@@ -35,6 +35,14 @@
     <length>1</length>
    </field>
 
+   <index>
+	   <name>search_lucene_status_index</name>
+           <primary>true</primary>
+	   <field>
+		   <name>fscache_id</name>
+		   <sorting>ascending</sorting>
+	   </field>
+   </index>
   </declaration>
 
  </table>

@@ -44,7 +44,7 @@ class OC_Search_Lucene_Status {
      */
     public static function setStatus ($id, $status) {
         
-        if ( ! is_int($id) || ! self::isValidStatus($status) ) {
+        if ( ! is_numeric($id) || ! self::isValidStatus($status) ) {
             return false;
         }
             
@@ -52,12 +52,15 @@ class OC_Search_Lucene_Status {
     }
     
     private static function createOrUpdateStatus ( $id, $status ) {
-        //try insert
-        $stmt = OC_DB::prepare( 'INSERT INTO *PREFIX*search_lucene_status (fscache_id,status) VALUES(?,?)' );
-        $result = $stmt->execute(array( $id, $status ));
+        
+        //TODO: mdb2 does not correctly set up primary keys, so trying to insert a duplicate entry will not throw an error
        
-        if (OC_DB::isError($result)) {
-            //try update
+        if (self::getStatus($id) === NULL) { // this makes an extra trip to the db
+            //try insert
+            $stmt = OC_DB::prepare( 'INSERT INTO *PREFIX*search_lucene_status (fscache_id,status) VALUES(?,?)' );
+            $result = $stmt->execute(array( $id, $status ));
+        } else {
+            //update
             $stmt = OC_DB::prepare( 'UPDATE *PREFIX*search_lucene_status set status = ? WHERE fscache_id = ?' );
             $result = $stmt->execute(array( $status, $id) );
         }
