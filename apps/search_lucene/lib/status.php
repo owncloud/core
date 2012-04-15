@@ -8,6 +8,7 @@
  * I ndexed: ok
  * C hanged: needs reindexing
  * D eleted: clean up index and remove from status
+ * E rror: could not index, do not try again FIXME
  * 
  */
 class OC_Search_Lucene_Status {
@@ -18,6 +19,7 @@ class OC_Search_Lucene_Status {
             case 'I':
             case 'C':
             case 'D':
+            case 'E':
                 return true;
             default:
                 return false;
@@ -36,10 +38,13 @@ class OC_Search_Lucene_Status {
     public static function markAsDeleted($fscacheId) {
         self::setStatus($fscacheId, 'D');
     }
+    public static function markAsError($fscacheId) {
+        self::setStatus($fscacheId, 'E');
+    }
     
     /**
      * @brief set the status for a file
-     * @param fscache id, status (one of 'N', 'I', 'C', 'D')
+     * @param fscache id, status (one of 'N', 'I', 'C', 'D', 'E')
      * @return boolean
      */
     public static function setStatus ($id, $status) {

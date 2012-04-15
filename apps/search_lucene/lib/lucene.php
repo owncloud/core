@@ -33,17 +33,32 @@ class OC_Search_Lucene extends OC_Search_Provider {
         * @param paramters parameters from postWriteFile-Hook
         * @return array
         */
-    static public function indexFile($path = '') {
+    static public function indexFile($path = '', $fscacheId = -1) {
         if ( $path === '' ) {
             //ignore the empty path element
             return;
         }
+        // begin HACK: remove user and file from path ... FIXME OC_FileCache::getPath($id); is not relative to user home
+        $toremove = '/'.OC_User::getUser().'/files';
+        if ( substr( $path, 1, strlen($toremove) ) ) {
+            $path = substr($path, strlen($toremove));
+        }
+        // end HACK
         $index = self::open();
                 
 	$file=OC_Filesystem::getLocalFile($path);
         $getID3=@new getID3();
 	$getID3->encoding='UTF-8';
         $data=$getID3->analyze($file);
+        
+        if ( isset($data['error']) ) {
+            OC_Search_Lucene_Status::markAsError($fscacheId);
+            OC_Log::write('search_lucene',
+                        'failed to extract meta information for '.$path.': '.$data['error']['0'],
+                        OC_Log::WARN);
+            
+            return;
+        }
         
         // TODO remove before insert to update?
         $doc = new Zend_Search_Lucene_Document();
@@ -62,6 +77,8 @@ class OC_Search_Lucene extends OC_Search_Provider {
 
         // Add document to the index
         $index->addDocument($doc);
+        
+        OC_Search_Lucene_Status::markAsIndexed($fscacheId);
     }
 
     /**
@@ -134,7 +151,7 @@ class OC_Search_Lucene extends OC_Search_Provider {
             $eventSource->send( 'indexing', array('path' => $path, 'status' => $status) );
             
             //  indexFile
-            self::indexFile($path);
+            self::indexFile($path, $id);
             
         }
         
