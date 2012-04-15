@@ -1,9 +1,9 @@
 <?php
 
 require_once 'Zend/Search/Lucene.php';
-require_once 'getID3/getid3/getid3.php';
+require_once 'getid3/getid3.php';
 
-class OC_Search_Lucene  implements OC_Search_Provider {
+class OC_Search_Lucene extends OC_Search_Provider {
     
     public static function open() {
         
@@ -33,21 +33,19 @@ class OC_Search_Lucene  implements OC_Search_Provider {
         * @param paramters parameters from postWriteFile-Hook
         * @return array
         */
-    static public function updateFile($parameters) {
-        if ( ! isset($parameters['path']) || $parameters['path'] === '' ) {
+    static public function indexFile($path = '') {
+        if ( $path === '' ) {
             //ignore the empty path element
             return;
         }
-        $path = $parameters['path'];
         $index = self::open();
-        
-        
+                
 	$file=OC_Filesystem::getLocalFile($path);
         $getID3=@new getID3();
 	$getID3->encoding='UTF-8';
         $data=$getID3->analyze($file);
         
-        
+        // TODO remove before insert to update?
         $doc = new Zend_Search_Lucene_Document();
 
         // Store document URL to identify it in the search results
@@ -57,7 +55,6 @@ class OC_Search_Lucene  implements OC_Search_Provider {
         $doc->addField(Zend_Search_Lucene_Field::unIndexed('filesize', $data['filesize']));
         $doc->addField(Zend_Search_Lucene_Field::unIndexed('mime_type', $data['mime_type']));
         
-
         // TODO index author, date ... use getid3 ... content
         
         // Index document contents
@@ -65,16 +62,6 @@ class OC_Search_Lucene  implements OC_Search_Provider {
 
         // Add document to the index
         $index->addDocument($doc);
-    }
-
-    /**
-        * @brief updates a file in the lucene index after a file has been updated
-        * @param paramters parameters from postWriteFile-Hook
-        * @return array
-        */
-    static public function renameFile($parameters) {
-            /* FIXME
-                */
     }
 
     /**
@@ -87,7 +74,7 @@ class OC_Search_Lucene  implements OC_Search_Provider {
                 */
     }
     
-    static public function search($query){
+    public function search($query){
         $results=array();
         if ( $query !== null ) {
             
@@ -133,6 +120,25 @@ class OC_Search_Lucene  implements OC_Search_Provider {
             
         }
         return $results;
+    }
+    
+    public static function index($eventSource) {
+        // get list of files to index
+        //TODO limit to 100? loop
+        $idsToIndex = OC_Search_Lucene_Status::getDirtyFiles();
+        $eventSource->send('count', count($idsToIndex));
+        foreach ($idsToIndex as $id => $status) {
+            
+            $path = OC_FileCache::getPath($id);
+            
+            $eventSource->send( 'indexing', array('path' => $path, 'status' => $status) );
+            
+            //  indexFile
+            self::indexFile($path);
+            
+        }
+        
+        $eventSource->send('done');
     }
     
 }

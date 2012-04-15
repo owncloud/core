@@ -45,4 +45,7 @@ OC_Hook::connect('OC_Filesystem','post_rename','OC_Search_Lucene_Status','onPost
 //listen for file deletions to clean the database
 OC_Hook::connect('OC_Filesystem','post_delete','OC_Search_Lucene_Status','onPostDelete');
 
+
+// start a background ajax call to index files. the app has no template so we need it here
+OC_Util::addScript('search_lucene', 'indexer');
 ?>

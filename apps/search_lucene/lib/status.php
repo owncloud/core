@@ -102,6 +102,19 @@ class OC_Search_Lucene_Status {
         return $row['count'];
     }
     
+    public static function getDirtyFiles() {
+        $files = array();
+        
+        $stmt = OC_DB::prepare( 'SELECT fscache_id AS id, status FROM *PREFIX*search_lucene_status WHERE status IN ( "N", "C", "D" )' );
+        $result = $stmt->execute();
+        
+        while( $row = $result->fetchRow()){
+                $files[] = $row;
+        }
+        
+        return $files;
+    }
+    
     public static function onPostCreate($param) {
         self::markAsNew( OC_FileCache::getId($param['path']) );
     }
