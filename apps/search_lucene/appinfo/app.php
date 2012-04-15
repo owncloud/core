@@ -1,7 +1,7 @@
 <?php
 
 /**
-* ownCloud - gallery application
+* ownCloud - search_lucene application
 *
 * @author Jörn Dreyer
 * @copyright 2012 Jörn Dreyer jfd@butonic.de
@@ -21,27 +21,27 @@
 * 
 */
 
-OC::$CLASSPATH['OC_Lucene_Search'] = 'apps/lucene_search/lib/lucene.php';
+OC::$CLASSPATH['OC_Search_Lucene'] = 'apps/search_lucene/lib/lucene.php';
 
-//$l = new OC_L10N('lucene_search');
+//$l = new OC_L10N('search_lucene');
 
 OC_App::register(array(
   'order' => 20,
-  'id' => 'lucene_search',
+  'id' => 'search_lucene',
   'name' => 'Lucene Search'));
 
-OC_Search::registerProvider('OC_Lucene_Search');
+OC_Search::registerProvider('OC_Search_Lucene');
 
-OC_APP::registerPersonal('lucene_search','settings');
+OC_APP::registerPersonal('search_lucene','settings');
 
 
 //connect to the filesystem for auto updating
-OC_Hook::connect('OC_Filesystem','post_write','OC_Lucene_Search','updateFile');
+OC_Hook::connect('OC_Filesystem','post_write','OC_Search_Lucene','updateFile');
 
 //connect to the filesystem for renaming
-OC_Hook::connect('OC_Filesystem','post_rename','OC_Lucene_Search','renameFile');
+OC_Hook::connect('OC_Filesystem','post_rename','OC_Search_Lucene','renameFile');
 
 //listen for file deletions to clean the database
-OC_Hook::connect('OC_Filesystem','post_delete','OC_Lucene_Search','deleteFile');
+OC_Hook::connect('OC_Filesystem','post_delete','OC_Search_Lucene','deleteFile');
 
 ?>

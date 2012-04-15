@@ -3,13 +3,13 @@
 require_once 'Zend/Search/Lucene.php';
 require_once 'getID3/getid3/getid3.php';
 
-class OC_Lucene_Search  implements OC_Search_Provider {
+class OC_Search_Lucene  implements OC_Search_Provider {
     
     public static function open() {
         
         try {
             // Create index
-            //$ocFilesystemView = OC_App::getStorage('lucene_search'); // encrypt the index on logout, decrypt on login
+            //$ocFilesystemView = OC_App::getStorage('search_lucene'); // encrypt the index on logout, decrypt on login
             
             $indexUrl = OC_Config::getValue( "datadirectory", OC::$SERVERROOT."/data" );
             $indexUrl .= '/' . OC_User::getUser() . '/lucene_index';
@@ -19,7 +19,7 @@ class OC_Lucene_Search  implements OC_Search_Provider {
                 $index = Zend_Search_Lucene::create($indexUrl);
             }
         } catch ( Exception $e ) {
-            OC_Log::write('lucene_search',
+            OC_Log::write('search_lucene',
                         $e->getMesage().' Trace:\n'.$e->getTraceAsString(),
                         OC_Log::ERROR);
             return null;
@@ -126,7 +126,7 @@ class OC_Lucene_Search  implements OC_Search_Provider {
                 }
                 
             } catch ( Exception $e ) {
-                OC_Log::write('lucene_search',
+                OC_Log::write('search_lucene',
                             $e->getMesage().' Trace:\n'.$e->getTraceAsString(),
                             OC_Log::ERROR);
             }

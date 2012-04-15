@@ -1,8 +1,8 @@
 <?php
 
-$tmpl = new OC_Template( 'lucene_search', 'settings');
+$tmpl = new OC_Template( 'search_lucene', 'settings');
 
-$index = OC_Lucene_Search::open();
+$index = OC_Search_Lucene::open();
 
 if ( $index===null ) {
     
