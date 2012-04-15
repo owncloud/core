@@ -52,14 +52,14 @@ class OC_Search_Lucene_Status {
     }
     
     private static function createOrUpdateStatus ( $id, $status ) {
-        //try update
-        $stmt = OC_DB::prepare( 'UPDATE *PREFIX*search_lucene_status set status = ? WHERE fscache_id = ?' );
-        $result = $stmt->execute(array( $status, $id) );
+        //try insert
+        $stmt = OC_DB::prepare( 'INSERT INTO *PREFIX*search_lucene_status (fscache_id,status) VALUES(?,?)' );
+        $result = $stmt->execute(array( $id, $status ));
        
         if (OC_DB::isError($result)) {
-            //try insert
-            $stmt = OC_DB::prepare( 'INSERT INTO *PREFIX*search_lucene_status (fscache_id,status) VALUES(?,?)' );
-            $result = $stmt->execute(array( $id, $status ));
+            //try update
+            $stmt = OC_DB::prepare( 'UPDATE *PREFIX*search_lucene_status set status = ? WHERE fscache_id = ?' );
+            $result = $stmt->execute(array( $status, $id) );
         }
                 
         if (OC_DB::isError($result)) {
@@ -99,17 +99,17 @@ class OC_Search_Lucene_Status {
         return $row['count'];
     }
     
-    public static function onPostCreate($path) {
-        self::markAsNew( OC_FileCache::getFileId($path) );
+    public static function onPostCreate($param) {
+        self::markAsNew( OC_FileCache::getId($param['path']) );
     }
-    public static function onPostWrite($path) {
-        self::markAsChanged( OC_FileCache::getFileId($path) );
+    public static function onPostWrite($param) {
+        self::markAsChanged( OC_FileCache::getId($param['path']) );
     }
-    public static function onPostRename($path) {
-        self::markAsChanged( OC_FileCache::getFileId($path) );
+    public static function onPostRename($param) {
+        self::markAsChanged( OC_FileCache::getId($param['path']) );
     }
-    public static function onPostDelete($path) {
-        self::markAsDeleted( OC_FileCache::getFileId($path) );
+    public static function onPostDelete($param) {
+        self::markAsDeleted( OC_FileCache::getId($param['path']) );
     }
     
 }
