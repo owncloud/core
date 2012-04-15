@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<database>
+
+ <name>*dbname*</name>
+ <create>true</create>
+ <overwrite>false</overwrite>
+
+ <charset>utf8</charset>
+
+ <table>
+
+  <name>*dbprefix*search_lucene_status</name>
+
+  <description>Filled by hooks, processed by background ajax</description>
+
+  <declaration>
+
+   <field>
+    <name>fscache_id</name>
+    <type>integer</type>
+    <default>0</default>
+    <notnull>true</notnull>
+    <unsigned>true</unsigned>
+    <length>4</length>
+    <decsription>the file id that needs an action</decsription>
+   </field>
+
+   <field>
+    <name>status</name>
+    <type>text</type>
+    <default></default>
+    <notnull>true</notnull>
+    <unsigned>true</unsigned>
+    <description>'N' = new, 'I' = indexed, 'C' = changed, 'D' = delete</description>
+    <length>1</length>
+   </field>
+
+  </declaration>
+
+ </table>
+
+</database>

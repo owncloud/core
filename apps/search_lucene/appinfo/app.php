@@ -22,6 +22,7 @@
 */
 
 OC::$CLASSPATH['OC_Search_Lucene'] = 'apps/search_lucene/lib/lucene.php';
+OC::$CLASSPATH['OC_Search_Lucene_Status'] = 'apps/search_lucene/lib/status.php';
 
 //$l = new OC_L10N('search_lucene');
 
@@ -36,12 +37,12 @@ OC_APP::registerPersonal('search_lucene','settings');
 
 
 //connect to the filesystem for auto updating
-OC_Hook::connect('OC_Filesystem','post_write','OC_Search_Lucene','updateFile');
+OC_Hook::connect('OC_Filesystem','post_write','OC_Search_Lucene_Status','onPostWrite');
 
 //connect to the filesystem for renaming
-OC_Hook::connect('OC_Filesystem','post_rename','OC_Search_Lucene','renameFile');
+OC_Hook::connect('OC_Filesystem','post_rename','OC_Search_Lucene_Status','onPostRename');
 
 //listen for file deletions to clean the database
-OC_Hook::connect('OC_Filesystem','post_delete','OC_Search_Lucene','deleteFile');
+OC_Hook::connect('OC_Filesystem','post_delete','OC_Search_Lucene_Status','onPostDelete');
 
 ?>
