@@ -38,8 +38,29 @@ class OC_Search_Lucene extends OC_Search_Provider {
             //ignore the empty path element
             return;
         }
+        
+        // the cache already knows mime and other basic stuff
+        $data = OC_FileCache::getCached($path);
+        
         $index = self::open();
                 
+        // TODO remove before insert to update?
+        $doc = new Zend_Search_Lucene_Document();
+
+        // Store document URL to identify it in the search results
+        $doc->addField(Zend_Search_Lucene_Field::Text('path', $path));
+        
+        //$doc->addField(Zend_Search_Lucene_Field::Text('filename', $data['filename']));
+        $doc->addField(Zend_Search_Lucene_Field::unIndexed('size', $data['size']));
+        
+        $doc->addField(Zend_Search_Lucene_Field::unIndexed('mimetype', $data['mimetype']));
+        
+        // TODO index author, date ... use getid3 ... content
+        
+        // Index document contents
+        //$doc->addField(Zend_Search_Lucene_Field::UnStored('contents', $docContent));
+
+        /*
 	$file=OC_Filesystem::getLocalFile($path);
         $getID3=@new getID3();
 	$getID3->encoding='UTF-8';
@@ -53,22 +74,9 @@ class OC_Search_Lucene extends OC_Search_Provider {
             
             return;
         }
+        */
         
-        // TODO remove before insert to update?
-        $doc = new Zend_Search_Lucene_Document();
-
-        // Store document URL to identify it in the search results
-        $doc->addField(Zend_Search_Lucene_Field::Text('path', $path));
         
-        $doc->addField(Zend_Search_Lucene_Field::Text('filename', $data['filename']));
-        $doc->addField(Zend_Search_Lucene_Field::unIndexed('filesize', $data['filesize']));
-        $doc->addField(Zend_Search_Lucene_Field::unIndexed('mime_type', $data['mime_type']));
-        
-        // TODO index author, date ... use getid3 ... content
-        
-        // Index document contents
-        //$doc->addField(Zend_Search_Lucene_Field::UnStored('contents', $docContent));
-
         // Add document to the index
         $index->addDocument($doc);
         
@@ -96,7 +104,7 @@ class OC_Search_Lucene extends OC_Search_Provider {
                 
                 foreach ($hits as $hit) {
                     //print_r($hit->mime_type);
-                    $mimeBase=substr($hit->mime_type,0,strpos($hit->mime_type,'/'));
+                    $mimeBase=substr($hit->mimetype,0,strpos($hit->mimetype,'/'));
                     //print_r($mimeBase);
                     switch($mimeBase){
                         case 'audio':
@@ -108,7 +116,7 @@ class OC_Search_Lucene extends OC_Search_Provider {
                             $type='Images';
                             break;
                         default:
-                            if($hit->mime_type=='application/xml'){
+                            if($hit->mimetype=='application/xml'){
                                 $type='Text';
                             } else {
                                 $type='Files';
@@ -116,8 +124,8 @@ class OC_Search_Lucene extends OC_Search_Provider {
                     }
                     //$results[]=new OC_Search_Result('fileName','info',OC_Helper::linkTo( 'files', 'download.php?file='.$path ),'Text');
                     $results[]=new OC_Search_Result(
-                                        $hit->filename,
-                                        'Score: ' . $hit->score . ', Size: ' . $hit->filesize,
+                                        $hit->path,
+                                        'Score: ' . $hit->score . ', Size: ' . $hit->size,
                                         OC_Helper::linkTo( 'files', 'download.php?file='.$hit->path),
                                         $type
                                );
