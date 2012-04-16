@@ -38,12 +38,6 @@ class OC_Search_Lucene extends OC_Search_Provider {
             //ignore the empty path element
             return;
         }
-        // begin HACK: remove user and file from path ... FIXME OC_FileCache::getPath($id); is not relative to user home
-        $toremove = '/'.OC_User::getUser().'/files';
-        if ( substr( $path, 1, strlen($toremove) ) ) {
-            $path = substr($path, strlen($toremove));
-        }
-        // end HACK
         $index = self::open();
                 
 	$file=OC_Filesystem::getLocalFile($path);
@@ -144,14 +138,14 @@ class OC_Search_Lucene extends OC_Search_Provider {
         //TODO limit to 100? loop
         $idsToIndex = OC_Search_Lucene_Status::getDirtyFiles();
         $eventSource->send('count', count($idsToIndex));
-        foreach ($idsToIndex as $id => $status) {
+        foreach ($idsToIndex as $file) {
             
-            $path = OC_FileCache::getPath($id);
+            $path = OC_FileCache::getPath($file['id']);
             
-            $eventSource->send( 'indexing', array('path' => $path, 'status' => $status) );
+            $eventSource->send( 'indexing', array('path' => $path, 'status' => $file['status']) );
             
             //  indexFile
-            self::indexFile($path, $id);
+            self::indexFile($path, $file['id']);
             
         }
         
