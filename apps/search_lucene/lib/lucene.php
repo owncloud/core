@@ -50,37 +50,74 @@ class OC_Search_Lucene extends OC_Search_Provider {
         // Store document URL to identify it in the search results
         $doc->addField(Zend_Search_Lucene_Field::Text('path', $path));
         
-        //$doc->addField(Zend_Search_Lucene_Field::Text('filename', $data['filename']));
         $doc->addField(Zend_Search_Lucene_Field::unIndexed('size', $data['size']));
         
         $doc->addField(Zend_Search_Lucene_Field::unIndexed('mimetype', $data['mimetype']));
         
-        // TODO index author, date ... use getid3 ... content
+        self::extractMetadata($path, $doc, $data['mimetype']);
         
-        // Index document contents
-        //$doc->addField(Zend_Search_Lucene_Field::UnStored('contents', $docContent));
-
-        /*
+        // Add document to the index
+        $index->addDocument($doc);
+        
+        OC_Search_Lucene_Status::markAsIndexed($fscacheId);
+    }
+    
+    private static function extractMetadata ($path, $doc, $mimetype) {
+              
 	$file=OC_Filesystem::getLocalFile($path);
         $getID3=@new getID3();
 	$getID3->encoding='UTF-8';
         $data=$getID3->analyze($file);
         
+        //show me what you got
+        foreach ($data as $key => $value) {
+            OC_Log::write('search_lucene',
+                        'getid3 extracted '.$key.': '.$value,
+                        OC_Log::DEBUG);
+        }
+        
+        // filename _should_ always work, so log if it does not
+        if ( isset($data['filename']) ) {
+            $doc->addField(Zend_Search_Lucene_Field::Text('filename', $data['filename']));
+        } else {
+            OC_Log::write('search_lucene',
+                        'failed to extract meta information for '.$path.': '.$data['error']['0'],
+                        OC_Log::WARN);
+        }
+        
+        $metaToIndex = array('artist', 'title');
+        foreach ($metaToIndex as $key) {
+            if ( isset($data[$key]) ) {
+                $doc->addField(Zend_Search_Lucene_Field::Text($key, $data[$key]));
+            }
+        }
+        
+        //content
+        
+        $mimeBase = self::baseTypeOf($mimetype);
+        //print_r($mimeBase);
+        switch($mimeBase){
+            case 'text':
+                $content = OC_Filesystem::file_get_contents($path);
+                break;
+            //TODO case '' index pdf content
+            //TODO case '' index office content
+            default:
+                //dont index content
+                $content = '';
+        }
+        if ($content != '') {
+            $doc->addField(Zend_Search_Lucene_Field::UnStored('content', $content));
+        }
+        
         if ( isset($data['error']) ) {
-            OC_Search_Lucene_Status::markAsError($fscacheId);
+            //OC_Search_Lucene_Status::markAsError($fscacheId);
             OC_Log::write('search_lucene',
                         'failed to extract meta information for '.$path.': '.$data['error']['0'],
                         OC_Log::WARN);
             
             return;
         }
-        */
-        
-        
-        // Add document to the index
-        $index->addDocument($doc);
-        
-        OC_Search_Lucene_Status::markAsIndexed($fscacheId);
     }
 
     /**
@@ -91,6 +128,10 @@ class OC_Search_Lucene extends OC_Search_Provider {
     static public function deleteFile($parameters) {
             /* FIXME
                 */
+    }
+    
+    public static function baseTypeOf($mimetype) {
+        return substr($mimetype,0,strpos($mimetype,'/'));
     }
     
     public function search($query){
@@ -104,11 +145,12 @@ class OC_Search_Lucene extends OC_Search_Provider {
                 
                 foreach ($hits as $hit) {
                     //print_r($hit->mime_type);
-                    $mimeBase=substr($hit->mimetype,0,strpos($hit->mimetype,'/'));
+                    $mimeBase = self::baseTypeOf($hit->mimetype);
                     //print_r($mimeBase);
                     switch($mimeBase){
                         case 'audio':
-                            continue; //ignore audio files?
+                            $type='Music';
+                            break;
                         case 'text':
                             $type='Text';
                             break;
@@ -122,9 +164,16 @@ class OC_Search_Lucene extends OC_Search_Provider {
                                 $type='Files';
                             }
                     }
+                    
+                    if (isset($hit->filename)) {
+                        $displayname = $hit->filename;
+                    } else {
+                        $displayname = $hit->path;
+                        //TODO make basename
+                    }
                     //$results[]=new OC_Search_Result('fileName','info',OC_Helper::linkTo( 'files', 'download.php?file='.$path ),'Text');
                     $results[]=new OC_Search_Result(
-                                        $hit->path,
+                                        $displayname,
                                         'Score: ' . $hit->score . ', Size: ' . $hit->size,
                                         OC_Helper::linkTo( 'files', 'download.php?file='.$hit->path),
                                         $type
@@ -148,7 +197,7 @@ class OC_Search_Lucene extends OC_Search_Provider {
         $eventSource->send('count', count($idsToIndex));
         foreach ($idsToIndex as $file) {
             
-            $path = OC_FileCache::getPath($file['id']);
+            $path = OC_FileCache::getPath( $file['id'] );
             
             $eventSource->send( 'indexing', array('path' => $path, 'status' => $file['status']) );
             
