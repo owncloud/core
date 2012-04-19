@@ -21,6 +21,9 @@
 * 
 */
 
+
+header('Content-type: text/html; charset=UTF-8') ;
+
 require_once('../../../lib/base.php');
 OC_JSON::checkLoggedIn();
 OC_JSON::checkAppEnabled('search_lucene');
@@ -34,12 +37,21 @@ function handleIndexing() {
   OC_Search_Lucene::index($eventSource);
   $eventSource->close();
 }
+function syncFromCache() {
+  set_time_limit(0);
+  $eventSource = new OC_EventSource();
+  OC_Search_Lucene_Status::syncFromCache($eventSource);
+  $eventSource->close();
+}
 
 
-if ($_GET['operation']) {
-  switch($_GET['operation']) {
+if ($_GET['action']) {
+  switch($_GET['action']) {
   case 'index':
     handleIndexing();
+    break;
+  case 'sync':
+    syncFromCache();
     break;
   default:
     OC_JSON::error(array('cause' => 'Unknown operation'));

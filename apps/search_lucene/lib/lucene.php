@@ -208,5 +208,4 @@ class OC_Search_Lucene extends OC_Search_Provider {
         
         $eventSource->send('done');
     }
-    
 }
