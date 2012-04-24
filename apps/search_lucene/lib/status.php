@@ -148,7 +148,7 @@ class OC_Search_Lucene_Status {
     }
     
     
-    public static function syncFromCache($eventSource) {
+    public static function syncFromCache(OC_EventSource $eventSource) {
         // add new files from index
         
         $stmt = OC_DB::prepare( 'SELECT id FROM oc_fscache LEFT JOIN oc_search_lucene_status ON oc_fscache.id=oc_search_lucene_status.fscache_id WHERE oc_search_lucene_status.fscache_id IS NULL;' );

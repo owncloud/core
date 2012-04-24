@@ -22,6 +22,7 @@
 */
 
 OC::$CLASSPATH['OC_Search_Lucene'] = 'apps/search_lucene/lib/lucene.php';
+OC::$CLASSPATH['OC_Search_Lucene_Indexer'] = 'apps/search_lucene/lib/indexer.php';
 OC::$CLASSPATH['OC_Search_Lucene_Status'] = 'apps/search_lucene/lib/status.php';
 
 //$l = new OC_L10N('search_lucene');

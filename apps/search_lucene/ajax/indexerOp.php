@@ -34,7 +34,7 @@ OC_JSON::checkAppEnabled('search_lucene');
 function handleIndexing() {
   set_time_limit(0);
   $eventSource = new OC_EventSource();
-  OC_Search_Lucene::index($eventSource);
+  OC_Search_Lucene_Indexer::index($eventSource);
   $eventSource->close();
 }
 function syncFromCache() {

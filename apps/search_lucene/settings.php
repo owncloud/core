@@ -2,7 +2,7 @@
 
 $tmpl = new OC_Template( 'search_lucene', 'settings');
 
-$index = OC_Search_Lucene::open();
+$index = OC_Search_Lucene::openOrCreate();
 
 if ( $index===null ) {
     
