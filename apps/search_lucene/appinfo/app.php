@@ -21,10 +21,12 @@
 * 
 */
 
-OC::$CLASSPATH['OC_Search_Lucene'] = 'apps/search_lucene/lib/lucene.php';
+OC::$CLASSPATH['OC_Search_Lucene']         = 'apps/search_lucene/lib/lucene.php';
 OC::$CLASSPATH['OC_Search_Lucene_Indexer'] = 'apps/search_lucene/lib/indexer.php';
-OC::$CLASSPATH['OC_Search_Lucene_Status'] = 'apps/search_lucene/lib/status.php';
+OC::$CLASSPATH['OC_Search_Lucene_Status']  = 'apps/search_lucene/lib/status.php';
+OC::$CLASSPATH['OC_Search_Lucene_Hooks']   = 'apps/search_lucene/lib/hooks.php';
 
+//TODO add translation
 //$l = new OC_L10N('search_lucene');
 
 OC_App::register(array(
@@ -36,17 +38,21 @@ OC_Search::registerProvider('OC_Search_Lucene');
 
 OC_APP::registerPersonal('search_lucene','settings');
 
+// --------------------------------------------------
+
+//post_create is ignored, as write will be triggered afterwards anyway
 
 //connect to the filesystem for auto updating
-OC_Hook::connect('OC_Filesystem','post_write','OC_Search_Lucene_Status','onPostWrite');
+OC_Hook::connect('OC_Filesystem','post_write','OC_Search_Lucene_Hooks','postWrite');
 
 //connect to the filesystem for renaming
-OC_Hook::connect('OC_Filesystem','post_rename','OC_Search_Lucene_Status','onPostRename');
+OC_Hook::connect('OC_Filesystem','post_rename','OC_Search_Lucene_Hooks','postRename');
 
 //listen for file deletions to clean the database
-OC_Hook::connect('OC_Filesystem','post_delete','OC_Search_Lucene_Status','onPostDelete');
+OC_Hook::connect('OC_Filesystem','post_delete','OC_Search_Lucene_Hooks','postDelete');
 
-
+// --------------------------------------------------
+// 
 // start a background ajax call to index files. the app has no template so we need it here
 OC_Util::addScript('search_lucene', 'indexer');
 ?>

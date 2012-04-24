@@ -10,9 +10,11 @@
  * D eleted: clean up index and remove from status
  * E rror: could not index, do not try again FIXME
  * 
+ * 
+ * @author Jörn Dreyer <jfd@butonic.de>
  */
 class OC_Search_Lucene_Status {
-    
+
     public static function isValidStatus($status) {
         switch ($status) {
             case 'N':
@@ -43,7 +45,10 @@ class OC_Search_Lucene_Status {
     }
     
     /**
-     * @brief set the status for a file
+     * set the status for a file
+     * 
+     * @author Jörn Dreyer <jfd@butonic.de>
+     * 
      * @param fscache id, status (one of 'N', 'I', 'C', 'D', 'E')
      * @return boolean
      */
@@ -104,7 +109,10 @@ class OC_Search_Lucene_Status {
     }
     
     /**
-     * @brief counts entries in the queue table
+     * counts entries in the queue table
+     * 
+     * @author Jörn Dreyer <jfd@butonic.de>
+     * 
      * @param 
      * @return integer
      */
@@ -134,19 +142,6 @@ class OC_Search_Lucene_Status {
         return $files;
     }
     
-    public static function onPostCreate($param) {
-        self::markAsNew( OC_FileCache::getId($param['path']) );
-    }
-    public static function onPostWrite($param) {
-        self::markAsChanged( OC_FileCache::getId($param['path']) );
-    }
-    public static function onPostRename($param) {
-        self::markAsChanged( OC_FileCache::getId($param['path']) );
-    }
-    public static function onPostDelete($param) {
-        self::markAsDeleted( OC_FileCache::getId($param['path']) );
-    }
-    
     
     public static function syncFromCache(OC_EventSource $eventSource) {
         // add new files from index
@@ -154,16 +149,36 @@ class OC_Search_Lucene_Status {
         $stmt = OC_DB::prepare( 'SELECT id FROM oc_fscache LEFT JOIN oc_search_lucene_status ON oc_fscache.id=oc_search_lucene_status.fscache_id WHERE oc_search_lucene_status.fscache_id IS NULL;' );
         $result = $stmt->execute();
         
+        $eventSource->send( 'adding', $result->numRows() );
         
         while( $row = $result->fetchRow() ){
             self::createStatus( $row['id'], 'N' );
         }
         
-        $eventSource->send( 'added', $result->numRows() );
+        $eventSource->send( 'adding done' );
         
-        // TODO remove files if vanished from cache?
+        // remove files if vanished from cache
         
-        $eventSource->send( 'done' );
+        $stmt = OC_DB::prepare( 'SELECT fscache_id FROM oc_search_lucene_status LEFT JOIN oc_fscache ON oc_search_lucene_status.fscache_id=oc_fscache.id WHERE oc_fscache.id IS NULL;' );
+        $result = $stmt->execute();
+        
+        $eventSource->send( 'removing', $result->numRows() );
+        
+        while( $row = $result->fetchRow() ){
+            
+            $stmt = OC_DB::prepare( 'DELETE FROM oc_search_lucene_status WHERE fscache_id=?;' );
+            $delResult = $stmt->execute( array( $row['fscache_id'] ) );
+
+            if ( OC_DB::isError($delResult) ) {
+                //TODO log ...
+            } else {
+                $eventSource->send( 'removed', $result->numRows() );
+            }
+            
+        }
+        $eventSource->send( 'removing done' );
+        
+        $eventSource->send( 'sync done' );
         
     }
     

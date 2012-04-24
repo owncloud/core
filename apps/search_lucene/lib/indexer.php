@@ -5,7 +5,16 @@ require_once 'getid3/getid3.php';
 
 class OC_Search_Lucene_Indexer {
     
-    
+    /**
+     * start indexing dirty files (as found in the status table)
+     * 
+     * the event source will be notified on every new file being indexed
+     * by sending 'indexing' and when indexing is 'done'
+     * 
+     * @author Jörn Dreyer <jfd@butonic.de>
+     * 
+     * @param $eventSource OC_EventSource
+     */
     public static function index(OC_EventSource $eventSource) {
         // get list of files to index
         //TODO limit to 100? loop
@@ -26,10 +35,12 @@ class OC_Search_Lucene_Indexer {
     }
     
     /**
-     * @brief update a file in the lucene index after a file has been updated
+     * index a file
      * 
-     * @param paramters parameters from postWriteFile-Hook
-     * @return array
+     * @author Jörn Dreyer <jfd@butonic.de>
+     * 
+     * @param $path the path of the file
+     * @param $fscacheId the id of the file in the fscache table
      */
     static public function indexFile($path = '', $fscacheId = -1) {
         if ( $path === '' ) {
@@ -40,9 +51,6 @@ class OC_Search_Lucene_Indexer {
         // the cache already knows mime and other basic stuff
         $data = OC_FileCache::getCached($path);
         
-        $index = OC_Search_Lucene::openOrCreate();
-                
-        // TODO remove before insert to update?
         $doc = new Zend_Search_Lucene_Document();
 
         // Store document URL to identify it in the search results
@@ -52,16 +60,26 @@ class OC_Search_Lucene_Indexer {
         
         $doc->addField(Zend_Search_Lucene_Field::unIndexed('mimetype', $data['mimetype']));
         
-        self::extractMetadata($path, $doc, $data['mimetype']);
+        self::extractMetadata($doc, $path, $data['mimetype']);
         
-        // Add document to the index
-        $index->addDocument($doc);
-        
-        OC_Search_Lucene_Status::markAsIndexed($fscacheId);
+        OC_Search_Lucene::updateFile($doc, $path, $fscacheId);
     }
     
     
-    private static function extractMetadata ($path, $doc, $mimetype) {
+    /**
+     * extract the metadata from a file
+     * 
+     * uses getid3 to extract metadata.
+     * if possible also adds content (currently only for plain text files)
+     * hint: use OC_FileCache::getCached($path) to get metadata for the last param
+     *  
+     * @author Jörn Dreyer <jfd@butonic.de>
+     * 
+     * @param $doc Zend_Search_Lucene_Document to add the metadata to
+     * @param $path path of the file to extract metadata from
+     * @param $mimetype depending on the mimetype different extractions are performed
+     */
+    private static function extractMetadata (Zend_Search_Lucene_Document $doc, $path, $mimetype) {
               
 	$file=OC_Filesystem::getLocalFile($path);
         $getID3=@new getID3();
