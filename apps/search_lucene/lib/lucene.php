@@ -144,40 +144,7 @@ class OC_Search_Lucene extends OC_Search_Provider {
                 $hits = $index->find($query);
                 
                 foreach ($hits as $hit) {
-                    //print_r($hit->mime_type);
-                    $mimeBase = self::baseTypeOf($hit->mimetype);
-                    //print_r($mimeBase);
-                    switch($mimeBase){
-                        case 'audio':
-                            $type='Music';
-                            break;
-                        case 'text':
-                            $type='Text';
-                            break;
-                        case 'image':
-                            $type='Images';
-                            break;
-                        default:
-                            if($hit->mimetype=='application/xml'){
-                                $type='Text';
-                            } else {
-                                $type='Files';
-                            }
-                    }
-                    
-                    if (isset($hit->filename)) {
-                        $displayname = $hit->filename;
-                    } else {
-                        $displayname = $hit->path;
-                        //TODO make basename
-                    }
-                    //$results[]=new OC_Search_Result('fileName','info',OC_Helper::linkTo( 'files', 'download.php?file='.$path ),'Text');
-                    $results[]=new OC_Search_Result(
-                                        $displayname,
-                                        'Score: ' . $hit->score . ', Size: ' . $hit->size,
-                                        OC_Helper::linkTo( 'files', 'download.php?file='.$hit->path),
-                                        $type
-                               );
+                    $results[] = self::asOCSearchResult($hit);
                 }
                 
             } catch ( Exception $e ) {
@@ -188,6 +155,50 @@ class OC_Search_Lucene extends OC_Search_Provider {
             
         }
         return $results;
+    }
+
+    /**
+     * converts a zend lucene search object to a OC_SearchResult
+     *
+     * Example:
+     * 
+     * Text | Some Document.txt
+     *      | /path/to/file, 148kb, Score: 0.55
+     * 
+     * @author Jörn Dreyer <jfd@butonic.de>
+     *
+     * @param Zend_Search_Lucene_Search_QueryHit $hit The Lucene Search Result
+     * @return OC_Search_Result an OC_Search_Result
+     */
+    private static function asOCSearchResult(Zend_Search_Lucene_Search_QueryHit $hit) {
+
+        //print_r($hit->mime_type);
+        $mimeBase = self::baseTypeOf($hit->mimetype);
+        //print_r($mimeBase);
+        switch($mimeBase){
+            case 'audio':
+                $type='Music';
+                break;
+            case 'text':
+                $type='Text';
+                break;
+            case 'image':
+                $type='Images';
+                break;
+            default:
+                if($hit->mimetype=='application/xml'){
+                    $type='Text';
+                } else {
+                    $type='Files';
+                }
+        }
+
+        return new OC_Search_Result(
+                            basename($hit->path),
+                            dirname($hit->path) . ', ' . $hit->size . ', Score: ' . number_format($hit->score, 2),
+                            OC_Helper::linkTo( 'files', 'download.php?file='.$hit->path),
+                            $type
+                    );
     }
     
     public static function index($eventSource) {
