@@ -1,10 +1,15 @@
 <?php
 
 require_once 'Zend/Search/Lucene.php';
+require_once 'Zend/Pdf.php';
 require_once 'getid3/getid3.php';
+require_once 'pdf2text.php';
 
+/**
+ * @author Jörn Dreyer <jfd@butonic.de>
+ */
 class OC_Search_Lucene_Indexer {
-    
+
     /**
      * start indexing dirty files (as found in the status table)
      * 
@@ -89,12 +94,21 @@ class OC_Search_Lucene_Indexer {
 	$getID3->encoding='UTF-8';
         $data=$getID3->analyze($file);
         
+        // TODO index meta information from media files
+        
         //show me what you got
-        foreach ($data as $key => $value) {
+        /*foreach ($data as $key => $value) {
             OC_Log::write('search_lucene',
                         'getid3 extracted '.$key.': '.$value,
                         OC_Log::DEBUG);
-        }
+            if (is_array($value)) {
+                foreach ($value as $k => $v) {
+                    OC_Log::write('search_lucene',
+                            '  ' . $value .'-' .$k.': '.$v,
+                            OC_Log::DEBUG);
+                }
+            }
+        }*/
         
         // filename _should_ always work, so log if it does not
         if ( isset($data['filename']) ) {
@@ -104,28 +118,49 @@ class OC_Search_Lucene_Indexer {
                         'failed to extract meta information for '.$path.': '.$data['error']['0'],
                         OC_Log::WARN);
         }
-        
-        $metaToIndex = array('artist', 'title');
-        foreach ($metaToIndex as $key) {
-            if ( isset($data[$key]) ) {
-                $doc->addField(Zend_Search_Lucene_Field::Text($key, $data[$key]));
-            }
-        }
-        
+                
         //content
         
-        $mimeBase = OC_Search_Lucene::baseTypeOf($mimetype);
-        //print_r($mimeBase);
-        switch($mimeBase){
-            case 'text':
-                $content = OC_Filesystem::file_get_contents($path);
-                break;
-            //TODO case '' index pdf content
-            //TODO case '' index office content
-            default:
-                //dont index content
-                $content = '';
+        OC_Log::write('search_lucene',
+                    'indexer extracting content for '.$path.' ('.$mimetype.')',
+                    OC_Log::DEBUG);
+        
+        $content = '';
+            
+        if ('text/plain' === $mimetype) {
+            $content = OC_Filesystem::file_get_contents($path);
+            
+        } else if ('application/pdf' === $mimetype) {
+            try {
+                $zendpdf = Zend_Pdf::parse(OC_Filesystem::file_get_contents($path));
+                
+                //we currently only display the filename, so we only index metadata here
+                if (isset($zendpdf->properties['Title'])) {
+                    $doc->addField(Zend_Search_Lucene_Field::UnStored('title',$zendpdf->properties['Title']));
+                }
+                if (isset($zendpdf->properties['Author'])) {
+                    $doc->addField(Zend_Search_Lucene_Field::UnStored('author',$zendpdf->properties['Author']));
+                }
+                if (isset($zendpdf->properties['Subject'])) {
+                    $doc->addField(Zend_Search_Lucene_Field::UnStored('subject',$zendpdf->properties['Subject']));
+                }
+                if (isset($zendpdf->properties['Keywords'])) {
+                    $doc->addField(Zend_Search_Lucene_Field::UnStored('keywords',$zendpdf->properties['Keywords']));
+                }
+                //TODO handle PDF 1.6 metadata Zend_Pdf::getMetadata()
+                
+                //do the content extraction
+                $pdfParse = new App_Search_Helper_PdfParser();
+                $content = $pdfParse->pdf2txt($zendpdf->render());
+                
+            } catch (Exception $e) {
+                OC_Log::write('search_lucene',
+                    $e->getMesage().' Trace:\n'.$e->getTraceAsString(),
+                    OC_Log::ERROR);
+            }
+            
         }
+        
         if ($content != '') {
             $doc->addField(Zend_Search_Lucene_Field::UnStored('content', $content));
         }

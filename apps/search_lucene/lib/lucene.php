@@ -2,6 +2,9 @@
 
 require_once 'Zend/Search/Lucene.php';
 
+/**
+ * @author Jörn Dreyer <jfd@butonic.de>
+ */
 class OC_Search_Lucene extends OC_Search_Provider {
     
     

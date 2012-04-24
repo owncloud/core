@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @author Jörn Dreyer <jfd@butonic.de>
+ */
 class OC_Search_Lucene_Hooks {
     
     /**
