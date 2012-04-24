@@ -55,22 +55,38 @@ class OC_Search_Lucene_Indexer {
         
         // the cache already knows mime and other basic stuff
         $data = OC_FileCache::getCached($path);
-        
-        $doc = new Zend_Search_Lucene_Document();
+        if (isset($data['mimetype'])) {
+            $mimetype = $data['mimetype'];
+            if ('text/html' === $mimetype) {
+                $doc = Zend_Search_Lucene_Document_Html::loadHTML(OC_Filesystem::file_get_contents($path));
+            } else if ('application/msword' === $mimetype) {
+                // FIXME uses ZipArchive ... make compatible with OC_Filesystem
+                //$doc = Zend_Search_Lucene_Document_Docx::loadDocxFile(OC_Filesystem::file_get_contents($path));
+                
+                //no special treatment yet
+                $doc = new Zend_Search_Lucene_Document();
+            } else {
+                $doc = new Zend_Search_Lucene_Document();
+            }
 
-        // store fscacheid as unique id to lookup by when deleting
-        $doc->addField(Zend_Search_Lucene_Field::Keyword('pk', $fscacheId));
-        
-        // Store document URL to identify it in the search results
-        $doc->addField(Zend_Search_Lucene_Field::Text('path', $path));
-        
-        $doc->addField(Zend_Search_Lucene_Field::unIndexed('size', $data['size']));
-        
-        $doc->addField(Zend_Search_Lucene_Field::unIndexed('mimetype', $data['mimetype']));
-        
-        self::extractMetadata($doc, $path, $data['mimetype']);
-        
-        OC_Search_Lucene::updateFile($doc, $path, $fscacheId);
+            // store fscacheid as unique id to lookup by when deleting
+            $doc->addField(Zend_Search_Lucene_Field::Keyword('pk', $fscacheId));
+
+            // Store document URL to identify it in the search results
+            $doc->addField(Zend_Search_Lucene_Field::Text('path', $path));
+
+            $doc->addField(Zend_Search_Lucene_Field::unIndexed('size', $data['size']));
+
+            $doc->addField(Zend_Search_Lucene_Field::unIndexed('mimetype', $mimetype));
+
+            self::extractMetadata($doc, $path, $mimetype);
+
+            OC_Search_Lucene::updateFile($doc, $path, $fscacheId);
+        } else {
+            OC_Log::write('search_lucene',
+                    'need mimetype for content extraction',
+                    OC_Log::ERROR);
+        }
     }
     
     
@@ -125,10 +141,10 @@ class OC_Search_Lucene_Indexer {
                     'indexer extracting content for '.$path.' ('.$mimetype.')',
                     OC_Log::DEBUG);
         
-        $content = '';
+        $body = '';
             
         if ('text/plain' === $mimetype) {
-            $content = OC_Filesystem::file_get_contents($path);
+            $body = OC_Filesystem::file_get_contents($path);
             
         } else if ('application/pdf' === $mimetype) {
             try {
@@ -151,7 +167,7 @@ class OC_Search_Lucene_Indexer {
                 
                 //do the content extraction
                 $pdfParse = new App_Search_Helper_PdfParser();
-                $content = $pdfParse->pdf2txt($zendpdf->render());
+                $body = $pdfParse->pdf2txt($zendpdf->render());
                 
             } catch (Exception $e) {
                 OC_Log::write('search_lucene',
@@ -161,8 +177,8 @@ class OC_Search_Lucene_Indexer {
             
         }
         
-        if ($content != '') {
-            $doc->addField(Zend_Search_Lucene_Field::UnStored('content', $content));
+        if ($body != '') {
+            $doc->addField(Zend_Search_Lucene_Field::UnStored('body', $body));
         }
         
         if ( isset($data['error']) ) {
