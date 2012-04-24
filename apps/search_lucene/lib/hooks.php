@@ -54,17 +54,23 @@ class OC_Search_Lucene_Hooks {
      * 
      * @param $param parameters from postDeleteFile-Hook
      */
-    static public function postDelete(array $param) {
-            OC_Log::write('search_lucene',
-                        'postDelete '.$param['path'],
-                        OC_Log::DEBUG);
+    static public function delete(array $param) {
+        // we cannot user post_delete as $param would not contain the id
+        // of the deleted file and we could not fetch it with getId
+      
+        $id = OC_FileCache::getId($param['path']);
+
+        if ($id === -1) {
+            return; // not in the index
+        }
+        
         //mark as deleted in index
         $index = OC_Search_Lucene::openOrCreate();
-        OC_Search_Lucene::deleteFile($index, $param['path']);
+        OC_Search_Lucene::deleteFile($index, $id);
 
         //mark as deleted in status table
         //TODO completely delete from status table?
-        OC_Search_Lucene_Status::markAsDeleted( OC_FileCache::getId($param['path']) );
+        OC_Search_Lucene_Status::markAsDeleted( $id );
     }
     
 }

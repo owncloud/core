@@ -54,7 +54,7 @@ class OC_Search_Lucene_Status {
      */
     public static function setStatus ($id, $status) {
         
-        if ( ! is_numeric($id) || ! self::isValidStatus($status) ) {
+        if ( ! is_numeric($id) || $id === -1 || ! self::isValidStatus($status) ) {
             return false;
         }
             
@@ -166,11 +166,17 @@ class OC_Search_Lucene_Status {
         
         while( $row = $result->fetchRow() ){
             
+            //remove from index
+            $index = OC_Search_Lucene::openOrCreate();
+            
+            OC_Search_Lucene::deleteFile($index, $row['fscache_id']);
+            
+            //remove from table            
             $stmt = OC_DB::prepare( 'DELETE FROM oc_search_lucene_status WHERE fscache_id=?;' );
             $delResult = $stmt->execute( array( $row['fscache_id'] ) );
 
             if ( OC_DB::isError($delResult) ) {
-                //TODO log ...
+                //TODO log?
             } else {
                 $eventSource->send( 'removed', $result->numRows() );
             }

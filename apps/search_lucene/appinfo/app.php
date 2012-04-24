@@ -49,7 +49,7 @@ OC_Hook::connect('OC_Filesystem','post_write','OC_Search_Lucene_Hooks','postWrit
 OC_Hook::connect('OC_Filesystem','post_rename','OC_Search_Lucene_Hooks','postRename');
 
 //listen for file deletions to clean the database
-OC_Hook::connect('OC_Filesystem','post_delete','OC_Search_Lucene_Hooks','postDelete');
+OC_Hook::connect('OC_Filesystem','delete','OC_Search_Lucene_Hooks','delete');
 
 // --------------------------------------------------
 // 

@@ -13,7 +13,7 @@ class OC_Search_Lucene_Indexer {
      * 
      * @author Jörn Dreyer <jfd@butonic.de>
      * 
-     * @param $eventSource OC_EventSource
+     * @param OC_EventSource $eventSource
      */
     public static function index(OC_EventSource $eventSource) {
         // get list of files to index
@@ -24,7 +24,7 @@ class OC_Search_Lucene_Indexer {
             
             $path = OC_FileCache::getPath( $file['id'] );
             
-            $eventSource->send( 'indexing', array('path' => $path, 'status' => $file['status']) );
+            $eventSource->send( 'indexing', array('path' => $path, 'status' => $file['status'], 'id' => $file['id']) );
             
             //  indexFile
             self::indexFile($path, $file['id']);
@@ -39,11 +39,11 @@ class OC_Search_Lucene_Indexer {
      * 
      * @author Jörn Dreyer <jfd@butonic.de>
      * 
-     * @param $path the path of the file
-     * @param $fscacheId the id of the file in the fscache table
+     * @param string $path the path of the file
+     * @param int $fscacheId the id of the file in the fscache table
      */
     static public function indexFile($path = '', $fscacheId = -1) {
-        if ( $path === '' ) {
+        if ( $path === '' || $fscacheId === -1 ) {
             //ignore the empty path element
             return;
         }
@@ -53,6 +53,9 @@ class OC_Search_Lucene_Indexer {
         
         $doc = new Zend_Search_Lucene_Document();
 
+        // store fscacheid as unique id to lookup by when deleting
+        $doc->addField(Zend_Search_Lucene_Field::Keyword('pk', $fscacheId));
+        
         // Store document URL to identify it in the search results
         $doc->addField(Zend_Search_Lucene_Field::Text('path', $path));
         
@@ -75,9 +78,9 @@ class OC_Search_Lucene_Indexer {
      *  
      * @author Jörn Dreyer <jfd@butonic.de>
      * 
-     * @param $doc Zend_Search_Lucene_Document to add the metadata to
-     * @param $path path of the file to extract metadata from
-     * @param $mimetype depending on the mimetype different extractions are performed
+     * @param Zend_Search_Lucene_Document $doc to add the metadata to
+     * @param string $path path of the file to extract metadata from
+     * @param string $mimetype depending on the mimetype different extractions are performed
      */
     private static function extractMetadata (Zend_Search_Lucene_Document $doc, $path, $mimetype) {
               

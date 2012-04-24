@@ -47,16 +47,16 @@ class OC_Search_Lucene extends OC_Search_Provider {
      * 
      * @author Jörn Dreyer <jfd@butonic.de>
      * 
-     * @param $doc Zend_Search_Lucene_Document the document to store for the path
-     * @param $path path to the document to update
-     * @param $fscacheId id of the file in the fscache table
+     * @param Zend_Search_Lucene_Document $doc the document to store for the path
+     * @param string $path path to the document to update
+     * @param int $fscacheId id of the file in the fscache table
      */
     static public function updateFile(Zend_Search_Lucene_Document $doc, $path = '', $fscacheId = -1) {  
                 
         $index = OC_Search_Lucene::openOrCreate();
                         
         // TODO profile perfomance for searching before adding to index
-        OC_Search_Lucene::deleteFile($index, $path);
+        OC_Search_Lucene::deleteFile($index, $fscacheId);
         
         OC_Log::write('search_lucene',
                       'adding ' . $path,
@@ -64,6 +64,8 @@ class OC_Search_Lucene extends OC_Search_Provider {
         
         // Add document to the index
         $index->addDocument($doc);
+        
+        $index->commit();
         
         OC_Search_Lucene_Status::markAsIndexed($fscacheId);
         
@@ -74,26 +76,26 @@ class OC_Search_Lucene extends OC_Search_Provider {
      * 
      * @author Jörn Dreyer <jfd@butonic.de>
      * 
-     * @param $index Zend_Search_Lucene_Interface
-     * @param $removePath path to the document to remove from the index
+     * @param Zend_Search_Lucene_Interface $index 
+     * @param int $fscacheId path to the document to remove from the index
      */
-    static public function deleteFile(Zend_Search_Lucene_Interface $index, $removePath) {        
+    static public function deleteFile(Zend_Search_Lucene_Interface $index, $fscacheId) {        
         
         OC_Log::write('search_lucene',
-                      'searching hits for ' . $removePath,
+                      'searching hits for pk:' . $fscacheId,
                       OC_Log::DEBUG);
         
-        $hits = $index->find('path:' . $removePath);
+        $hits = $index->find( 'pk:' . $fscacheId ); //id would be internal to lucene
         
         OC_Log::write('search_lucene',
-                      'found ' . sizeof($hits) . ' hits ',
+                      'found ' . count($hits) . ' hits ',
                       OC_Log::DEBUG);
         
         foreach ($hits as $hit) {
             OC_Log::write('search_lucene',
                           'removing ' . $hit->id . ':' . $hit->path . ' from index',
                           OC_Log::DEBUG);
-            $index->delete($hit->id);
+            $index->delete($hit);
         }
     }
     
@@ -102,15 +104,16 @@ class OC_Search_Lucene extends OC_Search_Provider {
      * 
      * @author Jörn Dreyer <jfd@butonic.de>
      * 
-     * @param $query lucene search query
+     * @param string $query lucene search query
      * @return array of OC_Search_Result
      */
     public function search($query){
         $results=array();
         if ( $query !== null ) {
-            
+            $query = '*' . $query . '*'; //FIXME emulates the old search but breaks all the nice lucene search query options
             try {
                 $index = self::openOrCreate(); 
+                Zend_Search_Lucene_Search_Query_Wildcard::setMinPrefixLength(0); //default is 3, 0 needed to keep current search behaviour
 
                 $hits = $index->find($query);
                 
@@ -165,7 +168,7 @@ class OC_Search_Lucene extends OC_Search_Provider {
 
         return new OC_Search_Result(
                             basename($hit->path),
-                            dirname($hit->path) . ', ' . $hit->size . ', Score: ' . number_format($hit->score, 2),
+                            dirname($hit->path) . ', ' . OC_Helper::humanFileSize($hit->size) . ', Score: ' . number_format($hit->score, 2),
                             OC_Helper::linkTo( 'files', 'download.php?file='.$hit->path),
                             $type
                     );
@@ -178,8 +181,8 @@ class OC_Search_Lucene extends OC_Search_Provider {
      * 
      * @author Jörn Dreyer <jfd@butonic.de>
      * 
-     * @param $mimetype mimetype string
-     * @return basetype 
+     * @param string $mimetype mimetype
+     * @return string basetype 
      */
     public static function baseTypeOf($mimetype) {
         return substr($mimetype,0,strpos($mimetype,'/'));
