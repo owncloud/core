@@ -29,27 +29,27 @@ OC::$CLASSPATH['OC_Search_Lucene_Hooks']   = 'apps/search_lucene/lib/hooks.php';
 //TODO add translation
 //$l = new OC_L10N('search_lucene');
 
-OC_App::register(array(
-  'order' => 20,
-  'id' => 'search_lucene',
-  'name' => 'Lucene Search'));
+//OCP\App::register(array(
+//  'order' => 20,
+//  'id' => 'search_lucene',
+//  'name' => 'Lucene Search'));
 
 OC_Search::registerProvider('OC_Search_Lucene');
 
-OC_APP::registerPersonal('search_lucene','settings');
+OCP\App::registerPersonal('search_lucene','settings');
 
 // --------------------------------------------------
 
 //post_create is ignored, as write will be triggered afterwards anyway
 
 //connect to the filesystem for auto updating
-OC_Hook::connect('OC_Filesystem','post_write','OC_Search_Lucene_Hooks','postWrite');
+OCP\Util::connectHook('OC_Filesystem','post_write','OC_Search_Lucene_Hooks','postWrite');
 
 //connect to the filesystem for renaming
-OC_Hook::connect('OC_Filesystem','post_rename','OC_Search_Lucene_Hooks','postRename');
+OCP\Util::connectHook('OC_Filesystem','post_rename','OC_Search_Lucene_Hooks','postRename');
 
 //listen for file deletions to clean the database
-OC_Hook::connect('OC_Filesystem','delete','OC_Search_Lucene_Hooks','delete');
+OCP\Util::connectHook('OC_Filesystem','delete','OC_Search_Lucene_Hooks','delete');
 
 // --------------------------------------------------
 // 

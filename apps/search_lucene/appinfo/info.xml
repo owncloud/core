@@ -7,5 +7,4 @@
 	<author>Jörn Dreyer</author>
 	<require>4</require>
 	<description>Search through your meta information and file contents with the power of lucene.</description>
-	<default_enable/>
 </info>
