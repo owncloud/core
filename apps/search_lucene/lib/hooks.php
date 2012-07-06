@@ -6,74 +6,45 @@
 class OC_Search_Lucene_Hooks {
     
     /**
-     * handle file creates (triggers reindexing)
-     * 
-     * the file is marked as new in the status table and
-     * will be indext upon next refresh
-     * 
-     * @author Jörn Dreyer <jfd@butonic.de>
-     * 
-     * @param $param parameters from postCreateFile-Hook
-     */
-    public static function postCreate(array $param) {
-        OC_Search_Lucene_Status::markAsNew( OC_FileCache::getId($param['path']) );
-    }
-
-    /**
      * handle file writes (triggers reindexing)
      * 
-     * the file is marked as changed in the status table and
-     * will be indext upon next refresh
+     * the file is indexed immediately
      * 
      * @author Jörn Dreyer <jfd@butonic.de>
      * 
-     * @param $param parameters from postWriteFile-Hook
+     * @param $param array from postWriteFile-Hook
      */
-    public static function postWrite(array $param) {
-        OC_Search_Lucene_Status::markAsChanged( OC_FileCache::getId($param['path']) );
+    public static function indexFile(array $param) {
+	if (isset($param['path'])) {
+	    OC_Search_Lucene_Indexer::indexFile($param['path']);
+	} else {
+            OC_Log::write('search_lucene',
+                    'missing path parameter',
+                    OC_Log::WARN);
+	}
     }
 
-    /**
-     * handle file renames (triggers reindexing)
-     * 
-     * the file is marked as changed in the status table and
-     * will be indext upon next refresh
-     * 
-     * @author Jörn Dreyer <jfd@butonic.de>
-     * 
-     * @param $param parameters from postRenameFile-Hook
-     */
-    public static function postRename(array $param) {
-        OC_Search_Lucene_Status::markAsChanged(OC_FileCache::getId($param['path']));
-    }
 
     /**
-     * cleanup after a file is deleted
-     * 
-     * the file is immediately removed from the index and
-     * marked as such in the satus table
-     * 
+     * cleanup when deleting a file
+     *
+     * the file is immediately removed from the index
+     *
      * @author Jörn Dreyer <jfd@butonic.de>
-     * 
-     * @param $param parameters from postDeleteFile-Hook
+     *
+     * @param $param array from postDeleteFile-Hook
      */
     static public function delete(array $param) {
-        // we cannot user post_delete as $param would not contain the id
+        // we cannot use post_delete as $param would not contain the id
         // of the deleted file and we could not fetch it with getId
+	if (isset($param['path'])) {
+            OC_Search_Lucene::deleteFile($param['path']);
+	} else {
+            OC_Log::write('search_lucene',
+                    'missing path parameter',
+                    OC_Log::WARN);
+	}
       
-        $id = OC_FileCache::getId($param['path']);
-
-        if ($id === -1) {
-            return; // not in the index
-        }
-        
-        //mark as deleted in index
-        $index = OC_Search_Lucene::openOrCreate();
-        OC_Search_Lucene::deleteFile($index, $id);
-
-        //mark as deleted in status table
-        //TODO completely delete from status table?
-        OC_Search_Lucene_Status::markAsDeleted( $id );
     }
     
 }

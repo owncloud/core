@@ -9,35 +9,6 @@ require_once 'pdf2text.php';
  * @author Jörn Dreyer <jfd@butonic.de>
  */
 class OC_Search_Lucene_Indexer {
-
-    /**
-     * start indexing dirty files (as found in the status table)
-     * 
-     * the event source will be notified on every new file being indexed
-     * by sending 'indexing' and when indexing is 'done'
-     * 
-     * @author Jörn Dreyer <jfd@butonic.de>
-     * 
-     * @param OC_EventSource $eventSource
-     */
-    public static function index(OC_EventSource $eventSource) {
-        // get list of files to index
-        //TODO limit to 100? loop
-        $idsToIndex = OC_Search_Lucene_Status::getDirtyFiles();
-        $eventSource->send('count', count($idsToIndex));
-        foreach ($idsToIndex as $file) {
-            
-            $path = OC_FileCache::getPath( $file['id'] );
-            
-            $eventSource->send( 'indexing', array('path' => $path, 'status' => $file['status'], 'id' => $file['id']) );
-            
-            //  indexFile
-            self::indexFile($path, $file['id']);
-            
-        }
-        
-        $eventSource->send('done');
-    }
     
     /**
      * index a file
@@ -45,16 +16,19 @@ class OC_Search_Lucene_Indexer {
      * @author Jörn Dreyer <jfd@butonic.de>
      * 
      * @param string $path the path of the file
-     * @param int $fscacheId the id of the file in the fscache table
      */
-    static public function indexFile($path = '', $fscacheId = -1) {
-        if ( $path === '' || $fscacheId === -1 ) {
+    static public function indexFile($path = '') {
+        
+        if ( $path === '' ) {
             //ignore the empty path element
             return;
         }
         
+        $root=OC_Filesystem::getRoot();
+        $pk = md5($root.$path);
+        
         // the cache already knows mime and other basic stuff
-        $data = OC_FileCache::getCached($path);
+        $data = OC_FileCache::get($path,$root);
         if (isset($data['mimetype'])) {
             $mimetype = $data['mimetype'];
             if ('text/html' === $mimetype) {
@@ -70,7 +44,7 @@ class OC_Search_Lucene_Indexer {
             }
 
             // store fscacheid as unique id to lookup by when deleting
-            $doc->addField(Zend_Search_Lucene_Field::Keyword('pk', $fscacheId));
+            $doc->addField(Zend_Search_Lucene_Field::Keyword('pk', $pk));
 
             // Store document URL to identify it in the search results
             $doc->addField(Zend_Search_Lucene_Field::Text('path', $path));
@@ -81,7 +55,7 @@ class OC_Search_Lucene_Indexer {
 
             self::extractMetadata($doc, $path, $mimetype);
 
-            OC_Search_Lucene::updateFile($doc, $path, $fscacheId);
+            OC_Search_Lucene::updateFile($doc, $path);
         } else {
             OC_Log::write('search_lucene',
                     'need mimetype for content extraction',
@@ -171,7 +145,7 @@ class OC_Search_Lucene_Indexer {
                 
             } catch (Exception $e) {
                 OC_Log::write('search_lucene',
-                    $e->getMesage().' Trace:\n'.$e->getTraceAsString(),
+                    $e->getMessage().' Trace:\n'.$e->getTraceAsString(),
                     OC_Log::ERROR);
             }
             

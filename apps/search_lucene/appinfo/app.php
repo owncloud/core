@@ -23,7 +23,6 @@
 
 OC::$CLASSPATH['OC_Search_Lucene']         = 'apps/search_lucene/lib/lucene.php';
 OC::$CLASSPATH['OC_Search_Lucene_Indexer'] = 'apps/search_lucene/lib/indexer.php';
-OC::$CLASSPATH['OC_Search_Lucene_Status']  = 'apps/search_lucene/lib/status.php';
 OC::$CLASSPATH['OC_Search_Lucene_Hooks']   = 'apps/search_lucene/lib/hooks.php';
 
 //TODO add translation
@@ -43,15 +42,11 @@ OCP\App::registerPersonal('search_lucene','settings');
 //post_create is ignored, as write will be triggered afterwards anyway
 
 //connect to the filesystem for auto updating
-OCP\Util::connectHook('OC_Filesystem','post_write','OC_Search_Lucene_Hooks','postWrite');
+OCP\Util::connectHook('OC_Filesystem','post_write','OC_Search_Lucene_Hooks','indexFile');
 
 //connect to the filesystem for renaming
-OCP\Util::connectHook('OC_Filesystem','post_rename','OC_Search_Lucene_Hooks','postRename');
+OCP\Util::connectHook('OC_Filesystem','post_rename','OC_Search_Lucene_Hooks','indexFile');
 
 //listen for file deletions to clean the database
 OCP\Util::connectHook('OC_Filesystem','delete','OC_Search_Lucene_Hooks','delete');
 
-// --------------------------------------------------
-// 
-// start a background ajax call to index files. the app has no template so we need it here
-OC_Util::addScript('search_lucene', 'indexer');

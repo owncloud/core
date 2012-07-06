@@ -23,7 +23,7 @@ class OC_Search_Lucene extends OC_Search_Provider {
             // Create index
             //$ocFilesystemView = OC_App::getStorage('search_lucene'); // encrypt the index on logout, decrypt on login
             
-            $indexUrl = OC_Config::getValue( "datadirectory", OC::$SERVERROOT."/data" );
+            $indexUrl = OC_Config::getValue( 'datadirectory', OC::$SERVERROOT.'/data' );
             $indexUrl .= '/' . OC_User::getUser() . '/lucene_index';
             if (file_exists($indexUrl)) {
                 $index = Zend_Search_Lucene::open($indexUrl);
@@ -32,7 +32,7 @@ class OC_Search_Lucene extends OC_Search_Provider {
             }
         } catch ( Exception $e ) {
             OC_Log::write('search_lucene',
-                        $e->getMesage().' Trace:\n'.$e->getTraceAsString(),
+                        $e->getMessage().' Trace:\n'.$e->getTraceAsString(),
                         OC_Log::ERROR);
             return null;
         }
@@ -52,14 +52,13 @@ class OC_Search_Lucene extends OC_Search_Provider {
      * 
      * @param Zend_Search_Lucene_Document $doc the document to store for the path
      * @param string $path path to the document to update
-     * @param int $fscacheId id of the file in the fscache table
      */
-    static public function updateFile(Zend_Search_Lucene_Document $doc, $path = '', $fscacheId = -1) {  
+    static public function updateFile(Zend_Search_Lucene_Document $doc, $path = '') {  
                 
         $index = OC_Search_Lucene::openOrCreate();
                         
         // TODO profile perfomance for searching before adding to index
-        OC_Search_Lucene::deleteFile($index, $fscacheId);
+        self::deleteFile($path, $index);
         
         OC_Log::write('search_lucene',
                       'adding ' . $path,
@@ -69,9 +68,7 @@ class OC_Search_Lucene extends OC_Search_Provider {
         $index->addDocument($doc);
         
         $index->commit();
-        
-        OC_Search_Lucene_Status::markAsIndexed($fscacheId);
-        
+                
     }
     
     /**
@@ -79,16 +76,29 @@ class OC_Search_Lucene extends OC_Search_Provider {
      * 
      * @author Jörn Dreyer <jfd@butonic.de>
      * 
-     * @param Zend_Search_Lucene_Interface $index 
-     * @param int $fscacheId path to the document to remove from the index
+     * @param string $path path to the document to remove from the index
+     * @param Zend_Search_Lucene_Interface $index optional can be passed ro reuse an existing instance
      */
-    static public function deleteFile(Zend_Search_Lucene_Interface $index, $fscacheId) {        
+    static public function deleteFile($path, Zend_Search_Lucene_Interface $index = null) {        
+        
+        if ( $path === '' ) {
+            //ignore the empty path element
+            return;
+        }
+        
+        if ($index === null) {
+           $index = self::openOrCreate();
+        }
+        
+        $root=OC_Filesystem::getRoot();
+        $pk = md5($root.$path);
         
         OC_Log::write('search_lucene',
-                      'searching hits for pk:' . $fscacheId,
+                      'searching hits for pk:' . $pk,
                       OC_Log::DEBUG);
+
         
-        $hits = $index->find( 'pk:' . $fscacheId ); //id would be internal to lucene
+        $hits = $index->find( 'pk:' . $pk ); //id would be internal to lucene
         
         OC_Log::write('search_lucene',
                       'found ' . count($hits) . ' hits ',
@@ -126,7 +136,7 @@ class OC_Search_Lucene extends OC_Search_Provider {
                 
             } catch ( Exception $e ) {
                 OC_Log::write('search_lucene',
-                            $e->getMesage().' Trace:\n'.$e->getTraceAsString(),
+                            $e->getMessage().' Trace:\n'.$e->getTraceAsString(),
                             OC_Log::ERROR);
             }
             
