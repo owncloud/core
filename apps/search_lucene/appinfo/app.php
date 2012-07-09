@@ -3,8 +3,9 @@
 /**
 * ownCloud - search_lucene application
 *
-* @author Jörn Dreyer
-* @copyright 2012 Jörn Dreyer jfd@butonic.de
+* @author    Jörn Dreyer <jfd@butonic.de>
+* @copyright 2012 Jörn Dreyer
+* @license   http://www.gnu.org/licenses/agpl-3.0 GNU Affero General Public License (AGPL) 3.0
 * 
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -35,18 +36,18 @@ OC::$CLASSPATH['OC_Search_Lucene_Hooks']   = 'apps/search_lucene/lib/hooks.php';
 
 OC_Search::registerProvider('OC_Search_Lucene');
 
-OCP\App::registerPersonal('search_lucene','settings');
+OCP\App::registerPersonal('search_lucene', 'settings');
 
 // --------------------------------------------------
 
 //post_create is ignored, as write will be triggered afterwards anyway
 
 //connect to the filesystem for auto updating
-OCP\Util::connectHook('OC_Filesystem','post_write','OC_Search_Lucene_Hooks','indexFile');
+OCP\Util::connectHook('OC_Filesystem', 'post_write', 'OC_Search_Lucene_Hooks', 'indexFile');
 
 //connect to the filesystem for renaming
-OCP\Util::connectHook('OC_Filesystem','post_rename','OC_Search_Lucene_Hooks','indexFile');
+OCP\Util::connectHook('OC_Filesystem', 'post_rename', 'OC_Search_Lucene_Hooks', 'indexFile');
 
 //listen for file deletions to clean the database
-OCP\Util::connectHook('OC_Filesystem','delete','OC_Search_Lucene_Hooks','delete');
+OCP\Util::connectHook('OC_Filesystem', 'delete', 'OC_Search_Lucene_Hooks', 'delete');
 

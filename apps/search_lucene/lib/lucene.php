@@ -50,8 +50,10 @@ class OC_Search_Lucene extends OC_Search_Provider {
      * 
      * @author Jörn Dreyer <jfd@butonic.de>
      * 
-     * @param Zend_Search_Lucene_Document $doc the document to store for the path
-     * @param string $path path to the document to update
+     * @param Zend_Search_Lucene_Document $doc  the document to store for the path
+     * @param string                      $path path to the document to update
+     * 
+     * @return void
      */
     static public function updateFile(Zend_Search_Lucene_Document $doc, $path = '') {  
                 
@@ -76,8 +78,10 @@ class OC_Search_Lucene extends OC_Search_Provider {
      * 
      * @author Jörn Dreyer <jfd@butonic.de>
      * 
-     * @param string $path path to the document to remove from the index
+     * @param string                       $path  path to the document to remove from the index
      * @param Zend_Search_Lucene_Interface $index optional can be passed ro reuse an existing instance
+     * 
+     * @return void
      */
     static public function deleteFile($path, Zend_Search_Lucene_Interface $index = null) {        
         
@@ -172,7 +176,7 @@ class OC_Search_Lucene extends OC_Search_Provider {
                 $type='Images';
                 break;
             default:
-                if($hit->mimetype=='application/xml'){
+                if ($hit->mimetype=='application/xml') {
                     $type='Text';
                 } else {
                     $type='Files';

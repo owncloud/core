@@ -16,6 +16,8 @@ class OC_Search_Lucene_Indexer {
      * @author Jörn Dreyer <jfd@butonic.de>
      * 
      * @param string $path the path of the file
+     * 
+     * @return void
      */
     static public function indexFile($path = '') {
         
@@ -73,9 +75,11 @@ class OC_Search_Lucene_Indexer {
      *  
      * @author Jörn Dreyer <jfd@butonic.de>
      * 
-     * @param Zend_Search_Lucene_Document $doc to add the metadata to
-     * @param string $path path of the file to extract metadata from
-     * @param string $mimetype depending on the mimetype different extractions are performed
+     * @param Zend_Search_Lucene_Document $doc      to add the metadata to
+     * @param string                      $path     path of the file to extract metadata from
+     * @param string                      $mimetype depending on the mimetype different extractions are performed
+     * 
+     * @return void
      */
     private static function extractMetadata (Zend_Search_Lucene_Document $doc, $path, $mimetype) {
               
