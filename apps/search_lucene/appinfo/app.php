@@ -34,6 +34,8 @@ OC::$CLASSPATH['OC_Search_Lucene_Hooks']   = 'apps/search_lucene/lib/hooks.php';
 //  'id' => 'search_lucene',
 //  'name' => 'Lucene Search'));
 
+//remove other providers
+OC_Search::clearProviders();
 OC_Search::registerProvider('OC_Search_Lucene');
 
 OCP\App::registerPersonal('search_lucene', 'settings');
