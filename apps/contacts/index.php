@@ -55,6 +55,8 @@ OCP\Util::addscript('files', 'jquery.fileupload');
 OCP\Util::addscript('contacts', 'jquery.inview');
 OCP\Util::addscript('contacts', 'jquery.Jcrop');
 OCP\Util::addscript('contacts', 'jquery.multi-autocomplete');
+OCP\Util::addscript('contacts', 'modernizr');
+OCP\Util::addscript('contacts','placeholder.polyfill.jquery');
 OCP\Util::addStyle('', 'jquery.multiselect');
 OCP\Util::addStyle('contacts', 'jquery.combobox');
 OCP\Util::addStyle('contacts', 'jquery.Jcrop');
