@@ -1,0 +1,13 @@
+name: owncloud
+framework: 
+  type: php
+  runtime: php
+mem: 128M
+min_version:
+  client: 1.4.3
+services:
+  ${name}-db: mysql
+  ${name}-fs: filesystem
+hooks:
+  pre-running:
+    - ln -s $STACKATO_FILESYSTEM data
