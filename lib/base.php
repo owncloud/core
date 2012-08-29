@@ -111,9 +111,13 @@ class OC{
 		if(isset($_SERVER['HTTP_USER_AGENT'])){
 			if(stripos($_SERVER['HTTP_USER_AGENT'],'ipad')>0) {
 				$mode='tablet';
+			}elseif(stripos($_SERVER['HTTP_USER_AGENT'],'Android')>0){
+				$mode='tablet';
 			}elseif(stripos($_SERVER['HTTP_USER_AGENT'],'iphone')>0){
 				$mode='mobile';
 			}elseif((stripos($_SERVER['HTTP_USER_AGENT'],'N9')>0) and (stripos($_SERVER['HTTP_USER_AGENT'],'nokia')>0)){
+				$mode='mobile';
+			}elseif((stripos($_SERVER['HTTP_USER_AGENT'],'Android')>0) and (stripos($_SERVER['HTTP_USER_AGENT'],'Mobile')>0)){
 				$mode='mobile';
 			}else{
 				$mode='default';
