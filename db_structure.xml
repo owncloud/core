@@ -404,6 +404,14 @@
 				<notnull>false</notnull>
 			</field>
 
+			<field>
+				<name>created</name>
+				<type>integer</type>
+				<default>0</default>
+				<notnull>true</notnull>
+				<length>8</length>
+			</field>
+
 			<index>
 				<name>pref_userid_appid_key_index</name>
 				<field>
