@@ -21,10 +21,6 @@
 * 
 */
 
-
-header('Content-type: text/html; charset=UTF-8') ;
-
-require_once('../../../lib/base.php');
 OC_JSON::checkLoggedIn();
 OC_JSON::checkAppEnabled('search_lucene');
 

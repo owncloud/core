@@ -55,4 +55,3 @@ OCP\Util::connectHook('OC_Filesystem','delete','OC_Search_Lucene_Hooks','delete'
 // 
 // start a background ajax call to index files. the app has no template so we need it here
 OC_Util::addScript('search_lucene', 'indexer');
-?>

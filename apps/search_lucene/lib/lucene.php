@@ -113,10 +113,10 @@ class OC_Search_Lucene extends OC_Search_Provider {
     public function search($query){
         $results=array();
         if ( $query !== null ) {
-            $query = '*' . $query . '*'; //FIXME emulates the old search but breaks all the nice lucene search query options
+            //$query = '*' . $query . '*'; //FIXME emulates the old search but breaks all the nice lucene search query options
             try {
                 $index = self::openOrCreate(); 
-                Zend_Search_Lucene_Search_Query_Wildcard::setMinPrefixLength(0); //default is 3, 0 needed to keep current search behaviour
+                //Zend_Search_Lucene_Search_Query_Wildcard::setMinPrefixLength(0); //default is 3, 0 needed to keep current search behaviour
 
                 $hits = $index->find($query);
                 
