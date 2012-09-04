@@ -17,7 +17,7 @@ function handleReIndex() {
   OCP\DB::commit();
      * 
      */
-    echo 'bla';
+    echo 'not yet implemented';
 }
 
 function handleOptimize() {
