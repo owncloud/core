@@ -36,6 +36,9 @@ $CONFIG = array(
 /* The automatic protocol detection of ownCloud can fail in certain reverse proxy situations. This option allows to manually override the protocol detection. For example "https" */
 "overwriteprotocol" => "",
 
+/* The automatic webroot detection of ownCloud can fail in certain reverse proxy situations. This option allows to manually override the automatic detection. For example "/domain.tld/ownCloud" */
+"overwritewebroot" => "",
+
 /* Enhanced auth forces users to enter their password again when performing potential sensitive actions like creating or deleting users */
 "enhancedauth" => true,
 

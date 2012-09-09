@@ -439,7 +439,7 @@ class OC_OCS {
 	public static function apiConfig($parameters) {
 		$format = $parameters['format'];
 		$user=OC_OCS::checkpassword(false);
-		$url=substr(OCP\Util::getServerHost().$_SERVER['SCRIPT_NAME'], 0, -11).'';
+		$url=substr(OCP\Util::getServerHost().OCP\Util::getScriptName, 0, -11).'';
 
 		$xml['version']='1.7';
 		$xml['website']='ownCloud';
