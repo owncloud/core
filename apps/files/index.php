@@ -38,7 +38,7 @@ OCP\App::setActiveNavigationEntry('files_index');
 $dir = isset($_GET['dir']) ? stripslashes($_GET['dir']) : '';
 // Redirect if directory does not exist
 if (!OC_Filesystem::is_dir($dir . '/')) {
-    header('Location: ' . $_SERVER['SCRIPT_NAME'] . '');
+    header('Location: ' . OC_Request::scriptName() . '');
     exit();
 }
 

@@ -59,6 +59,60 @@ class OC_Request {
 	}
 
 	/**
+	 * @brief Returns the reverse proxy prefix
+	 * @returns the reverse proxy prefix
+	 *
+	 * Returns the reverse proxy prefix
+	 */
+	private static function reverseProxyPrefix($proto = '') {
+		if($proto=='' and OC_Config::getValue('reverseproxyhost', '')<>'' and OC_Config::getValue('reverseproxyhost', '') == self::serverHost()) {
+			$proto = self::serverProtocol();
+		}
+		if($proto<>'') {
+			if($proto=='https' and OC_Config::getValue('reverseproxyprefixssl', '')<>'') {
+				return OC_Config::getValue('reverseproxyprefixssl', '');
+			} else if(OC_Config::getValue('reverseproxyprefix', '')<>'') {
+				return OC_Config::getValue('reverseproxyprefix', '');
+			}
+		}
+		return '';
+	}
+
+
+	/**
+	 * @brief Returns the request uri
+	 * @returns the request uri
+	 *
+	 * Returns the request uri, even if the website uses one or more
+	 * reverse proxies
+	 */
+	public static function requestUri($proto = '') {
+		$uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
+		$prefix = self::reverseProxyPrefix($proto);
+		if($prefix<>'') {
+			$uri = $prefix.$uri;
+		}
+		return $uri;
+	}
+
+	/**
+	 * @brief Returns the script name
+	 * @returns the script name
+	 *
+	 * Returns the script name, even if the website uses one or more
+	 * reverse proxies
+	 */
+	public static function scriptName() {
+		$name = $_SERVER['SCRIPT_NAME'];
+		$prefix = self::reverseProxyPrefix();
+		if($prefix<>'') {
+			$name = $prefix.$name;
+		}
+		return $name;
+	}
+
+
+	/**
 	 * @brief get Path info from request
 	 * @returns string Path info or false when not found
 	 */
