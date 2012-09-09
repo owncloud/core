@@ -93,7 +93,7 @@ class OC_OCS {
 		}
 
 		// preprocess url
-		$url = strtolower($_SERVER['REQUEST_URI']);
+		$url = strtolower(OCP\Util::getRequestUri());
 		if(substr($url,(strlen($url)-1))<>'/') $url.='/';
 		$ex=explode('/',$url);
 		$paracount=count($ex);
@@ -383,7 +383,7 @@ class OC_OCS {
 	*/
 	private static function apiConfig($format) {
 		$user=OC_OCS::checkpassword(false);
-		$url=substr(OCP\Util::getServerHost().$_SERVER['SCRIPT_NAME'],0,-11).'';
+		$url=substr(OCP\Util::getServerHost().OCP\Util::getScriptName,0,-11).'';
 
 		$xml['version']='1.7';
 		$xml['website']='ownCloud';

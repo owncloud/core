@@ -30,6 +30,12 @@ $CONFIG = array(
 /* Force use of HTTPS connection (true = use HTTPS) */
 "forcessl" => false,
 
+/* Host of the SSL proxy */
+"sslproxyhost" => "",
+
+/* URL for SSL proxy, as seen by the browser */
+"sslproxyprefix" => "",
+
 /* Theme to use for OwnCloud */
 "theme" => "",
 
