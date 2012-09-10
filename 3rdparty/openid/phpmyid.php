@@ -1626,7 +1626,7 @@ $profile['req_url'] = sprintf("%s://%s%s",
 		      $proto,
 		      OCP\Util::getServerHost(),
 // 		      $port,//host  already includes the path
-		      $_SERVER["REQUEST_URI"]);
+		      OCP\Util::getRequestUri());
 
 
 // Set the default allowance for testing
