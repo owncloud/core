@@ -7,6 +7,7 @@
 var OC;
 
 function t(app,text){
+	var args = Array.prototype.slice.call(arguments).slice(2);
 	if( !( app in t.cache )){
 		$.ajax(OC.filePath('core','ajax','translations.php'),{
 			async:false,//todo a proper sollution for this without sync ajax calls
@@ -23,7 +24,7 @@ function t(app,text){
 		}
 	}
 	if( typeof( t.cache[app][text] ) !== 'undefined' ){
-		return t.cache[app][text];
+		return vsprintf(t.cache[app][text], args);
 	}
 	else{
 		return text;
