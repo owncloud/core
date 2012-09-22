@@ -15,6 +15,7 @@
 "October" => "Octubre",
 "November" => "Noviembre",
 "December" => "Diciembre",
+"Sunday" => "Domingo",
 "Cancel" => "Cancelar",
 "No" => "No",
 "Yes" => "Sí",

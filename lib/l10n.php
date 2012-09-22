@@ -58,9 +58,11 @@ class OC_L10N{
 	 * Localization
 	 */
 	private $localizations = array(
-		'date' => 'd.m.Y',
-		'datetime' => 'd.m.Y H:i:s',
-		'time' => 'H:i:s');
+		'jsdate' => 'dd.mm.yy',
+		'date' => '%d.%m.%Y',
+		'datetime' => '%d.%m.%Y %H:%M:%S',
+		'time' => '%H:%M:%S',
+		'firstday' => 0);
 
 	/**
 	 * get an L10N instance
@@ -216,8 +218,13 @@ class OC_L10N{
 			case 'time':
 				if($data instanceof DateTime) return $data->format($this->localizations[$type]);
 				elseif(is_string($data)) $data = strtotime($data);
-				return date($this->localizations[$type], $data);
+				$language = self::findLanguage();
+				setlocale(LC_TIME, array($language, $language.'_'.strtoupper($language)));
+				return strftime($this->localizations[$type], $data);
 				break;
+			case 'firstday':
+			case 'jsdate':
+				return $this->localizations[$type];
 			default:
 				return false;
 		}

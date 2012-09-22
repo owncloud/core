@@ -7,6 +7,7 @@
 var OC;
 
 function t(app,text){
+	var args = Array.prototype.slice.call(arguments).slice(2);
 	if( !( app in t.cache )){
 		$.ajax(OC.filePath('core','ajax','translations.php'),{
 			async:false,//todo a proper sollution for this without sync ajax calls
@@ -23,7 +24,7 @@ function t(app,text){
 		}
 	}
 	if( typeof( t.cache[app][text] ) !== 'undefined' ){
-		return t.cache[app][text];
+		return vsprintf(t.cache[app][text], args);
 	}
 	else{
 		return text;
@@ -639,9 +640,7 @@ function formatDate(date){
 	if(typeof date=='number'){
 		date=new Date(date);
 	}
-	var monthNames = [ t('files','January'), t('files','February'), t('files','March'), t('files','April'), t('files','May'), t('files','June'),
-	t('files','July'), t('files','August'), t('files','September'), t('files','October'), t('files','November'), t('files','December') ];
-	return monthNames[date.getMonth()]+' '+date.getDate()+', '+date.getFullYear()+', '+((date.getHours()<10)?'0':'')+date.getHours()+':'+((date.getMinutes()<10)?'0':'')+date.getMinutes();
+	return $.datepicker.formatDate(datepickerFormatDate, date)+' '+date.getHours()+':'+((date.getMinutes()<10)?'0':'')+date.getMinutes();
 }
 
 /**
