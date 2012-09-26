@@ -256,7 +256,7 @@ $(document).ready(function() {
 									uploadtext.text(t('files', '1 file uploading'));
 									uploadtext.show();
 								} else {
-									uploadtext.text(currentUploads + ' ' + t('files', 'files uploading'));
+									uploadtext.text(t('files', '%s files uploading', currentUploads));
 								}
 							}
 						}
@@ -301,7 +301,7 @@ $(document).ready(function() {
 												uploadtext.text('');
 												uploadtext.hide();
 											} else {
-												uploadtext.text(currentUploads + ' ' + t('files', 'files uploading'));
+												uploadtext.text(t('files', 'files uploading', currentUploads));
 											}
 										})
 								.error(function(jqXHR, textStatus, errorThrown) {
@@ -316,7 +316,7 @@ $(document).ready(function() {
 											uploadtext.text('');
 											uploadtext.hide();
 										} else {
-											uploadtext.text(currentUploads + ' ' + t('files', 'files uploading'));
+											uploadtext.text(t('files', 'files uploading', currentUploads));
 										}
 										$('#notification').hide();
 										$('#notification').text(t('files', 'Upload cancelled.'));
@@ -664,7 +664,7 @@ function scanFiles(force,dir){
 	var scannerEventSource=new OC.EventSource(OC.filePath('files','ajax','scan.php'),{force:force,dir:dir});
 	scanFiles.cancel=scannerEventSource.close.bind(scannerEventSource);
 	scannerEventSource.listen('scanning',function(data){
-		$('#scan-count').text(data.count + ' ' + t('files', 'files scanned'));
+		$('#scan-count').text(t('files', '%s files scanned', data.count));
 		$('#scan-current').text(data.file+'/');
 	});
 	scannerEventSource.listen('success',function(success){
@@ -774,9 +774,9 @@ function procesSelection(){
 		var selection='';
 		if(selectedFolders.length>0){
 			if(selectedFolders.length==1){
-				selection+='1 '+t('files','folder');
+				selection+=t('files','1 folder');
 			}else{
-				selection+=selectedFolders.length+' '+t('files','folders');
+				selection+=t('files','%d folders',selectedFolders.length);
 			}
 			if(selectedFiles.length>0){
 				selection+=' & ';
@@ -784,9 +784,9 @@ function procesSelection(){
 		}
 		if(selectedFiles.length>0){
 			if(selectedFiles.length==1){
-				selection+='1 '+t('files','file');
+				selection+=t('files','1 file');
 			}else{
-				selection+=selectedFiles.length+' '+t('files','files');
+				selection+=t('files','%d files',selectedFiles.length);
 			}
 		}
 		$('#headerName>span.name').text(selection);
