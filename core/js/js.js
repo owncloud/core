@@ -27,7 +27,7 @@ function t(app,text){
 		return vsprintf(t.cache[app][text], args);
 	}
 	else{
-		return text;
+		return vsprintf(text, args);
 	}
 }
 t.cache={};
