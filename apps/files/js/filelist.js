@@ -238,7 +238,7 @@ var FileList={
 		if (isNewFile) {
 			$('#notification').html(t('files', 'replaced %s', newName)+'<span class="undo">'+t('files', 'undo')+'</span>');
 		} else {
-			$('#notification').html(t('files', 'replaced %s with %s', newName, oldName)+'<span class="undo">'+t('files', 'undo')+'</span>');
+			$('#notification').html(t('files', 'replaced %1$s with %2$s', newName, oldName)+'<span class="undo">'+t('files', 'undo')+'</span>');
 		}
 		$('#notification').fadeIn();
 	},

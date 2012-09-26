@@ -127,7 +127,7 @@ OC.Share={
 		var html = '<div id="dropdown" class="drop" data-item-type="'+itemType+'" data-item-source="'+itemSource+'">';
 		if (data.reshare) {
 			if (data.reshare.share_type == OC.Share.SHARE_TYPE_GROUP) {
-				html += '<span class="reshare">'+t('core', 'Shared with you and the group %s by %s', data.reshare.share_with, data.reshare.uid_owner)+'</span>';
+				html += '<span class="reshare">'+t('core', 'Shared with you and the group %1$s by %2$s', data.reshare.share_with, data.reshare.uid_owner)+'</span>';
 			} else {
 				html += '<span class="reshare">'+t('core', 'Shared with you by %s', data.reshare.uid_owner)+'</span>';
 			}
@@ -166,7 +166,7 @@ OC.Share={
 							OC.Share.addShareWith(share.share_type, share.share_with, share.permissions, possiblePermissions, false);
 						}
 					}
-					if (share.expiration.length > 0) {
+					if (share.expiration && share.expiration.length > 0) {
 						OC.Share.showExpirationDate(share.expiration);
 					}
 				});
@@ -247,7 +247,7 @@ OC.Share={
 			if (collectionList.length > 0) {
 				$(collectionList).append(', '+shareWith);
 			} else {
-				var html = '<li style="clear: both;" data-collection="'+item+'">'+t('core', 'Shared in %s with %s', item, shareWith)+'</li>';
+				var html = '<li style="clear: both;" data-collection="'+item+'">'+t('core', 'Shared in %1$s with %2$s', item, shareWith)+'</li>';
 				$('#shareWithList').prepend(html);
 			}
 		} else {
