@@ -239,6 +239,7 @@ class OC{
 		OC_Util::addScript( "jquery.infieldlabel.min" );
 		OC_Util::addScript( "jquery-tipsy" );
 		OC_Util::addScript( "oc-dialogs" );
+		OC_Util::addScript( "sprintf-0.7-beta1" );
 		OC_Util::addScript( "js" );
 		OC_Util::addScript( "eventsource" );
 		OC_Util::addScript( "config" );
