@@ -187,9 +187,9 @@ var FileList={
 	checkName:function(oldName, newName, isNewFile) {
 		if (isNewFile || $('tr').filterAttr('data-file', newName).length > 0) {
 			if (isNewFile) {
-				$('#notification').html(newName+' '+t('files', 'already exists')+'<span class="replace">'+t('files', 'replace')+'</span><span class="suggest">'+t('files', 'suggest name')+'</span><span class="cancel">'+t('files', 'cancel')+'</span>');
+				$('#notification').html(t('files', '%s already exists', newName)+'<span class="replace">'+t('files', 'replace')+'</span><span class="suggest">'+t('files', 'suggest name')+'</span><span class="cancel">'+t('files', 'cancel')+'</span>');
 			} else {
-				$('#notification').html(newName+' '+t('files', 'already exists')+'<span class="replace">'+t('files', 'replace')+'</span><span class="cancel">'+t('files', 'cancel')+'</span>');
+				$('#notification').html(t('files', '%s already exists', newName)+'<span class="replace">'+t('files', 'replace')+'</span><span class="cancel">'+t('files', 'cancel')+'</span>');
 			}
 			$('#notification').data('oldName', oldName);
 			$('#notification').data('newName', newName);
@@ -236,9 +236,9 @@ var FileList={
 			FileList.finishReplace();
 		};
 		if (isNewFile) {
-			$('#notification').html(t('files', 'replaced')+' '+newName+'<span class="undo">'+t('files', 'undo')+'</span>');
+			$('#notification').html(t('files', 'replaced %s', newName)+'<span class="undo">'+t('files', 'undo')+'</span>');
 		} else {
-			$('#notification').html(t('files', 'replaced')+' '+newName+' '+t('files', 'with')+' '+oldName+'<span class="undo">'+t('files', 'undo')+'</span>');
+			$('#notification').html(t('files', 'replaced %s with %s', newName, oldName)+'<span class="undo">'+t('files', 'undo')+'</span>');
 		}
 		$('#notification').fadeIn();
 	},
@@ -270,9 +270,9 @@ var FileList={
 		} else {
 			// NOTE: Temporary fix to change the text to unshared for files in root of Shared folder
 			if ($('#dir').val() == '/Shared') {
-				$('#notification').html(t('files', 'unshared')+' '+files+'<span class="undo">'+t('files', 'undo')+'</span>');
+				$('#notification').html(t('files', 'unshared %s', files)+'<span class="undo">'+t('files', 'undo')+'</span>');
 			} else {
-				$('#notification').html(t('files', 'deleted')+' '+files+'<span class="undo">'+t('files', 'undo')+'</span>');
+				$('#notification').html(t('files', 'deleted %s', files)+'<span class="undo">'+t('files', 'undo')+'</span>');
 			}
 			$('#notification').fadeIn();
 		}
