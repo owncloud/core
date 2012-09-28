@@ -129,7 +129,7 @@ OC.Share={
 			if (data.reshare.share_type == OC.Share.SHARE_TYPE_GROUP) {
 				html += '<span class="reshare">'+t('core', 'Shared with you and the group %1$s by %2$s', data.reshare.share_with, data.reshare.uid_owner)+'</span>';
 			} else {
-				html += '<span class="reshare">Shared with you by '+data.reshare.uid_owner+'</span>';
+				html += '<span class="reshare">'+t('core', 'Shared with you by %s', data.reshare.uid_owner)+'</span>';
 			}
 			html += '<br />';
 		}
@@ -179,7 +179,7 @@ OC.Share={
 							// Suggest sharing via email if valid email address
 // 							var pattern = new RegExp(/^[+a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i);
 // 							if (pattern.test(search.term)) {
-// 								response([{label: 'Share via email: '+search.term, value: {shareType: OC.Share.SHARE_TYPE_EMAIL, shareWith: search.term}}]);
+// 								response([{label: t('core', 'Share via email: %s', search.term), value: {shareType: OC.Share.SHARE_TYPE_EMAIL, shareWith: search.term}}]);
 // 							} else {
 								response(['No people found']);
 // 							}
