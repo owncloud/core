@@ -256,7 +256,7 @@ $(document).ready(function() {
 									uploadtext.text(t('files', '1 file uploading'));
 									uploadtext.show();
 								} else {
-									uploadtext.text(t('files', '%s files uploading', currentUploads));
+									uploadtext.text(t('files', '%d files uploading', currentUploads));
 								}
 							}
 						}
@@ -301,7 +301,7 @@ $(document).ready(function() {
 												uploadtext.text('');
 												uploadtext.hide();
 											} else {
-												uploadtext.text(t('files', 'files uploading', currentUploads));
+												uploadtext.text(t('files', '%d files uploading', currentUploads));
 											}
 										})
 								.error(function(jqXHR, textStatus, errorThrown) {
