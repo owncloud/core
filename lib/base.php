@@ -105,24 +105,31 @@ class OC{
 	public static function initPaths() {
 		// calculate the root directories
 		OC::$SERVERROOT=str_replace("\\", '/', substr(__FILE__, 0, -13));
-		OC::$SUBURI= str_replace("\\", "/", substr(realpath($_SERVER["SCRIPT_FILENAME"]), strlen(OC::$SERVERROOT)));
-		$scriptName=$_SERVER["SCRIPT_NAME"];
-		if(substr($scriptName, -1)=='/') {
-			$scriptName.='index.php';
-			//make sure suburi follows the same rules as scriptName
-			if(substr(OC::$SUBURI, -9)!='index.php') {
-				if(substr(OC::$SUBURI, -1)!='/') {
-					OC::$SUBURI=OC::$SUBURI.'/';
-				}
-				OC::$SUBURI=OC::$SUBURI.'index.php';
+		$scriptName = $_SERVER["SCRIPT_NAME"];
+		$documentUri = $_SERVER["DOCUMENT_URI"];
+		$pathInfo = $_SERVER["PATH_INFO"];
+		if(substr($scriptName,-1) == '/') {
+			$scriptName .= 'index.php';
+			if(substr($documentUri,-1) == '/') {
+				$documentUri .= 'index.php';
 			}
 		}
-
-		OC::$WEBROOT=substr($scriptName, 0, strlen($scriptName)-strlen(OC::$SUBURI));
-
-		if(OC::$WEBROOT!='' and OC::$WEBROOT[0]!=='/') {
-			OC::$WEBROOT='/'.OC::$WEBROOT;
+		if(strlen($pathInfo) == 0) {
+			// only true when no pathInfo
+			if(!strcmp($documentUri, $scriptName)) {
+				// only true when no pathInfo and no WEBROOT
+				OC::$WEBROOT = '';
+			}
+			else {
+				// only true when no pathInfo but WEBROOT
+				OC::$WEBROOT = substr($documentUri, 0, 0 - strlen($scriptName));
+			}
 		}
+		else {
+			// only true when pathInfo and WEBROOT
+			OC::$WEBROOT = substr($documentUri, 0, 0 - strlen($scriptName) - strlen($pathInfo));
+		}
+		OC::$SUBURI = substr($scriptName.$pathInfo, 1);
 
 		// ensure we can find OC_Config
 		set_include_path(
