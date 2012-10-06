@@ -524,7 +524,7 @@ class OC{
 			if(defined('DEBUG') && DEBUG) {
 				OC_Log::write('core','Refresh token in persistent login cookie',OC_Log::DEBUG);
 			}
-			$newtoken = md5($_COOKIE['oc_username'].mt_rand(1000000, 9999999).$_COOKIE['oc_token']);
+			$newtoken = md5($_COOKIE['oc_username'].OC_Util::generate_random_bytes(10).$_COOKIE['oc_token']);
 			OC_Preferences::setMultiValue($_COOKIE['oc_username'], 'login', 'token', $_COOKIE['oc_token'], $newtoken);
 			OC_User::setMagicInCookie($_COOKIE['oc_username'], $newtoken);
 			// login
@@ -552,7 +552,7 @@ class OC{
 				if(defined('DEBUG') && DEBUG) {
 					OC_Log::write('core', 'Setting remember login to cookie', OC_Log::DEBUG);
 				}
-				$token = md5($_POST['user'].mt_rand(1000000, 9999999).$_POST['password']);
+				$token = md5($_POST['user'].OC_Util::generate_random_bytes(10).$_POST['password']);
 				OC_Preferences::setMultiValue($_POST['user'], 'login', 'token', 'not defined', $token);
 				OC_User::setMagicInCookie($_POST['user'], $token);
 			}
