@@ -100,6 +100,9 @@ class OC_FileStorage_SWIFT extends OC_Filestorage_Common{
 		if(is_null($container)) {
 			return null;
 		}else{
+			if ($path=="/" or $path=='') {
+				return null;
+			}
 			try{
 				$obj=$container->get_object(basename($path));
 				$this->objects[$path]=$obj;
