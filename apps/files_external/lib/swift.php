@@ -443,7 +443,7 @@ class OC_FileStorage_SWIFT extends OC_Filestorage_Common{
 	}
 
 	public function free_space($path) {
-		return 0;
+		return 1024*1024*1024*8;
 	}
 
 	public function touch($path,$mtime=null) {
