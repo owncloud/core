@@ -138,7 +138,7 @@ class OC_FileStorage_SWIFT extends OC_Filestorage_Common{
 	private function createObject($path) {
 		$container=$this->getContainer(dirname($path));
 		if(!is_null($container)) {
-			$container=$this->createContainer($path);
+			$container=$this->createContainer(dirname($path));
 		}
 		return $container->create_object(basename($path));
 	}
@@ -280,7 +280,7 @@ class OC_FileStorage_SWIFT extends OC_Filestorage_Common{
 
 		$this->conn = new CF_Connection($this->auth);
 
-		if(!$this->containerExists($this->root)) {
+		if(!$this->containerExists('/')) {
 			$this->rootContainer=$this->createContainer('/');
 		}else{
 			$this->rootContainer=$this->getContainer('/');
