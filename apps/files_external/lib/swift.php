@@ -70,11 +70,11 @@ class OC_FileStorage_SWIFT extends OC_Filestorage_Common{
 	 * @return CF_Container
 	 */
 	private function createContainer($path) {
-		if($path=='' or $path=='/') {
+		if($path=='' or $path=='/' or $path=='.') {
 			return $this->conn->create_container($this->getContainerName($path));
 		}
 		$parent=dirname($path);
-		if($parent=='' or $parent=='/') {
+		if($parent=='' or $parent=='/' or $parent=='.') {
 			$parentContainer=$this->rootContainer;
 		}else{
 			if(!$this->containerExists($parent)) {
