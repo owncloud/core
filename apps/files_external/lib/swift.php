@@ -404,13 +404,13 @@ class OC_FileStorage_SWIFT extends OC_Filestorage_Common{
 	}
 
 	public function fopen($path,$mode) {
-		$obj=$this->getObject($path);
-		if(is_null($obj)) {
-			return false;
-		}
 		switch($mode) {
 			case 'r':
 			case 'rb':
+				$obj=$this->getObject($path);
+				if (is_null($obj)) {
+					return false;
+				}
 				$fp = fopen('php://temp', 'r+');
 				$obj->stream($fp);
 
@@ -508,7 +508,7 @@ class OC_FileStorage_SWIFT extends OC_Filestorage_Common{
 			$obj->save_to_filename($tmpFile);
 			return $tmpFile;
 		}else{
-			return false;
+			return OCP\Files::tmpFile();
 		}
 	}
 
