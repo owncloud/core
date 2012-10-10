@@ -507,21 +507,31 @@ class OC{
 	}
 
 	protected static function tryRememberLogin() {
-		if(!isset($_COOKIE["oc_remember_login"])
-			|| !isset($_COOKIE["oc_token"])
-			|| !isset($_COOKIE["oc_username"])
-			|| !$_COOKIE["oc_remember_login"])
+		if(!isset($_COOKIE['oc_remember_login'])
+		  || !isset($_COOKIE['oc_token'])
+		  || !isset($_COOKIE['oc_username'])
+		  || !$_COOKIE['oc_remember_login'])
 		{
 			return false;
 		}
 		OC_App::loadApps(array('authentication'));
-		if(defined("DEBUG") && DEBUG) {
+		if(defined('DEBUG') && DEBUG) {
 			OC_Log::write('core', 'Trying to login from cookie', OC_Log::DEBUG);
 		}
+		// delete tokens older than 90 days
+                OC_Preferences::deleteValues($_COOKIE['oc_username'], 'login', 'token', time() - 7776000 );
 		// confirm credentials in cookie
 		if(isset($_COOKIE['oc_token']) && OC_User::userExists($_COOKIE['oc_username']) &&
-			OC_Preferences::getValue($_COOKIE['oc_username'], "login", "token") === $_COOKIE['oc_token'])
+			OC_Preferences::valueExists($_COOKIE['oc_username'], 'login', 'token', $_COOKIE['oc_token']))
 		{
+			// generate new cookie
+			if(defined('DEBUG') && DEBUG) {
+				OC_Log::write('core','Refresh token in persistent login cookie',OC_Log::DEBUG);
+			}
+			$newtoken = md5($_COOKIE['oc_username'].OC_Util::generate_random_bytes(10).$_COOKIE['oc_token']);
+			OC_Preferences::setMultiValue($_COOKIE['oc_username'], 'login', 'token', $_COOKIE['oc_token'], $newtoken);
+			OC_User::setMagicInCookie($_COOKIE['oc_username'], $newtoken);
+			// login
 			OC_User::setUserId($_COOKIE['oc_username']);
 			OC_Util::redirectToDefaultPage();
 		}
@@ -532,7 +542,7 @@ class OC{
 	}
 
 	protected static function tryFormLogin() {
-		if(!isset($_POST["user"]) || !isset($_POST['password'])) {
+		if(!isset($_POST['user']) || !isset($_POST['password'])) {
 			return false;
 		}
 
@@ -540,15 +550,15 @@ class OC{
 
 		//setup extra user backends
 		OC_User::setupBackends();
-
-		if(OC_User::login($_POST["user"], $_POST["password"])) {
-			if(!empty($_POST["remember_login"])) {
-				if(defined("DEBUG") && DEBUG) {
+		
+		if(OC_User::login($_POST['user'], $_POST['password'])) {
+			if(!empty($_POST['remember_login'])) {
+				if(defined('DEBUG') && DEBUG) {
 					OC_Log::write('core', 'Setting remember login to cookie', OC_Log::DEBUG);
 				}
-				$token = md5($_POST["user"].time().$_POST['password']);
-				OC_Preferences::setValue($_POST['user'], 'login', 'token', $token);
-				OC_User::setMagicInCookie($_POST["user"], $token);
+				$token = md5($_POST['user'].OC_Util::generate_random_bytes(10).$_POST['password']);
+				OC_Preferences::setMultiValue($_POST['user'], 'login', 'token', 'not defined', $token);
+				OC_User::setMagicInCookie($_POST['user'], $token);
 			}
 			else {
 				OC_User::unsetMagicInCookie();

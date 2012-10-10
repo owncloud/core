@@ -29,7 +29,8 @@
  * `userid` VARCHAR( 255 ) NOT NULL ,
  * `appid` VARCHAR( 255 ) NOT NULL ,
  * `configkey` VARCHAR( 255 ) NOT NULL ,
- * `configvalue` VARCHAR( 255 ) NOT NULL
+ * `configvalue` VARCHAR( 255 ) NOT NULL ,
+ * `created` NUMBER( 8 ) NOT NULL
  * )
  *
  */
@@ -126,6 +127,25 @@ class OC_Preferences{
 	}
 
 	/**
+	 * @brief checks is a preference exists
+	 * @param $user user
+	 * @param $app app
+	 * @param $key key
+	 * @param $value value
+	 * @returns true/false
+	 *
+	 * This function searches the preference table for a given value.
+	 */
+	public static function valueExists( $user, $app, $key, $value ){
+		// Check if the key exist
+		$query = OC_DB::prepare( 'SELECT `configvalue` FROM `*PREFIX*preferences` WHERE `userid` = ? AND `appid` = ? AND `configkey` = ? AND `configvalue` = ?' );
+		$values=$query->execute(array($user,$app,$key,$value))->fetchAll();
+		$exists=(count($values)>0);
+
+		return $exists;
+	}
+
+	/**
 	 * @brief sets a value in the preferences
 	 * @param string $user user
 	 * @param string $app app
@@ -143,12 +163,41 @@ class OC_Preferences{
 		$exists=(count($values)>0);
 
 		if( !$exists ) {
-			$query = OC_DB::prepare( 'INSERT INTO `*PREFIX*preferences` ( `userid`, `appid`, `configkey`, `configvalue` ) VALUES( ?, ?, ?, ? )' );
-			$query->execute( array( $user, $app, $key, $value ));
+			$query = OC_DB::prepare( 'INSERT INTO `*PREFIX*preferences` ( `userid`, `appid`, `configkey`, `configvalue`, `created` ) VALUES( ?, ?, ?, ?, ? )' );
+			$query->execute( array( $user, $app, $key, $value, time() ));
 		}
 		else{
-			$query = OC_DB::prepare( 'UPDATE `*PREFIX*preferences` SET `configvalue` = ? WHERE `userid` = ? AND `appid` = ? AND `configkey` = ?' );
-			$query->execute( array( $value, $user, $app, $key ));
+			$query = OC_DB::prepare( 'UPDATE `*PREFIX*preferences` SET `configvalue` = ?, `created` = ? WHERE `userid` = ? AND `appid` = ? AND `configkey` = ?' );
+			$query->execute( array( $value, time(), $user, $app, $key ));
+		}
+		return true;
+	}
+
+	/**
+	 * @brief sets a multi value in the preferences
+	 * @param $user user
+	 * @param $app app
+	 * @param $key key
+	 * @param $oldval old value
+	 * @param $newval new value
+	 * @returns true/false
+	 *
+	 * Updates a existing value in the preferences. If the key does not exist, it
+	 * will be created automatically.
+	 */
+	public static function setMultiValue( $user, $app, $key, $oldval, $newval ){
+		// Check if the key does exist
+		$query = OC_DB::prepare( 'SELECT `configvalue` FROM `*PREFIX*preferences` WHERE `userid` = ? AND `appid` = ? AND `configkey` = ? AND `configvalue` = ?' );
+		$values=$query->execute(array($user,$app,$key,$oldval))->fetchAll();
+		$exists=(count($values)>0);
+
+		if( !$exists ){
+			$query = OC_DB::prepare( 'INSERT INTO `*PREFIX*preferences` ( `userid`, `appid`, `configkey`, `configvalue`, `created` ) VALUES( ?, ?, ?, ?, ? )' );
+			$query->execute( array( $user, $app, $key, $newval, time() ));
+		}
+		else{
+			$query = OC_DB::prepare( 'UPDATE `*PREFIX*preferences` SET `configvalue` = ?, `created` = ? WHERE `userid` = ? AND `appid` = ? AND `configkey` = ? AND `configvalue` = ?' );
+			$query->execute( array( $newval, time(), $user, $app, $key, $oldval ));
 		}
 		return true;
 	}
@@ -167,6 +216,23 @@ class OC_Preferences{
 		$query = OC_DB::prepare( 'DELETE FROM `*PREFIX*preferences` WHERE `userid` = ? AND `appid` = ? AND `configkey` = ?' );
 		$query->execute( array( $user, $app, $key ));
 
+		return true;
+	}
+
+	/**
+	 * @brief Deletes values by date
+	 * @param $user user
+	 * @param $app app
+	 * @param $key key
+	 * @param $date date in epoch (use time() for that)
+	 * @returns true/false
+	 *
+	 * Deletes values older than given time in epoch.
+	 */
+	public static function deleteValues( $user, $app, $key, $date ){
+		$query = OC_DB::prepare( 'DELETE FROM `*PREFIX*preferences` WHERE `userid` = ? AND `appid` = ? AND `configkey` = ? AND `created` < ?' );
+		$result = $query->execute( array( $user, $app, $key, $date ));
+	
 		return true;
 	}
 
