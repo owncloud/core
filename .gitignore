@@ -4,6 +4,8 @@ owncloud
 config/config.php
 config/mount.php
 apps/inc.php
+/.htaccess
+/apps/*
 
 # just sane ignores
 .*.sw[po]
