@@ -394,6 +394,9 @@ class OC_FileStorage_SWIFT extends OC_Filestorage_Common{
 	}
 
 	public function unlink($path) {
+		if($this->containerExists($path)) {
+			return $this->rmdir($path);
+		}
 		if($this->objectExists($path)) {
 			$container=$this->getContainer(dirname($path));
 			$container->delete_object(basename($path));
