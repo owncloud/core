@@ -484,7 +484,17 @@ class OC_FileStorage_SWIFT extends OC_Filestorage_Common{
 	}
 
 	public function stat($path) {
+		$container=$this->getContainer($path);
+		if (!is_null($container)) {
+			return array(
+				'mtime'=>-1,
+				'size'=>$container->bytes_used,
+				'ctime'=>-1
+			);
+		}
+
 		$obj=$this->getObject($path);
+
 		if(is_null($obj)) {
 			return false;
 		}
