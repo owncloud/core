@@ -218,7 +218,7 @@ msgstr ""
 
 #: appinfo/app.php:21
 msgid "Contacts"
-msgstr "Kotaktar"
+msgstr "Kontaktar"
 
 #: js/contacts.js:71
 msgid "Sorry, this functionality has not been implemented yet"
