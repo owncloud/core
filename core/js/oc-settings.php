@@ -20,3 +20,4 @@ var oc_appswebroots = <?php echo $apps_paths ?>;
 var oc_current_user = '<?php echo OC_User::getUser() ?>';
 var oc_requesttoken = '<?php echo OC_Util::callRegister() ?>';
 var oc_requestlifespan = '<?php echo OC_Util::$callLifespan ?>';
+var isadmin = <?php echo OC_Group::inGroup(OC_User::getUser(), 'admin')?true:false; ?>;
