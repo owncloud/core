@@ -165,6 +165,11 @@ class OC_Template{
 		header('X-XSS-Protection: 1; mode=block');
 		header('X-Content-Type-Options: nosniff');
 
+		// CSP
+		header("Content-Security-Policy: default-src 'self'"); // W3C draft
+		header("X-WebKit-CSP: default-src 'self'"); // Webkit
+		header("X-Content-Security-Policy: default-src 'self'"); // Internet Explorer
+
 		$this->findTemplate($name);
 	}
 
