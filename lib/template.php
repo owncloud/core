@@ -157,6 +157,7 @@ class OC_Template{
 		$this->vars = array();
 		$this->vars['requesttoken'] = OC_Util::callRegister();
 		$this->vars['requestlifespan'] = OC_Util::$callLifespan;
+		$this->vars['oc_JSSettings'] = OC_Helper::linkToAbsolute( 'core/js', 'oc-settings.php' );
 		$parts = explode('/', $app); // fix translation when app is something like core/lostpassword
 		$this->l10n = OC_L10N::get($parts[0]);
 
