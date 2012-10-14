@@ -431,8 +431,7 @@ class OC_Filesystem{
 		return self::$defaultInstance->filesize($path);
 	}
 	static public function readfile($path) {
-		header("X-Accel-Redirect: " . self::$defaultInstance->getLocalFile($path));
-		//return self::$defaultInstance->readfile($path);
+		return self::$defaultInstance->readfile($path);
 	}
 	/**
 	* @deprecated Replaced by isReadable() as part of CRUDS
