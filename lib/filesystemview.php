@@ -198,6 +198,11 @@ class OC_FilesystemView {
 		return $this->basicOperation('filesize', $path);
 	}
 	public function readfile($path) {
+		$storage = $this->getStorage($path);
+		if ($storage instanceof OC_Filestorage_Local) {
+			header("X-Accel-Redirect: " . $this->getLocalFile($path));
+			header("X-Sendfile: " . $this->getLocalFile($path));
+		}
 		@ob_end_clean();
 		$handle=$this->fopen($path, 'rb');
 		if ($handle) {
