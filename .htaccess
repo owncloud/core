@@ -22,11 +22,6 @@ RewriteRule ^remote/(.*) remote.php [QSA,L]
 <IfModule mod_xsendfile.c>
 	<Files *.php>
 		XSendFile On
-		/* This adds the proper header to let the web server handle
-		 * the file transfer, if it's configured through the right
-		 * environment variable
-		 */
-		XSendFileAllowAbove On
 		SetEnv MOD_X_SENDFILE_ENABLED 1
 	</Files>
 </IfModule>
