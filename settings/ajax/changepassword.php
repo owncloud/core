@@ -2,15 +2,15 @@
 
 // Init owncloud
 require_once '../../lib/base.php';
+
+// Check if we are a user
 OCP\JSON::callCheck();
+OC_JSON::checkLoggedIn();
+OC_JSON::verifyUser();
 
 $username = isset($_POST["username"]) ? $_POST["username"] : OC_User::getUser();
 $password = $_POST["password"];
 $oldPassword=isset($_POST["oldpassword"])?$_POST["oldpassword"]:'';
-
-// Check if we are a user
-OC_JSON::checkLoggedIn();
-OCP\JSON::callCheck();
 
 $userstatus = null;
 if(OC_Group::inGroup(OC_User::getUser(), 'admin')) {
