@@ -157,7 +157,6 @@ class OC_Template{
 		$this->vars = array();
 		$this->vars['requesttoken'] = OC_Util::callRegister();
 		$this->vars['requestlifespan'] = OC_Util::$callLifespan;
-		$this->vars['oc_JSSettings'] = OC_Helper::linkToAbsolute( 'core/js', 'oc-settings.php' );
 		$parts = explode('/', $app); // fix translation when app is something like core/lostpassword
 		$this->l10n = OC_L10N::get($parts[0]);
 
@@ -165,11 +164,6 @@ class OC_Template{
 		header('X-Frame-Options: Sameorigin');
 		header('X-XSS-Protection: 1; mode=block');
 		header('X-Content-Type-Options: nosniff');
-
-		// CSP
-		header("Content-Security-Policy: default-src 'self'"); // W3C draft
-		header("X-WebKit-CSP: default-src 'self'"); // Webkit
-		header("X-Content-Security-Policy: default-src 'self'"); // Internet Explorer
 
 		$this->findTemplate($name);
 	}
