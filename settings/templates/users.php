@@ -13,9 +13,6 @@ $items = array_flip($_['subadmingroups']);
 unset($items['admin']);
 $_['subadmingroups'] = array_flip($items);
 ?>
-<script>
-var isadmin = <?php echo $_['isadmin']?'true':'false'; ?>;
-</script>
 <div id="controls">
 	<form id="newuser" autocomplete="off">
 		<input id="newusername" type="text" placeholder="<?php echo $l->t('Name')?>" /> <input
