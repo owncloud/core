@@ -359,6 +359,7 @@ class OC_Util {
 	public static function checkAdminUser() {
 		// Check if we are a user
 		self::checkLoggedIn();
+		self::verifyUser();
 		if( !OC_Group::inGroup( OC_User::getUser(), 'admin' )) {
 			header( 'Location: '.OC_Helper::linkToAbsolute( '', 'index.php' ));
 			exit();
@@ -372,6 +373,7 @@ class OC_Util {
 	public static function checkSubAdminUser() {
 		// Check if we are a user
 		self::checkLoggedIn();
+		self::verifyUser();
 		if(OC_Group::inGroup(OC_User::getUser(),'admin')) {
 			return true;
 		}
@@ -380,6 +382,23 @@ class OC_Util {
 			exit();
 		}
 		return true;
+	}
+
+	/**
+	* Check if the user verified the login with his password in the last 15 minutes
+	* If not, the user will be shown a password verification page
+	*/
+	public static function verifyUser() {
+		// Check password to set session
+		if (OC_User::login(OC_User::getUser(), $_POST["password"] ) === true) {
+			$_SESSION['verifiedLogin']=time() + (15 * 60);
+		}
+
+		// Check if the user verified his password in the last 15 minutes
+		if($_SESSION['verifiedLogin'] < time() OR !isset($_SESSION['verifiedLogin'])) {
+			OC_Template::printGuestPage("", "verify",  array('username' => OC_User::getUser()));
+			exit();
+		}
 	}
 
 	/**
