@@ -118,6 +118,10 @@ class GROUP_LDAP extends lib\Access implements \OCP\GroupInterface {
 			$uid = $userDN;
 		}
 
+		if($this->connection->isCached('getUserGroups'.$uid)) {
+			return $this->connection->getFromCache('getUserGroups'.$uid);
+		}
+
 		$filter = $this->combineFilterWithAnd(array(
 			$this->connection->ldapGroupFilter,
 			$this->connection->ldapGroupMemberAssocAttr.'='.$uid
