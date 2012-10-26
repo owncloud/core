@@ -42,7 +42,7 @@ OC.EventSource=function(src,data){
 	}
 	dataStr+='requesttoken='+OC.Request.Token;
 	if(!this.useFallBack && typeof EventSource !='undefined'){
-		this.source=new EventSource(src+'?'+dataStr);
+		this.source=new EventSource(src+'&'+dataStr);
 		this.source.onmessage=function(e){
 			for(var i=0;i<this.typelessListeners.length;i++){
 				this.typelessListeners[i](JSON.parse(e.data));
