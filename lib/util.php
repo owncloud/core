@@ -528,6 +528,9 @@ class OC_Util {
 			$token=$_POST['requesttoken'];
 		}elseif(isset($_SERVER['HTTP_REQUESTTOKEN'])) {
 			$token=$_SERVER['HTTP_REQUESTTOKEN'];
+		}elseif(isset($_SESSION['IFRAME_REQUESTTOKEN'])) {
+			$token=$_SESSION['IFRAME_REQUESTTOKEN'];
+			unset($_SESSION['IFRAME_REQUESTTOKEN']);			
 		}else{
 			//no token found.
 			return false;
