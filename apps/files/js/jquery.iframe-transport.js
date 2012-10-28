@@ -47,7 +47,7 @@
                     // elements that have already been added to the DOM,
                     // so we set the name along with the iframe HTML markup:
                     iframe = $(
-                        '<iframe src="javascript:false;" name="iframe-transport-' +
+                        '<iframe src="./apps/files/ajax/iframerequest.php?requesttoken='+OC.Request.Token+'" name="iframe-transport-' +
                             (counter += 1) + '"></iframe>'
                     ).bind('load', function () {
                         var fileInputClones;
@@ -77,7 +77,7 @@
                                 );
                                 // Fix for IE endless progress bar activity bug
                                 // (happens on form submits to iframe targets):
-                                $('<iframe src="javascript:false;"></iframe>')
+                                $('<iframe src="./apps/files/ajax/iframerequest.php?requesttoken='+OC.Request.Token+'"></iframe>')
                                     .appendTo(form);
                                 form.remove();
                             });
