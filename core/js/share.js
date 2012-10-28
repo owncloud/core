@@ -142,7 +142,6 @@ OC.Share={
 				html += '<input type="checkbox" name="linkCheckbox" id="linkCheckbox" value="1" /><label for="linkCheckbox">'+t('core', 'Share with link')+'</label>';
 				html += '<br />';
 				html += '<input id="linkText" type="text" readonly="readonly" />';
-				html += '<br />';
 				html += '<input type="checkbox" name="showPassword" id="showPassword" value="1" style="display:none;" /><label for="showPassword" style="display:none;">'+t('core', 'Password protect')+'</label>';
 				html += '<div id="linkPass">';
 				html += '<input id="linkPassText" type="password" placeholder="'+t('core', 'Password')+'" />';
@@ -317,6 +316,7 @@ OC.Share={
 		var link = parent.location.protocol+'//'+location.host+OC.linkTo('', 'public.php')+'?service=files&'+type+'='+encodeURIComponent(file);
 		$('#linkText').val(link);
 		$('#linkText').show('blind');
+		$('#linkText').css('display','block');
 		$('#showPassword').show();
 		$('#showPassword+label').show();
 		if (password != null) {
