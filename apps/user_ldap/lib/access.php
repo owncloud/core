@@ -36,6 +36,27 @@ abstract class Access {
 		return ($this->connection instanceof Connection);
 	}
 
+	public function entryExists($dn){
+		if(!$this->checkConnection()) {
+			\OCP\Util::writeLog('user_ldap', 'No LDAP Connector assigned, access impossible for entryExists.', \OCP\Util::WARN);
+			return false;
+		}
+		$cr = $this->connection->getConnectionResource();
+		if(!is_resource($cr)) {
+			//LDAP not available
+			\OCP\Util::writeLog('user_ldap', 'LDAP resource not available.', \OCP\Util::DEBUG);
+			return false;
+		}
+		$rr = @ldap_read($cr, $dn, 'objectClass=*');
+		if(!is_resource($rr)) {
+			\OCP\Util::writeLog('user_ldap', 'entryExists failed for DN '.$dn, \OCP\Util::DEBUG);
+			//in case an error occurs , e.g. object does not exist
+			return false;
+		}
+		\OCP\Util::writeLog('user_ldap', 'entryExists: '.$dn.' found', \OCP\Util::DEBUG);
+		return true;	
+	}
+	
 	/**
 	 * @brief reads a given attribute for an LDAP record identified by a DN
 	 * @param $dn the record in question
