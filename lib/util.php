@@ -435,17 +435,6 @@ class OC_Util {
 	}
 
 	/**
-	 * @brief Static lifespan (in seconds) when a request token expires.
-	 * @see OC_Util::callRegister()
-	 * @see OC_Util::isCallRegistered()
-	 * @description
-	 * Also required for the client side to compute the piont in time when to
-	 * request a fresh token. The client will do so when nearly 97% of the
-	 * timespan coded here has expired. 
-	 */
-	public static $callLifespan = 3600; // 3600 secs = 1 hour
-
-	/**
 	 * @brief Register an get/post call. Important to prevent CSRF attacks.
 	 * @todo Write howto: CSRF protection guide
 	 * @return $token Generated token.
@@ -453,40 +442,25 @@ class OC_Util {
 	 * Creates a 'request token' (random) and stores it inside the session.
 	 * Ever subsequent (ajax) request must use such a valid token to succeed,
 	 * otherwise the request will be denied as a protection against CSRF.
-	 * The tokens expire after a fixed lifespan.
-	 * @see OC_Util::$callLifespan
 	 * @see OC_Util::isCallRegistered()
 	 */
 	public static function callRegister() {
-		// generate a random token.
-		$token = self::generate_random_bytes(20);
-
-		// store the token together with a timestamp in the session.
-		$_SESSION['requesttoken-'.$token]=time();
-
-		// cleanup old tokens garbage collector
-		// only run every 20th time so we don't waste cpu cycles
-		if(rand(0,20)==0) {
-			foreach($_SESSION as $key=>$value) {
-				// search all tokens in the session
-				if(substr($key,0,12)=='requesttoken') {
-					// check if static lifespan has expired
-					if($value+self::$callLifespan<time()) {
-						// remove outdated tokens
-						unset($_SESSION[$key]);
-					}
-				}
-			}
+		// Check if a token exists
+		if(!isset($_SESSION['requesttoken'])) {
+			// No valid token found, generate a new one.
+			$requestToken = self::generate_random_bytes(20);
+			$_SESSION['requesttoken']=$requestToken;
+		} else {
+			// Valid token already exists, send it
+			$requestToken = $_SESSION['requesttoken'];
 		}
-		// return the token
-		return($token);
+		return($requestToken);
 	}
 
 	/**
 	 * @brief Check an ajax get/post call if the request token is valid.
 	 * @return boolean False if request token is not set or is invalid.
-	 * @see OC_Util::$callLifespan
-	 * @see OC_Util::calLRegister()
+	 * @see OC_Util::callRegister()
 	 */
 	public static function isCallRegistered() {
 		if(isset($_GET['requesttoken'])) {
@@ -499,18 +473,14 @@ class OC_Util {
 			//no token found.
 			return false;
 		}
-		if(isset($_SESSION['requesttoken-'.$token])) {
-			$timestamp=$_SESSION['requesttoken-'.$token];
-			// check if static lifespan has expired
-			if($timestamp+self::$callLifespan<time()) {
-				return false;
-			}else{
-				//token valid
-				return true;
-			}
-		}else{
+		// Check if the token is valid
+		if($token !== $_SESSION['requesttoken']) {
+			// Not valid
 			return false;
 		}
+
+		// Token valid
+		return true;
 	}
 
 	/**

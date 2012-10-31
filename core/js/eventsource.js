@@ -40,7 +40,7 @@ OC.EventSource=function(src,data){
 			dataStr+=name+'='+encodeURIComponent(data[name])+'&';
 		}
 	}
-	dataStr+='requesttoken='+OC.Request.Token;
+	dataStr+='requesttoken='+OC.EventSource.requesttoken;
 	if(!this.useFallBack && typeof EventSource !='undefined'){
 		var joinChar = '&';
 		if(src.indexOf('?') == -1) {
