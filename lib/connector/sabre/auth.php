@@ -36,13 +36,17 @@ class OC_Connector_Sabre_Auth extends Sabre_DAV_Auth_Backend_AbstractBasic {
 			return true;
 		} else {
 			OC_Util::setUpFS();//login hooks may need early access to the filesystem
+
 			if(OC_User::login($username, $password)) {
 				OC_Util::setUpFS(OC_User::getUser());
 				return true;
 			}
-			else{
-				return false;
+			// Decode ISO-8859-1 which is the encoding sent by some clients
+			if(OC_User::login($username, iconv("ISO-8859-1", "UTF-8", $password))) {
+				OC_Util::setUpFS(OC_User::getUser());
+				return true;
 			}
+			return false;
 		}
 	}
 }
