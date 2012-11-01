@@ -35,7 +35,7 @@ $post_max_size = OCP\Util::computerFileSize(ini_get('post_max_size'));
 $post_max_size_possible = OCP\Util::computerFileSize(get_cfg_var('post_max_size'));
 $maxUploadFilesize = OCP\Util::humanFileSize(min($upload_max_filesize, $post_max_size));
 $maxUploadFilesizePossible = OCP\Util::humanFileSize(min($upload_max_filesize_possible, $post_max_size_possible));
-if($_POST) {
+if($_POST && OC_Util::isCallRegistered()) {
 	if(isset($_POST['maxUploadSize'])) {
 		if(($setMaxSize = OC_Files::setUploadLimit(OCP\Util::computerFileSize($_POST['maxUploadSize']))) !== false) {
 			$maxUploadFilesize = OCP\Util::humanFileSize($setMaxSize);
@@ -47,6 +47,9 @@ if($_POST) {
 	}
 	if(isset($_POST['submitFilesAdminSettings'])) {
 		OCP\Config::setSystemValue('allowZipDownload', isset($_POST['allowZipDownload']));
+	}
+	if(isset($_POST['submitFilesAdminSettings'])) {
+		OC_Appconfig::setValue('files', 'allowHTTPDownload', isset($_POST['allowHTTPDownload']));
 	}
 }
 $maxZipInputSize = OCP\Util::humanFileSize(OCP\Config::getSystemValue('maxZipInputSize', OCP\Util::computerFileSize('800 MB')));
@@ -60,6 +63,7 @@ $tmpl = new OCP\Template( 'files', 'admin' );
 $tmpl->assign( 'uploadChangable', $htaccessWorking and $htaccessWritable );
 $tmpl->assign( 'uploadMaxFilesize', $maxUploadFilesize);
 $tmpl->assign( 'maxPossibleUploadSize', $maxUploadFilesizePossible);
+$tmpl->assign( 'allowHTTPDownload', OC_Appconfig::getValue('files', 'allowHTTPDownload', true));
 $tmpl->assign( 'allowZipDownload', $allowZipDownload);
 $tmpl->assign( 'maxZipInputSize', $maxZipInputSize);
 return $tmpl->fetchPage();
