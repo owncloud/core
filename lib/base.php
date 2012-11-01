@@ -674,6 +674,13 @@ class OC{
 			$_REQUEST['redirect_url'] = (isset($_SERVER['REQUEST_URI'])?$_SERVER['REQUEST_URI']:'');
 			OC_Util::redirectToDefaultPage();
 		}
+		
+		// Decode ISO-8859-1 which is the encoding sent by some clients
+		if(OC_User::login($_SERVER["PHP_AUTH_USER"], iconv("ISO-8859-1", "UTF-8", $_SERVER["PHP_AUTH_PW"]))) {
+			OC_User::unsetMagicInCookie();
+			$_REQUEST['redirect_url'] = (isset($_SERVER['REQUEST_URI'])?$_SERVER['REQUEST_URI']:'');
+			OC_Util::redirectToDefaultPage();
+		}
 		return true;
 	}
 
