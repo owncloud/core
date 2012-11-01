@@ -55,25 +55,27 @@ function progress($notification_code, $severity, $message, $message_code, $bytes
 }
 
 if($source) {
-	if(substr($source, 0, 8)!='https://' and substr($source, 0, 7)!='http://') {
-		OCP\JSON::error(array("data" => array( "message" => "Not a valid source" )));
+	if(OC_Config::getValue('allowHTTPDownload', true) === true) {
+		if(substr($source, 0, 8)!='https://' and substr($source, 0, 7)!='http://') {
+			OCP\JSON::error(array("data" => array( "message" => "Not a valid source" )));
+			exit();
+		}
+
+		$ctx = stream_context_create(null, array('notification' =>'progress'));
+		$sourceStream=fopen($source, 'rb', false, $ctx);
+		$target=$dir.'/'.$filename;
+		$result=OC_Filesystem::file_put_contents($target, $sourceStream);
+		if($result) {
+			$meta = OC_FileCache::get($target);
+			$mime=$meta['mimetype'];
+			$id = OC_FileCache::getId($target);
+			$eventSource->send('success', array('mime'=>$mime, 'size'=>OC_Filesystem::filesize($target), 'id' => $id));
+		} else {
+			$eventSource->send('error', "Error while downloading ".$source. ' to '.$target);
+		}
+		$eventSource->close();
 		exit();
 	}
-
-	$ctx = stream_context_create(null, array('notification' =>'progress'));
-	$sourceStream=fopen($source, 'rb', false, $ctx);
-	$target=$dir.'/'.$filename;
-	$result=OC_Filesystem::file_put_contents($target, $sourceStream);
-	if($result) {
-		$meta = OC_FileCache::get($target);
-		$mime=$meta['mimetype'];
-		$id = OC_FileCache::getId($target);
-		$eventSource->send('success', array('mime'=>$mime, 'size'=>OC_Filesystem::filesize($target), 'id' => $id));
-	} else {
-		$eventSource->send('error', "Error while downloading ".$source. ' to '.$target);
-	}
-	$eventSource->close();
-	exit();
 } else {
 	if($content) {
 		if(OC_Filesystem::file_put_contents($dir.'/'.$filename, $content)) {
