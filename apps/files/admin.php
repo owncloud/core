@@ -63,7 +63,7 @@ $tmpl = new OCP\Template( 'files', 'admin' );
 $tmpl->assign( 'uploadChangable', $htaccessWorking and $htaccessWritable );
 $tmpl->assign( 'uploadMaxFilesize', $maxUploadFilesize);
 $tmpl->assign( 'maxPossibleUploadSize', $maxUploadFilesizePossible);
-$tmpl->assign( 'allowHTTPDownload', OC_Appconfig::getValue('files', 'allowHTTPDownload', 'true'));
+$tmpl->assign( 'allowHTTPDownload', OC_Appconfig::getValue('files', 'allowHTTPDownload', true));
 $tmpl->assign( 'allowZipDownload', $allowZipDownload);
 $tmpl->assign( 'maxZipInputSize', $maxZipInputSize);
 return $tmpl->fetchPage();

@@ -55,7 +55,7 @@ function progress($notification_code, $severity, $message, $message_code, $bytes
 }
 
 if($source) {
-	if(OC_Appconfig::getValue('files', 'allowHTTPDownload', 'true') == true) {
+	if(OC_Appconfig::getValue('files', 'allowHTTPDownload', true) == true) {
 		if(substr($source, 0, 8)!='https://' and substr($source, 0, 7)!='http://') {
 			OCP\JSON::error(array("data" => array( "message" => "Not a valid source" )));
 			exit();
