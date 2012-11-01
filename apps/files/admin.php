@@ -48,6 +48,9 @@ if($_POST && OC_Util::isCallRegistered()) {
 	if(isset($_POST['submitFilesAdminSettings'])) {
 		OCP\Config::setSystemValue('allowZipDownload', isset($_POST['allowZipDownload']));
 	}
+	if(isset($_POST['submitFilesAdminSettings'])) {
+		OC_Appconfig::setValue('files', 'allowHTTPDownload', isset($_POST['allowHTTPDownload']));
+	}
 }
 $maxZipInputSize = OCP\Util::humanFileSize(OCP\Config::getSystemValue('maxZipInputSize', OCP\Util::computerFileSize('800 MB')));
 $allowZipDownload = intval(OCP\Config::getSystemValue('allowZipDownload', true));
@@ -60,6 +63,7 @@ $tmpl = new OCP\Template( 'files', 'admin' );
 $tmpl->assign( 'uploadChangable', $htaccessWorking and $htaccessWritable );
 $tmpl->assign( 'uploadMaxFilesize', $maxUploadFilesize);
 $tmpl->assign( 'maxPossibleUploadSize', $maxUploadFilesizePossible);
+$tmpl->assign( 'allowHTTPDownload', OC_Appconfig::getValue('files', 'allowHTTPDownload', 'true'));
 $tmpl->assign( 'allowZipDownload', $allowZipDownload);
 $tmpl->assign( 'maxZipInputSize', $maxZipInputSize);
 return $tmpl->fetchPage();

@@ -36,9 +36,6 @@ $CONFIG = array(
 /* Time in seconds how long an user is authenticated without entering his password again before performing sensitive actions like creating or deleting users etc...*/
 "enhancedauthtime" => 15 * 60,
 
-/* Define wheter the "from link" function is available to users in the new files popup  (false = disable "from link") */
-'allowHTTPDownload' => false,
-
 /* Theme to use for ownCloud */
 "theme" => "",
 
