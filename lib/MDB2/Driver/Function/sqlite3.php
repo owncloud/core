@@ -77,7 +77,7 @@ class MDB2_Driver_Function_sqlite3 extends MDB2_Driver_Function_Common
      */
     function unixtimestamp($expression)
     {
-        return 'strftime("%s",'. $expression.', "utc")';
+        return 'strftime("%s", '. $expression.', "utc")';
     }
 
     // }}}
