@@ -36,7 +36,7 @@ abstract class Access {
 		return ($this->connection instanceof Connection);
 	}
 
-	public function entryExists($dn){
+	private function entryReader($dn, $attr, $filter = 'objectClass=*'){
 		if(!$this->checkConnection()) {
 			\OCP\Util::writeLog('user_ldap', 'No LDAP Connector assigned, access impossible for entryExists.', \OCP\Util::WARN);
 			return false;
@@ -47,15 +47,31 @@ abstract class Access {
 			\OCP\Util::writeLog('user_ldap', 'LDAP resource not available.', \OCP\Util::DEBUG);
 			return false;
 		}
-		$rr = @ldap_read($cr, $dn, 'objectClass=*');
+		$rr = @ldap_read($cr, $dn, $filter, array($attr));
 		if(!is_resource($rr)) {
-			\OCP\Util::writeLog('user_ldap', 'entryExists failed for DN '.$dn, \OCP\Util::DEBUG);
+			\OCP\Util::writeLog('user_ldap', 'entryReader failed for DN '.$dn, \OCP\Util::DEBUG);
 			//in case an error occurs , e.g. object does not exist
 			return false;
 		}
-		\OCP\Util::writeLog('user_ldap', 'entryExists: '.$dn.' found', \OCP\Util::DEBUG);
-		return true;	
+
+		if (empty($attr)) {
+                    \OCP\Util::writeLog('user_ldap', 'entryReader: '.$dn.' found', \OCP\Util::DEBUG);
+                    return true;
+                } else {
+                    $er = ldap_first_entry($cr, $rr);
+                    if(!is_resource($er)) {
+                    //did not match the filter, return false
+                    return false;
+                   }
+		    $result = \OCP\Util::mb_array_change_key_case(ldap_get_attributes($cr, $er), MB_CASE_LOWER, 'UTF-8');
+                }
+                return $result;
 	}
+
+        public function entryExists($dn) {
+            
+            return $this->entryReader($dn, array(), 'objectClass=*');
+        }
 	
 	/**
 	 * @brief reads a given attribute for an LDAP record identified by a DN
@@ -66,29 +82,8 @@ abstract class Access {
 	 * Reads an attribute from an LDAP entry
 	 */
 	public function readAttribute($dn, $attr, $filter = 'objectClass=*') {
-		if(!$this->checkConnection()) {
-			\OCP\Util::writeLog('user_ldap', 'No LDAP Connector assigned, access impossible for readAttribute.', \OCP\Util::WARN);
-			return false;
-		}
-		$cr = $this->connection->getConnectionResource();
-		if(!is_resource($cr)) {
-			//LDAP not available
-			\OCP\Util::writeLog('user_ldap', 'LDAP resource not available.', \OCP\Util::DEBUG);
-			return false;
-		}
-		$rr = @ldap_read($cr, $dn, $filter, array($attr));
-		if(!is_resource($rr)) {
-			\OCP\Util::writeLog('user_ldap', 'readAttribute '.$attr.' failed for DN '.$dn, \OCP\Util::DEBUG);
-			//in case an error occurs , e.g. object does not exist
-			return false;
-		}
-		$er = ldap_first_entry($cr, $rr);
-		if(!is_resource($er)) {
-			//did not match the filter, return false
-			return false;
-		}
-		//LDAP attributes are not case sensitive
-		$result = \OCP\Util::mb_array_change_key_case(ldap_get_attributes($cr, $er), MB_CASE_LOWER, 'UTF-8');
+
+		$result = $this->entryReader($dn, $attr, $filter);
 		$attr = mb_strtolower($attr, 'UTF-8');
 
 		if(isset($result[$attr]) && $result[$attr]['count'] > 0) {
