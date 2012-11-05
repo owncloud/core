@@ -2,6 +2,7 @@
 
 OC_JSON::checkSubAdminUser();
 OCP\JSON::callCheck();
+OC_App::loadApps();
 
 $username = $_POST["username"];
 
