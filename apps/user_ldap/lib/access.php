@@ -37,16 +37,17 @@ abstract class Access {
 	}
 
 	/**
-	 * @brief reads a given attribute for an LDAP record identified by a DN
+	 * @brief reads a directory record identified by a DN
 	 * @param $dn the record in question
 	 * @param $attr the attribute that shall be retrieved
-	 * @returns the values in an array on success, false otherwise
+	 * @returns the values in an array on success or true if $attr is empty,
+	 * false otherwise
 	 *
-	 * Reads an attribute from an LDAP entry
+	 * Reads an LDAP entry
 	 */
-	public function readAttribute($dn, $attr, $filter = 'objectClass=*') {
+	private function entryReader($dn, $attr, $filter = 'objectClass=*'){
 		if(!$this->checkConnection()) {
-			\OCP\Util::writeLog('user_ldap', 'No LDAP Connector assigned, access impossible for readAttribute.', \OCP\Util::WARN);
+			\OCP\Util::writeLog('user_ldap', 'No LDAP Connector assigned, access impossible for entryExists.', \OCP\Util::WARN);
 			return false;
 		}
 		$cr = $this->connection->getConnectionResource();
@@ -57,17 +58,47 @@ abstract class Access {
 		}
 		$rr = @ldap_read($cr, $dn, $filter, array($attr));
 		if(!is_resource($rr)) {
-			\OCP\Util::writeLog('user_ldap', 'readAttribute '.$attr.' failed for DN '.$dn, \OCP\Util::DEBUG);
+			\OCP\Util::writeLog('user_ldap', 'entryReader failed for DN '.$dn, \OCP\Util::DEBUG);
 			//in case an error occurs , e.g. object does not exist
 			return false;
 		}
-		$er = ldap_first_entry($cr, $rr);
-		if(!is_resource($er)) {
-			//did not match the filter, return false
-			return false;
-		}
-		//LDAP attributes are not case sensitive
-		$result = \OCP\Util::mb_array_change_key_case(ldap_get_attributes($cr, $er), MB_CASE_LOWER, 'UTF-8');
+
+		if (empty($attr)) {
+                    \OCP\Util::writeLog('user_ldap', 'entryReader: '.$dn.' found', \OCP\Util::DEBUG);
+                    return true;
+                } else {
+                    $er = ldap_first_entry($cr, $rr);
+                    if(!is_resource($er)) {
+                    //did not match the filter, return false
+                    return false;
+                   }
+		    $result = \OCP\Util::mb_array_change_key_case(ldap_get_attributes($cr, $er), MB_CASE_LOWER, 'UTF-8');
+                }
+                return $result;
+	}
+
+	/**
+	 * @brief checks if a directory object identified by a DN really exists
+	 * @param $dn the record in question
+	 * @returns true on success, false otherwise
+	 *
+	 * Checks if an LDAP entry exists
+	 */
+	public function entryExists($dn) {
+		return $this->entryReader($dn, array(), 'objectClass=*');
+	}
+	
+	/**
+	 * @brief reads a given attribute for an LDAP record identified by a DN
+	 * @param $dn the record in question
+	 * @param $attr the attribute that shall be retrieved
+	 * @returns the values in an array on success, false otherwise
+	 *
+	 * Reads an attribute from an LDAP entry
+	 */
+	public function readAttribute($dn, $attr, $filter = 'objectClass=*') {
+
+		$result = $this->entryReader($dn, $attr, $filter);
 		$attr = mb_strtolower($attr, 'UTF-8');
 
 		if(isset($result[$attr]) && $result[$attr]['count'] > 0) {
