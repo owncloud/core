@@ -36,6 +36,15 @@ abstract class Access {
 		return ($this->connection instanceof Connection);
 	}
 
+	/**
+	 * @brief reads a directory record identified by a DN
+	 * @param $dn the record in question
+	 * @param $attr the attribute that shall be retrieved
+	 * @returns the values in an array on success or true if $attr is empty,
+	 * false otherwise
+	 *
+	 * Reads an LDAP entry
+	 */
 	private function entryReader($dn, $attr, $filter = 'objectClass=*'){
 		if(!$this->checkConnection()) {
 			\OCP\Util::writeLog('user_ldap', 'No LDAP Connector assigned, access impossible for entryExists.', \OCP\Util::WARN);
@@ -68,10 +77,16 @@ abstract class Access {
                 return $result;
 	}
 
-        public function entryExists($dn) {
-            
-            return $this->entryReader($dn, array(), 'objectClass=*');
-        }
+	/**
+	 * @brief checks if a directory object identified by a DN really exists
+	 * @param $dn the record in question
+	 * @returns true on success, false otherwise
+	 *
+	 * Checks if an LDAP entry exists
+	 */
+	public function entryExists($dn) {
+		return $this->entryReader($dn, array(), 'objectClass=*');
+	}
 	
 	/**
 	 * @brief reads a given attribute for an LDAP record identified by a DN
