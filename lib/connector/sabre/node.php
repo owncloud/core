@@ -246,6 +246,9 @@ abstract class OC_Connector_Sabre_Node implements Sabre_DAV_INode, Sabre_DAV_IPr
 		$source = self::getFileSource($path);
 		$path = $source['path'];
 		
+		// get all user to which the file is shared
+		//OCP\Share::getItemShared($itemType, $itemSource)
+		
 		$paths = array();
 		while ($path != '/' && $path != '.' && $path != '' && $path != '\\') {
 			$paths[] = $path;

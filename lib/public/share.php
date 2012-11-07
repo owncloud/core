@@ -98,7 +98,31 @@ class Share {
 		}
 		return false;
 	}
+	
+	
+	/**
+	 * @brief Get the item of item type shared with the current user by source
+	 * @param string Item type
+	 * @param string Item source
+	 * @param string uid of item owner
+	 * @param int Format (optional) Format type must be defined by the backend
+	 * @return Return depends on format
+	 */
+	public static function getRecipientOfItemBySource($itemType, $itemSource, $itemOwner, $format = self::FORMAT_NONE, $parameters = null, $includeCollections = false) {
+		return self::getItems($itemType, $itemSource, self::$shareTypeUserAndGroups, null, $itemOwner, $format, $parameters, 1, $includeCollections, true);
+	}
 
+	/**
+	 * @brief Get the items of item type shared with the current user
+	 * @param string Item type
+	 * @param int Format (optional) Format type must be defined by the backend
+	 * @param int Number of items to return (optional) Returns all by default
+	 * @return Return depends on format
+	 */
+	public static function getRecipientsOfItem($itemType, $itemSource, $format = self::FORMAT_NONE, $parameters = null, $limit = -1, $includeCollections = false) {
+		return self::getItems($itemType, null, self::$shareTypeUserAndGroups, \OC_User::getUser(), null, $format, $parameters, $limit, $includeCollections);
+	}
+	
 	/**
 	* @brief Get the items of item type shared with the current user
 	* @param string Item type
