@@ -6,13 +6,14 @@
 #   <khanhnd@kenhgiaiphap.vn>, 2012.
 #   <mattheu_9x@yahoo.com>, 2012.
 # Son Nguyen <sonnghit@gmail.com>, 2012.
+# Sơn Nguyễn <sonnghit@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2012-11-09 00:01+0100\n"
-"PO-Revision-Date: 2012-11-08 17:26+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"POT-Creation-Date: 2012-11-11 00:01+0100\n"
+"PO-Revision-Date: 2012-11-10 04:40+0000\n"
+"Last-Translator: Sơn Nguyễn <sonnghit@gmail.com>\n"
 "Language-Team: Vietnamese (http://www.transifex.com/projects/p/owncloud/language/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -38,7 +39,7 @@ msgstr "Cài đặt"
 
 #: js/js.js:687
 msgid "seconds ago"
-msgstr "giây trước"
+msgstr "vài giây trước"
 
 #: js/js.js:688
 msgid "1 minute ago"
@@ -123,7 +124,7 @@ msgstr "Đã được chia sẽ với bạn và nhóm {group} bởi {owner}"
 
 #: js/share.js:153
 msgid "Shared with you by {owner}"
-msgstr "Đã được chia sẽ với bạn bởi {owner}"
+msgstr "Đã được chia sẽ bởi {owner}"
 
 #: js/share.js:158
 msgid "Share with"
@@ -131,7 +132,7 @@ msgstr "Chia sẻ với"
 
 #: js/share.js:163
 msgid "Share with link"
-msgstr "Chia sẻ với link"
+msgstr "Chia sẻ với liên kết"
 
 #: js/share.js:164
 msgid "Password protect"
@@ -220,11 +221,11 @@ msgstr "Vui lòng kiểm tra Email để khôi phục lại mật khẩu."
 
 #: lostpassword/templates/lostpassword.php:5
 msgid "Reset email send."
-msgstr ""
+msgstr "Thiết lập lại email gởi."
 
 #: lostpassword/templates/lostpassword.php:8
 msgid "Request failed!"
-msgstr ""
+msgstr "Yêu cầu  của bạn không thành công !"
 
 #: lostpassword/templates/lostpassword.php:11 templates/installation.php:38
 #: templates/login.php:20
@@ -295,13 +296,13 @@ msgstr "Cảnh bảo bảo mật"
 msgid ""
 "No secure random number generator is available, please enable the PHP "
 "OpenSSL extension."
-msgstr ""
+msgstr "Không an toàn ! chức năng random number generator đã có sẵn ,vui lòng bật  PHP OpenSSL extension."
 
 #: templates/installation.php:26
 msgid ""
 "Without a secure random number generator an attacker may be able to predict "
 "password reset tokens and take over your account."
-msgstr ""
+msgstr "Nếu không có random number generator , Hacker có thể  thiết lập lại mật khẩu và chiếm tài khoản của bạn."
 
 #: templates/installation.php:32
 msgid ""
@@ -347,7 +348,7 @@ msgstr "Tên cơ sở dữ liệu"
 
 #: templates/installation.php:121
 msgid "Database tablespace"
-msgstr ""
+msgstr "Cơ sở dữ liệu tablespace"
 
 #: templates/installation.php:127
 msgid "Database host"
@@ -443,7 +444,7 @@ msgstr "Đăng xuất"
 
 #: templates/login.php:8
 msgid "Automatic logon rejected!"
-msgstr "Tự động đăng nhập đã bị từ chối!"
+msgstr "Tự động đăng nhập đã bị từ chối !"
 
 #: templates/login.php:9
 msgid ""
@@ -461,7 +462,7 @@ msgstr "Bạn quên mật khẩu ?"
 
 #: templates/login.php:27
 msgid "remember"
-msgstr "Nhớ"
+msgstr "ghi nhớ"
 
 #: templates/login.php:28
 msgid "Log in"
