@@ -385,9 +385,6 @@ class OC_FileCache{
 		$totalSize=0;
 		if($dh) {
 			while (($filename = readdir($dh)) !== false) {
-				if(substr(PHP_OS, 0, 3) == "WIN"){
-					$filename = iconv( "iso-8859-1", "utf-8", $filename);
-				}
 				if($filename != '.' and $filename != '..') {
 					$file=$path.'/'.$filename;
 					if($view->is_dir($file.'/')) {
