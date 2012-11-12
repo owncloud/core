@@ -17,8 +17,13 @@ var UserList={
 	 */
 	do_delete:function( uid ) {
 		
+                // If a user have been already set for deletion, delete it completely 
+                if(UserList.deleteUid){
+                    UserList.finishDelete(null);
+                }
+                
 		UserList.deleteUid = uid;
-		
+                
 		// Set undo flag
 		UserList.deleteCanceled = false;
 		
