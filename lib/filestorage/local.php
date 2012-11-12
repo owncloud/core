@@ -4,34 +4,48 @@
  */
 class OC_Filestorage_Local extends OC_Filestorage_Common{
 	protected $datadir;
+	private function decode($str) {
+		if(substr(PHP_OS, 0, 3) == "WIN"){
+			return iconv( "utf-8", "iso-8859-1", $str);
+		}else{
+			return $str;
+		}
+	}
 	public function __construct($arguments) {
-		$this->datadir=$arguments['datadir'];
+		$this->datadir=$this->decode($arguments['datadir']);
 		if(substr($this->datadir, -1)!=='/') {
 			$this->datadir.='/';
 		}
 	}
 	public function mkdir($path) {
+		$path = $this->decode($path);
 		return @mkdir($this->datadir.$path);
 	}
 	public function rmdir($path) {
+		$path = $this->decode($path);
 		return @rmdir($this->datadir.$path);
 	}
 	public function opendir($path) {
+		$path = $this->decode($path);
 		return opendir($this->datadir.$path);
 	}
 	public function is_dir($path) {
+		$path = $this->decode($path);
 		if(substr($path, -1)=='/') {
 			$path=substr($path, 0, -1);
 		}
 		return is_dir($this->datadir.$path);
 	}
 	public function is_file($path) {
+		$path = $this->decode($path);
 		return is_file($this->datadir.$path);
 	}
 	public function stat($path) {
+		$path = $this->decode($path);
 		return stat($this->datadir.$path);
 	}
 	public function filetype($path) {
+		$path = $this->decode($path);
 		$filetype=filetype($this->datadir.$path);
 		if($filetype=='link') {
 			$filetype=filetype(realpath($this->datadir.$path));
@@ -42,25 +56,32 @@ class OC_Filestorage_Local extends OC_Filestorage_Common{
 		if($this->is_dir($path)) {
 			return 0;
 		}else{
+			$path = $this->decode($path);
 			return filesize($this->datadir.$path);
 		}
 	}
 	public function isReadable($path) {
+		$path = $this->decode($path);
 		return is_readable($this->datadir.$path);
 	}
 	public function isUpdatable($path) {
+		$path = $this->decode($path);
 		return is_writable($this->datadir.$path);
 	}
 	public function file_exists($path) {
+		$path = $this->decode($path);
 		return file_exists($this->datadir.$path);
 	}
 	public function filectime($path) {
+		$path = $this->decode($path);
 		return filectime($this->datadir.$path);
 	}
 	public function filemtime($path) {
+		$path = $this->decode($path);
 		return filemtime($this->datadir.$path);
 	}
 	public function touch($path, $mtime=null) {
+		$path = $this->decode($path);
 		// sets the modification time of the file to the given value.
 		// If mtime is nil the current time is set.
 		// note that the access time of the file always changes to the current time.
@@ -76,12 +97,15 @@ class OC_Filestorage_Local extends OC_Filestorage_Common{
 		return $result;
 	}
 	public function file_get_contents($path) {
+		$path = $this->decode($path);
 		return file_get_contents($this->datadir.$path);
 	}
 	public function file_put_contents($path, $data) {
+		$path = $this->decode($path);
 		return file_put_contents($this->datadir.$path, $data);
 	}
 	public function unlink($path) {
+		$path = $this->decode($path);
 		return $this->delTree($path);
 	}
 	public function rename($path1, $path2) {
@@ -93,7 +117,8 @@ class OC_Filestorage_Local extends OC_Filestorage_Common{
 			OC_Log::write('core', 'unable to rename, file does not exists : '.$path1, OC_Log::ERROR);
 			return false;
 		}
-
+		$path1 = $this->decode($path1);
+		$path2 = $this->decode($path2);
 		if($return=rename($this->datadir.$path1, $this->datadir.$path2)) {
 		}
 		return $return;
@@ -106,9 +131,12 @@ class OC_Filestorage_Local extends OC_Filestorage_Common{
 			$source=substr($path1, strrpos($path1, '/')+1);
 			$path2.=$source;
 		}
+		$path1 = $this->decode($path1);
+		$path2 = $this->decode($path2);
 		return copy($this->datadir.$path1, $this->datadir.$path2);
 	}
 	public function fopen($path, $mode) {
+		$path = $this->decode($path);
 		if($return=fopen($this->datadir.$path, $mode)) {
 			switch($mode) {
 				case 'r':
@@ -129,6 +157,7 @@ class OC_Filestorage_Local extends OC_Filestorage_Common{
 
 	public function getMimeType($path) {
 		if($this->isReadable($path)) {
+			$path = $this->decode($path);
 			return OC_Helper::getMimeType($this->datadir.$path);
 		}else{
 			return false;
@@ -138,6 +167,7 @@ class OC_Filestorage_Local extends OC_Filestorage_Common{
 	private function delTree($dir) {
 		$dirRelative=$dir;
 		$dir=$this->datadir.$dir;
+		$dir = $this->decode($dir);
 		if (!file_exists($dir)) return true;
 		if (!is_dir($dir) || is_link($dir)) return unlink($dir);
 		foreach (scandir($dir) as $item) {
@@ -157,10 +187,12 @@ class OC_Filestorage_Local extends OC_Filestorage_Common{
 	}
 
 	public function hash($path, $type, $raw=false) {
+		$path = $this->decode($path);
 		return hash_file($type, $this->datadir.$path, $raw);
 	}
 
 	public function free_space($path) {
+		$path = $this->decode($path);
 		return @disk_free_space($this->datadir.$path);
 	}
 
@@ -168,9 +200,11 @@ class OC_Filestorage_Local extends OC_Filestorage_Common{
 		return $this->searchInDir($query);
 	}
 	public function getLocalFile($path) {
+		$dir = $this->decode($dir);
 		return $this->datadir.$path;
 	}
 	public function getLocalFolder($path) {
+		$dir = $this->decode($dir);
 		return $this->datadir.$path;
 	}
 
