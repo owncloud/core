@@ -11,6 +11,11 @@
 "Selected files too large to generate zip file." => "Zvolené súbory sú príliž veľké na vygenerovanie zip súboru.",
 "Application is not enabled" => "Aplikácia nie je zapnutá",
 "Authentication error" => "Chyba autentifikácie",
+"Token expired. Please reload page." => "Token vypršal. Obnovte, prosím, stránku.",
+"Files" => "Súbory",
+"Text" => "Text",
+"Images" => "Obrázky",
+"seconds ago" => "pred sekundami",
 "1 minute ago" => "pred 1 minútou",
 "%d minutes ago" => "pred %d minútami",
 "today" => "dnes",
@@ -20,6 +25,7 @@
 "months ago" => "pred mesiacmi",
 "last year" => "minulý rok",
 "years ago" => "pred rokmi",
+"%s is available. Get <a href=\"%s\">more information</a>" => "%s je dostupné. Získať <a href=\"%s\">viac informácií</a>",
 "up to date" => "aktuálny",
 "updates check is disabled" => "sledovanie aktualizácií je vypnuté"
 );

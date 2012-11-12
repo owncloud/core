@@ -24,7 +24,14 @@
 abstract class OC_Connector_Sabre_Node implements Sabre_DAV_INode, Sabre_DAV_IProperties {
 	const GETETAG_PROPERTYNAME = '{DAV:}getetag';
 	const LASTMODIFIED_PROPERTYNAME = '{DAV:}lastmodified';
-	
+
+	/**
+	 * Allow configuring the method used to generate Etags
+	 *
+	 * @var array(class_name, function_name)
+	*/
+	public static $ETagFunction = null;
+
 	/**
 	 * The path to the current node
 	 *
@@ -80,12 +87,12 @@ abstract class OC_Connector_Sabre_Node implements Sabre_DAV_INode, Sabre_DAV_IPr
 		$newPath = $parentPath . '/' . $newName;
 		$oldPath = $this->path;
 
-		OC_Filesystem::rename($this->path,$newPath);
+		OC_Filesystem::rename($this->path, $newPath);
 
 		$this->path = $newPath;
 
 		$query = OC_DB::prepare( 'UPDATE `*PREFIX*properties` SET `propertypath` = ? WHERE `userid` = ? AND `propertypath` = ?' );
-		$query->execute( array( $newPath,OC_User::getUser(), $oldPath ));
+		$query->execute( array( $newPath, OC_User::getUser(), $oldPath ));
 
 	}
 
@@ -156,10 +163,10 @@ abstract class OC_Connector_Sabre_Node implements Sabre_DAV_INode, Sabre_DAV_IPr
 				} else {
 					if(!array_key_exists( $propertyName, $existing )) {
 						$query = OC_DB::prepare( 'INSERT INTO `*PREFIX*properties` (`userid`,`propertypath`,`propertyname`,`propertyvalue`) VALUES(?,?,?,?)' );
-						$query->execute( array( OC_User::getUser(), $this->path, $propertyName,$propertyValue ));
+						$query->execute( array( OC_User::getUser(), $this->path, $propertyName, $propertyValue ));
 					} else {
 						$query = OC_DB::prepare( 'UPDATE `*PREFIX*properties` SET `propertyvalue` = ? WHERE `userid` = ? AND `propertypath` = ? AND `propertyname` = ?' );
-						$query->execute( array( $propertyValue,OC_User::getUser(), $this->path, $propertyName ));
+						$query->execute( array( $propertyValue, OC_User::getUser(), $this->path, $propertyName ));
 					}
 				}
 			}
@@ -178,7 +185,7 @@ abstract class OC_Connector_Sabre_Node implements Sabre_DAV_INode, Sabre_DAV_IPr
 	 * If the array is empty, all properties should be returned
 	 *
 	 * @param array $properties
-	 * @return void
+	 * @return array
 	 */
 	public function getProperties($properties) {
 		if (is_null($this->property_cache)) {
@@ -209,7 +216,12 @@ abstract class OC_Connector_Sabre_Node implements Sabre_DAV_INode, Sabre_DAV_IPr
 	 * @return string|null Returns null if the ETag can not effectively be determined
 	 */
 	static protected function createETag($path) {
-		return uniqid('', true);
+		if(self::$ETagFunction) {
+			$hash = call_user_func(self::$ETagFunction, $path);
+			return $hash;
+		}else{
+			return uniqid('', true);
+		}
 	}
 
 	/**
@@ -235,7 +247,7 @@ abstract class OC_Connector_Sabre_Node implements Sabre_DAV_INode, Sabre_DAV_IPr
 	static public function removeETagPropertyForPath($path) {
 		// remove tags from this and parent paths
 		$paths = array();
-		while ($path != '/' && $path != '.' && $path != '') {
+		while ($path != '/' && $path != '.' && $path != '' && $path != '\\') {
 			$paths[] = $path;
 			$path = dirname($path);
 		}

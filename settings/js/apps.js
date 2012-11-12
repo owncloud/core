@@ -17,6 +17,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 		} else {
 			page.find('span.version').text('');
 		}
+		page.find('span.score').html(app.score);
 		page.find('p.description').html(app.description);
 		page.find('img.preview').attr('src', app.preview);
 		page.find('small.externalapp').attr('style', 'visibility:visible');
@@ -28,10 +29,13 @@ OC.Settings.Apps = OC.Settings.Apps || {
 		page.find('input.enable').data('appid', app.id);
 		page.find('input.enable').data('active', app.active);
 		if (app.internal == false) {
+			page.find('span.score').show();
 			page.find('p.appslink').show();
 			page.find('a').attr('href', 'http://apps.owncloud.com/content/show.php?content=' + app.id);
+			page.find('small.externalapp').hide();
 		} else {
 			page.find('p.appslink').hide();
+			page.find('span.score').hide();
 		}
 	},
 	enableApp:function(appid, active, element) {
@@ -47,6 +51,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 				}
 				else {
 					element.data('active',false);
+					OC.Settings.Apps.removeNavigation(appid);
 					element.val(t('settings','Enable'));
 				}
 			},'json');
@@ -57,6 +62,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 					OC.dialogs.alert('Error while enabling app','Error');
 				}
 				else {
+					OC.Settings.Apps.addNavigation(appid);
 					element.data('active',true);
 					element.val(t('settings','Disable'));
 				}
@@ -83,6 +89,38 @@ OC.Settings.Apps = OC.Settings.Apps || {
 			applist.last().after(app);
 		}
 		return app;
+	},
+	removeNavigation: function(appid){
+		$.getJSON(OC.filePath('settings', 'ajax', 'navigationdetect.php'), {app: appid}).done(function(response){
+			if(response.status === 'success'){
+				var navIds=response.nav_ids;
+				for(var i=0; i< navIds.length; i++){
+					$('#apps').children('li[data-id="'+navIds[i]+'"]').remove();
+				}
+			}
+		});
+	},
+	addNavigation: function(appid){
+		$.getJSON(OC.filePath('settings', 'ajax', 'navigationdetect.php'), {app: appid}).done(function(response){
+			if(response.status === 'success'){
+				var navEntries=response.nav_entries;
+				for(var i=0; i< navEntries.length; i++){
+					var entry = navEntries[i];
+					var container = $('#apps');
+
+					if(container.children('li[data-id="'+entry.id+'"]').length === 0){
+						var li=$('<li></li>');
+						li.attr('data-id', entry.id);
+						var a=$('<a></a>');
+						a.attr('style', 'background-image: url('+entry.icon+')');
+						a.text(entry.name);
+						a.attr('href', entry.href);
+						li.append(a);
+						container.append(li);
+					}
+				}
+			}
+		});
 	}
 };
 

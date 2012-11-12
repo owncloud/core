@@ -40,10 +40,10 @@ class OC_Crypt {
 	static private $bf = null;
 
 	public static function loginListener($params) {
-		self::init($params['uid'],$params['password']);
+		self::init($params['uid'], $params['password']);
 	}
 
-	public static function init($login,$password) {
+	public static function init($login, $password) {
 		$view=new OC_FilesystemView('/');
 		if(!$view->file_exists('/'.$login)) {
 			$view->mkdir('/'.$login);
@@ -51,7 +51,7 @@ class OC_Crypt {
 
 		OC_FileProxy::$enabled=false;
 		if(!$view->file_exists('/'.$login.'/encryption.key')) {// does key exist?
-			OC_Crypt::createkey($login,$password);
+			OC_Crypt::createkey($login, $password);
 		}
 		$key=$view->file_get_contents('/'.$login.'/encryption.key');
 		OC_FileProxy::$enabled=true;
@@ -80,18 +80,18 @@ class OC_Crypt {
 		}
 	}
 
-	public static function createkey($username,$passcode) {
+	public static function createkey($username, $passcode) {
 		// generate a random key
-		$key=mt_rand(10000,99999).mt_rand(10000,99999).mt_rand(10000,99999).mt_rand(10000,99999);
+		$key=mt_rand(10000, 99999).mt_rand(10000, 99999).mt_rand(10000, 99999).mt_rand(10000, 99999);
 
 		// encrypt the key with the passcode of the user
-		$enckey=OC_Crypt::encrypt($key,$passcode);
+		$enckey=OC_Crypt::encrypt($key, $passcode);
 
 		// Write the file
 		$proxyEnabled=OC_FileProxy::$enabled;
 		OC_FileProxy::$enabled=false;
 		$view=new OC_FilesystemView('/'.$username);
-		$view->file_put_contents('/encryption.key',$enckey);
+		$view->file_put_contents('/encryption.key', $enckey);
 		OC_FileProxy::$enabled=$proxyEnabled;
 	}
 
@@ -151,7 +151,7 @@ class OC_Crypt {
 	*/
 	public static function encryptFile( $source, $target, $key='') {
 		$handleread  = fopen($source, "rb");
-		if($handleread!=FALSE) {
+		if($handleread!=false) {
 			$handlewrite = fopen($target, "wb");
 			while (!feof($handleread)) {
 				$content = fread($handleread, 8192);
@@ -174,7 +174,7 @@ class OC_Crypt {
 		*/
 	public static function decryptFile( $source, $target, $key='') {
 		$handleread  = fopen($source, "rb");
-		if($handleread!=FALSE) {
+		if($handleread!=false) {
 			$handlewrite = fopen($target, "wb");
 			while (!feof($handleread)) {
 				$content = fread($handleread, 8192);
@@ -195,8 +195,8 @@ class OC_Crypt {
 	public static function blockEncrypt($data, $key='') {
 		$result='';
 		while(strlen($data)) {
-			$result.=self::encrypt(substr($data,0,8192),$key);
-			$data=substr($data,8192);
+			$result.=self::encrypt(substr($data, 0, 8192), $key);
+			$data=substr($data, 8192);
 		}
 		return $result;
 	}
@@ -204,14 +204,14 @@ class OC_Crypt {
 	/**
 	 * decrypt data in 8192b sized blocks
 	 */
-	public static function blockDecrypt($data, $key='',$maxLength=0) {
+	public static function blockDecrypt($data, $key='', $maxLength=0) {
 		$result='';
 		while(strlen($data)) {
-			$result.=self::decrypt(substr($data,0,8192),$key);
-			$data=substr($data,8192);
+			$result.=self::decrypt(substr($data, 0, 8192), $key);
+			$data=substr($data, 8192);
 		}
 		if($maxLength>0) {
-			return substr($result,0,$maxLength);
+			return substr($result, 0, $maxLength);
 		}else{
 			return rtrim($result, "\0");
 		}

@@ -19,7 +19,7 @@
 	<?php if (isset($_['folder'])): ?>
 		<?php echo $_['folder']; ?>
 	<?php else: ?>
-		<?php if (substr($_['mimetype'], 0 , strpos($_['mimetype'], '/')) == 'image'): ?>
+		<?php if (substr($_['mimetype'], 0, strpos($_['mimetype'], '/')) == 'image'): ?>
 			<div id="imgframe">
 				<img src="<?php echo $_['downloadURL']; ?>" />
 			</div>
@@ -31,7 +31,5 @@
 			</li>
 		</ul>
 	<?php endif; ?>
-	<div id="content"></div>
-	<table></table>
 </div>
 <footer><p class="info"><a href="http://owncloud.org/">ownCloud</a> &ndash; <?php echo $l->t('web services under your control'); ?></p></footer>

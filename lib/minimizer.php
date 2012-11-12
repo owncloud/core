@@ -2,14 +2,11 @@
 
 abstract class OC_Minimizer {
 	public function generateETag($files) {
-		$etag = '';
-		sort($files);
+		$fullpath_files = array();
 		foreach($files as $file_info) {
-			$file = $file_info[0] . '/' . $file_info[2];
-			$stat = stat($file);
-			$etag .= $file.$stat['mtime'].$stat['size'];
+			$fullpath_files[] = $file_info[0] . '/' . $file_info[2];
 		}
-		return md5($etag);
+		return OC_Cache::generateCacheKeyFromFiles($fullpath_files);
 	}
 
 	abstract public function minimizeFiles($files);
@@ -51,11 +48,11 @@ abstract class OC_Minimizer {
 }
 
 if (!function_exists('gzdecode')) {
-	function gzdecode($data,$maxlength=null,&$filename='',&$error='')
+	function gzdecode($data, $maxlength=null, &$filename='', &$error='')
 	{
-		if (strcmp(substr($data,0,9),"\x1f\x8b\x8\0\0\0\0\0\0")) {
+		if (strcmp(substr($data, 0, 9),"\x1f\x8b\x8\0\0\0\0\0\0")) {
 			return null;  // Not the GZIP format we expect (See RFC 1952)
 		}
-		return gzinflate(substr($data,10,-8));
+		return gzinflate(substr($data, 10, -8));
 	}
 }

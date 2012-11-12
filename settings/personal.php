@@ -5,8 +5,8 @@
  * See the COPYING-README file.
  */
 
-require_once '../lib/base.php';
 OC_Util::checkLoggedIn();
+OC_App::loadApps();
 
 // Highlight navigation entry
 OC_Util::addScript( 'settings', 'personal' );
@@ -18,12 +18,8 @@ OC_App::setActiveNavigationEntry( 'personal' );
 // calculate the disc space
 $rootInfo=OC_FileCache::get('');
 $sharedInfo=OC_FileCache::get('/Shared');
-if (!isset($sharedInfo['size'])) {
-	$sharedSize = 0;
-} else {
-	$sharedSize = $sharedInfo['size'];
-}
-$used=$rootInfo['size']-$sharedSize;
+$used=$rootInfo['size'];
+if($used<0) $used=0;
 $free=OC_Filesystem::free_space();
 $total=$free+$used;
 if($total==0) $total=1;  // prevent division by zero
@@ -44,11 +40,11 @@ $languages=array();
 foreach($languageCodes as $lang) {
 	$l=OC_L10N::get('settings', $lang);
 	if(substr($l->t('__language_name__'), 0, 1)!='_') {//first check if the language name is in the translation file
-		$languages[]=array('code'=>$lang,'name'=>$l->t('__language_name__'));
+		$languages[]=array('code'=>$lang, 'name'=>$l->t('__language_name__'));
 	}elseif(isset($languageNames[$lang])) {
-		$languages[]=array('code'=>$lang,'name'=>$languageNames[$lang]);
+		$languages[]=array('code'=>$lang, 'name'=>$languageNames[$lang]);
 	}else{//fallback to language code
-		$languages[]=array('code'=>$lang,'name'=>$lang);
+		$languages[]=array('code'=>$lang, 'name'=>$lang);
 	}
 }
 

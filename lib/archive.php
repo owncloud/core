@@ -13,14 +13,14 @@ abstract class OC_Archive{
 	 * @return OC_Archive
 	 */
 	public static function open($path) {
-		$ext=substr($path,strrpos($path,'.'));
+		$ext=substr($path, strrpos($path, '.'));
 		switch($ext) {
 			case '.zip':
 				return new OC_Archive_ZIP($path);
 			case '.gz':
 			case '.bz':
 			case '.bz2':
-				if(strpos($path,'.tar.')) {
+				if(strpos($path, '.tar.')) {
 					return new OC_Archive_TAR($path);
 				}
 				break;
@@ -42,14 +42,14 @@ abstract class OC_Archive{
 	 * @param string source either a local file or string data
 	 * @return bool
 	 */
-	abstract function addFile($path,$source='');
+	abstract function addFile($path, $source='');
 	/**
 	 * rename a file or folder in the archive
 	 * @param string source
 	 * @param string dest
 	 * @return bool
 	 */
-	abstract function rename($source,$dest);
+	abstract function rename($source, $dest);
 	/**
 	 * get the uncompressed size of a file in the archive
 	 * @param string path
@@ -85,7 +85,7 @@ abstract class OC_Archive{
 	 * @param string dest
 	 * @return bool
 	 */
-	abstract function extractFile($path,$dest);
+	abstract function extractFile($path, $dest);
 	/**
 	 * extract the archive
 	 * @param string path
@@ -111,14 +111,14 @@ abstract class OC_Archive{
 	 * @param string mode
 	 * @return resource
 	 */
-	abstract function getStream($path,$mode);
+	abstract function getStream($path, $mode);
 	/**
 	 * add a folder and all it's content
 	 * @param string $path
 	 * @param string source
 	 * @return bool
 	 */
-	function addRecursive($path,$source) {
+	function addRecursive($path, $source) {
 		if($dh=opendir($source)) {
 			$this->addFolder($path);
 			while($file=readdir($dh)) {
@@ -126,9 +126,9 @@ abstract class OC_Archive{
 					continue;
 				}
 				if(is_dir($source.'/'.$file)) {
-					$this->addRecursive($path.'/'.$file,$source.'/'.$file);
+					$this->addRecursive($path.'/'.$file, $source.'/'.$file);
 				}else{
-					$this->addFile($path.'/'.$file,$source.'/'.$file);
+					$this->addFile($path.'/'.$file, $source.'/'.$file);
 				}
 			}
 		}

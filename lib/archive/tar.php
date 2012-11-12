@@ -14,6 +14,7 @@ class OC_Archive_TAR extends OC_Archive{
 	const BZIP=2;
 
 	private $fileList;
+	private $cachedHeaders;
 
 	/**
 	 * @var Archive_Tar tar
@@ -22,7 +23,7 @@ class OC_Archive_TAR extends OC_Archive{
 	private $path;
 
 	function __construct($source) {
-		$types=array(null,'gz','bz');
+		$types=array(null, 'gz', 'bz');
 		$this->path=$source;
 		$this->tar=new Archive_Tar($source, $types[self::getTarType($source)]);
 	}
@@ -74,6 +75,7 @@ class OC_Archive_TAR extends OC_Archive{
 		$result=$this->tar->addModify(array($tmpBase.$path), '', $tmpBase);
 		rmdir($tmpBase.$path);
 		$this->fileList=false;
+		$this->cachedHeaders=false;
 		return $result;
 	}
 	/**
@@ -82,7 +84,7 @@ class OC_Archive_TAR extends OC_Archive{
 	 * @param string source either a local file or string data
 	 * @return bool
 	 */
-	function addFile($path,$source='') {
+	function addFile($path, $source='') {
 		if($this->fileExists($path)) {
 			$this->remove($path);
 		}
@@ -95,6 +97,7 @@ class OC_Archive_TAR extends OC_Archive{
 			$result=$this->tar->addString($path, $source);
 		}
 		$this->fileList=false;
+		$this->cachedHeaders=false;
 		return $result;
 	}
 
@@ -104,7 +107,7 @@ class OC_Archive_TAR extends OC_Archive{
 	 * @param string dest
 	 * @return bool
 	 */
-	function rename($source,$dest) {
+	function rename($source, $dest) {
 		//no proper way to delete, rename entire archive, rename file and remake archive
 		$tmp=OCP\Files::tmpFolder();
 		$this->tar->extract($tmp);
@@ -115,13 +118,19 @@ class OC_Archive_TAR extends OC_Archive{
 		$this->tar=new Archive_Tar($this->path, $types[self::getTarType($this->path)]);
 		$this->tar->createModify(array($tmp), '', $tmp.'/');
 		$this->fileList=false;
+		$this->cachedHeaders=false;
 		return true;
 	}
 
 	private function getHeader($file) {
-		$headers=$this->tar->listContent();
-		foreach($headers as $header) {
-			if($file==$header['filename'] or $file.'/'==$header['filename'] or '/'.$file.'/'==$header['filename'] or '/'.$file==$header['filename']) {
+		if ( ! $this->cachedHeaders ) {
+			$this->cachedHeaders = $this->tar->listContent();
+		}
+		foreach($this->cachedHeaders as $header) {
+			if(        $file     == $header['filename']
+				or     $file.'/' == $header['filename']
+				or '/'.$file.'/' == $header['filename']
+				or '/'.$file     == $header['filename']) {
 				return $header;
 			}
 		}
@@ -180,9 +189,11 @@ class OC_Archive_TAR extends OC_Archive{
 		if($this->fileList) {
 			return $this->fileList;
 		}
-		$headers=$this->tar->listContent();
+		if ( ! $this->cachedHeaders ) {
+			$this->cachedHeaders = $this->tar->listContent();
+		}
 		$files=array();
-		foreach($headers as $header) {
+		foreach($this->cachedHeaders as $header) {
 			$files[]=$header['filename'];
 		}
 		$this->fileList=$files;
@@ -202,7 +213,7 @@ class OC_Archive_TAR extends OC_Archive{
 	 * @param string dest
 	 * @return bool
 	 */
-	function extractFile($path,$dest) {
+	function extractFile($path, $dest) {
 		$tmp=OCP\Files::tmpFolder();
 		if(!$this->fileExists($path)) {
 			return false;
@@ -265,6 +276,7 @@ class OC_Archive_TAR extends OC_Archive{
 			return false;
 		}
 		$this->fileList=false;
+		$this->cachedHeaders=false;
 		//no proper way to delete, extract entire archive, delete file and remake archive
 		$tmp=OCP\Files::tmpFolder();
 		$this->tar->extract($tmp);
@@ -281,7 +293,7 @@ class OC_Archive_TAR extends OC_Archive{
 	 * @param string mode
 	 * @return resource
 	 */
-	function getStream($path,$mode) {
+	function getStream($path, $mode) {
 		if(strrpos($path, '.')!==false) {
 			$ext=substr($path, strrpos($path, '.'));
 		}else{
@@ -296,7 +308,7 @@ class OC_Archive_TAR extends OC_Archive{
 		if($mode=='r' or $mode=='rb') {
 			return fopen($tmpFile, $mode);
 		}else{
-			OC_CloseStreamWrapper::$callBacks[$tmpFile]=array($this,'writeBack');
+			OC_CloseStreamWrapper::$callBacks[$tmpFile]=array($this, 'writeBack');
 			self::$tempFiles[$tmpFile]=$path;
 			return fopen('close://'.$tmpFile, $mode);
 		}
@@ -321,7 +333,7 @@ class OC_Archive_TAR extends OC_Archive{
 			$this->tar->_close();
 			$this->tar=null;
 		}
-		$types=array(null,'gz','bz');
+		$types=array(null, 'gz', 'bz');
 		$this->tar=new Archive_Tar($this->path, $types[self::getTarType($this->path)]);
 	}
 }

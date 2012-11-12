@@ -62,14 +62,6 @@ $(document).ready(function() {
 		return false;
 	});
 
-	// Sets the file-action buttons behaviour :
-	$('tr').live('mouseenter',function(event) {
-		FileActions.display($(this).children('td.filename'));
-	});
-	$('tr').live('mouseleave',function(event) {
-		FileActions.hide();
-	});
-
 	var lastChecked;
 
 	// Sets the file link behaviour :
@@ -178,7 +170,12 @@ $(document).ready(function() {
 		var dir=$('#dir').val()||'/';
 		$('#notification').text(t('files','generating ZIP-file, it may take some time.'));
 		$('#notification').fadeIn();
-		window.location=OC.filePath('files', 'ajax', 'download.php') + '?'+ $.param({ dir: dir, files: files });
+		// use special download URL if provided, e.g. for public shared files
+		if ( (downloadURL = document.getElementById("downloadURL")) ) {
+			window.location=downloadURL.value+"&download&files="+files;
+		} else {
+			window.location=OC.filePath('files', 'ajax', 'download.php') + '?'+ $.param({ dir: dir, files: files });
+		}
 		return false;
 	});
 
@@ -195,6 +192,7 @@ $(document).ready(function() {
 			e.preventDefault(); // prevent browser from doing anything, if file isn't dropped in dropZone
 	});
 
+	if ( document.getElementById("data-upload-form") ) {
 	$(function() {
 		$('.file_upload_start').fileupload({
 			dropZone: $('#content'), // restrict dropZone to content div
@@ -221,8 +219,11 @@ $(document).ready(function() {
 					$( '#uploadsize-message' ).dialog({
 						modal: true,
 						buttons: {
-							Close: function() {
-								$( this ).dialog( 'close' );
+							Close: {
+								text:t('files', 'Close'),
+								click:function() {
+									$( this ).dialog( 'close' );
+								}
 							}
 						}
 					});
@@ -256,7 +257,7 @@ $(document).ready(function() {
 									uploadtext.text(t('files', '1 file uploading'));
 									uploadtext.show();
 								} else {
-									uploadtext.text(currentUploads + ' ' + t('files', 'files uploading'));
+									uploadtext.text(t('files', '{count} files uploading', {count: currentUploads}));
 								}
 							}
 						}
@@ -301,7 +302,7 @@ $(document).ready(function() {
 												uploadtext.text('');
 												uploadtext.hide();
 											} else {
-												uploadtext.text(currentUploads + ' ' + t('files', 'files uploading'));
+												uploadtext.text(t('files', '{count} files uploading', {count: currentUploads}));
 											}
 										})
 								.error(function(jqXHR, textStatus, errorThrown) {
@@ -316,7 +317,7 @@ $(document).ready(function() {
 											uploadtext.text('');
 											uploadtext.hide();
 										} else {
-											uploadtext.text(currentUploads + ' ' + t('files', 'files uploading'));
+											uploadtext.text(t('files', '{count} files uploading', {count: currentUploads}));
 										}
 										$('#notification').hide();
 										$('#notification').text(t('files', 'Upload cancelled.'));
@@ -341,7 +342,7 @@ $(document).ready(function() {
 												if(size==t('files','Pending')){
 													$('tr').filterAttr('data-file',file.name).find('td.filesize').text(file.size);
 												}
-												FileList.loadingDone(file.name);
+												FileList.loadingDone(file.name, file.id);
 											} else {
 												$('#notification').text(t('files', response.data.message));
 												$('#notification').fadeIn();
@@ -371,7 +372,7 @@ $(document).ready(function() {
 								if(size==t('files','Pending')){
 									$('tr').filterAttr('data-file',file.name).find('td.filesize').text(file.size);
 								}
-								FileList.loadingDone(file.name);
+								FileList.loadingDone(file.name, file.id);
 							} else {
 								$('#notification').text(t('files', response.data.message));
 								$('#notification').fadeIn();
@@ -408,7 +409,7 @@ $(document).ready(function() {
 			}
 		})
 	});
-
+	}
 	$.assocArraySize = function(obj) {
 		// http://stackoverflow.com/a/6700/11236
 		var size = 0, key;
@@ -513,6 +514,7 @@ $(document).ready(function() {
 								FileList.addFile(name,0,date,false,hidden);
 								var tr=$('tr').filterAttr('data-file',name);
 								tr.data('mime','text/plain').data('id',result.data.id);
+								tr.attr('data-id', result.data.id);
 								getMimeIcon('text/plain',function(path){
 									tr.find('td.filename').attr('style','background-image:url('+path+')');
 								});
@@ -530,6 +532,8 @@ $(document).ready(function() {
 							if (result.status == 'success') {
 								var date=new Date();
 								FileList.addDir(name,0,date,hidden);
+								var tr=$('tr').filterAttr('data-file',name);
+								tr.attr('data-id', result.data.id);
 							} else {
 								OC.dialogs.alert(result.data.message, 'Error');
 							}
@@ -566,6 +570,7 @@ $(document).ready(function() {
 						FileList.addFile(localName,size,date,false,hidden);
 						var tr=$('tr').filterAttr('data-file',localName);
 						tr.data('mime',mime).data('id',id);
+						tr.attr('data-id', id);
 						getMimeIcon(mime,function(path){
 							tr.find('td.filename').attr('style','background-image:url('+path+')');
 						});
@@ -592,7 +597,10 @@ $(document).ready(function() {
 
 	var lastWidth = 0;
 	var breadcrumbs = [];
-	var breadcrumbsWidth = $('#navigation').get(0).offsetWidth;
+	var breadcrumbsWidth = 0;
+	if ( document.getElementById("navigation") ) {
+		breadcrumbsWidth = $('#navigation').get(0).offsetWidth;
+	}
 	var hiddenBreadcrumbs = 0;
 
 	$.each($('.crumb'), function(index, breadcrumb) {
@@ -665,7 +673,7 @@ function scanFiles(force,dir){
 	var scannerEventSource=new OC.EventSource(OC.filePath('files','ajax','scan.php'),{force:force,dir:dir});
 	scanFiles.cancel=scannerEventSource.close.bind(scannerEventSource);
 	scannerEventSource.listen('scanning',function(data){
-		$('#scan-count').text(data.count + ' ' + t('files', 'files scanned'));
+		$('#scan-count').text(t('files', '{count} files scanned', {count: data.count}));
 		$('#scan-current').text(data.file+'/');
 	});
 	scannerEventSource.listen('success',function(success){
@@ -717,7 +725,7 @@ var folderDropOptions={
 }
 var crumbDropOptions={
 	drop: function( event, ui ) {
-		var file=ui.draggable.text().trim();
+		var file=ui.draggable.parent().data('file');
 		var target=$(this).data('dir');
 		var dir=$('#dir').val();
 		while(dir.substr(0,1)=='/'){//remove extra leading /'s
@@ -775,9 +783,9 @@ function procesSelection(){
 		var selection='';
 		if(selectedFolders.length>0){
 			if(selectedFolders.length==1){
-				selection+='1 '+t('files','folder');
+				selection+=t('files','1 folder');
 			}else{
-				selection+=selectedFolders.length+' '+t('files','folders');
+				selection+=t('files','{count} folders',{count: selectedFolders.length});
 			}
 			if(selectedFiles.length>0){
 				selection+=' & ';
@@ -785,9 +793,9 @@ function procesSelection(){
 		}
 		if(selectedFiles.length>0){
 			if(selectedFiles.length==1){
-				selection+='1 '+t('files','file');
+				selection+=t('files','1 file');
 			}else{
-				selection+=selectedFiles.length+' '+t('files','files');
+				selection+=t('files','{count} files',{count: selectedFiles.length});
 			}
 		}
 		$('#headerName>span.name').text(selection);
@@ -822,28 +830,6 @@ function getSelectedFiles(property){
 		}
 	});
 	return files;
-}
-
-function relative_modified_date(timestamp) {
-	var timediff = Math.round((new Date()).getTime() / 1000) - timestamp;
-	var diffminutes = Math.round(timediff/60);
-	var diffhours = Math.round(diffminutes/60);
-	var diffdays = Math.round(diffhours/24);
-	var diffmonths = Math.round(diffdays/31);
-	var diffyears = Math.round(diffdays/365);
-	if(timediff < 60) { return t('files','seconds ago'); }
-	else if(timediff < 120) { return '1 '+t('files','minute ago'); }
-	else if(timediff < 3600) { return diffminutes+' '+t('files','minutes ago'); }
-	//else if($timediff < 7200) { return '1 hour ago'; }
-	//else if($timediff < 86400) { return $diffhours.' hours ago'; }
-	else if(timediff < 86400) { return t('files','today'); }
-	else if(timediff < 172800) { return t('files','yesterday'); }
-	else if(timediff < 2678400) { return diffdays+' '+t('files','days ago'); }
-	else if(timediff < 5184000) { return t('files','last month'); }
-	//else if($timediff < 31556926) { return $diffmonths.' months ago'; }
-	else if(timediff < 31556926) { return t('files','months ago'); }
-	else if(timediff < 63113852) { return t('files','last year'); }
-	else { return diffyears+' '+t('files','years ago'); }
 }
 
 function getMimeIcon(mime, ready){
