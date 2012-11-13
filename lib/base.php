@@ -119,25 +119,26 @@ class OC{
 
 	public static function initPaths() {
 		// calculate the root directories
-		OC::$SERVERROOT=str_replace("\\", '/', substr(__DIR__, 0, -4));
-		OC::$SUBURI= str_replace("\\", "/", substr(realpath($_SERVER["SCRIPT_FILENAME"]), strlen(OC::$SERVERROOT)));
-		$scriptName=$_SERVER["SCRIPT_NAME"];
-		if(substr($scriptName, -1)=='/') {
-			$scriptName.='index.php';
-			//make sure suburi follows the same rules as scriptName
-			if(substr(OC::$SUBURI, -9)!='index.php') {
-				if(substr(OC::$SUBURI, -1)!='/') {
-					OC::$SUBURI=OC::$SUBURI.'/';
-				}
-				OC::$SUBURI=OC::$SUBURI.'index.php';
-			}
+		OC::$SERVERROOT=str_replace("\\", '/', substr(__FILE__, 0, -13));
+		$documentRoot=realpath($_SERVER['DOCUMENT_ROOT']);
+		$scriptName = $_SERVER["SCRIPT_NAME"];
+		$scriptFileName = $_SERVER["SCRIPT_FILENAME"];
+		if (isset($_SERVER["PATH_INFO"])) {
+			$pathInfo = $_SERVER["PATH_INFO"];
 		}
-
-		OC::$WEBROOT=substr($scriptName, 0, strlen($scriptName)-strlen(OC::$SUBURI));
-
-		if(OC::$WEBROOT!='' and OC::$WEBROOT[0]!=='/') {
-			OC::$WEBROOT='/'.OC::$WEBROOT;
+		else {
+			$pathInfo = "";
 		}
+		$subDir = "";
+		$alias = "";
+		if (strcmp($documentRoot,OC::$SERVERROOT)) {
+			$subDir=substr(OC::$SERVERROOT,strlen($documentRoot));
+		}
+		if(strcmp(OC::$SERVERROOT.$scriptName, $scriptFileName)) {
+		        $alias=substr($scriptName, 0, strlen(OC::$SERVERROOT) - strlen($subDir) - strlen($scriptFileName));
+		}
+		OC::$WEBROOT=$alias.$subDir;
+		OC::$SUBURI=substr($scriptName, 1 + strlen($alias)).$pathInfo;
 
 		// ensure we can find OC_Config
 		set_include_path(
