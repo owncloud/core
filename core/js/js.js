@@ -282,6 +282,18 @@ var OC={
 		}
 	}
 };
+
+OCConsole = function() {
+}
+
+OCConsole.prototype.log = (oc_debug === true && window.console) ? console.log : function() {};
+OCConsole.prototype.info = (oc_debug === true && window.console && window.console.info) ? console.info : function() {};
+OCConsole.prototype.warn = (oc_debug === true && window.console && window.console.warn) ? console.warn : function() {};
+OCConsole.prototype.error = (oc_debug === true && window.console && window.console.error) ? console.error : function() {};
+OCConsole.prototype.assert = (oc_debug === true && window.console && window.console.assert) ? console.assert : function() {};
+
+OC.console = new OCConsole();
+
 OC.search.customResults={};
 OC.search.currentResult=-1;
 OC.search.lastQuery='';
