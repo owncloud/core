@@ -411,6 +411,11 @@ class OC{
 			$_SESSION['user_id'] = '';
 		}
 
+		if( $locale = OC_Config::getValue('locale', false) ){
+			setlocale(LC_ALL, $locale);
+			putenv('LC_ALL='.$locale);
+		}
+
 		OC_User::useBackend(new OC_User_Database());
 		OC_Group::useBackend(new OC_Group_Database());
 
