@@ -162,7 +162,11 @@ abstract class Access {
 		if($dn) {
 			return $dn;
 		}
-
+		//There is no cached entry for the user; search the LDAP server
+		$dn = $this->getUserDn($name);
+		if($dn) {
+			return $dn;
+		}
 		return false;
 	}
 
@@ -185,6 +189,25 @@ abstract class Access {
 
 		$record = $query->execute(array($name))->fetchOne();
 		return $record;
+	}
+
+	/**
+	 * @brief returns the LDAP DN corresponding to the giver user identifier
+	 * @param $uid the searched user's identifier
+	 * @returns the LDAP DN on success, otherwise false
+	 * 
+	 * search the LDAP directory server for the entry corresponding to the given
+	 * user identifier
+	 */
+	public function getUserDN($uid) {
+		//find out dn of the user name
+		$filter = \OCP\Util::mb_str_replace('%uid', $uid, $this->connection->ldapLoginFilter, 'UTF-8');
+		$ldap_users = $this->fetchListOfUsers($filter, 'dn');
+		if(count($ldap_users) == 1) {
+			$dn = $ldap_users[0];
+			return $dn;
+		}
+		return false;
 	}
 
 	/**
