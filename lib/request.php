@@ -42,6 +42,8 @@ class OC_Request {
 	public static function serverProtocol() {
 		if (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
 			$proto = strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']);
+		}elseif(self::serverHost() == OC_Config::getValue('sslproxyhost', '')) {
+			$proto = 'https';
 		}else{
 			if(isset($_SERVER['HTTPS']) and !empty($_SERVER['HTTPS']) and ($_SERVER['HTTPS']!='off')) {
 				$proto = 'https';
@@ -51,6 +53,39 @@ class OC_Request {
 		}
 		return $proto;
 	}
+
+	/**
+	 * @brief Returns the request uri
+	 * @returns the request uri
+	 *
+	 * Returns the request uri, even if the website uses one or more
+	 * reverse proxies
+	 */
+	public static function requestUri() {
+		$uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
+		if(self::serverProtocol()=='https' and self::serverHost() == OC_Config::getValue('sslproxyhost', '') 
+		   and OC_Config::getValue('sslproxyprefix', '')<>''){
+			$uri = '/'.OC_Config::getValue('sslproxyprefix', '').$uri;
+		}
+		return $uri;
+	}
+
+	/**
+	 * @brief Returns the script name
+	 * @returns the script name
+	 *
+	 * Returns the script name, even if the website uses one or more
+	 * reverse proxies
+	 */
+	public static function scriptName() {
+		$name = $_SERVER['SCRIPT_NAME'];
+		if(self::serverProtocol()=='https' and self::serverHost() == OC_Config::getValue('sslproxyhost', '') 
+		   and OC_Config::getValue('sslproxyprefix', '')<>''){
+			$name = '/'.OC_Config::getValue('sslproxyprefix', '').$name;
+		}
+		return $name;
+	}
+
 
 	/**
 	 * @brief get Path info from request
