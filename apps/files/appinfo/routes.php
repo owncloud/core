@@ -6,6 +6,10 @@
  * See the COPYING-README file.
  */
 
-$this->create('download', 'download{file}')
-	->requirements(array('file' => '.*'))
-	->actionInclude('files/download.php');
+$this->create('download', 'download')
+	->requirements(array('dir' => '.*','files' => '.*'))
+	->actionInclude('files/ajax/download.php');
+
+$this->create('files_browse', 'browse')
+	->requirements(array('dir' => '.*'))
+	->actionInclude('files/index.php');

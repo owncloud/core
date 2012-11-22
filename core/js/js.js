@@ -73,12 +73,12 @@ function escapeHTML(s) {
 
 /**
 * Get the path to download a file
-* @param file The filename
+* @param files The filename(s)
 * @param dir The directory the file is in - e.g. $('#dir').val()
 * @return string
 */
-function fileDownloadPath(dir, file) {
-	return OC.filePath('files', 'ajax', 'download.php')+'?files='+encodeURIComponent(file)+'&dir='+encodeURIComponent(dir);
+function fileDownloadPath(dir, files) {
+		window.location = OC.Router.generate('download', {files: files, dir: dir} );
 }
 
 var OC={

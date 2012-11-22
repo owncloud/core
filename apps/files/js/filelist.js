@@ -15,7 +15,8 @@ var FileList={
 			extension=false;
 		}
 		html+='<td class="filename" style="background-image:url('+img+')"><input type="checkbox" />';
-		html+='<a class="name" href="download.php?file='+$('#dir').val().replace(/</, '&lt;').replace(/>/, '&gt;')+'/'+escapeHTML(name)+'"><span class="nametext">'+escapeHTML(basename);
+		//html+='<a class="name" href="download.php?file='+$('#dir').val().replace(/</, '&lt;').replace(/>/, '&gt;')+'/'+escapeHTML(name)+'"><span class="nametext">'+escapeHTML(basename);
+		html+='<a class="name" href="'+OC.Router.generate('download', {files: name, dir: $('#dir').val() })+'"><span class="nametext">'+escapeHTML(basename);
 		if(extension){
 			html+='<span class="extension">'+escapeHTML(extension)+'</span>';
 		}
@@ -169,6 +170,7 @@ var FileList={
 			tr.attr('data-file', newname);
 			var path = td.children('a.name').attr('href');
 			td.children('a.name').attr('href', path.replace(encodeURIComponent(name), encodeURIComponent(newname)));
+			//TODO use route
 			if (newname.indexOf('.') > 0 && tr.data('type') != 'dir') {
 				var basename=newname.substr(0,newname.lastIndexOf('.'));
 			} else {
@@ -223,6 +225,7 @@ var FileList={
 		td.children('a.name .span').text(newName);
 		var path = td.children('a.name').attr('href');
 		td.children('a.name').attr('href', path.replace(encodeURIComponent(oldName), encodeURIComponent(newName)));
+		//TODO use route
 		if (newName.indexOf('.') > 0) {
 			var basename = newName.substr(0, newName.lastIndexOf('.'));
 		} else {
