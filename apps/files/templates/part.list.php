@@ -19,14 +19,14 @@
 			$directory = str_replace('+', '%20', urlencode($file['directory']));
 			$directory = str_replace('%2F', '/', $directory); ?>
 			<tr data-id="<?php echo $file['id']; ?>" data-file="<?php echo $name;?>" data-type="<?php echo ($file['type'] == 'dir')?'dir':'file'?>" data-mime="<?php echo $file['mimetype']?>" data-size='<?php echo $file['size'];?>' data-permissions='<?php echo $file['permissions']; ?>'>
-				<td class="filename svg" style="background-image:url(<?php if($file['type'] == 'dir') echo OCP\mimetype_icon('dir'); else echo OCP\mimetype_icon($file['mimetype']); ?>)">
+				<td class="filename svg" style="background-image:url(<?php echo $file['type'] == 'dir' ? OCP\mimetype_icon('dir') : OCP\mimetype_icon($file['mimetype']); ?>)">
 					<?php if(!isset($_['readonly']) || !$_['readonly']) { ?><input type="checkbox" /><?php } ?>
 					<a class="name" href="<?php if($file['type'] == 'dir') echo $_['baseURL'].$directory.'/'.$name; else echo $_['downloadURL'].$directory.'/'.$name; ?>" title="">
-					<span class="nametext">
+					<span class="nametext" title="<?php echo htmlspecialchars($file['type'] == 'dir' ? $file['name'] : $file['basename']); ?>">
 						<?php if($file['type'] == 'dir'):?>
-							<?php echo htmlspecialchars($file['name']);?>
+							<?php echo htmlspecialchars($file['name']); ?>
 						<?php else:?>
-							<?php echo htmlspecialchars($file['basename']);?><span class='extension'><?php echo $file['extension'];?></span>
+							<?php echo htmlspecialchars(strlen($file['basename']) >= 100 ? substr($file['basename'], 0, 98).' …' : $file['basename']);?><span class='extension'><?php echo $file['extension'];?></span>
 						<?php endif;?>
 					</span>
 					<?php if($file['type'] == 'dir'):?>

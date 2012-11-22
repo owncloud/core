@@ -42,10 +42,10 @@
 	<div id="emptyfolder"><?php echo $l->t('Nothing in here. Upload something!')?></div>
 <?php endif; ?>
 
-<table>
+<table id="fileList">
 	<thead>
 		<tr>
-			<th id='headerName'>
+			<th id="headerName">
 				<input type="checkbox" id="select_all" />
 				<span class='name'><?php echo $l->t( 'Name' ); ?></span>
 				<span class='selectedActions'>
@@ -69,7 +69,7 @@
 			</th>
 		</tr>
 	</thead>
-	<tbody id="fileList">
+	<tbody>
 		<?php echo($_['fileList']); ?>
 	</tbody>
 </table>
