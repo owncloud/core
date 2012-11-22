@@ -91,6 +91,26 @@ var OC={
 	appswebroots:oc_appswebroots,
 	currentUser:(typeof oc_current_user!=='undefined')?oc_current_user:false,
 	coreApps:['', 'admin','log','search','settings','core','3rdparty'],
+
+	/**
+	 * Get a constructed url with a reference to a file in an app
+	 * and add eventualy some datas in parameters
+	 * @see filePath
+	 *
+	 * @param app the id of the app
+	 * @param type the type of the file to link to (e.g. css,img,ajax.template)
+	 * @param file the filename
+	 */
+	buildUrl:function(app,type,file,data){
+		var fileUrl = OC.filePath(app,type,file);
+		var separator = '&';
+
+		if(fileUrl.indexOf('?') === -1) {
+			separator = '?';
+		}
+		return fileUrl + separator + jQuery.param(data);
+	},
+	
 	/**
 	 * get an absolute url to a file in an appen
 	 * @param app the id of the app the file belongs to
