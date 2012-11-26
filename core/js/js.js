@@ -78,7 +78,7 @@ function escapeHTML(s) {
 * @return string
 */
 function fileDownloadPath(dir, files) {
-		window.location = OC.Router.generate('download', {files: files, dir: dir} );
+		return OC.Router.generate('download', {files: files, dir: dir});
 }
 
 var OC={
