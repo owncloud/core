@@ -242,28 +242,22 @@ class Storage {
 	 * @brief Erase a file's versions which exceed the set quota
 	 */
 	public static function expire($filename) {
-		if(\OCP\Config::getSystemValue('files_versions', Storage::DEFAULTENABLED)=='true') {
-			list($uid, $filename) = self::getUidAndFilename($filename);
-			$versions_fileview = new \OC_FilesystemView('/'.$uid.'/files_versions');
-
-			$versionsName=\OCP\Config::getSystemValue('datadirectory').$versions_fileview->getAbsolutePath($filename);
-
-			// check for old versions
-			$matches = glob( $versionsName.'.v*' );
-
-			if( count( $matches ) > \OCP\Config::getSystemValue( 'files_versionmaxversions', Storage::DEFAULTMAXVERSIONS ) ) {
-
-				$numberToDelete = count($matches) - \OCP\Config::getSystemValue( 'files_versionmaxversions', Storage::DEFAULTMAXVERSIONS );
-
-				// delete old versions of a file
-				$deleteItems = array_slice( $matches, 0, $numberToDelete );
-
-				foreach( $deleteItems as $de ) {
-
-					unlink( $versionsName.'.v'.$de );
-
-				}
+		$versions_fileview = \OCP\Files::getStorage('files_versions');
+		$abs_path = \OCP\Config::getSystemValue('datadirectory').$versions_fileview->getAbsolutePath('').$filename.'.v';
+		$limitType = \OCP\Config::getAppValue('files_versions', 'limitType', 'number');
+		
+		if ( $limitType == 'number' && ($max = \OCP\Config::getAppValue('files_versions', 'max_number')) != '0' ) {
+			$versions = Storage::getVersions($filename);
+			$numOfVersions = count($versions);
+			$i = 0;
+			while ($numOfVersions > $max) {
+				unlink($abs_path . $versions[$i]['version']);
+				$i++;
+				$numOfVersions--;
 			}
+		} else if ( $limitType == 'size' && ($max = \OCP\Config::getAppValue('files_versions', 'max_size')) != '0' ) {
+			null;
+			//TODO: unlink old version if max size is exceeded
 		}
 	}
 
