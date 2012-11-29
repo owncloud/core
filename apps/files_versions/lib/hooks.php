@@ -24,7 +24,7 @@ class Hooks {
 			$versions = new Storage( new \OC_FilesystemView('') );
 
 			$path = $params[\OC_Filesystem::signal_param_path];
-
+			
 			if($path<>'') $versions->store( $path );
 
 		}
