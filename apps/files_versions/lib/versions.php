@@ -31,7 +31,7 @@ class Storage {
 
 	const DEFAULTENABLED=true;
 	const DEFAULTBLACKLIST='avi mp3 mpg mp4 ctmp';
-	const DEFAULTMAXFILESIZE=1048576; // 10MB
+	const DEFAULTMAXFILESIZE=10485760; // 10MB
 	const DEFAULTMININTERVAL=60; // 1 min
 	const DEFAULTMAXVERSIONS=50;
 
@@ -191,19 +191,22 @@ class Storage {
 
 			$files_view = new \OC_FilesystemView('/'.\OCP\User::getUser().'/files');
 			$local_file = $files_view->getLocalFile($filename);
-			foreach( $matches as $ma ) {
+			$size = 0;
+			foreach( array_reverse($matches) as $ma ) {
 
 				$i++;
 				$versions[$i]['cur'] = 0;
 				$parts = explode( '.v', $ma );
 				$versions[$i]['version'] = ( end( $parts ) );
-
+				
+				$versions_fileview = \OCP\Files::getStorage('files_versions');
+				$size += $versions_fileview->filesize($filename.'.v'.$versions[$i]['version']);
+				$versions[$i]['size'] = $size;
+				
 				// if file with modified date exists, flag it in array as currently enabled version
 				( \md5_file( $ma ) == \md5_file( $local_file ) ? $versions[$i]['fileMatch'] = 1 : $versions[$i]['fileMatch'] = 0 );
 
 			}
-
-			$versions = array_reverse( $versions );
 
 			foreach( $versions as $key => $value ) {
 
@@ -246,7 +249,7 @@ class Storage {
 		$abs_path = \OCP\Config::getSystemValue('datadirectory').$versions_fileview->getAbsolutePath('').$filename.'.v';
 		$limitType = \OCP\Config::getAppValue('files_versions', 'limitType', 'number');
 		
-		if ( $limitType == 'number' && ($max = \OCP\Config::getAppValue('files_versions', 'max_number')) != '0' ) {
+		if ( $limitType == 'number' && ($max = \OCP\Config::getAppValue('files_versions', 'max_number', '0')) != '0' ) {
 			$versions = Storage::getVersions($filename);
 			$numOfVersions = count($versions);
 			$i = 0;
@@ -255,9 +258,15 @@ class Storage {
 				$i++;
 				$numOfVersions--;
 			}
-		} else if ( $limitType == 'size' && ($max = \OCP\Config::getAppValue('files_versions', 'max_size')) != '0' ) {
-			null;
-			//TODO: unlink old version if max size is exceeded
+		} else if ( $limitType == 'size' && ($max = \OCP\Config::getAppValue('files_versions', 'max_size', '0')) != '0' ) {
+			$versions = Storage::getVersions($filename);
+			$i = 0;
+			$numOfVersions = count($versions);
+			while ($numOfVersions > 0 && $versions[$i]['size'] > $max) {
+				unlink($abs_path . $versions[$i]['version']);
+				$i++;
+				$numOfVersions--;
+			}
 		}
 	}
 
