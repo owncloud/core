@@ -189,7 +189,7 @@ class Storage {
 
 			$i = 0;
 
-			$files_view = new \OC_FilesystemView('/'.\OCP\User::getUser().'/files');
+			$files_view = new \OC_FilesystemView('/'.$uid.'/files');
 			$local_file = $files_view->getLocalFile($filename);
 			$size = 0;
 			foreach( array_reverse($matches) as $ma ) {
