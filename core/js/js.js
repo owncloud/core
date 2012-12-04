@@ -523,6 +523,11 @@ $(document).ready(function(){
 	});
 	$(window).trigger('resize');
 
+     //PLACEHOLDER INIT
+     $('input[placeholder], textarea[placeholder]').placeholder();
+
+
+
 	if(!SVGSupport()){ //replace all svg images with png images for browser that dont support svg
 		replaceSVG();
 	}else{
