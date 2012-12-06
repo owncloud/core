@@ -54,7 +54,7 @@ foreach( OC_Files::getdirectorycontent( $dir ) as $i ) {
 		}
 		$i['route'] = OC::getRouter()->generate('download', array('dir'=>$i['directory'], 'files' => $i['name']));
 	} else {
-		$i['route'] = OC::getRouter()->generate('files_browse', array('dir'=>$i['directory'] . $i['name']));
+		$i['route'] = OC::getRouter()->generate('files_browse', array('dir'=>$i['directory'] . '/' . $i['name']));
 	}
 	if ($i['directory'] == '/') {
 		$i['directory'] = '';
