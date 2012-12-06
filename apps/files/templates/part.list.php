@@ -20,21 +20,18 @@
 			$directory = str_replace('+', '%20', urlencode($file['directory']));
 			$directory = str_replace('%2F', '/', $directory); ?>
 			<tr data-id="<?php echo $file['id']; ?>"
-				data-file="<?php echo $name;?>"
+				data-file="<?php echo $file['name']?>"
 				data-type="<?php echo ($file['type'] == 'dir')?'dir':'file'?>"
 				data-mime="<?php echo $file['mimetype']?>"
 				data-size='<?php echo $file['size'];?>'
 				data-permissions='<?php echo $file['permissions']; ?>'>
 				<td class="filename svg"
-				<?php if($file['type'] == 'dir'): ?>
-					style="background-image:url(<?php echo OCP\mimetype_icon('dir'); ?>)"
-				<?php else: ?>
-					style="background-image:url(<?php echo OCP\mimetype_icon($file['mimetype']); ?>)"
-				<?php endif; ?>
-					>
+					style="background-image:url(<?php echo OCP\mimetype_icon($file['mimetype']); ?>)" >
 				<?php if(!isset($_['readonly']) || !$_['readonly']): ?><input type="checkbox" /><?php endif; ?>
-				<?php if($file['type'] == 'dir'): ?>
-					<a class="name" href="<?php $_['baseURL'].$directory.'/'.$name; ?>)" title="">
+				<?php if( isset($file['route'])): ?>
+					<a class="name" href="<?php echo $file['route'] ?>" title="">
+				<?php elseif($file['type'] == 'dir'): ?>
+					<a class="name" href="<?php $_['baseURL'].$directory.'/'.$name; ?>" title="">
 				<?php else: ?>
 					<a class="name" href="<?php echo $_['downloadURL'].$directory.'/'.$name; ?>" title="">
 				<?php endif; ?>
