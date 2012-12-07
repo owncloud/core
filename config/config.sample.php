@@ -89,6 +89,9 @@ $CONFIG = array(
 /* Check if ownCloud is up to date */
 "updatechecker" => true,
 
+/* Set the locale environment */
+"locale" => 'en_US.UTF-8',
+
 /* Place to log to, can be owncloud and syslog (owncloud is log menu item in admin menu) */
 "log_type" => "owncloud",
 
