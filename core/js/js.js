@@ -14,6 +14,13 @@ if (oc_debug !== true) {
 	}
 }
 
+$(document).keydown(function(e){
+	if(e.keyCode == 70 && (e.ctrlKey || e.metaKey)) {
+		$('#searchbox').focus();
+		e.preventDefault();
+	}
+});
+
 /**
  * translate a string
  * @param app the id of the app for which to translate the string
