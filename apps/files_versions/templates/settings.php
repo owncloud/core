@@ -1,6 +1,10 @@
 
 <script>
+<<<<<<< HEAD
 var version_limit_ = "<?php echo $_['versioningLimitTime']; ?>";
+=======
+var version_limit_number = "<?php echo $_['versioningLimitNumber']; ?>";
+>>>>>>> e0c74a8b99885653bcf0dbe446e1a63f52297694
 var version_limit_size =  "<?php echo $_['versioningLimitSize']; ?>";
 </script>
 

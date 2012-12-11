@@ -247,6 +247,7 @@ class Storage {
 	public static function expire($filename) {
 		$versions_fileview = \OCP\Files::getStorage('files_versions');
 		$abs_path = \OCP\Config::getSystemValue('datadirectory').$versions_fileview->getAbsolutePath('').$filename.'.v';
+
 		$limitType = \OCP\Config::getAppValue('files_versions', 'limitType', 'time');
 		
 		if ( $limitType == 'time' && ($max = \OCP\Config::getAppValue('files_versions', 'max_time', '0')) != '0' ) {
