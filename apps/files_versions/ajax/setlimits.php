@@ -9,6 +9,6 @@ if ( !isset( $_POST['value'] ) ) {
 	if ( $_POST['type'] == 'size' ) {
 		OCP\Config::setAppValue('files_versions', 'max_size', OCP\Util::computerFileSize($_POST['value']));
 	} else {
-		OCP\Config::setAppValue('files_versions', 'max_number', $_POST['value']);
+		OCP\Config::setAppValue('files_versions', 'max_time', $_POST['value']);
 	}
 }

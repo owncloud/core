@@ -1,6 +1,6 @@
 
 <script>
-var version_limit_number = "<?php echo $_['versioningLimitNumber']; ?>";
+var version_limit_ = "<?php echo $_['versioningLimitTime']; ?>";
 var version_limit_size =  "<?php echo $_['versioningLimitSize']; ?>";
 </script>
 
@@ -13,7 +13,7 @@ var version_limit_size =  "<?php echo $_['versioningLimitSize']; ?>";
 			
 			<?php echo $l->t('Limit'); ?>: <select name='versionLimitType' id='versionLimitType' <?php if (!$_['versioningEnabled']) echo ' disabled="disabled"'; ?> >
 					<option value='size' <?php if( $_['versioningLimitType'] == "size") echo 'selected="selected"' ?> ><?php echo $l->t('Maximal size of versions per file'); ?></option>
-					<option value='number' <?php if( $_['versioningLimitType'] == "number") echo 'selected="selected"' ?>><?php echo $l->t('Maximal number of versions per file'); ?></option>
-				</select> <input name="maxVersions" id="maxVersions" style="width:90px;" value='<?php if ( $_['versioningLimitType'] == 'size') echo $_['versioningLimitSize']; else echo $_['versioningLimitNumber']; ?>' title="<?php echo $l->t( '0 is unlimited' ); ?>"<?php if (!$_['versioningEnabled']) echo ' disabled="disabled"'; ?> />
+					<option value='time' <?php if( $_['versioningLimitType'] == "time") echo 'selected="selected"' ?>><?php echo $l->t('Storage time of versions (in days)'); ?></option>
+				</select> <input name="maxVersions" id="maxVersions" style="width:90px;" value='<?php if ( $_['versioningLimitType'] == 'size') echo $_['versioningLimitSize']; else echo $_['versioningLimitTime']; ?>' title="<?php echo $l->t( '0 is unlimited' ); ?>"<?php if (!$_['versioningEnabled']) echo ' disabled="disabled"'; ?> />
         </fieldset>
 </form>

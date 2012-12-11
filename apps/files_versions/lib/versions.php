@@ -32,7 +32,7 @@ class Storage {
 	const DEFAULTENABLED=true;
 	const DEFAULTBLACKLIST='avi mp3 mpg mp4 ctmp';
 	const DEFAULTMAXFILESIZE=10485760; // 10MB
-	const DEFAULTMININTERVAL=60; // 1 min
+	const DEFAULTMININTERVAL=1; // 1 min
 	const DEFAULTMAXVERSIONS=50;
 
 	private static function getUidAndFilename($filename)
@@ -247,16 +247,19 @@ class Storage {
 	public static function expire($filename) {
 		$versions_fileview = \OCP\Files::getStorage('files_versions');
 		$abs_path = \OCP\Config::getSystemValue('datadirectory').$versions_fileview->getAbsolutePath('').$filename.'.v';
-		$limitType = \OCP\Config::getAppValue('files_versions', 'limitType', 'number');
+		$limitType = \OCP\Config::getAppValue('files_versions', 'limitType', 'time');
 		
-		if ( $limitType == 'number' && ($max = \OCP\Config::getAppValue('files_versions', 'max_number', '0')) != '0' ) {
+		if ( $limitType == 'time' && ($max = \OCP\Config::getAppValue('files_versions', 'max_time', '0')) != '0' ) {
+			$max = $max * 86400; // convert limit from minutes to seconds
 			$versions = Storage::getVersions($filename);
-			$numOfVersions = count($versions);
-			$i = 0;
-			while ($numOfVersions > $max) {
-				unlink($abs_path . $versions[$i]['version']);
-				$i++;
-				$numOfVersions--;
+			$time = time();
+			$limit = time()- $max;
+			foreach ($versions as $v) {
+				if ($v['version'] < $limit) {
+					unlink($abs_path . $v['version']);
+				} else {
+					break;
+				}
 			}
 		} else if ( $limitType == 'size' && ($max = \OCP\Config::getAppValue('files_versions', 'max_size', '0')) != '0' ) {
 			$versions = Storage::getVersions($filename);

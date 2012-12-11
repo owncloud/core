@@ -14,11 +14,11 @@ $(document).ready(function(){
 	
 	$('#versionLimitType').bind('change', function() {
 		if ( $("select#versionLimitType").val() == "size" ) {
-			version_limit_number = $('#maxVersions').val();
+			version_limit_time = $('#maxVersions').val();
 			$('#maxVersions').val(version_limit_size);
 		} else {
 			version_limit_size =  $('#maxVersions').val();
-			$('#maxVersions').val(version_limit_number);
+			$('#maxVersions').val(version_limit_time);
 		}
 		$.post(OC.filePath('files_versions','ajax','setlimits.php'), {type:$("select#versionLimitType").val()});
 	});
@@ -27,7 +27,7 @@ $(document).ready(function(){
 		if ( $("select#versionLimitType").val() == "size" ) {
 			version_limit_size =  $('#maxVersions').val();
 		} else {
-			version_limit_number = $('#maxVersions').val();
+			version_limit_time = $('#maxVersions').val();
 		}
 		$.post(OC.filePath('files_versions','ajax','setlimits.php'), {value:$('#maxVersions').val(), type:$("select#versionLimitType").val()});
 	});
