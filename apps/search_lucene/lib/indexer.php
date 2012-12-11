@@ -9,164 +9,164 @@ require_once 'pdf2text.php';
  * @author Jörn Dreyer <jfd@butonic.de>
  */
 class OC_Search_Lucene_Indexer {
-    
-    /**
-     * index a file
-     * 
-     * @author Jörn Dreyer <jfd@butonic.de>
-     * 
-     * @param string $path the path of the file
-     * 
-     * @return void
-     */
-    static public function indexFile($path = '') {
-        
-        if ( $path === '' ) {
-            //ignore the empty path element
-            return;
-        }
-        
-        $root=OC_Filesystem::getRoot();
-        $pk = md5($root.$path);
-        
-        // the cache already knows mime and other basic stuff
-        $data = OC_FileCache::get($path,$root);
-        if (isset($data['mimetype'])) {
-            $mimetype = $data['mimetype'];
-            if ('text/html' === $mimetype) {
-                $doc = Zend_Search_Lucene_Document_Html::loadHTML(OC_Filesystem::file_get_contents($path));
-            } else if ('application/msword' === $mimetype) {
-                // FIXME uses ZipArchive ... make compatible with OC_Filesystem
-                //$doc = Zend_Search_Lucene_Document_Docx::loadDocxFile(OC_Filesystem::file_get_contents($path));
-                
-                //no special treatment yet
-                $doc = new Zend_Search_Lucene_Document();
-            } else {
-                $doc = new Zend_Search_Lucene_Document();
-            }
 
-            // store fscacheid as unique id to lookup by when deleting
-            $doc->addField(Zend_Search_Lucene_Field::Keyword('pk', $pk));
+	/**
+	 * index a file
+	 * 
+	 * @author Jörn Dreyer <jfd@butonic.de>
+	 * 
+	 * @param string $path the path of the file
+	 * 
+	 * @return void
+	 */
+	static public function indexFile($path = '') {
 
-            // Store document URL to identify it in the search results
-            $doc->addField(Zend_Search_Lucene_Field::Text('path', $path));
+		if ( $path === '' ) {
+			//ignore the empty path element
+			return;
+		}
 
-            $doc->addField(Zend_Search_Lucene_Field::unIndexed('size', $data['size']));
+		$root=OC_Filesystem::getRoot();
+		$pk = md5($root.$path);
 
-            $doc->addField(Zend_Search_Lucene_Field::unIndexed('mimetype', $mimetype));
+		// the cache already knows mime and other basic stuff
+		$data = OC_FileCache::get($path, $root);
+		if (isset($data['mimetype'])) {
+			$mimetype = $data['mimetype'];
+			if ('text/html' === $mimetype) {
+				$doc = Zend_Search_Lucene_Document_Html::loadHTML(OC_Filesystem::file_get_contents($path));
+			} else if ('application/msword' === $mimetype) {
+				// FIXME uses ZipArchive ... make compatible with OC_Filesystem
+				//$doc = Zend_Search_Lucene_Document_Docx::loadDocxFile(OC_Filesystem::file_get_contents($path));
 
-            self::extractMetadata($doc, $path, $mimetype);
+				//no special treatment yet
+				$doc = new Zend_Search_Lucene_Document();
+			} else {
+				$doc = new Zend_Search_Lucene_Document();
+			}
 
-            OC_Search_Lucene::updateFile($doc, $path);
-        } else {
-            OC_Log::write('search_lucene',
-                    'need mimetype for content extraction',
-                    OC_Log::ERROR);
-        }
-    }
-    
-    
-    /**
-     * extract the metadata from a file
-     * 
-     * uses getid3 to extract metadata.
-     * if possible also adds content (currently only for plain text files)
-     * hint: use OC_FileCache::getCached($path) to get metadata for the last param
-     *  
-     * @author Jörn Dreyer <jfd@butonic.de>
-     * 
-     * @param Zend_Search_Lucene_Document $doc      to add the metadata to
-     * @param string                      $path     path of the file to extract metadata from
-     * @param string                      $mimetype depending on the mimetype different extractions are performed
-     * 
-     * @return void
-     */
-    private static function extractMetadata (Zend_Search_Lucene_Document $doc, $path, $mimetype) {
-              
-	$file=OC_Filesystem::getLocalFile($path);
-        $getID3=@new getID3();
-	$getID3->encoding='UTF-8';
-        $data=$getID3->analyze($file);
-        
-        // TODO index meta information from media files
-        
-        //show me what you got
-        /*foreach ($data as $key => $value) {
-            OC_Log::write('search_lucene',
-                        'getid3 extracted '.$key.': '.$value,
-                        OC_Log::DEBUG);
-            if (is_array($value)) {
-                foreach ($value as $k => $v) {
-                    OC_Log::write('search_lucene',
-                            '  ' . $value .'-' .$k.': '.$v,
-                            OC_Log::DEBUG);
-                }
-            }
-        }*/
-        
-        // filename _should_ always work, so log if it does not
-        if ( isset($data['filename']) ) {
-            $doc->addField(Zend_Search_Lucene_Field::Text('filename', $data['filename']));
-        } else {
-            OC_Log::write('search_lucene',
-                        'failed to extract meta information for '.$path.': '.$data['error']['0'],
-                        OC_Log::WARN);
-        }
-                
-        //content
-        
-        OC_Log::write('search_lucene',
-                    'indexer extracting content for '.$path.' ('.$mimetype.')',
-                    OC_Log::DEBUG);
-        
-        $body = '';
-            
-        if ('text/plain' === $mimetype) {
-            $body = OC_Filesystem::file_get_contents($path);
-            
-        } else if ('application/pdf' === $mimetype) {
-            try {
-                $zendpdf = Zend_Pdf::parse(OC_Filesystem::file_get_contents($path));
-                
-                //we currently only display the filename, so we only index metadata here
-                if (isset($zendpdf->properties['Title'])) {
-                    $doc->addField(Zend_Search_Lucene_Field::UnStored('title',$zendpdf->properties['Title']));
-                }
-                if (isset($zendpdf->properties['Author'])) {
-                    $doc->addField(Zend_Search_Lucene_Field::UnStored('author',$zendpdf->properties['Author']));
-                }
-                if (isset($zendpdf->properties['Subject'])) {
-                    $doc->addField(Zend_Search_Lucene_Field::UnStored('subject',$zendpdf->properties['Subject']));
-                }
-                if (isset($zendpdf->properties['Keywords'])) {
-                    $doc->addField(Zend_Search_Lucene_Field::UnStored('keywords',$zendpdf->properties['Keywords']));
-                }
-                //TODO handle PDF 1.6 metadata Zend_Pdf::getMetadata()
-                
-                //do the content extraction
-                $pdfParse = new App_Search_Helper_PdfParser();
-                $body = $pdfParse->pdf2txt($zendpdf->render());
-                
-            } catch (Exception $e) {
-                OC_Log::write('search_lucene',
-                    $e->getMessage().' Trace:\n'.$e->getTraceAsString(),
-                    OC_Log::ERROR);
-            }
-            
-        }
-        
-        if ($body != '') {
-            $doc->addField(Zend_Search_Lucene_Field::UnStored('body', $body));
-        }
-        
-        if ( isset($data['error']) ) {
-            //OC_Search_Lucene_Status::markAsError($fscacheId);
-            OC_Log::write('search_lucene',
-                        'failed to extract meta information for '.$path.': '.$data['error']['0'],
-                        OC_Log::WARN);
-            
-            return;
-        }
-    }
-    
+			// store fscacheid as unique id to lookup by when deleting
+			$doc->addField(Zend_Search_Lucene_Field::Keyword('pk', $pk));
+
+			// Store document URL to identify it in the search results
+			$doc->addField(Zend_Search_Lucene_Field::Text('path', $path));
+
+			$doc->addField(Zend_Search_Lucene_Field::unIndexed('size', $data['size']));
+
+			$doc->addField(Zend_Search_Lucene_Field::unIndexed('mimetype', $mimetype));
+
+			self::extractMetadata($doc, $path, $mimetype);
+
+			OC_Search_Lucene::updateFile($doc, $path);
+		} else {
+			OC_Log::write('search_lucene',
+					'need mimetype for content extraction',
+					OC_Log::ERROR);
+		}
+	}
+
+
+	/**
+	 * extract the metadata from a file
+	 * 
+	 * uses getid3 to extract metadata.
+	 * if possible also adds content (currently only for plain text files)
+	 * hint: use OC_FileCache::getCached($path) to get metadata for the last param
+	 *  
+	 * @author Jörn Dreyer <jfd@butonic.de>
+	 * 
+	 * @param Zend_Search_Lucene_Document $doc      to add the metadata to
+	 * @param string                      $path     path of the file to extract metadata from
+	 * @param string                      $mimetype depending on the mimetype different extractions are performed
+	 * 
+	 * @return void
+	 */
+	private static function extractMetadata (Zend_Search_Lucene_Document $doc, $path, $mimetype) {
+
+		$file=OC_Filesystem::getLocalFile($path);
+		$getID3=@new getID3();
+		$getID3->encoding='UTF-8';
+		$data=$getID3->analyze($file);
+
+		// TODO index meta information from media files
+
+		//show me what you got
+		/*foreach ($data as $key => $value) {
+			OC_Log::write('search_lucene',
+						'getid3 extracted '.$key.': '.$value,
+						OC_Log::DEBUG);
+			if (is_array($value)) {
+				foreach ($value as $k => $v) {
+					OC_Log::write('search_lucene',
+							'  ' . $value .'-' .$k.': '.$v,
+							OC_Log::DEBUG);
+				}
+			}
+		}*/
+
+		// filename _should_ always work, so log if it does not
+		if ( isset($data['filename']) ) {
+			$doc->addField(Zend_Search_Lucene_Field::Text('filename', $data['filename']));
+		} else {
+			OC_Log::write('search_lucene',
+						'failed to extract meta information for '.$path.': '.$data['error']['0'],
+						OC_Log::WARN);
+		}
+
+		//content
+
+		OC_Log::write('search_lucene',
+					'indexer extracting content for '.$path.' ('.$mimetype.')',
+					OC_Log::DEBUG);
+
+		$body = '';
+
+		if ('text/plain' === $mimetype) {
+			$body = OC_Filesystem::file_get_contents($path);
+
+		} else if ('application/pdf' === $mimetype) {
+			try {
+				$zendpdf = Zend_Pdf::parse(OC_Filesystem::file_get_contents($path));
+
+				//we currently only display the filename, so we only index metadata here
+				if (isset($zendpdf->properties['Title'])) {
+					$doc->addField(Zend_Search_Lucene_Field::UnStored('title', $zendpdf->properties['Title']));
+				}
+				if (isset($zendpdf->properties['Author'])) {
+					$doc->addField(Zend_Search_Lucene_Field::UnStored('author', $zendpdf->properties['Author']));
+				}
+				if (isset($zendpdf->properties['Subject'])) {
+					$doc->addField(Zend_Search_Lucene_Field::UnStored('subject', $zendpdf->properties['Subject']));
+				}
+				if (isset($zendpdf->properties['Keywords'])) {
+					$doc->addField(Zend_Search_Lucene_Field::UnStored('keywords', $zendpdf->properties['Keywords']));
+				}
+				//TODO handle PDF 1.6 metadata Zend_Pdf::getMetadata()
+
+				//do the content extraction
+				$pdfParse = new App_Search_Helper_PdfParser();
+				$body = $pdfParse->pdf2txt($zendpdf->render());
+
+			} catch (Exception $e) {
+				OC_Log::write('search_lucene',
+					$e->getMessage().' Trace:\n'.$e->getTraceAsString(),
+					OC_Log::ERROR);
+			}
+
+		}
+
+		if ($body != '') {
+			$doc->addField(Zend_Search_Lucene_Field::UnStored('body', $body));
+		}
+
+		if ( isset($data['error']) ) {
+			//OC_Search_Lucene_Status::markAsError($fscacheId);
+			OC_Log::write('search_lucene',
+						'failed to extract meta information for '.$path.': '.$data['error']['0'],
+						OC_Log::WARN);
+
+			return;
+		}
+	}
+
 }
