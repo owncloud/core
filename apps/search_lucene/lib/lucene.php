@@ -58,7 +58,7 @@ class OC_Search_Lucene extends OC_Search_Provider {
 
 
 		OC_Log::write('search_lucene',
-					  'oprimizing index ' . $path,
+					  'optimizing index ' . $path,
 					  OC_Log::DEBUG);
 
 		$index->optimize();
