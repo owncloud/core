@@ -32,7 +32,7 @@ class Storage {
 	const DEFAULTENABLED=true;
 	const DEFAULTBLACKLIST='avi mp3 mpg mp4 ctmp';
 	const DEFAULTMAXFILESIZE=10485760; // 10MB
-	const DEFAULTMININTERVAL=1; // 1 min
+	const DEFAULTMININTERVAL=60; // 1 min
 	const DEFAULTMAXVERSIONS=50;
 
 	private static function getUidAndFilename($filename)
