@@ -1,12 +1,11 @@
 <?php
- 
 
 header('Content-type: text/html; charset=UTF-8') ;
 
 OCP\JSON::checkLoggedIn();
 OCP\JSON::checkAppEnabled('search_lucene');
 
-function handleReIndex() {
+function handleReIndex($dir = '/') {
 	/*
 	 OCP\DB::beginTransaction();
 	 set_time_limit(0);
@@ -17,7 +16,16 @@ function handleReIndex() {
 	 OCP\DB::commit();
 	 * 
 	 */
-	echo 'not yet implemented';
+	
+	set_time_limit(0);//scanning can take ages
+	$eventSource = new OC_EventSource();
+	
+	$v = new IndexFileCacheVisitor($eventSource);
+	OC_FileCache::walk($v, $dir);
+	
+	$eventSource->close();
+	
+	$eventSource->send('success', true);
 }
 
 function handleOptimize() {
@@ -27,7 +35,7 @@ function handleOptimize() {
 if ($_GET['operation']) {
 	switch($_GET['operation']) {
 		case 'reindex':
-			handleReIndex();
+			handleReIndex($_GET['dir']);
 			break;
 		case 'optimize':
 			handleOptimize();

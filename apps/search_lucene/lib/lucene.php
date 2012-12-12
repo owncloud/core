@@ -1,6 +1,8 @@
 <?php
 
 require_once 'Zend/Search/Lucene.php';
+require_once 'Zend/Search/Lucene/Index/Term.php';
+require_once 'Zend/Search/Lucene/Search/Query/Term.php';
 
 /**
  * @author Jörn Dreyer <jfd@butonic.de>
@@ -20,6 +22,11 @@ class OC_Search_Lucene extends OC_Search_Provider {
 	public static function openOrCreate() {
 
 		try {
+			
+			Zend_Search_Lucene_Analysis_Analyzer::setDefault(
+				new Zend_Search_Lucene_Analysis_Analyzer_Common_TextNum_CaseInsensitive()
+			); //let lucene search for numbers as well as words
+			
 			// Create index
 			//$ocFilesystemView = OC_App::getStorage('search_lucene'); // encrypt the index on logout, decrypt on login
 
@@ -36,6 +43,7 @@ class OC_Search_Lucene extends OC_Search_Provider {
 						OC_Log::ERROR);
 			return null;
 		}
+		
 
 		return $index;
 	}
@@ -55,7 +63,6 @@ class OC_Search_Lucene extends OC_Search_Provider {
 		if ($index === null) {
 			$index = self::openOrCreate();
 		}
-
 
 		OC_Log::write('search_lucene',
 					  'optimizing index ' . $path,
@@ -79,17 +86,19 @@ class OC_Search_Lucene extends OC_Search_Provider {
 	 * 
 	 * @return void
 	 */
-	static public function updateFile(Zend_Search_Lucene_Document $doc, $path = '') {  
+	static public function updateFile(Zend_Search_Lucene_Document $doc, $path = '', Zend_Search_Lucene_Interface $index = null) {  
 
-		$index = OC_Search_Lucene::openOrCreate();
-
+		if ($index === null) {
+			$index = self::openOrCreate();
+		}
+		
 		// TODO profile perfomance for searching before adding to index
 		self::deleteFile($path, $index);
 
 		OC_Log::write('search_lucene',
 					  'adding ' . $path,
 					  OC_Log::DEBUG);
-
+		
 		// Add document to the index
 		$index->addDocument($doc);
 
@@ -155,10 +164,16 @@ class OC_Search_Lucene extends OC_Search_Provider {
 			// query * works ok
 			// query is still best
 			//$query = '*' . $query . '*'; //FIXME emulates the old search but breaks all the nice lucene search query options
+			if (strpos($query, '*')===false) {
+				$query = $query.='*'; // append query *, works ok
+			}
 			try {
 				$index = self::openOrCreate(); 
 				//Zend_Search_Lucene_Search_Query_Wildcard::setMinPrefixLength(0); //default is 3, 0 needed to keep current search behaviour
 
+				//$term  = new Zend_Search_Lucene_Index_Term($query);
+				//$query = new Zend_Search_Lucene_Search_Query_Term($term);
+				
 				$hits = $index->find($query);
 
 				foreach ($hits as $hit) {
@@ -211,11 +226,13 @@ class OC_Search_Lucene extends OC_Search_Provider {
 		}
 
 		return new OC_Search_Result(
-							basename($hit->path),
-							dirname($hit->path) . ', ' . OC_Helper::humanFileSize($hit->size) . ', Score: ' . number_format($hit->score, 2),
-							OC_Helper::linkTo( 'files', 'download.php?file='.$hit->path),
-							$type
-					);
+				basename($hit->path),
+				dirname($hit->path)
+					. ', ' . OC_Helper::humanFileSize($hit->size)
+					. ', Score: ' . number_format($hit->score, 2),
+				OC::getRouter()->generate('download', array('file'=>$hit->path)),
+				$type
+		);
 	}
 
 	/**

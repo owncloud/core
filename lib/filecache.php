@@ -375,6 +375,7 @@ class OC_FileCache{
 		}
 	}
 
+	
 	/**
 	 * recursively scan the filesystem and fill the cache
 	 * @param string $path
@@ -383,44 +384,10 @@ class OC_FileCache{
 	 * @param string $root (optional)
 	 */
 	public static function scan($path, $eventSource=false,&$count=0, $root=false) {
-		if($eventSource) {
-			$eventSource->send('scanning', array('file'=>$path, 'count'=>$count));
-		}
-		$lastSend=$count;
-		// NOTE: Ugly hack to prevent shared files from going into the cache (the source already exists somewhere in the cache)
-		if (substr($path, 0, 7) == '/Shared') {
-			return;
-		}
-		if($root===false) {
-			$view=OC_Filesystem::getView();
-		}else{
-			$view=new OC_FilesystemView($root);
-		}
-		self::scanFile($path, $root);
-		$dh=$view->opendir($path.'/');
-		$totalSize=0;
-		if($dh) {
-			while (($filename = readdir($dh)) !== false) {
-				if($filename != '.' and $filename != '..') {
-					$file=$path.'/'.$filename;
-					if($view->is_dir($file.'/')) {
-						self::scan($file, $eventSource, $count, $root);
-					}else{
-						$totalSize+=self::scanFile($file, $root);
-						$count++;
-						if($count>$lastSend+25 and $eventSource) {
-							$lastSend=$count;
-							$eventSource->send('scanning', array('file'=>$path, 'count'=>$count));
-						}
-					}
-				}
-			}
-		}
-
-		OC_FileCache_Update::cleanFolder($path, $root);
-		self::increaseSize($path, $totalSize, $root);
+		$fcv = new ScanFileCacheVisitor($eventSource);
+		self::walk($fcv, $path, $root);
 	}
-
+	
 	/**
 	 * scan a single file
 	 * @param string path
@@ -428,32 +395,8 @@ class OC_FileCache{
 	 * @return int size of the scanned file
 	 */
 	public static function scanFile($path, $root=false) {
-		// NOTE: Ugly hack to prevent shared files from going into the cache (the source already exists somewhere in the cache)
-		if (substr($path, 0, 7) == '/Shared') {
-			return;
-		}
-		if($root===false) {
-			$view=OC_Filesystem::getView();
-		}else{
-			$view=new OC_FilesystemView($root);
-		}
-		if(!$view->is_readable($path)) return; //cant read, nothing we can do
-		clearstatcache();
-		$mimetype=$view->getMimeType($path);
-		$stat=$view->stat($path);
-		if($mimetype=='httpd/unix-directory') {
-			$stat['size'] = 0;
-			$writable=$view->is_writable($path.'/');
-		}else{
-			$writable=$view->is_writable($path);
-		}
-		$stat['mimetype']=$mimetype;
-		$stat['writable']=$writable;
-		if($path=='/') {
-			$path='';
-		}
-		self::put($path, $stat, $root);
-		return $stat['size'];
+		$fcv = new ScanFileCacheVisitor();
+		self::walk($fcv, $path, $root);
 	}
 
 	/**
@@ -525,6 +468,54 @@ class OC_FileCache{
 			$query->execute(array('httpd/unix-directory'));
 		}
 	}
+
+	public static function walk(FileCacheVisitor $fcv, $path, $root=false) {
+		if($root===false) {
+			$view=OC_Filesystem::getView();
+		} else {
+			$view=new OC_FilesystemView($root);
+		}
+		return self::walkWithView($fcv, $path, $view);
+	}
+	/**
+	 * TODO this should be private, use walk() instead. It will create the view for you.
+	 * @param FileCacheVisitor $fcv
+	 * @param OC_FilesystemView | OC_Filestorage $view
+	 * @param string $path
+	 */
+	public static function walkWithView(FileCacheVisitor $fcv, $path, $view = null) {
+		if ($path === null) {
+			return;
+		}
+		if($view->is_dir($path.'/')) {
+			if ($fcv->enterDirectory($view, $path)) {
+				//try walking into directory
+				$dh=$view->opendir($path.'/');
+				if($dh) {
+					while (($filename = readdir($dh)) !== false) {
+						//skip special filenames
+						if($filename === '.' || $filename === '..') {
+							continue;
+						}
+						//walk childs
+						$child = OC_Filesystem::normalizePath($path.'/'.$filename);
+						if (!self::walkWithView($fcv, $child, $view)) {
+							//stop visiting
+							return false;
+						}
+					}
+				}
+				return $fcv->leaveDirectory($view, $path);
+			} else {
+				return false;
+			}
+			
+		} else {
+			return $fcv->visitFile($view, $path);
+		}
+		return true;
+	}
+	
 }
 
 //watch for changes and try to keep the cache up to date
@@ -532,3 +523,106 @@ OC_Hook::connect('OC_Filesystem', 'post_write', 'OC_FileCache_Update', 'fileSyst
 OC_Hook::connect('OC_Filesystem', 'post_delete', 'OC_FileCache_Update', 'fileSystemWatcherDelete');
 OC_Hook::connect('OC_Filesystem', 'post_rename', 'OC_FileCache_Update', 'fileSystemWatcherRename');
 OC_Hook::connect('OC_User', 'post_deleteUser', 'OC_FileCache_Update', 'deleteFromUser');
+
+interface FileCacheVisitor {
+	/**
+	 * @param OC_FilesystemView | OC_Filestorage $view
+	 * @param string $path
+	 */
+	public function enterDirectory($view, $path);
+	/**
+	 * @param OC_FilesystemView | OC_Filestorage $view
+	 * @param string $path
+	 */
+	public function leaveDirectory($view, $path);
+	/**
+	 * @param OC_FilesystemView | OC_Filestorage $view
+	 * @param string $path
+	 */
+	public function visitFile($view, $path);
+}
+
+class ScanFileCacheVisitor implements FileCacheVisitor {
+	
+	private $eventSource;
+	private $count;
+	private $lastSent;
+	private $dirsizes = array();
+	/**
+	 * @param OC_EventSource $eventSource (optional)
+	 */
+	public function __construct($eventSource=null) {
+		$this->eventSource = $eventSource;
+		$this->count = 0;
+		$this->lastSent = 0;
+	}
+
+	/**
+	 * @param OC_FilesystemView | OC_Filestorage $view
+	 * @param string $path
+	 */
+	public function enterDirectory($view, $path) {
+		// NOTE: Ugly hack to prevent shared files from going into the cache (the source already exists somewhere in the cache)
+		if (substr($path, 0, 7) == '/Shared') {
+			return true;
+		}
+		$this->dirsizes[$path] = 0;
+		return $this->visitFile($view, $path);
+		
+	}
+	/**
+	 * @param OC_FilesystemView | OC_Filestorage $view
+	 * @param string $path
+	 */
+	public function leaveDirectory($view, $path) {
+		// NOTE: Ugly hack to prevent shared files from going into the cache (the source already exists somewhere in the cache)
+		if (substr($path, 0, 7) == '/Shared') {
+			return true;
+		}
+		
+		OC_FileCache_Update::cleanFolder($path, $view->getRoot());
+		OC_FileCache::increaseSize($path, $this->dirsizes[$path]);
+		return true;
+		
+	}
+	/**
+	 * @param OC_FilesystemView | OC_Filestorage $view
+	 * @param string $path
+	 */
+	public function visitFile($view, $path) {
+		
+		// NOTE: Ugly hack to prevent shared files from going into the cache (the source already exists somewhere in the cache)
+		if (substr($path, 0, 7) == '/Shared') {
+			return true;
+		}
+		
+		if(!$view->is_readable($path)) return; //cant read, nothing we can do
+		clearstatcache();
+		$mimetype=$view->getMimeType($path);
+		$stat=$view->stat($path);
+		if($mimetype=='httpd/unix-directory') {
+			$stat['size'] = 0;
+			$writable=$view->is_writable($path.'/');
+		} else {
+			$writable=$view->is_writable($path);
+		}
+		$stat['mimetype']=$mimetype;
+		$stat['writable']=$writable;
+		
+		$this->dirsizes[dirname($path)] += $stat['size'];
+		
+		if($path=='/') {
+			$path='';
+		}
+		OC_FileCache::put($path, $stat, $view->getRoot());
+		
+		$this->count++;
+		//send to eventsource if present
+		if($this->count>$this->lastSent+25 and $this->eventSource) {
+			$this->lastSent=$this->count;
+			$this->eventSource->send('scanning', array('file'=>$path, 'count'=>$this->count));
+		}
+		return true;
+		
+	}
+}

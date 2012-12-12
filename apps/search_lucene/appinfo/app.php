@@ -25,6 +25,8 @@
 OC::$CLASSPATH['OC_Search_Lucene']         = 'apps/search_lucene/lib/lucene.php';
 OC::$CLASSPATH['OC_Search_Lucene_Indexer'] = 'apps/search_lucene/lib/indexer.php';
 OC::$CLASSPATH['OC_Search_Lucene_Hooks']   = 'apps/search_lucene/lib/hooks.php';
+OC::$CLASSPATH['IndexFileCacheVisitor']    = 'apps/search_lucene/lib/visitor.php';
+
 
 //TODO add translation
 //$l = new OC_L10N('search_lucene');
@@ -33,6 +35,9 @@ OC::$CLASSPATH['OC_Search_Lucene_Hooks']   = 'apps/search_lucene/lib/hooks.php';
 //  'order' => 20,
 //  'id' => 'search_lucene',
 //  'name' => 'Lucene Search'));
+
+
+OCP\Util::addScript('search_lucene', 'settings');
 
 //remove other providers
 OC_Search::clearProviders();
