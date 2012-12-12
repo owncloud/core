@@ -161,9 +161,9 @@ OC.Share={
 			if (link) {
 				html += '<div id="link">';
 				html += '<input type="checkbox" name="linkCheckbox" id="linkCheckbox" value="1" /><label for="linkCheckbox">'+t('core', 'Share with link')+'</label>';
-				html += '<a href="#" id="showPassword" style="display:none;"><img class="svg" alt="'+t('core', 'Password protect')+'" src="'+OC.imagePath('core', 'actions/lock')+'"/></a>';
 				html += '<br />';
 				html += '<input id="linkText" type="text" readonly="readonly" />';
+				html += '<input type="checkbox" name="showPassword" id="showPassword" value="1" style="display:none;" /><label for="showPassword" style="display:none;">'+t('core', 'Password protect')+'</label>';
 				html += '<div id="linkPass">';
 				html += '<input id="linkPassText" type="password" placeholder="'+t('core', 'Password')+'" />';
 				html += '</div>';
@@ -347,7 +347,9 @@ OC.Share={
 		}
 		$('#linkText').val(link);
 		$('#linkText').show('blind');
+		$('#linkText').css('display','block');
 		$('#showPassword').show();
+		$('#showPassword+label').show();
 		if (password != null) {
 			$('#linkPass').show('blind');
 			$('#linkPassText').attr('placeholder', t('core', 'Password protected'));
@@ -359,6 +361,7 @@ OC.Share={
 	hideLink:function() {
 		$('#linkText').hide('blind');
 		$('#showPassword').hide();
+		$('#showPassword+label').hide();
 		$('#linkPass').hide();
         $('#emailPrivateLink #email').hide();
         $('#emailPrivateLink #emailButton').hide();
