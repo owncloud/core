@@ -90,6 +90,9 @@ class OC{
 		elseif(strpos($className, 'OC_')===0) {
 			$path = strtolower(str_replace('_', '/', substr($className, 3)) . '.php');
 		}
+		elseif(strpos($className, 'OC\\')===0) {
+			$path = strtolower(str_replace('\\', '/', substr($className, 3)) . '.php');
+		}
 		elseif(strpos($className, 'OCP\\')===0) {
 			$path = 'public/'.strtolower(str_replace('\\', '/', substr($className, 3)) . '.php');
 		}
@@ -285,6 +288,9 @@ class OC{
 	public static function initSession() {
 		// prevents javascript from accessing php session cookies
 		ini_set('session.cookie_httponly', '1;');
+
+		// set the session name to the instance id - which is unique
+		session_name(OC_Util::getInstanceId());
 
 		// (re)-initialize session
 		session_start();
