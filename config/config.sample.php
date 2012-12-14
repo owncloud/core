@@ -33,6 +33,12 @@ $CONFIG = array(
 /* The automatic hostname detection of ownCloud can fail in certain reverse proxy situations. This option allows to manually override the automatic detection. You can also add a port. For example "www.example.com:88" */
 "overwritehost" => "",
 
+/* A proxy to use to connect to the internet. For example "myproxy.org:88" */
+"curlproxy" => "",
+
+/* The optional authentication for the proxy to use to connect to the internet. The format is: [username]:[password] */
+"curlproxyuserpwd" => "",
+
 /* The automatic protocol detection of ownCloud can fail in certain reverse proxy situations. This option allows to manually override the protocol detection. For example "https" */
 "overwriteprotocol" => "",
 
