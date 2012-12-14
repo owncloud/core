@@ -113,7 +113,8 @@ class OC_Response {
 		}
 		$etag = '"'.$etag.'"';
 		if (isset($_SERVER['HTTP_IF_NONE_MATCH']) &&
-		    trim($_SERVER['HTTP_IF_NONE_MATCH']) == $etag) {
+		    trim($_SERVER['HTTP_IF_NONE_MATCH']) == $etag)
+		{
 			self::setStatus(self::STATUS_NOT_MODIFIED);
 			exit;
 		}
@@ -136,7 +137,8 @@ class OC_Response {
 			$lastModified = $lastModified->format(DateTime::RFC2822);
 		}
 		if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) &&
-		    trim($_SERVER['HTTP_IF_MODIFIED_SINCE']) == $lastModified) {
+		    trim($_SERVER['HTTP_IF_MODIFIED_SINCE']) == $lastModified)
+		{
 			self::setStatus(self::STATUS_NOT_MODIFIED);
 			exit;
 		}

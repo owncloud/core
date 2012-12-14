@@ -79,7 +79,8 @@ class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 			foreach ($items as $item) {
 				if (isset($mimetype_filter)
 					&& strpos($item['mimetype'], $mimetype_filter) !== 0
-					&& $item['mimetype'] != 'httpd/unix-directory') {
+					&& $item['mimetype'] != 'httpd/unix-directory')
+				{
 					continue;
 				}
 				$file = array();

@@ -118,7 +118,8 @@ class OC_L10N{
 			if((OC_Helper::issubdirectory($i18ndir.$lang.'.php', OC_App::getAppPath($app).'/l10n/') ||
 				OC_Helper::issubdirectory($i18ndir.$lang.'.php', OC::$SERVERROOT.'/core/l10n/') ||
 				OC_Helper::issubdirectory($i18ndir.$lang.'.php', OC::$SERVERROOT.'/lib/l10n/') ||
-				OC_Helper::issubdirectory($i18ndir.$lang.'.php', OC::$SERVERROOT.'/settings')) && file_exists($i18ndir.$lang.'.php')) {
+				OC_Helper::issubdirectory($i18ndir.$lang.'.php', OC::$SERVERROOT.'/settings')) && file_exists($i18ndir.$lang.'.php'))
+			{
 				// Include the file, save the data from $CONFIG
 				include strip_tags($i18ndir).strip_tags($lang).'.php';
 				if(isset($TRANSLATIONS) && is_array($TRANSLATIONS)) {

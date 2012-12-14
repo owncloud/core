@@ -280,7 +280,8 @@ class Connection {
 			$configurationOK = false;
 		}
 		if((empty($this->config['ldapAgentName']) && !empty($this->config['ldapAgentPassword']))
-			|| (!empty($this->config['ldapAgentName']) && empty($this->config['ldapAgentPassword']))) {
+			|| (!empty($this->config['ldapAgentName']) && empty($this->config['ldapAgentPassword'])))
+		{
 			\OCP\Util::writeLog('user_ldap', 'Either no password given for the user agent or a password is given, but no LDAP agent; won`t connect.', \OCP\Util::WARN);
 			$configurationOK = false;
 		}
