@@ -142,7 +142,8 @@ class OC_Files {
 	public static function get($dir, $files, $only_header = false) {
 		$xsendfile = false;
 		if (isset($_SERVER['MOD_X_SENDFILE_ENABLED']) || 
-			isset($_SERVER['MOD_X_ACCEL_REDIRECT_ENABLED'])) {
+			isset($_SERVER['MOD_X_ACCEL_REDIRECT_ENABLED']))
+		{
 			$xsendfile = true;
 		}
 		if(strpos($files, ';')) {
@@ -492,7 +493,9 @@ class OC_Files {
 		if(is_writable(OC::$SERVERROOT.'/.htaccess')) {
 			file_put_contents(OC::$SERVERROOT.'/.htaccess', $htaccess);
 			return OC_Helper::computerFileSize($size);
-		} else { OC_Log::write('files', 'Can\'t write upload limit to '.OC::$SERVERROOT.'/.htaccess. Please check the file permissions', OC_Log::WARN); }
+		} else {
+			OC_Log::write('files', 'Can\'t write upload limit to '.OC::$SERVERROOT.'/.htaccess. Please check the file permissions', OC_Log::WARN);
+		}
 
 		return false;
 	}

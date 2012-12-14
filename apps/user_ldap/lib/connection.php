@@ -280,7 +280,8 @@ class Connection {
 			$configurationOK = false;
 		}
 		if((empty($this->config['ldapAgentName']) && !empty($this->config['ldapAgentPassword']))
-			|| (!empty($this->config['ldapAgentName']) && empty($this->config['ldapAgentPassword']))) {
+			|| (!empty($this->config['ldapAgentName']) && empty($this->config['ldapAgentPassword'])))
+		{
 			\OCP\Util::writeLog('user_ldap', 'Either no password given for the user agent or a password is given, but no LDAP agent; won`t connect.', \OCP\Util::WARN);
 			$configurationOK = false;
 		}
@@ -338,11 +339,11 @@ class Connection {
 			}
 			$this->ldapConnectionRes = ldap_connect($this->config['ldapHost'], $this->config['ldapPort']);
 			if(ldap_set_option($this->ldapConnectionRes, LDAP_OPT_PROTOCOL_VERSION, 3)) {
-					if(ldap_set_option($this->ldapConnectionRes, LDAP_OPT_REFERRALS, 0)) {
-						if($this->config['ldapTLS']) {
-							ldap_start_tls($this->ldapConnectionRes);
-						}
+				if(ldap_set_option($this->ldapConnectionRes, LDAP_OPT_REFERRALS, 0)) {
+					if($this->config['ldapTLS']) {
+						ldap_start_tls($this->ldapConnectionRes);
 					}
+				}
 			}
 
 			return $this->bind();
