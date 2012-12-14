@@ -665,6 +665,8 @@ class OC_Util {
                 curl_setopt($curl, CURLOPT_HEADER, 0);
                 curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
                 curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
+                if(OC_Config::getValue('curlproxy','')=='') curl_setopt($curl, CURLOPT_PROXY, OC_Config::getValue('curlproxy'));
+                if(OC_Config::getValue('curlproxyuserpwd','')=='') curl_setopt($curl, CURLOPT_PROXYUSERPWD, OC_Config::getValue('curlproxyuserpwd'));
                 curl_setopt($curl, CURLOPT_URL, $url);
 		curl_setopt($curl, CURLOPT_USERAGENT, "ownCloud Server Crawler");
                 $data = curl_exec($curl);
