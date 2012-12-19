@@ -105,8 +105,8 @@ class OC_Filestorage_Local extends OC_Filestorage_Common{
 			}
 			$source=substr($path1, strrpos($path1, '/')+1);
 			$path2.=$source;
-		} else if ( !$this->file_exists($path2) ) {
-			$this->mkdir($path2);
+		} else if ( !$this->file_exists(dirname($path2)) ) {
+			$this->mkdir(dirname($path2));
 			
 		}
 		return copy($this->datadir.$path1, $this->datadir.$path2);
