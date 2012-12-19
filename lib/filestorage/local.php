@@ -11,7 +11,7 @@ class OC_Filestorage_Local extends OC_Filestorage_Common{
 		}
 	}
 	public function mkdir($path) {
-		return @mkdir($this->datadir.$path, 0770);
+		return @mkdir($this->datadir.$path, 0770, true);
 	}
 	public function rmdir($path) {
 		return @rmdir($this->datadir.$path);
