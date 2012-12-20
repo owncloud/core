@@ -3,13 +3,6 @@
 	<fieldset>
 		<?php if(!empty($_['redirect_url'])) { echo '<input type="hidden" name="redirect_url" value="'.$_['redirect_url'].'" />'; } ?>
 		<ul>
-		<?php if(isset($_['invalidcookie']) && ($_['invalidcookie'])): ?>
-			<li class="errors">
-				<?php echo $l->t('Automatic logon rejected!'); ?><br>
-				<small><?php echo $l->t('You did not change your password recently.'); ?></small><br>
-				<small><?php echo $l->t('Please change your password frequently to secure your account.'); ?></small>
-			</li>
-		<?php endif; ?>
 		<?php if(isset($_['invalidpassword']) && ($_['invalidpassword'])): ?>
 			<a href="<?php echo OC_Helper::linkToRoute('core_lostpassword_index') ?>"><li class="errors">
 				<?php echo $l->t('Lost your password?'); ?>

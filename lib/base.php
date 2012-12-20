@@ -596,7 +596,7 @@ class OC{
 		$error = array();
 		// remember was checked after last login
 		if (OC::tryRememberLogin()) {
-			$error[] = 'invalidcookie';
+			OC_Log::write('core', 'Automatic logon rejected!', OC_Log::DEBUG);
 
 		// Someone wants to log in :
 		} elseif (OC::tryFormLogin()) {
