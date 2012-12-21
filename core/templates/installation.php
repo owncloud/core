@@ -102,6 +102,7 @@
 		<?php endif; ?>
 		
 		<?php if($_['hasMSSQL']): ?>
+		<input type='hidden' id='hasMSSQL' value='true'/>
 		<?php if(!$_['hasSQLite'] and !$_['hasPostgreSQL'] and !$_['hasMySQL']): ?>
 		<p>MSSQL <?php echo $l->t( 'will be used' ); ?>.</p>
 		<input type="hidden" id="dbtype" name="dbtype" value="mssql" />
