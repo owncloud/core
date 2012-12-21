@@ -138,6 +138,7 @@ class OC_Setup {
 				try {
 					self::setupMSSQLDatabase($dbhost, $dbuser, $dbpass, $dbname, $dbtableprefix, $username);
 				} catch (Exception $e) {
+                                        echo($e);
 					$error[] = array(
 						'error' => 'MSSQL username and/or password not valid',
 						'hint' => 'You need to enter either an existing account or the administrator.'
@@ -185,7 +186,7 @@ class OC_Setup {
 		return $error;
 	}
 
-	private static function setupMySQLDatabase($dbhost, $dbuser, $dbpass, $dbname, $username) {
+	private static function setupMySQLDatabase($dbhost, $dbuser, $dbpass, $dbname, $dbtableprefix, $username) {
 		//check if the database user has admin right
 		$connection = @mysql_connect($dbhost, $dbuser, $dbpass);
 		if(!$connection) {
@@ -554,24 +555,34 @@ class OC_Setup {
 		}
 	}
 
-	private static function setupMSSQLDatabase($dbhost, $dbuser, $dbpass, $dbname, $dbtableprefix, $dbtablespace, $username) {
+	private static function setupMSSQLDatabase($dbhost, $dbuser, $dbpass, $dbname, $dbtableprefix, $username) {
 		//check if the database user has admin right
-		$connectionInfo = array( "Database" => $dbname, "UID" => $dbuser, "PWD" => $dbpass);
+		$connectionInfo = array( "Database" => "master", "UID" => $dbuser, "PWD" => $dbpass);
 		
 		$connection = @sqlsrv_connect($dbhost, $connectionInfo);
 		if(!$connection) {
-			throw new Exception('MSSQL username and/or password not valid');			
+                        $entry = null;
+                        if( ($errors = sqlsrv_errors() ) != null) {
+                            $entry='DB Error: "'.print_r(sqlsrv_errors()).'"<br />';
+                        } else {
+                            $entry = '';
+                        }
+			throw new Exception('MSSQL username and/or password not valid: '.$entry);
 		}
 
 		OC_Config::setValue('dbuser', $dbuser);
 		OC_Config::setValue('dbpassword', $dbpass);
 
-		mssql_createDBLogin($dbuser, $dbpass, $dbname, $connection);
+		self::mssql_createDBLogin($dbuser, $dbpass, $dbname, $connection);
 		
-		mssql_createDatabase($dbname, $connection);
+		self::mssql_createDatabase($dbname, $connection);
 		
-		mssql_createDBUser($dbuser, $dbpass, $dbname, $connection);
+		self::mssql_createDBUser($dbuser, $dbpass, $dbname, $connection);
 
+		sqlsrv_close($connection);
+
+		$connectionInfo = array( "Database" => $dbname, "UID" => $dbuser, "PWD" => $dbpass);
+                
 		//fill the database if needed
 		$query="SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '{$dbname}' AND TABLE_NAME = '{$dbtableprefix}users'";
 		$result = sqlsrv_query($connection, $query);
@@ -598,7 +609,7 @@ class OC_Setup {
 			$result = sqlsrv_query($connection, $query);
 			if (!$result or $result === false) {
 			    if( ($errors = sqlsrv_errors() ) != null) {
-				$entry='DB Error: "'.sqlsrv_errors().'"<br />';
+				$entry='DB Error: "'.print_r(sqlsrv_errors()).'"<br />';
 			    } else {
 			    	$entry = '';
 			    }
@@ -620,7 +631,7 @@ class OC_Setup {
 			$result = sqlsrv_query($connection, $query);
 			if (!$result or $result === false) {
 			    if( ($errors = sqlsrv_errors() ) != null) {
-				$entry='DB Error: "'.sqlsrv_errors().'"<br />';
+				$entry='DB Error: "'.print_r(sqlsrv_errors()).'"<br />';
 			    } else {
 			    	$entry = '';
 			    }
@@ -633,7 +644,7 @@ class OC_Setup {
 		$result = sqlsrv_query($connection, $query);
 		if (!$result or $result === false) {
 		    if( ($errors = sqlsrv_errors() ) != null) {
-			$entry='DB Error: "'.sqlsrv_errors().'"<br />';
+			$entry='DB Error: "'.print_r(sqlsrv_errors()).'"<br />';
 		    } else {
 		    	$entry = '';
 		    }
@@ -643,11 +654,11 @@ class OC_Setup {
 	}
 	
 	private static function mssql_createDatabase($dbname, $connection) {
-		$query = "CREATE DATABASE [".$dbame."];";
+		$query = "CREATE DATABASE [".$dbname."];";
 		$result = sqlsrv_query($connection, $query);
 		if (!$result or $result === false) {
 		    if( ($errors = sqlsrv_errors() ) != null) {
-			$entry='DB Error: "'.sqlsrv_errors().'"<br />';
+			$entry='DB Error: "'.print_r(sqlsrv_errors()).'"<br />';
 		    } else {
 		    	$entry = '';
 		    }
