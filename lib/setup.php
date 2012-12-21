@@ -136,7 +136,7 @@ class OC_Setup {
 				OC_Config::setValue('dbtableprefix', $dbtableprefix);
 
 				try {
-					self::setupMSSQLDatabase($dbhost, $dbuser, $dbpass, $dbname, $dbtableprefix, $dbtablespace, $username);
+					self::setupMSSQLDatabase($dbhost, $dbuser, $dbpass, $dbname, $dbtableprefix, $username);
 				} catch (Exception $e) {
 					$error[] = array(
 						'error' => 'MSSQL username and/or password not valid',
@@ -185,7 +185,7 @@ class OC_Setup {
 		return $error;
 	}
 
-	private static function setupMySQLDatabase($dbhost, $dbuser, $dbpass, $dbname, $dbtableprefix, $username) {
+	private static function setupMySQLDatabase($dbhost, $dbuser, $dbpass, $dbname, $username) {
 		//check if the database user has admin right
 		$connection = @mysql_connect($dbhost, $dbuser, $dbpass);
 		if(!$connection) {
