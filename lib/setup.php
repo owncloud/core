@@ -15,13 +15,15 @@ class OC_Setup {
 			$error[] = 'Specify a data folder.';
 		}
 
-		if($dbtype=='mysql' or $dbtype == 'pgsql' or $dbtype == 'oci') { //mysql and postgresql needs more config options
+		if($dbtype=='mysql' or $dbtype == 'pgsql' or $dbtype == 'oci' or $dbtype == 'mssql') { //mysql and postgresql needs more config options
 			if($dbtype=='mysql')
 				$dbprettyname = 'MySQL';
 			else if($dbtype=='pgsql')
 					$dbprettyname = 'PostgreSQL';
-			else
+			else if($dbtype == 'oci')
 					$dbprettyname = 'Oracle';
+			else
+					$dbprettyname = 'MSSQL';
 
 
 			if(empty($options['dbuser'])) {
@@ -120,8 +122,29 @@ class OC_Setup {
 					);
 					return $error;
 				}
-			}
-			else {
+			} elseif ($dbtype == 'mssql') {
+				$dbuser = $options['dbuser'];
+				$dbpass = $options['dbpass'];
+				$dbname = $options['dbname'];
+				$dbhost = $options['dbhost'];
+				$dbtableprefix = isset($options['dbtableprefix']) ? $options['dbtableprefix'] : 'oc_';
+				
+				OC_Config::setValue('dbname', $dbname);
+				OC_Config::setValue('dbhost', $dbhost);
+				OC_Config::setValue('dbuser', $dbuser);
+				OC_Config::setValue('dbpassword', $dbpass);
+				OC_Config::setValue('dbtableprefix', $dbtableprefix);
+
+				try {
+					self::setupMSSQLDatabase($dbhost, $dbuser, $dbpass, $dbname, $dbtableprefix, $dbtablespace, $username);
+				} catch (Exception $e) {
+					$error[] = array(
+						'error' => 'MSSQL username and/or password not valid',
+						'hint' => 'You need to enter either an existing account or the administrator.'
+					);
+					return $error;
+				}
+			} else {
 				//delete the old sqlite database first, might cause infinte loops otherwise
 				if(file_exists("$datadir/owncloud.db")) {
 					unlink("$datadir/owncloud.db");
@@ -529,6 +552,63 @@ class OC_Setup {
 			$entry.='Offending command was: '.$query.', name:'.$name.', password:'.$password.'<br />';
 			echo($entry);
 		}
+	}
+
+	private static function setupMSSQLDatabase($dbhost, $dbuser, $dbpass, $dbname, $dbtableprefix, $dbtablespace, $username) {
+		//check if the database user has admin right
+		$connectionInfo = array( "Database" => $dbname, "UID" => $dbuser, "PWD" => $dbpass);
+		
+		$connection = @sqlsrv_connect($dbhost, $connectionInfo);
+		if(!$connection) {
+			throw new Exception('MSSQL username and/or password not valid');			
+		} 
+		/*
+		Support creation of MsSQL database with admin user.
+		
+		$oldUser=OC_Config::getValue('dbuser', false);
+		$oldPassword=OC_Config::getValue('dbpassword', false);
+		
+		$query="SELECT user FROM mysql.user WHERE user='$dbuser'"; //this should be enough to check for admin rights in mysql
+		if(mysql_query($query, $connection)) {
+			//use the admin login data for the new database user
+
+			//add prefix to the mysql user name to prevent collissions
+			$dbusername=substr('oc_'.$username,0,16);
+			if($dbusername!=$oldUser){
+				//hash the password so we don't need to store the admin config in the config file
+				$dbpassword=md5(time().$password);
+
+				self::createDBUser($dbusername, $dbpassword, $connection);
+
+				OC_Config::setValue('dbuser', $dbusername);
+				OC_Config::setValue('dbpassword', $dbpassword);
+			}
+
+			//create the database
+			self::createDatabase($dbname, $dbusername, $connection);
+		}
+		else {
+			if($dbuser!=$oldUser){
+				OC_Config::setValue('dbuser', $dbuser);
+				OC_Config::setValue('dbpassword', $dbpass);
+			}
+
+			//create the database
+			self::createDatabase($dbname, $dbuser, $connection);
+		}*/
+
+		//fill the database if needed
+		$query="SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '{$dbname}' AND TABLE_NAME = '{$dbtableprefix}users'";
+		$result = sqlsrv_query($connection, $query);
+		if($result) {
+			$row=sqlsrv_fetch_array($result);
+		}
+		
+		if(!$result or $row[0] == 0) {
+			OC_DB::createDbFromStructure('db_structure.xml');
+		}
+		
+		sqlsrv_close($connection);
 	}
 
 	/**
