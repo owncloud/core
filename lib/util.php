@@ -187,8 +187,8 @@ class OC_Util {
 
 		$web_server_restart= false;
 		//check for database drivers
-		if(!(is_callable('sqlite_open') or class_exists('SQLite3')) and !is_callable('mysql_connect') and !is_callable('pg_connect')) {
-			$errors[]=array('error'=>'No database drivers (sqlite, mysql, or postgresql) installed.<br/>', 'hint'=>'');//TODO: sane hint
+		if(!(is_callable('sqlite_open') or class_exists('SQLite3')) and !is_callable('mysql_connect') and !is_callable('pg_connect') and !is_callable('sqlsrv_connect')) {
+			$errors[]=array('error'=>'No database drivers (sqlite, mysql, postgresql or sqlsrv) installed.<br/>', 'hint'=>'');//TODO: sane hint
 			$web_server_restart= true;
 		}
 
