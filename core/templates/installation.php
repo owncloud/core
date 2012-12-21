@@ -1,8 +1,8 @@
-<input type='hidden' id='hasMySQL' value='<?php echo $_['hasMySQL'] ?>'></input>
-<input type='hidden' id='hasSQLite' value='<?php echo $_['hasSQLite'] ?>'></input>
-<input type='hidden' id='hasPostgreSQL' value='<?php echo $_['hasPostgreSQL'] ?>'></input>
-<input type='hidden' id='hasOracle' value='<?php echo $_['hasOracle'] ?>'></input>
-<input type='hidden' id='hasMSSQL' value='<?php echo $_['hasMSSQL'] ?>'></input>
+<input type='hidden' id='hasMySQL' value='<?php echo $_['hasMySQL'] ?>' />
+<input type='hidden' id='hasSQLite' value='<?php echo $_['hasSQLite'] ?>' />
+<input type='hidden' id='hasPostgreSQL' value='<?php echo $_['hasPostgreSQL'] ?>' />
+<input type='hidden' id='hasOracle' value='<?php echo $_['hasOracle'] ?>' />
+<input type='hidden' id='hasMSSQL' value='<?php echo $_['hasMSSQL'] ?>' />
 <form action="index.php" method="post">
 <input type="hidden" name="install" value="true" />
 	<?php if(count($_['errors']) > 0): ?>
@@ -102,7 +102,7 @@
 		<?php endif; ?>
 		
 		<?php if($_['hasMSSQL']): ?>
-		<input type='hidden' id='hasMSSQL' value='true'/>
+		<input type='hidden' id='hasMSSQL' value='true' />
 		<?php if(!$_['hasSQLite'] and !$_['hasPostgreSQL'] and !$_['hasMySQL']): ?>
 		<p>MSSQL <?php echo $l->t( 'will be used' ); ?>.</p>
 		<input type="hidden" id="dbtype" name="dbtype" value="mssql" />
