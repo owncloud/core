@@ -571,40 +571,6 @@ class OC_Setup {
 		mssql_createDatabase($dbname, $connection);
 		
 		mssql_createDBUser($dbuser, $dbpass, $dbname, $connection);
-		/*
-		Support creation of MsSQL database with admin user.
-		
-		$oldUser=OC_Config::getValue('dbuser', false);
-		$oldPassword=OC_Config::getValue('dbpassword', false);
-		
-		$query="SELECT user FROM mysql.user WHERE user='$dbuser'"; //this should be enough to check for admin rights in mysql
-		if(mysql_query($query, $connection)) {
-			//use the admin login data for the new database user
-
-			//add prefix to the mysql user name to prevent collissions
-			$dbusername=substr('oc_'.$username,0,16);
-			if($dbusername!=$oldUser){
-				//hash the password so we don't need to store the admin config in the config file
-				$dbpassword=md5(time().$password);
-
-				self::createDBUser($dbusername, $dbpassword, $connection);
-
-				OC_Config::setValue('dbuser', $dbusername);
-				OC_Config::setValue('dbpassword', $dbpassword);
-			}
-
-			//create the database
-			self::createDatabase($dbname, $dbusername, $connection);
-		}
-		else {
-			if($dbuser!=$oldUser){
-				OC_Config::setValue('dbuser', $dbuser);
-				OC_Config::setValue('dbpassword', $dbpass);
-			}
-
-			//create the database
-			self::createDatabase($dbname, $dbuser, $connection);
-		}*/
 
 		//fill the database if needed
 		$query="SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '{$dbname}' AND TABLE_NAME = '{$dbtableprefix}users'";
@@ -677,7 +643,17 @@ class OC_Setup {
 	}
 	
 	private static function mssql_createDatabase($dbname, $connection) {
-		$query = "";
+		$query = "CREATE DATABASE [".$dbame."];";
+		$result = sqlsrv_query($connection, $query);
+		if (!$result or $result === false) {
+		    if( ($errors = sqlsrv_errors() ) != null) {
+			$entry='DB Error: "'.sqlsrv_errors().'"<br />';
+		    } else {
+		    	$entry = '';
+		    }
+	    	    $entry.='Offending command was: '.$query.'<br />';
+		    echo($entry);
+		}
 	}
 	
 
