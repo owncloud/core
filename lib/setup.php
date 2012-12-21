@@ -561,7 +561,16 @@ class OC_Setup {
 		$connection = @sqlsrv_connect($dbhost, $connectionInfo);
 		if(!$connection) {
 			throw new Exception('MSSQL username and/or password not valid');			
-		} 
+		}
+
+		OC_Config::setValue('dbuser', $dbuser);
+		OC_Config::setValue('dbpassword', $dbpass);
+
+		mssql_createDBLogin($dbuser, $dbpass, $dbname, $connection);
+		
+		mssql_createDatabase($dbname, $connection);
+		
+		mssql_createDBUser($dbuser, $dbpass, $dbname, $connection);
 		/*
 		Support creation of MsSQL database with admin user.
 		
@@ -610,6 +619,67 @@ class OC_Setup {
 		
 		sqlsrv_close($connection);
 	}
+
+	private static function mssql_createDBLogin($name, $password, $dbname, $connection) {
+		$query = "SELECT * FROM master.sys.server_principals WHERE name = '".$name."';";
+		$result = sqlsrv_query($connection, $query);
+		if($result) {
+			$row = sqlsrv_fetch_array($result);
+		}
+		
+		if(!$result or $row[0} == 0) {
+			$query = "CREATE LOGIN [".$name."] WITH PASSWORD = '".$password."';";
+			$result = sqlsrv_query($connection, $query);
+			if (!$result or $result === false) {
+			    if( ($errors = sqlsrv_errors() ) != null) {
+				$entry='DB Error: "'.sqlsrv_errors().'"<br />';
+			    } else {
+			    	$entry = '';
+			    }
+		    	    $entry.='Offending command was: '.$query.'<br />';
+			    echo($entry);
+			}			
+		}
+	}
+
+	private static function mssql_createDBUser($name, $password, $dbname, $connection) {
+		$query = "SELECT * FROM [".$dbname."].sys.database_principals WHERE name = '".$name."';";
+		$result = sqlsrv_query($connection, $query);
+		if($result) {
+			$row=sqlsrv_fetch_array($result);
+		}		
+		
+		if (!$result or $row[0} == 0) {
+			$query = "USE [".$dbname."]; CREATE USER [".$name."] FOR LOGIN [".$name."];";
+			$result = sqlsrv_query($connection, $query);
+			if (!$result or $result === false) {
+			    if( ($errors = sqlsrv_errors() ) != null) {
+				$entry='DB Error: "'.sqlsrv_errors().'"<br />';
+			    } else {
+			    	$entry = '';
+			    }
+		    	    $entry.='Offending command was: '.$query.'<br />';
+			    echo($entry);
+			}			
+		}
+		
+		$query = "USE [".$dbname."]; EXEC sp_addrolemember 'db_owner', '".$name."';";
+		$result = sqlsrv_query($connection, $query);
+		if (!$result or $result === false) {
+		    if( ($errors = sqlsrv_errors() ) != null) {
+			$entry='DB Error: "'.sqlsrv_errors().'"<br />';
+		    } else {
+		    	$entry = '';
+		    }
+	    	    $entry.='Offending command was: '.$query.'<br />';
+		    echo($entry);
+		}
+	}
+	
+	private static function mssql_createDatabase($dbname, $connection) {
+		$query = "";
+	}
+	
 
 	/**
 	 * create .htaccess files for apache hosts
