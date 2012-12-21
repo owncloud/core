@@ -593,7 +593,7 @@ class OC_Setup {
 			$row = sqlsrv_fetch_array($result);
 		}
 		
-		if(!$result or $row[0} == 0) {
+		if(!$result or $row[0] == 0) {
 			$query = "CREATE LOGIN [".$name."] WITH PASSWORD = '".$password."';";
 			$result = sqlsrv_query($connection, $query);
 			if (!$result or $result === false) {
@@ -615,7 +615,7 @@ class OC_Setup {
 			$row=sqlsrv_fetch_array($result);
 		}		
 		
-		if (!$result or $row[0} == 0) {
+		if (!$result or $row[0] == 0) {
 			$query = "USE [".$dbname."]; CREATE USER [".$name."] FOR LOGIN [".$name."];";
 			$result = sqlsrv_query($connection, $query);
 			if (!$result or $result === false) {
