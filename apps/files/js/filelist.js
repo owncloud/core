@@ -15,7 +15,7 @@ var FileList={
 			extension=false;
 		}
 		html+='<td class="filename" style="background-image:url('+img+')"><input type="checkbox" />';
-		html+='<a class="name" href="download.php?file='+$('#dir').val().replace(/</, '&lt;').replace(/>/, '&gt;')+'/'+escapeHTML(name)+'"><span class="nametext">'+escapeHTML(basename);
+		html+='<a class="name" href="download.php?file='+FileActions.getCurrentDir().replace(/</, '&lt;').replace(/>/, '&gt;')+'/'+escapeHTML(name)+'"><span class="nametext">'+escapeHTML(basename);
 		if(extension){
 			html+='<span class="extension">'+escapeHTML(extension)+'</span>';
 		}
@@ -48,7 +48,7 @@ var FileList={
 		html = $('<tr></tr>').attr({ "data-type": "dir", "data-size": size, "data-file": name, "data-permissions": $('#permissions').val()});
 		td = $('<td></td>').attr({"class": "filename", "style": 'background-image:url('+OC.imagePath('core', 'filetypes/folder.png')+')' });
 		td.append('<input type="checkbox" />');
-		link_elem = $('<a></a>').attr({ "class": "name", "href": OC.linkTo('files', 'index.php')+"?dir="+ encodeURIComponent($('#dir').val()+'/'+name).replace(/%2F/g, '/') });
+		link_elem = $('<a></a>').attr({ "class": "name", "href": OC.linkTo('files', 'index.php')+"?dir="+ encodeURIComponent(FileActions.getCurrentDir()+'/'+name).replace(/%2F/g, '/') });
 		link_elem.append($('<span></span>').addClass('nametext').text(name));
 		link_elem.append($('<span></span>').attr({'class': 'uploadtext', 'currentUploads': 0}));
 		td.append(link_elem);
@@ -156,7 +156,7 @@ var FileList={
 				if (FileList.checkName(name, newname, false)) {
 					newname = name;
 				} else {
-					$.get(OC.filePath('files','ajax','rename.php'), { dir : $('#dir').val(), newname: newname, file: name },function(result) {
+					$.get(OC.filePath('files','ajax','rename.php'), { dir : FileActions.getCurrentDir(), newname: newname, file: name },function(result) {
 						if (!result || result.status == 'error') {
 							OC.dialogs.alert(result.data.message, 'Error moving file');
 							newname = name;
@@ -253,7 +253,7 @@ var FileList={
 	},
 	finishReplace:function() {
 		if (!FileList.replaceCanceled && FileList.replaceOldName && FileList.replaceNewName) {
-			$.ajax({url: OC.filePath('files', 'ajax', 'rename.php'), async: false, data: { dir: $('#dir').val(), newname: FileList.replaceNewName, file: FileList.replaceOldName }, success: function(result) {
+			$.ajax({url: OC.filePath('files', 'ajax', 'rename.php'), async: false, data: { dir: FileActions.getCurrentDir(), newname: FileList.replaceNewName, file: FileList.replaceOldName }, success: function(result) {
 				if (result && result.status == 'success') {
 					$('tr').filterAttr('data-replace', 'true').removeAttr('data-replace');
 				} else {
@@ -278,7 +278,7 @@ var FileList={
 			FileList.lastAction();
 		} else {
 			// NOTE: Temporary fix to change the text to unshared for files in root of Shared folder
-			if ($('#dir').val() == '/Shared') {
+			if (FileActions.getCurrentDir() == '/Shared') {
 				$('#notification').html(t('files', 'unshared {files}', {'files': escapeHTML(files)})+'<span class="undo">'+t('files', 'undo')+'</span>');
 			} else {
 				$('#notification').html(t('files', 'deleted {files}', {'files': escapeHTML(files)})+'<span class="undo">'+t('files', 'undo')+'</span>');
@@ -293,7 +293,7 @@ var FileList={
 				url: OC.filePath('files', 'ajax', 'delete.php'),
 				async:!sync,
 				type:'post',
-				data: {dir:$('#dir').val(),files:fileNames},
+				data: {dir:FileActions.getCurrentDir(),files:fileNames},
 				complete: function(data){
 					boolOperationFinished(data, function(){
 						$('#notification').fadeOut('400');

@@ -3,10 +3,10 @@ $(document).ready(function() {
 	if (typeof OC.Share !== 'undefined' && typeof FileActions !== 'undefined'  && !publicListView) {
 		
 		FileActions.register('all', 'Share', OC.PERMISSION_READ, OC.imagePath('core', 'actions/share'), function(filename) {
-			if ($('#dir').val() == '/') {
-				var item = $('#dir').val() + filename;
+			if (FileActions.getCurrentDir() == '/') {
+				var item = FileActions.getCurrentDir() + filename;
 			} else {
-				var item = $('#dir').val() + '/' + filename;
+				var item = FileActions.getCurrentDir() + '/' + filename;
 			}
 			var tr = $('tr').filterAttr('data-file', filename);
 			if ($(tr).data('type') == 'dir') {
