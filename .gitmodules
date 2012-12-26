@@ -1,0 +1,3 @@
+[submodule "owncloud-apps"]
+	path = owncloud-apps
+	url = https://github.com/andrewsbrown/owncloud-apps.git

@@ -83,7 +83,7 @@ var FileActions = {
 		
 		$.each(actions, function (name, action) {
 			// NOTE: Temporary fix to prevent rename action in root of Shared directory
-			if (name === 'Rename' && $('#dir').val() === '/Shared') {
+			if (name === 'Rename' && FileActions.getCurrentDir() === '/Shared') {
 				return true;
 			}
 			
@@ -113,7 +113,7 @@ var FileActions = {
 				img = img(file);
 			}
 			// NOTE: Temporary fix to allow unsharing of files in root of Shared folder
-			if ($('#dir').val() == '/Shared') {
+			if (FileActions.getCurrentDir() == '/Shared') {
 				var html = '<a href="#" original-title="' + t('files', 'Unshare') + '" class="action delete" />';
 			} else {
 				var html = '<a href="#" original-title="' + t('files', 'Delete') + '" class="action delete" />';
@@ -138,6 +138,9 @@ var FileActions = {
 	},
 	getCurrentPermissions: function () {
 		return FileActions.currentFile.parent().data('permissions');
+	},
+	getCurrentDir: function () {
+		return FileActions.currentFile.parent().attr('data-dir');
 	}
 };
 
@@ -150,7 +153,7 @@ $(document).ready(function () {
 	FileActions.register(downloadScope, 'Download', OC.PERMISSION_READ, function () {
 		return OC.imagePath('core', 'actions/download');
 	}, function (filename) {
-		window.location = OC.filePath('files', 'ajax', 'download.php') + '?files=' + encodeURIComponent(filename) + '&dir=' + encodeURIComponent($('#dir').val());
+		window.location = OC.filePath('files', 'ajax', 'download.php') + '?files=' + encodeURIComponent(filename) + '&dir=' + encodeURIComponent(FileActions.getCurrentDir());
 	});
 
 	$('#fileList tr').each(function(){
@@ -186,7 +189,7 @@ FileActions.register('all', 'Rename', OC.PERMISSION_UPDATE, function () {
 });
 
 FileActions.register('dir', 'Open', OC.PERMISSION_READ, '', function (filename) {
-	window.location = OC.linkTo('files', 'index.php') + '?dir=' + encodeURIComponent($('#dir').val()).replace(/%2F/g, '/') + '/' + encodeURIComponent(filename);
+	window.location = OC.linkTo('files', 'index.php') + '?dir=' + encodeURIComponent(FileActions.getCurrentDir()).replace(/%2F/g, '/') + '/' + encodeURIComponent(filename);
 });
 
 FileActions.setDefault('dir', 'Open');
