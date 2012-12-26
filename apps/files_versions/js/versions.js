@@ -23,7 +23,7 @@ $(document).ready(function(){
 				// Action to perform when clicked
 				if (scanFiles.scanning){return;}//workaround to prevent additional http request block scanning feedback
 
-				var file = $('#dir').val()+'/'+filename;
+				var file = FileActions.getCurrentDir()+'/'+filename;
 				// Check if drop down is already visible for a different file
 				if (($('#dropdown').length > 0) && $('#dropdown').hasClass('drop-versions') ) {
 					if (file != $('#dropdown').data('file')) {

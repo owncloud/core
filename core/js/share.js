@@ -25,7 +25,7 @@ OC.Share={
 						if (file.length > 0) {
 							$(file).find('.fileactions .action').filterAttr('data-action', 'Share').find('img').attr('src', image);
 						}
-						var dir = $('#dir').val();
+						var dir = FileActions.getCurrentDir();
 						if (dir.length > 1) {
 							var last = '';
 							var path = dir;
@@ -49,10 +49,10 @@ OC.Share={
 	updateIcon:function(itemType, itemSource) {
 		if (itemType == 'file' || itemType == 'folder') {
 			var filename = $('tr').filterAttr('data-id', String(itemSource)).data('file');
-			if ($('#dir').val() == '/') {
-				itemSource = $('#dir').val() + filename;
+			if (FileActions.getCurrentDir() == '/') {
+				itemSource = FileActions.getCurrentDir() + filename;
 			} else {
-				itemSource = $('#dir').val() + '/' + filename;
+				itemSource = FileActions.getCurrentDir() + '/' + filename;
 			}
 		}
 		var shares = false;
@@ -88,10 +88,10 @@ OC.Share={
 		// Switch file sources to path to check if status is set
 		if (itemType == 'file' || itemType == 'folder') {
 			var filename = $('tr').filterAttr('data-id', String(itemSource)).data('file');
-			if ($('#dir').val() == '/') {
-				var item = $('#dir').val() + filename;
+			if (FileActions.getCurrentDir() == '/') {
+				var item = FileActions.getCurrentDir() + filename;
 			} else {
-				var item = $('#dir').val() + '/' + filename;
+				var item = FileActions.getCurrentDir() + '/' + filename;
 			}
 			if (item.substring(0, 8) != '/Shared/') {
 				checkReshare = false;
@@ -334,10 +334,10 @@ OC.Share={
 			//fallback to pre token link
 			var filename = $('tr').filterAttr('data-id', String(itemSource)).data('file');
 			var type = $('tr').filterAttr('data-id', String(itemSource)).data('type');
-			if ($('#dir').val() == '/') {
-				var file = $('#dir').val() + filename;
+			if (FileActions.getCurrentDir() == '/') {
+				var file = FileActions.getCurrentDir() + filename;
 			} else {
-				var file = $('#dir').val() + '/' + filename;
+				var file = FileActions.getCurrentDir() + '/' + filename;
 			}
 			file = '/'+OC.currentUser+'/files'+file;
 			var link = parent.location.protocol+'//'+location.host+OC.linkTo('', 'public.php')+'?service=files&'+type+'='+encodeURIComponent(file);
