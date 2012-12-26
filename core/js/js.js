@@ -74,7 +74,7 @@ function escapeHTML(s) {
 /**
 * Get the path to download a file
 * @param file The filename
-* @param dir The directory the file is in - e.g. $('#dir').val()
+* @param dir The directory the file is in - e.g. FileActions.getCurrentDir()
 * @return string
 */
 function fileDownloadPath(dir, file) {
