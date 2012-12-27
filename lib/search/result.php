@@ -7,6 +7,7 @@ class OC_Search_Result{
 	public $text;
 	public $link;
 	public $type;
+	public $fileData;
 
 	/**
 	 * Create a new search result
