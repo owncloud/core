@@ -1,6 +1,6 @@
 <?php
 /**
- * a result of a search
+ * A result of a search
  */
 class OC_Search_Result{
 	public $name;
@@ -9,16 +9,18 @@ class OC_Search_Result{
 	public $type;
 
 	/**
-	 * create a new search result
+	 * Create a new search result
 	 * @param string $name short name for the result
 	 * @param string $text some more information about the result
 	 * @param string $link link for the result
 	 * @param string $type the type of result as human readable string ('File', 'Music', etc)
+         * @param array $fileData file metadata returned from database (e.g. ctime, mtime, path, etc.)
 	 */
-	public function __construct($name, $text, $link, $type) {
+	public function __construct($name, $text, $link, $type, $fileData = null) {
 		$this->name=$name;
 		$this->text=$text;
 		$this->link=$link;
 		$this->type=$type;
+                $this->fileData=$fileData;
 	}
 }
