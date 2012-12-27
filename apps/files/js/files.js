@@ -170,7 +170,7 @@ $(document).ready(function() {
 
 	$('.download').click('click',function(event) {
 		var files=getSelectedFiles('name').join(';');
-		var dir=$('#dir').val()||'/';
+		var dir=FileActions.getCurrentDir()||'/';
 		$('#notification').text(t('files','generating ZIP-file, it may take some time.'));
 		$('#notification').fadeIn();
 		// use special download URL if provided, e.g. for public shared files
@@ -511,7 +511,7 @@ $(document).ready(function() {
 		input.change(function(){
 			if (type != 'web' && Files.containsInvalidCharacters($(this).val())) {
 				return;
-			} else if( type == 'folder' && $('#dir').val() == '/' && $(this).val() == 'Shared') {
+			} else if( type == 'folder' && FileActions.getCurrentDir() == '/' && $(this).val() == 'Shared') {
 				$('#notification').text(t('files','Invalid folder name. Usage of "Shared" is reserved by Owncloud'));
 				$('#notification').fadeIn();
 				return;
@@ -530,7 +530,7 @@ $(document).ready(function() {
 				case 'file':
 					$.post(
 						OC.filePath('files','ajax','newfile.php'),
-						{dir:$('#dir').val(),filename:name},
+						{dir:FileActions.getCurrentDir(),filename:name},
 						function(result){
 							if (result.status == 'success') {
 								var date=new Date();
@@ -550,7 +550,7 @@ $(document).ready(function() {
 				case 'folder':
 					$.post(
 						OC.filePath('files','ajax','newfolder.php'),
-						{dir:$('#dir').val(),foldername:name},
+						{dir:FileActions.getCurrentDir(),foldername:name},
 						function(result){
 							if (result.status == 'success') {
 								var date=new Date();
@@ -580,7 +580,7 @@ $(document).ready(function() {
 					$('#uploadprogressbar').progressbar({value:0});
 					$('#uploadprogressbar').fadeIn();
 
-					var eventSource=new OC.EventSource(OC.filePath('files','ajax','newfile.php'),{dir:$('#dir').val(),source:name,filename:localName});
+					var eventSource=new OC.EventSource(OC.filePath('files','ajax','newfile.php'),{dir:FileActions.getCurrentDir(),source:name,filename:localName});
 					eventSource.listen('progress',function(progress){
 						$('#uploadprogressbar').progressbar('value',progress);
 					});
@@ -734,7 +734,7 @@ var folderDropOptions={
 	drop: function( event, ui ) {
 		var file=ui.draggable.parent().data('file');
 		var target=$(this).find('.nametext').text().trim();
-		var dir=$('#dir').val();
+		var dir=FileActions.getCurrentDir();
 		$.ajax({
 			url: OC.filePath('files', 'ajax', 'move.php'),
 			data: "dir="+encodeURIComponent(dir)+"&file="+encodeURIComponent(file)+'&target='+encodeURIComponent(dir)+'/'+encodeURIComponent(target),
@@ -750,7 +750,7 @@ var crumbDropOptions={
 	drop: function( event, ui ) {
 		var file=ui.draggable.parent().data('file');
 		var target=$(this).data('dir');
-		var dir=$('#dir').val();
+		var dir=FileActions.getCurrentDir();
 		while(dir.substr(0,1)=='/'){//remove extra leading /'s
 				dir=dir.substr(1);
 		}

@@ -1,6 +1,15 @@
 <?php
-
+/**
+ * Search file names and classify by mime type
+ */
 class OC_Search_Provider_File extends OC_Search_Provider{
+    
+	/**
+	 * Search through file names in the database and return the classified
+	 * results by mime type
+	 * @param string $query
+	 * @return OC_Search_Result
+	 */
 	function search($query) {
 		$files=OC_FileCache::search($query, true);
 		$results=array();
@@ -8,7 +17,6 @@ class OC_Search_Provider_File extends OC_Search_Provider{
 		foreach($files as $fileData) {
 			$path = $fileData['path'];
 			$mime = $fileData['mimetype'];
-
 			$name = basename($path);
 			$text = '';
 			$skip = false;
@@ -37,7 +45,7 @@ class OC_Search_Provider_File extends OC_Search_Provider{
 				}
 			}
 			if(!$skip) {
-				$results[] = new OC_Search_Result($name, $text, $link, $type);
+				$results[] = new OC_Search_Result($name, $text, $link, $type, $fileData);
 			}
 		}
 		return $results;
