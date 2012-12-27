@@ -29,7 +29,7 @@
 					<input type="hidden" name="requesttoken" value="<?php echo $_['requesttoken'] ?>" id="requesttoken">
 					<input type="hidden" class="max_human_file_size"
 						   value="(max <?php echo $_['uploadMaxHumanFilesize']; ?>)">
-					<input type="hidden" name="dir" value="<?php echo $_['dir'] ?>" id="dir">
+					<input type="hidden" name="dir" value="<?php echo $_['dir'] ?>" id="dir"><!-- use of $('#dir').val() is deprecated; use FileActions.getCurrentDir() instead -->
 					<input type="file" id="file_upload_start" name='files[]'/>
 					<a href="#" class="svg" onclick="return false;"
 					   title="<?php echo $l->t('Upload') . ' max. '.$_['uploadMaxHumanFilesize'] ?>"></a>

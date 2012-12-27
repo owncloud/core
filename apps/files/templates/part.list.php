@@ -21,6 +21,7 @@
 			$directory = str_replace('%2F', '/', $directory); ?>
 			<tr data-id="<?php echo $file['id']; ?>"
 				data-file="<?php echo $name;?>"
+				data-dir="<?php echo $directory;?>"
 				data-type="<?php echo ($file['type'] == 'dir')?'dir':'file'?>"
 				data-mime="<?php echo $file['mimetype']?>"
 				data-size='<?php echo $file['size'];?>'
