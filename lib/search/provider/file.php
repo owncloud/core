@@ -1,6 +1,14 @@
 <?php
-
+/**
+ * This provider only searches file names
+ */
 class OC_Search_Provider_File extends OC_Search_Provider{
+    
+        /**
+         * Search the database for files with the given file name
+         * @param string $query
+         * @return OC_Search_Result
+         */
 	function search($query) {
 		$files=OC_FileCache::search($query, true);
 		$results=array();
@@ -8,7 +16,6 @@ class OC_Search_Provider_File extends OC_Search_Provider{
 		foreach($files as $fileData) {
 			$path = $fileData['path'];
 			$mime = $fileData['mimetype'];
-
 			$name = basename($path);
 			$text = '';
 			$skip = false;
@@ -37,7 +44,7 @@ class OC_Search_Provider_File extends OC_Search_Provider{
 				}
 			}
 			if(!$skip) {
-				$results[] = new OC_Search_Result($name, $text, $link, $type);
+				$results[] = new OC_Search_Result($name, $text, $link, $type, $fileData);
 			}
 		}
 		return $results;
