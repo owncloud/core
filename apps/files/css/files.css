@@ -76,7 +76,7 @@ table td.filename input.filename { width:100%; cursor:text; }
 table td.filename a, table td.login, table td.logout, table td.download, table td.upload, table td.create, table td.delete { padding:.2em .5em .5em 0; }
 table td.filename .nametext, .uploadtext, .modified { float:left; padding:.3em 0; }
 /* TODO fix usability bug (accidental file/folder selection) */
-table td.filename .nametext { overflow:hidden; text-overflow:ellipsis; }
+table td.filename .nametext { overflow:hidden; text-overflow:ellipsis; width:40em; }
 table td.filename .uploadtext { font-weight:normal; margin-left:.5em; }
 table td.filename form { font-size:.85em; margin-left:3em; margin-right:3em; }
 table thead.fixed tr{ position:fixed; top:6.5em; z-index:49; -moz-box-shadow:0 -3px 7px #ddd; -webkit-box-shadow:0 -3px 7px #ddd; box-shadow:0 -3px 7px #ddd; }
