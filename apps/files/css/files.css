@@ -82,7 +82,7 @@ table td.filename input.filename { width:100%; cursor:text; }
 table td.filename a, table td.login, table td.logout, table td.download, table td.upload, table td.create, table td.delete { padding:.2em .5em .5em 0; }
 table td.filename .nametext, .uploadtext, .modified { float:left; padding:.3em 0; }
 /* TODO fix usability bug (accidental file/folder selection) */
-table td.filename .nametext { overflow:hidden; text-overflow:ellipsis; }
+table td.filename .nametext { overflow:hidden; text-overflow:ellipsis; width:40em; }
 table td.filename .uploadtext { font-weight:normal; margin-left:.5em; }
 table td.filename form { font-size:.85em; margin-left:3em; margin-right:3em; }
 #fileList tr td.filename>input[type="checkbox"]:first-child { -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; filter:alpha(opacity=0); opacity:0; float:left; margin:.7em 0 0 1em; /* bigger clickable area doesn’t work in FF width:2.8em; height:2.4em;*/ -webkit-transition:opacity 200ms; -moz-transition:opacity 200ms; -o-transition:opacity 200ms; transition:opacity 200ms; }
