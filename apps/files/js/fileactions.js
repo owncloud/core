@@ -188,6 +188,9 @@ FileActions.register('all', 'Rename', OC.PERMISSION_UPDATE, function () {
 
 FileActions.register('dir', 'Open', OC.PERMISSION_READ, '', function (filename) {
 	var dir=$('#dir').val()||'/';
+	if (dir.lastIndexOf('/')!==dir.length-1) {
+		dir += '/';
+	}
 	window.location = OC.Router.generate('files_browse', {dir: dir + filename});
 });
 
