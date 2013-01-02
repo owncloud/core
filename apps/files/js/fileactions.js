@@ -150,7 +150,8 @@ $(document).ready(function () {
 	FileActions.register(downloadScope, 'Download', OC.PERMISSION_READ, function () {
 		return OC.imagePath('core', 'actions/download');
 	}, function (filename) {
-		window.location = OC.Router.generate('download', {files: filename, dir: $('#dir').val()} );
+		var dir=$('#dir').val()||'/';
+		window.location = OC.Router.generate('download', {files: filename, dir: dir} );
 	});
 
 	$('#fileList tr').each(function(){
@@ -186,7 +187,8 @@ FileActions.register('all', 'Rename', OC.PERMISSION_UPDATE, function () {
 });
 
 FileActions.register('dir', 'Open', OC.PERMISSION_READ, '', function (filename) {
-	window.location = OC.Router.generate('files_browse', {dir: $('#dir').val() + '/' + filename});
+	var dir=$('#dir').val()||'/';
+	window.location = OC.Router.generate('files_browse', {dir: dir + filename});
 });
 
 FileActions.setDefault('dir', 'Open');
