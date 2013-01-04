@@ -38,36 +38,40 @@ OCP\App::setActiveNavigationEntry('files_index');
 $dir = isset($_GET['dir']) ? stripslashes($_GET['dir']) : '';
 // Redirect if directory does not exist
 if (!OC_Filesystem::is_dir($dir . '/')) {
-    header('Location: ' . $_SERVER['SCRIPT_NAME'] . '');
-    exit();
+	header('Location: ' . $_SERVER['SCRIPT_NAME'] . '');
+	exit();
 }
-
 $files = array();
-foreach (OC_Files::getdirectorycontent($dir) as $i) {
-    $i['date'] = OCP\Util::formatDate($i['mtime']);
-    if ($i['type'] == 'file') {
-        $fileinfo = pathinfo($i['name']);
-        $i['basename'] = $fileinfo['filename'];
-        if (!empty($fileinfo['extension'])) {
-            $i['extension'] = '.' . $fileinfo['extension'];
-        } else {
-            $i['extension'] = '';
-        }
-    }
-    if ($i['directory'] == '/') {
-        $i['directory'] = '';
-    }
-    $files[] = $i;
+foreach( OC_Files::getdirectorycontent( $dir ) as $i ) {
+	$i['date'] = OCP\Util::formatDate($i['mtime'] );
+	if ($i['type'] == 'file') {
+		$fileinfo = pathinfo($i['name']);
+		$i['basename'] = $fileinfo['filename'];
+		if (!empty($fileinfo['extension'])) {
+			$i['extension'] = '.' . $fileinfo['extension'];
+		} else {
+			$i['extension'] = '';
+		}
+		$i['route'] = OC::getRouter()->generate('download', array('dir'=>$i['directory'], 'files' => $i['name']));
+	} else {
+		$i['route'] = OC::getRouter()->generate('files_browse', array('dir'=>$i['directory'] . '/' . $i['name']));
+	}
+	if ($i['directory'] == '/') {
+		$i['directory'] = '';
+	}
+	
+	$files[] = $i;
 }
 
 // Make breadcrumb
 $breadcrumb = array();
 $pathtohere = '';
 foreach (explode('/', $dir) as $i) {
-    if ($i != '') {
-        $pathtohere .= '/' . $i;
-        $breadcrumb[] = array('dir' => $pathtohere, 'name' => $i);
-    }
+	if ( $i != '' ) {
+		$pathtohere .= '/'.$i;
+		$route = OC::getRouter()->generate('files_browse', array('dir'=>$pathtohere));
+		$breadcrumb[] = array( 'dir' => $pathtohere, 'name' => $i, 'route' => $route );
+	}
 }
 
 // make breadcrumb und filelist markup

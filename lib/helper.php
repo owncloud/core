@@ -186,7 +186,11 @@ class OC_Helper {
 	 * Returns the path to the image of this file type.
 	 */
 	public static function mimetypeIcon( $mimetype ) {
-		$alias=array('application/xml'=>'code/xml');
+		$alias=array(
+			'application/xml'=>'code/xml',
+			'httpd/unix-directory'=>'dir',
+			'inode/directory'=>'dir'
+			);
 		if(isset($alias[$mimetype])) {
 			$mimetype=$alias[$mimetype];
 		}
