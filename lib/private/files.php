@@ -42,6 +42,7 @@ class OC_Files {
 	 * @param string $dir
 	 * @param string $file ; separated list of files to download
 	 * @param boolean $only_header ; boolean to only send header of the request
+	 * @internal param \file $file ; separated list of files to download
 	 */
 	public static function get($dir, $files, $only_header = false) {
 		$xsendfile = false;
@@ -59,18 +60,14 @@ class OC_Files {
 			self::validateZipDownload($dir, $files);
 			$executionTime = intval(ini_get('max_execution_time'));
 			set_time_limit(0);
-			$zip = new ZipArchive();
 			$filename = OC_Helper::tmpFile('.zip');
-			if ($zip->open($filename, ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE)!==true) {
-				$l = OC_L10N::get('lib');
-				throw new Exception($l->t('cannot open "%s"', array($filename)));
-			}
+			$zip = new OC_Archive_ZIP($filename);
 			foreach ($files as $file) {
 				$file = $dir . '/' . $file;
 				if (\OC\Files\Filesystem::is_file($file)) {
 					$tmpFile = \OC\Files\Filesystem::toTmpFile($file);
 					self::$tmpFiles[] = $tmpFile;
-					$zip->addFile($tmpFile, basename($file));
+					$zip->addFile(basename($file), $tmpFile);
 				} elseif (\OC\Files\Filesystem::is_dir($file)) {
 					self::zipAddDir($file, $zip);
 				}
@@ -91,12 +88,8 @@ class OC_Files {
 			self::validateZipDownload($dir, $files);
 			$executionTime = intval(ini_get('max_execution_time'));
 			set_time_limit(0);
-			$zip = new ZipArchive();
 			$filename = OC_Helper::tmpFile('.zip');
-			if ($zip->open($filename, ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE)!==true) {
-				$l = OC_L10N::get('lib');
-				throw new Exception($l->t('cannot open "%s"', array($filename)));
-			}
++			$zip = new OC_Archive_ZIP($filename);
 			$file = $dir . '/' . $files;
 			self::zipAddDir($file, $zip);
 			$zip->close();
@@ -199,9 +192,15 @@ class OC_Files {
 		}
 	}
 
+	/**
+	 * Add directory to ZIP file
+	 * @param $dir
+	 * @param OC_Archive_ZIP $zip
+	 * @param string $internalDir
+	 */
 	public static function zipAddDir($dir, $zip, $internalDir='') {
 		$dirname=basename($dir);
-		$zip->addEmptyDir($internalDir.$dirname);
+		$zip->addFolder($internalDir.$dirname);
 		$internalDir.=$dirname.='/';
 		$files=OC_Files::getDirectoryContent($dir);
 		foreach($files as $file) {
@@ -210,7 +209,7 @@ class OC_Files {
 			if(\OC\Files\Filesystem::is_file($file)) {
 				$tmpFile=\OC\Files\Filesystem::toTmpFile($file);
 				OC_Files::$tmpFiles[]=$tmpFile;
-				$zip->addFile($tmpFile, $internalDir.$filename);
+				$zip->addFile($internalDir.$filename, $tmpFile);
 			}elseif(\OC\Files\Filesystem::is_dir($file)) {
 				self::zipAddDir($file, $zip, $internalDir);
 			}
