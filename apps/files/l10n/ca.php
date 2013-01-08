@@ -1,4 +1,5 @@
 <?php $TRANSLATIONS = array(
+"No file was uploaded. Unknown error" => "No s'ha carregat cap fitxer. Error desconegut",
 "There is no error, the file uploaded with success" => "El fitxer s'ha pujat correctament",
 "The uploaded file exceeds the upload_max_filesize directive in php.ini: " => "L’arxiu que voleu carregar supera el màxim definit en la directiva upload_max_filesize del php.ini:",
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form" => "El fitxer de pujada excedeix la directiva MAX_FILE_SIZE especificada al formulari HTML",
@@ -6,6 +7,8 @@
 "No file was uploaded" => "El fitxer no s'ha pujat",
 "Missing a temporary folder" => "S'ha perdut un fitxer temporal",
 "Failed to write to disk" => "Ha fallat en escriure al disc",
+"Not enough space available" => "No hi ha prou espai disponible",
+"Invalid directory." => "Directori no vàlid.",
 "Files" => "Fitxers",
 "Unshare" => "Deixa de compartir",
 "Delete" => "Suprimeix",
@@ -19,6 +22,8 @@
 "replaced {new_name} with {old_name}" => "s'ha substituït {old_name} per {new_name}",
 "unshared {files}" => "no compartits {files}",
 "deleted {files}" => "eliminats {files}",
+"'.' is an invalid file name." => "'.' és un nom no vàlid per un fitxer.",
+"File name cannot be empty." => "El nom del fitxer no pot ser buit.",
 "Invalid name, '\\', '/', '<', '>', ':', '\"', '|', '?' and '*' are not allowed." => "El nóm no és vàlid, '\\', '/', '<', '>', ':', '\"', '|', '?' i '*' no estan permesos.",
 "generating ZIP-file, it may take some time." => "s'estan generant fitxers ZIP, pot trigar una estona.",
 "Unable to upload your file as it is a directory or has 0 bytes" => "No es pot pujar el fitxer perquè és una carpeta o té 0 bytes",

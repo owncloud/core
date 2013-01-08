@@ -149,7 +149,7 @@ var FileList={
 			event.stopPropagation();
 			event.preventDefault();
 			var newname=input.val();
-			if (Files.containsInvalidCharacters(newname)) {
+			if (!Files.isFileNameValid(newname)) {
 				return false;
 			}
 			if (newname != name) {
@@ -288,7 +288,7 @@ var FileList={
 	},
 	finishDelete:function(ready,sync){
 		if(!FileList.deleteCanceled && FileList.deleteFiles){
-			var fileNames=FileList.deleteFiles.join(';');
+			var fileNames=JSON.stringify(FileList.deleteFiles);
 			$.ajax({
 				url: OC.filePath('files', 'ajax', 'delete.php'),
 				async:!sync,

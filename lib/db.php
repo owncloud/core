@@ -445,9 +445,9 @@ class OC_DB {
 		 * http://www.sqlite.org/lang_createtable.html
 		 * http://docs.oracle.com/cd/B19306_01/server.102/b14200/functions037.htm
 		 */
-		 if( $CONFIG_DBTYPE == 'pgsql' ) { //mysql support it too but sqlite doesn't
-				 $content = str_replace( '<default>0000-00-00 00:00:00</default>', '<default>CURRENT_TIMESTAMP</default>', $content );
-		 }
+		if( $CONFIG_DBTYPE == 'pgsql' ) { //mysql support it too but sqlite doesn't
+			$content = str_replace( '<default>0000-00-00 00:00:00</default>', '<default>CURRENT_TIMESTAMP</default>', $content );
+		}
 
 		file_put_contents( $file2, $content );
 
@@ -495,8 +495,9 @@ class OC_DB {
 		if (PEAR::isError($previousSchema)) {
 			$error = $previousSchema->getMessage();
 			$detail = $previousSchema->getDebugInfo();
-			OC_Log::write('core', 'Failed to get existing database structure for upgrading ('.$error.', '.$detail.')', OC_Log::FATAL);
-			return false;
+			$message = 'Failed to get existing database structure for updating ('.$error.', '.$detail.')';
+			OC_Log::write('core', $message, OC_Log::FATAL);
+			throw new Exception($message);
 		}
 
 		// Make changes and save them to an in-memory file
@@ -523,8 +524,9 @@ class OC_DB {
 		if (PEAR::isError($op)) {
 			$error = $op->getMessage();
 			$detail = $op->getDebugInfo();
-			OC_Log::write('core', 'Failed to update database structure ('.$error.', '.$detail.')', OC_Log::FATAL);
-			return false;
+			$message = 'Failed to update database structure ('.$error.', '.$detail.')';
+			OC_Log::write('core', $message, OC_Log::FATAL);
+			throw new Exception($message);
 		}
 		return true;
 	}

@@ -137,6 +137,20 @@ class OC_App{
 
 		OC_Appconfig::setValue($app, 'types', $appTypes);
 	}
+	
+	/**
+	 * check if app is shipped
+	 * @param string $appid the id of the app to check
+	 * @return bool
+	 */
+	public static function isShipped($appid){
+		$info = self::getAppInfo($appid);
+		if(isset($info['shipped']) && $info['shipped']=='true'){
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	/**
 	 * get all enabled apps
@@ -597,16 +611,16 @@ class OC_App{
 				$app1[$i]['internal'] = $app1[$i]['active'] = 0;
 
 				// rating img
-				if($app['score']>=0     and $app['score']<5) 	$img=OC_Helper::imagePath( "core", "rating/s1.png" );
-				elseif($app['score']>=5 and $app['score']<15) 	$img=OC_Helper::imagePath( "core", "rating/s2.png" );
-				elseif($app['score']>=15 and $app['score']<25) 	$img=OC_Helper::imagePath( "core", "rating/s3.png" );
-				elseif($app['score']>=25 and $app['score']<35) 	$img=OC_Helper::imagePath( "core", "rating/s4.png" );
-				elseif($app['score']>=35 and $app['score']<45) 	$img=OC_Helper::imagePath( "core", "rating/s5.png" );
-				elseif($app['score']>=45 and $app['score']<55) 	$img=OC_Helper::imagePath( "core", "rating/s6.png" );
-				elseif($app['score']>=55 and $app['score']<65) 	$img=OC_Helper::imagePath( "core", "rating/s7.png" );
-				elseif($app['score']>=65 and $app['score']<75) 	$img=OC_Helper::imagePath( "core", "rating/s8.png" );
-				elseif($app['score']>=75 and $app['score']<85) 	$img=OC_Helper::imagePath( "core", "rating/s9.png" );
-				elseif($app['score']>=85 and $app['score']<95) 	$img=OC_Helper::imagePath( "core", "rating/s10.png" );
+				if($app['score']>=0     and $app['score']<5)	$img=OC_Helper::imagePath( "core", "rating/s1.png" );
+				elseif($app['score']>=5 and $app['score']<15)	$img=OC_Helper::imagePath( "core", "rating/s2.png" );
+				elseif($app['score']>=15 and $app['score']<25)	$img=OC_Helper::imagePath( "core", "rating/s3.png" );
+				elseif($app['score']>=25 and $app['score']<35)	$img=OC_Helper::imagePath( "core", "rating/s4.png" );
+				elseif($app['score']>=35 and $app['score']<45)	$img=OC_Helper::imagePath( "core", "rating/s5.png" );
+				elseif($app['score']>=45 and $app['score']<55)	$img=OC_Helper::imagePath( "core", "rating/s6.png" );
+				elseif($app['score']>=55 and $app['score']<65)	$img=OC_Helper::imagePath( "core", "rating/s7.png" );
+				elseif($app['score']>=65 and $app['score']<75)	$img=OC_Helper::imagePath( "core", "rating/s8.png" );
+				elseif($app['score']>=75 and $app['score']<85)	$img=OC_Helper::imagePath( "core", "rating/s9.png" );
+				elseif($app['score']>=85 and $app['score']<95)	$img=OC_Helper::imagePath( "core", "rating/s10.png" );
 				elseif($app['score']>=95 and $app['score']<100)	$img=OC_Helper::imagePath( "core", "rating/s11.png" );
 
 				$app1[$i]['score'] = '<img src="'.$img.'"> Score: '.$app['score'].'%';
@@ -634,12 +648,15 @@ class OC_App{
 		if ($currentVersion) {
 			$installedVersion = $versions[$app];
 			if (version_compare($currentVersion, $installedVersion, '>')) {
+				$info = self::getAppInfo($app);
 				OC_Log::write($app, 'starting app upgrade from '.$installedVersion.' to '.$currentVersion, OC_Log::DEBUG);
 				try {
 					OC_App::updateApp($app);
+					OC_Hook::emit('update', 'success', 'Updated '.$info['name'].' app');
 				}
 				catch (Exception $e) {
 					echo 'Failed to upgrade "'.$app.'". Exception="'.$e->getMessage().'"';
+					OC_Hook::emit('update', 'failure', 'Failed to update '.$info['name'].' app: '.$e->getMessage());
 					die;
 				}
 				OC_Appconfig::setValue($app, 'installed_version', OC_App::getAppVersion($app));
@@ -664,6 +681,7 @@ class OC_App{
 			if(!isset($info['require']) or (($version[0].'.'.$version[1])>$info['require'])) {
 				OC_Log::write('core', 'App "'.$info['name'].'" ('.$app.') can\'t be used because it is not compatible with this version of ownCloud', OC_Log::ERROR);
 				OC_App::disable( $app );
+				OC_Hook::emit('update', 'success', 'Disabled '.$info['name'].' app because it is not compatible');
 			}
 		}
 	}

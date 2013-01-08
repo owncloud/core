@@ -26,17 +26,29 @@ Files={
 		});
 		procesSelection();
 	},
-	containsInvalidCharacters:function (name) {
+    isFileNameValid:function (name) {
+        if (name === '.') {
+            $('#notification').text(t('files', "'.' is an invalid file name."));
+            $('#notification').fadeIn();
+            return false;
+        }
+        if (name.length == 0) {
+            $('#notification').text(t('files', "File name cannot be empty."));
+            $('#notification').fadeIn();
+            return false;
+        }
+
+        // check for invalid characters
 		var invalid_characters = ['\\', '/', '<', '>', ':', '"', '|', '?', '*'];
 		for (var i = 0; i < invalid_characters.length; i++) {
 			if (name.indexOf(invalid_characters[i]) != -1) {
 				$('#notification').text(t('files', "Invalid name, '\\', '/', '<', '>', ':', '\"', '|', '?' and '*' are not allowed."));
 				$('#notification').fadeIn();
-				return true;
+				return false;
 			}
 		}
 		$('#notification').fadeOut();
-		return false;
+		return true;
 	}
 };
 $(document).ready(function() {
@@ -203,6 +215,9 @@ $(document).ready(function() {
 				var files = data.files;
 				var totalSize=0;
 				if(files){
+					if (FileList.lastAction) {
+						FileList.lastAction();
+					}
 					for(var i=0;i<files.length;i++){
 						if(files[i].size ==0 && files[i].type== '')
 						{
@@ -506,12 +521,15 @@ $(document).ready(function() {
 		$(this).append(input);
 		input.focus();
 		input.change(function(){
-			if (type != 'web' && Files.containsInvalidCharacters($(this).val())) {
+			if (type != 'web' && !Files.isFileNameValid($(this).val())) {
 				return;
 			} else if( type == 'folder' && $('#dir').val() == '/' && $(this).val() == 'Shared') {
 				$('#notification').text(t('files','Invalid folder name. Usage of "Shared" is reserved by Owncloud'));
 				$('#notification').fadeIn();
 				return;
+			}
+			if (FileList.lastAction) {
+				FileList.lastAction();
 			}
 			var name = getUniqueName($(this).val());
 			if (name != $(this).val()) {
@@ -770,22 +788,14 @@ function procesSelection(){
 	var selected=getSelectedFiles();
 	var selectedFiles=selected.filter(function(el){return el.type=='file'});
 	var selectedFolders=selected.filter(function(el){return el.type=='dir'});
-	if(selectedFiles.length==0 && selectedFolders.length==0){
+	if(selectedFiles.length==0 && selectedFolders.length==0) {
 		$('#headerName>span.name').text(t('files','Name'));
 		$('#headerSize').text(t('files','Size'));
 		$('#modified').text(t('files','Modified'));
-		$('th').removeClass('multiselect');
+		$('table').removeClass('multiselect');
 		$('.selectedActions').hide();
-		$('thead').removeClass('fixed');
-		$('#headerName').css('width','auto');
-		$('#headerSize').css('width','auto');
-		$('#headerDate').css('width','auto');
-		$('table').css('padding-top','0');
-	}else{
-		var width={name:$('#headerName').css('width'),size:$('#headerSize').css('width'),date:$('#headerDate').css('width')};
-		$('#headerName').css('width',width.name);
-		$('#headerSize').css('width',width.size);
-		$('#headerDate').css('width',width.date);
+	}
+	else {
 		$('.selectedActions').show();
 		var totalSize=0;
 		for(var i=0;i<selectedFiles.length;i++){
@@ -817,7 +827,7 @@ function procesSelection(){
 		}
 		$('#headerName>span.name').text(selection);
 		$('#modified').text('');
-		$('th').addClass('multiselect');
+		$('table').addClass('multiselect');
 	}
 }
 
@@ -853,7 +863,7 @@ function getMimeIcon(mime, ready){
 	if(getMimeIcon.cache[mime]){
 		ready(getMimeIcon.cache[mime]);
 	}else{
-		$.get( OC.filePath('files','ajax','mimeicon.php')+'&mime='+mime, function(path){
+		$.get( OC.filePath('files','ajax','mimeicon.php'), {mime: mime}, function(path){
 			getMimeIcon.cache[mime]=path;
 			ready(getMimeIcon.cache[mime]);
 		});

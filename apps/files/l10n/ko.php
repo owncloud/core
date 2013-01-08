@@ -1,4 +1,5 @@
 <?php $TRANSLATIONS = array(
+"No file was uploaded. Unknown error" => "파일이 업로드되지 않았습니다. 알 수 없는 오류입니다",
 "There is no error, the file uploaded with success" => "업로드에 성공하였습니다.",
 "The uploaded file exceeds the upload_max_filesize directive in php.ini: " => "업로드한 파일이 php.ini의 upload_max_filesize보다 큽니다:",
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form" => "업로드한 파일이 HTML 문서에 지정한 MAX_FILE_SIZE보다 더 큼",
@@ -6,6 +7,8 @@
 "No file was uploaded" => "업로드된 파일 없음",
 "Missing a temporary folder" => "임시 폴더가 사라짐",
 "Failed to write to disk" => "디스크에 쓰지 못했습니다",
+"Not enough space available" => "여유공간이 부족합니다",
+"Invalid directory." => "올바르지 않은 디렉토리입니다.",
 "Files" => "파일",
 "Unshare" => "공유 해제",
 "Delete" => "삭제",
@@ -19,6 +22,8 @@
 "replaced {new_name} with {old_name}" => "{old_name}이(가) {new_name}(으)로 대체됨",
 "unshared {files}" => "{files} 공유 해제됨",
 "deleted {files}" => "{files} 삭제됨",
+"'.' is an invalid file name." => "'.' 는 올바르지 않은 파일 이름 입니다.",
+"File name cannot be empty." => "파일이름은 공란이 될 수 없습니다.",
 "Invalid name, '\\', '/', '<', '>', ':', '\"', '|', '?' and '*' are not allowed." => "폴더 이름이 올바르지 않습니다. 이름에 문자 '\\', '/', '<', '>', ':', '\"', '|', '? ', '*'는 사용할 수 없습니다.",
 "generating ZIP-file, it may take some time." => "ZIP 파일을 생성하고 있습니다. 시간이 걸릴 수도 있습니다.",
 "Unable to upload your file as it is a directory or has 0 bytes" => "이 파일은 디렉터리이거나 비어 있기 때문에 업로드할 수 없습니다",

@@ -1,4 +1,5 @@
 <?php $TRANSLATIONS = array(
+"No file was uploaded. Unknown error" => "Er was geen bestand geladen.  Onbekende fout",
 "There is no error, the file uploaded with success" => "Geen fout opgetreden, bestand successvol geupload.",
 "The uploaded file exceeds the upload_max_filesize directive in php.ini: " => "Het geüploade bestand overscheidt de upload_max_filesize optie in php.ini:",
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form" => "Het geüploade bestand is groter dan de MAX_FILE_SIZE richtlijn die is opgegeven in de HTML-formulier",
@@ -6,6 +7,8 @@
 "No file was uploaded" => "Geen bestand geüpload",
 "Missing a temporary folder" => "Een tijdelijke map mist",
 "Failed to write to disk" => "Schrijven naar schijf mislukt",
+"Not enough space available" => "Niet genoeg ruimte beschikbaar",
+"Invalid directory." => "Ongeldige directory.",
 "Files" => "Bestanden",
 "Unshare" => "Stop delen",
 "Delete" => "Verwijder",
@@ -19,6 +22,8 @@
 "replaced {new_name} with {old_name}" => "verving {new_name} met {old_name}",
 "unshared {files}" => "delen gestopt {files}",
 "deleted {files}" => "verwijderde {files}",
+"'.' is an invalid file name." => "'.' is een ongeldige bestandsnaam.",
+"File name cannot be empty." => "Bestandsnaam kan niet leeg zijn.",
 "Invalid name, '\\', '/', '<', '>', ':', '\"', '|', '?' and '*' are not allowed." => "Onjuiste naam; '\\', '/', '<', '>', ':', '\"', '|', '?' en '*' zijn niet toegestaan.",
 "generating ZIP-file, it may take some time." => "aanmaken ZIP-file, dit kan enige tijd duren.",
 "Unable to upload your file as it is a directory or has 0 bytes" => "uploaden van de file mislukt, het is of een directory of de bestandsgrootte is 0 bytes",

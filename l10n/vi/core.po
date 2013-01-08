@@ -12,15 +12,39 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2012-11-21 00:01+0100\n"
-"PO-Revision-Date: 2012-11-20 05:31+0000\n"
-"Last-Translator: mattheu_9x <mattheu.9x@gmail.com>\n"
+"POT-Creation-Date: 2013-01-07 00:04+0100\n"
+"PO-Revision-Date: 2013-01-06 23:05+0000\n"
+"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Vietnamese (http://www.transifex.com/projects/p/owncloud/language/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#: ajax/share.php:84
+#, php-format
+msgid "User %s shared a file with you"
+msgstr ""
+
+#: ajax/share.php:86
+#, php-format
+msgid "User %s shared a folder with you"
+msgstr ""
+
+#: ajax/share.php:88
+#, php-format
+msgid ""
+"User %s shared the file \"%s\" with you. It is available for download here: "
+"%s"
+msgstr ""
+
+#: ajax/share.php:90
+#, php-format
+msgid ""
+"User %s shared the folder \"%s\" with you. It is available for download "
+"here: %s"
+msgstr ""
 
 #: ajax/vcategories/add.php:26 ajax/vcategories/edit.php:25
 msgid "Category type not provided."
@@ -142,8 +166,8 @@ msgid "The object type is not specified."
 msgstr "Loại đối tượng không được chỉ định."
 
 #: js/oc-vcategories.js:95 js/oc-vcategories.js:125 js/oc-vcategories.js:136
-#: js/oc-vcategories.js:195 js/share.js:135 js/share.js:142 js/share.js:527
-#: js/share.js:539
+#: js/oc-vcategories.js:195 js/share.js:135 js/share.js:142 js/share.js:554
+#: js/share.js:566
 msgid "Error"
 msgstr "Lỗi"
 
@@ -155,7 +179,7 @@ msgstr "Tên ứng dụng không được chỉ định."
 msgid "The required file {file} is not installed!"
 msgstr "Tập tin cần thiết {file} không được cài đặt!"
 
-#: js/share.js:124
+#: js/share.js:124 js/share.js:594
 msgid "Error while sharing"
 msgstr "Lỗi trong quá trình chia sẻ"
 
@@ -183,78 +207,94 @@ msgstr "Chia sẻ với"
 msgid "Share with link"
 msgstr "Chia sẻ với liên kết"
 
-#: js/share.js:164
+#: js/share.js:166
 msgid "Password protect"
 msgstr "Mật khẩu bảo vệ"
 
-#: js/share.js:168 templates/installation.php:42 templates/login.php:24
+#: js/share.js:168 templates/installation.php:44 templates/login.php:35
 #: templates/verify.php:13
 msgid "Password"
 msgstr "Mật khẩu"
 
+#: js/share.js:172
+msgid "Email link to person"
+msgstr ""
+
 #: js/share.js:173
+msgid "Send"
+msgstr ""
+
+#: js/share.js:177
 msgid "Set expiration date"
 msgstr "Đặt ngày kết thúc"
 
-#: js/share.js:174
+#: js/share.js:178
 msgid "Expiration date"
 msgstr "Ngày kết thúc"
 
-#: js/share.js:206
+#: js/share.js:210
 msgid "Share via email:"
 msgstr "Chia sẻ thông qua email"
 
-#: js/share.js:208
+#: js/share.js:212
 msgid "No people found"
 msgstr "Không tìm thấy người nào"
 
-#: js/share.js:235
+#: js/share.js:239
 msgid "Resharing is not allowed"
 msgstr "Chia sẻ lại không được cho phép"
 
-#: js/share.js:271
+#: js/share.js:275
 msgid "Shared in {item} with {user}"
 msgstr "Đã được chia sẽ trong {item} với {user}"
 
-#: js/share.js:292
+#: js/share.js:296
 msgid "Unshare"
 msgstr "Gỡ bỏ chia sẻ"
 
-#: js/share.js:304
+#: js/share.js:308
 msgid "can edit"
 msgstr "có thể chỉnh sửa"
 
-#: js/share.js:306
+#: js/share.js:310
 msgid "access control"
 msgstr "quản lý truy cập"
 
-#: js/share.js:309
+#: js/share.js:313
 msgid "create"
 msgstr "tạo"
 
-#: js/share.js:312
+#: js/share.js:316
 msgid "update"
 msgstr "cập nhật"
 
-#: js/share.js:315
+#: js/share.js:319
 msgid "delete"
 msgstr "xóa"
 
-#: js/share.js:318
+#: js/share.js:322
 msgid "share"
 msgstr "chia sẻ"
 
-#: js/share.js:343 js/share.js:514 js/share.js:516
+#: js/share.js:356 js/share.js:541
 msgid "Password protected"
 msgstr "Mật khẩu bảo vệ"
 
-#: js/share.js:527
+#: js/share.js:554
 msgid "Error unsetting expiration date"
 msgstr "Lỗi không thiết lập ngày kết thúc"
 
-#: js/share.js:539
+#: js/share.js:566
 msgid "Error setting expiration date"
 msgstr "Lỗi cấu hình ngày kết thúc"
+
+#: js/share.js:581
+msgid "Sending ..."
+msgstr ""
+
+#: js/share.js:592
+msgid "Email sent"
+msgstr ""
 
 #: lostpassword/controller.php:47
 msgid "ownCloud password reset"
@@ -276,8 +316,8 @@ msgstr "Thiết lập lại email gởi."
 msgid "Request failed!"
 msgstr "Yêu cầu  của bạn không thành công !"
 
-#: lostpassword/templates/lostpassword.php:11 templates/installation.php:38
-#: templates/login.php:20
+#: lostpassword/templates/lostpassword.php:11 templates/installation.php:39
+#: templates/login.php:28
 msgid "Username"
 msgstr "Tên người dùng"
 
@@ -366,44 +406,44 @@ msgstr "Thư mục dữ liệu và những tập tin của bạn có thể dễ 
 msgid "Create an <strong>admin account</strong>"
 msgstr "Tạo một <strong>tài khoản quản trị</strong>"
 
-#: templates/installation.php:48
+#: templates/installation.php:50
 msgid "Advanced"
 msgstr "Nâng cao"
 
-#: templates/installation.php:50
+#: templates/installation.php:52
 msgid "Data folder"
 msgstr "Thư mục dữ liệu"
 
-#: templates/installation.php:57
+#: templates/installation.php:59
 msgid "Configure the database"
 msgstr "Cấu hình cơ sở dữ liệu"
 
-#: templates/installation.php:62 templates/installation.php:73
-#: templates/installation.php:83 templates/installation.php:93
+#: templates/installation.php:64 templates/installation.php:75
+#: templates/installation.php:85 templates/installation.php:95
 msgid "will be used"
 msgstr "được sử dụng"
 
-#: templates/installation.php:105
+#: templates/installation.php:107
 msgid "Database user"
 msgstr "Người dùng cơ sở dữ liệu"
 
-#: templates/installation.php:109
+#: templates/installation.php:111
 msgid "Database password"
 msgstr "Mật khẩu cơ sở dữ liệu"
 
-#: templates/installation.php:113
+#: templates/installation.php:115
 msgid "Database name"
 msgstr "Tên cơ sở dữ liệu"
 
-#: templates/installation.php:121
+#: templates/installation.php:123
 msgid "Database tablespace"
 msgstr "Cơ sở dữ liệu tablespace"
 
-#: templates/installation.php:127
+#: templates/installation.php:129
 msgid "Database host"
 msgstr "Database host"
 
-#: templates/installation.php:132
+#: templates/installation.php:134
 msgid "Finish setup"
 msgstr "Cài đặt hoàn tất"
 
@@ -491,29 +531,29 @@ msgstr "các dịch vụ web dưới sự kiểm soát của bạn"
 msgid "Log out"
 msgstr "Đăng xuất"
 
-#: templates/login.php:8
+#: templates/login.php:10
 msgid "Automatic logon rejected!"
 msgstr "Tự động đăng nhập đã bị từ chối !"
 
-#: templates/login.php:9
+#: templates/login.php:11
 msgid ""
 "If you did not change your password recently, your account may be "
 "compromised!"
 msgstr "Nếu bạn không thay đổi mật khẩu gần đây của bạn, tài khoản của bạn có thể gặp nguy hiểm!"
 
-#: templates/login.php:10
+#: templates/login.php:13
 msgid "Please change your password to secure your account again."
 msgstr "Vui lòng thay đổi mật khẩu của bạn để đảm bảo tài khoản của bạn một lần nữa."
 
-#: templates/login.php:15
+#: templates/login.php:19
 msgid "Lost your password?"
 msgstr "Bạn quên mật khẩu ?"
 
-#: templates/login.php:27
+#: templates/login.php:39
 msgid "remember"
 msgstr "ghi nhớ"
 
-#: templates/login.php:28
+#: templates/login.php:41
 msgid "Log in"
 msgstr "Đăng nhập"
 
@@ -528,6 +568,11 @@ msgstr "Lùi lại"
 #: templates/part.pagenavi.php:20
 msgid "next"
 msgstr "Kế tiếp"
+
+#: templates/update.php:3
+#, php-format
+msgid "Updating ownCloud to version %s, this may take a while."
+msgstr ""
 
 #: templates/verify.php:5
 msgid "Security Warning!"

@@ -17,15 +17,39 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2012-12-03 00:04+0100\n"
-"PO-Revision-Date: 2012-12-01 23:28+0000\n"
-"Last-Translator: FredMaranhao <fred.maranhao@gmail.com>\n"
+"POT-Creation-Date: 2013-01-07 00:04+0100\n"
+"PO-Revision-Date: 2013-01-06 23:04+0000\n"
+"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/owncloud/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: ajax/share.php:84
+#, php-format
+msgid "User %s shared a file with you"
+msgstr ""
+
+#: ajax/share.php:86
+#, php-format
+msgid "User %s shared a folder with you"
+msgstr ""
+
+#: ajax/share.php:88
+#, php-format
+msgid ""
+"User %s shared the file \"%s\" with you. It is available for download here: "
+"%s"
+msgstr ""
+
+#: ajax/share.php:90
+#, php-format
+msgid ""
+"User %s shared the folder \"%s\" with you. It is available for download "
+"here: %s"
+msgstr ""
 
 #: ajax/vcategories/add.php:26 ajax/vcategories/edit.php:25
 msgid "Category type not provided."
@@ -147,8 +171,8 @@ msgid "The object type is not specified."
 msgstr "O tipo de objeto não foi especificado."
 
 #: js/oc-vcategories.js:95 js/oc-vcategories.js:125 js/oc-vcategories.js:136
-#: js/oc-vcategories.js:195 js/share.js:135 js/share.js:142 js/share.js:533
-#: js/share.js:545
+#: js/oc-vcategories.js:195 js/share.js:135 js/share.js:142 js/share.js:554
+#: js/share.js:566
 msgid "Error"
 msgstr "Erro"
 
@@ -160,7 +184,7 @@ msgstr "O nome do app não foi especificado."
 msgid "The required file {file} is not installed!"
 msgstr "O arquivo {file} necessário não está instalado!"
 
-#: js/share.js:124
+#: js/share.js:124 js/share.js:594
 msgid "Error while sharing"
 msgstr "Erro ao compartilhar"
 
@@ -188,78 +212,94 @@ msgstr "Compartilhar com"
 msgid "Share with link"
 msgstr "Compartilhar com link"
 
-#: js/share.js:164
+#: js/share.js:166
 msgid "Password protect"
 msgstr "Proteger com senha"
 
-#: js/share.js:168 templates/installation.php:42 templates/login.php:24
+#: js/share.js:168 templates/installation.php:44 templates/login.php:35
 #: templates/verify.php:13
 msgid "Password"
 msgstr "Senha"
 
+#: js/share.js:172
+msgid "Email link to person"
+msgstr ""
+
 #: js/share.js:173
+msgid "Send"
+msgstr ""
+
+#: js/share.js:177
 msgid "Set expiration date"
 msgstr "Definir data de expiração"
 
-#: js/share.js:174
+#: js/share.js:178
 msgid "Expiration date"
 msgstr "Data de expiração"
 
-#: js/share.js:206
+#: js/share.js:210
 msgid "Share via email:"
 msgstr "Compartilhar via e-mail:"
 
-#: js/share.js:208
+#: js/share.js:212
 msgid "No people found"
 msgstr "Nenhuma pessoa encontrada"
 
-#: js/share.js:235
+#: js/share.js:239
 msgid "Resharing is not allowed"
 msgstr "Não é permitido re-compartilhar"
 
-#: js/share.js:271
+#: js/share.js:275
 msgid "Shared in {item} with {user}"
 msgstr "Compartilhado em {item} com {user}"
 
-#: js/share.js:292
+#: js/share.js:296
 msgid "Unshare"
 msgstr "Descompartilhar"
 
-#: js/share.js:304
+#: js/share.js:308
 msgid "can edit"
 msgstr "pode editar"
 
-#: js/share.js:306
+#: js/share.js:310
 msgid "access control"
 msgstr "controle de acesso"
 
-#: js/share.js:309
+#: js/share.js:313
 msgid "create"
 msgstr "criar"
 
-#: js/share.js:312
+#: js/share.js:316
 msgid "update"
 msgstr "atualizar"
 
-#: js/share.js:315
+#: js/share.js:319
 msgid "delete"
 msgstr "remover"
 
-#: js/share.js:318
+#: js/share.js:322
 msgid "share"
 msgstr "compartilhar"
 
-#: js/share.js:349 js/share.js:520 js/share.js:522
+#: js/share.js:356 js/share.js:541
 msgid "Password protected"
 msgstr "Protegido com senha"
 
-#: js/share.js:533
+#: js/share.js:554
 msgid "Error unsetting expiration date"
 msgstr "Erro ao remover data de expiração"
 
-#: js/share.js:545
+#: js/share.js:566
 msgid "Error setting expiration date"
 msgstr "Erro ao definir data de expiração"
+
+#: js/share.js:581
+msgid "Sending ..."
+msgstr ""
+
+#: js/share.js:592
+msgid "Email sent"
+msgstr ""
 
 #: lostpassword/controller.php:47
 msgid "ownCloud password reset"
@@ -281,8 +321,8 @@ msgstr "Email de redefinição de senha enviado."
 msgid "Request failed!"
 msgstr "A requisição falhou!"
 
-#: lostpassword/templates/lostpassword.php:11 templates/installation.php:38
-#: templates/login.php:20
+#: lostpassword/templates/lostpassword.php:11 templates/installation.php:39
+#: templates/login.php:28
 msgid "Username"
 msgstr "Nome de Usuário"
 
@@ -371,44 +411,44 @@ msgstr "Seu diretório de dados e seus arquivos estão, provavelmente, acessíve
 msgid "Create an <strong>admin account</strong>"
 msgstr "Criar uma <strong>conta</strong> de <strong>administrador</strong>"
 
-#: templates/installation.php:48
+#: templates/installation.php:50
 msgid "Advanced"
 msgstr "Avançado"
 
-#: templates/installation.php:50
+#: templates/installation.php:52
 msgid "Data folder"
 msgstr "Pasta de dados"
 
-#: templates/installation.php:57
+#: templates/installation.php:59
 msgid "Configure the database"
 msgstr "Configurar o banco de dados"
 
-#: templates/installation.php:62 templates/installation.php:73
-#: templates/installation.php:83 templates/installation.php:93
+#: templates/installation.php:64 templates/installation.php:75
+#: templates/installation.php:85 templates/installation.php:95
 msgid "will be used"
 msgstr "será usado"
 
-#: templates/installation.php:105
+#: templates/installation.php:107
 msgid "Database user"
 msgstr "Usuário de banco de dados"
 
-#: templates/installation.php:109
+#: templates/installation.php:111
 msgid "Database password"
 msgstr "Senha do banco de dados"
 
-#: templates/installation.php:113
+#: templates/installation.php:115
 msgid "Database name"
 msgstr "Nome do banco de dados"
 
-#: templates/installation.php:121
+#: templates/installation.php:123
 msgid "Database tablespace"
 msgstr "Espaço de tabela do banco de dados"
 
-#: templates/installation.php:127
+#: templates/installation.php:129
 msgid "Database host"
 msgstr "Banco de dados do host"
 
-#: templates/installation.php:132
+#: templates/installation.php:134
 msgid "Finish setup"
 msgstr "Concluir configuração"
 
@@ -496,29 +536,29 @@ msgstr "web services sob seu controle"
 msgid "Log out"
 msgstr "Sair"
 
-#: templates/login.php:8
+#: templates/login.php:10
 msgid "Automatic logon rejected!"
 msgstr "Entrada Automática no Sistema Rejeitada!"
 
-#: templates/login.php:9
+#: templates/login.php:11
 msgid ""
 "If you did not change your password recently, your account may be "
 "compromised!"
 msgstr "Se você não mudou a sua senha recentemente, a sua conta pode estar comprometida!"
 
-#: templates/login.php:10
+#: templates/login.php:13
 msgid "Please change your password to secure your account again."
 msgstr "Por favor troque sua senha para tornar sua conta segura novamente."
 
-#: templates/login.php:15
+#: templates/login.php:19
 msgid "Lost your password?"
 msgstr "Esqueçeu sua senha?"
 
-#: templates/login.php:27
+#: templates/login.php:39
 msgid "remember"
 msgstr "lembrete"
 
-#: templates/login.php:28
+#: templates/login.php:41
 msgid "Log in"
 msgstr "Log in"
 
@@ -533,6 +573,11 @@ msgstr "anterior"
 #: templates/part.pagenavi.php:20
 msgid "next"
 msgstr "próximo"
+
+#: templates/update.php:3
+#, php-format
+msgid "Updating ownCloud to version %s, this may take a while."
+msgstr ""
 
 #: templates/verify.php:5
 msgid "Security Warning!"
