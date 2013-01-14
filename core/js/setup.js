@@ -5,6 +5,7 @@ $(document).ready(function() {
 		mysql:!!$('#hasMySQL').val(),
 		postgresql:!!$('#hasPostgreSQL').val(),
 		oracle:!!$('#hasOracle').val(),
+		mssql:!!$('#hasMSSQL').val()
 	};
 	
 	$('#selectDbType').buttonset();
@@ -41,6 +42,13 @@ $(document).ready(function() {
 		$('#dbhost').show(250);
 		$('#dbhostlabel').show(250);
 	});
+	
+	$('#mssql').click(function() {
+		$('#use_other_db').slideDown(250);
+		$('#dbhost').show(250);
+		$('#dbhostlabel').show(250);
+	});
+	
 
 	$('input[checked]').trigger('click');
 
