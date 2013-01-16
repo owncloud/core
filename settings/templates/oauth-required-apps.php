@@ -15,5 +15,5 @@
 		}
 		?>
 	</ul>
-	<a href="<?php echo OC::$WEBROOT; ?>" id="back-home" class="button">Back to ownCloud</a>
+	<a href="<?php echo OC::$WEBROOT; ?>" id="back-home" class="button"><?php echo $l->t('Back to ownCloud');?></a>
 </div>
