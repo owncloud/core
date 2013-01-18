@@ -49,7 +49,6 @@ input[type="checkbox"] { width:auto; }
 #quota { cursor:default; }
 
 /* SCROLLING------------------------------------------------------------------ */
-
 ::-webkit-scrollbar { width:1em; }
 ::-webkit-scrollbar-track-piece { background-color:transparent; }
 ::-webkit-scrollbar-thumb { background:#DDD; }
