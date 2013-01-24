@@ -34,7 +34,6 @@ AddEncoding gzip svgz
 </IfModule>
 Options -Indexes
 
-#Fix for issues #1268
 <IfModule mod_deflate.c>
   RemoveOutputFilter html css js rss xml
 </IfModule>
