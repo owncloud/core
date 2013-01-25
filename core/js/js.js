@@ -568,6 +568,7 @@ $(document).ready(function(){
 	});
 
 	// 'show password' checkbox
+	$('#password').showPassword();	
 	$('#pass2').showPassword();
 
 	//use infield labels
