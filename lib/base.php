@@ -185,7 +185,7 @@ class OC
 		// Then $subDir = substr('/var/www/dir', strlen('/var/www'))
 		// Then $subDir == '/dir'
 
-		if (strcmp($documentRoot,OC::$SERVERROOT)) {
+		if (strcmp($documentRoot, OC::$SERVERROOT)) {
 			$subDir = substr(OC::$SERVERROOT,strlen($documentRoot));
 		}
 
