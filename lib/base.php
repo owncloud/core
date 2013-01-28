@@ -126,7 +126,7 @@ class OC
 	{
 		// calculate the root directories
 		OC::$SERVERROOT = str_replace("\\", '/', substr(__DIR__, 0, -4));
-		$documentRoot=realpath($_SERVER['DOCUMENT_ROOT']);
+		$documentRoot = realpath($_SERVER['DOCUMENT_ROOT']);
 		$scriptName = $_SERVER["SCRIPT_NAME"];
 		$scriptFileName = $_SERVER["SCRIPT_FILENAME"];
 		if (isset($_SERVER["PATH_INFO"])) {
@@ -138,13 +138,13 @@ class OC
 		$subDir = "";
 		$alias = "";
 		if (strcmp($documentRoot,OC::$SERVERROOT)) {
-			$subDir=substr(OC::$SERVERROOT,strlen($documentRoot));
+			$subDir = substr(OC::$SERVERROOT,strlen($documentRoot));
 		}
 		if(strcmp(OC::$SERVERROOT.$scriptName, $scriptFileName)) {
-			$alias=substr($scriptName, 0, strlen(OC::$SERVERROOT) - strlen($subDir) - strlen($scriptFileName));
+			$alias = substr($scriptName, 0, strlen(OC::$SERVERROOT) - strlen($subDir) - strlen($scriptFileName));
 		}
-		OC::$WEBROOT=$alias.$subDir;
-		OC::$SUBURI=substr($scriptName, 1 + strlen($alias)).$pathInfo;
+		OC::$WEBROOT = $alias.$subDir;
+		OC::$SUBURI = substr($scriptName, 1 + strlen($alias)).$pathInfo;
 
 		// ensure we can find OC_Config
 		set_include_path(
