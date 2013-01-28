@@ -125,10 +125,53 @@ class OC
 	public static function initPaths()
 	{
 		// calculate the root directories
+
+		// Some comments because this code is a bit tricky, as requested here :
+		// https://github.com/owncloud/core/pull/385
+
+		// Imagine your httpd document root is '/var/www'
+		// -> requesting /index.html serves /var/www/index.html
+		// Imagine you have an alias named 'alias'
+		// -> requesting /alias/index.html serves /var/www/index.html
+		// Imagine you put owncloud on a subdir named 'dir'
+		// -> requesting /alias/dir/index.html serves /var/www/dir/index.html
+
+		// When requesting /alias/dir/index.php, it require lib/base.php
+		// __DIR__ == '/var/www/dir/lib'
+		//
+		// OC::$SERVERROOT=str_replace("\\", '/', substr(__DIR__, 0, -4));
+		// is similar to
+		// OC::$SERVERROOT=str_replace("\\", '/', substr(__DIR__, 0, strlen('/lib')));
+		//
+		// after that,
+		// OC::$SERVERROOT == '/var/www/dir'
+
+		// Note : I suppose that str_replace("\", '/', str) is to translate DOS path into Web path because
+		// various substr calls expects only one character as dir separator (I don't use any NT server,
+		// this part of the code was not my idea).
+
 		OC::$SERVERROOT = str_replace("\\", '/', substr(__DIR__, 0, -4));
+
+		// In this example, $documentRoot == '/var/www'
+
 		$documentRoot = realpath($_SERVER['DOCUMENT_ROOT']);
+
+		// If requesting /alias/dir/index.php/pathinfo or /alias/dir/index.php?param
+		// Then $scriptName == '/alias/dir/index.php'
+
 		$scriptName = $_SERVER["SCRIPT_NAME"];
+
+		// If requesting /alias/dir/index.php/pathinfo or /alias/dir/index.php?param
+		// Then $scriptFileName == '/var/www/dir/index.php'
+		// realpath() function is used here because previous __DIR__ call return implicitely real path
+		// We will compare later OC::$SERVERROOT and $scriptFileName, so we should not be disturbed
+		// by symlinks in file path
+
 		$scriptFileName = realpath($_SERVER["SCRIPT_FILENAME"]);
+
+		// If requesting /alias/dir/index.php/pathinfo
+		// Then $pathInfo == '/pathinfo'
+
 		if (isset($_SERVER["PATH_INFO"])) {
 			$pathInfo = $_SERVER["PATH_INFO"];
 		}
@@ -137,13 +180,42 @@ class OC
 		}
 		$subDir = "";
 		$alias = "";
+
+		// If '/var/www' != '/var/www/dir'
+		// Then $subDir = substr('/var/www/dir', strlen('/var/www'))
+		// Then $subDir == '/dir'
+
 		if (strcmp($documentRoot,OC::$SERVERROOT)) {
 			$subDir = substr(OC::$SERVERROOT,strlen($documentRoot));
 		}
+
+		// If '/var/www/dir' . '/alias/index.php' != '/var/www/dir/index.php' // True
+		// Then $alias = substr('/alias/index.php', 0, strlen('/var/www/dir') - strlen('/dir') - strlen('/var/www/dir/index.php'))
+		// Then $alias = substr('/alias/index.php', 0, strlen('/var/www/dir') - strlen('/var/www/dir/index.php'))
+		// Then $alias = substr('/alias/index.php', 0, 0 - strlen('/index.php'))
+		// Then $alias == '/alias
+
 		if(strcmp(OC::$SERVERROOT.$scriptName, $scriptFileName)) {
 			$alias = substr($scriptName, 0, strlen(OC::$SERVERROOT) - strlen($subDir) - strlen($scriptFileName));
 		}
+
+		// If requesting /alias/dir/index.php
+		// Then OC::$WEBROOT = '/alias' . '/dir'
+		// Then OC::$WEBROOT = '/alias/dir'
+		// Else If no alias, or no subdir
+		// Then OC::$WEBROOT = ''
+
 		OC::$WEBROOT = $alias.$subDir;
+
+		// If requesting /alias/dir/index.php/pathinfo
+		// Then OC::$SUBURI = substr('/alias/dir/index.php', 1 + strlen('/alias')).'/pathinfo'
+		// Then OC::$SUBURI = substr('/alias/dir/index.php', strlen('/alias/')).'/pathinfo'
+		// Then OC::$SUBURI = 'dir/index.php'.'/pathinfo'
+		// Then OC::$SUBURI = 'dir/index.php/pathinfo'
+		// Then OC::$SUBURI = 'dir/index.php/pathinfo'
+		// Else If no subdir
+		// OC::$SUBURI = 'index.php/pathinfo'
+
 		OC::$SUBURI = substr($scriptName, 1 + strlen($alias)).$pathInfo;
 
 		// ensure we can find OC_Config
