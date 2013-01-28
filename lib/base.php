@@ -128,7 +128,7 @@ class OC
 		OC::$SERVERROOT = str_replace("\\", '/', substr(__DIR__, 0, -4));
 		$documentRoot = realpath($_SERVER['DOCUMENT_ROOT']);
 		$scriptName = $_SERVER["SCRIPT_NAME"];
-		$scriptFileName = $_SERVER["SCRIPT_FILENAME"];
+		$scriptFileName = realpath($_SERVER["SCRIPT_FILENAME"]);
 		if (isset($_SERVER["PATH_INFO"])) {
 			$pathInfo = $_SERVER["PATH_INFO"];
 		}
