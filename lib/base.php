@@ -125,7 +125,7 @@ class OC
 	public static function initPaths()
 	{
 		// calculate the root directories
-		OC::$SERVERROOT=str_replace("\\", '/', substr(__FILE__, 0, -13));
+		OC::$SERVERROOT = str_replace("\\", '/', substr(__DIR__, 0, -4));
 		$documentRoot=realpath($_SERVER['DOCUMENT_ROOT']);
 		$scriptName = $_SERVER["SCRIPT_NAME"];
 		$scriptFileName = $_SERVER["SCRIPT_FILENAME"];
