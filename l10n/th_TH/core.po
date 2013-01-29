@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# AriesAnywhere Anywhere <ariesanywhere@gmail.com>, 2012.
+# AriesAnywhere Anywhere <ariesanywhere@gmail.com>, 2012-2013.
 # AriesAnywhere Anywhere <ariesanywherer@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-01-07 00:04+0100\n"
-"PO-Revision-Date: 2013-01-06 23:04+0000\n"
+"POT-Creation-Date: 2013-01-29 00:04+0100\n"
+"PO-Revision-Date: 2013-01-28 23:05+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Thai (Thailand) (http://www.transifex.com/projects/p/owncloud/language/th_TH/)\n"
 "MIME-Version: 1.0\n"
@@ -22,26 +22,26 @@ msgstr ""
 #: ajax/share.php:84
 #, php-format
 msgid "User %s shared a file with you"
-msgstr ""
+msgstr "ผู้ใช้งาน %s ได้แชร์ไฟล์ให้กับคุณ"
 
 #: ajax/share.php:86
 #, php-format
 msgid "User %s shared a folder with you"
-msgstr ""
+msgstr "ผู้ใช้งาน %s ได้แชร์โฟลเดอร์ให้กับคุณ"
 
 #: ajax/share.php:88
 #, php-format
 msgid ""
 "User %s shared the file \"%s\" with you. It is available for download here: "
 "%s"
-msgstr ""
+msgstr "ผู้ใช้งาน %s ได้แชร์ไฟล์ \"%s\" ให้กับคุณ และคุณสามารถสามารถดาวน์โหลดไฟล์ดังกล่าวได้จากที่นี่: %s"
 
 #: ajax/share.php:90
 #, php-format
 msgid ""
 "User %s shared the folder \"%s\" with you. It is available for download "
 "here: %s"
-msgstr ""
+msgstr "ผู้ใช้งาน %s ได้แชร์โฟลเดอร์ \"%s\" ให้กับคุณ และคุณสามารถดาวน์โหลดโฟลเดอร์ดังกล่าวได้จากที่นี่: %s"
 
 #: ajax/vcategories/add.php:26 ajax/vcategories/edit.php:25
 msgid "Category type not provided."
@@ -81,59 +81,135 @@ msgstr "ยังไม่ได้เลือกหมวดหมู่ที
 msgid "Error removing %s from favorites."
 msgstr "เกิดข้อผิดพลาดในการลบ %s ออกจากรายการโปรด"
 
-#: js/js.js:259 templates/layout.user.php:60 templates/layout.user.php:61
+#: js/config.php:32
+msgid "Sunday"
+msgstr "วันอาทิตย์"
+
+#: js/config.php:32
+msgid "Monday"
+msgstr "วันจันทร์"
+
+#: js/config.php:32
+msgid "Tuesday"
+msgstr "วันอังคาร"
+
+#: js/config.php:32
+msgid "Wednesday"
+msgstr "วันพุธ"
+
+#: js/config.php:32
+msgid "Thursday"
+msgstr "วันพฤหัสบดี"
+
+#: js/config.php:32
+msgid "Friday"
+msgstr "วันศุกร์"
+
+#: js/config.php:32
+msgid "Saturday"
+msgstr "วันเสาร์"
+
+#: js/config.php:33
+msgid "January"
+msgstr "มกราคม"
+
+#: js/config.php:33
+msgid "February"
+msgstr "กุมภาพันธ์"
+
+#: js/config.php:33
+msgid "March"
+msgstr "มีนาคม"
+
+#: js/config.php:33
+msgid "April"
+msgstr "เมษายน"
+
+#: js/config.php:33
+msgid "May"
+msgstr "พฤษภาคม"
+
+#: js/config.php:33
+msgid "June"
+msgstr "มิถุนายน"
+
+#: js/config.php:33
+msgid "July"
+msgstr "กรกฏาคม"
+
+#: js/config.php:33
+msgid "August"
+msgstr "สิงหาคม"
+
+#: js/config.php:33
+msgid "September"
+msgstr "กันยายน"
+
+#: js/config.php:33
+msgid "October"
+msgstr "ตุลาคม"
+
+#: js/config.php:33
+msgid "November"
+msgstr "พฤศจิกายน"
+
+#: js/config.php:33
+msgid "December"
+msgstr "ธันวาคม"
+
+#: js/js.js:280 templates/layout.user.php:47 templates/layout.user.php:48
 msgid "Settings"
 msgstr "ตั้งค่า"
 
-#: js/js.js:704
+#: js/js.js:762
 msgid "seconds ago"
 msgstr "วินาที ก่อนหน้านี้"
 
-#: js/js.js:705
+#: js/js.js:763
 msgid "1 minute ago"
 msgstr "1 นาทีก่อนหน้านี้"
 
-#: js/js.js:706
+#: js/js.js:764
 msgid "{minutes} minutes ago"
 msgstr "{minutes} นาทีก่อนหน้านี้"
 
-#: js/js.js:707
+#: js/js.js:765
 msgid "1 hour ago"
 msgstr "1 ชั่วโมงก่อนหน้านี้"
 
-#: js/js.js:708
+#: js/js.js:766
 msgid "{hours} hours ago"
 msgstr "{hours} ชั่วโมงก่อนหน้านี้"
 
-#: js/js.js:709
+#: js/js.js:767
 msgid "today"
 msgstr "วันนี้"
 
-#: js/js.js:710
+#: js/js.js:768
 msgid "yesterday"
 msgstr "เมื่อวานนี้"
 
-#: js/js.js:711
+#: js/js.js:769
 msgid "{days} days ago"
 msgstr "{day} วันก่อนหน้านี้"
 
-#: js/js.js:712
+#: js/js.js:770
 msgid "last month"
 msgstr "เดือนที่แล้ว"
 
-#: js/js.js:713
+#: js/js.js:771
 msgid "{months} months ago"
 msgstr "{months} เดือนก่อนหน้านี้"
 
-#: js/js.js:714
+#: js/js.js:772
 msgid "months ago"
 msgstr "เดือน ที่ผ่านมา"
 
-#: js/js.js:715
+#: js/js.js:773
 msgid "last year"
 msgstr "ปีที่แล้ว"
 
-#: js/js.js:716
+#: js/js.js:774
 msgid "years ago"
 msgstr "ปี ที่ผ่านมา"
 
@@ -209,17 +285,16 @@ msgid "Password protect"
 msgstr "ใส่รหัสผ่านไว้"
 
 #: js/share.js:168 templates/installation.php:44 templates/login.php:35
-#: templates/verify.php:13
 msgid "Password"
 msgstr "รหัสผ่าน"
 
 #: js/share.js:172
 msgid "Email link to person"
-msgstr ""
+msgstr "ส่งลิงก์ให้ทางอีเมล"
 
 #: js/share.js:173
 msgid "Send"
-msgstr ""
+msgstr "ส่ง"
 
 #: js/share.js:177
 msgid "Set expiration date"
@@ -287,10 +362,21 @@ msgstr "เกิดข้อผิดพลาดในการตั้งค
 
 #: js/share.js:581
 msgid "Sending ..."
-msgstr ""
+msgstr "กำลังส่ง..."
 
 #: js/share.js:592
 msgid "Email sent"
+msgstr "ส่งอีเมล์แล้ว"
+
+#: js/update.js:14
+msgid ""
+"The update was unsuccessful. Please report this issue to the <a "
+"href=\"https://github.com/owncloud/core/issues\" target=\"_blank\">ownCloud "
+"community</a>."
+msgstr ""
+
+#: js/update.js:18
+msgid "The update was successful. Redirecting you to ownCloud now."
 msgstr ""
 
 #: lostpassword/controller.php:47
@@ -444,87 +530,11 @@ msgstr "Database host"
 msgid "Finish setup"
 msgstr "ติดตั้งเรียบร้อยแล้ว"
 
-#: templates/layout.guest.php:16 templates/layout.user.php:17
-msgid "Sunday"
-msgstr "วันอาทิตย์"
-
-#: templates/layout.guest.php:16 templates/layout.user.php:17
-msgid "Monday"
-msgstr "วันจันทร์"
-
-#: templates/layout.guest.php:16 templates/layout.user.php:17
-msgid "Tuesday"
-msgstr "วันอังคาร"
-
-#: templates/layout.guest.php:16 templates/layout.user.php:17
-msgid "Wednesday"
-msgstr "วันพุธ"
-
-#: templates/layout.guest.php:16 templates/layout.user.php:17
-msgid "Thursday"
-msgstr "วันพฤหัสบดี"
-
-#: templates/layout.guest.php:16 templates/layout.user.php:17
-msgid "Friday"
-msgstr "วันศุกร์"
-
-#: templates/layout.guest.php:16 templates/layout.user.php:17
-msgid "Saturday"
-msgstr "วันเสาร์"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "January"
-msgstr "มกราคม"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "February"
-msgstr "กุมภาพันธ์"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "March"
-msgstr "มีนาคม"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "April"
-msgstr "เมษายน"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "May"
-msgstr "พฤษภาคม"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "June"
-msgstr "มิถุนายน"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "July"
-msgstr "กรกฏาคม"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "August"
-msgstr "สิงหาคม"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "September"
-msgstr "กันยายน"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "October"
-msgstr "ตุลาคม"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "November"
-msgstr "พฤศจิกายน"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "December"
-msgstr "ธันวาคม"
-
-#: templates/layout.guest.php:42
+#: templates/layout.guest.php:34
 msgid "web services under your control"
 msgstr "web services under your control"
 
-#: templates/layout.user.php:45
+#: templates/layout.user.php:32
 msgid "Log out"
 msgstr "ออกจากระบบ"
 
@@ -554,10 +564,6 @@ msgstr "จำรหัสผ่าน"
 msgid "Log in"
 msgstr "เข้าสู่ระบบ"
 
-#: templates/logout.php:1
-msgid "You are logged out."
-msgstr "คุณออกจากระบบเรียบร้อยแล้ว"
-
 #: templates/part.pagenavi.php:3
 msgid "prev"
 msgstr "ก่อนหน้า"
@@ -569,18 +575,4 @@ msgstr "ถัดไป"
 #: templates/update.php:3
 #, php-format
 msgid "Updating ownCloud to version %s, this may take a while."
-msgstr ""
-
-#: templates/verify.php:5
-msgid "Security Warning!"
-msgstr "คำเตือนเพื่อความปลอดภัย!"
-
-#: templates/verify.php:6
-msgid ""
-"Please verify your password. <br/>For security reasons you may be "
-"occasionally asked to enter your password again."
-msgstr "กรุณายืนยันรหัสผ่านของคุณ <br/> เพื่อความปลอดภัย คุณจะถูกขอให้กรอกรหัสผ่านอีกครั้ง"
-
-#: templates/verify.php:16
-msgid "Verify"
-msgstr "ยืนยัน"
+msgstr "กำลังอัพเดท ownCloud ไปเป็นรุ่น %s, กรุณารอสักครู่"

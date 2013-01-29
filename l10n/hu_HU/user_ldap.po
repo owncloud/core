@@ -3,12 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+#   <gyonkibendeguz@gmail.com>, 2013.
+# Laszlo Tornoci <torlasz@gmail.com>, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2012-12-30 00:04+0100\n"
-"PO-Revision-Date: 2012-12-29 17:19+0000\n"
+"POT-Creation-Date: 2013-01-20 00:05+0100\n"
+"PO-Revision-Date: 2013-01-19 15:57+0000\n"
 "Last-Translator: Laszlo Tornoci <torlasz@gmail.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/owncloud/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -26,9 +28,9 @@ msgstr "<b>Figyelem:</b> a user_ldap és user_webdavauth alkalmazások nem kompa
 
 #: templates/settings.php:11
 msgid ""
-"<b>Warning:</b> The PHP LDAP module needs is not installed, the backend will"
-" not work. Please ask your system administrator to install it."
-msgstr "<b>Figyelem:</b> a szükséges PHP LDAP modul nincs telepítve. Enélkül az LDAP azonosítás nem fog működni. Kérje meg a rendszergazdát, hogy telepítse a szükséges modult!"
+"<b>Warning:</b> The PHP LDAP module is not installed, the backend will not "
+"work. Please ask your system administrator to install it."
+msgstr "<b>Figyelmeztetés:</b> Az LDAP PHP modul nincs telepítve, ezért ez az alrendszer nem fog működni. Kérje meg a rendszergazdát, hogy telepítse!"
 
 #: templates/settings.php:15
 msgid "Host"
@@ -44,6 +46,10 @@ msgid "Base DN"
 msgstr "DN-gyökér"
 
 #: templates/settings.php:16
+msgid "One Base DN per line"
+msgstr "Soronként egy DN-gyökér"
+
+#: templates/settings.php:16
 msgid "You can specify Base DN for users and groups in the Advanced tab"
 msgstr "A Haladó fülre kattintva külön DN-gyökér állítható be a felhasználók és a csoportok számára"
 
@@ -56,7 +62,7 @@ msgid ""
 "The DN of the client user with which the bind shall be done, e.g. "
 "uid=agent,dc=example,dc=com. For anonymous access, leave DN and Password "
 "empty."
-msgstr ""
+msgstr "Annak a felhasználónak a DN-je, akinek a nevében bejelentkezve kapcsolódunk a kiszolgálóhoz, pl. uid=agent,dc=example,dc=com. Bejelentkezés nélküli eléréshez ne töltse ki a DN és Jelszó mezőket!"
 
 #: templates/settings.php:18
 msgid "Password"
@@ -108,15 +114,23 @@ msgstr "itt ne használjunk változót, pl. \"objectClass=posixGroup\"."
 
 #: templates/settings.php:24
 msgid "Port"
-msgstr ""
+msgstr "Port"
 
 #: templates/settings.php:25
 msgid "Base User Tree"
 msgstr "A felhasználói fa gyökere"
 
+#: templates/settings.php:25
+msgid "One User Base DN per line"
+msgstr "Soronként egy felhasználói fa gyökerét adhatjuk meg"
+
 #: templates/settings.php:26
 msgid "Base Group Tree"
 msgstr "A csoportfa gyökere"
+
+#: templates/settings.php:26
+msgid "One Group Base DN per line"
+msgstr "Soronként egy csoportfa gyökerét adhatjuk meg"
 
 #: templates/settings.php:27
 msgid "Group-Member association"

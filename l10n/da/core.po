@@ -8,6 +8,7 @@
 # Morten Juhl-Johansen Zölde-Fejér <morten@writtenandread.net>, 2011-2012.
 # Ole Holm Frandsen <froksen@gmail.com>, 2012.
 # Pascal d'Hermilly <pascal@dhermilly.dk>, 2011.
+# Rasmus Paasch <rasmuspaasch@gmail.com>, 2013.
 #   <simon@rosmi.dk>, 2012.
 # Thomas Tanghus <>, 2012.
 # Thomas Tanghus <thomas@tanghus.net>, 2012.
@@ -15,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-01-07 00:04+0100\n"
-"PO-Revision-Date: 2013-01-06 23:04+0000\n"
+"POT-Creation-Date: 2013-01-29 00:04+0100\n"
+"PO-Revision-Date: 2013-01-28 23:05+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Danish (http://www.transifex.com/projects/p/owncloud/language/da/)\n"
 "MIME-Version: 1.0\n"
@@ -87,59 +88,135 @@ msgstr "Ingen kategorier valgt"
 msgid "Error removing %s from favorites."
 msgstr "Fejl ved fjernelse af %s fra favoritter."
 
-#: js/js.js:259 templates/layout.user.php:60 templates/layout.user.php:61
+#: js/config.php:32
+msgid "Sunday"
+msgstr "Søndag"
+
+#: js/config.php:32
+msgid "Monday"
+msgstr "Mandag"
+
+#: js/config.php:32
+msgid "Tuesday"
+msgstr "Tirsdag"
+
+#: js/config.php:32
+msgid "Wednesday"
+msgstr "Onsdag"
+
+#: js/config.php:32
+msgid "Thursday"
+msgstr "Torsdag"
+
+#: js/config.php:32
+msgid "Friday"
+msgstr "Fredag"
+
+#: js/config.php:32
+msgid "Saturday"
+msgstr "Lørdag"
+
+#: js/config.php:33
+msgid "January"
+msgstr "Januar"
+
+#: js/config.php:33
+msgid "February"
+msgstr "Februar"
+
+#: js/config.php:33
+msgid "March"
+msgstr "Marts"
+
+#: js/config.php:33
+msgid "April"
+msgstr "April"
+
+#: js/config.php:33
+msgid "May"
+msgstr "Maj"
+
+#: js/config.php:33
+msgid "June"
+msgstr "Juni"
+
+#: js/config.php:33
+msgid "July"
+msgstr "Juli"
+
+#: js/config.php:33
+msgid "August"
+msgstr "August"
+
+#: js/config.php:33
+msgid "September"
+msgstr "September"
+
+#: js/config.php:33
+msgid "October"
+msgstr "Oktober"
+
+#: js/config.php:33
+msgid "November"
+msgstr "November"
+
+#: js/config.php:33
+msgid "December"
+msgstr "December"
+
+#: js/js.js:280 templates/layout.user.php:47 templates/layout.user.php:48
 msgid "Settings"
 msgstr "Indstillinger"
 
-#: js/js.js:704
+#: js/js.js:762
 msgid "seconds ago"
 msgstr "sekunder siden"
 
-#: js/js.js:705
+#: js/js.js:763
 msgid "1 minute ago"
 msgstr "1 minut siden"
 
-#: js/js.js:706
+#: js/js.js:764
 msgid "{minutes} minutes ago"
 msgstr "{minutes} minutter siden"
 
-#: js/js.js:707
+#: js/js.js:765
 msgid "1 hour ago"
 msgstr "1 time siden"
 
-#: js/js.js:708
+#: js/js.js:766
 msgid "{hours} hours ago"
 msgstr "{hours} timer siden"
 
-#: js/js.js:709
+#: js/js.js:767
 msgid "today"
 msgstr "i dag"
 
-#: js/js.js:710
+#: js/js.js:768
 msgid "yesterday"
 msgstr "i går"
 
-#: js/js.js:711
+#: js/js.js:769
 msgid "{days} days ago"
 msgstr "{days} dage siden"
 
-#: js/js.js:712
+#: js/js.js:770
 msgid "last month"
 msgstr "sidste måned"
 
-#: js/js.js:713
+#: js/js.js:771
 msgid "{months} months ago"
 msgstr "{months} måneder siden"
 
-#: js/js.js:714
+#: js/js.js:772
 msgid "months ago"
 msgstr "måneder siden"
 
-#: js/js.js:715
+#: js/js.js:773
 msgid "last year"
 msgstr "sidste år"
 
-#: js/js.js:716
+#: js/js.js:774
 msgid "years ago"
 msgstr "år siden"
 
@@ -215,7 +292,6 @@ msgid "Password protect"
 msgstr "Beskyt med adgangskode"
 
 #: js/share.js:168 templates/installation.php:44 templates/login.php:35
-#: templates/verify.php:13
 msgid "Password"
 msgstr "Kodeord"
 
@@ -298,6 +374,17 @@ msgstr "Sender ..."
 #: js/share.js:592
 msgid "Email sent"
 msgstr "E-mail afsendt"
+
+#: js/update.js:14
+msgid ""
+"The update was unsuccessful. Please report this issue to the <a "
+"href=\"https://github.com/owncloud/core/issues\" target=\"_blank\">ownCloud "
+"community</a>."
+msgstr ""
+
+#: js/update.js:18
+msgid "The update was successful. Redirecting you to ownCloud now."
+msgstr ""
 
 #: lostpassword/controller.php:47
 msgid "ownCloud password reset"
@@ -450,87 +537,11 @@ msgstr "Databasehost"
 msgid "Finish setup"
 msgstr "Afslut opsætning"
 
-#: templates/layout.guest.php:16 templates/layout.user.php:17
-msgid "Sunday"
-msgstr "Søndag"
-
-#: templates/layout.guest.php:16 templates/layout.user.php:17
-msgid "Monday"
-msgstr "Mandag"
-
-#: templates/layout.guest.php:16 templates/layout.user.php:17
-msgid "Tuesday"
-msgstr "Tirsdag"
-
-#: templates/layout.guest.php:16 templates/layout.user.php:17
-msgid "Wednesday"
-msgstr "Onsdag"
-
-#: templates/layout.guest.php:16 templates/layout.user.php:17
-msgid "Thursday"
-msgstr "Torsdag"
-
-#: templates/layout.guest.php:16 templates/layout.user.php:17
-msgid "Friday"
-msgstr "Fredag"
-
-#: templates/layout.guest.php:16 templates/layout.user.php:17
-msgid "Saturday"
-msgstr "Lørdag"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "January"
-msgstr "Januar"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "February"
-msgstr "Februar"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "March"
-msgstr "Marts"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "April"
-msgstr "April"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "May"
-msgstr "Maj"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "June"
-msgstr "Juni"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "July"
-msgstr "Juli"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "August"
-msgstr "August"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "September"
-msgstr "September"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "October"
-msgstr "Oktober"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "November"
-msgstr "November"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "December"
-msgstr "December"
-
-#: templates/layout.guest.php:42
+#: templates/layout.guest.php:34
 msgid "web services under your control"
 msgstr "Webtjenester under din kontrol"
 
-#: templates/layout.user.php:45
+#: templates/layout.user.php:32
 msgid "Log out"
 msgstr "Log ud"
 
@@ -560,10 +571,6 @@ msgstr "husk"
 msgid "Log in"
 msgstr "Log ind"
 
-#: templates/logout.php:1
-msgid "You are logged out."
-msgstr "Du er nu logget ud."
-
 #: templates/part.pagenavi.php:3
 msgid "prev"
 msgstr "forrige"
@@ -575,18 +582,4 @@ msgstr "næste"
 #: templates/update.php:3
 #, php-format
 msgid "Updating ownCloud to version %s, this may take a while."
-msgstr ""
-
-#: templates/verify.php:5
-msgid "Security Warning!"
-msgstr "Sikkerhedsadvarsel!"
-
-#: templates/verify.php:6
-msgid ""
-"Please verify your password. <br/>For security reasons you may be "
-"occasionally asked to enter your password again."
-msgstr "Verificer din adgangskode.<br/>Af sikkerhedsårsager kan du lejlighedsvist blive bedt om at indtaste din adgangskode igen."
-
-#: templates/verify.php:16
-msgid "Verify"
-msgstr "Verificer"
+msgstr "Opdatere Owncloud til version %s, dette kan tage et stykke tid."
