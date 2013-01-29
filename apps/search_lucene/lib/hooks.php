@@ -17,7 +17,8 @@ class OC_Search_Lucene_Hooks {
 	 */
 	public static function indexFile(array $param) {
 		if (isset($param['path'])) {
-			OC_Search_Lucene_Indexer::indexFile($param['path']);
+			//Add Background Job:
+			\OCP\BackgroundJob::addQueuedTask( 'search_lucene', 'OC_Search_Lucene_Indexer', 'indexFile', $param['path'] );
 		} else {
 			OC_Log::write('search_lucene',
 				'missing path parameter',
@@ -39,7 +40,8 @@ class OC_Search_Lucene_Hooks {
 		// we cannot use post_delete as $param would not contain the id
 		// of the deleted file and we could not fetch it with getId
 		if (isset($param['path'])) {
-			OC_Search_Lucene::deleteFile($param['path']);
+			//Add Background Job:
+			\OCP\BackgroundJob::addQueuedTask( 'search_lucene', 'OC_Search_Lucene', 'deleteFile', $param['path'] );
 		} else {
 			OC_Log::write('search_lucene',
 					'missing path parameter',
