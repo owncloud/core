@@ -40,7 +40,7 @@ OC::$CLASSPATH['IndexFileCacheVisitor']    = 'apps/search_lucene/lib/visitor.php
 OCP\Util::addScript('search_lucene', 'settings');
 
 //remove other providers
-OC_Search::clearProviders();
+OC_Search::removeProvider('OC_Search_Provider_File');
 OC_Search::registerProvider('OC_Search_Lucene');
 
 OCP\App::registerPersonal('search_lucene', 'settings');
