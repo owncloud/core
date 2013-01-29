@@ -30,12 +30,13 @@ class OC_Search_Lucene extends OC_Search_Provider {
 			// Create index
 			//$ocFilesystemView = OC_App::getStorage('search_lucene'); // encrypt the index on logout, decrypt on login
 
-			$indexUrl = OC_Config::getValue( 'datadirectory', OC::$SERVERROOT.'/data' );
-			$indexUrl .= '/' . OC_User::getUser() . '/lucene_index';
+			$indexUrl .= OC_User::getHome(OC_User::getUser()) . '/lucene_index';
 			if (file_exists($indexUrl)) {
 				$index = Zend_Search_Lucene::open($indexUrl);
 			} else {
 				$index = Zend_Search_Lucene::create($indexUrl);
+				//todo index all user files
+				
 			}
 		} catch ( Exception $e ) {
 			OC_Log::write('search_lucene',
@@ -170,14 +171,15 @@ class OC_Search_Lucene extends OC_Search_Provider {
 			try {
 				$index = self::openOrCreate(); 
 				//Zend_Search_Lucene_Search_Query_Wildcard::setMinPrefixLength(0); //default is 3, 0 needed to keep current search behaviour
-
+				
 				//$term  = new Zend_Search_Lucene_Index_Term($query);
 				//$query = new Zend_Search_Lucene_Search_Query_Term($term);
 				
 				$hits = $index->find($query);
 
-				foreach ($hits as $hit) {
-					$results[] = self::asOCSearchResult($hit);
+				//limit results. we cant show more than ~30 anyway. TODO use paging later
+				for ($i = 0; $i < 30 && $i < count($hits); $i++) {
+					$results[] = self::asOCSearchResult($hits[$i]);
 				}
 
 			} catch ( Exception $e ) {
