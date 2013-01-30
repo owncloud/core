@@ -1,3 +1,4 @@
+# BEGIN OwnCload
 <IfModule mod_fcgid.c>
 <IfModule mod_setenvif.c>
 <IfModule mod_headers.c>
@@ -18,7 +19,9 @@ php_value memory_limit 512M
 </IfModule>
 <IfModule mod_rewrite.c>
 RewriteEngine on
-RewriteRule .* - [env=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+# authentification fix (Lightning CalDAV etc.), instead of
+# RewriteRule .* - [env=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteRule .* - [env=REMOTE_USER:%{HTTP:Authorization},last]
 RewriteRule ^.well-known/host-meta /public.php?service=host-meta [QSA,L]
 RewriteRule ^.well-known/host-meta.json /public.php?service=host-meta-json [QSA,L]
 RewriteRule ^.well-known/carddav /remote.php/carddav/ [R]
@@ -33,3 +36,4 @@ AddType image/svg+xml svg svgz
 AddEncoding gzip svgz
 </IfModule>
 Options -Indexes
+# END OwnCload
