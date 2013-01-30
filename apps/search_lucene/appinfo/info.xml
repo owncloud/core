@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<info>
+	<id>search_lucene</id>
+	<name>Lucene Search</name>
+	<version>0.2</version>
+	<licence>AGPL</licence>
+	<author>Jörn Dreyer</author>
+	<require>4</require>
+	<types>
+		<filesystem/>
+	</types>
+	<description>Search through your meta information and file contents with the power of lucene.</description>
+</info>

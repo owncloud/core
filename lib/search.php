@@ -43,6 +43,20 @@ class OC_Search{
 	public static function registerProvider($class, $options=array()) {
 		self::$registeredProviders[]=array('class'=>$class, 'options'=>$options);
 	}
+	/**
+	 * register a new search provider to be used
+	 * @param string $provider class name of a OC_Search_Provider
+	 */
+	public static function removeProvider($class) {
+		self::$registeredProviders = array_filter(
+				self::$registeredProviders, 
+				function ($element) use ($class) {
+					return ($element['class'] != $class);
+				}
+		);
+		// force regeneration of providers on next search
+		self::$providers=array();
+	}
 
 	/**
 	 * search all provider for $query
