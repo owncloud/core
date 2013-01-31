@@ -129,6 +129,7 @@ input[type="submit"].enabled { background:#66f866; border:1px solid #5e5; -moz-b
 
 /* Icons for username and password fields to better recognize them */
 #adminlogin, #adminpass, #user, #password { width:11.7em!important; padding-left:1.8em; }
+#adminlogin+label, #adminpass+label, #user+label, #password+label { left:2.2em; }
 #adminlogin+label+img, #adminpass+label+img, #user+label+img, #password+label+img {
 	position:absolute; left:1.25em; top:1.65em;
 	opacity:.3;
