@@ -85,6 +85,11 @@ input[type="submit"] img, input[type="button"] img, button img, .button img { cu
 	}
 
 
+/* SCROLLING------------------------------------------------------------------ */
+::-webkit-scrollbar { width:5px; }
+::-webkit-scrollbar-track-piece { background-color:transparent; }
+::-webkit-scrollbar-thumb { background:#DDD; }
+
 #body-login input { font-size:1.5em; }
 #body-login input[type="text"], #body-login input[type="password"] { width:13em; }
 #body-login input.login { width:auto; float:right; }
