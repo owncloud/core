@@ -352,7 +352,7 @@ class OC
 	{
 		// register autoloader
 		spl_autoload_register(array('OC', 'autoload'));
-		setlocale(LC_ALL, 'en_US.UTF-8');
+		setlocale(LC_ALL, 'en_US.UTF-8', 'en_US.UTF8', 'enu_us');
 
 		// set some stuff
 		//ob_start();
