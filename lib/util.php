@@ -517,7 +517,7 @@ class OC_Util {
 	 * Check if the setlocal call doesn't work. This can happen if the right local packages are not available on the server.
 	 */
 	public static function issetlocaleworking() {
-		$result=setlocale(LC_ALL, 'en_US.UTF-8', 'en_US.UTF8', 'enu_us');
+		$result=setDefaultLocale();
 		if($result==false) {
 			return(false);
 		}else{
@@ -675,4 +675,8 @@ class OC_Util {
 		return $data;
 	}
 
+	public static function setDefaultLocale() {
+		return setlocale(LC_ALL, 'en_US.UTF-8', 'en_US.UTF8');
+	}
+        
 }
