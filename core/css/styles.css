@@ -51,7 +51,10 @@ textarea:hover, textarea:focus, textarea:active { background-color:#fff; color:#
 input[type="checkbox"] { margin:0; padding:0; height:auto; width:auto; }
 input[type="checkbox"]:hover+label, input[type="checkbox"]:focus+label { color:#111 !important; }
 #quota { cursor:default; }
-
+#show { float: right; position: absolute; right: 1em; top: 0.8em; display:none; }
+#login form input[name="show"] + label { background: url("../img/actions/toggle.png") no-repeat; opacity:0.3;
+float: right; width: 24px; position: absolute !important; height: 14px; right: 1em; top: 1.25em;}
+#login form input[name="show"]:checked + label { background:url("../img/actions/toggle.png") no-repeat; opacity:0.8; }
 
 /* SCROLLING */
 ::-webkit-scrollbar { width:8px; }
