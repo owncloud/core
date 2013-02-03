@@ -21,25 +21,27 @@
 #new>ul>li { height:20px; margin:.3em; padding-left:2em; padding-bottom:0.1em;
 		background-repeat:no-repeat; cursor:pointer; }
 #new>ul>li>p { cursor:pointer; }
-#new>ul>li>input { padding:0.3em; margin:-0.3em; }
+#new>ul>li>form>input { padding:0.3em; margin:-0.3em; }
+
+#trash { height:17px;  margin:0 0 0 1em; z-index:1010; position:absolute; right:13.5em; } 
 
 #upload { 
 	height:27px; padding:0; margin-left:0.2em; overflow:hidden;
 }
 #upload a {
 	position:relative; display:block; width:100%; height:27px;
-	cursor:pointer; z-index:1000;
+	cursor:pointer; z-index:10;
 	background-image:url('%webroot%/core/img/actions/upload.svg');
 	background-repeat:no-repeat;
 	background-position:7px 6px;
 }
 .file_upload_target { display:none; }
 .file_upload_form { display:inline; float:left; margin:0; padding:0; cursor:pointer; overflow:visible; }
-#file_upload_start { 
+#file_upload_start {
 	left:0; top:0; width:28px; height:27px; padding:0;
 	font-size:1em;
 	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; filter:alpha(opacity=0); opacity:0;
-	z-index:-1; position:relative; cursor:pointer; overflow:hidden;
+	z-index:20; position:relative; cursor:pointer; overflow:hidden;
 }
 
 #uploadprogresswrapper { position:absolute; right:13.5em; top:0em; }
@@ -104,21 +106,38 @@ table td.filename form { font-size:.85em; margin-left:3em; margin-right:3em; }
 #fileList tr:hover .fileactions { /* background to distinguish when overlaying with file names */
 	background:rgba(248,248,248,.9); box-shadow:-5px 0 7px rgba(248,248,248,.9);
 }
-#fileList tr.selected:hover .fileactions { /* slightly darker color for selected rows */
+#fileList tr.selected:hover .fileactions, #fileList tr.mouseOver .fileactions { /* slightly darker color for selected rows */
 	background:rgba(238,238,238,.9); box-shadow:-5px 0 7px rgba(238,238,238,.9);
 }
 #fileList .fileactions a.action img { position:relative; top:.2em; }
 #fileList a.action { display:inline; margin:-.5em 0; padding:1em .5em 1em .5em !important; }
+#fileList img.move2trash { display:inline; margin:-.5em 0; padding:1em .5em 1em .5em !important; float:right; }
 a.action.delete { float:right; }
 a.action>img { max-height:16px; max-width:16px; vertical-align:text-bottom; }
 .selectedActions { display:none; float:right; }
 .selectedActions a { display:inline; margin:-.5em 0; padding:.5em !important; }
 .selectedActions a img { position:relative; top:.3em; }
 
-/* add breadcrumb divider to the File item in navigation panel */
-#navigation>ul>li:first-child { background:url('%webroot%/core/img/breadcrumb-start.svg') no-repeat 12.5em 0px; width:12.5em; padding-right:1em; position:fixed; }
-#navigation>ul>li:first-child+li { padding-top:2.9em; }
 
 #scanning-message{ top:40%; left:40%; position:absolute; display:none; }
 
 div.crumb a{ padding:0.9em 0 0.7em 0; }
+
+table.dragshadow {
+	width:auto;
+}
+table.dragshadow td.filename {
+	padding-left:36px;
+	padding-right:16px;
+}
+table.dragshadow td.size {
+	padding-right:8px;
+}
+#upgrade {
+	width: 400px;
+	position: absolute;
+	top: 200px;
+	left: 50%;
+	text-align: center;
+	margin-left: -200px;
+}

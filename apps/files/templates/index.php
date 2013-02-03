@@ -14,7 +14,8 @@
 						data-type='web'><p><?php echo $l->t('From link');?></p></li>
 				</ul>
 			</div>
-			<div id="upload" class="button">
+			<div id="upload" class="button"
+				 title="<?php echo $l->t('Upload') . ' max. '.$_['uploadMaxHumanFilesize'] ?>">
 				<form data-upload-id='1'
 					  id="data-upload-form"
 					  class="file_upload_form"
@@ -31,12 +32,14 @@
 						   value="(max <?php echo $_['uploadMaxHumanFilesize']; ?>)">
 					<input type="hidden" name="dir" value="<?php echo $_['dir'] ?>" id="dir">
 					<input type="file" id="file_upload_start" name='files[]'/>
-					<a href="#" class="svg" onclick="return false;"
-					   title="<?php echo $l->t('Upload') . ' max. '.$_['uploadMaxHumanFilesize'] ?>"></a>
-					
-					<iframe name="file_upload_target_1" class="file_upload_target" src=""></iframe>
+					<a href="#" class="svg" onclick="return false;"></a>
 				</form>
 			</div>
+			<?php if ($_['trash'] ): ?>
+			<div id="trash" class="button">
+				<a><?php echo $l->t('Trash');?></a>
+			</div>
+			<?php endif; ?>
 			<div id="uploadprogresswrapper">
 				<div id="uploadprogressbar"></div>
 				<input type="button" class="stop" style="display:none"
@@ -44,7 +47,6 @@
 					onclick="javascript:Files.cancelUploads();"
 				/>
 			</div>
-
 		</div>
 		<div id="file_action_panel"></div>
 	<?php else:?>
@@ -52,7 +54,6 @@
 	<?php endif;?>
 	<input type="hidden" name="permissions" value="<?php echo $_['permissions']; ?>" id="permissions">
 </div>
-<div id='notification'></div>
 
 <?php if (isset($_['files']) and $_['isCreatable'] and count($_['files'])==0):?>
 	<div id="emptyfolder"><?php echo $l->t('Nothing in here. Upload something!')?></div>
@@ -117,3 +118,4 @@
 
 <!-- config hints for javascript -->
 <input type="hidden" name="allowZipDownload" id="allowZipDownload" value="<?php echo $_['allowZipDownload']; ?>" />
+<input type="hidden" name="usedSpacePercent" id="usedSpacePercent" value="<?php echo $_['usedSpacePercent']; ?>" />

@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2012-12-21 00:10+0100\n"
-"PO-Revision-Date: 2012-12-19 23:20+0000\n"
+"POT-Creation-Date: 2013-02-02 00:06+0100\n"
+"PO-Revision-Date: 2013-02-01 23:06+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Sinhala (Sri Lanka) (http://www.transifex.com/projects/p/owncloud/language/si_LK/)\n"
 "MIME-Version: 1.0\n"
@@ -32,7 +32,7 @@ msgstr "කණ්ඩායම දැනටමත් තිබේ"
 msgid "Unable to add group"
 msgstr "කාණඩයක් එක් කළ නොහැකි විය"
 
-#: ajax/enableapp.php:12
+#: ajax/enableapp.php:11
 msgid "Could not enable app. "
 msgstr "යෙදුම සක්‍රීය කළ නොහැකි විය."
 
@@ -43,14 +43,6 @@ msgstr "වි-තැපෑල සුරකින ලදී"
 #: ajax/lostpassword.php:14
 msgid "Invalid email"
 msgstr "අවලංගු වි-තැපෑල"
-
-#: ajax/openid.php:13
-msgid "OpenID Changed"
-msgstr "විවෘත හැඳුනුම නැතහොත් OpenID වෙනස්විය."
-
-#: ajax/openid.php:15 ajax/setlanguage.php:17 ajax/setlanguage.php:20
-msgid "Invalid request"
-msgstr "අවලංගු අයදුම"
 
 #: ajax/removegroup.php:13
 msgid "Unable to delete group"
@@ -68,6 +60,10 @@ msgstr "පරිශීලකයා මැකීමට නොහැක"
 msgid "Language changed"
 msgstr "භාෂාව ාවනස් කිරීම"
 
+#: ajax/setlanguage.php:17 ajax/setlanguage.php:20
+msgid "Invalid request"
+msgstr "අවලංගු අයදුම"
+
 #: ajax/togglegroups.php:12
 msgid "Admins can't remove themself from the admin group"
 msgstr ""
@@ -82,19 +78,47 @@ msgstr "පරිශීලකයා %s කණ්ඩායමට එකතු ක
 msgid "Unable to remove user from group %s"
 msgstr "පරිශීලකයා %s කණ්ඩායමින් ඉවත් කළ නොහැක"
 
-#: js/apps.js:28 js/apps.js:67
+#: ajax/updateapp.php:13
+msgid "Couldn't update app."
+msgstr ""
+
+#: js/apps.js:30
+msgid "Update to {appversion}"
+msgstr ""
+
+#: js/apps.js:36 js/apps.js:76
 msgid "Disable"
 msgstr "අක්‍රිය කරන්න"
 
-#: js/apps.js:28 js/apps.js:55
+#: js/apps.js:36 js/apps.js:64
 msgid "Enable"
 msgstr "ක්‍රියත්මක කරන්න"
+
+#: js/apps.js:55
+msgid "Please wait...."
+msgstr ""
+
+#: js/apps.js:84
+msgid "Updating...."
+msgstr ""
+
+#: js/apps.js:87
+msgid "Error while updating app"
+msgstr ""
+
+#: js/apps.js:87
+msgid "Error"
+msgstr "දෝෂයක්"
+
+#: js/apps.js:90
+msgid "Updated"
+msgstr ""
 
 #: js/personal.js:69
 msgid "Saving..."
 msgstr "සුරැකෙමින් පවතී..."
 
-#: personal.php:42 personal.php:43
+#: personal.php:34 personal.php:35
 msgid "__language_name__"
 msgstr ""
 
@@ -106,17 +130,21 @@ msgstr "යෙදුමක් එක් කිරීම"
 msgid "More Apps"
 msgstr "තවත් යෙදුම්"
 
-#: templates/apps.php:27
+#: templates/apps.php:24
 msgid "Select an App"
 msgstr "යෙදුමක් තොරන්න"
 
-#: templates/apps.php:31
+#: templates/apps.php:28
 msgid "See application page at apps.owncloud.com"
 msgstr ""
 
-#: templates/apps.php:32
+#: templates/apps.php:29
 msgid "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>"
 msgstr ""
+
+#: templates/apps.php:31
+msgid "Update"
+msgstr "යාවත්කාල කිරීම"
 
 #: templates/help.php:3
 msgid "User Documentation"
@@ -163,7 +191,7 @@ msgstr ""
 msgid "Download iOS Client"
 msgstr ""
 
-#: templates/personal.php:21 templates/users.php:23 templates/users.php:77
+#: templates/personal.php:21 templates/users.php:23 templates/users.php:81
 msgid "Password"
 msgstr "මුරපදය"
 
@@ -233,11 +261,11 @@ msgid ""
 "License\">AGPL</abbr></a>."
 msgstr "නිපදන ලද්දේ <a href=\"http://ownCloud.org/contact\" target=\"_blank\">ownCloud සමාජයෙන්</a>, the <a href=\"https://github.com/owncloud\" target=\"_blank\">මුල් කේතය </a>ලයිසන්ස් කර ඇත්තේ <a href=\"http://www.gnu.org/licenses/agpl-3.0.html\" target=\"_blank\"><abbr title=\"Affero General Public License\">AGPL</abbr></a> යටතේ."
 
-#: templates/users.php:21 templates/users.php:76
-msgid "Name"
-msgstr "නාමය"
+#: templates/users.php:21 templates/users.php:79
+msgid "Login Name"
+msgstr ""
 
-#: templates/users.php:26 templates/users.php:78 templates/users.php:98
+#: templates/users.php:26 templates/users.php:82 templates/users.php:107
 msgid "Groups"
 msgstr "සමූහය"
 
@@ -246,21 +274,41 @@ msgid "Create"
 msgstr "තනන්න"
 
 #: templates/users.php:35
-msgid "Default Quota"
-msgstr "සාමාන්‍ය සලාකය"
+msgid "Default Storage"
+msgstr ""
 
-#: templates/users.php:55 templates/users.php:138
+#: templates/users.php:42 templates/users.php:142
+msgid "Unlimited"
+msgstr ""
+
+#: templates/users.php:60 templates/users.php:157
 msgid "Other"
 msgstr "වෙනත්"
 
-#: templates/users.php:80 templates/users.php:112
+#: templates/users.php:80
+msgid "Display Name"
+msgstr ""
+
+#: templates/users.php:84 templates/users.php:121
 msgid "Group Admin"
 msgstr "කාණ්ඩ පරිපාලක"
 
-#: templates/users.php:82
-msgid "Quota"
-msgstr "සලාකය"
+#: templates/users.php:86
+msgid "Storage"
+msgstr ""
 
-#: templates/users.php:146
+#: templates/users.php:97
+msgid "change display name"
+msgstr ""
+
+#: templates/users.php:101
+msgid "set new password"
+msgstr ""
+
+#: templates/users.php:137
+msgid "Default"
+msgstr ""
+
+#: templates/users.php:165
 msgid "Delete"
 msgstr "මකා දමනවා"

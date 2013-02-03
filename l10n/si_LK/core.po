@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2012-12-13 00:17+0100\n"
-"PO-Revision-Date: 2012-12-12 23:17+0000\n"
+"POT-Creation-Date: 2013-02-02 00:06+0100\n"
+"PO-Revision-Date: 2013-01-31 23:30+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Sinhala (Sri Lanka) (http://www.transifex.com/projects/p/owncloud/language/si_LK/)\n"
 "MIME-Version: 1.0\n"
@@ -20,24 +20,24 @@ msgstr ""
 "Language: si_LK\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ajax/share.php:84
+#: ajax/share.php:85
 #, php-format
 msgid "User %s shared a file with you"
 msgstr ""
 
-#: ajax/share.php:86
+#: ajax/share.php:87
 #, php-format
 msgid "User %s shared a folder with you"
 msgstr ""
 
-#: ajax/share.php:88
+#: ajax/share.php:89
 #, php-format
 msgid ""
 "User %s shared the file \"%s\" with you. It is available for download here: "
 "%s"
 msgstr ""
 
-#: ajax/share.php:90
+#: ajax/share.php:91
 #, php-format
 msgid ""
 "User %s shared the folder \"%s\" with you. It is available for download "
@@ -82,59 +82,135 @@ msgstr "මකා දැමීම සඳහා ප්‍රවර්ගයන්
 msgid "Error removing %s from favorites."
 msgstr ""
 
-#: js/js.js:259 templates/layout.user.php:60 templates/layout.user.php:61
+#: js/config.php:32
+msgid "Sunday"
+msgstr "ඉරිදා"
+
+#: js/config.php:32
+msgid "Monday"
+msgstr "සඳුදා"
+
+#: js/config.php:32
+msgid "Tuesday"
+msgstr "අඟහරුවාදා"
+
+#: js/config.php:32
+msgid "Wednesday"
+msgstr "බදාදා"
+
+#: js/config.php:32
+msgid "Thursday"
+msgstr "බ්‍රහස්පතින්දා"
+
+#: js/config.php:32
+msgid "Friday"
+msgstr "සිකුරාදා"
+
+#: js/config.php:32
+msgid "Saturday"
+msgstr "සෙනසුරාදා"
+
+#: js/config.php:33
+msgid "January"
+msgstr "ජනවාරි"
+
+#: js/config.php:33
+msgid "February"
+msgstr "පෙබරවාරි"
+
+#: js/config.php:33
+msgid "March"
+msgstr "මාර්තු"
+
+#: js/config.php:33
+msgid "April"
+msgstr "අප්‍රේල්"
+
+#: js/config.php:33
+msgid "May"
+msgstr "මැයි"
+
+#: js/config.php:33
+msgid "June"
+msgstr "ජූනි"
+
+#: js/config.php:33
+msgid "July"
+msgstr "ජූලි"
+
+#: js/config.php:33
+msgid "August"
+msgstr "අගෝස්තු"
+
+#: js/config.php:33
+msgid "September"
+msgstr "සැප්තැම්බර්"
+
+#: js/config.php:33
+msgid "October"
+msgstr "ඔක්තෝබර්"
+
+#: js/config.php:33
+msgid "November"
+msgstr "නොවැම්බර්"
+
+#: js/config.php:33
+msgid "December"
+msgstr "දෙසැම්බර්"
+
+#: js/js.js:280
 msgid "Settings"
 msgstr "සැකසුම්"
 
-#: js/js.js:704
+#: js/js.js:759
 msgid "seconds ago"
 msgstr "තත්පරයන්ට පෙර"
 
-#: js/js.js:705
+#: js/js.js:760
 msgid "1 minute ago"
 msgstr "1 මිනිත්තුවකට පෙර"
 
-#: js/js.js:706
+#: js/js.js:761
 msgid "{minutes} minutes ago"
 msgstr ""
 
-#: js/js.js:707
+#: js/js.js:762
 msgid "1 hour ago"
 msgstr ""
 
-#: js/js.js:708
+#: js/js.js:763
 msgid "{hours} hours ago"
 msgstr ""
 
-#: js/js.js:709
+#: js/js.js:764
 msgid "today"
 msgstr "අද"
 
-#: js/js.js:710
+#: js/js.js:765
 msgid "yesterday"
 msgstr "ඊයේ"
 
-#: js/js.js:711
+#: js/js.js:766
 msgid "{days} days ago"
 msgstr ""
 
-#: js/js.js:712
+#: js/js.js:767
 msgid "last month"
 msgstr "පෙර මාසයේ"
 
-#: js/js.js:713
+#: js/js.js:768
 msgid "{months} months ago"
 msgstr ""
 
-#: js/js.js:714
+#: js/js.js:769
 msgid "months ago"
 msgstr "මාස කීපයකට පෙර"
 
-#: js/js.js:715
+#: js/js.js:770
 msgid "last year"
 msgstr "පෙර අවුරුද්දේ"
 
-#: js/js.js:716
+#: js/js.js:771
 msgid "years ago"
 msgstr "අවුරුදු කීපයකට පෙර"
 
@@ -164,8 +240,8 @@ msgid "The object type is not specified."
 msgstr ""
 
 #: js/oc-vcategories.js:95 js/oc-vcategories.js:125 js/oc-vcategories.js:136
-#: js/oc-vcategories.js:195 js/share.js:135 js/share.js:142 js/share.js:541
-#: js/share.js:553
+#: js/oc-vcategories.js:195 js/share.js:152 js/share.js:159 js/share.js:571
+#: js/share.js:583
 msgid "Error"
 msgstr "දෝෂයක්"
 
@@ -177,121 +253,139 @@ msgstr ""
 msgid "The required file {file} is not installed!"
 msgstr ""
 
-#: js/share.js:124 js/share.js:581
+#: js/share.js:29 js/share.js:43 js/share.js:90 js/share.js:93
+msgid "Share"
+msgstr "බෙදා හදා ගන්න"
+
+#: js/share.js:29 js/share.js:43 js/share.js:90 js/share.js:93
+msgid "Shared"
+msgstr ""
+
+#: js/share.js:141 js/share.js:611
 msgid "Error while sharing"
 msgstr ""
 
-#: js/share.js:135
+#: js/share.js:152
 msgid "Error while unsharing"
 msgstr ""
 
-#: js/share.js:142
+#: js/share.js:159
 msgid "Error while changing permissions"
 msgstr ""
 
-#: js/share.js:151
+#: js/share.js:168
 msgid "Shared with you and the group {group} by {owner}"
 msgstr ""
 
-#: js/share.js:153
+#: js/share.js:170
 msgid "Shared with you by {owner}"
 msgstr ""
 
-#: js/share.js:158
+#: js/share.js:175
 msgid "Share with"
 msgstr "බෙදාගන්න"
 
-#: js/share.js:163
+#: js/share.js:180
 msgid "Share with link"
 msgstr "යොමුවක් මඟින් බෙදාගන්න"
 
-#: js/share.js:164
+#: js/share.js:183
 msgid "Password protect"
 msgstr "මුර පදයකින් ආරක්ශාකරන්න"
 
-#: js/share.js:168 templates/installation.php:42 templates/login.php:24
-#: templates/verify.php:13
+#: js/share.js:185 templates/installation.php:44 templates/login.php:35
 msgid "Password"
 msgstr "මුර පදය "
 
-#: js/share.js:172
+#: js/share.js:189
 msgid "Email link to person"
 msgstr ""
 
-#: js/share.js:173
+#: js/share.js:190
 msgid "Send"
 msgstr ""
 
-#: js/share.js:177
+#: js/share.js:194
 msgid "Set expiration date"
 msgstr "කල් ඉකුත් විමේ දිනය දමන්න"
 
-#: js/share.js:178
+#: js/share.js:195
 msgid "Expiration date"
 msgstr "කල් ඉකුත් විමේ දිනය"
 
-#: js/share.js:210
+#: js/share.js:227
 msgid "Share via email:"
 msgstr "විද්‍යුත් තැපෑල මඟින් බෙදාගන්න: "
 
-#: js/share.js:212
+#: js/share.js:229
 msgid "No people found"
 msgstr ""
 
-#: js/share.js:239
+#: js/share.js:256
 msgid "Resharing is not allowed"
 msgstr ""
 
-#: js/share.js:275
+#: js/share.js:292
 msgid "Shared in {item} with {user}"
 msgstr ""
 
-#: js/share.js:296
+#: js/share.js:313
 msgid "Unshare"
 msgstr "නොබෙදු"
 
-#: js/share.js:308
+#: js/share.js:325
 msgid "can edit"
 msgstr "සංස්කරණය කළ හැක"
 
-#: js/share.js:310
+#: js/share.js:327
 msgid "access control"
 msgstr "ප්‍රවේශ පාලනය"
 
-#: js/share.js:313
+#: js/share.js:330
 msgid "create"
 msgstr "සදන්න"
 
-#: js/share.js:316
+#: js/share.js:333
 msgid "update"
 msgstr "යාවත්කාලීන කරන්න"
 
-#: js/share.js:319
+#: js/share.js:336
 msgid "delete"
 msgstr "මකන්න"
 
-#: js/share.js:322
+#: js/share.js:339
 msgid "share"
 msgstr "බෙදාහදාගන්න"
 
-#: js/share.js:353 js/share.js:528 js/share.js:530
+#: js/share.js:373 js/share.js:558
 msgid "Password protected"
 msgstr "මුර පදයකින් ආරක්ශාකර ඇත"
 
-#: js/share.js:541
+#: js/share.js:571
 msgid "Error unsetting expiration date"
 msgstr "කල් ඉකුත් දිනය ඉවත් කිරීමේ දෝෂයක්"
 
-#: js/share.js:553
+#: js/share.js:583
 msgid "Error setting expiration date"
 msgstr "කල් ඉකුත් දිනය ස්ථාපනය කිරීමේ දෝෂයක්"
 
-#: js/share.js:568
+#: js/share.js:598
 msgid "Sending ..."
 msgstr ""
 
-#: js/share.js:579
+#: js/share.js:609
 msgid "Email sent"
+msgstr ""
+
+#: js/update.js:14
+msgid ""
+"The update was unsuccessful. Please report this issue to the <a "
+"href=\"https://github.com/owncloud/core/issues\" target=\"_blank\">ownCloud "
+"community</a>."
+msgstr ""
+
+#: js/update.js:18
+msgid "The update was successful. Redirecting you to ownCloud now."
 msgstr ""
 
 #: lostpassword/controller.php:47
@@ -314,8 +408,8 @@ msgstr ""
 msgid "Request failed!"
 msgstr "ඉල්ලීම අසාර්ථකයි!"
 
-#: lostpassword/templates/lostpassword.php:11 templates/installation.php:38
-#: templates/login.php:20
+#: lostpassword/templates/lostpassword.php:11 templates/installation.php:39
+#: templates/login.php:28
 msgid "Username"
 msgstr "පරිශීලක නම"
 
@@ -404,160 +498,80 @@ msgstr "ඔබගේ දත්ත ඩිරෙක්ටරිය හා ගො�
 msgid "Create an <strong>admin account</strong>"
 msgstr ""
 
-#: templates/installation.php:48
+#: templates/installation.php:50
 msgid "Advanced"
 msgstr "දියුණු/උසස්"
 
-#: templates/installation.php:50
+#: templates/installation.php:52
 msgid "Data folder"
 msgstr "දත්ත ෆෝල්ඩරය"
 
-#: templates/installation.php:57
+#: templates/installation.php:59
 msgid "Configure the database"
 msgstr "දත්ත සමුදාය හැඩගැසීම"
 
-#: templates/installation.php:62 templates/installation.php:73
-#: templates/installation.php:83 templates/installation.php:93
+#: templates/installation.php:64 templates/installation.php:75
+#: templates/installation.php:85 templates/installation.php:95
 msgid "will be used"
 msgstr "භාවිතා වනු ඇත"
 
-#: templates/installation.php:105
+#: templates/installation.php:107
 msgid "Database user"
 msgstr "දත්තගබඩා භාවිතාකරු"
 
-#: templates/installation.php:109
+#: templates/installation.php:111
 msgid "Database password"
 msgstr "දත්තගබඩාවේ මුරපදය"
 
-#: templates/installation.php:113
+#: templates/installation.php:115
 msgid "Database name"
 msgstr "දත්තගබඩාවේ නම"
 
-#: templates/installation.php:121
+#: templates/installation.php:123
 msgid "Database tablespace"
 msgstr ""
 
-#: templates/installation.php:127
+#: templates/installation.php:129
 msgid "Database host"
 msgstr "දත්තගබඩා සේවාදායකයා"
 
-#: templates/installation.php:132
+#: templates/installation.php:134
 msgid "Finish setup"
 msgstr "ස්ථාපනය කිරීම අවසන් කරන්න"
 
-#: templates/layout.guest.php:16 templates/layout.user.php:17
-msgid "Sunday"
-msgstr "ඉරිදා"
-
-#: templates/layout.guest.php:16 templates/layout.user.php:17
-msgid "Monday"
-msgstr "සඳුදා"
-
-#: templates/layout.guest.php:16 templates/layout.user.php:17
-msgid "Tuesday"
-msgstr "අඟහරුවාදා"
-
-#: templates/layout.guest.php:16 templates/layout.user.php:17
-msgid "Wednesday"
-msgstr "බදාදා"
-
-#: templates/layout.guest.php:16 templates/layout.user.php:17
-msgid "Thursday"
-msgstr "බ්‍රහස්පතින්දා"
-
-#: templates/layout.guest.php:16 templates/layout.user.php:17
-msgid "Friday"
-msgstr "සිකුරාදා"
-
-#: templates/layout.guest.php:16 templates/layout.user.php:17
-msgid "Saturday"
-msgstr "සෙනසුරාදා"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "January"
-msgstr "ජනවාරි"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "February"
-msgstr "පෙබරවාරි"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "March"
-msgstr "මාර්තු"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "April"
-msgstr "අප්‍රේල්"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "May"
-msgstr "මැයි"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "June"
-msgstr "ජූනි"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "July"
-msgstr "ජූලි"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "August"
-msgstr "අගෝස්තු"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "September"
-msgstr "සැප්තැම්බර්"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "October"
-msgstr "ඔක්තෝබර්"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "November"
-msgstr "නොවැම්බර්"
-
-#: templates/layout.guest.php:17 templates/layout.user.php:18
-msgid "December"
-msgstr "දෙසැම්බර්"
-
-#: templates/layout.guest.php:42
+#: templates/layout.guest.php:34
 msgid "web services under your control"
 msgstr "ඔබට පාලනය කළ හැකි වෙබ් සේවාවන්"
 
-#: templates/layout.user.php:45
+#: templates/layout.user.php:49
 msgid "Log out"
 msgstr "නික්මීම"
 
-#: templates/login.php:8
+#: templates/login.php:10
 msgid "Automatic logon rejected!"
 msgstr ""
 
-#: templates/login.php:9
+#: templates/login.php:11
 msgid ""
 "If you did not change your password recently, your account may be "
 "compromised!"
 msgstr ""
 
-#: templates/login.php:10
+#: templates/login.php:13
 msgid "Please change your password to secure your account again."
 msgstr ""
 
-#: templates/login.php:15
+#: templates/login.php:19
 msgid "Lost your password?"
 msgstr "මුරපදය අමතකද?"
 
-#: templates/login.php:27
+#: templates/login.php:39
 msgid "remember"
 msgstr "මතක තබාගන්න"
 
-#: templates/login.php:28
+#: templates/login.php:41
 msgid "Log in"
 msgstr "ප්‍රවේශවන්න"
-
-#: templates/logout.php:1
-msgid "You are logged out."
-msgstr "ඔබ නික්මී ඇත."
 
 #: templates/part.pagenavi.php:3
 msgid "prev"
@@ -567,16 +581,7 @@ msgstr "පෙර"
 msgid "next"
 msgstr "ඊළඟ"
 
-#: templates/verify.php:5
-msgid "Security Warning!"
-msgstr ""
-
-#: templates/verify.php:6
-msgid ""
-"Please verify your password. <br/>For security reasons you may be "
-"occasionally asked to enter your password again."
-msgstr ""
-
-#: templates/verify.php:16
-msgid "Verify"
+#: templates/update.php:3
+#, php-format
+msgid "Updating ownCloud to version %s, this may take a while."
 msgstr ""

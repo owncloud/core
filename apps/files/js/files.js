@@ -26,21 +26,65 @@ Files={
 		});
 		procesSelection();
 	},
-	containsInvalidCharacters:function (name) {
+	updateMaxUploadFilesize:function(response) {
+		if(response == undefined) {
+			return;
+		}
+		if(response.data !== undefined && response.data.uploadMaxFilesize !== undefined) {
+			$('#max_upload').val(response.data.uploadMaxFilesize);
+			$('#upload.button').attr('original-title', response.data.maxHumanFilesize);
+			$('#usedSpacePercent').val(response.data.usedSpacePercent);
+			Files.displayStorageWarnings();
+		}
+		if(response[0] == undefined) {
+			return;
+		}
+		if(response[0].uploadMaxFilesize !== undefined) {
+			$('#max_upload').val(response[0].uploadMaxFilesize);
+			$('#upload.button').attr('original-title', response[0].maxHumanFilesize);
+			$('#usedSpacePercent').val(response[0].usedSpacePercent);
+			Files.displayStorageWarnings();
+		}
+
+	},
+	isFileNameValid:function (name) {
+		if (name === '.') {
+			OC.Notification.show(t('files', '\'.\' is an invalid file name.'));
+			return false;
+		}
+		if (name.length == 0) {
+			OC.Notification.show(t('files', 'File name cannot be empty.'));
+			return false;
+		}
+
+		// check for invalid characters
 		var invalid_characters = ['\\', '/', '<', '>', ':', '"', '|', '?', '*'];
 		for (var i = 0; i < invalid_characters.length; i++) {
 			if (name.indexOf(invalid_characters[i]) != -1) {
-				$('#notification').text(t('files', "Invalid name, '\\', '/', '<', '>', ':', '\"', '|', '?' and '*' are not allowed."));
-				$('#notification').fadeIn();
-				return true;
+				OC.Notification.show(t('files', "Invalid name, '\\', '/', '<', '>', ':', '\"', '|', '?' and '*' are not allowed."));
+				return false;
 			}
 		}
-		$('#notification').fadeOut();
-		return false;
+		OC.Notification.hide();
+		return true;
+	},
+	displayStorageWarnings: function() {
+		if (!OC.Notification.isHidden()) {
+			return;
+		}
+
+		var usedSpacePercent = $('#usedSpacePercent').val();
+		if (usedSpacePercent > 98) {
+			OC.Notification.show(t('files', 'Your storage is full, files can not be updated or synced anymore!'));
+			return;
+		}
+		if (usedSpacePercent > 90) {
+			OC.Notification.show(t('files', 'Your storage is almost full ({usedSpacePercent}%)', {usedSpacePercent: usedSpacePercent}));
+		}
 	}
 };
 $(document).ready(function() {
-	Files.bindKeyboardShortcuts(document, jQuery); 
+	Files.bindKeyboardShortcuts(document, jQuery);
 	$('#fileList tr').each(function(){
 		//little hack to set unescape filenames in attribute
 		$(this).attr('data-file',decodeURIComponent($(this).attr('data-file')));
@@ -70,13 +114,18 @@ $(document).ready(function() {
 		$(this).parent().children('#file_upload_start').trigger('click');
 		return false;
 	});
+	
+	// Show trash bin
+	$('#trash a').live('click', function() {
+		window.location=OC.filePath('files_trashbin', '', 'index.php');
+	});
 
 	var lastChecked;
 
 	// Sets the file link behaviour :
 	$('td.filename a').live('click',function(event) {
-		event.preventDefault();
 		if (event.ctrlKey || event.shiftKey) {
+			event.preventDefault();
 			if (event.shiftKey) {
 				var last = $(lastChecked).parent().parent().prevAll().length;
 				var first = $(this).parent().parent().prevAll().length;
@@ -118,6 +167,7 @@ $(document).ready(function() {
 				var permissions = $(this).parent().parent().data('permissions');
 				var action=FileActions.getDefault(mime,type, permissions);
 				if(action){
+					event.preventDefault();
 					action(filename);
 				}
 			}
@@ -171,8 +221,7 @@ $(document).ready(function() {
 	$('.download').click('click',function(event) {
 		var files=getSelectedFiles('name').join(';');
 		var dir=$('#dir').val()||'/';
-		$('#notification').text(t('files','generating ZIP-file, it may take some time.'));
-		$('#notification').fadeIn();
+		OC.Notification.show(t('files','Your download is being prepared. This might take some time if the files are big.'));
 		// use special download URL if provided, e.g. for public shared files
 		if ( (downloadURL = document.getElementById("downloadURL")) ) {
 			window.location=downloadURL.value+"&download&files="+files;
@@ -234,12 +283,12 @@ $(document).ready(function() {
 						}
 					});
 				}else{
-                    var dropTarget = $(e.originalEvent.target).closest('tr');
-                    if(dropTarget && dropTarget.attr('data-type') === 'dir') { // drag&drop upload to folder
-                        var dirName = dropTarget.attr('data-file')
-                    }
+					var dropTarget = $(e.originalEvent.target).closest('tr');
+					if(dropTarget && dropTarget.attr('data-type') === 'dir') { // drag&drop upload to folder
+						var dirName = dropTarget.attr('data-file')
+					}
 
-                    var date=new Date();
+					var date=new Date();
 					if(files){
 						for(var i=0;i<files.length;i++){
 							if(files[i].size>0){
@@ -292,26 +341,27 @@ $(document).ready(function() {
 								var jqXHR =  $('#file_upload_start').fileupload('send', {files: files[i],
 										formData: function(form) {
 											var formArray = form.serializeArray();
-                                            // array index 0 contains the max files size
-                                            // array index 1 contains the request token
-                                            // array index 2 contains the directory
+											// array index 0 contains the max files size
+											// array index 1 contains the request token
+											// array index 2 contains the directory
 											formArray[2]['value'] = dirName;
 											return formArray;
 										}}).success(function(result, textStatus, jqXHR) {
 											var response;
 											response=jQuery.parseJSON(result);
 											if(response[0] == undefined || response[0].status != 'success') {
-												$('#notification').text(t('files', response.data.message));
-												$('#notification').fadeIn();
+												OC.Notification.show(t('files', response.data.message));
 											}
+											Files.updateMaxUploadFilesize(response);
 											var file=response[0];
-                                            // TODO: this doesn't work if the file name has been changed server side
+											// TODO: this doesn't work if the file name has been changed server side
 											delete uploadingFiles[dirName][file.name];
-                                            if ($.assocArraySize(uploadingFiles[dirName]) == 0) {
-                                                delete uploadingFiles[dirName];
-                                            }
+											if ($.assocArraySize(uploadingFiles[dirName]) == 0) {
+												delete uploadingFiles[dirName];
+											}
+											//TODO update file upload size limit
 
-                                            var uploadtext = $('tr').filterAttr('data-type', 'dir').filterAttr('data-file', dirName).find('.uploadtext')
+											var uploadtext = $('tr').filterAttr('data-type', 'dir').filterAttr('data-file', dirName).find('.uploadtext')
 											var currentUploads = parseInt(uploadtext.attr('currentUploads'));
 											currentUploads -= 1;
 											uploadtext.attr('currentUploads', currentUploads);
@@ -339,9 +389,8 @@ $(document).ready(function() {
 										} else {
 											uploadtext.text(t('files', '{count} files uploading', {count: currentUploads}));
 										}
-										$('#notification').hide();
-										$('#notification').text(t('files', 'Upload cancelled.'));
-										$('#notification').fadeIn();
+										delete uploadingFiles[dirName][fileName];
+										OC.Notification.show(t('files', 'Upload cancelled.'));
 									}
 								});
 								//TODO test with filenames containing slashes
@@ -354,6 +403,8 @@ $(document).ready(function() {
 										.success(function(result, textStatus, jqXHR) {
 											var response;
 											response=jQuery.parseJSON(result);
+											Files.updateMaxUploadFilesize(response);
+
 											if(response[0] != undefined && response[0].status == 'success') {
 												var file=response[0];
 												delete uploadingFiles[file.name];
@@ -362,21 +413,21 @@ $(document).ready(function() {
 												if(size==t('files','Pending')){
 													$('tr').filterAttr('data-file',file.name).find('td.filesize').text(file.size);
 												}
+												//TODO update file upload size limit
 												FileList.loadingDone(file.name, file.id);
 											} else {
-												$('#notification').text(t('files', response.data.message));
-												$('#notification').fadeIn();
+												Files.cancelUpload(this.files[0].name);
+												OC.Notification.show(t('files', response.data.message));
 												$('#fileList > tr').not('[data-mime]').fadeOut();
 												$('#fileList > tr').not('[data-mime]').remove();
 											}
-										})
-								.error(function(jqXHR, textStatus, errorThrown) {
-									if(errorThrown === 'abort') {
-										$('#notification').hide();
-										$('#notification').text(t('files', 'Upload cancelled.'));
-										$('#notification').fadeIn();
-									}
-								});
+									})
+									.error(function(jqXHR, textStatus, errorThrown) {
+										if(errorThrown === 'abort') {
+											Files.cancelUpload(this.files[0].name);
+											OC.Notification.show(t('files', 'Upload cancelled.'));
+										}
+									});
 								uploadingFiles[uniqueName] = jqXHR;
 							}
 						}
@@ -384,6 +435,7 @@ $(document).ready(function() {
 						data.submit().success(function(data, status) {
 							// in safari data is a string
 							response = jQuery.parseJSON(typeof data === 'string' ? data : data[0].body.innerText);
+							Files.updateMaxUploadFilesize(response);
 							if(response[0] != undefined && response[0].status == 'success') {
 								var file=response[0];
 								delete uploadingFiles[file.name];
@@ -392,10 +444,11 @@ $(document).ready(function() {
 								if(size==t('files','Pending')){
 									$('tr').filterAttr('data-file',file.name).find('td.filesize').text(file.size);
 								}
+								//TODO update file upload size limit
 								FileList.loadingDone(file.name, file.id);
 							} else {
-								$('#notification').text(t('files', response.data.message));
-								$('#notification').fadeIn();
+								//TODO Files.cancelUpload(/*where do we get the filename*/);
+								OC.Notification.show(t('files', response.data.message));
 								$('#fileList > tr').not('[data-mime]').fadeOut();
 								$('#fileList > tr').not('[data-mime]').remove();
 							}
@@ -414,6 +467,10 @@ $(document).ready(function() {
 				$('#uploadprogressbar').progressbar('value',progress);
 			},
 			start: function(e, data) {
+				//IE < 10 does not fire the necessary events for the progress bar.
+				if($.browser.msie && parseInt($.browser.version) < 10) {
+					return;
+				}
 				$('#uploadprogressbar').progressbar({value:0});
 				$('#uploadprogressbar').fadeIn();
 				if(data.dataType != 'iframe ') {
@@ -434,7 +491,7 @@ $(document).ready(function() {
 		// http://stackoverflow.com/a/6700/11236
 		var size = 0, key;
 		for (key in obj) {
-		    if (obj.hasOwnProperty(key)) size++;
+			if (obj.hasOwnProperty(key)) size++;
 		}
 		return size;
 	};
@@ -477,7 +534,7 @@ $(document).ready(function() {
 		$('#new').removeClass('active');
 		$('#new li').each(function(i,element){
 			if($(element).children('p').length==0){
-				$(element).children('input').remove();
+				$(element).children('form').remove();
 				$(element).append('<p>'+$(element).data('text')+'</p>');
 			}
 		});
@@ -496,7 +553,7 @@ $(document).ready(function() {
 
 		$('#new li').each(function(i,element){
 			if($(element).children('p').length==0){
-				$(element).children('input').remove();
+				$(element).children('form').remove();
 				$(element).append('<p>'+$(element).data('text')+'</p>');
 			}
 		});
@@ -505,23 +562,30 @@ $(document).ready(function() {
 		var text=$(this).children('p').text();
 		$(this).data('text',text);
 		$(this).children('p').remove();
+		var form=$('<form></form>');
 		var input=$('<input>');
-		$(this).append(input);
+		form.append(input);
+		$(this).append(form);
 		input.focus();
-		input.change(function(){
-			if (type != 'web' && Files.containsInvalidCharacters($(this).val())) {
-				return;
-			} else if( type == 'folder' && $('#dir').val() == '/' && $(this).val() == 'Shared') {
-				$('#notification').text(t('files','Invalid folder name. Usage of "Shared" is reserved by Owncloud'));
-				$('#notification').fadeIn();
-				return;
+		form.submit(function(event){
+			event.stopPropagation();
+			event.preventDefault();
+			var newname=input.val();
+			if(type == 'web' && newname.length == 0) {
+				OC.Notification.show(t('files', 'URL cannot be empty.'));
+				return false;
+			} else if (type != 'web' && !Files.isFileNameValid(newname)) {
+				return false;
+			} else if( type == 'folder' && $('#dir').val() == '/' && newname == 'Shared') {
+				OC.Notification.show(t('files','Invalid folder name. Usage of \'Shared\' is reserved by Owncloud'));
+				return false;
 			}
 			if (FileList.lastAction) {
 				FileList.lastAction();
 			}
-			var name = getUniqueName($(this).val());
-			if (name != $(this).val()) {
-				FileList.checkName(name, $(this).val(), true);
+			var name = getUniqueName(newname);
+			if (newname != name) {
+				FileList.checkName(name, newname, true);
 				var hidden = true;
 			} else {
 				var hidden = false;
@@ -565,7 +629,7 @@ $(document).ready(function() {
 					break;
 				case 'web':
 					if(name.substr(0,8)!='https://' && name.substr(0,7)!='http://'){
-						name='http://'.name;
+						name='http://'+name;
 					}
 					var localName=name;
 					if(localName.substr(localName.length-1,1)=='/'){//strip /
@@ -604,19 +668,15 @@ $(document).ready(function() {
 					});
 					break;
 			}
-			var li=$(this).parent();
-			$(this).remove();
+			var li=form.parent();
+			form.remove();
 			li.append('<p>'+li.data('text')+'</p>');
 			$('#new>a').click();
 		});
 	});
 
-	//check if we need to scan the filesystem
-	$.get(OC.filePath('files','ajax','scan.php'),{checkonly:'true'}, function(response) {
-		if(response.data.done){
-			scanFiles();
-		}
-	}, "json");
+	//do a background scan if needed
+	scanFiles();
 
 	var lastWidth = 0;
 	var breadcrumbs = [];
@@ -683,35 +743,62 @@ $(document).ready(function() {
 	});
 
 	resizeBreadcrumbs(true);
+
+	// display storage warnings
+	setTimeout ( "Files.displayStorageWarnings()", 100 );
+	OC.Notification.setDefault(Files.displayStorageWarnings);
+
+	// file space size sync
+	function update_storage_statistics() {
+		$.getJSON(OC.filePath('files','ajax','getstoragestats.php'),function(response) {
+			Files.updateMaxUploadFilesize(response);
+		});
+	}
+
+	// start on load - we ask the server every 5 minutes
+	var update_storage_statistics_interval = 5*60*1000;
+	var update_storage_statistics_interval_id = setInterval(update_storage_statistics, update_storage_statistics_interval);
+
+	// Use jquery-visibility to de-/re-activate file stats sync
+	if ($.support.pageVisibility) {
+		$(document).on({
+			'show.visibility': function() {
+				if (!update_storage_statistics_interval_id) {
+					update_storage_statistics_interval_id = setInterval(update_storage_statistics, update_storage_statistics_interval);
+				}
+			},
+			'hide.visibility': function() {
+				clearInterval(update_storage_statistics_interval_id);
+				update_storage_statistics_interval_id = 0;
+			}
+		});
+	}
 });
 
-function scanFiles(force,dir){
+function scanFiles(force, dir){
 	if(!dir){
-		dir='';
+		dir = '';
 	}
-	force=!!force; //cast to bool
-	scanFiles.scanning=true;
-	$('#scanning-message').show();
-	$('#fileList').remove();
-	var scannerEventSource=new OC.EventSource(OC.filePath('files','ajax','scan.php'),{force:force,dir:dir});
-	scanFiles.cancel=scannerEventSource.close.bind(scannerEventSource);
-	scannerEventSource.listen('scanning',function(data){
-		$('#scan-count').text(t('files', '{count} files scanned', {count: data.count}));
-		$('#scan-current').text(data.file+'/');
+	force = !!force; //cast to bool
+	scanFiles.scanning = true;
+	var scannerEventSource = new OC.EventSource(OC.filePath('files','ajax','scan.php'),{force:force,dir:dir});
+	scanFiles.cancel = scannerEventSource.close.bind(scannerEventSource);
+	scannerEventSource.listen('count',function(count){
+		console.log(count + 'files scanned')
 	});
-	scannerEventSource.listen('success',function(success){
+	scannerEventSource.listen('folder',function(path){
+		console.log('now scanning ' + path)
+	});
+	scannerEventSource.listen('done',function(count){
 		scanFiles.scanning=false;
-		if(success){
-			window.location.reload();
-		}else{
-			alert(t('files', 'error while scanning'));
-		}
+		console.log('done after ' + count + 'files');
 	});
 }
 scanFiles.scanning=false;
 
 function boolOperationFinished(data, callback) {
 	result = jQuery.parseJSON(data.responseText);
+	Files.updateMaxUploadFilesize(result);
 	if(result.status == 'success'){
 		callback.call();
 	} else {
@@ -723,32 +810,101 @@ function updateBreadcrumb(breadcrumbHtml) {
 	$('p.nav').empty().html(breadcrumbHtml);
 }
 
-//options for file drag/dropp
+var createDragShadow = function(event){
+	//select dragged file
+	var isDragSelected = $(event.target).parents('tr').find('td input:first').prop('checked');
+	if (!isDragSelected) {
+		//select dragged file
+		$(event.target).parents('tr').find('td input:first').prop('checked',true);
+	}
+	
+	var selectedFiles = getSelectedFiles();
+	
+	if (!isDragSelected && selectedFiles.length == 1) {
+		//revert the selection
+		$(event.target).parents('tr').find('td input:first').prop('checked',false);
+	}
+	
+	//also update class when we dragged more than one file
+	if (selectedFiles.length > 1) {
+		$(event.target).parents('tr').addClass('selected');
+	}
+	
+	// build dragshadow
+	var dragshadow = $('<table class="dragshadow"></table>');
+	var tbody = $('<tbody></tbody>');
+	dragshadow.append(tbody);
+	
+	var dir=$('#dir').val();
+	
+	$(selectedFiles).each(function(i,elem){
+		var newtr = $('<tr data-dir="'+dir+'" data-filename="'+elem.name+'">'
+						+'<td class="filename">'+elem.name+'</td><td class="size">'+humanFileSize(elem.size)+'</td>'
+					 +'</tr>');
+		tbody.append(newtr);
+		if (elem.type === 'dir') {
+			newtr.find('td.filename').attr('style','background-image:url('+OC.imagePath('core', 'filetypes/folder.png')+')');
+		} else {
+			getMimeIcon(elem.mime,function(path){
+				newtr.find('td.filename').attr('style','background-image:url('+path+')');
+			});
+		}
+	});
+	
+	return dragshadow;
+}
+
+//options for file drag/drop
 var dragOptions={
-	distance: 20, revert: 'invalid', opacity: 0.7, helper: 'clone',
+	revert: 'invalid', revertDuration: 300,
+	opacity: 0.7, zIndex: 100, appendTo: 'body', cursorAt: { left: -5, top: -5 },
+	helper: createDragShadow, cursor: 'move',
 	stop: function(event, ui) {
 		$('#fileList tr td.filename').addClass('ui-draggable');
 	}
-};
+}
+
 var folderDropOptions={
 	drop: function( event, ui ) {
-		var file=ui.draggable.parent().data('file');
-		var target=$(this).find('.nametext').text().trim();
-		var dir=$('#dir').val();
-		$.ajax({
-			url: OC.filePath('files', 'ajax', 'move.php'),
-			data: "dir="+encodeURIComponent(dir)+"&file="+encodeURIComponent(file)+'&target='+encodeURIComponent(dir)+'/'+encodeURIComponent(target),
-			complete: function(data){boolOperationFinished(data, function(){
-				var el = $('#fileList tr').filterAttr('data-file',file).find('td.filename');
-				el.draggable('destroy');
-				FileList.remove(file);
-			});}
+		//don't allow moving a file into a selected folder
+		if ($(event.target).parents('tr').find('td input:first').prop('checked') === true) {
+			return false;
+		}
+		
+		var target=$.trim($(this).find('.nametext').text());
+		
+		var files = ui.helper.find('tr');
+		$(files).each(function(i,row){
+			var dir = $(row).data('dir');
+			var file = $(row).data('filename');
+			$.post(OC.filePath('files', 'ajax', 'move.php'), { dir: dir, file: file, target: dir+'/'+target }, function(result) {
+				if (result) {
+					if (result.status === 'success') {
+						//recalculate folder size
+						var oldSize = $('#fileList tr').filterAttr('data-file',target).data('size');
+						var newSize = oldSize + $('#fileList tr').filterAttr('data-file',file).data('size');
+						$('#fileList tr').filterAttr('data-file',target).data('size', newSize);
+						$('#fileList tr').filterAttr('data-file',target).find('td.filesize').text(humanFileSize(newSize));
+
+						FileList.remove(file);
+						procesSelection();
+						$('#notification').hide();
+					} else {
+						$('#notification').hide();
+						$('#notification').text(result.data.message);
+						$('#notification').fadeIn();
+					}
+				} else {
+					OC.dialogs.alert(t('Error moving file'));
+				}
+			});
 		});
-	}
+	},
+	tolerance: 'pointer'
 }
+
 var crumbDropOptions={
 	drop: function( event, ui ) {
-		var file=ui.draggable.parent().data('file');
 		var target=$(this).data('dir');
 		var dir=$('#dir').val();
 		while(dir.substr(0,1)=='/'){//remove extra leading /'s
@@ -761,12 +917,25 @@ var crumbDropOptions={
 		if(target==dir || target+'/'==dir){
 			return;
 		}
-		$.ajax({
-			url: OC.filePath('files', 'ajax', 'move.php'),
-		 data: "dir="+encodeURIComponent(dir)+"&file="+encodeURIComponent(file)+'&target='+encodeURIComponent(target),
-		 complete: function(data){boolOperationFinished(data, function(){
-			 FileList.remove(file);
-		 });}
+		var files = ui.helper.find('tr');
+		$(files).each(function(i,row){
+			var dir = $(row).data('dir');
+			var file = $(row).data('filename');
+			$.post(OC.filePath('files', 'ajax', 'move.php'), { dir: dir, file: file, target: target }, function(result) {
+				if (result) {
+					if (result.status === 'success') {
+						FileList.remove(file);
+						procesSelection();
+						$('#notification').hide();
+					} else {
+						$('#notification').hide();
+						$('#notification').text(result.data.message);
+						$('#notification').fadeIn();
+					}
+				} else {
+					OC.dialogs.alert(t('Error moving file'));
+				}
+			});
 		});
 	},
 	tolerance: 'pointer'
@@ -873,7 +1042,7 @@ function getUniqueName(name){
 			num=parseInt(numMatch[numMatch.length-1])+1;
 			base=base.split('(')
 			base.pop();
-			base=base.join('(').trim();
+			base=$.trim(base.join('('));
 		}
 		name=base+' ('+num+')';
 		if (extension) {

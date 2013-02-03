@@ -4,14 +4,14 @@
 # 
 # Translators:
 # Jesse Jaara <jesse.jaara@gmail.com>, 2012.
-# Jiri Grönroos <jiri.gronroos@iki.fi>, 2012.
+# Jiri Grönroos <jiri.gronroos@iki.fi>, 2012-2013.
 #   <tehoratopato@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2012-12-22 00:24+0100\n"
-"PO-Revision-Date: 2012-12-21 17:40+0000\n"
+"POT-Creation-Date: 2013-02-03 00:04+0100\n"
+"PO-Revision-Date: 2013-02-02 13:58+0000\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/projects/p/owncloud/language/fi_FI/)\n"
 "MIME-Version: 1.0\n"
@@ -32,7 +32,7 @@ msgstr "Ryhmä on jo olemassa"
 msgid "Unable to add group"
 msgstr "Ryhmän lisäys epäonnistui"
 
-#: ajax/enableapp.php:12
+#: ajax/enableapp.php:11
 msgid "Could not enable app. "
 msgstr "Sovelluksen käyttöönotto epäonnistui."
 
@@ -43,14 +43,6 @@ msgstr "Sähköposti tallennettu"
 #: ajax/lostpassword.php:14
 msgid "Invalid email"
 msgstr "Virheellinen sähköposti"
-
-#: ajax/openid.php:13
-msgid "OpenID Changed"
-msgstr "OpenID on vaihdettu"
-
-#: ajax/openid.php:15 ajax/setlanguage.php:17 ajax/setlanguage.php:20
-msgid "Invalid request"
-msgstr "Virheellinen pyyntö"
 
 #: ajax/removegroup.php:13
 msgid "Unable to delete group"
@@ -68,6 +60,10 @@ msgstr "Käyttäjän poisto epäonnistui"
 msgid "Language changed"
 msgstr "Kieli on vaihdettu"
 
+#: ajax/setlanguage.php:17 ajax/setlanguage.php:20
+msgid "Invalid request"
+msgstr "Virheellinen pyyntö"
+
 #: ajax/togglegroups.php:12
 msgid "Admins can't remove themself from the admin group"
 msgstr "Ylläpitäjät eivät poistaa omia tunnuksiaan ylläpitäjien ryhmästä"
@@ -82,19 +78,47 @@ msgstr "Käyttäjän tai ryhmän %s lisääminen ei onnistu"
 msgid "Unable to remove user from group %s"
 msgstr "Käyttäjän poistaminen ryhmästä %s ei onnistu"
 
-#: js/apps.js:28 js/apps.js:67
+#: ajax/updateapp.php:13
+msgid "Couldn't update app."
+msgstr "Sovelluksen päivitys epäonnistui."
+
+#: js/apps.js:30
+msgid "Update to {appversion}"
+msgstr "Päivitä versioon {appversion}"
+
+#: js/apps.js:36 js/apps.js:76
 msgid "Disable"
 msgstr "Poista käytöstä"
 
-#: js/apps.js:28 js/apps.js:55
+#: js/apps.js:36 js/apps.js:64
 msgid "Enable"
 msgstr "Käytä"
+
+#: js/apps.js:55
+msgid "Please wait...."
+msgstr "Odota hetki..."
+
+#: js/apps.js:84
+msgid "Updating...."
+msgstr "Päivitetään..."
+
+#: js/apps.js:87
+msgid "Error while updating app"
+msgstr "Virhe sovellusta päivittäessä"
+
+#: js/apps.js:87
+msgid "Error"
+msgstr "Virhe"
+
+#: js/apps.js:90
+msgid "Updated"
+msgstr "Päivitetty"
 
 #: js/personal.js:69
 msgid "Saving..."
 msgstr "Tallennetaan..."
 
-#: personal.php:42 personal.php:43
+#: personal.php:34 personal.php:35
 msgid "__language_name__"
 msgstr "_kielen_nimi_"
 
@@ -106,17 +130,21 @@ msgstr "Lisää sovelluksesi"
 msgid "More Apps"
 msgstr "Lisää sovelluksia"
 
-#: templates/apps.php:27
+#: templates/apps.php:24
 msgid "Select an App"
 msgstr "Valitse sovellus"
 
-#: templates/apps.php:31
+#: templates/apps.php:28
 msgid "See application page at apps.owncloud.com"
 msgstr "Katso sovellussivu osoitteessa apps.owncloud.com"
 
-#: templates/apps.php:32
+#: templates/apps.php:29
 msgid "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>"
 msgstr "<span class=\"licence\"></span>-lisensoija <span class=\"author\"></span>"
+
+#: templates/apps.php:31
+msgid "Update"
+msgstr "Päivitä"
 
 #: templates/help.php:3
 msgid "User Documentation"
@@ -163,7 +191,7 @@ msgstr "Lataa Android-sovellus"
 msgid "Download iOS Client"
 msgstr "Lataa iOS-sovellus"
 
-#: templates/personal.php:21 templates/users.php:23 templates/users.php:77
+#: templates/personal.php:21 templates/users.php:23 templates/users.php:81
 msgid "Password"
 msgstr "Salasana"
 
@@ -233,11 +261,11 @@ msgid ""
 "License\">AGPL</abbr></a>."
 msgstr "Kehityksestä on vastannut <a href=\"http://ownCloud.org/contact\" target=\"_blank\">ownCloud-yhteisö</a>, <a href=\"https://github.com/owncloud\" target=\"_blank\">lähdekoodi</a> on julkaistu lisenssin <a href=\"http://www.gnu.org/licenses/agpl-3.0.html\" target=\"_blank\"><abbr title=\"Affero General Public License\">AGPL</abbr></a> alaisena."
 
-#: templates/users.php:21 templates/users.php:76
-msgid "Name"
-msgstr "Nimi"
+#: templates/users.php:21 templates/users.php:79
+msgid "Login Name"
+msgstr "Kirjautumisnimi"
 
-#: templates/users.php:26 templates/users.php:78 templates/users.php:98
+#: templates/users.php:26 templates/users.php:82 templates/users.php:107
 msgid "Groups"
 msgstr "Ryhmät"
 
@@ -246,21 +274,41 @@ msgid "Create"
 msgstr "Luo"
 
 #: templates/users.php:35
-msgid "Default Quota"
-msgstr "Oletuskiintiö"
+msgid "Default Storage"
+msgstr ""
 
-#: templates/users.php:55 templates/users.php:138
+#: templates/users.php:42 templates/users.php:142
+msgid "Unlimited"
+msgstr "Rajoittamaton"
+
+#: templates/users.php:60 templates/users.php:157
 msgid "Other"
 msgstr "Muu"
 
-#: templates/users.php:80 templates/users.php:112
+#: templates/users.php:80
+msgid "Display Name"
+msgstr "Näyttönimi"
+
+#: templates/users.php:84 templates/users.php:121
 msgid "Group Admin"
 msgstr "Ryhmän ylläpitäjä"
 
-#: templates/users.php:82
-msgid "Quota"
-msgstr "Kiintiö"
+#: templates/users.php:86
+msgid "Storage"
+msgstr ""
 
-#: templates/users.php:146
+#: templates/users.php:97
+msgid "change display name"
+msgstr "vaihda näyttönimi"
+
+#: templates/users.php:101
+msgid "set new password"
+msgstr "aseta uusi salasana"
+
+#: templates/users.php:137
+msgid "Default"
+msgstr "Oletus"
+
+#: templates/users.php:165
 msgid "Delete"
 msgstr "Poista"

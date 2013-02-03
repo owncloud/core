@@ -10,7 +10,7 @@
 # Nick Remeslennikov <homolibere@gmail.com>, 2012.
 #   <rasperepodvipodvert@gmail.com>, 2012.
 #   <semen@sam002.net>, 2012.
-#   <sharov3@gmail.com>, 2012.
+#   <sharov3@gmail.com>, 2012-2013.
 #   <skoptev@ukr.net>, 2012.
 #   <tony.mccourin@gmail.com>, 2011.
 # Victor Bravo <>, 2012.
@@ -19,9 +19,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2012-12-27 00:04+0100\n"
-"PO-Revision-Date: 2012-12-26 06:17+0000\n"
-"Last-Translator: adol <sharov3@gmail.com>\n"
+"POT-Creation-Date: 2013-02-02 00:06+0100\n"
+"PO-Revision-Date: 2013-02-01 23:06+0000\n"
+"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/owncloud/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,7 +41,7 @@ msgstr "Группа уже существует"
 msgid "Unable to add group"
 msgstr "Невозможно добавить группу"
 
-#: ajax/enableapp.php:12
+#: ajax/enableapp.php:11
 msgid "Could not enable app. "
 msgstr "Не удалось включить приложение."
 
@@ -52,14 +52,6 @@ msgstr "Email сохранен"
 #: ajax/lostpassword.php:14
 msgid "Invalid email"
 msgstr "Неправильный Email"
-
-#: ajax/openid.php:13
-msgid "OpenID Changed"
-msgstr "OpenID изменён"
-
-#: ajax/openid.php:15 ajax/setlanguage.php:17 ajax/setlanguage.php:20
-msgid "Invalid request"
-msgstr "Неверный запрос"
 
 #: ajax/removegroup.php:13
 msgid "Unable to delete group"
@@ -77,6 +69,10 @@ msgstr "Невозможно удалить пользователя"
 msgid "Language changed"
 msgstr "Язык изменён"
 
+#: ajax/setlanguage.php:17 ajax/setlanguage.php:20
+msgid "Invalid request"
+msgstr "Неверный запрос"
+
 #: ajax/togglegroups.php:12
 msgid "Admins can't remove themself from the admin group"
 msgstr "Администратор не может удалить сам себя из группы admin"
@@ -91,19 +87,47 @@ msgstr "Невозможно добавить пользователя в гру
 msgid "Unable to remove user from group %s"
 msgstr "Невозможно удалить пользователя из группы %s"
 
-#: js/apps.js:28 js/apps.js:67
+#: ajax/updateapp.php:13
+msgid "Couldn't update app."
+msgstr ""
+
+#: js/apps.js:30
+msgid "Update to {appversion}"
+msgstr ""
+
+#: js/apps.js:36 js/apps.js:76
 msgid "Disable"
 msgstr "Выключить"
 
-#: js/apps.js:28 js/apps.js:55
+#: js/apps.js:36 js/apps.js:64
 msgid "Enable"
 msgstr "Включить"
+
+#: js/apps.js:55
+msgid "Please wait...."
+msgstr ""
+
+#: js/apps.js:84
+msgid "Updating...."
+msgstr ""
+
+#: js/apps.js:87
+msgid "Error while updating app"
+msgstr ""
+
+#: js/apps.js:87
+msgid "Error"
+msgstr "Ошибка"
+
+#: js/apps.js:90
+msgid "Updated"
+msgstr ""
 
 #: js/personal.js:69
 msgid "Saving..."
 msgstr "Сохранение..."
 
-#: personal.php:42 personal.php:43
+#: personal.php:34 personal.php:35
 msgid "__language_name__"
 msgstr "Русский "
 
@@ -115,29 +139,33 @@ msgstr "Добавить приложение"
 msgid "More Apps"
 msgstr "Больше приложений"
 
-#: templates/apps.php:27
+#: templates/apps.php:24
 msgid "Select an App"
 msgstr "Выберите приложение"
 
-#: templates/apps.php:31
+#: templates/apps.php:28
 msgid "See application page at apps.owncloud.com"
 msgstr "Смотрите дополнения на apps.owncloud.com"
 
-#: templates/apps.php:32
+#: templates/apps.php:29
 msgid "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>"
 msgstr "<span class=\"licence\"></span> лицензия. Автор <span class=\"author\"></span>"
 
+#: templates/apps.php:31
+msgid "Update"
+msgstr "Обновить"
+
 #: templates/help.php:3
 msgid "User Documentation"
-msgstr ""
+msgstr "Пользовательская документация"
 
 #: templates/help.php:4
 msgid "Administrator Documentation"
-msgstr ""
+msgstr "Документация администратора"
 
 #: templates/help.php:6
 msgid "Online Documentation"
-msgstr ""
+msgstr "Online документация"
 
 #: templates/help.php:7
 msgid "Forum"
@@ -145,11 +173,11 @@ msgstr "Форум"
 
 #: templates/help.php:9
 msgid "Bugtracker"
-msgstr ""
+msgstr "Bugtracker"
 
 #: templates/help.php:11
 msgid "Commercial Support"
-msgstr ""
+msgstr "Коммерческая поддержка"
 
 #: templates/personal.php:8
 #, php-format
@@ -172,7 +200,7 @@ msgstr "Загрузка Android-приложения"
 msgid "Download iOS Client"
 msgstr "Загрузка iOS-приложения"
 
-#: templates/personal.php:21 templates/users.php:23 templates/users.php:77
+#: templates/personal.php:21 templates/users.php:23 templates/users.php:81
 msgid "Password"
 msgstr "Пароль"
 
@@ -242,11 +270,11 @@ msgid ""
 "License\">AGPL</abbr></a>."
 msgstr "Разрабатывается <a href=\"http://ownCloud.org/contact\" target=\"_blank\">сообществом ownCloud</a>, <a href=\"https://github.com/owncloud\" target=\"_blank\">исходный код</a> доступен под лицензией <a href=\"http://www.gnu.org/licenses/agpl-3.0.html\" target=\"_blank\"><abbr title=\"Affero General Public License\">AGPL</abbr></a>."
 
-#: templates/users.php:21 templates/users.php:76
-msgid "Name"
-msgstr "Имя"
+#: templates/users.php:21 templates/users.php:79
+msgid "Login Name"
+msgstr ""
 
-#: templates/users.php:26 templates/users.php:78 templates/users.php:98
+#: templates/users.php:26 templates/users.php:82 templates/users.php:107
 msgid "Groups"
 msgstr "Группы"
 
@@ -255,21 +283,41 @@ msgid "Create"
 msgstr "Создать"
 
 #: templates/users.php:35
-msgid "Default Quota"
-msgstr "Квота по умолчанию"
+msgid "Default Storage"
+msgstr "Хранилище по-умолчанию"
 
-#: templates/users.php:55 templates/users.php:138
+#: templates/users.php:42 templates/users.php:142
+msgid "Unlimited"
+msgstr "Неограниченно"
+
+#: templates/users.php:60 templates/users.php:157
 msgid "Other"
 msgstr "Другое"
 
-#: templates/users.php:80 templates/users.php:112
+#: templates/users.php:80
+msgid "Display Name"
+msgstr ""
+
+#: templates/users.php:84 templates/users.php:121
 msgid "Group Admin"
 msgstr "Группа Администраторы"
 
-#: templates/users.php:82
-msgid "Quota"
-msgstr "Квота"
+#: templates/users.php:86
+msgid "Storage"
+msgstr "Хранилище"
 
-#: templates/users.php:146
+#: templates/users.php:97
+msgid "change display name"
+msgstr ""
+
+#: templates/users.php:101
+msgid "set new password"
+msgstr ""
+
+#: templates/users.php:137
+msgid "Default"
+msgstr "По-умолчанию"
+
+#: templates/users.php:165
 msgid "Delete"
 msgstr "Удалить"
