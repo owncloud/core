@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ownCloud
  *
@@ -20,71 +21,80 @@
  *
  */
 
-
 /**
- * provides an interface to all search providers
+ * Provides an interface to all search providers
  */
-class OC_Search{
-	static private $providers=array();
-	static private $registeredProviders=array();
+class OC_Search {
 
-	/**
-	 * remove all registered search providers
-	 */
-	public static function clearProviders() {
-		self::$providers=array();
-		self::$registeredProviders=array();
+    static private $providers = array();
+    static private $registeredProviders = array();
+
+    /**
+     * Remove all registered search providers.
+     */
+    public static function clearProviders() {
+	self::$providers = array();
+	self::$registeredProviders = array();
+    }
+
+    /**
+     * Register a new search provider to use in search.
+     * @param string $class name of a OC_Search_Provider
+     */
+    public static function registerProvider($class, $options = array()) {
+	self::$registeredProviders[] = array('class' => $class, 'options' => $options);
+    }
+
+    /**
+     * Remove a search provider.
+     * @param string $class
+     */
+    public static function removeProvider($class) {
+	// remove from registered providers
+	foreach (self::$registeredProviders as $i => $v) {
+	    if ($v['class'] == $class) {
+		unset(self::$registeredProviders[$i]);
+		break;
+	    }
 	}
-
-	/**
-	 * register a new search provider to be used
-	 * @param string $provider class name of a OC_Search_Provider
-	 */
-	public static function registerProvider($class, $options=array()) {
-		self::$registeredProviders[]=array('class'=>$class, 'options'=>$options);
+	// remove from providers
+	foreach (self::$providers as $i => $c) {
+	    if (is_a($c, $class)) {
+		unset(self::$providers[$i]);
+		break;
+	    }
 	}
+    }
 
-	/**
-	 * search all provider for $query
-	 * @param string query
-	 * @return array An array of OC_Search_Result's
-	 */
-	public static function search($query) {
-		self::initProviders();
-		$results=array();
-		foreach(self::$providers as $provider) {
-			$results=array_merge($results, $provider->search($query));
-		}
-		return $results;
+    /**
+     * Search all providers for a query string.
+     * @param string $query
+     * @param string $only_use_provider Use only this provider to search; the string must be the name of the provider class.
+     * @return array An array of OC_Search_Result's
+     */
+    public static function search($query, $only_use_provider = null) {
+	self::initProviders();
+	$results = array();
+	foreach (self::$providers as $provider) {
+	    if ($only_use_provider === null || is_a($provider, $only_use_provider)) {
+		$results = array_merge($results, $provider->search($query));
+	    }
 	}
+	return $results;
+    }
 
-	/**
-	 * remove an existing search provider
-	 * @param string $provider class name of a OC_Search_Provider
-	 */
-	public static function removeProvider($provider) {
-		self::$registeredProviders = array_filter(
-				self::$registeredProviders,
-				function ($element) use ($provider) {
-					return ($element['class'] != $provider);
-				}
-		);
-		// force regeneration of providers on next search
-		self::$providers=array();
+    /**
+     * Create instances of all the registered search providers.
+     */
+    private static function initProviders() {
+	if (count(self::$providers) > 0) {
+	    return;
 	}
-
-
-	/**
-	 * create instances of all the registered search providers
-	 */
-	private static function initProviders() {
-		if(count(self::$providers)>0) {
-			return;
-		}
-		foreach(self::$registeredProviders as $provider) {
-			$class=$provider['class'];
-			$options=$provider['options'];
-			self::$providers[]=new $class($options);
-		}
+	foreach (self::$registeredProviders as $provider) {
+	    $class = $provider['class'];
+	    $options = $provider['options'];
+	    self::$providers[] = new $class($options);
 	}
+    }
+
 }
