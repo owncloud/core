@@ -1,45 +1,37 @@
 <?php
 
-class OC_Search_Provider_File extends OC_Search_Provider{
-	function search($query) {
-		$files=\OC\Files\Filesystem::search($query, true);
-		$results=array();
-		$l=OC_L10N::get('lib');
-		foreach($files as $fileData) {
-			$path = $fileData['path'];
-			$mime = $fileData['mimetype'];
+/**
+ * This provider only searches file names
+ */
+class OC_Search_Provider_File extends OC_Search_Provider {
 
-			$name = basename($path);
-			$text = '';
-			$skip = false;
-			if($mime=='httpd/unix-directory') {
-				$link = OC_Helper::linkTo( 'files', 'index.php', array('dir' => $path));
-				$type = (string)$l->t('Files');
-			}else{
-				$link = OC_Helper::linkToRoute( 'download', array('file' => $path));
-				$mimeBase = $fileData['mimepart'];
-				switch($mimeBase) {
-					case 'audio':
-						$skip = true;
-						break;
-					case 'text':
-						$type = (string)$l->t('Text');
-						break;
-					case 'image':
-						$type = (string)$l->t('Images');
-						break;
-					default:
-						if($mime=='application/xml') {
-							$type = (string)$l->t('Text');
-						}else{
-							$type = (string)$l->t('Files');
-						}
-				}
-			}
-			if(!$skip) {
-				$results[] = new OC_Search_Result($name, $text, $link, $type);
-			}
-		}
-		return $results;
+    /**
+     * Search the database for files with the given file name
+     * @param string $query
+     * @return OC_Search_Result
+     */
+    function search($query) {
+	$files = \OC\Files\Filesystem::search($query);
+	$results = array();
+	// edit results
+	foreach ($files as $fileData) {
+	    // skip versions
+	    if (strpos($fileData['path'], '_versions') === 0) {
+		continue;
+	    }
+	    // skip top-level folder
+	    if ($fileData['name'] == 'files' && $fileData['parent'] == -1){
+		continue;
+	    }
+	    // create result
+	    $result = new OC_Search_Result_File($fileData['fileid'], '', '', '');
+	    // fill from file data
+	    $result->fill($fileData);
+	    // add to results
+	    $results[] = $result;
 	}
+	// return
+	return $results;
+    }
+
 }
