@@ -188,24 +188,22 @@ class OC_Helper {
 	 * Returns the path to the image of this file type.
 	 */
 	public static function mimetypeIcon( $mimetype ) {
-		$alias=array('application/xml'=>'code/xml');
+		$alias = array('application/xml' => 'code/xml', 'httpd/unix-directory' => 'dir');
 		if(isset($alias[$mimetype])) {
 			$mimetype=$alias[$mimetype];
 		}
 		// Replace slash and backslash with a minus
 		$mimetype = str_replace( "/", "-", $mimetype );
 		$mimetype = str_replace( "\\", "-", $mimetype );
-
 		// Is it a dir?
 		if( $mimetype == "dir" ) {
 			return OC::$WEBROOT."/core/img/filetypes/folder.png";
 		}
-
 		// Icon exists?
 		if( file_exists( OC::$SERVERROOT."/core/img/filetypes/$mimetype.png" )) {
 			return OC::$WEBROOT."/core/img/filetypes/$mimetype.png";
 		}
-		//try only the first part of the filetype
+		// Try only the first part of the filetype
 		$mimetype=substr($mimetype, 0, strpos($mimetype, '-'));
 		if( file_exists( OC::$SERVERROOT."/core/img/filetypes/$mimetype.png" )) {
 			return OC::$WEBROOT."/core/img/filetypes/$mimetype.png";
