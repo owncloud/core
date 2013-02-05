@@ -82,16 +82,16 @@ class OC_Search_Result_Contact extends OC_Search_Result {
      * @param string $id path to file
      */
     public static function fillFromId($id) {
-	$card = \OCA\Contacts\VCard::find($id);
-	if (!$card) {
-	    return null;
-	}
-	// create search result
-	$result = new OC_Search_Result_Contact($id, '', '', '');
-	// fill from file data
-	$result->fill($card);
-	// return
-	return $result;
+        $card = \OCA\Contacts\VCard::find($id);
+        if (!$card) {
+            return null;
+        }
+        // create search result
+        $result = new OC_Search_Result_Contact($id, '', '', '');
+        // fill from file data
+        $result->fill($card);
+        // return
+        return $result;
     }
 
     /**
@@ -99,23 +99,23 @@ class OC_Search_Result_Contact extends OC_Search_Result {
      * @param string $id
      */
     public function fill(array $data) {
-	$this->id = $data['id'];
-	$this->name = $data['fullname'];
-	$this->link = \OCP\Util::linkTo('contacts', 'index.php', array('id' => $data['id']));
-	$this->actions = self::format_actions();
-	// parse vcard
-	$vcard = \Sabre\VObject\Reader::read($data['carddata']);
-	$this->organization = self::format_property($vcard->ORG);
-	$this->address = self::format_property($vcard->ADR);
-	$this->birthday = self::format_property($vcard->BDAY);
-	$this->email = self::format_property($vcard->EMAIL);
-	$this->groups = self::format_property($vcard->CATEGORIES);
-	$this->instant_messaging = self::format_property($vcard->IMPP);
-	$this->nickname = self::format_property($vcard->NICKNAME);
-	$this->notes = self::format_property($vcard->NOTE);
-	$this->organization = self::format_property($vcard->ORG);
-	$this->telephone = self::format_property($vcard->TEL);
-	$this->url = self::format_property($vcard->URL);
+        $this->id = $data['id'];
+        $this->name = $data['fullname'];
+        $this->link = \OCP\Util::linkTo('contacts', 'index.php', array('id' => $data['id']));
+        $this->actions = self::format_actions();
+        // parse vcard
+        $vcard = \Sabre\VObject\Reader::read($data['carddata']);
+        $this->organization = self::format_property($vcard->ORG);
+        $this->address = self::format_property($vcard->ADR);
+        $this->birthday = self::format_property($vcard->BDAY);
+        $this->email = self::format_property($vcard->EMAIL);
+        $this->groups = self::format_property($vcard->CATEGORIES);
+        $this->instant_messaging = self::format_property($vcard->IMPP);
+        $this->nickname = self::format_property($vcard->NICKNAME);
+        $this->notes = self::format_property($vcard->NOTE);
+        $this->organization = self::format_property($vcard->ORG);
+        $this->telephone = self::format_property($vcard->TEL);
+        $this->url = self::format_property($vcard->URL);
     }
 
     /**
@@ -123,11 +123,12 @@ class OC_Search_Result_Contact extends OC_Search_Result {
      * @TODO special format for address
      */
     public function formatToHtml() {
-	foreach($this as $property => $value){
-	    if($property == 'id' || $property == 'link') continue;
-	    $this->property = htmlentities($value);
-	}
-	$this->name = self::format_name($this->name);
+        foreach ($this as $property => $value) {
+            if ($property == 'id' || $property == 'link')
+                continue;
+            $this->property = htmlentities($value);
+        }
+        $this->name = self::format_name($this->name);
     }
 
     /**
@@ -136,23 +137,23 @@ class OC_Search_Result_Contact extends OC_Search_Result {
      * @return string
      */
     function format_property($property) {
-	if ($property == null) {
-	    return '';
-	}
-	$value = $property->__toString();
-	return $value;
+        if ($property == null) {
+            return '';
+        }
+        $value = $property->__toString();
+        return $value;
     }
-    
+
     /**
      * Add an icon to the name
      * @param $name 
      * @return string
      */
     function format_name($name) {
-	// add icon
-	$url = \OCP\image_path('', 'actions/user.svg');
-	// add filename
-	return '<span class="has-icon" style="background-image: url(' . $url . ');">' . htmlspecialchars($name) . '</span>';
+        // add icon
+        $url = \OCP\image_path('', 'actions/user.svg');
+        // add filename
+        return '<span class="has-icon" style="background-image: url(' . $url . ');">' . htmlspecialchars($name) . '</span>';
     }
 
     /**
@@ -162,9 +163,10 @@ class OC_Search_Result_Contact extends OC_Search_Result {
      * @return string
      */
     function format_actions() {
-	$output_html = '<ul class="search_actions">';
-	$url = \OCP\Util::linkTo('contacts', 'index.php');
-	$output_html .= "<li><a href=\"{$url}\">Open</a></li>";
-	return $output_html . '</ul>';
+        $output_html = '<ul class="search_actions">';
+        $url = \OCP\Util::linkTo('contacts', 'index.php');
+        $output_html .= "<li><a href=\"{$url}\">Open</a></li>";
+        return $output_html . '</ul>';
     }
+
 }

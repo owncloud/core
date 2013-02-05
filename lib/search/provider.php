@@ -16,7 +16,7 @@ abstract class OC_Search_Provider {
      * @param array $options
      */
     public function __construct($options) {
-	$this->options = $options;
+        $this->options = $options;
     }
 
     /**

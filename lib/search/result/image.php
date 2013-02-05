@@ -21,9 +21,9 @@ class OC_Search_Result_Image extends OC_Search_Result_File {
      * Format select fields to HTML
      */
     public function formatToHtml() {
-	$this->name = self::format_name($this->path, 'image');
-	$this->size = self::format_size($this->size);
-	$this->modified = self::format_date($this->modified);
+        $this->name = self::format_name($this->path, 'image');
+        $this->size = self::format_size($this->size);
+        $this->modified = self::format_date($this->modified);
     }
 
 }

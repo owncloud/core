@@ -7,6 +7,7 @@ class OC_Search_Result_Article extends OC_Search_Result {
     /**
      * Type name; translated in templates
      */
+
     const TITLE = 'Articles';
 
     /**
@@ -20,13 +21,13 @@ class OC_Search_Result_Article extends OC_Search_Result {
      * @var string
      */
     public $author;
-    
+
     /**
      * Date the article was published
      * @var int
      */
     public $published;
-    
+
     /**
      * Favicon url
      * @var string
@@ -38,17 +39,17 @@ class OC_Search_Result_Article extends OC_Search_Result {
      * @param string $id path to file
      */
     public static function fillFromId($id) {
-	$feedMapper = new OCA\News\FeedMapper(OCP\USER::getUser());
-	$feed = $feedMapper->findById($id);
-	if ($feed === null) {
-	    return null;
-	}
-	// create search result
-	$result = new OC_Search_Result_Feed($id, '', '', '');
-	// fill from file data
-	$result->fill($feed);
-	// return
-	return $result;
+        $feedMapper = new OCA\News\FeedMapper(OCP\USER::getUser());
+        $feed = $feedMapper->findById($id);
+        if ($feed === null) {
+            return null;
+        }
+        // create search result
+        $result = new OC_Search_Result_Feed($id, '', '', '');
+        // fill from file data
+        $result->fill($feed);
+        // return
+        return $result;
     }
 
     /**
@@ -56,21 +57,21 @@ class OC_Search_Result_Article extends OC_Search_Result {
      * @param string $id
      */
     public function fill(array $data) {
-	$this->id = $data['id'];
-	$this->name = $data['title'];
-	$this->link = OCP\Util::linkTo('news', 'index.php') . '?itemid=' . urlencode($data['id']);
-	$this->actions = self::format_actions($data);
-	$this->author = $data['author'];
-	$this->published = $data['pub_date'];
-	$this->favicon = $data['favicon_link'];
+        $this->id = $data['id'];
+        $this->name = $data['title'];
+        $this->link = OCP\Util::linkTo('news', 'index.php') . '?itemid=' . urlencode($data['id']);
+        $this->actions = self::format_actions($data);
+        $this->author = $data['author'];
+        $this->published = $data['pub_date'];
+        $this->favicon = $data['favicon_link'];
     }
 
     /**
      * Format select fields to HTML
      */
     public function formatToHtml() {
-	$this->name = self::format_name($this->name, $this->favicon);
-	$this->modified = self::format_date($this->modified);
+        $this->name = self::format_name($this->name, $this->favicon);
+        $this->modified = self::format_date($this->modified);
     }
 
     /**
@@ -79,12 +80,12 @@ class OC_Search_Result_Article extends OC_Search_Result {
      * @return string
      */
     function format_actions($data) {
-	$output_html = '<ul class="search_actions">';
-	// add go to article
-	$output_html .= "<li><a href=\"{$this->link}\">Open</a></li>";
-	$output_html .= "<li><a href=\"{$data['url']}\">Open RSS</a></li>";
-	// return
-	return $output_html . '</ul>';
+        $output_html = '<ul class="search_actions">';
+        // add go to article
+        $output_html .= "<li><a href=\"{$this->link}\">Open</a></li>";
+        $output_html .= "<li><a href=\"{$data['url']}\">Open RSS</a></li>";
+        // return
+        return $output_html . '</ul>';
     }
 
     /**
@@ -94,12 +95,12 @@ class OC_Search_Result_Article extends OC_Search_Result {
      * @return string
      */
     function format_name($name, $url) {
-	if ($url) {
-	    // add icon
-	    return '<span class="has-icon" style="background-image: url(' . $url . ');">' . htmlspecialchars($name) . '</span>';
-	} else {
-	    return htmlspecialchars($name);
-	}
+        if ($url) {
+            // add icon
+            return '<span class="has-icon" style="background-image: url(' . $url . ');">' . htmlspecialchars($name) . '</span>';
+        } else {
+            return htmlspecialchars($name);
+        }
     }
 
     /**
@@ -108,9 +109,9 @@ class OC_Search_Result_Article extends OC_Search_Result {
      * @return string
      */
     function format_date($time) {
-	$color = self::get_date_color($time);
-	OC::autoload('OCP\Template');
-	return '<span style="color: ' . $color . '">' . OCP\relative_modified_date($time) . '</span>';
+        $color = self::get_date_color($time);
+        OC::autoload('OCP\Template');
+        return '<span style="color: ' . $color . '">' . OCP\relative_modified_date($time) . '</span>';
     }
 
     /**
@@ -119,10 +120,10 @@ class OC_Search_Result_Article extends OC_Search_Result {
      * @return string CSS color string
      */
     function get_date_color($mtime) {
-	$days_modified_ago = intval(abs($mtime - time()) / 86400);
-	$color = $days_modified_ago * 14;
-	$color = min(200, $color);
-	return "rgb($color, $color, $color)";
+        $days_modified_ago = intval(abs($mtime - time()) / 86400);
+        $color = $days_modified_ago * 14;
+        $color = min(200, $color);
+        return "rgb($color, $color, $color)";
     }
 
 }

@@ -50,10 +50,10 @@ abstract class OC_Search_Result {
      * @param string $actions HTML list of the actions available for this result
      */
     public function __construct($id = null, $name = null, $link = null, $actions = null) {
-	$this->id = $id;
-	$this->name = $name;
-	$this->link = $link;
-	$this->actions = $actions;
+        $this->id = $id;
+        $this->name = $name;
+        $this->link = $link;
+        $this->actions = $actions;
     }
 
     /**
@@ -62,8 +62,8 @@ abstract class OC_Search_Result {
      * @return OC_Search_Result
      */
     public static function fillFromId($id) {
-	// code in descendant classes; this function body is necessary or
-	// PHP will complain that a static method is declared abstract
+        // code in descendant classes; this function body is necessary or
+        // PHP will complain that a static method is declared abstract
     }
 
     /**

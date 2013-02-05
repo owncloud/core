@@ -20,7 +20,7 @@ class OC_Search_Provider_Gallery extends OC_Search_Provider {
                 continue;
             }
             // only add images
-            if ( strpos($fileData['mimetype'], 'image') !== false ){
+            if (strpos($fileData['mimetype'], 'image') !== false) {
                 // create result
                 $result = new OC_Search_Result_Image($fileData['id'], '', '', '');
                 // fill from file data

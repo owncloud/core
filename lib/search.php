@@ -33,8 +33,8 @@ class OC_Search {
      * Remove all registered search providers.
      */
     public static function clearProviders() {
-	self::$providers = array();
-	self::$registeredProviders = array();
+        self::$providers = array();
+        self::$registeredProviders = array();
     }
 
     /**
@@ -42,7 +42,7 @@ class OC_Search {
      * @param string $class name of a OC_Search_Provider
      */
     public static function registerProvider($class, $options = array()) {
-	self::$registeredProviders[] = array('class' => $class, 'options' => $options);
+        self::$registeredProviders[] = array('class' => $class, 'options' => $options);
     }
 
     /**
@@ -50,20 +50,20 @@ class OC_Search {
      * @param string $class
      */
     public static function removeProvider($class) {
-	// remove from registered providers
-	foreach (self::$registeredProviders as $i => $v) {
-	    if ($v['class'] == $class) {
-		unset(self::$registeredProviders[$i]);
-		break;
-	    }
-	}
-	// remove from providers
-	foreach (self::$providers as $i => $c) {
-	    if (is_a($c, $class)) {
-		unset(self::$providers[$i]);
-		break;
-	    }
-	}
+        // remove from registered providers
+        foreach (self::$registeredProviders as $i => $v) {
+            if ($v['class'] == $class) {
+                unset(self::$registeredProviders[$i]);
+                break;
+            }
+        }
+        // remove from providers
+        foreach (self::$providers as $i => $c) {
+            if (is_a($c, $class)) {
+                unset(self::$providers[$i]);
+                break;
+            }
+        }
     }
 
     /**
@@ -73,28 +73,28 @@ class OC_Search {
      * @return array An array of OC_Search_Result's
      */
     public static function search($query, $only_use_provider = null) {
-	self::initProviders();
-	$results = array();
-	foreach (self::$providers as $provider) {
-	    if ($only_use_provider === null || is_a($provider, $only_use_provider)) {
-		$results = array_merge($results, $provider->search($query));
-	    }
-	}
-	return $results;
+        self::initProviders();
+        $results = array();
+        foreach (self::$providers as $provider) {
+            if ($only_use_provider === null || is_a($provider, $only_use_provider)) {
+                $results = array_merge($results, $provider->search($query));
+            }
+        }
+        return $results;
     }
 
     /**
      * Create instances of all the registered search providers.
      */
     private static function initProviders() {
-	if (count(self::$providers) > 0) {
-	    return;
-	}
-	foreach (self::$registeredProviders as $provider) {
-	    $class = $provider['class'];
-	    $options = $provider['options'];
-	    self::$providers[] = new $class($options);
-	}
+        if (count(self::$providers) > 0) {
+            return;
+        }
+        foreach (self::$registeredProviders as $provider) {
+            $class = $provider['class'];
+            $options = $provider['options'];
+            self::$providers[] = new $class($options);
+        }
     }
 
 }

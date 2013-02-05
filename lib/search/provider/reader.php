@@ -20,7 +20,7 @@ class OC_Search_Provider_Reader extends OC_Search_Provider {
                 continue;
             }
             // only add PDFs
-            if ( $fileData['mimetype'] == 'application/pdf' ){
+            if ($fileData['mimetype'] == 'application/pdf') {
                 // create result
                 $result = new OC_Search_Result_Book($fileData['id'], '', '', '');
                 // fill from file data

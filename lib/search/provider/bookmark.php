@@ -33,25 +33,26 @@ class OC_Search_Provider_Bookmark extends OC_Search_Provider {
      * @return array of \OC_Search_Result_Bookmarks
      */
     function search($query) {
-	// create query
-	$search_words = array();
-	if (substr_count($query, ' ') > 0) {
-	    $search_words = explode(' ', $query);
-	} else {
-	    $search_words = $query;
-	}
-	// search
-	$bookmarks = OC_Bookmarks_Bookmarks::searchBookmarks($search_words);
-	// format results
-	$results = array();
-	foreach ($bookmarks as $bookmark) {
-	    // create search result
-	    $result = new OC_Search_Result_Bookmark($bookmark['id'], $bookmark['title'], $bookmark['url'], '');
-	    // fill from data
-	    $result->fill($bookmark);
-	    // add to results
-	    $results[] = $result;
-	}
-	return $results;
+        // create query
+        $search_words = array();
+        if (substr_count($query, ' ') > 0) {
+            $search_words = explode(' ', $query);
+        } else {
+            $search_words = $query;
+        }
+        // search
+        $bookmarks = OC_Bookmarks_Bookmarks::searchBookmarks($search_words);
+        // format results
+        $results = array();
+        foreach ($bookmarks as $bookmark) {
+            // create search result
+            $result = new OC_Search_Result_Bookmark($bookmark['id'], $bookmark['title'], $bookmark['url'], '');
+            // fill from data
+            $result->fill($bookmark);
+            // add to results
+            $results[] = $result;
+        }
+        return $results;
     }
+
 }

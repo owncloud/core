@@ -22,37 +22,37 @@ class OC_Search_Result_Song extends OC_Search_Result {
      * @var string
      */
     public $artist;
-    
+
     /**
      * The album name
      * @var string
      */
     public $album;
-    
+
     /**
      * The song size
      * @var int
      */
     public $size;
-    
+
     /**
      * The song length
      * @var int
      */
     public $length;
-    
+
     /**
      * The track number
      * @var int
      */
     public $track;
-    
+
     /**
      * Number of times played
      * @var int
      */
     public $play_count;
-    
+
     /**
      * Date last played
      * @var int
@@ -64,14 +64,14 @@ class OC_Search_Result_Song extends OC_Search_Result {
      * @param string $id path to file
      */
     public static function fillFromId($id) {
-	// get album data
-	$data = OCA\Media\Collection::getAlbum($id);
-	// create result
-	$result = new OC_Search_Result_Album('', '', '', '');
-	// fill from file data
-	$result->fill($data);
-	// return
-	return $result;
+        // get album data
+        $data = OCA\Media\Collection::getAlbum($id);
+        // create result
+        $result = new OC_Search_Result_Album('', '', '', '');
+        // fill from file data
+        $result->fill($data);
+        // return
+        return $result;
     }
 
     /**
@@ -79,30 +79,30 @@ class OC_Search_Result_Song extends OC_Search_Result {
      * @param string $id
      */
     public function fill(array $data) {
-	$this->id = $data['song_id'];
-	$this->name = $data['song_name'];
-	$this->artist = OCA\Media\Collection::getArtistName($data['song_artist']);
-	$this->album = OCA\Media\Collection::getAlbumName($data['song_album']);
-	$this->link = OCP\Util::linkTo('media', 'index.php') . '#artist=' . urlencode($this->artist) . '&album=' . urlencode($this->album) . '&song=' . urlencode($this->name);
-	$this->actions = self::format_actions($this->link);
-	$this->size = $data['song_size'];
-	$this->length = $data['song_length'];
-	$this->track = $data['song_track'];
-	$this->play_count = $data['song_playcount'];
-	$this->last_played = $data['song_lastplayed'];
+        $this->id = $data['song_id'];
+        $this->name = $data['song_name'];
+        $this->artist = OCA\Media\Collection::getArtistName($data['song_artist']);
+        $this->album = OCA\Media\Collection::getAlbumName($data['song_album']);
+        $this->link = OCP\Util::linkTo('media', 'index.php') . '#artist=' . urlencode($this->artist) . '&album=' . urlencode($this->album) . '&song=' . urlencode($this->name);
+        $this->actions = self::format_actions($this->link);
+        $this->size = $data['song_size'];
+        $this->length = $data['song_length'];
+        $this->track = $data['song_track'];
+        $this->play_count = $data['song_playcount'];
+        $this->last_played = $data['song_lastplayed'];
     }
 
     /**
      * Format select fields to HTML
      */
     public function formatToHtml() {
-	$this->name = self::format_name($this->name);
-	$this->size = self::format_size($this->size);
-	$this->last_played = self::format_data($this->last_played);
-	// format length
-	$minutes = floor($this->length / 60);
-	$seconds = $this->length % 60;
-	$this->length = $minutes.':'.$seconds;
+        $this->name = self::format_name($this->name);
+        $this->size = self::format_size($this->size);
+        $this->last_played = self::format_data($this->last_played);
+        // format length
+        $minutes = floor($this->length / 60);
+        $seconds = $this->length % 60;
+        $this->length = $minutes . ':' . $seconds;
     }
 
     /**
@@ -111,10 +111,10 @@ class OC_Search_Result_Song extends OC_Search_Result {
      * @return string
      */
     function format_name($name) {
-	// add icon
-	$url = \OC_Helper::mimetypeIcon('folder');
-	// add filename
-	return '<span class="has-icon" style="background-image: url(' . $url . ');">' . htmlspecialchars($name) . '</span>';
+        // add icon
+        $url = \OC_Helper::mimetypeIcon('folder');
+        // add filename
+        return '<span class="has-icon" style="background-image: url(' . $url . ');">' . htmlspecialchars($name) . '</span>';
     }
 
     /**
@@ -123,21 +123,21 @@ class OC_Search_Result_Song extends OC_Search_Result {
      * @return string
      */
     function format_actions($url) {
-	$output_html = '<ul class="search_actions">';
-	// open
-	$output_html .= "<li><a href=\"{$url}\">View songs</a></li>";
-	// return
-	return $output_html . '</ul>';
+        $output_html = '<ul class="search_actions">';
+        // open
+        $output_html .= "<li><a href=\"{$url}\">View songs</a></li>";
+        // return
+        return $output_html . '</ul>';
     }
-    
-        /**
+
+    /**
      * Formats size into an HTML span; adds color and makes it human-readable
      * @param string $size
      * @return string
      */
     function format_size($size) {
-	$color = self::get_size_color($size);
-	return '<span style="color: ' . $color . '">' . OC_Helper::humanFileSize($size) . '</span>';
+        $color = self::get_size_color($size);
+        return '<span style="color: ' . $color . '">' . OC_Helper::humanFileSize($size) . '</span>';
     }
 
     /**
@@ -146,9 +146,9 @@ class OC_Search_Result_Song extends OC_Search_Result {
      * @return string CSS color string
      */
     function get_size_color($size) {
-	$color = intval(200 - $size / 10000);
-	$color = max(0, $color);
-	return "rgb($color, $color, $color)";
+        $color = intval(200 - $size / 10000);
+        $color = max(0, $color);
+        return "rgb($color, $color, $color)";
     }
 
     /**
@@ -157,9 +157,9 @@ class OC_Search_Result_Song extends OC_Search_Result {
      * @return string
      */
     function format_date($time) {
-	$color = self::get_date_color($time);
-	OC::autoload('OCP\Template');
-	return '<span style="color: ' . $color . '">' . OCP\relative_modified_date($time) . '</span>';
+        $color = self::get_date_color($time);
+        OC::autoload('OCP\Template');
+        return '<span style="color: ' . $color . '">' . OCP\relative_modified_date($time) . '</span>';
     }
 
     /**
@@ -168,10 +168,10 @@ class OC_Search_Result_Song extends OC_Search_Result {
      * @return string CSS color string
      */
     function get_date_color($mtime) {
-	$days_modified_ago = intval(abs($mtime - time()) / 86400);
-	$color = $days_modified_ago * 14;
-	$color = min(200, $color);
-	return "rgb($color, $color, $color)";
+        $days_modified_ago = intval(abs($mtime - time()) / 86400);
+        $color = $days_modified_ago * 14;
+        $color = min(200, $color);
+        return "rgb($color, $color, $color)";
     }
 
 }
