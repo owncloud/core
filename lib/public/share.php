@@ -888,7 +888,7 @@ class Share {
 	private static function put($itemType, $itemSource, $shareType, $shareWith, $uidOwner, $permissions, $parentFolder = null, $token = null) {
 		$backend = self::getBackend($itemType);
 		// Check if this is a reshare
-		if ($checkReshare = self::getItemSharedWithBySource($itemType, $itemSource, self::FORMAT_NONE, null, true)) {
+		if ($checkReshare = self::getItemSharedWithBySource($itemType, $itemSource, self::FORMAT_NONE, null, false)) {
 			// Check if attempting to share back to owner
 			if ($checkReshare['uid_owner'] == $shareWith && $shareType == self::SHARE_TYPE_USER) {
 				$message = 'Sharing '.$itemSource.' failed, because the user '.$shareWith.' is the original sharer';
