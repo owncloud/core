@@ -585,34 +585,31 @@ $(document).ready(function() {
 		});
 	});
 
+	$(document).on('submit', '#dropdown #emailPrivateLink', function(event) {
+		event.preventDefault();
+		var link = $('#linkText').val();
+		var itemType = $('#dropdown').data('item-type');
+		var itemSource = $('#dropdown').data('item-source');
+		var file = $('tr').filterAttr('data-id', String(itemSource)).data('file');
+		var email = $('#email').val();
+		if (email != '') {
+			$('#email').attr('disabled', "disabled");
+			$('#email').val(t('core', 'Sending ...'));
+			$('#emailButton').attr('disabled', "disabled");
 
-    $(document).on('submit', '#dropdown #emailPrivateLink', function(event) {
-        event.preventDefault();
-        var link = $('#linkText').val();
-        var itemType = $('#dropdown').data('item-type');
-        var itemSource = $('#dropdown').data('item-source');
-        var file = $('tr').filterAttr('data-id', String(itemSource)).data('file');
-        var email = $('#email').val();
-        if (email != '') {
-            $('#email').attr('disabled', "disabled");
-            $('#email').val(t('core', 'Sending ...'));
-            $('#emailButton').attr('disabled', "disabled");
-
-            $.post(OC.filePath('core', 'ajax', 'share.php'), { action: 'email', toaddress: email, link: link, itemType: itemType, itemSource: itemSource, file: file},
-                function(result) {
-                    $('#email').attr('disabled', "false");
-                    $('#emailButton').attr('disabled', "false");
-                if (result && result.status == 'success') {
-                    $('#email').css('font-weight', 'bold');
-                    $('#email').animate({ fontWeight: 'normal' }, 2000, function() {
-                        $(this).val('');
-                    }).val(t('core','Email sent'));
-                } else {
-                    OC.dialogs.alert(result.data.message, t('core', 'Error while sharing'));
-                }
-            });
-        }
-    });
-
-
+			$.post(OC.filePath('core', 'ajax', 'share.php'), { action: 'email', toaddress: email, link: link, itemType: itemType, itemSource: itemSource, file: file},
+				function(result) {
+					$('#email').attr('disabled', "false");
+					$('#emailButton').attr('disabled', "false");
+				if (result && result.status == 'success') {
+					$('#email').css('font-weight', 'bold');
+					$('#email').animate({ fontWeight: 'normal' }, 2000, function() {
+						$(this).val('');
+					}).val(t('core','Email sent'));
+				} else {
+					OC.dialogs.alert(result.data.message, t('core', 'Error while sharing'));
+				}
+			});
+		}
+	});
 });
