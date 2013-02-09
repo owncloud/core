@@ -28,6 +28,7 @@
 
 class OC_Log_Owncloud {
 	static protected $logFile;
+        public static $logLevels = array('debug' => 0, 'info' => 1, 'warning' => 2, 'error' => 3, 'critical' => 4);
 
 	/**
 	 * Init class data
@@ -49,10 +50,11 @@ class OC_Log_Owncloud {
 	public static function write($app, $message, $level) {
 		$minLevel=min(OC_Config::getValue( "loglevel", OC_Log::WARN ), OC_Log::ERROR);
 		if($level>=$minLevel) {
-			$entry=array('app'=>$app, 'message'=>$message, 'level'=>$level, 'time'=>time());
 			$handle = @fopen(self::$logFile, 'a');
 			if ($handle) {
-				fwrite($handle, json_encode($entry)."\n");
+				// Format: Feb  8 13:36:01 hostname owncloud: {core} warning - my log message
+				fputs($handle, strftime("%b %e %H:%M:%S") . " " . gethostname() . " owncloud: {" . $app . "} " .
+					array_search($level, self::$logLevels)  . " - " . trim(json_encode($message), '"') . "\n");
 				fclose($handle);
 			}
 		}
@@ -85,7 +87,25 @@ class OC_Log_Owncloud {
 						if ($pos == 0) {
 							$line = $ch.$line;
 						}
-						$entry = json_decode($line);
+						// Format: Feb  8 13:36:01 hostname owncloud: {core} warning - my log message
+						$entry = new stdClass;
+
+						// time
+						$entry->time = strtotime(substr($line, 0, 16));
+
+						// app name
+						$spos = strpos($line, "{", 16);
+						$epos = strpos($line, "}", $spos);
+						$entry->app = substr($line, $spos + 1, $epos - $spos - 1);
+
+						// level
+						$spos   = $epos + 2;
+						$epos   = strpos($line, "-", $spos);
+						$entry->level = self::$logLevels[substr($line, $spos, $epos - $spos - 1)];
+
+						// message
+						$entry->message = json_decode('"' . substr($line, $epos + 2) . '"');
+
 						// Add the line as an entry if it is passed the offset and is equal or above the log level
 						if ($entry->level >= $minLevel) {
 							$lines++;
