@@ -401,15 +401,15 @@ OC.Share={
 $(document).ready(function() {
 	
 	if(typeof monthNames != 'undefined'){
-	$.datepicker.setDefaults({
-		monthNames: monthNames,
-		monthNamesShort: $.map(monthNames, function(v) { return v.slice(0,3)+'.'; }),
-		dayNames: dayNames,
-		dayNamesMin: $.map(dayNames, function(v) { return v.slice(0,2); }),
-		dayNamesShort: $.map(dayNames, function(v) { return v.slice(0,3)+'.'; }),
-		firstDay: firstDay
-	});
-  }
+		$.datepicker.setDefaults({
+			monthNames: monthNames,
+			monthNamesShort: $.map(monthNames, function(v) { return v.slice(0,3)+'.'; }),
+			dayNames: dayNames,
+			dayNamesMin: $.map(dayNames, function(v) { return v.slice(0,2); }),
+			dayNamesShort: $.map(dayNames, function(v) { return v.slice(0,3)+'.'; }),
+			firstDay: firstDay
+		});
+  	}
 	$('#fileList').on('click', 'a.share', function(event) {
 		event.stopPropagation();
 		if ($(this).data('item-type') !== undefined && $(this).data('item') !== undefined) {
