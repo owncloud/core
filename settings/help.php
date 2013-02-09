@@ -10,6 +10,7 @@ OC_App::loadApps();
 
 // Load the files we need
 OC_Util::addStyle( "settings", "settings" );
+OC_Util::addScript( 'settings', 'help');
 OC_App::setActiveNavigationEntry( "help" );
 
 
