@@ -33,3 +33,7 @@ AddType image/svg+xml svg svgz
 AddEncoding gzip svgz
 </IfModule>
 Options -Indexes
+
+<IfModule mod_deflate.c>
+  RemoveOutputFilter html css js rss xml
+</IfModule>
