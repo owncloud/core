@@ -401,16 +401,16 @@ OC.Share={
 $(document).ready(function() {
 	
 	if(typeof monthNames != 'undefined'){
-	$.datepicker.setDefaults({
-		monthNames: monthNames,
-		monthNamesShort: $.map(monthNames, function(v) { return v.slice(0,3)+'.'; }),
-		dayNames: dayNames,
-		dayNamesMin: $.map(dayNames, function(v) { return v.slice(0,2); }),
-		dayNamesShort: $.map(dayNames, function(v) { return v.slice(0,3)+'.'; }),
-		firstDay: firstDay
-	});
-  }
-	$('#fileList').on('click', 'a.share', function(event) {
+		$.datepicker.setDefaults({
+			monthNames: monthNames,
+			monthNamesShort: $.map(monthNames, function(v) { return v.slice(0,3)+'.'; }),
+			dayNames: dayNames,
+			dayNamesMin: $.map(dayNames, function(v) { return v.slice(0,2); }),
+			dayNamesShort: $.map(dayNames, function(v) { return v.slice(0,3)+'.'; }),
+			firstDay: firstDay
+		});
+  	}
+	$(document).on('click', 'a.share', function(event) {
 		event.stopPropagation();
 		if ($(this).data('item-type') !== undefined && $(this).data('item') !== undefined) {
 			var itemType = $(this).data('item-type');
@@ -444,12 +444,12 @@ $(document).ready(function() {
 		}
 	});
 
-	$('#fileList').on('mouseenter', '#dropdown #shareWithList li', function(event) {
+	$(document).on('mouseenter', '#dropdown #shareWithList li', function(event) {
 		// Show permissions and unshare button
 		$(':hidden', this).filter(':not(.cruds)').show();
 	});
 
-	$('#fileList').on('mouseleave', '#dropdown #shareWithList li', function(event) {
+	$(document).on('mouseleave', '#dropdown #shareWithList li', function(event) {
 		// Hide permissions and unshare button
 		if (!$('.cruds', this).is(':visible')) {
 			$('a', this).hide();
@@ -462,11 +462,11 @@ $(document).ready(function() {
 		}
 	});
 
-	$('#fileList').on('click', '#dropdown .showCruds', function() {
+	$(document).on('click', '#dropdown .showCruds', function() {
 		$(this).parent().find('.cruds').toggle();
 	});
 
-	$('#fileList').on('click', '#dropdown .unshare', function() {
+	$(document).on('click', '#dropdown .unshare', function() {
 		var li = $(this).parent();
 		var itemType = $('#dropdown').data('item-type');
 		var itemSource = $('#dropdown').data('item-source');
@@ -483,7 +483,7 @@ $(document).ready(function() {
 		});
 	});
 
-	$('#fileList').on('change', '#dropdown .permissions', function() {
+	$(document).on('change', '#dropdown .permissions', function() {
 		if ($(this).attr('name') == 'edit') {
 			var li = $(this).parent().parent()
 			var checkboxes = $('.permissions', li);
@@ -510,7 +510,7 @@ $(document).ready(function() {
 		OC.Share.setPermissions($('#dropdown').data('item-type'), $('#dropdown').data('item-source'), $(li).data('share-type'), $(li).data('share-with'), permissions);
 	});
 
-	$('#fileList').on('change', '#dropdown #linkCheckbox', function() {
+	$(document).on('change', '#dropdown #linkCheckbox', function() {
 		var itemType = $('#dropdown').data('item-type');
 		var itemSource = $('#dropdown').data('item-source');
 		if (this.checked) {
@@ -532,12 +532,12 @@ $(document).ready(function() {
 		}
 	});
 
-	$('#fileList').on('click', '#dropdown #linkText', function() {
+	$(document).on('click', '#dropdown #linkText', function() {
 		$(this).focus();
 		$(this).select();
 	});
 
-	$('#fileList').on('click', '#dropdown #showPassword', function() {
+	$(document).on('click', '#dropdown #showPassword', function() {
 		$('#linkPass').toggle('blind');
 		if (!$('#showPassword').is(':checked') ) {
 			var itemType = $('#dropdown').data('item-type');
@@ -548,7 +548,7 @@ $(document).ready(function() {
 		}
 	});
 
-	$('#fileList').on('focusout keyup', '#dropdown #linkPassText', function(event) {
+	$(document).on('focusout keyup', '#dropdown #linkPassText', function(event) {
 		if ( $('#linkPassText').val() != '' && (event.type == 'focusout' || event.keyCode == 13) ) {
 			var itemType = $('#dropdown').data('item-type');
 			var itemSource = $('#dropdown').data('item-source');
@@ -560,7 +560,7 @@ $(document).ready(function() {
 		}
 	});
 
-	$('#fileList').on('click', '#dropdown #expirationCheckbox', function() {
+	$(document).on('click', '#dropdown #expirationCheckbox', function() {
 		if (this.checked) {
 			OC.Share.showExpirationDate('');
 		} else {
@@ -575,7 +575,7 @@ $(document).ready(function() {
 		}
 	});
 	
-	$('#fileList').on('change', '#dropdown #expirationDate', function() {
+	$(document).on('change', '#dropdown #expirationDate', function() {
 		var itemType = $('#dropdown').data('item-type');
 		var itemSource = $('#dropdown').data('item-source');
 		$.post(OC.filePath('core', 'ajax', 'share.php'), { action: 'setExpirationDate', itemType: itemType, itemSource: itemSource, date: $(this).val() }, function(result) {
@@ -585,34 +585,31 @@ $(document).ready(function() {
 		});
 	});
 
+	$(document).on('submit', '#dropdown #emailPrivateLink', function(event) {
+		event.preventDefault();
+		var link = $('#linkText').val();
+		var itemType = $('#dropdown').data('item-type');
+		var itemSource = $('#dropdown').data('item-source');
+		var file = $('tr').filterAttr('data-id', String(itemSource)).data('file');
+		var email = $('#email').val();
+		if (email != '') {
+			$('#email').attr('disabled', "disabled");
+			$('#email').val(t('core', 'Sending ...'));
+			$('#emailButton').attr('disabled', "disabled");
 
-    $('#fileList').on('submit', '#dropdown #emailPrivateLink', function(event) {
-        event.preventDefault();
-        var link = $('#linkText').val();
-        var itemType = $('#dropdown').data('item-type');
-        var itemSource = $('#dropdown').data('item-source');
-        var file = $('tr').filterAttr('data-id', String(itemSource)).data('file');
-        var email = $('#email').val();
-        if (email != '') {
-            $('#email').attr('disabled', "disabled");
-            $('#email').val(t('core', 'Sending ...'));
-            $('#emailButton').attr('disabled', "disabled");
-
-            $.post(OC.filePath('core', 'ajax', 'share.php'), { action: 'email', toaddress: email, link: link, itemType: itemType, itemSource: itemSource, file: file},
-                function(result) {
-                    $('#email').attr('disabled', "false");
-                    $('#emailButton').attr('disabled', "false");
-                if (result && result.status == 'success') {
-                    $('#email').css('font-weight', 'bold');
-                    $('#email').animate({ fontWeight: 'normal' }, 2000, function() {
-                        $(this).val('');
-                    }).val(t('core','Email sent'));
-                } else {
-                    OC.dialogs.alert(result.data.message, t('core', 'Error while sharing'));
-                }
-            });
-        }
-    });
-
-
+			$.post(OC.filePath('core', 'ajax', 'share.php'), { action: 'email', toaddress: email, link: link, itemType: itemType, itemSource: itemSource, file: file},
+				function(result) {
+					$('#email').attr('disabled', "false");
+					$('#emailButton').attr('disabled', "false");
+				if (result && result.status == 'success') {
+					$('#email').css('font-weight', 'bold');
+					$('#email').animate({ fontWeight: 'normal' }, 2000, function() {
+						$(this).val('');
+					}).val(t('core','Email sent'));
+				} else {
+					OC.dialogs.alert(result.data.message, t('core', 'Error while sharing'));
+				}
+			});
+		}
+	});
 });
