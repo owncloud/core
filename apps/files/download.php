@@ -24,7 +24,7 @@
 // Check if we are a user
 OCP\User::checkLoggedIn();
 
-$filename = $_GET["file"];
+$filename = $_GET["file_path"];
 
 if(!\OC\Files\Filesystem::file_exists($filename)) {
 	header("HTTP/1.0 404 Not Found");
