@@ -28,7 +28,7 @@
 
 class OC_Log_Owncloud {
 	static protected $logFile;
-        public static $logLevels = array('debug' => 0, 'info' => 1, 'warning' => 2, 'error' => 3, 'critical' => 4);
+	public static $logLevels = array('debug' => 0, 'info' => 1, 'warning' => 2, 'error' => 3, 'critical' => 4);
 
 	/**
 	 * Init class data
