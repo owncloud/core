@@ -132,6 +132,15 @@ $CONFIG = array(
 /* Lifetime of the remember login cookie, default is 15 days */
 "remember_login_cookie_lifetime" => 60*60*24*15,
 
+/* Enables or disables the block of IP adresses who are triggering the bruteforce protection*/
+"bruteforce" => true,
+
+/* How many invalid logins can be done until the IP is blocked */
+"bruteforce_attempts" => 10,
+
+/* Timeframe until invalid logins are cleared from the log, default is 15 minutes */
+"bruteforce_time" => 60*15,
+
 /* Custom CSP policy, changing this will overwrite the standard policy */
 "custom_csp_policy" => "default-src \'self\'; script-src \'self\' \'unsafe-eval\'; style-src \'self\' \'unsafe-inline\'; frame-src *; img-src *; font-src \'self\' data:",
 
