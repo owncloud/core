@@ -305,7 +305,7 @@ class OC_User {
 	*/
 	public static function logInvalidAttempt($username, $ip) {
 		// Log the failed login attempt
-		OCP\Util::writeLog('core', 'Invalid login as '. $username .' from '. $ip,  OCP\Util::WARN);
+		OCP\Util::writeLog('core', 'Login attempt failed as  '. $username .' from '. $ip, OCP\Util::WARN);
 
 		// Write it into the database
 		$query = \OC_DB::prepare('INSERT INTO `*PREFIX*login_attempts` (`ip`, `timestamp`) VALUES (?,?)');
