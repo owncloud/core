@@ -310,8 +310,10 @@ class OC_User {
 		OCP\Util::writeLog('core', 'Login attempt failed as  '. $username .' from '. $ip, OCP\Util::WARN);
 
 		// Write it into the database
-		$query = \OC_DB::prepare('INSERT INTO `*PREFIX*login_attempts` (`ip`, `timestamp`) VALUES (?,?)');
-		$query->execute(array($ip, time()));
+		if (OC_Config::getValue( "bruteforce", true)) {
+			$query = \OC_DB::prepare('INSERT INTO `*PREFIX*login_attempts` (`ip`, `timestamp`) VALUES (?,?)');
+			$query->execute(array($ip, time()));
+		}
 	}
 
 
