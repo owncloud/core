@@ -646,8 +646,13 @@ class OC {
 	protected static function handleLogin() {
 		OC_App::loadApps(array('prelogin'));
 		$error = array();
+
+		// Check if the user is blocked
+		if (OC_User::checkBlock($_SERVER['REMOTE_ADDR'])) {
+			$error[] = 'blocked';
+		}
 		// remember was checked after last login
-		if (OC::tryRememberLogin()) {
+		elseif (OC::tryRememberLogin()) {
 			$error[] = 'invalidcookie';
 
 			// Someone wants to log in :
@@ -657,7 +662,8 @@ class OC {
 			// The user is already authenticated using Apaches AuthType Basic... very usable in combination with LDAP
 		} elseif (OC::tryBasicAuthLogin()) {
 			$error[] = 'invalidpassword';
-		}
+		} 
+
 		OC_Util::displayLoginPage(array_unique($error));
 	}
 

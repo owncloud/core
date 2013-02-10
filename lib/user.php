@@ -245,6 +245,14 @@ class OC_User {
 		$run = true;
 		OC_Hook::emit( "OC_User", "pre_login", array( "run" => &$run, "uid" => $uid ));
 
+		// Copy the username to $username since we need to access it later in case of an invalid login
+		$username = $uid;
+
+		// Check if the IP is already blocked
+		if (self::checkBlock($_SERVER['REMOTE_ADDR'])) {
+			return false;
+		}
+
 		if( $run ) {
 			$uid = self::checkPassword( $uid, $password );
 			$enabled = self::isEnabled($uid);
@@ -256,8 +264,54 @@ class OC_User {
 				return true;
 			}
 		}
+
+		// Invalid credentials provided, trigger the bruteforce detection
+		self::logInvalidAttempt($username, $_SERVER['REMOTE_ADDR']);
+				
 		return false;
 	}
+
+	/**
+	* @brief Checks if a specific IP is blocked
+	* @param $ip
+	* @returns bool
+	*/
+	public static function checkBlock($ip) {
+		// This will block an IP from logging in, it checkes if there are more than 10 failed attempts in the last 15 minutes
+		// if there are more attempts an IP will be blocked by timestamp(lastAttempt)+15minutes
+		$blockTime = time() - 60*15;
+		$query = OC_DB::prepare('SELECT COUNT(*) AS `count` FROM `*PREFIX*login_attempts` WHERE `ip` = ? AND `timestamp` > ?');
+		$result = $query->execute(array($ip, $blockTime));
+		$result = $result->fetchRow();
+
+		// Check if there were more than 10 failed logins
+		if($result['count'] > 10) {
+			return true;
+		}
+
+		// Delete all logged attempts which are older than 15 minutes
+		$deleteQuery = OC_DB::prepare('DELETE FROM `*PREFIX*login_attempts` WHERE `ip` = ? AND `timestamp` < ?');
+		$result = $deleteQuery->execute(array($ip, $blockTime));
+		$result = $result->fetchRow();
+
+		return false;
+	}
+
+	/**
+	* @brief Logs an invalid login attempt
+	* FIXME: This does not yet work with a reverse proxy in place 
+	* @param $username
+	* @param $ip
+	*/
+	public static function logInvalidAttempt($username, $ip) {
+		// Log the failed login attempt
+		OCP\Util::writeLog('core', 'Invalid login as '. $username .' from '. $ip,  OCP\Util::WARN);
+
+		// Write it into the database
+		$query = \OC_DB::prepare('INSERT INTO `*PREFIX*login_attempts` (`ip`, `timestamp`) VALUES (?,?)');
+		$query->execute(array($ip, time()));
+	}
+
 
 	/**
 	 * @brief Sets user id for session and triggers emit

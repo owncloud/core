@@ -13,6 +13,12 @@
 				<small><?php echo $l->t('Please change your password to secure your account again.'); ?></small>
 			</li>
 			<?php endif; ?>
+			<?php if (isset($_['blocked']) && ($_['blocked'])): ?>
+			<li class="errors">
+				<?php echo $l->t('IP blocked!'); ?><br>
+				<small><?php echo $l->t('Because of multiple failed logins from your IP address, we blocked logins from your IP address for <strong>15 minutes</strong>.'); ?></small>
+			</li>
+			<?php endif; ?>
 			<?php if (isset($_['invalidpassword']) && ($_['invalidpassword'])): ?>
 			<a href="<?php echo OC_Helper::linkToRoute('core_lostpassword_index') ?>">
 				<li class="errors">
@@ -21,6 +27,7 @@
 			</a>
 			<?php endif; ?>
 		</ul>
+		<?php if (!isset($_['blocked'])): ?>
 		<p class="infield grouptop">
 			<input type="text" name="user" id="user"
 				   value="<?php echo $_['username']; ?>"<?php echo $_['user_autofocus'] ? ' autofocus' : ''; ?>
@@ -55,6 +62,7 @@
 	</fieldset>
 </form>
 <?php } ?>
+<?php endif; ?>
 
 <?php
 OCP\Util::addscript('core', 'visitortimezone');
