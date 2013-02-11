@@ -146,19 +146,19 @@ $CONFIG = array(
 /* Enable maintenance mode to disable ownCloud */
 "maintenance" => false,
 
-"apps_paths" => array(
-
 /* Set an array of path for your apps directories
  key 'path' is for the fs path and the key 'url' is for the http path to your
  applications paths. 'writable' indicate if the user can install apps in this folder.
  You must have at least 1 app folder writable or you must set the parameter : appstoreenabled to false
 */
-	array(
-		'path'=> '/var/www/owncloud/apps',
+"apps_paths" => array(
+	0 => array(
+		'path'=> OC::$SERVERROOT.'/apps',
 		'url' => '/apps',
 		'writable' => true,
 	),
 ),
+
 'user_backends'=>array(
 	array(
 		'class'=>'OC_User_IMAP',
