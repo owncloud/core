@@ -690,6 +690,13 @@ $(document).ready(function(){
 	$('input[type=text]').focus(function(){
 		this.select();
 	});
+
+	// check if label in input field overflowed then add title for hint
+	$("label.infield").each( function() {
+		if ($(this).css('overflow') == 'hidden' && (this.clientWidth < this.scrollWidth))
+			$(this).attr("title", $(this).text());
+	});
+
 });
 
 if (!Array.prototype.map){
