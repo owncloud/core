@@ -20,7 +20,7 @@ if(OC_SubAdmin::isUserAccessible(OC_User::getUser(), $username)) {
 }
 if(OC_User::getUser() === $username && OC_User::checkPassword($username, $oldPassword)) {
 	$userstatus = 'user';
-        $password = $_POST["personal-password"];
+	$password = $_POST["personal-password"];
 }
 
 if(is_null($userstatus)) {
