@@ -19,7 +19,7 @@ class Test_DB extends PHPUnit_Framework_TestCase {
 		$content = file_get_contents( $dbfile );
 		$content = str_replace( '*dbprefix*', '*dbprefix*'.$r, $content );
 		file_put_contents( self::$schema_file, $content );
-		OC_DB::createDbFromStructure(self::$schema_file);
+		OC_DB::createDbFromStructure(self::$schema_file, true);
 
 		$this->test_prefix = $r;
 		$this->table1 = $this->test_prefix.'contacts_addressbooks';

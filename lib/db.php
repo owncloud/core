@@ -449,7 +449,7 @@ class OC_DB {
 	 *
 	 * TODO: write more documentation
 	 */
-	public static function createDbFromStructure( $file ) {
+	public static function createDbFromStructure( $file, $allowOverwrite=false ) {
 		$CONFIG_DBNAME  = OC_Config::getValue( "dbname", "owncloud" );
 		$CONFIG_DBTABLEPREFIX = OC_Config::getValue( "dbtableprefix", "oc_" );
 		$CONFIG_DBTYPE = OC_Config::getValue( "dbtype", "sqlite" );
@@ -495,6 +495,10 @@ class OC_DB {
 			unset($definition['charset']); //or MDB2 tries SHUTDOWN IMMEDIATE
 			$oldname = $definition['name'];
 			$definition['name']=OC_Config::getValue( "dbuser", $oldname );
+		}
+
+		if (!$allowOverwrite) {
+			$definition['overwrite'] = false;
 		}
 
 		$ret=self::$schema->createDatabase( $definition );

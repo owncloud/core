@@ -153,12 +153,12 @@ class OC_Setup {
 				}
 			}
 			else {
-				//delete the old sqlite database first, might cause infinte loops otherwise
+				//delete the old sqlite database first, might cause infinite loops otherwise
 				if(file_exists("$datadir/owncloud.db")) {
 					unlink("$datadir/owncloud.db");
 				}
 				//in case of sqlite, we can always fill the database
-				OC_DB::createDbFromStructure('db_structure.xml');
+				OC_DB::createDbFromStructure('db_structure.xml', true);
 			}
 
 			//create the user and group
@@ -243,7 +243,7 @@ class OC_Setup {
 			$row=mysql_fetch_row($result);
 		}
 		if(!$result or $row[0]==0) {
-			OC_DB::createDbFromStructure('db_structure.xml');
+			OC_DB::createDbFromStructure('db_structure.xml', true);
 		}
 		mysql_close($connection);
 	}
@@ -344,7 +344,7 @@ class OC_Setup {
 			$row = pg_fetch_row($result);
 		}
 		if(!$result or $row[0]==0) {
-			OC_DB::createDbFromStructure('db_structure.xml');
+			OC_DB::createDbFromStructure('db_structure.xml', true);
 		}
 	}
 
@@ -508,7 +508,7 @@ class OC_Setup {
 			$row = oci_fetch_row($stmt);
 		}
 		if(!$result or $row[0]==0) {
-			OC_DB::createDbFromStructure('db_structure.xml');
+			OC_DB::createDbFromStructure('db_structure.xml', true);
 		}
 	}
 

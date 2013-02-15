@@ -44,7 +44,7 @@ class Test_DBSchema extends PHPUnit_Framework_TestCase {
 	}
 
 	public function doTestSchemaCreating() {
-		OC_DB::createDbFromStructure(self::$schema_file);
+		OC_DB::createDbFromStructure(self::$schema_file, true);
 		$this->assertTableExist($this->table1);
 		$this->assertTableExist($this->table2);
 	}
