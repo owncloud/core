@@ -157,7 +157,7 @@ var OC={
 			link+=file;
 		}else{
 			if ((app == 'settings' || app == 'core' || app == 'search') && type == 'ajax') {
-				link+='/index.php/';
+				link+='/./';
 			}
 			else {
 				link+='/';
@@ -173,7 +173,7 @@ var OC={
 				link+=type+'/';
 			}
 			link+=file;
-		}
+	}
 		return link;
 	},
 	/**
