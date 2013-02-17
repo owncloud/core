@@ -157,7 +157,7 @@ var OC={
 			link+=file;
 		}else{
 			if ((app == 'settings' || app == 'core' || app == 'search') && type == 'ajax') {
-				link+='/./';
+				link+='/index.php/';
 			}
 			else {
 				link+='/';
