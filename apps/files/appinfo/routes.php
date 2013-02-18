@@ -6,6 +6,6 @@
  * See the COPYING-README file.
  */
 
-$this->create('download', 'download{file}')
-	->requirements(array('file' => '.*'))
-	->actionInclude('files/download.php');
+//$this->create('download', 'download{file}')
+//	->requirements(array('file' => '.*'))
+//	->actionInclude('files/download.php');
