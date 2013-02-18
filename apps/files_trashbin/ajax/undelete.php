@@ -7,6 +7,10 @@ $files = $_REQUEST['files'];
 $dirlisting = $_REQUEST['dirlisting'];
 $list = explode(';', $files);
 
+if (!is_array($list)){
+	$list = array($list);
+}
+
 $error = array();
 $success = array();
 
