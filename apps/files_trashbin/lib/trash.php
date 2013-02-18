@@ -168,8 +168,8 @@ class Trashbin {
 					$versionsRoot = new \OC_FilesystemView('/'.$user.'/'.'versions_trashbin/');
 					if ($versionsRoot->file_exists($file)){
 						$trashbinSize -= self::calculateSize(new \OC_FilesystemView('/'.$user.'/'.'versions_trashbin/'. $file));
+						$view->rename(\OC_Filesystem::normalizePath('versions_trashbin/'. $file), \OC_Filesystem::normalizePath('files_versions/'.$location.'/'.$filename.$ext));
 					}
-					$view->rename(\OC_Filesystem::normalizePath('versions_trashbin/'. $file), \OC_Filesystem::normalizePath('files_versions/'.$location.'/'.$filename.$ext));
 				} else if ( $versions = self::getVersionsFromTrash($versionedFile, $timestamp) ) {
 					foreach ($versions as $v) {
 						if ($timestamp ) {
