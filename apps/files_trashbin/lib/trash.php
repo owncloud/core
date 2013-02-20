@@ -57,7 +57,10 @@ class Trashbin {
 			$trashbinSize = self::calculateSize(new \OC_FilesystemView('/'. $user.'/files_trashbin'));
 			$trashbinSize += self::calculateSize(new \OC_FilesystemView('/'. $user.'/versions_trashbin'));
 		}
-		$trashbinSize += self::copy_recursive($file_path, 'files_trashbin/'.$deleted.'.d'.$timestamp, $view);
+
+		$info = $view->getFileInfo($file_path);
+		$view->rename('/files' . $file_path, 'files_trashbin/'.$deleted.'.d'.$timestamp);
+		$trashbinSize += $info['size'];
 
 		if ( $view->file_exists('files_trashbin/'.$deleted.'.d'.$timestamp) ) {
 			$query = \OC_DB::prepare("INSERT INTO *PREFIX*files_trash (id,timestamp,location,type,mime,user) VALUES (?,?,?,?,?,?)");
@@ -144,8 +147,8 @@ class Trashbin {
 			$location = '';
 		}
 		
-		$source = \OC_Filesystem::normalizePath('files_trashbin/'.$file);
-		$target = \OC_Filesystem::normalizePath('files/'.$location.'/'.$filename);
+		$source = \OC\Files\Filesystem::normalizePath('files_trashbin/'.$file);
+		$target = \OC\Files\Filesystem::normalizePath('files/'.$location.'/'.$filename);
 		
 		// we need a  extension in case a file/dir with the same name already exists
 		$ext = self::getUniqueExtension($location, $filename, $view);
