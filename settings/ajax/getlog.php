@@ -5,6 +5,7 @@
  * See the COPYING-README file.
  */
 
+include "../../lib/base.php";
 OC_JSON::checkAdminUser();
 
 $count=(isset($_GET['count']))?$_GET['count']:50;
