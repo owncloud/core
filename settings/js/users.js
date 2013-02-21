@@ -170,9 +170,13 @@ var UserList = {
 		}
 	},
 	update: function () {
-		if (typeof UserList.offset === 'undefined') {
-			UserList.offset = $('tbody tr').length;
+		if (UserList.updating) {
+			return;
+			setTimeout(function() {
+				UserList.update();
+			}, 200);
 		}
+		UserList.updating = true;
 		$.get(OC.Router.generate('settings_ajax_userlist', { offset: UserList.offset }), function (result) {
 			if (result.status === 'success') {
 				$.each(result.data, function (index, user) {
@@ -189,6 +193,7 @@ var UserList = {
 					UserList.doSort();
 				}
 			}
+			UserList.updating = false;
 		});
 	},
 
@@ -284,6 +289,7 @@ var UserList = {
 $(document).ready(function () {
 
 	UserList.doSort();
+	UserList.offset = $('tbody tr').length;
 	$('tbody tr:last').bind('inview', function (event, isInView, visiblePartX, visiblePartY) {
 		OC.Router.registerLoadedCallback(function () {
 			UserList.update();
