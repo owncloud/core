@@ -62,6 +62,9 @@
           if(base.$field.val() != ""){
                base.$label.hide();
                base.showing = false;
+          } else {
+               base.$label.fadeIn();
+               base.showing = true;
         };
       },100);
     };
