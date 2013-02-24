@@ -5,6 +5,7 @@ config/config.php
 config/mount.php
 apps/inc.php
 3rdparty
+apps2
 
 # ignore all apps except core ones
 apps/*
