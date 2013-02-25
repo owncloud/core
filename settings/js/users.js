@@ -114,27 +114,69 @@ var UserList = {
 				quotaSelect.append('<option value="' + quota + '" selected="selected">' + quota + '</option>');
 			}
 		}
-		var added = false;
+		$(tr).appendTo('tbody');
 		if (sort) {
-			username = username.toLowerCase();
-			$('tbody tr').each(function () {
-				if (username < $(this).attr('data-uid').toLowerCase()) {
-					$(tr).insertBefore($(this));
-					added = true;
-					return false;
-				}
-			});
-		}
-		if (!added) {
-			$(tr).appendTo('tbody');
+			UserList.doSort();
 		}
 		return tr;
 	},
+	// From http://my.opera.com/GreyWyvern/blog/show.dml/1671288
+	alphanum: function(a, b) {
+		function chunkify(t) {
+			var tz = [], x = 0, y = -1, n = 0, i, j;
 
-	update: function () {
-		if (typeof UserList.offset === 'undefined') {
-			UserList.offset = $('tbody tr').length;
+			while (i = (j = t.charAt(x++)).charCodeAt(0)) {
+			var m = (i == 46 || (i >=48 && i <= 57));
+			if (m !== n) {
+				tz[++y] = "";
+				n = m;
+			}
+			tz[y] += j;
+			}
+			return tz;
 		}
+
+		var aa = chunkify(a.toLowerCase());
+		var bb = chunkify(b.toLowerCase());
+
+		for (x = 0; aa[x] && bb[x]; x++) {
+			if (aa[x] !== bb[x]) {
+			var c = Number(aa[x]), d = Number(bb[x]);
+			if (c == aa[x] && d == bb[x]) {
+				return c - d;
+			} else return (aa[x] > bb[x]) ? 1 : -1;
+			}
+		}
+		return aa.length - bb.length;
+	},
+	doSort: function() {
+		var self = this;
+		var rows = $('tbody tr').get();
+
+		rows.sort(function(a, b) {
+			return UserList.alphanum($(a).find('td.name').text(), $(b).find('td.name').text());
+		});
+
+		var items = [];
+		$.each(rows, function(index, row) {
+			items.push(row);
+			if(items.length === 100) {
+				$('tbody').append(items);
+				items = [];
+			}
+		});
+		if(items.length > 0) {
+			$('tbody').append(items);
+		}
+	},
+	update: function () {
+		if (UserList.updating) {
+			return;
+			setTimeout(function() {
+				UserList.update();
+			}, 200);
+		}
+		UserList.updating = true;
 		$.get(OC.Router.generate('settings_ajax_userlist', { offset: UserList.offset }), function (result) {
 			if (result.status === 'success') {
 				$.each(result.data, function (index, user) {
@@ -147,7 +189,11 @@ var UserList = {
 						});
 					}
 				});
+				if (result.data.length > 0) {
+					UserList.doSort();
+				}
 			}
+			UserList.updating = false;
 		});
 	},
 
@@ -242,6 +288,8 @@ var UserList = {
 
 $(document).ready(function () {
 
+	UserList.doSort();
+	UserList.offset = $('tbody tr').length;
 	$('tbody tr:last').bind('inview', function (event, isInView, visiblePartX, visiblePartY) {
 		OC.Router.registerLoadedCallback(function () {
 			UserList.update();
