@@ -322,26 +322,26 @@ OC.Share={
 				} else {
 					html += '<label>';
 				}
-				html += '<input type="checkbox" name="edit" class="permissions" '+editChecked+' />'+t('core', 'can edit')+'</label>';
+				html+= '<select multiple id="cruds"><option><input type="checkbox" name="edit" class="permissions" '+editChecked+' />'+t('core', 'can edit')+'</label>';
 			}
-			html += '<a href="#" class="showCruds" style="display:none;"><img class="svg" alt="'+t('core', 'access control')+'" src="'+OC.imagePath('core', 'actions/triangle-s')+'"/></a>';
-			html += '<div class="cruds" style="display:none;">';
+			html += '<a href="#" class="showCruds"><img class="svg" alt="'+t('core', 'access control')+'" src="'+OC.imagePath('core', 'actions/triangle-s')+'"/></a></option>';
 				if (possiblePermissions & OC.PERMISSION_CREATE) {
-					html += '<label><input type="checkbox" name="create" class="permissions" '+createChecked+' data-permissions="'+OC.PERMISSION_CREATE+'" />'+t('core', 'create')+'</label>';
+					html += '<option value="1"><label><input type="checkbox" name="create" class="permissions" '+createChecked+' data-permissions="'+OC.PERMISSION_CREATE+'" />'+t('core', 'create')+'</label></option>';
 				}
 				if (possiblePermissions & OC.PERMISSION_UPDATE) {
-					html += '<label><input type="checkbox" name="update" class="permissions" '+updateChecked+' data-permissions="'+OC.PERMISSION_UPDATE+'" />'+t('core', 'update')+'</label>';
+					html += '<option value="2"><label><input type="checkbox" name="update" class="permissions" '+updateChecked+' data-permissions="'+OC.PERMISSION_UPDATE+'" />'+t('core', 'update')+'</label></option>';
 				}
 				if (possiblePermissions & OC.PERMISSION_DELETE) {
-					html += '<label><input type="checkbox" name="delete" class="permissions" '+deleteChecked+' data-permissions="'+OC.PERMISSION_DELETE+'" />'+t('core', 'delete')+'</label>';
+					html += '<option value="3"><label><input type="checkbox" name="delete" class="permissions" '+deleteChecked+' data-permissions="'+OC.PERMISSION_DELETE+'" />'+t('core', 'delete')+'</label></option>';
 				}
 				if (possiblePermissions & OC.PERMISSION_SHARE) {
-					html += '<label><input type="checkbox" name="share" class="permissions" '+shareChecked+' data-permissions="'+OC.PERMISSION_SHARE+'" />'+t('core', 'share')+'</label>';
+					html += '<option value="4"><label><input type="checkbox" name="share" class="permissions" '+shareChecked+' data-permissions="'+OC.PERMISSION_SHARE+'" />'+t('core', 'share')+'</label></option>';
 				}
-			html += '</div>';
+			html += '</select>';
 			html += '</li>';
 			$(html).appendTo('#shareWithList');
 			$('#expiration').show();
+			$("#cruds").multiselect({ header : false }); 
 		}
 	},
 	showLink:function(token, password, itemSource) {

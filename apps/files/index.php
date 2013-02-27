@@ -26,6 +26,7 @@ OCP\User::checkLoggedIn();
 
 // Load the files we need
 OCP\Util::addStyle('files', 'files');
+OCP\Util::addScript('', 'jquery.multiselect');
 OCP\Util::addscript('files', 'jquery.iframe-transport');
 OCP\Util::addscript('files', 'jquery.fileupload');
 OCP\Util::addscript('files', 'jquery-visibility');
