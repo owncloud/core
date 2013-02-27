@@ -26,15 +26,19 @@ if (version_compare($installedVersion, '0.2', '<')) {
 		}
 				
 		// move versions to the new folder
-		if ($handle = opendir($datadir.$user.'/versions_trashbin')) {
+		$old_trashbin_dir = $datadir.$user.'/versions_trashbin';
+		if (!is_dir($old_trashbin_dir)) {
+			continue;
+		}
+		if ($handle = opendir($old_trashbin_dir)) {
 			while (false !== ($file = readdir($handle))) {
-				rename($datadir.$user.'/versions_trashbin/'.$file,
+				rename($old_trashbin_dir.'/'.$file,
 						$datadir.$user.'/files_trashbin/versions/'.$file);
 			}
 			closedir($handle);
 		}
 		
-		@rmdir($datadir.$user.'/versions_trashbin');
+		@rmdir($old_trashbin_dir);
 		
 	}
 }
