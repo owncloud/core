@@ -505,8 +505,8 @@ class OC_Util {
 			}
 		} else {
 			$msg = 'Can not sanitize objects. This is an interim solution. ';
-			$msg += 'Please report this in our bugtracker and mention the app ';
-			$msg += 'which is causing this exception';
+			$msg .= 'Please report this in our bugtracker and mention the app ';
+			$msg .= 'which is causing this exception';
 			throw new \Exception($msg);
 		}
 		return $value;
