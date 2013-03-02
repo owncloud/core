@@ -1,6 +1,7 @@
 <?php
 set_time_limit(0);
 $RUNTIME_NOAPPS = true;
+$RUNTIME_NOSETUPFS = true;
 require_once '../../lib/base.php';
 
 if (OC::checkUpgrade(false)) {
