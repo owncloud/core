@@ -506,13 +506,21 @@ class OC_Util {
 	 * string or array of strings before displaying it on a web page.
 	 *
 	 * @param string or array of strings
+	 * @throws Exception when value is an object and cant be sanitized
 	 * @return array with sanitized strings or a single sanitized string, depends on the input parameter.
 	 */
 	public static function sanitizeHTML( &$value ) {
-		if (is_array($value)) {
-			array_walk_recursive($value, 'OC_Util::sanitizeHTML');
+		if(!is_object($value)){
+			if (is_array($value)) {
+				array_walk_recursive($value, 'OC_Util::sanitizeHTML');
+			} else {
+				$value = htmlentities((string)$value, ENT_QUOTES, 'UTF-8'); //Specify encoding for PHP<5.4
+			}
 		} else {
-			$value = htmlentities((string)$value, ENT_QUOTES, 'UTF-8'); //Specify encoding for PHP<5.4
+			$msg = 'Can not sanitize objects. This is an interim solution. ';
+			$msg .= 'Please report this in our bugtracker and mention the app ';
+			$msg .= 'which is causing this exception';
+			throw new \Exception($msg);
 		}
 		return $value;
 	}
