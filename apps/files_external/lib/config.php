@@ -105,6 +105,13 @@ class OC_Mount_Config {
 				'root' => '&Root',
 				'secure' => '!Secure https://'));
 
+		$backends['\OC\Files\Storage\RapidShare']=array(
+			'backend' => 'RapidShare',
+			'configuration' => array(
+				'user' => 'Username',
+				'password' => '*Password',
+				'root' => '&Root'));
+
 		$backends['\OC\Files\Storage\SFTP']=array(
 			'backend' => 'SFTP',
 			'configuration' => array(
