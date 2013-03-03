@@ -52,6 +52,12 @@ return array(
 		'token' => '',
 		'token_secret' => ''
 	),
+	'rapidshare' => array (
+		'run'=>false,
+		'user'=>'test',
+		'password'=>'test',
+		'root'=>'/test'
+	),
 	'sftp' => array (
 		'run'=>false,
 		'host'=>'localhost',
