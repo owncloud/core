@@ -625,10 +625,14 @@ class OC_Helper {
 			$ext = '';
 		}
 
-		$newpath = $path . '/' . $filename;
 		$counter = 2;
+		$newpath = $path . '/' . $filename;
+
 		while (\OC\Files\Filesystem::file_exists($newpath)) {
-			$newname = $name . ' (' . $counter . ')' . $ext;
+			if(preg_match('/\((\d+)\)/', $name, $matches) !== false ) {
+				$counter = ($matches[count($matches)-1]+1);
+				$newname = preg_replace ( '/\(\d+\)/' , ' ('.$counter.')', $name , 1).$ext;
+			}
 			$newpath = $path . '/' . $newname;
 			$counter++;
 		}
