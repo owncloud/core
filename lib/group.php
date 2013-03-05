@@ -294,6 +294,9 @@ class OC_Group {
 	public static function displayNamesInGroup($gid, $search = '', $limit = -1, $offset = 0) {
 		$displayNames=array();
 		foreach(self::$_usedBackends as $backend) {
+			if(!method_exists($backend, 'displayNamesInGroup'))
+				continue;
+
 			$displayNames = array_merge($backend->displayNamesInGroup($gid, $search, $limit, $offset), $displayNames);
 		}
 		return $displayNames;
