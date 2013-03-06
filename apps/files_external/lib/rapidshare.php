@@ -62,7 +62,14 @@ class RapidShare extends \OC\Files\Storage\Common {
 	}
 
 	public function mkdir($path) {
-		$path = $this->makeAbsolute($path);
+		return $this->createDirectory($path);
+	}
+
+	private function createDirectory($path, $isAbsolute=false) {
+		if (!$isAbsolute) {
+			$path = $this->makeAbsolute($path);
+		}
+
 		if ($this->getRealFolder($path) !== false) {
 			return false;
 		}
@@ -73,7 +80,7 @@ class RapidShare extends \OC\Files\Storage\Common {
 
 		$parentId = $this->getRealFolder($parentPath);
 		if ($parentId === false) {
-			if (!$this->mkdir($parentPath)) {
+			if (!$this->createDirectory($parentPath, true)) {
 				return false;
 			}
 		}
