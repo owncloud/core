@@ -391,6 +391,10 @@ class RapidShareAPI_StreamWrapper {
 		}
 	}
 
+	function stream_stat() {
+		return false;   // Implementation just to allow stream_get_contents() to succeed
+	}
+
 	function stream_flush() {
 		if ($this->outPos > 0) {
 			return $this->writeData($this->outBuffer, $this->writePosition);
@@ -423,6 +427,9 @@ class RapidShareAPI_StreamWrapper {
 		do {
 			$part = socket_read($this->socket, $length - strlen($string));
 			$string .= $part;
+			if ($string[0] === RapidShareAPI_StreamWrapper::API_Error) {
+				break;
+			}
 		} while ($part !== false && $part !== '' && strlen($string) < $length && $this->socketHasMoreData());
 
 		if ($part === false || socket_last_error($this->socket) > 0) {
@@ -437,7 +444,7 @@ class RapidShareAPI_StreamWrapper {
 		$write = null;
 		$except = null;
 
-		$changedSockets = socket_select($read, $write, $except, 0);
+		$changedSockets = socket_select($read, $write, $except, 1);
 		return $changedSockets > 0;
 	}
 
@@ -659,8 +666,14 @@ class RapidShareAPI_StreamWrapper {
 						$this->readPosition = $response->readInt();
 						$isCompressed = $response->readByte();
 						$length = $response->readInt();
-						$data = $response->readString($length);
-						return $isCompressed === 1 ? gzuncompress($data) : $data;
+						$data = $this->socketRead($length);
+						if ($data !== false) {
+							if ($isCompressed) {
+								$data = gzdecode($data);
+							}
+							$this->readPosition += strlen($data);
+							return $data;
+						}
 					}
 				}
 			}
