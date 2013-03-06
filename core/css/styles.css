@@ -39,7 +39,7 @@ filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#35537a', endC
 input[type="text"], input[type="password"], input[type="number"] { cursor:text; }
 input[type="text"], input[type="password"], input[type="search"], input[type="number"],
 textarea, select, button, .button, #quota, div.jp-progress, .pager li a {
-	width:120px; margin:4px; padding:11px 6px 6px;
+	width:120px; margin:4px; padding:8px 6px 6px 8px;
 	font-size:12px; font-family:Arial, Verdana, sans-serif;
 	background:#fff; color:#333; border:1px solid #ddd; outline:none;
 	-moz-box-shadow:0 1px 1px #fff, 0 2px 0 #bbb inset; -webkit-box-shadow:0 1px 1px #fff, 0 1px 0 #bbb inset; box-shadow:0 1px 1px #fff, 0 1px 0 #bbb inset;
@@ -154,14 +154,14 @@ input[type="submit"].enabled { background:#66f866; border:1px solid #5e5; -moz-b
 #login form #datadirField legend { margin-bottom:15px; }
 
 /* Icons for username and password fields to better recognize them */
-#adminlogin, #adminpass, #user, #password { width:225px!important; padding-left:30px; }
+#adminlogin, #adminpass, #user, #password { width:225px!important; padding:11px 5px 9px 30px; }
 #adminlogin+label+img, #adminpass-icon, #user+label+img, #password-icon {
 	position:absolute; left:15px; top:20px;
 	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=30)"; filter:alpha(opacity=30); opacity:.3;
 }
 #adminpass-icon, #password-icon { top:13px; }
-input[name="password-clone"] { padding-left:30px; width:225px !important; }
-input[name="adminpass-clone"] { padding-left:30px; width:225px !important; }
+input[name="password-clone"] { padding:11px 5px 9px 30px; width:225px !important; }
+input[name="adminpass-clone"] { padding:11px 5px 9px 30px; width:225px !important; }
 
 /* Nicely grouping input field sets */
 .grouptop input {
@@ -203,7 +203,7 @@ label.infield { cursor:text !important; top:12px; left:10px; }
 	background-image:url("../img/actions/toggle.png"); background-repeat:no-repeat;
 	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=30)"; filter:alpha(opacity=30); opacity:.3;
 }
-#pass2, input[name="personal-password-clone"] { padding:7px 30px 5px 5px; width:96px;}
+#pass2, input[name="personal-password-clone"] { padding:8px 6px 6px 8px; width:120px;}
 #personal-show + label { margin-top:12px; margin-left:-36px; }
 #passwordbutton { margin-left:6px; }
 
