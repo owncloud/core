@@ -5,14 +5,14 @@ body {
 #header {
 	background:#1d2d44;
 	box-shadow:0 0 10px rgba(0,0,0,.5), inset 0 -2px 10px #222;
-	height:2.5em;
+	height:30px;
 	left:0;
-	line-height:2.5em;
+	line-height:30px;
 	position:fixed;
 	right:0;
 	top:0;
 	z-index:100;
-	padding:.5em;
+	padding:6px;
 }
 
 #details {
@@ -21,34 +21,34 @@ body {
 
 #header #download {
 	font-weight:700;
-	margin-left:2em;
+	margin-left:24px;
 }
 
 #header #download img {
-	padding-left:.1em;
-	padding-right:.3em;
+	padding-left:1px;
+	padding-right:4px;
 	vertical-align:text-bottom;
 }
 
 #preview {
 	background:#eee;
 	border-bottom:1px solid #f8f8f8;
-	min-height:30em;
+	min-height:360px;
 	text-align:center;
 	margin:45px auto;
 }
 
 #noPreview {
 	display:none;
-	padding-top:5em;
+	padding-top:60px;
 }
 
 p.info {
 	color:#777;
 	text-align:center;
 	text-shadow:#fff 0 1px 0;
-	width:22em;
-	margin:2em auto;
+	width:264px;
+	margin:24px auto;
 }
 
 p.info a {
@@ -58,8 +58,8 @@ p.info a {
 
 #imgframe {
 	height:75%;
-	padding-bottom:2em;
-	padding-top:2em;
+	padding-bottom:24px;
+	padding-top:24px;
 	width:80%;
 	margin:0 auto;
 }
