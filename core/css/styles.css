@@ -39,7 +39,7 @@ filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#35537a', endC
 input[type="text"], input[type="password"], input[type="number"] { cursor:text; }
 input[type="text"], input[type="password"], input[type="search"], input[type="number"],
 textarea, select, button, .button, #quota, div.jp-progress, .pager li a {
-	width:120px; margin:4px; padding:7px 6px 5px;
+	width:120px; margin:4px; padding:11px 6px 6px;
 	font-size:12px; font-family:Arial, Verdana, sans-serif;
 	background:#fff; color:#333; border:1px solid #ddd; outline:none;
 	-moz-box-shadow:0 1px 1px #fff, 0 2px 0 #bbb inset; -webkit-box-shadow:0 1px 1px #fff, 0 1px 0 #bbb inset; box-shadow:0 1px 1px #fff, 0 1px 0 #bbb inset;
@@ -154,14 +154,14 @@ input[type="submit"].enabled { background:#66f866; border:1px solid #5e5; -moz-b
 #login form #datadirField legend { margin-bottom:15px; }
 
 /* Icons for username and password fields to better recognize them */
-#adminlogin, #adminpass, #user, #password { width:140px!important; padding-left:22px; }
+#adminlogin, #adminpass, #user, #password { width:225px!important; padding-left:30px; }
 #adminlogin+label+img, #adminpass-icon, #user+label+img, #password-icon {
 	position:absolute; left:15px; top:20px;
 	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=30)"; filter:alpha(opacity=30); opacity:.3;
 }
 #adminpass-icon, #password-icon { top:13px; }
-input[name="password-clone"] { padding-left:22px; width:140px !important; }
-input[name="adminpass-clone"] { padding-left:22px; width:140px !important; }
+input[name="password-clone"] { padding-left:30px; width:225px !important; }
+input[name="adminpass-clone"] { padding-left:30px; width:225px !important; }
 
 /* Nicely grouping input field sets */
 .grouptop input {
