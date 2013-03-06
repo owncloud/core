@@ -7,21 +7,21 @@
  	border:1px solid #ddd;
  	border-top:none;
  	box-shadow:0 1px 1px #ddd;
- 	padding-top:.5em;
+ 	padding-top:6px;
  	position:absolute;
-	max-height: 20em;
+	max-height: 240px;
 	overflow-y: auto;
  	z-index:49;
  }
 
  ul.multiselectoptions.down {
- 	border-bottom-left-radius:.5em;
- 	border-bottom-right-radius:.5em;
+ 	border-bottom-left-radius:6px;
+ 	border-bottom-right-radius:6px;
  }
 
  ul.multiselectoptions.up {
- 	border-top-left-radius:.5em;
- 	border-top-right-radius:.5em;
+ 	border-top-left-radius:6px;
+ 	border-top-right-radius:6px;
  }
 
  ul.multiselectoptions>li {
@@ -33,7 +33,7 @@
  	display:inline-block;
  	max-width:400px;
  	min-width:100px;
- 	padding-right:.6em;
+ 	padding-right:7px;
  	position:relative;
  	vertical-align:bottom;
  }
@@ -58,7 +58,7 @@
 
  div.multiselect>span:first-child {
  	float:left;
- 	margin-right:2em;
+ 	margin-right:24px;
  	overflow:hidden;
  	text-overflow:ellipsis;
  	width:90%;
@@ -66,13 +66,13 @@
 
  div.multiselect>span:last-child {
  	position:absolute;
- 	right:.8em;
+ 	right:10px;
  }
 
  ul.multiselectoptions input.new {
  	border-top-left-radius:0;
  	border-top-right-radius:0;
- 	padding-bottom:.2em;
- 	padding-top:.2em;
+ 	padding-bottom:2px;
+ 	padding-top:2px;
  	margin:0;
  }
