@@ -205,6 +205,7 @@ class RapidShareAPI_StreamWrapper {
 	const API_OpenFileHandle = 3;
 	const API_CreateNewFile = 5;
 	const API_Error = 250;
+	const API_Error_Length = 3;
 
 	const TcpBufferSize = 524288;	// 512KB
 	const MaxReadLength = 600000;
@@ -219,7 +220,7 @@ class RapidShareAPI_StreamWrapper {
 		$this->readPosition = $this->writePosition = 0;
 		$this->readAccess = $this->writeAccess = false;
 
-		if (!$this->connect()) {
+		if (!$this->connect(false)) {
 			return false;
 		}
 
@@ -423,29 +424,30 @@ class RapidShareAPI_StreamWrapper {
 	}
 
 	private function socketRead($length) {
-		$string = '';
-		do {
-			$part = socket_read($this->socket, $length - strlen($string));
-			$string .= $part;
-			if ($string[0] === RapidShareAPI_StreamWrapper::API_Error) {
-				break;
+		if ($length < RapidShareAPI_StreamWrapper::API_Error_Length) {
+			$read = socket_recv($this->socket, $buf, $length, MSG_WAITALL);
+			$string = $buf;
+			if ($read !== false && $string[0] === RapidShareAPI_StreamWrapper::API_Error) {
+				$read = socket_recv($this->socket, $buf, RapidShareAPI_StreamWrapper::API_Error_Length - $read, MSG_WAITALL);
+				$string .= $buf;
 			}
-		} while ($part !== false && $part !== '' && strlen($string) < $length && $this->socketHasMoreData());
+		} else {
+			$read = socket_recv($this->socket, $buf, RapidShareAPI_StreamWrapper::API_Error_Length, MSG_WAITALL);
+			$string = $buf;
+			if (   $read !== false && $string[0] !== RapidShareAPI_StreamWrapper::API_Error
+				&& $length - RapidShareAPI_StreamWrapper::API_Error_Length > 0) {
+				do {
+					$read = socket_recv($this->socket, $buf, $length - strlen($string), MSG_WAITALL);
+					$string .= $buf;
+				} while ($read !== false && strlen($string) < $length);
+			}
+		}
 
-		if ($part === false || socket_last_error($this->socket) > 0) {
+		if ($read === false || socket_last_error($this->socket) > 0) {
 			OCP\Util::writeLog('files_external', 'Could not read from Low Level API: ' . socket_strerror(socket_last_error($this->socket)), OCP\Util::ERROR);
 			return false;
 		}
 		return $string;
-	}
-
-	private function socketHasMoreData() {
-		$read = array($this->socket);
-		$write = null;
-		$except = null;
-
-		$changedSockets = socket_select($read, $write, $except, 1);
-		return $changedSockets > 0;
 	}
 
 	private function initCurl() {
@@ -477,8 +479,8 @@ class RapidShareAPI_StreamWrapper {
 		return $response;
 	}
 
-	private function connect() {
-		if ($this->socket === null || socket_last_error($this->socket) === SOCKET_ECONNRESET) {
+	private function connect($openFileHandle=true) {
+		if ($this->socket === null || socket_last_error($this->socket) > 0) {
 			$authString = $this->getAuthString();
 			if ($authString === false) {
 				return false;
@@ -509,13 +511,17 @@ class RapidShareAPI_StreamWrapper {
 			if ($this->socketRead(4) !== "BIN\n") {
 				return false;
 			}
+
+			if ($openFileHandle) {
+				return $this->openFileHandle();
+			}
 		}
 
 		return true;
 	}
 
 	private function createNewFile($folderId, $name) {
-		$this->connect();
+		$this->connect(false);
 
 		$request = new RapidShareAPI_ByteString();
 		$request->putByte(RapidShareAPI_StreamWrapper::API_CreateNewFile);
@@ -559,7 +565,7 @@ class RapidShareAPI_StreamWrapper {
 	}
 
 	private function openFileHandle() {
-		$this->connect();
+		$this->connect(false);
 
 		$fileId = $this->fileId;
 		$request = new RapidShareAPI_ByteString();
@@ -665,13 +671,17 @@ class RapidShareAPI_StreamWrapper {
 						$response->skip();
 						$this->readPosition = $response->readInt();
 						$isCompressed = $response->readByte();
-						$length = $response->readInt();
-						$data = $this->socketRead($length);
+						$readLength = $response->readInt();
+						$data = $this->socketRead($readLength);
 						if ($data !== false) {
 							if ($isCompressed) {
 								$data = gzdecode($data);
+								if ($data === false) {
+									OCP\Util::writeLog('files_external', 'Could not decompress gzip-transferred data in file #' . $fileId, OCP\Util::ERROR);
+									return false;
+								}
 							}
-							$this->readPosition += strlen($data);
+							$this->readPosition += $length;
 							return $data;
 						}
 					}
