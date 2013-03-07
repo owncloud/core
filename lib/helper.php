@@ -625,13 +625,20 @@ class OC_Helper {
 			$ext = '';
 		}
 
-		$counter = 2;
+		if(preg_match('/\((\d+)\)$/', $name, $matches, PREG_OFFSET_CAPTURE) !== false ) {
+			$counter = ($matches[count($matches)-1][0]);
+		}
+		else {
+			$counter = 2;
+		}
 		$newpath = $path . '/' . $filename;
 
 		while (\OC\Files\Filesystem::file_exists($newpath)) {
-			if(preg_match('/\((\d+)\)/', $name, $matches) !== false ) {
-				$counter = ($matches[count($matches)-1]+1);
-				$newname = preg_replace ( '/\(\d+\)/' , ' ('.$counter.')', $name , 1).$ext;
+			if(preg_match('/\((\d+)\)$/', $name, $matches, PREG_OFFSET_CAPTURE) !== false ) {
+				//Replace the last "(number)" with " (number+1)"
+				$newname = preg_replace ( '/ ?\(\d+\)$/' , ' ('.$counter.')', $name , 1).$ext;
+			} else {
+				$name . ' (' . $counter . ')' . $ext;
 			}
 			$newpath = $path . '/' . $newname;
 			$counter++;
