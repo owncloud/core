@@ -281,6 +281,7 @@ class OC {
 					$minimizerCSS->clearCache();
 					$minimizerJS = new OC_Minimizer_JS();
 					$minimizerJS->clearCache();
+					OC_Response::disableCaching();
 					OC_Util::addscript('update');
 					$tmpl = new OC_Template('', 'update', 'guest');
 					$tmpl->assign('version', OC_Util::getVersionString());
