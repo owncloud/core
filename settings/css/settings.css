@@ -89,3 +89,16 @@ table.shareAPI td { padding-bottom: 0.8em; }
 /* HELP */
 .pressed {background-color:#DDD;}
 
+/* PASSWORD */
+#password-strength {
+	display: inline-block;
+	margin-left: 13em;
+}
+.password-bad {
+	color:#C33; 
+	font-weight:bold;
+}
+.password-good {
+	 color :#33CC33;
+	 font-weight: bold;
+}
