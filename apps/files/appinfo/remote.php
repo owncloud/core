@@ -28,6 +28,7 @@ $RUNTIME_APPTYPES=array('filesystem', 'authentication', 'logging');
 OC_App::loadApps($RUNTIME_APPTYPES);
 
 OC_Util::obEnd();
+session_write_close();
 
 // Backends
 $authBackend = new OC_Connector_Sabre_Auth();
