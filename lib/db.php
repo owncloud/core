@@ -270,6 +270,7 @@ class OC_DB {
 						'hostspec' => $host,
 						'database' => $name
 					);
+					$options['portability'] = $options['portability'] - MDB2_PORTABILITY_EMPTY_TO_NULL;
 					break;
 				case 'oci':
 					$dsn = array(
