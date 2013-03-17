@@ -268,7 +268,7 @@ class OC_Util {
 			$web_server_restart= false;
 		}
 		if(version_compare(PHP_VERSION, '5.3.4', '<')) {
-			$errors[]=array('error'=>'PHP newer then 5.3.4 is required.',
+			$errors[]=array('error'=>'PHP newer than 5.3.3 is required.',
 				'hint'=>'Please ask your server administrator to update PHP to the latest PHP version.'
 					.' PHP 5.2 is no longer supported by ownCloud and the PHP community.');
 			$web_server_restart= false;
