@@ -81,7 +81,7 @@ class OC_TemplateLayout extends OC_Template {
 				$this->append( 'cssfiles', OC_Helper::linkTo($app, $path) . $versionParameter);
 			}
 			else {
-				$this->append( 'cssfiles', $web.'/'.$file);
+				$this->append( 'cssfiles', $web.'/'.$file . $versionParameter);
 			}
 		}
 	}
