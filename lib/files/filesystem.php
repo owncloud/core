@@ -290,6 +290,8 @@ class Filesystem {
 	 * @return string
 	 */
 	private static function setUserVars($user, $input) {
+		$displayName = \OC_User::getDisplayName($user);
+		$input = str_replace('$displayName', $displayName, $input);
 		return str_replace('$user', $user, $input);
 	}
 
