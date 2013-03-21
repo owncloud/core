@@ -330,7 +330,7 @@ var FileList={
 
 		var fileNames = JSON.stringify(files);
 		$.post(OC.filePath('files', 'ajax', 'delete.php'),
-				{dir:$('#dir').val(),files:fileNames},
+				{dir:encodeURIComponent($('#dir').val()),files:encodeURIComponent(fileNames)},
 				function(result){
 					if (result.status == 'success') {
 						$.each(files,function(index,file){

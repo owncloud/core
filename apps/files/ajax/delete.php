@@ -7,8 +7,8 @@ OCP\JSON::checkLoggedIn();
 OCP\JSON::callCheck();
 
 // Get data
-$dir = stripslashes($_POST["dir"]);
-$files = isset($_POST["file"]) ? stripslashes($_POST["file"]) : stripslashes($_POST["files"]);
+$dir = stripslashes(urldecode($_POST["dir"]));
+$files = isset($_POST["file"]) ? stripslashes(urldecode($_POST["file"])) : stripslashes(urldecode($_POST["files"]));
 
 $files = json_decode($files);
 $filesWithError = '';

@@ -228,7 +228,7 @@ $(document).ready(function() {
 		if ( (downloadURL = document.getElementById("downloadURL")) ) {
 			window.location=downloadURL.value+"&download&files="+files;
 		} else {
-			window.location=OC.filePath('files', 'ajax', 'download.php') + '?'+ $.param({ dir: dir, files: fileslist });
+			window.location=OC.filePath('files', 'ajax', 'download.php') + '?'+ $.param({ dir: encodeURIComponent(dir), files: encodeURIComponent(fileslist) });
 		}
 		return false;
 	});
