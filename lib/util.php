@@ -267,9 +267,9 @@ class OC_Util {
 				'hint'=>'Please ask your server administrator to install the module.');
 			$web_server_restart= false;
 		}
-		if(floatval(phpversion())<5.3) {
-			$errors[]=array('error'=>'PHP 5.3 is required.',
-				'hint'=>'Please ask your server administrator to update PHP to version 5.3 or higher.'
+		if(version_compare(PHP_VERSION, '5.3.4', '<')) {
+			$errors[]=array('error'=>'PHP newer than 5.3.3 is required.',
+				'hint'=>'Please ask your server administrator to update PHP to the latest PHP version.'
 					.' PHP 5.2 is no longer supported by ownCloud and the PHP community.');
 			$web_server_restart= false;
 		}
