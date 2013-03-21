@@ -9,7 +9,7 @@ $(document).ready(function() {
 			var files = tr.attr('data-file');
 			undeleteAction[0].innerHTML = undeleteAction[0].innerHTML+spinner;
 			$.post(OC.filePath('files_trashbin','ajax','undelete.php'),
-				{files:JSON.stringify([files]), dirlisting:tr.attr('data-dirlisting') },
+				{files:encodeURIComponent(JSON.stringify([files])), dirlisting:encodeURIComponent((tr.attr('data-dirlisting')) },
 				function(result){
 					for (var i = 0; i < result.data.success.length; i++) {
 						var row = document.getElementById(result.data.success[i].filename);
@@ -36,7 +36,7 @@ $(document).ready(function() {
 			deleteAction[0].outerHTML = newHTML;
 
 			$.post(OC.filePath('files_trashbin','ajax','delete.php'),
-				{files:JSON.stringify([files]), dirlisting:tr.attr('data-dirlisting') },
+				{files:encodeURIComponent(JSON.stringify([files])), dirlisting:encodeURIComponent(tr.attr('data-dirlisting')) },
 				function(result){
 					for (var i = 0; i < result.data.success.length; i++) {
 						var row = document.getElementById(result.data.success[i].filename);
@@ -104,7 +104,7 @@ $(document).ready(function() {
 			}
 
 			$.post(OC.filePath('files_trashbin','ajax','undelete.php'),
-					{files:fileslist, dirlisting:dirlisting},
+					{files:encodeURIComponent(fileslist), dirlisting:encodeURIComponent(dirlisting)},
 					function(result){
 						for (var i = 0; i < result.data.success.length; i++) {
 							var row = document.getElementById(result.data.success[i].filename);
@@ -129,7 +129,7 @@ $(document).ready(function() {
 			}
 
 			$.post(OC.filePath('files_trashbin','ajax','delete.php'),
-					{files:fileslist, dirlisting:dirlisting},
+					{files:encodeURIComponent(fileslist), dirlisting:encodeURIComponent(dirlisting)},
 					function(result){
 						for (var i = 0; i < result.data.success.length; i++) {
 							var row = document.getElementById(result.data.success[i].filename);
