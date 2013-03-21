@@ -9,7 +9,7 @@ $(document).ready(function() {
 			var files = tr.attr('data-file');
 			undeleteAction[0].innerHTML = undeleteAction[0].innerHTML+spinner;
 			$.post(OC.filePath('files_trashbin','ajax','undelete.php'),
-				{files:encodeURIComponent(JSON.stringify([files])), dirlisting:encodeURIComponent((tr.attr('data-dirlisting')) },
+				{files:encodeURIComponent(JSON.stringify([files])), dirlisting:encodeURIComponent(tr.attr('data-dirlisting')) },
 				function(result){
 					for (var i = 0; i < result.data.success.length; i++) {
 						var row = document.getElementById(result.data.success[i].filename);
