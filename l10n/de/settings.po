@@ -101,7 +101,7 @@ msgstr "Der Benutzer konnte nicht aus der Gruppe %s entfernt werden"
 
 #: ajax/updateapp.php:14
 msgid "Couldn't update app."
-msgstr "Die App konnte nicht geupdated werden."
+msgstr "Die App konnte nicht aktualisiert werden."
 
 #: js/apps.js:30
 msgid "Update to {appversion}"
@@ -121,7 +121,7 @@ msgstr "Bitte warten..."
 
 #: js/apps.js:84
 msgid "Updating...."
-msgstr "Update..."
+msgstr "Aktualisierung..."
 
 #: js/apps.js:87
 msgid "Error while updating app"
@@ -133,7 +133,7 @@ msgstr "Fehler"
 
 #: js/apps.js:90
 msgid "Updated"
-msgstr "Geupdated"
+msgstr "Aktualisiert"
 
 #: js/personal.js:99
 msgid "Saving..."
@@ -174,7 +174,7 @@ msgstr "Es muss ein gültiger Benutzername angegeben werden"
 
 #: js/users.js:353 js/users.js:359 js/users.js:374
 msgid "Error creating user"
-msgstr "Beim anlegen des Benutzers ist ein Fehler aufgetreten"
+msgstr "Beim Anlegen des Benutzers ist ein Fehler aufgetreten"
 
 #: js/users.js:358
 msgid "A valid password must be provided"
@@ -210,7 +210,7 @@ msgstr "Dein Web-Server ist noch nicht für Datei-Synchronisation bereit, weil d
 #: templates/admin.php:33
 #, php-format
 msgid "Please double check the <a href='%s'>installation guides</a>."
-msgstr "Bitte prüfen Sie die <a href='%s'>Instalationsanleitungen</a>."
+msgstr "Bitte prüfe die <a href='%s'>Instalationsanleitungen</a>."
 
 #: templates/admin.php:44
 msgid "Module 'fileinfo' missing"
@@ -266,7 +266,7 @@ msgstr "cron.php ist an einem Webcron-Service registriert. Die cron.php Seite wi
 msgid ""
 "Use systems cron service. Call the cron.php file in the owncloud folder via "
 "a system cronjob once a minute."
-msgstr "Nutze den Cron Systemdienst. Rufe die Datei cron.php im owncloud Ordner einmal pro Minute über einen Cronjob auf."
+msgstr "Bitte nutze den Cron Systemdienst. Rufe die Datei cron.php im owncloud Ordner einmal pro Minute über einen Cronjob auf."
 
 #: templates/admin.php:128
 msgid "Sharing"
@@ -286,7 +286,7 @@ msgstr "Erlaube Links"
 
 #: templates/admin.php:143
 msgid "Allow users to share items to the public with links"
-msgstr "Erlaube Benutzern Inhalte über öffentliche Links zu teilen"
+msgstr "Erlaube Benutzern, Inhalte über öffentliche Links zu teilen"
 
 #: templates/admin.php:150
 msgid "Allow resharing"
@@ -294,15 +294,15 @@ msgstr "Erlaube erneutes teilen"
 
 #: templates/admin.php:151
 msgid "Allow users to share items shared with them again"
-msgstr "Erlaube Benutzern mit ihnen geteilte Inhalte erneut zu teilen"
+msgstr "Erlaube Benutzern, mit ihnen geteilte Inhalte erneut zu teilen"
 
 #: templates/admin.php:158
 msgid "Allow users to share with anyone"
-msgstr "Erlaube Benutzern mit jedem zu teilen"
+msgstr "Erlaube Benutzern, mit jedem zu teilen"
 
 #: templates/admin.php:161
 msgid "Allow users to only share with users in their groups"
-msgstr "Erlaube Benutzern nur mit Benutzern ihrer Gruppe zu teilen"
+msgstr "Erlaube Benutzern, nur mit Benutzern ihrer Gruppe zu teilen"
 
 #: templates/admin.php:168
 msgid "Security"
@@ -321,7 +321,7 @@ msgstr "Erzwingt die Verwendung einer verschlüsselten Verbindung"
 msgid ""
 "Please connect to this ownCloud instance via HTTPS to enable or disable the "
 "SSL enforcement."
-msgstr "Bitte verbinden Sie sich über eine HTTPS Verbindung mit diesem ownCloud Server um diese Einstellung zu ändern"
+msgstr "Bitte verbinde Dich über eine HTTPS Verbindung mit diesem ownCloud Server um diese Einstellung zu ändern"
 
 #: templates/admin.php:195
 msgid "Log"
