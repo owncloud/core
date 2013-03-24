@@ -74,12 +74,12 @@ class Upgrade {
 	function insert($data) {
 		if (!$this->inCache($data['storage'], $data['path_hash'], $data['id'])) {
 			$insertQuery = \OC_DB::prepare('INSERT INTO `*PREFIX*filecache`
-					( `fileid`, `storage`, `path`, `path_hash`, `parent`, `name`, `mimetype`, `mimepart`, `size`, `mtime`, `encrypted` )
-					VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+					( `fileid`, `storage`, `path`, `path_hash`, `parent`, `name`, `mimetype`, `mimepart`, `size`, `mtime`, `encrypted`, `etag` )
+					VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
 
 			$insertQuery->execute(array($data['id'], $data['storage'],
 				$data['path'], $data['path_hash'], $data['parent'], $data['name'],
-				$data['mimetype'], $data['mimepart'], $data['size'], $data['mtime'], $data['encrypted']));
+				$data['mimetype'], $data['mimepart'], $data['size'], $data['mtime'], $data['encrypted'], $data['etag']));
 		}
 	}
 
@@ -111,6 +111,7 @@ class Upgrade {
 		 */
 		list($storage, $internalPath) = \OC\Files\Filesystem::resolvePath($data['path']);
 		if ($storage) {
+			$newData['etag'] = $data['etag'];
 			$newData['path_hash'] = md5($internalPath);
 			$newData['path'] = $internalPath;
 			$newData['storage'] = $this->getNumericId($storage);
