@@ -394,7 +394,7 @@ OC.Share={
 }
 
 $(document).ready(function() {
-	
+
 	if(typeof monthNames != 'undefined'){
 		$.datepicker.setDefaults({
 			monthNames: monthNames,
@@ -432,7 +432,7 @@ $(document).ready(function() {
 
 	$(this).click(function(event) {
 		var target = $(event.target);
-		var isMatched = !target.is('.drop, .ui-datepicker-next, .ui-datepicker-prev, .ui-icon') 
+		var isMatched = !target.is('.drop, .ui-datepicker-next, .ui-datepicker-prev, .ui-icon')
 			&& !target.closest('#ui-datepicker-div').length;
 		if (OC.Share.droppedDown && isMatched && $('#dropdown').has(event.target).length === 0) {
 			OC.Share.hideDropDown();
@@ -580,7 +580,7 @@ $(document).ready(function() {
 			});
 		}
 	});
-	
+
 	$(document).on('change', '#dropdown #expirationDate', function() {
 		var itemType = $('#dropdown').data('item-type');
 		var itemSource = $('#dropdown').data('item-source');
