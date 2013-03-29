@@ -295,10 +295,13 @@ class OC_L10N{
 				$available = self::findAvailableLanguages($app);
 			}
 			foreach($accepted_languages as $i) {
-				$temp = explode(';', $i);
-				$temp[0] = str_replace('-', '_', $temp[0]);
-				if( ($key = array_search($temp[0], $available)) !== false) {
-					return $available[$key];
+				$langs = explode(';', $i);
+				foreach($langs as $onelang) {
+					$temp = explode('-', $onelang);
+					$keyword = strtolower($temp[0]) . '_' . strtoupper($temp[1]);
+					if( ($key = array_search($keyword, $available)) !== false) {
+						return $available[$key];
+					}
 				}
 				foreach($available as $l) {
 					if ( $temp[0] == substr($l, 0, 2) ) {
