@@ -169,9 +169,6 @@ class OC_Config{
 		if (defined('DEBUG') && DEBUG) {
 			$content .= "define('DEBUG',true);\n";
 		}
-		if (defined('LOG_QUERIES') && LOG_QUERIES) {
-			$content .= "define('LOG_QUERIES',true);\n";
-		}
 		$content .= "\$CONFIG = ";
 		$content .= var_export(self::$cache, true);
 		$content .= ";\n";
