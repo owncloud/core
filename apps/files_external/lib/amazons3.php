@@ -84,7 +84,6 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			$path .= '/';
 		}
 		$opt = array('Delimiter' => '/', 'Prefix' => $path);
-		$this->objectsdelete = array();
 		try {
 			$response = $this->s3->listObjects(array_merge(
 				array('Bucket' => $this->bucket),
@@ -98,14 +97,14 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			}
 			// delete folders
 			foreach ($response[CommonPrefixes] as $object) {
-				$this->objectsdelete[] = array('Key' => $object[Prefix]);
+				$this->deleteFolder($object[Prefix]);
 			}
 		} catch (S3Exception  $e) {
 			return false;
 		}
 		// also add this folder
 		$this->objectsdelete[] = array('Key' => $path);
-		$this->deleteObjects($this->objectsdelete);
+		return true;
 	}
 
 	private function deleteObject($path) {
@@ -257,7 +256,9 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			if (!$this->file_exists($path)) {
 				return false;
 			}
+			$this->objectsdelete = array();
 			$this->deleteFolder($path);
+			return $this->deleteObjects($this->objectsdelete);
 		}
 		return $this->deleteObject($path);
 	}
