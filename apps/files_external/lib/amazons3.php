@@ -31,6 +31,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 	private $s3;
 	private $bucket;
 	private $objects = array();
+	private $objectsdelete = array();
 	private $id;
 
 	private static $tempFiles = array();
@@ -76,6 +77,59 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			}
 		}
 		return false;
+	}
+
+	private function deleteFolder($path) {
+		if (substr($path, -1) != '/') {
+			$path .= '/';
+		}
+		$opt = array('Delimiter' => '/', 'Prefix' => $path);
+		$this->objectsdelete = array();
+		try {
+			$response = $this->s3->listObjects(array_merge(
+				array('Bucket' => $this->bucket),
+				$opt
+			));
+			// delete files
+			foreach ($response[Contents] as $object) {
+				if ($object[Key] != $path) {
+					$this->objectsdelete[] = array('Key' => $object[Key]);
+				}
+			}
+			// delete folders
+			foreach ($response[CommonPrefixes] as $object) {
+				$this->objectsdelete[] = array('Key' => $object[Prefix]);
+			}
+		} catch (S3Exception  $e) {
+			return false;
+		}
+		// also add this folder
+		$this->objectsdelete[] = array('Key' => $path);
+		$this->deleteObjects($this->objectsdelete);
+	}
+
+	private function deleteObject($path) {
+		try {
+			$response = $this->s3->deleteObject(array(
+				'Bucket' => $this->bucket,
+				'Key' => $path
+			));
+			return true;
+		} catch (S3Exception $e) {
+			return false;
+		}
+	}
+
+	private function deleteObjects($objects) {
+		try {
+			$response = $this->s3->deleteObjects(array_merge(
+				array('Bucket' => $this->bucket),
+				array('Objects' => $objects)
+			));
+			return true;
+		} catch (S3Exception $e) {
+			return false;
+		}
 	}
 
 	public function getId() {
@@ -198,20 +252,14 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 
 	public function unlink($path) {
 		if (!$this->file_exists($path)) {
+			//could be folder
 			$path .= '/';
 			if (!$this->file_exists($path)) {
 				return false;
 			}
+			$this->deleteFolder($path);
 		}
-		try {
-			$response = $this->s3->deleteObject(array(
-				'Bucket' => $this->bucket,
-				'Key' => $path
-			));
-			return true;
-		} catch (S3Exception $e) {
-			return false;
-		}
+		return $this->deleteObject($path);
 	}
 
 	public function fopen($path, $mode) {
