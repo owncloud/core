@@ -367,8 +367,9 @@ class OC_DB {
 
 		// Optimize the query
 		$query = self::processQuery( $query );
-		if(OC_Config::getValue( "log_query", false)) {
-			OC_Log::write('core', 'DB prepare : '.$query, OC_Log::DEBUG);
+		if(OC_Config::getValue( "log_sql_query", false)) {
+			// handover the key ("log_sql_file") parameter set in config.php or NULL
+			OC_Log::write('core', 'DB prepare : '.$query, OC_Log::DEBUG, OC_Config::getValue("log_sql_file"));
 		}
 		self::connect();
 		// return the result
@@ -954,9 +955,10 @@ class PDOStatementWrapper{
 	 * make execute return the result instead of a bool
 	 */
 	public function execute($input=array()) {
-		if(OC_Config::getValue( "log_query", false)) {
+		if(OC_Config::getValue( "log_sql_query", false)) {
 			$params_str = str_replace("\n"," ",var_export($input,true));
-			OC_Log::write('core', 'DB execute with arguments : '.$params_str, OC_Log::DEBUG);
+			// handover the key ("log_sql_file") parameter set in config.php or NULL
+			OC_Log::write('core', 'DB execute with arguments : '.$params_str, OC_Log::DEBUG, OC_Config::getValue("log_sql_file"));
 		}
 		$this->lastArguments = $input;
 		if (count($input) > 0) {
