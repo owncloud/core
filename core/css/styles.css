@@ -237,8 +237,8 @@ fieldset.warning a { color:#b94a48 !important; font-weight:bold; }
 
 /* Alternative Logins */
 #alternative-logins legend { margin-bottom:10px; }
-#alternative-logins li { height:40px; display:inline-block; white-space:nowrap; }
-
+#alternative-logins li { height:40px; display:block; white-space:nowrap; }
+#alternative-logins a.button { display:block; left:0; right:0; text-align:center; }
 
 /* NAVIGATION ------------------------------------------------------------- */
 #navigation {
