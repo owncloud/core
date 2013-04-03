@@ -44,34 +44,34 @@ class OC_Log_Owncloud {
 			$log_path = $path_parts['dirname'];
 			$log_file = $path_parts['basename'];
 		}
-                // check if path exists in logfile parameter and use default if not
-                // was there no path set, php returns a dot, but it is filled
-                if(strlen($log_path) == 1) {
-                        // no path set, use default
-                        self::$defaultLogPath = $defaultLogPath;
-                  }
-                  elseif(!is_writable($log_path)) {
-                        // path set but not write accessible, use default
-                        $error_handler = 1;
-                        self::$defaultLogPath = $defaultLogPath;
-                  }
-                  else {
-                        // path set and accessible, use path set
-                        self::$defaultLogPath = $log_path;
-                }
-                if (strlen($log_file) == 0) {
-                        // no non-standard logfile set, use standard
-                        self::$oC_logFile = '/owncloud.log';
-                  }
-                  else {
-                        // no non-standard logfile set and accessible, use it
-                        self::$oC_logFile = '/'.$log_file;
-                }
+				// check if path exists in logfile parameter and use default if not
+				// was there no path set, php returns a dot, but it is filled
+				if(strlen($log_path) === 1) {
+						// no path set, use default
+						self::$defaultLogPath = $defaultLogPath;
+					}
+					elseif(!is_writable($log_path)) {
+						// path set but not write accessible, use default
+						$error_handler = 1;
+						self::$defaultLogPath = $defaultLogPath;
+					}
+					else {
+						// path set and accessible, use path set
+						self::$defaultLogPath = $log_path;
+				}
+				if (strlen($log_file) === 0) {
+						// no non-standard logfile set, use standard
+						self::$oC_logFile = '/owncloud.log';
+					}
+					else {
+						// no non-standard logfile set and accessible, use it
+						self::$oC_logFile = '/'.$log_file;
+				}
 
-                // try to log write attempt of special log path set in config.php
-                if ($error_handler == 1) {
-                        self::write('core', 'Cannot write to log path (' . $log_path . ') using default (' . self::$defaultLogPath . ')', OC_Log::WARN);
-                }
+				// try to log write attempt of special log path set in config.php
+				if ($error_handler === 1) {
+						self::write('core', 'Cannot write to log path (' . $log_path . ') using default (' . self::$defaultLogPath . ')', OC_Log::WARN);
+				}
 	}
 
 	/**
@@ -85,8 +85,8 @@ class OC_Log_Owncloud {
 	 */
 	public static function write($app, $message, $level, $special_log_file = NULL) {
 		$minLevel=min(OC_Config::getValue( "loglevel", OC_Log::WARN ), OC_Log::ERROR);
-        // either you reach the minimum log level needed or the special_log_file has a value
-        if($level>=$minLevel or !is_null($special_log_file)) {
+		// either you reach the minimum log level needed or the special_log_file has a value
+		if($level>=$minLevel or !is_null($special_log_file)) {
 			$entry=array('app'=>$app, 'message'=>$message, 'level'=>$level, 'time'=>time());
 			if (is_null($special_log_file)) {
 				$handle = @fopen(self::$defaultLogPath.self::$oC_logFile, 'a');
