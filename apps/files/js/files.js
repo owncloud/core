@@ -512,7 +512,7 @@ $(document).ready(function() {
 									tr.find('td.filename').attr('style','background-image:url('+path+')');
 								});
 							} else {
-								OC.dialogs.alert(result.data.message, t('files', 'Error'));
+								OC.dialogs.alert(result.data.message, t('core', 'Error'));
 							}
 						}
 					);
@@ -528,7 +528,7 @@ $(document).ready(function() {
 								var tr=$('tr').filterAttr('data-file',name);
 								tr.attr('data-id', result.data.id);
 							} else {
-								OC.dialogs.alert(result.data.message, t('files', 'Error'));
+								OC.dialogs.alert(result.data.message, t('core', 'Error'));
 							}
 						}
 					);
@@ -818,7 +818,7 @@ var folderDropOptions={
 						$('#notification').fadeIn();
 					}
 				} else {
-					OC.dialogs.alert(t('Error moving file'), t('files', 'Error'));
+					OC.dialogs.alert(t('Error moving file'), t('core', 'Error'));
 				}
 			});
 		});
@@ -856,7 +856,7 @@ var crumbDropOptions={
 						$('#notification').fadeIn();
 					}
 				} else {
-					OC.dialogs.alert(t('Error moving file'), t('files', 'Error'));
+					OC.dialogs.alert(t('Error moving file'), t('core', 'Error'));
 				}
 			});
 		});
