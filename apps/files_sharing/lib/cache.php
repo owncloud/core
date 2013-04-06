@@ -182,7 +182,7 @@ class Shared_Cache extends Cache {
 	 */
 	public function move($source, $target) {
 		if ($cache = $this->getSourceCache($source)) {
-			$targetPath = \OC_Share_Backend_File::getSourcePath(dirname($target));
+			$targetPath = \OC_Share_Backend_File::getSource(dirname($target));
 			if ($targetPath) {
 				$targetPath .= '/' . basename($target);
 				$cache->move($this->files[$source], $targetPath);
