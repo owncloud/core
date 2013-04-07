@@ -335,6 +335,9 @@ class OC_User {
 				return true;
 			}
 		}
+		if(isset($_POST['public_uploading'])) {
+                        return true;
+                }
 		return false;
 	}
 

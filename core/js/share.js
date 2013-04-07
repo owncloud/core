@@ -168,6 +168,8 @@ OC.Share={
 				html += '<div id="linkPass">';
 				html += '<input id="linkPassText" type="password" placeholder="'+t('core', 'Password')+'" />';
 				html += '</div>';
+				html += '<br />';
+				html += '<input type="checkbox" name="allowUpload" id="allowUpload" value="1" style="display:none;" /><label for="allowUpload" style="display:none;">'+t('core', 'Allow Upload')+'</label>';
 				html += '</div>';
 				html += '<form id="emailPrivateLink" >';
 				html += '<input id="email" style="display:none; width:62%;" value="" placeholder="'+t('core', 'Email link to person')+'" type="text" />';
@@ -197,6 +199,13 @@ OC.Share={
 					}
 				});
 			}
+			$.ajax({type: 'GET', url: OC.filePath('core', 'ajax', 'share.php'), data: { fetch: 'getUpload', itemType: itemType, itemSource: itemSource }, success: function(result) { 
+				if (result && result.status === 'success') {
+					if(result.data == "1" || result.data == "true" ) {
+						$('#allowUpload').attr('checked', true);
+					}
+                        	}
+                	}});
 			$('#shareWith').autocomplete({minLength: 1, source: function(search, response) {
 	// 			if (cache[search.term]) {
 	// 				response(cache[search.term]);
@@ -341,6 +350,7 @@ OC.Share={
 	},
 	showLink:function(token, password, itemSource) {
 		OC.Share.itemShares[OC.Share.SHARE_TYPE_LINK] = true;
+		itemType = $('#dropdown').data('item-type');
 		$('#linkCheckbox').attr('checked', true);
 		if (! token) {
 			//fallback to pre token link
@@ -360,6 +370,11 @@ OC.Share={
 		$('#linkText').val(link);
 		$('#linkText').show('blind');
 		$('#linkText').css('display','block');
+		//upload only for folders
+		if (itemType == 'folder') {
+			$('#allowUpload').show();
+			$('#allowUpload+label').show();
+		}
 		$('#showPassword').show();
 		$('#showPassword+label').show();
 		if (password != null) {
@@ -373,6 +388,8 @@ OC.Share={
 	},
 	hideLink:function() {
 		$('#linkText').hide('blind');
+		$('#allowUpload').hide();
+		$('#allowUpload+label').hide();
 		$('#showPassword').hide();
 		$('#showPassword+label').hide();
 		$('#linkPass').hide();
@@ -542,6 +559,21 @@ $(document).ready(function() {
 		$(this).focus();
 		$(this).select();
 	});
+
+	$('#allowUpload').live('change', function() {
+		var itemType = $('#dropdown').data('item-type');
+		var itemSource = $('#dropdown').data('item-source');
+		if ($('#allowUpload').is(':checked')) {
+			var allow = "1";
+		} else {
+			var allow = "0";
+		}
+		$.post(OC.filePath('core', 'ajax', 'share.php'), { action: 'setUpload', itemType: itemType, itemSource: itemSource, allow: allow }, function(result) {
+                       if (!result || result.status !== 'success') {
+                                OC.dialogs.alert(t('core', 'Error'), t('core', 'Error setting public upload rights'));
+                       }
+                });
+        });
 
 	$(document).on('click', '#dropdown #showPassword', function() {
 		$('#linkPass').toggle('blind');
