@@ -172,6 +172,33 @@ class Share {
 		return $result->fetchRow();
 	}
 
+	/*
+	 * @brief Get the upload permission of a item
+	 * @param string Item type
+         * @param string Item source
+	 * @return Boelean
+	*/
+	public static function getUploadPermission($itemType, $itemSource) {
+		$query = \OC_DB::prepare('SELECT `uploadable` FROM `*PREFIX*share` WHERE `item_Type` = ? AND `item_Source` = ?');
+		$result = $query->execute(array($itemType, $itemSource))->fetchRow();
+	
+		return $result['uploadable'];
+	}
+
+	/*
+         * @brief Set the upload permission for a item
+         * @param string Item type
+         * @param string Item source
+	 * @param string
+         * @return Boelean
+        */
+	public static function setUploadPermission($itemType, $itemSource, $allow) {
+                $query = \OC_DB::prepare('UPDATE `*PREFIX*share` SET `uploadable` = ? WHERE `item_Type` = ? AND item_Source = ?');
+                $query->execute(array($allow, $itemType, $itemSource));
+        
+                return "1";
+        }
+
 	/**
 	* @brief Get the shared items of item type owned by the current user
 	* @param string Item type

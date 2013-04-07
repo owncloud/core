@@ -73,3 +73,19 @@ thead{
 	background-color: white;
 	padding-left:0 !important; /* fixes multiselect bar offset on shared page */
 }
+
+.upload_wrapper { 
+	padding-left: 0.1em; 
+	padding-right: 0.3em; 
+	vertical-align: text-bottom; 
+	float:right; 
+}
+#upload_svg { 
+	height: 1.2em; 
+}
+.upload_target { 
+	display: none; 
+}
+#file_upload_start { 
+	display: none; 
+}

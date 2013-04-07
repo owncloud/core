@@ -21,6 +21,7 @@ if (isset($_GET['t'])) {
 		$type = $linkItem['item_type'];
 		$fileSource = $linkItem['file_source'];
 		$shareOwner = $linkItem['uid_owner'];
+		$allowUpload = OCP\SHARE::getUploadPermission($linkItem['item_type'], $linkItem['file_source']);
 		$fileOwner = null;
 		$path = null;
 		if (isset($linkItem['parent'])) {
@@ -110,6 +111,9 @@ if (isset($path)) {
 	}
 	$dir = dirname($path);
 	$file = basename($path);
+	// get the max. filesize for upload
+	$upload_max_filesize = OCP\Util::computerFileSize(ini_get('upload_max_filesize'));
+	$upload_max_human_filesize = OCP\Util::computerFileSize(ini_get('upload_max_filesize')) / 1024 / 1024;
 	// Download the file
 	if (isset($_GET['download'])) {
 		if (isset($_GET['files'])) { // download selected files
@@ -128,10 +132,16 @@ if (isset($path)) {
 		OCP\Util::addStyle('files_sharing', 'public');
 		OCP\Util::addScript('files_sharing', 'public');
 		OCP\Util::addScript('files', 'fileactions');
+		OCP\Util::addscript( 'files', 'jquery.fileupload' );
+                OCP\Util::addscript( 'files', 'files' );
 		$tmpl = new OCP\Template('files_sharing', 'public', 'base');
 		$tmpl->assign('uidOwner', $shareOwner);
 		$tmpl->assign('displayName', \OCP\User::getDisplayName($shareOwner));
 		$tmpl->assign('filename', $file);
+		$tmpl->assign('path', $path);
+                $tmpl->assign('allowUpload', $allowUpload);
+		$tmpl->assign('upload_max_filesize', $upload_max_filesize);
+                $tmpl->assign('upload_max_human_filesize', $upload_max_human_filesize);
 		$tmpl->assign('mimetype', \OC\Files\Filesystem::getMimeType($path));
 		$tmpl->assign('fileTarget', basename($linkItem['file_target']));
 		$urlLinkIdentifiers= (isset($token)?'&t='.$token:'')

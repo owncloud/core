@@ -63,6 +63,10 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 				($return) ? OC_JSON::success() : OC_JSON::error();
 			}
 			break;
+		case 'setUpload':
+			$return = OCP\Share::setUploadPermission($_POST['itemType'], $_POST['itemSource'], $_POST['allow']);
+                        ($return) ? OC_JSON::success() : OC_JSON::error();
+			break;
 		case 'setPermissions':
 			if (isset($_POST['shareType']) && isset($_POST['shareWith']) && isset($_POST['permissions'])) {
 				$return = OCP\Share::setPermissions(
@@ -155,6 +159,14 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 				OC_JSON::success(array('data' => array('reshare' => $reshare, 'shares' => $shares)));
 			}
 			break;
+		case 'getUpload':
+                        if (isset($_GET['itemType']) && isset($_GET['itemSource'])) {
+                                // check if other can upload in this item
+                                $return = OCP\Share::getUploadPermission($_GET['itemType'], $_GET['itemSource']);
+
+                                OC_JSON::success(array('data' => $return));
+                        }
+                        break;
 		case 'getShareWith':
 			if (isset($_GET['search'])) {
 				$sharePolicy = OC_Appconfig::getValue('core', 'shareapi_share_policy', 'global');
