@@ -23,8 +23,17 @@ $(document).ready(function(){
 							createVersionsDropdown(filename, file);
 						});
 					}
+					if (('#dropdown-share').length > 0){
+						$('#dropdown-version').hide();
+					}
 				} else {
 					createVersionsDropdown(filename, file);
+				}
+				// To check if drop down for the share is open for any other file
+				if (($('#dropdown-share').length > 0) && $('#dropdown-share').hasClass('drop-share')){
+					if ($('#dropdown-version').length > 0) {
+						$('#dropdown-share').hide();
+					}
 				}
 			}
 		);
