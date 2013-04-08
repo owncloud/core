@@ -27,30 +27,73 @@
  */
 
 class OC_Log_Owncloud {
-	static protected $logFile;
+	static protected $oC_logFile;
+	static protected $defaultLogPath;
 
 	/**
-	 * Init class data
+	 * Init class data for standard owncloud logging
 	 */
 	public static function init() {
-		$defaultLogFile = OC_Config::getValue("datadirectory", OC::$SERVERROOT.'/data').'/owncloud.log';
-		self::$logFile = OC_Config::getValue("logfile", $defaultLogFile);
-		if (!file_exists(self::$logFile)) {
-			self::$logFile = $defaultLogFile;
+		// set default log path
+		$defaultLogPath = OC_Config::getValue("datadirectory", OC::$SERVERROOT.'/data');
+
+		// try to get file and path from logfile parameter in config.php and separate it
+		$set_logfile = OC_Config::getValue("logfile");
+		if (!is_null($set_logfile)) {
+			$path_parts = pathinfo($set_logfile);
+			$log_path = $path_parts['dirname'];
+			$log_file = $path_parts['basename'];
 		}
+				// check if path exists in logfile parameter and use default if not
+				// was there no path set, php returns a dot, but it is filled
+				if(strlen($log_path) === 1) {
+						// no path set, use default
+						self::$defaultLogPath = $defaultLogPath;
+					}
+					elseif(!is_writable($log_path)) {
+						// path set but not write accessible, use default
+						$error_handler = 1;
+						self::$defaultLogPath = $defaultLogPath;
+					}
+					else {
+						// path set and accessible, use path set
+						self::$defaultLogPath = $log_path;
+				}
+				if (strlen($log_file) === 0) {
+						// no non-standard logfile set, use standard
+						self::$oC_logFile = '/owncloud.log';
+					}
+					else {
+						// no non-standard logfile set and accessible, use it
+						self::$oC_logFile = '/'.$log_file;
+				}
+
+				// try to log write attempt of special log path set in config.php
+				if ($error_handler === 1) {
+						self::write('core', 'Cannot write to log path (' . $log_path . ') using default (' . self::$defaultLogPath . ')', OC_Log::WARN);
+				}
 	}
 
 	/**
 	 * write a message in the log
 	 * @param string $app
 	 * @param string $message
-	 * @param int level
+	 * @param int $level
+	 * @param String $special_log_file
+	 *  special_log_file can either be a real filename as parameter or NULL.
+	 *  the complete path.file is generated on the parameter given
 	 */
-	public static function write($app, $message, $level) {
+	public static function write($app, $message, $level, $special_log_file = NULL) {
 		$minLevel=min(OC_Config::getValue( "loglevel", OC_Log::WARN ), OC_Log::ERROR);
-		if($level>=$minLevel) {
+		// either you reach the minimum log level needed or the special_log_file has a value
+		if($level>=$minLevel or !is_null($special_log_file)) {
 			$entry=array('app'=>$app, 'message'=>$message, 'level'=>$level, 'time'=>time());
-			$handle = @fopen(self::$logFile, 'a');
+			if (is_null($special_log_file)) {
+				$handle = @fopen(self::$defaultLogPath.self::$oC_logFile, 'a');
+			}
+			else {
+				$handle = @fopen(self::$defaultLogPath.'/'.$special_log_file, 'a');
+			}			
 			if ($handle) {
 				fwrite($handle, json_encode($entry)."\n");
 				fclose($handle);
@@ -68,7 +111,7 @@ class OC_Log_Owncloud {
 		self::init();
 		$minLevel=OC_Config::getValue( "loglevel", OC_Log::WARN );
 		$entries = array();
-		$handle = @fopen(self::$logFile, 'rb');
+		$handle = @fopen(self::$defaultLogPath.self::$oC_logFile, 'rb');
 		if ($handle) {
 			fseek($handle, 0, SEEK_END);
 			$pos = ftell($handle);

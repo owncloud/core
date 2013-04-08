@@ -27,16 +27,20 @@ class OC_Log {
 	 * write a message in the log
 	 * @param string $app
 	 * @param string $message
-	 * @param int level
+	 * @param int $level
+	 * @param string $special_log_file
+	 *   $special_log_file contains the variable set in config.php writing the log message to. 
+	 *   If null (not present), it will be rerouted to standard write.
+	 *   eg: OC_Config::getValue("log_sql_file") returns either null or the filename used as parameter
 	 */
-	public static function write($app, $message, $level) {
+	public static function write($app, $message, $level, $special_log_file = null) {
 		if (self::$enabled) {
 			if (!self::$class) {
 				self::$class = 'OC_Log_'.ucfirst(OC_Config::getValue('log_type', 'owncloud'));
 				call_user_func(array(self::$class, 'init'));
 			}
 			$log_class=self::$class;
-			$log_class::write($app, $message, $level);
+			$log_class::write($app, $message, $level, $special_log_file);
 		}
 	}
 

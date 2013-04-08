@@ -137,7 +137,12 @@ $CONFIG = array(
 
 /* Append All database query and parameters to the log file.
  (whatch out, this option can increase the size of your log file)*/
-"log_query" => false,
+"log_sql_query" => false,
+
+/* Filename only. If set, Owncloud database queries will be written to this filename and 
+  not to the standard log. The file will be written to the datadirectory or the path part
+  of "logfile" if it exists. No writing to Syslog. */
+"log_sql_file" => "",
 
 /* Lifetime of the remember login cookie, default is 15 days */
 "remember_login_cookie_lifetime" => 60*60*24*15,
