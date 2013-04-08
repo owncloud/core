@@ -15,10 +15,10 @@ $(document).ready(function(){
 
 				var file = $('#dir').val()+'/'+filename;
 				// Check if drop down is already visible for a different file
-				if (($('#dropdown').length > 0) && $('#dropdown').hasClass('drop-versions') ) {
-					if (file != $('#dropdown').data('file')) {
-						$('#dropdown').hide('blind', function() {
-							$('#dropdown').remove();
+				if (($('#dropdown-version').length > 0) && $('#dropdown-version').hasClass('drop-versions')) {
+					if (file != $('#dropdown-version').data('file')) {
+						$('#dropdown-version').hide('blind', function() {
+							$('#dropdown-version').remove();
 							$('tr').removeClass('mouseOver');
 							createVersionsDropdown(filename, file);
 						});
@@ -39,7 +39,7 @@ function createVersionsDropdown(filename, files) {
 
 	var historyUrl = OC.linkTo('files_versions', 'history.php') + '?path='+encodeURIComponent( $( '#dir' ).val() ).replace( /%2F/g, '/' )+'/'+encodeURIComponent( filename );
 
-	var html = '<div id="dropdown" class="drop drop-versions" data-file="'+escapeHTML(files)+'">';
+	var html = '<div id="dropdown-version" class="drop drop-versions" data-file="'+escapeHTML(files)+'">';
 	html += '<div id="private">';
 	html += '<select data-placeholder="Saved versions" id="found_versions" class="chzen-select" style="width:16em;">';
 	html += '<option value=""></option>';
@@ -74,7 +74,7 @@ function createVersionsDropdown(filename, files) {
 			} else {
 				$('#found_versions').hide();
 				$('#makelink').hide();
-				$('<div style="text-align:center;">No other versions available</div>').appendTo('#dropdown');
+				$('<div style="text-align:center;">No other versions available</div>').appendTo('#dropdown-version');
 			}
 			$('#found_versions').change(function(){
 				var revision=parseInt($(this).val());
@@ -127,16 +127,16 @@ function createVersionsDropdown(filename, files) {
 	}
 
 	$('tr').filterAttr('data-file',filename).addClass('mouseOver');
-	$('#dropdown').show('blind');
+	$('#dropdown-version').show('blind');
 
 
 }
 
 $(this).click(
 	function(event) {
-	if ($('#dropdown').has(event.target).length === 0 && $('#dropdown').hasClass('drop-versions')) {
-		$('#dropdown').hide('blind', function() {
-			$('#dropdown').remove();
+	if ($('#dropdown-version').has(event.target).length === 0 && $('#dropdown-version').hasClass('drop-versions')) {
+		$('#dropdown-version').hide('blind', function() {
+			$('#dropdown-version').remove();
 			$('tr').removeClass('mouseOver');
 		});
 	}
