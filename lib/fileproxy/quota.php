@@ -75,7 +75,11 @@ class OC_FileProxy_Quota extends OC_FileProxy{
 		$view = new \OC\Files\View("/".$owner."/files");
 
 		$rootInfo = $view->getFileInfo('/');
-		$usedSpace = isset($rootInfo['size'])?$rootInfo['size']:0;
+		$sharedInfo = $view->getFileInfo('/Shared');
+                $usedSpace = isset($rootInfo['size'])?$rootInfo['size']:0;
+                $sharedSpace = isset($sharedInfo['size'])?$sharedInfo['size']:0;
+                $usedSpace = $usedSpace - $sharedSpace;
+		
 		return $totalSpace - $usedSpace;
 	}
 
