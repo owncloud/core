@@ -283,7 +283,7 @@ class OC {
 					if(!OC_Util::issetlocaleworking()) {
 						$errors[] = array(
 							'error'=>'Setting locale to en_US.UTF-8/en_US.UTF8 failed',
-							'hint'=>'Please install the locale on your system.'
+							'hint'=>'Please install the locale on your system and restart your webserver.'
 						);
 					}
 					if(count($errors) > 0){
