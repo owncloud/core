@@ -1,10 +1,16 @@
 /**
  * Disable console output unless DEBUG mode is enabled.
  * Add 
- *     define('DEBUG', true);
+ *	 define('DEBUG', true);
  * To the end of config/config.php to enable debug mode.
  * The undefined checks fix the broken ie8 console
  */
+var oc_debug;
+var oc_webroot;
+var oc_requesttoken;
+if (typeof oc_webroot === "undefined") {
+	oc_webroot = location.pathname.substr(0, location.pathname.lastIndexOf('/'));
+}
 if (oc_debug !== true || typeof console === "undefined" || typeof console.log === "undefined") {
 	if (!window.console) {
 		window.console = {};
@@ -38,13 +44,13 @@ function t(app,text, vars){
 		}
 	}
 	var _build = function (text, vars) {
-        return text.replace(/{([^{}]*)}/g,
-            function (a, b) {
-                var r = vars[b];
-                return typeof r === 'string' || typeof r === 'number' ? r : a;
-            }
-        );
-    };
+		return text.replace(/{([^{}]*)}/g,
+			function (a, b) {
+				var r = vars[b];
+				return typeof r === 'string' || typeof r === 'number' ? r : a;
+			}
+		);
+	};
 	if( typeof( t.cache[app][text] ) !== 'undefined' ){
 		if(typeof vars === 'object') {
 			return _build(t.cache[app][text], vars);
@@ -268,7 +274,7 @@ var OC={
 		var popup = $('#appsettings_popup');
 		if(popup.length == 0) {
 			$('body').prepend('<div class="popup hidden" id="appsettings_popup"></div>');
-            popup = $('#appsettings_popup');
+			popup = $('#appsettings_popup');
 			popup.addClass(settings.hasClass('topright') ? 'topright' : 'bottomleft');
 		}
 		if(popup.is(':visible')) {
@@ -311,35 +317,44 @@ OC.addStyle.loaded=[];
 OC.addScript.loaded=[];
 
 OC.Notification={
-    getDefaultNotificationFunction: null,
-    setDefault: function(callback) {
-        OC.Notification.getDefaultNotificationFunction = callback;
-    },
-    hide: function(callback) {
-        $("#notification").text('');
-        $('#notification').fadeOut('400', function(){
-            if (OC.Notification.isHidden()) {
-                if (OC.Notification.getDefaultNotificationFunction) {
-                    OC.Notification.getDefaultNotificationFunction.call();
-                }
-            }
-            if (callback) {
-                callback.call();
-            }
-        });
-    },
-    showHtml: function(html) {
-        var notification = $('#notification');
-        notification.hide();
-        notification.html(html);
-        notification.fadeIn().css("display","inline");
-    },
-    show: function(text) {
-        var notification = $('#notification');
-        notification.hide();
-        notification.text(text);
-        notification.fadeIn().css("display","inline");
-    },
+	queuedNotifications: [],
+	getDefaultNotificationFunction: null,
+	setDefault: function(callback) {
+		OC.Notification.getDefaultNotificationFunction = callback;
+	},
+	hide: function(callback) {
+		$('#notification').fadeOut('400', function(){
+			if (OC.Notification.isHidden()) {
+				if (OC.Notification.getDefaultNotificationFunction) {
+					OC.Notification.getDefaultNotificationFunction.call();
+				}
+			}
+			if (callback) {
+				callback.call();
+			}
+			$('#notification').empty();
+			if(OC.Notification.queuedNotifications.length > 0){
+				OC.Notification.showHtml(OC.Notification.queuedNotifications[0]);
+				OC.Notification.queuedNotifications.shift();
+			}
+		});
+	},
+	showHtml: function(html) {
+		if(($('#notification').filter('span.undo').length == 1) || OC.Notification.isHidden()){
+			$('#notification').html(html);
+			$('#notification').fadeIn().css("display","inline");
+		}else{
+			OC.Notification.queuedNotifications.push(html);
+		}
+	},
+	show: function(text) {
+		if(($('#notification').filter('span.undo').length == 1) || OC.Notification.isHidden()){
+			$('#notification').html(text);
+			$('#notification').fadeIn().css("display","inline");
+		}else{
+			OC.Notification.queuedNotifications.push($(text).html());
+		}
+	},
 	isHidden: function() {
 		return ($("#notification").text() === '');
 	}
@@ -425,52 +440,6 @@ if(typeof localStorage !=='undefined' && localStorage !== null){
 }
 
 /**
- * implement Array.filter for browsers without native support
- */
-if (!Array.prototype.filter) {
-	Array.prototype.filter = function(fun /*, thisp*/) {
-		var len = this.length >>> 0;
-		if (typeof fun !== "function"){
-			throw new TypeError();
-		}
-
-		var res = [];
-		var thisp = arguments[1];
-		for (var i = 0; i < len; i++) {
-			if (i in this) {
-				var val = this[i]; // in case fun mutates this
-				if (fun.call(thisp, val, i, this))
-					res.push(val);
-			}
-		}
-		return res;
-	};
-}
-/**
- * implement Array.indexOf for browsers without native support
- */
-if (!Array.prototype.indexOf){
-	Array.prototype.indexOf = function(elt /*, from*/)
-	{
-		var len = this.length;
-
-		var from = Number(arguments[1]) || 0;
-		from = (from < 0) ? Math.ceil(from) : Math.floor(from);
-		if (from < 0){
-			from += len;
-		}
-
-		for (; from < len; from++)
-		{
-			if (from in this && this[from] === elt){
-				return from;
-			}
-		}
-		return -1;
-	};
-}
-
-/**
  * check if the browser support svg images
  */
 function SVGSupport() {
@@ -542,7 +511,7 @@ function replaceSVG(){
  */
 function object(o) {
 	function F() {}
-    F.prototype = o;
+	F.prototype = o;
 	return new F();
 }
 
@@ -578,6 +547,7 @@ function fillWindow(selector) {
 }
 
 $(document).ready(function(){
+	sessionHeartBeat();
 
 	if(!SVGSupport()){ //replace all svg images with png images for browser that dont support svg
 		replaceSVG();
@@ -622,11 +592,14 @@ $(document).ready(function(){
 	});
 
 	// 'show password' checkbox
-	$('#password').showPassword();	
+	$('#password').showPassword();
+	$('#adminpass').showPassword();	
 	$('#pass2').showPassword();
 
 	//use infield labels
-	$("label.infield").inFieldLabels();
+	$("label.infield").inFieldLabels({
+		pollDuration: 100
+	});
 
 	var checkShowCredentials = function() {
 		var empty = false;
@@ -656,14 +629,14 @@ $(document).ready(function(){
 		}
 	});
 	$('#settings #expand').click(function(event) {
-		$('#settings #expanddiv').slideToggle();
+		$('#settings #expanddiv').slideToggle(200);
 		event.stopPropagation();
 	});
 	$('#settings #expanddiv').click(function(event){
 		event.stopPropagation();
 	});
-	$(window).click(function(){//hide the settings menu when clicking outside it
-		$('#settings #expanddiv').slideUp();
+	$(document).click(function(){//hide the settings menu when clicking outside it
+		$('#settings #expanddiv').slideUp(200);
 	});
 
 	// all the tipsy stuff needs to be here (in reverse order) to work
@@ -684,32 +657,6 @@ $(document).ready(function(){
 		this.select();
 	});
 });
-
-if (!Array.prototype.map){
-	Array.prototype.map = function(fun /*, thisp */){
-		"use strict";
-
-		if (this === void 0 || this === null){
-			throw new TypeError();
-		}
-
-		var t = Object(this);
-		var len = t.length >>> 0;
-		if (typeof fun !== "function"){
-			throw new TypeError();
-		}
-
-		var res = new Array(len);
-		var thisp = arguments[1];
-		for (var i = 0; i < len; i++){
-			if (i in t){
-				res[i] = fun.call(thisp, t[i], i, t);
-			}
-		}
-
-		return res;
-	};
-}
 
 /**
  * Filter Jquery selector by attribute value
@@ -808,3 +755,17 @@ OC.set=function(name, value) {
 	}
 	context[tail]=value;
 };
+
+
+/**
+ * Calls the server periodically every 15 mins to ensure that session doesnt
+ * time out
+ */
+function sessionHeartBeat(){
+	OC.Router.registerLoadedCallback(function(){
+		var url = OC.Router.generate('heartbeat');
+		setInterval(function(){
+			$.post(url);
+		}, 900000);
+	});
+}

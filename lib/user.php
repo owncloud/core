@@ -160,7 +160,8 @@ class OC_User {
 		// Check the name for bad characters
 		// Allowed are: "a-z", "A-Z", "0-9" and "_.@-"
 		if( preg_match( '/[^a-zA-Z0-9 _\.@\-]/', $uid )) {
-			throw new Exception('Only the following characters are allowed in a username: "a-z", "A-Z", "0-9", and "_.@-"');
+			throw new Exception('Only the following characters are allowed in a username:'
+				.' "a-z", "A-Z", "0-9", and "_.@-"');
 		}
 		// No empty username
 		if(trim($uid) == '') {
@@ -172,7 +173,7 @@ class OC_User {
 		}
 
 		// Check if user already exists
-		if( self::userExists($uid) ) {
+		if( self::userExistsForCreation($uid) ) {
 			throw new Exception('The username is already being used');
 		}
 
@@ -275,7 +276,7 @@ class OC_User {
 			foreach(self::$_usedBackends as $backend) {
 				if($backend->implementsActions(OC_USER_BACKEND_SET_DISPLAYNAME)) {
 					if($backend->userExists($uid)) {
-						$success |= $backend->setDisplayName($uid, $displayName);
+						$result |= $backend->setDisplayName($uid, $displayName);
 					}
 				}
 			}
@@ -385,7 +386,7 @@ class OC_User {
 	 * generates a password
 	 */
 	public static function generatePassword() {
-		return uniqId();
+		return OC_Util::generate_random_bytes(30);
 	}
 
 	/**
@@ -420,6 +421,44 @@ class OC_User {
 	}
 
 	/**
+	 * @brief Check whether user can change his password
+	 * @param $uid The username
+	 * @returns true/false
+	 *
+	 * Check whether a specified user can change his password
+	 */
+	public static function canUserChangePassword($uid) {
+		foreach(self::$_usedBackends as $backend) {
+			if($backend->implementsActions(OC_USER_BACKEND_SET_PASSWORD)) {
+				if($backend->userExists($uid)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * @brief Check whether user can change his display name
+	 * @param $uid The username
+	 * @returns true/false
+	 *
+	 * Check whether a specified user can change his display name
+	 */
+	public static function canUserChangeDisplayName($uid) {
+		if (OC_Config::getValue('allow_user_to_change_display_name', true)) {
+			foreach(self::$_usedBackends as $backend) {
+				if($backend->implementsActions(OC_USER_BACKEND_SET_DISPLAYNAME)) {
+					if($backend->userExists($uid)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * @brief Check if the password is correct
 	 * @param $uid The username
 	 * @param $password The password
@@ -449,7 +488,7 @@ class OC_User {
 	 */
 	public static function getHome($uid) {
 		foreach(self::$_usedBackends as $backend) {
-			if($backend->implementsActions(OC_USER_BACKEND_GET_HOME)) {
+			if($backend->implementsActions(OC_USER_BACKEND_GET_HOME) && $backend->userExists($uid)) {
 				$result=$backend->getHome($uid);
 				if($result) {
 					return $result;
@@ -491,7 +530,7 @@ class OC_User {
 				$displayNames = array_merge($displayNames, $backendDisplayNames);
 			}
 		}
-		ksort($displayNames);
+		asort($displayNames);
 		return $displayNames;
 	}
 
@@ -503,9 +542,9 @@ class OC_User {
 	 */
 	public static function userExists($uid, $excludingBackend=null) {
 		foreach(self::$_usedBackends as $backend) {
-			if (!is_null($excludingBackend) && !strcmp(get_class($backend),$excludingBackend)) {
-			    OC_Log::write('OC_User', $excludingBackend . 'excluded from user existance check.', OC_Log::DEBUG);
-			    continue;
+			if (!is_null($excludingBackend) && !strcmp(get_class($backend), $excludingBackend)) {
+				OC_Log::write('OC_User', $excludingBackend . 'excluded from user existance check.', OC_Log::DEBUG);
+				continue;
 			}
 			$result=$backend->userExists($uid);
 			if($result===true) {
@@ -514,6 +553,19 @@ class OC_User {
 		}
 		return false;
 	}
+
+    public static function userExistsForCreation($uid) {
+        foreach(self::$_usedBackends as $backend) {
+            if(!$backend->hasUserListings())
+                continue;
+
+            $result=$backend->userExists($uid);
+            if($result===true) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 	/**
 	 * disables a user
@@ -537,7 +589,8 @@ class OC_User {
 	 * @param string $userid
 	 */
 	public static function enableUser($userid) {
-		$sql = "DELETE FROM `*PREFIX*preferences` WHERE `userid` = ? AND `appid` = ? AND `configkey` = ? AND `configvalue` = ?";
+		$sql = 'DELETE FROM `*PREFIX*preferences`'
+			." WHERE `userid` = ? AND `appid` = ? AND `configkey` = ? AND `configvalue` = ?";
 		$stmt = OC_DB::prepare($sql);
 		if ( ! OC_DB::isError($stmt) ) {
 			$result = $stmt->execute(array($userid, 'core', 'enabled', 'false'));
@@ -555,14 +608,17 @@ class OC_User {
 	 * @return bool
 	 */
 	public static function isEnabled($userid) {
-		$sql = "SELECT `userid` FROM `*PREFIX*preferences` WHERE `userid` = ? AND `appid` = ? AND `configkey` = ? AND `configvalue` = ?";
+		$sql = 'SELECT `userid` FROM `*PREFIX*preferences`'
+			.' WHERE `userid` = ? AND `appid` = ? AND `configkey` = ? AND `configvalue` = ?';
 		$stmt = OC_DB::prepare($sql);
 		if ( ! OC_DB::isError($stmt) ) {
 			$result = $stmt->execute(array($userid, 'core', 'enabled', 'false'));
 			if ( ! OC_DB::isError($result) ) {
 				return $result->numRows() ? false : true;
 			} else {
-				OC_Log::write('OC_User', 'could not check if enabled: '. OC_DB::getErrorMessage($result), OC_Log::ERROR);
+				OC_Log::write('OC_User',
+					'could not check if enabled: '. OC_DB::getErrorMessage($result),
+					OC_Log::ERROR);
 			}
 		} else {
 			OC_Log::write('OC_User', 'could not check if enabled: '. OC_DB::getErrorMessage($stmt), OC_Log::ERROR);
@@ -577,9 +633,9 @@ class OC_User {
 	public static function setMagicInCookie($username, $token) {
 		$secure_cookie = OC_Config::getValue("forcessl", false);
 		$expires = time() + OC_Config::getValue('remember_login_cookie_lifetime', 60*60*24*15);
-		setcookie("oc_username", $username, $expires, '', '', $secure_cookie);
-		setcookie("oc_token", $token, $expires, '', '', $secure_cookie, true);
-		setcookie("oc_remember_login", true, $expires, '', '', $secure_cookie);
+		setcookie("oc_username", $username, $expires, OC::$WEBROOT, '', $secure_cookie);
+		setcookie("oc_token", $token, $expires, OC::$WEBROOT, '', $secure_cookie, true);
+		setcookie("oc_remember_login", true, $expires, OC::$WEBROOT, '', $secure_cookie);
 	}
 
 	/**

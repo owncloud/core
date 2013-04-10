@@ -306,12 +306,18 @@ class OC_VCategories {
 			OCP\Util::writeLog('core', __METHOD__.', name: ' . $name. ' exists already', OCP\Util::DEBUG);
 			return false;
 		}
-		OCP\DB::insertIfNotExist(self::CATEGORY_TABLE,
-			array(
-				'uid' => $this->user,
-				'type' => $this->type,
-				'category' => $name,
-			));
+		try {
+			OCP\DB::insertIfNotExist(self::CATEGORY_TABLE,
+				array(
+					'uid' => $this->user,
+					'type' => $this->type,
+					'category' => $name,
+				));
+			} catch(Exception $e) {
+				OCP\Util::writeLog('core', __METHOD__.', exception: '.$e->getMessage(),
+					OCP\Util::ERROR);
+				return false;
+			}
 		$id = OCP\DB::insertid(self::CATEGORY_TABLE);
 		OCP\Util::writeLog('core', __METHOD__.', id: ' . $id, OCP\Util::DEBUG);
 		$this->categories[$id] = $name;
@@ -342,12 +348,11 @@ class OC_VCategories {
 				self::$relations[] = array('objid' => $id, 'category' => $name);
 			}
 		}
-		if(count($newones) > 0) {
-			$this->categories = array_merge($this->categories, $newones);
-			if($sync === true) {
-				$this->save();
-			}
+		$this->categories = array_merge($this->categories, $newones);
+		if($sync === true) {
+			$this->save();
 		}
+
 		return true;
 	}
 
@@ -436,12 +441,17 @@ class OC_VCategories {
 	private function save() {
 		if(is_array($this->categories)) {
 			foreach($this->categories as $category) {
-				OCP\DB::insertIfNotExist(self::CATEGORY_TABLE,
-					array(
-						'uid' => $this->user,
-						'type' => $this->type,
-						'category' => $category,
-					));
+				try {
+					OCP\DB::insertIfNotExist(self::CATEGORY_TABLE,
+						array(
+							'uid' => $this->user,
+							'type' => $this->type,
+							'category' => $category,
+						));
+				} catch(Exception $e) {
+					OCP\Util::writeLog('core', __METHOD__.', exception: '.$e->getMessage(),
+						OCP\Util::ERROR);
+				}
 			}
 			// reload categories to get the proper ids.
 			$this->loadCategories();
@@ -454,12 +464,17 @@ class OC_VCategories {
 				$catid = $this->array_searchi($relation['category'], $categories);
 				OC_Log::write('core', __METHOD__ . 'catid, ' . $relation['category'] . ' ' . $catid, OC_Log::DEBUG);
 				if($catid) {
-					OCP\DB::insertIfNotExist(self::RELATION_TABLE,
-						array(
-							'objid' => $relation['objid'],
-							'categoryid' => $catid,
-							'type' => $this->type,
-							));
+					try {
+						OCP\DB::insertIfNotExist(self::RELATION_TABLE,
+							array(
+								'objid' => $relation['objid'],
+								'categoryid' => $catid,
+								'type' => $this->type,
+								));
+					} catch(Exception $e) {
+						OCP\Util::writeLog('core', __METHOD__.', exception: '.$e->getMessage(),
+							OCP\Util::ERROR);
+					}
 				}
 			}
 			self::$relations = array(); // reset
@@ -521,23 +536,31 @@ class OC_VCategories {
 
 	/**
 	* @brief Delete category/object relations from the db
-	* @param int $id The id of the object
+	* @param array $ids The ids of the objects
 	* @param string $type The type of object (event/contact/task/journal).
 	* 	Defaults to the type set in the instance
 	* @returns boolean Returns false on error.
 	*/
-	public function purgeObject($id, $type = null) {
+	public function purgeObjects(array $ids, $type = null) {
 		$type = is_null($type) ? $this->type : $type;
+		if(count($ids) === 0) {
+			// job done ;)
+			return true;
+		}
+		$updates = $ids;
 		try {
-			$stmt = OCP\DB::prepare('DELETE FROM `' . self::RELATION_TABLE . '` '
-					. 'WHERE `objid` = ? AND `type`= ?');
-			$result = $stmt->execute(array($id, $type));
+			$query = 'DELETE FROM `' . self::RELATION_TABLE . '` ';
+			$query .= 'WHERE `objid` IN (' . str_repeat('?,', count($ids)-1) . '?) ';
+			$query .= 'AND `type`= ?';
+			$updates[] = $type;
+			$stmt = OCP\DB::prepare($query);
+			$result = $stmt->execute($updates);
 			if (OC_DB::isError($result)) {
 				OC_Log::write('core', __METHOD__. 'DB error: ' . OC_DB::getErrorMessage($result), OC_Log::ERROR);
 				return false;
 			}
 		} catch(Exception $e) {
-			OCP\Util::writeLog('core', __METHOD__.', exception: '.$e->getMessage(),
+			OCP\Util::writeLog('core', __METHOD__.', exception: ' . $e->getMessage(),
 				OCP\Util::ERROR);
 			return false;
 		}
@@ -689,7 +712,9 @@ class OC_VCategories {
 					$stmt = OCP\DB::prepare($sql);
 					$result = $stmt->execute(array($id));
 					if (OC_DB::isError($result)) {
-						OC_Log::write('core', __METHOD__. 'DB error: ' . OC_DB::getErrorMessage($result), OC_Log::ERROR);
+						OC_Log::write('core',
+							__METHOD__. 'DB error: ' . OC_DB::getErrorMessage($result),
+							OC_Log::ERROR);
 					}
 				} catch(Exception $e) {
 					OCP\Util::writeLog('core', __METHOD__.', exception: '.$e->getMessage(),

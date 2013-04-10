@@ -1,3 +1,5 @@
 <?php $TRANSLATIONS = array(
-"Name" => "Nama"
+"Error" => "Ralat",
+"Name" => "Nama",
+"Delete" => "Padam"
 );

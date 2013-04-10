@@ -3,12 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# CyberCowBoy <ccb3275@gmail.com>, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-02-02 00:06+0100\n"
-"PO-Revision-Date: 2013-02-01 23:06+0000\n"
+"POT-Creation-Date: 2013-04-09 02:10+0200\n"
+"PO-Revision-Date: 2013-04-08 02:21+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/owncloud/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -17,38 +18,68 @@ msgstr ""
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: js/trash.js:7 js/trash.js:69
-msgid "perform restore operation"
-msgstr ""
+#: ajax/delete.php:42
+#, php-format
+msgid "Couldn't delete %s permanently"
+msgstr "无法彻底删除文件%s"
 
-#: js/trash.js:100 templates/index.php:17
+#: ajax/undelete.php:42
+#, php-format
+msgid "Couldn't restore %s"
+msgstr "无法恢复%s"
+
+#: js/trash.js:7 js/trash.js:96
+msgid "perform restore operation"
+msgstr "执行恢复操作"
+
+#: js/trash.js:19 js/trash.js:46 js/trash.js:114 js/trash.js:139
+msgid "Error"
+msgstr "错误"
+
+#: js/trash.js:34
+msgid "delete file permanently"
+msgstr "彻底删除文件"
+
+#: js/trash.js:121
+msgid "Delete permanently"
+msgstr "永久删除"
+
+#: js/trash.js:174 templates/index.php:17
 msgid "Name"
 msgstr "名称"
 
-#: js/trash.js:101 templates/index.php:27
+#: js/trash.js:175 templates/index.php:27
 msgid "Deleted"
-msgstr ""
+msgstr "已删除"
 
-#: js/trash.js:110
+#: js/trash.js:184
 msgid "1 folder"
 msgstr "1个文件夹"
 
-#: js/trash.js:112
+#: js/trash.js:186
 msgid "{count} folders"
 msgstr "{count} 个文件夹"
 
-#: js/trash.js:120
+#: js/trash.js:194
 msgid "1 file"
 msgstr "1 个文件"
 
-#: js/trash.js:122
+#: js/trash.js:196
 msgid "{count} files"
 msgstr "{count} 个文件"
 
 #: templates/index.php:9
 msgid "Nothing in here. Your trash bin is empty!"
-msgstr ""
+msgstr "这里没有东西. 你的回收站是空的!"
 
 #: templates/index.php:20 templates/index.php:22
 msgid "Restore"
-msgstr ""
+msgstr "恢复"
+
+#: templates/index.php:30 templates/index.php:31
+msgid "Delete"
+msgstr "删除"
+
+#: templates/part.breadcrumb.php:9
+msgid "Deleted Files"
+msgstr "已删除文件"

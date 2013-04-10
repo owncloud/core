@@ -132,7 +132,8 @@ class OC_Helper {
 	 * Returns a absolute url to the given service.
 	 */
 	public static function linkToRemote( $service, $add_slash = true ) {
-		return self::makeURLAbsolute(self::linkToRemoteBase($service)) . (($add_slash && $service[strlen($service)-1]!='/')?'/':'');
+		return self::makeURLAbsolute(self::linkToRemoteBase($service))
+			. (($add_slash && $service[strlen($service)-1]!='/')?'/':'');
 	}
 
 	/**
@@ -144,7 +145,8 @@ class OC_Helper {
 	 * Returns a absolute url to the given service.
 	 */
 	public static function linkToPublic($service, $add_slash = false) {
-		return self::linkToAbsolute( '', 'public.php') . '?service=' . $service . (($add_slash && $service[strlen($service)-1]!='/')?'/':'');
+		return self::linkToAbsolute( '', 'public.php') . '?service=' . $service
+			. (($add_slash && $service[strlen($service)-1]!='/')?'/':'');
 	}
 
 	/**
@@ -379,7 +381,8 @@ class OC_Helper {
 			$mimeType='application/octet-stream';
 		}
 
-		if($mimeType=='application/octet-stream' and function_exists('finfo_open') and function_exists('finfo_file') and $finfo=finfo_open(FILEINFO_MIME)) {
+		if($mimeType=='application/octet-stream' and function_exists('finfo_open')
+			and function_exists('finfo_file') and $finfo=finfo_open(FILEINFO_MIME)) {
 			$info = @strtolower(finfo_file($finfo, $path));
 			if($info) {
 				$mimeType=substr($info, 0, strpos($info, ';'));
@@ -394,13 +397,12 @@ class OC_Helper {
 			// it looks like we have a 'file' command,
 			// lets see if it does have mime support
 			$path=escapeshellarg($path);
-			$fp = popen("file -i -b $path 2>/dev/null", "r");
+			$fp = popen("file -b --mime-type $path 2>/dev/null", "r");
 			$reply = fgets($fp);
 			pclose($fp);
 
-			// we have smth like 'text/x-c++; charset=us-ascii\n'
-			// and need to eliminate everything starting with semicolon including trailing LF
-			$mimeType = preg_replace('/;.*/ms', '', trim($reply));
+			//trim the newline
+			$mimeType = trim($reply);
 
 		}
 		return $mimeType;
@@ -437,14 +439,16 @@ class OC_Helper {
 	//FIXME: should also check for value validation (i.e. the email is an email).
 	public static function init_var($s, $d="") {
 		$r = $d;
-		if(isset($_REQUEST[$s]) && !empty($_REQUEST[$s]))
-			$r = stripslashes(htmlspecialchars($_REQUEST[$s]));
+		if(isset($_REQUEST[$s]) && !empty($_REQUEST[$s])) {
+			$r = OC_Util::sanitizeHTML($_REQUEST[$s]);
+		}
 
 		return $r;
 	}
 
 	/**
-	 * returns "checked"-attribute if request contains selected radio element OR if radio element is the default one -- maybe?
+	 * returns "checked"-attribute if request contains selected radio element
+	 * OR if radio element is the default one -- maybe?
 	 * @param string $s Name of radio-button element name
 	 * @param string $v Value of current radio-button element
 	 * @param string $d Value of default radio-button element
@@ -509,11 +513,16 @@ class OC_Helper {
 		if(!$source or !$target) {
 			return false;
 		}
-		$count=0;
+		$result = true;
+		$count = 0;
 		while(!feof($source)) {
-			$count+=fwrite($target, fread($source, 8192));
+			if ( ( $c = fwrite($target, fread($source, 8192)) ) === false) {
+				$result = false;
+			} else {
+				$count += $c;
+			}
 		}
-		return $count;
+		return array($count, $result);
 	}
 
 	/**
@@ -755,12 +764,22 @@ class OC_Helper {
 	public static function maxUploadFilesize($dir) {
 		$upload_max_filesize = OCP\Util::computerFileSize(ini_get('upload_max_filesize'));
 		$post_max_size = OCP\Util::computerFileSize(ini_get('post_max_size'));
-		$maxUploadFilesize = min($upload_max_filesize, $post_max_size);
-
 		$freeSpace = \OC\Files\Filesystem::free_space($dir);
-		$freeSpace = max($freeSpace, 0);
+		if ($upload_max_filesize == 0 and $post_max_size == 0) {
+			$maxUploadFilesize = \OC\Files\FREE_SPACE_UNLIMITED;
+		} elseif ($upload_max_filesize === 0 or $post_max_size === 0) {
+			$maxUploadFilesize = max($upload_max_filesize, $post_max_size); //only the non 0 value counts
+		} else {
+			$maxUploadFilesize = min($upload_max_filesize, $post_max_size);
+		}
 
-		return min($maxUploadFilesize, $freeSpace);
+		if($freeSpace !== \OC\Files\FREE_SPACE_UNKNOWN){
+			$freeSpace = max($freeSpace, 0);
+
+			return min($maxUploadFilesize, $freeSpace);
+		} else {
+			return $maxUploadFilesize;
+		}
 	}
 
 	/**
@@ -793,11 +812,19 @@ class OC_Helper {
 			$used = 0;
 		}
 		$free = \OC\Files\Filesystem::free_space();
-		$total = $free + $used;
+		if ($free >= 0){
+			$total = $free + $used;
+		} else {
+			$total = $free; //either unknown or unlimited
+		}
 		if ($total == 0) {
 			$total = 1; // prevent division by zero
 		}
-		$relative = round(($used / $total) * 10000) / 100;
+		if ($total >= 0){
+			$relative = round(($used / $total) * 10000) / 100;
+		} else {
+			$relative = 0;
+		}
 
 		return array('free' => $free, 'used' => $used, 'total' => $total, 'relative' => $relative);
 	}

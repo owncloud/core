@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-02-02 00:06+0100\n"
-"PO-Revision-Date: 2013-01-31 23:30+0000\n"
+"POT-Creation-Date: 2013-04-09 02:10+0200\n"
+"PO-Revision-Date: 2013-04-08 02:20+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Romanian (http://www.transifex.com/projects/p/owncloud/language/ro/)\n"
 "MIME-Version: 1.0\n"
@@ -23,24 +23,24 @@ msgstr ""
 "Language: ro\n"
 "Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
 
-#: ajax/share.php:85
+#: ajax/share.php:97
 #, php-format
 msgid "User %s shared a file with you"
 msgstr "Utilizatorul %s a partajat un fișier cu tine"
 
-#: ajax/share.php:87
+#: ajax/share.php:99
 #, php-format
 msgid "User %s shared a folder with you"
 msgstr "Utilizatorul %s a partajat un dosar cu tine"
 
-#: ajax/share.php:89
+#: ajax/share.php:101
 #, php-format
 msgid ""
 "User %s shared the file \"%s\" with you. It is available for download here: "
 "%s"
 msgstr "Utilizatorul %s a partajat fișierul \"%s\" cu tine. Îl poți descărca de aici: %s"
 
-#: ajax/share.php:91
+#: ajax/share.php:104
 #, php-format
 msgid ""
 "User %s shared the folder \"%s\" with you. It is available for download "
@@ -56,8 +56,9 @@ msgid "No category to add?"
 msgstr "Nici o categorie de adăugat?"
 
 #: ajax/vcategories/add.php:37
-msgid "This category already exists: "
-msgstr "Această categorie deja există:"
+#, php-format
+msgid "This category already exists: %s"
+msgstr ""
 
 #: ajax/vcategories/addToFavorites.php:26 ajax/vcategories/delete.php:27
 #: ajax/vcategories/favorites.php:24
@@ -85,135 +86,135 @@ msgstr "Nici o categorie selectată pentru ștergere."
 msgid "Error removing %s from favorites."
 msgstr "Eroare la ștergerea %s din favorite"
 
-#: js/config.php:32
+#: js/config.php:34
 msgid "Sunday"
 msgstr "Duminică"
 
-#: js/config.php:32
+#: js/config.php:35
 msgid "Monday"
 msgstr "Luni"
 
-#: js/config.php:32
+#: js/config.php:36
 msgid "Tuesday"
 msgstr "Marți"
 
-#: js/config.php:32
+#: js/config.php:37
 msgid "Wednesday"
 msgstr "Miercuri"
 
-#: js/config.php:32
+#: js/config.php:38
 msgid "Thursday"
 msgstr "Joi"
 
-#: js/config.php:32
+#: js/config.php:39
 msgid "Friday"
 msgstr "Vineri"
 
-#: js/config.php:32
+#: js/config.php:40
 msgid "Saturday"
 msgstr "Sâmbătă"
 
-#: js/config.php:33
+#: js/config.php:45
 msgid "January"
 msgstr "Ianuarie"
 
-#: js/config.php:33
+#: js/config.php:46
 msgid "February"
 msgstr "Februarie"
 
-#: js/config.php:33
+#: js/config.php:47
 msgid "March"
 msgstr "Martie"
 
-#: js/config.php:33
+#: js/config.php:48
 msgid "April"
 msgstr "Aprilie"
 
-#: js/config.php:33
+#: js/config.php:49
 msgid "May"
 msgstr "Mai"
 
-#: js/config.php:33
+#: js/config.php:50
 msgid "June"
 msgstr "Iunie"
 
-#: js/config.php:33
+#: js/config.php:51
 msgid "July"
 msgstr "Iulie"
 
-#: js/config.php:33
+#: js/config.php:52
 msgid "August"
 msgstr "August"
 
-#: js/config.php:33
+#: js/config.php:53
 msgid "September"
 msgstr "Septembrie"
 
-#: js/config.php:33
+#: js/config.php:54
 msgid "October"
 msgstr "Octombrie"
 
-#: js/config.php:33
+#: js/config.php:55
 msgid "November"
 msgstr "Noiembrie"
 
-#: js/config.php:33
+#: js/config.php:56
 msgid "December"
 msgstr "Decembrie"
 
-#: js/js.js:280
+#: js/js.js:286
 msgid "Settings"
 msgstr "Configurări"
 
-#: js/js.js:759
+#: js/js.js:707
 msgid "seconds ago"
 msgstr "secunde în urmă"
 
-#: js/js.js:760
+#: js/js.js:708
 msgid "1 minute ago"
 msgstr "1 minut în urmă"
 
-#: js/js.js:761
+#: js/js.js:709
 msgid "{minutes} minutes ago"
 msgstr "{minutes} minute in urma"
 
-#: js/js.js:762
+#: js/js.js:710
 msgid "1 hour ago"
 msgstr "Acum o ora"
 
-#: js/js.js:763
+#: js/js.js:711
 msgid "{hours} hours ago"
 msgstr "{hours} ore în urmă"
 
-#: js/js.js:764
+#: js/js.js:712
 msgid "today"
 msgstr "astăzi"
 
-#: js/js.js:765
+#: js/js.js:713
 msgid "yesterday"
 msgstr "ieri"
 
-#: js/js.js:766
+#: js/js.js:714
 msgid "{days} days ago"
 msgstr "{days} zile in urma"
 
-#: js/js.js:767
+#: js/js.js:715
 msgid "last month"
 msgstr "ultima lună"
 
-#: js/js.js:768
+#: js/js.js:716
 msgid "{months} months ago"
 msgstr "{months} luni în urmă"
 
-#: js/js.js:769
+#: js/js.js:717
 msgid "months ago"
 msgstr "luni în urmă"
 
-#: js/js.js:770
+#: js/js.js:718
 msgid "last year"
 msgstr "ultimul an"
 
-#: js/js.js:771
+#: js/js.js:719
 msgid "years ago"
 msgstr "ani în urmă"
 
@@ -242,9 +243,11 @@ msgstr "Ok"
 msgid "The object type is not specified."
 msgstr "Tipul obiectului nu a fost specificat"
 
-#: js/oc-vcategories.js:95 js/oc-vcategories.js:125 js/oc-vcategories.js:136
-#: js/oc-vcategories.js:195 js/share.js:152 js/share.js:159 js/share.js:571
-#: js/share.js:583
+#: js/oc-vcategories.js:14 js/oc-vcategories.js:80 js/oc-vcategories.js:95
+#: js/oc-vcategories.js:110 js/oc-vcategories.js:125 js/oc-vcategories.js:136
+#: js/oc-vcategories.js:172 js/oc-vcategories.js:189 js/oc-vcategories.js:195
+#: js/oc-vcategories.js:199 js/share.js:136 js/share.js:143 js/share.js:577
+#: js/share.js:589
 msgid "Error"
 msgstr "Eroare"
 
@@ -256,127 +259,127 @@ msgstr "Numele aplicației nu a fost specificat"
 msgid "The required file {file} is not installed!"
 msgstr "Fișierul obligatoriu {file} nu este instalat!"
 
-#: js/share.js:29 js/share.js:43 js/share.js:90 js/share.js:93
-msgid "Share"
-msgstr "Partajează"
-
-#: js/share.js:29 js/share.js:43 js/share.js:90 js/share.js:93
+#: js/share.js:30 js/share.js:45 js/share.js:87
 msgid "Shared"
 msgstr ""
 
-#: js/share.js:141 js/share.js:611
+#: js/share.js:90
+msgid "Share"
+msgstr "Partajează"
+
+#: js/share.js:125 js/share.js:617
 msgid "Error while sharing"
 msgstr "Eroare la partajare"
 
-#: js/share.js:152
+#: js/share.js:136
 msgid "Error while unsharing"
 msgstr "Eroare la anularea partajării"
 
-#: js/share.js:159
+#: js/share.js:143
 msgid "Error while changing permissions"
 msgstr "Eroare la modificarea permisiunilor"
 
-#: js/share.js:168
+#: js/share.js:152
 msgid "Shared with you and the group {group} by {owner}"
 msgstr "Distribuie cu tine si grupul {group} de {owner}"
 
-#: js/share.js:170
+#: js/share.js:154
 msgid "Shared with you by {owner}"
 msgstr "Distribuie cu tine de {owner}"
 
-#: js/share.js:175
+#: js/share.js:159
 msgid "Share with"
 msgstr "Partajat cu"
 
-#: js/share.js:180
+#: js/share.js:164
 msgid "Share with link"
 msgstr "Partajare cu legătură"
 
-#: js/share.js:183
+#: js/share.js:167
 msgid "Password protect"
 msgstr "Protejare cu parolă"
 
-#: js/share.js:185 templates/installation.php:44 templates/login.php:35
+#: js/share.js:169 templates/installation.php:54 templates/login.php:35
 msgid "Password"
 msgstr "Parola"
 
-#: js/share.js:189
+#: js/share.js:173
 msgid "Email link to person"
 msgstr "Expediază legătura prin poșta electronică"
 
-#: js/share.js:190
+#: js/share.js:174
 msgid "Send"
 msgstr "Expediază"
 
-#: js/share.js:194
+#: js/share.js:178
 msgid "Set expiration date"
 msgstr "Specifică data expirării"
 
-#: js/share.js:195
+#: js/share.js:179
 msgid "Expiration date"
 msgstr "Data expirării"
 
-#: js/share.js:227
+#: js/share.js:211
 msgid "Share via email:"
 msgstr "Distribuie prin email:"
 
-#: js/share.js:229
+#: js/share.js:213
 msgid "No people found"
 msgstr "Nici o persoană găsită"
 
-#: js/share.js:256
+#: js/share.js:251
 msgid "Resharing is not allowed"
 msgstr "Repartajarea nu este permisă"
 
-#: js/share.js:292
+#: js/share.js:287
 msgid "Shared in {item} with {user}"
 msgstr "Distribuie in {item} si {user}"
 
-#: js/share.js:313
+#: js/share.js:308
 msgid "Unshare"
 msgstr "Anulare partajare"
 
-#: js/share.js:325
+#: js/share.js:320
 msgid "can edit"
 msgstr "poate edita"
 
-#: js/share.js:327
+#: js/share.js:322
 msgid "access control"
 msgstr "control acces"
 
-#: js/share.js:330
+#: js/share.js:325
 msgid "create"
 msgstr "creare"
 
-#: js/share.js:333
+#: js/share.js:328
 msgid "update"
 msgstr "actualizare"
 
-#: js/share.js:336
+#: js/share.js:331
 msgid "delete"
 msgstr "ștergere"
 
-#: js/share.js:339
+#: js/share.js:334
 msgid "share"
 msgstr "partajare"
 
-#: js/share.js:373 js/share.js:558
+#: js/share.js:368 js/share.js:564
 msgid "Password protected"
 msgstr "Protejare cu parolă"
 
-#: js/share.js:571
+#: js/share.js:577
 msgid "Error unsetting expiration date"
 msgstr "Eroare la anularea datei de expirare"
 
-#: js/share.js:583
+#: js/share.js:589
 msgid "Error setting expiration date"
 msgstr "Eroare la specificarea datei de expirare"
 
-#: js/share.js:598
+#: js/share.js:604
 msgid "Sending ..."
 msgstr "Se expediază..."
 
-#: js/share.js:609
+#: js/share.js:615
 msgid "Email sent"
 msgstr "Mesajul a fost expediat"
 
@@ -391,7 +394,7 @@ msgstr ""
 msgid "The update was successful. Redirecting you to ownCloud now."
 msgstr ""
 
-#: lostpassword/controller.php:47
+#: lostpassword/controller.php:48
 msgid "ownCloud password reset"
 msgstr "Resetarea parolei ownCloud "
 
@@ -411,7 +414,7 @@ msgstr "Resetarea emailu-lui trimisa."
 msgid "Request failed!"
 msgstr "Solicitarea nu a reusit"
 
-#: lostpassword/templates/lostpassword.php:11 templates/installation.php:39
+#: lostpassword/templates/lostpassword.php:11 templates/installation.php:48
 #: templates/login.php:28
 msgid "Username"
 msgstr "Utilizator"
@@ -472,81 +475,95 @@ msgstr "Editează categoriile"
 msgid "Add"
 msgstr "Adaugă"
 
-#: templates/installation.php:23 templates/installation.php:31
+#: templates/installation.php:24 templates/installation.php:31
+#: templates/installation.php:38
 msgid "Security Warning"
 msgstr "Avertisment de securitate"
 
-#: templates/installation.php:24
+#: templates/installation.php:25
+msgid "Your PHP version is vulnerable to the NULL Byte attack (CVE-2006-7243)"
+msgstr ""
+
+#: templates/installation.php:26
+msgid "Please update your PHP installation to use ownCloud securely."
+msgstr ""
+
+#: templates/installation.php:32
 msgid ""
 "No secure random number generator is available, please enable the PHP "
 "OpenSSL extension."
 msgstr "Generatorul de numere pentru securitate nu este disponibil, va rog activati extensia PHP OpenSSL"
 
-#: templates/installation.php:26
+#: templates/installation.php:33
 msgid ""
 "Without a secure random number generator an attacker may be able to predict "
 "password reset tokens and take over your account."
 msgstr "Fara generatorul pentru numere de securitate , un atacator poate afla parola si reseta contul tau"
 
-#: templates/installation.php:32
+#: templates/installation.php:39
 msgid ""
-"Your data directory and your files are probably accessible from the "
-"internet. The .htaccess file that ownCloud provides is not working. We "
-"strongly suggest that you configure your webserver in a way that the data "
-"directory is no longer accessible or you move the data directory outside the"
-" webserver document root."
-msgstr "Directorul tău de date și fișierele tale probabil sunt accesibile prin internet. Fișierul .htaccess oferit de ownCloud nu funcționează. Îți recomandăm să configurezi server-ul tău web într-un mod în care directorul de date să nu mai fie accesibil sau mută directorul de date în afara directorului root al server-ului web."
+"Your data directory and files are probably accessible from the internet "
+"because the .htaccess file does not work."
+msgstr ""
 
-#: templates/installation.php:36
+#: templates/installation.php:40
+msgid ""
+"For information how to properly configure your server, please see the <a "
+"href=\"http://doc.owncloud.org/server/5.0/admin_manual/installation.html\" "
+"target=\"_blank\">documentation</a>."
+msgstr ""
+
+#: templates/installation.php:44
 msgid "Create an <strong>admin account</strong>"
 msgstr "Crează un <strong>cont de administrator</strong>"
 
-#: templates/installation.php:50
+#: templates/installation.php:62
 msgid "Advanced"
 msgstr "Avansat"
 
-#: templates/installation.php:52
+#: templates/installation.php:64
 msgid "Data folder"
 msgstr "Director date"
 
-#: templates/installation.php:59
+#: templates/installation.php:73
 msgid "Configure the database"
 msgstr "Configurează baza de date"
 
-#: templates/installation.php:64 templates/installation.php:75
-#: templates/installation.php:85 templates/installation.php:95
+#: templates/installation.php:78 templates/installation.php:90
+#: templates/installation.php:101 templates/installation.php:112
+#: templates/installation.php:124
 msgid "will be used"
 msgstr "vor fi folosite"
 
-#: templates/installation.php:107
+#: templates/installation.php:136
 msgid "Database user"
 msgstr "Utilizatorul bazei de date"
 
-#: templates/installation.php:111
+#: templates/installation.php:141
 msgid "Database password"
 msgstr "Parola bazei de date"
 
-#: templates/installation.php:115
+#: templates/installation.php:146
 msgid "Database name"
 msgstr "Numele bazei de date"
 
-#: templates/installation.php:123
+#: templates/installation.php:156
 msgid "Database tablespace"
 msgstr "Tabela de spațiu a bazei de date"
 
-#: templates/installation.php:129
+#: templates/installation.php:163
 msgid "Database host"
 msgstr "Bază date"
 
-#: templates/installation.php:134
+#: templates/installation.php:169
 msgid "Finish setup"
 msgstr "Finalizează instalarea"
 
-#: templates/layout.guest.php:34
+#: templates/layout.guest.php:40
 msgid "web services under your control"
 msgstr "servicii web controlate de tine"
 
-#: templates/layout.user.php:49
+#: templates/layout.user.php:58
 msgid "Log out"
 msgstr "Ieșire"
 
@@ -568,13 +585,17 @@ msgstr "Te rog schimba parola pentru ca, contul tau sa fie securizat din nou."
 msgid "Lost your password?"
 msgstr "Ai uitat parola?"
 
-#: templates/login.php:39
+#: templates/login.php:41
 msgid "remember"
 msgstr "amintește"
 
-#: templates/login.php:41
+#: templates/login.php:43
 msgid "Log in"
 msgstr "Autentificare"
+
+#: templates/login.php:49
+msgid "Alternative Logins"
+msgstr ""
 
 #: templates/part.pagenavi.php:3
 msgid "prev"

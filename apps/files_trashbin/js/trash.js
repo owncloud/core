@@ -6,22 +6,49 @@ $(document).ready(function() {
 			var tr=$('tr').filterAttr('data-file', filename);
 			var spinner = '<img class="move2trash" title="'+t('files_trashbin', 'perform restore operation')+'" src="'+ OC.imagePath('core', 'loader.gif') +'"></a>';
 			var undeleteAction = $('tr').filterAttr('data-file',filename).children("td.date");
+			var files = tr.attr('data-file');
 			undeleteAction[0].innerHTML = undeleteAction[0].innerHTML+spinner;
 			$.post(OC.filePath('files_trashbin','ajax','undelete.php'),
-				{files:tr.attr('data-file'), dirlisting:tr.attr('data-dirlisting') },
+				{files:JSON.stringify([files]), dirlisting:tr.attr('data-dirlisting') },
 				function(result){
 					for (var i = 0; i < result.data.success.length; i++) {
 						var row = document.getElementById(result.data.success[i].filename);
 						row.parentNode.removeChild(row);
 					}
 					if (result.status != 'success') {
-						OC.dialogs.alert(result.data.message, 'Error');
+						OC.dialogs.alert(result.data.message, t('core', 'Error'));
 					}
 				});
-			
+
 			});
 		};
-		
+
+		FileActions.register('all', 'Delete', OC.PERMISSION_READ, function () {
+			return OC.imagePath('core', 'actions/delete');
+		}, function (filename) {
+			$('.tipsy').remove();
+
+			var tr=$('tr').filterAttr('data-file', filename);
+			var deleteAction = $('tr').filterAttr('data-file',filename).children("td.date").children(".action.delete");
+			var oldHTML = deleteAction[0].outerHTML;
+			var newHTML = '<img class="move2trash" data-action="Delete" title="'+t('files', 'delete file permanently')+'" src="'+ OC.imagePath('core', 'loading.gif') +'"></a>';
+			var files = tr.attr('data-file');
+			deleteAction[0].outerHTML = newHTML;
+
+			$.post(OC.filePath('files_trashbin','ajax','delete.php'),
+				{files:JSON.stringify([files]), dirlisting:tr.attr('data-dirlisting') },
+				function(result){
+					for (var i = 0; i < result.data.success.length; i++) {
+						var row = document.getElementById(result.data.success[i].filename);
+						row.parentNode.removeChild(row);
+					}
+					if (result.status != 'success') {
+						OC.dialogs.alert(result.data.message, t('core', 'Error'));
+					}
+				});
+
+			});
+
 		// Sets the select_all checkbox behaviour :
 		$('#select_all').click(function() {
 			if($(this).attr('checked')){
@@ -63,19 +90,19 @@ $(document).ready(function() {
 				}
 			}
 			processSelection();
-		});		
-		
+		});
+
 		$('.undelete').click('click',function(event) {
 			var spinner = '<img class="move2trash" title="'+t('files_trashbin', 'perform restore operation')+'" src="'+ OC.imagePath('core', 'loader.gif') +'"></a>';
 			var files=getSelectedFiles('file');
-			var fileslist=files.join(';');
+			var fileslist = JSON.stringify(files);
 			var dirlisting=getSelectedFiles('dirlisting')[0];
-			
-			for (var i in files) {
+
+			for (var i=0; i<files.length; i++) {
 				var undeleteAction = $('tr').filterAttr('data-file',files[i]).children("td.date");
 				undeleteAction[0].innerHTML = undeleteAction[0].innerHTML+spinner;
 			}
-			
+
 			$.post(OC.filePath('files_trashbin','ajax','undelete.php'),
 					{files:fileslist, dirlisting:dirlisting},
 					function(result){
@@ -84,12 +111,59 @@ $(document).ready(function() {
 							row.parentNode.removeChild(row);
 						}
 						if (result.status != 'success') {
-							OC.dialogs.alert(result.data.message, 'Error');
+							OC.dialogs.alert(result.data.message, t('core', 'Error'));
 						}
-					});		
+					});
 			});
-	
 
+		$('.delete').click('click',function(event) {
+			console.log("delete selected");
+			var spinner = '<img class="move2trash" title="'+t('files_trashbin', 'Delete permanently')+'" src="'+ OC.imagePath('core', 'loading.gif') +'"></a>';
+			var files=getSelectedFiles('file');
+			var fileslist = JSON.stringify(files);
+			var dirlisting=getSelectedFiles('dirlisting')[0];
+
+			for (var i=0; i<files.length; i++) {
+				var deleteAction = $('tr').filterAttr('data-file',files[i]).children("td.date");
+				deleteAction[0].innerHTML = deleteAction[0].innerHTML+spinner;
+			}
+
+			$.post(OC.filePath('files_trashbin','ajax','delete.php'),
+					{files:fileslist, dirlisting:dirlisting},
+					function(result){
+						for (var i = 0; i < result.data.success.length; i++) {
+							var row = document.getElementById(result.data.success[i].filename);
+							row.parentNode.removeChild(row);
+						}
+						if (result.status != 'success') {
+							OC.dialogs.alert(result.data.message, t('core', 'Error'));
+						}
+					});
+			});
+
+	$('#fileList').on('click', 'td.filename a', function(event) {
+		var mime = $(this).parent().parent().data('mime');
+		if (mime !== 'httpd/unix-directory') {
+			event.preventDefault();
+		}
+		var filename = $(this).parent().parent().attr('data-file');
+		var tr = $('tr').filterAttr('data-file',filename);
+		var renaming = tr.data('renaming');
+		if(!renaming && !FileList.isLoading(filename)){
+			if(mime.substr(0, 5) === 'text/'){ //no texteditor for now
+				return;
+			}
+			var type = $(this).parent().parent().data('type');
+			var permissions = $(this).parent().parent().data('permissions');
+			var action = FileActions.getDefault(mime, type, permissions);
+			if(action){
+				event.preventDefault();
+				action(filename);
+			}
+		}
+	});
+
+	FileActions.actions.dir = {};
 });
 
 function processSelection(){
@@ -155,4 +229,8 @@ function getSelectedFiles(property){
 		}
 	});
 	return files;
+}
+
+function fileDownloadPath(dir, file) {
+	return OC.filePath('files_trashbin', '', 'download.php') + '?file='+encodeURIComponent(file);
 }

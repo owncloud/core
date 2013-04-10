@@ -8,6 +8,12 @@
 
 namespace OC\Files\Storage;
 
+if (\OC_Util::runningOnWindows()) {
+	class Local extends MappedLocal {
+
+	}
+} else {
+
 /**
  * for local filestore, we only have to map the paths
  */
@@ -18,6 +24,8 @@ class Local extends \OC\Files\Storage\Common{
 		if(substr($this->datadir, -1)!=='/') {
 			$this->datadir.='/';
 		}
+	}
+	public function __destruct() {
 	}
 	public function getId(){
 		return 'local::'.$this->datadir;
@@ -32,7 +40,7 @@ class Local extends \OC\Files\Storage\Common{
 		return opendir($this->datadir.$path);
 	}
 	public function is_dir($path) {
-		if(substr($path,-1)=='/') {
+		if(substr($path, -1)=='/') {
 			$path=substr($path, 0, -1);
 		}
 		return is_dir($this->datadir.$path);
@@ -87,6 +95,9 @@ class Local extends \OC\Files\Storage\Common{
 		// sets the modification time of the file to the given value.
 		// If mtime is nil the current time is set.
 		// note that the access time of the file always changes to the current time.
+		if(!$this->isUpdatable($path)) {
+			return false;
+		}
 		if(!is_null($mtime)) {
 			$result=touch( $this->datadir.$path, $mtime );
 		}else{
@@ -109,11 +120,11 @@ class Local extends \OC\Files\Storage\Common{
 	}
 	public function rename($path1, $path2) {
 		if (!$this->isUpdatable($path1)) {
-			\OC_Log::write('core','unable to rename, file is not writable : '.$path1,\OC_Log::ERROR);
+			\OC_Log::write('core', 'unable to rename, file is not writable : '.$path1, \OC_Log::ERROR);
 			return false;
 		}
 		if(! $this->file_exists($path1)) {
-			\OC_Log::write('core','unable to rename, file does not exists : '.$path1,\OC_Log::ERROR);
+			\OC_Log::write('core', 'unable to rename, file does not exists : '.$path1, \OC_Log::ERROR);
 			return false;
 		}
 
@@ -184,7 +195,7 @@ class Local extends \OC\Files\Storage\Common{
 		// Windows OS: we use COM to access the filesystem
 		if (strpos($name, 'win') !== false) {
 			if (class_exists('COM')) {
-				$fsobj = new COM("Scripting.FileSystemObject");
+				$fsobj = new \COM("Scripting.FileSystemObject");
 				$f = $fsobj->GetFile($fullPath);
 				return $f->Size;
 			}
@@ -197,7 +208,9 @@ class Local extends \OC\Files\Storage\Common{
 				return (float)exec('stat -c %s ' . escapeshellarg($fullPath));
 			}
 		} else {
-			OC_Log::write('core', 'Unable to determine file size of "'.$fullPath.'". Unknown OS: '.$name, OC_Log::ERROR);
+			\OC_Log::write('core',
+				'Unable to determine file size of "'.$fullPath.'". Unknown OS: '.$name,
+				\OC_Log::ERROR);
 		}
 
 		return 0;
@@ -208,7 +221,11 @@ class Local extends \OC\Files\Storage\Common{
 	}
 
 	public function free_space($path) {
-		return @disk_free_space($this->datadir.$path);
+		$space = @disk_free_space($this->datadir.$path);
+		if($space === false){
+			return \OC\Files\FREE_SPACE_UNKNOWN;
+		}
+		return $space;
 	}
 
 	public function search($query) {
@@ -244,4 +261,5 @@ class Local extends \OC\Files\Storage\Common{
 	public function hasUpdated($path, $time) {
 		return $this->filemtime($path)>$time;
 	}
+}
 }
