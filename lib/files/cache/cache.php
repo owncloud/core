@@ -205,7 +205,7 @@ class Cache {
 				. ' VALUES(' . implode(', ', $valuesPlaceholder) . ')');
 			$result = $query->execute($params);
 			if (\OC_DB::isError($result)) {
-				\OCP\Util::writeLog('cache', 'Insert to cache failed: '.$result, \OCP\Util::ERROR);
+				\OCP\Util::writeLog('cache', 'Insert to cache failed: ' . $result, \OCP\Util::ERROR);
 			}
 
 			return (int)\OC_DB::insertid('*PREFIX*filecache');
@@ -395,11 +395,10 @@ class Cache {
 			FROM `*PREFIX*filecache` WHERE `name` LIKE ? AND `storage` = ?'
 		);
 		$result = $query->execute(array($pattern, $this->numericId));
-		$files = array();
-		while ($row = $result->fetchRow()) {
+		$files = $result->fetchAll();
+		foreach ($files as &$row) {
 			$row['mimetype'] = $this->getMimetype($row['mimetype']);
 			$row['mimepart'] = $this->getMimetype($row['mimepart']);
-			$files[] = $row;
 		}
 		return $files;
 	}
@@ -417,16 +416,16 @@ class Cache {
 			$where = '`mimepart` = ?';
 		}
 		$query = \OC_DB::prepare('
-			SELECT `fileid`, `storage`, `path`, `parent`, `name`, `mimetype`, `mimepart`, `size`, `mtime`, `encrypted`, `etag`
+			SELECT `fileid`, `path`, `parent`, `name`, `mimetype`, `size`, `mtime`, `encrypted`, `etag`
 			FROM `*PREFIX*filecache` WHERE ' . $where . ' AND `storage` = ?'
 		);
 		$mimetype = $this->getMimetypeId($mimetype);
 		$result = $query->execute(array($mimetype, $this->numericId));
-		$files = array();
-		while ($row = $result->fetchRow()) {
+		$files = $result->fetchAll();
+		foreach ($files as &$row) {
 			$row['mimetype'] = $this->getMimetype($row['mimetype']);
-			$row['mimepart'] = $this->getMimetype($row['mimepart']);
-			$files[] = $row;
+			list($row['mimepart'],) = explode('/', $row['mimetype']);
+			$row['storage'] = $this->storageId;
 		}
 		return $files;
 	}
