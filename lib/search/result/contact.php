@@ -165,7 +165,8 @@ class OC_Search_Result_Contact extends OC_Search_Result {
     function format_actions() {
         $output_html = '<ul class="search_actions">';
         $url = \OCP\Util::linkTo('contacts', 'index.php');
-        $output_html .= "<li><a href=\"{$url}\">Open</a></li>";
+        $l = OC_L10N::get('search');
+        $output_html .= "<li><a href=\"{$url}\">".$l->t('Open')."</a></li>";
         return $output_html . '</ul>';
     }
 

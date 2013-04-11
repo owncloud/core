@@ -125,7 +125,8 @@ class OC_Search_Result_Song extends OC_Search_Result {
     function format_actions($url) {
         $output_html = '<ul class="search_actions">';
         // open
-        $output_html .= "<li><a href=\"{$url}\">View songs</a></li>";
+        $l = OC_L10N::get('search');
+        $output_html .= "<li><a href=\"{$url}\">".$l->t('View songs')."</a></li>";
         // return
         return $output_html . '</ul>';
     }

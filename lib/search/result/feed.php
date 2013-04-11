@@ -75,8 +75,9 @@ class OC_Search_Result_Feed extends OC_Search_Result {
     function format_actions($data) {
         $output_html = '<ul class="search_actions">';
         // add go to article
-        $output_html .= "<li><a href=\"{$this->link}\">Open</a></li>";
-        $output_html .= "<li><a href=\"{$data['url']}\">Open RSS</a></li>";
+        $l = OC_L10N::get('search');
+        $output_html .= "<li><a href=\"{$this->link}\">".$l->t('Open')."</a></li>";
+        $output_html .= "<li><a href=\"{$data['url']}\">".$l->t('Open RSS')."</a></li>";
         // return
         return $output_html . '</ul>';
     }

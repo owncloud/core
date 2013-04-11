@@ -83,9 +83,10 @@ class OC_Search_Result_Bookmark extends OC_Search_Result {
     function format_actions($data) {
         $output_html = '<ul class="search_actions">';
         if ($data['user_id'] == OCP\USER::getUser()) {
-            $output_html .= "<li><a href=\"{$data['url']}\">Open</a></li>";
+            $l = OC_L10N::get('search');
+            $output_html .= "<li><a href=\"{$data['url']}\">".$l->t('Open')."</a></li>";
             $edit_url = \OCP\Util::linkTo('bookmarks', 'index.php');
-            $output_html .= "<li><a href=\"{$edit_url}\">Edit</a></li>";
+            $output_html .= "<li><a href=\"{$edit_url}\">".$l->t('Edit')."</a></li>";
         }
         // return
         return $output_html . '</ul>';

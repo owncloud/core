@@ -185,20 +185,21 @@ class OC_Search_Result_File extends OC_Search_Result {
             $file = $file_info['basename'];
         }
         $dir = str_ireplace(OC_Filesystem::getRoot(), '/', $dir);
+        $l = OC_L10N::get('search');
         // download
         if ($permissions & \OCP\PERMISSION_READ) {
             $url = \OCP\Util::linkTo('files', 'ajax/download.php', array('dir' => $dir, 'files' => $file));
-            $output_html .= "<li><a href=\"{$url}\">Download</a></li>";
+            $output_html .= "<li><a href=\"{$url}\">".$l->t('Download')."</a></li>";
         }
         // go to location
         if ($permissions & \OCP\PERMISSION_READ) {
             $url = \OCP\Util::linkTo('files', 'index.php', array('dir' => $dir));
-            $output_html .= "<li><a href=\"{$url}\">Go to location</a></li>";
+            $output_html .= "<li><a href=\"{$url}\">".$l->t('Go to location')."</a></li>";
         }
         // delete
         if ($permissions & \OCP\PERMISSION_DELETE) {
             $url = \OCP\Util::linkTo('files', 'ajax/delete.php', array('dir' => $dir, 'file' => $file));
-            $output_html .= "<li><a href=\"{$url}\">Delete</a></li>";
+            $output_html .= "<li><a href=\"{$url}\">".$l->t('Delete')."</a></li>";
         }
         // return
         return $output_html . '</ul>';
