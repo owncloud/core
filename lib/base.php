@@ -277,8 +277,8 @@ class OC {
 				if ($showTemplate && !OC_Config::getValue('maintenance', false)) {
 					OC_Config::setValue('maintenance', true);
 
-					// if we are in maintenance mode we need to check if the 
-					// new dependencies and warn if there are errors
+					// if we are in maintenance mode we need to check if there are 
+					// new dependencies and warn
 					$errors = OC_Util::checkServer();
 					if(!OC_Util::issetlocaleworking()) {
 						$errors[] = array(
