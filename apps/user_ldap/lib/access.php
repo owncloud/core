@@ -898,7 +898,7 @@ abstract class Access {
 		}
 
 		//for now, supported (known) attributes are entryUUID, nsuniqueid, objectGUID
-		$testAttributes = array('entryuuid', 'nsuniqueid', 'objectguid', 'guid');
+		$testAttributes = array('entryuuid', 'nsuniqueid', 'objectguid', 'guid', 'uid');
 
 		foreach($testAttributes as $attribute) {
 			\OCP\Util::writeLog('user_ldap', 'Testing '.$attribute.' as UUID attr', \OCP\Util::DEBUG);
