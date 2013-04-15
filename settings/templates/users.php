@@ -22,7 +22,7 @@ $_['subadmingroups'] = array_flip($items);
         <input
             type="password" id="newuserpassword"
             placeholder="<?php p($l->t('Password')) ?>" />
-        <input id="emailID" type="text" placeholder="<?php p($l->t('E-mail')) ?>" /> 
+        <input id="email" type="text" placeholder="<?php p($l->t('E-mail')) ?>" /> 
         <select
             class="groupsselect"
             id="newusergroups" data-placeholder="groups"
