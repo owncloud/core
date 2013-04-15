@@ -409,6 +409,7 @@ $(document).ready(function () {
 		event.preventDefault();
 		var username = $('#newusername').val();
 		var password = $('#newuserpassword').val();
+		var email = $('#newuseremail').val();
 		if ($.trim(username) == '') {
 			OC.dialogs.alert(
 				t('settings', 'A valid username must be provided'),
@@ -421,6 +422,12 @@ $(document).ready(function () {
 				t('settings', 'Error creating user'));
 			return false;
 		}
+		if ($.trim(email) == '') {
+			OC.dialogs.alert(
+				t('settings', 'A valid email must be provided'),
+				t('settings', 'Error creating user'));
+			return false;
+		}
 		var groups = $('#newusergroups').prev().children('div').data('settings').checked;
 		$('#newuser').get(0).reset();
 		$.post(
@@ -428,6 +435,7 @@ $(document).ready(function () {
 			{
 				username: username,
 				password: password,
+				email: email,
 				groups: groups
 			},
 			function (result) {

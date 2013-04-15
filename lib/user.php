@@ -156,7 +156,7 @@ class OC_User {
 	 *
 	 * Allowed characters in the username are: "a-z", "A-Z", "0-9" and "_.@-"
 	 */
-	public static function createUser( $uid, $password ) {
+	public static function createUser( $uid, $password, $email ) {
 		// Check the name for bad characters
 		// Allowed are: "a-z", "A-Z", "0-9" and "_.@-"
 		if( preg_match( '/[^a-zA-Z0-9 _\.@\-]/', $uid )) {
@@ -171,6 +171,10 @@ class OC_User {
 		if(trim($password) == '') {
 			throw new Exception('A valid password must be provided');
 		}
+		// No empty email
+		if(trim($email) == '') {
+			throw new Exception('A valid email must be provided');
+		}
 
 		// Check if user already exists
 		if( self::userExistsForCreation($uid) ) {
@@ -179,7 +183,7 @@ class OC_User {
 
 
 		$run = true;
-		OC_Hook::emit( "OC_User", "pre_createUser", array( "run" => &$run, "uid" => $uid, "password" => $password ));
+		OC_Hook::emit( "OC_User", "pre_createUser", array( "run" => &$run, "uid" => $uid, "password" => $password, "email" => $email ));
 
 		if( $run ) {
 			//create the user in the first backend that supports creating users
@@ -187,8 +191,8 @@ class OC_User {
 				if(!$backend->implementsActions(OC_USER_BACKEND_CREATE_USER))
 					continue;
 
-				$backend->createUser($uid, $password);
-				OC_Hook::emit( "OC_User", "post_createUser", array( "uid" => $uid, "password" => $password ));
+				$backend->createUser($uid, $password, $email);
+				OC_Hook::emit( "OC_User", "post_createUser", array( "uid" => $uid, "password" => $password, "email" => $email ));
 
 				return self::userExists($uid);
 			}

@@ -25,10 +25,11 @@ if(OC_User::isAdminUser(OC_User::getUser())) {
 }
 $username = $_POST["username"];
 $password = $_POST["password"];
+$email = $_POST["email"];
 
 // Return Success story
 try {
-	if (!OC_User::createUser($username, $password)) {
+	if (!OC_User::createUser($username, $password, $email)) {
 		OC_JSON::error(array('data' => array( 'message' => 'User creation failed for '.$username )));
 		exit();
 	}
