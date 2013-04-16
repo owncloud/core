@@ -8,19 +8,19 @@
  * Post the email address change to the server.
  */
 function changeEmailAddress(){
-       emailInfo = $('#lostpassword #email');
-       console.log("Timout done.");
-        if (emailInfo.val() == emailInfo.defaultValue){
-            return;
-        }
-        //event.preventDefault();
-        emailInfo.defaultValue = emailInfo.val();
-        OC.msg.startSaving('#lostpassword .msg');
-        var post = $( "#lostpassword" ).serialize();
-        $.post( 'ajax/lostpassword.php', post, function(data){
-            OC.msg.finishedSaving('#lostpassword .msg', data);
-        });
+    emailInfo = $('#lostpassword #email');
+    console.log("Timout done.");
+    if (emailInfo.val() === emailInfo.defaultValue){
+        return;
     }
+    //event.preventDefault();
+    emailInfo.defaultValue = emailInfo.val();
+    OC.msg.startSaving('#lostpassword .msg');
+    var post = $( "#lostpassword" ).serialize();
+    $.post( 'ajax/lostpassword.php', post, function(data){
+        OC.msg.finishedSaving('#lostpassword .msg', data);
+    });
+}
 
 $(document).ready(function(){
 	$("#passwordbutton").click( function(){
@@ -81,10 +81,10 @@ $(document).ready(function(){
 	});
 
 
-	$('#lostpassword #email').keyup(function(event){
+    $('#lostpassword #email').keyup(function(){
         if(typeof timeout !== 'undefined'){
-                clearTimeout(timeout);
-            }
+            clearTimeout(timeout);
+        }
         timeout = setTimeout('changeEmailAddress()',1000);
     });
 
