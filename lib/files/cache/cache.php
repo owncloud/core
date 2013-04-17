@@ -97,7 +97,7 @@ class Cache {
 	 * @return array | false
 	 */
 	public function get($file) {
-		if (is_string($file) or $file == '') {
+		if (is_string($file) or $file === '') {
 			// normalize file
 			$file = $this->normalize($file);
 
@@ -319,7 +319,7 @@ class Cache {
 	 * @return bool
 	 */
 	public function inCache($file) {
-		return $this->getId($file) != -1;
+		return $this->getId($file) !== -1;
 	}
 
 	/**

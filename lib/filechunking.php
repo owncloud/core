@@ -49,7 +49,7 @@ class OC_FileChunking {
 				$parts ++;
 			}
 		}
-		return $parts == $this->info['chunkcount'];
+		return $parts === $this->info['chunkcount'];
 	}
 
 	public function assemble($f) {
@@ -79,7 +79,7 @@ class OC_FileChunking {
 			}
 			$data = fread($orgfile, $blocksize);
 			$org_md5 = md5($data, true);
-			if ($org_md5 == $new_md5) {
+			if ($org_md5 === $new_md5) {
 				$cache->set($prefix.$count, $data);
 			} else {
 				$needed[] = $count;

@@ -56,13 +56,13 @@ class OC_Helper {
 	 * Returns a url to the given app and file.
 	 */
 	public static function linkTo( $app, $file, $args = array() ) {
-		if( $app != '' ) {
+		if( $app !== '' ) {
 			$app_path = OC_App::getAppPath($app);
 			// Check if the app is in the app folder
 			if ($app_path && file_exists($app_path . '/' . $file)) {
-				if (substr($file, -3) == 'php' || substr($file, -3) == 'css') {
+				if (substr($file, -3) === 'php' || substr($file, -3) === 'css') {
 					$urlLinkTo = OC::$WEBROOT . '/index.php/apps/' . $app;
-					$urlLinkTo .= ($file != 'index.php') ? '/' . $file : '';
+					$urlLinkTo .= ($file !== 'index.php') ? '/' . $file : '';
 				} else {
 					$urlLinkTo = OC_App::getAppWebPath($app) . '/' . $file;
 				}
@@ -131,7 +131,7 @@ class OC_Helper {
 	 */
 	public static function linkToRemote($service, $add_slash = true) {
 		return self::makeURLAbsolute(self::linkToRemoteBase($service))
-		. (($add_slash && $service[strlen($service) - 1] != '/') ? '/' : '');
+		. (($add_slash && $service[strlen($service) - 1] !== '/') ? '/' : '');
 	}
 
 	/**
@@ -144,7 +144,7 @@ class OC_Helper {
 	 */
 	public static function linkToPublic($service, $add_slash = false) {
 		return self::linkToAbsolute('', 'public.php') . '?service=' . $service
-		. (($add_slash && $service[strlen($service) - 1] != '/') ? '/' : '');
+		. (($add_slash && $service[strlen($service) - 1] !== '/') ? '/' : '');
 	}
 
 	/**
@@ -296,7 +296,7 @@ class OC_Helper {
 			return chmod($path, $filemode);
 		$dh = opendir($path);
 		while (($file = readdir($dh)) !== false) {
-			if ($file != '.' && $file != '..') {
+			if ($file !== '.' && $file !== '..') {
 				$fullpath = $path . '/' . $file;
 				if (is_link($fullpath))
 					return false;
@@ -325,7 +325,7 @@ class OC_Helper {
 			}
 			$files = scandir($src);
 			foreach ($files as $file) {
-				if ($file != "." && $file != "..") {
+				if ($file !== "." && $file !== "..") {
 					self::copyr("$src/$file", "$dest/$file");
 				}
 			}
@@ -343,7 +343,7 @@ class OC_Helper {
 		if (is_dir($dir)) {
 			$files = scandir($dir);
 			foreach ($files as $file) {
-				if ($file != "." && $file != "..") {
+				if ($file !== "." && $file !== "..") {
 					self::rmdirr("$dir/$file");
 				}
 			}
@@ -437,7 +437,7 @@ class OC_Helper {
 	 * @param string $d Value of default radio-button element
 	 */
 	public static function init_radio($s, $v, $d) {
-		if ((isset($_REQUEST[$s]) && $_REQUEST[$s] == $v) || (!isset($_REQUEST[$s]) && $v == $d))
+		if ((isset($_REQUEST[$s]) && $_REQUEST[$s] === $v) || (!isset($_REQUEST[$s]) && $v === $d))
 			print "checked=\"checked\" ";
 	}
 
@@ -469,7 +469,7 @@ class OC_Helper {
 		$dirs = explode(PATH_SEPARATOR, $path);
 		// WARNING : We have to check if open_basedir is enabled :
 		$obd = ini_get('open_basedir');
-		if ($obd != "none") {
+		if ($obd !== "none") {
 			$obd_values = explode(PATH_SEPARATOR, $obd);
 			if (count($obd_values) > 0 and $obd_values[0]) {
 				// open_basedir is in effect !
@@ -682,7 +682,7 @@ class OC_Helper {
 	 *
 	 */
 	public static function mb_array_change_key_case($input, $case = MB_CASE_LOWER, $encoding = 'UTF-8') {
-		$case = ($case != MB_CASE_UPPER) ? MB_CASE_LOWER : MB_CASE_UPPER;
+		$case = ($case !== MB_CASE_UPPER) ? MB_CASE_LOWER : MB_CASE_UPPER;
 		$ret = array();
 		foreach ($input as $k => $v) {
 			$ret[mb_convert_case($k, $case, $encoding)] = $v;
@@ -749,7 +749,7 @@ class OC_Helper {
 		$it = new RecursiveIteratorIterator($aIt);
 
 		while ($it->valid()) {
-			if (((isset($index) AND ($it->key() == $index)) OR (!isset($index))) AND ($it->current() == $needle)) {
+			if (((isset($index) AND ($it->key() === $index)) OR (!isset($index))) AND ($it->current() === $needle)) {
 				return $aIt->key();
 			}
 
@@ -838,7 +838,7 @@ class OC_Helper {
 		} else {
 			$total = $free; //either unknown or unlimited
 		}
-		if ($total == 0) {
+		if ($total === 0) {
 			$total = 1; // prevent division by zero
 		}
 		if ($total >= 0) {

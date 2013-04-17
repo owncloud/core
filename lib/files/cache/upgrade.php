@@ -58,7 +58,7 @@ class Upgrade {
 			\OC_Hook::emit('\OC\Files\Cache\Upgrade', 'migrate_path', $child['path']);
 			if ($childData) {
 				$this->insert($childData);
-				if ($mode == Scanner::SCAN_RECURSIVE) {
+				if ($mode === Scanner::SCAN_RECURSIVE) {
 					$this->upgradeChilds($child['id']);
 				}
 			}

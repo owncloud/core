@@ -82,11 +82,11 @@ class OC_Log_Owncloud {
 			while ($pos >= 0 && $entriesCount < $limit) {
 				fseek($handle, $pos);
 				$ch = fgetc($handle);
-				if ($ch == "\n" || $pos == 0) {
-					if ($line != '') {
+				if ($ch === "\n" || $pos === 0) {
+					if ($line !== '') {
 						// Add the first character if at the start of the file,
 						// because it doesn't hit the else in the loop
-						if ($pos == 0) {
+						if ($pos === 0) {
 							$line = $ch.$line;
 						}
 						$entry = json_decode($line);

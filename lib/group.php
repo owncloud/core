@@ -101,7 +101,7 @@ class OC_Group {
 	 */
 	public static function deleteGroup($gid) {
 		// Prevent users from deleting group admin
-		if ($gid == "admin") {
+		if ($gid === "admin") {
 			return false;
 		}
 
