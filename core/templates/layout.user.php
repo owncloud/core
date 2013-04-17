@@ -35,7 +35,23 @@
 	</div>
 	<header><div id="header">
 			<a href="<?php print_unescaped(link_to('', 'index.php')); ?>" title="" id="owncloud"><img class="svg"
-				src="<?php print_unescaped(image_path('', 'logo-wide.svg')); ?>" alt="ownCloud" /></a>
+				src="<?php print_unescaped(image_path('', 'logo-icon.svg')); ?>" alt="ownCloud" /></a>
+
+			<nav><div id="navigation">
+				<ul id="apps" class="svg">
+					<?php foreach($_['navigation'] as $entry): ?>
+						<li data-id="<?php p($entry['id']); ?>">
+							<a href="<?php print_unescaped($entry['href']); ?>" title=""
+								<?php if( $entry['active'] ): ?> class="active"<?php endif; ?>>
+								<img class="icon svg" src="<?php print_unescaped($entry['icon']); ?>"/>
+								<span>
+									<?php p($entry['name']); ?>
+								</span>
+							</a>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			</div></nav>
 
 			<ul id="settings" class="svg">
 				<span id="expand" tabindex="0" role="link">
@@ -67,22 +83,6 @@
 					autocomplete="off" x-webkit-speech />
 			</form>
 		</div></header>
-
-		<nav><div id="navigation">
-			<ul id="apps" class="svg">
-				<?php foreach($_['navigation'] as $entry): ?>
-					<li data-id="<?php p($entry['id']); ?>">
-						<a href="<?php print_unescaped($entry['href']); ?>" title=""
-							<?php if( $entry['active'] ): ?> class="active"<?php endif; ?>>
-							<img class="icon svg" src="<?php print_unescaped($entry['icon']); ?>"/>
-							<span>
-								<?php p($entry['name']); ?>
-							</span>
-						</a>
-					</li>
-				<?php endforeach; ?>
-			</ul>
-		</div></nav>
 
 		<div id="content-wrapper">
 			<div id="content">

@@ -13,7 +13,7 @@
  	position:fixed;
  	right:0;
  	text-overflow:ellipsis;
- 	top:3.5em;
+	top:60px;
  	width:26.5em;
  	z-index:75;
  }
