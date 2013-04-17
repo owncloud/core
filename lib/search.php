@@ -66,7 +66,7 @@ class OC_Search{
 		self::$registeredProviders = array_filter(
 				self::$registeredProviders,
 				function ($element) use ($provider) {
-					return ($element['class'] != $provider);
+					return ($element['class'] !== $provider);
 				}
 		);
 		// force regeneration of providers on next search

@@ -42,7 +42,7 @@ class OC_Setup {
 		$dbSetup = new $class(self::getTrans(), 'db_structure.xml');
 		$error = array_merge($error, $dbSetup->validate($options));
 
-		if(count($error) != 0) {
+		if(count($error) !== 0) {
 			return $error;
 		}
 

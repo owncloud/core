@@ -42,7 +42,7 @@ class OC_OCS {
 	* @return mixed Data or if the key is not found and no default is set it will exit with a 400 Bad request
 	*/
 	public static function readData($method, $key, $type = 'raw', $default = null) {
-		if ($method == 'get') {
+		if ($method === 'get') {
 			if (isset($_GET[$key])) {
 				$data = $_GET[$key];
 			} else if (isset($default)) {
@@ -50,7 +50,7 @@ class OC_OCS {
 			} else {
 				$data = false;
 			}
-		} else if ($method == 'post') {
+		} else if ($method === 'post') {
 			if (isset($_POST[$key])) {
 				$data = $_POST[$key];
 			} else if (isset($default)) {
@@ -64,22 +64,22 @@ class OC_OCS {
 			exit();
 		} else {
 			// NOTE: Is the raw type necessary? It might be a little risky without sanitization
-			if ($type == 'raw') return $data;
-			elseif ($type == 'text') return OC_Util::sanitizeHTML($data);
-			elseif ($type == 'int')  return (int) $data;
-			elseif ($type == 'float') return (float) $data;
-			elseif ($type == 'array') return OC_Util::sanitizeHTML($data);
+			if ($type === 'raw') return $data;
+			elseif ($type === 'text') return OC_Util::sanitizeHTML($data);
+			elseif ($type === 'int')  return (int) $data;
+			elseif ($type === 'float') return (float) $data;
+			elseif ($type === 'array') return OC_Util::sanitizeHTML($data);
 			else return OC_Util::sanitizeHTML($data);
 		}
 	}
 
 	public static function notFound() {
-		if($_SERVER['REQUEST_METHOD'] == 'GET') {
+		if($_SERVER['REQUEST_METHOD'] === 'GET') {
 			$method='get';
-		}elseif($_SERVER['REQUEST_METHOD'] == 'PUT') {
+		}elseif($_SERVER['REQUEST_METHOD'] === 'PUT') {
 			$method='put';
 			parse_str(file_get_contents("php://input"), $put_vars);
-		}elseif($_SERVER['REQUEST_METHOD'] == 'POST') {
+		}elseif($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$method='post';
 		}else{
 			echo('internal server error: method not supported');
@@ -125,7 +125,7 @@ class OC_OCS {
 	*/
 	private static function generateXml($format, $status, $statuscode,
 		$message, $data=array(), $tag='', $tagattribute='', $dimension=-1, $itemscount='', $itemsperpage='') {
-		if($format=='json') {
+		if($format === 'json') {
 			$json=array();
 			$json['status']=$status;
 			$json['statuscode']=$statuscode;
@@ -147,18 +147,18 @@ class OC_OCS {
 			if($itemscount<>'') xmlwriter_write_element($writer, 'totalitems', $itemscount);
 			if(!empty($itemsperpage)) xmlwriter_write_element($writer, 'itemsperpage', $itemsperpage);
 			xmlwriter_end_element($writer);
-			if($dimension=='0') {
+			if($dimension === '0') {
 				// 0 dimensions
 				xmlwriter_write_element($writer, 'data', $data);
 
-			}elseif($dimension=='1') {
+			}elseif($dimension === '1') {
 				xmlwriter_start_element($writer, 'data');
 				foreach($data as $key=>$entry) {
 					xmlwriter_write_element($writer, $key, $entry);
 				}
 				xmlwriter_end_element($writer);
 
-			}elseif($dimension=='2') {
+			}elseif($dimension === '2') {
 				xmlwriter_start_element($writer, 'data');
 				foreach($data as $entry) {
 					xmlwriter_start_element($writer, $tag);
@@ -178,7 +178,7 @@ class OC_OCS {
 				}
 				xmlwriter_end_element($writer);
 
-			}elseif($dimension=='3') {
+			}elseif($dimension === '3') {
 				xmlwriter_start_element($writer, 'data');
 				foreach($data as $entrykey=>$entry) {
 					xmlwriter_start_element($writer, $tag);
@@ -199,7 +199,7 @@ class OC_OCS {
 					xmlwriter_end_element($writer);
 				}
 				xmlwriter_end_element($writer);
-			}elseif($dimension=='dynamic') {
+			}elseif($dimension === 'dynamic') {
 				xmlwriter_start_element($writer, 'data');
 				OC_OCS::toxml($writer, $data, 'comment');
 				xmlwriter_end_element($writer);

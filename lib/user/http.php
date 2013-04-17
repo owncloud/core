@@ -79,7 +79,7 @@ class OC_User_HTTP extends OC_User_Backend {
 
 		curl_close($ch);
 
-		return $status==200;
+		return $status === 200;
 	}
 
 	/**

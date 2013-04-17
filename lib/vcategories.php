@@ -144,7 +144,7 @@ class OC_VCategories {
 		}
 		$categories = array_values($this->categories);
 		uasort($categories, 'strnatcasecmp');
-		if($format == self::FORMAT_MAP) {
+		if($format === self::FORMAT_MAP) {
 			$catmap = array();
 			foreach($categories as $category) {
 				if($category !== self::CATEGORY_FAVORITE) {
@@ -371,7 +371,7 @@ class OC_VCategories {
 		$newones = array();
 		foreach($names as $name) {
 			if(($this->in_arrayi(
-				$name, $this->categories) == false) && $name != '') {
+				$name, $this->categories) === false) && $name !== '') {
 				$newones[] = $name;
 			}
 			if(!is_null($id) ) {

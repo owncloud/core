@@ -73,7 +73,7 @@ class OC_VObject{
 	public static function unescapeSemicolons($value) {
 		$array = explode(';', $value);
 		for($i=0;$i<count($array);$i++) {
-			if(substr($array[$i], -2, 2)=="\\\\") {
+			if(substr($array[$i], -2, 2) === "\\\\") {
 				if(isset($array[$i+1])) {
 					$array[$i] = substr($array[$i], 0, count($array[$i])-2).';'.$array[$i+1];
 					unset($array[$i+1]);
@@ -132,7 +132,7 @@ class OC_VObject{
 	}
 
 	public function setString($name, $string) {
-		if ($string != '') {
+		if ($string !== '') {
 			$string = strtr($string, array("\r\n"=>"\n"));
 			$this->vobject->__set($name, $string);
 		}else{
@@ -151,7 +151,7 @@ class OC_VObject{
 	 * @return void
 	 */
 	public function setDateTime($name, $datetime, $dateType=Sabre\VObject\Property\DateTime::LOCALTZ) {
-		if ($datetime == 'now') {
+		if ($datetime === 'now') {
 			$datetime = new DateTime();
 		}
 		if ($datetime instanceof DateTime) {
@@ -179,7 +179,7 @@ class OC_VObject{
 	}
 
 	public function &__get($name) {
-		if ($name == 'children') {
+		if ($name === 'children') {
 			return $this->vobject->children;
 		}
 		$return = $this->vobject->__get($name);

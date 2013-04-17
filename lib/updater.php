@@ -49,7 +49,7 @@ class Updater extends BasicEmitter {
 
 		\OC_Appconfig::setValue('core', 'lastupdatedat', time());
 
-		if (\OC_Appconfig::getValue('core', 'installedat', '') == '') {
+		if (\OC_Appconfig::getValue('core', 'installedat', '') === '') {
 			\OC_Appconfig::setValue('core', 'installedat', microtime(true));
 		}
 
@@ -130,7 +130,7 @@ class Updater extends BasicEmitter {
 			return;
 		}
 		$users = $result->fetchAll();
-		if (count($users) == 0) {
+		if (count($users) === 0) {
 			return;
 		}
 		$step = 100 / count($users);

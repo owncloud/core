@@ -136,13 +136,13 @@ class OC_Template extends \OC\Template\Base {
 			\OC::$session->set('formfactor', $_GET['formfactor']);
 		}
 		$formfactor = \OC::$session->get('formfactor');
-		if($formfactor==='default') {
+		if($formfactor === 'default') {
 			$fext='';
-		}elseif($formfactor==='mobile') {
+		}elseif($formfactor === 'mobile') {
 			$fext='.mobile';
-		}elseif($formfactor==='tablet') {
+		}elseif($formfactor === 'tablet') {
 			$fext='.tablet';
-		}elseif($formfactor==='standalone') {
+		}elseif($formfactor === 'standalone') {
 			$fext='.standalone';
 		}else{
 			$fext='';

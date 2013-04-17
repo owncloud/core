@@ -10,7 +10,7 @@ class OC_TemplateLayout extends OC_Template {
 	public function __construct( $renderas ) {
 		// Decide which page we show
 
-		if( $renderas == 'user' ) {
+		if( $renderas === 'user' ) {
 			parent::__construct( 'core', 'layout.user' );
 			if(in_array(OC_APP::getCurrentApp(), array('settings','admin', 'help'))!==false) {
 				$this->assign('bodyid', 'body-settings');
@@ -46,7 +46,7 @@ class OC_TemplateLayout extends OC_Template {
 			$user_displayname = OC_User::getDisplayName();
 			$this->assign( 'user_displayname', $user_displayname );
 			$this->assign( 'user_uid', OC_User::getUser() );
-		} else if ($renderas == 'guest' || $renderas == 'error') {
+		} else if ($renderas === 'guest' || $renderas === 'error') {
 			parent::__construct('core', 'layout.guest');
 		} else {
 			parent::__construct('core', 'layout.base');
@@ -55,7 +55,7 @@ class OC_TemplateLayout extends OC_Template {
 		// Add the js files
 		$jsfiles = self::findJavascriptFiles(OC_Util::$scripts);
 		$this->assign('jsfiles', array(), false);
-		if (OC_Config::getValue('installed', false) && $renderas!='error') {
+		if (OC_Config::getValue('installed', false) && $renderas !== 'error') {
 			$this->append( 'jsfiles', OC_Helper::linkToRoute('js_config') . $versionParameter);
 		}
 		if (!empty(OC_Util::$core_scripts)) {
