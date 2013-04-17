@@ -79,7 +79,7 @@ class OC_Connector_Sabre_Directory extends OC_Connector_Sabre_Node implements Sa
 				if (isset($_SERVER['CONTENT_LENGTH'])) {
 					$expected = $_SERVER['CONTENT_LENGTH'];
 					$actual = \OC\Files\Filesystem::filesize($partpath);
-					if ($actual !== $expected) {
+					if ($actual != $expected) {
 						\OC\Files\Filesystem::unlink($partpath);
 						throw new Sabre_DAV_Exception_BadRequest(
 								'expected filesize ' . $expected . ' got ' . $actual);

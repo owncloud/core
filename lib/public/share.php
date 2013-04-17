@@ -402,7 +402,7 @@ class Share {
 				// Only allow the same share to occur again if it is the same
 				// owner and is not a user share, this use case is for increasing
 				// permissions for a specific user
-				if ($checkExists['uid_owner'] !== $uidOwner || $checkExists['share_type'] === $shareType) {
+				if ($checkExists['uid_owner'] !== $uidOwner || $checkExists['share_type'] == $shareType) {
 					$message = 'Sharing '.$itemSource.' failed, because this item is already shared with '.$shareWith;
 					\OC_Log::write('OCP\Share', $message, \OC_Log::ERROR);
 					throw new \Exception($message);
@@ -427,7 +427,7 @@ class Share {
 				// Only allow the same share to occur again if it is the same
 				// owner and is not a group share, this use case is for increasing
 				// permissions for a specific user
-				if ($checkExists['uid_owner'] !== $uidOwner || $checkExists['share_type'] === $shareType) {
+				if ($checkExists['uid_owner'] !== $uidOwner || $checkExists['share_type'] == $shareType) {
 					$message = 'Sharing '.$itemSource.' failed, because this item is already shared with '.$shareWith;
 					\OC_Log::write('OCP\Share', $message, \OC_Log::ERROR);
 					throw new \Exception($message);
@@ -1035,12 +1035,12 @@ class Share {
 				$row['stime']=(int)$row['stime'];
 			}
 			// Filter out duplicate group shares for users with unique targets
-			if ($row['share_type'] === self::$shareTypeGroupUserUnique && isset($items[$row['parent']])) {
+			if ($row['share_type'] == self::$shareTypeGroupUserUnique && isset($items[$row['parent']])) {
 				$row['share_type'] = self::SHARE_TYPE_GROUP;
 				$row['share_with'] = $items[$row['parent']]['share_with'];
 				// Remove the parent group share
 				unset($items[$row['parent']]);
-				if ($row['permissions'] === 0) {
+				if ($row['permissions'] == 0) {
 					continue;
 				}
 			} else if (!isset($uidOwner)) {
@@ -1114,7 +1114,7 @@ class Share {
 			$collectionItems = array();
 			foreach ($items as &$row) {
 				// Return only the item instead of a 2-dimensional array
-				if ($limit === 1 && $row[$column] === $item && ($row['item_type'] === $itemType || $itemType === 'file')) {
+				if ($limit === 1 && $row[$column] == $item && ($row['item_type'] === $itemType || $itemType === 'file')) {
 					if ($format === self::FORMAT_NONE) {
 						return $row;
 					} else {
@@ -1155,7 +1155,7 @@ class Share {
 										\OC\Files\Filesystem::normalizePath($child['file_path']);
 								}
 								if (isset($item)) {
-									if ($childItem[$column] === $item) {
+									if ($childItem[$column] == $item) {
 										// Return only the item instead of a 2-dimensional array
 										if ($limit === 1) {
 											if ($format === self::FORMAT_NONE) {
@@ -1504,7 +1504,7 @@ class Share {
 				if (!empty($checkTarget)) {
 					foreach ($checkTarget as $item) {
 						// Skip item if it is the group parent row
-						if (isset($groupParent) && $item['id'] === $groupParent) {
+						if (isset($groupParent) && $item['id'] == $groupParent) {
 							if (count($checkTarget) === 1) {
 								return $target;
 							} else {
@@ -1680,7 +1680,7 @@ class Share {
 		$result = \OC_DB::executeAudited($sql, array(self::SHARE_TYPE_GROUP, $arguments['gid'],
 			self::$shareTypeGroupUserUnique, $arguments['uid']));
 		while ($item = $result->fetchRow()) {
-			if ($item['share_type'] === self::SHARE_TYPE_GROUP) {
+			if ($item['share_type'] == self::SHARE_TYPE_GROUP) {
 				// Delete all reshares by this user of the group share
 				self::delete($item['id'], true, $arguments['uid']);
 			} else {
