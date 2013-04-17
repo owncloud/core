@@ -36,7 +36,7 @@ class OC_Archive_ZIP extends OC_Archive{
 	 * @return bool
 	 */
 	function addFile($path, $source='') {
-		if($source and $source[0]=='/' and file_exists($source)) {
+		if($source and $source[0] === '/' and file_exists($source)) {
 			$result=$this->zip->addFile($source, $path);
 		}else{
 			$result=$this->zip->addFromString($path, $source);
@@ -159,7 +159,7 @@ class OC_Archive_ZIP extends OC_Archive{
 	 * @return resource
 	 */
 	function getStream($path, $mode) {
-		if($mode=='r' or $mode=='rb') {
+		if($mode === 'r' or $mode === 'rb') {
 			return $this->zip->getStream($path);
 		} else {
 			//since we cant directly get a writable stream,
@@ -192,7 +192,7 @@ class OC_Archive_ZIP extends OC_Archive{
 	}
 
 	private function stripPath($path) {
-		if(!$path || $path[0]=='/') {
+		if(!$path || $path[0] === '/') {
 			return substr($path, 1);
 		}else{
 			return $path;

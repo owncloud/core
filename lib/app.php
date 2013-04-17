@@ -122,7 +122,7 @@ class OC_App{
 	 */
 	private static function getAppTypes($app) {
 		//load the cache
-		if(count(self::$appTypes)==0) {
+		if(count(self::$appTypes) === 0) {
 			self::$appTypes=OC_Appconfig::getValues(false, 'types');
 		}
 
@@ -157,7 +157,7 @@ class OC_App{
 	 */
 	public static function isShipped($appid){
 		$info = self::getAppInfo($appid);
-		if(isset($info['shipped']) && $info['shipped']=='true') {
+		if(isset($info['shipped']) && $info['shipped'] === 'true') {
 			return true;
 		} else {
 			return false;
@@ -200,7 +200,7 @@ class OC_App{
 	 * This function checks whether or not an app is enabled.
 	 */
 	public static function isEnabled( $app ) {
-		if( 'files'==$app or ('yes' == OC_Appconfig::getValue( $app, 'enabled' ))) {
+		if( 'files'==$app or ('yes' === OC_Appconfig::getValue( $app, 'enabled' ))) {
 			return true;
 		}
 
@@ -223,7 +223,7 @@ class OC_App{
 			}else{
 				$appdata=OC_OCSClient::getApplication($app);
 				$download=OC_OCSClient::getApplicationDownload($app, 1);
-				if(isset($download['downloadlink']) and $download['downloadlink']!='') {
+				if(isset($download['downloadlink']) and $download['downloadlink'] !== '') {
 					$info = array('source'=>'http', 'href'=>$download['downloadlink'], 'appdata'=>$appdata);
 					$app=OC_Installer::installApp($info);
 				}
@@ -420,7 +420,7 @@ class OC_App{
 	// This is private as well. It simply works, so don't ask for more details
 	private static function proceedNavigation( $list ) {
 		foreach( $list as &$naventry ) {
-			if( $naventry['id'] == self::$activeapp ) {
+			if( $naventry['id'] === self::$activeapp ) {
 				$naventry['active'] = true;
 			}
 			else{
@@ -428,7 +428,7 @@ class OC_App{
 			}
 		} unset( $naventry );
 
-		usort( $list, create_function( '$a, $b', 'if( $a["order"] == $b["order"] ) {return 0;}elseif( $a["order"] < $b["order"] ) {return -1;}else{return 1;}' ));
+		usort( $list, create_function( '$a, $b', 'if( $a["order"] === $b["order"] ) {return 0;}elseif( $a["order"] < $b["order"] ) {return -1;}else{return 1;}' ));
 
 		return $list;
 	}
@@ -469,7 +469,7 @@ class OC_App{
 	* If the app is defined in multiple directories, the first one is taken. (false if not found)
 	*/
 	public static function getAppPath($appid) {
-		if( ($dir = self::findAppInDirectories($appid)) != false) {
+		if( ($dir = self::findAppInDirectories($appid)) !== false) {
 			return $dir['path'].'/'.$appid;
 		}
 		return false;
@@ -480,7 +480,7 @@ class OC_App{
 	* If the app is defined in multiple directories, the first one is taken. (false if not found)
 	*/
 	public static function getAppWebPath($appid) {
-		if( ($dir = self::findAppInDirectories($appid)) != false) {
+		if( ($dir = self::findAppInDirectories($appid)) !== false) {
 			return OC::$WEBROOT.$dir['url'].'/'.$appid;
 		}
 		return false;
@@ -528,21 +528,21 @@ class OC_App{
 			/**
 			 * @var $child SimpleXMLElement
 			 */
-			if($child->getName()=='remote') {
+			if($child->getName() === 'remote') {
 				foreach($child->children() as $remote) {
 					/**
 					 * @var $remote SimpleXMLElement
 					 */
 					$data['remote'][$remote->getName()]=(string)$remote;
 				}
-			}elseif($child->getName()=='public') {
+			}elseif($child->getName() === 'public') {
 				foreach($child->children() as $public) {
 					/**
 					 * @var $public SimpleXMLElement
 					 */
 					$data['public'][$public->getName()]=(string)$public;
 				}
-			}elseif($child->getName()=='types') {
+			}elseif($child->getName() === 'types') {
 				$data['types']=array();
 				foreach($child->children() as $type) {
 					/**
@@ -550,7 +550,7 @@ class OC_App{
 					 */
 					$data['types'][]=$type->getName();
 				}
-			}elseif($child->getName()=='description') {
+			}elseif($child->getName() === 'description') {
 				$xml=(string)$child->asXML();
 				$data[$child->getName()]=substr($xml, 13, -14);//script <description> tags
 			}else{
@@ -589,7 +589,7 @@ class OC_App{
 				$topFolder=substr($path_info, 1, strpos($path_info, '/', 1)-1);
 			}
 		}
-		if($topFolder=='apps') {
+		if($topFolder === 'apps') {
 			$length=strlen($topFolder);
 			return substr($script, $length+1, strpos($script, '/', $length+1)-$length-1);
 		}else{
@@ -669,7 +669,7 @@ class OC_App{
 
 			while (($file = readdir($dh)) !== false) {
 
-				if ($file[0] != '.' and is_file($apps_dir['path'].'/'.$file.'/appinfo/app.php')) {
+				if ($file[0] !== '.' and is_file($apps_dir['path'].'/'.$file.'/appinfo/app.php')) {
 
 					$apps[] = $file;
 
@@ -705,7 +705,7 @@ class OC_App{
 					continue;
 				}
 
-				if ( OC_Appconfig::getValue( $app, 'enabled', 'no') == 'yes' ) {
+				if ( OC_Appconfig::getValue( $app, 'enabled', 'no') === 'yes' ) {
 					$active = true;
 				} else {
 					$active = false;
@@ -713,7 +713,7 @@ class OC_App{
 
 				$info['active'] = $active;
 
-				if(isset($info['shipped']) and ($info['shipped']=='true')) {
+				if(isset($info['shipped']) and ($info['shipped'] === 'true')) {
 					$info['internal']=true;
 					$info['internallabel']='Internal App';
 					$info['internalclass']='';
@@ -736,11 +736,11 @@ class OC_App{
 			foreach ( $appList as $app ) {
 				foreach ( $remoteApps AS $key => $remote ) {
 					if (
-						$app['name'] == $remote['name']
+						$app['name'] === $remote['name']
 						// To set duplicate detection to use OCS ID instead of string name,
 						// enable this code, remove the line of code above,
 						// and add <ocs_id>[ID]</ocs_id> to info.xml of each 3rd party app:
-						// OR $app['ocs_id'] == $remote['ocs_id']
+						// OR $app['ocs_id'] === $remote['ocs_id']
 						) {
 						unset( $remoteApps[$key]);
 					}
@@ -776,7 +776,7 @@ class OC_App{
 				$app1[$i]['ocs_id'] = $app['id'];
 				$app1[$i]['internal'] = $app1[$i]['active'] = 0;
 				$app1[$i]['update'] = false;
-				if($app['label']=='recommended') {
+				if($app['label'] === 'recommended') {
 					$app1[$i]['internallabel'] = 'Recommended';
 					$app1[$i]['internalclass'] = 'recommendedapp';
 				}else{

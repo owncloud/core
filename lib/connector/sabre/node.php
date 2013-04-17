@@ -200,7 +200,7 @@ abstract class OC_Connector_Sabre_Node implements Sabre_DAV_INode, Sabre_DAV_IPr
 		}
 
 		// if the array was empty, we need to return everything
-		if(count($properties) == 0) {
+		if(count($properties) === 0) {
 			return $this->property_cache;
 		}
 
