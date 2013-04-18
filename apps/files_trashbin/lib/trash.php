@@ -39,9 +39,10 @@ class Trashbin {
 		$view = new \OC\Files\View('/'. $user);
 		if (!$view->is_dir('files_trashbin')) {
 			$view->mkdir('files_trashbin');
-			$view->mkdir("files_trashbin/files");
-			$view->mkdir("files_trashbin/versions");
-			$view->mkdir("files_trashbin/keyfiles");
+			$view->mkdir('files_trashbin/files');
+			$view->mkdir('files_trashbin/versions');
+			$view->mkdir('files_trashbin/keyfiles');
+			$view->mkdir('files_trashbin/share-keys');
 		}
 
 		$path_parts = pathinfo($file_path);
@@ -100,6 +101,7 @@ class Trashbin {
 		// get available disk space for user
 		$user = \OCP\User::getUser();
 		$quota = \OC_Preferences::getValue($user, 'files', 'quota');
+		$view = new \OC\Files\View('/'.$user);
 		if ( $quota === null || $quota === 'default') {
 			$quota = \OC_Appconfig::getValue('files', 'default_quota');
 		}
@@ -164,26 +166,33 @@ class Trashbin {
 
 			$user = \OCP\User::getUser();
 
-			//retain key files
+			// disable proxy to prevent recursive calls
+			\OC_FileProxy::$enabled = false;
+
+			// retain key files
 			$keyfile = \OC\Files\Filesystem::normalizePath('files_encryption/keyfiles/' . $file_path);
-			if ($view->file_exists($keyfile . '.key')) {
+			if ($view->is_dir($keyfile) || $view->file_exists($keyfile . '.key')) {
 
 				$user = \OCP\User::getUser();
-				if ($view->is_dir('files' . $file_path)) {
+				if ($view->is_dir($keyfile)) {
 					$size += self::calculateSize(new \OC\Files\View('/' . $user . '/' . $keyfile));
-					$view->rename($keyfile, 'files_trashbin/keyfiles/' . $deleted . '.d' . $timestamp);
+					$view->rename($keyfile, 'files_trashbin/keyfiles/' . $filename . '.d' . $timestamp);
 				} else {
 					$size += $view->filesize($keyfile . '.key');
-					$view->rename($keyfile . '.key', 'files_trashbin/keyfiles/' . $deleted . '.key.d' . $timestamp);
+					$view->rename($keyfile . '.key', 'files_trashbin/keyfiles/' . $filename . '.key.d' . $timestamp);
 				}
 			}
 
+			// TODO needs review, only handle folders atm?
 			// retain per user encryption key for keyfile
 			$sharekeys = \OC\Files\Filesystem::normalizePath('files_encryption/share-keys/' . $file_path);
 			if ($view->is_dir($sharekeys)) {
 				$size += self::calculateSize(new \OC\Files\View('/' . $user . '/' . $sharekeys));
 				$view->rename($keyfile, 'files_trashbin/share-keys/' . $sharekeys . '.d' . $timestamp);
 			}
+			
+			// enable proxy
+			\OC_FileProxy::$enabled = true;
 		}
 		return $size;
 	}
@@ -233,7 +242,18 @@ class Trashbin {
 		// we need a  extension in case a file/dir with the same name already exists
 		$ext = self::getUniqueExtension($location, $filename, $view);
 		$mtime = $view->filemtime($source);
-		if( $view->rename($source, $target.$ext) ) {
+
+		// disable proxy to prevent recursive calls
+		\OC_FileProxy::$enabled = false;
+		
+		// restore file
+		$restoreResult = $view->rename($source, $target.$ext);
+		
+		// enable proxy
+		\OC_FileProxy::$enabled = true;
+		           
+		// handle the restore result                  
+		if( $restoreResult ) {
 			$view->touch($target.$ext, $mtime);
 			\OCP\Util::emitHook('\OCA\Files_Trashbin\Trashbin', 'post_restore', 
 					array('filePath' => \OC\Files\Filesystem::normalizePath('/'.$location.'/'.$filename.$ext),
@@ -243,6 +263,7 @@ class Trashbin {
 			} else {
 				$trashbinSize -= $view->filesize($target.$ext);
 			}
+
 			// if versioning app is enabled, copy versions from the trash bin back to the original location
 			if ( \OCP\App::isEnabled('files_versions') ) {
 				if ($timestamp ) {
@@ -267,7 +288,9 @@ class Trashbin {
 			}
 			
 			// Take care of encryption keys TODO! Get '.key' in file between file name and delete date (also for permanent delete!)
+			// TODO handle share-keys
 			$parts = pathinfo($file);
+			error_log(print_r($parts,true));
 			if ( $result[0]['type'] === 'dir' ) {
 				$keyfile = \OC\Files\Filesystem::normalizePath('files_trashbin/keyfiles/'.$parts['dirname'].'/'.$filename);
 			} else {
@@ -276,6 +299,7 @@ class Trashbin {
 			if ($timestamp) {
 				$keyfile .= '.d'.$timestamp;
 			}
+
 			if ( \OCP\App::isEnabled('files_encryption') && $view->file_exists($keyfile) ) {
 				if ( $result[0]['type'] === 'dir' ) {
 					$trashbinSize -= self::calculateSize(new \OC\Files\View('/'.$user.'/'.$keyfile));
@@ -297,7 +321,7 @@ class Trashbin {
 		} else {
 			\OC_Log::write('files_trashbin', 'Couldn\'t restore file from trash bin, '.$filename, \OC_log::ERROR);
 		}
-
+		
 		return false;
 	}
 
