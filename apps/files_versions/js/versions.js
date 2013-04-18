@@ -26,7 +26,7 @@ $(document).ready(function(){
 				} else {
 					createVersionsDropdown(filename, file);
 				}
-				// To check if drop down for the share is open for any other file
+				// To check if drop down for the share is open, if so it is closed when user hits version.
 				if (($('#dropdown-share').length > 0) && $('#dropdown-share').hasClass('drop-share')){
 					if ($('#dropdown-version').length > 0) {
 						$('#dropdown-share').hide('blind', function() {
@@ -143,13 +143,11 @@ function createVersionsDropdown(filename, files) {
 
 $(this).click(
 	function(event) {
-	if ($('#dropdown-version').has(event.target).length === 0 && $('#dropdown-version').hasClass('drop-versions')) {
-		$('#dropdown-version').hide('blind', function() {
-			$('#dropdown-version').remove();
-			$('tr').removeClass('mouseOver');
-		});
-	}
-
-
+		if ($('#dropdown-version').has(event.target).length === 0 && $('#dropdown-version').hasClass('drop-versions')) {
+			$('#dropdown-version').hide('blind', function() {
+				$('#dropdown-version').remove();
+				$(tr).removeClass('mouseOver');
+			});
+		}
 	}
 );
