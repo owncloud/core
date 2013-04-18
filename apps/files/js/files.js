@@ -604,10 +604,10 @@ var crumbDropOptions={
 function procesSelection() {
 	var selected = getSelectedFilesTrash();
 	var selectedFiles = selected.filter(function(el) {
-		return el.type==='file';
+		return el.type === 'file';
 	});
 	var selectedFolders = selected.filter(function(el) {
-		return el.type==='dir';
+		return el.type === 'dir';
 	});
 	if (selectedFiles.length === 0 && selectedFolders.length === 0) {
 		$('#headerName>span.name').text(t('files','Name'));

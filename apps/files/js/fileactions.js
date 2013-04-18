@@ -163,13 +163,13 @@ var FileActions = {
 };
 
 $(document).ready(function () {
-	if ($('#allowZipDownload').val() == 1) {
+	if ($('#allowZipDownload').val() === 1) {
 		var downloadScope = 'all';
 	} else {
 		var downloadScope = 'file';
 	}
 
-	if (typeof disableDownloadActions == 'undefined' || !disableDownloadActions) {
+	if (typeof disableDownloadActions === 'undefined' || !disableDownloadActions) {
 		FileActions.register(downloadScope, 'Download', OC.PERMISSION_READ, function () {
 			return OC.imagePath('core', 'actions/download');
 		}, function (filename) {
