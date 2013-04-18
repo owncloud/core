@@ -26,9 +26,13 @@ require_once 'Dropbox/autoload.php';
 
 class Dropbox extends \OC\Files\Storage\Common {
 
-	private $dropbox;
+	private $appKey;
+	private $appSecret;
+	private $token;
+	private $tokenSecret;
 	private $root;
-	private $id;
+	private $ready;
+	private $dropbox;
 	private $metaData = array();
 
 	private static $tempFiles = array();
@@ -40,18 +44,31 @@ class Dropbox extends \OC\Files\Storage\Common {
 			&& isset($params['token'])
 			&& isset($params['token_secret'])
 		) {
+			$this->appKey = $params['app_key'];
+			$this->appSecret = $params['app_secret'];
+			$this->token = $params['token'];
+			$this->tokenSecret = $params['token_secret'];
 			$this->root = isset($params['root']) ? $params['root'] : '';
-			$this->id = 'dropbox::'.$params['app_key'] . $params['token']. '/' . $this->root;
-			$oauth = new \Dropbox_OAuth_Curl($params['app_key'], $params['app_secret']);
-			$oauth->setToken($params['token'], $params['token_secret']);
-			$this->dropbox = new \Dropbox_API($oauth, 'dropbox');
-			$this->mkdir('');
 		} else {
 			throw new \Exception('Creating \OC\Files\Storage\Dropbox storage failed');
 		}
 	}
 
+	private function init() {
+		if ($this->ready) {
+			return;
+		}
+		$this->ready = true;
+		$oauth = new \Dropbox_OAuth_Curl($this->appKey, $this->appSecret);
+		$oauth->setToken($this->token, $this->tokenSecret);
+		$this->dropbox = new \Dropbox_API($oauth, 'dropbox');
+		if ($this->root !== '') {
+			$this->mkdir('');
+		}
+	}
+
 	private function getMetaData($path, $list = false) {
+		$this->init();
 		$path = $this->root.$path;
 		if ( ! $list && isset($this->metaData[$path])) {
 			return $this->metaData[$path];
@@ -89,10 +106,11 @@ class Dropbox extends \OC\Files\Storage\Common {
 	}
 
 	public function getId(){
-		return $this->id;
+		return 'dropbox::'.$this->appKey.$this->token.'/'.$this->root;
 	}
 
 	public function mkdir($path) {
+		$this->init();
 		$path = $this->root.$path;
 		try {
 			$this->dropbox->createFolder($path);
@@ -104,10 +122,12 @@ class Dropbox extends \OC\Files\Storage\Common {
 	}
 
 	public function rmdir($path) {
+		$this->init();
 		return $this->unlink($path);
 	}
 
 	public function opendir($path) {
+		$this->init();
 		$contents = $this->getMetaData($path, true);
 		if ($contents) {
 			$files = array();
@@ -121,6 +141,7 @@ class Dropbox extends \OC\Files\Storage\Common {
 	}
 
 	public function stat($path) {
+		$this->init();
 		$metaData = $this->getMetaData($path);
 		if ($metaData) {
 			$stat['size'] = $metaData['bytes'];
@@ -132,6 +153,7 @@ class Dropbox extends \OC\Files\Storage\Common {
 	}
 
 	public function filetype($path) {
+		$this->init();
 		if ($path == '' || $path == '/') {
 			return 'dir';
 		} else {
@@ -148,14 +170,17 @@ class Dropbox extends \OC\Files\Storage\Common {
 	}
 
 	public function isReadable($path) {
+		$this->init();
 		return $this->file_exists($path);
 	}
 
 	public function isUpdatable($path) {
+		$this->init();
 		return $this->file_exists($path);
 	}
 
 	public function file_exists($path) {
+		$this->init();
 		if ($path == '' || $path == '/') {
 			return true;
 		}
@@ -166,6 +191,7 @@ class Dropbox extends \OC\Files\Storage\Common {
 	}
 
 	public function unlink($path) {
+		$this->init();
 		$path = $this->root.$path;
 		try {
 			$this->dropbox->delete($path);
@@ -177,6 +203,7 @@ class Dropbox extends \OC\Files\Storage\Common {
 	}
 
 	public function rename($path1, $path2) {
+		$this->init();
 		$path1 = $this->root.$path1;
 		$path2 = $this->root.$path2;
 		try {
@@ -189,6 +216,7 @@ class Dropbox extends \OC\Files\Storage\Common {
 	}
 
 	public function copy($path1, $path2) {
+		$this->init();
 		$path1 = $this->root.$path1;
 		$path2 = $this->root.$path2;
 		try {
@@ -201,6 +229,7 @@ class Dropbox extends \OC\Files\Storage\Common {
 	}
 
 	public function fopen($path, $mode) {
+		$this->init();
 		$path = $this->root.$path;
 		switch ($mode) {
 			case 'r':
@@ -244,6 +273,7 @@ class Dropbox extends \OC\Files\Storage\Common {
 	}
 
 	public function writeBack($tmpFile) {
+		$this->init();
 		if (isset(self::$tempFiles[$tmpFile])) {
 			$handle = fopen($tmpFile, 'r');
 			try {
@@ -256,6 +286,7 @@ class Dropbox extends \OC\Files\Storage\Common {
 	}
 
 	public function getMimeType($path) {
+		$this->init();
 		if ($this->filetype($path) == 'dir') {
 			return 'httpd/unix-directory';
 		} else {
@@ -268,6 +299,7 @@ class Dropbox extends \OC\Files\Storage\Common {
 	}
 
 	public function free_space($path) {
+		$this->init();
 		try {
 			$info = $this->dropbox->getAccountInfo();
 			return $info['quota_info']['quota'] - $info['quota_info']['normal'];
