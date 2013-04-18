@@ -10,7 +10,7 @@ if (version_compare($installedVersion, '1.1.6', '<')) {
 								.' WHERE `userid` = ?'
 								.' AND `propertypath` = ?');
 	while( $row = $result->fetchRow()) {
-		if ( $row['propertyname'][0] != '{' ) {
+		if ( $row['propertyname'][0] !== '{' ) {
 			$updateQuery->execute(array('{DAV:}' + $row['propertyname'], $row['userid'], $row['propertypath']));
 		}
 	}

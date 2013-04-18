@@ -77,7 +77,7 @@ if (\OC\Files\Filesystem::file_exists($target)) {
 }
 
 if($source) {
-	if(substr($source, 0, 8)!='https://' and substr($source, 0, 7)!='http://') {
+	if(substr($source, 0, 8) !== 'https://' and substr($source, 0, 7) !== 'http://') {
 		OCP\JSON::error(array('data' => array( 'message' => $l10n->t('Not a valid source') )));
 		exit();
 	}
