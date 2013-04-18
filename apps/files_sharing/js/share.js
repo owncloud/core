@@ -32,6 +32,15 @@ $(document).ready(function() {
 				$(tr).addClass('mouseOver');
 				OC.Share.showDropDown(itemType, $(tr).data('id'), appendTo, true, possiblePermissions);
 			}
+			// If Versions is open, Hides Share.
+			if (($('#dropdown-version').length > 0) && $('#dropdown-version').hasClass('drop-versions')) {
+				if ($('#dropdown-version').length > 0) {
+					$('#dropdown-version').hide('blind', function() {
+						$('#dropdown-version').remove();
+						$('tr').removeClass('mouseOver');
+					});
+				}
+			}
 		});
 		OC.Share.loadIcons('file');
 	}
