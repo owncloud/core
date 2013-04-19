@@ -32,7 +32,7 @@ class Shared_Watcher extends Watcher {
 	 * @param string $path
 	 */
 	public function checkUpdate($path) {
-		if ($path != '') {
+		if ($path !== '') {
 			parent::checkUpdate($path);
 		}
 	}
@@ -43,7 +43,7 @@ class Shared_Watcher extends Watcher {
 	 * @param string $path
 	 */
 	public function cleanFolder($path) {
-		if ($path != '') {
+		if ($path !== '') {
 			parent::cleanFolder($path);
 		}
 	}

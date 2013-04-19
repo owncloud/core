@@ -30,7 +30,7 @@ class Shared_Permissions extends Permissions {
 	 * @return int (-1 if file no permissions set)
 	 */
 	public function get($fileId, $user) {
-		if ($fileId == -1) {
+		if ($fileId === -1) {
 			return \OCP\PERMISSION_READ;
 		}
 		$source = \OCP\Share::getItemSharedWithBySource('file', $fileId, \OC_Share_Backend_File::FORMAT_SHARED_STORAGE,

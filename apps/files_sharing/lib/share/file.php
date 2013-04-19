@@ -71,7 +71,7 @@ class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 	}
 
 	public function formatItems($items, $format, $parameters = null) {
-		if ($format == self::FORMAT_SHARED_STORAGE) {
+		if ($format === self::FORMAT_SHARED_STORAGE) {
 			// Only 1 item should come through for this format call
 			return array(
 				'parent' => $items[key($items)]['parent'],
@@ -80,7 +80,7 @@ class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 				'permissions' => $items[key($items)]['permissions'],
 				'uid_owner' => $items[key($items)]['uid_owner']
 			);
-		} else if ($format == self::FORMAT_GET_FOLDER_CONTENTS) {
+		} else if ($format === self::FORMAT_GET_FOLDER_CONTENTS) {
 			$files = array();
 			foreach ($items as $item) {
 				$file = array();
@@ -98,7 +98,7 @@ class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 				$files[] = $file;
 			}
 			return $files;
-		} else if ($format == self::FORMAT_FILE_APP_ROOT) {
+		} else if ($format === self::FORMAT_FILE_APP_ROOT) {
 			$mtime = 0;
 			$size = 0;
 			foreach ($items as $item) {
@@ -114,13 +114,13 @@ class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 				'mimetype' => 'httpd/unix-directory',
 				'size' => $size
 			);
-		} else if ($format == self::FORMAT_OPENDIR) {
+		} else if ($format === self::FORMAT_OPENDIR) {
 			$files = array();
 			foreach ($items as $item) {
 				$files[] = basename($item['file_target']);
 			}
 			return $files;
-		} else if ($format == self::FORMAT_GET_ALL) {
+		} else if ($format === self::FORMAT_GET_ALL) {
 			$ids = array();
 			foreach ($items as $item) {
 				$ids[] = $item['file_source'];
@@ -137,7 +137,7 @@ class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 	}
 
 	public static function getSource($target) {
-		if ($target == '') {
+		if ($target === '') {
 			return false;
 		}
 		$target = '/'.$target;
