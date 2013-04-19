@@ -66,23 +66,10 @@ class OC_TemplateLayout extends OC_Template {
 			$file = $info[2];
 			$paths = explode('/', $file);
 
-			$in_root = false;
-			foreach(OC::$APPSROOTS as $app_root) {
-				if($root == $app_root['path']) {
-					$in_root = true;
-					break;
-				}
-			}
-
-			if($in_root ) {
-				$app = $paths[0];
-				unset($paths[0]);
-				$path = implode('/', $paths);
-				$this->append( 'cssfiles', OC_Helper::linkTo($app, $path) . $versionParameter);
-			}
-			else {
-				$this->append( 'cssfiles', $web.'/'.$file);
-			}
+			$app = $paths[0];
+			unset($paths[0]);
+			$path = implode('/', $paths);
+			$this->append( 'cssfiles', OC_Helper::linkTo($app, $path) . $versionParameter);
 		}
 	}
 
