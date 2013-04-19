@@ -30,8 +30,8 @@ $RUNTIME_APPTYPES=array('filesystem');
 // Check if we are a user
 OCP\User::checkLoggedIn();
 
-$files = $_GET["files"];
-$dir = $_GET["dir"];
+$files = urldecode($_GET["files"]);
+$dir = urldecode($_GET["dir"]);
 
 $files_list = json_decode($files);
 // in case we get only a single file
