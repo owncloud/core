@@ -19,11 +19,17 @@ body {
 	color:#fff;
 }
 
+#header #public_upload,
 #header #download {
 	font-weight:700;
 	margin-left:2em;
 }
 
+#header #public_upload {
+    margin-left: 0.3em;
+}
+
+#header #public_upload img,
 #header #download img {
 	padding-left:.1em;
 	padding-right:.3em;

@@ -23,6 +23,7 @@ if (isset($_GET['t'])) {
 		$shareOwner = $linkItem['uid_owner'];
 		$fileOwner = null;
 		$path = null;
+
 		if (isset($linkItem['parent'])) {
 			$parent = $linkItem['parent'];
 			while (isset($parent)) {
@@ -128,12 +129,17 @@ if (isset($path)) {
 		OCP\Util::addStyle('files_sharing', 'public');
 		OCP\Util::addScript('files_sharing', 'public');
 		OCP\Util::addScript('files', 'fileactions');
+                OCP\Util::addScript('files', 'jquery.iframe-transport');
+                OCP\Util::addScript('files', 'jquery.fileupload');
 		$tmpl = new OCP\Template('files_sharing', 'public', 'base');
 		$tmpl->assign('uidOwner', $shareOwner);
 		$tmpl->assign('displayName', \OCP\User::getDisplayName($shareOwner));
 		$tmpl->assign('filename', $file);
 		$tmpl->assign('mimetype', \OC\Files\Filesystem::getMimeType($path));
 		$tmpl->assign('fileTarget', basename($linkItem['file_target']));
+                $tmpl->assign('dirToken', $linkItem['token']);
+                $tmpl->assign('allowPublicUploadEnabled', (($linkItem['permissions'] & OCP\PERMISSION_CREATE) ? true : false ));
+
 		$urlLinkIdentifiers= (isset($token)?'&t='.$token:'')
 							.(isset($_GET['dir'])?'&dir='.$_GET['dir']:'')
 							.(isset($_GET['file'])?'&file='.$_GET['file']:'');
