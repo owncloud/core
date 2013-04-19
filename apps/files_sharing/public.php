@@ -10,9 +10,9 @@ if (\OC_Appconfig::getValue('core', 'shareapi_allow_links', 'yes') !== 'yes') {
 }
 
 function fileCmp($a, $b) {
-	if ($a['type'] == 'dir' and $b['type'] != 'dir') {
+	if ($a['type'] === 'dir' and $b['type'] !== 'dir') {
 		return -1;
-	} elseif ($a['type'] != 'dir' and $b['type'] == 'dir') {
+	} elseif ($a['type'] !== 'dir' and $b['type'] === 'dir') {
 		return 1;
 	} else {
 		return strnatcasecmp($a['name'], $b['name']);
@@ -59,7 +59,7 @@ if (isset($path)) {
 			$password = $_POST['password'];
 			if ($linkItem['share_type'] == OCP\Share::SHARE_TYPE_LINK) {
 				// Check Password
-				$forcePortable = (CRYPT_BLOWFISH != 1);
+				$forcePortable = (CRYPT_BLOWFISH !== 1);
 				$hasher = new PasswordHash(8, $forcePortable);
 				if (!($hasher->CheckPassword($password.OC_Config::getValue('passwordsalt', ''),
 											 $linkItem['share_with']))) {
@@ -112,9 +112,9 @@ if (isset($path)) {
 			if ($files_list === NULL ) {
 				$files_list = array($files);
 			}
-			OC_Files::get($path, $files_list, $_SERVER['REQUEST_METHOD'] == 'HEAD');
+			OC_Files::get($path, $files_list, $_SERVER['REQUEST_METHOD'] === 'HEAD');
 		} else {
-			OC_Files::get($dir, $file, $_SERVER['REQUEST_METHOD'] == 'HEAD');
+			OC_Files::get($dir, $file, $_SERVER['REQUEST_METHOD'] === 'HEAD');
 		}
 		exit();
 	} else {
@@ -164,7 +164,7 @@ if (isset($path)) {
 			foreach (\OC\Files\Filesystem::getDirectoryContent($path) as $i) {
 				$totalSize += $i['size'];
 				$i['date'] = OCP\Util::formatDate($i['mtime']);
-				if ($i['type'] == 'file') {
+				if ($i['type'] === 'file') {
 					$fileinfo = pathinfo($i['name']);
 					$i['basename'] = $fileinfo['filename'];
 					if (!empty($fileinfo['extension'])) {
@@ -183,7 +183,7 @@ if (isset($path)) {
 			$breadcrumb = array();
 			$pathtohere = '';
 			foreach (explode('/', $getPath) as $i) {
-				if ($i != '') {
+				if ($i !== '') {
 					$pathtohere .= '/' . $i;
 					$breadcrumb[] = array('dir' => $pathtohere, 'name' => $i);
 				}
@@ -221,7 +221,7 @@ if (isset($path)) {
 			$tmpl->assign('dir', $dir);
 
 			// Show file preview if viewer is available
-			if ($type == 'file') {
+			if ($type === 'file') {
 				$tmpl->assign('downloadURL', OCP\Util::linkToPublic('files') . $urlLinkIdentifiers . '&download');
 			} else {
 				$tmpl->assign('downloadURL', OCP\Util::linkToPublic('files')

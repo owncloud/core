@@ -69,11 +69,11 @@
 		<?php if (isset($_['folder'])): ?>
 			<?php print_unescaped($_['folder']); ?>
 		<?php else: ?>
-			<?php if (substr($_['mimetype'], 0, strpos($_['mimetype'], '/')) == 'image'): ?>
+			<?php if (substr($_['mimetype'], 0, strpos($_['mimetype'], '/')) === 'image'): ?>
 				<div id="imgframe">
 					<img src="<?php p($_['downloadURL']); ?>" />
 				</div>
-			<?php elseif (substr($_['mimetype'], 0, strpos($_['mimetype'], '/')) == 'video'): ?>
+			<?php elseif (substr($_['mimetype'], 0, strpos($_['mimetype'], '/')) === 'video'): ?>
 				<div id="imgframe">
 					<video tabindex="0" controls="" autoplay="">
 						<source src="<?php p($_['downloadURL']); ?>" type="<?php p($_['mimetype']); ?>" />
