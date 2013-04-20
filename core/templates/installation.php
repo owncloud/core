@@ -58,32 +58,11 @@
 		</p>
 	</fieldset>
 
-	<fieldset id="datadirField">
-		<legend><a id="showAdvanced"><?php p($l->t( 'Advanced' )); ?> <img class="svg" src="<?php print_unescaped(image_path('', 'actions/caret-dark.svg')); ?>" /></a></legend>
-		<div id="datadirContent">
-			<label for="directory"><?php p($l->t( 'Data folder' )); ?></label>
-			<input type="text" name="directory" id="directory"
-				placeholder="<?php p(OC::$SERVERROOT."/data"); ?>"
-				value="<?php p(OC_Helper::init_var('directory', $_['directory'])); ?>" />
-		</div>
-	</fieldset>
-
 	<fieldset id='databaseField'>
 		<?php if($_['hasMySQL'] or $_['hasPostgreSQL'] or $_['hasOracle'] or $_['hasMSSQL'])
 			$hasOtherDB = true; else $hasOtherDB =false; //other than SQLite ?>
 		<legend><?php p($l->t( 'Configure the database' )); ?></legend>
 		<div id="selectDbType">
-		<?php if($_['hasSQLite']): ?>
-		<input type='hidden' id='hasSQLite' value="true" />
-		<?php if(!$hasOtherDB): ?>
-		<p>SQLite <?php p($l->t( 'will be used' )); ?>.</p>
-		<input type="hidden" id="dbtype" name="dbtype" value="sqlite" />
-		<?php else: ?>
-		<input type="radio" name="dbtype" value="sqlite" id="sqlite"
-			<?php OC_Helper::init_radio('dbtype', 'sqlite', 'sqlite'); ?>/>
-		<label class="sqlite" for="sqlite">SQLite</label>
-		<?php endif; ?>
-		<?php endif; ?>
 
 		<?php if($_['hasMySQL']): ?>
 		<input type='hidden' id='hasMySQL' value='true'/>
@@ -92,7 +71,7 @@
 		<input type="hidden" id="dbtype" name="dbtype" value="mysql" />
 		<?php else: ?>
 		<input type="radio" name="dbtype" value="mysql" id="mysql"
-			<?php OC_Helper::init_radio('dbtype', 'mysql', 'sqlite'); ?>/>
+			<?php OC_Helper::init_radio('dbtype', 'mysql', 'mysql'); ?>/>
 		<label class="mysql" for="mysql">MySQL</label>
 		<?php endif; ?>
 		<?php endif; ?>
@@ -104,7 +83,7 @@
 		<?php else: ?>
 		<label class="pgsql" for="pgsql">PostgreSQL</label>
 		<input type="radio" name="dbtype" value='pgsql' id="pgsql"
-			<?php OC_Helper::init_radio('dbtype', 'pgsql', 'sqlite'); ?>/>
+			<?php OC_Helper::init_radio('dbtype', 'pgsql', 'mysql'); ?>/>
 		<?php endif; ?>
 		<?php endif; ?>
 
@@ -115,7 +94,7 @@
 		<?php else: ?>
 		<label class="oci" for="oci">Oracle</label>
 		<input type="radio" name="dbtype" value='oci' id="oci"
-			<?php OC_Helper::init_radio('dbtype', 'oci', 'sqlite'); ?>/>
+			<?php OC_Helper::init_radio('dbtype', 'oci', 'mysql'); ?>/>
 		<?php endif; ?>
 		<?php endif; ?>
         
@@ -129,6 +108,18 @@
 		<input type="radio" name="dbtype" value='mssql' id="mssql" <?php OC_Helper::init_radio('dbtype', 'mssql', 'sqlite'); ?>/>
 		<?php endif; ?>
 		<?php endif; ?>        
+
+		<?php if($_['hasSQLite']): ?>
+		<input type='hidden' id='hasSQLite' value="true" />
+		<?php if(!$hasOtherDB): ?>
+		<p>SQLite <?php p($l->t( 'will be used' )); ?>.</p>
+		<input type="hidden" id="dbtype" name="dbtype" value="sqlite" />
+		<?php else: ?>
+		<input type="radio" name="dbtype" value="sqlite" id="sqlite"
+			<?php OC_Helper::init_radio('dbtype', 'sqlite', 'mysql'); ?>/>
+		<label class="sqlite" for="sqlite">SQLite</label>
+		<?php endif; ?>
+		<?php endif; ?>
 		</div>
 
 		<?php if($hasOtherDB): ?>
@@ -162,11 +153,23 @@
 			</p>
 		</div>
 		<?php endif; ?>
+		<?php if($_['hasMySQL'] or $_['hasPostgreSQL'] or $_['hasOracle'] or $_['hasMSSQL']): ?>
 		<p class="infield groupbottom">
 			<label for="dbhost" class="infield" id="dbhostlabel"><?php p($l->t( 'Database host' )); ?></label>
 			<input type="text" name="dbhost" id="dbhost" placeholder=""
 				value="<?php p(OC_Helper::init_var('dbhost', 'localhost')); ?>" />
 		</p>
+		<?php endif; ?>
+	</fieldset>
+
+	<fieldset id="datadirField">
+		<legend><a id="showAdvanced"><?php p($l->t( 'Advanced' )); ?> <img class="svg" src="<?php print_unescaped(image_path('', 'actions/caret-dark.svg')); ?>" /></a></legend>
+		<div id="datadirContent">
+			<label for="directory"><?php p($l->t( 'Data folder' )); ?></label>
+			<input type="text" name="directory" id="directory"
+				placeholder="<?php p(OC::$SERVERROOT."/data"); ?>"
+				value="<?php p(OC_Helper::init_var('directory', $_['directory'])); ?>" />
+		</div>
 	</fieldset>
 
 	<div class="buttons"><input type="submit" class="primary" value="<?php p($l->t( 'Finish setup' )); ?>" /></div>
