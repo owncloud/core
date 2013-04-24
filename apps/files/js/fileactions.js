@@ -96,7 +96,12 @@ var FileActions = {
 				if (img) {
 					html += '<img class ="svg" src="' + img + '" /> ';
 				}
-				html += t('files', name) + '</a>';
+				// translation of "Share" is located in 'core' and not 'files'
+				if(name === 'Share')
+					html += t('core', name);
+				else
+					html += t('files', name);
+				html += '</a>';
 
 				var element = $(html);
 				element.data('action', name);
