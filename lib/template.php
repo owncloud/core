@@ -186,10 +186,14 @@ class OC_Template{
 		$this->l10n = OC_L10N::get($parts[0]);
 
 		// Some headers to enhance security
-		header('X-Frame-Options: Sameorigin'); // Disallow iFraming from other domains
 		header('X-XSS-Protection: 1; mode=block'); // Enforce browser based XSS filters
 		header('X-Content-Type-Options: nosniff'); // Disable sniffing the content type for IE
 
+		// Frame restriction policy
+		// If you change the standard policy, please also change it in config.sample.php
+		$framePolicy = OC_Config::getValue('custom_csp_policy',	'Sameorigin');
+		header('X-Frame-Options: '.$framePolicy); // Standard		
+		
 		// Content Security Policy
 		// If you change the standard policy, please also change it in config.sample.php
 		$policy = OC_Config::getValue('custom_csp_policy',
