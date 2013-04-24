@@ -149,6 +149,7 @@ $CONFIG = array(
 "custom_csp_policy" => "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; frame-src *; img-src *; font-src 'self' data:",
 
 /* Custom frame policy, changing this will overwrite the standard policy */
+/* SECURITY RISK! */
 "custom_frame_policy" => "Sameorigin",
 	
 /* The directory where the user data is stored, default to data in the owncloud

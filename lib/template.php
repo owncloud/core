@@ -191,8 +191,8 @@ class OC_Template{
 
 		// Frame restriction policy
 		// If you change the standard policy, please also change it in config.sample.php
-		$framePolicy = OC_Config::getValue('custom_csp_policy',	'Sameorigin');
-		header('X-Frame-Options: '.$framePolicy); // Standard		
+		$framePolicy = OC_Config::getValue('custom_frame_policy',	'Sameorigin');
+		header('X-Frame-Options: '.$framePolicy);		
 		
 		// Content Security Policy
 		// If you change the standard policy, please also change it in config.sample.php
