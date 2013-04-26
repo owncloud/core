@@ -42,7 +42,7 @@ class Storage {
 	public static function getUidAndFilename($filename) {
 		$uid = \OC\Files\Filesystem::getOwner($filename);
 		\OC\Files\Filesystem::initMountPoints($uid);
-		if ( $uid != \OCP\User::getUser() ) {
+		if ( $uid !== \OCP\User::getUser() ) {
 			$info = \OC\Files\Filesystem::getFileInfo($filename);
 			$ownerView = new \OC\Files\View('/'.$uid.'/files');
 			$filename = $ownerView->getPath($info['fileid']);
@@ -85,7 +85,7 @@ class Storage {
 	 * store a new version of a file.
 	 */
 	public static function store($filename) {
-		if(\OCP\Config::getSystemValue('files_versions', Storage::DEFAULTENABLED)=='true') {
+		if(\OCP\Config::getSystemValue('files_versions', Storage::DEFAULTENABLED) === 'true') {
 
 			// if the file gets streamed we need to remove the .part extension
 			// to get the right target
@@ -222,7 +222,7 @@ class Storage {
 	 */
 	public static function rollback($file, $revision) {
 
-		if(\OCP\Config::getSystemValue('files_versions', Storage::DEFAULTENABLED)=='true') {
+		if(\OCP\Config::getSystemValue('files_versions', Storage::DEFAULTENABLED) === 'true') {
 			list($uid, $filename) = self::getUidAndFilename($file);
 			$users_view = new \OC\Files\View('/'.$uid);
 			$files_view = new \OC\Files\View('/'.\OCP\User::getUser().'/files');
@@ -349,7 +349,7 @@ class Storage {
 	 * @return size of vesions
 	 */
 	private static function calculateSize($uid) {
-		if (\OCP\Config::getSystemValue('files_versions', Storage::DEFAULTENABLED) == 'true') {
+		if (\OCP\Config::getSystemValue('files_versions', Storage::DEFAULTENABLED) === 'true') {
 			$view = new \OC\Files\View('/' . $uid . '/files_versions');
 
 			$size = 0;
@@ -479,7 +479,7 @@ class Storage {
 	 * @brief Erase a file's versions which exceed the set quota
 	 */
 	private static function expire($filename, $versionsSize = null, $offset = 0) {
-		if(\OCP\Config::getSystemValue('files_versions', Storage::DEFAULTENABLED)=='true') {
+		if(\OCP\Config::getSystemValue('files_versions', Storage::DEFAULTENABLED) === 'true') {
 			list($uid, $filename) = self::getUidAndFilename($filename);
 			$versionsFileview = new \OC\Files\View('/'.$uid.'/files_versions');
 
