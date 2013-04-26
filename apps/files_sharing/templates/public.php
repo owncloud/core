@@ -23,7 +23,7 @@
 
         <a href="#" class="button" id="publicUpload"><img class="svg" alt="Upload" src="<?php print_unescaped(OCP\image_path("core", "actions/upload.svg")); ?>" /><?php p($l->t('Upload'))?></a>
 
-        <input id="publicUploadFileSelect" type="file" style="display:none" name="files[]" data-url="<?php print_unescaped(OCP\Util::linkTo('files', 'ajax/upload.php')); ?>" multiple>
+        <input id="publicUploadFileSelect" type="file" style="display:none" name="files[]" data-url="<?php print_unescaped(OCP\Util::linkTo('files_sharing', 'ajax/upload.php')); ?>" multiple>
 
         <input type="hidden" id="publicUploadMaxFileSize" name="MAX_FILE_SIZE" value="<?php p($_['upload_max_filesize']) ?>" />
         <input type="hidden" id="publicUploadRequestToken" name="requesttoken" value="<?php p($_['requesttoken']) ?>" />
