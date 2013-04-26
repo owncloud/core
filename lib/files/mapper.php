@@ -168,6 +168,9 @@ class Mapper
 	}
 
 	public function slugifyPath($path, $index=null) {
+		
+		$path = str_replace('\', '/', $path);
+		
 		$path = $this->stripRootFolder($path, $this->unchangedPhysicalRoot);
 
 		$pathElements = explode('/', $path);
