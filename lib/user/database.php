@@ -179,6 +179,18 @@ class OC_User_Database extends OC_User_Backend {
 	}
 
 	/**
+	 * @brief Check if the string is an email
+	 * @param $string The string to check
+	 * @returns boolean
+	 *
+	 * Check if the users is trying to login with email or with username
+	 * returns true if $string is an email or false
+	 */
+	public function isEmail($string) {
+		return filter_var($string, FILTER_VALIDATE_EMAIL);
+	}
+	
+	/**
 	 * @brief Check if the password is correct
 	 * @param $uid The username
 	 * @param $password The password
@@ -188,10 +200,17 @@ class OC_User_Database extends OC_User_Backend {
 	 * returns the user id or false
 	 */
 	public function checkPassword( $uid, $password ) {
-		$query = OC_DB::prepare( 'SELECT `uid`, `password` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)' );
-		$result = $query->execute( array( $uid));
-
+	
+		$type = self::isEmail($uid) ? 'email' : 'uid';
+		
+		$sql = "SELECT `uid`, `password` FROM `*PREFIX*users` WHERE LOWER($type) = LOWER(?)";
+							
+		$query = OC_DB::prepare( $sql );
+		
+		$result = $query->execute( array($uid));
+		
 		$row=$result->fetchRow();
+			
 		if($row) {
 			$storedHash=$row['password'];
 			if ($storedHash[0]=='$') {//the new phpass based hashing
