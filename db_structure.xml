@@ -912,13 +912,6 @@
 				<default></default>
 				<length>64</length>
 			</field>
-			
-			<field>
-				<name>email</name>
-				<type>text</type>
-				<default></default>
-				<length>256</length>
-			</field>
 
 			<field>
 				<name>password</name>
