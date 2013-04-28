@@ -386,7 +386,7 @@ class OC_User {
 	 * generates a password
 	 */
 	public static function generatePassword() {
-		return uniqId();
+		return OC_Util::generate_random_bytes(30);
 	}
 
 	/**
@@ -527,7 +527,7 @@ class OC_User {
 		foreach (self::$_usedBackends as $backend) {
 			$backendDisplayNames = $backend->getDisplayNames($search, $limit, $offset);
 			if (is_array($backendDisplayNames)) {
-				$displayNames = array_merge($displayNames, $backendDisplayNames);
+				$displayNames = $displayNames + $backendDisplayNames;
 			}
 		}
 		asort($displayNames);
@@ -633,9 +633,9 @@ class OC_User {
 	public static function setMagicInCookie($username, $token) {
 		$secure_cookie = OC_Config::getValue("forcessl", false);
 		$expires = time() + OC_Config::getValue('remember_login_cookie_lifetime', 60*60*24*15);
-		setcookie("oc_username", $username, $expires, '', '', $secure_cookie);
-		setcookie("oc_token", $token, $expires, '', '', $secure_cookie, true);
-		setcookie("oc_remember_login", true, $expires, '', '', $secure_cookie);
+		setcookie("oc_username", $username, $expires, OC::$WEBROOT, '', $secure_cookie);
+		setcookie("oc_token", $token, $expires, OC::$WEBROOT, '', $secure_cookie, true);
+		setcookie("oc_remember_login", true, $expires, OC::$WEBROOT, '', $secure_cookie);
 	}
 
 	/**

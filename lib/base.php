@@ -97,8 +97,15 @@ class OC {
 			$path = 'public/' . strtolower(str_replace('\\', '/', substr($className, 3)) . '.php');
 		} elseif (strpos($className, 'OCA\\') === 0) {
 			foreach (self::$APPSROOTS as $appDir) {
-				$path = $appDir['path'] . '/' . strtolower(str_replace('\\', '/', substr($className, 3)) . '.php');
-				$fullPath = stream_resolve_include_path($path);
+				$path = strtolower(str_replace('\\', '/', substr($className, 4)) . '.php');
+				$fullPath = stream_resolve_include_path($appDir['path'] . '/' . $path);
+				if (file_exists($fullPath)) {
+					require_once $fullPath;
+					return false;
+				}
+				// If not found in the root of the app directory, insert '/lib' after app id and try again.
+				$libpath = substr($path, 0, strpos($path, '/')) . '/lib' . substr($path, strpos($path, '/'));
+				$fullPath = stream_resolve_include_path($appDir['path'] . '/' . $libpath);
 				if (file_exists($fullPath)) {
 					require_once $fullPath;
 					return false;
@@ -323,6 +330,10 @@ class OC {
 		// prevents javascript from accessing php session cookies
 		ini_set('session.cookie_httponly', '1;');
 
+		// set the cookie path to the ownCloud directory
+		$cookie_path = OC::$WEBROOT ?: '/';
+		ini_set('session.cookie_path', $cookie_path);
+
 		// set the session name to the instance id - which is unique
 		session_name(OC_Util::getInstanceId());
 
@@ -354,7 +365,7 @@ class OC {
 		// session timeout
 		if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 60*60*24)) {
 			if (isset($_COOKIE[session_name()])) {
-				setcookie(session_name(), '', time() - 42000, '/');
+				setcookie(session_name(), '', time() - 42000, $cookie_path);
 			}
 			session_unset();
 			session_destroy();
@@ -463,11 +474,13 @@ class OC {
 		stream_wrapper_register('close', 'OC\Files\Stream\Close');
 		stream_wrapper_register('oc', 'OC\Files\Stream\OC');
 
+		self::initTemplateEngine();
 		self::checkConfig();
 		self::checkInstalled();
 		self::checkSSL();
-		self::initSession();
-		self::initTemplateEngine();
+		if ( !self::$CLI ) {
+			self::initSession();
+		}
 
 		$errors = OC_Util::checkServer();
 		if (count($errors) > 0) {
@@ -627,8 +640,13 @@ class OC {
 		// Handle redirect URL for logged in users
 		if (isset($_REQUEST['redirect_url']) && OC_User::isLoggedIn()) {
 			$location = OC_Helper::makeURLAbsolute(urldecode($_REQUEST['redirect_url']));
-			header('Location: ' . $location);
-			return;
+			
+			// Deny the redirect if the URL contains a @
+			// This prevents unvalidated redirects like ?redirect_url=:user@domain.com
+			if (strpos($location, '@') === FALSE) {
+				header('Location: ' . $location);
+				return;
+			}
 		}
 		// Handle WebDAV
 		if ($_SERVER['REQUEST_METHOD'] == 'PROPFIND') {

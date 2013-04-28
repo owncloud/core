@@ -10,7 +10,8 @@
 "Server configuration" => "پیکربندی سرور",
 "Add Server Configuration" => "افزودن پیکربندی سرور",
 "Host" => "میزبانی",
-"Password" => "رمز عبور",
+"Password" => "گذرواژه",
+"Group Filter" => "فیلتر گروه",
 "Port" => "درگاه",
 "in bytes" => "در بایت",
 "Help" => "راه‌نما"

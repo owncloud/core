@@ -38,6 +38,7 @@ class OC_Util {
 
 		$CONFIG_DATADIRECTORY = OC_Config::getValue( "datadirectory", OC::$SERVERROOT."/data" );
 		//first set up the local "root" storage
+		\OC\Files\Filesystem::initMounts();
 		if(!self::$rootMounted) {
 			\OC\Files\Filesystem::mount('\OC\Files\Storage\Local', array('datadir'=>$CONFIG_DATADIRECTORY), '/');
 			self::$rootMounted=true;
@@ -75,7 +76,7 @@ class OC_Util {
 	public static function getVersion() {
 		// hint: We only can count up. Reset minor/patchlevel when
 		// updating major/minor version number.
-		return array(5, 00, 6);
+		return array(5, 80, 02);
 	}
 
 	/**
@@ -83,7 +84,7 @@ class OC_Util {
 	 * @return string
 	 */
 	public static function getVersionString() {
-		return '5.0.5';
+		return '6.0 pre alpha';
 	}
 
 	/**
@@ -220,63 +221,63 @@ class OC_Util {
 		if(!class_exists('ZipArchive')) {
 			$errors[]=array('error'=>'PHP module zip not installed.',
 				'hint'=>'Please ask your server administrator to install the module.');
-			$web_server_restart= false;
+			$web_server_restart=true;
 		}
 		if(!class_exists('DOMDocument')) {
 			$errors[] = array('error' => 'PHP module dom not installed.',
 				'hint' => 'Please ask your server administrator to install the module.');
-			$web_server_restart = false;
+			$web_server_restart =true;
 		}
 		if(!function_exists('xml_parser_create')) {
 			$errors[] = array('error' => 'PHP module libxml not installed.',
 				'hint' => 'Please ask your server administrator to install the module.');
-			$web_server_restart = false;
+			$web_server_restart =true;
 		}
 		if(!function_exists('mb_detect_encoding')) {
 			$errors[]=array('error'=>'PHP module mb multibyte not installed.',
 				'hint'=>'Please ask your server administrator to install the module.');
-			$web_server_restart= false;
+			$web_server_restart=true;
 		}
 		if(!function_exists('ctype_digit')) {
 			$errors[]=array('error'=>'PHP module ctype is not installed.',
 				'hint'=>'Please ask your server administrator to install the module.');
-			$web_server_restart= false;
+			$web_server_restart=true;
 		}
 		if(!function_exists('json_encode')) {
 			$errors[]=array('error'=>'PHP module JSON is not installed.',
 				'hint'=>'Please ask your server administrator to install the module.');
-			$web_server_restart= false;
+			$web_server_restart=true;
 		}
 		if(!function_exists('imagepng')) {
 			$errors[]=array('error'=>'PHP module GD is not installed.',
 				'hint'=>'Please ask your server administrator to install the module.');
-			$web_server_restart= false;
+			$web_server_restart=true;
 		}
 		if(!function_exists('gzencode')) {
 			$errors[]=array('error'=>'PHP module zlib is not installed.',
 				'hint'=>'Please ask your server administrator to install the module.');
-			$web_server_restart= false;
+			$web_server_restart=true;
 		}
 		if(!function_exists('iconv')) {
 			$errors[]=array('error'=>'PHP module iconv is not installed.',
 				'hint'=>'Please ask your server administrator to install the module.');
-			$web_server_restart= false;
+			$web_server_restart=true;
 		}
 		if(!function_exists('simplexml_load_string')) {
 			$errors[]=array('error'=>'PHP module SimpleXML is not installed.',
 				'hint'=>'Please ask your server administrator to install the module.');
-			$web_server_restart= false;
+			$web_server_restart=true;
 		}
 		if(floatval(phpversion())<5.3) {
 			$errors[]=array('error'=>'PHP 5.3 is required.',
 				'hint'=>'Please ask your server administrator to update PHP to version 5.3 or higher.'
 					.' PHP 5.2 is no longer supported by ownCloud and the PHP community.');
-			$web_server_restart= false;
+			$web_server_restart=true;
 		}
 		if(!defined('PDO::ATTR_DRIVER_NAME')) {
 			$errors[]=array('error'=>'PHP PDO module is not installed.',
 				'hint'=>'Please ask your server administrator to install the module.');
-			$web_server_restart= false;
+			$web_server_restart=true;
 		}
 		if (((strtolower(@ini_get('safe_mode')) == 'on')
 			|| (strtolower(@ini_get('safe_mode')) == 'yes')
@@ -284,7 +285,12 @@ class OC_Util {
 			|| (ini_get("safe_mode") == 1 ))) {
 			$errors[]=array('error'=>'PHP Safe Mode is enabled. ownCloud requires that it is disabled to work properly.',
 				'hint'=>'PHP Safe Mode is a deprecated and mostly useless setting that should be disabled. Please ask your server administrator to disable it in php.ini or in your webserver config.');
-			$web_server_restart= false;
+			$web_server_restart=true;
+		}
+		if (get_magic_quotes_gpc() == 1 ) {
+			$errors[]=array('error'=>'Magic Quotes is enabled. ownCloud requires that it is disabled to work properly.',
+				'hint'=>'Magic Quotes is a deprecated and mostly useless setting that should be disabled. Please ask your server administrator to disable it in php.ini or in your webserver config.');
+			$web_server_restart=true;
 		}
 
 		if($web_server_restart) {
@@ -411,18 +417,19 @@ class OC_Util {
 		exit();
 	}
 
-	/**
-	 * get an id unqiue for this instance
-	 * @return string
-	 */
-	public static function getInstanceId() {
-		$id=OC_Config::getValue('instanceid', null);
-		if(is_null($id)) {
-			$id=uniqid();
-			OC_Config::setValue('instanceid', $id);
-		}
-		return $id;
-	}
+    /**
+     * get an id unique for this instance
+     * @return string
+     */
+    public static function getInstanceId() {
+        $id = OC_Config::getValue('instanceid', null);
+        if(is_null($id)) {
+            // We need to guarantee at least one letter in instanceid so it can be used as the session_name
+            $id = 'oc' . OC_Util::generate_random_bytes(10);
+            OC_Config::setValue('instanceid', $id);
+        }
+        return $id;
+    }
 
 	/**
 	 * @brief Static lifespan (in seconds) when a request token expires.
@@ -594,7 +601,7 @@ class OC_Util {
 		} catch(\Sabre_DAV_Exception_NotAuthenticated $e) {
 			$return = true;
 		} catch(\Exception $e) {
-			OC_Log::write('core', 'isWebDAVWorking: NO - Reason: '.$e, OC_Log::WARN);
+			OC_Log::write('core', 'isWebDAVWorking: NO - Reason: '.$e->getMessage(). ' ('.get_class($e).')', OC_Log::WARN);
 			$return = false;
 		}
 
@@ -617,8 +624,8 @@ class OC_Util {
 		$result = setlocale(LC_ALL, 'en_US.UTF-8', 'en_US.UTF8');
 		if($result == false) {
 			return false;
-        }
-        return true;
+		}
+		return true;
 	}
 
 	/**
@@ -633,26 +640,21 @@ class OC_Util {
 	 * Check if the ownCloud server can connect to the internet
 	 */
 	public static function isinternetconnectionworking() {
-		$proxy = OC_Config::getValue('proxy', '');
-		if($proxy <> '') {
-			list($proxy_host, $proxy_port) = explode(':',$proxy);
-			$connected = @fsockopen($proxy_host, $proxy_port, $errno, $errstr, 5);
-			if ($connected) {
-				fclose($connected);
-				return true;
-			}
-			\OC_Log::write('core', 'Couldn\'t connect to proxy server', \OC_log::WARN);
-			return false;
+
+		// in case there is no internet connection on purpose there is no need to display a warning
+		if (!\OC_Config::getValue("has_internet_connection", true)) {
+			return true;
 		}
+
 		// try to connect to owncloud.org to see if http connections to the internet are possible.
-		$connected = @fsockopen("www.owncloud.org", 80, $errno, $errstr, 10);
+		$connected = @fsockopen("www.owncloud.org", 80);
 		if ($connected) {
 			fclose($connected);
 			return true;
 		}else{
 
 			// second try in case one server is down
-			$connected = @fsockopen("apps.owncloud.com", 80, $errno, $errstr, 10);
+			$connected = @fsockopen("apps.owncloud.com", 80);
 			if ($connected) {
 				fclose($connected);
 				return true;
@@ -798,5 +800,26 @@ class OC_Util {
 	public static function runningOnWindows() {
 		return (substr(PHP_OS, 0, 3) === "WIN");
 	}
+
+
+	/**
+	 * Handles the case that there may not be a theme, then check if a "default"
+	 * theme exists and take that one
+	 * @return string the theme
+	 */
+	public static function getTheme() {
+		$theme = OC_Config::getValue("theme");
+
+		if(is_null($theme)) {
+			
+			if(is_dir(OC::$SERVERROOT . '/themes/default')) {
+				$theme = 'default';
+			}
+
+		}
+
+		return $theme;
+	}
+
 
 }

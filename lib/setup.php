@@ -37,7 +37,7 @@ class OC_Setup {
 			$error[] = $l->t('Set an admin password.');
 		}
 		if(empty($options['directory'])) {
-			$error[] = $l->t('Specify a data folder.');
+			$options['directory'] = OC::$SERVERROOT."/data";
 		}
 
 		if($dbtype == 'mysql' or $dbtype == 'pgsql' or $dbtype == 'oci' or $dbtype == 'mssql') { //mysql and postgresql needs more config options
@@ -187,6 +187,7 @@ class OC_Setup {
 					unlink("$datadir/owncloud.db");
 				}
 				//in case of sqlite, we can always fill the database
+				error_log("creating sqlite db");
 				OC_DB::createDbFromStructure('db_structure.xml');
 			}
 
@@ -195,7 +196,7 @@ class OC_Setup {
 				OC_User::createUser($username, $password);
 			}
 			catch(Exception $exception) {
-				$error[] = $exception->getMessage();
+				$error[] = 'Error while trying to create admin user: ' . $exception->getMessage();
 			}
 
 			if(count($error) == 0) {
@@ -243,7 +244,7 @@ class OC_Setup {
 			$dbusername=substr('oc_'.$username, 0, 16);
 			if($dbusername!=$oldUser) {
 				//hash the password so we don't need to store the admin config in the config file
-				$dbpassword=md5(time().$dbpass);
+				$dbpassword=OC_Util::generate_random_bytes(30);
 
 				self::createDBUser($dbusername, $dbpassword, $connection);
 
@@ -333,7 +334,7 @@ class OC_Setup {
 			//add prefix to the postgresql user name to prevent collisions
 			$dbusername='oc_'.$username;
 			//create a new password so we don't need to store the admin config in the config file
-			$dbpassword=md5(OC_Util::generate_random_bytes(30));
+			$dbpassword=OC_Util::generate_random_bytes(30);
 
 			self::pg_createDBUser($dbusername, $dbpassword, $connection);
 
@@ -476,7 +477,7 @@ class OC_Setup {
 			//add prefix to the oracle user name to prevent collisions
 			$dbusername='oc_'.$username;
 			//create a new password so we don't need to store the admin config in the config file
-			$dbpassword=md5(time().$dbpass);
+			$dbpassword=OC_Util::generate_random_bytes(30);
 
 			//oracle passwords are treated as identifiers:
 			//  must start with aphanumeric char
@@ -827,6 +828,10 @@ class OC_Setup {
 		$content.= "AddType image/svg+xml svg svgz\n";
 		$content.= "AddEncoding gzip svgz\n";
 		$content.= "</IfModule>\n";
+		$content.= "<IfModule dir_module>\n";
+		$content.= "DirectoryIndex index.php index.html\n";
+		$content.= "</IfModule>\n";
+		$content.= "AddDefaultCharset utf-8\n";
 		$content.= "Options -Indexes\n";
 		@file_put_contents(OC::$SERVERROOT.'/.htaccess', $content); //supress errors in case we don't have permissions for it
 

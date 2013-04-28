@@ -112,8 +112,8 @@ class Scanner {
 		if ($this->storage->is_dir($path) && ($dh = $this->storage->opendir($path))) {
 			\OC_DB::beginTransaction();
 			while ($file = readdir($dh)) {
+				$child = ($path) ? $path . '/' . $file : $file;
 				if (!$this->isIgnoredDir($file)) {
-					$child = ($path) ? $path . '/' . $file : $file;
 					$data = $this->scanFile($child, $recursive === self::SCAN_SHALLOW);
 					if ($data) {
 						if ($data['size'] === -1) {
