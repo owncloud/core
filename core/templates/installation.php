@@ -168,6 +168,10 @@
 				value="<?php p(OC_Helper::init_var('dbhost', 'localhost')); ?>" />
 		</p>
 	</fieldset>
-
+	<input type="hidden" name="timezone-offset" id="timezone-offset"/>
 	<div class="buttons"><input type="submit" class="primary" value="<?php p($l->t( 'Finish setup' )); ?>" /></div>
 </form>
+
+
+<?php
+OCP\Util::addscript('core', 'visitortimezone');
