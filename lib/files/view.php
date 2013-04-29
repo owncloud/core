@@ -372,7 +372,7 @@ class View {
 					list($storage1, $internalPath1) = Filesystem::resolvePath($absolutePath1 . $postFix1);
 					$storage1->unlink($internalPath1);
 				}
-				if ($this->fakeRoot == Filesystem::getRoot()) {
+				if ($result && ($this->fakeRoot == Filesystem::getRoot())) {
 					\OC_Hook::emit(
 						Filesystem::CLASSNAME,
 						Filesystem::signal_post_rename,
