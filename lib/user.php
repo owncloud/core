@@ -172,7 +172,7 @@ class OC_User {
 			throw new Exception('A valid password must be provided');
 		}
 		// No empty email
-		if(trim($email) == '') {
+		if(trim($email) === '') {
 			throw new Exception('A valid email must be provided');
 		}
 
