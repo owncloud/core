@@ -231,16 +231,27 @@ class USER_LDAP extends lib\Access implements \OCP\UserInterface {
 			return $displayName;
 		}
 
-		$displayName = $this->readAttribute(
-			$this->username2dn($uid),
+		$displayName = preg_replace_callback(
+			'~\\$\\{(\\w+)\\}~',
+			function ($matches) use ($self, $uid) {
+				$r = $self->readAttribute(
+					$self->username2dn($uid),
+					$matches[1]);
+
+				if ($r && count($r) > 0) {
+					return $r[0];
+				}
+			
+				return '';
+			},
 			$this->connection->ldapUserDisplayName);
-
-		if($displayName && (count($displayName) > 0)) {
-			$this->connection->writeToCache($cacheKey, $displayName[0]);
-			return $displayName[0];
-		}
-
-		return null;
+			
+			if($displayName) {
+				$this->connection->writeToCache($cacheKey, $displayName);
+				return $displayName;
+			}
+			
+			return null;
 	}
 
 	/**
