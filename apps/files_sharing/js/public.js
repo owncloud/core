@@ -52,9 +52,9 @@ $(document).ready(function() {
 // head around those yet - rgeber <geber@b1-systems.de>
 
 // Public Upload Button Handler
-$(document).on('click', '#publicUpload', function() {
-  $('#publicUploadFileSelect').trigger('click');
-});
+// $(document).on('click', '#publicUpload', function() {
+//   $('#publicUploadFileSelect').trigger('click');
+// });
 
 // Basic implementation of jquery.fileupload
 $(function () {
