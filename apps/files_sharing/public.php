@@ -196,6 +196,7 @@ if (isset($path)) {
 			$folder->assign('dir', $getPath);
 			$folder->assign('isCreatable', false);
 			$folder->assign('permissions', 0);
+                        $folder->assign('isPublic', true);
 			$folder->assign('files', $files);
 			$folder->assign('uploadMaxFilesize', 0);
 			$folder->assign('uploadMaxHumanFilesize', 0);

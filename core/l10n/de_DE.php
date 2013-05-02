@@ -135,5 +135,5 @@
 "Alternative Logins" => "Alternative Logins",
 "prev" => "Zurück",
 "next" => "Weiter",
-"Updating ownCloud to version %s, this may take a while." => "Aktualisiere ownCloud auf Version %s. Dies könnte eine Weile dauern.",
+"Updating ownCloud to version %s, this may take a while." => "Aktualisiere ownCloud auf Version %s. Dies könnte eine Weile dauern."
 );

@@ -1,3 +1,5 @@
+.gitignore
+3rdparty
 # the default generated dir + db file
 data
 owncloud
@@ -44,7 +46,7 @@ RCS/*
 .project
 .settings
 
-# netbeans 
+# netbeans
 nbproject
 
 # phpStorm
@@ -60,7 +62,7 @@ nbproject
 
 # vim ex mode
 .vimrc
-	
+
 # Mac OS
 .DS_Store
 
