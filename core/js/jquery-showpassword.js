@@ -85,19 +85,6 @@
 					setState( $checkbox, $input, $clone );
 				});
 				
-				$input.bind('keyup', function() {
-					update( $input, $clone )
-				});
-				
-				$clone.bind('keyup', function(){ 
-					update( $clone, $input );
-					
-					// Added for JQuery Validation compatibility
-					// This will trigger validation if it's ON for keyup event
-					$input.trigger('keyup');
-					
-				});
-				
 				// Added for JQuery Validation compatibility
 				// This will trigger validation if it's ON for blur event
 				$clone.bind('blur', function() { $input.trigger('focusout'); });
