@@ -133,15 +133,14 @@ class OC {
 
 	public static function initPaths() {
 		// calculate the root directories
-		OC::$SERVERROOT = str_replace("\\", '/', substr(__DIR__, 0, -4));
-
+		OC::$SERVERROOT = str_replace("\\",'/',$_SERVER['DOCUMENT_ROOT']);
 		// ensure we can find OC_Config
 		set_include_path(
 			OC::$SERVERROOT . '/lib' . PATH_SEPARATOR .
 				get_include_path()
 		);
 
-		OC::$SUBURI = str_replace("\\", "/", substr(realpath($_SERVER["SCRIPT_FILENAME"]), strlen(OC::$SERVERROOT)));
+		OC::$SUBURI = substr($_SERVER["SCRIPT_FILENAME"],strlen(OC::$SERVERROOT));
 		$scriptName = OC_Request::scriptName();
 		if (substr($scriptName, -1) == '/') {
 			$scriptName .= 'index.php';
