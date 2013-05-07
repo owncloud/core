@@ -317,7 +317,7 @@ abstract class Access {
 			}
 			$ldapname = $ldapname[0];
 		}
-		$intname = $isUser ? $this->sanitizeUsername($uuid) : $this->sanitizeUsername($ldapname);
+		$intname = $isUser ? $this->sanitizeUsername($uuid) : $ldapname;
 
 		//a new user/group! Add it only if it doesn't conflict with other backend's users or existing groups
 		//disabling Cache is required to avoid that the new user is cached as not-existing in fooExists check
@@ -1031,7 +1031,7 @@ abstract class Access {
 	 */
 	private function setPagedResultCookie($base, $filter, $limit, $offset, $cookie) {
 		if(!empty($cookie)) {
-			$cachekey = 'lc' . dechex(crc32($base)) . '-' . dechex(crc32($filter)) . '-' .$limit . '-' . $offset;
+			$cachekey = 'lc' . crc32($base) . '-' . crc32($filter) . '-' .$limit . '-' . $offset;
 			$cookie = $this->connection->writeToCache($cachekey, $cookie);
 		}
 	}

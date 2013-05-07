@@ -88,6 +88,8 @@
 "The update was successful. Redirecting you to ownCloud now." => "Aktualizácia bola úspešná. Presmerovávam na prihlasovaciu stránku.",
 "ownCloud password reset" => "Obnovenie hesla pre ownCloud",
 "Use the following link to reset your password: {link}" => "Použite nasledujúci odkaz pre obnovenie vášho hesla: {link}",
+"The link to reset your password has been sent to your email.<br>If you do not receive it within a reasonable amount of time, check your spam/junk folders.<br>If it is not there ask your local administrator ." => "Odkaz na obnovenie hesla bol odoslaný na Vašu emailovú adresu.<br>Ak ho v krátkej dobe neobdržíte, skontrolujte si Váš kôš a priečinok spam.<br>Ak ho ani tam nenájdete, kontaktujte svojho administrátora.",
+"Request failed!<br>Did you make sure your email/username was right?" => "Požiadavka zlyhala.<br>Uistili ste sa, že Vaše používateľské meno a email sú správne?",
 "You will receive a link to reset your password via Email." => "Odkaz pre obnovenie hesla obdržíte e-mailom.",
 "Username" => "Meno používateľa",
 "Request reset" => "Požiadať o obnovenie",

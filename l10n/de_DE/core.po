@@ -3,13 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# arkascha <foss@christian-reiner.info>, 2013
+# traductor <transifex-2.7.mensaje@spamgourmet.com>, 2013
+# Mirodin <blobbyjj@ymail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-04-27 02:16+0200\n"
-"PO-Revision-Date: 2013-04-27 00:17+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"POT-Creation-Date: 2013-05-04 01:58+0200\n"
+"PO-Revision-Date: 2013-05-03 21:40+0000\n"
+"Last-Translator: Mirodin <blobbyjj@ymail.com>\n"
 "Language-Team: German (Germany) <translations@owncloud.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -210,7 +213,7 @@ msgstr "Letztes Jahr"
 
 #: js/js.js:730
 msgid "years ago"
-msgstr "Vor  Jahren"
+msgstr "Vor Jahren"
 
 #: js/oc-dialogs.js:117 js/oc-dialogs.js:247
 msgid "Ok"
@@ -267,7 +270,7 @@ msgstr "Fehler beim Teilen"
 
 #: js/share.js:136
 msgid "Error while unsharing"
-msgstr "Fehler bei der Aufhebung der Teilung"
+msgstr "Fehler beim Aufheben der Freigabe"
 
 #: js/share.js:143
 msgid "Error while changing permissions"
@@ -401,11 +404,11 @@ msgid ""
 "The link to reset your password has been sent to your email.<br>If you do "
 "not receive it within a reasonable amount of time, check your spam/junk "
 "folders.<br>If it is not there ask your local administrator ."
-msgstr ""
+msgstr "Der Link zum Rücksetzen Ihres Passworts ist an Ihre E-Mail-Adresse gesendet worde.<br>Wenn Sie ihn nicht innerhalb einer vernünftigen Zeitspanne erhalten, prüfen Sie bitte Ihre Spam-Verzeichnisse.<br>Wenn er nicht dort ist, fragen Sie Ihren lokalen Administrator."
 
 #: lostpassword/templates/lostpassword.php:12
 msgid "Request failed!<br>Did you make sure your email/username was right?"
-msgstr ""
+msgstr "Anfrage fehlgeschlagen!<br>Haben Sie darauf geachtet, dass E-Mail-Adresse/Nutzername korrekt waren?"
 
 #: lostpassword/templates/lostpassword.php:15
 msgid "You will receive a link to reset your password via Email."
@@ -560,13 +563,18 @@ msgstr "Installation abschließen"
 msgid "web services under your control"
 msgstr "Web-Services unter Ihrer Kontrolle"
 
-#: templates/layout.user.php:58
+#: templates/layout.user.php:36
+#, php-format
+msgid "%s is available. Get more information on how to update."
+msgstr "%s ist nicht verfügbar. Holen Sie weitere Informationen zu Aktualisierungen ein."
+
+#: templates/layout.user.php:61
 msgid "Log out"
 msgstr "Abmelden"
 
 #: templates/login.php:9
 msgid "Automatic logon rejected!"
-msgstr "Automatische Anmeldung verweigert."
+msgstr "Automatische Anmeldung verweigert!"
 
 #: templates/login.php:10
 msgid ""
