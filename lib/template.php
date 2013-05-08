@@ -199,7 +199,7 @@ class OC_Template{
 		// If you change the standard policy, please also change it in config.sample.php
 		$policy = OC_Config::getValue('custom_csp_policy',
 			'default-src \'self\'; '
-			.'script-src \'self\' \'unsafe-eval\'; '
+			.'script-src \'self\' \'unsafe-eval\' \'unsafe-inline\'; '
 			.'style-src \'self\' \'unsafe-inline\'; '
 			.'frame-src *; '
 			.'img-src *; '
