@@ -175,8 +175,10 @@ class Mapper
 
 		// rip off the extension ext from last element
 		$last= end($pathElements);
-		$parts = pathinfo($last);
+		
+                $parts = pathinfo($last);
 		$filename = $parts['filename'];
+		
 		array_pop($pathElements);
 		array_push($pathElements, $filename);
 
@@ -214,8 +216,12 @@ class Mapper
 	private function slugify($text)
 	{
 		// replace non letter or digits by -
-		$text = preg_replace('~[^\\pL\d]+~u', '-', $text);
-
+		if (strncasecmp(PHP_OS, 'WIN', 3) == 0) {
+		$text = preg_replace('~[^\\pL\d\.]+~u', '-', $text); //on windows dots are allowed
+		} else {
+                $text = preg_replace('~[^\\pL\d]+~u', '-', $text);
+                }
+                
 		// trim
 		$text = trim($text, '-');
 
@@ -228,8 +234,12 @@ class Mapper
 		$text = strtolower($text);
 
 		// remove unwanted characters
-		$text = preg_replace('~[^-\w]+~', '', $text);
-
+		if (strncasecmp(PHP_OS, 'WIN', 3) == 0) {
+                $text = preg_replace('~[^-\w\.]+~', '', $text); //on windows dots are allowed
+                } else {
+                $text = preg_replace('~[^-\w]+~', '', $text);
+                }
+    
 		if (empty($text)) {
 			return uniqid();
 		}
