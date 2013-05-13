@@ -159,18 +159,18 @@ OC.Share={
 			dropDown.append('<br/>');
 		}
 		if (possiblePermissions & OC.PERMISSION_SHARE) {
-			dropDown.append($('<input/>').attr({id: 'shareWith', placeholder: t('core', 'Share with')}));
+			dropDown.append($('<input/>').attr({id: 'shareWith', type: 'text', placeholder: t('core', 'Share with')}));
 			dropDown.append($('<ul/>').attr('id','shareWithList'));
 			if (link) {
-				var linkDiv = $('<div/>');
-				linkDiv.append($('<input/>').attr({type: 'checkbox', name: 'linkCheckbox', id: 'linkCheckbox', value: 1}));
-				linkDiv.append($('<label/>').attr('for','linkCheckbox').text(t('core', 'Share with link')));
-				linkDiv.append('<br/>');
-				linkDiv.append($('<input/>').attr({type: 'text', readonly: 'readonly', id: 'linkText'}));
-				linkDiv.append($('<input/>').attr({id: 'showPassword', type: 'checkbox', name: 'showPassword', value: 1}).hide());
-				linkDiv.append($('<label/>').attr('for','showPassword').text(t('core', 'Password protect')));
-				var passDiv = $('<div/>').attr('id','linkPass');
-				passDiv.append($('<input/>').attr({id: 'linkPassText', type: 'password', placeholder: t('core', 'Password')}));
+				var linkDiv = $('<div/>').attr('id', 'link')
+					.append($('<input/>').attr({type: 'checkbox', name: 'linkCheckbox', id: 'linkCheckbox', value: 1}))
+					.append($('<label/>').attr('for','linkCheckbox').text(t('core', 'Share with link')))
+					.append('<br/>')
+					.append($('<input/>').attr({type: 'text', readonly: 'readonly', id: 'linkText'}))
+					.append($('<input/>').attr({id: 'showPassword', type: 'checkbox', name: 'showPassword', value: 1}).hide())
+					.append($('<label/>').attr('for','showPassword').text(t('core', 'Password protect')).hide());
+				var passDiv = $('<div/>').attr('id','linkPass')
+					.append($('<input/>').attr({id: 'linkPassText', type: 'password', placeholder: t('core', 'Password')}));
 				linkDiv.append(passDiv);
 				dropDown.append(linkDiv);
 				var emailForm = $('<form/>').attr('id', 'emailPrivateLink');
@@ -178,10 +178,10 @@ OC.Share={
 				emailForm.append($('<input/>').attr({id: 'emailButton', value: t('core', 'Send'), type: 'submit'}).hide());
 				dropDown.append(emailForm);
 			}
-			var expirationDiv = $('<div/>').attr('id', 'expiration');
-			expirationDiv.append($('<input/>').attr({type: 'checkbox', name: 'expirationCheckbox', id: 'expirationCheckbox', value: 1}));
-			expirationDiv.append($('<label/>').attr('for', 'expirationCheckbox').text(t('core', 'Set expiration date')));
-			expirationDiv.append($('<input/>').attr({type: 'text', id: 'expirationDate', placeholder: t('core', 'Expiration date'), style: 'width: 90%'}).hide());
+			var expirationDiv = $('<div/>').attr('id', 'expiration')
+				.append($('<input/>').attr({type: 'checkbox', name: 'expirationCheckbox', id: 'expirationCheckbox', value: 1}))
+				.append($('<label/>').attr('for', 'expirationCheckbox').text(t('core', 'Set expiration date')))
+				.append($('<input/>').attr({type: 'text', id: 'expirationDate', placeholder: t('core', 'Expiration date'), style: 'width: 90%'}).hide());
 			dropDown.append(expirationDiv);
 			dropDown.appendTo(appendTo);
 			// Reset item shares
