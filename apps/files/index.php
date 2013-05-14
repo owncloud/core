@@ -35,6 +35,7 @@ OCP\Util::addscript('files', 'jquery-visibility');
 OCP\Util::addscript('files', 'filelist');
 
 OCP\App::setActiveNavigationEntry('files_index');
+
 // Load the files
 $dir = '';
 if (isset($_GET['dir'])) {
