@@ -146,7 +146,7 @@ OC.Share={
 	},
 	showDropDown:function(itemType, itemSource, appendTo, link, possiblePermissions) {
 		var data = OC.Share.loadItem(itemType, itemSource);
-		var html = '<div id="dropdown" class="drop" data-item-type="'+itemType+'" data-item-source="'+itemSource+'">';
+		var html = '<div id="dropdown-share" class="drop drop-share" data-item-type="'+itemType+'" data-item-source="'+itemSource+'">';
 		if (data !== false && data.reshare !== false && data.reshare.uid_owner !== undefined) {
 			if (data.reshare.share_type == OC.Share.SHARE_TYPE_GROUP) {
 				html += '<span class="reshare">'+t('core', 'Shared with you and the group {group} by {owner}', {group: data.reshare.share_with, owner: data.reshare.displayname_owner})+'</span>';
@@ -221,8 +221,8 @@ OC.Share={
 			},
 			select: function(event, selected) {
 				event.stopPropagation();
-				var itemType = $('#dropdown').data('item-type');
-				var itemSource = $('#dropdown').data('item-source');
+				var itemType = $('#dropdown-share').data('item-type');
+				var itemSource = $('#dropdown-share').data('item-source');
 				var shareType = selected.item.value.shareType;
 				var shareWith = selected.item.value.shareWith;
 				$(this).val(shareWith);
@@ -252,15 +252,15 @@ OC.Share={
 			html += '</div>';
 			$(html).appendTo(appendTo);
 		}
-		$('#dropdown').show('blind', function() {
+		$('#dropdown-share').show('blind', function() {
 			OC.Share.droppedDown = true;
 		});
 		$('#shareWith').focus();
 	},
 	hideDropDown:function(callback) {
-		$('#dropdown').hide('blind', function() {
+		$('#dropdown-share').hide('blind', function() {
 			OC.Share.droppedDown = false;
-			$('#dropdown').remove();
+			$('#dropdown-share').remove();
 			if (typeof FileActions !== 'undefined') {
 				$('tr').removeClass('mouseOver');
 			}
@@ -417,7 +417,7 @@ $(document).ready(function() {
 				link = true;
 			}
 			if (OC.Share.droppedDown) {
-				if (itemSource != $('#dropdown').data('item')) {
+				if (itemSource != $('#dropdown-share').data('item')) {
 					OC.Share.hideDropDown(function () {
 						OC.Share.showDropDown(itemType, itemSource, appendTo, link, possiblePermissions);
 					});
@@ -434,17 +434,17 @@ $(document).ready(function() {
 		var target = $(event.target);
 		var isMatched = !target.is('.drop, .ui-datepicker-next, .ui-datepicker-prev, .ui-icon')
 			&& !target.closest('#ui-datepicker-div').length;
-		if (OC.Share.droppedDown && isMatched && $('#dropdown').has(event.target).length === 0) {
+		if (OC.Share.droppedDown && isMatched && $('#dropdown-share').has(event.target).length === 0) {
 			OC.Share.hideDropDown();
 		}
 	});
 
-	$(document).on('mouseenter', '#dropdown #shareWithList li', function(event) {
+	$(document).on('mouseenter', '#dropdown-share #shareWithList li', function(event) {
 		// Show permissions and unshare button
 		$(':hidden', this).filter(':not(.cruds)').show();
 	});
 
-	$(document).on('mouseleave', '#dropdown #shareWithList li', function(event) {
+	$(document).on('mouseleave', '#dropdown-share #shareWithList li', function(event) {
 		// Hide permissions and unshare button
 		if (!$('.cruds', this).is(':visible')) {
 			$('a', this).hide();
@@ -457,14 +457,14 @@ $(document).ready(function() {
 		}
 	});
 
-	$(document).on('click', '#dropdown .showCruds', function() {
+	$(document).on('click', '#dropdown-share .showCruds', function() {
 		$(this).parent().find('.cruds').toggle();
 	});
 
-	$(document).on('click', '#dropdown .unshare', function() {
+	$(document).on('click', '#dropdown-share .unshare', function() {
 		var li = $(this).parent();
-		var itemType = $('#dropdown').data('item-type');
-		var itemSource = $('#dropdown').data('item-source');
+		var itemType = $('#dropdown-share').data('item-type');
+		var itemSource = $('#dropdown-share').data('item-source');
 		var shareType = $(li).data('share-type');
 		var shareWith = $(li).data('share-with');
 		OC.Share.unshare(itemType, itemSource, shareType, shareWith, function() {
@@ -478,7 +478,7 @@ $(document).ready(function() {
 		});
 	});
 
-	$(document).on('change', '#dropdown .permissions', function() {
+	$(document).on('change', '#dropdown-share .permissions', function() {
 		if ($(this).attr('name') == 'edit') {
 			var li = $(this).parent().parent()
 			var checkboxes = $('.permissions', li);
@@ -509,16 +509,16 @@ $(document).ready(function() {
 		$(checkboxes).filter(':not(input[name="edit"])').filter(':checked').each(function(index, checkbox) {
 			permissions |= $(checkbox).data('permissions');
 		});
-		OC.Share.setPermissions($('#dropdown').data('item-type'),
-			$('#dropdown').data('item-source'),
+		OC.Share.setPermissions($('#dropdown-share').data('item-type'),
+			$('#dropdown-share').data('item-source'),
 			$(li).data('share-type'),
 			$(li).data('share-with'),
 			permissions);
 	});
 
-	$(document).on('change', '#dropdown #linkCheckbox', function() {
-		var itemType = $('#dropdown').data('item-type');
-		var itemSource = $('#dropdown').data('item-source');
+	$(document).on('change', '#dropdown-share #linkCheckbox', function() {
+		var itemType = $('#dropdown-share').data('item-type');
+		var itemSource = $('#dropdown-share').data('item-source');
 		if (this.checked) {
 			// Create a link
 			OC.Share.share(itemType, itemSource, OC.Share.SHARE_TYPE_LINK, '', OC.PERMISSION_READ, function(data) {
@@ -538,26 +538,26 @@ $(document).ready(function() {
 		}
 	});
 
-	$(document).on('click', '#dropdown #linkText', function() {
+	$(document).on('click', '#dropdown-share #linkText', function() {
 		$(this).focus();
 		$(this).select();
 	});
 
-	$(document).on('click', '#dropdown #showPassword', function() {
+	$(document).on('click', '#dropdown-share #showPassword', function() {
 		$('#linkPass').toggle('blind');
 		if (!$('#showPassword').is(':checked') ) {
-			var itemType = $('#dropdown').data('item-type');
-			var itemSource = $('#dropdown').data('item-source');
+			var itemType = $('#dropdown-share').data('item-type');
+			var itemSource = $('#dropdown-share').data('item-source');
 			OC.Share.share(itemType, itemSource, OC.Share.SHARE_TYPE_LINK, '', OC.PERMISSION_READ);
 		} else {
 			$('#linkPassText').focus();
 		}
 	});
 
-	$(document).on('focusout keyup', '#dropdown #linkPassText', function(event) {
+	$(document).on('focusout keyup', '#dropdown-share #linkPassText', function(event) {
 		if ( $('#linkPassText').val() != '' && (event.type == 'focusout' || event.keyCode == 13) ) {
-			var itemType = $('#dropdown').data('item-type');
-			var itemSource = $('#dropdown').data('item-source');
+			var itemType = $('#dropdown-share').data('item-type');
+			var itemSource = $('#dropdown-share').data('item-source');
 			OC.Share.share(itemType, itemSource, OC.Share.SHARE_TYPE_LINK, $('#linkPassText').val(), OC.PERMISSION_READ, function() {
 				console.log("password set to: '" + $('#linkPassText').val() +"' by event: " + event.type);
 				$('#linkPassText').val('');
@@ -566,12 +566,12 @@ $(document).ready(function() {
 		}
 	});
 
-	$(document).on('click', '#dropdown #expirationCheckbox', function() {
+	$(document).on('click', '#dropdown-share #expirationCheckbox', function() {
 		if (this.checked) {
 			OC.Share.showExpirationDate('');
 		} else {
-			var itemType = $('#dropdown').data('item-type');
-			var itemSource = $('#dropdown').data('item-source');
+			var itemType = $('#dropdown-share').data('item-type');
+			var itemSource = $('#dropdown-share').data('item-source');
 			$.post(OC.filePath('core', 'ajax', 'share.php'), { action: 'setExpirationDate', itemType: itemType, itemSource: itemSource, date: '' }, function(result) {
 				if (!result || result.status !== 'success') {
 					OC.dialogs.alert(t('core', 'Error unsetting expiration date'), t('core', 'Error'));
@@ -581,9 +581,9 @@ $(document).ready(function() {
 		}
 	});
 
-	$(document).on('change', '#dropdown #expirationDate', function() {
-		var itemType = $('#dropdown').data('item-type');
-		var itemSource = $('#dropdown').data('item-source');
+	$(document).on('change', '#dropdown-share #expirationDate', function() {
+		var itemType = $('#dropdown-share').data('item-type');
+		var itemSource = $('#dropdown-share').data('item-source');
 		$.post(OC.filePath('core', 'ajax', 'share.php'), { action: 'setExpirationDate', itemType: itemType, itemSource: itemSource, date: $(this).val() }, function(result) {
 			if (!result || result.status !== 'success') {
 				OC.dialogs.alert(t('core', 'Error setting expiration date'), t('core', 'Error'));
@@ -592,11 +592,11 @@ $(document).ready(function() {
 	});
 
 
-	$(document).on('submit', '#dropdown #emailPrivateLink', function(event) {
+	$(document).on('submit', '#dropdown-share #emailPrivateLink', function(event) {
 		event.preventDefault();
 		var link = $('#linkText').val();
-		var itemType = $('#dropdown').data('item-type');
-		var itemSource = $('#dropdown').data('item-source');
+		var itemType = $('#dropdown-share').data('item-type');
+		var itemSource = $('#dropdown-share').data('item-source');
 		var file = $('tr').filterAttr('data-id', String(itemSource)).data('file');
 		var email = $('#email').val();
 		if (email != '') {
