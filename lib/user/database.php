@@ -63,14 +63,14 @@ class OC_User_Database extends OC_User_Backend {
 	 * Creates a new user. Basic checking of username is done in OC_User
 	 * itself, not in its subclasses.
 	 */
-	public function createUser( $uid, $password ) {
+	public function createUser( $uid, $password, $email ) {
 		if( $this->userExists($uid) ) {
 			return false;
 		}else{
 			$hasher=$this->getHasher();
 			$hash = $hasher->HashPassword($password.OC_Config::getValue('passwordsalt', ''));
-			$query = OC_DB::prepare( 'INSERT INTO `*PREFIX*users` ( `uid`, `password` ) VALUES( ?, ? )' );
-			$result = $query->execute( array( $uid, $hash));
+			$query = OC_DB::prepare( 'INSERT INTO `*PREFIX*users` ( `uid`, `password`, `email` ) VALUES( ?, ?, ? )' );
+			$result = $query->execute( array( $uid, $hash, $email));
 
 			return $result ? true : false;
 		}
