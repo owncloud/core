@@ -34,6 +34,9 @@ OCP\Util::addscript('files', 'filelist');
 OCP\App::setActiveNavigationEntry('files_index');
 // Load the files
 $dir = isset($_GET['dir']) ? stripslashes($_GET['dir']) : '';
+// Save the directory you're working in the session
+session_start();
+if(!isset($_GET['dir'])) { $dir = $_SESSION['dir']; } else { $_SESSION['dir'] = $dir; }
 // Redirect if directory does not exist
 if (!\OC\Files\Filesystem::is_dir($dir . '/')) {
 	header('Location: ' . OCP\Util::getScriptName() . '');
