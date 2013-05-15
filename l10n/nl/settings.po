@@ -390,11 +390,11 @@ msgstr "Commerciële ondersteuning"
 #: templates/personal.php:8
 #, php-format
 msgid "You have used <strong>%s</strong> of the available <strong>%s</strong>"
-msgstr "U heeft <strong>%s</strong> van de <strong>%s</strong>  beschikbaren gebruikt"
+msgstr "U heeft <strong>%s</strong> van de beschikbare <strong>%s</strong> gebruikt"
 
 #: templates/personal.php:15
 msgid "Get the apps to sync your files"
-msgstr "Download de apps om bestanden te synchen"
+msgstr "Download de apps om bestanden te syncen"
 
 #: templates/personal.php:26
 msgid "Show First Run Wizard again"
