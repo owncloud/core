@@ -151,6 +151,12 @@
 					value="<?php p(OC_Helper::init_var('dbname')); ?>"
 					autocomplete="off" pattern="[0-9a-zA-Z$_-]+" />
 			</p>
+			<p class="infield groupmiddle">
+				<label for="dbtableprefix" class="infield"><?php p($l->t( 'Database tableprefix' )); ?></label>
+				<input type="text" name="dbtableprefix" id="dbtableprefix" placeholder=""
+					value="<?php p(OC_Helper::init_var('dbtableprefix')); ?>"
+					autocomplete="off" pattern="[0-9a-zA-Z$_-]+">
+			</p>
 		</div>
 		<?php endif; ?>
 		<?php if($_['hasOracle']): ?>
