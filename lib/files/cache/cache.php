@@ -325,7 +325,7 @@ class Cache {
 		if ($sourceData['mimetype'] === 'httpd/unix-directory') {
 			//find all child entries
 			$query = \OC_DB::prepare('SELECT `path`, `fileid` FROM `*PREFIX*filecache` WHERE `storage` = ? AND `path` LIKE ?');
-			$result = $query->execute(array($this->numericId, $source . '/%'));
+			$result = $query->execute(array($this->storageId, $source . '/%'));
 			$childEntries = $result->fetchAll();
 			$sourceLength = strlen($source);
 			$query = \OC_DB::prepare('UPDATE `*PREFIX*filecache` SET `path` = ?, `path_hash` = ? WHERE `fileid` = ?');
