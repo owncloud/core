@@ -245,13 +245,13 @@ class View {
 		if (!is_null($mtime) and !is_numeric($mtime)) {
 			$mtime = strtotime($mtime);
 		}
-		
+
 		$hooks = array('touch');
-		
+
 		if (!$this->file_exists($path)) {
 			$hooks[] = 'write';
 		}
-		
+
 		return $this->basicOperation('touch', $path, $hooks, $mtime);
 	}
 
@@ -711,7 +711,7 @@ class View {
 						if ($subStorage) {
 							$subCache = $subStorage->getCache('');
 							$rootEntry = $subCache->get('');
-							$data['size'] += $rootEntry['size'];
+							$data['size'] += isset($rootEntry['size']) ? $rootEntry['size'] : 0;
 						}
 					}
 				}
