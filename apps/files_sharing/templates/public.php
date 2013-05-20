@@ -23,10 +23,9 @@
 
         <?php if ($_['allowPublicUploadEnabled']):?>
 
-        <input type="hidden" id="publicUploadMaxFileSize" name="MAX_FILE_SIZE" value="<?php p($_['upload_max_filesize']) ?>" />
+
         <input type="hidden" id="publicUploadRequestToken" name="requesttoken" value="<?php p($_['requesttoken']) ?>" />
-        <input type="hidden" id="publicUploadMaxFileSizeHumanReadable" name="max_human_file_size" value="(max <?php p($_['upload_max_human_filesize']) ?>MB)" />
-        <input type="hidden" id="publicUploadTargetDir" name="dir" value="/<?php p($_['fileUploadPath']) ?>" />
+
         <input type="hidden" id="publicUploadTargetDirToken" name="dirToken" value="<?php p($_['dirToken']) ?>" />
         <div id="publicUploadButtonArray" class="button">
 
