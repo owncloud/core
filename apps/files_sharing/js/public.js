@@ -47,3 +47,32 @@ $(document).ready(function() {
 	}
 
 });
+
+// TODO: Is there a way to add the stuff below as file actions? Haven't got my
+// head around those yet - rgeber <geber@b1-systems.de>
+
+// Public Upload Button Handler
+// $(document).on('click', '#publicUpload', function() {
+//   $('#publicUploadFileSelect').trigger('click');
+// });
+
+// Basic implementation of jquery.fileupload
+$(function () {
+  $('#publicUploadFileSelect').fileupload({
+    dataType: 'json',
+    formData: {
+      MAX_FILE_SIZE: $('#publicUploadMaxFileSize').val(),
+      requesttoken: $('#publicUploadRequestToken').val(),
+      dir: $('#publicUploadTargetDir').val(),
+      dirToken: $('#publicUploadTargetDirToken').val()
+    },
+    done: function (e, data) {
+      // TODO: Is there a nice AJAXy way to update the list? - rgeber <geber@b1-systems.de>
+      if (data.result[0].status == 'success') {
+        window.location.reload();
+      } else {
+        alert(t('files_sharing', 'Upload failed'));
+      }
+    }
+  });
+});
