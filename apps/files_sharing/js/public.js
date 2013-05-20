@@ -69,7 +69,14 @@ $(function () {
     done: function (e, data) {
       // TODO: Is there a nice AJAXy way to update the list? - rgeber <geber@b1-systems.de>
       if (data.result[0].status == 'success') {
-        window.location.reload();
+        // window.location.reload();
+        FileList.addFile(
+          data.result[0].name,
+          data.result[0].size,
+          new Date(),
+          false,
+          false
+        );
       } else {
         alert(t('files_sharing', 'Upload failed'));
       }
