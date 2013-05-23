@@ -1,5 +1,4 @@
 <?php
-
 // Init owncloud
 
 // Firefox and Konqueror tries to download application/json for me.  --Arthur

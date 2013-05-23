@@ -61,15 +61,32 @@ $(function () {
   $('#publicUploadFileSelect').fileupload({
     dataType: 'json',
     formData: {
-      MAX_FILE_SIZE: $('#publicUploadMaxFileSize').val(),
+      MAX_FILE_SIZE: $('#uploadMaxFilesize').val(),
       requesttoken: $('#publicUploadRequestToken').val(),
-      dir: $('#publicUploadTargetDir').val(),
-      dirToken: $('#publicUploadTargetDirToken').val()
+      dirToken: $('#dirToken').val()
+    },
+    add: function(event, data) {
+
+      var totalUploadSize = 0;
+      $.each(data.originalFiles, function(i,file){
+        totalUploadSize += file.size;
+      });
+
+      if (totalUploadSize > $('input#uploadMaxFilesize').val()) {
+        alert(t('files','Not enough space available'));
+        data.textStatus = 'notenoughspace';
+        data.errorThrown = t('files','Not enough space available');
+        var fu = $(this).data('blueimp-fileupload') || $(this).data('fileupload');
+        fu._trigger('fail', e, data);
+        return false; //don't upload anything
+      }
+
+      var jqXHR = data.submit();
+
+      return true;
     },
     done: function (e, data) {
-      // TODO: Is there a nice AJAXy way to update the list? - rgeber <geber@b1-systems.de>
       if (data.result[0].status == 'success') {
-        // window.location.reload();
         FileList.addFile(
           data.result[0].name,
           data.result[0].size,
