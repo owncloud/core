@@ -1,18 +1,28 @@
 <?php
+
 /**
- * provides search functionalty
+ * Provides a template for search functionality throughout ownCloud; 
  */
 abstract class OC_Search_Provider {
-	private $options;
 
-	public function __construct($options) {
-		$this->options=$options;
-	}
+    /**
+     * List of options (currently unused)
+     * @var array
+     */
+    private $options;
 
-	/**
-	 * search for $query
-	 * @param string $query
-	 * @return array An array of OC_Search_Result's
-	 */
-	abstract public function search($query);
+    /**
+     * Constructor
+     * @param array $options
+     */
+    public function __construct($options) {
+        $this->options = $options;
+    }
+
+    /**
+     * Search for $query
+     * @param string $query
+     * @return array An array of OC_Search_Result's
+     */
+    abstract public function search($query);
 }
