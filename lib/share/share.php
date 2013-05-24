@@ -2,7 +2,9 @@
 /**
 * ownCloud
 *
+* @author Bernhard Posselt
 * @author Michael Gapczynski
+* @copyright 2012 Bernhard Posselt nukeawhale@gmail.com
 * @copyright 2013 Michael Gapczynski mtgap@owncloud.com
 *
 * This library is free software; you can redistribute it and/or
@@ -21,114 +23,138 @@
 
 namespace OC\Share;
 
-abstract class Share {
+/**
+ * Data holder for shared items. Extend this class for your items.
+ *
+ * A setter does not imply that property can change.
+ *
+ * Extension of OCA\AppFramework\Db\Entity
+ * 
+ */
+class Share {
 
-	private $id;
-	private $parentId;
-	private $shareOwner;
-	private $shareType;
-	private $shareWith;
-	private $permissions;
-	private $itemSource;
-	private $itemTarget;
+	public $id;
+	public $parentId;
+	public $shareTypeId;
+	public $uidOwner;
+	public $shareWith;
+	public $permissions;
+	public $itemSource;
+	public $itemTarget;
+	public $itemOwner;
+	public $expirationTime;
+	public $shareTime;
 
-	public function __construct() {
-		$this->shareType = $shareType;
-		$this->permissions = (int)$data['permissions'];
-	}
-
-	public function getId() {
-		return $this->id;
-	}
-
-	public function setId($id) {
-		$this->id = $id;
-	}
-
-	public function getParentId() {
-		return $this->parentId;
-	}
-
-	public function setParentId($parentId) {
-		$this->parentId = $parentId;
-	}
-
-	public function getShareType() {
-		return $this->shareType;
-	}
-
-	public function getShareOwner() {
-		return $this->shareOwner;
-	}
-
-	public function getShareWith() {
-		return $this->shareWith;
-	}
-
-	public function getPermissions() {
-		return $this->permissions;
-	}
-
-	public function setPermissions($permissions) {
-		$this->permissions = $permissions;
-	}
+	private $updatedFields = array();
+	private $fieldTypes = array(
+		'id' => 'int',
+		'parentId' => 'int',
+		'permissions' => 'int',
+		'expirationTime' => 'int',
+		'shareTime' => 'int'
+	);
 
 	public function isCreatable() {
-		return $this->getPermissions() & OCP\PERMISSION_CREATE;
+		return $this->permissions & OCP\PERMISSION_CREATE;
 	}
 
 	public function isReadable() {
-		return $this->getPermissions() & OCP\PERMISSION_READ;
+		return $this->permissions & OCP\PERMISSION_READ;
 	}
 
 	public function isUpdatable() {
-		return $this->getPermissions() & OCP\PERMISSION_UPDATE;
+		return $this->permissions & OCP\PERMISSION_UPDATE;
 	}
 
 	public function isDeletable() {
-		return $this->getPermissions() & OCP\PERMISSION_DELETE;
+		return $this->permissions & OCP\PERMISSION_DELETE;
 	}
 
 	public function isSharable() {
-		return $this->getPermissions() & OCP\PERMISSION_SHARE;
+		return $this->permissions & OCP\PERMISSION_SHARE;
 	}
 
-	public function getItemType() {
-		return $this->itemType;
+	/**
+	 * Simple alternative constructor for building entities from a request
+	 * @param array $params the array which was obtained via $this->params('key')
+	 * in the controller
+	 * @return Share
+	 */
+	public static function fromParams(array $params) {
+		$instance = new static();
+		foreach ($params as $key => $value) {
+			$method = 'set'.ucfirst($key);
+			$instance->$method($value);
+		}
+		return $instance;
 	}
 
-	public function getItemSource() {
-		return $this->itemSource;
-	}
 
-	public function getItemTarget() {
-		return $this->itemTarget;
-	}
-
-	public function getItemOwner() {
-		$parentId = $this->getParentId();
-		if ($parentId > -1) {
-			$database = new \OC\Share\Cache();
-			while ($parentId > -1) {
-				$parentShare = $database->getShare($parentId);
-				$parentId = $parentShare->getParentId();
+	/**
+	 * Maps the keys of the row array to the attributes
+	 * @param array $row the row to map onto the entity
+	 */
+	public static function fromRow(array $row) {
+		$instance = new static();
+		foreach ($row as $key => $value) {
+			$prop = $this->columnToProperty($key);
+			if ($value !== null && isset($this->fieldTypes[$prop])) {
+				settype($value, $this->fieldTypes[$prop]);
 			}
-			return $parentShare->getShareOwner();
+			$method = 'set'.ucfirst($key);
+			$instance->$method($value);
+			$this->$prop = $value;
+		}
+		return $instance;
+	}
+	
+	/**
+	 * Marks the entity as clean needed for setting the id after the insertion
+	 */
+	public function resetUpdatedFields() {
+		$this->updatedFields = array();
+	}
+
+	/**
+	 * Each time a setter is called, push the part after set
+	 * into an array: for instance setId will save Id in the 
+	 * updated fields array so it can be easily used to create the
+	 * getter method
+	 */
+	public function __call($methodName, $args) {
+		// setters
+		if (strpos($methodName, 'set') === 0) {
+			$attr = lcfirst( substr($methodName, 3) );
+			// setters should only work for existing attributes
+			if (property_exists($this, $attr)) {
+				$this->markFieldUpdated($attr);
+				$this->$attr = $args[0];	
+			} else {
+				throw new \BadFunctionCallException($attr . 
+					' is not a valid attribute');
+			}
+		// getters
+		} elseif (strpos($methodName, 'get') === 0) {
+			$attr = lcfirst(substr($methodName, 3));
+			// getters should only work for existing attributes
+			if (property_exists($this, $attr)) {
+				return $this->$attr;
+			} else {
+				throw new \BadFunctionCallException($attr . 
+					' is not a valid attribute');
+			}
 		} else {
-			return $this->getShareOwner();
+			throw new \BadFunctionCallException($methodName . 
+					' does not exist');
 		}
 	}
 
-	public function getExpirationTime() {
-		return $this->expirationTime;
-	}
- 
-	public function setExpirationTime($time) {
-		$this->expirationDate = $time;
-	}
-
-	public function getUpdatedFields() {
-		
+	/**
+	 * Mark an attribute as updated
+	 * @param string $attribute the name of the attribute
+	 */
+	protected function markFieldUpdated($attribute) {
+		$this->updatedFields[$attribute] = true;
 	}
 
 	/**
@@ -150,18 +176,38 @@ abstract class Share {
 	}
 
 	/**
-	 * Maps the keys of the row array to the attributes
-	 * @param array $row the row to map onto the entity
+	 * Transform a property to a database column name
+	 * @param string $property the name of the property
+	 * @return string the column name
 	 */
-	public function fromRow(array $row) {
-		foreach ($row as $key => $value) {
-			$prop = $this->columnToProperty($key);
-			$this->$prop = $value;
+	public function propertyToColumn($property) {
+		$parts = preg_split('/(?=[A-Z])/', $property);
+		$column = null;
+		foreach($parts as $part) {
+			if ($column === null) {
+				$column = $part;
+			} else {
+				$column .= '_'.lcfirst($part);
+			}
 		}
+		return $column;
 	}
 
-	public function toArray() {
-		
+	/**
+	 * @return array array of updated fields for update query
+	 */
+	public function getUpdatedFields() {
+		return $this->updatedFields;
+	}
+
+	/**
+	 * Adds type information for a field so that its automatically casted to
+	 * that value once its being returned from the database
+	 * @param string $fieldName the name of the attribute
+	 * @param string $type the type which will be used to call settype()
+	 */
+	protected function addType($fieldName, $type) {
+		$this->fieldTypes[$fieldName] = $type;
 	}
 
 }

@@ -50,4 +50,46 @@ public class Utility {
 		return \OC_App::isEnabled('files_sharing');
 	}
 
+	/**
+	 * Check if resharing is allowed
+	 * @return bool
+	 *
+	 * Resharing is allowed by default if not configured
+	 *
+	 */
+	public function isResharingAllowed() {
+		$configValue = \OC_Appconfig::getValue('core', 'shareapi_allow_resharing', 'yes');
+		if ($configValue === 'yes') {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Get the default expiration time
+	 * @return int
+	 *
+	 * No expiration time is set by default
+	 *
+	 */
+	public function getDefaultTime() {
+		return \OC_Appconfig::getValue('core', 'shareapi_expiration_time', 0);
+	}
+
+	public static function getSupportedShareTypes($class) {
+		// TODO Fetch share type objects based on marker interfaces
+		$shareTypeIds = class_implements($class);
+		foreach ($shareTypeIds as $shareTypeId) {
+			$shareTypes[$shareTypdId] = new \$shareTypeId.'ShareType';
+		}
+	}
+
+	public static function getSupportedShareType($class, $shareTypeId) {
+		if (!isset(self::$shareTypes[$shareTypeId])) {
+
+		}
+		return self::$shareTypes[$shareTypeId];
+	}
+
 }

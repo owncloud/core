@@ -21,11 +21,16 @@
 
 namespace OC\Share;
 
-abstract class Collection extends Share {
-
-	public function getChildren();
-
-	public function isChild();
-
-	public function search($pattern);
+/**
+ * 
+ */
+interface IShareFactory {
+	
+	/**
+	 * [mapToShare description]
+	 * @param  [type] $row [description]
+	 * @return Share
+	 */
+	public function mapToShare($row);
+	
 }

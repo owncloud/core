@@ -27,7 +27,9 @@ class User extends Common {
 		return 'user';
 	}
 
-	public function isValidShare($shareOwner, $shareWith) {
+	public function isValidShare(Share $share) {
+		$shareOwner = $share->getShareOwner();
+		$shareWith = $share->getShareWith();
 		if ($shareOwner === $shareWith) {
 			$message = 'the user '.$this->shareWith.' is the item owner';
 			throw new \InvalidShareException($message);
@@ -47,7 +49,7 @@ class User extends Common {
 		return true;
 	}
 
-	public function search($pattern) {
+	public function searchForShareWiths($pattern) {
 		return OC_User::getUsers();
 	}
 
