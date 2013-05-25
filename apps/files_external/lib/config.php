@@ -55,7 +55,10 @@ class OC_Mount_Config {
 
 		foreach (OC_Mount_Config::$backends as $class => $backend) {
 			if (isset($backend['has_dependencies']) and $backend['has_dependencies'] === true) {
-				if ($class::checkDependencies() !== true) {
+				if (!method_exists($class, 'checkDependencies')) {
+					\OCP\Util::writeLog('files_external', "Backend class $class has dependencies but doesn't provide method checkDependencies()", \OCP\Util::DEBUG);
+					continue;
+				} elseif ($class::checkDependencies() !== true) {
 					continue;
 				}
 			}
@@ -63,7 +66,7 @@ class OC_Mount_Config {
 		}
 
 		uasort($backends, $sortFunc);
-		return($backends);
+		return $backends;
 	}
 
 	/**
@@ -355,6 +358,6 @@ class OC_Mount_Config {
 			}
 		}
 
-		return($txt);
+		return $txt;
 	}
 }
