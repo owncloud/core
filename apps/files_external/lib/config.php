@@ -28,6 +28,17 @@ class OC_Mount_Config {
 	const MOUNT_TYPE_GROUP = 'group';
 	const MOUNT_TYPE_USER = 'user';
 
+	private static $backends = array();
+
+	public static function registerBackend($class, $definition) {
+		if (!isset($definition['backend'])) {
+			return false;
+		}
+
+		OC_Mount_Config::$backends[$class] = $definition;
+		return true;
+	}
+
 	/**
 	* Get details on each of the external storage backends, used for the mount config UI
 	* If a custom UI is needed, add the key 'custom' and a javascript file with that name will be loaded
@@ -38,7 +49,6 @@ class OC_Mount_Config {
 	* @return array
 	*/
 	public static function getBackends() {
-
 		$sortFunc = function($a, $b) {
 			return strcasecmp($a['backend'], $b['backend']);
 		};
@@ -52,6 +62,7 @@ class OC_Mount_Config {
 			$backends[$class] = $backend;
 		}
 
+		uasort($backends, $sortFunc);
 		return($backends);
 	}
 
