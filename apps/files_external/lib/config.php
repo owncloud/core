@@ -28,6 +28,17 @@ class OC_Mount_Config {
 	const MOUNT_TYPE_GROUP = 'group';
 	const MOUNT_TYPE_USER = 'user';
 
+	private static $backends = array();
+
+	public static function registerBackend($class, $definition) {
+		if (!isset($definition['backend'])) {
+			return false;
+		}
+
+		OC_Mount_Config::$backends[$class] = $definition;
+		return true;
+	}
+
 	/**
 	* Get details on each of the external storage backends, used for the mount config UI
 	* If a custom UI is needed, add the key 'custom' and a javascript file with that name will be loaded
@@ -38,82 +49,24 @@ class OC_Mount_Config {
 	* @return array
 	*/
 	public static function getBackends() {
+		$sortFunc = function($a, $b) {
+			return strcasecmp($a['backend'], $b['backend']);
+		};
 
-		$backends['\OC\Files\Storage\Local']=array(
-				'backend' => 'Local',
-				'configuration' => array(
-					'datadir' => 'Location'));
+		foreach (OC_Mount_Config::$backends as $class => $backend) {
+			if (isset($backend['has_dependencies']) and $backend['has_dependencies'] === true) {
+				if (!method_exists($class, 'checkDependencies')) {
+					\OCP\Util::writeLog('files_external', "Backend class $class has dependencies but doesn't provide method checkDependencies()", \OCP\Util::DEBUG);
+					continue;
+				} elseif ($class::checkDependencies() !== true) {
+					continue;
+				}
+			}
+			$backends[$class] = $backend;
+		}
 
-		$backends['\OC\Files\Storage\AmazonS3']=array(
-			'backend' => 'Amazon S3',
-			'configuration' => array(
-				'key' => 'Key',
-				'secret' => '*Secret',
-				'bucket' => 'Bucket'));
-
-		$backends['\OC\Files\Storage\Dropbox']=array(
-			'backend' => 'Dropbox',
-			'configuration' => array(
-				'configured' => '#configured',
-				'app_key' => 'App key',
-				'app_secret' => 'App secret',
-				'token' => '#token',
-				'token_secret' => '#token_secret'),
-				'custom' => 'dropbox');
-
-		if(OC_Mount_Config::checkphpftp()) $backends['\OC\Files\Storage\FTP']=array(
-			'backend' => 'FTP',
-			'configuration' => array(
-				'host' => 'URL',
-				'user' => 'Username',
-				'password' => '*Password',
-				'root' => '&Root',
-				'secure' => '!Secure ftps://'));
-
-		if(OC_Mount_Config::checkcurl()) $backends['\OC\Files\Storage\Google']=array(
-			'backend' => 'Google Drive',
-			'configuration' => array(
-				'configured' => '#configured',
-				'token' => '#token',
-				'token_secret' => '#token secret'),
-				'custom' => 'google');
-
-		$backends['\OC\Files\Storage\SWIFT']=array(
-			'backend' => 'OpenStack Swift',
-			'configuration' => array(
-				'host' => 'URL',
-				'user' => 'Username',
-				'token' => '*Token',
-				'root' => '&Root',
-				'secure' => '!Secure ftps://'));
-
-		if(OC_Mount_Config::checksmbclient()) $backends['\OC\Files\Storage\SMB']=array(
-			'backend' => 'SMB / CIFS',
-			'configuration' => array(
-				'host' => 'URL',
-				'user' => 'Username',
-				'password' => '*Password',
-				'share' => 'Share',
-				'root' => '&Root'));
-
-		if(OC_Mount_Config::checkcurl()) $backends['\OC\Files\Storage\DAV']=array(
-			'backend' => 'ownCloud / WebDAV',
-			'configuration' => array(
-				'host' => 'URL',
-				'user' => 'Username',
-				'password' => '*Password',
-				'root' => '&Root',
-				'secure' => '!Secure https://'));
-
-		$backends['\OC\Files\Storage\SFTP']=array(
-			'backend' => 'SFTP',
-			'configuration' => array(
-				'host' => 'URL',
-				'user' => 'Username',
-				'password' => '*Password',
-				'root' => '&Root'));
-
-		return($backends);
+		uasort($backends, $sortFunc);
+		return $backends;
 	}
 
 	/**
@@ -392,51 +345,19 @@ class OC_Mount_Config {
 	}
 
 	/**
-	 * check if smbclient is installed
-	 */
-	public static function checksmbclient() {
-		if(function_exists('shell_exec')) {
-			$output=shell_exec('which smbclient');
-			return (empty($output)?false:true);
-		}else{
-			return(false);
-		}
-	}
-
-	/**
-	 * check if php-ftp is installed
-	 */
-	public static function checkphpftp() {
-		if(function_exists('ftp_login')) {
-			return(true);
-		}else{
-			return(false);
-		}
-	}
-
-	/**
-	 * check if curl is installed
-	 */
-	public static function checkcurl() {
-		return (function_exists('curl_init'));
-	}
-
-	/**
 	 * check dependencies
 	 */
 	public static function checkDependencies() {
-		$l= new OC_L10N('files_external');
 		$txt='';
-		if(!OC_Mount_Config::checksmbclient()) {
-			$txt.=$l->t('<b>Warning:</b> "smbclient" is not installed. Mounting of CIFS/SMB shares is not possible. Please ask your system administrator to install it.').'<br />';
-		}
-		if(!OC_Mount_Config::checkphpftp()) {
-			$txt.=$l->t('<b>Warning:</b> The FTP support in PHP is not enabled or installed. Mounting of FTP shares is not possible. Please ask your system administrator to install it.').'<br />';
-		}
-		if(!OC_Mount_Config::checkcurl()) {
-			$txt.=$l->t('<b>Warning:</b> The Curl support in PHP is not enabled or installed. Mounting of ownCloud / WebDAV or GoogleDrive is not possible. Please ask your system administrator to install it.').'<br />';
+		foreach (OC_Mount_Config::$backends as $class => $backend) {
+			if (isset($backend['has_dependencies']) and $backend['has_dependencies'] === true) {
+				$result = $class::checkDependencies();
+				if ($result !== true) {
+					$txt.=$result.'<br />';
+				}
+			}
 		}
 
-		return($txt);
+		return $txt;
 	}
 }
