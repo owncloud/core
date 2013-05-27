@@ -77,7 +77,7 @@ class OC_Files {
 			$xsendfile = true;
 		}
 
-		if (is_array($files) && count($files) == 1) {
+		if (is_array($files) && count($files) === 1) {
 			$files = $files[0];
 		}
 
@@ -92,9 +92,9 @@ class OC_Files {
 			}
 		}
 
-		if ($get_type == GET_TYPE::ZIP_FILES || $get_type == GET_TYPE::ZIP_DIR) {
+		if ($get_type === GET_TYPE::ZIP_FILES || $get_type === GET_TYPE::ZIP_DIR) {
 			self::validateZipDownload($dir, $files);
-			if ($get_type == GET_TYPE::ZIP_FILES) {
+			if ($get_type === GET_TYPE::ZIP_FILES) {
 				$basename = basename($dir);
 				if ($basename) {
 					$name = $basename . '.zip';
@@ -131,7 +131,7 @@ class OC_Files {
 		if ($zip) {
 			$executionTime = intval(ini_get('max_execution_time'));
 			set_time_limit(0);
-			if ($get_type == GET_TYPE::ZIP_FILES) {
+			if ($get_type === GET_TYPE::ZIP_FILES) {
 				foreach ($files as $file) {
 					$file = $dir . '/' . $file;
 					if (\OC\Files\Filesystem::is_file($file)) {
@@ -142,7 +142,7 @@ class OC_Files {
 						self::zipAddDir($file, $zip);
 					}
 				}
-			} elseif ($get_type == GET_TYPE::ZIP_DIR) {
+			} elseif ($get_type === GET_TYPE::ZIP_DIR) {
 				$file = $dir . '/' . $files;
 				self::zipAddDir($file, $zip);
 			}
@@ -269,7 +269,7 @@ class OC_Files {
 		}
 
 		//don't allow user to break his config -- broken or malicious size input
-		if (intval($size) == 0) {
+		if (intval($size) === 0) {
 			return false;
 		}
 
@@ -291,7 +291,7 @@ class OC_Files {
 			if ($content !== null) {
 				$htaccess = $content;
 			}
-			if ($hasReplaced == 0) {
+			if ($hasReplaced === 0) {
 				$htaccess .= "\n" . $setting;
 			}
 		}
