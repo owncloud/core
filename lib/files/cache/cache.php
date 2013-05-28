@@ -219,14 +219,30 @@ class Cache {
 	 * @param int $id
 	 * @param array $data
 	 */
-	public function update($id, array $data) {
-		list($queryParts, $params) = $this->buildParts($data);
-		$params[] = $id;
+        public function update($id, array $data) {
+            list($queryParts, $params) = $this->buildParts($data);
+            $params[] = $id;
+            $updateneededquery = \OC_DB::prepare('SELECT ' . implode(', ', $queryParts) . ' FROM `*PREFIX*filecache` WHERE `fileid` = ?');
+            $currentvalues = $updateneededquery->execute(array($id));
 
-		$query = \OC_DB::prepare('UPDATE `*PREFIX*filecache` SET ' . implode(' = ?, ', $queryParts) . '=?'
-			. ' WHERE fileid = ?');
-		$query->execute($params);
-	}
+            if ($row = $currentvalues->fetchRow()) {
+                foreach ($data as $name => $value) {
+                //In buildParts they calculate the md5 to store it in path_hash and change the textual mimetype into an number
+                    if ($name === 'path') {
+                        $value = md5($value);
+                    } elseif ($name === 'mimetype') {
+                        $value = $this->getMimetypeId($value);
+                    }
+            //If a value is changed, commit the update
+                    if ($row[$name] != $value) {
+                        $query = \OC_DB::prepare('UPDATE `*PREFIX*filecache` SET ' . implode(' = ?, ', $queryParts) . '=?'
+                        . ' WHERE fileid = ?');
+                        $query->execute($params);
+                        break;
+                    }
+                }
+            }
+        }
 
 	/**
 	 * extract query parts and params array from data array
