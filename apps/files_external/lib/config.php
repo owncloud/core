@@ -29,6 +29,12 @@ class OC_Mount_Config {
 	const MOUNT_TYPE_USER = 'user';
 
 	/**
+	 * stores available backend configurations.
+	 * @var array
+	 */
+	static $backends = array();
+	
+	/**
 	* Get details on each of the external storage backends, used for the mount config UI
 	* If a custom UI is needed, add the key 'custom' and a javascript file with that name will be loaded
 	* If the configuration parameter should be secret, add a '*' to the beginning of the value
@@ -38,82 +44,148 @@ class OC_Mount_Config {
 	* @return array
 	*/
 	public static function getBackends() {
-
-		$backends['\OC\Files\Storage\Local']=array(
+		if (!self::getBackend('\OC\Files\Storage\Local')) {
+			//initialize files_external backend configurations
+			self::setBackend('\OC\Files\Storage\Local', array(
 				'backend' => 'Local',
 				'configuration' => array(
-					'datadir' => 'Location'));
+					'datadir' => 'Location'
+					)
+				)
+			);
+			
+			self::setBackend('\OC\Files\Storage\AmazonS3', array(
+				'backend' => 'Amazon S3',
+				'configuration' => array(
+					'key' => 'Key',
+					'secret' => '*Secret',
+					'bucket' => 'Bucket'
+					)
+				)
+			);
+			
+			self::setBackend('\OC\Files\Storage\Dropbox', array(
+				'backend' => 'Dropbox',
+				'configuration' => array(
+					'configured' => '#configured',
+					'app_key' => 'App key',
+					'app_secret' => 'App secret',
+					'token' => '#token',
+					'token_secret' => '#token_secret'),
+					'custom' => 'dropbox'
+				)
+			);
+			
+			if(OC_Mount_Config::checkphpftp()) {
+				self::setBackend('\OC\Files\Storage\FTP', array(
+					'backend' => 'FTP',
+					'configuration' => array(
+						'host' => 'URL',
+						'user' => 'Username',
+						'password' => '*Password',
+						'root' => '&Root',
+						'secure' => '!Secure ftps://'
+						)
+					)
+				);
+			}
+			
+			if(OC_Mount_Config::checkcurl()) {
+				self::setBackend('\OC\Files\Storage\Google', array(
+					'backend' => 'Google Drive',
+					'configuration' => array(
+						'configured' => '#configured',
+						'token' => '#token',
+						'token_secret' => '#token secret'
+						),
+						'custom' => 'google'
+					)
+				);
+				
+				self::setBackend('\OC\Files\Storage\DAV', array(
+					'backend' => 'ownCloud / WebDAV',
+					'configuration' => array(
+						'host' => 'URL',
+						'user' => 'Username',
+						'password' => '*Password',
+						'root' => '&Root',
+						'secure' => '!Secure https://'
+						)
+					)
+				);
+				
+			}
 
-		$backends['\OC\Files\Storage\AmazonS3']=array(
-			'backend' => 'Amazon S3',
-			'configuration' => array(
-				'key' => 'Key',
-				'secret' => '*Secret',
-				'bucket' => 'Bucket'));
+			self::setBackend('\OC\Files\Storage\SWIFT', array(
+				'backend' => 'OpenStack Swift',
+				'configuration' => array(
+					'host' => 'URL',
+					'user' => 'Username',
+					'token' => '*Token',
+					'root' => '&Root',
+					'secure' => '!Secure ftps://'
+					)
+				)
+			);
 
-		$backends['\OC\Files\Storage\Dropbox']=array(
-			'backend' => 'Dropbox',
-			'configuration' => array(
-				'configured' => '#configured',
-				'app_key' => 'App key',
-				'app_secret' => 'App secret',
-				'token' => '#token',
-				'token_secret' => '#token_secret'),
-				'custom' => 'dropbox');
+			if(OC_Mount_Config::checksmbclient()) {
+				self::setBackend('\OC\Files\Storage\SMB', array(
+					'backend' => 'SMB / CIFS',
+					'configuration' => array(
+						'host' => 'URL',
+						'user' => 'Username',
+						'password' => '*Password',
+						'share' => 'Share',
+						'root' => '&Root'
+						)
+					)
+				);
+			}
 
-		if(OC_Mount_Config::checkphpftp()) $backends['\OC\Files\Storage\FTP']=array(
-			'backend' => 'FTP',
-			'configuration' => array(
-				'host' => 'URL',
-				'user' => 'Username',
-				'password' => '*Password',
-				'root' => '&Root',
-				'secure' => '!Secure ftps://'));
+			self::setBackend('\OC\Files\Storage\SFTP', array(
+				'backend' => 'SFTP',
+				'configuration' => array(
+					'host' => 'URL',
+					'user' => 'Username',
+					'password' => '*Password',
+					'root' => '&Root'
+					)
+				)
+			);
 
-		if(OC_Mount_Config::checkcurl()) $backends['\OC\Files\Storage\Google']=array(
-			'backend' => 'Google Drive',
-			'configuration' => array(
-				'configured' => '#configured',
-				'token' => '#token',
-				'token_secret' => '#token secret'),
-				'custom' => 'google');
-
-		$backends['\OC\Files\Storage\SWIFT']=array(
-			'backend' => 'OpenStack Swift',
-			'configuration' => array(
-				'host' => 'URL',
-				'user' => 'Username',
-				'token' => '*Token',
-				'root' => '&Root',
-				'secure' => '!Secure ftps://'));
-
-		if(OC_Mount_Config::checksmbclient()) $backends['\OC\Files\Storage\SMB']=array(
-			'backend' => 'SMB / CIFS',
-			'configuration' => array(
-				'host' => 'URL',
-				'user' => 'Username',
-				'password' => '*Password',
-				'share' => 'Share',
-				'root' => '&Root'));
-
-		if(OC_Mount_Config::checkcurl()) $backends['\OC\Files\Storage\DAV']=array(
-			'backend' => 'ownCloud / WebDAV',
-			'configuration' => array(
-				'host' => 'URL',
-				'user' => 'Username',
-				'password' => '*Password',
-				'root' => '&Root',
-				'secure' => '!Secure https://'));
-
-		$backends['\OC\Files\Storage\SFTP']=array(
-			'backend' => 'SFTP',
-			'configuration' => array(
-				'host' => 'URL',
-				'user' => 'Username',
-				'password' => '*Password',
-				'root' => '&Root'));
-
-		return($backends);
+		}
+		return(self::$backends);
+	}
+	
+	/**
+	 * set a backend configuration
+	 * will log removing and overwriting existiong configurations with debug level
+	 * @param string $backend
+	 * @param array $configuration
+	 */
+	public static function setBackend($backend, $configuration) {
+		if ($configuration === null) {
+			\OCP\Util::writeLog('files_external', 'removing backend '.$backend, \OCP\Util::DEBUG);
+			unset(self::$backends[$backend]);
+		} else {
+			if (isset(self::$backends[$backend])) {
+				\OCP\Util::writeLog('files_external', 'updating backend '.$backend, \OCP\Util::DEBUG);
+			}
+			self::$backends[$backend] = $configuration;
+		}
+	}
+	
+	/**
+	 * get the current backend configuration
+	 * @param string $backend
+	 * @return array | null
+	 */
+	public static function getBackend($backend) {
+		if (isset(self::$backends[$backend])) {
+			return self::$backends[$backend];
+		} else {
+			return null;
+		}
 	}
 
 	/**
