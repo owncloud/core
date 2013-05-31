@@ -52,14 +52,20 @@ class Dropbox extends \OC\Files\Storage\Common {
 
 	private function getMetaData($path, $list = false) {
 		$path = $this->root.$path;
+		if (\OCA\Files\External\Locks::isLocked($path)) {
+			return false;
+		}
+
 		if ( ! $list && isset($this->metaData[$path])) {
 			return $this->metaData[$path];
 		} else {
 			if ($list) {
 				try {
+					\OCP\Util::writeLog('files_external', 'getMetaData start ' . $path, \OCP\Util::ERROR);
 					$response = $this->dropbox->getMetaData($path);
 				} catch (\Exception $exception) {
 					\OCP\Util::writeLog('files_external', $exception->getMessage(), \OCP\Util::ERROR);
+					\OCP\Util::writeLog('files_external', 'getMetaData end', \OCP\Util::ERROR);
 					return false;
 				}
 				if ($response && isset($response['contents'])) {
@@ -73,14 +79,18 @@ class Dropbox extends \OC\Files\Storage\Common {
 				}
 				$this->metaData[$path] = $response;
 				// Return contents of folder only
+				\OCP\Util::writeLog('files_external', 'getMetaData end', \OCP\Util::ERROR);
 				return $contents;
 			} else {
 				try {
+					\OCP\Util::writeLog('files_external', 'getMetaData start ' . $path, \OCP\Util::ERROR);
 					$response = $this->dropbox->getMetaData($path, 'false');
 					$this->metaData[$path] = $response;
+					\OCP\Util::writeLog('files_external', 'getMetaData end', \OCP\Util::ERROR);
 					return $response;
 				} catch (\Exception $exception) {
 					\OCP\Util::writeLog('files_external', $exception->getMessage(), \OCP\Util::ERROR);
+					\OCP\Util::writeLog('files_external', 'getMetaData end', \OCP\Util::ERROR);
 					return false;
 				}
 			}
@@ -158,9 +168,11 @@ class Dropbox extends \OC\Files\Storage\Common {
 		if ($path == '' || $path == '/') {
 			return true;
 		}
+
 		if ($this->getMetaData($path)) {
 			return true;
 		}
+
 		return false;
 	}
 
@@ -243,6 +255,7 @@ class Dropbox extends \OC\Files\Storage\Common {
 	}
 
 	public function writeBack($tmpFile) {
+		\OCP\Util::writeLog('files_external', 'writeBack start', \OCP\Util::ERROR);
 		if (isset(self::$tempFiles[$tmpFile])) {
 			$handle = fopen($tmpFile, 'r');
 			try {
@@ -252,6 +265,7 @@ class Dropbox extends \OC\Files\Storage\Common {
 				\OCP\Util::writeLog('files_external', $exception->getMessage(), \OCP\Util::ERROR);
 			}
 		}
+		\OCP\Util::writeLog('files_external', 'writeBack end', \OCP\Util::ERROR);
 	}
 
 	public function getMimeType($path) {
