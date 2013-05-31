@@ -17,7 +17,14 @@ OC::$CLASSPATH['OC\Files\Storage\Dropbox'] = 'files_external/lib/dropbox.php';
 OC::$CLASSPATH['OC\Files\Storage\SFTP'] = 'files_external/lib/sftp.php';
 OC::$CLASSPATH['OC_Mount_Config'] = 'files_external/lib/config.php';
 
+OC::$CLASSPATH['OCA\Files\External\Locks'] = 'files_external/lib/locks.php';
+OC::$CLASSPATH['OCA\Files\External\Proxy'] = 'files_external/lib/proxy.php';
+
 OCP\App::registerAdmin('files_external', 'settings');
 if (OCP\Config::getAppValue('files_external', 'allow_user_mounting', 'yes') == 'yes') {
 	OCP\App::registerPersonal('files_external', 'personal');
 }
+
+\OCA\Files\External\Locks::init();
+
+OC_FileProxy::register(new \OCA\Files\External\Proxy());
