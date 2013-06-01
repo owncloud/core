@@ -32,7 +32,8 @@ OC_Mount_Config::registerBackend('\OC\Files\Storage\AmazonS3', array(
 	'configuration' => array(
 		'key' => 'Key',
 		'secret' => '*Secret',
-		'bucket' => 'Bucket')));
+		'bucket' => 'Bucket'),
+	'has_dependencies' => true));
 
 OC_Mount_Config::registerBackend('\OC\Files\Storage\Dropbox', array(
 	'backend' => 'Dropbox',
@@ -42,7 +43,8 @@ OC_Mount_Config::registerBackend('\OC\Files\Storage\Dropbox', array(
 		'app_secret' => 'App secret',
 		'token' => '#token',
 		'token_secret' => '#token_secret'),
-	'custom' => 'dropbox'));
+	'custom' => 'dropbox',
+	'has_dependencies' => true));
 
 OC_Mount_Config::registerBackend('\OC\Files\Storage\FTP', array(
 	'backend' => 'FTP',
@@ -70,7 +72,8 @@ OC_Mount_Config::registerBackend('\OC\Files\Storage\SWIFT', array(
 		'user' => 'Username',
 		'token' => '*Token',
 		'root' => '&Root',
-		'secure' => '!Secure ftps://')));
+		'secure' => '!Secure ftps://'),
+	'has_dependencies' => true));
 
 OC_Mount_Config::registerBackend('\OC\Files\Storage\SMB', array(
 	'backend' => 'SMB / CIFS',
