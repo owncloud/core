@@ -51,6 +51,11 @@ class Dropbox extends \OC\Files\Storage\Common {
 	}
 
 	private function getMetaData($path, $list = false) {
+		// fix for file scanner
+		if($path === false) {
+			$path = '/';
+		}
+
 		$path = \OC\Files\Filesystem::normalizePath($this->root.$path);
 		if (\OCA\Files\External\Locks::isLocked($path)) {
 			return false;
@@ -70,7 +75,7 @@ class Dropbox extends \OC\Files\Storage\Common {
 					$contents = $response['contents'];
 					// Cache folder's contents
 					foreach ($contents as $file) {
-						$this->metaData[$path.'/'.basename($file['path'])] = $file;
+						$this->metaData[\OC\Files\Filesystem::normalizePath($path.'/'.basename($file['path']))] = $file;
 					}
 					unset($response['contents']);
 					$this->metaData[$path] = $response;
