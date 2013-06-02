@@ -51,9 +51,7 @@ class Dropbox extends \OC\Files\Storage\Common {
 	}
 
 	private function getMetaData($path, $list = false) {
-		$start = (float) array_sum(explode(' ',microtime()));
 		$path = \OC\Files\Filesystem::normalizePath($this->root.$path);
-		\OCP\Util::writeLog('files_external', 'getMetaData start '.$path, \OCP\Util::ERROR);
 		if (\OCA\Files\External\Locks::isLocked($path)) {
 			return false;
 		}
@@ -66,8 +64,6 @@ class Dropbox extends \OC\Files\Storage\Common {
 					$response = $this->dropbox->getMetaData($path);
 				} catch (\Exception $exception) {
 					\OCP\Util::writeLog('files_external', $exception->getMessage(), \OCP\Util::ERROR);
-					$end = (float) array_sum(explode(' ',microtime()));
-					\OCP\Util::writeLog('files_external', 'getMetaData1 Processing time: '. sprintf("%.4f", ($end-$start)).' seconds.', \OCP\Util::ERROR);
 					return false;
 				}
 				if ($response && isset($response['contents'])) {
@@ -81,21 +77,15 @@ class Dropbox extends \OC\Files\Storage\Common {
 				}
 				$this->metaData[$path] = $response;
 				// Return contents of folder only
-				$end = (float) array_sum(explode(' ',microtime()));
-				\OCP\Util::writeLog('files_external', 'getMetaData2 Processing time: '. sprintf("%.4f", ($end-$start)).' seconds.', \OCP\Util::ERROR);
 				return $contents;
 			} else {
 				try {
 					$response = $this->dropbox->getMetaData($path, 'false');
 					$this->metaData[$path] = $response;
 
-					$end = (float) array_sum(explode(' ',microtime()));
-					\OCP\Util::writeLog('files_external', 'getMetaData3 Processing time: '. sprintf("%.4f", ($end-$start)).' seconds.', \OCP\Util::ERROR);
 					return $response;
 				} catch (\Exception $exception) {
 					\OCP\Util::writeLog('files_external', $exception->getMessage(), \OCP\Util::ERROR);
-					$end = (float) array_sum(explode(' ',microtime()));
-					\OCP\Util::writeLog('files_external', 'getMetaData4 Processing time: '. sprintf("%.4f", ($end-$start)).' seconds.', \OCP\Util::ERROR);
 					return false;
 				}
 			}
@@ -260,7 +250,6 @@ class Dropbox extends \OC\Files\Storage\Common {
 	}
 
 	public function writeBack($tmpFile) {
-		$start = (float) array_sum(explode(' ',microtime()));
 		if (isset(self::$tempFiles[$tmpFile])) {
 			$handle = fopen($tmpFile, 'r');
 			try {
@@ -270,8 +259,6 @@ class Dropbox extends \OC\Files\Storage\Common {
 				\OCP\Util::writeLog('files_external', $exception->getMessage(), \OCP\Util::ERROR);
 			}
 		}
-		$end = (float) array_sum(explode(' ',microtime()));
-		\OCP\Util::writeLog('files_external', 'writeBack Processing time: '. sprintf("%.4f", ($end-$start)).' seconds.', \OCP\Util::ERROR);
 	}
 
 	public function getMimeType($path) {
