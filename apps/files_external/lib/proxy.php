@@ -20,22 +20,70 @@ class Proxy extends \OC_FileProxy {
 
 		if($this->isOnExternalMountPoint($path)) {
 			$mount = \OC\Files\Filesystem::getMountPoint($path);
-			$path = str_replace($mount, '', $path);
+			$path = \OC\Files\Filesystem::normalizePath(str_replace($mount, '', $path));
 			\OCA\Files\External\Locks::addLock($path);
 		}
+
+		return true;
 	}
 
 	public function postFile_put_contents($path, $count) {
 
 		if($this->isOnExternalMountPoint($path)) {
 			$mount = \OC\Files\Filesystem::getMountPoint($path);
-			$path = str_replace($mount, '', $path);
+			$path = \OC\Files\Filesystem::normalizePath(str_replace($mount, '', $path));
 			\OCA\Files\External\Locks::removeLock($path);
 		}
+
+		return true;
+	}
+
+	public function preMkdir($path) {
+
+		if($this->isOnExternalMountPoint($path)) {
+			$mount = \OC\Files\Filesystem::getMountPoint($path);
+			$path = \OC\Files\Filesystem::normalizePath(str_replace($mount, '', $path));
+			\OCA\Files\External\Locks::addLock($path);
+		}
+
+		return true;
+	}
+
+	public function postMkdir($path) {
+
+		if($this->isOnExternalMountPoint($path)) {
+			$mount = \OC\Files\Filesystem::getMountPoint($path);
+			$path = \OC\Files\Filesystem::normalizePath(str_replace($mount, '', $path));
+			\OCA\Files\External\Locks::removeLock($path);
+		}
+
+		return true;
+	}
+
+	public function preTouch($path) {
+
+		if($this->isOnExternalMountPoint($path)) {
+			$mount = \OC\Files\Filesystem::getMountPoint($path);
+			$path = \OC\Files\Filesystem::normalizePath(str_replace($mount, '', $path));
+			\OCA\Files\External\Locks::addLock($path);
+		}
+
+		return true;
+	}
+
+	public function postTouch($path) {
+
+		if($this->isOnExternalMountPoint($path)) {
+			$mount = \OC\Files\Filesystem::getMountPoint($path);
+			$path = \OC\Files\Filesystem::normalizePath(str_replace($mount, '', $path));
+			\OCA\Files\External\Locks::removeLock($path);
+		}
+
+		return true;
 	}
 
 	private function isOnExternalMountPoint($path) {
-		$mounts = \OC_Mount_Config::getPersonalMountPoints();
+		$mounts = \OC_Mount_Config::getPersonalMountPoints(false);
 
 		$fileMount = \OC\Files\Filesystem::getMountPoint($path);
 		$fileStorage = \OC\Files\Filesystem::getStorage($fileMount);
