@@ -18,66 +18,56 @@ class Proxy extends \OC_FileProxy {
 
 	public function preFile_put_contents($path, $data) {
 
-		if($this->isOnExternalMountPoint($path)) {
-			$mount = \OC\Files\Filesystem::getMountPoint($path);
-			$path = \OC\Files\Filesystem::normalizePath(str_replace($mount, '', $path));
-			\OCA\Files\External\Locks::addLock($path);
-		}
+		$this->addlock($path);
 
 		return true;
 	}
 
 	public function postFile_put_contents($path, $count) {
 
-		if($this->isOnExternalMountPoint($path)) {
-			$mount = \OC\Files\Filesystem::getMountPoint($path);
-			$path = \OC\Files\Filesystem::normalizePath(str_replace($mount, '', $path));
-			\OCA\Files\External\Locks::removeLock($path);
-		}
+		$this->removelock($path);
 
 		return true;
 	}
 
 	public function preMkdir($path) {
 
-		if($this->isOnExternalMountPoint($path)) {
-			$mount = \OC\Files\Filesystem::getMountPoint($path);
-			$path = \OC\Files\Filesystem::normalizePath(str_replace($mount, '', $path));
-			\OCA\Files\External\Locks::addLock($path);
-		}
+		$this->addlock($path);
 
 		return true;
 	}
 
 	public function postMkdir($path) {
 
-		if($this->isOnExternalMountPoint($path)) {
-			$mount = \OC\Files\Filesystem::getMountPoint($path);
-			$path = \OC\Files\Filesystem::normalizePath(str_replace($mount, '', $path));
-			\OCA\Files\External\Locks::removeLock($path);
-		}
+		$this->removelock($path);
 
 		return true;
 	}
 
 	public function preTouch($path) {
 
-		if($this->isOnExternalMountPoint($path)) {
-			$mount = \OC\Files\Filesystem::getMountPoint($path);
-			$path = \OC\Files\Filesystem::normalizePath(str_replace($mount, '', $path));
-			\OCA\Files\External\Locks::addLock($path);
-		}
+		$this->addlock($path);
 
 		return true;
 	}
 
 	public function postTouch($path) {
 
-		if($this->isOnExternalMountPoint($path)) {
-			$mount = \OC\Files\Filesystem::getMountPoint($path);
-			$path = \OC\Files\Filesystem::normalizePath(str_replace($mount, '', $path));
-			\OCA\Files\External\Locks::removeLock($path);
-		}
+		$this->removelock($path);
+
+		return true;
+	}
+
+	public function preRename($path) {
+
+		$this->addlock($path);
+
+		return true;
+	}
+
+	public function postRename($path) {
+
+		$this->removelock($path);
 
 		return true;
 	}
@@ -98,5 +88,21 @@ class Proxy extends \OC_FileProxy {
 		}
 
 		return $found;
+	}
+
+	private function addlock($path) {
+		if($this->isOnExternalMountPoint($path)) {
+			$mount = \OC\Files\Filesystem::getMountPoint($path);
+			$path = \OC\Files\Filesystem::normalizePath(str_replace($mount, '', $path));
+			\OCA\Files\External\Locks::addLock($path);
+		}
+	}
+
+	private function removelock($path) {
+		if($this->isOnExternalMountPoint($path)) {
+			$mount = \OC\Files\Filesystem::getMountPoint($path);
+			$path = \OC\Files\Filesystem::normalizePath(str_replace($mount, '', $path));
+			\OCA\Files\External\Locks::removeLock($path);
+		}
 	}
 }
