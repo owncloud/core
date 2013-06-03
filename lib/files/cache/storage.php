@@ -34,12 +34,21 @@ class Storage {
 
 		$query = \OC_DB::prepare('SELECT `numeric_id` FROM `*PREFIX*storages` WHERE `id` = ?');
 		$result = $query->execute(array($this->storageId));
+		if (\OC_DB::isError($result)) {
+			\OCP\Util::writeLog('storage', 'lookup failed: ' . \OC_DB::getErrorMessage($result) , \OCP\Util::ERROR);
+		}
 		if ($row = $result->fetchRow()) {
 			$this->numericId = $row['numeric_id'];
 		} else {
-			$query = \OC_DB::prepare('INSERT INTO `*PREFIX*storages`(`id`) VALUES(?)');
-			$query->execute(array($this->storageId));
+			$query = \OC_DB::prepare('INSERT INTO `*PREFIX*storages` (`id`) VALUES(?)');
+			$result = $query->execute(array($this->storageId));
+			if (\OC_DB::isError($result)) {
+				\OCP\Util::writeLog('storage', 'insert failed: ' . \OC_DB::getErrorMessage($result) , \OCP\Util::ERROR);
+			}
 			$this->numericId = \OC_DB::insertid('*PREFIX*storages');
+			if (\OC_DB::isError($this->numericId)) {
+				\OCP\Util::writeLog('storage', 'insertid failed: ' . \OC_DB::getErrorMessage($this->numericId) , \OCP\Util::ERROR);
+			}
 		}
 	}
 

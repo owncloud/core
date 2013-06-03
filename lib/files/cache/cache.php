@@ -212,7 +212,7 @@ class Cache {
 				. ' VALUES(' . implode(', ', $valuesPlaceholder) . ')');
 			$result = $query->execute($params);
 			if (\OC_DB::isError($result)) {
-				\OCP\Util::writeLog('cache', 'Insert to cache failed: ' . $result->getMessage(), \OCP\Util::ERROR);
+				\OCP\Util::writeLog('cache', 'Insert in cache failed: ' . \OC_DB::getErrorMessage($result), \OCP\Util::ERROR);
 			}
 
 			return (int)\OC_DB::insertid('*PREFIX*filecache');
@@ -291,7 +291,9 @@ class Cache {
 
 		$query = \OC_DB::prepare('SELECT `fileid` FROM `*PREFIX*filecache` WHERE `storage` = ? AND `path_hash` = ?');
 		$result = $query->execute(array($this->getNumericStorageId(), $pathHash));
-
+		if (\OC_DB::isError($result)) {
+			\OCP\Util::writeLog('cache', 'getId failed: ' . \OC_DB::getErrorMessage($result) , \OCP\Util::ERROR);
+		}
 		if ($row = $result->fetchRow()) {
 			return $row['fileid'];
 		} else {
