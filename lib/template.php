@@ -181,7 +181,11 @@ class OC_Template{
 		$this->renderas = $renderas;
 		$this->application = $app;
 		$this->vars = array();
-		$this->vars['requesttoken'] = OC_Util::callRegister();
+		if (is_object(\OC::$session)) {
+			$this->vars['requesttoken'] = OC_Util::callRegister();
+		} else {
+			$this->vars['requesttoken'] = null;
+		}
 		$parts = explode('/', $app); // fix translation when app is something like core/lostpassword
 		$this->l10n = OC_L10N::get($parts[0]);
 
@@ -246,14 +250,23 @@ class OC_Template{
 		// if the formfactor is not yet autodetected do the
 		// autodetection now. For possible formfactors check the
 		// detectFormfactor documentation
-		if (!\OC::$session->exists('formfactor')) {
-			\OC::$session->set('formfactor', self::detectFormfactor());
+		if (is_object(OC::$session)) {
+			if (!\OC::$session->exists('formfactor')) {
+				\OC::$session->set('formfactor', self::detectFormfactor());
+			}
+			// allow manual override via GET parameter
+			if(isset($_GET['formfactor'])) {
+				\OC::$session->set('formfactor', $_GET['formfactor']);
+			}
+			$formfactor = \OC::$session->get('formfactor');
+		} else {
+			//no session available, allow manual override via GET parameter
+			if(isset($_GET['formfactor'])) {
+				$formfactor = $_GET['formfactor'];
+			} else {
+				$formfactor = self::detectFormfactor();
+			}
 		}
-		// allow manual override via GET parameter
-		if(isset($_GET['formfactor'])) {
-			\OC::$session->set('formfactor', $_GET['formfactor']);
-		}
-		$formfactor = \OC::$session->get('formfactor');
 		if($formfactor=='default') {
 			$fext='';
 		}elseif($formfactor=='mobile') {

@@ -356,7 +356,7 @@ class OC_User {
 	 * @return string uid or false
 	 */
 	public static function getUser() {
-		if( \OC::$session->get('user_id') ) {
+		if( is_object(\OC::$session) && \OC::$session->get('user_id') ) {
 			return \OC::$session->get('user_id');
 		}
 		else{
