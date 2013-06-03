@@ -264,7 +264,9 @@ class OC_User {
 	 * @brief Sets user id for session and triggers emit
 	 */
 	public static function setUserId($uid) {
-		\OC::$session->set('user_id', $uid);
+		if( is_object(\OC::$session) ) {
+			\OC::$session->set('user_id', $uid);
+		}
 	}
 
 	/**
