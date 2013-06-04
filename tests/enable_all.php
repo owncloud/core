@@ -11,7 +11,7 @@ require_once __DIR__.'/../lib/base.php';
 OC_App::enable('files_encryption');
 OC_App::enable('calendar');
 OC_App::enable('contacts');
-OC_App::enable('apptemplateadvanced');
+#OC_App::enable('apptemplateadvanced');  //deprecated by owncloud scaffolding tool
 OC_App::enable('appframework');
 #OC_App::enable('files_archive');
 #OC_App::enable('mozilla_sync');
