@@ -229,6 +229,9 @@ class View extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(3, count($folderView->searchByMime('text')));
 	}
 
+	/**
+	 * @medium
+	 */
 	function testWatcher() {
 		$storage1 = $this->getTestStorage();
 		\OC\Files\Filesystem::mount($storage1, array(), '/');
@@ -246,6 +249,9 @@ class View extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(3, $cachedData['size']);
 	}
 
+	/**
+	 * @medium
+	 */
 	function testCopyBetweenStorages() {
 		$storage1 = $this->getTestStorage();
 		$storage2 = $this->getTestStorage();
@@ -267,6 +273,9 @@ class View extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue($rootView->file_exists('/substorage/folder/bar.txt'));
 	}
 
+	/**
+	 * @medium
+	 */
 	function testMoveBetweenStorages() {
 		$storage1 = $this->getTestStorage();
 		$storage2 = $this->getTestStorage();
@@ -283,6 +292,9 @@ class View extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue($rootView->file_exists('anotherfolder/bar.txt'));
 	}
 
+	/**
+	 * @medium
+	 */
 	function testTouch() {
 		$storage = $this->getTestStorage(true, '\Test\Files\TemporaryNoTouch');
 
