@@ -47,7 +47,8 @@ class OC_Connector_Sabre_Locks extends Sabre_DAV_Locks_Backend_Abstract {
 		
 		$query = 'SELECT * FROM `*PREFIX*locks`'
 		.' WHERE `userid` = ? AND (`created` + `timeout`) > ? AND (( `uri` = ?)';
-		if (OC_Config::getValue( "dbtype") === 'oci') { //FIXME oracle hack
+		if (OC_Config::getValue( "dbtype") === 'oci') {
+			//FIXME oracle hack: need to explicitly cast CLOB to CHAR for comparison
 			$query = 'SELECT * FROM `*PREFIX*locks`'
 			.' WHERE `userid` = ? AND (`created` + `timeout`) > ? AND (( to_char(`uri`) = ?)';
 		}
