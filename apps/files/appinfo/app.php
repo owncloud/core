@@ -19,3 +19,5 @@ OC_Search::registerProvider('OC_Search_Provider_File');
 \OC_Hook::connect('OC_Filesystem', 'post_touch', '\OC\Files\Cache\Updater', 'touchHook');
 \OC_Hook::connect('OC_Filesystem', 'post_delete', '\OC\Files\Cache\Updater', 'deleteHook');
 \OC_Hook::connect('OC_Filesystem', 'post_rename', '\OC\Files\Cache\Updater', 'renameHook');
+
+\OCP\BackgroundJob::addRegularTask('\OC\Files\Cache\BackgroundWatcher', 'checkNext');

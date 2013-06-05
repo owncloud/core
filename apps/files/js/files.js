@@ -511,9 +511,9 @@ $(document).ready(function() {
 								var date=new Date();
 								FileList.addFile(name,0,date,false,hidden);
 								var tr=$('tr').filterAttr('data-file',name);
-								tr.attr('data-mime','text/plain');
+								tr.attr('data-mime',result.data.mime);
 								tr.attr('data-id', result.data.id);
-								getMimeIcon('text/plain',function(path){
+								getMimeIcon(result.data.mime,function(path){
 									tr.find('td.filename').attr('style','background-image:url('+path+')');
 								});
 							} else {
@@ -708,14 +708,14 @@ function scanFiles(force, dir){
 	var scannerEventSource = new OC.EventSource(OC.filePath('files','ajax','scan.php'),{force:force,dir:dir});
 	scanFiles.cancel = scannerEventSource.close.bind(scannerEventSource);
 	scannerEventSource.listen('count',function(count){
-		console.log(count + 'files scanned')
+		console.log(count + ' files scanned')
 	});
 	scannerEventSource.listen('folder',function(path){
 		console.log('now scanning ' + path)
 	});
 	scannerEventSource.listen('done',function(count){
 		scanFiles.scanning=false;
-		console.log('done after ' + count + 'files');
+		console.log('done after ' + count + ' files');
 	});
 }
 scanFiles.scanning=false;
