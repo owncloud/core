@@ -33,7 +33,6 @@ class Test_Trashbin extends \PHPUnit_Framework_TestCase {
 	const TEST_TRASHBIN_USER1 = "test-trashbin-user1";
 
 	private $userId;
-	private $pass;
 	/**
 	 * @var \OC_FilesystemView
 	 */
@@ -62,7 +61,6 @@ class Test_Trashbin extends \PHPUnit_Framework_TestCase {
 		// set user id
 		\OC_User::setUserId(\Test_Trashbin::TEST_TRASHBIN_USER1);
 		$this->userId = \Test_Trashbin::TEST_TRASHBIN_USER1;
-		$this->pass = \Test_Trashbin::TEST_TRASHBIN_USER1;
 
 		// init filesystem view
 		$this->view = new \OC_FilesystemView('/');
@@ -208,13 +206,9 @@ class Test_Trashbin extends \PHPUnit_Framework_TestCase {
 	 * @param bool $create
 	 * @param bool $password
 	 */
-	public static function loginHelper($user, $create = false, $password = false) {
+	public static function loginHelper($user, $create = false) {
 		if ($create) {
 			\OC_User::createUser($user, $user);
-		}
-
-		if ($password === false) {
-			$password = $user;
 		}
 
 		\OC_Util::tearDownFS();
