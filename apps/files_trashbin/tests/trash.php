@@ -217,9 +217,6 @@ class Test_Trashbin extends \PHPUnit_Framework_TestCase {
 			$password = $user;
 		}
 
-		$view = new \OC_FilesystemView('/');
-		$view->mkdir(\Test_Trashbin::TEST_TRASHBIN_USER1);
-		$view->mkdir(\Test_Trashbin::TEST_TRASHBIN_USER1.'/files');
 		\OC_Util::tearDownFS();
 		\OC_User::setUserId('');
 		\OC\Files\Filesystem::tearDown();
