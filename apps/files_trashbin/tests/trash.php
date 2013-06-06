@@ -78,6 +78,9 @@ class Test_Trashbin extends \PHPUnit_Framework_TestCase {
 
 		// we want to tests with app files_trashbin enabled
 		\OC_App::enable('files_trashbin');
+
+		// disable encryption app for trash bin tests
+		\OC_App::disable('files_encryption');
 	}
 
 	function tearDown() {
