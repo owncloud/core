@@ -241,8 +241,11 @@ class Cache {
 		$params[] = $id;
 
 		$query = \OC_DB::prepare('UPDATE `*PREFIX*filecache` SET ' . implode(' = ?, ', $queryParts) . '=?'
-			. ' WHERE fileid = ?');
-		$query->execute($params);
+			. ' WHERE `fileid` = ?');
+		$result = $query->execute($params);
+		if (\OC_DB::isError($result)) {
+			\OCP\Util::writeLog('cache', 'update failed: ' . $result->getMessage(), \OCP\Util::ERROR);
+		}
 	}
 
 	/**
