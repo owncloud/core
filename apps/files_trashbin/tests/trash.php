@@ -33,6 +33,7 @@ class Test_Trashbin extends \PHPUnit_Framework_TestCase {
 	const TEST_TRASHBIN_USER1 = "test-trashbin-user1";
 
 	private $userId;
+
 	/**
 	 * @var \OC_FilesystemView
 	 */
@@ -83,15 +84,13 @@ class Test_Trashbin extends \PHPUnit_Framework_TestCase {
 		// reset app files_trashbin
 		if ($this->stateFilesTrashbin) {
 			OC_App::enable('files_trashbin');
-		}
-		else {
+		} else {
 			OC_App::disable('files_trashbin');
 		}
 		// reset app files_encryption
 		if ($this->stateFilesEncryption) {
 			OC_App::enable('files_encryption');
-		}
-		else {
+		} else {
 			OC_App::disable('files_encryption');
 		}
 	}
@@ -116,7 +115,7 @@ class Test_Trashbin extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue(is_int($writtenFile));
 
 		$this->assertTrue($this->view->file_exists(
-			'/' . $this->userId . '/files/' . $filename));
+				'/' . $this->userId . '/files/' . $filename));
 
 		// delete file
 		$this->userView->unlink($filename);
@@ -186,7 +185,7 @@ class Test_Trashbin extends \PHPUnit_Framework_TestCase {
 
 		// find created file with timestamp
 		$query = \OC_DB::prepare('SELECT `timestamp`,`type` FROM `*PREFIX*files_trash`'
-								 . ' WHERE `id`=?');
+				. ' WHERE `id`=?');
 		$result = $query->execute(array($filename))->fetchRow();
 
 		$this->assertTrue(is_array($result));
@@ -201,10 +200,9 @@ class Test_Trashbin extends \PHPUnit_Framework_TestCase {
 		$this->assertGreaterThan(0, \OCA\Files_Trashbin\Trashbin::delete($filename, $timestamp));
 	}
 
-		/**
+	/**
 	 * @param $user
 	 * @param bool $create
-	 * @param bool $password
 	 */
 	public static function loginHelper($user, $create = false) {
 		if ($create) {
