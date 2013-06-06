@@ -222,9 +222,6 @@ class Test_Trashbin extends \PHPUnit_Framework_TestCase {
 		\OC\Files\Filesystem::tearDown();
 		\OC_Util::setupFS($user);
 		\OC_User::setUserId($user);
-
-		$params['uid'] = $user;
-		$params['password'] = $password;
 	}
 
 }
