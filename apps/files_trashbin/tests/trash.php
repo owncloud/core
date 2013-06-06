@@ -38,6 +38,10 @@ class Test_Trashbin extends \PHPUnit_Framework_TestCase {
 	 * @var \OC_FilesystemView
 	 */
 	private $view;
+
+	/**
+	 * @var \OC_FilesystemView
+	 */
 	private $userView;
 	private $data;
 	private $stateFilesTrashbin;
