@@ -59,16 +59,20 @@ class BackgroundWatcher {
 	 */
 	static private function getNextFileId($previous, $folder) {
 		if ($folder) {
-			$query = \OC_DB::prepare('SELECT `fileid` FROM `*PREFIX*filecache` WHERE `fileid` > ? AND mimetype = ' . self::getFolderMimetype() . ' ORDER BY `fileid` ASC', 1);
+			$query = \OC_DB::prepare('SELECT `fileid` FROM `*PREFIX*filecache` WHERE `fileid` > ? AND `mimetype` = ? ORDER BY `fileid` ASC', 1);
 		} else {
-			$query = \OC_DB::prepare('SELECT `fileid` FROM `*PREFIX*filecache` WHERE `fileid` > ? AND mimetype != ' . self::getFolderMimetype() . ' ORDER BY `fileid` ASC', 1);
+			$query = \OC_DB::prepare('SELECT `fileid` FROM `*PREFIX*filecache` WHERE `fileid` > ? AND `mimetype` != ? ORDER BY `fileid` ASC', 1);
 		}
-		$result = $query->execute(array($previous));
-		if ($row = $result->fetchRow()) {
-			return $row['fileid'];
+		$result = $query->execute(array($previous,self::getFolderMimetype()));
+		if (\OC_DB::isError($result)) {
+			\OCP\Util::writeLog('cache', 'Backgroundwatcher could not get next file id: ' . \OC_DB::getErrorMessage($result), \OCP\Util::ERROR);
 		} else {
-			return 0;
+			$row = $result->fetchRow();
+			if (isset($row['fileid'])) {
+				return $row['fileid'];
+			}
 		}
+		return 0;
 	}
 
 	static public function checkNext() {
