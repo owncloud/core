@@ -280,6 +280,7 @@ class OC_DB {
 						'hostspec' => $host,
 						'charset' => 'AL32UTF8',
 					);
+					//FIXME use 'quote_identifier', true: http://pear.php.net/manual/en/package.database.mdb2.intro-quote.php
 					break;
 				case 'mssql':
 					$dsn = array(
@@ -512,27 +513,21 @@ class OC_DB {
 
 		//clean up memory
 		unlink( $file2 );
+		
+		self::raiseExceptionOnError($definition,'Failed to parse the database definition');
 
-		// Die in case something went wrong
-		if( $definition instanceof MDB2_Schema_Error ) {
-			OC_Template::printErrorPage( $definition->getMessage().': '.$definition->getUserInfo() );
-		}
 		if(OC_Config::getValue('dbtype', 'sqlite')==='oci') {
 			unset($definition['charset']); //or MDB2 tries SHUTDOWN IMMEDIATE
 			$oldname = $definition['name'];
 			$definition['name']=OC_Config::getValue( "dbuser", $oldname );
 		}
-
+		
 		// we should never drop a database
 		$definition['overwrite'] = false;
 
 		$ret=self::$schema->createDatabase( $definition );
 
-		// Die in case something went wrong
-		if( $ret instanceof MDB2_Error ) {
-			OC_Template::printErrorPage( self::$MDB2->getDebugOutput().' '.$ret->getMessage() . ': '
-				. $ret->getUserInfo() );
-		}
+		self::raiseExceptionOnError($ret,'Failed to create the database structure');
 
 		return true;
 	}
@@ -547,18 +542,17 @@ class OC_DB {
 		$CONFIG_DBTYPE = OC_Config::getValue( "dbtype", "sqlite" );
 
 		self::connectScheme();
+		
+		if(OC_Config::getValue('dbtype', 'sqlite')==='oci') {
+			//set dbname, it is unset because oci uses 'service' to connect
+			self::$schema->db->database_name=self::$schema->db->dsn['username'];
+		}
 
 		// read file
 		$content = file_get_contents( $file );
 
 		$previousSchema = self::$schema->getDefinitionFromDatabase();
-		if (PEAR::isError($previousSchema)) {
-			$error = $previousSchema->getMessage();
-			$detail = $previousSchema->getDebugInfo();
-			$message = 'Failed to get existing database structure for updating ('.$error.', '.$detail.')';
-			OC_Log::write('core', $message, OC_Log::FATAL);
-			throw new Exception($message);
-		}
+		self::raiseExceptionOnError($previousSchema,'Failed to get existing database structure for updating');
 
 		// Make changes and save them to an in-memory file
 		$file2 = 'static://db_scheme';
@@ -576,19 +570,20 @@ class OC_DB {
 			$content = str_replace( '<default>0000-00-00 00:00:00</default>',
 				'<default>CURRENT_TIMESTAMP</default>', $content );
 		}
+		if(OC_Config::getValue('dbtype', 'sqlite')==='oci') {
+			unset($previousSchema['charset']); //or MDB2 tries SHUTDOWN IMMEDIATE
+			$oldname = $previousSchema['name'];
+			$previousSchema['name']=OC_Config::getValue( "dbuser", $oldname );
+			//check identifiers are at most 30 chars long
+			
+		}
 		file_put_contents( $file2, $content );
 		$op = self::$schema->updateDatabase($file2, $previousSchema, array(), false);
 
 		//clean up memory
 		unlink( $file2 );
 
-		if (PEAR::isError($op)) {
-			$error = $op->getMessage();
-			$detail = $op->getDebugInfo();
-			$message = 'Failed to update database structure ('.$error.', '.$detail.')';
-			OC_Log::write('core', $message, OC_Log::FATAL);
-			throw new Exception($message);
-		}
+		self::raiseExceptionOnError($op,'Failed to update database structure');
 		return true;
 	}
 
@@ -891,6 +886,24 @@ class OC_DB {
 			return false;
 		}
 	}
+	/**
+	 * check if a result is an error, works with MDB2 and PDOException
+	 * @param mixed $result
+	 * @return bool
+	 */
+	public static function raiseExceptionOnError($result, $message = null, $query = null, $loglevel = OC_Log::FATAL) {
+		if(self::isError($result)) {
+			if ($message === null) {
+				$message = self::getErrorMessage($result);
+			} else {
+				$message .= ', Root cause:' . self::getErrorMessage($result);
+			}
+			if ($loglevel !== false) {
+				OC_Log::write('db', $message, $loglevel);
+			}
+			throw new DatabaseException($message, $query);
+		}
+	}
 
 	/**
 	 * returns the error code and message as a string for logging
@@ -901,9 +914,7 @@ class OC_DB {
 	public static function getErrorMessage($error) {
 		if ( self::$backend==self::BACKEND_MDB2 and PEAR::isError($error) ) {
 			$msg = $error->getCode() . ': ' . $error->getMessage();
-			if (defined('DEBUG') && DEBUG) {
-				$msg .= '(' . $error->getDebugInfo() . ')';
-			}
+			$msg .= ' (' . $error->getDebugInfo() . ')';
 		} elseif (self::$backend==self::BACKEND_PDO and self::$PDO) {
 			$msg = self::$PDO->errorCode() . ': ';
 			$errorInfo = self::$PDO->errorInfo();
