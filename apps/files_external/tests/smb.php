@@ -25,7 +25,7 @@ class SMB extends Storage {
 
 	public function tearDown() {
 		if ($this->instance) {
-			\OCP\Files::rmdirr($this->instance->constructUrl(''));
+			$this->instance->rmdir('');
 		}
 	}
 }
