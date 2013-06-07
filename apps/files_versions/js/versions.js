@@ -37,15 +37,14 @@ function goToVersionPage(url){
 
 function createVersionsDropdown(filename, files) {
 
-	var historyUrl = OC.linkTo('files_versions', 'history.php') + '?path='+encodeURIComponent( $( '#dir' ).val() ).replace( /%2F/g, '/' )+'/'+encodeURIComponent( filename );
+	var start = 0;
 
 	var html = '<div id="dropdown" class="drop drop-versions" data-file="'+escapeHTML(files)+'">';
 	html += '<div id="private">';
-	html += '<select data-placeholder="Saved versions" id="found_versions" class="chzen-select" style="width:16em;">';
-	html += '<option value=""></option>';
-	html += '</select>';
+	html += '<ul id="found_versions">';
+	html += '</ul>';
 	html += '</div>';
-	html += '<input type="button" value="All versions..." name="makelink" id="makelink" />';
+	html += '<input type="button" value="More versions..." name="makelink" id="makelink" />';
 	html += '<input id="link" style="display:none; width:90%;" />';
 
 	if (filename) {
@@ -55,33 +54,41 @@ function createVersionsDropdown(filename, files) {
 		$(html).appendTo($('thead .share'));
 	}
 
+	getVersions(start);
+	start = start + 5;
+
 	$("#makelink").click(function() {
-		goToVersionPage(historyUrl);
+		//get more versions
+		getVersions(start);
+		start = start + 5;
 	});
 
-	$.ajax({
-		type: 'GET',
-		url: OC.filePath('files_versions', 'ajax', 'getVersions.php'),
-		dataType: 'json',
-		data: { source: files },
-		async: false,
-		success: function( versions ) {
-
-			if (versions) {
-				$.each( versions, function(index, row ) {
-					addVersion( row );
+	function getVersions(start) {
+		$.ajax({
+			type: 'GET',
+			url: OC.filePath('files_versions', 'ajax', 'getVersions.php'),
+			dataType: 'json',
+			data: {source: files, start: start},
+			async: false,
+			success: function(result) {
+				var versions = result.data.versions;
+				if (result.data.endReached === true) {
+					$('#makelink').hide();
+				}
+				if (versions) {
+					$.each(versions, function(index, row) {
+						addVersion(row);
+					});
+				} else {
+					$('<div style="text-align:center;">No other versions available</div>').appendTo('#dropdown');
+				}
+				$('#found_versions').change(function() {
+					var revision = parseInt($(this).val());
+					revertFile(files, revision);
 				});
-			} else {
-				$('#found_versions').hide();
-				$('#makelink').hide();
-				$('<div style="text-align:center;">No other versions available</div>').appendTo('#dropdown');
 			}
-			$('#found_versions').change(function(){
-				var revision=parseInt($(this).val());
-				revertFile(files,revision);
-			});
-		}
-	});
+		});
+	}
 
 	function revertFile(file, revision) {
 
@@ -108,20 +115,14 @@ function createVersionsDropdown(filename, files) {
 
 	function addVersion( revision ) {
 		name=formatDate(revision.version*1000);
-		var version=$('<option/>');
-		version.attr('value',revision.version);
-		version.text(name);
 
-// 		} else {
-// 			var checked = ((permissions > 0) ? 'checked="checked"' : 'style="display:none;"');
-// 			var style = ((permissions == 0) ? 'style="display:none;"' : '');
-// 			var user = '<li data-uid_shared_with="'+uid_shared_with+'">';
-// 			user += '<a href="" class="unshare" style="display:none;"><img class="svg" alt="Unshare" src="'+OC.imagePath('core','actions/delete')+'"/></a>';
-// 			user += uid_shared_with;
-// 			user += '<input type="checkbox" name="permissions" id="'+uid_shared_with+'" class="permissions" '+checked+' />';
-// 			user += '<label for="'+uid_shared_with+'" '+style+'>can edit</label>';
-// 			user += '</li>';
-// 		}
+		image='<img src="';
+		image+=OC.imagePath('core', 'actions/history.svg');
+		image+='"/>';
+
+		var version=$('<li/>');
+		version.attr('value',revision.version);
+		version.html(name + ' ' + image);
 
 		version.appendTo('#found_versions');
 	}
