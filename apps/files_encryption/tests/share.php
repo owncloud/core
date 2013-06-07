@@ -647,7 +647,7 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 	}
 	
 	/**
-	 * @medium
+	 * @large
 	 */
 	function testRecoveryFile() {
 		// login as admin
@@ -752,7 +752,7 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @medium
+	 * @large
 	 */
 	function testRecoveryForUser() {
 		// login as admin
@@ -850,6 +850,9 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(0, \OC_Appconfig::getValue('files_encryption', 'recoveryAdminEnabled'));
 	}
 
+	/**
+	 * @medium
+	 */
 	function testFailShareFile() {
 		// login as admin
 		\Test_Encryption_Util::loginHelper(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER1);

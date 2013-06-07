@@ -117,7 +117,7 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @medium
+	 * @large
 	 * @return String
 	 */
 	function testGenerateIv() {
@@ -131,7 +131,7 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @medium
+	 * @large
 	 * @depends testGenerateIv
 	 */
 	function testConcatIv($iv) {
@@ -484,7 +484,7 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @medium
+	 * @large
 	 */
 	function testMultiKeyEncrypt() {
 
@@ -803,7 +803,7 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @medium
+	 * @large
 	 */
 	function testTouchExistingFile() {
 		$filename = '/tmp-' . time();
