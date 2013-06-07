@@ -23,7 +23,8 @@
 class DatabaseException extends Exception{
 	private $query;
 
-	public function __construct($message, $query){
+	//FIXME check if getQuery is used anywhere, maybe use parent constructor with $message, $code and $previous
+	public function __construct($message, $query = null){
 		parent::__construct($message);
 		$this->query = $query;
 	}
@@ -388,6 +389,53 @@ class OC_DB {
 			if( $type != 'sqlite' && $type != 'sqlite3' ) {
 				self::$preparedQueries[$rawQuery] = $result;
 			}
+		}
+		return $result;
+	}
+
+	/**
+	 * @brief execute a prepared statement, on error write log and throw exception
+	 * @param mixed $stmt PDOStatementWrapper | MDB2_Statement_Common ,
+	 *					  an array with 'sql' and optionally 'limit' and 'offset' keys
+	 *					.. or a simple sql query string
+	 * @param array $parameters
+	 * @return result
+	 * @throws DatabaseException
+	 */
+	static public function executeAudited( $stmt, array $parameters = null) {
+		if (is_string($stmt)) {
+			if (stripos($stmt,'LIMIT') !== false) { //OFFSET requires LIMIT, se we only neet to check for LIMIT
+				$message = 'LIMIT and OFFSET are forbidden for portability reasons,'
+						 . ' pass an array with \'limit\' and \'offset\' instead';
+				\OCP\Util::writeLog('db', $message, \OCP\Util::WARN);
+				throw new DatabaseException($message);
+				// TODO try to convert LIMIT OFFSET notation to parameters, see fixLimitClauseForMSSQL
+			}
+			$stmt = array('sql' => $stmt, 'limit' => null, 'offset' => null);
+		}
+		if (is_array($stmt)){
+			//create the statement
+			if ( ! array_key_exists('sql', $stmt) ) {
+				$message = 'statement array must atr least contain key \'sql\'';
+				\OCP\Util::writeLog('db', $message, \OCP\Util::FATAL);
+				throw new DatabaseException($message);
+			}
+			if ( ! array_key_exists('limit', $stmt) ) {
+				$stmt['limit'] = null;
+			}
+			if ( ! array_key_exists('limit', $stmt) ) {
+				$stmt['offset'] = null;
+			}
+			$stmt = self::prepare($stmt['sql'],$stmt['limit'],$stmt['offset']);
+		}
+		self::raiseExceptionOnError($stmt, 'Could not prepare statement');
+		if ($stmt instanceof PDOStatementWrapper || $stmt instanceof MDB2_Statement_Common) {
+			$result = $stmt->execute($parameters);
+			self::raiseExceptionOnError($result, 'Could not execute statement');
+		} else {
+			$message = 'Expected a prepared statement or array got ' . get_type($stmt);
+			\OCP\Util::writeLog('db', $message, \OCP\Util::FATAL);
+			throw new DatabaseException($message);
 		}
 		return $result;
 	}
@@ -887,21 +935,21 @@ class OC_DB {
 		}
 	}
 	/**
-	 * check if a result is an error, works with MDB2 and PDOException
+	 * check if a result is an error, writes a log entry and throws an exception, works with MDB2 and PDOException
 	 * @param mixed $result
-	 * @return bool
+	 * @param string message
+	 * @return void
+	 * @throws DatabaseException
 	 */
-	public static function raiseExceptionOnError($result, $message = null, $query = null, $loglevel = OC_Log::FATAL) {
+	public static function raiseExceptionOnError($result, $message = null) {
 		if(self::isError($result)) {
 			if ($message === null) {
 				$message = self::getErrorMessage($result);
 			} else {
 				$message .= ', Root cause:' . self::getErrorMessage($result);
 			}
-			if ($loglevel !== false) {
-				OC_Log::write('db', $message, $loglevel);
-			}
-			throw new DatabaseException($message, $query);
+			OC_Log::write('db', $message, OC_Log::FATAL);
+			throw new DatabaseException($message);
 		}
 	}
 
