@@ -112,6 +112,11 @@ class Cache {
 				FROM `*PREFIX*filecache` ' . $where;
 		$result = \OC_DB::executeAudited($sql, $params);
 		$data = $result->fetchRow();
+		//FIXME hide this crap in the next database layer, or just use doctrine
+		//PDO returns false, MDB2 returns null, oracle always uses MDB2, so convert null to false
+		if ($data === null) {
+			$data = false;
+		}
 
 		//merge partial data
 		if (!$data and  is_string($file)) {
