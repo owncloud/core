@@ -1,4 +1,5 @@
 $(document).ready(function(){
+
 	if (typeof FileActions !== 'undefined') {
 		// Add versions button to 'files/index.php'
 		FileActions.register(
@@ -29,7 +30,37 @@ $(document).ready(function(){
 			}
 		);
 	}
+
+	$('img[name="revertVersion"]').live("click", function() {
+		var revision = $(this).attr('id');
+		var file = $(this).attr('value');
+		revertFile(file, revision);
+	});
+
 });
+
+function revertFile(file, revision) {
+
+	$.ajax({
+		type: 'GET',
+		url: OC.linkTo('files_versions', 'ajax/rollbackVersion.php'),
+		dataType: 'json',
+		data: {file: file, revision: revision},
+		async: false,
+		success: function(response) {
+			if (response.status == 'error') {
+				OC.dialogs.alert('Failed to revert ' + file + ' to revision ' + formatDate(revision * 1000) + '.', 'Failed to revert');
+			} else {
+				$('#dropdown').hide('blind', function() {
+					$('#dropdown').remove();
+					$('tr').removeClass('mouseOver');
+					// TODO also update the modified time in the web ui
+				});
+			}
+		}
+	});
+
+}
 
 function goToVersionPage(url){
 	window.location.assign(url);
@@ -45,7 +76,7 @@ function createVersionsDropdown(filename, files) {
 	html += '</ul>';
 	html += '</div>';
 	html += '<input type="button" value="More versions..." name="makelink" id="makelink" />';
-	html += '<input id="link" style="display:none; width:90%;" />';
+	//html += '<input id="link" style="display:none; width:90%;" />';
 
 	if (filename) {
 		$('tr').filterAttr('data-file',filename).addClass('mouseOver');
@@ -90,39 +121,19 @@ function createVersionsDropdown(filename, files) {
 		});
 	}
 
-	function revertFile(file, revision) {
-
-		$.ajax({
-			type: 'GET',
-			url: OC.linkTo('files_versions', 'ajax/rollbackVersion.php'),
-			dataType: 'json',
-			data: {file: file, revision: revision},
-			async: false,
-			success: function(response) {
-				if (response.status=='error') {
-					OC.dialogs.alert('Failed to revert '+file+' to revision '+formatDate(revision*1000)+'.','Failed to revert');
-				} else {
-					$('#dropdown').hide('blind', function() {
-						$('#dropdown').remove();
-						$('tr').removeClass('mouseOver');
-						// TODO also update the modified time in the web ui
-					});
-				}
-			}
-		});
-
-	}
-
 	function addVersion( revision ) {
 		name=formatDate(revision.version*1000);
 
-		image='<img src="';
-		image+=OC.imagePath('core', 'actions/history.svg');
-		image+='"/>';
+		image='<img';
+		image+=' src="' + OC.imagePath('core', 'actions/history.svg') + '"';
+		image+=' id="' + revision.version + '"';
+		image+=' value="' + files + '"';
+		image+=' name="revertVersion"';
+		image+='/>';
 
 		var version=$('<li/>');
 		version.attr('value',revision.version);
-		version.html(name + ' ' + image);
+		version.html(name + ' ' + image );
 
 		version.appendTo('#found_versions');
 	}
