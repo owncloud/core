@@ -444,6 +444,7 @@ class OC_DB {
 	 * @brief gets last value of autoincrement
 	 * @param string $table The optional table name (will replace *PREFIX*) and add sequence suffix
 	 * @return int id
+	 * @throws DatabaseException
 	 *
 	 * MDB2 lastInsertID()
 	 *
@@ -453,25 +454,26 @@ class OC_DB {
 	public static function insertid($table=null) {
 		self::connect();
 		$type = OC_Config::getValue( "dbtype", "sqlite" );
-		if( $type == 'pgsql' ) {
+		if( $type === 'pgsql' ) {
 			$query = self::prepare('SELECT lastval() AS id');
 			$row = $query->execute()->fetchRow();
-			return $row['id'];
-		}
-		if( $type === 'mssql' || $type === 'oci') {
+			$result = $row['id'];
+		} else if( $type === 'mssql' || $type === 'oci') {
 			if($table !== null) {
 				$prefix = OC_Config::getValue( "dbtableprefix", "oc_" );
 				$table = str_replace( '*PREFIX*', $prefix, $table );
 			}
-			return self::$connection->lastInsertId($table);
-		}else{
+			$result = self::$connection->lastInsertId($table);
+		} else {
 			if($table !== null) {
 				$prefix = OC_Config::getValue( "dbtableprefix", "oc_" );
 				$suffix = OC_Config::getValue( "dbsequencesuffix", "_id_seq" );
 				$table = str_replace( '*PREFIX*', $prefix, $table ).$suffix;
 			}
-			return self::$connection->lastInsertId($table);
+			$result = self::$connection->lastInsertId($table);
 		}
+		self::raiseExceptionOnError($result, 'insertid failed');
+		return $result;
 	}
 
 	/**
@@ -926,7 +928,7 @@ class OC_DB {
 	 * @return bool
 	 */
 	public static function isError($result) {
-		if(!$result) {
+		if($result === false) {
 			return true;
 		}elseif(self::$backend==self::BACKEND_MDB2 and PEAR::isError($result)) {
 			return true;
