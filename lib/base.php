@@ -278,9 +278,9 @@ class OC {
 
 		OC_Util::addStyle("styles");
 		OC_Util::addStyle("multiselect");
-		OC_Util::addStyle("jquery/jquery-ui-1.10.0.custom");
-		OC_Util::addStyle("jquery/jquery-tipsy");
-		OC_Util::addStyle("jquery/jquery.ocdialog");
+		OC_Util::addStyle("vendor/jquery/jquery-ui-1.10.0.custom");
+		OC_Util::addStyle("vendor/jquery/jquery-tipsy");
+		OC_Util::addStyle("vendor/jquery/jquery.ocdialog");
 	}
 
 	public static function initSession() {
