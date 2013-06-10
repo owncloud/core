@@ -27,17 +27,18 @@
 
         <?php if ($_['allowPublicUploadEnabled']):?>
 
-        <input type="hidden" id="publicUploadRequestToken" name="requesttoken" value="<?php p($_['requesttoken']) ?>" />
-        <input type="hidden" id="dirToken" name="dirtoken" value="<?php p($_['dirToken']) ?>" />
-        <input type="hidden" id="uploadMaxFilesize" name="uploadMaxFilesize" value="<?php p($_['uploadMaxFilesize']) ?>" />
-        <input type="hidden" id="uploadMaxHumanFilesize" name="uploadMaxHumanFilesize" value="<?php p($_['uploadMaxHumanFilesize']) ?>" />
 
-        <div id="publicUploadButtonArray" class="button">
-          <input id="publicUploadFileSelect" type="file" name="files[]" data-url="<?php print_unescaped(OCP\Util::linkTo('files', 'ajax/upload.php')); ?>" multiple>
-          <a href="#" id="publicUploadButtonMock" class="svg" onclick="return false;"></a>
+          <input type="hidden" id="publicUploadRequestToken" name="requesttoken" value="<?php p($_['requesttoken']) ?>" />
+          <input type="hidden" id="dirToken" name="dirtoken" value="<?php p($_['dirToken']) ?>" />
+          <input type="hidden" id="uploadMaxFilesize" name="uploadMaxFilesize" value="<?php p($_['uploadMaxFilesize']) ?>" />
+          <input type="hidden" id="uploadMaxHumanFilesize" name="uploadMaxHumanFilesize" value="<?php p($_['uploadMaxHumanFilesize']) ?>" />
+
+          <div id="data-upload-form" class="button">
+            <input id="file_upload_start" type="file" name="files[]" data-url="<?php print_unescaped(OCP\Util::linkTo('files', 'ajax/upload.php')); ?>" multiple>
+            <a href="#" id="publicUploadButtonMock" class="svg" onclick="return false;"></a>
+          </div>
+
         </div>
-
-        <?php endif; ?>
 
         <div id="additional_controls" style="display:none">
           <div id="uploadprogresswrapper">
@@ -47,8 +48,11 @@
 		   onclick="javascript:Files.cancelUploads();"
 		   />
 	  </div>
-        </div>
 
+
+
+
+        <?php endif; ?>
 
 	</div>
 </div></header>
