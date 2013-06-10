@@ -260,7 +260,7 @@ class OC {
 		// Add the stuff we need always
 		OC_Util::addScript("vendor/jquery/jquery-1.10.0.min");
 		OC_Util::addScript("vendor/jquery/jquery-migrate-1.2.1.min");
-		OC_Util::addScript("vendor/jquery-ui/jquery-ui-1.10.0.custom");
+		OC_Util::addScript("3rdParty/jquery-ui","jquery-ui-1.10.0.custom");
 		OC_Util::addScript("vendor/jquery/jquery-showpassword");
 		OC_Util::addScript("vendor/jquery/jquery.infieldlabel");
 		OC_Util::addScript("vendor/jquery/jquery-tipsy");
