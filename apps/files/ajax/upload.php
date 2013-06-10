@@ -7,8 +7,10 @@ OCP\JSON::setContentTypeHeader('text/plain');
 // If a directory token is sent along check if public upload is permitted.
 // If not, check the login.
 // If no token is sent along, rely on login only
+
 if ($_POST['dirToken']) {
   $linkItem = OCP\Share::getShareByToken($_POST['dirToken']);
+  if ($linkItem === false) die('Ivalid Token');
 
   if (!($linkItem['permissions'] & OCP\PERMISSION_CREATE)) {
     OCP\JSON::checkLoggedIn();

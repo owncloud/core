@@ -7,6 +7,8 @@ function fileDownloadPath(dir, file) {
 	return url;
 }
 
+var form_data;
+
 $(document).ready(function() {
 
 	if (typeof FileActions !== 'undefined') {
@@ -46,9 +48,15 @@ $(document).ready(function() {
 		});
 	}
 
-});
+  // Add some form data to the upload handler
+  file_upload_param.formData = {
+    MAX_FILE_SIZE: $('#uploadMaxFilesize').val(),
+    requesttoken: $('#publicUploadRequestToken').val(),
+    dirToken: $('#dirToken').val(),
+    appname: 'files_sharing'
+  };
 
-// Add Uploadprogress Wrapper to controls bar
-$(document).ready(function() {
+  // Add Uploadprogress Wrapper to controls bar
   $('#controls').append($('#additional_controls div#uploadprogresswrapper'));
-})
+
+});
