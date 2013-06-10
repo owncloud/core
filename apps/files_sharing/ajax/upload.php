@@ -25,11 +25,11 @@ if ($_POST['dirToken']) {
 } else {
   // The standard case, files are uploaded through logged in users :)
   OCP\JSON::checkLoggedIn();
-  $dir = $_POST['dir'];
+  $dir = isset($_POST['dir']) ? $_POST['dir'] : "";
 }
 
 OCP\JSON::callCheck();
-$l = OC_L10N::get('files');
+$l = OC_L10N::get((isset($_POST['appname']) ? $_POST['appname'] : 'files' ));
 
 // get array with current storage stats (e.g. max file size)
 $storageStats = \OCA\files\lib\Helper::buildFileStorageStatistics($dir);

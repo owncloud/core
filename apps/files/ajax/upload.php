@@ -1,17 +1,36 @@
 <?php
-
 // Init owncloud
-
 
 // Firefox and Konqueror tries to download application/json for me.  --Arthur
 OCP\JSON::setContentTypeHeader('text/plain');
 
-OCP\JSON::checkLoggedIn();
+// If a directory token is sent along check if public upload is permitted.
+// If not, check the login.
+// If no token is sent along, rely on login only
+if ($_POST['dirToken']) {
+  $linkItem = OCP\Share::getShareByToken($_POST['dirToken']);
+
+  if (!($linkItem['permissions'] & OCP\PERMISSION_CREATE)) {
+    OCP\JSON::checkLoggedIn();
+  } else {
+
+    // The token defines the target directory (security reasons)
+    $dir = $linkItem['file_target'];
+
+    // Setup FS with owner
+    // NOTE: this subject has been discussed in the IRC channel. So far however I didn't come to a conclusion
+    // about possible security issues on this line. Please take a closer look at this during evaluation.
+    OC_Util::setupFS($linkItem['uid_owner']);
+  }
+} else {
+  // The standard case, files are uploaded through logged in users :)
+  OCP\JSON::checkLoggedIn();
+  $dir = isset($_POST['dir']) ? $_POST['dir'] : "";
+}
+
 OCP\JSON::callCheck();
-$l = OC_L10N::get('files');
+$l = OC_L10N::get((isset($_POST['appname']) ? $_POST['appname'] : 'files' ));
 
-
-$dir = $_POST['dir'];
 // get array with current storage stats (e.g. max file size)
 $storageStats = \OCA\files\lib\Helper::buildFileStorageStatistics($dir);
 

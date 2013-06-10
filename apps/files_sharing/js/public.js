@@ -56,7 +56,7 @@ $(document).ready(function() {
 
 // Process file upload
 // Reused from files.js - Special thanks to cosmomill
-if ( document.getElementById('publicUploadFileSelect') ) {
+
   $(function() {
     $('#publicUploadFileSelect').fileupload({
       dropZone: $('#content'), // restrict dropZone to content div
@@ -64,9 +64,9 @@ if ( document.getElementById('publicUploadFileSelect') ) {
       formData: {
         MAX_FILE_SIZE: $('#uploadMaxFilesize').val(),
         requesttoken: $('#publicUploadRequestToken').val(),
-        dirToken: $('#dirToken').val()
+        dirToken: $('#dirToken').val(),
+        appname: 'files_sharing'
       },
-
       //singleFileUploads is on by default, so the data.files array
       //will always have length 1
       add: function(e, data) {
@@ -158,8 +158,6 @@ if ( document.getElementById('publicUploadFileSelect') ) {
        */
       done:function(e, data) {
 	// handle different responses (json or body from iframe for ie)
-        console.log(e);
-        console.log(data);
 	var response;
 	if (typeof data.result === 'string') {
 	  response = data.result;
@@ -169,11 +167,8 @@ if ( document.getElementById('publicUploadFileSelect') ) {
 	}
 	var result=$.parseJSON(response);
 
-        console.log(result);
-
 	if(typeof result[0] !== 'undefined' && result[0].status === 'success') {
 	  var file = result[0];
-          console.log('Eagle Speedster');
           FileList.addFile(result[0].name, result[0].size, new Date(), false, false);
 	} else {
 	  data.textStatus = 'servererror';
@@ -216,4 +211,3 @@ if ( document.getElementById('publicUploadFileSelect') ) {
       }
     })
   });
-}
