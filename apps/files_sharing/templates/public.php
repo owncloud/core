@@ -1,3 +1,7 @@
+<div id="notification-container">
+  <div id="notification" style="display: none;"></div>
+</div>
+
 <input type="hidden" name="dir" value="<?php p($_['dir']) ?>" id="dir">
 <input type="hidden" name="downloadURL" value="<?php p($_['downloadURL']) ?>" id="downloadURL">
 <input type="hidden" name="filename" value="<?php p($_['filename']) ?>" id="filename">
@@ -34,6 +38,17 @@
         </div>
 
         <?php endif; ?>
+
+        <div id="additional_controls" style="display:none">
+          <div id="uploadprogresswrapper">
+	    <div id="uploadprogressbar"></div>
+	    <input type="button" class="stop" style="display:none"
+		   value="<?php p($l->t('Cancel upload'));?>"
+		   onclick="javascript:Files.cancelUploads();"
+		   />
+	  </div>
+        </div>
+
 
 	</div>
 </div></header>
