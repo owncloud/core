@@ -44,9 +44,15 @@ class OC_Connector_Sabre_Locks extends Sabre_DAV_Locks_Backend_Abstract {
 		// NOTE: SQLite requires time() to be inserted directly. That's ugly
 		// but otherwise reading locks from SQLite Databases will return
 		// nothing
+		
 		$query = 'SELECT * FROM `*PREFIX*locks`'
-			.' WHERE `userid` = ? AND (`created` + `timeout`) > '.time().' AND (( `uri` = ?)';
-		$params = array(OC_User::getUser(), $uri);
+		.' WHERE `userid` = ? AND (`created` + `timeout`) > ? AND (( `uri` = ?)';
+		if (OC_Config::getValue( "dbtype") === 'oci') {
+			//FIXME oracle hack: need to explicitly cast CLOB to CHAR for comparison
+			$query = 'SELECT * FROM `*PREFIX*locks`'
+			.' WHERE `userid` = ? AND (`created` + `timeout`) > ? AND (( to_char(`uri`) = ?)';
+		}
+		$params = array(OC_User::getUser(), time(), $uri);
 
 		// We need to check locks for every part in the uri.
 		$uriParts = explode('/', $uri);
@@ -77,6 +83,10 @@ class OC_Connector_Sabre_Locks extends Sabre_DAV_Locks_Backend_Abstract {
 		$stmt = OC_DB::prepare( $query );
 		$result = $stmt->execute( $params );
 
+		if (\OC_DB::isError($result)) {
+			\OCP\Util::writeLog('sabredav connector', 'lock lookup failed: ' . \OC_DB::getErrorMessage($result) , \OCP\Util::ERROR);
+		}
+		
 		$lockList = array();
 		while( $row = $result->fetchRow()) {
 
