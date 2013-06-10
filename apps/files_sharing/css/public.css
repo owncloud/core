@@ -92,7 +92,7 @@ thead{
     height:27px;
     cursor:pointer;
     z-index:10;
-    background-image:url('/owncloud_core/core/img/actions/upload.svg');
+    background-image:url('%webroot%/core/img/actions/upload.svg');
     background-repeat:no-repeat;
     background-position:7px 6px;
 }
