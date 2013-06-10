@@ -59,4 +59,7 @@ $(document).ready(function() {
   // Add Uploadprogress Wrapper to controls bar
   $('#controls').append($('#additional_controls div#uploadprogresswrapper'));
 
+  // Cancel upload trigger
+  $('uploadprogressbar').find('button.stop').click(Files.cancelUploads);
+
 });
