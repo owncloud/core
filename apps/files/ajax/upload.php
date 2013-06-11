@@ -31,7 +31,7 @@ if ($_POST['dirToken']) {
 }
 
 OCP\JSON::callCheck();
-$l = OC_L10N::get((isset($_POST['appname']) ? $_POST['appname'] : 'files' ));
+$l = OC_L10N::get('files');
 
 // get array with current storage stats (e.g. max file size)
 $storageStats = \OCA\files\lib\Helper::buildFileStorageStatistics($dir);
