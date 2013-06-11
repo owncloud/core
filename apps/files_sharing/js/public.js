@@ -60,6 +60,6 @@ $(document).ready(function() {
   $('#controls').append($('#additional_controls div#uploadprogresswrapper'));
 
   // Cancel upload trigger
-  $('uploadprogressbar').find('button.stop').click(Files.cancelUploads);
+  $('#cancel_upload_button').click(Files.cancelUploads);
 
 });

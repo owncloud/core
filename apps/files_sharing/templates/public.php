@@ -43,7 +43,7 @@
         <div id="additional_controls" style="display:none">
           <div id="uploadprogresswrapper">
 	    <div id="uploadprogressbar"></div>
-	    <input type="button" class="stop" style="display:none"
+	    <input id="cancel_upload_button" type="button" class="stop" style="display:none"
 		   value="<?php p($l->t('Cancel upload'));?>"
 		   />
 	  </div>
