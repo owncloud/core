@@ -35,6 +35,10 @@ class FTP extends \OC\Files\Storage\StreamWrapper{
 			if ( ! $this->root || $this->root[0]!='/') {
 				$this->root='/'.$this->root;
 			}
+			//create the root folder if necessary
+			if ( ! $this->is_dir('')) {
+				$this->mkdir('');
+			}
 		} else {
 			throw new \Exception();
 		}
@@ -59,6 +63,7 @@ class FTP extends \OC\Files\Storage\StreamWrapper{
 		return $url;
 	}
 	public function fopen($path,$mode) {
+		$this->init();
 		switch($mode) {
 			case 'r':
 			case 'rb':
@@ -95,6 +100,7 @@ class FTP extends \OC\Files\Storage\StreamWrapper{
 	}
 
 	public function writeBack($tmpFile) {
+		$this->init();
 		if (isset(self::$tempFiles[$tmpFile])) {
 			$this->uploadFile($tmpFile, self::$tempFiles[$tmpFile]);
 			unlink($tmpFile);

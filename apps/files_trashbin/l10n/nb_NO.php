@@ -13,6 +13,5 @@
 "{count} files" => "{count} filer",
 "Nothing in here. Your trash bin is empty!" => "Ingenting her. Søppelkassen din er tom!",
 "Restore" => "Gjenopprett",
-"Delete" => "Slett",
-"Deleted Files" => "Slettet filer"
+"Delete" => "Slett"
 );

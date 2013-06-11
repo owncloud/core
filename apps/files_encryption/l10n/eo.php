@@ -1,4 +1,4 @@
 <?php $TRANSLATIONS = array(
-"Saving..." => "Konservante...",
-"Encryption" => "Ĉifrado"
+"Encryption" => "Ĉifrado",
+"None" => "Nenio"
 );

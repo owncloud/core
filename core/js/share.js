@@ -156,6 +156,18 @@ OC.Share={
 			html += '<br />';
 		}
 		if (possiblePermissions & OC.PERMISSION_SHARE) {
+
+			// Determine the Allow Public Upload status.
+			// Used later on to determine if the
+			// respective checkbox should be checked or
+			// not.
+
+			var allowPublicUploadStatus = false;
+			$.each(data.shares, function(key, value) {
+			  if (allowPublicUploadStatus) return true;
+			  allowPublicUploadStatus = (value.permissions & OC.PERMISSION_CREATE) ? true : false;
+			});
+
 			html += '<input id="shareWith" type="text" placeholder="'+t('core', 'Share with')+'" />';
 			html += '<ul id="shareWithList">';
 			html += '</ul>';
@@ -168,7 +180,10 @@ OC.Share={
 				html += '<div id="linkPass">';
 				html += '<input id="linkPassText" type="password" placeholder="'+t('core', 'Password')+'" />';
 				html += '</div>';
-				html += '</div>';
+				html += '<div id="allowPublicUploadWrapper" style="display:none;">';
+				html += '<input type="checkbox" value="1" name="allowPublicUpload" id="sharingDialogAllowPublicUpload"' + ((allowPublicUploadStatus) ? 'checked="checked"' : '') + ' />';
+				html += '<label for="sharingDialogAllowPublicUpload">' + t('core', 'Allow Public Upload') + '</label>';
+				html += '</div></div>';
 				html += '<form id="emailPrivateLink" >';
 				html += '<input id="email" style="display:none; width:62%;" value="" placeholder="'+t('core', 'Email link to person')+'" type="text" />';
 				html += '<input id="emailButton" style="display:none;" type="submit" value="'+t('core', 'Send')+'" />';
@@ -189,7 +204,7 @@ OC.Share={
 						if (share.collection) {
 							OC.Share.addShareWith(share.share_type, share.share_with, share.share_with_displayname, share.permissions, possiblePermissions, share.collection);
 						} else {
-							OC.Share.addShareWith(share.share_type, share.share_with, share.share_with_displayname,  share.permissions, possiblePermissions, false);
+							OC.Share.addShareWith(share.share_type, share.share_with, share.share_with_displayname,	 share.permissions, possiblePermissions, false);
 						}
 					}
 					if (share.expiration != null) {
@@ -198,23 +213,23 @@ OC.Share={
 				});
 			}
 			$('#shareWith').autocomplete({minLength: 1, source: function(search, response) {
-	// 			if (cache[search.term]) {
-	// 				response(cache[search.term]);
-	// 			} else {
+	//			if (cache[search.term]) {
+	//				response(cache[search.term]);
+	//			} else {
 					$.get(OC.filePath('core', 'ajax', 'share.php'), { fetch: 'getShareWith', search: search.term, itemShares: OC.Share.itemShares }, function(result) {
 						if (result.status == 'success' && result.data.length > 0) {
 							response(result.data);
 						} else {
 							// Suggest sharing via email if valid email address
-// 							var pattern = new RegExp(/^[+a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i);
-// 							if (pattern.test(search.term)) {
-// 								response([{label: t('core', 'Share via email:')+' '+search.term, value: {shareType: OC.Share.SHARE_TYPE_EMAIL, shareWith: search.term}}]);
-// 							} else {
+//							var pattern = new RegExp(/^[+a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i);
+//							if (pattern.test(search.term)) {
+//								response([{label: t('core', 'Share via email:')+' '+search.term, value: {shareType: OC.Share.SHARE_TYPE_EMAIL, shareWith: search.term}}]);
+//							} else {
 								response([t('core', 'No people found')]);
-// 							}
+//							}
 						}
 					});
-	// 			}
+	//			}
 			},
 			focus: function(event, focused) {
 				event.preventDefault();
@@ -370,6 +385,7 @@ OC.Share={
 		$('#expiration').show();
 		$('#emailPrivateLink #email').show();
 		$('#emailPrivateLink #emailButton').show();
+		$('#allowPublicUploadWrapper').show();
 	},
 	hideLink:function() {
 		$('#linkText').hide('blind');
@@ -378,6 +394,7 @@ OC.Share={
 		$('#linkPass').hide();
 		$('#emailPrivateLink #email').hide();
 		$('#emailPrivateLink #emailButton').hide();
+		$('#allowPublicUploadWrapper').hide();
 	},
 	dirname:function(path) {
 		return path.replace(/\\/g,'/').replace(/\/[^\/]*$/, '');
@@ -543,6 +560,30 @@ $(document).ready(function() {
 		$(this).select();
 	});
 
+	// Handle the Allow Public Upload Checkbox
+	$(document).on('click', '#sharingDialogAllowPublicUpload', function() {
+
+	  // Gather data
+	  var allowPublicUpload = $(this).is(':checked');
+	  var itemType = $('#dropdown').data('item-type');
+	  var itemSource = $('#dropdown').data('item-source');
+	  var permissions = 0;
+
+	  // Calculate permissions
+	  if (allowPublicUpload) {
+	    permissions = OC.PERMISSION_UPDATE + OC.PERMISSION_CREATE + OC.PERMISSION_READ;
+	  } else {
+	    permissions = OC.PERMISSION_READ;
+	  }
+
+	  // Update the share information
+	  OC.Share.share(itemType, itemSource,	OC.Share.SHARE_TYPE_LINK, '', permissions, function(data) {
+	    return;
+	  });
+
+
+	});
+
 	$(document).on('click', '#dropdown #showPassword', function() {
 		$('#linkPass').toggle('blind');
 		if (!$('#showPassword').is(':checked') ) {
@@ -559,7 +600,6 @@ $(document).ready(function() {
 			var itemType = $('#dropdown').data('item-type');
 			var itemSource = $('#dropdown').data('item-source');
 			OC.Share.share(itemType, itemSource, OC.Share.SHARE_TYPE_LINK, $('#linkPassText').val(), OC.PERMISSION_READ, function() {
-				console.log("password set to: '" + $('#linkPassText').val() +"' by event: " + event.type);
 				$('#linkPassText').val('');
 				$('#linkPassText').attr('placeholder', t('core', 'Password protected'));
 			});

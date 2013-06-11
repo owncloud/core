@@ -115,11 +115,6 @@ $(document).ready(function() {
 		return false;
 	});
 
-	// Trigger cancelling of file upload
-	$('#uploadprogresswrapper .stop').on('click', function() {
-		Files.cancelUploads();
-	});
-
 	// Show trash bin
 	$('#trash a').live('click', function() {
 		window.location=OC.filePath('files_trashbin', '', 'index.php');
@@ -251,153 +246,7 @@ $(document).ready(function() {
 			e.preventDefault(); // prevent browser from doing anything, if file isn't dropped in dropZone
 	});
 
-	if ( document.getElementById('data-upload-form') ) {
-		$(function() {
-			$('#file_upload_start').fileupload({
-				dropZone: $('#content'), // restrict dropZone to content div
-				//singleFileUploads is on by default, so the data.files array will always have length 1
-				add: function(e, data) {
 
-					if(data.files[0].type === '' && data.files[0].size == 4096)
-					{
-						data.textStatus = 'dirorzero';
-						data.errorThrown = t('files','Unable to upload your file as it is a directory or has 0 bytes');
-						var fu = $(this).data('blueimp-fileupload') || $(this).data('fileupload');
-						fu._trigger('fail', e, data);
-						return true; //don't upload this file but go on with next in queue
-					}
-
-					var totalSize=0;
-					$.each(data.originalFiles, function(i,file){
-						totalSize+=file.size;
-					});
-
-					if(totalSize>$('#max_upload').val()){
-						data.textStatus = 'notenoughspace';
-						data.errorThrown = t('files','Not enough space available');
-						var fu = $(this).data('blueimp-fileupload') || $(this).data('fileupload');
-						fu._trigger('fail', e, data);
-						return false; //don't upload anything
-					}
-
-					// start the actual file upload
-					var jqXHR = data.submit();
-
-					// remember jqXHR to show warning to user when he navigates away but an upload is still in progress
-					if (typeof data.context !== 'undefined' && data.context.data('type') === 'dir') {
-						var dirName = data.context.data('file');
-						if(typeof uploadingFiles[dirName] === 'undefined') {
-							uploadingFiles[dirName] = {};
-						}
-						uploadingFiles[dirName][data.files[0].name] = jqXHR;
-					} else {
-						uploadingFiles[data.files[0].name] = jqXHR;
-					}
-
-					//show cancel button
-					if($('html.lte9').length === 0 && data.dataType !== 'iframe') {
-						$('#uploadprogresswrapper input.stop').show();
-					}
-				},
-				/**
-				 * called after the first add, does NOT have the data param
-				 * @param e
-				 */
-				start: function(e) {
-					//IE < 10 does not fire the necessary events for the progress bar.
-					if($('html.lte9').length > 0) {
-						return;
-					}
-					$('#uploadprogressbar').progressbar({value:0});
-					$('#uploadprogressbar').fadeIn();
-				},
-				fail: function(e, data) {
-					if (typeof data.textStatus !== 'undefined' && data.textStatus !== 'success' ) {
-						if (data.textStatus === 'abort') {
-							$('#notification').text(t('files', 'Upload cancelled.'));
-						} else {
-							// HTTP connection problem
-							$('#notification').text(data.errorThrown);
-						}
-						$('#notification').fadeIn();
-						//hide notification after 5 sec
-						setTimeout(function() {
-							$('#notification').fadeOut();
-						}, 5000);
-					}
-					delete uploadingFiles[data.files[0].name];
-				},
-				progress: function(e, data) {
-					// TODO: show nice progress bar in file row
-				},
-				progressall: function(e, data) {
-					//IE < 10 does not fire the necessary events for the progress bar.
-					if($('html.lte9').length > 0) {
-						return;
-					}
-					var progress = (data.loaded/data.total)*100;
-					$('#uploadprogressbar').progressbar('value',progress);
-				},
-				/**
-				 * called for every successful upload
-				 * @param e
-				 * @param data
-				 */
-				done:function(e, data) {
-					// handle different responses (json or body from iframe for ie)
-					var response;
-					if (typeof data.result === 'string') {
-						response = data.result;
-					} else {
-						//fetch response from iframe
-						response = data.result[0].body.innerText;
-					}
-					var result=$.parseJSON(response);
-
-					if(typeof result[0] !== 'undefined' && result[0].status === 'success') {
-						var file = result[0];
-					} else {
-						data.textStatus = 'servererror';
-						data.errorThrown = t('files', result.data.message);
-						var fu = $(this).data('blueimp-fileupload') || $(this).data('fileupload');
-						fu._trigger('fail', e, data);
-					}
-
-					var filename = result[0].originalname;
-
-					// delete jqXHR reference
-					if (typeof data.context !== 'undefined' && data.context.data('type') === 'dir') {
-						var dirName = data.context.data('file');
-						delete uploadingFiles[dirName][filename];
-						if ($.assocArraySize(uploadingFiles[dirName]) == 0) {
-							delete uploadingFiles[dirName];
-						}
-					} else {
-						delete uploadingFiles[filename];
-					}
-
-				},
-				/**
-				 * called after last upload
-				 * @param e
-				 * @param data
-				 */
-				stop: function(e, data) {
-					if(data.dataType !== 'iframe') {
-						$('#uploadprogresswrapper input.stop').hide();
-					}
-
-					//IE < 10 does not fire the necessary events for the progress bar.
-					if($('html.lte9').length > 0) {
-						return;
-					}
-
-					$('#uploadprogressbar').progressbar('value',100);
-					$('#uploadprogressbar').fadeOut();
-				}
-			})
-		});
-	}
 	$.assocArraySize = function(obj) {
 		// http://stackoverflow.com/a/6700/11236
 		var size = 0, key;
@@ -511,9 +360,9 @@ $(document).ready(function() {
 								var date=new Date();
 								FileList.addFile(name,0,date,false,hidden);
 								var tr=$('tr').filterAttr('data-file',name);
-								tr.attr('data-mime',result.data.mime);
+								tr.attr('data-mime','text/plain');
 								tr.attr('data-id', result.data.id);
-								getMimeIcon(result.data.mime,function(path){
+								getMimeIcon('text/plain',function(path){
 									tr.find('td.filename').attr('style','background-image:url('+path+')');
 								});
 							} else {
@@ -708,14 +557,14 @@ function scanFiles(force, dir){
 	var scannerEventSource = new OC.EventSource(OC.filePath('files','ajax','scan.php'),{force:force,dir:dir});
 	scanFiles.cancel = scannerEventSource.close.bind(scannerEventSource);
 	scannerEventSource.listen('count',function(count){
-		console.log(count + ' files scanned')
+		console.log(count + 'files scanned')
 	});
 	scannerEventSource.listen('folder',function(path){
 		console.log('now scanning ' + path)
 	});
 	scannerEventSource.listen('done',function(count){
 		scanFiles.scanning=false;
-		console.log('done after ' + count + ' files');
+		console.log('done after ' + count + 'files');
 	});
 }
 scanFiles.scanning=false;
@@ -762,9 +611,9 @@ var createDragShadow = function(event){
 	var dir=$('#dir').val();
 
 	$(selectedFiles).each(function(i,elem){
-		var newtr = $('<tr/>').attr('data-dir', dir).attr('data-filename', elem.name);
-		newtr.append($('<td/>').addClass('filename').text(elem.name));
-		newtr.append($('<td/>').addClass('size').text(humanFileSize(elem.size)));
+		var newtr = $('<tr data-dir="'+dir+'" data-filename="'+elem.name+'">'
+						+'<td class="filename">'+elem.name+'</td><td class="size">'+humanFileSize(elem.size)+'</td>'
+					 +'</tr>');
 		tbody.append(newtr);
 		if (elem.type === 'dir') {
 			newtr.find('td.filename').attr('style','background-image:url('+OC.imagePath('core', 'filetypes/folder.png')+')');
@@ -790,7 +639,7 @@ var dragOptions={
 // sane browsers support using the distance option
 if ( $('html.ie').length === 0) {
 	dragOptions['distance'] = 20;
-} 
+}
 
 var folderDropOptions={
 	drop: function( event, ui ) {

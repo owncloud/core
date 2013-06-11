@@ -1,6 +1,5 @@
 <?php $TRANSLATIONS = array(
 "Deletion failed" => "Ištrinti nepavyko",
-"Error" => "Klaida",
 "Password" => "Slaptažodis",
 "Group Filter" => "Grupės filtras",
 "Port" => "Prievadas",

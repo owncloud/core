@@ -1,45 +1,41 @@
 <?php
 
 /**
- * ownCloud
- *
- * @author Sam Tuke, Robin Appelman
- * @copyright 2012 Sam Tuke samtuke@owncloud.com, Robin Appelman
- * icewind1991@gmail.com
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
- *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
+* ownCloud
+*
+* @author Sam Tuke, Robin Appelman
+* @copyright 2012 Sam Tuke samtuke@owncloud.com, Robin Appelman 
+* icewind1991@gmail.com
+*
+* This library is free software; you can redistribute it and/or
+* modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
+* License as published by the Free Software Foundation; either
+* version 3 of the License, or any later version.
+*
+* This library is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+*
+* You should have received a copy of the GNU Affero General Public
+* License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+*
+*/
 
 /**
- * @brief Encryption proxy which handles filesystem operations before and after
- *        execution and encrypts, and handles keyfiles accordingly. Used for
- *        webui.
- */
+* @brief Encryption proxy which handles filesystem operations before and after
+*        execution and encrypts, and handles keyfiles accordingly. Used for 
+*        webui.
+*/
 
 namespace OCA\Encryption;
 
-/**
- * Class Proxy
- * @package OCA\Encryption
- */
 class Proxy extends \OC_FileProxy {
 
 	private static $blackList = null; //mimetypes blacklisted from encryption
-
+	
 	private static $enableEncryption = null;
-
+	
 	/**
 	 * Check if a file requires encryption
 	 * @param string $path
@@ -47,383 +43,347 @@ class Proxy extends \OC_FileProxy {
 	 *
 	 * Tests if server side encryption is enabled, and file is allowed by blacklists
 	 */
-	private static function shouldEncrypt($path) {
-
-		if (is_null(self::$enableEncryption)) {
-
-			if (
-				\OCP\Config::getAppValue('files_encryption', 'enable_encryption', 'true') === 'true'
-				&& Crypt::mode() === 'server'
+	private static function shouldEncrypt( $path ) {
+		
+		if ( is_null( self::$enableEncryption ) ) {
+		
+			if ( 
+				\OCP\Config::getAppValue( 'files_encryption', 'enable_encryption', 'true' ) == 'true' 
+				&& Crypt::mode() == 'server' 
 			) {
-
+			
 				self::$enableEncryption = true;
-
+			
 			} else {
-
+				
 				self::$enableEncryption = false;
-
+			
 			}
-
+			
 		}
-
-		if (!self::$enableEncryption) {
-
+		
+		if ( !self::$enableEncryption ) {
+		
 			return false;
-
+			
 		}
-
-		if (is_null(self::$blackList)) {
-
-			self::$blackList = explode(',', \OCP\Config::getAppValue('files_encryption', 'type_blacklist', ''));
-
+		
+		if ( is_null(self::$blackList ) ) {
+		
+			self::$blackList = explode(',', \OCP\Config::getAppValue( 'files_encryption', 'type_blacklist', 'jpg,png,jpeg,avi,mpg,mpeg,mkv,mp3,oga,ogv,ogg' ) );
+			
 		}
-
-		if (Crypt::isCatfileContent($path)) {
-
+		
+		if ( Crypt::isCatfile( $path ) ) {
+		
 			return true;
-
+			
 		}
-
-		$extension = substr($path, strrpos($path, '.') + 1);
-
-		if (array_search($extension, self::$blackList) === false) {
-
+		
+		$extension = substr( $path, strrpos( $path, '.' ) +1 );
+		
+		if ( array_search( $extension, self::$blackList ) === false ) {
+		
 			return true;
-
+			
 		}
-
+		
 		return false;
 	}
-
-	/**
-	 * @param $path
-	 * @param $data
-	 * @return bool
-	 */
-	public function preFile_put_contents($path, &$data) {
-
-		if (self::shouldEncrypt($path)) {
-
-			if (!is_resource($data)) {
-
-				// get root view
-				$view = new \OC_FilesystemView('/');
-
-				// get relative path
-				$relativePath = \OCA\Encryption\Helper::stripUserFilesPath($path);
-
-				if (!isset($relativePath)) {
-					return true;
-				}
-
-				$handle = fopen('crypt://' . $relativePath . '.etmp', 'w');
-				if (is_resource($handle)) {
-
-					// write data to stream
-					fwrite($handle, $data);
-
-					// close stream
-					fclose($handle);
-
-					// disable encryption proxy to prevent recursive calls
-					$proxyStatus = \OC_FileProxy::$enabled;
-					\OC_FileProxy::$enabled = false;
-
-					// get encrypted content
-					$data = $view->file_get_contents($path . '.etmp');
-
-					// remove our temp file
-					$view->unlink($path . '.etmp');
-
-					// re-enable proxy - our work is done
-					\OC_FileProxy::$enabled = $proxyStatus;
-				}
+	
+	public function preFile_put_contents( $path, &$data ) {
+		
+		if ( self::shouldEncrypt( $path ) ) {
+		
+			if ( !is_resource( $data ) ) { //stream put contents should have been converted to fopen
+			
+				$userId = \OCP\USER::getUser();
+				
+				$rootView = new \OC_FilesystemView( '/' );
+			
+				// Set the filesize for userland, before encrypting
+				$size = strlen( $data );
+				
+				// Disable encryption proxy to prevent recursive calls
+				\OC_FileProxy::$enabled = false;
+				
+				// TODO: Check if file is shared, if so, use multiKeyEncrypt
+				
+				// Encrypt plain data and fetch key
+				$encrypted = Crypt::keyEncryptKeyfile( $data, Keymanager::getPublicKey( $rootView, $userId ) );
+				
+				// Replace plain content with encrypted content by reference
+				$data = $encrypted['data'];
+				
+				$filePath = explode( '/', $path );
+				
+				$filePath = array_slice( $filePath, 3 );
+				
+				$filePath = '/' . implode( '/', $filePath );
+				
+				// TODO: make keyfile dir dynamic from app config
+				
+				$view = new \OC_FilesystemView( '/' );
+				
+				// Save keyfile for newly encrypted file in parallel directory tree
+				Keymanager::setFileKey( $view, $filePath, $userId, $encrypted['key'] );
+				
+				// Update the file cache with file info
+				\OC\Files\Filesystem::putFileInfo( $path, array( 'encrypted'=>true, 'size' => $size ), '' );
+				
+				// Re-enable proxy - our work is done
+				\OC_FileProxy::$enabled = true;
+				
 			}
 		}
-
-		return true;
-
+		
 	}
-
+	
 	/**
 	 * @param string $path Path of file from which has been read
 	 * @param string $data Data that has been read from file
 	 */
-	public function postFile_get_contents($path, $data) {
+	public function postFile_get_contents( $path, $data ) {
+	
+		// TODO: Use dependency injection to add required args for view and user etc. to this method
 
-		$plainData = null;
-		$view = new \OC_FilesystemView('/');
-
-		// get relative path
-		$relativePath = \OCA\Encryption\Helper::stripUserFilesPath($path);
-
-		// init session
-		$session = new \OCA\Encryption\Session($view);
-
+		// Disable encryption proxy to prevent recursive calls
+		\OC_FileProxy::$enabled = false;
+		
 		// If data is a catfile
-		if (
-			Crypt::mode() === 'server'
-			&& Crypt::isCatfileContent($data)
+		if ( 
+			Crypt::mode() == 'server' 
+			&& Crypt::isCatfile( $data ) 
 		) {
+			
+			$split = explode( '/', $path );
+			
+			$filePath = array_slice( $split, 3 );
+			
+			$filePath = '/' . implode( '/', $filePath );
+			
+			//$cached = \OC\Files\Filesystem::getFileInfo( $path, '' );
+			
+			$view = new \OC_FilesystemView( '' );
+			
+			$userId = \OCP\USER::getUser();
+			
+			// TODO: Check if file is shared, if so, use multiKeyDecrypt
+			
+			$encryptedKeyfile = Keymanager::getFileKey( $view, $userId, $filePath );
 
-			$handle = fopen('crypt://' . $relativePath, 'r');
-
-			if (is_resource($handle)) {
-				while (($plainDataChunk = fgets($handle, 8192)) !== false) {
-					$plainData .= $plainDataChunk;
-				}
-			}
-
+			$session = new Session();
+			
+			$decrypted = Crypt::keyDecryptKeyfile( $data, $encryptedKeyfile, $session->getPrivateKey( $split[1] ) );
+			
 		} elseif (
-			Crypt::mode() == 'server'
-			&& \OC::$session->exists('legacyenckey')
-			&& Crypt::isEncryptedMeta($path)
+		Crypt::mode() == 'server' 
+		&& isset( $_SESSION['legacyenckey'] )
+		&& Crypt::isEncryptedMeta( $path ) 
 		) {
-			// Disable encryption proxy to prevent recursive calls
-			$proxyStatus = \OC_FileProxy::$enabled;
-			\OC_FileProxy::$enabled = false;
-
-			$plainData = Crypt::legacyBlockDecrypt($data, $session->getLegacyKey());
-
-			\OC_FileProxy::$enabled = $proxyStatus;
+			
+			$decrypted = Crypt::legacyDecrypt( $data, $_SESSION['legacyenckey'] );
+			
 		}
-
-		if (!isset($plainData)) {
-
-			$plainData = $data;
-
+		
+		\OC_FileProxy::$enabled = true;
+		
+		if ( ! isset( $decrypted ) ) {
+		
+			$decrypted = $data;
+			
 		}
-
-		return $plainData;
-
+		
+		return $decrypted;
+		
 	}
-
+	
 	/**
 	 * @brief When a file is deleted, remove its keyfile also
 	 */
-	public function preUnlink($path) {
-
-		// let the trashbin handle this  
-		if (\OCP\App::isEnabled('files_trashbin')) {
-			return true;
-		}
-
+	public function preUnlink( $path ) {
+	
 		// Disable encryption proxy to prevent recursive calls
-		$proxyStatus = \OC_FileProxy::$enabled;
 		\OC_FileProxy::$enabled = false;
-
-		$view = new \OC_FilesystemView('/');
-
+		
+		$view = new \OC_FilesystemView( '/' );
+		
 		$userId = \OCP\USER::getUser();
-
-		$util = new Util($view, $userId);
-
-		// get relative path
-		$relativePath = \OCA\Encryption\Helper::stripUserFilesPath($path);
-
-		list($owner, $ownerPath) = $util->getUidAndFilename($relativePath);
-
-		// Delete keyfile & shareKey so it isn't orphaned
-		if (!Keymanager::deleteFileKey($view, $owner, $ownerPath)) {
-			\OCP\Util::writeLog('Encryption library',
-				'Keyfile or shareKey could not be deleted for file "' . $ownerPath . '"', \OCP\Util::ERROR);
+		
+		// Format path to be relative to user files dir
+		$trimmed = ltrim( $path, '/' );
+		$split = explode( '/', $trimmed );
+		$sliced = array_slice( $split, 2 );
+		$relPath = implode( '/', $sliced );
+		
+		if ( $view->is_dir( $path ) ) {
+			
+			// Dirs must be handled separately as deleteFileKey 
+			// doesn't handle them
+			$view->unlink( $userId . '/' . 'files_encryption' . '/' . 'keyfiles' . '/'. $relPath );
+			
+		} else {
+		
+			// Delete keyfile so it isn't orphaned
+			$result = Keymanager::deleteFileKey( $view, $userId, $relPath );
+		
+			\OC_FileProxy::$enabled = true;
+			
+			return $result;
+		
 		}
-
-		Keymanager::delAllShareKeys($view, $owner, $ownerPath);
-
-		\OC_FileProxy::$enabled = $proxyStatus;
-
-		// If we don't return true then file delete will fail; better
-		// to leave orphaned keyfiles than to disallow file deletion
-		return true;
-
+	
 	}
 
 	/**
-	 * @param $path
-	 * @return bool
+	 * @brief When a file is renamed, rename its keyfile also
+	 * @return bool Result of rename()
+	 * @note This is pre rather than post because using post didn't work
 	 */
-	public function postTouch($path) {
-		$this->handleFile($path);
-
-		return true;
-	}
-
-	/**
-	 * @param $path
-	 * @param $result
-	 * @return resource
-	 */
-	public function postFopen($path, &$result) {
-
-		if (!$result) {
-
-			return $result;
-
-		}
-
-		// split the path parts
-		$pathParts = explode('/', $path);
-
-		// get relative path
-		$relativePath = \OCA\Encryption\Helper::stripUserFilesPath($path);
-
-		// FIXME: handling for /userId/cache used by webdav for chunking. The cache chunks are NOT encrypted
-		if (isset($pathParts[2]) && $pathParts[2] === 'cache') {
-			return $result;
-		}
-
+	public function preRename( $oldPath, $newPath ) {
+		
 		// Disable encryption proxy to prevent recursive calls
-		$proxyStatus = \OC_FileProxy::$enabled;
 		\OC_FileProxy::$enabled = false;
-
-		$meta = stream_get_meta_data($result);
-
-		$view = new \OC_FilesystemView('');
-
-		$util = new Util($view, \OCP\USER::getUser());
-
+		
+		$view = new \OC_FilesystemView( '/' );
+		
+		$userId = \OCP\USER::getUser();
+	
+		// Format paths to be relative to user files dir
+		$oldTrimmed = ltrim( $oldPath, '/' );
+		$oldSplit = explode( '/', $oldTrimmed );
+		$oldSliced = array_slice( $oldSplit, 2 );
+		$oldRelPath = implode( '/', $oldSliced );
+		$oldKeyfilePath = $userId . '/' . 'files_encryption' . '/' . 'keyfiles' . '/' . $oldRelPath . '.key';
+		
+		$newTrimmed = ltrim( $newPath, '/' );
+		$newSplit = explode( '/', $newTrimmed );
+		$newSliced = array_slice( $newSplit, 2 );
+		$newRelPath = implode( '/', $newSliced );
+		$newKeyfilePath = $userId . '/' . 'files_encryption' . '/' . 'keyfiles' . '/' . $newRelPath . '.key';
+		
+		// Rename keyfile so it isn't orphaned
+		$result = $view->rename( $oldKeyfilePath, $newKeyfilePath );
+		
+		\OC_FileProxy::$enabled = true;
+		
+		return $result;
+	
+	}
+	
+	public function postFopen( $path, &$result ){
+	
+		if ( !$result ) {
+		
+			return $result;
+			
+		}
+		
+		// Reformat path for use with OC_FSV
+		$path_split = explode( '/', $path );
+		$path_f = implode( array_slice( $path_split, 3 ) );
+		
+		// Disable encryption proxy to prevent recursive calls
+		\OC_FileProxy::$enabled = false;
+		
+		$meta = stream_get_meta_data( $result );
+		
+		$view = new \OC_FilesystemView( '' );
+		
+		$util = new Util( $view, \OCP\USER::getUser());
+		
 		// If file is already encrypted, decrypt using crypto protocol
-		if (
-			Crypt::mode() === 'server'
-			&& $util->isEncryptedPath($path)
+		if ( 
+			Crypt::mode() == 'server' 
+			&& $util->isEncryptedPath( $path ) 
 		) {
-
+			
 			// Close the original encrypted file
-			fclose($result);
-
+			fclose( $result );
+			
 			// Open the file using the crypto stream wrapper 
 			// protocol and let it do the decryption work instead
-			$result = fopen('crypt://' . $relativePath, $meta['mode']);
-
-		} elseif (
-			self::shouldEncrypt($path)
-			and $meta ['mode'] !== 'r'
-				and $meta['mode'] !== 'rb'
+			$result = fopen( 'crypt://' . $path_f, $meta['mode'] );
+			
+			
+		} elseif ( 
+			self::shouldEncrypt( $path ) 
+			and $meta ['mode'] != 'r' 
+			and $meta['mode'] != 'rb' 
 		) {
-			$result = fopen('crypt://' . $relativePath, $meta['mode']);
+		// If the file is not yet encrypted, but should be 
+		// encrypted when it's saved (it's not read only)
+		
+		// NOTE: this is the case for new files saved via WebDAV
+		
+			if ( 
+			$view->file_exists( $path ) 
+			and $view->filesize( $path ) > 0 
+			) {
+				$x = $view->file_get_contents( $path );
+				
+				$tmp = tmpfile();
+				
+// 				// Make a temporary copy of the original file
+// 				\OCP\Files::streamCopy( $result, $tmp );
+// 				
+// 				// Close the original stream, we'll return another one
+// 				fclose( $result );
+// 				
+// 				$view->file_put_contents( $path_f, $tmp );
+// 				
+// 				fclose( $tmp );
+			
+			}
+			
+			$result = fopen( 'crypt://'.$path_f, $meta['mode'] );
+		
 		}
-
+		
 		// Re-enable the proxy
-		\OC_FileProxy::$enabled = $proxyStatus;
-
+		\OC_FileProxy::$enabled = true;
+		
 		return $result;
-
+	
 	}
 
-	/**
-	 * @param $path
-	 * @param $data
-	 * @return array
-	 */
-	public function postGetFileInfo($path, $data) {
-
-		// if path is a folder do nothing
-		if (is_array($data) && array_key_exists('size', $data)) {
-
-			// Disable encryption proxy to prevent recursive calls
-			$proxyStatus = \OC_FileProxy::$enabled;
-			\OC_FileProxy::$enabled = false;
-
-			// get file size
-			$data['size'] = self::postFileSize($path, $data['size']);
-
-			// Re-enable the proxy
-			\OC_FileProxy::$enabled = $proxyStatus;
+	public function postGetMimeType( $path, $mime ) {
+		
+		if ( Crypt::isCatfile( $path ) ) {
+		
+			$mime = \OCP\Files::getMimeType( 'crypt://' . $path, 'w' );
+		
 		}
+		
+		return $mime;
+		
+	}
 
+	public function postStat( $path, $data ) {
+	
+		if ( Crypt::isCatfile( $path ) ) {
+		
+			$cached = \OC\Files\Filesystem::getFileInfo( $path, '' );
+			
+			$data['size'] = $cached['size'];
+			
+		}
+		
 		return $data;
 	}
 
-	/**
-	 * @param $path
-	 * @param $size
-	 * @return bool
-	 */
-	public function postFileSize($path, $size) {
-
-		$view = new \OC_FilesystemView('/');
-
-		// if path is a folder do nothing
-		if ($view->is_dir($path)) {
-			return $size;
-		}
-
-		// get relative path
-		$relativePath = \OCA\Encryption\Helper::stripUserFilesPath($path);
-
-		// if path is empty we cannot resolve anything
-		if (empty($relativePath)) {
-			return $size;
-		}
-
-		$fileInfo = false;
-		// get file info from database/cache if not .part file
-		if (!Keymanager::isPartialFilePath($path)) {
-			$fileInfo = $view->getFileInfo($path);
-		}
-
-		// if file is encrypted return real file size
-		if (is_array($fileInfo) && $fileInfo['encrypted'] === true) {
-			$size = $fileInfo['unencrypted_size'];
+	public function postFileSize( $path, $size ) {
+		
+		if ( Crypt::isCatfile( $path ) ) {
+			
+			$cached = \OC\Files\Filesystem::getFileInfo( $path, '' );
+			
+			return  $cached['size'];
+		
 		} else {
-			// self healing if file was removed from file cache
-			if (!is_array($fileInfo)) {
-				$fileInfo = array();
-			}
-
-			$userId = \OCP\User::getUser();
-			$util = new Util($view, $userId);
-			$fixSize = $util->getFileSize($path);
-			if ($fixSize > 0) {
-				$size = $fixSize;
-
-				$fileInfo['encrypted'] = true;
-				$fileInfo['unencrypted_size'] = $size;
-
-				// put file info if not .part file
-				if (!Keymanager::isPartialFilePath($relativePath)) {
-					$view->putFileInfo($path, $fileInfo);
-				}
-			}
-
+		
+			return $size;
+			
 		}
-		return $size;
-	}
-
-	/**
-	 * @param $path
-	 */
-	public function handleFile($path) {
-
-		// Disable encryption proxy to prevent recursive calls
-		$proxyStatus = \OC_FileProxy::$enabled;
-		\OC_FileProxy::$enabled = false;
-
-		$view = new \OC_FilesystemView('/');
-		$session = new \OCA\Encryption\Session($view);
-		$userId = \OCP\User::getUser();
-		$util = new Util($view, $userId);
-
-		// split the path parts
-		$pathParts = explode('/', $path);
-
-		// get relative path
-		$relativePath = \OCA\Encryption\Helper::stripUserFilesPath($path);
-
-		// only if file is on 'files' folder fix file size and sharing
-		if (isset($pathParts[2]) && $pathParts[2] === 'files' && $util->fixFileSize($path)) {
-
-			// get sharing app state
-			$sharingEnabled = \OCP\Share::isEnabled();
-
-			// get users
-			$usersSharing = $util->getSharingUsersArray($sharingEnabled, $relativePath);
-
-			// update sharing-keys
-			$util->setSharedFileKeyfiles($session, $usersSharing, $relativePath);
-		}
-
-		\OC_FileProxy::$enabled = $proxyStatus;
 	}
 }

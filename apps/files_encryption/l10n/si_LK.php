@@ -1,4 +1,4 @@
 <?php $TRANSLATIONS = array(
-"Saving..." => "සුරැකෙමින් පවතී...",
-"Encryption" => "ගුප්ත කේතනය"
+"Encryption" => "ගුප්ත කේතනය",
+"None" => "කිසිවක් නැත"
 );

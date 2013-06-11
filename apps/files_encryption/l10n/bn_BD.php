@@ -1,4 +1,4 @@
 <?php $TRANSLATIONS = array(
-"Saving..." => "সংরক্ষণ করা হচ্ছে..",
-"Encryption" => "সংকেতায়ন"
+"Encryption" => "সংকেতায়ন",
+"None" => "কোনটিই নয়"
 );

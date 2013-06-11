@@ -1,4 +1,4 @@
 <?php $TRANSLATIONS = array(
-"Saving..." => "שמירה…",
-"Encryption" => "הצפנה"
+"Encryption" => "הצפנה",
+"None" => "כלום"
 );

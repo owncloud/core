@@ -20,7 +20,6 @@ class DAV extends Storage {
 		}
 		$this->config['webdav']['root'] .= '/' . $id; //make sure we have an new empty folder to work in
 		$this->instance = new \OC\Files\Storage\DAV($this->config['webdav']);
-		$this->instance->mkdir('/');
 	}
 
 	public function tearDown() {

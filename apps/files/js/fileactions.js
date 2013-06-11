@@ -22,18 +22,18 @@ var FileActions = {
 		if (FileActions.actions.all) {
 			actions = $.extend(actions, FileActions.actions.all);
 		}
-		if (type) {//type is 'dir' or 'file'
-			if (FileActions.actions[type]) {
-				actions = $.extend(actions, FileActions.actions[type]);
-			}
-		}
 		if (mime) {
+			if (FileActions.actions[mime]) {
+				actions = $.extend(actions, FileActions.actions[mime]);
+			}
 			var mimePart = mime.substr(0, mime.indexOf('/'));
 			if (FileActions.actions[mimePart]) {
 				actions = $.extend(actions, FileActions.actions[mimePart]);
 			}
-			if (FileActions.actions[mime]) {
-				actions = $.extend(actions, FileActions.actions[mime]);
+		}
+		if (type) {//type is 'dir' or 'file'
+			if (FileActions.actions[type]) {
+				actions = $.extend(actions, FileActions.actions[type]);
 			}
 		}
 		var filteredActions = {};
@@ -113,7 +113,6 @@ var FileActions = {
 			}
 		});
 		if(actions.Share && !($('#dir').val() === '/' && file === 'Shared')){
-			// t('files', 'Share')
 			addAction('Share', actions.Share);
 		}
 
