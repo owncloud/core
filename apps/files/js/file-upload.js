@@ -142,8 +142,6 @@ var file_upload_param = {
     $('#uploadprogressbar').fadeOut();
   }
 }
-
-
 var file_upload_handler = function() {
   $('#file_upload_start').fileupload(file_upload_param);
 };
@@ -204,13 +202,6 @@ $(document).ready(function() {
       }
     });
   });
-  $('#new').click(function(event){
-    event.stopPropagation();
-  });
-  $('#new>a').click(function(){
-    $('#new>ul').toggle();
-    $('#new').toggleClass('active');
-  });
   $('#new li').click(function(){
     if($(this).children('p').length==0){
       return;
@@ -258,93 +249,93 @@ $(document).ready(function() {
       switch(type){
       case 'file':
         $.post(
-	  OC.filePath('files','ajax','newfile.php'),
-	  {dir:$('#dir').val(),filename:name},
-	  function(result){
-	    if (result.status == 'success') {
-	      var date=new Date();
-	      FileList.addFile(name,0,date,false,hidden);
-	      var tr=$('tr').filterAttr('data-file',name);
-	      tr.attr('data-mime','text/plain');
-	      tr.attr('data-id', result.data.id);
-	      getMimeIcon('text/plain',function(path){
-	        tr.find('td.filename').attr('style','background-image:url('+path+')');
-	      });
-	    } else {
-	      OC.dialogs.alert(result.data.message, t('core', 'Error'));
-	    }
-	  }
+          OC.filePath('files','ajax','newfile.php'),
+          {dir:$('#dir').val(),filename:name},
+          function(result){
+            if (result.status == 'success') {
+              var date=new Date();
+              FileList.addFile(name,0,date,false,hidden);
+              var tr=$('tr').filterAttr('data-file',name);
+              tr.attr('data-mime',result.data.mime);
+              tr.attr('data-id', result.data.id);
+              getMimeIcon(result.data.mime,function(path){
+        	tr.find('td.filename').attr('style','background-image:url('+path+')');
+              });
+            } else {
+              OC.dialogs.alert(result.data.message, t('core', 'Error'));
+            }
+          }
         );
         break;
       case 'folder':
         $.post(
-	  OC.filePath('files','ajax','newfolder.php'),
-	  {dir:$('#dir').val(),foldername:name},
-	  function(result){
-	    if (result.status == 'success') {
-	      var date=new Date();
-	      FileList.addDir(name,0,date,hidden);
-	      var tr=$('tr').filterAttr('data-file',name);
-	      tr.attr('data-id', result.data.id);
-	    } else {
-	      OC.dialogs.alert(result.data.message, t('core', 'Error'));
-	    }
-	  }
+          OC.filePath('files','ajax','newfolder.php'),
+          {dir:$('#dir').val(),foldername:name},
+          function(result){
+            if (result.status == 'success') {
+              var date=new Date();
+              FileList.addDir(name,0,date,hidden);
+              var tr=$('tr').filterAttr('data-file',name);
+              tr.attr('data-id', result.data.id);
+            } else {
+              OC.dialogs.alert(result.data.message, t('core', 'Error'));
+            }
+          }
         );
         break;
       case 'web':
         if(name.substr(0,8)!='https://' && name.substr(0,7)!='http://'){
-	  name='http://'+name;
+          name='http://'+name;
         }
         var localName=name;
         if(localName.substr(localName.length-1,1)=='/'){//strip /
-	  localName=localName.substr(0,localName.length-1)
+          localName=localName.substr(0,localName.length-1)
         }
         if(localName.indexOf('/')){//use last part of url
-	  localName=localName.split('/').pop();
-        }else{//or the domain
-	  localName=(localName.match(/:\/\/(.[^/]+)/)[1]).replace('www.','');
-    }
-	        localName = getUniqueName(localName);
-	        //IE < 10 does not fire the necessary events for the progress bar.
-	        if($('html.lte9').length > 0) {
-	        } else {
-		  $('#uploadprogressbar').progressbar({value:0});
-		  $('#uploadprogressbar').fadeIn();
-	        }
+          localName=localName.split('/').pop();
+        } else { //or the domain
+          localName=(localName.match(/:\/\/(.[^\/]+)/)[1]).replace('www.','');
+        }
+        localName = getUniqueName(localName);
+        //IE < 10 does not fire the necessary events for the progress bar.
+        if($('html.lte9').length > 0) {
+        } else {
+          $('#uploadprogressbar').progressbar({value:0});
+          $('#uploadprogressbar').fadeIn();
+        }
 
-	        var eventSource=new OC.EventSource(OC.filePath('files','ajax','newfile.php'),{dir:$('#dir').val(),source:name,filename:localName});
-	        eventSource.listen('progress',function(progress){
-		  //IE < 10 does not fire the necessary events for the progress bar.
-		  if($('html.lte9').length > 0) {
-		  } else {
-		    $('#uploadprogressbar').progressbar('value',progress);
-		  }
-	        });
-	        eventSource.listen('success',function(data){
-		  var mime=data.mime;
-		  var size=data.size;
-		  var id=data.id;
-		  $('#uploadprogressbar').fadeOut();
-		  var date=new Date();
-		  FileList.addFile(localName,size,date,false,hidden);
-		  var tr=$('tr').filterAttr('data-file',localName);
-		  tr.data('mime',mime).data('id',id);
-		  tr.attr('data-id', id);
-		  getMimeIcon(mime,function(path){
-		    tr.find('td.filename').attr('style','background-image:url('+path+')');
-		  });
-	        });
-	        eventSource.listen('error',function(error){
-		  $('#uploadprogressbar').fadeOut();
-		  alert(error);
-	        });
-	        break;
-	       }
-    var li=form.parent();
-    form.remove();
-    li.append('<p>'+li.data('text')+'</p>');
-    $('#new>a').click();
+        var eventSource=new OC.EventSource(OC.filePath('files','ajax','newfile.php'),{dir:$('#dir').val(),source:name,filename:localName});
+        eventSource.listen('progress',function(progress){
+          //IE < 10 does not fire the necessary events for the progress bar.
+          if($('html.lte9').length > 0) {
+          } else {
+            $('#uploadprogressbar').progressbar('value',progress);
+          }
+        });
+        eventSource.listen('success',function(data){
+          var mime=data.mime;
+          var size=data.size;
+          var id=data.id;
+          $('#uploadprogressbar').fadeOut();
+          var date=new Date();
+          FileList.addFile(localName,size,date,false,hidden);
+          var tr=$('tr').filterAttr('data-file',localName);
+          tr.data('mime',mime).data('id',id);
+          tr.attr('data-id', id);
+          getMimeIcon(mime,function(path){
+            tr.find('td.filename').attr('style','background-image:url('+path+')');
+          });
+        });
+        eventSource.listen('error',function(error){
+          $('#uploadprogressbar').fadeOut();
+          alert(error);
+        });
+        break;
+      }
+      var li=form.parent();
+      form.remove();
+      li.append('<p>'+li.data('text')+'</p>');
+      $('#new>a').click();
+    });
   });
-})
 });
