@@ -250,7 +250,7 @@ $(document).ready(function() {
 	$(document).bind('drop dragover', function (e) {
 			e.preventDefault(); // prevent browser from doing anything, if file isn't dropped in dropZone
 	});
-	
+
 	$.assocArraySize = function(obj) {
 		// http://stackoverflow.com/a/6700/11236
 		var size = 0, key;
@@ -643,7 +643,7 @@ var dragOptions={
 // sane browsers support using the distance option
 if ( $('html.ie').length === 0) {
 	dragOptions['distance'] = 20;
-} 
+}
 
 var folderDropOptions={
 	drop: function( event, ui ) {
