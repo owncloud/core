@@ -8,9 +8,15 @@ OCP\JSON::setContentTypeHeader('text/plain');
 // If not, check the login.
 // If no token is sent along, rely on login only
 
+$l = OC_L10N::get('files');
+
 if ($_POST['dirToken']) {
   $linkItem = OCP\Share::getShareByToken($_POST['dirToken']);
-  if ($linkItem === false) die('Ivalid Token');
+
+  if ($linkItem === false) {
+    OCP\JSON::error(array('data' => array_merge(array('message' => $l->t('Invalid Token')))));
+    die();
+  }
 
   if (!($linkItem['permissions'] & OCP\PERMISSION_CREATE)) {
     OCP\JSON::checkLoggedIn();
@@ -31,7 +37,7 @@ if ($_POST['dirToken']) {
 }
 
 OCP\JSON::callCheck();
-$l = OC_L10N::get('files');
+
 
 // get array with current storage stats (e.g. max file size)
 $storageStats = \OCA\files\lib\Helper::buildFileStorageStatistics($dir);
