@@ -41,19 +41,11 @@ if (\OC_Util::runningOnWindows()) {
 		}
 
 		public function mkdir($path) {
-			if ($this->readonly === false) {
-				return @mkdir($this->datadir . $path);
-			} else {
-				return false;
-			}
+			return @mkdir($this->datadir . $path);
 		}
 
 		public function rmdir($path) {
-			if ($this->readonly === false) {
-				return @rmdir($this->datadir . $path);
-			} else {
-				return false;
-			}
+			return @rmdir($this->datadir . $path);
 		}
 
 		public function opendir($path) {
@@ -126,79 +118,59 @@ if (\OC_Util::runningOnWindows()) {
 		}
 
 		public function touch($path, $mtime = null) {
-			if ($this->readonly === false) {
-				// sets the modification time of the file to the given value.
-				// If mtime is nil the current time is set.
-				// note that the access time of the file always changes to the current time.
-				if ($this->file_exists($path) and !$this->isUpdatable($path)) {
-					return false;
-				}
-				if (!is_null($mtime)) {
-					$result = touch($this->datadir . $path, $mtime);
-				} else {
-					$result = touch($this->datadir . $path);
-				}
-				if ($result) {
-					clearstatcache(true, $this->datadir . $path);
-				}
-
-				return $result;
-			} else {
+			// sets the modification time of the file to the given value.
+			// If mtime is nil the current time is set.
+			// note that the access time of the file always changes to the current time.
+			if ($this->file_exists($path) and !$this->isUpdatable($path)) {
 				return false;
+			}
+			if (!is_null($mtime)) {
+				$result = touch($this->datadir . $path, $mtime);
+			} else {
+				$result = touch($this->datadir . $path);
+			}
+			if ($result) {
+				clearstatcache(true, $this->datadir . $path);
 			}
 		}
 
 		public function file_get_contents($path) {
 			return file_get_contents($this->datadir . $path);
 		}
+
 		public function file_put_contents($path, $data) {
-			if ($this->readonly === false) {
-				return file_put_contents($this->datadir . $path,$data);
-			} else {
-				return false;
-			}
+			return file_put_contents($this->datadir . $path,$data);
 		}
 
 		public function unlink($path) {
-			if ($this->readonly === false) {
-				return $this->delTree($path);
-			} else {
-				return false;
-			}
+			return $this->delTree($path);
 		}
 
 		public function rename($path1, $path2) {
-			if ($this->readonly === false) {
-				if (!$this->isUpdatable($path1)) {
-					\OC_Log::write('core', 'unable to rename, file is not writable : ' . $path1, \OC_Log::ERROR);
-					return false;
-				}
-				if(!$this->file_exists($path1)) {
-					\OC_Log::write('core', 'unable to rename, file does not exists : ' . $path1, \OC_Log::ERROR);
-					return false;
-				}
-
-				if ($return = rename($this->datadir . $path1, $this->datadir . $path2)) {
-				}
-				return $return;
-			} else {
+			if (!$this->isUpdatable($path1)) {
+				\OC_Log::write('core', 'unable to rename, file is not writable : ' . $path1, \OC_Log::ERROR);
 				return false;
 			}
+
+			if(!$this->file_exists($path1)) {
+				\OC_Log::write('core', 'unable to rename, file does not exists : ' . $path1, \OC_Log::ERROR);
+				return false;
+			}
+
+			if ($return = rename($this->datadir . $path1, $this->datadir . $path2)) {
+			}
+			return $return;
 		}
 
 		public function copy($path1, $path2) {
-			if ($this->readonly === false) {
-				if ($this->is_dir($path2)) {
-					if (!$this->file_exists($path2)) {
-						$this->mkdir($path2);
-					}
-					$source = substr($path1, strrpos($path1, '/') + 1);
-					$path2 .= $source;
+			if ($this->is_dir($path2)) {
+				if (!$this->file_exists($path2)) {
+					$this->mkdir($path2);
 				}
-				return copy($this->datadir . $path1, $this->datadir . $path2);
-			} else {
-				return false;
+				$source = substr($path1, strrpos($path1, '/') + 1);
+				$path2 .= $source;
 			}
+			return copy($this->datadir . $path1, $this->datadir . $path2);
 		}
 
 		public function fopen($path, $mode) {
@@ -219,28 +191,24 @@ if (\OC_Util::runningOnWindows()) {
 		}
 
 		private function delTree($dir) {
-			if ($this->readonly === false) {
-				$dirRelative = $dir;
-				$dir = $this->datadir . $dir;
-				if (!file_exists($dir)) return true;
-				if (!is_dir($dir) || is_link($dir)) return unlink($dir);
-				foreach (scandir($dir) as $item) {
-					if ($item == '.' || $item == '..') continue;
-					if (is_file($dir . '/' . $item)) {
-						if (unlink($dir . '/' . $item)) {
-						}
-					} elseif (is_dir($dir . '/' . $item)) {
-						if (!$this->delTree($dirRelative .  "/" . $item)) {
-							return false;
-						};
+			$dirRelative = $dir;
+			$dir = $this->datadir . $dir;
+			if (!file_exists($dir)) return true;
+			if (!is_dir($dir) || is_link($dir)) return unlink($dir);
+			foreach (scandir($dir) as $item) {
+				if ($item == '.' || $item == '..') continue;
+				if (is_file($dir . '/' . $item)) {
+					if (unlink($dir . '/' . $item)) {
 					}
+				} elseif (is_dir($dir . '/' . $item)) {
+					if (!$this->delTree($dirRelative .  "/" . $item)) {
+						return false;
+					};
 				}
-				if ($return = rmdir($dir)) {
-				}
-				return $return;
-			} else {
-				return false;
 			}
+			if ($return = rmdir($dir)) {
+			}
+			return $return;
 		}
 
 		private static function getFileSizeFromOS($fullPath) {
