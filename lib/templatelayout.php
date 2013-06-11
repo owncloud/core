@@ -109,7 +109,9 @@ class OC_TemplateLayout extends OC_Template {
 		foreach($styles as $style) {
 			// is it in 3rdparty?
 			if(strpos($style, '3rdparty') === 0 &&
-				self::appendIfExist($files, OC::$THIRDPARTYROOT, OC::$THIRDPARTYWEBROOT, $style.'.css') && OC::$THIRDPARTYROOT!=='' && OC::$THIRDPARTYWEBROOT!=='') {
+				(OC::$THIRDPARTYROOT !== '') && 
+				(OC::$THIRDPARTYWEBROOT !== '') &&
+				self::appendIfExist($files, OC::$THIRDPARTYROOT, OC::$THIRDPARTYWEBROOT, $style.'.css')) {
 
 			// or in the owncloud root?
 			}elseif(self::appendIfExist($files, OC::$SERVERROOT, OC::$WEBROOT, "$style$fext.css" )) {
@@ -163,7 +165,9 @@ class OC_TemplateLayout extends OC_Template {
 		foreach($scripts as $script) {
 			// Is it in 3rd party?
 			if(strpos($script, '3rdparty') === 0 &&
-				self::appendIfExist($files, OC::$THIRDPARTYROOT, OC::$THIRDPARTYWEBROOT, $script.'.js') && OC::$THIRDPARTYROOT!=='' && OC::$THIRDPARTYWEBROOT!=='') {
+				(OC::$THIRDPARTYROOT !== '') && 
+				(OC::$THIRDPARTYWEBROOT !== '') &&
+				self::appendIfExist($files, OC::$THIRDPARTYROOT, OC::$THIRDPARTYWEBROOT, $script.'.js')) {
 
 			// Is it in apps and overwritten by the theme?
 			}elseif(self::appendIfExist($files, OC::$SERVERROOT, OC::$WEBROOT, "themes/$theme/apps/$script$fext.js" )) {
