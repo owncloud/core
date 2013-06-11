@@ -41,7 +41,7 @@ if (\OC_Util::runningOnWindows()) {
 		}
 
 		public function mkdir($path) {
-			if ($this->readonly == false) {
+			if ($this->readonly === false) {
 				return @mkdir($this->datadir . $path);
 			} else {
 				return false;
@@ -49,7 +49,7 @@ if (\OC_Util::runningOnWindows()) {
 		}
 
 		public function rmdir($path) {
-			if ($this->readonly == false) {
+			if ($this->readonly === false) {
 				return @rmdir($this->datadir . $path);
 			} else {
 				return false;
@@ -110,7 +110,7 @@ if (\OC_Util::runningOnWindows()) {
 		}
 
 		public function isUpdatable($path) {
-			if ($this->readonly == false) {
+			if ($this->readonly === false) {
 				return is_writable($this->datadir . $path);
 			} else {
 				return false;
@@ -126,7 +126,7 @@ if (\OC_Util::runningOnWindows()) {
 		}
 
 		public function touch($path, $mtime = null) {
-			if ($this->readonly == false) {
+			if ($this->readonly === false) {
 				// sets the modification time of the file to the given value.
 				// If mtime is nil the current time is set.
 				// note that the access time of the file always changes to the current time.
@@ -152,7 +152,7 @@ if (\OC_Util::runningOnWindows()) {
 			return file_get_contents($this->datadir . $path);
 		}
 		public function file_put_contents($path, $data) {
-			if ($this->readonly == false) {
+			if ($this->readonly === false) {
 				return file_put_contents($this->datadir . $path,$data);
 			} else {
 				return false;
@@ -160,7 +160,7 @@ if (\OC_Util::runningOnWindows()) {
 		}
 
 		public function unlink($path) {
-			if ($this->readonly == false) {
+			if ($this->readonly === false) {
 				return $this->delTree($path);
 			} else {
 				return false;
@@ -168,7 +168,7 @@ if (\OC_Util::runningOnWindows()) {
 		}
 
 		public function rename($path1, $path2) {
-			if ($this->readonly == false) {
+			if ($this->readonly === false) {
 				if (!$this->isUpdatable($path1)) {
 					\OC_Log::write('core', 'unable to rename, file is not writable : ' . $path1, \OC_Log::ERROR);
 					return false;
@@ -187,7 +187,7 @@ if (\OC_Util::runningOnWindows()) {
 		}
 
 		public function copy($path1, $path2) {
-			if ($this->readonly == false) {
+			if ($this->readonly === false) {
 				if ($this->is_dir($path2)) {
 					if (!$this->file_exists($path2)) {
 						$this->mkdir($path2);
@@ -202,7 +202,7 @@ if (\OC_Util::runningOnWindows()) {
 		}
 
 		public function fopen($path, $mode) {
-			if ($this->readonly == false) {
+			if ($this->readonly === false) {
 				return fopen($this->datadir . $path, $mode);
 			} else {
 				return fopen($this->datadir . $path, 'r');
@@ -219,7 +219,7 @@ if (\OC_Util::runningOnWindows()) {
 		}
 
 		private function delTree($dir) {
-			if ($this->readonly == false) {
+			if ($this->readonly === false) {
 				$dirRelative = $dir;
 				$dir = $this->datadir . $dir;
 				if (!file_exists($dir)) return true;
@@ -274,7 +274,7 @@ if (\OC_Util::runningOnWindows()) {
 		}
 
 		public function free_space($path) {
-			if ($this->readonly == false) {
+			if ($this->readonly === false) {
 				$space = @disk_free_space($this->datadir . $path);
 				if ($space === false){
 					return \OC\Files\FREE_SPACE_UNKNOWN;
