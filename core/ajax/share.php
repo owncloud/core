@@ -98,19 +98,24 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 			if ($type === 'folder')
 				$subject = (string)$l->t('User %s shared a folder with you', $displayName);
 
-			$text = (string)$l->t('User %s shared the file "%s" with you. It is available for download here: %s',
-				array($displayName, $file, $link));
-			if ($type === 'folder')
-				$text = (string)$l->t('User %s shared the folder "%s" with you. It is available for download here: %s',
-					array($displayName, $file, $link));
+			$content = new OC_Template("core", "mail", "");
+			$content->assign ('link', $link);
+			$content->assign ('user_displayname', $displayName);
+			$content->assign ('filename', $file);
+			$text = $content->fetchPage();
 
+			$content = new OC_Template("core", "altmail", "");
+			$content->assign ('link', $link);
+			$content->assign ('user_displayname', $displayName);
+			$content->assign ('filename', $file);
+			$alttext = $content->fetchPage();
 
 			$default_from = OCP\Util::getDefaultEmailAddress('sharing-noreply');
 			$from_address = OCP\Config::getUserValue($user, 'settings', 'email', $default_from );
 
 			// send it out now
 			try {
-				OCP\Util::sendMail($to_address, $to_address, $subject, $text, $from_address, $displayName);
+				OCP\Util::sendMail($to_address, $to_address, $subject, $text, $from_address, $displayName, 1, $alttext);
 				OCP\JSON::success();
 			} catch (Exception $exception) {
 				OCP\JSON::error(array('data' => array('message' => OC_Util::sanitizeHTML($exception->getMessage()))));
