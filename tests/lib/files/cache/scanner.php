@@ -102,6 +102,23 @@ class Scanner extends \PHPUnit_Framework_TestCase {
 
 		$cachedDataFolder = $this->cache->get('');
 		$this->assertNotEquals($cachedDataFolder['size'], -1);
+
+		$this->storage->mkdir('folder/subfolder');
+		$this->scanner->scan('folder');
+		$this->assertTrue($this->cache->inCache('folder/subfolder'));
+		$cachedData = $this->cache->get('folder/subfolder');
+		$this->assertEquals(0, $cachedData['size']);
+
+		$textData = "dummy file data\n";
+		$textSize = strlen("dummy file data\n");
+		$this->storage->file_put_contents('folder/subfolder/bar.txt', $textData);
+		$this->scanner->scan('folder', \OC\Files\Cache\Scanner::SCAN_SHALLOW);
+		$cachedData = $this->cache->get('folder/subfolder');
+		$this->assertEquals(-1, $cachedData['size']);
+
+		$this->scanner->scan('folder/subfolder', \OC\Files\Cache\Scanner::SCAN_SHALLOW);
+		$cachedData = $this->cache->get('folder/subfolder');
+		$this->assertEquals($textSize, $cachedData['size']);
 	}
 
 	function testBackgroundScan(){
