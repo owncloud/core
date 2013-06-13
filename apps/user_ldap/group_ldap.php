@@ -39,17 +39,20 @@ class GROUP_LDAP extends lib\Access implements \OCP\GroupInterface {
 	 * @brief is user in group?
 	 * @param $uid uid of the user
 	 * @param $gid gid of the group
+	 * @param $includeTopGroups indicates if topGroups of the given group should also be cheked
 	 * @returns true/false
 	 *
 	 * Checks whether the user is member of a group or not.
 	 */
-	public function inGroup($uid, $gid) {
+	public function inGroup($uid, $gid, $includeTopGroups = false) {
 		if(!$this->enabled) {
 			return false;
 		}
+		
 		if($this->connection->isCached('inGroup'.$uid.':'.$gid)) {
 			return $this->connection->getFromCache('inGroup'.$uid.':'.$gid);
 		}
+		
 		$dn_user = $this->username2dn($uid);
 		$dn_group = $this->groupname2dn($gid);
 		// just in case
@@ -57,13 +60,19 @@ class GROUP_LDAP extends lib\Access implements \OCP\GroupInterface {
 			$this->connection->writeToCache('inGroup'.$uid.':'.$gid, false);
 			return false;
 		}
+		
+		//Use the new getGroupMembers function in access.php for determing the members of the given group
+		$members = $this->getGroupMembers($dn_group, $this->connection->ldapGroupMemberAssocAttr, $includeTopGroups);
+
 		//usually, LDAP attributes are said to be case insensitive. But there are exceptions of course.
-		$members = $this->readAttribute($dn_group, $this->connection->ldapGroupMemberAssocAttr);
+		//Add Filter -> ldapUserFilter because also a Goupr or other things can be members of a AD GROUP
+		//$members = $this->readAttribute($dn_group, $this->connection->ldapGroupMemberAssocAttr,  $this->connection->ldapUserFilter);
+		
 		if(!$members) {
 			$this->connection->writeToCache('inGroup'.$uid.':'.$gid, false);
 			return false;
 		}
-
+		
 		//extra work if we don't get back user DNs
 		//TODO: this can be done with one LDAP query
 		if(strtolower($this->connection->ldapGroupMemberAssocAttr) == 'memberuid') {
@@ -81,19 +90,20 @@ class GROUP_LDAP extends lib\Access implements \OCP\GroupInterface {
 
 		$isInGroup = in_array($dn_user, $members);
 		$this->connection->writeToCache('inGroup'.$uid.':'.$gid, $isInGroup);
-
+		
 		return $isInGroup;
 	}
-
+	
 	/**
 	 * @brief Get all groups a user belongs to
 	 * @param $uid Name of the user
+	 * @param $includeSubGroups indicates if SubGroups should also be checked
 	 * @returns array with group names
 	 *
 	 * This function fetches all groups a user belongs to. It does not check
 	 * if the user exists at all.
 	 */
-	public function getUserGroups($uid) {
+	public function getUserGroups($uid, $includeSubGroups = false) {
 		if(!$this->enabled) {
 			return array();
 		}
@@ -124,10 +134,10 @@ class GROUP_LDAP extends lib\Access implements \OCP\GroupInterface {
 			$this->connection->ldapGroupFilter,
 			$this->connection->ldapGroupMemberAssocAttr.'='.$uid
 		));
-		$groups = $this->fetchListOfGroups($filter, array($this->connection->ldapGroupDisplayName, 'dn'));
+		$groups = $this->fetchListOfGroups($filter, array($this->connection->ldapGroupDisplayName, 'dn'), null,null,$includeSubGroups);
 		$groups = array_unique($this->ownCloudGroupNames($groups), SORT_LOCALE_STRING);
 		$this->connection->writeToCache($cacheKey, $groups);
-
+		
 		return $groups;
 	}
 
@@ -242,7 +252,7 @@ class GROUP_LDAP extends lib\Access implements \OCP\GroupInterface {
 			return array();
 		}
 		$cachekey = 'getGroups-'.$search.'-'.$limit.'-'.$offset;
-
+		
 		//Check cache before driving unnecessary searches
 		\OCP\Util::writeLog('user_ldap', 'getGroups '.$cachekey, \OCP\Util::DEBUG);
 		$ldap_groups = $this->connection->getFromCache($cachekey);

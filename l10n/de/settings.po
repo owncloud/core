@@ -304,6 +304,11 @@ msgstr "Erlaube Benutzern mit jedem zu teilen"
 msgid "Allow users to only share with users in their groups"
 msgstr "Erlaube Benutzern nur mit Benutzern ihrer Gruppe zu teilen"
 
+#:templates/admin.php:164
+#Added German translation for new introduced subgroups settings
+msgid "Allow users to share with users in their groups and subgroups (LDAP Only)"
+msgstr "Erlaubt Benutzern, mit Benutzern ihrere Gruppe oder derer Untergruppen zu teilen (Nur mit LDAP)" 
+
 #: templates/admin.php:168
 msgid "Security"
 msgstr "Sicherheit"

@@ -53,7 +53,7 @@ abstract class OC_Group_Example {
 	 *
 	 * Checks whether the user is member of a group or not.
 	 */
-	abstract public static function inGroup($uid, $gid);
+	abstract public static function inGroup($uid, $gid, $includeTopGroups = false);
 
 	/**
 	 * @brief Add a user to a group
@@ -83,7 +83,7 @@ abstract class OC_Group_Example {
 	 * This function fetches all groups a user belongs to. It does not check
 	 * if the user exists at all.
 	 */
-	abstract public static function getUserGroups($uid);
+	abstract public static function getUserGroups($uid, $includeSubGroups = false);
 
 	/**
 	 * @brief get a list of all groups

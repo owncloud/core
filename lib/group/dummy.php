@@ -67,7 +67,7 @@ class OC_Group_Dummy extends OC_Group_Backend {
 	 *
 	 * Checks whether the user is member of a group or not.
 	 */
-	public function inGroup($uid, $gid) {
+	public function inGroup($uid, $gid, $includeTopGroups = false) {
 		if(isset($this->groups[$gid])) {
 			return (array_search($uid, $this->groups[$gid])!==false);
 		}else{
@@ -124,7 +124,7 @@ class OC_Group_Dummy extends OC_Group_Backend {
 	 * This function fetches all groups a user belongs to. It does not check
 	 * if the user exists at all.
 	 */
-	public function getUserGroups($uid) {
+	public function getUserGroups($uid, $includeSubGroups = false) {
 		$groups=array();
 		$allGroups=array_keys($this->groups);
 		foreach($allGroups as $group) {

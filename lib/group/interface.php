@@ -40,7 +40,7 @@ interface OC_Group_Interface {
 	 *
 	 * Checks whether the user is member of a group or not.
 	 */
-	public function inGroup($uid, $gid);
+	public function inGroup($uid, $gid, $includeTopGroups = false);
 
 	/**
 	 * @brief Get all groups a user belongs to
@@ -50,7 +50,7 @@ interface OC_Group_Interface {
 	 * This function fetches all groups a user belongs to. It does not check
 	 * if the user exists at all.
 	 */
-	public function getUserGroups($uid);
+	public function getUserGroups($uid, $includeSubGroups = false);
 
 	/**
 	 * @brief get a list of all groups

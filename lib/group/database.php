@@ -95,7 +95,7 @@ class OC_Group_Database extends OC_Group_Backend {
 	 *
 	 * Checks whether the user is member of a group or not.
 	 */
-	public function inGroup( $uid, $gid ) {
+	public function inGroup( $uid, $gid, $includeTopGroups = false ) {
 		// check
 		$stmt = OC_DB::prepare( "SELECT `uid` FROM `*PREFIX*group_user` WHERE `gid` = ? AND `uid` = ?" );
 		$result = $stmt->execute( array( $gid, $uid ));
@@ -145,7 +145,7 @@ class OC_Group_Database extends OC_Group_Backend {
 	 * This function fetches all groups a user belongs to. It does not check
 	 * if the user exists at all.
 	 */
-	public function getUserGroups( $uid ) {
+	public function getUserGroups( $uid, $includeSubGroups = false ) {
 		// No magic!
 		$stmt = OC_DB::prepare( "SELECT `gid` FROM `*PREFIX*group_user` WHERE `uid` = ?" );
 		$result = $stmt->execute( array( $uid ));

@@ -100,7 +100,7 @@ class Group_Proxy extends lib\Proxy implements \OCP\GroupInterface {
 	 *
 	 * Checks whether the user is member of a group or not.
 	 */
-	public function inGroup($uid, $gid) {
+	public function inGroup($uid, $gid, $includeTopGroups = false) {
 		return $this->handleRequest($gid, 'inGroup', array($uid, $gid));
 	}
 
@@ -112,11 +112,11 @@ class Group_Proxy extends lib\Proxy implements \OCP\GroupInterface {
 	 * This function fetches all groups a user belongs to. It does not check
 	 * if the user exists at all.
 	 */
-	public function getUserGroups($uid) {
+	public function getUserGroups($uid, $includeSubGroups = false) {
 		$groups = array();
 
 		foreach($this->backends as $backend) {
-		    $backendGroups = $backend->getUserGroups($uid);
+		    $backendGroups = $backend->getUserGroups($uid, $includeSubGroups);
 			if (is_array($backendGroups)) {
 				$groups = array_merge($groups, $backendGroups);
 			}

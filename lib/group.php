@@ -137,9 +137,9 @@ class OC_Group {
 	 *
 	 * Checks whether the user is member of a group or not.
 	 */
-	public static function inGroup( $uid, $gid ) {
+	public static function inGroup( $uid, $gid, $includeTopGroups = false) {
 		foreach(self::$_usedBackends as $backend) {
-			if($backend->inGroup($uid, $gid)) {
+			if($backend->inGroup($uid, $gid, $includeTopGroups)) {
 				return true;
 			}
 		}
@@ -220,10 +220,10 @@ class OC_Group {
 	 * This function fetches all groups a user belongs to. It does not check
 	 * if the user exists at all.
 	 */
-	public static function getUserGroups( $uid ) {
+	public static function getUserGroups( $uid, $includeSubGroups = false ) {
 		$groups=array();
 		foreach(self::$_usedBackends as $backend) {
-			$groups=array_merge($backend->getUserGroups($uid), $groups);
+			$groups=array_merge($backend->getUserGroups($uid, $includeSubGroups), $groups);
 		}
 		asort($groups);
 		return $groups;

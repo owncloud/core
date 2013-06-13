@@ -37,10 +37,38 @@ abstract class Access {
 	}
 
 	/**
+	 * @brief gets all members of a given LDAP Group
+	 * @param $dn the record in question
+	 * @param $attr the attribute that shall be retrieved
+	 * 		  if empty, just check the record's existence
+	 * @param string $includeTopGroups indicates if topGroups of this group also should be searched
+	 * @param string $filterthe filter to use for the LDAP search
+	 * @returns an array of values on succes or an empty
+	 * 	        array if $attr is empty, false otherwise
+	 */
+	public function getGroupMembers($dn, $attr, $includeTopGroups = false, $filter = 'objectClass=*')
+	{	
+		//initial read first groupmembers
+		$members = $this->readAttribute($dn, $attr, $filter);
+		//If topgroups should be included
+		if($includeTopGroups){
+			//read top groups
+			$topGroups = $this->readAttribute($dn, 'memberOf');
+			//Loop through given topgroups
+			foreach($topGroups as $topGroup){
+				//CUATION RECURSION: loop through all topGroups and it's members
+				$members = array_merge($members, $this->getGroupMembers($topGroup, $attr, $includeTopGroups));
+			}
+		}
+		return $members;
+	}
+	
+	/**
 	 * @brief reads a given attribute for an LDAP record identified by a DN
 	 * @param $dn the record in question
 	 * @param $attr the attribute that shall be retrieved
 	 *        if empty, just check the record's existence
+	 * @param $filter the filter to use for the LDAP search
 	 * @returns an array of values on success or an empty
 	 *          array if $attr is empty, false otherwise
 	 *
@@ -597,8 +625,8 @@ abstract class Access {
 		return $this->fetchList($this->searchUsers($filter, $attr, $limit, $offset), (count($attr) > 1));
 	}
 
-	public function fetchListOfGroups($filter, $attr, $limit = null, $offset = null) {
-		return $this->fetchList($this->searchGroups($filter, $attr, $limit, $offset), (count($attr) > 1));
+	public function fetchListOfGroups($filter, $attr, $limit = null, $offset = null, $includeSubGroups = false) {
+		return $this->fetchList($this->searchGroups($filter, $attr, $limit, $offset, $includeSubGroups), (count($attr) > 1));
 	}
 
 	private function fetchList($list, $manyAttributes) {
@@ -630,12 +658,23 @@ abstract class Access {
 	 * @brief executes an LDAP search, optimized for Groups
 	 * @param $filter the LDAP filter for the search
 	 * @param $attr optional, when a certain attribute shall be filtered out
+	 * @param $includeSubGroups indicates if SubGroups should also be searched
 	 * @returns array with the search result
 	 *
 	 * Executes an LDAP search
 	 */
-	public function searchGroups($filter, $attr = null, $limit = null, $offset = null) {
-		return $this->search($filter, $this->connection->ldapBaseGroups, $attr, $limit, $offset);
+	public function searchGroups($filter, $attr = null, $limit = null, $offset = null, $includeSubGroups = false) {
+		$findings = $this->search($filter, $this->connection->ldapBaseGroups, $attr, $limit, $offset);
+		//See if SubGroups have to be searched
+		if($includeSubGroups){
+			//Loop through all Groups where the User is a member
+			foreach($findings as $group){
+				$filter = preg_replace("/(memberO?f?=.*)\)\)/", 'memberOf='.$group["dn"]."))", $filter);
+				//CAUTION RECURSION: Loop Through all SubGroups
+				$findings = array_merge($findings,$this->searchGroups($filter, $attr, $limit, $offset, $includeSubGroups));
+			}
+		}
+		return $findings;
 	}
 
 	/**
@@ -652,7 +691,7 @@ abstract class Access {
 		if(!is_null($attr) && !is_array($attr)) {
 			$attr = array(mb_strtolower($attr, 'UTF-8'));
 		}
-
+		
 		// See if we have a resource, in case not cancel with message
 		$link_resource = $this->connection->getConnectionResource();
 		if(!is_resource($link_resource)) {
@@ -843,9 +882,10 @@ abstract class Access {
 	 * @return string the final filter part to use in LDAP searches
 	 */
 	public function getFilterPartForUserSearch($search) {
-		return $this->getFilterPartForSearch($search,
-			$this->connection->ldapAttributesForUserSearch,
-			$this->connection->ldapUserDisplayName);
+		//I think it was here when someone forgot to add the given ldapUserFilter to the search.
+		//If you won't add this filter to the search, my userFilter setting on the admin panel won't take effect
+		//Else you have to implement it in group_ldap:209
+		return $this->combineFilterWithAnd(array($this->connection->ldapUserFilter, $this->getFilterPartForSearch($search,$this->connection->ldapAttributesForUserSearch,$this->connection->ldapUserDisplayName)));
 	}
 
 	/**
@@ -854,9 +894,10 @@ abstract class Access {
 	 * @return string the final filter part to use in LDAP searches
 	 */
 	public function getFilterPartForGroupSearch($search) {
-		return $this->getFilterPartForSearch($search,
-			$this->connection->ldapAttributesForGroupSearch,
-			$this->connection->ldapGroupDisplayName);
+		//I think it was here when someone forgot to add the given ldapGroupFilter to the search.
+		//If you won't add this filter to the search, my groupFilter setting on the admin panel won't take effect
+		//Else you have to implement it in group_ldap:209
+		return $this->combineFilterWithAnd(array($this->connection->ldapGroupFilter, $this->getFilterPartForSearch($search,$this->connection->ldapAttributesForGroupSearch,$this->connection->ldapGroupDisplayName)));
 	}
 
 	/**
