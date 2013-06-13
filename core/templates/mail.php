@@ -2,7 +2,7 @@
 <tr><td>
 <table cellspacing="0" cellpadding="0" border="0" width="600px">
 <tr><td bgcolor="#1d2d44" colspan="2">
-<img src="<?php print_unescaped(image_path('', 'logo-mail.gif')); ?>" alt="ownCloud"/>
+<img src="<?php print_unescaped(OC_Helper::makeURLAbsolute(image_path('', 'logo-mail.gif'))); ?>" alt="ownCloud"/>
 </td>
 </tr>
 <tr><td bgcolor="#f8f8f8" colspan="2">&nbsp;</td></tr>
