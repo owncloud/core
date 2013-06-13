@@ -104,6 +104,7 @@ thead{
     position: absolute !important;
     top: 0;
     left: 0;
+    width: 100% !important;
 }
 
 .header-right #download span {
