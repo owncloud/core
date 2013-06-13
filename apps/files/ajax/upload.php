@@ -25,6 +25,10 @@ if ($_POST['dirToken']) {
     // The token defines the target directory (security reasons)
     $dir = $linkItem['file_target'];
 
+    if (!$dir || empty($dir) || $dir === false) {
+      OCP\JSON::error(array('data' => array_merge(array('message' => $l->t('Unable to set upload directory.')))));
+      die();
+    }
     // Setup FS with owner
     // NOTE: this subject has been discussed in the IRC channel. So far however I didn't come to a conclusion
     // about possible security issues on this line. Please take a closer look at this during evaluation.
