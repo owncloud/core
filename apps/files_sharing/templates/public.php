@@ -33,9 +33,12 @@
           <input type="hidden" id="uploadMaxFilesize" name="uploadMaxFilesize" value="<?php p($_['uploadMaxFilesize']) ?>" />
           <input type="hidden" id="uploadMaxHumanFilesize" name="uploadMaxHumanFilesize" value="<?php p($_['uploadMaxHumanFilesize']) ?>" />
 
+
           <div id="data-upload-form" class="button">
             <input id="file_upload_start" type="file" name="files[]" data-url="<?php print_unescaped(OCP\Util::linkTo('files', 'ajax/upload.php')); ?>" multiple>
-            <a href="#" id="publicUploadButtonMock" class="svg" onclick="return false;"></a>
+            <a href="#" id="publicUploadButtonMock" class="svg" onclick="return false;">
+              <span><?php p($l->t('Upload'))?></span>
+            </a>
           </div>
 
         </div>
