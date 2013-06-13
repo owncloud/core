@@ -131,6 +131,11 @@ class OC {
 		}
 		// search the apps folder
 		$config_paths = OC_Config::getValue('apps_paths', array());
+
+		if (file_exists(OC::$SERVERROOT . '/apps')) {
+			OC::$APPSROOTS[] = array('path' => OC::$SERVERROOT . '/apps', 'url' => '/apps', 'writable' => is_writable(OC::$SERVERROOT . '/apps'));
+		}
+
 		if (!empty($config_paths)) {
 			foreach ($config_paths as $paths) {
 				if (isset($paths['url']) && isset($paths['path'])) {
@@ -139,14 +144,10 @@ class OC {
 					OC::$APPSROOTS[] = $paths;
 				}
 			}
-		} elseif (file_exists(OC::$SERVERROOT . '/apps')) {
-			OC::$APPSROOTS[] = array('path' => OC::$SERVERROOT . '/apps', 'url' => '/apps', 'writable' => true);
-		} elseif (file_exists(OC::$SERVERROOT . '/../apps')) {
-			OC::$APPSROOTS[] = array(
-				'path' => rtrim(dirname(OC::$SERVERROOT), '/') . '/apps',
-				'url' => '/apps',
-				'writable' => true
-			);
+		} else{
+			foreach (glob(OC::$SERVERROOT."/apps[0-9]") as $filename) {
+				OC::$APPSROOTS[] = array('path' => $filename, 'url' => '/'.basename($filename), 'writable' => is_writable($filename));
+			}
 		}
 
 		if (empty(OC::$APPSROOTS)) {
