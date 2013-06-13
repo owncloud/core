@@ -100,12 +100,14 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 
 			$content = new OC_Template("core", "mail", "");
 			$content->assign ('link', $link);
+			$content->assign ('type', $type);
 			$content->assign ('user_displayname', $displayName);
 			$content->assign ('filename', $file);
 			$text = $content->fetchPage();
 
 			$content = new OC_Template("core", "altmail", "");
 			$content->assign ('link', $link);
+			$content->assign ('type', $type);
 			$content->assign ('user_displayname', $displayName);
 			$content->assign ('filename', $file);
 			$alttext = $content->fetchPage();

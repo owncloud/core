@@ -11,13 +11,22 @@
 <tr>
 <td bgcolor="#f8f8f8" width="20px">&nbsp;</td>
 <td bgcolor="#f8f8f8" style="font-weight:normal; font-size:0.8em; line-height:1.2em; font-family:verdana,'arial',sans;">
-<?php print_unescaped($l->t('%s shared "%s" with you. <a href="%s">Download it!</a>', array($_['user_displayname'], $_['filename'], $_['link']))); ?>
+<?php
+if ($_['type'] === 'folder')
+{
+	print_unescaped($l->t('%s shared »%s« with you. <a href="%s">Open it!</a>', array($_['user_displayname'], $_['filename'], $_['link'])));
+}
+else
+{
+	print_unescaped($l->t('%s shared »%s« with you. <a href="%s">Download it!</a>', array($_['user_displayname'], $_['filename'], $_['link'])));
+}
+?>
 </td>
 </tr>
 <tr><td bgcolor="#f8f8f8" colspan="2">&nbsp;</td></tr>
 <tr>
 <td bgcolor="#f8f8f8" width="20px">&nbsp;</td>
-<td bgcolor="#f8f8f8" style="font-weight:normal; font-size:0.8em; line-height:1.2em; font-family:verdana,'arial',sans;">--<br>ownCloud<br>Your Cloud, Your Data, Your Way!<br><a href="http://www.owncloud.org">http://www.ownCloud.org</a></td>
+<td bgcolor="#f8f8f8" style="font-weight:normal; font-size:0.8em; line-height:1.2em; font-family:verdana,'arial',sans;">--<br>ownCloud<br>Your Cloud, Your Data, Your Way!<br><a href="http://owncloud.org">http://ownCloud.org</a></td>
 </tr>
 <tr>
 <td bgcolor="#f8f8f8" colspan="2">&nbsp;</td>
