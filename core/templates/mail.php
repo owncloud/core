@@ -1,6 +1,6 @@
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
 <tr><td>
-<table cellspacing="0" cellpadding="2px" border="0" width="600px">
+<table cellspacing="0" cellpadding="0" border="0" width="600px">
 <tr><td bgcolor="#1d2d44" colspan="2">
 <img src="<?php print_unescaped(OC_Helper::makeURLAbsolute(image_path('', 'logo-mail.gif'))); ?>" alt="ownCloud"/>
 </td>
