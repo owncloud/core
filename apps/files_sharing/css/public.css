@@ -88,7 +88,6 @@ thead{
 #data-upload-form {
     position: relative;
     right: 0;
-    width: 28px;
     height: 27px;
     overflow: hidden;
     padding: 0;
@@ -122,4 +121,11 @@ thead{
     background-image:url('%webroot%/core/img/actions/upload.svg');
     background-repeat:no-repeat;
     background-position:7px 6px;
+}
+
+#publicUploadButtonMock span {
+    margin: 0 5px 0 28px;
+    position: relative;
+    top: -2px;
+    color: #555;
 }
