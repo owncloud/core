@@ -1,7 +1,9 @@
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
 <tr><td>
 <table cellspacing="0" cellpadding="0" border="0" width="600px">
-<tr><td bgcolor="#1d2d44" colspan="2">
+<tr>
+<td bgcolor="#1d2d44" width="20px">&nbsp;</td>
+<td bgcolor="#1d2d44">
 <img src="<?php print_unescaped(OC_Helper::makeURLAbsolute(image_path('', 'logo-mail.gif'))); ?>" alt="ownCloud"/>
 </td>
 </tr>
@@ -9,7 +11,7 @@
 <tr>
 <td bgcolor="#f8f8f8" width="20px">&nbsp;</td>
 <td bgcolor="#f8f8f8" style="font-weight:normal; font-size:0.8em; line-height:1.2em; font-family:verdana,'arial',sans;">
-<?php print_unescaped($l->t('User %s shared the file "%s" with you. It is available for download <a href="%s">here</a>.', array($_['user_displayname'], $_['filename'], $_['link']))); ?>
+<?php print_unescaped($l->t('%s shared "%s" with you. <a href="%s">Download it!</a>', array($_['user_displayname'], $_['filename'], $_['link']))); ?>
 </td>
 </tr>
 <tr><td bgcolor="#f8f8f8" colspan="2">&nbsp;</td></tr>
