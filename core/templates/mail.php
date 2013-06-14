@@ -12,14 +12,7 @@
 <td bgcolor="#f8f8f8" width="20px">&nbsp;</td>
 <td bgcolor="#f8f8f8" style="font-weight:normal; font-size:0.8em; line-height:1.2em; font-family:verdana,'arial',sans;">
 <?php
-if ($_['type'] === 'folder')
-{
-	print_unescaped($l->t('Hey there,<br><br>just letting you know that %s shared »%s« with you.<br><a href="%s">Open it!</a><br><br>Cheers!', array($_['user_displayname'], $_['filename'], $_['link'])));
-}
-else
-{
-	print_unescaped($l->t('Hey there,<br><br>just letting you know that %s shared »%s« with you.<br><a href="%s">Download it!</a><br><br>Cheers!', array($_['user_displayname'], $_['filename'], $_['link'])));
-}
+print_unescaped($l->t('Hey there,<br><br>just letting you know that %s shared »%s« with you.<br><a href="%s">View it!</a><br><br>Cheers!', array($_['user_displayname'], $_['filename'], $_['link'])));
 ?>
 </td>
 </tr>
