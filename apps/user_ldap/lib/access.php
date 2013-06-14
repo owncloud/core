@@ -56,7 +56,7 @@ abstract class Access {
 			$topGroups = $this->readAttribute($dn, 'memberOf');
 			//Loop through given topgroups
 			foreach($topGroups as $topGroup){
-				//CUATION RECURSION: loop through all topGroups and it's members
+				//CAUTION RECURSION: loop through all topGroups and it's members
 				$members = array_merge($members, $this->getGroupMembers($topGroup, $attr, $includeTopGroups));
 			}
 		}
@@ -691,7 +691,7 @@ abstract class Access {
 		if(!is_null($attr) && !is_array($attr)) {
 			$attr = array(mb_strtolower($attr, 'UTF-8'));
 		}
-		
+
 		// See if we have a resource, in case not cancel with message
 		$link_resource = $this->connection->getConnectionResource();
 		if(!is_resource($link_resource)) {

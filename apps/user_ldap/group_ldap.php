@@ -90,10 +90,10 @@ class GROUP_LDAP extends lib\Access implements \OCP\GroupInterface {
 
 		$isInGroup = in_array($dn_user, $members);
 		$this->connection->writeToCache('inGroup'.$uid.':'.$gid, $isInGroup);
-		
+
 		return $isInGroup;
 	}
-	
+
 	/**
 	 * @brief Get all groups a user belongs to
 	 * @param $uid Name of the user
@@ -137,7 +137,7 @@ class GROUP_LDAP extends lib\Access implements \OCP\GroupInterface {
 		$groups = $this->fetchListOfGroups($filter, array($this->connection->ldapGroupDisplayName, 'dn'), null,null,$includeSubGroups);
 		$groups = array_unique($this->ownCloudGroupNames($groups), SORT_LOCALE_STRING);
 		$this->connection->writeToCache($cacheKey, $groups);
-		
+
 		return $groups;
 	}
 
@@ -252,7 +252,7 @@ class GROUP_LDAP extends lib\Access implements \OCP\GroupInterface {
 			return array();
 		}
 		$cachekey = 'getGroups-'.$search.'-'.$limit.'-'.$offset;
-		
+
 		//Check cache before driving unnecessary searches
 		\OCP\Util::writeLog('user_ldap', 'getGroups '.$cachekey, \OCP\Util::DEBUG);
 		$ldap_groups = $this->connection->getFromCache($cachekey);
