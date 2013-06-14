@@ -1,0 +1,14 @@
+{
+	"name": "files",
+	"description": "",
+	"version": "1.1.7",
+	"private": true,
+	"dependencies": {},
+	"devDependencies": {
+		"grunt": "*",
+		"grunt-cli": "*",
+		"grunt-phpunit": "*",
+		"grunt-contrib-watch": "*"
+	},
+	"engine": "node >= 0.8"
+}
