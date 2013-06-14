@@ -57,6 +57,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 			$.post(OC.filePath('settings','ajax','disableapp.php'),{appid:appid},function(result) {
 				if(!result || result.status!='success') {
 					OC.dialogs.alert('Error while disabling app', t('core', 'Error'));
+					element.val(t('settings','Disable'));
 				}
 				else {
 					element.data('active',false);
