@@ -80,11 +80,10 @@ class Scanner {
 				}
 				$newData = $data;
 				if ($cacheData = $this->cache->get($file)) {
-					if ($checkExisting && $data['size'] === -1) {
-						$data['size'] = $cacheData['size'];
-					}
-					if ($data['mtime'] === $cacheData['mtime'] &&
-						$data['size'] === $cacheData['size']) {
+					if ($data['mtime'] === $cacheData['mtime']) {
+						if ($checkExisting) {
+							$data['size'] = $cacheData['size'];
+						}
 						$data['etag'] = $cacheData['etag'];
 					}
 					// Only update metadata that has changed
