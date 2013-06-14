@@ -19,10 +19,11 @@ print_unescaped($l->t('Hey there,<br><br>just letting you know that %s shared »
 <tr><td bgcolor="#f8f8f8" colspan="2">&nbsp;</td></tr>
 <tr>
 <td bgcolor="#f8f8f8" width="20px">&nbsp;</td>
-<td bgcolor="#f8f8f8" style="font-weight:normal; font-size:0.8em; line-height:1.2em; font-family:verdana,'arial',sans;">
+<td bgcolor="#f8f8f8" style="font-weight:normal; font-size:0.8em; line-height:1.2em; font-family:verdana,'arial',sans;">--<br>
 <?php
-print_unescaped($l->t('--<br>ownCloud - web services under your control<br><a href="http://owncloud.org">http://ownCloud.org</a>'));
-?></td>
+print_unescaped($l->t('ownCloud - web services under your control'));
+?>
+<br><a href="http://owncloud.org">http://ownCloud.org</a></td>
 </tr>
 <tr>
 <td bgcolor="#f8f8f8" colspan="2">&nbsp;</td>
