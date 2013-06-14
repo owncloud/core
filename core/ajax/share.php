@@ -94,9 +94,7 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 			$l = OC_L10N::get('core');
 
 			// setup the email
-			$subject = (string)$l->t('User %s shared a file with you', $displayName);
-			if ($type === 'folder')
-				$subject = (string)$l->t('User %s shared a folder with you', $displayName);
+			$subject = (string)$l->t('%s shared »%s« with you', array($displayName, $file));
 
 			$content = new OC_Template("core", "mail", "");
 			$content->assign ('link', $link);
