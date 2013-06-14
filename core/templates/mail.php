@@ -18,7 +18,7 @@ if ($_['type'] === 'folder')
 }
 else
 {
-	print_unescaped($l->t('Hey there,<br><br>just letting you know that %s shared »%s« with you.<br><a href="%s">Download it!</a> or <a href="%s">View it online!</a><br><br>Cheers!', array($_['user_displayname'], $_['filename'], $_['download_link'], $_['link'])));
+	print_unescaped($l->t('Hey there,<br><br>just letting you know that %s shared »%s« with you.<br><a href="%s">Download it!</a><br><br>Cheers!', array($_['user_displayname'], $_['filename'], $_['link'])));
 }
 ?>
 </td>
