@@ -1,7 +1,7 @@
 all: phpunit
 
 phpunit:
-	cd js/; make phpunit
+	phpunit tests/
 
 phpunit-watch:
-	cd js/; make phpunitwatch
+	cd tests/; make phpunitwatch
