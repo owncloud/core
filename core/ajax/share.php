@@ -100,6 +100,7 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 
 			$content = new OC_Template("core", "mail", "");
 			$content->assign ('link', $link);
+			$content->assign ('download_link', "$link&download");
 			$content->assign ('type', $type);
 			$content->assign ('user_displayname', $displayName);
 			$content->assign ('filename', $file);
@@ -107,6 +108,7 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 
 			$content = new OC_Template("core", "altmail", "");
 			$content->assign ('link', $link);
+			$content->assign ('download_link', "$link&download");
 			$content->assign ('type', $type);
 			$content->assign ('user_displayname', $displayName);
 			$content->assign ('filename', $file);

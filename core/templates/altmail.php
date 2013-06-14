@@ -1,15 +1,13 @@
 <?php
 if ($_['type'] === 'folder')
 {
-	p($l->t('%s shared »%s« with you. Open it here: %s', array($_['user_displayname'], $_['filename'], $_['link'])));
+    p($l->t("Hey there,\n\njust letting you know that %s shared »%s« with you.\nOpen it here: %s.\n\nCheers!", array($_['user_displayname'], $_['filename'], $_['link'])));
 }
 else
 {
-	p($l->t('%s shared »%s« with you. Download it here: %s', array($_['user_displayname'], $_['filename'], $_['link'])));
+    p($l->t("Hey there,\n\njust letting you know that %s shared »%s« with you.\nView it here: %s.\n\nCheers!", array($_['user_displayname'], $_['filename'], $_['link'])));
 }
 ?>
 
---
-ownCloud
-Your Cloud, Your Data, Your Way!
-http://ownCloud.org
+ownCloud – web services under your control
+http://ownCloud.org', 
