@@ -9,5 +9,6 @@ else
 }
 ?>
 
-ownCloud – web services under your control
-http://ownCloud.org', 
+<?php
+p($l->t("ownCloud – web services under your control\nhttp://ownCloud.org"));
+?>
