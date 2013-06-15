@@ -151,9 +151,9 @@ class OC_DB {
 					$dsn='sqlite:'.$datadir.'/'.$name.'.db';
 					break;
 				case 'mysql':
-                    if($unix_socket){
+					if($unix_socket){
 						$dsn='mysql:dbname='.$name.';unix_socket='.$unix_socket;
-                    }else if($port) {
+					}else if($port) {
 						$dsn='mysql:dbname='.$name.';host='.$host.';port='.$port;
 					}else{
 						$dsn='mysql:dbname='.$name.';host='.$host;
