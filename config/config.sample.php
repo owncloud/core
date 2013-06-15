@@ -23,6 +23,9 @@ $CONFIG = array(
 /* Host running the ownCloud database */
 "dbhost" => "",
 
+/* Path to the unix socket of a local mysql instance. If set, the dbhost and dbport options are ignored and the socket will be used */
+"unix_socket" => "",
+
 /* Prefix for the ownCloud tables in the database */
 "dbtableprefix" => "",
 
