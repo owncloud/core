@@ -32,6 +32,7 @@
           <input type="hidden" id="dirToken" name="dirtoken" value="<?php p($_['dirToken']) ?>" />
           <input type="hidden" id="uploadMaxFilesize" name="uploadMaxFilesize" value="<?php p($_['uploadMaxFilesize']) ?>" />
           <input type="hidden" id="uploadMaxHumanFilesize" name="uploadMaxHumanFilesize" value="<?php p($_['uploadMaxHumanFilesize']) ?>" />
+          <input type="hidden" id="directory_path" name="directory_path" value="<?php p($_['directory_path']) ?>" />
 
 
           <div id="data-upload-form" class="button">
