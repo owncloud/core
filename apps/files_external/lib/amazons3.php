@@ -299,13 +299,15 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 		if (is_null($mtime)) {
 			$mtime = time();
 		}
+		$content_type = 'text/plain';
 		if ($this->is_dir($path)) {
 			$path = $this->convert_directory_string($path);
+			$content_type = 'httpd/unix-directory';
 		}
 
 		$response = $this->s3->update_object($this->bucket, $path, array('meta' => array('LastModified' => $mtime)));
 		if($response->isOK() == false) {
-			$response = $this->s3->create_object($this->bucket, $path, array('length' => 0, 'meta' => array('LastModified' => $mtime)));
+			$response = $this->s3->create_object($this->bucket, $path, array('contentType' => $content_type, 'length' => 0, 'meta' => array('LastModified' => $mtime)));
 		}
 		return $response->isOK();
 	}
