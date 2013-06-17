@@ -4,7 +4,9 @@
  * ownCloud
  *
  * @author Michael Gapczynski
+ * @author Christian Berendt
  * @copyright 2012 Michael Gapczynski mtgap@owncloud.com
+ * @copyright 2013 Christian Berendt berendt@b1-systems.de
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -38,8 +40,34 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 	public function __construct($params) {
 		if (isset($params['key']) && isset($params['secret']) && isset($params['bucket'])) {
 			$this->id = 'amazon::' . $params['key'] . md5($params['secret']);
-			$this->s3 = new \AmazonS3(array('key' => $params['key'], 'secret' => $params['secret']));
+			$this->s3 = new \AmazonS3(array('key' => $params['key'], 'secret' => $params['secret'], 'certificate_authority' => true));
 			$this->bucket = $params['bucket'];
+			if(isset($params['hostname']) && isset($params['port'])) {
+				if($params['use_ssl'] === 'false') {
+					$params['use_ssl'] = false;
+				} else {
+					$params['use_ssl'] = true;
+				}
+				if($params['use_path_style'] === 'false') {
+					$params['use_path_style'] = false;
+				} else {
+					$params['use_path_style'] = true;
+				}
+				$this->s3->set_hostname($params['hostname'], $params['port']);
+				if($params['use_path_style']) {
+					$this->region = \AmazonS3::REGION_EU_W1;
+					$this->s3->enable_path_style();
+				} else {
+					$this->region = '';
+				}
+				$this->s3->allow_hostname_override(false);
+				$this->s3->use_ssl = $params['use_ssl'];
+
+				if($this->s3->if_bucket_exists($this->bucket) == false) {
+					$this->s3->createBucket($this->bucket, $this->region);
+				}
+
+			}
 		} else {
 			throw new \Exception();
 		}
@@ -70,18 +98,13 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 	}
 
 	public function mkdir($path) {
-		// Folders in Amazon S3 are 0 byte objects with a '/' at the end of the name
-		if (substr($path, -1) != '/') {
-			$path .= '/';
-		}
+		$path = $this->convert_directory_string($path);
 		$response = $this->s3->create_object($this->bucket, $path, array('body' => ''));
 		return $response->isOK();
 	}
 
 	public function rmdir($path) {
-		if (substr($path, -1) != '/') {
-			$path .= '/';
-		}
+		$path = $this->convert_directory_string($path);
 		return $this->unlink($path);
 	}
 
@@ -90,9 +113,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			// Use the '/' delimiter to only fetch objects inside the folder
 			$opt = array('delimiter' => '/');
 		} else {
-			if (substr($path, -1) != '/') {
-				$path .= '/';
-			}
+			$path = $this->convert_directory_string($path);
 			$opt = array('delimiter' => '/', 'prefix' => $path);
 		}
 		$response = $this->s3->list_objects($this->bucket, $opt);
@@ -158,15 +179,56 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 	}
 
 	public function file_exists($path) {
-		if ($this->filetype($path) == 'dir' && substr($path, -1) != '/') {
-			$path .= '/';
+		if ($this->is_dir($path)) {
+			$path = $this->convert_directory_string($path);
 		}
 		return $this->s3->if_object_exists($this->bucket, $path);
 	}
 
-	public function unlink($path) {
+	private function get_contents_of_directory($path) {
+		if ($path == '' || $path == '/') {
+			$opt = array('delimiter' => '/');
+		} else {
+			$opt = array('delimiter' => '/', 'prefix' => $path);
+		}
+
+		$response = $this->s3->list_objects($this->bucket, $opt);
+
+                $files = array();
+                foreach ($response->body->Contents as $object) {
+                        if ($object->Key != $path) {
+                                $files[] = $object->Key;
+                        }
+                }
+
+                foreach ($response->body->CommonPrefixes as $object) {
+                        $files[] = $object->Prefix;
+                }
+
+		return $files;
+
+	}
+
+	private function delete_directory($path) {
+		foreach($this->get_contents_of_directory($path) as $subpath) {
+			$this->unlink(stripcslashes($subpath));
+		}
+
 		$response = $this->s3->delete_object($this->bucket, $path);
 		return $response->isOK();
+	}
+
+	private function delete_file($path) {
+		$response = $this->s3->delete_object($this->bucket, $path);
+		return $response->isOK();
+	}
+
+	public function unlink($path) {
+		if($this->is_dir($path)) {
+			return $this->delete_directory($this->convert_directory_string($path));
+		} else {
+			return $this->delete_file($path);
+		}
 	}
 
 	public function fopen($path, $mode) {
@@ -212,9 +274,12 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 	public function writeBack($tmpFile) {
 		if (isset(self::$tempFiles[$tmpFile])) {
 			$handle = fopen($tmpFile, 'r');
+			$finfo = finfo_open(FILEINFO_MIME_TYPE);
 			$response = $this->s3->create_object($this->bucket,
 				self::$tempFiles[$tmpFile],
-				array('fileUpload' => $handle));
+				array('length' => filesize($tmpFile), 'fileUpload' => $handle, 'contentType' => finfo_file($finfo, $tmpFile))
+			);
+			finfo_close($finfo);
 			if ($response->isOK()) {
 				unlink($tmpFile);
 			}
@@ -222,25 +287,26 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 	}
 
 	public function getMimeType($path) {
-		if ($this->filetype($path) == 'dir') {
+		if ($this->is_dir($path)) {
 			return 'httpd/unix-directory';
 		} else {
-			$object = $this->getObject($path);
-			if ($object) {
-				return $object['ContentType'];
-			}
+			$headers = $this->getHeaders($path);
+			return $headers['content-type'];
 		}
-		return false;
 	}
 
 	public function touch($path, $mtime = null) {
 		if (is_null($mtime)) {
 			$mtime = time();
 		}
-		if ($this->filetype($path) == 'dir' && substr($path, -1) != '/') {
-			$path .= '/';
+		if ($this->is_dir($path)) {
+			$path = $this->convert_directory_string($path);
 		}
+
 		$response = $this->s3->update_object($this->bucket, $path, array('meta' => array('LastModified' => $mtime)));
+		if($response->isOK() == false) {
+			$response = $this->s3->create_object($this->bucket, $path, array('length' => 0, 'meta' => array('LastModified' => $mtime)));
+		}
 		return $response->isOK();
 	}
 
@@ -250,6 +316,108 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			return true;
 		}
 		return false;
+	}
+
+	private function convert_directory_string($path) {
+		// Folders in Amazon S3 are 0 byte objects with a '/' at the end of the name
+		if (substr($path, -1) != '/') {
+			$path .= '/';
+		}
+		return $path;
+	}
+
+	private function getMetadata($path) {
+		if($this->is_dir($path)) {
+			$response = $this->s3->get_object_metadata($this->bucket, $this->convert_directory_string($path));
+		} else {
+			$response = $this->s3->get_object_metadata($this->bucket, $path);
+		}
+		return $response;
+	}
+
+	private function getHeaders($path) {
+		if($this->is_dir($path)) {
+			$response = $this->s3->get_object_headers($this->bucket, $this->convert_directory_string($path));
+		} else {
+			$response = $this->s3->get_object_headers($this->bucket, $path);
+		}
+		return $response->header;
+	}
+
+	private function copy_file($path1, $path2) {
+		if($this->file_exists($path2)) {
+			return false;
+		}
+
+		$response = $this->s3->copy_object(array('bucket'=>$this->bucket,'filename'=>$path1), array('bucket'=>$this->bucket,'filename'=>$path2, 'meta'=>$this->getMetadata($path1)));
+		return $response->isOK();
+	}
+
+	private function copy_directory($path1, $path2) {
+		if($this->file_exists($this->convert_directory_string($path2))) {
+			return false;
+		}
+
+                foreach($this->get_contents_of_directory($this->convert_directory_string($path1)) as $subpath) {
+			if($this->convert_directory_string($path1) == $subpath) {
+				continue;
+			}
+			$source = stripcslashes($subpath);
+			$target = $path2 . substr(stripcslashes($subpath), strlen($path1));
+                        $this->copy($source, $target);
+                }
+
+		$response = $this->s3->copy_object(array('bucket' => $this->bucket, 'filename' => $this->convert_directory_string($path1)), array('bucket'=>$this->bucket,'filename'=>$this->convert_directory_string($path2)));
+		return $response->isOK();
+	}
+
+	public function copy($path1, $path2) {
+		if($this->is_file($path1)) {
+			return $this->copy_file($path1, $path2);
+		} else {
+			return $this->copy_directory($path1, $path2);
+		}
+	}
+
+	private function rename_file($path1, $path2) {
+		if($this->file_exists($path2)) {
+			return false;
+		}
+
+		if($this->copy_file($path1, $path2) == false) {
+			return false;
+		}
+
+		if($this->delete_file($path1) == false) {
+			$this->delete_file($path2);
+			return false;
+		}
+		return true;
+	}
+
+	private function rename_directory($path1, $path2) {
+		if($this->file_exists($this->convert_directory_string($path2))) {
+			return false;
+		}
+
+		if($this->copy_directory($path1, $path2) == false) {
+			return false;
+		}
+
+		if($this->delete_directory($path1) == false) {
+			$this->delete_directory($path2);
+			return false;
+		}
+
+		return true;
+	}
+
+	public function rename($path1, $path2) {
+		if($this->is_file($path1)) {
+			return $this->rename_file($path1, $path2);
+		} else {
+			return $this->rename_directory($path1, $path2);
+		}
 	}
 
 }
