@@ -206,7 +206,7 @@ if (isset($path)) {
 			$folder->assign('breadcrumb', $breadcrumbNav->fetchPage());
 			$folder->assign('dir', $getPath);
 			$folder->assign('isCreatable', false);
-			$folder->assign('permissions', 0);
+			$folder->assign('permissions', OCP\PERMISSION_READ);
 			$folder->assign('isPublic',true);
 			$folder->assign('files', $files);
 			$folder->assign('uploadMaxFilesize', $maxUploadFilesize);
