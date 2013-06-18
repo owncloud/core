@@ -1,6 +1,5 @@
 var file_upload_param = {
   dropZone: $('#content'), // restrict dropZone to content div
-  formData: {},
   //singleFileUploads is on by default, so the data.files array will always have length 1
   add: function(e, data) {
 
