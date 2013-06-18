@@ -104,8 +104,16 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 	}
 
 	public function rmdir($path) {
-		$path = $this->convertDirectoryString($path);
-		return $this->unlink($path);
+		foreach($this->get_contents_of_directory($this->convertDirectoryString($path)) as $subpath) {
+			if($this->is_dir(stripcslashes($subpath))) {
+				$this->rmdir(stripcslashes($subpath));
+			} else {
+				$this->unlink(stripcslashes($subpath));
+			}
+		}
+
+		$response = $this->s3->delete_object($this->bucket, $this->convertDirectoryString($path));
+		return $response->isOK();
 	}
 
 	public function opendir($path) {
@@ -209,26 +217,9 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 
 	}
 
-	private function delete_directory($path) {
-		foreach($this->get_contents_of_directory($path) as $subpath) {
-			$this->unlink(stripcslashes($subpath));
-		}
-
-		$response = $this->s3->delete_object($this->bucket, $path);
-		return $response->isOK();
-	}
-
-	private function delete_file($path) {
-		$response = $this->s3->delete_object($this->bucket, $path);
-		return $response->isOK();
-	}
-
 	public function unlink($path) {
-		if($this->is_dir($path)) {
-			return $this->delete_directory($this->convertDirectoryString($path));
-		} else {
-			return $this->delete_file($path);
-		}
+		$response = $this->s3->delete_object($this->bucket, $path);
+		return $response->isOK();
 	}
 
 	public function fopen($path, $mode) {
