@@ -302,7 +302,7 @@ msgstr "Erlaube Benutzern mit jedem zu teilen"
 
 #: templates/admin.php:161
 msgid "Allow users to only share with users in their groups"
-msgstr "Erlaube Benutzern nur mit Benutzern ihrer Gruppe zu teilen" 
+msgstr "Erlaube Benutzern nur mit Benutzern ihrer Gruppe zu teilen"
 
 #: templates/admin.php:168
 msgid "Security"

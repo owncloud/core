@@ -39,7 +39,7 @@ class GROUP_LDAP extends lib\Access implements \OCP\GroupInterface {
 	 * @brief is user in group?
 	 * @param $uid uid of the user
 	 * @param $gid gid of the group
-	 * @param $includeTopGroups indicates if topGroups of the given group should also be cheked
+	 * @param $includeTopGroups indicates if topGroups of the given group should also be checked
 	 * @returns true/false
 	 *
 	 * Checks whether the user is member of a group or not.
@@ -60,19 +60,15 @@ class GROUP_LDAP extends lib\Access implements \OCP\GroupInterface {
 			$this->connection->writeToCache('inGroup'.$uid.':'.$gid, false);
 			return false;
 		}
-		
-		//Use the new getGroupMembers function in access.php for determing the members of the given group
-		$members = $this->getGroupMembers($dn_group, $this->connection->ldapGroupMemberAssocAttr, $includeTopGroups);
 
-		//usually, LDAP attributes are said to be case insensitive. But there are exceptions of course.
-		//Add Filter -> ldapUserFilter because also a Goupr or other things can be members of a AD GROUP
-		//$members = $this->readAttribute($dn_group, $this->connection->ldapGroupMemberAssocAttr,  $this->connection->ldapUserFilter);
-		
+		//Use getGroupMembers function in access.php for determing the members of the given group
+		$members = $this->getGroupMembers($dn_group, $this->connection->ldapGroupMemberAssocAttr, $readGroups = array(), $includeTopGroups);
+
 		if(!$members) {
 			$this->connection->writeToCache('inGroup'.$uid.':'.$gid, false);
 			return false;
 		}
-		
+
 		//extra work if we don't get back user DNs
 		//TODO: this can be done with one LDAP query
 		if(strtolower($this->connection->ldapGroupMemberAssocAttr) == 'memberuid') {

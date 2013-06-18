@@ -101,7 +101,7 @@ class Group_Proxy extends lib\Proxy implements \OCP\GroupInterface {
 	 * Checks whether the user is member of a group or not.
 	 */
 	public function inGroup($uid, $gid, $includeTopGroups = false) {
-		return $this->handleRequest($gid, 'inGroup', array($uid, $gid));
+		return $this->handleRequest($gid, 'inGroup', array($uid, $gid, $includeTopGroups));
 	}
 
 	/**

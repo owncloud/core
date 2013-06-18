@@ -159,10 +159,11 @@ if (!$_['internetconnectionworking']) {
 				<input type="radio" name="shareapi_share_policy" id="sharePolicyGroupsOnly"
 					   value="groups_only" <?php if ($_['sharePolicy'] == 'groups_only') print_unescaped('checked="checked"'); ?> />
 				<label for="sharePolicyGroupsOnly"><?php p($l->t('Allow users to only share with users in their groups'));?></label><br/>
-				<!-- Introduced new possibility for sharing settings, to share with subgroups (LDAP only) -->
+				<?php if(OC_App::isEnabled('user_ldap')) { ?>
 				<input type="radio" name="shareapi_share_policy" id="sharePolicyGroupsSubGroups"
 					   value="groups_subgroups" <?php if($_['sharePolicy'] == 'groups_subgroups') print_unescaped('checked="checked"'); ?> />
-				<label for="sharePolicyGroupsSubGroups"><?php p($l->t('Allow users to share with users in their groups and subgroups (LDAP Only)'))?></label><br />
+				<label for="sharePolicyGroupsSubGroups"><?php p($l->t('Allow users to only share with users in their groups and subgroups (LDAP Only)'))?></label><br />
+				<?php } ?>
 			</td>
 		</tr>
 	</table>
