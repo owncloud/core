@@ -9,7 +9,6 @@ OCP\JSON::setContentTypeHeader('text/plain');
 // If no token is sent along, rely on login only
 
 $l = OC_L10N::get('files');
-
 if ($_POST['dirToken']) {
   $linkItem = OCP\Share::getShareByToken($_POST['dirToken']);
 
@@ -38,7 +37,12 @@ if ($_POST['dirToken']) {
   // The standard case, files are uploaded through logged in users :)
   OCP\JSON::checkLoggedIn();
   $dir = isset($_POST['dir']) ? $_POST['dir'] : "";
+  if (!$dir || empty($dir) || $dir === false) {
+    OCP\JSON::error(array('data' => array_merge(array('message' => $l->t('Unable to set upload directory.')))));
+    die();
+  }
 }
+
 
 OCP\JSON::callCheck();
 
