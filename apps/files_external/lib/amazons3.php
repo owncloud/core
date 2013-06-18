@@ -98,13 +98,13 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 	}
 
 	public function mkdir($path) {
-		$path = $this->convert_directory_string($path);
+		$path = $this->convertDirectoryString($path);
 		$response = $this->s3->create_object($this->bucket, $path, array('body' => ''));
 		return $response->isOK();
 	}
 
 	public function rmdir($path) {
-		$path = $this->convert_directory_string($path);
+		$path = $this->convertDirectoryString($path);
 		return $this->unlink($path);
 	}
 
@@ -113,7 +113,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			// Use the '/' delimiter to only fetch objects inside the folder
 			$opt = array('delimiter' => '/');
 		} else {
-			$path = $this->convert_directory_string($path);
+			$path = $this->convertDirectoryString($path);
 			$opt = array('delimiter' => '/', 'prefix' => $path);
 		}
 		$response = $this->s3->list_objects($this->bucket, $opt);
@@ -180,7 +180,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 
 	public function file_exists($path) {
 		if ($this->is_dir($path)) {
-			$path = $this->convert_directory_string($path);
+			$path = $this->convertDirectoryString($path);
 		}
 		return $this->s3->if_object_exists($this->bucket, $path);
 	}
@@ -225,7 +225,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 
 	public function unlink($path) {
 		if($this->is_dir($path)) {
-			return $this->delete_directory($this->convert_directory_string($path));
+			return $this->delete_directory($this->convertDirectoryString($path));
 		} else {
 			return $this->delete_file($path);
 		}
@@ -303,7 +303,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 		}
 		$content_type = 'text/plain';
 		if ($this->is_dir($path)) {
-			$path = $this->convert_directory_string($path);
+			$path = $this->convertDirectoryString($path);
 			$content_type = 'httpd/unix-directory';
 		}
 
@@ -322,7 +322,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 		return false;
 	}
 
-	private function convert_directory_string($path) {
+	private function convertDirectoryString($path) {
 		// Folders in Amazon S3 are 0 byte objects with a '/' at the end of the name
 		if (substr($path, -1) != '/') {
 			$path .= '/';
@@ -332,7 +332,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 
 	private function getMetadata($path) {
 		if($this->is_dir($path)) {
-			$response = $this->s3->get_object_metadata($this->bucket, $this->convert_directory_string($path));
+			$response = $this->s3->get_object_metadata($this->bucket, $this->convertDirectoryString($path));
 		} else {
 			$response = $this->s3->get_object_metadata($this->bucket, $path);
 		}
@@ -341,7 +341,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 
 	private function getHeaders($path) {
 		if($this->is_dir($path)) {
-			$response = $this->s3->get_object_headers($this->bucket, $this->convert_directory_string($path));
+			$response = $this->s3->get_object_headers($this->bucket, $this->convertDirectoryString($path));
 		} else {
 			$response = $this->s3->get_object_headers($this->bucket, $path);
 		}
@@ -358,12 +358,12 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 	}
 
 	private function copy_directory($path1, $path2) {
-		if($this->file_exists($this->convert_directory_string($path2))) {
+		if($this->file_exists($this->convertDirectoryString($path2))) {
 			return false;
 		}
 
-                foreach($this->get_contents_of_directory($this->convert_directory_string($path1)) as $subpath) {
-			if($this->convert_directory_string($path1) == $subpath) {
+                foreach($this->get_contents_of_directory($this->convertDirectoryString($path1)) as $subpath) {
+			if($this->convertDirectoryString($path1) == $subpath) {
 				continue;
 			}
 			$source = stripcslashes($subpath);
@@ -371,7 +371,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
                         $this->copy($source, $target);
                 }
 
-		$response = $this->s3->copy_object(array('bucket' => $this->bucket, 'filename' => $this->convert_directory_string($path1)), array('bucket'=>$this->bucket,'filename'=>$this->convert_directory_string($path2)));
+		$response = $this->s3->copy_object(array('bucket' => $this->bucket, 'filename' => $this->convertDirectoryString($path1)), array('bucket'=>$this->bucket,'filename'=>$this->convertDirectoryString($path2)));
 		return $response->isOK();
 	}
 
@@ -400,7 +400,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 	}
 
 	private function rename_directory($path1, $path2) {
-		if($this->file_exists($this->convert_directory_string($path2))) {
+		if($this->file_exists($this->convertDirectoryString($path2))) {
 			return false;
 		}
 
