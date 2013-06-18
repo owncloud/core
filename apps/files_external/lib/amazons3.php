@@ -289,9 +289,11 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 	public function getMimeType($path) {
 		if ($this->is_dir($path)) {
 			return 'httpd/unix-directory';
-		} else {
+		} else if ($this->file_exists($path)) {
 			$headers = $this->getHeaders($path);
 			return $headers['content-type'];
+		} else {
+			return false;
 		}
 	}
 
