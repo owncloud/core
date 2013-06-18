@@ -339,80 +339,63 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 		return $response->header;
 	}
 
-	private function copy_file($path1, $path2) {
-		if($this->file_exists($path2)) {
-			return false;
-		}
-
-		$response = $this->s3->copy_object(array('bucket'=>$this->bucket,'filename'=>$path1), array('bucket'=>$this->bucket,'filename'=>$path2, 'meta'=>$this->getMetadata($path1)));
-		return $response->isOK();
-	}
-
-	private function copy_directory($path1, $path2) {
-		if($this->file_exists($this->convertDirectoryString($path2))) {
-			return false;
-		}
-
-                foreach($this->get_contents_of_directory($this->convertDirectoryString($path1)) as $subpath) {
-			if($this->convertDirectoryString($path1) == $subpath) {
-				continue;
-			}
-			$source = stripcslashes($subpath);
-			$target = $path2 . substr(stripcslashes($subpath), strlen($path1));
-                        $this->copy($source, $target);
-                }
-
-		$response = $this->s3->copy_object(array('bucket' => $this->bucket, 'filename' => $this->convertDirectoryString($path1)), array('bucket'=>$this->bucket,'filename'=>$this->convertDirectoryString($path2)));
-		return $response->isOK();
-	}
-
 	public function copy($path1, $path2) {
 		if($this->is_file($path1)) {
-			return $this->copy_file($path1, $path2);
+			if($this->file_exists($path2)) {
+				return false;
+			}
+
+			$response = $this->s3->copy_object(array('bucket'=>$this->bucket,'filename'=>$path1), array('bucket'=>$this->bucket,'filename'=>$path2, 'meta'=>$this->getMetadata($path1)));
+			return $response->isOK();
 		} else {
-			return $this->copy_directory($path1, $path2);
-		}
-	}
+			if($this->file_exists($this->convertDirectoryString($path2))) {
+				return false;
+			}
 
-	private function rename_file($path1, $path2) {
-		if($this->file_exists($path2)) {
-			return false;
-		}
+                	foreach($this->get_contents_of_directory($this->convertDirectoryString($path1)) as $subpath) {
+				if($this->convertDirectoryString($path1) == $subpath) {
+					continue;
+				}
+				$source = stripcslashes($subpath);
+				$target = $path2 . substr(stripcslashes($subpath), strlen($path1));
+				$this->copy($source, $target);
+                	}
 
-		if($this->copy_file($path1, $path2) == false) {
-			return false;
+			$response = $this->s3->copy_object(array('bucket' => $this->bucket, 'filename' => $this->convertDirectoryString($path1)), array('bucket'=>$this->bucket,'filename'=>$this->convertDirectoryString($path2)));
+			return $response->isOK();
 		}
-
-		if($this->delete_file($path1) == false) {
-			$this->delete_file($path2);
-			return false;
-		}
-		return true;
-	}
-
-	private function rename_directory($path1, $path2) {
-		if($this->file_exists($this->convertDirectoryString($path2))) {
-			return false;
-		}
-
-		if($this->copy_directory($path1, $path2) == false) {
-			return false;
-		}
-
-		if($this->delete_directory($path1) == false) {
-			$this->delete_directory($path2);
-			return false;
-		}
-
-		return true;
 	}
 
 	public function rename($path1, $path2) {
 		if($this->is_file($path1)) {
-			return $this->rename_file($path1, $path2);
+			if($this->file_exists($path2)) {
+				return false;
+			}
+
+			if($this->copy($path1, $path2) == false) {
+				return false;
+			}
+
+			if($this->unlink($path1) == false) {
+				$this->unlink($path2);
+				return false;
+			}
 		} else {
-			return $this->rename_directory($path1, $path2);
+			if($this->file_exists($this->convertDirectoryString($path2))) {
+				return false;
+			}
+
+			if($this->copy($path1, $path2) == false) {
+				return false;
+			}
+
+			if($this->rmdir($path1) == false) {
+				$this->rmdir($path2);
+				return false;
+			}
 		}
+
+		return true;
 	}
 
 }
