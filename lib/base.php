@@ -255,29 +255,29 @@ class OC {
 
 	public static function initTemplateEngine() {
 		// Add the stuff we need always
-		OC_Util::addScript("jquery-1.10.0.min");
-		OC_Util::addScript("jquery-migrate-1.2.1.min");
-		OC_Util::addScript("jquery-ui-1.10.0.custom");
-		OC_Util::addScript("jquery-showpassword");
-		OC_Util::addScript("jquery.infieldlabel");
-		OC_Util::addScript("jquery-tipsy");
+		OC_Util::addScript("vendor/jquery/jquery-1.10.0.min");
+		OC_Util::addScript("vendor/jquery/jquery-migrate-1.2.1.min");
+		OC_Util::addScript("3rdParty/jquery-ui","jquery-ui-1.10.0.custom");
+		OC_Util::addScript("vendor/jquery/jquery-showpassword");
+		OC_Util::addScript("vendor/jquery/jquery.infieldlabel");
+		OC_Util::addScript("vendor/jquery/jquery-tipsy");
+		OC_Util::addScript("oc/jquery.ocdialog");		
 		OC_Util::addScript("compatibility");
-		OC_Util::addScript("jquery.ocdialog");
-		OC_Util::addScript("oc-dialogs");
-		OC_Util::addScript("octemplate");
+		OC_Util::addScript("oc/oc-dialogs");
+		OC_Util::addScript("oc/jquery.octemplate");
+		OC_Util::addScript("oc/oc-requesttoken");		
 		OC_Util::addScript("js");
 		OC_Util::addScript("eventsource");
-		OC_Util::addScript("config");
+		OC_Util::addScript("config");		
 		//OC_Util::addScript( "multiselect" );
 		OC_Util::addScript('search', 'result');
 		OC_Util::addScript('router');
 
 		OC_Util::addStyle("styles");
 		OC_Util::addStyle("multiselect");
-		OC_Util::addStyle("jquery-ui-1.10.0.custom");
-		OC_Util::addStyle("jquery-tipsy");
-		OC_Util::addStyle("jquery.ocdialog");
-		OC_Util::addScript("oc-requesttoken");
+		OC_Util::addStyle("vendor/jquery/jquery-ui-1.10.0.custom");
+		OC_Util::addStyle("vendor/jquery/jquery-tipsy");
+		OC_Util::addStyle("vendor/jquery/jquery.ocdialog");
 	}
 
 	public static function initSession() {
