@@ -53,7 +53,8 @@ $(document).ready(function() {
     MAX_FILE_SIZE: $('#uploadMaxFilesize').val(),
     requesttoken: $('#publicUploadRequestToken').val(),
     dirToken: $('#dirToken').val(),
-    appname: 'files_sharing'
+    appname: 'files_sharing',
+    subdir: $('input#dir').val()
   };
 
   // Add Uploadprogress Wrapper to controls bar

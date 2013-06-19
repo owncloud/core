@@ -22,7 +22,11 @@ if ($_POST['dirToken']) {
   } else {
 
     // The token defines the target directory (security reasons)
-    $dir = $linkItem['file_target'];
+    $dir = sprintf(
+      "/%s/%s",
+      $linkItem['file_target'],
+      isset($_POST['subdir']) ? $_POST['subdir'] : ''
+    );
 
     if (!$dir || empty($dir) || $dir === false) {
       OCP\JSON::error(array('data' => array_merge(array('message' => $l->t('Unable to set upload directory.')))));
