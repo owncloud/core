@@ -7,6 +7,7 @@
  */
 
 // Settings pages
+
 $this->create('settings_help', '/settings/help')
 	->actionInclude('settings/help.php');
 $this->create('settings_personal', '/settings/personal')
@@ -41,6 +42,8 @@ $this->create('settings_ajax_changepassword', '/settings/ajax/changepassword.php
 	->actionInclude('settings/ajax/changepassword.php');
 $this->create('settings_ajax_changedisplayname', '/settings/ajax/changedisplayname.php')
 	->actionInclude('settings/ajax/changedisplayname.php');
+$this->create('settings_ajax_getsettinginfo', '/settings/ajax/getsettinginfo.php')
+	->actionInclude('settings/ajax/getsettinginfo.php');
 // personel
 $this->create('settings_ajax_lostpassword', '/settings/ajax/lostpassword.php')
 	->actionInclude('settings/ajax/lostpassword.php');
