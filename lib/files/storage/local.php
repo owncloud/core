@@ -19,17 +19,11 @@ if (\OC_Util::runningOnWindows()) {
 	 */
 	class Local extends \OC\Files\Storage\Common {
 		protected $datadir;
-		protected $readonly;
 
 		public function __construct($arguments) {
 			$this->datadir = $arguments['datadir'];
 			if (substr($this->datadir, -1) !== '/') {
 				$this->datadir .= '/';
-			}
-			if (isset($arguments['readonly'])) {
-				$this->readonly = $arguments['readonly'];
-			} else {
-				$this->readonly = false;
 			}
 		}
 
@@ -102,11 +96,7 @@ if (\OC_Util::runningOnWindows()) {
 		}
 
 		public function isUpdatable($path) {
-			if ($this->readonly === false) {
-				return is_writable($this->datadir . $path);
-			} else {
-				return false;
-			}
+			return is_writable($this->datadir . $path);
 		}
 
 		public function file_exists($path) {
@@ -132,14 +122,16 @@ if (\OC_Util::runningOnWindows()) {
 			if ($result) {
 				clearstatcache(true, $this->datadir . $path);
 			}
+
+			return $result;
 		}
 
 		public function file_get_contents($path) {
 			return file_get_contents($this->datadir . $path);
 		}
 
-		public function file_put_contents($path, $data) {
-			return file_put_contents($this->datadir . $path,$data);
+		public function file_put_contents($path, $data) { //trigger_error("$path = ".var_export($path, 1));
+			return file_put_contents($this->datadir . $path, $data);
 		}
 
 		public function unlink($path) {
@@ -151,8 +143,7 @@ if (\OC_Util::runningOnWindows()) {
 				\OC_Log::write('core', 'unable to rename, file is not writable : ' . $path1, \OC_Log::ERROR);
 				return false;
 			}
-
-			if(!$this->file_exists($path1)) {
+			if (!$this->file_exists($path1)) {
 				\OC_Log::write('core', 'unable to rename, file does not exists : ' . $path1, \OC_Log::ERROR);
 				return false;
 			}
@@ -174,12 +165,22 @@ if (\OC_Util::runningOnWindows()) {
 		}
 
 		public function fopen($path, $mode) {
-			if ($this->readonly === false) {
-				return fopen($this->datadir . $path, $mode);
-			} else {
-				return fopen($this->datadir . $path, 'r');
+			if ($return = fopen($this->datadir . $path, $mode)) {
+				switch ($mode) {
+					case 'r':
+						break;
+					case 'r+':
+					case 'w+':
+					case 'x+':
+					case 'a+':
+						break;
+					case 'w':
+					case 'x':
+					case 'a':
+						break;
+				}
 			}
-			return false;
+			return $return;
 		}
 
 		public function getMimeType($path) {
@@ -201,7 +202,7 @@ if (\OC_Util::runningOnWindows()) {
 					if (unlink($dir . '/' . $item)) {
 					}
 				} elseif (is_dir($dir . '/' . $item)) {
-					if (!$this->delTree($dirRelative .  "/" . $item)) {
+					if (!$this->delTree($dirRelative . "/" . $item)) {
 						return false;
 					};
 				}
@@ -242,13 +243,9 @@ if (\OC_Util::runningOnWindows()) {
 		}
 
 		public function free_space($path) {
-			if ($this->readonly === false) {
-				$space = @disk_free_space($this->datadir . $path);
-				if ($space === false){
-					return \OC\Files\FREE_SPACE_UNKNOWN;
-				}
-			} else {
-				$space = 0;
+			$space = @disk_free_space($this->datadir . $path);
+			if ($space === false) {
+				return \OC\Files\FREE_SPACE_UNKNOWN;
 			}
 			return $space;
 		}
@@ -291,3 +288,4 @@ if (\OC_Util::runningOnWindows()) {
 		}
 	}
 }
+

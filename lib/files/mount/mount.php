@@ -21,6 +21,7 @@ class Mount {
 	private $storageId;
 	private $arguments = array();
 	private $mountPoint;
+	private $readonly = false;
 
 	/**
 	 * @param string|\OC\Files\Storage\Storage $storage
@@ -42,9 +43,13 @@ class Mount {
 				$storage = '\OC\Files\Storage\\' . substr($storage, 15);
 			}
 			$this->class = $storage;
-			$this->arguments = $arguments;
 		}
+		$this->arguments = $arguments;
 		$this->mountPoint = $mountpoint;
+
+		if (isset($arguments['readonly']) && is_bool($arguments['readonly'])) {
+			$this->readonly = $arguments['readonly'];
+		}
 	}
 
 	/**
@@ -114,6 +119,13 @@ class Mount {
 			$internalPath = substr($path, strlen($this->mountPoint));
 		}
 		return $internalPath;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isReadOnly() {
+		return $this->readonly;
 	}
 
 	/**
