@@ -69,7 +69,7 @@ abstract class Common implements \OC\Files\Storage\Storage {
 	public function getPermissions($path) {
 	
 		$isReadOnly = false;
-		$mount = \OC\Files\Mount\Manager::findByStorageId($this->getId());
+		$mount = \OC\Files\Filesystem::getMountByStorageId($this->getId());
 
 		if(count($mount) > 0 && $mount[0]->isReadOnly()) {
 		  $isReadOnly = true;
