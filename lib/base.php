@@ -264,10 +264,10 @@ class OC {
 		OC_Util::addScript("vendor/jquery/jquery-showpassword");
 		OC_Util::addScript("vendor/jquery/jquery.infieldlabel");
 		OC_Util::addScript("vendor/jquery/jquery-tipsy");
-		OC_Util::addScript("vendor/jquery/jquery.ocdialog");		
+		OC_Util::addScript("oc/jquery.ocdialog");		
 		OC_Util::addScript("compatibility");
 		OC_Util::addScript("oc/oc-dialogs");
-		OC_Util::addScript("oc/octemplate");
+		OC_Util::addScript("oc/jquery.octemplate");
 		OC_Util::addScript("oc/oc-requesttoken");		
 		OC_Util::addScript("js");
 		OC_Util::addScript("eventsource");
