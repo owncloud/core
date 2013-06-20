@@ -21,7 +21,8 @@
  *
  */
 ?>
-
-<li class="user-groups" ng-controller="grouplist" ng-repeat='groupname in groupnames'>
-	{{ groupname.name }}
-</li>
+<ul ng-controller="grouplist">
+	<li class="user-groups" ng-repeat='groupname in groupnames'>
+		<a href="#">{{ groupname.name }}</a>
+	</li>
+</ul>

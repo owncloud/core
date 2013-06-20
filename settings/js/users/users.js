@@ -24,7 +24,7 @@ var usersmanagement = angular.module('usersmanagement', []);
 /* Fetches the List of All Groups - Left Sidebar */
 
 usersmanagement.controller('grouplist', function($scope, $http) {
-	$http.get(OC.filePath('settings', 'ajax', 'getsettinginfo.php'))
+	$http.post(OC.filePath('settings', 'ajax', 'getsettinginfo.php'))
 		.then(function(response){
 			$scope.groupnames = response.data.result.groups;
 		});
@@ -33,8 +33,20 @@ usersmanagement.controller('grouplist', function($scope, $http) {
 /* Fetches the List of All Users along with their details on the Right Content */
 
 usersmanagement.controller('userlist', function($scope, $http) {
-	$http.get(OC.filePath('settings', 'ajax', 'userlist.php'))
+	$http.post(OC.filePath('settings', 'ajax', 'userlist.php'))
 		.then(function(response) {
 			$scope.usernames = response.data.users;
 		});
 });
+
+/* Asynchronously creates user */
+
+usersmanagement.controller('creategroup', function($scope, $http) {
+	$http.get(OC.filePath('settings', 'ajax', 'creategroup.php'))
+	.then(function(response) {
+		
+	});
+})
+
+/* Asynchronously creates group */
+

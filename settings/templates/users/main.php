@@ -25,10 +25,8 @@
 <div id="user-settings" ng-app="usersmanagement">
 	
 	<div id="app-navigation">
-		<ul>
-			<?php print_unescaped($this->inc('users/part.addnewgroup')); ?>
-			<?php print_unescaped($this->inc('users/part.leftgrouplist')); ?>
-		</ul>
+		<?php print_unescaped($this->inc('users/part.addnewgroup')); ?>
+		<?php print_unescaped($this->inc('users/part.leftgrouplist')); ?>
 	</div>
 	<div id="user-content">
 		<div id="hascontrols">

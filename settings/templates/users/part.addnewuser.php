@@ -24,15 +24,13 @@
 
 <div>
 	<fieldset>
-		<form>
-			<input class="" type="text" placeholder="<?php p($l->t('Add User')) ?>" />
-			<input class="" type="password" placeholder="<?php p($l->t('Password')) ?>" />
-			<!--<select>
-				Todo: Options from the current groups present 
-			</select>-->
-			<button class="" title="<?php p($l->t('Add')) ?>">
-				<?php p($l->t('Add')) ?>
-			</button>
+		<form id="newuser" autocomplete="off">
+			<input class="" id="newusername" type="text" placeholder="<?php p($l->t('Login Name')) ?>" />
+			<input id="newuserpassword" type="password" placeholder="<?php p($l->t('Password')) ?>" />
+			<select class="groupselect" id="newusergroups" title="<?php p($l->t('Groups'))?>">
+				<option></option>
+			</select>
+			<input type="submit" value="<?php p($l->t('Create'))?>" />
 		</form>
 	</fieldset>
 </div>
