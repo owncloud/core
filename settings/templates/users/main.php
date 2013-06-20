@@ -3,8 +3,8 @@
 /**
  * ownCloud - Core
  *
- * @author Morris Jobke
- * @copyright 2013 Morris Jobke morris.jobke@gmail.com
+ * @author Raghu Nayyar
+ * @copyright 2013 Raghu Nayyar <raghu.nayyar.007@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -20,25 +20,22 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+?>
 
-OC_JSON::checkSubAdminUser();
-
-$userUid = OC_User::getUser();
-$isAdmin = OC_User::isAdminUser($userUid);
-
-if($isAdmin) {
-	$groups = OC_Group::getGroups();
-} else {
-	$groups = OC_SubAdmin::getSubAdminsGroups($userUid);
-}
-
-$result = array(
-	'groups' => array()
-);
-
-// convert them to the needed format
-foreach( $groups as $gid ) {
-	$result['groups'][] = array( 'name' => $gid );
-}
-
-OCP\JSON::success(array('result' => $result));
+<div id="user-settings" ng-app="usersmanagement">
+	
+	<div id="app-navigation">
+		<ul>
+			<?php print_unescaped($this->inc('users/part.addnewgroup')); ?>
+			<?php print_unescaped($this->inc('users/part.leftgrouplist')); ?>
+		</ul>
+	</div>
+	<div id="user-content">
+		<div id="hascontrols">
+			<?php print_unescaped($this->inc('users/part.addnewuser')); ?>
+		</div>
+		<div id="user-table">
+			<?php print_unescaped($this->inc('users/part.userlist')); ?>
+		</div>
+	</div>
+</div>
