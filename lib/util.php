@@ -284,10 +284,6 @@ class OC_Util {
 				'hint'=>'Please ask your server administrator to install the module.');
 			$web_server_restart=true;
 		}
-		if(!extension_loaded("openssl") ) {
-			$errors[]=array('error'=>'PHP module OpenSSL is not installed.',
-				'hint'=>'Please ask your server administrator to install the module.');
-		}
 		if (((strtolower(@ini_get('safe_mode')) == 'on')
 			|| (strtolower(@ini_get('safe_mode')) == 'yes')
 			|| (strtolower(@ini_get('safe_mode')) == 'true')

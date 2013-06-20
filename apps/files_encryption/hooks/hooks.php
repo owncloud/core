@@ -39,10 +39,15 @@ class Hooks {
 	 */
 	public static function login($params) {
 
-		// Manually initialise Filesystem{} singleton with correct 
-		// fake root path, in order to avoid fatal webdav errors
-		// NOTE: disabled because this give errors on webdav!
-		//\OC\Files\Filesystem::init( $params['uid'], '/' . 'files' . '/' );
+		//check if openssl is available
+		if(!extension_loaded("openssll") ) {
+			$error_msg = "PHP module OpenSSL is not installed.";
+			$hint = 'Please ask your server administrator to install the module. For now the encryption app was disabled.';
+			\OCP\Util::writeLog('Encryption library', $error_msg . ' ' . $hint, \OCP\Util::ERROR);
+			\OCP\Template::printErrorPage($error_msg, $hint);
+			\OC_App::disable('files_encryption');
+			exit;
+		}
 
 		$view = new \OC_FilesystemView('/');
 
