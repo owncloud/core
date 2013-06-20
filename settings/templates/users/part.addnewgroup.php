@@ -22,13 +22,11 @@
  */
 ?>
 
-<li>
-	<div>
-		<fieldset>
-			<form>
-				<input type="text" placeholder="<?php p($l->t('Add Group'))?>">
-				<button title="<?php p($l->t('Add')) ?>"><?php p($l->t('Add')); ?>
-			</form>
-		</fieldset>
-	</div>
-</li>
+<div
+	<fieldset>
+		<form>
+			<input type="text" placeholder="<?php p($l->t('Add Group'))?>" />
+			<button title="<?php p($l->t('Add')) ?>"><?php p($l->t('Add')); ?>
+		</form>
+	</fieldset>
+</div>
