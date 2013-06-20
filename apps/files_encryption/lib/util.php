@@ -1060,7 +1060,7 @@ class Util {
 		$sql = 'UPDATE `*PREFIX*encryption` SET `migration_status` = ? WHERE `uid` = ? and `migration_status` = ?';
 		$args = array(self::MIGRATION_IN_PROGRESS, $this->userId, self::MIGRATION_OPEN);
 		$result = \OC_DB::executeAudited($sql, $args);
-		if ($result instanceof \PDOStatementWrapper && $result->numRows() > 0) {
+		if ($result instanceof \PDOStatementWrapper) {
 			$manipulatedRows = $result->numRows();
 		} else {
 			$manipulatedRows = $result; // mdb2 does not return a result on updates
@@ -1087,7 +1087,7 @@ class Util {
 		$sql = 'UPDATE `*PREFIX*encryption` SET `migration_status` = ? WHERE `uid` = ? and `migration_status` = ?';
 		$args = array(self::MIGRATION_COMPLETED, $this->userId, self::MIGRATION_IN_PROGRESS);
 		$result = \OC_DB::executeAudited($sql, $args);
-		if ($result instanceof \PDOStatementWrapper && $result->numRows() > 0) {
+		if ($result instanceof \PDOStatementWrapper) {
 			$manipulatedRows = $result->numRows();
 		} else {
 			$manipulatedRows = $result; // mdb2 does not return a result on updates
