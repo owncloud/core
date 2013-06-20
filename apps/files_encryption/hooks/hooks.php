@@ -40,7 +40,7 @@ class Hooks {
 	public static function login($params) {
 
 		//check if openssl is available
-		if(!extension_loaded("openssll") ) {
+		if(!extension_loaded("openssl") ) {
 			$error_msg = "PHP module OpenSSL is not installed.";
 			$hint = 'Please ask your server administrator to install the module. For now the encryption app was disabled.';
 			\OCP\Util::writeLog('Encryption library', $error_msg . ' ' . $hint, \OCP\Util::ERROR);
