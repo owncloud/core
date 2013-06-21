@@ -209,7 +209,7 @@ var FileList={
 			len = input.val().length;
 		}
 		input.selectRange(0,len);
-		
+
 		form.submit(function(event){
 			event.stopPropagation();
 			event.preventDefault();
@@ -437,7 +437,7 @@ $(document).ready(function(){
 				var date=new Date();
 				var param = {};
 				if ($('#publicUploadRequestToken')) {
-					param.download_url = document.location.href + '&download&path=//' + uniqueName;
+					param.download_url = document.location.href + '&download&path=/' + $('#dir').val() + '/' + uniqueName;
 				}
 				// create new file context
 				data.context = FileList.addFile(uniqueName,size,date,true,false,param);
