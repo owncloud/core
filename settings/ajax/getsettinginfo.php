@@ -23,22 +23,48 @@
 
 OC_JSON::checkSubAdminUser();
 
-$userUid = OC_User::getUser();
-$isAdmin = OC_User::isAdminUser($userUid);
+$users = array(
+	'users' => array()
+);
 
-if($isAdmin) {
-	$groups = OC_Group::getGroups();
-} else {
-	$groups = OC_SubAdmin::getSubAdminsGroups($userUid);
-}
-
-$result = array(
+$groupname = array(
 	'groups' => array()
 );
 
-// convert them to the needed format
-foreach( $groups as $gid ) {
-	$result['groups'][] = array( 'name' => $gid );
+$userUid = OC_User::getUser();
+$isAdmin = OC_User::isAdminUser($userUid);
+
+if (isset($_GET['offset'])) {
+	$offset = $_GET['offset'];
+} else {
+	$offset = 0;
+}
+if (isset($_GET['limit'])) {
+	$limit = $_GET['limit'];
+} else {
+	$limit = 10;
 }
 
-OCP\JSON::success(array('result' => $result));
+if ($isAdmin) {
+	$groups = OC_Group::getGroups();
+	$batch = OC_User::getDisplayNames('', $limit, $offset);
+	foreach ($batch as $user) {
+		$users['users'][] = array( 'user' => $user );
+	}
+}
+else {
+	$groups = OC_SubAdmin::getSubAdminsGroups($userUid);
+	$batch = OC_Group::usersInGroups($groups, '', $limit, $offset);
+	foreach ($batch as $user) {
+		$users['users'][] = array( 'user' => $user );
+	}
+}
+
+// convert them to the needed format
+foreach( $groups as $gid ) {
+	$groupname['groups'][] = array( 'name' => $gid );
+}
+
+OCP\JSON::success(array('result' => $groupname, 'username' => $users ));
+
+?>
