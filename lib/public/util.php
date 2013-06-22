@@ -185,7 +185,7 @@ class Util {
 	 * reverse proxies
 	 */
 	public static function getServerHost() {
-		return(\OC_Request::serverHost());
+		return \OC_Config::getValue( 'mail_domain', \OC_Request::serverHost());
 	}
 
 	/**
