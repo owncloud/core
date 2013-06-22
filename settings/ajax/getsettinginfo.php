@@ -31,6 +31,8 @@ $groupname = array(
 	'groups' => array()
 );
 
+$useringroup = array('useringroup' => array());
+
 $userUid = OC_User::getUser();
 $isAdmin = OC_User::isAdminUser($userUid);
 
@@ -62,9 +64,10 @@ else {
 
 // convert them to the needed format
 foreach( $groups as $gid ) {
+	$useringroup['useringroup'][] = OC_Group::usersInGroups($gid, '', $limit, $offset);
 	$groupname['groups'][] = array( 'name' => $gid );
 }
 
-OCP\JSON::success(array('result' => $groupname, 'username' => $users ));
+OCP\JSON::success(array('result' => $groupname, 'userid' => $useringroup ));
 
 ?>

@@ -24,5 +24,6 @@
 <ul ng-controller="grouplist">
 	<li class="user-groups" ng-repeat='groupname in groupnames'>
 		<a href="#">{{ groupname.name }}</a>
+		<span class="usercount"></span>
 	</li>
 </ul>
