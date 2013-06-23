@@ -233,13 +233,13 @@ class OC_L10N{
 			if($data instanceof DateTime) return $data->format($this->localizations[$type]);
 			elseif(is_string($data)) $data = strtotime($data);
 			$locales = array(self::findLanguage());
-			if (strlen($locales[0]) == 2) {
+			if (strlen($locales[0]) === 2) {
 				$locales[] = $locales[0].'_'.strtoupper($locales[0]);
 			}
 			setlocale(LC_TIME, $locales);
 			$format = $this->localizations[$type];
 			// Check for Windows to find and replace the %e modifier correctly
-			if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
+			if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 				$format = preg_replace('#(?<!%)((?:%%)*)%e#', '\1%#d', $format);
 			}
 			return strftime($format, $data);
@@ -314,7 +314,7 @@ class OC_L10N{
 			// Look for partial match (primary_tag)
 			foreach ( $accept_langs as $accept_lang ) {
 				foreach ( $available as $avail ) {
-					if ( strstr($accept_lang, '_', true) == strstr($avail, '_', true) ) {
+					if ( strstr($accept_lang, '_', true) === strstr($avail, '_', true) ) {
 						if ( is_null($app) ) {
 							self::$language = $avail;
 						}
@@ -376,7 +376,7 @@ class OC_L10N{
 	 * @returns bool
 	 */
 	public static function languageExists($app, $lang) {
-		if ($lang == 'en') {//english is always available
+		if ($lang === 'en') {//english is always available
 			return true;
 		}
 		$dir = self::findI18nDir($app);
