@@ -289,7 +289,7 @@ class OC_L10N{
 		}
 
 		// Get browser's accepted languages
-		if ( $accept_langs = OC_Request::parseAcceptLanguage() !== false ) {
+		if ( ($accept_langs = OC_Request::parseAcceptLanguage()) !== false ) {
 			if(is_array($app)) {
 				$available = $app;
 			}
@@ -306,7 +306,7 @@ class OC_L10N{
 
 			// Look for full match (primary_tag and subtag)
 			foreach ( $accept_langs as $accept_lang ) {
-				if( ($key = array_search($keyword, $available)) !== false) {
+				if( ($key = array_search($accept_lang, $available)) !== false) {
 					return $available[$key];
 				}
 			}
