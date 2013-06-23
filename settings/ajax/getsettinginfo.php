@@ -59,7 +59,7 @@ else {
 foreach( $groups as $gid ) {
 	$groupname[] = array( 
 		'name' => $gid,
-		'useringroup' => OC_Group::usersInGroups($gid, '', $limit, $offset)
+		'useringroup' => OC_Group::usersInGroup($gid, '', $limit, $offset)
 	);
 }
 
