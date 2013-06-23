@@ -23,12 +23,13 @@ var usersmanagement = angular.module('usersmanagement', []);
 
 /* Fetches the List of All Groups - Left Sidebar */
 
-usersmanagement.controller('grouplist', function($scope, $http) {
-	$http.post(OC.filePath('settings', 'ajax', 'grouplist.php'))
-		.then(function(response){
+usersmanagement.controller('grouplist', ['$scope', '$http',
+	function($scope, $http) {
+		$http.post(OC.filePath('settings', 'ajax', 'grouplist.php')).then(function(response){
 			$scope.groupnames = response.data.result;
 		});
-});
+	}
+]);
 
 /* Fetches the List of All Users along with their details on the Right Content */
 
