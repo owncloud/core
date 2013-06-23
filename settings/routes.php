@@ -42,8 +42,8 @@ $this->create('settings_ajax_changepassword', '/settings/ajax/changepassword.php
 	->actionInclude('settings/ajax/changepassword.php');
 $this->create('settings_ajax_changedisplayname', '/settings/ajax/changedisplayname.php')
 	->actionInclude('settings/ajax/changedisplayname.php');
-$this->create('settings_ajax_getsettinginfo', '/settings/ajax/getsettinginfo.php')
-	->actionInclude('settings/ajax/getsettinginfo.php');
+$this->create('settings_ajax_grouplist', '/settings/ajax/grouplist.php')
+	->actionInclude('settings/ajax/grouplist.php');
 // personel
 $this->create('settings_ajax_lostpassword', '/settings/ajax/lostpassword.php')
 	->actionInclude('settings/ajax/lostpassword.php');

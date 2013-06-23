@@ -24,7 +24,7 @@ var usersmanagement = angular.module('usersmanagement', []);
 /* Fetches the List of All Groups - Left Sidebar */
 
 usersmanagement.controller('grouplist', function($scope, $http) {
-	$http.post(OC.filePath('settings', 'ajax', 'getsettinginfo.php'))
+	$http.post(OC.filePath('settings', 'ajax', 'grouplist.php'))
 		.then(function(response){
 			$scope.groupnames = response.data.result;
 		});

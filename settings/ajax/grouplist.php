@@ -4,7 +4,9 @@
  * ownCloud - Core
  *
  * @author Morris Jobke
+ * @author Raghu Nayyar 
  * @copyright 2013 Morris Jobke morris.jobke@gmail.com
+ * @copyright 2013 Raghu Nayyar raghu.nayyar.007@gmail.com
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -20,6 +22,9 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
+// This file is repsonsible for the Ajax Request for Group list
+// Outputs are Names of Groups and IDs of users which are a part of them
 
 OC_JSON::checkSubAdminUser();
 
