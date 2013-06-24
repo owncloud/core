@@ -232,7 +232,7 @@ $(document).ready(function() {
       } else if (type != 'web' && !Files.isFileNameValid(newname)) {
         return false;
       } else if( type == 'folder' && $('#dir').val() == '/' && newname == 'Shared') {
-        OC.Notification.show(t('files','Invalid folder name. Usage of \'Shared\' is reserved by Owncloud'));
+        OC.Notification.show(t('files','Invalid folder name. Usage of \'Shared\' is reserved by ownCloud'));
         return false;
       }
       if (FileList.lastAction) {
