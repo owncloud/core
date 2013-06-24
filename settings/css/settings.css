@@ -98,13 +98,3 @@ table.shareAPI td { padding-bottom: 0.8em; }
 /* HELP */
 .pressed {background-color:#DDD;}
 
-/* New Styles */
-
-.usercount {
-	position:absolute;
-	right:0;
-	top:0;
-	bottom:0;
-	margin:6px;
-}
-

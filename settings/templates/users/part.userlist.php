@@ -22,7 +22,7 @@
  */
 ?>
 
-<table>
+<table id="userlist">
 	<thead>
 		<tr>
 			<th class="table-head thumbnail"></th>
@@ -36,7 +36,7 @@
 	</thead>
 	<tbody ng-controller="userlist">
 		<tr ng-repeat="user in users">
-			<td class="thumbnail"><!--Todo: Gravatar code for usernames.--></td>
+			<td class="thumbnail"><img src="http://placehold.it/30X30" /></td> <!--Temporary till wehave gravatars up!-->
 			<td class="login-name">{{ user.name }}</td>
 			<td class="display-name">{{ user.displayname }}</td>
 			<td class="user-pass"></td>
