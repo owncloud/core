@@ -40,7 +40,11 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 	public function __construct($params) {
 		if (isset($params['key']) && isset($params['secret']) && isset($params['bucket'])) {
 			$this->id = 'amazon::' . $params['key'] . md5($params['secret']);
-			$this->s3 = new \AmazonS3(array('key' => $params['key'], 'secret' => $params['secret'], 'certificate_authority' => true));
+			$this->s3 = new \AmazonS3(array(
+				'key' => $params['key'],
+				'secret' => $params['secret'],
+				'certificate_authority' => true
+			));
 			$this->bucket = $params['bucket'];
 			if(isset($params['hostname']) && isset($params['port'])) {
 				if($params['use_ssl'] === 'false') {
@@ -268,7 +272,11 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			$finfo = finfo_open(FILEINFO_MIME_TYPE);
 			$response = $this->s3->create_object($this->bucket,
 				self::$tempFiles[$tmpFile],
-				array('length' => filesize($tmpFile), 'fileUpload' => $handle, 'contentType' => finfo_file($finfo, $tmpFile))
+				array(
+					'length' => filesize($tmpFile),
+					'fileUpload' => $handle,
+					'contentType' => finfo_file($finfo, $tmpFile)
+				)
 			);
 			finfo_close($finfo);
 			if ($response->isOK()) {
@@ -298,9 +306,21 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			$content_type = 'httpd/unix-directory';
 		}
 
-		$response = $this->s3->update_object($this->bucket, $path, array('meta' => array('LastModified' => $mtime)));
+		$response = $this->s3->update_object(
+			$this->bucket,
+			$path,
+			array('meta' => array('LastModified' => $mtime))
+		);
 		if($response->isOK() == false) {
-			$response = $this->s3->create_object($this->bucket, $path, array('contentType' => $content_type, 'length' => 0, 'meta' => array('LastModified' => $mtime)));
+			$response = $this->s3->create_object(
+				$this->bucket,
+				$path,
+				array(
+					'contentType' => $content_type,
+					'length' => 0,
+					'meta' => array('LastModified' => $mtime)
+				)
+			);
 		}
 		return $response->isOK();
 	}
@@ -323,18 +343,30 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 
 	private function getMetadata($path) {
 		if($this->is_dir($path)) {
-			$response = $this->s3->get_object_metadata($this->bucket, $this->convertDirectoryString($path));
+			$response = $this->s3->get_object_metadata(
+				$this->bucket,
+				$this->convertDirectoryString($path)
+			);
 		} else {
-			$response = $this->s3->get_object_metadata($this->bucket, $path);
+			$response = $this->s3->get_object_metadata(
+				$this->bucket,
+				$path
+			);
 		}
 		return $response;
 	}
 
 	private function getHeaders($path) {
 		if($this->is_dir($path)) {
-			$response = $this->s3->get_object_headers($this->bucket, $this->convertDirectoryString($path));
+			$response = $this->s3->get_object_headers(
+				$this->bucket,
+				$this->convertDirectoryString($path)
+			);
 		} else {
-			$response = $this->s3->get_object_headers($this->bucket, $path);
+			$response = $this->s3->get_object_headers(
+				$this->bucket,
+				$path
+			);
 		}
 		return $response->header;
 	}
@@ -345,7 +377,17 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 				return false;
 			}
 
-			$response = $this->s3->copy_object(array('bucket'=>$this->bucket,'filename'=>$path1), array('bucket'=>$this->bucket,'filename'=>$path2, 'meta'=>$this->getMetadata($path1)));
+			$response = $this->s3->copy_object(
+				array(
+					'bucket' => $this->bucket,
+					'filename' => $path1
+				),
+				array(
+					'bucket' => $this->bucket,
+					'filename' => $path2,
+					'meta' => $this->getMetadata($path1)
+				)
+			);
 			return $response->isOK();
 		} else {
 			if($this->file_exists($this->convertDirectoryString($path2))) {
@@ -361,7 +403,16 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 				$this->copy($source, $target);
                 	}
 
-			$response = $this->s3->copy_object(array('bucket' => $this->bucket, 'filename' => $this->convertDirectoryString($path1)), array('bucket'=>$this->bucket,'filename'=>$this->convertDirectoryString($path2)));
+			$response = $this->s3->copy_object(
+				array(
+					'bucket' => $this->bucket,
+					'filename' => $this->convertDirectoryString($path1)
+				),
+				array(
+					'bucket' => $this->bucket,
+					'filename' => $this->convertDirectoryString($path2)
+				)
+			);
 			return $response->isOK();
 		}
 	}
