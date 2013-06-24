@@ -163,7 +163,9 @@ OC.Share={
 
 			var allowPublicUploadStatus = false;
 			$.each(data.shares, function(key, value) {
-			  if (allowPublicUploadStatus) return true;
+			  if (allowPublicUploadStatus) {
+                            return true;
+                          }
 			  allowPublicUploadStatus = (value.permissions & OC.PERMISSION_CREATE) ? true : false;
 			});
 
