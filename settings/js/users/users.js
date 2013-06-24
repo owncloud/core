@@ -33,12 +33,13 @@ usersmanagement.controller('grouplist', ['$scope', '$http',
 
 /* Fetches the List of All Users along with their details on the Right Content */
 
-usersmanagement.controller('userlist', function($scope, $http) {
-	$http.post(OC.filePath('settings', 'ajax', 'userlist.php'))
-		.then(function(response) {
-			$scope.usernames = response.data.users;
-		});
-});
+usersmanagement.controller('userlist', ['$scope', '$http',
+	function($scope,$http) {
+		$http.post(OC.filePath('settings', 'ajax', 'userlist.php')).then(function(response) {
+			$scope.users = response.data.userdetails;
+	});
+	}
+]);
 
 /* Asynchronously creates user */
 

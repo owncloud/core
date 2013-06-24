@@ -35,11 +35,12 @@
 		</tr>
 	</thead>
 	<tbody ng-controller="userlist">
-		<tr ng-repeat="user in usernames">
+		<tr ng-repeat="user in users">
 			<td class="thumbnail"><!--Todo: Gravatar code for usernames.--></td>
 			<td class="login-name">{{ user.name }}</td>
 			<td class="display-name">{{ user.displayname }}</td>
 			<td class="user-pass"></td>
+			<td class="groups"> {{user.groups}}</td>
 			<td class="local-storage">{{ user.quota }}</td>
 		</tr>
 	</tbody>
