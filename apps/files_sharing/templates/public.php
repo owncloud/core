@@ -59,6 +59,7 @@
 
 	</div>
 </div></header>
+<div id="content">
 <div id="preview">
 	<?php if (isset($_['folder'])): ?>
 		<?php print_unescaped($_['folder']); ?>
@@ -84,6 +85,7 @@
 		</ul>
 		<?php endif; ?>
 	<?php endif; ?>
+</div>
 </div>
 <footer><p class="info"><a href="http://owncloud.org/">ownCloud</a> &ndash;
 <?php p($l->t('web services under your control')); ?></p></footer>
