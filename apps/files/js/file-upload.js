@@ -1,3 +1,4 @@
+var file_upload_param = {};
 $(document).ready(function() {
 
   file_upload_param = {
