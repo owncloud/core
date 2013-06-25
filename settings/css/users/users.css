@@ -36,11 +36,22 @@
 /* User Table */
 
 #user-table {
-	position:absolute;
-	left:260px;
+	position: absolute;
+	left: 260px;
+	width: 80%;
+	float: left;
+	min-width: 700px;
 }
 
 #userlist {
 	position: relative;
+	width:100%;
+}
+
+#userlist thead {
+	
+}
+.login-name {
+
 }
 
