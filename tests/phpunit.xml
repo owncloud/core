@@ -16,6 +16,10 @@
 		</whitelist>
 	</filter>
 	<listeners>
-		<listener class="PHPUnit_Util_Log_JSON"></listener>
+		<listener class="PHPUnit_Util_Log_JSON">
+			<arguments>
+				<string>phpunit.log.json</string>
+			</arguments>
+		</listener>
 	</listeners>
 </phpunit>
