@@ -296,13 +296,6 @@ class OC_L10N{
 			else{
 				$available = self::findAvailableLanguages($app);
 			}
-			foreach($accepted_languages as $i) {
-				$temp = explode(';', $i);
-				$temp[0] = str_replace('-', '_', $temp[0]);
-				if( ($key = array_search($temp[0], $available)) !== false) {
-					if (is_null($app)) {
-						self::$language = $available[$key];
-					}
 
 			// Look for full match (primary_tag and subtag)
 			foreach ( $accept_langs as $accept_lang ) {
