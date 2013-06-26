@@ -146,39 +146,44 @@ OC.Share={
 	},
 	showDropDown:function(itemType, itemSource, appendTo, link, possiblePermissions) {
 		var data = OC.Share.loadItem(itemType, itemSource);
-		var html = '<div id="dropdown" class="drop" data-item-type="'+itemType+'" data-item-source="'+itemSource+'">';
+		var dropDown = $('<div/>');
+		dropDown.addClass('drop').attr({id: 'dropdown', 'data-item-type': itemType, 'data-item-source': itemSource});
 		if (data !== false && data.reshare !== false && data.reshare.uid_owner !== undefined) {
 			if (data.reshare.share_type == OC.Share.SHARE_TYPE_GROUP) {
-				html += '<span class="reshare">'+t('core', 'Shared with you and the group {group} by {owner}', {group: data.reshare.share_with, owner: data.reshare.displayname_owner})+'</span>';
+				dropDown.append($('<span/>').addClass('reshare')
+					.text(t('core', 'Shared with you and the group {group} by {owner}', {group: data.reshare.share_with, owner: data.reshare.displayname_owner})));
 			} else {
-				html += '<span class="reshare">'+t('core', 'Shared with you by {owner}', {owner: data.reshare.displayname_owner})+'</span>';
+				dropDown.append($('<span/>').addClass('reshare')
+					.text(t('core', 'Shared with you by {owner}', {owner: data.reshare.displayname_owner})));
 			}
-			html += '<br />';
+			dropDown.append('<br/>');
 		}
 		if (possiblePermissions & OC.PERMISSION_SHARE) {
-			html += '<input id="shareWith" type="text" placeholder="'+t('core', 'Share with')+'" />';
-			html += '<ul id="shareWithList">';
-			html += '</ul>';
+			dropDown.append($('<input/>').attr({id: 'shareWith', type: 'text', placeholder: t('core', 'Share with')}));
+			dropDown.append($('<ul/>').attr('id','shareWithList'));
 			if (link) {
-				html += '<div id="link">';
-				html += '<input type="checkbox" name="linkCheckbox" id="linkCheckbox" value="1" /><label for="linkCheckbox">'+t('core', 'Share with link')+'</label>';
-				html += '<br />';
-				html += '<input id="linkText" type="text" readonly="readonly" />';
-				html += '<input type="checkbox" name="showPassword" id="showPassword" value="1" style="display:none;" /><label for="showPassword" style="display:none;">'+t('core', 'Password protect')+'</label>';
-				html += '<div id="linkPass">';
-				html += '<input id="linkPassText" type="password" placeholder="'+t('core', 'Password')+'" />';
-				html += '</div>';
-				html += '</div>';
-				html += '<form id="emailPrivateLink" >';
-				html += '<input id="email" style="display:none; width:62%;" value="" placeholder="'+t('core', 'Email link to person')+'" type="text" />';
-				html += '<input id="emailButton" style="display:none;" type="submit" value="'+t('core', 'Send')+'" />';
-				html += '</form>';
+				var linkDiv = $('<div/>').attr('id', 'link')
+					.append($('<input/>').attr({type: 'checkbox', name: 'linkCheckbox', id: 'linkCheckbox', value: 1}))
+					.append($('<label/>').attr('for','linkCheckbox').text(t('core', 'Share with link')))
+					.append('<br/>')
+					.append($('<input/>').attr({type: 'text', readonly: 'readonly', id: 'linkText'}))
+					.append($('<input/>').attr({id: 'showPassword', type: 'checkbox', name: 'showPassword', value: 1}).hide())
+					.append($('<label/>').attr('for','showPassword').text(t('core', 'Password protect')).hide());
+				var passDiv = $('<div/>').attr('id','linkPass')
+					.append($('<input/>').attr({id: 'linkPassText', type: 'password', placeholder: t('core', 'Password')}));
+				linkDiv.append(passDiv);
+				dropDown.append(linkDiv);
+				var emailForm = $('<form/>').attr('id', 'emailPrivateLink');
+				emailForm.append($('<input/>').attr({id: 'email', style: 'width: 62%', placeholder:t('core', 'Email link to person'), type: 'text'}).hide());
+				emailForm.append($('<input/>').attr({id: 'emailButton', value: t('core', 'Send'), type: 'submit'}).hide());
+				dropDown.append(emailForm);
 			}
-			html += '<div id="expiration">';
-			html += '<input type="checkbox" name="expirationCheckbox" id="expirationCheckbox" value="1" /><label for="expirationCheckbox">'+t('core', 'Set expiration date')+'</label>';
-			html += '<input id="expirationDate" type="text" placeholder="'+t('core', 'Expiration date')+'" style="display:none; width:90%;" />';
-			html += '</div>';
-			$(html).appendTo(appendTo);
+			var expirationDiv = $('<div/>').attr('id', 'expiration')
+				.append($('<input/>').attr({type: 'checkbox', name: 'expirationCheckbox', id: 'expirationCheckbox', value: 1}))
+				.append($('<label/>').attr('for', 'expirationCheckbox').text(t('core', 'Set expiration date')))
+				.append($('<input/>').attr({type: 'text', id: 'expirationDate', placeholder: t('core', 'Expiration date'), style: 'width: 90%'}).hide());
+			dropDown.append(expirationDiv);
+			dropDown.appendTo(appendTo);
 			// Reset item shares
 			OC.Share.itemShares = [];
 			if (data.shares) {
@@ -248,9 +253,8 @@ OC.Share={
 					.appendTo( ul );
 			};
 		} else {
-			html += '<input id="shareWith" type="text" placeholder="'+t('core', 'Resharing is not allowed')+'" style="width:90%;" disabled="disabled"/>';
-			html += '</div>';
-			$(html).appendTo(appendTo);
+			dropDown.append($('<input/>').attr({id: 'shareWith', type: 'text', placeholder: t('core', 'Resharing is not allowed'), style: 'width:90%;', disabled: 'disabled'}));
+			dropDown.appendTo(appendTo);
 		}
 		$('#dropdown').show('blind', function() {
 			OC.Share.droppedDown = true;
@@ -284,8 +288,8 @@ OC.Share={
 			if (collectionList.length > 0) {
 				$(collectionList).append(', '+shareWithDisplayName);
 			} else {
-				var html = '<li style="clear: both;" data-collection="'+item+'">'+t('core', 'Shared in {item} with {user}', {'item': item, user: shareWithDisplayName})+'</li>';
-				$('#shareWithList').prepend(html);
+				var li = $('<li/>').attr({style: 'clear: both', 'data-collection': item}).text(t('core', 'Shared in {item} with {user}', {'item': item, user: shareWithDisplayName}));
+				$('#shareWithList').prepend(li);
 			}
 		} else {
 			var editChecked = createChecked = updateChecked = deleteChecked = shareChecked = '';
@@ -304,38 +308,70 @@ OC.Share={
 			if (permissions & OC.PERMISSION_SHARE) {
 				shareChecked = 'checked="checked"';
 			}
-			var html = '<li style="clear: both;" data-share-type="'+escapeHTML(shareType)+'" data-share-with="'+escapeHTML(shareWith)+'" title="' + escapeHTML(shareWith) + '">';
-			html += '<a href="#" class="unshare" style="display:none;"><img class="svg" alt="'+t('core', 'Unshare')+'" src="'+OC.imagePath('core', 'actions/delete')+'"/></a>';
+			var li = $('<li/>').attr({style: 'clear: both', 'data-share-type': shareType, "data-share-with": shareWith, title: shareWith});
+			var unshareLink = $('<a/>').attr('href', '#').addClass('unshare').hide();
+			unshareLink.append($('<img/>').attr({alt: t('core', 'Unshare'), src: OC.imagePath('core', 'actions/delete')}));
 			if(shareWith.length > 14){
-				html += escapeHTML(shareWithDisplayName.substr(0,11) + '...');
+				li.text(shareWithDisplayName.substr(0,11) + '...');
 			}else{
-				html += escapeHTML(shareWithDisplayName);
+				li.text(shareWithDisplayName);
 			}
+			li.append(unshareLink);
+			var label, input;
 			if (possiblePermissions & OC.PERMISSION_CREATE || possiblePermissions & OC.PERMISSION_UPDATE || possiblePermissions & OC.PERMISSION_DELETE) {
+				label = $('<label/>');
 				if (editChecked == '') {
-					html += '<label style="display:none;">';
-				} else {
-					html += '<label>';
+					label.hide();
 				}
-				html += '<input type="checkbox" name="edit" class="permissions" '+editChecked+' />'+t('core', 'can edit')+'</label>';
+				input = $('<input/>').attr({type: 'checkbox', name: 'edit'}).addClass('permissions');
+				if(editChecked){
+					input.attr('checked','checked');
+				}
+				label.append(input).append(t('core', 'can edit'));
+				li.append(label);
 			}
-			html += '<a href="#" class="showCruds" style="display:none;"><img class="svg" alt="'+t('core', 'access control')+'" src="'+OC.imagePath('core', 'actions/triangle-s')+'"/></a>';
-			html += '<div class="cruds" style="display:none;">';
-				if (possiblePermissions & OC.PERMISSION_CREATE) {
-					html += '<label><input type="checkbox" name="create" class="permissions" '+createChecked+' data-permissions="'+OC.PERMISSION_CREATE+'" />'+t('core', 'create')+'</label>';
+			var crudsLink = $('<a/>').attr('href','#').hide().addClass('showCruds');
+			crudsLink.append($('<img/>').attr({alt: t('core', 'access control'), src: OC.imagePath('core', 'actions/triangle-s')}));
+			li.append(crudsLink);
+			var crudsDiv = $('<div/>').addClass('cruds').hide();
+			if (possiblePermissions & OC.PERMISSION_CREATE) {
+				label = $('<label/>');
+				input = $('<input/>').attr({type: 'checkbox', name: 'create', 'data-permissions': OC.PERMISSION_CREATE}).addClass('permissions');
+				if(createChecked){
+					input.attr('checked','checked');
 				}
-				if (possiblePermissions & OC.PERMISSION_UPDATE) {
-					html += '<label><input type="checkbox" name="update" class="permissions" '+updateChecked+' data-permissions="'+OC.PERMISSION_UPDATE+'" />'+t('core', 'update')+'</label>';
+				label.append(input).append(t('core', 'create'));
+				crudsDiv.append(label);
+			}
+			if (possiblePermissions & OC.PERMISSION_UPDATE) {
+				label = $('<label/>');
+				input = $('<input/>').attr({type: 'checkbox', name: 'update', 'data-permissions': OC.PERMISSION_UPDATE}).addClass('permissions');
+				if(updateChecked){
+					input.attr('checked','checked');
 				}
-				if (possiblePermissions & OC.PERMISSION_DELETE) {
-					html += '<label><input type="checkbox" name="delete" class="permissions" '+deleteChecked+' data-permissions="'+OC.PERMISSION_DELETE+'" />'+t('core', 'delete')+'</label>';
+				label.append(input).append(t('core', 'update'));
+				crudsDiv.append(label);
+			}
+			if (possiblePermissions & OC.PERMISSION_DELETE) {
+				label = $('<label/>');
+				input = $('<input/>').attr({type: 'checkbox', name: 'delete', 'data-permissions': OC.PERMISSION_DELETE}).addClass('permissions');
+				if(deleteChecked){
+					input.attr('checked','checked');
 				}
-				if (possiblePermissions & OC.PERMISSION_SHARE) {
-					html += '<label><input type="checkbox" name="share" class="permissions" '+shareChecked+' data-permissions="'+OC.PERMISSION_SHARE+'" />'+t('core', 'share')+'</label>';
+				label.append(input).append(t('core', 'delete'));
+				crudsDiv.append(label);
+			}
+			if (possiblePermissions & OC.PERMISSION_SHARE) {
+				label = $('<label/>');
+				input = $('<input/>').attr({type: 'checkbox', name: 'share', 'data-permissions': OC.PERMISSION_SHARE}).addClass('permissions');
+				if(shareChecked){
+					input.attr('checked','checked');
 				}
-			html += '</div>';
-			html += '</li>';
-			$(html).appendTo('#shareWithList');
+				label.append(input).append(t('core', 'share'));
+				crudsDiv.append(label);
+			}
+			li.append(crudsDiv);
+			li.appendTo('#shareWithList');
 			$('#expiration').show();
 		}
 	},
