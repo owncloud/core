@@ -56,6 +56,38 @@ if ( isset( $_GET['path'] ) ) {
 		}
 
 	}
+	else if( isset( $_GET['download'] ) ) {
+		$localPath = $versions->getLocalPath($path, $_GET['download']);
+
+                if($localPath) {
+			$extension = pathinfo($path, PATHINFO_EXTENSION);
+			$filename = basename($path);
+			$filename = substr($filename, 0, strlen($filename)-strlen($extension)-1);
+			$filename .= "_v{$_GET['download']}.{$extension}";
+			
+			header('Content-Description: File Transfer');
+			header('Content-Type: application/octet-stream');
+			header('Content-Disposition: attachment; filename="'.$filename);
+			header('Content-Transfer-Encoding: binary');
+			header('Expires: 0');
+			header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+			header('Pragma: public');
+			header('Content-Length: ' . filesize($localPath));
+			ob_clean();
+			flush();
+			readfile($localPath);
+			exit;
+		}
+		else {
+			$tmpl->assign( 'outcome_stat', $l->t('failure') );
+
+                        $message = $l->t('Version "%s" for file "%s" does not exists.',
+                                array(OCP\Util::formatDate( doubleval($_GET['revert']) ), $_GET['path'] ) );
+
+                        $tmpl->assign( 'outcome_msg', $message);
+		}
+	}
+
 
 	// show the history only if there is something to show
 	$count = 999; //show the newest revisions
