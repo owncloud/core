@@ -5,6 +5,7 @@
 #feedback-messages h3 {
 	font-size: 1.3em;
 	font-style: italic;
+	margin-bottom: 2em;
 }
 
 .success {
@@ -13,4 +14,8 @@
 
 .failure {
 	color: red;
+}
+
+#version-history li {
+	padding: .4em;
 }
