@@ -139,6 +139,28 @@ class Storage {
 		}
 	}
 
+        /**
+         * Get local file version path of file and version
+         */
+        public static function getLocalPath($filename, $version) {
+                list($uid, $filename) = self::getUidAndFilename($filename);
+                $versions_fileview = new \OC\Files\View('/'.$uid .'/files_versions');
+
+                $abs_path = $versions_fileview->getLocalFile($filename.'.v');
+                $versionsSize = self::getVersionsSize($uid);
+
+                if ( $versionsSize === false || $versionsSize < 0 ) {
+                        $versionsSize = self::calculateSize($uid);
+                }
+
+                $path = $abs_path . $version;
+
+                if(file_exists($path)) {
+                        return $path;
+                }
+                return null;
+        }
+
 
 	/**
 	 * Delete versions of a file
