@@ -114,9 +114,12 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 	 * @return int
 	 */
 	public function getSize() {
-		$this->getFileinfoCache();
-		return $this->fileinfo_cache['size'];
-
+		if (substr($this->path, -5) === '.part') {
+			return \OC\Files\Filesystem::filesize($this->path);
+		} else {
+			$this->getFileinfoCache();
+			return $this->fileinfo_cache['size'];
+		}
 	}
 
 	/**
