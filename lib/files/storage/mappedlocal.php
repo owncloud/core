@@ -91,7 +91,7 @@ class MappedLocal extends \OC\Files\Storage\Common{
 	}
 	public function stat($path) {
 		$fullPath = $this->buildPath($path);
-		$statResult = stat($fullPath);
+		@$statResult = stat($fullPath);
 
 		if ($statResult['size'] < 0) {
 			$size = self::getFileSizeFromOS($fullPath);
