@@ -1,4 +1,9 @@
 <input type="hidden" id="disableSharing" data-status="<?php p($_['disableSharing']); ?>">
+<?php 	$dirName = str_replace('+', '%20', urlencode($_['dirName']));
+	$dirName = str_replace('%2F', '/', $dirName);
+	$baseUrl = $_['baseURL'] . '?dir=' . $dirName;
+	$downloadUrl = $_['downloadURL'] . '?file='.$dirName;
+	?>
 <?php foreach($_['files'] as $file):
 	$relative_deleted_date = OCP\relative_modified_date($file['timestamp']);
 	// the older the file, the brighter the shade of grey; days*14
@@ -7,7 +12,8 @@
 	$name = str_replace('+', '%20', urlencode($file['name']));
 	$name = str_replace('%2F', '/', $name);
 	$directory = str_replace('+', '%20', urlencode($file['directory']));
-	$directory = str_replace('%2F', '/', $directory); ?>
+	$directory = str_replace('%2F', '/', $directory); 
+	?>
 	<tr data-filename="<?php p($file['name']);?>"
 		data-type="<?php ($file['type'] == 'dir')?p('dir'):p('file')?>"
 		data-mime="<?php p($file['mimetype'])?>"
@@ -33,15 +39,15 @@
 		<?php if(!isset($_['readonly']) || !$_['readonly']): ?><input type="checkbox" /><?php endif; ?>
 		<?php if($file['type'] == 'dir'): ?>
 			<?php if( $_['dirlisting'] ): ?>
-				<a class="name" href="<?php p($_['baseURL'].'/'.$name); ?>" title="">
+				<a class="name" href="<?php p($baseUrl.'/'.$name); ?>" title="">
 			<?php else: ?>
-				<a class="name" href="<?php p($_['baseURL'].'/'.$name.'.d'.$file['timestamp']); ?>" title="">
+				<a class="name" href="<?php p($baseUrl.'/'.$name.'.d'.$file['timestamp']); ?>" title="">
 			<?php endif; ?>
 		<?php else: ?>
 			<?php if( $_['dirlisting'] ): ?>
-				<a class="name" href="<?php p($_['downloadURL'].'/'.$name); ?>" title="">
+				<a class="name" href="<?php p($downloadUrl.'/'.$name); ?>" title="">
 			<?php else: ?>
-				<a class="name" href="<?php p($_['downloadURL'].'/'.$name.'.d'.$file['timestamp']);?>" title="">
+				<a class="name" href="<?php p($downloadURL.'/'.$name.'.d'.$file['timestamp']);?>" title="">
 			<?php endif; ?>
 		<?php endif; ?>
 			<span class="nametext">
