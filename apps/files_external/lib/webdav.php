@@ -215,120 +215,120 @@ class DAV extends \OC\Files\Storage\Common{
 
 	public function free_space($path) {
 		$this->init();
-		$path=$this->cleanPath($path);
+		$path = $this->cleanPath($path);
 		try {
-			$response=$this->client->propfind($path, array('{DAV:}quota-available-bytes'));
+			$response = $this->client->propfind($path, array('{DAV:}quota-available-bytes'));
 			if (isset($response['{DAV:}quota-available-bytes'])) {
 				return (int)$response['{DAV:}quota-available-bytes'];
 			} else {
 				return 0;
 			}
-		} catch(\Exception $e) {
+		} catch (\Exception $e) {
 			return \OC\Files\FREE_SPACE_UNKNOWN;
 		}
 	}
 
-	public function touch($path, $mtime=null) {
+	public function touch($path, $mtime = null) {
 		$this->init();
 		if (is_null($mtime)) {
-			$mtime=time();
+			$mtime = time();
 		}
-		$path=$this->cleanPath($path);
-		$this->client->proppatch($path, array('{DAV:}lastmodified' => $mtime));
+		$path = $this->cleanPath($path);
+		try {
+			$this->client->proppatch($path, array('{DAV:}lastmodified' => $mtime));
+		} catch (\Sabre_DAV_Exception_NotFound $e) {
+			$this->file_put_contents($path, '');
+		}
 	}
 
 	public function getFile($path, $target) {
 		$this->init();
-		$source=$this->fopen($path, 'r');
+		$source = $this->fopen($path, 'r');
 		file_put_contents($target, $source);
 	}
 
 	public function uploadFile($path, $target) {
 		$this->init();
-		$source=fopen($path, 'r');
+		$source = fopen($path, 'r');
 
 		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_USERPWD, $this->user.':'.$this->password);
-		curl_setopt($curl, CURLOPT_URL, $this->createBaseUri().$target);
+		curl_setopt($curl, CURLOPT_USERPWD, $this->user . ':' . $this->password);
+		curl_setopt($curl, CURLOPT_URL, $this->createBaseUri() . $target);
 		curl_setopt($curl, CURLOPT_BINARYTRANSFER, true);
 		curl_setopt($curl, CURLOPT_INFILE, $source); // file pointer
 		curl_setopt($curl, CURLOPT_INFILESIZE, filesize($path));
 		curl_setopt($curl, CURLOPT_PUT, true);
-		curl_exec ($curl);
-		curl_close ($curl);
+		curl_exec($curl);
+		curl_close($curl);
 	}
 
 	public function rename($path1, $path2) {
 		$this->init();
-		$path1=$this->cleanPath($path1);
-		$path2=$this->root.$this->cleanPath($path2);
+		$path1 = $this->cleanPath($path1);
+		$path2 = $this->createBaseUri() . $this->cleanPath($path2);
 		try {
-			$this->client->request('MOVE', $path1, null, array('Destination'=>$path2));
+			$this->client->request('MOVE', $path1, null, array('Destination' => $path2));
 			return true;
-		} catch(\Exception $e) {
+		} catch (\Exception $e) {
 			return false;
 		}
 	}
 
 	public function copy($path1, $path2) {
 		$this->init();
-		$path1=$this->cleanPath($path1);
-		$path2=$this->root.$this->cleanPath($path2);
+		$path1 = $this->cleanPath($path1);
+		$path2 = $this->root . $this->cleanPath($path2);
 		try {
-			$this->client->request('COPY', $path1, null, array('Destination'=>$path2));
+			$this->client->request('COPY', $path1, null, array('Destination' => $path2));
 			return true;
-		} catch(\Exception $e) {
+		} catch (\Exception $e) {
 			return false;
 		}
 	}
 
 	public function stat($path) {
 		$this->init();
-		$path=$this->cleanPath($path);
+		$path = $this->cleanPath($path);
 		try {
-			$response=$this->client->propfind($path, array('{DAV:}getlastmodified', '{DAV:}getcontentlength'));
+			$response = $this->client->propfind($path, array('{DAV:}getlastmodified', '{DAV:}getcontentlength'));
 			return array(
-				'mtime'=>strtotime($response['{DAV:}getlastmodified']),
-				'size'=>(int)isset($response['{DAV:}getcontentlength']) ? $response['{DAV:}getcontentlength'] : 0,
+				'mtime' => strtotime($response['{DAV:}getlastmodified']),
+				'size' => (int)isset($response['{DAV:}getcontentlength']) ? $response['{DAV:}getcontentlength'] : 0,
 			);
-		} catch(\Exception $e) {
+		} catch (\Exception $e) {
 			return array();
 		}
 	}
 
 	public function getMimeType($path) {
 		$this->init();
-		$path=$this->cleanPath($path);
+		$path = $this->cleanPath($path);
 		try {
-			$response=$this->client->propfind($path, array('{DAV:}getcontenttype', '{DAV:}resourcetype'));
-			$responseType=$response["{DAV:}resourcetype"]->resourceType;
-			$type=(count($responseType)>0 and $responseType[0]=="{DAV:}collection")?'dir':'file';
-			if ($type=='dir') {
+			$response = $this->client->propfind($path, array('{DAV:}getcontenttype', '{DAV:}resourcetype'));
+			$responseType = $response["{DAV:}resourcetype"]->resourceType;
+			$type = (count($responseType) > 0 and $responseType[0] == "{DAV:}collection") ? 'dir' : 'file';
+			if ($type == 'dir') {
 				return 'httpd/unix-directory';
 			} elseif (isset($response['{DAV:}getcontenttype'])) {
 				return $response['{DAV:}getcontenttype'];
 			} else {
 				return false;
 			}
-		} catch(\Exception $e) {
+		} catch (\Exception $e) {
 			return false;
 		}
 	}
 
 	public function cleanPath($path) {
-		if ( ! $path || $path[0]=='/') {
-			return substr($path, 1);
-		} else {
-			return $path;
-		}
+		return trim($path, '/');
 	}
 
 	private function simpleResponse($method, $path, $body, $expected) {
-		$path=$this->cleanPath($path);
+		$path = $this->cleanPath($path);
 		try {
-			$response=$this->client->request($method, $path, $body);
-			return $response['statusCode']==$expected;
-		} catch(\Exception $e) {
+			$response = $this->client->request($method, $path, $body);
+			return $response['statusCode'] == $expected;
+		} catch (\Exception $e) {
 			return false;
 		}
 	}
