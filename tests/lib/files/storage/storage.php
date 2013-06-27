@@ -275,4 +275,22 @@ abstract class Storage extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse($this->instance->file_exists('folder/bar'));
 		$this->assertFalse($this->instance->file_exists('folder'));
 	}
+
+	public function testPartFiles() {
+		$textFile = \OC::$SERVERROOT . '/tests/data/lorem.txt';
+		$fh = fopen($textFile, 'r');
+		$target = $this->instance->fopen('foo.txt.part', 'w');
+		stream_copy_to_stream($fh, $target);
+		fclose($target);
+		$this->assertEquals(filesize($textFile), $this->instance->filesize('foo.txt.part'));
+		$this->assertTrue($this->instance->file_exists('foo.txt.part'));
+		$this->instance->rename('foo.txt.part', 'foo.txt');
+		$this->assertFalse($this->instance->file_exists('foo.txt.part'));
+		$this->assertTrue($this->instance->file_exists('foo.txt'));
+		$this->assertEquals(filesize($textFile), $this->instance->filesize('foo.txt'));
+	}
+
+	public function testStatNonExisting() {
+		$this->assertEquals(false, $this->instance->stat('bar.txt'));
+	}
 }
