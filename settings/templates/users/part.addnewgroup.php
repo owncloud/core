@@ -22,11 +22,12 @@
  */
 ?>
 
-<div
+<div ng-controller="creategroup">
 	<fieldset>
-		<form>
+		<form name="creategroup_form">
 			<input type="text" placeholder="<?php p($l->t('Add Group'))?>" />
-			<button title="<?php p($l->t('Add')) ?>"><?php p($l->t('Add')); ?>
+			<span class="error" id="nogroup" ng-show="" required>Group Name is required.</span>
+			<button title="<?php p($l->t('Add')) ?>" ng-click="savegroup()" ng-disabled="{{ disabledsavegroup() }}"><?php p($l->t('Add')); ?></button>
 		</form>
 	</fieldset>
 </div>
