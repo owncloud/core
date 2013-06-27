@@ -267,7 +267,7 @@ class View {
 			$absolutePath = Filesystem::normalizePath($this->getAbsolutePath($path));
 			if (\OC_FileProxy::runPreProxies('file_put_contents', $absolutePath, $data)
 				and Filesystem::isValidPath($path)
-					and !Filesystem::isFileBlacklisted($path)
+				and !Filesystem::isFileBlacklisted($path)
 			) {
 				$path = $this->getRelativePath($absolutePath);
 				$exists = $this->file_exists($path);
@@ -379,6 +379,7 @@ class View {
 					list($storage, $internalPath1) = Filesystem::resolvePath($absolutePath1 . $postFix1);
 					list(, $internalPath2) = Filesystem::resolvePath($absolutePath2 . $postFix2);
 					if ($storage) {
+						error_log('rename');
 						$result = $storage->rename($internalPath1, $internalPath2);
 						\OC_FileProxy::runPostProxies('rename', $absolutePath1, $absolutePath2);
 					} else {
@@ -658,7 +659,7 @@ class View {
 		$absolutePath = Filesystem::normalizePath($this->getAbsolutePath($path));
 		if (\OC_FileProxy::runPreProxies($operation, $absolutePath, $extraParam)
 			and Filesystem::isValidPath($path)
-				and !Filesystem::isFileBlacklisted($path)
+			and !Filesystem::isFileBlacklisted($path)
 		) {
 			$path = $this->getRelativePath($absolutePath);
 			if ($path == null) {
@@ -763,7 +764,7 @@ class View {
 
 			$data = $cache->get($internalPath);
 
-			if ($data and $data['fileid']) {
+			if ($data and !empty($data['fileid'])) {
 				if ($data['mimetype'] === 'httpd/unix-directory') {
 					//add the sizes of other mountpoints to the folder
 					$mountPoints = Filesystem::getMountPoints($path);
