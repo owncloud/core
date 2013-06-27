@@ -123,7 +123,7 @@ class Helper {
 
 			$view->file_put_contents('/public-keys/' . $recoveryKeyId . '.public.key', $keypair['publicKey']);
 
-			// Encrypt private key empthy passphrase
+			// Encrypt private key empty passphrase
 			$encryptedPrivateKey = \OCA\Encryption\Crypt::symmetricEncryptFileContent($keypair['privateKey'], $recoveryPassword);
 
 			// Save private key
