@@ -25,15 +25,12 @@ namespace Test\Files\Storage;
 class AmazonS3 extends Storage {
 
 	private $config;
-	private $id;
 
 	public function setUp() {
-		$this->id = uniqid();
 		$this->config = include('files_external/tests/config.php');
 		if ( ! is_array($this->config) or ! isset($this->config['amazons3']) or ! $this->config['amazons3']['run']) {
 			$this->markTestSkipped('AmazonS3 backend not configured');
 		}
-		$this->config['amazons3']['bucket'] = $this->id; // Make sure we have a new empty bucket to work in
 		$this->instance = new \OC\Files\Storage\AmazonS3($this->config['amazons3']);
 	}
 
@@ -41,8 +38,8 @@ class AmazonS3 extends Storage {
 		if ($this->instance) {
 			$s3 = new \AmazonS3(array('key' => $this->config['amazons3']['key'],
 									 'secret' => $this->config['amazons3']['secret']));
-			if ($s3->delete_all_objects($this->id)) {
-				$s3->delete_bucket($this->id);
+			if ($s3->delete_all_objects($this->config['amazons3']['bucket'])) {
+				$s3->delete_bucket($this->config['amazons3']['bucket']);
 			}
 		}
 	}
