@@ -116,6 +116,9 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 	}
 
 	public function rmdir($path) {
+		if($this->file_exists($path) == false) {
+			return false;
+		}
 		foreach($this->get_contents_of_directory($this->convertDirectoryString($path)) as $subpath) {
 			if($this->is_dir(stripcslashes($subpath))) {
 				$this->rmdir(stripcslashes($subpath));
