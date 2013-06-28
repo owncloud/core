@@ -207,7 +207,7 @@ class OC_Util {
 		$CONFIG_DATADIRECTORY = OC_Config::getValue( "datadirectory", OC::$SERVERROOT."/data" );
 		// Create root dir.
 		if(!is_dir($CONFIG_DATADIRECTORY)) {
-			$success=@mkdir($CONFIG_DATADIRECTORY);
+			$success=@mkdir($CONFIG_DATADIRECTORY, 0770, true);
 			if ($success) {
 				$errors = array_merge($errors, self::checkDataDirectoryPermissions($CONFIG_DATADIRECTORY));
 			} else {
