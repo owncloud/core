@@ -134,7 +134,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 	public function opendir($path) {
 		if ($path == '' || $path == '/') {
 			// Use the '/' delimiter to only fetch objects inside the folder
-			$opt = array('delimiter' => '/');
+			$opt = array('delimiter' => '/', 'prefix' => '/');
 		} else {
 			$path = $this->convertDirectoryString($path);
 			$opt = array('delimiter' => '/', 'prefix' => $path);
@@ -150,7 +150,9 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			}
 			// Sub folders show up as CommonPrefixes
 			foreach ($response->body->CommonPrefixes as $object) {
-				$files[] = basename($object->Prefix);
+				if ($object->Prefix != $path) {
+					$files[] = basename($object->Prefix);
+				}
 			}
 			\OC\Files\Stream\Dir::register('amazons3' . $path, $files);
 			return opendir('fakedir://amazons3' . $path);
@@ -210,7 +212,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 
 	private function get_contents_of_directory($path) {
 		if ($path == '' || $path == '/') {
-			$opt = array('delimiter' => '/');
+			$opt = array('delimiter' => '/', 'prefix' => '/');
 		} else {
 			$opt = array('delimiter' => '/', 'prefix' => $path);
 		}
@@ -225,7 +227,9 @@ class AmazonS3 extends \OC\Files\Storage\Common {
                 }
 
                 foreach ($response->body->CommonPrefixes as $object) {
-                        $files[] = $object->Prefix;
+			if ($object->Prefix != $path) {
+                        	$files[] = $object->Prefix;
+			}
                 }
 
 		return $files;
