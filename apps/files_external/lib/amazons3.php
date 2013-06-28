@@ -78,6 +78,10 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 		}
 	}
 
+	public function getConnection() {
+		return $this->s3;
+	}
+
 	private function getObject($path) {
 		if (array_key_exists($path, $this->objects)) {
 			return $this->objects[$path];
