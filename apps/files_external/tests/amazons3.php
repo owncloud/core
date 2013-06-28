@@ -36,8 +36,7 @@ class AmazonS3 extends Storage {
 
 	public function tearDown() {
 		if ($this->instance) {
-			$s3 = new \AmazonS3(array('key' => $this->config['amazons3']['key'],
-									 'secret' => $this->config['amazons3']['secret']));
+			$s3 = $this->instance->getConnection();
 			if ($s3->delete_all_objects($this->config['amazons3']['bucket'])) {
 				$s3->delete_bucket($this->config['amazons3']['bucket']);
 			}
