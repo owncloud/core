@@ -107,6 +107,9 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 	}
 
 	public function mkdir($path) {
+		if($this->file_exists($path)) {
+			return false;
+		}
 		$path = $this->convertDirectoryString($path);
 		$response = $this->s3->create_object($this->bucket, $path, array('body' => ''));
 		return $response->isOK();
