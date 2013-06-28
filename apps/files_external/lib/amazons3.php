@@ -69,6 +69,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 
 				if($this->s3->if_bucket_exists($this->bucket) == false) {
 					$this->s3->createBucket($this->bucket, $this->region);
+					$this->mkdir('/');
 				}
 
 			}
