@@ -33,6 +33,10 @@
 	margin:6px;
 }
 
+#hascontrols {
+	margin-left: 255px;
+}
+
 /* User Table */
 
 #user-table {

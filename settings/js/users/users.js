@@ -19,7 +19,7 @@
  *
  */
 
-var usersmanagement = angular.module('usersmanagement', []);
+var usersmanagement = angular.module('usersmanagement', ['ngResource']);
 
 /* Fetches the List of All Groups - Left Sidebar */
 
@@ -43,21 +43,22 @@ usersmanagement.controller('userlist', ['$scope', '$http',
 
 /* Asynchronously creates group */
 
-usersmanagement.controller('creategroup', ['$scope', '$http',
+usersmanagement.factory('newGroup', function($resource) {
+	return $resource(OC.filePath('settings', 'ajax', 'grouplist.php'), {}, {
+		update: { method : 'PUT' },
+		query: { method : 'GET' }
+	});
+});
+
+usersmanagement.controller('creategroup', ['$scope', '$http', 'newGroup',
 	function($scope, $http) {
 		var newgroup = {};
-
+		var userid = {};
 		$scope.savegroup = function() {
-			$http.post(
-				OC.filePath('settings', 'ajax', 'creategroup.php'), // url
-				{'groupname': $scope.newgroup }						// payload (maybe require some adjustments for matching the required data structure)
-				).then(function(response) {
-					// this will be called when the request is finished - here you could parse the response and add the group to the view
-					console.log('response: ', response, $scope);
-				}
-			);
+			console.log($scope.newgroup);
+			newGroup.update({ name : $scope.newgroup, useringroup: userid });
+			$scope.newgroup.reset();
 		}
-
 		$scope.disabledcreategroup = function() {
 			// here comes the logic for disabling the "add group" button
 			return false;
