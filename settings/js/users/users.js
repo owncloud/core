@@ -25,7 +25,7 @@ var usersmanagement = angular.module('usersmanagement', []);
 
 usersmanagement.controller('grouplist', ['$scope', '$http',
 	function($scope, $http) {
-		$http.post(OC.filePath('settings', 'ajax', 'grouplist.php')).then(function(response){
+		$http.get(OC.filePath('settings', 'ajax', 'grouplist.php')).then(function(response){
 			$scope.groupnames = response.data.result;
 		});
 	}
@@ -35,7 +35,7 @@ usersmanagement.controller('grouplist', ['$scope', '$http',
 
 usersmanagement.controller('userlist', ['$scope', '$http',
 	function($scope,$http) {
-		$http.post(OC.filePath('settings', 'ajax', 'userlist.php')).then(function(response) {
+		$http.get(OC.filePath('settings', 'ajax', 'userlist.php')).then(function(response) {
 			$scope.users = response.data.userdetails;
 	});
 	}
