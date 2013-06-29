@@ -46,15 +46,22 @@ usersmanagement.controller('userlist', ['$scope', '$http',
 usersmanagement.controller('creategroup', ['$scope', '$http',
 	function($scope, $http) {
 		var newgroup = {};
-		$http.post(OC.filePath('settings', 'ajax', 'creategroup.php')).then(function(response) {
-			$scope.savegroup = function(response,data) {
-				console.log($scope.newgroup);
-				response.data.result.groupname.$save($scope.newgroup); /* Something is wrong here */
-			}
-			$scope.disabledcreategroup = function(response) {
 
-			}
-		});
+		$scope.savegroup = function() {
+			$http.post(
+				OC.filePath('settings', 'ajax', 'creategroup.php'), // url
+				{'groupname': $scope.newgroup }						// payload (maybe require some adjustments for matching the required data structure)
+				).then(function(response) {
+					// this will be called when the request is finished - here you could parse the response and add the group to the view
+					console.log('response: ', response, $scope);
+				}
+			);
+		}
+
+		$scope.disabledcreategroup = function() {
+			// here comes the logic for disabling the "add group" button
+			return false;
+		}
 	}
 ]);
 
