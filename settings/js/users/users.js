@@ -41,14 +41,22 @@ usersmanagement.controller('userlist', ['$scope', '$http',
 	}
 ]);
 
-/* Asynchronously creates user */
-
-usersmanagement.controller('creategroup', function($scope, $http) {
-	$http.get(OC.filePath('settings', 'ajax', 'creategroup.php'))
-	.then(function(response) {
-		
-	});
-})
-
 /* Asynchronously creates group */
+
+usersmanagement.controller('creategroup', ['$scope', '$http',
+	function($scope, $http) {
+		var newgroup = {};
+		$http.post(OC.filePath('settings', 'ajax', 'creategroup.php')).then(function(response) {
+			$scope.savegroup = function(response,data) {
+				console.log($scope.newgroup);
+				response.data.result.groupname.$save($scope.newgroup); /* Something is wrong here */
+			}
+			$scope.disabledcreategroup = function(response) {
+
+			}
+		});
+	}
+]);
+
+/* Asynchronously creates user */
 
