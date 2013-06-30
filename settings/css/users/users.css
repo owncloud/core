@@ -25,12 +25,30 @@
 	position: fixed;
 }
 
-.usercount {
+.utils {
 	position:absolute;
 	right:0;
-	top:0;
-	bottom:0;
-	margin:6px;
+	top:0px;
+}
+
+.delete-button {
+	margin: 0;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-color: transparent;
+	border: 0;
+	box-shadow: none;
+	height: 32px;
+	width: 32px;
+}
+
+.delete-button:hover {
+	background-color: #DDD;
+}
+.usercount {
+	position: absolute;
+	padding: 7px;
+	right: 25px;
 }
 
 #hascontrols {

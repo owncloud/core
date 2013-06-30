@@ -23,8 +23,8 @@ var usersmanagement = angular.module('usersmanagement', ['ngResource']);
 
 /* Fetches the List of All Groups - Left Sidebar */
 
-usersmanagement.controller('grouplist', ['$scope', '$http',
-	function($scope, $http) {
+usersmanagement.controller('grouplist', ['$scope', '$http', 'GroupService',
+	function($scope, $http, GroupService) {
 		$http.get(OC.filePath('settings', 'ajax', 'grouplist.php')).then(function(response){
 			$scope.groupnames = response.data.result;
 		});

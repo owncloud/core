@@ -24,6 +24,9 @@
 <ul ng-controller="grouplist">
 	<li class="user-groups" ng-repeat='groupname in groupnames'>
 		<a href="#">{{ groupname.name }}</a>
-		<span class="usercount">{{ groupname.useringroup.length }}</span>
+		<span class="utils">
+			<span class="usercount">{{ groupname.useringroup.length }}</span>
+			<button class="svg action delete-icon delete-button" ng-click="deletegroup()"></button>
+		</span>
 	</li>
 </ul>
