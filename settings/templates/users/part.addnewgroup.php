@@ -25,8 +25,8 @@
 <div ng-controller="creategroup">
 	<fieldset>
 		<form name="creategroup_form">
-			<input type="text" placeholder="<?php p($l->t('Add Group'))?>" ng-model="newgroup" />
-			<span class="error" id="nogroup" ng-show="" required>Group Name is required.</span>
+			<input type="text" placeholder="<?php p($l->t('Add Group'))?>" ng-model="newgroup" required/>
+			<span class="error" id="nogroup" ng-show="newgroup.$error">Group Name is required.</span>
 			<button title="<?php p($l->t('Add')) ?>" ng-click="savegroup()" ng-disabled="disabledcreategroup()"><?php p($l->t('Add')); ?></button>
 		</form>
 	</fieldset>

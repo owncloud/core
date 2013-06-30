@@ -28,6 +28,9 @@ usersmanagement.controller('grouplist', ['$scope', '$http', 'GroupService',
 		$http.get(OC.filePath('settings', 'ajax', 'grouplist.php')).then(function(response){
 			$scope.groupnames = response.data.result;
 		});
+		$scope.deletegroup = function() {
+			GroupService.remove().delete(); // TODO
+		}
 	}
 ]);
 

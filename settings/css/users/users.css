@@ -25,6 +25,16 @@
 	position: fixed;
 }
 
+.error {
+	float: left;
+	display: block;
+	width: 100%;
+	text-align: center;
+	height: 25px;
+	padding-top: 10px;
+	background: #F2FF63;
+}
+
 .utils {
 	position:absolute;
 	right:0;
