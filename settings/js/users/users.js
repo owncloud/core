@@ -41,23 +41,32 @@ usersmanagement.controller('userlist', ['$scope', '$http',
 	}
 ]);
 
-/* Asynchronously creates group */
+/* Group Service */ 
 
-usersmanagement.factory('newGroup', function($resource) {
-	return $resource(OC.filePath('settings', 'ajax', 'grouplist.php'), {}, {
-		update: { method : 'PUT' },
-		query: { method : 'GET' }
-	});
+usersmanagement.factory('GroupService', function($resource) {
+	return {
+		create: function () {
+			return $resource(OC.filePath('settings', 'ajax', 'creategroup.php'), {}, {
+				method : 'POST'
+			});
+		},
+		remove: function () {
+			return $resource(OC.filePath('settings', 'ajax', 'removegroup.php'), {}, {
+				method: 'DELETE'
+			});
+		}
+	};
 });
 
-usersmanagement.controller('creategroup', ['$scope', '$http', 'newGroup',
-	function($scope, $http) {
+/* Asynchronously creates group */
+
+usersmanagement.controller('creategroup', ['$scope', '$http', 'GroupService',
+	function($scope, $http, GroupService) {
 		var newgroup = {};
 		var userid = {};
 		$scope.savegroup = function() {
 			console.log($scope.newgroup);
-			newGroup.update({ name : $scope.newgroup, useringroup: userid });
-			$scope.newgroup.reset();
+			GroupService.create().save({ groupname : $scope.newgroup });
 		}
 		$scope.disabledcreategroup = function() {
 			// here comes the logic for disabling the "add group" button
@@ -66,5 +75,9 @@ usersmanagement.controller('creategroup', ['$scope', '$http', 'newGroup',
 	}
 ]);
 
-/* Asynchronously creates user */
+/* TODO : Delete Groups from left sidebar */
+
+/* TODO : Asynchronously creates user */
+
+/* TODO : Delete Users from right content */
 
