@@ -58,12 +58,28 @@ usersmanagement.factory('GroupService', function($resource) {
 	};
 });
 
+/* User Serivce */
+
+usersmanagement.factory('UserService', function($resource) {
+	return {
+		create: function () {
+			return $resource(OC.filePath('settings', 'ajax', 'createuser.php'), {}, {
+				method : 'POST'
+			});
+		},
+		remove: function () {
+			return $resource(OC.filePath('settings', 'ajax', 'removeuser.php'), {}, {
+				method: 'DELETE'
+			});
+		}
+	};
+});
+
 /* Asynchronously creates group */
 
 usersmanagement.controller('creategroup', ['$scope', '$http', 'GroupService',
 	function($scope, $http, GroupService) {
 		var newgroup = {};
-		var userid = {};
 		$scope.savegroup = function() {
 			console.log($scope.newgroup);
 			GroupService.create().save({ groupname : $scope.newgroup });
