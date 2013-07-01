@@ -205,7 +205,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 
 	public function file_exists($path) {
 		if ($this->is_dir($path)) {
-			$path = $this->convertDirectoryString($path);
+			return true;
 		}
 		return $this->s3->if_object_exists($this->bucket, $path);
 	}
