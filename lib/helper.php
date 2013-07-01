@@ -400,7 +400,7 @@ class OC_Helper {
 		$mimeType = self::getFileNameMimeType($path);
 
 		// Workaround for https://bugs.php.net/bug.php?id=58023
-		if($mimeType=='application/octet-stream' && filesize($path) == 0){
+		if($mimeType === 'application/octet-stream' && filesize($path) === 0){
 			return 'inode/x-empty';
 		}
 
