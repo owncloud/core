@@ -7,7 +7,10 @@
  */
 var oc_debug;
 var oc_webroot;
-var oc_requesttoken;
+
+var oc_current_user = document.getElementsByTagName('head')[0].getAttribute('data-user');
+var oc_requesttoken = document.getElementsByTagName('head')[0].getAttribute('data-requesttoken');
+
 if (typeof oc_webroot === "undefined") {
 	oc_webroot = location.pathname.substr(0, location.pathname.lastIndexOf('/'));
 }
@@ -349,10 +352,10 @@ OC.Notification={
 	},
 	show: function(text) {
 		if(($('#notification').filter('span.undo').length == 1) || OC.Notification.isHidden()){
-			$('#notification').html(text);
+			$('#notification').text(text);
 			$('#notification').fadeIn().css("display","inline");
 		}else{
-			OC.Notification.queuedNotifications.push($(text).html());
+			OC.Notification.queuedNotifications.push($('<div/>').text(text).html());
 		}
 	},
 	isHidden: function() {
