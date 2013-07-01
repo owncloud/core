@@ -398,10 +398,6 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 
 	public function copy($path1, $path2) {
 		if ($this->is_file($path1)) {
-			if ($this->file_exists($path2)) {
-				return false;
-			}
-
 			$response = $this->s3->copy_object(
 				array(
 					'bucket' => $this->bucket,
