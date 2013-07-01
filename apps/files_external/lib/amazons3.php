@@ -120,7 +120,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 		if($this->file_exists($path) == false) {
 			return false;
 		}
-		foreach($this->get_contents_of_directory($this->convertDirectoryString($path)) as $subpath) {
+		foreach($this->getContentsOfDirectory($this->convertDirectoryString($path)) as $subpath) {
 			if($this->is_dir(stripcslashes($subpath))) {
 				$this->rmdir(stripcslashes($subpath));
 			} else {
@@ -210,7 +210,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 		return $this->s3->if_object_exists($this->bucket, $path);
 	}
 
-	private function get_contents_of_directory($path) {
+	private function getContentsOfDirectory($path) {
 		if ($path == '' || $path == '/') {
 			$opt = array('delimiter' => '/', 'prefix' => '/');
 		} else {
@@ -413,7 +413,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 				return false;
 			}
 
-                	foreach($this->get_contents_of_directory($this->convertDirectoryString($path1)) as $subpath) {
+                	foreach($this->getContentsOfDirectory($this->convertDirectoryString($path1)) as $subpath) {
 				if($this->convertDirectoryString($path1) == $subpath) {
 					continue;
 				}
