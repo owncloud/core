@@ -238,7 +238,11 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 
 	public function unlink($path) {
 		$response = $this->s3->delete_object($this->bucket, $path);
-		return $response->isOK();
+		if($response->isOK()) {
+			$this->touch(dirname($path));
+			return true;
+		}
+		return false;
 	}
 
 	public function fopen($path, $mode) {
@@ -276,6 +280,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 				if ($this->file_exists($path)) {
 					$source = $this->fopen($path, 'r');
 					file_put_contents($tmpFile, $source);
+					$this->touch(dirname($path));
 				}
 				self::$tempFiles[$tmpFile] = $path;
 				return fopen('close://' . $tmpFile, $mode);
@@ -296,6 +301,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			);
 			finfo_close($finfo);
 			if ($response->isOK()) {
+				$this->touch(dirname(self::$tempFiles[$tmpFile]));
 				unlink($tmpFile);
 			}
 		}
