@@ -50,26 +50,26 @@ class OC_USER_WEBDAVAUTH extends OC_User_Backend {
 		list($webdavauth_protocol, $webdavauth_url_path) = $arr;
 		$url= $webdavauth_protocol.'://'.$webdavauth_url_path;
 
-                $ch = curl_init($url);
+		$ch = curl_init($url);
 
-                curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
-                curl_setopt($ch, CURLOPT_USERPWD, urlencode($uid).':'.urlencode($password));
-                curl_setopt($ch, CURLOPT_HEADER, 1);
+		curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+		curl_setopt($ch, CURLOPT_USERPWD, urlencode($uid).':'.urlencode($password));
+		curl_setopt($ch, CURLOPT_HEADER, 1);
 
-                if($this->webdavauth_verify != 'checked') {
-                        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                }
+		if($this->webdavauth_verify !== 'checked') {
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		}
 
-                $result = curl_exec($ch);
+		$result = curl_exec($ch);
 
-                if($result==false){
+		if($result===false){
 			OC_Log::write('OC_USER_WEBDAVAUTH', 'Not possible to connect to WebDAV Url: "'.$webdavauth_protocol.'://'.$webdavauth_url_path.'" ', 3);
 			return false;
 
 		}
 		$returncode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-                curl_close($ch);
+		curl_close($ch);
 
 		if(substr($returncode, 0, 1) === '2') {
 			return $uid;
