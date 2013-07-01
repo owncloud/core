@@ -320,12 +320,6 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 		if (is_null($mtime)) {
 			$mtime = time();
 		}
-		$content_type = 'text/plain';
-		if ($this->is_dir($path)) {
-			$path = $this->convertDirectoryString($path);
-			$content_type = 'httpd/unix-directory';
-		}
-
 		$response = $this->s3->update_object(
 			$this->bucket,
 			$path,
@@ -336,7 +330,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 				$this->bucket,
 				$path,
 				array(
-					'contentType' => $content_type,
+					'contentType' => 'text/plain',
 					'length' => 0,
 					'meta' => array('LastModified' => $mtime)
 				)
