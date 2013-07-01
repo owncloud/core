@@ -179,18 +179,6 @@ class OC_User_Database extends OC_User_Backend {
 	}
 
 	/**
-	 * @brief Check if the string is an email
-	 * @param $string The string to check
-	 * @returns boolean
-	 *
-	 * Check if the users is trying to login with email or with username
-	 * returns true if $string is an email or false
-	 */
-	public function isEmail($string) {
-		return filter_var($string, FILTER_VALIDATE_EMAIL);
-	}
-	
-	/**
 	 * @brief Check if the password is correct
 	 * @param $uid The username
 	 * @param $password The password
@@ -201,9 +189,23 @@ class OC_User_Database extends OC_User_Backend {
 	 */
 	public function checkPassword( $uid, $password ) {
 	
-		$type = self::isEmail($uid) ? 'email' : 'uid';
+		$isEmail = filter_var($uid, FILTER_VALIDATE_EMAIL) ? true : false;
 		
-		$sql = "SELECT `uid`, `password` FROM `*PREFIX*users` WHERE LOWER($type) = LOWER(?)";
+		if ($isEmail) {
+		
+			$sql = "SELECT `userid` FROM `*PREFIX*preferences` WHERE LOWER(`configvalue`) = LOWER(?)";
+						
+			$query = OC_DB::prepare($sql);
+			
+			$result = $query->execute(array($uid));
+			
+			$uid = $result->fetchColumn();
+			
+			echo $uid;
+			
+		}
+		
+		$sql = "SELECT `uid`, `password` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)";
 							
 		$query = OC_DB::prepare( $sql );
 		
