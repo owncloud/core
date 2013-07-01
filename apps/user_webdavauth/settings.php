@@ -32,9 +32,9 @@ if($_POST) {
 	}
 	
 	if(isset($_POST['webdav_verify'])) {
-                OC_CONFIG::setValue('user_webdavauth_verify', 'checked');
+		OC_CONFIG::setValue('user_webdavauth_verify', 'checked');
         } else {
-                OC_CONFIG::setValue('user_webdavauth_verify', '');
+		OC_CONFIG::setValue('user_webdavauth_verify', '');
         }
 
 }
