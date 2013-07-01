@@ -165,7 +165,11 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 		if(isset($metadata['Size']) && isset($metadata['Headers']['last-modified'])) {
 			$stat['size'] = $metadata['Size'];
 			$stat['atime'] = time();
-			$stat['mtime'] = strtotime($metadata['Headers']['last-modified']);
+			if(isset($metadata['Headers']['x-amz-meta-lastmodified'])) {
+				$stat['mtime'] = $metadata['Headers']['x-amz-meta-lastmodified'];
+			} else {
+				$stat['mtime'] = strtotime($metadata['Headers']['last-modified']);
+			}
 			return $stat;
 		}
 		return false;
