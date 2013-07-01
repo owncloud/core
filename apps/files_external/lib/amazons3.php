@@ -353,6 +353,9 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 		if (substr($path, -1) != '/') {
 			$path .= '/';
 		}
+		if (substr($path, 0) != '/') {
+			$path = '/' . $path;
+		}
 		return $path;
 	}
 
