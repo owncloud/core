@@ -413,14 +413,14 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 				return false;
 			}
 
-                	foreach($this->getContentsOfDirectory($this->convertDirectoryString($path1)) as $subpath) {
+			foreach($this->getContentsOfDirectory($this->convertDirectoryString($path1)) as $subpath) {
 				if($this->convertDirectoryString($path1) == $subpath) {
 					continue;
 				}
 				$source = stripcslashes($subpath);
 				$target = $path2 . substr(stripcslashes($subpath), strlen($path1));
 				$this->copy($source, $target);
-                	}
+			}
 
 			$response = $this->s3->copy_object(
 				array(
