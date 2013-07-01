@@ -219,18 +219,18 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 
 		$response = $this->s3->list_objects($this->bucket, $opt);
 
-                $files = array();
-                foreach ($response->body->Contents as $object) {
-                        if ($object->Key != $path) {
-                                $files[] = $object->Key;
-                        }
-                }
-
-                foreach ($response->body->CommonPrefixes as $object) {
-			if ($object->Prefix != $path) {
-                        	$files[] = $object->Prefix;
+		$files = array();
+		foreach ($response->body->Contents as $object) {
+			if ($object->Key != $path) {
+				$files[] = $object->Key;
 			}
-                }
+		}
+
+		foreach ($response->body->CommonPrefixes as $object) {
+			if ($object->Prefix != $path) {
+				$files[] = $object->Prefix;
+			}
+		}
 
 		return $files;
 
