@@ -145,13 +145,13 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			$files = array();
 			foreach ($response->body->Contents as $object) {
 				// The folder being opened also shows up in the list of objects, don't add it to the files
-				if ($object->Key != $path) {
+				if ($object->Key != $path && basename($object->Key)) {
 					$files[] = basename($object->Key);
 				}
 			}
 			// Sub folders show up as CommonPrefixes
 			foreach ($response->body->CommonPrefixes as $object) {
-				if ($object->Prefix != $path) {
+				if ($object->Prefix != $path && basename($object->Prefix)) {
 					$files[] = basename($object->Prefix);
 				}
 			}
@@ -354,7 +354,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 		if (substr($path, -1) != '/') {
 			$path .= '/';
 		}
-		if (substr($path, 0) != '/') {
+		if (substr($path, 0, 1) != '/') {
 			$path = '/' . $path;
 		}
 		return $path;
