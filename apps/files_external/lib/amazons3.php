@@ -161,16 +161,11 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 	}
 
 	public function stat($path) {
-		if ($path == '' || $path == '/') {
-			$stat['size'] = $this->s3->get_bucket_filesize($this->bucket);
+		$metadata = $this->getMetadata($path);
+		if(isset($metadata['Size']) && isset($metadata['Headers']['last-modified'])) {
+			$stat['size'] = $metadata['Size'];
 			$stat['atime'] = time();
-			$stat['mtime'] = $stat['atime'];
-		} else if ($object = $this->getObject($path)) {
-			$stat['size'] = $object['Size'];
-			$stat['atime'] = time();
-			$stat['mtime'] = strtotime($object['LastModified']);
-		}
-		if (isset($stat)) {
+			$stat['mtime'] = strtotime($metadata['Headers']['last-modified']);
 			return $stat;
 		}
 		return false;
@@ -247,8 +242,10 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			case 'rb':
 				$tmpFile = \OC_Helper::tmpFile();
 				$handle = fopen($tmpFile, 'w');
-				$response = $this->s3->get_object($this->bucket, $path, array('fileDownload' => $handle));
+				$response = $this->s3->get_object($this->bucket, $path);
 				if ($response->isOK()) {
+					fwrite($handle, $response->body);
+					fclose($handle);
 					return fopen($tmpFile, 'r');
 				}
 				break;
@@ -283,13 +280,12 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 
 	public function writeBack($tmpFile) {
 		if (isset(self::$tempFiles[$tmpFile])) {
-			$handle = fopen($tmpFile, 'r');
 			$finfo = finfo_open(FILEINFO_MIME_TYPE);
 			$response = $this->s3->create_object($this->bucket,
 				self::$tempFiles[$tmpFile],
 				array(
 					'length' => filesize($tmpFile),
-					'fileUpload' => $handle,
+					'body' => file_get_contents($tmpFile),
 					'contentType' => finfo_file($finfo, $tmpFile)
 				)
 			);
