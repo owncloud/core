@@ -22,7 +22,7 @@ print_unescaped($l->t('Hey there,<br><br>just letting you know that %s shared »
 <td bgcolor="#f8f8f8" style="font-weight:normal; font-size:0.8em; line-height:1.2em; font-family:verdana,'arial',sans;">--<br>
 <?php p(OC_Defaults::getName()); ?> -
 <?php p(OC_Defaults::getSlogan()); ?>
-<br><a href="<?php print_unescaped(OC_Defaults::getBaseUrl()); ?>"><?php p(OC_Defaults::getBaseUrl());?></a></td>
+<br><a href="<?php print_unescaped(OC_Defaults::getBaseUrl()); ?>"><?php print_unescaped(OC_Defaults::getBaseUrl());?></a></td>
 </tr>
 <tr>
 <td bgcolor="#f8f8f8" colspan="2">&nbsp;</td>
