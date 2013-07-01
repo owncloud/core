@@ -440,10 +440,6 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 
 	public function rename($path1, $path2) {
 		if ($this->is_file($path1)) {
-			if ($this->file_exists($path2)) {
-				return false;
-			}
-
 			if ($this->copy($path1, $path2) == false) {
 				return false;
 			}
