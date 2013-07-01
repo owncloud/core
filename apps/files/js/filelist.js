@@ -388,8 +388,7 @@ $(document).ready(function(){
 	});
 	$('#notification:first-child').on('click', '.cancel', function() {
 		if ($('#notification > span').attr('data-isNewFile')) {
-			FileList.deleteCanceled = false;
-			FileList.deleteFiles = [$('#notification > span').attr('data-oldName')];
+			FileActions.actions.all.Delete.action($('#notification > span').attr('data-oldName'));
 		}
 	});
 	FileList.useUndo=(window.onbeforeunload)?true:false;
