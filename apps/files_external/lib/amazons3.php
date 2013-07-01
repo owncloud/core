@@ -290,16 +290,14 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 
 	public function writeBack($tmpFile) {
 		if (isset(self::$tempFiles[$tmpFile])) {
-			$finfo = finfo_open(FILEINFO_MIME_TYPE);
 			$response = $this->s3->create_object($this->bucket,
 				self::$tempFiles[$tmpFile],
 				array(
 					'length' => filesize($tmpFile),
 					'body' => file_get_contents($tmpFile),
-					'contentType' => finfo_file($finfo, $tmpFile)
+					'contentType' => \OC_Helper::getMimeType($tmpFile)
 				)
 			);
-			finfo_close($finfo);
 			if ($response->isOK()) {
 				$this->touch(dirname(self::$tempFiles[$tmpFile]));
 				unlink($tmpFile);
