@@ -162,7 +162,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 	}
 
 	public function stat($path) {
-		$metadata = $this->getMetadata($path);
+		$metadata = $this->getObject($path);
 		if (isset($metadata['Size']) && isset($metadata['Headers']['last-modified'])) {
 			$stat['size'] = $metadata['Size'];
 			$stat['atime'] = time();
@@ -358,21 +358,6 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 		return $path;
 	}
 
-	private function getMetadata($path) {
-		if ($this->is_dir($path)) {
-			$response = $this->s3->get_object_metadata(
-				$this->bucket,
-				$this->convertDirectoryString($path)
-			);
-		} else {
-			$response = $this->s3->get_object_metadata(
-				$this->bucket,
-				$path
-			);
-		}
-		return $response;
-	}
-
 	public function copy($path1, $path2) {
 		if ($this->is_file($path1)) {
 			$response = $this->s3->copy_object(
@@ -383,7 +368,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 				array(
 					'bucket' => $this->bucket,
 					'filename' => $path2,
-					'meta' => $this->getMetadata($path1)
+					'meta' => $this->getObject($path1)
 				)
 			);
 			return $response->isOK();
