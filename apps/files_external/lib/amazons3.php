@@ -84,20 +84,16 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 	}
 
 	private function getObject($path) {
-		if (array_key_exists($path, $this->objects)) {
-			return $this->objects[$path];
-		} else {
-			$response = $this->s3->get_object_metadata($this->bucket, $path);
+		$response = $this->s3->get_object_metadata($this->bucket, $path);
+		if ($response) {
+			$this->objects[$path] = $response;
+			return $response;
+			// This object could be a folder, a '/' must be at the end of the path
+		} else if (substr($path, -1) != '/') {
+			$response = $this->s3->get_object_metadata($this->bucket, $path . '/');
 			if ($response) {
 				$this->objects[$path] = $response;
 				return $response;
-				// This object could be a folder, a '/' must be at the end of the path
-			} else if (substr($path, -1) != '/') {
-				$response = $this->s3->get_object_metadata($this->bucket, $path . '/');
-				if ($response) {
-					$this->objects[$path] = $response;
-					return $response;
-				}
 			}
 		}
 		return false;
