@@ -309,8 +309,8 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 		if ($this->is_dir($path)) {
 			return 'httpd/unix-directory';
 		} else if ($this->file_exists($path)) {
-			$headers = $this->getHeaders($path);
-			return $headers['content-type'];
+			$headers = $this->getObject($path);
+			return $headers['ContentType'];
 		} else {
 			return false;
 		}
@@ -371,21 +371,6 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			);
 		}
 		return $response;
-	}
-
-	private function getHeaders($path) {
-		if ($this->is_dir($path)) {
-			$response = $this->s3->get_object_headers(
-				$this->bucket,
-				$this->convertDirectoryString($path)
-			);
-		} else {
-			$response = $this->s3->get_object_headers(
-				$this->bucket,
-				$path
-			);
-		}
-		return $response->header;
 	}
 
 	public function copy($path1, $path2) {
