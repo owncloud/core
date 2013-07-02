@@ -115,6 +115,16 @@ abstract class Storage extends \PHPUnit_Framework_TestCase {
 		//empty the file
 		$this->instance->file_put_contents('/lorem.txt', '');
 		$this->assertEquals('', $this->instance->file_get_contents('/lorem.txt'), 'file not emptied');
+
+		// check if it's working inside subdirectories as well
+		$this->instance->mkdir('/folder');
+		$this->instance->file_put_contents('/folder/lorem.txt', $sourceText);
+		$this->assertFalse($this->instance->is_dir('/folder/lorem.txt'));
+		$this->assertEquals($sourceText, $this->instance->file_get_contents('/folder/lorem.txt'), 'data returned from file_get_contents is not equal to the source data');
+		$this->instance->file_put_contents('/folder/lorem.txt', '');
+		$this->assertEquals('', $this->instance->file_get_contents('/folder/lorem.txt'), 'file not emptied');
+		$this->instance->rmdir('/folder');
+		$this->assertFalse($this->instance->file_exists('/folder/lorem.txt'));
 	}
 
 	/**
