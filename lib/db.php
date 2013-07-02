@@ -23,7 +23,8 @@
 class DatabaseException extends Exception{
 	private $query;
 
-	public function __construct($message, $query){
+	//FIXME getQuery seems to be unused, maybe use parent constructor with $message, $code and $previous
+	public function __construct($message, $query = null){
 		parent::__construct($message);
 		$this->query = $query;
 	}
@@ -325,11 +326,12 @@ class OC_DB {
 	 * @param string $query Query string
 	 * @param int $limit
 	 * @param int $offset
+	 * @param bool $isManipulation
 	 * @return MDB2_Statement_Common prepared SQL query
 	 *
 	 * SQL query via MDB2 prepare(), needs to be execute()'d!
 	 */
-	static public function prepare( $query , $limit=null, $offset=null ) {
+	static public function prepare( $query , $limit = null, $offset = null, $isManipulation = null) {
 
 		if (!is_null($limit) && $limit != -1) {
 			if (self::$backend == self::BACKEND_MDB2) {
@@ -366,12 +368,23 @@ class OC_DB {
 			OC_Log::write('core', 'DB prepare : '.$query, OC_Log::DEBUG);
 		}
 		self::connect();
+		
+		if ($isManipulation === null) {
+			//try to guess, so we return the number of rows on manipulations
+			$isManipulation = self::isManipulation($query);
+		}
+		
 		// return the result
 		if(self::$backend==self::BACKEND_MDB2) {
-			$result = self::$connection->prepare( $query );
+			// differentiate between query and manipulation
+			if ($isManipulation) {
+				$result = self::$connection->prepare( $query, null, MDB2_PREPARE_MANIP );
+			} else {
+				$result = self::$connection->prepare( $query, null, MDB2_PREPARE_RESULT );
+			}
 
 			// Die if we have an error (error means: bad query, not 0 results!)
-			if( PEAR::isError($result)) {
+			if( self::isError($result)) {
 				throw new DatabaseException($result->getMessage(), $query);
 			}
 		}else{
@@ -380,7 +393,8 @@ class OC_DB {
 			}catch(PDOException $e) {
 				throw new DatabaseException($e->getMessage(), $query);
 			}
-			$result=new PDOStatementWrapper($result);
+			// differentiate between query and manipulation
+			$result = new PDOStatementWrapper($result, $isManipulation);
 		}
 		if ((is_null($limit) || $limit == -1) and self::$cachingEnabled ) {
 			$type = OC_Config::getValue( "dbtype", "sqlite" );
@@ -390,11 +404,87 @@ class OC_DB {
 		}
 		return $result;
 	}
+	
+	/**
+	 * tries to guess the type of statement based on the first 10 characters
+	 * the current check allows some whitespace but does not work with IF EXISTS or other more complex statements
+	 * 
+	 * @param string $sql
+	 */
+	static public function isManipulation( $sql ) {
+		$selectOccurence = stripos ($sql, "SELECT");
+		if ($selectOccurence !== false && $selectOccurence < 10) {
+			return false;
+		}
+		$insertOccurence = stripos ($sql, "INSERT");
+		if ($insertOccurence !== false && $insertOccurence < 10) {
+			return true;
+		}
+		$updateOccurence = stripos ($sql, "UPDATE");
+		if ($updateOccurence !== false && $updateOccurence < 10) {
+			return true;
+		}
+		$deleteOccurance = stripos ($sql, "DELETE");
+		if ($deleteOccurance !== false && $deleteOccurance < 10) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * @brief execute a prepared statement, on error write log and throw exception
+	 * @param mixed $stmt PDOStatementWrapper | MDB2_Statement_Common ,
+	 *					  an array with 'sql' and optionally 'limit' and 'offset' keys
+	 *					.. or a simple sql query string
+	 * @param array $parameters
+	 * @return result
+	 * @throws DatabaseException
+	 */
+	static public function executeAudited( $stmt, array $parameters = null) {
+		if (is_string($stmt)) {
+			// convert to an array with 'sql'
+			if (stripos($stmt,'LIMIT') !== false) { //OFFSET requires LIMIT, se we only neet to check for LIMIT
+				// TODO try to convert LIMIT OFFSET notation to parameters, see fixLimitClauseForMSSQL
+				$message = 'LIMIT and OFFSET are forbidden for portability reasons,'
+						 . ' pass an array with \'limit\' and \'offset\' instead';
+				throw new DatabaseException($message);
+			}
+			$stmt = array('sql' => $stmt, 'limit' => null, 'offset' => null);
+		}
+		if (is_array($stmt)){
+			// convert to prepared statement
+			if ( ! array_key_exists('sql', $stmt) ) {
+				$message = 'statement array must at least contain key \'sql\'';
+				throw new DatabaseException($message);
+			}
+			if ( ! array_key_exists('limit', $stmt) ) {
+				$stmt['limit'] = null;
+			}
+			if ( ! array_key_exists('limit', $stmt) ) {
+				$stmt['offset'] = null;
+			}
+			$stmt = self::prepare($stmt['sql'], $stmt['limit'], $stmt['offset']);
+		}
+		self::raiseExceptionOnError($stmt, 'Could not prepare statement');
+		if ($stmt instanceof PDOStatementWrapper || $stmt instanceof MDB2_Statement_Common) {
+			$result = $stmt->execute($parameters);
+			self::raiseExceptionOnError($result, 'Could not execute statement');
+		} else {
+			if (is_object($stmt)) {
+				$message = 'Expected a prepared statement or array got ' . get_class($stmt);
+			} else {
+				$message = 'Expected a prepared statement or array got ' . gettype($stmt);
+			}
+			throw new DatabaseException($message);
+		}
+		return $result;
+	}
 
 	/**
 	 * @brief gets last value of autoincrement
 	 * @param string $table The optional table name (will replace *PREFIX*) and add sequence suffix
 	 * @return int id
+	 * @throws DatabaseException
 	 *
 	 * MDB2 lastInsertID()
 	 *
@@ -404,25 +494,27 @@ class OC_DB {
 	public static function insertid($table=null) {
 		self::connect();
 		$type = OC_Config::getValue( "dbtype", "sqlite" );
-		if( $type == 'pgsql' ) {
-			$query = self::prepare('SELECT lastval() AS id');
-			$row = $query->execute()->fetchRow();
+		if( $type === 'pgsql' ) {
+			$result = self::executeAudited('SELECT lastval() AS id');
+			$row = $result->fetchRow();
+			self::raiseExceptionOnError($row, 'fetching row for insertid failed');
 			return $row['id'];
-		}
-		if( $type == 'mssql' ) {
+		} else if( $type === 'mssql' || $type === 'oci') {
 			if($table !== null) {
 				$prefix = OC_Config::getValue( "dbtableprefix", "oc_" );
 				$table = str_replace( '*PREFIX*', $prefix, $table );
 			}
-			return self::$connection->lastInsertId($table);
-		}else{
+			$result = self::$connection->lastInsertId($table);
+		} else {
 			if($table !== null) {
 				$prefix = OC_Config::getValue( "dbtableprefix", "oc_" );
 				$suffix = OC_Config::getValue( "dbsequencesuffix", "_id_seq" );
 				$table = str_replace( '*PREFIX*', $prefix, $table ).$suffix;
 			}
-			return self::$connection->lastInsertId($table);
+			$result = self::$connection->lastInsertId($table);
 		}
+		self::raiseExceptionOnError($result, 'insertid failed');
+		return $result;
 	}
 
 	/**
@@ -512,11 +604,9 @@ class OC_DB {
 
 		//clean up memory
 		unlink( $file2 );
+		
+		self::raiseExceptionOnError($definition,'Failed to parse the database definition');
 
-		// Die in case something went wrong
-		if( $definition instanceof MDB2_Schema_Error ) {
-			OC_Template::printErrorPage( $definition->getMessage().': '.$definition->getUserInfo() );
-		}
 		if(OC_Config::getValue('dbtype', 'sqlite')==='oci') {
 			unset($definition['charset']); //or MDB2 tries SHUTDOWN IMMEDIATE
 			$oldname = $definition['name'];
@@ -528,11 +618,7 @@ class OC_DB {
 
 		$ret=self::$schema->createDatabase( $definition );
 
-		// Die in case something went wrong
-		if( $ret instanceof MDB2_Error ) {
-			OC_Template::printErrorPage( self::$MDB2->getDebugOutput().' '.$ret->getMessage() . ': '
-				. $ret->getUserInfo() );
-		}
+		self::raiseExceptionOnError($ret,'Failed to create the database structure');
 
 		return true;
 	}
@@ -547,18 +633,17 @@ class OC_DB {
 		$CONFIG_DBTYPE = OC_Config::getValue( "dbtype", "sqlite" );
 
 		self::connectScheme();
+		
+		if(OC_Config::getValue('dbtype', 'sqlite')==='oci') {
+			//set dbname, it is unset because oci uses 'service' to connect
+			self::$schema->db->database_name=self::$schema->db->dsn['username'];
+		}
 
 		// read file
 		$content = file_get_contents( $file );
 
 		$previousSchema = self::$schema->getDefinitionFromDatabase();
-		if (PEAR::isError($previousSchema)) {
-			$error = $previousSchema->getMessage();
-			$detail = $previousSchema->getDebugInfo();
-			$message = 'Failed to get existing database structure for updating ('.$error.', '.$detail.')';
-			OC_Log::write('core', $message, OC_Log::FATAL);
-			throw new Exception($message);
-		}
+		self::raiseExceptionOnError($previousSchema,'Failed to get existing database structure for updating');
 
 		// Make changes and save them to an in-memory file
 		$file2 = 'static://db_scheme';
@@ -576,19 +661,19 @@ class OC_DB {
 			$content = str_replace( '<default>0000-00-00 00:00:00</default>',
 				'<default>CURRENT_TIMESTAMP</default>', $content );
 		}
+		if(OC_Config::getValue('dbtype', 'sqlite')==='oci') {
+			unset($previousSchema['charset']); //or MDB2 tries SHUTDOWN IMMEDIATE
+			$oldname = $previousSchema['name'];
+			$previousSchema['name']=OC_Config::getValue( "dbuser", $oldname );
+			//TODO check identifiers are at most 30 chars long
+		}
 		file_put_contents( $file2, $content );
 		$op = self::$schema->updateDatabase($file2, $previousSchema, array(), false);
 
 		//clean up memory
 		unlink( $file2 );
 
-		if (PEAR::isError($op)) {
-			$error = $op->getMessage();
-			$detail = $op->getDebugInfo();
-			$message = 'Failed to update database structure ('.$error.', '.$detail.')';
-			OC_Log::write('core', $message, OC_Log::FATAL);
-			throw new Exception($message);
-		}
+		self::raiseExceptionOnError($op,'Failed to update database structure');
 		return true;
 	}
 
@@ -641,15 +726,9 @@ class OC_DB {
 			}
 			$query = substr($query, 0, strlen($query) - 5);
 			try {
-				$stmt = self::prepare($query);
-				$result = $stmt->execute($inserts);
-
-			} catch(PDOException $e) {
-				$entry = 'DB Error: "'.$e->getMessage() . '"<br />';
-				$entry .= 'Offending command was: ' . $query . '<br />';
-				OC_Log::write('core', $entry, OC_Log::FATAL);
-				error_log('DB error: '.$entry);
-				OC_Template::printErrorPage( $entry );
+				$result = self::executeAudited($query, $inserts);
+			} catch(DatabaseException $e) {
+				OC_Template::printExceptionErrorPage( $e );
 			}
 
 			if((int)$result->numRows() === 0) {
@@ -674,16 +753,15 @@ class OC_DB {
 		}
 
 		try {
-			$result = self::prepare($query);
+			$result = self::executeAudited($query, $inserts);
 		} catch(PDOException $e) {
-			$entry = 'DB Error: "'.$e->getMessage() . '"<br />';
-			$entry .= 'Offending command was: ' . $query.'<br />';
-			OC_Log::write('core', $entry, OC_Log::FATAL);
-			error_log('DB error: ' . $entry);
-			OC_Template::printErrorPage( $entry );
+			OC_Template::printExceptionErrorPage( $e );
+		}
+		if ($result === 0) {
+			return true;
 		}
 
-		return $result->execute($inserts);
+		return $result;
 	}
 
 	/**
@@ -718,6 +796,7 @@ class OC_DB {
 		}elseif( $type == 'oci'  ) {
 			$query = str_replace( '`', '"', $query );
 			$query = str_ireplace( 'NOW()', 'CURRENT_TIMESTAMP', $query );
+			$query = str_ireplace( 'UNIX_TIMESTAMP()', '((CAST(SYS_EXTRACT_UTC(systimestamp) AS DATE))-TO_DATE(\'1970101000000\',\'YYYYMMDDHH24MiSS\'))*24*3600', $query );
 		}elseif( $type == 'mssql' ) {
 			$query = preg_replace( "/\`(.*?)`/", "[$1]", $query );
 			$query = str_replace( 'NOW()', 'CURRENT_TIMESTAMP', $query );
@@ -883,7 +962,7 @@ class OC_DB {
 	 * @return bool
 	 */
 	public static function isError($result) {
-		if(!$result) {
+		if(self::$backend==self::BACKEND_PDO and $result === false) {
 			return true;
 		}elseif(self::$backend==self::BACKEND_MDB2 and PEAR::isError($result)) {
 			return true;
@@ -891,7 +970,32 @@ class OC_DB {
 			return false;
 		}
 	}
+	/**
+	 * check if a result is an error and throws an exception, works with MDB2 and PDOException
+	 * @param mixed $result
+	 * @param string message
+	 * @return void
+	 * @throws DatabaseException
+	 */
+	public static function raiseExceptionOnError($result, $message = null) {
+		if(self::isError($result)) {
+			if ($message === null) {
+				$message = self::getErrorMessage($result);
+			} else {
+				$message .= ', Root cause:' . self::getErrorMessage($result);
+			}
+			throw new DatabaseException($message, self::getErrorCode($result));
+		}
+	}
 
+	public static function getErrorCode($error) {
+		if ( self::$backend==self::BACKEND_MDB2 and PEAR::isError($error) ) {
+			$code = $error->getCode();
+		} elseif ( self::$backend==self::BACKEND_PDO and self::$PDO ) {
+			$code = self::$PDO->errorCode();
+		}
+		return $code;
+	}
 	/**
 	 * returns the error code and message as a string for logging
 	 * works with MDB2 and PDOException
@@ -901,9 +1005,7 @@ class OC_DB {
 	public static function getErrorMessage($error) {
 		if ( self::$backend==self::BACKEND_MDB2 and PEAR::isError($error) ) {
 			$msg = $error->getCode() . ': ' . $error->getMessage();
-			if (defined('DEBUG') && DEBUG) {
-				$msg .= '(' . $error->getDebugInfo() . ')';
-			}
+			$msg .= ' (' . $error->getDebugInfo() . ')';
 		} elseif (self::$backend==self::BACKEND_PDO and self::$PDO) {
 			$msg = self::$PDO->errorCode() . ': ';
 			$errorInfo = self::$PDO->errorInfo();
@@ -938,11 +1040,13 @@ class PDOStatementWrapper{
 	/**
 	 * @var PDOStatement
 	 */
-	private $statement=null;
-	private $lastArguments=array();
+	private $statement = null;
+	private $isManipulation = false;
+	private $lastArguments = array();
 
-	public function __construct($statement) {
-		$this->statement=$statement;
+	public function __construct($statement, $isManipulation = false) {
+		$this->statement = $statement;
+		$this->isManipulation = $isManipulation;
 	}
 
 	/**
@@ -964,15 +1068,18 @@ class PDOStatementWrapper{
 				$input = $this->tryFixSubstringLastArgumentDataForMSSQL($input);
 			}
 
-			$result=$this->statement->execute($input);
+			$result = $this->statement->execute($input);
 		} else {
-			$result=$this->statement->execute();
+			$result = $this->statement->execute();
 		}
 		
-		if ($result) {
-			return $this;
-		} else {
+		if ($result === false) {
 			return false;
+		}
+		if ($this->isManipulation) {
+			return $this->statement->rowCount();
+		} else {
+			return $this;
 		}
 	}
 
