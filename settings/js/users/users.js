@@ -36,8 +36,8 @@ usersmanagement.controller('grouplist', ['$scope', '$http', 'GroupService',
 
 /* Fetches the List of All Users along with their details on the Right Content */
 
-usersmanagement.controller('userlist', ['$scope', '$http',
-	function($scope,$http) {
+usersmanagement.controller('userlist', ['$scope', '$http', 'QuotaService',
+	function($scope,$http,QuotaService) {
 		$http.get(OC.filePath('settings', 'ajax', 'userlist.php')).then(function(response) {
 			$scope.users = response.data.userdetails;
 	});
@@ -76,6 +76,14 @@ usersmanagement.factory('UserService', function($resource) {
 			});
 		}
 	};
+});
+
+/* Quota Service */
+
+usersmanagement.factory('QuotaService', function($resource) {
+	return $resource(OC.filePath('settings','ajax', 'setQuota.php'), {}, {
+		method : 'POST'
+	});
 });
 
 /* Asynchronously creates group */

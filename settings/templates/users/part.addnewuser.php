@@ -24,13 +24,18 @@
 
 <div>
 	<fieldset>
-		<form id="newuser" autocomplete="off">
-			<input class="" id="newusername" type="text" placeholder="<?php p($l->t('Login Name')) ?>" />
-			<input id="newuserpassword" type="password" placeholder="<?php p($l->t('Password')) ?>" />
+		<form id="newuser" autocomplete="off" name="createuser_form">
+			<input class="" id="newusername" type="text" name="loginnamefield" placeholder="<?php p($l->t('Login Name')) ?>" ng-minlength="3" ng-required/>
+			<span class="error" id="nologinname" ng-show="createuser_form.loginnamefield.$error.required">Enter Login Name</span>
+			<span class="error" id="nologinname" ng-show="createuser_form.loginnamefield.$error.minlength">Minimum 3 characters</span>
+			<input id="newuserpassword" name="passwordfield" type="password" placeholder="<?php p($l->t('Password')) ?>" ng-required/>
+			<span class="error" id="nologinname" ng-show="createuser_form.loginnamefield.$error.required">Enter Password</span>
 			<select class="groupselect" id="newusergroups" title="<?php p($l->t('Groups'))?>">
-				<option></option>
+				<option>
+					<!--Retreive the list of groups, quota and other stuff.-->
+				</option>
 			</select>
-			<input type="submit" value="<?php p($l->t('Create'))?>" />
+			<input type="submit" ng-click="saveuser()" value="<?php p($l->t('Create'))?>" />
 		</form>
 	</fieldset>
 </div>
