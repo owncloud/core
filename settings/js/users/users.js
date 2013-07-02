@@ -19,7 +19,10 @@
  *
  */
 
-var usersmanagement = angular.module('usersmanagement', ['ngResource']);
+var usersmanagement = angular.module('usersmanagement', ['ngResource']).config(
+['$httpProvider', function($httpProvider) {
+	$httpProvider.defaults.headers.common['requesttoken'] = oc_requesttoken;	
+}]);
 
 /* Fetches the List of All Groups - Left Sidebar */
 
