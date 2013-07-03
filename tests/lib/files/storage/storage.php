@@ -79,6 +79,25 @@ abstract class Storage extends \PHPUnit_Framework_TestCase {
 			}
 		}
 		$this->assertEquals(array(), $content);
+
+		$this->assertTrue($this->instance->mkdir('/folder'));
+		$this->assertTrue($this->instance->mkdir('/folder/sub_a'));
+		$this->assertTrue($this->instance->mkdir('/folder/sub_b'));
+		$this->assertTrue($this->instance->mkdir('/folder/sub_b/sub_bb'));
+		$this->assertTrue($this->instance->touch('/folder/sub_b/sub_bb/file.txt'));
+		$this->assertTrue($this->instance->touch('/folder/sub_a/file.txt'));
+		$this->assertTrue($this->instance->is_dir('/folder/sub_b'));
+		$this->assertTrue($this->instance->is_dir('/folder/sub_b/sub_bb'));
+		$this->assertTrue($this->instance->file_exists('/folder/sub_a/file.txt'));
+		$this->assertTrue($this->instance->file_exists('/folder/sub_b/sub_bb/file.txt'));
+		$this->assertTrue($this->instance->rmdir('/folder/sub_b'));
+		$this->assertFalse($this->instance->is_dir('/folder/sub_b'));
+		$this->assertFalse($this->instance->is_dir('/folder/sub_b/sub_bb'));
+		$this->assertFalse($this->instance->file_exists('/folder/sub_b/sub_bb/file.txt'));
+		$this->assertTrue($this->instance->rmdir('/folder'));
+		$this->assertFalse($this->instance->is_dir('/folder'));
+		$this->assertFalse($this->instance->is_dir('/folder/sub_a'));
+		$this->assertFalse($this->instance->file_exists('/folder/sub_a/file.txt'));
 	}
 
 	/**
@@ -96,6 +115,16 @@ abstract class Storage extends \PHPUnit_Framework_TestCase {
 		//empty the file
 		$this->instance->file_put_contents('/lorem.txt', '');
 		$this->assertEquals('', $this->instance->file_get_contents('/lorem.txt'), 'file not emptied');
+
+		// check if it's working inside subdirectories as well
+		$this->instance->mkdir('/folder');
+		$this->instance->file_put_contents('/folder/lorem.txt', $sourceText);
+		$this->assertFalse($this->instance->is_dir('/folder/lorem.txt'));
+		$this->assertEquals($sourceText, $this->instance->file_get_contents('/folder/lorem.txt'), 'data returned from file_get_contents is not equal to the source data');
+		$this->instance->file_put_contents('/folder/lorem.txt', '');
+		$this->assertEquals('', $this->instance->file_get_contents('/folder/lorem.txt'), 'file not emptied');
+		$this->instance->rmdir('/folder');
+		$this->assertFalse($this->instance->file_exists('/folder/lorem.txt'));
 	}
 
 	/**
