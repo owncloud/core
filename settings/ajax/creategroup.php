@@ -3,6 +3,7 @@
 OCP\JSON::callCheck();
 OC_JSON::checkAdminUser();
 
+$l = OC_L10n::get('settings');
 $groupname = $_POST["groupname"];
 
 // Does the group exist?
