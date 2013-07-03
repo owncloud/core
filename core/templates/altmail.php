@@ -3,6 +3,5 @@ print_unescaped($l->t("Hey there,\n\njust letting you know that %s shared %s wit
 ?>
 
 --
-<?php p(OC_Defaults::getName()); ?> -
-<?php p(OC_Defaults::getSlogan()); ?>
+<?php p(OC_Defaults::getName() . ' - ' . OC_Defaults::getSlogan()); ?>
 <?php print_unescaped("\n".OC_Defaults::getBaseUrl()); ?>
