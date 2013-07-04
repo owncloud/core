@@ -47,8 +47,8 @@ class OC_User_Database extends OC_User_Backend {
 	 */
 	public function createUser($uid, $password) {
 		$hash = $this->hashPassword($password);
-		$query = OC_DB::prepare('INSERT INTO `*PREFIX*users` ( `uid`, `password` ) VALUES( ?, ? )');
-		$result = $query->execute(array($uid, $hash));
+		$query = OC_DB::prepare('INSERT INTO `*PREFIX*users` ( `uid`, `password`, `uid_lower` ) VALUES( ?, ?, ? )');
+		$result = $query->execute(array($uid, $hash, strtolower($uid)));
 
 		return (bool)$result;
 	}
@@ -61,8 +61,8 @@ class OC_User_Database extends OC_User_Backend {
 	 * Deletes a user
 	 */
 	public function deleteUser($uid) {
-		// Delete user-group-relation
-		$query = OC_DB::prepare('DELETE FROM `*PREFIX*users` WHERE `uid` = ?');
+		$uid = strtolower($uid);
+		$query = OC_DB::prepare('DELETE FROM `*PREFIX*users` WHERE `uid_lower` = ?');
 		$query->execute(array($uid));
 		return true;
 	}
@@ -77,7 +77,8 @@ class OC_User_Database extends OC_User_Backend {
 	 */
 	public function setPassword($uid, $password) {
 		$hash = $this->hashPassword($password);
-		$query = OC_DB::prepare('UPDATE `*PREFIX*users` SET `password` = ? WHERE `uid` = ?');
+		$uid = strtolower($uid);
+		$query = OC_DB::prepare('UPDATE `*PREFIX*users` SET `password` = ? WHERE `uid_lower` = ?');
 		$query->execute(array($hash, $uid));
 		return true;
 	}
@@ -91,7 +92,8 @@ class OC_User_Database extends OC_User_Backend {
 	 * Change the display name of a user
 	 */
 	public function setDisplayName($uid, $displayName) {
-		$query = OC_DB::prepare('UPDATE `*PREFIX*users` SET `displayname` = ? WHERE `uid` = ?');
+		$uid = strtolower($uid);
+		$query = OC_DB::prepare('UPDATE `*PREFIX*users` SET `displayname` = ? WHERE `uid_lower` = ?');
 		$query->execute(array($displayName, $uid));
 		return true;
 	}
@@ -102,7 +104,8 @@ class OC_User_Database extends OC_User_Backend {
 	 * @return string display name
 	 */
 	public function getDisplayName($uid) {
-		$query = OC_DB::prepare('SELECT `displayname` FROM `*PREFIX*users` WHERE `uid` = ?');
+		$uid = strtolower($uid);
+		$query = OC_DB::prepare('SELECT `displayname` FROM `*PREFIX*users` WHERE `uid_lower` = ?');
 		$result = $query->execute(array($uid));
 		if ($row = $result->fetchRow()) {
 			$displayName = trim($row['displayname']);
@@ -154,7 +157,8 @@ class OC_User_Database extends OC_User_Backend {
 	 * returns the user id or false
 	 */
 	public function checkPassword($uid, $password) {
-		$query = OC_DB::prepare('SELECT `uid`, `password` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)');
+		$uid = strtolower($uid);
+		$query = OC_DB::prepare('SELECT `uid`, `password` FROM `*PREFIX*users` WHERE `uid_lower` = ?');
 		$result = $query->execute(array($uid));
 
 		$row = $result->fetchRow();
@@ -178,7 +182,8 @@ class OC_User_Database extends OC_User_Backend {
 	 */
 	public function getUsers($search = '', $limit = null, $offset = null) {
 		if ($search) {
-			$query = OC_DB::prepare('SELECT `uid` FROM `*PREFIX*users` WHERE `uid` LIKE ?', $limit, $offset);
+			$search = strtolower($search);
+			$query = OC_DB::prepare('SELECT `uid` FROM `*PREFIX*users` WHERE `uid_lower` LIKE ?', $limit, $offset);
 			$result = $query->execute(array('%' . $search . '%'));
 		} else {
 			$query = OC_DB::prepare('SELECT `uid` FROM `*PREFIX*users`', $limit, $offset);
@@ -198,7 +203,8 @@ class OC_User_Database extends OC_User_Backend {
 	 * @return boolean
 	 */
 	public function userExists($uid) {
-		$query = OC_DB::prepare('SELECT COUNT(*) FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)');
+		$uid = strtolower($uid);
+		$query = OC_DB::prepare('SELECT COUNT(*) FROM `*PREFIX*users` WHERE `uid_lower` = ?');
 		$result = $query->execute(array($uid));
 		if (OC_DB::isError($result)) {
 			OC_Log::write('core', OC_DB::getErrorMessage($result), OC_Log::ERROR);
