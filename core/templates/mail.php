@@ -1,3 +1,4 @@
+<?php $defaults = new OC_Defaults() // initialize themable default strings and urls ?>
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
 <tr><td>
 <table cellspacing="0" cellpadding="0" border="0" width="600px">
@@ -20,9 +21,9 @@ print_unescaped($l->t('Hey there,<br><br>just letting you know that %s shared »
 <tr>
 <td bgcolor="#f8f8f8" width="20px">&nbsp;</td>
 <td bgcolor="#f8f8f8" style="font-weight:normal; font-size:0.8em; line-height:1.2em; font-family:verdana,'arial',sans;">--<br>
-<?php p(OC_Defaults::getName()); ?> -
-<?php p(OC_Defaults::getSlogan()); ?>
-<br><a href="<?php print_unescaped(OC_Defaults::getBaseUrl()); ?>"><?php print_unescaped(OC_Defaults::getBaseUrl());?></a></td>
+<?php p($defaults->getName()); ?> -
+<?php p($defaults->getSlogan()); ?>
+<br><a href="<?php print_unescaped($defaults->getBaseUrl()); ?>"><?php print_unescaped($defaults->getBaseUrl());?></a></td>
 </tr>
 <tr>
 <td bgcolor="#f8f8f8" colspan="2">&nbsp;</td>
