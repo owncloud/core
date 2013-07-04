@@ -3,14 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Adalberto Rodrigues <rodrigues_adalberto@yahoo.fr>, 2013
 # Christophe Lherieau <skimpax@gmail.com>, 2013
 # MathieuP <mathieu.payrol@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-07-01 03:18+0200\n"
-"PO-Revision-Date: 2013-06-30 23:15+0000\n"
+"POT-Creation-Date: 2013-07-04 09:30+0200\n"
+"PO-Revision-Date: 2013-07-04 07:31+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/owncloud/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -31,11 +32,11 @@ msgstr "Impossible de déplacer %s"
 
 #: ajax/upload.php:16 ajax/upload.php:39
 msgid "Unable to set upload directory."
-msgstr ""
+msgstr "Impossible de définir le dossier pour l'upload, charger."
 
 #: ajax/upload.php:23
 msgid "Invalid Token"
-msgstr ""
+msgstr "Jeton non valide"
 
 #: ajax/upload.php:55
 msgid "No file was uploaded. Unknown error"
@@ -130,43 +131,43 @@ msgstr "Supprimer"
 msgid "Rename"
 msgstr "Renommer"
 
-#: js/filelist.js:49 js/filelist.js:52 js/filelist.js:433
+#: js/filelist.js:49 js/filelist.js:52 js/filelist.js:464
 msgid "Pending"
 msgstr "En attente"
 
-#: js/filelist.js:271 js/filelist.js:273
+#: js/filelist.js:302 js/filelist.js:304
 msgid "{new_name} already exists"
 msgstr "{new_name} existe déjà"
 
-#: js/filelist.js:271 js/filelist.js:273
+#: js/filelist.js:302 js/filelist.js:304
 msgid "replace"
 msgstr "remplacer"
 
-#: js/filelist.js:271
+#: js/filelist.js:302
 msgid "suggest name"
 msgstr "Suggérer un nom"
 
-#: js/filelist.js:271 js/filelist.js:273
+#: js/filelist.js:302 js/filelist.js:304
 msgid "cancel"
 msgstr "annuler"
 
-#: js/filelist.js:318
+#: js/filelist.js:349
 msgid "replaced {new_name} with {old_name}"
 msgstr "{new_name} a été remplacé par {old_name}"
 
-#: js/filelist.js:318
+#: js/filelist.js:349
 msgid "undo"
 msgstr "annuler"
 
-#: js/filelist.js:343
+#: js/filelist.js:374
 msgid "perform delete operation"
 msgstr "effectuer l'opération de suppression"
 
-#: js/filelist.js:425
+#: js/filelist.js:456
 msgid "1 file uploading"
 msgstr "1 fichier en cours d'envoi"
 
-#: js/filelist.js:428 js/filelist.js:486
+#: js/filelist.js:459 js/filelist.js:517
 msgid "files uploading"
 msgstr "fichiers en cours d'envoi"
 
@@ -231,8 +232,9 @@ msgid "{count} files"
 msgstr "{count} fichiers"
 
 #: lib/app.php:73
-msgid "Unable to rename file"
-msgstr "Impossible de renommer le fichier"
+#, php-format
+msgid "%s could not be renamed"
+msgstr "%s ne peut être renommé"
 
 #: lib/helper.php:11 templates/index.php:18
 msgid "Upload"
@@ -327,6 +329,22 @@ msgstr "Les fichiers sont en cours d'analyse, veuillez patienter."
 #: templates/index.php:117
 msgid "Current scanning"
 msgstr "Analyse en cours"
+
+#: templates/part.list.php:78
+msgid "directory"
+msgstr ""
+
+#: templates/part.list.php:80
+msgid "directories"
+msgstr ""
+
+#: templates/part.list.php:89
+msgid "file"
+msgstr ""
+
+#: templates/part.list.php:91
+msgid "files"
+msgstr ""
 
 #: templates/upgrade.php:2
 msgid "Upgrading filesystem cache..."
