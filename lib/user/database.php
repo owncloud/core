@@ -227,4 +227,8 @@ class OC_User_Database extends OC_User_Backend {
 		return true;
 	}
 
+	public function setUidLowerRows() {
+		$query = \OC_DB::prepare('UPDATE `*PREFIX*users` SET `uid_lower` = LOWER(`uid`)');
+		$query->execute();
+	}
 }

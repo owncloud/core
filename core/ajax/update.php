@@ -16,9 +16,11 @@ if (OC::checkUpgrade(false)) {
 	OC_Hook::connect('update', 'failure', $watcher, 'failure');
 	$watcher->success('Turned on maintenance mode');
 	try {
-		$result = OC_DB::updateDbFromStructure(OC::$SERVERROOT.'/db_structure.xml');
+		$result = OC_DB::updateDbFromStructure(OC::$SERVERROOT . '/db_structure.xml');
 		$watcher->success('Updated database');
 
+		$userBackend = new \OC_User_Database();
+		$userBackend->setUidLowerRows();
 		// do a file cache upgrade for users with files
 		// this can take loooooooooooooooooooooooong
 		__doFileCacheUpgrade($watcher);
@@ -50,18 +52,18 @@ function __doFileCacheUpgrade($watcher) {
 		return;
 	}
 	$users = $result->fetchAll();
-	if(count($users) == 0) {
+	if (count($users) == 0) {
 		return;
 	}
 	$step = 100 / count($users);
 	$percentCompleted = 0;
 	$lastPercentCompletedOutput = 0;
 	$startInfoShown = false;
-	foreach($users as $userRow) {
+	foreach ($users as $userRow) {
 		$user = $userRow['user'];
 		\OC\Files\Filesystem::initMountPoints($user);
 		\OC\Files\Cache\Upgrade::doSilentUpgrade($user);
-		if(!$startInfoShown) {
+		if (!$startInfoShown) {
 			//We show it only now, because otherwise Info about upgraded apps
 			//will appear between this and progress info
 			$watcher->success('Updating filecache, this may take really long...');
@@ -69,8 +71,8 @@ function __doFileCacheUpgrade($watcher) {
 		}
 		$percentCompleted += $step;
 		$out = floor($percentCompleted);
-		if($out != $lastPercentCompletedOutput) {
-			$watcher->success('... '. $out.'% done ...');
+		if ($out != $lastPercentCompletedOutput) {
+			$watcher->success('... ' . $out . '% done ...');
 			$lastPercentCompletedOutput = $out;
 		}
 	}

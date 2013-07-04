@@ -923,6 +923,14 @@
 			</field>
 
 			<field>
+				<name>uid_lower</name>
+				<type>text</type>
+				<default></default>
+				<notnull>true</notnull>
+				<length>64</length>
+			</field>
+
+			<field>
 				<name>displayname</name>
 				<type>text</type>
 				<default></default>
@@ -942,6 +950,15 @@
 				<primary>true</primary>
 				<field>
 					<name>uid</name>
+					<sorting>ascending</sorting>
+				</field>
+			</index>
+
+			<index>
+				<name>uid_lower_Key</name>
+				<unique>true</unique>
+				<field>
+					<name>uid_lower</name>
 					<sorting>ascending</sorting>
 				</field>
 			</index>
