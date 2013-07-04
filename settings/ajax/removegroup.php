@@ -3,7 +3,8 @@
 OC_JSON::checkAdminUser();
 OCP\JSON::callCheck();
 
-$name = $_POST["groupname"];
+$params = json_decode(file_get_contents('php://input'), true);
+$name = $params["groupname"];
 
 // Return Success story
 if( OC_Group::deleteGroup( $name )) {
