@@ -4,6 +4,7 @@
  * See the COPYING-README file.
  */?>
 
+<?php $defaults = new OC_Defaults(); // initialize themable default strings and urls ?>
 
 <?php $defaults = new OC_Defaults(); // initialize themable default strings and urls ?>
 
