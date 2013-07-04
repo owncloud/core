@@ -95,7 +95,9 @@ class SMB extends Common {
 				$files = $this->dir($parent);
 				if (isset($files[basename($this->root . $path)])) {
 					$file = $files[basename($this->root . $path)];
-					$file['mtime'] = $file['time'];
+					if (isset($file['time'])) {
+						$file['mtime'] = $file['time'];
+					}
 					return $file;
 				} else {
 					return false;
