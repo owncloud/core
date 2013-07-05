@@ -208,4 +208,13 @@ class Helper {
 		header('Location: ' . $location . '?p=' . $post);
 		exit();
 	}
+
+	/**
+	 * @brief glob uses different pattern than regular expressions, escape glob pattern only
+	 * @param unescaped path
+	 * @return escaped path
+	 */
+	public static function escapeGlobPattern($path) {
+		return preg_replace('/(\*|\?|\[)/', '[$1]', $path);
+	}
 }
