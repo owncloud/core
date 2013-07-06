@@ -22,11 +22,14 @@
  */
 ?>
 <ul ng-controller="grouplist">
-	<li class="user-groups" ng-repeat='groupname in groupnames'>
+	<li class="user-groups" id="everyone">
+		<a href="#"><?php p($l->t('Everyone')); ?></a>
+	</li>
+	<li class="user-groups" ng-repeat="groupname in groupnames">
 		<a href="#">{{ groupname.name }}</a>
 		<span class="utils">
 			<span class="usercount">{{ groupname.useringroup.length }}</span>
-			<button class="svg action delete-icon delete-button" ng-click="deletegroup()"></button>
+			<button class="svg action delete-icon delete-button" ng-click="deletegroup(groupname.name)"></button>
 		</span>
 	</li>
 </ul>

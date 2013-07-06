@@ -24,40 +24,17 @@ var usersmanagement = angular.module('usersmanagement', ['ngResource']).config(
 	$httpProvider.defaults.headers.common['requesttoken'] = oc_requesttoken;	
 }]);
 
-/* Fetches the List of All Groups - Left Sidebar */
-
-usersmanagement.controller('grouplist', ['$scope', '$http', 'GroupService',
-	function($scope, $http, GroupService) {
-		$http.get(OC.filePath('settings', 'ajax', 'grouplist.php')).then(function(response){
-			$scope.groupnames = response.data.result;
-		});
-		$scope.deletegroup = function() {
-			GroupService.remove().delete(); // TODO
-		}
-	}
-]);
-
-/* Fetches the List of All Users along with their details on the Right Content */
-
-usersmanagement.controller('userlist', ['$scope', '$http', 'QuotaService',
-	function($scope,$http,QuotaService) {
-		$http.get(OC.filePath('settings', 'ajax', 'userlist.php')).then(function(response) {
-			$scope.users = response.data.userdetails;
-	});
-	}
-]);
-
 /* Group Service */ 
 
 usersmanagement.factory('GroupService', function($resource) {
 	return {
-		create: function () {
+		creategroup: function () {
 			return $resource(OC.filePath('settings', 'ajax', 'creategroup.php'), {}, {
 				method : 'POST'
 			});
 		},
-		remove: function () {
-			return $resource(OC.filePath('settings', 'ajax', 'removegroup.php'), {}, {
+		removegroup: function (group) {
+			return $resource(OC.filePath('settings', 'ajax', 'removegroup.php'), group, {
 				method: 'DELETE'
 			});
 		}
@@ -95,8 +72,7 @@ usersmanagement.controller('creategroup', ['$scope', '$http', 'GroupService',
 	function($scope, $http, GroupService) {
 		var newgroup = {};
 		$scope.savegroup = function() {
-			console.log($scope.newgroup);
-			GroupService.create().save({ groupname : $scope.newgroup });
+			GroupService.creategroup().save({ groupname : $scope.newgroup });
 		}
 		$scope.disabledcreategroup = function() {
 			// here comes the logic for disabling the "add group" button
@@ -105,7 +81,39 @@ usersmanagement.controller('creategroup', ['$scope', '$http', 'GroupService',
 	}
 ]);
 
-/* TODO : Delete Groups from left sidebar */
+/* Fetches the List of All Groups - Left Sidebar */
+
+usersmanagement.controller('grouplist', ['$scope', '$http', 'GroupService',
+	function($scope, $http, GroupService) {
+		$http.get(OC.filePath('settings', 'ajax', 'grouplist.php')).then(function(response){
+			$scope.groupnames = response.data.result;
+		});
+		$scope.deletegroup = function(groupid) {
+			GroupService.removegroup().delete({ groupname : groupid });
+		}
+	}
+]);
+
+/* Filters Grouplist - It Displays Admin on Top and the Remaining Alphabetically Sorted Right Below. */
+
+/*usersmanagement.filter('groupsort', ['$scope',
+	function($scope) {
+		return function() {
+			angular.forEach()
+			return;
+		}
+	}
+]);*/
+
+/* Fetches the List of All Users and details on the Right Content */
+
+usersmanagement.controller('userlist', ['$scope', '$http', 'QuotaService',
+	function($scope,$http,QuotaService) {
+		$http.get(OC.filePath('settings', 'ajax', 'userlist.php')).then(function(response) {
+			$scope.users = response.data.userdetails;
+	});
+	}
+]);
 
 /* TODO : Asynchronously creates user */
 
