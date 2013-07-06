@@ -45,13 +45,13 @@ usersmanagement.factory('GroupService', function($resource) {
 
 usersmanagement.factory('UserService', function($resource) {
 	return {
-		create: function () {
+		createuser: function () {
 			return $resource(OC.filePath('settings', 'ajax', 'createuser.php'), {}, {
 				method : 'POST'
 			});
 		},
-		remove: function () {
-			return $resource(OC.filePath('settings', 'ajax', 'removeuser.php'), {}, {
+		removeuser: function (users) {
+			return $resource(OC.filePath('settings', 'ajax', 'removeuser.php'), users, {
 				method: 'DELETE'
 			});
 		}
@@ -114,11 +114,14 @@ usersmanagement.filter('groupsort', function() {
 
 /* Fetches the List of All Users and details on the Right Content */
 
-usersmanagement.controller('userlist', ['$scope', '$http', 'QuotaService',
-	function($scope,$http,QuotaService) {
+usersmanagement.controller('userlist', ['$scope', '$http', 'QuotaService', 'UserService',
+	function ($scope, $http, QuotaService, UserService) {
 		$http.get(OC.filePath('settings', 'ajax', 'userlist.php')).then(function(response) {
 			$scope.users = response.data.userdetails;
-	});
+		});
+		$scope.deleteuser = function(userid) {
+			UserService.removeuser().delete({ username : userid });
+		}
 	}
 ]);
 

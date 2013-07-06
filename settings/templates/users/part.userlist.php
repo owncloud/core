@@ -42,6 +42,9 @@
 			<td class="user-pass"></td>
 			<td class="groups"> {{user.groups}}</td>
 			<td class="local-storage">{{ user.quota }}</td>
+			<th class="delete-column">
+				<button class="svg action delete-icon delete-button delete-user-icon" ng-click="deleteuser(user.name)"></button>
+			</td>
 		</tr>
 	</tbody>
 </table>
