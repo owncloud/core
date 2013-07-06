@@ -94,16 +94,23 @@ usersmanagement.controller('grouplist', ['$scope', '$http', 'GroupService',
 	}
 ]);
 
-/* Filters Grouplist - It Displays Admin on Top and the Remaining Alphabetically Sorted Right Below. */
+/* Filters Grouplist - It Displays Admin on Top and the Remaining Alphabetically Sorted Right Below.
+Needs More Love.
+*/
 
-/*usersmanagement.filter('groupsort', ['$scope',
-	function($scope) {
-		return function() {
-			angular.forEach()
-			return;
+usersmanagement.filter('groupsort', function() {
+    return function (groups) {
+		var grouplist;
+		grouplist = function (group1, group2) {
+			return group1.name > group2.name;
 		}
+		return groups.filter(function (group) { // Needs Attention Here!
+			return group.name === 'admin';
+		}).concat(groups.filter(function (group) {
+			return group.name !== 'admin';
+		}).sort(grouplist));
 	}
-]);*/
+});
 
 /* Fetches the List of All Users and details on the Right Content */
 
