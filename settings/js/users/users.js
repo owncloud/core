@@ -107,7 +107,19 @@ usersmanagement.controller('userlist', ['$scope', '$http', 'QuotaService', 'User
 	}
 ]);
 
-/* TODO : Asynchronously creates user */
+/* Filters the userlist for the respective group */
 
-/* TODO : Delete Users from right content */
+usersmanagement.filter('usertogroup', function() {
+	return function(users,groups) {
+		var groupusers = [];
+		for(var i=0; i<users.length; i++) {
+			for (var j=0; j<groups.length; j++ ) {
+				if(users[i].userid === groups[j]) {
+					groupusers.push(users[i]);
+				}
+			}
+		}
+		return groupusers;
+	}
+});
 
