@@ -21,27 +21,24 @@
 
 namespace OC\Share\ShareType;
 
+use OC\Share\Share;
+
+/**
+ * Interface for a controller of shares
+ */
 interface IShareType {
 
 	/**
-	 * Get the id for this share type
+	 * Get the identifier for this share type
 	 * @return string id
 	 */
 	public function getId();
 
 	/**
-	 * Get the shares for this share type based on the given parameters
-	 * @param string $shareWith 
-	 * @param string $uidOwner     
-	 * @param bool $isShareWithUser
-	 * @return array
-	 */
-	public function getShares($shareWith, $uidOwner, $isShareWithUser);
-
-	/**
 	 * Check if this share is valid for this share type
 	 * @param Share $share
 	 * @return bool
+	 * @throws InvalidShareException
 	 */
 	public function isValidShare(Share $share);
 
@@ -59,31 +56,32 @@ interface IShareType {
 	public function unshare(Share $share);
 
 	/**
-	 * Update the share's parent id in the database
+	 * Update the share's properties in the database
 	 * @param Share $share
-	 *
-	 * Call this to switch parent ids of a reshare if the current parent share is being removed
-	 * 
-	 */
-	public function setParentId(Share $share);
+ 	 */
+	public function update(Share $share);
 
 	/**
-	 * Update the share's permissions in the database
-	 * @param Share $share
+	 * Get the shares with the specified parameters for this share type
+	 * @param array $filter A key => value array of share properties
+ 	 * @param int $limit
+	 * @param int $offset
+	 * @return array Share
 	 */
-	public function setPermissions(Share $share);
+	public function getShares(array $filter, $limit, $offset);
+	
+	/**
+	 * Remove all shares of this share type in the database
+	 */
+	public function clear();
 
 	/**
-	 * Update the share's expiration time in the database
-	 * @param Share $share
-	 */
-	public function setExpirationTime(Share $share);
-
-	/**
-	 * Get potential people to share with based on the given pattern
+	 * Search for potential people of this share type to share with based on the given pattern
 	 * @param string $pattern
+ 	 * @param int $limit
+	 * @param int $offset
 	 * @return array
 	 */
-	public function searchForShareWiths($pattern);
+	public function searchForPotentialShareWiths($pattern, $limit, $offset);
 
 }

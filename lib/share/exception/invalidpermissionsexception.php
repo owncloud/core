@@ -19,20 +19,12 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace OC\Share;
+namespace OC\Share\Exception;
 
-/**
- * Creates Share entities from the database
- */
-class ShareFactory {
-	
-	/**
-	 * Map a database row to a Share entity
-	 * @param array $row A key => value array of share properties
-	 * @return Share
-	 */
-	public function mapToShare($row) {
-		return Share::fromRow($row);
+class InvalidPermissionsException extends \Exception {
+
+	public function __construct($message) {
+		parent::__construct($message);
 	}
 
 }

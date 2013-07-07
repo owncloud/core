@@ -22,17 +22,28 @@
 namespace OC\Share;
 
 /**
- * Creates Share entities from the database
+ * An alternative to ShareFactory that can reduce the number of queries to create a Share entity
+ * Setups JOINs in the share queries to retrieve additional properties for the Share entity
+ * The columns specified in getColumns() will be returned in the $row passed to mapToShare($row)
  */
-class ShareFactory {
+abstract class AdvancedShareFactory extends ShareFactory {
 	
 	/**
-	 * Map a database row to a Share entity
-	 * @param array $row A key => value array of share properties
-	 * @return Share
+	 * Get JOIN(s) to app table(s)
+	 * @return string
+	 * 
+	 * Example: JOIN `*PREFIX*table1` ON `*PREFIX*share`.`item_source` = `*PREFIX*table1`.`id`
+	 * 
 	 */
-	public function mapToShare($row) {
-		return Share::fromRow($row);
-	}
+	abstract public function getJoins();
 
+	/**
+	 * Get app table column(s)
+	 * @return string
+	 * 
+	 * Example: `*PREFIX*table1`.`id`, `*PREFIX*table1`.`name`
+	 * 
+	 */
+	abstract public function getColumns();
+	
 }

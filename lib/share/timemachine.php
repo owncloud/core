@@ -22,17 +22,16 @@
 namespace OC\Share;
 
 /**
- * Creates Share entities from the database
+ * Mock calls to time()
  */
-class ShareFactory {
-	
+class TimeMachine {
+
 	/**
-	 * Map a database row to a Share entity
-	 * @param array $row A key => value array of share properties
-	 * @return Share
+	 * Get time()
+	 * @return int
 	 */
-	public function mapToShare($row) {
-		return Share::fromRow($row);
+	public function getTime() {
+		return time();
 	}
 
 }

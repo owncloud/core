@@ -1,77 +1,116 @@
 <?php
 /**
-* ownCloud
-*
-* @author Bernhard Posselt
-* @author Michael Gapczynski
-* @copyright 2012 Bernhard Posselt nukeawhale@gmail.com
-* @copyright 2013 Michael Gapczynski mtgap@owncloud.com
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU AFFERO GENERAL PUBLIC LICENSE for more details.
-*
-* You should have received a copy of the GNU Affero General Public
-* License along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * ownCloud
+ *
+ * @author Bernhard Posselt
+ * @author Michael Gapczynski
+ * @copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+ * @copyright 2013 Michael Gapczynski mtgap@owncloud.com
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 namespace OC\Share;
 
 /**
- * Data holder for shared items. Extend this class for your items.
+ * Data holder for shared items
+ * Extend this class to store additional properties
  *
- * A setter does not imply that property can change.
- *
- * Extension of OCA\AppFramework\Db\Entity
+ * Adapated from OCA\AppFramework\Db\Entity
  * 
  */
 class Share {
 
-	public $id;
-	public $parentId;
-	public $shareTypeId;
-	public $uidOwner;
-	public $shareWith;
-	public $permissions;
-	public $itemSource;
-	public $itemTarget;
-	public $itemOwner;
-	public $expirationTime;
-	public $shareTime;
+	protected $id;
+	protected $parentIds = array();
+	protected $shareTypeId;
+	protected $shareOwner;
+	protected $shareWith;
+	protected $itemType;
+	protected $itemSource;
+	protected $itemTarget;
+	protected $itemOwner;
+	protected $permissions = 0;
+	protected $expirationTime;
+	protected $shareTime;
+	protected $token;
+	protected $password;
 
-	private $updatedFields = array();
-	private $fieldTypes = array(
+	private $updatedProperties = array();
+	private $propertyTypes = array(
 		'id' => 'int',
-		'parentId' => 'int',
 		'permissions' => 'int',
 		'expirationTime' => 'int',
 		'shareTime' => 'int'
 	);
 
+	/**
+	 * Check if the share has create permission
+	 * @return bool
+	 */
 	public function isCreatable() {
-		return $this->permissions & OCP\PERMISSION_CREATE;
+		return ($this->permissions & \OCP\PERMISSION_CREATE) !== 0;
 	}
 
+	/**
+	 * Check if the share has read permission
+	 * @return bool
+	 */
 	public function isReadable() {
-		return $this->permissions & OCP\PERMISSION_READ;
+		return ($this->permissions & \OCP\PERMISSION_READ) !== 0;
 	}
 
+	/**
+	 * Check if the share has update permission
+	 * @return bool
+	 */
 	public function isUpdatable() {
-		return $this->permissions & OCP\PERMISSION_UPDATE;
+		return ($this->permissions & \OCP\PERMISSION_UPDATE) !== 0;
 	}
 
+	/**
+	 * Check if the share has delete permission
+	 * @return bool
+	 */
 	public function isDeletable() {
-		return $this->permissions & OCP\PERMISSION_DELETE;
+		return ($this->permissions & \OCP\PERMISSION_DELETE) !== 0;
 	}
 
+	/**
+	 * Check if the share has share permission
+	 * @return bool
+	 */
 	public function isSharable() {
-		return $this->permissions & OCP\PERMISSION_SHARE;
+		return ($this->permissions & \OCP\PERMISSION_SHARE) !== 0;
+	}
+
+	/**
+	 * Add a reference to a parent share
+	 * @param Share $share
+	 */
+	public function addParentId($id) {
+		$this->parentIds[] = $id;
+		$this->markPropertyUpdated('parentIds');
+	}
+
+	/**
+	 * Remove a reference to a parent share
+	 * @param Share $share
+	 */
+	public function removeParentId($id) {
+		$this->parentIds = array_diff($this->parentIds, array($id));
+		$this->markPropertyUpdated('parentIds');
 	}
 
 	/**
@@ -82,13 +121,12 @@ class Share {
 	 */
 	public static function fromParams(array $params) {
 		$instance = new static();
-		foreach ($params as $key => $value) {
-			$method = 'set'.ucfirst($key);
+		foreach ($params as $property => $value) {
+			$method = 'set'.ucfirst($property);
 			$instance->$method($value);
 		}
 		return $instance;
 	}
-
 
 	/**
 	 * Maps the keys of the row array to the attributes
@@ -96,25 +134,17 @@ class Share {
 	 */
 	public static function fromRow(array $row) {
 		$instance = new static();
-		foreach ($row as $key => $value) {
-			$prop = $this->columnToProperty($key);
-			if ($value !== null && isset($this->fieldTypes[$prop])) {
-				settype($value, $this->fieldTypes[$prop]);
+		foreach ($row as $column => $value) {
+			$property = $instance::columnToProperty($column);
+			if (isset($value) && isset($instance->propertyTypes[$property])) {
+				settype($value, $instance->propertyTypes[$property]);
 			}
-			$method = 'set'.ucfirst($key);
+			$method = 'set'.ucfirst($property);
 			$instance->$method($value);
-			$this->$prop = $value;
 		}
 		return $instance;
 	}
 	
-	/**
-	 * Marks the entity as clean needed for setting the id after the insertion
-	 */
-	public function resetUpdatedFields() {
-		$this->updatedFields = array();
-	}
-
 	/**
 	 * Each time a setter is called, push the part after set
 	 * into an array: for instance setId will save Id in the 
@@ -124,45 +154,57 @@ class Share {
 	public function __call($methodName, $args) {
 		// setters
 		if (strpos($methodName, 'set') === 0) {
-			$attr = lcfirst( substr($methodName, 3) );
+			$property = lcfirst(substr($methodName, 3));
 			// setters should only work for existing attributes
-			if (property_exists($this, $attr)) {
-				$this->markFieldUpdated($attr);
-				$this->$attr = $args[0];	
+			if (property_exists($this, $property)) {
+				$this->markPropertyUpdated($property);
+				$this->$property = $args[0];	
 			} else {
-				throw new \BadFunctionCallException($attr . 
-					' is not a valid attribute');
+				throw new \BadFunctionCallException($property.' is not a valid property');
 			}
 		// getters
-		} elseif (strpos($methodName, 'get') === 0) {
-			$attr = lcfirst(substr($methodName, 3));
+		} else if (strpos($methodName, 'get') === 0) {
+			$property = lcfirst(substr($methodName, 3));
 			// getters should only work for existing attributes
-			if (property_exists($this, $attr)) {
-				return $this->$attr;
+			if (property_exists($this, $property)) {
+				return $this->$property;
 			} else {
-				throw new \BadFunctionCallException($attr . 
-					' is not a valid attribute');
+				throw new \BadFunctionCallException($property.' is not a valid property');
 			}
 		} else {
-			throw new \BadFunctionCallException($methodName . 
-					' does not exist');
+			throw new \BadFunctionCallException($methodName.' does not exist');
 		}
 	}
 
 	/**
-	 * Mark an attribute as updated
-	 * @param string $attribute the name of the attribute
+	 * Mark a property as updated
+	 * @param string $property the name of the property
 	 */
-	protected function markFieldUpdated($attribute) {
-		$this->updatedFields[$attribute] = true;
+	protected function markPropertyUpdated($property) {
+		$this->updatedProperties[$property] = true;
 	}
 
 	/**
-	 * Transform a database columnname to a property 
+	 * @return array array of updated fields for update query
+	 */
+	public function getUpdatedProperties() {
+		return $this->updatedProperties;
+	}
+
+	/**
+	 * Marks the entity as clean
+	 */
+	public function resetUpdatedProperties() {
+		$this->updatedProperties = array();
+	}
+
+	/**
+	 * Transform a database column name to a property 
 	 * @param string $columnName the name of the column
 	 * @return string the property name
 	 */
-	public function columnToProperty($columnName) {
+	public static function columnToProperty($columnName) {
+		$columnName = trim($columnName, '`');
 		$parts = explode('_', $columnName);
 		$property = null;
 		foreach ($parts as $part) {
@@ -180,34 +222,17 @@ class Share {
 	 * @param string $property the name of the property
 	 * @return string the column name
 	 */
-	public function propertyToColumn($property) {
+	public static function propertyToColumn($property) {
 		$parts = preg_split('/(?=[A-Z])/', $property);
 		$column = null;
-		foreach($parts as $part) {
+		foreach ($parts as $part) {
 			if ($column === null) {
 				$column = $part;
 			} else {
 				$column .= '_'.lcfirst($part);
 			}
 		}
-		return $column;
-	}
-
-	/**
-	 * @return array array of updated fields for update query
-	 */
-	public function getUpdatedFields() {
-		return $this->updatedFields;
-	}
-
-	/**
-	 * Adds type information for a field so that its automatically casted to
-	 * that value once its being returned from the database
-	 * @param string $fieldName the name of the attribute
-	 * @param string $type the type which will be used to call settype()
-	 */
-	protected function addType($fieldName, $type) {
-		$this->fieldTypes[$fieldName] = $type;
+		return '`'.$column.'`';
 	}
 
 }
