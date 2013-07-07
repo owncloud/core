@@ -119,8 +119,8 @@ class OC_L10N{
 				|| OC_Helper::issubdirectory($i18ndir.$lang.'.php', OC::$SERVERROOT.'/core/l10n/')
 				|| OC_Helper::issubdirectory($i18ndir.$lang.'.php', OC::$SERVERROOT.'/lib/l10n/')
 				|| OC_Helper::issubdirectory($i18ndir.$lang.'.php', OC::$SERVERROOT.'/settings')
-			)
-			&& file_exists($i18ndir.$lang.'.php')) {
+				)
+				&& file_exists($i18ndir.$lang.'.php')) {
 				// Include the file, save the data from $CONFIG
 				$transFile = strip_tags($i18ndir).strip_tags($lang).'.php';
 				include $transFile;
@@ -227,29 +227,29 @@ class OC_L10N{
 		switch($type) {
 			// If you add something don't forget to add it to $localizations
 			// at the top of the page
-		case 'date':
-		case 'datetime':
-		case 'time':
-			if($data instanceof DateTime) return $data->format($this->localizations[$type]);
-			elseif(is_string($data)) $data = strtotime($data);
-			$locales = array(self::findLanguage());
-			if (strlen($locales[0]) === 2) {
-				$locales[] = $locales[0].'_'.strtoupper($locales[0]);
+			case 'date':
+			case 'datetime':
+			case 'time':
+				if($data instanceof DateTime) return $data->format($this->localizations[$type]);
+				elseif(is_string($data)) $data = strtotime($data);
+				$locales = array(self::findLanguage());
+				if (strlen($locales[0]) === 2) {
+					$locales[] = $locales[0].'_'.strtoupper($locales[0]);
+				}
+				setlocale(LC_TIME, $locales);
+				$format = $this->localizations[$type];
+				// Check for Windows to find and replace the %e modifier correctly
+				if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+					$format = preg_replace('#(?<!%)((?:%%)*)%e#', '\1%#d', $format);
+				}
+				return strftime($format, $data);
+				break;
+			case 'firstday':
+			case 'jsdate':
+				return $this->localizations[$type];
+			default:
+				return false;
 			}
-			setlocale(LC_TIME, $locales);
-			$format = $this->localizations[$type];
-			// Check for Windows to find and replace the %e modifier correctly
-			if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-				$format = preg_replace('#(?<!%)((?:%%)*)%e#', '\1%#d', $format);
-			}
-			return strftime($format, $data);
-			break;
-		case 'firstday':
-		case 'jsdate':
-			return $this->localizations[$type];
-		default:
-			return false;
-		}
 	}
 
 	/**
@@ -278,7 +278,7 @@ class OC_L10N{
 	 *
 	 * If nothing works it returns 'en'
 	 */
-	 public static function findLanguage($app = null) {
+	public static function findLanguage($app = null) {
 		if(!is_array($app) && self::$language != '') {
 			return self::$language; // The language is already selected
 		}
