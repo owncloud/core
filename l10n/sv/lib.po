@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-06-30 02:06+0200\n"
-"PO-Revision-Date: 2013-06-30 00:06+0000\n"
+"POT-Creation-Date: 2013-07-07 01:59+0200\n"
+"PO-Revision-Date: 2013-07-06 23:15+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Swedish (http://www.transifex.com/projects/p/owncloud/language/sv/)\n"
 "MIME-Version: 1.0\n"
@@ -18,29 +18,33 @@ msgstr ""
 "Language: sv\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: app.php:359
+#: app.php:360
 msgid "Help"
 msgstr "Hjälp"
 
-#: app.php:372
+#: app.php:373
 msgid "Personal"
 msgstr "Personligt"
 
-#: app.php:383
+#: app.php:384
 msgid "Settings"
 msgstr "Inställningar"
 
-#: app.php:395
+#: app.php:396
 msgid "Users"
 msgstr "Användare"
 
-#: app.php:408
+#: app.php:409
 msgid "Apps"
 msgstr "Program"
 
-#: app.php:416
+#: app.php:417
 msgid "Admin"
 msgstr "Admin"
+
+#: defaults.php:33
+msgid "web services under your control"
+msgstr "webbtjänster under din kontroll"
 
 #: files.php:210
 msgid "ZIP download is turned off."

@@ -79,7 +79,7 @@ if (isset($path)) {
 											 $linkItem['share_with']))) {
 					$tmpl = new OCP\Template('files_sharing', 'authenticate', 'guest');
 					$tmpl->assign('URL', $url);
-					$tmpl->assign('error', true);
+					$tmpl->assign('wrongpw', true);
 					$tmpl->printPage();
 					exit();
 				} else {
@@ -149,6 +149,9 @@ if (isset($path)) {
 		$tmpl->assign('dirToken', $linkItem['token']);
 		$allowPublicUploadEnabled = (($linkItem['permissions'] & OCP\PERMISSION_CREATE) ? true : false );
 		if (\OCP\App::isEnabled('files_encryption')) {
+			$allowPublicUploadEnabled = false;
+		}
+		if (isset($file)) {
 			$allowPublicUploadEnabled = false;
 		}
 		$tmpl->assign('allowPublicUploadEnabled', $allowPublicUploadEnabled);

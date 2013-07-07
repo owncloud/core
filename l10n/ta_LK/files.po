@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-06-30 02:04+0200\n"
-"PO-Revision-Date: 2013-06-29 23:14+0000\n"
+"POT-Creation-Date: 2013-07-07 01:58+0200\n"
+"PO-Revision-Date: 2013-07-06 23:14+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Tamil (Sri-Lanka) (http://www.transifex.com/projects/p/owncloud/language/ta_LK/)\n"
 "MIME-Version: 1.0\n"
@@ -27,54 +27,54 @@ msgstr ""
 msgid "Could not move %s"
 msgstr ""
 
-#: ajax/upload.php:16 ajax/upload.php:39
+#: ajax/upload.php:16 ajax/upload.php:36 ajax/upload.php:48
 msgid "Unable to set upload directory."
 msgstr ""
 
-#: ajax/upload.php:23
+#: ajax/upload.php:22
 msgid "Invalid Token"
 msgstr ""
 
-#: ajax/upload.php:55
+#: ajax/upload.php:62
 msgid "No file was uploaded. Unknown error"
 msgstr "ஒரு கோப்பும் பதிவேற்றப்படவில்லை. அறியப்படாத வழு"
 
-#: ajax/upload.php:62
+#: ajax/upload.php:69
 msgid "There is no error, the file uploaded with success"
 msgstr "இங்கு வழு இல்லை, கோப்பு வெற்றிகரமாக பதிவேற்றப்பட்டது"
 
-#: ajax/upload.php:63
+#: ajax/upload.php:70
 msgid ""
 "The uploaded file exceeds the upload_max_filesize directive in php.ini: "
 msgstr ""
 
-#: ajax/upload.php:65
+#: ajax/upload.php:72
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
 msgstr "பதிவேற்றப்பட்ட கோப்பானது HTML  படிவத்தில் குறிப்பிடப்பட்டுள்ள MAX_FILE_SIZE  directive ஐ விட கூடியது"
 
-#: ajax/upload.php:66
+#: ajax/upload.php:73
 msgid "The uploaded file was only partially uploaded"
 msgstr "பதிவேற்றப்பட்ட கோப்பானது பகுதியாக மட்டுமே பதிவேற்றப்பட்டுள்ளது"
 
-#: ajax/upload.php:67
+#: ajax/upload.php:74
 msgid "No file was uploaded"
 msgstr "எந்த கோப்பும் பதிவேற்றப்படவில்லை"
 
-#: ajax/upload.php:68
+#: ajax/upload.php:75
 msgid "Missing a temporary folder"
 msgstr "ஒரு தற்காலிகமான கோப்புறையை காணவில்லை"
 
-#: ajax/upload.php:69
+#: ajax/upload.php:76
 msgid "Failed to write to disk"
 msgstr "வட்டில் எழுத முடியவில்லை"
 
-#: ajax/upload.php:87
+#: ajax/upload.php:94
 msgid "Not enough storage available"
 msgstr ""
 
-#: ajax/upload.php:119
+#: ajax/upload.php:126
 msgid "Invalid directory."
 msgstr ""
 
@@ -128,43 +128,43 @@ msgstr "நீக்குக"
 msgid "Rename"
 msgstr "பெயர்மாற்றம்"
 
-#: js/filelist.js:49 js/filelist.js:52 js/filelist.js:433
+#: js/filelist.js:49 js/filelist.js:52 js/filelist.js:464
 msgid "Pending"
 msgstr "நிலுவையிலுள்ள"
 
-#: js/filelist.js:271 js/filelist.js:273
+#: js/filelist.js:302 js/filelist.js:304
 msgid "{new_name} already exists"
 msgstr "{new_name} ஏற்கனவே உள்ளது"
 
-#: js/filelist.js:271 js/filelist.js:273
+#: js/filelist.js:302 js/filelist.js:304
 msgid "replace"
 msgstr "மாற்றிடுக"
 
-#: js/filelist.js:271
+#: js/filelist.js:302
 msgid "suggest name"
 msgstr "பெயரை பரிந்துரைக்க"
 
-#: js/filelist.js:271 js/filelist.js:273
+#: js/filelist.js:302 js/filelist.js:304
 msgid "cancel"
 msgstr "இரத்து செய்க"
 
-#: js/filelist.js:318
+#: js/filelist.js:349
 msgid "replaced {new_name} with {old_name}"
 msgstr "{new_name} ஆனது {old_name} இனால் மாற்றப்பட்டது"
 
-#: js/filelist.js:318
+#: js/filelist.js:349
 msgid "undo"
 msgstr "முன் செயல் நீக்கம் "
 
-#: js/filelist.js:343
+#: js/filelist.js:374
 msgid "perform delete operation"
 msgstr ""
 
-#: js/filelist.js:425
+#: js/filelist.js:456
 msgid "1 file uploading"
 msgstr "1 கோப்பு பதிவேற்றப்படுகிறது"
 
-#: js/filelist.js:428 js/filelist.js:486
+#: js/filelist.js:459 js/filelist.js:517
 msgid "files uploading"
 msgstr ""
 
@@ -229,7 +229,8 @@ msgid "{count} files"
 msgstr "{எண்ணிக்கை} கோப்புகள்"
 
 #: lib/app.php:73
-msgid "Unable to rename file"
+#, php-format
+msgid "%s could not be renamed"
 msgstr ""
 
 #: lib/helper.php:11 templates/index.php:18
@@ -325,6 +326,22 @@ msgstr "கோப்புகள் வருடப்படுகின்ற�
 #: templates/index.php:117
 msgid "Current scanning"
 msgstr "தற்போது வருடப்படுபவை"
+
+#: templates/part.list.php:78
+msgid "directory"
+msgstr ""
+
+#: templates/part.list.php:80
+msgid "directories"
+msgstr ""
+
+#: templates/part.list.php:89
+msgid "file"
+msgstr ""
+
+#: templates/part.list.php:91
+msgid "files"
+msgstr ""
 
 #: templates/upgrade.php:2
 msgid "Upgrading filesystem cache..."

@@ -8,40 +8,47 @@ OCP\JSON::setContentTypeHeader('text/plain');
 // If no token is sent along, rely on login only
 
 $l = OC_L10N::get('files');
-if (!$_POST['dirToken']) {
-  // The standard case, files are uploaded through logged in users :)
-  OCP\JSON::checkLoggedIn();
-  $dir = isset($_POST['dir']) ? $_POST['dir'] : "";
-  if (!$dir || empty($dir) || $dir === false) {
-    OCP\JSON::error(array('data' => array_merge(array('message' => $l->t('Unable to set upload directory.')))));
-    die();
-  }
+if (empty($_POST['dirToken'])) {
+	// The standard case, files are uploaded through logged in users :)
+	OCP\JSON::checkLoggedIn();
+	$dir = isset($_POST['dir']) ? $_POST['dir'] : "";
+	if (!$dir || empty($dir) || $dir === false) {
+		OCP\JSON::error(array('data' => array_merge(array('message' => $l->t('Unable to set upload directory.')))));
+		die();
+	}
 } else {
-  $linkItem = OCP\Share::getShareByToken($_POST['dirToken']);
+	$linkItem = OCP\Share::getShareByToken($_POST['dirToken']);
+	if ($linkItem === false) {
+		OCP\JSON::error(array('data' => array_merge(array('message' => $l->t('Invalid Token')))));
+		die();
+	}
 
-  if ($linkItem === false) {
-    OCP\JSON::error(array('data' => array_merge(array('message' => $l->t('Invalid Token')))));
-    die();
-  }
+	if (!($linkItem['permissions'] & OCP\PERMISSION_CREATE)) {
+		OCP\JSON::checkLoggedIn();
+	} else {
+		// Setup FS with owner
+		OC_Util::tearDownFS();
+		OC_Util::setupFS($linkItem['uid_owner']);
 
-  if (!($linkItem['permissions'] & OCP\PERMISSION_CREATE)) {
-    OCP\JSON::checkLoggedIn();
-  } else {
+		// translate linkItem to the real folder name on the file system
+		$sharedItem = OCP\Share::getSharedItem($linkItem['item_type'], $linkItem['item_source'], $linkItem['uid_owner']);
+		if (!$sharedItem || empty($sharedItem) || $sharedItem === false) {
+			OCP\JSON::error(array('data' => array_merge(array('message' => $l->t('Unable to set upload directory.')))));
+			die();
+		}
 
-    // The token defines the target directory (security reasons)
-    $dir = sprintf(
-      "/%s/%s",
-      $linkItem['file_target'],
-      isset($_POST['subdir']) ? $_POST['subdir'] : ''
-    );
+		// The token defines the target directory (security reasons)
+		$dir = sprintf(
+			"/%s/%s",
+			$sharedItem['path'],
+			isset($_POST['subdir']) ? $_POST['subdir'] : ''
+		);
 
-    if (!$dir || empty($dir) || $dir === false) {
-      OCP\JSON::error(array('data' => array_merge(array('message' => $l->t('Unable to set upload directory.')))));
-      die();
-    }
-    // Setup FS with owner
-    OC_Util::setupFS($linkItem['uid_owner']);
-  }
+		if (!$dir || empty($dir) || $dir === false) {
+			OCP\JSON::error(array('data' => array_merge(array('message' => $l->t('Unable to set upload directory.')))));
+			die();
+		}
+	}
 }
 
 
@@ -61,7 +68,7 @@ foreach ($_FILES['files']['error'] as $error) {
 		$errors = array(
 			UPLOAD_ERR_OK => $l->t('There is no error, the file uploaded with success'),
 			UPLOAD_ERR_INI_SIZE => $l->t('The uploaded file exceeds the upload_max_filesize directive in php.ini: ')
-				. ini_get('upload_max_filesize'),
+			. ini_get('upload_max_filesize'),
 			UPLOAD_ERR_FORM_SIZE => $l->t('The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form'),
 			UPLOAD_ERR_PARTIAL => $l->t('The uploaded file was only partially uploaded'),
 			UPLOAD_ERR_NO_FILE => $l->t('No file was uploaded'),
@@ -107,7 +114,7 @@ if (strpos($dir, '..') === false) {
 				'size' => $meta['size'],
 				'id' => $meta['fileid'],
 				'name' => basename($target),
-				'originalname'=>$files['name'][$i],
+				'originalname' => $files['name'][$i],
 				'uploadMaxFilesize' => $maxUploadFilesize,
 				'maxHumanFilesize' => $maxHumanFilesize
 			);

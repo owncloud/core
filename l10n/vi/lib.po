@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-06-30 02:06+0200\n"
-"PO-Revision-Date: 2013-06-30 00:06+0000\n"
+"POT-Creation-Date: 2013-07-07 01:59+0200\n"
+"PO-Revision-Date: 2013-07-06 23:15+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Vietnamese (http://www.transifex.com/projects/p/owncloud/language/vi/)\n"
 "MIME-Version: 1.0\n"
@@ -17,29 +17,33 @@ msgstr ""
 "Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: app.php:359
+#: app.php:360
 msgid "Help"
 msgstr "Giúp đỡ"
 
-#: app.php:372
+#: app.php:373
 msgid "Personal"
 msgstr "Cá nhân"
 
-#: app.php:383
+#: app.php:384
 msgid "Settings"
 msgstr "Cài đặt"
 
-#: app.php:395
+#: app.php:396
 msgid "Users"
 msgstr "Người dùng"
 
-#: app.php:408
+#: app.php:409
 msgid "Apps"
 msgstr "Ứng dụng"
 
-#: app.php:416
+#: app.php:417
 msgid "Admin"
 msgstr "Quản trị"
+
+#: defaults.php:33
+msgid "web services under your control"
+msgstr "dịch vụ web dưới sự kiểm soát của bạn"
 
 #: files.php:210
 msgid "ZIP download is turned off."

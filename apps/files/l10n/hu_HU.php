@@ -47,7 +47,6 @@
 "{count} folders" => "{count} mappa",
 "1 file" => "1 fájl",
 "{count} files" => "{count} fájl",
-"Unable to rename file" => "Nem lehet átnevezni a fájlt",
 "Upload" => "Feltöltés",
 "File handling" => "Fájlkezelés",
 "Maximum upload size" => "Maximális feltölthető fájlméret",
@@ -71,5 +70,7 @@
 "The files you are trying to upload exceed the maximum size for file uploads on this server." => "A feltöltendő állományok mérete meghaladja a kiszolgálón megengedett maximális méretet.",
 "Files are being scanned, please wait." => "A fájllista ellenőrzése zajlik, kis türelmet!",
 "Current scanning" => "Ellenőrzés alatt",
+"file" => "fájl",
+"files" => "fájlok",
 "Upgrading filesystem cache..." => "A fájlrendszer gyorsítótárának frissítése zajlik..."
 );

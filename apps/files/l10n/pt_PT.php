@@ -47,7 +47,6 @@
 "{count} folders" => "{count} pastas",
 "1 file" => "1 ficheiro",
 "{count} files" => "{count} ficheiros",
-"Unable to rename file" => "Não foi possível renomear o ficheiro",
 "Upload" => "Carregar",
 "File handling" => "Manuseamento de ficheiros",
 "Maximum upload size" => "Tamanho máximo de envio",
@@ -71,5 +70,7 @@
 "The files you are trying to upload exceed the maximum size for file uploads on this server." => "Os ficheiro que está a tentar enviar excedem o tamanho máximo de envio neste servidor.",
 "Files are being scanned, please wait." => "Os ficheiros estão a ser analisados, por favor aguarde.",
 "Current scanning" => "Análise actual",
+"file" => "ficheiro",
+"files" => "ficheiros",
 "Upgrading filesystem cache..." => "Atualizar cache do sistema de ficheiros..."
 );

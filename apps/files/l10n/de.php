@@ -47,7 +47,6 @@
 "{count} folders" => "{count} Ordner",
 "1 file" => "1 Datei",
 "{count} files" => "{count} Dateien",
-"Unable to rename file" => "Konnte Datei nicht umbenennen",
 "Upload" => "Hochladen",
 "File handling" => "Dateibehandlung",
 "Maximum upload size" => "Maximale Upload-Größe",
@@ -71,5 +70,7 @@
 "The files you are trying to upload exceed the maximum size for file uploads on this server." => "Die Datei überschreitet die Maximalgröße für Uploads auf diesem Server.",
 "Files are being scanned, please wait." => "Dateien werden gescannt, bitte warten.",
 "Current scanning" => "Scanne",
+"file" => "Datei",
+"files" => "Dateien",
 "Upgrading filesystem cache..." => "Dateisystem-Cache wird aktualisiert ..."
 );
