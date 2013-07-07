@@ -45,6 +45,7 @@ if ($isAdmin) {
 	$batch = OC_User::getDisplayNames('', $limit, $offset);
 	foreach ($batch as $user => $displayname) {
 		$users[] = array(
+			'userid' => str_replace(' ','', $user ),
 			'name' => $user,
 			'displayname' => $displayname,
 			'groups' => join(', ', OC_Group::getUserGroups($user)),
