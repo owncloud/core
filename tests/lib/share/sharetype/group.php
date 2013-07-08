@@ -58,6 +58,7 @@ class Group extends ShareType {
 		$share->setItemSource('23');
 		$share->setItemTarget('secrets');
 		$share->setPermissions(31);
+		$share->setShareTime(1370797580);
 		return $share;
 	}
 

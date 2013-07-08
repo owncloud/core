@@ -1016,7 +1016,7 @@
 				<name>password</name>
 				<type>text</type>
 				<default></default>
-				<notnull>true</notnull>
+				<notnull>false</notnull>
 				<length>250</length>
 			</field>
 
