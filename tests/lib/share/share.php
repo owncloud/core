@@ -3,7 +3,7 @@
 /**
  * ownCloud - News
  *
- * @author Alessandro Copyright
+ * @author Alessandro Cosentino
  * @author Bernhard Posselt
  * @author Michael Gapczynski
  * @copyright 2012 Alessandro Cosentino cosenal@gmail.com
