@@ -857,7 +857,9 @@
 
 	</table>
 
-	<name>*dbprefix*shares</name>
+	<table>
+
+		<name>*dbprefix*shares</name>
 
 		<declaration>
 
