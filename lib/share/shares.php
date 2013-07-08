@@ -134,9 +134,15 @@ abstract class Shares extends BasicEmitter {
 	 * @param Share $share
 	 */
 	public function update(Share $share) {
+		$properties = $share->getUpdatedProperties();
+		if (isset($properties['permissions'])) {
+			$this->areValidPermissions($share);
+		}
+		if (isset($properties['expirationTime'])) {
+			$this->isValidExpirationTime($share);
+		}
 		$shareType = $this->getShareType($share->getShareTypeId());
 		$this->emit(get_class($this), 'preUpdate', array($share));
-		$properties = $share->getUpdatedProperties();
 		foreach ($properties as $property => $updated) {
 			$setter = 'set'.ucfirst($property);
 			if (method_exists($shareType, $setter)) {

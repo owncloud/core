@@ -267,6 +267,29 @@ class Shares extends \PHPUnit_Framework_TestCase {
 		$this->shares->update($share);
 	}
 
+	public function testUpdateWithInvalidPermissions() {
+		$share = new Share();
+		$share->setShareTypeId('link');
+		$share->resetUpdatedProperties();
+		$share->setPermissions(0);
+		$this->setExpectedException('\OC\Share\Exception\InvalidPermissionsException',
+			'The permissions are not in the range of 1 to '.\OCP\PERMISSION_ALL
+		);
+		$this->shares->update($share);
+	}
+
+	public function testUpdateWithInvalidExpirationTime() {
+		$share = new Share();
+		$share->setShareTypeId('link');
+		$share->resetUpdatedProperties();
+		// 59 minutes 59 seconds in the future
+		$share->setExpirationTime(1370801179);
+		$this->setExpectedException('\OC\Share\Exception\InvalidExpirationTimeException',
+			'The expiration time is not at least 1 hour in the future'
+		);
+		$this->shares->update($share);
+	}
+
 	public function testGetShares() {
 		$share1 = new Share();
 		$share1->setId(1);
