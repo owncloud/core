@@ -379,7 +379,6 @@ class View {
 					list($storage, $internalPath1) = Filesystem::resolvePath($absolutePath1 . $postFix1);
 					list(, $internalPath2) = Filesystem::resolvePath($absolutePath2 . $postFix2);
 					if ($storage) {
-						error_log('rename');
 						$result = $storage->rename($internalPath1, $internalPath2);
 						\OC_FileProxy::runPostProxies('rename', $absolutePath1, $absolutePath2);
 					} else {
