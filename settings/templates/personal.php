@@ -6,8 +6,6 @@
 
 <?php $defaults = new OC_Defaults(); // initialize themable default strings and urls ?>
 
-<?php $defaults = new OC_Defaults(); // initialize themable default strings and urls ?>
-
 <div class="clientsbox">
 	<h2><?php p($l->t('Get the apps to sync your files'));?></h2>
 	<a href="<?php p($_['clients']['desktop']); ?>" target="_blank">
