@@ -178,7 +178,7 @@ abstract class Shares extends BasicEmitter {
 				if (isset($limit)) {
 					$limit--;
 					if ($limit === 0) {
-						break 2;
+						return $shares;
 					}
 				}
 				if (isset($offset) && $offset > 0) {
@@ -205,7 +205,7 @@ abstract class Shares extends BasicEmitter {
 				if (isset($limit)) {
 					$limit--;
 					if ($limit === 0) {
-						break 2;
+						return $shareWiths;
 					}
 				}
 				if (isset($offset) && $offset > 0) {
