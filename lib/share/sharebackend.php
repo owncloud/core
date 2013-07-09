@@ -32,7 +32,7 @@ use OC\Share\Exception\InvalidExpirationTimeException;
 /**
  * Backend class that apps extend and register with the ShareManager to share content
  *
- *  Hooks available in class name scope
+ *  Hooks available in scope \OC\Share:
  *  - preShare(Share $share)
  *  - postShare(Share $share)
  *  - preUnshare(Share $share)
@@ -108,10 +108,10 @@ abstract class ShareBackend extends BasicEmitter {
 				&& $this->isValidExpirationTime($share)
 			) {
 				$share->setItemTarget($this->generateItemTarget($share));
-				$this->emit(get_class($this), 'preShare', array($share));
+				$this->emit('\OC\Share', 'preShare', array($share));
 				$share->setShareTime($this->timeMachine->getTime());
 				$share = $shareType->share($share);
-				$this->emit(get_class($this), 'postShare', array($share));
+				$this->emit('\OC\Share', 'postShare', array($share));
 				return $share;
 			}
 		}
@@ -124,9 +124,9 @@ abstract class ShareBackend extends BasicEmitter {
 	 */
 	public function unshare(Share $share) {
 		$shareType = $this->getShareType($share->getShareTypeId());
-		$this->emit(get_class($this), 'preUnshare', array($share));
+		$this->emit('\OC\Share', 'preUnshare', array($share));
 		$shareType->unshare($share);
-		$this->emit(get_class($this), 'postUnshare', array($share));
+		$this->emit('\OC\Share', 'postUnshare', array($share));
 	}
 
 	/**
@@ -142,7 +142,7 @@ abstract class ShareBackend extends BasicEmitter {
 			$this->isValidExpirationTime($share);
 		}
 		$shareType = $this->getShareType($share->getShareTypeId());
-		$this->emit(get_class($this), 'preUpdate', array($share));
+		$this->emit('\OC\Share', 'preUpdate', array($share));
 		foreach ($properties as $property => $updated) {
 			$setter = 'set'.ucfirst($property);
 			if (method_exists($shareType, $setter)) {
@@ -153,7 +153,7 @@ abstract class ShareBackend extends BasicEmitter {
 		if (!empty($properties)) {
 			$shareType->update($share);
 		}
-		$this->emit(get_class($this), 'postUpdate', array($share));
+		$this->emit('\OC\Share', 'postUpdate', array($share));
 	}
 
 	/**
