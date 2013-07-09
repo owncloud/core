@@ -212,7 +212,7 @@ class Group extends Common {
 
 	public function clear() {
 		parent::clear();
-		$sql = 'DELETE '.$this->groupsTable.' FROM '.$this->groupsTable.' '.
+		$sql = 'DELETE FROM '.$this->groupsTable.' USING '.$this->groupsTable.' '.
 			'LEFT JOIN '.$this->table.' ON '.$this->groupsTable.'.`id` = '.$this->table.'.`id` '.
 			'WHERE '.$this->table.'.`id` IS NULL';
 		\OC_DB::executeAudited($sql);

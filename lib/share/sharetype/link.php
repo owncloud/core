@@ -159,7 +159,7 @@ class Link extends Common {
 
 	public function clear() {
 		parent::clear();
-		$sql = 'DELETE '.$this->linksTable.' FROM '.$this->linksTable.' '.
+		$sql = 'DELETE FROM '.$this->linksTable.' USING '.$this->linksTable.' '.
 			'LEFT JOIN '.$this->table.' ON '.$this->linksTable.'.`id` = '.$this->table.'.`id` '.
 			'WHERE '.$this->table.'.`id` IS NULL';
 		\OC_DB::executeAudited($sql);
