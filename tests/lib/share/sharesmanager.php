@@ -23,10 +23,10 @@ namespace Test\Share;
 
 use OC\Share\Share;
 
-class TestSharesManager extends \OC\Share\SharesManager {
+class TestShareManager extends \OC\Share\ShareManager {
 
-	public function pGetSharesBackend($itemType) {
-		return parent::getSharesBackend($itemType);
+	public function pGetShareBackend($itemType) {
+		return parent::getShareBackend($itemType);
 	}
 
 	public function pAreValidPermissionsForParents(Share $share) {
@@ -39,11 +39,11 @@ class TestSharesManager extends \OC\Share\SharesManager {
 
 }
 
-class SharesManager extends \PHPUnit_Framework_TestCase {
+class ShareManager extends \PHPUnit_Framework_TestCase {
 
-	private $shares;
-	private $collectionShares;
-	private $sharesManager;
+	private $shareBackend;
+	private $collectionShareBackend;
+	private $shareManager;
 	private $areCollectionsEnabled;
 
 	/**
@@ -54,33 +54,33 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 	protected function setUp() {
 		// Found workaround for mocks of abstract classes with concrete functions here:
 		// https://github.com/sebastianbergmann/phpunit-mock-objects/issues/95
-		$this->shares = $this->getMockBuilder('\OC\Share\Shares')
+		$this->shareBackend = $this->getMockBuilder('\OC\Share\ShareBackend')
 			->disableOriginalConstructor()
-			->setMethods(get_class_methods('\OC\Share\Shares'))
+			->setMethods(get_class_methods('\OC\Share\ShareBackend'))
 			->getMockForAbstractClass();
-		$this->shares->expects($this->any())
+		$this->shareBackend->expects($this->any())
 			->method('getItemType')
 			->will($this->returnValue('test'));
-		$this->shares->expects($this->any())
+		$this->shareBackend->expects($this->any())
 			->method('isValidItem')
 			->will($this->returnValue(true));
 		$this->areCollectionsEnabled = false;
-		$this->collectionShares = $this->getMockBuilder('\OC\Share\CollectionShares')
+		$this->collectionShare = $this->getMockBuilder('\OC\Share\CollectionShareBackend')
 			->disableOriginalConstructor()
-			->setMethods(get_class_methods('\OC\Share\CollectionShares'))
+			->setMethods(get_class_methods('\OC\Share\CollectionShareBackend'))
 			->getMockForAbstractClass();
-		$this->collectionShares->expects($this->any())
+		$this->collectionShare->expects($this->any())
 			->method('getItemType')
 			->will($this->returnValue('testCollection'));
-		$this->collectionShares->expects($this->any())
+		$this->collectionShare->expects($this->any())
 			->method('isValidItem')
 			->will($this->returnValue(true));
-		$this->collectionShares->expects($this->any())
+		$this->collectionShare->expects($this->any())
 			->method('getChildrenItemTypes')
 			->will($this->returnCallback(array($this, 'getChildrenItemTypesMock')));
-		$this->sharesManager = new TestSharesManager();
-		$this->sharesManager->registerSharesBackend($this->shares);
-		$this->sharesManager->registerSharesBackend($this->collectionShares);
+		$this->shareManager = new TestShareManager();
+		$this->shareManager->registerShareBackend($this->shareBackend);
+		$this->shareManager->registerShareBackend($this->collectionShare);
 	}
 
 	public function getChildrenItemTypesMock() {
@@ -128,14 +128,14 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 				array($share)
 			),
 		);
-		$this->shares->expects($this->atLeastOnce())
+		$this->shareBackend->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($map));
-		$this->shares->expects($this->once())
+		$this->shareBackend->expects($this->once())
 			->method('share')
 			->with($this->equalTo($share))
 			->will($this->returnValue($share));
-		$share = $this->sharesManager->share($share);
+		$share = $this->shareManager->share($share);
 		$this->assertEquals($sharedShare, $share);
 		\OC_Appconfig::setValue('core', 'shareapi_allow_resharing', $resharing);
 	}
@@ -169,15 +169,15 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 				array($parent)
 			),
 		);
-		$this->shares->expects($this->once())
+		$this->shareBackend->expects($this->once())
 			->method('getShares')
 			->will($this->returnValueMap($map));
-		$this->shares->expects($this->never())
+		$this->shareBackend->expects($this->never())
 			->method('share');
 		$this->setExpectedException('\OC\Share\Exception\InvalidShareException',
 			'The admin has disabled resharing'
 		);
-		$this->sharesManager->share($share);
+		$this->shareManager->share($share);
 		\OC_Appconfig::setValue('core', 'shareapi_allow_resharing', $resharing);
 	}
 
@@ -210,15 +210,15 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 				array($parent)
 			),
 		);
-		$this->shares->expects($this->once())
+		$this->shareBackend->expects($this->once())
 			->method('getShares')
 			->will($this->returnValueMap($map));
-		$this->shares->expects($this->never())
+		$this->shareBackend->expects($this->never())
 			->method('share');
 		$this->setExpectedException('\OC\Share\Exception\InvalidShareException',
 			'The parent shares don\'t allow resharing'
 		);
-		$this->sharesManager->share($share);
+		$this->shareManager->share($share);
 		\OC_Appconfig::setValue('core', 'shareapi_allow_resharing', $resharing);
 	}
 
@@ -250,13 +250,13 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 				array($parent)
 			),
 		);
-		$this->shares->expects($this->once())
+		$this->shareBackend->expects($this->once())
 			->method('getShares')
 			->will($this->returnValueMap($map));
 		$this->setExpectedException('\OC\Share\Exception\InvalidShareException',
 			'The share can\'t reshare back to the share owner'
 		);
-		$this->sharesManager->share($share);
+		$this->shareManager->share($share);
 		\OC_Appconfig::setValue('core', 'shareapi_allow_resharing', $resharing);
 	}
 
@@ -289,13 +289,13 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 				array($parent)
 			),
 		);
-		$this->shares->expects($this->once())
+		$this->shareBackend->expects($this->once())
 			->method('getShares')
 			->will($this->returnValueMap($map));
 		$this->setExpectedException('\OC\Share\Exception\InvalidShareException',
 			'The parent share has the same share with'
 		);
-		$this->sharesManager->share($share);
+		$this->shareManager->share($share);
 		\OC_Appconfig::setValue('core', 'shareapi_allow_resharing', $resharing);
 	}
 
@@ -347,17 +347,17 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 				array($share)
 			),
 		);
-		$this->shares->expects($this->atLeastOnce())
+		$this->shareBackend->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($map));
-		$this->shares->expects($this->once())
+		$this->shareBackend->expects($this->once())
 			->method('share')
 			->with($this->equalTo($share))
 			->will($this->returnValue($share));
-		$this->shares->expects($this->never())
+		$this->shareBackend->expects($this->never())
 			->method('update');
 		$share->resetUpdatedProperties();
-		$share = $this->sharesManager->share($share);
+		$share = $this->shareManager->share($share);
 		$this->assertEquals($sharedShare, $share);
 		\OC_Appconfig::setValue('core', 'shareapi_allow_resharing', $resharing);
 	}
@@ -417,18 +417,18 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 			),
 			array(array('id' => 2, 'shareTypeId' => 'user'), 1, null, array($reshare)),
 		);
-		$this->shares->expects($this->atLeastOnce())
+		$this->shareBackend->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($map));
-		$this->shares->expects($this->once())
+		$this->shareBackend->expects($this->once())
 			->method('share')
 			->with($this->equalTo($share))
 			->will($this->returnValue($share));
-		$this->shares->expects($this->once())
+		$this->shareBackend->expects($this->once())
 			->method('update')
 			->with($this->equalTo($reshare));
 		$share->resetUpdatedProperties();
-		$share = $this->sharesManager->share($share);
+		$share = $this->shareManager->share($share);
 		$this->assertEquals($sharedShare, $share);
 		$this->assertEquals($updatedReshare, $reshare);
 		\OC_Appconfig::setValue('core', 'shareapi_allow_resharing', $resharing);
@@ -477,20 +477,20 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 		$collectionMap = array(
 			array(array('id' => 1), 1, null, array($parent)),
 		);
-		$this->shares->expects($this->atLeastOnce())
+		$this->shareBackend->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($sharesMap));
-		$this->collectionShares->expects($this->atLeastOnce())
+		$this->collectionShare->expects($this->atLeastOnce())
 			->method('searchForChildren')
 			->will($this->returnValueMap($childMap));
-		$this->collectionShares->expects($this->atLeastOnce())
+		$this->collectionShare->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($collectionMap));
-		$this->shares->expects($this->once())
+		$this->shareBackend->expects($this->once())
 			->method('share')
 			->with($this->equalTo($share))
 			->will($this->returnValue($share));
-		$share = $this->sharesManager->share($share);
+		$share = $this->shareManager->share($share);
 		$this->assertEquals($sharedShare, $share);
 		\OC_Appconfig::setValue('core', 'shareapi_allow_resharing', $resharing);
 	}
@@ -591,26 +591,26 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 		$childMap = array(
 			array($anybodyelse, $item, array($duplicate, $share)),
 		);
-		$this->collectionShares->expects($this->atLeastOnce())
+		$this->collectionShare->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($collectionMap));
-		$this->collectionShares->expects($this->once())
+		$this->collectionShare->expects($this->once())
 			->method('share')
 			->with($this->equalTo($share))
 			->will($this->returnValue($share));
-		$this->collectionShares->expects($this->atLeastOnce())
+		$this->collectionShare->expects($this->atLeastOnce())
 			->method('searchForChildren')
 			->will($this->returnValueMap($childMap));
-		$this->collectionShares->expects($this->once())
+		$this->collectionShare->expects($this->once())
 			->method('update')
 			->with($this->equalTo($reshare2));
-		$this->shares->expects($this->atLeastOnce())
+		$this->shareBackend->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($sharesMap));
-		$this->shares->expects($this->once())
+		$this->shareBackend->expects($this->once())
 			->method('update')
 			->with($this->equalTo($reshare1));
-		$share = $this->sharesManager->share($share);
+		$share = $this->shareManager->share($share);
 		$this->assertEquals($sharedShare, $share);
 		$this->assertEquals($updatedReshare1, $reshare1);
 		$this->assertEquals($updatedReshare2, $reshare2);
@@ -639,14 +639,14 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 			array(array('parentId' => 2), null, null, array()),
 			array(array('parentId' => 3), null, null, array()),
 		);
-		$this->shares->expects($this->atLeastOnce())
+		$this->shareBackend->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($map));
-		$this->shares->expects($this->exactly(3))
+		$this->shareBackend->expects($this->exactly(3))
 			->method('unshare');
-		$this->shares->expects($this->never())
+		$this->shareBackend->expects($this->never())
 			->method('update');
-		$this->sharesManager->unshare($parent);
+		$this->shareManager->unshare($parent);
 	}
 
 	public function testUnshareWithResharesAndTwoParents() {
@@ -698,15 +698,15 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 			array(array('parentId' => 2), null, null, array()),
 			array(array('parentId' => 3), null, null, array()),
 		);
-		$this->shares->expects($this->atLeastOnce())
+		$this->shareBackend->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($map));
-		$this->shares->expects($this->exactly(2))
+		$this->shareBackend->expects($this->exactly(2))
 			->method('update');
-		$this->shares->expects($this->once())
+		$this->shareBackend->expects($this->once())
 			->method('unshare')
 			->with($this->equalTo($parent1));
-		$this->sharesManager->unshare($parent1);
+		$this->shareManager->unshare($parent1);
 		$this->assertEquals($updatedParent2, $parent2);
 		$this->assertEquals($updatedReshare1, $reshare1);
 		$this->assertEquals($updatedReshare2, $reshare2);
@@ -761,15 +761,15 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 			array(array('parentId' => 2), null, null, array()),
 			array(array('parentId' => 3), null, null, array()),
 		);
-		$this->shares->expects($this->atLeastOnce())
+		$this->shareBackend->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($map));
-		$this->shares->expects($this->exactly(2))
+		$this->shareBackend->expects($this->exactly(2))
 			->method('update');
-		$this->shares->expects($this->once())
+		$this->shareBackend->expects($this->once())
 			->method('unshare')
 			->with($this->equalTo($parent1));
-		$this->sharesManager->unshare($parent1);
+		$this->shareManager->unshare($parent1);
 		$this->assertEquals($updatedParent2, $parent2);
 		$this->assertEquals($updatedReshare1, $reshare1);
 		$this->assertEquals($updatedReshare2, $reshare2);
@@ -849,19 +849,19 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 			array(array('parentId' => 3), null, null, array()),
 			array(array('parentId' => 4), null, null, array()),
 		);
-		$this->shares->expects($this->atLeastOnce())
+		$this->shareBackend->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($sharesMap));
-		$this->shares->expects($this->once())
+		$this->shareBackend->expects($this->once())
 			->method('update');
-		$this->collectionShares->expects($this->atLeastOnce())
+		$this->collectionShare->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($collectionMap));
-		$this->collectionShares->expects($this->once())
+		$this->collectionShare->expects($this->once())
 			->method('update');
-		$this->collectionShares->expects($this->exactly(2))
+		$this->collectionShare->expects($this->exactly(2))
 			->method('unshare');
-		$this->sharesManager->unshare($parent1);
+		$this->shareManager->unshare($parent1);
 		$this->assertEquals($updatedParent2, $parent2);
 		$this->assertEquals($updatedReshare1, $reshare1);
 		$this->assertEquals($updatedReshare2, $reshare2);
@@ -877,13 +877,13 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 		$map = array(
 			array(array('id' => 1, 'shareTypeId' => 'group'), 1, null, array()),
 		);
-		$this->shares->expects($this->once())
+		$this->shareBackend->expects($this->once())
 			->method('getShares')
 			->will($this->returnValueMap($map));
 		$this->setExpectedException('\OC\Share\Exception\ShareDoesNotExistException',
 			'The share does not exist for update'
 		);
-		$this->sharesManager->update($share);
+		$this->shareManager->update($share);
 	}
 
 	public function testUpdateResharesWithOneParent() {
@@ -943,12 +943,12 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 			array(array('id' => 4, 'shareTypeId' => 'user'), 1, null, array($oldReshare3)),
 			array(array('parentId' => 4), null, null, array()),
 		);
-		$this->shares->expects($this->atLeastOnce())
+		$this->shareBackend->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($map));
-		$this->shares->expects($this->exactly(3))
+		$this->shareBackend->expects($this->exactly(3))
 			->method('update');
-		$this->sharesManager->update($updatedParent);
+		$this->shareManager->update($updatedParent);
 		$this->assertEquals($updatedReshare1, $reshare1);
 		$this->assertEquals($updatedReshare2, $reshare2);
 		$this->assertEquals($updatedReshare3, $reshare3);
@@ -996,14 +996,14 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 			array(array('id' => 4, 'shareTypeId' => 'user'), 1, null, array($reshare3)),
 			array(array('parentId' => 4), null, null, array()),
 		);
-		$this->shares->expects($this->atLeastOnce())
+		$this->shareBackend->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($map));
-		$this->shares->expects($this->once())
+		$this->shareBackend->expects($this->once())
 			->method('update');
-		$this->shares->expects($this->exactly(3))
+		$this->shareBackend->expects($this->exactly(3))
 			->method('unshare');
-		$this->sharesManager->update($updatedParent);
+		$this->shareManager->update($updatedParent);
 	}
 
 	public function testUpdateResharesWithTwoParents() {
@@ -1071,12 +1071,12 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 			array(array('id' => 4, 'shareTypeId' => 'user'), 1, null, array($oldReshare3)),
 			array(array('parentId' => 4), null, null, array()),
 		);
-		$this->shares->expects($this->atLeastOnce())
+		$this->shareBackend->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($map));
-		$this->shares->expects($this->exactly(3))
+		$this->shareBackend->expects($this->exactly(3))
 			->method('update');
-		$this->sharesManager->update($updatedParent1);
+		$this->shareManager->update($updatedParent1);
 		$this->assertEquals($updatedParent2, $parent2);
 		$this->assertEquals($updatedReshare1, $reshare1);
 		$this->assertEquals($updatedReshare2, $reshare2);
@@ -1151,12 +1151,12 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 			array(array('id' => 4, 'shareTypeId' => 'user'), 1, null, array($oldReshare3)),
 			array(array('parentId' => 4), null, null, array()),
 		);
-		$this->shares->expects($this->atLeastOnce())
+		$this->shareBackend->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($map));
-		$this->shares->expects($this->exactly(4))
+		$this->shareBackend->expects($this->exactly(4))
 			->method('update');
-		$this->sharesManager->update($updatedParent1);
+		$this->shareManager->update($updatedParent1);
 		$this->assertEquals($updatedParent2, $parent2);
 		$this->assertEquals($updatedReshare1, $reshare1);
 		$this->assertEquals($updatedReshare2, $reshare2);
@@ -1243,12 +1243,12 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 			array(array('id' => 2, 'shareTypeId' => 'link'), 1, null, array($reshare1)),
 			array(array('id' => 3, 'shareTypeId' => 'group'), 1, null, array($reshare2)),
 		);
-		$this->shares->expects($this->atLeastOnce())
+		$this->shareBackend->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($map));
-		$this->shares->expects($this->exactly(3))
+		$this->shareBackend->expects($this->exactly(3))
 			->method('update');
-		$this->sharesManager->update($updatedParent1);
+		$this->shareManager->update($updatedParent1);
 		$this->assertEquals($updatedParent2, $parent2);
 		$this->assertEquals($updatedReshare1, $reshare1);
 		$this->assertEquals($updatedReshare2, $reshare2);
@@ -1305,12 +1305,12 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 			array(array('id' => 1), 1, null, array($parent1)),
 			array(array('id' => 5), 1, null, array($parent2)),
 		);
-		$this->shares->expects($this->atLeastOnce())
+		$this->shareBackend->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($map));
-		$this->shares->expects($this->once())
+		$this->shareBackend->expects($this->once())
 			->method('update');
-		$this->sharesManager->update($updatedParent1);
+		$this->shareManager->update($updatedParent1);
 		$this->assertEquals($updatedParent2, $parent2);
 		$this->assertEquals($updatedReshare1, $reshare1);
 		$this->assertEquals($updatedReshare2, $reshare2);
@@ -1331,16 +1331,16 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 			array(array(), null, null, array($share1, $share2, $share3)),
 			array(array('parentId' => 2), null, null, array()),
 		);
-		$this->shares->expects($this->any())
+		$this->shareBackend->expects($this->any())
 			->method('getShares')
 			->will($this->returnValueMap($map));
-		$this->shares->expects($this->at(2))
+		$this->shareBackend->expects($this->at(2))
 			->method('isExpired')
 			->will($this->returnValue(true));
-		$this->shares->expects($this->once())
+		$this->shareBackend->expects($this->once())
 			->method('unshare')
 			->with($this->equalTo($share2));
-		$shares = $this->sharesManager->getShares('test');
+		$shares = $this->shareManager->getShares('test');
 		$this->assertEquals(2, count($shares));
 		$this->assertContains($share1, $shares);
 		$this->assertContains($share3, $shares);
@@ -1364,16 +1364,16 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 			array(array('parentId' => 2), null, null, array()),
 			array(array(), 1, 2, array($share4)),
 		);
-		$this->shares->expects($this->any())
+		$this->shareBackend->expects($this->any())
 			->method('getShares')
 			->will($this->returnValueMap($map));
-		$this->shares->expects($this->at(2))
+		$this->shareBackend->expects($this->at(2))
 			->method('isExpired')
 			->will($this->returnValue(true));
-		$this->shares->expects($this->once())
+		$this->shareBackend->expects($this->once())
 			->method('unshare')
 			->with($this->equalTo($share2));
-		$shares = $this->sharesManager->getShares('test', array(), 3);
+		$shares = $this->shareManager->getShares('test', array(), 3);
 		$this->assertCount(3, $shares);
 		$this->assertContains($share1, $shares);
 		$this->assertContains($share3, $shares);
@@ -1398,16 +1398,16 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 			array(array('parentId' => 2), null, null, array()),
 			array(array(), 1, 3, array($share5)),
 		);
-		$this->shares->expects($this->any())
+		$this->shareBackend->expects($this->any())
 			->method('getShares')
 			->will($this->returnValueMap($map));
-		$this->shares->expects($this->at(1))
+		$this->shareBackend->expects($this->at(1))
 			->method('isExpired')
 			->will($this->returnValue(true));
-		$this->shares->expects($this->once())
+		$this->shareBackend->expects($this->once())
 			->method('unshare')
 			->with($this->equalTo($share2));
-		$shares = $this->sharesManager->getShares('test', array(), 3, 1);
+		$shares = $this->shareManager->getShares('test', array(), 3, 1);
 		$this->assertCount(3, $shares);
 		$this->assertContains($share3, $shares);
 		$this->assertContains($share4, $shares);
@@ -1418,10 +1418,10 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 		$map = array(
 			array('foo', 3, 1, array('foouser2', 'foouser3', 'foogroup1')),
 		);
-		$this->shares->expects($this->once())
+		$this->shareBackend->expects($this->once())
 			->method('searchForPotentialShareWiths')
 			->will($this->returnValueMap($map));
-		$shareWiths = $this->sharesManager->searchForPotentialShareWiths('test', 'foo', 3, 1);
+		$shareWiths = $this->shareManager->searchForPotentialShareWiths('test', 'foo', 3, 1);
 		$this->assertCount(3, $shareWiths);
 		$this->assertContains('foouser2', $shareWiths);
 		$this->assertContains('foouser3', $shareWiths);
@@ -1482,12 +1482,12 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 			array(array('id' => 5), 1, null, array($reshare2)),
 			array(array('id' => 4, 'shareTypeId' => 'user'), 1, null, array($reshare3)),
 		);
-		$this->shares->expects($this->atLeastOnce())
+		$this->shareBackend->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($map));
-		$this->shares->expects($this->any())
+		$this->shareBackend->expects($this->any())
 			->method('unshare');
-		$this->sharesManager->unshareItem('test', $item);
+		$this->shareManager->unshareItem('test', $item);
 	}
 
 	public function testGetReshares() {
@@ -1506,10 +1506,10 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 		$map = array(
 			array(array('parentId' => 1), null, null, array($share1, $share2, $share3)),
 		);
-		$this->shares->expects($this->once())
+		$this->shareBackend->expects($this->once())
 			->method('getShares')
 			->will($this->returnValueMap($map));
-		$reshares = $this->sharesManager->getReshares($parent);
+		$reshares = $this->shareManager->getReshares($parent);
 		$this->assertCount(3, $reshares);
 		$this->assertContains($share1, $reshares);
 		$this->assertContains($share2, $reshares);
@@ -1523,10 +1523,10 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 		$map = array(
 			array(array('parentId' => 1), null, null, array()),
 		);
-		$this->shares->expects($this->once())
+		$this->shareBackend->expects($this->once())
 			->method('getShares')
 			->will($this->returnValueMap($map));
-		$this->assertEmpty($this->sharesManager->getReshares($parent));
+		$this->assertEmpty($this->shareManager->getReshares($parent));
 	}
 
 	public function testGetResharesInCollection() {
@@ -1550,13 +1550,13 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 		$collectionMap = array(
 			array(array('parentId' => 1), null, null, array($share2)),
 		);
-		$this->shares->expects($this->once())
+		$this->shareBackend->expects($this->once())
 			->method('getShares')
 			->will($this->returnValueMap($shareMap));
-		$this->collectionShares->expects($this->atLeastOnce())
+		$this->collectionShare->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($collectionMap));
-		$reshares = $this->sharesManager->getReshares($parent);
+		$reshares = $this->shareManager->getReshares($parent);
 		$this->assertCount(3, $reshares);
 		$this->assertContains($share1, $reshares);
 		$this->assertContains($share2, $reshares);
@@ -1581,10 +1581,10 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 			array(array('id' => 2), 1, null, array($parent2)),
 			array(array('id' => 3), 1, null, array($parent3)),
 		);
-		$this->shares->expects($this->exactly(3))
+		$this->shareBackend->expects($this->exactly(3))
 			->method('getShares')
 			->will($this->returnValueMap($map));
-		$parents = $this->sharesManager->getParents($share);
+		$parents = $this->shareManager->getParents($share);
 		$this->assertCount(3, $parents);
 		$this->assertContains($parent1, $parents);
 		$this->assertContains($parent2, $parents);
@@ -1611,13 +1611,13 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 			array(array('id' => 1), 1, null, array()),
 			array(array('id' => 2), 1, null, array($parent2)),
 		);
-		$this->shares->expects($this->atLeastOnce())
+		$this->shareBackend->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($sharesMap));
-		$this->collectionShares->expects($this->atLeastOnce())
+		$this->collectionShare->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($collectionMap));
-		$parents = $this->sharesManager->getParents($share);
+		$parents = $this->shareManager->getParents($share);
 		$this->assertCount(2, $parents);
 		$this->assertContains($parent1, $parents);
 		$this->assertContains($parent2, $parents);
@@ -1625,11 +1625,11 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 
 	public function testGetParentsWithNoParents() {
 		$share = new Share();
-		$this->shares->expects($this->never())
+		$this->shareBackend->expects($this->never())
 			->method('getShares');
-		$this->collectionShares->expects($this->never())
+		$this->collectionShare->expects($this->never())
 			->method('getShares');
-		$this->assertEmpty($this->sharesManager->getParents($share));
+		$this->assertEmpty($this->shareManager->getParents($share));
 	}
 
 	public function testGetParentsWithNotExistingParent() {
@@ -1639,20 +1639,20 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 		$map = array(
 			array(array('id' => 1), 1, null, array()),
 		);
-		$this->shares->expects($this->once())
+		$this->shareBackend->expects($this->once())
 			->method('getShares')
 			->will($this->returnValueMap($map));
 		$this->setExpectedException('\OC\Share\Exception\ShareDoesNotExistException',
 			'The parent share does not exist'
 		);
-		$this->sharesManager->getParents($share);
+		$this->shareManager->getParents($share);
 	}
 
-	public function testGetSharesBackend() {
-		$this->setExpectedException('\OC\Share\Exception\SharesBackendDoesNotExistException',
+	public function testGetShareBackend() {
+		$this->setExpectedException('\OC\Share\Exception\ShareBackendDoesNotExistException',
 			'A share backend does not exist for the item type'
 		);
-		$this->sharesManager->pGetSharesBackend('foo');
+		$this->shareManager->pGetShareBackend('foo');
 	}
 
 	public function testAreValidPermissionsWithOneParent() {
@@ -1668,15 +1668,15 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 		$map = array(
 			array(array('id' => 1), 1, null, array($parent)),
 		);
-		$this->shares->expects($this->any())
+		$this->shareBackend->expects($this->any())
 			->method('getShares')
 			->will($this->returnValueMap($map));
-		$this->assertTrue($this->sharesManager->pAreValidPermissionsForParents($share));
+		$this->assertTrue($this->shareManager->pAreValidPermissionsForParents($share));
 
 		// Share permissions are only Read and parent permissions are only Read, Update, and Share
 		$share->setPermissions(1);
 		$parent->setPermissions(19);
-		$this->assertTrue($this->sharesManager->pAreValidPermissionsForParents($share));
+		$this->assertTrue($this->shareManager->pAreValidPermissionsForParents($share));
 	}
 
 	public function testAreValidPermissionsWithOneParentAndShareExceedsPermissions() {
@@ -1692,13 +1692,13 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 		$map = array(
 			array(array('id' => 1), 1, null, array($parent)),
 		);
-		$this->shares->expects($this->any())
+		$this->shareBackend->expects($this->any())
 			->method('getShares')
 			->will($this->returnValueMap($map));
 		$this->setExpectedException('\OC\Share\Exception\InvalidPermissionsException',
 			'The permissions exceeds the parent shares\' permissions'
 		);
-		$this->sharesManager->pAreValidPermissionsForParents($share);
+		$this->shareManager->pAreValidPermissionsForParents($share);
 	}
 
 	public function testAreValidPermissionsWithTwoParents() {
@@ -1720,15 +1720,15 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 			array(array('id' => 1), 1, null, array($parent1)),
 			array(array('id' => 2), 1, null, array($parent2)),
 		);
-		$this->shares->expects($this->any())
+		$this->shareBackend->expects($this->any())
 			->method('getShares')
 			->will($this->returnValueMap($map));
-		$this->assertTrue($this->sharesManager->pAreValidPermissionsForParents($share));
+		$this->assertTrue($this->shareManager->pAreValidPermissionsForParents($share));
 
 		// Share and parent remove Create permission
 		$share->setPermissions(27);
 		$parent2->setPermissions(25);
-		$this->assertTrue($this->sharesManager->pAreValidPermissionsForParents($share));
+		$this->assertTrue($this->shareManager->pAreValidPermissionsForParents($share));
 	}
 
 	public function testAreValidPermissionsWithTwoParentsAndShareExceedsPermissions() {
@@ -1750,13 +1750,13 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 			array(array('id' => 1), 1, null, array($parent1)),
 			array(array('id' => 2), 1, null, array($parent2)),
 		);
-		$this->shares->expects($this->any())
+		$this->shareBackend->expects($this->any())
 			->method('getShares')
 			->will($this->returnValueMap($map));
 		$this->setExpectedException('\OC\Share\Exception\InvalidPermissionsException',
 			'The permissions exceeds the parent shares\' permissions'
 		);
-		$this->sharesManager->pAreValidPermissionsForParents($share);
+		$this->shareManager->pAreValidPermissionsForParents($share);
 	}
 
 	public function testIsValidExpirationTimeWithOneParent() {
@@ -1770,15 +1770,15 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 		$map = array(
 			array(array('id' => 1), 1, null, array($parent)),
 		);
-		$this->shares->expects($this->any())
+		$this->shareBackend->expects($this->any())
 			->method('getShares')
 			->will($this->returnValueMap($map));
-		$this->assertTrue($this->sharesManager->pIsValidExpirationTimeForParents($share));
+		$this->assertTrue($this->shareManager->pIsValidExpirationTimeForParents($share));
 
 		// Share expires 1 second before parent
 		$share->setExpirationTime(1370884024);
 		$parent->setExpirationTime(1370884025);
-		$this->assertTrue($this->sharesManager->pIsValidExpirationTimeForParents($share));
+		$this->assertTrue($this->shareManager->pIsValidExpirationTimeForParents($share));
 	}
 
 	public function testIsValidExpirationTimeWithOneParentExpiresAndShareDoesNotExpire() {
@@ -1793,13 +1793,13 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 		$map = array(
 			array(array('id' => 1), 1, null, array($parent)),
 		);
-		$this->shares->expects($this->any())
+		$this->shareBackend->expects($this->any())
 			->method('getShares')
 			->will($this->returnValueMap($map));
 		$this->setExpectedException('\OC\Share\Exception\InvalidExpirationTimeException',
 			'The expiration time exceeds the parent shares\' expiration times'
 		);
-		$this->sharesManager->pIsValidExpirationTimeForParents($share);
+		$this->shareManager->pIsValidExpirationTimeForParents($share);
 	}
 
 	public function testIsValidExpirationTimeWithOneParentExpiresAndShareExpiresAfter() {
@@ -1815,13 +1815,13 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 		$map = array(
 			array(array('id' => 1), 1, null, array($parent)),
 		);
-		$this->shares->expects($this->any())
+		$this->shareBackend->expects($this->any())
 			->method('getShares')
 			->will($this->returnValueMap($map));
 		$this->setExpectedException('\OC\Share\Exception\InvalidExpirationTimeException',
 			'The expiration time exceeds the parent shares\' expiration times'
 		);
-		$this->sharesManager->pIsValidExpirationTimeForParents($share);
+		$this->shareManager->pIsValidExpirationTimeForParents($share);
 	}
 
 	public function testIsValidExpirationTimeWithTwoParents() {
@@ -1839,27 +1839,27 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 			array(array('id' => 1), 1, null, array($parent1)),
 			array(array('id' => 2), 1, null, array($parent2)),
 		);
-		$this->shares->expects($this->any())
+		$this->shareBackend->expects($this->any())
 			->method('getShares')
 			->will($this->returnValueMap($map));
-		$this->assertTrue($this->sharesManager->pIsValidExpirationTimeForParents($share));
+		$this->assertTrue($this->shareManager->pIsValidExpirationTimeForParents($share));
 
 		// 1 parent expires, the other parent and share have no expiration time
 		$parent1->setExpirationTime(1370884025);
-		$this->assertTrue($this->sharesManager->pIsValidExpirationTimeForParents($share));
+		$this->assertTrue($this->shareManager->pIsValidExpirationTimeForParents($share));
 
 		// Share expires 1 second after 1 parent, the other parent has no expiration time
 		$share->setExpirationTime(1370884026);
-		$this->assertTrue($this->sharesManager->pIsValidExpirationTimeForParents($share));
+		$this->assertTrue($this->shareManager->pIsValidExpirationTimeForParents($share));
 
 		// 1 parent expires 1 second before share, the other parent expires 1 second after share
 		$parent2->setExpirationTime(1370884027);
-		$this->assertTrue($this->sharesManager->pIsValidExpirationTimeForParents($share));
+		$this->assertTrue($this->shareManager->pIsValidExpirationTimeForParents($share));
 
 		// Share expires 1 second before both parents
 		$share->setExpirationTime(1370884024);
 		$parent2->setExpirationTime(1370884025);
-		$this->assertTrue($this->sharesManager->pIsValidExpirationTimeForParents($share));
+		$this->assertTrue($this->shareManager->pIsValidExpirationTimeForParents($share));
 	}
 
 	public function testIsValidExpirationTimeWithTwoParentsExpireAndShareDoesNotExpire() {
@@ -1879,13 +1879,13 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 			array(array('id' => 1), 1, null, array($parent1)),
 			array(array('id' => 2), 1, null, array($parent2)),
 		);
-		$this->shares->expects($this->any())
+		$this->shareBackend->expects($this->any())
 			->method('getShares')
 			->will($this->returnValueMap($map));
 		$this->setExpectedException('\OC\Share\Exception\InvalidExpirationTimeException',
 			'The expiration time exceeds the parent shares\' expiration times'
 		);
-		$this->sharesManager->pIsValidExpirationTimeForParents($share);
+		$this->shareManager->pIsValidExpirationTimeForParents($share);
 	}
 
 	public function testIsValidExpirationTimeWithTwoParentsExpireAndShareExpiresAfter() {
@@ -1906,13 +1906,13 @@ class SharesManager extends \PHPUnit_Framework_TestCase {
 			array(array('id' => 1), 1, null, array($parent1)),
 			array(array('id' => 2), 1, null, array($parent2)),
 		);
-		$this->shares->expects($this->any())
+		$this->shareBackend->expects($this->any())
 			->method('getShares')
 			->will($this->returnValueMap($map));
 		$this->setExpectedException('\OC\Share\Exception\InvalidExpirationTimeException',
 			'The expiration time exceeds the parent shares\' expiration times'
 		);
-		$this->sharesManager->pIsValidExpirationTimeForParents($share);
+		$this->shareManager->pIsValidExpirationTimeForParents($share);
 	}
 
 }

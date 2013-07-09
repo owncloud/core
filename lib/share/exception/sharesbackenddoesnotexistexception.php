@@ -21,7 +21,7 @@
 
 namespace OC\Share\Exception;
 
-class SharesBackendDoesNotExistException extends \Exception {
+class ShareBackendDoesNotExistException extends \Exception {
 
 	public function __construct($message) {
 		parent::__construct($message);

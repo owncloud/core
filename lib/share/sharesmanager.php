@@ -22,36 +22,36 @@
 namespace OC\Share;
 
 use OC\Share\Share;
-use OC\Share\Shares;
-use OC\Share\CollectionShares;
+use OC\Share\ShareBackend;
+use OC\Share\CollectionShareBackend;
 use OC\Share\Exception\InvalidShareException;
 use OC\Share\Exception\ShareDoesNotExistException;
-use OC\Share\Exception\SharesBackendDoesNotExistException;
+use OC\Share\Exception\ShareBackendDoesNotExistException;
 use OC\Share\Exception\InvalidPermissionsException;
 use OC\Share\Exception\InvalidExpirationTimeException;
 
 /**
  * This is the gateway for sharing content between users in ownCloud, aka Share API
- * Apps must create a shares backend class that extends OC\Share\Shares and register it here
+ * Apps must create a share backend class that extends OC\Share\ShareBackend and register it here
  *
- * The SharesManager's primary purpose is to ensure consistency between shares and their reshares
+ * The ShareManager's primary purpose is to ensure consistency between shares and their reshares
  *
  * @version 2.0.0 BETA
  */
-class SharesManager {
+class ShareManager {
 
-	protected $sharesBackends;
+	protected $shareBackends;
 
 	/**
-	 * Register a shares backend
-	 * @param Shares $shares
+	 * Register a share backend
+	 * @param ShareBackend $shareBackend
 	 */
-	public function registerSharesBackend(Shares $shares) {
-		$this->sharesBackends[$shares->getItemType()] = $shares;
+	public function registerShareBackend(ShareBackend $shareBackend) {
+		$this->shareBackends[$shareBackend->getItemType()] = $shareBackend;
 	}
 
 	/**
-	 * Share a share in the shares backend
+	 * Share a share in the share backend
 	 * @param Share $share
 	 * @throws InvalidItemException
   	 * @throws InvalidShareException
@@ -60,7 +60,7 @@ class SharesManager {
 	 * @return bool
 	 */
 	public function share(Share $share) {
-		$backend = $this->getSharesBackend($share->getItemType());
+		$shareBackend = $this->getShareBackend($share->getItemType());
 		$parents = $this->searchForParents($share);
 		// See if the share is a reshare
 		if (!empty($parents)) {
@@ -97,7 +97,7 @@ class SharesManager {
 		} else {
 			$share->setItemOwner($share->getShareOwner());
 		}
-		$share = $backend->share($share);
+		$share = $shareBackend->share($share);
 		if ($share !== false && $share->isSharable()) {
 			$id = $share->getId();
 			// Add this share to existing reshares' parent ids
@@ -111,22 +111,22 @@ class SharesManager {
 	}
 
 	/**
-	 * Unshare a share in the shares backend
+	 * Unshare a share in the share backend
 	 * @param Share $share
 	 */
 	public function unshare(Share $share) {
-		$backend = $this->getSharesBackend($share->getItemType());
+		$shareBackend = $this->getShareBackend($share->getItemType());
 		if ($share->isSharable()) {
 			// Fake removing all permissions so reshares will be unshared or updated correctly
 			$fakeShare = clone $share;
 			$fakeShare->setPermissions(0);
 			$this->updateReshares($fakeShare, $share);
 		}
-		$backend->unshare($share);
+		$shareBackend->unshare($share);
 	}
 
 	/**
-	 * Update a share's properties in the shares backend
+	 * Update a share's properties in the share backend
 	 * @param Share $share
 	 * @throws ShareDoesNotExistException
 	 * @throws InvalidPermissionsException
@@ -155,8 +155,8 @@ class SharesManager {
 			throw new ShareDoesNotExistException('The share does not exist for update');
 		} else {
 			$oldShare = reset($result);
-			$backend = $this->getSharesBackend($itemType);
-			$backend->update($share);
+			$shareBackend = $this->getShareBackend($itemType);
+			$shareBackend->update($share);
 			if (isset($properties['permissions']) || isset($properties['expirationTime'])) {
 				$this->updateReshares($share, $oldShare);
 			}
@@ -164,7 +164,7 @@ class SharesManager {
 	}
 
 	/**
-	 * Get the shares with the specified parameters in the shares backend
+	 * Get the shares with the specified parameters in the share backend
 	 * @param string $itemType
 	 * @param array $filter (optional) A key => value array of share properties
 	 * @param int $limit (optional)
@@ -173,11 +173,11 @@ class SharesManager {
 	 */
 	public function getShares($itemType, $filter = array(), $limit = null, $offset = null) {
 		$shares = array();
-		$backend = $this->getSharesBackend($itemType);
-		$results = $backend->getShares($filter, $limit, $offset);
+		$shareBackend = $this->getShareBackend($itemType);
+		$results = $shareBackend->getShares($filter, $limit, $offset);
 		$expired = 0;
 		foreach ($results as $share) {
-			if ($backend->isExpired($share)) {
+			if ($shareBackend->isExpired($share)) {
 				$this->unshare($share);
 				$expired++;
 			} else {
@@ -199,7 +199,7 @@ class SharesManager {
 	}
 
 	/**
-	 * Search for potential people to share with based on the given pattern in the shares backend
+	 * Search for potential people to share with based on the given pattern in the share backend
 	 * @param string $itemType
 	 * @param string $pattern
 	 * @param int $limit (optional)
@@ -209,8 +209,8 @@ class SharesManager {
 	public function searchForPotentialShareWiths($itemType, $pattern, $limit = null,
 		$offset = null
 	) {
-		$backend = $this->getSharesBackend($itemType);
-		return $backend->searchForPotentialShareWiths($pattern, $limit, $offset);
+		$shareBackend = $this->getShareBackend($itemType);
+		return $shareBackend->searchForPotentialShareWiths($pattern, $limit, $offset);
 	}
 
 	/**
@@ -246,10 +246,10 @@ class SharesManager {
 			'parentId' => $share->getId(),
 		);
 		$reshares = $this->getShares($itemType, $filter);
-		$backend = $this->getSharesBackend($itemType);
-		if ($backend instanceof CollectionShares) {
+		$shareBackend = $this->getShareBackend($itemType);
+		if ($shareBackend instanceof CollectionShareBackend) {
 			// Find reshares in children item types 
-			foreach ($backend->getChildrenItemTypes() as $childItemType) {
+			foreach ($shareBackend->getChildrenItemTypes() as $childItemType) {
 				$childReshares = $this->getShares($childItemType, $filter);
 				$reshares = array_merge($reshares, $childReshares);
 			}
@@ -273,12 +273,12 @@ class SharesManager {
 		if (!empty($parentIds)) {
 			$itemType = $share->getItemType();
 			$parentItemTypes = array($itemType);
-			foreach ($this->sharesBackends as $backend) {
-				if ($backend instanceof CollectionShares
-					&& in_array($itemType, $backend->getChildrenItemTypes())
-					&& !in_array($backend->getItemType(), $parentItemTypes)
+			foreach ($this->shareBackends as $shareBackend) {
+				if ($shareBackend instanceof CollectionShareBackend
+					&& in_array($itemType, $shareBackend->getChildrenItemTypes())
+					&& !in_array($shareBackend->getItemType(), $parentItemTypes)
 				) {
-					$parentItemTypes[] = $backend->getItemType();
+					$parentItemTypes[] = $shareBackend->getItemType();
 				}
 			}
 			foreach ($parentIds as $parentId) {
@@ -300,16 +300,16 @@ class SharesManager {
 	}
 
 	/**
-	 * Get shares backend by item type
+	 * Get share backend by item type
 	 * @param string $itemType
-	 * @throws SharesBackendDoesNotExistException
-	 * @return Shares
+	 * @throws ShareBackendDoesNotExistException
+	 * @return ShareBackend
 	 */
-	protected function getSharesBackend($itemType) {
-		if (isset($this->sharesBackends[$itemType])) {
-			return $this->sharesBackends[$itemType];
+	protected function getShareBackend($itemType) {
+		if (isset($this->shareBackends[$itemType])) {
+			return $this->shareBackends[$itemType];
 		} else {
-			throw new SharesBackendDoesNotExistException(
+			throw new ShareBackendDoesNotExistException(
 				'A share backend does not exist for the item type'
 			);
 		}
@@ -370,11 +370,11 @@ class SharesManager {
 		);
 		$parents = $this->getShares($itemType, $filter);
 		// Search in collections for parents in case children were reshared
-		foreach ($this->sharesBackends as $backend) {
-			if ($backend instanceof CollectionShares
-				&& in_array($itemType, $backend->getChildrenItemTypes())
+		foreach ($this->shareBackends as $shareBackend) {
+			if ($shareBackend instanceof CollectionShareBackend
+				&& in_array($itemType, $shareBackend->getChildrenItemTypes())
 			) {
-				$collectionParents = $backend->searchForChildren($shareOwner, $itemSource);
+				$collectionParents = $shareBackend->searchForChildren($shareOwner, $itemSource);
 				$parents = array_merge($parents, $collectionParents);
 			}
 		}
@@ -459,7 +459,7 @@ class SharesManager {
 	 * @param Share $share
 	 * @param Share $oldShare
 	 *
-	 * The share has to be updated in the shares backend before this is called
+	 * The share has to be updated in the share backend before this is called
 	 * 
 	 */
 	protected function updateReshares(Share $share, Share $oldShare) {

@@ -30,7 +30,7 @@ use OC\Share\Exception\InvalidPermissionsException;
 use OC\Share\Exception\InvalidExpirationTimeException;
 
 /**
- * Backend class that apps extend and register with the SharesManager to share content
+ * Backend class that apps extend and register with the ShareManager to share content
  *
  *  Hooks available in class name scope
  *  - preShare(Share $share)
@@ -42,7 +42,7 @@ use OC\Share\Exception\InvalidExpirationTimeException;
  *
  * @version 2.0.0 BETA
  */
-abstract class Shares extends BasicEmitter {
+abstract class ShareBackend extends BasicEmitter {
 
 	protected $timeMachine;
 	protected $shareTypes;

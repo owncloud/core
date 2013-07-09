@@ -22,11 +22,11 @@
 namespace OC\Share;
 
 use OC\Share\Share;
-use OC\Share\Shares;
+use OC\Share\ShareBackend;
 use OC\Share\TimeMachine;
 
 /**
- * Backend class that apps extend and register with the SharesManager to share content
+ * Backend class that apps extend and register with the ShareManager to share content
  * This class should be used if the app has content that can have children that are also shared
  * using a different backend class e.g. folders
  *
@@ -40,7 +40,7 @@ use OC\Share\TimeMachine;
  *
  * @version 2.0.0 BETA
  */
-abstract class CollectionShares extends Shares {
+abstract class CollectionShareBackend extends ShareBackend {
 
 	/**
 	 * The constructor

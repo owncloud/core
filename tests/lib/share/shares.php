@@ -24,7 +24,7 @@ namespace Test\Share;
 use OC\Share\Share;
 use OC\Share\TimeMachine;
 
-class TestShares extends \OC\Share\Shares {
+class TestShareBackend extends \OC\Share\ShareBackend {
 
 	private $isValidItem;
 
@@ -64,13 +64,13 @@ class TestShares extends \OC\Share\Shares {
 
 }
 
-class Shares extends \PHPUnit_Framework_TestCase {
+class ShareBackend extends \PHPUnit_Framework_TestCase {
 
 	protected $timeMachine;
 	protected $user;
 	protected $group;
 	protected $link;
-	protected $shares;
+	protected $shareBackend;
 
 	protected function setUp() {
 		$this->timeMachine = $this->getMockBuilder('\OC\Share\TimeMachine')
@@ -97,14 +97,14 @@ class Shares extends \PHPUnit_Framework_TestCase {
 		$this->link->expects($this->any())
 			->method('getId')
 			->will($this->returnValue('link'));
-		$this->shares = new TestShares($this->timeMachine,
+		$this->shareBackend = new TestShareBackend($this->timeMachine,
 			array($this->user, $this->group, $this->link)
 		);
-		$this->shares->setIsValidItem(true);
+		$this->shareBackend->setIsValidItem(true);
 	}
 
 	public function testShare() {
-		$this->shares->setIsValidItem(true);
+		$this->shareBackend->setIsValidItem(true);
 
 		$mtgap = 'MTGap';
 		$icewind = 'Icewind';
@@ -151,22 +151,22 @@ class Shares extends \PHPUnit_Framework_TestCase {
 			->method('update');
 		$this->link->expects($this->never())
 			->method('setParentIds');
-		$share = $this->shares->share($share);
+		$share = $this->shareBackend->share($share);
 		$this->assertEquals($sharedShare, $share);
 	}
 
 	public function testShareWithInvalidItem() {
-		$this->shares->setIsValidItem(false);
+		$this->shareBackend->setIsValidItem(false);
 
 		$share = new Share();
 		$this->setExpectedException('\OC\Share\Exception\InvalidItemException',
 			'The item does not exist'
 		);
-		$this->shares->share($share);
+		$this->shareBackend->share($share);
 	}
 
 	public function testShareAgain() {
-		$this->shares->setIsValidItem(true);
+		$this->shareBackend->setIsValidItem(true);
 
 		$butonic = 'butonic';
 		$bartv = 'bartv';
@@ -187,11 +187,11 @@ class Shares extends \PHPUnit_Framework_TestCase {
 		$this->setExpectedException('\OC\Share\Exception\InvalidShareException',
 			'The share already exists'
 		);
-		$this->shares->share($share);
+		$this->shareBackend->share($share);
 	}
 
 	public function testShareWithInvalidShare() {
-		$this->shares->setIsValidItem(true);
+		$this->shareBackend->setIsValidItem(true);
 
 		$mtgap = 'MTGap';
 		$icewind = 'Icewind';
@@ -218,7 +218,7 @@ class Shares extends \PHPUnit_Framework_TestCase {
 			->method('isValidShare')
 			->with($this->equalTo($share))
 			->will($this->returnValue(false));
-		$this->assertFalse($this->shares->share($share));
+		$this->assertFalse($this->shareBackend->share($share));
 	}
 
 	public function testUnshare() {
@@ -228,7 +228,7 @@ class Shares extends \PHPUnit_Framework_TestCase {
 		$this->user->expects($this->once())
 			->method('unshare')
 			->with($this->equalTo($share));
-		$this->shares->unshare($share);
+		$this->shareBackend->unshare($share);
 	}
 
 	public function testUpdate() {
@@ -240,7 +240,7 @@ class Shares extends \PHPUnit_Framework_TestCase {
 		$this->user->expects($this->once())
 			->method('update')
 			->with($this->equalTo($share));
-		$this->shares->update($share);
+		$this->shareBackend->update($share);
 	}
 
 	public function testUpdateWithCustomUpdateMethod() {
@@ -254,7 +254,7 @@ class Shares extends \PHPUnit_Framework_TestCase {
 		$this->user->expects($this->once())
 			->method('setParentIds')
 			->with($this->equalTo($share));
-		$this->shares->update($share);
+		$this->shareBackend->update($share);
 	}
 
 	public function testUpdateWithNoChanges() {
@@ -264,7 +264,7 @@ class Shares extends \PHPUnit_Framework_TestCase {
 		$share->resetUpdatedProperties();
 		$this->link->expects($this->never())
 			->method('update');
-		$this->shares->update($share);
+		$this->shareBackend->update($share);
 	}
 
 	public function testUpdateWithInvalidPermissions() {
@@ -275,7 +275,7 @@ class Shares extends \PHPUnit_Framework_TestCase {
 		$this->setExpectedException('\OC\Share\Exception\InvalidPermissionsException',
 			'The permissions are not in the range of 1 to '.\OCP\PERMISSION_ALL
 		);
-		$this->shares->update($share);
+		$this->shareBackend->update($share);
 	}
 
 	public function testUpdateWithInvalidExpirationTime() {
@@ -287,7 +287,7 @@ class Shares extends \PHPUnit_Framework_TestCase {
 		$this->setExpectedException('\OC\Share\Exception\InvalidExpirationTimeException',
 			'The expiration time is not at least 1 hour in the future'
 		);
-		$this->shares->update($share);
+		$this->shareBackend->update($share);
 	}
 
 	public function testGetShares() {
@@ -315,7 +315,7 @@ class Shares extends \PHPUnit_Framework_TestCase {
 		$this->link->expects($this->once())
 			->method('getShares')
 			->will($this->returnValueMap($linkMap));
-		$shares = $this->shares->getShares();
+		$shares = $this->shareBackend->getShares();
 		$this->assertCount(2, $shares);
 		$this->assertContains($share1, $shares);
 		$this->assertContains($share2, $shares);
@@ -352,12 +352,12 @@ class Shares extends \PHPUnit_Framework_TestCase {
 		$this->link->expects($this->exactly(2))
 			->method('getShares')
 			->will($this->returnValueMap($linkMap));
-		$shares = $this->shares->getShares(array('itemSource' => $item));
+		$shares = $this->shareBackend->getShares(array('itemSource' => $item));
 		$this->assertCount(2, $shares);
 		$this->assertContains($share1, $shares);
 		$this->assertContains($share2, $shares);
 
-		$share = $this->shares->getShares(array('id' => 2));
+		$share = $this->shareBackend->getShares(array('id' => 2));
 		$this->assertCount(1, $share);
 		$this->assertContains($share2, $share);
 	}
@@ -376,7 +376,7 @@ class Shares extends \PHPUnit_Framework_TestCase {
 		$this->link->expects($this->once())
 			->method('getShares')
 			->will($this->returnValueMap($linkMap));
-		$shares = $this->shares->getShares(array('shareTypeId' => 'link'));
+		$shares = $this->shareBackend->getShares(array('shareTypeId' => 'link'));
 		$this->assertCount(1, $shares);
 		$this->assertContains($share, $shares);
 	}
@@ -405,7 +405,7 @@ class Shares extends \PHPUnit_Framework_TestCase {
 			->will($this->returnValueMap($groupMap));
 		$this->link->expects($this->never())
 			->method('getShares');
-		$shares = $this->shares->getShares(array(), 3, 1);
+		$shares = $this->shareBackend->getShares(array(), 3, 1);
 		$this->assertCount(3, $shares);
 		$this->assertContains($share2, $shares);
 		$this->assertContains($share3, $shares);
@@ -431,7 +431,7 @@ class Shares extends \PHPUnit_Framework_TestCase {
 		$this->link->expects($this->once())
 			->method('searchForPotentialShareWiths')
 			->will($this->returnValueMap($linkMap));
-		$shareWiths = $this->shares->searchForPotentialShareWiths('foo');
+		$shareWiths = $this->shareBackend->searchForPotentialShareWiths('foo');
 		$this->assertCount(5, $shareWiths);
 		$this->assertContains('foouser1', $shareWiths);
 		$this->assertContains('foouser2', $shareWiths);
@@ -455,7 +455,7 @@ class Shares extends \PHPUnit_Framework_TestCase {
 			->will($this->returnValueMap($groupMap));
 		$this->link->expects($this->never())
 			->method('searchForPotentialShareWiths');
-		$shareWiths = $this->shares->searchForPotentialShareWiths('foo', 3, 1);
+		$shareWiths = $this->shareBackend->searchForPotentialShareWiths('foo', 3, 1);
 		$this->assertCount(3, $shareWiths);
 		$this->assertContains('foouser2', $shareWiths);
 		$this->assertContains('foouser3', $shareWiths);
@@ -463,28 +463,28 @@ class Shares extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetShareType() {
-		$this->assertEquals($this->group, $this->shares->pGetShareType('group'));
+		$this->assertEquals($this->group, $this->shareBackend->pGetShareType('group'));
 	}
 
 	public function testGetShareTypeDoesNotExist() {
 		$this->setExpectedException('\OC\Share\Exception\ShareTypeDoesNotExistException',
 			'No share type found matching id'
 		);
-		$this->shares->pGetShareType('foo');
+		$this->shareBackend->pGetShareType('foo');
 	}
 
 	public function testIsExpired() {
 		// No expiration time
 		$share = new Share();
-		$this->assertFalse($this->shares->isExpired($share));
+		$this->assertFalse($this->shareBackend->isExpired($share));
 
 		// 1 second in the past
 		$share->setExpirationTime(1370797579);
-		$this->assertTrue($this->shares->isExpired($share));
+		$this->assertTrue($this->shareBackend->isExpired($share));
 
 		// 1 second in the future
 		$share->setExpirationTime(1370797581);
-		$this->assertFalse($this->shares->isExpired($share));
+		$this->assertFalse($this->shareBackend->isExpired($share));
 
 		// Default expiration time set for 2 hours from share time
 		$share->setExpirationTime(null);
@@ -492,18 +492,18 @@ class Shares extends \PHPUnit_Framework_TestCase {
 		\OC_Appconfig::setValue('core', 'shareapi_expiration_time', 7200);
 		// 1 hour 59 minutes 59 seconds in the past
 		$share->setShareTime(1370790381);
-		$this->assertFalse($this->shares->isExpired($share));
+		$this->assertFalse($this->shareBackend->isExpired($share));
 
 		// 2 hours 1 second in the past
 		$share->setShareTime(1370790379);
-		$this->assertTrue($this->shares->isExpired($share));
+		$this->assertTrue($this->shareBackend->isExpired($share));
 		\OC_Appconfig::setValue('core', 'shareapi_expiration_time', $defaultTime);
 	}
 
 	public function testAreValidPermissions() {
 		$share = new Share();
 		$share->setPermissions(31);
-		$this->assertTrue($this->shares->pAreValidPermissions($share));
+		$this->assertTrue($this->shareBackend->pAreValidPermissions($share));
 	}
 
 	public function testAreValidPermissionsWithString() {
@@ -512,7 +512,7 @@ class Shares extends \PHPUnit_Framework_TestCase {
 		$this->setExpectedException('\OC\Share\Exception\InvalidPermissionsException',
 			'The permissions are not an integer'
 		);
-		$this->shares->pAreValidPermissions($share);
+		$this->shareBackend->pAreValidPermissions($share);
 	}
 
 	public function testAreValidPermissionsWithZero() {
@@ -521,7 +521,7 @@ class Shares extends \PHPUnit_Framework_TestCase {
 		$this->setExpectedException('\OC\Share\Exception\InvalidPermissionsException',
 			'The permissions are not in the range of 1 to '.\OCP\PERMISSION_ALL
 		);
-		$this->shares->pAreValidPermissions($share);
+		$this->shareBackend->pAreValidPermissions($share);
 	}
 
 	public function testAreValidPermissionsWithOneMoreThanAll() {
@@ -530,17 +530,17 @@ class Shares extends \PHPUnit_Framework_TestCase {
 		$this->setExpectedException('\OC\Share\Exception\InvalidPermissionsException',
 			'The permissions are not in the range of 1 to '.\OCP\PERMISSION_ALL
 		);
-		$this->shares->pAreValidPermissions($share);
+		$this->shareBackend->pAreValidPermissions($share);
 	}
 
 	public function testIsValidExpirationTime() {
 		// No expiration time
 		$share = new Share();
-		$this->assertTrue($this->shares->pIsValidExpirationTime($share));
+		$this->assertTrue($this->shareBackend->pIsValidExpirationTime($share));
 
 		// 1 hour in the future
 		$share->setExpirationTime(1370801180);
-		$this->assertTrue($this->shares->pIsValidExpirationTime($share));
+		$this->assertTrue($this->shareBackend->pIsValidExpirationTime($share));
 	}
 
 	public function testIsValidExpirationTimeWithString() {
@@ -549,7 +549,7 @@ class Shares extends \PHPUnit_Framework_TestCase {
 		$this->setExpectedException('\OC\Share\Exception\InvalidExpirationTimeException',
 			'The expiration time is not an integer'
 		);
-		$this->shares->pIsValidExpirationTime($share);
+		$this->shareBackend->pIsValidExpirationTime($share);
 	}
 
 	public function testIsValidExpirationTimeNot1HourInTheFuture() {
@@ -559,7 +559,7 @@ class Shares extends \PHPUnit_Framework_TestCase {
 		$this->setExpectedException('\OC\Share\Exception\InvalidExpirationTimeException',
 			'The expiration time is not at least 1 hour in the future'
 		);
-		$this->shares->pIsValidExpirationTime($share);
+		$this->shareBackend->pIsValidExpirationTime($share);
 	}
 
 }
