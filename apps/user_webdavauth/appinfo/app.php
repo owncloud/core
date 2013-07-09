@@ -21,7 +21,7 @@
 *
 */
 
-if  (function_exists('curl_init')) {
+if (function_exists('curl_init')) {
 	require_once OC_App::getAppPath('user_webdavauth').'/user_webdavauth.php';
 	
 	OC_APP::registerAdmin('user_webdavauth', 'settings');
@@ -32,7 +32,7 @@ if  (function_exists('curl_init')) {
 	// add settings page to navigation
 	$entry = array(
 		'id' => "user_webdavauth_settings",
-		'order'=>1,
+		'order' => 1,
 		'href' => OC_Helper::linkTo( "user_webdavauth", "settings.php" ),
 		'name' => 'WEBDAVAUTH'
 	);
