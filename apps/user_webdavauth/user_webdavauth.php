@@ -62,7 +62,7 @@ class OC_USER_WEBDAVAUTH extends OC_User_Backend {
 
 		$result = curl_exec($ch);
 
-		if($result===false){
+		if($result===false) {
 			OC_Log::write('OC_USER_WEBDAVAUTH', 'Not possible to connect to WebDAV Url: "'.$webdavauth_protocol.'://'.$webdavauth_url_path.'" ', 3);
 			return false;
 
@@ -82,7 +82,7 @@ class OC_USER_WEBDAVAUTH extends OC_User_Backend {
 	/*
 	* we don´t know if a user exists without the password. so we have to return true all the time
 	*/
-	public function userExists( $uid ){
+	public function userExists( $uid ) {
 		return true;
 	}
 
