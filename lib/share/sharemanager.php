@@ -29,6 +29,7 @@ use OC\Share\Exception\ShareDoesNotExistException;
 use OC\Share\Exception\ShareBackendDoesNotExistException;
 use OC\Share\Exception\InvalidPermissionsException;
 use OC\Share\Exception\InvalidExpirationTimeException;
+use OC\Hooks\ForwardingEmitter;
 
 /**
  * This is the gateway for sharing content between users in ownCloud, aka Share API
@@ -36,9 +37,17 @@ use OC\Share\Exception\InvalidExpirationTimeException;
  *
  * The ShareManager's primary purpose is to ensure consistency between shares and their reshares
  *
+ *  Hooks available in scope \OC\Share:
+ *  - preShare(Share $share)
+ *  - postShare(Share $share)
+ *  - preUnshare(Share $share)
+ *  - postUnshare(Share $share)
+ *  - preUpdate(Share $share)
+ *  - postUpdate(Share $share)
+ *
  * @version 2.0.0 BETA
  */
-class ShareManager {
+class ShareManager extends ForwardingEmitter {
 
 	protected $shareBackends;
 
@@ -48,6 +57,7 @@ class ShareManager {
 	 */
 	public function registerShareBackend(ShareBackend $shareBackend) {
 		$this->shareBackends[$shareBackend->getItemType()] = $shareBackend;
+		$this->forward($shareBackend);
 	}
 
 	/**
