@@ -22,7 +22,7 @@
  */
 ?>
 
-<table id="userlist">
+<table id="userlist" ng-controller="userlist">
 	<thead>
 		<tr>
 			<th class="table-head thumbnail"></th>
@@ -34,9 +34,9 @@
 			<th class="table-head delete-user"></th>
 		</tr>
 	</thead>
-	<tbody ng-controller="userlist">
+	<tbody>
 		<tr ng-repeat="user in users">
-			<td class="thumbnail"><img src="http://placehold.it/30X30" /></td> <!--Temporary till wehave gravatars up!-->
+			<td class="thumbnail"><img src="http://placehold.it/30X30" /></td> <!--Temporary till we have gravatars up!-->
 			<td class="login-name">{{ user.name }}</td>
 			<td class="display-name">{{ user.displayname }}</td>
 			<td class="user-pass"></td>

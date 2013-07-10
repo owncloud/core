@@ -19,10 +19,15 @@
  *
  */
 
-var usersmanagement = angular.module('usersmanagement', ['ngResource']).config(
-['$httpProvider', function($httpProvider) {
-	$httpProvider.defaults.headers.common['requesttoken'] = oc_requesttoken;	
-}]);
+var usersmanagement = angular.module('usersmanagement', ['ngResource']).config(['$httpProvider','$routeProvider',
+	function($httpProvider,$routeProvider) {
+		$httpProvider.defaults.headers.common['requesttoken'] = oc_requesttoken;
+		$routeProvider.when('/', {
+			controller : 'userlist',
+			templateUrl : OC.filePath('settings', 'templates/users', 'part.userlist.php')
+		});	
+	},
+]);
 
 /* Group Service */ 
 
@@ -96,8 +101,8 @@ usersmanagement.controller('grouplist', ['$scope', '$http', 'GroupService',
 
 /* Fetches the List of All Users and details on the Right Content */
 
-usersmanagement.controller('userlist', ['$scope', '$http', 'QuotaService', 'UserService',
-	function ($scope, $http, QuotaService, UserService) {
+usersmanagement.controller('userlist', ['$scope', '$http', '$routeParams', '$location', 'QuotaService', 'UserService',
+	function ($scope, $http, $route, $routeParams, $location, QuotaService, UserService) {
 		$http.get(OC.filePath('settings', 'ajax', 'userlist.php')).then(function(response) {
 			$scope.users = response.data.userdetails;
 		});
