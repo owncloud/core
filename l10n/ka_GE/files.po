@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-07-07 01:58+0200\n"
-"PO-Revision-Date: 2013-07-06 23:14+0000\n"
+"POT-Creation-Date: 2013-07-10 02:13+0200\n"
+"PO-Revision-Date: 2013-07-09 23:15+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Georgian (Georgia) (http://www.transifex.com/projects/p/owncloud/language/ka_GE/)\n"
 "MIME-Version: 1.0\n"
@@ -27,7 +27,7 @@ msgstr "%s –ის გადატანა ვერ მოხერხდა
 msgid "Could not move %s"
 msgstr "%s –ის გადატანა ვერ მოხერხდა"
 
-#: ajax/upload.php:16 ajax/upload.php:36 ajax/upload.php:48
+#: ajax/upload.php:16 ajax/upload.php:45
 msgid "Unable to set upload directory."
 msgstr ""
 
@@ -35,46 +35,46 @@ msgstr ""
 msgid "Invalid Token"
 msgstr ""
 
-#: ajax/upload.php:62
+#: ajax/upload.php:59
 msgid "No file was uploaded. Unknown error"
 msgstr "ფაილი არ აიტვირთა. უცნობი შეცდომა"
 
-#: ajax/upload.php:69
+#: ajax/upload.php:66
 msgid "There is no error, the file uploaded with success"
 msgstr "ჭოცდომა არ დაფიქსირდა, ფაილი წარმატებით აიტვირთა"
 
-#: ajax/upload.php:70
+#: ajax/upload.php:67
 msgid ""
 "The uploaded file exceeds the upload_max_filesize directive in php.ini: "
 msgstr "ატვირთული ფაილი აჭარბებს upload_max_filesize დირექტივას php.ini ფაილში"
 
-#: ajax/upload.php:72
+#: ajax/upload.php:69
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
 msgstr "ატვირთული ფაილი აჭარბებს  MAX_FILE_SIZE დირექტივას, რომელიც მითითებულია HTML ფორმაში"
 
-#: ajax/upload.php:73
+#: ajax/upload.php:70
 msgid "The uploaded file was only partially uploaded"
 msgstr "ატვირთული ფაილი მხოლოდ ნაწილობრივ აიტვირთა"
 
-#: ajax/upload.php:74
+#: ajax/upload.php:71
 msgid "No file was uploaded"
 msgstr "ფაილი არ აიტვირთა"
 
-#: ajax/upload.php:75
+#: ajax/upload.php:72
 msgid "Missing a temporary folder"
 msgstr "დროებითი საქაღალდე არ არსებობს"
 
-#: ajax/upload.php:76
+#: ajax/upload.php:73
 msgid "Failed to write to disk"
 msgstr "შეცდომა დისკზე ჩაწერისას"
 
-#: ajax/upload.php:94
+#: ajax/upload.php:91
 msgid "Not enough storage available"
 msgstr "საცავში საკმარისი ადგილი არ არის"
 
-#: ajax/upload.php:126
+#: ajax/upload.php:123
 msgid "Invalid directory."
 msgstr "დაუშვებელი დირექტორია."
 
@@ -327,19 +327,19 @@ msgstr "მიმდინარეობს ფაილების სკა�
 msgid "Current scanning"
 msgstr "მიმდინარე სკანირება"
 
-#: templates/part.list.php:78
+#: templates/part.list.php:76
 msgid "directory"
 msgstr ""
 
-#: templates/part.list.php:80
+#: templates/part.list.php:78
 msgid "directories"
 msgstr ""
 
-#: templates/part.list.php:89
+#: templates/part.list.php:87
 msgid "file"
 msgstr ""
 
-#: templates/part.list.php:91
+#: templates/part.list.php:89
 msgid "files"
 msgstr ""
 

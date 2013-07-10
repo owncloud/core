@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-07-07 01:59+0200\n"
-"PO-Revision-Date: 2013-07-06 23:15+0000\n"
+"POT-Creation-Date: 2013-07-10 02:13+0200\n"
+"PO-Revision-Date: 2013-07-09 23:15+0000\n"
 "Last-Translator: miki_mika1362 <miki_mika1362@yahoo.com>\n"
 "Language-Team: Persian (http://www.transifex.com/projects/p/owncloud/language/fa/)\n"
 "MIME-Version: 1.0\n"
@@ -29,7 +29,7 @@ msgstr "خطا در اعتبار سنجی"
 
 #: ajax/changedisplayname.php:31
 msgid "Your display name has been changed."
-msgstr ""
+msgstr "نام نمایش شما تغییر یافته است."
 
 #: ajax/changedisplayname.php:34
 msgid "Unable to change display name"
@@ -236,7 +236,7 @@ msgstr "این سرور OwnCloud ارتباط اینترنتی ندارد.این
 
 #: templates/admin.php:94
 msgid "Cron"
-msgstr ""
+msgstr "زمانبند"
 
 #: templates/admin.php:103
 msgid "Execute one task with each page loaded"
@@ -246,13 +246,13 @@ msgstr "اجرای یک وظیفه با هر بار بارگذاری صفحه"
 msgid ""
 "cron.php is registered at a webcron service. Call the cron.php page in the "
 "owncloud root once a minute over http."
-msgstr ""
+msgstr "cron.php در یک سرویس webcron ثبت شده است. تماس یک بار در دقیقه بر روی http با صفحه  cron.php در ریشه owncloud ."
 
 #: templates/admin.php:123
 msgid ""
 "Use systems cron service. Call the cron.php file in the owncloud folder via "
 "a system cronjob once a minute."
-msgstr ""
+msgstr "استفاده از سیستم های سرویس cron . تماس یک بار در دقیقه با فایل cron.php در پوشه owncloud از طریق یک سیستم cronjob ."
 
 #: templates/admin.php:130
 msgid "Sharing"
@@ -307,7 +307,7 @@ msgstr "وادار کردن مشتریان برای ارتباط با ownCloud �
 msgid ""
 "Please connect to this ownCloud instance via HTTPS to enable or disable the "
 "SSL enforcement."
-msgstr ""
+msgstr "از طریق HTTPS به این نسخه از ownCloud متصل شوید تا بتوانید SSL  را فعال یا غیر فعال نمایید."
 
 #: templates/admin.php:197
 msgid "Log"
@@ -315,7 +315,7 @@ msgstr "کارنامه"
 
 #: templates/admin.php:198
 msgid "Log level"
-msgstr ""
+msgstr "سطح ورود"
 
 #: templates/admin.php:229
 msgid "More"
@@ -450,11 +450,14 @@ msgstr "به ترجمه آن کمک کنید"
 
 #: templates/personal.php:106
 msgid "WebDAV"
-msgstr ""
+msgstr "WebDAV"
 
 #: templates/personal.php:108
-msgid "Use this address to connect to your ownCloud in your file manager"
-msgstr "از این نشانی برای اتصال به ownCloud خودتان در بخش مدیریت فایل خودتان استفاده کنید"
+#, php-format
+msgid ""
+"Use this address to <a href=\"%s/server/5.0/user_manual/files/files.html\" "
+"target=\"_blank\">access your Files via WebDAV</a>"
+msgstr "استفاده ابن آدرس <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\"> برای دسترسی فایل های شما از طریق WebDAV </a>"
 
 #: templates/users.php:21
 msgid "Login Name"
@@ -466,13 +469,13 @@ msgstr "ایجاد کردن"
 
 #: templates/users.php:36
 msgid "Admin Recovery Password"
-msgstr ""
+msgstr "مدیریت بازیابی رمز عبور"
 
 #: templates/users.php:37 templates/users.php:38
 msgid ""
 "Enter the recovery password in order to recover the users files during "
 "password change"
-msgstr ""
+msgstr "در حین تغییر رمز عبور به منظور بازیابی فایل های کاربران، رمز عبور بازیابی را وارد کنید"
 
 #: templates/users.php:42
 msgid "Default Storage"
