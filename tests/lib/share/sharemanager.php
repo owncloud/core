@@ -61,22 +61,22 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 			->method('isValidItem')
 			->will($this->returnValue(true));
 		$this->areCollectionsEnabled = false;
-		$this->collectionShare = $this->getMockBuilder('\OC\Share\CollectionShareBackend')
+		$this->collectionShareBackend = $this->getMockBuilder('\OC\Share\CollectionShareBackend')
 			->disableOriginalConstructor()
 			->setMethods(get_class_methods('\OC\Share\CollectionShareBackend'))
 			->getMockForAbstractClass();
-		$this->collectionShare->expects($this->any())
+		$this->collectionShareBackend->expects($this->any())
 			->method('getItemType')
 			->will($this->returnValue('testCollection'));
-		$this->collectionShare->expects($this->any())
+		$this->collectionShareBackend->expects($this->any())
 			->method('isValidItem')
 			->will($this->returnValue(true));
-		$this->collectionShare->expects($this->any())
+		$this->collectionShareBackend->expects($this->any())
 			->method('getChildrenItemTypes')
 			->will($this->returnCallback(array($this, 'getChildrenItemTypesMock')));
 		$this->shareManager = new TestShareManager();
 		$this->shareManager->registerShareBackend($this->shareBackend);
-		$this->shareManager->registerShareBackend($this->collectionShare);
+		$this->shareManager->registerShareBackend($this->collectionShareBackend);
 	}
 
 	public function getChildrenItemTypesMock() {
@@ -93,7 +93,7 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 		$this->assertArrayHasKey('test', $backends);
 		$this->assertEquals($this->shareBackend, $backends['test']);
 		$this->assertArrayHasKey('testCollection', $backends);
-		$this->assertEquals($this->collectionShare, $backends['testCollection']);
+		$this->assertEquals($this->collectionShareBackend, $backends['testCollection']);
 	}
 
 	public function testGetShareBackend() {
@@ -492,10 +492,10 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 		$this->shareBackend->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($sharesMap));
-		$this->collectionShare->expects($this->atLeastOnce())
+		$this->collectionShareBackend->expects($this->atLeastOnce())
 			->method('searchForChildren')
 			->will($this->returnValueMap($childMap));
-		$this->collectionShare->expects($this->atLeastOnce())
+		$this->collectionShareBackend->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($collectionMap));
 		$this->shareBackend->expects($this->once())
@@ -603,17 +603,17 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 		$childMap = array(
 			array($anybodyelse, $item, array($duplicate, $share)),
 		);
-		$this->collectionShare->expects($this->atLeastOnce())
+		$this->collectionShareBackend->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($collectionMap));
-		$this->collectionShare->expects($this->once())
+		$this->collectionShareBackend->expects($this->once())
 			->method('share')
 			->with($this->equalTo($share))
 			->will($this->returnValue($share));
-		$this->collectionShare->expects($this->atLeastOnce())
+		$this->collectionShareBackend->expects($this->atLeastOnce())
 			->method('searchForChildren')
 			->will($this->returnValueMap($childMap));
-		$this->collectionShare->expects($this->once())
+		$this->collectionShareBackend->expects($this->once())
 			->method('update')
 			->with($this->equalTo($reshare2));
 		$this->shareBackend->expects($this->atLeastOnce())
@@ -866,12 +866,12 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 			->will($this->returnValueMap($sharesMap));
 		$this->shareBackend->expects($this->once())
 			->method('update');
-		$this->collectionShare->expects($this->atLeastOnce())
+		$this->collectionShareBackend->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($collectionMap));
-		$this->collectionShare->expects($this->once())
+		$this->collectionShareBackend->expects($this->once())
 			->method('update');
-		$this->collectionShare->expects($this->exactly(2))
+		$this->collectionShareBackend->expects($this->exactly(2))
 			->method('unshare');
 		$this->shareManager->unshare($parent1);
 		$this->assertEquals($updatedParent2, $parent2);
@@ -1565,7 +1565,7 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 		$this->shareBackend->expects($this->once())
 			->method('getShares')
 			->will($this->returnValueMap($shareMap));
-		$this->collectionShare->expects($this->atLeastOnce())
+		$this->collectionShareBackend->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($collectionMap));
 		$reshares = $this->shareManager->getReshares($parent);
@@ -1626,7 +1626,7 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 		$this->shareBackend->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($sharesMap));
-		$this->collectionShare->expects($this->atLeastOnce())
+		$this->collectionShareBackend->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($collectionMap));
 		$parents = $this->shareManager->getParents($share);
@@ -1639,7 +1639,7 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 		$share = new Share();
 		$this->shareBackend->expects($this->never())
 			->method('getShares');
-		$this->collectionShare->expects($this->never())
+		$this->collectionShareBackend->expects($this->never())
 			->method('getShares');
 		$this->assertEmpty($this->shareManager->getParents($share));
 	}
