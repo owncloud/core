@@ -27,6 +27,7 @@ use OC\Share\TimeMachine;
 class TestShareBackend extends \OC\Share\ShareBackend {
 
 	private $isValidItem;
+	private $events;
 
 	public function getItemType() {
 		return 'test';
@@ -60,6 +61,15 @@ class TestShareBackend extends \OC\Share\ShareBackend {
 
 	public function pIsValidExpirationTime(Share $share) {
 		return parent::isValidExpirationTime($share);
+	}
+
+	protected function emit($scope, $method, $arguments = array()) {
+		// Store the emitted events so they can be retrieved later for assertions
+		$this->events[] = array($scope, $method, $arguments);
+	}
+
+	public function getEvents() {
+		return $this->events;
 	}
 
 }
@@ -153,6 +163,9 @@ class ShareBackend extends \PHPUnit_Framework_TestCase {
 			->method('setParentIds');
 		$share = $this->shareBackend->share($share);
 		$this->assertEquals($sharedShare, $share);
+		$events = $this->shareBackend->getEvents();
+		$this->assertContains(array('\OC\Share', 'preShare', array($share)), $events);
+		$this->assertContains(array('\OC\Share', 'postShare', array($sharedShare)), $events);
 	}
 
 	public function testShareWithInvalidItem() {
@@ -229,6 +242,9 @@ class ShareBackend extends \PHPUnit_Framework_TestCase {
 			->method('unshare')
 			->with($this->equalTo($share));
 		$this->shareBackend->unshare($share);
+		$events = $this->shareBackend->getEvents();
+		$this->assertContains(array('\OC\Share', 'preUnshare', array($share)), $events);
+		$this->assertContains(array('\OC\Share', 'postUnshare', array($share)), $events);
 	}
 
 	public function testUpdate() {
@@ -241,6 +257,9 @@ class ShareBackend extends \PHPUnit_Framework_TestCase {
 			->method('update')
 			->with($this->equalTo($share));
 		$this->shareBackend->update($share);
+		$events = $this->shareBackend->getEvents();
+		$this->assertContains(array('\OC\Share', 'preUpdate', array($share)), $events);
+		$this->assertContains(array('\OC\Share', 'postUpdate', array($share)), $events);
 	}
 
 	public function testUpdateWithCustomUpdateMethod() {
@@ -255,6 +274,9 @@ class ShareBackend extends \PHPUnit_Framework_TestCase {
 			->method('setParentIds')
 			->with($this->equalTo($share));
 		$this->shareBackend->update($share);
+		$events = $this->shareBackend->getEvents();
+		$this->assertContains(array('\OC\Share', 'preUpdate', array($share)), $events);
+		$this->assertContains(array('\OC\Share', 'postUpdate', array($share)), $events);
 	}
 
 	public function testUpdateWithNoChanges() {
@@ -265,6 +287,22 @@ class ShareBackend extends \PHPUnit_Framework_TestCase {
 		$this->link->expects($this->never())
 			->method('update');
 		$this->shareBackend->update($share);
+		$events = $this->shareBackend->getEvents();
+		$this->assertEmpty($events);
+	}
+
+	public function testUpdateWithValidPermissionsAndExpirationTime() {
+		$share = new Share();
+		$share->setShareTypeId('user');
+		$share->resetUpdatedProperties();
+		$share->setPermissions(1);
+		$share->setExpirationTime(1370801180);
+		$this->user->expects($this->once())
+			->method('update');
+		$this->shareBackend->update($share);
+		$events = $this->shareBackend->getEvents();
+		$this->assertContains(array('\OC\Share', 'preUpdate', array($share)), $events);
+		$this->assertContains(array('\OC\Share', 'postUpdate', array($share)), $events);
 	}
 
 	public function testUpdateWithInvalidPermissions() {
@@ -276,6 +314,8 @@ class ShareBackend extends \PHPUnit_Framework_TestCase {
 			'The permissions are not in the range of 1 to '.\OCP\PERMISSION_ALL
 		);
 		$this->shareBackend->update($share);
+		$events = $this->shareBackend->getEvents();
+		$this->assertEmpty($events);
 	}
 
 	public function testUpdateWithInvalidExpirationTime() {
@@ -288,6 +328,8 @@ class ShareBackend extends \PHPUnit_Framework_TestCase {
 			'The expiration time is not at least 1 hour in the future'
 		);
 		$this->shareBackend->update($share);
+		$events = $this->shareBackend->getEvents();
+		$this->assertEmpty($events);
 	}
 
 	public function testGetShares() {

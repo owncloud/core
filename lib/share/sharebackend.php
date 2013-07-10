@@ -135,25 +135,27 @@ abstract class ShareBackend extends BasicEmitter {
 	 */
 	public function update(Share $share) {
 		$properties = $share->getUpdatedProperties();
-		if (isset($properties['permissions'])) {
-			$this->areValidPermissions($share);
-		}
-		if (isset($properties['expirationTime'])) {
-			$this->isValidExpirationTime($share);
-		}
-		$shareType = $this->getShareType($share->getShareTypeId());
-		$this->emit('\OC\Share', 'preUpdate', array($share));
-		foreach ($properties as $property => $updated) {
-			$setter = 'set'.ucfirst($property);
-			if (method_exists($shareType, $setter)) {
-				$shareType->$setter($share);
-				unset($properties[$property]);
-			}
-		}
 		if (!empty($properties)) {
-			$shareType->update($share);
+			if (isset($properties['permissions'])) {
+				$this->areValidPermissions($share);
+			}
+			if (isset($properties['expirationTime'])) {
+				$this->isValidExpirationTime($share);
+			}
+			$shareType = $this->getShareType($share->getShareTypeId());
+			$this->emit('\OC\Share', 'preUpdate', array($share));
+			foreach ($properties as $property => $updated) {
+				$setter = 'set'.ucfirst($property);
+				if (method_exists($shareType, $setter)) {
+					$shareType->$setter($share);
+					unset($properties[$property]);
+				}
+			}
+			if (!empty($properties)) {
+				$shareType->update($share);
+			}
+			$this->emit('\OC\Share', 'postUpdate', array($share));
 		}
-		$this->emit('\OC\Share', 'postUpdate', array($share));
 	}
 
 	/**
