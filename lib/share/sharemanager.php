@@ -51,6 +51,30 @@ class ShareManager {
 	}
 
 	/**
+	 * Get all registered share backends
+	 * @return array
+	 */
+	public function getShareBackends() {
+		return $this->shareBackends;
+	}
+
+	/**
+	 * Get a share backend by item type
+	 * @param string $itemType
+	 * @throws ShareBackendDoesNotExistException
+	 * @return ShareBackend
+	 */
+	public function getShareBackend($itemType) {
+		if (isset($this->shareBackends[$itemType])) {
+			return $this->shareBackends[$itemType];
+		} else {
+			throw new ShareBackendDoesNotExistException(
+				'A share backend does not exist for the item type'
+			);
+		}
+	}
+
+	/**
 	 * Share a share in the share backend
 	 * @param Share $share
 	 * @throws InvalidItemException
@@ -218,7 +242,8 @@ class ShareManager {
 	 * @param string $itemType
 	 * @param any $itemSource
 	 * 
-	 * Call this if an item is deleted by the item owner
+	 * Call this if an item is deleted by the item owner. However, this should not be called if
+	 * the item owner is deleted because this is handled by the UserWatcher.
 	 * 
 	 */
 	public function unshareItem($itemType, $itemSource) {
@@ -297,22 +322,6 @@ class ShareManager {
 			}
 		}
 		return $parents;
-	}
-
-	/**
-	 * Get share backend by item type
-	 * @param string $itemType
-	 * @throws ShareBackendDoesNotExistException
-	 * @return ShareBackend
-	 */
-	protected function getShareBackend($itemType) {
-		if (isset($this->shareBackends[$itemType])) {
-			return $this->shareBackends[$itemType];
-		} else {
-			throw new ShareBackendDoesNotExistException(
-				'A share backend does not exist for the item type'
-			);
-		}
 	}
 
 	/**

@@ -25,10 +25,6 @@ use OC\Share\Share;
 
 class TestShareManager extends \OC\Share\ShareManager {
 
-	public function pGetShareBackend($itemType) {
-		return parent::getShareBackend($itemType);
-	}
-
 	public function pAreValidPermissionsForParents(Share $share) {
 		return parent::areValidPermissionsForParents($share);
 	}
@@ -89,6 +85,22 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 		} else {
 			return array();
 		}
+	}
+
+	public function testGetShareBackends() {
+		$backends = $this->shareManager->getShareBackends();
+		$this->assertCount(2, $backends);
+		$this->assertArrayHasKey('test', $backends);
+		$this->assertEquals($this->shareBackend, $backends['test']);
+		$this->assertArrayHasKey('testCollection', $backends);
+		$this->assertEquals($this->collectionShare, $backends['testCollection']);
+	}
+
+	public function testGetShareBackend() {
+		$this->setExpectedException('\OC\Share\Exception\ShareBackendDoesNotExistException',
+			'A share backend does not exist for the item type'
+		);
+		$this->shareManager->getShareBackend('foo');
 	}
 
 	public function testShareWithOneParent() {
@@ -1646,13 +1658,6 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 			'The parent share does not exist'
 		);
 		$this->shareManager->getParents($share);
-	}
-
-	public function testGetShareBackend() {
-		$this->setExpectedException('\OC\Share\Exception\ShareBackendDoesNotExistException',
-			'A share backend does not exist for the item type'
-		);
-		$this->shareManager->pGetShareBackend('foo');
 	}
 
 	public function testAreValidPermissionsWithOneParent() {
