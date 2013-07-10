@@ -62,6 +62,7 @@ class DAV extends \OC\Files\Storage\Common{
 				'baseUri' => $this->createBaseUri(),
 				'userName' => $this->user,
 				'password' => $this->password,
+				'authType' => \Sabre_DAV_Client::AUTH_BASIC,
 			);
 
 		$this->client = new \Sabre_DAV_Client($settings);
@@ -104,7 +105,8 @@ class DAV extends \OC\Files\Storage\Common{
 		$this->init();
 		$path=$this->cleanPath($path);
 		try {
-			$response=$this->client->propfind($path, array(), 1);
+			$url = \Sabre_DAV_URLUtil::encodePath($path);
+			$response=$this->client->propfind($url, array(), 1);
 			$id=md5('webdav'.$this->root.$path);
 			$content = array();
 			$files=array_keys($response);
@@ -116,6 +118,7 @@ class DAV extends \OC\Files\Storage\Common{
 			\OC\Files\Stream\Dir::register($id, $content);
 			return opendir('fakedir://'.$id);
 		} catch(\Exception $e) {
+			\OCP\Util::writeLog("webdav client", 'opendir for '.$path.' failed: '.\OCP\Util::sanitizeHTML($e->getMessage()), \OCP\Util::ERROR);
 			return false;
 		}
 	}
@@ -124,12 +127,12 @@ class DAV extends \OC\Files\Storage\Common{
 		$this->init();
 		$path=$this->cleanPath($path);
 		try {
-			$response=$this->client->propfind($path, array('{DAV:}resourcetype'));
+			$response = $this->cachedPropfind($path);
 			$responseType=$response["{DAV:}resourcetype"]->resourceType;
 			return (count($responseType)>0 and $responseType[0]=="{DAV:}collection")?'dir':'file';
 		} catch(\Exception $e) {
 			error_log($e->getMessage());
-			\OCP\Util::writeLog("webdav client", \OCP\Util::sanitizeHTML($e->getMessage()), \OCP\Util::ERROR);
+			\OCP\Util::writeLog("webdav client", 'filetype for '.$path.' failed: '.\OCP\Util::sanitizeHTML($e->getMessage()), \OCP\Util::ERROR);
 			return false;
 		}
 	}
@@ -146,7 +149,7 @@ class DAV extends \OC\Files\Storage\Common{
 		$this->init();
 		$path=$this->cleanPath($path);
 		try {
-			$this->client->propfind($path, array('{DAV:}resourcetype'));
+			$this->cachedPropfind($path);
 			return true;//no 404 exception
 		} catch(\Exception $e) {
 			return false;
@@ -161,6 +164,7 @@ class DAV extends \OC\Files\Storage\Common{
 	public function fopen($path, $mode) {
 		$this->init();
 		$path=$this->cleanPath($path);
+		$this->cleanCache($path);
 		switch($mode) {
 			case 'r':
 			case 'rb':
@@ -171,7 +175,8 @@ class DAV extends \OC\Files\Storage\Common{
 				$curl = curl_init();
 				$fp = fopen('php://temp', 'r+');
 				curl_setopt($curl, CURLOPT_USERPWD, $this->user.':'.$this->password);
-				curl_setopt($curl, CURLOPT_URL, $this->createBaseUri().$path);
+				$url = \Sabre_DAV_URLUtil::encodePath($path);
+				curl_setopt($curl, CURLOPT_URL, $this->createBaseUri().$url);
 				curl_setopt($curl, CURLOPT_FILE, $fp);
 
 				curl_exec ($curl);
@@ -217,13 +222,14 @@ class DAV extends \OC\Files\Storage\Common{
 		$this->init();
 		$path = $this->cleanPath($path);
 		try {
-			$response = $this->client->propfind($path, array('{DAV:}quota-available-bytes'));
+			$response = $this->cachedPropfind($path);
 			if (isset($response['{DAV:}quota-available-bytes'])) {
 				return (int)$response['{DAV:}quota-available-bytes'];
 			} else {
 				return 0;
 			}
 		} catch (\Exception $e) {
+			\OCP\Util::writeLog("webdav client", 'free_space for '.$path.' failed: '.\OCP\Util::sanitizeHTML($e->getMessage()), \OCP\Util::ERROR);
 			return \OC\Files\FREE_SPACE_UNKNOWN;
 		}
 	}
@@ -234,8 +240,10 @@ class DAV extends \OC\Files\Storage\Common{
 			$mtime = time();
 		}
 		$path = $this->cleanPath($path);
+		$this->cleanCache($path);
 		try {
-			$this->client->proppatch($path, array('{DAV:}lastmodified' => $mtime));
+			$url = \Sabre_DAV_URLUtil::encodePath($path);
+			$this->client->proppatch($url, array('{DAV:}lastmodified' => $mtime));
 		} catch (\Sabre_DAV_Exception_NotFound $e) {
 			$this->file_put_contents($path, '');
 		}
@@ -248,12 +256,16 @@ class DAV extends \OC\Files\Storage\Common{
 	}
 
 	public function uploadFile($path, $target) {
+		$targeturl = \Sabre_DAV_URLUtil::encodePath($target);
+		
+		$this->cleanCache($path);
+		
 		$this->init();
 		$source = fopen($path, 'r');
 
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_USERPWD, $this->user . ':' . $this->password);
-		curl_setopt($curl, CURLOPT_URL, $this->createBaseUri() . $target);
+		curl_setopt($curl, CURLOPT_URL, $this->createBaseUri() . $targeturl);
 		curl_setopt($curl, CURLOPT_BINARYTRANSFER, true);
 		curl_setopt($curl, CURLOPT_INFILE, $source); // file pointer
 		curl_setopt($curl, CURLOPT_INFILESIZE, filesize($path));
@@ -266,10 +278,14 @@ class DAV extends \OC\Files\Storage\Common{
 		$this->init();
 		$path1 = $this->cleanPath($path1);
 		$path2 = $this->createBaseUri() . $this->cleanPath($path2);
+		$this->cleanCache($path1);
+		$this->cleanCache($path2);
+		$url1 = \Sabre_DAV_URLUtil::encodePath($path1);
 		try {
-			$this->client->request('MOVE', $path1, null, array('Destination' => $path2));
+			$this->client->request('MOVE', $url1, null, array('Destination' => $path2));
 			return true;
 		} catch (\Exception $e) {
+			\OCP\Util::writeLog("webdav client", 'rename for '.$path1.' to '.$path2.' failed: '.\OCP\Util::sanitizeHTML($e->getMessage()), \OCP\Util::ERROR);
 			return false;
 		}
 	}
@@ -278,10 +294,14 @@ class DAV extends \OC\Files\Storage\Common{
 		$this->init();
 		$path1 = $this->cleanPath($path1);
 		$path2 = $this->root . $this->cleanPath($path2);
+		$this->cleanCache($path1);
+		$this->cleanCache($path2);
+		$url1 = \Sabre_DAV_URLUtil::encodePath($path1);
 		try {
-			$this->client->request('COPY', $path1, null, array('Destination' => $path2));
+			$this->client->request('COPY', $url1, null, array('Destination' => $path2));
 			return true;
 		} catch (\Exception $e) {
+			\OCP\Util::writeLog("webdav client", 'copy for '.$path1.' to '.$path2.' failed: '.\OCP\Util::sanitizeHTML($e->getMessage()), \OCP\Util::ERROR);
 			return false;
 		}
 	}
@@ -290,12 +310,13 @@ class DAV extends \OC\Files\Storage\Common{
 		$this->init();
 		$path = $this->cleanPath($path);
 		try {
-			$response = $this->client->propfind($path, array('{DAV:}getlastmodified', '{DAV:}getcontentlength'));
+			$response = $this->cachedPropfind($path);
 			return array(
 				'mtime' => strtotime($response['{DAV:}getlastmodified']),
 				'size' => (int)isset($response['{DAV:}getcontentlength']) ? $response['{DAV:}getcontentlength'] : 0,
 			);
 		} catch (\Exception $e) {
+			\OCP\Util::writeLog("webdav client", 'stat for '.$path.' failed: '.\OCP\Util::sanitizeHTML($e->getMessage()), \OCP\Util::ERROR);
 			return array();
 		}
 	}
@@ -304,7 +325,7 @@ class DAV extends \OC\Files\Storage\Common{
 		$this->init();
 		$path = $this->cleanPath($path);
 		try {
-			$response = $this->client->propfind($path, array('{DAV:}getcontenttype', '{DAV:}resourcetype'));
+			$response = $this->cachedPropfind($path);
 			$responseType = $response["{DAV:}resourcetype"]->resourceType;
 			$type = (count($responseType) > 0 and $responseType[0] == "{DAV:}collection") ? 'dir' : 'file';
 			if ($type == 'dir') {
@@ -315,6 +336,7 @@ class DAV extends \OC\Files\Storage\Common{
 				return false;
 			}
 		} catch (\Exception $e) {
+			\OCP\Util::writeLog("webdav client", 'getMimeType for '.$path.' failed: '.\OCP\Util::sanitizeHTML($e->getMessage()), \OCP\Util::ERROR);
 			return false;
 		}
 	}
@@ -325,11 +347,41 @@ class DAV extends \OC\Files\Storage\Common{
 
 	private function simpleResponse($method, $path, $body, $expected) {
 		$path = $this->cleanPath($path);
+		$url = \Sabre_DAV_URLUtil::encodePath($path);
+		$this->cleanCache($path);
 		try {
-			$response = $this->client->request($method, $path, $body);
+			$response = $this->client->request($method, $url, $body);
 			return $response['statusCode'] == $expected;
 		} catch (\Exception $e) {
+			\OCP\Util::writeLog("webdav client", $method.' for '.$url.' failed: '.\OCP\Util::sanitizeHTML($e->getMessage()), \OCP\Util::ERROR);
 			return false;
 		}
+	}
+	private function cachedPropfind ($path, $depth = 0) {
+		$key = md5($this->createBaseUri() . $path);
+		$cache = \OC_Cache::getUserCache();
+		$cachedResponse= $cache->get($key);
+		if ($cachedResponse) {
+			return unserialize($cachedResponse);
+		} else {
+			$url = \Sabre_DAV_URLUtil::encodePath($path);
+			$response = $this->client->propfind($url, array(
+					'{DAV:}getcontenttype',
+					'{DAV:}resourcetype',
+					'{DAV:}getlastmodified',
+					'{DAV:}getcontentlength',
+					'{DAV:}quota-available-bytes'
+				), $depth
+			);
+			\OCP\Util::writeLog('files_external', json_encode($response), \OCP\Util::INFO);
+			$cache->set($key, serialize($response), 10); //cache only for ten seconds
+			return $response;
+		}
+	}
+	
+	private function cleanCache($path) {
+		$key = md5($this->createBaseUri() . $path);
+		$cache = \OC_Cache::getUserCache();
+		$cache->remove($key);
 	}
 }
