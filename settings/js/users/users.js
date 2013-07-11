@@ -88,11 +88,14 @@ usersmanagement.controller('creategroup', ['$scope', '$http', 'GroupService',
 
 /* Fetches the List of All Groups - Left Sidebar */
 
-usersmanagement.controller('grouplist', ['$scope', '$http', 'GroupService',
-	function($scope, $http, GroupService) {
+usersmanagement.controller('grouplist', ['$scope', '$http', '$location', 'GroupService',
+	function($scope, $http, GroupService, $location) {
 		$http.get(OC.filePath('settings', 'ajax', 'grouplist.php')).then(function(response){
 			$scope.groupnames = response.data.result;
 		});
+		$scope.switchuser = function(groupid) {
+			$location.url('/group/' + groupid);
+		}
 		$scope.deletegroup = function(groupid) {
 			GroupService.removegroup().delete({ groupname : groupid });
 		}
