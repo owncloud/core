@@ -22,8 +22,8 @@
 var usersmanagement = angular.module('usersmanagement', ['ngResource']).config(['$httpProvider','$routeProvider',
 	function($httpProvider,$routeProvider) {
 		$httpProvider.defaults.headers.common['requesttoken'] = oc_requesttoken;
-		$routeProvider.when('/', {
-			controller : 'userlist',
+		$routeProvider.when('/group/:groupid', {
+			controller : 'grouplist',
 			templateUrl : OC.filePath('settings', 'templates/users', 'part.userlist.php')
 		});	
 	},

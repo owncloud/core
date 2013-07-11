@@ -31,7 +31,8 @@
 		<div id="hascontrols">
 			<?php print_unescaped($this->inc('users/part.addnewuser')); ?>
 		</div>
-		<div id="user-table" ng-view>
-		</div>
+		<script type="text/ng-template">
+			<?php print_unescaped($this->inc('users/part.userlist')); ?>
+		</script>
 	</div>
 </div>
