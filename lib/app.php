@@ -21,6 +21,24 @@
  *
  */
 
+class MissingDependencyException extends \Exception {
+}
+
+class OutdatedDependencyException extends \Exception {
+}
+
+class DependingAppsException extends \Exception {
+	private $dependent;
+
+	public function __construct($dependent){
+		$this->dependent = $dependent;
+	}
+
+	public function getDependent() {
+		return $this->dependent;
+	}
+}
+
 /**
  * This class manages the apps. It allows them to register and integrate in the
  * owncloud ecosystem. Furthermore, this class is responsible for installing,
@@ -240,12 +258,8 @@ class OC_App{
 					.' not compatible with this version of ownCloud',
 					OC_Log::ERROR);
 				throw new \Exception($l->t("App can't be installed because it is not compatible with this version of ownCloud."));
-			} else if (isset($info['dependencies']) && !self::appDependencyCheck($info['dependencies'])) { // Check if dependencies are installed
-				OC_Log::write('core',
-					'App "'.$info['name'].'" can not be installed because it is'
-					. ' missing dependencies',
-					OC_Log::ERROR);
-				throw new \Exception($l->t("App can not be installed, because it is missing dependencies"));
+			} else if (isset($info['dependencies'])) {
+				self::appDependencyCheck($info['dependencies']); // Check if dependencies are installed
 			}else{
 				OC_Appconfig::setValue( $app, 'enabled', 'yes' );
 				if (isset($info['dependencies'])) { // Save dependencies to check when disabling
@@ -1002,6 +1016,7 @@ class OC_App{
 	/**
 	 * @brief checks if app dependencies are fullfilled
 	 * @param array $dependencies array of dependencies including each the dependent appid and version
+	 * @throws MissingDependencyException
 	 * @return bool
 	*/
 	public static function appDependencyCheck($dependencies) {
@@ -1021,17 +1036,20 @@ class OC_App{
 					$active = true;
 				}
 			}
-			if (!$active or !$version) {
-				return false;
+			if (!$active) {
+				throw new MissingDependencyException($dependency[0]);
+			}
+			if (!$version) {
+				throw new OutdatedDependencyException($dependency[0]);
 			}
 		}
 		return true;
 	}
 
 	/**
-	 * @brief checks if other apps depend on this app
+	 * @brief checks if no other apps depend on this app
 	 * @param string $appid id of the app to check
-	 * @throws \Exception
+	 * @throws DependingAppsException
 	 * @return bool
 	*/
 	public static function appDependsOnCheck($appid) {
@@ -1044,6 +1062,7 @@ class OC_App{
 			throw new DatabaseException($result->getMessage(), $query);
 		}
 
+		$alldependencies = array();
 		while ($row = $result->fetchRow()) {
 			$dependencies = json_decode($row['configvalue']);
 			foreach ($dependencies as $dependency) {
@@ -1061,9 +1080,7 @@ class OC_App{
 		if (empty($doesdepend)) {
 			return true;
 		} else {
-			//return $doesdepend;
-			$l = OC_L10N::get('core');
-			throw new \Exception($l->t("Can not disable app, because some apps depend on it"));
+			throw new DependingAppsException($doesdepend);
 		}
 	}
 }

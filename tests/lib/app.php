@@ -80,7 +80,72 @@ class Test_App extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testDependencyCheck() {
-		$dependencies = array( array("files", "1.0.0"), array("files_trashbin", "0.3") );
-		$this->assertTrue(OC_APP::appDependencyCheck($dependencies));
+		OC_Appconfig::setValue('someapp', 'enabled', 'yes');
+		OC_Appconfig::setValue('someapp', 'installed_version', '1.3.1');
+		OC_Appconfig::setValue('otherapp', 'enabled', 'yes');
+		OC_Appconfig::setValue('otherapp', 'installed_version', '0.3.1');
+		$dependencies = array( array('someapp', '1.3.1'), array('otherapp', '0.2') );
+		$this->assertTrue(OC_App::appDependencyCheck($dependencies));
+	}
+
+	public function testOutdatedDependencyCheck() {
+		OC_Appconfig::setValue('someapp', 'enabled', 'yes');
+		OC_Appconfig::setValue('someapp', 'installed_version', '1.3.1');
+		OC_Appconfig::setValue('otherapp', 'enabled', 'yes');
+		OC_Appconfig::setValue('otherapp', 'installed_version', '0.2');
+		$dependencies = array( array('someapp', '1.3.1'), array('otherapp', '0.1.1') );
+		try {
+			OC_App::appDependencyCheck($dependencies);
+		} catch (OutdatedDependencyException $e) {
+			$this->assertEquals($e->getMessage(), 'otherapp');
+		}
+	}
+
+	public function testDisabledDependencyCheck() {
+		OC_Appconfig::setValue('someapp', 'enabled', 'no');
+		OC_Appconfig::setValue('someapp', 'installed_version', '1.3.1');
+		OC_Appconfig::setValue('otherapp', 'enabled', 'yes');
+		OC_Appconfig::setValue('otherapp', 'installed_version', '0.2');
+		$dependencies = array( array('someapp', '1.3.1'), array('otherapp', '0.3.1') );
+		try {
+			OC_App::appDependencyCheck($dependencies);
+		} catch (MissingDependencyException $e) {
+			$this->assertEquals($e->getMessage(), 'someapp');
+		}
+	}
+
+	public function testNonExistantDependencyCheck() {
+		OC_Appconfig::setValue('someapp', 'enabled', 'yes');
+		OC_Appconfig::setValue('someapp', 'installed_version', '1.3.1');
+		$dependencies = array( array("someapp", "1.3.1"), array("nonexistant", "90.0.1") );
+		try {
+			OC_App::appDependencyCheck($dependencies);
+		} catch (MissingDependencyException $e) {
+			$this->assertEquals($e->getMessage(), "nonexistant");
+		}
+	}
+
+	public function testDependsOn() {
+		OC_Appconfig::setValue('dependentapp', 'enabled', 'yes');
+		OC_Appconfig::setValue('dependentapp', 'depends_on', json_encode(array(array('depencyapp', '0.5.1'))));
+		OC_Appconfig::setValue('otherdependentapp', 'enabled', 'yes');
+		OC_Appconfig::setValue('otherdependentapp', 'depends_on', json_encode(array(array('depencyapp', '0.4'), array('otherdependencyapp', '0.1'))));
+		OC_Appconfig::setValue('dependencyapp', 'enabled', 'yes');
+		OC_Appconfig::setValue('otherdependencyapp', 'enabled', 'yes');
+		$this->assertTrue(OC_App::appDependsOnCheck('otherdependentapp'));
+	}
+
+	public function testNegativeDependsOn() {
+		OC_Appconfig::setValue('dependentapp', 'enabled', 'yes');
+		OC_Appconfig::setValue('dependentapp', 'depends_on', json_encode(array(array('depencyapp', '0.5.1'))));
+		OC_Appconfig::setValue('otherdependentapp', 'enabled', 'yes');
+		OC_Appconfig::setValue('otherdependentapp', 'depends_on', json_encode(array(array('depencyapp', '0.4'), array('otherdependencyapp', '0.1'))));
+		OC_Appconfig::setValue('dependencyapp', 'enabled', 'yes');
+		OC_Appconfig::setValue('otherdependencyapp', 'enabled', 'yes');
+		try {
+			OC_App::appDependsOnCheck('dependencyapp');
+		} catch (DependingAppsException $e) {
+			$this->assertEquals($e->getDependent, array('dependentapp', 'otherdependentapp'));
+		}
 	}
 }
