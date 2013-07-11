@@ -210,7 +210,7 @@ class OC_App{
 	/**
 	 * @brief enables an app
 	 * @param mixed $app app
-	 * @return bool
+	 * @return mixed true on success, array on failure
 	 *
 	 * This function set an app as enabled in appconfig.
 	 */
@@ -232,12 +232,19 @@ class OC_App{
 			// check if the app is compatible with this version of ownCloud
 			$info=OC_App::getAppInfo($app);
 			$version=OC_Util::getVersion();
+			$l = OC_L10N::get('core');
 			if(!isset($info['require']) or !self::isAppVersionCompatible($version, $info['require'])) {
 				OC_Log::write('core',
 					'App "'.$info['name'].'" can\'t be installed because it is'
 					.' not compatible with this version of ownCloud',
 					OC_Log::ERROR);
-				return false;
+				return array($l->t("App can't be installed because it is not compatible with this version of ownCloud."));
+			} else if (isset($info['dependencies']) && !self::appDependencyCheck($info['dependencies'])) { // Check if dependecies are installed
+				OC_Log::write('core',
+					'App "'.$info['name'].'" can not be installed because it is'
+					. ' missing dependencies',
+					OC_Log::ERROR);
+				return array($l->t("App can not be installed, because it is missing dependencies"));
 			}else{
 				OC_Appconfig::setValue( $app, 'enabled', 'yes' );
 				if(isset($appdata['id'])) {
@@ -246,7 +253,7 @@ class OC_App{
 				return true;
 			}
 		}else{
-			return false;
+			return array($l->t("No app name specified"));
 		}
 	}
 
@@ -556,6 +563,13 @@ class OC_App{
 					 * @var $type SimpleXMLElement
 					 */
 					$data['types'][]=$type->getName();
+				}
+			} elseif ($child->getName() === 'dependencies') {
+				$data['dependencies'] = array();
+				foreach ($child->children() as $dependencies) {
+					if ($dependencies->getName() === 'dependency') {
+						$data['dependencies'][] = array( (string)$dependencies->{'id'}, (string)$dependencies->{'version'});
+					}
 				}
 			}elseif($child->getName()=='description') {
 				$xml=(string)$child->asXML();
@@ -975,5 +989,30 @@ class OC_App{
 			OC_Log::write('core', 'Can\'t get app storage, app '.$appid.' not enabled', OC_Log::ERROR);
 			return false;
 		}
+	}
+
+	/**
+	 * @brief checks if app dependencies are fullfilled
+	 * @param array $dependencies array of dependencies including each the dependend appid and version
+	 * @return bool
+	*/
+	public static function appDependencyCheck($dependencies) {
+		foreach ($dependencies as $dependency) {
+			$query = OC_DB::prepare('SELECT `appid`, `configkey`, `configvalue` FROM `*PREFIX*appconfig` WHERE `appid` = ?');
+			$result = $query->execute(array($dependency[0]));
+			$active = false;
+			$version = false;
+			while ($row = $result->fetchrow()) {
+				if ($row['configkey'] === "installed_version" && version_compare($row['configvalue'], $dependency[1], '>=')) {
+					$version = true;
+				} else if ($row['configkey'] === "enabled" && $row['configvalue'] === "yes") {
+					$active = true;
+				}
+			}
+			if (!$active or !$version) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

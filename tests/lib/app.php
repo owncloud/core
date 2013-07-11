@@ -79,4 +79,13 @@ class Test_App extends PHPUnit_Framework_TestCase {
 		$this->assertFalse(OC_App::isAppVersionCompatible($oc, $app));
 	}
 
+	public function testPositiveDependencyCheck() {
+		$dependencies = array( array("files", "1.0.0"), array("files_trashbin", "0.3") );
+		$this->assertTrue(OC_APP::appDependencyCheck($dependencies));
+	}
+
+	public function testNegativeDependencyCheck() {
+		$dependencies = array( array("files", "1.0.0"), array("nonexistant", "90.0.1") );
+		$this->assertNotEquals(OC_APP::appDependencyCheck($dependencies), true);
+	}
 }

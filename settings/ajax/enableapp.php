@@ -4,9 +4,8 @@ OC_JSON::checkAdminUser();
 OCP\JSON::callCheck();
 
 $appid = OC_App::enable(OC_App::cleanAppId($_POST['appid']));
-if($appid !== false) {
+if($appid === true) {
 	OC_JSON::success(array('data' => array('appid' => $appid)));
 } else {
-	$l = OC_L10N::get('settings');	
-	OC_JSON::error(array("data" => array( "message" => $l->t("Could not enable app. ") )));
+	OC_JSON::error(array("data" => array("message" => $appid[0]) ));
 }
