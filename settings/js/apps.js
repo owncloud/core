@@ -61,7 +61,11 @@ OC.Settings.Apps = OC.Settings.Apps || {
 		if(active) {
 			$.post(OC.filePath('settings','ajax','disableapp.php'),{appid:appid},function(result) {
 				if(!result || result.status !== 'success') {
-					OC.dialogs.alert('Error while disabling app', t('core', 'Error'));
+					if (result.data && result.data.message) {
+						OC.dialogs.alert(result.data.message, t('core', 'Error'));
+					} else {
+						OC.dialogs.alert('Error while disabling app', t('core', 'Error'));
+					}
 				}
 				else {
 					element.data('active',false);

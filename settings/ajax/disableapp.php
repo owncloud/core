@@ -2,6 +2,9 @@
 OC_JSON::checkAdminUser();
 OCP\JSON::callCheck();
 
-OC_App::disable(OC_App::cleanAppId($_POST['appid']));
-
-OC_JSON::success();
+try {
+	OC_App::disable(OC_App::cleanAppId($_POST['appid']));
+	OC_JSON::success();
+} catch (\Exception $e) {
+	OC_JSON::error( array('data' => array( "message" => $e->getMessage() )) );
+}

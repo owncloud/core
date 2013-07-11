@@ -3,9 +3,9 @@
 OC_JSON::checkAdminUser();
 OCP\JSON::callCheck();
 
-$appid = OC_App::enable(OC_App::cleanAppId($_POST['appid']));
-if($appid === true) {
-	OC_JSON::success(array('data' => array('appid' => $appid)));
-} else {
-	OC_JSON::error(array("data" => array("message" => $appid[0]) ));
+try {
+	OC_App::enable(OC_App::cleanAppId($_POST['appid']));
+	OC_JSON::success();
+} catch (\Exception $e) {
+	OC_JSON::error(array("data" => array("message" => $e->getMessage()) ));
 }

@@ -210,7 +210,8 @@ class OC_App{
 	/**
 	 * @brief enables an app
 	 * @param mixed $app app
-	 * @return mixed true on success, array on failure
+	 * @throws \Exception
+	 * @return bool
 	 *
 	 * This function set an app as enabled in appconfig.
 	 */
@@ -228,32 +229,35 @@ class OC_App{
 				}
 			}
 		}
+		$l = OC_L10N::get('core');
 		if($app!==false) {
 			// check if the app is compatible with this version of ownCloud
 			$info=OC_App::getAppInfo($app);
 			$version=OC_Util::getVersion();
-			$l = OC_L10N::get('core');
 			if(!isset($info['require']) or !self::isAppVersionCompatible($version, $info['require'])) {
 				OC_Log::write('core',
 					'App "'.$info['name'].'" can\'t be installed because it is'
 					.' not compatible with this version of ownCloud',
 					OC_Log::ERROR);
-				return array($l->t("App can't be installed because it is not compatible with this version of ownCloud."));
-			} else if (isset($info['dependencies']) && !self::appDependencyCheck($info['dependencies'])) { // Check if dependecies are installed
+				throw new \Exception($l->t("App can't be installed because it is not compatible with this version of ownCloud."));
+			} else if (isset($info['dependencies']) && !self::appDependencyCheck($info['dependencies'])) { // Check if dependencies are installed
 				OC_Log::write('core',
 					'App "'.$info['name'].'" can not be installed because it is'
 					. ' missing dependencies',
 					OC_Log::ERROR);
-				return array($l->t("App can not be installed, because it is missing dependencies"));
+				throw new \Exception($l->t("App can not be installed, because it is missing dependencies"));
 			}else{
 				OC_Appconfig::setValue( $app, 'enabled', 'yes' );
+				if (isset($info['dependencies'])) { // Save dependencies to check when disabling
+					OC_Appconfig::setValue($app, 'depends_on', json_encode($info['dependencies']));
+				}
 				if(isset($appdata['id'])) {
 					OC_Appconfig::setValue( $app, 'ocsid', $appdata['id'] );
 				}
 				return true;
 			}
 		}else{
-			return array($l->t("No app name specified"));
+			throw new \Exception($l->t("No app name specified"));
 		}
 	}
 
@@ -267,12 +271,16 @@ class OC_App{
 	public static function disable( $app ) {
 		// check if app is a shipped app or not. if not delete
 		\OC_Hook::emit('OC_App', 'pre_disable', array('app' => $app));
-		OC_Appconfig::setValue( $app, 'enabled', 'no' );
+		$dependson = self::appDependsOnCheck($app);
+		if (self::appDependsOnCheck($app)) {
+			OC_Appconfig::setValue( $app, 'enabled', 'no' );
+		}
 
 		// check if app is a shipped app or not. if not delete
 		if(!OC_App::isShipped( $app )) {
 			OC_Installer::removeApp( $app );
 		}
+		return true;
 	}
 
 	/**
@@ -993,16 +1001,20 @@ class OC_App{
 
 	/**
 	 * @brief checks if app dependencies are fullfilled
-	 * @param array $dependencies array of dependencies including each the dependend appid and version
+	 * @param array $dependencies array of dependencies including each the dependent appid and version
 	 * @return bool
 	*/
 	public static function appDependencyCheck($dependencies) {
 		foreach ($dependencies as $dependency) {
 			$query = OC_DB::prepare('SELECT `appid`, `configkey`, `configvalue` FROM `*PREFIX*appconfig` WHERE `appid` = ?');
 			$result = $query->execute(array($dependency[0]));
+			if (OC_DB::isError($result)) {
+				throw new DatabaseException($result->getMessage(), $query);
+			}
+
 			$active = false;
 			$version = false;
-			while ($row = $result->fetchrow()) {
+			while ($row = $result->fetchRow()) {
 				if ($row['configkey'] === "installed_version" && version_compare($row['configvalue'], $dependency[1], '>=')) {
 					$version = true;
 				} else if ($row['configkey'] === "enabled" && $row['configvalue'] === "yes") {
@@ -1014,5 +1026,44 @@ class OC_App{
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * @brief checks if other apps depend on this app
+	 * @param string $appid id of the app to check
+	 * @throws \Exception
+	 * @return bool
+	*/
+	public static function appDependsOnCheck($appid) {
+		$query = OC_DB::prepare('SELECT `first`.`appid`, `first`.`configvalue` FROM `*PREFIX*appconfig` `first` '.
+					'INNER JOIN `*PREFIX*appconfig` `second` ON `first`.`appid` = `second`.`appid` '.
+					'WHERE `first`.`configkey` = `depends_on` AND `second`.`configkey` = `enabled` '.
+					'AND `second`.`configvalue` = `yes`');
+		$result = $query->execute();
+		if (OC_DB::isError($result)) {
+			throw new DatabaseException($result->getMessage(), $query);
+		}
+
+		while ($row = $result->fetchRow()) {
+			$dependencies = json_decode($row['configvalue']);
+			foreach ($dependencies as $dependency) {
+				$alldependencies[] = array($row['appid'], $dependency[0]);
+			}
+		}
+
+		$doesdepend = array();
+		foreach ($alldependencies as $dependency) {
+			if ($dependency[1] === $appid) {
+				$doesdepend[] = $dependency[0];
+			}
+		}
+
+		if (empty($doesdepend)) {
+			return true;
+		} else {
+			//return $doesdepend;
+			$l = OC_L10N::get('core');
+			throw new \Exception($l->t("Can not disable app, because some apps depend on it"));
+		}
 	}
 }
