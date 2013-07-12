@@ -21,24 +21,6 @@
  *
  */
 
-class MissingDependencyException extends \Exception {
-}
-
-class OutdatedDependencyException extends \Exception {
-}
-
-class DependingAppsException extends \Exception {
-	private $dependent;
-
-	public function __construct($dependent){
-		$this->dependent = $dependent;
-	}
-
-	public function getDependent() {
-		return $this->dependent;
-	}
-}
-
 /**
  * This class manages the apps. It allows them to register and integrate in the
  * owncloud ecosystem. Furthermore, this class is responsible for installing,
@@ -258,11 +240,14 @@ class OC_App{
 					.' not compatible with this version of ownCloud',
 					OC_Log::ERROR);
 				throw new \Exception($l->t("App can't be installed because it is not compatible with this version of ownCloud."));
-			} else if (isset($info['dependencies'])) {
-				self::appDependencyCheck($info['dependencies']); // Check if dependencies are installed
 			}else{
+				if (isset($info['dependencies'])) {
+					// Check if dependencies are installed
+					self::appDependencyCheck($info['dependencies']);
+				}
 				OC_Appconfig::setValue( $app, 'enabled', 'yes' );
-				if (isset($info['dependencies'])) { // Save dependencies to check when disabling
+				// Save dependencies to check when disabling
+				if (isset($info['dependencies'])) {
 					OC_Appconfig::setValue($app, 'depends_on', json_encode($info['dependencies']));
 				}
 				if(isset($appdata['id'])) {
@@ -285,10 +270,10 @@ class OC_App{
 	public static function disable( $app ) {
 		// check if app is a shipped app or not. if not delete
 		\OC_Hook::emit('OC_App', 'pre_disable', array('app' => $app));
-		$dependson = self::appDependsOnCheck($app);
-		if (self::appDependsOnCheck($app)) {
-			OC_Appconfig::setValue( $app, 'enabled', 'no' );
-		}
+
+		// Check if other apps depend on this app
+		self::appDependsOnCheck($app);
+		OC_Appconfig::setValue( $app, 'enabled', 'no' );
 
 		// check if app is a shipped app or not. if not delete
 		if(!OC_App::isShipped( $app )) {
@@ -1016,7 +1001,7 @@ class OC_App{
 	/**
 	 * @brief checks if app dependencies are fullfilled
 	 * @param array $dependencies array of dependencies including each the dependent appid and version
-	 * @throws MissingDependencyException
+	 * @throws OC\App\MissingDependencyException
 	 * @return bool
 	*/
 	public static function appDependencyCheck($dependencies) {
@@ -1027,7 +1012,7 @@ class OC_App{
 			$version = false;
 
 			if (empty($values)) {
-				throw new MissingDependencyException($dependency[0]);
+				throw new \OC\App\MissingDependencyException($dependency[0]);
 			}
 
 			if (version_compare($values['installed_version'], $dependency[1], '>=')) {
@@ -1038,13 +1023,12 @@ class OC_App{
 			}
 
 			if (!$active) {
-				throw new MissingDependencyException($dependency[0]);
+				throw new \OC\App\MissingDependencyException($dependency[0]);
 			}
 			if (!$version) {
-				throw new OutdatedDependencyException($dependency[0]);
+				throw new \OC\App\OutdatedDependencyException($dependency[0]);
 			}
 		}
-		return true;
 	}
 
 	/**
@@ -1054,10 +1038,11 @@ class OC_App{
 	 * @return bool
 	*/
 	public static function appDependsOnCheck($appid) {
-		$query = OC_DB::prepare('SELECT `first`.`appid`, `second`.`configvalue` FROM `*PREFIX*appconfig` `first`, ' .
-					'`*PREFIX*appconfig` `second` WHERE `first`.`appid` = `second`.`appid` AND ' .
-					'`second`.`configkey` = ?');
-		$result = $query->execute(array("depends_on"));
+		$query = OC_DB::prepare('SELECT `first`.`appid`, `second`.`configvalue` FROM '.
+					'`*PREFIX*appconfig` `first`, `*PREFIX*appconfig` `second` WHERE '.
+					'`first`.`appid` = `second`.`appid` AND `first`.`configkey` = ? AND '.
+					'`first`.`configvalue` = ? AND `second`.`configkey` = ?');
+		$result = $query->execute(array("enabled", "yes", "depends_on"));
 		if (OC_DB::isError($result)) {
 			throw new DatabaseException($result->getMessage(), $query);
 		}
@@ -1077,10 +1062,8 @@ class OC_App{
 			}
 		}
 
-		if (empty($doesdepend)) {
-			return true;
-		} else {
-			throw new DependingAppsException($doesdepend);
+		if (!empty($doesdepend)) {
+			throw new \OC\App\DependingAppsException($doesdepend);
 		}
 	}
 }

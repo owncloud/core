@@ -5,7 +5,7 @@ OCP\JSON::callCheck();
 try {
 	OC_App::disable(OC_App::cleanAppId($_POST['appid']));
 	OC_JSON::success();
-} catch (DependingAppsException $e) {
+} catch (\OC\App\DependingAppsException $e) {
 	$dependentstring = "";
 	foreach ($e->getDependent() as $dependent) {
 		$dependentstring .= "<br>" . $dependent;

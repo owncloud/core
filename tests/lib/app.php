@@ -85,7 +85,7 @@ class Test_App extends PHPUnit_Framework_TestCase {
 		OC_Appconfig::setValue('otherapp', 'enabled', 'yes');
 		OC_Appconfig::setValue('otherapp', 'installed_version', '0.3.1');
 		$dependencies = array( array('someapp', '1.3.1'), array('otherapp', '0.2') );
-		$this->assertTrue(OC_App::appDependencyCheck($dependencies));
+		$this->assertNull(OC_App::appDependencyCheck($dependencies));
 	}
 
 	public function testOutdatedDependencyCheck() {
@@ -96,7 +96,7 @@ class Test_App extends PHPUnit_Framework_TestCase {
 		$dependencies = array( array('someapp', '1.3.1'), array('otherapp', '0.1.1') );
 		try {
 			OC_App::appDependencyCheck($dependencies);
-		} catch (OutdatedDependencyException $e) {
+		} catch (\OC\App\OutdatedDependencyException $e) {
 			$this->assertEquals($e->getMessage(), 'otherapp');
 		}
 	}
@@ -109,7 +109,7 @@ class Test_App extends PHPUnit_Framework_TestCase {
 		$dependencies = array( array('someapp', '1.3.1'), array('otherapp', '0.3.1') );
 		try {
 			OC_App::appDependencyCheck($dependencies);
-		} catch (MissingDependencyException $e) {
+		} catch (\OC\App\MissingDependencyException $e) {
 			$this->assertEquals($e->getMessage(), 'someapp');
 		}
 	}
@@ -120,7 +120,7 @@ class Test_App extends PHPUnit_Framework_TestCase {
 		$dependencies = array( array("someapp", "1.3.1"), array("nonexistant", "90.0.1") );
 		try {
 			OC_App::appDependencyCheck($dependencies);
-		} catch (MissingDependencyException $e) {
+		} catch (\OC\App\MissingDependencyException $e) {
 			$this->assertEquals($e->getMessage(), "nonexistant");
 		}
 	}
@@ -132,7 +132,7 @@ class Test_App extends PHPUnit_Framework_TestCase {
 		OC_Appconfig::setValue('otherdependentapp', 'depends_on', json_encode(array(array('depencyapp', '0.4'), array('otherdependencyapp', '0.1'))));
 		OC_Appconfig::setValue('dependencyapp', 'enabled', 'yes');
 		OC_Appconfig::setValue('otherdependencyapp', 'enabled', 'yes');
-		$this->assertTrue(OC_App::appDependsOnCheck('otherdependentapp'));
+		$this->assertNull(OC_App::appDependsOnCheck('otherdependentapp'));
 	}
 
 	public function testNegativeDependsOn() {
@@ -144,7 +144,7 @@ class Test_App extends PHPUnit_Framework_TestCase {
 		OC_Appconfig::setValue('otherdependencyapp', 'enabled', 'yes');
 		try {
 			OC_App::appDependsOnCheck('dependencyapp');
-		} catch (DependingAppsException $e) {
+		} catch (\OC\App\DependingAppsException $e) {
 			$this->assertEquals($e->getDependent, array('dependentapp', 'otherdependentapp'));
 		}
 	}
