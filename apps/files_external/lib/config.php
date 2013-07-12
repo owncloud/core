@@ -87,6 +87,16 @@ class OC_Mount_Config {
 				'root' => '&Root',
 				'secure' => '!Secure ftps://'));
 
+		$backends['\OC\Files\Storage\SWIFT_AUTHV2']=array(
+			'backend' => 'OpenStack Swift (V2 auth)',
+			'configuration' => array(
+				'auth_url' => 'Auth URL',
+				'tenant_name' => 'Tenant Name',
+				'user' => 'Username',
+				'password' => '*Password',
+				'root' => '&Root',
+				'secure' => '!Secure (https://)'));
+
 		if(OC_Mount_Config::checksmbclient()) $backends['\OC\Files\Storage\SMB']=array(
 			'backend' => 'SMB / CIFS',
 			'configuration' => array(
