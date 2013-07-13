@@ -39,6 +39,12 @@ usersmanagement.factory('GroupService', function($resource) {
 				method : 'POST'
 			});
 		},
+		togglegroup: function () {
+			return $resource(OC.filePath('settings', 'ajax', 'togglegroup.php'), group, {
+				method : 'GET'
+				isArray : true
+			});
+		},
 		removegroup: function (group) {
 			return $resource(OC.filePath('settings', 'ajax', 'removegroup.php'), group, {
 				method: 'DELETE'
