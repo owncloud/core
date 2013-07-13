@@ -21,34 +21,32 @@
  *
  */
 
-	class SettingsApp {
+class SettingsApp {
 
-    	public static function main($controllerName, $methodName, $routeParams) {
-			
-			OCP\JSON::callCheck();
-			OC_JSON::checkLoggedIn();
-			OC_JSON::checkAdminUser();
+	public static function main($controllerName, $methodName, $routeParams) {
+		
+		// these security checks apply to all controllers in the settings app
+		OCP\JSON::callCheck();
+		OC_JSON::checkLoggedIn();
+		OC_JSON::checkAdminUser();
 
-			// parse input parameters
-    		$params = json_decode(file_get_contents('php://input'), true);
-         	$params = is_array($params) ? $params: array();
-          
-          
-    		 // is it autoloaded?
-    		 $controller = new $controllerName($routeParams, $params); // maybe you want a request object that does this.
-    
-    		 // use a container to pass in any objects
-    		 // $container = new DIContainer();
-    		 // $container['routeParams'] = $routeParams;
-    		 // $controller = $container[$controllerName];
-			 list($headers, $out) = $controller->$methodName();
-			 foreach($headers as $header) {
-				 header($header);
-			 }
-			 
-			 print($out);
-			 
-		 }    
-    
-	 }
-?>
+		// parse input parameters
+		//$params = json_decode(file_get_contents('php://input'), true);
+		//$params = is_array($params) ? $params: array();
+	
+	
+		$container = new SettingsContainer();
+		$container['routeParams'] = $routeParams;
+		$controller = $container[$controllerName];
+
+		list($headers, $out) = $controller->$methodName();
+
+		foreach($headers as $header) {
+			header($header);
+		}
+		
+		print($out);
+
+	}
+
+}
