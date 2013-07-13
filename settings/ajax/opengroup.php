@@ -20,17 +20,22 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-?>
 
-<div id="user-settings" ng-app="usersmanagement">
-	<div id="app-navigation">
-		<?php print_unescaped($this->inc('users/part.addnewgroup')); ?>
-		<?php print_unescaped($this->inc('users/part.leftgrouplist')); ?>
-	</div>
-	<div id="user-content">
-		<div id="hascontrols">
-			<?php print_unescaped($this->inc('users/part.addnewuser')); ?>
-		</div>
-		<script type="text/ng-template"></script>
-	</div>
-</div>
+OCP\JSON::checkLoggedIn();
+OCP\JSON::callCheck();
+
+$settings = new \OC\Settings\Users(
+	\OC_L10n::get('settings')
+);
+
+$result = $settings->opengroup(
+	$_GET['groupname']
+);
+
+if ($result['success'] === true) {
+	OCP\JSON::success(array('data' => $result['data']));
+} else {
+	OCP\JSON::error(array('data' => $result['data']));
+}
+
+?>

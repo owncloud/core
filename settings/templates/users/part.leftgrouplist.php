@@ -25,7 +25,7 @@
 		<a href="#"><?php p($l->t('Everyone')); ?></a>
 	</li>
 	<li class="user-groups" ng-repeat="groupname in groupnames | orderBy:['isAdmin','name']">
-		<a ng-href="groups/{{ groupname.groupid }}" ng-click="switchgroup(groupname.groupid)">{{ groupname.name }}</a>
+		<a ng-href="users/group/{{ groupname.groupid }}" ng-click="switchgroup(groupname.groupid)">{{ groupname.name }}</a>
 		<span class="utils">
 			<span class="usercount">{{ groupname.useringroup.length }}</span>
 			<button class="svg action delete-icon delete-button" ng-click="deletegroup(groupname.name)"></button>
