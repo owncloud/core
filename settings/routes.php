@@ -20,8 +20,14 @@ $this->create('settings_apps', '/settings/apps')
 	->actionInclude('settings/apps.php');
 $this->create('settings_admin', '/settings/admin')
 	->actionInclude('settings/admin.php');
+
 // Settings ajax actions
 // users
+
+$this->create('settings_useringroup', '/settings/users/group/{groupid}')->get()->action(
+	function($params){
+		SettingsApp::main('UserController', 'opengroup', $params);
+	});
 $this->create('settings_ajax_userlist', '/settings/ajax/userlist.php')
 	->actionInclude('settings/ajax/userlist.php');
 $this->create('settings_ajax_createuser', '/settings/ajax/createuser.php')

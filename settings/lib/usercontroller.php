@@ -21,7 +21,10 @@
  *
  */
 
-namespace OC\Settings\Users
+namespace OC\Settings\Users;
+
+// Doesn't seem to Work at the moment
+require_once(__DIR__.'SettingsApp.php');
 
 class UserController {
 	
