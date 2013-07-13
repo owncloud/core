@@ -21,31 +21,24 @@
  *
  */
 
-class SettingsApp {
+namespace OC\Settings\DependencyInjection;
 
-	public static function main($controllerName, $methodName, $routeParams) {
-		
-		// these security checks apply to all controllers in the settings app
-		OCP\JSON::callCheck();
-		OC_JSON::checkLoggedIn();
-		OC_JSON::checkAdminUser();
+use OC\Settings\Controller\UserController;
+
+require_once __DIR__ . '/../3rdparty/Pimple/Pimple.php';
+
+
+class DIContainer extends \Pimple {
+
+
+	public function __construct() {
 
 		// parse input parameters
-		//$params = json_decode(file_get_contents('php://input'), true);
-		//$params = is_array($params) ? $params: array();
-	
-	
-		$container = new SettingsContainer();
-		$container['routeParams'] = $routeParams;
-		$controller = $container[$controllerName];
+		$this['params'] = json_decode(file_get_contents('php://input'), true);
 
-		list($headers, $out) = $controller->$methodName();
-
-		foreach($headers as $header) {
-			header($header);
-		}
-		
-		print($out);
+		$this['UserController'] = $this->share(function() {
+			return new UserController();
+		});
 
 	}
 

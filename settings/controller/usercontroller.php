@@ -21,13 +21,13 @@
  *
  */
 
-namespace OC\Settings\Users;
+namespace OC\Settings\Controller;
 
 class UserController {
 	
 	/* Responsible for Switching between the Groups */
 	
-	public function opengroup($groupname) {
+	public function openGroup($groupname) {
 		$result = array(
 			'success' => false,
 			'data' => NULL
@@ -42,5 +42,9 @@ class UserController {
 		}
 		return $result;
 	} 	
+
+	public function test() {
+		return array('hi');
+	}
 }
 ?>
