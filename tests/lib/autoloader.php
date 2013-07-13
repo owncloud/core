@@ -71,4 +71,9 @@ class AutoLoader extends \PHPUnit_Framework_TestCase {
 		$this->assertStringEndsWith('apps/files/foobar.php', $result[0]);
 		$this->assertStringEndsWith('apps/files/lib/foobar.php', $result[1]);
 	}
+
+	public function testLoadSettingsClasses() {
+		$this->assertEquals(array('../settings/foo/bar.php'), 
+			$this->loader->findClass('OC\Settings\Foo\Bar'));
+	}
 }
