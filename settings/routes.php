@@ -24,10 +24,10 @@ $this->create('settings_admin', '/settings/admin')
 // Settings ajax actions
 // users
 
-$this->create('settings_useringroup', '/settings/users/group/{groupid}')->get()->action(
-	function($params){
-		SettingsApp::main('UserController', 'opengroup', $params);
-	});
+OC::$CLASSPATH['UserController'] = 'settings/lib/usercontroller.php';
+$this->create('settings_user_controller_opengroup', '/settings/users/group/{groupid}')
+	->get()
+	->action('UserController', 'opengroup');	
 $this->create('settings_ajax_userlist', '/settings/ajax/userlist.php')
 	->actionInclude('settings/ajax/userlist.php');
 $this->create('settings_ajax_createuser', '/settings/ajax/createuser.php')

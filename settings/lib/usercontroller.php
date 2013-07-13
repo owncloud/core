@@ -23,9 +23,6 @@
 
 namespace OC\Settings\Users;
 
-// Doesn't seem to Work at the moment
-require_once(__DIR__.'SettingsApp.php');
-
 class UserController {
 	
 	/* Responsible for Switching between the Groups */
@@ -36,12 +33,12 @@ class UserController {
 			'data' => NULL
 		);
 		// Success / Failure opening of the file.
-		if ($result['success'] => true) {
-			$result['data'] => array(
+		if ($result['success'] === true) {
+			$result['data'] = array(
 				"groupname" => $groupname
 			);
 		} else {
-			$result['data'] => $this->l10n->t('%s could not be opened', array($groupname));
+			$result['data'] = $this->l10n->t('%s could not be opened', array($groupname));
 		}
 		return $result;
 	} 	
