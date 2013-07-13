@@ -41,7 +41,7 @@ usersmanagement.factory('GroupService', function($resource) {
 		},
 		togglegroup: function () {
 			return $resource(OC.filePath('settings', 'ajax', 'togglegroup.php'), group, {
-				method : 'GET'
+				method : 'GET',
 				isArray : true
 			});
 		},
