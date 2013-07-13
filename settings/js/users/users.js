@@ -22,12 +22,12 @@
 var usersmanagement = angular.module('usersmanagement', ['ngResource']).config(['$httpProvider','$routeProvider',
 	function($httpProvider,$routeProvider) {
 		$httpProvider.defaults.headers.common['requesttoken'] = oc_requesttoken;
-		$routeProvider.when('users/group/:groupid', {
+		$routeProvider.when('users/', {
 			controller : 'grouplist',
 			templateUrl : OC.filePath('settings', 'templates/users', 'part.userlist.php')
 		})
 		.otherwise({ redirectTo : '/users'});	
-	},
+	}
 ]);
 
 /* Group Service */ 

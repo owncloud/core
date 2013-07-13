@@ -28,9 +28,10 @@ $this->create('settings_admin', '/settings/admin')
 // users
 
 $this->create('settings_user_controller_opengroup', '/settings/users/group/{groupid}')
-->get()->action(function($routeParameters){
-	App::main('UserController', 'test', $routeParameters, new DIContainer());
+->get()->action(function($params){
+	App::main('UserController', 'opengroup', $params, new DIContainer());
 });	
+
 $this->create('settings_ajax_userlist', '/settings/ajax/userlist.php')
 	->actionInclude('settings/ajax/userlist.php');
 $this->create('settings_ajax_createuser', '/settings/ajax/createuser.php')

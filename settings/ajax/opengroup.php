@@ -21,10 +21,10 @@
  *
  */
 
-OCP\JSON::checkLoggedIn();
 OCP\JSON::callCheck();
+OC_JSON::checkSubAdminUser();
 
-$settings = new \OC\Settings\Users(
+$settings = new \OC\Settings(
 	\OC_L10n::get('settings')
 );
 

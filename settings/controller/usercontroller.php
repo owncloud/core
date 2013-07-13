@@ -35,16 +35,12 @@ class UserController {
 		// Success / Failure opening of the file.
 		if ($result['success'] === true) {
 			$result['data'] = array(
-				"groupname" => $groupname
+				'groupname' => $groupname
 			);
 		} else {
 			$result['data'] = $this->l10n->t('%s could not be opened', array($groupname));
 		}
 		return $result;
-	} 	
-
-	public function test() {
-		return array('hi');
 	}
 }
 ?>
