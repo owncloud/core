@@ -77,7 +77,7 @@ class Autoloader {
 			$paths[] = strtolower(str_replace('_', '/', substr($class, 3)) . '.php');
 		// classpath magic for loading classes in settings
 		} elseif (strpos($class, 'OC\\Settings\\') === 0) {
-			$paths[] = strtolower(str_replace('\\', '/', '../settings/' . substr($class, 12)) . '.php');
+			$paths[] = strtolower(str_replace('\\', '/', '../' . substr($class, 3)) . '.php');
 		} elseif (strpos($class, 'OC\\') === 0) {
 			$paths[] = strtolower(str_replace('\\', '/', substr($class, 3)) . '.php');
 		} elseif (strpos($class, 'OCP\\') === 0) {
