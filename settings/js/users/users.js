@@ -22,11 +22,14 @@
 var usersmanagement = angular.module('usersmanagement', ['ngResource']).config(['$httpProvider','$routeProvider',
 	function($httpProvider,$routeProvider) {
 		$httpProvider.defaults.headers.common['requesttoken'] = oc_requesttoken;
-		$routeProvider.when('users/', {
-			controller : 'grouplist',
+		$routeProvider
+		.when('/group/:groupid', {
+			controller : 'grouplistController',
 			templateUrl : OC.filePath('settings', 'templates/users', 'part.userlist.php')
 		})
-		.otherwise({ redirectTo : '/users'});	
+		.otherwise({
+			redirectTo : '/group/everyone'
+		});
 	}
 ]);
 
@@ -80,7 +83,7 @@ usersmanagement.factory('QuotaService', function($resource) {
 
 /* Asynchronously creates group */
 
-usersmanagement.controller('creategroup', ['$scope', '$http', 'GroupService',
+usersmanagement.controller('creategroupController', ['$scope', '$http', 'GroupService',
 	function($scope, $http, GroupService) {
 		var newgroup = {};
 		$scope.savegroup = function() {
@@ -95,7 +98,7 @@ usersmanagement.controller('creategroup', ['$scope', '$http', 'GroupService',
 
 /* Fetches the List of All Groups - Left Sidebar */
 
-usersmanagement.controller('grouplist', ['$scope', '$http', '$location', 'GroupService',
+usersmanagement.controller('grouplistController', ['$scope', '$http', '$location', 'GroupService', 'UserService',
 	function($scope, $http, GroupService, $location) {
 		$http.get(OC.filePath('settings', 'ajax', 'grouplist.php')).then(function(response){
 			$scope.groupnames = response.data.result;
@@ -111,8 +114,8 @@ usersmanagement.controller('grouplist', ['$scope', '$http', '$location', 'GroupS
 
 /* Fetches the List of All Users and details on the Right Content */
 
-usersmanagement.controller('userlist', ['$scope', '$http', '$routeParams', '$location', 'QuotaService', 'UserService',
-	function ($scope, $http, $route, $routeParams, $location, QuotaService, UserService) {
+usersmanagement.controller('userlistController', ['$scope', '$http', 'UserService', 'GroupService',
+	function ($scope, $http, UserService, Groupservice) {
 		$http.get(OC.filePath('settings', 'ajax', 'userlist.php')).then(function(response) {
 			$scope.users = response.data.userdetails;
 		});
@@ -124,7 +127,7 @@ usersmanagement.controller('userlist', ['$scope', '$http', '$routeParams', '$loc
 
 /* Filters the userlist for the respective group */
 
-usersmanagement.filter('usertogroup', function() {
+usersmanagement.filter('usertogroupFilter', function() {
 	return function(users,groups) {
 		var groupusers = [];
 		for(var i=0; i<users.length; i++) {

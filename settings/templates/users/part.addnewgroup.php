@@ -22,7 +22,7 @@
  */
 ?>
 
-<div ng-controller="creategroup">
+<div ng-controller="creategroupController">
 	<fieldset>
 		<form name="creategroup_form">
 			<input type="text" ng-minlength="3" name="newgroup" placeholder="<?php p($l->t('Add Group'))?>" ng-model="newgroup" ng-required />

@@ -22,19 +22,21 @@
  */
 ?>
 
-<table id="userlist" ng-controller="userlist">
+<table id="userlist" ng-controller="userlistController">
 	<thead>
 		<tr>
+			<!--Do something with the static hmtl here in the view.-->
 			<th class="table-head thumbnail"></th>
-			<th class="table-head login-name"><?php p($l->t('Login Name')); ?></th>
-			<th class="table-head display-name"><?php p($l->t('Display Name')); ?></th>
-			<th class="table-head user-pass"><?php p($l->t('Password')); ?></th>
-			<th class="table-head groups"><?php p($l->t('Groups')); ?></th>
-			<th class="table-head local-storage"><?php p($l->t('Local Storage')); ?></th>
+			<th class="table-head login-name">Login Name</th>
+			<th class="table-head display-name">Display Name</th>
+			<th class="table-head user-pass">Password</th>
+			<th class="table-head groups">Groups</th>
+			<th class="table-head local-storage">Local Storage</th>
 			<th class="table-head delete-user"></th>
 		</tr>
 	</thead>
 	<tbody>
+		<!-- The Filter Goes here with the ngRepeat.-->
 		<tr ng-repeat="user in users">
 			<td class="thumbnail"><img src="http://placehold.it/30X30" /></td> <!--Temporary till we have gravatars up!-->
 			<td class="login-name">{{ user.name }}</td>

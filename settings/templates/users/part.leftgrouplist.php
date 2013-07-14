@@ -20,7 +20,7 @@
  *
  */
 ?>
-<ul ng-controller="grouplist">
+<ul ng-controller="grouplistController">
 	<li class="user-groups" id="everyone">
 		<a href="#"><?php p($l->t('Everyone')); ?></a>
 	</li>
