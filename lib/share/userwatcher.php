@@ -23,7 +23,7 @@ namespace OC\Share;
 
 use OC\Share\ShareManager;
 use OC\User\Manager;
-use Oc\User\User;
+use OC\User\User;
 
 /**
  * Listen to user events that require updating shares
