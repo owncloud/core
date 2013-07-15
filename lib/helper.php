@@ -647,10 +647,21 @@ class OC_Helper {
 			$ext = '';
 		}
 
+		if(preg_match('/\((\d+)\)$/', $name, $matches, PREG_OFFSET_CAPTURE) !== false ) {
+			$counter = ($matches[count($matches)-1][0]);
+		}
+		else {
+			$counter = 2;
+		}
 		$newpath = $path . '/' . $filename;
-		$counter = 2;
+
 		while (\OC\Files\Filesystem::file_exists($newpath)) {
-			$newname = $name . ' (' . $counter . ')' . $ext;
+			if(preg_match('/\((\d+)\)$/', $name, $matches, PREG_OFFSET_CAPTURE) !== false ) {
+				//Replace the last "(number)" with " (number+1)"
+				$newname = preg_replace ( '/ ?\(\d+\)$/' , ' ('.$counter.')', $name , 1).$ext;
+			} else {
+				$name . ' (' . $counter . ')' . $ext;
+			}
 			$newpath = $path . '/' . $newname;
 			$counter++;
 		}
