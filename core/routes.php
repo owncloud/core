@@ -57,6 +57,20 @@ $this->create('core_lostpassword_reset_password', '/lostpassword/reset/{token}/{
 	->post()
 	->action('OC_Core_LostPassword_Controller', 'resetPassword');
 
+OC::$CLASSPATH['OC_Core_Registration_Controller'] = 'core/registration/controller.php';
+$this->create('core_registration_index', '/register/')
+	->get()
+	->action('OC_Core_Registration_Controller', 'index');
+$this->create('core_registration_send_email', '/register/')
+	->post()
+	->action('OC_Core_Registration_Controller', 'sendEmail');
+$this->create('core_registration_register_form', '/register/verify/{token}')
+	->get()
+	->action('OC_Core_Registration_Controller', 'registerForm');
+$this->create('core_registration_create_account', '/register/verify/{token}')
+	->post()
+	->action('OC_Core_Registration_Controller', 'createAccount');
+
 // Not specifically routed
 $this->create('app_css', '/apps/{app}/{file}')
 	->requirements(array('file' => '.*.css'))

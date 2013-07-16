@@ -184,8 +184,8 @@ input[type="submit"].enabled { background:#66f866; border:1px solid #5e5; -moz-b
 #login form #datadirField legend { margin-bottom:15px; }
 
 /* Icons for username and password fields to better recognize them */
-#adminlogin, #adminpass, #user, #password { width:11.7em!important; padding-left:1.8em; }
-#adminlogin+label+img, #adminpass-icon, #user+label+img, #password-icon {
+#adminlogin, #adminpass, #user, #password, #email { width:11.7em!important; padding-left:1.8em; }
+#adminlogin+label+img, #adminpass-icon, #user+label+img, #password-icon, #email+label+img{
 	position:absolute; left:1.25em; top:1.65em;
 	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=30)"; filter:alpha(opacity=30); opacity:.3;
 }
