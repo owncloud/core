@@ -956,7 +956,6 @@
 
 			<index>
 				<name>uid_lower_Key</name>
-				<unique>true</unique>
 				<field>
 					<name>uid_lower</name>
 					<sorting>ascending</sorting>
