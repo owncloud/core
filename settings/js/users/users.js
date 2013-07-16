@@ -52,8 +52,13 @@ usersmanagement.factory('GroupService', function($resource) {
 			return $resource(OC.filePath('settings', 'ajax', 'removegroup.php'), group, {
 				method: 'DELETE'
 			});
+		},
+		getByGroupId: function(groupId) {
+			return $resource(OC.filePath('settings', 'ajax', 'grouplist.php'), {}, {
+				method: 'GET'
+			});
 		}
-	};
+	}
 });
 
 /* User Serivce */
@@ -98,14 +103,13 @@ usersmanagement.controller('creategroupController', ['$scope', '$http', 'GroupSe
 
 /* Fetches the List of All Groups - Left Sidebar */
 
-usersmanagement.controller('grouplistController', ['$scope', '$http', '$location', 'GroupService', 'UserService',
-	function($scope, $http, GroupService, $location) {
+usersmanagement.controller('grouplistController', ['$scope', '$http', '$routeParams', 'GroupService', 'UserService',
+	function($scope, $http, $routeParams, GroupService) {
 		$http.get(OC.filePath('settings', 'ajax', 'grouplist.php')).then(function(response){
 			$scope.groupnames = response.data.result;
 		});
-		$scope.switchuser = function(groupid) {
-			$location.url('/group/' + groupid);
-		}
+		console.log($routeParams.groupid);
+		$scope.groups = GroupService.getByGroupId($routeParams.groupid);
 		$scope.deletegroup = function(groupid) {
 			GroupService.removegroup().delete({ groupname : groupid });
 		}
