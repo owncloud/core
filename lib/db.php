@@ -621,8 +621,8 @@ class OC_DB {
 		// read file
 		$content = file_get_contents( $file );
 
-		$previousSchema = self::$schema->getDefinitionFromDatabase();
-		self::raiseExceptionOnError($previousSchema,'Failed to get existing database structure for updating');
+		$previousSchema = self::$schema->getDefinitionFromDatabase($CONFIG_DBTABLEPREFIX);
+		self::raiseExceptionOnError($previousSchema, 'Failed to get existing database structure for updating');
 
 		// Make changes and save them to an in-memory file
 		$file2 = 'static://db_scheme';
