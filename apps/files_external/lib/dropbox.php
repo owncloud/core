@@ -51,7 +51,16 @@ class Dropbox extends \OC\Files\Storage\Common {
 	}
 
 	private function getMetaData($path, $list = false) {
-		$path = $this->root.$path;
+		// fix for file scanner
+		if($path === false) {
+			$path = '/';
+		}
+
+		$path = \OC\Files\Filesystem::normalizePath($this->root.$path);
+		if (\OCA\Files\External\Locks::isLocked($path)) {
+			return false;
+		}
+
 		if ( ! $list && isset($this->metaData[$path])) {
 			return $this->metaData[$path];
 		} else {
@@ -66,7 +75,7 @@ class Dropbox extends \OC\Files\Storage\Common {
 					$contents = $response['contents'];
 					// Cache folder's contents
 					foreach ($contents as $file) {
-						$this->metaData[$path.'/'.basename($file['path'])] = $file;
+						$this->metaData[\OC\Files\Filesystem::normalizePath($path.'/'.basename($file['path']))] = $file;
 					}
 					unset($response['contents']);
 					$this->metaData[$path] = $response;
@@ -78,6 +87,7 @@ class Dropbox extends \OC\Files\Storage\Common {
 				try {
 					$response = $this->dropbox->getMetaData($path, 'false');
 					$this->metaData[$path] = $response;
+
 					return $response;
 				} catch (\Exception $exception) {
 					\OCP\Util::writeLog('files_external', $exception->getMessage(), \OCP\Util::ERROR);
@@ -158,9 +168,11 @@ class Dropbox extends \OC\Files\Storage\Common {
 		if ($path == '' || $path == '/') {
 			return true;
 		}
+
 		if ($this->getMetaData($path)) {
 			return true;
 		}
+
 		return false;
 	}
 
@@ -277,6 +289,37 @@ class Dropbox extends \OC\Files\Storage\Common {
 	}
 
 	public function touch($path, $mtime = null) {
+
+		// creating a empty file will prevent the file scanner
+		// from calling the API about 9x
+		$path = \OC\Files\Filesystem::normalizePath($path);
+
+		try {
+			$response = $this->dropbox->getMetaData($path);
+		} catch (\Exception $exception) {
+			\OCP\Util::writeLog('files_external', $exception->getMessage(), \OCP\Util::ERROR);
+		}
+
+		if(!isset($response)) {
+			if (strrpos($path, '.') !== false) {
+				$ext = substr($path, strrpos($path, '.'));
+			} else {
+				$ext = '';
+			}
+			$tmpFile = \OC_Helper::tmpFile($ext);
+
+			$handle = fopen($tmpFile, 'r');
+			try {
+				$this->dropbox->putFile($path, $handle);
+				unlink($tmpFile);
+			} catch (\Exception $exception) {
+				\OCP\Util::writeLog('files_external', $exception->getMessage(), \OCP\Util::ERROR);
+			}
+			fclose($handle);
+		} else {
+			// dropbox currently does not support touch so we ignore this
+		}
+
 		return false;
 	}
 

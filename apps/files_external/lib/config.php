@@ -183,7 +183,7 @@ class OC_Mount_Config {
 	* The returned array is not in the same format as getUserMountPoints()
 	* @return array
 	*/
-	public static function getPersonalMountPoints() {
+	public static function getPersonalMountPoints($withStatus = true) {
 		$mountPoints = self::readData(true);
 		$backends = self::getBackends();
 		$uid = OCP\User::getUser();
@@ -194,12 +194,18 @@ class OC_Mount_Config {
 				if (strpos($mount['class'], 'OC_Filestorage_') !== false) {
 					$mount['class'] = '\OC\Files\Storage\\'.substr($mount['class'], 15);
 				}
+
+				$status = false;
+				if($withStatus) {
+					$status = self::getBackendStatus($mount['class'], $mount['options']);
+				}
+
 				// Remove '/uid/files/' from mount point
 				$personal[substr($mountPoint, strlen($uid) + 8)] = array(
 					'class' => $mount['class'],
 					'backend' => $backends[$mount['class']]['backend'],
 					'configuration' => $mount['options'],
-					'status' => self::getBackendStatus($mount['class'], $mount['options'])
+					'status' => $status
 				);
 			}
 		}
