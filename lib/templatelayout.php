@@ -109,6 +109,8 @@ class OC_TemplateLayout extends OC_Template {
 		foreach($styles as $style) {
 			// is it in 3rdparty?
 			if(strpos($style, '3rdparty') === 0 &&
+				(OC::$THIRDPARTYROOT !== '') && 
+				(OC::$THIRDPARTYWEBROOT !== '') &&
 				self::appendIfExist($files, OC::$THIRDPARTYROOT, OC::$THIRDPARTYWEBROOT, $style.'.css')) {
 
 			// or in the owncloud root?
@@ -163,6 +165,8 @@ class OC_TemplateLayout extends OC_Template {
 		foreach($scripts as $script) {
 			// Is it in 3rd party?
 			if(strpos($script, '3rdparty') === 0 &&
+				(OC::$THIRDPARTYROOT !== '') && 
+				(OC::$THIRDPARTYWEBROOT !== '') &&
 				self::appendIfExist($files, OC::$THIRDPARTYROOT, OC::$THIRDPARTYWEBROOT, $script.'.js')) {
 
 			// Is it in apps and overwritten by the theme?
