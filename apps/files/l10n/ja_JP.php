@@ -68,10 +68,15 @@
 "You don’t have write permissions here." => "あなたには書き込み権限がありません。",
 "Nothing in here. Upload something!" => "ここには何もありません。何かアップロードしてください。",
 "Download" => "ダウンロード",
+"Size (MB)" => "サイズ(MB)",
 "Unshare" => "共有解除",
 "Upload too large" => "アップロードには大きすぎます。",
 "The files you are trying to upload exceed the maximum size for file uploads on this server." => "アップロードしようとしているファイルは、サーバで規定された最大サイズを超えています。",
 "Files are being scanned, please wait." => "ファイルをスキャンしています、しばらくお待ちください。",
 "Current scanning" => "スキャン中",
+"directory" => "ディレクトリ",
+"directories" => "ディレクトリ",
+"file" => "ファイル",
+"files" => "ファイル",
 "Upgrading filesystem cache..." => "ファイルシステムキャッシュを更新中..."
 );

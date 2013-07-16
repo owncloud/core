@@ -5,15 +5,17 @@
 # Translators:
 # a.tangemann <a.tangemann@web.de>, 2013
 # SteinQuadrat, 2013
+# I Robot <owncloud-bot@tmit.eu>, 2013
 # Marcel Kühlhorn <susefan93@gmx.de>, 2013
 # Mirodin <blobbyjj@ymail.com>, 2013
+# kabum <uu.kabum@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-07-04 09:30+0200\n"
-"PO-Revision-Date: 2013-07-04 07:31+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"POT-Creation-Date: 2013-07-15 02:24+0200\n"
+"PO-Revision-Date: 2013-07-14 23:25+0000\n"
+"Last-Translator: kabum <uu.kabum@gmail.com>\n"
 "Language-Team: German (Germany) <translations@owncloud.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,54 +33,54 @@ msgstr "Konnte %s nicht verschieben. Eine Datei mit diesem Namen existiert berei
 msgid "Could not move %s"
 msgstr "Konnte %s nicht verschieben"
 
-#: ajax/upload.php:16 ajax/upload.php:39
+#: ajax/upload.php:16 ajax/upload.php:45
 msgid "Unable to set upload directory."
 msgstr "Das Upload-Verzeichnis konnte nicht gesetzt werden."
 
-#: ajax/upload.php:23
+#: ajax/upload.php:22
 msgid "Invalid Token"
 msgstr "Ungültiges Merkmal"
 
-#: ajax/upload.php:55
+#: ajax/upload.php:59
 msgid "No file was uploaded. Unknown error"
 msgstr "Keine Datei hochgeladen. Unbekannter Fehler"
 
-#: ajax/upload.php:62
+#: ajax/upload.php:66
 msgid "There is no error, the file uploaded with success"
 msgstr "Es ist kein Fehler aufgetreten. Die Datei wurde erfolgreich hochgeladen."
 
-#: ajax/upload.php:63
+#: ajax/upload.php:67
 msgid ""
 "The uploaded file exceeds the upload_max_filesize directive in php.ini: "
 msgstr "Die hochgeladene Datei überschreitet die upload_max_filesize Vorgabe in php.ini"
 
-#: ajax/upload.php:65
+#: ajax/upload.php:69
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
 msgstr "Die Datei ist größer, als die MAX_FILE_SIZE Vorgabe erlaubt, die im HTML-Formular spezifiziert ist"
 
-#: ajax/upload.php:66
+#: ajax/upload.php:70
 msgid "The uploaded file was only partially uploaded"
 msgstr "Die Datei konnte nur teilweise übertragen werden"
 
-#: ajax/upload.php:67
+#: ajax/upload.php:71
 msgid "No file was uploaded"
 msgstr "Keine Datei konnte übertragen werden."
 
-#: ajax/upload.php:68
+#: ajax/upload.php:72
 msgid "Missing a temporary folder"
 msgstr "Kein temporärer Ordner vorhanden"
 
-#: ajax/upload.php:69
+#: ajax/upload.php:73
 msgid "Failed to write to disk"
 msgstr "Fehler beim Schreiben auf die Festplatte"
 
-#: ajax/upload.php:87
+#: ajax/upload.php:91
 msgid "Not enough storage available"
 msgstr "Nicht genug Speicher vorhanden."
 
-#: ajax/upload.php:119
+#: ajax/upload.php:123
 msgid "Invalid directory."
 msgstr "Ungültiges Verzeichnis."
 
@@ -132,43 +134,43 @@ msgstr "Löschen"
 msgid "Rename"
 msgstr "Umbenennen"
 
-#: js/filelist.js:49 js/filelist.js:52 js/filelist.js:464
+#: js/filelist.js:49 js/filelist.js:52 js/filelist.js:466
 msgid "Pending"
 msgstr "Ausstehend"
 
-#: js/filelist.js:302 js/filelist.js:304
+#: js/filelist.js:304 js/filelist.js:306
 msgid "{new_name} already exists"
 msgstr "{new_name} existiert bereits"
 
-#: js/filelist.js:302 js/filelist.js:304
+#: js/filelist.js:304 js/filelist.js:306
 msgid "replace"
 msgstr "ersetzen"
 
-#: js/filelist.js:302
+#: js/filelist.js:304
 msgid "suggest name"
 msgstr "Namen vorschlagen"
 
-#: js/filelist.js:302 js/filelist.js:304
+#: js/filelist.js:304 js/filelist.js:306
 msgid "cancel"
 msgstr "abbrechen"
 
-#: js/filelist.js:349
+#: js/filelist.js:351
 msgid "replaced {new_name} with {old_name}"
 msgstr "{old_name} wurde ersetzt durch {new_name}"
 
-#: js/filelist.js:349
+#: js/filelist.js:351
 msgid "undo"
 msgstr "rückgängig machen"
 
-#: js/filelist.js:374
+#: js/filelist.js:376
 msgid "perform delete operation"
 msgstr "Löschvorgang ausführen"
 
-#: js/filelist.js:456
+#: js/filelist.js:458
 msgid "1 file uploading"
 msgstr "1 Datei wird hochgeladen"
 
-#: js/filelist.js:459 js/filelist.js:517
+#: js/filelist.js:461 js/filelist.js:519
 msgid "files uploading"
 msgstr "Dateien werden hoch geladen"
 
@@ -208,7 +210,7 @@ msgstr "Ungültiger Verzeichnisname. Die Nutzung von \"Shared\" ist ownCloud vor
 msgid "Name"
 msgstr "Name"
 
-#: js/files.js:745 templates/index.php:80
+#: js/files.js:745
 msgid "Size"
 msgstr "Größe"
 
@@ -309,6 +311,10 @@ msgstr "Alles leer. Laden Sie etwas hoch!"
 msgid "Download"
 msgstr "Herunterladen"
 
+#: templates/index.php:80
+msgid "Size (MB)"
+msgstr "Größe (MB)"
+
 #: templates/index.php:87 templates/index.php:88
 msgid "Unshare"
 msgstr "Freigabe aufheben"
@@ -331,21 +337,21 @@ msgstr "Dateien werden gescannt, bitte warten."
 msgid "Current scanning"
 msgstr "Scanne"
 
-#: templates/part.list.php:78
+#: templates/part.list.php:76
 msgid "directory"
-msgstr ""
+msgstr "Verzeichnis"
 
-#: templates/part.list.php:80
+#: templates/part.list.php:78
 msgid "directories"
-msgstr ""
+msgstr "Verzeichnisse"
+
+#: templates/part.list.php:87
+msgid "file"
+msgstr "Datei"
 
 #: templates/part.list.php:89
-msgid "file"
-msgstr ""
-
-#: templates/part.list.php:91
 msgid "files"
-msgstr ""
+msgstr "Dateien"
 
 #: templates/upgrade.php:2
 msgid "Upgrading filesystem cache..."

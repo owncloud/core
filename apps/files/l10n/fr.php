@@ -68,10 +68,15 @@
 "You don’t have write permissions here." => "Vous n'avez pas le droit d'écriture ici.",
 "Nothing in here. Upload something!" => "Il n'y a rien ici ! Envoyez donc quelque chose :)",
 "Download" => "Télécharger",
+"Size (MB)" => "Taille (Mo)",
 "Unshare" => "Ne plus partager",
 "Upload too large" => "Téléversement trop volumineux",
 "The files you are trying to upload exceed the maximum size for file uploads on this server." => "Les fichiers que vous essayez d'envoyer dépassent la taille maximale permise par ce serveur.",
 "Files are being scanned, please wait." => "Les fichiers sont en cours d'analyse, veuillez patienter.",
 "Current scanning" => "Analyse en cours",
+"directory" => "dossier",
+"directories" => "dossiers",
+"file" => "fichier",
+"files" => "fichiers",
 "Upgrading filesystem cache..." => "Mise à niveau du cache du système de fichier"
 );

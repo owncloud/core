@@ -68,10 +68,15 @@
 "You don’t have write permissions here." => "Sie haben hier keine Schreib-Berechtigungen.",
 "Nothing in here. Upload something!" => "Alles leer. Laden Sie etwas hoch!",
 "Download" => "Herunterladen",
+"Size (MB)" => "Größe (MB)",
 "Unshare" => "Freigabe aufheben",
 "Upload too large" => "Der Upload ist zu groß",
 "The files you are trying to upload exceed the maximum size for file uploads on this server." => "Die Datei überschreitet die Maximalgröße für Uploads auf diesem Server.",
 "Files are being scanned, please wait." => "Dateien werden gescannt, bitte warten.",
 "Current scanning" => "Scanne",
+"directory" => "Verzeichnis",
+"directories" => "Verzeichnisse",
+"file" => "Datei",
+"files" => "Dateien",
 "Upgrading filesystem cache..." => "Dateisystem-Cache wird aktualisiert ..."
 );

@@ -49,6 +49,7 @@
 "{count} folders" => "{count} carpetes",
 "1 file" => "1 fitxer",
 "{count} files" => "{count} fitxers",
+"%s could not be renamed" => "%s no es pot canviar el nom",
 "Upload" => "Puja",
 "File handling" => "Gestió de fitxers",
 "Maximum upload size" => "Mida màxima de pujada",
@@ -67,10 +68,15 @@
 "You don’t have write permissions here." => "No teniu permisos d'escriptura aquí.",
 "Nothing in here. Upload something!" => "Res per aquí. Pugeu alguna cosa!",
 "Download" => "Baixa",
+"Size (MB)" => "Mida (MB)",
 "Unshare" => "Deixa de compartir",
 "Upload too large" => "La pujada és massa gran",
 "The files you are trying to upload exceed the maximum size for file uploads on this server." => "Els fitxers que esteu intentant pujar excedeixen la mida màxima de pujada del servidor",
 "Files are being scanned, please wait." => "S'estan escanejant els fitxers, espereu",
 "Current scanning" => "Actualment escanejant",
+"directory" => "directori",
+"directories" => "directoris",
+"file" => "fitxer",
+"files" => "fitxers",
 "Upgrading filesystem cache..." => "Actualitzant la memòria de cau del sistema de fitxers..."
 );

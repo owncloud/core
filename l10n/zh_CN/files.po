@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-07-04 09:30+0200\n"
-"PO-Revision-Date: 2013-07-04 07:31+0000\n"
+"POT-Creation-Date: 2013-07-15 02:24+0200\n"
+"PO-Revision-Date: 2013-07-14 23:25+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/owncloud/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -30,54 +30,54 @@ msgstr "无法移动 %s - 同名文件已存在"
 msgid "Could not move %s"
 msgstr "无法移动 %s"
 
-#: ajax/upload.php:16 ajax/upload.php:39
+#: ajax/upload.php:16 ajax/upload.php:45
 msgid "Unable to set upload directory."
 msgstr "无法设置上传文件夹。"
 
-#: ajax/upload.php:23
+#: ajax/upload.php:22
 msgid "Invalid Token"
 msgstr "无效密匙"
 
-#: ajax/upload.php:55
+#: ajax/upload.php:59
 msgid "No file was uploaded. Unknown error"
 msgstr "没有文件被上传。未知错误"
 
-#: ajax/upload.php:62
+#: ajax/upload.php:66
 msgid "There is no error, the file uploaded with success"
 msgstr "文件上传成功，没有错误发生"
 
-#: ajax/upload.php:63
+#: ajax/upload.php:67
 msgid ""
 "The uploaded file exceeds the upload_max_filesize directive in php.ini: "
 msgstr "上传文件大小已超过php.ini中upload_max_filesize所规定的值"
 
-#: ajax/upload.php:65
+#: ajax/upload.php:69
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
 msgstr "上传的文件长度超出了 HTML 表单中 MAX_FILE_SIZE 的限制"
 
-#: ajax/upload.php:66
+#: ajax/upload.php:70
 msgid "The uploaded file was only partially uploaded"
 msgstr "已上传文件只上传了部分（不完整）"
 
-#: ajax/upload.php:67
+#: ajax/upload.php:71
 msgid "No file was uploaded"
 msgstr "没有文件被上传"
 
-#: ajax/upload.php:68
+#: ajax/upload.php:72
 msgid "Missing a temporary folder"
 msgstr "缺少临时目录"
 
-#: ajax/upload.php:69
+#: ajax/upload.php:73
 msgid "Failed to write to disk"
 msgstr "写入磁盘失败"
 
-#: ajax/upload.php:87
+#: ajax/upload.php:91
 msgid "Not enough storage available"
 msgstr "没有足够的存储空间"
 
-#: ajax/upload.php:119
+#: ajax/upload.php:123
 msgid "Invalid directory."
 msgstr "无效文件夹。"
 
@@ -131,43 +131,43 @@ msgstr "删除"
 msgid "Rename"
 msgstr "重命名"
 
-#: js/filelist.js:49 js/filelist.js:52 js/filelist.js:464
+#: js/filelist.js:49 js/filelist.js:52 js/filelist.js:466
 msgid "Pending"
 msgstr "等待"
 
-#: js/filelist.js:302 js/filelist.js:304
+#: js/filelist.js:304 js/filelist.js:306
 msgid "{new_name} already exists"
 msgstr "{new_name} 已存在"
 
-#: js/filelist.js:302 js/filelist.js:304
+#: js/filelist.js:304 js/filelist.js:306
 msgid "replace"
 msgstr "替换"
 
-#: js/filelist.js:302
+#: js/filelist.js:304
 msgid "suggest name"
 msgstr "建议名称"
 
-#: js/filelist.js:302 js/filelist.js:304
+#: js/filelist.js:304 js/filelist.js:306
 msgid "cancel"
 msgstr "取消"
 
-#: js/filelist.js:349
+#: js/filelist.js:351
 msgid "replaced {new_name} with {old_name}"
 msgstr "已将 {old_name}替换成 {new_name}"
 
-#: js/filelist.js:349
+#: js/filelist.js:351
 msgid "undo"
 msgstr "撤销"
 
-#: js/filelist.js:374
+#: js/filelist.js:376
 msgid "perform delete operation"
 msgstr "进行删除操作"
 
-#: js/filelist.js:456
+#: js/filelist.js:458
 msgid "1 file uploading"
 msgstr "1个文件上传中"
 
-#: js/filelist.js:459 js/filelist.js:517
+#: js/filelist.js:461 js/filelist.js:519
 msgid "files uploading"
 msgstr "文件上传中"
 
@@ -207,7 +207,7 @@ msgstr "无效文件夹名。'共享' 是 Owncloud 预留的文件夹名。"
 msgid "Name"
 msgstr "名称"
 
-#: js/files.js:745 templates/index.php:80
+#: js/files.js:745
 msgid "Size"
 msgstr "大小"
 
@@ -308,6 +308,10 @@ msgstr "这里还什么都没有。上传些东西吧！"
 msgid "Download"
 msgstr "下载"
 
+#: templates/index.php:80
+msgid "Size (MB)"
+msgstr ""
+
 #: templates/index.php:87 templates/index.php:88
 msgid "Unshare"
 msgstr "取消共享"
@@ -330,21 +334,21 @@ msgstr "文件正在被扫描，请稍候。"
 msgid "Current scanning"
 msgstr "当前扫描"
 
-#: templates/part.list.php:78
+#: templates/part.list.php:76
 msgid "directory"
 msgstr ""
 
-#: templates/part.list.php:80
+#: templates/part.list.php:78
 msgid "directories"
 msgstr ""
 
-#: templates/part.list.php:89
+#: templates/part.list.php:87
 msgid "file"
-msgstr ""
+msgstr "文件"
 
-#: templates/part.list.php:91
+#: templates/part.list.php:89
 msgid "files"
-msgstr ""
+msgstr "文件"
 
 #: templates/upgrade.php:2
 msgid "Upgrading filesystem cache..."
