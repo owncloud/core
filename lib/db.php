@@ -132,6 +132,7 @@ class OC_DB {
 		$user = OC_Config::getValue( "dbuser", "" );
 		$pass = OC_Config::getValue( "dbpassword", "" );
 		$type = OC_Config::getValue( "dbtype", "sqlite" );
+		$unix_socket = OC_Config::getValue( "unix_socket", "" );
 		if(strpos($host, ':')) {
 			list($host, $port)=explode(':', $host, 2);
 		}else{
@@ -151,7 +152,9 @@ class OC_DB {
 					$dsn='sqlite:'.$datadir.'/'.$name.'.db';
 					break;
 				case 'mysql':
-					if($port) {
+					if($unix_socket){
+						$dsn='mysql:dbname='.$name.';unix_socket='.$unix_socket;
+					}else if($port) {
 						$dsn='mysql:dbname='.$name.';host='.$host.';port='.$port;
 					}else{
 						$dsn='mysql:dbname='.$name.';host='.$host;
