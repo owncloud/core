@@ -109,11 +109,24 @@ class Files {
 	}
 
 	/**
-	 * @param string appid
-	 * @param $app app
+	 * Get a filesystem view to storage app related data in
+	 *
+	 * @param string $app
 	 * @return \OC\Files\View
 	 */
 	public static function getStorage( $app ) {
 		return \OC_App::getStorage( $app );
+	}
+
+	/**
+	 * @param string $root
+	 * @return \OC\Files\View
+	 */
+	public static function getView( $root ) {
+		$view = new \OC\Files\View( $root );
+		if (!$view->file_exists( '/' )) {
+			$view->mkdir( '/' );
+		}
+		return $view;
 	}
 }
