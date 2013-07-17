@@ -9,8 +9,12 @@
 namespace OC\Core\Controller;
 
 class Update {
+	/**
+	 * @var \OC\Updater
+	 */
 	protected $updater;
 	protected $eventSource;
+
 
 	public function __construct($updater, $eventSource = null) {
 		$this->updater = $updater;
@@ -43,7 +47,7 @@ class Update {
 
 		try {
 			$this->updater->upgrade();
-		} catch(Exception $e) {
+		} catch(\Exception $e) {
 			$failure($e->getMessage());
 		}
 	}

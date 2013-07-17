@@ -3,7 +3,8 @@ set_time_limit(0);
 $RUNTIME_NOAPPS = true;
 require_once '../../lib/base.php';
 
-if (OC::checkUpgrade(false)) { // to bad OC_EventSource starts output, otherwise this could also be in the controller
+// to bad OC_EventSource starts output, otherwise this could also be in the controller
+if (OC::checkUpgrade(false)) {
 	$eventSource = new OC_EventSource();
 	$msg = function($msg) use ($eventSource) {
 		$eventSource->send('success', $msg);
