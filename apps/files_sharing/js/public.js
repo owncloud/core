@@ -63,6 +63,8 @@ $(document).ready(function() {
   $('#controls').append($('#additional_controls div#uploadprogresswrapper'));
 
   // Cancel upload trigger
-  $('#cancel_upload_button').click(Files.cancelUploads);
+  if (typeof Files != "undefined") { // Check if Files exists
+  	$('#cancel_upload_button').click(Files.cancelUploads);
+  }
 
 });
