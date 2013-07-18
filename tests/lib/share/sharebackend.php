@@ -22,7 +22,6 @@
 namespace Test\Share;
 
 use OC\Share\Share;
-use OC\Share\TimeMachine;
 
 class TestShareBackend extends \OC\Share\ShareBackend {
 
@@ -110,21 +109,31 @@ class ShareBackend extends \PHPUnit_Framework_TestCase {
 		$this->shareBackend = new TestShareBackend($this->timeMachine,
 			array($this->user, $this->group, $this->link)
 		);
-		$this->shareBackend->setIsValidItem(true);
 	}
 
-	public function testShare() {
+	/**
+	 * Get a fake valid item source for testing isValidItem
+	 * @param Share $share
+	 * @return any
+	 */
+	protected function getValidItemSource(Share $share) {
 		$this->shareBackend->setIsValidItem(true);
+		return 1;
+	}
 
+	protected function getExpectedItemTarget(Share $share) {}
+
+	public function testShare() {
 		$mtgap = 'MTGap';
 		$icewind = 'Icewind';
-		$item = 1;
 		$share = new Share();
 		$share->setShareTypeId('user');
 		$share->setShareOwner($mtgap);
 		$share->setShareWith($icewind);
-		$share->setItemSource($item);
+		$share->setItemOwner($mtgap);
 		$share->setPermissions(31);
+		$item = $this->getValidItemSource($share);
+		$share->setItemSource($item);
 		$share->resetUpdatedProperties();
 		$sharedShare = clone $share;
 		$sharedShare->setShareTime(1370797580);
@@ -179,15 +188,14 @@ class ShareBackend extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testShareAgain() {
-		$this->shareBackend->setIsValidItem(true);
-
 		$butonic = 'butonic';
 		$bartv = 'bartv';
-		$item = 2;
 		$share = new Share();
 		$share->setShareTypeId('user');
 		$share->setShareOwner($butonic);
 		$share->setShareWith($bartv);
+		$share->setItemOwner($butonic);
+		$item = $this->getValidItemSource($share);
 		$share->setItemSource($item);
 		$map = array(
 			array(array('shareOwner' => $butonic, 'shareWith' => $bartv, 'itemSource' => $item),
@@ -204,8 +212,6 @@ class ShareBackend extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testShareWithInvalidShare() {
-		$this->shareBackend->setIsValidItem(true);
-
 		$mtgap = 'MTGap';
 		$icewind = 'Icewind';
 		$item = 1;
@@ -213,8 +219,10 @@ class ShareBackend extends \PHPUnit_Framework_TestCase {
 		$share->setShareTypeId('user');
 		$share->setShareOwner($mtgap);
 		$share->setShareWith($icewind);
-		$share->setItemSource($item);
+		$share->setItemOwner($mtgap);
 		$share->setPermissions(31);
+		$item = $this->getValidItemSource($share);
+		$share->setItemSource($item);
 		$userMap = array(
 			array(array('shareOwner' => $mtgap, 'shareWith' => $icewind, 'itemSource' => $item),
 				1, null, array()
