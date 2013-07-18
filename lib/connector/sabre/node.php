@@ -1,10 +1,11 @@
 <?php
-
 /**
  * ownCloud
  *
  * @author Jakob Sack
+ * @author Michael Gapczynski
  * @copyright 2011 Jakob Sack kde@jakobsack.de
+ * @copyright 2013 Michael Gapczynski mtgap@owncloud.com
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -21,207 +22,216 @@
  *
  */
 
-abstract class OC_Connector_Sabre_Node implements Sabre_DAV_INode, Sabre_DAV_IProperties {
+abstract class OC_Connector_Sabre_Node implements Sabre_DAV_IProperties {
+
 	const GETETAG_PROPERTYNAME = '{DAV:}getetag';
 	const LASTMODIFIED_PROPERTYNAME = '{DAV:}lastmodified';
 
 	/**
-	 * Allow configuring the method used to generate Etags
-	 *
-	 * @var array(class_name, function_name)
-	*/
-	public static $ETagFunction = null;
-
-	/**
 	 * The path to the current node
-	 *
 	 * @var string
 	 */
 	protected $path;
+
 	/**
 	 * node fileinfo cache
 	 * @var array
 	 */
-	protected $fileinfo_cache;
+	protected $fileInfoCache;
+
 	/**
 	 * node properties cache
 	 * @var array
 	 */
-	protected $property_cache = null;
+	protected $propertyCache;
 
 	/**
-	 * @brief Sets up the node, expects a full path name
+	 * Sets up the node, expects a full path name
 	 * @param string $path
-	 * @return void
 	 */
 	public function __construct($path) {
 		$this->path = $path;
 	}
 
-
-
 	/**
-	 * @brief  Returns the name of the node
+	 * Returns the name of the node
 	 * @return string
 	 */
 	public function getName() {
-
-		list(, $name)  = Sabre_DAV_URLUtil::splitPath($this->path);
+		list(, $name) = Sabre_DAV_URLUtil::splitPath($this->path);
 		return $name;
-
 	}
 
 	/**
-	 * @brief Renames the node
+	 * Renames the node
 	 * @param string $name The new name
 	 * @return void
+	 * @throws Sabre_DAV_Exception_Forbidden
 	 */
 	public function setName($name) {
-
+		if (!\OC\Files\Filesystem::isUpdatable($this->path)) {
+			throw new \Sabre_DAV_Exception_Forbidden();
+		}
 		list($parentPath, ) = Sabre_DAV_URLUtil::splitPath($this->path);
 		list(, $newName) = Sabre_DAV_URLUtil::splitPath($name);
-
 		$newPath = $parentPath . '/' . $newName;
-		$oldPath = $this->path;
-
-		\OC\Files\Filesystem::rename($this->path, $newPath);
-
-		$this->path = $newPath;
-
-		$query = OC_DB::prepare( 'UPDATE `*PREFIX*properties` SET `propertypath` = ?'
-			.' WHERE `userid` = ? AND `propertypath` = ?' );
-		$query->execute( array( $newPath, OC_User::getUser(), $oldPath ));
-
-	}
-
-	public function setFileinfoCache($fileinfo_cache)
-	{
-		$this->fileinfo_cache = $fileinfo_cache;
-	}
-
-	/**
-	 * @brief Ensure that the fileinfo cache is filled
-	 * @note Uses OC_FileCache or a direct stat
-	 */
-	protected function getFileinfoCache() {
-		if (!isset($this->fileinfo_cache)) {
-			if ($fileinfo_cache = \OC\Files\Filesystem::getFileInfo($this->path)) {
-			} else {
-				$fileinfo_cache = \OC\Files\Filesystem::stat($this->path);
-			}
-
-			$this->fileinfo_cache = $fileinfo_cache;
+		$result = \OC\Files\Filesystem::rename($this->path, $newPath);
+		if ($result) {
+			$this->path = $newPath;
+		} else {
+			throw new \Sabre_DAV_Exception_Forbidden();
 		}
 	}
 
-	public function setPropertyCache($property_cache)
-	{
-		$this->property_cache = $property_cache;
-	}
-
 	/**
-	 * @brief Returns the last modification time, as a unix timestamp
+	 * Returns the last modification time, as a unix timestamp
 	 * @return int
 	 */
 	public function getLastModified() {
-		$this->getFileinfoCache();
-		return $this->fileinfo_cache['mtime'];
-
+		$fileInfo = $this->getFileInfo();
+		if (isset($fileInfo['mtime'])) {
+			return $fileInfo['mtime'];
+		}
 	}
 
 	/**
-	 *  sets the last modification time of the file (mtime) to the value given
-	 *  in the second parameter or to now if the second param is empty.
-	 *  Even if the modification time is set to a custom value the access time is set to now.
-	 */
-	public function touch($mtime) {
-		\OC\Files\Filesystem::touch($this->path, $mtime);
-	}
-
-	/**
-	 * @brief Updates properties on this node,
+	 * Updates properties on this node
 	 * @param array $mutations
-	 * @see Sabre_DAV_IProperties::updateProperties
-	 * @return bool|array
+	 * @see Sabre_DAV_IProperties->updateProperties
+	 * @return bool
 	 */
-	public function updateProperties($properties) {
-		$existing = $this->getProperties(array());
-		foreach($properties as $propertyName => $propertyValue) {
-			// If it was null, we need to delete the property
-			if (is_null($propertyValue)) {
-				if(array_key_exists( $propertyName, $existing )) {
-					$query = OC_DB::prepare( 'DELETE FROM `*PREFIX*properties`'
-						.' WHERE `userid` = ? AND `propertypath` = ? AND `propertyname` = ?' );
-					$query->execute( array( OC_User::getUser(), $this->path, $propertyName ));
+	public function updateProperties($mutations) {
+		$fileInfo = $this->getFileInfo();
+		if (!isset($fileInfo['fileid']) || isset($mutations['{http://owncloud.org/ns}id'])) {
+			return false;
+		}
+		$fileId = $fileInfo['fileid'];
+		$existing = $this->getProperties($mutations);
+		foreach ($mutations as $name => $value) {
+			// In the case a property should be deleted, the property value will be null
+			if (is_null($value)) {
+				if (isset($existing[$name])) {
+					$sql = 'DELETE FROM `*PREFIX*properties` '.
+						'WHERE `fileid` = ? AND `propertyname` = ?';
+					OC_DB::executeAudited($sql, array($fileId, $name));
+					unset($this->propertyCache[$name]);
 				}
-			}
-			else {
-				if( strcmp( $propertyName, self::GETETAG_PROPERTYNAME) === 0 ) {
-					\OC\Files\Filesystem::putFileInfo($this->path, array('etag'=> $propertyValue));
-				} elseif( strcmp( $propertyName, self::LASTMODIFIED_PROPERTYNAME) === 0 ) {
-					$this->touch($propertyValue);
+			} else {
+				if ($name === self::GETETAG_PROPERTYNAME) {
+					\OC\Files\Filesystem::putFileInfo($this->path, array('etag' => $value));
+					$this->fileInfoCache['etag'] = $value;
+				} else if ($name === self::LASTMODIFIED_PROPERTYNAME) {
+					$this->touch($value);
 				} else {
-					if(!array_key_exists( $propertyName, $existing )) {
-						$query = OC_DB::prepare( 'INSERT INTO `*PREFIX*properties`'
-							.' (`userid`,`propertypath`,`propertyname`,`propertyvalue`) VALUES(?,?,?,?)' );
-						$query->execute( array( OC_User::getUser(), $this->path, $propertyName,$propertyValue ));
+					if (!isset($existing[$name])) {
+						$sql = 'INSERT INTO `*PREFIX*properties` '.
+							'(`fileid`, `propertyname`, `propertyvalue`) VALUES(?,?,?)';
+						OC_DB::executeAudited($sql, array($fileId, $name, $value));
 					} else {
-						$query = OC_DB::prepare( 'UPDATE `*PREFIX*properties` SET `propertyvalue` = ?'
-							.' WHERE `userid` = ? AND `propertypath` = ? AND `propertyname` = ?' );
-						$query->execute( array( $propertyValue,OC_User::getUser(), $this->path, $propertyName ));
+						$sql = 'UPDATE `*PREFIX*properties` SET `propertyvalue` = ? '.
+							'WHERE `fileid` = ? AND `propertyname` = ?';
+						OC_DB::executeAudited($sql, array($value, $fileId, $name));
 					}
 				}
+				$this->propertyCache[$name] = $value;
 			}
-
 		}
-		$this->setPropertyCache(null);
 		return true;
 	}
 
 	/**
-	 * @brief Returns a list of properties for this nodes.;
-	 * @param array $properties
-	 * @return array
-	 * @note The properties list is a list of propertynames the client
-	 * requested, encoded as xmlnamespace#tagName, for example:
-	 * http://www.example.org/namespace#author If the array is empty, all
-	 * properties should be returned
-	 */
+     * Returns a list of properties for this node
+     * @param array $properties
+     * @see Sabre_DAV_IProperties->getProperties
+     * @return array
+     */
 	public function getProperties($properties) {
-		if (is_null($this->property_cache)) {
-			$sql = 'SELECT * FROM `*PREFIX*properties` WHERE `userid` = ? AND `propertypath` = ?';
-			$result = OC_DB::executeAudited( $sql, array( OC_User::getUser(), $this->path ) );
-
-			$this->property_cache = array();
-			while( $row = $result->fetchRow()) {
-				$this->property_cache[$row['propertyname']] = $row['propertyvalue'];
+		if (!isset($this->propertyCache)) {
+			$this->propertyCache = array();
+			$fileInfo = $this->getFileInfo();
+			if (isset($fileInfo['fileid'])) {
+				$fileId = $fileInfo['fileid'];
+				$this->propertyCache['{http://owncloud.org/ns}id'] = $fileId;
+				$sql = 'SELECT `propertyname`, `propertyvalue` FROM `*PREFIX*properties` '.
+					'WHERE `fileid` = ?';
+				$result = OC_DB::executeAudited($sql, array($fileId));
+				while ($row = $result->fetchRow()) {
+					$this->propertyCache[$row['propertyname']] = $row['propertyvalue'];
+				}
+				if (isset($fileInfo['etag'])) {
+					$this->propertyCache[self::GETETAG_PROPERTYNAME] = '"'.$fileInfo['etag'].'"';
+				}
+				$this->propertyCache['{DAV:}current-user-privilege-set'] = $this->getPrivileges();
 			}
-			$this->property_cache[self::GETETAG_PROPERTYNAME] = $this->getETagPropertyForPath($this->path);
 		}
-
-		// if the array was empty, we need to return everything
-		if(count($properties) == 0) {
-			return $this->property_cache;
+		// If the array is empty, it means 'all properties' were requested
+		if (empty($properties)) {
+			return $this->propertyCache;
+		} else {
+			// Return requested properties
+			return array_intersect_key($this->propertyCache, array_flip($properties));
 		}
-
-		$props = array();
-		foreach($properties as $property) {
-			if (isset($this->property_cache[$property])) $props[$property] = $this->property_cache[$property];
-		}
-		return $props;
 	}
 
 	/**
-	 * Returns the ETag surrounded by double-quotes for this path.
-	 * @param string $path Path of the file
-	 * @return string|null Returns null if the ETag can not effectively be determined
+	 * Get the CRUDS permissions transformed as privileges for the node
+	 * @return Sabre_DAVACL_Property_CurrentUserPrivilegeSet
 	 */
-	static public function getETagPropertyForPath($path) {
-		$data = \OC\Files\Filesystem::getFileInfo($path);
-		if (isset($data['etag'])) {
-			return '"'.$data['etag'].'"';
+	protected function getPrivileges() {
+		$privileges = array();
+		$fileInfo = $this->getFileInfo();
+		if (isset($fileInfo['permissions'])) {
+			$permissions = $fileInfo['permissions'];
+			if ($permissions & OCP\PERMISSION_CREATE) {
+	            $privileges[] = '{DAV:}bind';
+	        }
+	        if ($permissions & OCP\PERMISSION_READ) {
+	            $privileges[] = '{DAV:}read';
+			}
+			if ($permissions & OCP\PERMISSION_UPDATE) {
+				$privileges[] = '{DAV:}write-content';
+			}
+			if ($permissions & OCP\PERMISSION_DELETE) {
+				$privileges[] = '{DAV:}unbind';
+			}
+			if ($permissions & OCP\PERMISSION_SHARE) {
+				$privileges[] = '{http://owncloud.org/ns}share';
+			}
 		}
-		return null;
+		return new Sabre_DAVACL_Property_CurrentUserPrivilegeSet($privileges);
+	}
+
+	/**
+	 * Set the metadata for the node
+	 * @param array $fileInfo
+	 */
+	public function setFileInfo($fileInfo) {
+		$this->fileInfoCache = $fileInfo;
+	}
+
+	/**
+	 * Get the metadata for the node
+	 * @return array
+	 */
+	protected function getFileInfo() {
+		if (!isset($this->fileInfoCache)) {
+			$this->fileInfoCache = \OC\Files\Filesystem::getFileInfo($this->path);
+		}
+		return $this->fileInfoCache;
+	}
+
+	/**
+	 * Set the last modification time of the file (mtime) to the value given
+	 * Even if the modification time is set to a custom value the access time is set to now.
+	 * @param int $mtime
+	 * @return bool
+	 */
+	protected function touch($mtime) {
+		$result = \OC\Files\Filesystem::touch($this->path, $mtime);
+		if ($result) {
+			$this->fileInfoCache['mtime'] = $mtime;
+		}
+		return $result;
 	}
 
 }

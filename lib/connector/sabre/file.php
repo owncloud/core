@@ -1,10 +1,11 @@
 <?php
-
 /**
  * ownCloud
  *
  * @author Jakob Sack
+ * @author Michael Gapczynski
  * @copyright 2011 Jakob Sack kde@jakobsack.de
+ * @copyright 2013 Michael Gapczynski mtgap@owncloud.com
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -26,71 +27,64 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 	/**
 	 * Updates the data
 	 *
-	 * The data argument is a readable stream resource.
-	 *
-	 * After a succesful put operation, you may choose to return an ETag. The
-	 * etag must always be surrounded by double-quotes. These quotes must
-	 * appear in the actual string you're returning.
-	 *
-	 * Clients may use the ETag from a PUT request to later on make sure that
-	 * when they update the file, the contents haven't changed in the mean
-	 * time.
-	 *
-	 * If you don't plan to store the file byte-by-byte, and you return a
-	 * different object on a subsequent GET you are strongly recommended to not
-	 * return an ETag, and just return null.
-	 *
 	 * @param resource $data
 	 * @throws Sabre_DAV_Exception_Forbidden
+	 * @see Sabre_DAV_IFile->put
 	 * @return string|null
 	 */
 	public function put($data) {
-
-		if (!\OC\Files\Filesystem::isUpdatable($this->path)) {
+		if (\OC\Files\Filesystem::file_exists($this->path)
+			&& !\OC\Files\Filesystem::isUpdatable($this->path)
+		) {
 			throw new \Sabre_DAV_Exception_Forbidden();
 		}
-
-		// mark file as partial while uploading (ignored by the scanner)
-		$partpath = $this->path . '.part';
-
-		\OC\Files\Filesystem::file_put_contents($partpath, $data);
-
-		//detect aborted upload
-		if (isset ($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'PUT') {
-			if (isset($_SERVER['CONTENT_LENGTH'])) {
-				$expected = $_SERVER['CONTENT_LENGTH'];
-				$actual = \OC\Files\Filesystem::filesize($partpath);
-				if ($actual != $expected) {
-					\OC\Files\Filesystem::unlink($partpath);
-					throw new Sabre_DAV_Exception_BadRequest(
-						'expected filesize ' . $expected . ' got ' . $actual);
+		if (isset($_SERVER['HTTP_OC_CHUNKED'])) {
+			$info = OC_FileChunking::decodeName(basename($this->path));
+			if (empty($info)) {
+				throw new Sabre_DAV_Exception_NotImplemented();
+			}
+			$chunkHandler = new OC_FileChunking($info);
+			$chunkHandler->store($info['index'], $data);
+			if ($chunkHandler->isComplete()) {
+				$chunkHandler->file_assemble($this->path);
+			}
+		} else {
+			// mark file as partial while uploading (ignored by the scanner)
+			$partpath = $this->path . '.part';
+			\OC\Files\Filesystem::file_put_contents($partpath, $data);
+			//detect aborted upload
+			if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'PUT') {
+				if (isset($_SERVER['CONTENT_LENGTH'])) {
+					$expected = $_SERVER['CONTENT_LENGTH'];
+					$actual = \OC\Files\Filesystem::filesize($partpath);
+					if ($actual !== $expected) {
+						\OC\Files\Filesystem::unlink($partpath);
+						throw new Sabre_DAV_Exception_BadRequest(
+							'expected filesize ' . $expected . ' got ' . $actual
+						);
+					}
 				}
 			}
+			// rename to correct path
+			\OC\Files\Filesystem::rename($partpath, $this->path);
 		}
-
-		// rename to correct path
-		\OC\Files\Filesystem::rename($partpath, $this->path);
-
-		//allow sync clients to send the mtime along in a header
+		// allow sync clients to send the mtime along in a header
 		$mtime = OC_Request::hasModificationTime();
 		if ($mtime !== false) {
-			if (\OC\Files\Filesystem::touch($this->path, $mtime)) {
+			if ($this->touch($mtime)) {
 				header('X-OC-MTime: accepted');
 			}
 		}
-
-		return OC_Connector_Sabre_Node::getETagPropertyForPath($this->path);
+		return $this->getETag();
 	}
 
 	/**
 	 * Returns the data
 	 *
-	 * @return string
+	 * @return stream
 	 */
 	public function get() {
-
 		return \OC\Files\Filesystem::fopen($this->path, 'rb');
-
 	}
 
 	/**
@@ -100,12 +94,10 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 	 * @throws Sabre_DAV_Exception_Forbidden
 	 */
 	public function delete() {
-
 		if (!\OC\Files\Filesystem::isDeletable($this->path)) {
 			throw new \Sabre_DAV_Exception_Forbidden();
 		}
 		\OC\Files\Filesystem::unlink($this->path);
-
 	}
 
 	/**
@@ -114,9 +106,10 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 	 * @return int
 	 */
 	public function getSize() {
-		$this->getFileinfoCache();
-		return $this->fileinfo_cache['size'];
-
+		$fileInfo = $this->getFileInfo();
+		if (isset($fileInfo['size'])) {
+			return $fileInfo['size'];
+		}
 	}
 
 	/**
@@ -128,12 +121,12 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 	 *
 	 * Return null if the ETag can not effectively be determined
 	 *
-	 * @return mixed
+	 * @return string|null
 	 */
 	public function getETag() {
-		$properties = $this->getProperties(array(self::GETETAG_PROPERTYNAME));
-		if (isset($properties[self::GETETAG_PROPERTYNAME])) {
-			return $properties[self::GETETAG_PROPERTYNAME];
+		$fileInfo = $this->getFileInfo();
+		if (isset($fileInfo['etag'])) {
+			return '"'.$fileInfo['etag'].'"';
 		}
 		return null;
 	}
@@ -143,14 +136,14 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 	 *
 	 * If null is returned, we'll assume application/octet-stream
 	 *
-	 * @return mixed
+	 * @return string|null
 	 */
 	public function getContentType() {
-		if (isset($this->fileinfo_cache['mimetype'])) {
-			return $this->fileinfo_cache['mimetype'];
+		$fileInfo = $this->getFileInfo();
+		if (isset($fileInfo['mimteype'])) {
+			return $fileInfo['mimteype'];
 		}
-
-		return \OC\Files\Filesystem::getMimeType($this->path);
-
+		return null;
 	}
+
 }
