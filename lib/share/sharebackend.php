@@ -50,8 +50,8 @@ abstract class ShareBackend extends BasicEmitter {
 	/**
 	 * The constructor
 	 * @param TimeMachine $timeMachine The time() mock
-	 * @param array $shareTypes An array of share type objects that items can be shared through
-	 * e.g. User, Group, Link
+	 * @param ShareType[] $shareTypes An array of share type objects that items can be shared
+	 * through e.g. User, Group, Link
 	 */
 	public function __construct(TimeMachine $timeMachine, array $shareTypes) {
 		$this->timeMachine = $timeMachine;
@@ -163,7 +163,7 @@ abstract class ShareBackend extends BasicEmitter {
 	 * @param array $filter (optional) A key => value array of share properties
 	 * @param int $limit (optional)
 	 * @param int $offset (optional)
-	 * @return array
+	 * @return Share[]
 	 */
 	public function getShares($filter = array(), $limit = null, $offset = null) {
 		if (isset($filter['shareTypeId'])) {

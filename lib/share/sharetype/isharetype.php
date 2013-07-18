@@ -66,7 +66,7 @@ interface IShareType {
 	 * @param array $filter A key => value array of share properties
  	 * @param int $limit
 	 * @param int $offset
-	 * @return array Share
+	 * @return Share[]
 	 */
 	public function getShares(array $filter, $limit, $offset);
 	

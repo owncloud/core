@@ -64,7 +64,7 @@ class ShareManager extends ForwardingEmitter {
 
 	/**
 	 * Get all registered share backends
-	 * @return array
+	 * @return ShareBackend[]
 	 */
 	public function getShareBackends() {
 		return $this->shareBackends;
@@ -196,7 +196,7 @@ class ShareManager extends ForwardingEmitter {
 	 * @param array $filter (optional) A key => value array of share properties
 	 * @param int $limit (optional)
 	 * @param int $offset (optional)
-	 * @return array
+	 * @return Share[]
 	 */
 	public function getShares($itemType, $filter = array(), $limit = null, $offset = null) {
 		$shares = array();
@@ -301,7 +301,7 @@ class ShareManager extends ForwardingEmitter {
 	/**
 	 * Get all reshares of a share
 	 * @param Share $share
-	 * @return array
+	 * @return Share[]
 	 *
 	 * It is possible for the reshares to be of a different item type if the share's item type
 	 * is a collection
@@ -328,7 +328,7 @@ class ShareManager extends ForwardingEmitter {
 	 * Get all parents of a share
 	 * @param Share $share
   	 * @throws ShareDoesNotExistException
-	 * @return array
+	 * @return Share[]
 	 *
 	 * It is possible for the parents to be of a different item type if the shares's item type
 	 * is a child item type in a collection
@@ -367,7 +367,7 @@ class ShareManager extends ForwardingEmitter {
 	/**
 	 * Search for reshares of a share
 	 * @param Share $share
-	 * @return array Share
+	 * @return Share[]
 	 *
 	 * Call this to determine if the share has existing reshares because there is a duplicate share
 	 *
@@ -402,7 +402,7 @@ class ShareManager extends ForwardingEmitter {
 	/**
 	 * Search for parent shares of a share
 	 * @param Share $share
-	 * @return array Share
+	 * @return Share[]
 	 *
 	 * Call this to determine if the share is a reshare and needs to set the parent ids property
 	 *
@@ -432,7 +432,7 @@ class ShareManager extends ForwardingEmitter {
 
 	/**
 	 * Get the total permissions of an array of shares
-	 * @param array $shares
+	 * @param Share[] $shares
 	 * @return int
 	 */
 	protected function getTotalPermissions(array $shares) {
@@ -445,7 +445,7 @@ class ShareManager extends ForwardingEmitter {
 
 	/**
 	 * Get the latest expiration time of an array of shares
-	 * @param array $shares
+	 * @param Share[] $shares
 	 * @return int|null
 	 */
 	protected function getLatestExpirationTime(array $shares) {
