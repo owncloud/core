@@ -22,6 +22,7 @@
 namespace Test\Share;
 
 use OC\Share\Share;
+use OC\Share\Exception\ShareTypeDoesNotExistException;
 
 class TestShareManager extends \OC\Share\ShareManager {
 
@@ -893,7 +894,7 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 			->method('getShares')
 			->will($this->returnValueMap($map));
 		$this->setExpectedException('\OC\Share\Exception\ShareDoesNotExistException',
-			'The share does not exist for update'
+			'A share could not be found with that id'
 		);
 		$this->shareManager->update($share);
 	}
@@ -1426,6 +1427,44 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 		$this->assertContains($share5, $shares);
 	}
 
+	public function testGetShareById() {
+		$share = new Share();
+		$share->setId(1);
+		$share->setItemType('testCollection');
+		$share->setShareTypeId('link');
+		$collectionMap = array(
+			array(array('id' => 1, 'shareTypeId' => 'link'), 1, null, array($share)),
+		);
+		$this->shareBackend->expects($this->atLeastOnce())
+			->method('getShares')
+			->will($this->throwException(new ShareTypeDoesNotExistException(
+				'No share type found matching id'
+			)));
+		$this->collectionShareBackend->expects($this->atLeastOnce())
+			->method('getShares')
+			->will($this->returnValueMap($collectionMap));
+		$this->assertEquals($share, $this->shareManager->getShareById(1, null, 'link'));
+	}
+
+	public function testGetShareByIdWithMultipleSharesReturned() {
+		$share1 = new Share();
+		$share1->setId(1);
+		$share1->setItemType('test');
+		$share2 = new Share();
+		$share2->setId(1);
+		$share2->setItemType('test');
+		$map = array(
+			array(array('id' => 1), 1, null, array($share1, $share2)),
+		);
+		$this->shareBackend->expects($this->once())
+			->method('getShares')
+			->will($this->returnValueMap($map));
+		$this->setExpectedException('\OC\Share\Exception\MultipleSharesReturnedException',
+			'Multiple shares were returned with that id'
+		);
+		$this->shareManager->getShareById(1, 'test');
+	}
+
 	public function testSearchForPotentialShareWiths() {
 		$map = array(
 			array('foo', 3, 1, array('foouser2', 'foouser3', 'foogroup1')),
@@ -1655,7 +1694,7 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 			->method('getShares')
 			->will($this->returnValueMap($map));
 		$this->setExpectedException('\OC\Share\Exception\ShareDoesNotExistException',
-			'The parent share does not exist'
+			'A share could not be found with that id'
 		);
 		$this->shareManager->getParents($share);
 	}

@@ -27,8 +27,10 @@ use OC\Share\CollectionShareBackend;
 use OC\Share\Exception\InvalidShareException;
 use OC\Share\Exception\ShareDoesNotExistException;
 use OC\Share\Exception\ShareBackendDoesNotExistException;
+use OC\Share\Exception\ShareTypeDoesNotExistException;
 use OC\Share\Exception\InvalidPermissionsException;
 use OC\Share\Exception\InvalidExpirationTimeException;
+use OC\Share\Exception\MultipleSharesReturnedException;
 use OC\Hooks\ForwardingEmitter;
 
 /**
@@ -180,20 +182,11 @@ class ShareManager extends ForwardingEmitter {
 			$this->isValidExpirationTimeForParents($share);
 		}
 		// Find the share in the backend to compare old/new properties for reshares' updates
-		$filter = array(
-			'id' => $share->getId(),
-			'shareTypeId' => $share->getShareTypeId(),
-		);
-		$result = $this->getShares($itemType, $filter, 1);
-		if (empty($result)) {
-			throw new ShareDoesNotExistException('The share does not exist for update');
-		} else {
-			$oldShare = reset($result);
-			$shareBackend = $this->getShareBackend($itemType);
-			$shareBackend->update($share);
-			if (isset($properties['permissions']) || isset($properties['expirationTime'])) {
-				$this->updateReshares($share, $oldShare);
-			}
+		$oldShare = $this->getShareById($share->getId(), $itemType, $share->getShareTypeId());
+		$shareBackend = $this->getShareBackend($itemType);
+		$shareBackend->update($share);
+		if (isset($properties['permissions']) || isset($properties['expirationTime'])) {
+			$this->updateReshares($share, $oldShare);
 		}
 	}
 
@@ -230,6 +223,45 @@ class ShareManager extends ForwardingEmitter {
 			$shares = array_merge($shares, $expiredReplacements);
 		}
 		return $shares;
+	}
+
+	/**
+	 * Get a share by id
+	 * @param int $id
+	 * @param string $itemType (optional)
+	 * @param string $shareTypeId (optional)
+	 * @throws ShareDoesNotExistException
+	 * @return Share
+	 */
+	public function getShareById($id, $itemType = null, $shareTypeId = null) {
+		$share = array();
+		$filter = array('id' => $id);
+		if (isset($shareTypeId)) {
+			$filter['shareTypeId'] = $shareTypeId;
+		}
+		if (isset($itemType)) {
+			$share = $this->getShares($itemType, $filter, 1);
+		} else {
+			foreach ($this->shareBackends as $shareBackend) {
+				try {
+					$share = $this->getShares($shareBackend->getItemType(), $filter, 1);
+					if (!empty($share)) {
+						break;
+					}
+				} catch (ShareTypeDoesNotExistException $exception) {
+					// Do nothing
+				}
+			}
+		}
+		if (empty($share)) {
+			throw new ShareDoesNotExistException('A share could not be found with that id');
+		} else if (count($share) > 1) {
+			throw new MultipleSharesReturnedException(
+				'Multiple shares were returned with that id'
+			);
+		} else {
+			return reset($share);
+		}
 	}
 
 	/**
@@ -317,16 +349,14 @@ class ShareManager extends ForwardingEmitter {
 				}
 			}
 			foreach ($parentIds as $parentId) {
-				$filter = array(
-					'id' => $parentId,
-				);
 				foreach ($parentItemTypes as $parentItemType) {
-					$result = $this->getShares($parentItemType, $filter, 1);
-					if (!empty($result)) {
-						$parents[] = reset($result);
+					try {
+						$parents[] = $this->getShareById($parentId, $parentItemType);
 						break;
-					} else if ($parentItemType === end($parentItemTypes)) {
-						throw new ShareDoesNotExistException('The parent share does not exist');
+					} catch (ShareDoesNotExistException $exception) {
+						if ($parentItemType === end($parentItemTypes)) {
+							throw $exception;
+						}
 					}
 				}
 			}
