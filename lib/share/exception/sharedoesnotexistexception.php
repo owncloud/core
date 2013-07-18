@@ -23,7 +23,8 @@ namespace OC\Share\Exception;
 
 class ShareDoesNotExistException extends \Exception {
 
-	public function __construct($message) {
+	public function __construct($id) {
+		$message = 'A share does not exist with the id '.$id;
 		parent::__construct($message);
 	}
 

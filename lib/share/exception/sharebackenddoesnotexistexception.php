@@ -23,7 +23,8 @@ namespace OC\Share\Exception;
 
 class ShareBackendDoesNotExistException extends \Exception {
 
-	public function __construct($message) {
+	public function __construct($itemType) {
+		$message = 'A share backend does not exist for the item type '.$itemType;
 		parent::__construct($message);
 	}
 

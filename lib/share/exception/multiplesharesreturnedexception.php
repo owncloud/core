@@ -21,10 +21,10 @@
 
 namespace OC\Share\Exception;
 
-class ShareTypeDoesNotExistException extends \Exception {
+class MultipleSharesReturnedException extends \Exception {
 
-	public function __construct($shareTypeId) {
-		$message = 'A share type does not exist with the id '.$shareTypeId;
+	public function __construct($id) {
+		$message = 'Multiple shares were returned for the id '.$id;
 		parent::__construct($message);
 	}
 

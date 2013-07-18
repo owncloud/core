@@ -518,7 +518,7 @@ class ShareBackend extends \PHPUnit_Framework_TestCase {
 
 	public function testGetShareTypeDoesNotExist() {
 		$this->setExpectedException('\OC\Share\Exception\ShareTypeDoesNotExistException',
-			'No share type found matching id'
+			'A share type does not exist with the id foo'
 		);
 		$this->shareBackend->pGetShareType('foo');
 	}

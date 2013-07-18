@@ -80,9 +80,7 @@ class ShareManager extends ForwardingEmitter {
 		if (isset($this->shareBackends[$itemType])) {
 			return $this->shareBackends[$itemType];
 		} else {
-			throw new ShareBackendDoesNotExistException(
-				'A share backend does not exist for the item type'
-			);
+			throw new ShareBackendDoesNotExistException($itemType);
 		}
 	}
 
@@ -254,11 +252,9 @@ class ShareManager extends ForwardingEmitter {
 			}
 		}
 		if (empty($share)) {
-			throw new ShareDoesNotExistException('A share could not be found with that id');
+			throw new ShareDoesNotExistException($id);
 		} else if (count($share) > 1) {
-			throw new MultipleSharesReturnedException(
-				'Multiple shares were returned with that id'
-			);
+			throw new MultipleSharesReturnedException($id);
 		} else {
 			return reset($share);
 		}
@@ -475,7 +471,7 @@ class ShareManager extends ForwardingEmitter {
 			$parentPermissions = $this->getTotalPermissions($parents);
 			if ($permissions & ~$parentPermissions) {
 				throw new InvalidPermissionsException(
-					'The permissions exceeds the parent shares\' permissions'.$share->getId()
+					'The permissions exceeds the parent shares\' permissions'
 				);
 			}
 		}

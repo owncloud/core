@@ -99,7 +99,7 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 
 	public function testGetShareBackend() {
 		$this->setExpectedException('\OC\Share\Exception\ShareBackendDoesNotExistException',
-			'A share backend does not exist for the item type'
+			'A share backend does not exist for the item type foo'
 		);
 		$this->shareManager->getShareBackend('foo');
 	}
@@ -894,7 +894,7 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 			->method('getShares')
 			->will($this->returnValueMap($map));
 		$this->setExpectedException('\OC\Share\Exception\ShareDoesNotExistException',
-			'A share could not be found with that id'
+			'A share does not exist with the id 1'
 		);
 		$this->shareManager->update($share);
 	}
@@ -1460,7 +1460,7 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 			->method('getShares')
 			->will($this->returnValueMap($map));
 		$this->setExpectedException('\OC\Share\Exception\MultipleSharesReturnedException',
-			'Multiple shares were returned with that id'
+			'Multiple shares were returned for the id 1'
 		);
 		$this->shareManager->getShareById(1, 'test');
 	}
@@ -1694,7 +1694,7 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 			->method('getShares')
 			->will($this->returnValueMap($map));
 		$this->setExpectedException('\OC\Share\Exception\ShareDoesNotExistException',
-			'A share could not be found with that id'
+			'A share does not exist with the id 1'
 		);
 		$this->shareManager->getParents($share);
 	}

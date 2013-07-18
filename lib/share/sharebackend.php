@@ -255,7 +255,7 @@ abstract class ShareBackend extends BasicEmitter {
 				return $shareType;
 			}
 		}
-		throw new ShareTypeDoesNotExistException('No share type found matching id');
+		throw new ShareTypeDoesNotExistException($shareTypeId);
 	}
 
 	/**
