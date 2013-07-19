@@ -4,7 +4,9 @@
  * ownCloud
  *
  * @author Michael Gapczynski
+ * @author Gregor Taetzner
  * @copyright 2012 Michael Gapczynski mtgap@owncloud.com
+ * @copyright 2013 Gregor Taetzner gregor@freenet.de
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -22,23 +24,25 @@
 
 namespace OC\Files\Storage;
 
-require_once 'aws-sdk/sdk.class.php';
+require_once 'aws.phar';
 
 class AmazonS3 extends \OC\Files\Storage\Common {
 
 	private $s3;
 	private $bucket;
 	private $objects = array();
+	private $objectsdelete = array();
 	private $id;
 
 	private static $tempFiles = array();
 
-	// TODO Update to new AWS SDK
-
 	public function __construct($params) {
 		if (isset($params['key']) && isset($params['secret']) && isset($params['bucket'])) {
 			$this->id = 'amazon::' . $params['key'] . md5($params['secret']);
-			$this->s3 = new \AmazonS3(array('key' => $params['key'], 'secret' => $params['secret']));
+			$this->s3 = \Aws\S3\S3Client::factory(array(
+				'key' => $params['key'],
+				'secret' => $params['secret']
+			));
 			$this->bucket = $params['bucket'];
 		} else {
 			throw new \Exception();
@@ -49,20 +53,82 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 		if (array_key_exists($path, $this->objects)) {
 			return $this->objects[$path];
 		} else {
-			$response = $this->s3->get_object_metadata($this->bucket, $path);
-			if ($response) {
-				$this->objects[$path] = $response;
-				return $response;
-				// This object could be a folder, a '/' must be at the end of the path
-			} else if (substr($path, -1) != '/') {
-				$response = $this->s3->get_object_metadata($this->bucket, $path . '/');
-				if ($response) {
-					$this->objects[$path] = $response;
-					return $response;
+			if (!$this->file_exists($path)) {
+				//could be folder
+				$path .= '/';
+				if (!$this->file_exists($path)) {
+					return false;
 				}
+			}
+			try {
+				$response = $this->s3->headObject(array(
+					'Bucket' => $this->bucket,
+					'Key' => $path
+				));
+				if ($response) {
+					return array(
+						'Key' => $path,
+						'Size' => $response[ContentLength],
+						'ContentType' => $response[ContentType]
+					);
+				}
+			} catch (S3Exception $e) {
+				return false;
 			}
 		}
 		return false;
+	}
+
+	private function deleteFolder($path) {
+		if (substr($path, -1) != '/') {
+			$path .= '/';
+		}
+		$opt = array('Delimiter' => '/', 'Prefix' => $path);
+		try {
+			$response = $this->s3->listObjects(array_merge(
+				array('Bucket' => $this->bucket),
+				$opt
+			));
+			// delete files
+			foreach ($response[Contents] as $object) {
+				if ($object[Key] != $path) {
+					$this->objectsdelete[] = array('Key' => $object[Key]);
+				}
+			}
+			// delete folders
+			foreach ($response[CommonPrefixes] as $object) {
+				$this->deleteFolder($object[Prefix]);
+			}
+		} catch (S3Exception  $e) {
+			return false;
+		}
+		// also add this folder
+		$this->objectsdelete[] = array('Key' => $path);
+		return true;
+	}
+
+	private function deleteObject($path) {
+		try {
+			$response = $this->s3->deleteObject(array(
+				'Bucket' => $this->bucket,
+				'Key' => $path
+			));
+			return true;
+		} catch (S3Exception $e) {
+			return false;
+		}
+	}
+
+	private function deleteObjects($objects) {
+		try {
+			$response = $this->s3->deleteObjects(array_merge(
+				array('Bucket' => $this->bucket),
+				array('Objects' => $objects)
+			));
+			return true;
+		} catch (S3Exception $e) {
+			return false;
+		}
 	}
 
 	public function getId() {
@@ -74,8 +140,16 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 		if (substr($path, -1) != '/') {
 			$path .= '/';
 		}
-		$response = $this->s3->create_object($this->bucket, $path, array('body' => ''));
-		return $response->isOK();
+		try {
+			$response = $this->s3->putObject(array(
+				'Bucket' => $this->bucket,
+				'Key' => $path,
+				'body' => ''
+			));
+			return true;
+		} catch (S3Exception $e) {
+			return false;
+		}
 	}
 
 	public function rmdir($path) {
@@ -88,35 +162,48 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 	public function opendir($path) {
 		if ($path == '' || $path == '/') {
 			// Use the '/' delimiter to only fetch objects inside the folder
-			$opt = array('delimiter' => '/');
+			$opt = array('Delimiter' => '/');
 		} else {
 			if (substr($path, -1) != '/') {
 				$path .= '/';
 			}
-			$opt = array('delimiter' => '/', 'prefix' => $path);
+			$opt = array('Delimiter' => '/', 'Prefix' => $path);
 		}
-		$response = $this->s3->list_objects($this->bucket, $opt);
-		if ($response->isOK()) {
+		try {
+			$response = $this->s3->listObjects(array_merge(
+				array('Bucket' => $this->bucket),
+				$opt
+			));
 			$files = array();
-			foreach ($response->body->Contents as $object) {
+			foreach ($response[Contents] as $object) {
 				// The folder being opened also shows up in the list of objects, don't add it to the files
-				if ($object->Key != $path) {
-					$files[] = basename($object->Key);
+				if ($object[Key] != $path) {
+					$files[] = basename($object[Key]);
+					// fetch ContentType
+					$headresponse = $this->getObject($object[Key]);
+					$object[ContentType] = $headresponse[ContentType];
+					$this->objects[$object[Key]] = $object;
 				}
 			}
 			// Sub folders show up as CommonPrefixes
-			foreach ($response->body->CommonPrefixes as $object) {
-				$files[] = basename($object->Prefix);
+			foreach ($response[CommonPrefixes] as $object) {
+				$files[] = $object[Prefix];
+				$this->objects[$object[Prefix]] = array(
+					'Key' => $object[Prefix],
+					'Size' => '0'
+				);
 			}
 			\OC\Files\Stream\Dir::register('amazons3' . $path, $files);
 			return opendir('fakedir://amazons3' . $path);
+		} catch (S3Exception $e) {
+			return false;
 		}
 		return false;
 	}
 
 	public function stat($path) {
 		if ($path == '' || $path == '/') {
-			$stat['size'] = $this->s3->get_bucket_filesize($this->bucket);
+			$stat['size'] = '0';
 			$stat['atime'] = time();
 			$stat['mtime'] = $stat['atime'];
 		} else if ($object = $this->getObject($path)) {
@@ -124,6 +211,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			$stat['atime'] = time();
 			$stat['mtime'] = strtotime($object['LastModified']);
 		}
+
 		if (isset($stat)) {
 			return $stat;
 		}
@@ -137,7 +225,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			$object = $this->getObject($path);
 			if ($object) {
 				// Amazon S3 doesn't have typical folders, this is an alternative method to detect a folder
-				if (substr($object['Key'], -1) == '/' && $object['Size'] == 0) {
+				if (substr($object[Key], -1) == '/' && $object['Size'] == 0) {
 					return 'dir';
 				} else {
 					return 'file';
@@ -158,15 +246,21 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 	}
 
 	public function file_exists($path) {
-		if ($this->filetype($path) == 'dir' && substr($path, -1) != '/') {
-			$path .= '/';
-		}
-		return $this->s3->if_object_exists($this->bucket, $path);
+		return $this->s3->doesObjectExist($this->bucket, $path);
 	}
 
 	public function unlink($path) {
-		$response = $this->s3->delete_object($this->bucket, $path);
-		return $response->isOK();
+		if (!$this->file_exists($path)) {
+			//could be folder
+			$path .= '/';
+			if (!$this->file_exists($path)) {
+				return false;
+			}
+			$this->objectsdelete = array();
+			$this->deleteFolder($path);
+			return $this->deleteObjects($this->objectsdelete);
+		}
+		return $this->deleteObject($path);
 	}
 
 	public function fopen($path, $mode) {
@@ -175,11 +269,16 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			case 'rb':
 				$tmpFile = \OC_Helper::tmpFile();
 				$handle = fopen($tmpFile, 'w');
-				$response = $this->s3->get_object($this->bucket, $path, array('fileDownload' => $handle));
-				if ($response->isOK()) {
+				try {
+					$response = $this->s3->getObject(array(
+						'Bucket' => $this->bucket,
+						'Key'=> $path,
+						'SaveAs' => $handle
+					));
 					return fopen($tmpFile, 'r');
+				} catch( S3Exception $e ) {
+					break;
 				}
-				break;
 			case 'w':
 			case 'wb':
 			case 'a':
@@ -212,11 +311,15 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 	public function writeBack($tmpFile) {
 		if (isset(self::$tempFiles[$tmpFile])) {
 			$handle = fopen($tmpFile, 'r');
-			$response = $this->s3->create_object($this->bucket,
-				self::$tempFiles[$tmpFile],
-				array('fileUpload' => $handle));
-			if ($response->isOK()) {
+			try {
+				$response = $this->s3->putObject(array(
+					'Bucket' => $this->bucket,
+					'Key' => self::$tempFiles[$tmpFile],
+					'Body' => $handle
+				));
 				unlink($tmpFile);
+			} catch( S3Exception $e ) {
+				//TODO throw error?
 			}
 		}
 	}
@@ -234,22 +337,18 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 	}
 
 	public function touch($path, $mtime = null) {
-		if (is_null($mtime)) {
-			$mtime = time();
-		}
-		if ($this->filetype($path) == 'dir' && substr($path, -1) != '/') {
-			$path .= '/';
-		}
-		$response = $this->s3->update_object($this->bucket, $path, array('meta' => array('LastModified' => $mtime)));
-		return $response->isOK();
+		//TODO what is that for?
 	}
 
 	public function test() {
-		$test = $this->s3->get_canonical_user_id();
-		if (isset($test['id']) && $test['id'] != '') {
-			return true;
+		try {
+			$test = $this->s3->listBuckets();
+			if (isset($test['Owner']) && $test['Owner']['ID'] != '') {
+				return true;
+			}
+		} catch (S3Exception $e) {
+			return false;
 		}
 		return false;
 	}
-
 }
