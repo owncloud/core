@@ -108,8 +108,21 @@ usersmanagement.controller('grouplistController', ['$scope', '$http', '$routePar
 		$http.get(OC.filePath('settings', 'ajax', 'grouplist.php')).then(function(response){
 			$scope.groupnames = response.data.result;
 		});
-		console.log($routeParams.groupid);
+
+		//console.log($routeParams.groupid);
 		$scope.groups = GroupService.getByGroupId($routeParams.groupid);
+
+		// Selects teh current Group.
+		$scope.selectGroup = function(groupid) {
+			$scope.selectedGroup = groupid;
+		}
+
+		// Adds an Active class for the ng-class field.
+		$scope.selectListGroup = function(groupid) {
+			return groupid === $scope.selectedGroup ? 'active' : undefined;
+		}
+
+		//Deletes the group.
 		$scope.deletegroup = function(groupid) {
 			GroupService.removegroup().delete({ groupname : groupid });
 		}
@@ -118,11 +131,13 @@ usersmanagement.controller('grouplistController', ['$scope', '$http', '$routePar
 
 /* Fetches the List of All Users and details on the Right Content */
 
-usersmanagement.controller('userlistController', ['$scope', '$http', 'UserService', 'GroupService',
-	function ($scope, $http, UserService, Groupservice) {
+usersmanagement.controller('userlistController', ['$scope', '$http', 'UserService', 'GroupService','$routeParams',
+	function ($scope, $http, UserService, Groupservice, $routeParams) {
 		$http.get(OC.filePath('settings', 'ajax', 'userlist.php')).then(function(response) {
 			$scope.users = response.data.userdetails;
 		});
+		$scope.gid = $routeParams.groupid;
+		//console.log($scope.gid);
 		$scope.deleteuser = function(userid) {
 			UserService.removeuser().delete({ username : userid });
 		}
