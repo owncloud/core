@@ -15,7 +15,7 @@ class OC_Core_Registration_Controller {
 		// This function wll be implemented in the future with searchValue function in OC_Preference
 
 		if ( !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) ) {
-			displayRegisterPage($l->t('Email address you entered is not valid'), true);
+			self::displayRegisterPage($l->t('Email address you entered is not valid'), true);
 			return;
 		}
 
