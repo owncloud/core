@@ -7,7 +7,7 @@
 		<fieldset>
 			<?php if (!empty($_['errormsg'])): ?>
 				<div class="errors"><p>
-				<?php print_unescaped($_['errormsg'])); ?>
+				<?php print_unescaped($_['errormsg']); ?>
 				</p></div>
 				<?php print_unescaped($l->t('Please re-enter a valid email address')); ?>
 			<?php else: ?>
