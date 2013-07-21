@@ -32,7 +32,7 @@
 			<th class="table-head user-pass">Password</th>
 			<th class="table-head groups">Groups</th>
 			<th class="table-head local-storage">Local Storage</th>
-			<th class="table-head delete-user"></th>
+			<th class="table-head user-actions"></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -45,6 +45,7 @@
 			<td class="groups"> {{user.groups}}</td>
 			<td class="local-storage">{{ user.quota }}</td>
 			<th class="delete-column">
+				<button class="svg action edit-icon edit-button edit-user-button" ng-click="edituser(user.userid)"></button>
 				<button class="svg action delete-icon delete-button delete-user-icon" ng-click="deleteuser(user.name)"></button>
 			</td>
 		</tr>

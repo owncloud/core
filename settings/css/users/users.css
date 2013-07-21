@@ -87,14 +87,20 @@
 
 }
 
-.delete-user-icon {
+.delete-user-icon, .edit-user-icon {
 	padding:2px;
 }
 
-.delete-column .delete-button {
+.edit-user-button {
+	padding: 0.25em;
+	border: none !important;
+	background-color: transparent !important;	
+}
+
+.delete-column .delete-button, .delete-column .edit-icon {
 	opacity:1 !important; /*Temporary*/
 }
-.delete-column .delete-button:hover {
+.delete-column .delete-button:hover, .delete-column .edit-button:hover {
 	background-color:transparent;
 }
 
