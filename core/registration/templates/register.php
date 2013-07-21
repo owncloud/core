@@ -10,7 +10,7 @@
 				<?php print_unescaped($_['errormsg']); ?>
 				</p></div>
 				<p class="infield">
-					<input type="text" name="email" id="email" placeholder="" value="" required autofocus />
+					<input type="email" name="email" id="email" placeholder="" value="" required autofocus />
 					<label for="email" class="infield"><?php print_unescaped($l->t( 'Email' )); ?></label>
 					<img class="svg" src="<?php print_unescaped(image_path('', 'actions/mail.svg')); ?>" alt=""/>
 				</p>
@@ -30,7 +30,7 @@
 				<?php print_unescaped($l->t('You will receive an email with verification link')); ?>
 			<?php endif; ?>
 			<p class="infield">
-				<input type="text" name="email" id="email" placeholder="" value="" required autofocus />
+				<input type="email" name="email" id="email" placeholder="" value="" required autofocus />
 				<label for="email" class="infield"><?php print_unescaped($l->t( 'Email' )); ?></label>
 				<img class="svg" src="<?php print_unescaped(image_path('', 'actions/mail.svg')); ?>" alt=""/>
 			</p>
