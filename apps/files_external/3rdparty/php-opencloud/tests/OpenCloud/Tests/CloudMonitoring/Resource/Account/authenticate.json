@@ -1,0 +1,151 @@
+{
+  "access": {
+    "token": {
+      "id": "TOKEN-ID",
+      "expires": "2001-01-01T13:41:50.000-05:00",
+      "tenant": {
+        "id": "TENANT-ID",
+        "name": "TENANT-NAME"
+      }
+    },
+    "serviceCatalog": [
+      {
+        "endpoints": [
+          {
+            "region": "DFW",
+            "tenantId": "M-ALT-ID",
+            "publicURL": "https:\/\/storage101.dfw1.clouddrive.com\/v1\/M-ALT-ID",
+            "internalURL": "https:\/\/snet-storage101.dfw1.clouddrive.com\/v1\/M-ALT-ID"
+          }
+        ],
+        "name": "cloudFiles",
+        "type": "object-store"
+      },
+      {
+        "endpoints": [
+          {
+            "tenantId": "TENANT-ID",
+            "publicURL": "https:\/\/servers.api.rackspacecloud.com\/v1.0\/TENANT-ID",
+            "versionInfo": "https:\/\/servers.api.rackspacecloud.com\/v1.0",
+            "versionList": "https:\/\/servers.api.rackspacecloud.com\/",
+            "versionId": "1.0"
+          }
+        ],
+        "name": "cloudServers",
+        "type": "compute"
+      },
+      {
+        "endpoints": [
+          {
+            "region": "DFW",
+            "tenantId": "M-ALT-ID",
+            "publicURL": "https:\/\/cdn1.clouddrive.com\/v1\/M-ALT-ID"
+          }
+        ],
+        "name": "cloudFilesCDN",
+        "type": "rax:object-cdn"
+      },
+      {
+        "endpoints": [
+          {
+            "region": "DFW",
+            "tenantId": "TENANT-ID",
+            "publicURL": "https:\/\/dfw.servers.api.rackspacecloud.com\/v2\/TENANT-ID",
+            "versionInfo": "https:\/\/dfw.servers.api.rackspacecloud.com\/v2",
+            "versionList": "https:\/\/dfw.servers.api.rackspacecloud.com\/",
+            "versionId": "2"
+          },
+          {
+            "region": "ORD",
+            "tenantId": "TENANT-ID",
+            "publicURL": "https:\/\/ord.servers.api.rackspacecloud.com\/v2\/TENANT-ID",
+            "versionInfo": "https:\/\/ord.servers.api.rackspacecloud.com\/v2",
+            "versionList": "https:\/\/ord.servers.api.rackspacecloud.com\/",
+            "versionId": "2"
+          }
+        ],
+        "name": "cloudServersOpenStack",
+        "type": "compute"
+      },
+      {
+        "endpoints": [
+          {
+            "region": "ORD",
+            "tenantId": "TENANT-ID",
+            "publicURL": "https:\/\/ord.loadbalancers.api.rackspacecloud.com\/v1.0\/TENANT-ID"
+          },
+          {
+            "region": "DFW",
+            "tenantId": "TENANT-ID",
+            "publicURL": "https:\/\/dfw.loadbalancers.api.rackspacecloud.com\/v1.0\/TENANT-ID"
+          }
+        ],
+        "name": "cloudLoadBalancers",
+        "type": "rax:load-balancer"
+      },
+      {
+        "endpoints": [
+          {
+            "region": "DFW",
+            "tenantId": "TENANT-ID",
+            "publicURL": "https:\/\/dfw.databases.api.rackspacecloud.com\/v1.0\/TENANT-ID"
+          },
+          {
+            "region": "ORD",
+            "tenantId": "TENANT-ID",
+            "publicURL": "https:\/\/ord.databases.api.rackspacecloud.com\/v1.0\/TENANT-ID"
+          }
+        ],
+        "name": "cloudDatabases",
+        "type": "rax:database"
+      },
+      {
+        "endpoints": [
+          {
+            "region": "ORD",
+            "tenantId": "TENANT-ID",
+            "publicURL": "https:\/\/ord.blockstorage.api.rackspacecloud.com\/v1\/TENANT-ID"
+          },
+          {
+            "region": "DFW",
+            "tenantId": "TENANT-ID",
+            "publicURL": "https:\/\/dfw.blockstorage.api.rackspacecloud.com\/v1\/TENANT-ID"
+          }
+        ],
+        "name": "cloudBlockStorage",
+        "type": "volume"
+      },
+      {
+        "endpoints": [
+          {
+            "tenantId": "TENANT-ID",
+            "publicURL": "https:\/\/monitoring.api.rackspacecloud.com\/v1.0\/TENANT-ID"
+          }
+        ],
+        "name": "cloudMonitoring",
+        "type": "rax:monitor"
+      },
+      {
+        "endpoints": [
+          {
+            "tenantId": "TENANT-ID",
+            "publicURL": "https:\/\/dns.api.rackspacecloud.com\/v1.0\/TENANT-ID"
+          }
+        ],
+        "name": "cloudDNS",
+        "type": "rax:dns"
+      }
+    ],
+    "user": {
+      "id": "USER-ID",
+      "roles": [
+        {
+          "id": "99",
+          "description": "User Admin Role.",
+          "name": "identity:user-admin"
+        }
+      ],
+      "name": "USER-NAME"
+    }
+  }
+}

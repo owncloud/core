@@ -1,0 +1,21 @@
+{
+    "values": [
+        {
+            "numPoints": 1,
+            "average": 4,
+            "timestamp": 1335744000000
+        },
+        {
+            "numPoints": 1,
+            "average": 6,
+            "timestamp": 1335744000030
+        }
+    ],
+    "metadata": {
+        "count": 2,
+        "limit": null,
+        "marker": null,
+        "next_marker": null,
+        "next_href": null
+    }
+}

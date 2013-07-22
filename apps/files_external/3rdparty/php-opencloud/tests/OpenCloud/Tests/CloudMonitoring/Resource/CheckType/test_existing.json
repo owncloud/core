@@ -1,0 +1,30 @@
+[
+    {
+        "timestamp": 1319222001982,
+        "monitoring_zone_id": "mzxJ4L2IU",
+        "available": true,
+        "status": "code=200,rt=0.257s,bytes=0",
+        "metrics": {
+            "bytes": {
+                "type": "i",
+                "data": "0"
+            },
+            "tt_firstbyte": {
+                "type": "I",
+                "data": "257"
+            },
+            "tt_connect": {
+                "type": "I",
+                "data": "128"
+            },
+            "code": {
+                "type": "s",
+                "data": "200"
+            },
+            "duration": {
+                "type": "I",
+                "data": "257"
+            }
+        }
+    }
+]

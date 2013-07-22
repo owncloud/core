@@ -1,0 +1,19 @@
+{
+    "values": [
+        {
+            "id": "00-agent.example.com",
+            "last_connected": 1334685407
+        },
+        {
+            "id": "i-need-a-new-agent.example.com",
+            "last_connected": 1334685407
+        }
+    ],
+    "metadata": {
+        "count": 2,
+        "limit": 50,
+        "marker": null,
+        "next_marker": null,
+        "next_href": null
+    }
+}

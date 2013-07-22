@@ -1,0 +1,8 @@
+{
+    "id": "ntAAAA",
+    "label": "my webhook #1",
+    "type": "webhook",
+    "details": {
+        "url": "https://systems.example.org/alert"
+    }
+}

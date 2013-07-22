@@ -1,0 +1,37 @@
+{
+  "instance": {
+    "status": "ACTIVE",
+    "updated": "2012-09-06T15:14:09",
+    "name": "TestInstance",
+    "links": [
+      {
+        "href": "https:\/\/dfw.databases.api.rackspacecloud.com\/v1.0\/9999\/instances\/56a0c515-9999-4ef1-9fe2-76be46a3aaaa",
+        "rel": "self"
+      },
+      {
+        "href": "https:\/\/dfw.databases.api.rackspacecloud.com\/instances\/56a0c515-9999-4ef1-9fe2-76be46a3aaaa",
+        "rel": "bookmark"
+      }
+    ],
+    "created": "2012-09-06T15:13:57",
+    "hostname": "b1d24cbcccccbf6183157710a2e6bfac5ee8639.rackspaceclouddb.com",
+    "volume": {
+      "used": 0.1410026550293,
+      "size": 1
+    },
+    "flavor": {
+      "id": "1",
+      "links": [
+        {
+          "href": "https:\/\/dfw.databases.api.rackspacecloud.com\/v1.0\/9999\/flavors\/1",
+          "rel": "self"
+        },
+        {
+          "href": "https:\/\/dfw.databases.api.rackspacecloud.com\/flavors\/1",
+          "rel": "bookmark"
+        }
+      ]
+    },
+    "id": "56a0c515-9999-4ef1-9fe2-76be46a3aaaa"
+  }
+}

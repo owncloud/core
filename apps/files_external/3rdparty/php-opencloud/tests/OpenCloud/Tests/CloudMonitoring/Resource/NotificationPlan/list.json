@@ -1,0 +1,23 @@
+{
+    "values": [
+        {
+            "label": "Notification Plan 1",
+            "critical_state": [
+                "ntAAAA"
+            ],
+            "warning_state": [
+                "ntCCCCC"
+            ],
+            "ok_state": [
+                "ntBBBB"
+            ]
+        }
+    ],
+    "metadata": {
+        "count": 1,
+        "limit": 50,
+        "marker": null,
+        "next_marker": null,
+        "next_href": null
+    }
+}

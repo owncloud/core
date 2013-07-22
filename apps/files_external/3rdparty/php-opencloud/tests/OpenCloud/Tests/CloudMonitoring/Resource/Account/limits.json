@@ -1,0 +1,23 @@
+{
+    "resource": {
+        "checks": 150,
+        "alarms": 50
+    },
+    "rate": {
+        "global": {
+            "limit": 50000,
+            "used": 500,
+            "window": "24 hours"
+        },
+        "test_check": {
+            "limit": 500,
+            "used": 5,
+            "window": "24 hours"
+        },
+        "test_alarm": {
+            "limit": 500,
+            "used": 2,
+            "window": "24 hours"
+        }
+    }
+}

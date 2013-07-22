@@ -1,0 +1,7 @@
+{
+    "id": "someId",
+    "metadata": {
+        "key": "aValue"
+    },
+    "webhook_token": "token12345"
+}

@@ -1,0 +1,81 @@
+{
+  "server": {
+    "status": "ACTIVE",
+    "updated": "2001-01-01T19:20:45Z",
+    "hostId": "8c2a101e81bdaaXXXXdcd52f20da40cc305bf6eeb461f69baa0fdabb",
+    "addresses": {
+      "public": [
+        {
+          "version": 4,
+          "addr": "500.6.73.19"
+        },
+        {
+          "version": 6,
+          "addr": "2001:4800:780e:0510:199e:7e1e:xxxx:yyyy"
+        }
+      ],
+      "private": [
+        {
+          "version": 4,
+          "addr": "10.180.x.y"
+        }
+      ]
+    },
+    "links": [
+      {
+        "href": "https:\/\/dfw.servers.api.rackspacecloud.com\/v2\/9999\/servers\/9bfd203a-0695-xxxx-yyyy-66c4194c967b",
+        "rel": "self"
+      },
+      {
+        "href": "https:\/\/dfw.servers.api.rackspacecloud.com\/9999\/servers\/9bfd203a-0695-xxxx-yyyy-66c4194c967b",
+        "rel": "bookmark"
+      }
+    ],
+    "image": {
+      "id": "0cab6212-f231-4abd-9c70-608d0d0e04ba",
+      "links": [
+        {
+          "href": "https:\/\/dfw.servers.api.rackspacecloud.com\/9999\/images\/0cab6212-f231-4abd-9c70-608d0d0e04ba",
+          "rel": "bookmark"
+        }
+      ]
+    },
+    "flavor": {
+      "id": "2",
+      "links": [
+        {
+          "href": "https:\/\/dfw.servers.api.rackspacecloud.com\/9999\/flavors\/2",
+          "rel": "bookmark"
+        }
+      ]
+    },
+    "id": "9bfd203a-0695-xxxx-yyyy-66c4194c967b",
+    "rax-bandwidth:bandwidth": [
+      {
+        "interface": "public",
+        "bandwidth_outbound": 87571,
+        "bandwidth_inbound": 36263834,
+        "audit_period_start": "2001-01-01T06:00:00Z",
+        "audit_period_end": "2001-01-01T14:14:25Z"
+      },
+      {
+        "interface": "private",
+        "bandwidth_outbound": 144,
+        "bandwidth_inbound": 2554412,
+        "audit_period_start": "2001-01-01T06:00:00Z",
+        "audit_period_end": "2001-01-01T14:14:25Z"
+      }
+    ],
+    "user_id": "999",
+    "name": "MODEL",
+    "created": "2012-06-20T19:04:44Z",
+    "tenant_id": "9999",
+    "OS-DCF:diskConfig": "AUTO",
+    "accessIPv4": "500.6.73.19",
+    "accessIPv6": "2001:4800:780e:0510:199e:7e1e:xxxx:yyyy",
+    "progress": 100,
+    "metadata": {
+      
+    }
+  }
+}

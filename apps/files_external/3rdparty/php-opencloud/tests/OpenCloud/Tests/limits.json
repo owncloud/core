@@ -1,0 +1,74 @@
+{
+  "limits": {
+    "rate": [
+      {
+        "regex": "\/v[^\/]\/(\\d+)\/(rax-networks)\/?.*",
+        "uri": "\/rax-networks",
+        "limit": [
+          {
+            "next-available": "2012-08-03T18:34:32.803Z",
+            "unit": "DAY",
+            "remaining": 0,
+            "value": 0,
+            "verb": "POST"
+          },
+          {
+            "next-available": "2012-08-03T18:34:32.803Z",
+            "unit": "MINUTE",
+            "remaining": 0,
+            "value": 0,
+            "verb": "GET"
+          }
+        ]
+      },
+      {
+        "regex": "\/v[^\/]\/(\\d+)\/(servers)\/?.*",
+        "uri": "\/servers",
+        "limit": [
+          {
+            "next-available": "2012-08-03T18:34:32.803Z",
+            "unit": "DAY",
+            "remaining": 1000,
+            "value": 1000,
+            "verb": "POST"
+          }
+        ]
+      },
+      {
+        "regex": "\/v[^\/]\/(\\d+)\/?.*",
+        "uri": "*",
+        "limit": [
+          {
+            "next-available": "2012-08-03T18:34:32.802Z",
+            "unit": "MINUTE",
+            "remaining": 100,
+            "value": 100,
+            "verb": "ALL"
+          }
+        ]
+      }
+    ],
+    "absolute": {
+      "maxServerMeta": 20,
+      "maxTotalInstances": 100,
+      "maxPersonality": 5,
+      "totalPrivateNetworksUsed": 0,
+      "maxImageMeta": 20,
+      "maxPersonalitySize": 10240,
+      "totalVolumesUsed": 0,
+      "maxTotalPrivateNetworks": 0,
+      "maxTotalKeypairs": 100,
+      "totalCoresUsed": 0,
+      "maxTotalVolumes": 0,
+      "totalRAMUsed": 0,
+      "totalInstancesUsed": 0,
+      "totalVolumeGigabytesUsed": 0,
+      "maxTotalCores": -1,
+      "totalSecurityGroupsUsed": 0,
+      "maxTotalFloatingIps": 5,
+      "totalKeyPairsUsed": 0,
+      "maxTotalVolumeGigabytes": -1,
+      "maxTotalRAMSize": 66560
+    }
+  }
+}

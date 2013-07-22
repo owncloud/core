@@ -1,0 +1,14 @@
+{
+    "id": "remote.http_body_match_1",
+    "label": "Body match - string found",
+    "description": "Alarm which returns CRITICAL if the provided string is found in the body",
+    "check_type": "remote.http",
+    "criteria": "if (metric['body_match'] regex '${string}') {\n  return new AlarmStatus(CRITICAL, '${string} found, returning CRITICAL.');\n}\n",
+    "fields": [
+        {
+            "name": "string",
+            "description": "String to check for in the body",
+            "type": "string"
+        }
+    ]
+}

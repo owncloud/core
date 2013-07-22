@@ -1,0 +1,12 @@
+{
+    "label": "Notification Plan 1",
+    "critical_state": [
+        "ntAAAA"
+    ],
+    "warning_state": [
+        "ntCCCCC"
+    ],
+    "ok_state": [
+        "ntBBBB"
+    ]
+}

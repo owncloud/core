@@ -1,0 +1,9 @@
+language: php
+php:
+  - "5.5"
+  - "5.4"
+  - "5.3"
+notifications:
+  email:
+    - drg-devs@lists.rackspace.com
+  irc: "irc.freenode.org#rackspace-dev"

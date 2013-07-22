@@ -1,0 +1,300 @@
+{
+    "values": [
+        {
+            "id": "remote.dns",
+            "type": "remote",
+            "fields": [
+                {
+                    "name": "port",
+                    "description": "Port number (default: 53)",
+                    "optional": true
+                },
+                {
+                    "name": "query",
+                    "description": "DNS Query",
+                    "optional": false
+                },
+                {
+                    "name": "record_type",
+                    "description": "DNS Record Type",
+                    "optional": false
+                }
+            ]
+        },
+        {
+            "id": "remote.ssh",
+            "type": "remote",
+            "fields": [
+                {
+                    "name": "port",
+                    "description": "Port number (default: 22)",
+                    "optional": true
+                }
+            ]
+        },
+        {
+            "id": "remote.smtp",
+            "type": "remote",
+            "fields": [
+                {
+                    "name": "port",
+                    "description": "Port number (default: 25)",
+                    "optional": true
+                },
+                {
+                    "name": "ehlo",
+                    "description": "EHLO parameter",
+                    "optional": true
+                },
+                {
+                    "name": "from",
+                    "description": "From parameter",
+                    "optional": true
+                },
+                {
+                    "name": "to",
+                    "description": "To parameter (if blank, a \"quit\" is issued before sending a to line, and the connection is terminated)",
+                    "optional": true
+                },
+                {
+                    "name": "payload",
+                    "description": "Specifies the payload",
+                    "optional": true
+                },
+                {
+                    "name": "starttls",
+                    "description": "Should the connection be upgraded to TLS/SSL",
+                    "optional": true
+                }
+            ]
+        },
+        {
+            "id": "remote.http",
+            "type": "remote",
+            "fields": [
+                {
+                    "name": "url",
+                    "description": "Target URL",
+                    "optional": false
+                },
+                {
+                    "name": "body",
+                    "description": "Body match regular expression (body is limited to 100k)",
+                    "optional": true
+                },
+                {
+                    "name": "headers",
+                    "description": "Arbitrary headers which are sent with the request.",
+                    "optional": true
+                },
+                {
+                    "name": "body_matches",
+                    "description": "Body match regular expressions (body is limited to 100k, matches are truncated to 80 characters)",
+                    "optional": true
+                },
+                {
+                    "name": "method",
+                    "description": "HTTP method (default: GET)",
+                    "optional": true
+                },
+                {
+                    "name": "auth_user",
+                    "description": "Optional auth user",
+                    "optional": true
+                },
+                {
+                    "name": "auth_password",
+                    "description": "Optional auth password",
+                    "optional": true
+                },
+                {
+                    "name": "follow_redirects",
+                    "description": "Follow redirects (default: true)",
+                    "optional": true
+                },
+                {
+                    "name": "payload",
+                    "description": "Specify a request body (limited to 1024 characters). If following a redirect, payload will only be sent to first location",
+                    "optional": true
+                }
+            ]
+        },
+        {
+            "id": "remote.tcp",
+            "type": "remote",
+            "fields": [
+                {
+                    "name": "port",
+                    "description": "Port number",
+                    "optional": false
+                },
+                {
+                    "name": "banner_match",
+                    "description": "Banner match regex.",
+                    "optional": true
+                },
+                {
+                    "name": "send_body",
+                    "description": "Send a body. If a banner is provided the body is sent after the banner is verified.",
+                    "optional": true
+                },
+                {
+                    "name": "body_match",
+                    "description": "Body match regex. Key/Values are captured when matches are specified within the regex. Note: Maximum body size 1024 bytes.",
+                    "optional": true
+                },
+                {
+                    "name": "ssl",
+                    "description": "Enable SSL",
+                    "optional": true
+                }
+            ]
+        },
+        {
+            "id": "remote.ping",
+            "type": "remote",
+            "fields": [
+                {
+                    "name": "count",
+                    "description": "Number of pings to send within a single check",
+                    "optional": true
+                }
+            ]
+        },
+        {
+            "id": "remote.ftp-banner",
+            "type": "remote",
+            "fields": [
+                {
+                    "name": "port",
+                    "description": "Port number (default: 21)",
+                    "optional": true
+                }
+            ]
+        },
+        {
+            "id": "remote.imap-banner",
+            "type": "remote",
+            "fields": [
+                {
+                    "name": "port",
+                    "description": "Port number (default: 143)",
+                    "optional": true
+                },
+                {
+                    "name": "ssl",
+                    "description": "Enable SSL",
+                    "optional": true
+                }
+            ]
+        },
+        {
+            "id": "remote.pop3-banner",
+            "type": "remote",
+            "fields": [
+                {
+                    "name": "port",
+                    "description": "Port number (default: 110)",
+                    "optional": true
+                },
+                {
+                    "name": "ssl",
+                    "description": "Enable SSL",
+                    "optional": true
+                }
+            ]
+        },
+        {
+            "id": "remote.smtp-banner",
+            "type": "remote",
+            "fields": [
+                {
+                    "name": "port",
+                    "description": "Port number (default: 25)",
+                    "optional": true
+                },
+                {
+                    "name": "ssl",
+                    "description": "Enable SSL",
+                    "optional": true
+                }
+            ]
+        },
+        {
+            "id": "remote.postgresql-banner",
+            "type": "remote",
+            "fields": [
+                {
+                    "name": "port",
+                    "description": "Port number (default: 5432)",
+                    "optional": true
+                },
+                {
+                    "name": "ssl",
+                    "description": "Enable SSL",
+                    "optional": true
+                }
+            ]
+        },
+        {
+            "id": "remote.telnet-banner",
+            "type": "remote",
+            "fields": [
+                {
+                    "name": "port",
+                    "description": "Port number (default: 23)",
+                    "optional": true
+                },
+                {
+                    "name": "banner_match",
+                    "description": "Banner to check",
+                    "optional": true
+                },
+                {
+                    "name": "ssl",
+                    "description": "Enable SSL",
+                    "optional": true
+                }
+            ]
+        },
+        {
+            "id": "remote.mysql-banner",
+            "type": "remote",
+            "fields": [
+                {
+                    "name": "port",
+                    "description": "Port number (default: 3306)",
+                    "optional": true
+                },
+                {
+                    "name": "ssl",
+                    "description": "Enable SSL",
+                    "optional": true
+                }
+            ]
+        },
+        {
+            "id": "remote.mssql-banner",
+            "type": "remote",
+            "fields": [
+                {
+                    "name": "port",
+                    "description": "Port number (default: 1433)",
+                    "optional": true
+                },
+                {
+                    "name": "ssl",
+                    "description": "Enable SSL",
+                    "optional": true
+                }
+            ]
+        }
+    ],
+    "metadata": {
+        "count": 14,
+        "limit": 50,
+        "marker": null,
+        "next_marker": null,
+        "next_href": null
+    }
+}
