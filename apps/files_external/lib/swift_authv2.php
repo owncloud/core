@@ -518,23 +518,27 @@ class SWIFT_AUTHV2 extends \OC\Files\Storage\Common{
 		$targetObject->name = basename($path2);
 		$result = $sourceObject->Copy($targetObject);
 
-		unset($this->objects[$path1]);
 		if ($result) {
 			$targetObj=$this->getObject($path2);
 			$this->resetMTime($targetObj);
+			$this->unlink($path1);
 		}
 		return $result;
 	}
 
 	public function copy($path1, $path2) {
 		$this->init();
-		$sourceContainer=$this->getContainer(dirname($path1));
+
+		$sourceObject=$this->getObject($path1);
 		$targetContainer=$this->getContainer(dirname($path2));
-		#TODO(chmou)
-		$result=$sourceContainer->copy_object_to(basename($path1), $targetContainer, basename($path2));
+		$targetObject=$targetContainer->DataObject();
+		$targetObject->name = basename($path2);
+		$result = $sourceObject->Copy($targetObject);
+
 		if ($result) {
 			$targetObj=$this->getObject($path2);
 			$this->resetMTime($targetObj);
+			$this->unlink($path1);
 		}
 		return $result;
 	}
