@@ -4,6 +4,8 @@
  * See the COPYING-README file.
  */
 $levels = array('Debug', 'Info', 'Warning', 'Error', 'Fatal');
+
+$defaults = new OC_Defaults(); // initialize themable default strings and urls
 ?>
 
 <?php
@@ -94,7 +96,7 @@ if (!$_['internetconnectionworking']) {
 		<tr>
 			<td>
 				<input type="radio" name="mode" value="ajax"
-					   id="backgroundjobs_ajax" <?php if ($_['backgroundjobs_mode'] == "ajax") {
+					   id="backgroundjobs_ajax" <?php if ($_['backgroundjobs_mode'] === "ajax") {
 					print_unescaped('checked="checked"');
 				} ?>>
 				<label for="backgroundjobs_ajax">AJAX</label><br/>
@@ -104,7 +106,7 @@ if (!$_['internetconnectionworking']) {
 		<tr>
 			<td>
 				<input type="radio" name="mode" value="webcron"
-					   id="backgroundjobs_webcron" <?php if ($_['backgroundjobs_mode'] == "webcron") {
+					   id="backgroundjobs_webcron" <?php if ($_['backgroundjobs_mode'] === "webcron") {
 					print_unescaped('checked="checked"');
 				} ?>>
 				<label for="backgroundjobs_webcron">Webcron</label><br/>
@@ -114,7 +116,7 @@ if (!$_['internetconnectionworking']) {
 		<tr>
 			<td>
 				<input type="radio" name="mode" value="cron"
-					   id="backgroundjobs_cron" <?php if ($_['backgroundjobs_mode'] == "cron") {
+					   id="backgroundjobs_cron" <?php if ($_['backgroundjobs_mode'] === "cron") {
 					print_unescaped('checked="checked"');
 				} ?>>
 				<label for="backgroundjobs_cron">Cron</label><br/>
@@ -130,34 +132,44 @@ if (!$_['internetconnectionworking']) {
 		<tr>
 			<td id="enable">
 				<input type="checkbox" name="shareapi_enabled" id="shareAPIEnabled"
-					   value="1" <?php if ($_['shareAPIEnabled'] == 'yes') print_unescaped('checked="checked"'); ?> />
+					   value="1" <?php if ($_['shareAPIEnabled'] === 'yes') print_unescaped('checked="checked"'); ?> />
 				<label for="shareAPIEnabled"><?php p($l->t('Enable Share API'));?></label><br/>
 				<em><?php p($l->t('Allow apps to use the Share API')); ?></em>
 			</td>
 		</tr>
 		<tr>
-			<td <?php if ($_['shareAPIEnabled'] == 'no') print_unescaped('style="display:none"');?>>
+			<td <?php if ($_['shareAPIEnabled'] === 'no') print_unescaped('style="display:none"');?>>
 				<input type="checkbox" name="shareapi_allow_links" id="allowLinks"
-					   value="1" <?php if ($_['allowLinks'] == 'yes') print_unescaped('checked="checked"'); ?> />
+					   value="1" <?php if ($_['allowLinks'] === 'yes') print_unescaped('checked="checked"'); ?> />
 				<label for="allowLinks"><?php p($l->t('Allow links'));?></label><br/>
 				<em><?php p($l->t('Allow users to share items to the public with links')); ?></em>
 			</td>
 		</tr>
+		<?php if (!\OCP\App::isEnabled('files_encryption')) { ?>
 		<tr>
 			<td <?php if ($_['shareAPIEnabled'] == 'no') print_unescaped('style="display:none"');?>>
+				<input type="checkbox" name="shareapi_allow_public_upload" id="allowPublicUpload"
+				       value="1" <?php if ($_['allowPublicUpload'] == 'yes') print_unescaped('checked="checked"'); ?> />
+				<label for="allowPublicUpload"><?php p($l->t('Allow public uploads'));?></label><br/>
+				<em><?php p($l->t('Allow users to enable others to upload into their publicly shared folders')); ?></em>
+			</td>
+		</tr>
+		<?php } ?>
+		<tr>
+			<td <?php if ($_['shareAPIEnabled'] === 'no') print_unescaped('style="display:none"');?>>
 				<input type="checkbox" name="shareapi_allow_resharing" id="allowResharing"
-					   value="1" <?php if ($_['allowResharing'] == 'yes') print_unescaped('checked="checked"'); ?> />
+					   value="1" <?php if ($_['allowResharing'] === 'yes') print_unescaped('checked="checked"'); ?> />
 				<label for="allowResharing"><?php p($l->t('Allow resharing'));?></label><br/>
 				<em><?php p($l->t('Allow users to share items shared with them again')); ?></em>
 			</td>
 		</tr>
 		<tr>
-			<td <?php if ($_['shareAPIEnabled'] == 'no') print_unescaped('style="display:none"');?>>
+			<td <?php if ($_['shareAPIEnabled'] === 'no') print_unescaped('style="display:none"');?>>
 				<input type="radio" name="shareapi_share_policy" id="sharePolicyGlobal"
-					   value="global" <?php if ($_['sharePolicy'] == 'global') print_unescaped('checked="checked"'); ?> />
+					   value="global" <?php if ($_['sharePolicy'] === 'global') print_unescaped('checked="checked"'); ?> />
 				<label for="sharePolicyGlobal"><?php p($l->t('Allow users to share with anyone')); ?></label><br/>
 				<input type="radio" name="shareapi_share_policy" id="sharePolicyGroupsOnly"
-					   value="groups_only" <?php if ($_['sharePolicy'] == 'groups_only') print_unescaped('checked="checked"'); ?> />
+					   value="groups_only" <?php if ($_['sharePolicy'] === 'groups_only') print_unescaped('checked="checked"'); ?> />
 				<label for="sharePolicyGroupsOnly"><?php p($l->t('Allow users to only share with users in their groups'));?></label><br/>
 			</td>
 		</tr>
@@ -196,7 +208,7 @@ if (!$_['internetconnectionworking']) {
 	<?php p($l->t('Log level'));?> <select name='loglevel' id='loglevel'>
 	<option value='<?php p($_['loglevel'])?>'><?php p($levels[$_['loglevel']])?></option>
 	<?php for ($i = 0; $i < 5; $i++):
-	if ($i != $_['loglevel']):?>
+	if ($i !== $_['loglevel']):?>
 		<option value='<?php p($i)?>'><?php p($levels[$i])?></option>
 		<?php endif;
 endfor;?>
@@ -230,12 +242,17 @@ endfor;?>
 
 </fieldset>
 
-<fieldset class="personalblock credits-footer">
-<?php if (OC_Util::getEditionString() === ''): ?>
+<fieldset class="personalblock">
 	<legend><strong><?php p($l->t('Version'));?></strong></legend>
-	<strong>ownCloud</strong> <?php p(OC_Util::getVersionString()); ?> <?php p(OC_Util::getEditionString()); ?><br/>
-	<?php print_unescaped($l->t('Developed by the <a href="http://ownCloud.org/contact" target="_blank">ownCloud community</a>, the <a href="https://github.com/owncloud" target="_blank">source code</a> is licensed under the <a href="http://www.gnu.org/licenses/agpl-3.0.html" target="_blank"><abbr title="Affero General Public License">AGPL</abbr></a>.')); ?>
-<?php else: ?>
-    <p>© 2013 <a href="<?php p(OC_Defaults::getBaseUrl()); ?>" target="_blank"><?php p(OC_Defaults::getEntity()); ?></a> – <?php p(OC_Defaults::getSlogan()); ?></p>
+	<strong><?php p($defaults->getName()); ?></strong> <?php p(OC_Util::getVersionString()); ?>
+<?php if (OC_Util::getEditionString() === ''): ?>
+	<p>
+		<?php print_unescaped($l->t('Developed by the <a href="http://ownCloud.org/contact" target="_blank">ownCloud community</a>, the <a href="https://github.com/owncloud" target="_blank">source code</a> is licensed under the <a href="http://www.gnu.org/licenses/agpl-3.0.html" target="_blank"><abbr title="Affero General Public License">AGPL</abbr></a>.')); ?>
+	</p>
 <?php endif; ?>
+</fieldset>
+<fieldset class="personalblock credits-footer">
+<p>
+	<?php print_unescaped($defaults->getShortFooter()); ?>
+</p>
 </fieldset>
