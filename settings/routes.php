@@ -11,6 +11,7 @@
 use \OC\Settings\App;
 use \OC\Settings\DependencyInjection\DIContainer;
 
+/** @var $this OC_Router */
 $this->create('settings_help', '/settings/help')
 	->actionInclude('settings/help.php');
 $this->create('settings_personal', '/settings/personal')
