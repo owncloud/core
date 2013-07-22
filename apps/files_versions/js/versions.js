@@ -124,16 +124,23 @@ function createVersionsDropdown(filename, files) {
 	function addVersion( revision ) {
 		name=formatDate(revision.version*1000);
 
-		image='<img';
-		image+=' src="' + OC.imagePath('core', 'actions/history.svg') + '"';
-		image+=' id="' + revision.version + '"';
-		image+=' value="' + files + '"';
-		image+=' name="revertVersion"';
-		image+='/>';
+		download='<img';
+		download+=' src="' + OC.imagePath('core', 'actions/download.svg') + '"';
+		download+=' id="' + revision.version + '"';
+		download+=' value="' + files + '"';
+		download+=' name="downloadVersion"';
+		download+='/>';
+
+		revert='<img';
+		revert+=' src="' + OC.imagePath('core', 'actions/history.svg') + '"';
+		revert+=' id="' + revision.version + '"';
+		revert+=' value="' + files + '"';
+		revert+=' name="revertVersion"';
+		revert+='/>';
 
 		var version=$('<li/>');
-		version.attr('value',revision.version);
-		version.html(name + ' ' + image );
+		version.attr('value', revision.version);
+		version.html(name + ' ' + download + ' ' + revert );
 
 		version.appendTo('#found_versions');
 	}
