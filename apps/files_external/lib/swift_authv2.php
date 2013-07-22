@@ -55,7 +55,7 @@ class SWIFT_AUTHV2 extends \OC\Files\Storage\Common{
 	 * @return \CF_Container
 	 */
 	private function getContainer($path) {
-		if ($path=='' or $path=='/') {
+		if ($path==='' or $path==='/') {
 			return $this->rootContainer;
 		}
 		if (isset($this->containers[$path])) {
@@ -76,13 +76,13 @@ class SWIFT_AUTHV2 extends \OC\Files\Storage\Common{
 	 * @return \CF_Container
 	 */
 	private function createContainer($path) {
-		if ($path=='' or $path=='/' or $path=='.') {
+		if ($path==='' or $path==='/' or $path==='.') {
 			$_container_cnx = $this->conn->Container(Null);
 			$_created = $_container_cnx->Create(array('name'=>$this->getContainerName($path)));
 			return $this->conn->Container($this->getContainerName($path));
 		}
 		$parent=dirname($path);
-		if ($parent=='' or $parent=='/' or $parent=='.') {
+		if ($parent==='' or $parent==='/' or $parent==='.') {
 			$parentContainer=$this->rootContainer;
 		} else {
 			if ( ! $this->containerExists($parent)) {
@@ -110,7 +110,7 @@ class SWIFT_AUTHV2 extends \OC\Files\Storage\Common{
 		if (is_null($container)) {
 			return null;
 		} else {
-			if ($path=="/" or $path=='') {
+			if ($path==="/" or $path==='') {
 				return null;
 			}
 			try {
@@ -289,7 +289,7 @@ class SWIFT_AUTHV2 extends \OC\Files\Storage\Common{
 			} else {
 				$this->secure = false;
 			}
-			if ( ! $this->root || $this->root[0]!='/') {
+			if ( ! $this->root || $this->root[0]!=='/') {
 				$this->root='/'.$this->root;
 			}
 			$this->id = 'swift:' . $this->auth_url . ':'.$this->root . ':' . $this->tenant_name . ':' . $this->user;
@@ -341,7 +341,7 @@ class SWIFT_AUTHV2 extends \OC\Files\Storage\Common{
 			return false;
 		} else {
 			$this->emptyContainer($path);
-			if ($path!='' and $path!='/') {
+			if ($path!=='' and $path!=='/') {
 				$parentContainer=$this->getContainer(dirname($path));
 				$this->removeSubContainer($parentContainer, basename($path));
 			}
