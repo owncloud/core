@@ -104,3 +104,8 @@
 	background-color:transparent;
 }
 
+.default-storage {
+	float:right;
+	margin-right:20px;
+	margin-top:5px;
+}
