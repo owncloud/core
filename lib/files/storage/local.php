@@ -79,7 +79,7 @@ if (\OC_Util::runningOnWindows()) {
 
 		public function stat($path) {
 			$fullPath = $this->datadir . $path;
-			$statResult = stat($fullPath);
+			@$statResult = stat($fullPath);
 
 			if ($statResult['size'] < 0) {
 				$size = self::getFileSizeFromOS($fullPath);
