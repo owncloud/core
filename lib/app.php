@@ -211,7 +211,7 @@ class OC_App{
 	 * @brief enables an app
 	 * @param mixed $app app
 	 * @throws \Exception
-	 * @return bool
+	 * @return void
 	 *
 	 * This function set an app as enabled in appconfig.
 	 */
@@ -253,7 +253,6 @@ class OC_App{
 				if(isset($appdata['id'])) {
 					OC_Appconfig::setValue( $app, 'ocsid', $appdata['id'] );
 				}
-				return true;
 			}
 		}else{
 			throw new \Exception($l->t("No app name specified"));
@@ -575,7 +574,7 @@ class OC_App{
 				$data['dependencies'] = array();
 				foreach ($child->children() as $dependencies) {
 					if ($dependencies->getName() === 'dependency') {
-						$data['dependencies'][] = array( (string)$dependencies->{'id'}, (string)$dependencies->{'version'});
+						$data['dependencies'][] = array( 'id' => (string)$dependencies->{'id'}, 'version' => (string)$dependencies->{'version'});
 					}
 				}
 			}elseif($child->getName()=='description') {
@@ -1000,22 +999,22 @@ class OC_App{
 
 	/**
 	 * @brief checks if app dependencies are fullfilled
-	 * @param array $dependencies array of dependencies including each the dependent appid and version
+	 * @param array $dependencies associative array of dependencies including each the dependent appid ('id') and version ('version')
 	 * @throws OC\App\MissingDependencyException
-	 * @return bool
+	 * @return void
 	*/
 	public static function appDependencyCheck($dependencies) {
 		foreach ($dependencies as $dependency) {
-			$values = OC_Appconfig::getValues($dependency[0], false);
+			$values = OC_Appconfig::getValues($dependency['id'], false);
 
 			$active = false;
 			$version = false;
 
 			if (empty($values)) {
-				throw new \OC\App\MissingDependencyException($dependency[0]);
+				throw new \OC\App\MissingDependencyException($dependency['id']);
 			}
 
-			if (version_compare($values['installed_version'], $dependency[1], '>=')) {
+			if (version_compare($values['installed_version'], $dependency['version'], '>=')) {
 				$version = true;
 			}
 			if ($values['enabled'] === "yes") {
@@ -1023,10 +1022,10 @@ class OC_App{
 			}
 
 			if (!$active) {
-				throw new \OC\App\MissingDependencyException($dependency[0]);
+				throw new \OC\App\MissingDependencyException($dependency['id']);
 			}
 			if (!$version) {
-				throw new \OC\App\OutdatedDependencyException($dependency[0]);
+				throw new \OC\App\OutdatedDependencyException($dependency['id']);
 			}
 		}
 	}
@@ -1035,7 +1034,7 @@ class OC_App{
 	 * @brief checks if no other apps depend on this app
 	 * @param string $appid id of the app to check
 	 * @throws DependingAppsException
-	 * @return bool
+	 * @return void
 	*/
 	public static function appDependsOnCheck($appid) {
 		$query = OC_DB::prepare('SELECT `first`.`appid`, `second`.`configvalue` FROM '.
