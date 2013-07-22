@@ -14,3 +14,11 @@
 .failure {
 	color: red;
 }
+
+ul#found_versions li {
+	cursor: default !important;
+}
+
+ul#found_versions img {
+	cursor: pointer !important;
+}
