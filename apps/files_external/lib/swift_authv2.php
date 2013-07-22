@@ -9,7 +9,7 @@
 
 namespace OC\Files\Storage;
 
-require_once 'php-opencloud/lib/php-opencloud.php';
+require_once 'files_external/3rdparty/php-opencloud/lib/php-opencloud.php';
 
 class SWIFT_AUTHV2 extends \OC\Files\Storage\Common{
 	private $id;
