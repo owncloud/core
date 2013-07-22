@@ -50,10 +50,6 @@ class TestShareBackend extends \OC\Share\ShareBackend {
 		$this->isValidItem = $isValidItem;
 	}
 
-	public function pGetShareType($shareTypeId) {
-		return parent::getShareType($shareTypeId);
-	}
-
 	public function pAreValidPermissions(Share $share) {
 		return parent::areValidPermissions($share);
 	}
@@ -122,6 +118,28 @@ class ShareBackend extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function getExpectedItemTarget(Share $share) {}
+
+	public function testGetShareTypes() {
+		$shareTypes = $this->shareBackend->getShareTypes();
+		$this->assertCount(3, $shareTypes);
+		$this->assertArrayHasKey('user', $shareTypes);
+		$this->assertEquals($this->user, $shareTypes['user']);
+		$this->assertArrayHasKey('group', $shareTypes);
+		$this->assertEquals($this->group, $shareTypes['group']);
+		$this->assertArrayHasKey('link', $shareTypes);
+		$this->assertEquals($this->link, $shareTypes['link']);
+	}
+
+	public function testGetShareType() {
+		$this->assertEquals($this->group, $this->shareBackend->getShareType('group'));
+	}
+
+	public function testGetShareTypeDoesNotExist() {
+		$this->setExpectedException('\OC\Share\Exception\ShareTypeDoesNotExistException',
+			'A share type does not exist with the id foo'
+		);
+		$this->shareBackend->getShareType('foo');
+	}
 
 	public function testShare() {
 		$mtgap = 'MTGap';
@@ -460,67 +478,6 @@ class ShareBackend extends \PHPUnit_Framework_TestCase {
 		$this->assertContains($share2, $shares);
 		$this->assertContains($share3, $shares);
 		$this->assertContains($share4, $shares);
-	}
-
-	public function testSearchForPotentialShareWiths() {
-		$userMap = array(
-			array('foo', null, null, array('foouser1', 'foouser2', 'foouser3')),
-		);
-		$this->user->expects($this->once())
-			->method('searchForPotentialShareWiths')
-			->will($this->returnValueMap($userMap));
-		$groupMap = array(
-			array('foo', null, null, array('foogroup1', 'foogroup2')),
-		);
-		$this->group->expects($this->once())
-			->method('searchForPotentialShareWiths')
-			->will($this->returnValueMap($groupMap));
-		$linkMap = array(
-			array('foo', null, null, array()),
-		);
-		$this->link->expects($this->once())
-			->method('searchForPotentialShareWiths')
-			->will($this->returnValueMap($linkMap));
-		$shareWiths = $this->shareBackend->searchForPotentialShareWiths('foo');
-		$this->assertCount(5, $shareWiths);
-		$this->assertContains('foouser1', $shareWiths);
-		$this->assertContains('foouser2', $shareWiths);
-		$this->assertContains('foouser3', $shareWiths);
-		$this->assertContains('foogroup1', $shareWiths);
-		$this->assertContains('foogroup2', $shareWiths);
-	}
-
-	public function testSearchForPotentialShareWithsWithLimitOffset() {
-		$userMap = array(
-			array('foo', 3, 1, array('foouser2', 'foouser3')),
-		);
-		$this->user->expects($this->once())
-			->method('searchForPotentialShareWiths')
-			->will($this->returnValueMap($userMap));
-		$groupMap = array(
-			array('foo', 1, 0, array('foogroup1')),
-		);
-		$this->group->expects($this->once())
-			->method('searchForPotentialShareWiths')
-			->will($this->returnValueMap($groupMap));
-		$this->link->expects($this->never())
-			->method('searchForPotentialShareWiths');
-		$shareWiths = $this->shareBackend->searchForPotentialShareWiths('foo', 3, 1);
-		$this->assertCount(3, $shareWiths);
-		$this->assertContains('foouser2', $shareWiths);
-		$this->assertContains('foouser3', $shareWiths);
-		$this->assertContains('foogroup1', $shareWiths);
-	}
-
-	public function testGetShareType() {
-		$this->assertEquals($this->group, $this->shareBackend->pGetShareType('group'));
-	}
-
-	public function testGetShareTypeDoesNotExist() {
-		$this->setExpectedException('\OC\Share\Exception\ShareTypeDoesNotExistException',
-			'A share type does not exist with the id foo'
-		);
-		$this->shareBackend->pGetShareType('foo');
 	}
 
 	public function testIsExpired() {

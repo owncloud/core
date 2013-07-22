@@ -261,21 +261,6 @@ class ShareManager extends ForwardingEmitter {
 	}
 
 	/**
-	 * Search for potential people to share with based on the given pattern in the share backend
-	 * @param string $itemType
-	 * @param string $pattern
-	 * @param int $limit (optional)
-	 * @param int $offset (optional)
-	 * @return array
-	 */
-	public function searchForPotentialShareWiths($itemType, $pattern, $limit = null,
-		$offset = null
-	) {
-		$shareBackend = $this->getShareBackend($itemType);
-		return $shareBackend->searchForPotentialShareWiths($pattern, $limit, $offset);
-	}
-
-	/**
 	 * Unshare all shares of an item
 	 * @param string $itemType
 	 * @param any $itemSource

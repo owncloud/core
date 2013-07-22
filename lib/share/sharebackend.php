@@ -55,7 +55,9 @@ abstract class ShareBackend extends BasicEmitter {
 	 */
 	public function __construct(TimeMachine $timeMachine, array $shareTypes) {
 		$this->timeMachine = $timeMachine;
-		$this->shareTypes = $shareTypes;
+		foreach ($shareTypes as $shareType) {
+			$this->shareTypes[$shareType->getId()] = $shareType;
+		}
 	}
 
 	/**
@@ -80,6 +82,29 @@ abstract class ShareBackend extends BasicEmitter {
 	 * @return string|array
 	 */
 	abstract protected function generateItemTarget(Share $share);
+
+
+	/**
+	 * Get all share types
+	 * @return ShareType[]
+	 */
+	public function getShareTypes() {
+		return $this->shareTypes;
+	}
+
+	/**
+	 * Get share type by id
+	 * @param string $shareTypeId
+	 * @throws ShareTypeDoesNotExistException
+	 * @return ShareType
+	 */
+	public function getShareType($shareTypeId) {
+		if (isset($this->shareTypes[$shareTypeId])) {
+			return $this->shareTypes[$shareTypeId];
+		} else {
+			throw new ShareTypeDoesNotExistException($shareTypeId);
+		}
+	}
 
 	/**
 	 * Share a share
@@ -192,33 +217,6 @@ abstract class ShareBackend extends BasicEmitter {
 	}
 
 	/**
-	 * Search for potential people to share with based on the given pattern
-	 * @param string $pattern
-	 * @param int $limit (optional)
-	 * @param int $offset (optional)
-	 * @return array
-	 */
-	public function searchForPotentialShareWiths($pattern, $limit = null, $offset = null) {
-		$shareWiths = array();
-		foreach ($this->shareTypes as $shareType) {
-			$result = $shareType->searchForPotentialShareWiths($pattern, $limit, $offset);
-			foreach ($result as $shareWith) {
-				$shareWiths[] = $shareWith;
-				if (isset($limit)) {
-					$limit--;
-					if ($limit === 0) {
-						return $shareWiths;
-					}
-				}
-				if (isset($offset) && $offset > 0) {
-					$offset--;
-				}
-			}
-		}
-		return $shareWiths;
-	}
-
-	/**
 	 * Check if a share is expired
 	 * @param Share $share
 	 * @return bool
@@ -241,21 +239,6 @@ abstract class ShareBackend extends BasicEmitter {
 				return false;
 			}
 		}
-	}
-
-	/**
-	 * Get share type by id
-	 * @param string $shareTypeId
-	 * @throws ShareTypeDoesNotExistException
-	 * @return ShareType
-	 */
-	protected function getShareType($shareTypeId) {
-		foreach ($this->shareTypes as $shareType) {
-			if ($shareType->getId() === $shareTypeId) {
-				return $shareType;
-			}
-		}
-		throw new ShareTypeDoesNotExistException($shareTypeId);
 	}
 
 	/**

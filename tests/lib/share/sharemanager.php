@@ -1465,20 +1465,6 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 		$this->shareManager->getShareById(1, 'test');
 	}
 
-	public function testSearchForPotentialShareWiths() {
-		$map = array(
-			array('foo', 3, 1, array('foouser2', 'foouser3', 'foogroup1')),
-		);
-		$this->shareBackend->expects($this->once())
-			->method('searchForPotentialShareWiths')
-			->will($this->returnValueMap($map));
-		$shareWiths = $this->shareManager->searchForPotentialShareWiths('test', 'foo', 3, 1);
-		$this->assertCount(3, $shareWiths);
-		$this->assertContains('foouser2', $shareWiths);
-		$this->assertContains('foouser3', $shareWiths);
-		$this->assertContains('foogroup1', $shareWiths);
-	}
-
 	public function testUnshareItem() {
 		$item = 1;
 		$parent1 = new Share();
