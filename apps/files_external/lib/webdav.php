@@ -73,8 +73,6 @@ class DAV extends \OC\Files\Storage\Common{
 				$this->client->addTrustedCertificates($certPath);
 			}
 		}
-		//create the root folder if necessary
-		$this->mkdir('');
 	}
 
 	public function getId(){
@@ -236,7 +234,13 @@ class DAV extends \OC\Files\Storage\Common{
 			$mtime=time();
 		}
 		$path=$this->cleanPath($path);
-		$this->client->proppatch($path, array('{DAV:}lastmodified' => $mtime));
+
+		// if file exists, update the mtime, else create a new empty file
+		if ($this->file_exists($path)) {
+			$this->client->proppatch($path, array('{DAV:}lastmodified' => $mtime));
+		} else {
+			$this->file_put_contents($path, '');
+		}
 	}
 
 	public function getFile($path, $target) {

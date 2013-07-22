@@ -25,23 +25,30 @@ $_['subadmingroups'] = array_flip($items);
 			id="newusergroups" data-placeholder="groups"
 			title="<?php p($l->t('Groups'))?>" multiple="multiple">
 			<?php foreach($_["groups"] as $group): ?>
-			<option value="<?php p($group['name']);?>">
-				<?php p($group['name']);?>
-			</option>
+			<option value="<?php p($group['name']);?>"><?php p($group['name']);?></option>
 			<?php endforeach;?>
 		</select> <input type="submit" value="<?php p($l->t('Create'))?>" />
 	</form>
+	<?php if((bool)$_['recoveryAdminEnabled']): ?>
+	<div class="recoveryPassword">
+	<input id="recoveryPassword"
+		   type="password"
+		   placeholder="<?php p($l->t('Admin Recovery Password'))?>"
+		   title="<?php p($l->t('Enter the recovery password in order to recover the users files during password change'))?>"
+		   alt="<?php p($l->t('Enter the recovery password in order to recover the users files during password change'))?>"/>
+	</div>
+	<?php endif; ?>
 	<div class="quota">
 		<span><?php p($l->t('Default Storage'));?></span>
 			<?php if((bool) $_['isadmin']): ?>
 			<select class='quota'>
 				<option
-					<?php if($_['default_quota']=='none') print_unescaped('selected="selected"');?>
+					<?php if($_['default_quota'] === 'none') print_unescaped('selected="selected"');?>
 						value='none'>
 					<?php p($l->t('Unlimited'));?>
 				</option>
 				<?php foreach($_['quota_preset'] as $preset):?>
-				<?php if($preset!='default'):?>
+				<?php if($preset !== 'default'):?>
 				<option
 				<?php if($_['default_quota']==$preset) print_unescaped('selected="selected"');?>
 					value='<?php p($preset);?>'>
@@ -74,7 +81,7 @@ $_['subadmingroups'] = array_flip($items);
 <table class="hascontrols" data-groups="<?php p(implode(', ', $allGroups));?>">
 	<thead>
 		<tr>
-			<th id='headerName'><?php p($l->t('Login Name'))?></th>
+			<th id='headerName'><?php p($l->t('Username'))?></th>
 			<th id="headerDisplayName"><?php p($l->t( 'Display Name' )); ?></th>
 			<th id="headerPassword"><?php p($l->t( 'Password' )); ?></th>
 			<th id="headerGroups"><?php p($l->t( 'Groups' )); ?></th>
@@ -105,9 +112,7 @@ $_['subadmingroups'] = array_flip($items);
 				data-placeholder="groups" title="<?php p($l->t('Groups'))?>"
 				multiple="multiple">
 					<?php foreach($_["groups"] as $group): ?>
-					<option value="<?php p($group['name']);?>">
-						<?php p($group['name']);?>
-					</option>
+					<option value="<?php p($group['name']);?>"><?php p($group['name']);?></option>
 					<?php endforeach;?>
 			</select>
 			</td>
@@ -119,9 +124,7 @@ $_['subadmingroups'] = array_flip($items);
 				data-placeholder="subadmins" title="<?php p($l->t('Group Admin'))?>"
 				multiple="multiple">
 					<?php foreach($_["subadmingroups"] as $group): ?>
-					<option value="<?php p($group);?>">
-						<?php p($group);?>
-					</option>
+					<option value="<?php p($group);?>"><?php p($group);?></option>
 					<?php endforeach;?>
 			</select>
 			</td>
@@ -129,12 +132,12 @@ $_['subadmingroups'] = array_flip($items);
 			<td class="quota">
 				<select class='quota-user'>
 					<option
-						<?php if($user['quota']=='default') print_unescaped('selected="selected"');?>
+						<?php if($user['quota'] === 'default') print_unescaped('selected="selected"');?>
 							value='default'>
 						<?php p($l->t('Default'));?>
 					</option>
 					<option
-					<?php if($user['quota']=='none') print_unescaped('selected="selected"');?>
+					<?php if($user['quota'] === 'none') print_unescaped('selected="selected"');?>
 							value='none'>
 						<?php p($l->t('Unlimited'));?>
 					</option>

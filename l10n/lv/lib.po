@@ -3,14 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-04-01 00:02+0200\n"
-"PO-Revision-Date: 2013-03-31 22:01+0000\n"
-"Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
+"POT-Creation-Date: 2013-07-22 01:54-0400\n"
+"PO-Revision-Date: 2013-07-22 05:25+0000\n"
+"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Latvian (http://www.transifex.com/projects/p/owncloud/language/lv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,47 +17,51 @@ msgstr ""
 "Language: lv\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);\n"
 
-#: app.php:349
+#: app.php:360
 msgid "Help"
 msgstr "Palīdzība"
 
-#: app.php:362
+#: app.php:373
 msgid "Personal"
 msgstr "Personīgi"
 
-#: app.php:373
+#: app.php:384
 msgid "Settings"
 msgstr "Iestatījumi"
 
-#: app.php:385
+#: app.php:396
 msgid "Users"
 msgstr "Lietotāji"
 
-#: app.php:398
+#: app.php:409
 msgid "Apps"
 msgstr "Lietotnes"
 
-#: app.php:406
+#: app.php:417
 msgid "Admin"
 msgstr "Administratori"
 
-#: files.php:209
+#: defaults.php:33
+msgid "web services under your control"
+msgstr "tīmekļa servisi tavā varā"
+
+#: files.php:226
 msgid "ZIP download is turned off."
 msgstr "ZIP lejupielādēšana ir izslēgta."
 
-#: files.php:210
+#: files.php:227
 msgid "Files need to be downloaded one by one."
 msgstr "Datnes var lejupielādēt tikai katru atsevišķi."
 
-#: files.php:211 files.php:244
+#: files.php:228 files.php:261
 msgid "Back to Files"
 msgstr "Atpakaļ pie datnēm"
 
-#: files.php:241
+#: files.php:258
 msgid "Selected files too large to generate zip file."
 msgstr "Izvēlētās datnes ir pārāk lielas, lai izveidotu zip datni."
 
-#: helper.php:228
+#: helper.php:236
 msgid "couldn't be determined"
 msgstr "nevarēja noteikt"
 
@@ -86,172 +89,157 @@ msgstr "Teksts"
 msgid "Images"
 msgstr "Attēli"
 
-#: setup.php:34
-msgid "Set an admin username."
-msgstr "Iestatiet administratora lietotājvārdu."
-
-#: setup.php:37
-msgid "Set an admin password."
-msgstr "Iestatiet administratora paroli."
-
-#: setup.php:40
-msgid "Specify a data folder."
-msgstr "Norādiet datu mapi."
-
-#: setup.php:55
+#: setup/abstractdatabase.php:22
 #, php-format
 msgid "%s enter the database username."
 msgstr "%s ievadiet datubāzes lietotājvārdu."
 
-#: setup.php:58
+#: setup/abstractdatabase.php:25
 #, php-format
 msgid "%s enter the database name."
 msgstr "%s ievadiet datubāzes nosaukumu."
 
-#: setup.php:61
+#: setup/abstractdatabase.php:28
 #, php-format
 msgid "%s you may not use dots in the database name"
 msgstr "%s datubāžu nosaukumos nedrīkst izmantot punktus"
 
-#: setup.php:64
-#, php-format
-msgid "%s set the database host."
-msgstr "%s iestatiet datubāžu serveri."
-
-#: setup.php:132 setup.php:324 setup.php:369
-msgid "PostgreSQL username and/or password not valid"
-msgstr "Nav derīga PostgreSQL parole un/vai lietotājvārds"
-
-#: setup.php:133 setup.php:156 setup.php:233
-msgid "You need to enter either an existing account or the administrator."
-msgstr "Jums jāievada vai nu esošs vai administratora konts."
-
-#: setup.php:155 setup.php:457 setup.php:524
-msgid "Oracle username and/or password not valid"
-msgstr "Nav derīga Oracle parole un/vai lietotājvārds"
-
-#: setup.php:232
-msgid "MySQL username and/or password not valid"
-msgstr "Nav derīga MySQL parole un/vai lietotājvārds"
-
-#: setup.php:286 setup.php:390 setup.php:399 setup.php:417 setup.php:427
-#: setup.php:436 setup.php:465 setup.php:531 setup.php:557 setup.php:564
-#: setup.php:575 setup.php:582 setup.php:591 setup.php:599 setup.php:608
-#: setup.php:614
-#, php-format
-msgid "DB Error: \"%s\""
-msgstr "DB kļūda — “%s”"
-
-#: setup.php:287 setup.php:391 setup.php:400 setup.php:418 setup.php:428
-#: setup.php:437 setup.php:466 setup.php:532 setup.php:558 setup.php:565
-#: setup.php:576 setup.php:592 setup.php:600 setup.php:609
-#, php-format
-msgid "Offending command was: \"%s\""
-msgstr "Vainīgā komanda bija “%s”"
-
-#: setup.php:303
-#, php-format
-msgid "MySQL user '%s'@'localhost' exists already."
-msgstr "MySQL lietotājs %s'@'localhost' jau eksistē."
-
-#: setup.php:304
-msgid "Drop this user from MySQL"
-msgstr "Izmest šo lietotāju no MySQL"
-
-#: setup.php:309
-#, php-format
-msgid "MySQL user '%s'@'%%' already exists"
-msgstr "MySQL lietotājs '%s'@'%%' jau eksistē"
-
-#: setup.php:310
-msgid "Drop this user from MySQL."
-msgstr "Izmest šo lietotāju no MySQL."
-
-#: setup.php:583 setup.php:615
-#, php-format
-msgid "Offending command was: \"%s\", name: %s, password: %s"
-msgstr "Vainīgā komanda bija \"%s\", vārds: %s, parole: %s"
-
-#: setup.php:635
+#: setup/mssql.php:20
 #, php-format
 msgid "MS SQL username and/or password not valid: %s"
 msgstr "Nav derīga MySQL parole un/vai lietotājvārds — %s"
 
-#: setup.php:853
+#: setup/mssql.php:21 setup/mysql.php:13 setup/oci.php:114
+#: setup/postgresql.php:24 setup/postgresql.php:70
+msgid "You need to enter either an existing account or the administrator."
+msgstr "Jums jāievada vai nu esošs vai administratora konts."
+
+#: setup/mysql.php:12
+msgid "MySQL username and/or password not valid"
+msgstr "Nav derīga MySQL parole un/vai lietotājvārds"
+
+#: setup/mysql.php:67 setup/oci.php:54 setup/oci.php:121 setup/oci.php:147
+#: setup/oci.php:154 setup/oci.php:165 setup/oci.php:172 setup/oci.php:181
+#: setup/oci.php:189 setup/oci.php:198 setup/oci.php:204
+#: setup/postgresql.php:89 setup/postgresql.php:98 setup/postgresql.php:115
+#: setup/postgresql.php:125 setup/postgresql.php:134
+#, php-format
+msgid "DB Error: \"%s\""
+msgstr "DB kļūda — “%s”"
+
+#: setup/mysql.php:68 setup/oci.php:55 setup/oci.php:122 setup/oci.php:148
+#: setup/oci.php:155 setup/oci.php:166 setup/oci.php:182 setup/oci.php:190
+#: setup/oci.php:199 setup/postgresql.php:90 setup/postgresql.php:99
+#: setup/postgresql.php:116 setup/postgresql.php:126 setup/postgresql.php:135
+#, php-format
+msgid "Offending command was: \"%s\""
+msgstr "Vainīgā komanda bija “%s”"
+
+#: setup/mysql.php:85
+#, php-format
+msgid "MySQL user '%s'@'localhost' exists already."
+msgstr "MySQL lietotājs %s'@'localhost' jau eksistē."
+
+#: setup/mysql.php:86
+msgid "Drop this user from MySQL"
+msgstr "Izmest šo lietotāju no MySQL"
+
+#: setup/mysql.php:91
+#, php-format
+msgid "MySQL user '%s'@'%%' already exists"
+msgstr "MySQL lietotājs '%s'@'%%' jau eksistē"
+
+#: setup/mysql.php:92
+msgid "Drop this user from MySQL."
+msgstr "Izmest šo lietotāju no MySQL."
+
+#: setup/oci.php:34
+msgid "Oracle connection could not be established"
+msgstr ""
+
+#: setup/oci.php:41 setup/oci.php:113
+msgid "Oracle username and/or password not valid"
+msgstr "Nav derīga Oracle parole un/vai lietotājvārds"
+
+#: setup/oci.php:173 setup/oci.php:205
+#, php-format
+msgid "Offending command was: \"%s\", name: %s, password: %s"
+msgstr "Vainīgā komanda bija \"%s\", vārds: %s, parole: %s"
+
+#: setup/postgresql.php:23 setup/postgresql.php:69
+msgid "PostgreSQL username and/or password not valid"
+msgstr "Nav derīga PostgreSQL parole un/vai lietotājvārds"
+
+#: setup.php:28
+msgid "Set an admin username."
+msgstr "Iestatiet administratora lietotājvārdu."
+
+#: setup.php:31
+msgid "Set an admin password."
+msgstr "Iestatiet administratora paroli."
+
+#: setup.php:184
 msgid ""
 "Your web server is not yet properly setup to allow files synchronization "
 "because the WebDAV interface seems to be broken."
 msgstr "Jūsu serveris vēl nav pareizi iestatīts, lai ļautu sinhronizēt datnes, jo izskatās, ka WebDAV saskarne ir salauzta."
 
-#: setup.php:854
+#: setup.php:185
 #, php-format
 msgid "Please double check the <a href='%s'>installation guides</a>."
 msgstr "Lūdzu, vēlreiz pārbaudiet <a href='%s'>instalēšanas palīdzību</a>."
 
-#: template.php:113
+#: template.php:95
 msgid "seconds ago"
 msgstr "sekundes atpakaļ"
 
-#: template.php:114
+#: template.php:96
 msgid "1 minute ago"
 msgstr "pirms 1 minūtes"
 
-#: template.php:115
+#: template.php:97
 #, php-format
 msgid "%d minutes ago"
 msgstr "pirms %d minūtēm"
 
-#: template.php:116
+#: template.php:98
 msgid "1 hour ago"
 msgstr "pirms 1 stundas"
 
-#: template.php:117
+#: template.php:99
 #, php-format
 msgid "%d hours ago"
 msgstr "pirms %d stundām"
 
-#: template.php:118
+#: template.php:100
 msgid "today"
 msgstr "šodien"
 
-#: template.php:119
+#: template.php:101
 msgid "yesterday"
 msgstr "vakar"
 
-#: template.php:120
+#: template.php:102
 #, php-format
 msgid "%d days ago"
 msgstr "pirms %d dienām"
 
-#: template.php:121
+#: template.php:103
 msgid "last month"
 msgstr "pagājušajā mēnesī"
 
-#: template.php:122
+#: template.php:104
 #, php-format
 msgid "%d months ago"
 msgstr "pirms %d mēnešiem"
 
-#: template.php:123
+#: template.php:105
 msgid "last year"
 msgstr "gājušajā gadā"
 
-#: template.php:124
+#: template.php:106
 msgid "years ago"
 msgstr "gadus atpakaļ"
-
-#: updater.php:78
-#, php-format
-msgid "%s is available. Get <a href=\"%s\">more information</a>"
-msgstr "%s ir pieejams. Iegūt <a href=\"%s\">vairāk informācijas</a>"
-
-#: updater.php:81
-msgid "up to date"
-msgstr "ir aktuāls"
-
-#: updater.php:84
-msgid "updates check is disabled"
-msgstr "atjauninājumu pārbaude ir deaktivēta"
 
 #: vcategories.php:188 vcategories.php:249
 #, php-format

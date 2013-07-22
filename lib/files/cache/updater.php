@@ -7,6 +7,7 @@
  */
 
 namespace OC\Files\Cache;
+use OCP\Util;
 
 /**
  * listen to filesystem hooks and change the cache accordingly
@@ -25,7 +26,7 @@ class Updater {
 	}
 
 	/**
-	 * preform a write update
+	 * perform a write update
 	 *
 	 * @param string $path the relative path of the file
 	 */
@@ -45,7 +46,7 @@ class Updater {
 	}
 
 	/**
-	 * preform a delete update
+	 * perform a delete update
 	 *
 	 * @param string $path the relative path of the file
 	 */
@@ -102,7 +103,7 @@ class Updater {
 	static public function correctFolder($path, $time) {
 		if ($path !== '' && $path !== '/') {
 			$parent = dirname($path);
-			if ($parent === '.') {
+			if ($parent === '.' || $parent === '\\') {
 				$parent = '';
 			}
 			/**
@@ -116,6 +117,8 @@ class Updater {
 				if ($id !== -1) {
 					$cache->update($id, array('mtime' => $time, 'etag' => $storage->getETag($internalPath)));
 					self::correctFolder($parent, $time);
+				} else {
+					Util::writeLog('core', 'Path not in cache: '.$internalPath, Util::ERROR);
 				}
 			}
 		}
@@ -132,7 +135,14 @@ class Updater {
 	 * @param array $params
 	 */
 	static public function touchHook($params) {
-		self::writeUpdate($params['path']);
+		$path = $params['path'];
+		list($storage, $internalPath) = self::resolvePath($path);
+		$cache = $storage->getCache();
+		$id = $cache->getId($internalPath);
+		if ($id !== -1) {
+			$cache->update($id, array('etag' => $storage->getETag($internalPath)));
+		}
+		self::writeUpdate($path);
 	}
 
 	/**
