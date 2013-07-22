@@ -1,0 +1,19 @@
+{
+    "values": [
+        {
+            "id": "ntAAAA",
+            "label": "my webhook #1",
+            "type": "webhook",
+            "details": {
+                "url": "https://systems.example.org/alert"
+            }
+        }
+    ],
+    "metadata": {
+        "count": 1,
+        "limit": 50,
+        "marker": null,
+        "next_marker": null,
+        "next_href": null
+    }
+}

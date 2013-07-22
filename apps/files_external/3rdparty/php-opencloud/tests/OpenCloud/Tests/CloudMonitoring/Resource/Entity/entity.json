@@ -1,0 +1,16 @@
+{
+    "id": "enAAAAA",
+    "label": "Brand New Entity",
+    "ip_addresses": {
+        "default": "127.0.0.4",
+        "b": "127.0.0.5",
+        "c": "127.0.0.6",
+        "test": "127.0.0.7"
+    },
+    "metadata": {
+        "all": "kinds",
+        "of": "stuff",
+        "can": "go",
+        "here": "null is not a valid value"
+    }
+}

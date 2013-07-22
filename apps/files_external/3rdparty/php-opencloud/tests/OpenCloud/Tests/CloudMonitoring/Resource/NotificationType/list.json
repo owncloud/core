@@ -1,0 +1,41 @@
+{
+    "values": [
+        {
+            "id": "webhook",
+            "fields": [
+                {
+                    "name": "url",
+                    "description": "An HTTP or HTTPS URL to POST to",
+                    "optional": false
+                }
+            ]
+        },
+        {
+            "id": "email",
+            "fields": [
+                {
+                    "name": "address",
+                    "description": "Email address to send notifications to",
+                    "optional": false
+                }
+            ]
+        },
+        {
+            "id": "pagerduty",
+            "fields": [
+                {
+                    "name": "service_key",
+                    "description": "The PagerDuty service key to use.",
+                    "optional": false
+                }
+            ]
+        }
+    ],
+    "metadata": {
+        "count": 3,
+        "limit": 50,
+        "marker": null,
+        "next_marker": null,
+        "next_href": null
+    }
+}

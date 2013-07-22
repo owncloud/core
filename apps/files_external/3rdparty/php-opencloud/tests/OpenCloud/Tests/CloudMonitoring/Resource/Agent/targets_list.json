@@ -1,0 +1,20 @@
+{
+    "targets": [
+        "/",
+        "/proc",
+        "/sys",
+        "/sys/fs/fuse/connections",
+        "/sys/kernel/debug",
+        "/sys/kernel/security",
+        "/dev",
+        "/dev/pts",
+        "/dev/shm",
+        "/var/run",
+        "/var/lock",
+        "/lib/init/rw",
+        "/var/lib/ureadahead/debugfs",
+        "/boot",
+        "/mnt/hgfs",
+        "/var/run/vmblock-fuse"
+    ]
+}

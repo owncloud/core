@@ -1,0 +1,17 @@
+{
+  "server": {
+    "OS-DCF:diskConfig": "AUTO",
+    "id": "b8f6c580-0c7f-XXXX-yyyy-672cccdc8127",
+    "links": [
+      {
+        "href": "https:\/\/dfw.servers.api.rackspacecloud.com\/v2\/9999\/servers\/b8f6c580-0c7f-XXXX-yyyy-672cccdc8127",
+        "rel": "self"
+      },
+      {
+        "href": "https:\/\/dfw.servers.api.rackspacecloud.com\/9999\/servers\/b8f6c580-0c7f-XXXX-yyyy-672cccdc8127",
+        "rel": "bookmark"
+      }
+    ],
+    "adminPass": "gsmMj4wjxxxxyeN"
+  }
+}

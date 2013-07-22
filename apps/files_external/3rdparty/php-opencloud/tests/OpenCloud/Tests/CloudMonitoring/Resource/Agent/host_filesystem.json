@@ -1,0 +1,17 @@
+{
+    "timestamp": 1354040333343,
+    "info": [
+        {
+            "dir_name": "/",
+            "dev_name": "/dev/mapper/dev-root",
+            "sys_type_name": "ext4",
+            "options": "rw,errors=remount-ro",
+            "free": 9095192,
+            "used": 10389956,
+            "avail": 8105396,
+            "total": 19485148,
+            "files": 1237888,
+            "free_files": 990331
+        }
+    ]
+}

@@ -1,0 +1,35 @@
+{
+    "timestamp": 1354038900510,
+    "info": [
+        {
+            "name": "lo",
+            "type": "Local Loopback",
+            "address": "127.0.0.1",
+            "netmask": "255.0.0.0",
+            "address6": "::1",
+            "broadcast": "0.0.0.0",
+            "hwaddr": "00:00:00:00:00:00",
+            "mtu": 16436,
+            "rx_packets": 361762,
+            "rx_bytes": 92488304,
+            "tx_packets": 361762,
+            "tx_bytes": 92488304,
+            "flags": 73
+        },
+        {
+            "name": "eth0",
+            "type": "Ethernet",
+            "address": "192.168.95.128",
+            "netmask": "255.255.255.0",
+            "address6": "fe80::250:56ff:fe24:bbbb",
+            "broadcast": "192.168.95.255",
+            "hwaddr": "00:00:00:00:00:00",
+            "mtu": 1500,
+            "rx_packets": 13142,
+            "rx_bytes": 1838773,
+            "tx_packets": 12087,
+            "tx_bytes": 6282141,
+            "flags": 2115
+        }
+    ]
+}

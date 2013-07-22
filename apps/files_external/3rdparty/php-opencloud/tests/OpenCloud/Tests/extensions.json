@@ -1,0 +1,84 @@
+{
+  "extensions": [
+    {
+      "updated": "2011-09-27T00:00:00+00:00",
+      "name": "DiskConfig",
+      "links": [
+        
+      ],
+      "namespace": "http:\/\/docs.openstack.org\/compute\/ext\/disk_config\/api\/v1.1",
+      "alias": "OS-DCF",
+      "description": "Disk Management Extension"
+    },
+    {
+      "updated": "2011-03-25T00:00:00+00:00",
+      "name": "Volumes",
+      "links": [
+        
+      ],
+      "namespace": "http:\/\/docs.openstack.org\/compute\/ext\/volumes\/api\/v1.1",
+      "alias": "os-volumes",
+      "description": "Volumes support"
+    },
+    {
+      "updated": "2012-01-19T00:00:00+00:00",
+      "name": "ServerBandwidth",
+      "links": [
+        
+      ],
+      "namespace": "http:\/\/docs.rackspace.com\/servers\/api\/ext\/server_bandwidth\/",
+      "alias": "rax-bandwidth",
+      "description": "Server Bandwidth Extension"
+    },
+    {
+      "updated": "2011-11-03T00:00:00+00:00",
+      "name": "ExtendedStatus",
+      "links": [
+        
+      ],
+      "namespace": "http:\/\/docs.openstack.org\/compute\/ext\/extended_status\/api\/v1.1",
+      "alias": "OS-EXT-STS",
+      "description": "Extended Status support"
+    },
+    {
+      "updated": "2011-12-23T00:00:00+00:00",
+      "name": "Consoles",
+      "links": [
+        
+      ],
+      "namespace": "http:\/\/docs.openstack.org\/compute\/ext\/os-consoles\/api\/v2",
+      "alias": "os-consoles",
+      "description": "Interactive Console support."
+    },
+    {
+      "updated": "2012-03-07T09:46:43-05:00",
+      "name": "RAXNetworks",
+      "links": [
+        
+      ],
+      "namespace": "http:\/\/docs.openstack.org\/ext\/services\/api\/v1.1",
+      "alias": "rax-networks",
+      "description": "Admin-only Network Management Extension"
+    },
+    {
+      "updated": "2011-08-18T00:00:00+00:00",
+      "name": "Rescue",
+      "links": [
+        
+      ],
+      "namespace": "http:\/\/docs.openstack.org\/compute\/ext\/rescue\/api\/v1.1",
+      "alias": "os-rescue",
+      "description": "Instance rescue mode"
+    },
+    {
+      "updated": "2012-07-13T00:00:00+00:00",
+      "name": "Used Limits",
+      "links": [
+        
+      ],
+      "namespace": "http:\/\/docs.openstack.org\/compute\/ext\/used_limits\/api\/v1.1",
+      "alias": "os-used-limits",
+      "description": "Provide data on limited resources that are being used."
+    }
+  ]
+}

@@ -6,15 +6,15 @@
 /apps/inc.php
 
 # ignore all apps except core ones
-/apps*
-!/apps/files
-!/apps/files_encryption
-!/apps/files_external
-!/apps/files_sharing
-!/apps/files_trashbin
-!/apps/files_versions
-!/apps/user_ldap
-!/apps/user_webdavauth
+/apps/*
+!/apps/files/
+!/apps/files_encryption/
+!/apps/files_external/
+!/apps/files_sharing/
+!/apps/files_trashbin/
+!/apps/files_versions/
+!/apps/user_ldap/
+!/apps/user_webdavauth/
 
 # ignore themes except the README
 /themes/*
@@ -48,7 +48,7 @@ RCS/*
 .project
 .settings
 
-# netbeans 
+# netbeans
 nbproject
 
 # phpStorm
@@ -64,7 +64,7 @@ nbproject
 
 # vim ex mode
 .vimrc
-	
+
 # Mac OS
 .DS_Store
 

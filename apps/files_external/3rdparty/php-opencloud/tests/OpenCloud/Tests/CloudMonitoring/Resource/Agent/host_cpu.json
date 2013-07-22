@@ -1,0 +1,35 @@
+{
+    "timestamp": 1354038712351,
+    "info": [
+        {
+            "name": "cpu.0",
+            "vendor": "Intel",
+            "model": "Core(TM) i7-2760QM CPU @ 2.40GHz",
+            "mhz": 2394,
+            "idle": 32872370,
+            "irq": 2320,
+            "soft_irq": 3390,
+            "nice": 10,
+            "sys": 247780,
+            "user": 235470,
+            "wait": 12180,
+            "total": 33373520,
+            "total_cores": 2,
+            "total_sockets": 2
+        },
+        {
+            "name": "cpu.1",
+            "vendor": "Intel",
+            "model": "Core(TM) i7-2760QM CPU @ 2.40GHz",
+            "mhz": 2394,
+            "idle": 32921490,
+            "soft_irq": 10910,
+            "sys": 239540,
+            "user": 236780,
+            "wait": 12020,
+            "total": 33420740,
+            "total_cores": 2,
+            "total_sockets": 2
+        }
+    ]
+}

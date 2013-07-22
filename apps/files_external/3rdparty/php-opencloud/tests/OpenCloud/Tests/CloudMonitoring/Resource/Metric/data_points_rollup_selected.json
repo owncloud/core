@@ -1,0 +1,23 @@
+{
+    "values": [
+        {
+            "numPoints": 1141,
+            "variance": 8.43710608512335,
+            "max": 9,
+            "timestamp": 1335744000000
+        },
+        {
+            "numPoints": 2880,
+            "variance": 8.25,
+            "max": 9,
+            "timestamp": 1335830400000
+        }
+    ],
+    "metadata": {
+        "count": 2,
+        "limit": null,
+        "marker": null,
+        "next_marker": null,
+        "next_href": null
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "values": [
+        {
+            "id": "cntl4qsIbA",
+            "guid": "0b49b96d-24c9-45ca-c585-4040707f4880",
+            "agent_id": "00-agent.example.com",
+            "endpoint": "lon3",
+            "process_version": "0.1.2.16",
+            "bundle_version": "0.1.2.16",
+            "agent_ip": "10.1.2.3"
+        },
+        {
+            "id": "cnyHsfATLd",
+            "guid": "0b49b96d-24c9-45ca-c585-4040707f4880",
+            "agent_id": "00-agent.example.com",
+            "endpoint": "ord1",
+            "process_version": "0.1.2.16",
+            "bundle_version": "0.1.2.16",
+            "agent_ip": "10.1.2.3"
+        }
+    ],
+    "metadata": {
+        "count": 2,
+        "limit": 50,
+        "marker": null,
+        "next_marker": null,
+        "next_href": null
+    }
+}

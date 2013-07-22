@@ -1,0 +1,17 @@
+{
+    "id": "chAAAA",
+    "label": "Website check 1",
+    "type": "remote.http",
+    "details": {
+        "url": "http://www.foo.com",
+        "method": "GET",
+        "follow_redirects": true,
+        "include_body": false
+    },
+    "monitoring_zones_poll": [
+        "mzA"
+    ],
+    "timeout": 30,
+    "period": 100,
+    "target_alias": "default"
+}

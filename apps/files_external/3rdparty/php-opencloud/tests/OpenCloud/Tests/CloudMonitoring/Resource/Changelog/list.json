@@ -1,0 +1,20 @@
+{
+    "values": [
+        {
+            "id": "4c5e28f0-0b3f-11e1-860d-c55c4705a286",
+            "timestamp": 1320890228991,
+            "entity_id": "enPhid7noo",
+            "alarm_id": "alahf9vuNa",
+            "check_id": "chIe7vohba",
+            "state": "WARNING",
+            "analyzed_by_monitoring_zone_id": "DFW"
+        }
+    ],
+    "metadata": {
+        "count": 1,
+        "limit": 50,
+        "marker": null,
+        "next_marker": null,
+        "next_href": null
+    }
+}

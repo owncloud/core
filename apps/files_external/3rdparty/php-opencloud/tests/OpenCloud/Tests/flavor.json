@@ -1,0 +1,17 @@
+{
+  "flavor": {
+    "ram": 512,
+    "id": 1,
+    "links": [
+      {
+        "href": "https:\/\/dfw.databases.api.rackspacecloud.com\/v1.0\/9999\/flavors\/1",
+        "rel": "self"
+      },
+      {
+        "href": "https:\/\/dfw.databases.api.rackspacecloud.com\/flavors\/1",
+        "rel": "bookmark"
+      }
+    ],
+    "name": "TESTFLAVOR"
+  }
+}

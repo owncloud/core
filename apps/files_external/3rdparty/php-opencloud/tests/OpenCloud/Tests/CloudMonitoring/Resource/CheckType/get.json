@@ -1,0 +1,21 @@
+{
+    "id": "remote.dns",
+    "type": "remote",
+    "fields": [
+        {
+            "name": "port",
+            "description": "Port number (default: 53)",
+            "optional": true
+        },
+        {
+            "name": "query",
+            "description": "DNS Query",
+            "optional": false
+        },
+        {
+            "name": "record_type",
+            "description": "DNS Record Type",
+            "optional": false
+        }
+    ]
+}

@@ -1,0 +1,8 @@
+{
+    "id": "mzAAAAA",
+    "label": "US South (Atlanta) - 5",
+    "country_code": "US",
+    "source_ips": [
+        "1.2.0.0/24"
+    ]
+}

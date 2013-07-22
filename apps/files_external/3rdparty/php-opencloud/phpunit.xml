@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="false" verbose="false" bootstrap="./tests/bootstrap.php">
+  
+    <testsuites>
+        <testsuite name="OpenCloud">
+            <directory>./tests/OpenCloud/Tests</directory>
+        </testsuite>
+    </testsuites>
+
+  <logging>
+    <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
+  </logging>
+
+  <filter>
+        <whitelist>
+            <directory suffix=".php">./lib</directory>
+        </whitelist>
+  </filter>
+
+</phpunit>

@@ -1,0 +1,17 @@
+{
+    "values": [
+        {
+            "name": "mzdfw.available"
+        },
+        {
+            "name": "mzdfw.average"
+        }
+    ],
+    "metadata": {
+        "count": 2,
+        "limit": null,
+        "marker": null,
+        "next_marker": null,
+        "next_href": null
+    }
+}

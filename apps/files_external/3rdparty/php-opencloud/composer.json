@@ -1,0 +1,25 @@
+{
+    "name": "rackspace/php-opencloud",
+    "description": "Rackspace open cloud php library",
+    "keywords": ["opencloud", "cloudfiles"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Glen Campbell",
+            "email": "glen.campbell@rackspace.com"
+        },
+        {
+            "name": "Jamie Hannaford",
+            "email": "jamie@limetree.org"
+        }
+    ],
+    "autoload": {
+        "classmap": ["lib/"]
+    },
+    "require": {
+        "php"     : ">=5.3.0",
+        "ext-curl": "*"
+    }
+
+}

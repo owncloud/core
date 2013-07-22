@@ -1,0 +1,10 @@
+{
+    "id": "webhook",
+    "fields": [
+        {
+            "name": "url",
+            "description": "An HTTP or HTTPS URL to POST to",
+            "optional": false
+        }
+    ]
+}

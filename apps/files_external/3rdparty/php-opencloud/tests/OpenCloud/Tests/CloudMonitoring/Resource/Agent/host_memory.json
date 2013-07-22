@@ -1,0 +1,16 @@
+{
+    "timestamp": 1354038868450,
+    "info": {
+        "actual_free": 3117314048,
+        "actual_used": 1451307008,
+        "free": 2726739968,
+        "ram": 4360,
+        "swap_free": 926932992
+        "swap_page_in": 926932992,
+        "swap_page_out": 926932992,
+        "swap_total": 926932992,
+        "swap_used": 926932992,
+        "total": 4568621056,
+        "used": 1841881088
+    }
+}
