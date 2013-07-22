@@ -1,4 +1,13 @@
 <?php
+
+// in case there are private configurations in the users home -> use them
+$privateConfigFile = $_SERVER['HOME'] . '/owncloud-extfs-test-config.php';
+if (file_exists($privateConfigFile)) {
+	$config = include($privateConfigFile);
+	return $config;
+}
+
+// this is now more a template now for your private configurations
 return array(
 	'ftp'=>array(
 		'run'=>false,
@@ -41,7 +50,13 @@ return array(
 		'run'=>false,
 		'key'=>'test',
 		'secret'=>'test',
-		'bucket'=>'bucket',
+		'bucket'=>'bucket'
+		//'hostname' => 'your.host.name',
+		//'port' => '443',
+		//'use_ssl' => 'true',
+		//'region' => 'eu-west-1',
+		//'test'=>'true',
+		//'timeout'=>20
 	),
 	'dropbox' => array (
 		'run'=>false,

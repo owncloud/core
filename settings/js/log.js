@@ -19,7 +19,7 @@ OC.Log={
 	getMore:function(count){
 		count = count || 10;
 		$.get(OC.filePath('settings','ajax','getlog.php'),{offset:OC.Log.loaded,count:count},function(result){
-			if(result.status=='success'){
+			if(result.status === 'success'){
 				OC.Log.addEntries(result.data);
 				if(!result.remain){
 					$('#moreLog').hide();
@@ -55,7 +55,11 @@ OC.Log={
 			row.append(messageTd);
 
 			var timeTd=$('<td/>');
-			timeTd.text(formatDate(entry.time*1000));
+			if(isNaN(entry.time)){
+				timeTd.text(entry.time);
+			} else {
+				timeTd.text(formatDate(entry.time*1000));
+			}
 			row.append(timeTd);
 			$('#log').append(row);
 		}

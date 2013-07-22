@@ -23,20 +23,22 @@
 
 namespace OCA\user_ldap\lib;
 
-class Jobs {
+class Jobs extends \OC\BackgroundJob\TimedJob {
 	static private $groupsFromDB;
 
 	static private $groupBE;
 	static private $connector;
 
+	public function __construct(){
+		$this->interval = self::getRefreshInterval();
+	}
+
+	public function run($argument){
+		Jobs::updateGroups();
+	}
+
 	static public function updateGroups() {
 		\OCP\Util::writeLog('user_ldap', 'Run background job "updateGroups"', \OCP\Util::DEBUG);
-		$lastUpdate = \OCP\Config::getAppValue('user_ldap', 'bgjUpdateGroupsLastRun', 0);
-		if((time() - $lastUpdate) < self::getRefreshInterval()) {
-			\OCP\Util::writeLog('user_ldap', 'bgJ "updateGroups" – last run too fresh, aborting.', \OCP\Util::DEBUG);
-			//komm runter Werner die Maurer geben ein aus
-			return;
-		}
 
 		$knownGroups = array_keys(self::getKnownGroups());
 		$actualGroups = self::getGroupBE()->getGroups();
@@ -45,15 +47,12 @@ class Jobs {
 			\OCP\Util::writeLog('user_ldap',
 				'bgJ "updateGroups" – groups do not seem to be configured properly, aborting.',
 				\OCP\Util::INFO);
-			\OCP\Config::setAppValue('user_ldap', 'bgjUpdateGroupsLastRun', time());
 			return;
 		}
 
 		self::handleKnownGroups(array_intersect($actualGroups, $knownGroups));
 		self::handleCreatedGroups(array_diff($actualGroups, $knownGroups));
 		self::handleRemovedGroups(array_diff($knownGroups, $actualGroups));
-
-		\OCP\Config::setAppValue('user_ldap', 'bgjUpdateGroupsLastRun', time());
 
 		\OCP\Util::writeLog('user_ldap', 'bgJ "updateGroups" – Finished.', \OCP\Util::DEBUG);
 	}
@@ -135,21 +134,19 @@ class Jobs {
 			\OCP\Util::DEBUG);
 	}
 
-	static private function getConnector() {
-		if(!is_null(self::$connector)) {
-			return self::$connector;
-		}
-		self::$connector = new \OCA\user_ldap\lib\Connection('user_ldap');
-		return self::$connector;
-	}
-
 	static private function getGroupBE() {
 		if(!is_null(self::$groupBE)) {
 			return self::$groupBE;
 		}
-		self::getConnector();
-		self::$groupBE = new \OCA\user_ldap\GROUP_LDAP();
-		self::$groupBE->setConnector(self::$connector);
+		$configPrefixes = Helper::getServerConfigurationPrefixes(true);
+		if(count($configPrefixes) == 1) {
+			//avoid the proxy when there is only one LDAP server configured
+			$connector = new Connection($configPrefixes[0]);
+			self::$groupBE = new \OCA\user_ldap\GROUP_LDAP();
+			self::$groupBE->setConnector($connector);
+		} else {
+			self::$groupBE = new \OCA\user_ldap\Group_Proxy($configPrefixes);
+		}
 
 		return self::$groupBE;
 	}
