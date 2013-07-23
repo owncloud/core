@@ -48,7 +48,7 @@ function revertFile(file, revision) {
 		data: {file: file, revision: revision},
 		async: false,
 		success: function(response) {
-			if (response.status == 'error') {
+			if (response.status === 'error') {
 				OC.dialogs.alert('Failed to revert ' + file + ' to revision ' + formatDate(revision * 1000) + '.', 'Failed to revert');
 			} else {
 				$('#dropdown').hide('blind', function() {
