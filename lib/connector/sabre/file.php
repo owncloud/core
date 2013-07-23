@@ -98,6 +98,7 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 			throw new \Sabre_DAV_Exception_Forbidden();
 		}
 		\OC\Files\Filesystem::unlink($this->path);
+		$this->clearProperties();
 	}
 
 	/**

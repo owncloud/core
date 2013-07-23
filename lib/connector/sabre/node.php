@@ -204,6 +204,19 @@ abstract class OC_Connector_Sabre_Node implements Sabre_DAV_IProperties {
 	}
 
 	/**
+	 * Clear all properties for the node
+	 */
+	protected function clearProperties() {
+		$fileInfo = $this->getFileInfo();
+		if (isset($fileInfo['fileid'])) {
+			$fileId = $fileInfo['fileid'];
+			$sql = 'DELETE FROM `*PREFIX*properties` WHERE `fileid` = ?';
+			OC_DB::executeAudited($sql, array($fileId));
+		}
+		$this->propertyCache = array();
+	}
+
+	/**
 	 * Set the metadata for the node
 	 * @param array $fileInfo
 	 */
