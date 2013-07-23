@@ -106,10 +106,17 @@ abstract class OC_Connector_Sabre_Node implements Sabre_DAV_IProperties {
 			return false;
 		}
 		$fileId = $fileInfo['fileid'];
-		$existing = $this->getProperties($mutations);
+		$existing = $this->getProperties(array_keys($mutations));
 		foreach ($mutations as $name => $value) {
-			// In the case a property should be deleted, the property value will be null
-			if (is_null($value)) {
+			if ($name === self::GETETAG_PROPERTYNAME) {
+				\OC\Files\Filesystem::putFileInfo($this->path, array('etag' => $value));
+				$this->fileInfoCache['etag'] = $value;
+				$this->propertyCache[$name] = $value;
+			} else if ($name === self::LASTMODIFIED_PROPERTYNAME) {
+				$this->touch($value);
+				$this->propertyCache[$name] = $value;
+			} else if (is_null($value)) {
+				// In the case a property should be deleted, the property value will be null
 				if (isset($existing[$name])) {
 					$sql = 'DELETE FROM `*PREFIX*properties` '.
 						'WHERE `fileid` = ? AND `propertyname` = ?';
@@ -117,21 +124,14 @@ abstract class OC_Connector_Sabre_Node implements Sabre_DAV_IProperties {
 					unset($this->propertyCache[$name]);
 				}
 			} else {
-				if ($name === self::GETETAG_PROPERTYNAME) {
-					\OC\Files\Filesystem::putFileInfo($this->path, array('etag' => $value));
-					$this->fileInfoCache['etag'] = $value;
-				} else if ($name === self::LASTMODIFIED_PROPERTYNAME) {
-					$this->touch($value);
+				if (!isset($existing[$name])) {
+					$sql = 'INSERT INTO `*PREFIX*properties` '.
+						'(`fileid`, `propertyname`, `propertyvalue`) VALUES(?,?,?)';
+					OC_DB::executeAudited($sql, array($fileId, $name, $value));
 				} else {
-					if (!isset($existing[$name])) {
-						$sql = 'INSERT INTO `*PREFIX*properties` '.
-							'(`fileid`, `propertyname`, `propertyvalue`) VALUES(?,?,?)';
-						OC_DB::executeAudited($sql, array($fileId, $name, $value));
-					} else {
-						$sql = 'UPDATE `*PREFIX*properties` SET `propertyvalue` = ? '.
-							'WHERE `fileid` = ? AND `propertyname` = ?';
-						OC_DB::executeAudited($sql, array($value, $fileId, $name));
-					}
+					$sql = 'UPDATE `*PREFIX*properties` SET `propertyvalue` = ? '.
+						'WHERE `fileid` = ? AND `propertyname` = ?';
+					OC_DB::executeAudited($sql, array($value, $fileId, $name));
 				}
 				$this->propertyCache[$name] = $value;
 			}
