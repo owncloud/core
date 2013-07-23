@@ -364,6 +364,26 @@ class OC_Helper {
 	}
 
 	/**
+	 * Try to guess the mimetype based on filename
+	 *
+	 * @param string $path
+	 * @return string
+	 */
+	static public function getFileNameMimeType($path){
+		if(strpos($path, '.')) {
+			//try to guess the type by the file extension
+			if(!self::$mimetypes || self::$mimetypes != include 'mimetypes.list.php') {
+				self::$mimetypes=include 'mimetypes.list.php';
+			}
+			$extension=strtolower(strrchr(basename($path), "."));
+			$extension=substr($extension, 1);//remove leading .
+			return (isset(self::$mimetypes[$extension]))?self::$mimetypes[$extension]:'application/octet-stream';
+		}else{
+			return 'application/octet-stream';
+		}
+	}
+
+	/**
 	 * get the mimetype form a local file
 	 * @param string $path
 	 * @return string
@@ -377,17 +397,7 @@ class OC_Helper {
 			return "httpd/unix-directory";
 		}
 
-		if(strpos($path, '.')) {
-			//try to guess the type by the file extension
-			if(!self::$mimetypes || self::$mimetypes != include 'mimetypes.list.php') {
-				self::$mimetypes=include 'mimetypes.list.php';
-			}
-			$extension=strtolower(strrchr(basename($path), "."));
-			$extension=substr($extension, 1);//remove leading .
-			$mimeType=(isset(self::$mimetypes[$extension]))?self::$mimetypes[$extension]:'application/octet-stream';
-		}else{
-			$mimeType='application/octet-stream';
-		}
+		$mimeType = self::getFileNameMimeType($path);
 
 		if($mimeType=='application/octet-stream' and function_exists('finfo_open')
 			and function_exists('finfo_file') and $finfo=finfo_open(FILEINFO_MIME)) {
@@ -609,7 +619,7 @@ class OC_Helper {
 	}
 
 	/**
-	 * remove all files in PHP /oc-noclean temp dir 
+	 * remove all files in PHP /oc-noclean temp dir
 	 */
 	public static function cleanTmpNoClean() {
 		$tmpDirNoCleanFile=get_temp_dir().'/oc-noclean/';
@@ -626,6 +636,18 @@ class OC_Helper {
 	* @return string
 	*/
 	public static function buildNotExistingFileName($path, $filename) {
+		$view = \OC\Files\Filesystem::getView();
+		return self::buildNotExistingFileNameForView($path, $filename, $view);
+	}
+
+	/**
+	* Adds a suffix to the name in case the file exists
+	*
+	* @param $path
+	* @param $filename
+	* @return string
+	*/
+	public static function buildNotExistingFileNameForView($path, $filename, \OC\Files\View $view) {
 		if($path==='/') {
 			$path='';
 		}
@@ -638,11 +660,27 @@ class OC_Helper {
 		}
 
 		$newpath = $path . '/' . $filename;
-		$counter = 2;
-		while (\OC\Files\Filesystem::file_exists($newpath)) {
-			$newname = $name . ' (' . $counter . ')' . $ext;
-			$newpath = $path . '/' . $newname;
-			$counter++;
+		if ($view->file_exists($newpath)) {
+			if(preg_match_all('/\((\d+)\)/', $name, $matches, PREG_OFFSET_CAPTURE)) {
+				//Replace the last "(number)" with "(number+1)" 
+				$last_match = count($matches[0])-1;
+				$counter = $matches[1][$last_match][0]+1;
+				$offset = $matches[0][$last_match][1];
+				$match_length = strlen($matches[0][$last_match][0]);
+			} else {
+				$counter = 2;
+				$offset = false;
+			}
+			do {
+				if($offset) {
+					//Replace the last "(number)" with "(number+1)" 
+					$newname = substr_replace($name, '('.$counter.')', $offset, $match_length);
+				} else {
+					$newname = $name . ' (' . $counter . ')';
+				}
+				$newpath = $path . '/' . $newname . $ext;
+				$counter++;
+			} while ($view->file_exists($newpath));
 		}
 
 		return $newpath;
@@ -777,9 +815,9 @@ class OC_Helper {
 		$upload_max_filesize = OCP\Util::computerFileSize(ini_get('upload_max_filesize'));
 		$post_max_size = OCP\Util::computerFileSize(ini_get('post_max_size'));
 		$freeSpace = \OC\Files\Filesystem::free_space($dir);
-		if ($upload_max_filesize == 0 and $post_max_size == 0) {
+		if ((int)$upload_max_filesize === 0 and (int)$post_max_size === 0) {
 			$maxUploadFilesize = \OC\Files\FREE_SPACE_UNLIMITED;
-		} elseif ($upload_max_filesize === 0 or $post_max_size === 0) {
+		} elseif ((int)$upload_max_filesize === 0 or (int)$post_max_size === 0) {
 			$maxUploadFilesize = max($upload_max_filesize, $post_max_size); //only the non 0 value counts
 		} else {
 			$maxUploadFilesize = min($upload_max_filesize, $post_max_size);

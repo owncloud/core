@@ -1,5 +1,4 @@
 <?php $TRANSLATIONS = array(
-"User %s shared a file with you" => "उपयोगकर्ता %s ने आप के साथ एक फ़ाइल सहभाजीत किया",
 "January" => "जनवरी",
 "February" => "फरवरी",
 "March" => "मार्च",
@@ -13,6 +12,9 @@
 "November" => "नवंबर",
 "December" => "दिसम्बर",
 "Settings" => "सेटिंग्स",
+"Error" => "त्रुटि",
+"Share" => "साझा करें",
+"Share with" => "के साथ साझा",
 "Password" => "पासवर्ड",
 "Use the following link to reset your password: {link}" => "आगे दिये गये लिंक का उपयोग पासवर्ड बदलने के लिये किजीये: {link}",
 "You will receive a link to reset your password via Email." => "पासवर्ड बदलने कि लिंक आपको ई-मेल द्वारा भेजी जायेगी|",

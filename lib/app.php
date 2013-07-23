@@ -174,7 +174,8 @@ class OC_App{
 		$apps=array('files');
 		$sql = 'SELECT `appid` FROM `*PREFIX*appconfig`'
 			.' WHERE `configkey` = \'enabled\' AND `configvalue`=\'yes\'';
-		if (OC_Config::getValue( 'dbtype', 'sqlite' ) === 'oci') { //FIXME oracle hack
+		if (OC_Config::getValue( 'dbtype', 'sqlite' ) === 'oci') {
+			//FIXME oracle hack: need to explicitly cast CLOB to CHAR for comparison
 			$sql = 'SELECT `appid` FROM `*PREFIX*appconfig`'
 			.' WHERE `configkey` = \'enabled\' AND to_char(`configvalue`)=\'yes\'';
 		}
@@ -258,6 +259,7 @@ class OC_App{
 	 */
 	public static function disable( $app ) {
 		// check if app is a shipped app or not. if not delete
+		\OC_Hook::emit('OC_App', 'pre_disable', array('app' => $app));
 		OC_Appconfig::setValue( $app, 'enabled', 'no' );
 
 		// check if app is a shipped app or not. if not delete
@@ -348,7 +350,8 @@ class OC_App{
 
 		$settings = array();
 		// by default, settings only contain the help menu
-		if(OC_Config::getValue('knowledgebaseenabled', true)==true) {
+		if(OC_Util::getEditionString() === '' &&
+			OC_Config::getValue('knowledgebaseenabled', true)==true) {
 			$settings = array(
 				array(
 					"id" => "help",
@@ -421,7 +424,7 @@ class OC_App{
 		return $navigation;
 	}
 
-	/// This is private as well. It simply works, so don't ask for more details
+	// This is private as well. It simply works, so don't ask for more details
 	private static function proceedNavigation( $list ) {
 		foreach( $list as &$naventry ) {
 			if( $naventry['id'] == self::$activeapp ) {
@@ -470,7 +473,7 @@ class OC_App{
 	}
 	/**
 	* Get the directory for the given app.
-	* If the app is defined in multiple directory, the first one is taken. (false if not found)
+	* If the app is defined in multiple directories, the first one is taken. (false if not found)
 	*/
 	public static function getAppPath($appid) {
 		if( ($dir = self::findAppInDirectories($appid)) != false) {
@@ -481,7 +484,7 @@ class OC_App{
 
 	/**
 	* Get the path for the given app on the access
-	* If the app is defined in multiple directory, the first one is taken. (false if not found)
+	* If the app is defined in multiple directories, the first one is taken. (false if not found)
 	*/
 	public static function getAppWebPath($appid) {
 		if( ($dir = self::findAppInDirectories($appid)) != false) {
@@ -815,7 +818,7 @@ class OC_App{
 	}
 
 	/**
-	 * check if the app need updating and update when needed
+	 * check if the app needs updating and update when needed
 	 */
 	public static function checkUpgrade($app) {
 		if (in_array($app, self::$checkedApps)) {

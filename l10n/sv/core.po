@@ -3,13 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Gunnar Norin <blittan@xbmc.org>, 2013
+# medialabs, 2013
+# Magnus Höglund <magnus@linux.com>, 2013
 # medialabs, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-06-05 01:58+0200\n"
-"PO-Revision-Date: 2013-06-04 20:18+0000\n"
+"POT-Creation-Date: 2013-07-23 01:55-0400\n"
+"PO-Revision-Date: 2013-07-23 05:04+0000\n"
 "Last-Translator: medialabs\n"
 "Language-Team: Swedish (http://www.transifex.com/projects/p/owncloud/language/sv/)\n"
 "MIME-Version: 1.0\n"
@@ -20,27 +23,8 @@ msgstr ""
 
 #: ajax/share.php:97
 #, php-format
-msgid "User %s shared a file with you"
-msgstr "Användare %s delade en fil med dig"
-
-#: ajax/share.php:99
-#, php-format
-msgid "User %s shared a folder with you"
-msgstr "Användare %s delade en mapp med dig"
-
-#: ajax/share.php:101
-#, php-format
-msgid ""
-"User %s shared the file \"%s\" with you. It is available for download here: "
-"%s"
-msgstr "Användare %s delade filen \"%s\" med dig. Den finns att ladda ner här: %s"
-
-#: ajax/share.php:104
-#, php-format
-msgid ""
-"User %s shared the folder \"%s\" with you. It is available for download "
-"here: %s"
-msgstr "Användare %s delade mappen \"%s\" med dig. Den finns att ladda ner här: %s"
+msgid "%s shared »%s« with you"
+msgstr "%s delade »%s« med dig"
 
 #: ajax/vcategories/add.php:26 ajax/vcategories/edit.php:25
 msgid "Category type not provided."
@@ -81,135 +65,135 @@ msgstr "Inga kategorier valda för radering."
 msgid "Error removing %s from favorites."
 msgstr "Fel vid borttagning av %s från favoriter."
 
-#: js/config.php:34
+#: js/config.php:32
 msgid "Sunday"
 msgstr "Söndag"
 
-#: js/config.php:35
+#: js/config.php:33
 msgid "Monday"
 msgstr "Måndag"
 
-#: js/config.php:36
+#: js/config.php:34
 msgid "Tuesday"
 msgstr "Tisdag"
 
-#: js/config.php:37
+#: js/config.php:35
 msgid "Wednesday"
 msgstr "Onsdag"
 
-#: js/config.php:38
+#: js/config.php:36
 msgid "Thursday"
 msgstr "Torsdag"
 
-#: js/config.php:39
+#: js/config.php:37
 msgid "Friday"
 msgstr "Fredag"
 
-#: js/config.php:40
+#: js/config.php:38
 msgid "Saturday"
 msgstr "Lördag"
 
-#: js/config.php:45
+#: js/config.php:43
 msgid "January"
 msgstr "Januari"
 
-#: js/config.php:46
+#: js/config.php:44
 msgid "February"
 msgstr "Februari"
 
-#: js/config.php:47
+#: js/config.php:45
 msgid "March"
 msgstr "Mars"
 
-#: js/config.php:48
+#: js/config.php:46
 msgid "April"
 msgstr "April"
 
-#: js/config.php:49
+#: js/config.php:47
 msgid "May"
 msgstr "Maj"
 
-#: js/config.php:50
+#: js/config.php:48
 msgid "June"
 msgstr "Juni"
 
-#: js/config.php:51
+#: js/config.php:49
 msgid "July"
 msgstr "Juli"
 
-#: js/config.php:52
+#: js/config.php:50
 msgid "August"
 msgstr "Augusti"
 
-#: js/config.php:53
+#: js/config.php:51
 msgid "September"
 msgstr "September"
 
-#: js/config.php:54
+#: js/config.php:52
 msgid "October"
 msgstr "Oktober"
 
-#: js/config.php:55
+#: js/config.php:53
 msgid "November"
 msgstr "November"
 
-#: js/config.php:56
+#: js/config.php:54
 msgid "December"
 msgstr "December"
 
-#: js/js.js:286
+#: js/js.js:293
 msgid "Settings"
 msgstr "Inställningar"
 
-#: js/js.js:718
+#: js/js.js:715
 msgid "seconds ago"
 msgstr "sekunder sedan"
 
-#: js/js.js:719
+#: js/js.js:716
 msgid "1 minute ago"
 msgstr "1 minut sedan"
 
-#: js/js.js:720
+#: js/js.js:717
 msgid "{minutes} minutes ago"
 msgstr "{minutes} minuter sedan"
 
-#: js/js.js:721
+#: js/js.js:718
 msgid "1 hour ago"
 msgstr "1 timme sedan"
 
-#: js/js.js:722
+#: js/js.js:719
 msgid "{hours} hours ago"
 msgstr "{hours} timmar sedan"
 
-#: js/js.js:723
+#: js/js.js:720
 msgid "today"
 msgstr "i dag"
 
-#: js/js.js:724
+#: js/js.js:721
 msgid "yesterday"
 msgstr "i går"
 
-#: js/js.js:725
+#: js/js.js:722
 msgid "{days} days ago"
 msgstr "{days} dagar sedan"
 
-#: js/js.js:726
+#: js/js.js:723
 msgid "last month"
 msgstr "förra månaden"
 
-#: js/js.js:727
+#: js/js.js:724
 msgid "{months} months ago"
 msgstr "{months} månader sedan"
 
-#: js/js.js:728
+#: js/js.js:725
 msgid "months ago"
 msgstr "månader sedan"
 
-#: js/js.js:729
+#: js/js.js:726
 msgid "last year"
 msgstr "förra året"
 
-#: js/js.js:730
+#: js/js.js:727
 msgid "years ago"
 msgstr "år sedan"
 
@@ -245,8 +229,8 @@ msgstr "Objekttypen är inte specificerad."
 #: js/oc-vcategories.js:14 js/oc-vcategories.js:80 js/oc-vcategories.js:95
 #: js/oc-vcategories.js:110 js/oc-vcategories.js:125 js/oc-vcategories.js:136
 #: js/oc-vcategories.js:172 js/oc-vcategories.js:189 js/oc-vcategories.js:195
-#: js/oc-vcategories.js:199 js/share.js:136 js/share.js:143 js/share.js:577
-#: js/share.js:589
+#: js/oc-vcategories.js:199 js/share.js:136 js/share.js:143 js/share.js:625
+#: js/share.js:637
 msgid "Error"
 msgstr "Fel"
 
@@ -266,7 +250,7 @@ msgstr "Delad"
 msgid "Share"
 msgstr "Dela"
 
-#: js/share.js:125 js/share.js:617
+#: js/share.js:125 js/share.js:665
 msgid "Error while sharing"
 msgstr "Fel vid delning"
 
@@ -286,114 +270,118 @@ msgstr "Delad med dig och gruppen {group} av {owner}"
 msgid "Shared with you by {owner}"
 msgstr "Delad med dig av {owner}"
 
-#: js/share.js:159
+#: js/share.js:177
 msgid "Share with"
 msgstr "Delad med"
 
-#: js/share.js:164
+#: js/share.js:182
 msgid "Share with link"
 msgstr "Delad med länk"
 
-#: js/share.js:167
+#: js/share.js:185
 msgid "Password protect"
 msgstr "Lösenordsskydda"
 
-#: js/share.js:169 templates/installation.php:54 templates/login.php:26
+#: js/share.js:187 templates/installation.php:54 templates/login.php:26
 msgid "Password"
 msgstr "Lösenord"
 
-#: js/share.js:173
+#: js/share.js:192
+msgid "Allow Public Upload"
+msgstr "Tillåt publik uppladdning"
+
+#: js/share.js:196
 msgid "Email link to person"
 msgstr "E-posta länk till person"
 
-#: js/share.js:174
+#: js/share.js:197
 msgid "Send"
 msgstr "Skicka"
 
-#: js/share.js:178
+#: js/share.js:202
 msgid "Set expiration date"
 msgstr "Sätt utgångsdatum"
 
-#: js/share.js:179
+#: js/share.js:203
 msgid "Expiration date"
 msgstr "Utgångsdatum"
 
-#: js/share.js:211
+#: js/share.js:235
 msgid "Share via email:"
 msgstr "Dela via e-post:"
 
-#: js/share.js:213
+#: js/share.js:237
 msgid "No people found"
 msgstr "Hittar inga användare"
 
-#: js/share.js:251
+#: js/share.js:275
 msgid "Resharing is not allowed"
 msgstr "Dela vidare är inte tillåtet"
 
-#: js/share.js:287
+#: js/share.js:311
 msgid "Shared in {item} with {user}"
 msgstr "Delad i {item} med {user}"
 
-#: js/share.js:308
+#: js/share.js:332
 msgid "Unshare"
 msgstr "Sluta dela"
 
-#: js/share.js:320
+#: js/share.js:344
 msgid "can edit"
 msgstr "kan redigera"
 
-#: js/share.js:322
+#: js/share.js:346
 msgid "access control"
 msgstr "åtkomstkontroll"
 
-#: js/share.js:325
+#: js/share.js:349
 msgid "create"
 msgstr "skapa"
 
-#: js/share.js:328
+#: js/share.js:352
 msgid "update"
 msgstr "uppdatera"
 
-#: js/share.js:331
+#: js/share.js:355
 msgid "delete"
 msgstr "radera"
 
-#: js/share.js:334
+#: js/share.js:358
 msgid "share"
 msgstr "dela"
 
-#: js/share.js:368 js/share.js:564
+#: js/share.js:392 js/share.js:612
 msgid "Password protected"
 msgstr "Lösenordsskyddad"
 
-#: js/share.js:577
+#: js/share.js:625
 msgid "Error unsetting expiration date"
 msgstr "Fel vid borttagning av utgångsdatum"
 
-#: js/share.js:589
+#: js/share.js:637
 msgid "Error setting expiration date"
 msgstr "Fel vid sättning av utgångsdatum"
 
-#: js/share.js:604
+#: js/share.js:652
 msgid "Sending ..."
 msgstr "Skickar ..."
 
-#: js/share.js:615
+#: js/share.js:663
 msgid "Email sent"
 msgstr "E-post skickat"
 
-#: js/update.js:14
+#: js/update.js:17
 msgid ""
 "The update was unsuccessful. Please report this issue to the <a "
 "href=\"https://github.com/owncloud/core/issues\" target=\"_blank\">ownCloud "
 "community</a>."
-msgstr "Uppdateringen misslyckades. Rapportera detta problem till <a href=\"https://github.com/owncloud/core/issues\" target=\"_blank\">ownCloud-gemenskapen</a>."
+msgstr "Uppdateringen misslyckades. Rapportera detta problem till <a href=\"https://github.com/owncloud/core/issues\" target=\"_blank\">ownCloud Community</a>."
 
-#: js/update.js:18
+#: js/update.js:21
 msgid "The update was successful. Redirecting you to ownCloud now."
-msgstr "Uppdateringen lyckades. Du omdirigeras nu till OwnCloud"
+msgstr "Uppdateringen lyckades. Du omdirigeras nu till OwnCloud."
 
-#: lostpassword/controller.php:48
+#: lostpassword/controller.php:60
 msgid "ownCloud password reset"
 msgstr "ownCloud lösenordsåterställning"
 
@@ -421,7 +409,19 @@ msgstr "Du får en länk att återställa ditt lösenord via e-post."
 msgid "Username"
 msgstr "Användarnamn"
 
-#: lostpassword/templates/lostpassword.php:21
+#: lostpassword/templates/lostpassword.php:22
+msgid ""
+"Your files are encrypted. If you haven't enabled the recovery key, there "
+"will be no way to get your data back after your password is reset. If you "
+"are not sure what to do, please contact your administrator before you "
+"continue. Do you really want to continue?"
+msgstr "Dina filer är krypterade. Om du inte har aktiverat återställningsnyckeln kommer det inte att finnas någon möjlighet att få tillbaka dina filer efter att ditt lösenord har återställts. Om du är osäker, kontakta din systemadministratör innan du fortsätter. Är du verkligen säker på att fortsätta?"
+
+#: lostpassword/templates/lostpassword.php:24
+msgid "Yes, I really want to reset my password now"
+msgstr "Ja, jag vill verkligen återställa mitt lösenord nu"
+
+#: lostpassword/templates/lostpassword.php:27
 msgid "Request reset"
 msgstr "Begär återställning"
 
@@ -468,6 +468,17 @@ msgstr "Åtkomst förbjuden"
 #: templates/404.php:12
 msgid "Cloud not found"
 msgstr "Hittade inget moln"
+
+#: templates/altmail.php:4
+#, php-format
+msgid ""
+"Hey there,\n"
+"\n"
+"just letting you know that %s shared %s with you.\n"
+"View it: %s\n"
+"\n"
+"Cheers!"
+msgstr "Hej där,⏎\n⏎\nville bara meddela dig att %s delade %s med dig.⏎\nTitta på den: %s⏎\n⏎\nVi hörs!"
 
 #: templates/edit_categories_dialog.php:4
 msgid "Edit categories"
@@ -561,16 +572,12 @@ msgstr "Databasserver"
 msgid "Finish setup"
 msgstr "Avsluta installation"
 
-#: templates/layout.guest.php:40
-msgid "web services under your control"
-msgstr "webbtjänster under din kontroll"
-
-#: templates/layout.user.php:37
+#: templates/layout.user.php:43
 #, php-format
 msgid "%s is available. Get more information on how to update."
-msgstr "%s är tillgänglig. Få mer information om hur du går tillväga för att uppdatera"
+msgstr "%s är tillgänglig. Få mer information om hur du går tillväga för att uppdatera."
 
-#: templates/layout.user.php:62
+#: templates/layout.user.php:68
 msgid "Log out"
 msgstr "Logga ut"
 
@@ -603,6 +610,13 @@ msgstr "Logga in"
 #: templates/login.php:47
 msgid "Alternative Logins"
 msgstr "Alternativa inloggningar"
+
+#: templates/mail.php:16
+#, php-format
+msgid ""
+"Hey there,<br><br>just letting you know that %s shared »%s« with you.<br><a "
+"href=\"%s\">View it!</a><br><br>Cheers!"
+msgstr "Hej där,<br><br>ville bara informera dig om att %s delade »%s« med dig.<br><a href=\"%s\">Titta på den!</a><br><br>Hörs!"
 
 #: templates/part.pagenavi.php:3
 msgid "prev"

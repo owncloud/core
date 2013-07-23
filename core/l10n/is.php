@@ -1,8 +1,4 @@
 <?php $TRANSLATIONS = array(
-"User %s shared a file with you" => "Notandinn %s deildi skrá með þér",
-"User %s shared a folder with you" => "Notandinn %s deildi möppu með þér",
-"User %s shared the file \"%s\" with you. It is available for download here: %s" => "Notandinn %s deildi skránni \"%s\" með þér. Hægt er að hlaða henni niður hér: %s",
-"User %s shared the folder \"%s\" with you. It is available for download here: %s" => "Notandinn %s deildi möppunni \"%s\" með þér. Hægt er að hlaða henni niður hér: %s",
 "Category type not provided." => "Flokkur ekki gefin",
 "No category to add?" => "Enginn flokkur til að bæta við?",
 "Object type not provided." => "Tegund ekki í boði.",
@@ -116,7 +112,6 @@
 "Database tablespace" => "Töflusvæði gagnagrunns",
 "Database host" => "Netþjónn gagnagrunns",
 "Finish setup" => "Virkja uppsetningu",
-"web services under your control" => "vefþjónusta undir þinni stjórn",
 "%s is available. Get more information on how to update." => "%s er til boða. Fáðu meiri upplýsingar um hvernig þú uppfærir.",
 "Log out" => "Útskrá",
 "Automatic logon rejected!" => "Sjálfvirkri innskráningu hafnað!",

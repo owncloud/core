@@ -190,7 +190,7 @@ class OC_User {
 					// use Reflection to create a new instance, using the $args
 					$backend = $reflectionObj->newInstanceArgs($arguments);
 					self::useBackend($backend);
-					$_setupedBackends[] = $i;
+					self::$_setupedBackends[] = $i;
 				} else {
 					OC_Log::write('core', 'User backend ' . $class . ' already initialized.', OC_Log::DEBUG);
 				}
@@ -213,7 +213,7 @@ class OC_User {
 	 * Allowed characters in the username are: "a-z", "A-Z", "0-9" and "_.@-"
 	 */
 	public static function createUser($uid, $password) {
-		self::getManager()->createUser($uid, $password);
+		return self::getManager()->createUser($uid, $password);
 	}
 
 	/**
@@ -316,7 +316,7 @@ class OC_User {
 	 * @return string uid or false
 	 */
 	public static function getUser() {
-		$uid = OC::$session->get('user_id');
+		$uid = OC::$session ? OC::$session->get('user_id') : null;
 		if (!is_null($uid)) {
 			return $uid;
 		} else {

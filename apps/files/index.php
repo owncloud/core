@@ -26,6 +26,7 @@ OCP\User::checkLoggedIn();
 
 // Load the files we need
 OCP\Util::addStyle('files', 'files');
+OCP\Util::addscript('files', 'file-upload');
 OCP\Util::addscript('files', 'jquery.iframe-transport');
 OCP\Util::addscript('files', 'jquery.fileupload');
 OCP\Util::addscript('files', 'jquery-visibility');
@@ -120,6 +121,10 @@ if ($needUpgrade) {
 	// information about storage capacities
 	$storageInfo=OC_Helper::getStorageInfo();
 	$maxUploadFilesize=OCP\Util::maxUploadFilesize($dir);
+	$publicUploadEnabled = \OC_Appconfig::getValue('core', 'shareapi_allow_public_upload', 'yes');
+	if (OC_App::isEnabled('files_encryption')) {
+		$publicUploadEnabled = 'no';
+	}
 
 	OCP\Util::addscript('files', 'fileactions');
 	OCP\Util::addscript('files', 'files');
@@ -136,5 +141,7 @@ if ($needUpgrade) {
 	$tmpl->assign('uploadMaxHumanFilesize', OCP\Util::humanFileSize($maxUploadFilesize));
 	$tmpl->assign('allowZipDownload', intval(OCP\Config::getSystemValue('allowZipDownload', true)));
 	$tmpl->assign('usedSpacePercent', (int)$storageInfo['relative']);
+	$tmpl->assign('isPublic', false);
+	$tmpl->assign('publicUploadEnabled', $publicUploadEnabled);
 	$tmpl->printPage();
 }
