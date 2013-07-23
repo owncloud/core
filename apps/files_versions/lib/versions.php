@@ -288,7 +288,7 @@ class Storage {
 				}
 			}
 
-			// newes versions first
+			// newest versions first
 			$versions = array_reverse( $versions );
 
 			// only show the newest commits

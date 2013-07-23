@@ -31,7 +31,7 @@ $(document).ready(function(){
 		);
 	}
 
-	$('img[name="revertVersion"]').live("click", function() {
+	$(document).on("click", 'img[name="revertVersion"]', function() {
 		var revision = $(this).attr('id');
 		var file = $(this).attr('value');
 		revertFile(file, revision);
@@ -75,7 +75,7 @@ function createVersionsDropdown(filename, files) {
 	html += '<ul id="found_versions">';
 	html += '</ul>';
 	html += '</div>';
-	html += '<input type="hidden" value="More versions..." name="makelink" id="makelink" />';
+	html += '<input type="hidden" value="'+ t('files_versions', 'More versions...') + '" name="makelink" id="makelink" />';
 
 	if (filename) {
 		$('tr').filterAttr('data-file',filename).addClass('mouseOver');
@@ -112,7 +112,7 @@ function createVersionsDropdown(filename, files) {
 						addVersion(row);
 					});
 				} else {
-					$('<div style="text-align:center;">No other versions available</div>').appendTo('#dropdown');
+					$('<div style="text-align:center;">'+ t('files_versions', 'No other versions available') + '</div>').appendTo('#dropdown');
 				}
 				$('#found_versions').change(function() {
 					var revision = parseInt($(this).val());
