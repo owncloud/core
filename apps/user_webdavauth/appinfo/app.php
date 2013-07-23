@@ -21,17 +21,21 @@
 *
 */
 
-require_once OC_App::getAppPath('user_webdavauth').'/user_webdavauth.php';
-
-OC_APP::registerAdmin('user_webdavauth', 'settings');
-
-OC_User::registerBackend("WEBDAVAUTH");
-OC_User::useBackend( "WEBDAVAUTH" );
-
-// add settings page to navigation
-$entry = array(
-	'id' => "user_webdavauth_settings",
-	'order'=>1,
-	'href' => OC_Helper::linkTo( "user_webdavauth", "settings.php" ),
-	'name' => 'WEBDAVAUTH'
-);
+if (function_exists('curl_init')) {
+	require_once OC_App::getAppPath('user_webdavauth').'/user_webdavauth.php';
+	
+	OC_APP::registerAdmin('user_webdavauth', 'settings');
+	
+	OC_User::registerBackend("WEBDAVAUTH");
+	OC_User::useBackend( "WEBDAVAUTH" );
+	
+	// add settings page to navigation
+	$entry = array(
+		'id' => "user_webdavauth_settings",
+		'order' => 1,
+		'href' => OC_Helper::linkTo( "user_webdavauth", "settings.php" ),
+		'name' => 'WEBDAVAUTH'
+	);
+} else {
+	OC_Log::write('OC_USER_WEBDAVAUTH', 'Can not enable WebDAV authentication backend because cURL is disabled', 3);
+}

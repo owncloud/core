@@ -26,6 +26,7 @@ class OC_USER_WEBDAVAUTH extends OC_User_Backend {
 
 	public function __construct() {
 		$this->webdavauth_url = OC_Config::getValue( "user_webdavauth_url" );
+		$this->webdavauth_verify = OC_Config::getValue( "user_webdavauth_verify" );
 	}
 
 	public function deleteUser($uid) {
@@ -47,14 +48,28 @@ class OC_USER_WEBDAVAUTH extends OC_User_Backend {
 			return false;
 		}
 		list($webdavauth_protocol, $webdavauth_url_path) = $arr;
-		$url= $webdavauth_protocol.'://'.urlencode($uid).':'.urlencode($password).'@'.$webdavauth_url_path;
-		$headers = get_headers($url);
-		if($headers==false) {
+		$url= $webdavauth_protocol.'://'.$webdavauth_url_path;
+
+		$ch = curl_init($url);
+
+		curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+		curl_setopt($ch, CURLOPT_USERPWD, urlencode($uid).':'.urlencode($password));
+		curl_setopt($ch, CURLOPT_HEADER, 1);
+
+		if($this->webdavauth_verify !== 'checked') {
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		}
+
+		$result = curl_exec($ch);
+
+		if($result===false) {
 			OC_Log::write('OC_USER_WEBDAVAUTH', 'Not possible to connect to WebDAV Url: "'.$webdavauth_protocol.'://'.$webdavauth_url_path.'" ', 3);
 			return false;
 
 		}
-		$returncode= substr($headers[0], 9, 3);
+		$returncode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+		curl_close($ch);
 
 		if(substr($returncode, 0, 1) === '2') {
 			return $uid;
@@ -67,7 +82,7 @@ class OC_USER_WEBDAVAUTH extends OC_User_Backend {
 	/*
 	* we don´t know if a user exists without the password. so we have to return true all the time
 	*/
-	public function userExists( $uid ){
+	public function userExists( $uid ) {
 		return true;
 	}
 

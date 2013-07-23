@@ -30,10 +30,18 @@ if($_POST) {
 	if(isset($_POST['webdav_url'])) {
 		OC_CONFIG::setValue('user_webdavauth_url', strip_tags($_POST['webdav_url']));
 	}
+	
+	if(isset($_POST['webdav_verify'])) {
+		OC_CONFIG::setValue('user_webdavauth_verify', 'checked');
+        } else {
+		OC_CONFIG::setValue('user_webdavauth_verify', '');
+        }
+
 }
 
 // fill template
 $tmpl = new OC_Template( 'user_webdavauth', 'settings');
 $tmpl->assign( 'webdav_url', OC_Config::getValue( "user_webdavauth_url" ));
+$tmpl->assign( 'webdav_verify', OC_Config::getValue( "user_webdavauth_verify" ));
 
 return $tmpl->fetchPage();
