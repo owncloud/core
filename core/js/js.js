@@ -599,7 +599,7 @@ $(document).ready(function(){
 	});
 
 	var setShowPassword = function(input, label) {
-		input.showPassword().keyup(function(){
+		input.showPassword().bind('keyup input', function(){
 			if (input.val().length == 0) {
 				label.hide();
 			}
