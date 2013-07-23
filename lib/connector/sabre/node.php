@@ -102,7 +102,9 @@ abstract class OC_Connector_Sabre_Node implements Sabre_DAV_IProperties {
 	 */
 	public function updateProperties($mutations) {
 		$fileInfo = $this->getFileInfo();
-		if (!isset($fileInfo['fileid']) || isset($mutations['{http://owncloud.org/ns}id'])) {
+		if (!isset($fileInfo['fileid'])
+			|| isset($mutations['{xmlns:oc="http://owncloud.org/ns"}id'])
+		) {
 			return false;
 		}
 		$fileId = $fileInfo['fileid'];
@@ -151,7 +153,7 @@ abstract class OC_Connector_Sabre_Node implements Sabre_DAV_IProperties {
 			$fileInfo = $this->getFileInfo();
 			if (isset($fileInfo['fileid'])) {
 				$fileId = $fileInfo['fileid'];
-				$this->propertyCache['{http://owncloud.org/ns}id'] = $fileId;
+				$this->propertyCache['{xmlns:oc="http://owncloud.org/ns"}id'] = $fileId;
 				$sql = 'SELECT `propertyname`, `propertyvalue` FROM `*PREFIX*properties` '.
 					'WHERE `fileid` = ?';
 				$result = OC_DB::executeAudited($sql, array($fileId));
@@ -195,7 +197,7 @@ abstract class OC_Connector_Sabre_Node implements Sabre_DAV_IProperties {
 				$privileges[] = '{DAV:}unbind';
 			}
 			if ($permissions & OCP\PERMISSION_SHARE) {
-				$privileges[] = '{http://owncloud.org/ns}share';
+				$privileges[] = '{xmlns:oc="http://owncloud.org/ns"}share';
 			}
 		}
 		return new Sabre_DAVACL_Property_CurrentUserPrivilegeSet($privileges);
