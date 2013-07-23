@@ -1,24 +1,13 @@
-#history {
-	margin: 2em 2em 0;
-}
-
-#feedback-messages h3 {
-	font-size: 1.3em;
-	font-style: italic;
-}
-
-.success {
-	color: green;
-}
-
-.failure {
-	color: red;
-}
-
 ul#found_versions li {
 	cursor: default !important;
 }
 
 ul#found_versions img {
 	cursor: pointer !important;
+	padding-left: 10px;
+}
+
+ul#found_versions li span {
+	float: left;
+	min-width: 100px;
 }

@@ -263,6 +263,7 @@ class Storage {
 				$key = $version.'#'.$filename;
 				$versions[$key]['cur'] = 0;
 				$versions[$key]['version'] = $version;
+				$versions[$key]['humanReadableTimestamp'] = self::getHumanReadableTimestamp($version);
 				$versions[$key]['path'] = $filename;
 				$versions[$key]['size'] = $versions_fileview->filesize($filename.'.v'.$version);
 
@@ -271,6 +272,7 @@ class Storage {
 
 			}
 
+			// oldest versions first
 			$versions = array_reverse( $versions );
 
 			foreach( $versions as $key => $value ) {
@@ -281,6 +283,7 @@ class Storage {
 				}
 			}
 
+			// newes versions first
 			$versions = array_reverse( $versions );
 
 			// only show the newest commits
@@ -297,6 +300,32 @@ class Storage {
 
 	}
 
+	/**
+	 * @brief translate a timestamp into a string like "5 days ago"
+	 * @param int $timestamp
+	 * @return string for example "5 days ago"
+	 */
+	private static function getHumanReadableTimestamp($timestamp) {
+
+		$diff = time() - $timestamp;
+
+		if ($diff < 60) { // first minute
+			return  $diff . " seconds ago";
+		} elseif ($diff < 3600) { //first hour
+			return round($diff / 60) . " minutes ago";
+		} elseif ($diff < 86400) { // first day
+			return round($diff / 3600) . " hours ago";
+		} elseif ($diff < 604800) { //first week
+			return round($diff / 86400) . " days ago";
+		} elseif ($diff < 2419200) { //first month
+			return round($diff / 604800) . " weeks ago";
+		} elseif ($diff < 29030400) { // first year
+			return round($diff / 2419200) . " months ago";
+		} else {
+			return round($diff / 29030400) . " years ago";
+		}
+
+	}
 
 	/**
 	 * @brief deletes used space for files versions in db if user was deleted

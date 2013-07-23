@@ -123,9 +123,12 @@ function createVersionsDropdown(filename, files) {
 	}
 
 	function addVersion( revision ) {
-		name=formatDate(revision.version*1000);
-		var path = OC.filePath('files_versions', '', 'download.php')
-		download ='<a href="' + path + "?file=" + files + '&revision=' + revision.version + '">'
+		title = formatDate(revision.version*1000);
+		name ='<span title="' + title + '">' + revision.humanReadableTimestamp + '</span>';
+
+		path = OC.filePath('files_versions', '', 'download.php');
+
+		download ='<a href="' + path + "?file=" + files + '&revision=' + revision.version + '">';
 		download+='<img';
 		download+=' src="' + OC.imagePath('core', 'actions/download.svg') + '"';
 		download+=' id="' + revision.version + '"';
