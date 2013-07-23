@@ -952,6 +952,48 @@
 
 	<table>
 
+		<name>*dbprefix*pending_regist</name>
+
+		<declaration>
+
+			<field>
+				<name>email</name>
+				<type>text</type>
+				<default></default>
+				<notnull>true</notnull>
+				<length>64</length>
+			</field>
+
+			<field>
+				<name>token</name>
+				<type>text</type>
+				<default></default>
+				<notnull>false</notnull>
+				<length>256</length>
+			</field>
+
+			<field>
+				<name>requested</name>
+				<type>integer</type>
+				<default></default>
+				<notnull>true</notnull>
+			</field>
+
+			<index>
+				<name>pending_regist_pKey</name>
+				<primary>true</primary>
+				<field>
+					<name>requested</name>
+					<sorting>descending</sorting>
+				</field>
+			</index>
+
+		</declaration>
+
+	</table>
+
+	<table>
+
 		<name>*dbprefix*vcategory</name>
 
 		<declaration>
