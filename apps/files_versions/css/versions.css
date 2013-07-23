@@ -1,9 +1,9 @@
 ul#found_versions li {
-	cursor: default !important;
+	cursor: default;
 }
 
 ul#found_versions img {
-	cursor: pointer !important;
+	cursor: pointer;
 	padding-left: 10px;
 }
 
