@@ -75,8 +75,7 @@ function createVersionsDropdown(filename, files) {
 	html += '<ul id="found_versions">';
 	html += '</ul>';
 	html += '</div>';
-	html += '<input type="button" value="More versions..." name="makelink" id="makelink" />';
-	//html += '<input id="link" style="display:none; width:90%;" />';
+	html += '<input type="hidden" value="More versions..." name="makelink" id="makelink" />';
 
 	if (filename) {
 		$('tr').filterAttr('data-file',filename).addClass('mouseOver');
@@ -104,7 +103,9 @@ function createVersionsDropdown(filename, files) {
 			success: function(result) {
 				var versions = result.data.versions;
 				if (result.data.endReached === true) {
-					$('#makelink').hide();
+					document.getElementById("makelink").type="hidden";
+				} else {
+					document.getElementById("makelink").type="button";
 				}
 				if (versions) {
 					$.each(versions, function(index, row) {
