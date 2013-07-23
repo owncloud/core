@@ -55,7 +55,7 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 			//detect aborted upload
 			if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'PUT') {
 				if (isset($_SERVER['CONTENT_LENGTH'])) {
-					$expected = $_SERVER['CONTENT_LENGTH'];
+					$expected = (int)$_SERVER['CONTENT_LENGTH'];
 					$actual = \OC\Files\Filesystem::filesize($partpath);
 					if ($actual !== $expected) {
 						\OC\Files\Filesystem::unlink($partpath);
