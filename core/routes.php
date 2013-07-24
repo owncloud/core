@@ -41,7 +41,7 @@ $this->create('js_config', '/core/js/config.js')
 	->actionInclude('core/js/config.php');
 // Routing
 $this->create('core_ajax_routes', '/core/routes.json')
-	->action('OC_Router', 'JSRoutes');
+	->action('\OC\Route\Router', 'JSRoutes');
 
 OC::$CLASSPATH['OC_Core_LostPassword_Controller'] = 'core/lostpassword/controller.php';
 $this->create('core_lostpassword_index', '/lostpassword/')
