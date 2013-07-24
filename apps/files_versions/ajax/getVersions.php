@@ -22,9 +22,7 @@ if( ($versions = OCA\Files_Versions\Storage::getVersions($uid, $filename)) ) {
 		$versionsFormatted[] = OCP\Util::formatDate( $version['version'] );
 	}
 
-	$versionsSorted = array_reverse( $versions );
-
-	\OCP\JSON::success(array('data' => array('versions' => $versionsSorted, 'endReached' => $endReached)));
+	\OCP\JSON::success(array('data' => array('versions' => $versions, 'endReached' => $endReached)));
 
 } else {
 

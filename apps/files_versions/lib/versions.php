@@ -239,10 +239,9 @@ class Storage {
 	 * @brief get a list of all available versions of a file in descending chronological order
 	 * @param $uid user id from the owner of the file
 	 * @param $filename file to find versions of, relative to the user files dir
-	 * @param $count number of versions to return
 	 * @returns array
 	 */
-	public static function getVersions($uid, $filename, $count = 0 ) {
+	public static function getVersions($uid, $filename ) {
 		if( \OCP\Config::getSystemValue('files_versions', Storage::DEFAULTENABLED)=='true' ) {
 			$versions_fileview = new \OC\Files\View('/' . $uid . '/files_versions');
 			$versionsName = $versions_fileview->getLocalFile($filename).'.v';
@@ -277,7 +276,7 @@ class Storage {
 
 			}
 
-			// oldest versions first
+			// newest versions first
 			$versions = array_reverse( $versions );
 
 			foreach( $versions as $key => $value ) {
@@ -286,14 +285,6 @@ class Storage {
 					$value['cur'] = 1;
 					break;
 				}
-			}
-
-			// newest versions first
-			$versions = array_reverse( $versions );
-
-			// only show the newest commits
-			if( $count != 0 and ( count( $versions )>$count ) ) {
-				$versions = array_slice( $versions, count( $versions ) - $count );
 			}
 
 			return( $versions );
