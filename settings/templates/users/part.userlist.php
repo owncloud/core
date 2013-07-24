@@ -37,16 +37,43 @@
 	</thead>
 	<tbody>
 		<!-- The Filter Goes here with the ngRepeat.-->
-		<tr ng-repeat="user in users">
-			<td class="thumbnail"><img src="http://placehold.it/30X30" /></td> <!--Temporary till we have gravatars up!-->
-			<td class="login-name">{{ user.name }}</td>
-			<td class="display-name">{{ user.displayname }}</td>
-			<td class="user-pass"></td>
-			<td class="groups"> {{user.groups}}</td>
-			<td class="local-storage">{{ user.quota }}</td>
+		<tr ng-repeat="user in users" ng-init="toggleviewrow = true; toggleditrow = false;">
+			<td class="thumbnail">
+				<img src="http://placehold.it/30X30" />
+			</td> <!--Temporary till we have gravatars up!-->
+			<td class="login-name">
+				<span ng-show="toggleviewrow">{{ user.name }}</span>
+				<input type="text" ng-show="toggleditrow"/>
+			</td>
+			<td class="display-name">
+				<span ng-show="toggleviewrow">{{ user.displayname }}</span>
+				<input type="text" ng-show="toggleditrow"/>
+			</td>
+			<td class="user-pass">
+				<span ng-show="toggleviewrow"></span>
+				<input type="password" ng-show="toggleditrow"/>
+			</td>
+			<td class="groups">
+				<span ng-show="toggleviewrow">{{user.groups}}</span>
+			    <select ng-show="toggleditrow" chosen multiple allow-single-deselect="true"
+			      no-results-text="'No Such Group..'"
+			      <option value=""></option>
+			    </select>
+			</td>
+			<td class="local-storage">
+				<span ng-show="toggleviewrow">{{ user.quota }}</span>
+				<select ng-show="toggleditrow">
+					<option>Default</option>
+					<option>1 GB</option>
+					<option>5 GB</option>
+					<option>10 GB</option>
+					<option>Unlimited..</option>
+					<option>Other..</option>
+				</select>
+			</td>
 			<th class="delete-column">
-				<button class="svg action edit-icon edit-button edit-user-button" ng-click="edituser(user.userid)"></button>
-				<button class="svg action delete-icon delete-button delete-user-icon" ng-click="deleteuser(user.name)"></button>
+				<button class="svg action edit-icon edit-button edit-user-button" ng-click="toggleviewrow = !toggleviewrow; toggleditrow = !toggleditrow"></button>
+				<button class="svg action delete-icon delete-button delete-user-icon" ng-show="toggleditrow" ng-click="deleteuser(user.name)"></button>
 			</td>
 		</tr>
 	</tbody>
