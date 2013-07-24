@@ -1,5 +1,14 @@
 #found_versions li {
 	cursor: default;
+	height: 35px;
+	float: left;
+}
+
+#found_versions li > span,
+#found_versions li > a,
+#found_versions li > img {
+	padding: 9px;
+	float: left;
 }
 
 #found_versions img {
