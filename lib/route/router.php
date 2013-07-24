@@ -91,12 +91,19 @@ class Router {
 	/**
 	 * loads the api routes
 	 */
-	public function loadRoutes() {
-		foreach ($this->getRoutingFiles() as $app => $file) {
-			$this->useCollection($app);
-			require_once $file;
-			$collection = $this->getCollection($app);
-			$this->root->addCollection($collection, '/apps/' . $app);
+	public function loadRoutes($app = '') {
+		if ($app) {
+			$file = \OC_App::getAppPath($app) . '/appinfo/routes.php';
+			if (file_exists($file)) {
+				require_once $file;
+			}
+		} else {
+			foreach ($this->getRoutingFiles() as $app => $file) {
+				$this->useCollection($app);
+				require_once $file;
+				$collection = $this->getCollection($app);
+				$this->root->addCollection($collection, '/apps/' . $app);
+			}
 		}
 		$this->useCollection('root');
 		require_once 'settings/routes.php';
