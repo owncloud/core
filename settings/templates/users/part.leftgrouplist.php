@@ -24,7 +24,6 @@
 	<li class="user-groups" id="everyone">
 		<a href="#"><?php p($l->t('Everyone')); ?></a>
 	</li>
-	<!--<div ng-show="loading" class="loading">LOADING...</div>-->
 	<loading></loading>
 	<li class="user-groups" ng-repeat="groupname in groupnames | orderBy:['isAdmin','name']" ng-class="selectListGroup(groupname.groupid)" ng-click="selectGroup(groupname.groupid)">
 		<a ng-href="#/group/{{ groupname.groupid }}">{{ groupname.name }}</a>
