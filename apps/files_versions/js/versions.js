@@ -32,7 +32,6 @@ $(document).ready(function(){
 	}
 
 	$(document).on("click", 'span[class="revertVersion"]', function() {
-		console.log("click");
 		var revision = $(this).attr('id');
 		var file = $(this).attr('value');
 		revertFile(file, revision);
