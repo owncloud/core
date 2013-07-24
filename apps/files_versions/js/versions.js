@@ -22,6 +22,7 @@ $(document).ready(function(){
 						createDropDown = false;
 					}
 					$('#dropdown').remove();
+					$('tr').removeClass('mouseOver');
 				}
 
 				if(createDropDown === true) {
