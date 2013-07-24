@@ -13,12 +13,34 @@ use Symfony\Component\Routing\RouteCollection;
 //use Symfony\Component\Routing\Route;
 
 class OC_Router {
+	/**
+	 * @var \Symfony\Component\Routing\RouteCollection[] $collections
+	 */
 	protected $collections = array();
+
+	/**
+	 * @var \Symfony\Component\Routing\RouteCollection $collection
+	 */
 	protected $collection = null;
+
+	/**
+	 * @var \Symfony\Component\Routing\RouteCollection $root
+	 */
 	protected $root = null;
 
+	/**
+	 * @var \Symfony\Component\Routing\Generator\UrlGenerator $generator
+	 */
 	protected $generator = null;
+
+	/**
+	 * @var string[] $routing_files
+	 */
 	protected $routing_files;
+
+	/**
+	 * @var string $cache_key
+	 */
 	protected $cache_key;
 
 	public function __construct() {
@@ -35,6 +57,9 @@ class OC_Router {
 		$this->root = $this->getCollection('root');
 	}
 
+	/**
+	 * @return string[]
+	 */
 	public function getRoutingFiles() {
 		if (!isset($this->routing_files)) {
 			$this->routing_files = array();
@@ -48,6 +73,9 @@ class OC_Router {
 		return $this->routing_files;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getCacheKey() {
 		if (!isset($this->cache_key)) {
 			$files = $this->getRoutingFiles();
@@ -79,6 +107,10 @@ class OC_Router {
 		$this->root->addCollection($collection, '/ocs');
 	}
 
+	/**
+	 * @param string $name
+	 * @return \Symfony\Component\Routing\RouteCollection
+	 */
 	protected function getCollection($name) {
 		if (!isset($this->collections[$name])) {
 			$this->collections[$name] = new RouteCollection();
@@ -102,6 +134,7 @@ class OC_Router {
 	 * @param string $pattern The pattern to match
 	 * @param array  $defaults     An array of default parameter values
 	 * @param array  $requirements An array of requirements for parameters (regexes)
+	 * @return \OC_Route
 	 */
 	public function create($name, $pattern, array $defaults = array(), array $requirements = array()) {
 		$route = new OC_Route($pattern, $defaults, $requirements);
@@ -113,6 +146,7 @@ class OC_Router {
 	 * Find the route matching $url.
 	 *
 	 * @param string $url The url to find
+	 * @throws \Exception
 	 */
 	public function match($url) {
 		$matcher = new UrlMatcher($this->root, $this->context);
@@ -150,6 +184,8 @@ class OC_Router {
 	 *
 	 * @param string $name Name of the route to use.
 	 * @param array $parameters Parameters for the route
+	 * @param bool $absolute
+	 * @return string
 	 */
 	public function generate($name, $parameters = array(), $absolute = false)
 	{
