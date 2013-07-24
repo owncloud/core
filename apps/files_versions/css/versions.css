@@ -1,13 +1,13 @@
-ul#found_versions li {
+#found_versions li {
 	cursor: default;
 }
 
-ul#found_versions img {
+#found_versions img {
 	cursor: pointer;
 	padding-left: 10px;
 }
 
-ul#found_versions li span {
+#found_versions li span {
 	float: left;
 	min-width: 100px;
 }
