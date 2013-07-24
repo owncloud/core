@@ -7,7 +7,11 @@ ul#found_versions img {
 	padding-left: 10px;
 }
 
-ul#found_versions li span {
+span.versionDate {
 	float: left;
 	min-width: 100px;
+}
+
+span.revertVersion {
+	cursor: pointer;
 }

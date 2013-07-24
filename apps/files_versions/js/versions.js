@@ -31,7 +31,8 @@ $(document).ready(function(){
 		);
 	}
 
-	$(document).on("click", 'img[name="revertVersion"]', function() {
+	$(document).on("click", 'span[class="revertVersion"]', function() {
+		console.log("click");
 		var revision = $(this).attr('id');
 		var file = $(this).attr('value');
 		revertFile(file, revision);
@@ -124,30 +125,32 @@ function createVersionsDropdown(filename, files) {
 
 	function addVersion( revision ) {
 		title = formatDate(revision.version*1000);
-		name ='<span title="' + title + '">' + revision.humanReadableTimestamp + '</span>';
+		name ='<span class="versionDate" title="' + title + '">' + revision.humanReadableTimestamp + '</span>';
 
 		path = OC.filePath('files_versions', '', 'download.php');
 
 		download ='<a href="' + path + "?file=" + files + '&revision=' + revision.version + '">';
+		download+=name;
 		download+='<img';
 		download+=' src="' + OC.imagePath('core', 'actions/download') + '"';
 		download+=' id="' + revision.version + '"';
 		download+=' value="' + files + '"';
-		download+=' title="' + t('files_versions', 'Download') + '"';
 		download+=' name="downloadVersion"';
 		download+='/></a>';
 
-		revert='<img';
+		revert='<span class="revertVersion"';
+		revert+=' id="' + revision.version + '"';
+		revert+=' value="' + files + '">';
+		revert+='<img';
 		revert+=' src="' + OC.imagePath('core', 'actions/history') + '"';
 		revert+=' id="' + revision.version + '"';
 		revert+=' value="' + files + '"';
-		revert+=' title="' + t('files_versions', 'Revert') + '"';
 		revert+=' name="revertVersion"';
-		revert+='/>';
+		revert+='/>'+t('files_versions', 'Revert')+'</span>';
 
 		var version=$('<li/>');
 		version.attr('value', revision.version);
-		version.html(name + download + revert );
+		version.html(download + revert);
 
 		version.appendTo('#found_versions');
 	}
