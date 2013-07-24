@@ -14,14 +14,6 @@ if( ($versions = OCA\Files_Versions\Storage::getVersions($uid, $filename)) ) {
 
 	$versions = array_slice($versions, $start, $count);
 
-	if (count($versions))
-
-	$versionsFormatted = array();
-
-	foreach ( $versions AS $version ) {
-		$versionsFormatted[] = OCP\Util::formatDate( $version['version'] );
-	}
-
 	\OCP\JSON::success(array('data' => array('versions' => $versions, 'endReached' => $endReached)));
 
 } else {
