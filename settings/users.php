@@ -12,11 +12,13 @@ OC_App::loadApps();
 OC_Util::addScript( 'settings', 'vendor/angular/angular');
 OC_Util::addScript( 'settings', 'vendor/angular/angular-resource');
 OC_Util::addScript( 'settings', 'vendor/angular-ui/ui-bootstrap');
+OC_Util::addScript( 'settings', 'vendor/chosen/chosen');
 OC_Util::addScript( 'settings', 'users/users' );
 OC_Util::addScript( 'core', 'multiselect' );
 OC_Util::addScript( 'core', 'singleselect' );
 OC_Util::addScript('core', 'jquery.inview');
 OC_Util::addStyle('settings', 'users/users');
+OC_Util::addStyle('settings', 'users/vendor/chosen/chosen');
 // OC_Util::addStyle( 'settings', 'settings' ); temporarily removing.
 OC_App::setActiveNavigationEntry( 'core_users' );
 

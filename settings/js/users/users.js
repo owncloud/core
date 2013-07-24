@@ -19,7 +19,7 @@
  *
  */
 
-var usersmanagement = angular.module('usersmanagement', ['ngResource','ui.bootstrap']).config(['$httpProvider','$routeProvider',
+var usersmanagement = angular.module('usersmanagement', ['ngResource','ui.bootstrap','localytics.directives']).config(['$httpProvider','$routeProvider',
 	function($httpProvider,$routeProvider) {
 		$httpProvider.defaults.headers.common['requesttoken'] = oc_requesttoken;
 		$routeProvider
