@@ -146,7 +146,7 @@ function createVersionsDropdown(filename, files) {
 		revert+=' id="' + revision.version + '"';
 		revert+=' value="' + files + '"';
 		revert+=' name="revertVersion"';
-		revert+='/>'+t('files_versions', 'Revert')+'</span>';
+		revert+='/>'+t('files_versions', 'Restore')+'</span>';
 
 		var version=$('<li/>');
 		version.attr('value', revision.version);
