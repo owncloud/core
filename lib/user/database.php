@@ -192,18 +192,28 @@ class OC_User_Database extends OC_User_Backend {
 		$isEmail = filter_var($uid, FILTER_VALIDATE_EMAIL) ? true : false;
 		
 		if ($isEmail) {
-		
+			
 			$sql = "SELECT `userid` FROM `*PREFIX*preferences` WHERE LOWER(`configvalue`) = LOWER(?)";
-						
+			
 			$query = OC_DB::prepare($sql);
 			
 			$result = $query->execute(array($uid));
 			
-			$uid = $result->fetchColumn();
+			$fetch = $result->fetchAll();
 			
-			echo $uid;
-			
+			/**
+			* Case 1: No account has that email (login refused)
+			* Case 2: Multiple accounts share the same email (login refused)
+			* Case 3: Email is unique (else case)
+			*/
+			if (empty($fetch) || count($fetch) > 1) {
+				return false;
+			} else {				
+				$uid = $fetch[0]['userid'];
+			}
 		}
+		
+		//Proceed to password check
 		
 		$sql = "SELECT `uid`, `password` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)";
 							
