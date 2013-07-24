@@ -38,3 +38,7 @@
 	cursor: pointer;
 	float: right;
 }
+
+.drop-versions #makelink {
+	float: left;
+}
