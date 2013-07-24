@@ -16,7 +16,11 @@
 	padding-left: 10px;
 }
 
-#found_versions li span {
+span.versionDate {
 	float: left;
 	min-width: 100px;
+}
+
+span.revertVersion {
+	cursor: pointer;
 }
