@@ -1,6 +1,7 @@
 #found_versions li {
+	width: 100%;
 	cursor: default;
-	height: 35px;
+	height: 36px;
 	float: left;
 	border-bottom: 1px solid rgba(100,100,100,.1);
 }
@@ -8,25 +9,33 @@
 	border-bottom: none;
 }
 
-#found_versions li > span,
-#found_versions li > a,
-#found_versions li > img {
-	padding: 9px;
+#found_versions li > * {
+	padding: 7px;
 	float: left;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	filter: alpha(opacity=50);
+	opacity: .5;
+}
+#found_versions li > *:hover,
+#found_versions li > *:focus {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	filter: alpha(opacity=100);
+	opacity: 1;
 }
 
 #found_versions img {
 	cursor: pointer;
 }
 
-.versionDate {
+#found_versions .versionDate {
 	float: left;
 	min-width: 100px;
 }
 
-.revertVersion {
+#found_versions .revertVersion {
 	cursor: pointer;
 	vertical-align: top;
+	float: right;
 }
 
 .revertVersion img {
