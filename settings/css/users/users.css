@@ -35,6 +35,12 @@
 	background: #F2FF63;
 }
 
+#app-navigation .loading {
+	width:35px;
+	height:35px;
+	margin:0 auto;
+}
+
 .utils {
 	position:absolute;
 	right:0;

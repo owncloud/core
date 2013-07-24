@@ -105,10 +105,11 @@ usersmanagement.controller('creategroupController', ['$scope', '$http', 'GroupSe
 
 usersmanagement.controller('grouplistController', ['$scope', '$http', '$routeParams', 'GroupService', 'UserService',
 	function($scope, $http, $routeParams, GroupService) {
+		$scope.loading = true;
 		$http.get(OC.filePath('settings', 'ajax', 'grouplist.php')).then(function(response){
 			$scope.groupnames = response.data.result;
+			$scope.loading = false;
 		});
-
 		//console.log($routeParams.groupid);
 		$scope.groups = GroupService.getByGroupId($routeParams.groupid);
 
@@ -157,5 +158,21 @@ usersmanagement.filter('usertogroupFilter', function() {
 			}
 		}
 		return groupusers;
+	}
+});
+
+/* The Spinner Directive */
+
+usersmanagement.directive('loading', function() {
+	return {
+		restrict: 'E',
+		replace: true,
+		template:"<div class='loading'></div>",
+	    link: function($scope, element, attr) {
+			$scope.$watch('loading', function(val) {
+				if (val) { $(element).show(); }
+				else { $(element).hide(); }
+			});
+		}		
 	}
 });
