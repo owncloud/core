@@ -130,7 +130,7 @@ function createVersionsDropdown(filename, files) {
 
 		download ='<a href="' + path + "?file=" + files + '&revision=' + revision.version + '">';
 		download+='<img';
-		download+=' src="' + OC.imagePath('core', 'actions/download.svg') + '"';
+		download+=' src="' + OC.imagePath('core', 'actions/download') + '"';
 		download+=' id="' + revision.version + '"';
 		download+=' value="' + files + '"';
 		download+=' title="' + t('files_versions', 'Download') + '"';
@@ -138,7 +138,7 @@ function createVersionsDropdown(filename, files) {
 		download+='/></a>';
 
 		revert='<img';
-		revert+=' src="' + OC.imagePath('core', 'actions/history.svg') + '"';
+		revert+=' src="' + OC.imagePath('core', 'actions/history') + '"';
 		revert+=' id="' + revision.version + '"';
 		revert+=' value="' + files + '"';
 		revert+=' title="' + t('files_versions', 'Revert') + '"';
