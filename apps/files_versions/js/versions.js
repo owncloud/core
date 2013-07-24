@@ -130,13 +130,13 @@ function createVersionsDropdown(filename, files) {
 		path = OC.filePath('files_versions', '', 'download.php');
 
 		download ='<a href="' + path + "?file=" + files + '&revision=' + revision.version + '">';
-		download+=name;
 		download+='<img';
 		download+=' src="' + OC.imagePath('core', 'actions/download') + '"';
 		download+=' id="' + revision.version + '"';
 		download+=' value="' + files + '"';
-		download+=' name="downloadVersion"';
-		download+='/></a>';
+		download+=' name="downloadVersion" />';
+		download+=name;
+		download+='</a>';
 
 		revert='<span class="revertVersion"';
 		revert+=' id="' + revision.version + '"';

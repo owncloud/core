@@ -12,6 +12,7 @@
 #found_versions li > * {
 	padding: 7px;
 	float: left;
+	vertical-align: top;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
 	filter: alpha(opacity=50);
 	opacity: .5;
@@ -25,19 +26,15 @@
 
 #found_versions img {
 	cursor: pointer;
+	padding-right: 4px;
 }
 
 #found_versions .versionDate {
-	float: left;
 	min-width: 100px;
+	vertical-align: text-bottom;
 }
 
 #found_versions .revertVersion {
 	cursor: pointer;
-	vertical-align: top;
 	float: right;
-}
-
-.revertVersion img {
-	padding-right: 4px;
 }
