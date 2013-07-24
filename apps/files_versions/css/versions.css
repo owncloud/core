@@ -2,6 +2,10 @@
 	cursor: default;
 	height: 35px;
 	float: left;
+	border-bottom: 1px solid rgba(100,100,100,.1);
+}
+#found_versions li:last-child {
+	border-bottom: none;
 }
 
 #found_versions li > span,
@@ -13,14 +17,18 @@
 
 #found_versions img {
 	cursor: pointer;
-	padding-left: 10px;
 }
 
-span.versionDate {
+.versionDate {
 	float: left;
 	min-width: 100px;
 }
 
-span.revertVersion {
+.revertVersion {
 	cursor: pointer;
+	vertical-align: top;
+}
+
+.revertVersion img {
+	padding-right: 4px;
 }
