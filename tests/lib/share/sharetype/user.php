@@ -225,8 +225,26 @@ class User extends ShareType {
 	}
 
 	public function testSearchForPotentialShareWiths() {
+		$user1 = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()
+			->getMock();
+		$user1->expects($this->any())
+			->method('getDisplayName')
+			->will($this->returnValue('foouser1'));
+		$user2 = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()
+			->getMock();
+		$user2->expects($this->any())
+			->method('getDisplayName')
+			->will($this->returnValue('foouser2'));
+		$user3 = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()
+			->getMock();
+		$user3->expects($this->any())
+			->method('getDisplayName')
+			->will($this->returnValue('foouser3'));
 		$map = array(
-			array('foo', null, null, array('foouser1', 'foouser2', 'foouser3')),
+			array('foo', null, null, array($user1, $user2, $user3)),
 		);
 		$this->userManager->expects($this->once())
 			->method('searchDisplayName')
@@ -239,8 +257,20 @@ class User extends ShareType {
 	}
 
 	public function testSearchForPotentialShareWithsWithLimitOffset() {
+		$user2 = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()
+			->getMock();
+		$user2->expects($this->any())
+			->method('getDisplayName')
+			->will($this->returnValue('foouser2'));
+		$user3 = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()
+			->getMock();
+		$user3->expects($this->any())
+			->method('getDisplayName')
+			->will($this->returnValue('foouser3'));
 		$map = array(
-			array('foo', 3, 1, array('foouser2', 'foouser3')),
+			array('foo', 3, 1, array($user2, $user3)),
 		);
 		$this->userManager->expects($this->once())
 			->method('searchDisplayName')

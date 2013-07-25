@@ -76,7 +76,12 @@ class User extends Common {
 	}
 
 	public function searchForPotentialShareWiths($pattern, $limit, $offset) {
-		return $this->userManager->searchDisplayName($pattern, $limit, $offset);
+		$shareWiths = array();
+		$result = $this->userManager->searchDisplayName($pattern, $limit, $offset);
+		foreach ($result as $user) {
+			$shareWiths[] = $user->getDisplayName();
+		}
+		return $shareWiths;
 	}
 
 }
