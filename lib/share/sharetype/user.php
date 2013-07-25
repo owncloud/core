@@ -24,7 +24,8 @@ namespace OC\Share\ShareType;
 use OC\Share\Share;
 use OC\Share\ShareFactory;
 use OC\Share\Exception\InvalidShareException;
-use OC\User\Manager;
+use OC\User\Manager as UserManager;
+use OC\Group\Manager as GroupManager;
 
 /**
  * Controller for shares between two users
@@ -32,16 +33,21 @@ use OC\User\Manager;
 class User extends Common {
 
 	protected $userManager;
+	protected $groupManager;
 
 	/**
 	 * The constructor
 	 * @param string $itemType
 	 * @param ShareFactory $shareFactory
-	 * @param Manager $userManager
+	 * @param UserManager $userManager
+	 * @param GroupManager $groupManager
 	 */
-	public function __construct($itemType, ShareFactory $shareFactory, Manager $userManager) {
+	public function __construct($itemType, ShareFactory $shareFactory, UserManager $userManager,
+		GroupManager $groupManager
+	) {
 		parent::__construct($itemType, $shareFactory);
 		$this->userManager = $userManager;
+		$this->groupManager = $groupManager;
 	}
 
 	public function getId() {
@@ -62,15 +68,18 @@ class User extends Common {
 		}
 		$sharingPolicy = \OC_Appconfig::getValue('core', 'shareapi_share_policy', 'global');
 		if ($sharingPolicy === 'groups_only') {
-			$inGroup = array_intersect(\OC_Group::getUserGroups($shareOwner),
-				\OC_Group::getUserGroups($shareWith)
-			);
-			if (empty($inGroup)) {
-				throw new InvalidShareException(
-					'The share owner is not in any groups of the user shared with as required by'
-					.' the groups only sharing policy set by the admin'
-				);
+			$shareOwnerUser = $this->userManager->get($shareOwner);
+			$shareWithUser = $this->userManager->get($shareWith);
+			$groups = $this->groupManager->getUserGroups($shareOwnerUser);
+			foreach ($groups as $group) {
+				if ($group->inGroup($shareWithUser)) {
+					return true;
+				}
 			}
+			throw new InvalidShareException(
+				'The share owner is not in any groups of the user shared with as required by '.
+				'the groups only sharing policy set by the admin'
+			);
 		}
 		return true;
 	}

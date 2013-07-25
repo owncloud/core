@@ -35,6 +35,7 @@ class TestUser extends \OC\Share\ShareType\User {
 class User extends ShareType {
 
 	private $userManager;
+	private $groupManager;
 	private $user1;
 	private $user2;
 	private $user3;
@@ -43,7 +44,12 @@ class User extends ShareType {
 		$this->userManager = $this->getMockBuilder('\OC\User\Manager')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->instance = new TestUser('test', new ShareFactory(), $this->userManager);
+		$this->groupManager = $this->getMockBuilder('\OC\Group\Manager')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->instance = new TestUser('test', new ShareFactory(), $this->userManager,
+			$this->groupManager
+		);
 	}
 
 	protected function getTestShare() {
@@ -156,13 +162,12 @@ class User extends ShareType {
 		$this->instance->isValidShare($share);
 	}
 
-	public function testIsValidShareWithGroupOnlyPolicy() {
+	public function testIsValidShareWithGroupsOnlyPolicy() {
 		$sharingPolicy = \OC_Appconfig::getValue('core', 'shareapi_share_policy', 'global');
 		\OC_Appconfig::setValue('core', 'shareapi_share_policy', 'groups_only');
 
 		$jancborchardt = 'jancborchardt';
 		$raydiation = 'Raydiation';
-		$devs = 'devs';
 		$share = new Share();
 		$share->setShareOwner($jancborchardt);
 		$share->setShareWith($raydiation);
@@ -173,11 +178,30 @@ class User extends ShareType {
 		$this->userManager->expects($this->atLeastOnce())
 			->method('userExists')
 			->will($this->returnValueMap($map));
-		\OC_Group::clearBackends();
-		\OC_Group::useBackend(new \OC_Group_Dummy);
-		\OC_Group::createGroup($devs);
-		\OC_Group::addToGroup($jancborchardt, $devs);
-		\OC_Group::addToGroup($raydiation, $devs);
+		$shareOwnerUser = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()
+			->getMock();
+		$shareWithUser = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()
+			->getMock();
+		$usersMap = array(
+			array($jancborchardt, $shareOwnerUser),
+			array($raydiation, $shareWithUser),
+		);
+		$this->userManager->expects($this->any())
+			->method('get')
+			->will($this->returnValueMap($usersMap));
+		$group = $this->getMockBuilder('\OC\Group\Group')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->groupManager->expects($this->once())
+			->method('getUserGroups')
+			->with($this->equalTo($shareOwnerUser))
+			->will($this->returnValue(array($group)));
+		$group->expects($this->atLeastOnce())
+			->method('inGroup')
+			->with($this->equalTo($shareWithUser))
+			->will($this->returnValue(true));
 		$this->assertTrue($this->instance->isValidShare($share));
 
 		\OC_Appconfig::setValue('core', 'shareapi_share_policy', $sharingPolicy);
@@ -189,7 +213,6 @@ class User extends ShareType {
 
 		$jancborchardt = 'jancborchardt';
 		$raydiation = 'Raydiation';
-		$devs = 'devs';
 		$share = new Share();
 		$share->setShareOwner($jancborchardt);
 		$share->setShareWith($raydiation);
@@ -200,13 +223,33 @@ class User extends ShareType {
 		$this->userManager->expects($this->atLeastOnce())
 			->method('userExists')
 			->will($this->returnValueMap($map));
-		\OC_Group::clearBackends();
-		\OC_Group::useBackend(new \OC_Group_Dummy);
-		\OC_Group::createGroup($devs);
-		\OC_Group::addToGroup($raydiation, $devs);
+		$shareOwnerUser = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()
+			->getMock();
+		$shareWithUser = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()
+			->getMock();
+		$usersMap = array(
+			array($jancborchardt, $shareOwnerUser),
+			array($raydiation, $shareWithUser),
+		);
+		$this->userManager->expects($this->any())
+			->method('get')
+			->will($this->returnValueMap($usersMap));
+		$group = $this->getMockBuilder('\OC\Group\Group')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->groupManager->expects($this->once())
+			->method('getUserGroups')
+			->with($this->equalTo($shareOwnerUser))
+			->will($this->returnValue(array($group)));
+		$group->expects($this->atLeastOnce())
+			->method('inGroup')
+			->with($this->equalTo($shareWithUser))
+			->will($this->returnValue(false));
 		$this->setExpectedException('\OC\Share\Exception\InvalidShareException',
-			'The share owner is not in any groups of the user shared with as required by the'
-			.' groups only sharing policy set by the admin'
+			'The share owner is not in any groups of the user shared with as required by the '.
+			'groups only sharing policy set by the admin'
 		);
 		$this->instance->isValidShare($share);
 
