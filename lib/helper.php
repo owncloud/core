@@ -856,7 +856,8 @@ class OC_Helper {
 	 */
 	public static function getStorageInfo() {
 		$rootInfo = \OC\Files\Filesystem::getFileInfo('/');
-		$used = $rootInfo['size'];
+		$sharedInfo = \OC\Files\Filesystem::getFileInfo('/Shared');
+                $used = $rootInfo['size'] - $sharedInfo['size'];
 		if ($used < 0) {
 			$used = 0;
 		}
