@@ -39,6 +39,7 @@ $this->create('core_ajax_vcategories_edit', '/core/ajax/vcategories/edit.php')
 // oC JS config
 $this->create('js_config', '/core/js/config.js')
 	->actionInclude('core/js/config.php');
+
 // Routing
 $this->create('core_ajax_routes', '/core/routes.json')
 	->action('OC_Router', 'JSRoutes');
@@ -56,6 +57,11 @@ $this->create('core_lostpassword_reset', '/lostpassword/reset/{token}/{user}')
 $this->create('core_lostpassword_reset_password', '/lostpassword/reset/{token}/{user}')
 	->post()
 	->action('OC_Core_LostPassword_Controller', 'resetPassword');
+
+$this->create('core_ajax_lostpassword', '/core/ajax/lostpassword.php')
+	->actionInclude('core/ajax/lostpassword.php');
+$this->create('js_lostpassword', 'js/lostpassword.js')
+	->actionInclude('core/js/lostpassword.js');
 
 // Not specifically routed
 $this->create('app_css', '/apps/{app}/{file}')

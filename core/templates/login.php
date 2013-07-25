@@ -30,7 +30,7 @@
 		</p>
 
 		<?php if (isset($_['invalidpassword']) && ($_['invalidpassword'])): ?>
-		<a class="warning" href="<?php print_unescaped(OC_Helper::linkToRoute('core_lostpassword_index')) ?>">
+		<a id="lost-password" class="warning" href="<?php print_unescaped(OC_Helper::linkToRoute('core_lostpassword_index')) ?>">
 			<?php p($l->t('Lost your password?')); ?>
 		</a>
 		<?php endif; ?>
@@ -54,6 +54,5 @@
 </form>
 <?php } ?>
 
-<?php
-OCP\Util::addscript('core', 'visitortimezone');
-
+<?php OCP\Util::addScript('core', 'visitortimezone'); ?>
+<?php OC_Util::addScript('core', "lostpassword"); ?>

@@ -409,6 +409,14 @@ label.infield { cursor:text !important; top:1.05em; left:.85em; }
 	cursor: pointer;
 }
 
+#body-login p#lost-password {
+	text-align:left;
+}
+#lost-password-encryption{
+	display: block;
+	margin:10px auto;
+	text-align: center;
+}
 
 /* Alternative Logins */
 #alternative-logins legend { margin-bottom:10px; }
@@ -429,7 +437,7 @@ label.infield { cursor:text !important; top:1.05em; left:.85em; }
 #body-login input[type="submit"] {
 	padding: 10px 20px; /* larger log in and installation buttons */
 }
-#remember_login {
+#remember_login, #encrypted-continue {
 	margin: 18px 5px 0 18px;
 	vertical-align: text-bottom;
 }
