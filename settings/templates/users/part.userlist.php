@@ -55,9 +55,8 @@
 			</td>
 			<td class="groups">
 				<span ng-show="toggleviewrow">{{user.groups}}</span>
-			    <select ng-show="toggleditrow" chosen multiple allow-single-deselect="true"
-			      no-results-text="'No Such Group..'"
-			      <option value=""></option>
+			    <select chosen multiple ng-show="toggleditrow" allow-single-deselect="true" no-results-text="'No Such Group..'" class="chzn-done">
+			      <option value="{{user.groups}}">{{user.groups}}</option>
 			    </select>
 			</td>
 			<td class="local-storage">
