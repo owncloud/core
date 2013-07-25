@@ -21,6 +21,10 @@
 /apps/files_external/3rdparty/irodsphp/prods/tutorials
 /apps/files_external/3rdparty/irodsphp/prods/test*
 
+# settings grunt files
+
+/settings/js/node_modules/*
+/settings/js/users/build/*
 
 
 # ignore themes except the README

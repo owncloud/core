@@ -1,7 +1,7 @@
 {
 	"name": "User Management",
 	"description": "ownCloud - Settings",
-	"version": "1",
+	"version": "1.0",
 	"author": {
 		"name": "Raghu Nayyar",
 		"email": "raghu.nayyar.007@gmail.com"
@@ -9,13 +9,11 @@
 	"contributors": ["Raghu Nayyar", "Bernhard Posselt", "Jan Christoph Borchardt", "Morris Jobke, ownCloud Community"],
 	"dependencies": {},
 	"devDependencies": {
-		"grunt": "0.4",
-		"grunt-cli": "~0.1.69",
-		"grunt-contrib-concat": "0.4.0",
-		"grunt-contrib-watch": "0.4.4",
-		"gruntacular": "0.3",
-		"grunt-wrap": "~0.2",
-		"grunt-phpunit": "0.3.0"
+		"grunt": "*",
+		"grunt-cli": "*",
+		"grunt-contrib-concat": "*",
+		"grunt-contrib-watch": "*",
+		"grunt-wrap": "*",
 	},
 	"engine": "node >= 0.8"
 }

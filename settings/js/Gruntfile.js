@@ -22,15 +22,14 @@
 module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('gruntacular');
 	grunt.loadNpmTasks('grunt-wrap');
-	grunt.loadNpmTasks('grunt-phpunit');
 	grunt.initConfig({
 		meta: {
 		      pkg: grunt.file.readJSON('package.json'),
 		      version: '<%= meta.pkg.version %>',
 		      banner: '/**\n' + ' * <%= meta.pkg.description %> - v<%= meta.version %>\n' + ' *\n' + ' * Copyright (c) <%= grunt.template.today("yyyy") %> - ' + '<%= meta.pkg.author.name %> <<%= meta.pkg.author.email %>>\n' + ' *\n' + ' * This file is licensed under the Affero General Public License version 3 or later.\n' + ' * See the COPYING file\n' + ' *\n' + ' */\n\n',
-		      production: 'users/public/'
+		      build: 'users/build/',
+			  production: 'users/public/'
 		    },
 		concat: {
 			app: {
@@ -39,30 +38,25 @@ module.exports = function(grunt) {
 					striBanners: {
 						options: 'block'
 					}
-					src: 
-						['users/users.js'],
-					dest: '<%= meta.production %>users.app.js'
+					src: ['<%= meta.build %>config.js', '<%= meta.build %>controllers.js', '<%= meta.build %>directives.js', '<%= meta.build %>services.js', '<%= meta.build %>filters.js'],
+					dest: '<%= meta.production %>users.js'
 				}
 			}
 		},
 		wrap: {
 			app: {
-				src: '<%= meta.production %>users.app.js',
+				src: '<%= meta.production %>users.js',
 				dest: '',
 				wrapper: ['(function(angular, $, moment, undefined){\n\n', '\n})(window.angular, window.jQuery, window.moment);']
 			}
 		},
-	    phpunit: {
-	      classes: {
-	        dir: '../tests'
-	      },
-	      options: {
-	        colors: true
-	      }
-	    }
+		watch: {
+		      concat: {
+		        files: ['<%= meta.build %>*.js'],
+		        tasks: 'compile'
+		      }
+		    },
 	});
     grunt.registerTask('run', ['watch:concat']);
     grunt.registerTask('compile', ['concat', 'wrap']);
-    grunt.registerTask('ci', ['testacular:continuous']);
-    return grunt.registerTask('testphp', ['watch:phpunit']);
 }
