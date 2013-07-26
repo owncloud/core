@@ -79,6 +79,12 @@
 	margin-left: 255px;
 }
 
+.default-storage {
+	float:right;
+	margin-right:20px;
+	margin-top:5px;
+}
+
 /* User Table */
 
 #user-table {
@@ -98,6 +104,16 @@
 	
 }
 
+#userlist tbody tr > td.delete-column .delete-button {
+	opacity:0;
+	background-color:transparent;
+	padding:2px;
+}
+
+#userlist tbody tr:hover > td.delete-column .delete-button {
+	opacity:1;
+}
+
 .login-name, .display-name, .user-pass, .groups, .local-storage {
 	max-width:200px;
 	width:200px;
@@ -112,31 +128,4 @@
 
 .login-name span:hover, .display-name span:hover, .user-pass span:hover {
 	border:1px solid #eee;
-}
-
-.user-actions {
-	
-}
-
-.delete-user-icon, .edit-user-icon {
-	padding:2px;
-}
-
-.edit-user-button {
-	padding: 0.25em;
-	border: none !important;
-	background-color: transparent !important;	
-}
-
-.delete-column .delete-button, .delete-column .edit-icon {
-	opacity:1 !important; /*Temporary*/
-}
-.delete-column .delete-button:hover, .delete-column .edit-button:hover {
-	background-color:transparent;
-}
-
-.default-storage {
-	float:right;
-	margin-right:20px;
-	margin-top:5px;
 }
