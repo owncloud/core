@@ -187,89 +187,88 @@ class OC_User_Database extends OC_User_Backend {
 	 * Check if the password is correct without logging in the user
 	 * returns the user id or false
 	 */
-	public function checkPassword( $uid, $password ) {
-		$uids = Array();
-		
-		$isEmail = filter_var($uid, FILTER_VALIDATE_EMAIL) ? true : false;
+	public function checkPassword( $uid, $password ) {		
+		$isEmail = (bool) filter_var($uid, FILTER_VALIDATE_EMAIL);
 		
 		if ($isEmail) {
 			
 			//Gets the uid(s) associated with that email
-			$sql = "SELECT `userid` FROM `*PREFIX*preferences` WHERE LOWER(`configvalue`) = LOWER(?)";
+			$sql = "SELECT `userid` FROM `*PREFIX*preferences` WHERE LOWER(`configkey`) = 'email' AND LOWER(`configvalue`) = LOWER(?)";
 			
 			$query = OC_DB::prepare($sql);
 			
 			$result = $query->execute(array($uid));
 			
-			$fetch = $result->fetchAll();
-			
-			/**
-			* Case 1: No account has that email (login refused)
-			* Case 2: Multiple accounts share the same email (loop trough the accounts)
-			* Case 3: Email is unique (override uid with email)
-			*/
-			if (empty($fetch)) {
+			$uids = $result->fetchAll();
+			 			
+			//No account has that email (login refused)
+			if (empty($uids))
 				return false;
-			} else if (count($fetch) > 1) {
-				foreach($fetch as $row) {
-					array_push($uids, $row['userid']);
-				}
-			} else {				
-				$uids[0] = $fetch[0]['userid'];
-			}
-			
-		//Uses the uid provided by the user in case of not login on with email
-		} else {
-			$uids[0] = $uid;
 		}
 	
 		/**
-		Proceed to password check
-		Returns the uid at the first account's password match
+		* Proceed to password check
+		* Returns the uid at the first account's password match
 		*/
 		
-		$data = Array();
+		$sql = "SELECT `uid`, `password` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)";
 		
-		foreach($uids as $uid) {			
-			$sql = "SELECT `uid`, `password` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)";
-								
-			$query = OC_DB::prepare( $sql );
-			
+		if (empty($uids)) {		
+			$query = OC_DB::prepare($sql);
+		
 			$result = $query->execute(array($uid));
 			
-			$row=$result->fetchRow();
-					
-			array_push($data, $row);
+		} else {
+			//Builds the query based on the number of array elements
+			$sql .= ' OR ';
+			
+			$condition = Array();
+			for ($i = 1; $i < count($uids); $i++) {
+				array_push($condition, "LOWER(`uid`) = LOWER(?)");
+			}
+			
+			$sql .= implode(' OR ', $condition);
+			
+			$query = OC_DB::prepare($sql);
+			
+			for ($i = 0; $i < count($uids); $i++) {
+				$query->bindValue($i+1, $uids[$i]['userid'], PDO::PARAM_STR);
+			}
+			
+			$result = $query->execute();
 		}
 		
-		if (!empty($data)) {
-				
-			$accounts = Array();
+		$users = $result->fetchAll();
+		
+		if (!empty($users)) {
 			
-			foreach($data as $user) {
-				
+			$matches = Array();
+			
+			foreach($users as $user) {
+			
 				$storedHash=$user['password'];
+				
 				if ($storedHash[0]=='$') {//the new phpass based hashing
 					$hasher=$this->getHasher();
+					
 					if($hasher->CheckPassword($password.OC_Config::getValue('passwordsalt', ''), $storedHash)) {
-						//return $user['uid'];
 						
-						array_push($accounts, $user['uid']);
+						array_push($matches, $user['uid']);
 					}
-				}else{//old sha1 based hashing
+				} else {//old sha1 based hashing
+					
 					if(sha1($password)==$storedHash) {
 						//upgrade to new hashing
 						$this->setPassword($row['uid'], $password);
-						//return $user['uid'];
 						
-						array_push($accounts, $user['uid']);
+						array_push($matches, $user['uid']);
 					}
 				}
 			}
-					
+						
 			//In case of multiple accounts with different passwords the login is not rejected
-			if (count($accounts) == 1) {
-				return $accounts[0];
+			if (count($matches) == 1) {
+				return $matches[0];
 			//In case of multiple accounts sharing the same email and passwords the login is rejected
 			} else {
 				return false;
