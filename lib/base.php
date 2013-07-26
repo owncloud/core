@@ -333,7 +333,6 @@ class OC {
 	public static function getRouter() {
 		if (!isset(OC::$router)) {
 			OC::$router = new \OC\Route\Router();
-			OC::$router->loadRoutes();
 		}
 
 		return OC::$router;

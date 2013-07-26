@@ -116,14 +116,18 @@ class Router {
 				}
 			}
 		}
-		$this->useCollection('root');
-		require_once 'settings/routes.php';
-		require_once 'core/routes.php';
 
-		// include ocs routes
-		require_once 'ocs/routes.php';
-		$collection = $this->getCollection('ocs');
-		$this->root->addCollection($collection, '/ocs');
+		if (count($this->loadedRoutes) === 0) {
+			$this->useCollection('root');
+			require_once 'settings/routes.php';
+			require_once 'core/routes.php';
+
+			// include ocs routes
+			require_once 'ocs/routes.php';
+			$collection = $this->getCollection('ocs');
+			$this->root->addCollection($collection, '/ocs');
+			$this->loadedRoutes[] = 'core';
+		}
 	}
 
 	/**
@@ -168,6 +172,7 @@ class Router {
 	 * @throws \Exception
 	 */
 	public function match($url) {
+		$this->loadRoutes();
 		$matcher = new UrlMatcher($this->root, $this->context);
 		$parameters = $matcher->match($url);
 		if (isset($parameters['action'])) {
@@ -206,6 +211,7 @@ class Router {
 	 * @return string
 	 */
 	public function generate($name, $parameters = array(), $absolute = false) {
+		$this->loadRoutes();
 		return $this->getGenerator()->generate($name, $parameters, $absolute);
 	}
 
@@ -214,6 +220,7 @@ class Router {
 	 */
 	public static function JSRoutes() {
 		$router = \OC::getRouter();
+		$router->loadRoutes();
 
 		$etag = $router->getCacheKey();
 		\OC_Response::enableCaching();
