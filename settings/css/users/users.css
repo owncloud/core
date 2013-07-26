@@ -97,8 +97,25 @@
 #userlist thead {
 	
 }
-.login-name {
 
+.login-name, .display-name, .user-pass, .groups, .local-storage {
+	max-width:200px;
+	width:200px;
+}
+
+.login-name span, .display-name span, .user-pass span {
+	width:100px;
+	padding:7px 95px 5px 5px;
+	border-radius:5px;
+	border:1px solid transparent;
+}
+
+.login-name span:hover, .display-name span:hover, .user-pass span:hover {
+	border:1px solid #eee;
+}
+
+.user-actions {
+	
 }
 
 .delete-user-icon, .edit-user-icon {

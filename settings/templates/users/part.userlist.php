@@ -50,7 +50,7 @@
 			</td> <!--Temporary till we have gravatars up!-->
 			<td class="login-name">
 				<span ng-show="viewname" ng-click="viewname = !viewname; editname = !editname;">{{ user.name }}</span>
-				<input ng-show="editname" value="{{user.name}}" ng-focus="editname" ng-blur="editname = !editname; viewname = !viewname" />
+				<input type="text" ng-show="editname" value="{{user.name}}" ng-focus="editname" ng-blur="editname = !editname; viewname = !viewname" />
 			</td>
 			<td class="display-name">
 				<span ng-show="viewdisplayname" ng-click="viewdisplayname = !viewdisplayname; editdisplayname = !editdisplayname;">{{ user.displayname }}</span>
