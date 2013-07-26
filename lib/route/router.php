@@ -44,6 +44,11 @@ class Router {
 	 */
 	protected $cache_key;
 
+	/**
+	 * @var string[] $loadedRoutes
+	 */
+	protected $loadedRoutes = array();
+
 	public function __construct() {
 		$baseUrl = \OC_Helper::linkTo('', 'index.php');
 		if (!\OC::$CLI) {
@@ -93,16 +98,22 @@ class Router {
 	 */
 	public function loadRoutes($app = '') {
 		if ($app) {
-			$file = \OC_App::getAppPath($app) . '/appinfo/routes.php';
-			if (file_exists($file)) {
-				require_once $file;
+			if (array_search($app, $this->loadedRoutes) === false) {
+				$file = \OC_App::getAppPath($app) . '/appinfo/routes.php';
+				if (file_exists($file)) {
+					require_once $file;
+				}
+				$this->loadedRoutes[] = $app;
 			}
 		} else {
 			foreach ($this->getRoutingFiles() as $app => $file) {
-				$this->useCollection($app);
-				require_once $file;
-				$collection = $this->getCollection($app);
-				$this->root->addCollection($collection, '/apps/' . $app);
+				if (array_search($app, $this->loadedRoutes) === false) {
+					$this->useCollection($app);
+					require_once $file;
+					$collection = $this->getCollection($app);
+					$this->root->addCollection($collection, '/apps/' . $app);
+					$this->loadedRoutes[] = $app;
+				}
 			}
 		}
 		$this->useCollection('root');
