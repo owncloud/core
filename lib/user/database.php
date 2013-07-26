@@ -222,8 +222,14 @@ class OC_User_Database extends OC_User_Backend {
 		} else {
 			$uids[0] = $uid;
 		}
+	
+		/**
+		Proceed to password check
+		Returns the uid at the first account's password match
+		*/
 		
-		//Proceed to password check
+		$data = Array();
+		
 		foreach($uids as $uid) {			
 			$sql = "SELECT `uid`, `password` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)";
 								
@@ -232,24 +238,45 @@ class OC_User_Database extends OC_User_Backend {
 			$result = $query->execute(array($uid));
 			
 			$row=$result->fetchRow();
+					
+			array_push($data, $row);
+		}
+		
+		if (!empty($data)) {
+				
+			$accounts = Array();
 			
-			if($row) {
-				$storedHash=$row['password'];
+			foreach($data as $user) {
+				
+				$storedHash=$user['password'];
 				if ($storedHash[0]=='$') {//the new phpass based hashing
 					$hasher=$this->getHasher();
 					if($hasher->CheckPassword($password.OC_Config::getValue('passwordsalt', ''), $storedHash)) {
-						return $row['uid'];
+						//return $user['uid'];
+						
+						array_push($accounts, $user['uid']);
 					}
 				}else{//old sha1 based hashing
 					if(sha1($password)==$storedHash) {
 						//upgrade to new hashing
 						$this->setPassword($row['uid'], $password);
-						return $row['uid'];
+						//return $user['uid'];
+						
+						array_push($accounts, $user['uid']);
 					}
 				}
-			}else{
+			}
+					
+			//In case of multiple accounts with different passwords the login is not rejected
+			if (count($accounts) == 1) {
+				return $accounts[0];
+			//In case of multiple accounts sharing the same email and passwords the login is rejected
+			} else {
 				return false;
 			}
+			
+		} else {
+			return false;
 		}
 	}
 
