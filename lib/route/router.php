@@ -101,7 +101,10 @@ class Router {
 			if (array_search($app, $this->loadedRoutes) === false) {
 				$file = \OC_App::getAppPath($app) . '/appinfo/routes.php';
 				if (file_exists($file)) {
+					$this->useCollection($app);
 					require_once $file;
+					$collection = $this->getCollection($app);
+					$this->root->addCollection($collection, '/apps/' . $app);
 				}
 				$this->loadedRoutes[] = $app;
 			}
