@@ -188,11 +188,13 @@ class OC_User_Database extends OC_User_Backend {
 	 * returns the user id or false
 	 */
 	public function checkPassword( $uid, $password ) {
-	
+		$uids = Array();
+		
 		$isEmail = filter_var($uid, FILTER_VALIDATE_EMAIL) ? true : false;
 		
 		if ($isEmail) {
 			
+			//Gets the uid(s) associated with that email
 			$sql = "SELECT `userid` FROM `*PREFIX*preferences` WHERE LOWER(`configvalue`) = LOWER(?)";
 			
 			$query = OC_DB::prepare($sql);
@@ -203,46 +205,51 @@ class OC_User_Database extends OC_User_Backend {
 			
 			/**
 			* Case 1: No account has that email (login refused)
-			* Case 2: Multiple accounts share the same email (login refused)
-			* Case 3: Email is unique (else case)
+			* Case 2: Multiple accounts share the same email (loop trough the accounts)
+			* Case 3: Email is unique (override uid with email)
 			*/
-			if (empty($fetch) || count($fetch) > 1) {
+			if (empty($fetch)) {
 				return false;
+			} else if (count($fetch) > 1) {
+				foreach($fetch as $row) {
+					array_push($uids, $row['userid']);
+				}
 			} else {				
-				$uid = $fetch[0]['userid'];
+				$uids[0] = $fetch[0]['userid'];
 			}
+			
+		//Uses the uid provided by the user in case of not login on with email
+		} else {
+			$uids[0] = $uid;
 		}
 		
 		//Proceed to password check
-		
-		$sql = "SELECT `uid`, `password` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)";
-							
-		$query = OC_DB::prepare( $sql );
-		
-		$result = $query->execute( array($uid));
-		
-		$row=$result->fetchRow();
+		foreach($uids as $uid) {			
+			$sql = "SELECT `uid`, `password` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)";
+								
+			$query = OC_DB::prepare( $sql );
 			
-		if($row) {
-			$storedHash=$row['password'];
-			if ($storedHash[0]=='$') {//the new phpass based hashing
-				$hasher=$this->getHasher();
-				if($hasher->CheckPassword($password.OC_Config::getValue('passwordsalt', ''), $storedHash)) {
-					return $row['uid'];
-				}else{
-					return false;
+			$result = $query->execute(array($uid));
+			
+			$row=$result->fetchRow();
+			
+			if($row) {
+				$storedHash=$row['password'];
+				if ($storedHash[0]=='$') {//the new phpass based hashing
+					$hasher=$this->getHasher();
+					if($hasher->CheckPassword($password.OC_Config::getValue('passwordsalt', ''), $storedHash)) {
+						return $row['uid'];
+					}
+				}else{//old sha1 based hashing
+					if(sha1($password)==$storedHash) {
+						//upgrade to new hashing
+						$this->setPassword($row['uid'], $password);
+						return $row['uid'];
+					}
 				}
-			}else{//old sha1 based hashing
-				if(sha1($password)==$storedHash) {
-					//upgrade to new hashing
-					$this->setPassword($row['uid'], $password);
-					return $row['uid'];
-				}else{
-					return false;
-				}
+			}else{
+				return false;
 			}
-		}else{
-			return false;
 		}
 	}
 
