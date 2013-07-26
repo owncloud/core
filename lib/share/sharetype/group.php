@@ -24,6 +24,7 @@ namespace OC\Share\ShareType;
 use OC\Share\Share;
 use OC\Share\ShareFactory;
 use OC\Share\Exception\InvalidShareException;
+use OC\Group\Manager as GroupManager;
 use OC\User\Manager as UserManager;
 
 /**
@@ -31,6 +32,7 @@ use OC\User\Manager as UserManager;
  */
 class Group extends Common {
 
+	protected $groupManager;
 	protected $userManager;
 	protected $groupTable;
 
@@ -38,10 +40,14 @@ class Group extends Common {
 	 * The constructor
 	 * @param string $itemType
 	 * @param ShareFactory $shareFactory
-	 * @param Manager $userManager
+	 * @param GroupManager $groupManager
+	 * @param UserManager $userManager
 	 */
-	public function __construct($itemType, ShareFactory $shareFactory, UserManager $userManager) {
+	public function __construct($itemType, ShareFactory $shareFactory, GroupManager $groupManager,
+		UserManager $userManager
+	) {
 		parent::__construct($itemType, $shareFactory);
+		$this->groupManager = $groupManager;
 		$this->userManager = $userManager;
 		$this->groupsTable = '`*PREFIX*shares_groups`';
 	}
@@ -56,14 +62,19 @@ class Group extends Common {
 		if (!$this->userManager->userExists($shareOwner)) {
 			throw new InvalidShareException('The share owner does not exist');
 		}
-		if (!\OC_Group::groupExists($shareWith)) {
+		if (!$this->groupManager->groupExists($shareWith)) {
 			throw new InvalidShareException('The group shared with does not exist');
 		}
 		$sharingPolicy = \OC_Appconfig::getValue('core', 'shareapi_share_policy', 'global');
-		if ($sharingPolicy === 'groups_only' && !\OC_Group::inGroup($shareOwner, $shareWith)) {
-			throw new InvalidShareException('The share owner is not in the group shared with as'
-				.' required by the groups only sharing policy set by the admin'
-			);
+		if ($sharingPolicy === 'groups_only') {
+			$group = $this->groupManager->get($shareWith);
+			$shareOwnerUser = $this->userManager->get($shareOwner);
+			if (!$group->inGroup($shareOwnerUser)) {
+				throw new InvalidShareException(
+					'The share owner is not in the group shared with as required by '.
+					'the groups only sharing policy set by the admin'
+				);
+			}
 		}
 		return true;
 	}
@@ -147,15 +158,18 @@ class Group extends Common {
 			foreach ($filter as $property => $value) {
 				$column = Share::propertyToColumn($property);
 				if ($property === 'shareWith')  {
-					$groups = \OC_Group::getUserGroups($value);
+					$shareWithUser = $this->userManager->get($value);
+					$groups = $this->groupManager->getUserGroups($shareWithUser);
 					if (empty($groups)) {
 						// The user has no groups, no group shares are possible
 						return array();
 					} else {
 						// Find shares with the user's groups, but exclude the shares they own
+						foreach ($groups as $group) {
+							$params[] = $group->getGID();
+						}
 						$placeholders = join(',', array_fill(0, count($groups), '?'));
 						$where .= $column.' IN ('.$placeholders.') AND `share_owner` != ? AND ';
-						$params = array_merge($params, $groups);
 						$params[] = $value;
 					}
 				} else {
@@ -203,8 +217,8 @@ class Group extends Common {
 					$itemTargets = array($share->getItemTarget());
 					$itemTargets['users'] = $userItemTargets;
 					$share->setItemTarget($itemTargets);
-					$share->resetUpdatedProperties();
 				}
+				$share->resetUpdatedProperties();
 			}
 		}
 		return $shares;
@@ -219,7 +233,12 @@ class Group extends Common {
 	}
 
 	public function searchForPotentialShareWiths($pattern, $limit, $offset) {
-		return \OC_Group::getGroups($pattern, $limit, $offset);
+		$shareWiths = array();
+		$result = $this->groupManager->search($pattern, $limit, $offset);
+		foreach ($result as $group) {
+			$shareWiths[] = $group->getGID();
+		}
+		return $shareWiths;
 	}
 
 	protected function getUserItemTargets($id) {
