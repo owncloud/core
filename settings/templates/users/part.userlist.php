@@ -36,7 +36,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		<loading</loading>
+		<loading></loading>
 		<!-- The Filter Goes here with the ngRepeat.-->
 		<tr ng-repeat="user in users"
 			ng-init="viewname = true; editname = false;

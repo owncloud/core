@@ -35,10 +35,18 @@
 	background: #F2FF63;
 }
 
-#app-navigation .loading {
+#app-navigation .loading, #user-content .loading {
 	width:35px;
 	height:35px;
 	margin:0 auto;
+}
+
+#user-content .loading {
+	position: absolute;
+	left: 50%;
+	right: 50%;
+	top: 50%;
+	bottom: 50%;
 }
 
 .utils {
