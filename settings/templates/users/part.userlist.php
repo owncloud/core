@@ -36,32 +36,39 @@
 		</tr>
 	</thead>
 	<tbody>
+		<loading</loading>
 		<!-- The Filter Goes here with the ngRepeat.-->
-		<tr ng-repeat="user in users" ng-init="toggleviewrow = true; toggleditrow = false;">
+		<tr ng-repeat="user in users"
+			ng-init="viewname = true; editname = false;
+				 viewdisplayname = true; editdisplayname = false;
+				 viewpassword = true; editpassword = false;
+				 viewgroup = true; editgroup = false;
+				 viewls = true; editls = false;
+				 ">
 			<td class="thumbnail">
 				<img src="http://placehold.it/30X30" />
 			</td> <!--Temporary till we have gravatars up!-->
 			<td class="login-name">
-				<span ng-show="toggleviewrow">{{ user.name }}</span>
-				<input type="text" ng-show="toggleditrow" value="{{ user.name }}" ng-blur="hasFocus=false"/>
+				<span ng-show="viewname" ng-click="viewname = !viewname; editname = !editname;">{{ user.name }}</span>
+				<input ng-show="editname" value="{{user.name}}" ng-focus="editname" ng-blur="editname = !editname; viewname = !viewname" />
 			</td>
 			<td class="display-name">
-				<span ng-show="toggleviewrow">{{ user.displayname }}</span>
-				<input type="text" ng-show="toggleditrow" value="{{ user.displayname }}" ng-blur="hasFocus=false" />
+				<span ng-show="viewdisplayname" ng-click="viewdisplayname = !viewdisplayname; editdisplayname = !editdisplayname;">{{ user.displayname }}</span>
+				<input type="text" ng-show="editdisplayname" value="{{ user.displayname }}" ng-focus="editdisplayname" ng-blur="editdisplayname = !editdisplayname; viewdisplayname = !viewdisplayname" />
 			</td>
 			<td class="user-pass">
-				<span ng-show="toggleviewrow">●●●●●●●</span>
-				<input type="password" ng-show="toggleditrow" placeholder="●●●●●●●" ng-blur="hasFocus=false" />
+				<span ng-show="viewpassword" ng-click="viewpassword = !viewpassword; editpassword = !editpassword">●●●●●●●</span>
+				<input type="password" ng-show="editpassword" placeholder="●●●●●●●" ng-focus="editpassword" ng-blur="editpassword = !editpassword; viewpassword = !viewpassword" />
 			</td>
 			<td class="groups">
-				<span ng-show="toggleviewrow">{{user.groups}}</span>
-			    <select chosen multiple ng-show="toggleditrow" allow-single-deselect="true" no-results-text="'No Such Group..'" class="chzn-done" ng-blur="hasFocus=false" style="height:30px;"><!--Temporary, till everything is fixed on chosen is-->
+				<span ng-show="viewgroup" ng-click="viewgroup = !viewgroup; editgroup = !toggleditgroup">{{user.groups}}</span>
+			    <select chosen multiple ng-show="editgroup" allow-single-deselect="true" no-results-text="'No Such Group..'" class="chzn-done" ng-focus="editgroup" ng-blur="editgroup = !editgroup; viewgroup = !viewgroup" style="height:30px;"><!--Temporary, till everything is fixed on chosen is-->
 			      <option value="{{user.groups}}">{{user.groups}}</option>
 			    </select>
 			</td>
 			<td class="local-storage">
-				<span ng-show="toggleviewrow">{{ user.quota }}</span>
-				<select ng-show="toggleditrow" ng-blur="hasFocus=false">
+				<span ng-show="viewls" ng-click="viewls = !viewls; editls = !editls">{{ user.quota }}</span>
+				<select ng-show="editls" ng-focus="editls" ng-blur="editls = !editls; viewls = !viewls">
 					<option>Default</option>
 					<option>1 GB</option>
 					<option>5 GB</option>
@@ -71,8 +78,7 @@
 				</select>
 			</td>
 			<td class="delete-column">
-				<button class="svg action edit-icon edit-button edit-user-button" ng-click="toggleviewrow = !toggleviewrow; toggleditrow = !toggleditrow"></button>
-				<button class="svg action delete-icon delete-button delete-user-icon" ng-show="toggleditrow" ng-click="deleteuser(user.name)"></button>
+				<button class="svg action delete-icon delete-button delete-user-icon" ng-click="deleteuser(user.name)"></button>
 			</td>
 		</tr>
 	</tbody>
