@@ -43,25 +43,25 @@
 			</td> <!--Temporary till we have gravatars up!-->
 			<td class="login-name">
 				<span ng-show="toggleviewrow">{{ user.name }}</span>
-				<input type="text" ng-show="toggleditrow"/>
+				<input type="text" ng-show="toggleditrow" value="{{ user.name }}" ng-blur="hasFocus=false"/>
 			</td>
 			<td class="display-name">
 				<span ng-show="toggleviewrow">{{ user.displayname }}</span>
-				<input type="text" ng-show="toggleditrow"/>
+				<input type="text" ng-show="toggleditrow" value="{{ user.displayname }}" ng-blur="hasFocus=false" />
 			</td>
 			<td class="user-pass">
-				<span ng-show="toggleviewrow"></span>
-				<input type="password" ng-show="toggleditrow"/>
+				<span ng-show="toggleviewrow">●●●●●●●</span>
+				<input type="password" ng-show="toggleditrow" placeholder="●●●●●●●" ng-blur="hasFocus=false" />
 			</td>
 			<td class="groups">
 				<span ng-show="toggleviewrow">{{user.groups}}</span>
-			    <select chosen multiple ng-show="toggleditrow" allow-single-deselect="true" no-results-text="'No Such Group..'" class="chzn-done">
+			    <select chosen multiple ng-show="toggleditrow" allow-single-deselect="true" no-results-text="'No Such Group..'" class="chzn-done" ng-blur="hasFocus=false" style="height:30px;"><!--Temporary, till everything is fixed on chosen is-->
 			      <option value="{{user.groups}}">{{user.groups}}</option>
 			    </select>
 			</td>
 			<td class="local-storage">
 				<span ng-show="toggleviewrow">{{ user.quota }}</span>
-				<select ng-show="toggleditrow">
+				<select ng-show="toggleditrow" ng-blur="hasFocus=false">
 					<option>Default</option>
 					<option>1 GB</option>
 					<option>5 GB</option>
@@ -70,7 +70,7 @@
 					<option>Other..</option>
 				</select>
 			</td>
-			<th class="delete-column">
+			<td class="delete-column">
 				<button class="svg action edit-icon edit-button edit-user-button" ng-click="toggleviewrow = !toggleviewrow; toggleditrow = !toggleditrow"></button>
 				<button class="svg action delete-icon delete-button delete-user-icon" ng-show="toggleditrow" ng-click="deleteuser(user.name)"></button>
 			</td>
