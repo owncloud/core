@@ -117,7 +117,7 @@ class Router {
 			}
 		}
 
-		if (count($this->loadedRoutes) === 0) {
+		if (array_search('core', $this->loadedRoutes) === false) {
 			$this->useCollection('root');
 			require_once 'settings/routes.php';
 			require_once 'core/routes.php';
@@ -172,7 +172,12 @@ class Router {
 	 * @throws \Exception
 	 */
 	public function match($url) {
-		$this->loadRoutes();
+		if (substr($url, 0, 6) === '/apps/') {
+			list(, , $app,) = explode('/', $url, 4);
+			$this->loadRoutes($app);
+		} else {
+			$this->loadRoutes();
+		}
 		$matcher = new UrlMatcher($this->root, $this->context);
 		$parameters = $matcher->match($url);
 		if (isset($parameters['action'])) {
