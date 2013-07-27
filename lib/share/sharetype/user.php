@@ -84,13 +84,44 @@ class User extends Common {
 		return true;
 	}
 
-	public function searchForPotentialShareWiths($pattern, $limit, $offset) {
+	public function searchForPotentialShareWiths($shareOwner, $pattern, $limit, $offset) {
 		$shareWiths = array();
-		$result = $this->userManager->searchDisplayName($pattern, $limit, $offset);
-		foreach ($result as $user) {
-			$shareWiths[] = $user->getDisplayName();
+		$users = array();
+		$fakeLimit = $limit;
+		if (isset($fakeLimit)) {
+			// Just in case the share owner shows up in the list of users
+			$fakeLimit++;
+			if (isset($offset)) {
+				// Using the offset in the user manager and group calls may cause unexpected
+				// returns because this function filters the users. The limit and offset are
+				// applied manually after all possible users are retrieved and filtered
+				$fakeLimit += $offset;
+			}
 		}
-		return $shareWiths;
+		$sharingPolicy = \OC_Appconfig::getValue('core', 'shareapi_share_policy', 'global');
+		if ($sharingPolicy === 'groups_only') {
+			$shareOwnerUser = $this->userManager->get($shareOwner);
+			if ($shareOwnerUser) {
+				$groups = $this->groupManager->getUserGroups($shareOwnerUser);
+				foreach ($groups as $group) {
+					$result = $group->searchDisplayName($pattern, $fakeLimit, null);
+					$users = array_merge($users, $result);
+				}
+			}
+		} else {
+			$users = $this->userManager->searchDisplayName($pattern, $fakeLimit, null);
+		}
+		foreach ($users as $user) {
+			$uid = $user->getUID();
+			if ($uid !== $shareOwner && !isset($shareWiths[$uid])) {
+				$shareWiths[$uid] = array(
+					'shareWith' => $uid,
+					'shareWithDisplayName' => $user->getDisplayName(),
+				);
+			}
+		}
+		$shareWiths = array_slice($shareWiths, $offset, $limit);
+		return array_values($shareWiths);
 	}
 
 }

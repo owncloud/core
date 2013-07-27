@@ -198,7 +198,7 @@ class Link extends ShareType {
 	}
 
 	public function testSearchForPotentialShareWiths() {
-		$this->assertEmpty($this->instance->searchForPotentialShareWiths('foo', 3, 1));
+		$this->assertEmpty($this->instance->searchForPotentialShareWiths('user2', 'foo', 3, 1));
 	}
 
 }

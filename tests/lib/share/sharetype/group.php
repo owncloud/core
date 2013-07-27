@@ -326,6 +326,9 @@ class Group extends ShareType {
 	}
 
 	public function testSearchForPotentialShareWiths() {
+		$sharingPolicy = \OC_Appconfig::getValue('core', 'shareapi_share_policy', 'global');
+		\OC_Appconfig::setValue('core', 'shareapi_share_policy', 'global');
+
 		$group1 = $this->getMockBuilder('\OC\Group\Group')
 			->disableOriginalConstructor()
 			->getMock();
@@ -350,14 +353,25 @@ class Group extends ShareType {
 		$this->groupManager->expects($this->once())
 			->method('search')
 			->will($this->returnValueMap($map));
-		$shareWiths = $this->instance->searchForPotentialShareWiths('foo', null, null);
+		$shareWiths = $this->instance->searchForPotentialShareWiths('user2', 'foo', null, null);
 		$this->assertCount(3, $shareWiths);
-		$this->assertContains('foogroup1', $shareWiths);
-		$this->assertContains('foogroup2', $shareWiths);
-		$this->assertContains('foogroup3', $shareWiths);
+		$this->assertContains(array(
+			'shareWith' => 'foogroup1',
+			'shareWithDisplayName' => 'foogroup1 (group)'), $shareWiths);
+		$this->assertContains(array(
+			'shareWith' => 'foogroup2',
+			'shareWithDisplayName' => 'foogroup2 (group)'), $shareWiths);
+		$this->assertContains(array(
+			'shareWith' => 'foogroup3',
+			'shareWithDisplayName' => 'foogroup3 (group)'), $shareWiths);
+
+		\OC_Appconfig::setValue('core', 'shareapi_share_policy', $sharingPolicy);
 	}
 
 	public function testSearchForPotentialShareWithsWithLimitOffset() {
+		$sharingPolicy = \OC_Appconfig::getValue('core', 'shareapi_share_policy', 'global');
+		\OC_Appconfig::setValue('core', 'shareapi_share_policy', 'global');
+
 		$group2 = $this->getMockBuilder('\OC\Group\Group')
 			->disableOriginalConstructor()
 			->getMock();
@@ -376,10 +390,121 @@ class Group extends ShareType {
 		$this->groupManager->expects($this->once())
 			->method('search')
 			->will($this->returnValueMap($map));
-		$shareWiths = $this->instance->searchForPotentialShareWiths('foo', 3, 1);
+		$shareWiths = $this->instance->searchForPotentialShareWiths('user2', 'foo', 3, 1);
 		$this->assertCount(2, $shareWiths);
-		$this->assertContains('foogroup2', $shareWiths);
-		$this->assertContains('foogroup3', $shareWiths);
+		$this->assertContains(array(
+			'shareWith' => 'foogroup2',
+			'shareWithDisplayName' => 'foogroup2 (group)'), $shareWiths);
+		$this->assertContains(array(
+			'shareWith' => 'foogroup3',
+			'shareWithDisplayName' => 'foogroup3 (group)'), $shareWiths);
+
+		\OC_Appconfig::setValue('core', 'shareapi_share_policy', $sharingPolicy);
+	}
+
+	public function testSearchForPotentialShareWithsWithGroupsOnlyPolicy() {
+		$sharingPolicy = \OC_Appconfig::getValue('core', 'shareapi_share_policy', 'global');
+		\OC_Appconfig::setValue('core', 'shareapi_share_policy', 'groups_only');
+
+		$shareOwnerUser = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->userManager->expects($this->any())
+			->method('get')
+			->with($this->equalTo('user2'))
+			->will($this->returnValue($shareOwnerUser));
+		$group1 = $this->getMockBuilder('\OC\Group\Group')
+			->disableOriginalConstructor()
+			->getMock();
+		$group1->expects($this->any())
+			->method('getGID')
+			->will($this->returnValue('foogroup1'));
+		$group2 = $this->getMockBuilder('\OC\Group\Group')
+			->disableOriginalConstructor()
+			->getMock();
+		$group2->expects($this->any())
+			->method('getGID')
+			->will($this->returnValue('foogroup2'));
+		$group3 = $this->getMockBuilder('\OC\Group\Group')
+			->disableOriginalConstructor()
+			->getMock();
+		$group3->expects($this->any())
+			->method('getGID')
+			->will($this->returnValue('bargroup3'));
+		$group4 = $this->getMockBuilder('\OC\Group\Group')
+			->disableOriginalConstructor()
+			->getMock();
+		$group4->expects($this->any())
+			->method('getGID')
+			->will($this->returnValue('foogroup3'));
+		$this->groupManager->expects($this->once())
+			->method('getUserGroups')
+			->with($this->equalTo($shareOwnerUser))
+			->will($this->returnValue(array($group1, $group2, $group3, $group4)));
+		$shareWiths = $this->instance->searchForPotentialShareWiths('user2', 'foo', null, null);
+		$this->assertCount(3, $shareWiths);
+		$this->assertContains(array(
+			'shareWith' => 'foogroup1',
+			'shareWithDisplayName' => 'foogroup1 (group)'), $shareWiths);
+		$this->assertContains(array(
+			'shareWith' => 'foogroup2',
+			'shareWithDisplayName' => 'foogroup2 (group)'), $shareWiths);
+		$this->assertContains(array(
+			'shareWith' => 'foogroup3',
+			'shareWithDisplayName' => 'foogroup3 (group)'), $shareWiths);
+
+		\OC_Appconfig::setValue('core', 'shareapi_share_policy', $sharingPolicy);
+	}
+
+	public function testSearchForPotentialShareWithsWithLimitOffsetAndGroupsOnlyPolicy() {
+		$sharingPolicy = \OC_Appconfig::getValue('core', 'shareapi_share_policy', 'global');
+		\OC_Appconfig::setValue('core', 'shareapi_share_policy', 'groups_only');
+
+		$shareOwnerUser = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->userManager->expects($this->any())
+			->method('get')
+			->with($this->equalTo('user2'))
+			->will($this->returnValue($shareOwnerUser));
+		$group1 = $this->getMockBuilder('\OC\Group\Group')
+			->disableOriginalConstructor()
+			->getMock();
+		$group1->expects($this->any())
+			->method('getGID')
+			->will($this->returnValue('foogroup1'));
+		$group2 = $this->getMockBuilder('\OC\Group\Group')
+			->disableOriginalConstructor()
+			->getMock();
+		$group2->expects($this->any())
+			->method('getGID')
+			->will($this->returnValue('foogroup2'));
+		$group3 = $this->getMockBuilder('\OC\Group\Group')
+			->disableOriginalConstructor()
+			->getMock();
+		$group3->expects($this->any())
+			->method('getGID')
+			->will($this->returnValue('bargroup3'));
+		$group4 = $this->getMockBuilder('\OC\Group\Group')
+			->disableOriginalConstructor()
+			->getMock();
+		$group4->expects($this->any())
+			->method('getGID')
+			->will($this->returnValue('foogroup3'));
+		$this->groupManager->expects($this->once())
+			->method('getUserGroups')
+			->with($this->equalTo($shareOwnerUser))
+			->will($this->returnValue(array($group1, $group2, $group3, $group4)));
+		$shareWiths = $this->instance->searchForPotentialShareWiths('user2', 'foo', 3, 1);
+		$this->assertCount(2, $shareWiths);
+		$this->assertContains(array(
+			'shareWith' => 'foogroup2',
+			'shareWithDisplayName' => 'foogroup2 (group)'), $shareWiths);
+		$this->assertContains(array(
+			'shareWith' => 'foogroup3',
+			'shareWithDisplayName' => 'foogroup3 (group)'), $shareWiths);
+
+		\OC_Appconfig::setValue('core', 'shareapi_share_policy', $sharingPolicy);
 	}
 
 }

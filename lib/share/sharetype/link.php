@@ -165,7 +165,7 @@ class Link extends Common {
 		\OC_DB::executeAudited($sql);
 	}
 
-	public function searchForPotentialShareWiths($pattern, $limit, $offset) {
+	public function searchForPotentialShareWiths($shareOwner, $pattern, $limit, $offset) {
 		// Links are not associated with a person
 		return array();
 	}

@@ -232,11 +232,29 @@ class Group extends Common {
 		\OC_DB::executeAudited($sql);
 	}
 
-	public function searchForPotentialShareWiths($pattern, $limit, $offset) {
+	public function searchForPotentialShareWiths($shareOwner, $pattern, $limit, $offset) {
 		$shareWiths = array();
-		$result = $this->groupManager->search($pattern, $limit, $offset);
-		foreach ($result as $group) {
-			$shareWiths[] = $group->getGID();
+		$groups = array();
+		$sharingPolicy = \OC_Appconfig::getValue('core', 'shareapi_share_policy', 'global');
+		if ($sharingPolicy === 'groups_only') {
+			$shareOwnerUser = $this->userManager->get($shareOwner);
+			if ($shareOwnerUser) {
+				$result = $this->groupManager->getUserGroups($shareOwnerUser);
+				foreach ($result as $group) {
+					if (stripos($group->getGID(), $pattern) !== false) {
+						$groups[] = $group;
+					}
+				}
+				$groups = array_slice($groups, $offset, $limit);
+			}
+		} else {
+			$groups = $this->groupManager->search($pattern, $limit, $offset);
+		}
+		foreach ($groups as $group) {
+			$shareWiths[] = array(
+				'shareWith' => $group->getGID(),
+				'shareWithDisplayName' => $group->getGID().' (group)',
+			);
 		}
 		return $shareWiths;
 	}

@@ -77,11 +77,12 @@ interface IShareType {
 
 	/**
 	 * Search for potential people of this share type to share with based on the given pattern
+	 * @param string $shareOwner
 	 * @param string $pattern
  	 * @param int $limit
 	 * @param int $offset
 	 * @return array
 	 */
-	public function searchForPotentialShareWiths($pattern, $limit, $offset);
+	public function searchForPotentialShareWiths($shareOwner, $pattern, $limit, $offset);
 
 }
