@@ -30,7 +30,7 @@
 			<span class="error" id="nologinname" ng-show="createuser_form.loginnamefield.$error.minlength">Minimum 3 characters</span>
 			<input id="newuserpassword" name="passwordfield" type="password" placeholder="<?php p($l->t('Password')) ?>" ng-required/>
 			<span class="error" id="nologinname" ng-show="createuser_form.loginnamefield.$error.required">Enter Password</span>
-			<select chosen multiple class="groupselect" id="newusergroups" title="<?php p($l->t('Groups'))?>">
+			<select chosen multiple class="groupselect" allow-single-deselect="true" data-placeholder="Select Group.." no-result-text="No Such Group.." style="width:150px;" id="newusergroups" title="<?php p($l->t('Groups'))?>">
 				<option>
 					<!--Retreive the list of groups, quota and other stuff.-->
 				</option>
