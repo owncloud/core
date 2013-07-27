@@ -57,6 +57,11 @@ usersmanagement.factory('GroupService', function($resource) {
 			return $resource(OC.filePath('settings', 'ajax', 'grouplist.php'), {}, {
 				method: 'GET'
 			});
+		},
+		getgrouplist: function() {
+			return $resource(OC.filePath('settings', 'ajax', 'grouplist.php'), {}, {
+				method: 'POST'
+			});
 		}
 	}
 });
@@ -130,10 +135,25 @@ usersmanagement.controller('grouplistController', ['$scope', '$http', '$routePar
 	}
 ]);
 
+/* Asynchronously creates user */
+
+usersmanagement.controller('addUserController', ['$scope', '$http', 'UserService', 'GroupService',
+	function($scope, $http, UserService, GroupService) {
+		var newuser,password = {};
+		var groups = [];
+		$scope.allgroups = GroupService.getgrouplist();
+		console.log($scope.allgroups);
+		/* Password can be console logged, do something. */
+		$scope.saveuser = function() {
+			UserService.createuser().save({ username : $scope.newuser }, { password : $scope.password }, { group : $scope.groups });
+		}
+	}
+]);
+
 /* Fetches the List of All Users and details on the Right Content */
 
 usersmanagement.controller('userlistController', ['$scope', '$http', 'UserService', 'GroupService','$routeParams',
-	function ($scope, $http, UserService, Groupservice, $routeParams) {
+	function($scope, $http, UserService, Groupservice, $routeParams) {
 		$scope.loading = true;
 		$http.get(OC.filePath('settings', 'ajax', 'userlist.php')).then(function(response) {
 			$scope.users = response.data.userdetails;
