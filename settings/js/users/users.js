@@ -134,8 +134,10 @@ usersmanagement.controller('grouplistController', ['$scope', '$http', '$routePar
 
 usersmanagement.controller('userlistController', ['$scope', '$http', 'UserService', 'GroupService','$routeParams',
 	function ($scope, $http, UserService, Groupservice, $routeParams) {
+		$scope.loading = true;
 		$http.get(OC.filePath('settings', 'ajax', 'userlist.php')).then(function(response) {
 			$scope.users = response.data.userdetails;
+			$scope.loading = false;
 		});
 		$scope.gid = $routeParams.groupid;
 		//console.log($scope.gid);
