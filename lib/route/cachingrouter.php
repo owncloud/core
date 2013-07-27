@@ -27,10 +27,10 @@ class CachingRouter extends Router {
 	public function __construct($cache) {
 		$this->cache = $cache;
 
-		$versionSum = array_sum(\OC_App::getAppVersions());
-		if (!$this->cache->hasKey('versionSum') || $this->cache->get('versionSum') != $versionSum) {
+		$versionString = implode(\OC_App::getAppVersions());
+		if (!$this->cache->hasKey('versionString') || $this->cache->get('versionString') !== $versionString) {
 			$this->cache->clear();
-			$this->cache->set('versionSum', $versionSum);
+			$this->cache->set('versionString', $versionString);
 		}
 		parent::__construct();
 	}
