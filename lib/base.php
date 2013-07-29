@@ -741,7 +741,7 @@ class OC {
 		}
 	}
 
-    protected static function tryShibbolethLogin() {
+    public static function tryShibbolethLogin() {
         // Don't attempt a Shibboleth login if it is deactivated.
         if (! \OC_Config::getValue( "shibboleth_active")) {
              return false;
