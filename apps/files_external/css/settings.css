@@ -1,24 +1,24 @@
-td.status > span {
+#files_external .status > span {
 	display: inline-block;
 	height: 16px;
 	width: 16px;
 	vertical-align: text-bottom;
 }
 
-span.success {
+#files_external .success {
 	background: #37ce02;
 	border-radius: 8px;
 }
-span.error {
+#files_external .error {
 	background: #ce3702;
 }
-span.waiting {
+#files_external .waiting {
 	background: none;
 }
 
-td.mountPoint, td.backend { width:10em; }
-td.remove>img { visibility:hidden; padding-top:0.8em; }
-tr:hover>td.remove>img { visibility:visible; cursor:pointer; }
-#addMountPoint>td { border:none; }
-#addMountPoint>td.applicable { visibility:hidden; }
-#selectBackend { margin-left:-10px; }
+#files_external td.mountPoint, td.backend { width:10em; }
+#files_external td.remove>img { visibility:hidden; padding-top:0.8em; }
+#files_external tr:hover>td.remove>img { visibility:visible; cursor:pointer; }
+#files_external #addMountPoint>td { border:none; }
+#files_external #addMountPoint>td.applicable { visibility:hidden; }
+#files_external #selectBackend { margin-left:-10px; }
