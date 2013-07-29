@@ -278,7 +278,7 @@ class OC_User {
                 session_regenerate_id(true);
                 self::setUserId($uid);
                 self::setDisplayName($uid);
-                OC_Hook::emit( "OC_User", "post_login", array( "uid" => $uid, 'password'=>$password ));
+                OC_Hook::emit( "OC_User", "post_login", array( "uid" => $uid, 'password'=>'' ));
                 return true;
             }
         }

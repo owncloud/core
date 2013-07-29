@@ -742,16 +742,25 @@ class OC {
 	}
 
     protected static function tryShibbolethLogin() {
+        // Don't attempt a Shibboleth login if it is deactivated.
+        if (! \OC_Config::getValue( "shibboleth_active")) {
+             return false;
+        }
+
         if (!isset($_SERVER["PHP_AUTH_USER"]) || !isset($_SERVER["eppn"])) {
             return false;
         }
 
-        OC_App::loadApps(array('authentication'));
+        OC_App::loadApps();
 
-        if (OC_User::loginWithoutPassword($_SERVER["PHP_AUTH_USER"])) {
+        //setup extra user backends
+        OC_User::setupBackends();
+
+        if (OC_User::loginWithoutPassword($_SERVER["eppn"])) {
             OC_User::unsetMagicInCookie();
             $_REQUEST['redirect_url'] = OC_Request::requestUri();
             OC_Util::redirectToDefaultPage();
+            exit();
         }
         return true;
     }
