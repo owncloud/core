@@ -190,8 +190,7 @@ class OC_User_Database extends OC_User_Backend {
 	public function checkPassword( $uid, $password ) {		
 		$isEmail = (bool) filter_var($uid, FILTER_VALIDATE_EMAIL);
 		
-		if ($isEmail) {
-			
+		if ($isEmail) {			
 			//Gets the uid(s) associated with that email
 			$sql = "SELECT `userid` FROM `*PREFIX*preferences` WHERE LOWER(`configkey`) = 'email' AND LOWER(`configvalue`) = LOWER(?)";
 			
@@ -199,8 +198,9 @@ class OC_User_Database extends OC_User_Backend {
 			
 			$result = $query->execute(array($uid));
 			
-			$uids = $result->fetchAll();
-			 			
+			//Gets usernames (only the first column)
+			$uids = $result->fetchAll(PDO::FETCH_COLUMN, 0);
+			
 			//No account has that email (login refused)
 			if (empty($uids))
 				return false;
@@ -213,7 +213,7 @@ class OC_User_Database extends OC_User_Backend {
 		
 		$sql = "SELECT `uid`, `password` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)";
 		
-		if (empty($uids)) {		
+		if (!isset($uids)) {		
 			$query = OC_DB::prepare($sql);
 		
 			$result = $query->execute(array($uid));
@@ -231,15 +231,11 @@ class OC_User_Database extends OC_User_Backend {
 			
 			$query = OC_DB::prepare($sql);
 			
-			for ($i = 0; $i < count($uids); $i++) {
-				$query->bindValue($i+1, $uids[$i]['userid'], PDO::PARAM_STR);
-			}
-			
-			$result = $query->execute();
+			$result = $query->execute($uids);
 		}
 		
 		$users = $result->fetchAll();
-		
+				
 		if (!empty($users)) {
 			
 			$matches = Array();
