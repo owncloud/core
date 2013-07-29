@@ -260,6 +260,31 @@ class OC_User {
 		return false;
 	}
 
+    /**
+     * @brief Try to login a user without a password. Assumes authentication
+     * has already happened (e.g. via SSO).
+     *
+     * @param $uid The username of the user to log in
+     *
+     * Log in a user and regenerate a new session.
+     */
+    public static function loginWithoutPassword( $uid ) {
+        $run = true;
+        OC_Hook::emit( "OC_User", "pre_login", array( "run" => &$run, "uid" => $uid ));
+
+        if( $run ) {
+            $enabled = self::isEnabled($uid);
+            if($uid && $enabled) {
+                session_regenerate_id(true);
+                self::setUserId($uid);
+                self::setDisplayName($uid);
+                OC_Hook::emit( "OC_User", "post_login", array( "uid" => $uid, 'password'=>$password ));
+                return true;
+            }
+        }
+        return false;
+    }
+
 	/**
 	 * @brief Sets user id for session and triggers emit
 	 */

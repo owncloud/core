@@ -79,7 +79,7 @@ class OC {
 	 */
 	public static function autoload($className) {
 		$className = trim($className, '\\');
-		
+
 		if (array_key_exists($className, OC::$CLASSPATH)) {
 			$path = OC::$CLASSPATH[$className];
 			/** @TODO: Remove this when necessary
@@ -326,9 +326,9 @@ class OC {
 
 		// if session cant be started break with http 500 error
 		if (session_start() === false){
-			OC_Log::write('core', 'Session could not be initialized', 
+			OC_Log::write('core', 'Session could not be initialized',
 				OC_Log::ERROR);
-			
+
 			header('HTTP/1.1 500 Internal Server Error');
 			OC_Util::addStyle("styles");
 			$error = 'Session could not be initialized. Please contact your ';
@@ -492,7 +492,12 @@ class OC {
 
 		if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SESSION['user_id'])
 			&& $_SERVER['PHP_AUTH_USER'] != $_SESSION['user_id']) {
-			OC_User::logout();
+            $sessionUser = $_SESSION['user_id'];
+            $serverUser = $_SERVER['PHP_AUTH_USER'];
+            OC_Log::write('core',
+                "Session user-id doesn't match PHP_AUTH_USER. SESSION[user_id]: $sessionUser; SERVER[PHP_AUTH_USER]: $serverUser.",
+                OC_Log::WARN);
+            OC_User::logout();
 		}
 
 		// Load Apps
@@ -636,7 +641,7 @@ class OC {
 		// Handle redirect URL for logged in users
 		if (isset($_REQUEST['redirect_url']) && OC_User::isLoggedIn()) {
 			$location = OC_Helper::makeURLAbsolute(urldecode($_REQUEST['redirect_url']));
-			
+
 			// Deny the redirect if the URL contains a @
 			// This prevents unvalidated redirects like ?redirect_url=:user@domain.com
 			if (strpos($location, '@') === FALSE) {
@@ -707,8 +712,11 @@ class OC {
 	protected static function handleLogin() {
 		OC_App::loadApps(array('prelogin'));
 		$error = array();
+        if (OC::tryShibbolethLogin()) {
+
+        }
 		// remember was checked after last login
-		if (OC::tryRememberLogin()) {
+        elseif (OC::tryRememberLogin()) {
 			$error[] = 'invalidcookie';
 
 			// Someone wants to log in :
@@ -732,6 +740,21 @@ class OC {
 			}
 		}
 	}
+
+    protected static function tryShibbolethLogin() {
+        if (!isset($_SERVER["PHP_AUTH_USER"]) || !isset($_SERVER["eppn"])) {
+            return false;
+        }
+
+        OC_App::loadApps(array('authentication'));
+
+        if (OC_User::loginWithoutPassword($_SERVER["PHP_AUTH_USER"])) {
+            OC_User::unsetMagicInCookie();
+            $_REQUEST['redirect_url'] = OC_Request::requestUri();
+            OC_Util::redirectToDefaultPage();
+        }
+        return true;
+    }
 
 	protected static function tryRememberLogin() {
 		if (!isset($_COOKIE["oc_remember_login"])
