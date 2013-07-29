@@ -304,8 +304,6 @@ label.infield { cursor:text !important; top:1.05em; left:.85em; }
 	padding-left: 28px;
 	margin-left: -28px;
 }
-#body-login form .errors { background:#fed7d7; border:1px solid #f00; list-style-indent:inside; margin:0 0 2em; padding:1em; }
-#body-login .success { background:#d7fed7; border:1px solid #0f0; width: 35%; margin: 30px auto; padding:1em; text-align: center;}
 
 /* Show password toggle */
 #show, #dbpassword {
@@ -362,17 +360,33 @@ label.infield { cursor:text !important; top:1.05em; left:.85em; }
 #body-login form #selectDbType label.ui-state-hover, #body-login form #selectDbType label.ui-state-active { color:#000; background-color:#e8e8e8; }
 
 
-/* Warnings and errors are the same */
-.warning, .update, .error {
-	display: block;
-	padding: 10px;
+
+/* ERRORS & SUCCESS FEEDBACK ------------------------------------------------------------ */
+
+.success {
+	color: #31bb01;
+	background-color: #cdffbb;
+}
+/* Errors and warnings are the same, TODO standardize on .error */
+.error, .warning, .update {
 	color: #dd3b3b;
-	text-shadow: 0 -1px 0 rgba(0,0,0,.3);
-	background-color: rgba(0,0,0,.3);
-	text-align: center;
+	background-color: #ffcdbb;
+}
+.success, .error, .warning, .update {
+	padding: 7px;
+	font-weight: bold;
+	text-shadow: none;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	border-radius: 5px;
+}
+
+#body-login .error, #body-login .warning, #body-login .update, #body-login .success {
+	display: block;
+	padding: 10px;
+	text-shadow: 0 -1px 0 rgba(0,0,0,.3);
+	background-color: rgba(0,0,0,.3);
+	text-align: center;
 	cursor: default;
 }
 .warning legend,
@@ -381,6 +395,7 @@ label.infield { cursor:text !important; top:1.05em; left:.85em; }
 	color: #dd3b3b !important;
 	font-weight: bold;
 }
+
 .error pre {
 	white-space: pre-wrap;
 	text-align: left;
@@ -395,9 +410,9 @@ label.infield { cursor:text !important; top:1.05em; left:.85em; }
 #body-login .error {
 	margin: 35px auto;
 }
+#body-login .success,
 #body-login .warning {
 	margin: 0 7px 5px;
-	font-weight: bold;
 }
 #body-login .warning legend {
 	text-shadow: none;
@@ -408,15 +423,18 @@ label.infield { cursor:text !important; top:1.05em; left:.85em; }
 #body-login a.warning {
 	cursor: pointer;
 }
+#body-login form .errors { background:#fed7d7; border:1px solid #f00; list-style-indent:inside; margin:0 0 2em; padding:1em; }
 
-#body-login p#lost-password {
-	text-align:left;
+#body-login #lost-password {
+	text-align: left;
 }
 #lost-password-encryption{
 	display: block;
-	margin:10px auto;
+	margin: 10px auto;
 	text-align: center;
 }
+
+
 
 /* Alternative Logins */
 #alternative-logins legend { margin-bottom:10px; }
@@ -836,9 +854,6 @@ div.crumb:active {
 }
 #app-navigation .personalblock > legend { /* TODO @Raydiation: still needed? */
 	padding: 10px 0; margin: 0;
-}
-#app-navigation .error {
-	color: #dd1144;
 }
 
 
