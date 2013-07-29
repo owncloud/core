@@ -60,7 +60,7 @@ class OC_Core_LostPassword_Controller {
 					$defaults = new OC_Defaults();
 					OC_Mail::send($email, $_POST['user'], $l->t('%s password reset', array($defaults->getName())), $msg, $from, $defaults->getName());
 				} catch (Exception $e) {
-					OC_Template::printErrorPage( 'A problem occurs during sending the e-mail please contact your administrator.');
+					OC_Template::printErrorPage( 'Couldn’t send reset email. Please contact your administrator.');
 				}
 				self::displayLostPasswordPage(false, true);
 			} else {

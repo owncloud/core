@@ -19,7 +19,7 @@ try {
 		
 		$email = OC_Preferences::getValue($user, 'settings', 'email', '');
 		if (empty($email)) {
-			throw new Exception($l->t('Request failed!<br />Did you make sure your email/username was right?'));
+			throw new Exception($l->t('Couldn’t send reset email because there is no email address for this username. Please contact your administrator.'));
 		}
 		
 		$link = OC_Helper::linkToRoute('core_lostpassword_reset',

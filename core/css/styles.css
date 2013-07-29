@@ -373,7 +373,7 @@ label.infield { cursor:text !important; top:1.05em; left:.85em; }
 	background-color: #ffcdbb;
 }
 .success, .error, .warning, .update {
-	padding: 7px;
+	padding: 10px;
 	font-weight: bold;
 	text-shadow: none;
 	-moz-border-radius: 5px;
@@ -383,7 +383,6 @@ label.infield { cursor:text !important; top:1.05em; left:.85em; }
 
 #body-login .error, #body-login .warning, #body-login .update, #body-login .success {
 	display: block;
-	padding: 10px;
 	text-shadow: 0 -1px 0 rgba(0,0,0,.3);
 	background-color: rgba(0,0,0,.3);
 	text-align: center;
