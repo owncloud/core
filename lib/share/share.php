@@ -36,7 +36,9 @@ class Share {
 	protected $parentIds = array();
 	protected $shareTypeId;
 	protected $shareOwner;
+	protected $shareOwnerDisplayName;
 	protected $shareWith;
+	protected $shareWithDisplayName;
 	protected $itemType;
 	protected $itemSource;
 	protected $itemTarget;
@@ -54,6 +56,31 @@ class Share {
 		'expirationTime' => 'int',
 		'shareTime' => 'int'
 	);
+
+	/**
+	 * Get all properties in an array
+	 * @return array
+	 */
+	public function toAPI() {
+		return array(
+			'id' => $this->id,
+			'parentIds' => $this->parentIds,
+			'shareTypeId' => $this->shareTypeId,
+			'shareOwner' => $this->shareOwner,
+			'shareOwnerDisplayName' => $this->shareOwnerDisplayName,
+			'shareWith' => $this->shareWith,
+			'shareWithDisplayName' => $this->shareWithDisplayName,
+			'itemType' => $this->itemType,
+			'itemSource' => $this->itemSource,
+			'itemTarget' => $this->itemTarget,
+			'itemOwner' => $this->itemOwner,
+			'permissions' => $this->permissions,
+			'expirationTime' => $this->expirationTime,
+			'shareTime' => $this->shareTime,
+			'token' => $this->token,
+			'password' => $this->password,
+		);
+	}
 
 	/**
 	 * Check if the share has create permission

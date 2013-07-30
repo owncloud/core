@@ -31,6 +31,42 @@ use OC\Share\Share;
 
 class ShareTest extends \PHPUnit_Framework_TestCase {
 
+	public function testToAPI() {
+		$share = new Share();
+		$share->setId(1);
+		$share->setParentIds(array(2, 3));
+		$share->setShareTypeId('link');
+		$share->setShareOwner('MTGap');
+		$share->setShareOwnerDisplayName('Michael Gapczynski');
+		$share->setItemType('test');
+		$share->setItemSource(21);
+		$share->setItemTarget('Test');
+		$share->setItemOwner('MTGap');
+		$share->setPermissions(31);
+		$share->setExpirationTime(1370884025);
+		$share->setShareTime(1370883025);
+		$share->setToken('3akdsfj32as23kjsdf');
+		$share->setPassword('4AJak34jkDajl4aa42Jmkapw');
+		$this->assertEquals(array(
+			'id' => 1,
+			'parentIds' => array(2, 3),
+			'shareTypeId' => 'link',
+			'shareOwner' => 'MTGap',
+			'shareOwnerDisplayName' => 'Michael Gapczynski',
+			'shareWith' => null,
+			'shareWithDisplayName' => null,
+			'itemType' => 'test',
+			'itemSource' => 21,
+			'itemTarget' => 'Test',
+			'itemOwner' => 'MTGap',
+			'permissions' => 31,
+			'expirationTime' => 1370884025,
+			'shareTime' => 1370883025,
+			'token' => '3akdsfj32as23kjsdf',
+			'password' => '4AJak34jkDajl4aa42Jmkapw',
+		), $share->toAPI());
+	}
+
 	public function testIsCreatable() {
 		$share = new Share();
 		$share->setPermissions(\OCP\PERMISSION_CREATE);
