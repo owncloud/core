@@ -492,12 +492,12 @@ class OC {
 
 		if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SESSION['user_id'])
 			&& $_SERVER['PHP_AUTH_USER'] != $_SESSION['user_id']) {
-            $sessionUser = $_SESSION['user_id'];
-            $serverUser = $_SERVER['PHP_AUTH_USER'];
-            OC_Log::write('core',
-                "Session user-id doesn't match PHP_AUTH_USER. SESSION[user_id]: $sessionUser; SERVER[PHP_AUTH_USER]: $serverUser.",
-                OC_Log::WARN);
-            OC_User::logout();
+			$sessionUser = $_SESSION['user_id'];
+			$serverUser = $_SERVER['PHP_AUTH_USER'];
+			OC_Log::write('core',
+				"Session user-id doesn't match PHP_AUTH_USER. SESSION[user_id]: $sessionUser; SERVER[PHP_AUTH_USER]: $serverUser.",
+				OC_Log::WARN);
+			OC_User::logout();
 		}
 
 		// Load Apps
@@ -712,11 +712,11 @@ class OC {
 	protected static function handleLogin() {
 		OC_App::loadApps(array('prelogin'));
 		$error = array();
-        if (OC::tryShibbolethLogin()) {
+		if (OC::tryShibbolethLogin()) {
 
-        }
+		}
 		// remember was checked after last login
-        elseif (OC::tryRememberLogin()) {
+		elseif (OC::tryRememberLogin()) {
 			$error[] = 'invalidcookie';
 
 			// Someone wants to log in :
@@ -741,29 +741,29 @@ class OC {
 		}
 	}
 
-    public static function tryShibbolethLogin() {
-        // Don't attempt a Shibboleth login if it is deactivated.
-        if (! \OC_Config::getValue( "shibboleth_active")) {
-             return false;
-        }
+	public static function tryShibbolethLogin() {
+		// Don't attempt a Shibboleth login if it is deactivated.
+		if (! \OC_Config::getValue( "shibboleth_active")) {
+			return false;
+		}
 
-        if (!isset($_SERVER["PHP_AUTH_USER"]) || !isset($_SERVER["eppn"])) {
-            return false;
-        }
+		if (!isset($_SERVER["PHP_AUTH_USER"]) || !isset($_SERVER["eppn"])) {
+			return false;
+		}
 
-        OC_App::loadApps();
+		OC_App::loadApps();
 
-        //setup extra user backends
-        OC_User::setupBackends();
+		//setup extra user backends
+		OC_User::setupBackends();
 
-        if (OC_User::loginWithoutPassword($_SERVER["eppn"])) {
-            OC_User::unsetMagicInCookie();
-            $_REQUEST['redirect_url'] = OC_Request::requestUri();
-            OC_Util::redirectToDefaultPage();
-            exit();
-        }
-        return true;
-    }
+		if (OC_User::loginWithoutPassword($_SERVER["eppn"])) {
+			OC_User::unsetMagicInCookie();
+			$_REQUEST['redirect_url'] = OC_Request::requestUri();
+			OC_Util::redirectToDefaultPage();
+			exit();
+		}
+		return true;
+	}
 
 	protected static function tryRememberLogin() {
 		if (!isset($_COOKIE["oc_remember_login"])
