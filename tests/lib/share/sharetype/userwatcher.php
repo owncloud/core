@@ -19,10 +19,10 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Test\Share;
+namespace Test\Share\ShareType;
 
 use OC\Share\Share;
-use OC\User\User;
+use OC\Share\Exception\ShareTypeDoesNotExistException;
 
 class UserWatcher extends \PHPUnit_Framework_TestCase {
 
@@ -89,28 +89,42 @@ class UserWatcher extends \PHPUnit_Framework_TestCase {
 			array('test1', array('shareTypeId' => 'user', 'shareWith' => $mtgap), null, null,
 				array($share3)
 			),
-			array('test2', array('shareTypeId' => 'user', 'shareWith' => $mtgap), null, null,
-				array($share4)
-			),
 		);
-		$this->shareManager->expects($this->exactly(4))
+		$this->shareManager->expects($this->at(0))
 			->method('getShares')
 			->will($this->returnValueMap($map));
-		$this->shareManager->expects($this->exactly(4))
+		$this->shareManager->expects($this->at(1))
+			->method('getShares')
+			->will($this->returnValueMap($map));
+		$this->shareManager->expects($this->at(2))
+			->method('getShares')
+			->will($this->returnValueMap($map));
+		$this->shareManager->expects($this->at(3))
+			->method('getShares')
+			->will($this->returnValueMap($map));
+		$this->shareManager->expects($this->at(4))
+			->method('getShares')
+			->with($this->equalTo('test2'),
+				$this->equalTo(array('shareTypeId' => 'user', 'shareWith' => $mtgap)),
+				$this->equalTo(null), $this->equalTo(null)
+			)
+			->will($this->throwException(new ShareTypeDoesNotExistException(
+				'No share type found matching id'
+			)));
+		$this->shareManager->expects($this->exactly(3))
 			->method('unshare');
 		$userManager = $this->getMockBuilder('\OC\User\Manager')
 			->disableOriginalConstructor()
 			->getMock();
 		$userManager->expects($this->once())
 			->method('listen')
+			->with($this->equalTo('\OC\User'), $this->equalTo('postDelete'))
 			->will($this->returnCallBack(array($this, 'listenPostDelete')));
-		$userWatcher = new \OC\Share\UserWatcher($this->shareManager, $userManager);
+		$userWatcher = new \OC\Share\ShareType\UserWatcher($this->shareManager, $userManager);
 	}
 
 	public function listenPostDelete($scope, $method, $callback) {
 		// Fake PublicEmitter's emit
-		$this->assertEquals('\OC\User', $scope);
-		$this->assertEquals('postDelete', $method);
 		call_user_func_array($callback, array($this->user));
 	}
 

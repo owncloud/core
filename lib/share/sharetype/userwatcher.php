@@ -19,11 +19,11 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace OC\Share;
+namespace OC\Share\ShareType;
 
 use OC\Share\ShareManager;
+use OC\Share\Exception\ShareTypeDoesNotExistException;
 use OC\User\Manager;
-use OC\User\User;
 
 /**
  * Listen to user events that require updating shares
@@ -37,7 +37,7 @@ class UserWatcher {
 		$userManager->listen('\OC\User', 'postDelete', array($this, 'onUserDeleted'));
 	}
 
-	public function onUserDeleted(User $user) {
+	public function onUserDeleted(\OC\User\User $user) {
 		$uid = $user->getUID();
 		$shares = array();
 		$filterShareOwner = array(
@@ -47,15 +47,20 @@ class UserWatcher {
 			'shareTypeId' => 'user',
 			'shareWith' => $uid,
 		);
-		$itemTypes = array_keys($this->shareManager->getShareBackends());
-		foreach ($itemTypes as $itemType) {
+		$shareBackends = $this->shareManager->getShareBackends();
+		foreach ($shareBackends as $shareBackend) {
+			$itemType = $shareBackend->getItemType();
 			$shareOwnerShares = $this->shareManager->getShares($itemType, $filterShareOwner);
-			$shareWithShares = $this->shareManager->getShares($itemType, $filterShareWith);
-			$shares = array_merge($shares, $shareOwnerShares, $shareWithShares);
+			$shares = array_merge($shares, $shareOwnerShares);
+			try {
+				$shareWithShares = $this->shareManager->getShares($itemType, $filterShareWith);
+				$shares = array_merge($shares, $shareWithShares);
+			} catch (ShareTypeDoesNotExistException $exception) {
+				// Do nothing
+			}
 		}
 		foreach ($shares as $share) {
 			$this->shareManager->unshare($share);
 		}
 	}
-
 }
