@@ -20,18 +20,17 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-?>
 
-<div id="user-settings" ng-app="usersmanagement">
-	<div id="app-navigation">
-		<?php print_unescaped($this->inc('users/part.addnewgroup')); ?>
-		<?php print_unescaped($this->inc('users/part.leftgrouplist')); ?>
-	</div>
-	<div id="user-content">
-		<div id="hascontrols">
-			<?php print_unescaped($this->inc('users/part.addnewuser')); ?>
-			<?php print_unescaped($this->inc('users/part.setstorage')); ?>
-		</div>
-		<div id="user-table" ng-view></div>
-	</div>
+?>
+<div ng-controller="setQuotaController" id='local-storage'>
+	<fieldset class="default-storage">
+		<label>Default Storage</label>
+		<select>
+			<option><?php p($l->t('Default')) ?></option>
+			<option><?php p($l->t('Unlimited')) ?></option>
+			<option><?php p($l->t('5 GB')) ?></option>
+			<option><?php p($l->t('10 GB')) ?></option>
+			<option><?php p($l->t('15 GB')) ?></option>
+		</select>
+	</fieldset>
 </div>

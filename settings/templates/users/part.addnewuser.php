@@ -36,16 +36,6 @@
 				</option>
 			</select>
 			<input type="submit" ng-click="saveuser()" value="<?php p($l->t('Create'))?>" />
-			<fieldset class="default-storage">
-				<label>Default Storage</label>
-				<select>
-					<option><?php p($l->t('Default')) ?></option>
-					<option><?php p($l->t('Unlimited')) ?></option>
-					<option><?php p($l->t('5 GB')) ?></option>
-					<option><?php p($l->t('10 GB')) ?></option>
-					<option><?php p($l->t('15 GB')) ?></option>
-				</select>
-			</fieldset>
 		</form>
 	</fieldset>
 </div>

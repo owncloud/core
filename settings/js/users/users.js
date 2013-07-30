@@ -141,12 +141,18 @@ usersmanagement.controller('addUserController', ['$scope', '$http', 'UserService
 	function($scope, $http, UserService, GroupService) {
 		var newuser,password = {};
 		var groups = [];
-		$scope.allgroups = GroupService.getgrouplist();
-		console.log($scope.allgroups);
+		//$scope.allgroups = GroupService.getgrouplist();
+		//console.log($scope.allgroups);
 		/* Password can be console logged, do something. */
 		$scope.saveuser = function() {
 			UserService.createuser().save({ username : $scope.newuser }, { password : $scope.password }, { group : $scope.groups });
 		}
+	}
+]);
+
+usersmanagement.controller('setQuotaController', ['$scope', 'QuotaService',
+	function($scope, QuotaService) {
+		//Shift Default Storage here.
 	}
 ]);
 
