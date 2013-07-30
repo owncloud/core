@@ -84,6 +84,22 @@ class User extends Common {
 		return true;
 	}
 
+	public function share(Share $share) {
+		$share = parent::share($share);
+		if ($share) {
+			$share = $this->setShareDisplayNames($share);
+		}
+		return $share;
+	}
+
+	public function getShares(array $filter, $limit, $offset) {
+		$shares = parent::getShares($filter, $limit, $offset);
+		foreach ($shares as &$share) {
+			$share = $this->setShareDisplayNames($share);
+		}
+		return $shares;
+	}
+
 	public function searchForPotentialShareWiths($shareOwner, $pattern, $limit, $offset) {
 		$shareWiths = array();
 		$users = array();
@@ -122,6 +138,24 @@ class User extends Common {
 		}
 		$shareWiths = array_slice($shareWiths, $offset, $limit);
 		return array_values($shareWiths);
+	}
+
+	/**
+	 * Set the display names for the share owner and share with
+	 * @param Share $share
+	 * @return Share
+	 */
+	protected function setShareDisplayNames(Share $share) {
+		$shareOwnerUser = $this->userManager->get($share->getShareOwner());
+		if ($shareOwnerUser) {
+			$share->setShareOwnerDisplayName($shareOwnerUser->getDisplayName());
+		}
+		$shareWithUser = $this->userManager->get($share->getShareWith());
+		if ($shareWithUser) {
+			$share->setShareWithDisplayName($shareWithUser->getDisplayName());
+		}
+		$share->resetUpdatedProperties();
+		return $share;
 	}
 
 }

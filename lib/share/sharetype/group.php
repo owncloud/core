@@ -89,7 +89,7 @@ class Group extends Common {
 		if ($share) {
 			$share->setItemTarget($itemTargets);
 			$this->setItemTarget($share);
-			$share->resetUpdatedProperties();
+			$share = $this->setShareDisplayNames($share);
 		}
 		return $share;
 	}
@@ -206,7 +206,7 @@ class Group extends Common {
 				$shares[] = $share;
 			}
 		}
-		foreach ($shares as $share) {
+		foreach ($shares as &$share) {
 			$userItemTargets = $this->getUserItemTargets($share->getId());
 			if (!empty($userItemTargets)) {
 				if (isset($filter['shareWith'])) {
@@ -218,8 +218,8 @@ class Group extends Common {
 					$itemTargets['users'] = $userItemTargets;
 					$share->setItemTarget($itemTargets);
 				}
-				$share->resetUpdatedProperties();
 			}
+			$share = $this->setShareDisplayNames($share);
 		}
 		return $shares;
 	}
@@ -267,6 +267,21 @@ class Group extends Common {
 			$itemTargets[$row['uid']] = $row['item_target'];
 		}
 		return $itemTargets;
+	}
+
+	/**
+	 * Set the display names for the share owner and share with
+	 * @param Share $share
+	 * @return Share
+	 */
+	protected function setShareDisplayNames(Share $share) {
+		$shareOwnerUser = $this->userManager->get($share->getShareOwner());
+		if ($shareOwnerUser) {
+			$share->setShareOwnerDisplayName($shareOwnerUser->getDisplayName());
+		}
+		$share->setShareWithDisplayName($share->getShareWith(). ' (group)');
+		$share->resetUpdatedProperties();
+		return $share;
 	}
 
 }

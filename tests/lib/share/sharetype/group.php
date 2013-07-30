@@ -55,10 +55,52 @@ class Group extends ShareType {
 	}
 
 	protected function getTestShare() {
+		$mtgap = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()
+			->getMock();
+		$mtgap->expects($this->any())
+			->method('getDisplayName')
+			->will($this->returnValue('Michael Gapczynski'));
+		$karlitschek = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()
+			->getMock();
+		$karlitschek->expects($this->any())
+			->method('getDisplayName')
+			->will($this->returnValue('Frank Karlitschek'));
+		$icewind = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()
+			->getMock();
+		$icewind->expects($this->any())
+			->method('getDisplayName')
+			->will($this->returnValue('Robin Appelman'));
+		$map = array(
+			array('MTGap', $mtgap),
+			array('karlitschek', $karlitschek),
+			array('Icewind', $icewind),
+		);
+		$this->userManager->expects($this->atLeastOnce())
+			->method('get')
+			->will($this->returnValueMap($map));
 		$share = new Share();
 		$share->setShareTypeId($this->instance->getId());
 		$share->setShareOwner('MTGap');
 		$share->setShareWith('friends');
+		$share->setItemType('test');
+		$share->setItemOwner('MTGap');
+		$share->setItemSource('23');
+		$share->setItemTarget('secrets');
+		$share->setPermissions(31);
+		$share->setShareTime(1370797580);
+		return $share;
+	}
+
+	protected function getSharedTestShare() {
+		$share = new Share();
+		$share->setShareTypeId($this->instance->getId());
+		$share->setShareOwner('MTGap');
+		$share->setShareOwnerDisplayName('Michael Gapczynski');
+		$share->setShareWith('friends');
+		$share->setShareWithDisplayName('friends (group)');
 		$share->setItemType('test');
 		$share->setItemOwner('MTGap');
 		$share->setItemSource('23');
@@ -298,15 +340,8 @@ class Group extends ShareType {
 		$this->assertEquals($share, $this->getShareById($share->getId()));
 	}
 
-	public function testGetSharesWithFilter() {
+	public function testGetSharesWithShareWithFilter() {
 		$this->setupTestShares();
-		$shareWithUser = $this->getMockBuilder('\OC\User\User')
-			->disableOriginalConstructor()
-			->getMock();
-		$this->userManager->expects($this->once())
-			->method('get')
-			->with($this->equalTo($this->user3))
-			->will($this->returnValue($shareWithUser));
 		$group1 = $this->getMockBuilder('\OC\Group\Group')
 			->disableOriginalConstructor()
 			->getMock();
@@ -315,7 +350,6 @@ class Group extends ShareType {
 			->will($this->returnValue($this->group1));
 		$this->groupManager->expects($this->once())
 			->method('getUserGroups')
-			->with($this->equalTo($shareWithUser))
 			->will($this->returnValue(array($group1)));
 		$filter = array(
 			'shareWith' => $this->user3,
@@ -323,6 +357,17 @@ class Group extends ShareType {
 		$shares = $this->instance->getShares($filter, null, null);
 		$this->assertCount(1, $shares);
 		$this->assertContains($this->share1, $shares, '', false, false);
+	}
+
+	public function testGetSharesWithShareWithFilterAndNoGroups() {
+		$this->setupTestShares();-
+		$this->groupManager->expects($this->once())
+			->method('getUserGroups')
+			->will($this->returnValue(array()));
+		$filter = array(
+			'shareWith' => $this->user1,
+		);
+		$this->assertEmpty($this->instance->getShares($filter, null, null));
 	}
 
 	public function testSearchForPotentialShareWiths() {

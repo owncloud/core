@@ -80,7 +80,7 @@ class Link extends Common {
 			\OC_DB::executeAudited($sql, array($share->getId(), $token, $password));
 			$share->setToken($token);
 			$share->setPassword($password);
-			$share->resetUpdatedProperties();
+			$share = $this->setShareDisplayName($share);
 		}
 		return $share;
 	}
@@ -150,7 +150,7 @@ class Link extends Common {
 				$share = $this->shareFactory->mapToShare($row);
 				$parentIds = $this->getParentIds($share->getId());
 				$share->setParentIds($parentIds);
-				$share->resetUpdatedProperties();
+				$share = $this->setShareDisplayName($share);
 				$shares[] = $share;
 			}
 			return $shares;
@@ -181,6 +181,20 @@ class Link extends Common {
 			$password = $this->hasher->HashPassword($password.$salt);
 		}
 		return $password;
+	}
+
+	/**
+	 * Set the display name for the share owner
+	 * @param Share $share
+	 * @return Share
+	 */
+	protected function setShareDisplayName(Share $share) {
+		$shareOwnerUser = $this->userManager->get($share->getShareOwner());
+		if ($shareOwnerUser) {
+			$share->setShareOwnerDisplayName($shareOwnerUser->getDisplayName());
+		}
+		$share->resetUpdatedProperties();
+		return $share;
 	}
 
 }

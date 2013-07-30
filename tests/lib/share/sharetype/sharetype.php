@@ -36,6 +36,12 @@ abstract class ShareType extends \PHPUnit_Framework_TestCase {
 	abstract protected function getTestShare();
 
 	/**
+	 * Get the same share as getTestShare, but as expected after being shared
+	 * @return Share
+	 */
+	abstract protected function getSharedTestShare();
+
+	/**
 	 * Setup four shares with fake data assigned to their respective class property
 	 * The fourth share has the third share as a parent (even if it doesn't make sense)
 	 */
@@ -47,23 +53,28 @@ abstract class ShareType extends \PHPUnit_Framework_TestCase {
 
 	public function testShare() {
 		$share = $this->getTestShare();
-		$result = $this->instance->share($share);
-		$this->assertNotNull($result->getId());
-		$this->assertEquals(array(), $result->getUpdatedProperties());
-		$share->setId($result->getId());
-		$share->resetUpdatedProperties();
-		$this->assertEquals($share, $this->getShareById($share->getId()));
+		$sharedShare = $this->getSharedTestShare();
+		$share = $this->instance->share($share);
+		$this->assertNotNull($share->getId());
+		$this->assertEquals(array(), $share->getUpdatedProperties());
+		$sharedShare->setId($share->getId());
+		$sharedShare->resetUpdatedProperties();
+		$this->assertEquals($sharedShare, $share);
+		$this->assertEquals($sharedShare, $this->getShareById($share->getId()));
 	}
 
 	public function testShareWithParents() {
 		$share = $this->getTestShare();
 		$share->setParentIds(array(1, 3));
-		$result = $this->instance->share($share);
-		$this->assertNotNull($result->getId());
-		$this->assertEquals(array(), $result->getUpdatedProperties());
-		$share->setId($result->getId());
-		$share->resetUpdatedProperties();
-		$this->assertEquals($share, $this->getShareById($share->getId()));
+		$sharedShare = $this->getSharedTestShare();
+		$share = $this->instance->share($share);
+		$this->assertNotNull($share->getId());
+		$this->assertEquals(array(), $share->getUpdatedProperties());
+		$sharedShare->setId($share->getId());
+		$sharedShare->setParentIds(array(1, 3));
+		$sharedShare->resetUpdatedProperties();
+		$this->assertEquals($sharedShare, $share);
+		$this->assertEquals($sharedShare, $this->getShareById($share->getId()));
 	}
 
 	public function testUnshare() {
