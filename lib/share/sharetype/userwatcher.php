@@ -37,6 +37,10 @@ class UserWatcher {
 		$userManager->listen('\OC\User', 'postDelete', array($this, 'onUserDeleted'));
 	}
 
+	/**
+	 * Unshare all shares to and owned by the deleted user
+	 * @param \OC\User\User $user
+	 */
 	public function onUserDeleted(\OC\User\User $user) {
 		$uid = $user->getUID();
 		$shares = array();
@@ -63,4 +67,5 @@ class UserWatcher {
 			$this->shareManager->unshare($share);
 		}
 	}
+
 }
