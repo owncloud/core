@@ -72,20 +72,9 @@ class OC_Connector_Sabre_Auth extends Sabre_DAV_Auth_Backend_AbstractBasic {
 	  * @return bool
 	  */
 	public function authenticate(Sabre_DAV_Server $server, $realm) {
-		// TODO Ideally, we call the same authentication method as in lib/base.php
-		//if (OC::tryShibbolethLogin())
-		//    return true;
-
-		// Don't attempt a Shibboleth login if it is deactivated.
-		if (! \OC_Config::getValue( "shibboleth_active")) {
- 			return false;
+		if (! OC_User::handleApacheAuth(true)) {
+		    return false;
 		}
-
-		if (!isset($_SERVER["PHP_AUTH_USER"]) || !isset($_SERVER["eppn"])) {
-			return false;
-		}
-
-		OC_User::loginWithoutPassword($_SERVER["eppn"]);
 
 		if (OC_User::isLoggedIn()) {
 			$user = OC_User::getUser();

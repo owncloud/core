@@ -286,6 +286,44 @@ class OC_User {
 	}
 
 	/**
+	 * @brief Verify with Apache whether user is authenticated.
+	 * @note Currently supports only Shibboleth.
+	 *
+	 * @param $isWebdav Is this request done using webdav.
+	 * @return true: authenticated - false: not authenticated
+	 */
+	public static function handleApacheAuth($isWebdav = false) {
+		// Is Shibboleth activated
+		if (\OC_Config::getValue( "shibboleth_active")) {
+			return self::handleShibbolethAuth($isWebdav);
+		}
+
+		return false;
+	}
+
+	private static function handleShibbolethAuth($isWebdav = false) {
+		if (!isset($_SERVER["PHP_AUTH_USER"]) || !isset($_SERVER["eppn"])) {
+			return false;
+		}
+
+		OC_App::loadApps();
+
+		//setup extra user backends
+		OC_User::setupBackends();
+
+		if (OC_User::loginWithoutPassword($_SERVER["eppn"])) {
+			OC_User::unsetMagicInCookie();
+
+			if (!$isWebdav) {
+				$_REQUEST['redirect_url'] = OC_Request::requestUri();
+				OC_Util::redirectToDefaultPage();
+				exit();
+			}
+		}
+		return true;
+	}
+
+	/**
 	 * @brief Sets user id for session and triggers emit
 	 */
 	public static function setUserId($uid) {

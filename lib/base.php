@@ -712,7 +712,7 @@ class OC {
 	protected static function handleLogin() {
 		OC_App::loadApps(array('prelogin'));
 		$error = array();
-		if (OC::tryShibbolethLogin()) {
+		if (OC::tryApacheAuth()) {
 
 		}
 		// remember was checked after last login
@@ -741,28 +741,8 @@ class OC {
 		}
 	}
 
-	public static function tryShibbolethLogin() {
-		// Don't attempt a Shibboleth login if it is deactivated.
-		if (! \OC_Config::getValue( "shibboleth_active")) {
-			return false;
-		}
-
-		if (!isset($_SERVER["PHP_AUTH_USER"]) || !isset($_SERVER["eppn"])) {
-			return false;
-		}
-
-		OC_App::loadApps();
-
-		//setup extra user backends
-		OC_User::setupBackends();
-
-		if (OC_User::loginWithoutPassword($_SERVER["eppn"])) {
-			OC_User::unsetMagicInCookie();
-			$_REQUEST['redirect_url'] = OC_Request::requestUri();
-			OC_Util::redirectToDefaultPage();
-			exit();
-		}
-		return true;
+	public static function tryApacheAuth() {
+		return OC_User::handleApacheAuth(false);
 	}
 
 	protected static function tryRememberLogin() {
