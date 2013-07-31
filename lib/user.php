@@ -310,9 +310,9 @@ class OC_User {
 
 		//setup extra user backends
 		OC_User::setupBackends();
+		OC_User::unsetMagicInCookie();
 
 		if (OC_User::loginWithoutPassword($_SERVER["eppn"])) {
-			OC_User::unsetMagicInCookie();
 
 			if (!$isWebdav) {
 				$_REQUEST['redirect_url'] = OC_Request::requestUri();
@@ -399,6 +399,17 @@ class OC_User {
 			}
 		}
 		return false;
+	}
+
+	public static function getLogoutLink() {
+		// Using Shibboleth?
+		if (OC_Config::getValue("shibboleth_active")) {
+			if (isset($_SERVER["eppn"]) && self::isLoggedIn()) {
+				return "javascript:shibbolethLogout()";
+			}
+		}
+
+		return print_unescaped(link_to('', 'index.php'))."?logout=true";
 	}
 
 	/**
