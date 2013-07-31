@@ -204,9 +204,6 @@ class Manager extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('foo', $user->getUID());
 	}
 
-	/**
-	 * @expectedException \Exception
-	 */
 	public function testCreateUserSingleBackendExists() {
 		/**
 		 * @var \OC_User_Dummy | \PHPUnit_Framework_MockObject_MockObject $backend
@@ -227,7 +224,12 @@ class Manager extends \PHPUnit_Framework_TestCase {
 		$manager = new \OC\User\Manager();
 		$manager->registerBackend($backend);
 
-		$manager->createUser('foo', 'bar');
+		try {
+			$manager->createUser('foo', 'bar');
+		} catch (\Exception $e) {
+			// Don't use @expectedException to prevent
+			// "InvalidArgumentException: You must not expect the generic exception class."
+		}
 	}
 
 	public function testCreateUserSingleBackendNotSupported() {
@@ -259,9 +261,6 @@ class Manager extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse($manager->createUser('foo', 'bar'));
 	}
 
-	/**
-	 * @expectedException \Exception
-	 */
 	public function testCreateUserTwoBackendExists() {
 		/**
 		 * @var \OC_User_Dummy | \PHPUnit_Framework_MockObject_MockObject $backend1
@@ -299,6 +298,11 @@ class Manager extends \PHPUnit_Framework_TestCase {
 		$manager->registerBackend($backend1);
 		$manager->registerBackend($backend2);
 
-		$manager->createUser('foo', 'bar');
+		try {
+			$manager->createUser('foo', 'bar');
+		} catch (\Exception $e) {
+			// Don't use @expectedException to prevent
+			// "InvalidArgumentException: You must not expect the generic exception class."
+		}
 	}
 }
