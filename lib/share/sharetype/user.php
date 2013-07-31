@@ -23,6 +23,7 @@ namespace OC\Share\ShareType;
 
 use OC\Share\Share;
 use OC\Share\ShareFactory;
+use OC\Share\ItemTargetMachine;
 use OC\Share\Exception\InvalidShareException;
 use OC\User\Manager as UserManager;
 use OC\Group\Manager as GroupManager;
@@ -32,20 +33,23 @@ use OC\Group\Manager as GroupManager;
  */
 class User extends Common {
 
+	protected $itemTargetMachine;
 	protected $userManager;
 	protected $groupManager;
 
 	/**
 	 * The constructor
 	 * @param string $itemType
-	 * @param ShareFactory $shareFactory
-	 * @param UserManager $userManager
-	 * @param GroupManager $groupManager
+	 * @param \OC\Share\ShareFactory $shareFactory
+	 * @param \OC\Share\ItemTargetMachine $itemTargetMachine
+	 * @param \OC\User\Manager $userManager
+	 * @param \OC\Group\Manager $groupManager
 	 */
-	public function __construct($itemType, ShareFactory $shareFactory, UserManager $userManager,
-		GroupManager $groupManager
+	public function __construct($itemType, ShareFactory $shareFactory,
+		ItemTargetMachine $itemTargetMachine, UserManager $userManager, GroupManager $groupManager
 	) {
 		parent::__construct($itemType, $shareFactory);
+		$this->itemTargetMachine = $itemTargetMachine;
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
 	}
@@ -85,6 +89,8 @@ class User extends Common {
 	}
 
 	public function share(Share $share) {
+		$user = $this->userManager->get($share->getShareWith());
+		$share->setItemTarget($this->itemTargetMachine->getItemTarget($share, $user));
 		$share = parent::share($share);
 		if ($share) {
 			$share = $this->setShareDisplayNames($share);
@@ -142,8 +148,8 @@ class User extends Common {
 
 	/**
 	 * Set the display names for the share owner and share with
-	 * @param Share $share
-	 * @return Share
+	 * @param \OC\Share\Share $share
+	 * @return \OC\Share\Share
 	 */
 	protected function setShareDisplayNames(Share $share) {
 		$shareOwnerUser = $this->userManager->get($share->getShareOwner());

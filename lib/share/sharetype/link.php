@@ -23,6 +23,7 @@ namespace OC\Share\ShareType;
 
 use OC\Share\Share;
 use OC\Share\ShareFactory;
+use OC\Share\ItemTargetMachine;
 use OC\Share\Exception\InvalidShareException;
 use OC\User\Manager;
 use PasswordHash;
@@ -32,6 +33,7 @@ use PasswordHash;
  */
 class Link extends Common {
 
+	protected $itemTargetMachine;
 	protected $userManager;
 	protected $hasher;
 	protected $linkTable;
@@ -41,14 +43,16 @@ class Link extends Common {
 	/**
 	 * The constructor
 	 * @param string $itemType
-	 * @param ShareFactory $shareFactory
-	 * @param Manager $userManager
-	 * @param PasswordHash $hasher
+	 * @param \OC\Share\ShareFactory $shareFactory
+	 * @param \OC\Share\ItemTargetMachine $itemTargetMachine
+	 * @param \OC\User\Manager $userManager
+	 * @param \PasswordHash $hasher
 	 */
-	public function __construct($itemType, ShareFactory $shareFactory, Manager $userManager,
-		PasswordHash $hasher
+	public function __construct($itemType, ShareFactory $shareFactory,
+		ItemTargetMachine $itemTargetMachine, Manager $userManager, PasswordHash $hasher
 	) {
 		parent::__construct($itemType, $shareFactory);
+		$this->itemTargetMachine = $itemTargetMachine;
 		$this->userManager = $userManager;
 		$this->hasher = $hasher;
 		$this->linksTable = '`*PREFIX*shares_links`';
@@ -71,6 +75,7 @@ class Link extends Common {
 	}
 
 	public function share(Share $share) {
+		$share->setItemTarget($this->itemTargetMachine->getItemTarget($share));
 		$share = parent::share($share);
 		if ($share) {
 			$token = \OC_Util::generate_random_bytes(self::TOKEN_LENGTH);
@@ -93,7 +98,7 @@ class Link extends Common {
 
 	/**
 	 * Update the share's password for the link in the database
-	 * @param Share $share
+	 * @param \OC\Share\Share $share
 	 */
 	public function setPassword(Share $share) {
 		$password = $this->hashPassword($share->getPassword());
@@ -185,8 +190,8 @@ class Link extends Common {
 
 	/**
 	 * Set the display name for the share owner
-	 * @param Share $share
-	 * @return Share
+	 * @param \OC\Share\Share $share
+	 * @return \OC\Share\Share
 	 */
 	protected function setShareDisplayName(Share $share) {
 		$shareOwnerUser = $this->userManager->get($share->getShareOwner());

@@ -34,97 +34,126 @@ class TestLink extends \OC\Share\ShareType\Link {
 
 class Link extends ShareType {
 
+	private $itemTargetMachine;
 	private $userManager;
 	private $hasher;
+	private $mtgap;
+	private $mtgapDisplay;
+	private $karlitschek;
+	private $karlitschekDisplay;
+	private $icewind;
+	private $icewindDisplay;
 
 	protected function setUp() {
+		$this->mtgap = 'MTGap';
+		$this->mtgapDisplay = 'Michael Gapczynski';
+		$this->karlitschek = 'karlitschek';
+		$this->karlitschekDisplay = 'Frank Karlitschek';
+		$this->icewind = 'Icewind';
+		$this->icewindDisplay = 'Robin Appelman';
+		$this->itemTargetMachine = $this->getMockBuilder('\OC\Share\ItemTargetMachine')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->itemTargetMachine->expects($this->any())
+			->method('getItemTarget')
+			->will($this->returnValue('Test Target'));
 		$this->userManager = $this->getMockBuilder('\OC\User\Manager')
 			->disableOriginalConstructor()
 			->getMock();
 		$this->hasher = $this->getMockBuilder('\PasswordHash')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->instance = new TestLink('test', new ShareFactory(), $this->userManager,
-			$this->hasher
+		$this->instance = new TestLink('test', new ShareFactory(), $this->itemTargetMachine,
+			$this->userManager,	$this->hasher
 		);
 	}
 
-	protected function getTestShare() {
-		$mtgap = $this->getMockBuilder('\OC\User\User')
+	protected function getTestShare($version) {
+		$share = new Share();
+		$share->setShareTypeId($this->instance->getId());
+		$share->setItemType('test');
+		$share->setItemSource('23');
+		$share->setPermissions(31);
+		$share->setShareTime(1370797580);
+		$mtgapUser = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()
 			->getMock();
-		$mtgap->expects($this->any())
+		$mtgapUser->expects($this->any())
 			->method('getDisplayName')
-			->will($this->returnValue('Michael Gapczynski'));
-		$karlitschek = $this->getMockBuilder('\OC\User\User')
+			->will($this->returnValue($this->mtgapDisplay));
+		$karlitschekUser = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()
 			->getMock();
-		$karlitschek->expects($this->any())
+		$karlitschekUser->expects($this->any())
 			->method('getDisplayName')
-			->will($this->returnValue('Frank Karlitschek'));
-		$icewind = $this->getMockBuilder('\OC\User\User')
+			->will($this->returnValue($this->karlitschekDisplay));
+		$icewindUser = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()
 			->getMock();
-		$icewind->expects($this->any())
+		$icewindUser->expects($this->any())
 			->method('getDisplayName')
-			->will($this->returnValue('Robin Appelman'));
+			->will($this->returnValue($this->icewindDisplay));
 		$map = array(
-			array('MTGap', $mtgap),
-			array('karlitschek', $karlitschek),
-			array('Icewind', $icewind),
+			array($this->mtgap, $mtgapUser),
+			array($this->karlitschek, $karlitschekUser),
+			array($this->icewind, $icewindUser),
 		);
 		$this->userManager->expects($this->atLeastOnce())
 			->method('get')
 			->will($this->returnValueMap($map));
-		$share = new Share();
-		$share->setShareTypeId($this->instance->getId());
-		$share->setShareOwner('MTGap');
-		$share->setShareWith(null);
-		$share->setItemType('test');
-		$share->setItemOwner('MTGap');
-		$share->setItemSource('23');
-		$share->setItemTarget('secrets');
-		$share->setPermissions(31);
-		$share->setShareTime(1370797580);
+		switch ($version) {
+			case 1:
+				$share->setShareOwner($this->mtgap);
+				$share->setItemOwner($this->mtgap);
+				break;
+			case 2:
+				$share->setShareOwner($this->mtgap);
+				$share->setItemOwner($this->mtgap);
+				break;
+			case 3:
+				$share->setShareOwner($this->icewind);
+				$share->setItemOwner($this->icewind);
+				break;
+			case 4:
+				$share->setShareOwner($this->karlitschek);
+				$share->setItemOwner($this->karlitschek);
+				break;
+		}	
 		return $share;
 	}
 
-	protected function getSharedTestShare() {
-		// TODO Fix token
+	protected function getSharedTestShare($version) {
+		// TODO Set token
 		$share = new Share();
 		$share->setShareTypeId($this->instance->getId());
-		$share->setShareOwner('MTGap');
-		$share->setShareOwnerDisplayName('Michael Gapczynski');
-		$share->setShareWith(null);
 		$share->setItemType('test');
-		$share->setItemOwner('MTGap');
 		$share->setItemSource('23');
-		$share->setItemTarget('secrets');
+		$share->setItemTarget('Test Target');
 		$share->setPermissions(31);
 		$share->setShareTime(1370797580);
+		switch ($version) {
+			case 1:
+				$share->setShareOwner($this->mtgap);
+				$share->setItemOwner($this->mtgap);
+				$share->setShareOwnerDisplayName($this->mtgapDisplay);
+				break;
+			case 2:
+				$share->setShareOwner($this->mtgap);
+				$share->setItemOwner($this->mtgap);
+				$share->setShareOwnerDisplayName($this->mtgapDisplay);
+				break;
+			case 3:
+				$share->setShareOwner($this->icewind);
+				$share->setItemOwner($this->icewind);
+				$share->setShareOwnerDisplayName($this->icewindDisplay);
+				break;
+			case 4:
+				$share->setShareOwner($this->karlitschek);
+				$share->setItemOwner($this->karlitschek);
+				$share->setShareOwnerDisplayName($this->karlitschekDisplay);
+				break;
+		}	
 		return $share;
-	}
-
-	protected function setupTestShares() {
-		$this->user1 = 'MTGap';
-		$this->user2 = 'karlitschek';
-		$this->user3 = 'Icewind';
-		$this->share1 = $this->getTestShare();
-		$this->share1->setShareOwner($this->user1);
-		$this->share1 = $this->instance->share($this->share1);
-
-		$this->share2 = $this->getTestShare();
-		$this->share2->setShareOwner($this->user1);
-		$this->share2 = $this->instance->share($this->share2);
-
-		$this->share3 = $this->getTestShare();
-		$this->share3->setShareOwner($this->user3);
-		$this->share3 = $this->instance->share($this->share3);
-
-		$this->share4 = $this->getTestShare();
-		$this->share4->setShareOwner($this->user2);
-		$this->share4->addParentId($this->share3->getId());
-		$this->share4 = $this->instance->share($this->share4);
 	}
 
 	public function testIsValidShare() {
@@ -191,7 +220,7 @@ class Link extends ShareType {
 	}
 
 	public function testShareWithPassword() {
-		$share = $this->getTestShare();
+		$share = $this->getTestShare(1);
 		$share->setPassword('password');
 		$this->hasher->expects($this->once())
 			->method('HashPassword')
@@ -205,7 +234,7 @@ class Link extends ShareType {
 	}
 
 	public function testSetPassword() {
-		$share = $this->getTestShare();
+		$share = $this->getTestShare(2);
 		$share = $this->instance->share($share);
 		$this->hasher->expects($this->once())
 			->method('HashPassword')

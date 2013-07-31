@@ -30,30 +30,43 @@ abstract class ShareType extends \PHPUnit_Framework_TestCase {
 	protected $share4;
 
 	/**
-	 * Get a share with fake data
-	 * @return Share
+	 * Get a share with fake data, it will be passed into the share method
+	 * @param int $version 1-4 Return a unique share for each version number
+	 * @return \OC\Share\Share
 	 */
-	abstract protected function getTestShare();
+	abstract protected function getTestShare($version);
 
 	/**
 	 * Get the same share as getTestShare, but as expected after being shared
-	 * @return Share
+	 * @param int $version 1-4 Return a unique share for each version number
+	 * @return \OC\Share\Share
 	 */
-	abstract protected function getSharedTestShare();
+	abstract protected function getSharedTestShare($version);
 
 	/**
-	 * Setup four shares with fake data assigned to their respective class property
-	 * The fourth share has the third share as a parent (even if it doesn't make sense)
+	 * Setup four shares with fake data
 	 */
-	abstract protected function setupTestShares();
+	protected function setupTestShares() {
+		$shares = array();
+		for ($i = 1; $i < 5; $i++) {
+			$share = $this->getTestShare($i);
+			$share = $this->instance->share($share);
+			$sharedShare = $this->getSharedTestShare($i);
+			$sharedShare->setId($share->getId());
+			$sharedShare->resetUpdatedProperties();
+			$this->assertEquals($sharedShare, $share);
+			$shares[] = $share;
+		}
+		list($this->share1, $this->share2, $this->share3, $this->share4) = $shares;
+	}
 
 	protected function tearDown() {
 		$this->instance->clear();
 	}
 
 	public function testShare() {
-		$share = $this->getTestShare();
-		$sharedShare = $this->getSharedTestShare();
+		$share = $this->getTestShare(1);
+		$sharedShare = $this->getSharedTestShare(1);
 		$share = $this->instance->share($share);
 		$this->assertNotNull($share->getId());
 		$this->assertEquals(array(), $share->getUpdatedProperties());
@@ -64,9 +77,9 @@ abstract class ShareType extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testShareWithParents() {
-		$share = $this->getTestShare();
+		$share = $this->getTestShare(2);
 		$share->setParentIds(array(1, 3));
-		$sharedShare = $this->getSharedTestShare();
+		$sharedShare = $this->getSharedTestShare(2);
 		$share = $this->instance->share($share);
 		$this->assertNotNull($share->getId());
 		$this->assertEquals(array(), $share->getUpdatedProperties());
@@ -78,7 +91,7 @@ abstract class ShareType extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUnshare() {
-		$share = $this->getTestShare();
+		$share = $this->getTestShare(3);
 		$share = $this->instance->share($share);
 		$this->assertEquals($share, $this->getShareById($share->getId()));
 		$this->instance->unshare($share);
@@ -86,7 +99,7 @@ abstract class ShareType extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdate() {
-		$share = $this->getTestShare();
+		$share = $this->getTestShare(4);
 		$share = $this->instance->share($share);
 		$share->setPermissions(1);
 		$this->instance->update($share);
@@ -95,7 +108,7 @@ abstract class ShareType extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateTwoProperties() {
-		$share = $this->getTestShare();
+		$share = $this->getTestShare(2);
 		$share = $this->instance->share($share);
 		$share->setPermissions(21);
 		$share->setExpirationTime(1370884027);
@@ -105,7 +118,7 @@ abstract class ShareType extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetParentIds() {
-		$share = $this->getTestShare();
+		$share = $this->getTestShare(1);
 		$share->setParentIds(array(1, 2));
 		$share = $this->instance->share($share);
 		$share->setParentIds(array(2, 3, 4));
@@ -135,6 +148,9 @@ abstract class ShareType extends \PHPUnit_Framework_TestCase {
 
 	public function testGetSharesWithParentId() {
 		$this->setupTestShares();
+		$this->share4->addParentId($this->share3->getId());
+		$this->instance->setParentIds($this->share4);
+		$this->share4->resetUpdatedProperties();
 		$filter = array(
 			'parentId' => $this->share3->getId(),
 		);
@@ -146,7 +162,7 @@ abstract class ShareType extends \PHPUnit_Framework_TestCase {
 	/**
 	 * Get a share from the share type based on id
 	 * @param int $id
-	 * @return Share|bool
+	 * @return \OC\Share\Share | bool
 	 */
 	protected function getShareById($id) {
 		$share = $this->instance->getShares(array('id' => $id), 1, null);

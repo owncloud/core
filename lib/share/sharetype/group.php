@@ -23,6 +23,7 @@ namespace OC\Share\ShareType;
 
 use OC\Share\Share;
 use OC\Share\ShareFactory;
+use OC\Share\ItemTargetMachine;
 use OC\Share\Exception\InvalidShareException;
 use OC\Group\Manager as GroupManager;
 use OC\User\Manager as UserManager;
@@ -32,6 +33,7 @@ use OC\User\Manager as UserManager;
  */
 class Group extends Common {
 
+	protected $itemTargetMachine;
 	protected $groupManager;
 	protected $userManager;
 	protected $groupTable;
@@ -39,14 +41,16 @@ class Group extends Common {
 	/**
 	 * The constructor
 	 * @param string $itemType
-	 * @param ShareFactory $shareFactory
-	 * @param GroupManager $groupManager
-	 * @param UserManager $userManager
+	 * @param \OC\Share\ShareFactory $shareFactory
+	 * @param \OC\Share\ItemTargetMachine $itemTargetMachine
+	 * @param \OC\Group\Manager $groupManager
+	 * @param \OC\User\Manager $userManager
 	 */
-	public function __construct($itemType, ShareFactory $shareFactory, GroupManager $groupManager,
-		UserManager $userManager
+	public function __construct($itemType, ShareFactory $shareFactory,
+		ItemTargetMachine $itemTargetMachine, GroupManager $groupManager, UserManager $userManager
 	) {
 		parent::__construct($itemType, $shareFactory);
+		$this->itemTargetMachine = $itemTargetMachine;
 		$this->groupManager = $groupManager;
 		$this->userManager = $userManager;
 		$this->groupsTable = '`*PREFIX*shares_groups`';
@@ -80,15 +84,28 @@ class Group extends Common {
 	}
 
 	public function share(Share $share) {
-		$itemTargets = $share->getItemTarget();
-		if (is_array($itemTargets)) {
-			// The first element is the default group item target
-			$share->setItemTarget(reset($itemTargets));
-		}
+		$groupItemTarget = $this->itemTargetMachine->getItemTarget($share);
+		$share->setItemTarget($groupItemTarget);
 		$share = parent::share($share);
 		if ($share) {
+			$shareOwner = $share->getShareOwner();
+			$userItemTargets = array();
+			$group = $this->groupManager->get($share->getShareWith());
+			foreach ($group->getUsers() as $user) {
+				$uid = $user->getUID();
+				if ($uid !== $shareOwner) {
+					$userItemTarget = $this->itemTargetMachine->getItemTarget($share, $user);
+					if ($userItemTarget !== $groupItemTarget) {
+						$userItemTargets[$uid] = $userItemTarget;
+					}
+				}
+			}
+			$itemTargets = array($share->getItemTarget());
+			$itemTargets['users'] = $userItemTargets;
 			$share->setItemTarget($itemTargets);
-			$this->setItemTarget($share);
+			if (!empty($userItemTargets)) {
+				$this->setItemTarget($share);
+			}
 			$share = $this->setShareDisplayNames($share);
 		}
 		return $share;
@@ -96,7 +113,7 @@ class Group extends Common {
 
 	/**
 	 * Update the share's item targets in the database
-	 * @param Share $share
+	 * @param \OC\Share\Share $share
 	 *
 	 * Group shares can have different item targets for users in the group
 	 * and are stored in a separate table
@@ -140,13 +157,15 @@ class Group extends Common {
 
 	public function getShares(array $filter, $limit, $offset) {
 		$shares = array();
-		if (!isset($filter['shareWith'])
-			|| (isset($filter['isShareWithGroup']) && $filter['isShareWithGroup'] === true)
-		) {
-			unset($filter['isShareWithGroup']);
+		$isShareWithUser = false;
+		// The isShareWithUser parameter allows the shareWith parameter to be a user rather than
+		// a group in the filter
+		if (!isset($filter['isShareWithUser']) || $filter['isShareWithUser'] === false) {
+			unset($filter['isShareWithUser']);
 			$shares = parent::getShares($filter, $limit, $offset);
 		} else {
-			unset($filter['isShareWithGroup']);
+			unset($filter['isShareWithUser']);
+			$isShareWithUser = true;
 			$defaults = array(
 				'shareTypeId' => $this->getId(),
 				'itemType' => $this->itemType,
@@ -158,8 +177,11 @@ class Group extends Common {
 			foreach ($filter as $property => $value) {
 				$column = Share::propertyToColumn($property);
 				if ($property === 'shareWith')  {
+					$groups = array();
 					$shareWithUser = $this->userManager->get($value);
-					$groups = $this->groupManager->getUserGroups($shareWithUser);
+					if ($shareWithUser) {
+						$groups = $this->groupManager->getUserGroups($shareWithUser);
+					}
 					if (empty($groups)) {
 						// The user has no groups, no group shares are possible
 						return array();
@@ -209,10 +231,8 @@ class Group extends Common {
 		foreach ($shares as &$share) {
 			$userItemTargets = $this->getUserItemTargets($share->getId());
 			if (!empty($userItemTargets)) {
-				if (isset($filter['shareWith'])) {
-					if (isset($userItemTargets[$filter['shareWith']])) {
-						$share->setItemTarget($userItemTargets[$filter['shareWith']]);
-					}
+				if ($isShareWithUser && isset($userItemTargets[$filter['shareWith']])) {
+					$share->setItemTarget($userItemTargets[$filter['shareWith']]);
 				} else {
 					$itemTargets = array($share->getItemTarget());
 					$itemTargets['users'] = $userItemTargets;
@@ -259,6 +279,19 @@ class Group extends Common {
 		return $shareWiths;
 	}
 
+	/**
+	 * Get the item target machine
+	 * @return \OC\Share\ItemTargetMachine
+	 */
+	public function getItemTargetMachine() {
+		return $this->itemTargetMachine;
+	}
+
+	/**
+	 * Get the unique item targets for the users of a group share specified by the id
+	 * @param int $id
+	 * @return array
+	 */
 	protected function getUserItemTargets($id) {
 		$sql = 'SELECT `uid`, `item_target` FROM '.$this->groupsTable.' WHERE `id` = ?';
 		$result = \OC_DB::executeAudited($sql, array($id));
@@ -271,8 +304,8 @@ class Group extends Common {
 
 	/**
 	 * Set the display names for the share owner and share with
-	 * @param Share $share
-	 * @return Share
+	 * @param \OC\Share\Share $share
+	 * @return \OC\Share\Share
 	 */
 	protected function setShareDisplayNames(Share $share) {
 		$shareOwnerUser = $this->userManager->get($share->getShareOwner());

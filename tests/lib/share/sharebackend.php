@@ -42,10 +42,6 @@ class TestShareBackend extends \OC\Share\ShareBackend {
 		}
 	}
 
-	protected function generateItemTarget(Share $share) {
-		return 'Item Target';
-	}
-
 	public function setIsValidItem($isValidItem) {
 		$this->isValidItem = $isValidItem;
 	}
@@ -155,7 +151,6 @@ class ShareBackend extends \PHPUnit_Framework_TestCase {
 		$share->resetUpdatedProperties();
 		$sharedShare = clone $share;
 		$sharedShare->setShareTime(1370797580);
-		$sharedShare->setItemTarget('Item Target');
 		$userMap = array(
 			array(array('shareOwner' => $mtgap, 'shareWith' => $icewind, 'itemSource' => $item),
 				1, null, array()

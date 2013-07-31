@@ -75,15 +75,6 @@ abstract class ShareBackend extends BasicEmitter {
 	 */
 	abstract protected function isValidItem(Share $share);
 
-
-	/**
-	 * Generate an item target for the share with
-	 * @param \OC\Share\Share $share
-	 * @return string | array
-	 */
-	abstract protected function generateItemTarget(Share $share);
-
-
 	/**
 	 * Get all share types
 	 * @return \OC\Share\ShareType\IShareType[]
@@ -132,7 +123,6 @@ abstract class ShareBackend extends BasicEmitter {
 			if ($shareType->isValidShare($share) && $this->areValidPermissions($share)
 				&& $this->isValidExpirationTime($share)
 			) {
-				$share->setItemTarget($this->generateItemTarget($share));
 				$this->emit('\OC\Share', 'preShare', array($share));
 				$share->setShareTime($this->timeMachine->getTime());
 				$share = $shareType->share($share);
