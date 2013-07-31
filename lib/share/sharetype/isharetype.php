@@ -36,28 +36,28 @@ interface IShareType {
 
 	/**
 	 * Check if this share is valid for this share type
-	 * @param Share $share
+	 * @param \OC\Share\Share $share
 	 * @return bool
-	 * @throws InvalidShareException
+	 * @throws \OC\Share\Exception\InvalidShareException
 	 */
 	public function isValidShare(Share $share);
 
 	/**
 	 * Insert the share into the database
-	 * @param Share $share
-	 * @return Share
+	 * @param \OC\Share\Share $share
+	 * @return \OC\Share\Share
 	 */
 	public function share(Share $share);
 
 	/**
 	 * Remove the share from the database
-	 * @param Share $share
+	 * @param \OC\Share\Share $share
 	 */
 	public function unshare(Share $share);
 
 	/**
 	 * Update the share's properties in the database
-	 * @param Share $share
+	 * @param \OC\Share\Share $share
  	 */
 	public function update(Share $share);
 
@@ -66,7 +66,7 @@ interface IShareType {
 	 * @param array $filter A key => value array of share properties
  	 * @param int $limit
 	 * @param int $offset
-	 * @return Share[]
+	 * @return \OC\Share\Share[]
 	 */
 	public function getShares(array $filter, $limit, $offset);
 	
