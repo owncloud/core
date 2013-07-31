@@ -32,10 +32,13 @@ return array(
 	),
 	'swift'=>array(
 		'run'=>false,
-		'user'=>'test:tester',
-		'token'=>'testing',
-		'host'=>'localhost.local:8080/auth',
-		'root'=>'/',
+		'user'=>'testing',
+		//'tenant'=>'testing',
+		'password'=>'testing',
+		//'key'=>'testing',
+		'bucket'=>'testing',
+		'region'=>'SYD'
+		//'url'=>'https://identity.api.rackspacecloud.com/v2.0/'
 	),
 	'smb'=>array(
 		'run'=>false,
