@@ -227,9 +227,11 @@ class Manager extends \PHPUnit_Framework_TestCase {
 		try {
 			$manager->createUser('foo', 'bar');
 		} catch (\Exception $e) {
+			return;
 			// Don't use @expectedException to prevent
 			// "InvalidArgumentException: You must not expect the generic exception class."
 		}
+		$this->fail("Expected \Exception");
 	}
 
 	public function testCreateUserSingleBackendNotSupported() {
@@ -301,8 +303,10 @@ class Manager extends \PHPUnit_Framework_TestCase {
 		try {
 			$manager->createUser('foo', 'bar');
 		} catch (\Exception $e) {
+			return;
 			// Don't use @expectedException to prevent
 			// "InvalidArgumentException: You must not expect the generic exception class."
 		}
+		$this->fail("Expected \Exception");
 	}
 }
