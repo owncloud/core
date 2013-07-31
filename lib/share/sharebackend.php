@@ -32,13 +32,13 @@ use OC\Share\Exception\InvalidExpirationTimeException;
 /**
  * Backend class that apps extend and register with the ShareManager to share content
  *
- *  Hooks available in scope \OC\Share:
- *  - preShare(Share $share)
- *  - postShare(Share $share)
- *  - preUnshare(Share $share)
- *  - postUnshare(Share $share)
- *  - preUpdate(Share $share)
- *  - postUpdate(Share $share)
+ * Hooks available in scope \OC\Share:
+ *  - preShare(\OC\Share\Share $share)
+ *  - postShare(\OC\Share\Share $share)
+ *  - preUnshare(\OC\Share\Share $share)
+ *  - postUnshare(\OC\Share\Share $share)
+ *  - preUpdate(\OC\Share\Share $share)
+ *  - postUpdate(\OC\Share\Share $share)
  *
  * @version 2.0.0 BETA
  */
@@ -49,9 +49,9 @@ abstract class ShareBackend extends BasicEmitter {
 
 	/**
 	 * The constructor
-	 * @param TimeMachine $timeMachine The time() mock
-	 * @param ShareType[] $shareTypes An array of share type objects that items can be shared
-	 * through e.g. User, Group, Link
+	 * @param \OC\Share\TimeMachine $timeMachine The time() mock
+	 * @param \OC\Share\ShareType\IShareType[] $shareTypes An array of share type objects that
+	 * items can be shared through e.g. User, Group, Link
 	 */
 	public function __construct(TimeMachine $timeMachine, array $shareTypes) {
 		$this->timeMachine = $timeMachine;
@@ -68,9 +68,9 @@ abstract class ShareBackend extends BasicEmitter {
 
 	/**
 	 * Check if an item is valid for the share owner
-	 * @param Share $share
-	 * @throws InvalidItemException If the item does not exist or the share owner does not have
-	 * access to the item
+	 * @param \OC\Share\Share $share
+	 * @throws \OC\Share\Exception\InvalidItemException If the item does not exist or the share
+	 * owner does not have access to the item
 	 * @return bool
 	 */
 	abstract protected function isValidItem(Share $share);
@@ -78,15 +78,15 @@ abstract class ShareBackend extends BasicEmitter {
 
 	/**
 	 * Generate an item target for the share with
-	 * @param Share $share
-	 * @return string|array
+	 * @param \OC\Share\Share $share
+	 * @return string | array
 	 */
 	abstract protected function generateItemTarget(Share $share);
 
 
 	/**
 	 * Get all share types
-	 * @return ShareType[]
+	 * @return \OC\Share\ShareType\IShareType[]
 	 */
 	public function getShareTypes() {
 		return $this->shareTypes;
@@ -95,8 +95,8 @@ abstract class ShareBackend extends BasicEmitter {
 	/**
 	 * Get share type by id
 	 * @param string $shareTypeId
-	 * @throws ShareTypeDoesNotExistException
-	 * @return ShareType
+	 * @throws \OC\Share\Exception\ShareTypeDoesNotExistException
+	 * @return \OC\Share\IShareType
 	 */
 	public function getShareType($shareTypeId) {
 		if (isset($this->shareTypes[$shareTypeId])) {
@@ -108,12 +108,12 @@ abstract class ShareBackend extends BasicEmitter {
 
 	/**
 	 * Share a share
-	 * @param Share $share
-	 * @throws InvalidItemException
-  	 * @throws InvalidShareException
-  	 * @throws InvalidPermissionsException
-  	 * @throws InvalidExpirationTimeException
-  	 * @return Share|bool
+	 * @param \OC\Share\Share $share
+	 * @throws \OC\Share\Exception\InvalidItemException
+	 * @throws \OC\Share\Exception\InvalidShareException
+	 * @throws \OC\Share\Exception\InvalidPermissionsException
+	 * @throws \OC\Share\Exception\InvalidExpirationTimeException
+	 * @return \OC\Share\Share | bool
 	 */
 	public function share(Share $share) {
 		if ($this->isValidItem($share)) {
@@ -145,7 +145,7 @@ abstract class ShareBackend extends BasicEmitter {
 
 	/**
 	 * Unshare a share
-	 * @param Share $share
+	 * @param \OC\Share\Share $share
 	 */
 	public function unshare(Share $share) {
 		$shareType = $this->getShareType($share->getShareTypeId());
@@ -156,7 +156,7 @@ abstract class ShareBackend extends BasicEmitter {
 
 	/**
 	 * Update a share's properties in the database
-	 * @param Share $share
+	 * @param \OC\Share\Share $share
 	 */
 	public function update(Share $share) {
 		$properties = $share->getUpdatedProperties();
@@ -188,7 +188,7 @@ abstract class ShareBackend extends BasicEmitter {
 	 * @param array $filter (optional) A key => value array of share properties
 	 * @param int $limit (optional)
 	 * @param int $offset (optional)
-	 * @return Share[]
+	 * @return \OC\Share\Share[]
 	 */
 	public function getShares($filter = array(), $limit = null, $offset = null) {
 		if (isset($filter['shareTypeId'])) {
@@ -218,7 +218,7 @@ abstract class ShareBackend extends BasicEmitter {
 
 	/**
 	 * Check if a share is expired
-	 * @param Share $share
+	 * @param \OC\Share\Share $share
 	 * @return bool
 	 */
 	public function isExpired(Share $share) {
@@ -243,8 +243,9 @@ abstract class ShareBackend extends BasicEmitter {
 
 	/**
 	 * Check if a share's permissions are valid
-	 * @param Share $share
-	 * @throws InvalidPermissionsException
+	 * @param \OC\Share\Share $share
+	 * @throws \OC\Share\Exception\InvalidPermissionsException If the permissions are not an
+	 * integer or are not in the range of 1 to 31
 	 * @return bool
 	 *
 	 * Permissions are defined by the CRUDS system, see lib/public/constants.php
@@ -270,8 +271,9 @@ abstract class ShareBackend extends BasicEmitter {
 
 	/**
 	 * Check if a share's expiration time is valid
-	 * @param Share $share
-	 * @throws InvalidExpirationTimeException
+	 * @param \OC\Share\Share $share
+	 * @throws \OC\Share\Exception\InvalidExpirationTimeException If the expiration time is set and is
+	 * not an integer or is not at least 1 hour in the future
 	 * @return bool
 	 *
 	 * Expiration time is defined by a unix timestamp
