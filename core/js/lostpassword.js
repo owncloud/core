@@ -1,8 +1,8 @@
 
 OC.Lostpassword = {
-	errorMsg : t('core', 'Couldn’t send reset email. Please contact your administrator.'),
+	sendErrorMsg : t('core', 'Couldn’t send reset email. Please contact your administrator.'),
 			
-	successMsg : t('core', 'The link to reset your password has been sent to your email. If you do not receive it within a reasonable amount of time, check your spam/junk folders.<br>If it is not there ask your local administrator.'),
+	sendSuccessMsg : t('core', 'The link to reset your password has been sent to your email. If you do not receive it within a reasonable amount of time, check your spam/junk folders.<br>If it is not there ask your local administrator.'),
 	
 	encryptedMsg : t('core', "Your files are encrypted. If you haven't enabled the recovery key, there will be no way to get your data back after your password is reset.<br />If you are not sure what to do, please contact your administrator before you continue. <br />Do you really want to continue?")
 			+ ('<br /><input type="checkbox" id="encrypted-continue" value="Yes" />')
@@ -13,67 +13,122 @@ OC.Lostpassword = {
 			+ t('core', 'Reset password')
 			+ '</a>',
 			
-			
+	resetErrorMsg : t('core', 'Password can not be changed. Please contact your administrator.'),
+	
 	init : function() {
 		if ($('#lost-password-encryption').length){
-			$('#lost-password-encryption').click(OC.Lostpassword.send);
+			$('#lost-password-encryption').click(OC.Lostpassword.sendLink);
 		} else {
-			$('#lost-password').click(OC.Lostpassword.send);
+			$('#lost-password').click(OC.Lostpassword.sendLink);
 		}
+		$('#reset-password #submit').click(OC.Lostpassword.resetPassword);
 	},
 			
-	send : function(event){
+	sendLink : function(event){
 		event.preventDefault();
 		if (!$('#user').val().length){
 			$('#submit').trigger('click');
 		} else {
 			$.post(
-					OC.filePath('core', 'ajax', 'lostpassword.php'), 
+					OC.filePath('core', 'ajax', 'password/lost'), 
 					{ 
 						user : $('#user').val(),
 						proceed: $('#encrypted-continue').attr('checked') ? 'Yes' : 'No'
 					}, 
-					OC.Lostpassword.done
+					OC.Lostpassword.sendLinkDone
 			);
 		}
 	},
 			
-	done : function(result){
+	sendLinkDone : function(result){
 		if (result && result.status === 'success'){
-			OC.Lostpassword.success();
+			OC.Lostpassword.sendLinkSuccess();
 		} else {
 			if (result && result.msg){
-				var errorMsg = result.msg;
+				var sendErrorMsg = result.msg;
 			} else if (result && result.encryption) {
-				var errorMsg = OC.Lostpassword.encryptedMsg;
+				var sendErrorMsg = OC.Lostpassword.encryptedMsg;
 			} else {
-				var errorMsg = OC.Lostpassword.errorMsg;
+				var sendErrorMsg = OC.Lostpassword.sendErrorMsg;
 			}
-			OC.Lostpassword.error(errorMsg);
+			OC.Lostpassword.sendLinkError(sendErrorMsg);
 		}
 	},
 			
-	success : function(msg){
-		var node = OC.Lostpassword.getNode();
+	sendLinkSuccess : function(msg){
+		var node = OC.Lostpassword.getSendStatusNode();
 		node.addClass('success').css({width:'auto'});
-		node.html(OC.Lostpassword.successMsg);
+		node.html(OC.Lostpassword.sendSuccessMsg);
 	},
 			
-	error : function(msg){
-		var node = OC.Lostpassword.getNode();
+	sendLinkError : function(msg){
+		var node = OC.Lostpassword.getSendStatusNode();
 		node.addClass('warning');
 		node.html(msg);
 		OC.Lostpassword.init();
 	},
-	
-	getNode : function(){
+			
+	getSendStatusNode : function(){
 		if (!$('#lost-password').length){
 			$('<p id="lost-password"></p>').insertBefore($('#remember_login'));
 		} else {
 			$('#lost-password').replaceWith($('<p id="lost-password"></p>'));
 		}
 		return $('#lost-password');
+	},
+	
+	resetPassword : function(event){
+		event.preventDefault();
+		if ($('#password').val()){
+			$.post(
+					$('#password').parents('form').attr('action'),
+					{ 
+						password : $('#password').val()
+					},
+					OC.Lostpassword.resetDone
+			);
+		}
+	},
+			
+	resetDone : function(result){
+		if (result && result.status === 'success'){
+			$.post(
+					OC.webroot + '/',
+					{
+						user : window.location.href.split('/').pop(),
+						password : $('#password').val()
+					},
+					OC.Lostpassword.redirect
+			);
+		} else {
+			if (result && result.msg){
+				var resetErrorMsg = result.msg;
+			} else {
+				var resetErrorMsg = OC.Lostpassword.resetErrorMsg;
+			}
+			OC.Lostpassword.resetError(resetErrorMsg);
+		}
+	},
+	
+	redirect : function(msg){
+		window.location = OC.webroot;
+	},
+			
+	resetError : function(msg){
+		var node = OC.Lostpassword.getResetStatusNode();
+		node.addClass('warning');
+		node.html(msg);
+	},
+	
+	getResetStatusNode : function (){
+		if (!$('#lost-password').length){
+			$('<p id="lost-password"></p>').insertAfter($('#submit'));
+		} else {
+			$('#lost-password').replaceWith($('<p id="lost-password"></p>'));
+		}
+		return $('#lost-password');
 	}
+
 };
 
 $(document).ready(OC.Lostpassword.init);

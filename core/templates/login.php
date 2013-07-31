@@ -30,7 +30,7 @@
 		</p>
 
 		<?php if (isset($_['invalidpassword']) && ($_['invalidpassword'])): ?>
-		<a id="lost-password" class="warning" href="<?php print_unescaped(OC_Helper::linkToRoute('core_lostpassword_index')) ?>">
+		<a id="lost-password" class="warning" href="">
 			<?php p($l->t('Lost your password?')); ?>
 		</a>
 		<?php endif; ?>
