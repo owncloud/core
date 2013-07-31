@@ -39,13 +39,13 @@ use OC\Hooks\ForwardingEmitter;
  *
  * The ShareManager's primary purpose is to ensure consistency between shares and their reshares
  *
- *  Hooks available in scope \OC\Share:
- *  - preShare(Share $share)
- *  - postShare(Share $share)
- *  - preUnshare(Share $share)
- *  - postUnshare(Share $share)
- *  - preUpdate(Share $share)
- *  - postUpdate(Share $share)
+ * Hooks available in scope \OC\Share:
+ *  - preShare(\OC\Share\Share $share)
+ *  - postShare(\OC\Share\Share $share)
+ *  - preUnshare(\OC\Share\Share $share)
+ *  - postUnshare(\OC\Share\Share $share)
+ *  - preUpdate(\OC\Share\Share $share)
+ *  - postUpdate(\OC\Share\Share $share)
  *
  * @version 2.0.0 BETA
  */
@@ -55,7 +55,7 @@ class ShareManager extends ForwardingEmitter {
 
 	/**
 	 * Register a share backend
-	 * @param ShareBackend $shareBackend
+	 * @param \OC\Share\ShareBackend $shareBackend
 	 */
 	public function registerShareBackend(ShareBackend $shareBackend) {
 		$this->shareBackends[$shareBackend->getItemType()] = $shareBackend;
@@ -64,7 +64,7 @@ class ShareManager extends ForwardingEmitter {
 
 	/**
 	 * Get all registered share backends
-	 * @return ShareBackend[]
+	 * @return \OC\Share\ShareBackend[]
 	 */
 	public function getShareBackends() {
 		return $this->shareBackends;
@@ -73,8 +73,8 @@ class ShareManager extends ForwardingEmitter {
 	/**
 	 * Get a share backend by item type
 	 * @param string $itemType
-	 * @throws ShareBackendDoesNotExistException
-	 * @return ShareBackend
+	 * @throws \OC\Share\Exception\ShareBackendDoesNotExistException
+	 * @return \OC\Share\ShareBackend
 	 */
 	public function getShareBackend($itemType) {
 		if (isset($this->shareBackends[$itemType])) {
@@ -87,11 +87,11 @@ class ShareManager extends ForwardingEmitter {
 	/**
 	 * Share a share in the share backend
 	 * @param Share $share
-	 * @throws InvalidItemException
-  	 * @throws InvalidShareException
-  	 * @throws InvalidPermissionsException
-  	 * @throws InvalidExpirationTimeException
-	 * @return bool
+	 * @throws \OC\Share\Exception\InvalidItemException
+	 * @throws \OC\Share\Exception\InvalidShareException
+	 * @throws \OC\Share\Exception\InvalidPermissionsException
+	 * @throws \OC\Share\Exception\InvalidExpirationTimeException
+	 * @return \OC\Share\Share | bool
 	 */
 	public function share(Share $share) {
 		$shareBackend = $this->getShareBackend($share->getItemType());
@@ -146,7 +146,7 @@ class ShareManager extends ForwardingEmitter {
 
 	/**
 	 * Unshare a share in the share backend
-	 * @param Share $share
+	 * @param \OC\Share\Share $share
 	 */
 	public function unshare(Share $share) {
 		$shareBackend = $this->getShareBackend($share->getItemType());
@@ -161,10 +161,10 @@ class ShareManager extends ForwardingEmitter {
 
 	/**
 	 * Update a share's properties in the share backend
-	 * @param Share $share
-	 * @throws ShareDoesNotExistException
-	 * @throws InvalidPermissionsException
-	 * @throws InvalidExpirationTimeException
+	 * @param \OC\Share\Share $share
+	 * @throws \OC\Share\Exception\ShareDoesNotExistException
+	 * @throws \OC\Share\Exception\InvalidPermissionsException
+	 * @throws \OC\Share\Exception\InvalidExpirationTimeException
 	 *
 	 * Updating permissions or expiration time will trigger an update of the respective property
 	 * for all reshares to ensure consistency with the parent shares
@@ -194,7 +194,7 @@ class ShareManager extends ForwardingEmitter {
 	 * @param array $filter (optional) A key => value array of share properties
 	 * @param int $limit (optional)
 	 * @param int $offset (optional)
-	 * @return Share[]
+	 * @return \OC\Share\Share[]
 	 */
 	public function getShares($itemType, $filter = array(), $limit = null, $offset = null) {
 		$shares = array();
@@ -228,8 +228,8 @@ class ShareManager extends ForwardingEmitter {
 	 * @param int $id
 	 * @param string $itemType (optional)
 	 * @param string $shareTypeId (optional)
-	 * @throws ShareDoesNotExistException
-	 * @return Share
+	 * @throws \OC\Share\Exception\ShareDoesNotExistException
+	 * @return \OC\Share\Share
 	 */
 	public function getShareById($id, $itemType = null, $shareTypeId = null) {
 		$share = array();
@@ -281,8 +281,8 @@ class ShareManager extends ForwardingEmitter {
 
 	/**
 	 * Get all reshares of a share
-	 * @param Share $share
-	 * @return Share[]
+	 * @param \OC\Share\Share $share
+	 * @return \OC\Share\Share[]
 	 *
 	 * It is possible for the reshares to be of a different item type if the share's item type
 	 * is a collection
@@ -307,9 +307,9 @@ class ShareManager extends ForwardingEmitter {
 
 	/**
 	 * Get all parents of a share
-	 * @param Share $share
-  	 * @throws ShareDoesNotExistException
-	 * @return Share[]
+	 * @param \OC\Share\Share $share
+	 * @throws \OC\Share\Exception\ShareDoesNotExistException
+	 * @return \OC\Share\Share[]
 	 *
 	 * It is possible for the parents to be of a different item type if the shares's item type
 	 * is a child item type in a collection
@@ -347,8 +347,8 @@ class ShareManager extends ForwardingEmitter {
 
 	/**
 	 * Search for reshares of a share
-	 * @param Share $share
-	 * @return Share[]
+	 * @param \OC\Share\Share $share
+	 * @return \OC\Share\Share[]
 	 *
 	 * Call this to determine if the share has existing reshares because there is a duplicate share
 	 *
@@ -382,8 +382,8 @@ class ShareManager extends ForwardingEmitter {
 
 	/**
 	 * Search for parent shares of a share
-	 * @param Share $share
-	 * @return Share[]
+	 * @param \OC\Share\Share $share
+	 * @return \OC\Share\Share[]
 	 *
 	 * Call this to determine if the share is a reshare and needs to set the parent ids property
 	 *
@@ -413,7 +413,7 @@ class ShareManager extends ForwardingEmitter {
 
 	/**
 	 * Get the total permissions of an array of shares
-	 * @param Share[] $shares
+	 * @param \OC\Share\Share[] $shares
 	 * @return int
 	 */
 	protected function getTotalPermissions(array $shares) {
@@ -426,8 +426,8 @@ class ShareManager extends ForwardingEmitter {
 
 	/**
 	 * Get the latest expiration time of an array of shares
-	 * @param Share[] $shares
-	 * @return int|null
+	 * @param \OC\Share\Share[] $shares
+	 * @return int | null
 	 */
 	protected function getLatestExpirationTime(array $shares) {
 		$latestTime = null;
@@ -444,8 +444,8 @@ class ShareManager extends ForwardingEmitter {
 
 	/**
 	 * Check if a share's permissions are valid with respect to the parent shares
-	 * @param Share $share
-	 * @throws InvalidPermissionsException
+	 * @param \OC\Share\Share $share
+	 * @throws \OC\Share\Exception\InvalidPermissionsException
 	 * @return bool
 	 */
 	protected function areValidPermissionsForParents(Share $share) {
@@ -465,8 +465,8 @@ class ShareManager extends ForwardingEmitter {
 
 	/**
 	 * Check if a share's expiration time is valid with respect to the parent shares
-	 * @param Share $share
-	 * @throws InvalidExpirationTimeException
+	 * @param \OC\Share\Share $share
+	 * @throws \OC\Share\Exception\InvalidExpirationTimeException
 	 * @return bool
 	 */
 	protected function isValidExpirationTimeForParents(Share $share) {
@@ -486,8 +486,8 @@ class ShareManager extends ForwardingEmitter {
 
 	/**
 	 * Update the reshares of a share to ensure consistency of permissions and expiration time
-	 * @param Share $share
-	 * @param Share $oldShare
+	 * @param \OC\Share\Share $share
+	 * @param \OC\Share\Share $oldShare
 	 *
 	 * The share has to be updated in the share backend before this is called
 	 * 
