@@ -84,14 +84,16 @@ class OC_Mount_Config {
 				'token' => '#token'),
 				'custom' => 'google');
 
-		$backends['\OC\Files\Storage\SWIFT']=array(
-			'backend' => 'OpenStack Swift',
+		$backends['\OC\Files\Storage\Swift']=array(
+			'backend' => 'OpenStack Object Storage',
 			'configuration' => array(
-				'host' => 'URL',
 				'user' => 'Username',
-				'token' => '*Token',
-				'root' => '&Root',
-				'secure' => '!Secure ftps://'));
+				'tenant' => 'Tenantname (optional)',
+				'password' => '*password (optional)',
+				'key' => '*API Key (optional)',
+				'bucket' => 'Bucket',
+				'region' => 'Region',
+				'url' => 'URL (optional)'));
 
 		if(OC_Mount_Config::checksmbclient()) $backends['\OC\Files\Storage\SMB']=array(
 			'backend' => 'SMB / CIFS',
