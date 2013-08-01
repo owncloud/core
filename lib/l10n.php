@@ -286,6 +286,12 @@ class OC_L10N{
 			}
 		}
 
+    $configuredLanguage = OC_Config::getValue('language', 'not_set');
+
+    if($configuredLanguage !== 'not_set') {
+      return $configuredLanguage;
+    }
+
 		if(isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
 			$accepted_languages = preg_split('/,\s*/', strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']));
 			if(is_array($app)) {
