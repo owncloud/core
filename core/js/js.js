@@ -1,6 +1,6 @@
 /**
  * Disable console output unless DEBUG mode is enabled.
- * Add 
+ * Add
  *	 define('DEBUG', true);
  * To the end of config/config.php to enable debug mode.
  * The undefined checks fix the broken ie8 console
@@ -28,10 +28,12 @@ if (oc_debug !== true || typeof console === "undefined" || typeof console.log ==
  * translate a string
  * @param app the id of the app for which to translate the string
  * @param text the string to translate
+ * @param vars (optional) FIXME
+ * @param count (optional) number to replace %n with
  * @return string
  */
-function t(app,text, vars){
-	if( !( t.cache[app] )){
+function t(app, text, vars, count){
+	if( !( t.cache[app] )) {
 		$.ajax(OC.filePath('core','ajax','translations.php'),{
 			async:false,//todo a proper sollution for this without sync ajax calls
 			data:{'app': app},
@@ -46,38 +48,52 @@ function t(app,text, vars){
 			t.cache[app] = [];
 		}
 	}
-	var _build = function (text, vars) {
-		return text.replace(/{([^{}]*)}/g,
+	var _build = function (text, vars, count) {
+		return text.replace(/%n/g, count).replace(/{([^{}]*)}/g,
 			function (a, b) {
 				var r = vars[b];
 				return typeof r === 'string' || typeof r === 'number' ? r : a;
 			}
 		);
 	};
+	var translation = text;
 	if( typeof( t.cache[app][text] ) !== 'undefined' ){
-		if(typeof vars === 'object') {
-			return _build(t.cache[app][text], vars);
-		} else {
-			return t.cache[app][text];
-		}
+		translation = t.cache[app][text];
 	}
-	else{
-		if(typeof vars === 'object') {
-			return _build(text, vars);
-		} else {
-			return text;
-		}
+
+	if(typeof vars === 'object' || count !== undefined ) {
+		return _build(translation, vars, count);
+	} else {
+		return translation;
 	}
 }
 t.cache={};
 
-/*
+/**
+ * translate a string
+ * @param app the id of the app for which to translate the string
+ * @param text_singular the string to translate for exactly one object
+ * @param text_plural the string to translate for n objects
+ * @param count number to determine whether to use singular or plural
+ * @param vars (optional) FIXME
+ * @return string
+ */
+function n(app, text_singular, text_plural, count, vars){
+	if(count === 1) {
+		return t(app, text_singular, vars, count);
+	}
+	else{
+		return t(app, text_plural, vars, count);
+	}
+}
+
+/**
 * Sanitizes a HTML string
-* @param string
+* @param s string
 * @return Sanitized string
 */
 function escapeHTML(s) {
-		return s.toString().split('&').join('&amp;').split('<').join('&lt;').split('"').join('&quot;');
+	return s.toString().split('&').join('&amp;').split('<').join('&lt;').split('"').join('&quot;');
 }
 
 /**
@@ -735,7 +751,7 @@ OC.get=function(name) {
 	var namespaces = name.split(".");
 	var tail = namespaces.pop();
 	var context=window;
-	
+
 	for(var i = 0; i < namespaces.length; i++) {
 		context = context[namespaces[i]];
 		if(!context){
@@ -754,7 +770,7 @@ OC.set=function(name, value) {
 	var namespaces = name.split(".");
 	var tail = namespaces.pop();
 	var context=window;
-	
+
 	for(var i = 0; i < namespaces.length; i++) {
 		if(!context[namespaces[i]]){
 			context[namespaces[i]]={};
