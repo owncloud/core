@@ -56,9 +56,16 @@ if (\OCP\App::isEnabled('files_encryption') && $userstatus !== 'user') {
 
 	}
 } else { // if user changes his own password or if encryption is disabled, proceed
-	if ($userstatus == 'user' && !is_null($password) && OC_User::setPassword($username, $password)) {
-		OC_JSON::success(array('data' => array('username' => $username)));
-	} else {
-		OC_JSON::error(array('data' => array('message' => 'Unable to change password')));
-	}
+
+        // Administrators and users who've typed their old password can create a new passowrd. 
+        if ($userstatus == "admin" || $userstatus == "user"){
+                if (!is_null($password) && OC_User::setPassword($username, $password)) {
+                        OC_JSON::success(array('data' => array('username' => $username)));
+                } else {
+                        OC_JSON::error(array('data' => array('message' => 'Unable to change password')));
+                }
+        } else { // If we're at "subadmin", the user did not specify their old password.  Don't change the password and let them know.
+                OC_JSON::error(array('data' => array('message' => 'Unable to change password.  Please type your old password.')));
+        }
+
 }
