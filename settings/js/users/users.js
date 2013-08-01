@@ -100,7 +100,6 @@ usersmanagement.controller('creategroupController', ['$scope', '$http', 'GroupSe
 			GroupService.creategroup().save({ groupname : $scope.newgroup });
 		}
 		$scope.disabledcreategroup = function() {
-			// here comes the logic for disabling the "add group" button
 			return false;
 		}
 	}
@@ -116,10 +115,9 @@ usersmanagement.controller('grouplistController', ['$scope', '$http', '$routePar
 			var grouplist = $scope.groupnames;
 			$scope.loading = false;
 			
-			//console.log($routeParams.groupid);
 			$scope.groups = GroupService.getByGroupId($routeParams.groupid);
 
-			// Selects teh current Group.
+			// Selects the current Group.
 			$scope.selectGroup = function(groupid) {
 				$scope.selectedGroup = groupid;
 			}
@@ -144,9 +142,6 @@ usersmanagement.controller('addUserController', ['$scope', '$http', 'UserService
 	function($scope, $http, UserService, GroupService) {
 		var newuser,password = {};
 		var groups = [];
-		//$scope.allgroups = GroupService.getgrouplist();
-		//console.log($scope.allgroups);
-		/* Password can be console logged, do something. */
 		$scope.saveuser = function() {
 			UserService.createuser().save({ username : $scope.newuser }, { password : $scope.password }, { group : $scope.groups });
 		}
@@ -169,7 +164,6 @@ usersmanagement.controller('userlistController', ['$scope', '$http', 'UserServic
 			$scope.loading = false;
 			
 			$scope.gid = $routeParams.groupid;
-			//console.log($scope.gid);
 			$scope.deleteuser = function(user) {
 				$scope.users.splice($scope.users.indexOf(user), 1);
 				UserService.removeuser().delete({ username : user });
