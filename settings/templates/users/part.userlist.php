@@ -78,7 +78,7 @@
 				</select>
 			</td>
 			<td class="delete-column">
-				<button class="svg action delete-icon delete-button delete-user-icon" ng-click="deleteuser(user.name)"></button>
+				<button class="svg action delete-icon delete-button delete-user-icon" ng-click="deleteuser(user)"></button>
 			</td>
 		</tr>
 	</tbody>

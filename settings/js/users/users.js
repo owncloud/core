@@ -167,12 +167,14 @@ usersmanagement.controller('userlistController', ['$scope', '$http', 'UserServic
 		$http.get(OC.filePath('settings', 'ajax', 'userlist.php')).then(function(response) {
 			$scope.users = response.data.userdetails;
 			$scope.loading = false;
+			
+			$scope.gid = $routeParams.groupid;
+			//console.log($scope.gid);
+			$scope.deleteuser = function(user) {
+				$scope.users.splice($scope.users.indexOf(user), 1);
+				UserService.removeuser().delete({ username : user });
+			}
 		});
-		$scope.gid = $routeParams.groupid;
-		//console.log($scope.gid);
-		$scope.deleteuser = function(userid) {
-			UserService.removeuser().delete({ username : userid });
-		}
 	}
 ]);
 
