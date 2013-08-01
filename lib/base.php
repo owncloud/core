@@ -741,7 +741,7 @@ class OC {
 		}
 	}
 
-	public static function tryApacheAuth() {
+	protected static function tryApacheAuth() {
 		return OC_User::handleApacheAuth(false);
 	}
 
