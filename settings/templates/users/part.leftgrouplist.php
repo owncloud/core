@@ -29,7 +29,7 @@
 		<a ng-href="#/group/{{ groupname.groupid }}">{{ groupname.name }}</a>
 		<span class="utils">
 			<span class="usercount">{{ groupname.useringroup.length }}</span>
-			<button class="svg action delete-icon delete-button" ng-click="deletegroup(groupname.name)" original-title="Delete Group" title="Delete Group"></button>
+			<button class="svg action delete-icon delete-button" ng-click="deletegroup(groupname)" original-title="Delete Group" title="Delete Group"></button>
 		</span>
 	</li>
 </ul>

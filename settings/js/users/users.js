@@ -113,25 +113,28 @@ usersmanagement.controller('grouplistController', ['$scope', '$http', '$routePar
 		$scope.loading = true;
 		$http.get(OC.filePath('settings', 'ajax', 'grouplist.php')).then(function(response){
 			$scope.groupnames = response.data.result;
+			var grouplist = $scope.groupnames;
 			$scope.loading = false;
+			
+			//console.log($routeParams.groupid);
+			$scope.groups = GroupService.getByGroupId($routeParams.groupid);
+
+			// Selects teh current Group.
+			$scope.selectGroup = function(groupid) {
+				$scope.selectedGroup = groupid;
+			}
+
+			// Adds an Active class for the ng-class field.
+			$scope.selectListGroup = function(groupid) {
+				return groupid === $scope.selectedGroup ? 'active' : undefined;
+			}
+
+			//Deletes the group.
+			$scope.deletegroup = function(group) {
+				grouplist.splice(grouplist.indexOf(group), 1);
+				GroupService.removegroup().delete({ groupname : group });
+			}
 		});
-		//console.log($routeParams.groupid);
-		$scope.groups = GroupService.getByGroupId($routeParams.groupid);
-
-		// Selects teh current Group.
-		$scope.selectGroup = function(groupid) {
-			$scope.selectedGroup = groupid;
-		}
-
-		// Adds an Active class for the ng-class field.
-		$scope.selectListGroup = function(groupid) {
-			return groupid === $scope.selectedGroup ? 'active' : undefined;
-		}
-
-		//Deletes the group.
-		$scope.deletegroup = function(groupid) {
-			GroupService.removegroup().delete({ groupname : groupid });
-		}
 	}
 ]);
 
