@@ -56,7 +56,7 @@ if (\OCP\App::isEnabled('files_encryption') && $userstatus !== 'user') {
 
 	}
 } else { // if user changes his own password or if encryption is disabled, proceed
-	if (!is_null($password) && OC_User::setPassword($username, $password)) {
+	if ($userstatus == 'user' && !is_null($password) && OC_User::setPassword($username, $password)) {
 		OC_JSON::success(array('data' => array('username' => $username)));
 	} else {
 		OC_JSON::error(array('data' => array('message' => 'Unable to change password')));
