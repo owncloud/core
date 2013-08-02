@@ -36,6 +36,7 @@ var usersmanagement = angular.module('usersmanagement', ['ngResource','localytic
 /* Group Service */ 
 
 usersmanagement.factory('GroupService', function($resource) {
+	var groupname = {};
 	return {
 		creategroup: function () {
 			return $resource(OC.filePath('settings', 'ajax', 'creategroup.php'), {}, {
@@ -58,10 +59,11 @@ usersmanagement.factory('GroupService', function($resource) {
 				method: 'GET'
 			});
 		},
-		getgrouplist: function() {
-			return $resource(OC.filePath('settings', 'ajax', 'grouplist.php'), {}, {
-				method: 'POST'
-			});
+		addnewgroup: function(newgroup) {
+			groupname = newgroup;
+		},
+		getnewgroup: function() {
+			return groupname;
 		}
 	}
 });
@@ -97,6 +99,7 @@ usersmanagement.controller('creategroupController', ['$scope', '$http', 'GroupSe
 	function($scope, $http, GroupService) {
 		var newgroup = {};
 		$scope.savegroup = function() {
+			GroupService.addnewgroup($scope.newgroup);
 			GroupService.creategroup().save({ groupname : $scope.newgroup });
 		}
 		$scope.disabledcreategroup = function() {
@@ -116,6 +119,18 @@ usersmanagement.controller('grouplistController', ['$scope', '$http', '$routePar
 			$scope.loading = false;
 			
 			$scope.groups = GroupService.getByGroupId($routeParams.groupid);
+			/* Getting New Group from addGroup Controller
+			$scope.newgroup = GroupService.getnewgroup();
+			var newgroup = $scope.newgroup;
+						console.log(newgroup);
+			if (!newgroup.length) {
+				return;
+			}
+
+			$scope.newgroup = '';
+
+			grouplist.push({title: $scope.newgroup, completed: false});
+			*/
 
 			// Selects the current Group.
 			$scope.selectGroup = function(groupid) {
@@ -157,7 +172,7 @@ usersmanagement.controller('setQuotaController', ['$scope', 'QuotaService',
 /* Fetches the List of All Users and details on the Right Content */
 
 usersmanagement.controller('userlistController', ['$scope', '$http', 'UserService', 'GroupService','$routeParams',
-	function($scope, $http, UserService, Groupservice, $routeParams) {
+	function($scope, $http, UserService, GroupService, $routeParams) {
 		$scope.loading = true;
 		$http.get(OC.filePath('settings', 'ajax', 'userlist.php')).then(function(response) {
 			$scope.users = response.data.userdetails;
