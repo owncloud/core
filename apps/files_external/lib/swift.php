@@ -31,10 +31,25 @@ use \OpenCloud\Common\Exceptions;
 
 class Swift extends \OC\Files\Storage\Common {
 
+        /**
+         * @var \OpenCloud\ObjectStore
+         */
 	private $connection;
+        /**
+         * @var \OpenCloud\ObjectStore\Container
+         */
 	private $container;
+        /**
+         * @var \OpenCloud\OpenStack
+         */
 	private $anchor;
+        /**
+         * @var string
+         */
 	private $bucket;
+        /**
+         * @var array
+         */
 	private static $tmpFiles = array();
 
 	private function normalizePath($path) {
