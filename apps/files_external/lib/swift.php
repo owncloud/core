@@ -67,8 +67,10 @@ class Swift extends \OC\Files\Storage\Common {
 			$object = $this->container->DataObject($path);
 			return true;
 		} catch (Exceptions\ObjFetchError $e) {
+			\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
 			return false;
 		} catch (Exceptions\HttpError $e) {
+			\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
 			return false;
 		}
 	}
@@ -134,6 +136,7 @@ class Swift extends \OC\Files\Storage\Common {
 				'content_type' => 'httpd/unix-directory'
 			));
 		} catch (Exceptions\CreateUpdateError $e) {
+			\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
 			return false;
 		}
 
@@ -176,6 +179,7 @@ class Swift extends \OC\Files\Storage\Common {
 			$object = $this->container->DataObject($path . '/');
 			$object->Delete();
 		} catch (Exceptions\DeleteError $e) {
+			\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
 			return false;
 		}
 
@@ -207,6 +211,7 @@ class Swift extends \OC\Files\Storage\Common {
 			\OC\Files\Stream\Dir::register('swift' . $path, $files);
 			return opendir('fakedir://swift' . $path);
 		} catch (Exception $e) {
+			\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
 			return false;
 		}
 
@@ -222,6 +227,7 @@ class Swift extends \OC\Files\Storage\Common {
 		try {
 			$object = $this->container->DataObject($path);
 		} catch (Exceptions\ObjFetchError $e) {
+			\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
 			return false;
 		}
 
@@ -263,8 +269,10 @@ class Swift extends \OC\Files\Storage\Common {
 			$object = $this->container->DataObject($path);
 			$object->Delete();
 		} catch (Exceptions\DeleteError $e) {
+			\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
 			return false;
 		} catch (Exceptions\ObjFetchError $e) {
+			\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
 			return false;
 		}
 
@@ -282,11 +290,13 @@ class Swift extends \OC\Files\Storage\Common {
 				try {
 					$object = $this->container->DataObject($path);
 				} catch (Exceptions\ObjFetchError $e) {
+					\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
 					return false;
 				}
 				try {
 					$object->SaveToFilename($tmpFile);
 				} catch (Exceptions\IOError $e) {
+					\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
 					return false;
 				}
 				return fopen($tmpFile, 'r');
@@ -377,6 +387,7 @@ class Swift extends \OC\Files\Storage\Common {
 				));
 				$source->Copy($target);
 			} catch (Exceptions\ObjectCopyError $e) {
+				\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
 				return false;
 			}
 		} else {
@@ -392,6 +403,7 @@ class Swift extends \OC\Files\Storage\Common {
 				));
 				$source->Copy($target);
 			} catch (Exceptions\ObjectCopyError $e) {
+				\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
 				return false;
 			}
 
