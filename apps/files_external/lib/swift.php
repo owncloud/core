@@ -451,5 +451,3 @@ class Swift extends \OC\Files\Storage\Common {
 		unlink($tmpFile);
 	}
 }
-
-?>
