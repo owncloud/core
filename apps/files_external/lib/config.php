@@ -84,7 +84,7 @@ class OC_Mount_Config {
 				'token' => '#token'),
 				'custom' => 'google');
 
-		$backends['\OC\Files\Storage\Swift']=array(
+		if(OC_Mount_Config::checkcurl()) $backends['\OC\Files\Storage\Swift']=array(
 			'backend' => 'OpenStack Object Storage',
 			'configuration' => array(
 				'user' => 'Username',
