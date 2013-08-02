@@ -1,9 +1,11 @@
 <?php $TRANSLATIONS = array(
+"The password is wrong. Try again." => "Kodeordet er forkert. Prøv igen.",
 "Password" => "Kodeord",
 "Submit" => "Send",
 "%s shared the folder %s with you" => "%s delte mappen %s med dig",
 "%s shared the file %s with you" => "%s delte filen %s med dig",
 "Download" => "Download",
-"No preview available for" => "Forhåndsvisning ikke tilgængelig for",
-"web services under your control" => "Webtjenester under din kontrol"
+"Upload" => "Upload",
+"Cancel upload" => "Fortryd upload",
+"No preview available for" => "Forhåndsvisning ikke tilgængelig for"
 );

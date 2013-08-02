@@ -24,6 +24,7 @@
 "Delete" => "Forigi",
 "__language_name__" => "Esperanto",
 "Security Warning" => "Sekureca averto",
+"Your web server is not yet properly setup to allow files synchronization because the WebDAV interface seems to be broken." => "Via TTT-servilo ankoraŭ ne ĝuste agordiĝis por permesi sinkronigi dosierojn ĉar la WebDAV-interfaco ŝajnas rompita.",
 "Cron" => "Cron",
 "Sharing" => "Kunhavigo",
 "Enable Share API" => "Kapabligi API-on por Kunhavigo",
@@ -52,6 +53,7 @@
 "Forum" => "Forumo",
 "Bugtracker" => "Cimoraportejo",
 "Commercial Support" => "Komerca subteno",
+"Get the apps to sync your files" => "Ekhavu la aplikaĵojn por sinkronigi viajn dosierojn",
 "You have used <strong>%s</strong> of the available <strong>%s</strong>" => "Vi uzas <strong>%s</strong> el la haveblaj <strong>%s</strong>",
 "Password" => "Pasvorto",
 "Your password was changed" => "Via pasvorto ŝanĝiĝis",
@@ -65,11 +67,11 @@
 "Language" => "Lingvo",
 "Help translate" => "Helpu traduki",
 "WebDAV" => "WebDAV",
-"Use this address to connect to your ownCloud in your file manager" => "Uzu ĉi tiun adreson por konekti al via ownCloud vian dosieradministrilon",
 "Create" => "Krei",
 "Default Storage" => "Defaŭlta konservejo",
 "Unlimited" => "Senlima",
 "Other" => "Alia",
+"Username" => "Uzantonomo",
 "Storage" => "Konservejo",
 "Default" => "Defaŭlta"
 );

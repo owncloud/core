@@ -45,7 +45,7 @@ class OC_Mount_Config {
 	* If the configuration parameter should be secret, add a '*' to the beginning of the value
 	* If the configuration parameter is a boolean, add a '!' to the beginning of the value
 	* If the configuration parameter is optional, add a '&' to the beginning of the value
-	* If the configuration parameter is hidden, add a '#' to the begining of the value
+	* If the configuration parameter is hidden, add a '#' to the beginning of the value
 	* @return array
 	*/
 	public static function getBackends() {

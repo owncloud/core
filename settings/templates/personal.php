@@ -4,13 +4,6 @@
  * See the COPYING-README file.
  */?>
 
-<div id="quota" class="personalblock"><div style="width:<?php p($_['usage_relative']);?>%;">
-	<p id="quotatext"><?php print_unescaped($l->t('You have used <strong>%s</strong> of the available <strong>%s</strong>',
-		array($_['usage'], $_['total_space'])));?></p>
-</div></div>
-
-
-
 <div class="clientsbox">
 	<h2><?php p($l->t('Get the apps to sync your files'));?></h2>
 	<a href="<?php p($_['clients']['desktop']); ?>" target="_blank">
@@ -27,6 +20,15 @@
 	<?php }?>
 </div>
 
+
+<div id="quota" class="personalblock">
+	<div style="width:<?php p($_['usage_relative']);?>%;">
+		<p id="quotatext">
+			<?php print_unescaped($l->t('You have used <strong>%s</strong> of the available <strong>%s</strong>',
+			array($_['usage'], $_['total_space'])));?>
+		</p>
+	</div>
+</div>
 
 
 <?php
@@ -63,6 +65,9 @@ if($_['displayNameChangeSupported']) {
 }
 ?>
 
+<?php
+if($_['passwordChangeSupported']) {
+?>
 <form id="lostpassword">
 	<fieldset class="personalblock">
 		<legend><strong><?php p($l->t('Email'));?></strong></legend>
@@ -71,6 +76,9 @@ if($_['displayNameChangeSupported']) {
 		<em><?php p($l->t('Fill in an email address to enable password recovery'));?></em>
 	</fieldset>
 </form>
+<?php
+}
+?>
 
 <form>
 	<fieldset class="personalblock">
@@ -85,27 +93,32 @@ if($_['displayNameChangeSupported']) {
 			<option value="<?php p($language['code']);?>"><?php p($language['name']);?></option>
 		<?php endforeach;?>
 		</select>
-		<a href="https://www.transifex.net/projects/p/owncloud/team/<?php p($_['activelanguage']['code']);?>/"
+		<?php if (OC_Util::getEditionString() === ''): ?>
+		<a href="https://www.transifex.com/projects/p/owncloud/team/<?php p($_['activelanguage']['code']);?>/"
 			target="_blank"><em><?php p($l->t('Help translate'));?></em></a>
+		<?php endif; ?>
 	</fieldset>
 </form>
 
 <fieldset class="personalblock">
 	<legend><strong><?php p($l->t('WebDAV'));?></strong></legend>
 	<code><?php print_unescaped(OC_Helper::linkToRemote('webdav')); ?></code><br />
-	<em><?php p($l->t('Use this address to connect to your ownCloud in your file manager'));?></em>
+	<em><?php print_unescaped($l->t('Use this address to <a href="%s/server/5.0/user_manual/files/files.html" target="_blank">access your Files via WebDAV</a>', array($theme->getDocBaseUrl())));?></em>
 </fieldset>
 
 <?php foreach($_['forms'] as $form) {
 	print_unescaped($form);
 };?>
 
-
 <fieldset class="personalblock">
 	<legend><strong><?php p($l->t('Version'));?></strong></legend>
-	<strong>ownCloud</strong> <?php p(OC_Util::getVersionString()); ?>
-	<?php p(OC_Util::getEditionString()); ?> <br />
+	<strong><?php p($theme->getName()); ?></strong> <?php p(OC_Util::getVersionString()); ?><br/>
+<?php if (OC_Util::getEditionString() === ''): ?>
 	<?php print_unescaped($l->t('Developed by the <a href="http://ownCloud.org/contact" target="_blank">ownCloud community</a>, the <a href="https://github.com/owncloud" target="_blank">source code</a> is licensed under the <a href="http://www.gnu.org/licenses/agpl-3.0.html" target="_blank"><abbr title="Affero General Public License">AGPL</abbr></a>.')); ?>
+<?php endif; ?>
 </fieldset>
-
-
+<fieldset class="personalblock credits-footer">
+<p>
+	<?php print_unescaped($theme->getShortFooter()); ?>
+</p>
+</fieldset>
