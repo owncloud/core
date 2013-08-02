@@ -35,18 +35,6 @@ class SWIFT extends \OC\Files\Storage\Common{
 	private $objects=array();
 	private $containers=array();
 
-	/**
-	 * check if curl is installed
-	 */
-	public static function checkDependencies() {
-		if (function_exists('curl_init')) {
-			return true;
-		} else {
-			$l = new \OC_L10N('files_external');
-			return $l->t('<b>Note:</b> The cURL support in PHP is not enabled or installed. Mounting of OpenStack Swift is not possible. Please ask your system administrator to install it.');
-		}
-	}
-
 	const SUBCONTAINER_FILE='.subcontainers';
 
 	/**
@@ -596,4 +584,16 @@ class SWIFT extends \OC\Files\Storage\Common{
 			$obj->sync_metadata();
 		}
 	}
+
+	/**
+	 * check if curl is installed
+	 */
+	public static function checkDependencies() {
+		if (function_exists('curl_init')) {
+			return true;
+		} else {
+			return array('curl');
+		}
+	}
+
 }

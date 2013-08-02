@@ -1,7 +1,6 @@
 <form id="files_external">
 	<fieldset class="personalblock">
 	<legend><strong><?php p($l->t('External Storage')); ?></strong></legend>
-		<?php if (isset($_['dependencies']) and ($_['dependencies']<>'')) print_unescaped(''.$_['dependencies'].''); ?>
 		<table id="externalStorage" data-admin='<?php print_unescaped(json_encode($_['isAdminPage'])); ?>'>
 			<thead>
 				<tr>
@@ -118,6 +117,7 @@
 			<?php endforeach; ?>
 			</tbody>
 		</table>
+		<?php if (isset($_['dependencies']) and ($_['dependencies']<>'')) print_unescaped(''.$_['dependencies'].''); ?>
 		<br />
 
 		<?php if ($_['isAdminPage']): ?>
