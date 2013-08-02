@@ -186,4 +186,8 @@ $CONFIG = array(
 'customclient_desktop' => '', //http://owncloud.org/sync-clients/
 'customclient_android' => '', //https://play.google.com/store/apps/details?id=com.owncloud.android
 'customclient_ios' => '' //https://itunes.apple.com/us/app/owncloud/id543672169?mt=8
+
+// Enable or disable possibleActions of the user
+"disablepasswordchange" => false,
+"disabledisplaynamechange" => false,
 );
