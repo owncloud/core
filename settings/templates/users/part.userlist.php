@@ -62,9 +62,10 @@
 			</td>
 			<td class="groups">
 				<span ng-show="viewgroup" ng-click="viewgroup = !viewgroup; editgroup = !toggleditgroup">{{user.groups}}</span>
-			    <select chosen multiple ng-show="editgroup" allow-single-deselect="true" no-results-text="'No Such Group..'" class="chzn-done" ng-focus="editgroup" ng-blur="editgroup = !editgroup; viewgroup = !viewgroup" style="height:30px;"><!--Temporary, till everything is fixed on chosen is-->
-			      <option value="{{user.groups}}">{{user.groups}}</option>
-			    </select>
+				<div ng-focus="editgroup" ng-show="editgroup" ng-blur="editgroup = !editgroup; viewgroup = !viewgroup" class="editgroupdiv">
+			    	<select chosen multiple allow-single-deselect="true" data-placeholder="Select Group.." no-results-text="'No Such Group..'">
+			    	</select>
+				</div>
 			</td>
 			<td class="local-storage">
 				<span ng-show="viewls" ng-click="viewls = !viewls; editls = !editls">{{ user.quota }}</span>

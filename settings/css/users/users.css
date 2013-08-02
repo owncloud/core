@@ -130,3 +130,19 @@
 .login-name span:hover, .display-name span:hover, .user-pass span:hover {
 	border:1px solid #eee;
 }
+
+.groups .editgroupdiv select {
+	display:none !important;
+}
+
+.groups .editgroupdiv .chzn-container {
+	width:120px !important;
+}
+
+.groups .editgroupdiv .chzn-container .chzn-choices .search-field input {
+	width:118px !important;
+}
+
+.groups .editgroupdiv .chzn-container .chzn-drop {
+	width:118px !important;
+}
