@@ -77,8 +77,8 @@ $tmpl->assign('email', $email);
 $tmpl->assign('languages', $languages);
 $tmpl->assign('commonlanguages', $commonlanguages);
 $tmpl->assign('activelanguage', $userLang);
-$tmpl->assign('passwordChangeSupported', OC_User::canUserChangePassword(OC_User::getUser()));
-$tmpl->assign('displayNameChangeSupported', OC_User::canUserChangeDisplayName(OC_User::getUser()));
+$tmpl->assign('passwordChangeSupported', !OC_Config::getValue('disablepasswordchange', false) && OC_User::canUserChangePassword(OC_User::getUser()));
+$tmpl->assign('displayNameChangeSupported', !OC_Config::getValue('disabledisplaynamechange', false) && OC_User::canUserChangeDisplayName(OC_User::getUser()));
 $tmpl->assign('displayName', OC_User::getDisplayName());
 
 $forms=OC_App::getForms('personal');
