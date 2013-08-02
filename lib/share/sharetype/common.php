@@ -174,9 +174,8 @@ abstract class Common implements IShareType {
 	public function clear() {
 		$sql = 'DELETE FROM '.$this->table.' WHERE `share_type_id` = ?';
 		\OC_DB::executeAudited($sql, array($this->getId()));
-		$sql = 'DELETE FROM '.$this->parentsTable.' USING '.$this->parentsTable.' '.
-			'LEFT JOIN '.$this->table.' ON '.$this->parentsTable.'.`id` = '.$this->table.'.`id` '.
-			'WHERE '.$this->table.'.`id` IS NULL';
+		$sql = 'DELETE FROM '.$this->parentsTable.' WHERE '.$this->parentsTable.'.`id` NOT IN '.
+			' (SELECT `id` FROM '.$this->table.')';
 		\OC_DB::executeAudited($sql);
 	}
 
