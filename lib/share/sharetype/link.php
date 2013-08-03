@@ -29,12 +29,24 @@ use OC\User\Manager;
 use PasswordHash;
 
 /**
+ * Temporary class - waiting for an injectable Util
+ */
+class TokenMachine {
+
+	public function getToken($length) {
+		return \OC_Util::generate_random_bytes($length);
+	}
+
+}
+
+/**
  * Controller for shares between a user and the public via a link
  */
 class Link extends Common {
 
 	protected $itemTargetMachine;
 	protected $userManager;
+	protected $tokenMachine;
 	protected $hasher;
 	protected $linkTable;
 
@@ -46,14 +58,17 @@ class Link extends Common {
 	 * @param \OC\Share\ShareFactory $shareFactory
 	 * @param \OC\Share\ItemTargetMachine $itemTargetMachine
 	 * @param \OC\User\Manager $userManager
+	 * @param \OC\Share\ShareType\TokenMachine $tokenMachine
 	 * @param \PasswordHash $hasher
 	 */
 	public function __construct($itemType, ShareFactory $shareFactory,
-		ItemTargetMachine $itemTargetMachine, Manager $userManager, PasswordHash $hasher
+		ItemTargetMachine $itemTargetMachine, Manager $userManager, TokenMachine $tokenMachine,
+		PasswordHash $hasher
 	) {
 		parent::__construct($itemType, $shareFactory);
 		$this->itemTargetMachine = $itemTargetMachine;
 		$this->userManager = $userManager;
+		$this->tokenMachine = $tokenMachine;
 		$this->hasher = $hasher;
 		$this->linksTable = '`*PREFIX*shares_links`';
 	}
@@ -78,7 +93,7 @@ class Link extends Common {
 		$share->setItemTarget($this->itemTargetMachine->getItemTarget($share));
 		$share = parent::share($share);
 		if ($share) {
-			$token = \OC_Util::generate_random_bytes(self::TOKEN_LENGTH);
+			$token = $this->tokenMachine->getToken(self::TOKEN_LENGTH);
 			$password = $this->hashPassword($share->getPassword());
 			$sql = 'INSERT INTO '.$this->linksTable.' (`id`, `token`, `password`)'.
 				'VALUES (?, ?, ?)';

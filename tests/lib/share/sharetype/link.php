@@ -36,6 +36,8 @@ class Link extends ShareType {
 
 	private $itemTargetMachine;
 	private $userManager;
+	private $tokenMachine;
+	private $counter;
 	private $hasher;
 	private $mtgap;
 	private $mtgapDisplay;
@@ -60,11 +62,15 @@ class Link extends ShareType {
 		$this->userManager = $this->getMockBuilder('\OC\User\Manager')
 			->disableOriginalConstructor()
 			->getMock();
+		$this->tokenMachine = $this->getMockBuilder('\OC\Share\ShareType\TokenMachine')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->counter = 0;
 		$this->hasher = $this->getMockBuilder('\PasswordHash')
 			->disableOriginalConstructor()
 			->getMock();
 		$this->instance = new TestLink('test', new ShareFactory(), $this->itemTargetMachine,
-			$this->userManager,	$this->hasher
+			$this->userManager, $this->tokenMachine, $this->hasher
 		);
 	}
 
@@ -101,29 +107,41 @@ class Link extends ShareType {
 		$this->userManager->expects($this->atLeastOnce())
 			->method('get')
 			->will($this->returnValueMap($map));
+		$counter = $this->counter;
 		switch ($version) {
 			case 1:
 				$share->setShareOwner($this->mtgap);
 				$share->setItemOwner($this->mtgap);
+				$this->tokenMachine->expects($this->at($counter))
+					->method('getToken')
+					->will($this->returnValue('2kla32ljadsfoj23kjab'));
 				break;
 			case 2:
 				$share->setShareOwner($this->mtgap);
 				$share->setItemOwner($this->mtgap);
+				$this->tokenMachine->expects($this->at($counter))
+					->method('getToken')
+					->will($this->returnValue('auoiu23k2jiapi2kjads'));
 				break;
 			case 3:
 				$share->setShareOwner($this->icewind);
 				$share->setItemOwner($this->icewind);
+				$this->tokenMachine->expects($this->at($counter))
+					->method('getToken')
+					->will($this->returnValue('82093jkadp2kjasdf212'));
 				break;
 			case 4:
 				$share->setShareOwner($this->karlitschek);
 				$share->setItemOwner($this->karlitschek);
+				$this->tokenMachine->expects($this->at($counter))
+					->method('getToken')
+					->will($this->returnValue('po2jad2ijajk32i0sads'));
 				break;
 		}	
 		return $share;
 	}
 
 	protected function getSharedTestShare($version) {
-		// TODO Set token
 		$share = new Share();
 		$share->setShareTypeId($this->instance->getId());
 		$share->setItemType('test');
@@ -136,21 +154,25 @@ class Link extends ShareType {
 				$share->setShareOwner($this->mtgap);
 				$share->setItemOwner($this->mtgap);
 				$share->setShareOwnerDisplayName($this->mtgapDisplay);
+				$share->setToken('2kla32ljadsfoj23kjab');
 				break;
 			case 2:
 				$share->setShareOwner($this->mtgap);
 				$share->setItemOwner($this->mtgap);
 				$share->setShareOwnerDisplayName($this->mtgapDisplay);
+				$share->setToken('auoiu23k2jiapi2kjads');
 				break;
 			case 3:
 				$share->setShareOwner($this->icewind);
 				$share->setItemOwner($this->icewind);
 				$share->setShareOwnerDisplayName($this->icewindDisplay);
+				$share->setToken('82093jkadp2kjasdf212');
 				break;
 			case 4:
 				$share->setShareOwner($this->karlitschek);
 				$share->setItemOwner($this->karlitschek);
 				$share->setShareOwnerDisplayName($this->karlitschekDisplay);
+				$share->setToken('po2jad2ijajk32i0sads');
 				break;
 		}	
 		return $share;
@@ -255,7 +277,7 @@ class Link extends ShareType {
 		$this->assertContains($this->share2, $shares, '', false, false);
 
 		$filter = array(
-			'shareOwner' => $this->user1,
+			'shareOwner' => $this->mtgap,
 		);
 		$shares = $this->instance->getShares($filter, null, null);
 		$this->assertCount(2, $shares);
