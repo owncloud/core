@@ -28,10 +28,15 @@
 			<input class="" id="newusername" type="text" name="loginnamefield" placeholder="<?php p($l->t('Login Name')) ?>" ng-minlength="3" required ng-model="newuser"/>
 			<span class="error" id="nologinname" ng-show="createuser_form.loginnamefield.$error.minlength">Minimum 3 characters</span>
 			<input id="newuserpassword" name="passwordfield" type="password" placeholder="<?php p($l->t('Password')) ?>" ng-model="password" required/>
-			<select chosen multiple class="groupselect" allow-single-deselect="true" data-placeholder="Select Group.." no-result-text="No Such Group.." style="width:150px;" id="newusergroups" title="<?php p($l->t('Groups'))?>">
-				<option>
-					<!--Retreive the list of groups, quota and other stuff.-->
-				</option>
+			<select
+				chosen multiple style="width:150px;" id="newusergroups"
+				class="groupselect" title="<?php p($l->t('Groups'))?>"
+				allow-single-deselect="true"
+				data-placeholder="Select Group.."
+				no-result-text="No Such Group.."
+				ng-model="selectedgroup"
+				ng-options="pergroup.result.groupid for pergroup in allgroups">
+				<option value=""></option>
 			</select>
 			<button title="<?php p($l->t('Create'))?>" ng-click="saveuser()" ng-disabled="createuser_form.$invalid"><?php p($l->t('Create'))?></button>
 		</form>

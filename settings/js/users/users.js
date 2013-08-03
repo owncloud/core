@@ -160,6 +160,8 @@ usersmanagement.controller('addUserController', ['$scope', '$http', 'UserService
 		$scope.saveuser = function() {
 			UserService.createuser().save({ username : $scope.newuser }, { password : $scope.password }, { group : $scope.groups });
 		}
+		/* Takes Out all groups for the Chosen dropdown */
+		$scope.allgroups = GroupService.getByGroupId().get();	
 	}
 ]);
 
