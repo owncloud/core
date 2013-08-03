@@ -172,33 +172,15 @@ class ShareTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals($id, $share->getId());
 	}
 
-	public function testCallShouldOnlyWorkForGetterSetter() {
-		$this->setExpectedException('\BadFunctionCallException');
-		$share = new Share();
-		$share->something();
-	}
-
-	public function testGetterShouldFailIfPropertyNotDefined() {
-		$this->setExpectedException('\BadFunctionCallException');
-		$share = new Share();
-		$share->getTest();
-	}
-
-	public function testSetterShouldFailIfPropertyNotDefined() {
-		$this->setExpectedException('\BadFunctionCallException');
-		$share = new Share();
-		$share->setTest();
-	}
-
 	public function testSetterMarksPropertyUpdated() {
 		$share = new Share();
-		$share->setId(3);
-		$this->assertContains('id', $share->getUpdatedProperties());
+		$share->setParentIds(array(1, 3));
+		$this->assertContains('parentIds', $share->getUpdatedProperties());
 	}
 
 	public function testResetUpdatedProperties() {
 		$share = new Share();
-		$share->setId(3);
+		$share->setParentIds(array(1, 3));
 		$share->resetUpdatedProperties();
 		$this->assertEmpty($share->getUpdatedProperties());
 	}

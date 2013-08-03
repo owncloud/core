@@ -28,7 +28,7 @@ namespace OC\Share;
  * Extend this class to store additional properties
  *
  * Adapated from OCA\AppFramework\Db\Entity
- * 
+ * Only setters that call markPropertyUpdated are mutable properties
  */
 class Share {
 
@@ -58,32 +58,222 @@ class Share {
 	);
 
 	/**
-	 * Get all properties in an array
-	 * @return array
+	 * Get the id
+	 * @return int
 	 */
-	public function toAPI() {
-		return array(
-			'id' => $this->id,
-			'parentIds' => $this->parentIds,
-			'shareTypeId' => $this->shareTypeId,
-			'shareOwner' => $this->shareOwner,
-			'shareOwnerDisplayName' => $this->shareOwnerDisplayName,
-			'shareWith' => $this->shareWith,
-			'shareWithDisplayName' => $this->shareWithDisplayName,
-			'itemType' => $this->itemType,
-			'itemSource' => $this->itemSource,
-			'itemTarget' => $this->itemTarget,
-			'itemOwner' => $this->itemOwner,
-			'permissions' => $this->permissions,
-			'expirationTime' => $this->expirationTime,
-			'shareTime' => $this->shareTime,
-			'token' => $this->token,
-			'password' => $this->password,
-		);
+	public function getId() {
+		return $this->id;
 	}
 
 	/**
-	 * Check if the share has create permission
+	 * Set the id
+	 * @param int $id
+	 */
+	public function setId($id) {
+		$this->id = $id;
+	}
+
+	/**
+	 * Get the references to parent shares
+	 * @return array
+	 */
+	public function getParentIds() {
+		return $this->parentIds;
+	}
+
+	/**
+	 * Set the references to parent shares
+	 * @param array $parentIds
+	 */
+	public function setParentIds($parentIds) {
+		$this->parentIds = $parentIds;
+		$this->markPropertyUpdated('parentIds');
+	}
+
+	/**
+	 * Add a reference to a parent share
+	 * @param int $id
+	 */
+	public function addParentId($id) {
+		$parentIds = $this->getParentIds();
+		$parentIds[] = $id;
+		$this->setParentIds($parentIds);
+	}
+
+	/**
+	 * Remove a reference to a parent share
+	 * @param int $id
+	 */
+	public function removeParentId($id) {
+		$parentIds = $this->getParentIds();
+		$parentIds = array_diff($this->getParentIds(), array($id));
+		$this->setParentIds($parentIds);
+	}
+
+	/**
+	 * Get the share type id
+	 * @return string
+	 */
+	public function getShareTypeId() {
+		return $this->shareTypeId;
+	}
+
+	/**
+	 * Set the share type id
+	 * @param string $shareTypeId
+	 */
+	public function setShareTypeId($shareTypeId) {
+		$this->shareTypeId = $shareTypeId;
+	}
+
+	/**
+	 * Get the share owner
+	 * @return string
+	 */
+	public function getShareOwner() {
+		return $this->shareOwner;
+	}
+
+	/**
+	 * Set the share owner
+	 * @param string $shareOwner
+	 */
+	public function setShareOwner($shareOwner) {
+		$this->shareOwner = $shareOwner;
+	}
+
+	/**
+	 * Get the share owner display name
+	 * @return string
+	 */
+	public function getShareOwnerDisplayName() {
+		return $this->shareOwnerDisplayName;
+	}
+
+	/**
+	 * Set the share owner display name
+	 * @param string $shareOwnerDisplayName
+	 */
+	public function setShareOwnerDisplayName($shareOwnerDisplayName) {
+		$this->shareOwnerDisplayName = $shareOwnerDisplayName;
+	}
+
+	/**
+	 * Get the share with
+	 * @return string
+	 */
+	public function getShareWith() {
+		return $this->shareWith;
+	}
+
+	/**
+	 * Set the share with
+	 * @param string $shareWith
+	 */
+	public function setShareWith($shareWith) {
+		$this->shareWith = $shareWith;
+	}
+
+	/**
+	 * Get the share with display name
+	 * @return string
+	 */
+	public function getShareWithDisplayName() {
+		return $this->shareWithDisplayName;
+	}
+
+	/**
+	 * Set the share With display name
+	 * @param string $shareWithDisplayName
+	 */
+	public function setShareWithDisplayName($shareWithDisplayName) {
+		$this->shareWithDisplayName = $shareWithDisplayName;
+	}
+
+	/**
+	 * Get the item type
+	 * @return string
+	 */
+	public function getItemType() {
+		return $this->itemType;
+	}
+
+	/**
+	 * Set the item type
+	 * @param string $itemType
+	 */
+	public function setItemType($itemType) {
+		$this->itemType = $itemType;
+	}
+
+	/**
+	 * Get the item source
+	 * @return mixed
+	 */
+	public function getItemSource() {
+		return $this->itemSource;
+	}
+
+	/**
+	 * Set the item source
+	 * @param mixed $itemSource
+	 */
+	public function setItemSource($itemSource) {
+		$this->itemSource = $itemSource;
+	}
+
+	/**
+	 * Get the item target
+	 * @return string
+	 */
+	public function getItemTarget() {
+		return $this->itemTarget;
+	}
+
+	/**
+	 * Set the item target
+	 * @param string $itemTarget
+	 */
+	public function setItemTarget($itemTarget) {
+		$this->itemTarget = $itemTarget;
+		$this->markPropertyUpdated('itemTarget');
+	}
+
+	/**
+	 * Get the item owner, may differ from share owner if this is a reshare
+	 * @return string
+	 */
+	public function getItemOwner() {
+		return $this->itemOwner;
+	}
+
+	/**
+	 * Set the item owner
+	 * @param string $itemOwner
+	 */
+	public function setItemOwner($itemOwner) {
+		$this->itemOwner = $itemOwner;
+	}
+
+	/**
+	 * Get the permissions
+	 * @return int
+	 */
+	public function getPermissions() {
+		return $this->permissions;
+	}
+
+	/**
+	 * Set the permissions
+	 * @param int $permissions
+	 */
+	public function setPermissions($permissions) {
+		$this->permissions = $permissions;
+		$this->markPropertyUpdated('permissions');
+	}
+
+	/**
+	 * Check if create permission is granted
 	 * @return bool
 	 */
 	public function isCreatable() {
@@ -91,7 +281,7 @@ class Share {
 	}
 
 	/**
-	 * Check if the share has read permission
+	 * Check if read permission is granted
 	 * @return bool
 	 */
 	public function isReadable() {
@@ -99,7 +289,7 @@ class Share {
 	}
 
 	/**
-	 * Check if the share has update permission
+	 * Check if update permission is granted
 	 * @return bool
 	 */
 	public function isUpdatable() {
@@ -107,7 +297,7 @@ class Share {
 	}
 
 	/**
-	 * Check if the share has delete permission
+	 * Check if delete permission is granted
 	 * @return bool
 	 */
 	public function isDeletable() {
@@ -115,7 +305,7 @@ class Share {
 	}
 
 	/**
-	 * Check if the share has share permission
+	 * Check if share permission is granted
 	 * @return bool
 	 */
 	public function isSharable() {
@@ -123,21 +313,94 @@ class Share {
 	}
 
 	/**
-	 * Add a reference to a parent share
-	 * @param Share $share
+	 * Get the expiration time
+	 * @return int
 	 */
-	public function addParentId($id) {
-		$this->parentIds[] = $id;
-		$this->markPropertyUpdated('parentIds');
+	public function getExpirationTime() {
+		return $this->expirationTime;
 	}
 
 	/**
-	 * Remove a reference to a parent share
-	 * @param Share $share
+	 * Set the expiration time
+	 * @param int $expirationTime
 	 */
-	public function removeParentId($id) {
-		$this->parentIds = array_diff($this->parentIds, array($id));
-		$this->markPropertyUpdated('parentIds');
+	public function setExpirationTime($expirationTime) {
+		$this->expirationTime = $expirationTime;
+		$this->markPropertyUpdated('expirationTime');
+	}
+
+	/**
+	 * Get the share time
+	 * @return int
+	 */
+	public function getShareTime() {
+		return $this->shareTime;
+	}
+
+	/**
+	 * Set the share time
+	 * @param int $shareTime
+	 */
+	public function setShareTime($shareTime) {
+		$this->shareTime = $shareTime;
+	}
+
+	/**
+	 * Get the token, only for shares of the link share type
+	 * @return string
+	 */
+	public function getToken() {
+		return $this->token;
+	}
+
+	/**
+	 * Set the token, only for shares of the link share type
+	 * @param string $token
+	 */
+	public function setToken($token) {
+		$this->token = $token;
+	}
+
+	/**
+	 * Get the password, only for shares of the link share type
+	 * @return string
+	 */
+	public function getPassword() {
+		return $this->password;
+	}
+
+	/**
+	 * Set the password, only for shares of the link share type
+	 * @param string $password
+	 */
+	public function setPassword($password) {
+		$this->password = $password;
+		$this->markPropertyUpdated('password');
+	}
+
+	/**
+	 * Get all properties in an array
+	 * @return array
+	 */
+	public function toAPI() {
+		return array(
+			'id' => $this->getId(),
+			'parentIds' => $this->getParentIds(),
+			'shareTypeId' => $this->getShareTypeId(),
+			'shareOwner' => $this->getShareOwner(),
+			'shareOwnerDisplayName' => $this->getShareOwnerDisplayName(),
+			'shareWith' => $this->getShareWith(),
+			'shareWithDisplayName' => $this->getShareWithDisplayName(),
+			'itemType' => $this->getItemType(),
+			'itemSource' => $this->getItemSource(),
+			'itemTarget' => $this->getItemTarget(),
+			'itemOwner' => $this->getItemOwner(),
+			'permissions' => $this->getPermissions(),
+			'expirationTime' => $this->getExpirationTime(),
+			'shareTime' => $this->getShareTime(),
+			'token' => $this->getToken(),
+			'password' => $this->getPassword(),
+		);
 	}
 
 	/**
@@ -172,37 +435,6 @@ class Share {
 		return $instance;
 	}
 	
-	/**
-	 * Each time a setter is called, push the part after set
-	 * into an array: for instance setId will save Id in the 
-	 * updated fields array so it can be easily used to create the
-	 * getter method
-	 */
-	public function __call($methodName, $args) {
-		// setters
-		if (strpos($methodName, 'set') === 0) {
-			$property = lcfirst(substr($methodName, 3));
-			// setters should only work for existing attributes
-			if (property_exists($this, $property)) {
-				$this->markPropertyUpdated($property);
-				$this->$property = $args[0];	
-			} else {
-				throw new \BadFunctionCallException($property.' is not a valid property');
-			}
-		// getters
-		} else if (strpos($methodName, 'get') === 0) {
-			$property = lcfirst(substr($methodName, 3));
-			// getters should only work for existing attributes
-			if (property_exists($this, $property)) {
-				return $this->$property;
-			} else {
-				throw new \BadFunctionCallException($property.' is not a valid property');
-			}
-		} else {
-			throw new \BadFunctionCallException($methodName.' does not exist');
-		}
-	}
-
 	/**
 	 * Mark a property as updated
 	 * @param string $property the name of the property
