@@ -134,6 +134,7 @@
 	padding:7px 95px 5px 5px;
 	border-radius:5px;
 	border:1px solid transparent;
+	cursor:text;
 }
 
 .login-name span:hover, .display-name span:hover, .user-pass span:hover {
