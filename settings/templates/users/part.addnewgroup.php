@@ -25,10 +25,13 @@
 <div ng-controller="creategroupController">
 	<fieldset>
 		<form name="creategroup_form">
-			<input type="text" ng-minlength="3" name="newgroup" placeholder="<?php p($l->t('Add Group'))?>" ng-model="newgroup" ng-required />
+			<input type="text" ng-minlength="3" name="newgroup" placeholder="<?php p($l->t('Add Group'))?>" ng-model="newgroup" required />
 			<span class="error" id="nogroup" ng-show="creategroup_form.newgroup.$error.minlength">Enter minimum 3 characters.</span>
-			<span class="error" id="min_char_group" ng-show="creategroup_form.newgroup.$error.required">Enter a Group name.</span>
-			<button title="<?php p($l->t('Add')) ?>" ng-click="savegroup()"><?php p($l->t('Add')); ?></button>
+			<button title="<?php p($l->t('Add')) ?>"
+				ng-click="savegroup()"
+				ng-disabled="creategroup_form.$invalid">
+				<?php p($l->t('Add')); ?>
+			</button>
 		</form>
 	</fieldset>
 </div>
