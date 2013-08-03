@@ -38,13 +38,16 @@
 	<tbody>
 		<loading></loading>
 		<!-- The Filter Goes here with the ngRepeat.-->
-		<tr ng-repeat="user in users"
+		<tr ng-repeat="user in users | orderBy:['isAdmin','name']"
 			ng-init="viewname = true; editname = false;
 				 viewdisplayname = true; editdisplayname = false;
 				 viewpassword = true; editpassword = false;
 				 viewgroup = true; editgroup = false;
-				 viewls = true; editls = false;
-				 ">
+				 viewls = true; editls = false;"
+			ng-class="{
+			 	admin: !user.isAdmin
+			 }"
+				 >
 			<td class="thumbnail">
 				<img src="http://placehold.it/30X30" />
 			</td> <!--Temporary till we have gravatars up!-->
