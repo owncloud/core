@@ -21,11 +21,17 @@
  */
 ?>
 <ul ng-controller="grouplistController">
-	<li class="user-groups" id="everyone">
+	<li class="user-groups everyone">
 		<a href="#"><?php p($l->t('Everyone')); ?></a>
 	</li>
 	<loading></loading>
-	<li class="user-groups" ng-repeat="groupname in groupnames | orderBy:['isAdmin','name']" ng-class="selectListGroup(groupname.groupid)" ng-click="selectGroup(groupname.groupid)">
+	<li class="user-groups"
+	ng-repeat="groupname in groupnames | orderBy:['isAdmin','name']"
+	ng-class="{ 
+		active: selectListGroup(groupname.groupid), 
+		admin: !groupname.isAdmin
+	}"
+	ng-click="selectGroup(groupname.groupid)">
 		<a ng-href="#/group/{{ groupname.groupid }}">{{ groupname.name }}</a>
 		<span class="utils">
 			<span class="usercount">{{ groupname.useringroup.length }}</span>

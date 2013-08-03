@@ -41,6 +41,15 @@
 	margin:0 auto;
 }
 
+/* Explicit Items in the List - Take Color Inputs from Jan */
+
+.everyone {
+	background-color:#666 !important;
+}
+.admin {
+	background: rgba(242, 255, 99, 0.8) !important;
+}
+
 #user-content .loading {
 	position: absolute;
 	left: 50%;
