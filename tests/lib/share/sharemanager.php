@@ -36,6 +36,11 @@ class TestShareManager extends \OC\Share\ShareManager {
 
 }
 
+abstract class CollectionShareBackend extends \OC\Share\ShareBackend
+	implements \OC\Share\ICollectionShareBackend {
+
+}
+
 class ShareManager extends \PHPUnit_Framework_TestCase {
 
 	private $shareBackend;
@@ -59,16 +64,22 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 			->method('getItemType')
 			->will($this->returnValue('test'));
 		$this->shareBackend->expects($this->any())
+			->method('getItemTypePlural')
+			->will($this->returnValue('tests'));
+		$this->shareBackend->expects($this->any())
 			->method('isValidItem')
 			->will($this->returnValue(true));
 		$this->areCollectionsEnabled = false;
-		$this->collectionShareBackend = $this->getMockBuilder('\OC\Share\CollectionShareBackend')
+		$this->collectionShareBackend = $this->getMockBuilder('\Test\Share\CollectionShareBackend')
 			->disableOriginalConstructor()
-			->setMethods(get_class_methods('\OC\Share\CollectionShareBackend'))
+			->setMethods(get_class_methods('\Test\Share\CollectionShareBackend'))
 			->getMockForAbstractClass();
 		$this->collectionShareBackend->expects($this->any())
 			->method('getItemType')
 			->will($this->returnValue('testCollection'));
+		$this->collectionShareBackend->expects($this->any())
+			->method('getItemTypePlural')
+			->will($this->returnValue('testCollections'));
 		$this->collectionShareBackend->expects($this->any())
 			->method('isValidItem')
 			->will($this->returnValue(true));

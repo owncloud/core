@@ -26,37 +26,26 @@ use OC\Share\ShareBackend;
 use OC\Share\TimeMachine;
 
 /**
- * Backend class that apps extend and register with the ShareManager to share content
- * This class should be used if the app has content that can have children that are also shared
- * using a different backend class e.g. folders
+ * This interface should be implemented if a share backend has content that can have children that
+ * are also shared using a different backend class e.g. folders
  *
- *  Hooks available in class name scope
- *  - preShare(Share $share)
- *  - postShare(Share $share)
- *  - preUnshare(Share $share)
- *  - postUnshare(Share $share)
- *  - preUpdate(Share $share)
- *  - postUpdate(Share $share)
+ * Hooks available in scope \OC\Share:
+ *  - preShare(\OC\Share\Share $share)
+ *  - postShare(\OC\Share\Share $share)
+ *  - preUnshare(\OC\Share\Share $share)
+ *  - postUnshare(\OC\Share\Share $share)
+ *  - preUpdate(\OC\Share\Share $share)
+ *  - postUpdate(\OC\Share\Share $share)
  *
  * @version 2.0.0 BETA
  */
-abstract class CollectionShareBackend extends ShareBackend {
-
-	/**
-	 * The constructor
-	 * @param TimeMachine $timeMachine The time() mock
-	 * @param array $shareTypes An array of share type objects that items can be shared through
-	 * e.g. User, Group, Link
-	 */
-	public function __construct(TimeMachine $timeMachine, array $shareTypes) {
-		parent::__construct($timeMachine, $shareTypes);
-	}
+interface ICollectionShareBackend {
 
 	/**
 	 * Get the identifiers for the children item types of this backend
 	 * @return array
 	 */
-	abstract public function getChildrenItemTypes();
+	public function getChildrenItemTypes();
 
 	/**
 	 * Search for shares of this collection item type that contain the child item source and
@@ -65,6 +54,6 @@ abstract class CollectionShareBackend extends ShareBackend {
 	 * @param any $itemSource
 	 * @return array
 	 */
-	abstract public function searchForChildren($shareWith, $itemSource);
+	public function searchForChildren($shareWith, $itemSource);
 
 }
