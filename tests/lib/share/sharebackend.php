@@ -32,6 +32,10 @@ class TestShareBackend extends \OC\Share\ShareBackend {
 		return 'test';
 	}
 
+	public function getItemTypePlural() {
+		return 'tests';
+	}
+
 	protected function isValidItem(Share $share) {
 		if ($this->isValidItem === false) {
 			throw new \OC\Share\Exception\InvalidItemException(

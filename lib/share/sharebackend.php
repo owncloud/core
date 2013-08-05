@@ -61,10 +61,16 @@ abstract class ShareBackend extends BasicEmitter {
 	}
 
 	/**
-	 * Get the identifier for the item type this backend handles
+	 * Get the identifier for the item type this backend handles, should be a singular noun
 	 * @return string
 	 */
 	abstract public function getItemType();
+
+	/**
+	 * Get the plural form of getItemType, used for the RESTful API
+	 * @return string
+	 */
+	abstract public function getItemTypePlural();
 
 	/**
 	 * Check if an item is valid for the share owner
