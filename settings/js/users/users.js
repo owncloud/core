@@ -162,6 +162,7 @@ usersmanagement.controller('addUserController', ['$scope', '$http', 'UserService
 		}
 		/* Takes Out all groups for the Chosen dropdown */
 		$scope.allgroups = GroupService.getByGroupId().get();	
+		console.log($scope.allgroups);
 	}
 ]);
 

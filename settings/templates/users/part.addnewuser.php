@@ -35,7 +35,7 @@
 				data-placeholder="Select Group.."
 				no-result-text="No Such Group.."
 				ng-model="selectedgroup"
-				ng-options="pergroup.result.groupid for pergroup in allgroups">
+				ng-options="pergroup.name for pergroup in allgroups.result">
 				<option value=""></option>
 			</select>
 			<button title="<?php p($l->t('Create'))?>" ng-click="saveuser()" ng-disabled="createuser_form.$invalid"><?php p($l->t('Create'))?></button>
