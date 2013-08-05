@@ -158,11 +158,12 @@ usersmanagement.controller('addUserController', ['$scope', '$http', 'UserService
 		var newuser,password = {};
 		var groups = [];
 		$scope.saveuser = function() {
-			UserService.createuser().save({ username : $scope.newuser }, { password : $scope.password }, { group : $scope.groups });
+			console.log($scope.newuser);
+			console.log($scope.selectedgroup);
+			UserService.createuser().save({ username : $scope.newuser }, { password : $scope.password }, { group : $scope.selectedgroup });
 		}
 		/* Takes Out all groups for the Chosen dropdown */
-		$scope.allgroups = GroupService.getByGroupId().get();	
-		console.log($scope.allgroups);
+		$scope.allgroups = GroupService.getByGroupId().get();
 	}
 ]);
 
