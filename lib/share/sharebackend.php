@@ -252,7 +252,7 @@ abstract class ShareBackend extends BasicEmitter {
 	 * You can use PHP's bitwise operators to manipulate the permissions
 	 * 
 	 */
-	protected function areValidPermissions($share) {
+	protected function areValidPermissions(Share $share) {
 		$permissions = $share->getPermissions();
 		if (!is_int($permissions)) {
 			throw new InvalidPermissionsException('The permissions are not an integer');
