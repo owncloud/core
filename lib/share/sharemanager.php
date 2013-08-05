@@ -240,7 +240,7 @@ class ShareManager extends ForwardingEmitter {
 		if (isset($itemType)) {
 			$share = $this->getShares($itemType, $filter, 1);
 		} else {
-			foreach ($this->shareBackends as $shareBackend) {
+			foreach ($this->getShareBackends() as $shareBackend) {
 				try {
 					$share = $this->getShares($shareBackend->getItemType(), $filter, 1);
 					if (!empty($share)) {
@@ -321,7 +321,7 @@ class ShareManager extends ForwardingEmitter {
 		if (!empty($parentIds)) {
 			$itemType = $share->getItemType();
 			$parentItemTypes = array($itemType);
-			foreach ($this->shareBackends as $shareBackend) {
+			foreach ($this->getShareBackends() as $shareBackend) {
 				if ($shareBackend instanceof CollectionShareBackend
 					&& in_array($itemType, $shareBackend->getChildrenItemTypes())
 					&& !in_array($shareBackend->getItemType(), $parentItemTypes)
@@ -400,7 +400,7 @@ class ShareManager extends ForwardingEmitter {
 		);
 		$parents = $this->getShares($itemType, $filter);
 		// Search in collections for parents in case children were reshared
-		foreach ($this->shareBackends as $shareBackend) {
+		foreach ($this->getShareBackends() as $shareBackend) {
 			if ($shareBackend instanceof CollectionShareBackend
 				&& in_array($itemType, $shareBackend->getChildrenItemTypes())
 			) {
