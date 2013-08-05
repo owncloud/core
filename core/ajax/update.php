@@ -3,34 +3,20 @@ set_time_limit(0);
 $RUNTIME_NOAPPS = true;
 require_once '../../lib/base.php';
 
+// to bad OC_EventSource starts output, otherwise this could also be in the controller
 if (OC::checkUpgrade(false)) {
 	$eventSource = new OC_EventSource();
-	$updater = new \OC\Updater(\OC_Log::$object);
-	$updater->listen('\OC\Updater', 'maintenanceStart', function () use ($eventSource) {
-		$eventSource->send('success', 'Turned on maintenance mode');
-	});
-	$updater->listen('\OC\Updater', 'maintenanceEnd', function () use ($eventSource) {
-		$eventSource->send('success', 'Turned off maintenance mode');
-	});
-	$updater->listen('\OC\Updater', 'dbUpgrade', function () use ($eventSource) {
-		$eventSource->send('success', 'Updated database');
-	});
-	$updater->listen('\OC\Updater', 'filecacheStart', function () use ($eventSource) {
-		$eventSource->send('success', 'Updating filecache, this may take really long...');
-	});
-	$updater->listen('\OC\Updater', 'filecacheDone', function () use ($eventSource) {
-		$eventSource->send('success', 'Updated filecache');
-	});
-	$updater->listen('\OC\Updater', 'filecacheProgress', function ($out) use ($eventSource) {
-		$eventSource->send('success', '... ' . $out . '% done ...');
-	});
-	$updater->listen('\OC\Updater', 'failure', function ($message) use ($eventSource) {
-		$eventSource->send('failure', $message);
+	$msg = function($msg) use ($eventSource) {
+		$eventSource->send('success', $msg);
+	};
+	$failure = function($msg) use ($eventSource) {
+		$eventSource->send('failure', $msg);
 		$eventSource->close();
-		OC_Config::setValue('maintenance', false);
-	});
+	};
 
-	$updater->upgrade();
+	$updater = new \OC\Updater(\OC_Log::$object);
+	$controller = new OC\Core\Controller\Update($updater);
+	$controller->doUpgrade($msg, $failure);
 
 	$eventSource->send('done', '');
 	$eventSource->close();
