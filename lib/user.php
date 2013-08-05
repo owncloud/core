@@ -261,26 +261,23 @@ class OC_User {
 	}
 
 	/**
-	 * @brief Try to login a user without a password. Assumes authentication
+	 * @brief Try to login a user, assuming authentication
 	 * has already happened (e.g. via SSO).
-	 *
-	 * @param $uid The username of the user to log in
 	 *
 	 * Log in a user and regenerate a new session.
 	 */
-	public static function loginWithoutPassword( $uid ) {
-		$run = true;
+	public static function loginWithApache() {
+
+		$uid = $_SERVER["PHP_AUTH_USER"];
 		OC_Hook::emit( "OC_User", "pre_login", array( "run" => &$run, "uid" => $uid ));
 
-		if( $run ) {
-			$enabled = self::isEnabled($uid);
-			if($uid && $enabled) {
-				session_regenerate_id(true);
-				self::setUserId($uid);
-				self::setDisplayName($uid);
-				OC_Hook::emit( "OC_User", "post_login", array( "uid" => $uid, 'password'=>'' ));
-				return true;
-			}
+		$enabled = self::isEnabled($uid);
+		if($uid && $enabled) {
+			session_regenerate_id(true);
+			self::setUserId($uid);
+			self::setDisplayName($uid);
+			OC_Hook::emit( "OC_User", "post_login", array( "uid" => $uid, 'password'=>'' ));
+			return true;
 		}
 		return false;
 	}
@@ -293,35 +290,32 @@ class OC_User {
 	 * @return true: authenticated - false: not authenticated
 	 */
 	public static function handleApacheAuth($isWebdav = false) {
-		// Is Shibboleth activated
-		if (\OC_Config::getValue( "shibboleth_active")) {
-			return self::handleShibbolethAuth($isWebdav);
+		foreach (self::$_usedBackends as $backend) {
+			if ($backend instanceof OCP\ApacheBackend) {
+				if ($backend->isSessionActive()) {
+					OC_App::loadApps();
+
+					//setup extra user backends
+					self::setupBackends();
+					self::unsetMagicInCookie();
+
+					if (self::loginWithApache()) {
+						if (! $isWebdav) {
+							$_REQUEST['redirect_url'] = \OC_Request::requestUri();
+							OC_Util::redirectToDefaultPage();
+							exit();
+						}
+						else {
+							return true;
+						}
+					}
+				}
+			}
 		}
 
 		return false;
 	}
 
-	private static function handleShibbolethAuth($isWebdav = false) {
-		if (!isset($_SERVER["PHP_AUTH_USER"]) || !isset($_SERVER["eppn"])) {
-			return false;
-		}
-
-		OC_App::loadApps();
-
-		//setup extra user backends
-		OC_User::setupBackends();
-		OC_User::unsetMagicInCookie();
-
-		if (OC_User::loginWithoutPassword($_SERVER["eppn"])) {
-
-			if (!$isWebdav) {
-				$_REQUEST['redirect_url'] = OC_Request::requestUri();
-				OC_Util::redirectToDefaultPage();
-				exit();
-			}
-		}
-		return true;
-	}
 
 	/**
 	 * @brief Sets user id for session and triggers emit
@@ -401,15 +395,23 @@ class OC_User {
 		return false;
 	}
 
-	public static function getLogoutLink() {
-		// Using Shibboleth?
-		if (OC_Config::getValue("shibboleth_active")) {
-			if (isset($_SERVER["eppn"]) && self::isLoggedIn()) {
-				return "javascript:shibbolethLogout()";
+	/**
+	 * Supplies an attribute to the logout hyperlink. The default behaviuour
+	 * is to return an href with '?logout=true' appended. However, it can
+	 * supply any attribute(s) which are valid for <a>.
+	 *
+	 * @return String with one or more HTML attributes.
+	 */
+	public static function getLogoutAttribute() {
+		foreach (self::$_usedBackends as $backend) {
+			if ($backend instanceof OCP\ApacheBackend) {
+				if ($backend->isSessionActive()) {
+					return $backend->getLogoutAttribute();
+				}
 			}
 		}
 
-		return print_unescaped(link_to('', 'index.php'))."?logout=true";
+		return print_unescaped("href=".link_to('', 'index.php'))."?logout=true";
 	}
 
 	/**
