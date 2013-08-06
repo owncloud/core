@@ -56,23 +56,61 @@
 				<input type="text" ng-show="editname" value="{{user.name}}" ng-focus="editname" ng-blur="editname = !editname; viewname = !viewname" />
 			</td>
 			<td class="display-name">
-				<span ng-show="viewdisplayname" ng-click="viewdisplayname = !viewdisplayname; editdisplayname = !editdisplayname;">{{ user.displayname }}</span>
-				<input type="text" ng-show="editdisplayname" value="{{ user.displayname }}" ng-focus="editdisplayname" ng-blur="editdisplayname = !editdisplayname; viewdisplayname = !viewdisplayname" />
+				<span ng-show="viewdisplayname"
+					ng-click="viewdisplayname = !viewdisplayname; editdisplayname = !editdisplayname;">
+					{{ user.displayname }}
+				</span>
+				<input type="text"
+					ng-show="editdisplayname"
+					value="{{ user.displayname }}"
+					ng-focus="editdisplayname" 
+					ng-blur="editdisplayname = !editdisplayname; viewdisplayname = !viewdisplayname" 
+				/>
 			</td>
 			<td class="user-pass">
-				<span ng-show="viewpassword" ng-click="viewpassword = !viewpassword; editpassword = !editpassword">●●●●●●●</span>
-				<input type="password" ng-show="editpassword" placeholder="●●●●●●●" ng-focus="editpassword" ng-blur="editpassword = !editpassword; viewpassword = !viewpassword" />
+				<span
+					ng-show="viewpassword"
+					ng-click="viewpassword = !viewpassword; editpassword = !editpassword">
+					●●●●●●●
+				</span>
+				<input
+					type="password"
+					ng-show="editpassword"
+					placeholder="●●●●●●●"
+					ng-focus="editpassword"
+					ng-blur="editpassword = !editpassword; viewpassword = !viewpassword" 
+				/>
 			</td>
 			<td class="groups">
-				<span ng-show="viewgroup" ng-click="viewgroup = !viewgroup; editgroup = !toggleditgroup">{{user.groups}}</span>
-				<div ng-focus="editgroup" ng-show="editgroup" ng-blur="editgroup = !editgroup; viewgroup = !viewgroup" class="editgroupdiv">
-			    	<select chosen multiple allow-single-deselect="true" data-placeholder="Select Group.." no-results-text="'No Such Group..'">
+				<span 
+					ng-show="viewgroup"
+					ng-click="viewgroup = !viewgroup; editgroup = !toggleditgroup">
+					{{user.groups}}
+				</span>
+				<div
+					ng-focus="editgroup"
+					ng-show="editgroup"
+					ng-blur="editgroup = !editgroup; viewgroup = !viewgroup"
+					class="editgroupdiv">
+			    	<select
+						chosen multiple
+						allow-single-deselect="true"
+						data-placeholder="Select Group.."
+						no-results-text="'No Such Group..'"
+						ng-options="ingroup.name for ingroup in allgroups.result">
 			    	</select>
 				</div>
 			</td>
 			<td class="local-storage">
-				<span ng-show="viewls" ng-click="viewls = !viewls; editls = !editls">{{ user.quota }}</span>
-				<select ng-show="editls" ng-focus="editls" ng-blur="editls = !editls; viewls = !viewls">
+				<span
+					ng-show="viewls"
+					ng-click="viewls = !viewls; editls = !editls">
+						{{ user.quota }}
+				</span>
+				<select
+					ng-show="editls"
+					ng-focus="editls"
+					ng-blur="editls = !editls; viewls = !viewls">
 					<option>Default</option>
 					<option>1 GB</option>
 					<option>5 GB</option>
