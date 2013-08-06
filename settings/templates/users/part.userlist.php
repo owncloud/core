@@ -52,8 +52,7 @@
 				<img src="http://placehold.it/30X30" />
 			</td> <!--Temporary till we have gravatars up!-->
 			<td class="login-name">
-				<span ng-show="viewname" ng-click="viewname = !viewname; editname = !editname;">{{ user.name }}</span>
-				<input type="text" ng-show="editname" value="{{user.name}}" ng-focus="editname" ng-blur="editname = !editname; viewname = !viewname" />
+				<span>{{ user.name }}</span>
 			</td>
 			<td class="display-name">
 				<span ng-show="viewdisplayname"
