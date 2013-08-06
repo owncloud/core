@@ -1,0 +1,82 @@
+#body-login form label.infield { /* labels are ellipsized when too long, keep them short */
+position:absolute; 
+width:60%; 
+padding-left:0em;	
+font-size:19px; 
+color:#aaa;	
+white-space:nowrap; 
+overflow:hidden; 
+text-overflow:ellipsis;
+margin-left: 0.4em;
+}
+
+#password {
+width: 60% !important;
+padding-left: 0.5em;
+}
+
+input[type="submit"]{
+width: 46px;
+height: 45px;
+padding: .4em;
+background-color: rgba(240,240,240,.9);
+font-weight: bold;
+color: #555;
+text-shadow: rgba(255,255,255,.9) 0 1px 0;
+border: 1px solid rgba(190,190,190,.9);
+cursor: pointer;
+-moz-box-shadow: 0 1px 1px rgba(255,255,255,.9), 0 1px 1px rgba(255,255,255,.9) inset;
+-webkit-box-shadow: 0 1px 1px rgba(255,255,255,.9), 0 1px 1px rgba(255,255,255,.9) inset;
+box-shadow: 0 1px 1px rgba(255,255,255,.9), 0 1px 1px rgba(255,255,255,.9) inset;
+-moz-border-radius: .5em;
+-webkit-border-radius: .5em;
+border-radius: .5em;
+margin-left: 0.35em;
+margin-top: 0.25em;
+background-image:url('/php/core/core/img/actions/confirm.svg');
+background-repeat:no-repeat;
+background-position: center;
+}
+
+#body-login input[type="submit"] {
+
+margin-top: 0.3em;
+padding-right: 1.25em;
+padding-top: 0.5em;
+padding-bottom: 0.75em;
+}
+
+#body-login input[type="password"] {
+width: 13em;
+padding-left: 0.5em;
+padding-top: 0.6em;
+padding-bottom: 0.5em;
+}
+
+#body-login .warning {
+margin: 0 7px 5px;
+font-weight: bold;
+margin-left: 1.1em;
+margin-right: 1.2em;
+}
+
+.warning-info{
+font-weight: bold;
+display: block;
+padding: 10px;
+color: rgb(255, 255, 255);
+text-shadow: 0 -1px 0 rgba(0,0,0,.3);
+background-color: transparent;
+text-align: left;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+border-radius: 5px;
+cursor: default;
+margin-top: -1.5em;
+text-align: center;
+}
+
+#body-login input[type="password"] {
+width: 13em;
+margin-left: 0.7em;
+}
