@@ -29,7 +29,7 @@
 			<span class="error" id="nologinname" ng-show="createuser_form.loginnamefield.$error.minlength">Minimum 3 characters</span>
 			<input id="newuserpassword" name="passwordfield" type="password" placeholder="<?php p($l->t('Password')) ?>" ng-model="password" required/>
 			<select
-				chosen multiple style="width:150px;" id="newusergroups"
+				chosen multiple id="newusergroups"
 				class="groupselect" title="<?php p($l->t('Groups'))?>"
 				allow-single-deselect="true"
 				data-placeholder="Select Group.."
