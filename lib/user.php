@@ -303,7 +303,7 @@ class OC_User {
 						if (! $isWebdav) {
 							$_REQUEST['redirect_url'] = \OC_Request::requestUri();
 							OC_Util::redirectToDefaultPage();
-							exit();
+							return true;
 						}
 						else {
 							return true;
