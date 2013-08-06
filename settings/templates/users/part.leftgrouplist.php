@@ -20,10 +20,7 @@
  *
  */
 ?>
-<ul ng-controller="grouplistController">
-	<li class="user-groups everyone">
-		<a href="#"><?php p($l->t('Everyone')); ?></a>
-	</li>
+<ul ng-controller="grouplistController" id="group-list">
 	<loading></loading>
 	<li class="user-groups"
 	ng-repeat="groupname in groupnames | orderBy:['isAdmin','name']"

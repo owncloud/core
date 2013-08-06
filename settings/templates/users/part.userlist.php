@@ -31,7 +31,7 @@
 			<th class="table-head display-name">Display Name</th>
 			<th class="table-head user-pass">Password</th>
 			<th class="table-head groups">Groups</th>
-			<th class="table-head local-storage">Local Storage</th>
+			<th class="table-head local-storage">Storage</th>
 			<th class="table-head user-actions"></th>
 		</tr>
 	</thead>

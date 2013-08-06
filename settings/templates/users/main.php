@@ -24,6 +24,9 @@
 
 <div id="user-settings" ng-app="usersmanagement">
 	<div id="app-navigation">
+		<div class="user-groups everyone">
+			<a href="#"><?php p($l->t('Everyone')); ?></a>
+		</div>
 		<?php print_unescaped($this->inc('users/part.addnewgroup')); ?>
 		<?php print_unescaped($this->inc('users/part.leftgrouplist')); ?>
 	</div>

@@ -41,13 +41,38 @@
 	margin:0 auto;
 }
 
-/* Explicit Items in the List - Take Color Inputs from Jan */
+/* Explicit Items in the List */
 
 .everyone {
-	background-color:#666 !important;
+	background-color: #ddd;
+	border-top: 1px solid #fff;
+	border-bottom: 1px solid #ddd;
+	position: relative;
+	width: 100%;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	text-shadow: 0 1px 0 rgba(255,255,255,.9);
+}
+
+.everyone:hover {
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+}
+
+.everyone a {
+	display: block;
+	width: 100%;
+	padding: 0 16px;
+	overflow: hidden;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	line-height: 32px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	color: #333;
 }
 .admin {
-	background: rgba(242, 255, 99, 0.8) !important;
+	
 }
 
 #user-content .loading {
@@ -100,7 +125,7 @@
 
 #user-table {
 	position: absolute;
-	left: 260px;
+	left: 250px;
 	width: 80%;
 	float: left;
 	min-width: 700px;
@@ -112,6 +137,11 @@
 }
 
 #userlist thead {
+	height:30px;
+}
+
+#userlist tbody tr {
+	height:44px;
 }
 
 #userlist tbody tr > td.delete-column .delete-button {
@@ -122,6 +152,17 @@
 
 #userlist tbody tr:hover > td.delete-column .delete-button {
 	opacity:1;
+}
+
+.thumbnail {
+	position:relative;
+	width:50px;
+}
+
+.thumbnail img {
+	position: absolute;
+	top: 6px;
+	left: 10px;
 }
 
 .login-name, .display-name, .user-pass, .groups, .local-storage {

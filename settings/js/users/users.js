@@ -131,7 +131,7 @@ usersmanagement.controller('grouplistController', ['$scope', '$http', '$routePar
 
 			grouplist.push({title: $scope.newgroup, completed: false});
 			*/
-
+			
 			// Selects the current Group.
 			$scope.selectGroup = function(groupid) {
 				$scope.selectedGroup = groupid;
@@ -205,6 +205,16 @@ usersmanagement.filter('usertogroupFilter', function() {
 		}
 		return groupusers;
 	}
+});
+
+/* Capitalizes the Group List */
+
+usersmanagement.filter('capitalize', function() {
+	var firstcharUpper = function(input) {
+		input = input.charAt(0).toUpperCase();
+		return input;
+	}
+	return firstcharUpper;
 });
 
 /* The Spinner Directive */
