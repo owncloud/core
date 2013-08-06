@@ -392,11 +392,9 @@ class ShareManager extends ForwardingEmitter {
 	 */
 	protected function searchForParents(Share $share) {
 		$itemType = $share->getItemType();
-		$shareOwner = $share->getShareOwner();
-		$itemSource = $share->getItemSource();
 		$filter = array(
-			'shareWith' => $shareOwner,
-			'itemSource' => $itemSource,
+			'shareWith' => $share->getShareOwner(),
+			'itemSource' => $share->getItemSource(),
 		);
 		$parents = $this->getShares($itemType, $filter);
 		// Search in collections for parents in case children were reshared
@@ -404,8 +402,16 @@ class ShareManager extends ForwardingEmitter {
 			if ($shareBackend instanceof ICollectionShareBackend
 				&& in_array($itemType, $shareBackend->getChildrenItemTypes())
 			) {
-				$collectionParents = $shareBackend->searchForChildren($shareOwner, $itemSource);
-				$parents = array_merge($parents, $collectionParents);
+				$collectionParents = $shareBackend->searchForParentCollections($share);
+				// Check if shares are expired, because this method call doesn't go through
+				// ShareManager's getShares method
+				foreach ($collectionParents as $share) {
+					if ($shareBackend->isExpired($share)) {
+						$this->unshare($share);
+					} else {
+						$parents[] = $share;
+					}
+				}
 			}
 		}
 		return $parents;

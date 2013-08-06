@@ -466,6 +466,7 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 		$jancborchardt = 'jancborchardt';
 		$danimo = 'danimo';
 		$dragotin = 'dragotin';
+		$group = 'group';
 		$item = 1;
 		$collectionItem = 2;
 		$share = new Share();
@@ -479,34 +480,53 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 		$sharedShare = clone $share;
 		$sharedShare->setItemOwner($jancborchardt);
 		$sharedShare->addParentId(1);
-		$parent = new Share();
-		$parent->setId(1);
-		$parent->setShareTypeId('user');
-		$parent->setShareOwner($jancborchardt);
-		$parent->setShareWith($danimo);
-		$parent->setItemOwner($jancborchardt);
-		$parent->setItemType('testCollection');
-		$parent->setItemSource($collectionItem);
-		$parent->setPermissions(31);
+		$parent1 = new Share();
+		$parent1->setId(1);
+		$parent1->setShareTypeId('user');
+		$parent1->setShareOwner($jancborchardt);
+		$parent1->setShareWith($danimo);
+		$parent1->setItemOwner($jancborchardt);
+		$parent1->setItemType('testCollection');
+		$parent1->setItemSource($collectionItem);
+		$parent1->setPermissions(31);
+		$parent2 = new Share();
+		$parent2->setId(2);
+		$parent2->setShareTypeId('user');
+		$parent2->setShareOwner($jancborchardt);
+		$parent2->setShareWith($group);
+		$parent2->setItemOwner($jancborchardt);
+		$parent2->setItemType('testCollection');
+		$parent2->setItemSource($collectionItem);
+		$parent2->setPermissions(31);
 		$sharesMap = array(
 			array(array('shareWith' => $danimo, 'itemSource' => $item), null, null, array()),
 			array(array('id' => 1), 1, null, array()),
 			array(array('shareOwner' => $danimo, 'itemSource' => $item), null, null,
 				array($share)
 			),
-		);
-		$childMap = array(
-			array($danimo, $item, array($parent)),
+			array(array('parentId' => 2), null, null, array()),
 		);
 		$collectionMap = array(
-			array(array('id' => 1), 1, null, array($parent)),
+			array(array('id' => 1), 1, null, array($parent1)),
+			array(array('id' => 2), 1, null, array($parent2)),
+			array(array('parentId' => 2), null, null, array()),
+		);
+		$childMap = array(
+			array($share, array($parent1, $parent2)),
+		);
+		$expiredMap = array(
+			array($parent1, false),
+			array($parent2, true),
 		);
 		$this->shareBackend->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($sharesMap));
 		$this->collectionShareBackend->expects($this->atLeastOnce())
-			->method('searchForChildren')
+			->method('searchForParentCollections')
 			->will($this->returnValueMap($childMap));
+		$this->collectionShareBackend->expects($this->any())
+			->method('isExpired')
+			->will($this->returnValueMap($expiredMap));
 		$this->collectionShareBackend->expects($this->atLeastOnce())
 			->method('getShares')
 			->will($this->returnValueMap($collectionMap));
@@ -613,7 +633,7 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 			array(array('id' => 2, 'shareTypeId' => 'user'), 1, null, array($reshare1)),
 		);
 		$childMap = array(
-			array($anybodyelse, $item, array($duplicate, $share)),
+			array($reshare1, array($duplicate, $share)),
 		);
 		$this->collectionShareBackend->expects($this->atLeastOnce())
 			->method('getShares')
@@ -623,7 +643,7 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 			->with($this->equalTo($share))
 			->will($this->returnValue($share));
 		$this->collectionShareBackend->expects($this->atLeastOnce())
-			->method('searchForChildren')
+			->method('searchForParentCollections')
 			->will($this->returnValueMap($childMap));
 		$this->collectionShareBackend->expects($this->once())
 			->method('update')

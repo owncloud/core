@@ -22,8 +22,6 @@
 namespace OC\Share;
 
 use OC\Share\Share;
-use OC\Share\ShareBackend;
-use OC\Share\TimeMachine;
 
 /**
  * This interface should be implemented if a share backend has content that can have children that
@@ -49,11 +47,10 @@ interface ICollectionShareBackend {
 
 	/**
 	 * Search for shares of this collection item type that contain the child item source and
-	 * shared with $shareWith
-	 * @param string $shareWith
-	 * @param any $itemSource
-	 * @return array
+	 * shared with the share owner
+	 * @param \OC\Share\Share $share
+	 * @return \OC\Share\Share[]
 	 */
-	public function searchForChildren($shareWith, $itemSource);
+	public function searchForParentCollections(Share $share);
 
 }
