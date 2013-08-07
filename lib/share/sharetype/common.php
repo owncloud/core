@@ -68,7 +68,7 @@ abstract class Common implements IShareType {
 		$columns = join(',', $columns);
 		$sql = 'INSERT INTO '.$this->table.' ('.$columns.') VALUES ('.$placeholders.')';
 		$result = \OC_DB::executeAudited($sql, $params);
-		$id = (int)\OC_DB::insertid($this->table);
+		$id = (int)\OC_DB::insertid();
 		$share->setId($id);
 		$share->resetUpdatedProperties();
 		$this->setParentIds($share);
