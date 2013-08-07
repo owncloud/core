@@ -25,34 +25,60 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-wrap');
 	grunt.initConfig({
 		meta: {
-		      pkg: grunt.file.readJSON('package.json'),
-		      version: '<%= meta.pkg.version %>',
-		      banner: '/**\n' + ' * <%= meta.pkg.description %> - v<%= meta.version %>\n' + ' *\n' + ' * Copyright (c) <%= grunt.template.today("yyyy") %> - ' + '<%= meta.pkg.author.name %> <<%= meta.pkg.author.email %>>\n' + ' *\n' + ' * This file is licensed under the Affero General Public License version 3 or later.\n' + ' * See the COPYING file\n' + ' *\n' + ' */\n\n',
-		      build: 'users/build/',
-			  production: 'users/public/'
+			pkg:
+				grunt.file.readJSON('package.json'),
+				version: '<%= meta.pkg.version %>',
+				banner:'/**\n' +
+				' * <%= meta.pkg.description %> - v<%= meta.version %>\n' +
+				' *\n' +
+				' * Copyright (c) <%= grunt.template.today("yyyy") %> - ' +
+				'<%= meta.pkg.author.name %> <<%= meta.pkg.author.email %>>\n' +
+				' *\n' +
+				' * This file is licensed under the Affero General Public License version 3 or later.\n' +
+				' * See the COPYING file\n' +
+				' *\n' +
+				' */\n\n',
+				build: 'users/build/',
+				production: 'users/public'
 		    },
 		concat: {
 			app: {
-				option: {
-					banner: '<%= meta.banner %>\n'
-					striBanners: {
-						options: 'block'
+				options: {
+					banner: '<%= meta.banner %>\n',
+					stripBanners: {
+						options: {
+							line:true
+						}
 					}
-					src: ['<%= meta.build %>config.js', '<%= meta.build %>controllers.js', '<%= meta.build %>directives.js', '<%= meta.build %>services.js', '<%= meta.build %>filters.js'],
-					dest: '<%= meta.production %>users.js'
-				}
+				},
+				src: [
+					'<%= meta.build %>config.js',
+					'<%= meta.build %>service.js',
+					'<%= meta.build %>controller.js',
+					'<%= meta.build %>directive.js',
+					'<%= meta.build %>filter.js'
+				],
+				dest: '<%= meta.production %>users.js'
 			}
 		},
 		wrap: {
 			app: {
 				src: '<%= meta.production %>users.js',
 				dest: '',
-				wrapper: ['(function(angular, $, moment, undefined){\n\n', '\n})(window.angular, window.jQuery, window.moment);']
+				wrapper:[
+					'(function(angular, $, moment, undefined){\n\n', '\n})(window.angular, window.jQuery, window.moment);'
+				]
 			}
 		},
 		watch: {
 		      concat: {
-		        files: ['<%= meta.build %>*.js'],
+		        files: [
+					'<%= meta.build %>config.js',
+					'<%= meta.build %>controller.js',
+					'<%= meta.build %>directive.js',
+					'<%= meta.build %>service.js',
+					'<%= meta.build %>filter.js'
+				],
 		        tasks: 'compile'
 		      }
 		    },
