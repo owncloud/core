@@ -7,6 +7,10 @@
  */
 
 // Post installation check
+$this->create('web_login', '/login')
+	->action('OC', 'login');
+
+// Post installation check
 $this->create('post_setup_check', '/post-setup-check')
 	->action('OC_Setup', 'postSetupCheck');
 
