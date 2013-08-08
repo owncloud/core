@@ -1,8 +1,8 @@
+
 /**
- * ownCloud - Core
+ * ownCloud - Settings - v2.0.0
  *
- * @author Raghu Nayyar
- * @copyright 2013 Raghu Nayyar <raghu.nayyar.007@gmail.com>
+ * Copyright (c) 2013 - Raghu Nayyar <raghu.nayyar.007@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -18,6 +18,7 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 
 var usersmanagement = angular.module('usersmanagement', ['ngResource','localytics.directives']).config(['$httpProvider','$routeProvider',
 	function($httpProvider,$routeProvider) {
@@ -93,7 +94,7 @@ usersmanagement.factory('QuotaService', function($resource) {
 	});
 });
 
-/* Asynchronously creates group */
+/* Controller for Creating Groups - Left Sidebar */
 
 usersmanagement.controller('creategroupController', ['$scope', '$http', 'GroupService',
 	function($scope, $http, GroupService) {
@@ -119,18 +120,6 @@ usersmanagement.controller('grouplistController', ['$scope', '$http', '$routePar
 			$scope.loading = false;
 			
 			$scope.groups = GroupService.getByGroupId($routeParams.groupid);
-			/* Getting New Group from addGroup Controller
-			$scope.newgroup = GroupService.getnewgroup();
-			var newgroup = $scope.newgroup;
-						console.log(newgroup);
-			if (!newgroup.length) {
-				return;
-			}
-
-			$scope.newgroup = '';
-
-			grouplist.push({title: $scope.newgroup, completed: false});
-			*/
 			
 			// Selects the current Group.
 			$scope.selectGroup = function(groupid) {
@@ -142,7 +131,7 @@ usersmanagement.controller('grouplistController', ['$scope', '$http', '$routePar
 				return groupid === $scope.selectedGroup ? 'active' : undefined;
 			}
 
-			//Deletes the group.
+			// Deletes the group.
 			$scope.deletegroup = function(group) {
 				grouplist.splice(grouplist.indexOf(group), 1);
 				GroupService.removegroup().delete({ groupname : group });
@@ -162,14 +151,14 @@ usersmanagement.controller('addUserController', ['$scope', '$http', 'UserService
 			console.log($scope.selectedgroup);
 			UserService.createuser().save({ username : $scope.newuser }, { password : $scope.password }, { group : $scope.selectedgroup });
 		}
-		/* Takes Out all groups for the Chosen dropdown */
+		// Takes Out all groups for the Chosen dropdown
 		$scope.allgroups = GroupService.getByGroupId().get();
 	}
 ]);
 
 usersmanagement.controller('setQuotaController', ['$scope', 'QuotaService',
 	function($scope, QuotaService) {
-		//Shift Default Storage here.
+		// Shift Default Storage here.
 	}
 ]);
 
@@ -190,32 +179,6 @@ usersmanagement.controller('userlistController', ['$scope', '$http', 'UserServic
 		});
 	}
 ]);
-
-/* Filters the userlist for the respective group */
-
-usersmanagement.filter('usertogroupFilter', function() {
-	return function(users,groups) {
-		var groupusers = [];
-		for(var i=0; i<users.length; i++) {
-			for (var j=0; j<groups.length; j++ ) {
-				if(users[i].userid === groups[j]) {
-					groupusers.push(users[i]);
-				}
-			}
-		}
-		return groupusers;
-	}
-});
-
-/* Capitalizes the Group List */
-
-usersmanagement.filter('capitalize', function() {
-	var firstcharUpper = function(input) {
-		input = input.charAt(0).toUpperCase();
-		return input;
-	}
-	return firstcharUpper;
-});
 
 /* The Spinner Directive */
 
@@ -253,5 +216,32 @@ usersmanagement.directive('ngBlur', ['$parse', function($parse) {
 		element.bind('blur', function () {
 			scope.$apply(attrs.ngBlur);
 		});
-	};
+	}
 }]);
+
+/* Filters the userlist for the respective group */
+
+usersmanagement.filter('usertogroupFilter', function() {
+	return function(users,groups) {
+		var groupusers = [];
+		for(var i=0; i<users.length; i++) {
+			for (var j=0; j<groups.length; j++ ) {
+				if(users[i].userid === groups[j]) {
+					groupusers.push(users[i]);
+				}
+			}
+		}
+		return groupusers;
+	}
+});
+
+/* Capitalizes the Group List */
+
+usersmanagement.filter('capitalize', function() {
+	var firstcharUpper = function(input) {
+		input = input.charAt(0).toUpperCase();
+		return input;
+	}
+	return firstcharUpper;
+});
+
