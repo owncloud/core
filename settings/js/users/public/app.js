@@ -59,14 +59,19 @@ usersmanagement.factory('GroupService', function($resource) {
 			return $resource(OC.filePath('settings', 'ajax', 'grouplist.php'), {}, {
 				method: 'GET'
 			});
-		},
-		addnewgroup: function(newgroup) {
-			groupname = newgroup;
-		},
-		getnewgroup: function() {
-			return groupname;
 		}
 	}
+});
+
+/* Create Group Service */
+
+usersmanagement.factory('CreateGroupService', function() {
+	var CreateGroup = {};
+    CreateGroup.groupname = "";
+    CreateGroup.addNewGroup = function(newgroup) {
+        CreateGroup.groupname = newgroup;
+    };
+    return CreateGroup;
 });
 
 /* User Serivce */
@@ -96,24 +101,22 @@ usersmanagement.factory('QuotaService', function($resource) {
 
 /* Controller for Creating Groups - Left Sidebar */
 
-usersmanagement.controller('creategroupController', ['$scope', '$http', 'GroupService',
+usersmanagement.controller('creategroupController', ['$scope', '$http', 'GroupService', 'CreateGroupService',
 	function($scope, $http, GroupService) {
 		var newgroup = {};
 		$scope.savegroup = function() {
-			GroupService.addnewgroup($scope.newgroup);
 			GroupService.creategroup().save({ groupname : $scope.newgroup });
+			CreateGroupService.addNewGroup($scope.newgroup);		
 			$scope.showgroupinput = false;
 			$scope.showbutton = true;
-		}
-		$scope.disabledcreategroup = function() {
-			return false;
+			$scope.newgroup = '';
 		}
 	}
 ]);
 
 /* Fetches the List of All Groups - Left Sidebar */
 
-usersmanagement.controller('grouplistController', ['$scope', '$http', '$routeParams', 'GroupService', 'UserService',
+usersmanagement.controller('grouplistController', ['$scope', '$http', '$routeParams', 'GroupService', 'CreateGroupService', 'UserService',
 	function($scope, $http, $routeParams, GroupService) {
 		$scope.loading = true;
 		$http.get(OC.filePath('settings', 'ajax', 'grouplist.php')).then(function(response){
@@ -123,6 +126,21 @@ usersmanagement.controller('grouplistController', ['$scope', '$http', '$routePar
 			
 			$scope.groups = GroupService.getByGroupId($routeParams.groupid);
 			
+		    $scope.$watch(function() {
+		        return CreateGroupService.groupname;
+		    }, function(newGroupname, oldGroupname) {
+				if (newGroupname !== oldGroupname) {
+					getnewgroup(newGroupname);
+				}
+		    });
+		    var getnewgroup = function(newname) {
+		        grouplist.push({
+					groupid : newname.trim(),
+					name : newname,
+					useringroup : [],
+					isAdmin : false
+		        });
+		    }
 			// Selects the current Group.
 			$scope.selectGroup = function(groupid) {
 				$scope.selectedGroup = groupid;
@@ -149,8 +167,6 @@ usersmanagement.controller('addUserController', ['$scope', '$http', 'UserService
 		var newuser,password = {};
 		var groups = [];
 		$scope.saveuser = function() {
-			console.log($scope.newuser);
-			console.log($scope.selectedgroup);
 			UserService.createuser().save({ username : $scope.newuser }, { password : $scope.password }, { group : $scope.selectedgroup });
 		}
 		// Takes Out all groups for the Chosen dropdown
