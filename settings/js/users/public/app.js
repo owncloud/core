@@ -102,6 +102,8 @@ usersmanagement.controller('creategroupController', ['$scope', '$http', 'GroupSe
 		$scope.savegroup = function() {
 			GroupService.addnewgroup($scope.newgroup);
 			GroupService.creategroup().save({ groupname : $scope.newgroup });
+			$scope.showgroupinput = false;
+			$scope.showbutton = true;
 		}
 		$scope.disabledcreategroup = function() {
 			return false;

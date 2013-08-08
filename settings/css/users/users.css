@@ -75,6 +75,32 @@
 	
 }
 
+.addbutton {
+	background-color: #eee;
+	border-top: 1px solid #fff;
+	border-bottom: 1px solid #ddd;
+	position: relative;
+	width: 100%;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	text-shadow: 0 1px 0 rgba(255,255,255,.9);
+}
+
+.addbutton span {
+	display: block;
+	width: 100%;
+	padding: 0 16px;
+	overflow: hidden;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	line-height: 32px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	color: #333;
+	cursor:pointer;
+	font-weight:500;
+}
+
 #user-content .loading {
 	position: absolute;
 	left: 50%;
