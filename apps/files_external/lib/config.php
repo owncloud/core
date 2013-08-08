@@ -28,6 +28,17 @@ class OC_Mount_Config {
 	const MOUNT_TYPE_GROUP = 'group';
 	const MOUNT_TYPE_USER = 'user';
 
+	private static $backends = array();
+
+	public static function registerBackend($class, $definition) {
+		if (!isset($definition['backend'])) {
+			return false;
+		}
+
+		OC_Mount_Config::$backends[$class] = $definition;
+		return true;
+	}
+
 	/**
 	* Get details on each of the external storage backends, used for the mount config UI
 	* If a custom UI is needed, add the key 'custom' and a javascript file with that name will be loaded
@@ -38,99 +49,24 @@ class OC_Mount_Config {
 	* @return array
 	*/
 	public static function getBackends() {
+		$sortFunc = function($a, $b) {
+			return strcasecmp($a['backend'], $b['backend']);
+		};
 
-		$backends['\OC\Files\Storage\Local']=array(
-				'backend' => 'Local',
-				'configuration' => array(
-					'datadir' => 'Location'));
+		foreach (OC_Mount_Config::$backends as $class => $backend) {
+			if (isset($backend['has_dependencies']) and $backend['has_dependencies'] === true) {
+				if (!method_exists($class, 'checkDependencies')) {
+					\OCP\Util::writeLog('files_external', "Backend class $class has dependencies but doesn't provide method checkDependencies()", \OCP\Util::DEBUG);
+					continue;
+				} elseif ($class::checkDependencies() !== true) {
+					continue;
+				}
+			}
+			$backends[$class] = $backend;
+		}
 
-		$backends['\OC\Files\Storage\AmazonS3']=array(
-			'backend' => 'Amazon S3',
-			'configuration' => array(
-				'key' => 'Access Key',
-				'secret' => '*Secret Key',
-				'bucket' => 'Bucket',
-				'hostname' => 'Hostname (optional)',
-				'port' => 'Port (optional)',
-				'region' => 'Region (optional)',
-				'use_ssl' => '!Enable SSL',
-				'use_path_style' => '!Enable Path Style'));
-
-		$backends['\OC\Files\Storage\Dropbox']=array(
-			'backend' => 'Dropbox',
-			'configuration' => array(
-				'configured' => '#configured',
-				'app_key' => 'App key',
-				'app_secret' => 'App secret',
-				'token' => '#token',
-				'token_secret' => '#token_secret'),
-				'custom' => 'dropbox');
-
-		if(OC_Mount_Config::checkphpftp()) $backends['\OC\Files\Storage\FTP']=array(
-			'backend' => 'FTP',
-			'configuration' => array(
-				'host' => 'URL',
-				'user' => 'Username',
-				'password' => '*Password',
-				'root' => '&Root',
-				'secure' => '!Secure ftps://'));
-
-		if(OC_Mount_Config::checkcurl()) $backends['\OC\Files\Storage\Google']=array(
-			'backend' => 'Google Drive',
-			'configuration' => array(
-				'configured' => '#configured',
-				'client_id' => 'Client ID',
-				'client_secret' => 'Client secret',
-				'token' => '#token'),
-				'custom' => 'google');
-
-		$backends['\OC\Files\Storage\SWIFT']=array(
-			'backend' => 'OpenStack Swift',
-			'configuration' => array(
-				'host' => 'URL',
-				'user' => 'Username',
-				'token' => '*Token',
-				'root' => '&Root',
-				'secure' => '!Secure ftps://'));
-
-		if(OC_Mount_Config::checksmbclient()) $backends['\OC\Files\Storage\SMB']=array(
-			'backend' => 'SMB / CIFS',
-			'configuration' => array(
-				'host' => 'URL',
-				'user' => 'Username',
-				'password' => '*Password',
-				'share' => 'Share',
-				'root' => '&Root'));
-
-		if(OC_Mount_Config::checkcurl()) $backends['\OC\Files\Storage\DAV']=array(
-			'backend' => 'ownCloud / WebDAV',
-			'configuration' => array(
-				'host' => 'URL',
-				'user' => 'Username',
-				'password' => '*Password',
-				'root' => '&Root',
-				'secure' => '!Secure https://'));
-
-		$backends['\OC\Files\Storage\SFTP']=array(
-			'backend' => 'SFTP',
-			'configuration' => array(
-				'host' => 'URL',
-				'user' => 'Username',
-				'password' => '*Password',
-				'root' => '&Root'));
-
-		$backends['\OC\Files\Storage\iRODS']=array(
-			'backend' => 'iRODS',
-			'configuration' => array(
-				'host' => 'Host',
-				'port' => 'Port',
-				'use_logon_credentials' => '!Use ownCloud login',
-				'user' => 'Username',
-				'password' => '*Password',
-				'auth_mode' => 'Authentication Mode',
-				'zone' => 'Zone'));
-
-		return($backends);
+		uasort($backends, $sortFunc);
+		return $backends;
 	}
 
 	/**
@@ -409,51 +345,87 @@ class OC_Mount_Config {
 	}
 
 	/**
-	 * check if smbclient is installed
-	 */
-	public static function checksmbclient() {
-		if(function_exists('shell_exec')) {
-			$output=shell_exec('which smbclient');
-			return (empty($output)?false:true);
-		}else{
-			return(false);
-		}
-	}
-
-	/**
-	 * check if php-ftp is installed
-	 */
-	public static function checkphpftp() {
-		if(function_exists('ftp_login')) {
-			return(true);
-		}else{
-			return(false);
-		}
-	}
-
-	/**
-	 * check if curl is installed
-	 */
-	public static function checkcurl() {
-		return (function_exists('curl_init'));
-	}
-
-	/**
 	 * check dependencies
 	 */
 	public static function checkDependencies() {
-		$l= new OC_L10N('files_external');
-		$txt='';
-		if(!OC_Mount_Config::checksmbclient()) {
-			$txt.=$l->t('<b>Warning:</b> "smbclient" is not installed. Mounting of CIFS/SMB shares is not possible. Please ask your system administrator to install it.').'<br />';
-		}
-		if(!OC_Mount_Config::checkphpftp()) {
-			$txt.=$l->t('<b>Warning:</b> The FTP support in PHP is not enabled or installed. Mounting of FTP shares is not possible. Please ask your system administrator to install it.').'<br />';
-		}
-		if(!OC_Mount_Config::checkcurl()) {
-			$txt.=$l->t('<b>Warning:</b> The Curl support in PHP is not enabled or installed. Mounting of ownCloud / WebDAV or GoogleDrive is not possible. Please ask your system administrator to install it.').'<br />';
+		$dependencies = array();
+		foreach (OC_Mount_Config::$backends as $class => $backend) {
+			if (isset($backend['has_dependencies']) and $backend['has_dependencies'] === true) {
+				$result = $class::checkDependencies();
+				if ($result !== true) {
+					foreach ($result as $key => $value) {
+						if (is_numeric($key)) {
+							OC_Mount_Config::addDependency($dependencies, $value, $backend['backend']);
+						} else {
+							OC_Mount_Config::addDependency($dependencies, $key, $backend['backend'], $value);
+						}
+					}
+				}
+			}
 		}
 
-		return($txt);
+		if (count($dependencies) > 0) {
+			return OC_Mount_Config::generateDependencyMessage($dependencies);
+		}
+		return '';
+	}
+
+	private static function addDependency(&$dependencies, $module, $backend, $message=null) {
+		if (!isset($dependencies[$module])) {
+			$dependencies[$module] = array();
+		}
+
+		if ($message === null) {
+			$dependencies[$module][] = $backend;
+		} else {
+			$dependencies[$module][] = array('backend' => $backend, 'message' => $message);
+		}
+	}
+
+	private static function generateDependencyMessage($dependencies) {
+		$l = new \OC_L10N('files_external');
+		$dependencyMessage = '';
+		foreach ($dependencies as $module => $backends) {
+			$dependencyGroup = array();
+			foreach ($backends as $backend) {
+				if (is_array($backend)) {
+					$dependencyMessage .= '<br />' . $l->t('<b>Note:</b> ') . $backend['message'];
+				} else {
+					$dependencyGroup[] = $backend;
+				}
+			}
+
+			if (count($dependencyGroup) > 0) {
+				$backends = '';
+				for ($i = 0; $i < count($dependencyGroup); $i++) {
+					if ($i > 0 && $i === count($dependencyGroup) - 1) {
+						$backends .= $l->t(' and ');
+					} elseif ($i > 0) {
+						$backends .= ', ';
+					}
+					$backends .= '<i>' . $dependencyGroup[$i] . '</i>';
+				}
+				$dependencyMessage .= '<br />' . OC_Mount_Config::getSingleDependencyMessage($l, $module, $backends);
+			}
+		}
+		return $dependencyMessage;
+	}
+
+	/**
+	 * Returns a dependency missing message
+	 * @param $l OC_L10N
+	 * @param $module string
+	 * @param $backend string
+	 * @return string
+	 */
+	private static function getSingleDependencyMessage($l, $module, $backend) {
+		switch (strtolower($module)) {
+			case 'curl':
+				return $l->t('<b>Note:</b> The cURL support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it.', $backend);
+			case 'ftp':
+				return $l->t('<b>Note:</b> The FTP support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it.', $backend);
+			default:
+				return $l->t('<b>Note:</b> "%s" is not installed. Mounting of %s is not possible. Please ask your system administrator to install it.', array($module, $backend));
+		}
 	}
 }
