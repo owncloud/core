@@ -827,6 +827,10 @@ class View {
 
 			$ids = array();
 			foreach ($files as $i => $file) {
+				
+				// Do NOT display hidden files / folders - names starting with a dot (.) - in file lists
+				if( substr(strrchr($f['path'], "/"), 1, 1) === '.') unset($files[$fk]);
+				
 				$files[$i]['type'] = $file['mimetype'] === 'httpd/unix-directory' ? 'dir' : 'file';
 				$ids[] = $file['fileid'];
 
