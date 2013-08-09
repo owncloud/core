@@ -20,6 +20,9 @@
 */
 namespace OCP;
 
+use OC\Share\ShareManager;
+use OC\Share\Controller\ShareDialogController;
+
 /**
 * This class provides the ability for apps to share their content between users.
 * Apps must create a backend class that implements OCP\Share_Backend and register it with this class.
@@ -63,7 +66,53 @@ class Share {
 	private static $backendTypes = array();
 	private static $isResharingAllowed;
 
+	private static $shareManager;
+
 	/**
+	 * Get the ShareManager
+	 * @return \OC\Share\ShareManager | null
+	 */
+	public static function getShareManager() {
+		if (!isset(self::$shareManager)) {
+			if (\OC_Appconfig::getValue('core', 'shareapi_enabled', 'yes') === 'yes') {
+				self::$shareManager = new ShareManager();
+				\OC_Util::addScript('core', 'share');
+				\OC_Util::addStyle('core', 'share');
+			} else {
+				self::$shareManager = null;
+			}
+		}
+		return self::$shareManager;
+	}
+
+	// /**
+	//  * Get the ShareDialogController
+	//  * @param mixed $params The parameters for the request
+	//  * @return \OC\Share\Controller\ShareDialogController | null
+	//  */
+	// public static function getShareDialogController($params) {
+	// 	\OC_JSON::callCheck();
+	// 	\OC_JSON::checkLoggedIn();
+	// 	$contents = json_decode(file_get_contents('php://input'), true);
+	// 	$contents = is_array($contents) ? $contents: array();
+	// 	$params = array_merge($params, $contents, $_GET, $_POST);
+	// 	$shareManager = self::getShareManager();
+	// 	if ($shareManager) {
+	// 		return new ShareDialogController($shareManager, new \OC\Log(), $params);
+	// 	}
+	// 	return null;
+	// }
+
+	// public static function update() {
+	// 	$shareManager = self::getShareManager();
+	// 	if ($shareManager) {
+	// 		$updater = new \OC\Share\Updater($shareManager, new \OC\Log());
+	// 		$updater->updateAll();
+	// 	}
+	// }
+
+	/**
+	* @deprecated As of version 2.0.0, replaced by ShareManager
 	* @brief Register a sharing backend class that implements OCP\Share_Backend for an item type
 	* @param string Item type
 	* @param string Backend class
@@ -94,6 +143,7 @@ class Share {
 	}
 
 	/**
+	* @deprecated As of version 2.0.0, replaced by ShareManager
 	* @brief Check if the Share API is enabled
 	* @return Returns true if enabled or false
 	*
@@ -108,6 +158,7 @@ class Share {
 	}
 	
 	/**
+	* @deprecated As of version 2.0.0, replaced by ShareManager
 	* @brief Prepare a path to be passed to DB as file_target
 	* @return string Prepared path
 	*/
@@ -125,6 +176,7 @@ class Share {
 	}
 
 	/**
+	* @deprecated As of version 2.0.0, replaced by ShareManager
 	* @brief Find which users can access a shared item
 	* @param $path to the file
 	* @param $user owner of the file
@@ -227,6 +279,7 @@ class Share {
 	}
 
 	/**
+	* @deprecated As of version 2.0.0, replaced by ShareManager
 	* @brief Get the items of item type shared with the current user
 	* @param string Item type
 	* @param int Format (optional) Format type must be defined by the backend
@@ -240,6 +293,7 @@ class Share {
 	}
 
 	/**
+	* @deprecated As of version 2.0.0, replaced by ShareManager
 	* @brief Get the item of item type shared with the current user
 	* @param string Item type
 	* @param string Item target
@@ -253,6 +307,7 @@ class Share {
 	}
 	
 	/**
+	* @deprecated As of version 2.0.0, replaced by ShareManager
 	* @brief Get the item of item type shared with the current user by source
 	* @param string Item type
 	* @param string Item source
@@ -266,6 +321,7 @@ class Share {
 	}
 
 	/**
+	* @deprecated As of version 2.0.0, replaced by ShareManager
 	* @brief Get the item of item type shared by a link
 	* @param string Item type
 	* @param string Item source
@@ -278,6 +334,7 @@ class Share {
 	}
 
 	/**
+	 * @deprecated As of version 2.0.0, replaced by ShareManager
 	 * @brief Get the item shared by a token
 	 * @param string token
 	 * @return Item
@@ -292,6 +349,7 @@ class Share {
 	}
 
 	/**
+	 * @deprecated As of version 2.0.0, replaced by ShareManager
 	 * @brief resolves reshares down to the last real share
 	 * @param $linkItem
 	 * @return $fileOwner
@@ -454,9 +512,6 @@ class Share {
 					$forcePortable = (CRYPT_BLOWFISH != 1);
 					$hasher = new \PasswordHash(8, $forcePortable);
 					$shareWith = $hasher->HashPassword($shareWith.\OC_Config::getValue('passwordsalt', ''));
-				} else {
-					// reuse the already set password
-					$shareWith = $checkExists['share_with'];
 				}
 
 				// Generate token
@@ -1288,8 +1343,6 @@ class Share {
 		if ($shareType == self::SHARE_TYPE_GROUP) {
 			$groupItemTarget = self::generateTarget($itemType, $itemSource, $shareType, $shareWith['group'],
 				$uidOwner, $suggestedItemTarget);
-			$run = true;
-			$error = '';
 			\OC_Hook::emit('OCP\Share', 'pre_shared', array(
 				'itemType' => $itemType,
 				'itemSource' => $itemSource,
@@ -1299,15 +1352,8 @@ class Share {
 				'uidOwner' => $uidOwner,
 				'permissions' => $permissions,
 				'fileSource' => $fileSource,
-				'token' => $token,
-				'run' => &$run,
-				'error' => &$error
+				'token' => $token
 			));
-			
-			if ($run === false) {
-				throw new \Exception($error);
-			}
-			
 			if (isset($fileSource)) {
 				if ($parentFolder) {
 					if ($parentFolder === true) {
@@ -1383,8 +1429,6 @@ class Share {
 		} else {
 			$itemTarget = self::generateTarget($itemType, $itemSource, $shareType, $shareWith, $uidOwner,
 				$suggestedItemTarget);
-			$run = true;
-			$error = '';
 			\OC_Hook::emit('OCP\Share', 'pre_shared', array(
 				'itemType' => $itemType,
 				'itemSource' => $itemSource,
@@ -1394,15 +1438,8 @@ class Share {
 				'uidOwner' => $uidOwner,
 				'permissions' => $permissions,
 				'fileSource' => $fileSource,
-				'token' => $token,
-				'run' => &$run,
-				'error' => &$error
+				'token' => $token
 			));
-			
-			if ($run === false) {
-				throw new \Exception($error);
-			}
-			
 			if (isset($fileSource)) {
 				if ($parentFolder) {
 					if ($parentFolder === true) {

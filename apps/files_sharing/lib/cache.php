@@ -3,7 +3,7 @@
  * ownCloud
  *
  * @author Michael Gapczynski
- * @copyright 2012 Michael Gapczynski mtgap@owncloud.com
+ * @copyright 2012-2013 Michael Gapczynski mtgap@owncloud.com
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -21,43 +21,44 @@
 
 namespace OC\Files\Cache;
 
+use OCA\Files\Share\FileShareFetcher;
+
 /**
  * Metadata cache for shared files
  *
  * don't use this class directly if you need to get metadata, use \OC\Files\Filesystem::getFileInfo instead
  */
-class Shared_Cache extends Cache {
+class SharedCache extends Cache {
 
 	private $storage;
-	private $files = array();
+	private $storageId;
+	private $numericId;
+	private $fetcher;
 
-	public function __construct($storage) {
+	/**
+	 * The constructor
+	 * @param \OC\Files\Storage\Shared $storage
+	 * @param \OCA\Files\Share\FileShareFetcher $fetcher
+	 */
+	public function __construct($storage, FileShareFetcher $fetcher) {
 		$this->storage = $storage;
+		$this->fetcher = $fetcher;
 	}
 
 	/**
-	 * @brief Get the source cache of a shared file or folder
+	 * Get the source cache of a shared file or folder
 	 * @param string $target Shared target file path
-	 * @return \OC\Files\Cache\Cache
+	 * @return array Consisting of \OC\Files\Cache\Cache and the internal path
 	 */
-	private function getSourceCache($target) {
-		$source = \OC_Share_Backend_File::getSource($target);
-		if (isset($source['path']) && isset($source['fileOwner'])) {
-			\OC\Files\Filesystem::initMountPoints($source['fileOwner']);
-			$mount = \OC\Files\Filesystem::getMountByNumericId($source['storage']);
-			if (is_array($mount)) {
-				$fullPath = $mount[key($mount)]->getMountPoint().$source['path'];
-				list($storage, $internalPath) = \OC\Files\Filesystem::resolvePath($fullPath);
-				if ($storage) {
-					$this->files[$target] = $internalPath;
-					$cache = $storage->getCache();
-					$this->storageId = $storage->getId();
-					$this->numericId = $cache->getNumericStorageId();
-					return $cache;
-				}
-			}
+	protected function getSourceCache($path) {
+		list ($storage, $internalPath) = $this->fetcher->resolvePath($path);
+		if ($storage && $internalPath) {
+			$cache = $storage->getCache();
+			$this->storageId = $storage->getId();
+			$this->numericId = $cache->getNumericStorageId();
+			return array($cache, $internalPath);
 		}
-		return false;
+		return array(null, null);
 	}
 
 	public function getNumericStorageId() {
@@ -75,33 +76,73 @@ class Shared_Cache extends Cache {
 	 * @return array
 	 */
 	public function get($file) {
-		if ($file == '') {
-			$data = \OCP\Share::getItemsSharedWith('file', \OC_Share_Backend_File::FORMAT_FILE_APP_ROOT);
-			$etag = \OCP\Config::getUserValue(\OCP\User::getUser(), 'files_sharing', 'etag');
+		if ($file === '' || $file === -1) {
+			$files = array();
+			$size = 0;
+			$mtime = 0;
+			$encrypted = false;
+			$unencryptedSize = 0;
+			$shares = $this->fetcher->getAll();
+			foreach ($shares as $share) {
+				$fileId = $share->getItemSource();
+				// Ignore duplicate shares
+				if (!isset($files[$fileId])) {
+					if ($share->getEncrypted()) {
+						$encrypted = true;
+					}
+					if ($share->getMtime() > $mtime) {
+						$mtime = $share->getMtime();
+					}
+					$size += $share->getSize();
+					$unencryptedSize += $share->getUnencryptedSize();
+					$files[$fileId] = true;
+				}
+			}
+			$etag = $this->fetcher->getETag();
 			if (!isset($etag)) {
 				$etag = $this->storage->getETag('');
-				\OCP\Config::setUserValue(\OCP\User::getUser(), 'files_sharing', 'etag', $etag);
+				$this->fetcher->setETag($etag);
 			}
-			$data['etag'] = $etag;
-			return $data;
+			return array(
+				'fileid' => -1,
+				'storage' => null,
+				'path' => 'files/Shared',
+				'parent' => -1,
+				'name' => 'Shared',
+				'mimetype' => 'httpd/unix-directory',
+				'mimepart' => 'httpd',
+				'size' => $size,
+				'mtime' => $mtime,
+				'storage_mtime' => $mtime,
+				'encrypted' => $encrypted,
+				'unencrypted_size' => $unencryptedSize,
+				'etag' => $etag,
+			);
 		} else if (is_string($file)) {
-			if ($cache = $this->getSourceCache($file)) {
-				return $cache->get($this->files[$file]);
+			$shares = $this->fetcher->getByPath($file);
+			foreach ($shares as $share) {
+				// Check if we have an exact share for this path
+				if ($share->getItemTarget() === $file) {
+					return $share->getMetadata();
+				}
+			}
+			if (!empty($shares)) {
+				list($cache, $internalPath) = $this->getSourceCache($file);
+				if ($cache && $internalPath) {
+					return $cache->get($internalPath);
+				}
 			}
 		} else {
-			$query = \OC_DB::prepare(
-				'SELECT `fileid`, `storage`, `path`, `parent`, `name`, `mimetype`, `mimepart`,'
-				.' `size`, `mtime`, `encrypted`'
-				.' FROM `*PREFIX*filecache` WHERE `fileid` = ?');
-			$result = $query->execute(array($file));
-			$data = $result->fetchRow();
-			$data['fileid'] = (int)$data['fileid'];
-			$data['size'] = (int)$data['size'];
-			$data['mtime'] = (int)$data['mtime'];
-			$data['encrypted'] = (bool)$data['encrypted'];
-			$data['mimetype'] = $this->getMimetype($data['mimetype']);
-			$data['mimepart'] = $this->getMimetype($data['mimepart']);
-			return $data;
+			$shares = $this->fetcher->getById($file);
+			foreach ($shares as $share) {
+				// Check if we have an exact share for this id
+				if ($share->getItemSource() === $file) {
+					return $share->getMetadata();
+				}
+			}
+			if (!empty($shares)) {
+				return parent::get($file);
+			}
 		}
 		return false;
 	}
@@ -113,19 +154,30 @@ class Shared_Cache extends Cache {
 	 * @return array
 	 */
 	public function getFolderContents($folder) {
-		if ($folder == '') {
-			$files = \OCP\Share::getItemsSharedWith('file', \OC_Share_Backend_File::FORMAT_GET_FOLDER_CONTENTS);
-			foreach ($files as &$file) {
-				$file['mimetype'] = $this->getMimetype($file['mimetype']);
-				$file['mimepart'] = $this->getMimetype($file['mimepart']);
+		$files = array();
+		if ($folder === '') {
+			$shares = $this->fetcher->getAll();
+			foreach ($shares as $share) {
+				$fileId = $share->getItemSource();
+				// Ignore duplicate shares
+				if (!isset($files[$fileId])) {
+					$file = $share->getMetadata();
+					$file['mimetype'] = $this->getMimetype($file['mimetype']);
+					$file['mimepart'] = $this->getMimetype($file['mimepart']);
+					if ($file['storage_mtime'] === 0) {
+						$file['storage_mtime'] = $file['mtime'];
+					}
+					$files[$fileId] = $file;
+				}
 			}
-			return $files;
+			$files = array_values($files);
 		} else {
-			if ($cache = $this->getSourceCache($folder)) {
-				return $cache->getFolderContents($this->files[$folder]);
+			list($cache, $internalPath) = $this->getSourceCache($folder);
+			if ($cache && $internalPath) {
+				$files = $cache->getFolderContents($internalPath);
 			}
 		}
-		return false;
+		return $files;
 	}
 
 	/**
@@ -137,12 +189,17 @@ class Shared_Cache extends Cache {
 	 * @return int file id
 	 */
 	public function put($file, array $data) {
-		if ($file === '' && isset($data['etag'])) {
-			return \OCP\Config::setUserValue(\OCP\User::getUser(), 'files_sharing', 'etag', $data['etag']);
-		} else if ($cache = $this->getSourceCache($file)) {
-			return $cache->put($this->files[$file], $data);
+		if ($file === '') {
+			if (isset($data['etag'])) {
+				$this->fetcher->setETag($data['etag']);
+			}
+		} else {
+			list($cache, $internalPath) = $this->getSourceCache($file);
+			if ($cache && $internalPath) {
+				return $cache->put($internalPath, $data);
+			}
 		}
-		return false;
+		return -1;
 	}
 
 	/**
@@ -152,8 +209,19 @@ class Shared_Cache extends Cache {
 	 * @return int
 	 */
 	public function getId($file) {
-		if ($cache = $this->getSourceCache($file)) {
-			return $cache->getId($this->files[$file]);
+		if ($file === '') {
+			return -1;
+		}
+		$shares = $this->fetcher->getByPath($file);
+		foreach ($shares as $share) {
+			// Check if we have an exact share for this path
+			if ($share->getItemTarget() === $file) {
+				return $share->getItemSource();
+			}
+		}
+		list($cache, $internalPath) = $this->getSourceCache($file);
+		if ($cache && $internalPath) {
+			return $cache->getId($internalPath);
 		}
 		return -1;
 	}
@@ -165,7 +233,7 @@ class Shared_Cache extends Cache {
 	 * @return bool
 	 */
 	public function inCache($file) {
-		if ($file == '') {
+		if ($file === '') {
 			return true;
 		}
 		return parent::inCache($file);
@@ -177,8 +245,9 @@ class Shared_Cache extends Cache {
 	 * @param string $file
 	 */
 	public function remove($file) {
-		if ($cache = $this->getSourceCache($file)) {
-			$cache->remove($this->files[$file]);
+		list($cache, $internalPath) = $this->getSourceCache($file);
+		if ($cache && $internalPath) {
+			return $cache->remove($internalPath);
 		}
 	}
 
@@ -189,11 +258,11 @@ class Shared_Cache extends Cache {
 	 * @param string $target
 	 */
 	public function move($source, $target) {
-		if ($cache = $this->getSourceCache($source)) {
-			$file = \OC_Share_Backend_File::getSource($target);
-			if ($file && isset($file['path'])) {
-				$cache->move($this->files[$source], $file['path']);
-			}
+		list($cache, $oldInternalPath) = $this->getSourceCache($source);
+		list( , $newInternalPath) = $this->fetcher->resolvePath(dirname($target));
+		if ($cache && $oldInternalPath && $newInternalPath) {
+			$newInternalPath .= '/'.basename($target);
+			$cache->move($oldInternalPath, $newInternalPath);
 		}
 	}
 
@@ -210,11 +279,12 @@ class Shared_Cache extends Cache {
 	 * @return int, Cache::NOT_FOUND, Cache::PARTIAL, Cache::SHALLOW or Cache::COMPLETE
 	 */
 	public function getStatus($file) {
-		if ($file == '') {
+		if ($file === '') {
 			return self::COMPLETE;
 		}
-		if ($cache = $this->getSourceCache($file)) {
-			return $cache->getStatus($this->files[$file]);
+		list($cache, $internalPath) = $this->getSourceCache($file);
+		if ($cache && $internalPath) {
+			return $cache->getStatus($internalPath);
 		}
 		return self::NOT_FOUND;
 	}
@@ -260,8 +330,13 @@ class Shared_Cache extends Cache {
 	 * @return int
 	 */
 	public function calculateFolderSize($path) {
-		if ($cache = $this->getSourceCache($path)) {
-			return $cache->calculateFolderSize($this->files[$path]);
+		if ($path === '') {
+			$data = $this->get('');
+			return $data['size'];
+		}
+		list($cache, $internalPath) = $this->getSourceCache($path);
+		if ($cache && $internalPath) {
+			return $cache->calculateFolderSize($internalPath);
 		}
 		return 0;
 	}
@@ -272,7 +347,12 @@ class Shared_Cache extends Cache {
 	 * @return int[]
 	 */
 	public function getAll() {
-		return \OCP\Share::getItemsSharedWith('file', \OC_Share_Backend_File::FORMAT_GET_ALL);
+		$ids = array();
+		$shares = $this->fetcher->getAll();
+		foreach ($shares as $share) {
+			$ids[] = $share->getItemSource();
+		}
+		return array_unique($ids);
 	}
 
 	/**

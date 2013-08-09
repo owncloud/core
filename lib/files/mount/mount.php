@@ -119,7 +119,7 @@ class Mount {
 	 * @return string
 	 */
 	public function getInternalPath($path) {
-		if ($this->mountPoint === $path or $this->mountPoint . '/' === $path) {
+		if ($this->mountPoint === $path or $this->mountPoint === $path . '/') {
 			$internalPath = '';
 		} else {
 			$internalPath = substr($path, strlen($this->mountPoint));
