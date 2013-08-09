@@ -29,17 +29,6 @@ use OC\User\Manager;
 use PasswordHash;
 
 /**
- * Temporary class - waiting for an injectable Util
- */
-class TokenMachine {
-
-	public function getToken($length) {
-		return \OC_Util::generate_random_bytes($length);
-	}
-
-}
-
-/**
  * Controller for shares between a user and the public via a link
  */
 class Link extends Common {
