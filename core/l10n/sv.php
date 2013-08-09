@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "%s shared »%s« with you" => "%s delade »%s« med dig",
 "Category type not provided." => "Kategorityp inte angiven.",
 "No category to add?" => "Ingen kategori att lägga till?",
@@ -110,9 +111,11 @@
 "Add" => "Lägg till",
 "Security Warning" => "Säkerhetsvarning",
 "Your PHP version is vulnerable to the NULL Byte attack (CVE-2006-7243)" => "Din version av PHP är sårbar för NULL byte attack (CVE-2006-7243)",
+"Please update your PHP installation to use %s securely." => "Var god uppdatera din PHP-installation för att använda %s säkert.",
 "No secure random number generator is available, please enable the PHP OpenSSL extension." => "Ingen säker slumptalsgenerator finns tillgänglig. Du bör aktivera PHP OpenSSL-tillägget.",
 "Without a secure random number generator an attacker may be able to predict password reset tokens and take over your account." => "Utan en säker slumptalsgenerator kan angripare få möjlighet att förutsäga lösenordsåterställningar och ta över ditt konto.",
 "Your data directory and files are probably accessible from the internet because the .htaccess file does not work." => "Din datakatalog och filer är förmodligen tillgängliga från Internet, eftersom .htaccess-filen inte fungerar.",
+"For information how to properly configure your server, please see the <a href=\"%s\" target=\"_blank\">documentation</a>." => "För information hur du korrekt konfigurerar din servern, se ownCloud <a href=\"%s\" target=\"_blank\">dokumentationen</a>.",
 "Create an <strong>admin account</strong>" => "Skapa ett <strong>administratörskonto</strong>",
 "Advanced" => "Avancerad",
 "Data folder" => "Datamapp",
@@ -138,3 +141,4 @@
 "next" => "nästa",
 "Updating ownCloud to version %s, this may take a while." => "Uppdaterar ownCloud till version %s, detta kan ta en stund."
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";
