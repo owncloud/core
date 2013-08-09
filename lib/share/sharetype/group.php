@@ -23,6 +23,7 @@ namespace OC\Share\ShareType;
 
 use OC\Share\Share;
 use OC\Share\ShareFactory;
+use OC\Share\AdvancedShareFactory;
 use OC\Share\ItemTargetMachine;
 use OC\Share\Exception\InvalidShareException;
 use OC\Group\Manager as GroupManager;

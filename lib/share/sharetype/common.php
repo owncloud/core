@@ -23,6 +23,7 @@ namespace OC\Share\ShareType;
 
 use OC\Share\Share;
 use OC\Share\ShareFactory;
+use OC\Share\AdvancedShareFactory;
 
 abstract class Common implements IShareType {
 
