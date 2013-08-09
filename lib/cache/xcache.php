@@ -16,6 +16,22 @@ class OC_Cache_XCache {
 		}
 	}
 
+	public static function available()
+	{
+		if (!extension_loaded('xcache')) {
+			return false;
+		}
+		if (\OC::$CLI) {
+			return false;
+		}
+		// as soon as admin auth is enabled we can run into issues with admin ops like xcache_clear_cache
+		if (ini_get('xcache.admin.enable_auth')) {
+			return false;
+		}
+
+		return true;
+	}
+
 	/**
 	 * entries in XCache gets namespaced to prevent collisions between owncloud instances and users
 	 */

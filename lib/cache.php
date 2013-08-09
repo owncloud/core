@@ -32,7 +32,7 @@ class OC_Cache {
 	static public function getGlobalCache($fast=false) {
 		if (!self::$global_cache) {
 			self::$global_cache_fast = null;
-			if (!self::$global_cache_fast && function_exists('xcache_set')) {
+			if (!self::$global_cache_fast && OC_Cache_XCache::available()) {
 				self::$global_cache_fast = new OC_Cache_XCache(true);
 			}
 			if (!self::$global_cache_fast && function_exists('apc_store')) {
@@ -61,7 +61,7 @@ class OC_Cache {
 	static public function getUserCache($fast=false) {
 		if (!self::$user_cache) {
 			self::$user_cache_fast = null;
-			if (!self::$user_cache_fast && function_exists('xcache_set')) {
+			if (!self::$user_cache_fast && OC_Cache_XCache::available()) {
 				self::$user_cache_fast = new OC_Cache_XCache();
 			}
 			if (!self::$user_cache_fast && function_exists('apc_store')) {
