@@ -130,6 +130,7 @@ abstract class Common implements IShareType {
 			'shareTypeId' => $this->getId(),
 			'itemType' => $this->itemType,
 		);
+		unset($filter['isShareWithUser']);
 		$filter = array_merge($defaults, $filter);
 		$where = '';
 		$params = array();
