@@ -825,12 +825,13 @@ class View {
 			$files = $cache->getFolderContents($internalPath); //TODO: mimetype_filter
 			$permissions = $permissionsCache->getDirectoryPermissions($cache->getId($internalPath), $user);
 
+                        // Do NOT display hidden files / folders - names starting with a dot (.) - in file lists
+                        foreach ($files as $i => $file) {
+                                if( substr(strrchr($file['path'], "/"), 1, 1) === '.') unset($files[$i]);
+                        }
+
 			$ids = array();
 			foreach ($files as $i => $file) {
-				
-				// Do NOT display hidden files / folders - names starting with a dot (.) - in file lists
-				if( substr(strrchr($f['path'], "/"), 1, 1) === '.') unset($files[$fk]);
-				
 				$files[$i]['type'] = $file['mimetype'] === 'httpd/unix-directory' ? 'dir' : 'file';
 				$ids[] = $file['fileid'];
 
