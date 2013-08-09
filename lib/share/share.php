@@ -494,4 +494,14 @@ class Share {
 		return '`'.$column.'`';
 	}
 
+	/**
+	 * Adds type information for a property so that its automatically casted to
+	 * that value once its being returned from the database
+	 * @param string $property the name of the attribute
+	 * @param string $type the type which will be used to call settype()
+	 */
+	protected function addType($property, $type) {
+		$this->propertyTypes[$property] = $type;
+	}
+
 }
