@@ -135,7 +135,7 @@ usersmanagement.controller('grouplistController', ['$scope', '$http', '$routePar
 		    });
 		    var getnewgroup = function(newname) {
 		        grouplist.push({
-					groupid : newname.trim(),
+					groupid : newname.replace(/\s/g, ''),
 					name : newname,
 					useringroup : [],
 					isAdmin : false
