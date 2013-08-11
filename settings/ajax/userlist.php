@@ -48,9 +48,9 @@ if ($isAdmin) {
 			'userid' => str_replace(' ','', $user ),
 			'name' => $user,
 			'displayname' => $displayname,
-			'groups' => join(', ', OC_Group::getUserGroups($user)),
+			'groups' => OC_Group::getUserGroups($user),
 			'isAdmin' =>  !OC_User::isAdminUser($user),
-			'subadmin' => join(', ', OC_SubAdmin::getSubAdminsGroups($user)),
+			'subadmin' => OC_SubAdmin::getSubAdminsGroups($user),
 			'quota' => OC_Preferences::getValue($user, 'files', 'quota', 'default'));
 	}
 } else {
@@ -61,7 +61,7 @@ if ($isAdmin) {
 			'userid' => str_replace(' ','', $user ),
 			'name' => $user,
 			'displayname' => OC_User::getDisplayName($user),
-			'groups' => join(', ', OC_Group::getUserGroups($user)),
+			'groups' => OC_Group::getUserGroups($user),
 			'isAdmin' =>  !OC_User::isAdminUser($user),
 			'quota' => OC_Preferences::getValue($user, 'files', 'quota', 'default'));
 	}

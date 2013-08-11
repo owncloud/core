@@ -96,7 +96,7 @@
 						allow-single-deselect="true"
 						data-placeholder="Select Group.."
 						no-results-text="'No Such Group..'"
-						ng-options="ingroup.name for ingroup in allgroups.result">
+						ng-options="">
 			    	</select>
 				</div>
 			</td>

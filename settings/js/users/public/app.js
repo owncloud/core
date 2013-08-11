@@ -74,6 +74,19 @@ usersmanagement.factory('CreateGroupService', function() {
     return CreateGroup;
 });
 
+/* Create User Service */
+
+usersmanagement.factory('CreateUserService', function() {
+	var CreateUser = {};
+    CreateUser.username = "";
+	CreateUser.useringroups = "";
+    CreateUser.addNewUser = function(user,groups) {
+        CreateUser.username = user;
+		CreateUser.useringroups = groups;
+    };
+    return CreateUser;
+});
+
 /* User Serivce */
 
 usersmanagement.factory('UserService', function($resource) {
@@ -126,6 +139,7 @@ usersmanagement.controller('grouplistController', ['$scope', '$http', '$routePar
 			
 			$scope.groups = GroupService.getByGroupId($routeParams.groupid);
 			
+			//Ajaxifies the Group Addition
 		    $scope.$watch(function() {
 		        return CreateGroupService.groupname;
 		    }, function(newGroupname, oldGroupname) {
@@ -188,6 +202,28 @@ usersmanagement.controller('userlistController', ['$scope', '$http', 'UserServic
 		$http.get(OC.filePath('settings', 'ajax', 'userlist.php')).then(function(response) {
 			$scope.users = response.data.userdetails;
 			$scope.loading = false;
+			
+			//Ajaxifies the User Addition
+			
+		    $scope.$watch(function() {
+		        return {
+					'user' : CreateUserService.username,
+					 'useringroups' : CreateUserService.useringroups
+				};
+		    }, function(newUsername, oldUsername) {
+				if (newUsername !== oldUsername) {
+					getnewuser(newUsername);
+				}
+		    });
+			
+		    var getnewuser = function(newname) {
+		        $scope.users.push({
+					userid : newname.replace(/\s/g, ''),
+					name : newname,
+					displayname : newname,
+					groups : CreateUserService.useringroups
+		        });
+		    }
 			
 			$scope.gid = $routeParams.groupid;
 			$scope.deleteuser = function(user) {
