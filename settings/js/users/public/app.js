@@ -196,12 +196,15 @@ usersmanagement.controller('setQuotaController', ['$scope', 'QuotaService',
 
 /* Fetches the List of All Users and details on the Right Content */
 
-usersmanagement.controller('userlistController', ['$scope', '$http', 'UserService', 'GroupService','$routeParams',
+usersmanagement.controller('userlistController', ['$scope', '$http', 'UserService', 'GroupService', '$routeParams',
 	function($scope, $http, UserService, GroupService, $routeParams) {
 		$scope.loading = true;
 		$http.get(OC.filePath('settings', 'ajax', 'userlist.php')).then(function(response) {
 			$scope.users = response.data.userdetails;
 			$scope.loading = false;
+			
+			/* Takes Out all groups for the Chosen dropdown */
+			$scope.allgroups = GroupService.getByGroupId().get();
 			
 			//Ajaxifies the User Addition
 			

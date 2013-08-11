@@ -84,9 +84,9 @@ module.exports = function(grunt) {
 		      concat: {
 		        files: [
 					'<%= meta.build %>config.js',
+					'<%= meta.build %>service.js',
 					'<%= meta.build %>controller.js',
 					'<%= meta.build %>directive.js',
-					'<%= meta.build %>service.js',
 					'<%= meta.build %>filter.js'
 				],
 		        tasks: 'compile'
