@@ -231,9 +231,14 @@ class Swift extends \OC\Files\Storage\Common {
 			return false;
 		}
 
+		$mtime = strtotime($object->extra_headers['Last-Modified']);
+		if (isset($object->extra_headers['X-Object-Meta-Timestamp'])) {
+			$mtime = $object->extra_headers['X-Object-Meta-Timestamp'];
+		}
+
 		$stat = array();
 		$stat['size'] = $object->content_length;
-		$stat['mtime'] = strtotime($object->extra_headers['Last-Modified']);
+		$stat['mtime'] = $mtime;
 		$stat['atime'] = time();
 		return $stat;
 	}
@@ -352,25 +357,26 @@ class Swift extends \OC\Files\Storage\Common {
 			if( is_null($mtime)) {
 				$mtime = time();
 			}
-			$object->updateMetadata(array(
-				'extra_headers' => array(
-					'Last-Modified' => date('%a, %d %b %Y %T %Z', $mtime)
-				)
-			));
-		} else {
-			$object = $this->container->DataObject();
 			$settings = array(
 				'name' => $path,
-				'content_type' => 'text/plain'
+				'extra_headers' => array(
+					'X-Object-Meta-Timestamp' => $mtime
+				)
 			);
-			$object->Create($settings);
+			$object->Update($settings);
+		} else {
+			$object = $this->container->DataObject();
 			if (is_null($mtime)) {
 				$mtime = time();
 			}
-			$object->updateMetadata(array(
+			$settings = array(
+				'name' => $path,
+				'content_type' => 'text/plain',
 				'extra_headers' => array(
-				'Last-Modified' => date('%a, %d %b %Y %T %Z', $mtime)
-			)));
+					'X-Object-Meta-Timestamp' => $mtime
+				)
+			);
+			$object->Create($settings);
 		}
 	}
 
