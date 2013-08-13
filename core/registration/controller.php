@@ -92,6 +92,9 @@ class OC_Core_Registration_Controller {
 				// delete request after account created
 				$query = OC_DB::prepare('DELETE FROM `*PREFIX*pending_regist` WHERE `email` = ? ');
 				$deleted = $query->execute(array($email));
+				OC_Template::printGuestPage('core/registration', 'message',
+					array('errors' => array(),
+					'messages' => array(str_replace('%homeurl%', OC_Config::getValue('ocwebroot', '/'), $l-t('Your account have been created, you can <a href="%homeurl%">log in now</a>.')));
 			}
 		} else {
 			OC_Template::printGuestPage('core', 'error',
