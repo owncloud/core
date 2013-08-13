@@ -110,6 +110,7 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 			$content->assign ('type', $type);
 			$content->assign ('user_displayname', $displayName);
 			$content->assign ('filename', $file);
+			$content->assign ('message', $message);
 			$alttext = $content->fetchPage();
 
 			$default_from = OCP\Util::getDefaultEmailAddress('sharing-noreply');
