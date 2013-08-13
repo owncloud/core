@@ -6,6 +6,19 @@ class OC_Core_Registration_Controller {
 				'entered' => $entered));
 	}
 
+	/**
+	 * @brief Renders the registration form
+	 * @param $errormsgs numeric array containing error messages to displey
+	 * @param $entered_data associative array containing previously entered data by user
+	 * @param $email User email
+	 */
+	protected static function displayRegisterForm($errormsgs, $entered_data, $email) {
+		OC_Template::printGuestPage('core/registration', 'form',
+			array('errormsgs' => $errormsgs,
+			'entered_data' => $entered_data,
+			'email' => $email ));
+	}
+
 	public static function index($args) {
 		self::displayRegisterPage(false, false);
 	}
@@ -45,9 +58,44 @@ class OC_Core_Registration_Controller {
 	}
 
 	public static function registerForm($args) {
+		$l = OC_L10N::get('core');
+		$email = self::verifyToken($args['token']);
+
+		if ( $email !== false ) {
+			self::displayRegisterForm(array(), array(), $email);
+		} else {
+			OC_Template::printGuestPage('core', 'error',
+				array('errors' =>
+				array('error' => $l->t('Invalid verification URL. No registration request with this verification URL is found.'))
+			));
+		}
 	}
 
 	public static function createAccount($args) {
+		$l = OC_L10N::get('core');
+		$email = self::verifyToken($args['token']);
+
+		if ( $email !== false ) {
+			$query = OC_DB::prepare('SELECT `requested` FROM `*PREFIX*pending_regist` WHERE `email` = ? ');
+			$requested = $query->execute(array($email))->fetchOne();
+			if ( time() - $requested > 86400 ) {
+				// expired
+				$query = OC_DB::prepare('DELETE FROM `*PREFIX*pending_regist` WHERE `email` = ? ');
+				$deleted = $query->execute(array($email));
+				self::displayRegisterPage($l-t('Your registration request has expired, please make a new request below.'), false);
+			} else {
+				try {
+					OC_User::createUser($_POST['user'], $_POST['password']);
+				} catch (\Exception $e) {
+					self::displayRegisterForm(array($e->getMessage()), $_POST, $email);
+				}
+			}
+		} else {
+			OC_Template::printGuestPage('core', 'error',
+				array('errors' =>
+				array(array('error' => $l->t('Invalid verification URL. No registration request with this verification URL is found.')))
+			));
+		}
 	}
 
 	/**
@@ -70,6 +118,12 @@ class OC_Core_Registration_Controller {
 			$query->execute(array( $email, $token, time() ));
 			return $token;
 		}
+	}
+
+	public static function verifyToken($token) {
+		$query = OC_DB::prepare('SELECT `email` FROM `*PREFIX*pending_regist` WHERE `token` = ? ');
+		$email = $query->execute(array($token))->fetchOne();
+		return OC_DB::isError($email) ? false : $email;
 	}
 }
 
