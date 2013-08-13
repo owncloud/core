@@ -677,11 +677,13 @@ $(document).ready(function() {
 				function(result) {
 					$('#email').attr('disabled', "false");
 					$('#emailButton').attr('disabled', "false");
+					$('#emailMessage').attr('disabled', "false");
 				if (result && result.status == 'success') {
 					$('#email').css('font-weight', 'bold');
 					$('#email').animate({ fontWeight: 'normal' }, 2000, function() {
 						$(this).val('');
 					}).val(t('core','Email sent'));
+					$('#emailMessage').val('');
 				} else {
 					OC.dialogs.alert(result.data.message, t('core', 'Error while sharing'));
 				}
