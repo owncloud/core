@@ -89,6 +89,7 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 			$link = $_POST['link'];
 			$file = $_POST['file'];
 			$to_address = $_POST['toaddress'];
+			$message = $_POST['message'];
 
 			// enable l10n support
 			$l = OC_L10N::get('core');
@@ -101,6 +102,7 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 			$content->assign ('type', $type);
 			$content->assign ('user_displayname', $displayName);
 			$content->assign ('filename', $file);
+			$content->assign ('message', $message);
 			$text = $content->fetchPage();
 
 			$content = new OC_Template("core", "altmail", "");
