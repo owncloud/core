@@ -89,6 +89,9 @@ class OC_Core_Registration_Controller {
 				} catch (\Exception $e) {
 					self::displayRegisterForm(array($e->getMessage()), $_POST, $email);
 				}
+				// delete request after account created
+				$query = OC_DB::prepare('DELETE FROM `*PREFIX*pending_regist` WHERE `email` = ? ');
+				$deleted = $query->execute(array($email));
 			}
 		} else {
 			OC_Template::printGuestPage('core', 'error',
