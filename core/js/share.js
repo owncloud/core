@@ -401,6 +401,7 @@ OC.Share={
 		$('#expiration').show();
 		$('#emailPrivateLink #email').show();
 		$('#emailPrivateLink #emailButton').show();
+		$('#emailPrivateLink #emailMessage').show();
 		$('#allowPublicUploadWrapper').show();
 	},
 	hideLink:function() {
@@ -410,6 +411,7 @@ OC.Share={
 		$('#linkPass').hide();
 		$('#emailPrivateLink #email').hide();
 		$('#emailPrivateLink #emailButton').hide();
+		$('#emailPrivateLink #emailMessage').hide();
 		$('#allowPublicUploadWrapper').hide();
 	},
 	dirname:function(path) {
