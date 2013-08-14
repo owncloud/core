@@ -208,14 +208,14 @@ class Storage {
 			$versionCreated = false;
 
 			//first create a new version
-			$version = 'files_versions'.$filename.'.v'.$users_view->filemtime('files'.$filename);
+			$version = 'files_versions'.$filename.'.v'.$users_view->filemtime('files/'.$filename);
 			if ( !$users_view->file_exists($version)) {
 
 				// disable proxy to prevent multiple fopen calls
 				$proxyStatus = \OC_FileProxy::$enabled;
 				\OC_FileProxy::$enabled = false;
 
-				$users_view->copy('files'.$filename, 'files_versions'.$filename.'.v'.$users_view->filemtime('files'.$filename));
+				$users_view->copy('files/'.$filename, 'files_versions/'.$filename.'.v'.$users_view->filemtime('files/'.$filename));
 
 				// reset proxy state
 				\OC_FileProxy::$enabled = $proxyStatus;
@@ -224,7 +224,7 @@ class Storage {
 			}
 
 			// rollback
-			if( @$users_view->rename('files_versions'.$filename.'.v'.$revision, 'files'.$filename) ) {
+			if( @$users_view->rename('files_versions/'.$filename.'.v'.$revision, 'files/'.$filename) ) {
 				$files_view->touch($file, $revision);
 				Storage::expire($file);
 				return true;

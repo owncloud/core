@@ -57,6 +57,10 @@ class Hooks {
 			}
 	}
 	
+	/**
+	 * @brief check max trash bin size after a new file was written and resize the trash bin if necessary
+	 * @param array $params
+	 */
 	public static function post_write_hook($params) {
 		Trashbin::resizeTrash(\OCP\User::getUser());
 	}
