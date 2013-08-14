@@ -111,6 +111,7 @@ table td.filename form { font-size:.85em; margin-left:3em; margin-right:3em; }
 #fileList tr.selected td.filename>input[type="checkbox"]:first-child { -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; filter:alpha(opacity=100); opacity:1; }
 
 #fileList tr td.filename {
+	background-size: 16px;
 	position:relative; width:100%;
 	-webkit-transition:background-image 500ms; -moz-transition:background-image 500ms; -o-transition:background-image 500ms; transition:background-image 500ms;
 }
