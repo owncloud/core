@@ -40,6 +40,9 @@
 				}
 				// Escape
 				if(event.keyCode === 27 && self.options.closeOnEscape) {
+					if (self.closeCB) {
+						self.closeCB();
+					}
 					self.close();
 					return false;
 				}

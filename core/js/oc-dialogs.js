@@ -307,14 +307,7 @@ var OCdialogs = {
 				closeOnEscape: true,
 				modal: true,
 				buttons: buttonlist,
-				close: function(event, ui) {
-					try {
-						$(this).ocdialog('destroy').remove();
-					} catch(e) {
-						alert (e);
-					}
-					self.$ = null;
-				}
+				closeButton: null
 			});
 			OCdialogs.dialogs_counter++;
 			
