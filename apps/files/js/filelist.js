@@ -370,7 +370,7 @@ var FileList={
 			files=[files];
 		}
 		for (var i=0; i<files.length; i++) {
-			var deleteAction = $('tr').filterAttr('data-file',files[i]).children("td.date").children(".action.delete");
+			var deleteAction = $('tr[data-file="'+files[i]+'"]').children("td.date").children().last();
 			var oldHTML = deleteAction.html();
 			var newHTML = '<img class="move2trash" data-action="Delete" title="'+t('files', 'perform delete operation')+'" src="'+ OC.imagePath('core', 'loading.gif') +'"></a>';
 			deleteAction.html(newHTML);
