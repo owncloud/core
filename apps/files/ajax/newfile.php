@@ -61,7 +61,10 @@ if($source) {
 	}
 
 	$ctx = stream_context_create(null, array('notification' =>'progress'));
+	$proxyStatus = \OC_FileProxy::$enabled;
+	\OC_FileProxy::$enabled = false;
 	$sourceStream=fopen($source, 'rb', false, $ctx);
+	\OC_FileProxy::$enabled = $proxyStatus;
 	$target=$dir.'/'.$filename;
 	$result=\OC\Files\Filesystem::file_put_contents($target, $sourceStream);
 	if($result) {

@@ -311,10 +311,6 @@ $(document).ready(function() {
 		$('#new').toggleClass('active');
 	});
 	$('#new li').click(function(){
-		if($(this).children('p').length==0){
-			return;
-		}
-
 		$('#new li').each(function(i,element){
 			if($(element).children('p').length==0){
 				$(element).children('form').remove();
