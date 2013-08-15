@@ -183,7 +183,7 @@ if (isset($path)) {
 			$breadcrumb = array();
 			$pathtohere = '';
 			foreach (explode('/', $getPath) as $i) {
-				if ($i !== '') {
+				if ((string)$i !== '') {
 					$pathtohere .= '/' . $i;
 					$breadcrumb[] = array('dir' => $pathtohere, 'name' => $i);
 				}

@@ -113,7 +113,7 @@ class Shared_Cache extends Cache {
 	 * @return array
 	 */
 	public function getFolderContents($folder) {
-		if ($folder === '') {
+		if ((string)$folder === '') {
 			$files = \OCP\Share::getItemsSharedWith('file', \OC_Share_Backend_File::FORMAT_GET_FOLDER_CONTENTS);
 			foreach ($files as &$file) {
 				$file['mimetype'] = $this->getMimetype($file['mimetype']);
