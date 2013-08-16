@@ -66,7 +66,7 @@ foreach( $groups as $gid ) {
 		'groupid' => str_replace(' ','', $gid ),
 		'name' => $gid,
 		'useringroup' => OC_Group::usersInGroup($gid, '', $limit, $offset),
-		'isAdmin' => !OC_User::isAdminUser($gid)
+		'isAdmin' => !OC_User::isAdminUser($gid),
 	);
 }
 

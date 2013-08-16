@@ -211,7 +211,7 @@ usersmanagement.controller('userlistController', ['$scope', '$http', 'UserServic
 		    $scope.$watch(function() {
 		        return {
 					'user' : CreateUserService.username,
-					 'useringroups' : CreateUserService.useringroups
+					'useringroups' : CreateUserService.useringroups
 				};
 		    }, function(newUsername, oldUsername) {
 				if (newUsername !== oldUsername) {
@@ -229,6 +229,7 @@ usersmanagement.controller('userlistController', ['$scope', '$http', 'UserServic
 		    }
 			
 			$scope.gid = $routeParams.groupid;
+
 			$scope.deleteuser = function(user) {
 				$scope.users.splice($scope.users.indexOf(user), 1);
 				UserService.removeuser().delete({ username : user });

@@ -51,6 +51,7 @@ if ($isAdmin) {
 			'groups' => OC_Group::getUserGroups($user),
 			'isAdmin' =>  !OC_User::isAdminUser($user),
 			'subadmin' => OC_SubAdmin::getSubAdminsGroups($user),
+			'isSubAdmin' => !OC_SubAdmin::isSubAdmin($user),
 			'quota' => OC_Preferences::getValue($user, 'files', 'quota', 'default'));
 	}
 } else {
@@ -63,6 +64,7 @@ if ($isAdmin) {
 			'displayname' => OC_User::getDisplayName($user),
 			'groups' => OC_Group::getUserGroups($user),
 			'isAdmin' =>  !OC_User::isAdminUser($user),
+			'isSubAdmin' => !OC_SubAdmin::isSubAdmin($user),
 			'quota' => OC_Preferences::getValue($user, 'files', 'quota', 'default'));
 	}
 }
