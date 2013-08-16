@@ -212,18 +212,14 @@
 	display:none !important;
 }
 
-.groups .editgroupdiv .chzn-container {
-	width:120px !important;
+
+.groups .chzn-container .chzn-choices {
+	width:150px;
 }
 
-.groups .editgroupdiv .chzn-container .chzn-choices .search-field input {
-	width:118px !important;
+.groups .chzn.container .chzn-drop {
+	width:150px;
 }
-
-.groups .editgroupdiv .chzn-container .chzn-drop {
-	width:118px !important;
-}
-
 #newusergroups_chzn {
 	min-width:150px !important;
 	max-width:300px !important;
@@ -235,12 +231,17 @@
 	min-width:150px !important;
 }
 
-#newusergroups_chzn .chzn-choices .search-field input {
+.groups .chzn-choices .search-input {
+	width:150px !important;
+}
+
+.groups .chzn-choices .search-field input {
+	width:150px !important;
+}
+
+.groups .chzn-drop {
 	min-width:150px !important;
 }
-#newusergroups_chzn .chzn-drop {
-	min-width:150px !important;
-}
-#newusergroups_chzn .chzn-drop .chz-results {
+.groups .chzn-drop .chz-results {
 	min-width:150px !important;
 }
