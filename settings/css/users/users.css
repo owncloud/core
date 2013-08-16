@@ -236,6 +236,7 @@
 	overflow-y:scroll;
 	max-height:30px;
 	width:150px !important;
+	margin: -9px -2px;
 }
 
 .groups .chzn-choices .search-input {
@@ -244,6 +245,10 @@
 
 #newusergroups_chzn .chzn-choices .search-field input, .groups .chzn-choices .search-field input {
 	width:150px !important;
+}
+
+#newusergroups_chzn .chzn-drop {
+	margin: 9px -2px;
 }
 
 #newusergroups_chzn .chzn-drop, .groups .chzn-drop {
