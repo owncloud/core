@@ -19,7 +19,8 @@
     "grunt-contrib-concat": "*",
     "grunt-contrib-watch": "*",
     "grunt-contrib-jshint": "*",
-    "grunt-wrap": "*"
+    "grunt-wrap": "*",
+    "grunt-karma": "*"
   },
   "engine": "node >= 0.8"
 }

@@ -24,6 +24,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-wrap');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-karma');
+
 	grunt.initConfig({
 		meta: {
 			pkg:
@@ -50,7 +52,8 @@ module.exports = function(grunt) {
 				' *\n' +
 				' */\n\n',
 				src: 'users/app/',
-				production: 'users/public/'
+				production: 'users/public/',
+				tests: 'tests/'
 		},
 		concat: {
 			app: {
@@ -105,9 +108,32 @@ module.exports = function(grunt) {
 					'<%= meta.src %>filter.js'
 				],
 				tasks: 'compile'
-				}
 			},
+			test: {
+				files: [
+					'<%= meta.src %>config.js',
+					'<%= meta.src %>service.js',
+					'<%= meta.src %>controller.js',
+					'<%= meta.src %>directive.js',
+					'<%= meta.src %>filter.js',
+					'<%= meta.tests %>**/*.js'
+				],
+				tasks: 'karma:unit'
+			}
+		},
+		karma: {
+			unit: {
+				configFile: 'tests/config/karma.js'
+			},
+			continuous: {
+				configFile: 'tests/config/karma.js',
+				singleRun: true,
+				browsers: ['PhantomJS'],
+				reporters: ['progress']
+			}
+		}
 	});
 	grunt.registerTask('run', ['watch:concat']);
 	grunt.registerTask('compile', ['jshint', 'concat', 'wrap']);
+	grunt.registerTask('test', ['watch:test']);
 };
