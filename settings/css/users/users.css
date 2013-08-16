@@ -226,27 +226,27 @@
 .groups .chzn.container .chzn-drop {
 	width:150px;
 }
+
 #newusergroups_chzn {
-	min-width:150px !important;
-	max-width:300px !important;
+	width:150px !important;
 }
 
 #newusergroups_chzn .chzn-choices {
 	overflow-y:scroll;
 	max-height:30px;
-	min-width:150px !important;
+	width:150px !important;
 }
 
 .groups .chzn-choices .search-input {
 	width:150px !important;
 }
 
-.groups .chzn-choices .search-field input {
+#newusergroups_chzn .chzn-choices .search-field input, .groups .chzn-choices .search-field input {
 	width:150px !important;
 }
 
-.groups .chzn-drop {
-	min-width:150px !important;
+#newusergroups_chzn .chzn-drop, .groups .chzn-drop {
+	width:150px !important;
 }
 .groups .chzn-drop .chz-results {
 	min-width:150px !important;
