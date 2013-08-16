@@ -40,36 +40,17 @@ usersmanagement.factory('GroupService', function($resource) {
 				method: 'DELETE'
 			});
 		},
+		getAllGroups: function() {
+			return $resource(OC.filePath('settings', 'ajax', 'grouplist.php'), {}, {
+				method:'POST'
+			});
+		},
 		getByGroupId: function(groupId) {
 			return $resource(OC.filePath('settings', 'ajax', 'grouplist.php'), {}, {
 				method: 'GET'
 			});
 		}
 	}
-});
-
-/* Create Group Service */
-
-usersmanagement.factory('CreateGroupService', function() {
-	return {
-		groupname: "",
-		addNewGroup: function(newgroup) {
-        	CreateGroup.groupname = newgroup;
-        }
-    };
-});
-
-/* Create User Service */
-
-usersmanagement.factory('CreateUserService', function() {
-	var CreateUser = {};
-    CreateUser.username = "";
-	CreateUser.useringroups = "";
-    CreateUser.addNewUser = function(user,groups) {
-        CreateUser.username = user;
-		CreateUser.useringroups = groups;
-    };
-    return CreateUser;
 });
 
 /* User Serivce */
@@ -89,6 +70,11 @@ usersmanagement.factory('UserService', ['$resource', 'Config',
 		},
 		updateField: function(userId, fields) {
 			return $resource(Config.baseUrl + '/users/' + userId, fields, {
+				method: 'POST'
+			});
+		},
+		getAllUsers: function() {
+			return $resource(OC.filePath('settings', 'ajax', 'userlist.php'), {}, {
 				method: 'POST'
 			});
 		}

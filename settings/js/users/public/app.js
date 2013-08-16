@@ -66,36 +66,17 @@ usersmanagement.factory('GroupService', function($resource) {
 				method: 'DELETE'
 			});
 		},
+		getAllGroups: function() {
+			return $resource(OC.filePath('settings', 'ajax', 'grouplist.php'), {}, {
+				method:'POST'
+			});
+		},
 		getByGroupId: function(groupId) {
 			return $resource(OC.filePath('settings', 'ajax', 'grouplist.php'), {}, {
 				method: 'GET'
 			});
 		}
 	}
-});
-
-/* Create Group Service */
-
-usersmanagement.factory('CreateGroupService', function() {
-	return {
-		groupname: "",
-		addNewGroup: function(newgroup) {
-        	CreateGroup.groupname = newgroup;
-        }
-    };
-});
-
-/* Create User Service */
-
-usersmanagement.factory('CreateUserService', function() {
-	var CreateUser = {};
-    CreateUser.username = "";
-	CreateUser.useringroups = "";
-    CreateUser.addNewUser = function(user,groups) {
-        CreateUser.username = user;
-		CreateUser.useringroups = groups;
-    };
-    return CreateUser;
 });
 
 /* User Serivce */
@@ -115,6 +96,11 @@ usersmanagement.factory('UserService', ['$resource', 'Config',
 		},
 		updateField: function(userId, fields) {
 			return $resource(Config.baseUrl + '/users/' + userId, fields, {
+				method: 'POST'
+			});
+		},
+		getAllUsers: function() {
+			return $resource(OC.filePath('settings', 'ajax', 'userlist.php'), {}, {
 				method: 'POST'
 			});
 		}
@@ -287,12 +273,12 @@ usersmanagement.factory('_Model', function() {
 /* Controller for Creating Groups - Left Sidebar */
 
 usersmanagement.controller('creategroupController',
-	['$scope', '$http', 'GroupService', 'CreateGroupService',
-	function($scope, $http, GroupService, CreateGroupService) {
+	['$scope', '$http', 'GroupService',
+	function($scope, $http, GroupService) {
 		var newgroup = {};
 		$scope.savegroup = function() {
 			GroupService.creategroup().save({ groupname : $scope.newgroup });
-			CreateGroupService.addNewGroup($scope.newgroup);
+			//CreateGroupService.addNewGroup($scope.newgroup);
 			$scope.showgroupinput = false;
 			$scope.showbutton = true;
 			$scope.newgroup = '';
@@ -303,32 +289,15 @@ usersmanagement.controller('creategroupController',
 /* Fetches the List of All Groups - Left Sidebar */
 
 usersmanagement.controller('grouplistController',
-	['$scope', '$http', '$routeParams', 'GroupService', 'CreateGroupService', 'UserService',
-	function($scope, $http, $routeParams, GroupService, CreateGroupService, UserService) {
+	['$scope', '$resource', '$routeParams', 'GroupService', 'UserService',
+	function($scope, $resource, $routeParams, GroupService, UserService) {
 		$scope.loading = true;
-		$http.get(OC.filePath('settings', 'ajax', 'grouplist.php')).then(function(response){
+		$scope.Groupdata = GroupService.getAllGroups().get().success(function(response) {
 			$scope.groupnames = response.data.result;
 			var grouplist = $scope.groupnames;
 			$scope.loading = false;
 
 			$scope.groups = GroupService.getByGroupId($routeParams.groupid);
-
-			//Ajaxifies the Group Addition
-		    $scope.$watch(function() {
-		        return CreateGroupService.groupname;
-		    }, function(newGroupname, oldGroupname) {
-				if (newGroupname !== oldGroupname) {
-					getnewgroup(newGroupname);
-				}
-		    });
-		    var getnewgroup = function(newname) {
-		        grouplist.push({
-					groupid : newname.replace(/\s/g, ''),
-					name : newname,
-					useringroup : [],
-					isAdmin : false
-		        });
-		    }
 			// Selects the current Group.
 			$scope.selectGroup = function(groupid) {
 				$scope.selectedGroup = groupid;
@@ -373,28 +342,15 @@ usersmanagement.controller('setQuotaController',
 /* Fetches the List of All Users and details on the Right Content */
 
 usersmanagement.controller('userlistController',
-	['$scope', '$http', 'UserService', 'GroupService', '$routeParams', 'CreateUserService',
-	function($scope, $http, UserService, GroupService, $routeParams, CreateUserService) {
+	['$scope', '$resource', 'UserService', 'GroupService', '$routeParams', 'CreateUserService',
+	function($scope, $resource, UserService, GroupService, $routeParams, CreateUserService) {
 		$scope.loading = true;
-		$http.get(OC.filePath('settings', 'ajax', 'userlist.php')).then(function(response) {
+		$scope.Userdata = UserService.getAllUsers().get().success(function(response) {
 			$scope.users = response.data.userdetails;
 			$scope.loading = false;
 
 			/* Takes Out all groups for the Chosen dropdown */
 			$scope.allgroups = GroupService.getByGroupId().get();
-
-			//Ajaxifies the User Addition
-
-		    $scope.$watch(function() {
-		        return {
-					'user' : CreateUserService.username,
-					'useringroups' : CreateUserService.useringroups
-				};
-		    }, function(newUsername, oldUsername) {
-				if (newUsername !== oldUsername) {
-					getnewuser(newUsername);
-				}
-		    });
 
 		    var getnewuser = function(newname) {
 		        $scope.users.push({
