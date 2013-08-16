@@ -21,7 +21,8 @@
 
 /* Group Service */
 
-usersmanagement.factory('GroupService', function($resource) {
+usersmanagement.factory('GroupService', 
+	['$q', '$resource', function($q, $resource) {
 	var groupname = {};
 	return {
 		creategroup: function () {
@@ -41,9 +42,13 @@ usersmanagement.factory('GroupService', function($resource) {
 			});
 		},
 		getAllGroups: function() {
-			return $resource(OC.filePath('settings', 'ajax', 'grouplist.php'), {}, {
-				method:'POST'
+			var deferred = $q.defer();
+			$resource(OC.filePath('settings', 'ajax', 'grouplist.php'), {}, {
+				method:'GET'
+			}, function(response){
+				deffered.resolve(response);
 			});
+			return deferred.promise;
 		},
 		getByGroupId: function(groupId) {
 			return $resource(OC.filePath('settings', 'ajax', 'grouplist.php'), {}, {
@@ -51,12 +56,12 @@ usersmanagement.factory('GroupService', function($resource) {
 			});
 		}
 	}
-});
+}]);
 
 /* User Serivce */
 
-usersmanagement.factory('UserService', ['$resource', 'Config',
-	function($resource, Config) {
+usersmanagement.factory('UserService', ['$resource', 'Config', '$q',
+	function($resource, Config, $q) {
 	return {
 		createuser: function () {
 			return $resource(OC.filePath('settings', 'ajax', 'createuser.php'), {}, {
@@ -74,9 +79,13 @@ usersmanagement.factory('UserService', ['$resource', 'Config',
 			});
 		},
 		getAllUsers: function() {
-			return $resource(OC.filePath('settings', 'ajax', 'userlist.php'), {}, {
-				method: 'POST'
+			var deferred = $q.defer();
+			$resource(OC.filePath('settings', 'ajax', 'userlist.php'), {}, {
+				method: 'GET'
+			}, function(response){
+				deffered.resolve(response);
 			});
+			return deferred.promise;
 		}
 	};
 }]);

@@ -63,7 +63,7 @@ else {
 // convert them to the needed format
 foreach( $groups as $gid ) {
 	$groupname[] = array(
-		'groupid' => str_replace(' ','', $gid ),
+		'id' => str_replace(' ','', $gid ),
 		'name' => $gid,
 		'useringroup' => OC_Group::usersInGroup($gid, '', $limit, $offset),
 		'isAdmin' => !OC_User::isAdminUser($gid),

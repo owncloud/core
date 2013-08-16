@@ -38,12 +38,11 @@ usersmanagement.controller('creategroupController',
 /* Fetches the List of All Groups - Left Sidebar */
 
 usersmanagement.controller('grouplistController',
-	['$scope', '$resource', '$routeParams', 'GroupService', 'UserService',
-	function($scope, $resource, $routeParams, GroupService, UserService) {
+	['$scope', '$resource', '$routeParams', 'GroupService', 'UserService', 'GroupModel',
+	function($scope, $resource, $routeParams, GroupService, UserService, GroupModel) {
 		$scope.loading = true;
-		$scope.Groupdata = GroupService.getAllGroups().get().success(function(response) {
-			$scope.groupnames = response.data.result;
-			var grouplist = $scope.groupnames;
+		$scope.groups = GroupModel.getAll();
+		GroupService.getAllGroups().then(function(response) {
 			$scope.loading = false;
 
 			$scope.groups = GroupService.getByGroupId($routeParams.groupid);
@@ -91,17 +90,17 @@ usersmanagement.controller('setQuotaController',
 /* Fetches the List of All Users and details on the Right Content */
 
 usersmanagement.controller('userlistController',
-	['$scope', '$resource', 'UserService', 'GroupService', '$routeParams', 'CreateUserService',
-	function($scope, $resource, UserService, GroupService, $routeParams, CreateUserService) {
+	['$scope', '$resource', 'UserService', 'GroupService', '$routeParams',
+	function($scope, $resource, UserService, GroupService, $routeParams) {
 		$scope.loading = true;
-		$scope.Userdata = UserService.getAllUsers().get().success(function(response) {
+		UserService.getAllUsers().then(function(response) {
 			$scope.users = response.data.userdetails;
 			$scope.loading = false;
 
 			/* Takes Out all groups for the Chosen dropdown */
 			$scope.allgroups = GroupService.getByGroupId().get();
 
-		    var getnewuser = function(newname) {
+		    /*var getnewuser = function(newname) {
 		        $scope.users.push({
 					userid : newname.replace(/\s/g, ''),
 					name : newname,
@@ -109,7 +108,7 @@ usersmanagement.controller('userlistController',
 					groups : CreateUserService.useringroups
 		        });
 		    }
-
+				*/
 			$scope.gid = $routeParams.groupid;
 
 			$scope.deleteuser = function(user) {

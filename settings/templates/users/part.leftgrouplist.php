@@ -23,16 +23,16 @@
 <ul ng-controller="grouplistController" id="group-list">
 	<loading></loading>
 	<li class="user-groups"
-	ng-repeat="groupname in groupnames | orderBy:['isAdmin','name']"
+	ng-repeat="group in groups | orderBy:['isAdmin','name']"
 	ng-class="{ 
-		active: selectListGroup(groupname.groupid), 
+		active: selectListGroup(group.id), 
 		admin: !groupname.isAdmin
 	}"
-	ng-click="selectGroup(groupname.groupid)">
-		<a ng-href="#/group/{{ groupname.groupid }}">{{ groupname.name }}</a>
+	ng-click="selectGroup(group.id)">
+		<a ng-href="#/group/{{ group.id }}">{{ group.name }}</a>
 		<span class="utils">
-			<span class="usercount">{{ groupname.useringroup.length }}</span>
-			<button class="svg action delete-icon delete-button" ng-click="deletegroup(groupname)" original-title="Delete Group" title="Delete Group"></button>
+			<span class="usercount">{{ group.useringroup.length }}</span>
+			<button class="svg action delete-icon delete-button" ng-click="deletegroup(group)" original-title="Delete Group" title="Delete Group"></button>
 		</span>
 	</li>
 </ul>
