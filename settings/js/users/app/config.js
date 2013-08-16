@@ -26,7 +26,7 @@ config(['$httpProvider','$routeProvider', '$windowProvider', '$provide',
 		$httpProvider.defaults.headers.common['requesttoken'] = oc_requesttoken;
 
 		$routeProvider
-		.when('/group/:groupid', {
+		.when('/group/:groupId', {
 			controller : 'grouplistController',
 			templateUrl : OC.filePath('settings', 'templates/users', 'part.userlist.php')
 		})

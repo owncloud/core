@@ -27,7 +27,7 @@ config(['$httpProvider','$routeProvider', '$windowProvider', '$provide',
 		$httpProvider.defaults.headers.common['requesttoken'] = oc_requesttoken;
 
 		$routeProvider
-		.when('/group/:groupid', {
+		.when('/group/:groupId', {
 			controller : 'grouplistController',
 			templateUrl : OC.filePath('settings', 'templates/users', 'part.userlist.php')
 		})
@@ -88,8 +88,8 @@ usersmanagement.factory('GroupService',
 /* User Serivce */
 
 usersmanagement.factory('UserService',
-	['$resource', 'Config', '$q', 'UserModel',
-	function($resource, Config, $q, UserModel) {
+	['$resource', 'Config', '$q', 'UserModel', '_InArrayQuery',
+	function($resource, Config, $q, UserModel, _InArrayQuery) {
 	return {
 		createuser: function () {
 			return $resource(OC.filePath('settings', 'ajax', 'createuser.php'), {}, {
@@ -114,6 +114,10 @@ usersmanagement.factory('UserService',
 				deferred.resolve(response);
 			});
 			return deferred.promise;
+		},
+		getUsersInGroup: function (groupId) {
+			var usersInGroupQuery = new _InArrayQuery('groups', groupId);
+			return UserModel.get(usersInGroupQuery);
 		}
 	};
 }]);
@@ -285,6 +289,71 @@ usersmanagement.factory('_Model', function() {
 });
 
 
+usersmanagement.factory('_InArrayQuery', ['_Query', function(_Query) {
+	var _InArrayQuery = function(fieldName, filterFor) {
+		_Query.call(this, 'inarrayquery', [fieldName, filterFor]);
+		this.filterFor = filterFor;
+		this.fieldName = fieldName;
+	};
+
+	_InArrayQuery.prototype = Object.create(_Query.prototype);
+
+	_InArrayQuery.prototype.exec = function(data) {
+		var filtered = [];
+
+		for(var i=0; i<data.length; i++) {
+			var current = data[i];
+
+			for(var j=0; j<current[this.fieldName].length; j++) {
+				var toBeCompared = current[this.fieldName][j];
+
+				if(toBeCompared === this.filterFor) {
+					filtered.push(current);
+					break;
+				}
+			}
+		}
+
+ 		return filtered;
+	};
+
+	return _InArrayQuery;
+}]);
+
+usersmanagement.factory('_Query', [function() {
+		var Query;
+		Query = (function() {
+
+			function Query(_name, _args) {
+				this._name = _name;
+				this._args = _args != null ? _args : [];
+			}
+
+			Query.prototype.exec = function(data) {
+				throw new Error('Not implemented');
+			};
+
+			Query.prototype.hashCode = function(filter) {
+				var arg, hash, _i, _len, _ref;
+				hash = this._name;
+				_ref = this._args;
+				for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+					arg = _ref[_i];
+					if (angular.isString(arg)) {
+						arg = arg.replace(/_/gi, '__');
+					}
+					hash += '_' + arg;
+				}
+				return hash;
+			};
+
+			return Query;
+
+		})();
+		return Query;
+	}
+]);
+
 /* Controller for Creating Groups - Left Sidebar */
 
 usersmanagement.controller('creategroupController',
@@ -312,7 +381,6 @@ usersmanagement.controller('grouplistController',
 
 		GroupService.getAllGroups().then(function(response) {
 			$scope.loading = false;
-			console.log($scope.groups);
 
 			// Selects the current Group.
 			$scope.selectGroup = function(groupid) {
@@ -362,6 +430,7 @@ usersmanagement.controller('userlistController',
 	function($scope, $resource, UserService, GroupService, $routeParams) {
 		$scope.loading = true;
 		UserService.getAllUsers().then(function(response) {
+			$scope.users = UserService.getUsersInGroup($routeParams.groupId);
 			$scope.loading = false;
 
 			/* Takes Out all groups for the Chosen dropdown */
