@@ -48,7 +48,7 @@ module.exports = function(grunt) {
 				' * License along with this library.  If not, see <http://www.gnu.org/licenses/>.\n' +
  			   	' *\n' +
  			   	' */\n\n',
-				build: 'users/app/',
+				src: 'users/app/',
 				production: 'users/public/'
 		    },
 		concat: {
@@ -62,32 +62,33 @@ module.exports = function(grunt) {
 					}
 				},
 				src: [
-					'<%= meta.build %>config.js',
-					'<%= meta.build %>service.js',
-					'<%= meta.build %>controller.js',
-					'<%= meta.build %>directive.js',
-					'<%= meta.build %>filter.js'
+					'<%= meta.src %>config.js',
+					'<%= meta.src %>service.js',
+					'<%= meta.src %>controller.js',
+					'<%= meta.src %>directive.js',
+					'<%= meta.src %>filter.js'
 				],
 				dest: '<%= meta.production %>app.js'
 			}
 		},
 		wrap: {
 			app: {
-				src: '<%= meta.production %>app.js',
+				src: ['<%= meta.production %>app.js'],
 				dest: '',
-				wrapper:[
-					'(function(angular, $, moment, undefined){\n\n', '\n})(window.angular, window.jQuery, window.moment);'
+				wrapper: [
+					'(function(angular, $, undefined){\n\n\'use strict\';\n\n',
+					'\n})(angular, jQuery);'
 				]
 			}
 		},
 		watch: {
 		      concat: {
 		        files: [
-					'<%= meta.build %>config.js',
-					'<%= meta.build %>service.js',
-					'<%= meta.build %>controller.js',
-					'<%= meta.build %>directive.js',
-					'<%= meta.build %>filter.js'
+					'<%= meta.src %>config.js',
+					'<%= meta.src %>service.js',
+					'<%= meta.src %>controller.js',
+					'<%= meta.src %>directive.js',
+					'<%= meta.src %>filter.js'
 				],
 		        tasks: 'compile'
 		      }
