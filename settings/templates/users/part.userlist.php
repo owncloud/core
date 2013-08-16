@@ -38,7 +38,7 @@
 	<tbody>
 		<loading></loading>
 		<!-- The Filter Goes here with the ngRepeat.-->
-		<tr ng-repeat="user in users | orderBy:['isAdmin','name']"
+		<tr ng-repeat="user in users | orderBy:['isAdmin','isSubAdmin','name']"
 			ng-init="viewname = true; editname = false;
 				 viewdisplayname = true; editdisplayname = false;
 				 viewpassword = true; editpassword = false;
