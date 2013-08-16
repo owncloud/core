@@ -161,6 +161,7 @@
 	width: 80%;
 	float: left;
 	min-width: 700px;
+	padding-top: 10px;
 }
 
 #userlist {
