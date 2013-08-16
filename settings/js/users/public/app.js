@@ -426,15 +426,15 @@ usersmanagement.controller('setQuotaController',
 /* Fetches the List of All Users and details on the Right Content */
 
 usersmanagement.controller('userlistController',
-	['$scope', '$resource', 'UserService', 'GroupService', '$routeParams',
-	function($scope, $resource, UserService, GroupService, $routeParams) {
+	['$scope', 'UserService', 'GroupService', '$routeParams',
+	function($scope, UserService, GroupService, $routeParams) {
 		$scope.loading = true;
 		UserService.getAllUsers().then(function(response) {
 			$scope.users = UserService.getUsersInGroup($routeParams.groupId);
 			$scope.loading = false;
 
 			/* Takes Out all groups for the Chosen dropdown */
-			$scope.allgroups = GroupService.getByGroupId().get();
+			//$scope.allgroups = GroupService.getByGroupId().get();
 
 		    /*var getnewuser = function(newname) {
 		        $scope.users.push({
@@ -445,7 +445,7 @@ usersmanagement.controller('userlistController',
 		        });
 		    }
 				*/
-			$scope.gid = $routeParams.groupid;
+			/*$scope.gid = $routeParams.groupid;
 
 			$scope.deleteuser = function(user) {
 				$scope.users.splice($scope.users.indexOf(user), 1);
@@ -455,7 +455,7 @@ usersmanagement.controller('userlistController',
 			$scope.updateUser = function(field) {
 				console.log(field);
 				console.log($scope.users);
-			}
+			}*/
 		});
 	}
 ]);
