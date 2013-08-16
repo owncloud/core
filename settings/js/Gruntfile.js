@@ -48,7 +48,7 @@ module.exports = function(grunt) {
 				' * License along with this library.  If not, see <http://www.gnu.org/licenses/>.\n' +
  			   	' *\n' +
  			   	' */\n\n',
-				build: 'users/build/',
+				build: 'users/app/',
 				production: 'users/public/'
 		    },
 		concat: {

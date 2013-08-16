@@ -24,8 +24,6 @@
 # settings grunt files
 
 /settings/js/node_modules/*
-/settings/js/users/build/*
-
 
 # ignore themes except the README
 /themes/*
