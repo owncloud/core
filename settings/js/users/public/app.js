@@ -47,7 +47,7 @@ config(['$httpProvider','$routeProvider', '$windowProvider', '$provide',
 
 /* Group Service */
 
-usersmanagement.factory('GroupService', 
+usersmanagement.factory('GroupService',
 	['$q', '$resource', function($q, $resource) {
 	var groupname = {};
 	return {
@@ -126,13 +126,17 @@ usersmanagement.factory('QuotaService', function($resource) {
 
 
 usersmanagement.factory('GroupModel', ['_Model', function (_Model) {
-	GroupModel = function() {};
+	GroupModel = function() {
+		_Model.call(this);
+	};
 	GroupModel.prototype = Object.create(_Model.prototype);
 	return new GroupModel();
 }]);
 
 usersmanagement.factory('UserModel', ['_Model', function (_Model) {
-	UserModel = function() {};
+	UserModel = function() {
+		_Model.call(this);
+	};
 	UserModel.prototype = Object.create(_Model.prototype);
 	return new UserModel();
 }]);
@@ -302,6 +306,8 @@ usersmanagement.controller('grouplistController',
 	function($scope, $resource, $routeParams, GroupService, UserService, GroupModel) {
 		$scope.loading = true;
 		$scope.groups = GroupModel.getAll();
+		console.log(GroupModel);
+		console.log(GroupModel.getAll());
 		GroupService.getAllGroups().then(function(response) {
 			$scope.loading = false;
 

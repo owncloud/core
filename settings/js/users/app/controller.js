@@ -42,6 +42,8 @@ usersmanagement.controller('grouplistController',
 	function($scope, $resource, $routeParams, GroupService, UserService, GroupModel) {
 		$scope.loading = true;
 		$scope.groups = GroupModel.getAll();
+		console.log(GroupModel);
+		console.log(GroupModel.getAll());
 		GroupService.getAllGroups().then(function(response) {
 			$scope.loading = false;
 
