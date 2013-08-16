@@ -19,7 +19,7 @@
  *
  */
 
-/* Group Service */ 
+/* Group Service */
 
 usersmanagement.factory('GroupService', function($resource) {
 	var groupname = {};
@@ -74,7 +74,8 @@ usersmanagement.factory('CreateUserService', function() {
 
 /* User Serivce */
 
-usersmanagement.factory('UserService', function($resource) {
+usersmanagement.factory('UserService', ['$resource', 'Config',
+	function($resource, Config) {
 	return {
 		createuser: function () {
 			return $resource(OC.filePath('settings', 'ajax', 'createuser.php'), {}, {
@@ -85,9 +86,14 @@ usersmanagement.factory('UserService', function($resource) {
 			return $resource(OC.filePath('settings', 'ajax', 'removeuser.php'), users, {
 				method: 'DELETE'
 			});
+		},
+		updateField: function(userId, fields) {
+			return $resource(Config.baseUrl + '/users/' + userId, fields, {
+				method: 'POST'
+			});
 		}
 	};
-});
+}]);
 
 /* Quota Service */
 

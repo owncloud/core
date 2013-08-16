@@ -24,9 +24,18 @@
 namespace OC\Settings\Controller;
 
 class UserController {
-	
+
+	private $params;
+	private $routeParams;
+
+	public function __construct($params, $routeParams) {
+		$this->params = $params;
+		$this->routeParams = $routeParams;
+	}
+
+
 	/* Responsible for Switching between the Groups */
-	
+
 	public function openGroup($groupname) {
 		$result = array(
 			'success' => false,
@@ -42,5 +51,10 @@ class UserController {
 		}
 		return $result;
 	}
+
+
+	public function updateUser() {
+		return json_encode($this->routeParams);
+	}
+
 }
-?>

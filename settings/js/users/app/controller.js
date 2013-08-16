@@ -21,12 +21,13 @@
 
 /* Controller for Creating Groups - Left Sidebar */
 
-usersmanagement.controller('creategroupController', ['$scope', '$http', 'GroupService', 'CreateGroupService',
-	function($scope, $http, GroupService) {
+usersmanagement.controller('creategroupController',
+	['$scope', '$http', 'GroupService', 'CreateGroupService',
+	function($scope, $http, GroupService, CreateGroupService) {
 		var newgroup = {};
 		$scope.savegroup = function() {
 			GroupService.creategroup().save({ groupname : $scope.newgroup });
-			CreateGroupService.addNewGroup($scope.newgroup);		
+			CreateGroupService.addNewGroup($scope.newgroup);
 			$scope.showgroupinput = false;
 			$scope.showbutton = true;
 			$scope.newgroup = '';
@@ -36,16 +37,17 @@ usersmanagement.controller('creategroupController', ['$scope', '$http', 'GroupSe
 
 /* Fetches the List of All Groups - Left Sidebar */
 
-usersmanagement.controller('grouplistController', ['$scope', '$http', '$routeParams', 'GroupService', 'CreateGroupService', 'UserService',
-	function($scope, $http, $routeParams, GroupService) {
+usersmanagement.controller('grouplistController',
+	['$scope', '$http', '$routeParams', 'GroupService', 'CreateGroupService', 'UserService',
+	function($scope, $http, $routeParams, GroupService, CreateGroupService, UserService) {
 		$scope.loading = true;
 		$http.get(OC.filePath('settings', 'ajax', 'grouplist.php')).then(function(response){
 			$scope.groupnames = response.data.result;
 			var grouplist = $scope.groupnames;
 			$scope.loading = false;
-			
+
 			$scope.groups = GroupService.getByGroupId($routeParams.groupid);
-			
+
 			//Ajaxifies the Group Addition
 		    $scope.$watch(function() {
 		        return CreateGroupService.groupname;
@@ -83,7 +85,8 @@ usersmanagement.controller('grouplistController', ['$scope', '$http', '$routePar
 
 /* Asynchronously creates user */
 
-usersmanagement.controller('addUserController', ['$scope', '$http', 'UserService', 'GroupService',
+usersmanagement.controller('addUserController',
+	['$scope', '$http', 'UserService', 'GroupService',
 	function($scope, $http, UserService, GroupService) {
 		var newuser,password = {};
 		var groups = [];
@@ -95,7 +98,8 @@ usersmanagement.controller('addUserController', ['$scope', '$http', 'UserService
 	}
 ]);
 
-usersmanagement.controller('setQuotaController', ['$scope', 'QuotaService',
+usersmanagement.controller('setQuotaController',
+	['$scope', 'QuotaService',
 	function($scope, QuotaService) {
 		// Shift Default Storage here.
 	}
@@ -103,18 +107,19 @@ usersmanagement.controller('setQuotaController', ['$scope', 'QuotaService',
 
 /* Fetches the List of All Users and details on the Right Content */
 
-usersmanagement.controller('userlistController', ['$scope', '$http', 'UserService', 'GroupService', '$routeParams',
-	function($scope, $http, UserService, GroupService, $routeParams) {
+usersmanagement.controller('userlistController',
+	['$scope', '$http', 'UserService', 'GroupService', '$routeParams', 'CreateUserService',
+	function($scope, $http, UserService, GroupService, $routeParams, CreateUserService) {
 		$scope.loading = true;
 		$http.get(OC.filePath('settings', 'ajax', 'userlist.php')).then(function(response) {
 			$scope.users = response.data.userdetails;
 			$scope.loading = false;
-			
+
 			/* Takes Out all groups for the Chosen dropdown */
 			$scope.allgroups = GroupService.getByGroupId().get();
-			
+
 			//Ajaxifies the User Addition
-			
+
 		    $scope.$watch(function() {
 		        return {
 					'user' : CreateUserService.username,
@@ -125,7 +130,7 @@ usersmanagement.controller('userlistController', ['$scope', '$http', 'UserServic
 					getnewuser(newUsername);
 				}
 		    });
-			
+
 		    var getnewuser = function(newname) {
 		        $scope.users.push({
 					userid : newname.replace(/\s/g, ''),
@@ -134,12 +139,17 @@ usersmanagement.controller('userlistController', ['$scope', '$http', 'UserServic
 					groups : CreateUserService.useringroups
 		        });
 		    }
-			
+
 			$scope.gid = $routeParams.groupid;
 
 			$scope.deleteuser = function(user) {
 				$scope.users.splice($scope.users.indexOf(user), 1);
 				UserService.removeuser().delete({ username : user });
+			};
+
+			$scope.updateUser = function(field) {
+				console.log(field);
+				console.log($scope.users);
 			}
 		});
 	}

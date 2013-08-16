@@ -37,7 +37,7 @@ class DIContainer extends \Pimple {
 		$this['params'] = json_decode(file_get_contents('php://input'), true);
 
 		$this['UserController'] = $this->share(function() {
-			return new UserController();
+			return new UserController($c['params'], $['routeParams']);
 		});
 
 	}

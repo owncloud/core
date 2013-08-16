@@ -19,9 +19,12 @@
  *
  */
 
-var usersmanagement = angular.module('usersmanagement', ['ngResource','localytics.directives']).config(['$httpProvider','$routeProvider',
-	function($httpProvider,$routeProvider) {
+var usersmanagement = angular.module('usersmanagement', ['ngResource','localytics.directives']).
+config(['$httpProvider','$routeProvider', '$windowProvider', '$provide',
+	function($httpProvider,$routeProvider, $windowProvider, $provide) {
+
 		$httpProvider.defaults.headers.common['requesttoken'] = oc_requesttoken;
+
 		$routeProvider
 		.when('/group/:groupid', {
 			controller : 'grouplistController',
@@ -29,6 +32,14 @@ var usersmanagement = angular.module('usersmanagement', ['ngResource','localytic
 		})
 		.otherwise({
 			redirectTo : '/group/everyone'
+		});
+
+		var $window = $windowProvider.$get();
+		var url = $window.location.href;
+		var baseUrl = url.split('index.php')[0] + 'index.php/settings';
+
+		$provide.value('Config', {
+			baseUrl: baseUrl
 		});
 	}
 ]);

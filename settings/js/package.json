@@ -18,6 +18,7 @@
     "grunt-cli": "*",
     "grunt-contrib-concat": "*",
     "grunt-contrib-watch": "*",
+    "grunt-contrib-jshint": "*",
     "grunt-wrap": "*"
   },
   "engine": "node >= 0.8"

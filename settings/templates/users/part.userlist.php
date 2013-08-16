@@ -61,9 +61,12 @@
 				</span>
 				<input type="text"
 					ng-show="editdisplayname"
-					value="{{ user.displayname }}"
-					ng-focus="editdisplayname" 
-					ng-blur="editdisplayname = !editdisplayname; viewdisplayname = !viewdisplayname" 
+					ng-model="user.displayname"
+					ng-focus="editdisplayname"
+					ng-blur="
+						editdisplayname = !editdisplayname;
+						viewdisplayname = !viewdisplayname;
+						update('displayName')"
 				/>
 			</td>
 			<td class="user-pass">
@@ -77,11 +80,11 @@
 					ng-show="editpassword"
 					placeholder="●●●●●●●"
 					ng-focus="editpassword"
-					ng-blur="editpassword = !editpassword; viewpassword = !viewpassword" 
+					ng-blur="editpassword = !editpassword; viewpassword = !viewpassword"
 				/>
 			</td>
 			<td class="groups">
-			<!--	<span 
+			<!--	<span
 					ng-show="viewgroup"
 					ng-click="viewgroup = !viewgroup; editgroup = !toggleditgroup">
 					{{user.groups}}

@@ -31,7 +31,12 @@ $this->create('settings_admin', '/settings/admin')
 $this->create('settings_user_controller_opengroup', '/settings/users/group/{groupid}')
 ->get()->action(function($params){
 	App::main('UserController', 'opengroup', $params, new DIContainer());
-});	
+});
+
+$this->create('settings_user_controller_updateuser', '/settings/users/{userId}')
+->post()->action(function($params){
+	App::main('UserController', 'updateUser', $params, new DIContainer());
+});
 
 $this->create('settings_ajax_userlist', '/settings/ajax/userlist.php')
 	->actionInclude('settings/ajax/userlist.php');
