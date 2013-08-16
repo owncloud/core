@@ -24,15 +24,17 @@
 	<loading></loading>
 	<li class="user-groups"
 	ng-repeat="group in groups | orderBy:['isAdmin','name']"
-	ng-class="{ 
-		active: selectListGroup(group.id), 
-		admin: !groupname.isAdmin
-	}"
-	ng-click="selectGroup(group.id)">
-		<a ng-href="#/group/{{ group.id }}">{{ group.name }}</a>
+	ng-class="{
+		active: routeParams.groupId == group.id,
+		admin: !group.isAdmin
+	}">
+		<a ng-href="#/group/{{ group.id }}">{{ group.id }}</a>
 		<span class="utils">
 			<span class="usercount">{{ group.useringroup.length }}</span>
-			<button class="svg action delete-icon delete-button" ng-click="deletegroup(group)" original-title="Delete Group" title="Delete Group"></button>
+			<button class="svg action delete-icon delete-button"
+			ng-click="deletegroup(group)"
+			original-title="Delete Group"
+			title="Delete Group"></button>
 		</span>
 	</li>
 </ul>
