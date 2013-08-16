@@ -42,10 +42,12 @@ usersmanagement.controller('grouplistController',
 	function($scope, $resource, $routeParams, GroupService, UserService, GroupModel) {
 		$scope.loading = true;
 		$scope.groups = GroupModel.getAll();
+		$scope.routeParams = $routeParams;
+
 		GroupService.getAllGroups().then(function(response) {
 			$scope.loading = false;
+			console.log($scope.groups);
 
-			$scope.groups = GroupService.getByGroupId($routeParams.groupid);
 			// Selects the current Group.
 			$scope.selectGroup = function(groupid) {
 				$scope.selectedGroup = groupid;
