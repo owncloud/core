@@ -42,8 +42,6 @@ usersmanagement.controller('grouplistController',
 	function($scope, $resource, $routeParams, GroupService, UserService, GroupModel) {
 		$scope.loading = true;
 		$scope.groups = GroupModel.getAll();
-		console.log(GroupModel);
-		console.log(GroupModel.getAll());
 		GroupService.getAllGroups().then(function(response) {
 			$scope.loading = false;
 
@@ -96,7 +94,6 @@ usersmanagement.controller('userlistController',
 	function($scope, $resource, UserService, GroupService, $routeParams) {
 		$scope.loading = true;
 		UserService.getAllUsers().then(function(response) {
-			$scope.users = response.data.userdetails;
 			$scope.loading = false;
 
 			/* Takes Out all groups for the Chosen dropdown */

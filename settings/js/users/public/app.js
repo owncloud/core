@@ -48,7 +48,8 @@ config(['$httpProvider','$routeProvider', '$windowProvider', '$provide',
 /* Group Service */
 
 usersmanagement.factory('GroupService',
-	['$q', '$resource', function($q, $resource) {
+	['$q', '$resource', 'GroupModel',
+	function($q, $resource, GroupModel) {
 	var groupname = {};
 	return {
 		creategroup: function () {
@@ -69,10 +70,10 @@ usersmanagement.factory('GroupService',
 		},
 		getAllGroups: function() {
 			var deferred = $q.defer();
-			$resource(OC.filePath('settings', 'ajax', 'grouplist.php'), {}, {
-				method:'GET'
-			}, function(response){
-				deffered.resolve(response);
+			var Groups = $resource(OC.filePath('settings', 'ajax', 'grouplist.php'));
+			Groups.get(function(response){
+				GroupModel.addAll(response.result);
+				deferred.resolve(response);
 			});
 			return deferred.promise;
 		},
@@ -86,8 +87,9 @@ usersmanagement.factory('GroupService',
 
 /* User Serivce */
 
-usersmanagement.factory('UserService', ['$resource', 'Config', '$q',
-	function($resource, Config, $q) {
+usersmanagement.factory('UserService',
+	['$resource', 'Config', '$q', 'UserModel',
+	function($resource, Config, $q, UserModel) {
 	return {
 		createuser: function () {
 			return $resource(OC.filePath('settings', 'ajax', 'createuser.php'), {}, {
@@ -106,10 +108,10 @@ usersmanagement.factory('UserService', ['$resource', 'Config', '$q',
 		},
 		getAllUsers: function() {
 			var deferred = $q.defer();
-			$resource(OC.filePath('settings', 'ajax', 'userlist.php'), {}, {
-				method: 'GET'
-			}, function(response){
-				deffered.resolve(response);
+			var User = $resource(OC.filePath('settings', 'ajax', 'userlist.php'));
+			User.get(function(response){
+				UserModel.addAll(response.userdetails);
+				deferred.resolve(response);
 			});
 			return deferred.promise;
 		}
@@ -306,8 +308,6 @@ usersmanagement.controller('grouplistController',
 	function($scope, $resource, $routeParams, GroupService, UserService, GroupModel) {
 		$scope.loading = true;
 		$scope.groups = GroupModel.getAll();
-		console.log(GroupModel);
-		console.log(GroupModel.getAll());
 		GroupService.getAllGroups().then(function(response) {
 			$scope.loading = false;
 
@@ -360,7 +360,6 @@ usersmanagement.controller('userlistController',
 	function($scope, $resource, UserService, GroupService, $routeParams) {
 		$scope.loading = true;
 		UserService.getAllUsers().then(function(response) {
-			$scope.users = response.data.userdetails;
 			$scope.loading = false;
 
 			/* Takes Out all groups for the Chosen dropdown */
