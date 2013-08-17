@@ -1,0 +1,273 @@
+/**
+ * ownCloud - Core
+ *
+ * @author Raghu Nayyar
+ * @copyright 2013 Raghu Nayyar <raghu.nayyar.007@gmail.com>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+/* Group List Styles */
+
+#app-navigation {
+	position: fixed;
+}
+
+#app-navigation > ul {
+	height:auto;
+}
+
+#user-groups {
+	height:75% !important;
+}
+
+.error {
+	float: left;
+	display: block;
+	width: 100%;
+	text-align: center;
+	height: 25px;
+	padding-top: 10px;
+	background: #F2FF63;
+}
+
+#app-navigation .loading, #user-content .loading {
+	width:35px;
+	height:35px;
+	margin:0 auto;
+}
+
+/* Explicit Items in the List */
+
+.everyone {
+	background-color: #ddd;
+	border-top: 1px solid #fff;
+	border-bottom: 1px solid #ddd;
+	position: relative;
+	width: 100%;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	text-shadow: 0 1px 0 rgba(255,255,255,.9);
+}
+
+.everyone:hover {
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+}
+
+.everyone a {
+	display: block;
+	width: 100%;
+	padding: 0 16px;
+	overflow: hidden;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	line-height: 32px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	color: #333;
+}
+.admin {
+
+}
+
+.addbutton {
+	background-color: #eee;
+	border-top: 1px solid #fff;
+	border-bottom: 1px solid #ddd;
+	position: relative;
+	width: 100%;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	text-shadow: 0 1px 0 rgba(255,255,255,.9);
+}
+
+.addbutton span {
+	display: block;
+	width: 100%;
+	padding: 0 16px;
+	overflow: hidden;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	line-height: 32px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	color: #333;
+	cursor:pointer;
+	font-weight:500;
+}
+
+#user-content .loading {
+	position: absolute;
+	left: 50%;
+	right: 50%;
+	top: 50%;
+	bottom: 50%;
+}
+
+.utils {
+	position:absolute;
+	right:0;
+	top:0px;
+}
+
+.delete-button {
+	margin: 0;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-color: transparent;
+	border: 0;
+	box-shadow: none;
+	height: 32px;
+	width: 32px;
+}
+
+.delete-button:hover {
+	background-color: #DDD;
+}
+.utils span {
+	position: absolute;
+	padding: 7px;
+	right:5px;
+}
+
+.utils .activeusercount {
+	right:25px;
+}
+
+#hascontrols {
+	margin-left: 250px;
+	/*background-image: linear-gradient(top, rgb(248,248,248) 0, rgb(255,255,255) 84px);
+	background-image: -o-linear-gradient(top, rgb(248,248,248) 0, rgb(255,255,255) 84px);
+	background-image: -moz-linear-gradient(top, rgb(248,248,248) 0, rgb(255,255,255) 84px);
+	background-image: -webkit-linear-gradient(top, rgb(248,248,248) 0, rgb(255,255,255) 84px);
+	background-image: -ms-linear-gradient(top, rgb(248,248,248) 0, rgb(255,255,255) 84px);
+	*/
+	background-color:#efefef;
+	padding: 2px 0 2px 0;
+}
+
+/* Default Storage Controller Styles */
+
+#local-storage {
+	position:absolute;
+	right:10px;
+	top:10px;
+}
+
+/* User Table */
+
+#user-table {
+	position: absolute;
+	left: 250px;
+	width: 80%;
+	float: left;
+	min-width: 700px;
+	padding-top: 10px;
+}
+
+#userlist {
+	position: relative;
+	width:100%;
+}
+
+#userlist thead {
+	height:30px;
+}
+
+#userlist tbody tr {
+	height:44px;
+}
+
+#userlist tbody tr > td.delete-column .delete-button {
+	opacity:0;
+	background-color:transparent;
+	padding:2px;
+}
+
+#userlist tbody tr:hover > td.delete-column .delete-button {
+	opacity:1;
+}
+
+.thumbnail {
+	position:relative;
+	width:50px;
+}
+
+.thumbnail img {
+	position: absolute;
+	top: 6px;
+	left: 10px;
+}
+
+.login-name, .display-name, .user-pass, .groups, .local-storage {
+	max-width:200px;
+	width:200px;
+}
+
+.display-name span, .user-pass span {
+	width:100px;
+	padding:7px 95px 5px 5px;
+	border-radius:5px;
+	border:1px solid transparent;
+	cursor:text;
+}
+
+.display-name span:hover, .user-pass span:hover {
+	border:1px solid #eee;
+}
+
+.groups .editgroupdiv select {
+	display:none !important;
+}
+
+
+.groups .chzn-container .chzn-choices {
+	width:150px;
+}
+
+.groups .chzn.container .chzn-drop {
+	width:150px;
+}
+
+#newusergroups_chzn {
+	width:150px !important;
+}
+
+#newusergroups_chzn .chzn-choices {
+	overflow-y:scroll;
+	max-height:30px;
+	width:150px !important;
+	margin: -9px -2px;
+}
+
+.groups .chzn-choices .search-input {
+	width:150px !important;
+}
+
+#newusergroups_chzn .chzn-choices .search-field input, .groups .chzn-choices .search-field input {
+	width:150px !important;
+}
+
+#newusergroups_chzn .chzn-drop {
+	margin: 9px -2px;
+}
+
+#newusergroups_chzn .chzn-drop, .groups .chzn-drop {
+	width:150px !important;
+}
+.groups .chzn-drop .chz-results {
+	min-width:150px !important;
+}
