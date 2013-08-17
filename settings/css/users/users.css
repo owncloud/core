@@ -137,9 +137,13 @@
 .delete-button:hover {
 	background-color: #DDD;
 }
-.usercount {
+.utils span {
 	position: absolute;
 	padding: 7px;
+	right:5px;
+}
+
+.utils .activeusercount {
 	right:25px;
 }
 

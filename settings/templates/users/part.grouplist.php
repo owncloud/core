@@ -29,7 +29,12 @@
 	}">
 		<a ng-href="#/group/{{ group.id }}">{{ group.id }}</a>
 		<span class="utils">
-			<span class="usercount">{{ group.useringroup.length }}</span>
+			<span
+			ng-class="{
+				activeusercount:routeParams.groupId == group.id
+			}">
+				{{ group.useringroup.length }}
+			</span>
 			<button class="svg action delete-icon delete-button"
 			ng-click="deletegroup(group)"
 			ng-show="routeParams.groupId == group.id"
