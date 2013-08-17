@@ -22,7 +22,7 @@
  */
 ?>
 
-<ul ng-controller="prioritygroupController" class="group-list">
+<ul ng-controller="prioritygroupController" id="priority-list">
 	<li class="user-groups">
 		<a href="#/group/"><?php p($l->t('Everyone')); ?></a>
 	</li>
@@ -30,6 +30,6 @@
 		<a href="#/group/admins"><?php p($l->t('Admins')); ?></a>
 	</li>
 	<li class="user-groups">
-		<a href="#/group/subadmins"><?php p($l->t('SubAdmins')); ?></a>
+		<a href="#/group/subadmins"><?php p($l->t('Subadmins')); ?></a>
 	</li>
 </ul>
