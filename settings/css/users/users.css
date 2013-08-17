@@ -149,11 +149,13 @@
 
 #hascontrols {
 	margin-left: 250px;
-	background-image: linear-gradient(top, rgb(248,248,248) 0, rgb(255,255,255) 84px);
+	/*background-image: linear-gradient(top, rgb(248,248,248) 0, rgb(255,255,255) 84px);
 	background-image: -o-linear-gradient(top, rgb(248,248,248) 0, rgb(255,255,255) 84px);
 	background-image: -moz-linear-gradient(top, rgb(248,248,248) 0, rgb(255,255,255) 84px);
 	background-image: -webkit-linear-gradient(top, rgb(248,248,248) 0, rgb(255,255,255) 84px);
 	background-image: -ms-linear-gradient(top, rgb(248,248,248) 0, rgb(255,255,255) 84px);
+	*/
+	background-color:#efefef;
 	padding: 2px 0 2px 0;
 }
 
