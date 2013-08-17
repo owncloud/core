@@ -369,7 +369,6 @@ usersmanagement.controller('creategroupController',
 		var newgroup = {};
 		$scope.savegroup = function() {
 			GroupService.creategroup().save({ groupname : $scope.newgroup });
-			//CreateGroupService.addNewGroup($scope.newgroup);
 			$scope.showgroupinput = false;
 			$scope.showbutton = true;
 			$scope.newgroup = '';
@@ -385,10 +384,11 @@ usersmanagement.controller('grouplistController',
 		$scope.loading = true;
 		$scope.groups = GroupModel.getAll();
 		groups = $scope.groups;
+		
 		$scope.routeParams = $routeParams;
 		GroupService.getAllGroups().then(function(response) {
 			$scope.loading = false;
-
+			
 			// Deletes the group.
 			$scope.deletegroup = function(group) {
 				groups.splice(groups.indexOf(group), 1);

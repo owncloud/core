@@ -20,20 +20,19 @@
  *
  */
 ?>
-<ul ng-controller="grouplistController" class="group-list" id="user-groups" ng-init="showdeletebtn = false">
+<ul ng-controller="grouplistController" class="group-list" id="user-groups">
 	<loading></loading>
 	<li class="user-groups"
 	ng-repeat="group in groups | orderBy:['isAdmin','name']"
 	ng-class="{
-		active: routeParams.groupId == group.id,
-		admin: !group.isAdmin
+		active: routeParams.groupId == group.id
 	}">
 		<a ng-href="#/group/{{ group.id }}">{{ group.id }}</a>
 		<span class="utils">
 			<span class="usercount">{{ group.useringroup.length }}</span>
 			<button class="svg action delete-icon delete-button"
 			ng-click="deletegroup(group)"
-			ng-show="showdeletebtn"
+			ng-show="routeParams.groupId == group.id"
 			original-title="Delete Group"
 			title="Delete Group"></button>
 		</span>
