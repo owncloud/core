@@ -45,14 +45,10 @@ if ($isAdmin) {
 	$batch = OC_User::getDisplayNames('', $limit, $offset);
 	foreach ($batch as $user => $displayname) {
 		$users[] = array(
-			'id' => str_replace(' ','', $user ),
+			'userid' => str_replace(' ','', $user ),
 			'name' => $user,
 			'displayname' => $displayname,
-			'groups' => array_map(function($in) {
-							return str_replace(' ','', $in);
-						},
-						OC_Group::getUserGroups($user)
-					),
+			'groups' => OC_Group::getUserGroups($user),
 			'isAdmin' =>  !OC_User::isAdminUser($user),
 			'subadmin' => OC_SubAdmin::getSubAdminsGroups($user),
 			'isSubAdmin' => !OC_SubAdmin::isSubAdmin($user),
@@ -63,14 +59,10 @@ if ($isAdmin) {
 	$batch = OC_Group::usersInGroups($groups, '', $limit, $offset);
 	foreach ($batch as $user) {
 		$users[] = array(
-			'id' => str_replace(' ','', $user ),
+			'userid' => str_replace(' ','', $user ),
 			'name' => $user,
 			'displayname' => OC_User::getDisplayName($user),
-			'groups' => array_map(function($in) {
-							return str_replace(' ','', $in );
-						},
-						OC_Group::getUserGroups($user)
-					),
+			'groups' => OC_Group::getUserGroups($user),
 			'isAdmin' =>  !OC_User::isAdminUser($user),
 			'isSubAdmin' => !OC_SubAdmin::isSubAdmin($user),
 			'quota' => OC_Preferences::getValue($user, 'files', 'quota', 'default'));

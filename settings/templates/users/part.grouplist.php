@@ -23,7 +23,7 @@
 <ul ng-controller="grouplistController" class="group-list" id="user-groups">
 	<loading></loading>
 	<li class="user-groups"
-	ng-repeat="group in groups | orderBy:['name'] | filter:{isAdmin:true}"
+	ng-repeat="group in groups | orderBy:['isAdmin','name']"
 	ng-class="{
 		active: routeParams.groupId == group.id
 	}">
@@ -35,13 +35,11 @@
 			}">
 				{{ group.useringroup.length }}
 			</span>
-			<button
-				class="svg action delete-icon delete-button"
-				ng-click="deletegroup(group.name)"
-				ng-show="routeParams.groupId == group.id"
-				original-title="Delete Group"
-				title="Delete Group">
-			</button>
+			<button class="svg action delete-icon delete-button"
+			ng-click="deletegroup(group)"
+			ng-show="routeParams.groupId == group.id"
+			original-title="Delete Group"
+			title="Delete Group"></button>
 		</span>
 	</li>
 </ul>

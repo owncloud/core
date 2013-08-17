@@ -22,25 +22,14 @@
  */
 ?>
 
-<ul ng-controller="prioritygroupController" id="priority-list">
-	<li
-		class="user-groups"
-		ng-click="getEveryone()"
-		ng-class="{
-			active: routeParams.groupId == '/'
-		}"
-	>
-		<a href="#/group/">
-			<?php p($l->t('Everyone')); ?>
-		</a>
+<ul ng-controller="prioritygroupController" class="group-list">
+	<li class="user-groups">
+		<a href="#/group/"><?php p($l->t('Everyone')); ?></a>
 	</li>
-	<li class="user-groups"
-		ng-class="{
-			active: routeParams.groupId == '/admin'
-		}"
-	>
-		<a href="#/group/admin">
-			<?php p($l->t('Admins')); ?>
-		</a>
+	<li class="user-groups">
+		<a href="#/group/admins"><?php p($l->t('Admins')); ?></a>
+	</li>
+	<li class="user-groups">
+		<a href="#/group/subadmins"><?php p($l->t('SubAdmins')); ?></a>
 	</li>
 </ul>

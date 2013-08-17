@@ -5,7 +5,9 @@ OC_JSON::checkAdminUser();
 
 $l = OC_L10n::get('settings');
 
-$groupname = $_GET["groupname"];
+$params = json_decode(file_get_contents('php://input'), true);
+
+$groupname = $params["groupname"];
 
 // Return Success story
 if( OC_Group::deleteGroup( $groupname )) {

@@ -3,8 +3,6 @@
  *
  * @author Raghu Nayyar
  * @copyright 2013 Raghu Nayyar <raghu.nayyar.007@gmail.com>
- * @coauthor Bernhard Posselt
- * @copyright 2013 Bernhard Posselt <nukeawhale@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -33,10 +31,16 @@ usersmanagement.factory('GroupService',
 				method : 'POST'
 			});
 		},
-		removegroup: function(group) {
-			$resource(OC.filePath('settings', 'ajax', 'removegroup.php')).delete(
-				{ groupname : group }
-			);
+		togglegroup: function () {
+			return $resource(OC.filePath('settings', 'ajax', 'togglegroup.php'), group, {
+				method : 'GET',
+				isArray : true
+			});
+		},
+		removegroup: function (group) {
+			return $resource(OC.filePath('settings', 'ajax', 'removegroup.php'), group, {
+				method: 'DELETE'
+			});
 		},
 		getAllGroups: function() {
 			var deferred = $q.defer();
@@ -61,25 +65,15 @@ usersmanagement.factory('UserService',
 	['$resource', 'Config', '$q', 'UserModel', '_InArrayQuery',
 	function($resource, Config, $q, UserModel, _InArrayQuery) {
 	return {
-		createuser: function(user, userpass, ingroup) {
-			return $resource(OC.filePath('settings', 'ajax', 'createuser.php')).save(
-				{ username : user, password: userpass, groups : ingroup }
-			);
+		createuser: function () {
+			return $resource(OC.filePath('settings', 'ajax', 'createuser.php'), {}, {
+				method : 'POST'
+			});
 		},
-		removeuser: function(user) {
-			return $resource(OC.filePath('settings', 'ajax', 'removeuser.php')).delete(
-				{ username : user }
-			);
-		},
-		updateName: function(userid,displayname) {
-			return $resource(OC.filePath('settings', 'ajax', 'changedisplayname.php')).save(
-				{ username : userid, displayName : displayname }
-			);
-		},
-		updatePass: function(userid,password) {
-			return $resource(OC.filePath('settings', 'ajax', 'changepassword.php')).save(
-				{ userid : userid, password : password }
-			);
+		removeuser: function (users) {
+			return $resource(OC.filePath('settings', 'ajax', 'removeuser.php'), users, {
+				method: 'DELETE'
+			});
 		},
 		updateField: function(userId, fields) {
 			return $resource(Config.baseUrl + '/users/' + userId, fields, {
@@ -98,16 +92,6 @@ usersmanagement.factory('UserService',
 		getUsersInGroup: function (groupId) {
 			var usersInGroupQuery = new _InArrayQuery('groups', groupId);
 			return UserModel.get(usersInGroupQuery);
-		},
-		toggleGroup: function(userid,group) {
-			return $resource(OC.filePath('settings', 'ajax', 'togglegroup.php')).save(
-				{ username : userid, groupname : group }
-			);
-		},
-		toggleSubadmin: function(userid,subadmins) {
-			return $resource(OC.filePath('settings', 'ajax', 'togglegroup.php')).save(
-				{ username : userid, group : subadmins }
-			);
 		}
 	};
 }]);
@@ -115,18 +99,9 @@ usersmanagement.factory('UserService',
 /* Quota Service */
 
 usersmanagement.factory('QuotaService', function($resource) {
-	return {
-		setUserQuota: function(userid,userQuota) {
-			return $resource(OC.filePath('settings','ajax', 'setquota.php')).save(
-				{ username : userid, quota : userQuota }
-			);
-		},
-		setDefaultQuota: function(defaultquota) {
-			return $resource(OC.filePath('settings', 'ajax', 'setquota.php')).save(
-				{ quota : defaultquota }
-			);
-		}
-	}
+	return $resource(OC.filePath('settings','ajax', 'setQuota.php'), {}, {
+		method : 'POST'
+	});
 });
 
 

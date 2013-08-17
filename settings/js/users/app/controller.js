@@ -22,18 +22,7 @@
 usersmanagement.controller('prioritygroupController',
 	['$scope', '$routeParams', 'GroupService', 'UserService',
 	function($scope, $routeParams, GroupService, UserService){
-		
-        $scope.routeParams = $routeParams;
         
-		/*Returns everyone. */
-		$scope.getEveryone = function() {
-			
-		}
-		
-		/* Returns the list of Subadmins on the Userlist */
-		$scope.getSubadmins = function() {
-			
-		}
 	}
 ]);
 
@@ -59,6 +48,7 @@ usersmanagement.controller('grouplistController',
 	function($scope, $resource, $routeParams, GroupService, UserService, GroupModel) {
 		$scope.loading = true;
 		$scope.groups = GroupModel.getAll();
+		groups = $scope.groups;
 		
 		$scope.routeParams = $routeParams;
 		GroupService.getAllGroups().then(function(response) {
@@ -66,8 +56,8 @@ usersmanagement.controller('grouplistController',
 			
 			// Deletes the group.
 			$scope.deletegroup = function(group) {
-				$scope.groups.splice($scope.groups.indexOf(group), 1);
-				GroupService.removegroup(group);
+				groups.splice(groups.indexOf(group), 1);
+				GroupService.removegroup().delete({ groupname : group });
 			}
 		});
 	}
@@ -78,135 +68,57 @@ usersmanagement.controller('grouplistController',
 usersmanagement.controller('addUserController',
 	['$scope', '$http', 'UserService', 'GroupService',
 	function($scope, $http, UserService, GroupService) {
-		
-		// Takes Out all groups for the Mutiselect dropdown
-		$scope.allgroups = GroupService.getByGroupId().get();
-		var newuser = $scope.newuser;
-		var password = $scope.password;
-        
-        /* Selected Group is dependant on multiselect, needs polishing. */
-		var selectedgroup = $scope.addGroup;
-		$scope.saveuser = function(newuser,password,selectedgroup) {
-			UserService.createuser(newuser,password,selectedgroup);
+		var newuser,password = {};
+		var groups = [];
+		$scope.saveuser = function() {
+			UserService.createuser().save({ username : $scope.newuser }, { password : $scope.password }, { group : $scope.selectedgroup });
 		}
+		// Takes Out all groups for the Chosen dropdown
+		$scope.allgroups = GroupService.getByGroupId().get();
 	}
 ]);
 
 usersmanagement.controller('setQuotaController',
 	['$scope', 'QuotaService',
 	function($scope, QuotaService) {
-		$scope.quotavalues =[
-								{show : '5 GB', quotaval : '5 GB'},
-								{show : '10 GB', quotaval : '10 GB'},
-								{show : '15 GB', quotaval : '15 GB'},
-								{show : 'Unlimited', quotaval : 'none'},
-								{show : 'Custom', quotaval : 'Custom'}
-							];
-		// Default Quota
-		$scope.selectdefaultQuota = function(defaultquota) {
-			if (defaultquota.quotaval === 'Custom') {
-				$scope.customValInput = true;
-				$scope.showQuotadropdown = false;
-				$scope.sendCustomVal = function() {
-					var customVal = $scope.customVal + ' GB';
-					QuotaService.setDefaultQuota(customVal);
-					$scope.customValInput = false;
-				}
-			}
-			else {
-				QuotaService.setDefaultQuota(defaultquota.quotaval);
-			}
-		}
+		// Shift Default Storage here.
 	}
 ]);
 
 /* Fetches the List of All Users and details on the Right Content */
 
 usersmanagement.controller('userlistController',
-	['$scope', 'UserService', 'GroupService', 'QuotaService','$routeParams',
-	function($scope, UserService, GroupService, QuotaService, $routeParams) {
+	['$scope', 'UserService', 'GroupService', '$routeParams',
+	function($scope, UserService, GroupService, $routeParams) {
 		$scope.loading = true;
 		UserService.getAllUsers().then(function(response) {
 			$scope.users = UserService.getUsersInGroup($routeParams.groupId);
 			$scope.loading = false;
-			$scope.userquotavalues = [
-                {show : '5 GB', quotaval : '5 GB'},
-			    {show : '10 GB', quotaval : '10 GB'},
-			    {show : '15 GB', quotaval : '15 GB'},
-			    {show : 'Unlimited', quotaval : 'none'}
-			];
-            
-			/* Takes Out all groups for the Multiselect dropdown */
+
+			/* Takes Out all groups for the Chosen dropdown */
+			
 			$scope.allgroups = GroupService.getByGroupId().get();
-			
-			/* Updates Display name */
-			$scope.updateDisplayName = function(userid,displayname) {
-				UserService.updateName(userid,displayname);
-			}
-			
-			/* Updates Password */
-			$scope.updatePassword = function(userid,password) {
-				UserService.updatePass(userid,password);
-			}
-			
-			/* Updates User Quota */
-    		$scope.updateUserQuota = function(userid,userquota) {
-    			QuotaService.setUserQuota(userid,userQuota.quotaval);
-    		}
-			$scope.updateUserQuota = function(userid,userQuota) {
-				QuotaService.setUserQuota(userid,userQuota.quotaval);
-			}
-			
+
+		    /*var getnewuser = function(newname) {
+		        $scope.users.push({
+					userid : newname.replace(/\s/g, ''),
+					name : newname,
+					displayname : newname,
+					groups : CreateUserService.useringroups
+		        });
+		    }
+				*/
 			/* Deletes Users */
+			
 			$scope.deleteuser = function(user) {
 				$scope.users.splice($scope.users.indexOf(user), 1);
-				UserService.removeuser(user);
+				UserService.removeuser().delete({ username : user });
 			};
-			
-			/* Everything on Multiselect - Group Toggle */
-            
-            /* TODO : Make the translation work. */
-            
-			if (isadmin) {
-				$scope.label = t('settings', 'Add Group');
-			} else {
-				$scope.label = null;
-			}
-            $scope.checked = [];
-            $scope.user = element.attr('data-username');
-            user = $scope.user;
-    		if (element.attr('multiselect-users')) {
-    			if (element.data('userGroups')) {
-    				checked = element.data('userGroups');
-    			}
-                if (user) {
-                    $scope.checkHandeler = function(group) {
-                        if (user === OC.currentUser && group === 'admin') {
-                            return false;
-                        }
-                        if (!isadmin && checked.length === 1 && checked[0] === group) {
-                            return false;
-                        }
-                        GroupService.toggleGroup(user,group);
-                    }
-                } else {
-                    $scope.checkHandeler = false;
-                }
-            }
-            
-            /* Everything on Subadmin toggle. */
-            
-            if (element.attr('multiselect-subadmins')) {
-                if ( element.data('subadmin')) {
-                    checked = element.data('subadmin');
-                }
-                var checkHandeler = function(group) {
-                    if (group === 'admin') {
-                        return false;
-                    }
-                    GroupService.toggleSubadmin(user,group);
-                }
-            }
+			/*
+			$scope.updateUser = function(field) {
+				console.log(field);
+				console.log($scope.users);
+			}*/
 		});
 	}
 ]);

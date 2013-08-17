@@ -25,34 +25,20 @@
 <div ng-controller="addUserController">
 	<fieldset>
 		<form id="newuser" autocomplete="off" name="createuser_form">
-			<input 
-				id="newusername"
-				type="text"
-				name="loginnamefield"
-				placeholder="<?php p($l->t('Username')) ?>"
-				required ng-model="newuser" 
-			/>
-			<input
-				id="newuserpassword" 
-				name="passwordfield"
-				type="password"
-				placeholder="<?php p($l->t('Password')) ?>"
-				ng-model="password"
-			/>
+			<input class="" id="newusername" type="text" name="loginnamefield" placeholder="<?php p($l->t('Login Name')) ?>" ng-minlength="3" required ng-model="newuser"/>
+			<span class="error" id="nologinname" ng-show="createuser_form.loginnamefield.$error.minlength">Minimum 3 characters</span>
+			<input id="newuserpassword" name="passwordfield" type="password" placeholder="<?php p($l->t('Password')) ?>" ng-model="password" required/>
 			<select
-				id="newusergroups"
-				class="groupselect multiselect"
-				title="<?php p($l->t('Groups'))?>"
+				chosen multiple id="newusergroups"
+				class="groupselect" title="<?php p($l->t('Groups'))?>"
+				allow-single-deselect="true"
+				data-placeholder="Select Group.."
+				no-result-text="No Such Group.."
 				ng-model="selectedgroup"
-				ng-options="pergroup.name for pergroup in allgroups.result"
-				multiselect-dropdown>
+				ng-options="pergroup.name for pergroup in allgroups.result">
+				<option value=""></option>
 			</select>
-			<button
-				title="<?php p($l->t('Create'))?>"
-				ng-click="saveuser(newuser,password,selectedgroup)" 
-				ng-disabled="createuser_form.$invalid">
-					<?php p($l->t('Add User'))?>
-			</button>
+			<button title="<?php p($l->t('Create'))?>" ng-click="saveuser()" ng-disabled="createuser_form.$invalid"><?php p($l->t('Create'))?></button>
 		</form>
 	</fieldset>
 </div>

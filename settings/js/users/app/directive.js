@@ -21,108 +21,40 @@
 
 /* The Spinner Directive */
 
-usersmanagement.directive('loading',
-	[ function() {
-		return {
-			restrict: 'E',
-			replace: true,
-			template:"<div class='loading'></div>",
-	    	link: function($scope, element, attr) {
-				$scope.$watch('loading', function(val) {
-					if (val) {
-						$(element).show();
-					}
-					else {
-						$(element).hide();
-					}
-				});
-			}		
-		}
-	}]
-);
+usersmanagement.directive('loading', function() {
+	return {
+		restrict: 'E',
+		replace: true,
+		template:"<div class='loading'></div>",
+	    link: function($scope, element, attr) {
+			$scope.$watch('loading', function(val) {
+				if (val) {
+					$(element).show();
+				}
+				else {
+					$(element).hide();
+				}
+			});
+		}		
+	}
+});
 
 /* ngFocus and ngBlur Directives */
 
-usersmanagement.directive('ngFocus', 
-	['$parse', function($timeout) {
-    	return function( scope, element, attrs ) {
-        	scope.$watch(attrs.ngFocus, function (newVal, oldVal) {
-            	if (newVal) {
-            		element[0].focus();
-            	}
-			});
-		};
-	}
-]);
-
-usersmanagement.directive('ngBlur',
-	['$parse', function($parse) {
-    	return function (scope, element, attrs) {
-			element.bind('blur', function () {
-				scope.$apply(attrs.ngBlur);
-			});
-		}
-	}
-]);
-
-/* The Jquery Multiselect Directive for Toggling Groups. */
-
-usersmanagement.directive('multiselectUsers', [function() {
-	return function(scope, element, attributes) {
-		element = $(element[0]); // To use jQuery.
-        element.multiSelect({
-			title: 'Groups..',
-			createText: scope.label,
-			selectedFirst: true,
-            sort: true,
-			minWidth: 100,
-			checked: scope.checked,
-			oncheck: scope.checkHandeler,
-			onuncheck: scope.checkHandeler
-			//createCallback: addGroup,
+usersmanagement.directive('ngFocus', ['$parse', function($timeout) {
+    return function( scope, element, attrs ) {
+        scope.$watch(attrs.ngFocus, function (newVal, oldVal) {
+            if (newVal)
+                element[0].focus();
         });
-	}
+      };
 }]);
 
-/* The Jquery Multiselect Directive for Toggling SubAdmins */
-
-usersmanagement.directive('multiselectSubadmins', [function() {
-	return function(scope, element, attributes) {
-		element = $(element[0]); // To use jQuery.
-        element.multiSelect({
-			title: 'Group Admin..',
-            createText: null,
-			minWidth: 100,
-			checked: scope.checked,
-			oncheck: scope.checkHandeler,
-			onuncheck: scope.checkHandeler
-            //createCallback: addSubadmin
-        });
+usersmanagement.directive('ngBlur', ['$parse', function($parse) {
+    return function (scope, element, attrs) {
+		element.bind('blur', function () {
+			scope.$apply(attrs.ngBlur);
+		});
 	}
 }]);
-
-/* The Jquery Multiselect Directive for Adding Groups. */
-
-usersmanagement.directive('multiselectDropdown', [function() {
-	return function(scope, element, attributes) {
-		element = $(element[0]); // To use jQuery.
-        element.multiSelect({
-			title: 'Groups..',
-			oncheck: scope.addGroup,
-			minWidth: 100,
-			maxWidth: 125
-        });
-	}
-}]);
-
-/* The Directives for the ownCloud Avatars. */
-
-usersmanagement.directive('avatar',
-	[ function() {
-		return {
-			template: "<div class='avatardiv'></div>",
-			replace: true
-			// Get the Avatar Plugin here once it gets into master.
-		}
-	}]
-);
+>>>>>>> Initial Commit for User Management

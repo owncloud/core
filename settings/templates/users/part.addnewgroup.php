@@ -22,29 +22,19 @@
  */
 ?>
 
-<div 
-	ng-controller="creategroupController"
-	ng-init="showbutton = true; showgroupinput = false;"
-	class="addGroupContainer">
-	<div
-		class="addgroupbutton"
-		ng-show="showbutton"
-		ng-click="
-			showgroupinput = !showgroupinput"
-		>
-		<span><?php p($l->t('+ Add Group'))?></span>
+<div ng-controller="creategroupController" ng-init="showbutton = true; showgroupinput = false;">
+	<div class="addbutton" ng-show="showbutton" ng-click="showbutton = !showbutton; showgroupinput = !showgroupinput">
+		<span>+ Add Group</span>
 	</div>
-	<fieldset ng-show="showgroupinput" class="showgroupinput">
+	<fieldset ng-show="showgroupinput">
 		<form name="creategroup_form">
-			<input 
-				type="text" name="newgroup"
-				placeholder="<?php p($l->t('Add Group'))?>"
-				ng-model="newgroup"
-				ng-blur="
-					showgroupinput = !showgroupinput;
-					savegroup(newgroup);"
-				required 
-			/>
+			<input type="text" ng-minlength="3" name="newgroup" placeholder="<?php p($l->t('Add Group'))?>" ng-model="newgroup" required />
+			<span class="error" id="nogroup" ng-show="creategroup_form.newgroup.$error.minlength">Enter minimum 3 characters.</span>
+			<button title="<?php p($l->t('Add')) ?>"
+				ng-click="savegroup()"
+				ng-disabled="creategroup_form.$invalid">
+				<?php p($l->t('Add')); ?>
+			</button>
 		</form>
 	</fieldset>
 </div>
