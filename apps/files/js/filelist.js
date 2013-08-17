@@ -1,7 +1,25 @@
 var FileList={
 	useUndo:true,
+	postProcessList: function(){
+		$('#fileList tr').each(function(){
+			//little hack to set unescape filenames in attribute
+			$(this).attr('data-file',decodeURIComponent($(this).attr('data-file')));
+		});
+	},
 	update:function(fileListHtml) {
-		$('#fileList').empty().html(fileListHtml);
+		var $fileList = $('#fileList');
+		$fileList.empty().html(fileListHtml);
+		$('#emptycontent').toggleClass('hidden', $fileList.find('tr').length > 0);
+		$fileList.find('tr').each(function () {
+			FileActions.display($(this).children('td.filename'));
+		});
+		$fileList.trigger(jQuery.Event("fileActionsReady"));
+		FileList.postProcessList();
+		// "Files" might not be loaded in extending apps
+		if (window.Files){
+			Files.setupDragAndDrop();
+		}
+		$fileList.trigger(jQuery.Event("updated"));
 	},
 	createRow:function(type, name, iconurl, linktarget, size, lastModified, permissions){
 		var td, simpleSize, basename, extension;
@@ -24,20 +42,20 @@ var FileList={
 			"href": linktarget
 		});
 		//split extension from filename for non dirs
-		if (type !== 'dir' && name.indexOf('.')!==-1) {
-			basename = name.substr(0,name.lastIndexOf('.'));
-			extension = name.substr(name.lastIndexOf('.'));
+		if (type != 'dir' && name.indexOf('.')!=-1) {
+			basename=name.substr(0,name.lastIndexOf('.'));
+			extension=name.substr(name.lastIndexOf('.'));
 		} else {
-			basename = name;
-			extension = false;
+			basename=name;
+			extension=false;
 		}
-		var name_span = $('<span></span>').addClass('nametext').text(basename);
+		var name_span=$('<span></span>').addClass('nametext').text(basename);
 		link_elem.append(name_span);
 		if(extension){
 			name_span.append($('<span></span>').addClass('extension').text(extension));
 		}
 		//dirs can show the number of uploaded files
-		if (type === 'dir') {
+		if (type == 'dir') {
 			link_elem.append($('<span></span>').attr({
 				'class': 'uploadtext',
 				'currentUploads': 0
@@ -47,10 +65,10 @@ var FileList={
 		tr.append(td);
 
 		//size column
-		if (size!==t('files', 'Pending')) {
+		if(size!=t('files', 'Pending')){
 			simpleSize = humanFileSize(size);
-		} else {
-			simpleSize = t('files', 'Pending');
+		}else{
+			simpleSize=t('files', 'Pending');
 		}
 		var sizeColor = Math.round(160-Math.pow((size/(1024*1024)),2));
 		var lastModifiedTime = Math.round(lastModified.getTime() / 1000);
@@ -101,9 +119,9 @@ var FileList={
 		);
 
 		FileList.insertElement(name, 'file', tr);
-		if (loading) {
+		if(loading){
 			tr.data('loading',true);
-		} else {
+		}else{
 			tr.find('td.filename').draggable(dragOptions);
 		}
 		if (hidden) {
@@ -134,20 +152,83 @@ var FileList={
 		FileActions.display(tr.find('td.filename'));
 		return tr;
 	},
-	refresh:function(data) {
-		var result = jQuery.parseJSON(data.responseText);
-		if(typeof(result.data.breadcrumb) !== 'undefined'){
-			updateBreadcrumb(result.data.breadcrumb);
+	/**
+	 * @brief Changes the current directory and reload the file list.
+	 * @param targetDir target directory (non URL encoded)
+	 * @param changeUrl false if the URL must not be changed (defaults to true)
+	 */
+	changeDirectory: function(targetDir, changeUrl){
+		var $dir = $('#dir'),
+			url,
+			currentDir = $dir.val() || '/';
+		targetDir = targetDir || '/';
+		if (currentDir === targetDir){
+			return;
+		}
+		FileList.setCurrentDir(targetDir, changeUrl);
+		FileList.reload();
+	},
+	setCurrentDir: function(targetDir, changeUrl){
+		$('#dir').val(targetDir);
+		// Note: IE8 handling ignored for now
+		if (window.history.pushState && changeUrl !== false){
+			url = OC.linkTo('files', 'index.php')+"?dir="+ encodeURIComponent(targetDir).replace(/%2F/g, '/'),
+			window.history.pushState({dir: targetDir}, '', url);
+		}
+	},
+	/**
+	 * @brief Reloads the file list using ajax call
+	 */
+	reload: function(){
+		FileList.showMask();
+		if (FileList._reloadCall){
+			FileList._reloadCall.abort();
+		}
+		FileList._reloadCall = $.ajax({
+			url: OC.filePath('files','ajax','list.php'),
+			data: {
+				dir : $('#dir').val(),
+				breadcrumb: true
+			},
+			error: function(result){
+				FileList.reloadCallback(result);
+			},
+			success: function(result) {
+				FileList.reloadCallback(result);
+			}
+		});
+	},
+	reloadCallback: function(result){
+		var $controls = $('#controls');
+
+		delete FileList._reloadCall;
+		FileList.hideMask();
+
+		if (!result || result.status === 'error') {
+			OC.Notification.show(result.data.message);
+			return;
+		}
+
+		if (result.status === 404){
+			// go back home
+			FileList.changeDirectory('/');
+			return;
+		}
+
+		if(typeof(result.data.breadcrumb) != 'undefined'){
+			$controls.find('.crumb').remove();
+			$controls.prepend(result.data.breadcrumb);
+			// TODO: might need refactor breadcrumb code into a new file
+			//resizeBreadcrumbs(true);
 		}
 		FileList.update(result.data.files);
-		resetFileActionPanel();
 	},
 	remove:function(name){
 		$('tr').filterAttr('data-file',name).find('td.filename').draggable('destroy');
 		$('tr').filterAttr('data-file',name).remove();
 		FileList.updateFileSummary();
-		if($('tr[data-file]').length===0){
-			$('#emptycontent').show();
+		if($('tr[data-file]').length==0){
+			$('#emptycontent').removeClass('hidden');
 		}
 	},
 	insertElement:function(name,type,element){
@@ -165,19 +246,19 @@ var FileList={
 			}
 		}
 		if(fileElements.length){
-			if(pos===-1){
+			if(pos==-1){
 				$(fileElements[0]).before(element);
 			}else{
 				$(fileElements[pos]).after(element);
 			}
-		}else if(type==='dir' && $('tr[data-file]').length>0){
+		}else if(type=='dir' && $('tr[data-file]').length>0){
 			$('tr[data-file]').first().before(element);
-		} else if(type==='file' && $('tr[data-file]').length>0) {
+		} else if(type=='file' && $('tr[data-file]').length>0) {
 			$('tr[data-file]').last().before(element);
 		}else{
 			$('#fileList').append(element);
 		}
-		$('#emptycontent').hide();
+		$('#emptycontent').addClass('hidden');
 		FileList.updateFileSummary();
 	},
 	loadingDone:function(name, id){
@@ -185,7 +266,7 @@ var FileList={
 		tr.data('loading',false);
 		mime=tr.data('mime');
 		tr.attr('data-mime',mime);
-		if (id) {
+		if (id != null) {
 			tr.attr('data-id', id);
 		}
 		var path = getPathForPreview(name);
@@ -221,7 +302,7 @@ var FileList={
 			var newname=input.val();
 			if (!Files.isFileNameValid(newname)) {
 				return false;
-			} else if (newname !== name) {
+			} else if (newname != name) {
 				if (FileList.checkName(name, newname, false)) {
 					newname = name;
 				} else {
@@ -269,14 +350,14 @@ var FileList={
 			tr.attr('data-file', newname);
 			var path = td.children('a.name').attr('href');
 			td.children('a.name').attr('href', path.replace(encodeURIComponent(name), encodeURIComponent(newname)));
-			if (newname.indexOf('.') > 0 && tr.data('type') !== 'dir') {
+			if (newname.indexOf('.') > 0 && tr.data('type') != 'dir') {
 				var basename=newname.substr(0,newname.lastIndexOf('.'));
 			} else {
 				var basename=newname;
 			}
 			td.find('a.name span.nametext').text(basename);
-			if (newname.indexOf('.') > 0 && tr.data('type') !== 'dir') {
-				if (td.find('a.name span.extension').length === 0 ) {
+			if (newname.indexOf('.') > 0 && tr.data('type') != 'dir') {
+				if (td.find('a.name span.extension').length == 0 ) {
 					td.find('a.name span.nametext').append('<span class="extension"></span>');
 				}
 				td.find('a.name span.extension').text(newname.substr(newname.lastIndexOf('.')));
@@ -286,7 +367,7 @@ var FileList={
 			return false;
 		});
 		input.keyup(function(event){
-			if (event.keyCode === 27) {
+			if (event.keyCode == 27) {
 				tr.data('renaming',false);
 				form.remove();
 				td.children('a.name').show();
@@ -312,7 +393,7 @@ var FileList={
 			html.attr('data-oldName', oldName);
 			html.attr('data-newName', newName);
 			html.attr('data-isNewFile', isNewFile);
-			OC.Notification.showHtml(html);
+            OC.Notification.showHtml(html);
 			return true;
 		} else {
 			return false;
@@ -351,13 +432,13 @@ var FileList={
 			FileList.finishReplace();
 		};
 		if (!isNewFile) {
-			OC.Notification.showHtml(t('files', 'replaced {new_name} with {old_name}', {new_name: newName}, {old_name: oldName})+'<span class="undo">'+t('files', 'undo')+'</span>');
+            OC.Notification.showHtml(t('files', 'replaced {new_name} with {old_name}', {new_name: newName}, {old_name: oldName})+'<span class="undo">'+t('files', 'undo')+'</span>');
 		}
 	},
 	finishReplace:function() {
 		if (!FileList.replaceCanceled && FileList.replaceOldName && FileList.replaceNewName) {
 			$.ajax({url: OC.filePath('files', 'ajax', 'rename.php'), async: false, data: { dir: $('#dir').val(), newname: FileList.replaceNewName, file: FileList.replaceOldName }, success: function(result) {
-				if (result && result.status === 'success') {
+				if (result && result.status == 'success') {
 					$('tr').filterAttr('data-replace', 'true').removeAttr('data-replace');
 				} else {
 					OC.dialogs.alert(result.data.message, 'Error moving file');
@@ -386,7 +467,7 @@ var FileList={
 		$.post(OC.filePath('files', 'ajax', 'delete.php'),
 				{dir:$('#dir').val(),files:fileNames},
 				function(result){
-					if (result.status === 'success') {
+					if (result.status == 'success') {
 						$.each(files,function(index,file){
 							var files = $('tr').filterAttr('data-file',file);
 							files.remove();
@@ -427,7 +508,7 @@ var FileList={
 			var infoVars = {
 				dirs: '<span class="dirinfo">'+directoryInfo+'</span><span class="connector">',
 				files: '</span><span class="fileinfo">'+fileInfo+'</span>'
-			};
+			}
 
 			var info = t('files', '{dirs} and {files}', infoVars);
 
@@ -508,6 +589,30 @@ var FileList={
 				$connector.show();
 			}
 		}
+	},
+	showMask: function(){
+		// in case one was shown before
+		var $mask = $('#content .mask');
+		if ($mask.length){
+			return;
+		}
+
+		$mask = $('<div class="mask transparent"></div>');
+
+		$mask.css('background-image', 'url('+ OC.imagePath('core', 'loading.gif') + ')');
+		$('#content').append($mask);
+
+		// block UI, but only make visible in case loading takes longer
+		FileList._maskTimeout = window.setTimeout(function(){
+			// reset opacity
+			$mask.removeClass('transparent');
+		}, 250);
+	},
+	hideMask: function(){
+		var $mask = $('#content .mask').remove();
+		if (FileList._maskTimeout){
+			window.clearTimeout(FileList._maskTimeout);
+		}
 	}
 };
 
@@ -515,160 +620,147 @@ $(document).ready(function(){
 
 	// handle upload events
 	var file_upload_start = $('#file_upload_start');
-
 	file_upload_start.on('fileuploaddrop', function(e, data) {
-		OC.Upload.logStatus('filelist handle fileuploaddrop', e, data);
-
-		var dropTarget = $(e.originalEvent.target).closest('tr');
-		if(dropTarget && dropTarget.data('type') === 'dir') { // drag&drop upload to folder
-
-			// remember as context
-			data.context = dropTarget;
-
-			var dir = dropTarget.data('file');
-
-			// update folder in form
-			data.formData = function(form) {
-				var formArray = form.serializeArray();
-				// array index 0 contains the max files size
-				// array index 1 contains the request token
-				// array index 2 contains the directory
-				var parentDir = formArray[2]['value'];
-				if (parentDir === '/') {
-					formArray[2]['value'] += dir;
-				} else {
-					formArray[2]['value'] += '/' + dir;
+		// only handle drop to dir if fileList exists
+		if ($('#fileList').length > 0) {
+			var dropTarget = $(e.originalEvent.target).closest('tr');
+			if(dropTarget && dropTarget.data('type') === 'dir') { // drag&drop upload to folder
+				var dirName = dropTarget.data('file');
+				// update folder in form
+				data.formData = function(form) {
+					var formArray = form.serializeArray();
+					// array index 0 contains the max files size
+					// array index 1 contains the request token
+					// array index 2 contains the directory
+					var parentDir = formArray[2]['value'];
+					if (parentDir === '/') {
+						formArray[2]['value'] += dirName;
+					} else {
+						formArray[2]['value'] += '/'+dirName;
+					}
+					return formArray;
 				}
-
-				return formArray;
-			};
-		} 
-
-	});
-	file_upload_start.on('fileuploadadd', function(e, data) {
-		OC.Upload.logStatus('filelist handle fileuploadadd', e, data);
-
-		//finish delete if we are uploading a deleted file
-		if(FileList.deleteFiles && FileList.deleteFiles.indexOf(data.files[0].name)!==-1){
-			FileList.finishDelete(null, true); //delete file before continuing
-		}
-
-		// add ui visualization to existing folder
-		if(data.context && data.context.data('type') === 'dir') {
-			// add to existing folder
-
-			// update upload counter ui
-			var uploadtext = data.context.find('.uploadtext');
-			var currentUploads = parseInt(uploadtext.attr('currentUploads'));
-			currentUploads += 1;
-			uploadtext.attr('currentUploads', currentUploads);
-
-			var translatedText = n('files', 'Uploading %n file', 'Uploading %n files', currentUploads);
-			if(currentUploads === 1) {
-				var img = OC.imagePath('core', 'loading.gif');
-				data.context.find('td.filename').attr('style','background-image:url('+img+')');
-				uploadtext.text(translatedText);
-				uploadtext.show();
-			} else {
-				uploadtext.text(translatedText);
 			}
 		}
-
 	});
-	/*
-	 * when file upload done successfully add row to filelist
-	 * update counter when uploading to sub folder
-	 */
-	file_upload_start.on('fileuploaddone', function(e, data) {
-		OC.Upload.logStatus('filelist handle fileuploaddone', e, data);
+	file_upload_start.on('fileuploadadd', function(e, data) {
+		// only add to fileList if it exists
+		if ($('#fileList').length > 0) {
 
-		var response;
-		if (typeof data.result === 'string') {
-			response = data.result;
-		} else {
-			// fetch response from iframe
-			response = data.result[0].body.innerText;
-		}
-		var result=$.parseJSON(response);
+			if(FileList.deleteFiles && FileList.deleteFiles.indexOf(data.files[0].name)!=-1){//finish delete if we are uploading a deleted file
+				FileList.finishDelete(null, true); //delete file before continuing
+			}
 
-		if(typeof result[0] !== 'undefined' && result[0].status === 'success') {
-			var file = result[0];
+			// add ui visualization to existing folder or as new stand-alone file?
+			var dropTarget = $(e.originalEvent.target).closest('tr');
+			if(dropTarget && dropTarget.data('type') === 'dir') {
+				// add to existing folder
+				var dirName = dropTarget.data('file');
 
-			if (data.context && data.context.data('type') === 'dir') {
+				// set dir context
+				data.context = $('tr').filterAttr('data-type', 'dir').filterAttr('data-file', dirName);
 
 				// update upload counter ui
 				var uploadtext = data.context.find('.uploadtext');
 				var currentUploads = parseInt(uploadtext.attr('currentUploads'));
-				currentUploads -= 1;
+				currentUploads += 1;
 				uploadtext.attr('currentUploads', currentUploads);
 				var translatedText = n('files', 'Uploading %n file', 'Uploading %n files', currentUploads);
-				if(currentUploads === 0) {
-					var img = OC.imagePath('core', 'filetypes/folder.png');
+				if(currentUploads === 1) {
+					var img = OC.imagePath('core', 'loading.gif');
 					data.context.find('td.filename').attr('style','background-image:url('+img+')');
 					uploadtext.text(translatedText);
-					uploadtext.hide();
+					uploadtext.show();
 				} else {
 					uploadtext.text(translatedText);
 				}
-
-				// update folder size
-				var size = parseInt(data.context.data('size'));
-				size += parseInt(file.size);
-				data.context.attr('data-size', size);
-				data.context.find('td.filesize').text(humanFileSize(size));
-
 			} else {
-
 				// add as stand-alone row to filelist
-				var size=t('files', 'Pending');
-				if (data.files[0].size>=0){
+				var uniqueName = getUniqueName(data.files[0].name);
+				var size=t('files','Pending');
+				if(data.files[0].size>=0){
 					size=data.files[0].size;
 				}
 				var date=new Date();
 				var param = {};
 				if ($('#publicUploadRequestToken').length) {
-					param.download_url = document.location.href + '&download&path=/' + $('#dir').val() + '/' + file.name;
+					param.download_url = document.location.href + '&download&path=/' + $('#dir').val() + '/' + uniqueName;
 				}
-				//should the file exist in the list remove it
-				FileList.remove(file.name);
-
 				// create new file context
-				data.context = FileList.addFile(file.name, file.size, date, false, false, param);
+				data.context = FileList.addFile(uniqueName,size,date,true,false,param);
 
-				// update file data
-				data.context.attr('data-mime',file.mime).attr('data-id',file.id);
-
-				var path = getPathForPreview(file.name);
-				lazyLoadPreview(path, file.mime, function(previewpath){
-					data.context.find('td.filename').attr('style','background-image:url('+previewpath+')');
-				});
 			}
 		}
 	});
-	file_upload_start.on('fileuploadstop', function(e, data) {
-		OC.Upload.logStatus('filelist handle fileuploadstop', e, data);
+	file_upload_start.on('fileuploaddone', function(e, data) {
+		// only update the fileList if it exists
+		if ($('#fileList').length > 0) {
+			var response;
+			if (typeof data.result === 'string') {
+				response = data.result;
+			} else {
+				// fetch response from iframe
+				response = data.result[0].body.innerText;
+			}
+			var result=$.parseJSON(response);
 
-		//if user pressed cancel hide upload chrome
-		if (data.errorThrown === 'abort') {
-			//cleanup uploading to a dir
-			var uploadtext = $('tr .uploadtext');
-			var img = OC.imagePath('core', 'filetypes/folder.png');
-			uploadtext.parents('td.filename').attr('style','background-image:url('+img+')');
-			uploadtext.fadeOut();
-			uploadtext.attr('currentUploads', 0);
+			if(typeof result[0] !== 'undefined' && result[0].status === 'success') {
+				var file = result[0];
+
+				if (data.context.data('type') === 'file') {
+					// update file data
+					data.context.attr('data-mime',file.mime).attr('data-id',file.id);
+					var size = data.context.data('size');
+					if(size!=file.size){
+						data.context.attr('data-size', file.size);
+						data.context.find('td.filesize').text(humanFileSize(file.size));
+					}
+					if (FileList.loadingDone) {
+						FileList.loadingDone(file.name, file.id);
+					}
+				} else {
+					// update upload counter ui
+					var uploadtext = data.context.find('.uploadtext');
+					var currentUploads = parseInt(uploadtext.attr('currentUploads'));
+					currentUploads -= 1;
+					uploadtext.attr('currentUploads', currentUploads);
+					if(currentUploads === 0) {
+						var img = OC.imagePath('core', 'filetypes/folder.png');
+						data.context.find('td.filename').attr('style','background-image:url('+img+')');
+						uploadtext.text('');
+						uploadtext.hide();
+					} else {
+						uploadtext.text(currentUploads + ' ' + t('files', 'files uploading'));
+					}
+
+					// update folder size
+					var size = parseInt(data.context.data('size'));
+					size += parseInt(file.size);
+					data.context.attr('data-size', size);
+					data.context.find('td.filesize').text(humanFileSize(size));
+
+				}
+			}
 		}
 	});
 	file_upload_start.on('fileuploadfail', function(e, data) {
-		OC.Upload.logStatus('filelist handle fileuploadfail', e, data);
-
-		//if user pressed cancel hide upload chrome
-		if (data.errorThrown === 'abort') {
+		// only update the fileList if it exists
+		// cleanup files, error notification has been shown by fileupload code
+		var tr = data.context;
+		if (typeof tr === 'undefined') {
+			tr = $('tr').filterAttr('data-file', data.files[0].name);
+		}
+		if (tr.attr('data-type') === 'dir') {
 			//cleanup uploading to a dir
-			var uploadtext = $('tr .uploadtext');
+			var uploadtext = tr.find('.uploadtext');
 			var img = OC.imagePath('core', 'filetypes/folder.png');
-			uploadtext.parents('td.filename').attr('style','background-image:url('+img+')');
-			uploadtext.fadeOut();
-			uploadtext.attr('currentUploads', 0);
+			tr.find('td.filename').attr('style','background-image:url('+img+')');
+			uploadtext.text('');
+			uploadtext.hide(); //TODO really hide already
+		} else {
+			//remove file
+			tr.fadeOut();
+			tr.remove();
 		}
 	});
 
@@ -696,16 +788,16 @@ $(document).ready(function(){
 			FileList.replaceIsNewFile = null;
 		}
 		FileList.lastAction = null;
-		OC.Notification.hide();
+        OC.Notification.hide();
 	});
 	$('#notification:first-child').on('click', '.replace', function() {
-		OC.Notification.hide(function() {
-			FileList.replace($('#notification > span').attr('data-oldName'), $('#notification > span').attr('data-newName'), $('#notification > span').attr('data-isNewFile'));
-		});
+        OC.Notification.hide(function() {
+            FileList.replace($('#notification > span').attr('data-oldName'), $('#notification > span').attr('data-newName'), $('#notification > span').attr('data-isNewFile'));
+        });
 	});
 	$('#notification:first-child').on('click', '.suggest', function() {
 		$('tr').filterAttr('data-file', $('#notification > span').attr('data-oldName')).show();
-		OC.Notification.hide();
+        OC.Notification.hide();
 	});
 	$('#notification:first-child').on('click', '.cancel', function() {
 		if ($('#notification > span').attr('data-isNewFile')) {
@@ -722,6 +814,20 @@ $(document).ready(function(){
 	$(window).unload(function (){
 		$(window).trigger('beforeunload');
 	});
+
+	window.onpopstate = function(e){
+		var targetDir;
+		if (e.state && e.state.dir){
+			targetDir = e.state.dir;
+		}
+		else{
+			// read from URL
+			targetDir = (OC.parseQueryString(location.search) || {dir: '/'}).dir || '/';
+		}
+		if (targetDir){
+			FileList.changeDirectory(targetDir, false);
+		}
+	}
 
 	FileList.createFileSummary();
 });
