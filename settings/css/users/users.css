@@ -21,6 +21,10 @@
 
 /* Group List Styles */
 
+#user-settings {
+	height:100%;
+}
+
 #app-navigation {
 	position: fixed;
 	overflow:auto !important;
@@ -190,7 +194,6 @@ form[name="creategroup_form"] input {
 #user-table {
 	position: absolute;
 	left: 300px;
-	width: 80%;
 	float: left;
 	min-width: 700px;
 	padding-top: 10px;
