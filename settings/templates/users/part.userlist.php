@@ -84,26 +84,15 @@
 				/>
 			</td>
 			<td class="groups">
-			<!--	<span
-					ng-show="viewgroup"
-					ng-click="viewgroup = !viewgroup; editgroup = !toggleditgroup">
-					{{user.groups}}
-				</span>
-				<div
-					ng-focus="editgroup"
-					ng-show="editgroup"
-					ng-blur="editgroup = !editgroup; viewgroup = !viewgroup"
-					class="editgroupdiv">-->
-			    	<select
-						chosen multiple
-						allow-single-deselect="true"
-						data-placeholder="Select Group.."
-						no-results-text="'No Such Group..'"
-						ng-model="user.selectedgroup"
-						ng-options="pergroup.name for pergroup in allgroups.result">
-						<option value=""></option>
-			    	</select>
-					<!--</div>-->
+			    <select
+					chosen multiple
+					allow-single-deselect="true"
+					data-placeholder="Select Group.."
+					no-results-text="'No Such Group..'"
+					ng-model="user.selectedgroup"
+					ng-options="pergroup.name for pergroup in allgroups.result">
+					<option value=""></option>
+			    </select>
 			</td>
 			<td class="local-storage">
 				<span

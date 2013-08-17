@@ -431,7 +431,8 @@ usersmanagement.controller('userlistController',
 			$scope.loading = false;
 
 			/* Takes Out all groups for the Chosen dropdown */
-			//$scope.allgroups = GroupService.getByGroupId().get();
+			
+			$scope.allgroups = GroupService.getByGroupId().get();
 
 		    /*var getnewuser = function(newname) {
 		        $scope.users.push({
@@ -442,13 +443,13 @@ usersmanagement.controller('userlistController',
 		        });
 		    }
 				*/
-			/*$scope.gid = $routeParams.groupid;
-
+			/* Deletes Users */
+			
 			$scope.deleteuser = function(user) {
 				$scope.users.splice($scope.users.indexOf(user), 1);
 				UserService.removeuser().delete({ username : user });
 			};
-
+			/*
 			$scope.updateUser = function(field) {
 				console.log(field);
 				console.log($scope.users);
