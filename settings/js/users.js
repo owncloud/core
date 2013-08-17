@@ -198,27 +198,35 @@ var UserList = {
 		UserList.updating = true;
 		$.get(OC.Router.generate('settings_ajax_userlist', { offset: UserList.offset, limit: UserList.usersToLoad }), function (result) {
 			if (result.status === 'success') {
+				var finished = $.Deferred()
+					.done(function(loadMore){
+						UserList.updating = false;
+						if(loadMore) {
+							UserList.update();
+						}
+					})
+					.done(function(){
+						// This .done() executes before the prior .done() completes its async update()
+						// This allows incoming names to be sorted as they're loaded
+						UserList.doSort();
+					});
 				//The offset does not mirror the amount of users available,
 				//because it is backend-dependent. For correct retrieval,
 				//always the limit(requested amount of users) needs to be added.
-				UserList.offset += UserList.usersToLoad;
+				UserList.offset += result.data.length;
 				$.each(result.data, function (index, user) {
 					if($('tr[data-uid="' + user.name + '"]').length > 0) {
 						return true;
 					}
 					var tr = UserList.add(user.name, user.displayname, user.groups, user.subadmin, user.quota, false);
-					if (index == 9) {
-						$(tr).bind('inview', function (event, isInView, visiblePartX, visiblePartY) {
-							$(this).unbind(event);
-							UserList.update();
-						});
+					if (index + 1 === UserList.usersToLoad) {
+						finished.resolve(true);
 					}
 				});
-				if (result.data.length > 0) {
-					UserList.doSort();
+				if (result.data.length === 0) {
+					finished.resolve(false);
 				}
 			}
-			UserList.updating = false;
 		});
 	},
 
@@ -322,10 +330,8 @@ $(document).ready(function () {
 
 	UserList.doSort();
 	UserList.availableGroups = $('#content table').attr('data-groups').split(', ');
-	$('tbody tr:last').bind('inview', function (event, isInView, visiblePartX, visiblePartY) {
-		OC.Router.registerLoadedCallback(function () {
-			UserList.update();
-		});
+	OC.Router.registerLoadedCallback(function () {
+		UserList.update();
 	});
 
 	$('select[multiple]').each(function (index, element) {
