@@ -27,7 +27,7 @@
 		<tr>
 			<!--Do something with the static hmtl here in the view.-->
 			<th class="table-head thumbnail"></th>
-			<th class="table-head login-name">Login Name</th>
+			<th class="table-head login-name">Username</th>
 			<th class="table-head display-name">Display Name</th>
 			<th class="table-head user-pass">Password</th>
 			<th class="table-head groups">Groups</th>
