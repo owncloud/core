@@ -30,7 +30,7 @@
 }
 
 #user-groups {
-	height:74% !important;
+	height:75% !important;
 }
 
 .error {
@@ -140,7 +140,7 @@
 .usercount {
 	position: absolute;
 	padding: 7px;
-	right: 25px;
+	right:5px;
 }
 
 #hascontrols {

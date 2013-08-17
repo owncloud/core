@@ -20,7 +20,7 @@
  *
  */
 ?>
-<ul ng-controller="grouplistController" class="group-list" id="user-groups">
+<ul ng-controller="grouplistController" class="group-list" id="user-groups" ng-init="showdeletebtn = false">
 	<loading></loading>
 	<li class="user-groups"
 	ng-repeat="group in groups | orderBy:['isAdmin','name']"
@@ -33,6 +33,7 @@
 			<span class="usercount">{{ group.useringroup.length }}</span>
 			<button class="svg action delete-icon delete-button"
 			ng-click="deletegroup(group)"
+			ng-show="showdeletebtn"
 			original-title="Delete Group"
 			title="Delete Group"></button>
 		</span>

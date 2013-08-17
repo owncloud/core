@@ -384,24 +384,14 @@ usersmanagement.controller('grouplistController',
 	function($scope, $resource, $routeParams, GroupService, UserService, GroupModel) {
 		$scope.loading = true;
 		$scope.groups = GroupModel.getAll();
+		groups = $scope.groups;
 		$scope.routeParams = $routeParams;
 		GroupService.getAllGroups().then(function(response) {
 			$scope.loading = false;
-			console.log($scope.groups);
-
-			// Selects the current Group.
-			$scope.selectGroup = function(groupid) {
-				$scope.selectedGroup = groupid;
-			}
-
-			// Adds an Active class for the ng-class field.
-			$scope.selectListGroup = function(groupid) {
-				return groupid === $scope.selectedGroup ? 'active' : undefined;
-			}
 
 			// Deletes the group.
 			$scope.deletegroup = function(group) {
-				grouplist.splice(grouplist.indexOf(group), 1);
+				groups.splice(groups.indexOf(group), 1);
 				GroupService.removegroup().delete({ groupname : group });
 			}
 		});
