@@ -98,27 +98,12 @@ usersmanagement.controller('userlistController',
 			/* Takes Out all groups for the Chosen dropdown */
 			
 			$scope.allgroups = GroupService.getByGroupId().get();
-
-		    /*var getnewuser = function(newname) {
-		        $scope.users.push({
-					userid : newname.replace(/\s/g, ''),
-					name : newname,
-					displayname : newname,
-					groups : CreateUserService.useringroups
-		        });
-		    }
-				*/
 			/* Deletes Users */
 			
 			$scope.deleteuser = function(user) {
 				$scope.users.splice($scope.users.indexOf(user), 1);
 				UserService.removeuser().delete({ username : user });
 			};
-			/*
-			$scope.updateUser = function(field) {
-				console.log(field);
-				console.log($scope.users);
-			}*/
 		});
 	}
 ]);
