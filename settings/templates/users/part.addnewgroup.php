@@ -30,20 +30,19 @@
 		class="addbutton"
 		ng-show="showbutton"
 		ng-click="
-			showbutton = !showbutton;
 			showgroupinput = !showgroupinput"
 		>
-		<span>+ Add Group</span>
+		<span><?php p($l->t('+ Add Group'))?>p</span>
 	</div>
-	<fieldset ng-show="showgroupinput">
+	<fieldset ng-show="showgroupinput" class="showgroupinput">
 		<form name="creategroup_form">
 			<input type="text" ng-minlength="3" name="newgroup" placeholder="<?php p($l->t('Add Group'))?>" ng-model="newgroup" required />
 			<span class="error" id="nogroup" ng-show="creategroup_form.newgroup.$error.minlength">Enter minimum 3 characters.</span>
-			<button title="<?php p($l->t('Add')) ?>"
+			<!--<button title="<?php p($l->t('Add')) ?>"
 				ng-click="savegroup()"
 				ng-disabled="creategroup_form.$invalid">
 				<?php p($l->t('Add')); ?>
-			</button>
+			</button>-->
 		</form>
 	</fieldset>
 </div>

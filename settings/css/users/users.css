@@ -119,6 +119,20 @@
 	font-weight:500;
 }
 
+.showgroupinput {
+	background:#eee;
+	border-bottom:1px solid #ccc;
+}
+
+form[name="creategroup_form"] {
+	padding:4px 12px;
+}
+form[name="creategroup_form"] input {
+	width: 250px;
+	margin-top: 8px;
+	margin-left: 1px;
+}
+
 #user-content .loading {
 	position: absolute;
 	left: 50%;
