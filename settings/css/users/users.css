@@ -26,6 +26,10 @@
 	overflow:auto !important;
 }
 
+#priority-list {
+	border-bottom:1px solid #ccc;
+}
+
 #app-navigation > ul {
 	height:auto;
 	overflow:auto;
@@ -93,6 +97,11 @@
 	box-sizing: border-box;
 	text-shadow: 0 1px 0 rgba(255,255,255,.9);
 	height:44px;
+	border-bottom:1px solid #ccc;
+}
+
+.addbutton:hover {
+	background:#DDD;
 }
 
 .addbutton span {

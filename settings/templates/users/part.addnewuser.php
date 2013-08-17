@@ -38,7 +38,7 @@
 				ng-options="pergroup.name for pergroup in allgroups.result">
 				<option value=""></option>
 			</select>
-			<button title="<?php p($l->t('Create'))?>" ng-click="saveuser()" ng-disabled="createuser_form.$invalid"><?php p($l->t('Create'))?></button>
+			<button title="<?php p($l->t('Create'))?>" ng-click="saveuser()" ng-disabled="createuser_form.$invalid"><?php p($l->t('Add User'))?></button>
 		</form>
 	</fieldset>
 </div>
