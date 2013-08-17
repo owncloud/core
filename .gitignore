@@ -87,3 +87,6 @@ nbproject
 /tests/coverage*
 /tests/autoconfig*
 /tests/autotest*
+
+# settings node module
+/settings/js/node_modules/

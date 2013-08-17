@@ -59,7 +59,7 @@ if ($isAdmin) {
 	$batch = OC_Group::usersInGroups($groups, '', $limit, $offset);
 	foreach ($batch as $user) {
 		$users[] = array(
-			'userid' => str_replace(' ','', $user ),
+			'id' => str_replace(' ','', $user ),
 			'name' => $user,
 			'displayname' => OC_User::getDisplayName($user),
 			'groups' => OC_Group::getUserGroups($user),
