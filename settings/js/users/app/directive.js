@@ -1,4 +1,4 @@
-/*
+//*
  * ownCloud - Core
  *
  * @author Raghu Nayyar
@@ -57,4 +57,3 @@ usersmanagement.directive('ngBlur', ['$parse', function($parse) {
 		});
 	}
 }]);
->>>>>>> Initial Commit for User Management

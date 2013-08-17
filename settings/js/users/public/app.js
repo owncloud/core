@@ -523,4 +523,3 @@ usersmanagement.filter('capitalize',
 		return firstcharUpper;
 	}
 ]);
-

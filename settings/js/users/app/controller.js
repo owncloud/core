@@ -22,7 +22,7 @@
 usersmanagement.controller('prioritygroupController',
 	['$scope', '$routeParams', 'GroupService', 'UserService',
 	function($scope, $routeParams, GroupService, UserService){
-        
+
 	}
 ]);
 
@@ -49,11 +49,11 @@ usersmanagement.controller('grouplistController',
 		$scope.loading = true;
 		$scope.groups = GroupModel.getAll();
 		groups = $scope.groups;
-		
+
 		$scope.routeParams = $routeParams;
 		GroupService.getAllGroups().then(function(response) {
 			$scope.loading = false;
-			
+
 			// Deletes the group.
 			$scope.deletegroup = function(group) {
 				groups.splice(groups.indexOf(group), 1);
@@ -96,7 +96,7 @@ usersmanagement.controller('userlistController',
 			$scope.loading = false;
 
 			/* Takes Out all groups for the Chosen dropdown */
-			
+
 			$scope.allgroups = GroupService.getByGroupId().get();
 
 		    /*var getnewuser = function(newname) {
@@ -109,7 +109,7 @@ usersmanagement.controller('userlistController',
 		    }
 				*/
 			/* Deletes Users */
-			
+
 			$scope.deleteuser = function(user) {
 				$scope.users.splice($scope.users.indexOf(user), 1);
 				UserService.removeuser().delete({ username : user });
