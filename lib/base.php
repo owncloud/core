@@ -228,16 +228,39 @@ class OC {
 			$currentVersion = implode('.', OC_Util::getVersion());
 			if (version_compare($currentVersion, $installedVersion, '>')) {
 				if ($showTemplate && !OC_Config::getValue('maintenance', false)) {
-					OC_Config::setValue('theme', '');
-					$minimizerCSS = new OC_Minimizer_CSS();
-					$minimizerCSS->clearCache();
-					$minimizerJS = new OC_Minimizer_JS();
-					$minimizerJS->clearCache();
-					OC_Util::addscript('update');
-					$tmpl = new OC_Template('', 'update', 'guest');
-					$tmpl->assign('version', OC_Util::getVersionString());
-					$tmpl->printPage();
-					exit();
+
+					// if we are in maintenance mode we need to check if there are 
+					// new dependencies and warn
+					$errors = OC_Util::checkServer();
+					if(!OC_Util::issetlocaleworking()) {
+						$errors[] = array(
+							'error'=>'Setting locale to en_US.UTF-8/en_US.UTF8 failed',
+							'hint'=>'Please install the locale on your system and restart your webserver.'
+						);
+					}
+					if(count($errors) > 0){
+						// if errors happened, we need to remove the maintenance
+						// mode to get back into this check
+						OC_Config::setValue('maintenance', false);
+
+						// print the error page
+						$tmpl = new OC_Template('', 'error', 'guest');
+						$tmpl->assign('errors', $errors);
+						$tmpl->printPage();
+						exit();
+					// if every dependency check worked fine, upgrade
+					} else {
+						OC_Config::setValue('theme', '');
+						$minimizerCSS = new OC_Minimizer_CSS();
+						$minimizerCSS->clearCache();
+						$minimizerJS = new OC_Minimizer_JS();
+						$minimizerJS->clearCache();
+						OC_Util::addscript('update');
+						$tmpl = new OC_Template('', 'update', 'guest');
+						$tmpl->assign('version', OC_Util::getVersionString());
+						$tmpl->printPage();
+						exit();
+					}
 				} else {
 					return true;
 				}
