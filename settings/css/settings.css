@@ -100,3 +100,7 @@ table.shareAPI td { padding-bottom: 0.8em; }
 /* HELP */
 .pressed {background-color:#DDD;}
 
+/* fix hidden groups in firefox - https://github.com/owncloud/core/issues/2571 */
+ul.multiselectoptions > li {
+    overflow: visible !important;
+}
