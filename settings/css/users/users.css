@@ -25,6 +25,14 @@
 	position: fixed;
 }
 
+#app-navigation > ul {
+	height:auto;
+}
+
+#user-groups {
+	height:74% !important;
+}
+
 .error {
 	float: left;
 	display: block;

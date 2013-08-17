@@ -20,7 +20,7 @@
  *
  */
 ?>
-<ul ng-controller="grouplistController" id="group-list">
+<ul ng-controller="grouplistController" class="group-list" id="user-groups">
 	<loading></loading>
 	<li class="user-groups"
 	ng-repeat="group in groups | orderBy:['isAdmin','name']"

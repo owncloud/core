@@ -24,16 +24,14 @@
 
 <div id="user-settings" ng-app="usersmanagement">
 	<div id="app-navigation">
-		<div class="user-groups everyone">
-			<a href="#"><?php p($l->t('Everyone')); ?></a>
-		</div>
+		<?php print_unescaped($this->inc('users/part.prioritygroups')); ?>
 		<?php print_unescaped($this->inc('users/part.addnewgroup')); ?>
-		<?php print_unescaped($this->inc('users/part.leftgrouplist')); ?>
+		<?php print_unescaped($this->inc('users/part.grouplist')); ?>
+		<?php print_unescaped($this->inc('users/part.usersettings')); ?>
 	</div>
 	<div id="user-content">
 		<div id="hascontrols">
 			<?php print_unescaped($this->inc('users/part.addnewuser')); ?>
-			<?php print_unescaped($this->inc('users/part.setstorage')); ?>
 		</div>
 		<div id="user-table" ng-view></div>
 	</div>

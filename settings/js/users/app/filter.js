@@ -18,28 +18,30 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-/* Filters the userlist for the respective group */
 
-usersmanagement.filter('usertogroupFilter', function() {
-	return function(users,groups) {
-		var groupusers = [];
-		for(var i=0; i<users.length; i++) {
-			for (var j=0; j<groups.length; j++ ) {
-				if(users[i].userid === groups[j]) {
-					groupusers.push(users[i]);
+/* Lists out Admins and User Admins on Top. */
+
+usersmanagement.filter('adminFilter', 
+	[function() {
+		return function(groups) {
+			var isAdmin = [];
+			for (var i=0; i<groups.length; i++) {
+				if (groups[i].isAdmin == true) {
+					isAdmin.push(groups[i]);
 				}
 			}
 		}
-		return groupusers;
 	}
-});
+]);
 
 /* Capitalizes the Group List */
 
-usersmanagement.filter('capitalize', function() {
-	var firstcharUpper = function(input) {
-		input = input.charAt(0).toUpperCase();
-		return input;
+usersmanagement.filter('capitalize',
+	[function() {
+		var firstcharUpper = function(input) {
+			input = input.charAt(0).toUpperCase();
+			return input;
+		}
+		return firstcharUpper;
 	}
-	return firstcharUpper;
-});
+]);

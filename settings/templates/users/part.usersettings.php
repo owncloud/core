@@ -22,7 +22,16 @@
  */
 
 ?>
-<div ng-controller="setQuotaController" id='local-storage'>
+
+<div id="app-settings" ng-controller="setQuotaController">
+	<div id="app-settings-header">
+		<button class="settings-button" tabindex="0"></button>
+	</div>
+	<div id="app-settings-content">
+	</div>
+</div>
+
+<!--<div ng-controller="setQuotaController" id='local-storage'>
 	<fieldset class="default-storage">
 		<label>Default Storage</label>
 		<select>
@@ -33,4 +42,4 @@
 			<option><?php p($l->t('15 GB')) ?></option>
 		</select>
 	</fieldset>
-</div>
+</div>-->

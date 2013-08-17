@@ -1,4 +1,6 @@
-/*
+<?php
+
+/**
  * ownCloud - Core
  *
  * @author Raghu Nayyar
@@ -18,28 +20,16 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+?>
 
-var usersmanagement = angular.module('usersmanagement', ['ngResource','localytics.directives']).
-config(['$httpProvider','$routeProvider', '$windowProvider', '$provide',
-	function($httpProvider,$routeProvider, $windowProvider, $provide) {
-
-		$httpProvider.defaults.headers.common['requesttoken'] = oc_requesttoken;
-
-		$routeProvider
-		.when('/group/:groupId', {
-			controller : 'grouplistController',
-			templateUrl : OC.filePath('settings', 'templates/users', 'part.userlist.php')
-		})
-		.otherwise({
-			redirectTo : '/group/'
-		});
-
-		var $window = $windowProvider.$get();
-		var url = $window.location.href;
-		var baseUrl = url.split('index.php')[0] + 'index.php/settings';
-
-		$provide.value('Config', {
-			baseUrl: baseUrl
-		});
-	}
-]);
+<ul ng-controller="prioritygroupController" class="group-list">
+	<li class="user-groups">
+		<a href="#/group/"><?php p($l->t('Everyone')); ?></a>
+	</li>
+	<li class="user-groups">
+		<a href="#/group/admins"><?php p($l->t('Admins')); ?></a>
+	</li>
+	<li class="user-groups">
+		<a href="#/group/subadmins"><?php p($l->t('SubAdmins')); ?></a>
+	</li>
+</ul>

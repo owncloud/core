@@ -19,6 +19,13 @@
  *
  */
 
+usersmanagement.controller('prioritygroupController',
+	['$scope', '$routeParams', 'GroupService', 'UserService',
+	function($scope, $routeParams, GroupService, UserService){
+		
+	}
+]);
+
 /* Controller for Creating Groups - Left Sidebar */
 
 usersmanagement.controller('creategroupController',
@@ -43,9 +50,9 @@ usersmanagement.controller('grouplistController',
 		$scope.loading = true;
 		$scope.groups = GroupModel.getAll();
 		$scope.routeParams = $routeParams;
-
 		GroupService.getAllGroups().then(function(response) {
 			$scope.loading = false;
+			console.log($scope.groups);
 
 			// Selects the current Group.
 			$scope.selectGroup = function(groupid) {

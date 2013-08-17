@@ -32,7 +32,7 @@ config(['$httpProvider','$routeProvider', '$windowProvider', '$provide',
 			templateUrl : OC.filePath('settings', 'templates/users', 'part.userlist.php')
 		})
 		.otherwise({
-			redirectTo : '/group/everyone'
+			redirectTo : '/group/'
 		});
 
 		var $window = $windowProvider.$get();
@@ -354,6 +354,13 @@ usersmanagement.factory('_Query', [function() {
 	}
 ]);
 
+usersmanagement.controller('prioritygroupController',
+	['$scope', '$routeParams', 'GroupService', 'UserService',
+	function($scope, $routeParams, GroupService, UserService){
+		
+	}
+]);
+
 /* Controller for Creating Groups - Left Sidebar */
 
 usersmanagement.controller('creategroupController',
@@ -378,9 +385,9 @@ usersmanagement.controller('grouplistController',
 		$scope.loading = true;
 		$scope.groups = GroupModel.getAll();
 		$scope.routeParams = $routeParams;
-
 		GroupService.getAllGroups().then(function(response) {
 			$scope.loading = false;
+			console.log($scope.groups);
 
 			// Selects the current Group.
 			$scope.selectGroup = function(groupid) {
@@ -499,29 +506,30 @@ usersmanagement.directive('ngBlur', ['$parse', function($parse) {
 	}
 }]);
 
-/* Filters the userlist for the respective group */
+/* Lists out Admins and User Admins on Top. */
 
-usersmanagement.filter('usertogroupFilter', function() {
-	return function(users,groups) {
-		var groupusers = [];
-		for(var i=0; i<users.length; i++) {
-			for (var j=0; j<groups.length; j++ ) {
-				if(users[i].userid === groups[j]) {
-					groupusers.push(users[i]);
+usersmanagement.filter('adminFilter', 
+	[function() {
+		return function(groups) {
+			var isAdmin = [];
+			for (var i=0; i<groups.length; i++) {
+				if (groups[i].isAdmin == true) {
+					isAdmin.push(groups[i]);
 				}
 			}
 		}
-		return groupusers;
 	}
-});
+]);
 
 /* Capitalizes the Group List */
 
-usersmanagement.filter('capitalize', function() {
-	var firstcharUpper = function(input) {
-		input = input.charAt(0).toUpperCase();
-		return input;
+usersmanagement.filter('capitalize',
+	[function() {
+		var firstcharUpper = function(input) {
+			input = input.charAt(0).toUpperCase();
+			return input;
+		}
+		return firstcharUpper;
 	}
-	return firstcharUpper;
-});
+]);
 
