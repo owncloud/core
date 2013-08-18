@@ -81,7 +81,16 @@ usersmanagement.controller('addUserController',
 usersmanagement.controller('setQuotaController',
 	['$scope', 'QuotaService',
 	function($scope, QuotaService) {
-		// Shift Default Storage here.
+		
+		// Default Quota
+		$scope.defaultQuota = function(defaultquota) {
+			QuotaService.setquota().save({ quota : defaultquota });
+		}
+		
+		//User Quota
+		$scope.userQuota = function(userid,userquota) {
+			QUOTASERVICE.setquota().save({ username : userid } , { quota : userquota });
+		}
 	}
 ]);
 
