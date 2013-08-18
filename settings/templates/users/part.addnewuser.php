@@ -25,9 +25,9 @@
 <div ng-controller="addUserController">
 	<fieldset>
 		<form id="newuser" autocomplete="off" name="createuser_form">
-			<input class="" id="newusername" type="text" name="loginnamefield" placeholder="<?php p($l->t('Username')) ?>" ng-minlength="3" required ng-model="newuser"/>
-			<span class="error" id="nologinname" ng-show="createuser_form.loginnamefield.$error.minlength">Minimum 3 characters</span>
-			<input id="newuserpassword" name="passwordfield" type="password" placeholder="<?php p($l->t('Password')) ?>" ng-model="password" required/>
+			<input class="" id="newusername" type="text" name="loginnamefield" placeholder="<?php p($l->t('Username')) ?>" ng-minlength="3" required ng-model="newuser" title="Minimum 3 characters" original-title="Minimum 3 chracters"/>
+			<!--<span class="error" id="nologinname" ng-show="createuser_form.loginnamefield.$error.minlength">Minimum 3 characters</span>-->
+			<input id="newuserpassword" name="passwordfield" type="password" placeholder="<?php p($l->t('Password')) ?>" ng-model="password" title="Minimum 3 chracters" original-title="Minimum 3 chracters" required/>
 			<select
 				chosen multiple id="newusergroups"
 				class="groupselect" title="<?php p($l->t('Groups'))?>"

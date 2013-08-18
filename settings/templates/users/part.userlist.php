@@ -23,6 +23,7 @@
 ?>
 
 <table id="userlist" ng-controller="userlistController">
+	<loading></loading>
 	<thead>
 		<tr>
 			<!--Do something with the static hmtl here in the view.-->
@@ -36,7 +37,6 @@
 		</tr>
 	</thead>
 	<tbody>
-		<loading></loading>
 		<!-- The Filter Goes here with the ngRepeat.-->
 		<tr ng-repeat="user in users | orderBy:['isAdmin','isSubAdmin','name']"
 			ng-init="viewname = true; editname = false;
