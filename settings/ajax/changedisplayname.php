@@ -6,8 +6,10 @@ OC_JSON::checkLoggedIn();
 
 $l=OC_L10N::get('core');
 
-$username = isset($_POST["username"]) ? $_POST["username"] : OC_User::getUser();
-$displayName = $_POST["displayName"];
+$params = json_decode(file_get_contents('php://input'), true);
+
+$username = isset($params["username"]) ? $params["username"] : OC_User::getUser();
+$displayName = $params["displayName"];
 
 $userstatus = null;
 if(OC_User::isAdminUser(OC_User::getUser())) {

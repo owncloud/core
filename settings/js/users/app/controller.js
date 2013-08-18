@@ -98,6 +98,11 @@ usersmanagement.controller('userlistController',
 			/* Takes Out all groups for the Chosen dropdown */
 			
 			$scope.allgroups = GroupService.getByGroupId().get();
+			
+			$scope.updateDisplayName = function(userid,displayname) {
+				console.log(userid + ':' + displayname);
+				UserService.updateName().save({ username : userid }, { displayName : displayname })
+			}
 			/* Deletes Users */
 			
 			$scope.deleteuser = function(user) {
