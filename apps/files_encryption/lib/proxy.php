@@ -116,7 +116,7 @@ class Proxy extends \OC_FileProxy {
 					return true;
 				}
 
-				$handle = fopen('crypt://' . $relativePath . '.etmp', 'w');
+				$handle = fopen('crypt://' . $relativePath . '.part', 'w');
 				if (is_resource($handle)) {
 
 					// write data to stream
@@ -130,10 +130,10 @@ class Proxy extends \OC_FileProxy {
 					\OC_FileProxy::$enabled = false;
 
 					// get encrypted content
-					$data = $view->file_get_contents($path . '.etmp');
+					$data = $view->file_get_contents($path . '.part');
 
 					// remove our temp file
-					$view->unlink($path . '.etmp');
+					$view->unlink($path . '.part');
 
 					// re-enable proxy - our work is done
 					\OC_FileProxy::$enabled = $proxyStatus;

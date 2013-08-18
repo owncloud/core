@@ -174,7 +174,7 @@ class Keymanager {
 	 */
 	public static function fixPartialFilePath($path) {
 
-		if (preg_match('/\.part$/', $path) || preg_match('/\.etmp$/', $path)) {
+		if (preg_match('/\.part$/', $path)) {
 
 			$newLength = strlen($path) - 5;
 			$fPath = substr($path, 0, $newLength);
@@ -196,7 +196,7 @@ class Keymanager {
 	 */
 	public static function isPartialFilePath($path) {
 
-		if (preg_match('/\.part$/', $path) || preg_match('/\.etmp$/', $path)) {
+		if (preg_match('/\.part$/', $path)) {
 
 			return true;
 
