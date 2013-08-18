@@ -88,5 +88,5 @@ nbproject
 /tests/autoconfig*
 /tests/autotest*
 
-# settings node module
-/settings/js/node_modules/
+# Build
+/build/node_modules/
