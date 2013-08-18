@@ -445,42 +445,49 @@ usersmanagement.controller('userlistController',
 
 /* The Spinner Directive */
 
-usersmanagement.directive('loading', function() {
-	return {
-		restrict: 'E',
-		replace: true,
-		template:"<div class='loading'></div>",
-	    link: function($scope, element, attr) {
-			$scope.$watch('loading', function(val) {
-				if (val) {
-					$(element).show();
-				}
-				else {
-					$(element).hide();
-				}
-			});
-		}		
-	}
-});
+usersmanagement.directive('loading',
+	[ function() {
+		return {
+			restrict: 'E',
+			replace: true,
+			template:"<div class='loading'></div>",
+	    	link: function($scope, element, attr) {
+				$scope.$watch('loading', function(val) {
+					if (val) {
+						$(element).show();
+					}
+					else {
+						$(element).hide();
+					}
+				});
+			}		
+		}
+	}]
+);
 
 /* ngFocus and ngBlur Directives */
 
-usersmanagement.directive('ngFocus', ['$parse', function($timeout) {
-    return function( scope, element, attrs ) {
-        scope.$watch(attrs.ngFocus, function (newVal, oldVal) {
-            if (newVal)
-                element[0].focus();
-        });
-      };
-}]);
-
-usersmanagement.directive('ngBlur', ['$parse', function($parse) {
-    return function (scope, element, attrs) {
-		element.bind('blur', function () {
-			scope.$apply(attrs.ngBlur);
-		});
+usersmanagement.directive('ngFocus', 
+	['$parse', function($timeout) {
+    	return function( scope, element, attrs ) {
+        	scope.$watch(attrs.ngFocus, function (newVal, oldVal) {
+            	if (newVal) {
+            		element[0].focus();
+            	}
+			});
+		};
 	}
-}]);
+]);
+
+usersmanagement.directive('ngBlur',
+	['$parse', function($parse) {
+    	return function (scope, element, attrs) {
+			element.bind('blur', function () {
+				scope.$apply(attrs.ngBlur);
+			});
+		}
+	}
+]);
 
 /* Lists out Admins and User Admins on Top. */
 
