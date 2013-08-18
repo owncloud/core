@@ -66,7 +66,7 @@
 					ng-blur="
 						editdisplayname = !editdisplayname;
 						viewdisplayname = !viewdisplayname;
-						update('displayName')"
+						updateDisplayName(user.id, user.displayname)"
 				/>
 			</td>
 			<td class="user-pass">
