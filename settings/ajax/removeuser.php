@@ -5,9 +5,7 @@ OC_JSON::checkAdminUser();
 
 $l = OC_L10n::get('settings');
 
-$params = json_decode(file_get_contents('php://input'), true);
-
-$username = $params["username"];
+$username = $_GET["username"];
 
 // A user shouldn't be able to delete his own account
 if(OC_User::getUser() === $username) {
