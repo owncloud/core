@@ -21,16 +21,26 @@
 
 /* Group List Styles */
 
+#user-settings {
+	height:100%;
+}
+
 #app-navigation {
 	position: fixed;
+	overflow:auto !important;
+}
+
+#priority-list {
+	border-bottom:1px solid #ccc;
 }
 
 #app-navigation > ul {
 	height:auto;
+	overflow:auto;
 }
 
 #user-groups {
-	height:75% !important;
+	overflow:hidden !important;
 }
 
 .error {
@@ -85,8 +95,6 @@
 
 .addgroupbutton {
 	background-color: #eee;
-	border-top: 1px solid #fff;
-	border-bottom: 1px solid #ddd;
 	position: relative;
 	width: 100%;
 	-moz-box-sizing: border-box;
@@ -103,7 +111,7 @@
 .addgroupbutton span {
 	display: block;
 	width: 100%;
-	padding: 0 16px;
+	padding: 7px 12px;
 	overflow: hidden;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
@@ -135,11 +143,9 @@ form[name="creategroup_form"] input {
 }
 
 #user-content .loading {
-	position: absolute;
-	left: 50%;
-	right: 50%;
-	top: 50%;
-	bottom: 50%;
+	position:fixed;
+	top:50%;
+	left:50%;
 }
 
 .utils {
@@ -166,14 +172,16 @@ form[name="creategroup_form"] input {
 	position: absolute;
 	padding: 7px;
 	right:5px;
+	top:5px;
 }
 
 .utils .activeusercount {
 	right:25px;
+	top:5px;
 }
 
 #hascontrols {
-	margin-left: 250px;
+	margin-left: 300px;
 	/*background-image: linear-gradient(top, rgb(248,248,248) 0, rgb(255,255,255) 84px);
 	background-image: -o-linear-gradient(top, rgb(248,248,248) 0, rgb(255,255,255) 84px);
 	background-image: -moz-linear-gradient(top, rgb(248,248,248) 0, rgb(255,255,255) 84px);
@@ -184,23 +192,16 @@ form[name="creategroup_form"] input {
 	padding: 2px 0 2px 0;
 }
 
-/* Default Storage Controller Styles */
-
-#local-storage {
-	position:absolute;
-	right:10px;
-	top:10px;
+#searchBar {
+	text-align:center;
 }
-
 /* User Table */
 
 #user-table {
 	position: absolute;
-	left: 250px;
-	width: 80%;
+	left: 300px;
 	float: left;
 	min-width: 700px;
-	padding-top: 10px;
 }
 
 #userlist {
