@@ -27,7 +27,7 @@
 	ng-init="showbutton = true; showgroupinput = false;"
 	class="addGroupContainer">
 	<div
-		class="addbutton"
+		class="addgroupbutton"
 		ng-show="showbutton"
 		ng-click="
 			showgroupinput = !showgroupinput"

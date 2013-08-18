@@ -93,7 +93,7 @@
 
 }
 
-.addbutton {
+.addgroupbutton {
 	background-color: #eee;
 	position: relative;
 	width: 100%;
@@ -104,11 +104,11 @@
 	border-bottom:1px solid #ccc;
 }
 
-.addbutton:hover {
+.addgroupbutton:hover {
 	background:#DDD;
 }
 
-.addbutton span {
+.addgroupbutton span {
 	display: block;
 	width: 100%;
 	padding: 7px 12px;
@@ -126,6 +126,11 @@
 .showgroupinput {
 	background:#eee;
 	border-bottom:1px solid #ccc;
+}
+
+#app-settings-content {
+	display:block;
+	height:100px;
 }
 
 form[name="creategroup_form"] {
