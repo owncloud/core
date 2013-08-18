@@ -126,7 +126,7 @@ module.exports = function(grunt) {
 				configFile: '../settings/tests/config/karma.js'
 			},
 			continuous: {
-				configFile: '../settings/tests/config/karma.js',
+				configFile: '../settings/js/tests/config/karma.js',
 				singleRun: true,
 				browsers: ['PhantomJS'],
 				reporters: ['progress']
