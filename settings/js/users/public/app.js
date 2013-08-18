@@ -64,7 +64,7 @@ usersmanagement.factory('GroupService',
 			});
 		},
 		removegroup: function (group) {
-			return $resource(OC.filePath('settings', 'ajax', 'removegroup.php'), group, {
+			$resource(OC.filePath('settings', 'ajax', 'removegroup.php'), group, {
 				method: 'DELETE'
 			});
 		},
@@ -100,6 +100,10 @@ usersmanagement.factory('UserService',
 			return $resource(OC.filePath('settings', 'ajax', 'removeuser.php'), users, {
 				method: 'DELETE'
 			});
+		},
+		updateName: function(userid,displayname) {
+			return $resource(OC.filePath('settings', 'ajax', 'changedisplayname.php')).save(
+				{ username : userid, displayName : displayname });
 		},
 		updateField: function(userId, fields) {
 			return $resource(Config.baseUrl + '/users/' + userId, fields, {
@@ -433,6 +437,11 @@ usersmanagement.controller('userlistController',
 			/* Takes Out all groups for the Chosen dropdown */
 
 			$scope.allgroups = GroupService.getByGroupId().get();
+			
+			$scope.updateDisplayName = function(userid,displayname) {
+				console.log(userid + ':' + displayname);
+				UserService.updateName(userid,displayname);
+			}
 			/* Deletes Users */
 
 			$scope.deleteuser = function(user) {

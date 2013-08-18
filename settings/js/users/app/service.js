@@ -75,6 +75,10 @@ usersmanagement.factory('UserService',
 				method: 'DELETE'
 			});
 		},
+		updateName: function(userid,displayname) {
+			return $resource(OC.filePath('settings', 'ajax', 'changedisplayname.php')).save(
+				{ username : userid, displayName : displayname });
+		},
 		updateField: function(userId, fields) {
 			return $resource(Config.baseUrl + '/users/' + userId, fields, {
 				method: 'POST'

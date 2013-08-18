@@ -32,7 +32,7 @@
 		ng-click="
 			showgroupinput = !showgroupinput"
 		>
-		<span><?php p($l->t('+ Add Group'))?>p</span>
+		<span><?php p($l->t('+ Add Group'))?></span>
 	</div>
 	<fieldset ng-show="showgroupinput">
 		<form name="creategroup_form">
