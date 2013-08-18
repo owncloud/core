@@ -38,7 +38,7 @@ usersmanagement.factory('GroupService',
 			});
 		},
 		removegroup: function (group) {
-			return $resource(OC.filePath('settings', 'ajax', 'removegroup.php'), group, {
+			$resource(OC.filePath('settings', 'ajax', 'removegroup.php'), group, {
 				method: 'DELETE'
 			});
 		},
