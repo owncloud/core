@@ -1,5 +1,5 @@
 {
-  "name": "User-Management",
+  "name": "Core",
   "description": "ownCloud - Settings",
   "version": "2.0.0",
   "author": {
@@ -9,7 +9,6 @@
   "contributors": [
     "Raghu Nayyar",
     "Bernhard Posselt",
-    "Jan Christoph Borchardt",
     "Morris Jobke, ownCloud Community"
   ],
   "dependencies": {},
