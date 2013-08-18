@@ -129,9 +129,13 @@ usersmanagement.factory('UserService',
 /* Quota Service */
 
 usersmanagement.factory('QuotaService', function($resource) {
-	return $resource(OC.filePath('settings','ajax', 'setQuota.php'), {}, {
-		method : 'POST'
-	});
+	return {
+		setquota: function() {
+			return $resource(OC.filePath('settings','ajax', 'setQuota.php'), {}, {
+				method : 'POST'
+			});
+		}
+	}
 });
 
 
@@ -420,7 +424,16 @@ usersmanagement.controller('addUserController',
 usersmanagement.controller('setQuotaController',
 	['$scope', 'QuotaService',
 	function($scope, QuotaService) {
-		// Shift Default Storage here.
+		
+		// Default Quota
+		$scope.defaultQuota = function(defaultquota) {
+			QuotaService.setquota().save({ quota : defaultquota });
+		}
+		
+		//User Quota
+		$scope.userQuota = function(userid,userquota) {
+			QUOTASERVICE.setquota().save({ username : userid } , { quota : userquota });
+		}
 	}
 ]);
 
