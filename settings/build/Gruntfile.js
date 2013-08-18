@@ -123,10 +123,10 @@ module.exports = function(grunt) {
 		},
 		karma: {
 			unit: {
-				configFile: '../js/tests/config/karma.js'
+				configFile: '../settings/tests/config/karma.js'
 			},
 			continuous: {
-				configFile: '../js/tests/config/karma.js',
+				configFile: '../settings/tests/config/karma.js',
 				singleRun: true,
 				browsers: ['PhantomJS'],
 				reporters: ['progress']

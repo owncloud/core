@@ -6,7 +6,7 @@
 /apps/inc.php
 
 # ignore all apps except core ones
-/apps*/*
+/apps*
 !/apps/files
 !/apps/files_encryption
 !/apps/files_external
@@ -71,7 +71,7 @@ nbproject
 
 # vim ex mode
 .vimrc
-	
+
 # Mac OS
 .DS_Store
 
@@ -82,18 +82,11 @@ nbproject
 # Tests
 /tests/phpunit.xml
 
-# Node Modules
-/build/node_modules/
-
-# Node Modules for Settings
-
-/settings/build/node_modules/
-
 # Tests - auto-generated files
 /data-autotest
 /tests/coverage*
 /tests/autoconfig*
 /tests/autotest*
 
-# settings node module
-/settings/js/node_modules/
+# Build
+/build/node_modules/
