@@ -138,11 +138,9 @@ form[name="creategroup_form"] input {
 }
 
 #user-content .loading {
-	position: absolute;
-	left: 50%;
-	right: 50%;
-	top: 50%;
-	bottom: 50%;
+	position:fixed;
+	top:50%;
+	left:50%;
 }
 
 .utils {
