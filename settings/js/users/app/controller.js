@@ -89,7 +89,7 @@ usersmanagement.controller('setQuotaController',
 		
 		//User Quota
 		$scope.userQuota = function(userid,userquota) {
-			QUOTASERVICE.setquota().save({ username : userid } , { quota : userquota });
+			QuotaService.setquota().save({ username : userid } , { quota : userquota });
 		}
 	}
 ]);
