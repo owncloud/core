@@ -23,23 +23,22 @@
 
 ?>
 
-<div id="app-settings" ng-controller="setQuotaController">
+<div id="app-settings" ng-controller="setQuotaController"
+	ng-init=" showQuotaSettings = false;">
 	<div id="app-settings-header">
-		<button class="settings-button" tabindex="0"></button>
+		<button class="settings-button" ng-click="showQuotaSettings = !showQuotaSettings;" tabindex="0"></button>
 	</div>
-	<div id="app-settings-content">
+	<div id="app-settings-content" ng-show="showQuotaSettings">
+		<fieldset class="default-storage">
+			<label>Default Storage</label>
+			<select>
+				<option><?php p($l->t('Default')); ?></option>
+				<option><?php p($l->t('Unlimited')); ?></option>
+				<option><?php p($l->t('5 GB')); ?></option>
+				<option><?php p($l->t('10 GB')); ?></option>
+				<option><?php p($l->t('15 GB')); ?></option>
+				<option><?php p($l->t('Custom')); ?></option>
+			</select>
+		</fieldset>
 	</div>
 </div>
-
-<!--<div ng-controller="setQuotaController" id='local-storage'>
-	<fieldset class="default-storage">
-		<label>Default Storage</label>
-		<select>
-			<option><?php p($l->t('Default')) ?></option>
-			<option><?php p($l->t('Unlimited')) ?></option>
-			<option><?php p($l->t('5 GB')) ?></option>
-			<option><?php p($l->t('10 GB')) ?></option>
-			<option><?php p($l->t('15 GB')) ?></option>
-		</select>
-	</fieldset>
-</div>-->

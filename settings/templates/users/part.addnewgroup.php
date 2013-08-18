@@ -22,9 +22,17 @@
  */
 ?>
 
-<div ng-controller="creategroupController" ng-init="showbutton = true; showgroupinput = false;">
-	<div class="addbutton" ng-show="showbutton" ng-click="showbutton = !showbutton; showgroupinput = !showgroupinput">
-		<span>+ Add Group</span>
+<div 
+	ng-controller="creategroupController"
+	ng-init="showbutton = true; showgroupinput = false;"
+	class="addGroupContainer">
+	<div
+		class="addgroupbutton"
+		ng-show="showbutton"
+		ng-click="
+			showgroupinput = !showgroupinput"
+		>
+		<span><?php p($l->t('+ Add Group'))?>p</span>
 	</div>
 	<fieldset ng-show="showgroupinput">
 		<form name="creategroup_form">

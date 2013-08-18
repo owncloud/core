@@ -83,7 +83,7 @@
 
 }
 
-.addbutton {
+.addgroupbutton {
 	background-color: #eee;
 	border-top: 1px solid #fff;
 	border-bottom: 1px solid #ddd;
@@ -92,9 +92,15 @@
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	text-shadow: 0 1px 0 rgba(255,255,255,.9);
+	height:44px;
+	border-bottom:1px solid #ccc;
 }
 
-.addbutton span {
+.addgroupbutton:hover {
+	background:#DDD;
+}
+
+.addgroupbutton span {
 	display: block;
 	width: 100%;
 	padding: 0 16px;
@@ -107,6 +113,25 @@
 	color: #333;
 	cursor:pointer;
 	font-weight:500;
+}
+
+.showgroupinput {
+	background:#eee;
+	border-bottom:1px solid #ccc;
+}
+
+#app-settings-content {
+	display:block;
+	height:100px;
+}
+
+form[name="creategroup_form"] {
+	padding:4px 12px;
+}
+form[name="creategroup_form"] input {
+	width: 250px;
+	margin-top: 8px;
+	margin-left: 1px;
 }
 
 #user-content .loading {
