@@ -192,6 +192,9 @@ form[name="creategroup_form"] input {
 	padding: 2px 0 2px 0;
 }
 
+#searchBar {
+	text-align:center;
+}
 /* User Table */
 
 #user-table {
@@ -199,7 +202,6 @@ form[name="creategroup_form"] input {
 	left: 300px;
 	float: left;
 	min-width: 700px;
-	padding-top: 10px;
 }
 
 #userlist {
