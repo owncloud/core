@@ -115,6 +115,15 @@ class Updater extends BasicEmitter {
 		\OC_App::checkAppsRequirements();
 		// load all apps to also upgrade enabled apps
 		\OC_App::loadApps();
+		try {
+			$shareManager = \OCP\Share::getShareManager();
+			if ($shareManager) {
+				$updater = new \OC\Share\Updater($shareManager, $this->log);
+				$updater->updateAll();
+			}
+		} catch (\Exception $exception) {
+			$this->emit('\OC\Updater', 'failure', array($exception->getMessage()));
+		}
 		\OC_Config::setValue('maintenance', false);
 		$this->emit('\OC\Updater', 'maintenanceEnd');
 	}
