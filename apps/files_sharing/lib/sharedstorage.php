@@ -401,7 +401,7 @@ class Shared extends Common {
 				return $storage->free_space($internalPath);
 			}
 		}
-		return \OC\Files\FREE_SPACE_UNKNOWN;
+		return \OC\Files\SPACE_UNKNOWN;
 	}
 
 	public function getLocalFile($path) {
