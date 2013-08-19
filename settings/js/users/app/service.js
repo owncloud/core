@@ -3,6 +3,8 @@
  *
  * @author Raghu Nayyar
  * @copyright 2013 Raghu Nayyar <raghu.nayyar.007@gmail.com>
+ * @coauthor Bernhard Posselt
+ * @copyright 2013 Bernhard Posselt <nukeawhale@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
