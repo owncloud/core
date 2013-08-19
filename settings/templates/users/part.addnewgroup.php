@@ -36,8 +36,13 @@
 	</div>
 	<fieldset ng-show="showgroupinput" class="showgroupinput">
 		<form name="creategroup_form">
-			<input type="text" ng-minlength="3" name="newgroup" placeholder="<?php p($l->t('Add Group'))?>" ng-model="newgroup" required orginal-title="Minimum 3 characters" title="Minimum 3 characters"/>
-			<!--<span class="error" id="nogroup" ng-show="creategroup_form.newgroup.$error.minlength">Enter minimum 3 characters.</span>-->
+			<input 
+				type="text" name="newgroup"
+				ng-minlength="3" 
+				placeholder="<?php p($l->t('Add Group'))?>"
+				ng-model="newgroup"
+				required 
+			/>
 			<!--<button title="<?php p($l->t('Add')) ?>"
 				ng-click="savegroup()"
 				ng-disabled="creategroup_form.$invalid">
