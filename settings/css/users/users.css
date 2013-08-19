@@ -193,7 +193,8 @@ form[name="creategroup_form"] input {
 }
 
 #searchBar {
-	text-align:center;
+	float: right;
+	margin: -40px 10px;
 }
 /* User Table */
 

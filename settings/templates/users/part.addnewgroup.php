@@ -38,7 +38,6 @@
 		<form name="creategroup_form">
 			<input 
 				type="text" name="newgroup"
-				ng-minlength="3" 
 				placeholder="<?php p($l->t('Add Group'))?>"
 				ng-model="newgroup"
 				required 
