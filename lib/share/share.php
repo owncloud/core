@@ -412,8 +412,10 @@ class Share {
 	public static function fromParams(array $params) {
 		$instance = new static();
 		foreach ($params as $property => $value) {
-			$method = 'set'.ucfirst($property);
-			$instance->$method($value);
+			$setter = 'set'.ucfirst($property);
+			if (method_exists($instance, $setter)) {
+				$instance->$setter($value);
+			}
 		}
 		return $instance;
 	}
@@ -426,11 +428,13 @@ class Share {
 		$instance = new static();
 		foreach ($row as $column => $value) {
 			$property = $instance::columnToProperty($column);
-			if (isset($value) && isset($instance->propertyTypes[$property])) {
-				settype($value, $instance->propertyTypes[$property]);
+			$setter = 'set'.ucfirst($property);
+			if (method_exists($instance, $setter)) {
+				if (isset($value) && isset($instance->propertyTypes[$property])) {
+					settype($value, $instance->propertyTypes[$property]);
+				}
+				$instance->$setter($value);
 			}
-			$method = 'set'.ucfirst($property);
-			$instance->$method($value);
 		}
 		return $instance;
 	}
