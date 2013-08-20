@@ -1,9 +1,13 @@
 <?php
 
-OC_JSON::checkSubAdminUser();
 OCP\JSON::callCheck();
+OC_JSON::checkAdminUser();
 
-$username = $_POST["username"];
+$l = OC_L10n::get('settings');
+
+$params = json_decode(file_get_contents('php://input'), true);
+
+$username = $params["username"];
 
 // A user shouldn't be able to delete his own account
 if(OC_User::getUser() === $username) {
@@ -11,16 +15,14 @@ if(OC_User::getUser() === $username) {
 }
 
 if(!OC_User::isAdminUser(OC_User::getUser()) && !OC_SubAdmin::isUserAccessible(OC_User::getUser(), $username)) {
-	$l = OC_L10N::get('core');
-	OC_JSON::error(array( 'data' => array( 'message' => $l->t('Authentication error') )));
+	OC_JSON::error(array( "result" => array( "message" => $l->t("Authentication error") )));
 	exit();
 }
 
 // Return Success story
 if( OC_User::deleteUser( $username )) {
-	OC_JSON::success(array("data" => array( "username" => $username )));
+	OC_JSON::success(array("result" => array( "username" => $username )));
 }
 else{
-	$l = OC_L10N::get('core');
-	OC_JSON::error(array("data" => array( "message" => $l->t("Unable to delete user") )));
+	OC_JSON::error(array("result" => array( "message" => $l->t("Unable to delete user") )));
 }

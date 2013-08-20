@@ -20,8 +20,16 @@
  *
  */
 
-OC_JSON::callCheck();
+// This file is repsonsible for the Ajax Request for User list
+// Outputs everything you see on the right side.
+
 OC_JSON::checkSubAdminUser();
+
+$userUid = OC_User::getUser();
+$isAdmin = OC_User::isAdminUser($userUid);
+$users = array();
+
+
 if (isset($_GET['offset'])) {
 	$offset = $_GET['offset'];
 } else {
@@ -32,15 +40,18 @@ if (isset($_GET['limit'])) {
 } else {
 	$limit = 10;
 }
-$users = array();
-if (OC_User::isAdminUser(OC_User::getUser())) {
+
+if ($isAdmin) {
 	$batch = OC_User::getDisplayNames('', $limit, $offset);
 	foreach ($batch as $user => $displayname) {
 		$users[] = array(
+			'userid' => str_replace(' ','', $user ),
 			'name' => $user,
 			'displayname' => $displayname,
-			'groups' => join(', ', OC_Group::getUserGroups($user)),
-			'subadmin' => join(', ', OC_SubAdmin::getSubAdminsGroups($user)),
+			'groups' => OC_Group::getUserGroups($user),
+			'isAdmin' =>  !OC_User::isAdminUser($user),
+			'subadmin' => OC_SubAdmin::getSubAdminsGroups($user),
+			'isSubAdmin' => !OC_SubAdmin::isSubAdmin($user),
 			'quota' => OC_Preferences::getValue($user, 'files', 'quota', 'default'));
 	}
 } else {
@@ -48,10 +59,13 @@ if (OC_User::isAdminUser(OC_User::getUser())) {
 	$batch = OC_Group::usersInGroups($groups, '', $limit, $offset);
 	foreach ($batch as $user) {
 		$users[] = array(
+			'userid' => str_replace(' ','', $user ),
 			'name' => $user,
 			'displayname' => OC_User::getDisplayName($user),
-			'groups' => join(', ', OC_Group::getUserGroups($user)),
+			'groups' => OC_Group::getUserGroups($user),
+			'isAdmin' =>  !OC_User::isAdminUser($user),
+			'isSubAdmin' => !OC_SubAdmin::isSubAdmin($user),
 			'quota' => OC_Preferences::getValue($user, 'files', 'quota', 'default'));
 	}
 }
-OC_JSON::success(array('data' => $users));
+OCP\JSON::success(array('userdetails' => $users));
