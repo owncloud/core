@@ -1140,7 +1140,7 @@ class Util {
 		if ($sharingEnabled) {
 
 			// Find out who, if anyone, is sharing the file
-			$result = \OCP\Share::getUsersSharingFile($ownerPath, $owner, true);
+			$result = $this->getUsersSharingFile($ownerPath, $owner, true);
 			$userIds = $result['users'];
 			if ($result['public']) {
 				$userIds[] = $this->publicShareKeyId;
@@ -1177,6 +1177,61 @@ class Util {
 
 		return $uniqueUserIds;
 
+	}
+
+	/**
+	* @brief Find which users can access a shared item
+	* @param $path to the file
+	* @param $user owner of the file
+	* @param include owner to the list of users with access to the file
+	* @return array
+	* @note $path needs to be relative to user data dir, e.g. 'file.txt'
+	*       not '/admin/data/file.txt'
+	*/
+	public function getUsersSharingFile($path, $user, $includeOwner = false) {
+		$users = array();
+		$public = false;
+		$shareManager = \OCP\Share::getShareManager();
+		if ($shareManager) {
+			$view = new \OC\Files\View('/' . $user . '/files/');
+			$meta = $view->getFileInfo(\OC\Files\Filesystem::normalizePath($path));
+			$fileId = -1;
+			if ($meta !== false) {
+				$fileId = $meta['fileid'];
+				$cache = new \OC\Files\Cache\Cache($meta['storage']);
+			}
+			if ($meta['mimetype'] === 'httpd/unix-directory') {
+				$itemType = 'folder';
+			} else {
+				$itemType = 'file';
+			}
+			$filter = array();
+			while ($fileId !== -1) {
+				$filter['itemSource'] = $fileId;
+				$shares = $shareManager->getShares($itemType, $filter);
+				foreach ($shares as $share) {
+					$shareTypeId = $share->getShareTypeId();
+					if ($shareTypeId === 'user') {
+						$users[] = $share->getShareWith();
+					} else if ($shareTypeId === 'group') {
+						$usersInGroup = \OC_Group::usersInGroup($share->getShareWith());
+						$users = array_merge($users, $usersInGroup);
+					} else if ($shareTypeId === 'link') {
+						$public = true;
+					}
+				}
+				$meta = $cache->get((int)$fileId);
+				if ($meta !== false) {
+					$fileId = (int)$meta['parent'];
+				} else {
+					$fileId = -1;
+				}
+			}
+		}
+		if ($includeOwner) {
+			$users[] = $user;
+		}
+		return array('users' => array_unique($users), 'public'  => $public);
 	}
 
 	private function getUserWithAccessToMountPoint($users, $groups) {
@@ -1605,7 +1660,7 @@ class Util {
 
 		// Find out who, if anyone, is sharing the file
 		if ($sharingEnabled) {
-			$result = \OCP\Share::getUsersSharingFile($file, $this->userId, true);
+			$result = $this->getUsersSharingFile($file, $this->userId, true);
 			$userIds = $result['users'];
 			$userIds[] = $this->recoveryKeyId;
 			if ($result['public']) {

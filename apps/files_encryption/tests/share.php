@@ -32,6 +32,7 @@ require_once realpath(dirname(__FILE__) . '/../appinfo/app.php');
 require_once realpath(dirname(__FILE__) . '/util.php');
 
 use OCA\Encryption;
+use OCA\Files\Share\FileShare;
 
 /**
  * Class Test_Encryption_Share
@@ -54,6 +55,9 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 	public $folder1;
 	public $subfolder;
 	public $subsubfolder;
+
+	private static $usersSharingPolicy;
+	private static $linkSharingPolicy;
 
 	public static function setUpBeforeClass() {
 		// reset backend
@@ -88,6 +92,11 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 		\OC_Group::createGroup(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_GROUP1);
 		\OC_Group::addToGroup(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER3, \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_GROUP1);
 		\OC_Group::addToGroup(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER4, \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_GROUP1);
+
+		self::$usersSharingPolicy = \OC_Appconfig::getValue('core', 'shareapi_share_policy', 'global');
+		\OC_Appconfig::setValue('core', 'shareapi_share_policy', 'global');
+		self::$linkSharingPolicy = \OC_Appconfig::getValue('core', 'shareapi_allow_links', 'yes');
+		\OC_Appconfig::setValue('core', 'shareapi_allow_links', 'yes');
 	}
 
 	function setUp() {
@@ -125,6 +134,9 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 		\OC_User::deleteUser(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER2);
 		\OC_User::deleteUser(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER3);
 		\OC_User::deleteUser(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER4);
+
+		\OC_Appconfig::setValue('core', 'shareapi_share_policy', self::$usersSharingPolicy);
+		\OC_Appconfig::setValue('core', 'shareapi_allow_links', self::$linkSharingPolicy);
 	}
 
 	/**
@@ -159,7 +171,15 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 		\OC_FileProxy::$enabled = $proxyStatus;
 
 		// share the file
-		\OCP\Share::shareItem('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_USER, \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER2, OCP\PERMISSION_ALL);
+		$share = new FileShare();
+		$share->setItemType('file');
+		$share->setItemSource($fileInfo['fileid']);
+		$share->setShareTypeId('user');
+		$share->setShareOwner(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER1);
+		$share->setShareWith(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER2);
+		$share->setPermissions(27);
+		$shareManager = \OCP\Share::getShareManager();
+		$share = $shareManager->share($share);
 
 		// login as admin
 		\Test_Encryption_Util::loginHelper(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER1);
@@ -186,7 +206,7 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 			\Test_Encryption_Util::loginHelper(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER1);
 
 			// unshare the file
-			\OCP\Share::unshare('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_USER, \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER2);
+			$shareManager->unshare($share);
 
 			// check if share key not exists
 			$this->assertFalse($this->view->file_exists(
@@ -219,7 +239,15 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 			'/' . \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER2 . '/files/Shared/' . $this->filename);
 
 		// share the file with user2
-		\OCP\Share::shareItem('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_USER, \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER3, OCP\PERMISSION_ALL);
+		$share = new FileShare();
+		$share->setItemType('file');
+		$share->setItemSource($fileInfo['fileid']);
+		$share->setShareTypeId('user');
+		$share->setShareOwner(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER2);
+		$share->setShareWith(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER3);
+		$share->setPermissions(27);
+		$shareManager = \OCP\Share::getShareManager();
+		$share = $shareManager->share($share);
 
 		// login as admin
 		\Test_Encryption_Util::loginHelper(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER1);
@@ -245,8 +273,10 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 			// login as user1
 			\Test_Encryption_Util::loginHelper(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER2);
 
+			$parentShare = reset($shareManager->getParents($share));
+
 			// unshare the file with user2
-			\OCP\Share::unshare('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_USER, \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER3);
+			$shareManager->unshare($share);
 
 			// login as admin
 			\Test_Encryption_Util::loginHelper(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER1);
@@ -257,7 +287,7 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 				. $this->filename . '.' . \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER3 . '.shareKey'));
 
 			// unshare the file with user1
-			\OCP\Share::unshare('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_USER, \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER2);
+			$shareManager->unshare($parentShare);
 
 			// check if share key not exists
 			$this->assertFalse($this->view->file_exists(
@@ -314,7 +344,15 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 		\OC_FileProxy::$enabled = $proxyStatus;
 
 		// share the folder with user1
-		\OCP\Share::shareItem('folder', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_USER, \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER2, OCP\PERMISSION_ALL);
+		$share = new FileShare();
+		$share->setItemType('folder');
+		$share->setItemSource($fileInfo['fileid']);
+		$share->setShareTypeId('user');
+		$share->setShareOwner(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER1);
+		$share->setShareWith(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER2);
+		$share->setPermissions(OCP\PERMISSION_ALL);
+		$shareManager = \OCP\Share::getShareManager();
+		$share = $shareManager->share($share);
 
 		// login as admin
 		\Test_Encryption_Util::loginHelper(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER1);
@@ -343,7 +381,7 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 			\Test_Encryption_Util::loginHelper(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER1);
 
 			// unshare the folder with user1
-			\OCP\Share::unshare('folder', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_USER, \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER2);
+			$shareManager->unshare($share);
 
 			// check if share key not exists
 			$this->assertFalse($this->view->file_exists(
@@ -390,7 +428,15 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 		\OC_FileProxy::$enabled = $proxyStatus;
 
 		// share the file with user2
-		\OCP\Share::shareItem('folder', $fileInfoSubFolder['fileid'], \OCP\Share::SHARE_TYPE_USER, \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER3, OCP\PERMISSION_ALL);
+		$share = new FileShare();
+		$share->setItemType('folder');
+		$share->setItemSource($fileInfo['fileid']);
+		$share->setShareTypeId('user');
+		$share->setShareOwner(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER2);
+		$share->setShareWith(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER3);
+		$share->setPermissions(OCP\PERMISSION_ALL);
+		$shareManager = \OCP\Share::getShareManager();
+		$folderShare = $shareManager->share($share);
 
 		// login as admin
 		\Test_Encryption_Util::loginHelper(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER1);
@@ -421,7 +467,15 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue(is_array($fileInfo));
 
 		// share the file with user3
-		\OCP\Share::shareItem('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_USER, \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER4, OCP\PERMISSION_ALL);
+		$share = new FileShare();
+		$share->setItemType('file');
+		$share->setItemSource($fileInfo['fileid']);
+		$share->setShareTypeId('user');
+		$share->setShareOwner(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER3);
+		$share->setShareWith(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER4);
+		$share->setPermissions(27);
+		$shareManager = \OCP\Share::getShareManager();
+		$fileShare = $shareManager->share($share);
 
 		// login as admin
 		\Test_Encryption_Util::loginHelper(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER1);
@@ -449,7 +503,7 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 			\Test_Encryption_Util::loginHelper(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER3);
 
 			// unshare the file with user3
-			\OCP\Share::unshare('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_USER, \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER4);
+			$shareManager->unshare($fileShare);
 
 			// check if share key not exists
 			$this->assertFalse($this->view->file_exists(
@@ -460,8 +514,10 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 			// login as user1
 			\Test_Encryption_Util::loginHelper(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER2);
 
+			$parentShare = reset($shareManager->getParents($share));
+
 			// unshare the folder with user2
-			\OCP\Share::unshare('folder', $fileInfoSubFolder['fileid'], \OCP\Share::SHARE_TYPE_USER, \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER3);
+			$shareManager->unshare($folderShare);
 
 			// check if share key not exists
 			$this->assertFalse($this->view->file_exists(
@@ -473,7 +529,7 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 			\Test_Encryption_Util::loginHelper(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER1);
 
 			// unshare the folder1 with user1
-			\OCP\Share::unshare('folder', $fileInfoFolder1['fileid'], \OCP\Share::SHARE_TYPE_USER, \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER2);
+			$shareManager->unshare($parentShare);
 
 			// check if share key not exists
 			$this->assertFalse($this->view->file_exists(
@@ -522,7 +578,14 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 		\OC_FileProxy::$enabled = $proxyStatus;
 
 		// share the file
-		\OCP\Share::shareItem('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_LINK, false, OCP\PERMISSION_ALL);
+		$share = new FileShare();
+		$share->setItemType('file');
+		$share->setItemSource($fileInfo['fileid']);
+		$share->setShareTypeId('link');
+		$share->setShareOwner(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER1);
+		$share->setPermissions(27);
+		$shareManager = \OCP\Share::getShareManager();
+		$share = $shareManager->share($share);
 
 		// login as admin
 		\Test_Encryption_Util::loginHelper(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER1);
@@ -551,7 +614,7 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 		\Test_Encryption_Util::loginHelper(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER1);
 
 		// unshare the file
-		\OCP\Share::unshare('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_LINK, null);
+		$shareManager->unshare($share);
 
 		// check if share key not exists
 		$this->assertFalse($this->view->file_exists(
@@ -598,7 +661,15 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 		\OC_FileProxy::$enabled = $proxyStatus;
 
 		// share the file
-		\OCP\Share::shareItem('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_GROUP, \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_GROUP1, OCP\PERMISSION_ALL);
+		$share = new FileShare();
+		$share->setItemType('file');
+		$share->setItemSource($fileInfo['fileid']);
+		$share->setShareTypeId('group');
+		$share->setShareOwner(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER1);
+		$share->setShareWith(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_GROUP1);
+		$share->setPermissions(27);
+		$shareManager = \OCP\Share::getShareManager();
+		$share = $shareManager->share($share);
 
 		// login as admin
 		\Test_Encryption_Util::loginHelper(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER1);
@@ -625,7 +696,7 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 		\Test_Encryption_Util::loginHelper(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER1);
 
 		// unshare the file
-		\OCP\Share::unshare('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_GROUP, \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_GROUP1);
+		$this->shareManager->unshare($share);
 
 		// check if share key not exists
 		$this->assertFalse($this->view->file_exists(
@@ -885,7 +956,15 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 
 		// share the file
 		try {
-			\OCP\Share::shareItem('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_GROUP, \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_GROUP1, OCP\PERMISSION_ALL);
+			$share = new FileShare();
+			$share->setItemType('file');
+			$share->setItemSource($fileInfo['fileid']);
+			$share->setShareTypeId('group');
+			$share->setShareOwner(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER1);
+			$share->setShareWith(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_GROUP1);
+			$share->setPermissions(OCP\PERMISSION_ALL);
+			$shareManager = \OCP\Share::getShareManager();
+			$share = $shareManager->share($share);
 		} catch (Exception $e) {
 			$this->assertEquals(0, strpos($e->getMessage(), "Following users are not set up for encryption"));
 		}
@@ -917,7 +996,7 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 		\OC_FileProxy::$enabled = $proxyStatus;
 
 		// unshare the file with user1
-		\OCP\Share::unshare('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_GROUP, \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_GROUP1);
+		$shareManager->unshare($share);
 
 		// check if share key not exists
 		$this->assertFalse($this->view->file_exists(
