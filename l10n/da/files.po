@@ -3,13 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Sappe, 2013
+# claus_chr <claus_chr@webspeed.dk>, 2013
 # Ole Holm Frandsen <froksen@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-07-22 01:54-0400\n"
-"PO-Revision-Date: 2013-07-22 05:55+0000\n"
+"POT-Creation-Date: 2013-08-19 15:06-0400\n"
+"PO-Revision-Date: 2013-08-19 19:06+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Danish (http://www.transifex.com/projects/p/owncloud/language/da/)\n"
 "MIME-Version: 1.0\n"
@@ -30,11 +32,11 @@ msgstr "Kunne ikke flytte %s"
 
 #: ajax/upload.php:16 ajax/upload.php:45
 msgid "Unable to set upload directory."
-msgstr ""
+msgstr "Ude af stand til at vælge upload mappe."
 
 #: ajax/upload.php:22
 msgid "Invalid Token"
-msgstr ""
+msgstr "Ugyldig Token "
 
 #: ajax/upload.php:59
 msgid "No file was uploaded. Unknown error"
@@ -95,12 +97,12 @@ msgstr "ikke nok tilgængelig ledig plads "
 msgid "Upload cancelled."
 msgstr "Upload afbrudt."
 
-#: js/file-upload.js:167 js/files.js:266
+#: js/file-upload.js:167 js/files.js:280
 msgid ""
 "File upload is in progress. Leaving the page now will cancel the upload."
 msgstr "Fil upload kører. Hvis du forlader siden nu, vil uploadet blive annuleret."
 
-#: js/file-upload.js:233 js/files.js:339
+#: js/file-upload.js:233 js/files.js:353
 msgid "URL cannot be empty."
 msgstr "URLen kan ikke være tom."
 
@@ -108,8 +110,8 @@ msgstr "URLen kan ikke være tom."
 msgid "Invalid folder name. Usage of 'Shared' is reserved by ownCloud"
 msgstr "Ugyldigt mappenavn. Brug af 'Shared' er forbeholdt af ownCloud"
 
-#: js/file-upload.js:267 js/file-upload.js:283 js/files.js:373 js/files.js:389
-#: js/files.js:693 js/files.js:731
+#: js/file-upload.js:269 js/file-upload.js:285 js/files.js:389 js/files.js:405
+#: js/files.js:709 js/files.js:747
 msgid "Error"
 msgstr "Fejl"
 
@@ -121,11 +123,7 @@ msgstr "Del"
 msgid "Delete permanently"
 msgstr "Slet permanent"
 
-#: js/fileactions.js:128 templates/index.php:93 templates/index.php:94
-msgid "Delete"
-msgstr "Slet"
-
-#: js/fileactions.js:194
+#: js/fileactions.js:192
 msgid "Rename"
 msgstr "Omdøb"
 
@@ -157,15 +155,13 @@ msgstr "erstattede {new_name} med {old_name}"
 msgid "undo"
 msgstr "fortryd"
 
-#: js/filelist.js:375
-msgid "perform delete operation"
-msgstr "udfør slet operation"
+#: js/filelist.js:453
+msgid "Uploading %n file"
+msgid_plural "Uploading %n files"
+msgstr[0] "Uploader %n fil"
+msgstr[1] "Uploader %n filer"
 
-#: js/filelist.js:457
-msgid "1 file uploading"
-msgstr "1 fil uploades"
-
-#: js/filelist.js:460 js/filelist.js:518
+#: js/filelist.js:518
 msgid "files uploading"
 msgstr "uploader filer"
 
@@ -191,48 +187,50 @@ msgstr "Din opbevaringsplads er fyldt op, filer kan ikke opdateres eller synkron
 msgid "Your storage is almost full ({usedSpacePercent}%)"
 msgstr "Din opbevaringsplads er næsten fyldt op ({usedSpacePercent}%)"
 
-#: js/files.js:231
+#: js/files.js:94
+msgid ""
+"Encryption was disabled but your files are still encrypted. Please go to "
+"your personal settings to decrypt your files."
+msgstr ""
+
+#: js/files.js:245
 msgid ""
 "Your download is being prepared. This might take some time if the files are "
 "big."
 msgstr "Dit download forberedes. Dette kan tage lidt tid ved større filer."
 
-#: js/files.js:344
+#: js/files.js:358
 msgid "Invalid folder name. Usage of 'Shared' is reserved by Owncloud"
 msgstr "Ugyldigt mappenavn. Brug af \"Shared\" er forbeholdt Owncloud"
 
-#: js/files.js:744 templates/index.php:69
+#: js/files.js:760 templates/index.php:67
 msgid "Name"
 msgstr "Navn"
 
-#: js/files.js:745 templates/index.php:80
+#: js/files.js:761 templates/index.php:78
 msgid "Size"
 msgstr "Størrelse"
 
-#: js/files.js:746 templates/index.php:82
+#: js/files.js:762 templates/index.php:80
 msgid "Modified"
 msgstr "Ændret"
 
-#: js/files.js:763
-msgid "1 folder"
-msgstr "1 mappe"
+#: js/files.js:778
+msgid "%n folder"
+msgid_plural "%n folders"
+msgstr[0] "%n mappe"
+msgstr[1] "%n mapper"
 
-#: js/files.js:765
-msgid "{count} folders"
-msgstr "{count} mapper"
-
-#: js/files.js:773
-msgid "1 file"
-msgstr "1 fil"
-
-#: js/files.js:775
-msgid "{count} files"
-msgstr "{count} filer"
+#: js/files.js:784
+msgid "%n file"
+msgid_plural "%n files"
+msgstr[0] "%n fil"
+msgstr[1] "%n filer"
 
 #: lib/app.php:73
 #, php-format
 msgid "%s could not be renamed"
-msgstr ""
+msgstr "%s kunne ikke omdøbes"
 
 #: lib/helper.php:11 templates/index.php:18
 msgid "Upload"
@@ -286,55 +284,59 @@ msgstr "Mappe"
 msgid "From link"
 msgstr "Fra link"
 
-#: templates/index.php:42
+#: templates/index.php:41
 msgid "Deleted files"
 msgstr "Slettede filer"
 
-#: templates/index.php:48
+#: templates/index.php:46
 msgid "Cancel upload"
 msgstr "Fortryd upload"
 
-#: templates/index.php:54
+#: templates/index.php:52
 msgid "You don’t have write permissions here."
 msgstr "Du har ikke skriverettigheder her."
 
-#: templates/index.php:61
+#: templates/index.php:59
 msgid "Nothing in here. Upload something!"
 msgstr "Her er tomt. Upload noget!"
 
-#: templates/index.php:75
+#: templates/index.php:73
 msgid "Download"
 msgstr "Download"
 
-#: templates/index.php:87 templates/index.php:88
+#: templates/index.php:85 templates/index.php:86
 msgid "Unshare"
 msgstr "Fjern deling"
 
-#: templates/index.php:107
+#: templates/index.php:91 templates/index.php:92
+msgid "Delete"
+msgstr "Slet"
+
+#: templates/index.php:105
 msgid "Upload too large"
 msgstr "Upload er for stor"
 
-#: templates/index.php:109
+#: templates/index.php:107
 msgid ""
 "The files you are trying to upload exceed the maximum size for file uploads "
 "on this server."
 msgstr "Filerne, du prøver at uploade, er større end den maksimale størrelse for fil-upload på denne server."
 
-#: templates/index.php:114
+#: templates/index.php:112
 msgid "Files are being scanned, please wait."
 msgstr "Filerne bliver indlæst, vent venligst."
 
-#: templates/index.php:117
+#: templates/index.php:115
 msgid "Current scanning"
 msgstr "Indlæser"
 
 #: templates/part.list.php:74
 msgid "directory"
-msgstr ""
+msgstr "mappe"
 
 #: templates/part.list.php:76
 msgid "directories"
-msgstr ""
+msgstr "Mapper"
 
 #: templates/part.list.php:85
 msgid "file"

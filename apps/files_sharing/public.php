@@ -112,9 +112,9 @@ if (isset($path)) {
 			if ($files_list === NULL ) {
 				$files_list = array($files);
 			}
-			OC_Files::get($path, $files_list, $_SERVER['REQUEST_METHOD'] == 'HEAD' ? true : false);
+			OC_Files::get($path, $files_list, $_SERVER['REQUEST_METHOD'] == 'HEAD');
 		} else {
-			OC_Files::get($dir, $file, $_SERVER['REQUEST_METHOD'] == 'HEAD' ? true : false);
+			OC_Files::get($dir, $file, $_SERVER['REQUEST_METHOD'] == 'HEAD');
 		}
 		exit();
 	} else {
@@ -133,7 +133,7 @@ if (isset($path)) {
 		$tmpl->assign('mimetype', \OC\Files\Filesystem::getMimeType($path));
 		$tmpl->assign('fileTarget', basename($linkItem['file_target']));
 		$tmpl->assign('dirToken', $linkItem['token']);
-		$allowPublicUploadEnabled = (($linkItem['permissions'] & OCP\PERMISSION_CREATE) ? true : false );
+		$allowPublicUploadEnabled = (bool) ($linkItem['permissions'] & OCP\PERMISSION_CREATE);
 		if (\OCP\App::isEnabled('files_encryption')) {
 			$allowPublicUploadEnabled = false;
 		}
@@ -234,6 +234,12 @@ if (isset($path)) {
 } else {
 	OCP\Util::writeLog('share', 'could not resolve linkItem', \OCP\Util::DEBUG);
 }
+
+$errorTemplate = new OCP\Template('files_sharing', 'part.404', '');
+$errorContent = $errorTemplate->fetchPage();
+
 header('HTTP/1.0 404 Not Found');
+OCP\Util::addStyle('files_sharing', '404');
 $tmpl = new OCP\Template('', '404', 'guest');
+$tmpl->assign('content', $errorContent);
 $tmpl->printPage();

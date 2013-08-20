@@ -414,15 +414,7 @@ class OC_App{
 
 			// if the user is an admin
 			if(OC_User::isAdminUser(OC_User::getUser())) {
-				// admin apps menu
-				$settings[] = array(
-					"id" => "core_apps",
-					"order" => 3,
-					"href" => OC_Helper::linkToRoute( "settings_apps" ).'?installed',
-					"name" => $l->t("Apps"),
-					"icon" => OC_Helper::imagePath( "settings", "apps.svg" )
-				);
-
+				// admin settings
 				$settings[]=array(
 					"id" => "admin",
 					"order" => 1000,
@@ -694,7 +686,7 @@ class OC_App{
 			}
 			$dh = opendir( $apps_dir['path'] );
 
-			while( $file = readdir( $dh ) ) {
+			while (($file = readdir($dh)) !== false) {
 
 				if ($file[0] != '.' and is_file($apps_dir['path'].'/'.$file.'/appinfo/app.php')) {
 
@@ -859,9 +851,9 @@ class OC_App{
 					OC_Hook::emit('update', 'success', 'Updated '.$info['name'].' app');
 				}
 				catch (Exception $e) {
-					echo 'Failed to upgrade "'.$app.'". Exception="'.$e->getMessage().'"';
 					OC_Hook::emit('update', 'failure', 'Failed to update '.$info['name'].' app: '.$e->getMessage());
-					die;
+					$l = OC_L10N::get('lib');
+					throw new RuntimeException($l->t('Failed to upgrade "%s".', array($app)), 0, $e);
 				}
 				OC_Appconfig::setValue($app, 'installed_version', OC_App::getAppVersion($app));
 			}

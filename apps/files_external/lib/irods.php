@@ -11,8 +11,10 @@ namespace OC\Files\Storage;
 set_include_path(get_include_path() . PATH_SEPARATOR .
 	\OC_App::getAppPath('files_external') . '/3rdparty/irodsphp/prods/src');
 
+ob_start();
 require_once 'ProdsConfig.inc.php';
 require_once 'ProdsStreamer.class.php';
+ob_end_clean();
 
 class iRODS extends \OC\Files\Storage\StreamWrapper{
 	private $password;
@@ -135,7 +137,7 @@ class iRODS extends \OC\Files\Storage\StreamWrapper{
 	private function collectionMTime($path) {
 		$dh = $this->opendir($path);
 		$lastCTime = $this->filemtime($path);
-		while ($file = readdir($dh)) {
+		while (($file = readdir($dh)) !== false) {
 			if ($file != '.' and $file != '..') {
 				$time = $this->filemtime($file);
 				if ($time > $lastCTime) {

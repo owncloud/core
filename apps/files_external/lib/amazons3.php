@@ -33,10 +33,25 @@ use Aws\S3\Exception\S3Exception;
 
 class AmazonS3 extends \OC\Files\Storage\Common {
 
+	/**
+	 * @var \Aws\S3\S3Client
+	 */
 	private $connection;
+	/**
+	 * @var string
+	 */
 	private $bucket;
+	/**
+	 * @var array
+	 */
 	private static $tmpFiles = array();
+	/**
+	 * @var bool
+	 */
 	private $test = false;
+	/**
+	 * @var int
+	 */
 	private $timeout = 15;
 
 	private function normalizePath($path) {
@@ -64,7 +79,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 
 		$this->bucket = $params['bucket'];
 		$scheme = ($params['use_ssl'] === 'false') ? 'http' : 'https';
-		$this->test = ( isset($params['test'])) ? true : false;
+		$this->test = isset($params['test']);
 		$this->timeout = ( ! isset($params['timeout'])) ? 15 : $params['timeout'];
 		$params['region'] = ( ! isset($params['region'])) ? 'eu-west-1' : $params['region'];
 		$params['hostname'] = ( !isset($params['hostname'])) ? 's3.amazonaws.com' : $params['hostname'];
@@ -96,6 +111,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 				));
 			$this->testTimeout();
 			} catch (S3Exception $e) {
+				\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
 				throw new \Exception("Creation of bucket failed.");
 			}
 		}
@@ -129,6 +145,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			));
 			$this->testTimeout();
 		} catch (S3Exception $e) {
+			\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
 			return false;
 		}
 
@@ -150,6 +167,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 				$path
 			);
 		} catch (S3Exception $e) {
+			\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
 			return false;
 		}
 
@@ -165,7 +183,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 		}
 
 		$dh = $this->opendir($path);
-		while ($file = readdir($dh)) {
+		while (($file = readdir($dh)) !== false) {
 			if ($file === '.' || $file === '..') {
 				continue;
 			}
@@ -184,6 +202,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			));
 			$this->testTimeout();
 		} catch (S3Exception $e) {
+			\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
 			return false;
 		}
 
@@ -221,6 +240,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 
 			return opendir('fakedir://amazons3' . $path);
 		} catch (S3Exception $e) {
+			\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
 			return false;
 		}
 	}
@@ -249,6 +269,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 
 			return $stat;
 		} catch(S3Exception $e) {
+			\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
 			return false;
 		}
 	}
@@ -269,6 +290,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 				return 'dir';
 			}
 		} catch (S3Exception $e) {
+			\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
 			return false;
 		}
 
@@ -293,6 +315,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			));
 			$this->testTimeout();
 		} catch (S3Exception $e) {
+			\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
 			return false;
 		}
 
@@ -315,6 +338,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 						'SaveAs' => $tmpFile
 					));
 				} catch (S3Exception $e) {
+					\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
 					return false;
 				}
 
@@ -361,6 +385,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 					'Key' => $path
 				));
 			} catch (S3Exception $e) {
+				\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
 				return false;
 			}
 
@@ -398,6 +423,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 				$this->testTimeout();
 			}
 		} catch (S3Exception $e) {
+			\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
 			return false;
 		}
 
@@ -417,6 +443,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 				));
 				$this->testTimeout();
 			} catch (S3Exception $e) {
+				\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
 				return false;
 			}
 		} else {
@@ -432,11 +459,12 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 				));
 				$this->testTimeout();
 			} catch (S3Exception $e) {
+				\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
 				return false;
 			}
 
 			$dh = $this->opendir($path1);
-			while ($file = readdir($dh)) {
+			while (($file = readdir($dh)) !== false) {
 				if ($file === '.' || $file === '..') {
 					continue;
 				}
@@ -514,6 +542,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 
 			unlink($tmpFile);
 		} catch (S3Exception $e) {
+			\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
 			return false;
 		}
 	}

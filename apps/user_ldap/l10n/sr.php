@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Deletion failed" => "Брисање није успело",
 "Error" => "Грешка",
 "Host" => "Домаћин",
@@ -9,28 +10,19 @@
 "Password" => "Лозинка",
 "For anonymous access, leave DN and Password empty." => "За анониман приступ, оставите поља DN и лозинка празним.",
 "User Login Filter" => "Филтер за пријаву корисника",
-"Defines the filter to apply, when login is attempted. %%uid replaces the username in the login action." => "Одређује филтер за примењивање при покушају пријаве. %%uid замењује корисничко име.",
-"use %%uid placeholder, e.g. \"uid=%%uid\"" => "користите чувар места %%uid, нпр. „uid=%%uid\"",
 "User List Filter" => "Филтер за списак корисника",
-"Defines the filter to apply, when retrieving users." => "Одређује филтер за примењивање при прибављању корисника.",
-"without any placeholder, e.g. \"objectClass=person\"." => "без икаквог чувара места, нпр. „objectClass=person“.",
 "Group Filter" => "Филтер групе",
-"Defines the filter to apply, when retrieving groups." => "Одређује филтер за примењивање при прибављању група.",
-"without any placeholder, e.g. \"objectClass=posixGroup\"." => "без икаквог чувара места, нпр. „objectClass=posixGroup“.",
 "Port" => "Порт",
 "Use TLS" => "Користи TLS",
 "Case insensitve LDAP server (Windows)" => "LDAP сервер осетљив на велика и мала слова (Windows)",
 "Turn off SSL certificate validation." => "Искључите потврду SSL сертификата.",
-"If connection only works with this option, import the LDAP server's SSL certificate in your ownCloud server." => "Увезите SSL сертификат LDAP сервера у свој ownCloud ако веза ради само са овом опцијом.",
-"Not recommended, use for testing only." => "Не препоручује се; користите само за тестирање.",
 "in seconds. A change empties the cache." => "у секундама. Промена испражњава кеш меморију.",
 "User Display Name Field" => "Име приказа корисника",
-"The LDAP attribute to use to generate the user`s ownCloud name." => "LDAP атрибут за стварање имена ownCloud-а корисника.",
 "Base User Tree" => "Основно стабло корисника",
 "Group Display Name Field" => "Име приказа групе",
-"The LDAP attribute to use to generate the groups`s ownCloud name." => "LDAP атрибут за стварање имена ownCloud-а групе.",
 "Base Group Tree" => "Основна стабло група",
 "Group-Member association" => "Придруживање чланова у групу",
 "in bytes" => "у бајтовима",
 "Help" => "Помоћ"
 );
+$PLURAL_FORMS = "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);";
