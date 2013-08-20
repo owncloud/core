@@ -78,6 +78,7 @@ class Share {
 				self::$shareManager = new ShareManager();
 				\OC_Util::addScript('core', 'share');
 				\OC_Util::addStyle('core', 'share');
+				self::setupHooks();
 			} else {
 				self::$shareManager = null;
 			}
@@ -110,6 +111,78 @@ class Share {
 	// 		$updater->updateAll();
 	// 	}
 	// }
+
+	/**
+	 * Emit old hooks for backwards compatibility
+	 */
+	public static function setupHooks() {
+		$shareManager = self::getShareManager();
+		if ($shareManager) {
+			self::$shareManager->listen('\OC\Share', 'preShare', function($share) {
+				\OC_Hook::emit('OCP\Share', 'pre_shared', self::getHookArray($share));
+			});
+			self::$shareManager->listen('\OC\Share', 'postShare', function($share) {
+				\OC_Hook::emit('OCP\Share', 'post_shared', self::getHookArray($share));
+			});
+			self::$shareManager->listen('\OC\Share', 'preUnshare', function($share) {
+				$params = self::getHookArray($share);
+				$params['itemParent'] = $params['parent'];
+				\OC_Hook::emit('OCP\Share', 'pre_unshare', $params);
+			});
+			self::$shareManager->listen('\OC\Share', 'postUnshare', function($share) {
+				$params = self::getHookArray($share);
+				$params['itemParent'] = $params['parent'];
+				\OC_Hook::emit('OCP\Share', 'post_unshare', $params);
+			});
+			self::$shareManager->listen('\OC\Share', 'postUpdate', function($share) {
+				$properties = $share->getUpdatedProperties();
+				if (isset($properties['permissions'])) {
+					$itemType = $share->getItemType();
+					if ($itemType === 'file' || $itemType === 'folder') {
+						$params = self::getHookArray($share);
+						$params['path'] = $share->getPath();
+						\OC_Hook::emit('OCP\Share', 'post_update_permissions', $params);
+					}
+				}
+			});
+		}
+	}
+
+	/**
+	 * Get the share properties in an array as expected for the old hooks
+	 * @param \OC\Share\Share $share
+	 * @return array
+	 */
+	public static function getHookArray($share) {
+		$itemTarget = $share->getItemTarget();
+		if ($share->getShareTypeId() === 'group') {
+			$itemTarget = reset($itemTarget);
+		}
+		$shareType = null;
+		$shareTypeId = $share->getShareTypeId();
+		if ($shareTypeId === 'user') {
+			$shareType = self::SHARE_TYPE_USER;
+		} else if ($shareTypeId === 'group') {
+			$shareType = self::SHARE_TYPE_GROUP;
+		} else if ($shareTypeId === 'link') {
+			$shareType = self::SHARE_TYPE_LINK;
+		}
+		$parentIds = $share->getParentIds();
+		return array(
+			'itemType' => $share->getItemType(),
+			'itemSource' => $share->getItemSource(),
+			'itemTarget' => $itemTarget,
+			'parent' => reset($parentIds),
+			'shareType' => $shareType,
+			'shareWith' => $share->getShareWith(),
+			'uidOwner' => $share->getShareOwner(),
+			'permissions' => $share->getPermissions(),
+			'fileSource' => $share->getItemSource(),
+			'fileTarget' => $itemTarget,
+			'id' => $share->getId(),
+			'token' => $share->getToken(),
+		);
+	}
 
 	/**
 	* @deprecated As of version 2.0.0, replaced by ShareManager
