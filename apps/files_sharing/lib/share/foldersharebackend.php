@@ -78,11 +78,11 @@ class FolderShareBackend extends FileShareBackend implements ICollectionShareBac
 			'isShareWithUser' => true,
 		);
 		// Loop through parent folders and check if they are shared
-		$fileId = $share->getItemSource();
+		$fileId = $this->getParentFolderId($share->getItemSource());
 		while ($fileId !== -1) {
-			$fileId = $this->getParentFolderId($fileId);
 			$filter['itemSource'] = $fileId;
 			$parents = array_merge($parents, $this->getShares($filter));
+			$fileId = $this->getParentFolderId($fileId);
 		}
 		return $parents;
 	}

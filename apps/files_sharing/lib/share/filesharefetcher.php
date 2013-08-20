@@ -240,6 +240,7 @@ class FileShareFetcher {
 				'shareWith' => $this->uid,
 				'isShareWithUser' => true,
 			);
+			$fileId = $folderShareBackend->getParentFolderId($fileId);
 			while ($fileId !== -1) {
 				$filter['itemSource'] = $fileId;
 				$folderShares = $this->shareManager->getShares($this->folderItemType, $filter);
