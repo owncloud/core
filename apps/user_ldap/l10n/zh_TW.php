@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Failed to clear the mappings." => "清除映射失敗",
 "Failed to delete the server configuration" => "刪除伺服器設定時失敗",
 "The configuration is valid and the connection could be established!" => "設定有效且連線可建立",
@@ -15,7 +16,6 @@
 "Connection test failed" => "連線測試失敗",
 "Do you really want to delete the current Server Configuration?" => "您真的確定要刪除現在的伺服器設定嗎?",
 "Confirm Deletion" => "確認已刪除",
-"<b>Warning:</b> Apps user_ldap and user_webdavauth are incompatible. You may experience unexpected behaviour. Please ask your system administrator to disable one of them." => "<b>警告:</b> 應用程式user_ldap和user_webdavauth互不相容。可能會造成無法預期的結果。請要求您的系統管理員將兩者其中之一停用。",
 "<b>Warning:</b> The PHP LDAP module is not installed, the backend will not work. Please ask your system administrator to install it." => "<b>警告:</b>沒有安裝 PHP LDAP 模組，後端系統將無法運作。請要求您的系統管理員安裝模組。",
 "Server configuration" => "伺服器設定",
 "Add Server Configuration" => "新增伺服器設定",
@@ -27,14 +27,8 @@
 "Password" => "密碼",
 "For anonymous access, leave DN and Password empty." => "匿名連接時請將DN與密碼欄位留白",
 "User Login Filter" => "使用者登入過濾器",
-"Defines the filter to apply, when login is attempted. %%uid replaces the username in the login action." => "試圖登入時會定義要套用的篩選器。登入過程中%%uid會取代使用者名稱。",
-"use %%uid placeholder, e.g. \"uid=%%uid\"" => "請使用 %%uid placeholder，例如:\"uid=%%uid\"",
 "User List Filter" => "使用者名單篩選器",
-"Defines the filter to apply, when retrieving users." => "檢索使用者時定義要套用的篩選器",
-"without any placeholder, e.g. \"objectClass=person\"." => "請勿使用任何placeholder，例如:\"objectClass=person\"。",
 "Group Filter" => "群組篩選器",
-"Defines the filter to apply, when retrieving groups." => "檢索群組時，定義要套用的篩選器",
-"without any placeholder, e.g. \"objectClass=posixGroup\"." => "請勿使用任何placeholder，例如:\"objectClass=posixGroup\"。",
 "Connection Settings" => "連線設定",
 "Configuration Active" => "設定為主動模式",
 "When unchecked, this configuration will be skipped." => "沒有被勾選時，此設定會被略過。",
@@ -43,17 +37,13 @@
 "Give an optional backup host. It must be a replica of the main LDAP/AD server." => "請給定一個可選的備用主機。必須是LDAP/AD中央伺服器的複本。",
 "Backup (Replica) Port" => "備用(複本)連接阜",
 "Disable Main Server" => "停用主伺服器",
-"When switched on, ownCloud will only connect to the replica server." => "當開關打開時，ownCloud將只會連接複本伺服器。",
 "Use TLS" => "使用TLS",
 "Case insensitve LDAP server (Windows)" => "不區分大小寫的LDAP伺服器(Windows)",
 "Turn off SSL certificate validation." => "關閉 SSL 憑證驗證",
-"If connection only works with this option, import the LDAP server's SSL certificate in your ownCloud server." => "若連線只有在此選項開啟時運作，請匯入LDAP伺服器的SSL認證到您的ownCloud伺服器。",
-"Not recommended, use for testing only." => "不推薦使用，僅供測試用途。",
 "Cache Time-To-Live" => "快取的存活時間",
 "in seconds. A change empties the cache." => "以秒為單位。更變後會清空快取。",
 "Directory Settings" => "目錄選項",
 "User Display Name Field" => "使用者名稱欄位",
-"The LDAP attribute to use to generate the user`s ownCloud name." => "用於產生ownCloud名稱",
 "Base User Tree" => "Base使用者數",
 "One User Base DN per line" => "一行一個使用者Base DN",
 "User Search Attributes" => "使用者搜索屬性",
@@ -74,3 +64,4 @@
 "Test Configuration" => "測試此設定",
 "Help" => "說明"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";

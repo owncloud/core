@@ -120,13 +120,8 @@ class OC_Connector_Sabre_Directory extends OC_Connector_Sabre_Node implements Sa
 		if (!\OC\Files\Filesystem::isDeletable($this->path)) {
 			throw new \Sabre_DAV_Exception_Forbidden();
 		}
-		if ($this->path != "/Shared") {
-			foreach($this->getChildren() as $child) {
-				$child->delete();
-			}
-			\OC\Files\Filesystem::rmdir($this->path);
-			$this->clearProperties();
-		}
+		\OC\Files\Filesystem::rmdir($this->path);
+		$this->clearProperties();
 	}
 
 	/**

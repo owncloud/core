@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Efstathios Iosifidis <iefstathios@gmail.com>, 2013
 # Efstathios Iosifidis <iosifidis@opensuse.org>, 2013
 # KAT.RAT12 <spanish.katerina@gmail.com>, 2013
 # Teogramm <theodorewii121@hotmail.com>, 2013
@@ -12,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-07-17 02:20-0400\n"
-"PO-Revision-Date: 2013-07-17 05:25+0000\n"
+"POT-Creation-Date: 2013-08-19 15:06-0400\n"
+"PO-Revision-Date: 2013-08-19 19:07+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Greek (http://www.transifex.com/projects/p/owncloud/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -125,7 +126,11 @@ msgstr "Σφάλμα κατά την ενημέρωση της εφαρμογή�
 msgid "Updated"
 msgstr "Ενημερώθηκε"
 
-#: js/personal.js:118
+#: js/personal.js:150
+msgid "Decrypting files... Please wait, this can take some time."
+msgstr ""
+
+#: js/personal.js:172
 msgid "Saving..."
 msgstr "Γίνεται αποθήκευση..."
 
@@ -170,113 +175,119 @@ msgstr "Σφάλμα δημιουργίας χρήστη"
 msgid "A valid password must be provided"
 msgstr "Πρέπει να δοθεί έγκυρο συνθηματικό"
 
-#: personal.php:37 personal.php:38
+#: personal.php:40 personal.php:41
 msgid "__language_name__"
 msgstr "__όνομα_γλώσσας__"
 
-#: templates/admin.php:17
+#: templates/admin.php:15
 msgid "Security Warning"
 msgstr "Προειδοποίηση Ασφαλείας"
 
-#: templates/admin.php:20
+#: templates/admin.php:18
 msgid ""
 "Your data directory and your files are probably accessible from the "
-"internet. The .htaccess file that ownCloud provides is not working. We "
-"strongly suggest that you configure your webserver in a way that the data "
-"directory is no longer accessible or you move the data directory outside the"
-" webserver document root."
-msgstr "Ο κατάλογος data και τα αρχεία σας πιθανόν να είναι διαθέσιμα στο διαδίκτυο. Το αρχείο .htaccess που παρέχει το ownCloud δεν δουλεύει. Σας προτείνουμε ανεπιφύλακτα να ρυθμίσετε το διακομιστή σας με τέτοιο τρόπο ώστε ο κατάλογος data να μην είναι πλέον προσβάσιμος ή να μετακινήσετε τον κατάλογο data έξω από τον κατάλογο του διακομιστή."
+"internet. The .htaccess file is not working. We strongly suggest that you "
+"configure your webserver in a way that the data directory is no longer "
+"accessible or you move the data directory outside the webserver document "
+"root."
+msgstr ""
 
-#: templates/admin.php:31
+#: templates/admin.php:29
 msgid "Setup Warning"
 msgstr "Ρύθμιση Προειδοποίησης"
 
-#: templates/admin.php:34
+#: templates/admin.php:32
 msgid ""
 "Your web server is not yet properly setup to allow files synchronization "
 "because the WebDAV interface seems to be broken."
 msgstr "Ο διακομιστής σας δεν έχει ρυθμιστεί κατάλληλα ώστε να επιτρέπει τον συγχρονισμό αρχείων γιατί η διεπαφή WebDAV πιθανόν να είναι κατεστραμμένη."
 
-#: templates/admin.php:35
+#: templates/admin.php:33
 #, php-format
-msgid "Please double check the <a href='%s'>installation guides</a>."
-msgstr "Ελέγξτε ξανά τις <a href='%s'>οδηγίες εγκατάστασης</a>."
+msgid "Please double check the <a href=\"%s\">installation guides</a>."
+msgstr ""
 
-#: templates/admin.php:46
+#: templates/admin.php:44
 msgid "Module 'fileinfo' missing"
 msgstr "Η ενοτητα 'fileinfo' λειπει"
 
-#: templates/admin.php:49
+#: templates/admin.php:47
 msgid ""
 "The PHP module 'fileinfo' is missing. We strongly recommend to enable this "
 "module to get best results with mime-type detection."
 msgstr "Η PHP ενοτητα 'fileinfo' λειπει. Σας συνιστούμε να ενεργοποιήσετε αυτή την ενότητα για να έχετε καλύτερα αποτελέσματα με τον εντοπισμό τύπου MIME. "
 
-#: templates/admin.php:60
+#: templates/admin.php:58
 msgid "Locale not working"
 msgstr "Η μετάφραση δεν δουλεύει"
 
-#: templates/admin.php:65
+#: templates/admin.php:63
 #, php-format
 msgid ""
-"This ownCloud server can't set system locale to %s. This means that there "
-"might be problems with certain characters in file names. We strongly suggest"
-" to install the required packages on your system to support %s."
-msgstr "Αυτός ο ownCloud διακομιστης δεν μπορείτε να εφαρμοσει το σύνολο τοπικής προσαρμογής συστημάτων στο %s. Αυτό σημαίνει ότι μπορεί να υπάρξουν προβλήματα με ορισμένους χαρακτήρες σε ονόματα αρχείων. Σας συνιστούμε να εγκαταστήσετε τις απαραίτητες συσκευασίες στο σύστημά σας για να υποστηρίχθει το %s. "
+"System locale can't be set to %s. This means that there might be problems "
+"with certain characters in file names. We strongly suggest to install the "
+"required packages on your system to support %s."
+msgstr ""
 
-#: templates/admin.php:77
+#: templates/admin.php:75
 msgid "Internet connection not working"
 msgstr "Η σύνδεση στο διαδίκτυο δεν δουλεύει"
 
-#: templates/admin.php:80
+#: templates/admin.php:78
 msgid ""
-"This ownCloud server has no working internet connection. This means that "
-"some of the features like mounting of external storage, notifications about "
-"updates or installation of 3rd party apps don´t work. Accessing files from "
-"remote and sending of notification emails might also not work. We suggest to"
-" enable internet connection for this server if you want to have all features"
-" of ownCloud."
-msgstr "Αυτός ο διακομιστής ownCloud δεν έχει σύνδεση στο Διαδίκτυο. Αυτό σημαίνει ότι ορισμένα από τα χαρακτηριστικά γνωρίσματα όπως η τοποθέτηση εξωτερικής αποθήκευσης, οι κοινοποιήσεις σχετικά με ανανεωσεις, ή εγκατάσταση 3ων εφαρμογές δεν λειτουργούν.  Η πρόσβαση σε αρχεία και η αποστολή μηνυμάτων ηλεκτρονικού ταχυδρομείου μπορεί επίσης να μην λειτουργεί. Σας προτείνουμε να σύνδεθειτε στο διαδικτυο αυτό τον διακομιστή, εάν θέλετε να έχετε όλα τα χαρακτηριστικά του ownCloud."
+"This server has no working internet connection. This means that some of the "
+"features like mounting of external storage, notifications about updates or "
+"installation of 3rd party apps don´t work. Accessing files from remote and "
+"sending of notification emails might also not work. We suggest to enable "
+"internet connection for this server if you want to have all features."
+msgstr ""
 
-#: templates/admin.php:94
+#: templates/admin.php:92
 msgid "Cron"
 msgstr "Cron"
 
-#: templates/admin.php:103
+#: templates/admin.php:99
 msgid "Execute one task with each page loaded"
 msgstr "Εκτέλεση μιας διεργασίας με κάθε σελίδα που φορτώνεται"
 
-#: templates/admin.php:113
+#: templates/admin.php:107
 msgid ""
-"cron.php is registered at a webcron service. Call the cron.php page in the "
-"owncloud root once a minute over http."
-msgstr "Το cron.php είναι καταχωρημένο στην υπηρεσία webcron. Να καλείται μια φορά το λεπτό η σελίδα cron.php από τον root του owncloud μέσω http"
+"cron.php is registered at a webcron service to call cron.php once a minute "
+"over http."
+msgstr ""
 
-#: templates/admin.php:123
-msgid ""
-"Use systems cron service. Call the cron.php file in the owncloud folder via "
-"a system cronjob once a minute."
-msgstr "Χρήση υπηρεσίας συστήματος cron. Να καλείται μια φορά το λεπτό, το αρχείο cron.php από τον φάκελο του owncloud μέσω του cronjob του συστήματος."
+#: templates/admin.php:115
+msgid "Use systems cron service to call the cron.php file once a minute."
+msgstr ""
 
-#: templates/admin.php:130
+#: templates/admin.php:120
 msgid "Sharing"
 msgstr "Διαμοιρασμός"
 
-#: templates/admin.php:136
+#: templates/admin.php:126
 msgid "Enable Share API"
 msgstr "Ενεργοποίηση API Διαμοιρασμού"
 
-#: templates/admin.php:137
+#: templates/admin.php:127
 msgid "Allow apps to use the Share API"
 msgstr "Να επιτρέπεται στις εφαρμογές να χρησιμοποιούν το API Διαμοιρασμού"
 
-#: templates/admin.php:144
+#: templates/admin.php:134
 msgid "Allow links"
 msgstr "Να επιτρέπονται σύνδεσμοι"
 
-#: templates/admin.php:145
+#: templates/admin.php:135
 msgid "Allow users to share items to the public with links"
 msgstr "Να επιτρέπεται στους χρήστες να διαμοιράζουν δημόσια με συνδέσμους"
+
+#: templates/admin.php:143
+msgid "Allow public uploads"
+msgstr ""
+
+#: templates/admin.php:144
+msgid ""
+"Allow users to enable others to upload into their publicly shared folders"
+msgstr ""
 
 #: templates/admin.php:152
 msgid "Allow resharing"
@@ -302,38 +313,39 @@ msgstr "Ασφάλεια"
 msgid "Enforce HTTPS"
 msgstr "Επιβολή χρήσης HTTPS"
 
-#: templates/admin.php:184
-msgid ""
-"Enforces the clients to connect to ownCloud via an encrypted connection."
-msgstr "Επιβολή στους πελάτες να συνδεθούν στο ownCloud μέσω μιας κρυπτογραφημένης σύνδεσης."
+#: templates/admin.php:185
+#, php-format
+msgid "Forces the clients to connect to %s via an encrypted connection."
+msgstr ""
 
-#: templates/admin.php:187
+#: templates/admin.php:191
+#, php-format
 msgid ""
-"Please connect to this ownCloud instance via HTTPS to enable or disable the "
-"SSL enforcement."
-msgstr "Παρακαλώ συνδεθείτε με το ownCloud μέσω HTTPS για να ενεργοποιήσετε ή να απενεργοποιήσετε την επιβολή SSL. "
+"Please connect to your %s via HTTPS to enable or disable the SSL "
+"enforcement."
+msgstr ""
 
-#: templates/admin.php:197
+#: templates/admin.php:203
 msgid "Log"
 msgstr "Καταγραφές"
 
-#: templates/admin.php:198
+#: templates/admin.php:204
 msgid "Log level"
 msgstr "Επίπεδο καταγραφής"
 
-#: templates/admin.php:229
+#: templates/admin.php:235
 msgid "More"
 msgstr "Περισσότερα"
 
-#: templates/admin.php:230
+#: templates/admin.php:236
 msgid "Less"
 msgstr "Λιγότερα"
 
-#: templates/admin.php:236 templates/personal.php:116
+#: templates/admin.php:242 templates/personal.php:140
 msgid "Version"
 msgstr "Έκδοση"
 
-#: templates/admin.php:240 templates/personal.php:119
+#: templates/admin.php:246 templates/personal.php:143
 msgid ""
 "Developed by the <a href=\"http://ownCloud.org/contact\" "
 "target=\"_blank\">ownCloud community</a>, the <a "
@@ -391,76 +403,92 @@ msgstr "Bugtracker"
 msgid "Commercial Support"
 msgstr "Εμπορική Υποστήριξη"
 
-#: templates/personal.php:10
+#: templates/personal.php:8
 msgid "Get the apps to sync your files"
 msgstr "Λήψη της εφαρμογής για συγχρονισμό των αρχείων σας"
 
-#: templates/personal.php:21
+#: templates/personal.php:19
 msgid "Show First Run Wizard again"
 msgstr "Προβολή Πρώτης Εκτέλεσης Οδηγού πάλι"
 
-#: templates/personal.php:29
+#: templates/personal.php:27
 #, php-format
 msgid "You have used <strong>%s</strong> of the available <strong>%s</strong>"
 msgstr "Χρησιμοποιήσατε <strong>%s</strong> από διαθέσιμα <strong>%s</strong>"
 
-#: templates/personal.php:41 templates/users.php:23 templates/users.php:86
+#: templates/personal.php:39 templates/users.php:23 templates/users.php:86
 msgid "Password"
 msgstr "Συνθηματικό"
 
-#: templates/personal.php:42
+#: templates/personal.php:40
 msgid "Your password was changed"
 msgstr "Το συνθηματικό σας έχει αλλάξει"
 
-#: templates/personal.php:43
+#: templates/personal.php:41
 msgid "Unable to change your password"
 msgstr "Δεν ήταν δυνατή η αλλαγή του κωδικού πρόσβασης"
 
-#: templates/personal.php:44
+#: templates/personal.php:42
 msgid "Current password"
 msgstr "Τρέχων συνθηματικό"
 
-#: templates/personal.php:46
+#: templates/personal.php:44
 msgid "New password"
 msgstr "Νέο συνθηματικό"
 
-#: templates/personal.php:48
+#: templates/personal.php:46
 msgid "Change password"
 msgstr "Αλλαγή συνθηματικού"
 
-#: templates/personal.php:60 templates/users.php:85
+#: templates/personal.php:58 templates/users.php:85
 msgid "Display Name"
 msgstr "Όνομα εμφάνισης"
 
-#: templates/personal.php:75
+#: templates/personal.php:73
 msgid "Email"
 msgstr "Ηλ. ταχυδρομείο"
 
-#: templates/personal.php:77
+#: templates/personal.php:75
 msgid "Your email address"
 msgstr "Η διεύθυνση ηλεκτρονικού ταχυδρομείου σας"
 
-#: templates/personal.php:78
+#: templates/personal.php:76
 msgid "Fill in an email address to enable password recovery"
 msgstr "Συμπληρώστε μια διεύθυνση ηλεκτρονικού ταχυδρομείου για να ενεργοποιηθεί η ανάκτηση συνθηματικού"
 
-#: templates/personal.php:87 templates/personal.php:88
+#: templates/personal.php:85 templates/personal.php:86
 msgid "Language"
 msgstr "Γλώσσα"
 
-#: templates/personal.php:100
+#: templates/personal.php:98
 msgid "Help translate"
 msgstr "Βοηθήστε στη μετάφραση"
 
-#: templates/personal.php:106
+#: templates/personal.php:104
 msgid "WebDAV"
 msgstr "WebDAV"
 
-#: templates/personal.php:108
+#: templates/personal.php:106
 #, php-format
 msgid ""
 "Use this address to <a href=\"%s/server/5.0/user_manual/files/files.html\" "
 "target=\"_blank\">access your Files via WebDAV</a>"
+msgstr "Χρήση αυτής της διεύθυνσης για <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">πρόσβαση των αρχείων σας μέσω WebDAV</a>"
+
+#: templates/personal.php:117
+msgid "Encryption"
+msgstr ""
+
+#: templates/personal.php:119
+msgid "The encryption app is no longer enabled, decrypt all your file"
+msgstr ""
+
+#: templates/personal.php:125
+msgid "Log-in password"
+msgstr ""
+
+#: templates/personal.php:130
+msgid "Decrypt all Files"
 msgstr ""
 
 #: templates/users.php:21

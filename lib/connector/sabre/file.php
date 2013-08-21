@@ -63,6 +63,21 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 							'expected filesize ' . $expected . ' got ' . $actual
 						);
 					}
+		
+		// mark file as partial while uploading (ignored by the scanner)
+		$partpath = $this->path . '.part';
+
+		\OC\Files\Filesystem::file_put_contents($partpath, $data);
+
+		//detect aborted upload
+		if (isset ($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'PUT') {
+			if (isset($_SERVER['CONTENT_LENGTH'])) {
+				$expected = $_SERVER['CONTENT_LENGTH'];
+				$actual = \OC\Files\Filesystem::filesize($partpath);
+				if ($actual != $expected) {
+					\OC\Files\Filesystem::unlink($partpath);
+					throw new Sabre_DAV_Exception_BadRequest(
+						'expected filesize ' . $expected . ' got ' . $actual);
 				}
 			}
 			// rename to correct path
@@ -108,9 +123,10 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 	 */
 	public function getSize() {
 		$fileInfo = $this->getFileInfo();
-		if (isset($fileInfo['size'])) {
+		if (isset($fileInfo['size']) && $fileInfo['size'] > -1) {
 			return $fileInfo['size'];
 		}
+		return null;
 	}
 
 	/**

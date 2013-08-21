@@ -19,7 +19,7 @@ OC.Log={
 	getMore:function(count){
 		count = count || 10;
 		$.get(OC.filePath('settings','ajax','getlog.php'),{offset:OC.Log.loaded,count:count},function(result){
-			if(result.status=='success'){
+			if(result.status === 'success'){
 				OC.Log.addEntries(result.data);
 				if(!result.remain){
 					$('#moreLog').hide();
@@ -35,8 +35,9 @@ OC.Log={
 		$('#moreLog').show();
 		// remove all non-remaining items
 		$('#log tr').slice(OC.Log.loaded).remove();
-		if(OC.Log.loaded <= 3)
+		if(OC.Log.loaded <= 3) {
 			$('#lessLog').hide();
+		}
 	},
 	addEntries:function(entries){
 		for(var i=0;i<entries.length;i++){

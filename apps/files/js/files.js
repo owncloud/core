@@ -81,9 +81,23 @@ Files={
 		if (usedSpacePercent > 90) {
 			OC.Notification.show(t('files', 'Your storage is almost full ({usedSpacePercent}%)', {usedSpacePercent: usedSpacePercent}));
 		}
+	},
+
+	displayEncryptionWarning: function() {
+
+		if (!OC.Notification.isHidden()) {
+			return;
+		}
+
+		var encryptedFiles = $('#encryptedFiles').val();
+		if (encryptedFiles === '1') {
+			OC.Notification.show(t('files_encryption', 'Encryption was disabled but your files are still encrypted. Please go to your personal settings to decrypt your files.'));
+			return;
+		}
 	}
 };
 $(document).ready(function() {
+	Files.displayEncryptionWarning();
 	Files.bindKeyboardShortcuts(document, jQuery);
 	$('#fileList tr').each(function(){
 		//little hack to set unescape filenames in attribute
@@ -121,7 +135,7 @@ $(document).ready(function() {
 	});
 
 	// Show trash bin
-	$('#trash a').live('click', function() {
+	$('#trash').on('click', function() {
 		window.location=OC.filePath('files_trashbin', '', 'index.php');
 	});
 
@@ -365,7 +379,9 @@ $(document).ready(function() {
 								FileList.addFile(name,0,date,false,hidden);
 								var tr=$('tr').filterAttr('data-file',name);
 								tr.attr('data-mime',result.data.mime);
+								tr.attr('data-size',result.data.size);
 								tr.attr('data-id', result.data.id);
+								tr.find('.filesize').text(humanFileSize(result.data.size));
 								getMimeIcon(result.data.mime,function(path){
 									tr.find('td.filename').attr('style','background-image:url('+path+')');
 								});
@@ -756,26 +772,16 @@ function procesSelection(){
 		for(var i=0;i<selectedFolders.length;i++){
 			totalSize+=selectedFolders[i].size;
 		};
-		simpleSize=simpleFileSize(totalSize);
-		$('#headerSize').text(simpleSize);
-		$('#headerSize').attr('title',humanFileSize(totalSize));
+		$('#headerSize').text(humanFileSize(totalSize));
 		var selection='';
 		if(selectedFolders.length>0){
-			if(selectedFolders.length==1){
-				selection+=t('files','1 folder');
-			}else{
-				selection+=t('files','{count} folders',{count: selectedFolders.length});
-			}
+			selection += n('files', '%n folder', '%n folders', selectedFolders.length);
 			if(selectedFiles.length>0){
 				selection+=' & ';
 			}
 		}
 		if(selectedFiles.length>0){
-			if(selectedFiles.length==1){
-				selection+=t('files','1 file');
-			}else{
-				selection+=t('files','{count} files',{count: selectedFiles.length});
-			}
+			selection += n('files', '%n file', '%n files', selectedFiles.length);
 		}
 		$('#headerName>span.name').text(selection);
 		$('#modified').text('');
@@ -846,4 +852,12 @@ function getUniqueName(name){
 		return getUniqueName(name);
 	}
 	return name;
+}
+
+function checkTrashStatus() {
+	$.post(OC.filePath('files_trashbin', 'ajax', 'isEmpty.php'), function(result){
+		if (result.data.isEmpty === false) {
+			$("input[type=button][id=trash]").removeAttr("disabled");
+		}
+	});
 }

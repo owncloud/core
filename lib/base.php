@@ -91,7 +91,7 @@ class OC {
 		// ensure we can find OC_Config
 		set_include_path(
 			OC::$SERVERROOT . '/lib' . PATH_SEPARATOR .
-				get_include_path()
+			get_include_path()
 		);
 
 		OC::$SUBURI = str_replace("\\", "/", substr(realpath($_SERVER["SCRIPT_FILENAME"]), strlen(OC::$SERVERROOT)));
@@ -124,10 +124,9 @@ class OC {
 			OC::$THIRDPARTYWEBROOT = rtrim(dirname(OC::$WEBROOT), '/');
 			OC::$THIRDPARTYROOT = rtrim(dirname(OC::$SERVERROOT), '/');
 		} else {
-			echo('3rdparty directory not found! Please put the ownCloud 3rdparty'
+			throw new Exception('3rdparty directory not found! Please put the ownCloud 3rdparty'
 				.' folder in the ownCloud folder or the folder above.'
 				.' You can also configure the location in the config.php file.');
-			exit;
 		}
 		// search the apps folder
 		$config_paths = OC_Config::getValue('apps_paths', array());
@@ -150,9 +149,8 @@ class OC {
 		}
 
 		if (empty(OC::$APPSROOTS)) {
-			echo('apps directory not found! Please put the ownCloud apps folder in the ownCloud folder'
+			throw new Exception('apps directory not found! Please put the ownCloud apps folder in the ownCloud folder'
 				.' or the folder above. You can also configure the location in the config.php file.');
-			exit;
 		}
 		$paths = array();
 		foreach (OC::$APPSROOTS as $path) {
@@ -162,11 +160,11 @@ class OC {
 		// set the right include path
 		set_include_path(
 			OC::$SERVERROOT . '/lib' . PATH_SEPARATOR .
-				OC::$SERVERROOT . '/config' . PATH_SEPARATOR .
-				OC::$THIRDPARTYROOT . '/3rdparty' . PATH_SEPARATOR .
-				implode($paths, PATH_SEPARATOR) . PATH_SEPARATOR .
-				get_include_path() . PATH_SEPARATOR .
-				OC::$SERVERROOT
+			OC::$SERVERROOT . '/config' . PATH_SEPARATOR .
+			OC::$THIRDPARTYROOT . '/3rdparty' . PATH_SEPARATOR .
+			implode($paths, PATH_SEPARATOR) . PATH_SEPARATOR .
+			get_include_path() . PATH_SEPARATOR .
+			OC::$SERVERROOT
 		);
 	}
 
@@ -174,14 +172,11 @@ class OC {
 		if (file_exists(OC::$SERVERROOT . "/config/config.php")
 			and !is_writable(OC::$SERVERROOT . "/config/config.php")) {
 			$defaults = new OC_Defaults();
-			$tmpl = new OC_Template('', 'error', 'guest');
-			$tmpl->assign('errors', array(1 => array(
-				'error' => "Can't write into config directory 'config'",
-				'hint' => 'This can usually be fixed by '
+			OC_Template::printErrorPage(
+				"Can't write into config directory!",
+				'This can usually be fixed by '
 					.'<a href="' . $defaults->getDocBaseUrl() . '/server/5.0/admin_manual/installation/installation_source.html#set-the-directory-permissions" target="_blank">giving the webserver write access to the config directory</a>.'
-			)));
-			$tmpl->printPage();
-			exit();
+			);
 		}
 	}
 
@@ -223,10 +218,7 @@ class OC {
 			header('Retry-After: 120');
 
 			// render error page
-			$tmpl = new OC_Template('', 'error', 'guest');
-			$tmpl->assign('errors', array(1 => array('error' => 'ownCloud is in maintenance mode')));
-			$tmpl->printPage();
-			exit();
+			OC_Template::printErrorPage('ownCloud is in maintenance mode');
 		}
 	}
 
@@ -286,17 +278,17 @@ class OC {
 		ini_set('session.cookie_httponly', '1;');
 
 		// set the cookie path to the ownCloud directory
-		$cookie_path = OC::$WEBROOT ?: '/';
+		$cookie_path = OC::$WEBROOT ? : '/';
 		ini_set('session.cookie_path', $cookie_path);
 
 		//set the session object to a dummy session so code relying on the session existing still works
 		self::$session = new \OC\Session\Memory('');
-		
-		try{
+
+		try {
 			// set the session name to the instance id - which is unique
 			self::$session = new \OC\Session\Internal(OC_Util::getInstanceId());
 			// if session cant be started break with http 500 error
-		}catch (Exception $e){
+		} catch (Exception $e) {
 			OC_Log::write('core', 'Session could not be initialized',
 				OC_Log::ERROR);
 
@@ -305,11 +297,7 @@ class OC {
 			$error = 'Session could not be initialized. Please contact your ';
 			$error .= 'system administrator';
 
-			$tmpl = new OC_Template('', 'error', 'guest');
-			$tmpl->assign('errors', array(1 => array('error' => $error)));
-			$tmpl->printPage();
-
-			exit();
+			OC_Template::printErrorPage($error);
 		}
 
 		$sessionLifeTime = self::getSessionLifeTime();
@@ -364,12 +352,13 @@ class OC {
 	public static function init() {
 		// register autoloader
 		require_once __DIR__ . '/autoloader.php';
-		self::$loader=new \OC\Autoloader();
+		self::$loader = new \OC\Autoloader();
 		self::$loader->registerPrefix('Doctrine\\Common', 'doctrine/common/lib');
 		self::$loader->registerPrefix('Doctrine\\DBAL', 'doctrine/dbal/lib');
 		self::$loader->registerPrefix('Symfony\\Component\\Routing', 'symfony/routing');
 		self::$loader->registerPrefix('Sabre\\VObject', '3rdparty');
 		self::$loader->registerPrefix('Sabre_', '3rdparty');
+		self::$loader->registerPrefix('Patchwork', '3rdparty');
 		spl_autoload_register(array(self::$loader, 'load'));
 
 		// set some stuff
@@ -384,7 +373,7 @@ class OC {
 		ini_set('arg_separator.output', '&amp;');
 
 		// try to switch magic quotes off.
-		if (get_magic_quotes_gpc()==1) {
+		if (get_magic_quotes_gpc() == 1) {
 			ini_set('magic_quotes_runtime', 0);
 		}
 
@@ -409,7 +398,8 @@ class OC {
 
 		//set http auth headers for apache+php-cgi work around
 		if (isset($_SERVER['HTTP_AUTHORIZATION'])
-			&& preg_match('/Basic\s+(.*)$/i', $_SERVER['HTTP_AUTHORIZATION'], $matches)) {
+			&& preg_match('/Basic\s+(.*)$/i', $_SERVER['HTTP_AUTHORIZATION'], $matches)
+		) {
 			list($name, $password) = explode(':', base64_decode($matches[1]), 2);
 			$_SERVER['PHP_AUTH_USER'] = strip_tags($name);
 			$_SERVER['PHP_AUTH_PW'] = strip_tags($password);
@@ -417,7 +407,8 @@ class OC {
 
 		//set http auth headers for apache+php-cgi work around if variable gets renamed by apache
 		if (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])
-			&& preg_match('/Basic\s+(.*)$/i', $_SERVER['REDIRECT_HTTP_AUTHORIZATION'], $matches)) {
+			&& preg_match('/Basic\s+(.*)$/i', $_SERVER['REDIRECT_HTTP_AUTHORIZATION'], $matches)
+		) {
 			list($name, $password) = explode(':', base64_decode($matches[1]), 2);
 			$_SERVER['PHP_AUTH_USER'] = strip_tags($name);
 			$_SERVER['PHP_AUTH_PW'] = strip_tags($password);
@@ -433,19 +424,24 @@ class OC {
 			}
 		}
 
-		if (!defined('PHPUNIT_RUN') and !(defined('DEBUG') and DEBUG)) {
-			OC\Log\ErrorHandler::register();
-			OC\Log\ErrorHandler::setLogger(OC_Log::$object);
+		if (!defined('PHPUNIT_RUN')) {
+			if (defined('DEBUG') and DEBUG) {
+				set_exception_handler(array('OC_Template', 'printExceptionErrorPage'));
+			} else {
+				OC\Log\ErrorHandler::register();
+				OC\Log\ErrorHandler::setLogger(OC_Log::$object);
+			}
 		}
 
 		// register the stream wrappers
 		stream_wrapper_register('fakedir', 'OC\Files\Stream\Dir');
 		stream_wrapper_register('static', 'OC\Files\Stream\StaticStream');
 		stream_wrapper_register('close', 'OC\Files\Stream\Close');
+		stream_wrapper_register('quota', 'OC\Files\Stream\Quota');
 		stream_wrapper_register('oc', 'OC\Files\Stream\OC');
 
 		self::initTemplateEngine();
-		if ( !self::$CLI ) {
+		if (!self::$CLI) {
 			self::initSession();
 		} else {
 			self::$session = new \OC\Session\Memory('');
@@ -466,7 +462,7 @@ class OC {
 
 		// User and Groups
 		if (!OC_Config::getValue("installed", false)) {
-			self::$session->set('user_id','');
+			self::$session->set('user_id', '');
 		}
 
 		OC_User::useBackend(new OC_User_Database());
@@ -833,3 +829,4 @@ if (!function_exists('get_temp_dir')) {
 }
 
 OC::init();
+

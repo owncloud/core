@@ -24,6 +24,9 @@ $email=OC_Preferences::getValue(OC_User::getUser(), 'settings', 'email', '');
 $userLang=OC_Preferences::getValue( OC_User::getUser(), 'core', 'lang', OC_L10N::findLanguage() );
 $languageCodes=OC_L10N::findAvailableLanguages();
 
+//check if encryption was enabled in the past
+$enableDecryptAll = OC_Util::encryptedFiles();
+
 // array of common languages
 $commonlangcodes = array(
 	'en', 'es', 'fr', 'de', 'de_DE', 'ja_JP', 'ar', 'ru', 'nl', 'it', 'pt_BR', 'pt_PT', 'da', 'fi_FI', 'nb_NO', 'sv', 'zh_CN', 'ko'
@@ -34,7 +37,7 @@ $languages=array();
 $commonlanguages = array();
 foreach($languageCodes as $lang) {
 	$l=OC_L10N::get('settings', $lang);
-	if(substr($l->t('__language_name__'), 0, 1)!='_') {//first check if the language name is in the translation file
+	if(substr($l->t('__language_name__'), 0, 1) !== '_') {//first check if the language name is in the translation file
 		$ln=array('code'=>$lang, 'name'=> (string)$l->t('__language_name__'));
 	}elseif(isset($languageNames[$lang])) {
 		$ln=array('code'=>$lang, 'name'=>$languageNames[$lang]);
@@ -80,6 +83,7 @@ $tmpl->assign('activelanguage', $userLang);
 $tmpl->assign('passwordChangeSupported', OC_User::canUserChangePassword(OC_User::getUser()));
 $tmpl->assign('displayNameChangeSupported', OC_User::canUserChangeDisplayName(OC_User::getUser()));
 $tmpl->assign('displayName', OC_User::getDisplayName());
+$tmpl->assign('enableDecryptAll' , $enableDecryptAll);
 
 $forms=OC_App::getForms('personal');
 $tmpl->assign('forms', array());

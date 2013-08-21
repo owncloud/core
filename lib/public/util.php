@@ -78,6 +78,15 @@ class Util {
 	}
 
 	/**
+	 * @brief get l10n object
+	 * @param string $app
+	 * @return OC_L10N
+	 */
+	public static function getL10N( $application ) {
+		return \OC_L10N::get( $application );
+	}
+
+	/**
 	 * @brief add a css file
 	 * @param string $url
 	 */
@@ -113,6 +122,14 @@ class Util {
 		return(\OC_Util::formatDate( $timestamp, $dateOnly ));
 	}
 
+	/**
+	 * @brief check if some encrypted files are stored
+	 * @return bool
+	 */
+	public static function encryptedFiles() {
+		return \OC_Util::encryptedFiles();
+	}
+	
 	/**
 	 * @brief Creates an absolute url
 	 * @param string $app app
