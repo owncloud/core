@@ -210,7 +210,8 @@ class OC_App{
 	/**
 	 * @brief enables an app
 	 * @param mixed $app app
-	 * @return bool
+	 * @throws \Exception
+	 * @return void
 	 *
 	 * This function set an app as enabled in appconfig.
 	 */
@@ -228,6 +229,7 @@ class OC_App{
 				}
 			}
 		}
+		$l = OC_L10N::get('core');
 		if($app!==false) {
 			// check if the app is compatible with this version of ownCloud
 			$info=OC_App::getAppInfo($app);
@@ -237,16 +239,23 @@ class OC_App{
 					'App "'.$info['name'].'" can\'t be installed because it is'
 					.' not compatible with this version of ownCloud',
 					OC_Log::ERROR);
-				return false;
+				throw new \Exception($l->t("App can't be installed because it is not compatible with this version of ownCloud."));
 			}else{
+				if (isset($info['dependencies'])) {
+					// Check if dependencies are installed
+					self::appDependencyCheck($info['dependencies']);
+				}
 				OC_Appconfig::setValue( $app, 'enabled', 'yes' );
+				// Save dependencies to check when disabling
+				if (isset($info['dependencies'])) {
+					OC_Appconfig::setValue($app, 'depends_on', json_encode($info['dependencies']));
+				}
 				if(isset($appdata['id'])) {
 					OC_Appconfig::setValue( $app, 'ocsid', $appdata['id'] );
 				}
-				return true;
 			}
 		}else{
-			return false;
+			throw new \Exception($l->t("No app name specified"));
 		}
 	}
 
@@ -260,12 +269,16 @@ class OC_App{
 	public static function disable( $app ) {
 		// check if app is a shipped app or not. if not delete
 		\OC_Hook::emit('OC_App', 'pre_disable', array('app' => $app));
+
+		// Check if other apps depend on this app
+		self::appDependsOnCheck($app);
 		OC_Appconfig::setValue( $app, 'enabled', 'no' );
 
 		// check if app is a shipped app or not. if not delete
 		if(!OC_App::isShipped( $app )) {
 			OC_Installer::removeApp( $app );
 		}
+		return true;
 	}
 
 	/**
@@ -548,6 +561,13 @@ class OC_App{
 					 * @var $type SimpleXMLElement
 					 */
 					$data['types'][]=$type->getName();
+				}
+			} elseif ($child->getName() === 'dependencies') {
+				$data['dependencies'] = array();
+				foreach ($child->children() as $dependencies) {
+					if ($dependencies->getName() === 'dependency') {
+						$data['dependencies'][] = array( 'id' => (string)$dependencies->{'id'}, 'version' => (string)$dependencies->{'version'});
+					}
 				}
 			}elseif($child->getName()=='description') {
 				$xml=(string)$child->asXML();
@@ -966,6 +986,75 @@ class OC_App{
 		}else{
 			OC_Log::write('core', 'Can\'t get app storage, app '.$appid.' not enabled', OC_Log::ERROR);
 			return false;
+		}
+	}
+
+	/**
+	 * @brief checks if app dependencies are fullfilled
+	 * @param array $dependencies associative array of dependencies including each the dependent appid ('id') and version ('version')
+	 * @throws OC\App\MissingDependencyException
+	 * @return void
+	*/
+	public static function appDependencyCheck($dependencies) {
+		foreach ($dependencies as $dependency) {
+			$values = OC_Appconfig::getValues($dependency['id'], false);
+
+			$active = false;
+			$version = false;
+
+			if (empty($values)) {
+				throw new \OC\App\MissingDependencyException($dependency['id']);
+			}
+
+			if (version_compare($values['installed_version'], $dependency['version'], '>=')) {
+				$version = true;
+			}
+			if ($values['enabled'] === "yes") {
+				$active = true;
+			}
+
+			if (!$active) {
+				throw new \OC\App\MissingDependencyException($dependency['id']);
+			}
+			if (!$version) {
+				throw new \OC\App\OutdatedDependencyException($dependency['id']);
+			}
+		}
+	}
+
+	/**
+	 * @brief checks if no other apps depend on this app
+	 * @param string $appid id of the app to check
+	 * @throws DependingAppsException
+	 * @return void
+	*/
+	public static function appDependsOnCheck($appid) {
+		$query = OC_DB::prepare('SELECT `first`.`appid`, `second`.`configvalue` FROM '.
+					'`*PREFIX*appconfig` `first`, `*PREFIX*appconfig` `second` WHERE '.
+					'`first`.`appid` = `second`.`appid` AND `first`.`configkey` = ? AND '.
+					'`first`.`configvalue` = ? AND `second`.`configkey` = ?');
+		$result = $query->execute(array("enabled", "yes", "depends_on"));
+		if (OC_DB::isError($result)) {
+			throw new DatabaseException($result->getMessage(), $query);
+		}
+
+		$alldependencies = array();
+		while ($row = $result->fetchRow()) {
+			$dependencies = json_decode($row['configvalue']);
+			foreach ($dependencies as $dependency) {
+				$alldependencies[] = array($row['appid'], $dependency[0]);
+			}
+		}
+
+		$doesdepend = array();
+		foreach ($alldependencies as $dependency) {
+			if ($dependency[1] === $appid) {
+				$doesdepend[] = $dependency[0];
+			}
+		}
+
+		if (!empty($doesdepend)) {
+			throw new \OC\App\DependingAppsException($doesdepend);
 		}
 	}
 }
