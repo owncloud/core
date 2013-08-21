@@ -101,12 +101,7 @@ OC.Share={
 	loadItem:function(itemType, itemSource) {
 		var data = '';
 		var checkReshare = true;
-		if (typeof OC.Share.statuses[itemSource] === 'undefined') {
-			// NOTE: Check does not always work and misses some shares, fix later
-			var checkShares = true;
-		} else {
-			var checkShares = true;
-		}
+		var checkShares = true;
 		$.ajax({type: 'GET', url: OC.filePath('core', 'ajax', 'share.php'), data: { fetch: 'getItem', itemType: itemType, itemSource: itemSource, checkReshare: checkReshare, checkShares: checkShares }, async: false, success: function(result) {
 			if (result && result.status === 'success') {
 				data = result.data;
