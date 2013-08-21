@@ -48,15 +48,19 @@ class Updater {
 	 * Update all shares
 	 */
 	public function updateAll() {
-		$this->logger->notice('Started update of shares to Share API 2');
-		$sql = 'SELECT `id`, `share_type`, `share_with`, `uid_owner` AS `share_owner`, '.
-			'`item_type`, `item_source`, `file_source`, `permissions`, `stime` AS `share_time`, '.
-			'`expiration` AS `expiration_time`, `token` FROM `*PREFIX*share`';
-		$result = \OC_DB::executeAudited($sql);
-		while ($row = $result->fetchRow()) {
-			$this->updateShare($row);
+		$version = \OC_Appconfig::getValue('core', 'shareAPIVersion', '1.0.0');
+		if ($version === '1.0.0') {
+			$this->logger->notice('Started update of shares to Share API 2');
+			$sql = 'SELECT `id`, `share_type`, `share_with`, `uid_owner` AS `share_owner`, '.
+				'`item_type`, `item_source`, `file_source`, `permissions`, `stime` AS '.
+				'`share_time`, `expiration` AS `expiration_time`, `token` FROM `*PREFIX*share`';
+			$result = \OC_DB::executeAudited($sql);
+			while ($row = $result->fetchRow()) {
+				$this->updateShare($row);
+			}
+			$this->logger->notice('Finished update of shares to Share API 2');
+			\OC_Appconfig::setValue('core', 'shareAPIVersion', '2.0.0');
 		}
-		$this->logger->notice('Finished update of shares to Share API 2');
 	}
 
 	/**
