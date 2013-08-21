@@ -52,6 +52,7 @@ class FileShareBackend extends ShareBackend {
 	 * @return bool
 	 */
 	protected function isValidItem(Share $share) {
+		\OC\Files\Filesystem::init($share->getShareOwner(), '/'.$share->getShareOwner().'/files');
 		$path = \OC\Files\Filesystem::getPath($share->getItemSource());
 		if (!isset($path)) {
 			throw new InvalidItemException('The file does not exist in the filesystem');
@@ -68,6 +69,7 @@ class FileShareBackend extends ShareBackend {
 	 */
 	protected function areValidPermissions(Share $share) {
 		parent::areValidPermissions($share);
+		\OC\Files\Filesystem::init($share->getShareOwner(), '/'.$share->getShareOwner().'/files');
 		$path = \OC\Files\Filesystem::getPath($share->getItemSource());
 		$permissions = 0;
 		// TODO Move to view

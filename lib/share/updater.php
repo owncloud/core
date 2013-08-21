@@ -95,6 +95,10 @@ class Updater {
 			}
 			unset($row['file_source']);
 			settype($row['permissions'], 'int');
+			if ($row['item_type'] === 'file') {
+				// Remove Create permission from files
+				$row['permissions'] &= ~4;
+			}
 			settype($row['share_time'], 'int');
 			if (isset($row['expiration_time'])) {
 				$date = new DateTime($row['expiration_time']);
