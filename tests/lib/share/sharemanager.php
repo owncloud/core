@@ -144,8 +144,8 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 		$parent->setItemSource($item);
 		$parent->setPermissions(31);
 		$map = array(
-			array(array('shareWith' => $danimo, 'itemSource' => $item), null, null,
-				array($parent)
+			array(array('shareWith' => $danimo, 'isShareWithUser' => true, 'itemSource' => $item),
+				null, null,	array($parent)
 			),
 			array(array('id' => 1), 1, null, array($parent)),
 			array(array('shareOwner' => $danimo, 'itemSource' => $item), null, null,
@@ -189,8 +189,8 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 		$parent->setItemSource($item);
 		$parent->setPermissions(31);
 		$map = array(
-			array(array('shareWith' => $blizzz, 'itemSource' => $item), null, null,
-				array($parent)
+			array(array('shareWith' => $blizzz, 'isShareWithUser' => true, 'itemSource' => $item),
+				null, null,	array($parent)
 			),
 		);
 		$this->shareBackend->expects($this->once())
@@ -230,8 +230,8 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 		$parent->setItemSource($item);
 		$parent->setPermissions(15);
 		$map = array(
-			array(array('shareWith' => $blizzz, 'itemSource' => $item), null, null,
-				array($parent)
+			array(array('shareWith' => $blizzz, 'isShareWithUser' => true, 'itemSource' => $item),
+				null, null,	array($parent)
 			),
 		);
 		$this->shareBackend->expects($this->once())
@@ -270,8 +270,8 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 		$parent->setItemSource($item);
 		$parent->setPermissions(31);
 		$map = array(
-			array(array('shareWith' => $danimo, 'itemSource' => $item), null, null,
-				array($parent)
+			array(array('shareWith' => $danimo, 'isShareWithUser' => true, 'itemSource' => $item),
+				null, null,	array($parent)
 			),
 		);
 		$this->shareBackend->expects($this->once())
@@ -309,8 +309,8 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 		$parent->setItemSource($item);
 		$parent->setPermissions(31);
 		$map = array(
-			array(array('shareWith' => $danimo, 'itemSource' => $item), null, null,
-				array($parent)
+			array(array('shareWith' => $danimo, 'isShareWithUser' => true, 'itemSource' => $item),
+				null, null,	array($parent)
 			),
 		);
 		$this->shareBackend->expects($this->once())
@@ -362,8 +362,8 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 		$parent2->setItemSource($item);
 		$parent2->setPermissions(31);
 		$map = array(
-			array(array('shareWith' => $anybodyelse, 'itemSource' => $item), null, null,
-				array($parent1, $parent2)
+			array(array('shareWith' => $anybodyelse, 'isShareWithUser' => true,
+				'itemSource' => $item), null, null,	array($parent1, $parent2)
 			),
 			array(array('id' => 1), 1, null, array($parent1)),
 			array(array('id' => 2), 1, null, array($parent2)),
@@ -431,13 +431,14 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 		$updatedReshare = clone $reshare;
 		$updatedReshare->addParentId(3);
 		$map = array(
-			array(array('shareWith' => $mtgap, 'itemSource' => $item), null, null, array()),
+			array(array('shareWith' => $mtgap, 'isShareWithUser' => true, 'itemSource' => $item),
+				null, null, array()),
 			array(array('shareOwner' => $mtgap, 'itemSource' => $item), null, null,
 				array($share, $duplicate)
 			),
 			array(array('parentId' => 1), null, null, array($reshare)),
-			array(array('shareWith' => $anybodyelse, 'itemSource' => $item), null, null,
-				array($duplicate, $share)
+			array(array('shareWith' => $anybodyelse, 'isShareWithUser' => true,
+				'itemSource' => $item), null, null,	array($duplicate, $share)
 			),
 			array(array('id' => 2, 'shareTypeId' => 'user'), 1, null, array($reshare)),
 		);
@@ -499,7 +500,8 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 		$parent2->setItemSource($collectionItem);
 		$parent2->setPermissions(31);
 		$sharesMap = array(
-			array(array('shareWith' => $danimo, 'itemSource' => $item), null, null, array()),
+			array(array('shareWith' => $danimo, 'isShareWithUser' => true, 'itemSource' => $item),
+				null, null, array()),
 			array(array('id' => 1), 1, null, array()),
 			array(array('shareOwner' => $danimo, 'itemSource' => $item), null, null,
 				array($share)
@@ -610,25 +612,25 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 		$reshare3->resetUpdatedProperties();
 		$updatedReshare3 = clone $reshare3;
 		$collectionMap = array(
-			array(array('shareWith' => $mtgap, 'itemSource' => $collectionItem), null, null,
-				array()
+			array(array('shareWith' => $mtgap, 'isShareWithUser' => true,
+				'itemSource' => $collectionItem), null, null, array()
 			),
 			array(array('shareOwner' => $mtgap, 'itemSource' => $collectionItem), null, null,
 				array($share, $duplicate)
 			),
 			array(array('parentId' => 1), null, null, array($reshare2, $reshare3)),
-			array(array('shareWith' => $anybodyelse, 'itemSource' => $collectionItem), null, null,
-				array($duplicate, $share)
+			array(array('shareWith' => $anybodyelse, 'isShareWithUser' => true, 
+				'itemSource' => $collectionItem), null, null, array($duplicate, $share)
 			),
-			array(array('shareWith' => $dragotin, 'itemSource' => $collectionItem), null, null,
-				array($duplicate)
+			array(array('shareWith' => $dragotin, 'isShareWithUser' => true, 
+				'itemSource' => $collectionItem), null, null, array($duplicate)
 			),
 			array(array('id' => 3, 'shareTypeId' => 'link'), 1, null, array($reshare2)),
 		);
 		$sharesMap = array(
 			array(array('parentId' => 1), null, null, array($reshare1)),
-			array(array('shareWith' => $anybodyelse, 'itemSource' => $item), null, null,
-				array()
+			array(array('shareWith' => $anybodyelse, 'isShareWithUser' => true,
+				'itemSource' => $item), null, null,	array()
 			),
 			array(array('id' => 2, 'shareTypeId' => 'user'), 1, null, array($reshare1)),
 		);
@@ -1281,8 +1283,8 @@ class ShareManager extends \PHPUnit_Framework_TestCase {
 				array($parent1, $parent2)
 			),
 			array(array('parentId' => 5), null, null, array($reshare1, $reshare2)),
-			array(array('shareWith' => $DeepDiver, 'itemSource' => $item), null, null,
-				array($parent1, $parent2)
+			array(array('shareWith' => $DeepDiver, 'isShareWithUser' => true,
+				'itemSource' => $item), null, null,	array($parent1, $parent2)
 			),
 			array(array('id' => 2, 'shareTypeId' => 'link'), 1, null, array($reshare1)),
 			array(array('id' => 3, 'shareTypeId' => 'group'), 1, null, array($reshare2)),
