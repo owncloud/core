@@ -394,6 +394,7 @@ class ShareManager extends ForwardingEmitter {
 		$itemType = $share->getItemType();
 		$filter = array(
 			'shareWith' => $share->getShareOwner(),
+			'isShareWithUser' => true,
 			'itemSource' => $share->getItemSource(),
 		);
 		$parents = $this->getShares($itemType, $filter);
