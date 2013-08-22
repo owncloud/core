@@ -56,7 +56,6 @@ class Updater {
 				'`item_source`, `file_source`, `permissions`, `stime`, `expiration`, `token` '.
 				'FROM `*PREFIX*share`';
 			$result = \OC_DB::executeAudited($sql);
-			$updated = array();
 			while ($row = $result->fetchRow()) {
 				$this->updateShare($row);
 			}
