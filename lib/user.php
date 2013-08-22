@@ -269,6 +269,7 @@ class OC_User {
 	public static function loginWithApache() {
 
 		$uid = $_SERVER["PHP_AUTH_USER"];
+		$run = true;
 		OC_Hook::emit( "OC_User", "pre_login", array( "run" => &$run, "uid" => $uid ));
 
 		$enabled = self::isEnabled($uid);
