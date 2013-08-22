@@ -145,7 +145,9 @@ class Share {
 	public static function getHookArray($share) {
 		$itemTarget = $share->getItemTarget();
 		if ($share->getShareTypeId() === 'group') {
-			$itemTarget = reset($itemTarget);
+			if (is_array($itemTarget)) {
+				$itemTarget = reset($itemTarget);
+			}
 		}
 		$shareType = null;
 		$shareTypeId = $share->getShareTypeId();
@@ -156,12 +158,16 @@ class Share {
 		} else if ($shareTypeId === 'link') {
 			$shareType = self::SHARE_TYPE_LINK;
 		}
+		$parent = null;
 		$parentIds = $share->getParentIds();
+		if (is_array($parentIds)) {
+			$parent = reset($parentIds);
+		}
 		return array(
 			'itemType' => $share->getItemType(),
 			'itemSource' => $share->getItemSource(),
 			'itemTarget' => $itemTarget,
-			'parent' => reset($parentIds),
+			'parent' => $parent,
 			'shareType' => $shareType,
 			'shareWith' => $share->getShareWith(),
 			'uidOwner' => $share->getShareOwner(),
