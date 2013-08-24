@@ -25,6 +25,7 @@ use OC\Share\Share;
 use OC\Share\ShareBackend;
 use OC\Share\Exception\InvalidItemException;
 use OC\Share\Exception\InvalidPermissionsException;
+use OC\Files\Filesystem;
 
 class FileShareBackend extends ShareBackend {
 
@@ -52,8 +53,8 @@ class FileShareBackend extends ShareBackend {
 	 * @return bool
 	 */
 	protected function isValidItem(Share $share) {
-		\OC\Files\Filesystem::init($share->getShareOwner(), '/'.$share->getShareOwner().'/files');
-		$path = \OC\Files\Filesystem::getPath($share->getItemSource());
+		Filesystem::init($share->getShareOwner(), '/'.$share->getShareOwner().'/files');
+		$path = Filesystem::getPath($share->getItemSource());
 		if (!isset($path)) {
 			throw new InvalidItemException('The file does not exist in the filesystem');
 		}
@@ -69,26 +70,9 @@ class FileShareBackend extends ShareBackend {
 	 */
 	protected function areValidPermissions(Share $share) {
 		parent::areValidPermissions($share);
-		\OC\Files\Filesystem::init($share->getShareOwner(), '/'.$share->getShareOwner().'/files');
-		$path = \OC\Files\Filesystem::getPath($share->getItemSource());
-		$permissions = 0;
-		// TODO Move to view
-		if (\OC\Files\Filesystem::isCreatable($path)) {
-			$permissions |= \OCP\PERMISSION_CREATE;
-		}
-		if (\OC\Files\Filesystem::isReadable($path)) {
-			$permissions |= \OCP\PERMISSION_READ;
-		}
-		if (\OC\Files\Filesystem::isUpdatable($path)) {
-			$permissions |= \OCP\PERMISSION_UPDATE;
-		}
-		if (\OC\Files\Filesystem::isDeletable($path)) {
-			$permissions |= \OCP\PERMISSION_DELETE;
-		}
-		if (\OC\Files\Filesystem::isSharable($path)) {
-			$permissions |= \OCP\PERMISSION_SHARE;
-		}
-		if ($share->getPermissions() & ~$permissions) {
+		Filesystem::init($share->getShareOwner(), '/'.$share->getShareOwner().'/files');
+		$path = Filesystem::getPath($share->getItemSource());
+		if ($share->getPermissions() & ~Filesystem::getPermissions($path)) {
 			throw new InvalidPermissionsException('The permissions are not valid for the file');
 		}
 		return true;

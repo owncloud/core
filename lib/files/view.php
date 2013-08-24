@@ -230,6 +230,10 @@ class View {
 		return $this->basicOperation('isSharable', $path);
 	}
 
+	public function getPermissions($path) {
+		return $this->basicOperation('getPermissions', $path);
+	}
+
 	public function file_exists($path) {
 		if ($path == '/') {
 			return true;

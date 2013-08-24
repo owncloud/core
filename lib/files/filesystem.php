@@ -588,6 +588,10 @@ class Filesystem {
 		return self::$defaultInstance->isSharable($path);
 	}
 
+	static public function getPermissions($path) {
+		return self::$defaultInstance->getPermissions($path);
+	}
+
 	static public function file_exists($path) {
 		return self::$defaultInstance->file_exists($path);
 	}
