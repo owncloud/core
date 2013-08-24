@@ -7,3 +7,6 @@
 [submodule "apps2"]
 	path = apps2
 	url = https://github.com/owncloud/apps.git
+[submodule "capps/bookmarks"]
+	path = capps/bookmarks
+	url = https://github.com/owncloud/bookmarks
