@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
 /**
  * Copyright (c) 2013 Thomas Müller <thomas.mueller@tmit.eu>
  * This file is licensed under the Affero General Public License version 3 or
@@ -64,4 +65,16 @@ class Test_L10n extends PHPUnit_Framework_TestCase {
 		$l = new OC_L10N('test');
 		$this->assertSame('February 13, 2009 23:31', $l->l('datetime', 1234567890));
 	}
+
+	public function testLanguageExists() {
+		$this->assertTrue(OC_L10N::languageExists('core', 'en')); // en should always be available
+		$this->assertTrue(OC_L10N::languageExists('files', 'zh_TW')); // /apps/files/l10n/zh_TW.php should exist for this to be true
+	}
+
+	public function testCheckPreferenceLanguage() {
+		$this->assertFalse(OC_L10N::checkPreferenceLanguage(array('en', 'fr')));
+		$this->assertFalse(OC_L10N::checkPreferenceLanguage());
+		// Currently we don't test when user is logged in
+	}
 }
+?>
