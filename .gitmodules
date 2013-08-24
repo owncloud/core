@@ -1,3 +1,6 @@
 [submodule "3rdparty"]
 	path = 3rdparty
 	url = git://github.com/owncloud/3rdparty.git
+[submodule "capps/calendar"]
+	path = capps/calendar
+	url = https://github.com/owncloud/calendar
