@@ -39,23 +39,26 @@ $this->create('core_ajax_vcategories_edit', '/core/ajax/vcategories/edit.php')
 // oC JS config
 $this->create('js_config', '/core/js/config.js')
 	->actionInclude('core/js/config.php');
+
 // Routing
 $this->create('core_ajax_routes', '/core/routes.json')
 	->action('OC_Router', 'JSRoutes');
 
 OC::$CLASSPATH['OC_Core_LostPassword_Controller'] = 'core/lostpassword/controller.php';
-$this->create('core_lostpassword_index', '/lostpassword/')
-	->get()
-	->action('OC_Core_LostPassword_Controller', 'index');
-$this->create('core_lostpassword_send_email', '/lostpassword/')
-	->post()
-	->action('OC_Core_LostPassword_Controller', 'sendEmail');
+OC::$CLASSPATH['OC_Core_LostPassword_Ajax_Controller'] = 'core/lostpassword/ajaxcontroller.php';
 $this->create('core_lostpassword_reset', '/lostpassword/reset/{token}/{user}')
 	->get()
 	->action('OC_Core_LostPassword_Controller', 'reset');
-$this->create('core_lostpassword_reset_password', '/lostpassword/reset/{token}/{user}')
+
+$this->create('core_ajax_password_lost', '/core/ajax/password/lost')
 	->post()
-	->action('OC_Core_LostPassword_Controller', 'resetPassword');
+	->action('OC_Core_LostPassword_Ajax_Controller', 'lost');
+$this->create('core_ajax_password_reset', '/core/ajax/password/reset/{token}/{user}')
+	->post()
+	->action('OC_Core_LostPassword_Ajax_Controller', 'resetPassword');
+
+$this->create('js_lostpassword', 'js/lostpassword.js')
+	->actionInclude('core/js/lostpassword.js');
 
 // Not specifically routed
 $this->create('app_css', '/apps/{app}/{file}')
