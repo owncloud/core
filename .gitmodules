@@ -4,3 +4,6 @@
 [submodule "capps/calendar"]
 	path = capps/calendar
 	url = https://github.com/owncloud/calendar
+[submodule "apps2"]
+	path = apps2
+	url = https://github.com/owncloud/apps.git
