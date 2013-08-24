@@ -16,3 +16,6 @@
 [submodule "capps/contacts"]
 	path = capps/contacts
 	url = https://github.com/owncloud/contacts
+[submodule "capps/appframework"]
+	path = capps/appframework
+	url = https://github.com/owncloud/appframework
