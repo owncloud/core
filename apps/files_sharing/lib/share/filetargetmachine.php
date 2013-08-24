@@ -24,6 +24,7 @@ namespace OCA\Files\Share;
 use OC\Share\Share;
 use OC\Share\ItemTargetMachine;
 use OC\User\User;
+use OC\Files\Filesystem;
 
 class FileTargetMachine extends ItemTargetMachine {
 	
@@ -37,7 +38,8 @@ class FileTargetMachine extends ItemTargetMachine {
 	 *
 	 */
 	public function getItemTarget(Share $share, User $user = null) {
-		$path = \OC\Files\Filesystem::getPath($share->getItemSource());
+		Filesystem::init($share->getShareOwner(), '/'.$share->getShareOwner().'/files');
+		$path = Filesystem::getPath($share->getItemSource());
 		return basename($path);
 	}
 
