@@ -2,6 +2,7 @@
 
 // Firefox and Konqueror tries to download application/json for me.  --Arthur
 OCP\JSON::setContentTypeHeader('text/plain');
+OCP\JSON::callCheck();
 
 // If a directory token is sent along check if public upload is permitted.
 // If not, check the login.
@@ -12,45 +13,47 @@ if (empty($_POST['dirToken'])) {
 	// The standard case, files are uploaded through logged in users :)
 	OCP\JSON::checkLoggedIn();
 	$dir = isset($_POST['dir']) ? $_POST['dir'] : "";
-	if (!$dir || empty($dir) || $dir === false) {
-		OCP\JSON::error(array('data' => array_merge(array('message' => $l->t('Unable to set upload directory.')))));
+	if (!$dir) {
+		OCP\JSON::error(array('data' => array('message' => $l->t('Unable to set upload directory.'))));
 		die();
 	}
 } else {
-	$linkItem = OCP\Share::getShareByToken($_POST['dirToken']);
-	if ($linkItem === false) {
-		OCP\JSON::error(array('data' => array_merge(array('message' => $l->t('Invalid Token')))));
-		die();
-	}
-
-	if (!($linkItem['permissions'] & OCP\PERMISSION_CREATE)) {
-		OCP\JSON::checkLoggedIn();
-	} else {
-		// resolve reshares
-		$rootLinkItem = OCP\Share::resolveReShare($linkItem);
-
-		// Setup FS with owner
-		OC_Util::tearDownFS();
-		OC_Util::setupFS($rootLinkItem['uid_owner']);
-
-		// The token defines the target directory (security reasons)
-		$path = \OC\Files\Filesystem::getPath($linkItem['file_source']);
-		$dir = sprintf(
-			"/%s/%s",
-			$path,
-			isset($_POST['subdir']) ? $_POST['subdir'] : ''
+	$shareManager = OCP\Share::getShareManager();
+	if ($shareManager) {
+		$filter = array(
+			'shareTypeId' => 'link',
+			'token' => $_POST['dirToken'],
 		);
-
-		if (!$dir || empty($dir) || $dir === false) {
-			OCP\JSON::error(array('data' => array_merge(array('message' => $l->t('Unable to set upload directory.')))));
+		$share = $shareManager->getShares('file', $filter, 1);
+		if (empty($share)) {
+			// Try folder item type instead
+			$share = $shareManager->getShares('folder', $filter, 1);
+		}
+		if (!empty($share)) {
+			$share = reset($share);
+			if ($share->isCreatable()) {
+				OC_Util::tearDownFS();
+				OC_Util::setupFS($share->getItemOwner());
+				$path = \OC\Files\Filesystem::getPath($share->getItemSource());
+				$dir = sprintf(
+					"/%s/%s",
+					$path,
+					isset($_POST['subdir']) ? $_POST['subdir'] : ''
+				);
+				if (!$dir) {
+					OCP\JSON::error(array('data' => array('message' => $l->t('Unable to set upload directory.'))));
+					die();
+				}
+			}
+		} else {
+			OCP\JSON::error(array('data' => array('message' => $l->t('Invalid Token'))));
 			die();
 		}
+	} else {
+		OCP\JSON::error(array('data' => array('message' => $l->t('Unable to set upload directory.'))));
+		die();
 	}
 }
-
-
-OCP\JSON::callCheck();
-
 
 // get array with current storage stats (e.g. max file size)
 $storageStats = \OCA\files\lib\Helper::buildFileStorageStatistics($dir);
