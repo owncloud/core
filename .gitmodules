@@ -10,3 +10,6 @@
 [submodule "capps/bookmarks"]
 	path = capps/bookmarks
 	url = https://github.com/owncloud/bookmarks
+[submodule "capps/notes"]
+	path = capps/notes
+	url = https://github.com/owncloud/notes
