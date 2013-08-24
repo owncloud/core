@@ -13,3 +13,6 @@
 [submodule "capps/notes"]
 	path = capps/notes
 	url = https://github.com/owncloud/notes
+[submodule "capps/contacts"]
+	path = capps/contacts
+	url = https://github.com/owncloud/contacts
