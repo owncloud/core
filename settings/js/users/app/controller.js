@@ -109,7 +109,7 @@ usersmanagement.controller('userlistController',
 			$scope.allgroups = GroupService.getByGroupId().get();
 			
 			$scope.updateDisplayName = function(userid,displayname) {
-				UserService.updateName().save({ username : userid }, { displayName : displayname })
+				UserService.updateName(userid,displayname);
 			}
 			/* Deletes Users */
 			
