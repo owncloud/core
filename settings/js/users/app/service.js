@@ -112,10 +112,15 @@ usersmanagement.factory('UserService',
 
 usersmanagement.factory('QuotaService', function($resource) {
 	return {
-		setquota: function() {
-			return $resource(OC.filePath('settings','ajax', 'setQuota.php'), {}, {
-				method : 'POST'
-			});
+		setUserQuota: function(userid,userQuota) {
+			return $resource(OC.filePath('settings','ajax', 'setQuota.php')).save(
+				{ username : userid, quota : userQuota }
+			);
+		},
+		setDefaultQuota: function(defaultquota) {
+			return $resource(OC.filePath('settings', 'ajax', 'setQuota.php')).save(
+				{ quota : defaultquota }
+			);
 		}
 	}
 });
