@@ -129,9 +129,18 @@ usersmanagement.factory('UserService',
 /* Quota Service */
 
 usersmanagement.factory('QuotaService', function($resource) {
-	return $resource(OC.filePath('settings','ajax', 'setQuota.php'), {}, {
-		method : 'POST'
-	});
+	return {
+		setUserQuota: function(userid,userQuota) {
+			return $resource(OC.filePath('settings','ajax', 'setQuota.php')).save(
+				{ username : userid, quota : userQuota }
+			);
+		},
+		setDefaultQuota: function(defaultquota) {
+			return $resource(OC.filePath('settings', 'ajax', 'setQuota.php')).save(
+				{ quota : defaultquota }
+			);
+		}
+	}
 });
 
 
@@ -420,7 +429,11 @@ usersmanagement.controller('addUserController',
 usersmanagement.controller('setQuotaController',
 	['$scope', 'QuotaService',
 	function($scope, QuotaService) {
-		// Shift Default Storage here.
+			
+		// Default Quota
+		$scope.defaultQuota = function(defaultquota) {
+			QuotaService.setDefaultQuota(defaultquota);
+		}
 	}
 ]);
 
@@ -441,8 +454,13 @@ usersmanagement.controller('userlistController',
 			$scope.updateDisplayName = function(userid,displayname) {
 				UserService.updateName().save({ username : userid }, { displayName : displayname })
 			}
+			
+			/* Updates User Quota */
+			$scope.updateUserQuota = function(userid,userQuota) {
+				QuotaService.setUserQuota(userid,userQuota);
+			}
+			
 			/* Deletes Users */
-
 			$scope.deleteuser = function(user) {
 				$scope.users.splice($scope.users.indexOf(user), 1);
 				UserService.removeuser().delete({ username : user });
