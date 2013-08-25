@@ -145,7 +145,7 @@ class OC_Installer{
 		}
 
 		// check if the ocs version is the same as the version in info.xml/version
-		if(!isset($info['version']) or ($info['version']<>$data['appdata']['version'])) {
+		if(!isset($info['version']) or ($info['version'] !== $data['appdata']['version'])) {
 			OC_Helper::rmdirr($extractDir);
 			throw new \Exception($l->t("App can't be installed because the version in info.xml/version is not the same as the version reported from the app store"));
 		}
@@ -264,12 +264,12 @@ class OC_Installer{
 	public static function isUpdateAvailable( $app ) {
 		$ocsid=OC_Appconfig::getValue( $app, 'ocsid', '');
 
-		if($ocsid<>'') {
+		if($ocsid !== '') {
 
 			$ocsdata=OC_OCSClient::getApplication($ocsid);
 			$ocsversion= (string) $ocsdata['version'];
 			$currentversion=OC_App::getAppVersion($app);
-			if($ocsversion<>$currentversion) {
+			if($ocsversion !== $currentversion) {
 				return($ocsversion);
 
 			}else{
@@ -462,7 +462,7 @@ class OC_Installer{
 				$cmd = 'grep -ri '.escapeshellarg($bl).' '.$folder.'';
 				$result = exec($cmd);
 				// bad pattern found
-				if($result<>'') {
+				if($result !== '') {
 					OC_Log::write('core',
 						'App "'.$appname.'" is using a not allowed call "'.$bl.'". Installation refused.',
 						OC_Log::ERROR);

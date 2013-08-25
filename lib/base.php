@@ -114,7 +114,7 @@ class OC {
 		}
 
 		// search the 3rdparty folder
-		if (OC_Config::getValue('3rdpartyroot', '') <> '' and OC_Config::getValue('3rdpartyurl', '') <> '') {
+		if (OC_Config::getValue('3rdpartyroot', '') !== '' and OC_Config::getValue('3rdpartyurl', '') !== '') {
 			OC::$THIRDPARTYROOT = OC_Config::getValue('3rdpartyroot', '');
 			OC::$THIRDPARTYWEBROOT = OC_Config::getValue('3rdpartyurl', '');
 		} elseif (file_exists(OC::$SERVERROOT . '/3rdparty')) {
@@ -196,7 +196,7 @@ class OC {
 		if (OC_Config::getValue("forcessl", false)) {
 			header('Strict-Transport-Security: max-age=31536000');
 			ini_set("session.cookie_secure", "on");
-			if (OC_Request::serverProtocol() <> 'https' and !OC::$CLI) {
+			if (OC_Request::serverProtocol() !==  'https' and !OC::$CLI) {
 				$url = "https://" . OC_Request::serverHost() . OC_Request::requestUri();
 				header("Location: $url");
 				exit();

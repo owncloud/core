@@ -78,8 +78,8 @@ class OC_Mail {
 				$mailo->AddAddress($ad, $toname);
 			}
 
-			if($ccaddress<>'') $mailo->AddCC($ccaddress, $ccname);
-			if($bcc<>'') $mailo->AddBCC($bcc);
+			if($ccaddress !== '') $mailo->AddCC($ccaddress, $ccname);
+			if($bcc !== '') $mailo->AddBCC($bcc);
 
 			$mailo->AddReplyTo($fromaddress, $fromname);
 

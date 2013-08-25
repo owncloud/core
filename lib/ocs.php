@@ -144,7 +144,7 @@ class OC_OCS {
 			xmlwriter_write_element($writer, 'status', $status);
 			xmlwriter_write_element($writer, 'statuscode', $statuscode);
 			xmlwriter_write_element($writer, 'message', $message);
-			if($itemscount<>'') xmlwriter_write_element($writer, 'totalitems', $itemscount);
+			if($itemscount !== '') xmlwriter_write_element($writer, 'totalitems', $itemscount);
 			if(!empty($itemsperpage)) xmlwriter_write_element($writer, 'itemsperpage', $itemsperpage);
 			xmlwriter_end_element($writer);
 			if($dimension === '0') {
