@@ -82,9 +82,13 @@
 					<input
 						type="password"
 						ng-show="editpassword"
+						ng-model="user.password"
 						placeholder="●●●●●●●"
 						ng-focus="editpassword"
-						ng-blur="editpassword = !editpassword; viewpassword = !viewpassword"
+						ng-blur="
+							editpassword = !editpassword;
+							viewpassword = !viewpassword;
+							updatePassword(user.id,user.password)"
 					/>
 				</td>
 				<td class="groups">

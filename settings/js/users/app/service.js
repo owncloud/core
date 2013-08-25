@@ -79,7 +79,13 @@ usersmanagement.factory('UserService',
 		},
 		updateName: function(userid,displayname) {
 			return $resource(OC.filePath('settings', 'ajax', 'changedisplayname.php')).save(
-				{ username : userid, displayName : displayname });
+				{ username : userid, displayName : displayname }
+			);
+		},
+		updatePass: function(userid,password) {
+			return $resource(OC.filePath('settings', 'ajax', 'changepassword.php')).save(
+				{ userid : userid, password : password }
+			);
 		},
 		updateField: function(userId, fields) {
 			return $resource(Config.baseUrl + '/users/' + userId, fields, {

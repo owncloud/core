@@ -105,11 +105,15 @@ usersmanagement.controller('userlistController',
 			$scope.loading = false;
 
 			/* Takes Out all groups for the Chosen dropdown */
-			
 			$scope.allgroups = GroupService.getByGroupId().get();
-			
+			/* Updates Display name */
 			$scope.updateDisplayName = function(userid,displayname) {
 				UserService.updateName(userid,displayname);
+			}
+			
+			/* Updates Password */
+			$scope.updatePassword = function(userid,password) {
+				UserService.updatePass(userid,password);
 			}
 			/* Deletes Users */
 			
