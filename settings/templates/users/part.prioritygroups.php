@@ -27,7 +27,7 @@
 		<a href="#/group/"><?php p($l->t('Everyone')); ?></a>
 	</li>
 	<li class="user-groups">
-		<a href="#/group/admins"><?php p($l->t('Admins')); ?></a>
+		<a href="#/group/admin"><?php p($l->t('Admins')); ?></a>
 	</li>
 	<li class="user-groups">
 		<a href="#/group/subadmins"><?php p($l->t('Subadmins')); ?></a>
