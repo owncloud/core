@@ -103,7 +103,13 @@ usersmanagement.factory('UserService',
 		},
 		updateName: function(userid,displayname) {
 			return $resource(OC.filePath('settings', 'ajax', 'changedisplayname.php')).save(
-				{ username : userid, displayName : displayname });
+				{ username : userid, displayName : displayname }
+			);
+		},
+		updatePass: function(userid,password) {
+			return $resource(OC.filePath('settings', 'ajax', 'changepassword.php')).save(
+				{ userid : userid, password : password }
+			);
 		},
 		updateField: function(userId, fields) {
 			return $resource(Config.baseUrl + '/users/' + userId, fields, {
@@ -448,11 +454,15 @@ usersmanagement.controller('userlistController',
 			$scope.loading = false;
 
 			/* Takes Out all groups for the Chosen dropdown */
-			
 			$scope.allgroups = GroupService.getByGroupId().get();
-			
+			/* Updates Display name */
 			$scope.updateDisplayName = function(userid,displayname) {
 				UserService.updateName(userid,displayname);
+			}
+			
+			/* Updates Password */
+			$scope.updatePassword = function(userid,password) {
+				UserService.updatePass(userid,password);
 			}
 			/* Deletes Users */
 			
