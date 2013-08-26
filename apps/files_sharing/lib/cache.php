@@ -32,7 +32,6 @@ class SharedCache extends Cache {
 
 	private $storage;
 	private $storageId;
-	private $numericId;
 	private $fetcher;
 
 	/**
@@ -55,18 +54,13 @@ class SharedCache extends Cache {
 		if ($storage && $internalPath) {
 			$cache = $storage->getCache();
 			$this->storageId = $storage->getId();
-			$this->numericId = $cache->getNumericStorageId();
 			return array($cache, $internalPath);
 		}
 		return array(null, null);
 	}
 
 	public function getNumericStorageId() {
-		if (isset($this->numericId)) {
-			return $this->numericId;
-		} else {
-			return false;
-		}
+		return null;
 	}
 
 	/**
@@ -139,7 +133,6 @@ class SharedCache extends Cache {
 				if ($data['storage_mtime'] === 0) {
 					$data['storage_mtime'] = $data['mtime'];
 				}
-				return $data;
 			} else if (!empty($shares)) {
 				$share = reset($shares);
 				$folder = $share->getItemTarget();
@@ -152,9 +145,9 @@ class SharedCache extends Cache {
 				}
 				if ($data) {
 					$data['path'] = $folder.substr($data['path'], strlen($share->getPath()));
-					return $data;
 				}
 			}
+			return $data;
 		}
 		return false;
 	}
@@ -221,19 +214,18 @@ class SharedCache extends Cache {
 	 * @return int
 	 */
 	public function getId($file) {
-		if ($file === '') {
-			return -1;
-		}
-		$shares = $this->fetcher->getByPath($file);
-		foreach ($shares as $share) {
-			// Check if we have an exact share for this path
-			if ($share->getItemTarget() === $file) {
-				return $share->getItemSource();
+		if ($file !== '') {
+			$shares = $this->fetcher->getByPath($file);
+			foreach ($shares as $share) {
+				// Check if we have an exact share for this path
+				if ($share->getItemTarget() === $file) {
+					return $share->getItemSource();
+				}
 			}
-		}
-		list($cache, $internalPath) = $this->getSourceCache($file);
-		if ($cache && $internalPath) {
-			return $cache->getId($internalPath);
+			list($cache, $internalPath) = $this->getSourceCache($file);
+			if ($cache && $internalPath) {
+				return $cache->getId($internalPath);
+			}
 		}
 		return -1;
 	}
@@ -271,10 +263,13 @@ class SharedCache extends Cache {
 	 */
 	public function move($source, $target) {
 		list($cache, $oldInternalPath) = $this->getSourceCache($source);
-		list( , $newInternalPath) = $this->fetcher->resolvePath(dirname($target));
-		if ($cache && $oldInternalPath && $newInternalPath) {
-			$newInternalPath .= '/'.basename($target);
-			$cache->move($oldInternalPath, $newInternalPath);
+		if ($cache && $oldInternalPath) {
+			// Renaming/moving is only allowed within shared folders
+			if (dirname($target) !== '') {
+				list( , $newInternalPath) = $this->fetcher->resolvePath(dirname($target));
+				$newInternalPath .= '/'.basename($target);
+				$cache->move($oldInternalPath, $newInternalPath);
+			}
 		}
 	}
 
