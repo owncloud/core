@@ -428,11 +428,10 @@ class Cache {
 		$sql = 'SELECT `fileid`, `storage`, `path`, `parent`, `name`, `mimetype`, `mimepart`, `size`, `mtime`, `encrypted`, `unencrypted_size`, `etag`
 				FROM `*PREFIX*filecache` WHERE `name` LIKE ? AND `storage` = ?';
 		$result = \OC_DB::executeAudited($sql, array($pattern, $this->getNumericStorageId()));
-		$files = array();
-		while ($row = $result->fetchRow()) {
+		$files = $result->fetchAll();
+		foreach ($files as &$row) {
 			$row['mimetype'] = $this->getMimetype($row['mimetype']);
 			$row['mimepart'] = $this->getMimetype($row['mimepart']);
-			$files[] = $row;
 		}
 		return $files;
 	}
@@ -453,11 +452,11 @@ class Cache {
 				FROM `*PREFIX*filecache` WHERE ' . $where . ' AND `storage` = ?';
 		$mimetype = $this->getMimetypeId($mimetype);
 		$result = \OC_DB::executeAudited($sql, array($mimetype, $this->getNumericStorageId()));
-		$files = array();
-		while ($row = $result->fetchRow()) {
+		$files = $result->fetchAll();
+		foreach ($files as &$row) {
 			$row['mimetype'] = $this->getMimetype($row['mimetype']);
-			$row['mimepart'] = $this->getMimetype($row['mimepart']);
-			$files[] = $row;
+			list($row['mimepart'],) = explode('/', $row['mimetype']);
+			$row['storage'] = $this->storageId;
 		}
 		return $files;
 	}

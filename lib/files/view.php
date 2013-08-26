@@ -964,14 +964,16 @@ class View {
 		$rootLength = strlen($this->fakeRoot);
 
 		$mountPoint = Filesystem::getMountPoint($this->fakeRoot);
+		$truncRootLength = $rootLength - strlen($mountPoint);
 		$storage = Filesystem::getStorage($mountPoint);
+		$relativeFakeRoot = substr($this->fakeRoot, strlen($mountPoint));
 		if ($storage) {
 			$cache = $storage->getCache('');
 
 			$results = $cache->$method($query);
 			foreach ($results as $result) {
-				if (substr($mountPoint . $result['path'], 0, $rootLength) === $this->fakeRoot) {
-					$result['path'] = substr($mountPoint . $result['path'], $rootLength);
+				if (strpos($result['path'], $relativeFakeRoot) === 0) {
+					$result['path'] = substr($result['path'], $truncRootLength);
 					$files[] = $result;
 				}
 			}
