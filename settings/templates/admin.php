@@ -116,6 +116,19 @@ if (!$_['internetconnectionworking']) {
 	</p>
 </fieldset>
 
+<fieldset class="personalblock" id="loginpage">
+	<legend><strong><?php p($l->t('Login Page'));?></strong></legend>
+	<table class="LoginPage nostyle">
+		<tr>
+			<td>
+				<input type=checkbox name="passworddisplay" id="allowPasswordDisplay"
+                                        value="1" <?php if ($_['allowPasswordDisplay'] == 'yes') print_unescaped('checked="checked" '); ?> />
+				<label for="passworddisplay"><?php p($l->t('Allow clear text display of passwords'));?></label><br/>
+			</td>
+		</tr>
+	</table>
+</fieldset>
+
 <fieldset class="personalblock" id="shareAPI">
 	<legend><strong><?php p($l->t('Sharing'));?></strong></legend>
 	<table class="shareAPI nostyle">

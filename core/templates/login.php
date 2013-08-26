@@ -24,9 +24,11 @@
 			<input type="password" name="password" id="password" value="" data-typetoggle="#show" placeholder=""
 				   required<?php p($_['user_autofocus'] ? '' : ' autofocus'); ?> />
 			<label for="password" class="infield"><?php p($l->t('Password')); ?></label>
+			<?php if ($_['display_password']): ?>
 			<img class="svg" id="password-icon" src="<?php print_unescaped(image_path('', 'actions/password.svg')); ?>" alt=""/>
 			<input type="checkbox" id="show" name="show" />
 			<label for="show"></label>
+			<?php endif; ?>
 		</p>
 
 		<?php if (isset($_['invalidpassword']) && ($_['invalidpassword'])): ?>
