@@ -106,7 +106,7 @@ class SharedCache extends Cache {
 			return array(
 				'fileid' => -1,
 				'storage' => null,
-				'path' => 'files/Shared',
+				'path' => '',
 				'parent' => -1,
 				'name' => 'Shared',
 				'mimetype' => 'httpd/unix-directory',
@@ -118,30 +118,42 @@ class SharedCache extends Cache {
 				'unencrypted_size' => $unencryptedSize,
 				'etag' => $etag,
 			);
-		} else if (is_string($file)) {
-			$shares = $this->fetcher->getByPath($file);
-			foreach ($shares as $share) {
-				// Check if we have an exact share for this path
-				if ($share->getItemTarget() === $file) {
-					return $share->getMetadata();
-				}
-			}
-			if (!empty($shares)) {
-				list($cache, $internalPath) = $this->getSourceCache($file);
-				if ($cache && $internalPath) {
-					return $cache->get($internalPath);
-				}
-			}
 		} else {
-			$shares = $this->fetcher->getById($file);
+			$data = false;
+			if (is_string($file)) {
+				$shares = $this->fetcher->getByPath($file);
+			} else {
+				$shares = $this->fetcher->getById($file);
+			}
 			foreach ($shares as $share) {
-				// Check if we have an exact share for this id
-				if ($share->getItemSource() === $file) {
-					return $share->getMetadata();
+				// Check if we have an exact share for this path or id
+				if (is_string($file) && $share->getItemTarget() === $file
+					|| is_int($file) && $share->getItemSource() === $file
+				) {
+					$data = $share->getMetadata();
 				}
 			}
-			if (!empty($shares)) {
-				return parent::get($file);
+			if ($data) {
+				$data['mimetype'] = $this->getMimetype($data['mimetype']);
+				$data['mimepart'] = $this->getMimetype($data['mimepart']);
+				if ($data['storage_mtime'] === 0) {
+					$data['storage_mtime'] = $data['mtime'];
+				}
+				return $data;
+			} else if (!empty($shares)) {
+				$share = reset($shares);
+				$folder = $share->getItemTarget();
+				if (is_string($file)) {
+					list($cache, $internalPath) = $this->getSourceCache($file);
+					$data = $cache->get($internalPath);
+				} else {
+					list($cache) = $this->getSourceCache($folder);
+					$data = $cache->get($file);
+				}
+				if ($data) {
+					$data['path'] = $folder.substr($data['path'], strlen($share->getPath()));
+					return $data;
+				}
 			}
 		}
 		return false;

@@ -1030,23 +1030,25 @@ class View {
 	/**
 	 * Get the path of a file by id, relative to the view
 	 *
-	 * Note that the resulting path is not guarantied to be unique for the id, multiple paths can point to the same file
+	 * Note that the resulting path is not guaranteed to be unique for the id, multiple paths can point to the same file
 	 *
 	 * @param int $id
-	 * @return string
+	 * @return string | null
 	 */
 	public function getPath($id) {
-		list($storage, $internalPath) = Cache\Cache::getById($id);
-		$mounts = Filesystem::getMountByStorageId($storage);
+		$mountManager = Filesystem::getMountManager();
+		$mounts = $mountManager->getAll();
 		foreach ($mounts as $mount) {
-			/**
-			 * @var \OC\Files\Mount $mount
-			 */
-			$fullPath = $mount->getMountPoint() . $internalPath;
-			if (!is_null($path = $this->getRelativePath($fullPath))) {
-				return $path;
+			$cache = $mount->getStorage()->getCache();
+			$data = $cache->get($id);
+			if ($data) {
+				$fullPath = $mount->getMountPoint() . $data['path'];
+				if (!is_null($path = $this->getRelativePath($fullPath))) {
+					return $path;
+				}
 			}
 		}
 		return null;
 	}
+
 }

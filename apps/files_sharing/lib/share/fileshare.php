@@ -235,7 +235,7 @@ class FileShare extends Share {
 		return array(
 			'fileid' => $this->getItemSource(),
 			'storage' => $this->getStorage(),
-			'path' => 'files/Shared/'.$this->getItemTarget(),
+			'path' => $this->getItemTarget(),
 			'parent' => $this->getParent(),
 			'name' => basename($this->getItemTarget()),
 			'mimetype' => $this->getMimetype(),
