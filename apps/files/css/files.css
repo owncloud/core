@@ -94,7 +94,7 @@ table th#headerDate, table td.date { min-width:11em; padding:0 .1em 0 1em; text-
 
 /* Multiselect bar */
 #filestable.multiselect { top:63px; }
-table.multiselect thead { position:fixed; top:82px; z-index:1; -moz-box-sizing: border-box; box-sizing: border-box; left: 0; padding-left: 64px; width:100%; }
+table.multiselect thead { position:fixed; top:82px; z-index:1; -moz-box-sizing: border-box; box-sizing: border-box; left: 0; padding-left: 80px; width:100%; }
 table.multiselect thead th {
 	background-color: rgba(210,210,210,.7);
 	color: #000;
@@ -130,8 +130,7 @@ table td.filename form { font-size:.85em; margin-left:3em; margin-right:3em; }
 
 /* File actions */
 .fileactions {
-	position:absolute; top:.6em; right:0;
-	font-size:.8em;
+	position:absolute; top:.4em; right:0;
 }
 #fileList .name { position:relative; /* Firefox needs to explicitly have this default set … */ }
 #fileList tr:hover .fileactions { /* background to distinguish when overlaying with file names */
@@ -146,7 +145,7 @@ table td.filename form { font-size:.85em; margin-left:3em; margin-right:3em; }
 	background-color: rgba(230,230,230,.9);
 	box-shadow: -5px 0 7px rgba(230,230,230,.9);
 }
-#fileList .fileactions a.action img { position:relative; top:.2em; }
+#fileList .fileactions a.action img { position:relative; }
 #fileList a.action { display:inline; margin:-.5em 0; padding:1em .5em 1em .5em !important; }
 #fileList img.move2trash { display:inline; margin:-.5em 0; padding:1em .5em 1em .5em !important; float:right; }
 a.action.delete { float:right; }
