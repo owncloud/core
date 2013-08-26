@@ -103,6 +103,7 @@ table.multiselect thead th {
 }
 table.multiselect #headerName { width: 100%; }
 table td.selection, table th.selection, table td.fileaction { width:2em; text-align:center; }
+table tr.shared { background-color: #ADFF2F; }
 table td.filename a.name { display:block; height:1.5em; vertical-align:middle; margin-left:3em; }
 table tr[data-type="dir"] td.filename a.name span.nametext {font-weight:bold; }
 table td.filename input.filename { width:100%; cursor:text; }
@@ -136,6 +137,10 @@ table td.filename form { font-size:.85em; margin-left:3em; margin-right:3em; }
 #fileList tr:hover .fileactions { /* background to distinguish when overlaying with file names */
 	background-color: rgba(240,240,240,0.898);
 	box-shadow: -5px 0 7px rgba(240,240,240,0.898);
+}
+#fileList tr.shared:hover .fileactions { /* background to distinguish when overlaying with file names */
+	background-color: rgba(173,255,47,0.898);
+	box-shadow: -5px 0 7px rgba(173,255,47,0.898);
 }
 #fileList tr.selected:hover .fileactions, #fileList tr.mouseOver .fileactions { /* slightly darker color for selected rows */
 	background-color: rgba(230,230,230,.9);
