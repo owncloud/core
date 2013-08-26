@@ -40,13 +40,11 @@
 				type="text" name="newgroup"
 				placeholder="<?php p($l->t('Add Group'))?>"
 				ng-model="newgroup"
+				ng-blur="
+					showgroupinput = !showgroupinput;
+					savegroup(newgroup);"
 				required 
 			/>
-			<!--<button title="<?php p($l->t('Add')) ?>"
-				ng-click="savegroup()"
-				ng-disabled="creategroup_form.$invalid">
-				<?php p($l->t('Add')); ?>
-			</button>-->
 		</form>
 	</fieldset>
 </div>

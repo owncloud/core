@@ -81,6 +81,7 @@ usersmanagement.controller('addUserController',
 usersmanagement.controller('setQuotaController',
 	['$scope', 'QuotaService',
 	function($scope, QuotaService) {
+		$scope.quotaValue = [ {value : 5}, {value : 10}, {value : 20}, {value : 'Unlimited'}, {value : 'Custom'}]
 			
 		// Default Quota
 		$scope.defaultQuota = function(defaultquota) {

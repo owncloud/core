@@ -23,7 +23,7 @@
 <ul ng-controller="grouplistController" class="group-list" id="user-groups">
 	<loading></loading>
 	<li class="user-groups"
-	ng-repeat="group in groups | orderBy:['isAdmin','name'] | filter:{isAdmin:true}"
+	ng-repeat="group in groups | orderBy:['name'] | filter:{isAdmin:true}"
 	ng-class="{
 		active: routeParams.groupId == group.id
 	}">
