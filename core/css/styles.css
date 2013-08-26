@@ -158,6 +158,10 @@ input[type="submit"].enabled { background:#66f866; border:1px solid #5e5; -moz-b
 }
 #controls .button { display:inline-block; }
 
+#controls ~ #fileTable {
+    padding-top: 3em;
+}
+
 #content { position:relative; height:100%; width:100%; }
 #content .hascontrols { position: relative; top: 2.9em; }
 #content-wrapper {
