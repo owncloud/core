@@ -1,0 +1,46 @@
+#body-login form label.infield {
+	width: 60%;
+	padding-left: 0;	
+	margin-left: 6.4px;
+}
+
+#password {
+	width: 60% !important;
+	padding-left: 8px;
+}
+
+input[type="submit"]{
+	width: 45px;
+	height: 44px;
+	margin-left: 8px;
+	margin-top: 5px;
+	background-image: url('%webroot%/core/img/actions/confirm.svg');
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+#body-login input[type="submit"] {
+	padding-bottom: 15px;
+}
+
+#body-login input[type="password"] {
+	margin-left: 14px;
+}
+
+#body-login .warning {
+	margin-left: 15px;
+	margin-right: 17px;
+}
+
+.warning-info{
+	font-weight: bold;
+	padding: 10px;
+	color: rgb(255, 255, 255);
+	text-shadow: 0 -1px 0 rgba(0,0,0,.3);
+	background-color: transparent;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	margin-top: -20px;
+	text-align: center;
+}
