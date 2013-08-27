@@ -51,7 +51,10 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 		} else {
 			// mark file as partial while uploading (ignored by the scanner)
 			$partpath = $this->path . '.part';
-			\OC\Files\Filesystem::file_put_contents($partpath, $data);
+			$result = \OC\Files\Filesystem::file_put_contents($partpath, $data);
+			if ($result === false) {
+				throw new Sabre_DAV_Exception_InternalServerError();
+			}
 			//detect aborted upload
 			if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'PUT') {
 				if (isset($_SERVER['CONTENT_LENGTH'])) {
