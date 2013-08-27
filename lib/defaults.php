@@ -131,5 +131,17 @@ class OC_Defaults {
 
 		return $footer;
 	}
+	
+        public function getEmailFooter() {
+                if ($this->themeExist('getEmailFooter')) {
+                        $emailfooter = $this->theme->getEmailFooter();
+                } else {
+                        $emailfooter="\n--\n";
+                        $emailfooter.=$defaults->getName() . "\n";
+                        $emailfooter.=$defaults->getSlogan() . "\n";
+                }
+
+                return $emailfooter;
+        }
 
 }
