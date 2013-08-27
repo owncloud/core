@@ -1,11 +1,11 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "Impossible de charger la liste depuis l'App Store",
 "Authentication error" => "Erreur d'authentification",
 "Your display name has been changed." => "Votre nom d'affichage a bien été modifié.",
 "Unable to change display name" => "Impossible de modifier le nom d'affichage",
 "Group already exists" => "Ce groupe existe déjà",
 "Unable to add group" => "Impossible d'ajouter le groupe",
-"Could not enable app. " => "Impossible d'activer l'Application",
 "Email saved" => "E-mail sauvegardé",
 "Invalid email" => "E-mail invalide",
 "Unable to delete group" => "Impossible de supprimer le groupe",
@@ -20,9 +20,10 @@
 "Disable" => "Désactiver",
 "Enable" => "Activer",
 "Please wait...." => "Veuillez patienter…",
-"Error" => "Erreur",
 "Updating...." => "Mise à jour...",
 "Error while updating app" => "Erreur lors de la mise à jour de l'application",
+"Error" => "Erreur",
+"Update" => "Mettre à jour",
 "Updated" => "Mise à jour effectuée avec succès",
 "Saving..." => "Enregistrement...",
 "deleted" => "supprimé",
@@ -67,7 +68,6 @@
 "Select an App" => "Sélectionner une Application",
 "See application page at apps.owncloud.com" => "Voir la page des applications à l'url apps.owncloud.com",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "Distribué sous licence <span class=\"licence\"></span>, par <span class=\"author\"></span>",
-"Update" => "Mettre à jour",
 "User Documentation" => "Documentation utilisateur",
 "Administrator Documentation" => "Documentation administrateur",
 "Online Documentation" => "Documentation en ligne",
@@ -91,6 +91,7 @@
 "Help translate" => "Aidez à traduire",
 "WebDAV" => "WebDAV",
 "Use this address to <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">access your Files via WebDAV</a>" => "Utilisez cette adresse pour <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">accéder à vos fichiers via WebDAV</a>",
+"Encryption" => "Chiffrement",
 "Login Name" => "Nom de la connexion",
 "Create" => "Créer",
 "Admin Recovery Password" => "Récupération du mot de passe administrateur",
@@ -104,3 +105,4 @@
 "set new password" => "Changer le mot de passe",
 "Default" => "Défaut"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n > 1);";

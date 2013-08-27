@@ -119,7 +119,7 @@ if ($needUpgrade) {
 	$tmpl->printPage();
 } else {
 	// information about storage capacities
-	$storageInfo=OC_Helper::getStorageInfo();
+	$storageInfo=OC_Helper::getStorageInfo($dir);
 	$maxUploadFilesize=OCP\Util::maxUploadFilesize($dir);
 	$publicUploadEnabled = \OC_Appconfig::getValue('core', 'shareapi_allow_public_upload', 'yes');
 	if (OC_App::isEnabled('files_encryption')) {
@@ -150,5 +150,6 @@ if ($needUpgrade) {
 	$tmpl->assign('usedSpacePercent', (int)$storageInfo['relative']);
 	$tmpl->assign('isPublic', false);
 	$tmpl->assign('publicUploadEnabled', $publicUploadEnabled);
+	$tmpl->assign("encryptedFiles", \OCP\Util::encryptedFiles());
 	$tmpl->printPage();
 }

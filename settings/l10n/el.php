@@ -1,11 +1,11 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "Σφάλμα στην φόρτωση της λίστας από το App Store",
 "Authentication error" => "Σφάλμα πιστοποίησης",
 "Your display name has been changed." => "Το όνομα σας στην οθόνη άλλαξε. ",
 "Unable to change display name" => "Δεν είναι δυνατή η αλλαγή του ονόματος εμφάνισης",
 "Group already exists" => "Η ομάδα υπάρχει ήδη",
 "Unable to add group" => "Αδυναμία προσθήκης ομάδας",
-"Could not enable app. " => "Αδυναμία ενεργοποίησης εφαρμογής ",
 "Email saved" => "Το email αποθηκεύτηκε ",
 "Invalid email" => "Μη έγκυρο email",
 "Unable to delete group" => "Αδυναμία διαγραφής ομάδας",
@@ -20,9 +20,10 @@
 "Disable" => "Απενεργοποίηση",
 "Enable" => "Ενεργοποίηση",
 "Please wait...." => "Παρακαλώ περιμένετε...",
-"Error" => "Σφάλμα",
 "Updating...." => "Ενημέρωση...",
 "Error while updating app" => "Σφάλμα κατά την ενημέρωση της εφαρμογής",
+"Error" => "Σφάλμα",
+"Update" => "Ενημέρωση",
 "Updated" => "Ενημερώθηκε",
 "Saving..." => "Γίνεται αποθήκευση...",
 "deleted" => "διαγράφηκε",
@@ -67,7 +68,6 @@
 "Select an App" => "Επιλέξτε μια Εφαρμογή",
 "See application page at apps.owncloud.com" => "Δείτε την σελίδα εφαρμογών στο apps.owncloud.com",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span>-άδεια από <span class=\"author\"></span>",
-"Update" => "Ενημέρωση",
 "User Documentation" => "Τεκμηρίωση Χρήστη",
 "Administrator Documentation" => "Τεκμηρίωση Διαχειριστή",
 "Online Documentation" => "Τεκμηρίωση στο Διαδίκτυο",
@@ -91,6 +91,7 @@
 "Help translate" => "Βοηθήστε στη μετάφραση",
 "WebDAV" => "WebDAV",
 "Use this address to <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">access your Files via WebDAV</a>" => "Χρήση αυτής της διεύθυνσης για <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">πρόσβαση των αρχείων σας μέσω WebDAV</a>",
+"Encryption" => "Κρυπτογράφηση",
 "Login Name" => "Όνομα Σύνδεσης",
 "Create" => "Δημιουργία",
 "Admin Recovery Password" => "Κωδικός Επαναφοράς Διαχειριστή ",
@@ -104,3 +105,4 @@
 "set new password" => "επιλογή νέου κωδικού",
 "Default" => "Προκαθορισμένο"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

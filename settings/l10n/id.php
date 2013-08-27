@@ -1,10 +1,10 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "Tidak dapat memuat daftar dari App Store",
 "Authentication error" => "Galat saat autentikasi",
 "Unable to change display name" => "Tidak dapat mengubah nama tampilan",
 "Group already exists" => "Grup sudah ada",
 "Unable to add group" => "Tidak dapat menambah grup",
-"Could not enable app. " => "Tidak dapat mengaktifkan aplikasi.",
 "Email saved" => "Email disimpan",
 "Invalid email" => "Email tidak valid",
 "Unable to delete group" => "Tidak dapat menghapus grup",
@@ -19,9 +19,10 @@
 "Disable" => "Nonaktifkan",
 "Enable" => "aktifkan",
 "Please wait...." => "Mohon tunggu....",
-"Error" => "Galat",
 "Updating...." => "Memperbarui....",
 "Error while updating app" => "Gagal ketika memperbarui aplikasi",
+"Error" => "Galat",
+"Update" => "Perbarui",
 "Updated" => "Diperbarui",
 "Saving..." => "Menyimpan...",
 "deleted" => "dihapus",
@@ -66,7 +67,6 @@
 "Select an App" => "Pilih Aplikasi",
 "See application page at apps.owncloud.com" => "Lihat halaman aplikasi di apps.owncloud.com",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span>-dilisensikan oleh <span class=\"author\"></span>",
-"Update" => "Perbarui",
 "User Documentation" => "Dokumentasi Pengguna",
 "Administrator Documentation" => "Dokumentasi Administrator",
 "Online Documentation" => "Dokumentasi Online",
@@ -89,6 +89,7 @@
 "Language" => "Bahasa",
 "Help translate" => "Bantu menerjemahkan",
 "WebDAV" => "WebDAV",
+"Encryption" => "Enkripsi",
 "Login Name" => "Nama Masuk",
 "Create" => "Buat",
 "Default Storage" => "Penyimpanan Baku",
@@ -100,3 +101,4 @@
 "set new password" => "setel sandi baru",
 "Default" => "Baku"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";

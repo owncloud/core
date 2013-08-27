@@ -1,9 +1,9 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "Ne eblis ŝargi liston el aplikaĵovendejo",
 "Authentication error" => "Aŭtentiga eraro",
 "Group already exists" => "La grupo jam ekzistas",
 "Unable to add group" => "Ne eblis aldoni la grupon",
-"Could not enable app. " => "Ne eblis kapabligi la aplikaĵon.",
 "Email saved" => "La retpoŝtadreso konserviĝis",
 "Invalid email" => "Nevalida retpoŝtadreso",
 "Unable to delete group" => "Ne eblis forigi la grupon",
@@ -16,6 +16,7 @@
 "Disable" => "Malkapabligi",
 "Enable" => "Kapabligi",
 "Error" => "Eraro",
+"Update" => "Ĝisdatigi",
 "Saving..." => "Konservante...",
 "deleted" => "forigita",
 "undo" => "malfari",
@@ -46,7 +47,6 @@
 "Select an App" => "Elekti aplikaĵon",
 "See application page at apps.owncloud.com" => "Vidu la paĝon pri aplikaĵoj ĉe apps.owncloud.com",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"</span>-permesilhavigita de <span class=\"author\"></span>",
-"Update" => "Ĝisdatigi",
 "User Documentation" => "Dokumentaro por uzantoj",
 "Administrator Documentation" => "Dokumentaro por administrantoj",
 "Online Documentation" => "Reta dokumentaro",
@@ -67,6 +67,7 @@
 "Language" => "Lingvo",
 "Help translate" => "Helpu traduki",
 "WebDAV" => "WebDAV",
+"Encryption" => "Ĉifrado",
 "Create" => "Krei",
 "Default Storage" => "Defaŭlta konservejo",
 "Unlimited" => "Senlima",
@@ -75,3 +76,4 @@
 "Storage" => "Konservejo",
 "Default" => "Defaŭlta"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

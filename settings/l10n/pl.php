@@ -1,11 +1,11 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "Nie można wczytać listy aplikacji",
 "Authentication error" => "Błąd uwierzytelniania",
 "Your display name has been changed." => "Twoje wyświetlana nazwa została zmieniona.",
 "Unable to change display name" => "Nie można zmienić wyświetlanej nazwy",
 "Group already exists" => "Grupa już istnieje",
 "Unable to add group" => "Nie można dodać grupy",
-"Could not enable app. " => "Nie można włączyć aplikacji.",
 "Email saved" => "E-mail zapisany",
 "Invalid email" => "Nieprawidłowy e-mail",
 "Unable to delete group" => "Nie można usunąć grupy",
@@ -20,9 +20,10 @@
 "Disable" => "Wyłącz",
 "Enable" => "Włącz",
 "Please wait...." => "Proszę czekać...",
-"Error" => "Błąd",
 "Updating...." => "Aktualizacja w toku...",
 "Error while updating app" => "Błąd podczas aktualizacji aplikacji",
+"Error" => "Błąd",
+"Update" => "Aktualizuj",
 "Updated" => "Zaktualizowano",
 "Saving..." => "Zapisywanie...",
 "deleted" => "usunięto",
@@ -39,6 +40,7 @@
 "Security Warning" => "Ostrzeżenie o zabezpieczeniach",
 "Setup Warning" => "Ostrzeżenia konfiguracji",
 "Your web server is not yet properly setup to allow files synchronization because the WebDAV interface seems to be broken." => "Serwer internetowy nie jest jeszcze poprawnie skonfigurowany, aby umożliwić synchronizację plików, ponieważ interfejs WebDAV wydaje się być uszkodzony.",
+"Please double check the <a href=\"%s\">installation guides</a>." => "Proszę sprawdź ponownie <a href=\"%s\">przewodnik instalacji</a>.",
 "Module 'fileinfo' missing" => "Brak modułu „fileinfo”",
 "The PHP module 'fileinfo' is missing. We strongly recommend to enable this module to get best results with mime-type detection." => "Brak modułu PHP „fileinfo”. Zalecamy włączenie tego modułu, aby uzyskać najlepsze wyniki podczas wykrywania typów MIME.",
 "Locale not working" => "Lokalizacja nie działa",
@@ -57,6 +59,7 @@
 "Allow users to only share with users in their groups" => "Zezwalaj użytkownikom współdzielić z użytkownikami ze swoich grup",
 "Security" => "Bezpieczeństwo",
 "Enforce HTTPS" => "Wymuś HTTPS",
+"Forces the clients to connect to %s via an encrypted connection." => "Wymusza na klientach na łączenie się %s za pośrednictwem połączenia szyfrowanego.",
 "Log" => "Logi",
 "Log level" => "Poziom logów",
 "More" => "Więcej",
@@ -68,7 +71,6 @@
 "Select an App" => "Zaznacz aplikację",
 "See application page at apps.owncloud.com" => "Zobacz stronę aplikacji na apps.owncloud.com",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span>-licencjonowane przez <span class=\"author\"></span>",
-"Update" => "Aktualizuj",
 "User Documentation" => "Dokumentacja użytkownika",
 "Administrator Documentation" => "Dokumentacja administratora",
 "Online Documentation" => "Dokumentacja online",
@@ -91,6 +93,7 @@
 "Language" => "Język",
 "Help translate" => "Pomóż w tłumaczeniu",
 "WebDAV" => "WebDAV",
+"Encryption" => "Szyfrowanie",
 "Login Name" => "Login",
 "Create" => "Utwórz",
 "Admin Recovery Password" => "Odzyskiwanie hasła administratora",
@@ -104,3 +107,4 @@
 "set new password" => "ustaw nowe hasło",
 "Default" => "Domyślny"
 );
+$PLURAL_FORMS = "nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);";

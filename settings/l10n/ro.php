@@ -1,11 +1,11 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "Imposibil de actualizat lista din  App Store.",
 "Authentication error" => "Eroare la autentificare",
 "Your display name has been changed." => "Numele afişat a fost schimbat.",
 "Unable to change display name" => "Imposibil de schimbat numele afişat.",
 "Group already exists" => "Grupul există deja",
 "Unable to add group" => "Nu s-a putut adăuga grupul",
-"Could not enable app. " => "Nu s-a putut activa aplicația.",
 "Email saved" => "E-mail salvat",
 "Invalid email" => "E-mail nevalid",
 "Unable to delete group" => "Nu s-a putut șterge grupul",
@@ -20,9 +20,10 @@
 "Disable" => "Dezactivați",
 "Enable" => "Activare",
 "Please wait...." => "Aşteptaţi vă rog....",
-"Error" => "Eroare",
 "Updating...." => "Actualizare în curs....",
 "Error while updating app" => "Eroare în timpul actualizării aplicaţiei",
+"Error" => "Eroare",
+"Update" => "Actualizare",
 "Updated" => "Actualizat",
 "Saving..." => "Se salvează...",
 "deleted" => "șters",
@@ -66,7 +67,6 @@
 "Select an App" => "Selectează o aplicație",
 "See application page at apps.owncloud.com" => "Vizualizează pagina applicației pe apps.owncloud.com",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span>-licențiat <span class=\"author\"></span>",
-"Update" => "Actualizare",
 "User Documentation" => "Documentație utilizator",
 "Administrator Documentation" => "Documentație administrator",
 "Online Documentation" => "Documentație online",
@@ -87,6 +87,7 @@
 "Language" => "Limba",
 "Help translate" => "Ajută la traducere",
 "WebDAV" => "WebDAV",
+"Encryption" => "Încriptare",
 "Create" => "Crează",
 "Default Storage" => "Stocare implicită",
 "Unlimited" => "Nelimitată",
@@ -95,3 +96,4 @@
 "Storage" => "Stocare",
 "Default" => "Implicită"
 );
+$PLURAL_FORMS = "nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));";

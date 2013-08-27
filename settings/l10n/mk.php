@@ -1,9 +1,9 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "Неможам да вчитам листа од App Store",
 "Authentication error" => "Грешка во автентикација",
 "Group already exists" => "Групата веќе постои",
 "Unable to add group" => "Неможе да додадам група",
-"Could not enable app. " => "Неможе да овозможам апликација.",
 "Email saved" => "Електронската пошта е снимена",
 "Invalid email" => "Неисправна електронска пошта",
 "Unable to delete group" => "Неможе да избришам група",
@@ -16,6 +16,7 @@
 "Disable" => "Оневозможи",
 "Enable" => "Овозможи",
 "Error" => "Грешка",
+"Update" => "Ажурирај",
 "Saving..." => "Снимам...",
 "undo" => "врати",
 "Groups" => "Групи",
@@ -34,7 +35,6 @@
 "Select an App" => "Избери аппликација",
 "See application page at apps.owncloud.com" => "Види ја страницата со апликации на apps.owncloud.com",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span>-лиценцирано од <span class=\"author\"></span>",
-"Update" => "Ажурирај",
 "User Documentation" => "Корисничка документација",
 "Administrator Documentation" => "Администраторска документација",
 "Online Documentation" => "Документација на интернет",
@@ -53,7 +53,9 @@
 "Language" => "Јазик",
 "Help translate" => "Помогни во преводот",
 "WebDAV" => "WebDAV",
+"Encryption" => "Енкрипција",
 "Create" => "Создај",
 "Other" => "Останато",
 "Username" => "Корисничко име"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;";

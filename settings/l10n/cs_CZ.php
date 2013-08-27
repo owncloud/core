@@ -1,11 +1,11 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "Nelze načíst seznam z App Store",
 "Authentication error" => "Chyba přihlášení",
 "Your display name has been changed." => "Vaše zobrazované jméno bylo změněno.",
 "Unable to change display name" => "Nelze změnit zobrazované jméno",
 "Group already exists" => "Skupina již existuje",
 "Unable to add group" => "Nelze přidat skupinu",
-"Could not enable app. " => "Nelze povolit aplikaci.",
 "Email saved" => "E-mail uložen",
 "Invalid email" => "Neplatný e-mail",
 "Unable to delete group" => "Nelze smazat skupinu",
@@ -20,10 +20,12 @@
 "Disable" => "Zakázat",
 "Enable" => "Povolit",
 "Please wait...." => "Čekejte prosím...",
-"Error" => "Chyba",
 "Updating...." => "Aktualizuji...",
 "Error while updating app" => "Chyba při aktualizaci aplikace",
+"Error" => "Chyba",
+"Update" => "Aktualizovat",
 "Updated" => "Aktualizováno",
+"Decrypting files... Please wait, this can take some time." => "Probíhá odšifrování souborů... Prosíme počkejte, tato operace může trvat několik minut.",
 "Saving..." => "Ukládám...",
 "deleted" => "smazáno",
 "undo" => "vrátit zpět",
@@ -77,7 +79,6 @@
 "Select an App" => "Vyberte aplikaci",
 "See application page at apps.owncloud.com" => "Více na stránce s aplikacemi na apps.owncloud.com",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span>-licencováno <span class=\"author\"></span>",
-"Update" => "Aktualizovat",
 "User Documentation" => "Uživatelská dokumentace",
 "Administrator Documentation" => "Dokumentace správce",
 "Online Documentation" => "Online dokumentace",
@@ -101,6 +102,10 @@
 "Help translate" => "Pomoci s překladem",
 "WebDAV" => "WebDAV",
 "Use this address to <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">access your Files via WebDAV</a>" => "Použijte <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">tuto adresu pro přístup k vašim souborům přes WebDAV</a>",
+"Encryption" => "Šifrování",
+"The encryption app is no longer enabled, decrypt all your file" => "Šifrovací aplikace již není spuštěna, odšifrujte všechny své soubory",
+"Log-in password" => "Heslo",
+"Decrypt all Files" => "Odšifrovat všechny soubory",
 "Login Name" => "Přihlašovací jméno",
 "Create" => "Vytvořit",
 "Admin Recovery Password" => "Heslo obnovy správce",
@@ -114,3 +119,4 @@
 "set new password" => "nastavit nové heslo",
 "Default" => "Výchozí"
 );
+$PLURAL_FORMS = "nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;";

@@ -1,11 +1,11 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "Klarer ikkje å lasta inn liste fra app-butikken",
 "Authentication error" => "Autentiseringsfeil",
 "Your display name has been changed." => "Visingsnamnet ditt er endra.",
 "Unable to change display name" => "Klarte ikkje endra visingsnamnet",
 "Group already exists" => "Gruppa finst allereie",
 "Unable to add group" => "Klarte ikkje leggja til gruppa",
-"Could not enable app. " => "Klarte ikkje slå på programmet.",
 "Email saved" => "E-postadresse lagra",
 "Invalid email" => "Ugyldig e-postadresse",
 "Unable to delete group" => "Klarte ikkje å sletta gruppa",
@@ -20,9 +20,10 @@
 "Disable" => "Slå av",
 "Enable" => "Slå på",
 "Please wait...." => "Ver venleg og vent …",
-"Error" => "Feil",
 "Updating...." => "Oppdaterer …",
 "Error while updating app" => "Feil ved oppdatering av app",
+"Error" => "Feil",
+"Update" => "Oppdater",
 "Updated" => "Oppdatert",
 "Saving..." => "Lagrar …",
 "deleted" => "sletta",
@@ -67,7 +68,6 @@
 "Select an App" => "Vel eit program",
 "See application page at apps.owncloud.com" => "Sjå programsida på apps.owncloud.com",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "Lisensiert under <span class=\"licence\"></span> av <span class=\"author\"></span>",
-"Update" => "Oppdater",
 "User Documentation" => "Brukardokumentasjon",
 "Administrator Documentation" => "Administratordokumentasjon",
 "Online Documentation" => "Dokumentasjon på nett",
@@ -101,3 +101,4 @@
 "set new password" => "lag nytt passord",
 "Default" => "Standard"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

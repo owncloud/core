@@ -1,11 +1,11 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "Ni mogoče naložiti seznama iz programskega središča",
 "Authentication error" => "Napaka med overjanjem",
 "Your display name has been changed." => "Prikazano ime je bilo spremenjeno.",
 "Unable to change display name" => "Prikazanega imena ni mogoče spremeniti.",
 "Group already exists" => "Skupina že obstaja",
 "Unable to add group" => "Skupine ni mogoče dodati",
-"Could not enable app. " => "Programa ni mogoče omogočiti.",
 "Email saved" => "Elektronski naslov je shranjen",
 "Invalid email" => "Neveljaven elektronski naslov",
 "Unable to delete group" => "Skupine ni mogoče izbrisati",
@@ -20,9 +20,10 @@
 "Disable" => "Onemogoči",
 "Enable" => "Omogoči",
 "Please wait...." => "Počakajte ...",
-"Error" => "Napaka",
 "Updating...." => "Poteka posodabljanje ...",
 "Error while updating app" => "Prišlo je do napake med posodabljanjem programa.",
+"Error" => "Napaka",
+"Update" => "Posodobi",
 "Updated" => "Posodobljeno",
 "Saving..." => "Poteka shranjevanje ...",
 "deleted" => "izbrisano",
@@ -67,7 +68,6 @@
 "Select an App" => "Izbor programa",
 "See application page at apps.owncloud.com" => "Obiščite spletno stran programa na apps.owncloud.com",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span>-z dovoljenjem <span class=\"author\"></span>",
-"Update" => "Posodobi",
 "User Documentation" => "Uporabniška dokumentacija",
 "Administrator Documentation" => "Skrbniška dokumentacija",
 "Online Documentation" => "Spletna dokumentacija",
@@ -90,6 +90,7 @@
 "Language" => "Jezik",
 "Help translate" => "Sodelujte pri prevajanju",
 "WebDAV" => "WebDAV",
+"Encryption" => "Šifriranje",
 "Login Name" => "Prijavno ime",
 "Create" => "Ustvari",
 "Admin Recovery Password" => "Obnovitev administratorjevega gesla",
@@ -103,3 +104,4 @@
 "set new password" => "nastavi novo geslo",
 "Default" => "Privzeto"
 );
+$PLURAL_FORMS = "nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);";

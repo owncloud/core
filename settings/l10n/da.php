@@ -1,11 +1,11 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "Kunne ikke indlæse listen fra App Store",
 "Authentication error" => "Adgangsfejl",
 "Your display name has been changed." => "Dit skærmnavn blev ændret.",
 "Unable to change display name" => "Kunne ikke skifte skærmnavn",
 "Group already exists" => "Gruppen findes allerede",
 "Unable to add group" => "Gruppen kan ikke oprettes",
-"Could not enable app. " => "Applikationen kunne ikke aktiveres.",
 "Email saved" => "Email adresse gemt",
 "Invalid email" => "Ugyldig email adresse",
 "Unable to delete group" => "Gruppen kan ikke slettes",
@@ -20,10 +20,12 @@
 "Disable" => "Deaktiver",
 "Enable" => "Aktiver",
 "Please wait...." => "Vent venligst...",
-"Error" => "Fejl",
 "Updating...." => "Opdaterer....",
 "Error while updating app" => "Der opstod en fejl under app opgraderingen",
+"Error" => "Fejl",
+"Update" => "Opdater",
 "Updated" => "Opdateret",
+"Decrypting files... Please wait, this can take some time." => "Dekryptere filer... Vent venligst, dette kan tage lang tid. ",
 "Saving..." => "Gemmer...",
 "deleted" => "Slettet",
 "undo" => "fortryd",
@@ -77,7 +79,6 @@
 "Select an App" => "Vælg en App",
 "See application page at apps.owncloud.com" => "Se applikationens side på apps.owncloud.com",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span>-licenseret af <span class=\"author\"></span>",
-"Update" => "Opdater",
 "User Documentation" => "Brugerdokumentation",
 "Administrator Documentation" => "Administrator Dokumentation",
 "Online Documentation" => "Online dokumentation",
@@ -101,6 +102,10 @@
 "Help translate" => "Hjælp med oversættelsen",
 "WebDAV" => "WebDAV",
 "Use this address to <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">access your Files via WebDAV</a>" => "Anvend denne adresse til at <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">tilgå dine filer via WebDAV</a>",
+"Encryption" => "Kryptering",
+"The encryption app is no longer enabled, decrypt all your file" => "Krypterings app'en er ikke længere aktiv. Dekrypter alle dine filer. ",
+"Log-in password" => "Log-in kodeord",
+"Decrypt all Files" => "Dekrypter alle Filer ",
 "Login Name" => "Loginnavn",
 "Create" => "Ny",
 "Admin Recovery Password" => "Administrator gendannelse kodeord",
@@ -114,3 +119,4 @@
 "set new password" => "skift kodeord",
 "Default" => "Standard"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

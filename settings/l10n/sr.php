@@ -1,10 +1,10 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "Грешка приликом учитавања списка из Складишта Програма",
 "Authentication error" => "Грешка при провери идентитета",
 "Unable to change display name" => "Не могу да променим име за приказ",
 "Group already exists" => "Група већ постоји",
 "Unable to add group" => "Не могу да додам групу",
-"Could not enable app. " => "Не могу да укључим програм",
 "Email saved" => "Е-порука сачувана",
 "Invalid email" => "Неисправна е-адреса",
 "Unable to delete group" => "Не могу да уклоним групу",
@@ -19,9 +19,10 @@
 "Disable" => "Искључи",
 "Enable" => "Омогући",
 "Please wait...." => "Сачекајте…",
-"Error" => "Грешка",
 "Updating...." => "Ажурирам…",
 "Error while updating app" => "Грешка при ажурирању апликације",
+"Error" => "Грешка",
+"Update" => "Ажурирај",
 "Updated" => "Ажурирано",
 "Saving..." => "Чување у току...",
 "deleted" => "обрисано",
@@ -65,7 +66,6 @@
 "Select an App" => "Изаберите програм",
 "See application page at apps.owncloud.com" => "Погледајте страницу са програмима на apps.owncloud.com",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span>-лиценцирао <span class=\"author\"></span>",
-"Update" => "Ажурирај",
 "User Documentation" => "Корисничка документација",
 "Administrator Documentation" => "Администраторска документација",
 "Online Documentation" => "Мрежна документација",
@@ -88,6 +88,7 @@
 "Language" => "Језик",
 "Help translate" => " Помозите у превођењу",
 "WebDAV" => "WebDAV",
+"Encryption" => "Шифровање",
 "Login Name" => "Корисничко име",
 "Create" => "Направи",
 "Default Storage" => "Подразумевано складиште",
@@ -99,3 +100,4 @@
 "set new password" => "постави нову лозинку",
 "Default" => "Подразумевано"
 );
+$PLURAL_FORMS = "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);";

@@ -1,11 +1,11 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "לא ניתן לטעון רשימה מה־App Store",
 "Authentication error" => "שגיאת הזדהות",
 "Your display name has been changed." => "שם התצוגה שלך הוחלף.",
 "Unable to change display name" => "לא ניתן לשנות את שם התצוגה",
 "Group already exists" => "הקבוצה כבר קיימת",
 "Unable to add group" => "לא ניתן להוסיף קבוצה",
-"Could not enable app. " => "לא ניתן להפעיל את היישום",
 "Email saved" => "הדוא״ל נשמר",
 "Invalid email" => "דוא״ל לא חוקי",
 "Unable to delete group" => "לא ניתן למחוק את הקבוצה",
@@ -20,9 +20,10 @@
 "Disable" => "בטל",
 "Enable" => "הפעלה",
 "Please wait...." => "נא להמתין…",
-"Error" => "שגיאה",
 "Updating...." => "מתבצע עדכון…",
 "Error while updating app" => "אירעה שגיאה בעת עדכון היישום",
+"Error" => "שגיאה",
+"Update" => "עדכון",
 "Updated" => "מעודכן",
 "Saving..." => "שמירה…",
 "deleted" => "נמחק",
@@ -65,7 +66,6 @@
 "Select an App" => "בחירת יישום",
 "See application page at apps.owncloud.com" => "צפה בעמוד הישום ב apps.owncloud.com",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "ברישיון <span class=\"licence\"></span>לטובת <span class=\"author\"></span>",
-"Update" => "עדכון",
 "User Documentation" => "תיעוד משתמש",
 "Administrator Documentation" => "תיעוד מנהלים",
 "Online Documentation" => "תיעוד מקוון",
@@ -88,6 +88,7 @@
 "Language" => "פה",
 "Help translate" => "עזרה בתרגום",
 "WebDAV" => "WebDAV",
+"Encryption" => "הצפנה",
 "Login Name" => "שם כניסה",
 "Create" => "יצירה",
 "Admin Recovery Password" => "ססמת השחזור של המנהל",
@@ -100,3 +101,4 @@
 "set new password" => "הגדרת ססמה חדשה",
 "Default" => "בררת מחדל"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

@@ -1,11 +1,11 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "アプリストアからリストをロードできません",
 "Authentication error" => "認証エラー",
 "Your display name has been changed." => "表示名を変更しました。",
 "Unable to change display name" => "表示名を変更できません",
 "Group already exists" => "グループは既に存在しています",
 "Unable to add group" => "グループを追加できません",
-"Could not enable app. " => "アプリを有効にできませんでした。",
 "Email saved" => "メールアドレスを保存しました",
 "Invalid email" => "無効なメールアドレス",
 "Unable to delete group" => "グループを削除できません",
@@ -20,10 +20,12 @@
 "Disable" => "無効",
 "Enable" => "有効化",
 "Please wait...." => "しばらくお待ちください。",
-"Error" => "エラー",
 "Updating...." => "更新中....",
 "Error while updating app" => "アプリの更新中にエラーが発生",
+"Error" => "エラー",
+"Update" => "更新",
 "Updated" => "更新済み",
+"Decrypting files... Please wait, this can take some time." => "ファイルを複合中... しばらくお待ちください、この処理には少し時間がかかるかもしれません。",
 "Saving..." => "保存中...",
 "deleted" => "削除",
 "undo" => "元に戻す",
@@ -77,7 +79,6 @@
 "Select an App" => "アプリを選択してください",
 "See application page at apps.owncloud.com" => "apps.owncloud.com でアプリケーションのページを見てください",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span>-ライセンス: <span class=\"author\"></span>",
-"Update" => "更新",
 "User Documentation" => "ユーザドキュメント",
 "Administrator Documentation" => "管理者ドキュメント",
 "Online Documentation" => "オンラインドキュメント",
@@ -101,6 +102,10 @@
 "Help translate" => "翻訳に協力する",
 "WebDAV" => "WebDAV",
 "Use this address to <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">access your Files via WebDAV</a>" => "<a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">WebDAV経由でファイルにアクセス</a>するにはこのアドレスを利用してください",
+"Encryption" => "暗号化",
+"The encryption app is no longer enabled, decrypt all your file" => "暗号化アプリはもはや有効ではありません、すべてのファイルを複合してください",
+"Log-in password" => "ログインパスワード",
+"Decrypt all Files" => "すべてのファイルを複合する",
 "Login Name" => "ログイン名",
 "Create" => "作成",
 "Admin Recovery Password" => "管理者復旧パスワード",
@@ -114,3 +119,4 @@
 "set new password" => "新しいパスワードを設定",
 "Default" => "デフォルト"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";

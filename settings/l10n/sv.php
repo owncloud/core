@@ -1,11 +1,11 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "Kan inte ladda listan från App Store",
 "Authentication error" => "Fel vid autentisering",
 "Your display name has been changed." => "Ditt visningsnamn har ändrats.",
 "Unable to change display name" => "Kan inte ändra visningsnamn",
 "Group already exists" => "Gruppen finns redan",
 "Unable to add group" => "Kan inte lägga till grupp",
-"Could not enable app. " => "Kunde inte aktivera appen.",
 "Email saved" => "E-post sparad",
 "Invalid email" => "Ogiltig e-post",
 "Unable to delete group" => "Kan inte radera grupp",
@@ -20,10 +20,12 @@
 "Disable" => "Deaktivera",
 "Enable" => "Aktivera",
 "Please wait...." => "Var god vänta...",
-"Error" => "Fel",
 "Updating...." => "Uppdaterar...",
 "Error while updating app" => "Fel uppstod vid uppdatering av appen",
+"Error" => "Fel",
+"Update" => "Uppdatera",
 "Updated" => "Uppdaterad",
+"Decrypting files... Please wait, this can take some time." => "Dekrypterar filer... Vänligen vänta, detta kan ta en stund.",
 "Saving..." => "Sparar...",
 "deleted" => "raderad",
 "undo" => "ångra",
@@ -77,7 +79,6 @@
 "Select an App" => "Välj en App",
 "See application page at apps.owncloud.com" => "Se programsida på apps.owncloud.com",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span>-licensierad av <span class=\"author\"></span>",
-"Update" => "Uppdatera",
 "User Documentation" => "Användardokumentation",
 "Administrator Documentation" => "Administratörsdokumentation",
 "Online Documentation" => "Onlinedokumentation",
@@ -101,6 +102,10 @@
 "Help translate" => "Hjälp att översätta",
 "WebDAV" => "WebDAV",
 "Use this address to <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">access your Files via WebDAV</a>" => "Använd denna adress för att <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">komma åt dina filer via WebDAV</a>",
+"Encryption" => "Kryptering",
+"The encryption app is no longer enabled, decrypt all your file" => "Appen för kryptering är inte längre aktiverad, dekryptera alla dina filer",
+"Log-in password" => "Inloggningslösenord",
+"Decrypt all Files" => "Dekryptera alla filer",
 "Login Name" => "Inloggningsnamn",
 "Create" => "Skapa",
 "Admin Recovery Password" => "Admin återställningslösenord",
@@ -114,3 +119,4 @@
 "set new password" => "ange nytt lösenord",
 "Default" => "Förvald"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

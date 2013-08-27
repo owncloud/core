@@ -1,11 +1,11 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "Не удалось загрузить список из App Store",
 "Authentication error" => "Ошибка аутентификации",
 "Your display name has been changed." => "Ваше отображаемое имя было изменено.",
 "Unable to change display name" => "Невозможно изменить отображаемое имя",
 "Group already exists" => "Группа уже существует",
 "Unable to add group" => "Невозможно добавить группу",
-"Could not enable app. " => "Не удалось включить приложение.",
 "Email saved" => "Email сохранен",
 "Invalid email" => "Неправильный Email",
 "Unable to delete group" => "Невозможно удалить группу",
@@ -20,9 +20,10 @@
 "Disable" => "Выключить",
 "Enable" => "Включить",
 "Please wait...." => "Подождите...",
-"Error" => "Ошибка",
 "Updating...." => "Обновление...",
 "Error while updating app" => "Ошибка при обновлении приложения",
+"Error" => "Ошибка",
+"Update" => "Обновить",
 "Updated" => "Обновлено",
 "Saving..." => "Сохранение...",
 "deleted" => "удален",
@@ -77,7 +78,6 @@
 "Select an App" => "Выберите приложение",
 "See application page at apps.owncloud.com" => "Смотрите дополнения на apps.owncloud.com",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span> лицензия. Автор <span class=\"author\"></span>",
-"Update" => "Обновить",
 "User Documentation" => "Пользовательская документация",
 "Administrator Documentation" => "Документация администратора",
 "Online Documentation" => "Online документация",
@@ -101,6 +101,7 @@
 "Help translate" => "Помочь с переводом",
 "WebDAV" => "WebDAV",
 "Use this address to <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">access your Files via WebDAV</a>" => "Используйте этот адрес чтобы получить доступ к вашим файлам через WebDav - <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">",
+"Encryption" => "Шифрование",
 "Login Name" => "Имя пользователя",
 "Create" => "Создать",
 "Admin Recovery Password" => "Восстановление Пароля Администратора",
@@ -114,3 +115,4 @@
 "set new password" => "установить новый пароль",
 "Default" => "По умолчанию"
 );
+$PLURAL_FORMS = "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);";

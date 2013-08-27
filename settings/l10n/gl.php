@@ -1,11 +1,11 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "Non foi posíbel cargar a lista desde a App Store",
 "Authentication error" => "Produciuse un erro de autenticación",
 "Your display name has been changed." => "O seu nome visíbel foi cambiado",
 "Unable to change display name" => "Non é posíbel cambiar o nome visíbel",
 "Group already exists" => "O grupo xa existe",
 "Unable to add group" => "Non é posíbel engadir o grupo",
-"Could not enable app. " => "Non é posíbel activar o aplicativo.",
 "Email saved" => "Correo gardado",
 "Invalid email" => "Correo incorrecto",
 "Unable to delete group" => "Non é posíbel eliminar o grupo.",
@@ -20,10 +20,12 @@
 "Disable" => "Desactivar",
 "Enable" => "Activar",
 "Please wait...." => "Agarde...",
-"Error" => "Erro",
 "Updating...." => "Actualizando...",
 "Error while updating app" => "Produciuse un erro mentres actualizaba o aplicativo",
+"Error" => "Erro",
+"Update" => "Actualizar",
 "Updated" => "Actualizado",
+"Decrypting files... Please wait, this can take some time." => "Descifrando ficheiros... isto pode levar un anaco.",
 "Saving..." => "Gardando...",
 "deleted" => "eliminado",
 "undo" => "desfacer",
@@ -77,7 +79,6 @@
 "Select an App" => "Escolla un aplicativo",
 "See application page at apps.owncloud.com" => "Consulte a páxina do aplicativo en apps.owncloud.com",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span>-licenciado por<span class=\"author\"></span>",
-"Update" => "Actualizar",
 "User Documentation" => "Documentación do usuario",
 "Administrator Documentation" => "Documentación do administrador",
 "Online Documentation" => "Documentación na Rede",
@@ -101,6 +102,10 @@
 "Help translate" => "Axude na tradución",
 "WebDAV" => "WebDAV",
 "Use this address to <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">access your Files via WebDAV</a>" => "Empregue esta ligazón <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">para acceder aos sus ficheiros mediante WebDAV</a>",
+"Encryption" => "Cifrado",
+"The encryption app is no longer enabled, decrypt all your file" => "o aplicativo de cifrado non está activado, descifrar todos os ficheiros",
+"Log-in password" => "Contrasinal de acceso",
+"Decrypt all Files" => "Descifrar todos os ficheiros",
 "Login Name" => "Nome de acceso",
 "Create" => "Crear",
 "Admin Recovery Password" => "Contrasinal de recuperación do administrador",
@@ -114,3 +119,4 @@
 "set new password" => "estabelecer un novo contrasinal",
 "Default" => "Predeterminado"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

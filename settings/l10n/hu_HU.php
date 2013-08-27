@@ -1,11 +1,11 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "Nem tölthető le a lista az App Store-ból",
 "Authentication error" => "Azonosítási hiba",
 "Your display name has been changed." => "Az Ön megjelenítési neve megváltozott.",
 "Unable to change display name" => "Nem sikerült megváltoztatni a megjelenítési nevet",
 "Group already exists" => "A csoport már létezik",
 "Unable to add group" => "A csoport nem hozható létre",
-"Could not enable app. " => "A program nem aktiválható.",
 "Email saved" => "Email mentve",
 "Invalid email" => "Hibás email",
 "Unable to delete group" => "A csoport nem törölhető",
@@ -20,9 +20,10 @@
 "Disable" => "Letiltás",
 "Enable" => "engedélyezve",
 "Please wait...." => "Kérem várjon...",
-"Error" => "Hiba",
 "Updating...." => "Frissítés folyamatban...",
 "Error while updating app" => "Hiba történt a programfrissítés közben",
+"Error" => "Hiba",
+"Update" => "Frissítés",
 "Updated" => "Frissítve",
 "Saving..." => "Mentés...",
 "deleted" => "törölve",
@@ -77,7 +78,6 @@
 "Select an App" => "Válasszon egy alkalmazást",
 "See application page at apps.owncloud.com" => "Lásd apps.owncloud.com, alkalmazások oldal",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span>-a jogtuladonos <span class=\"author\"></span>",
-"Update" => "Frissítés",
 "User Documentation" => "Felhasználói leírás",
 "Administrator Documentation" => "Üzemeltetői leírás",
 "Online Documentation" => "Online leírás",
@@ -101,6 +101,7 @@
 "Help translate" => "Segítsen a fordításban!",
 "WebDAV" => "WebDAV",
 "Use this address to <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">access your Files via WebDAV</a>" => "Ezt a címet használja, ha <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">WebDAV-on keresztül szeretné elérni az állományait</a>",
+"Encryption" => "Titkosítás",
 "Login Name" => "Bejelentkezési név",
 "Create" => "Létrehozás",
 "Admin Recovery Password" => "A jelszóvisszaállítás adminisztrációja",
@@ -114,3 +115,4 @@
 "set new password" => "új jelszó beállítása",
 "Default" => "Alapértelmezett"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

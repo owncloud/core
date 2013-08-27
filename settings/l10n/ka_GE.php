@@ -1,11 +1,11 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "აპლიკაციების სია ვერ ჩამოიტვირთა App Store",
 "Authentication error" => "ავთენტიფიკაციის შეცდომა",
 "Your display name has been changed." => "თქვენი დისფლეის სახელი უკვე შეიცვალა",
 "Unable to change display name" => "დისფლეის სახელის შეცვლა ვერ მოხერხდა",
 "Group already exists" => "ჯგუფი უკვე არსებობს",
 "Unable to add group" => "ჯგუფის დამატება ვერ მოხერხდა",
-"Could not enable app. " => "ვერ მოხერხდა აპლიკაციის ჩართვა.",
 "Email saved" => "იმეილი შენახულია",
 "Invalid email" => "არასწორი იმეილი",
 "Unable to delete group" => "ჯგუფის წაშლა ვერ მოხერხდა",
@@ -20,9 +20,10 @@
 "Disable" => "გამორთვა",
 "Enable" => "ჩართვა",
 "Please wait...." => "დაიცადეთ....",
-"Error" => "შეცდომა",
 "Updating...." => "მიმდინარეობს განახლება....",
 "Error while updating app" => "შეცდომა აპლიკაციის განახლების დროს",
+"Error" => "შეცდომა",
+"Update" => "განახლება",
 "Updated" => "განახლებულია",
 "Saving..." => "შენახვა...",
 "deleted" => "წაშლილი",
@@ -67,7 +68,6 @@
 "Select an App" => "აირჩიეთ აპლიკაცია",
 "See application page at apps.owncloud.com" => "ნახეთ აპლიკაციის გვერდი apps.owncloud.com –ზე",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span>-ლიცენსირებულია <span class=\"author\"></span>",
-"Update" => "განახლება",
 "User Documentation" => "მომხმარებლის დოკუმენტაცია",
 "Administrator Documentation" => "ადმინისტრატორის დოკუმენტაცია",
 "Online Documentation" => "ონლაინ დოკუმენტაცია",
@@ -90,6 +90,7 @@
 "Language" => "ენა",
 "Help translate" => "თარგმნის დახმარება",
 "WebDAV" => "WebDAV",
+"Encryption" => "ენკრიპცია",
 "Login Name" => "მომხმარებლის სახელი",
 "Create" => "შექმნა",
 "Default Storage" => "საწყისი საცავი",
@@ -101,3 +102,4 @@
 "set new password" => "დააყენეთ ახალი პაროლი",
 "Default" => "საწყისი პარამეტრები"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";

@@ -1,11 +1,11 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "Incapaz de carregar a lista da App Store",
 "Authentication error" => "Erro na autenticação",
 "Your display name has been changed." => "O seu nome foi alterado",
 "Unable to change display name" => "Não foi possível alterar o nome",
 "Group already exists" => "O grupo já existe",
 "Unable to add group" => "Impossível acrescentar o grupo",
-"Could not enable app. " => "Não foi possível activar a app.",
 "Email saved" => "Email guardado",
 "Invalid email" => "Email inválido",
 "Unable to delete group" => "Impossível apagar grupo",
@@ -20,9 +20,10 @@
 "Disable" => "Desactivar",
 "Enable" => "Activar",
 "Please wait...." => "Por favor aguarde...",
-"Error" => "Erro",
 "Updating...." => "A Actualizar...",
 "Error while updating app" => "Erro enquanto actualizava a aplicação",
+"Error" => "Erro",
+"Update" => "Actualizar",
 "Updated" => "Actualizado",
 "Saving..." => "A guardar...",
 "deleted" => "apagado",
@@ -77,7 +78,6 @@
 "Select an App" => "Selecione uma aplicação",
 "See application page at apps.owncloud.com" => "Ver a página da aplicação em apps.owncloud.com",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span>-licenciado por <span class=\"author\"></span>",
-"Update" => "Actualizar",
 "User Documentation" => "Documentação de Utilizador",
 "Administrator Documentation" => "Documentação de administrador.",
 "Online Documentation" => "Documentação Online",
@@ -101,6 +101,7 @@
 "Help translate" => "Ajude a traduzir",
 "WebDAV" => "WebDAV",
 "Use this address to <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">access your Files via WebDAV</a>" => "Use este endereço para <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">aceder aos seus ficheiros via WebDav</a>",
+"Encryption" => "Encriptação",
 "Login Name" => "Nome de utilizador",
 "Create" => "Criar",
 "Admin Recovery Password" => "Recuperar password de administrador",
@@ -114,3 +115,4 @@
 "set new password" => "definir nova palavra-passe",
 "Default" => "Padrão"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

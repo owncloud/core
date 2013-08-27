@@ -1,10 +1,10 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "Не вдалося завантажити список з App Store",
 "Authentication error" => "Помилка автентифікації",
 "Unable to change display name" => "Не вдалося змінити зображене ім'я",
 "Group already exists" => "Група вже існує",
 "Unable to add group" => "Не вдалося додати групу",
-"Could not enable app. " => "Не вдалося активувати програму. ",
 "Email saved" => "Адресу збережено",
 "Invalid email" => "Невірна адреса",
 "Unable to delete group" => "Не вдалося видалити групу",
@@ -19,9 +19,10 @@
 "Disable" => "Вимкнути",
 "Enable" => "Включити",
 "Please wait...." => "Зачекайте, будь ласка...",
-"Error" => "Помилка",
 "Updating...." => "Оновлюється...",
 "Error while updating app" => "Помилка при оновленні програми",
+"Error" => "Помилка",
+"Update" => "Оновити",
 "Updated" => "Оновлено",
 "Saving..." => "Зберігаю...",
 "deleted" => "видалені",
@@ -66,7 +67,6 @@
 "Select an App" => "Вибрати додаток",
 "See application page at apps.owncloud.com" => "Перегляньте сторінку програм на apps.owncloud.com",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>",
-"Update" => "Оновити",
 "User Documentation" => "Документація Користувача",
 "Administrator Documentation" => "Документація Адміністратора",
 "Online Documentation" => "Он-Лайн Документація",
@@ -89,6 +89,7 @@
 "Language" => "Мова",
 "Help translate" => "Допомогти з перекладом",
 "WebDAV" => "WebDAV",
+"Encryption" => "Шифрування",
 "Login Name" => "Ім'я Логіну",
 "Create" => "Створити",
 "Default Storage" => "сховище за замовчуванням",
@@ -100,3 +101,4 @@
 "set new password" => "встановити новий пароль",
 "Default" => "За замовчуванням"
 );
+$PLURAL_FORMS = "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);";

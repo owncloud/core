@@ -1,9 +1,9 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "Ekki tókst að hlaða lista frá forrita síðu",
 "Authentication error" => "Villa við auðkenningu",
 "Group already exists" => "Hópur er þegar til",
 "Unable to add group" => "Ekki tókst að bæta við hóp",
-"Could not enable app. " => "Gat ekki virkjað forrit",
 "Email saved" => "Netfang vistað",
 "Invalid email" => "Ógilt netfang",
 "Unable to delete group" => "Ekki tókst að eyða hóp",
@@ -16,8 +16,9 @@
 "Disable" => "Gera óvirkt",
 "Enable" => "Virkja",
 "Please wait...." => "Andartak....",
-"Error" => "Villa",
 "Updating...." => "Uppfæri...",
+"Error" => "Villa",
+"Update" => "Uppfæra",
 "Updated" => "Uppfært",
 "Saving..." => "Er að vista ...",
 "deleted" => "eytt",
@@ -36,7 +37,6 @@
 "Select an App" => "Veldu forrit",
 "See application page at apps.owncloud.com" => "Skoða síðu forrits hjá apps.owncloud.com",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span>-leyfi skráð af <span class=\"author\"></span>",
-"Update" => "Uppfæra",
 "User Documentation" => "Notenda handbók",
 "Administrator Documentation" => "Stjórnenda handbók",
 "Online Documentation" => "Handbók á netinu",
@@ -57,6 +57,7 @@
 "Language" => "Tungumál",
 "Help translate" => "Hjálpa við þýðingu",
 "WebDAV" => "WebDAV",
+"Encryption" => "Dulkóðun",
 "Create" => "Búa til",
 "Default Storage" => "Sjálfgefin gagnageymsla",
 "Unlimited" => "Ótakmarkað",
@@ -65,3 +66,4 @@
 "Storage" => "gagnapláss",
 "Default" => "Sjálfgefið"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

@@ -1,11 +1,11 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "No s'ha pogut carregar la llista des de l'App Store",
 "Authentication error" => "Error d'autenticació",
 "Your display name has been changed." => "El nom a mostrar ha canviat.",
 "Unable to change display name" => "No s'ha pogut canviar el nom a mostrar",
 "Group already exists" => "El grup ja existeix",
 "Unable to add group" => "No es pot afegir el grup",
-"Could not enable app. " => "No s'ha pogut activar l'apliació",
 "Email saved" => "S'ha desat el correu electrònic",
 "Invalid email" => "El correu electrònic no és vàlid",
 "Unable to delete group" => "No es pot eliminar el grup",
@@ -20,10 +20,12 @@
 "Disable" => "Desactiva",
 "Enable" => "Habilita",
 "Please wait...." => "Espereu...",
-"Error" => "Error",
 "Updating...." => "Actualitzant...",
 "Error while updating app" => "Error en actualitzar l'aplicació",
+"Error" => "Error",
+"Update" => "Actualitza",
 "Updated" => "Actualitzada",
+"Decrypting files... Please wait, this can take some time." => "Desencriptant fitxers... Espereu, això pot trigar una estona.",
 "Saving..." => "Desant...",
 "deleted" => "esborrat",
 "undo" => "desfés",
@@ -77,7 +79,6 @@
 "Select an App" => "Seleccioneu una aplicació",
 "See application page at apps.owncloud.com" => "Mireu la pàgina d'aplicacions a apps.owncloud.com",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span>-propietat de <span class=\"author\"></span>",
-"Update" => "Actualitza",
 "User Documentation" => "Documentació d'usuari",
 "Administrator Documentation" => "Documentació d'administrador",
 "Online Documentation" => "Documentació en línia",
@@ -101,6 +102,10 @@
 "Help translate" => "Ajudeu-nos amb la traducció",
 "WebDAV" => "WebDAV",
 "Use this address to <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">access your Files via WebDAV</a>" => "Useu aquesta adreça per <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">accedir als fitxers via WebDAV</a>",
+"Encryption" => "Xifrat",
+"The encryption app is no longer enabled, decrypt all your file" => "L'aplicació d'encriptació ja no està activada, desencripteu tots els vostres fitxers.",
+"Log-in password" => "Contrasenya d'accés",
+"Decrypt all Files" => "Desencripta tots els fitxers",
 "Login Name" => "Nom d'accés",
 "Create" => "Crea",
 "Admin Recovery Password" => "Recuperació de contrasenya d'administrador",
@@ -114,3 +119,4 @@
 "set new password" => "estableix nova contrasenya",
 "Default" => "Per defecte"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

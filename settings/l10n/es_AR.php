@@ -1,11 +1,11 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "Imposible cargar la lista desde el App Store",
 "Authentication error" => "Error al autenticar",
 "Your display name has been changed." => "El nombre mostrado que usás fue cambiado.",
 "Unable to change display name" => "No fue posible cambiar el nombre mostrado",
 "Group already exists" => "El grupo ya existe",
 "Unable to add group" => "No fue posible añadir el grupo",
-"Could not enable app. " => "No se pudo habilitar la App.",
 "Email saved" => "e-mail guardado",
 "Invalid email" => "El e-mail no es válido ",
 "Unable to delete group" => "No fue posible borrar el grupo",
@@ -20,9 +20,10 @@
 "Disable" => "Desactivar",
 "Enable" => "Activar",
 "Please wait...." => "Por favor, esperá....",
-"Error" => "Error",
 "Updating...." => "Actualizando....",
 "Error while updating app" => "Error al actualizar App",
+"Error" => "Error",
+"Update" => "Actualizar",
 "Updated" => "Actualizado",
 "Saving..." => "Guardando...",
 "deleted" => "borrado",
@@ -69,7 +70,6 @@
 "Select an App" => "Elegí una App",
 "See application page at apps.owncloud.com" => "Mirá la web de aplicaciones apps.owncloud.com",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span>-licenciado por <span class=\"author\">",
-"Update" => "Actualizar",
 "User Documentation" => "Documentación de Usuario",
 "Administrator Documentation" => "Documentación de Administrador",
 "Online Documentation" => "Documentación en línea",
@@ -93,6 +93,7 @@
 "Help translate" => "Ayudanos a traducir",
 "WebDAV" => "WebDAV",
 "Use this address to <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">access your Files via WebDAV</a>" => "Usá esta dirección para <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">acceder a tus archivos a través de WebDAV</a>",
+"Encryption" => "Encriptación",
 "Login Name" => "Nombre de Usuario",
 "Create" => "Crear",
 "Admin Recovery Password" => "Recuperación de contraseña de administrador",
@@ -106,3 +107,4 @@
 "set new password" => "Configurar nueva contraseña",
 "Default" => "Predeterminado"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

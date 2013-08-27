@@ -1,11 +1,11 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "Ezin izan da App Dendatik zerrenda kargatu",
 "Authentication error" => "Autentifikazio errorea",
 "Your display name has been changed." => "Zure bistaratze izena aldatu egin da.",
 "Unable to change display name" => "Ezin izan da bistaratze izena aldatu",
 "Group already exists" => "Taldea dagoeneko existitzenda",
 "Unable to add group" => "Ezin izan da taldea gehitu",
-"Could not enable app. " => "Ezin izan da aplikazioa gaitu.",
 "Email saved" => "Eposta gorde da",
 "Invalid email" => "Baliogabeko eposta",
 "Unable to delete group" => "Ezin izan da taldea ezabatu",
@@ -20,9 +20,10 @@
 "Disable" => "Ez-gaitu",
 "Enable" => "Gaitu",
 "Please wait...." => "Itxoin mesedez...",
-"Error" => "Errorea",
 "Updating...." => "Eguneratzen...",
 "Error while updating app" => "Errorea aplikazioa eguneratzen zen bitartean",
+"Error" => "Errorea",
+"Update" => "Eguneratu",
 "Updated" => "Eguneratuta",
 "Saving..." => "Gordetzen...",
 "deleted" => "ezabatuta",
@@ -74,7 +75,6 @@
 "Select an App" => "Aukeratu programa bat",
 "See application page at apps.owncloud.com" => "Ikusi programen orria apps.owncloud.com en",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span>-lizentziatua <span class=\"author\"></span>",
-"Update" => "Eguneratu",
 "User Documentation" => "Erabiltzaile dokumentazioa",
 "Administrator Documentation" => "Administradore dokumentazioa",
 "Online Documentation" => "Online dokumentazioa",
@@ -98,6 +98,7 @@
 "Help translate" => "Lagundu itzultzen",
 "WebDAV" => "WebDAV",
 "Use this address to <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">access your Files via WebDAV</a>" => "<a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">helbidea erabili zure fitxategiak WebDAV bidez eskuratzeko</a>",
+"Encryption" => "Enkriptazioa",
 "Login Name" => "Sarrera Izena",
 "Create" => "Sortu",
 "Admin Recovery Password" => "Kudeatzaile pasahitz berreskuratzea",
@@ -111,3 +112,4 @@
 "set new password" => "ezarri pasahitz berria",
 "Default" => "Lehenetsia"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

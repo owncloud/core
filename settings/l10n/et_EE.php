@@ -1,11 +1,11 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "App Store'i nimekirja laadimine ebaõnnestus",
 "Authentication error" => "Autentimise viga",
 "Your display name has been changed." => "Sinu näidatav nimi on muudetud.",
 "Unable to change display name" => "Ei saa muuta näidatavat nime",
 "Group already exists" => "Grupp on juba olemas",
 "Unable to add group" => "Keela grupi lisamine",
-"Could not enable app. " => "Rakenduse sisselülitamine ebaõnnestus.",
 "Email saved" => "Kiri on salvestatud",
 "Invalid email" => "Vigane e-post",
 "Unable to delete group" => "Grupi kustutamine ebaõnnestus",
@@ -20,10 +20,12 @@
 "Disable" => "Lülita välja",
 "Enable" => "Lülita sisse",
 "Please wait...." => "Palun oota...",
-"Error" => "Viga",
 "Updating...." => "Uuendamine...",
 "Error while updating app" => "Viga rakenduse uuendamisel",
+"Error" => "Viga",
+"Update" => "Uuenda",
 "Updated" => "Uuendatud",
+"Decrypting files... Please wait, this can take some time." => "Dekrüpteerin faile... Palun oota, see võib võtta veidi aega.",
 "Saving..." => "Salvestamine...",
 "deleted" => "kustutatud",
 "undo" => "tagasi",
@@ -77,7 +79,6 @@
 "Select an App" => "Vali programm",
 "See application page at apps.owncloud.com" => "Vaata rakenduste lehte aadressil apps.owncloud.com",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span>-litsenseeritud <span class=\"author\"></span>",
-"Update" => "Uuenda",
 "User Documentation" => "Kasutaja dokumentatsioon",
 "Administrator Documentation" => "Administraatori dokumentatsioon",
 "Online Documentation" => "Online dokumentatsioon",
@@ -101,6 +102,10 @@
 "Help translate" => "Aita tõlkida",
 "WebDAV" => "WebDAV",
 "Use this address to <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">access your Files via WebDAV</a>" => "Kasuta seda aadressi <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">oma failidele ligipääsuks WebDAV kaudu</a>",
+"Encryption" => "Krüpteerimine",
+"The encryption app is no longer enabled, decrypt all your file" => "Küpteeringu rakend pole lubatud, dekrüpteeri kõik oma failid",
+"Log-in password" => "Sisselogimise parool",
+"Decrypt all Files" => "Dekrüpteeri kõik failid",
 "Login Name" => "Kasutajanimi",
 "Create" => "Lisa",
 "Admin Recovery Password" => "Admin taasteparool",
@@ -114,3 +119,4 @@
 "set new password" => "määra uus parool",
 "Default" => "Vaikeväärtus"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

@@ -1,9 +1,9 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "ไม่สามารถโหลดรายการจาก App Store ได้",
 "Authentication error" => "เกิดข้อผิดพลาดในสิทธิ์การเข้าใช้งาน",
 "Group already exists" => "มีกลุ่มดังกล่าวอยู่ในระบบอยู่แล้ว",
 "Unable to add group" => "ไม่สามารถเพิ่มกลุ่มได้",
-"Could not enable app. " => "ไม่สามารถเปิดใช้งานแอปได้",
 "Email saved" => "อีเมลถูกบันทึกแล้ว",
 "Invalid email" => "อีเมลไม่ถูกต้อง",
 "Unable to delete group" => "ไม่สามารถลบกลุ่มได้",
@@ -18,9 +18,10 @@
 "Disable" => "ปิดใช้งาน",
 "Enable" => "เปิดใช้งาน",
 "Please wait...." => "กรุณารอสักครู่...",
-"Error" => "ข้อผิดพลาด",
 "Updating...." => "กำลังอัพเดทข้อมูล...",
 "Error while updating app" => "เกิดข้อผิดพลาดในระหว่างการอัพเดทแอปฯ",
+"Error" => "ข้อผิดพลาด",
+"Update" => "อัพเดท",
 "Updated" => "อัพเดทแล้ว",
 "Saving..." => "กำลังบันทึกข้อมูล...",
 "deleted" => "ลบแล้ว",
@@ -52,7 +53,6 @@
 "Select an App" => "เลือก App",
 "See application page at apps.owncloud.com" => "ดูหน้าแอพพลิเคชั่นที่ apps.owncloud.com",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span>-ลิขสิทธิ์การใช้งานโดย <span class=\"author\"></span>",
-"Update" => "อัพเดท",
 "User Documentation" => "เอกสารคู่มือการใช้งานสำหรับผู้ใช้งาน",
 "Administrator Documentation" => "เอกสารคู่มือการใช้งานสำหรับผู้ดูแลระบบ",
 "Online Documentation" => "เอกสารคู่มือการใช้งานออนไลน์",
@@ -74,6 +74,7 @@
 "Language" => "ภาษา",
 "Help translate" => "ช่วยกันแปล",
 "WebDAV" => "WebDAV",
+"Encryption" => "การเข้ารหัส",
 "Login Name" => "ชื่อที่ใช้สำหรับเข้าสู่ระบบ",
 "Create" => "สร้าง",
 "Default Storage" => "พื้นที่จำกัดข้อมูลเริ่มต้น",
@@ -85,3 +86,4 @@
 "set new password" => "ตั้งค่ารหัสผ่านใหม่",
 "Default" => "ค่าเริ่มต้น"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";

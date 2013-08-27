@@ -1,11 +1,11 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "قادر به بارگذاری لیست از فروشگاه اپ نیستم",
 "Authentication error" => "خطا در اعتبار سنجی",
 "Your display name has been changed." => "نام نمایش شما تغییر یافته است.",
 "Unable to change display name" => "امکان تغییر نام نمایشی شما وجود ندارد",
 "Group already exists" => "این گروه در حال حاضر موجود است",
 "Unable to add group" => "افزودن گروه امکان پذیر نیست",
-"Could not enable app. " => "برنامه را نمی توان فعال ساخت.",
 "Email saved" => "ایمیل ذخیره شد",
 "Invalid email" => "ایمیل غیر قابل قبول",
 "Unable to delete group" => "حذف گروه امکان پذیر نیست",
@@ -20,9 +20,10 @@
 "Disable" => "غیرفعال",
 "Enable" => "فعال",
 "Please wait...." => "لطفا صبر کنید ...",
-"Error" => "خطا",
 "Updating...." => "در حال بروز رسانی...",
 "Error while updating app" => "خطا در هنگام بهنگام سازی برنامه",
+"Error" => "خطا",
+"Update" => "به روز رسانی",
 "Updated" => "بروز رسانی انجام شد",
 "Saving..." => "در حال ذخیره سازی...",
 "deleted" => "حذف شده",
@@ -67,7 +68,6 @@
 "Select an App" => "یک برنامه انتخاب کنید",
 "See application page at apps.owncloud.com" => "صفحه این اٌپ را در apps.owncloud.com ببینید",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span>-مجاز از طرف <span class=\"author\"></span>",
-"Update" => "به روز رسانی",
 "User Documentation" => "مستندات کاربر",
 "Administrator Documentation" => "مستندات مدیر",
 "Online Documentation" => "مستندات آنلاین",
@@ -91,6 +91,7 @@
 "Help translate" => "به ترجمه آن کمک کنید",
 "WebDAV" => "WebDAV",
 "Use this address to <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">access your Files via WebDAV</a>" => "استفاده ابن آدرس <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\"> برای دسترسی فایل های شما از طریق WebDAV </a>",
+"Encryption" => "رمزگذاری",
 "Login Name" => "نام کاربری",
 "Create" => "ایجاد کردن",
 "Admin Recovery Password" => "مدیریت بازیابی رمز عبور",
@@ -104,3 +105,4 @@
 "set new password" => "تنظیم کلمه عبور جدید",
 "Default" => "پیش فرض"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";

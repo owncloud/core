@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Authentication error" => "Възникна проблем с идентификацията",
 "Group already exists" => "Групата вече съществува",
 "Unable to add group" => "Невъзможно добавяне на група",
@@ -12,8 +13,9 @@
 "Disable" => "Изключено",
 "Enable" => "Включено",
 "Please wait...." => "Моля почакайте....",
-"Error" => "Грешка",
 "Updating...." => "Обновява се...",
+"Error" => "Грешка",
+"Update" => "Обновяване",
 "Updated" => "Обновено",
 "Saving..." => "Записване...",
 "deleted" => "изтрито",
@@ -31,7 +33,6 @@
 "Add your App" => "Добавете Ваше приложение",
 "More Apps" => "Още приложения",
 "Select an App" => "Изберете приложение",
-"Update" => "Обновяване",
 "User Documentation" => "Потребителска документация",
 "Administrator Documentation" => "Административна документация",
 "Online Documentation" => "Документация",
@@ -51,6 +52,7 @@
 "Language" => "Език",
 "Help translate" => "Помогнете с превода",
 "WebDAV" => "WebDAV",
+"Encryption" => "Криптиране",
 "Login Name" => "Потребител",
 "Create" => "Създаване",
 "Default Storage" => "Хранилище по подразбиране",
@@ -60,3 +62,4 @@
 "Storage" => "Хранилище",
 "Default" => "По подразбиране"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";
