@@ -48,7 +48,6 @@ usersmanagement.controller('grouplistController',
 	function($scope, $resource, $routeParams, GroupService, UserService, GroupModel) {
 		$scope.loading = true;
 		$scope.groups = GroupModel.getAll();
-		groups = $scope.groups;
 		
 		$scope.routeParams = $routeParams;
 		GroupService.getAllGroups().then(function(response) {
@@ -56,8 +55,8 @@ usersmanagement.controller('grouplistController',
 			
 			// Deletes the group.
 			$scope.deletegroup = function(group) {
-				groups.splice(groups.indexOf(group), 1);
-				GroupService.removegroup().delete({ groupname : group });
+				$scope.groups.splice($scope.groups.indexOf(group), 1);
+				GroupService.removegroup(group);
 			}
 		});
 	}
@@ -120,7 +119,7 @@ usersmanagement.controller('userlistController',
 			/* Deletes Users */
 			$scope.deleteuser = function(user) {
 				$scope.users.splice($scope.users.indexOf(user), 1);
-				UserService.removeuser().delete({ username : user });
+				UserService.removeuser(user);
 			};
 		});
 	}
