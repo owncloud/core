@@ -1037,7 +1037,8 @@ class View {
 	 */
 	public function getPath($id) {
 		$mountManager = Filesystem::getMountManager();
-		$mounts = $mountManager->getAll();
+		$mounts = $mountManager->findIn($this->getRoot());
+		$mounts[] = $mountManager->find($this->getRoot());
 		foreach ($mounts as $mount) {
 			$cache = $mount->getStorage()->getCache();
 			$data = $cache->get($id);
