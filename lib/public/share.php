@@ -110,23 +110,23 @@ class Share {
 	public static function setupHooks() {
 		$shareManager = self::getShareManager();
 		if ($shareManager) {
-			self::$shareManager->listen('\OC\Share', 'preShare', function($share) {
+			$shareManager->listen('\OC\Share', 'preShare', function($share) {
 				\OC_Hook::emit('OCP\Share', 'pre_shared', self::getHookArray($share));
 			});
-			self::$shareManager->listen('\OC\Share', 'postShare', function($share) {
+			$shareManager->listen('\OC\Share', 'postShare', function($share) {
 				\OC_Hook::emit('OCP\Share', 'post_shared', self::getHookArray($share));
 			});
-			self::$shareManager->listen('\OC\Share', 'preUnshare', function($share) {
+			$shareManager->listen('\OC\Share', 'preUnshare', function($share) {
 				$params = self::getHookArray($share);
 				$params['itemParent'] = $params['parent'];
 				\OC_Hook::emit('OCP\Share', 'pre_unshare', $params);
 			});
-			self::$shareManager->listen('\OC\Share', 'postUnshare', function($share) {
+			$shareManager->listen('\OC\Share', 'postUnshare', function($share) {
 				$params = self::getHookArray($share);
 				$params['itemParent'] = $params['parent'];
 				\OC_Hook::emit('OCP\Share', 'post_unshare', $params);
 			});
-			self::$shareManager->listen('\OC\Share', 'postUpdate', function($share) {
+			$shareManager->listen('\OC\Share', 'postUpdate', function($share) {
 				$properties = $share->getUpdatedProperties();
 				if (isset($properties['permissions'])) {
 					$itemType = $share->getItemType();
@@ -1524,7 +1524,7 @@ class Share {
 			if ($run === false) {
 				throw new \Exception($error);
 			}
-			
+
 			if (isset($fileSource)) {
 				if ($parentFolder) {
 					if ($parentFolder === true) {
