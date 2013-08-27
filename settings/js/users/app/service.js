@@ -37,10 +37,10 @@ usersmanagement.factory('GroupService',
 				isArray : true
 			});
 		},
-		removegroup: function (group) {
-			$resource(OC.filePath('settings', 'ajax', 'removegroup.php'), group, {
-				method: 'DELETE'
-			});
+		removegroup: function(group) {
+			$resource(OC.filePath('settings', 'ajax', 'removegroup.php')).delete(
+				{ groupname : group }
+			);
 		},
 		getAllGroups: function() {
 			var deferred = $q.defer();
@@ -70,10 +70,10 @@ usersmanagement.factory('UserService',
 				method : 'POST'
 			});
 		},
-		removeuser: function (users) {
-			return $resource(OC.filePath('settings', 'ajax', 'removeuser.php'), users, {
-				method: 'DELETE'
-			});
+		removeuser: function(user) {
+			return $resource(OC.filePath('settings', 'ajax', 'removeuser.php')).delete(
+				{ username : user }
+			);
 		},
 		updateName: function(userid,displayname) {
 			return $resource(OC.filePath('settings', 'ajax', 'changedisplayname.php')).save(

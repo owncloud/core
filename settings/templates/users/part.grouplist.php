@@ -35,11 +35,13 @@
 			}">
 				{{ group.useringroup.length }}
 			</span>
-			<button class="svg action delete-icon delete-button"
-			ng-click="deletegroup(group.name)"
-			ng-show="routeParams.groupId == group.id"
-			original-title="Delete Group"
-			title="Delete Group"></button>
+			<button
+				class="svg action delete-icon delete-button"
+				ng-click="deletegroup(group.name)"
+				ng-show="routeParams.groupId == group.id"
+				original-title="Delete Group"
+				title="Delete Group">
+			</button>
 		</span>
 	</li>
 </ul>
