@@ -31,16 +31,3 @@ input[type="submit"]{
 	margin-left: 15px;
 	margin-right: 17px;
 }
-
-.warning-info{
-	font-weight: bold;
-	padding: 10px;
-	color: rgb(255, 255, 255);
-	text-shadow: 0 -1px 0 rgba(0,0,0,.3);
-	background-color: transparent;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
-	margin-top: -20px;
-	text-align: center;
-}

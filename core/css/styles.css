@@ -191,6 +191,7 @@ input[type="submit"].enabled { background:#66f866; border:1px solid #5e5; -moz-b
 #body-login p.info,
 #body-login form fieldset legend,
 #body-login #datadirContent label,
+#body-login form fieldset .warning-info,
 #body-login form input[type="checkbox"]+label {
 	text-align: center;
 	color: #000;
@@ -214,7 +215,7 @@ input[type="submit"].enabled { background:#66f866; border:1px solid #5e5; -moz-b
 #body-login form { width:22em; margin:2em auto 2em; padding:0; }
 #body-login form fieldset {
 	margin-bottom: 20px;
-	text-align: left;
+	text-align: left;warning-info
 }
 #body-login form #adminaccount { margin-bottom:5px; }
 #body-login form fieldset legend, #datadirContent label {
