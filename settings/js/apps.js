@@ -20,11 +20,16 @@ OC.Settings.Apps = OC.Settings.Apps || {
 		page.find('span.score').html(app.score);
 		page.find('p.description').text(app.description);
 		page.find('img.preview').attr('src', app.preview);
+		if (app.preview && app.preview.length) {
+			page.find('img.preview').show();
+		} else {
+			page.find('img.preview').hide();
+		}
 		page.find('small.externalapp').attr('style', 'visibility:visible');
 		page.find('span.author').text(app.author);
-		page.find('span.licence').text(app.licence);
+		page.find('span.licence').text(app.license);
 
-		if (app.update != false) {
+		if (app.update !== false) {
 			page.find('input.update').show();
 			page.find('input.update').data('appid', app.id);
 			page.find('input.update').attr('value',t('settings', 'Update to {appversion}', {appversion:app.update}));
@@ -36,7 +41,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 		page.find('input.enable').val((app.active) ? t('settings', 'Disable') : t('settings', 'Enable'));
 		page.find('input.enable').data('appid', app.id);
 		page.find('input.enable').data('active', app.active);
-		if (app.internal == false) {
+		if (app.internal === false) {
 			page.find('span.score').show();
 			page.find('p.appslink').show();
 			page.find('a').attr('href', 'http://apps.owncloud.com/content/show.php?content=' + app.id);
@@ -45,52 +50,73 @@ OC.Settings.Apps = OC.Settings.Apps || {
 			page.find('p.appslink').hide();
 			page.find('span.score').hide();
 		}
+		if (typeof($('#leftcontent li[data-id="'+app.id+'"]').data('errormsg')) !== "undefined") {
+			page.find(".warning").show();
+			page.find(".warning").text($('#leftcontent li[data-id="'+app.id+'"]').data('errormsg'));
+		} else {
+			page.find(".warning").hide();
+		}
 	},
 	enableApp:function(appid, active, element) {
 		console.log('enableApp:', appid, active, element);
 		var appitem=$('#leftcontent li[data-id="'+appid+'"]');
-		appData = appitem.data('app');
-		appData.active = !active;
-		appitem.data('app', appData);
 		element.val(t('settings','Please wait....'));
 		if(active) {
 			$.post(OC.filePath('settings','ajax','disableapp.php'),{appid:appid},function(result) {
-				if(!result || result.status!='success') {
-					OC.dialogs.alert('Error while disabling app', t('core', 'Error'));
+				if(!result || result.status !== 'success') {
+					if (result.data && result.data.message) {
+						OC.Settings.Apps.showErrorMessage(result.data.message);
+						appitem.data('errormsg', result.data.message);
+					} else {
+						OC.Settings.Apps.showErrorMessage(t('settings', 'Error while disabling app'));
+						appitem.data('errormsg', t('settings', 'Error while disabling app'));
+					}
+					element.val(t('settings','Disable'));
+					appitem.addClass('appwarning');
 				}
 				else {
-					element.data('active',false);
+					appitem.data('active',false);
 					OC.Settings.Apps.removeNavigation(appid);
+					appitem.removeClass('active');
 					element.val(t('settings','Enable'));
 				}
 			},'json');
-			$('#leftcontent li[data-id="'+appid+'"]').removeClass('active');
 		} else {
 			$.post(OC.filePath('settings','ajax','enableapp.php'),{appid:appid},function(result) {
-				if(!result || result.status!='success') {
-					OC.dialogs.alert('Error while enabling app', t('core', 'Error'));
-				}
-				else {
+				if(!result || result.status !== 'success') {
+					if (result.data && result.data.message) {
+						OC.Settings.Apps.showErrorMessage(result.data.message);
+						appitem.data('errormsg', result.data.message);
+					} else {
+						OC.Settings.Apps.showErrorMessage(t('settings', 'Error while enabling app'));
+						appitem.data('errormsg', t('settings', 'Error while disabling app'));
+					}
+					element.val(t('settings','Enable'));
+					appitem.addClass('appwarning');
+				} else {
 					OC.Settings.Apps.addNavigation(appid);
-					element.data('active',true);
+					appitem.data('active',true);
+					appitem.addClass('active');
 					element.val(t('settings','Disable'));
 				}
 			},'json')
 			.fail(function() { 
-				OC.dialogs.alert('Error while enabling app', t('core', 'Error'));
-				element.data('active',false);
+				OC.Settings.Apps.showErrorMessage(t('settings', 'Error while enabling app'));
+				appitem.data('errormsg', t('settings', 'Error while enabling app'));
+				appitem.data('active',false);
+				appitem.addClass('appwarning');
 				OC.Settings.Apps.removeNavigation(appid);
 				element.val(t('settings','Enable'));
 			});
-			$('#leftcontent li[data-id="'+appid+'"]').addClass('active');
 		}
 	},
 	updateApp:function(appid, element) {
 		console.log('updateApp:', appid, element);
 		element.val(t('settings','Updating....'));
 		$.post(OC.filePath('settings','ajax','updateapp.php'),{appid:appid},function(result) {
-			if(!result || result.status!='success') {
-				OC.dialogs.alert(t('settings','Error while updating app'),t('settings','Error'));
+			if(!result || result.status !== 'success') {
+				OC.Settings.Apps.showErrorMessage(t('settings','Error while updating app'),t('settings','Error'));
+				element.val(t('settings','Update'));
 			}
 			else {
 				element.val(t('settings','Updated'));
@@ -142,16 +168,30 @@ OC.Settings.Apps = OC.Settings.Apps || {
 						li.attr('data-id', entry.id);
 						var img= $('<img class="icon"/>').attr({ src: entry.icon});
 						var a=$('<a></a>').attr('href', entry.href);
-						var filename=$('<span></span>')
+						var filename=$('<span></span>');
 						filename.text(entry.name);
 						a.prepend(filename);
 						a.prepend(img);
 						li.append(a);
-						container.append(li);
+						// prepend the new app before the 'More apps' function
+						$('#apps-management').before(li);
+						// scroll the app navigation down so the newly added app is seen
+						$('#navigation').animate({ scrollTop: $('#apps').height() }, 'slow');
+						// draw attention to the newly added app entry by flashing it twice
+						container.children('li[data-id="'+entry.id+'"]').animate({opacity:.3}).animate({opacity:1}).animate({opacity:.3}).animate({opacity:1});
+
+						if (!SVGSupport() && entry.icon.match(/\.svg$/i)) {
+							$(img).addClass('svg');
+							replaceSVG();
+						}
 					}
 				}
 			}
 		});
+	},
+	showErrorMessage: function(message) {
+		$('.appinfo .warning').show();
+		$('.appinfo .warning').text(message);
 	}
 };
 
@@ -162,7 +202,7 @@ $(document).ready(function(){
 		$(this).find('span.hidden').remove();
 	});
 	$('#leftcontent li').keydown(function(event) {
-		if (event.which == 13 || event.which == 32) {
+		if (event.which === 13 || event.which === 32) {
 			$(event.target).click();
 		}
 		return false;

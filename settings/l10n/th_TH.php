@@ -1,9 +1,9 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "ไม่สามารถโหลดรายการจาก App Store ได้",
 "Authentication error" => "เกิดข้อผิดพลาดในสิทธิ์การเข้าใช้งาน",
 "Group already exists" => "มีกลุ่มดังกล่าวอยู่ในระบบอยู่แล้ว",
 "Unable to add group" => "ไม่สามารถเพิ่มกลุ่มได้",
-"Could not enable app. " => "ไม่สามารถเปิดใช้งานแอปได้",
 "Email saved" => "อีเมลถูกบันทึกแล้ว",
 "Invalid email" => "อีเมลไม่ถูกต้อง",
 "Unable to delete group" => "ไม่สามารถลบกลุ่มได้",
@@ -18,9 +18,10 @@
 "Disable" => "ปิดใช้งาน",
 "Enable" => "เปิดใช้งาน",
 "Please wait...." => "กรุณารอสักครู่...",
-"Error" => "ข้อผิดพลาด",
 "Updating...." => "กำลังอัพเดทข้อมูล...",
 "Error while updating app" => "เกิดข้อผิดพลาดในระหว่างการอัพเดทแอปฯ",
+"Error" => "ข้อผิดพลาด",
+"Update" => "อัพเดท",
 "Updated" => "อัพเดทแล้ว",
 "Saving..." => "กำลังบันทึกข้อมูล...",
 "deleted" => "ลบแล้ว",
@@ -30,11 +31,8 @@
 "Delete" => "ลบ",
 "__language_name__" => "ภาษาไทย",
 "Security Warning" => "คำเตือนเกี่ยวกับความปลอดภัย",
-"Your data directory and your files are probably accessible from the internet. The .htaccess file that ownCloud provides is not working. We strongly suggest that you configure your webserver in a way that the data directory is no longer accessible or you move the data directory outside the webserver document root." => "ไดเร็กทอรี่ข้อมูลและไฟล์ของคุณสามารถเข้าถึงได้จากอินเทอร์เน็ต ไฟล์ .htaccess ที่ ownCloud มีให้ไม่สามารถทำงานได้อย่างเหมาะสม เราขอแนะนำให้คุณกำหนดค่าเว็บเซิร์ฟเวอร์ใหม่ในรูปแบบที่ไดเร็กทอรี่เก็บข้อมูลไม่สามารถเข้าถึงได้อีกต่อไป หรือคุณได้ย้ายไดเร็กทอรี่ที่ใช้เก็บข้อมูลไปอยู่ภายนอกตำแหน่ง root ของเว็บเซิร์ฟเวอร์แล้ว",
 "Cron" => "Cron",
 "Execute one task with each page loaded" => "ประมวลคำสั่งหนึ่งงานในแต่ละครั้งที่มีการโหลดหน้าเว็บ",
-"cron.php is registered at a webcron service. Call the cron.php page in the owncloud root once a minute over http." => "cron.php ได้รับการลงทะเบียนแล้วกับเว็บผู้ให้บริการ webcron เรียกหน้าเว็บ cron.php ที่ตำแหน่ง root ของ owncloud หลังจากนี้สักครู่ผ่านทาง http",
-"Use systems cron service. Call the cron.php file in the owncloud folder via a system cronjob once a minute." => "ใช้บริการ cron จากระบบ เรียกไฟล์ cron.php ในโฟลเดอร์ owncloud ผ่านทาง cronjob ของระบบหลังจากนี้สักครู่",
 "Sharing" => "การแชร์ข้อมูล",
 "Enable Share API" => "เปิดใช้งาน API สำหรับคุณสมบัติแชร์ข้อมูล",
 "Allow apps to use the Share API" => "อนุญาตให้แอปฯสามารถใช้ API สำหรับแชร์ข้อมูลได้",
@@ -55,7 +53,6 @@
 "Select an App" => "เลือก App",
 "See application page at apps.owncloud.com" => "ดูหน้าแอพพลิเคชั่นที่ apps.owncloud.com",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span>-ลิขสิทธิ์การใช้งานโดย <span class=\"author\"></span>",
-"Update" => "อัพเดท",
 "User Documentation" => "เอกสารคู่มือการใช้งานสำหรับผู้ใช้งาน",
 "Administrator Documentation" => "เอกสารคู่มือการใช้งานสำหรับผู้ดูแลระบบ",
 "Online Documentation" => "เอกสารคู่มือการใช้งานออนไลน์",
@@ -77,7 +74,7 @@
 "Language" => "ภาษา",
 "Help translate" => "ช่วยกันแปล",
 "WebDAV" => "WebDAV",
-"Use this address to connect to your ownCloud in your file manager" => "ใช้ที่อยู่นี้เพื่อเชื่อมต่อกับ ownCloud ในโปรแกรมจัดการไฟล์ของคุณ",
+"Encryption" => "การเข้ารหัส",
 "Login Name" => "ชื่อที่ใช้สำหรับเข้าสู่ระบบ",
 "Create" => "สร้าง",
 "Default Storage" => "พื้นที่จำกัดข้อมูลเริ่มต้น",
@@ -89,3 +86,4 @@
 "set new password" => "ตั้งค่ารหัสผ่านใหม่",
 "Default" => "ค่าเริ่มต้น"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";

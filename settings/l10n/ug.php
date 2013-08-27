@@ -1,11 +1,11 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "ئەپ بازىرىدىن تىزىمنى يۈكلىيەلمىدى",
 "Authentication error" => "سالاھىيەت دەلىللەش خاتالىقى",
 "Your display name has been changed." => "كۆرسىتىدىغان ئىسمىڭىز ئۆزگەردى.",
 "Unable to change display name" => "كۆرسىتىدىغان ئىسىمنى ئۆزگەرتكىلى بولمايدۇ",
 "Group already exists" => "گۇرۇپپا مەۋجۇت",
 "Unable to add group" => "گۇرۇپپا قوشقىلى بولمايدۇ",
-"Could not enable app. " => "ئەپنى قوزغىتالمىدى. ",
 "Email saved" => "تورخەت ساقلاندى",
 "Invalid email" => "ئىناۋەتسىز تورخەت",
 "Unable to delete group" => "گۇرۇپپىنى ئۆچۈرەلمىدى",
@@ -19,9 +19,10 @@
 "Disable" => "چەكلە",
 "Enable" => "قوزغات",
 "Please wait...." => "سەل كۈتۈڭ…",
-"Error" => "خاتالىق",
 "Updating...." => "يېڭىلاۋاتىدۇ…",
 "Error while updating app" => "ئەپنى يېڭىلاۋاتقاندا خاتالىق كۆرۈلدى",
+"Error" => "خاتالىق",
+"Update" => "يېڭىلا",
 "Updated" => "يېڭىلاندى",
 "Saving..." => "ساقلاۋاتىدۇ…",
 "deleted" => "ئۆچۈرۈلگەن",
@@ -41,7 +42,6 @@
 "Add your App" => "ئەپىڭىزنى قوشۇڭ",
 "More Apps" => "تېخىمۇ كۆپ ئەپلەر",
 "Select an App" => "بىر ئەپ تاللاڭ",
-"Update" => "يېڭىلا",
 "User Documentation" => "ئىشلەتكۈچى قوللانمىسى",
 "Administrator Documentation" => "باشقۇرغۇچى قوللانمىسى",
 "Online Documentation" => "توردىكى قوللانما",
@@ -59,6 +59,7 @@
 "Language" => "تىل",
 "Help translate" => "تەرجىمىگە ياردەم",
 "WebDAV" => "WebDAV",
+"Encryption" => "شىفىرلاش",
 "Login Name" => "تىزىمغا كىرىش ئاتى",
 "Create" => "قۇر",
 "Default Storage" => "كۆڭۈلدىكى ساقلىغۇچ",
@@ -70,3 +71,4 @@
 "set new password" => "يېڭى ئىم تەڭشە",
 "Default" => "كۆڭۈلدىكى"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";

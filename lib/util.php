@@ -1,7 +1,5 @@
 <?php
 
-require_once 'Patchwork/PHP/Shim/Normalizer.php';
-
 /**
  * Class for utility functions
  *
@@ -48,6 +46,16 @@ class OC_Util {
 		}
 
 		if( $user != "" ) { //if we aren't logged in, there is no use to set up the filesystem
+			$quota = self::getUserQuota($user);
+			if ($quota !== \OC\Files\SPACE_UNLIMITED) {
+				\OC\Files\Filesystem::addStorageWrapper(function($mountPoint, $storage) use ($quota, $user) {
+					if ($mountPoint === '/' . $user . '/'){
+						return new \OC\Files\Storage\Wrapper\Quota(array('storage' => $storage, 'quota' => $quota));
+					} else {
+						return $storage;
+					}
+				});
+			}
 			$user_dir = '/'.$user.'/files';
 			$user_root = OC_User::getHome($user);
 			$userdirectory = $user_root . '/files';
@@ -57,14 +65,24 @@ class OC_Util {
 			//jail the user into his "home" directory
 			\OC\Files\Filesystem::init($user, $user_dir);
 
-			$quotaProxy=new OC_FileProxy_Quota();
 			$fileOperationProxy = new OC_FileProxy_FileOperations();
-			OC_FileProxy::register($quotaProxy);
 			OC_FileProxy::register($fileOperationProxy);
 
 			OC_Hook::emit('OC_Filesystem', 'setup', array('user' => $user, 'user_dir' => $user_dir));
 		}
 		return true;
+	}
+
+	public static function getUserQuota($user){
+		$userQuota = OC_Preferences::getValue($user, 'files', 'quota', 'default');
+		if($userQuota === 'default') {
+			$userQuota = OC_AppConfig::getValue('files', 'default_quota', 'none');
+		}
+		if($userQuota === 'none') {
+			return \OC\Files\SPACE_UNLIMITED;
+		}else{
+			return OC_Helper::computerFileSize($userQuota);
+		}
 	}
 
 	public static function tearDownFS() {
@@ -170,7 +188,13 @@ class OC_Util {
 	 * @return array arrays with error messages and hints
 	 */
 	public static function checkServer() {
+		// Assume that if checkServer() succeeded before in this session, then all is fine.
+		if(\OC::$session->exists('checkServer_suceeded') && \OC::$session->get('checkServer_suceeded'))
+			return array();
+
 		$errors=array();
+
+		$defaults = new \OC_Defaults();
 
 		$web_server_restart= false;
 		//check for database drivers
@@ -184,14 +208,16 @@ class OC_Util {
 		}
 
 		//common hint for all file permissons error messages
-		$permissionsHint='Permissions can usually be fixed by giving the webserver write access'
-			.' to the ownCloud directory';
+		$permissionsHint = 'Permissions can usually be fixed by '
+			.'<a href="' . $defaults->getDocBaseUrl() . '/server/5.0/admin_manual/installation/installation_source.html#set-the-directory-permissions" target="_blank">giving the webserver write access to the root directory</a>.';
 
 		// Check if config folder is writable.
 		if(!is_writable(OC::$SERVERROOT."/config/") or !is_readable(OC::$SERVERROOT."/config/")) {
-			$errors[]=array('error'=>"Can't write into config directory 'config'",
-				'hint'=>'You can usually fix this by giving the webserver user write access'
-					.' to the config directory in owncloud');
+			$errors[] = array(
+				'error' => "Can't write into config directory",
+				'hint' => 'This can usually be fixed by '
+					.'<a href="' . $defaults->getDocBaseUrl() . '/server/5.0/admin_manual/installation/installation_source.html#set-the-directory-permissions" target="_blank">giving the webserver write access to the config directory</a>.'
+				);
 		}
 
 		// Check if there is a writable install folder.
@@ -199,9 +225,12 @@ class OC_Util {
 			if( OC_App::getInstallPath() === null
 				|| !is_writable(OC_App::getInstallPath())
 				|| !is_readable(OC_App::getInstallPath()) ) {
-				$errors[]=array('error'=>"Can't write into apps directory",
-					'hint'=>'You can usually fix this by giving the webserver user write access'
-					.' to the apps directory in owncloud or disabling the appstore in the config file.');
+				$errors[] = array(
+					'error' => "Can't write into apps directory",
+					'hint' => 'This can usually be fixed by '
+						.'<a href="' . $defaults->getDocBaseUrl() . '/server/5.0/admin_manual/installation/installation_source.html#set-the-directory-permissions" target="_blank">giving the webserver write access to the apps directory</a> '
+						.'or disabling the appstore in the config file.'
+					);
 			}
 		}
 		$CONFIG_DATADIRECTORY = OC_Config::getValue( "datadirectory", OC::$SERVERROOT."/data" );
@@ -211,10 +240,11 @@ class OC_Util {
 			if ($success) {
 				$errors = array_merge($errors, self::checkDataDirectoryPermissions($CONFIG_DATADIRECTORY));
 			} else {
-				$errors[]=array('error'=>"Can't create data directory (".$CONFIG_DATADIRECTORY.")",
-					'hint'=>"You can usually fix this by giving the webserver write access to the ownCloud directory '"
-						.OC::$SERVERROOT."' (in a terminal, use the command "
-						."'chown -R www-data:www-data /path/to/your/owncloud/install/data' ");
+				$errors[] = array(
+					'error' => "Can't create data directory (".$CONFIG_DATADIRECTORY.")",
+					'hint' => 'This can usually be fixed by '
+					.'<a href="' . $defaults->getDocBaseUrl() . '/server/5.0/admin_manual/installation/installation_source.html#set-the-directory-permissions" target="_blank">giving the webserver write access to the root directory</a>.'
+				);
 			}
 		} else if(!is_writable($CONFIG_DATADIRECTORY) or !is_readable($CONFIG_DATADIRECTORY)) {
 			$errors[]=array('error'=>'Data directory ('.$CONFIG_DATADIRECTORY.') not writable by ownCloud',
@@ -303,9 +333,29 @@ class OC_Util {
 				'hint'=>'Please ask your server administrator to restart the web server.');
 		}
 
+		// Cache the result of this function
+		\OC::$session->set('checkServer_suceeded', count($errors) == 0);
+
 		return $errors;
 	}
 
+	/**
+	 * @brief check if there are still some encrypted files stored
+	 * @return boolean
+	 */
+	public static function encryptedFiles() {
+		//check if encryption was enabled in the past
+		$encryptedFiles = false;
+		if (OC_App::isEnabled('files_encryption') === false) {
+			$view = new OC\Files\View('/' . OCP\User::getUser());
+			if ($view->file_exists('/files_encryption/keyfiles')) {
+				$encryptedFiles = true;
+			}
+		}
+		
+		return $encryptedFiles;
+	}
+	
 	/**
 	* Check for correct file permissions of data directory
 	* @return array arrays with error messages and hints
@@ -531,7 +581,22 @@ class OC_Util {
 		}
 		return $value;
 	}
-
+	
+	/**
+	 * @brief Public function to encode url parameters
+	 *
+	 * This function is used to encode path to file before output.
+	 * Encoding is done according to RFC 3986 with one exception:
+	 * Character '/' is preserved as is. 
+	 *
+	 * @param string $component part of URI to encode
+	 * @return string 
+	 */
+	public static function encodePath($component) {
+		$encoded = rawurlencode($component);
+		$encoded = str_replace('%2F', '/', $encoded);
+		return $encoded;
+	}
 
 	/**
 	 * Check if the htaccess file is working by creating a test file in the data directory and trying to access via http
@@ -850,6 +915,10 @@ class OC_Util {
 		if (function_exists('xcache_clear_cache')) {
 			xcache_clear_cache(XC_TYPE_VAR, 0);
 		}
+		// Opcache (PHP >= 5.5)
+		if (function_exists('opcache_reset')) {
+			opcache_reset();
+		}
 	}
 
 	/**
@@ -868,5 +937,12 @@ class OC_Util {
 		}
 
 		return $value;
+	}
+
+	public static function basename($file)
+	{
+		$file = rtrim($file, '/');
+		$t = explode('/', $file);
+		return array_pop($t);
 	}
 }

@@ -4,8 +4,7 @@
  * See the COPYING-README file.
  */?>
 
-
-<div class="clientsbox">
+<div class="clientsbox center">
 	<h2><?php p($l->t('Get the apps to sync your files'));?></h2>
 	<a href="<?php p($_['clients']['desktop']); ?>" target="_blank">
 		<img src="<?php print_unescaped(OCP\Util::imagePath('core', 'desktopapp.png')); ?>" />
@@ -17,7 +16,7 @@
 		<img src="<?php print_unescaped(OCP\Util::imagePath('core', 'appstore.png')); ?>" />
 	</a>
 	<?php if(OC_APP::isEnabled('firstrunwizard')) {?>
-	<center><a class="button" href="#" id="showWizard"><?php p($l->t('Show First Run Wizard again'));?></a></center>
+	<p class="center"><a class="button" href="#" id="showWizard"><?php p($l->t('Show First Run Wizard again'));?></a></p>
 	<?php }?>
 </div>
 
@@ -95,7 +94,7 @@ if($_['passwordChangeSupported']) {
 		<?php endforeach;?>
 		</select>
 		<?php if (OC_Util::getEditionString() === ''): ?>
-		<a href="https://www.transifex.net/projects/p/owncloud/team/<?php p($_['activelanguage']['code']);?>/"
+		<a href="https://www.transifex.com/projects/p/owncloud/team/<?php p($_['activelanguage']['code']);?>/"
 			target="_blank"><em><?php p($l->t('Help translate'));?></em></a>
 		<?php endif; ?>
 	</fieldset>
@@ -104,20 +103,48 @@ if($_['passwordChangeSupported']) {
 <fieldset class="personalblock">
 	<legend><strong><?php p($l->t('WebDAV'));?></strong></legend>
 	<code><?php print_unescaped(OC_Helper::linkToRemote('webdav')); ?></code><br />
-	<em><?php p($l->t('Use this address to connect to your ownCloud in your file manager'));?></em>
+	<em><?php print_unescaped($l->t('Use this address to <a href="%s/server/5.0/user_manual/files/files.html" target="_blank">access your Files via WebDAV</a>', array($theme->getDocBaseUrl())));?></em>
 </fieldset>
 
 <?php foreach($_['forms'] as $form) {
 	print_unescaped($form);
 };?>
 
-<fieldset class="personalblock credits-footer">
-<?php if (OC_Util::getEditionString() === ''): ?>
-	<legend><strong><?php p($l->t('Version'));?></strong></legend>
-	<strong>ownCloud</strong> <?php p(OC_Util::getVersionString()); ?>
-	<?php p(OC_Util::getEditionString()); ?> <br />
-	<?php print_unescaped($l->t('Developed by the <a href="http://ownCloud.org/contact" target="_blank">ownCloud community</a>, the <a href="https://github.com/owncloud" target="_blank">source code</a> is licensed under the <a href="http://www.gnu.org/licenses/agpl-3.0.html" target="_blank"><abbr title="Affero General Public License">AGPL</abbr></a>.')); ?>
-<?php else: ?>
-    <p>© 2013 <a href="<?php p(OC_Defaults::getBaseUrl()); ?>" target="_blank"><?php p(OC_Defaults::getEntity()); ?></a> – <?php p(OC_Defaults::getSlogan()); ?></p>
+<?php if($_['enableDecryptAll']): ?>
+<form id="decryptAll">
+	<fieldset class="personalblock">
+		<legend>
+			<?php p( $l->t( 'Encryption' ) ); ?>
+		</legend>
+		<?php p($l->t( "The encryption app is no longer enabled, decrypt all your file" )); ?>
+		<p>
+			<input
+				type="password"
+				name="privateKeyPassword"
+				id="privateKeyPassword" />
+			<label for="privateKeyPassword"><?php p($l->t( "Log-in password" )); ?></label>
+			<br />
+			<button
+				type="button"
+				disabled
+				name="submitDecryptAll"><?php p($l->t( "Decrypt all Files" )); ?>
+			</button>
+			<span class="msg"></span>
+		</p>
+		<br />
+	</fieldset>
+</form>
 <?php endif; ?>
+
+<fieldset class="personalblock">
+	<legend><strong><?php p($l->t('Version'));?></strong></legend>
+	<strong><?php p($theme->getName()); ?></strong> <?php p(OC_Util::getVersionString()); ?><br/>
+<?php if (OC_Util::getEditionString() === ''): ?>
+	<?php print_unescaped($l->t('Developed by the <a href="http://ownCloud.org/contact" target="_blank">ownCloud community</a>, the <a href="https://github.com/owncloud" target="_blank">source code</a> is licensed under the <a href="http://www.gnu.org/licenses/agpl-3.0.html" target="_blank"><abbr title="Affero General Public License">AGPL</abbr></a>.')); ?>
+<?php endif; ?>
+</fieldset>
+<fieldset class="personalblock credits-footer">
+<p>
+	<?php print_unescaped($theme->getShortFooter()); ?>
+</p>
 </fieldset>

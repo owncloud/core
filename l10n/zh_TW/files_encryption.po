@@ -4,12 +4,13 @@
 # 
 # Translators:
 # pellaeon <nfsmwlin@gmail.com>, 2013
+# Flymok <transifex@flymok.net>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-06-22 02:06+0200\n"
-"PO-Revision-Date: 2013-06-22 00:07+0000\n"
+"POT-Creation-Date: 2013-08-21 08:10-0400\n"
+"PO-Revision-Date: 2013-08-19 19:20+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/owncloud/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -56,19 +57,25 @@ msgstr ""
 
 #: files/error.php:7
 msgid ""
-"Your private key is not valid! Maybe your password was changed from outside."
-" You can update your private key password in your personal settings to "
-"regain access to your files"
+"Your private key is not valid! Likely your password was changed outside the "
+"ownCloud system (e.g. your corporate directory). You can update your private"
+" key password in your personal settings to recover access to your encrypted "
+"files."
+msgstr "您的私鑰不正確! 感覺像是密碼在 ownCloud 系統之外被改變(例：您的目錄)。 您可以在個人設定中更新私鑰密碼取回已加密的檔案。"
+
+#: hooks/hooks.php:41
+msgid "Missing requirements."
 msgstr ""
 
-#: hooks/hooks.php:44
-msgid "PHP module OpenSSL is not installed."
-msgstr ""
-
-#: hooks/hooks.php:45
+#: hooks/hooks.php:42
 msgid ""
-"Please ask your server administrator to install the module. For now the "
-"encryption app was disabled."
+"Please make sure that PHP 5.3.3 or newer is installed and that OpenSSL "
+"together with the PHP extension is enabled and configured properly. For now,"
+" the encryption app has been disabled."
+msgstr ""
+
+#: hooks/hooks.php:249
+msgid "Following users are not set up for encryption:"
 msgstr ""
 
 #: js/settings-admin.js:11
@@ -138,15 +145,15 @@ msgstr ""
 msgid ""
 " If you don't remember your old password you can ask your administrator to "
 "recover your files."
-msgstr ""
+msgstr "如果您忘記舊密碼，可以請求管理員協助取回檔案。"
 
 #: templates/settings-personal.php:24
 msgid "Old log-in password"
-msgstr ""
+msgstr "舊登入密碼"
 
 #: templates/settings-personal.php:30
 msgid "Current log-in password"
-msgstr ""
+msgstr "目前的登入密碼"
 
 #: templates/settings-personal.php:35
 msgid "Update Private Key Password"

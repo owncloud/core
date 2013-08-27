@@ -29,6 +29,9 @@ class Connection {
 	private $configID;
 	private $configured = false;
 
+	//whether connection should be kept on __destruct
+	private $dontDestruct = false;
+
 	//cache handler
 	protected $cache;
 
@@ -77,15 +80,29 @@ class Connection {
 	public function __construct($configPrefix = '', $configID = 'user_ldap') {
 		$this->configPrefix = $configPrefix;
 		$this->configID = $configID;
-		$this->cache = \OC_Cache::getGlobalCache();
+		$memcache = new \OC\Memcache\Factory();
+		if($memcache->isAvailable()) {
+			$this->cache = $memcache->create();
+		} else {
+			$this->cache = \OC_Cache::getGlobalCache();
+		}
 		$this->config['hasPagedResultSupport'] = (function_exists('ldap_control_paged_result')
 			&& function_exists('ldap_control_paged_result_response'));
 	}
 
 	public function __destruct() {
-		if(is_resource($this->ldapConnectionRes)) {
+		if(!$this->dontDestruct && is_resource($this->ldapConnectionRes)) {
 			@ldap_unbind($this->ldapConnectionRes);
 		};
+	}
+
+	/**
+	 * @brief defines behaviour when the instance is cloned
+	 */
+	public function __clone() {
+		//a cloned instance inherits the connection resource. It may use it,
+		//but it may not disconnect it
+		$this->dontDestruct = true;
 	}
 
 	public function __get($name) {
@@ -210,6 +227,22 @@ class Connection {
 	}
 
 	/**
+	 * Special handling for reading Base Configuration
+	 *
+	 * @param $base the internal name of the config key
+	 * @param $value the value stored for the base
+	 */
+	private function readBase($base, $value) {
+		if(empty($value)) {
+			$value = '';
+		} else {
+			$value = preg_split('/\r\n|\r|\n/', $value);
+		}
+
+		$this->config[$base] = $value;
+	}
+
+	/**
 	 * Caches the general LDAP configuration.
 	 */
 	private function readConfiguration($force = false) {
@@ -224,14 +257,9 @@ class Connection {
 			$this->config['ldapAgentName']  = $this->$v('ldap_dn');
 			$this->config['ldapAgentPassword']
 				= base64_decode($this->$v('ldap_agent_password'));
-			$rawLdapBase                    = $this->$v('ldap_base');
-			$this->config['ldapBase']
-				= preg_split('/\r\n|\r|\n/', $rawLdapBase);
-			$this->config['ldapBaseUsers']
-				= preg_split('/\r\n|\r|\n/', ($this->$v('ldap_base_users')));
-			$this->config['ldapBaseGroups']
-				= preg_split('/\r\n|\r|\n/', $this->$v('ldap_base_groups'));
-			unset($rawLdapBase);
+			$this->readBase('ldapBase',       $this->$v('ldap_base'));
+			$this->readBase('ldapBaseUsers',  $this->$v('ldap_base_users'));
+			$this->readBase('ldapBaseGroups', $this->$v('ldap_base_groups'));
 			$this->config['ldapTLS']        = $this->$v('ldap_tls');
 			$this->config['ldapNoCase']     = $this->$v('ldap_nocase');
 			$this->config['turnOffCertCheck']

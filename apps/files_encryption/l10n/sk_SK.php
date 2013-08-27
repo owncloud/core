@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Recovery key successfully enabled" => "Záchranný kľúč bol úspešne povolený",
 "Could not enable recovery key. Please check your recovery key password!" => "Nepodarilo sa povoliť záchranný kľúč. Skontrolujte prosím Vaše heslo záchranného kľúča!",
 "Recovery key successfully disabled" => "Záchranný kľúč bol úspešne zakázaný",
@@ -7,7 +8,6 @@
 "Could not change the password. Maybe the old password was not correct." => "Nemožno zmeniť heslo. Pravdepodobne nebolo staré heslo zadané správne.",
 "Private key password successfully updated." => "Heslo súkromného kľúča je úspešne aktualizované.",
 "Could not update the private key password. Maybe the old password was not correct." => "Nemožno aktualizovať heslo súkromného kľúča. Možno nebolo staré heslo správne.",
-"Your private key is not valid! Maybe your password was changed from outside. You can update your private key password in your personal settings to regain access to your files" => "Váš súkromný kľúč je neplatný. Možno bolo Vaše heslo zmenené z vonku. Môžete aktualizovať heslo súkromného kľúča v osobnom nastavení na opätovné získanie prístupu k súborom",
 "Saving..." => "Ukladám...",
 "Your private key is not valid! Maybe the your password was changed from outside." => "Váš súkromný kľúč je neplatný. Možno bolo Vaše heslo zmenené z vonku.",
 "personal settings" => "osobné nastavenia",
@@ -26,3 +26,4 @@
 "File recovery settings updated" => "Nastavenie obnovy súborov aktualizované",
 "Could not update file recovery" => "Nemožno aktualizovať obnovenie súborov"
 );
+$PLURAL_FORMS = "nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;";
