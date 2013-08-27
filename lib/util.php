@@ -398,6 +398,7 @@ class OC_Util {
 			$parameters['redirect_url'] = urlencode($redirect_url);
 		}
 
+		$parameters['show_password_icon'] = OC_Config::getValue('show_password_icon', true);
 		$parameters['alt_login'] = OC_App::getAlternativeLogIns();
 		OC_Template::printGuestPage("", "login", $parameters);
 	}

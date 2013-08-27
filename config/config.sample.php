@@ -32,6 +32,9 @@ $CONFIG = array(
 /* Force use of HTTPS connection (true = use HTTPS) */
 "forcessl" => false,
 
+/* Display the "show password" icon on the login page. */
+"show_password_icon" => true,
+
 /* Blacklist a specific file and disallow the upload of files with this name - WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING. */
 "blacklisted_files" => array('.htaccess'),
 
