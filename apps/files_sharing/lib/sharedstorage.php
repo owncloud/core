@@ -52,7 +52,9 @@ class Shared extends Common {
 	public static function setup($params) {
 		if (isset($params['user']) && isset($params['user_dir'])) {
 			$shareManager = \OCP\Share::getShareManager();
-			$fetcher = new FileShareFetcher($shareManager, $params['user']);
+			$fetcher = new FileShareFetcher($shareManager, \OC_Group::getManager(),
+				$params['user']
+			);
 			\OC\Files\Filesystem::mount('\OC\Files\Storage\Shared', array('fetcher' => $fetcher),
 				$params['user_dir'].'/Shared/'
 			);

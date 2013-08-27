@@ -22,15 +22,17 @@
 namespace OCA\Files\Share;
 
 use OC\Share\ShareManager;
+use OC\Group\Manager;
 
 /**
- * Class to retrieve file shares for a user from the ShareManager
+ * Class to retrieve file shares from the ShareManager
  *
  * These are helper methods used by the shared storage, cache, permissions, etc.
  */
 class FileShareFetcher {
 
 	protected $shareManager;
+	protected $groupManager;
 	protected $uid;
 	protected $fileItemType;
 	protected $folderItemType;
@@ -38,31 +40,54 @@ class FileShareFetcher {
 	/**
 	 * The constructor
 	 * @param \OC\Share\ShareManager $shareManager
-	 * @param string $uid
+	 * @param \OC\Group\Manager $groupManager
+	 * @param string $uid (optional)
 	 */
-	public function __construct(ShareManager $shareManager, $uid) {
+	public function __construct(ShareManager $shareManager, Manager $groupManager, $uid = null) {
 		$this->shareManager = $shareManager;
-		$this->uid = $uid;
+		$this->groupManager = $groupManager;
+		$this->setUID($uid);
 		$this->fileItemType = 'file';
 		$this->folderItemType = 'folder';
 	}
 
 	/**
-	 * Get all files shares for the user
+	 * Get the UID of the user to retrieve shares for
+	 * @return string | null
+	 *
+	 * If no UID is set, all file shares can be retrieved
+	 *
+	 */
+	public function getUID() {
+		return $this->uid;
+	}
+
+	/**
+	 * Set the UID of the user to retrieve shares for
+	 * @param string | null $uid
+	 */
+	public function setUID($uid) {
+		$this->uid = $uid;
+	}
+
+	/**
+	 * Get all files shares
 	 * @return \OCA\Files\Share\FileShare[]
 	 */
 	public function getAll() {
-		$filter = array(
-			'shareWith' => $this->uid,
-			'isShareWithUser' => true,
-		);
+		$filter = array();
+		$uid = $this->getUID();
+		if (isset($uid)) {
+			$filter['shareWith'] = $uid;
+			$filter['isShareWithUser'] = true;
+		}
 		$fileShares = $this->shareManager->getShares($this->fileItemType, $filter);
 		$folderShares = $this->shareManager->getShares($this->folderItemType, $filter);
 		return array_merge($fileShares, $folderShares);
 	}
 
 	/**
-	 * Get all permissions of all shared files for the user
+	 * Get all permissions of all shared files
 	 * @return array With file ids as keys and permissions as values
 	 */
 	public function getAllPermissions() {
@@ -74,7 +99,10 @@ class FileShareFetcher {
 	 * @return string
 	 */
 	public function getETag() {
-		return \OCP\Config::getUserValue($this->uid, 'files_sharing', 'etag');
+		$uid = $this->getUID();
+		if (isset($uid)) {
+			return \OCP\Config::getUserValue($uid, 'files_sharing', 'etag');
+		}
 	}
 
 	/**
@@ -82,46 +110,53 @@ class FileShareFetcher {
 	 * @param string $etag
 	 */
 	public function setETag($etag) {
-		\OCP\Config::setUserValue($this->uid, 'files_sharing', 'etag', $etag);
+		$uid = $this->getUID();
+		if (isset($uid)) {
+			\OCP\Config::setUserValue($uid, 'files_sharing', 'etag', $etag);
+		}
 	}
 
 	/**
-	 * Get all files shares specified by path
+	 * Get all files shares specified by target path for the user
 	 * @param string $path
 	 * @return \OCA\Files\Share\FileShare[]
 	 * 
 	 * The returned file shares may not be exact shares for the path, but parent folders
+	 * Only works if a UID is set
 	 * 
 	 */
 	public function getByPath($path) {
 		$shares = array();
-		$filter = array(
-			'shareWith' => $this->uid,
-			'isShareWithUser' => true,
-		);
-		$path = rtrim($path, '/');
-		$pos = strpos($path, '/', 1);
-		// Get shared folder name
-		if ($pos !== false) {
-			$filter['itemTarget'] = substr($path, 0, $pos);
-			$shares = $this->shareManager->getShares($this->folderItemType, $filter);
-		} else {
-			$ext = pathinfo($path, PATHINFO_EXTENSION);
-			if ($ext === 'part') {
-				$path = substr($path, 0, -5);
-			}
-			$filter['itemTarget'] = $path;
-			// Try to guess file type
-			if (empty($ext)) {
+		$uid = $this->getUID();
+		if (isset($uid)) {
+			$filter = array(
+				'shareWith' => $this->uid,
+				'isShareWithUser' => true,
+			);
+			$path = rtrim($path, '/');
+			$pos = strpos($path, '/', 1);
+			// Get shared folder name
+			if ($pos !== false) {
+				$filter['itemTarget'] = substr($path, 0, $pos);
 				$shares = $this->shareManager->getShares($this->folderItemType, $filter);
-				$itemType = $this->fileItemType;
 			} else {
-				$shares = $this->shareManager->getShares($this->fileItemType, $filter);
-				$itemType = $this->folderItemType;
-			}
-			if (empty($shares)) {
-				// Try the other item type
-				$shares = $this->shareManager->getShares($itemType, $filter);
+				$ext = pathinfo($path, PATHINFO_EXTENSION);
+				if ($ext === 'part') {
+					$path = substr($path, 0, -5);
+				}
+				$filter['itemTarget'] = $path;
+				// Try to guess file type
+				if (empty($ext)) {
+					$shares = $this->shareManager->getShares($this->folderItemType, $filter);
+					$itemType = $this->fileItemType;
+				} else {
+					$shares = $this->shareManager->getShares($this->fileItemType, $filter);
+					$itemType = $this->folderItemType;
+				}
+				if (empty($shares)) {
+					// Try the other item type
+					$shares = $this->shareManager->getShares($itemType, $filter);
+				}
 			}
 		}
 		return $shares;
@@ -133,14 +168,17 @@ class FileShareFetcher {
 	 * @return \OCA\Files\Share\FileShare[]
 	 *
 	 * The returned file shares may not be exact shares for the file id, but parent folders
-	 * 
+	 *
 	 */
 	public function getById($fileId) {
 		$filter = array(
-			'shareWith' => $this->uid,
-			'isShareWithUser' => true,
 			'itemSource' => $fileId,
 		);
+		$uid = $this->getUID();
+		if (isset($uid)) {
+			$filter['shareWith'] = $uid;
+			$filter['isShareWithUser'] = true;
+		}
 		$shares = $this->shareManager->getShares($this->fileItemType, $filter);
 		if (empty($shares)) {
 			// Try folder item type instead
@@ -150,9 +188,12 @@ class FileShareFetcher {
 	}
 
 	/**
-	 * Resolve a shared path to a storage and internal path
+	 * Resolve a target path for the user to a storage and internal path
  	 * @param string $path
 	 * @return array Consisting of \OC\Files\Storage\Storage and the internal path
+	 *
+	 * Only works if a UID is set
+	 *
 	 */
 	public function resolvePath($path) {
 		$shares = $this->getByPath($path);
@@ -179,9 +220,12 @@ class FileShareFetcher {
 	}
 
 	/**
-	 * Get permissions for a shared file specified by path
+	 * Get permissions for a shared file specified by target path for the user
 	 * @param string $path
 	 * @return int
+	 *
+	 * Only works if a UID is set
+	 *
 	 */
 	public function getPermissionsByPath($path) {
 		$shares = $this->getByPath($path);
@@ -204,6 +248,52 @@ class FileShareFetcher {
 			return reset($permissions);
 		}
 		return 0;
+	}
+
+	/**
+	 * Get all UIDs of files shares specified by target path for the user
+	 * @param string $path
+	 * @return array With UIDs as values
+	 *
+	 * Only works if a UID is set
+	 *
+	 */
+	public function getUsersSharedWithByPath($path) {
+		$shares = $this->getByPath($path);
+		return $this->getUsersSharedWith($shares);
+	}
+
+	/**
+	 * Get all UIDs of files shares specified by file id
+	 * @param int $fileId
+	 * @return array With UIDs as values
+	 */
+	public function getUsersSharedWithById($fileId) {
+		$shares = $this->getById($fileId);
+		return $this->getUsersSharedWith($shares);
+	}
+
+	/**
+	 * Get all UIDs of an array of shares
+	 * @param \OCA\Files\Share\FileShare[] $shares
+	 * @return array With UIDs as values
+	 */
+	public function getUsersSharedWith(array $shares) {
+		$uids = array();
+		foreach ($shares as $share) {
+			$shareTypeId = $share->getShareTypeId();
+			if ($shareTypeId === 'user') {
+				$uids[] = $share->getShareWith();
+			} else if ($shareTypeId === 'group') {
+				$group = $this->groupManager->get($share->getShareWith());
+				if ($group) {
+					foreach ($group->getUsers() as $user) {
+						$uids[] = $user->getUID();
+					}
+				}
+			}
+		}
+		return array_unique($uids);
 	}
 
 	/**
@@ -236,10 +326,11 @@ class FileShareFetcher {
 		$shares = array();
 		$folderShareBackend = $this->shareManager->getShareBackend($this->folderItemType);
 		if ($folderShareBackend) {
-			$filter = array(
-				'shareWith' => $this->uid,
-				'isShareWithUser' => true,
-			);
+			$uid = $this->getUID();
+			if (isset($uid)) {
+				$filter['shareWith'] = $uid;
+				$filter['isShareWithUser'] = true;
+			}
 			$fileId = $folderShareBackend->getParentFolderId($fileId);
 			while ($fileId !== -1) {
 				$filter['itemSource'] = $fileId;

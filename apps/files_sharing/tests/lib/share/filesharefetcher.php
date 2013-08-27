@@ -27,12 +27,16 @@ class FileShareFetcher extends \PHPUnit_Framework_TestCase {
 
 	protected $matt;
 	protected $shareManager;
+	protected $groupManager;
 	protected $folderShareBackend;
 	protected $fetcher;
 
 	protected function setUp() {
 		$this->matt = 'MTRichards';
 		$this->shareManager = $this->getMockBuilder('\OC\Share\ShareManager')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->groupManager = $this->getMockBuilder('\OC\Group\Manager')
 			->disableOriginalConstructor()
 			->getMock();
 		$this->folderShareBackend  = $this->getMockBuilder('\OCA\Files\Share\FolderShareBackend')
@@ -42,7 +46,9 @@ class FileShareFetcher extends \PHPUnit_Framework_TestCase {
 			->method('getShareBackend')
 			->with($this->equalTo('folder'))
 			->will($this->returnValue($this->folderShareBackend));
-		$this->fetcher = new \OCA\Files\Share\FileShareFetcher($this->shareManager, $this->matt);
+		$this->fetcher = new \OCA\Files\Share\FileShareFetcher($this->shareManager,
+			$this->groupManager, $this->matt
+		);
 	}
 
 	public function testGetAll() {
@@ -171,8 +177,8 @@ class FileShareFetcher extends \PHPUnit_Framework_TestCase {
 		$share->setItemType('file');
 		$share->setItemSource(79);
 		$map = array(
-			array('file', array('shareWith' => $this->matt, 'isShareWithUser' => true,
-				'itemSource' => 79), null, null, array($share)
+			array('file', array('itemSource' => 79, 'shareWith' => $this->matt,
+				'isShareWithUser' => true), null, null, array($share)
 			),
 		);
 		$this->shareManager->expects($this->once())
@@ -191,11 +197,11 @@ class FileShareFetcher extends \PHPUnit_Framework_TestCase {
 		$share->setItemType('folder');
 		$share->setItemSource(80);
 		$map = array(
-			array('file', array('shareWith' => $this->matt, 'isShareWithUser' => true,
-				'itemSource' => 80), null, null, array()
+			array('file', array('itemSource' => 80, 'shareWith' => $this->matt,
+				'isShareWithUser' => true), null, null, array()
 			),
-			array('folder', array('shareWith' => $this->matt, 'isShareWithUser' => true,
-				'itemSource' => 80), null, null, array($share)
+			array('folder', array('itemSource' => 80, 'shareWith' => $this->matt,
+				'isShareWithUser' => true), null, null, array($share)
 			),
 		);
 		$this->shareManager->expects($this->exactly(2))
@@ -220,8 +226,8 @@ class FileShareFetcher extends \PHPUnit_Framework_TestCase {
 		$share3->setItemType('folder');
 		$share3->setItemSource(4);
 		$map = array(
-			array('file', array('shareWith' => $this->matt, 'isShareWithUser' => true,
-				'itemSource' => 72), null, null, array($share1)
+			array('file', array('itemSource' => 72, 'shareWith' => $this->matt,
+				'isShareWithUser' => true), null, null, array($share1)
 			),
 			array('folder', array('shareWith' => $this->matt, 'isShareWithUser' => true,
 				'itemSource' => 21), null, null, array($share2)
@@ -289,11 +295,11 @@ class FileShareFetcher extends \PHPUnit_Framework_TestCase {
 		$share2->setItemSource(80);
 		$share2->setPermissions(5);
 		$map = array(
-			array('file', array('shareWith' => $this->matt, 'isShareWithUser' => true,
-				'itemSource' => 80), null, null, array()
+			array('file', array('itemSource' => 80, 'shareWith' => $this->matt,
+				'isShareWithUser' => true), null, null, array()
 			),
-			array('folder', array('shareWith' => $this->matt, 'isShareWithUser' => true,
-				'itemSource' => 80), null, null, array($share1, $share2)
+			array('folder', array('itemSource' => 80, 'shareWith' => $this->matt,
+				'isShareWithUser' => true), null, null, array($share1, $share2)
 			),
 		);
 		$this->shareManager->expects($this->exactly(2))
@@ -314,6 +320,75 @@ class FileShareFetcher extends \PHPUnit_Framework_TestCase {
 			->method('getParentFolderId')
 			->will($this->returnValue(-1));
 		$this->assertEquals(0, $this->fetcher->getPermissionsById(1));
+	}
+
+	public function testGetUsersSharedWithByPath() {
+		$share = new FileShare();
+		$share->setShareTypeId('user');
+		$share->setShareWith($this->matt);
+		$share->setItemType('file');
+		$share->setItemTarget('secrets.txt');
+		$map = array(
+			array('file', array('shareWith' => $this->matt, 'isShareWithUser' => true,
+				'itemTarget' => 'secrets.txt'), null, null, array($share)
+			),
+		);
+		$this->shareManager->expects($this->once())
+			->method('getShares')
+			->will($this->returnValueMap($map));
+		$uids = $this->fetcher->getUsersSharedWithByPath('secrets.txt');
+		$this->assertCount(1, $uids);
+		$this->assertContains($this->matt, $uids);
+	}
+
+	public function testGetUsersSharedWithById() {
+		$share1 = new FileShare();
+		$share1->setShareTypeId('user');
+		$share1->setShareWith($this->matt);
+		$share1->setItemType('file');
+		$share1->setItemSource(79);
+		$share2 = new FileShare();
+		$share2->setShareTypeId('group');
+		$share2->setShareWith('group');
+		$share2->setItemType('file');
+		$share2->setItemSource(79);
+		$map = array(
+			array('file', array('itemSource' => 79), null, null, array($share1, $share2)),
+		);
+		$this->shareManager->expects($this->once())
+			->method('getShares')
+			->will($this->returnValueMap($map));
+		$this->folderShareBackend->expects($this->once())
+			->method('getParentFolderId')
+			->with($this->equalTo(79))
+			->will($this->returnValue(-1));
+		$group = $this->getMockBuilder('\OC\Group\Group')
+			->disableOriginalConstructor()
+			->getMock();
+		$user1 = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()
+			->getMock();
+		$user1->expects($this->once())
+			->method('getUID')
+			->will($this->returnValue($this->matt));
+		$user2 = $this->getMockBuilder('\OC\User\User')
+			->disableOriginalConstructor()
+			->getMock();
+		$user2->expects($this->once())
+			->method('getUID')
+			->will($this->returnValue('MTGap'));
+		$group->expects($this->once())
+			->method('getUsers')
+			->will($this->returnValue(array($user1, $user2)));
+		$this->groupManager->expects($this->once())
+			->method('get')
+			->with($this->equalTo('group'))
+			->will($this->returnValue($group));
+		$this->fetcher->setUID(null);
+		$uids = $this->fetcher->getUsersSharedWithById(79);
+		$this->assertCount(2, $uids);
+		$this->assertContains($this->matt, $uids);
+		$this->assertContains('MTGap', $uids);
 	}
 
 }
