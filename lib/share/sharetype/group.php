@@ -259,12 +259,11 @@ class Group extends Common {
 		if ($sharingPolicy === 'groups_only') {
 			$shareOwnerUser = $this->userManager->get($shareOwner);
 			if ($shareOwnerUser) {
-				$result = $this->groupManager->getUserGroups($shareOwnerUser);
-				foreach ($result as $group) {
-					if (stripos($group->getGID(), $pattern) !== false) {
-						$groups[] = $group;
-					}
-				}
+				$groups = $this->groupManager->search($pattern);
+				$userGroups = $this->groupManager->getUserGroups($shareOwnerUser);
+				$groups = array_uintersect($groups, $userGroups, function($group1, $group2) {
+					return strcmp($group1->getGID(), $group2->getGID());
+				});
 				$groups = array_slice($groups, $offset, $limit);
 			}
 		} else {

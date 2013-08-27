@@ -104,14 +104,6 @@ class Share {
 	// 	return null;
 	// }
 
-	// public static function update() {
-	// 	$shareManager = self::getShareManager();
-	// 	if ($shareManager) {
-	// 		$updater = new \OC\Share\Updater($shareManager, new \OC\Log());
-	// 		$updater->updateAll();
-	// 	}
-	// }
-
 	/**
 	 * Emit old hooks for backwards compatibility
 	 */
@@ -340,7 +332,7 @@ class Share {
 					}
 				}
 			}
-			
+
 			// let's get the parent for the next round
 			$meta = $cache->get((int)$source);
 			if($meta !== false) {
@@ -974,7 +966,11 @@ class Share {
 		// Get filesystem root to add it to the file target and remove from the
 		// file source, match file_source with the file cache
 		if ($itemType == 'file' || $itemType == 'folder') {
-			$root = \OC\Files\Filesystem::getRoot();
+			if(!is_null($uidOwner)) {
+				$root = \OC\Files\Filesystem::getRoot();
+			} else {
+				$root = '';
+			}
 			$where = 'INNER JOIN `*PREFIX*filecache` ON `file_source` = `*PREFIX*filecache`.`fileid`';
 			if (!isset($item)) {
 				$where .= ' WHERE `file_target` IS NOT NULL';
@@ -1433,6 +1429,11 @@ class Share {
 				'fileSource' => $fileSource,
 				'token' => $token
 			));
+
+			if ($run === false) {
+				throw new \Exception($error);
+			}
+
 			if (isset($fileSource)) {
 				if ($parentFolder) {
 					if ($parentFolder === true) {
@@ -1519,6 +1520,11 @@ class Share {
 				'fileSource' => $fileSource,
 				'token' => $token
 			));
+
+			if ($run === false) {
+				throw new \Exception($error);
+			}
+			
 			if (isset($fileSource)) {
 				if ($parentFolder) {
 					if ($parentFolder === true) {
