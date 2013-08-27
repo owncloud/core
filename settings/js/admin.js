@@ -14,16 +14,6 @@ $(document).ready(function(){
 		}
 	});
 
-	$('#allowPasswordDisplay').change(function() {
-		$('.loginpage td:not(#enable)').toggle();
-		if (this.checked) {
-		        var value = 'yes';
-		} else {
-			var value = 'no';
-		}
-		OC.AppConfig.setValue('core', 'login_display_password', value);
-	});
-
 	$('#shareAPIEnabled').change(function() {
 		$('.shareAPI td:not(#enable)').toggle();
 	});
