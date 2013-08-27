@@ -39,7 +39,7 @@ class FileTargetMachine extends ItemTargetMachine {
 	 */
 	public function getItemTarget(Share $share, User $user = null) {
 		Filesystem::init($share->getShareOwner(), '/'.$share->getShareOwner().'/files');
-		$path = Filesystem::getPath($share->getItemSource());
+		$path = Filesystem::getPath((int)$share->getItemSource());
 		return basename($path);
 	}
 
