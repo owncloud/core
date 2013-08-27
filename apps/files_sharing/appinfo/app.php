@@ -31,10 +31,6 @@ OC::$CLASSPATH['OC\Files\Cache\SharedPermissions'] = 'files_sharing/lib/permissi
 OC::$CLASSPATH['OC\Files\Cache\SharedUpdater'] = 'files_sharing/lib/updater.php';
 OC::$CLASSPATH['OC\Files\Cache\SharedWatcher'] = 'files_sharing/lib/watcher.php';
 
-// \OC_Hook::connect('OC_Filesystem', 'post_write', '\OC\Files\Cache\Shared_Updater', 'writeHook');
-// \OC_Hook::connect('OC_Filesystem', 'delete', '\OC\Files\Cache\Shared_Updater', 'deleteHook');
-// \OC_Hook::connect('OC_Filesystem', 'post_rename', '\OC\Files\Cache\Shared_Updater', 'renameHook');
-
 $shareManager = \OCP\Share::getShareManager();
 $timeMachine = new \OC\Share\TimeMachine();
 $fileShareFactory = new \OCA\Files\Share\FileShareFactory();
@@ -69,6 +65,9 @@ $fileShareBackend = new \OCA\Files\Share\FileShareBackend($timeMachine, $fileSha
 $folderShareBackend = new \OCA\Files\Share\FolderShareBackend($timeMachine, $folderShareTypes);
 $shareManager->registerShareBackend($fileShareBackend);
 $shareManager->registerShareBackend($folderShareBackend);
+$sharedUpdater = new \OC\Files\Cache\SharedUpdater($shareManager,
+	new \OCA\Files\Share\FileShareFetcher($shareManager, $groupManager)
+);
 // TODO Wait for hook changes so we can use a closure to replace setup and pass in ShareManager
 \OCP\Util::connectHook('OC_Filesystem', 'setup', '\OC\Files\Storage\Shared', 'setup');
 \OCP\Util::addScript('files_sharing', 'share');
