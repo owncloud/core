@@ -144,4 +144,16 @@ class OC_Defaults {
                 return $emailfooter;
         }
 
+        public function getEmailFooterHtml() {
+                if ($this->themeExist('getEmailFooterHtml')) {
+                        $emailfooter = $this->theme->getEmailFooterHtml();
+                } else {
+                        $emailfooter="<br>--<br>";
+                        $emailfooter.=$defaults->getName() . " - ";
+                        $emailfooter.=$defaults->getSlogan() . "<br>";
+                }
+
+                return $emailfooter;
+        }
+
 }
