@@ -19,9 +19,9 @@ print_unescaped($l->t('Hey there,<br><br>just letting you know that %s shared »
 <tr><td bgcolor="#f8f8f8" colspan="2">&nbsp;</td></tr>
 <tr>
 <td bgcolor="#f8f8f8" width="20px">&nbsp;</td>
-<td bgcolor="#f8f8f8" style="font-weight:normal; font-size:0.8em; line-height:1.2em; font-family:verdana,'arial',sans;">--<br>
+<td bgcolor="#f8f8f8" style="font-weight:normal; font-size:0.8em; line-height:1.2em; font-family:verdana,'arial',sans;">
 <?php p($theme->getEmailFooterHtml()); ?>
-<br><a href="<?php print_unescaped($theme->getBaseUrl()); ?>"><?php print_unescaped($theme->getBaseUrl());?></a></td>
+</td>
 </tr>
 <tr>
 <td bgcolor="#f8f8f8" colspan="2">&nbsp;</td>
