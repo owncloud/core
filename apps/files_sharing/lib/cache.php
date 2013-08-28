@@ -125,6 +125,7 @@ class SharedCache extends Cache {
 					|| is_int($file) && $share->getItemSource() === $file
 				) {
 					$data = $share->getMetadata();
+					break;
 				}
 			}
 			if ($data) {
