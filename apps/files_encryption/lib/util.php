@@ -1191,47 +1191,33 @@ class Util {
 	public function getUsersSharingFile($path, $user, $includeOwner = false) {
 		$users = array();
 		$public = false;
-		$shareManager = \OCP\Share::getShareManager();
-		if ($shareManager) {
-			$view = new \OC\Files\View('/' . $user . '/files/');
-			$meta = $view->getFileInfo(\OC\Files\Filesystem::normalizePath($path));
-			$fileId = -1;
-			if ($meta !== false) {
-				$fileId = $meta['fileid'];
-				$cache = new \OC\Files\Cache\Cache($meta['storage']);
-			}
-			if ($meta['mimetype'] === 'httpd/unix-directory') {
-				$itemType = 'folder';
-			} else {
-				$itemType = 'file';
-			}
-			$filter = array();
-			while ($fileId !== -1) {
-				$filter['itemSource'] = $fileId;
-				$shares = $shareManager->getShares($itemType, $filter);
+		$view = new \OC\Files\View('/' . $user . '/files/');
+		$meta = $view->getFileInfo(\OC\Files\Filesystem::normalizePath($path));
+		if ($meta !== false) {
+			$fileId = $meta['fileid'];
+			$shareManager = \OCP\Share::getShareManager();
+			if ($shareManager) {
+				$fetcher = new \OCA\Files\Share\FileShareFetcher($shareManager,
+					\OC_Group::getManager()
+				);
+				$shares = $fetcher->getById($fileId);
 				foreach ($shares as $share) {
-					$shareTypeId = $share->getShareTypeId();
-					if ($shareTypeId === 'user') {
-						$users[] = $share->getShareWith();
-					} else if ($shareTypeId === 'group') {
-						$usersInGroup = \OC_Group::usersInGroup($share->getShareWith());
-						$users = array_merge($users, $usersInGroup);
-					} else if ($shareTypeId === 'link') {
+					if ($share->getShareTypeId() === 'link') {
 						$public = true;
+						break;
 					}
 				}
-				$meta = $cache->get((int)$fileId);
-				if ($meta !== false) {
-					$fileId = (int)$meta['parent'];
+				$users = $fetcher->getUsersSharedWith($shares);
+				if ($includeOwner) {
+					if (!in_array($user, $users)) {
+						$users[] = $user;
+					}
 				} else {
-					$fileId = -1;
+					$users = array_diff($users, array($user));
 				}
 			}
 		}
-		if ($includeOwner) {
-			$users[] = $user;
-		}
-		return array('users' => array_unique($users), 'public'  => $public);
+		return array('users' => $users, 'public'  => $public);
 	}
 
 	private function getUserWithAccessToMountPoint($users, $groups) {
