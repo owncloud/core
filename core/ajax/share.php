@@ -202,15 +202,7 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 						}
 						$itemType = $share->getItemType();
 						if ($itemType === 'file' || $itemType == 'folder') {
-							$mounts = \OC\Files\Filesystem::getMountByNumericId($share->getStorage());
-							$view = \OC\Files\Filesystem::getView();
-							foreach ($mounts as $mount) {
-								$fullPath = $mount->getMountPoint().$share->getPath();
-								if (!is_null($path = $view->getRelativePath($fullPath))) {
-									$statuses[$share->getItemSource()]['path'] = $path;
-									break;
-								}
-							}
+							$statuses[$share->getItemSource()]['path'] = \OC\Files\Filesystem::getPath($share->getItemSource());
 						}
 					}
 				} catch (Exception $exception) {
