@@ -9,14 +9,14 @@ OC_Util::checkSubAdminUser();
 OC_App::loadApps();
 
 // We have some javascript foo!
-OC_Util::addScript( 'settings', 'vendor/angular/angular');
-OC_Util::addScript( 'settings', 'vendor/angular/angular-resource');
-OC_Util::addScript( 'settings', 'vendor/chosen/chosen.jquery');
-OC_Util::addScript( 'settings', 'vendor/chosen/chosen');
+OC_Util::addScript('settings', 'vendor/angular/angular');
+OC_Util::addScript('settings', 'vendor/angular/angular-resource');
+OC_Util::addScript('settings', 'vendor/bootstrap-multiselect/multiselect');
+OC_Util::addScript('settings', 'vendor/bootstrap-multiselect/bootstrap');
+OC_Util::addScript('settings', 'vendor/underscore/underscore');
 OC_Util::addScript( 'settings', 'users/public/app' );
 OC_Util::addStyle('settings', 'users/users');
-OC_Util::addStyle('settings', 'users/vendor/chosen/chosen');
-// OC_Util::addStyle( 'settings', 'settings' ); temporarily removing.
+OC_Util::addStyle('settings', 'users/vendor/multiselect/bootstrap');
 OC_App::setActiveNavigationEntry( 'core_users' );
 
 $users = array();

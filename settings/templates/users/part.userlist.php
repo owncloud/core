@@ -92,15 +92,13 @@
 					/>
 				</td>
 				<td class="groups">
-				    <select
-						chosen multiple
-						allow-single-deselect="true"
-						data-placeholder="Select Group.."
-						no-results-text="'No Such Group..'"
+					<select
+						class="multiselect"
+						data-placeholder="Select Options" 
 						ng-model="user.selectedgroup"
-						ng-options="pergroup.name for pergroup in allgroups.result">
-						<option value=""></option>
-				    </select>
+						ng-options="pergroup.name for pergroup in allgroups.result"
+						multiple="multiple" multiselect-dropdown>
+					</select>
 				</td>
 				<td class="local-storage">
 					<span

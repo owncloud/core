@@ -19,7 +19,7 @@
  *
  */
 
-var usersmanagement = angular.module('usersmanagement', ['ngResource','localytics.directives']).
+var usersmanagement = angular.module('usersmanagement', ['ngResource']).
 config(['$httpProvider','$routeProvider', '$windowProvider', '$provide',
 	function($httpProvider,$routeProvider, $windowProvider, $provide) {
 
