@@ -859,6 +859,199 @@
 
 	<table>
 
+		<name>*dbprefix*shares</name>
+
+		<declaration>
+
+			<field>
+				<name>id</name>
+				<type>integer</type>
+				<default>0</default>
+				<notnull>true</notnull>
+				<autoincrement>1</autoincrement>
+				<length>4</length>
+			</field>
+
+			<field>
+				<name>share_type_id</name>
+				<type>text</type>
+				<default></default>
+				<notnull>true</notnull>
+				<length>32</length>
+			</field>
+
+			<field>
+				<name>share_owner</name>
+				<type>text</type>
+				<default></default>
+				<notnull>true</notnull>
+				<length>64</length>
+			</field>
+
+			<field>
+				<name>share_with</name>
+				<type>text</type>
+				<default></default>
+				<notnull>false</notnull>
+				<length>64</length>
+			</field>
+
+			<field>
+				<name>item_type</name>
+				<type>text</type>
+				<default></default>
+				<notnull>true</notnull>
+				<length>64</length>
+			</field>	
+
+			<field>
+				<name>item_owner</name>
+				<type>text</type>
+				<default></default>
+				<notnull>true</notnull>
+				<length>64</length>
+			</field>
+
+			<field>
+				<name>item_source</name>
+				<type>text</type>
+				<default></default>
+				<notnull>false</notnull>
+				<length>64</length>
+			</field>
+
+			<field>
+				<name>item_target</name>
+				<type>text</type>
+				<default></default>
+				<notnull>false</notnull>
+				<length>250</length>
+			</field>
+
+			<field>
+				<name>permissions</name>
+				<type>integer</type>
+				<default>0</default>
+				<notnull>true</notnull>
+				<length>1</length>
+			</field>
+
+			<field>
+				<name>share_time</name>
+				<type>integer</type>
+				<default>0</default>
+				<notnull>true</notnull>
+				<length>4</length>
+			</field>
+
+			<field>
+				<name>expiration_time</name>
+				<type>integer</type>
+				<default></default>
+				<notnull>false</notnull>
+				<length>4</length>
+			</field>
+
+		</declaration>
+
+	</table>
+
+	<table>
+		
+		<name>*dbprefix*shares_groups</name>
+
+		<declaration>
+
+			<field>
+				<name>id</name>
+				<type>integer</type>
+				<default>0</default>
+				<notnull>true</notnull>
+				<length>4</length>
+			</field>
+
+			<field>
+				<name>uid</name>
+				<type>text</type>
+				<default></default>
+				<notnull>true</notnull>
+				<length>64</length>
+			</field>
+
+			<field>
+				<name>item_target</name>
+				<type>text</type>
+				<default></default>
+				<notnull>true</notnull>
+				<length>250</length>
+			</field>
+
+		</declaration>
+
+	</table>
+
+	<table>
+
+		<name>*dbprefix*shares_links</name>
+
+		<declaration>
+
+			<field>
+				<name>id</name>
+				<type>integer</type>
+				<default>0</default>
+				<notnull>true</notnull>
+				<length>4</length>
+			</field>
+
+			<field>
+				<name>token</name>
+				<type>text</type>
+				<default></default>
+				<notnull>true</notnull>
+				<length>250</length>
+			</field>
+
+			<field>
+				<name>password</name>
+				<type>text</type>
+				<default></default>
+				<notnull>false</notnull>
+				<length>250</length>
+			</field>
+
+		</declaration>
+
+	</table>
+
+	<table>
+
+		<name>*dbprefix*shares_parents</name>
+
+		<declaration>
+
+			<field>
+				<name>id</name>
+				<type>integer</type>
+				<default>0</default>
+				<notnull>true</notnull>
+				<length>4</length>
+			</field>
+
+			<field>
+				<name>parent_id</name>
+				<type>integer</type>
+				<default>0</default>
+				<notnull>true</notnull>
+				<length>4</length>
+			</field>
+
+		</declaration>
+
+	</table>
+
+	<table>
+
 		<name>*dbprefix*jobs</name>
 
 		<declaration>

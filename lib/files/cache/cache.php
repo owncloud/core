@@ -104,8 +104,8 @@ class Cache {
 			$where = 'WHERE `storage` = ? AND `path_hash` = ?';
 			$params = array($this->getNumericStorageId(), md5($file));
 		} else { //file id
-			$where = 'WHERE `fileid` = ?';
-			$params = array($file);
+			$where = 'WHERE `storage` = ? AND `fileid` = ?';
+			$params = array($this->getNumericStorageId(), $file);
 		}
 		$sql = 'SELECT `fileid`, `storage`, `path`, `parent`, `name`, `mimetype`, `mimepart`, `size`, `mtime`,
 					   `storage_mtime`, `encrypted`, `unencrypted_size`, `etag`
@@ -119,9 +119,9 @@ class Cache {
 			$data = false;
 		}
 
-		//merge partial data
-		if (!$data and  is_string($file)) {
-			if (isset($this->partial[$file])) {
+		if (!$data) {
+			//merge partial data
+			if (is_string($file) && isset($this->partial[$file])) {
 				$data = $this->partial[$file];
 			}
 		} else {

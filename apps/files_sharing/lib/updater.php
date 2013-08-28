@@ -21,84 +21,111 @@
 
 namespace OC\Files\Cache;
 
-class Shared_Updater {
+use OC\Share\Share;
+use OC\Share\ShareManager;
+use OCA\Files\Share\FileShareFetcher;
+use OC\Files\Filesystem;
+use OC\Files\Cache\Updater;
+
+/**
+ * Listens to filesystem hooks and share hooks to update ETags and remove deleted shares
+ */
+class SharedUpdater {
+
+	protected $shareManager;
+	protected $fetcher;
+	protected $fileItemType;
+	protected $folderItemType;
 
 	/**
-	* Correct the parent folders' ETags for all users shared the file at $target
-	*
-	* @param string $target
-	*/
-	static public function correctFolders($target) {
-		$uid = \OCP\User::getUser();
-		$uidOwner = \OC\Files\Filesystem::getOwner($target);
-		$info = \OC\Files\Filesystem::getFileInfo($target);
-		// Correct Shared folders of other users shared with
-		$users = \OCP\Share::getUsersItemShared('file', $info['fileid'], $uidOwner, true);
-		if (!empty($users)) {
-			while (!empty($users)) {
-				$reshareUsers = array();
-				foreach ($users as $user) {
-					if ( $user !== $uidOwner ) {
-						$etag = \OC\Files\Filesystem::getETag('');
-						\OCP\Config::setUserValue($user, 'files_sharing', 'etag', $etag);
-						// Look for reshares
-						$reshareUsers = array_merge($reshareUsers, \OCP\Share::getUsersItemShared('file', $info['fileid'], $user, true));
-					}
-				}
-				$users = $reshareUsers;
+	 * The constructor
+	 * @param \OC\Share\ShareManager $shareManager
+	 * @param \OCA\Files\Share\FileShareFetcher $fetcher
+	 */
+	public function __construct(ShareManager $shareManager, FileShareFetcher $fetcher) {
+		$this->shareManager = $shareManager;
+		$this->fetcher = $fetcher;
+		$this->fileItemType = 'file';
+		$this->folderItemType = 'folder';
+		\OCP\Util::connectHook('OC_Filesystem', 'post_write', $this, 'onWrite');
+		\OCP\Util::connectHook('OC_Filesystem', 'post_rename', $this, 'onRename');
+		\OCP\Util::connectHook('OC_Filesystem', 'post_delete', $this, 'onDelete');
+		$this->shareManager->listen('\OC\Share', 'postShare', array($this, 'onShare'));
+	}
+
+	/**
+	 * Correct the parent folders' ETags
+	 * @param array $params
+	 */
+	public function onWrite($params) {
+		$this->correctFolders($params['path']);
+	}
+
+	/**
+	 * Correct the parent folders' ETags
+	 * @param array $params
+	 */
+	public function onRename($params) {
+		$this->correctFolders($params['newpath']);
+		$this->correctFolders(dirname($params['oldpath']));
+	}
+
+	/**
+	 * Correct the parent folders' ETags and unshare all shares of the file
+	 * @param array $params
+	 */
+	public function onDelete($params) {
+		$this->correctFolders($params['path']);
+		$data = Filesystem::getFileInfo($path);
+		if (isset($data['fileid']) && isset($data['mimetype'])) {
+			$fileId = $data['fileid'];
+			if ($data['mimetype'] === 'httpd/unix-directory') {
+				$itemType = $this->folderItemType;
+			} else {
+				$itemType = $this->fileItemType;
 			}
-			// Correct folders of shared file owner
-			$target = substr($target, 8);
-			if ($uidOwner !== $uid && $source = \OC_Share_Backend_File::getSource($target)) {
-				\OC\Files\Filesystem::initMountPoints($uidOwner);
-				$source = '/'.$uidOwner.'/'.$source['path'];
-				\OC\Files\Cache\Updater::correctFolder($source, $info['mtime']);
+			$this->shareManager->unshareItem($itemType, $fileId);
+		}
+	}
+
+	/**
+	 * Correct the parent folders' ETags for all users the specified share was shared with
+	 * @param \OC\Share\Share $share
+	 */
+	public function onShare(Share $share) {
+		$itemType = $share->getItemType();
+		if ($itemType === $this->fileItemType || $itemType === $this->folderItemType) {
+			$eTag = Filesystem::getETag('');
+			$uids = $this->fetcher->getUsersSharedWith(array($share));
+			foreach ($uids as $uid) {
+				$this->fetcher->setUID($uid);
+				$this->fetcher->setETag($eTag);
 			}
 		}
 	}
 
 	/**
-	 * @param array $params
-	 */
-	static public function writeHook($params) {
-		self::correctFolders($params['path']);
-	}
-
-	/**
-	 * @param array $params
-	 */
-	static public function renameHook($params) {
-		self::correctFolders($params['newpath']);
-		self::correctFolders(pathinfo($params['oldpath'], PATHINFO_DIRNAME));
-	}
-
-	/**
-	 * @param array $params
-	 */
-	static public function deleteHook($params) {
-		self::correctFolders($params['path']);
-	}
-
-	/**
-	 * @param array $params
-	 */
-	static public function shareHook($params) {
-		if ($params['itemType'] === 'file' || $params['itemType'] === 'folder') {
-			$uidOwner = \OCP\User::getUser();
-			$users = \OCP\Share::getUsersItemShared($params['itemType'], $params['fileSource'], $uidOwner, true);
-			if (!empty($users)) {
-				while (!empty($users)) {
-					$reshareUsers = array();
-					foreach ($users as $user) {
-						if ($user !== $uidOwner) {
-							$etag = \OC\Files\Filesystem::getETag('');
-							\OCP\Config::setUserValue($user, 'files_sharing', 'etag', $etag);
-							// Look for reshares
-							$reshareUsers = array_merge($reshareUsers, \OCP\Share::getUsersItemShared('file', $params['fileSource'], $user, true));
-						}
-					}
-					$users = $reshareUsers;
+	* Correct the parent folders' ETags for all users with access to the specified path
+	* @param string $path
+	*/
+	protected function correctFolders($path) {
+		$data = Filesystem::getFileInfo($path);
+		if (isset($data['fileid'])) {
+			$fileId = $data['fileid'];
+			$itemOwner = Filesystem::getOwner($path);
+			$eTag = Filesystem::getETag('');
+			$this->fetcher->setUID(null);
+			$uids = $this->fetcher->getUsersSharedWithById($fileId);
+			foreach ($uids as $uid) {
+				if ($uid !== $itemOwner) {
+					$this->fetcher->setUID($uid);
+					$this->fetcher->setETag($eTag);
 				}
+			}
+			if ($itemOwner !== \OCP\User::getUser()) {
+				// Correct folders of file owner
+				Filesystem::init($itemOwner, '/'.$itemOwner.'/files');
+				Updater::correctFolder(Filesystem::getPath($fileId), $data['mtime']);
 			}
 		}
 	}

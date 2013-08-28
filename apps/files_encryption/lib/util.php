@@ -1140,7 +1140,7 @@ class Util {
 		if ($sharingEnabled) {
 
 			// Find out who, if anyone, is sharing the file
-			$result = \OCP\Share::getUsersSharingFile($ownerPath, $owner, true);
+			$result = $this->getUsersSharingFile($ownerPath, $owner, true);
 			$userIds = $result['users'];
 			if ($result['public']) {
 				$userIds[] = $this->publicShareKeyId;
@@ -1177,6 +1177,47 @@ class Util {
 
 		return $uniqueUserIds;
 
+	}
+
+	/**
+	* @brief Find which users can access a shared item
+	* @param $path to the file
+	* @param $user owner of the file
+	* @param include owner to the list of users with access to the file
+	* @return array
+	* @note $path needs to be relative to user data dir, e.g. 'file.txt'
+	*       not '/admin/data/file.txt'
+	*/
+	public function getUsersSharingFile($path, $user, $includeOwner = false) {
+		$users = array();
+		$public = false;
+		$view = new \OC\Files\View('/' . $user . '/files/');
+		$meta = $view->getFileInfo(\OC\Files\Filesystem::normalizePath($path));
+		if ($meta !== false) {
+			$fileId = $meta['fileid'];
+			$shareManager = \OCP\Share::getShareManager();
+			if ($shareManager) {
+				$fetcher = new \OCA\Files\Share\FileShareFetcher($shareManager,
+					\OC_Group::getManager()
+				);
+				$shares = $fetcher->getById($fileId);
+				foreach ($shares as $share) {
+					if ($share->getShareTypeId() === 'link') {
+						$public = true;
+						break;
+					}
+				}
+				$users = $fetcher->getUsersSharedWith($shares);
+				if ($includeOwner) {
+					if (!in_array($user, $users)) {
+						$users[] = $user;
+					}
+				} else {
+					$users = array_diff($users, array($user));
+				}
+			}
+		}
+		return array('users' => $users, 'public'  => $public);
 	}
 
 	private function getUserWithAccessToMountPoint($users, $groups) {
@@ -1605,7 +1646,7 @@ class Util {
 
 		// Find out who, if anyone, is sharing the file
 		if ($sharingEnabled) {
-			$result = \OCP\Share::getUsersSharingFile($file, $this->userId, true);
+			$result = $this->getUsersSharingFile($file, $this->userId, true);
 			$userIds = $result['users'];
 			$userIds[] = $this->recoveryKeyId;
 			if ($result['public']) {
