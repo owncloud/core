@@ -121,8 +121,26 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 			break;
 		case 'setExpirationDate':
 			if (isset($_POST['date'])) {
-				$return = OCP\Share::setExpirationDate($_POST['itemType'], $_POST['itemSource'], $_POST['date']);
-				($return) ? OC_JSON::success() : OC_JSON::error();
+				if ($_POST['date'] === '') {
+					$time = null;
+				} else {
+					$date = new \DateTime($_POST['date']);
+					$time = $date->getTimeStamp();
+				}
+				$filter = array(
+					'shareOwner' => \OCP\User::getUser(),
+					'itemSource' => $_POST['itemSource'],
+				);
+				try {
+					$shares = $shareManager->getShares($_POST['itemType'], $filter);
+					foreach ($shares as $share) {
+						$share->setExpirationTime($time);
+						$shareManager->update($share);
+					}
+				} catch (Exception $exception) {
+					OC_JSON::error();
+				}
+				OC_JSON::success();
 			}
 			break;
 		case 'email':
@@ -170,9 +188,35 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 	switch ($_GET['fetch']) {
 		case 'getItemsSharedStatuses':
 			if (isset($_GET['itemType'])) {
-				// $return = OCP\Share::getItemsShared($_GET['itemType'], OCP\Share::FORMAT_STATUSES);
-				$return = array();
-				is_array($return) ? OC_JSON::success(array('data' => $return)) : OC_JSON::error();
+				$statuses = array();
+				$filter = array(
+					'shareOwner' => \OCP\User::getUser(),
+				);
+				try {
+					$shares = $shareManager->getShares($_GET['itemType'], $filter);
+					foreach ($shares as $share) {
+						if ($share->getShareTypeId() === 'link') {
+							$statuses[$share->getItemSource()]['link'] = true;
+						} else if (!isset($statuses[$share->getItemSource()])) {
+							$statuses[$share->getItemSource()]['link'] = false;
+						}
+						$itemType = $share->getItemType();
+						if ($itemType === 'file' || $itemType == 'folder') {
+							$mounts = \OC\Files\Filesystem::getMountByNumericId($share->getStorage());
+							$view = \OC\Files\Filesystem::getView();
+							foreach ($mounts as $mount) {
+								$fullPath = $mount->getMountPoint().$share->getPath();
+								if (!is_null($path = $view->getRelativePath($fullPath))) {
+									$statuses[$share->getItemSource()]['path'] = $path;
+									break;
+								}
+							}
+						}
+					}
+				} catch (Exception $exception) {
+					OC_JSON::error(array('data' => array('message' => OC_Util::sanitizeHTML($exception->getMessage()))));
+				}
+				OC_JSON::success(array('data' => $statuses));
 			}
 			break;
 		case 'getItem':
@@ -180,17 +224,41 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 				&& isset($_GET['itemSource'])
 				&& isset($_GET['checkReshare'])
 				&& isset($_GET['checkShares'])) {
-				// if ($_GET['checkReshare'] == 'true') {
-				// 	$reshare = OCP\Share::getItemSharedWithBySource(
-				// 		$_GET['itemType'],
-				// 		$_GET['itemSource'],
-				// 		OCP\Share::FORMAT_NONE,
-				// 		null,
-				// 		true
-				// 	);
-				// } else {
+				if ($_GET['checkReshare'] == 'true') {
 					$reshare = array();
-				// }
+					$filter = array(
+						'shareWith' => \OCP\User::getUser(),
+						'isShareWithUser' => true,
+						'itemSource' => $_GET['itemSource'],
+					);
+					$result = $shareManager->getShares($_GET['itemType'], $filter);
+					$shares = array();
+					foreach ($result as $share) {
+						$shareTypeId = $share->getShareTypeId();
+						if ($shareTypeId === 'user') {
+							$shareTypeId = \OCP\Share::SHARE_TYPE_USER;
+						} else if ($shareTypeId === 'group') {
+							$shareTypeId = OCP\Share::SHARE_TYPE_GROUP;
+						} else if ($shareTypeId === 'link') {
+							$shareTypeId = OCP\Share::SHARE_TYPE_LINK;
+						}
+						$expiration = $share->getExpirationTime();
+						if (isset($expiration)) {
+							$expiration = date('d-m-Y', $share->getExpirationTime());
+						}
+						$reshare[$share->getId()] = array(
+							'share_type' => $shareTypeId,
+							'uid_owner' => $share->getShareOwner(),
+							'share_with' => $share->getShareWith(),
+							'permissions' => $share->getPermissions(),
+							'share_with_displayname' => $share->getShareWithDisplayName(),
+							'displayname_owner' => $share->getShareOwnerDisplayName(),
+							'expiration' => $expiration,
+						);
+					}
+				} else {
+					$reshare = array();
+				}
 				if ($_GET['checkShares'] == 'true') {
 					$filter = array(
 						'shareOwner' => \OCP\User::getUser(),
@@ -207,6 +275,10 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 						} else if ($shareTypeId === 'link') {
 							$shareTypeId = OCP\Share::SHARE_TYPE_LINK;
 						}
+						$expiration = $share->getExpirationTime();
+						if (isset($expiration)) {
+							$expiration = date('d-m-Y', $share->getExpirationTime());
+						}
 						$shares[$share->getId()] = array(
 							'share_type' => $shareTypeId,
 							'uid_owner' => $share->getShareOwner(),
@@ -214,6 +286,7 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 							'permissions' => $share->getPermissions(),
 							'share_with_displayname' => $share->getShareWithDisplayName(),
 							'displayname_owner' => $share->getShareOwnerDisplayName(),
+							'expiration' => $expiration,
 						);
 					}
 				} else {

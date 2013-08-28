@@ -6,6 +6,7 @@ $(document).ready(function() {
 
 		$('#fileList').one('fileActionsReady',function(){
 			OC.Share.loadIcons('file');
+			OC.Share.loadIcons('folder');
 		});
 
 		FileActions.register('all', 'Share', OC.PERMISSION_READ, OC.imagePath('core', 'actions/share'), function(filename) {
