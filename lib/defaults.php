@@ -139,6 +139,7 @@ class OC_Defaults {
                         $emailfooter="\n--\n";
                         $emailfooter.=$defaults->getName() . "\n";
                         $emailfooter.=$defaults->getSlogan() . "\n";
+                        $emailfooter.=$defaults->getBaseUrl();
                 }
 
                 return $emailfooter;
@@ -148,9 +149,14 @@ class OC_Defaults {
                 if ($this->themeExist('getEmailFooterHtml')) {
                         $emailfooter = $this->theme->getEmailFooterHtml();
                 } else {
-                        $emailfooter="<br>--<br>";
-                        $emailfooter.=$defaults->getName() . " - ";
-                        $emailfooter.=$defaults->getSlogan() . "<br>";
+                        $emailfooter='--<br>';
+                        $emailfooter.=$defaults->getName() . ' - ';
+                        $emailfooter.=$defaults->getSlogan() . '<br>';
+                        $emailfooter.='<br><a href="';
+                        $emailfooter.=$defaults->getBaseUrl();
+                        $emailfooter.='">';
+                        $emailfooter.=$defaults->getBaseUrl();
+                        $emailfooter.='</a>';
                 }
 
                 return $emailfooter;
