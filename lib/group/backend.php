@@ -85,7 +85,7 @@ abstract class OC_Group_Backend implements OC_Group_Interface {
 	 *
 	 * Checks whether the user is member of a group or not.
 	 */
-	public function inGroup($uid, $gid) {
+	public function inGroup($uid, $gid, $includeTopGroups = false) {
 		return in_array($gid, $this->getUserGroups($uid));
 	}
 
@@ -97,7 +97,7 @@ abstract class OC_Group_Backend implements OC_Group_Interface {
 	 * This function fetches all groups a user belongs to. It does not check
 	 * if the user exists at all.
 	 */
-	public function getUserGroups($uid) {
+	public function getUserGroups($uid, $includeSubGroups = false) {
 		return array();
 	}
 
@@ -106,6 +106,7 @@ abstract class OC_Group_Backend implements OC_Group_Interface {
 	 * @param string $search
 	 * @param int $limit
 	 * @param int $offset
+	 * @param bool $includeSubgroups
 	 * @return array with group names
 	 *
 	 * Returns a list with all groups

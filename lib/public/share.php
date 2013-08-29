@@ -421,6 +421,14 @@ class Share {
 				\OC_Log::write('OCP\Share', $message, \OC_Log::ERROR);
 				throw new \Exception($message);
 			}
+			//Extension for subgroup of group check in AD
+			//also use the new introduced $incloudTopGroups param of the inGroup function
+			else if($sharingPolicy == 'groups_subgroups' && !\OC_Group::inGroup($uidOwner, $shareWith, true)){
+				$message = 'Sharing '.$itemSource.' failed, because '
+					.$uidOwner.' is not a member of the group '.$shareWith.' or of it\'s subgroups';
+				\OC_Log::write('OCP\Share', $message, \OC_Log::ERROR);
+				throw new \Exception ($message);
+			}
 			// Check if the item source is already shared with the group, either from the same owner or a different user
 			// The check for each user in the group is done inside the put() function
 			if ($checkExists = self::getItems($itemType, $itemSource, self::SHARE_TYPE_GROUP, $shareWith,

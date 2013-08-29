@@ -39,17 +39,20 @@ class GROUP_LDAP extends lib\Access implements \OCP\GroupInterface {
 	 * @brief is user in group?
 	 * @param $uid uid of the user
 	 * @param $gid gid of the group
+	 * @param $includeTopGroups indicates if topGroups of the given group should also be checked
 	 * @returns true/false
 	 *
 	 * Checks whether the user is member of a group or not.
 	 */
-	public function inGroup($uid, $gid) {
+	public function inGroup($uid, $gid, $includeTopGroups = false) {
 		if(!$this->enabled) {
 			return false;
 		}
+		
 		if($this->connection->isCached('inGroup'.$uid.':'.$gid)) {
 			return $this->connection->getFromCache('inGroup'.$uid.':'.$gid);
 		}
+		
 		$dn_user = $this->username2dn($uid);
 		$dn_group = $this->groupname2dn($gid);
 		// just in case
@@ -57,8 +60,10 @@ class GROUP_LDAP extends lib\Access implements \OCP\GroupInterface {
 			$this->connection->writeToCache('inGroup'.$uid.':'.$gid, false);
 			return false;
 		}
-		//usually, LDAP attributes are said to be case insensitive. But there are exceptions of course.
-		$members = $this->readAttribute($dn_group, $this->connection->ldapGroupMemberAssocAttr);
+
+		//Use getGroupMembers function in access.php for determing the members of the given group
+		$members = $this->getGroupMembers($dn_group, $this->connection->ldapGroupMemberAssocAttr, $readGroups = array(), $includeTopGroups);
+
 		if(!$members) {
 			$this->connection->writeToCache('inGroup'.$uid.':'.$gid, false);
 			return false;
@@ -88,12 +93,13 @@ class GROUP_LDAP extends lib\Access implements \OCP\GroupInterface {
 	/**
 	 * @brief Get all groups a user belongs to
 	 * @param $uid Name of the user
+	 * @param $includeSubGroups indicates if SubGroups should also be checked
 	 * @returns array with group names
 	 *
 	 * This function fetches all groups a user belongs to. It does not check
 	 * if the user exists at all.
 	 */
-	public function getUserGroups($uid) {
+	public function getUserGroups($uid, $includeSubGroups = false) {
 		if(!$this->enabled) {
 			return array();
 		}
@@ -124,7 +130,7 @@ class GROUP_LDAP extends lib\Access implements \OCP\GroupInterface {
 			$this->connection->ldapGroupFilter,
 			$this->connection->ldapGroupMemberAssocAttr.'='.$uid
 		));
-		$groups = $this->fetchListOfGroups($filter, array($this->connection->ldapGroupDisplayName, 'dn'));
+		$groups = $this->fetchListOfGroups($filter, array($this->connection->ldapGroupDisplayName, 'dn'), null,null,$includeSubGroups);
 		$groups = array_unique($this->ownCloudGroupNames($groups), SORT_LOCALE_STRING);
 		$this->connection->writeToCache($cacheKey, $groups);
 
