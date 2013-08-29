@@ -57,12 +57,6 @@ usersmanagement.factory('GroupService',
 				method : 'POST'
 			});
 		},
-		togglegroup: function () {
-			return $resource(OC.filePath('settings', 'ajax', 'togglegroup.php'), group, {
-				method : 'GET',
-				isArray : true
-			});
-		},
 		removegroup: function(group) {
 			$resource(OC.filePath('settings', 'ajax', 'removegroup.php')).delete(
 				{ groupname : group }
@@ -128,7 +122,12 @@ usersmanagement.factory('UserService',
 		getUsersInGroup: function (groupId) {
 			var usersInGroupQuery = new _InArrayQuery('groups', groupId);
 			return UserModel.get(usersInGroupQuery);
-		}
+		},
+		toggleGroup: function(userid,group) {
+			return $resource(OC.filePath('settings', 'ajax', 'togglegroup.php')).save(
+				{ username : userid, groupname : group }
+			);
+		},
 	};
 }]);
 
@@ -475,6 +474,17 @@ usersmanagement.controller('userlistController',
 				$scope.users.splice($scope.users.indexOf(user), 1);
 				UserService.removeuser(user);
 			};
+			
+			/* To Toggle User Groups */
+			$scope.toggleGroup = function() {
+				UserService.groupToggle({ username : userid });
+			}
+			
+			/* To Add a User to a New Group */
+			$scope.addGroup = function() {
+				
+			}
+			
 		});
 	}
 ]);
@@ -525,20 +535,33 @@ usersmanagement.directive('ngBlur',
 	}
 ]);
 
-/* The Jquery Multiselect Directive. */
+/* The Jquery Multiselect Directive for Toggling Groups. */
 
-usersmanagement.directive('multiselectDropdown', [function() {
+usersmanagement.directive('multiselectUsers', [function() {
 	return function(scope, element, attributes) {
-		
-		/* Use as jQuery */
-		element = $(element[0]);
+		element = $(element[0]); // To use jQuery.
         element.multiSelect({
-			title: 'More Groups..',
-			maxWIdth:'200px'
+			title: 'Add to Groups..',
+			createCallback: scope.addGroup,
+			onCheck: scope.toggleGroup,
+			minWidth: 150,
+			maxWidth: 200
         });
 	}
 }]);
 
+/* The Jquery Multiselect Directive for Adding Groups. */
+
+usersmanagement.directive('multiselectDropdown', [function() {
+	return function(scope, element, attributes) {
+		element = $(element[0]); // To use jQuery.
+        element.multiSelect({
+			title: 'Add to Groups..',
+			minWidth: 150,
+			maxWidth: 200
+        });
+	}
+}]);
 /* Lists out Admins and User Admins on Top. */
 
 usersmanagement.filter('adminFilter', 

@@ -121,6 +121,17 @@ usersmanagement.controller('userlistController',
 				$scope.users.splice($scope.users.indexOf(user), 1);
 				UserService.removeuser(user);
 			};
+			
+			/* To Toggle User Groups */
+			$scope.toggleGroup = function() {
+				UserService.groupToggle({ username : userid });
+			}
+			
+			/* To Add a User to a New Group */
+			$scope.addGroup = function() {
+				
+			}
+			
 		});
 	}
 ]);

@@ -65,16 +65,30 @@ usersmanagement.directive('ngBlur',
 	}
 ]);
 
-/* The Jquery Multiselect Directive. */
+/* The Jquery Multiselect Directive for Toggling Groups. */
+
+usersmanagement.directive('multiselectUsers', [function() {
+	return function(scope, element, attributes) {
+		element = $(element[0]); // To use jQuery.
+        element.multiSelect({
+			title: 'Add to Groups..',
+			createCallback: scope.addGroup,
+			onCheck: scope.toggleGroup,
+			minWidth: 150,
+			maxWidth: 200
+        });
+	}
+}]);
+
+/* The Jquery Multiselect Directive for Adding Groups. */
 
 usersmanagement.directive('multiselectDropdown', [function() {
 	return function(scope, element, attributes) {
-		
-		/* Use as jQuery */
-		element = $(element[0]);
+		element = $(element[0]); // To use jQuery.
         element.multiSelect({
-			title: 'More Groups..',
-			maxWIdth:'200px'
+			title: 'Add to Groups..',
+			minWidth: 150,
+			maxWidth: 200
         });
 	}
 }]);

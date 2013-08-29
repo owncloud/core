@@ -33,12 +33,6 @@ usersmanagement.factory('GroupService',
 				method : 'POST'
 			});
 		},
-		togglegroup: function () {
-			return $resource(OC.filePath('settings', 'ajax', 'togglegroup.php'), group, {
-				method : 'GET',
-				isArray : true
-			});
-		},
 		removegroup: function(group) {
 			$resource(OC.filePath('settings', 'ajax', 'removegroup.php')).delete(
 				{ groupname : group }
@@ -104,7 +98,12 @@ usersmanagement.factory('UserService',
 		getUsersInGroup: function (groupId) {
 			var usersInGroupQuery = new _InArrayQuery('groups', groupId);
 			return UserModel.get(usersInGroupQuery);
-		}
+		},
+		toggleGroup: function(userid,group) {
+			return $resource(OC.filePath('settings', 'ajax', 'togglegroup.php')).save(
+				{ username : userid, groupname : group }
+			);
+		},
 	};
 }]);
 

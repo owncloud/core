@@ -25,11 +25,24 @@
 <div ng-controller="addUserController">
 	<fieldset>
 		<form id="newuser" autocomplete="off" name="createuser_form">
-			<input class="" id="newusername" type="text" name="loginnamefield" placeholder="<?php p($l->t('Username')) ?>" ng-minlength="3" required ng-model="newuser" />
-			<input id="newuserpassword" name="passwordfield" type="password" placeholder="<?php p($l->t('Password')) ?>" ng-model="password" />
+			<input 
+				id="newusername"
+				type="text"
+				name="loginnamefield"
+				placeholder="<?php p($l->t('Username')) ?>"
+				required ng-model="newuser" 
+			/>
+			<input
+				id="newuserpassword" 
+				name="passwordfield"
+				type="password"
+				placeholder="<?php p($l->t('Password')) ?>"
+				ng-model="password"
+			/>
 			<select
 				id="newusergroups"
-				class="groupselect multiselect" title="<?php p($l->t('Groups'))?>"
+				class="groupselect multiselect"
+				title="<?php p($l->t('Groups'))?>"
 				ng-model="selectedgroup"
 				ng-options="pergroup.name for pergroup in allgroups.result"
 				required multiple="multiple" multiselect-dropdown>
