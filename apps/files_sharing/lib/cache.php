@@ -304,31 +304,35 @@ class SharedCache extends Cache {
 	 * @return array of file data
 	 */
 	public function search($pattern) {
-		// TODO
+		$pattern = $this->normalize($pattern);
+		// Remove the '%' characters that were added for the LIKE query
+		$trimmedPattern = trim($pattern, '%');
+		return $this->searchCommon($pattern, 'search', function($share) use ($trimmedPattern) {
+			if (stripos($share->getItemTarget(), $trimmedPattern) !== false) {
+				return true;
+			}
+			return false;
+		});
 	}
 
 	/**
 	 * search for files by mimetype
 	 *
-	 * @param string $part1
-	 * @param string $part2
+	 * @param string $mimetype
 	 * @return array
 	 */
 	public function searchByMime($mimetype) {
-		if (strpos($mimetype, '/')) {
-			$where = '`mimetype` = ?';
-		} else {
-			$where = '`mimepart` = ?';
-		}
-		$mimetype = $this->getMimetypeId($mimetype);
-		$ids = $this->getAll();
-		$placeholders = join(',', array_fill(0, count($ids), '?'));
-		$query = \OC_DB::prepare('
-			SELECT `fileid`, `storage`, `path`, `parent`, `name`, `mimetype`, `mimepart`, `size`, `mtime`, `encrypted`
-			FROM `*PREFIX*filecache` WHERE ' . $where . ' AND `fileid` IN (' . $placeholders . ')'
+		$mimetypeId = (int)$this->getMimetypeId($mimetype);
+		return $this->searchCommon($mimetype, 'searchByMime',
+			function($share) use ($mimetypeId) {
+				if ($share->getMimepart() === $mimetypeId
+					|| $share->getMimetype() === $mimetypeId
+				) {
+					return true;
+				}
+				return false;
+			}
 		);
-		$result = $query->execute(array_merge(array($mimetype), $ids));
-		return $result->fetchAll();
 	}
 
 	/**
@@ -357,10 +361,18 @@ class SharedCache extends Cache {
 	public function getAll() {
 		$ids = array();
 		$shares = $this->fetcher->getAll();
+		$folderMimetypeId = (int)$this->getMimetypeId('httpd/unix-directory');
 		foreach ($shares as $share) {
-			$ids[] = $share->getItemSource();
+			$fileId = $share->getItemSource();
+			if (!isset($ids[$fileId])) {
+				$ids[$fileId] = $fileId;
+				if ($share->getMimetype() === $folderMimetypeId) {
+					$childrenIds = $this->getChildrenIds($fileId);
+					$ids = array_merge($ids, array_combine($childrenIds, $childrenIds));
+				}
+			}
 		}
-		return array_unique($ids);
+		return array_values($ids);
 	}
 
 	/**
@@ -374,6 +386,87 @@ class SharedCache extends Cache {
 	 */
 	public function getIncomplete() {
 		return false;
+	}
+
+	/**
+	 * Search all file shares and their children
+	 * @param mixed $query The search query to pass to the method
+	 * @param string $method The method to call inside a cache - 'search' or 'searchByMime'
+	 * @param callable $callback A callable that returns true if the file share passed as an
+	 * argument matches the search query, elsewise returns false
+	 * @return array
+	 */
+	protected function searchCommon($query, $method, $callback) {
+		$files = array();
+		$caches = array();
+		$folderMimetypeId = (int)$this->getMimetypeId('httpd/unix-directory');
+		$shares = $this->fetcher->getAll();
+		// Look through all file shares for matches
+		foreach ($shares as $share) {
+			$fileId = $share->getItemSource();
+			// Ignore duplicate shares
+			if (!isset($files[$fileId])) {
+				if ($callback($share)) {
+					$file = $share->getMetadata();
+					$file['mimetype'] = $this->getMimetype($file['mimetype']);
+					$file['mimepart'] = $this->getMimetype($file['mimepart']);
+					if ($file['storage_mtime'] === 0) {
+						$file['storage_mtime'] = $file['mtime'];
+					}
+					$files[$fileId] = $file;
+				}
+				$storageId = $share->getStorage();
+				if ($share->getMimetype() === $folderMimetypeId && !isset($caches[$storageId])) {
+					list($cache) = $this->getSourceCache($share->getItemTarget());
+					$caches[$storageId] = $cache;
+				}
+			}
+		}
+		$ids = $this->getAll();
+		// Look inside shared folders' caches for more results
+		foreach ($caches as $cache) {
+			$result = $cache->$method($query);
+			foreach ($result as $file) {
+				$fileId = (int)$file['fileid'];
+				// Ensure that the search result is a shared file
+				if (!isset($files[$fileId]) && in_array($fileId, $ids) !== false) {
+					// Find the shared folder this file is inside
+					foreach ($shares as $share) {
+						$path = $share->getPath();
+						if ((int)$file['storage'] === $share->getStorage()
+							&& strpos($file['path'], $path) === 0
+						) {
+							// Rebuild the path relative to the Shared folder
+							$folder = $share->getItemTarget();
+							$file['path'] = $folder.substr($file['path'], strlen($path));
+							$files[$fileId] = $file;
+						}
+					}
+				}
+			}
+		}
+		return array_values($files);
+	}
+
+	/**
+	 * Get all children file ids for the specified file id
+	 * @param int $fileId
+	 * @return int[]
+	 */
+	protected function getChildrenIds($fileId) {
+		$ids = array();
+		$folderMimetypeId = (int)$this->getMimetypeId('httpd/unix-directory');
+		$sql = 'SELECT `fileid`, `mimetype` FROM `*PREFIX*filecache` WHERE `parent` = ?';
+		$result = \OC_DB::executeAudited($sql, array($fileId));
+		$rows = $result->fetchAll();
+		foreach ($rows as $row) {
+			$fileId = (int)$row['fileid'];
+			$ids[] = $fileId;
+			if ((int)$row['mimetype'] === $folderMimetypeId) {
+				$ids = array_merge($ids, $this->getChildrenIds($fileId));
+			}
+		}
+		return $ids;
 	}
 
 }

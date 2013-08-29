@@ -45,6 +45,8 @@ class FileShare extends Share {
 		$this->addType('itemSource', 'int');
 		$this->addType('storage', 'int');
 		$this->addType('parent', 'int');
+		$this->addType('mimetype', 'int');
+		$this->addType('mimepart', 'int');
 		$this->addType('size', 'int');
 		$this->addType('mtime', 'int');
 		$this->addType('encrypted', 'bool');
