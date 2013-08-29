@@ -36,6 +36,7 @@
 				<th class="table-head display-name">Display Name</th>
 				<th class="table-head user-pass">Password</th>
 				<th class="table-head groups">Groups</th>
+				<th class="table-head groups">Sub Admin</th>
 				<th class="table-head local-storage">Storage</th>
 				<th class="table-head user-actions"></th>
 			</tr>
@@ -97,7 +98,16 @@
 						data-placeholder="Select Options" 
 						ng-model="user.selectedgroup"
 						ng-options="pergroup.name for pergroup in allgroups.result"
-						multiple="multiple" multiselect-dropdown>
+						multiple="multiple" multiselect-users>
+					</select>
+				</td>
+				<td class="subadmin-groups">
+					<select
+						class="multiselect"
+						data-placeholder="Select Options" 
+						ng-model="user.selectedgroup"
+						ng-options="pergroup.name for pergroup in allgroups.result"
+						multiple="multiple" multiselect-users>
 					</select>
 				</td>
 				<td class="local-storage">
