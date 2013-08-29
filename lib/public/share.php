@@ -63,7 +63,124 @@ class Share {
 	private static $backendTypes = array();
 	private static $isResharingAllowed;
 
+	private static $shareManager;
+
 	/**
+	 * Get the ShareManager
+	 * @return \OC\Share\ShareManager | null
+	 */
+	public static function getShareManager() {
+		if (!isset(self::$shareManager)) {
+			if (\OC_Appconfig::getValue('core', 'shareapi_enabled', 'yes') === 'yes') {
+				self::$shareManager = new ShareManager();
+				\OC_Util::addScript('core', 'share');
+				\OC_Util::addStyle('core', 'share');
+				self::setupHooks();
+			} else {
+				self::$shareManager = null;
+			}
+		}
+		return self::$shareManager;
+	}
+
+	// /**
+	//  * Get the ShareDialogController
+	//  * @param mixed $params The parameters for the request
+	//  * @return \OC\Share\Controller\ShareDialogController | null
+	//  */
+	// public static function getShareDialogController($params) {
+	// 	\OC_JSON::callCheck();
+	// 	\OC_JSON::checkLoggedIn();
+	// 	$contents = json_decode(file_get_contents('php://input'), true);
+	// 	$contents = is_array($contents) ? $contents: array();
+	// 	$params = array_merge($params, $contents, $_GET, $_POST);
+	// 	$shareManager = self::getShareManager();
+	// 	if ($shareManager) {
+	// 		return new ShareDialogController($shareManager, new \OC\Log(), $params);
+	// 	}
+	// 	return null;
+	// }
+
+	/**
+	 * Emit old hooks for backwards compatibility
+	 */
+	public static function setupHooks() {
+		$shareManager = self::getShareManager();
+		if ($shareManager) {
+			self::$shareManager->listen('\OC\Share', 'preShare', function($share) {
+				\OC_Hook::emit('OCP\Share', 'pre_shared', self::getHookArray($share));
+			});
+			self::$shareManager->listen('\OC\Share', 'postShare', function($share) {
+				\OC_Hook::emit('OCP\Share', 'post_shared', self::getHookArray($share));
+			});
+			self::$shareManager->listen('\OC\Share', 'preUnshare', function($share) {
+				$params = self::getHookArray($share);
+				$params['itemParent'] = $params['parent'];
+				\OC_Hook::emit('OCP\Share', 'pre_unshare', $params);
+			});
+			self::$shareManager->listen('\OC\Share', 'postUnshare', function($share) {
+				$params = self::getHookArray($share);
+				$params['itemParent'] = $params['parent'];
+				\OC_Hook::emit('OCP\Share', 'post_unshare', $params);
+			});
+			self::$shareManager->listen('\OC\Share', 'postUpdate', function($share) {
+				$properties = $share->getUpdatedProperties();
+				if (isset($properties['permissions'])) {
+					$itemType = $share->getItemType();
+					if ($itemType === 'file' || $itemType === 'folder') {
+						$params = self::getHookArray($share);
+						$params['path'] = $share->getPath();
+						\OC_Hook::emit('OCP\Share', 'post_update_permissions', $params);
+					}
+				}
+			});
+		}
+	}
+
+	/**
+	 * Get the share properties in an array as expected for the old hooks
+	 * @param \OC\Share\Share $share
+	 * @return array
+	 */
+	public static function getHookArray($share) {
+		$itemTarget = $share->getItemTarget();
+		if ($share->getShareTypeId() === 'group') {
+			if (is_array($itemTarget)) {
+				$itemTarget = reset($itemTarget);
+			}
+		}
+		$shareType = null;
+		$shareTypeId = $share->getShareTypeId();
+		if ($shareTypeId === 'user') {
+			$shareType = self::SHARE_TYPE_USER;
+		} else if ($shareTypeId === 'group') {
+			$shareType = self::SHARE_TYPE_GROUP;
+		} else if ($shareTypeId === 'link') {
+			$shareType = self::SHARE_TYPE_LINK;
+		}
+		$parent = null;
+		$parentIds = $share->getParentIds();
+		if (is_array($parentIds)) {
+			$parent = reset($parentIds);
+		}
+		return array(
+			'itemType' => $share->getItemType(),
+			'itemSource' => $share->getItemSource(),
+			'itemTarget' => $itemTarget,
+			'parent' => $parent,
+			'shareType' => $shareType,
+			'shareWith' => $share->getShareWith(),
+			'uidOwner' => $share->getShareOwner(),
+			'permissions' => $share->getPermissions(),
+			'fileSource' => $share->getItemSource(),
+			'fileTarget' => $itemTarget,
+			'id' => $share->getId(),
+			'token' => $share->getToken(),
+		);
+	}
+
+	/**
+	* @deprecated As of version 2.0.0, replaced by ShareManager
 	* @brief Register a sharing backend class that implements OCP\Share_Backend for an item type
 	* @param string Item type
 	* @param string Backend class
