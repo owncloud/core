@@ -28,15 +28,11 @@
 			<input class="" id="newusername" type="text" name="loginnamefield" placeholder="<?php p($l->t('Username')) ?>" ng-minlength="3" required ng-model="newuser" />
 			<input id="newuserpassword" name="passwordfield" type="password" placeholder="<?php p($l->t('Password')) ?>" ng-model="password" />
 			<select
-				chosen multiple id="newusergroups"
-				class="groupselect" title="<?php p($l->t('Groups'))?>"
-				allow-single-deselect="true"
-				data-placeholder="Select Group.."
-				no-result-text="No Such Group.."
+				id="newusergroups"
+				class="groupselect multiselect" title="<?php p($l->t('Groups'))?>"
 				ng-model="selectedgroup"
 				ng-options="pergroup.name for pergroup in allgroups.result"
-				required>
-				<option value=""></option>
+				required multiple="multiple" multiselect-dropdown>
 			</select>
 			<button
 				title="<?php p($l->t('Create'))?>"
