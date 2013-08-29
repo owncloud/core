@@ -218,6 +218,7 @@ class Filesystem {
 		if ($user == '') {
 			$user = \OC_User::getUser();
 		}
+		\OC_Util::setupFS($user);
 		$parser = new \OC\ArrayParser();
 
 		$root = \OC_User::getHome($user);
