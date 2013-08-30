@@ -1,0 +1,352 @@
+/*************************************
+ * contacts et favoris               *
+ *************************************/
+
+@media (max-width:1080px) {
+	#contacts {
+		position: absolute !important;
+		width: auto !important;
+		top: 0 !important;
+		left: 0 !important;
+		right: 0 !important;
+		bottom: 0 !important;
+		overflow: hidden !important;
+	}
+	
+	#contacts ul.contacts {
+		position: absolute;
+		top: 3em;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		overflow: auto;
+	}
+	
+	.fluxx-state-N-shown #content #groupsheader {
+		left: 5em !important;
+	}
+
+	#content #groupsheader {
+		right: 0;
+		left: 0;
+		width: auto;
+		height: 40px;
+	}
+	
+	#grouplist h3 .action {
+		display: inline-block !important;
+	}
+	
+	#content #contactsheader {
+		left: 0 !important;
+		right: 0 !important;
+		position: absolute;
+		top: 160px !important;
+		height: 40px;
+	}
+	
+	#content #leftcontent {
+		position: absolute;
+		height: 120px !important;
+		top: 40px !important;
+		left: 0 !important;
+		right: 0 !important;
+		width: auto !important;
+	}
+	#content #leftcontent h3 {
+		height: 30px;
+	}
+	
+	#content #leftcontent #add_form {
+		padding-bottom: 0;
+		text-align: right;
+	}
+	
+	#content #leftcontent #add_url {
+		width: 95%;
+	}
+
+	#content #rightcontent {
+		position: absolute;
+		top: 200px !important;
+		bottom: 30px !important;
+		left: 0 !important;
+		right: 0 !important;
+		width: auto !important;
+		overflow: auto !important;
+	}
+	
+	#content #rightcontent div.bookmarks_list {
+		position: static;
+		padding-top: 0;
+	}
+
+	#content #rightcontent #firstrun {
+		position: static;
+		padding : 1em;
+	}
+	
+	#content #rightcontent #firstrun #distance {
+		height: 10%;
+		margin-bottom: 0;
+	}
+	
+	#content #rightcontent #firstrun #firstrun_message {
+		width: 100%;
+	}
+	
+	.bookmark_single {
+		height: 5em;
+	}
+	.bookmark_title {
+		float: left;
+		height : 1.4em;
+	}
+	.bookmark_desc {
+		float: left;
+		clear: both;
+		top: auto !important;
+		left: auto !important;
+		width: auto !important;
+		position: static !important;
+		height : 1.3em !important;
+	}
+	.bookmark_date {
+		float: right;
+		top: auto !important;
+		left: auto !important;
+		width: auto !important;
+		position: static !important;
+		height : 1.3em !important;
+	}
+	.bookmark_tags {
+		float: left;
+		clear: both;
+		top: auto !important;
+		left: auto !important;
+		width: auto !important;
+		position: static !important;
+		height : 1.5em !important;
+	}
+	
+	div.bookmark_single span.bookmark_edit_btn {
+		display: inline-block !important;
+	}
+	
+	div.bookmark_single p.bookmark_actions {
+		display: inline-block !important;
+		bottom: auto;
+		right: 0.3em;
+		top: 0.3em;
+	}
+	
+	#bookmark_settings {
+		width: 100% !important;
+	}
+
+	#content #contacts-settings {
+		left: 0;
+		right: 0;
+		width: auto;
+	}
+	
+	#content #rightcontent #contact span.arrow {
+		display: none;
+	}
+	#content #rightcontent #contact {
+		left: 1em;
+		right: 1em;
+		top: 1em;
+		bottom: 1em;
+		width: auto;
+	}
+	#content #rightcontent #contact #photowrapper {
+		width:55px !important;
+		height:70px !important;
+		overflow: hidden;
+	}
+	#content #rightcontent #contact img.contactphoto {
+		max-width:50px !important;
+		max-height:65px !important;
+	}
+	
+	#content #rightcontent #contact .action {
+		opacity: 1 !important;
+	}
+	
+	#content #rightcontent #contact .listactions {
+		opacity: 1 !important;
+	}
+	
+	#content #rightcontent #contact footer button {
+		display: block !important;
+		float: left !important;
+	}
+}
+
+/*************************************
+ * formulaire de recherche & user    *
+ *************************************/
+@media (min-width:1081px) {
+	#opensearchbutton {
+		display: none;
+	}
+	
+	#closesearchbutton {
+		display: none;
+	}
+	#searchboxpanel {
+		display: block;
+	}
+}
+@media (max-width:1080px) {
+	#searchboxpanel {
+		z-index: 100;
+		background-color: #1D2D44;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 3em;
+		text-align: right;
+		padding-right: 4em;
+		display: none;
+	}
+	
+	#opensearchbutton {
+		background-image: url(../core/img/actions/search.svg?2012-12-19T21:23:20Z);
+		background-position:center center;
+		background-repeat: no-repeat;
+		margin: 0.5em;
+		margin-top: 1em;
+		height: 1.5em;
+		width: 1.5em;
+		display: inline;
+	}
+	
+	#closesearchbutton {
+		background-image: url(../core/img/actions/delete.svg?2012-12-19T21:23:20Z);
+		background-position:center center;
+		background-repeat: no-repeat;
+		height: 1.8em;
+		width: 1.8em;
+		display: inline;
+		margin-top: 0.5em;
+	}
+	
+	#searchbox {
+		float: none;
+	}
+	
+	#searchresults {
+		left: 0 !important;
+		right: 0 !important;
+		width: auto !important;
+		border-bottom-left-radius: 0 !important;
+	}
+}
+
+#settings {
+	margin-right: 3em;
+}
+
+/*************************************
+ * files app                         *
+ *************************************/
+#controls {
+        overflow: hidden;
+}
+@media (max-width:1080px) {
+	#new a {
+			background-image: url(../core/img/actions/add.svg?2012-12-19T21:23:20Z);
+			background-position:center center;
+			background-repeat: no-repeat;
+			display: block;
+			font-size: 0;
+			width: 18px;
+	}
+	#fileList span.fileactions {
+		position: static !important;
+	}
+	#fileList a.action {
+		display: inline-block !important;
+		opacity: 0.5 !important;
+		font-size: 0;
+		margin-left: 10px !important;
+		vertical-align: middle;
+	}
+	
+	#content #headerDate {
+		display: none;
+	}
+
+	#content #fileList .date {
+		display: none;
+	}
+	
+}
+
+/*************************************
+ * Fluxx compensator                 *
+ *************************************/
+
+@media (max-width:1080px) {
+	#fluxx-N {
+		width: 3em;
+		height: 3em;
+	}
+	#fluxx-N img.svg {
+		width: 2.5em;
+		height: 2.5em;
+	}
+	.fluxx-handle.fluxx-horizontal.fluxx-shown {
+		transform: scale(-1, 1) translate(3em, 0);
+	}
+	
+	#fluxx-H {
+		width: 3em;
+		height: 3em;
+	}
+	#fluxx-H img.svg {
+		width: 2.5em;
+		height: 2.5em;
+	}
+	.fluxx-handle.fluxx-vertical.fluxx-shown {
+		transform: scale(1, -1) translate(0, 3em);
+	}
+}
+
+/*************************************
+ * app framework apps like news app  *
+ *************************************/
+@media (max-width:1080px) {
+	#app-navigation {
+		position: absolute;
+		height: 15em !important;
+		top: 0px !important;
+		left: 0 !important;
+		right: 0 !important;
+		width: auto !important;
+	}
+	
+	#app-navigation span.utils button {
+		display: block;
+	}
+	
+	#app-navigation #app-settings {
+		position: absolute;
+		width: 100%;
+		max-height: 15em;
+		overflow: auto;
+	}
+	
+	#app-content {
+		position: absolute;
+		top: 15em !important;
+		bottom: 3em !important;
+		left: 0 !important;
+		right: 0 !important;
+		width: auto !important;
+		overflow: auto !important;
+	}
+}

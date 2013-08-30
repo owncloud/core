@@ -12,6 +12,7 @@
 			p($theme->getTitle());
 			p(trim($_['user_displayname']) != '' ?' ('.$_['user_displayname'].') ':'') ?>
 		</title>
+		<meta content="initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="apple-itunes-app" content="app-id=543672169">
@@ -69,11 +70,15 @@
 				</div>
 			</ul>
 
-			<form class="searchbox" action="#" method="post">
-				<input id="searchbox" class="svg" type="search" name="query"
-					value="<?php if(isset($_POST['query'])) {p($_POST['query']);};?>"
-					autocomplete="off" x-webkit-speech />
-			</form>
+			<input type="button" id="opensearchbutton" class="searchbox header-right">
+			<div id="searchboxpanel" class="searchbox">
+				<form class="searchbox" action="#" method="post">
+					<input id="searchbox" class="svg" type="search" name="query"
+						value="<?php if(isset($_POST['query'])) {p($_POST['query']);};?>"
+						autocomplete="off" x-webkit-speech />
+					<input type="button" id="closesearchbutton"/>
+				</form>
+			</div>
 		</div></header>
 
 		<nav><div id="navigation">
