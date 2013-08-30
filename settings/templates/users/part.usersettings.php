@@ -27,7 +27,8 @@
 	ng-controller="setQuotaController"
 	ng-init="
 	showQuotaSettings = false;
-	customQuotaInput = false;"
+	customQuotaInput = false;
+	showQuotadropdown = false;"
 >
 	<div id="app-settings-header">
 		<button
@@ -41,16 +42,25 @@
 		ng-show="showQuotaSettings"
 	>
 		<fieldset class="default-storage">
-			<label><?php p($l->t('Default Storage')); ?></label>
-			<select>
-				<option><?php p($l->t('Default')); ?></option>
-				<option><?php p($l->t('Unlimited')); ?></option>
-				<option><?php p($l->t('5 GB')); ?></option>
-				<option><?php p($l->t('10 GB')); ?></option>
-				<option><?php p($l->t('15 GB')); ?></option>
-				<option ng-click="customQuotaInput = true; "><?php p($l->t('Custom')); ?></option>
+			<label>
+				<?php p($l->t('Default Storage : ')); ?>
+			</label>
+			<!-- Find a work around to get this value.-->
+			<span>
+				<?php p($_['default_quota']); ?>
+			</span>
+			<button ng-click="showQuotadropdown = true;">
+				<?php p($l->t('Change'))?>
+			</button>
+			<select
+				ng-show="showQuotadropdown"
+				ng-options="quotavalue as quotavalue.show for quotavalue in quotavalues"
+				ng-model="quotavalue"
+				ng-change="selectdefaultQuota(quotavalue);
+						 showQuotadropdown=false;">
+				<option value=""><?php p($l->t('Default Value')); ?></option>
 			</select>
-			<label><?php p($l->t('Custom')); ?></label>
+			<!--<label><?php p($l->t('Custom')); ?></label>
 			<input
 				type="text"
 				ng-model="customQuota"
@@ -58,7 +68,7 @@
 					defaultQuota(customQuota);
 					customQuotaInput = false;"
 			/>
-			<span><?php p($l->t('GB')); ?></span>
+			<span><?php p($l->t('GB')); ?></span>-->
 		</fieldset>
 	</div>
 </div>

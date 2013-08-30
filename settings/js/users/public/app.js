@@ -131,12 +131,12 @@ usersmanagement.factory('UserService',
 usersmanagement.factory('QuotaService', function($resource) {
 	return {
 		setUserQuota: function(userid,userQuota) {
-			return $resource(OC.filePath('settings','ajax', 'setQuota.php')).save(
+			return $resource(OC.filePath('settings','ajax', 'setquota.php')).save(
 				{ username : userid, quota : userQuota }
 			);
 		},
 		setDefaultQuota: function(defaultquota) {
-			return $resource(OC.filePath('settings', 'ajax', 'setQuota.php')).save(
+			return $resource(OC.filePath('settings', 'ajax', 'setquota.php')).save(
 				{ quota : defaultquota }
 			);
 		}
@@ -427,10 +427,17 @@ usersmanagement.controller('addUserController',
 usersmanagement.controller('setQuotaController',
 	['$scope', 'QuotaService',
 	function($scope, QuotaService) {
-			
+		$scope.quotavalues =[
+								{show : '5GB', quotaval : '5gb'},
+								{show : '10GB', quotaval : '10gb'},
+								{show : '10GB', quotaval : '20gb'},
+								//{show : '10 GB', quotaval : 'Unlimited'},
+								//{show : 'Custom', quotaval : 'Custom'}
+							];
 		// Default Quota
-		$scope.defaultQuota = function(defaultquota) {
-			QuotaService.setDefaultQuota(defaultquota);
+		$scope.selectdefaultQuota = function(defaultquota) {
+			console.log(defaultquota.quotaval);
+			QuotaService.setDefaultQuota(defaultquota.quotaval);
 		}
 	}
 ]);
