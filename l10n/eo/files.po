@@ -3,15 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Mariano <mstreet@kde.org.ar>, 2013.
-# Mariano  <mstreet@kde.org.ar>, 2012.
-#   <mstreet@kde.org.ar>, 2011, 2012.
+# Mariano <mstreet@kde.org.ar>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-02-10 00:08+0100\n"
-"PO-Revision-Date: 2013-02-09 23:08+0000\n"
+"POT-Creation-Date: 2013-08-30 09:31-0400\n"
+"PO-Revision-Date: 2013-08-30 13:34+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Esperanto (http://www.transifex.com/projects/p/owncloud/language/eo/)\n"
 "MIME-Version: 1.0\n"
@@ -30,105 +28,159 @@ msgstr "Ne eblis movi %s: dosiero kun ĉi tiu nomo jam ekzistas"
 msgid "Could not move %s"
 msgstr "Ne eblis movi %s"
 
-#: ajax/rename.php:22 ajax/rename.php:25
-msgid "Unable to rename file"
-msgstr "Ne eblis alinomigi dosieron"
+#: ajax/upload.php:16 ajax/upload.php:45
+msgid "Unable to set upload directory."
+msgstr ""
 
-#: ajax/upload.php:19
+#: ajax/upload.php:22
+msgid "Invalid Token"
+msgstr ""
+
+#: ajax/upload.php:59
 msgid "No file was uploaded. Unknown error"
 msgstr "Neniu dosiero alŝutiĝis. Nekonata eraro."
 
-#: ajax/upload.php:26
+#: ajax/upload.php:66
 msgid "There is no error, the file uploaded with success"
-msgstr "Ne estas eraro, la dosiero alŝutiĝis sukcese"
+msgstr "Ne estas eraro, la dosiero alŝutiĝis sukcese."
 
-#: ajax/upload.php:27
+#: ajax/upload.php:67
 msgid ""
 "The uploaded file exceeds the upload_max_filesize directive in php.ini: "
 msgstr "La dosiero alŝutita superas la regulon upload_max_filesize el php.ini: "
 
-#: ajax/upload.php:29
+#: ajax/upload.php:69
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
 msgstr "La dosiero alŝutita superas la regulon MAX_FILE_SIZE, kiu estas difinita en la HTML-formularo"
 
-#: ajax/upload.php:31
+#: ajax/upload.php:70
 msgid "The uploaded file was only partially uploaded"
-msgstr "La alŝutita dosiero nur parte alŝutiĝis"
+msgstr "la alŝutita dosiero nur parte alŝutiĝis"
 
-#: ajax/upload.php:32
+#: ajax/upload.php:71
 msgid "No file was uploaded"
-msgstr "Neniu dosiero estas alŝutita"
+msgstr "Neniu dosiero alŝutiĝis."
 
-#: ajax/upload.php:33
+#: ajax/upload.php:72
 msgid "Missing a temporary folder"
-msgstr "Mankas tempa dosierujo"
+msgstr "Mankas provizora dosierujo."
 
-#: ajax/upload.php:34
+#: ajax/upload.php:73
 msgid "Failed to write to disk"
 msgstr "Malsukcesis skribo al disko"
 
-#: ajax/upload.php:52
+#: ajax/upload.php:91
 msgid "Not enough storage available"
+msgstr "Ne haveblas sufiĉa memoro"
+
+#: ajax/upload.php:109
+msgid "Upload failed"
 msgstr ""
 
-#: ajax/upload.php:83
+#: ajax/upload.php:127
 msgid "Invalid directory."
 msgstr "Nevalida dosierujo."
 
-#: appinfo/app.php:10
+#: appinfo/app.php:12
 msgid "Files"
 msgstr "Dosieroj"
 
+#: js/file-upload.js:11
+msgid "Unable to upload your file as it is a directory or has 0 bytes"
+msgstr "Ne eblis alŝuti vian dosieron ĉar ĝi estas dosierujo aŭ havas 0 duumokojn"
+
+#: js/file-upload.js:24
+msgid "Not enough space available"
+msgstr "Ne haveblas sufiĉa spaco"
+
+#: js/file-upload.js:64
+msgid "Upload cancelled."
+msgstr "La alŝuto nuliĝis."
+
+#: js/file-upload.js:165
+msgid ""
+"File upload is in progress. Leaving the page now will cancel the upload."
+msgstr "Dosieralŝuto plenumiĝas. Lasi la paĝon nun nuligus la alŝuton."
+
+#: js/file-upload.js:239
+msgid "URL cannot be empty."
+msgstr "URL ne povas esti malplena."
+
+#: js/file-upload.js:244 lib/app.php:53
+msgid "Invalid folder name. Usage of 'Shared' is reserved by ownCloud"
+msgstr "Nevalida dosierujnomo. La uzo de “Shared” estas rezervita de ownCloud."
+
+#: js/file-upload.js:275 js/file-upload.js:291 js/files.js:511 js/files.js:549
+msgid "Error"
+msgstr "Eraro"
+
 #: js/fileactions.js:116
+msgid "Share"
+msgstr "Kunhavigi"
+
+#: js/fileactions.js:126
 msgid "Delete permanently"
-msgstr ""
+msgstr "Forigi por ĉiam"
 
-#: js/fileactions.js:118 templates/index.php:91 templates/index.php:92
-msgid "Delete"
-msgstr "Forigi"
-
-#: js/fileactions.js:184
+#: js/fileactions.js:192
 msgid "Rename"
 msgstr "Alinomigi"
 
-#: js/filelist.js:49 js/filelist.js:52 js/files.js:291 js/files.js:407
-#: js/files.js:438
+#: js/filelist.js:49 js/filelist.js:52 js/filelist.js:573
 msgid "Pending"
 msgstr "Traktotaj"
 
-#: js/filelist.js:253 js/filelist.js:255
+#: js/filelist.js:305 js/filelist.js:307
 msgid "{new_name} already exists"
 msgstr "{new_name} jam ekzistas"
 
-#: js/filelist.js:253 js/filelist.js:255
+#: js/filelist.js:305 js/filelist.js:307
 msgid "replace"
 msgstr "anstataŭigi"
 
-#: js/filelist.js:253
+#: js/filelist.js:305
 msgid "suggest name"
 msgstr "sugesti nomon"
 
-#: js/filelist.js:253 js/filelist.js:255
+#: js/filelist.js:305 js/filelist.js:307
 msgid "cancel"
 msgstr "nuligi"
 
-#: js/filelist.js:295
-msgid "replaced {new_name}"
-msgstr "anstataŭiĝis {new_name}"
-
-#: js/filelist.js:295 js/filelist.js:297
-msgid "undo"
-msgstr "malfari"
-
-#: js/filelist.js:297
+#: js/filelist.js:352
 msgid "replaced {new_name} with {old_name}"
 msgstr "anstataŭiĝis {new_name} per {old_name}"
 
-#: js/filelist.js:322
-msgid "perform delete operation"
+#: js/filelist.js:352
+msgid "undo"
+msgstr "malfari"
+
+#: js/filelist.js:422 js/filelist.js:488 js/files.js:580
+msgid "%n folder"
+msgid_plural "%n folders"
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/filelist.js:423 js/filelist.js:489 js/files.js:586
+msgid "%n file"
+msgid_plural "%n files"
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/filelist.js:430
+msgid "{dirs} and {files}"
 msgstr ""
+
+#: js/filelist.js:561
+msgid "Uploading %n file"
+msgid_plural "Uploading %n files"
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/filelist.js:626
+msgid "files uploading"
+msgstr "dosieroj estas alŝutataj"
 
 #: js/files.js:52
 msgid "'.' is an invalid file name."
@@ -146,82 +198,40 @@ msgstr "Nevalida nomo: “\\”, “/”, “<”, “>”, “:”, “\"”, �
 
 #: js/files.js:78
 msgid "Your storage is full, files can not be updated or synced anymore!"
-msgstr ""
+msgstr "Via memoro plenas, ne plu eblas ĝisdatigi aŭ sinkronigi dosierojn!"
 
 #: js/files.js:82
 msgid "Your storage is almost full ({usedSpacePercent}%)"
+msgstr "Via memoro preskaŭ plenas ({usedSpacePercent}%)"
+
+#: js/files.js:94
+msgid ""
+"Encryption was disabled but your files are still encrypted. Please go to "
+"your personal settings to decrypt your files."
 msgstr ""
 
-#: js/files.js:224
+#: js/files.js:245
 msgid ""
 "Your download is being prepared. This might take some time if the files are "
 "big."
 msgstr "Via elŝuto pretiĝatas. Ĉi tio povas daŭri iom da tempo se la dosieroj grandas."
 
-#: js/files.js:261
-msgid "Unable to upload your file as it is a directory or has 0 bytes"
-msgstr "Ne eblis alŝuti vian dosieron ĉar ĝi estas dosierujo aŭ havas 0 duumokojn"
-
-#: js/files.js:261
-msgid "Upload Error"
-msgstr "Alŝuta eraro"
-
-#: js/files.js:272
-msgid "Close"
-msgstr "Fermi"
-
-#: js/files.js:311
-msgid "1 file uploading"
-msgstr "1 dosiero estas alŝutata"
-
-#: js/files.js:314 js/files.js:369 js/files.js:384
-msgid "{count} files uploading"
-msgstr "{count} dosieroj alŝutatas"
-
-#: js/files.js:387 js/files.js:422
-msgid "Upload cancelled."
-msgstr "La alŝuto nuliĝis."
-
-#: js/files.js:496
-msgid ""
-"File upload is in progress. Leaving the page now will cancel the upload."
-msgstr "Dosieralŝuto plenumiĝas. Lasi la paĝon nun nuligus la alŝuton."
-
-#: js/files.js:569
-msgid "URL cannot be empty."
-msgstr "URL ne povas esti malplena."
-
-#: js/files.js:574
-msgid "Invalid folder name. Usage of 'Shared' is reserved by Owncloud"
-msgstr "Nevalida dosierujnomo. Uzo de “Shared” rezervatas de Owncloud."
-
-#: js/files.js:947 templates/index.php:67
+#: js/files.js:562 templates/index.php:67
 msgid "Name"
 msgstr "Nomo"
 
-#: js/files.js:948 templates/index.php:78
+#: js/files.js:563 templates/index.php:78
 msgid "Size"
 msgstr "Grando"
 
-#: js/files.js:949 templates/index.php:80
+#: js/files.js:564 templates/index.php:80
 msgid "Modified"
 msgstr "Modifita"
 
-#: js/files.js:968
-msgid "1 folder"
-msgstr "1 dosierujo"
-
-#: js/files.js:970
-msgid "{count} folders"
-msgstr "{count} dosierujoj"
-
-#: js/files.js:978
-msgid "1 file"
-msgstr "1 dosiero"
-
-#: js/files.js:980
-msgid "{count} files"
-msgstr "{count} dosierujoj"
+#: lib/app.php:73
+#, php-format
+msgid "%s could not be renamed"
+msgstr ""
 
 #: lib/helper.php:11 templates/index.php:18
 msgid "Upload"
@@ -275,13 +285,17 @@ msgstr "Dosierujo"
 msgid "From link"
 msgstr "El ligilo"
 
-#: templates/index.php:40
-msgid "Trash bin"
-msgstr ""
+#: templates/index.php:41
+msgid "Deleted files"
+msgstr "Forigitaj dosieroj"
 
 #: templates/index.php:46
 msgid "Cancel upload"
 msgstr "Nuligi alŝuton"
+
+#: templates/index.php:52
+msgid "You don’t have write permissions here."
+msgstr "Vi ne havas permeson skribi ĉi tie."
 
 #: templates/index.php:59
 msgid "Nothing in here. Upload something!"
@@ -295,9 +309,13 @@ msgstr "Elŝuti"
 msgid "Unshare"
 msgstr "Malkunhavigi"
 
+#: templates/index.php:91 templates/index.php:92
+msgid "Delete"
+msgstr "Forigi"
+
 #: templates/index.php:105
 msgid "Upload too large"
-msgstr "Elŝuto tro larĝa"
+msgstr "Alŝuto tro larĝa"
 
 #: templates/index.php:107
 msgid ""
@@ -315,4 +333,4 @@ msgstr "Nuna skano"
 
 #: templates/upgrade.php:2
 msgid "Upgrading filesystem cache..."
-msgstr ""
+msgstr "Ĝisdatiĝas dosiersistema kaŝmemoro..."

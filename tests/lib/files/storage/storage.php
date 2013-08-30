@@ -168,59 +168,27 @@ abstract class Storage extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue($this->instance->isReadable('/lorem.txt'));
 		$ctimeEnd = time();
 		$mTime = $this->instance->filemtime('/lorem.txt');
-		$this->assertTrue($this->instance->hasUpdated('/lorem.txt', $ctimeStart - 1));
-		$this->assertTrue($this->instance->hasUpdated('/', $ctimeStart - 1));
+		$this->assertTrue($this->instance->hasUpdated('/lorem.txt', $ctimeStart - 5));
+		$this->assertTrue($this->instance->hasUpdated('/', $ctimeStart - 5));
 
-		$this->assertTrue(($ctimeStart - 1) <= $mTime);
+		$this->assertTrue(($ctimeStart - 5) <= $mTime);
 		$this->assertTrue($mTime <= ($ctimeEnd + 1));
 		$this->assertEquals(filesize($textFile), $this->instance->filesize('/lorem.txt'));
 
 		$stat = $this->instance->stat('/lorem.txt');
-		//only size and mtime are requered in the result
+		//only size and mtime are required in the result
 		$this->assertEquals($stat['size'], $this->instance->filesize('/lorem.txt'));
 		$this->assertEquals($stat['mtime'], $mTime);
 
-		$mtimeStart = time();
-		$supportsTouch = $this->instance->touch('/lorem.txt');
-		$mtimeEnd = time();
-		if ($supportsTouch !== false) {
+		if ($this->instance->touch('/lorem.txt', 100) !== false) {
 			$mTime = $this->instance->filemtime('/lorem.txt');
-			$this->assertTrue(($mtimeStart - 1) <= $mTime);
-			$this->assertTrue($mTime <= ($mtimeEnd + 1));
-
-			$this->assertTrue($this->instance->hasUpdated('/lorem.txt', $mtimeStart - 1));
-
-			if ($this->instance->touch('/lorem.txt', 100) !== false) {
-				$mTime = $this->instance->filemtime('/lorem.txt');
-				$this->assertEquals($mTime, 100);
-			}
+			$this->assertEquals($mTime, 100);
 		}
 
 		$mtimeStart = time();
-		$fh = $this->instance->fopen('/lorem.txt', 'a');
-		fwrite($fh, ' ');
-		fclose($fh);
-		clearstatcache();
-		$mtimeEnd = time();
-		$mTime = $this->instance->filemtime('/lorem.txt');
-		$this->assertTrue(($mtimeStart - 1) <= $mTime);
-		$this->assertTrue($mTime <= ($mtimeEnd + 1));
 
 		$this->instance->unlink('/lorem.txt');
-		$this->assertTrue($this->instance->hasUpdated('/', $mtimeStart - 1));
-	}
-
-	public function testSearch() {
-		$textFile = \OC::$SERVERROOT . '/tests/data/lorem.txt';
-		$this->instance->file_put_contents('/lorem.txt', file_get_contents($textFile, 'r'));
-		$pngFile = \OC::$SERVERROOT . '/tests/data/logo-wide.png';
-		$this->instance->file_put_contents('/logo-wide.png', file_get_contents($pngFile, 'r'));
-		$svgFile = \OC::$SERVERROOT . '/tests/data/logo-wide.svg';
-		$this->instance->file_put_contents('/logo-wide.svg', file_get_contents($svgFile, 'r'));
-		$result = $this->instance->search('logo');
-		$this->assertEquals(2, count($result));
-		$this->assertContains('/logo-wide.svg', $result);
-		$this->assertContains('/logo-wide.png', $result);
+		$this->assertTrue($this->instance->hasUpdated('/', $mtimeStart - 5));
 	}
 
 	public function testFOpen() {
@@ -241,5 +209,23 @@ abstract class Storage extends \PHPUnit_Framework_TestCase {
 		$fh = $this->instance->fopen('foo', 'r');
 		$content = stream_get_contents($fh);
 		$this->assertEquals(file_get_contents($textFile), $content);
+	}
+
+	public function testTouchCreateFile() {
+		$this->assertFalse($this->instance->file_exists('foo'));
+		$this->instance->touch('foo');
+		$this->assertTrue($this->instance->file_exists('foo'));
+	}
+
+	public function testRecursiveRmdir() {
+		$this->instance->mkdir('folder');
+		$this->instance->mkdir('folder/bar');
+		$this->instance->file_put_contents('folder/asd.txt', 'foobar');
+		$this->instance->file_put_contents('folder/bar/foo.txt', 'asd');
+		$this->instance->rmdir('folder');
+		$this->assertFalse($this->instance->file_exists('folder/asd.txt'));
+		$this->assertFalse($this->instance->file_exists('folder/bar/foo.txt'));
+		$this->assertFalse($this->instance->file_exists('folder/bar'));
+		$this->assertFalse($this->instance->file_exists('folder'));
 	}
 }

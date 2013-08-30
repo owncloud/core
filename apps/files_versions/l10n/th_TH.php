@@ -1,5 +1,6 @@
-<?php $TRANSLATIONS = array(
-"History" => "ประวัติ",
-"Files Versioning" => "การกำหนดเวอร์ชั่นของไฟล์",
-"Enable" => "เปิดใช้งาน"
+<?php
+$TRANSLATIONS = array(
+"Versions" => "รุ่น",
+"Restore" => "คืนค่า"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";

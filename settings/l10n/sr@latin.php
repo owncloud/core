@@ -1,19 +1,20 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Authentication error" => "Greška pri autentifikaciji",
 "Language changed" => "Jezik je izmenjen",
 "Invalid request" => "Neispravan zahtev",
+"Groups" => "Grupe",
+"Delete" => "Obriši",
 "Select an App" => "Izaberite program",
-"Clients" => "Klijenti",
 "Password" => "Lozinka",
 "Unable to change your password" => "Ne mogu da izmenim vašu lozinku",
 "Current password" => "Trenutna lozinka",
 "New password" => "Nova lozinka",
-"show" => "prikaži",
 "Change password" => "Izmeni lozinku",
 "Email" => "E-mail",
 "Language" => "Jezik",
-"Groups" => "Grupe",
 "Create" => "Napravi",
 "Other" => "Drugo",
-"Delete" => "Obriši"
+"Username" => "Korisničko ime"
 );
+$PLURAL_FORMS = "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);";

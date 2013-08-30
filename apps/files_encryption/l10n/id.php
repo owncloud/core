@@ -1,4 +1,6 @@
-<?php $TRANSLATIONS = array(
-"Encryption" => "enkripsi",
-"None" => "tidak ada"
+<?php
+$TRANSLATIONS = array(
+"Saving..." => "Menyimpan...",
+"Encryption" => "Enkripsi"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";

@@ -1,5 +1,5 @@
-<?php $TRANSLATIONS = array(
-"History" => "مێژوو",
-"Files Versioning" => "وه‌شانی په‌ڕگه",
-"Enable" => "چالاککردن"
+<?php
+$TRANSLATIONS = array(
+"Versions" => "وه‌شان"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

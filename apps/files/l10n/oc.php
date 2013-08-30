@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "There is no error, the file uploaded with success" => "Amontcargament capitat, pas d'errors",
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form" => "Lo fichièr amontcargat es mai gròs que la directiva «MAX_FILE_SIZE» especifiada dins lo formulari HTML",
 "The uploaded file was only partially uploaded" => "Lo fichièr foguèt pas completament amontcargat",
@@ -6,18 +7,21 @@
 "Missing a temporary folder" => "Un dorsièr temporari manca",
 "Failed to write to disk" => "L'escriptura sul disc a fracassat",
 "Files" => "Fichièrs",
-"Delete" => "Escafa",
+"Unable to upload your file as it is a directory or has 0 bytes" => "Impossible d'amontcargar lo teu fichièr qu'es un repertòri o que ten pas que 0 octet.",
+"Upload cancelled." => "Amontcargar anullat.",
+"File upload is in progress. Leaving the page now will cancel the upload." => "Un amontcargar es a se far. Daissar aquesta pagina ara tamparà lo cargament. ",
+"Error" => "Error",
+"Share" => "Parteja",
 "Rename" => "Torna nomenar",
 "Pending" => "Al esperar",
 "replace" => "remplaça",
 "suggest name" => "nom prepausat",
 "cancel" => "anulla",
 "undo" => "defar",
-"Unable to upload your file as it is a directory or has 0 bytes" => "Impossible d'amontcargar lo teu fichièr qu'es un repertòri o que ten pas que 0 octet.",
-"Upload Error" => "Error d'amontcargar",
-"1 file uploading" => "1 fichièr al amontcargar",
-"Upload cancelled." => "Amontcargar anullat.",
-"File upload is in progress. Leaving the page now will cancel the upload." => "Un amontcargar es a se far. Daissar aquesta pagina ara tamparà lo cargament. ",
+"_%n folder_::_%n folders_" => array("",""),
+"_%n file_::_%n files_" => array("",""),
+"_Uploading %n file_::_Uploading %n files_" => array("",""),
+"files uploading" => "fichièrs al amontcargar",
 "Name" => "Nom",
 "Size" => "Talha",
 "Modified" => "Modificat",
@@ -36,9 +40,11 @@
 "Cancel upload" => " Anulla l'amontcargar",
 "Nothing in here. Upload something!" => "Pas res dedins. Amontcarga qualquaren",
 "Download" => "Avalcarga",
-"Unshare" => "Non parteja",
+"Unshare" => "Pas partejador",
+"Delete" => "Escafa",
 "Upload too large" => "Amontcargament tròp gròs",
 "The files you are trying to upload exceed the maximum size for file uploads on this server." => "Los fichièrs que sias a amontcargar son tròp pesucs per la talha maxi pel servidor.",
 "Files are being scanned, please wait." => "Los fiichièrs son a èsser explorats, ",
 "Current scanning" => "Exploracion en cors"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n > 1);";

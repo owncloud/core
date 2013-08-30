@@ -24,48 +24,58 @@
 
 class OC_OCS_Cloud {
 
-	public static function getSystemWebApps() {
-		OC_Util::checkLoggedIn();
-		$apps = OC_App::getEnabledApps();
-		$values = array();
-		foreach($apps as $app) {
-			$info = OC_App::getAppInfo($app);
-			if(isset($info['standalone'])) {
-				$newValue = array('name'=>$info['name'],'url'=>OC_Helper::linkToAbsolute($app,''),'icon'=>'');
-				$values[] = $newValue;
-			}
-		}
-		return new OC_OCS_Result($values);
+	public static function getCapabilities($parameters) {
+		$result = array();
+		list($major, $minor, $micro) = OC_Util::getVersion();
+		$result['version'] = array(
+			'major' => $major,
+			'minor' => $minor,
+			'micro' => $micro,
+			'string' => OC_Util::getVersionString(),
+			'edition' => OC_Util::getEditionString(),
+			);
+			
+		$result['capabilities'] = array(
+			'core' => array(
+				'pollinterval' => OC_Config::getValue('pollinterval', 60),
+				),
+			);
+			
+		return new OC_OCS_Result($result);
 	}
-
-	public static function getUserQuota($parameters) {
-		$user = OC_User::getUser();
-		if(OC_User::isAdminUser($user) or ($user==$parameters['user'])) {
-
-			if(OC_User::userExists($parameters['user'])) {
-				// calculate the disc space
-				$userDir = '/'.$parameters['user'].'/files';
-				\OC\Files\Filesystem::init($useDir);
-				$rootInfo = \OC\Files\Filesystem::getFileInfo('');
-				$sharedInfo = \OC\Files\Filesystem::getFileInfo('/Shared');
-				$used = $rootInfo['size'] - $sharedInfo['size'];
-				$free = \OC\Files\Filesystem::free_space();
-				$total = $free + $used;
-				if($total===0) $total = 1;  // prevent division by zero
-				$relative = round(($used/$total)*10000)/100;
-
-				$xml = array();
-				$xml['quota'] = $total;
-				$xml['free'] = $free;
-				$xml['used'] = $used;
-				$xml['relative'] = $relative;
-
-				return new OC_OCS_Result($xml);
-			} else {
-				return new OC_OCS_Result(null, 300);
-			}
+	
+	/**
+	 * gets user info
+	 *
+	 * exposes the quota of an user:
+	 * <data>
+	 *   <quota>
+	 *      <free>1234</free>
+	 *      <used>4321</used>
+	 *      <total>5555</total>
+	 *      <ralative>0.78</ralative>
+	 *   </quota>
+	 * </data>
+	 *
+	 * @param $parameters object should contain parameter 'userid' which identifies
+	 *                           the user from whom the information will be returned
+	 */
+	public static function getUser($parameters) {
+		// Check if they are viewing information on themselves
+		if($parameters['userid'] === OC_User::getUser()) {
+			// Self lookup
+			$quota = array();
+			$storage = OC_Helper::getStorageInfo();
+			$quota = array(
+				'free' =>  $storage['free'],
+				'used' =>  $storage['used'],
+				'total' =>  $storage['total'],
+				'relative' => $storage['relative'],
+				);
+			return new OC_OCS_Result(array('quota' => $quota));
 		} else {
-			return new OC_OCS_Result(null, 300);
+			// No permission to view this user data
+			return new OC_OCS_Result(null, 997);
 		}
 	}
 

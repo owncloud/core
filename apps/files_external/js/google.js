@@ -3,82 +3,127 @@ $(document).ready(function() {
 	$('#externalStorage tbody tr.\\\\OC\\\\Files\\\\Storage\\\\Google').each(function() {
 		var configured = $(this).find('[data-parameter="configured"]');
 		if ($(configured).val() == 'true') {
-			$(this).find('.configuration')
-                .append('<span id="access" style="padding-left:0.5em;">'+t('files_external', 'Access granted')+'</span>');
+			$(this).find('.configuration input').attr('disabled', 'disabled');
+			$(this).find('.configuration').append($('<span/>').attr('id', 'access')
+				.text(t('files_external', 'Access granted')));
 		} else {
-			var token = $(this).find('[data-parameter="token"]');
-			var token_secret = $(this).find('[data-parameter="token_secret"]');
-			var params = {};
-			window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m, key, value) {
-				params[key] = value;
-			});
-			if (params['oauth_token'] !== undefined && params['oauth_verifier'] !== undefined && decodeURIComponent(params['oauth_token']) == $(token).val()) {
-				var tr = $(this);
-				$.post(OC.filePath('files_external', 'ajax', 'google.php'), { step: 2, oauth_verifier: params['oauth_verifier'], request_token: $(token).val(), request_token_secret: $(token_secret).val() }, function(result) {
-					if (result && result.status == 'success') {
-						$(token).val(result.access_token);
-						$(token_secret).val(result.access_token_secret);
-						$(configured).val('true');
-						OC.MountConfig.saveStorage(tr);
-						$(tr).find('.configuration').append('<span id="access" style="padding-left:0.5em;">'+t('files_external', 'Access granted')+'</span>');
-					} else {
-						OC.dialogs.alert(result.data.message,
-                            t('files_external', 'Error configuring Google Drive storage')
-                        );
-					}
+			var client_id = $(this).find('.configuration [data-parameter="client_id"]').val();
+			var client_secret = $(this).find('.configuration [data-parameter="client_secret"]')
+				.val();
+			if (client_id != '' && client_secret != '') {
+				var params = {};
+				window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m, key, value) {
+					params[key] = value;
 				});
-			} else if ($(this).find('.google').length == 0) {
-				$(this).find('.configuration').append('<a class="button google">'+t('files_external', 'Grant access')+'</a>');
-			}
-		}
-	});
-
-	$('#externalStorage tbody').on('change', 'tr', function() {
-		if ($(this).hasClass('\\\\OC\\\\Files\\\\Storage\\\\Google') && $(this).find('[data-parameter="configured"]').val() != 'true') {
-			if ($(this).find('.mountPoint input').val() != '') {
-				if ($(this).find('.google').length == 0) {
-					$(this).find('.configuration').append('<a class="button google">'+t('files_external', 'Grant access')+'</a>');
+				if (params['code'] !== undefined) {
+					var tr = $(this);
+					var token = $(this).find('.configuration [data-parameter="token"]');
+					var statusSpan = $(tr).find('.status span');
+					statusSpan.removeClass();
+					statusSpan.addClass('waiting');
+					$.post(OC.filePath('files_external', 'ajax', 'google.php'),
+						{
+							step: 2,
+							client_id: client_id,
+							client_secret: client_secret,
+							redirect: location.protocol + '//' + location.host + location.pathname,
+							code: params['code'],
+						}, function(result) {
+							if (result && result.status == 'success') {
+								$(token).val(result.data.token);
+								$(configured).val('true');
+								OC.MountConfig.saveStorage(tr);
+								$(tr).find('.configuration input').attr('disabled', 'disabled');
+								$(tr).find('.configuration').append($('<span/>')
+									.attr('id', 'access')
+									.text(t('files_external', 'Access granted')));
+							} else {
+								OC.dialogs.alert(result.data.message,
+									t('files_external', 'Error configuring Google Drive storage')
+								);
+							}
+						}
+					);
 				}
+			} else {
+				onGoogleInputsChange($(this));
 			}
 		}
 	});
 
-	$('#externalStorage tbody').on('keyup', 'tr .mountPoint input', function() {
-		var tr = $(this).parent().parent();
-		if ($(tr).hasClass('\\\\OC\\\\Files\\\\Storage\\\\Google') && $(tr).find('[data-parameter="configured"]').val() != 'true' && $(tr).find('.google').length > 0) {
-			if ($(this).val() != '') {
-				$(tr).find('.google').show();
-			} else {
+	$('#externalStorage').on('paste', 'tbody tr.\\\\OC\\\\Files\\\\Storage\\\\Google td',
+		function() {
+			var tr = $(this).parent();
+			setTimeout(function() {
+				onGoogleInputsChange(tr);
+			}, 20);
+		}
+	);
+
+	$('#externalStorage').on('keyup', 'tbody tr.\\\\OC\\\\Files\\\\Storage\\\\Google td',
+		function() {
+			onGoogleInputsChange($(this).parent());
+		}
+	);
+
+	$('#externalStorage').on('change', 'tbody tr.\\\\OC\\\\Files\\\\Storage\\\\Google .chzn-select'
+		, function() {
+			onGoogleInputsChange($(this).parent().parent());
+		}
+	);
+
+	function onGoogleInputsChange(tr) {
+		if ($(tr).find('[data-parameter="configured"]').val() != 'true') {
+			var config = $(tr).find('.configuration');
+			if ($(tr).find('.mountPoint input').val() != ''
+				&& $(config).find('[data-parameter="client_id"]').val() != ''
+				&& $(config).find('[data-parameter="client_secret"]').val() != ''
+				&& ($(tr).find('.chzn-select').length == 0
+				|| $(tr).find('.chzn-select').val() != null))
+			{
+				if ($(tr).find('.google').length == 0) {
+					$(config).append($('<a/>').addClass('button google')
+						.text(t('files_external', 'Grant access')));
+				} else {
+					$(tr).find('.google').show();
+				}
+			} else if ($(tr).find('.google').length > 0) {
 				$(tr).find('.google').hide();
 			}
 		}
-	});
+	}
 
-	$('.google').on('click', function(event) {
+	$('#externalStorage').on('click', '.google', function(event) {
 		event.preventDefault();
 		var tr = $(this).parent().parent();
 		var configured = $(this).parent().find('[data-parameter="configured"]');
-		var token = $(this).parent().find('[data-parameter="token"]');
-		var token_secret = $(this).parent().find('[data-parameter="token_secret"]');
-		$.post(OC.filePath('files_external', 'ajax', 'google.php'), { step: 1, callback: window.location.href }, function(result) {
-			if (result && result.status == 'success') {
-				$(configured).val('false');
-				$(token).val(result.data.request_token);
-				$(token_secret).val(result.data.request_token_secret);
-				if (OC.MountConfig.saveStorage(tr)) {
-					window.location = result.data.url;
-				} else {
-					OC.dialogs.alert(
-                        t('files_external', 'Fill out all required fields'),
-                        t('files_external', 'Error configuring Google Drive storage')
-                    );
+		var client_id = $(this).parent().find('[data-parameter="client_id"]').val();
+		var client_secret = $(this).parent().find('[data-parameter="client_secret"]').val();
+		var statusSpan = $(tr).find('.status span');
+		if (client_id != '' && client_secret != '') {
+			var token = $(this).parent().find('[data-parameter="token"]');
+			$.post(OC.filePath('files_external', 'ajax', 'google.php'),
+				{
+					step: 1,
+					client_id: client_id,
+					client_secret: client_secret,
+					redirect: location.protocol + '//' + location.host + location.pathname,
+				}, function(result) {
+					if (result && result.status == 'success') {
+						$(configured).val('false');
+						$(token).val('false');
+						OC.MountConfig.saveStorage(tr);
+						statusSpan.removeClass();
+						statusSpan.addClass('waiting');
+						window.location = result.data.url;
+					} else {
+						OC.dialogs.alert(result.data.message,
+							t('files_external', 'Error configuring Google Drive storage')
+						);
+					}
 				}
-			} else {
-				OC.dialogs.alert(result.data.message,
-                    t('files_external', 'Error configuring Google Drive storage')
-                );
-			}
-		});
+			);
+		}
 	});
 
 });

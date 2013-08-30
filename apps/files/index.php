@@ -26,6 +26,7 @@ OCP\User::checkLoggedIn();
 
 // Load the files we need
 OCP\Util::addStyle('files', 'files');
+OCP\Util::addscript('files', 'file-upload');
 OCP\Util::addscript('files', 'jquery.iframe-transport');
 OCP\Util::addscript('files', 'jquery.fileupload');
 OCP\Util::addscript('files', 'jquery-visibility');
@@ -90,13 +91,13 @@ foreach (explode('/', $dir) as $i) {
 
 // make breadcrumb und filelist markup
 $list = new OCP\Template('files', 'part.list', '');
-$list->assign('files', $files, false);
-$list->assign('baseURL', OCP\Util::linkTo('files', 'index.php') . '?dir=', false);
-$list->assign('downloadURL', OCP\Util::linkToRoute('download', array('file' => '/')), false);
+$list->assign('files', $files);
+$list->assign('baseURL', OCP\Util::linkTo('files', 'index.php') . '?dir=');
+$list->assign('downloadURL', OCP\Util::linkToRoute('download', array('file' => '/')));
 $list->assign('disableSharing', false);
 $breadcrumbNav = new OCP\Template('files', 'part.breadcrumb', '');
-$breadcrumbNav->assign('breadcrumb', $breadcrumb, false);
-$breadcrumbNav->assign('baseURL', OCP\Util::linkTo('files', 'index.php') . '?dir=', false);
+$breadcrumbNav->assign('breadcrumb', $breadcrumb);
+$breadcrumbNav->assign('baseURL', OCP\Util::linkTo('files', 'index.php') . '?dir=');
 
 $permissions = OCP\PERMISSION_READ;
 if (\OC\Files\Filesystem::isCreatable($dir . '/')) {
@@ -118,23 +119,37 @@ if ($needUpgrade) {
 	$tmpl->printPage();
 } else {
 	// information about storage capacities
-	$storageInfo=OC_Helper::getStorageInfo();
+	$storageInfo=OC_Helper::getStorageInfo($dir);
 	$maxUploadFilesize=OCP\Util::maxUploadFilesize($dir);
+	$publicUploadEnabled = \OC_Appconfig::getValue('core', 'shareapi_allow_public_upload', 'yes');
+	if (OC_App::isEnabled('files_encryption')) {
+		$publicUploadEnabled = 'no';
+	}
 
+	$trashEnabled = \OCP\App::isEnabled('files_trashbin');
+	$trashEmpty = true;
+	if ($trashEnabled) {
+		$trashEmpty = \OCA\Files_Trashbin\Trashbin::isEmpty($user);
+	}
+	
 	OCP\Util::addscript('files', 'fileactions');
 	OCP\Util::addscript('files', 'files');
 	OCP\Util::addscript('files', 'keyboardshortcuts');
 	$tmpl = new OCP\Template('files', 'index', 'user');
-	$tmpl->assign('fileList', $list->fetchPage(), false);
-	$tmpl->assign('breadcrumb', $breadcrumbNav->fetchPage(), false);
+	$tmpl->assign('fileList', $list->fetchPage());
+	$tmpl->assign('breadcrumb', $breadcrumbNav->fetchPage());
 	$tmpl->assign('dir', \OC\Files\Filesystem::normalizePath($dir));
 	$tmpl->assign('isCreatable', \OC\Files\Filesystem::isCreatable($dir . '/'));
 	$tmpl->assign('permissions', $permissions);
 	$tmpl->assign('files', $files);
-	$tmpl->assign('trash', \OCP\App::isEnabled('files_trashbin'));
+	$tmpl->assign('trash', $trashEnabled);
+	$tmpl->assign('trashEmpty', $trashEmpty);
 	$tmpl->assign('uploadMaxFilesize', $maxUploadFilesize);
 	$tmpl->assign('uploadMaxHumanFilesize', OCP\Util::humanFileSize($maxUploadFilesize));
 	$tmpl->assign('allowZipDownload', intval(OCP\Config::getSystemValue('allowZipDownload', true)));
 	$tmpl->assign('usedSpacePercent', (int)$storageInfo['relative']);
+	$tmpl->assign('isPublic', false);
+	$tmpl->assign('publicUploadEnabled', $publicUploadEnabled);
+	$tmpl->assign("encryptedFiles", \OCP\Util::encryptedFiles());
 	$tmpl->printPage();
 }

@@ -1,17 +1,15 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Access granted" => "පිවිසීමට හැක",
 "Error configuring Dropbox storage" => "Dropbox ගබඩාව වින්‍යාස කිරීමේ දෝශයක් ඇත",
 "Grant access" => "පිවිසුම ලබාදෙන්න",
-"Fill out all required fields" => "අත්‍යාවශ්‍ය තොරතුරු සියල්ල සම්පුර්ණ කරන්න",
 "Please provide a valid Dropbox app key and secret." => "කරුණාකර වලංගු Dropbox යෙදුම් යතුරක් හා රහසක් ලබාදෙන්න.",
 "Error configuring Google Drive storage" => "Google Drive ගබඩාව වින්‍යාස කිරීමේ දෝශයක් ඇත",
 "External Storage" => "භාහිර ගබඩාව",
-"Mount point" => "මවුන්ට් කළ ස්ථානය",
-"Backend" => "පසු පද්ධතිය",
+"Folder name" => "ෆොල්ඩරයේ නම",
 "Configuration" => "වින්‍යාසය",
 "Options" => "විකල්පයන්",
 "Applicable" => "අදාළ",
-"Add mount point" => "මවුන්ට් කරන ස්ථානයක් එකතු කරන්න",
 "None set" => "කිසිවක් නැත",
 "All Users" => "සියළු පරිශීලකයන්",
 "Groups" => "කණ්ඩායම්",
@@ -22,3 +20,4 @@
 "SSL root certificates" => "SSL මූල සහතිකයන්",
 "Import Root Certificate" => "මූල සහතිකය ආයාත කරන්න"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

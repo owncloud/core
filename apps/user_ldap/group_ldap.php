@@ -66,7 +66,7 @@ class GROUP_LDAP extends lib\Access implements \OCP\GroupInterface {
 
 		//extra work if we don't get back user DNs
 		//TODO: this can be done with one LDAP query
-		if(strtolower($this->connection->ldapGroupMemberAssocAttr) == 'memberuid') {
+		if(strtolower($this->connection->ldapGroupMemberAssocAttr) === 'memberuid') {
 			$dns = array();
 			foreach($members as $mid) {
 				$filter = str_replace('%uid', $mid, $this->connection->ldapLoginFilter);
@@ -108,11 +108,11 @@ class GROUP_LDAP extends lib\Access implements \OCP\GroupInterface {
 		}
 
 		//uniqueMember takes DN, memberuid the uid, so we need to distinguish
-		if((strtolower($this->connection->ldapGroupMemberAssocAttr) == 'uniquemember')
-			|| (strtolower($this->connection->ldapGroupMemberAssocAttr) == 'member')
+		if((strtolower($this->connection->ldapGroupMemberAssocAttr) === 'uniquemember')
+			|| (strtolower($this->connection->ldapGroupMemberAssocAttr) === 'member')
 		) {
 			$uid = $userDN;
-		} else if(strtolower($this->connection->ldapGroupMemberAssocAttr) == 'memberuid') {
+		} else if(strtolower($this->connection->ldapGroupMemberAssocAttr) === 'memberuid') {
 			$result = $this->readAttribute($userDN, 'uid');
 			$uid = $result[0];
 		} else {
@@ -139,6 +139,9 @@ class GROUP_LDAP extends lib\Access implements \OCP\GroupInterface {
 		if(!$this->enabled) {
 			return array();
 		}
+		if(!$this->groupExists($gid)) {
+			return array();
+		}
 		$cachekey = 'usersInGroup-'.$gid.'-'.$search.'-'.$limit.'-'.$offset;
 		// check for cache of the exact query
 		$groupUsers = $this->connection->getFromCache($cachekey);
@@ -154,7 +157,7 @@ class GROUP_LDAP extends lib\Access implements \OCP\GroupInterface {
 			return $groupUsers;
 		}
 
-		if($limit == -1) {
+		if($limit === -1) {
 			$limit = null;
 		}
 		$groupDN = $this->groupname2dn($gid);
@@ -172,12 +175,13 @@ class GROUP_LDAP extends lib\Access implements \OCP\GroupInterface {
 		}
 
 		$groupUsers = array();
-		$isMemberUid = (strtolower($this->connection->ldapGroupMemberAssocAttr) == 'memberuid');
+		$isMemberUid = (strtolower($this->connection->ldapGroupMemberAssocAttr) === 'memberuid');
 		foreach($members as $member) {
 			if($isMemberUid) {
 				//we got uids, need to get their DNs to 'tranlsate' them to usernames
 				$filter = $this->combineFilterWithAnd(array(
-					\OCP\Util::mb_str_replace('%uid', $member, $this->connection>ldapLoginFilter, 'UTF-8'),
+					\OCP\Util::mb_str_replace('%uid', $member,
+						$this->connection->ldapLoginFilter, 'UTF-8'),
 					$this->getFilterPartForUserSearch($search)
 				));
 				$ldap_users = $this->fetchListOfUsers($filter, 'dn');
@@ -188,7 +192,9 @@ class GROUP_LDAP extends lib\Access implements \OCP\GroupInterface {
 			} else {
 				//we got DNs, check if we need to filter by search or we can give back all of them
 				if(!empty($search)) {
-					if(!$this->readAttribute($member, $this->connection->ldapUserDisplayName, $this->getFilterPartForUserSearch($search))) {
+					if(!$this->readAttribute($member,
+						$this->connection->ldapUserDisplayName,
+						$this->getFilterPartForUserSearch($search))) {
 						continue;
 					}
 				}
@@ -204,6 +210,25 @@ class GROUP_LDAP extends lib\Access implements \OCP\GroupInterface {
 		$this->connection->writeToCache($cachekey, $groupUsers);
 
 		return $groupUsers;
+	}
+
+	/**
+	 * @brief get a list of all display names in a group
+	 * @returns array with display names (value) and user ids(key)
+	 */
+	public function displayNamesInGroup($gid, $search, $limit, $offset) {
+		if(!$this->enabled) {
+			return array();
+		}
+		if(!$this->groupExists($gid)) {
+			return array();
+		}
+		$users = $this->usersInGroup($gid, $search, $limit, $offset);
+		$displayNames = array();
+		foreach($users as $user) {
+			$displayNames[$user] = \OC_User::getDisplayName($user);
+		}
+		return $displayNames;
 	}
 
 	/**
@@ -225,7 +250,8 @@ class GROUP_LDAP extends lib\Access implements \OCP\GroupInterface {
 			return $ldap_groups;
 		}
 
-		// if we'd pass -1 to LDAP search, we'd end up in a Protocol error. With a limit of 0, we get 0 results. So we pass null.
+		// if we'd pass -1 to LDAP search, we'd end up in a Protocol
+		// error. With a limit of 0, we get 0 results. So we pass null.
 		if($limit <= 0) {
 			$limit = null;
 		}
@@ -234,7 +260,8 @@ class GROUP_LDAP extends lib\Access implements \OCP\GroupInterface {
 			$this->getFilterPartForGroupSearch($search)
 		));
 		\OCP\Util::writeLog('user_ldap', 'getGroups Filter '.$filter, \OCP\Util::DEBUG);
-		$ldap_groups = $this->fetchListOfGroups($filter, array($this->connection->ldapGroupDisplayName, 'dn'), $limit, $offset);
+		$ldap_groups = $this->fetchListOfGroups($filter, array($this->connection->ldapGroupDisplayName, 'dn'),
+			$limit, $offset);
 		$ldap_groups = $this->ownCloudGroupNames($ldap_groups);
 
 		$this->connection->writeToCache($cachekey, $ldap_groups);
@@ -282,7 +309,6 @@ class GROUP_LDAP extends lib\Access implements \OCP\GroupInterface {
 	* compared with OC_USER_BACKEND_CREATE_USER etc.
 	*/
 	public function implementsActions($actions) {
-		//always returns false, because possible actions are modifying actions. We do not write to LDAP, at least for now.
-		return false;
+		return (bool)(OC_GROUP_BACKEND_GET_DISPLAYNAME	& $actions);
 	}
 }

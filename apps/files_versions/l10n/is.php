@@ -1,5 +1,5 @@
-<?php $TRANSLATIONS = array(
-"History" => "Saga",
-"Files Versioning" => "Útgáfur af skrám",
-"Enable" => "Virkja"
+<?php
+$TRANSLATIONS = array(
+"Versions" => "Útgáfur"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

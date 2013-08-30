@@ -33,7 +33,8 @@ class Shared_Permissions extends Permissions {
 		if ($fileId == -1) {
 			return \OCP\PERMISSION_READ;
 		}
-		$source = \OCP\Share::getItemSharedWithBySource('file', $fileId, \OC_Share_Backend_File::FORMAT_SHARED_STORAGE, null, true);
+		$source = \OCP\Share::getItemSharedWithBySource('file', $fileId, \OC_Share_Backend_File::FORMAT_SHARED_STORAGE,
+			null, true);
 		if ($source) {
 			return $source['permissions'];
 		} else {
@@ -70,16 +71,39 @@ class Shared_Permissions extends Permissions {
 	}
 
 	/**
+	 * get the permissions for all files in a folder
+	 *
+	 * @param int $parentId
+	 * @param string $user
+	 * @return int[]
+	 */
+	public function getDirectoryPermissions($parentId, $user) {
+		// Root of the Shared folder
+		if ($parentId === -1) {
+			return \OCP\Share::getItemsSharedWith('file', \OC_Share_Backend_File::FORMAT_PERMISSIONS);
+		}
+		$permissions = $this->get($parentId, $user);
+		$query = \OC_DB::prepare('SELECT `fileid` FROM `*PREFIX*filecache` WHERE `parent` = ?');
+		$result = $query->execute(array($parentId));
+		$filePermissions = array();
+		while ($row = $result->fetchRow()) {
+			$filePermissions[$row['fileid']] = $permissions;
+		}
+		return $filePermissions;
+	}
+
+	/**
 	 * remove the permissions for a file
 	 *
 	 * @param int $fileId
 	 * @param string $user
 	 */
-	public function remove($fileId, $user) {
+	public function remove($fileId, $user = null) {
 		// Not a valid action for Shared Permissions
 	}
 
 	public function removeMultiple($fileIds, $user) {
 		// Not a valid action for Shared Permissions
 	}
+
 }

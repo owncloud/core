@@ -23,42 +23,46 @@ class DAV extends \OC\Files\Storage\Common{
 	private static $tempFiles=array();
 
 	public function __construct($params) {
-		$host = $params['host'];
-		//remove leading http[s], will be generated in createBaseUri()
-		if (substr($host, 0, 8) == "https://") $host = substr($host, 8);
-		else if (substr($host, 0, 7) == "http://") $host = substr($host, 7);
-		$this->host=$host;
-		$this->user=$params['user'];
-		$this->password=$params['password'];
-		if (isset($params['secure'])) {
-			if (is_string($params['secure'])) {
-				$this->secure = ($params['secure'] === 'true');
+		if (isset($params['host']) && isset($params['user']) && isset($params['password'])) {
+			$host = $params['host'];
+			//remove leading http[s], will be generated in createBaseUri()
+			if (substr($host, 0, 8) == "https://") $host = substr($host, 8);
+			else if (substr($host, 0, 7) == "http://") $host = substr($host, 7);
+			$this->host=$host;
+			$this->user=$params['user'];
+			$this->password=$params['password'];
+			if (isset($params['secure'])) {
+				if (is_string($params['secure'])) {
+					$this->secure = ($params['secure'] === 'true');
+				} else {
+					$this->secure = (bool)$params['secure'];
+				}
 			} else {
-				$this->secure = (bool)$params['secure'];
+				$this->secure = false;
+			}
+			$this->root=isset($params['root'])?$params['root']:'/';
+			if ( ! $this->root || $this->root[0]!='/') {
+				$this->root='/'.$this->root;
+			}
+			if (substr($this->root, -1, 1)!='/') {
+				$this->root.='/';
 			}
 		} else {
-			$this->secure = false;
-		}
-		$this->root=isset($params['root'])?$params['root']:'/';
-		if ( ! $this->root || $this->root[0]!='/') {
-			$this->root='/'.$this->root;
-		}
-		if (substr($this->root, -1, 1)!='/') {
-			$this->root.='/';
+			throw new \Exception();
 		}
 	}
 
 	private function init(){
-		if($this->ready){
+		if($this->ready) {
 			return;
 		}
 		$this->ready = true;
 
-		$settings = array(
-			'baseUri' => $this->createBaseUri(),
-			'userName' => $this->user,
-			'password' => $this->password,
-		);
+			$settings = array(
+				'baseUri' => $this->createBaseUri(),
+				'userName' => $this->user,
+				'password' => $this->password,
+			);
 
 		$this->client = new \Sabre_DAV_Client($settings);
 
@@ -69,8 +73,6 @@ class DAV extends \OC\Files\Storage\Common{
 				$this->client->addTrustedCertificates($certPath);
 			}
 		}
-		//create the root folder if necesary
-		$this->mkdir('');
 	}
 
 	public function getId(){
@@ -153,10 +155,10 @@ class DAV extends \OC\Files\Storage\Common{
 
 	public function unlink($path) {
 		$this->init();
-		return $this->simpleResponse('DELETE', $path, null ,204);
+		return $this->simpleResponse('DELETE', $path, null, 204);
 	}
 
-	public function fopen($path,$mode) {
+	public function fopen($path, $mode) {
 		$this->init();
 		$path=$this->cleanPath($path);
 		switch($mode) {
@@ -169,8 +171,9 @@ class DAV extends \OC\Files\Storage\Common{
 				$curl = curl_init();
 				$fp = fopen('php://temp', 'r+');
 				curl_setopt($curl, CURLOPT_USERPWD, $this->user.':'.$this->password);
-				curl_setopt($curl, CURLOPT_URL, $this->createBaseUri().$path);
+				curl_setopt($curl, CURLOPT_URL, $this->createBaseUri().str_replace(' ', '%20', $path));
 				curl_setopt($curl, CURLOPT_FILE, $fp);
+				curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
 
 				curl_exec ($curl);
 				curl_close ($curl);
@@ -222,7 +225,7 @@ class DAV extends \OC\Files\Storage\Common{
 				return 0;
 			}
 		} catch(\Exception $e) {
-			return 0;
+			return \OC\Files\SPACE_UNKNOWN;
 		}
 	}
 
@@ -232,22 +235,28 @@ class DAV extends \OC\Files\Storage\Common{
 			$mtime=time();
 		}
 		$path=$this->cleanPath($path);
-		$this->client->proppatch($path, array('{DAV:}lastmodified' => $mtime));
+
+		// if file exists, update the mtime, else create a new empty file
+		if ($this->file_exists($path)) {
+			$this->client->proppatch($path, array('{DAV:}lastmodified' => $mtime));
+		} else {
+			$this->file_put_contents($path, '');
+		}
 	}
 
-	public function getFile($path,$target) {
+	public function getFile($path, $target) {
 		$this->init();
-		$source=$this->fopen($path,'r');
-		file_put_contents($target,$source);
+		$source=$this->fopen($path, 'r');
+		file_put_contents($target, $source);
 	}
 
-	public function uploadFile($path,$target) {
+	public function uploadFile($path, $target) {
 		$this->init();
 		$source=fopen($path, 'r');
 
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_USERPWD, $this->user.':'.$this->password);
-		curl_setopt($curl, CURLOPT_URL, $this->createBaseUri().$target);
+		curl_setopt($curl, CURLOPT_URL, $this->createBaseUri().str_replace(' ', '%20', $target));
 		curl_setopt($curl, CURLOPT_BINARYTRANSFER, true);
 		curl_setopt($curl, CURLOPT_INFILE, $source); // file pointer
 		curl_setopt($curl, CURLOPT_INFILESIZE, filesize($path));
@@ -256,7 +265,7 @@ class DAV extends \OC\Files\Storage\Common{
 		curl_close ($curl);
 	}
 
-	public function rename($path1,$path2) {
+	public function rename($path1, $path2) {
 		$this->init();
 		$path1=$this->cleanPath($path1);
 		$path2=$this->root.$this->cleanPath($path2);
@@ -268,7 +277,7 @@ class DAV extends \OC\Files\Storage\Common{
 		}
 	}
 
-	public function copy($path1,$path2) {
+	public function copy($path1, $path2) {
 		$this->init();
 		$path1=$this->cleanPath($path1);
 		$path2=$this->root.$this->cleanPath($path2);
@@ -313,7 +322,7 @@ class DAV extends \OC\Files\Storage\Common{
 		}
 	}
 
-	private function cleanPath($path) {
+	public function cleanPath($path) {
 		if ( ! $path || $path[0]=='/') {
 			return substr($path, 1);
 		} else {
@@ -321,7 +330,7 @@ class DAV extends \OC\Files\Storage\Common{
 		}
 	}
 
-	private function simpleResponse($method,$path,$body,$expected) {
+	private function simpleResponse($method, $path, $body, $expected) {
 		$path=$this->cleanPath($path);
 		try {
 			$response=$this->client->request($method, $path, $body);

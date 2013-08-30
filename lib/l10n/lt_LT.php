@@ -1,10 +1,11 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Help" => "Pagalba",
 "Personal" => "Asmeniniai",
 "Settings" => "Nustatymai",
 "Users" => "Vartotojai",
-"Apps" => "Programos",
 "Admin" => "Administravimas",
+"web services under your control" => "jūsų valdomos web paslaugos",
 "ZIP download is turned off." => "ZIP atsisiuntimo galimybė yra išjungta.",
 "Files need to be downloaded one by one." => "Failai turi būti parsiunčiami vienas po kito.",
 "Back to Files" => "Atgal į Failus",
@@ -14,16 +15,16 @@
 "Token expired. Please reload page." => "Sesija baigėsi. Prašome perkrauti puslapį.",
 "Files" => "Failai",
 "Text" => "Žinučių",
-"seconds ago" => "prieš kelias sekundes",
-"1 minute ago" => "prieš 1 minutę",
-"%d minutes ago" => "prieš %d minučių",
+"Images" => "Paveikslėliai",
+"seconds ago" => "prieš sekundę",
+"_%n minute ago_::_%n minutes ago_" => array("",""," prieš %n minučių"),
+"_%n hour ago_::_%n hours ago_" => array("","","prieš %n valandų"),
 "today" => "šiandien",
 "yesterday" => "vakar",
-"%d days ago" => "prieš %d dienų",
-"last month" => "praėjusį mėnesį",
-"last year" => "pereitais metais",
-"years ago" => "prieš metus",
-"%s is available. Get <a href=\"%s\">more information</a>" => "%s yra galimas. Platesnė <a href=\"%s\">informacija čia</a>",
-"up to date" => "pilnai atnaujinta",
-"updates check is disabled" => "atnaujinimų tikrinimas išjungtas"
+"_%n day go_::_%n days ago_" => array("","",""),
+"last month" => "praeitą mėnesį",
+"_%n month ago_::_%n months ago_" => array("","","prieš %n mėnesių"),
+"last year" => "praeitais metais",
+"years ago" => "prieš metus"
 );
+$PLURAL_FORMS = "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);";

@@ -3,21 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-#   <cronner@gmail.com>, 2012.
-#   <mikkelbjerglarsen@gmail.com>, 2011, 2012.
-# Morten Juhl-Johansen Zölde-Fejér <morten@writtenandread.net>, 2011-2013.
-# Ole Holm Frandsen <froksen@gmail.com>, 2012.
-# Pascal d'Hermilly <pascal@dhermilly.dk>, 2011.
-# Rasmus Paasch <rasmuspaasch@gmail.com>, 2013.
-#   <simon@rosmi.dk>, 2012.
-# Thomas Tanghus <>, 2012.
-# Thomas Tanghus <thomas@tanghus.net>, 2012.
+# Sappe, 2013
+# claus_chr <claus_chr@webspeed.dk>, 2013
+# Ole Holm Frandsen <froksen@gmail.com>, 2013
+# Peter Jespersen <flywheeldk@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-02-09 00:12+0100\n"
-"PO-Revision-Date: 2013-02-08 23:12+0000\n"
+"POT-Creation-Date: 2013-08-30 09:32-0400\n"
+"PO-Revision-Date: 2013-08-30 13:33+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Danish (http://www.transifex.com/projects/p/owncloud/language/da/)\n"
 "MIME-Version: 1.0\n"
@@ -26,29 +21,39 @@ msgstr ""
 "Language: da\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ajax/share.php:85
+#: ajax/share.php:97
 #, php-format
-msgid "User %s shared a file with you"
-msgstr "Bruger %s delte en fil med dig"
+msgid "%s shared »%s« with you"
+msgstr "%s delte »%s« med sig"
 
-#: ajax/share.php:87
-#, php-format
-msgid "User %s shared a folder with you"
-msgstr "Bruger %s delte en mappe med dig"
+#: ajax/share.php:227
+msgid "group"
+msgstr ""
 
-#: ajax/share.php:89
-#, php-format
-msgid ""
-"User %s shared the file \"%s\" with you. It is available for download here: "
-"%s"
-msgstr "Bruger %s delte filen \"%s\" med dig. Den kan hentes her: %s"
+#: ajax/update.php:11
+msgid "Turned on maintenance mode"
+msgstr "Startede vedligeholdelsestilstand"
 
-#: ajax/share.php:91
+#: ajax/update.php:14
+msgid "Turned off maintenance mode"
+msgstr "standsede vedligeholdelsestilstand"
+
+#: ajax/update.php:17
+msgid "Updated database"
+msgstr "Opdaterede database"
+
+#: ajax/update.php:20
+msgid "Updating filecache, this may take really long..."
+msgstr "Opdatere filcache, dette kan tage rigtigt lang tid..."
+
+#: ajax/update.php:23
+msgid "Updated filecache"
+msgstr "Opdaterede filcache"
+
+#: ajax/update.php:26
 #, php-format
-msgid ""
-"User %s shared the folder \"%s\" with you. It is available for download "
-"here: %s"
-msgstr "Bruger %s delte mappe \"%s\" med dig. Det kan hentes her: %s"
+msgid "... %d%% done ..."
+msgstr "... %d%% færdig ..."
 
 #: ajax/vcategories/add.php:26 ajax/vcategories/edit.php:25
 msgid "Category type not provided."
@@ -61,7 +66,7 @@ msgstr "Ingen kategori at tilføje?"
 #: ajax/vcategories/add.php:37
 #, php-format
 msgid "This category already exists: %s"
-msgstr ""
+msgstr "Kategorien eksisterer allerede: %s"
 
 #: ajax/vcategories/addToFavorites.php:26 ajax/vcategories/delete.php:27
 #: ajax/vcategories/favorites.php:24
@@ -93,151 +98,151 @@ msgstr "Fejl ved fjernelse af %s fra favoritter."
 msgid "Sunday"
 msgstr "Søndag"
 
-#: js/config.php:32
+#: js/config.php:33
 msgid "Monday"
 msgstr "Mandag"
 
-#: js/config.php:32
+#: js/config.php:34
 msgid "Tuesday"
 msgstr "Tirsdag"
 
-#: js/config.php:32
+#: js/config.php:35
 msgid "Wednesday"
 msgstr "Onsdag"
 
-#: js/config.php:32
+#: js/config.php:36
 msgid "Thursday"
 msgstr "Torsdag"
 
-#: js/config.php:32
+#: js/config.php:37
 msgid "Friday"
 msgstr "Fredag"
 
-#: js/config.php:32
+#: js/config.php:38
 msgid "Saturday"
 msgstr "Lørdag"
 
-#: js/config.php:33
+#: js/config.php:43
 msgid "January"
 msgstr "Januar"
 
-#: js/config.php:33
+#: js/config.php:44
 msgid "February"
 msgstr "Februar"
 
-#: js/config.php:33
+#: js/config.php:45
 msgid "March"
 msgstr "Marts"
 
-#: js/config.php:33
+#: js/config.php:46
 msgid "April"
 msgstr "April"
 
-#: js/config.php:33
+#: js/config.php:47
 msgid "May"
 msgstr "Maj"
 
-#: js/config.php:33
+#: js/config.php:48
 msgid "June"
 msgstr "Juni"
 
-#: js/config.php:33
+#: js/config.php:49
 msgid "July"
 msgstr "Juli"
 
-#: js/config.php:33
+#: js/config.php:50
 msgid "August"
 msgstr "August"
 
-#: js/config.php:33
+#: js/config.php:51
 msgid "September"
 msgstr "September"
 
-#: js/config.php:33
+#: js/config.php:52
 msgid "October"
 msgstr "Oktober"
 
-#: js/config.php:33
+#: js/config.php:53
 msgid "November"
 msgstr "November"
 
-#: js/config.php:33
+#: js/config.php:54
 msgid "December"
 msgstr "December"
 
-#: js/js.js:284
+#: js/js.js:355
 msgid "Settings"
 msgstr "Indstillinger"
 
-#: js/js.js:764
+#: js/js.js:812
 msgid "seconds ago"
 msgstr "sekunder siden"
 
-#: js/js.js:765
-msgid "1 minute ago"
-msgstr "1 minut siden"
+#: js/js.js:813
+msgid "%n minute ago"
+msgid_plural "%n minutes ago"
+msgstr[0] "%n minut siden"
+msgstr[1] "%n minutter siden"
 
-#: js/js.js:766
-msgid "{minutes} minutes ago"
-msgstr "{minutes} minutter siden"
+#: js/js.js:814
+msgid "%n hour ago"
+msgid_plural "%n hours ago"
+msgstr[0] "%n time siden"
+msgstr[1] "%n timer siden"
 
-#: js/js.js:767
-msgid "1 hour ago"
-msgstr "1 time siden"
-
-#: js/js.js:768
-msgid "{hours} hours ago"
-msgstr "{hours} timer siden"
-
-#: js/js.js:769
+#: js/js.js:815
 msgid "today"
 msgstr "i dag"
 
-#: js/js.js:770
+#: js/js.js:816
 msgid "yesterday"
 msgstr "i går"
 
-#: js/js.js:771
-msgid "{days} days ago"
-msgstr "{days} dage siden"
+#: js/js.js:817
+msgid "%n day ago"
+msgid_plural "%n days ago"
+msgstr[0] "%n dag siden"
+msgstr[1] "%n dage siden"
 
-#: js/js.js:772
+#: js/js.js:818
 msgid "last month"
 msgstr "sidste måned"
 
-#: js/js.js:773
-msgid "{months} months ago"
-msgstr "{months} måneder siden"
+#: js/js.js:819
+msgid "%n month ago"
+msgid_plural "%n months ago"
+msgstr[0] "%n måned siden"
+msgstr[1] "%n måneder siden"
 
-#: js/js.js:774
+#: js/js.js:820
 msgid "months ago"
 msgstr "måneder siden"
 
-#: js/js.js:775
+#: js/js.js:821
 msgid "last year"
 msgstr "sidste år"
 
-#: js/js.js:776
+#: js/js.js:822
 msgid "years ago"
 msgstr "år siden"
 
-#: js/oc-dialogs.js:126
+#: js/oc-dialogs.js:123
 msgid "Choose"
 msgstr "Vælg"
 
-#: js/oc-dialogs.js:146 js/oc-dialogs.js:166
-msgid "Cancel"
-msgstr "Fortryd"
+#: js/oc-dialogs.js:143 js/oc-dialogs.js:210
+msgid "Error loading file picker template"
+msgstr "Fejl ved indlæsning af filvælger skabelon"
 
-#: js/oc-dialogs.js:162
-msgid "No"
-msgstr "Nej"
-
-#: js/oc-dialogs.js:163
+#: js/oc-dialogs.js:168
 msgid "Yes"
 msgstr "Ja"
 
-#: js/oc-dialogs.js:180
+#: js/oc-dialogs.js:178
+msgid "No"
+msgstr "Nej"
+
+#: js/oc-dialogs.js:195
 msgid "Ok"
 msgstr "OK"
 
@@ -246,9 +251,11 @@ msgstr "OK"
 msgid "The object type is not specified."
 msgstr "Objekttypen er ikke angivet."
 
-#: js/oc-vcategories.js:95 js/oc-vcategories.js:125 js/oc-vcategories.js:136
-#: js/oc-vcategories.js:195 js/share.js:152 js/share.js:159 js/share.js:571
-#: js/share.js:583
+#: js/oc-vcategories.js:14 js/oc-vcategories.js:80 js/oc-vcategories.js:95
+#: js/oc-vcategories.js:110 js/oc-vcategories.js:125 js/oc-vcategories.js:136
+#: js/oc-vcategories.js:172 js/oc-vcategories.js:189 js/oc-vcategories.js:195
+#: js/oc-vcategories.js:199 js/share.js:129 js/share.js:142 js/share.js:149
+#: js/share.js:643 js/share.js:655
 msgid "Error"
 msgstr "Fejl"
 
@@ -260,167 +267,187 @@ msgstr "Den app navn er ikke angivet."
 msgid "The required file {file} is not installed!"
 msgstr "Den krævede fil {file} er ikke installeret!"
 
-#: js/share.js:29 js/share.js:43 js/share.js:90 js/share.js:93
+#: js/share.js:30 js/share.js:45 js/share.js:87
+msgid "Shared"
+msgstr "Delt"
+
+#: js/share.js:90
 msgid "Share"
 msgstr "Del"
 
-#: js/share.js:29 js/share.js:43 js/share.js:90 js/share.js:93
-msgid "Shared"
-msgstr ""
-
-#: js/share.js:141 js/share.js:611
+#: js/share.js:131 js/share.js:683
 msgid "Error while sharing"
 msgstr "Fejl under deling"
 
-#: js/share.js:152
+#: js/share.js:142
 msgid "Error while unsharing"
 msgstr "Fejl under annullering af deling"
 
-#: js/share.js:159
+#: js/share.js:149
 msgid "Error while changing permissions"
 msgstr "Fejl under justering af rettigheder"
 
-#: js/share.js:168
+#: js/share.js:158
 msgid "Shared with you and the group {group} by {owner}"
 msgstr "Delt med dig og gruppen {group} af {owner}"
 
-#: js/share.js:170
+#: js/share.js:160
 msgid "Shared with you by {owner}"
 msgstr "Delt med dig af {owner}"
 
-#: js/share.js:175
+#: js/share.js:183
 msgid "Share with"
 msgstr "Del med"
 
-#: js/share.js:180
+#: js/share.js:188
 msgid "Share with link"
 msgstr "Del med link"
 
-#: js/share.js:183
+#: js/share.js:191
 msgid "Password protect"
 msgstr "Beskyt med adgangskode"
 
-#: js/share.js:185 templates/installation.php:44 templates/login.php:35
+#: js/share.js:193 templates/installation.php:57 templates/login.php:26
 msgid "Password"
 msgstr "Kodeord"
 
-#: js/share.js:189
+#: js/share.js:198
+msgid "Allow Public Upload"
+msgstr "Tillad Offentlig Upload"
+
+#: js/share.js:202
 msgid "Email link to person"
 msgstr "E-mail link til person"
 
-#: js/share.js:190
+#: js/share.js:203
 msgid "Send"
 msgstr "Send"
 
-#: js/share.js:194
+#: js/share.js:208
 msgid "Set expiration date"
 msgstr "Vælg udløbsdato"
 
-#: js/share.js:195
+#: js/share.js:209
 msgid "Expiration date"
 msgstr "Udløbsdato"
 
-#: js/share.js:227
+#: js/share.js:241
 msgid "Share via email:"
 msgstr "Del via email:"
 
-#: js/share.js:229
+#: js/share.js:243
 msgid "No people found"
 msgstr "Ingen personer fundet"
 
-#: js/share.js:256
+#: js/share.js:281
 msgid "Resharing is not allowed"
 msgstr "Videredeling ikke tilladt"
 
-#: js/share.js:292
+#: js/share.js:317
 msgid "Shared in {item} with {user}"
 msgstr "Delt i {item} med {user}"
 
-#: js/share.js:313
+#: js/share.js:338
 msgid "Unshare"
 msgstr "Fjern deling"
 
-#: js/share.js:325
+#: js/share.js:350
 msgid "can edit"
 msgstr "kan redigere"
 
-#: js/share.js:327
+#: js/share.js:352
 msgid "access control"
 msgstr "Adgangskontrol"
 
-#: js/share.js:330
+#: js/share.js:355
 msgid "create"
 msgstr "opret"
 
-#: js/share.js:333
+#: js/share.js:358
 msgid "update"
 msgstr "opdater"
 
-#: js/share.js:336
+#: js/share.js:361
 msgid "delete"
 msgstr "slet"
 
-#: js/share.js:339
+#: js/share.js:364
 msgid "share"
 msgstr "del"
 
-#: js/share.js:373 js/share.js:558
+#: js/share.js:398 js/share.js:630
 msgid "Password protected"
 msgstr "Beskyttet med adgangskode"
 
-#: js/share.js:571
+#: js/share.js:643
 msgid "Error unsetting expiration date"
 msgstr "Fejl ved fjernelse af udløbsdato"
 
-#: js/share.js:583
+#: js/share.js:655
 msgid "Error setting expiration date"
 msgstr "Fejl under sætning af udløbsdato"
 
-#: js/share.js:598
+#: js/share.js:670
 msgid "Sending ..."
 msgstr "Sender ..."
 
-#: js/share.js:609
+#: js/share.js:681
 msgid "Email sent"
 msgstr "E-mail afsendt"
 
-#: js/update.js:14
+#: js/update.js:17
 msgid ""
 "The update was unsuccessful. Please report this issue to the <a "
 "href=\"https://github.com/owncloud/core/issues\" target=\"_blank\">ownCloud "
 "community</a>."
 msgstr "Opdateringen blev ikke udført korrekt. Rapporter venligst problemet til <a href=\"https://github.com/owncloud/core/issues\" target=\"_blank\">ownClouds community</a>."
 
-#: js/update.js:18
+#: js/update.js:21
 msgid "The update was successful. Redirecting you to ownCloud now."
 msgstr "Opdateringen blev udført korrekt. Du bliver nu viderestillet til ownCloud."
 
-#: lostpassword/controller.php:47
-msgid "ownCloud password reset"
-msgstr "Nulstil ownCloud kodeord"
+#: lostpassword/controller.php:61
+#, php-format
+msgid "%s password reset"
+msgstr "%s adgangskode nulstillet"
 
 #: lostpassword/templates/email.php:2
 msgid "Use the following link to reset your password: {link}"
 msgstr "Anvend følgende link til at nulstille din adgangskode: {link}"
 
-#: lostpassword/templates/lostpassword.php:3
+#: lostpassword/templates/lostpassword.php:4
+msgid ""
+"The link to reset your password has been sent to your email.<br>If you do "
+"not receive it within a reasonable amount of time, check your spam/junk "
+"folders.<br>If it is not there ask your local administrator ."
+msgstr "Linket til at nulstille dit kodeord er blevet sendt til din e-post. <br> Hvis du ikke modtager den inden for en rimelig tid, så tjek dine spam / junk mapper.<br> Hvis det ikke er der, så spørg din lokale administrator."
+
+#: lostpassword/templates/lostpassword.php:12
+msgid "Request failed!<br>Did you make sure your email/username was right?"
+msgstr "Anmodning mislykkedes!<br>Er du sikker på at din e-post / brugernavn var korrekt?"
+
+#: lostpassword/templates/lostpassword.php:15
 msgid "You will receive a link to reset your password via Email."
 msgstr "Du vil modtage et link til at nulstille dit kodeord via email."
 
-#: lostpassword/templates/lostpassword.php:5
-msgid "Reset email send."
-msgstr "Reset-mail afsendt."
-
-#: lostpassword/templates/lostpassword.php:8
-msgid "Request failed!"
-msgstr "Anmodningen mislykkedes!"
-
-#: lostpassword/templates/lostpassword.php:11 templates/installation.php:39
-#: templates/login.php:28
+#: lostpassword/templates/lostpassword.php:18 templates/installation.php:51
+#: templates/login.php:19
 msgid "Username"
 msgstr "Brugernavn"
 
-#: lostpassword/templates/lostpassword.php:14
+#: lostpassword/templates/lostpassword.php:22
+msgid ""
+"Your files are encrypted. If you haven't enabled the recovery key, there "
+"will be no way to get your data back after your password is reset. If you "
+"are not sure what to do, please contact your administrator before you "
+"continue. Do you really want to continue?"
+msgstr "Dine filer er krypterede. Hvis du ikke har aktiveret gendannelsesnøglen kan du ikke få dine data tilbage efter at du har ændret adgangskode. HVis du ikke er sikker på, hvad du skal gøre så kontakt din administrator før du fortsætter. Vil du fortsætte?"
+
+#: lostpassword/templates/lostpassword.php:24
+msgid "Yes, I really want to reset my password now"
+msgstr "Ja, Jeg ønsker virkelig at nulstille mit kodeord"
+
+#: lostpassword/templates/lostpassword.php:27
 msgid "Request reset"
 msgstr "Anmod om nulstilling"
 
@@ -442,13 +469,13 @@ msgstr "Nulstil kodeord"
 
 #: strings.php:5
 msgid "Personal"
-msgstr "Personlig"
+msgstr "Personligt"
 
 #: strings.php:6
 msgid "Users"
 msgstr "Brugere"
 
-#: strings.php:7
+#: strings.php:7 templates/layout.user.php:105
 msgid "Apps"
 msgstr "Apps"
 
@@ -464,9 +491,20 @@ msgstr "Hjælp"
 msgid "Access forbidden"
 msgstr "Adgang forbudt"
 
-#: templates/404.php:12
+#: templates/404.php:15
 msgid "Cloud not found"
 msgstr "Sky ikke fundet"
+
+#: templates/altmail.php:2
+#, php-format
+msgid ""
+"Hey there,\n"
+"\n"
+"just letting you know that %s shared %s with you.\n"
+"View it: %s\n"
+"\n"
+"Cheers!"
+msgstr "Hallo\n\ndette blot for at lade dig vide, at %s har delt %s med dig.\nSe det: %s\n\nHej"
 
 #: templates/edit_categories_dialog.php:4
 msgid "Edit categories"
@@ -476,125 +514,136 @@ msgstr "Rediger kategorier"
 msgid "Add"
 msgstr "Tilføj"
 
-#: templates/installation.php:23 templates/installation.php:30
+#: templates/installation.php:24 templates/installation.php:31
+#: templates/installation.php:38
 msgid "Security Warning"
 msgstr "Sikkerhedsadvarsel"
 
-#: templates/installation.php:24
+#: templates/installation.php:25
+msgid "Your PHP version is vulnerable to the NULL Byte attack (CVE-2006-7243)"
+msgstr "Din PHP-version er sårbar overfor et NULL Byte angreb (CVE-2006-7243)"
+
+#: templates/installation.php:26
+#, php-format
+msgid "Please update your PHP installation to use %s securely."
+msgstr "Opdater venligst din PHP installation for at anvende %s sikkert."
+
+#: templates/installation.php:32
 msgid ""
 "No secure random number generator is available, please enable the PHP "
 "OpenSSL extension."
 msgstr "Ingen sikker tilfældighedsgenerator til tal er tilgængelig. Aktiver venligst OpenSSL udvidelsen."
 
-#: templates/installation.php:25
+#: templates/installation.php:33
 msgid ""
 "Without a secure random number generator an attacker may be able to predict "
 "password reset tokens and take over your account."
 msgstr "Uden en sikker tilfældighedsgenerator til tal kan en angriber måske gætte dit gendan kodeord og overtage din konto"
 
-#: templates/installation.php:31
+#: templates/installation.php:39
 msgid ""
 "Your data directory and files are probably accessible from the internet "
 "because the .htaccess file does not work."
-msgstr ""
+msgstr "Dine data mappe og filer er sandsynligvis tilgængelige fra internettet fordi .htaccess filen ikke virker."
 
-#: templates/installation.php:32
+#: templates/installation.php:41
+#, php-format
 msgid ""
 "For information how to properly configure your server, please see the <a "
-"href=\"http://doc.owncloud.org/server/5.0/admin_manual/installation.html\" "
-"target=\"_blank\">documentation</a>."
-msgstr ""
+"href=\"%s\" target=\"_blank\">documentation</a>."
+msgstr "For information om, hvordan du konfigurerer din server korrekt se <a href=\"%s\" target=\"_blank\">dokumentationen</a>."
 
-#: templates/installation.php:36
+#: templates/installation.php:47
 msgid "Create an <strong>admin account</strong>"
 msgstr "Opret en <strong>administratorkonto</strong>"
 
-#: templates/installation.php:52
+#: templates/installation.php:65
 msgid "Advanced"
 msgstr "Avanceret"
 
-#: templates/installation.php:54
+#: templates/installation.php:67
 msgid "Data folder"
 msgstr "Datamappe"
 
-#: templates/installation.php:61
+#: templates/installation.php:77
 msgid "Configure the database"
 msgstr "Konfigurer databasen"
 
-#: templates/installation.php:66 templates/installation.php:77
-#: templates/installation.php:87 templates/installation.php:97
+#: templates/installation.php:82 templates/installation.php:94
+#: templates/installation.php:105 templates/installation.php:116
+#: templates/installation.php:128
 msgid "will be used"
 msgstr "vil blive brugt"
 
-#: templates/installation.php:109
+#: templates/installation.php:140
 msgid "Database user"
 msgstr "Databasebruger"
 
-#: templates/installation.php:113
+#: templates/installation.php:147
 msgid "Database password"
 msgstr "Databasekodeord"
 
-#: templates/installation.php:117
+#: templates/installation.php:152
 msgid "Database name"
 msgstr "Navn på database"
 
-#: templates/installation.php:125
+#: templates/installation.php:160
 msgid "Database tablespace"
 msgstr "Database tabelplads"
 
-#: templates/installation.php:131
+#: templates/installation.php:167
 msgid "Database host"
 msgstr "Databasehost"
 
-#: templates/installation.php:136
+#: templates/installation.php:175
 msgid "Finish setup"
 msgstr "Afslut opsætning"
 
-#: templates/layout.guest.php:33
-msgid "web services under your control"
-msgstr "Webtjenester under din kontrol"
+#: templates/layout.user.php:41
+#, php-format
+msgid "%s is available. Get more information on how to update."
+msgstr "%s er tilgængelig. Få mere information om, hvordan du opdaterer."
 
-#: templates/layout.user.php:48
+#: templates/layout.user.php:66
 msgid "Log out"
 msgstr "Log ud"
 
-#: templates/login.php:10
+#: templates/login.php:9
 msgid "Automatic logon rejected!"
 msgstr "Automatisk login afvist!"
 
-#: templates/login.php:11
+#: templates/login.php:10
 msgid ""
 "If you did not change your password recently, your account may be "
 "compromised!"
 msgstr "Hvis du ikke har ændret din adgangskode for nylig, har nogen muligvis tiltvunget sig adgang til din konto!"
 
-#: templates/login.php:13
+#: templates/login.php:12
 msgid "Please change your password to secure your account again."
 msgstr "Skift adgangskode for at sikre din konto igen."
 
-#: templates/login.php:19
+#: templates/login.php:32
 msgid "Lost your password?"
 msgstr "Mistet dit kodeord?"
 
-#: templates/login.php:41
+#: templates/login.php:37
 msgid "remember"
 msgstr "husk"
 
-#: templates/login.php:43
+#: templates/login.php:39
 msgid "Log in"
 msgstr "Log ind"
 
-#: templates/login.php:49
+#: templates/login.php:45
 msgid "Alternative Logins"
-msgstr ""
+msgstr "Alternative logins"
 
-#: templates/part.pagenavi.php:3
-msgid "prev"
-msgstr "forrige"
-
-#: templates/part.pagenavi.php:20
-msgid "next"
-msgstr "næste"
+#: templates/mail.php:15
+#, php-format
+msgid ""
+"Hey there,<br><br>just letting you know that %s shared »%s« with you.<br><a "
+"href=\"%s\">View it!</a><br><br>Cheers!"
+msgstr "Hallo,<br><br>dette blot for at lade dig vide, at %s har delt \"%s\" med dig.<br><a href=\"%s\">Se det!</a><br><br>Hej"
 
 #: templates/update.php:3
 #, php-format

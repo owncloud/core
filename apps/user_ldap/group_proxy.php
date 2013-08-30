@@ -76,8 +76,15 @@ class Group_Proxy extends lib\Proxy implements \OCP\GroupInterface {
 			if(isset($this->backends[$prefix])) {
 				$result = call_user_func_array(array($this->backends[$prefix], $method), $parameters);
 				if(!$result) {
-					//not found here, reset cache to null
-					$this->writeToCache($cacheKey, null);
+					//not found here, reset cache to null if group vanished
+					//because sometimes methods return false with a reason
+					$groupExists = call_user_func_array(
+						array($this->backends[$prefix], 'groupExists'),
+						array($gid)
+					);
+					if(!$groupExists) {
+						$this->writeToCache($cacheKey, null);
+					}
 				}
 				return $result;
 			}
@@ -133,6 +140,22 @@ class Group_Proxy extends lib\Proxy implements \OCP\GroupInterface {
 		}
 
 		return $users;
+	}
+
+	/**
+	 * @brief get a list of all display names in a group
+	 * @returns array with display names (value) and user ids(key)
+	 */
+	public function displayNamesInGroup($gid, $search, $limit, $offset) {
+		$displayNames = array();
+
+		foreach($this->backends as $backend) {
+			$backendUsers = $backend->displayNamesInGroup($gid, $search, $limit, $offset);
+			if (is_array($backendUsers)) {
+				$displayNames = array_merge($displayNames, $backendUsers);
+			}
+		}
+		return $displayNames;
 	}
 
 	/**

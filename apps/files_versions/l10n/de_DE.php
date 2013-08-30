@@ -1,9 +1,10 @@
-<?php $TRANSLATIONS = array(
-"success" => "Erfolgreich",
-"failure" => "Fehlgeschlagen",
-"No old versions available" => "keine älteren Versionen verfügbar",
-"No path specified" => "Kein Pfad angegeben",
-"History" => "Historie",
-"Files Versioning" => "Dateiversionierung",
-"Enable" => "Aktivieren"
+<?php
+$TRANSLATIONS = array(
+"Could not revert: %s" => "Konnte %s nicht zurücksetzen",
+"Versions" => "Versionen",
+"Failed to revert {file} to revision {timestamp}." => "Konnte {file} der Revision {timestamp} nicht rückgänging machen.",
+"More versions..." => "Mehrere Versionen...",
+"No other versions available" => "Keine anderen Versionen verfügbar",
+"Restore" => "Wiederherstellen"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

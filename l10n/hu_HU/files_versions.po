@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Laszlo Tornoci <torlasz@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-02-08 00:10+0100\n"
-"PO-Revision-Date: 2013-02-07 23:11+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"POT-Creation-Date: 2013-08-09 07:59-0400\n"
+"PO-Revision-Date: 2013-08-09 11:40+0000\n"
+"Last-Translator: Laszlo Tornoci <torlasz@gmail.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/owncloud/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,49 +18,27 @@ msgstr ""
 "Language: hu_HU\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ajax/rollbackVersion.php:15
+#: ajax/rollbackVersion.php:13
 #, php-format
 msgid "Could not revert: %s"
-msgstr ""
+msgstr "Nem sikerült átállni a változatra: %s"
 
-#: history.php:40
-msgid "success"
-msgstr ""
+#: js/versions.js:7
+msgid "Versions"
+msgstr "Az állományok korábbi változatai"
 
-#: history.php:42
-#, php-format
-msgid "File %s was reverted to version %s"
-msgstr ""
+#: js/versions.js:53
+msgid "Failed to revert {file} to revision {timestamp}."
+msgstr "Nem sikerült a(z) {file} állományt erre visszaállítani: {timestamp}."
 
-#: history.php:49
-msgid "failure"
-msgstr ""
+#: js/versions.js:79
+msgid "More versions..."
+msgstr "További változatok..."
 
-#: history.php:51
-#, php-format
-msgid "File %s could not be reverted to version %s"
-msgstr ""
+#: js/versions.js:116
+msgid "No other versions available"
+msgstr "Az állománynak nincs több változata"
 
-#: history.php:68
-msgid "No old versions available"
-msgstr ""
-
-#: history.php:73
-msgid "No path specified"
-msgstr ""
-
-#: js/versions.js:16
-msgid "History"
-msgstr "Korábbi változatok"
-
-#: templates/history.php:20
-msgid "Revert a file to a previous version by clicking on its revert button"
-msgstr ""
-
-#: templates/settings.php:3
-msgid "Files Versioning"
-msgstr "Az állományok verzionálása"
-
-#: templates/settings.php:4
-msgid "Enable"
-msgstr "engedélyezve"
+#: js/versions.js:149
+msgid "Restore"
+msgstr "Visszaállítás"

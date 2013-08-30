@@ -46,7 +46,7 @@ class OC_User_Database extends OC_User_Backend {
 
 	private function getHasher() {
 		if(!self::$hasher) {
-			//we don't want to use DES based crypt(), since it doesn't return a has with a recognisable prefix
+			//we don't want to use DES based crypt(), since it doesn't return a hash with a recognisable prefix
 			$forcePortable=(CRYPT_BLOWFISH!=1);
 			self::$hasher=new PasswordHash(8, $forcePortable);
 		}
@@ -85,7 +85,7 @@ class OC_User_Database extends OC_User_Backend {
 	 */
 	public function deleteUser( $uid ) {
 		// Delete user-group-relation
-		$query = OC_DB::prepare( 'DELETE FROM `*PREFIX*users` WHERE uid = ?' );
+		$query = OC_DB::prepare( 'DELETE FROM `*PREFIX*users` WHERE `uid` = ?' );
 		$query->execute( array( $uid ));
 		return true;
 	}
@@ -110,7 +110,7 @@ class OC_User_Database extends OC_User_Backend {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * @brief Set display name
 	 * @param $uid The username
@@ -136,7 +136,7 @@ class OC_User_Database extends OC_User_Backend {
 	 */
 	public function getDisplayName($uid) {
 		if( $this->userExists($uid) ) {
-			$query = OC_DB::prepare( 'SELECT displayname FROM `*PREFIX*users` WHERE `uid` = ?' );
+			$query = OC_DB::prepare( 'SELECT `displayname` FROM `*PREFIX*users` WHERE `uid` = ?' );
 			$result = $query->execute( array( $uid ))->fetchAll();
 			$displayName = trim($result[0]['displayname'], ' ');
 			if ( !empty($displayName) ) {
@@ -146,7 +146,7 @@ class OC_User_Database extends OC_User_Backend {
 			}
 		}
 	}
-	
+
 	/**
 	 * @brief Get a list of all display names
 	 * @returns array with  all displayNames (value) and the correspondig uids (key)
@@ -155,15 +155,17 @@ class OC_User_Database extends OC_User_Backend {
 	 */
 	public function getDisplayNames($search = '', $limit = null, $offset = null) {
 		$displayNames = array();
-		$query = OC_DB::prepare('SELECT `uid`, `displayname` FROM `*PREFIX*users` WHERE LOWER(`displayname`) LIKE LOWER(?)', $limit, $offset);
+		$query = OC_DB::prepare('SELECT `uid`, `displayname` FROM `*PREFIX*users`'
+			.' WHERE LOWER(`displayname`) LIKE LOWER(?)', $limit, $offset);
 		$result = $query->execute(array($search.'%'));
 		$users = array();
 		while ($row = $result->fetchRow()) {
 			$displayNames[$row['uid']] = $row['displayname'];
 		}
-		
+
 		// let's see if we can also find some users who don't have a display name yet
-		$query = OC_DB::prepare('SELECT `uid`, `displayname` FROM `*PREFIX*users` WHERE LOWER(`uid`) LIKE LOWER(?)', $limit, $offset);
+		$query = OC_DB::prepare('SELECT `uid`, `displayname` FROM `*PREFIX*users`'
+			.' WHERE LOWER(`uid`) LIKE LOWER(?)', $limit, $offset);
 		$result = $query->execute(array($search.'%'));
 		while ($row = $result->fetchRow()) {
 			$displayName =  trim($row['displayname'], ' ');
@@ -171,11 +173,11 @@ class OC_User_Database extends OC_User_Backend {
 				$displayNames[$row['uid']] = $row['uid'];
 			}
 		}
-		
-		
+
+
 		return $displayNames;
 	}
-	
+
 	/**
 	 * @brief Check if the password is correct
 	 * @param $uid The username
@@ -235,13 +237,13 @@ class OC_User_Database extends OC_User_Backend {
 	 * @return boolean
 	 */
 	public function userExists($uid) {
-		$query = OC_DB::prepare( 'SELECT * FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)' );
+		$query = OC_DB::prepare( 'SELECT COUNT(*) FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)' );
 		$result = $query->execute( array( $uid ));
 		if (OC_DB::isError($result)) {
 			OC_Log::write('core', OC_DB::getErrorMessage($result), OC_Log::ERROR);
 			return false;
 		}
-		return $result->numRows() > 0;
+		return $result->fetchOne() > 0;
 	}
 
 	/**
@@ -256,4 +258,12 @@ class OC_User_Database extends OC_User_Backend {
 			return false;
 		}
 	}
+
+	/**
+	 * @return bool
+	 */
+	public function hasUserListings() {
+		return true;
+	}
+
 }

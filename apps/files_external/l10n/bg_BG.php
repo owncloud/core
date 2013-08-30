@@ -1,9 +1,9 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Access granted" => "Достъпът е даден",
 "Grant access" => "Даване на достъп",
-"Fill out all required fields" => "Попълнете всички задължителни полета",
 "External Storage" => "Външно хранилище",
-"Backend" => "Администрация",
+"Folder name" => "Име на папката",
 "Configuration" => "Конфигурация",
 "Options" => "Опции",
 "Applicable" => "Приложимо",
@@ -17,3 +17,4 @@
 "SSL root certificates" => "SSL основни сертификати",
 "Import Root Certificate" => "Импортиране на основен сертификат"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

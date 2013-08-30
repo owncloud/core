@@ -1,5 +1,6 @@
-<?php $TRANSLATIONS = array(
-"History" => "Historie",
-"Files Versioning" => "Fil versjonering",
-"Enable" => "Aktiver"
+<?php
+$TRANSLATIONS = array(
+"Versions" => "Versjoner",
+"Restore" => "Gjenopprett"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

@@ -1,10 +1,10 @@
-<?php $TRANSLATIONS = array(
-"success" => "uspech",
-"File %s was reverted to version %s" => "Subror %s bol vrateny na verziu %s",
-"failure" => "chyba",
-"No old versions available" => "Nie sú dostupné žiadne staršie verzie",
-"No path specified" => "Nevybrali ste cestu",
-"History" => "História",
-"Files Versioning" => "Vytváranie verzií súborov",
-"Enable" => "Zapnúť"
+<?php
+$TRANSLATIONS = array(
+"Could not revert: %s" => "Nemožno obnoviť: %s",
+"Versions" => "Verzie",
+"Failed to revert {file} to revision {timestamp}." => "Zlyhalo obnovenie súboru {file} na verziu {timestamp}.",
+"More versions..." => "Viac verzií...",
+"No other versions available" => "Žiadne ďalšie verzie nie sú dostupné",
+"Restore" => "Obnoviť"
 );
+$PLURAL_FORMS = "nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;";

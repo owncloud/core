@@ -87,8 +87,10 @@ OC.EventSource.prototype={
 	useFallBack:false,
 	fallBackCallBack:function(type,data){
 		if(type){
-			for(var i=0;i<this.listeners[type].length;i++){
-				this.listeners[type][i](data);
+			if (typeof this.listeners['done'] != 'undefined') {
+				for(var i=0;i<this.listeners[type].length;i++){
+					this.listeners[type][i](data);
+				}
 			}
 		}else{
 			for(var i=0;i<this.typelessListeners.length;i++){
@@ -108,7 +110,11 @@ OC.EventSource.prototype={
 					this.listeners[type].push(callback);
 				}else{
 					this.source.addEventListener(type,function(e){
-						callback(JSON.parse(e.data));
+						if (typeof e.data != 'undefined') {
+							callback(JSON.parse(e.data));
+						} else {
+							callback('');
+						}
 					},false);
 				}
 			}else{
@@ -117,6 +123,8 @@ OC.EventSource.prototype={
 		}
 	},
 	close:function(){
-		this.source.close();
+		if (typeof this.source !='undefined') {
+			this.source.close();
+		}
 	}
 }

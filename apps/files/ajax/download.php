@@ -33,4 +33,10 @@ OCP\User::checkLoggedIn();
 $files = $_GET["files"];
 $dir = $_GET["dir"];
 
-OC_Files::get($dir, $files, $_SERVER['REQUEST_METHOD'] == 'HEAD' ? true : false);
+$files_list = json_decode($files);
+// in case we get only a single file
+if (!is_array($files_list)) {
+	$files_list = array($files);
+}
+
+OC_Files::get($dir, $files_list, $_SERVER['REQUEST_METHOD'] == 'HEAD');

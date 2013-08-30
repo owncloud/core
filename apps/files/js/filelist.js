@@ -15,7 +15,7 @@ var FileList={
 		// filename td
 		td = $('<td></td>').attr({
 			"class": "filename",
-			"style": 'background-image:url('+iconurl+')'
+			"style": 'background-image:url('+iconurl+'); background-size: 16px;'
 		});
 		td.append('<input type="checkbox" />');
 		var link_elem = $('<a></a>').attr({
@@ -35,7 +35,7 @@ var FileList={
 		if(extension){
 			name_span.append($('<span></span>').addClass('extension').text(extension));
 		}
-		//dirs can show the number of uploaded files 
+		//dirs can show the number of uploaded files
 		if (type == 'dir') {
 			link_elem.append($('<span></span>').attr({
 				'class': 'uploadtext',
@@ -44,22 +44,21 @@ var FileList={
 		}
 		td.append(link_elem);
 		tr.append(td);
-		
+
 		//size column
 		if(size!=t('files', 'Pending')){
-			simpleSize=simpleFileSize(size);
+			simpleSize = humanFileSize(size);
 		}else{
 			simpleSize=t('files', 'Pending');
 		}
-		var sizeColor = Math.round(200-Math.pow((size/(1024*1024)),2));
+		var sizeColor = Math.round(160-Math.pow((size/(1024*1024)),2));
 		var lastModifiedTime = Math.round(lastModified.getTime() / 1000);
 		td = $('<td></td>').attr({
 			"class": "filesize",
-			"title": humanFileSize(size),
 			"style": 'color:rgb('+sizeColor+','+sizeColor+','+sizeColor+')'
 		}).text(simpleSize);
 		tr.append(td);
-		
+
 		// date column
 		var modifiedColor = Math.round((Math.round((new Date()).getTime() / 1000)-lastModifiedTime)/60/60/24*5);
 		td = $('<td></td>').attr({ "class": "date" });
@@ -71,8 +70,20 @@ var FileList={
 		tr.append(td);
 		return tr;
 	},
-	addFile:function(name,size,lastModified,loading,hidden){
+	addFile:function(name,size,lastModified,loading,hidden,param){
 		var imgurl;
+
+		if (!param) {
+			param = {};
+		}
+
+		var download_url = null;
+		if (!param.download_url) {
+			download_url = OC.Router.generate('download', { file: $('#dir').val()+'/'+name });
+		} else {
+			download_url = param.download_url;
+		}
+
 		if (loading) {
 			imgurl = OC.imagePath('core', 'loading.gif');
 		} else {
@@ -82,26 +93,26 @@ var FileList={
 			'file',
 			name,
 			imgurl,
-			OC.Router.generate('download', { file: $('#dir').val()+'/'+name }),
+			download_url,
 			size,
 			lastModified,
 			$('#permissions').val()
 		);
-			
-		FileList.insertElement(name, 'file', tr.attr('data-file',name));
-		var row = $('tr').filterAttr('data-file',name);
+
+		FileList.insertElement(name, 'file', tr);
 		if(loading){
-			row.data('loading',true);
+			tr.data('loading',true);
 		}else{
-			row.find('td.filename').draggable(dragOptions);
+			tr.find('td.filename').draggable(dragOptions);
 		}
 		if (hidden) {
-			row.hide();
+			tr.hide();
 		}
-		FileActions.display(row.find('td.filename'));
+		FileActions.display(tr.find('td.filename'));
+		return tr;
 	},
 	addDir:function(name,size,lastModified,hidden){
-		
+
 		var tr = this.createRow(
 			'dir',
 			name,
@@ -111,15 +122,16 @@ var FileList={
 			lastModified,
 			$('#permissions').val()
 		);
-			
+
 		FileList.insertElement(name,'dir',tr);
-		var row = $('tr').filterAttr('data-file',name);
-		row.find('td.filename').draggable(dragOptions);
-		row.find('td.filename').droppable(folderDropOptions);
+		var td = tr.find('td.filename');
+		td.draggable(dragOptions);
+		td.droppable(folderDropOptions);
 		if (hidden) {
-			row.hide();
+			tr.hide();
 		}
-		FileActions.display(row.find('td.filename'));
+		FileActions.display(tr.find('td.filename'));
+		return tr;
 	},
 	refresh:function(data) {
 		var result = jQuery.parseJSON(data.responseText);
@@ -132,6 +144,7 @@ var FileList={
 	remove:function(name){
 		$('tr').filterAttr('data-file',name).find('td.filename').draggable('destroy');
 		$('tr').filterAttr('data-file',name).remove();
+		FileList.updateFileSummary();
 		if($('tr[data-file]').length==0){
 			$('#emptyfolder').show();
 		}
@@ -158,10 +171,13 @@ var FileList={
 			}
 		}else if(type=='dir' && $('tr[data-file]').length>0){
 			$('tr[data-file]').first().before(element);
+		} else if(type=='file' && $('tr[data-file]').length>0) {
+			$('tr[data-file]').last().before(element);
 		}else{
 			$('#fileList').append(element);
 		}
 		$('#emptyfolder').hide();
+		FileList.updateFileSummary();
 	},
 	loadingDone:function(name, id){
 		var mime, tr=$('tr').filterAttr('data-file',name);
@@ -190,6 +206,13 @@ var FileList={
 		td.children('a.name').hide();
 		td.append(form);
 		input.focus();
+		//preselect input
+		var len = input.val().lastIndexOf('.');
+		if (len === -1) {
+			len = input.val().length;
+		}
+		input.selectRange(0,len);
+
 		form.submit(function(event){
 			event.stopPropagation();
 			event.preventDefault();
@@ -200,13 +223,44 @@ var FileList={
 				if (FileList.checkName(name, newname, false)) {
 					newname = name;
 				} else {
-					$.get(OC.filePath('files','ajax','rename.php'), { dir : $('#dir').val(), newname: newname, file: name },function(result) {
-						if (!result || result.status == 'error') {
-							OC.dialogs.alert(result.data.message, 'Error moving file');
-							newname = name;
+					// save background image, because it's replaced by a spinner while async request
+					var oldBackgroundImage = td.css('background-image');
+					// mark as loading
+					td.css('background-image', 'url('+ OC.imagePath('core', 'loading.gif') + ')');
+					$.ajax({
+						url: OC.filePath('files','ajax','rename.php'),
+						data: {
+							dir : $('#dir').val(),
+							newname: newname,
+							file: name
+						},
+						success: function(result) {
+							if (!result || result.status === 'error') {
+								OC.Notification.show(result.data.message);
+								newname = name;
+								// revert changes
+								tr.attr('data-file', newname);
+								var path = td.children('a.name').attr('href');
+								td.children('a.name').attr('href', path.replace(encodeURIComponent(name), encodeURIComponent(newname)));
+								if (newname.indexOf('.') > 0 && tr.data('type') !== 'dir') {
+									var basename=newname.substr(0,newname.lastIndexOf('.'));
+								} else {
+									var basename=newname;
+								}
+								td.find('a.name span.nametext').text(basename);
+								if (newname.indexOf('.') > 0 && tr.data('type') !== 'dir') {
+									if (td.find('a.name span.extension').length === 0 ) {
+										td.find('a.name span.nametext').append('<span class="extension"></span>');
+									}
+									td.find('a.name span.extension').text(newname.substr(newname.lastIndexOf('.')));
+								}
+								tr.find('.fileactions').effect('highlight', {}, 5000);
+								tr.effect('highlight', {}, 5000);
+							}
+							// remove loading mark and recover old image
+							td.css('background-image', oldBackgroundImage);
 						}
 					});
-
 				}
 			}
 			tr.data('renaming',false);
@@ -246,14 +300,17 @@ var FileList={
 	},
 	checkName:function(oldName, newName, isNewFile) {
 		if (isNewFile || $('tr').filterAttr('data-file', newName).length > 0) {
-			$('#notification').data('oldName', oldName);
-			$('#notification').data('newName', newName);
-			$('#notification').data('isNewFile', isNewFile);
-            if (isNewFile) {
-                OC.Notification.showHtml(t('files', '{new_name} already exists', {new_name: escapeHTML(newName)})+'<span class="replace">'+t('files', 'replace')+'</span><span class="suggest">'+t('files', 'suggest name')+'</span><span class="cancel">'+t('files', 'cancel')+'</span>');
-            } else {
-                OC.Notification.showHtml(t('files', '{new_name} already exists', {new_name: escapeHTML(newName)})+'<span class="replace">'+t('files', 'replace')+'</span><span class="cancel">'+t('files', 'cancel')+'</span>');
-            }
+			var html;
+			if(isNewFile){
+				html = t('files', '{new_name} already exists', {new_name: escapeHTML(newName)})+'<span class="replace">'+t('files', 'replace')+'</span><span class="suggest">'+t('files', 'suggest name')+'</span>&nbsp;<span class="cancel">'+t('files', 'cancel')+'</span>';
+			}else{
+				html = t('files', '{new_name} already exists', {new_name: escapeHTML(newName)})+'<span class="replace">'+t('files', 'replace')+'</span><span class="cancel">'+t('files', 'cancel')+'</span>';
+			}
+			html = $('<span>' + html + '</span>');
+			html.attr('data-oldName', oldName);
+			html.attr('data-newName', newName);
+			html.attr('data-isNewFile', isNewFile);
+            OC.Notification.showHtml(html);
 			return true;
 		} else {
 			return false;
@@ -291,9 +348,7 @@ var FileList={
 		FileList.lastAction = function() {
 			FileList.finishReplace();
 		};
-		if (isNewFile) {
-			OC.Notification.showHtml(t('files', 'replaced {new_name}', {new_name: newName})+'<span class="undo">'+t('files', 'undo')+'</span>');
-		} else {
+		if (!isNewFile) {
             OC.Notification.showHtml(t('files', 'replaced {new_name} with {old_name}', {new_name: newName}, {old_name: oldName})+'<span class="undo">'+t('files', 'undo')+'</span>');
 		}
 	},
@@ -315,12 +370,10 @@ var FileList={
 	do_delete:function(files){
 		if(files.substr){
 			files=[files];
-		}	
-		for (var i in files) {
+		}
+		for (var i=0; i<files.length; i++) {
 			var deleteAction = $('tr').filterAttr('data-file',files[i]).children("td.date").children(".action.delete");
-			var oldHTML = deleteAction[0].outerHTML;
-			var newHTML = '<img class="move2trash" data-action="Delete" title="'+t('files', 'perform delete operation')+'" src="'+ OC.imagePath('core', 'loading.gif') +'"></a>';
-			deleteAction[0].outerHTML = newHTML;
+			deleteAction.removeClass('delete-icon').addClass('progress-icon');
 		}
 		// Finish any existing actions
 		if (FileList.lastAction) {
@@ -334,22 +387,276 @@ var FileList={
 					if (result.status == 'success') {
 						$.each(files,function(index,file){
 							var files = $('tr').filterAttr('data-file',file);
-							files.hide();
+							files.remove();
 							files.find('input[type="checkbox"]').removeAttr('checked');
 							files.removeClass('selected');
 						});
 						procesSelection();
+						checkTrashStatus();
+						FileList.updateFileSummary();
 					} else {
 						$.each(files,function(index,file) {
-							var deleteAction = $('tr').filterAttr('data-file',file).children("td.date").children(".move2trash");
-							deleteAction[0].outerHTML = oldHTML;
+							var deleteAction = $('tr').filterAttr('data-file',files[i]).children("td.date").children(".action.delete");
+							deleteAction.removeClass('progress-icon').addClass('delete-icon');
 						});
-					} 
+					}
 				});
+	},
+	createFileSummary: function() {
+		if( $('#fileList tr').length > 0 ) {
+			var totalDirs = 0;
+			var totalFiles = 0;
+			var totalSize = 0;
+
+			// Count types and filesize
+			$.each($('tr[data-file]'), function(index, value) {
+				if ($(value).data('type') === 'dir') {
+					totalDirs++;
+				} else if ($(value).data('type') === 'file') {
+					totalFiles++;
+				}
+				totalSize += parseInt($(value).data('size'));
+			});
+
+			// Get translations
+			var directoryInfo = n('files', '%n folder', '%n folders', totalDirs);
+			var fileInfo = n('files', '%n file', '%n files', totalFiles);
+
+			var infoVars = {
+				dirs: '<span class="dirinfo">'+directoryInfo+'</span><span class="connector">',
+				files: '</span><span class="fileinfo">'+fileInfo+'</span>'
+			}
+
+			var info = t('files', '{dirs} and {files}', infoVars);
+
+			// don't show the filesize column, if filesize is NaN (e.g. in trashbin)
+			if (isNaN(totalSize)) {
+				var fileSize = '';
+			} else {
+				var fileSize = '<td class="filesize">'+humanFileSize(totalSize)+'</td>';
+			}
+
+			$('#fileList').append('<tr class="summary"><td><span class="info">'+info+'</span></td>'+fileSize+'<td></td></tr>');
+
+			var $dirInfo = $('.summary .dirinfo');
+			var $fileInfo = $('.summary .fileinfo');
+			var $connector = $('.summary .connector');
+
+			// Show only what's necessary, e.g.: no files: don't show "0 files"
+			if ($dirInfo.html().charAt(0) === "0") {
+				$dirInfo.hide();
+				$connector.hide();
+			}
+			if ($fileInfo.html().charAt(0) === "0") {
+				$fileInfo.hide();
+				$connector.hide();
+			}
+		}
+	},
+	updateFileSummary: function() {
+		var $summary = $('.summary');
+
+		// Check if we should remove the summary to show "Upload something"
+		if ($('#fileList tr').length === 1 && $summary.length === 1) {
+			$summary.remove();
+		}
+		// If there's no summary create one (createFileSummary checks if there's data)
+		else if ($summary.length === 0) {
+			FileList.createFileSummary();
+		}
+		// There's a summary and data -> Update the summary
+		else if ($('#fileList tr').length > 1 && $summary.length === 1) {
+			var totalDirs = 0;
+			var totalFiles = 0;
+			var totalSize = 0;
+			$.each($('tr[data-file]'), function(index, value) {
+				if ($(value).data('type') === 'dir') {
+					totalDirs++;
+				} else if ($(value).data('type') === 'file') {
+					totalFiles++;
+				}
+				if ($(value).data('size') !== undefined) {
+					totalSize += parseInt($(value).data('size'));
+				}
+			});
+
+			var $dirInfo = $('.summary .dirinfo');
+			var $fileInfo = $('.summary .fileinfo');
+			var $connector = $('.summary .connector');
+
+			// Substitute old content with new translations
+			$dirInfo.html(n('files', '%n folder', '%n folders', totalDirs));
+			$fileInfo.html(n('files', '%n file', '%n files', totalFiles));
+			$('.summary .filesize').html(humanFileSize(totalSize));
+
+			// Show only what's necessary (may be hidden)
+			if ($dirInfo.html().charAt(0) === "0") {
+				$dirInfo.hide();
+				$connector.hide();
+			} else {
+				$dirInfo.show();
+			}
+			if ($fileInfo.html().charAt(0) === "0") {
+				$fileInfo.hide();
+				$connector.hide();
+			} else {
+				$fileInfo.show();
+			}
+			if ($dirInfo.html().charAt(0) !== "0" && $fileInfo.html().charAt(0) !== "0") {
+				$connector.show();
+			}
+		}
 	}
 };
 
 $(document).ready(function(){
+
+	// handle upload events
+	var file_upload_start = $('#file_upload_start');
+	file_upload_start.on('fileuploaddrop', function(e, data) {
+		// only handle drop to dir if fileList exists
+		if ($('#fileList').length > 0) {
+			var dropTarget = $(e.originalEvent.target).closest('tr');
+			if(dropTarget && dropTarget.data('type') === 'dir') { // drag&drop upload to folder
+				var dirName = dropTarget.data('file');
+				// update folder in form
+				data.formData = function(form) {
+					var formArray = form.serializeArray();
+					// array index 0 contains the max files size
+					// array index 1 contains the request token
+					// array index 2 contains the directory
+					var parentDir = formArray[2]['value'];
+					if (parentDir === '/') {
+						formArray[2]['value'] += dirName;
+					} else {
+						formArray[2]['value'] += '/'+dirName;
+					}
+					return formArray;
+				}
+			}
+		}
+	});
+	file_upload_start.on('fileuploadadd', function(e, data) {
+		// only add to fileList if it exists
+		if ($('#fileList').length > 0) {
+
+			if(FileList.deleteFiles && FileList.deleteFiles.indexOf(data.files[0].name)!=-1){//finish delete if we are uploading a deleted file
+				FileList.finishDelete(null, true); //delete file before continuing
+			}
+
+			// add ui visualization to existing folder or as new stand-alone file?
+			var dropTarget = $(e.originalEvent.target).closest('tr');
+			if(dropTarget && dropTarget.data('type') === 'dir') {
+				// add to existing folder
+				var dirName = dropTarget.data('file');
+
+				// set dir context
+				data.context = $('tr').filterAttr('data-type', 'dir').filterAttr('data-file', dirName);
+
+				// update upload counter ui
+				var uploadtext = data.context.find('.uploadtext');
+				var currentUploads = parseInt(uploadtext.attr('currentUploads'));
+				currentUploads += 1;
+				uploadtext.attr('currentUploads', currentUploads);
+				var translatedText = n('files', 'Uploading %n file', 'Uploading %n files', currentUploads);
+				if(currentUploads === 1) {
+					var img = OC.imagePath('core', 'loading.gif');
+					data.context.find('td.filename').attr('style','background-image:url('+img+')');
+					uploadtext.text(translatedText);
+					uploadtext.show();
+				} else {
+					uploadtext.text(translatedText);
+				}
+			} else {
+				// add as stand-alone row to filelist
+				var uniqueName = getUniqueName(data.files[0].name);
+				var size=t('files','Pending');
+				if(data.files[0].size>=0){
+					size=data.files[0].size;
+				}
+				var date=new Date();
+				var param = {};
+				if ($('#publicUploadRequestToken').length) {
+					param.download_url = document.location.href + '&download&path=/' + $('#dir').val() + '/' + uniqueName;
+				}
+				// create new file context
+				data.context = FileList.addFile(uniqueName,size,date,true,false,param);
+
+			}
+		}
+	});
+	file_upload_start.on('fileuploaddone', function(e, data) {
+		// only update the fileList if it exists
+		if ($('#fileList').length > 0) {
+			var response;
+			if (typeof data.result === 'string') {
+				response = data.result;
+			} else {
+				// fetch response from iframe
+				response = data.result[0].body.innerText;
+			}
+			var result=$.parseJSON(response);
+
+			if(typeof result[0] !== 'undefined' && result[0].status === 'success') {
+				var file = result[0];
+
+				if (data.context.data('type') === 'file') {
+					// update file data
+					data.context.attr('data-mime',file.mime).attr('data-id',file.id);
+					var size = data.context.data('size');
+					if(size!=file.size){
+						data.context.attr('data-size', file.size);
+						data.context.find('td.filesize').text(humanFileSize(file.size));
+					}
+					if (FileList.loadingDone) {
+						FileList.loadingDone(file.name, file.id);
+					}
+				} else {
+					// update upload counter ui
+					var uploadtext = data.context.find('.uploadtext');
+					var currentUploads = parseInt(uploadtext.attr('currentUploads'));
+					currentUploads -= 1;
+					uploadtext.attr('currentUploads', currentUploads);
+					if(currentUploads === 0) {
+						var img = OC.imagePath('core', 'filetypes/folder.png');
+						data.context.find('td.filename').attr('style','background-image:url('+img+')');
+						uploadtext.text('');
+						uploadtext.hide();
+					} else {
+						uploadtext.text(currentUploads + ' ' + t('files', 'files uploading'));
+					}
+
+					// update folder size
+					var size =  parseInt(data.context.data('size'));
+					size +=  parseInt(file.size)	;
+					data.context.attr('data-size', size);
+					data.context.find('td.filesize').text(humanFileSize(size));
+
+				}
+			}
+		}
+	});
+	file_upload_start.on('fileuploadfail', function(e, data) {
+		// only update the fileList if it exists
+		// cleanup files, error notification has been shown by fileupload code
+		var tr = data.context;
+		if (typeof tr === 'undefined') {
+			tr = $('tr').filterAttr('data-file', data.files[0].name);
+		}
+		if (tr.attr('data-type') === 'dir') {
+			//cleanup uploading to a dir
+			var uploadtext = tr.find('.uploadtext');
+			var img = OC.imagePath('core', 'filetypes/folder.png');
+			tr.find('td.filename').attr('style','background-image:url('+img+')');
+			uploadtext.text('');
+			uploadtext.hide(); //TODO really hide already
+		} else {
+			//remove file
+			tr.fadeOut();
+			tr.remove();
+		}
+	});
+
 	$('#notification').hide();
 	$('#notification').on('click', '.undo', function(){
 		if (FileList.deleteFiles) {
@@ -376,19 +683,19 @@ $(document).ready(function(){
 		FileList.lastAction = null;
         OC.Notification.hide();
 	});
-	$('#notification').on('click', '.replace', function() {
+	$('#notification:first-child').on('click', '.replace', function() {
         OC.Notification.hide(function() {
-            FileList.replace($('#notification').data('oldName'), $('#notification').data('newName'), $('#notification').data('isNewFile'));
+            FileList.replace($('#notification > span').attr('data-oldName'), $('#notification > span').attr('data-newName'), $('#notification > span').attr('data-isNewFile'));
         });
 	});
-	$('#notification').on('click', '.suggest', function() {
-		$('tr').filterAttr('data-file', $('#notification').data('oldName')).show();
+	$('#notification:first-child').on('click', '.suggest', function() {
+		$('tr').filterAttr('data-file', $('#notification > span').attr('data-oldName')).show();
         OC.Notification.hide();
 	});
-	$('#notification').on('click', '.cancel', function() {
-		if ($('#notification').data('isNewFile')) {
+	$('#notification:first-child').on('click', '.cancel', function() {
+		if ($('#notification > span').attr('data-isNewFile')) {
 			FileList.deleteCanceled = false;
-			FileList.deleteFiles = [$('#notification').data('oldName')];
+			FileList.deleteFiles = [$('#notification > span').attr('data-oldName')];
 		}
 	});
 	FileList.useUndo=(window.onbeforeunload)?true:false;
@@ -400,4 +707,6 @@ $(document).ready(function(){
 	$(window).unload(function (){
 		$(window).trigger('beforeunload');
 	});
+
+	FileList.createFileSummary();
 });

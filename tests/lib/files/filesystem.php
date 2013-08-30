@@ -72,7 +72,7 @@ class Filesystem extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('/path', \OC\Files\Filesystem::normalizePath('\path'));
 		$this->assertEquals('/foo/bar', \OC\Files\Filesystem::normalizePath('/foo//bar/'));
 		$this->assertEquals('/foo/bar', \OC\Files\Filesystem::normalizePath('/foo////bar'));
-		if (class_exists('Normalizer')) {
+		if (class_exists('Patchwork\PHP\Shim\Normalizer')) {
 			$this->assertEquals("/foo/bar\xC3\xBC", \OC\Files\Filesystem::normalizePath("/foo/baru\xCC\x88"));
 		}
 	}
@@ -82,7 +82,7 @@ class Filesystem extends \PHPUnit_Framework_TestCase {
 			$user = \OC_User::getUser();
 		}else{
 			$user=uniqid();
-			\OC\Files\Filesystem::init('/'.$user.'/files');
+			\OC\Files\Filesystem::init($user, '/'.$user.'/files');
 		}
 		\OC_Hook::clear('OC_Filesystem');
 		\OC_Hook::connect('OC_Filesystem', 'post_write', $this, 'dummyHook');

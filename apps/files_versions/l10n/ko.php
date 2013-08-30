@@ -1,5 +1,7 @@
-<?php $TRANSLATIONS = array(
-"History" => "역사",
-"Files Versioning" => "파일 버전 관리",
-"Enable" => "사용함"
+<?php
+$TRANSLATIONS = array(
+"Could not revert: %s" => "되돌릴 수 없습니다: %s",
+"Versions" => "버전",
+"Restore" => "복원"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";

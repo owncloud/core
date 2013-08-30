@@ -1,5 +1,5 @@
-<?php $TRANSLATIONS = array(
-"History" => "ইতিহাস",
-"Files Versioning" => "ফাইল ভার্সন করা",
-"Enable" => "সক্রিয় "
+<?php
+$TRANSLATIONS = array(
+"Versions" => "ভার্সন"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

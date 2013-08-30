@@ -16,7 +16,7 @@ if(OC_User::isAdminUser(OC_User::getUser())) {
 				$groups[] = $group;
 			}
 		}
-		if(count($groups) == 0) {
+		if(count($groups) === 0) {
 			$groups = OC_SubAdmin::getSubAdminsGroups(OC_User::getUser());
 		}
 	}else{
@@ -25,12 +25,6 @@ if(OC_User::isAdminUser(OC_User::getUser())) {
 }
 $username = $_POST["username"];
 $password = $_POST["password"];
-
-// Does the group exist?
-if(OC_User::userExists($username)) {
-	OC_JSON::error(array("data" => array( "message" => "User already exists" )));
-	exit();
-}
 
 // Return Success story
 try {
@@ -47,7 +41,7 @@ try {
 	OC_JSON::success(array("data" =>
 				array(
 					"username" => $username,
-					"groups" => implode( ", ", OC_Group::getUserGroups( $username )))));
+					"groups" => OC_Group::getUserGroups( $username ))));
 } catch (Exception $exception) {
 	OC_JSON::error(array("data" => array( "message" => $exception->getMessage())));
 }

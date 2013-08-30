@@ -1,13 +1,16 @@
 /**
  * Disable console output unless DEBUG mode is enabled.
- * Add 
- *     define('DEBUG', true);
+ * Add
+ *	 define('DEBUG', true);
  * To the end of config/config.php to enable debug mode.
  * The undefined checks fix the broken ie8 console
  */
 var oc_debug;
 var oc_webroot;
-var oc_requesttoken;
+
+var oc_current_user = document.getElementsByTagName('head')[0].getAttribute('data-user');
+var oc_requesttoken = document.getElementsByTagName('head')[0].getAttribute('data-requesttoken');
+
 if (typeof oc_webroot === "undefined") {
 	oc_webroot = location.pathname.substr(0, location.pathname.lastIndexOf('/'));
 }
@@ -21,60 +24,121 @@ if (oc_debug !== true || typeof console === "undefined" || typeof console.log ==
 	}
 }
 
-/**
- * translate a string
- * @param app the id of the app for which to translate the string
- * @param text the string to translate
- * @return string
- */
-function t(app,text, vars){
-	if( !( t.cache[app] )){
-		$.ajax(OC.filePath('core','ajax','translations.php'),{
-			async:false,//todo a proper sollution for this without sync ajax calls
-			data:{'app': app},
-			type:'POST',
-			success:function(jsondata){
+function initL10N(app) {
+	if (!( t.cache[app] )) {
+		$.ajax(OC.filePath('core', 'ajax', 'translations.php'), {
+			async: false,//todo a proper solution for this without sync ajax calls
+			data: {'app': app},
+			type: 'POST',
+			success: function (jsondata) {
 				t.cache[app] = jsondata.data;
+				t.plural_form = jsondata.plural_form;
 			}
 		});
 
 		// Bad answer ...
-		if( !( t.cache[app] )){
+		if (!( t.cache[app] )) {
 			t.cache[app] = [];
 		}
 	}
-	var _build = function (text, vars) {
-        return text.replace(/{([^{}]*)}/g,
-            function (a, b) {
-                var r = vars[b];
-                return typeof r === 'string' || typeof r === 'number' ? r : a;
-            }
-        );
-    };
-	if( typeof( t.cache[app][text] ) !== 'undefined' ){
-		if(typeof vars === 'object') {
-			return _build(t.cache[app][text], vars);
+	if (typeof t.plural_function == 'undefined') {
+		t.plural_function = function (n) {
+			var p = (n != 1) ? 1 : 0;
+			return { 'nplural' : 2, 'plural' : p };
+		};
+
+		/**
+		 * code below has been taken from jsgettext - which is LGPL licensed
+		 * https://developer.berlios.de/projects/jsgettext/
+		 * http://cvs.berlios.de/cgi-bin/viewcvs.cgi/jsgettext/jsgettext/lib/Gettext.js
+		 */
+		var pf_re = new RegExp('^(\\s*nplurals\\s*=\\s*[0-9]+\\s*;\\s*plural\\s*=\\s*(?:\\s|[-\\?\\|&=!<>+*/%:;a-zA-Z0-9_\(\)])+)', 'm');
+		if (pf_re.test(t.plural_form)) {
+			//ex english: "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+			//pf = "nplurals=2; plural=(n != 1);";
+			//ex russian: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10< =4 && (n%100<10 or n%100>=20) ? 1 : 2)
+			//pf = "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)";
+			var pf = t.plural_form;
+			if (! /;\s*$/.test(pf)) pf = pf.concat(';');
+			/* We used to use eval, but it seems IE has issues with it.
+			 * We now use "new Function", though it carries a slightly
+			 * bigger performance hit.
+			 var code = 'function (n) { var plural; var nplurals; '+pf+' return { "nplural" : nplurals, "plural" : (plural === true ? 1 : plural ? plural : 0) }; };';
+			 Gettext._locale_data[domain].head.plural_func = eval("("+code+")");
+			 */
+			var code = 'var plural; var nplurals; '+pf+' return { "nplural" : nplurals, "plural" : (plural === true ? 1 : plural ? plural : 0) };';
+			t.plural_function = new Function("n", code);
 		} else {
-			return t.cache[app][text];
-		}
-	}
-	else{
-		if(typeof vars === 'object') {
-			return _build(text, vars);
-		} else {
-			return text;
+			console.log("Syntax error in language file. Plural-Forms header is invalid ["+t.plural_forms+"]");
 		}
 	}
 }
-t.cache={};
+/**
+ * translate a string
+ * @param app the id of the app for which to translate the string
+ * @param text the string to translate
+ * @param vars (optional) FIXME
+ * @param count (optional) number to replace %n with
+ * @return string
+ */
+function t(app, text, vars, count){
+	initL10N(app);
+	var _build = function (text, vars, count) {
+		return text.replace(/%n/g, count).replace(/{([^{}]*)}/g,
+			function (a, b) {
+				var r = vars[b];
+				return typeof r === 'string' || typeof r === 'number' ? r : a;
+			}
+		);
+	};
+	var translation = text;
+	if( typeof( t.cache[app][text] ) !== 'undefined' ){
+		translation = t.cache[app][text];
+	}
 
-/*
+	if(typeof vars === 'object' || count !== undefined ) {
+		return _build(translation, vars, count);
+	} else {
+		return translation;
+	}
+}
+t.cache = {};
+
+/**
+ * translate a string
+ * @param app the id of the app for which to translate the string
+ * @param text_singular the string to translate for exactly one object
+ * @param text_plural the string to translate for n objects
+ * @param count number to determine whether to use singular or plural
+ * @param vars (optional) FIXME
+ * @return string
+ */
+function n(app, text_singular, text_plural, count, vars) {
+	initL10N(app);
+	var identifier = '_' + text_singular + '__' + text_plural + '_';
+	if( typeof( t.cache[app][identifier] ) !== 'undefined' ){
+		var translation = t.cache[app][identifier];
+		if ($.isArray(translation)) {
+			var plural = t.plural_function(count);
+			return t(app, translation[plural.plural], vars, count);
+		}
+	}
+
+	if(count === 1) {
+		return t(app, text_singular, vars, count);
+	}
+	else{
+		return t(app, text_plural, vars, count);
+	}
+}
+
+/**
 * Sanitizes a HTML string
-* @param string
+* @param s string
 * @return Sanitized string
 */
 function escapeHTML(s) {
-		return s.toString().split('&').join('&amp;').split('<').join('&lt;').split('"').join('&quot;');
+	return s.toString().split('&').join('&amp;').split('<').join('&lt;').split('"').join('&quot;');
 }
 
 /**
@@ -93,6 +157,7 @@ var OC={
 	PERMISSION_UPDATE:2,
 	PERMISSION_DELETE:8,
 	PERMISSION_SHARE:16,
+	PERMISSION_ALL:31,
 	webroot:oc_webroot,
 	appswebroots:(typeof oc_appswebroots !== 'undefined') ? oc_appswebroots:false,
 	currentUser:(typeof oc_current_user!=='undefined')?oc_current_user:false,
@@ -223,8 +288,12 @@ var OC={
 		var path=OC.filePath(app,'css',style+'.css');
 		if(OC.addStyle.loaded.indexOf(path)===-1){
 			OC.addStyle.loaded.push(path);
-			style=$('<link rel="stylesheet" type="text/css" href="'+path+'"/>');
-			$('head').append(style);
+			if (document.createStyleSheet) {
+				document.createStyleSheet(path);
+			} else {
+				style=$('<link rel="stylesheet" type="text/css" href="'+path+'"/>');
+				$('head').append(style);
+			}
 		}
 	},
 	basename: function(path) {
@@ -274,7 +343,7 @@ var OC={
 		var popup = $('#appsettings_popup');
 		if(popup.length == 0) {
 			$('body').prepend('<div class="popup hidden" id="appsettings_popup"></div>');
-            popup = $('#appsettings_popup');
+			popup = $('#appsettings_popup');
 			popup.addClass(settings.hasClass('topright') ? 'topright' : 'bottomleft');
 		}
 		if(popup.is(':visible')) {
@@ -317,35 +386,44 @@ OC.addStyle.loaded=[];
 OC.addScript.loaded=[];
 
 OC.Notification={
-    getDefaultNotificationFunction: null,
-    setDefault: function(callback) {
-        OC.Notification.getDefaultNotificationFunction = callback;
-    },
-    hide: function(callback) {
-        $("#notification").text('');
-        $('#notification').fadeOut('400', function(){
-            if (OC.Notification.isHidden()) {
-                if (OC.Notification.getDefaultNotificationFunction) {
-                    OC.Notification.getDefaultNotificationFunction.call();
-                }
-            }
-            if (callback) {
-                callback.call();
-            }
-        });
-    },
-    showHtml: function(html) {
-        var notification = $('#notification');
-        notification.hide();
-        notification.html(html);
-        notification.fadeIn().css("display","inline");
-    },
-    show: function(text) {
-        var notification = $('#notification');
-        notification.hide();
-        notification.text(text);
-        notification.fadeIn().css("display","inline");
-    },
+	queuedNotifications: [],
+	getDefaultNotificationFunction: null,
+	setDefault: function(callback) {
+		OC.Notification.getDefaultNotificationFunction = callback;
+	},
+	hide: function(callback) {
+		$('#notification').fadeOut('400', function(){
+			if (OC.Notification.isHidden()) {
+				if (OC.Notification.getDefaultNotificationFunction) {
+					OC.Notification.getDefaultNotificationFunction.call();
+				}
+			}
+			if (callback) {
+				callback.call();
+			}
+			$('#notification').empty();
+			if(OC.Notification.queuedNotifications.length > 0){
+				OC.Notification.showHtml(OC.Notification.queuedNotifications[0]);
+				OC.Notification.queuedNotifications.shift();
+			}
+		});
+	},
+	showHtml: function(html) {
+		if(($('#notification').filter('span.undo').length == 1) || OC.Notification.isHidden()){
+			$('#notification').html(html);
+			$('#notification').fadeIn().css("display","inline");
+		}else{
+			OC.Notification.queuedNotifications.push(html);
+		}
+	},
+	show: function(text) {
+		if(($('#notification').filter('span.undo').length == 1) || OC.Notification.isHidden()){
+			$('#notification').text(text);
+			$('#notification').fadeIn().css("display","inline");
+		}else{
+			OC.Notification.queuedNotifications.push($('<div/>').text(text).html());
+		}
+	},
 	isHidden: function() {
 		return ($("#notification").text() === '');
 	}
@@ -354,6 +432,44 @@ OC.Notification={
 OC.Breadcrumb={
 	container:null,
 	crumbs:[],
+	show:function(dir, leafname, leaflink){
+		OC.Breadcrumb.clear();
+		
+		// show home + path in subdirectories
+		if (dir && dir !== '/') {
+			//add home
+			var link = OC.linkTo('files','index.php');
+
+			var crumb=$('<div/>');
+			crumb.addClass('crumb');
+
+			var crumbLink=$('<a/>');
+			crumbLink.attr('href',link);
+
+			var crumbImg=$('<img/>');
+			crumbImg.attr('src',OC.imagePath('core','places/home'));
+			crumbLink.append(crumbImg);
+			crumb.append(crumbLink);
+			OC.Breadcrumb.container.prepend(crumb);
+			OC.Breadcrumb.crumbs.push(crumb);
+
+			//add path parts
+			var segments = dir.split('/');
+			var pathurl = '';
+			jQuery.each(segments, function(i,name) {
+				if (name !== '') {
+					pathurl = pathurl+'/'+name;
+					var link = OC.linkTo('files','index.php')+'?dir='+encodeURIComponent(pathurl);
+					OC.Breadcrumb.push(name, link);
+				}
+			});
+		}
+		
+		//add leafname
+		if (leafname && leaflink) {
+				OC.Breadcrumb.push(leafname, leaflink);
+		}
+	},
 	push:function(name, link){
 		if(!OC.Breadcrumb.container){//default
 			OC.Breadcrumb.container=$('#controls');
@@ -371,7 +487,7 @@ OC.Breadcrumb={
 			existing.removeClass('last');
 			existing.last().after(crumb);
 		}else{
-			OC.Breadcrumb.container.append(crumb);
+			OC.Breadcrumb.container.prepend(crumb);
 		}
 		OC.Breadcrumb.crumbs.push(crumb);
 		return crumb;
@@ -427,52 +543,6 @@ if(typeof localStorage !=='undefined' && localStorage !== null){
 		getItem:function(){
 			return null;
 		}
-	};
-}
-
-/**
- * implement Array.filter for browsers without native support
- */
-if (!Array.prototype.filter) {
-	Array.prototype.filter = function(fun /*, thisp*/) {
-		var len = this.length >>> 0;
-		if (typeof fun !== "function"){
-			throw new TypeError();
-		}
-
-		var res = [];
-		var thisp = arguments[1];
-		for (var i = 0; i < len; i++) {
-			if (i in this) {
-				var val = this[i]; // in case fun mutates this
-				if (fun.call(thisp, val, i, this))
-					res.push(val);
-			}
-		}
-		return res;
-	};
-}
-/**
- * implement Array.indexOf for browsers without native support
- */
-if (!Array.prototype.indexOf){
-	Array.prototype.indexOf = function(elt /*, from*/)
-	{
-		var len = this.length;
-
-		var from = Number(arguments[1]) || 0;
-		from = (from < 0) ? Math.ceil(from) : Math.floor(from);
-		if (from < 0){
-			from += len;
-		}
-
-		for (; from < len; from++)
-		{
-			if (from in this && this[from] === elt){
-				return from;
-			}
-		}
-		return -1;
 	};
 }
 
@@ -548,7 +618,7 @@ function replaceSVG(){
  */
 function object(o) {
 	function F() {}
-    F.prototype = o;
+	F.prototype = o;
 	return new F();
 }
 
@@ -584,6 +654,7 @@ function fillWindow(selector) {
 }
 
 $(document).ready(function(){
+	sessionHeartBeat();
 
 	if(!SVGSupport()){ //replace all svg images with png images for browser that dont support svg
 		replaceSVG();
@@ -627,13 +698,25 @@ $(document).ready(function(){
 		}
 	});
 
-	// 'show password' checkbox
-	$('#password').showPassword();
-	$('#adminpass').showPassword();	
-	$('#pass2').showPassword();
+	var setShowPassword = function(input, label) {
+		input.showPassword().keyup(function(){
+			if (input.val().length == 0) {
+				label.hide();
+			}
+			else {
+				label.css("display", "inline").show();
+			}
+		});
+		label.hide();
+	};
+	setShowPassword($('#adminpass'), $('label[for=show]'));
+	setShowPassword($('#pass2'), $('label[for=personal-show]'));
+	setShowPassword($('#dbpass'), $('label[for=dbpassword]'));
 
 	//use infield labels
-	$("label.infield").inFieldLabels();
+	$("label.infield").inFieldLabels({
+		pollDuration: 100
+	});
 
 	var checkShowCredentials = function() {
 		var empty = false;
@@ -663,27 +746,23 @@ $(document).ready(function(){
 		}
 	});
 	$('#settings #expand').click(function(event) {
-		$('#settings #expanddiv').slideToggle();
+		$('#settings #expanddiv').slideToggle(200);
 		event.stopPropagation();
 	});
 	$('#settings #expanddiv').click(function(event){
 		event.stopPropagation();
 	});
-	$(window).click(function(){//hide the settings menu when clicking outside it
-		$('#settings #expanddiv').slideUp();
+	$(document).click(function(){//hide the settings menu when clicking outside it
+		$('#settings #expanddiv').slideUp(200);
 	});
 
 	// all the tipsy stuff needs to be here (in reverse order) to work
-	$('.jp-controls .jp-previous').tipsy({gravity:'nw', fade:true, live:true});
-	$('.jp-controls .jp-next').tipsy({gravity:'n', fade:true, live:true});
 	$('.displayName .action').tipsy({gravity:'se', fade:true, live:true});
 	$('.password .action').tipsy({gravity:'se', fade:true, live:true});
 	$('#upload').tipsy({gravity:'w', fade:true});
 	$('.selectedActions a').tipsy({gravity:'s', fade:true, live:true});
-	$('a.delete').tipsy({gravity: 'e', fade:true, live:true});
+	$('a.action.delete').tipsy({gravity:'e', fade:true, live:true});
 	$('a.action').tipsy({gravity:'s', fade:true, live:true});
-	$('#headerSize').tipsy({gravity:'s', fade:true, live:true});
-	$('td.filesize').tipsy({gravity:'s', fade:true, live:true});
 	$('td .modified').tipsy({gravity:'s', fade:true, live:true});
 
 	$('input').tipsy({gravity:'w', fade:true});
@@ -691,32 +770,6 @@ $(document).ready(function(){
 		this.select();
 	});
 });
-
-if (!Array.prototype.map){
-	Array.prototype.map = function(fun /*, thisp */){
-		"use strict";
-
-		if (this === void 0 || this === null){
-			throw new TypeError();
-		}
-
-		var t = Object(this);
-		var len = t.length >>> 0;
-		if (typeof fun !== "function"){
-			throw new TypeError();
-		}
-
-		var res = new Array(len);
-		var thisp = arguments[1];
-		for (var i = 0; i < len; i++){
-			if (i in t){
-				res[i] = fun.call(thisp, t[i], i, t);
-			}
-		}
-
-		return res;
-	};
-}
 
 /**
  * Filter Jquery selector by attribute value
@@ -739,14 +792,6 @@ function humanFileSize(size) {
 	return relativeSize + ' ' + readableFormat;
 }
 
-function simpleFileSize(bytes) {
-	var mbytes = Math.round(bytes/(1024*1024/10))/10;
-	if(bytes == 0) { return '0'; }
-	else if(mbytes < 0.1) { return '< 0.1'; }
-	else if(mbytes > 1000) { return '> 1000'; }
-	else { return mbytes.toFixed(1); }
-}
-
 function formatDate(date){
 	if(typeof date=='number'){
 		date=new Date(date);
@@ -765,15 +810,13 @@ function relative_modified_date(timestamp) {
 	var diffdays = Math.round(diffhours/24);
 	var diffmonths = Math.round(diffdays/31);
 	if(timediff < 60) { return t('core','seconds ago'); }
-	else if(timediff < 120) { return t('core','1 minute ago'); }
-	else if(timediff < 3600) { return t('core','{minutes} minutes ago',{minutes: diffminutes}); }
-	else if(timediff < 7200) { return t('core','1 hour ago'); }
-	else if(timediff < 86400) { return t('core','{hours} hours ago',{hours: diffhours}); }
+	else if(timediff < 3600) { return n('core','%n minute ago', '%n minutes ago', diffminutes); }
+	else if(timediff < 86400) { return n('core', '%n hour ago', '%n hours ago', diffhours); }
 	else if(timediff < 86400) { return t('core','today'); }
 	else if(timediff < 172800) { return t('core','yesterday'); }
-	else if(timediff < 2678400) { return t('core','{days} days ago',{days: diffdays}); }
+	else if(timediff < 2678400) { return n('core', '%n day ago', '%n days ago', diffdays); }
 	else if(timediff < 5184000) { return t('core','last month'); }
-	else if(timediff < 31556926) { return t('core','{months} months ago',{months: diffmonths}); }
+	else if(timediff < 31556926) { return n('core', '%n month ago', '%n months ago', diffmonths); }
 	//else if(timediff < 31556926) { return t('core','months ago'); }
 	else if(timediff < 63113852) { return t('core','last year'); }
 	else { return t('core','years ago'); }
@@ -787,7 +830,7 @@ OC.get=function(name) {
 	var namespaces = name.split(".");
 	var tail = namespaces.pop();
 	var context=window;
-	
+
 	for(var i = 0; i < namespaces.length; i++) {
 		context = context[namespaces[i]];
 		if(!context){
@@ -806,7 +849,7 @@ OC.set=function(name, value) {
 	var namespaces = name.split(".");
 	var tail = namespaces.pop();
 	var context=window;
-	
+
 	for(var i = 0; i < namespaces.length; i++) {
 		if(!context[namespaces[i]]){
 			context[namespaces[i]]={};
@@ -815,3 +858,37 @@ OC.set=function(name, value) {
 	}
 	context[tail]=value;
 };
+
+/**
+ * select a range in an input field
+ * @link http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
+ * @param {type} start
+ * @param {type} end
+ */
+$.fn.selectRange = function(start, end) {
+	return this.each(function() {
+		if (this.setSelectionRange) {
+			this.focus();
+			this.setSelectionRange(start, end);
+		} else if (this.createTextRange) {
+			var range = this.createTextRange();
+			range.collapse(true);
+			range.moveEnd('character', end);
+			range.moveStart('character', start);
+			range.select();
+		}
+	});
+};
+
+/**
+ * Calls the server periodically every 15 mins to ensure that session doesnt
+ * time out
+ */
+function sessionHeartBeat(){
+	OC.Router.registerLoadedCallback(function(){
+		var url = OC.Router.generate('heartbeat');
+		setInterval(function(){
+			$.post(url);
+		}, 900000);
+	});
+}

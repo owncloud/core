@@ -41,11 +41,48 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 	 * return an ETag, and just return null.
 	 *
 	 * @param resource $data
+	 * @throws Sabre_DAV_Exception_Forbidden
 	 * @return string|null
 	 */
 	public function put($data) {
 
-		\OC\Files\Filesystem::file_put_contents($this->path,$data);
+		if (!\OC\Files\Filesystem::isUpdatable($this->path)) {
+			throw new \Sabre_DAV_Exception_Forbidden();
+		}
+
+		// throw an exception if encryption was disabled but the files are still encrypted
+		if (\OC_Util::encryptedFiles()) {
+			throw new \Sabre_DAV_Exception_ServiceUnavailable();
+		}
+		
+		// mark file as partial while uploading (ignored by the scanner)
+		$partpath = $this->path . '.part';
+
+		\OC\Files\Filesystem::file_put_contents($partpath, $data);
+
+		//detect aborted upload
+		if (isset ($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'PUT') {
+			if (isset($_SERVER['CONTENT_LENGTH'])) {
+				$expected = $_SERVER['CONTENT_LENGTH'];
+				$actual = \OC\Files\Filesystem::filesize($partpath);
+				if ($actual != $expected) {
+					\OC\Files\Filesystem::unlink($partpath);
+					throw new Sabre_DAV_Exception_BadRequest(
+						'expected filesize ' . $expected . ' got ' . $actual);
+				}
+			}
+		}
+
+		// rename to correct path
+		\OC\Files\Filesystem::rename($partpath, $this->path);
+
+		//allow sync clients to send the mtime along in a header
+		$mtime = OC_Request::hasModificationTime();
+		if ($mtime !== false) {
+			if (\OC\Files\Filesystem::touch($this->path, $mtime)) {
+				header('X-OC-MTime: accepted');
+			}
+		}
 
 		return OC_Connector_Sabre_Node::getETagPropertyForPath($this->path);
 	}
@@ -57,7 +94,12 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 	 */
 	public function get() {
 
-		return \OC\Files\Filesystem::fopen($this->path,'rb');
+		//throw execption if encryption is disabled but files are still encrypted
+		if (\OC_Util::encryptedFiles()) {
+			throw new \Sabre_DAV_Exception_ServiceUnavailable();
+		} else {
+			return \OC\Files\Filesystem::fopen($this->path, 'rb');
+		}
 
 	}
 
@@ -65,9 +107,13 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 	 * Delete the current file
 	 *
 	 * @return void
+	 * @throws Sabre_DAV_Exception_Forbidden
 	 */
 	public function delete() {
 
+		if (!\OC\Files\Filesystem::isDeletable($this->path)) {
+			throw new \Sabre_DAV_Exception_Forbidden();
+		}
 		\OC\Files\Filesystem::unlink($this->path);
 
 	}
@@ -79,15 +125,19 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 	 */
 	public function getSize() {
 		$this->getFileinfoCache();
-		return $this->fileinfo_cache['size'];
-
+		if ($this->fileinfo_cache['size'] > -1) {
+			return $this->fileinfo_cache['size'];
+		} else {
+			return null;
+		}
 	}
 
 	/**
 	 * Returns the ETag for a file
 	 *
-	 * An ETag is a unique identifier representing the current version of the file. If the file changes, the ETag MUST change.
-	 * The ETag is an arbritrary string, but MUST be surrounded by double-quotes.
+	 * An ETag is a unique identifier representing the current version of the
+	 * file. If the file changes, the ETag MUST change.  The ETag is an
+	 * arbritrary string, but MUST be surrounded by double-quotes.
 	 *
 	 * Return null if the ETag can not effectively be determined
 	 *

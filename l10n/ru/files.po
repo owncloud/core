@@ -3,25 +3,17 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Denis  <reg.transifex.net@demitel.ru>, 2012.
-#   <jekader@gmail.com>, 2012.
-#   <lankme@gmail.com>, 2012.
-#   <mpolr21@gmail.com>, 2012.
-# Nick Remeslennikov <homolibere@gmail.com>, 2012.
-#   <semen@sam002.net>, 2012.
-# Sergey <sergey@markevich.ru>, 2013.
-#   <sharov3@gmail.com>, 2013.
-#   <skoptev@ukr.net>, 2012.
-#   <tony.mccourin@gmail.com>, 2011.
-# Victor Bravo <>, 2012.
-#   <victor.dubiniuk@gmail.com>, 2012.
-# Дмитрий <langaru@gmail.com>, 2013.
+# lord93 <lordakryl@gmail.com>, 2013
+# eurekafag <rkfg@rkfg.me>, 2013
+# Victor Bravo <>, 2013
+# hackproof <hackproof.ai@gmail.com>, 2013
+# Friktor <antonshramko@yandex.ru>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-02-10 00:08+0100\n"
-"PO-Revision-Date: 2013-02-09 23:08+0000\n"
+"POT-Creation-Date: 2013-08-30 09:31-0400\n"
+"PO-Revision-Date: 2013-08-30 13:34+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/owncloud/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -40,105 +32,162 @@ msgstr "Невозможно переместить %s - файл с таким 
 msgid "Could not move %s"
 msgstr "Невозможно переместить %s"
 
-#: ajax/rename.php:22 ajax/rename.php:25
-msgid "Unable to rename file"
-msgstr "Невозможно переименовать файл"
+#: ajax/upload.php:16 ajax/upload.php:45
+msgid "Unable to set upload directory."
+msgstr "Не удалось установить каталог загрузки."
 
-#: ajax/upload.php:19
+#: ajax/upload.php:22
+msgid "Invalid Token"
+msgstr "Недопустимый маркер"
+
+#: ajax/upload.php:59
 msgid "No file was uploaded. Unknown error"
 msgstr "Файл не был загружен. Неизвестная ошибка"
 
-#: ajax/upload.php:26
+#: ajax/upload.php:66
 msgid "There is no error, the file uploaded with success"
-msgstr "Файл успешно загружен"
+msgstr "Файл загружен успешно."
 
-#: ajax/upload.php:27
+#: ajax/upload.php:67
 msgid ""
 "The uploaded file exceeds the upload_max_filesize directive in php.ini: "
 msgstr "Файл превышает размер установленный upload_max_filesize в php.ini:"
 
-#: ajax/upload.php:29
+#: ajax/upload.php:69
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
-msgstr "Файл превышает размер MAX_FILE_SIZE, указаный в HTML-форме"
+msgstr "Загружаемый файл превосходит значение переменной MAX_FILE_SIZE, указанной в форме HTML"
 
-#: ajax/upload.php:31
+#: ajax/upload.php:70
 msgid "The uploaded file was only partially uploaded"
-msgstr "Файл был загружен не полностью"
+msgstr "Файл загружен частично"
 
-#: ajax/upload.php:32
+#: ajax/upload.php:71
 msgid "No file was uploaded"
 msgstr "Файл не был загружен"
 
-#: ajax/upload.php:33
+#: ajax/upload.php:72
 msgid "Missing a temporary folder"
-msgstr "Невозможно найти временную папку"
+msgstr "Отсутствует временная папка"
 
-#: ajax/upload.php:34
+#: ajax/upload.php:73
 msgid "Failed to write to disk"
 msgstr "Ошибка записи на диск"
 
-#: ajax/upload.php:52
+#: ajax/upload.php:91
 msgid "Not enough storage available"
 msgstr "Недостаточно доступного места в хранилище"
 
-#: ajax/upload.php:83
+#: ajax/upload.php:109
+msgid "Upload failed"
+msgstr ""
+
+#: ajax/upload.php:127
 msgid "Invalid directory."
 msgstr "Неправильный каталог."
 
-#: appinfo/app.php:10
+#: appinfo/app.php:12
 msgid "Files"
 msgstr "Файлы"
 
+#: js/file-upload.js:11
+msgid "Unable to upload your file as it is a directory or has 0 bytes"
+msgstr "Файл не был загружен: его размер 0 байт либо это не файл, а директория."
+
+#: js/file-upload.js:24
+msgid "Not enough space available"
+msgstr "Недостаточно свободного места"
+
+#: js/file-upload.js:64
+msgid "Upload cancelled."
+msgstr "Загрузка отменена."
+
+#: js/file-upload.js:165
+msgid ""
+"File upload is in progress. Leaving the page now will cancel the upload."
+msgstr "Файл в процессе загрузки. Покинув страницу вы прервёте загрузку."
+
+#: js/file-upload.js:239
+msgid "URL cannot be empty."
+msgstr "Ссылка не может быть пустой."
+
+#: js/file-upload.js:244 lib/app.php:53
+msgid "Invalid folder name. Usage of 'Shared' is reserved by ownCloud"
+msgstr "Неправильное имя каталога. Имя 'Shared' зарезервировано."
+
+#: js/file-upload.js:275 js/file-upload.js:291 js/files.js:511 js/files.js:549
+msgid "Error"
+msgstr "Ошибка"
+
 #: js/fileactions.js:116
+msgid "Share"
+msgstr "Открыть доступ"
+
+#: js/fileactions.js:126
 msgid "Delete permanently"
 msgstr "Удалено навсегда"
 
-#: js/fileactions.js:118 templates/index.php:91 templates/index.php:92
-msgid "Delete"
-msgstr "Удалить"
-
-#: js/fileactions.js:184
+#: js/fileactions.js:192
 msgid "Rename"
 msgstr "Переименовать"
 
-#: js/filelist.js:49 js/filelist.js:52 js/files.js:291 js/files.js:407
-#: js/files.js:438
+#: js/filelist.js:49 js/filelist.js:52 js/filelist.js:573
 msgid "Pending"
 msgstr "Ожидание"
 
-#: js/filelist.js:253 js/filelist.js:255
+#: js/filelist.js:305 js/filelist.js:307
 msgid "{new_name} already exists"
 msgstr "{new_name} уже существует"
 
-#: js/filelist.js:253 js/filelist.js:255
+#: js/filelist.js:305 js/filelist.js:307
 msgid "replace"
 msgstr "заменить"
 
-#: js/filelist.js:253
+#: js/filelist.js:305
 msgid "suggest name"
 msgstr "предложить название"
 
-#: js/filelist.js:253 js/filelist.js:255
+#: js/filelist.js:305 js/filelist.js:307
 msgid "cancel"
 msgstr "отмена"
 
-#: js/filelist.js:295
-msgid "replaced {new_name}"
-msgstr "заменено {new_name}"
-
-#: js/filelist.js:295 js/filelist.js:297
-msgid "undo"
-msgstr "отмена"
-
-#: js/filelist.js:297
+#: js/filelist.js:352
 msgid "replaced {new_name} with {old_name}"
 msgstr "заменено {new_name} на {old_name}"
 
-#: js/filelist.js:322
-msgid "perform delete operation"
-msgstr "выполняется операция удаления"
+#: js/filelist.js:352
+msgid "undo"
+msgstr "отмена"
+
+#: js/filelist.js:422 js/filelist.js:488 js/files.js:580
+msgid "%n folder"
+msgid_plural "%n folders"
+msgstr[0] "%n папка"
+msgstr[1] "%n папки"
+msgstr[2] "%n папок"
+
+#: js/filelist.js:423 js/filelist.js:489 js/files.js:586
+msgid "%n file"
+msgid_plural "%n files"
+msgstr[0] "%n файл"
+msgstr[1] "%n файла"
+msgstr[2] "%n файлов"
+
+#: js/filelist.js:430
+msgid "{dirs} and {files}"
+msgstr ""
+
+#: js/filelist.js:561
+msgid "Uploading %n file"
+msgid_plural "Uploading %n files"
+msgstr[0] "Закачка %n файла"
+msgstr[1] "Закачка %n файлов"
+msgstr[2] "Закачка %n файлов"
+
+#: js/filelist.js:626
+msgid "files uploading"
+msgstr "файлы загружаются"
 
 #: js/files.js:52
 msgid "'.' is an invalid file name."
@@ -162,80 +211,38 @@ msgstr "Ваше дисковое пространство полностью з
 msgid "Your storage is almost full ({usedSpacePercent}%)"
 msgstr "Ваше хранилище почти заполнено ({usedSpacePercent}%)"
 
-#: js/files.js:224
+#: js/files.js:94
+msgid ""
+"Encryption was disabled but your files are still encrypted. Please go to "
+"your personal settings to decrypt your files."
+msgstr ""
+
+#: js/files.js:245
 msgid ""
 "Your download is being prepared. This might take some time if the files are "
 "big."
 msgstr "Загрузка началась. Это может потребовать много времени, если файл большого размера."
 
-#: js/files.js:261
-msgid "Unable to upload your file as it is a directory or has 0 bytes"
-msgstr "Не удается загрузить файл размером 0 байт в каталог"
-
-#: js/files.js:261
-msgid "Upload Error"
-msgstr "Ошибка загрузки"
-
-#: js/files.js:272
-msgid "Close"
-msgstr "Закрыть"
-
-#: js/files.js:311
-msgid "1 file uploading"
-msgstr "загружается 1 файл"
-
-#: js/files.js:314 js/files.js:369 js/files.js:384
-msgid "{count} files uploading"
-msgstr "{count} файлов загружается"
-
-#: js/files.js:387 js/files.js:422
-msgid "Upload cancelled."
-msgstr "Загрузка отменена."
-
-#: js/files.js:496
-msgid ""
-"File upload is in progress. Leaving the page now will cancel the upload."
-msgstr "Файл в процессе загрузки. Покинув страницу вы прервёте загрузку."
-
-#: js/files.js:569
-msgid "URL cannot be empty."
-msgstr "Ссылка не может быть пустой."
-
-#: js/files.js:574
-msgid "Invalid folder name. Usage of 'Shared' is reserved by Owncloud"
-msgstr "Неправильное имя каталога. Имя 'Shared' зарезервировано."
-
-#: js/files.js:947 templates/index.php:67
+#: js/files.js:562 templates/index.php:67
 msgid "Name"
-msgstr "Название"
+msgstr "Имя"
 
-#: js/files.js:948 templates/index.php:78
+#: js/files.js:563 templates/index.php:78
 msgid "Size"
 msgstr "Размер"
 
-#: js/files.js:949 templates/index.php:80
+#: js/files.js:564 templates/index.php:80
 msgid "Modified"
 msgstr "Изменён"
 
-#: js/files.js:968
-msgid "1 folder"
-msgstr "1 папка"
-
-#: js/files.js:970
-msgid "{count} folders"
-msgstr "{count} папок"
-
-#: js/files.js:978
-msgid "1 file"
-msgstr "1 файл"
-
-#: js/files.js:980
-msgid "{count} files"
-msgstr "{count} файлов"
+#: lib/app.php:73
+#, php-format
+msgid "%s could not be renamed"
+msgstr "%s не может быть переименован"
 
 #: lib/helper.php:11 templates/index.php:18
 msgid "Upload"
-msgstr "Загрузить"
+msgstr "Загрузка"
 
 #: templates/admin.php:5
 msgid "File handling"
@@ -285,13 +292,17 @@ msgstr "Папка"
 msgid "From link"
 msgstr "Из ссылки"
 
-#: templates/index.php:40
-msgid "Trash bin"
-msgstr ""
+#: templates/index.php:41
+msgid "Deleted files"
+msgstr "Удалённые файлы"
 
 #: templates/index.php:46
 msgid "Cancel upload"
 msgstr "Отмена загрузки"
+
+#: templates/index.php:52
+msgid "You don’t have write permissions here."
+msgstr "У вас нет разрешений на запись здесь."
 
 #: templates/index.php:59
 msgid "Nothing in here. Upload something!"
@@ -303,17 +314,21 @@ msgstr "Скачать"
 
 #: templates/index.php:85 templates/index.php:86
 msgid "Unshare"
-msgstr "Отменить публикацию"
+msgstr "Закрыть общий доступ"
+
+#: templates/index.php:91 templates/index.php:92
+msgid "Delete"
+msgstr "Удалить"
 
 #: templates/index.php:105
 msgid "Upload too large"
-msgstr "Файл слишком большой"
+msgstr "Файл слишком велик"
 
 #: templates/index.php:107
 msgid ""
 "The files you are trying to upload exceed the maximum size for file uploads "
 "on this server."
-msgstr "Файлы, которые Вы пытаетесь загрузить, превышают лимит для файлов на этом сервере."
+msgstr "Файлы, которые вы пытаетесь загрузить, превышают лимит для файлов на этом сервере."
 
 #: templates/index.php:112
 msgid "Files are being scanned, please wait."
@@ -325,4 +340,4 @@ msgstr "Текущее сканирование"
 
 #: templates/upgrade.php:2
 msgid "Upgrading filesystem cache..."
-msgstr "Обновление кеша файловой системы..."
+msgstr "Обновление кэша файловой системы..."

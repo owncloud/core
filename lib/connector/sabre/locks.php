@@ -44,7 +44,13 @@ class OC_Connector_Sabre_Locks extends Sabre_DAV_Locks_Backend_Abstract {
 		// NOTE: SQLite requires time() to be inserted directly. That's ugly
 		// but otherwise reading locks from SQLite Databases will return
 		// nothing
-		$query = 'SELECT * FROM `*PREFIX*locks` WHERE `userid` = ? AND (`created` + `timeout`) > '.time().' AND (( `uri` = ?)';
+		$query = 'SELECT * FROM `*PREFIX*locks`'
+			   .' WHERE `userid` = ? AND (`created` + `timeout`) > '.time().' AND (( `uri` = ?)';
+		if (OC_Config::getValue( "dbtype") === 'oci') {
+			//FIXME oracle hack: need to explicitly cast CLOB to CHAR for comparison
+			$query = 'SELECT * FROM `*PREFIX*locks`'
+				   .' WHERE `userid` = ? AND (`created` + `timeout`) > '.time().' AND (( to_char(`uri`) = ?)';
+		}
 		$params = array(OC_User::getUser(), $uri);
 
 		// We need to check locks for every part in the uri.
@@ -59,23 +65,31 @@ class OC_Connector_Sabre_Locks extends Sabre_DAV_Locks_Backend_Abstract {
 
 			if ($currentPath) $currentPath.='/';
 			$currentPath.=$part;
-
-			$query.=' OR (`depth` != 0 AND `uri` = ?)';
+			//FIXME oracle hack: need to explicitly cast CLOB to CHAR for comparison
+			if (OC_Config::getValue( "dbtype") === 'oci') {
+				$query.=' OR (`depth` != 0 AND to_char(`uri`) = ?)';
+			} else {
+				$query.=' OR (`depth` != 0 AND `uri` = ?)';
+			}
 			$params[] = $currentPath;
 
 		}
 
 		if ($returnChildLocks) {
 
-			$query.=' OR (`uri` LIKE ?)';
+			//FIXME oracle hack: need to explicitly cast CLOB to CHAR for comparison
+			if (OC_Config::getValue( "dbtype") === 'oci') {
+				$query.=' OR (to_char(`uri`) LIKE ?)';
+			} else {
+				$query.=' OR (`uri` LIKE ?)';
+			}
 			$params[] = $uri . '/%';
 
 		}
 		$query.=')';
 
-		$stmt = OC_DB::prepare( $query );
-		$result = $stmt->execute( $params );
-
+		$result = OC_DB::executeAudited( $query, $params );
+		
 		$lockList = array();
 		while( $row = $result->fetchRow()) {
 
@@ -112,15 +126,40 @@ class OC_Connector_Sabre_Locks extends Sabre_DAV_Locks_Backend_Abstract {
 		$locks = $this->getLocks($uri, false);
 		$exists = false;
 		foreach($locks as $lock) {
-			if ($lock->token == $lockInfo->token) $exists = true;
+			if ($lock->token == $lockInfo->token) {
+				$exists = true;
+				break;
+			}
 		}
 
 		if ($exists) {
-			$query = OC_DB::prepare( 'UPDATE `*PREFIX*locks` SET `owner` = ?, `timeout` = ?, `scope` = ?, `depth` = ?, `uri` = ?, `created` = ? WHERE `userid` = ? AND `token` = ?' );
-			$result = $query->execute( array($lockInfo->owner,$lockInfo->timeout,$lockInfo->scope,$lockInfo->depth,$uri,$lockInfo->created,OC_User::getUser(),$lockInfo->token));
+			$sql = 'UPDATE `*PREFIX*locks`'
+				 .' SET `owner` = ?, `timeout` = ?, `scope` = ?, `depth` = ?, `uri` = ?, `created` = ?'
+				 .' WHERE `userid` = ? AND `token` = ?';
+			$result = OC_DB::executeAudited( $sql, array(
+				$lockInfo->owner,
+				$lockInfo->timeout,
+				$lockInfo->scope,
+				$lockInfo->depth,
+				$uri,
+				$lockInfo->created,
+				OC_User::getUser(),
+				$lockInfo->token)
+			);
 		} else {
-			$query = OC_DB::prepare( 'INSERT INTO `*PREFIX*locks` (`userid`,`owner`,`timeout`,`scope`,`depth`,`uri`,`created`,`token`) VALUES (?,?,?,?,?,?,?,?)' );
-			$result = $query->execute( array(OC_User::getUser(),$lockInfo->owner,$lockInfo->timeout,$lockInfo->scope,$lockInfo->depth,$uri,$lockInfo->created,$lockInfo->token));
+			$sql = 'INSERT INTO `*PREFIX*locks`'
+				 .' (`userid`,`owner`,`timeout`,`scope`,`depth`,`uri`,`created`,`token`)'
+				 .' VALUES (?,?,?,?,?,?,?,?)';
+			$result = OC_DB::executeAudited( $sql, array(
+				OC_User::getUser(),
+				$lockInfo->owner,
+				$lockInfo->timeout,
+				$lockInfo->scope,
+				$lockInfo->depth,
+				$uri,
+				$lockInfo->created,
+				$lockInfo->token)
+			);
 		}
 
 		return true;
@@ -136,10 +175,14 @@ class OC_Connector_Sabre_Locks extends Sabre_DAV_Locks_Backend_Abstract {
 	 */
 	public function unlock($uri, Sabre_DAV_Locks_LockInfo $lockInfo) {
 
-		$query = OC_DB::prepare( 'DELETE FROM `*PREFIX*locks` WHERE `userid` = ? AND `uri` = ? AND `token` = ?' );
-		$result = $query->execute( array(OC_User::getUser(), $uri, $lockInfo->token));
+		$sql = 'DELETE FROM `*PREFIX*locks` WHERE `userid` = ? AND `uri` = ? AND `token` = ?';
+		if (OC_Config::getValue( "dbtype") === 'oci') {
+			//FIXME oracle hack: need to explicitly cast CLOB to CHAR for comparison
+			$sql = 'DELETE FROM `*PREFIX*locks` WHERE `userid` = ? AND to_char(`uri`) = ? AND `token` = ?';
+		}
+		$result = OC_DB::executeAudited( $sql, array(OC_User::getUser(), $uri, $lockInfo->token));
 
-		return $result->numRows() === 1;
+		return $result === 1;
 
 	}
 

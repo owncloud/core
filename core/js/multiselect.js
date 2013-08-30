@@ -25,7 +25,7 @@
 			'labels':[],
 			'oncheck':false,
 			'onuncheck':false,
-			'minWidth': 'default;',
+			'minWidth': 'default;'
 		};
 		$(this).attr('data-msid', multiSelectId);
 		$.extend(settings,options);
@@ -176,10 +176,10 @@
 			});
 			button.parent().data('preventHide',false);
 			if(settings.createText){
-				var li=$('<li class="creator">+ <em>'+settings.createText+'<em></li>');
+				var li=$('<li class="creator">+ '+settings.createText+'</li>');
 				li.click(function(event){
 					li.empty();
-					var input=$('<input class="new">');
+					var input=$('<input type="text" class="new">');
 					li.append(input);
 					input.focus();
 					input.css('width',button.innerWidth());
@@ -200,7 +200,7 @@
 								return false;
 							}
 							var li=$(this).parent();
-							var val = $(this).val()
+							var val = $(this).val();
 							var select=button.parent().next();
 							if(typeof settings.createCallback === 'function') {
 								var response = settings.createCallback(select, val);
@@ -266,8 +266,9 @@
 			}
 			list.append(list.find('li.creator'));
 			var pos=button.position();
-			if($(document).height() > (button.offset().top+button.outerHeight() + list.children().length * button.height())
-				|| $(document).height()/2 > pos.top
+			if(($(document).height() > (button.offset().top+button.outerHeight() + list.children().length * button.height())
+				&& $(document).height() - button.offset().top > (button.offset().top+button.outerHeight() + list.children().length * button.height()))
+				|| $(document).height()/2 > button.offset().top
 			) {
 				list.css({
 					top:pos.top+button.outerHeight()-5,

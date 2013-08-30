@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-10 00:08+0100\n"
+"Project-Id-Version: ownCloud Core 5.0.0\n"
+"Report-Msgid-Bugs-To: translations@owncloud.org\n"
+"POT-Creation-Date: 2013-08-30 09:32-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,49 +17,27 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ajax/rollbackVersion.php:15
+#: ajax/rollbackVersion.php:13
 #, php-format
 msgid "Could not revert: %s"
 msgstr ""
 
-#: history.php:40
-msgid "success"
+#: js/versions.js:7
+msgid "Versions"
 msgstr ""
 
-#: history.php:42
-#, php-format
-msgid "File %s was reverted to version %s"
+#: js/versions.js:53
+msgid "Failed to revert {file} to revision {timestamp}."
 msgstr ""
 
-#: history.php:49
-msgid "failure"
+#: js/versions.js:79
+msgid "More versions..."
 msgstr ""
 
-#: history.php:51
-#, php-format
-msgid "File %s could not be reverted to version %s"
+#: js/versions.js:116
+msgid "No other versions available"
 msgstr ""
 
-#: history.php:68
-msgid "No old versions available"
-msgstr ""
-
-#: history.php:73
-msgid "No path specified"
-msgstr ""
-
-#: js/versions.js:16
-msgid "History"
-msgstr ""
-
-#: templates/history.php:20
-msgid "Revert a file to a previous version by clicking on its revert button"
-msgstr ""
-
-#: templates/settings.php:3
-msgid "Files Versioning"
-msgstr ""
-
-#: templates/settings.php:4
-msgid "Enable"
+#: js/versions.js:145
+msgid "Restore"
 msgstr ""

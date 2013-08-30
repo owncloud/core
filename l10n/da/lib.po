@@ -3,16 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-#   <cronner@gmail.com>, 2012.
-# Morten Juhl-Johansen Zölde-Fejér <morten@writtenandread.net>, 2012-2013.
-#   <osos@openeyes.dk>, 2012.
+# Sappe, 2013
+# claus_chr <claus_chr@webspeed.dk>, 2013
+# Ole Holm Frandsen <froksen@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-02-10 00:08+0100\n"
-"PO-Revision-Date: 2013-02-09 23:08+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"POT-Creation-Date: 2013-08-30 09:33-0400\n"
+"PO-Revision-Date: 2013-08-29 05:10+0000\n"
+"Last-Translator: claus_chr <claus_chr@webspeed.dk>\n"
 "Language-Team: Danish (http://www.transifex.com/projects/p/owncloud/language/da/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,49 +20,128 @@ msgstr ""
 "Language: da\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: app.php:339
+#: app.php:239
+#, php-format
+msgid ""
+"App \"%s\" can't be installed because it is not compatible with this version"
+" of ownCloud."
+msgstr "App'en \"%s\" kan ikke blive installeret, da den ikke er kompatibel med denne version af ownCloud."
+
+#: app.php:250
+msgid "No app name specified"
+msgstr "Intet app-navn angivet"
+
+#: app.php:361
 msgid "Help"
 msgstr "Hjælp"
 
-#: app.php:346
+#: app.php:374
 msgid "Personal"
-msgstr "Personlig"
+msgstr "Personligt"
 
-#: app.php:351
+#: app.php:385
 msgid "Settings"
 msgstr "Indstillinger"
 
-#: app.php:356
+#: app.php:397
 msgid "Users"
 msgstr "Brugere"
 
-#: app.php:363
-msgid "Apps"
-msgstr "Apps"
-
-#: app.php:365
+#: app.php:410
 msgid "Admin"
 msgstr "Admin"
 
-#: files.php:202
+#: app.php:837
+#, php-format
+msgid "Failed to upgrade \"%s\"."
+msgstr "Upgradering af \"%s\" fejlede"
+
+#: defaults.php:35
+msgid "web services under your control"
+msgstr "Webtjenester under din kontrol"
+
+#: files.php:66 files.php:98
+#, php-format
+msgid "cannot open \"%s\""
+msgstr "Kan ikke åbne \"%s\""
+
+#: files.php:226
 msgid "ZIP download is turned off."
 msgstr "ZIP-download er slået fra."
 
-#: files.php:203
+#: files.php:227
 msgid "Files need to be downloaded one by one."
 msgstr "Filer skal downloades en for en."
 
-#: files.php:203 files.php:228
+#: files.php:228 files.php:256
 msgid "Back to Files"
 msgstr "Tilbage til Filer"
 
-#: files.php:227
+#: files.php:253
 msgid "Selected files too large to generate zip file."
 msgstr "De markerede filer er for store til at generere en ZIP-fil."
 
-#: helper.php:226
-msgid "couldn't be determined"
-msgstr "kunne ikke fastslås"
+#: files.php:254
+msgid ""
+"Download the files in smaller chunks, seperately or kindly ask your "
+"administrator."
+msgstr "Download filerne i små bider, seperat, eller kontakt venligst din administrator."
+
+#: installer.php:63
+msgid "No source specified when installing app"
+msgstr "Ingen kilde angivet under installation af app"
+
+#: installer.php:70
+msgid "No href specified when installing app from http"
+msgstr "Ingen href angivet under installation af app via http"
+
+#: installer.php:75
+msgid "No path specified when installing app from local file"
+msgstr "Ingen sti angivet under installation af app fra lokal fil"
+
+#: installer.php:89
+#, php-format
+msgid "Archives of type %s are not supported"
+msgstr "Arkiver af type %s understøttes ikke"
+
+#: installer.php:103
+msgid "Failed to open archive when installing app"
+msgstr "Kunne ikke åbne arkiv under installation af appen"
+
+#: installer.php:123
+msgid "App does not provide an info.xml file"
+msgstr "Der følger ingen info.xml-fil med appen"
+
+#: installer.php:129
+msgid "App can't be installed because of not allowed code in the App"
+msgstr "Appen kan ikke installeres, da den indeholder ikke-tilladt kode"
+
+#: installer.php:138
+msgid ""
+"App can't be installed because it is not compatible with this version of "
+"ownCloud"
+msgstr "Appen kan ikke installeres, da den ikke er kompatibel med denne version af ownCloud."
+
+#: installer.php:144
+msgid ""
+"App can't be installed because it contains the <shipped>true</shipped> tag "
+"which is not allowed for non shipped apps"
+msgstr "Appen kan ikke installeres, da den indeholder taget\n<shipped>\n\ntrue\n</shipped>\n\nhvilket ikke er tilladt for ikke-medfølgende apps"
+
+#: installer.php:150
+msgid ""
+"App can't be installed because the version in info.xml/version is not the "
+"same as the version reported from the app store"
+msgstr "App kan ikke installeres, da versionen i info.xml/version ikke er den samme som versionen rapporteret fra app-storen"
+
+#: installer.php:160
+msgid "App directory already exists"
+msgstr "App-mappe findes allerede"
+
+#: installer.php:173
+#, php-format
+msgid "Can't create app folder. Please fix permissions. %s"
+msgstr "Kan ikke oprette app-mappe. Ret tilladelser. %s"
 
 #: json.php:28
 msgid "Application is not enabled"
@@ -88,81 +167,157 @@ msgstr "SMS"
 msgid "Images"
 msgstr "Billeder"
 
-#: setup.php:624
+#: setup/abstractdatabase.php:22
+#, php-format
+msgid "%s enter the database username."
+msgstr "%s indtast database brugernavnet."
+
+#: setup/abstractdatabase.php:25
+#, php-format
+msgid "%s enter the database name."
+msgstr "%s indtast database navnet."
+
+#: setup/abstractdatabase.php:28
+#, php-format
+msgid "%s you may not use dots in the database name"
+msgstr "%s du må ikke bruge punktummer i databasenavnet."
+
+#: setup/mssql.php:20
+#, php-format
+msgid "MS SQL username and/or password not valid: %s"
+msgstr "MS SQL brugernavn og/eller adgangskode ikke er gyldigt: %s"
+
+#: setup/mssql.php:21 setup/mysql.php:13 setup/oci.php:114
+#: setup/postgresql.php:24 setup/postgresql.php:70
+msgid "You need to enter either an existing account or the administrator."
+msgstr "Du bliver nødt til at indtaste en eksisterende bruger eller en administrator."
+
+#: setup/mysql.php:12
+msgid "MySQL username and/or password not valid"
+msgstr "MySQL brugernavn og/eller kodeord er ikke gyldigt."
+
+#: setup/mysql.php:67 setup/oci.php:54 setup/oci.php:121 setup/oci.php:147
+#: setup/oci.php:154 setup/oci.php:165 setup/oci.php:172 setup/oci.php:181
+#: setup/oci.php:189 setup/oci.php:198 setup/oci.php:204
+#: setup/postgresql.php:89 setup/postgresql.php:98 setup/postgresql.php:115
+#: setup/postgresql.php:125 setup/postgresql.php:134
+#, php-format
+msgid "DB Error: \"%s\""
+msgstr "Databasefejl: \"%s\""
+
+#: setup/mysql.php:68 setup/oci.php:55 setup/oci.php:122 setup/oci.php:148
+#: setup/oci.php:155 setup/oci.php:166 setup/oci.php:182 setup/oci.php:190
+#: setup/oci.php:199 setup/postgresql.php:90 setup/postgresql.php:99
+#: setup/postgresql.php:116 setup/postgresql.php:126 setup/postgresql.php:135
+#, php-format
+msgid "Offending command was: \"%s\""
+msgstr "Fejlende kommando var: \"%s\""
+
+#: setup/mysql.php:85
+#, php-format
+msgid "MySQL user '%s'@'localhost' exists already."
+msgstr "MySQL brugeren '%s'@'localhost' eksisterer allerede."
+
+#: setup/mysql.php:86
+msgid "Drop this user from MySQL"
+msgstr "Slet denne bruger fra MySQL"
+
+#: setup/mysql.php:91
+#, php-format
+msgid "MySQL user '%s'@'%%' already exists"
+msgstr "MySQL brugeren '%s'@'%%' eksisterer allerede."
+
+#: setup/mysql.php:92
+msgid "Drop this user from MySQL."
+msgstr "Slet denne bruger fra MySQL"
+
+#: setup/oci.php:34
+msgid "Oracle connection could not be established"
+msgstr "Oracle forbindelsen kunne ikke etableres"
+
+#: setup/oci.php:41 setup/oci.php:113
+msgid "Oracle username and/or password not valid"
+msgstr "Oracle brugernavn og/eller kodeord er ikke gyldigt."
+
+#: setup/oci.php:173 setup/oci.php:205
+#, php-format
+msgid "Offending command was: \"%s\", name: %s, password: %s"
+msgstr "Fejlende kommando var: \"%s\", navn: %s, password: %s"
+
+#: setup/postgresql.php:23 setup/postgresql.php:69
+msgid "PostgreSQL username and/or password not valid"
+msgstr "PostgreSQL brugernavn og/eller kodeord er ikke gyldigt."
+
+#: setup.php:28
+msgid "Set an admin username."
+msgstr "Angiv et admin brugernavn."
+
+#: setup.php:31
+msgid "Set an admin password."
+msgstr "Angiv et admin kodeord."
+
+#: setup.php:184
 msgid ""
 "Your web server is not yet properly setup to allow files synchronization "
 "because the WebDAV interface seems to be broken."
-msgstr ""
+msgstr "Din webserver er endnu ikke sat op til at tillade fil synkronisering fordi WebDAV grænsefladen virker ødelagt."
 
-#: setup.php:625
+#: setup.php:185
 #, php-format
 msgid "Please double check the <a href='%s'>installation guides</a>."
-msgstr ""
+msgstr "Dobbelttjek venligst <a href='%s'>installations vejledningerne</a>."
 
-#: template.php:113
+#: template/functions.php:80
 msgid "seconds ago"
 msgstr "sekunder siden"
 
-#: template.php:114
-msgid "1 minute ago"
-msgstr "1 minut siden"
+#: template/functions.php:81
+msgid "%n minute ago"
+msgid_plural "%n minutes ago"
+msgstr[0] "%n minut siden"
+msgstr[1] "%n minutter siden"
 
-#: template.php:115
-#, php-format
-msgid "%d minutes ago"
-msgstr "%d minutter siden"
+#: template/functions.php:82
+msgid "%n hour ago"
+msgid_plural "%n hours ago"
+msgstr[0] "%n time siden"
+msgstr[1] "%n timer siden"
 
-#: template.php:116
-msgid "1 hour ago"
-msgstr "1 time siden"
-
-#: template.php:117
-#, php-format
-msgid "%d hours ago"
-msgstr "%d timer siden"
-
-#: template.php:118
+#: template/functions.php:83
 msgid "today"
-msgstr "I dag"
+msgstr "i dag"
 
-#: template.php:119
+#: template/functions.php:84
 msgid "yesterday"
-msgstr "I går"
+msgstr "i går"
 
-#: template.php:120
-#, php-format
-msgid "%d days ago"
-msgstr "%d dage siden"
+#: template/functions.php:85
+msgid "%n day go"
+msgid_plural "%n days ago"
+msgstr[0] "%n dag siden"
+msgstr[1] "%n dage siden"
 
-#: template.php:121
+#: template/functions.php:86
 msgid "last month"
-msgstr "Sidste måned"
+msgstr "sidste måned"
 
-#: template.php:122
-#, php-format
-msgid "%d months ago"
-msgstr "%d måneder siden"
+#: template/functions.php:87
+msgid "%n month ago"
+msgid_plural "%n months ago"
+msgstr[0] "%n måned siden"
+msgstr[1] "%n måneder siden"
 
-#: template.php:123
+#: template/functions.php:88
 msgid "last year"
-msgstr "Sidste år"
+msgstr "sidste år"
 
-#: template.php:124
+#: template/functions.php:89
 msgid "years ago"
 msgstr "år siden"
 
-#: updater.php:75
-#, php-format
-msgid "%s is available. Get <a href=\"%s\">more information</a>"
-msgstr "%s er tilgængelig. Få <a href=\"%s\">mere information</a>"
-
-#: updater.php:77
-msgid "up to date"
-msgstr "opdateret"
-
-#: updater.php:80
-msgid "updates check is disabled"
-msgstr "Check for opdateringer er deaktiveret"
+#: template.php:297
+msgid "Caused by:"
+msgstr "Forårsaget af:"
 
 #: vcategories.php:188 vcategories.php:249
 #, php-format

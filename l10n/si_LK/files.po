@@ -3,14 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Anushke Guneratne <anushke@gmail.com>, 2012.
-# Chamara Disanayake <chamara@nic.lk>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-02-10 00:08+0100\n"
-"PO-Revision-Date: 2013-02-09 23:08+0000\n"
+"POT-Creation-Date: 2013-08-30 09:31-0400\n"
+"PO-Revision-Date: 2013-08-30 13:34+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Sinhala (Sri Lanka) (http://www.transifex.com/projects/p/owncloud/language/si_LK/)\n"
 "MIME-Version: 1.0\n"
@@ -29,104 +27,158 @@ msgstr ""
 msgid "Could not move %s"
 msgstr ""
 
-#: ajax/rename.php:22 ajax/rename.php:25
-msgid "Unable to rename file"
+#: ajax/upload.php:16 ajax/upload.php:45
+msgid "Unable to set upload directory."
 msgstr ""
 
-#: ajax/upload.php:19
+#: ajax/upload.php:22
+msgid "Invalid Token"
+msgstr ""
+
+#: ajax/upload.php:59
 msgid "No file was uploaded. Unknown error"
 msgstr "ගොනුවක් උඩුගත නොවුනි. නොහැඳිනු දෝෂයක්"
 
-#: ajax/upload.php:26
+#: ajax/upload.php:66
 msgid "There is no error, the file uploaded with success"
-msgstr "නිවැරදි ව ගොනුව උඩුගත කෙරිනි"
+msgstr "දෝෂයක් නොමැත. සාර්ථකව ගොනුව උඩුගත කෙරුණි"
 
-#: ajax/upload.php:27
+#: ajax/upload.php:67
 msgid ""
 "The uploaded file exceeds the upload_max_filesize directive in php.ini: "
 msgstr ""
 
-#: ajax/upload.php:29
+#: ajax/upload.php:69
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
 msgstr "උඩුගත කළ ගොනුවේ විශාලත්වය HTML පෝරමයේ නියම කළ ඇති MAX_FILE_SIZE විශාලත්වයට වඩා වැඩිය"
 
-#: ajax/upload.php:31
+#: ajax/upload.php:70
 msgid "The uploaded file was only partially uploaded"
 msgstr "උඩුගත කළ ගොනුවේ කොටසක් පමණක් උඩුගත විය"
 
-#: ajax/upload.php:32
+#: ajax/upload.php:71
 msgid "No file was uploaded"
-msgstr "කිසිදු ගොනවක් උඩුගත නොවිනි"
+msgstr "ගොනුවක් උඩුගත නොවුණි"
 
-#: ajax/upload.php:33
+#: ajax/upload.php:72
 msgid "Missing a temporary folder"
-msgstr "තාවකාලික ෆොල්ඩරයක් සොයාගත නොහැක"
+msgstr "තාවකාලික ෆොල්ඩරයක් අතුරුදහන්"
 
-#: ajax/upload.php:34
+#: ajax/upload.php:73
 msgid "Failed to write to disk"
 msgstr "තැටිගත කිරීම අසාර්ථකයි"
 
-#: ajax/upload.php:52
+#: ajax/upload.php:91
 msgid "Not enough storage available"
 msgstr ""
 
-#: ajax/upload.php:83
+#: ajax/upload.php:109
+msgid "Upload failed"
+msgstr ""
+
+#: ajax/upload.php:127
 msgid "Invalid directory."
 msgstr ""
 
-#: appinfo/app.php:10
+#: appinfo/app.php:12
 msgid "Files"
 msgstr "ගොනු"
 
+#: js/file-upload.js:11
+msgid "Unable to upload your file as it is a directory or has 0 bytes"
+msgstr ""
+
+#: js/file-upload.js:24
+msgid "Not enough space available"
+msgstr ""
+
+#: js/file-upload.js:64
+msgid "Upload cancelled."
+msgstr "උඩුගත කිරීම අත් හරින්න ලදී"
+
+#: js/file-upload.js:165
+msgid ""
+"File upload is in progress. Leaving the page now will cancel the upload."
+msgstr "උඩුගතකිරීමක් සිදුවේ. පිටුව හැර යාමෙන් එය නැවතෙනු ඇත"
+
+#: js/file-upload.js:239
+msgid "URL cannot be empty."
+msgstr "යොමුව හිස් විය නොහැක"
+
+#: js/file-upload.js:244 lib/app.php:53
+msgid "Invalid folder name. Usage of 'Shared' is reserved by ownCloud"
+msgstr ""
+
+#: js/file-upload.js:275 js/file-upload.js:291 js/files.js:511 js/files.js:549
+msgid "Error"
+msgstr "දෝෂයක්"
+
 #: js/fileactions.js:116
+msgid "Share"
+msgstr "බෙදා හදා ගන්න"
+
+#: js/fileactions.js:126
 msgid "Delete permanently"
 msgstr ""
 
-#: js/fileactions.js:118 templates/index.php:91 templates/index.php:92
-msgid "Delete"
-msgstr "මකන්න"
-
-#: js/fileactions.js:184
+#: js/fileactions.js:192
 msgid "Rename"
 msgstr "නැවත නම් කරන්න"
 
-#: js/filelist.js:49 js/filelist.js:52 js/files.js:291 js/files.js:407
-#: js/files.js:438
+#: js/filelist.js:49 js/filelist.js:52 js/filelist.js:573
 msgid "Pending"
 msgstr ""
 
-#: js/filelist.js:253 js/filelist.js:255
+#: js/filelist.js:305 js/filelist.js:307
 msgid "{new_name} already exists"
 msgstr ""
 
-#: js/filelist.js:253 js/filelist.js:255
+#: js/filelist.js:305 js/filelist.js:307
 msgid "replace"
 msgstr "ප්‍රතිස්ථාපනය කරන්න"
 
-#: js/filelist.js:253
+#: js/filelist.js:305
 msgid "suggest name"
 msgstr "නමක් යෝජනා කරන්න"
 
-#: js/filelist.js:253 js/filelist.js:255
+#: js/filelist.js:305 js/filelist.js:307
 msgid "cancel"
 msgstr "අත් හරින්න"
 
-#: js/filelist.js:295
-msgid "replaced {new_name}"
-msgstr ""
-
-#: js/filelist.js:295 js/filelist.js:297
-msgid "undo"
-msgstr "නිෂ්ප්‍රභ කරන්න"
-
-#: js/filelist.js:297
+#: js/filelist.js:352
 msgid "replaced {new_name} with {old_name}"
 msgstr ""
 
-#: js/filelist.js:322
-msgid "perform delete operation"
+#: js/filelist.js:352
+msgid "undo"
+msgstr "නිෂ්ප්‍රභ කරන්න"
+
+#: js/filelist.js:422 js/filelist.js:488 js/files.js:580
+msgid "%n folder"
+msgid_plural "%n folders"
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/filelist.js:423 js/filelist.js:489 js/files.js:586
+msgid "%n file"
+msgid_plural "%n files"
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/filelist.js:430
+msgid "{dirs} and {files}"
+msgstr ""
+
+#: js/filelist.js:561
+msgid "Uploading %n file"
+msgid_plural "Uploading %n files"
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/filelist.js:626
+msgid "files uploading"
 msgstr ""
 
 #: js/files.js:52
@@ -151,80 +203,38 @@ msgstr ""
 msgid "Your storage is almost full ({usedSpacePercent}%)"
 msgstr ""
 
-#: js/files.js:224
+#: js/files.js:94
+msgid ""
+"Encryption was disabled but your files are still encrypted. Please go to "
+"your personal settings to decrypt your files."
+msgstr ""
+
+#: js/files.js:245
 msgid ""
 "Your download is being prepared. This might take some time if the files are "
 "big."
 msgstr ""
 
-#: js/files.js:261
-msgid "Unable to upload your file as it is a directory or has 0 bytes"
-msgstr ""
-
-#: js/files.js:261
-msgid "Upload Error"
-msgstr "උඩුගත කිරීමේ දෝශයක්"
-
-#: js/files.js:272
-msgid "Close"
-msgstr "වසන්න"
-
-#: js/files.js:311
-msgid "1 file uploading"
-msgstr "1 ගොනුවක් උඩගත කෙරේ"
-
-#: js/files.js:314 js/files.js:369 js/files.js:384
-msgid "{count} files uploading"
-msgstr ""
-
-#: js/files.js:387 js/files.js:422
-msgid "Upload cancelled."
-msgstr "උඩුගත කිරීම අත් හරින්න ලදී"
-
-#: js/files.js:496
-msgid ""
-"File upload is in progress. Leaving the page now will cancel the upload."
-msgstr "උඩුගතකිරීමක් සිදුවේ. පිටුව හැර යාමෙන් එය නැවතෙනු ඇත"
-
-#: js/files.js:569
-msgid "URL cannot be empty."
-msgstr "යොමුව හිස් විය නොහැක"
-
-#: js/files.js:574
-msgid "Invalid folder name. Usage of 'Shared' is reserved by Owncloud"
-msgstr ""
-
-#: js/files.js:947 templates/index.php:67
+#: js/files.js:562 templates/index.php:67
 msgid "Name"
 msgstr "නම"
 
-#: js/files.js:948 templates/index.php:78
+#: js/files.js:563 templates/index.php:78
 msgid "Size"
 msgstr "ප්‍රමාණය"
 
-#: js/files.js:949 templates/index.php:80
+#: js/files.js:564 templates/index.php:80
 msgid "Modified"
 msgstr "වෙනස් කළ"
 
-#: js/files.js:968
-msgid "1 folder"
-msgstr "1 ෆොල්ඩරයක්"
-
-#: js/files.js:970
-msgid "{count} folders"
-msgstr ""
-
-#: js/files.js:978
-msgid "1 file"
-msgstr "1 ගොනුවක්"
-
-#: js/files.js:980
-msgid "{count} files"
+#: lib/app.php:73
+#, php-format
+msgid "%s could not be renamed"
 msgstr ""
 
 #: lib/helper.php:11 templates/index.php:18
 msgid "Upload"
-msgstr "උඩුගත කිරීම"
+msgstr "උඩුගත කරන්න"
 
 #: templates/admin.php:5
 msgid "File handling"
@@ -274,13 +284,17 @@ msgstr "ෆෝල්ඩරය"
 msgid "From link"
 msgstr "යොමුවෙන්"
 
-#: templates/index.php:40
-msgid "Trash bin"
+#: templates/index.php:41
+msgid "Deleted files"
 msgstr ""
 
 #: templates/index.php:46
 msgid "Cancel upload"
 msgstr "උඩුගත කිරීම අත් හරින්න"
+
+#: templates/index.php:52
+msgid "You don’t have write permissions here."
+msgstr ""
 
 #: templates/index.php:59
 msgid "Nothing in here. Upload something!"
@@ -288,11 +302,15 @@ msgstr "මෙහි කිසිවක් නොමැත. යමක් උඩ�
 
 #: templates/index.php:73
 msgid "Download"
-msgstr "බාගත කිරීම"
+msgstr "බාන්න"
 
 #: templates/index.php:85 templates/index.php:86
 msgid "Unshare"
 msgstr "නොබෙදු"
+
+#: templates/index.php:91 templates/index.php:92
+msgid "Delete"
+msgstr "මකා දමන්න"
 
 #: templates/index.php:105
 msgid "Upload too large"

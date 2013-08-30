@@ -59,9 +59,11 @@ class Util {
 	 * @param string $fromname
 	 * @param bool $html
 	 */
-	public static function sendMail( $toaddress, $toname, $subject, $mailtext, $fromaddress, $fromname, $html = 0, $altbody = '', $ccaddress = '', $ccname = '', $bcc = '') {
+	public static function sendMail( $toaddress, $toname, $subject, $mailtext, $fromaddress, $fromname,
+		$html = 0, $altbody = '', $ccaddress = '', $ccname = '', $bcc = '') {
 		// call the internal mail class
-		\OC_MAIL::send($toaddress, $toname, $subject, $mailtext, $fromaddress, $fromname, $html, $altbody, $ccaddress, $ccname, $bcc);
+		\OC_MAIL::send($toaddress, $toname, $subject, $mailtext, $fromaddress, $fromname,
+			$html, $altbody, $ccaddress, $ccname, $bcc);
 	}
 
 	/**
@@ -73,6 +75,15 @@ class Util {
 	public static function writeLog( $app, $message, $level ) {
 		// call the internal log class
 		\OC_LOG::write( $app, $message, $level );
+	}
+
+	/**
+	 * @brief get l10n object
+	 * @param string $app
+	 * @return OC_L10N
+	 */
+	public static function getL10N( $application ) {
+		return \OC_L10N::get( $application );
 	}
 
 	/**
@@ -111,6 +122,14 @@ class Util {
 		return(\OC_Util::formatDate( $timestamp, $dateOnly ));
 	}
 
+	/**
+	 * @brief check if some encrypted files are stored
+	 * @return bool
+	 */
+	public static function encryptedFiles() {
+		return \OC_Util::encryptedFiles();
+	}
+	
 	/**
 	 * @brief Creates an absolute url
 	 * @param string $app app
@@ -215,11 +234,15 @@ class Util {
 	 */
 	public static function getDefaultEmailAddress($user_part) {
 		$host_name = self::getServerHostName();
-		// handle localhost installations
-		if ($host_name === 'localhost') {
-			$host_name = "example.com";
+		$host_name = \OC_Config::getValue('mail_domain', $host_name);
+		$defaultEmailAddress = $user_part.'@'.$host_name;
+
+		if (\OC_Mail::ValidateAddress($defaultEmailAddress)) {
+			return $defaultEmailAddress;
 		}
-		return $user_part.'@'.$host_name;
+
+		// in case we cannot build a valid email address from the hostname let's fallback to 'localhost.localdomain'
+		return $user_part.'@localhost.localdomain';
 	}
 
 	/**
@@ -340,13 +363,28 @@ class Util {
 	/**
 	 * @brief Used to sanitize HTML
 	 *
-	 * This function is used to sanitize HTML and should be applied on any string or array of strings before displaying it on a web page.
+	 * This function is used to sanitize HTML and should be applied on any
+	 * string or array of strings before displaying it on a web page.
 	 *
 	 * @param string|array of strings
 	 * @return array with sanitized strings or a single sinitized string, depends on the input parameter.
 	 */
 	public static function sanitizeHTML( $value ) {
 		return(\OC_Util::sanitizeHTML($value));
+	}
+		
+	/**
+	 * @brief Public function to encode url parameters
+	 *
+	 * This function is used to encode path to file before output.
+	 * Encoding is done according to RFC 3986 with one exception:
+	 * Character '/' is preserved as is. 
+	 *
+	 * @param string $component part of URI to encode
+	 * @return string 
+	 */
+	public static function encodePath($component) {
+		return(\OC_Util::encodePath($component));
 	}
 
 	/**

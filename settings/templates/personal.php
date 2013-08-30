@@ -4,28 +4,45 @@
  * See the COPYING-README file.
  */?>
 
-<div id="quota" class="personalblock"><div style="width:<?php echo $_['usage_relative'];?>%;">
-	<p id="quotatext"><?php echo $l->t('You have used <strong>%s</strong> of the available <strong>%s</strong>', array($_['usage'], $_['total_space']));?></p>
-</div></div>
+<div class="clientsbox center">
+	<h2><?php p($l->t('Get the apps to sync your files'));?></h2>
+	<a href="<?php p($_['clients']['desktop']); ?>" target="_blank">
+		<img src="<?php print_unescaped(OCP\Util::imagePath('core', 'desktopapp.png')); ?>" />
+	</a>
+	<a href="<?php p($_['clients']['android']); ?>" target="_blank">
+		<img src="<?php print_unescaped(OCP\Util::imagePath('core', 'googleplay.png')); ?>" />
+	</a>
+	<a href="<?php p($_['clients']['ios']); ?>" target="_blank">
+		<img src="<?php print_unescaped(OCP\Util::imagePath('core', 'appstore.png')); ?>" />
+	</a>
+	<?php if(OC_APP::isEnabled('firstrunwizard')) {?>
+	<p class="center"><a class="button" href="#" id="showWizard"><?php p($l->t('Show First Run Wizard again'));?></a></p>
+	<?php }?>
+</div>
 
-<fieldset class="personalblock">
-	<legend><strong><?php echo $l->t('Clients');?></strong></legend>
-	<a class="button" href="<?php echo $_['clients']['desktop']; ?>" target="_blank"><?php echo $l->t('Download Desktop Clients');?></a>
-	<a class="button" href="<?php echo $_['clients']['android']; ?>" target="_blank"><?php echo $l->t('Download Android Client');?></a>
-	<a class="button" href="<?php echo $_['clients']['ios']; ?>" target="_blank"><?php echo $l->t('Download iOS Client');?></a>
-</fieldset>
+
+<div id="quota" class="personalblock">
+	<div style="width:<?php p($_['usage_relative']);?>%;">
+		<p id="quotatext">
+			<?php print_unescaped($l->t('You have used <strong>%s</strong> of the available <strong>%s</strong>',
+			array($_['usage'], $_['total_space'])));?>
+		</p>
+	</div>
+</div>
+
 
 <?php
 if($_['passwordChangeSupported']) {
 ?>
 <form id="passwordform">
 	<fieldset class="personalblock">
-		<legend><strong><?php echo $l->t('Password');?></strong></legend>
+		<legend><strong><?php p($l->t('Password'));?></strong></legend>
 		<div id="passwordchanged"><?php echo $l->t('Your password was changed');?></div>
 		<div id="passworderror"><?php echo $l->t('Unable to change your password');?></div>
 		<input type="password" id="pass1" name="oldpassword" placeholder="<?php echo $l->t('Current password');?>" />
-		<input type="password" id="pass2" name="password" placeholder="<?php echo $l->t('New password');?>" data-typetoggle="#show" />
-		<input type="checkbox" id="show" name="show" /><label for="show"> <?php echo $l->t('show');?></label>
+		<input type="password" id="pass2" name="personal-password"
+			placeholder="<?php echo $l->t('New password');?>" data-typetoggle="#personal-show" />
+		<input type="checkbox" id="personal-show" name="show" /><label for="personal-show"></label>
 		<input id="passwordbutton" type="submit" value="<?php echo $l->t('Change password');?>" />
 	</fieldset>
 </form>
@@ -39,52 +56,95 @@ if($_['displayNameChangeSupported']) {
 <form id="displaynameform">
 	<fieldset class="personalblock">
 		<legend><strong><?php echo $l->t('Display Name');?></strong></legend>
-		<div id="displaynamechanged"><?php echo $l->t('Your display name was changed');?></div>
-		<div id="displaynameerror"><?php echo $l->t('Unable to change your display name');?></div>
-		<input type="text" id="displayName" name="displayName" value="<?php echo $_['displayName']?>" />
-		<input type="hidden" id="oldDisplayName" name="oldDisplayName" value="<?php echo $_['displayName']?>" />
-		<input id="displaynamebutton" type="submit" value="<?php echo $l->t('Change display name');?>" />
+		<input type="text" id="displayName" name="displayName" value="<?php p($_['displayName'])?>" />
+        <span class="msg"></span>
+		<input type="hidden" id="oldDisplayName" name="oldDisplayName" value="<?php p($_['displayName'])?>" />
 	</fieldset>
 </form>
 <?php
 }
 ?>
 
+<?php
+if($_['passwordChangeSupported']) {
+?>
 <form id="lostpassword">
 	<fieldset class="personalblock">
-		<legend><strong><?php echo $l->t('Email');?></strong></legend>
-		<input type="text" name="email" id="email" value="<?php echo $_['email']; ?>" placeholder="<?php echo $l->t('Your email address');?>" /><span class="msg"></span><br />
-		<em><?php echo $l->t('Fill in an email address to enable password recovery');?></em>
+		<legend><strong><?php p($l->t('Email'));?></strong></legend>
+		<input type="text" name="email" id="email" value="<?php p($_['email']); ?>"
+			placeholder="<?php p($l->t('Your email address'));?>" /><span class="msg"></span><br />
+		<em><?php p($l->t('Fill in an email address to enable password recovery'));?></em>
 	</fieldset>
 </form>
+<?php
+}
+?>
 
 <form>
 	<fieldset class="personalblock">
-		<legend><strong><?php echo $l->t('Language');?></strong></legend>
-		<select id="languageinput" class="chzen-select" name="lang" data-placeholder="<?php echo $l->t('Language');?>">
+		<legend><strong><?php p($l->t('Language'));?></strong></legend>
+		<select id="languageinput" class="chzen-select" name="lang" data-placeholder="<?php p($l->t('Language'));?>">
+		<option value="<?php p($_['activelanguage']['code']);?>"><?php p($_['activelanguage']['name']);?></option>
+		<?php foreach($_['commonlanguages'] as $language):?>
+			<option value="<?php p($language['code']);?>"><?php p($language['name']);?></option>
+		<?php endforeach;?>
+		<optgroup label="––––––––––"><option class="languagedivider">-</option></optgroup>
 		<?php foreach($_['languages'] as $language):?>
-			<option value="<?php echo $language['code'];?>"><?php echo $language['name'];?></option>
+			<option value="<?php p($language['code']);?>"><?php p($language['name']);?></option>
 		<?php endforeach;?>
 		</select>
-		<a href="https://www.transifex.net/projects/p/owncloud/team/<?php echo $_['languages'][0]['code'];?>/" target="_blank"><em><?php echo $l->t('Help translate');?></em></a>
+		<?php if (OC_Util::getEditionString() === ''): ?>
+		<a href="https://www.transifex.com/projects/p/owncloud/team/<?php p($_['activelanguage']['code']);?>/"
+			target="_blank"><em><?php p($l->t('Help translate'));?></em></a>
+		<?php endif; ?>
 	</fieldset>
 </form>
 
 <fieldset class="personalblock">
-	<legend><strong><?php echo $l->t('WebDAV');?></strong></legend>
-	<code><?php echo OC_Helper::linkToRemote('webdav'); ?></code><br />
-	<em><?php echo $l->t('Use this address to connect to your ownCloud in your file manager');?></em>
+	<legend><strong><?php p($l->t('WebDAV'));?></strong></legend>
+	<code><?php print_unescaped(OC_Helper::linkToRemote('webdav')); ?></code><br />
+	<em><?php print_unescaped($l->t('Use this address to <a href="%s/server/5.0/user_manual/files/files.html" target="_blank">access your Files via WebDAV</a>', array($theme->getDocBaseUrl())));?></em>
 </fieldset>
 
 <?php foreach($_['forms'] as $form) {
-	echo $form;
+	print_unescaped($form);
 };?>
 
+<?php if($_['enableDecryptAll']): ?>
+<form id="decryptAll">
+	<fieldset class="personalblock">
+		<legend>
+			<?php p( $l->t( 'Encryption' ) ); ?>
+		</legend>
+		<?php p($l->t( "The encryption app is no longer enabled, decrypt all your file" )); ?>
+		<p>
+			<input
+				type="password"
+				name="privateKeyPassword"
+				id="privateKeyPassword" />
+			<label for="privateKeyPassword"><?php p($l->t( "Log-in password" )); ?></label>
+			<br />
+			<button
+				type="button"
+				disabled
+				name="submitDecryptAll"><?php p($l->t( "Decrypt all Files" )); ?>
+			</button>
+			<span class="msg"></span>
+		</p>
+		<br />
+	</fieldset>
+</form>
+<?php endif; ?>
 
 <fieldset class="personalblock">
-	<legend><strong><?php echo $l->t('Version');?></strong></legend>
-	<strong>ownCloud</strong> <?php echo(OC_Util::getVersionString()); ?> <?php echo(OC_Util::getEditionString()); ?> <br />
-	<?php echo $l->t('Developed by the <a href="http://ownCloud.org/contact" target="_blank">ownCloud community</a>, the <a href="https://github.com/owncloud" target="_blank">source code</a> is licensed under the <a href="http://www.gnu.org/licenses/agpl-3.0.html" target="_blank"><abbr title="Affero General Public License">AGPL</abbr></a>.'); ?>
+	<legend><strong><?php p($l->t('Version'));?></strong></legend>
+	<strong><?php p($theme->getName()); ?></strong> <?php p(OC_Util::getVersionString()); ?><br/>
+<?php if (OC_Util::getEditionString() === ''): ?>
+	<?php print_unescaped($l->t('Developed by the <a href="http://ownCloud.org/contact" target="_blank">ownCloud community</a>, the <a href="https://github.com/owncloud" target="_blank">source code</a> is licensed under the <a href="http://www.gnu.org/licenses/agpl-3.0.html" target="_blank"><abbr title="Affero General Public License">AGPL</abbr></a>.')); ?>
+<?php endif; ?>
 </fieldset>
-
-
+<fieldset class="personalblock credits-footer">
+<p>
+	<?php print_unescaped($theme->getShortFooter()); ?>
+</p>
+</fieldset>

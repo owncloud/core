@@ -10,7 +10,7 @@ namespace OC\Files\Storage;
 /**
  * for local filestore, we only have to map the paths
  */
-class Local extends \OC\Files\Storage\Common{
+class MappedLocal extends \OC\Files\Storage\Common{
 	protected $datadir;
 	private $mapper;
 
@@ -20,7 +20,7 @@ class Local extends \OC\Files\Storage\Common{
 			$this->datadir.='/';
 		}
 
-		$this->mapper= new \OC\Files\Mapper();
+		$this->mapper= new \OC\Files\Mapper($this->datadir);
 	}
 	public function __destruct() {
 		if (defined('PHPUNIT_RUN')) {
@@ -34,10 +34,30 @@ class Local extends \OC\Files\Storage\Common{
 		return @mkdir($this->buildPath($path));
 	}
 	public function rmdir($path) {
-		if ($result = @rmdir($this->buildPath($path))) {
-			$this->cleanMapper($path);
+		try {
+			$it = new \RecursiveIteratorIterator(
+				new \RecursiveDirectoryIterator($this->buildPath($path)),
+				\RecursiveIteratorIterator::CHILD_FIRST
+			);
+			foreach ($it as $file) {
+				/**
+				 * @var \SplFileInfo $file
+				 */
+				if (in_array($file->getBasename(), array('.', '..'))) {
+					continue;
+				} elseif ($file->isDir()) {
+					rmdir($file->getPathname());
+				} elseif ($file->isFile() || $file->isLink()) {
+					unlink($file->getPathname());
+				}
+			}
+			if ($result = @rmdir($this->buildPath($path))) {
+				$this->cleanMapper($path);
+			}
+			return $result;
+		} catch (\UnexpectedValueException $e) {
+			return false;
 		}
-		return $result;
 	}
 	public function opendir($path) {
 		$files = array('.', '..');
@@ -45,12 +65,12 @@ class Local extends \OC\Files\Storage\Common{
 
 		$logicalPath = $this->mapper->physicalToLogic($physicalPath);
 		$dh = opendir($physicalPath);
-		while ($file = readdir($dh)) {
+		while (($file = readdir($dh)) !== false) {
 			if ($file === '.' or $file === '..') {
 				continue;
 			}
 
-			$logicalFilePath = $this->mapper->physicalToLogic($physicalPath.DIRECTORY_SEPARATOR.$file);
+			$logicalFilePath = $this->mapper->physicalToLogic($physicalPath.'/'.$file);
 
 			$file= $this->mapper->stripRootFolder($logicalFilePath, $logicalPath);
 			$file = $this->stripLeading($file);
@@ -61,7 +81,7 @@ class Local extends \OC\Files\Storage\Common{
 		return opendir('fakedir://local-win32'.$path);
 	}
 	public function is_dir($path) {
-		if(substr($path,-1)=='/') {
+		if(substr($path, -1)=='/') {
 			$path=substr($path, 0, -1);
 		}
 		return is_dir($this->buildPath($path));
@@ -130,7 +150,7 @@ class Local extends \OC\Files\Storage\Common{
 	public function file_get_contents($path) {
 		return file_get_contents($this->buildPath($path));
 	}
-	public function file_put_contents($path, $data) {//trigger_error("$path = ".var_export($path, 1));
+	public function file_put_contents($path, $data) {
 		return file_put_contents($this->buildPath($path), $data);
 	}
 	public function unlink($path) {
@@ -138,11 +158,11 @@ class Local extends \OC\Files\Storage\Common{
 	}
 	public function rename($path1, $path2) {
 		if (!$this->isUpdatable($path1)) {
-			\OC_Log::write('core','unable to rename, file is not writable : '.$path1,\OC_Log::ERROR);
+			\OC_Log::write('core', 'unable to rename, file is not writable : '.$path1, \OC_Log::ERROR);
 			return false;
 		}
 		if(! $this->file_exists($path1)) {
-			\OC_Log::write('core','unable to rename, file does not exists : '.$path1,\OC_Log::ERROR);
+			\OC_Log::write('core', 'unable to rename, file does not exists : '.$path1, \OC_Log::ERROR);
 			return false;
 		}
 
@@ -248,7 +268,9 @@ class Local extends \OC\Files\Storage\Common{
 				return (float)exec('stat -c %s ' . escapeshellarg($fullPath));
 			}
 		} else {
-			\OC_Log::write('core', 'Unable to determine file size of "'.$fullPath.'". Unknown OS: '.$name, \OC_Log::ERROR);
+			\OC_Log::write('core',
+				'Unable to determine file size of "'.$fullPath.'". Unknown OS: '.$name,
+				\OC_Log::ERROR);
 		}
 
 		return 0;
@@ -272,20 +294,20 @@ class Local extends \OC\Files\Storage\Common{
 		return $this->buildPath($path);
 	}
 
-	protected function searchInDir($query, $dir='', $isLogicPath=true) {
+	protected function searchInDir($query, $dir='') {
 		$files=array();
 		$physicalDir = $this->buildPath($dir);
 		foreach (scandir($physicalDir) as $item) {
 			if ($item == '.' || $item == '..')
 				continue;
-			$physicalItem = $this->mapper->physicalToLogic($physicalDir.DIRECTORY_SEPARATOR.$item);
+			$physicalItem = $this->mapper->physicalToLogic($physicalDir.'/'.$item);
 			$item = substr($physicalItem, strlen($physicalDir)+1);
 
 			if(strstr(strtolower($item), strtolower($query)) !== false) {
 				$files[]=$dir.'/'.$item;
 			}
 			if(is_dir($physicalItem)) {
-				$files=array_merge($files, $this->searchInDir($query, $physicalItem, false));
+				$files=array_merge($files, $this->searchInDir($query, $dir.'/'.$item));
 			}
 		}
 		return $files;
@@ -328,6 +350,12 @@ class Local extends \OC\Files\Storage\Common{
 	private function stripLeading($path) {
 		if(strpos($path, '/') === 0) {
 			$path = substr($path, 1);
+		}
+		if(strpos($path, '\\') === 0) {
+			$path = substr($path, 1);
+		}
+		if ($path === false) {
+			return '';
 		}
 
 		return $path;

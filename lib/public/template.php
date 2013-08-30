@@ -77,12 +77,13 @@ function relative_modified_date($timestamp) {
 
 
 /**
- * @brief Return a human readable outout for a file size.
+ * @brief DEPRECATED Return a human readable outout for a file size.
+ * @deprecated human_file_size() instead
  * @param $byte size of a file in byte
  * @returns human readable interpretation of a file size
  */
 function simple_file_size($bytes) {
-	return(\simple_file_size($bytes));
+	return(\human_file_size($bytes));
 }
 
 
@@ -99,7 +100,8 @@ function html_select_options($options, $selected, $params=array()) {
 
 
 /**
- * This class provides the template system for owncloud. You can use it to load specific templates, add data and generate the html code
+ * This class provides the template system for owncloud. You can use it to load
+ * specific templates, add data and generate the html code
  */
 class Template extends \OC_Template {
 

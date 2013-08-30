@@ -1,6 +1,7 @@
 <?php
 
 OCP\JSON::checkAppEnabled('files_external');
+OCP\JSON::callCheck();
 
 if ( ! ($filename = $_FILES['rootcert_import']['name']) ) {
 	header("Location: settings/personal.php");
@@ -13,7 +14,7 @@ fclose($fh);
 $filename = $_FILES['rootcert_import']['name'];
 
 $view = new \OC\Files\View('/'.\OCP\User::getUser().'/files_external/uploads');
-if (!$view->file_exists('')){
+if (!$view->file_exists('')) {
 	$view->mkdir('');
 }
 
@@ -28,13 +29,17 @@ if ($isValid == false) {
 
 // add the certificate if it could be verified
 if ( $isValid ) {
+	// disable proxy to prevent multiple fopen calls
+	$proxyStatus = \OC_FileProxy::$enabled;
+	\OC_FileProxy::$enabled = false;
 	$view->file_put_contents($filename, $data);
 	OC_Mount_Config::createCertificateBundle();
+	\OC_FileProxy::$enabled = $proxyStatus;
 } else {
 	OCP\Util::writeLog('files_external',
 			'Couldn\'t import SSL root certificate ('.$filename.'), allowed formats: PEM and DER',
 			OCP\Util::WARN);
 }
 
-header('Location: settings/personal.php');
+header('Location:' . OCP\Util::linkToRoute( "settings_personal" ));
 exit;

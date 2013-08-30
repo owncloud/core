@@ -1,17 +1,15 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Access granted" => "Alirpermeso donita",
 "Error configuring Dropbox storage" => "Eraro dum agordado de la memorservo Dropbox",
 "Grant access" => "Doni alirpermeson",
-"Fill out all required fields" => "Plenigu ĉiujn neprajn kampojn",
 "Please provide a valid Dropbox app key and secret." => "Bonvolu provizi ŝlosilon de la aplikaĵo Dropbox validan kaj sekretan.",
 "Error configuring Google Drive storage" => "Eraro dum agordado de la memorservo Google Drive",
 "External Storage" => "Malena memorilo",
-"Mount point" => "Surmetingo",
-"Backend" => "Motoro",
+"Folder name" => "Dosierujnomo",
 "Configuration" => "Agordo",
 "Options" => "Malneproj",
 "Applicable" => "Aplikebla",
-"Add mount point" => "Aldoni surmetingon",
 "None set" => "Nenio agordita",
 "All Users" => "Ĉiuj uzantoj",
 "Groups" => "Grupoj",
@@ -22,3 +20,4 @@
 "SSL root certificates" => "Radikaj SSL-atestoj",
 "Import Root Certificate" => "Enporti radikan ateston"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

@@ -1,10 +1,11 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Help" => "עזרה",
 "Personal" => "אישי",
 "Settings" => "הגדרות",
 "Users" => "משתמשים",
-"Apps" => "יישומים",
 "Admin" => "מנהל",
+"web services under your control" => "שירותי רשת תחת השליטה שלך",
 "ZIP download is turned off." => "הורדת ZIP כבויה",
 "Files need to be downloaded one by one." => "יש להוריד את הקבצים אחד אחרי השני.",
 "Back to Files" => "חזרה לקבצים",
@@ -15,20 +16,18 @@
 "Files" => "קבצים",
 "Text" => "טקסט",
 "Images" => "תמונות",
+"Your web server is not yet properly setup to allow files synchronization because the WebDAV interface seems to be broken." => "שרת האינטרנט שלך אינו מוגדר לצורכי סנכרון קבצים עדיין כיוון שמנשק ה־WebDAV כנראה אינו תקין.",
+"Please double check the <a href='%s'>installation guides</a>." => "נא לעיין שוב ב<a href='%s'>מדריכי ההתקנה</a>.",
 "seconds ago" => "שניות",
-"1 minute ago" => "לפני דקה אחת",
-"%d minutes ago" => "לפני %d דקות",
-"1 hour ago" => "לפני שעה",
-"%d hours ago" => "לפני %d שעות",
+"_%n minute ago_::_%n minutes ago_" => array("","לפני %n דקות"),
+"_%n hour ago_::_%n hours ago_" => array("","לפני %n שעות"),
 "today" => "היום",
 "yesterday" => "אתמול",
-"%d days ago" => "לפני %d ימים",
+"_%n day go_::_%n days ago_" => array("","לפני %n ימים"),
 "last month" => "חודש שעבר",
-"%d months ago" => "לפני %d חודשים",
+"_%n month ago_::_%n months ago_" => array("","לפני %n חודשים"),
 "last year" => "שנה שעברה",
 "years ago" => "שנים",
-"%s is available. Get <a href=\"%s\">more information</a>" => "%s זמין. קבלת <a href=\"%s\">מידע נוסף</a>",
-"up to date" => "עדכני",
-"updates check is disabled" => "בדיקת עדכונים מנוטרלת",
 "Could not find category \"%s\"" => "לא ניתן למצוא את הקטגוריה „%s“"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

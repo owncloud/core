@@ -22,7 +22,7 @@
 
 namespace OC\Files\Storage;
 
-require_once 'Dropbox/autoload.php';
+require_once __DIR__ . '/../3rdparty/Dropbox/autoload.php';
 
 class Dropbox extends \OC\Files\Storage\Common {
 
@@ -40,12 +40,11 @@ class Dropbox extends \OC\Files\Storage\Common {
 			&& isset($params['token'])
 			&& isset($params['token_secret'])
 		) {
-			$this->id = 'dropbox::'.$params['app_key'] . $params['token']. '/' . $params['root'];
-			$this->root=isset($params['root'])?$params['root']:'';
+			$this->root = isset($params['root']) ? $params['root'] : '';
+			$this->id = 'dropbox::'.$params['app_key'] . $params['token']. '/' . $this->root;
 			$oauth = new \Dropbox_OAuth_Curl($params['app_key'], $params['app_secret']);
 			$oauth->setToken($params['token'], $params['token_secret']);
 			$this->dropbox = new \Dropbox_API($oauth, 'dropbox');
-			$this->mkdir('');
 		} else {
 			throw new \Exception('Creating \OC\Files\Storage\Dropbox storage failed');
 		}

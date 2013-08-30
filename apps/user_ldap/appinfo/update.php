@@ -18,7 +18,7 @@ if(!is_null($pw)) {
 //detect if we can switch on naming guidelines. We won't do it on conflicts.
 //it's a bit spaghetti, but hey.
 $state = OCP\Config::getSystemValue('ldapIgnoreNamingRules', 'unset');
-if($state == 'unset') {
+if($state === 'unset') {
 	OCP\Config::setSystemValue('ldapIgnoreNamingRules', false);
 }
 
@@ -48,7 +48,7 @@ foreach($objects as $object) {
 		$newDN = escapeDN(mb_strtolower($dn['ldap_dn'], 'UTF-8'));
 		if(!empty($dn['directory_uuid'])) {
 			$uuid = $dn['directory_uuid'];
-		} elseif($object == 'user') {
+		} elseif($object === 'user') {
 			$uuid = $userBE->getUUID($newDN);
 			//fix home folder to avoid new ones depending on the configuration
 			$userBE->getHome($dn['owncloud_name']);
@@ -58,7 +58,9 @@ foreach($objects as $object) {
 		try {
 			$updateQuery->execute(array($newDN, $uuid, $dn['ldap_dn']));
 		} catch(Exception $e) {
-		    \OCP\Util::writeLog('user_ldap', 'Could not update '.$object.' '.$dn['ldap_dn'].' in the mappings table. ', \OCP\Util::WARN);
+			\OCP\Util::writeLog('user_ldap',
+				'Could not update '.$object.' '.$dn['ldap_dn'].' in the mappings table. ',
+				\OCP\Util::WARN);
 		}
 
 	}
@@ -88,3 +90,7 @@ if(!isset($connector)) {
 //it is required, that connections do have ldap_configuration_active setting stored in the database
 $connector->getConfiguration();
 $connector->saveConfiguration();
+
+// we don't save it anymore, was a well-meant bad idea. Clean up database.
+$query = OC_DB::prepare('DELETE FROM `*PREFIX*preferences` WHERE `appid` = ? AND `configkey` = ?');
+$query->execute(array('user_ldap' , 'homedir'));

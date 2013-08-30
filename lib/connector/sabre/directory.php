@@ -45,9 +45,15 @@ class OC_Connector_Sabre_Directory extends OC_Connector_Sabre_Node implements Sa
 	 *
 	 * @param string $name Name of the file
 	 * @param resource|string $data Initial payload
+	 * @throws Sabre_DAV_Exception_Forbidden
 	 * @return null|string
 	 */
 	public function createFile($name, $data = null) {
+
+		if (!\OC\Files\Filesystem::isCreatable($this->path)) {
+			throw new \Sabre_DAV_Exception_Forbidden();
+		}
+
 		if (isset($_SERVER['HTTP_OC_CHUNKED'])) {
 			$info = OC_FileChunking::decodeName($name);
 			if (empty($info)) {
@@ -62,7 +68,36 @@ class OC_Connector_Sabre_Directory extends OC_Connector_Sabre_Node implements Sa
 			}
 		} else {
 			$newPath = $this->path . '/' . $name;
-			\OC\Files\Filesystem::file_put_contents($newPath, $data);
+
+			// mark file as partial while uploading (ignored by the scanner)
+			$partpath = $newPath . '.part';
+
+			\OC\Files\Filesystem::file_put_contents($partpath, $data);
+
+			//detect aborted upload
+			if (isset ($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'PUT' ) {
+				if (isset($_SERVER['CONTENT_LENGTH'])) {
+					$expected = $_SERVER['CONTENT_LENGTH'];
+					$actual = \OC\Files\Filesystem::filesize($partpath);
+					if ($actual != $expected) {
+						\OC\Files\Filesystem::unlink($partpath);
+						throw new Sabre_DAV_Exception_BadRequest(
+								'expected filesize ' . $expected . ' got ' . $actual);
+					}
+				}
+			}
+
+			// rename to correct path
+			\OC\Files\Filesystem::rename($partpath, $newPath);
+
+			// allow sync clients to send the mtime along in a header
+			$mtime = OC_Request::hasModificationTime();
+			if ($mtime !== false) {
+				if(\OC\Files\Filesystem::touch($newPath, $mtime)) {
+					header('X-OC-MTime: accepted');
+				}
+			}
+
 			return OC_Connector_Sabre_Node::getETagPropertyForPath($newPath);
 		}
 
@@ -73,12 +108,19 @@ class OC_Connector_Sabre_Directory extends OC_Connector_Sabre_Node implements Sa
 	 * Creates a new subdirectory
 	 *
 	 * @param string $name
+	 * @throws Sabre_DAV_Exception_Forbidden
 	 * @return void
 	 */
 	public function createDirectory($name) {
 
+		if (!\OC\Files\Filesystem::isCreatable($this->path)) {
+			throw new \Sabre_DAV_Exception_Forbidden();
+		}
+
 		$newPath = $this->path . '/' . $name;
-		\OC\Files\Filesystem::mkdir($newPath);
+		if(!\OC\Files\Filesystem::mkdir($newPath)) {
+			throw new Sabre_DAV_Exception_Forbidden('Could not create directory '.$newPath);
+		}
 
 	}
 
@@ -121,7 +163,7 @@ class OC_Connector_Sabre_Directory extends OC_Connector_Sabre_Node implements Sa
 		$paths = array();
 		foreach($folder_content as $info) {
 			$paths[] = $this->path.'/'.$info['name'];
-			$properties[$this->path.'/'.$info['name']][self::GETETAG_PROPERTYNAME] = $info['etag'];
+			$properties[$this->path.'/'.$info['name']][self::GETETAG_PROPERTYNAME] = '"' . $info['etag'] . '"';
 		}
 		if(count($paths)>0) {
 			//
@@ -131,7 +173,8 @@ class OC_Connector_Sabre_Directory extends OC_Connector_Sabre_Node implements Sa
 			$chunks = array_chunk($paths, 200, false);
 			foreach ($chunks as $pack) {
 				$placeholders = join(',', array_fill(0, count($pack), '?'));
-				$query = OC_DB::prepare( 'SELECT * FROM `*PREFIX*properties` WHERE `userid` = ?' . ' AND `propertypath` IN ('.$placeholders.')' );
+				$query = OC_DB::prepare( 'SELECT * FROM `*PREFIX*properties`'
+					.' WHERE `userid` = ?' . ' AND `propertypath` IN ('.$placeholders.')' );
 				array_unshift($pack, OC_User::getUser()); // prepend userid
 				$result = $query->execute( $pack );
 				while($row = $result->fetchRow()) {
@@ -171,11 +214,14 @@ class OC_Connector_Sabre_Directory extends OC_Connector_Sabre_Node implements Sa
 	 * Deletes all files in this directory, and then itself
 	 *
 	 * @return void
+	 * @throws Sabre_DAV_Exception_Forbidden
 	 */
 	public function delete() {
 
+		if (!\OC\Files\Filesystem::isDeletable($this->path)) {
+			throw new \Sabre_DAV_Exception_Forbidden();
+		}
 		if ($this->path != "/Shared") {
-			foreach($this->getChildren() as $child) $child->delete();
 			\OC\Files\Filesystem::rmdir($this->path);
 		}
 
@@ -187,10 +233,10 @@ class OC_Connector_Sabre_Directory extends OC_Connector_Sabre_Node implements Sa
 	 * @return array
 	 */
 	public function getQuotaInfo() {
-		$rootInfo=\OC\Files\Filesystem::getFileInfo('');
+		$storageInfo = OC_Helper::getStorageInfo($this->path);
 		return array(
-			$rootInfo['size'],
-			\OC\Files\Filesystem::free_space()
+			$storageInfo['used'],
+			$storageInfo['free']
 		);
 
 	}

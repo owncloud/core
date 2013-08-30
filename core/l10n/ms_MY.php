@@ -1,6 +1,7 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "No category to add?" => "Tiada kategori untuk di tambah?",
-"No categories selected for deletion." => "tiada kategori dipilih untuk penghapusan",
+"No categories selected for deletion." => "Tiada kategori dipilih untuk dibuang.",
 "Sunday" => "Ahad",
 "Monday" => "Isnin",
 "Tuesday" => "Selasa",
@@ -21,14 +22,16 @@
 "November" => "November",
 "December" => "Disember",
 "Settings" => "Tetapan",
-"Cancel" => "Batal",
-"No" => "Tidak",
+"_%n minute ago_::_%n minutes ago_" => array(""),
+"_%n hour ago_::_%n hours ago_" => array(""),
+"_%n day ago_::_%n days ago_" => array(""),
+"_%n month ago_::_%n months ago_" => array(""),
 "Yes" => "Ya",
+"No" => "Tidak",
 "Ok" => "Ok",
 "Error" => "Ralat",
 "Share" => "Kongsi",
 "Password" => "Kata laluan",
-"ownCloud password reset" => "Set semula kata lalaun ownCloud",
 "Use the following link to reset your password: {link}" => "Guna pautan berikut untuk menetapkan semula kata laluan anda: {link}",
 "You will receive a link to reset your password via Email." => "Anda akan menerima pautan untuk menetapkan semula kata laluan anda melalui emel",
 "Username" => "Nama pengguna",
@@ -44,7 +47,7 @@
 "Help" => "Bantuan",
 "Access forbidden" => "Larangan akses",
 "Cloud not found" => "Awan tidak dijumpai",
-"Edit categories" => "Edit kategori",
+"Edit categories" => "Ubah kategori",
 "Add" => "Tambah",
 "Security Warning" => "Amaran keselamatan",
 "Create an <strong>admin account</strong>" => "buat <strong>akaun admin</strong>",
@@ -57,11 +60,9 @@
 "Database name" => "Nama pangkalan data",
 "Database host" => "Hos pangkalan data",
 "Finish setup" => "Setup selesai",
-"web services under your control" => "Perkhidmatan web di bawah kawalan anda",
 "Log out" => "Log keluar",
 "Lost your password?" => "Hilang kata laluan?",
 "remember" => "ingat",
-"Log in" => "Log masuk",
-"prev" => "sebelum",
-"next" => "seterus"
+"Log in" => "Log masuk"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";

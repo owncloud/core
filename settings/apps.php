@@ -30,13 +30,13 @@ OC_App::setActiveNavigationEntry( "core_apps" );
 
 function app_sort( $a, $b ) {
 
-	if ($a['active'] != $b['active']) {
+	if ($a['active'] !== $b['active']) {
 
 		return $b['active'] - $a['active'];
 
 	}
 
-	if ($a['internal'] != $b['internal']) {
+	if ($a['internal'] !== $b['internal']) {
 		return $b['internal'] - $a['internal'];
 	}
 
@@ -49,7 +49,7 @@ usort( $combinedApps, 'app_sort' );
 
 $tmpl = new OC_Template( "settings", "apps", "user" );
 
-$tmpl->assign('apps', $combinedApps, false);
+$tmpl->assign('apps', $combinedApps);
 
 $appid = (isset($_GET['appid'])?strip_tags($_GET['appid']):'');
 

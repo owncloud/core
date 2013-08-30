@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Martin  <fireball@atlas.cz>, 2012.
-# Tomáš Chvátal <tomas.chvatal@gmail.com>, 2012-2013.
+# Honza K. <honza889@gmail.com>, 2013
+# pstast <petr@stastny.eu>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-02-09 00:12+0100\n"
-"PO-Revision-Date: 2013-02-08 06:40+0000\n"
-"Last-Translator: Tomáš Chvátal <tomas.chvatal@gmail.com>\n"
+"POT-Creation-Date: 2013-08-16 01:29-0400\n"
+"PO-Revision-Date: 2013-08-15 18:50+0000\n"
+"Last-Translator: pstast <petr@stastny.eu>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/owncloud/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,49 +19,27 @@ msgstr ""
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: ajax/rollbackVersion.php:15
+#: ajax/rollbackVersion.php:13
 #, php-format
 msgid "Could not revert: %s"
-msgstr "Nelze navrátit: %s"
+msgstr "Nelze vrátit: %s"
 
-#: history.php:40
-msgid "success"
-msgstr "úspěch"
+#: js/versions.js:7
+msgid "Versions"
+msgstr "Verze"
 
-#: history.php:42
-#, php-format
-msgid "File %s was reverted to version %s"
-msgstr "Soubor %s byl navrácen na verzi %s"
+#: js/versions.js:53
+msgid "Failed to revert {file} to revision {timestamp}."
+msgstr "Selhalo vrácení souboru {file} na verzi {timestamp}."
 
-#: history.php:49
-msgid "failure"
-msgstr "sehlhání"
+#: js/versions.js:79
+msgid "More versions..."
+msgstr "Více verzí..."
 
-#: history.php:51
-#, php-format
-msgid "File %s could not be reverted to version %s"
-msgstr "Soubor %s nemohl být navrácen na verzi %s"
+#: js/versions.js:116
+msgid "No other versions available"
+msgstr "Žádné další verze nejsou dostupné"
 
-#: history.php:68
-msgid "No old versions available"
-msgstr "Nejsou dostupné žádné starší verze"
-
-#: history.php:73
-msgid "No path specified"
-msgstr "Nezadána cesta"
-
-#: js/versions.js:16
-msgid "History"
-msgstr "Historie"
-
-#: templates/history.php:20
-msgid "Revert a file to a previous version by clicking on its revert button"
-msgstr "Navraťte soubor do předchozí verze kliknutím na tlačítko navrátit"
-
-#: templates/settings.php:3
-msgid "Files Versioning"
-msgstr "Verzování souborů"
-
-#: templates/settings.php:4
-msgid "Enable"
-msgstr "Povolit"
+#: js/versions.js:149
+msgid "Restore"
+msgstr "Obnovit"
