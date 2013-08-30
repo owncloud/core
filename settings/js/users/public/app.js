@@ -148,6 +148,11 @@ usersmanagement.factory('UserService',
 				{ username : userid, groupname : group }
 			);
 		},
+		toggleSubadmin: function(userid,subadmins) {
+			return $resource(OC.filePath('settings', 'ajax', 'togglegroup.php')).save(
+				{ username : userid, group : subadmins }
+			);
+		}
 	};
 }]);
 
