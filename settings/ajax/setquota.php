@@ -21,11 +21,7 @@ if(($username === '' && !OC_User::isAdminUser(OC_User::getUser()))
 }
 
 //make sure the quota is in the expected format
-<<<<<<< HEAD
 $quota = $params["quota"];
-=======
-$quota = $_POST["quota"];
->>>>>>> ef27a76... partially fixes setquota controller and service.
 if ($quota !== 'none' and $quota !== 'default') {
 	$quota= OC_Helper::computerFileSize($quota);
 	$quota=OC_Helper::humanFileSize($quota);
@@ -41,4 +37,3 @@ if($username) {
 	OC_Appconfig::setValue('files', 'default_quota', $quota);
 }
 OC_JSON::success(array("data" => array( "username" => $username , 'quota' => $quota)));
-
