@@ -37,12 +37,8 @@ class OC_User_Dummy extends OC_User_Backend {
 	 * itself, not in its subclasses.
 	 */
 	public function createUser($uid, $password) {
-		if (isset($this->users[$uid])) {
-			return false;
-		} else {
-			$this->users[$uid] = $password;
-			return true;
-		}
+		$lowerUid = strtolower($uid);
+		$this->users[$lowerUid] = array('uid' => $uid, 'password' => $password, 'displayname' => $uid);
 	}
 
 	/**
@@ -53,8 +49,9 @@ class OC_User_Dummy extends OC_User_Backend {
 	 * Deletes a user
 	 */
 	public function deleteUser($uid) {
+		$lowerUid = strtolower($uid);
 		if (isset($this->users[$uid])) {
-			unset($this->users[$uid]);
+			unset($this->users[$lowerUid]);
 			return true;
 		} else {
 			return false;
@@ -70,8 +67,9 @@ class OC_User_Dummy extends OC_User_Backend {
 	 * Change the password of a user
 	 */
 	public function setPassword($uid, $password) {
-		if (isset($this->users[$uid])) {
-			$this->users[$uid] = $password;
+		$lowerUid = strtolower($uid);
+		if (isset($this->users[$lowerUid])) {
+			$this->users[$lowerUid]['password'] = $password;
 			return true;
 		} else {
 			return false;
@@ -88,8 +86,13 @@ class OC_User_Dummy extends OC_User_Backend {
 	 * returns the user id or false
 	 */
 	public function checkPassword($uid, $password) {
-		if (isset($this->users[$uid])) {
-			return ($this->users[$uid] == $password);
+		$lowerUid = strtolower($uid);
+		if (isset($this->users[$lowerUid])) {
+			if ($this->users[$lowerUid]['password'] == $password) {
+				return $this->users[$lowerUid]['uid'];
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}
@@ -105,7 +108,23 @@ class OC_User_Dummy extends OC_User_Backend {
 	 * Get a list of all users.
 	 */
 	public function getUsers($search = '', $limit = null, $offset = null) {
-		return array_keys($this->users);
+		$result = array();
+		$search = strtolower($search);
+		foreach ($this->users as $uid => $user) {
+			if ($offset > 0) {
+				$offset--;
+			} else {
+				if (is_null($limit) or $limit > 0) {
+					if ($search == '' or strpos($uid, $search) !== false) {
+						$result[] = $user['uid'];
+						if (!is_null($limit)) {
+							$limit--;
+						}
+					}
+				}
+			}
+		}
+		return $result;
 	}
 
 	/**
@@ -114,7 +133,8 @@ class OC_User_Dummy extends OC_User_Backend {
 	 * @return boolean
 	 */
 	public function userExists($uid) {
-		return isset($this->users[$uid]);
+		$lowerUid = strtolower($uid);
+		return isset($this->users[$lowerUid]);
 	}
 
 	/**
@@ -122,5 +142,15 @@ class OC_User_Dummy extends OC_User_Backend {
 	 */
 	public function hasUserListings() {
 		return true;
+	}
+
+	public function setDisplayName($uid, $displayName) {
+		$lowerUid = strtolower($uid);
+		$this->users[$lowerUid]['displayname'] = $displayName;
+	}
+
+	public function getDisplayName($uid) {
+		$lowerUid = strtolower($uid);
+		return $this->users[$lowerUid]['displayname'];
 	}
 }
