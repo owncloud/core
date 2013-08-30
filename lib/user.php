@@ -252,6 +252,51 @@ class OC_User {
 	}
 
 	/**
+	* @brief Checks if a specific IP is blocked
+	* @param $ip
+	* @returns bool
+	*/
+	public static function checkBlock($ip) {
+		if (OC_Config::getValue( "bruteforce", true)) {
+			// This will block an IP from logging in, it checkes if there are more than 10 failed attempts in the last 15 minutes
+			// if there are more attempts an IP will be blocked by timestamp(lastAttempt)+15minutes
+			$blockTime = time() - OC_Config::getValue( "bruteforce_time", 60*15);
+			$query = OC_DB::prepare('SELECT COUNT(*) AS `count` FROM `*PREFIX*login_attempts` WHERE `ip` = ? AND `timestamp` > ?');
+			$result = $query->execute(array($ip, $blockTime));
+			$result = $result->fetchRow();
+
+			// Check if there were more than 10 failed logins
+			if($result['count'] > OC_Config::getValue( "bruteforce_attempts", 10)) {
+				return true;
+			}
+
+			// Delete all logged attempts which are older than 15 minutes
+			$deleteQuery = OC_DB::prepare('DELETE FROM `*PREFIX*login_attempts` WHERE `ip` = ? AND `timestamp` < ?');
+			$result = $deleteQuery->execute(array($ip, $blockTime));
+		}
+
+		return false;
+	}
+
+	/**
+	* @brief Logs an invalid login attempt
+	* FIXME: This does not yet work with a reverse proxy in place 
+	* @param $username
+	* @param $ip
+	*/
+	public static function logInvalidAttempt($username, $ip) {
+		// Log the failed login attempt
+		OCP\Util::writeLog('core', 'Login attempt failed as  '. $username .' from '. $ip, OCP\Util::WARN);
+
+		// Write it into the database
+		if (OC_Config::getValue( "bruteforce", true)) {
+			$query = \OC_DB::prepare('INSERT INTO `*PREFIX*login_attempts` (`ip`, `timestamp`) VALUES (?,?)');
+			$query->execute(array($ip, time()));
+		}
+	}
+
+
+	/**
 	 * @brief Sets user id for session and triggers emit
 	 */
 	public static function setUserId($uid) {

@@ -952,6 +952,38 @@
 
 	<table>
 
+		<name>*dbprefix*login_attempts</name>
+
+		<declaration>
+
+			<field>
+				<name>ip</name>
+				<type>text</type>
+				<default></default>
+				<notnull>true</notnull>
+				<length>45</length>
+			</field>
+
+			<field>
+				<name>timestamp</name>
+				<type>timestamp</type>
+				<notnull>true</notnull>
+			</field>
+
+			<index>
+				<name>login_attempts_pKey</name>
+				<field>
+					<name>ip</name>
+					<sorting>ascending</sorting>
+				</field>
+			</index>
+
+		</declaration>
+
+	</table>
+
+	<table>
+
 		<name>*dbprefix*vcategory</name>
 
 		<declaration>

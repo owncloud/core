@@ -122,6 +122,12 @@ class Session implements Emitter {
 	public function login($uid, $password) {
 		$this->manager->emit('\OC\User', 'preLogin', array($uid, $password));
 		$user = $this->manager->get($uid);
+
+		// Check if the IP is already blocked
+		if (\OC_User::checkBlock($_SERVER['REMOTE_ADDR'])) {
+			return false;
+		}
+
 		if ($user) {
 			$result = $user->checkPassword($password);
 			if ($result and $user->isEnabled()) {
@@ -132,6 +138,9 @@ class Session implements Emitter {
 				return false;
 			}
 		} else {
+			// Invalid credentials provided, trigger the bruteforce detection
+			\OC_User::logInvalidAttempt($username, $_SERVER['REMOTE_ADDR']);
+
 			return false;
 		}
 	}

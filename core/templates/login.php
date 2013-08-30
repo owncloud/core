@@ -12,6 +12,13 @@
 			<small><?php p($l->t('Please change your password to secure your account again.')); ?></small>
 		</div>
 		<?php endif; ?>
+		<?php if (isset($_['blocked']) && ($_['blocked'])): ?>
+		<div class="warning">
+			<?php echo $l->t('IP blocked!'); ?><br>
+			<small><?php echo $l->t('Because of multiple failed logins from your IP address, we blocked logins from your IP address for <strong>15 minutes</strong>.'); ?></small>
+		</div>
+		<?php endif; ?>
+		<?php if (!isset($_['blocked'])): ?>
 		<p class="infield grouptop">
 			<input type="text" name="user" id="user" placeholder=""
 				   value="<?php p($_['username']); ?>"<?php p($_['user_autofocus'] ? ' autofocus' : ''); ?>
@@ -51,6 +58,7 @@
 	</fieldset>
 </form>
 <?php } ?>
+<?php endif; ?>
 
 <?php
 OCP\Util::addscript('core', 'visitortimezone');
