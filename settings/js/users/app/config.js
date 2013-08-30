@@ -2,7 +2,9 @@
  * ownCloud - Core
  *
  * @author Raghu Nayyar
+ * @author Bernhard Posselt
  * @copyright 2013 Raghu Nayyar <raghu.nayyar.007@gmail.com>
+ * @copyright 2013 Bernhard Posselt <nukeawhale@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -42,4 +44,24 @@ config(['$httpProvider','$routeProvider', '$windowProvider', '$provide',
 			baseUrl: baseUrl
 		});
 	}
-]);
+]).run(['$rootScope', '$location', 'GroupService',
+	function($rootScope, $location, GroupService) {
+	$rootScope.$on('$routeChangeError', function() {
+		// Something wrong here
+		var groups = GroupService.getAllGroups();
+		
+		// route change error should redirect to the latest note if possible
+		if (groups.length > 0) {
+			var sorted = groups.sort(function(a, b) {
+				if(a.modified > b.modified) return 1;
+				if(a.modified < b.modified) return -1;
+				return 0;
+			});
+			
+			var group = groups[groups.length-1];
+			$location.path('/group/' + group.id);
+		} else {
+			$location.path('/group/');
+		}
+	});
+}]);
