@@ -436,16 +436,16 @@ usersmanagement.controller('setQuotaController',
 	['$scope', 'QuotaService',
 	function($scope, QuotaService) {
 		$scope.quotavalues =[
-								{show : '5GB', quotaval : '5gb'},
-								{show : '10GB', quotaval : '10gb'},
-								{show : '10GB', quotaval : '20gb'},
+								{show : '5 GB'},
+								{show : '10 GB'},
+								{show : '10 GB'},
 								//{show : '10 GB', quotaval : 'Unlimited'},
 								//{show : 'Custom', quotaval : 'Custom'}
 							];
 		// Default Quota
 		$scope.selectdefaultQuota = function(defaultquota) {
-			console.log(defaultquota.quotaval);
-			QuotaService.setDefaultQuota(defaultquota.quotaval);
+			console.log(defaultquota.show);
+			QuotaService.setDefaultQuota(defaultquota.show);
 		}
 	}
 ]);
