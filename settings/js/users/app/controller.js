@@ -67,13 +67,15 @@ usersmanagement.controller('grouplistController',
 usersmanagement.controller('addUserController',
 	['$scope', '$http', 'UserService', 'GroupService',
 	function($scope, $http, UserService, GroupService) {
-		var newuser,password = {};
-		var groups = [];
-		$scope.saveuser = function() {
-			UserService.createuser().save({ username : $scope.newuser }, { password : $scope.password }, { group : $scope.selectedgroup });
-		}
-		// Takes Out all groups for the Chosen dropdown
+		
+		// Takes Out all groups for the Mutiselect dropdown
 		$scope.allgroups = GroupService.getByGroupId().get();
+		var newuser = $scope.newuser;
+		var password = $scope.password;
+		var selectedgroup = $scope.addGroup;
+		$scope.saveuser = function(newuser,password,selectedgroup) {
+			UserService.createuser(newuser,password,selectedgroup);
+		}
 	}
 ]);
 

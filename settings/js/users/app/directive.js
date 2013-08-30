@@ -87,6 +87,7 @@ usersmanagement.directive('multiselectDropdown', [function() {
 		element = $(element[0]); // To use jQuery.
         element.multiSelect({
 			title: 'Add to Groups..',
+			oncheck: scope.addGroup,
 			minWidth: 150,
 			maxWidth: 200
         });

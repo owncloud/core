@@ -85,10 +85,10 @@ usersmanagement.factory('UserService',
 	['$resource', 'Config', '$q', 'UserModel', '_InArrayQuery',
 	function($resource, Config, $q, UserModel, _InArrayQuery) {
 	return {
-		createuser: function () {
-			return $resource(OC.filePath('settings', 'ajax', 'createuser.php'), {}, {
-				method : 'POST'
-			});
+		createuser: function(user, userpass, ingroup) {
+			return $resource(OC.filePath('settings', 'ajax', 'createuser.php')).save(
+				{ username : user, password: userpass, groups : ingroup }
+			);
 		},
 		removeuser: function(user) {
 			return $resource(OC.filePath('settings', 'ajax', 'removeuser.php')).delete(
@@ -420,13 +420,15 @@ usersmanagement.controller('grouplistController',
 usersmanagement.controller('addUserController',
 	['$scope', '$http', 'UserService', 'GroupService',
 	function($scope, $http, UserService, GroupService) {
-		var newuser,password = {};
-		var groups = [];
-		$scope.saveuser = function() {
-			UserService.createuser().save({ username : $scope.newuser }, { password : $scope.password }, { group : $scope.selectedgroup });
-		}
-		// Takes Out all groups for the Chosen dropdown
+		
+		// Takes Out all groups for the Mutiselect dropdown
 		$scope.allgroups = GroupService.getByGroupId().get();
+		var newuser = $scope.newuser;
+		var password = $scope.password;
+		var selectedgroup = $scope.addGroup;
+		$scope.saveuser = function(newuser,password,selectedgroup) {
+			UserService.createuser(newuser,password,selectedgroup);
+		}
 	}
 ]);
 
@@ -557,6 +559,7 @@ usersmanagement.directive('multiselectDropdown', [function() {
 		element = $(element[0]); // To use jQuery.
         element.multiSelect({
 			title: 'Add to Groups..',
+			oncheck: scope.addGroup,
 			minWidth: 150,
 			maxWidth: 200
         });
