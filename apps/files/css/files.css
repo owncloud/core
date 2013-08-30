@@ -71,11 +71,21 @@
 	font-size:1.5em; font-weight:bold;
 	color:#888; text-shadow:#fff 0 1px 0;
 }
-#filestable { position: relative; top:37px; width:100%; }
-#filestable tbody tr { background-color:#fff; height:2.5em; }
-#filestable tbody tr:hover, 
-#filestable tbody tr:active { background-color:#f8f8f8; }
-#filestable tbody tr.selected { background-color:#eee; }
+#filestable {
+	position: relative; 
+	top:37px; 
+	width:100%; 
+}
+#filestable tbody tr {
+	background-color: #fff;
+	height:2.5em;
+}
+#filestable tbody tr:hover, #filestable tbody tr:active {
+	background-color: rgb(240,240,240); 
+}
+#filestable tbody tr.selected {
+	background-color:rgb(230,230,230);
+}
 tbody a { color:#000; }
 span.extension, span.uploading, td.date { color:#999; }
 span.extension { text-transform:lowercase; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)"; filter:alpha(opacity=70); opacity:.7; -webkit-transition:opacity 300ms; -moz-transition:opacity 300ms; -o-transition:opacity 300ms; transition:opacity 300ms; }
