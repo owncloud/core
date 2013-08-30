@@ -109,8 +109,8 @@ usersmanagement.controller('userlistController',
 			$scope.userquotavalues = [
 									{ show : '5 GB' },
 									{ show : '10 GB' },
-									{ show : '10 GB' },
-									//{show : '10 GB'},
+									{ show : '15 GB' },
+									//{show : 'Unlimited'},
 									//{show : 'Custom'}
 			];			
 

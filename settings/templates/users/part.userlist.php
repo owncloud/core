@@ -119,12 +119,12 @@
 					<select
 						ng-options="userquotavalue as userquotavalue.show for userquotavalue in userquotavalues"
 						ng-model="userquotavalue"
-						ng-change="updateUserQuota(user.name,userquotavalue);"
+						ng-change="updateUserQuota(user.name,userquotavalue);
+								 editls = !editls;
+								 viewls = !viewls;"
 						ng-show="editls"
 						ng-focus="editls"
-						ng-blur="editls = !editls;
-								 viewls = !viewls;
-						">
+						>
 						<option val="">Default Value</option>
 					</select>
 				</td>
