@@ -61,10 +61,10 @@ usersmanagement.factory('UserService',
 	['$resource', 'Config', '$q', 'UserModel', '_InArrayQuery',
 	function($resource, Config, $q, UserModel, _InArrayQuery) {
 	return {
-		createuser: function () {
-			return $resource(OC.filePath('settings', 'ajax', 'createuser.php'), {}, {
-				method : 'POST'
-			});
+		createuser: function(user, userpass, ingroup) {
+			return $resource(OC.filePath('settings', 'ajax', 'createuser.php')).save(
+				{ username : user, password: userpass, groups : ingroup }
+			);
 		},
 		removeuser: function(user) {
 			return $resource(OC.filePath('settings', 'ajax', 'removeuser.php')).delete(

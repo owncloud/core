@@ -45,11 +45,11 @@
 				title="<?php p($l->t('Groups'))?>"
 				ng-model="selectedgroup"
 				ng-options="pergroup.name for pergroup in allgroups.result"
-				required multiple="multiple" multiselect-dropdown>
+				multiselect-dropdown>
 			</select>
 			<button
 				title="<?php p($l->t('Create'))?>"
-				ng-click="saveuser()" 
+				ng-click="saveuser(newuser,password,selectedgroup)" 
 				ng-disabled="createuser_form.$invalid">
 					<?php p($l->t('Add User'))?>
 			</button>
