@@ -117,15 +117,15 @@
 							{{ user.quota }}
 					</span>
 					<select
+						ng-options="userquotavalue as userquotavalue.show for userquotavalue in userquotavalues"
+						ng-model="userquotavalue"
+						ng-change="updateUserQuota(user.name,userquotavalue);"
 						ng-show="editls"
 						ng-focus="editls"
-						ng-blur="editls = !editls; viewls = !viewls">
-						<option>Default</option>
-						<option>1 GB</option>
-						<option>5 GB</option>
-						<option>10 GB</option>
-						<option>Unlimited..</option>
-						<option>Other..</option>
+						ng-blur="editls = !editls;
+								 viewls = !viewls;
+						">
+						<option val="">Default Value</option>
 					</select>
 				</td>
 				<td class="delete-column">

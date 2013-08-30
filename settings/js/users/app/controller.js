@@ -100,12 +100,19 @@ usersmanagement.controller('setQuotaController',
 /* Fetches the List of All Users and details on the Right Content */
 
 usersmanagement.controller('userlistController',
-	['$scope', 'UserService', 'GroupService', '$routeParams',
-	function($scope, UserService, GroupService, $routeParams) {
+	['$scope', 'UserService', 'GroupService', 'QuotaService','$routeParams',
+	function($scope, UserService, GroupService, QuotaService, $routeParams) {
 		$scope.loading = true;
 		UserService.getAllUsers().then(function(response) {
 			$scope.users = UserService.getUsersInGroup($routeParams.groupId);
 			$scope.loading = false;
+			$scope.userquotavalues = [
+									{ show : '5 GB' },
+									{ show : '10 GB' },
+									{ show : '10 GB' },
+									//{show : '10 GB'},
+									//{show : 'Custom'}
+			];			
 
 			/* Takes Out all groups for the Chosen dropdown */
 			$scope.allgroups = GroupService.getByGroupId().get();
@@ -121,7 +128,8 @@ usersmanagement.controller('userlistController',
 			
 			/* Updates User Quota */
 			$scope.updateUserQuota = function(userid,userQuota) {
-				QuotaService.setUserQuota(userid,userQuota);
+				console.log(userid);
+				QuotaService.setUserQuota(userid,userQuota.show);
 			}
 			
 			/* Deletes Users */
