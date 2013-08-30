@@ -8,7 +8,9 @@
 OC_JSON::checkSubAdminUser();
 OCP\JSON::callCheck();
 
-$username = isset($_POST["username"])?$_POST["username"]:'';
+$params = json_decode(file_get_contents('php://input'), true);
+
+$username = isset($params["username"])?$params["username"]:'';
 
 if(($username === '' && !OC_User::isAdminUser(OC_User::getUser()))
 	|| (!OC_User::isAdminUser(OC_User::getUser())
@@ -19,7 +21,7 @@ if(($username === '' && !OC_User::isAdminUser(OC_User::getUser()))
 }
 
 //make sure the quota is in the expected format
-$quota = $_POST["quota"];
+$quota = $params["quota"];
 if ($quota !== 'none' and $quota !== 'default') {
 	$quota= OC_Helper::computerFileSize($quota);
 	$quota=OC_Helper::humanFileSize($quota);
