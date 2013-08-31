@@ -21,9 +21,11 @@ input[type="submit"]{
 
 #body-login input[type="submit"] {
 	padding-bottom: 13px;
+	margin-left: 14px;
 }
 
 #body-login input[type="password"] {
+	margin: 0;
 	margin-left: 14px;
 }
 
