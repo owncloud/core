@@ -28,8 +28,8 @@ config(['$httpProvider','$routeProvider', '$windowProvider', '$provide',
 
 		$routeProvider
 		.when('/group/:groupId', {
-			controller : 'grouplistController',
-			templateUrl : OC.filePath('settings', 'templates/users', 'part.userlist.php')
+			templateUrl : 'user-table.html',
+			controller : 'grouplistController'
 		})
 		.otherwise({
 			redirectTo : '/group/'
