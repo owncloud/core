@@ -33,7 +33,7 @@
 		<div id="hascontrols">
 			<?php print_unescaped($this->inc('users/part.addnewuser')); ?>
 		</div>
-		<script type="text/ng-template" id="user-table user-table.html">
+		<script type="text/ng-template" id="user-table.html">
 			<?php print_unescaped($this->inc('users/part.userlist')); ?>
 		</script>
 	</div>
