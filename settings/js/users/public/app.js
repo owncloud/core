@@ -370,7 +370,16 @@ usersmanagement.factory('_Query', [function() {
 usersmanagement.controller('prioritygroupController',
 	['$scope', '$routeParams', 'GroupService', 'UserService',
 	function($scope, $routeParams, GroupService, UserService){
-
+		
+		/*Returns everyone. */
+		$scope.getEveryone = function() {
+			
+		}
+		
+		/* Returns the list of Subadmins on the Userlist */
+		$scope.getSubadmins = function() {
+			
+		}
 	}
 ]);
 
