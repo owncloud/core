@@ -9,7 +9,7 @@
 		<p class="infield">
 			<label for="password" class="infield"><?php p($l->t('Password')); ?></label>
 			<input type="password" name="password" id="password" placeholder="" value="" autofocus />
-			<input type="submit" value="" />
+			<input type="submit" value="" class="svg" />
 		</p>
 	</fieldset>
 </form>
