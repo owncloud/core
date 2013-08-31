@@ -19,15 +19,15 @@ msgstr ""
 "Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: templates/authenticate.php:7
+#: templates/authenticate.php:4
 msgid "The password is wrong. Try again."
 msgstr "Bitte überprüfen sie Ihr Passwort und versuchen Sie es erneut."
 
-#: templates/authenticate.php:10
+#: templates/authenticate.php:7
 msgid "Password"
 msgstr "Passwort"
 
-#: templates/authenticate.php:12
+#: templates/authenticate.php:9
 msgid "Submit"
 msgstr "Absenden"
 
