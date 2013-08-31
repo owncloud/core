@@ -32,12 +32,12 @@
 			<tr>
 				<!--Do something with the static hmtl here in the view.-->
 				<th class="table-head thumbnail"></th>
-				<th class="table-head login-name">Username</th>
-				<th class="table-head display-name">Display Name</th>
-				<th class="table-head user-pass">Password</th>
-				<th class="table-head groups">Groups</th>
-				<th class="table-head groups">Sub Admin</th>
-				<th class="table-head local-storage">Storage</th>
+				<th class="table-head login-name"><?php p($l->t('Username')); ?></th>
+				<th class="table-head display-name"><?php p($l->t('Display Name')); ?></th>
+				<th class="table-head user-pass"><?php p($l->t('Password')); ?></th>
+				<th class="table-head groups"><?php p($l->t('Groups')); ?></th>
+				<th class="table-head groups"><?php p($l->t('Sub Admins')); ?></th>
+				<th class="table-head local-storage"><?php p($l->t('Storage')); ?></th>
 				<th class="table-head user-actions"></th>
 			</tr>
 		</thead>
@@ -125,7 +125,7 @@
 						ng-show="editls"
 						ng-focus="editls"
 						>
-						<option val="">Default Value</option>
+						<option val=""><?php p($l->t('Default Value')); ?></option>
 					</select>
 				</td>
 				<td class="delete-column">
