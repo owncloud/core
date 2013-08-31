@@ -93,3 +93,15 @@ usersmanagement.directive('multiselectDropdown', [function() {
         });
 	}
 }]);
+
+/* The Directives for the ownCloud Avatars. */
+
+usersmanagement.directive('avatar',
+	[ function() {
+		return function(scope, element, attributes) {
+			element = $(element[0]); // To use jQuery.
+			
+			// Get the Avatar Plugin here once it gets into master.
+		}
+	}]
+);
