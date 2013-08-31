@@ -54,8 +54,8 @@
 				 }"
 					 >
 				<td class="thumbnail">
-					<img src="http://placehold.it/30X30" />
-				</td> <!--Temporary till we have gravatars up!-->
+					<avatar></avatar>
+				</td>
 				<td class="login-name">
 					<span>{{ user.name }}</span>
 				</td>
