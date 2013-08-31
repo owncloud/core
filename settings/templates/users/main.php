@@ -36,5 +36,6 @@
 		<script type="text/ng-template" id="user-table.html">
 			<?php print_unescaped($this->inc('users/part.userlist')); ?>
 		</script>
+		<div ng-view id="user-table"></div>
 	</div>
 </div>
