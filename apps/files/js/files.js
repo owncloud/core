@@ -155,6 +155,11 @@ Files={
 	}
 };
 $(document).ready(function() {
+	// FIXME: workaround for trashbin app
+	if (window.trashBinApp){
+		return;
+	}
+	Files.displayEncryptionWarning();
 	Files.bindKeyboardShortcuts(document, jQuery);
 
 	FileList.postProcessList();
