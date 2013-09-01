@@ -28,7 +28,8 @@
 	ng-init="
 	showQuotaSettings = false;
 	customQuotaInput = false;
-	showQuotadropdown = false;"
+	showQuotadropdown = false;
+	customValInput = false;"
 >
 	<div id="app-settings-header">
 		<button
@@ -60,15 +61,15 @@
 						 showQuotadropdown=false;">
 				<option value=""><?php p($l->t('Default Value')); ?></option>
 			</select>
-			<!--<label><?php p($l->t('Custom')); ?></label>
-			<input
-				type="text"
-				ng-model="customQuota"
-				ng-blur="
-					defaultQuota(customQuota);
-					customQuotaInput = false;"
-			/>
-			<span><?php p($l->t('GB')); ?></span>-->
+			<div ng-show="customValInput">
+				<input
+					ng-model="customVal"
+					type="text"
+					ng-blur="blurCustomVal" 
+					placeholder="<?php p($l->t('Enter Custom Value..')); ?>" 
+				/>
+				<button ng-click="sendCustomVal()"><?php p($l->t('Custom Quota'))?></button>
+			</div>
 		</fieldset>
 	</div>
 </div>
