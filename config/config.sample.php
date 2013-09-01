@@ -71,6 +71,9 @@ $CONFIG = array(
 /* Enable the help menu item in the settings */
 "knowledgebaseenabled" => true,
 
+/* URL to use for the help page, server should understand OCS */
+"knowledgebaseurl" => "http://api.apps.owncloud.com/v1",
+
 /* Enable installing apps from the appstore */
 "appstoreenabled" => true,
 
@@ -212,8 +215,6 @@ $CONFIG = array(
 /* cl parameters for libreoffice / openoffice */
 'preview_office_cl_parameters' => '',
 
-// Extra SSL options to be used for configuration
-'openssl' => array(
-	//'config' => '/absolute/location/of/openssl.cnf',
-),
+/* whether avatars should be enabled */
+'enable_avatars' => true,
 );
