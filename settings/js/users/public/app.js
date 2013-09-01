@@ -509,10 +509,13 @@ usersmanagement.controller('userlistController',
 									{ show : '15 GB' },
 									//{show : 'Unlimited'},
 									//{show : 'Custom'}
-			];			
+			];
+			
+			
 
-			/* Takes Out all groups for the Chosen dropdown */
+			/* Takes Out all groups for the Multiselect dropdown */
 			$scope.allgroups = GroupService.getByGroupId().get();
+			
 			/* Updates Display name */
 			$scope.updateDisplayName = function(userid,displayname) {
 				UserService.updateName(userid,displayname);
@@ -535,16 +538,8 @@ usersmanagement.controller('userlistController',
 				UserService.removeuser(user);
 			};
 			
-			/* To Toggle User Groups */
-			$scope.toggleGroup = function() {
-				UserService.groupToggle({ username : userid });
-			}
-			
-			/* To Add a User to a New Group */
-			$scope.addGroup = function() {
-				
-			}
-			
+			/* Everything on Multiselect - Group Toggle */
+			$scope.label = 'Add Group';
 		});
 	}
 ]);
@@ -602,10 +597,13 @@ usersmanagement.directive('multiselectUsers', [function() {
 		element = $(element[0]); // To use jQuery.
         element.multiSelect({
 			title: 'Add to Groups..',
-			createCallback: scope.addGroup,
-			onCheck: scope.toggleGroup,
-			minWidth: 150,
-			maxWidth: 200
+			createText: scope.label,
+			selectedFirst: true,
+			minWidth: 100
+			//checked: checked,
+			//oncheck: checkHandeler,
+			//onuncheck: checkHandeler,
+			//createCallback: addGroup,
         });
 	}
 }]);
