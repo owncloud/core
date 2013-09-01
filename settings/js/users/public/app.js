@@ -618,9 +618,9 @@ usersmanagement.directive('multiselectDropdown', [function() {
 
 usersmanagement.directive('avatar',
 	[ function() {
-		return function(scope, element, attributes) {
-			element = $(element[0]); // To use jQuery.
-			
+		return {
+			template: "<div class='avatardiv'></div>",
+			replace: true
 			// Get the Avatar Plugin here once it gets into master.
 		}
 	}]
