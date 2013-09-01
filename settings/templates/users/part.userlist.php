@@ -36,7 +36,7 @@
 				<th class="table-head display-name"><?php p($l->t('Display Name')); ?></th>
 				<th class="table-head user-pass"><?php p($l->t('Password')); ?></th>
 				<th class="table-head groups"><?php p($l->t('Groups')); ?></th>
-				<th class="table-head groups"><?php p($l->t('Sub Admins')); ?></th>
+				<!--<th class="table-head groups"><?php p($l->t('Sub Admins')); ?></th>-->
 				<th class="table-head local-storage"><?php p($l->t('Storage')); ?></th>
 				<th class="table-head user-actions"></th>
 			</tr>
@@ -101,7 +101,7 @@
 						multiple="multiple" multiselect-users>
 					</select>
 				</td>
-				<td class="subadmin-groups">
+				<!--<td class="subadmin-groups">
 					<select
 						class="multiselect"
 						data-placeholder="Select Options" 
@@ -109,7 +109,7 @@
 						ng-options="pergroup.name for pergroup in allgroups.result"
 						multiple="multiple" multiselect-subadmins>
 					</select>
-				</td>
+				</td>-->
 				<td class="local-storage">
 					<span
 						ng-show="viewls"
