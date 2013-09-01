@@ -94,7 +94,7 @@ usersmanagement.controller('setQuotaController',
 		$scope.quotavalues =[
 								{show : '5 GB'},
 								{show : '10 GB'},
-								{show : '10 GB'},
+								{show : '15 GB'},
 								//{show : '10 GB', quotaval : 'Unlimited'},
 								//{show : 'Custom', quotaval : 'Custom'}
 							];
