@@ -107,7 +107,7 @@
 						data-placeholder="Select Options" 
 						ng-model="user.selectedgroup"
 						ng-options="pergroup.name for pergroup in allgroups.result"
-						multiple="multiple" multiselect-users>
+						multiple="multiple" multiselect-subadmins>
 					</select>
 				</td>
 				<td class="local-storage">
@@ -124,7 +124,7 @@
 								 viewls = !viewls;"
 						ng-show="editls"
 						ng-focus="editls"
-						>
+					>
 						<option val=""><?php p($l->t('Default Value')); ?></option>
 					</select>
 				</td>

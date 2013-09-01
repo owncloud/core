@@ -80,6 +80,20 @@ usersmanagement.directive('multiselectUsers', [function() {
 	}
 }]);
 
+/* The Jquery Multiselect Directive for Toggling SubAdmins. */
+
+usersmanagement.directive('multiselectSubadmins', [function() {
+	return function(scope, element, attributes) {
+		element = $(element[0]); // To use jQuery.
+        element.multiSelect({
+			title: 'Select Subadmin of..',
+			minWidth: 150,
+			maxWidth: 200
+        });
+	}
+}]);
+
+
 /* The Jquery Multiselect Directive for Adding Groups. */
 
 usersmanagement.directive('multiselectDropdown', [function() {
