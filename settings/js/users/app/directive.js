@@ -72,10 +72,13 @@ usersmanagement.directive('multiselectUsers', [function() {
 		element = $(element[0]); // To use jQuery.
         element.multiSelect({
 			title: 'Add to Groups..',
-			createCallback: scope.addGroup,
-			onCheck: scope.toggleGroup,
-			minWidth: 150,
-			maxWidth: 200
+			createText: scope.label,
+			selectedFirst: true,
+			minWidth: 100
+			//checked: checked,
+			//oncheck: checkHandeler,
+			//onuncheck: checkHandeler,
+			//createCallback: addGroup,
         });
 	}
 }]);
