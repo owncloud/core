@@ -4,13 +4,14 @@
 # 
 # Translators:
 # mhh <marian.hvolka@stuba.sk>, 2013
+# martin, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-08-21 08:11-0400\n"
-"PO-Revision-Date: 2013-08-20 19:40+0000\n"
-"Last-Translator: mhh <marian.hvolka@stuba.sk>\n"
+"POT-Creation-Date: 2013-08-30 09:33-0400\n"
+"PO-Revision-Date: 2013-08-28 18:11+0000\n"
+"Last-Translator: martin\n"
 "Language-Team: Slovak (Slovakia) (http://www.transifex.com/projects/p/owncloud/language/sk_SK/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -42,10 +43,6 @@ msgstr "Skupina už existuje"
 #: ajax/creategroup.php:19
 msgid "Unable to add group"
 msgstr "Nie je možné pridať skupinu"
-
-#: ajax/enableapp.php:11
-msgid "Could not enable app. "
-msgstr "Nie je možné zapnúť aplikáciu."
 
 #: ajax/lostpassword.php:12
 msgid "Email saved"
@@ -89,35 +86,47 @@ msgstr "Nie je možné odstrániť používateľa zo skupiny %s"
 msgid "Couldn't update app."
 msgstr "Nemožno aktualizovať aplikáciu."
 
-#: js/apps.js:35
+#: js/apps.js:43
 msgid "Update to {appversion}"
 msgstr "Aktualizovať na {appversion}"
 
-#: js/apps.js:41 js/apps.js:81
+#: js/apps.js:49 js/apps.js:82 js/apps.js:108
 msgid "Disable"
 msgstr "Zakázať"
 
-#: js/apps.js:41 js/apps.js:69 js/apps.js:88
+#: js/apps.js:49 js/apps.js:89 js/apps.js:102 js/apps.js:117
 msgid "Enable"
 msgstr "Zapnúť"
 
-#: js/apps.js:60
+#: js/apps.js:71
 msgid "Please wait...."
 msgstr "Čakajte prosím..."
 
-#: js/apps.js:64 js/apps.js:76 js/apps.js:85 js/apps.js:98
-msgid "Error"
-msgstr "Chyba"
+#: js/apps.js:79 js/apps.js:80 js/apps.js:100
+msgid "Error while disabling app"
+msgstr "Chyba pri zablokovaní aplikácie"
 
-#: js/apps.js:95
+#: js/apps.js:99 js/apps.js:112 js/apps.js:113
+msgid "Error while enabling app"
+msgstr "Chyba pri povoľovaní aplikácie"
+
+#: js/apps.js:123
 msgid "Updating...."
 msgstr "Aktualizujem..."
 
-#: js/apps.js:98
+#: js/apps.js:126
 msgid "Error while updating app"
 msgstr "chyba pri aktualizácii aplikácie"
 
-#: js/apps.js:101
+#: js/apps.js:126
+msgid "Error"
+msgstr "Chyba"
+
+#: js/apps.js:127 templates/apps.php:43
+msgid "Update"
+msgstr "Aktualizovať"
+
+#: js/apps.js:130
 msgid "Updated"
 msgstr "Aktualizované"
 
@@ -370,10 +379,6 @@ msgstr "Pozrite si stránku aplikácií na apps.owncloud.com"
 msgid "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>"
 msgstr "<span class=\"licence\"></span>-licencované <span class=\"author\"></span>"
 
-#: templates/apps.php:43
-msgid "Update"
-msgstr "Aktualizovať"
-
 #: templates/help.php:4
 msgid "User Documentation"
 msgstr "Príručka používateľa"
@@ -476,7 +481,7 @@ msgstr "Šifrovanie"
 
 #: templates/personal.php:119
 msgid "The encryption app is no longer enabled, decrypt all your file"
-msgstr ""
+msgstr "Šifrovacia aplikácia nie je povolená, dešifrujte všetky vaše súbory"
 
 #: templates/personal.php:125
 msgid "Log-in password"

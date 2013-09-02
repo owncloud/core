@@ -102,6 +102,18 @@ $(document).ready(function() {
 			var result=$.parseJSON(response);
 
 			if(typeof result[0] !== 'undefined' && result[0].status === 'success') {
+				var filename = result[0].originalname;
+
+				// delete jqXHR reference
+				if (typeof data.context !== 'undefined' && data.context.data('type') === 'dir') {
+					var dirName = data.context.data('file');
+					delete uploadingFiles[dirName][filename];
+					if ($.assocArraySize(uploadingFiles[dirName]) == 0) {
+						delete uploadingFiles[dirName];
+					}
+				} else {
+					delete uploadingFiles[filename];
+				}
 				var file = result[0];
 			} else {
 				data.textStatus = 'servererror';
@@ -109,20 +121,6 @@ $(document).ready(function() {
 				var fu = $(this).data('blueimp-fileupload') || $(this).data('fileupload');
 				fu._trigger('fail', e, data);
 			}
-
-			var filename = result[0].originalname;
-
-			// delete jqXHR reference
-			if (typeof data.context !== 'undefined' && data.context.data('type') === 'dir') {
-				var dirName = data.context.data('file');
-				delete uploadingFiles[dirName][filename];
-				if ($.assocArraySize(uploadingFiles[dirName]) == 0) {
-					delete uploadingFiles[dirName];
-				}
-			} else {
-				delete uploadingFiles[filename];
-			}
-
 		},
 		/**
 		 * called after last upload
@@ -205,6 +203,13 @@ $(document).ready(function() {
 			}
 		});
 	});
+	$('#new').click(function(event){
+		event.stopPropagation();
+	});
+	$('#new>a').click(function(){
+		$('#new>ul').toggle();
+		$('#new').toggleClass('active');
+	});
 	$('#new li').click(function(){
 		if($(this).children('p').length==0){
 			return;
@@ -222,7 +227,7 @@ $(document).ready(function() {
 		$(this).data('text',text);
 		$(this).children('p').remove();
 		var form=$('<form></form>');
-		var input=$('<input>');
+		var input=$('<input type="text">');
 		form.append(input);
 		$(this).append(form);
 		input.focus();
@@ -263,8 +268,9 @@ $(document).ready(function() {
 								tr.attr('data-mime',result.data.mime);
 								tr.attr('data-id', result.data.id);
 								tr.find('.filesize').text(humanFileSize(result.data.size));
-								getMimeIcon(result.data.mime,function(path){
-									tr.find('td.filename').attr('style','background-image:url('+path+')');
+								var path = getPathForPreview(name);
+								lazyLoadPreview(path, result.data.mime, function(previewpath){
+									tr.find('td.filename').attr('style','background-image:url('+previewpath+')');
 								});
 							} else {
 								OC.dialogs.alert(result.data.message, t('core', 'Error'));
@@ -325,8 +331,9 @@ $(document).ready(function() {
 						var tr=$('tr').filterAttr('data-file',localName);
 						tr.data('mime',mime).data('id',id);
 						tr.attr('data-id', id);
-						getMimeIcon(mime,function(path){
-							tr.find('td.filename').attr('style','background-image:url('+path+')');
+						var path = $('#dir').val()+'/'+localName;
+						lazyLoadPreview(path, mime, function(previewpath){
+							tr.find('td.filename').attr('style','background-image:url('+previewpath+')');
 						});
 					});
 					eventSource.listen('error',function(error){
