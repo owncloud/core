@@ -228,7 +228,6 @@ table td.filename form { font-size:.85em; margin-left:3em; margin-right:3em; }
 	position: absolute;
 	top: 16px;
 	right: 0;
-	font-size: 11px;
 }
 #fileList tr:hover .fileactions { /* background to distinguish when overlaying with file names */
 	background-color: rgba(240,240,240,0.898);
