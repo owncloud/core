@@ -353,8 +353,8 @@ class OC {
 
 	public static function init() {
 		// register autoloader
-		require_once __DIR__ . '/autoloader.php';
-		self::$loader = new \OC\Autoloader();
+		require_once __DIR__ . '/cachingautoloader.php';
+		self::$loader = new \OC\CachingAutoloader();
 		self::$loader->registerPrefix('Doctrine\\Common', 'doctrine/common/lib');
 		self::$loader->registerPrefix('Doctrine\\DBAL', 'doctrine/dbal/lib');
 		self::$loader->registerPrefix('Symfony\\Component\\Routing', 'symfony/routing');
