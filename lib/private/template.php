@@ -172,11 +172,14 @@ class OC_Template extends \OC\Template\Base {
 
 	/**
 	 * @brief Add a custom element to the header
+	 * If $text is null then the element will be written as empty element.
+	 * So use "" to get a closing tag.
 	 * @param string $tag tag name of the element
 	 * @param array $attributes array of attributes for the element
 	 * @param string $text the text content for the element
+	 * @return void
 	 */
-	public function addHeader( $tag, $attributes, $text='') {
+	public function addHeader( $tag, $attributes, $text=null) {
 		$this->headers[]=array('tag'=>$tag,'attributes'=>$attributes, 'text'=>$text);
 	}
 
