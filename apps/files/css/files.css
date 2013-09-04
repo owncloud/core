@@ -73,18 +73,18 @@
 }
 #filestable {
 	position: relative; 
-	top:37px; 
-	width:100%; 
+	top: 37px; 
+	width: 100%; 
 }
 #filestable tbody tr {
 	background-color: #fff;
-	height:2.5em;
+	height: 2.5em;
 }
 #filestable tbody tr:hover, #filestable tbody tr:active {
 	background-color: rgb(240,240,240); 
 }
 #filestable tbody tr.selected {
-	background-color:rgb(230,230,230);
+	background-color: rgb(230,230,230);
 }
 tbody a { color:#000; }
 span.extension, span.uploading, td.date { color:#999; }
