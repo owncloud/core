@@ -28,38 +28,65 @@ config(['$httpProvider','$routeProvider', '$windowProvider', '$provide',
 		$httpProvider.defaults.headers.common['requesttoken'] = oc_requesttoken;
 
 		$routeProvider
-		.when('/group/:groupId', {
-			templateUrl : 'user-table.html',
-			controller : 'grouplistController'
-		})
-		.otherwise({
-			redirectTo : '/group/'
-		});
-
-		var $window = $windowProvider.$get();
-		var url = $window.location.href;
-		var baseUrl = url.split('index.php')[0] + 'index.php/settings';
-
-		$provide.value('Config', {
-			baseUrl: baseUrl
-		});
-	}
-]).run(['$rootScope', '$location', 'GroupService',
-	function($rootScope, $location, GroupService) {
+			.when('/group/:groupId', {
+				templateUrl : 'user-table.html',
+				controller : 'userlistController',
+				resolve : {
+					users :['$q', '$route', 'GroupModel', 'UserService',
+					function ($q,$route,GroupModel,UserService) {
+						var deferred = $q.defer();
+						var groupId = $route.current.params.groupId;
+						var group = GroupModel.getById(groupId);
+						if(group) {
+							var users = UserService.getUsersInGroup(groupId);
+							deferred.resolve(users);
+						}
+						else {
+							deferred.reject();
+						}
+						return deferred.promise;
+					}]
+				}
+			})
+			.otherwise('/group/', {
+				templateUrl : 'user-table.html',
+				controller : 'userlistController',
+				resolve : {
+					users :['$q', '$route', 'GroupModel', 'UserModel',
+						function ($q,$route,GroupModel,UserModel) {
+							var deferred = $q.defer();
+							var group = GroupModel.getById(groupId);
+		                    if(group) {
+		                        var users = UserModel.getAll();
+		                        deferred.resolve(users);
+		                    }
+							else {
+		                        deferred.reject();
+		                    }
+						return deferred.promise;
+					}]
+				}
+			});
+			var $window = $windowProvider.$get();
+			var url = $window.location.href;
+			var baseUrl = url.split('index.php')[0] + 'index.php/settings';
+			$provide.value('Config', {
+				baseUrl: baseUrl
+			});
+		}
+]).run(['$rootScope', '$location', 'GroupModel',
+	function($rootScope, $location, GroupModel) {
 	$rootScope.$on('$routeChangeError', function() {
 		// Something wrong here
-		var groups = GroupService.getAllGroups();
-		
-		// route change error should redirect to the latest note if possible
+		var groups = GroupModel.getAll();
 		if (groups.length > 0) {
 			var sorted = groups.sort(function(a, b) {
 				if(a.modified > b.modified) return 1;
 				if(a.modified < b.modified) return -1;
 				return 0;
 			});
-			
 			var group = groups[groups.length-1];
-			$location.path('/group/' + group.id);
+			$location.path('/group/' + group.groupId);
 		} else {
 			$location.path('/group/');
 		}
