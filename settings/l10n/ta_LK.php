@@ -1,9 +1,9 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "செயலி சேமிப்பிலிருந்து பட்டியலை ஏற்றமுடியாதுள்ளது",
 "Authentication error" => "அத்தாட்சிப்படுத்தலில் வழு",
 "Group already exists" => "குழு ஏற்கனவே உள்ளது",
 "Unable to add group" => "குழுவை சேர்க்க முடியாது",
-"Could not enable app. " => "செயலியை இயலுமைப்படுத்த முடியாது",
 "Email saved" => "மின்னஞ்சல் சேமிக்கப்பட்டது",
 "Invalid email" => "செல்லுபடியற்ற மின்னஞ்சல்",
 "Unable to delete group" => "குழுவை நீக்க முடியாது",
@@ -15,6 +15,7 @@
 "Disable" => "இயலுமைப்ப",
 "Enable" => "இயலுமைப்படுத்துக",
 "Error" => "வழு",
+"Update" => "இற்றைப்படுத்தல்",
 "Saving..." => "சேமிக்கப்படுகிறது...",
 "undo" => "முன் செயல் நீக்கம் ",
 "Groups" => "குழுக்கள்",
@@ -22,7 +23,6 @@
 "Delete" => "நீக்குக",
 "__language_name__" => "_மொழி_பெயர்_",
 "Security Warning" => "பாதுகாப்பு எச்சரிக்கை",
-"Your data directory and your files are probably accessible from the internet. The .htaccess file that ownCloud provides is not working. We strongly suggest that you configure your webserver in a way that the data directory is no longer accessible or you move the data directory outside the webserver document root." => "உங்களுடைய தரவு அடைவு மற்றும் உங்களுடைய கோப்புக்களை பெரும்பாலும் இணையத்தினூடாக அணுகலாம். ownCloud இனால் வழங்கப்படுகின்ற .htaccess கோப்பு வேலை செய்யவில்லை. தரவு அடைவை நீண்ட நேரத்திற்கு அணுகக்கூடியதாக உங்களுடைய வலைய சேவையகத்தை தகவமைக்குமாறு நாங்கள் உறுதியாக கூறுகிறோம் அல்லது தரவு அடைவை வலைய சேவையக மூல ஆவணத்திலிருந்து வெளியே அகற்றுக.  ",
 "More" => "மேலதிக",
 "Less" => "குறைவான",
 "Developed by the <a href=\"http://ownCloud.org/contact\" target=\"_blank\">ownCloud community</a>, the <a href=\"https://github.com/owncloud\" target=\"_blank\">source code</a> is licensed under the <a href=\"http://www.gnu.org/licenses/agpl-3.0.html\" target=\"_blank\"><abbr title=\"Affero General Public License\">AGPL</abbr></a>." => "Developed by the <a href=\"http://ownCloud.org/contact\" target=\"_blank\">ownCloud community</a>, the <a href=\"https://github.com/owncloud\" target=\"_blank\">source code</a> is licensed under the <a href=\"http://www.gnu.org/licenses/agpl-3.0.html\" target=\"_blank\"><abbr title=\"Affero General Public License\">AGPL</abbr></a>.",
@@ -31,7 +31,6 @@
 "Select an App" => "செயலி ஒன்றை தெரிவுசெய்க",
 "See application page at apps.owncloud.com" => "apps.owncloud.com இல் செயலி பக்கத்தை பார்க்க",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"அனுமதிப்பத்திரம்\"></span>-அனுமதி பெற்ற <span class=\"ஆசிரியர்\"></span>",
-"Update" => "இற்றைப்படுத்தல்",
 "You have used <strong>%s</strong> of the available <strong>%s</strong>" => "நீங்கள் <strong>%s</strong> இலுள்ள <strong>%s</strong>பயன்படுத்தியுள்ளீர்கள்",
 "Password" => "கடவுச்சொல்",
 "Your password was changed" => "உங்களுடைய கடவுச்சொல் மாற்றப்பட்டுள்ளது",
@@ -44,6 +43,9 @@
 "Fill in an email address to enable password recovery" => "கடவுச்சொல் மீள் பெறுவதை இயலுமைப்படுத்துவதற்கு மின்னஞ்சல் முகவரியை இயலுமைப்படுத்துக",
 "Language" => "மொழி",
 "Help translate" => "மொழிபெயர்க்க உதவி",
+"Encryption" => "மறைக்குறியீடு",
 "Create" => "உருவாக்குக",
-"Other" => "மற்றவை"
+"Other" => "மற்றவை",
+"Username" => "பயனாளர் பெயர்"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

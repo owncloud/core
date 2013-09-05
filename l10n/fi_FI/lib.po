@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Jiri Grönroos <jiri.gronroos@iki.fi>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-04-28 01:57+0200\n"
-"PO-Revision-Date: 2013-04-27 23:57+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"POT-Creation-Date: 2013-08-27 11:18-0400\n"
+"PO-Revision-Date: 2013-08-26 06:20+0000\n"
+"Last-Translator: Jiri Grönroos <jiri.gronroos@iki.fi>\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/projects/p/owncloud/language/fi_FI/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,49 +18,128 @@ msgstr ""
 "Language: fi_FI\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: app.php:349
+#: app.php:239
+#, php-format
+msgid ""
+"App \"%s\" can't be installed because it is not compatible with this version"
+" of ownCloud."
+msgstr "Sovellusta \"%s\" ei voi asentaa, koska se ei ole yhteensopiva käytössä olevan ownCloud-version kanssa."
+
+#: app.php:250
+msgid "No app name specified"
+msgstr ""
+
+#: app.php:361
 msgid "Help"
 msgstr "Ohje"
 
-#: app.php:362
+#: app.php:374
 msgid "Personal"
 msgstr "Henkilökohtainen"
 
-#: app.php:373
+#: app.php:385
 msgid "Settings"
 msgstr "Asetukset"
 
-#: app.php:385
+#: app.php:397
 msgid "Users"
 msgstr "Käyttäjät"
 
-#: app.php:398
-msgid "Apps"
-msgstr "Sovellukset"
-
-#: app.php:406
+#: app.php:410
 msgid "Admin"
 msgstr "Ylläpitäjä"
 
-#: files.php:209
+#: app.php:837
+#, php-format
+msgid "Failed to upgrade \"%s\"."
+msgstr ""
+
+#: defaults.php:35
+msgid "web services under your control"
+msgstr "verkkopalvelut hallinnassasi"
+
+#: files.php:66 files.php:98
+#, php-format
+msgid "cannot open \"%s\""
+msgstr ""
+
+#: files.php:226
 msgid "ZIP download is turned off."
 msgstr "ZIP-lataus on poistettu käytöstä."
 
-#: files.php:210
+#: files.php:227
 msgid "Files need to be downloaded one by one."
 msgstr "Tiedostot on ladattava yksittäin."
 
-#: files.php:211 files.php:244
+#: files.php:228 files.php:256
 msgid "Back to Files"
 msgstr "Takaisin tiedostoihin"
 
-#: files.php:241
+#: files.php:253
 msgid "Selected files too large to generate zip file."
 msgstr "Valitut tiedostot ovat liian suurikokoisia mahtuakseen zip-tiedostoon."
 
-#: helper.php:228
-msgid "couldn't be determined"
-msgstr "ei voitu määrittää"
+#: files.php:254
+msgid ""
+"Download the files in smaller chunks, seperately or kindly ask your "
+"administrator."
+msgstr ""
+
+#: installer.php:63
+msgid "No source specified when installing app"
+msgstr "Lähdettä ei määritelty sovellusta asennettaessa"
+
+#: installer.php:70
+msgid "No href specified when installing app from http"
+msgstr ""
+
+#: installer.php:75
+msgid "No path specified when installing app from local file"
+msgstr "Polkua ei määritelty sovellusta asennettaessa paikallisesta tiedostosta"
+
+#: installer.php:89
+#, php-format
+msgid "Archives of type %s are not supported"
+msgstr "Tyypin %s arkistot eivät ole tuettuja"
+
+#: installer.php:103
+msgid "Failed to open archive when installing app"
+msgstr ""
+
+#: installer.php:123
+msgid "App does not provide an info.xml file"
+msgstr "Sovellus ei sisällä info.xml-tiedostoa"
+
+#: installer.php:129
+msgid "App can't be installed because of not allowed code in the App"
+msgstr ""
+
+#: installer.php:138
+msgid ""
+"App can't be installed because it is not compatible with this version of "
+"ownCloud"
+msgstr ""
+
+#: installer.php:144
+msgid ""
+"App can't be installed because it contains the <shipped>true</shipped> tag "
+"which is not allowed for non shipped apps"
+msgstr ""
+
+#: installer.php:150
+msgid ""
+"App can't be installed because the version in info.xml/version is not the "
+"same as the version reported from the app store"
+msgstr ""
+
+#: installer.php:160
+msgid "App directory already exists"
+msgstr "Sovelluskansio on jo olemassa"
+
+#: installer.php:173
+#, php-format
+msgid "Can't create app folder. Please fix permissions. %s"
+msgstr "Sovelluskansion luominen ei onnistu. Korjaa käyttöoikeudet. %s"
 
 #: json.php:28
 msgid "Application is not enabled"
@@ -85,155 +165,157 @@ msgstr "Teksti"
 msgid "Images"
 msgstr "Kuvat"
 
-#: setup.php:34
-msgid "Set an admin username."
-msgstr "Aseta ylläpitäjän käyttäjätunnus."
-
-#: setup.php:37
-msgid "Set an admin password."
-msgstr "Aseta ylläpitäjän salasana."
-
-#: setup.php:55
+#: setup/abstractdatabase.php:22
 #, php-format
 msgid "%s enter the database username."
 msgstr "%s anna tietokannan käyttäjätunnus."
 
-#: setup.php:58
+#: setup/abstractdatabase.php:25
 #, php-format
 msgid "%s enter the database name."
 msgstr "%s anna tietokannan nimi."
 
-#: setup.php:61
+#: setup/abstractdatabase.php:28
 #, php-format
 msgid "%s you may not use dots in the database name"
 msgstr "%s et voi käyttää pisteitä tietokannan nimessä"
 
-#: setup.php:64
-#, php-format
-msgid "%s set the database host."
-msgstr ""
-
-#: setup.php:132 setup.php:325 setup.php:370
-msgid "PostgreSQL username and/or password not valid"
-msgstr "PostgreSQL:n käyttäjätunnus ja/tai salasana on väärin"
-
-#: setup.php:133 setup.php:156 setup.php:234
-msgid "You need to enter either an existing account or the administrator."
-msgstr ""
-
-#: setup.php:155 setup.php:458 setup.php:525
-msgid "Oracle username and/or password not valid"
-msgstr "Oraclen käyttäjätunnus ja/tai salasana on väärin"
-
-#: setup.php:233
-msgid "MySQL username and/or password not valid"
-msgstr "MySQL:n käyttäjätunnus ja/tai salasana on väärin"
-
-#: setup.php:287 setup.php:391 setup.php:400 setup.php:418 setup.php:428
-#: setup.php:437 setup.php:466 setup.php:532 setup.php:558 setup.php:565
-#: setup.php:576 setup.php:583 setup.php:592 setup.php:600 setup.php:609
-#: setup.php:615
-#, php-format
-msgid "DB Error: \"%s\""
-msgstr "Tietokantavirhe: \"%s\""
-
-#: setup.php:288 setup.php:392 setup.php:401 setup.php:419 setup.php:429
-#: setup.php:438 setup.php:467 setup.php:533 setup.php:559 setup.php:566
-#: setup.php:577 setup.php:593 setup.php:601 setup.php:610
-#, php-format
-msgid "Offending command was: \"%s\""
-msgstr ""
-
-#: setup.php:304
-#, php-format
-msgid "MySQL user '%s'@'localhost' exists already."
-msgstr "MySQL-käyttäjä '%s'@'localhost' on jo olemassa."
-
-#: setup.php:305
-msgid "Drop this user from MySQL"
-msgstr "Pudota tämä käyttäjä MySQL:stä"
-
-#: setup.php:310
-#, php-format
-msgid "MySQL user '%s'@'%%' already exists"
-msgstr "MySQL-käyttäjä '%s'@'%%' on jo olemassa"
-
-#: setup.php:311
-msgid "Drop this user from MySQL."
-msgstr "Pudota tämä käyttäjä MySQL:stä."
-
-#: setup.php:584 setup.php:616
-#, php-format
-msgid "Offending command was: \"%s\", name: %s, password: %s"
-msgstr ""
-
-#: setup.php:636
+#: setup/mssql.php:20
 #, php-format
 msgid "MS SQL username and/or password not valid: %s"
 msgstr "MS SQL -käyttäjätunnus ja/tai -salasana on väärin: %s"
 
-#: setup.php:858
+#: setup/mssql.php:21 setup/mysql.php:13 setup/oci.php:114
+#: setup/postgresql.php:24 setup/postgresql.php:70
+msgid "You need to enter either an existing account or the administrator."
+msgstr ""
+
+#: setup/mysql.php:12
+msgid "MySQL username and/or password not valid"
+msgstr "MySQL:n käyttäjätunnus ja/tai salasana on väärin"
+
+#: setup/mysql.php:67 setup/oci.php:54 setup/oci.php:121 setup/oci.php:147
+#: setup/oci.php:154 setup/oci.php:165 setup/oci.php:172 setup/oci.php:181
+#: setup/oci.php:189 setup/oci.php:198 setup/oci.php:204
+#: setup/postgresql.php:89 setup/postgresql.php:98 setup/postgresql.php:115
+#: setup/postgresql.php:125 setup/postgresql.php:134
+#, php-format
+msgid "DB Error: \"%s\""
+msgstr "Tietokantavirhe: \"%s\""
+
+#: setup/mysql.php:68 setup/oci.php:55 setup/oci.php:122 setup/oci.php:148
+#: setup/oci.php:155 setup/oci.php:166 setup/oci.php:182 setup/oci.php:190
+#: setup/oci.php:199 setup/postgresql.php:90 setup/postgresql.php:99
+#: setup/postgresql.php:116 setup/postgresql.php:126 setup/postgresql.php:135
+#, php-format
+msgid "Offending command was: \"%s\""
+msgstr ""
+
+#: setup/mysql.php:85
+#, php-format
+msgid "MySQL user '%s'@'localhost' exists already."
+msgstr "MySQL-käyttäjä '%s'@'localhost' on jo olemassa."
+
+#: setup/mysql.php:86
+msgid "Drop this user from MySQL"
+msgstr "Pudota tämä käyttäjä MySQL:stä"
+
+#: setup/mysql.php:91
+#, php-format
+msgid "MySQL user '%s'@'%%' already exists"
+msgstr "MySQL-käyttäjä '%s'@'%%' on jo olemassa"
+
+#: setup/mysql.php:92
+msgid "Drop this user from MySQL."
+msgstr "Pudota tämä käyttäjä MySQL:stä."
+
+#: setup/oci.php:34
+msgid "Oracle connection could not be established"
+msgstr "Oracle-yhteyttä ei voitu muodostaa"
+
+#: setup/oci.php:41 setup/oci.php:113
+msgid "Oracle username and/or password not valid"
+msgstr "Oraclen käyttäjätunnus ja/tai salasana on väärin"
+
+#: setup/oci.php:173 setup/oci.php:205
+#, php-format
+msgid "Offending command was: \"%s\", name: %s, password: %s"
+msgstr ""
+
+#: setup/postgresql.php:23 setup/postgresql.php:69
+msgid "PostgreSQL username and/or password not valid"
+msgstr "PostgreSQL:n käyttäjätunnus ja/tai salasana on väärin"
+
+#: setup.php:28
+msgid "Set an admin username."
+msgstr "Aseta ylläpitäjän käyttäjätunnus."
+
+#: setup.php:31
+msgid "Set an admin password."
+msgstr "Aseta ylläpitäjän salasana."
+
+#: setup.php:184
 msgid ""
 "Your web server is not yet properly setup to allow files synchronization "
 "because the WebDAV interface seems to be broken."
 msgstr ""
 
-#: setup.php:859
+#: setup.php:185
 #, php-format
 msgid "Please double check the <a href='%s'>installation guides</a>."
 msgstr "Lue tarkasti <a href='%s'>asennusohjeet</a>."
 
-#: template.php:113
+#: template/functions.php:80
 msgid "seconds ago"
 msgstr "sekuntia sitten"
 
-#: template.php:114
-msgid "1 minute ago"
-msgstr "1 minuutti sitten"
+#: template/functions.php:81
+msgid "%n minute ago"
+msgid_plural "%n minutes ago"
+msgstr[0] "%n minuutti sitten"
+msgstr[1] "%n minuuttia sitten"
 
-#: template.php:115
-#, php-format
-msgid "%d minutes ago"
-msgstr "%d minuuttia sitten"
+#: template/functions.php:82
+msgid "%n hour ago"
+msgid_plural "%n hours ago"
+msgstr[0] "%n tunti sitten"
+msgstr[1] "%n tuntia sitten"
 
-#: template.php:116
-msgid "1 hour ago"
-msgstr "1 tunti sitten"
-
-#: template.php:117
-#, php-format
-msgid "%d hours ago"
-msgstr "%d tuntia sitten"
-
-#: template.php:118
+#: template/functions.php:83
 msgid "today"
 msgstr "tänään"
 
-#: template.php:119
+#: template/functions.php:84
 msgid "yesterday"
 msgstr "eilen"
 
-#: template.php:120
-#, php-format
-msgid "%d days ago"
-msgstr "%d päivää sitten"
+#: template/functions.php:85
+msgid "%n day go"
+msgid_plural "%n days ago"
+msgstr[0] "%n päivä sitten"
+msgstr[1] "%n päivää sitten"
 
-#: template.php:121
+#: template/functions.php:86
 msgid "last month"
 msgstr "viime kuussa"
 
-#: template.php:122
-#, php-format
-msgid "%d months ago"
-msgstr "%d kuukautta sitten"
+#: template/functions.php:87
+msgid "%n month ago"
+msgid_plural "%n months ago"
+msgstr[0] "%n kuukausi sitten"
+msgstr[1] "%n kuukautta sitten"
 
-#: template.php:123
+#: template/functions.php:88
 msgid "last year"
 msgstr "viime vuonna"
 
-#: template.php:124
+#: template/functions.php:89
 msgid "years ago"
 msgstr "vuotta sitten"
+
+#: template.php:297
+msgid "Caused by:"
+msgstr "Aiheuttaja:"
 
 #: vcategories.php:188 vcategories.php:249
 #, php-format

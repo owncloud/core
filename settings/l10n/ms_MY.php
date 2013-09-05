@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Authentication error" => "Ralat pengesahan",
 "Email saved" => "Emel disimpan",
 "Invalid email" => "Emel tidak sah",
@@ -7,6 +8,7 @@
 "Disable" => "Nyahaktif",
 "Enable" => "Aktif",
 "Error" => "Ralat",
+"Update" => "Kemaskini",
 "Saving..." => "Simpan...",
 "deleted" => "dihapus",
 "Groups" => "Kumpulan",
@@ -19,7 +21,6 @@
 "Add your App" => "Tambah apps anda",
 "Select an App" => "Pilih aplikasi",
 "See application page at apps.owncloud.com" => "Lihat halaman applikasi di apps.owncloud.com",
-"Update" => "Kemaskini",
 "Password" => "Kata laluan",
 "Unable to change your password" => "Gagal mengubah kata laluan anda ",
 "Current password" => "Kata laluan semasa",
@@ -31,5 +32,7 @@
 "Language" => "Bahasa",
 "Help translate" => "Bantu terjemah",
 "Create" => "Buat",
-"Other" => "Lain"
+"Other" => "Lain",
+"Username" => "Nama pengguna"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";

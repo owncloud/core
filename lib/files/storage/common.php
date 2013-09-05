@@ -138,27 +138,21 @@ abstract class Common implements \OC\Files\Storage\Storage {
 	 */
 	public function deleteAll($directory, $empty = false) {
 		$directory = trim($directory, '/');
-
-		if (!$this->file_exists(\OCP\USER::getUser() . '/' . $directory)
-			|| !$this->is_dir(\OCP\USER::getUser() . '/' . $directory)
-		) {
-			return false;
-		} elseif (!$this->isReadable(\OCP\USER::getUser() . '/' . $directory)) {
+		if (!$this->is_dir($directory) || !$this->isReadable($directory)) {
 			return false;
 		} else {
-			$directoryHandle = $this->opendir(\OCP\USER::getUser() . '/' . $directory);
-			while ($contents = readdir($directoryHandle)) {
-				if ($contents != '.' && $contents != '..') {
-					$path = $directory . "/" . $contents;
+			$directoryHandle = $this->opendir($directory);
+			while (($contents = readdir($directoryHandle)) !== false) {
+				if (!\OC\Files\Filesystem::isIgnoredDir($contents)) {
+					$path = $directory . '/' . $contents;
 					if ($this->is_dir($path)) {
 						$this->deleteAll($path);
 					} else {
-						$this->unlink(\OCP\USER::getUser() . '/' . $path); // TODO: make unlink use same system path as is_dir
+						$this->unlink($path);
 					}
 				}
 			}
-			//$this->closedir( $directoryHandle ); // TODO: implement closedir in OC_FSV
-			if ($empty == false) {
+			if ($empty === false) {
 				if (!$this->rmdir($directory)) {
 					return false;
 				}
@@ -231,7 +225,7 @@ abstract class Common implements \OC\Files\Storage\Storage {
 
 	private function addLocalFolder($path, $target) {
 		if ($dh = $this->opendir($path)) {
-			while ($file = readdir($dh)) {
+			while (($file = readdir($dh)) !== false) {
 				if ($file !== '.' and $file !== '..') {
 					if ($this->is_dir($path . '/' . $file)) {
 						mkdir($target . '/' . $file);
@@ -249,7 +243,7 @@ abstract class Common implements \OC\Files\Storage\Storage {
 		$files = array();
 		$dh = $this->opendir($dir);
 		if ($dh) {
-			while ($item = readdir($dh)) {
+			while (($item = readdir($dh)) !== false) {
 				if ($item == '.' || $item == '..') continue;
 				if (strstr(strtolower($item), strtolower($query)) !== false) {
 					$files[] = $dir . '/' . $item;
@@ -372,6 +366,6 @@ abstract class Common implements \OC\Files\Storage\Storage {
 	 * @return int
 	 */
 	public function free_space($path) {
-		return \OC\Files\FREE_SPACE_UNKNOWN;
+		return \OC\Files\SPACE_UNKNOWN;
 	}
 }

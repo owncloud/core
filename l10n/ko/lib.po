@@ -3,13 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# chohy <chohy@yahoo.com>, 2013
+# smallsnail <bjh13579@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-04-28 01:57+0200\n"
-"PO-Revision-Date: 2013-04-27 23:57+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"POT-Creation-Date: 2013-08-27 11:18-0400\n"
+"PO-Revision-Date: 2013-08-26 09:30+0000\n"
+"Last-Translator: chohy <chohy@yahoo.com>\n"
 "Language-Team: Korean (http://www.transifex.com/projects/p/owncloud/language/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,49 +19,128 @@ msgstr ""
 "Language: ko\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: app.php:349
+#: app.php:239
+#, php-format
+msgid ""
+"App \"%s\" can't be installed because it is not compatible with this version"
+" of ownCloud."
+msgstr "현재 ownCloud 버전과 호환되지 않기 때문에 \"%s\" 앱을 설치할 수 없습니다."
+
+#: app.php:250
+msgid "No app name specified"
+msgstr "앱 이름이 지정되지 않았습니다."
+
+#: app.php:361
 msgid "Help"
 msgstr "도움말"
 
-#: app.php:362
+#: app.php:374
 msgid "Personal"
 msgstr "개인"
 
-#: app.php:373
+#: app.php:385
 msgid "Settings"
 msgstr "설정"
 
-#: app.php:385
+#: app.php:397
 msgid "Users"
 msgstr "사용자"
 
-#: app.php:398
-msgid "Apps"
-msgstr "앱"
-
-#: app.php:406
+#: app.php:410
 msgid "Admin"
 msgstr "관리자"
 
-#: files.php:209
+#: app.php:837
+#, php-format
+msgid "Failed to upgrade \"%s\"."
+msgstr "\"%s\" 업그레이드에 실패했습니다."
+
+#: defaults.php:35
+msgid "web services under your control"
+msgstr "내가 관리하는 웹 서비스"
+
+#: files.php:66 files.php:98
+#, php-format
+msgid "cannot open \"%s\""
+msgstr "\"%s\"을(를) 열 수 없습니다."
+
+#: files.php:226
 msgid "ZIP download is turned off."
 msgstr "ZIP 다운로드가 비활성화되었습니다."
 
-#: files.php:210
+#: files.php:227
 msgid "Files need to be downloaded one by one."
 msgstr "파일을 개별적으로 다운로드해야 합니다."
 
-#: files.php:211 files.php:244
+#: files.php:228 files.php:256
 msgid "Back to Files"
 msgstr "파일로 돌아가기"
 
-#: files.php:241
+#: files.php:253
 msgid "Selected files too large to generate zip file."
 msgstr "선택한 파일들은 ZIP 파일을 생성하기에 너무 큽니다."
 
-#: helper.php:228
-msgid "couldn't be determined"
-msgstr "결정할 수 없음"
+#: files.php:254
+msgid ""
+"Download the files in smaller chunks, seperately or kindly ask your "
+"administrator."
+msgstr ""
+
+#: installer.php:63
+msgid "No source specified when installing app"
+msgstr "앱을 설치할 때 소스가 지정되지 않았습니다."
+
+#: installer.php:70
+msgid "No href specified when installing app from http"
+msgstr "http에서 앱을 설치할 대 href가 지정되지 않았습니다."
+
+#: installer.php:75
+msgid "No path specified when installing app from local file"
+msgstr "로컬 파일에서 앱을 설치할 때 경로가 지정되지 않았습니다."
+
+#: installer.php:89
+#, php-format
+msgid "Archives of type %s are not supported"
+msgstr "%s 타입 아카이브는 지원되지 않습니다."
+
+#: installer.php:103
+msgid "Failed to open archive when installing app"
+msgstr "앱을 설치할 때 아카이브를 열지 못했습니다."
+
+#: installer.php:123
+msgid "App does not provide an info.xml file"
+msgstr "앱에서 info.xml 파일이 제공되지 않았습니다."
+
+#: installer.php:129
+msgid "App can't be installed because of not allowed code in the App"
+msgstr "앱에 허용되지 않는 코드가 있어서 앱을 설치할 수 없습니다. "
+
+#: installer.php:138
+msgid ""
+"App can't be installed because it is not compatible with this version of "
+"ownCloud"
+msgstr "현재 ownCloud 버전과 호환되지 않기 때문에 앱을 설치할 수 없습니다."
+
+#: installer.php:144
+msgid ""
+"App can't be installed because it contains the <shipped>true</shipped> tag "
+"which is not allowed for non shipped apps"
+msgstr "출하되지 않은 앱에 허용되지 않는 <shipped>true</shipped> 태그를 포함하고 있기 때문에 앱을 설치할 수 없습니다."
+
+#: installer.php:150
+msgid ""
+"App can't be installed because the version in info.xml/version is not the "
+"same as the version reported from the app store"
+msgstr "info.xml/version에 포함된 버전과 앱 스토어에 보고된 버전이 같지 않아서 앱을 설치할 수 없습니다. "
+
+#: installer.php:160
+msgid "App directory already exists"
+msgstr "앱 디렉토리가 이미 존재합니다. "
+
+#: installer.php:173
+#, php-format
+msgid "Can't create app folder. Please fix permissions. %s"
+msgstr "앱 폴더를 만들 수 없습니다. 권한을 수정하십시오. %s "
 
 #: json.php:28
 msgid "Application is not enabled"
@@ -85,155 +166,153 @@ msgstr "텍스트"
 msgid "Images"
 msgstr "그림"
 
-#: setup.php:34
-msgid "Set an admin username."
-msgstr ""
-
-#: setup.php:37
-msgid "Set an admin password."
-msgstr ""
-
-#: setup.php:55
+#: setup/abstractdatabase.php:22
 #, php-format
 msgid "%s enter the database username."
-msgstr ""
+msgstr "데이터베이스 사용자 명을 %s 에 입력해주십시오"
 
-#: setup.php:58
+#: setup/abstractdatabase.php:25
 #, php-format
 msgid "%s enter the database name."
-msgstr ""
+msgstr "데이터베이스 명을 %s 에 입력해주십시오"
 
-#: setup.php:61
+#: setup/abstractdatabase.php:28
 #, php-format
 msgid "%s you may not use dots in the database name"
-msgstr ""
+msgstr "%s 에 적으신 데이터베이스 이름에는 점을 사용할수 없습니다"
 
-#: setup.php:64
-#, php-format
-msgid "%s set the database host."
-msgstr ""
-
-#: setup.php:132 setup.php:325 setup.php:370
-msgid "PostgreSQL username and/or password not valid"
-msgstr ""
-
-#: setup.php:133 setup.php:156 setup.php:234
-msgid "You need to enter either an existing account or the administrator."
-msgstr ""
-
-#: setup.php:155 setup.php:458 setup.php:525
-msgid "Oracle username and/or password not valid"
-msgstr ""
-
-#: setup.php:233
-msgid "MySQL username and/or password not valid"
-msgstr ""
-
-#: setup.php:287 setup.php:391 setup.php:400 setup.php:418 setup.php:428
-#: setup.php:437 setup.php:466 setup.php:532 setup.php:558 setup.php:565
-#: setup.php:576 setup.php:583 setup.php:592 setup.php:600 setup.php:609
-#: setup.php:615
-#, php-format
-msgid "DB Error: \"%s\""
-msgstr ""
-
-#: setup.php:288 setup.php:392 setup.php:401 setup.php:419 setup.php:429
-#: setup.php:438 setup.php:467 setup.php:533 setup.php:559 setup.php:566
-#: setup.php:577 setup.php:593 setup.php:601 setup.php:610
-#, php-format
-msgid "Offending command was: \"%s\""
-msgstr ""
-
-#: setup.php:304
-#, php-format
-msgid "MySQL user '%s'@'localhost' exists already."
-msgstr ""
-
-#: setup.php:305
-msgid "Drop this user from MySQL"
-msgstr ""
-
-#: setup.php:310
-#, php-format
-msgid "MySQL user '%s'@'%%' already exists"
-msgstr ""
-
-#: setup.php:311
-msgid "Drop this user from MySQL."
-msgstr ""
-
-#: setup.php:584 setup.php:616
-#, php-format
-msgid "Offending command was: \"%s\", name: %s, password: %s"
-msgstr ""
-
-#: setup.php:636
+#: setup/mssql.php:20
 #, php-format
 msgid "MS SQL username and/or password not valid: %s"
-msgstr ""
+msgstr "MS SQL 사용자 이름이나 암호가 잘못되었습니다: %s"
 
-#: setup.php:858
+#: setup/mssql.php:21 setup/mysql.php:13 setup/oci.php:114
+#: setup/postgresql.php:24 setup/postgresql.php:70
+msgid "You need to enter either an existing account or the administrator."
+msgstr "기존 계정이나 administrator(관리자)를 입력해야 합니다."
+
+#: setup/mysql.php:12
+msgid "MySQL username and/or password not valid"
+msgstr "MySQL 사용자 이름이나 암호가 잘못되었습니다."
+
+#: setup/mysql.php:67 setup/oci.php:54 setup/oci.php:121 setup/oci.php:147
+#: setup/oci.php:154 setup/oci.php:165 setup/oci.php:172 setup/oci.php:181
+#: setup/oci.php:189 setup/oci.php:198 setup/oci.php:204
+#: setup/postgresql.php:89 setup/postgresql.php:98 setup/postgresql.php:115
+#: setup/postgresql.php:125 setup/postgresql.php:134
+#, php-format
+msgid "DB Error: \"%s\""
+msgstr "DB 오류: \"%s\""
+
+#: setup/mysql.php:68 setup/oci.php:55 setup/oci.php:122 setup/oci.php:148
+#: setup/oci.php:155 setup/oci.php:166 setup/oci.php:182 setup/oci.php:190
+#: setup/oci.php:199 setup/postgresql.php:90 setup/postgresql.php:99
+#: setup/postgresql.php:116 setup/postgresql.php:126 setup/postgresql.php:135
+#, php-format
+msgid "Offending command was: \"%s\""
+msgstr "잘못된 명령: \"%s\""
+
+#: setup/mysql.php:85
+#, php-format
+msgid "MySQL user '%s'@'localhost' exists already."
+msgstr "MySQL 사용자 '%s'@'localhost'이(가) 이미 존재합니다."
+
+#: setup/mysql.php:86
+msgid "Drop this user from MySQL"
+msgstr "이 사용자를 MySQL에서 뺍니다."
+
+#: setup/mysql.php:91
+#, php-format
+msgid "MySQL user '%s'@'%%' already exists"
+msgstr "MySQL 사용자 '%s'@'%%'이(가) 이미 존재합니다. "
+
+#: setup/mysql.php:92
+msgid "Drop this user from MySQL."
+msgstr "이 사용자를 MySQL에서 뺍니다."
+
+#: setup/oci.php:34
+msgid "Oracle connection could not be established"
+msgstr "Oracle 연결을 수립할 수 없습니다."
+
+#: setup/oci.php:41 setup/oci.php:113
+msgid "Oracle username and/or password not valid"
+msgstr "Oracle 사용자 이름이나 암호가 잘못되었습니다."
+
+#: setup/oci.php:173 setup/oci.php:205
+#, php-format
+msgid "Offending command was: \"%s\", name: %s, password: %s"
+msgstr "잘못된 명령: \"%s\", 이름: %s, 암호: %s"
+
+#: setup/postgresql.php:23 setup/postgresql.php:69
+msgid "PostgreSQL username and/or password not valid"
+msgstr "PostgreSQL의 사용자 명 혹은 비밀번호가 잘못되었습니다"
+
+#: setup.php:28
+msgid "Set an admin username."
+msgstr "관리자 이름 설정"
+
+#: setup.php:31
+msgid "Set an admin password."
+msgstr "관리자 비밀번호 설정"
+
+#: setup.php:184
 msgid ""
 "Your web server is not yet properly setup to allow files synchronization "
 "because the WebDAV interface seems to be broken."
-msgstr ""
+msgstr "WebDAV 인터페이스가 제대로 작동하지 않습니다. 웹 서버에서 파일 동기화를 사용할 수 있도록 설정이 제대로 되지 않은 것 같습니다."
 
-#: setup.php:859
+#: setup.php:185
 #, php-format
 msgid "Please double check the <a href='%s'>installation guides</a>."
-msgstr ""
+msgstr "<a href='%s'>설치 가이드</a>를 다시 한 번 확인하십시오."
 
-#: template.php:113
+#: template/functions.php:80
 msgid "seconds ago"
 msgstr "초 전"
 
-#: template.php:114
-msgid "1 minute ago"
-msgstr "1분 전"
+#: template/functions.php:81
+msgid "%n minute ago"
+msgid_plural "%n minutes ago"
+msgstr[0] "%n분 전 "
 
-#: template.php:115
-#, php-format
-msgid "%d minutes ago"
-msgstr "%d분 전"
+#: template/functions.php:82
+msgid "%n hour ago"
+msgid_plural "%n hours ago"
+msgstr[0] "%n시간 전 "
 
-#: template.php:116
-msgid "1 hour ago"
-msgstr "1시간 전"
-
-#: template.php:117
-#, php-format
-msgid "%d hours ago"
-msgstr "%d시간 전"
-
-#: template.php:118
+#: template/functions.php:83
 msgid "today"
 msgstr "오늘"
 
-#: template.php:119
+#: template/functions.php:84
 msgid "yesterday"
 msgstr "어제"
 
-#: template.php:120
-#, php-format
-msgid "%d days ago"
-msgstr "%d일 전"
+#: template/functions.php:85
+msgid "%n day go"
+msgid_plural "%n days ago"
+msgstr[0] "%n일 전 "
 
-#: template.php:121
+#: template/functions.php:86
 msgid "last month"
 msgstr "지난 달"
 
-#: template.php:122
-#, php-format
-msgid "%d months ago"
-msgstr "%d개월 전"
+#: template/functions.php:87
+msgid "%n month ago"
+msgid_plural "%n months ago"
+msgstr[0] "%n달 전 "
 
-#: template.php:123
+#: template/functions.php:88
 msgid "last year"
 msgstr "작년"
 
-#: template.php:124
+#: template/functions.php:89
 msgid "years ago"
 msgstr "년 전"
+
+#: template.php:297
+msgid "Caused by:"
+msgstr "원인: "
 
 #: vcategories.php:188 vcategories.php:249
 #, php-format

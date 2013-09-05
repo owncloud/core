@@ -1,4 +1,6 @@
-<?php $TRANSLATIONS = array(
-"Encryption" => "הצפנה",
-"None" => "כלום"
+<?php
+$TRANSLATIONS = array(
+"Saving..." => "שמירה…",
+"Encryption" => "הצפנה"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

@@ -1,7 +1,6 @@
-<?php $TRANSLATIONS = array(
-"Encryption" => "Kryptering",
-"File encryption is enabled." => "Fil-kryptering er aktivert.",
-"The following file types will not be encrypted:" => "Følgende filtyper vil ikke bli kryptert:",
-"Exclude the following file types from encryption:" => "Ekskluder følgende filtyper fra kryptering:",
-"None" => "Ingen"
+<?php
+$TRANSLATIONS = array(
+"Saving..." => "Lagrer...",
+"Encryption" => "Kryptering"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

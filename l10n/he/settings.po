@@ -3,12 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Yaron Shahrabani <sh.yaron@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-04-27 02:17+0200\n"
-"PO-Revision-Date: 2013-04-26 08:28+0000\n"
+"POT-Creation-Date: 2013-08-25 19:18-0400\n"
+"PO-Revision-Date: 2013-08-25 23:18+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Hebrew (http://www.transifex.com/projects/p/owncloud/language/he/)\n"
 "MIME-Version: 1.0\n"
@@ -28,11 +29,11 @@ msgstr "שגיאת הזדהות"
 
 #: ajax/changedisplayname.php:31
 msgid "Your display name has been changed."
-msgstr ""
+msgstr "שם התצוגה שלך הוחלף."
 
 #: ajax/changedisplayname.php:34
 msgid "Unable to change display name"
-msgstr ""
+msgstr "לא ניתן לשנות את שם התצוגה"
 
 #: ajax/creategroup.php:10
 msgid "Group already exists"
@@ -41,10 +42,6 @@ msgstr "הקבוצה כבר קיימת"
 #: ajax/creategroup.php:19
 msgid "Unable to add group"
 msgstr "לא ניתן להוסיף קבוצה"
-
-#: ajax/enableapp.php:11
-msgid "Could not enable app. "
-msgstr "לא ניתן להפעיל את היישום"
 
 #: ajax/lostpassword.php:12
 msgid "Email saved"
@@ -58,7 +55,7 @@ msgstr "דוא״ל לא חוקי"
 msgid "Unable to delete group"
 msgstr "לא ניתן למחוק את הקבוצה"
 
-#: ajax/removeuser.php:24
+#: ajax/removeuser.php:25
 msgid "Unable to delete user"
 msgstr "לא ניתן למחוק את המשתמש"
 
@@ -86,86 +83,102 @@ msgstr "לא ניתן להסיר משתמש מהקבוצה %s"
 
 #: ajax/updateapp.php:14
 msgid "Couldn't update app."
-msgstr ""
+msgstr "לא ניתן לעדכן את היישום."
 
-#: js/apps.js:30
+#: js/apps.js:35
 msgid "Update to {appversion}"
-msgstr ""
+msgstr "עדכון לגרסה {appversion}"
 
-#: js/apps.js:36 js/apps.js:76
+#: js/apps.js:41 js/apps.js:74 js/apps.js:100
 msgid "Disable"
 msgstr "בטל"
 
-#: js/apps.js:36 js/apps.js:64 js/apps.js:83
+#: js/apps.js:41 js/apps.js:81 js/apps.js:94 js/apps.js:109
 msgid "Enable"
 msgstr "הפעלה"
 
-#: js/apps.js:55
+#: js/apps.js:63
 msgid "Please wait...."
+msgstr "נא להמתין…"
+
+#: js/apps.js:71 js/apps.js:72 js/apps.js:92
+msgid "Error while disabling app"
 msgstr ""
 
-#: js/apps.js:59 js/apps.js:71 js/apps.js:80 js/apps.js:93
+#: js/apps.js:91 js/apps.js:104 js/apps.js:105
+msgid "Error while enabling app"
+msgstr ""
+
+#: js/apps.js:115
+msgid "Updating...."
+msgstr "מתבצע עדכון…"
+
+#: js/apps.js:118
+msgid "Error while updating app"
+msgstr "אירעה שגיאה בעת עדכון היישום"
+
+#: js/apps.js:118
 msgid "Error"
 msgstr "שגיאה"
 
-#: js/apps.js:90
-msgid "Updating...."
-msgstr ""
+#: js/apps.js:119 templates/apps.php:43
+msgid "Update"
+msgstr "עדכון"
 
-#: js/apps.js:93
-msgid "Error while updating app"
-msgstr ""
-
-#: js/apps.js:96
+#: js/apps.js:122
 msgid "Updated"
+msgstr "מעודכן"
+
+#: js/personal.js:150
+msgid "Decrypting files... Please wait, this can take some time."
 msgstr ""
 
-#: js/personal.js:118
+#: js/personal.js:172
 msgid "Saving..."
 msgstr "שמירה…"
 
-#: js/users.js:43
+#: js/users.js:47
 msgid "deleted"
-msgstr ""
+msgstr "נמחק"
 
-#: js/users.js:43
+#: js/users.js:47
 msgid "undo"
 msgstr "ביטול"
 
-#: js/users.js:75
+#: js/users.js:79
 msgid "Unable to remove user"
-msgstr ""
+msgstr "לא ניתן להסיר את המשתמש"
 
-#: js/users.js:88 templates/users.php:26 templates/users.php:78
-#: templates/users.php:103
+#: js/users.js:92 templates/users.php:26 templates/users.php:87
+#: templates/users.php:112
 msgid "Groups"
 msgstr "קבוצות"
 
-#: js/users.js:91 templates/users.php:80 templates/users.php:115
+#: js/users.js:97 templates/users.php:89 templates/users.php:124
 msgid "Group Admin"
 msgstr "מנהל הקבוצה"
 
-#: js/users.js:111 templates/users.php:155
+#: js/users.js:120 templates/users.php:164
 msgid "Delete"
 msgstr "מחיקה"
 
-#: js/users.js:262
+#: js/users.js:277
 msgid "add group"
-msgstr ""
+msgstr "הוספת קבוצה"
 
-#: js/users.js:414
+#: js/users.js:436
 msgid "A valid username must be provided"
-msgstr ""
+msgstr "יש לספק שם משתמש תקני"
 
-#: js/users.js:415 js/users.js:421 js/users.js:436
+#: js/users.js:437 js/users.js:443 js/users.js:458
 msgid "Error creating user"
-msgstr ""
+msgstr "יצירת המשתמש נכשלה"
 
-#: js/users.js:420
+#: js/users.js:442
 msgid "A valid password must be provided"
-msgstr ""
+msgstr "יש לספק ססמה תקנית"
 
-#: personal.php:35 personal.php:36
+#: personal.php:40 personal.php:41
 msgid "__language_name__"
 msgstr "עברית"
 
@@ -176,30 +189,30 @@ msgstr "אזהרת אבטחה"
 #: templates/admin.php:18
 msgid ""
 "Your data directory and your files are probably accessible from the "
-"internet. The .htaccess file that ownCloud provides is not working. We "
-"strongly suggest that you configure your webserver in a way that the data "
-"directory is no longer accessible or you move the data directory outside the"
-" webserver document root."
-msgstr "יתכן שתיקיית הנתונים והקבצים שלך נגישים דרך האינטרנט. קובץ ה־‎.htaccess שמסופק על ידי ownCloud כנראה אינו עובד. אנו ממליצים בחום להגדיר את שרת האינטרנט שלך בדרך שבה תיקיית הנתונים לא תהיה זמינה עוד או להעביר את תיקיית הנתונים מחוץ לספריית העל של שרת האינטרנט."
+"internet. The .htaccess file is not working. We strongly suggest that you "
+"configure your webserver in a way that the data directory is no longer "
+"accessible or you move the data directory outside the webserver document "
+"root."
+msgstr ""
 
 #: templates/admin.php:29
 msgid "Setup Warning"
-msgstr ""
+msgstr "שגיאת הגדרה"
 
 #: templates/admin.php:32
 msgid ""
 "Your web server is not yet properly setup to allow files synchronization "
 "because the WebDAV interface seems to be broken."
-msgstr ""
+msgstr "שרת האינטרנט שלך אינו מוגדר לצורכי סנכרון קבצים עדיין כיוון שמנשק ה־WebDAV כנראה אינו תקין."
 
 #: templates/admin.php:33
 #, php-format
-msgid "Please double check the <a href='%s'>installation guides</a>."
+msgid "Please double check the <a href=\"%s\">installation guides</a>."
 msgstr ""
 
 #: templates/admin.php:44
 msgid "Module 'fileinfo' missing"
-msgstr ""
+msgstr "המודול „fileinfo“ חסר"
 
 #: templates/admin.php:47
 msgid ""
@@ -214,121 +227,128 @@ msgstr ""
 #: templates/admin.php:63
 #, php-format
 msgid ""
-"This ownCloud server can't set system locale to %s. This means that there "
-"might be problems with certain characters in file names. We strongly suggest"
-" to install the required packages on your system to support %s."
+"System locale can't be set to %s. This means that there might be problems "
+"with certain characters in file names. We strongly suggest to install the "
+"required packages on your system to support %s."
 msgstr ""
 
 #: templates/admin.php:75
 msgid "Internet connection not working"
-msgstr ""
+msgstr "החיבור לאינטרנט אינו פעיל"
 
 #: templates/admin.php:78
 msgid ""
-"This ownCloud server has no working internet connection. This means that "
-"some of the features like mounting of external storage, notifications about "
-"updates or installation of 3rd party apps don´t work. Accessing files from "
-"remote and sending of notification emails might also not work. We suggest to"
-" enable internet connection for this server if you want to have all features"
-" of ownCloud."
+"This server has no working internet connection. This means that some of the "
+"features like mounting of external storage, notifications about updates or "
+"installation of 3rd party apps don´t work. Accessing files from remote and "
+"sending of notification emails might also not work. We suggest to enable "
+"internet connection for this server if you want to have all features."
 msgstr ""
 
 #: templates/admin.php:92
 msgid "Cron"
-msgstr ""
+msgstr "Cron"
 
-#: templates/admin.php:101
+#: templates/admin.php:99
 msgid "Execute one task with each page loaded"
-msgstr ""
+msgstr "יש להפעיל משימה אחת עם כל עמוד שנטען"
 
-#: templates/admin.php:111
+#: templates/admin.php:107
 msgid ""
-"cron.php is registered at a webcron service. Call the cron.php page in the "
-"owncloud root once a minute over http."
+"cron.php is registered at a webcron service to call cron.php once a minute "
+"over http."
 msgstr ""
 
-#: templates/admin.php:121
-msgid ""
-"Use systems cron service. Call the cron.php file in the owncloud folder via "
-"a system cronjob once a minute."
+#: templates/admin.php:115
+msgid "Use systems cron service to call the cron.php file once a minute."
 msgstr ""
 
-#: templates/admin.php:128
+#: templates/admin.php:120
 msgid "Sharing"
-msgstr ""
+msgstr "שיתוף"
+
+#: templates/admin.php:126
+msgid "Enable Share API"
+msgstr "הפעלת API השיתוף"
+
+#: templates/admin.php:127
+msgid "Allow apps to use the Share API"
+msgstr "לאפשר ליישום להשתמש ב־API השיתוף"
 
 #: templates/admin.php:134
-msgid "Enable Share API"
-msgstr ""
+msgid "Allow links"
+msgstr "לאפשר קישורים"
 
 #: templates/admin.php:135
-msgid "Allow apps to use the Share API"
-msgstr ""
-
-#: templates/admin.php:142
-msgid "Allow links"
-msgstr ""
+msgid "Allow users to share items to the public with links"
+msgstr "לאפשר למשתמשים לשתף פריטים "
 
 #: templates/admin.php:143
-msgid "Allow users to share items to the public with links"
+msgid "Allow public uploads"
 msgstr ""
 
-#: templates/admin.php:150
-msgid "Allow resharing"
-msgstr ""
-
-#: templates/admin.php:151
-msgid "Allow users to share items shared with them again"
-msgstr ""
-
-#: templates/admin.php:158
-msgid "Allow users to share with anyone"
-msgstr ""
-
-#: templates/admin.php:161
-msgid "Allow users to only share with users in their groups"
-msgstr ""
-
-#: templates/admin.php:168
-msgid "Security"
-msgstr ""
-
-#: templates/admin.php:181
-msgid "Enforce HTTPS"
-msgstr ""
-
-#: templates/admin.php:182
+#: templates/admin.php:144
 msgid ""
-"Enforces the clients to connect to ownCloud via an encrypted connection."
+"Allow users to enable others to upload into their publicly shared folders"
 msgstr ""
+
+#: templates/admin.php:152
+msgid "Allow resharing"
+msgstr "לאפשר שיתוף מחדש"
+
+#: templates/admin.php:153
+msgid "Allow users to share items shared with them again"
+msgstr "לאפשר למשתמשים לשתף הלאה פריטים ששותפו אתם"
+
+#: templates/admin.php:160
+msgid "Allow users to share with anyone"
+msgstr "לאפשר למשתמשים לשתף עם כל אחד"
+
+#: templates/admin.php:163
+msgid "Allow users to only share with users in their groups"
+msgstr "לאפשר למשתמשים לשתף עם משתמשים בקבוצות שלהם בלבד"
+
+#: templates/admin.php:170
+msgid "Security"
+msgstr "אבטחה"
+
+#: templates/admin.php:183
+msgid "Enforce HTTPS"
+msgstr "לאלץ HTTPS"
 
 #: templates/admin.php:185
-msgid ""
-"Please connect to this ownCloud instance via HTTPS to enable or disable the "
-"SSL enforcement."
+#, php-format
+msgid "Forces the clients to connect to %s via an encrypted connection."
 msgstr ""
 
-#: templates/admin.php:195
+#: templates/admin.php:191
+#, php-format
+msgid ""
+"Please connect to your %s via HTTPS to enable or disable the SSL "
+"enforcement."
+msgstr ""
+
+#: templates/admin.php:203
 msgid "Log"
 msgstr "יומן"
 
-#: templates/admin.php:196
+#: templates/admin.php:204
 msgid "Log level"
-msgstr ""
+msgstr "רמת הדיווח"
 
-#: templates/admin.php:227
+#: templates/admin.php:235
 msgid "More"
 msgstr "יותר"
 
-#: templates/admin.php:228
+#: templates/admin.php:236
 msgid "Less"
 msgstr "פחות"
 
-#: templates/admin.php:235 templates/personal.php:105
+#: templates/admin.php:242 templates/personal.php:140
 msgid "Version"
 msgstr "גרסא"
 
-#: templates/admin.php:238 templates/personal.php:108
+#: templates/admin.php:246 templates/personal.php:143
 msgid ""
 "Developed by the <a href=\"http://ownCloud.org/contact\" "
 "target=\"_blank\">ownCloud community</a>, the <a "
@@ -338,29 +358,25 @@ msgid ""
 "License\">AGPL</abbr></a>."
 msgstr "פותח על די <a href=\"http://ownCloud.org/contact\" target=\"_blank\">קהילתownCloud</a>, <a href=\"https://github.com/owncloud\" target=\"_blank\">קוד המקור</a> מוגן ברישיון <a href=\"http://www.gnu.org/licenses/agpl-3.0.html\" target=\"_blank\"><abbr title=\"Affero General Public License\">AGPL</abbr></a>."
 
-#: templates/apps.php:11
+#: templates/apps.php:13
 msgid "Add your App"
 msgstr "הוספת היישום שלך"
 
-#: templates/apps.php:12
+#: templates/apps.php:28
 msgid "More Apps"
 msgstr "יישומים נוספים"
 
-#: templates/apps.php:28
+#: templates/apps.php:33
 msgid "Select an App"
 msgstr "בחירת יישום"
 
-#: templates/apps.php:34
+#: templates/apps.php:39
 msgid "See application page at apps.owncloud.com"
 msgstr "צפה בעמוד הישום ב apps.owncloud.com"
 
-#: templates/apps.php:36
+#: templates/apps.php:41
 msgid "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>"
 msgstr "ברישיון <span class=\"licence\"></span>לטובת <span class=\"author\"></span>"
-
-#: templates/apps.php:38
-msgid "Update"
-msgstr "עדכון"
 
 #: templates/help.php:4
 msgid "User Documentation"
@@ -380,113 +396,146 @@ msgstr "פורום"
 
 #: templates/help.php:14
 msgid "Bugtracker"
-msgstr ""
+msgstr "עוקב תקלות"
 
 #: templates/help.php:17
 msgid "Commercial Support"
 msgstr "תמיכה בתשלום"
 
 #: templates/personal.php:8
+msgid "Get the apps to sync your files"
+msgstr "השג את האפליקציות על מנת לסנכרן את הקבצים שלך"
+
+#: templates/personal.php:19
+msgid "Show First Run Wizard again"
+msgstr "הצגת אשף ההפעלה הראשונית שוב"
+
+#: templates/personal.php:27
 #, php-format
 msgid "You have used <strong>%s</strong> of the available <strong>%s</strong>"
 msgstr "השתמשת ב־<strong>%s</strong> מתוך <strong>%s</strong> הזמינים לך"
 
-#: templates/personal.php:15
-msgid "Get the apps to sync your files"
-msgstr "השג את האפליקציות על מנת לסנכרן את הקבצים שלך"
-
-#: templates/personal.php:26
-msgid "Show First Run Wizard again"
-msgstr ""
-
-#: templates/personal.php:37 templates/users.php:23 templates/users.php:77
+#: templates/personal.php:39 templates/users.php:23 templates/users.php:86
 msgid "Password"
 msgstr "סיסמא"
 
-#: templates/personal.php:38
+#: templates/personal.php:40
 msgid "Your password was changed"
 msgstr "הססמה שלך הוחלפה"
 
-#: templates/personal.php:39
+#: templates/personal.php:41
 msgid "Unable to change your password"
 msgstr "לא ניתן לשנות את הססמה שלך"
 
-#: templates/personal.php:40
+#: templates/personal.php:42
 msgid "Current password"
 msgstr "ססמה נוכחית"
 
-#: templates/personal.php:42
+#: templates/personal.php:44
 msgid "New password"
 msgstr "ססמה חדשה"
 
-#: templates/personal.php:44
+#: templates/personal.php:46
 msgid "Change password"
 msgstr "שינוי ססמה"
 
-#: templates/personal.php:56 templates/users.php:76
+#: templates/personal.php:58 templates/users.php:85
 msgid "Display Name"
-msgstr ""
+msgstr "שם תצוגה"
 
-#: templates/personal.php:68
+#: templates/personal.php:73
 msgid "Email"
 msgstr "דואר אלקטרוני"
 
-#: templates/personal.php:70
+#: templates/personal.php:75
 msgid "Your email address"
 msgstr "כתובת הדוא״ל שלך"
 
-#: templates/personal.php:71
+#: templates/personal.php:76
 msgid "Fill in an email address to enable password recovery"
 msgstr "נא למלא את כתובת הדוא״ל שלך כדי לאפשר שחזור ססמה"
 
-#: templates/personal.php:77 templates/personal.php:78
+#: templates/personal.php:85 templates/personal.php:86
 msgid "Language"
 msgstr "פה"
 
-#: templates/personal.php:89
+#: templates/personal.php:98
 msgid "Help translate"
 msgstr "עזרה בתרגום"
 
-#: templates/personal.php:94
+#: templates/personal.php:104
 msgid "WebDAV"
+msgstr "WebDAV"
+
+#: templates/personal.php:106
+#, php-format
+msgid ""
+"Use this address to <a href=\"%s/server/5.0/user_manual/files/files.html\" "
+"target=\"_blank\">access your Files via WebDAV</a>"
 msgstr ""
 
-#: templates/personal.php:96
-msgid "Use this address to connect to your ownCloud in your file manager"
-msgstr "השתמש בכתובת זאת על מנת להתחבר אל ownCloud דרך סייר קבצים."
+#: templates/personal.php:117
+msgid "Encryption"
+msgstr "הצפנה"
 
-#: templates/users.php:21 templates/users.php:75
+#: templates/personal.php:119
+msgid "The encryption app is no longer enabled, decrypt all your file"
+msgstr ""
+
+#: templates/personal.php:125
+msgid "Log-in password"
+msgstr ""
+
+#: templates/personal.php:130
+msgid "Decrypt all Files"
+msgstr ""
+
+#: templates/users.php:21
 msgid "Login Name"
-msgstr ""
+msgstr "שם כניסה"
 
 #: templates/users.php:30
 msgid "Create"
 msgstr "יצירה"
 
-#: templates/users.php:33
+#: templates/users.php:36
+msgid "Admin Recovery Password"
+msgstr "ססמת השחזור של המנהל"
+
+#: templates/users.php:37 templates/users.php:38
+msgid ""
+"Enter the recovery password in order to recover the users files during "
+"password change"
+msgstr ""
+
+#: templates/users.php:42
 msgid "Default Storage"
-msgstr ""
+msgstr "אחסון בררת המחדל"
 
-#: templates/users.php:39 templates/users.php:133
+#: templates/users.php:48 templates/users.php:142
 msgid "Unlimited"
-msgstr ""
+msgstr "ללא הגבלה"
 
-#: templates/users.php:57 templates/users.php:148
+#: templates/users.php:66 templates/users.php:157
 msgid "Other"
 msgstr "אחר"
 
-#: templates/users.php:82
+#: templates/users.php:84
+msgid "Username"
+msgstr "שם משתמש"
+
+#: templates/users.php:91
 msgid "Storage"
-msgstr ""
+msgstr "אחסון"
 
-#: templates/users.php:93
+#: templates/users.php:102
 msgid "change display name"
-msgstr ""
+msgstr "החלפת שם התצוגה"
 
-#: templates/users.php:97
+#: templates/users.php:106
 msgid "set new password"
-msgstr ""
+msgstr "הגדרת ססמה חדשה"
 
-#: templates/users.php:128
+#: templates/users.php:137
 msgid "Default"
-msgstr ""
+msgstr "בררת מחדל"

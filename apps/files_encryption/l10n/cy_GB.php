@@ -1,7 +1,6 @@
-<?php $TRANSLATIONS = array(
-"Encryption" => "Amgryptiad",
-"File encryption is enabled." => "Galluogwyd amgryptio ffeiliau.",
-"The following file types will not be encrypted:" => "Ni fydd ffeiliau o'r math yma'n cael eu hamgryptio:",
-"Exclude the following file types from encryption:" => "Eithrio'r mathau canlynol o ffeiliau rhag cael eu hamgryptio:",
-"None" => "Dim"
+<?php
+$TRANSLATIONS = array(
+"Saving..." => "Yn cadw...",
+"Encryption" => "Amgryptiad"
 );
+$PLURAL_FORMS = "nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != 11) ? 2 : 3;";

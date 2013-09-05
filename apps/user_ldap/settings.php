@@ -4,7 +4,9 @@
  * ownCloud - user_ldap
  *
  * @author Dominik Schmidt
+ * @author Arthur Schiwon
  * @copyright 2011 Dominik Schmidt dev@dominik-schmidt.de
+ * @copyright 2012-2013 Arthur Schiwon blizzz@owncloud.com
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -42,7 +44,9 @@ OCP\Util::addstyle('user_ldap', 'settings');
 $tmpl = new OCP\Template('user_ldap', 'settings');
 
 $prefixes = \OCA\user_ldap\lib\Helper::getServerConfigurationPrefixes();
+$hosts = \OCA\user_ldap\lib\Helper::getServerConfigurationHosts();
 $tmpl->assign('serverConfigurationPrefixes', $prefixes);
+$tmpl->assign('serverConfigurationHosts', $hosts);
 
 // assign default values
 if(!isset($ldap)) {

@@ -1,5 +1,7 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "WebDAV Authentication" => "WebDAV 認證",
-"URL: http://" => "網址：http://",
-"ownCloud will send the user credentials to this URL. This plugin checks the response and will interpret the HTTP statuscodes 401 and 403 as invalid credentials, and all other responses as valid credentials." => "ownCloud會將把用戶的證件發送到這個網址。這個插件會檢查回應，並把HTTP狀態代碼401和403視為無效證件和所有其他回應視為有效證件。"
+"Address: " => "為址",
+"The user credentials will be sent to this address. This plugin checks the response and will interpret the HTTP statuscodes 401 and 403 as invalid credentials, and all other responses as valid credentials." => "使用者憑證將會被傳送到此位址。此外掛程式將會檢查回應，HTTP statuscodes 401與403將會被理解為無效憑證，而所有其他的回應將會被理解為有效憑證。"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";

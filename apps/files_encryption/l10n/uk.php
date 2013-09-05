@@ -1,7 +1,6 @@
-<?php $TRANSLATIONS = array(
-"Encryption" => "Шифрування",
-"File encryption is enabled." => "Увімкнуто шифрування файлів.",
-"The following file types will not be encrypted:" => "Такі типи файлів шифруватись не будуть:",
-"Exclude the following file types from encryption:" => "Виключити наступні типи файлів з ​​шифрування:",
-"None" => "Жоден"
+<?php
+$TRANSLATIONS = array(
+"Saving..." => "Зберігаю...",
+"Encryption" => "Шифрування"
 );
+$PLURAL_FORMS = "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);";

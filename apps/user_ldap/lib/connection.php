@@ -29,6 +29,9 @@ class Connection {
 	private $configID;
 	private $configured = false;
 
+	//whether connection should be kept on __destruct
+	private $dontDestruct = false;
+
 	//cache handler
 	protected $cache;
 
@@ -65,6 +68,8 @@ class Connection {
 		'ldapAttributesForGroupSearch' => null,
 		'homeFolderNamingRule' => null,
 		'hasPagedResultSupport' => false,
+		'ldapExpertUsernameAttr' => null,
+		'ldapExpertUUIDAttr' => null,
 	);
 
 	/**
@@ -75,15 +80,29 @@ class Connection {
 	public function __construct($configPrefix = '', $configID = 'user_ldap') {
 		$this->configPrefix = $configPrefix;
 		$this->configID = $configID;
-		$this->cache = \OC_Cache::getGlobalCache();
+		$memcache = new \OC\Memcache\Factory();
+		if($memcache->isAvailable()) {
+			$this->cache = $memcache->create();
+		} else {
+			$this->cache = \OC_Cache::getGlobalCache();
+		}
 		$this->config['hasPagedResultSupport'] = (function_exists('ldap_control_paged_result')
 			&& function_exists('ldap_control_paged_result_response'));
 	}
 
 	public function __destruct() {
-		if(is_resource($this->ldapConnectionRes)) {
+		if(!$this->dontDestruct && is_resource($this->ldapConnectionRes)) {
 			@ldap_unbind($this->ldapConnectionRes);
 		};
+	}
+
+	/**
+	 * @brief defines behaviour when the instance is cloned
+	 */
+	public function __clone() {
+		//a cloned instance inherits the connection resource. It may use it,
+		//but it may not disconnect it
+		$this->dontDestruct = true;
 	}
 
 	public function __get($name) {
@@ -99,7 +118,7 @@ class Connection {
 	public function __set($name, $value) {
 		$changed = false;
 		//only few options are writable
-		if($name == 'ldapUuidAttribute') {
+		if($name === 'ldapUuidAttribute') {
 			\OCP\Util::writeLog('user_ldap', 'Set config ldapUuidAttribute to  '.$value, \OCP\Util::DEBUG);
 			$this->config[$name] = $value;
 			if(!empty($this->configID)) {
@@ -208,6 +227,22 @@ class Connection {
 	}
 
 	/**
+	 * Special handling for reading Base Configuration
+	 *
+	 * @param $base the internal name of the config key
+	 * @param $value the value stored for the base
+	 */
+	private function readBase($base, $value) {
+		if(empty($value)) {
+			$value = '';
+		} else {
+			$value = preg_split('/\r\n|\r|\n/', $value);
+		}
+
+		$this->config[$base] = $value;
+	}
+
+	/**
 	 * Caches the general LDAP configuration.
 	 */
 	private function readConfiguration($force = false) {
@@ -222,14 +257,9 @@ class Connection {
 			$this->config['ldapAgentName']  = $this->$v('ldap_dn');
 			$this->config['ldapAgentPassword']
 				= base64_decode($this->$v('ldap_agent_password'));
-			$rawLdapBase                    = $this->$v('ldap_base');
-			$this->config['ldapBase']
-				= preg_split('/\r\n|\r|\n/', $rawLdapBase);
-			$this->config['ldapBaseUsers']
-				= preg_split('/\r\n|\r|\n/', ($this->$v('ldap_base_users')));
-			$this->config['ldapBaseGroups']
-				= preg_split('/\r\n|\r|\n/', $this->$v('ldap_base_groups'));
-			unset($rawLdapBase);
+			$this->readBase('ldapBase',       $this->$v('ldap_base'));
+			$this->readBase('ldapBaseUsers',  $this->$v('ldap_base_users'));
+			$this->readBase('ldapBaseGroups', $this->$v('ldap_base_groups'));
 			$this->config['ldapTLS']        = $this->$v('ldap_tls');
 			$this->config['ldapNoCase']     = $this->$v('ldap_nocase');
 			$this->config['turnOffCertCheck']
@@ -265,6 +295,10 @@ class Connection {
 				= preg_split('/\r\n|\r|\n/', $this->$v('ldap_attributes_for_user_search'));
 			$this->config['ldapAttributesForGroupSearch']
 				= preg_split('/\r\n|\r|\n/', $this->$v('ldap_attributes_for_group_search'));
+			$this->config['ldapExpertUsernameAttr']
+				= $this->$v('ldap_expert_username_attr');
+			$this->config['ldapExpertUUIDAttr']
+				= $this->$v('ldap_expert_uuid_attr');
 
 			$this->configured = $this->validateConfiguration();
 		}
@@ -290,7 +324,6 @@ class Connection {
 			'ldap_group_filter'=>'ldapGroupFilter',
 			'ldap_display_name'=>'ldapUserDisplayName',
 			'ldap_group_display_name'=>'ldapGroupDisplayName',
-
 			'ldap_tls'=>'ldapTLS',
 			'ldap_nocase'=>'ldapNoCase',
 			'ldap_quota_def'=>'ldapQuotaDefault',
@@ -302,7 +335,9 @@ class Connection {
 			'ldap_turn_off_cert_check' => 'turnOffCertCheck',
 			'ldap_configuration_active' => 'ldapConfigurationActive',
 			'ldap_attributes_for_user_search' => 'ldapAttributesForUserSearch',
-			'ldap_attributes_for_group_search' => 'ldapAttributesForGroupSearch'
+			'ldap_attributes_for_group_search' => 'ldapAttributesForGroupSearch',
+			'ldap_expert_username_attr' => 'ldapExpertUsernameAttr',
+			'ldap_expert_uuid_attr' => 'ldapExpertUUIDAttr',
 		);
 		return $array;
 	}
@@ -321,9 +356,9 @@ class Connection {
 		$params = $this->getConfigTranslationArray();
 
 		foreach($config as $parameter => $value) {
-			if(($parameter == 'homeFolderNamingRule'
+			if(($parameter === 'homeFolderNamingRule'
 				|| (isset($params[$parameter])
-					&& $params[$parameter] == 'homeFolderNamingRule'))
+					&& $params[$parameter] === 'homeFolderNamingRule'))
 				&& !empty($value)) {
 				$value = 'attr:'.$value;
 			}
@@ -389,7 +424,7 @@ class Connection {
 		$trans = $this->getConfigTranslationArray();
 		$config = array();
 		foreach($trans as $dbKey => $classKey) {
-			if($classKey == 'homeFolderNamingRule') {
+			if($classKey === 'homeFolderNamingRule') {
 				if(strpos($this->config[$classKey], 'attr:') === 0) {
 					$config[$dbKey] = substr($this->config[$classKey], 5);
 				} else {
@@ -442,7 +477,7 @@ class Connection {
 		}
 		foreach(array('ldapAttributesForUserSearch', 'ldapAttributesForGroupSearch') as $key) {
 			if(is_array($this->config[$key])
-				&& count($this->config[$key]) == 1
+				&& count($this->config[$key]) === 1
 				&& empty($this->config[$key][0])) {
 				$this->config[$key] = array();
 			}
@@ -505,6 +540,10 @@ class Connection {
 			$configurationOK = false;
 		}
 
+		if(!empty($this->config['ldapExpertUUIDAttr'])) {
+			$this->config['ldapUuidAttribute'] = $this->config['ldapExpertUUIDAttr'];
+		}
+
 		return $configurationOK;
 	}
 
@@ -543,6 +582,8 @@ class Connection {
 			'ldap_configuration_active'			=> 1,
 			'ldap_attributes_for_user_search'	=> '',
 			'ldap_attributes_for_group_search'	=> '',
+			'ldap_expert_username_attr'              => '',
+			'ldap_expert_uuid_attr'             => '',
 		);
 	}
 
@@ -588,14 +629,13 @@ class Connection {
 				$error = null;
 			}
 
-			$error = null;
 			//if LDAP server is not reachable, try the Backup (Replica!) Server
-			if((!$bindStatus && ($error == -1))
+			if((!$bindStatus && ($error !== 0))
 				|| $this->config['ldapOverrideMainServer']
 				|| $this->getFromCache('overrideMainServer')) {
 					$this->doConnect($this->config['ldapBackupHost'], $this->config['ldapBackupPort']);
 					$bindStatus = $this->bind();
-					if($bindStatus && $error == -1) {
+					if(!$bindStatus && $error === -1) {
 						//when bind to backup server succeeded and failed to main server,
 						//skip contacting him until next cache refresh
 						$this->writeToCache('overrideMainServer', true);
@@ -608,6 +648,10 @@ class Connection {
 	private function doConnect($host, $port) {
 		if(empty($host)) {
 			return false;
+		}
+		if(strpos($host, '://') !== false) {
+			//ldap_connect ignores port paramater when URLs are passed
+			$host .= ':' . $port;
 		}
 		$this->ldapConnectionRes = ldap_connect($host, $port);
 		if(ldap_set_option($this->ldapConnectionRes, LDAP_OPT_PROTOCOL_VERSION, 3)) {
@@ -623,10 +667,17 @@ class Connection {
 	 * Binds to LDAP
 	 */
 	public function bind() {
+		static $getConnectionResourceAttempt = false;
 		if(!$this->config['ldapConfigurationActive']) {
 			return false;
 		}
+		if($getConnectionResourceAttempt) {
+			$getConnectionResourceAttempt = false;
+			return false;
+		}
+		$getConnectionResourceAttempt = true;
 		$cr = $this->getConnectionResource();
+		$getConnectionResourceAttempt = false;
 		if(!is_resource($cr)) {
 			return false;
 		}

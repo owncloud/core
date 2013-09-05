@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "Nemogićnost učitavanja liste sa Apps Stora",
 "Authentication error" => "Greška kod autorizacije",
 "Email saved" => "Email spremljen",
@@ -32,5 +33,7 @@
 "Language" => "Jezik",
 "Help translate" => "Pomoć prevesti",
 "Create" => "Izradi",
-"Other" => "ostali"
+"Other" => "ostali",
+"Username" => "Korisničko ime"
 );
+$PLURAL_FORMS = "nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;";

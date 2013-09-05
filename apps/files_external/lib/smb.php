@@ -8,7 +8,7 @@
 
 namespace OC\Files\Storage;
 
-require_once 'smb4php/smb.php';
+require_once __DIR__ . '/../3rdparty/smb4php/smb.php';
 
 class SMB extends \OC\Files\Storage\StreamWrapper{
 	private $password;
@@ -57,12 +57,22 @@ class SMB extends \OC\Files\Storage\StreamWrapper{
 
 	public function stat($path) {
 		if ( ! $path and $this->root=='/') {//mtime doesn't work for shares
-			$mtime=$this->shareMTime();
 			$stat=stat($this->constructUrl($path));
+			if (empty($stat)) {
+				return false;
+			}
+			$mtime=$this->shareMTime();
 			$stat['mtime']=$mtime;
 			return $stat;
 		} else {
-			return stat($this->constructUrl($path));
+			$stat = stat($this->constructUrl($path));
+
+			// smb4php can return an empty array if the connection could not be established
+			if (empty($stat)) {
+				return false;
+			}
+
+			return $stat;
 		}
 	}
 
@@ -89,7 +99,7 @@ class SMB extends \OC\Files\Storage\StreamWrapper{
 	private function shareMTime() {
 		$dh=$this->opendir('');
 		$lastCtime=0;
-		while($file=readdir($dh)) {
+		while (($file = readdir($dh)) !== false) {
 			if ($file!='.' and $file!='..') {
 				$ctime=$this->filemtime($file);
 				if ($ctime>$lastCtime) {

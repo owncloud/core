@@ -26,6 +26,7 @@ OCP\User::checkLoggedIn();
 
 // Load the files we need
 OCP\Util::addStyle('files', 'files');
+OCP\Util::addscript('files', 'file-upload');
 OCP\Util::addscript('files', 'jquery.iframe-transport');
 OCP\Util::addscript('files', 'jquery.fileupload');
 OCP\Util::addscript('files', 'jquery-visibility');
@@ -73,6 +74,7 @@ foreach ($content as $i) {
 		}
 	}
 	$i['directory'] = $dir;
+	$i['isPreviewAvailable'] = \OCP\Preview::isMimeSupported($i['mimetype']);
 	$files[] = $i;
 }
 
@@ -94,6 +96,7 @@ $list->assign('files', $files);
 $list->assign('baseURL', OCP\Util::linkTo('files', 'index.php') . '?dir=');
 $list->assign('downloadURL', OCP\Util::linkToRoute('download', array('file' => '/')));
 $list->assign('disableSharing', false);
+$list->assign('isPublic', false);
 $breadcrumbNav = new OCP\Template('files', 'part.breadcrumb', '');
 $breadcrumbNav->assign('breadcrumb', $breadcrumb);
 $breadcrumbNav->assign('baseURL', OCP\Util::linkTo('files', 'index.php') . '?dir=');
@@ -118,9 +121,19 @@ if ($needUpgrade) {
 	$tmpl->printPage();
 } else {
 	// information about storage capacities
-	$storageInfo=OC_Helper::getStorageInfo();
+	$storageInfo=OC_Helper::getStorageInfo($dir);
 	$maxUploadFilesize=OCP\Util::maxUploadFilesize($dir);
+	$publicUploadEnabled = \OC_Appconfig::getValue('core', 'shareapi_allow_public_upload', 'yes');
+	if (OC_App::isEnabled('files_encryption')) {
+		$publicUploadEnabled = 'no';
+	}
 
+	$trashEnabled = \OCP\App::isEnabled('files_trashbin');
+	$trashEmpty = true;
+	if ($trashEnabled) {
+		$trashEmpty = \OCA\Files_Trashbin\Trashbin::isEmpty($user);
+	}
+	
 	OCP\Util::addscript('files', 'fileactions');
 	OCP\Util::addscript('files', 'files');
 	OCP\Util::addscript('files', 'keyboardshortcuts');
@@ -131,10 +144,14 @@ if ($needUpgrade) {
 	$tmpl->assign('isCreatable', \OC\Files\Filesystem::isCreatable($dir . '/'));
 	$tmpl->assign('permissions', $permissions);
 	$tmpl->assign('files', $files);
-	$tmpl->assign('trash', \OCP\App::isEnabled('files_trashbin'));
+	$tmpl->assign('trash', $trashEnabled);
+	$tmpl->assign('trashEmpty', $trashEmpty);
 	$tmpl->assign('uploadMaxFilesize', $maxUploadFilesize);
 	$tmpl->assign('uploadMaxHumanFilesize', OCP\Util::humanFileSize($maxUploadFilesize));
 	$tmpl->assign('allowZipDownload', intval(OCP\Config::getSystemValue('allowZipDownload', true)));
 	$tmpl->assign('usedSpacePercent', (int)$storageInfo['relative']);
+	$tmpl->assign('isPublic', false);
+	$tmpl->assign('publicUploadEnabled', $publicUploadEnabled);
+	$tmpl->assign("encryptedFiles", \OCP\Util::encryptedFiles());
 	$tmpl->printPage();
 }

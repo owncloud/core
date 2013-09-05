@@ -1,6 +1,7 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Password" => "စကားဝှက်",
 "Submit" => "ထည့်သွင်းမည်",
-"Download" => "ဒေါင်းလုတ်",
-"web services under your control" => "သင်၏ထိန်းချုပ်မှု့အောက်တွင်ရှိသော Web services"
+"Download" => "ဒေါင်းလုတ်"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";

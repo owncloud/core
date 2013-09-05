@@ -1,10 +1,19 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "Konnt Lescht net vum App Store lueden",
 "Authentication error" => "Authentifikatioun's Fehler",
+"Your display name has been changed." => "Aren Nickname ass geännert ginn.",
+"Unable to change display name" => "Unmeiglech den Nickname ze änneren.",
+"Group already exists" => "Group existeiert schon.",
+"Unable to add group" => "Onmeiglech Grupp beizefügen.",
 "Email saved" => "E-mail gespäichert",
 "Invalid email" => "Ongülteg e-mail",
+"Unable to delete group" => "Onmeiglech d'Grup ze läschen.",
+"Unable to delete user" => "Onmeiglech User zu läschen.",
 "Language changed" => "Sprooch huet geännert",
 "Invalid request" => "Ongülteg Requête",
+"Admins can't remove themself from the admin group" => "Admins kennen sech selwer net aus enger Admin Group läschen.",
+"Unable to add user to group %s" => "Onmeiglech User an Grupp ze sätzen %s",
 "Disable" => "Ofschalten",
 "Enable" => "Aschalten",
 "Error" => "Fehler",
@@ -39,5 +48,7 @@
 "Language" => "Sprooch",
 "Help translate" => "Hëllef iwwersetzen",
 "Create" => "Erstellen",
-"Other" => "Aner"
+"Other" => "Aner",
+"Username" => "Benotzernumm"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

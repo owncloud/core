@@ -1,7 +1,11 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
+"Password successfully changed." => "Đã đổi mật khẩu.",
+"Could not change the password. Maybe the old password was not correct." => "Không thể đổi mật khẩu. Có lẽ do mật khẩu cũ không đúng.",
+"Saving..." => "Đang lưu...",
 "Encryption" => "Mã hóa",
-"File encryption is enabled." => "Mã hóa file đã mở",
-"The following file types will not be encrypted:" => "Loại file sau sẽ không được mã hóa",
-"Exclude the following file types from encryption:" => "Việc mã hóa không bao gồm loại file sau",
-"None" => "Không gì cả"
+"Enabled" => "Bật",
+"Disabled" => "Tắt",
+"Change Password" => "Đổi Mật khẩu"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";

@@ -1,7 +1,9 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Deletion failed" => "מחיקה נכשלה",
 "Keep settings?" => "האם לשמור את ההגדרות?",
 "Cannot add server configuration" => "לא ניתן להוסיף את הגדרות השרת",
+"Error" => "שגיאה",
 "Connection test succeeded" => "בדיקת החיבור עברה בהצלחה",
 "Connection test failed" => "בדיקת החיבור נכשלה",
 "Do you really want to delete the current Server Configuration?" => "האם אכן למחוק את הגדרות השרת הנוכחיות?",
@@ -20,3 +22,4 @@
 "in bytes" => "בבתים",
 "Help" => "עזרה"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

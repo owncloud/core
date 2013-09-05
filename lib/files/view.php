@@ -249,10 +249,14 @@ class View {
 		$hooks = array('touch');
 
 		if (!$this->file_exists($path)) {
+			$hooks[] = 'create';
 			$hooks[] = 'write';
 		}
-
-		return $this->basicOperation('touch', $path, $hooks, $mtime);
+		$result = $this->basicOperation('touch', $path, $hooks, $mtime);
+		if (!$result) { //if native touch fails, we emulate it by changing the mtime in the cache
+			$this->putFileInfo($path, array('mtime' => $mtime));
+		}
+		return true;
 	}
 
 	public function file_get_contents($path) {
@@ -263,18 +267,19 @@ class View {
 		if (is_resource($data)) { //not having to deal with streams in file_put_contents makes life easier
 			$absolutePath = Filesystem::normalizePath($this->getAbsolutePath($path));
 			if (\OC_FileProxy::runPreProxies('file_put_contents', $absolutePath, $data)
-				&& Filesystem::isValidPath($path)
+				and Filesystem::isValidPath($path)
+				and !Filesystem::isFileBlacklisted($path)
 			) {
 				$path = $this->getRelativePath($absolutePath);
 				$exists = $this->file_exists($path);
 				$run = true;
-				if ($this->fakeRoot == Filesystem::getRoot() && !Cache\Scanner::isIgnoredFile($path)) {
+				if ($this->shouldEmitHooks($path)) {
 					if (!$exists) {
 						\OC_Hook::emit(
 							Filesystem::CLASSNAME,
 							Filesystem::signal_create,
 							array(
-								Filesystem::signal_param_path => $path,
+								Filesystem::signal_param_path => $this->getHookPath($path),
 								Filesystem::signal_param_run => &$run
 							)
 						);
@@ -283,7 +288,7 @@ class View {
 						Filesystem::CLASSNAME,
 						Filesystem::signal_write,
 						array(
-							Filesystem::signal_param_path => $path,
+							Filesystem::signal_param_path => $this->getHookPath($path),
 							Filesystem::signal_param_run => &$run
 						)
 					);
@@ -296,18 +301,18 @@ class View {
 					list ($count, $result) = \OC_Helper::streamCopy($data, $target);
 					fclose($target);
 					fclose($data);
-					if ($this->fakeRoot == Filesystem::getRoot() && !Cache\Scanner::isIgnoredFile($path)) {
+					if ($this->shouldEmitHooks($path) && $result !== false) {
 						if (!$exists) {
 							\OC_Hook::emit(
 								Filesystem::CLASSNAME,
 								Filesystem::signal_post_create,
-								array(Filesystem::signal_param_path => $path)
+								array(Filesystem::signal_param_path => $this->getHookPath($path))
 							);
 						}
 						\OC_Hook::emit(
 							Filesystem::CLASSNAME,
 							Filesystem::signal_post_write,
-							array(Filesystem::signal_param_path => $path)
+							array(Filesystem::signal_param_path => $this->getHookPath($path))
 						);
 					}
 					\OC_FileProxy::runPostProxies('file_put_contents', $absolutePath, $count);
@@ -340,6 +345,7 @@ class View {
 			\OC_FileProxy::runPreProxies('rename', $absolutePath1, $absolutePath2)
 			and Filesystem::isValidPath($path2)
 			and Filesystem::isValidPath($path1)
+			and !Filesystem::isFileBlacklisted($path2)
 		) {
 			$path1 = $this->getRelativePath($absolutePath1);
 			$path2 = $this->getRelativePath($absolutePath2);
@@ -348,12 +354,21 @@ class View {
 				return false;
 			}
 			$run = true;
-			if ($this->fakeRoot == Filesystem::getRoot()) {
+			if ($this->shouldEmitHooks() && (Cache\Scanner::isPartialFile($path1) && !Cache\Scanner::isPartialFile($path2))) {
+				// if it was a rename from a part file to a regular file it was a write and not a rename operation
+				\OC_Hook::emit(
+					Filesystem::CLASSNAME, Filesystem::signal_write,
+					array(
+						Filesystem::signal_param_path => $this->getHookPath($path2),
+						Filesystem::signal_param_run => &$run
+					)
+				);
+			} elseif ($this->shouldEmitHooks()) {
 				\OC_Hook::emit(
 					Filesystem::CLASSNAME, Filesystem::signal_rename,
 					array(
-						Filesystem::signal_param_oldpath => $path1,
-						Filesystem::signal_param_newpath => $path2,
+						Filesystem::signal_param_oldpath => $this->getHookPath($path1),
+						Filesystem::signal_param_newpath => $this->getHookPath($path2),
 						Filesystem::signal_param_run => &$run
 					)
 				);
@@ -366,23 +381,49 @@ class View {
 					list(, $internalPath2) = Filesystem::resolvePath($absolutePath2 . $postFix2);
 					if ($storage) {
 						$result = $storage->rename($internalPath1, $internalPath2);
+						\OC_FileProxy::runPostProxies('rename', $absolutePath1, $absolutePath2);
 					} else {
 						$result = false;
 					}
 				} else {
-					$source = $this->fopen($path1 . $postFix1, 'r');
-					$target = $this->fopen($path2 . $postFix2, 'w');
-					list($count, $result) = \OC_Helper::streamCopy($source, $target);
-					list($storage1, $internalPath1) = Filesystem::resolvePath($absolutePath1 . $postFix1);
-					$storage1->unlink($internalPath1);
+					if ($this->is_dir($path1)) {
+						$result = $this->copy($path1, $path2);
+						if ($result === true) {
+							list($storage1, $internalPath1) = Filesystem::resolvePath($absolutePath1 . $postFix1);
+							$result = $storage1->deleteAll($internalPath1);
+						}
+					} else {
+						$source = $this->fopen($path1 . $postFix1, 'r');
+						$target = $this->fopen($path2 . $postFix2, 'w');
+						list($count, $result) = \OC_Helper::streamCopy($source, $target);
+
+						// close open handle - especially $source is necessary because unlink below will
+						// throw an exception on windows because the file is locked
+						fclose($source);
+						fclose($target);
+
+						if ($result !== false) {
+							list($storage1, $internalPath1) = Filesystem::resolvePath($absolutePath1 . $postFix1);
+							$storage1->unlink($internalPath1);
+						}
+					}
 				}
-				if ($this->fakeRoot == Filesystem::getRoot()) {
+				if ($this->shouldEmitHooks() && (Cache\Scanner::isPartialFile($path1) && !Cache\Scanner::isPartialFile($path2)) && $result !== false) {
+					// if it was a rename from a part file to a regular file it was a write and not a rename operation
+					\OC_Hook::emit(
+						Filesystem::CLASSNAME,
+						Filesystem::signal_post_write,
+						array(
+							Filesystem::signal_param_path => $this->getHookPath($path2),
+						)
+					);
+				} elseif ($this->shouldEmitHooks() && $result !== false) {
 					\OC_Hook::emit(
 						Filesystem::CLASSNAME,
 						Filesystem::signal_post_rename,
 						array(
-							Filesystem::signal_param_oldpath => $path1,
-							Filesystem::signal_param_newpath => $path2
+							Filesystem::signal_param_oldpath => $this->getHookPath($path1),
+							Filesystem::signal_param_newpath => $this->getHookPath($path2)
 						)
 					);
 				}
@@ -404,6 +445,7 @@ class View {
 			\OC_FileProxy::runPreProxies('copy', $absolutePath1, $absolutePath2)
 			and Filesystem::isValidPath($path2)
 			and Filesystem::isValidPath($path1)
+			and !Filesystem::isFileBlacklisted($path2)
 		) {
 			$path1 = $this->getRelativePath($absolutePath1);
 			$path2 = $this->getRelativePath($absolutePath2);
@@ -413,13 +455,13 @@ class View {
 			}
 			$run = true;
 			$exists = $this->file_exists($path2);
-			if ($this->fakeRoot == Filesystem::getRoot()) {
+			if ($this->shouldEmitHooks()) {
 				\OC_Hook::emit(
 					Filesystem::CLASSNAME,
 					Filesystem::signal_copy,
 					array(
-						Filesystem::signal_param_oldpath => $path1,
-						Filesystem::signal_param_newpath => $path2,
+						Filesystem::signal_param_oldpath => $this->getHookPath($path1),
+						Filesystem::signal_param_newpath => $this->getHookPath($path2),
 						Filesystem::signal_param_run => &$run
 					)
 				);
@@ -428,7 +470,7 @@ class View {
 						Filesystem::CLASSNAME,
 						Filesystem::signal_create,
 						array(
-							Filesystem::signal_param_path => $path2,
+							Filesystem::signal_param_path => $this->getHookPath($path2),
 							Filesystem::signal_param_run => &$run
 						)
 					);
@@ -438,7 +480,7 @@ class View {
 						Filesystem::CLASSNAME,
 						Filesystem::signal_write,
 						array(
-							Filesystem::signal_param_path => $path2,
+							Filesystem::signal_param_path => $this->getHookPath($path2),
 							Filesystem::signal_param_run => &$run
 						)
 					);
@@ -456,30 +498,39 @@ class View {
 						$result = false;
 					}
 				} else {
-					$source = $this->fopen($path1 . $postFix1, 'r');
-					$target = $this->fopen($path2 . $postFix2, 'w');
-					list($count, $result) = \OC_Helper::streamCopy($source, $target);
+					if ($this->is_dir($path1) && ($dh = $this->opendir($path1))) {
+						$result = $this->mkdir($path2);
+						while (($file = readdir($dh)) !== false) {
+							if (!Filesystem::isIgnoredDir($file)) {
+								$result = $this->copy($path1 . '/' . $file, $path2 . '/' . $file);
+							}
+						}
+					} else {
+						$source = $this->fopen($path1 . $postFix1, 'r');
+						$target = $this->fopen($path2 . $postFix2, 'w');
+						list($count, $result) = \OC_Helper::streamCopy($source, $target);
+					}
 				}
-				if ($this->fakeRoot == Filesystem::getRoot()) {
+				if ($this->shouldEmitHooks() && $result !== false) {
 					\OC_Hook::emit(
 						Filesystem::CLASSNAME,
 						Filesystem::signal_post_copy,
 						array(
-							Filesystem::signal_param_oldpath => $path1,
-							Filesystem::signal_param_newpath => $path2
+							Filesystem::signal_param_oldpath => $this->getHookPath($path1),
+							Filesystem::signal_param_newpath => $this->getHookPath($path2)
 						)
 					);
 					if (!$exists) {
 						\OC_Hook::emit(
 							Filesystem::CLASSNAME,
 							Filesystem::signal_post_create,
-							array(Filesystem::signal_param_path => $path2)
+							array(Filesystem::signal_param_path => $this->getHookPath($path2))
 						);
 					}
 					\OC_Hook::emit(
 						Filesystem::CLASSNAME,
 						Filesystem::signal_post_write,
-						array(Filesystem::signal_param_path => $path2)
+						array(Filesystem::signal_param_path => $this->getHookPath($path2))
 					);
 				}
 				return $result;
@@ -570,11 +621,11 @@ class View {
 			if ($path == null) {
 				return false;
 			}
-			if (Filesystem::$loaded && $this->fakeRoot == Filesystem::getRoot()) {
+			if ($this->shouldEmitHooks($path)) {
 				\OC_Hook::emit(
 					Filesystem::CLASSNAME,
 					Filesystem::signal_read,
-					array(Filesystem::signal_param_path => $path)
+					array(Filesystem::signal_param_path => $this->getHookPath($path))
 				);
 			}
 			list($storage, $internalPath) = Filesystem::resolvePath($absolutePath . $postFix);
@@ -606,7 +657,10 @@ class View {
 	private function basicOperation($operation, $path, $hooks = array(), $extraParam = null) {
 		$postFix = (substr($path, -1, 1) === '/') ? '/' : '';
 		$absolutePath = Filesystem::normalizePath($this->getAbsolutePath($path));
-		if (\OC_FileProxy::runPreProxies($operation, $absolutePath, $extraParam) and Filesystem::isValidPath($path)) {
+		if (\OC_FileProxy::runPreProxies($operation, $absolutePath, $extraParam)
+			and Filesystem::isValidPath($path)
+			and !Filesystem::isFileBlacklisted($path)
+		) {
 			$path = $this->getRelativePath($absolutePath);
 			if ($path == null) {
 				return false;
@@ -621,7 +675,7 @@ class View {
 					$result = $storage->$operation($internalPath);
 				}
 				$result = \OC_FileProxy::runPostProxies($operation, $this->getAbsolutePath($path), $result);
-				if (Filesystem::$loaded and $this->fakeRoot == Filesystem::getRoot()) {
+				if ($this->shouldEmitHooks($path) && $result !== false) {
 					if ($operation != 'fopen') { //no post hooks for fopen, the file stream is still open
 						$this->runHooks($hooks, $path, true);
 					}
@@ -632,10 +686,35 @@ class View {
 		return null;
 	}
 
+	/**
+	 * get the path relative to the default root for hook usage
+	 *
+	 * @param string $path
+	 * @return string
+	 */
+	private function getHookPath($path) {
+		if (!Filesystem::getView()) {
+			return $path;
+		}
+		return Filesystem::getView()->getRelativePath($this->getAbsolutePath($path));
+	}
+
+	private function shouldEmitHooks($path = '') {
+		if ($path && Cache\Scanner::isPartialFile($path)) {
+			return false;
+		}
+		if (!Filesystem::$loaded) {
+			return false;
+		}
+		$defaultRoot = Filesystem::getRoot();
+		return (strlen($this->fakeRoot) >= strlen($defaultRoot)) && (substr($this->fakeRoot, 0, strlen($defaultRoot)) === $defaultRoot);
+	}
+
 	private function runHooks($hooks, $path, $post = false) {
+		$path = $this->getHookPath($path);
 		$prefix = ($post) ? 'post_' : '';
 		$run = true;
-		if (Filesystem::$loaded and $this->fakeRoot == Filesystem::getRoot() && !Cache\Scanner::isIgnoredFile($path)) {
+		if ($this->shouldEmitHooks($path)) {
 			foreach ($hooks as $hook) {
 				if ($hook != 'read') {
 					\OC_Hook::emit(
@@ -719,7 +798,7 @@ class View {
 						if ($subStorage) {
 							$subCache = $subStorage->getCache('');
 							$rootEntry = $subCache->get('');
-							$data['size'] += $rootEntry['size'];
+							$data['size'] += isset($rootEntry['size']) ? $rootEntry['size'] : 0;
 						}
 					}
 				}
@@ -732,6 +811,9 @@ class View {
 				$data['permissions'] = $permissions;
 			}
 		}
+
+		$data = \OC_FileProxy::runPostProxies('getFileInfo', $path, $data);
+
 		return $data;
 	}
 
@@ -767,18 +849,18 @@ class View {
 			}
 
 			$files = $cache->getFolderContents($internalPath); //TODO: mimetype_filter
+			$permissions = $permissionsCache->getDirectoryPermissions($cache->getId($internalPath), $user);
 
 			$ids = array();
 			foreach ($files as $i => $file) {
 				$files[$i]['type'] = $file['mimetype'] === 'httpd/unix-directory' ? 'dir' : 'file';
 				$ids[] = $file['fileid'];
 
-				$permissions = $permissionsCache->get($file['fileid'], $user);
-				if ($permissions === -1) {
-					$permissions = $storage->getPermissions($file['path']);
-					$permissionsCache->set($file['fileid'], $user, $permissions);
+				if (!isset($permissions[$file['fileid']])) {
+					$permissions[$file['fileid']] = $storage->getPermissions($file['path']);
+					$permissionsCache->set($file['fileid'], $user, $permissions[$file['fileid']]);
 				}
-				$files[$i]['permissions'] = $permissions;
+				$files[$i]['permissions'] = $permissions[$file['fileid']];
 			}
 
 			//add a folder for any mountpoint in this directory and add the sizes of other mountpoints to the folders

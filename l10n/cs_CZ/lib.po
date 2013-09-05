@@ -3,13 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Honza K. <honza889@gmail.com>, 2013
+# pstast <petr@stastny.eu>, 2013
+# Tomáš Chvátal <tomas.chvatal@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-04-28 01:57+0200\n"
-"PO-Revision-Date: 2013-04-27 23:57+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"POT-Creation-Date: 2013-08-30 09:33-0400\n"
+"PO-Revision-Date: 2013-08-30 07:31+0000\n"
+"Last-Translator: pstast <petr@stastny.eu>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/owncloud/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,49 +20,128 @@ msgstr ""
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: app.php:349
+#: app.php:239
+#, php-format
+msgid ""
+"App \"%s\" can't be installed because it is not compatible with this version"
+" of ownCloud."
+msgstr "Aplikace \"%s\" nemůže být nainstalována, protože není kompatibilní s touto verzí ownCloud."
+
+#: app.php:250
+msgid "No app name specified"
+msgstr "Nebyl zadan název aplikace"
+
+#: app.php:361
 msgid "Help"
 msgstr "Nápověda"
 
-#: app.php:362
+#: app.php:374
 msgid "Personal"
 msgstr "Osobní"
 
-#: app.php:373
+#: app.php:385
 msgid "Settings"
 msgstr "Nastavení"
 
-#: app.php:385
+#: app.php:397
 msgid "Users"
 msgstr "Uživatelé"
 
-#: app.php:398
-msgid "Apps"
-msgstr "Aplikace"
-
-#: app.php:406
+#: app.php:410
 msgid "Admin"
 msgstr "Administrace"
 
-#: files.php:209
-msgid "ZIP download is turned off."
-msgstr "Stahování ZIPu je vypnuto."
+#: app.php:837
+#, php-format
+msgid "Failed to upgrade \"%s\"."
+msgstr "Selhala aktualizace verze \"%s\"."
 
-#: files.php:210
+#: defaults.php:35
+msgid "web services under your control"
+msgstr "webové služby pod Vaší kontrolou"
+
+#: files.php:66 files.php:98
+#, php-format
+msgid "cannot open \"%s\""
+msgstr "nelze otevřít \"%s\""
+
+#: files.php:226
+msgid "ZIP download is turned off."
+msgstr "Stahování v ZIPu je vypnuto."
+
+#: files.php:227
 msgid "Files need to be downloaded one by one."
 msgstr "Soubory musí být stahovány jednotlivě."
 
-#: files.php:211 files.php:244
+#: files.php:228 files.php:256
 msgid "Back to Files"
 msgstr "Zpět k souborům"
 
-#: files.php:241
+#: files.php:253
 msgid "Selected files too large to generate zip file."
-msgstr "Vybrané soubory jsou příliš velké pro vytvoření zip souboru."
+msgstr "Vybrané soubory jsou příliš velké pro vytvoření ZIP souboru."
 
-#: helper.php:228
-msgid "couldn't be determined"
-msgstr "nelze zjistit"
+#: files.php:254
+msgid ""
+"Download the files in smaller chunks, seperately or kindly ask your "
+"administrator."
+msgstr "Stáhněte soubory po menších částech, samostatně, nebo se obraťte na správce."
+
+#: installer.php:63
+msgid "No source specified when installing app"
+msgstr "Nebyl zadán zdroj při instalaci aplikace"
+
+#: installer.php:70
+msgid "No href specified when installing app from http"
+msgstr "Nebyl zadán odkaz pro instalaci aplikace z HTTP"
+
+#: installer.php:75
+msgid "No path specified when installing app from local file"
+msgstr "Nebyla zadána cesta pro instalaci aplikace z místního souboru"
+
+#: installer.php:89
+#, php-format
+msgid "Archives of type %s are not supported"
+msgstr "Archivy typu %s nejsou podporovány"
+
+#: installer.php:103
+msgid "Failed to open archive when installing app"
+msgstr "Chyba při otevírání archivu během instalace aplikace"
+
+#: installer.php:123
+msgid "App does not provide an info.xml file"
+msgstr "Aplikace neposkytuje soubor info.xml"
+
+#: installer.php:129
+msgid "App can't be installed because of not allowed code in the App"
+msgstr "Aplikace nemůže být nainstalována, protože obsahuje nepovolený kód"
+
+#: installer.php:138
+msgid ""
+"App can't be installed because it is not compatible with this version of "
+"ownCloud"
+msgstr "Aplikace nemůže být nainstalována, protože není kompatibilní s touto verzí ownCloud"
+
+#: installer.php:144
+msgid ""
+"App can't be installed because it contains the <shipped>true</shipped> tag "
+"which is not allowed for non shipped apps"
+msgstr "Aplikace nemůže být nainstalována, protože obsahuje značku\n<shipped>\n\ntrue\n</shipped>\n\ncož není povoleno pro nedodávané aplikace"
+
+#: installer.php:150
+msgid ""
+"App can't be installed because the version in info.xml/version is not the "
+"same as the version reported from the app store"
+msgstr "Aplikace nemůže být nainstalována, protože verze uvedená v info.xml/version nesouhlasí s verzí oznámenou z úložiště aplikací."
+
+#: installer.php:160
+msgid "App directory already exists"
+msgstr "Adresář aplikace již existuje"
+
+#: installer.php:173
+#, php-format
+msgid "Can't create app folder. Please fix permissions. %s"
+msgstr "Nelze vytvořit složku aplikace. Opravte práva souborů. %s"
 
 #: json.php:28
 msgid "Application is not enabled"
@@ -85,155 +167,161 @@ msgstr "Text"
 msgid "Images"
 msgstr "Obrázky"
 
-#: setup.php:34
-msgid "Set an admin username."
-msgstr "Zadejte uživatelské jméno správce."
-
-#: setup.php:37
-msgid "Set an admin password."
-msgstr "Zadejte heslo správce."
-
-#: setup.php:55
+#: setup/abstractdatabase.php:22
 #, php-format
 msgid "%s enter the database username."
 msgstr "Zadejte uživatelské jméno %s databáze."
 
-#: setup.php:58
+#: setup/abstractdatabase.php:25
 #, php-format
 msgid "%s enter the database name."
 msgstr "Zadejte název databáze pro %s databáze."
 
-#: setup.php:61
+#: setup/abstractdatabase.php:28
 #, php-format
 msgid "%s you may not use dots in the database name"
 msgstr "V názvu databáze %s nesmíte používat tečky."
 
-#: setup.php:64
+#: setup/mssql.php:20
 #, php-format
-msgid "%s set the database host."
-msgstr "Zadejte název počítače s databází %s."
+msgid "MS SQL username and/or password not valid: %s"
+msgstr "Uživatelské jméno či heslo MSSQL není platné: %s"
 
-#: setup.php:132 setup.php:325 setup.php:370
-msgid "PostgreSQL username and/or password not valid"
-msgstr "Uživatelské jméno, či heslo PostgreSQL není platné"
-
-#: setup.php:133 setup.php:156 setup.php:234
+#: setup/mssql.php:21 setup/mysql.php:13 setup/oci.php:114
+#: setup/postgresql.php:24 setup/postgresql.php:70
 msgid "You need to enter either an existing account or the administrator."
-msgstr "Musíte zadat existující účet, či správce."
+msgstr "Musíte zadat existující účet či správce."
 
-#: setup.php:155 setup.php:458 setup.php:525
-msgid "Oracle username and/or password not valid"
-msgstr "Uživatelské jméno, či heslo Oracle není platné"
-
-#: setup.php:233
+#: setup/mysql.php:12
 msgid "MySQL username and/or password not valid"
-msgstr "Uživatelské jméno, či heslo MySQL není platné"
+msgstr "Uživatelské jméno či heslo MySQL není platné"
 
-#: setup.php:287 setup.php:391 setup.php:400 setup.php:418 setup.php:428
-#: setup.php:437 setup.php:466 setup.php:532 setup.php:558 setup.php:565
-#: setup.php:576 setup.php:583 setup.php:592 setup.php:600 setup.php:609
-#: setup.php:615
+#: setup/mysql.php:67 setup/oci.php:54 setup/oci.php:121 setup/oci.php:147
+#: setup/oci.php:154 setup/oci.php:165 setup/oci.php:172 setup/oci.php:181
+#: setup/oci.php:189 setup/oci.php:198 setup/oci.php:204
+#: setup/postgresql.php:89 setup/postgresql.php:98 setup/postgresql.php:115
+#: setup/postgresql.php:125 setup/postgresql.php:134
 #, php-format
 msgid "DB Error: \"%s\""
-msgstr "Chyba DB: \"%s\""
+msgstr "Chyba databáze: \"%s\""
 
-#: setup.php:288 setup.php:392 setup.php:401 setup.php:419 setup.php:429
-#: setup.php:438 setup.php:467 setup.php:533 setup.php:559 setup.php:566
-#: setup.php:577 setup.php:593 setup.php:601 setup.php:610
+#: setup/mysql.php:68 setup/oci.php:55 setup/oci.php:122 setup/oci.php:148
+#: setup/oci.php:155 setup/oci.php:166 setup/oci.php:182 setup/oci.php:190
+#: setup/oci.php:199 setup/postgresql.php:90 setup/postgresql.php:99
+#: setup/postgresql.php:116 setup/postgresql.php:126 setup/postgresql.php:135
 #, php-format
 msgid "Offending command was: \"%s\""
-msgstr "Podezřelý příkaz byl: \"%s\""
+msgstr "Příslušný příkaz byl: \"%s\""
 
-#: setup.php:304
+#: setup/mysql.php:85
 #, php-format
 msgid "MySQL user '%s'@'localhost' exists already."
 msgstr "Uživatel '%s'@'localhost' již v MySQL existuje."
 
-#: setup.php:305
+#: setup/mysql.php:86
 msgid "Drop this user from MySQL"
-msgstr "Zahodit uživatele z MySQL"
+msgstr "Zrušte tohoto uživatele z MySQL"
 
-#: setup.php:310
+#: setup/mysql.php:91
 #, php-format
 msgid "MySQL user '%s'@'%%' already exists"
 msgstr "Uživatel '%s'@'%%' již v MySQL existuje"
 
-#: setup.php:311
+#: setup/mysql.php:92
 msgid "Drop this user from MySQL."
-msgstr "Zahodit uživatele z MySQL."
+msgstr "Zrušte tohoto uživatele z MySQL"
 
-#: setup.php:584 setup.php:616
+#: setup/oci.php:34
+msgid "Oracle connection could not be established"
+msgstr "Spojení s Oracle nemohlo být navázáno"
+
+#: setup/oci.php:41 setup/oci.php:113
+msgid "Oracle username and/or password not valid"
+msgstr "Uživatelské jméno či heslo Oracle není platné"
+
+#: setup/oci.php:173 setup/oci.php:205
 #, php-format
 msgid "Offending command was: \"%s\", name: %s, password: %s"
-msgstr "Podezřelý příkaz byl: \"%s\", jméno: %s, heslo: %s"
+msgstr "Příslušný příkaz byl: \"%s\", jméno: %s, heslo: %s"
 
-#: setup.php:636
-#, php-format
-msgid "MS SQL username and/or password not valid: %s"
-msgstr "Uživatelské jméno, či heslo MSSQL není platné: %s"
+#: setup/postgresql.php:23 setup/postgresql.php:69
+msgid "PostgreSQL username and/or password not valid"
+msgstr "Uživatelské jméno či heslo PostgreSQL není platné"
 
-#: setup.php:858
+#: setup.php:28
+msgid "Set an admin username."
+msgstr "Zadejte uživatelské jméno správce."
+
+#: setup.php:31
+msgid "Set an admin password."
+msgstr "Zadejte heslo správce."
+
+#: setup.php:184
 msgid ""
 "Your web server is not yet properly setup to allow files synchronization "
 "because the WebDAV interface seems to be broken."
-msgstr "Váš webový server není správně nastaven pro umožnění synchronizace, protože rozhraní WebDAV je rozbité."
+msgstr "Váš webový server není správně nastaven pro umožnění synchronizace, rozhraní WebDAV se zdá být rozbité."
 
-#: setup.php:859
+#: setup.php:185
 #, php-format
 msgid "Please double check the <a href='%s'>installation guides</a>."
 msgstr "Zkonzultujte, prosím, <a href='%s'>průvodce instalací</a>."
 
-#: template.php:113
+#: template/functions.php:80
 msgid "seconds ago"
-msgstr "před pár vteřinami"
+msgstr "před pár sekundami"
 
-#: template.php:114
-msgid "1 minute ago"
-msgstr "před minutou"
+#: template/functions.php:81
+msgid "%n minute ago"
+msgid_plural "%n minutes ago"
+msgstr[0] "před %n minutou"
+msgstr[1] "před %n minutami"
+msgstr[2] "před %n minutami"
 
-#: template.php:115
-#, php-format
-msgid "%d minutes ago"
-msgstr "před %d minutami"
+#: template/functions.php:82
+msgid "%n hour ago"
+msgid_plural "%n hours ago"
+msgstr[0] "před %n hodinou"
+msgstr[1] "před %n hodinami"
+msgstr[2] "před %n hodinami"
 
-#: template.php:116
-msgid "1 hour ago"
-msgstr "před hodinou"
-
-#: template.php:117
-#, php-format
-msgid "%d hours ago"
-msgstr "před %d hodinami"
-
-#: template.php:118
+#: template/functions.php:83
 msgid "today"
 msgstr "dnes"
 
-#: template.php:119
+#: template/functions.php:84
 msgid "yesterday"
 msgstr "včera"
 
-#: template.php:120
-#, php-format
-msgid "%d days ago"
-msgstr "před %d dny"
+#: template/functions.php:85
+msgid "%n day go"
+msgid_plural "%n days ago"
+msgstr[0] "před %n dnem"
+msgstr[1] "před %n dny"
+msgstr[2] "před %n dny"
 
-#: template.php:121
+#: template/functions.php:86
 msgid "last month"
 msgstr "minulý měsíc"
 
-#: template.php:122
-#, php-format
-msgid "%d months ago"
-msgstr "Před %d měsíci"
+#: template/functions.php:87
+msgid "%n month ago"
+msgid_plural "%n months ago"
+msgstr[0] "před %n měsícem"
+msgstr[1] "před %n měsíci"
+msgstr[2] "před %n měsíci"
 
-#: template.php:123
+#: template/functions.php:88
 msgid "last year"
 msgstr "minulý rok"
 
-#: template.php:124
+#: template/functions.php:89
 msgid "years ago"
 msgstr "před lety"
+
+#: template.php:297
+msgid "Caused by:"
+msgstr "Příčina:"
 
 #: vcategories.php:188 vcategories.php:249
 #, php-format
