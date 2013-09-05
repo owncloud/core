@@ -521,17 +521,23 @@ a.action>img {
 
 div.crumb a {
 	padding: 0.9em 0 0.7em 0;
-	color: #555;
-}
-
-div.crumb a:hover {
 	color: #b0b0b0;
 }
 
-div.crumb a:hover img {
+div.crumb a:hover {
+	color: #555;
+}
+
+div.crumb a img {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
 	filter: alpha(opacity=30);
 	opacity: .3;
+}
+
+div.crumb a:hover img {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+	filter: alpha(opacity=90);
+	opacity: .9;
 }
 
 table.dragshadow {
