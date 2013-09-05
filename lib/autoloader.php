@@ -16,6 +16,24 @@ class Autoloader {
 	private $classPaths = array();
 
 	/**
+	 * Registers this instance as an autoloader.
+	 *
+	 * @param Boolean $prepend Whether to prepend the autoloader or not
+	 */
+	public function register($prepend = false)
+	{
+		spl_autoload_register(array($this, 'load'), true, $prepend);
+	}
+
+	/**
+	 * Unregisters this instance as an autoloader.
+	 */
+	public function unregister()
+	{
+		spl_autoload_unregister(array($this, 'load'));
+	}
+
+	/**
 	 * Add a custom prefix to the autoloader
 	 *
 	 * @param string $prefix

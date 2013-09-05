@@ -85,15 +85,7 @@ class OC {
 	public static $loader = null;
 
 	public static function initPaths() {
-		// calculate the root directories
-		OC::$SERVERROOT = str_replace("\\", '/', substr(__DIR__, 0, -4));
-
-		// ensure we can find OC_Config
-		set_include_path(
-			OC::$SERVERROOT . '/lib' . PATH_SEPARATOR .
-			get_include_path()
-		);
-
+		// Calculate the sub-uri
 		OC::$SUBURI = str_replace("\\", "/", substr(realpath($_SERVER["SCRIPT_FILENAME"]), strlen(OC::$SERVERROOT)));
 		$scriptName = OC_Request::scriptName();
 		if (substr($scriptName, -1) == '/') {
@@ -107,6 +99,7 @@ class OC {
 			}
 		}
 
+		// set the webroot
 		OC::$WEBROOT = substr($scriptName, 0, strlen($scriptName) - strlen(OC::$SUBURI));
 
 		if (OC::$WEBROOT != '' and OC::$WEBROOT[0] !== '/') {
@@ -351,17 +344,33 @@ class OC {
 	}
 
 
-	public static function init() {
-		// register autoloader
-		require_once __DIR__ . '/cachingautoloader.php';
-		self::$loader = new \OC\CachingAutoloader();
+	public static function bootstrap() {
+		// register simple autoloader to be safe
+		require_once __DIR__ . '/autoloader.php';
+		$loader = new \OC\Autoloader();
+		$loader->register();
+
+		// calculate the server root directory
+		OC::$SERVERROOT = str_replace("\\", '/', substr(__DIR__, 0, -4));
+
+		$memoryCache = \OC\Memcache\Factory::createLowLatency('Autoloader');
+		if ($memoryCache) {
+			self::$loader = new \OC\CachingAutoloader($memoryCache);
+			self::$loader->register();
+			$loader->unregister();
+		} else {
+			self::$loader = $loader;
+		}
 		self::$loader->registerPrefix('Doctrine\\Common', 'doctrine/common/lib');
 		self::$loader->registerPrefix('Doctrine\\DBAL', 'doctrine/dbal/lib');
 		self::$loader->registerPrefix('Symfony\\Component\\Routing', 'symfony/routing');
 		self::$loader->registerPrefix('Sabre\\VObject', '3rdparty');
 		self::$loader->registerPrefix('Sabre_', '3rdparty');
 		self::$loader->registerPrefix('Patchwork', '3rdparty');
-		spl_autoload_register(array(self::$loader, 'load'));
+	}
+
+	public static function init() {
+		self::bootstrap();
 
 		// set some stuff
 		//ob_start();
