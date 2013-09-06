@@ -23,6 +23,8 @@ usersmanagement.controller('prioritygroupController',
 	['$scope', '$routeParams', 'GroupService', 'UserService',
 	function($scope, $routeParams, GroupService, UserService){
 		
+        $scope.routeParams = $routeParams;
+        
 		/*Returns everyone. */
 		$scope.getEveryone = function() {
 			
@@ -81,6 +83,8 @@ usersmanagement.controller('addUserController',
 		$scope.allgroups = GroupService.getByGroupId().get();
 		var newuser = $scope.newuser;
 		var password = $scope.password;
+        
+        /* Selected Group is dependant on multiselect, needs polishing. */
 		var selectedgroup = $scope.addGroup;
 		$scope.saveuser = function(newuser,password,selectedgroup) {
 			UserService.createuser(newuser,password,selectedgroup);
@@ -126,15 +130,12 @@ usersmanagement.controller('userlistController',
 			$scope.users = UserService.getUsersInGroup($routeParams.groupId);
 			$scope.loading = false;
 			$scope.userquotavalues = [
-									{ show : '5 GB' },
-									{ show : '10 GB' },
-									{ show : '15 GB' },
-									//{show : 'Unlimited'},
-									//{show : 'Custom'}
+                {show : '5 GB', quotaval : '5 GB'},
+			    {show : '10 GB', quotaval : '10 GB'},
+			    {show : '15 GB', quotaval : '15 GB'},
+			    {show : 'Unlimited', quotaval : 'none'}
 			];
-			
-			
-
+            
 			/* Takes Out all groups for the Multiselect dropdown */
 			$scope.allgroups = GroupService.getByGroupId().get();
 			
@@ -149,9 +150,11 @@ usersmanagement.controller('userlistController',
 			}
 			
 			/* Updates User Quota */
+    		$scope.updateUserQuota = function(userid,userquota) {
+    			QuotaService.setUserQuota(userid,userQuota.quotaval);
+    		}
 			$scope.updateUserQuota = function(userid,userQuota) {
-				console.log(userid);
-				QuotaService.setUserQuota(userid,userQuota.show);
+				QuotaService.setUserQuota(userid,userQuota.quotaval);
 			}
 			
 			/* Deletes Users */
