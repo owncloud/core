@@ -434,9 +434,7 @@ var OCdialogs = {
 	},
 	_getFileList: function(dir, mimeType) {
 		if (typeof(mimeType) === "string") {
-			var tmp = mimeType;
-			mimeType = new Array();
-			mimeType[0] = tmp;
+			mimeType = [mimeType];
 		}
 
 		return $.getJSON(
