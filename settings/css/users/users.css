@@ -2,7 +2,9 @@
  * ownCloud - Core
  *
  * @author Raghu Nayyar
+ * @author Jan-Christoph Borchardt
  * @copyright 2013 Raghu Nayyar <raghu.nayyar.007@gmail.com>
+ * @copyright 2013 Jan-Christoph Borchardt <hey@jancborchardt.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -18,6 +20,40 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
+
+form { display:inline; }
+table:not(.nostyle) th { height:2em; color:#999; }
+table:not(.nostyle) th, table:not(.nostyle) td { border-bottom:1px solid #ddd; padding:0 .5em; padding-left:.8em; text-align:left; font-weight:normal; }
+td.name, td.password { padding-left:.8em; }
+td.password>img,td.displayName>img, td.remove>a, td.quota>img { visibility:hidden; }
+td.password, td.quota, td.displayName { width:12em; cursor:pointer; }
+td.password>span, td.quota>span, rd.displayName>span { margin-right: 1.2em; color: #C7C7C7; }
+
+td.remove { width:1em; padding-right:1em; }
+tr:hover>td.password>span, tr:hover>td.displayName>span { margin:0; cursor:pointer; }
+tr:hover>td.remove>a, tr:hover>td.password>img,tr:hover>td.displayName>img, tr:hover>td.quota>img { visibility:visible; cursor:pointer; }
+tr:hover>td.remove>a { float:right; }
+li.selected { background-color:#ddd; }
+table:not(.nostyle) { width:100%; }
+#rightcontent { padding-left: 1em; }
+div.quota { float:right; display:block; position:absolute; right:25em; top:-1px; }
+div.quota-select-wrapper { position: relative; }
+div.recoveryPassword { left:50em; display:block; position:absolute; top:-1px; }
+input#recoveryPassword {width:15em;}
+select.quota { position:absolute; left:0; top:0; width:10em; }
+select.quota-user { position:relative; left:0; top:0; width:10em; }
+div.quota>span { position:absolute; right:0; white-space:nowrap; top:.7em; color:#888; text-shadow:0 1px 0 #fff; }
+select.quota.active { background: #fff; }
+
+/* positioning fixes */
+#newuser { position:relative; top:-3px; }
+#newuser .multiselect { top:1px; }
+#headerGroups, #headerSubAdmins, #headerQuota { padding-left:18px; }
+
+.ie8 table.hascontrols{border-collapse:collapse;width: 100%;}
+.ie8 table.hascontrols tbody tr{border-collapse:collapse;border: 1px solid #ddd !important;}
+
 
 /* Group List Styles */
 
@@ -160,8 +196,9 @@ form[name="creategroup_form"] input {
 	background-color: transparent;
 	border: 0;
 	box-shadow: none;
-	height: 32px;
-	width: 32px;
+    position:absolute;
+    top:0;
+    right:-5px;
 }
 
 .delete-button:hover {
@@ -176,17 +213,11 @@ form[name="creategroup_form"] input {
 
 .utils .activeusercount {
 	right:25px;
-	top:5px;
+	top:6px;
 }
 
 #hascontrols {
 	margin-left: 300px;
-	/*background-image: linear-gradient(top, rgb(248,248,248) 0, rgb(255,255,255) 84px);
-	background-image: -o-linear-gradient(top, rgb(248,248,248) 0, rgb(255,255,255) 84px);
-	background-image: -moz-linear-gradient(top, rgb(248,248,248) 0, rgb(255,255,255) 84px);
-	background-image: -webkit-linear-gradient(top, rgb(248,248,248) 0, rgb(255,255,255) 84px);
-	background-image: -ms-linear-gradient(top, rgb(248,248,248) 0, rgb(255,255,255) 84px);
-	*/
 	background-color:#efefef;
 	padding: 2px 0 2px 0;
 }
@@ -217,26 +248,17 @@ form[name="creategroup_form"] input {
 	height:44px;
 }
 
-#userlist tbody tr > td.delete-column .delete-button {
+#userlist tbody tr > td.delete-column .delete-user-icon {
 	opacity:0;
 	background-color:transparent;
 	padding:2px;
+    border:0;
 }
 
-#userlist tbody tr:hover > td.delete-column .delete-button {
+#userlist tbody tr:hover > td.delete-column .delete-user-icon {
 	opacity:1;
 }
 
-.thumbnail {
-	position:relative;
-	width:50px;
-}
-
-.thumbnail img {
-	position: absolute;
-	top: 6px;
-	left: 10px;
-}
 
 .login-name, .display-name, .user-pass, .groups, .local-storage {
 	max-width:200px;
@@ -257,43 +279,4 @@ form[name="creategroup_form"] input {
 
 .groups .editgroupdiv select {
 	display:none !important;
-}
-
-
-.groups .chzn-container .chzn-choices {
-	width:150px;
-}
-
-.groups .chzn.container .chzn-drop {
-	width:150px;
-}
-
-#newusergroups_chzn {
-	width:150px !important;
-}
-
-#newusergroups_chzn .chzn-choices {
-	overflow-y:scroll;
-	max-height:30px;
-	width:150px !important;
-	margin: -9px -2px;
-}
-
-.groups .chzn-choices .search-input {
-	width:150px !important;
-}
-
-#newusergroups_chzn .chzn-choices .search-field input, .groups .chzn-choices .search-field input {
-	width:150px !important;
-}
-
-#newusergroups_chzn .chzn-drop {
-	margin: 9px -2px;
-}
-
-#newusergroups_chzn .chzn-drop, .groups .chzn-drop {
-	width:150px !important;
-}
-.groups .chzn-drop .chz-results {
-	min-width:150px !important;
 }
