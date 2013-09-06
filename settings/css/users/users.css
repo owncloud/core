@@ -56,7 +56,6 @@ select.quota.active { background: #fff; }
 
 
 /* Group List Styles */
-
 #user-settings { height:100%; }
 #app-navigation { position: fixed; overflow:auto !important; }
 #app-navigation > ul { height:auto; overflow:auto; }
@@ -65,187 +64,51 @@ select.quota.active { background: #fff; }
 #user-groups { overflow:hidden !important; }
 
 /* Explicit Items in the List */
-
-.everyone {
-	background-color: #ddd;
-	border-top: 1px solid #fff;
-	border-bottom: 1px solid #ddd;
-	position: relative;
-	width: 100%;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	text-shadow: 0 1px 0 rgba(255,255,255,.9);
-}
-
-.everyone:hover {
-	border-top: 1px solid #ccc;
-	border-bottom: 1px solid #ccc;
-}
-
-.everyone a {
-	display: block;
-	width: 100%;
-	padding: 0 16px;
-	overflow: hidden;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	line-height: 32px;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	color: #333;
-}
-.admin {
-
-}
-
 .addgroupbutton {
-	background-color: #eee;
-	position: relative;
-	width: 100%;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
+	background-color: #eee; position: relative; width: 100%; height:44px;
+	-moz-box-sizing: border-box; box-sizing: border-box;
 	text-shadow: 0 1px 0 rgba(255,255,255,.9);
-	height:44px;
 }
+.addgroupbutton:hover { background:#DDD; }
 
-.addgroupbutton:hover {
-	background:#DDD;
+.addgroupbutton span { display: block; width: 100%; padding: 7px 12px; overflow: hidden;
+	-moz-box-sizing: border-box; box-sizing: border-box;
+	line-height: 32px; white-space: nowrap; text-overflow: ellipsis; cursor:pointer;
+	color: #333; font-weight:500;
 }
-
-.addgroupbutton span {
-	display: block;
-	width: 100%;
-	padding: 7px 12px;
-	overflow: hidden;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	line-height: 32px;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	color: #333;
-	cursor:pointer;
-	font-weight:500;
+.showgroupinput { background:#eee; border-bottom:1px solid #ccc; }
+form[name="creategroup_form"] { padding:4px 12px; }
+form[name="creategroup_form"] input { width: 250px;
+	margin-top: 8px; margin-left: 1px;
 }
-
-.showgroupinput {
-	background:#eee;
-	border-bottom:1px solid #ccc;
-}
-
-#app-settings-content {
-	display:block;
-	height:100px;
-}
-
-form[name="creategroup_form"] {
-	padding:4px 12px;
-}
-form[name="creategroup_form"] input {
-	width: 250px;
-	margin-top: 8px;
-	margin-left: 1px;
-}
-
-#user-content .loading {
-	position:fixed;
-	top:50%;
-	left:50%;
-}
-
-.utils {
-	position:absolute;
-	right:0;
-	top:0px;
-}
-
-.delete-button {
-	margin: 0;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-color: transparent;
-	border: 0;
+#app-settings-content { display:block; height:100px; }
+#user-content .loading { position:fixed; top:50%; left:50%; }
+.utils { position:absolute; right:0; top:0px; }
+.delete-button { 
+    margin: 0; border: 0;
+    position:absolute; top:0; right:-5px;
+    background-position: center; background-repeat: no-repeat; background-color: transparent;
 	box-shadow: none;
-    position:absolute;
-    top:0;
-    right:-5px;
 }
+.delete-button:hover { background-color: #DDD; }
+.utils span { position: absolute; padding: 7px;
+	right:5px; top:5px;
+}
+.utils .activeusercount { right:35px; top:6px; }
+#hascontrols { margin-left: 300px; background-color:#efefef; padding: 2px 0 2px 0; }
+#searchBar { float: right; margin: -40px 10px; }
 
-.delete-button:hover {
-	background-color: #DDD;
-}
-.utils span {
-	position: absolute;
-	padding: 7px;
-	right:5px;
-	top:5px;
-}
-
-.utils .activeusercount {
-	right:35px;
-	top:6px;
-}
-
-#hascontrols {
-	margin-left: 300px;
-	background-color:#efefef;
-	padding: 2px 0 2px 0;
-}
-
-#searchBar {
-	float: right;
-	margin: -40px 10px;
-}
 /* User Table */
-
-#user-table {
-	position: absolute;
-	left: 300px;
-	float: left;
-	min-width: 700px;
+#user-table { position: absolute; left: 300px; float: left; min-width: 700px; }
+#userlist { position: relative; width:100%; }
+#userlist tbody tr > td.delete-column .delete-user-icon { 
+    opacity:0; background-color:transparent;
+	padding:2px; border:0;
 }
-
-#userlist {
-	position: relative;
-	width:100%;
-}
-
-#userlist thead {
-	height:30px;
-}
-
-#userlist tbody tr {
-	height:44px;
-}
-
-#userlist tbody tr > td.delete-column .delete-user-icon {
-	opacity:0;
-	background-color:transparent;
-	padding:2px;
-    border:0;
-}
-
-#userlist tbody tr:hover > td.delete-column .delete-user-icon {
-	opacity:1;
-}
-
-
-.login-name, .display-name, .user-pass, .groups, .local-storage {
-	max-width:200px;
-	width:200px;
-}
-
-.display-name span, .user-pass span {
-	width:100px;
-	padding:7px 95px 5px 5px;
-	border-radius:5px;
-	border:1px solid transparent;
+#userlist tbody tr:hover > td.delete-column .delete-user-icon { opacity:1; }
+.login-name, .display-name, .user-pass, .groups, .local-storage { max-width:200px; width:200px; }
+.display-name span, .user-pass span { width:100px; padding:7px 95px 5px 5px;
+	border-radius:5px; border:1px solid transparent;
 	cursor:text;
 }
-
-.display-name span:hover, .user-pass span:hover {
-	border:1px solid #eee;
-}
-
-.groups .editgroupdiv select {
-	display:none !important;
-}
+.display-name span:hover, .user-pass span:hover { border:1px solid #eee; }
