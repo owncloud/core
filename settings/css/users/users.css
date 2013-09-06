@@ -57,43 +57,12 @@ select.quota.active { background: #fff; }
 
 /* Group List Styles */
 
-#user-settings {
-	height:100%;
-}
-
-#app-navigation {
-	position: fixed;
-	overflow:auto !important;
-}
-
-#priority-list {
-	border-bottom:1px solid #ccc;
-}
-
-#app-navigation > ul {
-	height:auto;
-	overflow:auto;
-}
-
-#user-groups {
-	overflow:hidden !important;
-}
-
-.error {
-	float: left;
-	display: block;
-	width: 100%;
-	text-align: center;
-	height: 25px;
-	padding-top: 10px;
-	background: #F2FF63;
-}
-
-#app-navigation .loading, #user-content .loading {
-	width:35px;
-	height:35px;
-	margin:0 auto;
-}
+#user-settings { height:100%; }
+#app-navigation { position: fixed; overflow:auto !important; }
+#app-navigation > ul { height:auto; overflow:auto; }
+#app-navigation .loading, #user-content .loading { width:35px; height:35px; margin:0 auto; }
+#priority-list { border-bottom:1px solid #ccc; }
+#user-groups { overflow:hidden !important; }
 
 /* Explicit Items in the List */
 

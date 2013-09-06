@@ -599,7 +599,7 @@ usersmanagement.directive('multiselectUsers', [function() {
 	return function(scope, element, attributes) {
 		element = $(element[0]); // To use jQuery.
         element.multiSelect({
-			title: 'Add to Groups..',
+			title: 'Groups..',
 			createText: scope.label,
 			selectedFirst: true,
 			minWidth: 100
@@ -631,10 +631,10 @@ usersmanagement.directive('multiselectDropdown', [function() {
 	return function(scope, element, attributes) {
 		element = $(element[0]); // To use jQuery.
         element.multiSelect({
-			title: 'Add to Groups..',
+			title: 'Groups..',
 			oncheck: scope.addGroup,
-			minWidth: 150,
-			maxWidth: 200
+			minWidth: 100,
+			maxWidth: 125
         });
 	}
 }]);
