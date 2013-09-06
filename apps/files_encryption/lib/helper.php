@@ -132,7 +132,7 @@ class Helper {
 
 			$view->file_put_contents('/public-keys/' . $recoveryKeyId . '.public.key', $keypair['publicKey']);
 
-			// Encrypt private key empthy passphrase
+			// Encrypt private key empty passphrase
 			$encryptedPrivateKey = \OCA\Encryption\Crypt::symmetricEncryptFileContent($keypair['privateKey'], $recoveryPassword);
 
 			// Save private key
@@ -199,12 +199,39 @@ class Helper {
 	public static function stripUserFilesPath($path) {
 		$trimmed = ltrim($path, '/');
 		$split = explode('/', $trimmed);
+		
+		// it is not a file relative to data/user/files
+		if (count($split) < 3 || $split[1] !== 'files') {
+			return false;
+		}
+		
 		$sliced = array_slice($split, 2);
 		$relPath = implode('/', $sliced);
 
 		return $relPath;
 	}
 
+	/**
+	 * @brief get path to the correspondig file in data/user/files
+	 * @param string $path path to a version or a file in the trash
+	 * @return string path to correspondig file relative to data/user/files
+	 */
+	public static function getPathToRealFile($path) {
+		$trimmed = ltrim($path, '/');
+		$split = explode('/', $trimmed);
+		
+		if (count($split) < 3 || $split[1] !== "files_versions") {
+			return false;
+		}
+		
+		$sliced = array_slice($split, 2);
+		$realPath = implode('/', $sliced);
+		//remove the last .v
+		$realPath = substr($realPath, 0, strrpos($realPath, '.v'));
+
+		return $realPath;
+	}	
+	
 	/**
 	 * @brief redirect to a error page
 	 */
@@ -217,4 +244,64 @@ class Helper {
 		header('Location: ' . $location . '?p=' . $post);
 		exit();
 	}
+
+	/**
+	 * check requirements for encryption app.
+	 * @return bool true if requirements are met
+	 */
+	public static function checkRequirements() {
+		$result = true;
+
+		//openssl extension needs to be loaded
+		$result &= extension_loaded("openssl");
+		// we need php >= 5.3.3
+		$result &= version_compare(phpversion(), '5.3.3', '>=');
+
+		return (bool) $result;
+	}
+	
+	/**
+	 * check some common errors if the server isn't configured properly for encryption
+	 * @return bool true if configuration seems to be OK
+	 */
+	public static function checkConfiguration() {
+		if(self::getOpenSSLPkey()) {
+			return true;
+		} else {
+			while ($msg = openssl_error_string()) {
+				\OCP\Util::writeLog('Encryption library', 'openssl_pkey_new() fails:  ' . $msg, \OCP\Util::ERROR);
+			}
+			return false;
+		}
+	}
+
+	/**
+	 * Create an openssl pkey with config-supplied settings
+	 * WARNING: This initializes a new private keypair, which is computationally expensive
+	 * @return resource The pkey resource created
+	 */
+	public static function getOpenSSLPkey() {
+		return openssl_pkey_new(self::getOpenSSLConfig());
+	}
+
+	/**
+	 * Return an array of OpenSSL config options, default + config
+	 * Used for multiple OpenSSL functions
+	 * @return array The combined defaults and config settings
+	 */
+	public static function getOpenSSLConfig() {
+		$config = array('private_key_bits' => 4096);
+		$config = array_merge(\OCP\Config::getSystemValue('openssl', array()), $config);
+		return $config;
+	}
+
+	/**
+	 * @brief glob uses different pattern than regular expressions, escape glob pattern only
+	 * @param unescaped path
+	 * @return escaped path
+	 */
+	public static function escapeGlobPattern($path) {
+		return preg_replace('/(\*|\?|\[)/', '[$1]', $path);
+	}
 }
+

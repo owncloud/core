@@ -222,7 +222,6 @@ class OC_Connector_Sabre_Directory extends OC_Connector_Sabre_Node implements Sa
 			throw new \Sabre_DAV_Exception_Forbidden();
 		}
 		if ($this->path != "/Shared") {
-			foreach($this->getChildren() as $child) $child->delete();
 			\OC\Files\Filesystem::rmdir($this->path);
 		}
 
@@ -234,10 +233,10 @@ class OC_Connector_Sabre_Directory extends OC_Connector_Sabre_Node implements Sa
 	 * @return array
 	 */
 	public function getQuotaInfo() {
-		$rootInfo=\OC\Files\Filesystem::getFileInfo('');
+		$storageInfo = OC_Helper::getStorageInfo($this->path);
 		return array(
-			$rootInfo['size'],
-			\OC\Files\Filesystem::free_space()
+			$storageInfo['used'],
+			$storageInfo['free']
 		);
 
 	}

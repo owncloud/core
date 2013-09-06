@@ -20,10 +20,19 @@ class View extends \PHPUnit_Framework_TestCase {
 	private $storages = array();
 
 	public function setUp() {
+		\OC_User::clearBackends();
+		\OC_User::useBackend(new \OC_User_Dummy());
+
+		//login
+		\OC_User::createUser('test', 'test');
+		$this->user = \OC_User::getUser();
+		\OC_User::setUserId('test');
+
 		\OC\Files\Filesystem::clearMounts();
 	}
 
 	public function tearDown() {
+		\OC_User::setUserId($this->user);
 		foreach ($this->storages as $storage) {
 			$cache = $storage->getCache();
 			$ids = $cache->getAll();
@@ -314,6 +323,35 @@ class View extends \PHPUnit_Framework_TestCase {
 		$cachedData = $rootView->getFileInfo('foo.txt');
 		$this->assertGreaterThanOrEqual($cachedData['mtime'], $oldCachedData['mtime']);
 		$this->assertEquals($cachedData['storage_mtime'], $cachedData['mtime']);
+	}
+
+	/**
+	 * @medium
+	 */
+	function testViewHooks() {
+		$storage1 = $this->getTestStorage();
+		$storage2 = $this->getTestStorage();
+		$defaultRoot = \OC\Files\Filesystem::getRoot();
+		\OC\Files\Filesystem::mount($storage1, array(), '/');
+		\OC\Files\Filesystem::mount($storage2, array(), $defaultRoot . '/substorage');
+		\OC_Hook::connect('OC_Filesystem', 'post_write', $this, 'dummyHook');
+
+		$rootView = new \OC\Files\View('');
+		$subView = new \OC\Files\View($defaultRoot . '/substorage');
+		$this->hookPath = null;
+
+		$rootView->file_put_contents('/foo.txt', 'asd');
+		$this->assertNull($this->hookPath);
+
+		$subView->file_put_contents('/foo.txt', 'asd');
+		$this->assertNotNull($this->hookPath);
+		$this->assertEquals('/substorage/foo.txt', $this->hookPath);
+	}
+
+	private $hookPath;
+
+	function dummyHook($params) {
+		$this->hookPath = $params['path'];
 	}
 
 	/**

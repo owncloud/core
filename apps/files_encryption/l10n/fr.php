@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Recovery key successfully enabled" => "Clé de récupération activée avec succès",
 "Could not enable recovery key. Please check your recovery key password!" => "Impossible d'activer la clé de récupération. Veuillez vérifier votre mot de passe de clé de récupération !",
 "Recovery key successfully disabled" => "Clé de récupération désactivée avec succès",
@@ -8,8 +9,9 @@
 "Private key password successfully updated." => "Mot de passe de la clé privé mis à jour avec succès.",
 "Could not update the private key password. Maybe the old password was not correct." => "Impossible de mettre à jour le mot de passe de la clé privé. Peut-être que l'ancien mot de passe n'était pas correcte.",
 "Your private key is not valid! Likely your password was changed outside the ownCloud system (e.g. your corporate directory). You can update your private key password in your personal settings to recover access to your encrypted files." => "Votre clé de sécurité privée n'est pas valide! Il est probable que votre mot de passe ait été changé sans passer par le système ownCloud (par éxemple: le serveur de votre entreprise). Ain d'avoir à nouveau accès à vos fichiers cryptés, vous pouvez mettre à jour votre clé de sécurité privée dans les paramètres personnels de votre compte.",
-"PHP module OpenSSL is not installed." => "Le module OpenSSL de PHP n'est pas installé.",
-"Please ask your server administrator to install the module. For now the encryption app was disabled." => "Veuillez demander à l'administrateur du serveur d'installer le module. Pour l'instant l'application de chiffrement a été désactivé.",
+"Missing requirements." => "Système minimum requis non respecté.",
+"Please make sure that PHP 5.3.3 or newer is installed and that OpenSSL together with the PHP extension is enabled and configured properly. For now, the encryption app has been disabled." => "Veuillez vous assurer qu'une version de PHP 5.3.3 ou supérieure est installée et qu'OpenSSL et son extension PHP sont activés et configurés correctement. En attendant, l'application de chiffrement été désactivée.",
+"Following users are not set up for encryption:" => "Les utilisateurs suivants ne sont pas configurés pour le chiffrement :",
 "Saving..." => "Enregistrement...",
 "Your private key is not valid! Maybe the your password was changed from outside." => "Votre clef privée est invalide ! Votre mot de passe a peut-être été modifié depuis l'extérieur.",
 "You can unlock your private key in your " => "Vous pouvez déverrouiller votre clé privée dans votre",
@@ -34,3 +36,4 @@
 "File recovery settings updated" => "Paramètres de récupération de fichiers mis à jour",
 "Could not update file recovery" => "Ne peut pas remettre à jour les fichiers de récupération"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n > 1);";

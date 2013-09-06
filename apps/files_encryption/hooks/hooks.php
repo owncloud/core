@@ -30,23 +30,12 @@ use OC\Files\Filesystem;
  */
 class Hooks {
 
-	// TODO: use passphrase for encrypting private key that is separate to 
-	// the login password
-
 	/**
 	 * @brief Startup encryption backend upon user login
 	 * @note This method should never be called for users using client side encryption
 	 */
 	public static function login($params) {
 		$l = new \OC_L10N('files_encryption');
-		//check if openssl is available
-		if(!extension_loaded("openssl") ) {
-			$error_msg = $l->t("PHP module OpenSSL is not installed.");
-			$hint = $l->t('Please ask your server administrator to install the module. For now the encryption app was disabled.');
-			\OC_App::disable('files_encryption');
-			\OCP\Util::writeLog('Encryption library', $error_msg . ' ' . $hint, \OCP\Util::ERROR);
-			\OCP\Template::printErrorPage($error_msg, $hint);
-		}
 
 		$view = new \OC_FilesystemView('/');
 
@@ -57,23 +46,21 @@ class Hooks {
 
 		$util = new Util($view, $params['uid']);
 
+		//check if all requirements are met
+		if(!$util->ready() && (!Helper::checkRequirements() || !Helper::checkConfiguration())) {
+			$error_msg = $l->t("Missing requirements.");
+			$hint = $l->t('Please make sure that PHP 5.3.3 or newer is installed and that OpenSSL together with the PHP extension is enabled and configured properly. For now, the encryption app has been disabled.');
+			\OC_App::disable('files_encryption');
+			\OCP\Util::writeLog('Encryption library', $error_msg . ' ' . $hint, \OCP\Util::ERROR);
+			\OCP\Template::printErrorPage($error_msg, $hint);
+		}
+
 		// setup user, if user not ready force relogin
 		if (Helper::setupUser($util, $params['password']) === false) {
 			return false;
 		}
 
-		$encryptedKey = Keymanager::getPrivateKey($view, $params['uid']);
-
-		$privateKey = Crypt::decryptPrivateKey($encryptedKey, $params['password']);
-
-		if ($privateKey === false) {
-			\OCP\Util::writeLog('Encryption library', 'Private key for user "' . $params['uid']
-													  . '" is not valid! Maybe the user password was changed from outside if so please change it back to gain access', \OCP\Util::ERROR);
-		}
-
-		$session = new \OCA\Encryption\Session($view);
-
-		$session->setPrivateKey($privateKey);
+		$session = $util->initEncryption($params);
 
 		// Check if first-run file migration has already been performed
 		$ready = false;
@@ -238,6 +225,7 @@ class Hooks {
 	 */
 	public static function preShared($params) {
 
+		$l = new \OC_L10N('files_encryption');
 		$users = array();
 		$view = new \OC\Files\View('/public-keys/');
 
@@ -250,21 +238,18 @@ class Hooks {
 				break;
 		}
 
-		$error = false;
+		$notConfigured = array();
 		foreach ($users as $user) {
 			if (!$view->file_exists($user . '.public.key')) {
-				$error = true;
-				break;
+				$notConfigured[] = $user;
 			}
 		}
 
-		if ($error) // Set flag var 'run' to notify emitting
-			// script that hook execution failed
-		{
-			$params['run']->run = false;
+		if (count($notConfigured) > 0) {
+			$params['run'] = false;
+			$params['error'] = $l->t('Following users are not set up for encryption:') . ' ' . join(', ' , $notConfigured);
 		}
-		// TODO: Make sure files_sharing provides user
-		// feedback on failed share
+		
 	}
 
 	/**
@@ -476,10 +461,19 @@ class Hooks {
 		$util = new Util($view, $userId);
 
 		// Format paths to be relative to user files dir
-		$oldKeyfilePath = \OC\Files\Filesystem::normalizePath(
-			$userId . '/' . 'files_encryption' . '/' . 'keyfiles' . '/' . $params['oldpath']);
-		$newKeyfilePath = \OC\Files\Filesystem::normalizePath(
-			$userId . '/' . 'files_encryption' . '/' . 'keyfiles' . '/' . $params['newpath']);
+		if ($util->isSystemWideMountPoint($params['oldpath'])) {
+			$baseDir = 'files_encryption/';
+			$oldKeyfilePath = $baseDir . 'keyfiles/' . $params['oldpath'];
+		} else {
+			$baseDir = $userId . '/' . 'files_encryption/';
+			$oldKeyfilePath = $baseDir . 'keyfiles/' . $params['oldpath'];
+		}
+
+		if ($util->isSystemWideMountPoint($params['newpath'])) {
+			$newKeyfilePath =  $baseDir . 'keyfiles/' . $params['newpath'];
+		} else {
+			$newKeyfilePath = $baseDir . 'keyfiles/' . $params['newpath'];
+		}
 
 		// add key ext if this is not an folder
 		if (!$view->is_dir($oldKeyfilePath)) {
@@ -487,8 +481,9 @@ class Hooks {
 			$newKeyfilePath .= '.key';
 
 			// handle share-keys
-			$localKeyPath = $view->getLocalFile($userId . '/files_encryption/share-keys/' . $params['oldpath']);
-			$matches = glob(preg_quote($localKeyPath) . '*.shareKey');
+			$localKeyPath = $view->getLocalFile($baseDir . 'share-keys/' . $params['oldpath']);
+			$escapedPath = Helper::escapeGlobPattern($localKeyPath);
+			$matches = glob($escapedPath . '*.shareKey');
 			foreach ($matches as $src) {
 				$dst = \OC\Files\Filesystem::normalizePath(str_replace($params['oldpath'], $params['newpath'], $src));
 
@@ -502,10 +497,8 @@ class Hooks {
 
 		} else {
 			// handle share-keys folders
-			$oldShareKeyfilePath = \OC\Files\Filesystem::normalizePath(
-				$userId . '/' . 'files_encryption' . '/' . 'share-keys' . '/' . $params['oldpath']);
-			$newShareKeyfilePath = \OC\Files\Filesystem::normalizePath(
-				$userId . '/' . 'files_encryption' . '/' . 'share-keys' . '/' . $params['newpath']);
+			$oldShareKeyfilePath = $baseDir . 'share-keys/' . $params['oldpath'];
+			$newShareKeyfilePath = $baseDir . 'share-keys/' . $params['newpath'];
 
 			// create destination folder if not exists
 			if (!$view->file_exists(dirname($newShareKeyfilePath))) {

@@ -52,17 +52,18 @@ foreach($accessibleusers as $uid => $displayName) {
 		&& array_search($quota, array('none', 'default'))===false;
 
 	$name = $displayName;
-	if ( $displayName != $uid ) {
+	if ( $displayName !== $uid ) {
 		$name = $name . ' ('.$uid.')';
-	} 
-	
+	}
+
 	$users[] = array(
 		"name" => $uid,
-		"displayName" => $displayName, 
-		"groups" => join( ", ", /*array_intersect(*/OC_Group::getUserGroups($uid)/*, OC_SubAdmin::getSubAdminsGroups(OC_User::getUser()))*/),
-		'quota'=>$quota,
-		'isQuotaUserDefined'=>$isQuotaUserDefined,
-		'subadmin'=>implode(', ', OC_SubAdmin::getSubAdminsGroups($uid)));
+		"displayName" => $displayName,
+		"groups" => OC_Group::getUserGroups($uid),
+		'quota' => $quota,
+		'isQuotaUserDefined' => $isQuotaUserDefined,
+		'subadmin' => OC_SubAdmin::getSubAdminsGroups($uid),
+	);
 }
 
 foreach( $accessiblegroups as $i ) {

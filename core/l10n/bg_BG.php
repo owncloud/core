@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "No categories selected for deletion." => "Няма избрани категории за изтриване",
 "Sunday" => "Неделя",
 "Monday" => "Понеделник",
@@ -21,14 +22,15 @@
 "December" => "Декември",
 "Settings" => "Настройки",
 "seconds ago" => "преди секунди",
-"1 minute ago" => "преди 1 минута",
-"1 hour ago" => "преди 1 час",
+"_%n minute ago_::_%n minutes ago_" => array("",""),
+"_%n hour ago_::_%n hours ago_" => array("",""),
 "today" => "днес",
 "yesterday" => "вчера",
+"_%n day ago_::_%n days ago_" => array("",""),
 "last month" => "последният месец",
+"_%n month ago_::_%n months ago_" => array("",""),
 "last year" => "последната година",
 "years ago" => "последните години",
-"Cancel" => "Отказ",
 "Yes" => "Да",
 "No" => "Не",
 "Ok" => "Добре",
@@ -50,7 +52,6 @@
 "Help" => "Помощ",
 "Access forbidden" => "Достъпът е забранен",
 "Cloud not found" => "облакът не намерен",
-"web services under your control" => "уеб услуги под Ваш контрол",
 "Edit categories" => "Редактиране на категориите",
 "Add" => "Добавяне",
 "Create an <strong>admin account</strong>" => "Създаване на <strong>админ профил</strong>",
@@ -66,7 +67,6 @@
 "Log out" => "Изход",
 "Lost your password?" => "Забравена парола?",
 "remember" => "запомни",
-"Log in" => "Вход",
-"prev" => "пред.",
-"next" => "следващо"
+"Log in" => "Вход"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

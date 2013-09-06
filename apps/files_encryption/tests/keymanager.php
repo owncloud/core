@@ -6,14 +6,15 @@
  * See the COPYING-README file.
  */
 
-require_once realpath(dirname(__FILE__) . '/../../../lib/base.php');
-require_once realpath(dirname(__FILE__) . '/../lib/crypt.php');
-require_once realpath(dirname(__FILE__) . '/../lib/keymanager.php');
-require_once realpath(dirname(__FILE__) . '/../lib/proxy.php');
-require_once realpath(dirname(__FILE__) . '/../lib/stream.php');
-require_once realpath(dirname(__FILE__) . '/../lib/util.php');
-require_once realpath(dirname(__FILE__) . '/../lib/helper.php');
-require_once realpath(dirname(__FILE__) . '/../appinfo/app.php');
+require_once __DIR__ . '/../../../lib/base.php';
+require_once __DIR__ . '/../lib/crypt.php';
+require_once __DIR__ . '/../lib/keymanager.php';
+require_once __DIR__ . '/../lib/proxy.php';
+require_once __DIR__ . '/../lib/stream.php';
+require_once __DIR__ . '/../lib/util.php';
+require_once __DIR__ . '/../lib/helper.php';
+require_once __DIR__ . '/../appinfo/app.php';
+require_once __DIR__ . '/util.php';
 
 use OCA\Encryption;
 
@@ -21,6 +22,8 @@ use OCA\Encryption;
  * Class Test_Encryption_Keymanager
  */
 class Test_Encryption_Keymanager extends \PHPUnit_Framework_TestCase {
+
+	const TEST_USER = "test-keymanager-user";
 
 	public $userId;
 	public $pass;
@@ -47,26 +50,18 @@ class Test_Encryption_Keymanager extends \PHPUnit_Framework_TestCase {
 		// disable file proxy by default
 		\OC_FileProxy::$enabled = false;
 
-		// setup filesystem
-		\OC_Util::tearDownFS();
-		\OC_User::setUserId('');
-		\OC\Files\Filesystem::tearDown();
-		\OC_Util::setupFS('admin');
-		\OC_User::setUserId('admin');
-
-		// login admin
-		$params['uid'] = 'admin';
-		$params['password'] = 'admin';
-		OCA\Encryption\Hooks::login($params);
+		// create test user
+		\OC_User::deleteUser(\Test_Encryption_Keymanager::TEST_USER);
+		\Test_Encryption_Util::loginHelper(\Test_Encryption_Keymanager::TEST_USER, true);
 	}
 
 	function setUp() {
 		// set content for encrypting / decrypting in tests
-		$this->dataLong = file_get_contents(realpath(dirname(__FILE__) . '/../lib/crypt.php'));
+		$this->dataLong = file_get_contents(__DIR__ . '/../lib/crypt.php');
 		$this->dataShort = 'hats';
-		$this->dataUrl = realpath(dirname(__FILE__) . '/../lib/crypt.php');
-		$this->legacyData = realpath(dirname(__FILE__) . '/legacy-text.txt');
-		$this->legacyEncryptedData = realpath(dirname(__FILE__) . '/legacy-encrypted-text.txt');
+		$this->dataUrl = __DIR__ . '/../lib/crypt.php';
+		$this->legacyData = __DIR__ . '/legacy-text.txt';
+		$this->legacyEncryptedData = __DIR__ . '/legacy-encrypted-text.txt';
 		$this->randomKey = Encryption\Crypt::generateKey();
 
 		$keypair = Encryption\Crypt::createKeypair();
@@ -75,9 +70,9 @@ class Test_Encryption_Keymanager extends \PHPUnit_Framework_TestCase {
 
 		$this->view = new \OC_FilesystemView('/');
 
-		\OC_User::setUserId('admin');
-		$this->userId = 'admin';
-		$this->pass = 'admin';
+		\OC_User::setUserId(\Test_Encryption_Keymanager::TEST_USER);
+		$this->userId = \Test_Encryption_Keymanager::TEST_USER;
+		$this->pass = \Test_Encryption_Keymanager::TEST_USER;
 
 		$userHome = \OC_User::getHome($this->userId);
 		$this->dataDir = str_replace('/' . $this->userId, '', $userHome);
@@ -101,6 +96,9 @@ class Test_Encryption_Keymanager extends \PHPUnit_Framework_TestCase {
 
 	public static function tearDownAfterClass() {
 		\OC_FileProxy::$enabled = true;
+
+		// cleanup test user
+		\OC_User::deleteUser(\Test_Encryption_Keymanager::TEST_USER);
 	}
 
 	/**
@@ -143,10 +141,7 @@ class Test_Encryption_Keymanager extends \PHPUnit_Framework_TestCase {
 	 */
 	function testSetFileKey() {
 
-		# NOTE: This cannot be tested until we are able to break out 
-		# of the FileSystemView data directory root
-
-		$key = Encryption\Crypt::symmetricEncryptFileContentKeyfile($this->randomKey, 'hat');
+		$key = $this->randomKey;
 
 		$file = 'unittest-' . time() . '.txt';
 
@@ -154,24 +149,17 @@ class Test_Encryption_Keymanager extends \PHPUnit_Framework_TestCase {
 		$proxyStatus = \OC_FileProxy::$enabled;
 		\OC_FileProxy::$enabled = false;
 
-		$this->view->file_put_contents($this->userId . '/files/' . $file, $key['encrypted']);
+		$this->view->file_put_contents($this->userId . '/files/' . $file, $this->dataShort);
 
-		// Re-enable proxy - our work is done
-		\OC_FileProxy::$enabled = $proxyStatus;
+		Encryption\Keymanager::setFileKey($this->view, $file, $this->userId, $key);
 
-		//$view = new \OC_FilesystemView( '/' . $this->userId . '/files_encryption/keyfiles' );
-		Encryption\Keymanager::setFileKey($this->view, $file, $this->userId, $key['key']);
-
-		// enable encryption proxy
-		$proxyStatus = \OC_FileProxy::$enabled;
-		\OC_FileProxy::$enabled = true;
+		$this->assertTrue($this->view->file_exists('/' . $this->userId . '/files_encryption/keyfiles/' . $file . '.key'));
 
 		// cleanup
 		$this->view->unlink('/' . $this->userId . '/files/' . $file);
 
 		// change encryption proxy to previous state
 		\OC_FileProxy::$enabled = $proxyStatus;
-
 	}
 
 	/**
@@ -226,16 +214,16 @@ class Test_Encryption_Keymanager extends \PHPUnit_Framework_TestCase {
 		$filename = '/tmp-' . time() . '.txt';
 
 		// create folder structure
-		$this->view->mkdir('/admin/files/folder1');
-		$this->view->mkdir('/admin/files/folder1/subfolder');
-		$this->view->mkdir('/admin/files/folder1/subfolder/subsubfolder');
+		$this->view->mkdir('/'.Test_Encryption_Keymanager::TEST_USER.'/files/folder1');
+		$this->view->mkdir('/'.Test_Encryption_Keymanager::TEST_USER.'/files/folder1/subfolder');
+		$this->view->mkdir('/'.Test_Encryption_Keymanager::TEST_USER.'/files/folder1/subfolder/subsubfolder');
 
 		// enable encryption proxy
 		$proxyStatus = \OC_FileProxy::$enabled;
 		\OC_FileProxy::$enabled = true;
 
 		// save file with content
-		$cryptedFile = file_put_contents('crypt:///folder1/subfolder/subsubfolder/' . $filename, $this->dataShort);
+		$cryptedFile = file_put_contents('crypt:///'.Test_Encryption_Keymanager::TEST_USER.'/files/folder1/subfolder/subsubfolder' . $filename, $this->dataShort);
 
 		// test that data was successfully written
 		$this->assertTrue(is_int($cryptedFile));

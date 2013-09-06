@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Recovery key successfully enabled" => "Se ha habilitado la recuperación de archivos",
 "Could not enable recovery key. Please check your recovery key password!" => "No se pudo habilitar la clave de recuperación. Por favor compruebe su contraseña.",
 "Recovery key successfully disabled" => "Clave de recuperación deshabilitada",
@@ -7,8 +8,10 @@
 "Could not change the password. Maybe the old password was not correct." => "No se pudo cambiar la contraseña. Compruebe que la contraseña actual sea correcta.",
 "Private key password successfully updated." => "Contraseña de clave privada actualizada con éxito.",
 "Could not update the private key password. Maybe the old password was not correct." => "No se pudo cambiar la contraseña. Puede que la contraseña antigua no sea correcta.",
-"PHP module OpenSSL is not installed." => "El módulo OpenSSL de PHP no está instalado.",
-"Please ask your server administrator to install the module. For now the encryption app was disabled." => "Por favor pida al administrador de su servidor que le instale el módulo. De momento la aplicación de cifrado está deshabilitada.",
+"Your private key is not valid! Likely your password was changed outside the ownCloud system (e.g. your corporate directory). You can update your private key password in your personal settings to recover access to your encrypted files." => "¡Su clave privada no es válida! Tal vez su contraseña ha sido cambiada desde fuera. Puede actualizar su clave privada en sus opciones personales para recuperar el acceso a sus ficheros.",
+"Missing requirements." => "Requisitos incompletos.",
+"Please make sure that PHP 5.3.3 or newer is installed and that OpenSSL together with the PHP extension is enabled and configured properly. For now, the encryption app has been disabled." => "Por favor, asegúrese de que PHP 5.3.3 o posterior está instalado y que la extensión OpenSSL de PHP está habilitada y configurada correctamente. Por el momento, la aplicación de cifrado ha sido deshabilitada.",
+"Following users are not set up for encryption:" => "Los siguientes usuarios no han sido configurados para el cifrado:",
 "Saving..." => "Guardando...",
 "Your private key is not valid! Maybe the your password was changed from outside." => "¡Su clave privada no es válida! Tal vez su contraseña ha sido cambiada desde fuera.",
 "You can unlock your private key in your " => "Puede desbloquear su clave privada en su",
@@ -19,8 +22,8 @@
 "Enabled" => "Habilitar",
 "Disabled" => "Deshabilitado",
 "Change recovery key password:" => "Cambiar la contraseña de la clave de recuperación",
-"Old Recovery key password" => "Contraseña de la antigua clave de recuperación",
-"New Recovery key password" => "Contraseña de la nueva clave de recuperación",
+"Old Recovery key password" => "Antigua clave de recuperación",
+"New Recovery key password" => "Nueva clave de recuperación",
 "Change Password" => "Cambiar contraseña",
 "Your private key password no longer match your log-in password:" => "Su contraseña de clave privada ya no coincide con su contraseña de acceso:",
 "Set your old private key password to your current log-in password." => "Establecer la contraseña de su antigua clave privada a su contraseña actual de acceso.",
@@ -33,3 +36,4 @@
 "File recovery settings updated" => "Opciones de recuperación de archivos actualizada",
 "Could not update file recovery" => "No se pudo actualizar la recuperación de archivos"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

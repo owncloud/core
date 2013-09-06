@@ -12,7 +12,7 @@ use OC\Files\Stream\Dir;
 use SMB\NotFoundException;
 use SMB\Server;
 
-require_once 'smb/autoload.php';
+require_once 'files_external/3rdparty/smb/autoload.php';
 
 class SMB extends Common {
 	/**
@@ -52,7 +52,7 @@ class SMB extends Common {
 
 	/**
 	 * @param string $path
-	 * return array[]
+	 * @return array[]
 	 */
 	private function dir($path) {
 		$path = trim($path, '/');

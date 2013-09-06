@@ -1,9 +1,9 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "Ne eblis ŝargi liston el aplikaĵovendejo",
 "Authentication error" => "Aŭtentiga eraro",
 "Group already exists" => "La grupo jam ekzistas",
 "Unable to add group" => "Ne eblis aldoni la grupon",
-"Could not enable app. " => "Ne eblis kapabligi la aplikaĵon.",
 "Email saved" => "La retpoŝtadreso konserviĝis",
 "Invalid email" => "Nevalida retpoŝtadreso",
 "Unable to delete group" => "Ne eblis forigi la grupon",
@@ -16,6 +16,7 @@
 "Disable" => "Malkapabligi",
 "Enable" => "Kapabligi",
 "Error" => "Eraro",
+"Update" => "Ĝisdatigi",
 "Saving..." => "Konservante...",
 "deleted" => "forigita",
 "undo" => "malfari",
@@ -25,7 +26,6 @@
 "__language_name__" => "Esperanto",
 "Security Warning" => "Sekureca averto",
 "Your web server is not yet properly setup to allow files synchronization because the WebDAV interface seems to be broken." => "Via TTT-servilo ankoraŭ ne ĝuste agordiĝis por permesi sinkronigi dosierojn ĉar la WebDAV-interfaco ŝajnas rompita.",
-"Please double check the <a href='%s'>installation guides</a>." => "Bonvolu duoble kontroli la <a href='%s'>gvidilon por instalo</a>.",
 "Cron" => "Cron",
 "Sharing" => "Kunhavigo",
 "Enable Share API" => "Kapabligi API-on por Kunhavigo",
@@ -47,7 +47,6 @@
 "Select an App" => "Elekti aplikaĵon",
 "See application page at apps.owncloud.com" => "Vidu la paĝon pri aplikaĵoj ĉe apps.owncloud.com",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"</span>-permesilhavigita de <span class=\"author\"></span>",
-"Update" => "Ĝisdatigi",
 "User Documentation" => "Dokumentaro por uzantoj",
 "Administrator Documentation" => "Dokumentaro por administrantoj",
 "Online Documentation" => "Reta dokumentaro",
@@ -68,7 +67,7 @@
 "Language" => "Lingvo",
 "Help translate" => "Helpu traduki",
 "WebDAV" => "WebDAV",
-"Use this address to connect to your ownCloud in your file manager" => "Uzu ĉi tiun adreson por konekti al via ownCloud vian dosieradministrilon",
+"Encryption" => "Ĉifrado",
 "Create" => "Krei",
 "Default Storage" => "Defaŭlta konservejo",
 "Unlimited" => "Senlima",
@@ -77,3 +76,4 @@
 "Storage" => "Konservejo",
 "Default" => "Defaŭlta"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

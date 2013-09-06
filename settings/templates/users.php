@@ -43,12 +43,12 @@ $_['subadmingroups'] = array_flip($items);
 			<?php if((bool) $_['isadmin']): ?>
 			<select class='quota'>
 				<option
-					<?php if($_['default_quota']=='none') print_unescaped('selected="selected"');?>
+					<?php if($_['default_quota'] === 'none') print_unescaped('selected="selected"');?>
 						value='none'>
 					<?php p($l->t('Unlimited'));?>
 				</option>
 				<?php foreach($_['quota_preset'] as $preset):?>
-				<?php if($preset!='default'):?>
+				<?php if($preset !== 'default'):?>
 				<option
 				<?php if($_['default_quota']==$preset) print_unescaped('selected="selected"');?>
 					value='<?php p($preset);?>'>
@@ -78,7 +78,7 @@ $_['subadmingroups'] = array_flip($items);
 	</div>
 </div>
 
-<table class="hascontrols" data-groups="<?php p(implode(', ', $allGroups));?>">
+<table class="hascontrols" data-groups="<?php p(json_encode($allGroups));?>">
 	<thead>
 		<tr>
 			<th id='headerName'><?php p($l->t('Username'))?></th>
@@ -108,7 +108,7 @@ $_['subadmingroups'] = array_flip($items);
 			<td class="groups"><select
 				class="groupsselect"
 				data-username="<?php p($user['name']) ;?>"
-				data-user-groups="<?php p($user['groups']) ;?>"
+				data-user-groups="<?php p(json_encode($user['groups'])) ;?>"
 				data-placeholder="groups" title="<?php p($l->t('Groups'))?>"
 				multiple="multiple">
 					<?php foreach($_["groups"] as $group): ?>
@@ -120,7 +120,7 @@ $_['subadmingroups'] = array_flip($items);
 			<td class="subadmins"><select
 				class="subadminsselect"
 				data-username="<?php p($user['name']) ;?>"
-				data-subadmin="<?php p($user['subadmin']);?>"
+				data-subadmin="<?php p(json_encode($user['subadmin']));?>"
 				data-placeholder="subadmins" title="<?php p($l->t('Group Admin'))?>"
 				multiple="multiple">
 					<?php foreach($_["subadmingroups"] as $group): ?>
@@ -132,12 +132,12 @@ $_['subadmingroups'] = array_flip($items);
 			<td class="quota">
 				<select class='quota-user'>
 					<option
-						<?php if($user['quota']=='default') print_unescaped('selected="selected"');?>
+						<?php if($user['quota'] === 'default') print_unescaped('selected="selected"');?>
 							value='default'>
 						<?php p($l->t('Default'));?>
 					</option>
 					<option
-					<?php if($user['quota']=='none') print_unescaped('selected="selected"');?>
+					<?php if($user['quota'] === 'none') print_unescaped('selected="selected"');?>
 							value='none'>
 						<?php p($l->t('Unlimited'));?>
 					</option>

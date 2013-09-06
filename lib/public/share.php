@@ -140,8 +140,13 @@ class Share {
 		$source = -1;
 		$cache = false;
 
-		$view = new \OC\Files\View('/' . $user . '/files/');
-		$meta = $view->getFileInfo(\OC\Files\Filesystem::normalizePath($path));
+		$view = new \OC\Files\View('/' . $user . '/files');
+		if ($view->file_exists($path)) {
+			$meta = $view->getFileInfo($path);
+		} else {
+			// if the file doesn't exists yet we start with the parent folder
+			$meta = $view->getFileInfo(dirname($path));
+		}
 
 		if($meta !== false) {
 			$source = $meta['fileid'];
@@ -209,7 +214,7 @@ class Share {
 					}
 				}
 			}
-			
+
 			// let's get the parent for the next round
 			$meta = $cache->get((int)$source);
 			if($meta !== false) {
@@ -292,6 +297,29 @@ class Share {
 	}
 
 	/**
+	 * @brief resolves reshares down to the last real share
+	 * @param $linkItem
+	 * @return $fileOwner
+	 */
+	public static function resolveReShare($linkItem)
+	{
+		if (isset($linkItem['parent'])) {
+			$parent = $linkItem['parent'];
+			while (isset($parent)) {
+				$query = \OC_DB::prepare('SELECT * FROM `*PREFIX*share` WHERE `id` = ?', 1);
+				$item = $query->execute(array($parent))->fetchRow();
+				if (isset($item['parent'])) {
+					$parent = $item['parent'];
+				} else {
+					return $item;
+				}
+			}
+		}
+		return $linkItem;
+	}
+
+
+	/**
 	* @brief Get the shared items of item type owned by the current user
 	* @param string Item type
 	* @param int Format (optional) Format type must be defined by the backend
@@ -312,7 +340,7 @@ class Share {
 	* @return Return depends on format
 	*/
 	public static function getItemShared($itemType, $itemSource, $format = self::FORMAT_NONE,
-		$parameters = null, $includeCollections = false) {
+	                                     $parameters = null, $includeCollections = false) {
 		return self::getItems($itemType, $itemSource, null, null, \OC_User::getUser(), $format,
 			$parameters, -1, $includeCollections);
 	}
@@ -431,13 +459,16 @@ class Share {
 					$forcePortable = (CRYPT_BLOWFISH != 1);
 					$hasher = new \PasswordHash(8, $forcePortable);
 					$shareWith = $hasher->HashPassword($shareWith.\OC_Config::getValue('passwordsalt', ''));
+				} else {
+					// reuse the already set password
+					$shareWith = $checkExists['share_with'];
 				}
 
 				// Generate token
 				if (isset($oldToken)) {
 					$token = $oldToken;
 				} else {
-					$token = \OC_Util::generate_random_bytes(self::TOKEN_LENGTH);
+					$token = \OC_Util::generateRandomBytes(self::TOKEN_LENGTH);
 				}
 				$result = self::put($itemType, $itemSource, $shareType, $shareWith, $uidOwner, $permissions,
 					null, $token);
@@ -634,6 +665,17 @@ class Share {
 			}
 			$query = \OC_DB::prepare('UPDATE `*PREFIX*share` SET `permissions` = ? WHERE `id` = ?');
 			$query->execute(array($permissions, $item['id']));
+			if ($itemType === 'file' || $itemType === 'folder') {
+				\OC_Hook::emit('OCP\Share', 'post_update_permissions', array(
+					'itemType' => $itemType,
+					'itemSource' => $itemSource,
+					'shareType' => $shareType,
+					'shareWith' => $shareWith,
+					'uidOwner' => \OC_User::getUser(),
+					'permissions' => $permissions,
+					'path' => $item['path'],
+				));
+			}
 			// Check if permissions were removed
 			if ($item['permissions'] & ~$permissions) {
 				// If share permission is removed all reshares must be deleted
@@ -803,7 +845,11 @@ class Share {
 		// Get filesystem root to add it to the file target and remove from the
 		// file source, match file_source with the file cache
 		if ($itemType == 'file' || $itemType == 'folder') {
-			$root = \OC\Files\Filesystem::getRoot();
+			if(!is_null($uidOwner)) {
+				$root = \OC\Files\Filesystem::getRoot();
+			} else {
+				$root = '';
+			}
 			$where = 'INNER JOIN `*PREFIX*filecache` ON `file_source` = `*PREFIX*filecache`.`fileid`';
 			if (!isset($item)) {
 				$where .= ' WHERE `file_target` IS NOT NULL';
@@ -1251,6 +1297,8 @@ class Share {
 		if ($shareType == self::SHARE_TYPE_GROUP) {
 			$groupItemTarget = self::generateTarget($itemType, $itemSource, $shareType, $shareWith['group'],
 				$uidOwner, $suggestedItemTarget);
+			$run = true;
+			$error = '';
 			\OC_Hook::emit('OCP\Share', 'pre_shared', array(
 				'itemType' => $itemType,
 				'itemSource' => $itemSource,
@@ -1260,8 +1308,15 @@ class Share {
 				'uidOwner' => $uidOwner,
 				'permissions' => $permissions,
 				'fileSource' => $fileSource,
-				'token' => $token
+				'token' => $token,
+				'run' => &$run,
+				'error' => &$error
 			));
+
+			if ($run === false) {
+				throw new \Exception($error);
+			}
+
 			if (isset($fileSource)) {
 				if ($parentFolder) {
 					if ($parentFolder === true) {
@@ -1337,6 +1392,8 @@ class Share {
 		} else {
 			$itemTarget = self::generateTarget($itemType, $itemSource, $shareType, $shareWith, $uidOwner,
 				$suggestedItemTarget);
+			$run = true;
+			$error = '';
 			\OC_Hook::emit('OCP\Share', 'pre_shared', array(
 				'itemType' => $itemType,
 				'itemSource' => $itemSource,
@@ -1346,8 +1403,15 @@ class Share {
 				'uidOwner' => $uidOwner,
 				'permissions' => $permissions,
 				'fileSource' => $fileSource,
-				'token' => $token
+				'token' => $token,
+				'run' => &$run,
+				'error' => &$error
 			));
+
+			if ($run === false) {
+				throw new \Exception($error);
+			}
+
 			if (isset($fileSource)) {
 				if ($parentFolder) {
 					if ($parentFolder === true) {
