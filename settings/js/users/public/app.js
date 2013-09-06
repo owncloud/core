@@ -27,65 +27,38 @@ config(['$httpProvider','$routeProvider', '$windowProvider', '$provide',
 		$httpProvider.defaults.headers.common['requesttoken'] = oc_requesttoken;
 
 		$routeProvider
-			.when('/group/:groupId', {
-				templateUrl : 'user-table.html',
-				controller : 'userlistController',
-				resolve : {
-					users :['$q', '$route', 'GroupModel', 'UserService',
-					function ($q,$route,GroupModel,UserService) {
-						var deferred = $q.defer();
-						var groupId = $route.current.params.groupId;
-						var group = GroupModel.getById(groupId);
-						if(group) {
-							var users = UserService.getUsersInGroup(groupId);
-							deferred.resolve(users);
-						}
-						else {
-							deferred.reject();
-						}
-						return deferred.promise;
-					}]
-				}
-			})
-			.otherwise('/group/', {
-				templateUrl : 'user-table.html',
-				controller : 'userlistController',
-				resolve : {
-					users :['$q', '$route', 'GroupModel', 'UserModel',
-						function ($q,$route,GroupModel,UserModel) {
-							var deferred = $q.defer();
-							var group = GroupModel.getById(groupId);
-		                    if(group) {
-		                        var users = UserModel.getAll();
-		                        deferred.resolve(users);
-		                    }
-							else {
-		                        deferred.reject();
-		                    }
-						return deferred.promise;
-					}]
-				}
-			});
-			var $window = $windowProvider.$get();
-			var url = $window.location.href;
-			var baseUrl = url.split('index.php')[0] + 'index.php/settings';
-			$provide.value('Config', {
-				baseUrl: baseUrl
-			});
-		}
-]).run(['$rootScope', '$location', 'GroupModel',
-	function($rootScope, $location, GroupModel) {
+		.when('/group/:groupId', {
+			templateUrl : 'user-table.html',
+			controller : 'grouplistController'
+		})
+		.otherwise({
+			redirectTo : '/group/'
+		});
+
+		var $window = $windowProvider.$get();
+		var url = $window.location.href;
+		var baseUrl = url.split('index.php')[0] + 'index.php/settings';
+
+		$provide.value('Config', {
+			baseUrl: baseUrl
+		});
+	}
+]).run(['$rootScope', '$location', 'GroupService',
+	function($rootScope, $location, GroupService) {
 	$rootScope.$on('$routeChangeError', function() {
 		// Something wrong here
-		var groups = GroupModel.getAll();
+		var groups = GroupService.getAllGroups();
+		
+		// route change error should redirect to the latest note if possible
 		if (groups.length > 0) {
 			var sorted = groups.sort(function(a, b) {
 				if(a.modified > b.modified) return 1;
 				if(a.modified < b.modified) return -1;
 				return 0;
 			});
+			
 			var group = groups[groups.length-1];
-			$location.path('/group/' + group.groupId);
+			$location.path('/group/' + group.id);
 		} else {
 			$location.path('/group/');
 		}
@@ -524,12 +497,11 @@ usersmanagement.controller('setQuotaController',
 /* Fetches the List of All Users and details on the Right Content */
 
 usersmanagement.controller('userlistController',
-	['$scope', 'UserService', 'GroupService', 'QuotaService', 'users', '$routeParams',
-	function($scope, UserService, GroupService, QuotaService, users, $routeParams) {
+	['$scope', 'UserService', 'GroupService', 'QuotaService','$routeParams',
+	function($scope, UserService, GroupService, QuotaService, $routeParams) {
 		$scope.loading = true;
 		UserService.getAllUsers().then(function(response) {
-			$scope.users = users;
-			console.log(users);
+			$scope.users = UserService.getUsersInGroup($routeParams.groupId);
 			$scope.loading = false;
 			$scope.userquotavalues = [
 									{ show : '5 GB' },
@@ -539,6 +511,8 @@ usersmanagement.controller('userlistController',
 									//{show : 'Custom'}
 			];
 			
+			
+
 			/* Takes Out all groups for the Multiselect dropdown */
 			$scope.allgroups = GroupService.getByGroupId().get();
 			
@@ -554,12 +528,13 @@ usersmanagement.controller('userlistController',
 			
 			/* Updates User Quota */
 			$scope.updateUserQuota = function(userid,userQuota) {
+				console.log(userid);
 				QuotaService.setUserQuota(userid,userQuota.show);
 			}
 			
 			/* Deletes Users */
 			$scope.deleteuser = function(user) {
-				users.splice(users.indexOf(user), 1);
+				$scope.users.splice($scope.users.indexOf(user), 1);
 				UserService.removeuser(user);
 			};
 			

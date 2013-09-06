@@ -119,12 +119,11 @@ usersmanagement.controller('setQuotaController',
 /* Fetches the List of All Users and details on the Right Content */
 
 usersmanagement.controller('userlistController',
-	['$scope', 'UserService', 'GroupService', 'QuotaService', 'users', '$routeParams',
-	function($scope, UserService, GroupService, QuotaService, users, $routeParams) {
+	['$scope', 'UserService', 'GroupService', 'QuotaService','$routeParams',
+	function($scope, UserService, GroupService, QuotaService, $routeParams) {
 		$scope.loading = true;
 		UserService.getAllUsers().then(function(response) {
-			$scope.users = users;
-			console.log(users);
+			$scope.users = UserService.getUsersInGroup($routeParams.groupId);
 			$scope.loading = false;
 			$scope.userquotavalues = [
 									{ show : '5 GB' },
@@ -134,6 +133,8 @@ usersmanagement.controller('userlistController',
 									//{show : 'Custom'}
 			];
 			
+			
+
 			/* Takes Out all groups for the Multiselect dropdown */
 			$scope.allgroups = GroupService.getByGroupId().get();
 			
@@ -149,12 +150,13 @@ usersmanagement.controller('userlistController',
 			
 			/* Updates User Quota */
 			$scope.updateUserQuota = function(userid,userQuota) {
+				console.log(userid);
 				QuotaService.setUserQuota(userid,userQuota.show);
 			}
 			
 			/* Deletes Users */
 			$scope.deleteuser = function(user) {
-				users.splice(users.indexOf(user), 1);
+				$scope.users.splice($scope.users.indexOf(user), 1);
 				UserService.removeuser(user);
 			};
 			
