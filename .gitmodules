@@ -1,3 +1,21 @@
 [submodule "3rdparty"]
 	path = 3rdparty
 	url = git://github.com/owncloud/3rdparty.git
+[submodule "capps/calendar"]
+	path = capps/calendar
+	url = https://github.com/owncloud/calendar
+[submodule "apps2"]
+	path = apps2
+	url = https://github.com/owncloud/apps.git
+[submodule "capps/bookmarks"]
+	path = capps/bookmarks
+	url = https://github.com/owncloud/bookmarks
+[submodule "capps/notes"]
+	path = capps/notes
+	url = https://github.com/owncloud/notes
+[submodule "capps/contacts"]
+	path = capps/contacts
+	url = https://github.com/owncloud/contacts
+[submodule "capps/appframework"]
+	path = capps/appframework
+	url = https://github.com/owncloud/appframework

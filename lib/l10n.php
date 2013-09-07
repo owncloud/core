@@ -390,13 +390,13 @@ class OC_L10N {
 					$data = strtotime($data);
 				}
 				$locales = array(self::findLanguage());
-				if (strlen($locales[0]) == 2) {
+				if (strlen($locales[0]) === 2) {
 					$locales[] = $locales[0].'_'.strtoupper($locales[0]);
 				}
 				setlocale(LC_TIME, $locales);
 				$format = $this->localizations[$type];
 				// Check for Windows to find and replace the %e modifier correctly
-				if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
+				if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 					$format = preg_replace('#(?<!%)((?:%%)*)%e#', '\1%#d', $format);
 				}
 				return strftime($format, $data);
@@ -406,7 +406,7 @@ class OC_L10N {
 				return $this->localizations[$type];
 			default:
 				return false;
-		}
+			}
 	}
 
 	/**
@@ -437,56 +437,43 @@ class OC_L10N {
 	 */
 	public static function findLanguage($app = null) {
 		if(!is_array($app) && self::$language != '') {
+			// The language is already selected
 			return self::$language;
 		}
 
-		if(OC_User::getUser() && OC_Preferences::getValue(OC_User::getUser(), 'core', 'lang')) {
-			$lang = OC_Preferences::getValue(OC_User::getUser(), 'core', 'lang');
-			self::$language = $lang;
-			if(is_array($app)) {
-				$available = $app;
-				$lang_exists = array_search($lang, $available) !== false;
-			}
-			else {
-				$lang_exists = self::languageExists($app, $lang);
-			}
-			if($lang_exists) {
-				return $lang;
-			}
+		// If user's preference language is available, use it
+		if ( $lang = self::checkPreferenceLanguage($app) ) {
+			return $lang;
 		}
 
-    $default_language = OC_Config::getValue('default_language', false);
-
-    if($default_language !== false) {
-      return $default_language;
-    }
-
-		if(isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-			$accepted_languages = preg_split('/,\s*/', strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']));
+		// Get browser's accepted languages
+		if ( ($accept_langs = OC_Request::parseAcceptLanguage()) !== false ) {
 			if(is_array($app)) {
 				$available = $app;
 			}
 			else{
 				$available = self::findAvailableLanguages($app);
 			}
-			foreach($accepted_languages as $i) {
-				$temp = explode(';', $i);
-				$temp[0] = str_replace('-', '_', $temp[0]);
-				if( ($key = array_search($temp[0], $available)) !== false) {
-					if (is_null($app)) {
-						self::$language = $available[$key];
-					}
+
+			// Look for full match (primary_tag and subtag)
+			foreach ( $accept_langs as $accept_lang ) {
+				if( ($key = array_search($accept_lang, $available)) !== false) {
 					return $available[$key];
 				}
-				foreach($available as $l) {
-					if ( $temp[0] == substr($l, 0, 2) ) {
-						if (is_null($app)) {
-							self::$language = $l;
+			}
+
+			// Look for partial match (primary_tag)
+			foreach ( $accept_langs as $accept_lang ) {
+				foreach ( $available as $avail ) {
+					if ( strstr($accept_lang, '_', true) === strstr($avail, '_', true) ) {
+						if ( is_null($app) ) {
+							self::$language = $avail;
 						}
-						return $l;
+						return $avail;
 					}
 				}
 			}
+
 		}
 
 		// Last try: English
@@ -533,8 +520,15 @@ class OC_L10N {
 		return $available;
 	}
 
+	/**
+	 * @brief Determine whether a language is available in app
+	 * @param $app App that needs to be determined
+	 * @param $lang Does this language exists in $app? $lang must be in the form like zh_TW , not zh_tw nor zh-tw
+	 * @returns bool
+	 */
 	public static function languageExists($app, $lang) {
-		if ($lang == 'en') {//english is always available
+		// English is always available
+		if ($lang === 'en') {
 			return true;
 		}
 		$dir = self::findI18nDir($app);
@@ -542,5 +536,26 @@ class OC_L10N {
 			return file_exists($dir.'/'.$lang.'.php');
 		}
 		return false;
+	}
+
+	/**
+	 * @brief Check availability of user preference language
+	 * @param $app if $app is an array, treat it as available languages; if it's a string, treat it as the App we should check language availability upon.
+	 * @returns false if language is not available or preference language not set, returns user preference language if it's available
+	 */
+	public static function checkPreferenceLanguage($app=null) {
+		if(OC_User::getUser() && OC_Preferences::getValue(OC_User::getUser(), 'core', 'lang')) {
+			$lang = OC_Preferences::getValue(OC_User::getUser(), 'core', 'lang');
+			self::$language = $lang;
+			if(is_array($app)) { // treat $app as available languages
+				$available = $app;
+				$lang_exists = array_search($lang, $available) !== false;
+			} else {
+				$lang_exists = self::languageExists($app, $lang);
+			}
+			return $lang_exists ? $lang : false;
+		} else {
+			return false; // Preference language not set
+		}
 	}
 }
