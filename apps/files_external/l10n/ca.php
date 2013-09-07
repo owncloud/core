@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Access granted" => "S'ha concedit l'accés",
 "Error configuring Dropbox storage" => "Error en configurar l'emmagatzemament Dropbox",
 "Grant access" => "Concedeix accés",
@@ -6,6 +7,7 @@
 "Error configuring Google Drive storage" => "Error en configurar l'emmagatzemament Google Drive",
 "<b>Warning:</b> \"smbclient\" is not installed. Mounting of CIFS/SMB shares is not possible. Please ask your system administrator to install it." => "<b>Avís:</b> \"smbclient\" no està instal·lat. No es pot muntar la compartició CIFS/SMB. Demaneu a l'administrador del sistema que l'instal·li.",
 "<b>Warning:</b> The FTP support in PHP is not enabled or installed. Mounting of FTP shares is not possible. Please ask your system administrator to install it." => "<b>Avís:</b> El suport FTP per PHP no està activat o no està instal·lat. No es pot muntar la compartició FTP. Demaneu a l'administrador del sistema que l'instal·li.",
+"<b>Warning:</b> The Curl support in PHP is not enabled or installed. Mounting of ownCloud / WebDAV or GoogleDrive is not possible. Please ask your system administrator to install it." => "<b>Avís:</b>El suport Curl de PHP no està activat o instal·lat. No es pot muntar ownCloud / WebDAV o GoogleDrive. Demaneu a l'administrador que l'instal·li.",
 "External Storage" => "Emmagatzemament extern",
 "Folder name" => "Nom de la carpeta",
 "External storage" => "Emmagatzemament extern",
@@ -23,3 +25,4 @@
 "SSL root certificates" => "Certificats SSL root",
 "Import Root Certificate" => "Importa certificat root"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

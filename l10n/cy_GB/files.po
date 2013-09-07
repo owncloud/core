@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-04-27 02:16+0200\n"
-"PO-Revision-Date: 2013-04-26 08:27+0000\n"
+"POT-Creation-Date: 2013-09-01 13:27-0400\n"
+"PO-Revision-Date: 2013-08-30 13:50+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Welsh (United Kingdom) (http://www.transifex.com/projects/p/owncloud/language/cy_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -27,56 +27,93 @@ msgstr "Methwyd symud %s - Mae ffeil gyda'r enw hwn eisoes yn bodoli"
 msgid "Could not move %s"
 msgstr "Methwyd symud %s"
 
-#: ajax/rename.php:22 ajax/rename.php:25
-msgid "Unable to rename file"
-msgstr "Methu ailenwi ffeil"
+#: ajax/upload.php:16 ajax/upload.php:45
+msgid "Unable to set upload directory."
+msgstr ""
 
-#: ajax/upload.php:19
+#: ajax/upload.php:22
+msgid "Invalid Token"
+msgstr ""
+
+#: ajax/upload.php:59
 msgid "No file was uploaded. Unknown error"
 msgstr "Ni lwythwyd ffeil i fyny. Gwall anhysbys."
 
-#: ajax/upload.php:26
+#: ajax/upload.php:66
 msgid "There is no error, the file uploaded with success"
 msgstr "Does dim gwall, llwythodd y ffeil i fyny'n llwyddiannus"
 
-#: ajax/upload.php:27
+#: ajax/upload.php:67
 msgid ""
 "The uploaded file exceeds the upload_max_filesize directive in php.ini: "
 msgstr "Mae'r ffeil lwythwyd i fyny'n fwy na chyfarwyddeb upload_max_filesize yn php.ini:"
 
-#: ajax/upload.php:29
+#: ajax/upload.php:69
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
 msgstr "Mae'r ffeil lwythwyd i fyny'n fwy na chyfarwyddeb MAX_FILE_SIZE bennwyd yn y ffurflen HTML"
 
-#: ajax/upload.php:30
+#: ajax/upload.php:70
 msgid "The uploaded file was only partially uploaded"
 msgstr "Dim ond yn rhannol y llwythwyd y ffeil i fyny"
 
-#: ajax/upload.php:31
+#: ajax/upload.php:71
 msgid "No file was uploaded"
 msgstr "Ni lwythwyd ffeil i fyny"
 
-#: ajax/upload.php:32
+#: ajax/upload.php:72
 msgid "Missing a temporary folder"
 msgstr "Plygell dros dro yn eisiau"
 
-#: ajax/upload.php:33
+#: ajax/upload.php:73
 msgid "Failed to write to disk"
 msgstr "Methwyd ysgrifennu i'r ddisg"
 
-#: ajax/upload.php:51
+#: ajax/upload.php:91
 msgid "Not enough storage available"
 msgstr "Dim digon o le storio ar gael"
 
-#: ajax/upload.php:83
+#: ajax/upload.php:109
+msgid "Upload failed"
+msgstr "Methwyd llwytho i fyny"
+
+#: ajax/upload.php:127
 msgid "Invalid directory."
 msgstr "Cyfeiriadur annilys."
 
 #: appinfo/app.php:12
 msgid "Files"
 msgstr "Ffeiliau"
+
+#: js/file-upload.js:11
+msgid "Unable to upload your file as it is a directory or has 0 bytes"
+msgstr "Methu llwytho'ch ffeil i fyny gan ei fod yn gyferiadur neu'n cynnwys 0 beit"
+
+#: js/file-upload.js:24
+msgid "Not enough space available"
+msgstr "Dim digon o le ar gael"
+
+#: js/file-upload.js:64
+msgid "Upload cancelled."
+msgstr "Diddymwyd llwytho i fyny."
+
+#: js/file-upload.js:165
+msgid ""
+"File upload is in progress. Leaving the page now will cancel the upload."
+msgstr "Mae ffeiliau'n cael eu llwytho i fyny. Bydd gadael y dudalen hon nawr yn diddymu'r broses."
+
+#: js/file-upload.js:239
+msgid "URL cannot be empty."
+msgstr "Does dim hawl cael URL gwag."
+
+#: js/file-upload.js:244 lib/app.php:53
+msgid "Invalid folder name. Usage of 'Shared' is reserved by ownCloud"
+msgstr ""
+
+#: js/file-upload.js:276 js/file-upload.js:292 js/files.js:512 js/files.js:550
+msgid "Error"
+msgstr "Gwall"
 
 #: js/fileactions.js:116
 msgid "Share"
@@ -86,51 +123,67 @@ msgstr "Rhannu"
 msgid "Delete permanently"
 msgstr "Dileu'n barhaol"
 
-#: js/fileactions.js:128 templates/index.php:94 templates/index.php:95
-msgid "Delete"
-msgstr "Dileu"
-
-#: js/fileactions.js:194
+#: js/fileactions.js:192
 msgid "Rename"
 msgstr "Ailenwi"
 
-#: js/filelist.js:49 js/filelist.js:52 js/filelist.js:414
+#: js/filelist.js:50 js/filelist.js:53 js/filelist.js:575
 msgid "Pending"
 msgstr "I ddod"
 
-#: js/filelist.js:252 js/filelist.js:254
+#: js/filelist.js:307 js/filelist.js:309
 msgid "{new_name} already exists"
 msgstr "{new_name} yn bodoli'n barod"
 
-#: js/filelist.js:252 js/filelist.js:254
+#: js/filelist.js:307 js/filelist.js:309
 msgid "replace"
 msgstr "amnewid"
 
-#: js/filelist.js:252
+#: js/filelist.js:307
 msgid "suggest name"
 msgstr "awgrymu enw"
 
-#: js/filelist.js:252 js/filelist.js:254
+#: js/filelist.js:307 js/filelist.js:309
 msgid "cancel"
 msgstr "diddymu"
 
-#: js/filelist.js:299
+#: js/filelist.js:354
 msgid "replaced {new_name} with {old_name}"
 msgstr "newidiwyd {new_name} yn lle {old_name}"
 
-#: js/filelist.js:299
+#: js/filelist.js:354
 msgid "undo"
 msgstr "dadwneud"
 
-#: js/filelist.js:324
-msgid "perform delete operation"
-msgstr "cyflawni gweithred dileu"
+#: js/filelist.js:424 js/filelist.js:490 js/files.js:581
+msgid "%n folder"
+msgid_plural "%n folders"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
-#: js/filelist.js:406
-msgid "1 file uploading"
-msgstr "1 ffeil yn llwytho i fyny"
+#: js/filelist.js:425 js/filelist.js:491 js/files.js:587
+msgid "%n file"
+msgid_plural "%n files"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
-#: js/filelist.js:409 js/filelist.js:463
+#: js/filelist.js:432
+msgid "{dirs} and {files}"
+msgstr ""
+
+#: js/filelist.js:563
+msgid "Uploading %n file"
+msgid_plural "Uploading %n files"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: js/filelist.js:628
 msgid "files uploading"
 msgstr "ffeiliau'n llwytho i fyny"
 
@@ -156,68 +209,34 @@ msgstr "Mae eich storfa'n llawn, ni ellir diweddaru a chydweddu ffeiliau mwyach!
 msgid "Your storage is almost full ({usedSpacePercent}%)"
 msgstr "Mae eich storfa bron a bod yn llawn ({usedSpacePercent}%)"
 
-#: js/files.js:226
+#: js/files.js:94
+msgid ""
+"Encryption was disabled but your files are still encrypted. Please go to "
+"your personal settings to decrypt your files."
+msgstr ""
+
+#: js/files.js:245
 msgid ""
 "Your download is being prepared. This might take some time if the files are "
 "big."
 msgstr "Wrthi'n paratoi i lwytho i lawr. Gall gymryd peth amser os yw'r ffeiliau'n fawr."
 
-#: js/files.js:259
-msgid "Unable to upload your file as it is a directory or has 0 bytes"
-msgstr "Methu llwytho'ch ffeil i fyny gan ei fod yn gyferiadur neu'n cynnwys 0 beit"
-
-#: js/files.js:272
-msgid "Not enough space available"
-msgstr "Dim digon o le ar gael"
-
-#: js/files.js:312
-msgid "Upload cancelled."
-msgstr "Diddymwyd llwytho i fyny."
-
-#: js/files.js:408
-msgid ""
-"File upload is in progress. Leaving the page now will cancel the upload."
-msgstr "Mae ffeiliau'n cael eu llwytho i fyny. Bydd gadael y dudalen hon nawr yn diddymu'r broses."
-
-#: js/files.js:481
-msgid "URL cannot be empty."
-msgstr "Does dim hawl cael URL gwag."
-
-#: js/files.js:486
-msgid "Invalid folder name. Usage of 'Shared' is reserved by Owncloud"
-msgstr "Enw plygell annilys. Mae'r defnydd o 'Shared' yn cael ei gadw gan Owncloud"
-
-#: js/files.js:515 js/files.js:531 js/files.js:821 js/files.js:859
-msgid "Error"
-msgstr "Gwall"
-
-#: js/files.js:872 templates/index.php:70
+#: js/files.js:563 templates/index.php:69
 msgid "Name"
 msgstr "Enw"
 
-#: js/files.js:873 templates/index.php:81
+#: js/files.js:564 templates/index.php:81
 msgid "Size"
 msgstr "Maint"
 
-#: js/files.js:874 templates/index.php:83
+#: js/files.js:565 templates/index.php:83
 msgid "Modified"
 msgstr "Addaswyd"
 
-#: js/files.js:893
-msgid "1 folder"
-msgstr "1 blygell"
-
-#: js/files.js:895
-msgid "{count} folders"
-msgstr "{count} plygell"
-
-#: js/files.js:903
-msgid "1 file"
-msgstr "1 ffeil"
-
-#: js/files.js:905
-msgid "{count} files"
-msgstr "{count} ffeil"
+#: lib/app.php:73
+#, php-format
+msgid "%s could not be renamed"
+msgstr ""
 
 #: lib/helper.php:11 templates/index.php:18
 msgid "Upload"
@@ -271,29 +290,33 @@ msgstr "Plygell"
 msgid "From link"
 msgstr "Dolen o"
 
-#: templates/index.php:42
+#: templates/index.php:41
 msgid "Deleted files"
 msgstr "Ffeiliau ddilewyd"
 
-#: templates/index.php:48
+#: templates/index.php:46
 msgid "Cancel upload"
 msgstr "Diddymu llwytho i fyny"
 
-#: templates/index.php:55
+#: templates/index.php:52
 msgid "You don’t have write permissions here."
 msgstr "Nid oes gennych hawliau ysgrifennu fan hyn."
 
-#: templates/index.php:62
+#: templates/index.php:59
 msgid "Nothing in here. Upload something!"
 msgstr "Does dim byd fan hyn. Llwythwch rhywbeth i fyny!"
 
-#: templates/index.php:76
+#: templates/index.php:75
 msgid "Download"
 msgstr "Llwytho i lawr"
 
 #: templates/index.php:88 templates/index.php:89
 msgid "Unshare"
 msgstr "Dad-rannu"
+
+#: templates/index.php:94 templates/index.php:95
+msgid "Delete"
+msgstr "Dileu"
 
 #: templates/index.php:108
 msgid "Upload too large"

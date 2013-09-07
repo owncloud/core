@@ -8,7 +8,7 @@
 
 /**
  * Class for abstraction of filesystem functions
- * This class won't call any filesystem functions for itself but but will pass them to the correct OC_Filestorage object
+ * This class won't call any filesystem functions for itself but will pass them to the correct OC_Filestorage object
  * this class should also handle all the file permission related stuff
  *
  * Hooks provided:
@@ -30,8 +30,10 @@
 
 namespace OC\Files;
 
-const FREE_SPACE_UNKNOWN = -2;
-const FREE_SPACE_UNLIMITED = -3;
+use OC\Files\Storage\Loader;
+const SPACE_NOT_COMPUTED = -1;
+const SPACE_UNKNOWN = -2;
+const SPACE_UNLIMITED = -3;
 
 class Filesystem {
 	/**
@@ -143,6 +145,37 @@ class Filesystem {
 	const signal_param_run = 'run';
 
 	/**
+	 * @var \OC\Files\Storage\Loader $loader
+	 */
+	private static $loader;
+
+	/**
+	 * @param callable $wrapper
+	 */
+	public static function addStorageWrapper($wrapper) {
+		self::getLoader()->addStorageWrapper($wrapper);
+
+		$mounts = self::getMountManager()->getAll();
+		foreach ($mounts as $mount) {
+			$mount->wrapStorage($wrapper);
+		}
+	}
+
+	public static function getLoader() {
+		if (!self::$loader) {
+			self::$loader = new Loader();
+		}
+		return self::$loader;
+	}
+
+	public static function getMountManager() {
+		if (!self::$mounts) {
+			\OC_Util::setupFS();
+		}
+		return self::$mounts;
+	}
+
+	/**
 	 * get the mountpoint of the storage object for a path
 	 * ( note: because a storage is not always mounted inside the fakeroot, the
 	 * returned mountpoint is relative to the absolute root of the filesystem
@@ -152,6 +185,9 @@ class Filesystem {
 	 * @return string
 	 */
 	static public function getMountPoint($path) {
+		if (!self::$mounts) {
+			\OC_Util::setupFS();
+		}
 		$mount = self::$mounts->find($path);
 		if ($mount) {
 			return $mount->getMountPoint();
@@ -167,6 +203,9 @@ class Filesystem {
 	 * @return string[]
 	 */
 	static public function getMountPoints($path) {
+		if (!self::$mounts) {
+			\OC_Util::setupFS();
+		}
 		$result = array();
 		$mounts = self::$mounts->findIn($path);
 		foreach ($mounts as $mount) {
@@ -182,6 +221,9 @@ class Filesystem {
 	 * @return \OC\Files\Storage\Storage
 	 */
 	public static function getStorage($mountPoint) {
+		if (!self::$mounts) {
+			\OC_Util::setupFS();
+		}
 		$mount = self::$mounts->find($mountPoint);
 		return $mount->getStorage();
 	}
@@ -191,6 +233,9 @@ class Filesystem {
 	 * @return Mount\Mount[]
 	 */
 	public static function getMountByStorageId($id) {
+		if (!self::$mounts) {
+			\OC_Util::setupFS();
+		}
 		return self::$mounts->findByStorageId($id);
 	}
 
@@ -199,7 +244,10 @@ class Filesystem {
 	 * @return Mount\Mount[]
 	 */
 	public static function getMountByNumericId($id) {
-		return self::$mounts->findByStorageId($id);
+		if (!self::$mounts) {
+			\OC_Util::setupFS();
+		}
+		return self::$mounts->findByNumericId($id);
 	}
 
 	/**
@@ -209,6 +257,9 @@ class Filesystem {
 	 * @return array consisting of the storage and the internal path
 	 */
 	static public function resolvePath($path) {
+		if (!self::$mounts) {
+			\OC_Util::setupFS();
+		}
 		$mount = self::$mounts->find($path);
 		if ($mount) {
 			return array($mount->getStorage(), $mount->getInternalPath($path));
@@ -221,8 +272,12 @@ class Filesystem {
 		if (self::$defaultInstance) {
 			return false;
 		}
+		self::getLoader();
 		self::$defaultInstance = new View($root);
-		self::$mounts = new Mount\Manager();
+
+		if (!self::$mounts) {
+			self::$mounts = new Mount\Manager();
+		}
 
 		//load custom mount config
 		self::initMountPoints($user);
@@ -232,8 +287,10 @@ class Filesystem {
 		return true;
 	}
 
-	static public function initMounts(){
-		self::$mounts = new Mount\Manager();
+	static public function initMounts() {
+		if (!self::$mounts) {
+			self::$mounts = new Mount\Manager();
+		}
 	}
 
 	/**
@@ -354,7 +411,9 @@ class Filesystem {
 	 * clear all mounts and storage backends
 	 */
 	public static function clearMounts() {
-		self::$mounts->clear();
+		if (self::$mounts) {
+			self::$mounts->clear();
+		}
 	}
 
 	/**
@@ -365,7 +424,10 @@ class Filesystem {
 	 * @param string $mountpoint
 	 */
 	static public function mount($class, $arguments, $mountpoint) {
-		$mount = new Mount\Mount($class, $mountpoint, $arguments);
+		if (!self::$mounts) {
+			\OC_Util::setupFS();
+		}
+		$mount = new Mount\Mount($class, $mountpoint, $arguments, self::getLoader());
 		self::$mounts->addMount($mount);
 	}
 
@@ -448,6 +510,19 @@ class Filesystem {
 		$blacklist = \OC_Config::getValue('blacklisted_files', array('.htaccess'));
 		$filename = strtolower(basename($filename));
 		return (in_array($filename, $blacklist));
+	}
+
+	/**
+	 * @brief check if the directory should be ignored when scanning
+	 * NOTE: the special directories . and .. would cause never ending recursion
+	 * @param String $dir
+	 * @return boolean
+	 */
+	static public function isIgnoredDir($dir) {
+		if ($dir === '.' || $dir === '..') {
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -613,9 +688,8 @@ class Filesystem {
 			$path = substr($path, 0, -1);
 		}
 		//normalize unicode if possible
-		if (class_exists('Normalizer')) {
-			$path = \Normalizer::normalize($path);
-		}
+		$path = \OC_Util::normalizeUnicode($path);
+
 		return $path;
 	}
 
@@ -663,7 +737,7 @@ class Filesystem {
 	/**
 	 * Get the path of a file by id
 	 *
-	 * Note that the resulting path is not guarantied to be unique for the id, multiple paths can point to the same file
+	 * Note that the resulting path is not guaranteed to be unique for the id, multiple paths can point to the same file
 	 *
 	 * @param int $id
 	 * @return string

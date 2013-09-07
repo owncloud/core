@@ -73,11 +73,11 @@ class OC_App{
 
 		if (!defined('DEBUG') || !DEBUG) {
 			if (is_null($types)
-				&& empty(OC_Util::$core_scripts)
-				&& empty(OC_Util::$core_styles)) {
-				OC_Util::$core_scripts = OC_Util::$scripts;
+				&& empty(OC_Util::$coreScripts)
+				&& empty(OC_Util::$coreStyles)) {
+				OC_Util::$coreScripts = OC_Util::$scripts;
 				OC_Util::$scripts = array();
-				OC_Util::$core_styles = OC_Util::$styles;
+				OC_Util::$coreStyles = OC_Util::$styles;
 				OC_Util::$styles = array();
 			}
 		}
@@ -172,9 +172,18 @@ class OC_App{
 			return array();
 		}
 		$apps=array('files');
-		$query = OC_DB::prepare( 'SELECT `appid` FROM `*PREFIX*appconfig`'
-			.' WHERE `configkey` = \'enabled\' AND `configvalue`=\'yes\'' );
+		$sql = 'SELECT `appid` FROM `*PREFIX*appconfig`'
+			.' WHERE `configkey` = \'enabled\' AND `configvalue`=\'yes\'';
+		if (OC_Config::getValue( 'dbtype', 'sqlite' ) === 'oci') {
+			//FIXME oracle hack: need to explicitly cast CLOB to CHAR for comparison
+			$sql = 'SELECT `appid` FROM `*PREFIX*appconfig`'
+			.' WHERE `configkey` = \'enabled\' AND to_char(`configvalue`)=\'yes\'';
+		}
+		$query = OC_DB::prepare( $sql );
 		$result=$query->execute();
+		if( \OC_DB::isError($result)) {
+			throw new DatabaseException($result->getMessage(), $query);
+		}
 		while($row=$result->fetchRow()) {
 			if(array_search($row['appid'], $apps)===false) {
 				$apps[]=$row['appid'];
@@ -201,7 +210,8 @@ class OC_App{
 	/**
 	 * @brief enables an app
 	 * @param mixed $app app
-	 * @return bool
+	 * @throws \Exception
+	 * @return void
 	 *
 	 * This function set an app as enabled in appconfig.
 	 */
@@ -219,25 +229,25 @@ class OC_App{
 				}
 			}
 		}
+		$l = OC_L10N::get('core');
 		if($app!==false) {
 			// check if the app is compatible with this version of ownCloud
 			$info=OC_App::getAppInfo($app);
 			$version=OC_Util::getVersion();
 			if(!isset($info['require']) or !self::isAppVersionCompatible($version, $info['require'])) {
-				OC_Log::write('core',
-					'App "'.$info['name'].'" can\'t be installed because it is'
-					.' not compatible with this version of ownCloud',
-					OC_Log::ERROR);
-				return false;
+				throw new \Exception(
+					$l->t("App \"%s\" can't be installed because it is not compatible with this version of ownCloud.",
+						array($info['name'])
+					)
+				);
 			}else{
 				OC_Appconfig::setValue( $app, 'enabled', 'yes' );
 				if(isset($appdata['id'])) {
 					OC_Appconfig::setValue( $app, 'ocsid', $appdata['id'] );
 				}
-				return true;
 			}
 		}else{
-			return false;
+			throw new \Exception($l->t("No app name specified"));
 		}
 	}
 
@@ -250,6 +260,7 @@ class OC_App{
 	 */
 	public static function disable( $app ) {
 		// check if app is a shipped app or not. if not delete
+		\OC_Hook::emit('OC_App', 'pre_disable', array('app' => $app));
 		OC_Appconfig::setValue( $app, 'enabled', 'no' );
 
 		// check if app is a shipped app or not. if not delete
@@ -340,7 +351,8 @@ class OC_App{
 
 		$settings = array();
 		// by default, settings only contain the help menu
-		if(OC_Config::getValue('knowledgebaseenabled', true)==true) {
+		if(OC_Util::getEditionString() === '' &&
+			OC_Config::getValue('knowledgebaseenabled', true)==true) {
 			$settings = array(
 				array(
 					"id" => "help",
@@ -390,15 +402,7 @@ class OC_App{
 
 			// if the user is an admin
 			if(OC_User::isAdminUser(OC_User::getUser())) {
-				// admin apps menu
-				$settings[] = array(
-					"id" => "core_apps",
-					"order" => 3,
-					"href" => OC_Helper::linkToRoute( "settings_apps" ).'?installed',
-					"name" => $l->t("Apps"),
-					"icon" => OC_Helper::imagePath( "settings", "apps.svg" )
-				);
-
+				// admin settings
 				$settings[]=array(
 					"id" => "admin",
 					"order" => 1000,
@@ -413,7 +417,7 @@ class OC_App{
 		return $navigation;
 	}
 
-	/// This is private as well. It simply works, so don't ask for more details
+	// This is private as well. It simply works, so don't ask for more details
 	private static function proceedNavigation( $list ) {
 		foreach( $list as &$naventry ) {
 			if( $naventry['id'] == self::$activeapp ) {
@@ -462,7 +466,7 @@ class OC_App{
 	}
 	/**
 	* Get the directory for the given app.
-	* If the app is defined in multiple directory, the first one is taken. (false if not found)
+	* If the app is defined in multiple directories, the first one is taken. (false if not found)
 	*/
 	public static function getAppPath($appid) {
 		if( ($dir = self::findAppInDirectories($appid)) != false) {
@@ -473,7 +477,7 @@ class OC_App{
 
 	/**
 	* Get the path for the given app on the access
-	* If the app is defined in multiple directory, the first one is taken. (false if not found)
+	* If the app is defined in multiple directories, the first one is taken. (false if not found)
 	*/
 	public static function getAppWebPath($appid) {
 		if( ($dir = self::findAppInDirectories($appid)) != false) {
@@ -663,7 +667,7 @@ class OC_App{
 			}
 			$dh = opendir( $apps_dir['path'] );
 
-			while( $file = readdir( $dh ) ) {
+			while (($file = readdir($dh)) !== false) {
 
 				if ($file[0] != '.' and is_file($apps_dir['path'].'/'.$file.'/appinfo/app.php')) {
 
@@ -807,7 +811,7 @@ class OC_App{
 	}
 
 	/**
-	 * check if the app need updating and update when needed
+	 * check if the app needs updating and update when needed
 	 */
 	public static function checkUpgrade($app) {
 		if (in_array($app, self::$checkedApps)) {
@@ -828,9 +832,9 @@ class OC_App{
 					OC_Hook::emit('update', 'success', 'Updated '.$info['name'].' app');
 				}
 				catch (Exception $e) {
-					echo 'Failed to upgrade "'.$app.'". Exception="'.$e->getMessage().'"';
 					OC_Hook::emit('update', 'failure', 'Failed to update '.$info['name'].' app: '.$e->getMessage());
-					die;
+					$l = OC_L10N::get('lib');
+					throw new RuntimeException($l->t('Failed to upgrade "%s".', array($app)), 0, $e);
 				}
 				OC_Appconfig::setValue($app, 'installed_version', OC_App::getAppVersion($app));
 			}

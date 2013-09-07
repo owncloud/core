@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
-"Password" => "پاسورڈ",
-"web services under your control" => "آپ کے اختیار میں ویب سروسیز"
+<?php
+$TRANSLATIONS = array(
+"Password" => "پاسورڈ"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

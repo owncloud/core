@@ -9,10 +9,10 @@ input#openid, input#webdav { width:20em; }
 /* PERSONAL */
 
 /* Sync clients */
-.clientsbox { margin:12px; text-align:center; }
+.clientsbox { margin:12px; }
 .clientsbox h1 { font-size:40px; font-weight:bold; margin:50px 0 20px; }
 .clientsbox h2 { font-size:20px; font-weight:bold; margin:35px 0 10px; }
-.clientsbox center { margin-top:10px; }
+.clientsbox .center { margin-top:10px; }
 
 #passworderror { display:none; }
 #passwordchanged { display:none; }
@@ -45,6 +45,8 @@ table:not(.nostyle) { width:100%; }
 #rightcontent { padding-left: 1em; }
 div.quota { float:right; display:block; position:absolute; right:25em; top:-1px; }
 div.quota-select-wrapper { position: relative; }
+div.recoveryPassword { left:50em; display:block; position:absolute; top:-1px; }
+input#recoveryPassword {width:15em;}
 select.quota { position:absolute; left:0; top:0; width:10em; }
 select.quota-user { position:relative; left:0; top:0; width:10em; }
 div.quota>span { position:absolute; right:0; white-space:nowrap; top:.7em; color:#888; text-shadow:0 1px 0 #fff; }
@@ -55,13 +57,27 @@ select.quota.active { background: #fff; }
 #newuser .multiselect { top:1px; }
 #headerGroups, #headerSubAdmins, #headerQuota { padding-left:18px; }
 
+.ie8 table.hascontrols{border-collapse:collapse;width: 100%;}
+.ie8 table.hascontrols tbody tr{border-collapse:collapse;border: 1px solid #ddd !important;}
 
 /* APPS */
-.appinfo { margin: 1em; }
+.appinfo { margin: 1em 40px; }
 h3 { font-size: 1.4em; font-weight: bold; }
-ul.applist li { height: 2.2em; padding: 0.2em 0.2em 0.2em 0.8em !important; }
+ul.applist a {
+	height: 2.2em;
+	padding: 0.2em 0.2em 0.2em 0.8em !important;
+}
+ul.applist .app-external {
+	width: 100%;
+}
 li { color:#888; }
 li.active { color:#000; }
+#leftcontent .appwarning {
+	background: #fcc;
+}
+#leftcontent .appwarning:hover {
+	background: #fbb;
+}
 small.externalapp { color:#FFF; background-color:#BBB; font-weight:bold; font-size: 0.6em; margin: 0; padding: 0.1em 0.2em; border-radius: 4px;}
 small.externalapp.list { float: right; }
 small.recommendedapp { color:#FFF; background-color:#888; font-weight:bold; font-size: 0.6em; margin: 0; padding: 0.1em 0.2em; border-radius: 4px;}

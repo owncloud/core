@@ -5,8 +5,8 @@
 </div>
 <div id='notification'></div>
 
-<?php if (isset($_['files']) && count($_['files'])==0 && $_['dirlisting'] == false):?>
-	<div id="emptyfolder"><?php p($l->t('Nothing in here. Your trash bin is empty!'))?></div>
+<?php if (isset($_['files']) && count($_['files']) === 0 && $_['dirlisting'] === false):?>
+	<div id="emptycontent"><?php p($l->t('Nothing in here. Your trash bin is empty!'))?></div>
 <?php endif; ?>
 
 <table id="filestable">
@@ -18,7 +18,7 @@
 				<span class='selectedActions'>
 						<a href="" class="undelete">
 							<img class="svg" alt="<?php p($l->t( 'Restore' )); ?>"
-								 src="<?php print_unescaped(OCP\image_path("core", "actions/undelete.png")); ?>" />
+								 src="<?php print_unescaped(OCP\image_path("core", "actions/history.svg")); ?>" />
 							<?php p($l->t('Restore'))?>
 						</a>
 				</span>

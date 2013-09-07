@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "No category to add?" => "ထည့်ရန်ခေါင်းစဉ်မရှိဘူးလား",
 "No categories selected for deletion." => "ဖျက်ရန်အတွက်ခေါင်းစဉ်မရွေးထားပါ",
 "January" => "ဇန်နဝါရီ",
@@ -14,18 +15,19 @@
 "November" => "နိုဝင်ဘာ",
 "December" => "ဒီဇင်ဘာ",
 "seconds ago" => "စက္ကန့်အနည်းငယ်က",
-"1 minute ago" => "၁ မိနစ်အရင်က",
-"1 hour ago" => "၁ နာရီ အရင်က",
+"_%n minute ago_::_%n minutes ago_" => array(""),
+"_%n hour ago_::_%n hours ago_" => array(""),
 "today" => "ယနေ့",
 "yesterday" => "မနေ့က",
+"_%n day ago_::_%n days ago_" => array(""),
 "last month" => "ပြီးခဲ့သောလ",
+"_%n month ago_::_%n months ago_" => array(""),
 "last year" => "မနှစ်က",
 "years ago" => "နှစ် အရင်က",
-"Ok" => "အိုကေ",
-"Cancel" => "ပယ်ဖျက်မည်",
 "Choose" => "ရွေးချယ်",
 "Yes" => "ဟုတ်",
 "No" => "မဟုတ်ဘူး",
+"Ok" => "အိုကေ",
 "Password" => "စကားဝှက်",
 "Set expiration date" => "သက်တမ်းကုန်ဆုံးမည့်ရက်သတ်မှတ်မည်",
 "Expiration date" => "သက်တမ်းကုန်ဆုံးမည့်ရက်",
@@ -55,10 +57,8 @@
 "Database password" => "Database စကားဝှက်",
 "Database name" => "Database အမည်",
 "Finish setup" => "တပ်ဆင်ခြင်းပြီးပါပြီ။",
-"web services under your control" => "သင်၏ထိန်းချုပ်မှု့အောက်တွင်ရှိသော Web services",
 "Lost your password?" => "သင်၏စကားဝှက်ပျောက်သွားပြီလား။",
 "remember" => "မှတ်မိစေသည်",
-"Log in" => "ဝင်ရောက်ရန်",
-"prev" => "ယခင်",
-"next" => "နောက်သို့"
+"Log in" => "ဝင်ရောက်ရန်"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";

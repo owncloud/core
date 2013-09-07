@@ -50,10 +50,6 @@ class SFTP extends \OC\Files\Storage\Common {
 			$host_keys[$this->host] = $current_host_key;
 			$this->write_host_keys($host_keys);
 		}
-
-		if(!$this->file_exists('')){
-			$this->mkdir('');
-		}
 	}
 
 	public function test() {
@@ -174,7 +170,7 @@ class SFTP extends \OC\Files\Storage\Common {
 
 	public function file_exists($path) {
 		try {
-			return $this->client->stat($this->abs_path($path)) === false ? false : true;
+			return $this->client->stat($this->abs_path($path)) !== false;
 		} catch (\Exception $e) {
 			return false;
 		}

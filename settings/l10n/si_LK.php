@@ -1,8 +1,8 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Authentication error" => "සත්‍යාපන දෝෂයක්",
 "Group already exists" => "කණ්ඩායම දැනටමත් තිබේ",
 "Unable to add group" => "කාණඩයක් එක් කළ නොහැකි විය",
-"Could not enable app. " => "යෙදුම සක්‍රීය කළ නොහැකි විය.",
 "Email saved" => "වි-තැපෑල සුරකින ලදී",
 "Invalid email" => "අවලංගු වි-තැපෑල",
 "Unable to delete group" => "කණ්ඩායම මැකීමට නොහැක",
@@ -14,13 +14,13 @@
 "Disable" => "අක්‍රිය කරන්න",
 "Enable" => "සක්‍රිය කරන්න",
 "Error" => "දෝෂයක්",
+"Update" => "යාවත්කාල කිරීම",
 "Saving..." => "සුරැකෙමින් පවතී...",
 "undo" => "නිෂ්ප්‍රභ කරන්න",
 "Groups" => "කණ්ඩායම්",
 "Group Admin" => "කාණ්ඩ පරිපාලක",
 "Delete" => "මකා දමන්න",
 "Security Warning" => "ආරක්ෂක නිවේදනයක්",
-"Your data directory and your files are probably accessible from the internet. The .htaccess file that ownCloud provides is not working. We strongly suggest that you configure your webserver in a way that the data directory is no longer accessible or you move the data directory outside the webserver document root." => "ඔබගේ දත්ත ඩිරෙක්ටරිය හා ගොනුවලට අන්තර්ජාලයෙන් පිවිසිය හැක. ownCloud සපයා ඇති .htaccess ගොනුව ක්‍රියාකරන්නේ නැත. අපි තරයේ කියා සිටිනුයේ නම්, මෙම දත්ත හා ගොනු එසේ පිවිසීමට නොහැකි වන ලෙස ඔබේ වෙබ් සේවාදායකයා  වින්‍යාස කරන ලෙස හෝ එම ඩිරෙක්ටරිය වෙබ් මූලයෙන් පිටතට ගෙනයන ලෙසය.",
 "Sharing" => "හුවමාරු කිරීම",
 "Allow links" => "යොමු සලසන්න",
 "Allow resharing" => "යළි යළිත් හුවමාරුවට අවසර දෙමි",
@@ -34,7 +34,6 @@
 "Add your App" => "යෙදුමක් එක් කිරීම",
 "More Apps" => "තවත් යෙදුම්",
 "Select an App" => "යෙදුමක් තොරන්න",
-"Update" => "යාවත්කාල කිරීම",
 "Password" => "මුර පදය",
 "Your password was changed" => "ඔබගේ මුර පදය වෙනස් කෙරුණි",
 "Unable to change your password" => "මුර පදය වෙනස් කළ නොහැකි විය",
@@ -46,6 +45,9 @@
 "Fill in an email address to enable password recovery" => "මුරපද ප්‍රතිස්ථාපනය සඳහා විද්‍යුත් තැපැල් විස්තර ලබා දෙන්න",
 "Language" => "භාෂාව",
 "Help translate" => "පරිවර්ථන සහය",
+"Encryption" => "ගුප්ත කේතනය",
 "Create" => "තනන්න",
-"Other" => "වෙනත්"
+"Other" => "වෙනත්",
+"Username" => "පරිශීලක නම"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

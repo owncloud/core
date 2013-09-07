@@ -7,12 +7,16 @@ function fileDownloadPath(dir, file) {
 	return url;
 }
 
+var form_data;
+
 $(document).ready(function() {
+
+	$('#data-upload-form').tipsy({gravity:'ne', fade:true});
 
 	if (typeof FileActions !== 'undefined') {
 		var mimetype = $('#mimetype').val();
 		// Show file preview if previewer is available, images are already handled by the template
-		if (mimetype.substr(0, mimetype.indexOf('/')) != 'image') {
+		if (mimetype.substr(0, mimetype.indexOf('/')) != 'image' && $('.publicpreview').length === 0) {
 			// Trigger default action if not download TODO
 			var action = FileActions.getDefault(mimetype, 'file', OC.PERMISSION_READ);
 			if (typeof action === 'undefined') {
@@ -27,23 +31,38 @@ $(document).ready(function() {
 			}
 		}
 		FileActions.register('dir', 'Open', OC.PERMISSION_READ, '', function(filename) {
-			var tr = $('tr').filterAttr('data-file', filename)
+			var tr = $('tr').filterAttr('data-file', filename);
 			if (tr.length > 0) {
 				window.location = $(tr).find('a.name').attr('href');
 			}
 		});
 		FileActions.register('file', 'Download', OC.PERMISSION_READ, '', function(filename) {
-			var tr = $('tr').filterAttr('data-file', filename)
+			var tr = $('tr').filterAttr('data-file', filename);
 			if (tr.length > 0) {
 				window.location = $(tr).find('a.name').attr('href');
 			}
 		});
 		FileActions.register('dir', 'Download', OC.PERMISSION_READ, '', function(filename) {
-			var tr = $('tr').filterAttr('data-file', filename)
+			var tr = $('tr').filterAttr('data-file', filename);
 			if (tr.length > 0) {
 				window.location = $(tr).find('a.name').attr('href')+'&download';
 			}
 		});
 	}
+
+  // Add some form data to the upload handler
+  file_upload_param.formData = {
+    MAX_FILE_SIZE: $('#uploadMaxFilesize').val(),
+    requesttoken: $('#publicUploadRequestToken').val(),
+    dirToken: $('#dirToken').val(),
+    appname: 'files_sharing',
+    subdir: $('input#dir').val()
+  };
+
+  // Add Uploadprogress Wrapper to controls bar
+  $('#controls').append($('#additional_controls div#uploadprogresswrapper'));
+
+  // Cancel upload trigger
+  $('#cancel_upload_button').click(Files.cancelUploads);
 
 });

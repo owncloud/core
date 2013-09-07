@@ -94,23 +94,28 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 			$l = OC_L10N::get('core');
 
 			// setup the email
-			$subject = (string)$l->t('User %s shared a file with you', $displayName);
-			if ($type === 'folder')
-				$subject = (string)$l->t('User %s shared a folder with you', $displayName);
+			$subject = (string)$l->t('%s shared »%s« with you', array($displayName, $file));
 
-			$text = (string)$l->t('User %s shared the file "%s" with you. It is available for download here: %s',
-				array($displayName, $file, $link));
-			if ($type === 'folder')
-				$text = (string)$l->t('User %s shared the folder "%s" with you. It is available for download here: %s',
-					array($displayName, $file, $link));
+			$content = new OC_Template("core", "mail", "");
+			$content->assign ('link', $link);
+			$content->assign ('type', $type);
+			$content->assign ('user_displayname', $displayName);
+			$content->assign ('filename', $file);
+			$text = $content->fetchPage();
 
+			$content = new OC_Template("core", "altmail", "");
+			$content->assign ('link', $link);
+			$content->assign ('type', $type);
+			$content->assign ('user_displayname', $displayName);
+			$content->assign ('filename', $file);
+			$alttext = $content->fetchPage();
 
 			$default_from = OCP\Util::getDefaultEmailAddress('sharing-noreply');
 			$from_address = OCP\Config::getUserValue($user, 'settings', 'email', $default_from );
 
 			// send it out now
 			try {
-				OCP\Util::sendMail($to_address, $to_address, $subject, $text, $from_address, $displayName);
+				OCP\Util::sendMail($to_address, $to_address, $subject, $text, $from_address, $displayName, 1, $alttext);
 				OCP\JSON::success();
 			} catch (Exception $exception) {
 				OCP\JSON::error(array('data' => array('message' => OC_Util::sanitizeHTML($exception->getMessage()))));
@@ -176,10 +181,10 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 // 						}
 // 					}
 // 				}
+				$groups = OC_Group::getGroups($_GET['search']);
 				if ($sharePolicy == 'groups_only') {
-					$groups = OC_Group::getUserGroups(OC_User::getUser());
-				} else {
-					$groups = OC_Group::getGroups();
+					$usergroups = OC_Group::getUserGroups(OC_User::getUser());
+					$groups = array_intersect($groups, $usergroups);
 				}
 				$count = 0;
 				$users = array();
@@ -208,15 +213,18 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 					}
 				}
 				$count = 0;
+				
+				// enable l10n support
+				$l = OC_L10N::get('core');
+				
 				foreach ($groups as $group) {
 					if ($count < 15) {
-						if (stripos($group, $_GET['search']) !== false
-							&& (!isset($_GET['itemShares'])
+						if (!isset($_GET['itemShares'])
 							|| !isset($_GET['itemShares'][OCP\Share::SHARE_TYPE_GROUP])
 							|| !is_array($_GET['itemShares'][OCP\Share::SHARE_TYPE_GROUP])
-							|| !in_array($group, $_GET['itemShares'][OCP\Share::SHARE_TYPE_GROUP]))) {
+							|| !in_array($group, $_GET['itemShares'][OCP\Share::SHARE_TYPE_GROUP])) {
 							$shareWith[] = array(
-								'label' => $group.' (group)',
+								'label' => $group.' ('.$l->t('group').')',
 								'value' => array(
 									'shareType' => OCP\Share::SHARE_TYPE_GROUP,
 									'shareWith' => $group

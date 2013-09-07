@@ -20,6 +20,8 @@ $users = array();
 $groups = array();
 
 $isadmin = OC_User::isAdminUser(OC_User::getUser());
+$recoveryAdminEnabled = OC_App::isEnabled('files_encryption') &&
+					    OC_Appconfig::getValue( 'files_encryption', 'recoveryAdminEnabled' );
 
 if($isadmin) {
 	$accessiblegroups = OC_Group::getGroups();
@@ -50,17 +52,18 @@ foreach($accessibleusers as $uid => $displayName) {
 		&& array_search($quota, array('none', 'default'))===false;
 
 	$name = $displayName;
-	if ( $displayName != $uid ) {
+	if ( $displayName !== $uid ) {
 		$name = $name . ' ('.$uid.')';
-	} 
-	
+	}
+
 	$users[] = array(
 		"name" => $uid,
-		"displayName" => $displayName, 
-		"groups" => join( ", ", /*array_intersect(*/OC_Group::getUserGroups($uid)/*, OC_SubAdmin::getSubAdminsGroups(OC_User::getUser()))*/),
-		'quota'=>$quota,
-		'isQuotaUserDefined'=>$isQuotaUserDefined,
-		'subadmin'=>implode(', ', OC_SubAdmin::getSubAdminsGroups($uid)));
+		"displayName" => $displayName,
+		"groups" => OC_Group::getUserGroups($uid),
+		'quota' => $quota,
+		'isQuotaUserDefined' => $isQuotaUserDefined,
+		'subadmin' => OC_SubAdmin::getSubAdminsGroups($uid),
+	);
 }
 
 foreach( $accessiblegroups as $i ) {
@@ -77,4 +80,5 @@ $tmpl->assign( 'numofgroups', count($accessiblegroups));
 $tmpl->assign( 'quota_preset', $quotaPreset);
 $tmpl->assign( 'default_quota', $defaultQuota);
 $tmpl->assign( 'defaultQuotaIsUserDefined', $defaultQuotaIsUserDefined);
+$tmpl->assign( 'recoveryAdminEnabled', $recoveryAdminEnabled);
 $tmpl->printPage();

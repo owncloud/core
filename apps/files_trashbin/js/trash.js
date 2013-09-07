@@ -2,12 +2,13 @@
 $(document).ready(function() {
 
 	if (typeof FileActions !== 'undefined') {
-		FileActions.register('all', 'Restore', OC.PERMISSION_READ,  OC.imagePath('core', 'actions/undelete.png'), function(filename) {
+		FileActions.register('all', 'Restore', OC.PERMISSION_READ, OC.imagePath('core', 'actions/history'), function(filename) {
 			var tr=$('tr').filterAttr('data-file', filename);
-			var spinner = '<img class="move2trash" title="'+t('files_trashbin', 'perform restore operation')+'" src="'+ OC.imagePath('core', 'loader.gif') +'"></a>';
+			var spinner = '<img class="move2trash" title="'+t('files_trashbin', 'perform restore operation')+'" src="'+ OC.imagePath('core', 'loading.gif') +'"></a>';
 			var undeleteAction = $('tr').filterAttr('data-file',filename).children("td.date");
 			var files = tr.attr('data-file');
 			undeleteAction[0].innerHTML = undeleteAction[0].innerHTML+spinner;
+			disableActions();
 			$.post(OC.filePath('files_trashbin','ajax','undelete.php'),
 				{files:JSON.stringify([files]), dirlisting:tr.attr('data-dirlisting') },
 				function(result){
@@ -15,9 +16,11 @@ $(document).ready(function() {
 						var row = document.getElementById(result.data.success[i].filename);
 						row.parentNode.removeChild(row);
 					}
-					if (result.status != 'success') {
+					if (result.status !== 'success') {
 						OC.dialogs.alert(result.data.message, t('core', 'Error'));
 					}
+					enableActions();
+					FileList.updateFileSummary();
 				});
 
 			});
@@ -34,7 +37,7 @@ $(document).ready(function() {
 			var newHTML = '<img class="move2trash" data-action="Delete" title="'+t('files', 'delete file permanently')+'" src="'+ OC.imagePath('core', 'loading.gif') +'"></a>';
 			var files = tr.attr('data-file');
 			deleteAction[0].outerHTML = newHTML;
-
+			disableActions();
 			$.post(OC.filePath('files_trashbin','ajax','delete.php'),
 				{files:JSON.stringify([files]), dirlisting:tr.attr('data-dirlisting') },
 				function(result){
@@ -42,9 +45,11 @@ $(document).ready(function() {
 						var row = document.getElementById(result.data.success[i].filename);
 						row.parentNode.removeChild(row);
 					}
-					if (result.status != 'success') {
+					if (result.status !== 'success') {
 						OC.dialogs.alert(result.data.message, t('core', 'Error'));
 					}
+					enableActions();
+					FileList.updateFileSummary();
 				});
 
 			});
@@ -72,7 +77,7 @@ $(document).ready(function() {
 				var rows = $(this).parent().parent().parent().children('tr');
 				for (var i = start; i < end; i++) {
 					$(rows).each(function(index) {
-						if (index == i) {
+						if (index === i) {
 							var checkbox = $(this).children().children('input:checkbox');
 							$(checkbox).attr('checked', 'checked');
 							$(checkbox).parent().parent().addClass('selected');
@@ -93,11 +98,12 @@ $(document).ready(function() {
 		});
 
 		$('.undelete').click('click',function(event) {
-			var spinner = '<img class="move2trash" title="'+t('files_trashbin', 'perform restore operation')+'" src="'+ OC.imagePath('core', 'loader.gif') +'"></a>';
+			event.preventDefault();
+			var spinner = '<img class="move2trash" title="'+t('files_trashbin', 'perform restore operation')+'" src="'+ OC.imagePath('core', 'loading.gif') +'"></a>';
 			var files=getSelectedFiles('file');
 			var fileslist = JSON.stringify(files);
 			var dirlisting=getSelectedFiles('dirlisting')[0];
-
+			disableActions();
 			for (var i=0; i<files.length; i++) {
 				var undeleteAction = $('tr').filterAttr('data-file',files[i]).children("td.date");
 				undeleteAction[0].innerHTML = undeleteAction[0].innerHTML+spinner;
@@ -110,19 +116,22 @@ $(document).ready(function() {
 							var row = document.getElementById(result.data.success[i].filename);
 							row.parentNode.removeChild(row);
 						}
-						if (result.status != 'success') {
+						if (result.status !== 'success') {
 							OC.dialogs.alert(result.data.message, t('core', 'Error'));
 						}
+						enableActions();
 					});
 			});
 
 		$('.delete').click('click',function(event) {
+			event.preventDefault();
 			console.log("delete selected");
 			var spinner = '<img class="move2trash" title="'+t('files_trashbin', 'Delete permanently')+'" src="'+ OC.imagePath('core', 'loading.gif') +'"></a>';
 			var files=getSelectedFiles('file');
 			var fileslist = JSON.stringify(files);
 			var dirlisting=getSelectedFiles('dirlisting')[0];
 
+			disableActions();
 			for (var i=0; i<files.length; i++) {
 				var deleteAction = $('tr').filterAttr('data-file',files[i]).children("td.date");
 				deleteAction[0].innerHTML = deleteAction[0].innerHTML+spinner;
@@ -135,9 +144,10 @@ $(document).ready(function() {
 							var row = document.getElementById(result.data.success[i].filename);
 							row.parentNode.removeChild(row);
 						}
-						if (result.status != 'success') {
+						if (result.status !== 'success') {
 							OC.dialogs.alert(result.data.message, t('core', 'Error'));
 						}
+						enableActions();
 					});
 			});
 
@@ -168,9 +178,9 @@ $(document).ready(function() {
 
 function processSelection(){
 	var selected=getSelectedFiles();
-	var selectedFiles=selected.filter(function(el){return el.type=='file'});
-	var selectedFolders=selected.filter(function(el){return el.type=='dir'});
-	if(selectedFiles.length==0 && selectedFolders.length==0) {
+	var selectedFiles=selected.filter(function(el){return el.type === 'file'});
+	var selectedFolders=selected.filter(function(el){return el.type === 'dir'});
+	if(selectedFiles.length === 0 && selectedFolders.length === 0) {
 		$('#headerName>span.name').text(t('files','Name'));
 		$('#modified').text(t('files','Deleted'));
 		$('table').removeClass('multiselect');
@@ -180,21 +190,13 @@ function processSelection(){
 		$('.selectedActions').show();
 		var selection='';
 		if(selectedFolders.length>0){
-			if(selectedFolders.length==1){
-				selection+=t('files','1 folder');
-			}else{
-				selection+=t('files','{count} folders',{count: selectedFolders.length});
-			}
+			selection += n('files', '%n folder', '%n folders', selectedFolders.length);
 			if(selectedFiles.length>0){
 				selection+=' & ';
 			}
 		}
 		if(selectedFiles.length>0){
-			if(selectedFiles.length==1){
-				selection+=t('files','1 file');
-			}else{
-				selection+=t('files','{count} files',{count: selectedFiles.length});
-			}
+			selection += n('files', '%n file', '%n files', selectedFiles.length);
 		}
 		$('#headerName>span.name').text(selection);
 		$('#modified').text('');
@@ -233,4 +235,14 @@ function getSelectedFiles(property){
 
 function fileDownloadPath(dir, file) {
 	return OC.filePath('files_trashbin', '', 'download.php') + '?file='+encodeURIComponent(file);
+}
+
+function enableActions() {
+	$(".action").css("display", "inline");
+	$(":input:checkbox").css("display", "inline");
+}
+
+function disableActions() {
+	$(".action").css("display", "none");
+	$(":input:checkbox").css("display", "none");
 }

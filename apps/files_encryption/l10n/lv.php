@@ -1,7 +1,6 @@
-<?php $TRANSLATIONS = array(
-"Encryption" => "Šifrēšana",
-"File encryption is enabled." => "Datņu šifrēšana ir aktivēta.",
-"The following file types will not be encrypted:" => "Sekojošās datnes netiks šifrētas:",
-"Exclude the following file types from encryption:" => "Sekojošos datņu tipus izslēgt no šifrēšanas:",
-"None" => "Nav"
+<?php
+$TRANSLATIONS = array(
+"Saving..." => "Saglabā...",
+"Encryption" => "Šifrēšana"
 );
+$PLURAL_FORMS = "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);";
