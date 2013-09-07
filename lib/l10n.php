@@ -553,7 +553,7 @@ class OC_L10N {
 			} else {
 				$lang_exists = self::languageExists($app, $lang);
 			}
-			return $lang_extsis ? $lang : false;
+			return $lang_exists ? $lang : false;
 		} else {
 			return false; // Preference language not set
 		}
