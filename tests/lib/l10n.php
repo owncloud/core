@@ -1,5 +1,4 @@
 <?php
-<<<<<<< HEAD
 /**
  * Copyright (c) 2013 Thomas Müller <thomas.mueller@tmit.eu>
  * This file is licensed under the Affero General Public License version 3 or
@@ -77,4 +76,3 @@ class Test_L10n extends PHPUnit_Framework_TestCase {
 		// Currently we don't test when user is logged in
 	}
 }
-?>

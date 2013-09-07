@@ -437,7 +437,8 @@ class OC_L10N {
 	 */
 	public static function findLanguage($app = null) {
 		if(!is_array($app) && self::$language != '') {
-			return self::$language; // The language is already selected
+			// The language is already selected
+			return self::$language;
 		}
 
 		// If user's preference language is available, use it
@@ -526,7 +527,8 @@ class OC_L10N {
 	 * @returns bool
 	 */
 	public static function languageExists($app, $lang) {
-		if ($lang === 'en') {//english is always available
+		// English is always available
+		if ($lang === 'en') {
 			return true;
 		}
 		$dir = self::findI18nDir($app);
@@ -551,7 +553,7 @@ class OC_L10N {
 			} else {
 				$lang_exists = self::languageExists($app, $lang);
 			}
-			return $lang_extsis ? $lang : false;
+			return $lang_exists ? $lang : false;
 		} else {
 			return false; // Preference language not set
 		}
