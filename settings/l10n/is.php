@@ -1,9 +1,9 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "Ekki tókst að hlaða lista frá forrita síðu",
 "Authentication error" => "Villa við auðkenningu",
 "Group already exists" => "Hópur er þegar til",
 "Unable to add group" => "Ekki tókst að bæta við hóp",
-"Could not enable app. " => "Gat ekki virkjað forrit",
 "Email saved" => "Netfang vistað",
 "Invalid email" => "Ógilt netfang",
 "Unable to delete group" => "Ekki tókst að eyða hóp",
@@ -16,8 +16,9 @@
 "Disable" => "Gera óvirkt",
 "Enable" => "Virkja",
 "Please wait...." => "Andartak....",
-"Error" => "Villa",
 "Updating...." => "Uppfæri...",
+"Error" => "Villa",
+"Update" => "Uppfæra",
 "Updated" => "Uppfært",
 "Saving..." => "Er að vista ...",
 "deleted" => "eytt",
@@ -27,7 +28,6 @@
 "Delete" => "Eyða",
 "__language_name__" => "__nafn_tungumáls__",
 "Security Warning" => "Öryggis aðvörun",
-"Your data directory and your files are probably accessible from the internet. The .htaccess file that ownCloud provides is not working. We strongly suggest that you configure your webserver in a way that the data directory is no longer accessible or you move the data directory outside the webserver document root." => "Gagnamappan þín er að öllum líkindum aðgengileg frá internetinu. Skráin .htaccess sem fylgir með ownCloud er ekki að virka. Við mælum eindregið með því að þú stillir vefþjóninn þannig að gagnamappan verði ekki aðgengileg frá internetinu eða færir hana út fyrir vefrótina.",
 "More" => "Meira",
 "Less" => "Minna",
 "Version" => "Útgáfa",
@@ -37,7 +37,6 @@
 "Select an App" => "Veldu forrit",
 "See application page at apps.owncloud.com" => "Skoða síðu forrits hjá apps.owncloud.com",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span>-leyfi skráð af <span class=\"author\"></span>",
-"Update" => "Uppfæra",
 "User Documentation" => "Notenda handbók",
 "Administrator Documentation" => "Stjórnenda handbók",
 "Online Documentation" => "Handbók á netinu",
@@ -58,6 +57,7 @@
 "Language" => "Tungumál",
 "Help translate" => "Hjálpa við þýðingu",
 "WebDAV" => "WebDAV",
+"Encryption" => "Dulkóðun",
 "Create" => "Búa til",
 "Default Storage" => "Sjálfgefin gagnageymsla",
 "Unlimited" => "Ótakmarkað",
@@ -66,3 +66,4 @@
 "Storage" => "gagnapláss",
 "Default" => "Sjálfgefið"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

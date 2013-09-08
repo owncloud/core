@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Deletion failed" => "Forigo malsukcesis",
 "Success" => "Sukceso",
 "Error" => "Eraro",
@@ -9,29 +10,20 @@
 "Password" => "Pasvorto",
 "For anonymous access, leave DN and Password empty." => "Por sennoman aliron, lasu DN-on kaj Pasvorton malplenaj.",
 "User Login Filter" => "Filtrilo de uzantensaluto",
-"Defines the filter to apply, when login is attempted. %%uid replaces the username in the login action." => "Ĝi difinas la filtrilon aplikotan, kiam oni provas ensaluti. %%uid anstataŭigas la uzantonomon en la ensaluta ago.",
-"use %%uid placeholder, e.g. \"uid=%%uid\"" => "uzu la referencilon %%uid, ekz.: \"uid=%%uid\"",
 "User List Filter" => "Filtrilo de uzantolisto",
-"Defines the filter to apply, when retrieving users." => "Ĝi difinas la filtrilon aplikotan, kiam veniĝas uzantoj.",
-"without any placeholder, e.g. \"objectClass=person\"." => "sen ajna referencilo, ekz.: \"objectClass=person\".",
 "Group Filter" => "Filtrilo de grupo",
-"Defines the filter to apply, when retrieving groups." => "Ĝi difinas la filtrilon aplikotan, kiam veniĝas grupoj.",
-"without any placeholder, e.g. \"objectClass=posixGroup\"." => "sen ajna referencilo, ekz.: \"objectClass=posixGroup\".",
 "Port" => "Pordo",
 "Use TLS" => "Uzi TLS-on",
 "Case insensitve LDAP server (Windows)" => "LDAP-servilo blinda je litergrandeco (Vindozo)",
 "Turn off SSL certificate validation." => "Malkapabligi validkontrolon de SSL-atestiloj.",
-"If connection only works with this option, import the LDAP server's SSL certificate in your ownCloud server." => "Se la konekto nur funkcias kun ĉi tiu malnepro, enportu la SSL-atestilo de la LDAP-servilo en via ownCloud-servilo.",
-"Not recommended, use for testing only." => "Ne rekomendata, uzu ĝin nur por testoj.",
 "in seconds. A change empties the cache." => "sekunde. Ajna ŝanĝo malplenigas la kaŝmemoron.",
 "User Display Name Field" => "Kampo de vidignomo de uzanto",
-"The LDAP attribute to use to generate the user`s ownCloud name." => "La atributo de LDAP uzota por generi la ownCloud-an nomon de la uzanto.",
 "Base User Tree" => "Baza uzantarbo",
 "Group Display Name Field" => "Kampo de vidignomo de grupo",
-"The LDAP attribute to use to generate the groups`s ownCloud name." => "La atributo de LDAP uzota por generi la ownCloud-an nomon de la grupo.",
 "Base Group Tree" => "Baza gruparbo",
 "Group-Member association" => "Asocio de grupo kaj membro",
 "in bytes" => "duumoke",
 "Leave empty for user name (default). Otherwise, specify an LDAP/AD attribute." => "Lasu malplena por uzantonomo (defaŭlto). Alie, specifu LDAP/AD-atributon.",
 "Help" => "Helpo"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

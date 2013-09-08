@@ -1,9 +1,9 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "অ্যাপস্টোর থেকে তালিকা লোড করতে সক্ষম নয়",
 "Authentication error" => "অনুমোদন ঘটিত সমস্যা",
 "Group already exists" => "গোষ্ঠীটি পূর্ব থেকেই বিদ্যমান",
 "Unable to add group" => "গোষ্ঠী যোগ করা সম্ভব হলো না",
-"Could not enable app. " => "অ্যপটি সক্রিয় করতে সক্ষম নয়।",
 "Email saved" => "ই-মেইল সংরক্ষন করা হয়েছে",
 "Invalid email" => "ই-মেইলটি সঠিক নয়",
 "Unable to delete group" => "গোষ্ঠী মুছে ফেলা সম্ভব হলো না ",
@@ -16,6 +16,7 @@
 "Disable" => "নিষ্ক্রিয়",
 "Enable" => "সক্রিয় ",
 "Error" => "সমস্যা",
+"Update" => "পরিবর্ধন",
 "Saving..." => "সংরক্ষণ করা হচ্ছে..",
 "undo" => "ক্রিয়া প্রত্যাহার",
 "Groups" => "গোষ্ঠীসমূহ",
@@ -32,7 +33,6 @@
 "Select an App" => "অ্যাপ নির্বাচন করুন",
 "See application page at apps.owncloud.com" => "apps.owncloud.com এ অ্যাপ্লিকেসন পৃষ্ঠা দেখুন",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span>-লাইসেন্সধারী <span class=\"author\"></span>",
-"Update" => "পরিবর্ধন",
 "User Documentation" => "ব্যবহারকারী সহায়িকা",
 "Administrator Documentation" => "প্রশাসক সহায়িকা",
 "Online Documentation" => "অনলাইন সহায়িকা",
@@ -53,6 +53,7 @@
 "Language" => "ভাষা",
 "Help translate" => "অনুবাদ করতে সহায়তা করুন",
 "WebDAV" => "WebDAV",
+"Encryption" => "সংকেতায়ন",
 "Create" => "তৈরী কর",
 "Default Storage" => "পূর্বনির্ধারিত সংরক্ষণাগার",
 "Unlimited" => "অসীম",
@@ -61,3 +62,4 @@
 "Storage" => "সংরক্ষণাগার",
 "Default" => "পূর্বনির্ধারিত"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

@@ -1,7 +1,9 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Language changed" => "Linguage cambiate",
 "Invalid request" => "Requesta invalide",
 "Error" => "Error",
+"Update" => "Actualisar",
 "Groups" => "Gruppos",
 "Delete" => "Deler",
 "__language_name__" => "Interlingua",
@@ -9,7 +11,6 @@
 "More" => "Plus",
 "Add your App" => "Adder tu application",
 "Select an App" => "Selectionar un app",
-"Update" => "Actualisar",
 "Get the apps to sync your files" => "Obtene le apps (applicationes) pro synchronizar tu files",
 "Password" => "Contrasigno",
 "Unable to change your password" => "Non pote cambiar tu contrasigno",
@@ -24,3 +25,4 @@
 "Other" => "Altere",
 "Username" => "Nomine de usator"
 );
+$PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

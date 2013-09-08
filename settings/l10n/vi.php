@@ -1,10 +1,10 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "Không thể tải danh sách ứng dụng từ App Store",
 "Authentication error" => "Lỗi xác thực",
 "Unable to change display name" => "Không thể thay đổi tên hiển thị",
 "Group already exists" => "Nhóm đã tồn tại",
 "Unable to add group" => "Không thể thêm nhóm",
-"Could not enable app. " => "không thể kích hoạt ứng dụng.",
 "Email saved" => "Lưu email",
 "Invalid email" => "Email không hợp lệ",
 "Unable to delete group" => "Không thể xóa nhóm",
@@ -19,9 +19,10 @@
 "Disable" => "Tắt",
 "Enable" => "Bật",
 "Please wait...." => "Xin hãy đợi...",
-"Error" => "Lỗi",
 "Updating...." => "Đang cập nhật...",
 "Error while updating app" => "Lỗi khi cập nhật ứng dụng",
+"Error" => "Lỗi",
+"Update" => "Cập nhật",
 "Updated" => "Đã cập nhật",
 "Saving..." => "Đang lưu...",
 "deleted" => "đã xóa",
@@ -31,11 +32,8 @@
 "Delete" => "Xóa",
 "__language_name__" => "__Ngôn ngữ___",
 "Security Warning" => "Cảnh bảo bảo mật",
-"Your data directory and your files are probably accessible from the internet. The .htaccess file that ownCloud provides is not working. We strongly suggest that you configure your webserver in a way that the data directory is no longer accessible or you move the data directory outside the webserver document root." => "Thư mục dữ liệu và những tập tin của bạn có thể dễ dàng bị truy cập từ mạng. Tập tin .htaccess do ownCloud cung cấp không hoạt động. Chúng tôi đề nghị bạn nên cấu hình lại máy chủ web để thư mục dữ liệu không còn bị truy cập hoặc bạn nên di chuyển thư mục dữ liệu ra bên ngoài thư mục gốc của máy chủ.",
 "Cron" => "Cron",
 "Execute one task with each page loaded" => "Thực thi tác vụ mỗi khi trang được tải",
-"cron.php is registered at a webcron service. Call the cron.php page in the owncloud root once a minute over http." => "cron.php đã được đăng ký tại một dịch vụ webcron. Gọi trang cron.php mỗi phút một lần thông qua giao thức http.",
-"Use systems cron service. Call the cron.php file in the owncloud folder via a system cronjob once a minute." => "Sử dụng dịch vụ cron của hệ thống. Gọi tệp tin cron.php mỗi phút một lần.",
 "Sharing" => "Chia sẻ",
 "Enable Share API" => "Bật chia sẻ API",
 "Allow apps to use the Share API" => "Cho phép các ứng dụng sử dụng chia sẻ API",
@@ -55,7 +53,6 @@
 "Select an App" => "Chọn một ứng dụng",
 "See application page at apps.owncloud.com" => "Xem nhiều ứng dụng hơn tại apps.owncloud.com",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span>-Giấy phép được cấp bởi  <span class=\"author\"></span>",
-"Update" => "Cập nhật",
 "User Documentation" => "Tài liệu người sử dụng",
 "Administrator Documentation" => "Tài liệu quản trị",
 "Online Documentation" => "Tài liệu trực tuyến",
@@ -78,6 +75,7 @@
 "Language" => "Ngôn ngữ",
 "Help translate" => "Hỗ trợ dịch thuật",
 "WebDAV" => "WebDAV",
+"Encryption" => "Mã hóa",
 "Login Name" => "Tên đăng nhập",
 "Create" => "Tạo",
 "Default Storage" => "Bộ nhớ mặc định",
@@ -89,3 +87,4 @@
 "set new password" => "đặt mật khẩu mới",
 "Default" => "Mặc định"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";

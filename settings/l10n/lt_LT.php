@@ -1,9 +1,9 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Unable to load list from App Store" => "Neįmanoma įkelti sąrašo iš Programų Katalogo",
 "Authentication error" => "Autentikacijos klaida",
 "Group already exists" => "Grupė jau egzistuoja",
 "Unable to add group" => "Nepavyko pridėti grupės",
-"Could not enable app. " => "Nepavyksta įjungti aplikacijos.",
 "Email saved" => "El. paštas išsaugotas",
 "Invalid email" => "Netinkamas el. paštas",
 "Unable to delete group" => "Nepavyko ištrinti grupės",
@@ -17,9 +17,10 @@
 "Disable" => "Išjungti",
 "Enable" => "Įjungti",
 "Please wait...." => "Prašome palaukti...",
-"Error" => "Klaida",
 "Updating...." => "Atnaujinama...",
 "Error while updating app" => "Įvyko klaida atnaujinant programą",
+"Error" => "Klaida",
+"Update" => "Atnaujinti",
 "Updated" => "Atnaujinta",
 "Saving..." => "Saugoma...",
 "deleted" => "ištrinta",
@@ -33,7 +34,6 @@
 "A valid password must be provided" => "Slaptažodis turi būti tinkamas",
 "__language_name__" => "Kalba",
 "Security Warning" => "Saugumo pranešimas",
-"Your data directory and your files are probably accessible from the internet. The .htaccess file that ownCloud provides is not working. We strongly suggest that you configure your webserver in a way that the data directory is no longer accessible or you move the data directory outside the webserver document root." => "Jūsų duomenų aplankalas ir Jūsų failai turbūt yra pasiekiami per internetą. Failas .htaccess, kuris duodamas, neveikia. Mes rekomenduojame susitvarkyti savo nustatymsu taip, kad failai nebūtų pasiekiami per internetą, arba persikelti juos kitur.",
 "Module 'fileinfo' missing" => "Trūksta 'fileinfo' modulio",
 "Cron" => "Cron",
 "Sharing" => "Dalijimasis",
@@ -49,7 +49,6 @@
 "More Apps" => "Daugiau aplikacijų",
 "Select an App" => "Pasirinkite programą",
 "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>" => "<span class=\"licence\"></span>- autorius<span class=\"author\"></span>",
-"Update" => "Atnaujinti",
 "Forum" => "Forumas",
 "Bugtracker" => "Klaidų sekimas",
 "Get the apps to sync your files" => "Atsisiųskite programėlių, kad sinchronizuotumėte savo failus",
@@ -65,6 +64,7 @@
 "Language" => "Kalba",
 "Help translate" => "Padėkite išversti",
 "WebDAV" => "WebDAV",
+"Encryption" => "Šifravimas",
 "Login Name" => "Vartotojo vardas",
 "Create" => "Sukurti",
 "Unlimited" => "Neribota",
@@ -73,3 +73,4 @@
 "set new password" => "nustatyti naują slaptažodį",
 "Default" => "Numatytasis"
 );
+$PLURAL_FORMS = "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);";

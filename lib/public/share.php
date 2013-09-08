@@ -209,7 +209,7 @@ class Share {
 					}
 				}
 			}
-			
+
 			// let's get the parent for the next round
 			$meta = $cache->get((int)$source);
 			if($meta !== false) {
@@ -454,13 +454,16 @@ class Share {
 					$forcePortable = (CRYPT_BLOWFISH != 1);
 					$hasher = new \PasswordHash(8, $forcePortable);
 					$shareWith = $hasher->HashPassword($shareWith.\OC_Config::getValue('passwordsalt', ''));
+				} else {
+					// reuse the already set password
+					$shareWith = $checkExists['share_with'];
 				}
 
 				// Generate token
 				if (isset($oldToken)) {
 					$token = $oldToken;
 				} else {
-					$token = \OC_Util::generate_random_bytes(self::TOKEN_LENGTH);
+					$token = \OC_Util::generateRandomBytes(self::TOKEN_LENGTH);
 				}
 				$result = self::put($itemType, $itemSource, $shareType, $shareWith, $uidOwner, $permissions,
 					null, $token);
@@ -837,7 +840,11 @@ class Share {
 		// Get filesystem root to add it to the file target and remove from the
 		// file source, match file_source with the file cache
 		if ($itemType == 'file' || $itemType == 'folder') {
-			$root = \OC\Files\Filesystem::getRoot();
+			if(!is_null($uidOwner)) {
+				$root = \OC\Files\Filesystem::getRoot();
+			} else {
+				$root = '';
+			}
 			$where = 'INNER JOIN `*PREFIX*filecache` ON `file_source` = `*PREFIX*filecache`.`fileid`';
 			if (!isset($item)) {
 				$where .= ' WHERE `file_target` IS NOT NULL';
@@ -1285,6 +1292,8 @@ class Share {
 		if ($shareType == self::SHARE_TYPE_GROUP) {
 			$groupItemTarget = self::generateTarget($itemType, $itemSource, $shareType, $shareWith['group'],
 				$uidOwner, $suggestedItemTarget);
+			$run = true;
+			$error = '';
 			\OC_Hook::emit('OCP\Share', 'pre_shared', array(
 				'itemType' => $itemType,
 				'itemSource' => $itemSource,
@@ -1294,8 +1303,15 @@ class Share {
 				'uidOwner' => $uidOwner,
 				'permissions' => $permissions,
 				'fileSource' => $fileSource,
-				'token' => $token
+				'token' => $token,
+				'run' => &$run,
+				'error' => &$error
 			));
+
+			if ($run === false) {
+				throw new \Exception($error);
+			}
+
 			if (isset($fileSource)) {
 				if ($parentFolder) {
 					if ($parentFolder === true) {
@@ -1371,6 +1387,8 @@ class Share {
 		} else {
 			$itemTarget = self::generateTarget($itemType, $itemSource, $shareType, $shareWith, $uidOwner,
 				$suggestedItemTarget);
+			$run = true;
+			$error = '';
 			\OC_Hook::emit('OCP\Share', 'pre_shared', array(
 				'itemType' => $itemType,
 				'itemSource' => $itemSource,
@@ -1380,8 +1398,15 @@ class Share {
 				'uidOwner' => $uidOwner,
 				'permissions' => $permissions,
 				'fileSource' => $fileSource,
-				'token' => $token
+				'token' => $token,
+				'run' => &$run,
+				'error' => &$error
 			));
+
+			if ($run === false) {
+				throw new \Exception($error);
+			}
+
 			if (isset($fileSource)) {
 				if ($parentFolder) {
 					if ($parentFolder === true) {

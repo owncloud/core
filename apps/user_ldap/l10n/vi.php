@@ -1,4 +1,5 @@
-<?php $TRANSLATIONS = array(
+<?php
+$TRANSLATIONS = array(
 "Deletion failed" => "Xóa thất bại",
 "Success" => "Thành công",
 "Error" => "Lỗi",
@@ -11,34 +12,23 @@
 "Password" => "Mật khẩu",
 "For anonymous access, leave DN and Password empty." => "Cho phép truy cập nặc danh , DN và mật khẩu trống.",
 "User Login Filter" => "Lọc người dùng đăng nhập",
-"Defines the filter to apply, when login is attempted. %%uid replaces the username in the login action." => "Xác định các bộ lọc để áp dụng, khi đăng nhập . uid%% thay thế tên người dùng trong các lần đăng nhập.",
-"use %%uid placeholder, e.g. \"uid=%%uid\"" => "use %%uid placeholder, e.g. \"uid=%%uid\"",
 "User List Filter" => "Lọc danh sách thành viên",
-"Defines the filter to apply, when retrieving users." => "Xác định các bộ lọc để áp dụng, khi người dụng sử dụng.",
-"without any placeholder, e.g. \"objectClass=person\"." => "mà không giữ chỗ nào, ví dụ như \"objectClass = person\".",
 "Group Filter" => "Bộ lọc nhóm",
-"Defines the filter to apply, when retrieving groups." => "Xác định các bộ lọc để áp dụng, khi nhóm sử dụng.",
-"without any placeholder, e.g. \"objectClass=posixGroup\"." => "mà không giữ chỗ nào, ví dụ như \"objectClass = osixGroup\".",
 "Connection Settings" => "Connection Settings",
 "Port" => "Cổng",
 "Backup (Replica) Port" => "Cổng sao lưu (Replica)",
 "Disable Main Server" => "Tắt máy chủ chính",
-"When switched on, ownCloud will only connect to the replica server." => "When switched on, ownCloud will only connect to the replica server.",
 "Use TLS" => "Sử dụng TLS",
 "Do not use it additionally for LDAPS connections, it will fail." => "Do not use it additionally for LDAPS connections, it will fail.",
 "Case insensitve LDAP server (Windows)" => "Trường hợp insensitve LDAP máy chủ (Windows)",
 "Turn off SSL certificate validation." => "Tắt xác thực chứng nhận SSL",
-"If connection only works with this option, import the LDAP server's SSL certificate in your ownCloud server." => "Nếu kết nối chỉ hoạt động với tùy chọn này, vui lòng import LDAP certificate SSL  trong máy chủ ownCloud của bạn.",
-"Not recommended, use for testing only." => "Không khuyến khích, Chỉ sử dụng để thử nghiệm.",
 "in seconds. A change empties the cache." => "trong vài giây. Một sự thay đổi bộ nhớ cache.",
 "Directory Settings" => "Directory Settings",
 "User Display Name Field" => "Hiển thị tên người sử dụng",
-"The LDAP attribute to use to generate the user`s ownCloud name." => "Các thuộc tính LDAP sử dụng để tạo tên người dùng ownCloud.",
 "Base User Tree" => "Cây người dùng cơ bản",
 "User Search Attributes" => "User Search Attributes",
 "Optional; one attribute per line" => "Optional; one attribute per line",
 "Group Display Name Field" => "Hiển thị tên nhóm",
-"The LDAP attribute to use to generate the groups`s ownCloud name." => "Các thuộc tính LDAP sử dụng để tạo các nhóm ownCloud.",
 "Base Group Tree" => "Cây nhóm cơ bản",
 "Group Search Attributes" => "Group Search Attributes",
 "Group-Member association" => "Nhóm thành viên Cộng đồng",
@@ -47,3 +37,4 @@
 "Leave empty for user name (default). Otherwise, specify an LDAP/AD attribute." => "Để trống tên người dùng (mặc định). Nếu không chỉ định thuộc tính LDAP/AD",
 "Help" => "Giúp đỡ"
 );
+$PLURAL_FORMS = "nplurals=1; plural=0;";
