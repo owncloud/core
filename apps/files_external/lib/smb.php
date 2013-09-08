@@ -88,7 +88,7 @@ class SMB extends Common {
 	public function stat($path) {
 		$path = trim($path, '/');
 		try {
-			if (!$path and $this->root == '/') { //mtime doesn't work for shares
+			if (!$path and $this->root === '/') { //mtime doesn't work for shares
 				return array('mtime' => $this->shareMTime(), 'size' => 0, 'type' => 'dir');
 			} else {
 				$parent = dirname($this->root . $path);
