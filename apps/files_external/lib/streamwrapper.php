@@ -33,7 +33,7 @@ abstract class StreamWrapper extends Common{
 		return filetype($this->constructUrl($path));
 	}
 
-//	public function isReadable($path) {
+	public function isReadable($path) {
 		return true;//not properly supported
 	}
 
