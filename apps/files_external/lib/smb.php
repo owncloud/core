@@ -127,8 +127,8 @@ class SMB extends Common {
 		$files = $this->dir($this->root);
 		$lastMtime = 0;
 		foreach ($files as $file) {
-			if ($file['mtime'] > $lastMtime) {
-				$lastMtime = $file['mtime'];
+			if ($file['time'] > $lastMtime) {
+				$lastMtime = $file['time'];
 			}
 		}
 		return $lastMtime;
