@@ -25,13 +25,13 @@ var FileList={
 		});
 		//split extension from filename for non dirs
 		if (type !== 'dir' && name.indexOf('.')!==-1) {
-			basename=name.substr(0,name.lastIndexOf('.'));
-			extension=name.substr(name.lastIndexOf('.'));
+			basename = name.substr(0,name.lastIndexOf('.'));
+			extension = name.substr(name.lastIndexOf('.'));
 		} else {
-			basename=name;
-			extension=false;
+			basename = name;
+			extension = false;
 		}
-		var name_span=$('<span></span>').addClass('nametext').text(basename);
+		var name_span = $('<span></span>').addClass('nametext').text(basename);
 		link_elem.append(name_span);
 		if(extension){
 			name_span.append($('<span></span>').addClass('extension').text(extension));
@@ -47,10 +47,10 @@ var FileList={
 		tr.append(td);
 
 		//size column
-		if(size!==t('files', 'Pending')){
+		if (size!==t('files', 'Pending')) {
 			simpleSize = humanFileSize(size);
-		}else{
-			simpleSize=t('files', 'Pending');
+		} else {
+			simpleSize = t('files', 'Pending');
 		}
 		var sizeColor = Math.round(160-Math.pow((size/(1024*1024)),2));
 		var lastModifiedTime = Math.round(lastModified.getTime() / 1000);
@@ -101,9 +101,9 @@ var FileList={
 		);
 
 		FileList.insertElement(name, 'file', tr);
-		if(loading){
+		if (loading) {
 			tr.data('loading',true);
-		}else{
+		} else {
 			tr.find('td.filename').draggable(dragOptions);
 		}
 		if (hidden) {
@@ -427,7 +427,7 @@ var FileList={
 			var infoVars = {
 				dirs: '<span class="dirinfo">'+directoryInfo+'</span><span class="connector">',
 				files: '</span><span class="fileinfo">'+fileInfo+'</span>'
-			}
+			};
 
 			var info = t('files', '{dirs} and {files}', infoVars);
 
