@@ -146,9 +146,7 @@ class Swift extends \OC\Files\Storage\Common {
 	public function file_exists($path) {
 		$path = $this->normalizePath($path);
 
-		if (!$path) {
-			$path = '.';
-		} else if ($path !== '.' && $this->is_dir($path)) {
+		if ($path !== '.' && $this->is_dir($path)) {
 			$path .= '/';
 		}
 
