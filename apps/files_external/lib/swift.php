@@ -191,7 +191,7 @@ class Swift extends \OC\Files\Storage\Common {
 
 		if ($path === '.') {
 			$path = '';
-		} else if ($path) {
+		} else {
 			$path .= '/';
 		}
 
