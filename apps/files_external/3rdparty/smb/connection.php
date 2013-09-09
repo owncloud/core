@@ -21,7 +21,7 @@ class Connection extends RawConnection {
 	}
 
 	/**
-	 * get all unprocessed output from smbclient untill the next prompt
+	 * get all unprocessed output from smbclient until the next prompt
 	 *
 	 * @throws ConnectionError
 	 * @return array
