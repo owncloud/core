@@ -459,10 +459,6 @@ class Swift extends \OC\Files\Storage\Common {
 		return true;
 	}
 
-	public function test() {
-		return true;
-	}
-
 	public function getId() {
 		return $this->id;
 	}
