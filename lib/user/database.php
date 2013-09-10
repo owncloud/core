@@ -188,89 +188,48 @@ class OC_User_Database extends OC_User_Backend {
 	 * returns the user id or false
 	 */
 	public function checkPassword( $uid, $password ) {		
-		$isEmail = (bool) filter_var($uid, FILTER_VALIDATE_EMAIL);
-		
+				
+		//Email check
+		/*$isEmail = (bool) filter_var($uid, FILTER_VALIDATE_EMAIL);
+				
 		if ($isEmail) {			
-			//Gets the uid(s) associated with that email
-			$sql = "SELECT `userid` FROM `*PREFIX*preferences` WHERE LOWER(`configkey`) = 'email' AND LOWER(`configvalue`) = LOWER(?)";
-			
+			//Gets the UID associated with that email
+			//$sql = "SELECT `userid` FROM `*PREFIX*preferences` WHERE LOWER(`configkey`) = 'email' AND LOWER(`configvalue`) = LOWER(?)";
+			$sql = "SELECT userid FROM oc_preferences WHERE configkey = 'email' AND configvalue = (?)";
 			$query = OC_DB::prepare($sql);
-			
 			$result = $query->execute(array($uid));
+			$uid = $result->fetchColumn();
 			
-			//Gets usernames (only the first column)
-			$uids = $result->fetchAll(PDO::FETCH_COLUMN, 0);
+			var_dump($uid);
 			
 			//No account has that email (login refused)
-			if (empty($uids))
-				return false;
-		}
+			if (empty($uid)) return false;
+		}*/
+		
 	
-		/**
-		* Proceed to password check
-		* Returns the uid at the first account's password match
-		*/
-		
-		$sql = "SELECT `uid`, `password` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)";
-		
-		if (!isset($uids)) {		
-			$query = OC_DB::prepare($sql);
-		
-			$result = $query->execute(array($uid));
-			
-		} else {
-			//Builds the query based on the number of array elements
-			$sql .= ' OR ';
-			
-			$condition = Array();
-			for ($i = 1; $i < count($uids); $i++) {
-				array_push($condition, "LOWER(`uid`) = LOWER(?)");
-			}
-			
-			$sql .= implode(' OR ', $condition);
-			
-			$query = OC_DB::prepare($sql);
-			
-			$result = $query->execute($uids);
-		}
-		
-		$users = $result->fetchAll();
-				
-		if (!empty($users)) {
-			
-			$matches = Array();
-			
-			foreach($users as $user) {
-			
-				$storedHash=$user['password'];
-				
-				if ($storedHash[0]=='$') {//the new phpass based hashing
-					$hasher=$this->getHasher();
-					
-					if($hasher->CheckPassword($password.OC_Config::getValue('passwordsalt', ''), $storedHash)) {
-						
-						array_push($matches, $user['uid']);
-					}
-				} else {//old sha1 based hashing
-					
-					if(sha1($password)==$storedHash) {
-						//upgrade to new hashing
-						$this->setPassword($row['uid'], $password);
-						
-						array_push($matches, $user['uid']);
-					}
+		$query = OC_DB::prepare( 'SELECT `uid`, `password` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)' );
+		$result = $query->execute( array($uid) );
+
+		$row=$result->fetchRow();
+		if($row) {
+			$storedHash=$row['password'];
+			if ($storedHash[0]=='$') {//the new phpass based hashing
+				$hasher=$this->getHasher();
+				if($hasher->CheckPassword($password.OC_Config::getValue('passwordsalt', ''), $storedHash)) {
+					return $row['uid'];
+				}else{
+					return false;
+				}
+			}else{//old sha1 based hashing
+				if(sha1($password)==$storedHash) {
+					//upgrade to new hashing
+					$this->setPassword($row['uid'], $password);
+					return $row['uid'];
+				}else{
+					return false;
 				}
 			}
-						
-			//In case of multiple accounts with different passwords the login is not rejected
-			if (count($matches) == 1) {
-				return $matches[0];
-			//In case of multiple accounts sharing the same email and passwords the login is rejected
-			} else {
-				return false;
-			}
-			
-		} else {
+		}else{
 			return false;
 		}
 	}
@@ -296,14 +255,42 @@ class OC_User_Database extends OC_User_Backend {
 	 * @param string $uid the username
 	 * @return boolean
 	 */
-	public function userExists($uid) {
-		$query = OC_DB::prepare( 'SELECT COUNT(*) FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)' );
+	public function userExists($uid) {					
+		$query = OC_DB::prepare('SELECT COUNT(*) FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)');
+		
 		$result = $query->execute( array( $uid ));
+	
 		if (OC_DB::isError($result)) {
 			OC_Log::write('core', OC_DB::getErrorMessage($result), OC_Log::ERROR);
 			return false;
 		}
+		
 		return $result->fetchOne() > 0;
+	}
+	
+	/**
+	* @brief Returns the user id(s) associated to the email provided
+	* @param $email the user's email
+	* @return array
+	*/
+	public function getUid($email) {
+		$uids = Array();
+		
+		$query = OC_DB::prepare('SELECT `userid` FROM `*PREFIX*preferences` WHERE `configkey` = "email" 
+					AND LOWER(`configvalue`) = LOWER(?)');
+		
+		$result = $query->execute( array($email) );
+
+		if (OC_DB::isError($result)) {
+			OC_Log::write('core', OC_DB::getErrorMessage($result), OC_Log::ERROR);
+			return null;
+		}
+		
+		for ($i = 0; $i < $result->numRows(); $i++) {
+			array_push($uids, $result->fetchOne());
+		}
+		
+		return $uids;
 	}
 
 	/**
