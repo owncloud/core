@@ -115,6 +115,15 @@ abstract class OC_User_Backend implements OC_User_Interface {
 	public function userExists($uid) {
 		return false;
 	}
+	
+	/**
+	* @brief Get the UID associated to the email provided
+	* @param $email the user's email
+	* @return string
+	*/
+	public function getUid($email) {
+		return array();
+	}
 
 	/**
 	* @brief get the user's home directory
