@@ -188,25 +188,6 @@ class OC_User_Database extends OC_User_Backend {
 	 * returns the user id or false
 	 */
 	public function checkPassword( $uid, $password ) {		
-				
-		//Email check
-		/*$isEmail = (bool) filter_var($uid, FILTER_VALIDATE_EMAIL);
-				
-		if ($isEmail) {			
-			//Gets the UID associated with that email
-			//$sql = "SELECT `userid` FROM `*PREFIX*preferences` WHERE LOWER(`configkey`) = 'email' AND LOWER(`configvalue`) = LOWER(?)";
-			$sql = "SELECT userid FROM oc_preferences WHERE configkey = 'email' AND configvalue = (?)";
-			$query = OC_DB::prepare($sql);
-			$result = $query->execute(array($uid));
-			$uid = $result->fetchColumn();
-			
-			var_dump($uid);
-			
-			//No account has that email (login refused)
-			if (empty($uid)) return false;
-		}*/
-		
-	
 		$query = OC_DB::prepare( 'SELECT `uid`, `password` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)' );
 		$result = $query->execute( array($uid) );
 
