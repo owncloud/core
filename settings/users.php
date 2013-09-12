@@ -9,12 +9,12 @@ OC_Util::checkSubAdminUser();
 OC_App::loadApps();
 
 // We have some javascript foo!
-OC_Util::addScript( 'settings', 'users' );
-OC_Util::addScript( 'core', 'multiselect' );
-OC_Util::addScript( 'core', 'singleselect' );
-OC_Util::addScript('core', 'jquery.inview');
-OC_Util::addStyle( 'settings', 'settings' );
-OC_App::setActiveNavigationEntry( 'core_users' );
+OC_Util::addScript('settings', 'vendor/angular/angular');
+OC_Util::addScript('settings', 'vendor/angular/angular-resource');
+OC_Util::addScript('core', 'multiselect');
+OC_Util::addScript( 'settings', 'users/public/app');
+OC_Util::addStyle('settings', 'users/users');
+OC_App::setActiveNavigationEntry('core_users');
 
 $users = array();
 $groups = array();
@@ -71,7 +71,7 @@ foreach( $accessiblegroups as $i ) {
 	$groups[] = array( "name" => $i );
 }
 
-$tmpl = new OC_Template( "settings", "users", "user" );
+$tmpl = new OC_Template( "settings", "users/main", "user" );
 $tmpl->assign( 'users', $users );
 $tmpl->assign( 'groups', $groups );
 $tmpl->assign( 'isadmin', (int) $isadmin);
@@ -82,3 +82,5 @@ $tmpl->assign( 'default_quota', $defaultQuota);
 $tmpl->assign( 'defaultQuotaIsUserDefined', $defaultQuotaIsUserDefined);
 $tmpl->assign( 'recoveryAdminEnabled', $recoveryAdminEnabled);
 $tmpl->printPage();
+
+?>

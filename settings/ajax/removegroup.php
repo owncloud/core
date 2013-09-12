@@ -1,14 +1,16 @@
 <?php
 
-OC_JSON::checkAdminUser();
 OCP\JSON::callCheck();
+OC_JSON::checkAdminUser();
 
-$name = $_POST["groupname"];
+$l = OC_L10n::get('settings');
+
+$groupname = $_GET["groupname"];
 
 // Return Success story
-if( OC_Group::deleteGroup( $name )) {
-	OC_JSON::success(array("data" => array( "groupname" => $name )));
+if( OC_Group::deleteGroup( $groupname )) {
+	OC_JSON::success(array("result" => array( "groupname" => $groupname )));
 }
 else{
-	OC_JSON::error(array("data" => array( "message" => $l->t("Unable to delete group") )));
+	OC_JSON::error(array("result" => array( "message" => $l->t("Unable to delete group") )));
 }
