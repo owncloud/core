@@ -61,7 +61,7 @@ class Server extends SimpleContainer implements IServerContainer {
 			return \OC\Files\Filesystem::getView();
 		});
 		$this->registerService('AppFolder', function($c){
-			return OC_App::getStorage(OC_App::getCurrentApp());
+			return \OC_App::getStorage(\OC_App::getCurrentApp());
 		});
 	}
 
