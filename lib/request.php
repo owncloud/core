@@ -83,7 +83,7 @@ class OC_Request {
 	 */
 	public static function requestUri() {
 		$uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
-		if (OC_Config::getValue('overwritewebroot') !== null and self::isOverwriteCondition()) {
+		if (($webroot = OC_Config::getValue('overwritewebroot')) !== null and self::isOverwriteCondition()) {
 			$uri = self::scriptName() . substr($uri, strlen($_SERVER['SCRIPT_NAME']));
 		}
 		return $uri;
@@ -98,10 +98,15 @@ class OC_Request {
 	 */
 	public static function scriptName() {
 		$name = $_SERVER['SCRIPT_NAME'];
-		if (OC_Config::getValue('overwritewebroot') !== null and self::isOverwriteCondition()) {
-			$serverroot = str_replace("\\", '/', substr(__DIR__, 0, -4));
-			$suburi = str_replace("\\", "/", substr(realpath($_SERVER["SCRIPT_FILENAME"]), strlen($serverroot)));
+		if (($webroot = OC_Config::getValue('overwritewebroot')) !== null and self::isOverwriteCondition()) {
+			$serverroot = str_replace("\\", '/', dirname(__DIR__));
+			$suburi = substr(realpath($_SERVER['SCRIPT_FILENAME']), strlen($serverroot));
+
 			$name = OC_Config::getValue('overwritewebroot', '') . $suburi;
+
+			if (strlen($webroot)) {
+				$name = '/' . $name;
+			}
 		}
 		return $name;
 	}
