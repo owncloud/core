@@ -57,6 +57,12 @@ class Server extends SimpleContainer implements IServerContainer {
 			$view = new View();
 			return new Root($manager, $view, $user);
 		});
+		$this->registerService('UserFolder', function($c){
+			return \OC\Files\Filesystem::getView();
+		});
+		$this->registerService('AppFolder', function($c){
+			return OC_App::getStorage(OC_App::getCurrentApp());
+		});
 	}
 
 	/**
@@ -97,4 +103,27 @@ class Server extends SimpleContainer implements IServerContainer {
 	{
 		return $this->query('RootFolder');
 	}
+
+	/**
+	 * Returns a view to ownCloud's files folder
+	 *
+	 * @return \OCP\Files\Folder
+	 */
+	function getUserFolder() {
+
+		return $this->query('UserFolder');
+
+	}
+
+	/**
+	 * Returns an app-specific view in ownClouds data directory
+	 *
+	 * @return \OCP\Files\Folder
+	 */
+	function getAppFolder() {
+
+		return $this->query('AppFolder');
+
+	}
+
 }
