@@ -14,7 +14,7 @@
 	position:fixed;
 	right:0;
 	text-overflow:ellipsis;
-	top:20px;
+	top:45px;
 	width:380px;
 	z-index:75;
 }
@@ -61,7 +61,7 @@
 	border-right:1px solid #aaa;
 	font-weight:700;
 	text-align:right;
-	width:3.5em;
+	width:60px;
 }
 
 #searchresults tr.current {
