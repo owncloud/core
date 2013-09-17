@@ -39,6 +39,22 @@ class OC_App{
 	static private $altLogin = array();
 
 	/**
+	 * @var \OC\App\Manager $manager
+	 */
+	private static $manager;
+
+	/**
+	 * @return \OC\App\Manager
+	 */
+	public static function getManager() {
+		if (self::$manager) {
+			return self::$manager;
+		}
+		self::$manager = new \OC\App\Manager(OC::$APPSROOTS);
+		return self::$manager;
+	}
+
+	/**
 	 * @brief clean the appid
 	 * @param $app Appid that needs to be cleaned
 	 * @return string
@@ -171,25 +187,7 @@ class OC_App{
 		if(!OC_Config::getValue('installed', false)) {
 			return array();
 		}
-		$apps=array('files');
-		$sql = 'SELECT `appid` FROM `*PREFIX*appconfig`'
-			.' WHERE `configkey` = \'enabled\' AND `configvalue`=\'yes\'';
-		if (OC_Config::getValue( 'dbtype', 'sqlite' ) === 'oci') {
-			//FIXME oracle hack: need to explicitly cast CLOB to CHAR for comparison
-			$sql = 'SELECT `appid` FROM `*PREFIX*appconfig`'
-			.' WHERE `configkey` = \'enabled\' AND to_char(`configvalue`)=\'yes\'';
-		}
-		$query = OC_DB::prepare( $sql );
-		$result=$query->execute();
-		if( \OC_DB::isError($result)) {
-			throw new DatabaseException($result->getMessage(), $query);
-		}
-		while($row=$result->fetchRow()) {
-			if(array_search($row['appid'], $apps)===false) {
-				$apps[]=$row['appid'];
-			}
-		}
-		return $apps;
+		return self::getManager()->getEnabledApps();
 	}
 
 	/**
@@ -200,11 +198,7 @@ class OC_App{
 	 * This function checks whether or not an app is enabled.
 	 */
 	public static function isEnabled( $app ) {
-		if( 'files'==$app or ('yes' == OC_Appconfig::getValue( $app, 'enabled' ))) {
-			return true;
-		}
-
-		return false;
+		return self::getManager()->isEnabled($app);
 	}
 
 	/**
@@ -451,28 +445,17 @@ class OC_App{
 		return null;
 	}
 
-
-	protected static function findAppInDirectories($appid) {
-		static $app_dir = array();
-		if (isset($app_dir[$appid])) {
-			return $app_dir[$appid];
-		}
-		foreach(OC::$APPSROOTS as $dir) {
-			if(file_exists($dir['path'].'/'.$appid)) {
-				return $app_dir[$appid]=$dir;
-			}
-		}
-		return false;
-	}
 	/**
 	* Get the directory for the given app.
 	* If the app is defined in multiple directories, the first one is taken. (false if not found)
 	*/
 	public static function getAppPath($appid) {
-		if( ($dir = self::findAppInDirectories($appid)) != false) {
-			return $dir['path'].'/'.$appid;
+		try {
+			$info = self::getManager()->getInfo($appid);
+		} catch(OutOfBoundsException $e) {
+			return null;
 		}
-		return false;
+		return $info->getDirectory();
 	}
 
 	/**
@@ -480,23 +463,24 @@ class OC_App{
 	* If the app is defined in multiple directories, the first one is taken. (false if not found)
 	*/
 	public static function getAppWebPath($appid) {
-		if( ($dir = self::findAppInDirectories($appid)) != false) {
-			return OC::$WEBROOT.$dir['url'].'/'.$appid;
+		try {
+			$info = self::getManager()->getInfo($appid);
+		} catch(OutOfBoundsException $e) {
+			return null;
 		}
-		return false;
+		return $info->getWebPath();
 	}
 
 	/**
 	 * get the last version of the app, either from appinfo/version or from appinfo/info.xml
 	 */
 	public static function getAppVersion($appid) {
-		$file= self::getAppPath($appid).'/appinfo/version';
-		if(is_file($file) && $version = trim(file_get_contents($file))) {
-			return $version;
-		}else{
-			$appData=self::getAppInfo($appid);
-			return isset($appData['version'])? $appData['version'] : '';
+		try {
+			$info = self::getManager()->getInfo($appid);
+		} catch(OutOfBoundsException $e) {
+			return '';
 		}
+		return $info->getVersion();
 	}
 
 	/**
