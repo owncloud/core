@@ -149,7 +149,8 @@ if (strpos($dir, '..') === false) {
 					'name' => basename($target),
 					'originalname' => $files['tmp_name'][$i],
 					'uploadMaxFilesize' => $maxUploadFileSize,
-					'maxHumanFilesize' => $maxHumanFileSize
+					'maxHumanFilesize' => $maxHumanFileSize,
+					'permissions' => $meta['permissions']
 				);
 			}
 		}
