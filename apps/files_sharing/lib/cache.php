@@ -250,7 +250,14 @@ class Shared_Cache extends Cache {
 			FROM `*PREFIX*filecache` WHERE ' . $where . ' AND `fileid` IN (' . $placeholders . ')'
 		);
 		$result = $query->execute(array_merge(array($mimetype), $ids));
-		return $result->fetchAll();
+		
+		$files = array();
+		while ($row = $result->fetchRow()) {
+			$row['mimetype'] = $this->getMimetype($row['mimetype']);
+			$row['mimepart'] = $this->getMimetype($row['mimepart']);
+			$files[] = $row;
+		}
+		return $files;
 	}
 
 	/**
