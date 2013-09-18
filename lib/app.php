@@ -235,7 +235,7 @@ class OC_App{
 					)
 				);
 			}else{
-				OC_Appconfig::setValue( $app, 'enabled', 'yes' );
+				self::getManager()->enableApp($app);
 				if(isset($appdata['id'])) {
 					OC_Appconfig::setValue( $app, 'ocsid', $appdata['id'] );
 				}
@@ -253,9 +253,7 @@ class OC_App{
 	 * This function set an app as disabled in appconfig.
 	 */
 	public static function disable( $app ) {
-		// check if app is a shipped app or not. if not delete
-		\OC_Hook::emit('OC_App', 'pre_disable', array('app' => $app));
-		OC_Appconfig::setValue( $app, 'enabled', 'no' );
+		self::getManager()->disableApp($app);
 
 		// check if app is a shipped app or not. if not delete
 		if(!OC_App::isShipped( $app )) {

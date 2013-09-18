@@ -62,6 +62,31 @@ class Manager implements ManagerInterface {
 	}
 
 	/**
+	 * @brief enables an app
+	 * @param mixed $app app
+	 * @return void
+	 *
+	 * This function set an app as enabled in appconfig.
+	 */
+	public function enableApp( $app ) {
+		\OC_Appconfig::setValue( $app, 'enabled', 'yes' ); // TODO: DI
+		$this->enabledApps[] = $app;
+	}
+
+	/**
+	 * @brief disables an app
+	 * @param string $app app
+	 * @return bool
+	 *
+	 * This function set an app as disabled in appconfig.
+	 */
+	public function disableApp( $app ) {
+		\OC_Hook::emit('OC_App', 'pre_disable', array('app' => $app)); // TODO: refactor
+		\OC_Appconfig::setValue( $app, 'enabled', 'no' ); // TODO: DI
+		$this->enabledApps = null;
+	}
+
+	/**
 	 * @brief load all enabled apps
 	 * @param array $types
 	 *
