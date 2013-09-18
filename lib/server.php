@@ -57,6 +57,17 @@ class Server extends SimpleContainer implements IServerContainer {
 			$view = new View();
 			return new Root($manager, $view, $user);
 		});
+		$this->registerService('CustomFolder', function($c) {
+			$dir = $c['CustomFolderPath'];
+			$root = $this->getRootFolder();
+			$folder = null;
+			if(!$root->nodeExists($dir)) {
+				$folder = $root->newFolder($dir);
+			} else {
+				$folder = $root->get($dir);
+			}
+			return $folder;
+		});
 	}
 
 	/**
@@ -97,4 +108,29 @@ class Server extends SimpleContainer implements IServerContainer {
 	{
 		return $this->query('RootFolder');
 	}
+
+	/**
+	 * Returns a view to ownCloud's files folder
+	 *
+	 * @return \OCP\Files\Folder
+	 */
+	function getUserFolder() {
+
+		$this->registerParameter('CustomFolderPath', '/files');
+		return $this->query('CustomFolder');
+
+	}
+
+	/**
+	 * Returns an app-specific view in ownClouds data directory
+	 *
+	 * @return \OCP\Files\Folder
+	 */
+	function getAppFolder() {
+
+		$this->registerParameter('CustomFolderPath', '/' . \OC_App::getCurrentApp());
+		return $this->query('CustomFolder');
+
+	}
+
 }
