@@ -426,7 +426,7 @@ class Cache {
 		$pattern = $this->normalize($pattern);
 
 		$sql = 'SELECT `fileid`, `storage`, `path`, `parent`, `name`, `mimetype`, `mimepart`, `size`, `mtime`, `encrypted`, `unencrypted_size`, `etag`
-				FROM `*PREFIX*filecache` WHERE `name` LIKE ? AND `storage` = ?';
+				FROM `*PREFIX*filecache` WHERE `name` LIKE ? AND `storage` = ? AND `path` LIKE "files/%"';
 		$result = \OC_DB::executeAudited($sql, array($pattern, $this->getNumericStorageId()));
 		$files = array();
 		while ($row = $result->fetchRow()) {
@@ -450,7 +450,7 @@ class Cache {
 			$where = '`mimepart` = ?';
 		}
 		$sql = 'SELECT `fileid`, `storage`, `path`, `parent`, `name`, `mimetype`, `mimepart`, `size`, `mtime`, `encrypted`, `unencrypted_size`, `etag`
-				FROM `*PREFIX*filecache` WHERE ' . $where . ' AND `storage` = ?';
+				FROM `*PREFIX*filecache` WHERE ' . $where . ' AND `storage` = ? AND `path` LIKE "files/%"';
 		$mimetype = $this->getMimetypeId($mimetype);
 		$result = \OC_DB::executeAudited($sql, array($mimetype, $this->getNumericStorageId()));
 		$files = array();
