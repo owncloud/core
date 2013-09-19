@@ -311,19 +311,22 @@ class OC {
 		OC_Util::addScript("jquery.infieldlabel");
 		OC_Util::addScript("jquery-tipsy");
 		OC_Util::addScript("compatibility");
+		OC_Util::addScript("jquery.ocdialog");
 		OC_Util::addScript("oc-dialogs");
 		OC_Util::addScript("js");
+		OC_Util::addScript("octemplate");
 		OC_Util::addScript("eventsource");
 		OC_Util::addScript("config");
 		//OC_Util::addScript( "multiselect" );
 		OC_Util::addScript('search', 'result');
 		OC_Util::addScript('router');
+		OC_Util::addScript("oc-requesttoken");
 
 		OC_Util::addStyle("styles");
 		OC_Util::addStyle("multiselect");
 		OC_Util::addStyle("jquery-ui-1.10.0.custom");
 		OC_Util::addStyle("jquery-tipsy");
-		OC_Util::addScript("oc-requesttoken");
+		OC_Util::addStyle("jquery.ocdialog");
 	}
 
 	public static function initSession() {
