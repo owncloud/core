@@ -26,12 +26,177 @@ function supportAjaxUploadWithProgress() {
 	}
 }
 
+/**
+ * keeps track of uploads in progress and implements callbacks for the conflicts dialog
+ * @type {OC.Upload}
+ */
+OC.Upload = {
+	_uploads: [],
+	/**
+	 * cancels a single upload, 
+	 * @deprecated because it was only used when a file currently beeing uploaded was deleted. Now they are added after
+	 * they have been uploaded.
+	 * @param {string} dir
+	 * @param {string} filename
+	 * @returns {unresolved}
+	 */
+	cancelUpload:function(dir, filename) {
+		var self = this;
+		var deleted = false;
+		//FIXME _selections
+		jQuery.each(this._uploads, function(i, jqXHR) {
+			if (selection.dir === dir && selection.uploads[filename]) {
+				deleted = self.deleteSelectionUpload(selection, filename);
+				return false; // end searching through selections
+			}
+		});
+		return deleted;
+	},
+	/**
+	 * deletes the jqHXR object from a data selection
+	 * @param {object} data
+	 */
+	deleteUpload:function(data) {
+		delete data.jqXHR;
+	},
+	/**
+	 * cancels all uploads
+	 */
+	cancelUploads:function() {
+		this.log('canceling uploads');
+		jQuery.each(this._uploads,function(i, jqXHR){
+			jqXHR.abort();
+		});
+		this._uploads = [];
+	},
+	rememberUpload:function(jqXHR){
+		if (jqXHR) {
+			this._uploads.push(jqXHR);
+		}
+	},
+	/**
+	 * Checks the currently known uploads.
+	 * returns true if any hxr has the state 'pending'
+	 * @returns {boolean}
+	 */
+	isProcessing:function(){
+		var count = 0;
+		
+		jQuery.each(this._uploads,function(i, data){
+			if (data.state() === 'pending') {
+				count++;
+			}
+		});
+		return count > 0;
+	},
+	/**
+	 * callback for the conflicts dialog
+	 * @param {object} data
+	 */
+	onCancel:function(data) {
+		this.cancelUploads();
+	},
+	/**
+	 * callback for the conflicts dialog
+	 * calls onSkip, onReplace or onAutorename for each conflict
+	 * @param {object} conflicts - list of conflict elements
+	 */
+	onContinue:function(conflicts) {
+		var self = this;
+		//iterate over all conflicts
+		jQuery.each(conflicts, function (i, conflict) {
+			conflict = $(conflict);
+			var keepOriginal = conflict.find('.original input[type="checkbox"]:checked').length === 1;
+			var keepReplacement = conflict.find('.replacement input[type="checkbox"]:checked').length === 1;
+			if (keepOriginal && keepReplacement) {
+				// when both selected -> autorename
+				self.onAutorename(conflict.data('data'));
+			} else if (keepReplacement) {
+				// when only replacement selected -> overwrite
+				self.onReplace(conflict.data('data'));
+			} else {
+				// when only original seleted -> skip
+				// when none selected -> skip
+				self.onSkip(conflict.data('data'));
+			}
+		});
+	},
+	/**
+	 * handle skipping an upload
+	 * @param {object} data
+	 */
+	onSkip:function(data){
+		this.log('skip', null, data);
+		this.deleteUpload(data);
+	},
+	/**
+	 * handle replacing a file on the server with an uploaded file
+	 * @param {object} data
+	 */
+	onReplace:function(data){
+		this.log('replace', null, data);
+		data.data.append('resolution', 'replace');
+		data.submit();
+	},
+	/**
+	 * handle uploading a file and letting the server decide a new name
+	 * @param {object} data
+	 */
+	onAutorename:function(data){
+		this.log('autorename', null, data);
+		if (data.data) {
+			data.data.append('resolution', 'autorename');
+		} else {
+			data.formData.push({name:'resolution',value:'autorename'}); //hack for ie8
+		}
+		data.submit();
+	},
+	_trace:false, //TODO implement log handler for JS per class?
+	log:function(caption, e, data) {
+		if (this._trace) {
+			console.log(caption);
+			console.log(data);
+		}
+	},
+	/**
+	 * TODO checks the list of existing files prior to uploading and shows a simple dialog to choose
+	 * skip all, replace all or choosw which files to keep
+	 * @param {array} selection of files to upload
+	 * @param {object} callbacks - object with several callback methods
+	 * @param {function} callbacks.onNoConflicts
+	 * @param {function} callbacks.onSkipConflicts
+	 * @param {function} callbacks.onReplaceConflicts
+	 * @param {function} callbacks.onChooseConflicts
+	 * @param {function} callbacks.onCancel
+	 */
+	checkExistingFiles: function (selection, callbacks){
+		// TODO check filelist before uploading and show dialog on conflicts, use callbacks
+		callbacks.onNoConflicts(selection);
+	}
+};
+
 $(document).ready(function() {
 
 	if ( $('#file_upload_start').length ) {
 		var file_upload_param = {
 			dropZone: $('#content'), // restrict dropZone to content div
 			//singleFileUploads is on by default, so the data.files array will always have length 1
+			/**
+			 * on first add of every selection
+			 * - check all files of originalFiles array with files in dir
+			 * - on conflict show dialog
+			 *   - skip all -> remember as single skip action for all conflicting files
+			 *   - replace all -> remember as single replace action for all conflicting files
+			 *   - choose -> show choose dialog
+			 *     - mark files to keep
+			 *       - when only existing -> remember as single skip action
+			 *       - when only new -> remember as single replace action
+			 *       - when both -> remember as single autorename action
+			 * - start uploading selection
+			 * @param {object} e
+			 * @param {object} data
+			 * @returns {boolean}
+			 */
 			add: function(e, data) {
 
 				if(data.files[0].type === '' && data.files[0].size == 4096)
@@ -69,6 +234,15 @@ $(document).ready(function() {
 				} else {
 					uploadingFiles[data.files[0].name] = jqXHR;
 				}
+
+				return true; // continue adding files
+			},
+			/**
+			 * called after the first add, does NOT have the data param
+			 * @param {object} e
+			 */
+			start: function(e) {
+				OC.Upload.log('start', e, null);
 			},
 			submit: function(e, data) {
 				if ( ! data.formData ) {
@@ -103,8 +277,8 @@ $(document).ready(function() {
 			},
 			/**
 			 * called for every successful upload
-			 * @param e
-			 * @param data
+			 * @param {object} e
+			 * @param {object} data
 			 */
 			done:function(e, data) {
 				// handle different responses (json or body from iframe for ie)
@@ -140,8 +314,8 @@ $(document).ready(function() {
 			},
 			/**
 			 * called after last upload
-			 * @param e
-			 * @param data
+			 * @param {object} e
+			 * @param {object} data
 			 */
 			stop: function(e, data) {
 			}
