@@ -693,7 +693,7 @@ var folderDropOptions={
 						$('#notification').fadeIn();
 					}
 				} else {
-					OC.dialogs.alert(t('Error moving file'), t('core', 'Error'));
+					OC.dialogs.alert(t('files', 'Error moving file'), t('files', 'Error'));
 				}
 			});
 		});
@@ -731,7 +731,7 @@ var crumbDropOptions={
 						$('#notification').fadeIn();
 					}
 				} else {
-					OC.dialogs.alert(t('Error moving file'), t('core', 'Error'));
+					OC.dialogs.alert(t('files', 'Error moving file'), t('files', 'Error'));
 				}
 			});
 		});
