@@ -14,8 +14,11 @@ class Manager implements ManagerInterface {
 	protected $approots;
 	protected $app_path = array();
 	protected $app_info = array();
+	protected $enabledApps;
+	protected $appTypes;
+	protected $installedVersions;
 
-	public function __construct($approots) {
+	public function __construct(array $approots) {
 		$this->approots = $approots;
 		// TODO:appconfig
 	}
@@ -46,6 +49,9 @@ class Manager implements ManagerInterface {
 		return in_array($app, $this->getEnabledApps());
 	}
 
+	/**
+	 * get all enabled apps
+	 */
 	public function getEnabledApps() {
 		if (isset($this->enabledApps)) {
 			return $this->enabledApps;
@@ -87,17 +93,66 @@ class Manager implements ManagerInterface {
 	}
 
 	/**
-	 * @brief load all enabled apps
-	 * @param array $types
-	 *
-	 * This function walks through the owncloud directory and loads all apps
-	 * it can find. A directory contains an app if the file /appinfo/app.php
-	 * exists.
-	 *
-	 * if $types is set, only apps of those types will be loaded
+	 * check if an app is of a specific type
+	 * @param string $app
+	 * @param string|array $types
+	 * @return bool
 	 */
-	public function loadAll() {
-		\OC_App::loadApps(); // TODO: refactor
+	public function isType($app, $types) {
+		if (is_string($types)) {
+			$types = array($types);
+		}
+		$appTypes = $this->getAppTypes($app);
+		foreach ($types as $type) {
+			if (in_array($type, $appTypes)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * get the types of an app
+	 * @param string $app
+	 * @return array
+	 */
+	private function getAppTypes($app) {
+		if (!isset($this->appTypes)) {
+			$this->appTypes = \OC_Appconfig::getValues(false, 'types'); // TODO: DI
+		}
+
+		if (isset($this->appTypes[$app])) {
+			return explode(',', $this->appTypes[$app]);
+		} else {
+			return array();
+		}
+	}
+
+	/**
+	 * read app types from info.xml and cache them in the database
+	 */
+	public function setAppTypes($app) {
+		$appData = $this->getInfo($app)->getData();
+
+		if(isset($appData['types'])) {
+			$appTypes = implode(',', $appData['types']);
+		}else{
+			$appTypes = '';
+		}
+
+		\OC_Appconfig::setValue($app, 'types', $appTypes); // TODO: DI
+		$this->appTypes[$app] = $appTypes;
+	}
+
+	/**
+	 * get the installed version of all apps
+	 */
+	public function getInstalledVersions() {
+		if (isset($this->installedVersions)) {
+			return $this->installedVersions;
+		}
+		$this->installedVersions = \OC_Appconfig::getValues(false, 'installed_version'); // TODO: DI
+		return $this->installedVersions;
 	}
 
 	/**

@@ -44,6 +44,11 @@ class OC_App{
 	private static $manager;
 
 	/**
+	 * @var \OC\App\Loader $loader
+	 */
+	private static $loader;
+
+	/**
 	 * @return \OC\App\Manager
 	 */
 	public static function getManager() {
@@ -52,6 +57,17 @@ class OC_App{
 		}
 		self::$manager = new \OC\App\Manager(OC::$APPSROOTS);
 		return self::$manager;
+	}
+
+	/**
+	 * @return \OC\App\Loader
+	 */
+	public static function getLoader() {
+		if (self::$loader) {
+			return self::$loader;
+		}
+		self::$loader = new \OC\App\Loader(self::getManager());
+		return self::$loader;
 	}
 
 	/**
@@ -75,17 +91,11 @@ class OC_App{
 	 * if $types is set, only apps of those types will be loaded
 	 */
 	public static function loadApps($types=null) {
-		// Load the enabled apps here
-		$apps = self::getEnabledApps();
-		// prevent app.php from printing output
-		ob_start();
-		foreach( $apps as $app ) {
-			if((is_null($types) or self::isType($app, $types)) && !in_array($app, self::$loadedApps)) {
-				self::loadApp($app);
-				self::$loadedApps[] = $app;
-			}
+		if (is_null($types)) {
+		    self::getLoader()->loadAll();
+		} else {
+		    self::getLoader()->loadTypes($types);
 		}
-		ob_end_clean();
 
 		if (!defined('DEBUG') || !DEBUG) {
 			if (is_null($types)
@@ -106,10 +116,7 @@ class OC_App{
 	 * @param string $app
 	 */
 	public static function loadApp($app) {
-		if(is_file(self::getAppPath($app).'/appinfo/app.php')) {
-			self::checkUpgrade($app);
-			require_once $app.'/appinfo/app.php';
-		}
+		self::getLoader()->load($app);
 	}
 
 	/**
@@ -119,16 +126,7 @@ class OC_App{
 	 * @return bool
 	 */
 	public static function isType($app, $types) {
-		if(is_string($types)) {
-			$types=array($types);
-		}
-		$appTypes=self::getAppTypes($app);
-		foreach($types as $type) {
-			if(array_search($type, $appTypes)!==false) {
-				return true;
-			}
-		}
-		return false;
+		return self::getManager()->isType($app, $types);
 	}
 
 	/**
@@ -137,31 +135,14 @@ class OC_App{
 	 * @return array
 	 */
 	private static function getAppTypes($app) {
-		//load the cache
-		if(count(self::$appTypes)==0) {
-			self::$appTypes=OC_Appconfig::getValues(false, 'types');
-		}
-
-		if(isset(self::$appTypes[$app])) {
-			return explode(',', self::$appTypes[$app]);
-		}else{
-			return array();
-		}
+		return self::getManager()->getAppTypes($app);
 	}
 
 	/**
 	 * read app types from info.xml and cache them in the database
 	 */
 	public static function setAppTypes($app) {
-		$appData=self::getAppInfo($app);
-
-		if(isset($appData['types'])) {
-			$appTypes=implode(',', $appData['types']);
-		}else{
-			$appTypes='';
-		}
-
-		OC_Appconfig::setValue($app, 'types', $appTypes);
+		self::getManager()->setAppTypes($app);
 	}
 
 	/**
@@ -886,18 +867,7 @@ class OC_App{
 	 * get the installed version of all apps
 	 */
 	public static function getAppVersions() {
-		static $versions;
-		if (isset($versions)) {   // simple cache, needs to be fixed
-			return $versions; // when function is used besides in checkUpgrade
-		}
-		$versions=array();
-		$query = OC_DB::prepare( 'SELECT `appid`, `configvalue` FROM `*PREFIX*appconfig`'
-			.' WHERE `configkey` = \'installed_version\'' );
-		$result = $query->execute();
-		while($row = $result->fetchRow()) {
-			$versions[$row['appid']]=$row['configvalue'];
-		}
-		return $versions;
+		return self::getManager()->getInstalledVersions();
 	}
 
 	/**

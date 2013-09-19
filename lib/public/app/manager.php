@@ -20,11 +20,6 @@ interface Manager {
 	public function isEnabled( $app );
 
 	/**
-	 * @brief load all enabled apps
-	 */
-	public function loadAll();
-
-	/**
 	 * @brief Get information about the app
 	 * @param $app string appid
 	 *
