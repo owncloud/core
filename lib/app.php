@@ -39,35 +39,17 @@ class OC_App{
 	static private $altLogin = array();
 
 	/**
-	 * @var \OC\App\Manager $manager
-	 */
-	private static $manager;
-
-	/**
-	 * @var \OC\App\Loader $loader
-	 */
-	private static $loader;
-
-	/**
 	 * @return \OC\App\Manager
 	 */
 	public static function getManager() {
-		if (self::$manager) {
-			return self::$manager;
-		}
-		self::$manager = new \OC\App\Manager(OC::$APPSROOTS);
-		return self::$manager;
+		return OC::$server->getAppManager();
 	}
 
 	/**
 	 * @return \OC\App\Loader
 	 */
 	public static function getLoader() {
-		if (self::$loader) {
-			return self::$loader;
-		}
-		self::$loader = new \OC\App\Loader(self::getManager());
-		return self::$loader;
+		return OC::$server->getAppLoader();
 	}
 
 	/**

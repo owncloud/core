@@ -59,6 +59,12 @@ class Server extends SimpleContainer implements IServerContainer {
 		$this->registerService('UserCache', function($c) {
 			return new UserCache();
 		});
+		$this->registerService('AppManager', function($c) {
+			return new \OC\App\Manager(\OC::$APPSROOTS);
+		});
+		$this->registerService('AppLoader', function($c) {
+			return new \OC\App\Loader($c->query('AppManager'));
+		});
 	}
 
 	/**
@@ -115,4 +121,22 @@ class Server extends SimpleContainer implements IServerContainer {
 		return \OC::$session;
 	}
 
+
+	/**
+	 * Returns the app manager
+	 *
+	 * @return \OCP\App\Manager
+	 */
+	function getAppManager() {
+		return $this->query('AppManager');
+	}
+
+	/**
+	 * Returns the app loader
+	 *
+	 * @return \OCP\App\Loader
+	 */
+	function getAppLoader() {
+		return $this->query('AppLoader');
+	}
 }
