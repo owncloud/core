@@ -824,6 +824,27 @@ function getMimeIcon(mime, ready){
 }
 getMimeIcon.cache={};
 
+function getPathForPreview(name) {
+	var path = $('#dir').val() + '/' + name;
+	return path;
+}
+
+function lazyLoadPreview(path, mime, ready, width, height) {
+	getMimeIcon(mime,ready);
+	if (!width) {
+		width = $('#filestable').data('preview-x');
+	}
+	if (!height) {
+		height = $('#filestable').data('preview-y');
+	}
+	var previewURL = OC.Router.generate('core_ajax_preview', {file: encodeURIComponent(path), x:width, y:height});
+	$.get(previewURL, function() {
+		previewURL = previewURL.replace('(','%28');
+		previewURL = previewURL.replace(')','%29');
+		ready(previewURL + '&reload=true');
+	});
+}
+
 function getUniqueName(name){
 	if($('tr').filterAttr('data-file',name).length>0){
 		var parts=name.split('.');
