@@ -110,6 +110,10 @@ class Server extends SimpleContainer implements IServerContainer {
 		$this->registerService('UserCache', function($c) {
 			return new UserCache();
 		});
+
+		$this->registerService('AvatarManager', function($c) {
+			return new AvatarManager();
+		}
 	}
 
 	/**
@@ -137,6 +141,15 @@ class Server extends SimpleContainer implements IServerContainer {
 	 */
 	function getPreviewManager() {
 		return $this->query('PreviewManager');
+	}
+
+	/**
+	 * Returns the avatar manager, used for avatar functionality
+	 *
+	 * @return \OCP\IAvatar
+	 */
+	function getAvatarManager() {
+		return $this->query('AvatarManager');
 	}
 
 	/**
