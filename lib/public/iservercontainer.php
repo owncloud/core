@@ -104,6 +104,6 @@ interface IServerContainer {
 	 * @brief Returns an avatar manager, used for avatar functionality
 	 * @return \OCP\IAvatar
 	 */
-	function getAvatar();
+	function getAvatarManager();
 
 }
