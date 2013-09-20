@@ -64,7 +64,7 @@
 }
 .oc-dialog .fileexists .conflict {
 	width: 100%;
-	height: 85px;
+	height: 65px;
 }
 .oc-dialog .fileexists .conflict .filename {
 	color:#777;
@@ -72,11 +72,11 @@
 	clear: left;
 }
 .oc-dialog .fileexists .icon {
-	width: 64px;
-	height: 64px;
+	width: 32px;
+	height: 32px;
 	margin: 0px 5px 5px 5px;
 	background-repeat: no-repeat;
-	background-size: 64px 64px;
+	background-size: 32px 32px;
 	float: left;
 }
 .oc-dialog .fileexists .replacement {
