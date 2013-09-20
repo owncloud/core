@@ -113,7 +113,7 @@ class Server extends SimpleContainer implements IServerContainer {
 
 		$this->registerService('AvatarManager', function($c) {
 			return new AvatarManager();
-		}
+		});
 	}
 
 	/**
