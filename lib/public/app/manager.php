@@ -20,6 +20,24 @@ interface Manager {
 	public function isEnabled( $app );
 
 	/**
+	 * @brief enables an app
+	 * @param mixed $app app
+	 * @return void
+	 *
+	 * This function set an app as enabled in appconfig.
+	 */
+	public function enableApp( $app );
+
+	/**
+	 * @brief disables an app
+	 * @param string $app app
+	 * @return bool
+	 *
+	 * This function set an app as disabled in appconfig.
+	 */
+	public function disableApp( $app );
+
+	/**
 	 * @brief Get information about the app
 	 * @param $app string appid
 	 *
