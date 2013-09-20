@@ -14,12 +14,6 @@ namespace OCP;
 interface IAvatar {
 
 	/**
-	 * @brief constructor
-	 * @param $user string user to do avatar-management with
-	 */
-	function __construct($user);
-
-	/**
 	 * @brief get the users avatar
 	 * @param $size integer size in px of the avatar, defaults to 64
 	 * @return boolean|\OC_Image containing the avatar or false if there's no image
