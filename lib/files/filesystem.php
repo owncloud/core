@@ -306,6 +306,7 @@ class Filesystem {
 
 		$root = \OC_User::getHome($user);
 		self::mount('\OC\Files\Storage\Local', array('datadir' => $root), $user);
+		self::mount('\OC\Files\Storage\Local', array('datadir' => $root.'/files'), $user.'/files');
 		$datadir = \OC_Config::getValue("datadirectory", \OC::$SERVERROOT . "/data");
 
 		//move config file to it's new position
