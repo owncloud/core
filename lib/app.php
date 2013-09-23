@@ -407,33 +407,34 @@ class OC_App{
 	}
 
 	/**
-	* Get the directory for the given app.
-	* If the app is defined in multiple directories, the first one is taken. (false if not found)
+	* @brief Get the directory for the given app.
+	* @return string|false If the app is defined in multiple directories, the first one is taken.
 	*/
 	public static function getAppPath($appid) {
 		try {
 			$info = self::getManager()->getInfo($appid);
 		} catch(OutOfBoundsException $e) {
-			return null;
+			return false;
 		}
 		return $info->getDirectory();
 	}
 
 	/**
-	* Get the path for the given app on the access
-	* If the app is defined in multiple directories, the first one is taken. (false if not found)
+	* @brief Get the path for the given app on the access
+	* @return string|false If the app is defined in multiple directories, the first one is taken.
 	*/
 	public static function getAppWebPath($appid) {
 		try {
 			$info = self::getManager()->getInfo($appid);
 		} catch(OutOfBoundsException $e) {
-			return null;
+			return false;
 		}
 		return $info->getWebPath();
 	}
 
 	/**
-	 * get the last version of the app, either from appinfo/version or from appinfo/info.xml
+	 * @brief get the last version of the app, either from appinfo/version or from appinfo/info.xml
+	 * @return string version, empty if not found
 	 */
 	public static function getAppVersion($appid) {
 		try {
