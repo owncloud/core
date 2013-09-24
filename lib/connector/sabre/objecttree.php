@@ -40,7 +40,7 @@ class ObjectTree extends \Sabre_DAV_ObjectTree {
 			$node = new \OC_Connector_Sabre_File($path);
 		}
 
-		$node->setFileinfoCache($info);
+		$node->setFileInfo($info);
 
 		$this->cache[$path] = $node;
 		return $node;
