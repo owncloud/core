@@ -75,7 +75,7 @@ class Manager extends PublicEmitter {
 	}
 
 	/**
-	 * get a user by user id
+	 * get a user by user id or email
 	 *
 	 * @param string $uid
 	 * @return \OC\User\User
@@ -84,9 +84,16 @@ class Manager extends PublicEmitter {
 		if (isset($this->cachedUsers[$uid])) { //check the cache first to prevent having to loop over the backends
 			return $this->cachedUsers[$uid];
 		}
-		foreach ($this->backends as $backend) {
-			if ($backend->userExists($uid)) {
-				return $this->getUserObject($uid, $backend);
+		
+		$isEmail = (bool) filter_var($uid, FILTER_VALIDATE_EMAIL);
+		
+		foreach ($this->backends as $backend) {			
+			if ($isEmail) {
+				$uids = $backend->getUid($uid);
+				
+				if (!empty($uids)) return $this->getUserObject($uids, $backend);
+			} else {
+				if ($backend->userExists($uid)) return $this->getUserObject(array($uid), $backend);	
 			}
 		}
 		return null;
@@ -97,14 +104,22 @@ class Manager extends PublicEmitter {
 	 *
 	 * @param string $uid
 	 * @param \OC_User_Backend $backend
-	 * @return \OC\User\User
+	 * @return \OC\User\User(s)
 	 */
-	protected function getUserObject($uid, $backend) {
-		if (isset($this->cachedUsers[$uid])) {
-			return $this->cachedUsers[$uid];
+	protected function getUserObject($uids, $backend) {
+		$users = Array();
+				
+		foreach($uids as $uid) {		
+			if (isset($this->cachedUsers[$uid])) {
+				array_push($users, $this->cachedUsers[$uid]);
+			} else {
+				$this->cachedUsers[$uid] = new User($uid, $backend, $this);
+	
+				array_push($users, $this->cachedUsers[$uid]);
+			}
 		}
-		$this->cachedUsers[$uid] = new User($uid, $backend, $this);
-		return $this->cachedUsers[$uid];
+				
+		return $users;
 	}
 
 	/**

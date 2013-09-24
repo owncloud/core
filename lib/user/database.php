@@ -187,9 +187,9 @@ class OC_User_Database extends OC_User_Backend {
 	 * Check if the password is correct without logging in the user
 	 * returns the user id or false
 	 */
-	public function checkPassword( $uid, $password ) {
+	public function checkPassword( $uid, $password ) {		
 		$query = OC_DB::prepare( 'SELECT `uid`, `password` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)' );
-		$result = $query->execute( array( $uid));
+		$result = $query->execute( array($uid) );
 
 		$row=$result->fetchRow();
 		if($row) {
@@ -236,14 +236,42 @@ class OC_User_Database extends OC_User_Backend {
 	 * @param string $uid the username
 	 * @return boolean
 	 */
-	public function userExists($uid) {
-		$query = OC_DB::prepare( 'SELECT COUNT(*) FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)' );
+	public function userExists($uid) {					
+		$query = OC_DB::prepare('SELECT COUNT(*) FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)');
+		
 		$result = $query->execute( array( $uid ));
+	
 		if (OC_DB::isError($result)) {
 			OC_Log::write('core', OC_DB::getErrorMessage($result), OC_Log::ERROR);
 			return false;
 		}
+		
 		return $result->fetchOne() > 0;
+	}
+	
+	/**
+	* @brief Returns the user id(s) associated to the email provided
+	* @param $email the user's email
+	* @return array
+	*/
+	public function getUid($email) {
+		$uids = Array();
+		
+		$query = OC_DB::prepare('SELECT `userid` FROM `*PREFIX*preferences` WHERE `configkey` = "email" 
+					AND LOWER(`configvalue`) = LOWER(?)');
+		
+		$result = $query->execute( array($email) );
+
+		if (OC_DB::isError($result)) {
+			OC_Log::write('core', OC_DB::getErrorMessage($result), OC_Log::ERROR);
+			return null;
+		}
+		
+		for ($i = 0; $i < $result->numRows(); $i++) {
+			array_push($uids, $result->fetchOne());
+		}
+		
+		return $uids;
 	}
 
 	/**
