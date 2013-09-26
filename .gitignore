@@ -85,6 +85,10 @@ nbproject
 # Node Modules
 /build/node_modules/
 
+# Node Modules for Settings
+
+/settings/build/node_modules/
+
 # Tests - auto-generated files
 /data-autotest
 /tests/coverage*
