@@ -51,9 +51,9 @@ module.exports = function(grunt) {
 				' * License along with this library.  If not, see <http://www.gnu.org/licenses/>.\n' +
 				' *\n' +
 				' */\n\n',
-				settings_src: '../settings/js/users/app/',
-				settings_production: '../settings/js/users/public/',
-				settings_tests: '../settings/tests/'
+				src: '../js/users/app/',
+				production: '../js/users/public/',
+				tests: '../js/tests/'
 		},
 		concat: {
 			app: {
@@ -66,18 +66,18 @@ module.exports = function(grunt) {
 					}
 				},
 				src: [
-					'<%= meta.settings_src %>config.js',
-					'<%= meta.settings_src %>service.js',
-					'<%= meta.settings_src %>controller.js',
-					'<%= meta.settings_src %>directive.js',
-					'<%= meta.settings_src %>filter.js'
+					'<%= meta.src %>config.js',
+					'<%= meta.src %>service.js',
+					'<%= meta.src %>controller.js',
+					'<%= meta.src %>directive.js',
+					'<%= meta.src %>filter.js'
 				],
-				dest: '<%= meta.settings_production %>app.js'
+				dest: '<%= meta.production %>app.js'
 			}
 		},
 		wrap: {
 			app: {
-				src: ['<%= meta.settings_production %>app.js'],
+				src: ['<%= meta.production %>app.js'],
 				dest: '',
 				wrapper: [
 					'(function(angular, $, undefined){\n\n\'use strict\';\n\n',
@@ -88,8 +88,8 @@ module.exports = function(grunt) {
 		jshint: {
 			files: [
 				'Gruntfile.js',
-				'../settings/js/app/**/*.js',
-				'../settings/js/config/*.js'
+				'../js/app/**/*.js',
+				'../js/config/*.js'
 			],
 			options: {
 				// options here to override JSHint defaults
@@ -101,32 +101,32 @@ module.exports = function(grunt) {
 		watch: {
 			concat: {
 				files: [
-					'<%= meta.settings_src %>config.js',
-					'<%= meta.settings_src %>service.js',
-					'<%= meta.settings_src %>controller.js',
-					'<%= meta.settings_src %>directive.js',
-					'<%= meta.settings_src %>filter.js'
+					'<%= meta.src %>config.js',
+					'<%= meta.src %>service.js',
+					'<%= meta.src %>controller.js',
+					'<%= meta.src %>directive.js',
+					'<%= meta.src %>filter.js'
 				],
 				tasks: 'compile'
 			},
 			test: {
 				files: [
-					'<%= meta.settings_src %>config.js',
-					'<%= meta.settings_src %>service.js',
-					'<%= meta.settings_src %>controller.js',
-					'<%= meta.settings_src %>directive.js',
-					'<%= meta.settings_src %>filter.js',
-					'<%= meta.settings_tests %>**/*.js'
+					'<%= meta.src %>config.js',
+					'<%= meta.src %>service.js',
+					'<%= meta.src %>controller.js',
+					'<%= meta.src %>directive.js',
+					'<%= meta.src %>filter.js',
+					'<%= meta.tests %>**/*.js'
 				],
 				tasks: 'karma:unit'
 			}
 		},
 		karma: {
 			unit: {
-				configFile: '../settings/js/tests/config/karma.js'
+				configFile: '../js/tests/config/karma.js'
 			},
 			continuous: {
-				configFile: '../settings/js/tests/config/karma.js',
+				configFile: '../js/tests/config/karma.js',
 				singleRun: true,
 				browsers: ['PhantomJS'],
 				reporters: ['progress']
