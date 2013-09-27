@@ -25,7 +25,7 @@ class Server extends SimpleContainer implements IServerContainer {
 			$params = array();
 
 			// we json decode the body only in case of content type json
-			if (isset($_SERVER['CONTENT_TYPE']) && stripos($_SERVER['CONTENT_TYPE'],'json') === true ) {
+			if (isset($_SERVER['CONTENT_TYPE']) && stripos($_SERVER['CONTENT_TYPE'],'json') !== false ) {
 				$params = json_decode(file_get_contents('php://input'), true);
 				$params = is_array($params) ? $params: array();
 			}
@@ -49,8 +49,12 @@ class Server extends SimpleContainer implements IServerContainer {
 		$this->registerService('PreviewManager', function($c) {
 			return new PreviewManager();
 		});
+		$this->registerService('TagManager', function($c) {
+			$user = \OC_User::getUser();
+			return new TagManager($user);
+		});
 		$this->registerService('RootFolder', function($c) {
-			// TODO: get user from container as well
+			// TODO: get user and user manager from container as well
 			$user = \OC_User::getUser();
 			/** @var $c SimpleContainer */
 			$userManager = $c->query('UserManager');
@@ -112,7 +116,8 @@ class Server extends SimpleContainer implements IServerContainer {
 		});
 
 		$this->registerService('AvatarManager', function($c) {
-			return new AvatarManager();
+			$user = \OC_User::getUser();
+			return new AvatarManager($user);
 		});
 	}
 
@@ -144,6 +149,7 @@ class Server extends SimpleContainer implements IServerContainer {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Returns the avatar manager, used for avatar functionality
 	 *
 	 * @return \OCP\IAvatar
@@ -153,12 +159,58 @@ class Server extends SimpleContainer implements IServerContainer {
 	}
 
 	/**
+	 * Returns the tag manager which can get and set tags for different object types
+	 *
+	 * @see \OCP\ITagManager::load()
+	 * @return \OCP\ITagManager
+	 */
+	function getTagManager() {
+		return $this->query('TagManager');
+	}
+
+	/**
 	 * Returns the root folder of ownCloud's data directory
 	 *
 	 * @return \OCP\Files\Folder
 	 */
 	function getRootFolder() {
 		return $this->query('RootFolder');
+	}
+
+	/**
+	 * Returns a view to ownCloud's files folder
+	 *
+	 * @return \OCP\Files\Folder
+	 */
+	function getUserFolder() {
+
+		$dir = '/files';
+		$root = $this->getRootFolder();
+		$folder = null;
+		if(!$root->nodeExists($dir)) {
+			$folder = $root->newFolder($dir);
+		} else {
+			$folder = $root->get($dir);
+		}
+		return $folder;
+	}
+
+	/**
+	 * Returns an app-specific view in ownClouds data directory
+	 *
+	 * @return \OCP\Files\Folder
+	 */
+	function getAppFolder() {
+
+		$dir = '/' . \OC_App::getCurrentApp();
+		$root = $this->getRootFolder();
+		$folder = null;
+		if(!$root->nodeExists($dir)) {
+			$folder = $root->newFolder($dir);
+		} else {
+			$folder = $root->get($dir);
+		}
+		return $folder;
 	}
 
 	/**
@@ -188,6 +240,7 @@ class Server extends SimpleContainer implements IServerContainer {
 	function getConfig() {
 		return $this->query('AllConfig');
 	}
+
 	/**
 	 * Returns an ICache instance
 	 *
