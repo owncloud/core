@@ -3,13 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Fatih Aşıcı <fatih.asici@gmail.com>, 2013
 # ismail yenigül <ismail.yenigul@surgate.com>, 2013
+# tridinebandim, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-08-11 08:07-0400\n"
-"PO-Revision-Date: 2013-08-11 12:07+0000\n"
+"POT-Creation-Date: 2013-09-22 12:55-0400\n"
+"PO-Revision-Date: 2013-09-20 15:01+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/owncloud/language/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -23,9 +25,38 @@ msgstr ""
 msgid "%s shared »%s« with you"
 msgstr "%s  sizinle »%s« paylaşımında bulundu"
 
+#: ajax/share.php:227
+msgid "group"
+msgstr "grup"
+
+#: ajax/update.php:11
+msgid "Turned on maintenance mode"
+msgstr "Bakım kipi etkinleştirildi"
+
+#: ajax/update.php:14
+msgid "Turned off maintenance mode"
+msgstr "Bakım kipi kapatıldı"
+
+#: ajax/update.php:17
+msgid "Updated database"
+msgstr "Veritabanı güncellendi"
+
+#: ajax/update.php:20
+msgid "Updating filecache, this may take really long..."
+msgstr "Dosya önbelleği güncelleniyor. Bu, gerçekten uzun sürebilir."
+
+#: ajax/update.php:23
+msgid "Updated filecache"
+msgstr "Dosya önbelleği güncellendi"
+
+#: ajax/update.php:26
+#, php-format
+msgid "... %d%% done ..."
+msgstr "%%%d tamamlandı ..."
+
 #: ajax/vcategories/add.php:26 ajax/vcategories/edit.php:25
 msgid "Category type not provided."
-msgstr "Kategori türü desteklenmemektedir."
+msgstr "Kategori türü girilmedi."
 
 #: ajax/vcategories/add.php:30
 msgid "No category to add?"
@@ -61,6 +92,26 @@ msgstr "Silmek için bir kategori seçilmedi"
 #, php-format
 msgid "Error removing %s from favorites."
 msgstr "%s favorilere çıkarılırken hata oluştu"
+
+#: avatar/controller.php:62
+msgid "No image or file provided"
+msgstr ""
+
+#: avatar/controller.php:81
+msgid "Unknown filetype"
+msgstr ""
+
+#: avatar/controller.php:85
+msgid "Invalid image"
+msgstr ""
+
+#: avatar/controller.php:115 avatar/controller.php:142
+msgid "No temporary profile picture available, try again"
+msgstr ""
+
+#: avatar/controller.php:135
+msgid "No crop data provided"
+msgstr ""
 
 #: js/config.php:32
 msgid "Sunday"
@@ -138,85 +189,125 @@ msgstr "Kasım"
 msgid "December"
 msgstr "Aralık"
 
-#: js/js.js:354
+#: js/js.js:387
 msgid "Settings"
 msgstr "Ayarlar"
 
-#: js/js.js:814
+#: js/js.js:866
 msgid "seconds ago"
 msgstr "saniye önce"
 
-#: js/js.js:815
-msgid "1 minute ago"
-msgstr "1 dakika önce"
+#: js/js.js:867
+msgid "%n minute ago"
+msgid_plural "%n minutes ago"
+msgstr[0] "%n dakika önce"
+msgstr[1] "%n dakika önce"
 
-#: js/js.js:816
-msgid "{minutes} minutes ago"
-msgstr "{minutes} dakika önce"
+#: js/js.js:868
+msgid "%n hour ago"
+msgid_plural "%n hours ago"
+msgstr[0] "%n saat önce"
+msgstr[1] "%n saat önce"
 
-#: js/js.js:817
-msgid "1 hour ago"
-msgstr "1 saat önce"
-
-#: js/js.js:818
-msgid "{hours} hours ago"
-msgstr "{hours} saat önce"
-
-#: js/js.js:819
+#: js/js.js:869
 msgid "today"
 msgstr "bugün"
 
-#: js/js.js:820
+#: js/js.js:870
 msgid "yesterday"
 msgstr "dün"
 
-#: js/js.js:821
-msgid "{days} days ago"
-msgstr "{days} gün önce"
+#: js/js.js:871
+msgid "%n day ago"
+msgid_plural "%n days ago"
+msgstr[0] "%n gün önce"
+msgstr[1] "%n gün önce"
 
-#: js/js.js:822
+#: js/js.js:872
 msgid "last month"
 msgstr "geçen ay"
 
-#: js/js.js:823
-msgid "{months} months ago"
-msgstr "{months} ay önce"
+#: js/js.js:873
+msgid "%n month ago"
+msgid_plural "%n months ago"
+msgstr[0] "%n ay önce"
+msgstr[1] "%n ay önce"
 
-#: js/js.js:824
+#: js/js.js:874
 msgid "months ago"
 msgstr "ay önce"
 
-#: js/js.js:825
+#: js/js.js:875
 msgid "last year"
 msgstr "geçen yıl"
 
-#: js/js.js:826
+#: js/js.js:876
 msgid "years ago"
 msgstr "yıl önce"
 
-#: js/oc-dialogs.js:117
+#: js/oc-dialogs.js:123
 msgid "Choose"
 msgstr "seç"
 
-#: js/oc-dialogs.js:122
-msgid "Cancel"
-msgstr "İptal"
+#: js/oc-dialogs.js:146
+msgid "Error loading file picker template: {error}"
+msgstr ""
 
-#: js/oc-dialogs.js:141 js/oc-dialogs.js:200
-msgid "Error loading file picker template"
-msgstr "Seçici şablon dosya yüklemesinde hata"
-
-#: js/oc-dialogs.js:164
+#: js/oc-dialogs.js:172
 msgid "Yes"
 msgstr "Evet"
 
-#: js/oc-dialogs.js:172
+#: js/oc-dialogs.js:182
 msgid "No"
 msgstr "Hayır"
 
-#: js/oc-dialogs.js:185
+#: js/oc-dialogs.js:199
 msgid "Ok"
 msgstr "Tamam"
+
+#: js/oc-dialogs.js:219
+msgid "Error loading message template: {error}"
+msgstr ""
+
+#: js/oc-dialogs.js:347
+msgid "{count} file conflict"
+msgid_plural "{count} file conflicts"
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/oc-dialogs.js:361
+msgid "One file conflict"
+msgstr ""
+
+#: js/oc-dialogs.js:367
+msgid "Which files do you want to keep?"
+msgstr ""
+
+#: js/oc-dialogs.js:368
+msgid ""
+"If you select both versions, the copied file will have a number added to its"
+" name."
+msgstr ""
+
+#: js/oc-dialogs.js:376
+msgid "Cancel"
+msgstr "İptal"
+
+#: js/oc-dialogs.js:386
+msgid "Continue"
+msgstr ""
+
+#: js/oc-dialogs.js:433 js/oc-dialogs.js:446
+msgid "(all selected)"
+msgstr ""
+
+#: js/oc-dialogs.js:436 js/oc-dialogs.js:449
+msgid "({count} selected)"
+msgstr ""
+
+#: js/oc-dialogs.js:457
+msgid "Error loading file exists template"
+msgstr ""
 
 #: js/oc-vcategories.js:5 js/oc-vcategories.js:85 js/oc-vcategories.js:102
 #: js/oc-vcategories.js:117 js/oc-vcategories.js:132 js/oc-vcategories.js:162
@@ -227,7 +318,7 @@ msgstr "Nesne türü belirtilmemiş."
 #: js/oc-vcategories.js:110 js/oc-vcategories.js:125 js/oc-vcategories.js:136
 #: js/oc-vcategories.js:172 js/oc-vcategories.js:189 js/oc-vcategories.js:195
 #: js/oc-vcategories.js:199 js/share.js:129 js/share.js:142 js/share.js:149
-#: js/share.js:643 js/share.js:655
+#: js/share.js:645 js/share.js:657
 msgid "Error"
 msgstr "Hata"
 
@@ -247,7 +338,7 @@ msgstr "Paylaşılan"
 msgid "Share"
 msgstr "Paylaş"
 
-#: js/share.js:131 js/share.js:683
+#: js/share.js:131 js/share.js:685
 msgid "Error while sharing"
 msgstr "Paylaşım sırasında hata  "
 
@@ -303,67 +394,67 @@ msgstr "Son kullanma tarihini ayarla"
 msgid "Expiration date"
 msgstr "Son kullanım tarihi"
 
-#: js/share.js:241
+#: js/share.js:242
 msgid "Share via email:"
 msgstr "Eposta ile paylaş"
 
-#: js/share.js:243
+#: js/share.js:245
 msgid "No people found"
 msgstr "Kişi bulunamadı"
 
-#: js/share.js:281
+#: js/share.js:283
 msgid "Resharing is not allowed"
 msgstr "Tekrar paylaşmaya izin verilmiyor"
 
-#: js/share.js:317
+#: js/share.js:319
 msgid "Shared in {item} with {user}"
 msgstr " {item} içinde  {user} ile paylaşılanlarlar"
 
-#: js/share.js:338
+#: js/share.js:340
 msgid "Unshare"
 msgstr "Paylaşılmayan"
 
-#: js/share.js:350
+#: js/share.js:352
 msgid "can edit"
 msgstr "düzenleyebilir"
 
-#: js/share.js:352
+#: js/share.js:354
 msgid "access control"
 msgstr "erişim kontrolü"
 
-#: js/share.js:355
+#: js/share.js:357
 msgid "create"
 msgstr "oluştur"
 
-#: js/share.js:358
+#: js/share.js:360
 msgid "update"
 msgstr "güncelle"
 
-#: js/share.js:361
+#: js/share.js:363
 msgid "delete"
 msgstr "sil"
 
-#: js/share.js:364
+#: js/share.js:366
 msgid "share"
 msgstr "paylaş"
 
-#: js/share.js:398 js/share.js:630
+#: js/share.js:400 js/share.js:632
 msgid "Password protected"
 msgstr "Paralo korumalı"
 
-#: js/share.js:643
+#: js/share.js:645
 msgid "Error unsetting expiration date"
 msgstr "Geçerlilik tarihi tanımlama kaldırma hatası"
 
-#: js/share.js:655
+#: js/share.js:657
 msgid "Error setting expiration date"
 msgstr "Geçerlilik tarihi tanımlama hatası"
 
-#: js/share.js:670
+#: js/share.js:672
 msgid "Sending ..."
 msgstr "Gönderiliyor..."
 
-#: js/share.js:681
+#: js/share.js:683
 msgid "Email sent"
 msgstr "Eposta gönderildi"
 
@@ -378,9 +469,10 @@ msgstr "Güncelleme başarılı olmadı. Lütfen bu hatayı bildirin <a href=\"h
 msgid "The update was successful. Redirecting you to ownCloud now."
 msgstr "Güncelleme başarılı. ownCloud'a yönlendiriliyor."
 
-#: lostpassword/controller.php:60
-msgid "ownCloud password reset"
-msgstr "ownCloud parola sıfırlama"
+#: lostpassword/controller.php:62
+#, php-format
+msgid "%s password reset"
+msgstr "%s parola sıfırlama"
 
 #: lostpassword/templates/email.php:2
 msgid "Use the following link to reset your password: {link}"
@@ -446,7 +538,7 @@ msgstr "Kişisel"
 msgid "Users"
 msgstr "Kullanıcılar"
 
-#: strings.php:7
+#: strings.php:7 templates/layout.user.php:108
 msgid "Apps"
 msgstr "Uygulamalar"
 
@@ -497,7 +589,7 @@ msgstr "PHP sürümünüz NULL Byte saldırısına açık (CVE-2006-7243)"
 #: templates/installation.php:26
 #, php-format
 msgid "Please update your PHP installation to use %s securely."
-msgstr ""
+msgstr "%s güvenli olarak kullanmak için, lütfen PHP kurulumunuzu güncelleyin."
 
 #: templates/installation.php:32
 msgid ""
@@ -522,7 +614,7 @@ msgstr "Veri klasörünüz ve dosyalarınız .htaccess dosyası çalışmadığ�
 msgid ""
 "For information how to properly configure your server, please see the <a "
 "href=\"%s\" target=\"_blank\">documentation</a>."
-msgstr ""
+msgstr "Server'ınızı nasıl ayarlayacağınıza dair bilgi için, lütfen <a href=\"%s\" target=\"_blank\">dokümantasyon sayfasını</a> ziyaret edin."
 
 #: templates/installation.php:47
 msgid "Create an <strong>admin account</strong>"
@@ -575,13 +667,9 @@ msgstr "Kurulumu tamamla"
 msgid "%s is available. Get more information on how to update."
 msgstr "%s mevcuttur. Güncelleştirme hakkında daha fazla bilgi alın."
 
-#: templates/layout.user.php:66
+#: templates/layout.user.php:69
 msgid "Log out"
 msgstr "Çıkış yap"
-
-#: templates/layout.user.php:100
-msgid "More apps"
-msgstr ""
 
 #: templates/login.php:9
 msgid "Automatic logon rejected!"
@@ -597,19 +685,19 @@ msgstr "Yakın zamanda parolanızı değiştirmedi iseniz hesabınız riske gire
 msgid "Please change your password to secure your account again."
 msgstr "Hesabınızı korumak için lütfen parolanızı değiştirin."
 
-#: templates/login.php:34
+#: templates/login.php:32
 msgid "Lost your password?"
 msgstr "Parolanızı mı unuttunuz?"
 
-#: templates/login.php:39
+#: templates/login.php:37
 msgid "remember"
 msgstr "hatırla"
 
-#: templates/login.php:41
+#: templates/login.php:39
 msgid "Log in"
 msgstr "Giriş yap"
 
-#: templates/login.php:47
+#: templates/login.php:45
 msgid "Alternative Logins"
 msgstr "Alternatif Girişler"
 
@@ -619,14 +707,6 @@ msgid ""
 "Hey there,<br><br>just letting you know that %s shared »%s« with you.<br><a "
 "href=\"%s\">View it!</a><br><br>Cheers!"
 msgstr "Merhaba, <br><br> %s sizinle »%s« paylaşımında bulundu.<br><a href=\"%s\">Paylaşımı gör!</a><br><br>İyi günler!"
-
-#: templates/part.pagenavi.php:3
-msgid "prev"
-msgstr "önceki"
-
-#: templates/part.pagenavi.php:20
-msgid "next"
-msgstr "sonraki"
 
 #: templates/update.php:3
 #, php-format

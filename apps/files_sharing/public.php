@@ -19,6 +19,20 @@ function fileCmp($a, $b) {
 	}
 }
 
+function determineIcon($file, $sharingRoot, $sharingToken) {
+	// for folders we simply reuse the files logic
+	if($file['type'] == 'dir') {
+		return \OCA\Files\Helper::determineIcon($file);
+	}
+
+	$relativePath = substr($file['path'], 6);
+	$relativePath = substr($relativePath, strlen($sharingRoot));
+	if($file['isPreviewAvailable']) {
+		return OCP\publicPreview_icon($relativePath, $sharingToken);
+	}
+	return OCP\mimetype_icon($file['mimetype']);
+}
+
 if (isset($_GET['t'])) {
 	$token = $_GET['t'];
 	$linkItem = OCP\Share::getShareByToken($token);
@@ -112,9 +126,9 @@ if (isset($path)) {
 			if ($files_list === NULL ) {
 				$files_list = array($files);
 			}
-			OC_Files::get($path, $files_list, $_SERVER['REQUEST_METHOD'] == 'HEAD' ? true : false);
+			OC_Files::get($path, $files_list, $_SERVER['REQUEST_METHOD'] == 'HEAD');
 		} else {
-			OC_Files::get($dir, $file, $_SERVER['REQUEST_METHOD'] == 'HEAD' ? true : false);
+			OC_Files::get($dir, $file, $_SERVER['REQUEST_METHOD'] == 'HEAD');
 		}
 		exit();
 	} else {
@@ -133,7 +147,8 @@ if (isset($path)) {
 		$tmpl->assign('mimetype', \OC\Files\Filesystem::getMimeType($path));
 		$tmpl->assign('fileTarget', basename($linkItem['file_target']));
 		$tmpl->assign('dirToken', $linkItem['token']);
-		$allowPublicUploadEnabled = (($linkItem['permissions'] & OCP\PERMISSION_CREATE) ? true : false );
+		$tmpl->assign('disableSharing', true);
+		$allowPublicUploadEnabled = (bool) ($linkItem['permissions'] & OCP\PERMISSION_CREATE);
 		if (\OCP\App::isEnabled('files_encryption')) {
 			$allowPublicUploadEnabled = false;
 		}
@@ -155,6 +170,7 @@ if (isset($path)) {
 			$tmpl->assign('dir', $getPath);
 
 			OCP\Util::addStyle('files', 'files');
+			OCP\Util::addStyle('files', 'upload');
 			OCP\Util::addScript('files', 'files');
 			OCP\Util::addScript('files', 'filelist');
 			OCP\Util::addscript('files', 'keyboardshortcuts');
@@ -172,9 +188,11 @@ if (isset($path)) {
 					} else {
 						$i['extension'] = '';
 					}
+					$i['isPreviewAvailable'] = \OCP\Preview::isMimeSupported($i['mimetype']);
 				}
 				$i['directory'] = $getPath;
 				$i['permissions'] = OCP\PERMISSION_READ;
+				$i['icon'] = determineIcon($i, $basePath, $token);
 				$files[] = $i;
 			}
 			usort($files, "fileCmp");
@@ -190,10 +208,12 @@ if (isset($path)) {
 			}
 			$list = new OCP\Template('files', 'part.list', '');
 			$list->assign('files', $files);
-			$list->assign('disableSharing', true);
 			$list->assign('baseURL', OCP\Util::linkToPublic('files') . $urlLinkIdentifiers . '&path=');
 			$list->assign('downloadURL',
 				OCP\Util::linkToPublic('files') . $urlLinkIdentifiers . '&download&path=');
+			$list->assign('isPublic', true);
+			$list->assign('sharingtoken', $token);
+			$list->assign('sharingroot', $basePath);
 			$breadcrumbNav = new OCP\Template('files', 'part.breadcrumb', '');
 			$breadcrumbNav->assign('breadcrumb', $breadcrumb);
 			$breadcrumbNav->assign('baseURL', OCP\Util::linkToPublic('files') . $urlLinkIdentifiers . '&path=');

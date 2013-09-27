@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-08-11 08:07-0400\n"
-"PO-Revision-Date: 2013-08-11 12:08+0000\n"
+"POT-Creation-Date: 2013-09-16 11:33-0400\n"
+"PO-Revision-Date: 2013-09-16 15:34+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Arabic (http://www.transifex.com/projects/p/owncloud/language/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -17,29 +17,52 @@ msgstr ""
 "Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: app.php:360
+#: app.php:239
+#, php-format
+msgid ""
+"App \"%s\" can't be installed because it is not compatible with this version"
+" of ownCloud."
+msgstr ""
+
+#: app.php:250
+msgid "No app name specified"
+msgstr ""
+
+#: app.php:361
 msgid "Help"
 msgstr "المساعدة"
 
-#: app.php:373
+#: app.php:374
 msgid "Personal"
 msgstr "شخصي"
 
-#: app.php:384
+#: app.php:385
 msgid "Settings"
 msgstr "إعدادات"
 
-#: app.php:396
+#: app.php:397
 msgid "Users"
 msgstr "المستخدمين"
 
-#: app.php:409
+#: app.php:410
 msgid "Admin"
 msgstr "المدير"
 
-#: app.php:836
+#: app.php:839
 #, php-format
 msgid "Failed to upgrade \"%s\"."
+msgstr ""
+
+#: avatar.php:56
+msgid "Custom profile pictures don't work with encryption yet"
+msgstr ""
+
+#: avatar.php:64
+msgid "Unknown filetype"
+msgstr ""
+
+#: avatar.php:69
+msgid "Invalid image"
 msgstr ""
 
 #: defaults.php:35
@@ -73,9 +96,61 @@ msgid ""
 "administrator."
 msgstr ""
 
-#: helper.php:235
-msgid "couldn't be determined"
-msgstr "تعذّر تحديده"
+#: installer.php:63
+msgid "No source specified when installing app"
+msgstr ""
+
+#: installer.php:70
+msgid "No href specified when installing app from http"
+msgstr ""
+
+#: installer.php:75
+msgid "No path specified when installing app from local file"
+msgstr ""
+
+#: installer.php:89
+#, php-format
+msgid "Archives of type %s are not supported"
+msgstr ""
+
+#: installer.php:103
+msgid "Failed to open archive when installing app"
+msgstr ""
+
+#: installer.php:125
+msgid "App does not provide an info.xml file"
+msgstr ""
+
+#: installer.php:131
+msgid "App can't be installed because of not allowed code in the App"
+msgstr ""
+
+#: installer.php:140
+msgid ""
+"App can't be installed because it is not compatible with this version of "
+"ownCloud"
+msgstr ""
+
+#: installer.php:146
+msgid ""
+"App can't be installed because it contains the <shipped>true</shipped> tag "
+"which is not allowed for non shipped apps"
+msgstr ""
+
+#: installer.php:152
+msgid ""
+"App can't be installed because the version in info.xml/version is not the "
+"same as the version reported from the app store"
+msgstr ""
+
+#: installer.php:162
+msgid "App directory already exists"
+msgstr ""
+
+#: installer.php:175
+#, php-format
+msgid "Can't create app folder. Please fix permissions. %s"
+msgstr ""
 
 #: json.php:28
 msgid "Application is not enabled"
@@ -201,55 +276,67 @@ msgstr "اعدادات خادمك غير صحيحة بشكل تسمح لك بم�
 msgid "Please double check the <a href='%s'>installation guides</a>."
 msgstr "الرجاء التحقق من <a href='%s'>دليل التنصيب</a>."
 
-#: template/functions.php:80
+#: template/functions.php:96
 msgid "seconds ago"
 msgstr "منذ ثواني"
 
-#: template/functions.php:81
-msgid "1 minute ago"
-msgstr "منذ دقيقة"
+#: template/functions.php:97
+msgid "%n minute ago"
+msgid_plural "%n minutes ago"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
-#: template/functions.php:82
-#, php-format
-msgid "%d minutes ago"
-msgstr "%d دقيقة مضت"
+#: template/functions.php:98
+msgid "%n hour ago"
+msgid_plural "%n hours ago"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
-#: template/functions.php:83
-msgid "1 hour ago"
-msgstr "قبل ساعة مضت"
-
-#: template/functions.php:84
-#, php-format
-msgid "%d hours ago"
-msgstr "%d ساعة مضت"
-
-#: template/functions.php:85
+#: template/functions.php:99
 msgid "today"
 msgstr "اليوم"
 
-#: template/functions.php:86
+#: template/functions.php:100
 msgid "yesterday"
 msgstr "يوم أمس"
 
-#: template/functions.php:87
-#, php-format
-msgid "%d days ago"
-msgstr "%d يوم مضى"
+#: template/functions.php:101
+msgid "%n day go"
+msgid_plural "%n days ago"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
-#: template/functions.php:88
+#: template/functions.php:102
 msgid "last month"
 msgstr "الشهر الماضي"
 
-#: template/functions.php:89
-#, php-format
-msgid "%d months ago"
-msgstr "%d شهر مضت"
+#: template/functions.php:103
+msgid "%n month ago"
+msgid_plural "%n months ago"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
 
-#: template/functions.php:90
+#: template/functions.php:104
 msgid "last year"
 msgstr "السنةالماضية"
 
-#: template/functions.php:91
+#: template/functions.php:105
 msgid "years ago"
 msgstr "سنة مضت"
 

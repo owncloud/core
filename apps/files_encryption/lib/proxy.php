@@ -50,9 +50,8 @@ class Proxy extends \OC_FileProxy {
 	private static function shouldEncrypt($path) {
 
 		if (is_null(self::$enableEncryption)) {
-
 			if (
-				\OCP\Config::getAppValue('files_encryption', 'enable_encryption', 'true') === 'true'
+				\OCP\App::isEnabled('files_encryption') === true
 				&& Crypt::mode() === 'server'
 			) {
 
@@ -116,7 +115,7 @@ class Proxy extends \OC_FileProxy {
 					return true;
 				}
 
-				$handle = fopen('crypt://' . $relativePath . '.etmp', 'w');
+				$handle = fopen('crypt://' . $path . '.etmp', 'w');
 				if (is_resource($handle)) {
 
 					// write data to stream
@@ -154,9 +153,6 @@ class Proxy extends \OC_FileProxy {
 		$plainData = null;
 		$view = new \OC_FilesystemView('/');
 
-		// get relative path
-		$relativePath = \OCA\Encryption\Helper::stripUserFilesPath($path);
-
 		// init session
 		$session = new \OCA\Encryption\Session($view);
 
@@ -166,7 +162,7 @@ class Proxy extends \OC_FileProxy {
 			&& Crypt::isCatfileContent($data)
 		) {
 
-			$handle = fopen('crypt://' . $relativePath, 'r');
+			$handle = fopen('crypt://' . $path, 'r');
 
 			if (is_resource($handle)) {
 				while (($plainDataChunk = fgets($handle, 8192)) !== false) {
@@ -203,7 +199,7 @@ class Proxy extends \OC_FileProxy {
 	 */
 	public function preUnlink($path) {
 
-		// let the trashbin handle this  
+		// let the trashbin handle this
 		if (\OCP\App::isEnabled('files_trashbin')) {
 			return true;
 		}
@@ -294,16 +290,16 @@ class Proxy extends \OC_FileProxy {
 			// Close the original encrypted file
 			fclose($result);
 
-			// Open the file using the crypto stream wrapper 
+			// Open the file using the crypto stream wrapper
 			// protocol and let it do the decryption work instead
-			$result = fopen('crypt://' . $relativePath, $meta['mode']);
+			$result = fopen('crypt://' . $path, $meta['mode']);
 
 		} elseif (
 			self::shouldEncrypt($path)
 			and $meta ['mode'] !== 'r'
 				and $meta['mode'] !== 'rb'
 		) {
-			$result = fopen('crypt://' . $relativePath, $meta['mode']);
+			$result = fopen('crypt://' . $path, $meta['mode']);
 		}
 
 		// Re-enable the proxy

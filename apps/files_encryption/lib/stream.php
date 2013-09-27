@@ -62,6 +62,7 @@ class Stream {
 	private $unencryptedSize;
 	private $publicKey;
 	private $encKeyfile;
+	private $newFile; // helper var, we only need to write the keyfile for new files
 	/**
 	 * @var \OC\Files\View
 	 */
@@ -73,13 +74,16 @@ class Stream {
 	private $privateKey;
 
 	/**
-	 * @param $path
+	 * @param $path raw path relative to data/
 	 * @param $mode
 	 * @param $options
 	 * @param $opened_path
 	 * @return bool
 	 */
 	public function stream_open($path, $mode, $options, &$opened_path) {
+
+		// assume that the file already exist before we decide it finally in getKey()
+		$this->newFile = false;
 
 		if (!isset($this->rootView)) {
 			$this->rootView = new \OC_FilesystemView('/');
@@ -93,11 +97,20 @@ class Stream {
 
 		$this->userId = $util->getUserId();
 
-		// Strip identifier text from path, this gives us the path relative to data/<user>/files
-		$this->relPath = \OC\Files\Filesystem::normalizePath(str_replace('crypt://', '', $path));
-
 		// rawPath is relative to the data directory
-		$this->rawPath = $util->getUserFilesDir() . $this->relPath;
+		$this->rawPath = \OC\Files\Filesystem::normalizePath(str_replace('crypt://', '', $path));
+
+		// Strip identifier text from path, this gives us the path relative to data/<user>/files
+		$this->relPath = Helper::stripUserFilesPath($this->rawPath);
+		// if raw path doesn't point to a real file, check if it is a version or a file in the trash bin
+		if ($this->relPath === false) {
+			$this->relPath = Helper::getPathToRealFile($this->rawPath);
+		}
+
+		if($this->relPath === false) {
+			\OCP\Util::writeLog('Encryption library', 'failed to open file "' . $this->rawPath . '" expecting a path to user/files or to user/files_versions', \OCP\Util::ERROR);
+			return false;
+		}
 
 		// Disable fileproxies so we can get the file size and open the source file without recursive encryption
 		$proxyStatus = \OC_FileProxy::$enabled;
@@ -175,7 +188,7 @@ class Stream {
 		}
 
 		// Get the data from the file handle
-		$data = fread($this->handle, 8192);
+		$data = fread($this->handle, $count);
 
 		$result = null;
 
@@ -258,6 +271,8 @@ class Stream {
 
 		} else {
 
+			$this->newFile = true;
+
 			return false;
 
 		}
@@ -281,9 +296,9 @@ class Stream {
 			return strlen($data);
 		}
 
-		// Disable the file proxies so that encryption is not 
-		// automatically attempted when the file is written to disk - 
-		// we are handling that separately here and we don't want to 
+		// Disable the file proxies so that encryption is not
+		// automatically attempted when the file is written to disk -
+		// we are handling that separately here and we don't want to
 		// get into an infinite loop
 		$proxyStatus = \OC_FileProxy::$enabled;
 		\OC_FileProxy::$enabled = false;
@@ -296,7 +311,7 @@ class Stream {
 		$pointer = ftell($this->handle);
 
 		// Get / generate the keyfile for the file we're handling
-		// If we're writing a new file (not overwriting an existing 
+		// If we're writing a new file (not overwriting an existing
 		// one), save the newly generated keyfile
 		if (!$this->getKey()) {
 
@@ -304,7 +319,7 @@ class Stream {
 
 		}
 
-		// If extra data is left over from the last round, make sure it 
+		// If extra data is left over from the last round, make sure it
 		// is integrated into the next 6126 / 8192 block
 		if ($this->writeCache) {
 
@@ -329,12 +344,12 @@ class Stream {
 			if ($remainingLength < 6126) {
 
 				// Set writeCache to contents of $data
-				// The writeCache will be carried over to the 
-				// next write round, and added to the start of 
-				// $data to ensure that written blocks are 
-				// always the correct length. If there is still 
-				// data in writeCache after the writing round 
-				// has finished, then the data will be written 
+				// The writeCache will be carried over to the
+				// next write round, and added to the start of
+				// $data to ensure that written blocks are
+				// always the correct length. If there is still
+				// data in writeCache after the writing round
+				// has finished, then the data will be written
 				// to disk by $this->flush().
 				$this->writeCache = $data;
 
@@ -348,7 +363,7 @@ class Stream {
 
 				$encrypted = $this->preWriteEncrypt($chunk, $this->plainKey);
 
-				// Write the data chunk to disk. This will be 
+				// Write the data chunk to disk. This will be
 				// attended to the last data chunk if the file
 				// being handled totals more than 6126 bytes
 				fwrite($this->handle, $encrypted);
@@ -436,9 +451,7 @@ class Stream {
 			fwrite($this->handle, $encrypted);
 
 			$this->writeCache = '';
-
 		}
-
 	}
 
 	/**
@@ -451,65 +464,70 @@ class Stream {
 		// if there is no valid private key return false
 		if ($this->privateKey === false) {
 
-				// cleanup
-				if ($this->meta['mode'] !== 'r' && $this->meta['mode'] !== 'rb') {
+			// cleanup
+			if ($this->meta['mode'] !== 'r' && $this->meta['mode'] !== 'rb') {
 
-					// Disable encryption proxy to prevent recursive calls
-					$proxyStatus = \OC_FileProxy::$enabled;
-					\OC_FileProxy::$enabled = false;
+				// Disable encryption proxy to prevent recursive calls
+				$proxyStatus = \OC_FileProxy::$enabled;
+				\OC_FileProxy::$enabled = false;
 
-					if ($this->rootView->file_exists($this->rawPath) && $this->size === 0) {
-						$this->rootView->unlink($this->rawPath);
-					}
-
-					// Re-enable proxy - our work is done
-					\OC_FileProxy::$enabled = $proxyStatus;
+				if ($this->rootView->file_exists($this->rawPath) && $this->size === 0) {
+					$this->rootView->unlink($this->rawPath);
 				}
+
+				// Re-enable proxy - our work is done
+				\OC_FileProxy::$enabled = $proxyStatus;
+			}
 
 			// if private key is not valid redirect user to a error page
 			\OCA\Encryption\Helper::redirectToErrorPage();
 		}
 
 		if (
-			$this->meta['mode'] !== 'r'
-			and $this->meta['mode'] !== 'rb'
-				and $this->size > 0
+				$this->meta['mode'] !== 'r' &&
+				$this->meta['mode'] !== 'rb' &&
+				$this->size > 0
 		) {
-			// Disable encryption proxy to prevent recursive calls
-			$proxyStatus = \OC_FileProxy::$enabled;
-			\OC_FileProxy::$enabled = false;
 
-			// Fetch user's public key
-			$this->publicKey = Keymanager::getPublicKey($this->rootView, $this->userId);
+			// only write keyfiles if it was a new file
+			if ($this->newFile === true) {
 
-			// Check if OC sharing api is enabled
-			$sharingEnabled = \OCP\Share::isEnabled();
+				// Disable encryption proxy to prevent recursive calls
+				$proxyStatus = \OC_FileProxy::$enabled;
+				\OC_FileProxy::$enabled = false;
 
-			$util = new Util($this->rootView, $this->userId);
+				// Fetch user's public key
+				$this->publicKey = Keymanager::getPublicKey($this->rootView, $this->userId);
 
-			// Get all users sharing the file includes current user
-			$uniqueUserIds = $util->getSharingUsersArray($sharingEnabled, $this->relPath, $this->userId);
+				// Check if OC sharing api is enabled
+				$sharingEnabled = \OCP\Share::isEnabled();
 
-			// Fetch public keys for all sharing users
-			$publicKeys = Keymanager::getPublicKeys($this->rootView, $uniqueUserIds);
+				$util = new Util($this->rootView, $this->userId);
 
-			// Encrypt enc key for all sharing users
-			$this->encKeyfiles = Crypt::multiKeyEncrypt($this->plainKey, $publicKeys);
+				// Get all users sharing the file includes current user
+				$uniqueUserIds = $util->getSharingUsersArray($sharingEnabled, $this->relPath, $this->userId);
 
-			// Save the new encrypted file key
-			Keymanager::setFileKey($this->rootView, $this->relPath, $this->userId, $this->encKeyfiles['data']);
+				// Fetch public keys for all sharing users
+				$publicKeys = Keymanager::getPublicKeys($this->rootView, $uniqueUserIds);
 
-			// Save the sharekeys
-			Keymanager::setShareKeys($this->rootView, $this->relPath, $this->encKeyfiles['keys']);
+				// Encrypt enc key for all sharing users
+				$this->encKeyfiles = Crypt::multiKeyEncrypt($this->plainKey, $publicKeys);
+
+				// Save the new encrypted file key
+				Keymanager::setFileKey($this->rootView, $this->relPath, $this->userId, $this->encKeyfiles['data']);
+
+				// Save the sharekeys
+				Keymanager::setShareKeys($this->rootView, $this->relPath, $this->encKeyfiles['keys']);
+
+				// Re-enable proxy - our work is done
+				\OC_FileProxy::$enabled = $proxyStatus;
+			}
 
 			// get file info
 			$fileInfo = $this->rootView->getFileInfo($this->rawPath);
 			if (!is_array($fileInfo)) {
 				$fileInfo = array();
 			}
-
-			// Re-enable proxy - our work is done
-			\OC_FileProxy::$enabled = $proxyStatus;
 
 			// set encryption data
 			$fileInfo['encrypted'] = true;
@@ -518,10 +536,10 @@ class Stream {
 
 			// set fileinfo
 			$this->rootView->putFileInfo($this->rawPath, $fileInfo);
+
 		}
 
 		return fclose($this->handle);
-
 	}
 
 }

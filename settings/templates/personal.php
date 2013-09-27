@@ -40,7 +40,7 @@ if($_['passwordChangeSupported']) {
 		<div id="passwordchanged"><?php echo $l->t('Your password was changed');?></div>
 		<div id="passworderror"><?php echo $l->t('Unable to change your password');?></div>
 		<input type="password" id="pass1" name="oldpassword" placeholder="<?php echo $l->t('Current password');?>" />
-		<input type="password" id="pass2" name="password"
+		<input type="password" id="pass2" name="personal-password"
 			placeholder="<?php echo $l->t('New password');?>" data-typetoggle="#personal-show" />
 		<input type="checkbox" id="personal-show" name="show" /><label for="personal-show"></label>
 		<input id="passwordbutton" type="submit" value="<?php echo $l->t('Change password');?>" />
@@ -80,6 +80,27 @@ if($_['passwordChangeSupported']) {
 }
 ?>
 
+<?php if ($_['enableAvatars']): ?>
+<form id="avatar" method="post" action="<?php p(\OC_Helper::linkToRoute('core_avatar_post')); ?>">
+	<fieldset class="personalblock">
+		<legend><strong><?php p($l->t('Profile picture')); ?></strong></legend>
+		<div id="displayavatar">
+			<div class="avatardiv"></div><br>
+			<div class="warning hidden"></div>
+			<div class="inlineblock button" id="uploadavatarbutton"><?php p($l->t('Upload new')); ?></div>
+			<input type="file" class="hidden" name="files[]" id="uploadavatar">
+			<div class="inlineblock button" id="selectavatar"><?php p($l->t('Select new from Files')); ?></div>
+			<div class="inlineblock button" id="removeavatar"><?php p($l->t('Remove image')); ?></div><br>
+			<?php p($l->t('Either png or jpg. Ideally square but you will be able to crop it.')); ?>
+		</div>
+		<div id="cropper" class="hidden">
+			<div class="inlineblock button" id="abortcropperbutton"><?php p($l->t('Abort')); ?></div>
+			<div class="inlineblock button primary" id="sendcropperbutton"><?php p($l->t('Choose as profile image')); ?></div>
+		</div>
+	</fieldset>
+</form>
+<?php endif; ?>
+
 <form>
 	<fieldset class="personalblock">
 		<legend><strong><?php p($l->t('Language'));?></strong></legend>
@@ -109,6 +130,32 @@ if($_['passwordChangeSupported']) {
 <?php foreach($_['forms'] as $form) {
 	print_unescaped($form);
 };?>
+
+<?php if($_['enableDecryptAll']): ?>
+<form id="decryptAll">
+	<fieldset class="personalblock">
+		<legend>
+			<?php p( $l->t( 'Encryption' ) ); ?>
+		</legend>
+		<?php p($l->t( "The encryption app is no longer enabled, decrypt all your file" )); ?>
+		<p>
+			<input
+				type="password"
+				name="privateKeyPassword"
+				id="privateKeyPassword" />
+			<label for="privateKeyPassword"><?php p($l->t( "Log-in password" )); ?></label>
+			<br />
+			<button
+				type="button"
+				disabled
+				name="submitDecryptAll"><?php p($l->t( "Decrypt all Files" )); ?>
+			</button>
+			<span class="msg"></span>
+		</p>
+		<br />
+	</fieldset>
+</form>
+<?php endif; ?>
 
 <fieldset class="personalblock">
 	<legend><strong><?php p($l->t('Version'));?></strong></legend>

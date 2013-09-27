@@ -4,14 +4,15 @@
 # 
 # Translators:
 # Sappe, 2013
+# claus_chr <claus_chr@webspeed.dk>, 2013
 # Ole Holm Frandsen <froksen@gmail.com>, 2013
 # Peter Jespersen <flywheeldk@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-08-11 08:07-0400\n"
-"PO-Revision-Date: 2013-08-11 12:07+0000\n"
+"POT-Creation-Date: 2013-09-27 00:01-0400\n"
+"PO-Revision-Date: 2013-09-24 17:20+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Danish (http://www.transifex.com/projects/p/owncloud/language/da/)\n"
 "MIME-Version: 1.0\n"
@@ -24,6 +25,35 @@ msgstr ""
 #, php-format
 msgid "%s shared »%s« with you"
 msgstr "%s delte »%s« med sig"
+
+#: ajax/share.php:227
+msgid "group"
+msgstr "gruppe"
+
+#: ajax/update.php:11
+msgid "Turned on maintenance mode"
+msgstr "Startede vedligeholdelsestilstand"
+
+#: ajax/update.php:14
+msgid "Turned off maintenance mode"
+msgstr "standsede vedligeholdelsestilstand"
+
+#: ajax/update.php:17
+msgid "Updated database"
+msgstr "Opdaterede database"
+
+#: ajax/update.php:20
+msgid "Updating filecache, this may take really long..."
+msgstr "Opdatere filcache, dette kan tage rigtigt lang tid..."
+
+#: ajax/update.php:23
+msgid "Updated filecache"
+msgstr "Opdaterede filcache"
+
+#: ajax/update.php:26
+#, php-format
+msgid "... %d%% done ..."
+msgstr "... %d%% færdig ..."
 
 #: ajax/vcategories/add.php:26 ajax/vcategories/edit.php:25
 msgid "Category type not provided."
@@ -63,6 +93,26 @@ msgstr "Ingen kategorier valgt"
 #, php-format
 msgid "Error removing %s from favorites."
 msgstr "Fejl ved fjernelse af %s fra favoritter."
+
+#: avatar/controller.php:62
+msgid "No image or file provided"
+msgstr ""
+
+#: avatar/controller.php:81
+msgid "Unknown filetype"
+msgstr "Ukendt filtype"
+
+#: avatar/controller.php:85
+msgid "Invalid image"
+msgstr "Ugyldigt billede"
+
+#: avatar/controller.php:115 avatar/controller.php:142
+msgid "No temporary profile picture available, try again"
+msgstr ""
+
+#: avatar/controller.php:135
+msgid "No crop data provided"
+msgstr ""
 
 #: js/config.php:32
 msgid "Sunday"
@@ -140,85 +190,125 @@ msgstr "November"
 msgid "December"
 msgstr "December"
 
-#: js/js.js:354
+#: js/js.js:387
 msgid "Settings"
 msgstr "Indstillinger"
 
-#: js/js.js:814
+#: js/js.js:866
 msgid "seconds ago"
 msgstr "sekunder siden"
 
-#: js/js.js:815
-msgid "1 minute ago"
-msgstr "1 minut siden"
+#: js/js.js:867
+msgid "%n minute ago"
+msgid_plural "%n minutes ago"
+msgstr[0] "%n minut siden"
+msgstr[1] "%n minutter siden"
 
-#: js/js.js:816
-msgid "{minutes} minutes ago"
-msgstr "{minutes} minutter siden"
+#: js/js.js:868
+msgid "%n hour ago"
+msgid_plural "%n hours ago"
+msgstr[0] "%n time siden"
+msgstr[1] "%n timer siden"
 
-#: js/js.js:817
-msgid "1 hour ago"
-msgstr "1 time siden"
-
-#: js/js.js:818
-msgid "{hours} hours ago"
-msgstr "{hours} timer siden"
-
-#: js/js.js:819
+#: js/js.js:869
 msgid "today"
 msgstr "i dag"
 
-#: js/js.js:820
+#: js/js.js:870
 msgid "yesterday"
 msgstr "i går"
 
-#: js/js.js:821
-msgid "{days} days ago"
-msgstr "{days} dage siden"
+#: js/js.js:871
+msgid "%n day ago"
+msgid_plural "%n days ago"
+msgstr[0] "%n dag siden"
+msgstr[1] "%n dage siden"
 
-#: js/js.js:822
+#: js/js.js:872
 msgid "last month"
 msgstr "sidste måned"
 
-#: js/js.js:823
-msgid "{months} months ago"
-msgstr "{months} måneder siden"
+#: js/js.js:873
+msgid "%n month ago"
+msgid_plural "%n months ago"
+msgstr[0] "%n måned siden"
+msgstr[1] "%n måneder siden"
 
-#: js/js.js:824
+#: js/js.js:874
 msgid "months ago"
 msgstr "måneder siden"
 
-#: js/js.js:825
+#: js/js.js:875
 msgid "last year"
 msgstr "sidste år"
 
-#: js/js.js:826
+#: js/js.js:876
 msgid "years ago"
 msgstr "år siden"
 
-#: js/oc-dialogs.js:117
+#: js/oc-dialogs.js:123
 msgid "Choose"
 msgstr "Vælg"
 
-#: js/oc-dialogs.js:122
-msgid "Cancel"
-msgstr "Annuller"
+#: js/oc-dialogs.js:146
+msgid "Error loading file picker template: {error}"
+msgstr ""
 
-#: js/oc-dialogs.js:141 js/oc-dialogs.js:200
-msgid "Error loading file picker template"
-msgstr "Fejl ved indlæsning af filvælger skabelon"
-
-#: js/oc-dialogs.js:164
+#: js/oc-dialogs.js:172
 msgid "Yes"
 msgstr "Ja"
 
-#: js/oc-dialogs.js:172
+#: js/oc-dialogs.js:182
 msgid "No"
 msgstr "Nej"
 
-#: js/oc-dialogs.js:185
+#: js/oc-dialogs.js:199
 msgid "Ok"
 msgstr "OK"
+
+#: js/oc-dialogs.js:219
+msgid "Error loading message template: {error}"
+msgstr ""
+
+#: js/oc-dialogs.js:347
+msgid "{count} file conflict"
+msgid_plural "{count} file conflicts"
+msgstr[0] ""
+msgstr[1] ""
+
+#: js/oc-dialogs.js:361
+msgid "One file conflict"
+msgstr ""
+
+#: js/oc-dialogs.js:367
+msgid "Which files do you want to keep?"
+msgstr ""
+
+#: js/oc-dialogs.js:368
+msgid ""
+"If you select both versions, the copied file will have a number added to its"
+" name."
+msgstr ""
+
+#: js/oc-dialogs.js:376
+msgid "Cancel"
+msgstr "Annuller"
+
+#: js/oc-dialogs.js:386
+msgid "Continue"
+msgstr ""
+
+#: js/oc-dialogs.js:433 js/oc-dialogs.js:446
+msgid "(all selected)"
+msgstr ""
+
+#: js/oc-dialogs.js:436 js/oc-dialogs.js:449
+msgid "({count} selected)"
+msgstr ""
+
+#: js/oc-dialogs.js:457
+msgid "Error loading file exists template"
+msgstr ""
 
 #: js/oc-vcategories.js:5 js/oc-vcategories.js:85 js/oc-vcategories.js:102
 #: js/oc-vcategories.js:117 js/oc-vcategories.js:132 js/oc-vcategories.js:162
@@ -229,7 +319,7 @@ msgstr "Objekttypen er ikke angivet."
 #: js/oc-vcategories.js:110 js/oc-vcategories.js:125 js/oc-vcategories.js:136
 #: js/oc-vcategories.js:172 js/oc-vcategories.js:189 js/oc-vcategories.js:195
 #: js/oc-vcategories.js:199 js/share.js:129 js/share.js:142 js/share.js:149
-#: js/share.js:643 js/share.js:655
+#: js/share.js:656 js/share.js:668
 msgid "Error"
 msgstr "Fejl"
 
@@ -249,7 +339,7 @@ msgstr "Delt"
 msgid "Share"
 msgstr "Del"
 
-#: js/share.js:131 js/share.js:683
+#: js/share.js:131 js/share.js:696
 msgid "Error while sharing"
 msgstr "Fejl under deling"
 
@@ -305,67 +395,67 @@ msgstr "Vælg udløbsdato"
 msgid "Expiration date"
 msgstr "Udløbsdato"
 
-#: js/share.js:241
+#: js/share.js:242
 msgid "Share via email:"
 msgstr "Del via email:"
 
-#: js/share.js:243
+#: js/share.js:245
 msgid "No people found"
 msgstr "Ingen personer fundet"
 
-#: js/share.js:281
+#: js/share.js:283
 msgid "Resharing is not allowed"
 msgstr "Videredeling ikke tilladt"
 
-#: js/share.js:317
+#: js/share.js:319
 msgid "Shared in {item} with {user}"
 msgstr "Delt i {item} med {user}"
 
-#: js/share.js:338
+#: js/share.js:340
 msgid "Unshare"
 msgstr "Fjern deling"
 
-#: js/share.js:350
+#: js/share.js:352
 msgid "can edit"
 msgstr "kan redigere"
 
-#: js/share.js:352
+#: js/share.js:354
 msgid "access control"
 msgstr "Adgangskontrol"
 
-#: js/share.js:355
+#: js/share.js:357
 msgid "create"
 msgstr "opret"
 
-#: js/share.js:358
+#: js/share.js:360
 msgid "update"
 msgstr "opdater"
 
-#: js/share.js:361
+#: js/share.js:363
 msgid "delete"
 msgstr "slet"
 
-#: js/share.js:364
+#: js/share.js:366
 msgid "share"
 msgstr "del"
 
-#: js/share.js:398 js/share.js:630
+#: js/share.js:400 js/share.js:643
 msgid "Password protected"
 msgstr "Beskyttet med adgangskode"
 
-#: js/share.js:643
+#: js/share.js:656
 msgid "Error unsetting expiration date"
 msgstr "Fejl ved fjernelse af udløbsdato"
 
-#: js/share.js:655
+#: js/share.js:668
 msgid "Error setting expiration date"
 msgstr "Fejl under sætning af udløbsdato"
 
-#: js/share.js:670
+#: js/share.js:683
 msgid "Sending ..."
 msgstr "Sender ..."
 
-#: js/share.js:681
+#: js/share.js:694
 msgid "Email sent"
 msgstr "E-mail afsendt"
 
@@ -380,9 +470,10 @@ msgstr "Opdateringen blev ikke udført korrekt. Rapporter venligst problemet til
 msgid "The update was successful. Redirecting you to ownCloud now."
 msgstr "Opdateringen blev udført korrekt. Du bliver nu viderestillet til ownCloud."
 
-#: lostpassword/controller.php:60
-msgid "ownCloud password reset"
-msgstr "Nulstil ownCloud kodeord"
+#: lostpassword/controller.php:62
+#, php-format
+msgid "%s password reset"
+msgstr "%s adgangskode nulstillet"
 
 #: lostpassword/templates/email.php:2
 msgid "Use the following link to reset your password: {link}"
@@ -414,7 +505,7 @@ msgid ""
 "will be no way to get your data back after your password is reset. If you "
 "are not sure what to do, please contact your administrator before you "
 "continue. Do you really want to continue?"
-msgstr ""
+msgstr "Dine filer er krypterede. Hvis du ikke har aktiveret gendannelsesnøglen kan du ikke få dine data tilbage efter at du har ændret adgangskode. HVis du ikke er sikker på, hvad du skal gøre så kontakt din administrator før du fortsætter. Vil du fortsætte?"
 
 #: lostpassword/templates/lostpassword.php:24
 msgid "Yes, I really want to reset my password now"
@@ -448,7 +539,7 @@ msgstr "Personligt"
 msgid "Users"
 msgstr "Brugere"
 
-#: strings.php:7
+#: strings.php:7 templates/layout.user.php:108
 msgid "Apps"
 msgstr "Apps"
 
@@ -477,7 +568,7 @@ msgid ""
 "View it: %s\n"
 "\n"
 "Cheers!"
-msgstr ""
+msgstr "Hallo\n\ndette blot for at lade dig vide, at %s har delt %s med dig.\nSe det: %s\n\nHej"
 
 #: templates/edit_categories_dialog.php:4
 msgid "Edit categories"
@@ -524,7 +615,7 @@ msgstr "Dine data mappe og filer er sandsynligvis tilgængelige fra internettet 
 msgid ""
 "For information how to properly configure your server, please see the <a "
 "href=\"%s\" target=\"_blank\">documentation</a>."
-msgstr ""
+msgstr "For information om, hvordan du konfigurerer din server korrekt se <a href=\"%s\" target=\"_blank\">dokumentationen</a>."
 
 #: templates/installation.php:47
 msgid "Create an <strong>admin account</strong>"
@@ -577,13 +668,9 @@ msgstr "Afslut opsætning"
 msgid "%s is available. Get more information on how to update."
 msgstr "%s er tilgængelig. Få mere information om, hvordan du opdaterer."
 
-#: templates/layout.user.php:66
+#: templates/layout.user.php:69
 msgid "Log out"
 msgstr "Log ud"
-
-#: templates/layout.user.php:100
-msgid "More apps"
-msgstr ""
 
 #: templates/login.php:9
 msgid "Automatic logon rejected!"
@@ -599,19 +686,19 @@ msgstr "Hvis du ikke har ændret din adgangskode for nylig, har nogen muligvis t
 msgid "Please change your password to secure your account again."
 msgstr "Skift adgangskode for at sikre din konto igen."
 
-#: templates/login.php:34
+#: templates/login.php:32
 msgid "Lost your password?"
 msgstr "Mistet dit kodeord?"
 
-#: templates/login.php:39
+#: templates/login.php:37
 msgid "remember"
 msgstr "husk"
 
-#: templates/login.php:41
+#: templates/login.php:39
 msgid "Log in"
 msgstr "Log ind"
 
-#: templates/login.php:47
+#: templates/login.php:45
 msgid "Alternative Logins"
 msgstr "Alternative logins"
 
@@ -620,15 +707,7 @@ msgstr "Alternative logins"
 msgid ""
 "Hey there,<br><br>just letting you know that %s shared »%s« with you.<br><a "
 "href=\"%s\">View it!</a><br><br>Cheers!"
-msgstr ""
-
-#: templates/part.pagenavi.php:3
-msgid "prev"
-msgstr "forrige"
-
-#: templates/part.pagenavi.php:20
-msgid "next"
-msgstr "næste"
+msgstr "Hallo,<br><br>dette blot for at lade dig vide, at %s har delt \"%s\" med dig.<br><a href=\"%s\">Se det!</a><br><br>Hej"
 
 #: templates/update.php:3
 #, php-format
