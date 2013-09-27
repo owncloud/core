@@ -74,10 +74,11 @@ usersmanagement.directive('multiselectUsers', [function() {
 			title: 'Groups..',
 			createText: scope.label,
 			selectedFirst: true,
-			minWidth: 100
-			//checked: checked,
-			//oncheck: checkHandeler,
-			//onuncheck: checkHandeler,
+            sort: true,
+			minWidth: 100,
+			checked: scope.checked,
+			oncheck: scope.checkHandeler,
+			onuncheck: scope.checkHandeler
 			//createCallback: addGroup,
         });
 	}
@@ -90,8 +91,12 @@ usersmanagement.directive('multiselectSubadmins', [function() {
 		element = $(element[0]); // To use jQuery.
         element.multiSelect({
 			title: 'Group Admin..',
+            createText: null,
 			minWidth: 100,
-			maxWidth: 125
+			checked: scope.checked,
+			oncheck: scope.checkHandeler,
+			onuncheck: scope.checkHandeler
+            //createCallback: addSubadmin
         });
 	}
 }]);

@@ -164,7 +164,49 @@ usersmanagement.controller('userlistController',
 			};
 			
 			/* Everything on Multiselect - Group Toggle */
-			$scope.label = 'Add Group';
+            
+            /* TODO : Make the translation work. */
+            
+			if (isadmin) {
+				$scope.label = t('settings', 'Add Group');
+			} else {
+				$scope.label = null;
+			}
+            $scope.checked = [];
+            $scope.user = element.attr('data-username');
+            user = $scope.user;
+    		if (element.attr('multiselect-users')) {
+    			if (element.data('userGroups')) {
+    				checked = element.data('userGroups');
+    			}
+                if (user) {
+                    $scope.checkHandeler = function(group) {
+                        if (user === OC.currentUser && group === 'admin') {
+                            return false;
+                        }
+                        if (!isadmin && checked.length === 1 && checked[0] === group) {
+                            return false;
+                        }
+                        GroupService.toggleGroup(user,group);
+                    }
+                } else {
+                    $scope.checkHandeler = false;
+                }
+            }
+            
+            /* Everything on Subadmin toggle. */
+            
+            if (element.attr('multiselect-subadmins')) {
+                if ( element.data('subadmin')) {
+                    checked = element.data('subadmin');
+                }
+                var checkHandeler = function(group) {
+                    if (group === 'admin') {
+                        return false;
+                    }
+                    GroupService.toggleSubadmin(user,group);
+                }
+            }
 		});
 	}
 ]);
