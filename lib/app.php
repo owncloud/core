@@ -71,6 +71,9 @@ class OC_App{
 	 * if $types is set, only apps of those types will be loaded
 	 */
 	public static function loadApps($types=null) {
+		if(!OC_Config::getValue('installed', false)) {
+			return;
+		}
 		if (is_null($types)) {
 		    self::getLoader()->loadAll();
 		} else {
@@ -96,6 +99,9 @@ class OC_App{
 	 * @param string $app
 	 */
 	public static function loadApp($app) {
+		if(!OC_Config::getValue('installed', false)) {
+			return;
+		}
 		self::getLoader()->load($app);
 	}
 
