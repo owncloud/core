@@ -116,8 +116,7 @@ class Server extends SimpleContainer implements IServerContainer {
 		});
 
 		$this->registerService('AvatarManager', function($c) {
-			$user = \OC_User::getUser();
-			return new AvatarManager($user);
+			return new AvatarManager(); //TODO AvatarManager needs $user
 		});
 	}
 
