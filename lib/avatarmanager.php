@@ -9,7 +9,10 @@ namespace OC;
 
 use OCP\IAvatar;
 
-class AvatarManager implements IAvatar {
+/*
+ * This class implements methods to access Avatar functionality
+ */
+class AvatarManager implements IAvatarManager {
 
 	private $avatar;
 

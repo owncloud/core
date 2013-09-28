@@ -11,11 +11,11 @@ namespace OCP;
  * This class provides avatar functionality
  */
 
-interface IAvatar {
+interface IAvatarManager {
 
 	/**
 	 * @brief get the users avatar
-	 * @param $size integer size in px of the avatar, defaults to 64
+	 * @param $size integer size in px of the avatar, avatars are square, defaults to 64
 	 * @return boolean|\OC_Image containing the avatar or false if there's no image
 	 */
 	function get($size = 64);

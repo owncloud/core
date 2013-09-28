@@ -149,7 +149,6 @@ class Server extends SimpleContainer implements IServerContainer {
 	}
 
 	/**
-<<<<<<< HEAD
 	 * Returns the avatar manager, used for avatar functionality
 	 *
 	 * @return \OCP\IAvatar
