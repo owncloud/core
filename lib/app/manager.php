@@ -76,7 +76,9 @@ class Manager implements ManagerInterface {
 	 */
 	public function enableApp( $app ) {
 		\OC_Appconfig::setValue( $app, 'enabled', 'yes' ); // TODO: DI
-		$this->enabledApps[] = $app;
+		if (isset($this->enabledApps)) {
+			$this->enabledApps[] = $app;
+		}
 	}
 
 	/**

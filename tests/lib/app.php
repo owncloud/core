@@ -108,4 +108,12 @@ class Test_App extends PHPUnit_Framework_TestCase {
 		OC_App::getManager()->disableApp($app);
 		$this->assertFalse(OC_App::isEnabled($app));
 	}
+
+	public function testDisableEnableIsEnabled() {
+		$this->assertTrue(OC_App::isEnabled('files'));
+		$app = 'test12345';
+		OC_App::getManager()->disableApp($app);
+		OC_App::getManager()->enableApp($app);
+		$this->assertTrue(OC_App::isEnabled('files'));
+	}
 }
