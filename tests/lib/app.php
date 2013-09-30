@@ -79,4 +79,33 @@ class Test_App extends PHPUnit_Framework_TestCase {
 		$this->assertFalse(OC_App::isAppVersionCompatible($oc, $app));
 	}
 
+	public function testGetAppInfo() {
+		$info = OC_App::getAppInfo('files');
+		$this->assertInternalType('array', $info);
+		$this->assertArrayHasKey('id', $info);
+		$this->assertArrayHasKey('name', $info);
+		$this->assertArrayHasKey('remote', $info);
+		$this->assertArrayHasKey('public', $info);
+		$this->assertEquals('files', $info['id']);
+	}
+
+	public function testGetEnabledApps() {
+		$enabledApps = OC_App::getEnabledApps();
+		$this->assertInternalType('array', $enabledApps);
+		$this->assertContains('files', $enabledApps);
+	}
+
+	public function testIsEnabled() {
+		$this->assertTrue(OC_App::isEnabled('files'));
+		$this->assertFalse(OC_App::isEnabled('files2'));
+	}
+
+	public function testEnableAndDisable() {
+		$app = 'test12345';
+		$this->assertFalse(OC_App::isEnabled($app));
+		OC_App::getManager()->enableApp($app);
+		$this->assertTrue(OC_App::isEnabled($app));
+		OC_App::getManager()->disableApp($app);
+		$this->assertFalse(OC_App::isEnabled($app));
+	}
 }
