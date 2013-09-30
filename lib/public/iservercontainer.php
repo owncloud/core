@@ -122,4 +122,10 @@ interface IServerContainer {
 	 */
 	function getDatabaseConnection();
 
+	/**
+	 * @brief Returns an avatar manager, used for avatar functionality
+	 * @return \OCP\IAvatar
+	 */
+	function getAvatarManager();
+
 }
