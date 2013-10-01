@@ -106,9 +106,8 @@ class OC_Util {
 	 * @return array
 	 */
 	public static function getVersion() {
-		// hint: We only can count up. Reset minor/patchlevel when
-		// updating major/minor version number.
-		return array(5, 80, 07);
+		OC_Util::loadVersion();
+		return \OC::$server->getSession()->get('OC_Version');
 	}
 
 	/**
@@ -116,7 +115,8 @@ class OC_Util {
 	 * @return string
 	 */
 	public static function getVersionString() {
-		return '6.0 pre alpha';
+		OC_Util::loadVersion();
+		return \OC::$server->getSession()->get('OC_VersionString');
 	}
 
 	/**
@@ -126,7 +126,46 @@ class OC_Util {
 	 * @return string
 	 */
 	public static function getEditionString() {
-		return '';
+		OC_Util::loadVersion();
+		return \OC::$server->getSession()->get('OC_Edition');
+	}
+
+	/**
+	 * @description get the update channel of the current installed of ownCloud.
+	 * @return string
+	 */
+	public static function getChannel() {
+		OC_Util::loadVersion();
+		return \OC::$server->getSession()->get('OC_Channel');
+	}
+        
+	/**
+	 * @description get the build number of the current installed of ownCloud.
+	 * @return string
+	 */
+	public static function getBuild() {
+		OC_Util::loadVersion();
+		return \OC::$server->getSession()->get('OC_Build');
+	}
+
+	/**
+	 * @description load the version.php into the session as cache
+	 */
+	private static function loadVersion() {
+		if(!\OC::$server->getSession()->exists('OC_Version')) {
+			require 'version.php';
+			$session = \OC::$server->getSession();
+			/** @var $OC_Version string */
+			$session->set('OC_Version', $OC_Version);
+			/** @var $OC_VersionString string */
+			$session->set('OC_VersionString', $OC_VersionString);
+			/** @var $OC_Edition string */
+			$session->set('OC_Edition', $OC_Edition);
+			/** @var $OC_Channel string */
+			$session->set('OC_Channel', $OC_Channel);
+			/** @var $OC_Build string */
+			$session->set('OC_Build', $OC_Build);
+		}
 	}
 
 	/**
@@ -410,14 +449,18 @@ class OC_Util {
 		$encryptedFiles = false;
 		if (OC_App::isEnabled('files_encryption') === false) {
 			$view = new OC\Files\View('/' . OCP\User::getUser());
-			if ($view->file_exists('/files_encryption/keyfiles')) {
-				$encryptedFiles = true;
+			$keyfilePath = '/files_encryption/keyfiles';
+			if ($view->is_dir($keyfilePath)) {
+				$dircontent = $view->getDirectoryContent($keyfilePath);
+				if (!empty($dircontent)) {
+					$encryptedFiles = true;
+				}
 			}
 		}
-		
+
 		return $encryptedFiles;
 	}
-	
+
 	/**
 	 * @brief Check for correct file permissions of data directory
 	 * @paran string $dataDirectory
@@ -467,6 +510,7 @@ class OC_Util {
 		}
 
 		$parameters['alt_login'] = OC_App::getAlternativeLogIns();
+		$parameters['rememberLoginAllowed'] = self::rememberLoginAllowed();
 		OC_Template::printGuestPage("", "login", $parameters);
 	}
 
@@ -506,6 +550,27 @@ class OC_Util {
 			header( 'Location: '.OC_Helper::linkToAbsolute( '', 'index.php' ));
 			exit();
 		}
+	}
+
+	/**
+	 * Check if it is allowed to remember login.
+	 *
+	 * @note Every app can set 'rememberlogin' to 'false' to disable the remember login feature
+	 *
+	 * @return bool
+	 */
+	public static function rememberLoginAllowed() {
+
+		$apps = OC_App::getEnabledApps();
+
+		foreach ($apps as $app) {
+			$appInfo = OC_App::getAppInfo($app);
+			if (isset($appInfo['rememberlogin']) && $appInfo['rememberlogin'] === 'false') {
+				return false;
+			}
+
+		}
+		return true;
 	}
 
 	/**
@@ -654,16 +719,16 @@ class OC_Util {
 		}
 		return $value;
 	}
-	
+
 	/**
 	 * @brief Public function to encode url parameters
 	 *
 	 * This function is used to encode path to file before output.
 	 * Encoding is done according to RFC 3986 with one exception:
-	 * Character '/' is preserved as is. 
+	 * Character '/' is preserved as is.
 	 *
 	 * @param string $component part of URI to encode
-	 * @return string 
+	 * @return string
 	 */
 	public static function encodePath($component) {
 		$encoded = rawurlencode($component);
@@ -730,12 +795,6 @@ class OC_Util {
 			'baseUri' => OC_Helper::linkToRemote('webdav'),
 		);
 
-		// save the old timeout so that we can restore it later
-		$oldTimeout = ini_get("default_socket_timeout");
-
-		// use a 5 sec timeout for the check. Should be enough for local requests.
-		ini_set("default_socket_timeout", 5);
-
 		$client = new \Sabre_DAV_Client($settings);
 
 		// for this self test we don't care if the ssl certificate is self signed and the peer cannot be verified.
@@ -751,9 +810,6 @@ class OC_Util {
 			OC_Log::write('core', 'isWebDAVWorking: NO - Reason: '.$e->getMessage(). ' ('.get_class($e).')', OC_Log::WARN);
 			$return = false;
 		}
-
-		// restore the original timeout
-		ini_set("default_socket_timeout", $oldTimeout);
 
 		return $return;
 	}
@@ -810,7 +866,7 @@ class OC_Util {
 			}
 		}
 	}
-	
+
 	/**
 	 * @brief Check if the connection to the internet is disabled on purpose
 	 * @return bool
