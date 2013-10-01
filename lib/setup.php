@@ -103,6 +103,11 @@ class OC_Setup {
 			OC_Group::addToGroup($username, 'admin');
 			OC_User::login($username, $password);
 
+			// Add timezone to session
+			if (isset($_POST['timezone-offset'])) {
+				$_SESSION['timezone'] = $_POST['timezone-offset'];
+			}
+
 			//guess what this does
 			OC_Installer::installShippedApps();
 

@@ -780,6 +780,11 @@ class OC {
 		}
 		// confirm credentials in cookie
 		if (isset($_COOKIE['oc_token']) && OC_User::userExists($_COOKIE['oc_username'])) {
+			// setting up the time zone
+			if (isset($_POST['timezone-offset'])) {
+				$_SESSION['timezone'] = $_POST['timezone-offset'];
+			}
+
 			// delete outdated cookies
 			self::cleanupLoginTokens($_COOKIE['oc_username']);
 			// get stored tokens
