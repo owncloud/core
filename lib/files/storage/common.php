@@ -67,20 +67,28 @@ abstract class Common implements \OC\Files\Storage\Storage {
 	}
 
 	public function getPermissions($path) {
+	
+		$isReadOnly = false;
+		$mount = \OC\Files\Filesystem::getMountByStorageId($this->getId());
+
+		if(count($mount) > 0 && $mount[0]->isReadOnly()) {
+		  $isReadOnly = true;
+		}
+
 		$permissions = 0;
-		if ($this->isCreatable($path)) {
+		if (!$isReadOnly && $this->isCreatable($path)) {
 			$permissions |= \OCP\PERMISSION_CREATE;
 		}
 		if ($this->isReadable($path)) {
 			$permissions |= \OCP\PERMISSION_READ;
 		}
-		if ($this->isUpdatable($path)) {
+		if (!$isReadOnly && $this->isUpdatable($path)) {
 			$permissions |= \OCP\PERMISSION_UPDATE;
 		}
-		if ($this->isDeletable($path)) {
+		if (!$isReadOnly && $this->isDeletable($path)) {
 			$permissions |= \OCP\PERMISSION_DELETE;
 		}
-		if ($this->isSharable($path)) {
+		if (!$isReadOnly && $this->isSharable($path)) {
 			$permissions |= \OCP\PERMISSION_SHARE;
 		}
 		return $permissions;

@@ -215,6 +215,24 @@ class Filesystem {
 	}
 
 	/**
+	 *
+	 * @param string $path
+	 * @return string
+	 */
+	static public function getMount($path) {
+		if (!self::$mounts) {
+			\OC_Util::setupFS();
+		}
+		$mount = self::$mounts->find($path);
+		if ($mount) {
+			return $mount;
+		} else {
+			return false;
+		}
+	}
+
+
+	/**
 	 * get the storage mounted at $mountPoint
 	 *
 	 * @param string $mountPoint
@@ -342,9 +360,9 @@ class Filesystem {
 					if ($mountUser === 'all' or strtolower($mountUser) === strtolower($user)) {
 						foreach ($mounts as $mountPoint => $options) {
 							$mountPoint = self::setUserVars($user, $mountPoint);
-							foreach ($options as &$option) {
-								$option = self::setUserVars($user, $option);
-							}
+//							foreach ($options as &$option) {
+//								$option = self::setUserVars($user, $option);
+//							}
 							self::mount($options['class'], $options['options'], $mountPoint);
 						}
 					}

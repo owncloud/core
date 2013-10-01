@@ -104,6 +104,15 @@ class View {
 	}
 
 	/**
+	 *
+	 * @param string $path
+	 * @return mount
+	 */
+	public function getMount($path) {
+		return Filesystem::getMount($this->getAbsolutePath($path));
+	}
+
+	/**
 	 * resolve a path to a storage and internal path
 	 *
 	 * @param string $path
@@ -211,7 +220,13 @@ class View {
 	}
 
 	public function isCreatable($path) {
-		return $this->basicOperation('isCreatable', $path);
+		$mount = $this->getMount($path);
+		if($mount && !$mount->isReadOnly()) { 
+			return $this->basicOperation('isCreatable', $path);
+		} else {
+			return false;
+		}
+//		return $this->basicOperation('isCreatable', $path);
 	}
 
 	public function isReadable($path) {
@@ -219,11 +234,23 @@ class View {
 	}
 
 	public function isUpdatable($path) {
-		return $this->basicOperation('isUpdatable', $path);
+		$mount = $this->getMount($path);
+		if($mount && !$mount->isReadOnly()) { 
+			return $this->basicOperation('isUpdatable', $path);
+		} else {
+			return false;
+		}
+//		return $this->basicOperation('isUpdatable', $path);
 	}
 
 	public function isDeletable($path) {
-		return $this->basicOperation('isDeletable', $path);
+		$mount = $this->getMount($path);
+		if($mount && !$mount->isReadOnly()) { 
+			return $this->basicOperation('isDeletable', $path);
+		} else {
+			return false;
+		}
+//		return $this->basicOperation('isDeletable', $path);
 	}
 
 	public function isSharable($path) {
@@ -641,7 +668,13 @@ class View {
 	}
 
 	public function free_space($path = '/') {
-		return $this->basicOperation('free_space', $path);
+		$mount = $this->getMount($path);
+		if($mount && !$mount->isReadOnly()) {
+			return $this->basicOperation('free_space', $path);
+		} else {
+			return 0;
+		}
+//		return $this->basicOperation('free_space', $path);
 	}
 
 	/**
@@ -657,6 +690,14 @@ class View {
 	 * \OC\Files\Storage\Storage for delegation to a storage backend for execution
 	 */
 	private function basicOperation($operation, $path, $hooks = array(), $extraParam = null) {
+	
+
+		// Stop guard measure to prevent writing on read only mounts
+		$mount = $this->getMount($path);
+		if($mount && $mount->isReadOnly() && (count($hooks) >= 2 || count($hooks) == 1 && $hooks[0] != 'read')) {
+			return false;
+		}
+
 		$postFix = (substr($path, -1, 1) === '/') ? '/' : '';
 		$absolutePath = Filesystem::normalizePath($this->getAbsolutePath($path));
 		if (\OC_FileProxy::runPreProxies($operation, $absolutePath, $extraParam)
