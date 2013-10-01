@@ -115,12 +115,7 @@ class OC_Mail {
 
 		$defaults = new OC_Defaults();
 
-		$txt="\n--\n";
-		$txt.=$defaults->getName() . "\n";
-		$txt.=$defaults->getSlogan() . "\n";
-
-		return($txt);
-
+                return( $defaults->getEmailFooter() );
 	}
 
 	/**
