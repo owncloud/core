@@ -743,6 +743,12 @@ class OC_Util {
 	 * file in the data directory and trying to access via http
 	 */
 	public static function isHtAccessWorking() {
+
+		// in case there is no internet connection there is no need to display a warning
+		if (self::isInternetConnectionEnabled() === false) {
+			return true;
+		}
+
 		// testdata
 		$fileName = '/htaccesstest.txt';
 		$testContent = 'testcontent';
@@ -788,6 +794,12 @@ class OC_Util {
 	 *
 	 */
 	public static function isWebDAVWorking() {
+
+		// in case there is no internet connection there is no need to display a warning
+		if (self::isInternetConnectionEnabled() === false) {
+			return true;
+		}
+
 		if (!function_exists('curl_init')) {
 			return true;
 		}
