@@ -8,7 +8,7 @@
 
 namespace OC\App;
 
-use OCP\App\Loader as LoaderInterface;
+use OCP\App\ILoader as LoaderInterface;
 
 class Loader implements LoaderInterface {
 	/**

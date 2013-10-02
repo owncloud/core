@@ -253,7 +253,7 @@ class Server extends SimpleContainer implements IServerContainer {
 	/**
 	 * Returns the app manager
 	 *
-	 * @return \OCP\App\Manager
+	 * @return \OCP\App\IManager
 	 */
 	function getAppManager() {
 		return $this->query('AppManager');
@@ -262,7 +262,7 @@ class Server extends SimpleContainer implements IServerContainer {
 	/**
 	 * Returns the app loader
 	 *
-	 * @return \OCP\App\Loader
+	 * @return \OCP\App\ILoader
 	 */
 	function getAppLoader() {
 		return $this->query('AppLoader');

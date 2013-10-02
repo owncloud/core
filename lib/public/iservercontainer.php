@@ -118,14 +118,14 @@ interface IServerContainer {
 	/**
 	 * Returns the current session
 	 *
-	 * @return \OCP\App\Manager
+	 * @return \OCP\App\IManager
 	 */
 	function getAppManager();
 
 	/**
 	 * Returns the current session
 	 *
-	 * @return \OCP\App\Loader
+	 * @return \OCP\App\ILoader
 	 */
 	function getAppLoader();
 

@@ -8,7 +8,7 @@
 
 namespace OC\App;
 
-use OCP\App\Info as InfoInterface;
+use OCP\App\IInfo as InfoInterface;
 
 class Info implements InfoInterface {
 	protected $appid;

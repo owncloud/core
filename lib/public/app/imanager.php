@@ -11,7 +11,7 @@ namespace OCP\App;
 /**
  * Provide a common interface to all Application functions
  */
-interface Manager {
+interface IManager {
 	/**
 	 * @brief checks whether or not an app is enabled
 	 * @param $app string appid
@@ -41,7 +41,7 @@ interface Manager {
 	 * @brief Get information about the app
 	 * @param $app string appid
 	 *
-	 * @return \OCP\App\Info|null
+	 * @return \OCP\App\IInfo|null
 	 */
 	public function getInfo( $app );
 }

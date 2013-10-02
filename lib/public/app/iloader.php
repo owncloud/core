@@ -11,7 +11,7 @@ namespace OCP\App;
 /**
  * Provide a common interface to all Application functions
  */
-interface Loader {
+interface ILoader {
 	/**
 	 * @brief load all enabled apps
 	 */

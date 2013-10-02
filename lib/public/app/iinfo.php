@@ -11,7 +11,7 @@ namespace OCP\App;
 /**
  * Provide a common interface to all Application functions
  */
-interface Info {
+interface IInfo {
 	/**
 	 * @brief Get the name of the app.
 	 *

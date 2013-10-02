@@ -8,7 +8,7 @@
 
 namespace OC\App;
 
-use OCP\App\Manager as ManagerInterface;
+use OCP\App\IManager as ManagerInterface;
 
 class Manager implements ManagerInterface {
 	protected $approots;
@@ -161,7 +161,7 @@ class Manager implements ManagerInterface {
 	 * @brief Get information about the app
 	 * @param $app string appid
 	 *
-	 * @return \OCP\App\Info|null
+	 * @return \OCP\App\IInfo|null
 	 * @throws \OutOfBoundsException when not app is not available/found
 	 */
 	public function getInfo( $app ) {
