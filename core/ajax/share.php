@@ -82,41 +82,9 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 			}
 			break;
 		case 'email':
-			// read post variables
-			$user = OCP\USER::getUser();
-			$displayName = OCP\User::getDisplayName();
-			$type = $_POST['itemType'];
-			$link = $_POST['link'];
-			$file = $_POST['file'];
-			$to_address = $_POST['toaddress'];
-
-			// enable l10n support
-			$l = OC_L10N::get('core');
-
-			// setup the email
-			$subject = (string)$l->t('%s shared »%s« with you', array($displayName, $file));
-
-			$content = new OC_Template("core", "mail", "");
-			$content->assign ('link', $link);
-			$content->assign ('type', $type);
-			$content->assign ('user_displayname', $displayName);
-			$content->assign ('filename', $file);
-			$text = $content->fetchPage();
-
-			$content = new OC_Template("core", "altmail", "");
-			$content->assign ('link', $link);
-			$content->assign ('type', $type);
-			$content->assign ('user_displayname', $displayName);
-			$content->assign ('filename', $file);
-			$alttext = $content->fetchPage();
-
-			$default_from = OCP\Util::getDefaultEmailAddress('sharing-noreply');
-			$from_address = OCP\Config::getUserValue($user, 'settings', 'email', $default_from );
-
-			// send it out now
 			try {
-				OCP\Util::sendMail($to_address, $to_address, $subject, $text, $from_address, $displayName, 1, $alttext);
-				OCP\JSON::success();
+				$return = OCP\Share::sendNotificationEmail($_POST['itemType'], $_POST['itemSource'], $_POST['toaddress']);
+				($return) ? OC_JSON::success() : OC_JSON::error();
 			} catch (Exception $exception) {
 				OCP\JSON::error(array('data' => array('message' => OC_Util::sanitizeHTML($exception->getMessage()))));
 			}

@@ -758,6 +758,59 @@ class Share {
 		return false;
 	}
 
+<<<<<<< HEAD
+=======
+	public static function sendNotificationEmail($itemType, $itemSource, $to_address) {
+		if ($item = self::getItems($itemType, $itemSource, self::SHARE_TYPE_LINK, null, \OC_User::getUser(),
+			self::FORMAT_NONE, null, 1, false)) {
+			if (!$item[token]) {
+				$message = 'Trying to send email for '.$itemSource.' when it is not publicly shared';
+				\OC_Log::write('OCP\Share', $message, \OC_Log::ERROR);
+				throw new \Exception($message);
+			}
+			$user = \OC_User::getUser();
+			$displayName = User::getDisplayName();
+			$fileName = basename($item['path']);
+			$link = \OC_Helper::makeURLAbsolute('/public.php').'?service=files&t='.$item['token'];
+			// enable l10n support
+			$l = Util::getL10N('core');
+	
+			// setup the email
+			$subject = (string)$l->t('%s shared »%s« with you', array($displayName, $fileName));
+	
+			$content = new \OC_Template("core", "mail", "");
+			$content->assign ('link', $link);
+			$content->assign ('type', $itemType);
+			$content->assign ('user_displayname', $displayName);
+			$content->assign ('filename', $fileName);
+			$text = $content->fetchPage();
+	
+			$content = new \OC_Template("core", "altmail", "");
+			$content->assign ('link', $link);
+			$content->assign ('type', $itemType);
+			$content->assign ('user_displayname', $displayName);
+			$content->assign ('filename', $fileName);
+			$alttext = $content->fetchPage();
+	
+			$default_from = Util::getDefaultEmailAddress('sharing-noreply');
+			$from_address = Config::getUserValue($user, 'settings', 'email', $default_from );
+		
+			Util::sendMail($to_address, $to_address, $subject, $text, $from_address, $displayName, 1, $alttext);
+			\OC_Hook::emit('OCP\Share', 'post_send_notification_email', array(
+				'itemType' => $itemType,
+				'itemSource' => $itemSource,
+				'to' => $to_address,
+				'uidOwner' => \OC_User::getUser(),
+				'path' => $item['path']
+			));
+			
+			return true;
+		} 
+		return false;
+	}
+
+
+>>>>>>> ac93eba... Move send email logic to core, add checks and event
 	/**
 	* @brief Get the backend class for the specified item type
 	* @param string $itemType
