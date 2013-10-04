@@ -758,12 +758,10 @@ class Share {
 		return false;
 	}
 
-<<<<<<< HEAD
-=======
 	public static function sendNotificationEmail($itemType, $itemSource, $to_address) {
 		if ($item = self::getItems($itemType, $itemSource, self::SHARE_TYPE_LINK, null, \OC_User::getUser(),
 			self::FORMAT_NONE, null, 1, false)) {
-			if (!$item[token]) {
+			if (empty($item['token'])) {
 				$message = 'Trying to send email for '.$itemSource.' when it is not publicly shared';
 				\OC_Log::write('OCP\Share', $message, \OC_Log::ERROR);
 				throw new \Exception($message);
@@ -809,8 +807,6 @@ class Share {
 		return false;
 	}
 
-
->>>>>>> ac93eba... Move send email logic to core, add checks and event
 	/**
 	* @brief Get the backend class for the specified item type
 	* @param string $itemType
