@@ -738,6 +738,13 @@ class Share {
 		throw new \Exception($message);
 	}
 
+	/**
+	* @brief Sets the expiration date of all shares for a file
+	* @param string Item type
+	* @param string Item source
+	* @param date Expiration date 
+	* @return Returns true on success or false on failure
+	*/
 	public static function setExpirationDate($itemType, $itemSource, $date) {
 		if ($items = self::getItems($itemType, $itemSource, null, null, \OC_User::getUser(),
 			self::FORMAT_NONE, null, -1, false)) {
@@ -758,7 +765,14 @@ class Share {
 		return false;
 	}
 
-	public static function sendNotificationEmail($itemType, $itemSource, $to_address) {
+	/**
+	* @brief Sends an email with the public link of a shrade file 
+	* @param string Item type
+	* @param string Item source
+	* @param string A single address to send the email 
+	* @return Returns true on success or false on failure
+	*/
+	public static function sendNotificationEmail($itemType, $itemSource, $toAddress) {
 		if ($item = self::getItems($itemType, $itemSource, self::SHARE_TYPE_LINK, null, \OC_User::getUser(),
 			self::FORMAT_NONE, null, 1, false)) {
 			if (empty($item['token'])) {
@@ -790,14 +804,14 @@ class Share {
 			$content->assign ('filename', $fileName);
 			$alttext = $content->fetchPage();
 	
-			$default_from = Util::getDefaultEmailAddress('sharing-noreply');
-			$from_address = Config::getUserValue($user, 'settings', 'email', $default_from );
+			$defaultFrom = Util::getDefaultEmailAddress('sharing-noreply');
+			$fromAddress = Config::getUserValue($user, 'settings', 'email', $defaultFrom );
 		
-			Util::sendMail($to_address, $to_address, $subject, $text, $from_address, $displayName, 1, $alttext);
+			Util::sendMail($toAddress, $toAddress, $subject, $text, $fromAddress, $displayName, 1, $alttext);
 			\OC_Hook::emit('OCP\Share', 'post_send_notification_email', array(
 				'itemType' => $itemType,
 				'itemSource' => $itemSource,
-				'to' => $to_address,
+				'to' => $toAddress,
 				'uidOwner' => \OC_User::getUser(),
 				'path' => $item['path']
 			));
