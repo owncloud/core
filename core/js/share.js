@@ -201,6 +201,7 @@ OC.Share={
 				html += '</div><form id="emailPrivateLink" >';
 				html += '<input id="email" style="display:none; width:62%;" value="" placeholder="'+t('core', 'Email link to person')+'" type="text" />';
 				html += '<input id="emailButton" style="display:none;" type="submit" value="'+t('core', 'Send')+'" />';
+				html += '<br/><textarea id="emailMessage" style="display:none;width:90%" placeholder="'+t('core', 'Message (optional)')+'" ></textarea>';
 				html += '</form>';
 			}
 
@@ -402,6 +403,7 @@ OC.Share={
 		$('#expiration').show();
 		$('#emailPrivateLink #email').show();
 		$('#emailPrivateLink #emailButton').show();
+		$('#emailPrivateLink #emailMessage').show();
 		$('#allowPublicUploadWrapper').show();
 	},
 	hideLink:function() {
@@ -411,6 +413,7 @@ OC.Share={
 		$('#linkPass').hide();
 		$('#emailPrivateLink #email').hide();
 		$('#emailPrivateLink #emailButton').hide();
+		$('#emailPrivateLink #emailMessage').hide();
 		$('#allowPublicUploadWrapper').hide();
 	},
 	dirname:function(path) {
@@ -678,20 +681,24 @@ $(document).ready(function() {
 		var itemSource = $('#dropdown').data('item-source');
 		var file = $('tr').filterAttr('data-id', String(itemSource)).data('file');
 		var email = $('#email').val();
+		var message = $('#emailMessage').val();
 		if (email != '') {
 			$('#email').attr('disabled', "disabled");
 			$('#email').val(t('core', 'Sending ...'));
 			$('#emailButton').attr('disabled', "disabled");
+			$('#emailMessage').attr('disabled', "disabled");
 
-			$.post(OC.filePath('core', 'ajax', 'share.php'), { action: 'email', toaddress: email, link: link, itemType: itemType, itemSource: itemSource, file: file},
+			$.post(OC.filePath('core', 'ajax', 'share.php'), { action: 'email', toaddress: email, message: message, link: link, itemType: itemType, itemSource: itemSource, file: file},
 				function(result) {
 					$('#email').attr('disabled', "false");
 					$('#emailButton').attr('disabled', "false");
+					$('#emailMessage').attr('disabled', "false");
 				if (result && result.status == 'success') {
 					$('#email').css('font-weight', 'bold');
 					$('#email').animate({ fontWeight: 'normal' }, 2000, function() {
 						$(this).val('');
 					}).val(t('core','Email sent'));
+					$('#emailMessage').val('');
 				} else {
 					OC.dialogs.alert(result.data.message, t('core', 'Error while sharing'));
 				}
