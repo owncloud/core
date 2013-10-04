@@ -79,10 +79,13 @@ class Cache {
 
 	public function getMimetype($id) {
 		if (!isset($this->mimetypes[$id])) {
-			$sql = 'SELECT `mimetype` FROM `*PREFIX*mimetypes` WHERE `id` = ?';
-			$result = \OC_DB::executeAudited($sql, array($id));
-			if ($row = $result->fetchRow()) {
-				$this->mimetypes[$id] = $row['mimetype'];
+			$sql = 'SELECT `id`, `mimetype` FROM `*PREFIX*mimetypes`';
+			$result = \OC_DB::executeAudited($sql);
+			while ($row = $result->fetchRow()) {
+				$this->mimetypes[$row['id']] = $row['mimetype'];
+			}
+			if (!isset($this->mimetypes[$id])) {
+				return $this->mimetypes[$id];
 			} else {
 				return null;
 			}
