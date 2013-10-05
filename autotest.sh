@@ -12,6 +12,16 @@ DATABASEUSER=oc_autotest$EXECUTOR_NUMBER
 ADMINLOGIN=admin$EXECUTOR_NUMBER
 BASEDIR=$PWD
 
+if ! [ -w config -a -w config/config.php ]; then
+	echo "Please enable write permissions on config and config/config.php" >&2
+	exit 1
+fi
+
+# Back up existing (dev) config if one exists
+if [ -f config/config.php ]; then
+	mv config/config.php config/config-autotest-backup.php
+fi
+
 # use tmpfs for datadir - should speedup unit test execution
 if [ -d /dev/shm ]; then
   DATADIR=/dev/shm/data-autotest$EXECUTOR_NUMBER
@@ -142,12 +152,7 @@ EOF
 	rm -rf coverage-html-$1
 	mkdir coverage-html-$1
 	php -f enable_all.php
-	if [ "$1" == "sqlite" ] ; then
-		# coverage only with sqlite - causes segfault on ci.tmit.eu - reason unknown
-		phpunit --configuration phpunit-autotest.xml --log-junit autotest-results-$1.xml --coverage-clover autotest-clover-$1.xml --coverage-html coverage-html-$1 $2 $3
-	else
-		phpunit --configuration phpunit-autotest.xml --log-junit autotest-results-$1.xml $2 $3
-	fi
+	phpunit --configuration phpunit-autotest.xml --log-junit autotest-results-$1.xml --coverage-clover autotest-clover-$1.xml --coverage-html coverage-html-$1 $2 $3
 }
 
 #
@@ -161,6 +166,13 @@ if [ -z "$1" ]
 	execute_tests 'oci'
 else
 	execute_tests $1 $2 $3
+fi
+
+cd $BASEDIR
+
+# Restore existing config
+if [ -f config/config-autotest-backup.php ]; then
+	mv config/config-autotest-backup.php config/config.php
 fi
 
 #

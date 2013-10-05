@@ -199,12 +199,12 @@ class Helper {
 	public static function stripUserFilesPath($path) {
 		$trimmed = ltrim($path, '/');
 		$split = explode('/', $trimmed);
-		
+
 		// it is not a file relative to data/user/files
 		if (count($split) < 3 || $split[1] !== 'files') {
 			return false;
 		}
-		
+
 		$sliced = array_slice($split, 2);
 		$relPath = implode('/', $sliced);
 
@@ -219,30 +219,33 @@ class Helper {
 	public static function getPathToRealFile($path) {
 		$trimmed = ltrim($path, '/');
 		$split = explode('/', $trimmed);
-		
+
 		if (count($split) < 3 || $split[1] !== "files_versions") {
 			return false;
 		}
-		
+
 		$sliced = array_slice($split, 2);
 		$realPath = implode('/', $sliced);
 		//remove the last .v
 		$realPath = substr($realPath, 0, strrpos($realPath, '.v'));
 
 		return $realPath;
-	}	
-	
+	}
+
 	/**
 	 * @brief redirect to a error page
 	 */
-	public static function redirectToErrorPage() {
+	public static function redirectToErrorPage($session) {
+
+		$init = $session->getInitialized();
+
 		$location = \OC_Helper::linkToAbsolute('apps/files_encryption/files', 'error.php');
 		$post = 0;
 		if(count($_POST) > 0) {
 			$post = 1;
-		}
-		header('Location: ' . $location . '?p=' . $post);
-		exit();
+			}
+			header('Location: ' . $location . '?p=' . $post . '&i=' . $init);
+			exit();
 	}
 
 	/**
@@ -259,13 +262,13 @@ class Helper {
 
 		return (bool) $result;
 	}
-	
+
 	/**
 	 * check some common errors if the server isn't configured properly for encryption
 	 * @return bool true if configuration seems to be OK
 	 */
 	public static function checkConfiguration() {
-		if(openssl_pkey_new(array('private_key_bits' => 4096))) {
+		if(self::getOpenSSLPkey()) {
 			return true;
 		} else {
 			while ($msg = openssl_error_string()) {
@@ -273,6 +276,26 @@ class Helper {
 			}
 			return false;
 		}
+	}
+
+	/**
+	 * Create an openssl pkey with config-supplied settings
+	 * WARNING: This initializes a new private keypair, which is computationally expensive
+	 * @return resource The pkey resource created
+	 */
+	public static function getOpenSSLPkey() {
+		return openssl_pkey_new(self::getOpenSSLConfig());
+	}
+
+	/**
+	 * Return an array of OpenSSL config options, default + config
+	 * Used for multiple OpenSSL functions
+	 * @return array The combined defaults and config settings
+	 */
+	public static function getOpenSSLConfig() {
+		$config = array('private_key_bits' => 4096);
+		$config = array_merge(\OCP\Config::getSystemValue('openssl', array()), $config);
+		return $config;
 	}
 
 	/**

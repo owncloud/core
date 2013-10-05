@@ -106,22 +106,22 @@ class Share {
 		}
 		return false;
 	}
-	
+
 	/**
 	* @brief Prepare a path to be passed to DB as file_target
 	* @return string Prepared path
 	*/
 	public static function prepFileTarget( $path ) {
-	
+
 		// Paths in DB are stored with leading slashes, so add one if necessary
 		if ( substr( $path, 0, 1 ) !== '/' ) {
-		
+
 			$path = '/' . $path;
-		
+
 		}
-		
+
 		return $path;
-	
+
 	}
 
 	/**
@@ -140,8 +140,13 @@ class Share {
 		$source = -1;
 		$cache = false;
 
-		$view = new \OC\Files\View('/' . $user . '/files/');
-		$meta = $view->getFileInfo(\OC\Files\Filesystem::normalizePath($path));
+		$view = new \OC\Files\View('/' . $user . '/files');
+		if ($view->file_exists($path)) {
+			$meta = $view->getFileInfo($path);
+		} else {
+			// if the file doesn't exists yet we start with the parent folder
+			$meta = $view->getFileInfo(dirname($path));
+		}
 
 		if($meta !== false) {
 			$source = $meta['fileid'];
@@ -241,9 +246,9 @@ class Share {
 
 	/**
 	* @brief Get the item of item type shared with the current user
-	* @param string Item type
-	* @param string Item target
-	* @param int Format (optional) Format type must be defined by the backend
+	* @param string $itemType
+	* @param string $ItemTarget
+	* @param int $format (optional) Format type must be defined by the backend
 	* @return Return depends on format
 	*/
 	public static function getItemSharedWith($itemType, $itemTarget, $format = self::FORMAT_NONE,
@@ -251,7 +256,56 @@ class Share {
 		return self::getItems($itemType, $itemTarget, self::$shareTypeUserAndGroups, \OC_User::getUser(), null, $format,
 			$parameters, 1, $includeCollections);
 	}
-	
+
+	/**
+	 * @brief Get the item of item type shared with a given user by source
+	 * @param string $ItemType
+	 * @param string $ItemSource
+	 * @param string $user User user to whom the item was shared
+	 * @return array Return list of items with file_target, permissions and expiration
+	 */
+	public static function getItemSharedWithUser($itemType, $itemSource, $user) {
+
+		$shares = array();
+
+		// first check if there is a db entry for the specific user
+		$query = \OC_DB::prepare(
+				'SELECT `file_target`, `permissions`, `expiration`
+					FROM
+					`*PREFIX*share`
+					WHERE
+					`item_source` = ? AND `item_type` = ? AND `share_with` = ?'
+				);
+
+		$result = \OC_DB::executeAudited($query, array($itemSource, $itemType, $user));
+
+		while ($row = $result->fetchRow()) {
+			$shares[] = $row;
+		}
+
+		//if didn't found a result than let's look for a group share.
+		if(empty($shares)) {
+			$groups = \OC_Group::getUserGroups($user);
+
+			$query = \OC_DB::prepare(
+					'SELECT `file_target`, `permissions`, `expiration`
+						FROM
+						`*PREFIX*share`
+						WHERE
+						`item_source` = ? AND `item_type` = ? AND `share_with` in (?)'
+					);
+
+			$result = \OC_DB::executeAudited($query, array($itemSource, $itemType, implode(',', $groups)));
+
+			while ($row = $result->fetchRow()) {
+				$shares[] = $row;
+			}
+		}
+
+		return $shares;
+
+	}
+
 	/**
 	* @brief Get the item of item type shared with the current user by source
 	* @param string Item type
@@ -288,7 +342,18 @@ class Share {
 		if (\OC_DB::isError($result)) {
 			\OC_Log::write('OCP\Share', \OC_DB::getErrorMessage($result) . ', token=' . $token, \OC_Log::ERROR);
 		}
-		return $result->fetchRow();
+		$row = $result->fetchRow();
+
+		if (!empty($row['expiration'])) {
+			$now = new \DateTime();
+			$expirationDate = new \DateTime($row['expiration'], new \DateTimeZone('UTC'));
+			if ($now > $expirationDate) {
+				self::delete($row['id']);
+				return false;
+			}
+		}
+
+		return $row;
 	}
 
 	/**
@@ -445,6 +510,7 @@ class Share {
 					$uidOwner, self::FORMAT_NONE, null, 1)) {
 					// remember old token
 					$oldToken = $checkExists['token'];
+					$oldPermissions = $checkExists['permissions'];
 					//delete the old share
 					self::delete($checkExists['id']);
 				}
@@ -455,15 +521,18 @@ class Share {
 					$hasher = new \PasswordHash(8, $forcePortable);
 					$shareWith = $hasher->HashPassword($shareWith.\OC_Config::getValue('passwordsalt', ''));
 				} else {
-					// reuse the already set password
-					$shareWith = $checkExists['share_with'];
+					// reuse the already set password, but only if we change permissions
+					// otherwise the user disabled the password protection
+					if ($checkExists && (int)$permissions !== (int)$oldPermissions) {
+						$shareWith = $checkExists['share_with'];
+					}
 				}
 
 				// Generate token
 				if (isset($oldToken)) {
 					$token = $oldToken;
 				} else {
-					$token = \OC_Util::generate_random_bytes(self::TOKEN_LENGTH);
+					$token = \OC_Util::generateRandomBytes(self::TOKEN_LENGTH);
 				}
 				$result = self::put($itemType, $itemSource, $shareType, $shareWith, $uidOwner, $permissions,
 					null, $token);
@@ -633,6 +702,29 @@ class Share {
 		}
 		return false;
 	}
+	/**
+	 * @brief sent status if users got informed by mail about share
+	 * @param string $itemType
+	 * @param string $itemSource
+	 * @param int $shareType SHARE_TYPE_USER, SHARE_TYPE_GROUP, or SHARE_TYPE_LINK
+	 * @param bool $status
+	 */
+	public static function setSendMailStatus($itemType, $itemSource, $shareType, $status) {
+		$status = $status ? 1 : 0;
+
+		$query = \OC_DB::prepare(
+				'UPDATE `*PREFIX*share`
+					SET `mail_send` = ?
+					WHERE `item_type` = ? AND `item_source` = ? AND `share_type` = ?');
+
+		$result = $query->execute(array($status, $itemType, $itemSource, $shareType));
+
+		if($result === false) {
+			\OC_Log::write('OCP\Share', 'Couldn\'t set send mail status', \OC_Log::ERROR);
+		}
+
+
+	}
 
 	/**
 	* @brief Set the permissions of an item for a specific user or group
@@ -740,10 +832,10 @@ class Share {
 
 	/**
 	* @brief Get the backend class for the specified item type
-	* @param string Item type
-	* @return Sharing backend object
+	* @param string $itemType
+	* @return Share_Backend
 	*/
-	private static function getBackend($itemType) {
+	public static function getBackend($itemType) {
 		if (isset(self::$backends[$itemType])) {
 			return self::$backends[$itemType];
 		} else if (isset(self::$backendTypes[$itemType]['class'])) {
@@ -963,19 +1055,19 @@ class Share {
 		if ($format == self::FORMAT_STATUSES) {
 			if ($itemType == 'file' || $itemType == 'folder') {
 				$select = '`*PREFIX*share`.`id`, `item_type`, `*PREFIX*share`.`parent`,'
-					.' `share_type`, `file_source`, `path`, `expiration`, `storage`';
+					.' `share_type`, `file_source`, `path`, `expiration`, `storage`, `mail_send`';
 			} else {
-				$select = '`id`, `item_type`, `item_source`, `parent`, `share_type`, `expiration`';
+				$select = '`id`, `item_type`, `item_source`, `parent`, `share_type`, `expiration`, `mail_send`';
 			}
 		} else {
 			if (isset($uidOwner)) {
 				if ($itemType == 'file' || $itemType == 'folder') {
 					$select = '`*PREFIX*share`.`id`, `item_type`, `*PREFIX*share`.`parent`,'
 						.' `share_type`, `share_with`, `file_source`, `path`, `permissions`, `stime`,'
-						.' `expiration`, `token`, `storage`';
+						.' `expiration`, `token`, `storage`, `mail_send`';
 				} else {
 					$select = '`id`, `item_type`, `item_source`, `parent`, `share_type`, `share_with`, `permissions`,'
-						.' `stime`, `file_source`, `expiration`, `token`';
+						.' `stime`, `file_source`, `expiration`, `token`, `mail_send`';
 				}
 			} else {
 				if ($fileDependent) {
@@ -986,11 +1078,11 @@ class Share {
 						$select = '`*PREFIX*share`.`id`, `item_type`, `*PREFIX*share`.`parent`, `uid_owner`, '
 							.'`share_type`, `share_with`, `file_source`, `path`, `file_target`, '
 							.'`permissions`, `expiration`, `storage`, `*PREFIX*filecache`.`parent` as `file_parent`, '
-							.'`name`, `mtime`, `mimetype`, `mimepart`, `size`, `encrypted`, `etag`';
+							.'`name`, `mtime`, `mimetype`, `mimepart`, `size`, `encrypted`, `etag`, `mail_send`';
 					} else {
 						$select = '`*PREFIX*share`.`id`, `item_type`, `item_source`, `item_target`,
 							`*PREFIX*share`.`parent`, `share_type`, `share_with`, `uid_owner`,
-							`file_source`, `path`, `file_target`, `permissions`, `stime`, `expiration`, `token`, `storage`';
+							`file_source`, `path`, `file_target`, `permissions`, `stime`, `expiration`, `token`, `storage`, `mail_send`';
 					}
 				} else {
 					$select = '*';

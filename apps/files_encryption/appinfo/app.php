@@ -25,7 +25,9 @@ if (!OC_Config::getValue('maintenance', false)) {
 	// App manager related hooks
 	OCA\Encryption\Helper::registerAppHooks();
 
-	stream_wrapper_register('crypt', 'OCA\Encryption\Stream');
+	if(!in_array('crypt', stream_get_wrappers())) {
+		stream_wrapper_register('crypt', 'OCA\Encryption\Stream');
+	}
 
 	// check if we are logged in
 	if (OCP\User::isLoggedIn()) {
@@ -40,23 +42,6 @@ if (!OC_Config::getValue('maintenance', false)) {
 		$sessionReady = OCA\Encryption\Helper::checkRequirements();
 		if($sessionReady) {
 			$session = new \OCA\Encryption\Session($view);
-		}
-
-		$user = \OCP\USER::getUser();
-		// check if user has a private key
-		if ($sessionReady === false
-			|| (!$view->file_exists('/' . $user . '/files_encryption/' . $user . '.private.key')
-				&& OCA\Encryption\Crypt::mode() === 'server')
-		) {
-
-			// Force the user to log-in again if the encryption key isn't unlocked
-			// (happens when a user is logged in before the encryption app is
-			// enabled)
-			OCP\User::logout();
-
-			header("Location: " . OC::$WEBROOT . '/');
-
-			exit();
 		}
 	}
 } else {
