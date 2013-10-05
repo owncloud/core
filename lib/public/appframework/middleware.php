@@ -22,54 +22,18 @@
  */
 
 
-namespace OC\AppFramework\Middleware;
+namespace OCP\AppFramework;
 
-use OC\AppFramework\Controller\Controller;
 use OCP\AppFramework\Http\Response;
-use OCP\AppFramework\IMiddleWare;
+
 
 /**
- * This class is used to store and run all the middleware in correct order
+ * Middleware is used to provide hooks before or after controller methods and
+ * deal with possible exceptions raised in the controller methods.
+ * They're modeled after Django's middleware system:
+ * https://docs.djangoproject.com/en/dev/topics/http/middleware/
  */
-class MiddlewareDispatcher {
-
-	/**
-	 * @var array array containing all the middlewares
-	 */
-	private $middlewares;
-
-	/**
-	 * @var int counter which tells us what middlware was executed once an
-	 *                  exception occurs
-	 */
-	private $middlewareCounter;
-
-
-	/**
-	 * Constructor
-	 */
-	public function __construct(){
-		$this->middlewares = array();
-		$this->middlewareCounter = 0;
-	}
-
-
-	/**
-	 * Adds a new middleware
-	 * @param Middleware $middleware the middleware which will be added
-	 */
-	public function registerMiddleware(IMiddleware $middleWare){
-		array_push($this->middlewares, $middleWare);
-	}
-
-
-	/**
-	 * returns an array with all middleware elements
-	 * @return array the middlewares
-	 */
-	public function getMiddlewares(){
-		return $this->middlewares;
-	}
+abstract class Middleware implements IMiddleWare {
 
 
 	/**
@@ -80,41 +44,26 @@ class MiddlewareDispatcher {
 	 * @param string $methodName the name of the method that will be called on
 	 *                           the controller
 	 */
-	public function beforeController(Controller $controller, $methodName){
-		// we need to count so that we know which middlewares we have to ask in
-		// case theres an exception
-		for($i=0; $i<count($this->middlewares); $i++){
-			$this->middlewareCounter++;
-			$middleware = $this->middlewares[$i];
-			$middleware->beforeController($controller, $methodName);
-		}
+	public function beforeController($controller, $methodName){
+
 	}
 
 
 	/**
 	 * This is being run when either the beforeController method or the
-	 * controller method itself is throwing an exception. The middleware is asked
-	 * in reverse order to handle the exception and to return a response.
+	 * controller method itself is throwing an exception. The middleware is
+	 * asked in reverse order to handle the exception and to return a response.
 	 * If the response is null, it is assumed that the exception could not be
 	 * handled and the error will be thrown again
 	 *
 	 * @param Controller $controller the controller that is being called
 	 * @param string $methodName the name of the method that will be called on
-	 *                            the controller
+	 *                           the controller
 	 * @param \Exception $exception the thrown exception
-	 * @return Response a Response object if the middleware can handle the
-	 * exception
 	 * @throws \Exception the passed in exception if it cant handle it
+	 * @return Response a Response object in case that the exception was handled
 	 */
-	public function afterException(Controller $controller, $methodName, \Exception $exception){
-		for($i=$this->middlewareCounter-1; $i>=0; $i--){
-			$middleware = $this->middlewares[$i];
-			try {
-				return $middleware->afterException($controller, $methodName, $exception);
-			} catch(\Exception $exception){
-				continue;
-			}
-		}
+	public function afterException($controller, $methodName, \Exception $exception){
 		throw $exception;
 	}
 
@@ -125,15 +74,11 @@ class MiddlewareDispatcher {
 	 *
 	 * @param Controller $controller the controller that is being called
 	 * @param string $methodName the name of the method that will be called on
-	 *                            the controller
+	 *                           the controller
 	 * @param Response $response the generated response from the controller
 	 * @return Response a Response object
 	 */
-	public function afterController(Controller $controller, $methodName, Response $response){
-		for($i=count($this->middlewares)-1; $i>=0; $i--){
-			$middleware = $this->middlewares[$i];
-			$response = $middleware->afterController($controller, $methodName, $response);
-		}
+	public function afterController($controller, $methodName, Response $response){
 		return $response;
 	}
 
@@ -148,11 +93,7 @@ class MiddlewareDispatcher {
 	 * @param string $output the generated output from a response
 	 * @return string the output that should be printed
 	 */
-	public function beforeOutput(Controller $controller, $methodName, $output){
-		for($i=count($this->middlewares)-1; $i>=0; $i--){
-			$middleware = $this->middlewares[$i];
-			$output = $middleware->beforeOutput($controller, $methodName, $output);
-		}
+	public function beforeOutput($controller, $methodName, $output){
 		return $output;
 	}
 
