@@ -76,7 +76,7 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 		}
 
 		// mark file as partial while uploading (ignored by the scanner)
-		$partpath = $this->path . '.part';
+		$partpath = $this->path . uniqid() . '.part';
 
 		try {
 			$putOkay = $fs->file_put_contents($partpath, $data);
