@@ -35,7 +35,6 @@ $TRANSLATIONS = array(
 "Set an admin password." => "დააყენეთ ადმინისტრატორის პაროლი.",
 "Your web server is not yet properly setup to allow files synchronization because the WebDAV interface seems to be broken." => "თქვენი web სერვერი არ არის კონფიგურირებული ფაილ სინქრონიზაციისთვის, რადგან WebDAV ინტერფეისი შეიძლება იყოს გატეხილი.",
 "Please double check the <a href='%s'>installation guides</a>." => "გთხოვთ გადაათვალიეროთ <a href='%s'>ინსტალაციის გზამკვლევი</a>.",
-"Could not find category \"%s\"" => "\"%s\" კატეგორიის მოძებნა ვერ მოხერხდა",
 "seconds ago" => "წამის წინ",
 "_%n minute ago_::_%n minutes ago_" => array(""),
 "_%n hour ago_::_%n hours ago_" => array(""),
@@ -45,6 +44,7 @@ $TRANSLATIONS = array(
 "last month" => "გასულ თვეში",
 "_%n month ago_::_%n months ago_" => array(""),
 "last year" => "ბოლო წელს",
-"years ago" => "წლის წინ"
+"years ago" => "წლის წინ",
+"Could not find category \"%s\"" => "\"%s\" კატეგორიის მოძებნა ვერ მოხერხდა"
 );
 $PLURAL_FORMS = "nplurals=1; plural=0;";
