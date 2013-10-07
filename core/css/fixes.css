@@ -29,7 +29,8 @@
 
 /* disable opacity of info text on gradient
    since we cannot set a good backround color to use the filter&background hack as with the input labels */
-.lte9 #body-login p.info {
+.lte9 #body-login p.info,
+.lte9 #body-login .warning-info {
 	filter: initial;
 }
 

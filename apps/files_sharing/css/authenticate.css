@@ -1,0 +1,35 @@
+#body-login form label.infield {
+	width: 60%;
+	padding-left: 0;	
+	margin-left: 6.4px;
+}
+
+#password {
+	width: 60% !important;
+	padding-left: 8px;
+}
+
+input[type="submit"]{
+	width: 45px;
+	height: 44px;
+	margin-left: 8px;
+	margin-top: 5px;
+	background-image: url('%webroot%/core/img/actions/confirm.svg');
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+#body-login input[type="submit"] {
+	padding-bottom: 13px;
+	margin-left: 14px;
+}
+
+#body-login input[type="password"] {
+	margin: 0;
+	margin-left: 14px;
+}
+
+#body-login .warning {
+	margin-left: 15px;
+	margin-right: 17px;
+}
