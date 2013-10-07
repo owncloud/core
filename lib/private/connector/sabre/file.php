@@ -60,8 +60,9 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 
 		// if file is located in /Shared we write the part file to the users
 		// root folder because we can't create new files in /shared
+		// we extend the name with a random number to avoid overwriting a existing file
 		if(dirname($partpath) === 'Shared') {
-			$partpath = pathinfo($partpath, PATHINFO_FILENAME);
+			$partpath = pathinfo($partpath, PATHINFO_FILENAME) . rand();
 		}
 
 		\OC\Files\Filesystem::file_put_contents($partpath, $data);
