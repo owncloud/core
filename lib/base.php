@@ -175,7 +175,8 @@ class OC {
 
 	public static function checkConfig() {
 		if (file_exists(OC::$SERVERROOT . "/config/config.php")
-			and !is_writable(OC::$SERVERROOT . "/config/config.php")) {
+			and !is_writable(OC::$SERVERROOT . "/config/config.php")
+			and !defined('PHPUNIT_RUN')) {
 			$defaults = new OC_Defaults();
 			OC_Template::printErrorPage(
 				"Can't write into config directory!",
