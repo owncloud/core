@@ -77,6 +77,7 @@ class Autoloader {
 			$paths[] = 'private/' . strtolower(str_replace('_', '/', substr($class, 3)) . '.php');
 		} elseif (strpos($class, 'OC\\') === 0) {
 			$paths[] = 'private/' . strtolower(str_replace('\\', '/', substr($class, 3)) . '.php');
+			$paths[] = strtolower(str_replace('\\', '/', substr($class, 3)) . '.php');
 		} elseif (strpos($class, 'OCP\\') === 0) {
 			$paths[] = 'public/' . strtolower(str_replace('\\', '/', substr($class, 4)) . '.php');
 		} elseif (strpos($class, 'OCA\\') === 0) {
@@ -117,7 +118,11 @@ class Autoloader {
 		// Does this PHP have an in-memory cache? We cache the paths there
 		if ($this->constructingMemoryCache && !$this->memoryCache) {
 			$this->constructingMemoryCache = false;
-			$this->memoryCache = \OC\Memcache\Factory::createLowLatency('Autoloader');
+			try {
+				$this->memoryCache = \OC\Memcache\Factory::createLowLatency('Autoloader');
+			} catch(\Exception $ex) {
+				// no caching then - fine with me
+			}
 		}
 		if ($this->memoryCache) {
 			$pathsToRequire = $this->memoryCache->get($class);

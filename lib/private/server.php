@@ -22,13 +22,18 @@ class Server extends SimpleContainer implements IServerContainer {
 			return new ContactsManager();
 		});
 		$this->registerService('Request', function($c) {
-			$params = array();
-
-			// we json decode the body only in case of content type json
-			if (isset($_SERVER['CONTENT_TYPE']) && stripos($_SERVER['CONTENT_TYPE'],'json') !== false ) {
-				$params = json_decode(file_get_contents('php://input'), true);
-				$params = is_array($params) ? $params: array();
+			if (isset($c['urlParams'])) {
+				$urlParams = $c['urlParams'];
+			} else {
+				$urlParams = array();
 			}
+
+			if (\OC::$session->exists('requesttoken')) {
+				$requesttoken = \OC::$session->get('requesttoken');
+			} else {
+				$requesttoken = false;
+			}
+
 
 			return new Request(
 				array(
@@ -42,7 +47,8 @@ class Server extends SimpleContainer implements IServerContainer {
 						? $_SERVER['REQUEST_METHOD']
 						: null,
 					'params' => $params,
-					'urlParams' => $c['urlParams']
+					'urlParams' => $urlParams,
+					'requesttoken' => $requesttoken,
 				)
 			);
 		});
@@ -110,6 +116,15 @@ class Server extends SimpleContainer implements IServerContainer {
 		});
 		$this->registerService('AllConfig', function($c) {
 			return new \OC\AllConfig();
+		});
+		$this->registerService('L10NFactory', function($c) {
+			return new \OC\L10N\Factory();
+		});
+		$this->registerService('URLGenerator', function($c) {
+			return new \OC\URLGenerator();
+		});
+		$this->registerService('AppHelper', function($c) {
+			return new \OC\AppHelper();
 		});
 		$this->registerService('UserCache', function($c) {
 			return new UserCache();
@@ -230,6 +245,29 @@ class Server extends SimpleContainer implements IServerContainer {
 	 */
 	function getConfig() {
 		return $this->query('AllConfig');
+	}
+
+	/**
+	 * get an L10N instance
+	 * @param $app string appid
+	 * @return \OC_L10N
+	 */
+	function getL10N($app) {
+		return $this->query('L10NFactory')->get($app);
+	}
+
+	/**
+	 * @return \OC\URLGenerator
+	 */
+	function getURLGenerator() {
+		return $this->query('URLGenerator');
+	}
+
+	/**
+	 * @return \OC\Helper
+	 */
+	function getHelper() {
+		return $this->query('AppHelper');
 	}
 
 	/**

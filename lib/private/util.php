@@ -68,6 +68,7 @@ class OC_Util {
 			$userDirectory = $userRoot . '/files';
 			if( !is_dir( $userDirectory )) {
 				mkdir( $userDirectory, 0755, true );
+				OC_Util::copySkeleton($userDirectory);
 			}
 			//jail the user into his "home" directory
 			\OC\Files\Filesystem::init($user, $userDir);
@@ -90,6 +91,35 @@ class OC_Util {
 		}else{
 			return OC_Helper::computerFileSize($userQuota);
 		}
+	}
+
+	/**
+	 * @brief copies the user skeleton files into the fresh user home files
+	 * @param string $userDirectory
+	 */
+	public static function copySkeleton($userDirectory) {
+		OC_Util::copyr(\OC::$SERVERROOT.'/core/skeleton' , $userDirectory);
+	}
+
+	/**
+	 * @brief copies a directory recursively
+	 * @param string $source
+	 * @param string $target
+	 * @return void
+	 */
+	public static function copyr($source,$target) {
+		$dir = opendir($source);
+		@mkdir($target);
+		while(false !== ( $file = readdir($dir)) ) {
+			if ( !\OC\Files\Filesystem::isIgnoredDir($file) ) {
+				if ( is_dir($source . '/' . $file) ) {
+					OC_Util::copyr($source . '/' . $file , $target . '/' . $file);
+				} else {
+					copy($source . '/' . $file,$target . '/' . $file);
+				}
+			}
+		}
+		closedir($dir);
 	}
 
 	/**
@@ -138,7 +168,7 @@ class OC_Util {
 		OC_Util::loadVersion();
 		return \OC::$server->getSession()->get('OC_Channel');
 	}
-        
+
 	/**
 	 * @description get the build number of the current installed of ownCloud.
 	 * @return string
@@ -152,9 +182,12 @@ class OC_Util {
 	 * @description load the version.php into the session as cache
 	 */
 	private static function loadVersion() {
-		if(!\OC::$server->getSession()->exists('OC_Version')) {
+		$timestamp = filemtime(OC::$SERVERROOT.'/version.php');
+		if(!\OC::$server->getSession()->exists('OC_Version') or OC::$server->getSession()->get('OC_Version_Timestamp') != $timestamp) {
 			require 'version.php';
 			$session = \OC::$server->getSession();
+			/** @var $timestamp int */
+			$session->set('OC_Version_Timestamp', $timestamp);
 			/** @var $OC_Version string */
 			$session->set('OC_Version', $OC_Version);
 			/** @var $OC_VersionString string */
@@ -617,7 +650,7 @@ class OC_Util {
 		if(is_null($id)) {
 			// We need to guarantee at least one letter in instanceid so it can be used as the session_name
 			$id = 'oc' . self::generateRandomBytes(10);
-			OC_Config::setValue('instanceid', $id);
+			OC_Config::$object->setValue('instanceid', $id);
 		}
 		return $id;
 	}
@@ -665,29 +698,7 @@ class OC_Util {
 	 * @see OC_Util::callRegister()
 	 */
 	public static function isCallRegistered() {
-		if(!\OC::$session->exists('requesttoken')) {
-			return false;
-		}
-
-		if(isset($_GET['requesttoken'])) {
-			$token = $_GET['requesttoken'];
-		} elseif(isset($_POST['requesttoken'])) {
-			$token = $_POST['requesttoken'];
-		} elseif(isset($_SERVER['HTTP_REQUESTTOKEN'])) {
-			$token = $_SERVER['HTTP_REQUESTTOKEN'];
-		} else {
-			//no token found.
-			return false;
-		}
-
-		// Check if the token is valid
-		if($token !== \OC::$session->get('requesttoken')) {
-			// Not valid
-			return false;
-		} else {
-			// Valid token
-			return true;
-		}
+		return \OC::$server->getRequest()->passesCSRFCheck();
 	}
 
 	/**
@@ -952,9 +963,9 @@ class OC_Util {
 	 * @param string $url Url to get content
 	 * @return string of the response or false on error
 	 * This function get the content of a page via curl, if curl is enabled.
-	 * If not, file_get_element is used.
+	 * If not, file_get_contents is used.
 	 */
-	public static function getUrlContent($url){
+	public static function getUrlContent($url) {
 		if (function_exists('curl_init')) {
 			$curl = curl_init();
 
