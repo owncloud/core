@@ -10,7 +10,7 @@ namespace OC\App;
 
 use OCP\App\ILoader as LoaderInterface;
 
-class Loader implements LoaderInterface {
+class Loader extends \OC\Hooks\BasicEmitter implements LoaderInterface {
 	/**
 	 * @var $manager \OC\App\Manager
 	 */
@@ -79,6 +79,9 @@ class Loader implements LoaderInterface {
 		}
 	}
 
+	/**
+	 * check if the app needs updating and update when needed
+	 */
 	protected function checkUpgrade($app) {
 		if (in_array($app, $this->checkedApps)) {
 			return;
@@ -86,7 +89,7 @@ class Loader implements LoaderInterface {
 		$this->checkedApps[] = $app;
 		try {
 			$info = $this->manager->getInfo($app);
-		} catch(OutOfBoundsException $e) {
+		} catch(\OutOfBoundsException $e) {
 			return;
 		}
 		$currentVersion = $info->getVersion();
@@ -94,7 +97,8 @@ class Loader implements LoaderInterface {
 			$versions = $this->manager->getInstalledVersions();
 			$installedVersion = $versions[$app];
 			if (version_compare($currentVersion, $installedVersion, '>')) {
-				// TODO: emit signal
+				$this->emit('OC\\AppLoader', 'doUpgrade',
+					array($app, $info->getName(), $installedVersion, $currentVersion));
 			}
 		}
 	}

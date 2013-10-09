@@ -31,8 +31,6 @@ class OC_App{
 	static private $adminForms = array();
 	static private $personalForms = array();
 	static private $appInfo = array();
-	static private $appTypes = array();
-	static private $loadedApps = array();
 	static private $checkedApps = array();
 	static private $altLogin = array();
 
@@ -72,7 +70,7 @@ class OC_App{
 	 */
 	public static function loadApps($types=null) {
 		if(!OC_Config::getValue('installed', false)) {
-			return;
+			return false;
 		}
 		if (is_null($types)) {
 		    self::getLoader()->loadAll();
@@ -113,15 +111,6 @@ class OC_App{
 	 */
 	public static function isType($app, $types) {
 		return self::getManager()->isType($app, $types);
-	}
-
-	/**
-	 * get the types of an app
-	 * @param string $app
-	 * @return array
-	 */
-	private static function getAppTypes($app) {
-		return self::getManager()->getAppTypes($app);
 	}
 
 	/**
@@ -758,36 +747,21 @@ class OC_App{
 	}
 
 	/**
-	 * check if the app needs updating and update when needed
+	 * perform the app upgrade
 	 */
-	public static function checkUpgrade($app) {
-		if (in_array($app, self::$checkedApps)) {
-			return;
+	public static function doUpgrade($app, $appName, $installedVersion, $currentVersion) {
+		OC_Log::write($app, 'starting app upgrade from '.$installedVersion.' to '.$currentVersion, OC_Log::DEBUG);
+		try {
+			OC_App::updateApp($app);
+			OC_Hook::emit('update', 'success', 'Updated '.$appName.' app');
 		}
-		self::$checkedApps[] = $app;
-		$versions = self::getAppVersions();
-		$currentVersion=OC_App::getAppVersion($app);
-		if ($currentVersion) {
-			$installedVersion = $versions[$app];
-			if (version_compare($currentVersion, $installedVersion, '>')) {
-				$info = self::getAppInfo($app);
-				OC_Log::write($app,
-					'starting app upgrade from '.$installedVersion.' to '.$currentVersion,
-					OC_Log::DEBUG);
-				try {
-					OC_App::updateApp($app);
-					OC_Hook::emit('update', 'success', 'Updated '.$info['name'].' app');
-				}
-				catch (Exception $e) {
-					OC_Hook::emit('update', 'failure', 'Failed to update '.$info['name'].' app: '.$e->getMessage());
-					$l = OC_L10N::get('lib');
-					throw new RuntimeException($l->t('Failed to upgrade "%s".', array($app)), 0, $e);
-				}
-				OC_Appconfig::setValue($app, 'installed_version', OC_App::getAppVersion($app));
-			}
+		catch (Exception $e) {
+			OC_Hook::emit('update', 'failure', 'Failed to update '.$appName.' app: '.$e->getMessage());
+			$l = OC_L10N::get('lib');
+			throw new RuntimeException($l->t('Failed to upgrade "%s".', array($app)), 0, $e);
 		}
+		OC_Appconfig::setValue($app, 'installed_version', $currentVersion);
 	}
-
 	/**
 	 * check if the current enabled apps are compatible with the current
 	 * ownCloud version. disable them if not.

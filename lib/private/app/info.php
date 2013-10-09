@@ -61,7 +61,7 @@ class Info implements InfoInterface {
 	 * @return string
 	 */
 	public function getWebPath() {
-		return OC::$WEBROOT.$this->app_path['url'].'/'.$this->appid; // FIXME: remove WEBROOT
+		return \OC::$WEBROOT.$this->app_path['url'].'/'.$this->appid; // FIXME: remove WEBROOT
 	}
 
 	/**

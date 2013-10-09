@@ -133,7 +133,12 @@ class Server extends SimpleContainer implements IServerContainer {
 			return new \OC\App\Manager(\OC::$APPSROOTS);
 		});
 		$this->registerService('AppLoader', function($c) {
-			return new \OC\App\Loader($c->query('AppManager'));
+			$loader = new \OC\App\Loader($c->query('AppManager'));
+			$loader->listen('OC\\AppLoader', 'doUpgrade', function($app, $appName, $installedVersion, $currentVersion) {
+				\OC_App::doUpgrade($app, $appName, $installedVersion, $currentVersion);
+			});
+			return $loader;
+
 		});
 	}
 
