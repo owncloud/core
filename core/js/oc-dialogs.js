@@ -248,7 +248,12 @@ var OCdialogs = {
 				url: url,
 				data: ajaxSettings && ajaxSettings.data,
 				stack: exception.stack,
-				hint: exception.hint
+				hint: exception.hint,
+				errorLabel: t('core', 'Error:'),
+				urlLabel: t('core', 'URL:'),
+				dataLabel: t('core', 'Data:'),
+				hintLabel: t('core', 'Hint:'),
+				stackLabel: t('core', 'Stack:')
 			});
 
 			if (!ajaxSettings){
