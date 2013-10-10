@@ -746,7 +746,19 @@ a.bookmarklet { background-color:#ddd; border:1px solid #ccc; padding:5px;paddin
 #oc-dialog-filepicker-content .filepicker_element_selected { background-color:lightblue;}
 .ui-dialog {position:fixed !important;}
 span.ui-icon {float: left; margin: 3px 7px 30px 0;}
-
+#oc-dialog-exception-content{
+	overflow: auto;
+	/* IE8 will ignore this and will show horizontal scrollbars */
+	word-break: break-word;
+}
+	#oc-dialog-exception-content .label{
+		font-weight: bold;
+		display: inline-block;
+		width: 50px;
+	}
+	#oc-dialog-exception-content .value{
+		color: #666;
+	}
 .loading { background: url('../img/loading.gif') no-repeat center; cursor: wait; }
 .move2trash { /* decrease spinner size */
 	width: 16px;

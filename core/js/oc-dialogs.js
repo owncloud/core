@@ -220,6 +220,85 @@ var OCdialogs = {
 			}
 		});
 	},
+	exception: function(exception, ajaxSettings, callback){
+		var self = this;
+		$.when(this._getExceptionTemplate()).then(function($tmpl) {
+			var dialog_name = 'oc-dialog-exception-content';
+			var dialog_id = '#' + dialog_name;
+			var url = '';
+			var message = '';
+			var stack = null;
+			if(self.$exceptionDialog) {
+				self.$exceptionDialog.ocdialog('close');
+			}
+
+			if (ajaxSettings){
+				url = ajaxSettings.type + ' ' + ajaxSettings.url;
+			}
+
+			if (exception.code){
+				message = '[' + exception.code + '] ';
+			}
+			message += exception.message;
+
+			self.$exceptionDialog = $tmpl.octemplate({
+				dialog_name: dialog_name,
+				title: t('core', 'Server-side exception'),
+				message: message,
+				url: url,
+				data: ajaxSettings && ajaxSettings.data,
+				stack: exception.stack,
+				hint: exception.hint
+			});
+
+			if (!ajaxSettings){
+				self.$exceptionDialog.find('.connection').remove();
+			}
+
+			if (!exception.stack){
+				self.$exceptionDialog.find('.stack').remove();
+			}
+
+			if (!exception.hint){
+				self.$exceptionDialog.find('.hint').remove();
+			}
+
+			$('body').append(self.$exceptionDialog);
+
+			var functionToCall = function() {
+				$(dialog_id).ocdialog('close');
+				if(callback !== undefined) {
+					callback();
+				}
+			};
+			var buttonlist = [{
+				text: t('core', 'Ok'),
+				click: functionToCall,
+				defaultButton: true
+			}];
+
+			self.$exceptionDialog.ocdialog({
+				closeOnEscape: true,
+				width: 800,
+				height: exception.stack?420:200,
+				modal: true,
+				buttons: buttonlist,
+				close: function(event, ui) {
+					try {
+						$(this).ocdialog('destroy').remove();
+					} catch(e) {}
+					self.$exceptionDialog = null;
+				}
+			});
+		})
+		.fail(function(status, error) {
+			// If the method is called while navigating away
+			// from the page, it is probably not needed ;)
+			if(status !== 0) {
+				alert(t('core', 'Error loading exception template: {error}', {error: error}));
+			}
+		});
+	},
 	_fileexistsshown: false,
 	/**
 	 * Displays file exists dialog
@@ -473,6 +552,22 @@ var OCdialogs = {
 			});
 		} else {
 			defer.resolve(this.$filePickerTemplate);
+		}
+		return defer.promise();
+	},
+	_getExceptionTemplate: function() {
+		var defer = $.Deferred();
+		if(!this.$exceptionTemplate) {
+			var self = this;
+			$.get(OC.filePath('core', 'templates', 'exception.html'), function(tmpl) {
+				self.$exceptionTmpl = $(tmpl);
+				defer.resolve(self.$exceptionTmpl);
+			})
+			.fail(function(jqXHR, textStatus, errorThrown) {
+				defer.reject(jqXHR.status, errorThrown);
+			});
+		} else {
+			defer.resolve(this.$exceptionTmpl);
 		}
 		return defer.promise();
 	},
