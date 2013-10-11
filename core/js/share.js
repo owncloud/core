@@ -210,14 +210,17 @@ OC.Share={
 			html += '<input id="expirationDate" type="text" placeholder="'+t('core', 'Expiration date')+'" style="display:none; width:90%;" />';
 			html += '</div>';
 
-			html += '<div id="qrcode">';
-			html += '<input type="checkbox" name="qrcodeCheckbox" id="qrcodeCheckbox" value="1" /><label for="qrcodeCheckbox">'+t('core', 'Show QR-Code')+'</label>';
-            html += '<br />';
-			html += '<center>';
-            html += '<img id="qrcodeLoader" alt="'+t('core', 'Loading QR-Code')+'" src="core/img/loading.gif" style="display: none;" />';
-            html += '<img id="qrcodeImg" alt="'+t('core', 'QR-Code')+'" style="display:none; width:60%;" />';
-            html += '</center>';
-			html += '</div>';
+            var canvasSupported = !!document.createElement("canvas").getContext;
+
+            if(canvasSupported) {
+                html += '<div id="qrcode">';
+                html += '<input type="checkbox" name="qrcodeCheckbox" id="qrcodeCheckbox" value="1" /><label for="qrcodeCheckbox">'+t('core', 'Show QR-Code')+'</label>';
+                html += '<br />';
+                html += '<center>';
+                html += '<div id="qrcodeImg" style="display:none; width:60%;"></div>';
+                html += '</center>';
+                html += '</div>';
+            }
 			$(html).appendTo(appendTo);
 			// Reset item shares
 			OC.Share.itemShares = [];
@@ -445,26 +448,20 @@ OC.Share={
 		});
 	},
     showQRCode: function() {
-        var link = 'http://www.mecard.eu/?q=' + encodeURIComponent($('#linkText').val());
 
-        $('#qrcodeImg').hide();
-        $('#qrcodeLoader').show();
-        
-        $('#qrcodeImg').attr('src', link);
-        $('#qrcodeImg').on('load', function() {
+        $('#qrcodeImg').empty();
 
-            $('#qrcodeLoader').hide();
-            $(this).show();
-        }).on('error', function() {
+        new QRCode(document.getElementById('qrcodeImg'), {
+            'text': $('#linkText').val(),
+            'width': 180,
+            'height': 180
+        }); 
 
-            OC.dialogs.alert(t('core', t('core', 'Unable to load QR-Code')), t('core', 'Warning'));
-            $('#qrcodeLoader').hide();
-            $('#qrcodeCheckbox').selected = false;
-        });
+        $('#qrcodeImg').slideDown();
     },
     hideQRCode: function() {
 
-        $('#qrcodeImg').hide();
+        $('#qrcodeImg').slideUp();
     }
 };
 

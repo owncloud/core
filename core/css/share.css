@@ -76,6 +76,9 @@ a.unshare {
 #linkText,#linkPass,#expiration,#qrcode {
 	display:none;
 }
+#qrcodeImg {
+    margin-top: 5px;
+}
 
 #link #showPassword img {
 	padding-left:.3em;

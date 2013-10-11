@@ -32,6 +32,7 @@ OCP\Util::addscript('files', 'jquery.iframe-transport');
 OCP\Util::addscript('files', 'jquery.fileupload');
 OCP\Util::addscript('files', 'jquery-visibility');
 OCP\Util::addscript('files', 'filelist');
+OCP\Util::addscript('files', 'qrcodejs/qrcode.min');
 
 OCP\App::setActiveNavigationEntry('files_index');
 // Load the files
