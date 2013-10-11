@@ -209,6 +209,15 @@ OC.Share={
 			html += '<input type="checkbox" name="expirationCheckbox" id="expirationCheckbox" value="1" /><label for="expirationCheckbox">'+t('core', 'Set expiration date')+'</label>';
 			html += '<input id="expirationDate" type="text" placeholder="'+t('core', 'Expiration date')+'" style="display:none; width:90%;" />';
 			html += '</div>';
+
+			html += '<div id="qrcode">';
+			html += '<input type="checkbox" name="qrcodeCheckbox" id="qrcodeCheckbox" value="1" /><label for="qrcodeCheckbox">'+t('core', 'Show QR-Code')+'</label>';
+            html += '<br />';
+			html += '<center>';
+            html += '<img id="qrcodeLoader" alt="'+t('core', 'Loading QR-Code')+'" src="core/img/loading.gif" style="display: none;" />';
+            html += '<img id="qrcodeImg" alt="'+t('core', 'QR-Code')+'" style="display:none; width:60%;" />';
+            html += '</center>';
+			html += '</div>';
 			$(html).appendTo(appendTo);
 			// Reset item shares
 			OC.Share.itemShares = [];
@@ -409,6 +418,7 @@ OC.Share={
 			$('#linkPassText').attr('placeholder', t('core', 'Password protected'));
 		}
 		$('#expiration').show();
+		$('#qrcode').show();
 		$('#emailPrivateLink #email').show();
 		$('#emailPrivateLink #emailButton').show();
 		$('#allowPublicUploadWrapper').show();
@@ -433,7 +443,29 @@ OC.Share={
 		$('#expirationDate').datepicker({
 			dateFormat : 'dd-mm-yy'
 		});
-	}
+	},
+    showQRCode: function() {
+        var link = 'http://www.mecard.eu/?q=' + encodeURIComponent($('#linkText').val());
+
+        $('#qrcodeImg').hide();
+        $('#qrcodeLoader').show();
+        
+        $('#qrcodeImg').attr('src', link);
+        $('#qrcodeImg').on('load', function() {
+
+            $('#qrcodeLoader').hide();
+            $(this).show();
+        }).on('error', function() {
+
+            OC.dialogs.alert(t('core', t('core', 'Unable to load QR-Code')), t('core', 'Warning'));
+            $('#qrcodeLoader').hide();
+            $('#qrcodeCheckbox').selected = false;
+        });
+    },
+    hideQRCode: function() {
+
+        $('#qrcodeImg').hide();
+    }
 };
 
 $(document).ready(function() {
@@ -668,6 +700,14 @@ $(document).ready(function() {
 				}
 				$('#expirationDate').hide();
 			});
+		}
+	});
+
+	$(document).on('click', '#dropdown #qrcodeCheckbox', function() {
+		if (this.checked) {
+            OC.Share.showQRCode();
+		} else {
+            OC.Share.hideQRCode();
 		}
 	});
 
