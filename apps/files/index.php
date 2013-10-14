@@ -24,6 +24,9 @@
 // Check if we are a user
 OCP\User::checkLoggedIn();
 
+// Start session
+session_start();
+
 // Load the files we need
 OCP\Util::addStyle('files', 'files');
 OCP\Util::addStyle('files', 'upload');
@@ -34,8 +37,18 @@ OCP\Util::addscript('files', 'jquery-visibility');
 OCP\Util::addscript('files', 'filelist');
 
 OCP\App::setActiveNavigationEntry('files_index');
+
 // Load the files
-$dir = isset($_GET['dir']) ? stripslashes($_GET['dir']) : '';
+$dir = '';
+if (isset($_GET['dir'])) {
+    $dir = stripslashes($_GET['dir']);
+    // Save the directory you're working in session
+    $_SESSION['dir'] = $dir;
+} elseif (isset($_SESSION['dir'])) {
+    // Get the directory you're working from session
+    $dir = $_SESSION['dir'];
+}
+
 // Redirect if directory does not exist
 if (!\OC\Files\Filesystem::is_dir($dir . '/')) {
 	header('Location: ' . OCP\Util::getScriptName() . '');
