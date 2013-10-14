@@ -302,6 +302,9 @@ OC.Share={
 		});
 	},
 	addShareWith:function(shareType, shareWith, shareWithDisplayName, permissions, possiblePermissions, collection) {
+		if (shareType == 1) {
+			shareWithDisplayName = shareWithDisplayName + " (" + t('core', 'group') + ')';
+		} 
 		if (!OC.Share.itemShares[shareType]) {
 			OC.Share.itemShares[shareType] = [];
 		}
