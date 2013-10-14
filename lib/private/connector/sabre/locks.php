@@ -3,8 +3,9 @@
 /**
  * ownCloud
  *
- * @author Jakob Sack
+ * @author Jakob Sack, Thomas Müller
  * @copyright 2011 Jakob Sack kde@jakobsack.de
+ * @copyright 2013 Thomas Müller thomas.mueller@tmit.eu
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -38,6 +39,8 @@ class OC_Connector_Sabre_Locks extends \Sabre\DAV\Locks\Backend\AbstractBackend 
 	 */
 	public function getLocks($uri, $returnChildLocks) {
 
+		list($user, $path) = $this->resolveUserAndPath($uri);
+
 		// NOTE: the following 10 lines or so could be easily replaced by
 		// pure sql. MySQL's non-standard string concatination prevents us
 		// from doing this though.
@@ -45,31 +48,33 @@ class OC_Connector_Sabre_Locks extends \Sabre\DAV\Locks\Backend\AbstractBackend 
 		// but otherwise reading locks from SQLite Databases will return
 		// nothing
 		$query = 'SELECT * FROM `*PREFIX*locks`'
-			   .' WHERE `userid` = ? AND (`created` + `timeout`) > '.time().' AND (( `uri` = ?)';
-		if (OC_Config::getValue( "dbtype") === 'oci') {
+			. ' WHERE `userid` = ? AND (`created` + `timeout`) > ' . time() . ' AND (( `uri` = ?)';
+		if (OC_Config::getValue("dbtype") === 'oci') {
 			//FIXME oracle hack: need to explicitly cast CLOB to CHAR for comparison
 			$query = 'SELECT * FROM `*PREFIX*locks`'
-				   .' WHERE `userid` = ? AND (`created` + `timeout`) > '.time().' AND (( to_char(`uri`) = ?)';
+				. ' WHERE `userid` = ? AND (`created` + `timeout`) > ' . time() . ' AND (( to_char(`uri`) = ?)';
 		}
-		$params = array(OC_User::getUser(), $uri);
+		$params = array($user, $path);
 
 		// We need to check locks for every part in the uri.
-		$uriParts = explode('/', $uri);
+		$uriParts = explode('/', $path);
 
 		// We already covered the last part of the uri
 		array_pop($uriParts);
 
-		$currentPath='';
+		$currentPath = '';
 
-		foreach($uriParts as $part) {
+		foreach ($uriParts as $part) {
 
-			if ($currentPath) $currentPath.='/';
-			$currentPath.=$part;
+			if ($currentPath) {
+				$currentPath .= '/';
+			}
+			$currentPath .= $part;
 			//FIXME oracle hack: need to explicitly cast CLOB to CHAR for comparison
-			if (OC_Config::getValue( "dbtype") === 'oci') {
-				$query.=' OR (`depth` != 0 AND to_char(`uri`) = ?)';
+			if (OC_Config::getValue("dbtype") === 'oci') {
+				$query .= ' OR (`depth` != 0 AND to_char(`uri`) = ?)';
 			} else {
-				$query.=' OR (`depth` != 0 AND `uri` = ?)';
+				$query .= ' OR (`depth` != 0 AND `uri` = ?)';
 			}
 			$params[] = $currentPath;
 
@@ -78,20 +83,20 @@ class OC_Connector_Sabre_Locks extends \Sabre\DAV\Locks\Backend\AbstractBackend 
 		if ($returnChildLocks) {
 
 			//FIXME oracle hack: need to explicitly cast CLOB to CHAR for comparison
-			if (OC_Config::getValue( "dbtype") === 'oci') {
-				$query.=' OR (to_char(`uri`) LIKE ?)';
+			if (OC_Config::getValue("dbtype") === 'oci') {
+				$query .= ' OR (to_char(`uri`) LIKE ?)';
 			} else {
-				$query.=' OR (`uri` LIKE ?)';
+				$query .= ' OR (`uri` LIKE ?)';
 			}
 			$params[] = $uri . '/%';
 
 		}
-		$query.=')';
+		$query .= ')';
 
-		$result = OC_DB::executeAudited( $query, $params );
-		
+		$result = OC_DB::executeAudited($query, $params);
+
 		$lockList = array();
-		while( $row = $result->fetchRow()) {
+		while ($row = $result->fetchRow()) {
 
 			$lockInfo = new \Sabre\DAV\Locks\LockInfo();
 			$lockInfo->owner = $row['owner'];
@@ -100,7 +105,7 @@ class OC_Connector_Sabre_Locks extends \Sabre\DAV\Locks\Backend\AbstractBackend 
 			$lockInfo->created = $row['created'];
 			$lockInfo->scope = $row['scope'];
 			$lockInfo->depth = $row['depth'];
-			$lockInfo->uri   = $row['uri'];
+			$lockInfo->uri = $row['uri'];
 			$lockList[] = $lockInfo;
 
 		}
@@ -118,14 +123,17 @@ class OC_Connector_Sabre_Locks extends \Sabre\DAV\Locks\Backend\AbstractBackend 
 	 */
 	public function lock($uri, \Sabre\DAV\Locks\LockInfo $lockInfo) {
 
+		list($user, $path) = $this->resolveUserAndPath($uri);
+
 		// We're making the lock timeout 5 minutes
 		$lockInfo->timeout = 300;
 		$lockInfo->created = time();
-		$lockInfo->uri = $uri;
+		$lockInfo->uri = $path;
 
+		// NOTE: leave $uri here in order to get the user resolved inside properly
 		$locks = $this->getLocks($uri, false);
 		$exists = false;
-		foreach($locks as $lock) {
+		foreach ($locks as $lock) {
 			if ($lock->token == $lockInfo->token) {
 				$exists = true;
 				break;
@@ -134,31 +142,31 @@ class OC_Connector_Sabre_Locks extends \Sabre\DAV\Locks\Backend\AbstractBackend 
 
 		if ($exists) {
 			$sql = 'UPDATE `*PREFIX*locks`'
-				 .' SET `owner` = ?, `timeout` = ?, `scope` = ?, `depth` = ?, `uri` = ?, `created` = ?'
-				 .' WHERE `userid` = ? AND `token` = ?';
-			$result = OC_DB::executeAudited( $sql, array(
-				$lockInfo->owner,
-				$lockInfo->timeout,
-				$lockInfo->scope,
-				$lockInfo->depth,
-				$uri,
-				$lockInfo->created,
-				OC_User::getUser(),
-				$lockInfo->token)
+				. ' SET `owner` = ?, `timeout` = ?, `scope` = ?, `depth` = ?, `uri` = ?, `created` = ?'
+				. ' WHERE `userid` = ? AND `token` = ?';
+			$result = OC_DB::executeAudited($sql, array(
+					$lockInfo->owner,
+					$lockInfo->timeout,
+					$lockInfo->scope,
+					$lockInfo->depth,
+					$path,
+					$lockInfo->created,
+					$user,
+					$lockInfo->token)
 			);
 		} else {
 			$sql = 'INSERT INTO `*PREFIX*locks`'
-				 .' (`userid`,`owner`,`timeout`,`scope`,`depth`,`uri`,`created`,`token`)'
-				 .' VALUES (?,?,?,?,?,?,?,?)';
-			$result = OC_DB::executeAudited( $sql, array(
-				OC_User::getUser(),
-				$lockInfo->owner,
-				$lockInfo->timeout,
-				$lockInfo->scope,
-				$lockInfo->depth,
-				$uri,
-				$lockInfo->created,
-				$lockInfo->token)
+				. ' (`userid`,`owner`,`timeout`,`scope`,`depth`,`uri`,`created`,`token`)'
+				. ' VALUES (?,?,?,?,?,?,?,?)';
+			$result = OC_DB::executeAudited($sql, array(
+					$user,
+					$lockInfo->owner,
+					$lockInfo->timeout,
+					$lockInfo->scope,
+					$lockInfo->depth,
+					$path,
+					$lockInfo->created,
+					$lockInfo->token)
 			);
 		}
 
@@ -175,15 +183,45 @@ class OC_Connector_Sabre_Locks extends \Sabre\DAV\Locks\Backend\AbstractBackend 
 	 */
 	public function unlock($uri, \Sabre\DAV\Locks\LockInfo $lockInfo) {
 
+		list($user, $path) = $this->resolveUserAndPath($uri);
+
 		$sql = 'DELETE FROM `*PREFIX*locks` WHERE `userid` = ? AND `uri` = ? AND `token` = ?';
-		if (OC_Config::getValue( "dbtype") === 'oci') {
+		if (OC_Config::getValue("dbtype") === 'oci') {
 			//FIXME oracle hack: need to explicitly cast CLOB to CHAR for comparison
 			$sql = 'DELETE FROM `*PREFIX*locks` WHERE `userid` = ? AND to_char(`uri`) = ? AND `token` = ?';
 		}
-		$result = OC_DB::executeAudited( $sql, array(OC_User::getUser(), $uri, $lockInfo->token));
+		$result = OC_DB::executeAudited($sql, array($user, $path, $lockInfo->token));
 
 		return $result === 1;
 
+	}
+
+	private function resolveUserAndPath($uri) {
+
+		$uriParts = explode('/', $uri);
+		$shared = array_shift($uriParts);
+		if ($shared === 'Shared') {
+			$itemTarget = array_shift($uriParts);
+
+			// resolve the path down to it's physical existence
+			$item = \OCP\Share::getItemSharedWith('folder', $itemTarget);
+			$resolved = \OCP\Share::resolveReShare($item);
+
+			// recreate fill path
+			$targetPath = $resolved['path'];
+			if (!empty($uriParts)) {
+				$targetPath .= '/' . implode('/', $uriParts);
+			}
+			// remove 'files/' from path as it's relative to '/Shared'
+			if (substr($targetPath, 0, 6) === 'files/') {
+				$targetPath = substr($targetPath, 6);
+			}
+
+			return array($resolved['uid_owner'], $targetPath);
+		}
+
+		// file/folder from users own dataspace
+		return array(OC_User::getUser(), $uri);
 	}
 
 }
