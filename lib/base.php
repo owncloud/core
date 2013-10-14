@@ -517,7 +517,7 @@ class OC {
 		register_shutdown_function(array('OC_Helper', 'cleanTmp'));
 
 		//parse the given parameters
-		self::$REQUESTEDAPP = (isset($_GET['app']) && trim($_GET['app']) != '' && !is_null($_GET['app']) ? OC_App::cleanAppId(strip_tags($_GET['app'])) : OC_Config::getValue('defaultapp', 'files'));
+		self::$REQUESTEDAPP = (isset($_GET['app']) && trim($_GET['app']) != '' && !is_null($_GET['app']) ? OC_App::cleanAppId(strip_tags($_GET['app'])) : null);
 		if (substr_count(self::$REQUESTEDAPP, '?') != 0) {
 			$app = substr(self::$REQUESTEDAPP, 0, strpos(self::$REQUESTEDAPP, '?'));
 			$param = substr($_GET['app'], strpos($_GET['app'], '?') + 1);
@@ -694,8 +694,9 @@ class OC {
 				OC_User::logout();
 				header("Location: " . OC::$WEBROOT . '/');
 			} else {
-				if (is_null($file)) {
-					$param['file'] = 'index.php';
+				if (is_null($file) && is_null($app)) {
+					OC_Util::redirectToDefaultPage();
+					return;
 				}
 				$file_ext = substr($param['file'], -3);
 				if ($file_ext != 'php'
