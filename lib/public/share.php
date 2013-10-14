@@ -755,8 +755,7 @@ class Share {
 						'itemType' => $itemType,
 						'itemSource' => $itemSource,
 						'date' => $date,
-						'uidOwner' => \OC_User::getUser(),
-						'path' => $item['path'],
+						'uidOwner' => \OC_User::getUser()
 					));
 				}
 				return true;
