@@ -210,17 +210,17 @@ OC.Share={
 			html += '<input id="expirationDate" type="text" placeholder="'+t('core', 'Expiration date')+'" style="display:none; width:90%;" />';
 			html += '</div>';
 
-            var canvasSupported = !!document.createElement("canvas").getContext;
+			var canvasSupported = !!document.createElement("canvas").getContext;
 
-            if(canvasSupported) {
-                html += '<div id="qrcode">';
-                html += '<input type="checkbox" name="qrcodeCheckbox" id="qrcodeCheckbox" value="1" /><label for="qrcodeCheckbox">'+t('core', 'Show QR-Code')+'</label>';
-                html += '<br />';
-                html += '<center>';
-                html += '<div id="qrcodeImg" style="display:none; width:60%;"></div>';
-                html += '</center>';
-                html += '</div>';
-            }
+			if(canvasSupported) {
+				html += '<div id="qrcode">';
+				html += '<input type="checkbox" name="qrcodeCheckbox" id="qrcodeCheckbox" value="1" /><label for="qrcodeCheckbox">'+t('core', 'Show QR-Code')+'</label>';
+				html += '<br />';
+				html += '<center>';
+				html += '<div id="qrcodeImg" style="display:none; width:60%;"></div>';
+				html += '</center>';
+				html += '</div>';
+			}
 			$(html).appendTo(appendTo);
 			// Reset item shares
 			OC.Share.itemShares = [];
@@ -447,22 +447,22 @@ OC.Share={
 			dateFormat : 'dd-mm-yy'
 		});
 	},
-    showQRCode: function() {
+	showQRCode: function() {
 
-        $('#qrcodeImg').empty();
+		$('#qrcodeImg').empty();
 
-        new QRCode(document.getElementById('qrcodeImg'), {
-            'text': $('#linkText').val(),
-            'width': 180,
-            'height': 180
-        }); 
+		$('#qrcodeImg').qrcode({
+			'text': $('#linkText').val(),
+			'width': 180,
+			'height': 180
+		}); 
 
-        $('#qrcodeImg').slideDown();
-    },
-    hideQRCode: function() {
+		$('#qrcodeImg').slideDown();
+	},
+	hideQRCode: function() {
 
-        $('#qrcodeImg').slideUp();
-    }
+		$('#qrcodeImg').slideUp();
+	}
 };
 
 $(document).ready(function() {
@@ -702,9 +702,9 @@ $(document).ready(function() {
 
 	$(document).on('click', '#dropdown #qrcodeCheckbox', function() {
 		if (this.checked) {
-            OC.Share.showQRCode();
+			OC.Share.showQRCode();
 		} else {
-            OC.Share.hideQRCode();
+			OC.Share.hideQRCode();
 		}
 	});
 
