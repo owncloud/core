@@ -464,6 +464,9 @@ class OC {
 
 		self::initTemplateEngine();
 		if (!self::$CLI) {
+			if(!defined("DISABLE_SESSION")) {
+				self::initSession();
+			}
 			self::initSession();
 		} else {
 			self::$session = new \OC\Session\Memory('');
