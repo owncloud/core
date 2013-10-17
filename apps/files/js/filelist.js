@@ -542,9 +542,10 @@ var FileList={
 		var fileNames = JSON.stringify(files);
 		$.post(OC.filePath('files', 'ajax', 'delete.php'),
 				{dir:$('#dir').val(),files:fileNames},
-				function(result) {
-					if (result.status === 'success') {
-						$.each(files,function(index,file) {
+				function(result){
+					if (result.status == 'success') {
+						Files.updateMaxUploadFilesize(result);
+						$.each(files,function(index,file){
 							var files = $('tr[data-file="'+file+'"]');
 							files.remove();
 							files.find('input[type="checkbox"]').removeAttr('checked');
