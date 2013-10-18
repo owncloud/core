@@ -17,8 +17,15 @@
 				<span id="details"><?php p($l->t('%s shared the folder %s with you',
 						array($_['displayName'], $_['fileTarget']))) ?></span>
 			<?php else: ?>
-				<span id="details"><?php p($l->t('%s shared the file %s with you',
-						array($_['displayName'], $_['fileTarget']))) ?></span>
+				<span id="details"><?php print_unescaped($l->t('%s shared the file %s with you',
+					array(
+						$_['displayName'],
+						// sanitizeHTML messes up with original arguments (by reference), so need to make a copy first...
+						'<a href="' . OC_Util::sanitizeHTML($url = $_['downloadURL']). '">' .
+						OC_Util::sanitizeHTML($f = $_['fileTarget']) .
+						'</a>'
+					)
+				)) ?></span>
 			<?php endif; ?>
 
 
