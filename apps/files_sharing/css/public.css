@@ -17,6 +17,16 @@ body {
 #details {
 	color:#fff;
 	float: left;
+	vertical-align: top;
+}
+#details a{
+	color: white;
+	text-decoration: underline;
+	display: inline-block;
+	max-width: 200px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 #public_upload,
