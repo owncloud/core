@@ -21,7 +21,8 @@ body {
 }
 
 #public_upload,
-#download {
+#download, 
+#logout {
 	font-weight:700;
 	margin: 0 0.4em 0 0;
 	padding: 0 5px;
@@ -39,7 +40,8 @@ body {
 }
 
 #public_upload img,
-#download img {
+#download img,
+#logout img {
 	padding-left:.1em;
 	padding-right:.3em;
 	vertical-align:text-bottom;
@@ -111,7 +113,8 @@ thead{
 	width: 100% !important;
 }
 
-#download span {
+#download span,
+#logout span {
 	position: relative;
 	bottom: 3px;
 }

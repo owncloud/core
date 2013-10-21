@@ -60,9 +60,13 @@
 					/>
 			</div>
 
+			<?php endif; ?>
 
-
-
+			<?php if ($_SESSION['public_link_authenticated']): ?>
+			<a href="<?php p($_['logout_path']); ?>" class="button" id="logout">
+				<img class="svg" alt="Logout" src="<?php print_unescaped(OCP\image_path("core", "actions/logout.svg")); ?>">
+				<span><?php p($l->t('Logout'))?></span>
+			</a>
 			<?php endif; ?>
 
 		</div>
