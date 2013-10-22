@@ -18,8 +18,8 @@ class Http extends Base
     private $errno;
     private $error;
     private $info = array();
-    private $body;
-    private $headers = array();
+    protected $body;
+    protected $headers = array();
 
     /**
      * The constructor parses everything necessary
@@ -27,10 +27,10 @@ class Http extends Base
     public function __construct($request, $data) 
     {
         // save the raw data (who knows? we might need it)
-        $this->body = $data;
+        $this->setBody($data);
 
         // and split each line into name: value pairs
-        foreach($request->ReturnHeaders() as $line) {
+        foreach($request->returnHeaders() as $line) {
             if (preg_match('/^([^:]+):\s+(.+?)\s*$/', $line, $matches)) {
                 $this->headers[$matches[1]] = $matches[2];
             } else {
@@ -38,14 +38,18 @@ class Http extends Base
             }
         }
 
-        // debug caching
+        // @codeCoverageIgnoreStart
         if (isset($this->headers['Cache-Control'])) {
-            $this->debug('Cache-Control: %s', $this->headers['Cache-Control']);
+            $this->getLogger()->info('Cache-Control: {header}', array(
+                'headers' => $this->headers['Cache-Control']
+            ));
         }
-
         if (isset($this->headers['Expires'])) {
-            $this->debug('Expires: %s', $this->headers['Expires']);
+            $this->getLogger()->info('Expires: {header}', array(
+                'headers' => $this->headers['Expires']
+            ));
         }
+        // @codeCoverageIgnoreEnd
 
         // set some other data
         $this->info = $request->info();
@@ -58,9 +62,19 @@ class Http extends Base
      *
      * @return string
      */
-    public function HttpBody() 
+    public function httpBody() 
     {
         return $this->body;
+    }
+    
+    /**
+     * Sets the body.
+     * 
+     * @param string $body
+     */
+    public function setBody($body)
+    {
+        $this->body = $body;
     }
 
     /**
@@ -68,7 +82,7 @@ class Http extends Base
      *
      * @return associative array('header'=>value)
      */
-    public function Headers() 
+    public function headers() 
     {
         return $this->headers;
     }
@@ -78,9 +92,9 @@ class Http extends Base
      *
      * @return string with the value of the requested header, or NULL
      */
-    public function Header($name) 
+    public function header($name) 
     {
-        return isset($this->headers[$name]) ? $this->headers[$name] : NULL;
+        return isset($this->headers[$name]) ? $this->headers[$name] : null;
     }
 
     /**
@@ -118,7 +132,7 @@ class Http extends Base
      *
      * @return integer
      */
-    public function HttpStatus() 
+    public function httpStatus() 
     {
         return $this->info['http_code'];
     }

@@ -1,4 +1,13 @@
 <?php
+/**
+ * PHP OpenCloud library.
+ * 
+ * @copyright Copyright 2013 Rackspace US, Inc. See COPYING for licensing information.
+ * @license   https://www.apache.org/licenses/LICENSE-2.0 Apache 2.0
+ * @version   1.6.0
+ * @author    Glen Campbell <glen.campbell@rackspace.com>
+ * @author    Jamie Hannaford <jamie.hannaford@rackspace.com>
+ */
 
 namespace OpenCloud\ObjectStore;
 
@@ -7,43 +16,25 @@ use OpenCloud\Common\Exceptions;
 use OpenCloud\Common\Lang;
 
 /**
- * ObjectStore - this defines the object-store (Cloud Files) service.
- *
- * Usage:
- * <code>
- *      $conn = new OpenStack('{URL}', '{SECRET}');
- *      $ostore = new OpenCloud\ObjectStore(
- *          $conn,
- *          'service name',
- *          'service region',
- *          'URL type'
- *      );
- * </code>
- *
- * Default values for service name, service region, and urltype can be
- * provided via the global constants RAXSDK_OBJSTORE_NAME,
- * RAXSDK_OBJSTORE_REGION, and RAXSDK_OBJSTORE_URLTYPE.
- *
- * @author Glen Campbell <glen.campbell@rackspace.com>
+ * The ObjectStore (Cloud Files) service.
  */
-
-class Service extends ObjectStoreBase 
+class Service extends AbstractService 
 {
     
     /**
-     * This holds the associated CDN object (for Rackspace public cloud)
+     * This holds the associated CDN service (for Rackspace public cloud)
      * or is NULL otherwise. The existence of an object here is
      * indicative that the CDN service is available.
      */
     private $cdn;
 
     /**
-     * creates a new ObjectStore object
+     * Creates a new ObjectStore service object.
      *
-     * @param OpenCloud\OpenStack $conn a connection object
-     * @param string $serviceName the name of the service to use
-     * @param string $serviceRegion the name of the service region to use
-     * @param string $urltype the type of URL to use (usually "publicURL")
+     * @param OpenCloud\OpenStack $connection    The connection object
+     * @param string              $serviceName   The name of the service
+     * @param string              $serviceRegion The service's region
+     * @param string              $urlType       The type of URL (normally 'publicURL')
      */
     public function __construct(
         OpenStack $connection,
@@ -51,9 +42,8 @@ class Service extends ObjectStoreBase
         $serviceRegion = RAXSDK_OBJSTORE_REGION,
         $urltype = RAXSDK_OBJSTORE_URLTYPE
     ) {
-        $this->debug(Lang::translate('initializing ObjectStore...'));
+        $this->getLogger()->info('Initializing Container Service...');
 
-        // call the parent contructor
         parent::__construct(
             $connection,
             'object-store',
@@ -64,54 +54,62 @@ class Service extends ObjectStoreBase
 
         // establish the CDN container, if available
         try {
-            $this->cdn = new ObjectStoreCDN(
+            $this->cdn = new CDNService(
                 $connection,
-                $serviceName . 'CDN', // will work for Rackspace
+                $serviceName . 'CDN',
                 $serviceRegion,
                 $urltype
             );
         } catch (Exceptions\EndpointError $e) {
-            /**
-             * if we have an endpoint error, then
-             * the CDN functionality is not available
-             * In this case, we silently ignore  it.
-             */
-            $this->cdn = null;
+             // If we have an endpoint error, then the CDN functionality is not 
+             // available. In this case, we silently ignore  it.
         }
     }
 
-    /**
-     * sets the shared secret value for the TEMP_URL
+    /** 
+     * Sets the shared secret value for the TEMP_URL
      *
      * @param string $secret the shared secret
      * @return HttpResponse
      */
-    public function SetTempUrlSecret($secret) 
+    public function setTempUrlSecret($secret) 
     {
-        $response = $this->Request(
-            $this->Url(), 
+        $response = $this->request(
+            $this->url(), 
             'POST',
             array('X-Account-Meta-Temp-Url-Key' => $secret)
         );
-
-        if ($response->HttpStatus() > 204) {
+        
+        // @codeCoverageIgnoreStart
+        if ($response->httpStatus() > 204) {
             throw new Exceptions\HttpError(sprintf(
                 Lang::translate('Error in request, status [%d] for URL [%s] [%s]'),
-                $response->HttpStatus(),
-                $this->Url(),
-                $response->HttpBody()
+                $response->httpStatus(),
+                $this->url(),
+                $response->httpBody()
             ));
         }
+        // @codeCoverageIgnoreEnd
 
         return $response;
     }
 
     /**
-     * returns the CDN object
+     * Get the CDN service.
+     * 
+     * @return null|CDNService
      */
-    public function CDN() 
+    public function getCDNService() 
     {
         return $this->cdn;
     }
-
+    
+    /**
+     * Backwards compability.
+     */
+    public function CDN()
+    {
+        return $this->getCDNService();
+    }
+    
 }

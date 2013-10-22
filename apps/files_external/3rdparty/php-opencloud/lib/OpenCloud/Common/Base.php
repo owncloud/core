@@ -1,13 +1,11 @@
 <?php
 /**
- * The root class for all other classes in this library
- *
  * @copyright 2012-2013 Rackspace Hosting, Inc.
  * See COPYING for licensing information
- *
  * @package phpOpenCloud
  * @version 1.0
  * @author Glen Campbell <glen.campbell@rackspace.com>
+ * @author Jamie Hannaford <jamie.hannaford@rackspace.com>
  */
 
 namespace OpenCloud\Common;
@@ -18,15 +16,11 @@ use OpenCloud\Common\Exceptions\JsonError;
 use OpenCloud\Common\Exceptions\UrlError;
 
 /**
- * The Base class is the root class for all other objects used or defined by
- * this SDK.
+ * The root class for all other objects used or defined by this SDK.
  *
  * It contains common code for error handling as well as service functions that
  * are useful. Because it is an abstract class, it cannot be called directly,
  * and it has no publicly-visible properties.
- *
- * @since 1.0
- * @author Glen Campbell <glen.campbell@rackspace.com>
  */
 abstract class Base
 {
@@ -37,95 +31,32 @@ abstract class Base
     /**
      * Debug status.
      *
-     * @var bool
+     * @var    LoggerInterface
      * @access private
      */
-    private $debugStatus = false;
+    private $logger;
 
     /**
-     * Sets the style for outputting debug messages.
-     *
-     * Echoing messages   == true
-     * Returning messages == false
-     *
-     * (default value: true)
-     *
-     * @var bool
-     * @access private
+     * Sets the Logger object.
+     * 
+     * @param \OpenCloud\Common\Log\LoggerInterface $logger
      */
-    private $debugOutputStyle = true;
-
-    /**
-     * setDebug function.
-     *
-     * @access public
-     * @return void
-     */
-    public function setDebug($status)
+    public function setLogger(Log\LoggerInterface $logger)
     {
-        $this->debugStatus = $status;
+        $this->logger = $logger;
     }
 
     /**
-     * getDebug function.
-     *
-     * @access public
-     * @return void
+     * Returns the Logger object.
+     * 
+     * @return \OpenCloud\Common\Log\AbstractLogger
      */
-    public function getDebug()
+    public function getLogger()
     {
-        return $this->debugStatus;
-    }
-
-    /**
-     * Sets the debug output style.
-     *
-     * @access public
-     * @param mixed $state
-     * @return void
-     */
-    public function setDebugOutputStyle($state)
-    {
-        $this->debugOutputStyle = $state;
-    }
-
-    /**
-     * Gets the debug output style.
-     *
-     * @access public
-     * @return void
-     */
-    public function getDebugOutputStyle()
-    {
-        return $this->debugOutputStyle;
-    }
-
-    /**
-     * Displays a debug message if $RAXSDK_DEBUG is TRUE
-     *
-     * The primary parameter is a string in sprintf() format, and it can accept
-     * up to five optional parameters. It prints the debug message, prefixed
-     * with "Debug:" and the class name, to the standard output device.
-     *
-     * Example:
-     *   `$this->debug('Starting execution of %s', get_class($this))`
-     *
-     * @param string $msg The message string (required); can be in
-     *      sprintf() format.
-     * @param mixed $p1 Optional argument to be passed to sprintf()
-     * @param mixed $p2 Optional argument to be passed to sprintf()
-     * @param mixed $p3 Optional argument to be passed to sprintf()
-     * @param mixed $p4 Optional argument to be passed to sprintf()
-     * @param mixed $p5 Optional argument to be passed to sprintf()
-     * @return void
-     *
-     * @TODO - change this method name to something more descriptive/accurate
-     */
-    public function debug()
-    {
-        if ($this->getDebug() === true || RAXSDK_DEBUG === true) {
-            return Debug::logMessage($this, func_get_args());
+        if (null === $this->logger) {
+            $this->setLogger(new Log\Logger);
         }
+        return $this->logger;
     }
 
     /**
@@ -137,11 +68,71 @@ abstract class Base
      *
      * @throws UrlError
      */
-    public function Url($subresource = '')
+    public function url($subresource = '')
     {
-        throw new UrlError(Lang::translate('URL method must be overridden in class definition'));
+        throw new UrlError(Lang::translate(
+            'URL method must be overridden in class definition'
+        ));
     }
 
+/**
+     * Populates the current object based on an unknown data type.
+     * 
+     * @param  array|object|string|integer $info
+     * @throws Exceptions\InvalidArgumentError
+     */
+    public function populate($info, $setObjects = true)
+    {
+        if (is_string($info) || is_integer($info)) {
+            
+            // If the data type represents an ID, the primary key is set
+            // and we retrieve the full resource from the API
+            $this->{$this->primaryKeyField()} = (string) $info;
+            $this->refresh($info);
+            
+        } elseif (is_object($info) || is_array($info)) {
+            
+            foreach($info as $key => $value) {
+                
+                if ($key == 'metadata' || $key == 'meta') {
+                    
+                    if (empty($this->metadata) || !$this->metadata instanceof Metadata) {
+                        $this->metadata = new Metadata;
+                    }
+                    
+                    // Metadata
+                    $this->$key->setArray($value);
+                    
+                } elseif (!empty($this->associatedResources[$key]) && $setObjects === true) {
+                    
+                    // Associated resource
+                    try {
+                        $resource = $this->service()->resource($this->associatedResources[$key], $value);
+                        $resource->setParent($this);
+                        $this->$key = $resource;
+                    } catch (Exception\ServiceException $e) {}
+                    
+                } elseif (!empty($this->associatedCollections[$key]) && $setObjects === true) {
+                    
+                    // Associated collection
+                    try {
+                        $this->$key = $this->service()->resourceList($this->associatedCollections[$key], null, $this); 
+                    } catch (Exception\ServiceException $e) {}
+                    
+                } else {
+                    
+                    // Normal key/value pair
+                    $this->$key = $value; 
+                }
+            }
+        } elseif (null !== $info) {
+            throw new Exceptions\InvalidArgumentError(sprintf(
+                Lang::translate('Argument for [%s] must be string or object'), 
+                get_class()
+            ));
+        }
+    }
+    
     /**
      * Sets extended attributes on an object and validates them
      *
@@ -150,13 +141,15 @@ abstract class Base
      * means that the attribute is not defined on the object, and thus
      * an exception is thrown.
      *
+     * @codeCoverageIgnore
+     * 
      * @param string $property the name of the attribute
      * @param mixed $value the value of the attribute
      * @return void
      */
     public function __set($property, $value)
     {
-        $this->SetProperty($property, $value);
+        $this->setProperty($property, $value);
     }
 
     /**
@@ -172,13 +165,12 @@ abstract class Base
      * @throws \OpenCloud\AttributeError if strict checks are on and
      *      the property prefix is not in the list of prefixes.
      */
-    public function SetProperty($property, $value, array $prefixes = array())
+    public function setProperty($property, $value, array $prefixes = array())
     {
         // if strict checks are off, go ahead and set it
-        if (!RAXSDK_STRICT_PROPERTY_CHECKS) {
-            $this->$property = $value;
-        } elseif ($this->CheckAttributePrefix($property, $prefixes)) {
-            // otherwise, check the prefix
+        if (!RAXSDK_STRICT_PROPERTY_CHECKS 
+            || $this->checkAttributePrefix($property, $prefixes)
+        ) {
             $this->$property = $value;
         } else {
             // if that fails, then throw the exception
@@ -198,7 +190,7 @@ abstract class Base
      * @param array $arr array of key/value pairs
      * @return string
      */
-    public function MakeQueryString($array)
+    public function makeQueryString($array)
     {
         $queryString = '';
 
@@ -206,8 +198,7 @@ abstract class Base
             if ($queryString) {
                 $queryString .= '&';
             }
-            $queryString .= urlencode($key) . '=' .
-            	urlencode($this->to_string($value));
+            $queryString .= urlencode($key) . '=' . urlencode($this->to_string($value));
         }
 
         return $queryString;
@@ -226,34 +217,37 @@ abstract class Base
      *
      * @return boolean TRUE if an error occurred, FALSE if none
      * @throws JsonError
+     * 
+     * @codeCoverageIgnore
      */
-    public function CheckJsonError()
+    public function checkJsonError()
     {
-        switch(json_last_error()) {
+        switch (json_last_error()) {
             case JSON_ERROR_NONE:
-                return false;
-                break;
+                return;
             case JSON_ERROR_DEPTH:
-                throw new JsonError(Lang::translate('JSON error: The maximum stack depth has been exceeded'));
+                $jsonError = 'JSON error: The maximum stack depth has been exceeded';
                 break;
             case JSON_ERROR_STATE_MISMATCH:
-                throw new JsonError(Lang::translate('JSON error: Invalid or malformed JSON'));
+                $jsonError = 'JSON error: Invalid or malformed JSON';
                 break;
             case JSON_ERROR_CTRL_CHAR:
-                throw new JsonError(Lang::translate('JSON error: Control character error, possibly incorrectly encoded'));
+                $jsonError = 'JSON error: Control character error, possibly incorrectly encoded';
                 break;
             case JSON_ERROR_SYNTAX:
-                throw new JsonError(Lang::translate('JSON error: Syntax error'));
+                $jsonError = 'JSON error: Syntax error';
                 break;
             case JSON_ERROR_UTF8:
-                throw new JsonError(Lang::translate('JSON error: Malformed UTF-8 characters, possibly incorrectly encoded'));
+                $jsonError = 'JSON error: Malformed UTF-8 characters, possibly incorrectly encoded';
                 break;
             default:
-                throw new JsonError(Lang::translate('Unexpected JSON error'));
+                $jsonError = 'Unexpected JSON error';
                 break;
         }
-
-        return true;
+        
+        if (isset($jsonError)) {
+            throw new JsonError(Lang::translate($jsonError));
+        }
     }
 
     /**
@@ -261,7 +255,7 @@ abstract class Base
      *
      * This can be stubbed out for unit testing and avoid making live calls.
      */
-    public function GetHttpRequestObject($url, $method = 'GET', array $options = array())
+    public function getHttpRequestObject($url, $method = 'GET', array $options = array())
     {
         return new Request\Curl($url, $method, $options);
     }
@@ -276,7 +270,7 @@ abstract class Base
      * @param array $prefixes a list of prefixes
      * @return boolean TRUE if valid; FALSE if not
      */
-    private function CheckAttributePrefix($property, array $prefixes = array())
+    private function checkAttributePrefix($property, array $prefixes = array())
     {
         $prefix = strstr($property, ':', true);
 

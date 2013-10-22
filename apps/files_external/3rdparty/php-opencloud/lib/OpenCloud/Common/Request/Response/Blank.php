@@ -19,12 +19,7 @@ class Blank extends Http
         }
     }
 
-    public function HttpBody() 
-    { 
-        return $this->body; 
-    }
-
-    public function HttpStatus() 
+    public function httpStatus() 
     { 
         return $this->status; 
     }

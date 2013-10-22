@@ -60,6 +60,12 @@ if (!defined('RAXSDK_COMPUTE_REGION'))
     define('RAXSDK_COMPUTE_REGION', NULL);
 if (!defined('RAXSDK_COMPUTE_URLTYPE'))
     define('RAXSDK_COMPUTE_URLTYPE', 'publicURL');
+if (!defined('RAXSDK_MONITORING_NAME'))
+    define('RAXSDK_MONITORING_NAME', 'cloudMonitoring');
+if (!defined('RAXSDK_MONITORING_REGION'))
+    define('RAXSDK_MONITORING_REGION', '{ignore}');
+if (!defined('RAXSDK_MONITORING_URLTYPE'))
+    define('RAXSDK_MONITORING_URLTYPE', 'publicURL');
 if (!defined('RAXSDK_ORCHESTRATION_NAME'))
     define('RAXSDK_ORCHESTRATION_NAME', 'cloudOrchestration');
 if (!defined('RAXSDK_ORCHESTRATION_REGION'))
@@ -93,9 +99,15 @@ if (!defined('RAXSDK_LBSERVICE_URLTYPE'))
 if (!defined('RAXSDK_DNS_NAME'))
     define('RAXSDK_DNS_NAME', 'cloudDNS');
 if (!defined('RAXSDK_DNS_REGION'))
-    define('RAXSDK_DNS_REGION', '{IGNORE}'); // DNS is regionless
+    define('RAXSDK_DNS_REGION', '{ignore}'); // DNS is regionless
 if (!defined('RAXSDK_DNS_URLTYPE'))
     define('RAXSDK_DNS_URLTYPE', 'publicURL');
+if (!defined('RAXSDK_AUTOSCALE_NAME'))
+	define('RAXSDK_AUTOSCALE_NAME', 'autoscale');
+if (!defined('RAXSDK_AUTOSCALE_REGION'))
+	define('RAXSDK_AUTOSCALE_REGION', NULL);
+if (!defined('RAXSDK_AUTOSCALE_URLTYPE'))
+	define('RAXSDK_AUTOSCALE_URLTYPE', 'publicURL');
 if (!defined('RAXSDK_DNS_ASYNC_TIMEOUT'))
 	define('RAXSDK_DNS_ASYNC_TIMEOUT', 60);
 if (!defined('RAXSDK_DNS_ASYNC_INTERVAL'))
@@ -133,7 +145,7 @@ if (!defined('RAXSDK_SSL_VERIFYPEER'))
 //define('RAXSDK_CACERTPEM', __DIR__ . DIRECTORY_SEPARATOR . 'cacert.pem');
 
 /* these should not be overridden */
-define('RAXSDK_VERSION', '1.5.7');
+define('RAXSDK_VERSION', '1.5.10');
 define('RAXSDK_USER_AGENT', 'php-opencloud/'.RAXSDK_VERSION.' (Rackspace)');
 define('RAXSDK_ERROR', 'Error:');
 define('RAXSDK_FATAL', 'FATAL ERROR:');
@@ -183,6 +195,8 @@ define('RAXSDK_DEBUG', false);
 /**
  * This is called if there is an error getting the default timezone;
  * that means that the default timezone isn't set.
+ * 
+ * @codeCoverageIgnore
  */
 function __raxsdk_timezone_set($errno, $errstr) {
 	if ($errno==2)
@@ -200,6 +214,8 @@ restore_error_handler();
 	 * \OpenCloud\Common\Lang::translate() - this function should be used to wrap all static strings. In the future,
 	 * this may provide us with a hook for providing different language
 	 * translations.
+     * 
+     * @codeCoverageIgnore
 	 */
 	function define_gettext() {
 		function translate($str) {
@@ -215,6 +231,8 @@ restore_error_handler();
 	 *
 	 * Mainly, this is just for appearance's sake. I really hate to see
 	 * URLs like .../servers//address, for some reason.
+     * 
+     * @codeCoverageIgnore
 	 */
 	function noslash($str) {
 		while ($str && (substr($str, -1) == '/'))
@@ -224,6 +242,8 @@ restore_error_handler();
 
 	/**
 	 * Turns debugging on or off
+     * 
+     * @codeCoverageIgnore
 	 */
 	function setDebug($state=TRUE) {
 	    global $RAXSDK_DEBUG;

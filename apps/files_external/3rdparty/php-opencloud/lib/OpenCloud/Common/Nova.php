@@ -53,7 +53,6 @@ abstract class Nova extends Service
 	    $serviceRegion, 
 	    $urltype
 	) {
-		$this->debug(Lang::translate('initializing Nova...'));
 		parent::__construct(
 			$conn,
 			$serviceType,
@@ -61,7 +60,10 @@ abstract class Nova extends Service
 			$serviceRegion,
 			$urltype
 		);
+        
 		$this->_url = Lang::noslash(parent::Url());
+        
+        $this->getLogger()->info(Lang::translate('Initializing Nova...'));
 	}
 
 	/**

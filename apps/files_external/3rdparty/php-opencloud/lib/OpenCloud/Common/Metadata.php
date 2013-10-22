@@ -64,17 +64,23 @@ class Metadata extends Base
      *      for a Container by using $prefix='X-Container-Meta-'.
      * @return void
      */
-    public function SetArray($values, $prefix = null) 
+    public function setArray($values, $prefix = null) 
     {
         if (empty($values)) {
             return false;
         }
+        
         foreach ($values as $key => $value) {
             if ($prefix) {
                 if (strpos($key, $prefix) === 0) {
                     $name = substr($key, strlen($prefix));
-                    $this->debug(Lang::translate('Setting [%s] to [%s]'), 
-                    	$name, $value);
+                    $this->getLogger()->info(
+                        Lang::translate('Setting [{name}] to [{value}]'), 
+                    	array(
+                            'name'  => $name, 
+                            'value' => $value
+                        )
+                    );
                     $this->$name = $value;
                 }
             } else {

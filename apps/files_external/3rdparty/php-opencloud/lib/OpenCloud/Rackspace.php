@@ -34,7 +34,7 @@ namespace OpenCloud;
  *      ));
  * </code>
  */
-class Rackspace extends OpenStack 
+class Rackspace extends OpenStack
 {
 
     //this is the JSON string for our new credentials
@@ -51,10 +51,10 @@ ENDCRED;
      *
      * @return string
      */
-    public function Credentials() 
+    public function Credentials()
     {
         $sec = $this->Secret();
-        if (isset($sec['username']) 
+        if (isset($sec['username'])
             && isset($sec['apiKey'])
         ) {
             return sprintf(
@@ -76,7 +76,7 @@ ENDCRED;
      * @param string $region the region (e.g., 'DFW')
      * @param string $urltype the type of URL (e.g., 'publicURL');
      */
-    public function DbService($name = null, $region = null, $urltype = null) 
+    public function DbService($name = null, $region = null, $urltype = null)
     {
         return $this->Service('Database', $name, $region, $urltype);
     }
@@ -91,20 +91,42 @@ ENDCRED;
      * @param string $region the region (e.g., 'DFW')
      * @param string $urltype the type of URL (e.g., 'publicURL');
      */
-    public function LoadBalancerService($name = null, $region = null, $urltype = null) 
+    public function LoadBalancerService($name = null, $region = null, $urltype = null)
     {
         return $this->Service('LoadBalancer', $name, $region, $urltype);
     }
-    
+
     /**
      * creates a new DNS service object
      *
      * This is a factory method that is currently Rackspace-only
      * (not available via the OpenStack class)
      */
-    public function DNS($name = null, $region = null, $urltype = null) 
+    public function DNS($name = null, $region = null, $urltype = null)
     {
         return $this->Service('DNS', $name, $region, $urltype);
+    }
+
+    /**
+     * creates a new CloudMonitoring service object
+     *
+     * This is a factory method that is currently Rackspace-only
+     * (not available via the OpenStack class)
+     */
+    public function CloudMonitoring($name=null, $region=null, $urltype=null)
+    {
+        return $this->Service('CloudMonitoring', $name, $region, $urltype);
+    }
+
+    /**
+     * creates a new Autoscale service object
+     *
+     * This is a factory method that is currently Rackspace-only
+     * (not available via the OpenStack class)
+     */
+    public function Autoscale($name=null, $region=null, $urltype=null)
+    {
+        return $this->Service('Autoscale', $name, $region, $urltype);
     }
 
 }

@@ -4,7 +4,6 @@ namespace OpenCloud\Common\Request;
 
 use OpenCloud\Common\Base;
 use OpenCloud\Common\Lang;
-use OpenCloud\Common\Exceptions\HttpException;
 use OpenCloud\Common\Exceptions\HttpRetryError;
 use OpenCloud\Common\Exceptions\HttpUrlError;
 use OpenCloud\Common\Exceptions\HttpTimeoutError;
@@ -30,7 +29,7 @@ class Curl extends Base implements HttpRequestInterface
     private $returnheaders = array();
 
     /**
-     * initializes the CURL handle and HTTP method
+     * Initializes the CURL handle and HTTP method
      *
      * The constructor also sets a number of default values for options.
      *
@@ -45,24 +44,30 @@ class Curl extends Base implements HttpRequestInterface
         $this->handle = curl_init($url);
 
         // set our options
-        $this->SetOption(CURLOPT_CUSTOMREQUEST, $method);
+        $this->setOption(CURLOPT_CUSTOMREQUEST, $method);
 
         foreach($options as $opt => $value) {
-            $this->debug(Lang::translate('Setting option %s=%s'), $opt, $value);
-            $this->SetOption($opt, $value);
+            $this->getLogger()->info(Lang::translate('Setting option {key}={val}'), array(
+                'key' => $opt, 
+                'val' => $value
+            ));
+            $this->setOption($opt, $value);
         }
 
-        // set security handling options
+        // @codeCoverageIgnoreStart
         if (RAXSDK_SSL_VERIFYHOST != 2) {
-            syslog(LOG_WARNING, Lang::translate("WARNING: RAXSDK_SSL_VERIFYHOST has reduced security, value [" . RAXSDK_SSL_VERIFYHOST . "]\n"));
+            $this->getLogger()->warning("WARNING: RAXSDK_SSL_VERIFYHOST has reduced security, value [{value}]", array(
+                'value' => RAXSDK_SSL_VERIFYHOST
+            ));
         }
 
         if (RAXSDK_SSL_VERIFYPEER !== true) {
-            syslog(LOG_WARNING, Lang::translate("WARNING: RAXSDK_SSL_VERIFYPEER has reduced security\n"));
+            $this->getLogger()->warning("WARNING: RAXSDK_SSL_VERIFYPEER has reduced security");
         }
+        // @codeCoverageIgnoreEnd
 
-        $this->SetOption(CURLOPT_SSL_VERIFYHOST, RAXSDK_SSL_VERIFYHOST);
-        $this->SetOption(CURLOPT_SSL_VERIFYPEER, RAXSDK_SSL_VERIFYPEER);
+        $this->setOption(CURLOPT_SSL_VERIFYHOST, RAXSDK_SSL_VERIFYHOST);
+        $this->setOption(CURLOPT_SSL_VERIFYPEER, RAXSDK_SSL_VERIFYPEER);
 
         if (defined('RAXSDK_CACERTPEM') && file_exists(RAXSDK_CACERTPEM)) {
             $this->setOption(CURLOPT_CAINFO, RAXSDK_CACERTPEM);
@@ -71,27 +76,24 @@ class Curl extends Base implements HttpRequestInterface
         //  curl code [18]
         //  message [transfer closed with x bytes remaining to read]
         if ($method === 'HEAD') {
-            $this->SetOption(CURLOPT_NOBODY, true);
+            $this->setOption(CURLOPT_NOBODY, true);
         }
 
         // follow redirects
-        $this->SetOption(CURLOPT_FOLLOWLOCATION, true);
+        $this->setOption(CURLOPT_FOLLOWLOCATION, true);
 
         // don't return the headers in the request
-        $this->SetOption(CURLOPT_HEADER, false);
+        $this->setOption(CURLOPT_HEADER, false);
 
         // retrieve headers via callback
-        $this->SetOption(CURLOPT_HEADERFUNCTION, array($this, '_get_header_cb'));
+        $this->setOption(CURLOPT_HEADERFUNCTION, array($this, '_get_header_cb'));
 
         // return the entire request on curl_exec()
-        $this->SetOption(CURLOPT_RETURNTRANSFER, true);
-
-        // uncomment to turn on Verbose mode
-        //$http->SetOption(CURLOPT_VERBOSE, TRUE);
+        $this->setOption(CURLOPT_RETURNTRANSFER, true);
 
         // set default timeouts
-        $this->SetConnectTimeout(RAXSDK_CONNECTTIMEOUT);
-        $this->SetHttpTimeout(RAXSDK_TIMEOUT);
+        $this->setConnectTimeout(RAXSDK_CONNECTTIMEOUT);
+        $this->setHttpTimeout(RAXSDK_TIMEOUT);
     }
 
     /**
@@ -100,7 +102,7 @@ class Curl extends Base implements HttpRequestInterface
      * @param const $name - a CURL named constant; e.g. CURLOPT_TIMEOUT
      * @param mixed $value - the value for the option
      */
-    public function SetOption($name, $value)
+    public function setOption($name, $value)
     {
         return curl_setopt($this->handle, $name, $value);
     }
@@ -115,9 +117,9 @@ class Curl extends Base implements HttpRequestInterface
      * @param integer $value The connection timeout in seconds.
      *      Use 0 to wait indefinitely (NOT recommended)
      */
-    public function SetConnectTimeout($value)
+    public function setConnectTimeout($value)
     {
-        $this->SetOption(CURLOPT_CONNECTTIMEOUT, $value);
+        $this->setOption(CURLOPT_CONNECTTIMEOUT, $value);
     }
 
     /**
@@ -130,9 +132,9 @@ class Curl extends Base implements HttpRequestInterface
      * @param integer $value - the number of seconds to wait before timing out
      *      the HTTP request.
      */
-    public function SetHttpTimeout($value)
+    public function setHttpTimeout($value)
     {
-        $this->SetOption(CURLOPT_TIMEOUT, $value);
+        $this->setOption(CURLOPT_TIMEOUT, $value);
     }
 
     /**
@@ -141,7 +143,7 @@ class Curl extends Base implements HttpRequestInterface
      * If you set this to a non-zero value, then it will repeat the request
      * up to that number.
      */
-    public function SetRetries($value)
+    public function setRetries($value)
     {
         $this->retries = $value;
     }
@@ -157,11 +159,13 @@ class Curl extends Base implements HttpRequestInterface
     public function setheaders($array)
     {
         if (!is_array($array)) {
-            throw new HttpException(Lang::translate('Value passed to CurlRequest::setheaders() must be array'));
+            throw new HttpError(Lang::translate(
+                'Value passed to CurlRequest::setheaders() must be array'
+            ));
         }
 
         foreach ($array as $name => $value) {
-            $this->SetHeader($name, $value);
+            $this->setHeader($name, $value);
         }
     }
 
@@ -174,7 +178,7 @@ class Curl extends Base implements HttpRequestInterface
      * @param string $name The name of the header
      * @param mixed $value The value of the header
      */
-    public function SetHeader($name, $value)
+    public function setHeader($name, $value)
     {
         $this->headers[$name] = $value;
     }
@@ -188,8 +192,10 @@ class Curl extends Base implements HttpRequestInterface
      *
      * @return OpenCloud\HttpResponse
      * @throws OpenCloud\HttpError
+     * 
+     * @codeCoverageIgnore
      */
-    public function Execute()
+    public function execute()
     {
         // set all the headers
         $headarr = array();
@@ -198,7 +204,7 @@ class Curl extends Base implements HttpRequestInterface
             $headarr[] = $name.': '.$value;
         }
 
-        $this->SetOption(CURLOPT_HTTPHEADER, $headarr);
+        $this->setOption(CURLOPT_HTTPHEADER, $headarr);
 
         // set up to retry if necessary
         $try_counter = 0;
@@ -206,14 +212,20 @@ class Curl extends Base implements HttpRequestInterface
         do {
             $data = curl_exec($this->handle);
             if (curl_errno($this->handle) && ($try_counter<$this->retries)) {
-                $this->debug(Lang::translate('Curl error [%d]; retrying [%s]'), curl_errno($this->handle), $this->url);
+                $this->getLogger()->info(Lang::translate('Curl error [%d]; retrying [%s]'), array(
+                    'error' => curl_errno($this->handle), 
+                    'url'   => $this->url
+                ));
             }
 
-        } while((++$try_counter<=$this->retries) && (curl_errno($this->handle)!=0));
+        } while((++$try_counter <= $this->retries) && (curl_errno($this->handle) != 0));
 
         // log retries error
         if ($this->retries && curl_errno($this->handle)) {
-            throw new HttpRetryError(sprintf(Lang::translate('No more retries available, last error [%d]'), curl_errno($this->handle)));
+            throw new HttpRetryError(sprintf(
+                Lang::translate('No more retries available, last error [%d]'), 
+                curl_errno($this->handle)
+            ));
         }
 
         // check for CURL errors
@@ -235,7 +247,6 @@ class Curl extends Base implements HttpRequestInterface
                     curl_errno($this->handle),
                     curl_error($this->handle)
                 ));
-                break;
         }
 
         // otherwise, return the HttpResponse
@@ -277,7 +288,7 @@ class Curl extends Base implements HttpRequestInterface
     /**
      * Returns the headers as an array
      */
-    public function ReturnHeaders()
+    public function returnHeaders()
     {
         return $this->returnheaders;
     }
