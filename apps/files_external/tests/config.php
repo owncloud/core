@@ -32,10 +32,13 @@ return array(
 	),
 	'swift'=>array(
 		'run'=>false,
-		'user'=>'test:tester',
-		'token'=>'testing',
-		'host'=>'localhost.local:8080/auth',
-		'root'=>'/',
+		'user'=>'test',
+		'password'=>'test',
+		'bucket'=>'test',
+		'region'=>'RegionOne',
+		//'tenant'=>'testing', //to be used with OpenStack Object Storage
+		//'key'=>'testing', //to be used with Rackspace Cloud Files
+		//'url'=>'https://identity.api.rackspacecloud.com/v2.0/' //to be used with Rackspace Cloud Files
 	),
 	'smb'=>array(
 		'run'=>false,
