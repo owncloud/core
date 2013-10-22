@@ -58,7 +58,7 @@ class OC_Response {
 				$status = $status . ' Not Modified';
 				break;
 			case self::STATUS_TEMPORARY_REDIRECT:
-				if ($protocol == 'HTTP/1.1') {
+				if ($protocol === 'HTTP/1.1') {
 					$status = $status . ' Temporary Redirect';
 					break;
 				} else {
@@ -94,7 +94,7 @@ class OC_Response {
 	*  DateTime object when to expire response
 	*/
 	static public function setExpiresHeader($expires) {
-		if (is_string($expires) && $expires[0] == 'P') {
+		if (is_string($expires) && $expires[0] === 'P') {
 			$interval = $expires;
 			$expires = new DateTime('now');
 			$expires->add(new DateInterval($interval));
@@ -117,7 +117,7 @@ class OC_Response {
 		}
 		$etag = '"'.$etag.'"';
 		if (isset($_SERVER['HTTP_IF_NONE_MATCH']) &&
-		    trim($_SERVER['HTTP_IF_NONE_MATCH']) == $etag) {
+		    trim($_SERVER['HTTP_IF_NONE_MATCH']) === $etag) {
 			self::setStatus(self::STATUS_NOT_MODIFIED);
 			exit;
 		}
@@ -140,7 +140,7 @@ class OC_Response {
 			$lastModified = $lastModified->format(DateTime::RFC2822);
 		}
 		if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) &&
-		    trim($_SERVER['HTTP_IF_MODIFIED_SINCE']) == $lastModified) {
+		    trim($_SERVER['HTTP_IF_MODIFIED_SINCE']) === $lastModified) {
 			self::setStatus(self::STATUS_NOT_MODIFIED);
 			exit;
 		}

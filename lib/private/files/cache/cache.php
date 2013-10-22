@@ -326,7 +326,7 @@ class Cache {
 	 * @return bool
 	 */
 	public function inCache($file) {
-		return $this->getId($file) != -1;
+		return $this->getId($file) !== -1;
 	}
 
 	/**

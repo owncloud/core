@@ -37,7 +37,7 @@ class StaticStream {
 			case 'r':
 				if (!isset(self::$data[$path])) return false;
 				$this->path = $path;
-				$this->writable = isset($mode[1]) && $mode[1] == '+';
+				$this->writable = isset($mode[1]) && $mode[1] === '+';
 				break;
 			case 'w':
 				self::$data[$path] = '';

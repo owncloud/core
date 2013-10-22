@@ -81,9 +81,9 @@ class OC_API {
 	 */
 	public static function call($parameters) {
 		// Prepare the request variables
-		if($_SERVER['REQUEST_METHOD'] == 'PUT') {
+		if($_SERVER['REQUEST_METHOD'] === 'PUT') {
 			parse_str(file_get_contents("php://input"), $parameters['_put']);
-		} else if($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+		} else if($_SERVER['REQUEST_METHOD'] === 'DELETE') {
 			parse_str(file_get_contents("php://input"), $parameters['_delete']);
 		}
 		$name = $parameters['_route'];
@@ -258,9 +258,9 @@ class OC_API {
 				'data' => $result->getData(),
 				),
 			);
-		if ($format == 'json') {
+		if ($format === 'json') {
 			OC_JSON::encodedPrint($response);
-		} else if ($format == 'xml') {
+		} else if ($format === 'xml') {
 			header('Content-type: text/xml; charset=UTF-8');
 			$writer = new XMLWriter();
 			$writer->openMemory();

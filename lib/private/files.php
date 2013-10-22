@@ -51,7 +51,7 @@ class OC_Files {
 			$xsendfile = true;
 		}
 
-		if (is_array($files) && count($files) == 1) {
+		if (is_array($files) && count($files) === 1) {
 			$files = $files[0];
 		}
 
@@ -280,7 +280,7 @@ class OC_Files {
 		}
 
 		//don't allow user to break his config -- broken or malicious size input
-		if (intval($size) == 0) {
+		if (intval($size) === 0) {
 			return false;
 		}
 
@@ -302,7 +302,7 @@ class OC_Files {
 			if ($content !== null) {
 				$htaccess = $content;
 			}
-			if ($hasReplaced == 0) {
+			if ($hasReplaced === 0) {
 				$htaccess .= "\n" . $setting;
 			}
 		}

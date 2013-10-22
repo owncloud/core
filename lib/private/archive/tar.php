@@ -58,7 +58,7 @@ class OC_Archive_TAR extends OC_Archive{
 	 */
 	function addFolder($path) {
 		$tmpBase=OC_Helper::tmpFolder();
-		if(substr($path, -1, 1)!='/') {
+		if(substr($path, -1, 1) !== '/') {
 			$path.='/';
 		}
 		if($this->fileExists($path)) {
@@ -88,7 +88,7 @@ class OC_Archive_TAR extends OC_Archive{
 		if($this->fileExists($path)) {
 			$this->remove($path);
 		}
-		if($source and $source[0]=='/' and file_exists($source)) {
+		if($source and $source[0] === '/' and file_exists($source)) {
 			$header=array();
 			$dummy='';
 			$this->tar->_openAppend();
@@ -127,10 +127,10 @@ class OC_Archive_TAR extends OC_Archive{
 			$this->cachedHeaders = $this->tar->listContent();
 		}
 		foreach($this->cachedHeaders as $header) {
-			if(        $file     == $header['filename']
-				or     $file.'/' == $header['filename']
-				or '/'.$file.'/' == $header['filename']
-				or '/'.$file     == $header['filename']) {
+			if(        $file     === $header['filename']
+				or     $file.'/' === $header['filename']
+				or '/'.$file.'/' === $header['filename']
+				or '/'.$file     === $header['filename']) {
 				return $header;
 			}
 		}
@@ -166,7 +166,7 @@ class OC_Archive_TAR extends OC_Archive{
 		$folderContent=array();
 		$pathLength=strlen($path);
 		foreach($files as $file) {
-			if($file[0]=='/') {
+			if($file[0] === '/') {
 				$file=substr($file, 1);
 			}
 			if(substr($file, 0, $pathLength)==$path and $file!=$path) {
@@ -249,7 +249,7 @@ class OC_Archive_TAR extends OC_Archive{
 			return true;
 		}else{
 			$folderPath=$path;
-			if(substr($folderPath, -1, 1)!='/') {
+			if(substr($folderPath, -1, 1) !== '/') {
 				$folderPath.='/';
 			}
 			$pathLength=strlen($folderPath);
@@ -259,7 +259,7 @@ class OC_Archive_TAR extends OC_Archive{
 				}
 			}
 		}
-		if($path[0]!='/') {//not all programs agree on the use of a leading /
+		if($path[0] !== '/') {//not all programs agree on the use of a leading /
 			return $this->fileExists('/'.$path);
 		}else{
 			return false;
@@ -302,10 +302,10 @@ class OC_Archive_TAR extends OC_Archive{
 		$tmpFile=OCP\Files::tmpFile($ext);
 		if($this->fileExists($path)) {
 			$this->extractFile($path, $tmpFile);
-		}elseif($mode=='r' or $mode=='rb') {
+		}elseif($mode === 'r' or $mode === 'rb') {
 			return false;
 		}
-		if($mode=='r' or $mode=='rb') {
+		if($mode === 'r' or $mode === 'rb') {
 			return fopen($tmpFile, $mode);
 		}else{
 			\OC\Files\Stream\Close::registerCallback($tmpFile, array($this, 'writeBack'));

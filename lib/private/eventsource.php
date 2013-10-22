@@ -34,7 +34,7 @@ class OC_EventSource{
 	public function __construct() {
 		OC_Util::obEnd();
 		header('Cache-Control: no-cache');
-		$this->fallback=isset($_GET['fallback']) and $_GET['fallback']=='true';
+		$this->fallback=isset($_GET['fallback']) and $_GET['fallback'] === 'true';
 		if($this->fallback) {
 			$this->fallBackId=$_GET['fallback_id'];
 			header("Content-Type: text/html");

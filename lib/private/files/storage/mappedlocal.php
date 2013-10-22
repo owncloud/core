@@ -83,7 +83,7 @@ class MappedLocal extends \OC\Files\Storage\Common{
 		return opendir('fakedir://local-win32'.$path);
 	}
 	public function is_dir($path) {
-		if(substr($path, -1)=='/') {
+		if(substr($path, -1) === '/') {
 			$path=substr($path, 0, -1);
 		}
 		return is_dir($this->buildPath($path));
@@ -104,7 +104,7 @@ class MappedLocal extends \OC\Files\Storage\Common{
 	}
 	public function filetype($path) {
 		$filetype=filetype($this->buildPath($path));
-		if($filetype=='link') {
+		if($filetype === 'link') {
 			$filetype=filetype(realpath($this->buildPath($path)));
 		}
 		return $filetype;
@@ -233,7 +233,7 @@ class MappedLocal extends \OC\Files\Storage\Common{
 			}
 		}
 		foreach (scandir($dir) as $item) {
-			if ($item == '.' || $item == '..') {
+			if ($item === '.' || $item === '..') {
 				continue;
 			}
 			if(is_file($dir.'/'.$item)) {
@@ -300,7 +300,7 @@ class MappedLocal extends \OC\Files\Storage\Common{
 		$files=array();
 		$physicalDir = $this->buildPath($dir);
 		foreach (scandir($physicalDir) as $item) {
-			if ($item == '.' || $item == '..')
+			if ($item === '.' || $item === '..')
 				continue;
 			$physicalItem = $this->mapper->physicalToLogic($physicalDir.'/'.$item);
 			$item = substr($physicalItem, strlen($physicalDir)+1);

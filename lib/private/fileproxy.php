@@ -52,7 +52,7 @@ class OC_FileProxy{
 	 * this implements a dummy proxy for all operations
 	 */
 	public function __call($function, $arguments) {
-		if(substr($function, 0, 3)=='pre') {
+		if(substr($function, 0, 3) === 'pre') {
 			return true;
 		}else{
 			return $arguments[1];

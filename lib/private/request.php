@@ -65,7 +65,7 @@ class OC_Request {
 		if (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
 			$proto = strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']);
 		}else{
-			if(isset($_SERVER['HTTPS']) and !empty($_SERVER['HTTPS']) and ($_SERVER['HTTPS']!='off')) {
+			if(isset($_SERVER['HTTPS']) and !empty($_SERVER['HTTPS']) and ($_SERVER['HTTPS'] !== 'off')) {
 				$proto = 'https';
 			}else{
 				$proto = 'http';
@@ -151,7 +151,7 @@ class OC_Request {
 		if (!isset($_SERVER['HTTP_CACHE_CONTROL'])) {
 			return false;
 		}
-		return $_SERVER['HTTP_CACHE_CONTROL'] == 'no-cache';
+		return $_SERVER['HTTP_CACHE_CONTROL'] === 'no-cache';
 	}
 
 	/**

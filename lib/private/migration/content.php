@@ -195,7 +195,7 @@ class OC_Migration_Content{
 		if(is_resource($dirhandle)) {
 			while (false !== ( $file = readdir($dirhandle))) {
 
-				if (( $file != '.' ) && ( $file != '..' )) {
+				if (( $file !== '.' ) && ( $file !== '..' )) {
 
 					if (is_dir($dir . '/' . $file) && $recursive) {
 						$this->addDir($dir . '/' . $file, $recursive, $internaldir);

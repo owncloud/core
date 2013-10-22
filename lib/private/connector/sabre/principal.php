@@ -24,7 +24,7 @@ class OC_Connector_Sabre_Principal implements Sabre_DAVACL_IPrincipalBackend {
 	public function getPrincipalsByPrefix( $prefixPath ) {
 		$principals = array();
 
-		if ($prefixPath == 'principals') {
+		if ($prefixPath === 'principals') {
 			foreach(OC_User::getUsers() as $user) {
 				$user_uri = 'principals/'.$user;
 				$principals[] = array(
@@ -48,7 +48,7 @@ class OC_Connector_Sabre_Principal implements Sabre_DAVACL_IPrincipalBackend {
 	public function getPrincipalByPath($path) {
 		list($prefix, $name) = explode('/', $path);
 
-		if ($prefix == 'principals' && OC_User::userExists($name)) {
+		if ($prefix === 'principals' && OC_User::userExists($name)) {
 			return array(
 				'uri' => 'principals/'.$name,
 				'{DAV:}displayname' => $name,
@@ -86,7 +86,7 @@ class OC_Connector_Sabre_Principal implements Sabre_DAVACL_IPrincipalBackend {
 		list($prefix, $name) = Sabre_DAV_URLUtil::splitPath($principal);
 
 		$group_membership = array();
-		if ($prefix == 'principals') {
+		if ($prefix === 'principals') {
 			$principal = $this->getPrincipalByPath($principal);
 			if (!$principal) {
 				throw new Sabre_DAV_Exception('Principal not found');

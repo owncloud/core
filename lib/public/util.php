@@ -215,7 +215,7 @@ class Util {
 		$host_name = self::getServerHost();
 		// strip away port number (if existing)
 		$colon_pos = strpos($host_name, ':');
-		if ($colon_pos != FALSE) {
+		if ($colon_pos !== FALSE) {
 			$host_name = substr($host_name, 0, $colon_pos);
 		}
 		return $host_name;

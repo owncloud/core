@@ -111,7 +111,7 @@ class OC_Connector_Sabre_Directory extends OC_Connector_Sabre_Node implements Sa
 			throw new Sabre_DAV_Exception_NotFound('File with name ' . $path . ' could not be located');
 		}
 
-		if ($info['mimetype'] == 'httpd/unix-directory') {
+		if ($info['mimetype'] === 'httpd/unix-directory') {
 			$node = new OC_Connector_Sabre_Directory($path);
 		} else {
 			$node = new OC_Connector_Sabre_File($path);
@@ -190,7 +190,7 @@ class OC_Connector_Sabre_Directory extends OC_Connector_Sabre_Node implements Sa
 		if (!\OC\Files\Filesystem::isDeletable($this->path)) {
 			throw new \Sabre_DAV_Exception_Forbidden();
 		}
-		if ($this->path != "/Shared") {
+		if ($this->path !== "/Shared") {
 			\OC\Files\Filesystem::rmdir($this->path);
 		}
 

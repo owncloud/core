@@ -72,7 +72,7 @@ class FileGlobal {
 			$dh=opendir($cache_dir);
 			if(is_resource($dh)) {
 				while (($file = readdir($dh)) !== false) {
-					if($file!='.' and $file!='..' and ($prefix==='' || strpos($file, $prefix) === 0)) {
+					if($file !== '.' and $file !== '..' and ($prefix === '' || strpos($file, $prefix) === 0)) {
 						unlink($cache_dir.$file);
 					}
 				}
@@ -93,7 +93,7 @@ class FileGlobal {
 			$dh=opendir($cache_dir);
 			if(is_resource($dh)) {
 				while (($file = readdir($dh)) !== false) {
-					if($file!='.' and $file!='..') {
+					if($file !== '.' and $file !== '..') {
 						$mtime = filemtime($cache_dir.$file);
 						if ($mtime < $now) {
 							unlink($cache_dir.$file);

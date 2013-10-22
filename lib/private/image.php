@@ -375,7 +375,7 @@ class OC_Image {
 	*/
 	public function load($imageRef) {
 		if(is_resource($imageRef)) {
-			if(get_resource_type($imageRef) == 'gd') {
+			if(get_resource_type($imageRef) === 'gd') {
 				$this->resource = $imageRef;
 				return $this->resource;
 			} elseif(in_array(get_resource_type($imageRef), array('file', 'stream'))) {
@@ -576,21 +576,21 @@ class OC_Image {
 		// read file header
 		$meta = unpack('vtype/Vfilesize/Vreserved/Voffset', fread($fh, 14));
 		// check for bitmap
-		if ($meta['type'] != 19778) {
+		if ($meta['type'] !== 19778) {
 			trigger_error('imagecreatefrombmp: ' . $fileName . ' is not a bitmap!', E_USER_WARNING);
 			return false;
 		}
 		// read image header
 		$meta += unpack('Vheadersize/Vwidth/Vheight/vplanes/vbits/Vcompression/Vimagesize/Vxres/Vyres/Vcolors/Vimportant', fread($fh, 40));
 		// read additional 16bit header
-		if ($meta['bits'] == 16) {
+		if ($meta['bits'] === 16) {
 			$meta += unpack('VrMask/VgMask/VbMask', fread($fh, 12));
 		}
 		// set bytes and padding
 		$meta['bytes'] = $meta['bits'] / 8;
 		$this->bitDepth = $meta['bits']; //remember the bit depth for the imagebmp call
 		$meta['decal'] = 4 - (4 * (($meta['width'] * $meta['bytes'] / 4)- floor($meta['width'] * $meta['bytes'] / 4)));
-		if ($meta['decal'] == 4) {
+		if ($meta['decal'] === 4) {
 			$meta['decal'] = 0;
 		}
 		// obtain imagesize
@@ -652,7 +652,7 @@ class OC_Image {
 						break;
 					case 4:
 						$color = unpack('n', $vide . substr($data, floor($p), 1));
-						$color[1] = ($p * 2) % 2 == 0 ? $color[1] >> 4 : $color[1] & 0x0F;
+						$color[1] = ($p * 2) % 2 === 0 ? $color[1] >> 4 : $color[1] & 0x0F;
 						$color[1] = $palette[ $color[1] + 1 ];
 						break;
 					case 1:
@@ -737,21 +737,21 @@ class OC_Image {
 		$heightOrig=imageSY($this->resource);
 		$process = imagecreatetruecolor($width, $height);
 
-		if ($process == false) {
+		if ($process === false) {
 			OC_Log::write('core', __METHOD__.'(): Error creating true color image', OC_Log::ERROR);
 			imagedestroy($process);
 			return false;
 		}
 
 		// preserve transparency
-		if($this->imageType == IMAGETYPE_GIF or $this->imageType == IMAGETYPE_PNG) {
+		if($this->imageType === IMAGETYPE_GIF or $this->imageType === IMAGETYPE_PNG) {
 			imagecolortransparent($process, imagecolorallocatealpha($process, 0, 0, 0, 127));
 			imagealphablending($process, false);
 			imagesavealpha($process, true);
 		}
 
 		imagecopyresampled($process, $this->resource, 0, 0, 0, 0, $width, $height, $widthOrig, $heightOrig);
-		if ($process == false) {
+		if ($process === false) {
 			OC_Log::write('core', __METHOD__.'(): Error resampling process image '.$width.'x'.$height, OC_Log::ERROR);
 			imagedestroy($process);
 			return false;
@@ -773,7 +773,7 @@ class OC_Image {
 		}
 		$widthOrig=imageSX($this->resource);
 		$heightOrig=imageSY($this->resource);
-		if($widthOrig === $heightOrig and $size==0) {
+		if($widthOrig === $heightOrig and $size === 0) {
 			return true;
 		}
 		$ratioOrig = $widthOrig/$heightOrig;
@@ -794,21 +794,21 @@ class OC_Image {
 			$targetHeight=$height;
 		}
 		$process = imagecreatetruecolor($targetWidth, $targetHeight);
-		if ($process == false) {
+		if ($process === false) {
 			OC_Log::write('core', 'OC_Image->centerCrop. Error creating true color image', OC_Log::ERROR);
 			imagedestroy($process);
 			return false;
 		}
 
 		// preserve transparency
-		if($this->imageType == IMAGETYPE_GIF or $this->imageType == IMAGETYPE_PNG) {
+		if($this->imageType === IMAGETYPE_GIF or $this->imageType === IMAGETYPE_PNG) {
 			imagecolortransparent($process, imagecolorallocatealpha($process, 0, 0, 0, 127));
 			imagealphablending($process, false);
 			imagesavealpha($process, true);
 		}
 
 		imagecopyresampled($process, $this->resource, 0, 0, $x, $y, $targetWidth, $targetHeight, $width, $height);
-		if ($process == false) {
+		if ($process === false) {
 			OC_Log::write('core',
 				'OC_Image->centerCrop. Error resampling process image '.$width.'x'.$height,
 				OC_Log::ERROR);
@@ -834,13 +834,13 @@ class OC_Image {
 			return false;
 		}
 		$process = imagecreatetruecolor($w, $h);
-		if ($process == false) {
+		if ($process === false) {
 			OC_Log::write('core', __METHOD__.'(): Error creating true color image', OC_Log::ERROR);
 			imagedestroy($process);
 			return false;
 		}
 		imagecopyresampled($process, $this->resource, 0, 0, $x, $y, $w, $h, $w, $h);
-		if ($process == false) {
+		if ($process === false) {
 			OC_Log::write('core', __METHOD__.'(): Error resampling process image '.$w.'x'.$h, OC_Log::ERROR);
 			imagedestroy($process);
 			return false;
@@ -901,7 +901,7 @@ if ( ! function_exists( 'imagebmp') ) {
 		if (!in_array($bit, array(1, 4, 8, 16, 24, 32))) {
 			$bit = 24;
 		}
-		else if ($bit == 32) {
+		else if ($bit === 32) {
 			$bit = 24;
 		}
 		$bits = pow(2, $bit);
@@ -916,11 +916,11 @@ if ( ! function_exists( 'imagebmp') ) {
 				$rgbQuad .= chr($colors['blue']) . chr($colors['green']) . chr($colors['red']) . "\0";
 			}
 			$bmpData = '';
-			if ($compression == 0 || $bit < 8) {
+			if ($compression === 0 || $bit < 8) {
 				$compression = 0;
 				$extra = '';
 				$padding = 4 - ceil($width / (8 / $bit)) % 4;
-				if ($padding % 4 != 0) {
+				if ($padding % 4 !== 0) {
 					$extra = str_repeat("\0", $padding);
 				}
 				for ($j = $height - 1; $j >= 0; $j --) {
@@ -939,14 +939,14 @@ if ( ! function_exists( 'imagebmp') ) {
 				}
 			}
 			// RLE8
-			else if ($compression == 1 && $bit == 8) {
+			else if ($compression === 1 && $bit === 8) {
 				for ($j = $height - 1; $j >= 0; $j--) {
 					$lastIndex = "\0";
 					$sameNum = 0;
 					for ($i = 0; $i <= $width; $i++) {
 						$index = imagecolorat($im, $i, $j);
 						if ($index !== $lastIndex || $sameNum > 255) {
-							if ($sameNum != 0) {
+							if ($sameNum !== 0) {
 								$bmpData .= chr($same_num) . chr($lastIndex);
 							}
 							$lastIndex = $index;
@@ -966,7 +966,7 @@ if ( ! function_exists( 'imagebmp') ) {
 		else {
 			$extra = '';
 			$padding = 4 - ($width * ($bit / 8)) % 4;
-			if ($padding % 4 != 0) {
+			if ($padding % 4 !== 0) {
 				$extra = str_repeat("\0", $padding);
 			}
 			$bmpData = '';
@@ -974,7 +974,7 @@ if ( ! function_exists( 'imagebmp') ) {
 				for ($i = 0; $i < $width; $i++) {
 					$index  = imagecolorat($im, $i, $j);
 					$colors = imagecolorsforindex($im, $index);
-					if ($bit == 16) {
+					if ($bit === 16) {
 						$bin = 0 << $bit;
 						$bin |= ($colors['red'] >> 3) << 10;
 						$bin |= ($colors['green'] >> 3) << 5;
@@ -993,7 +993,7 @@ if ( ! function_exists( 'imagebmp') ) {
 		}
 		$fileHeader = 'BM' . pack('V3', 54 + $sizeQuad + $sizeData, 0, 54 + $sizeQuad);
 		$infoHeader = pack('V3v2V*', 0x28, $width, $height, 1, $bit, $compression, $sizeData, 0, 0, $colorsNum, 0);
-		if ($fileName != '') {
+		if ($fileName !== '') {
 			$fp = fopen($fileName, 'wb');
 			fwrite($fp, $fileHeader . $infoHeader . $rgbQuad . $bmpData);
 			fclose($fp);

@@ -102,11 +102,11 @@ class OC {
 
 		OC::$SUBURI = str_replace("\\", "/", substr(realpath($_SERVER["SCRIPT_FILENAME"]), strlen(OC::$SERVERROOT)));
 		$scriptName = OC_Request::scriptName();
-		if (substr($scriptName, -1) == '/') {
+		if (substr($scriptName, -1) === '/') {
 			$scriptName .= 'index.php';
 			//make sure suburi follows the same rules as scriptName
-			if (substr(OC::$SUBURI, -9) != 'index.php') {
-				if (substr(OC::$SUBURI, -1) != '/') {
+			if (substr(OC::$SUBURI, -9) !== 'index.php') {
+				if (substr(OC::$SUBURI, -1) !== '/') {
 					OC::$SUBURI = OC::$SUBURI . '/';
 				}
 				OC::$SUBURI = OC::$SUBURI . 'index.php';
@@ -115,12 +115,12 @@ class OC {
 
 		OC::$WEBROOT = substr($scriptName, 0, strlen($scriptName) - strlen(OC::$SUBURI));
 
-		if (OC::$WEBROOT != '' and OC::$WEBROOT[0] !== '/') {
+		if (OC::$WEBROOT !== '' and OC::$WEBROOT[0] !== '/') {
 			OC::$WEBROOT = '/' . OC::$WEBROOT;
 		}
 
 		// search the 3rdparty folder
-		if (OC_Config::getValue('3rdpartyroot', '') <> '' and OC_Config::getValue('3rdpartyurl', '') <> '') {
+		if (OC_Config::getValue('3rdpartyroot', '') !== '' and OC_Config::getValue('3rdpartyurl', '') !== '') {
 			OC::$THIRDPARTYROOT = OC_Config::getValue('3rdpartyroot', '');
 			OC::$THIRDPARTYWEBROOT = OC_Config::getValue('3rdpartyurl', '');
 		} elseif (file_exists(OC::$SERVERROOT . '/3rdparty')) {
@@ -188,7 +188,7 @@ class OC {
 
 	public static function checkInstalled() {
 		// Redirect to installer if not installed
-		if (!OC_Config::getValue('installed', false) && OC::$SUBURI != '/index.php') {
+		if (!OC_Config::getValue('installed', false) && OC::$SUBURI !== '/index.php') {
 			if (!OC::$CLI) {
 				$url = 'http://' . $_SERVER['SERVER_NAME'] . OC::$WEBROOT . '/index.php';
 				header("Location: $url");
@@ -202,7 +202,7 @@ class OC {
 		if (OC_Config::getValue("forcessl", false)) {
 			header('Strict-Transport-Security: max-age=31536000');
 			ini_set("session.cookie_secure", "on");
-			if (OC_Request::serverProtocol() <> 'https' and !OC::$CLI) {
+			if (OC_Request::serverProtocol() !==  'https' and !OC::$CLI) {
 				$url = "https://" . OC_Request::serverHost() . OC_Request::requestUri();
 				header("Location: $url");
 				exit();
@@ -217,7 +217,7 @@ class OC {
 
 	public static function checkMaintenanceMode() {
 		// Allow ajax update script to execute without being stopped
-		if (OC_Config::getValue('maintenance', false) && OC::$SUBURI != '/core/ajax/update.php') {
+		if (OC_Config::getValue('maintenance', false) && OC::$SUBURI !== '/core/ajax/update.php') {
 			// send http status 503
 			header('HTTP/1.1 503 Service Temporarily Unavailable');
 			header('Status: 503 Service Temporarily Unavailable');
@@ -386,13 +386,13 @@ class OC {
 		if (defined('DEBUG') && DEBUG) {
 			ini_set('display_errors', 1);
 		}
-		self::$CLI = (php_sapi_name() == 'cli');
+		self::$CLI = (php_sapi_name() === 'cli');
 
 		date_default_timezone_set('UTC');
 		ini_set('arg_separator.output', '&amp;');
 
 		// try to switch magic quotes off.
-		if (get_magic_quotes_gpc() == 1) {
+		if (get_magic_quotes_gpc() === 1) {
 			ini_set('magic_quotes_runtime', 0);
 		}
 
@@ -491,7 +491,7 @@ class OC {
 		OC_Group::useBackend(new OC_Group_Database());
 
 		if (isset($_SERVER['PHP_AUTH_USER']) && self::$session->exists('user_id')
-			&& $_SERVER['PHP_AUTH_USER'] != self::$session->get('user_id')) {
+			&& $_SERVER['PHP_AUTH_USER'] !== self::$session->get('user_id')) {
 			$sessionUser = self::$session->get('user_id');
 			$serverUser = $_SERVER['PHP_AUTH_USER'];
 			OC_Log::write('core',
@@ -525,8 +525,8 @@ class OC {
 		register_shutdown_function(array('OC_Helper', 'cleanTmp'));
 
 		//parse the given parameters
-		self::$REQUESTEDAPP = (isset($_GET['app']) && trim($_GET['app']) != '' && !is_null($_GET['app']) ? OC_App::cleanAppId(strip_tags($_GET['app'])) : OC_Config::getValue('defaultapp', 'files'));
-		if (substr_count(self::$REQUESTEDAPP, '?') != 0) {
+		self::$REQUESTEDAPP = (isset($_GET['app']) && trim($_GET['app']) !== '' && !is_null($_GET['app']) ? OC_App::cleanAppId(strip_tags($_GET['app'])) : OC_Config::getValue('defaultapp', 'files'));
+		if (substr_count(self::$REQUESTEDAPP, '?') !== 0) {
 			$app = substr(self::$REQUESTEDAPP, 0, strpos(self::$REQUESTEDAPP, '?'));
 			$param = substr($_GET['app'], strpos($_GET['app'], '?') + 1);
 			parse_str($param, $get);
@@ -535,7 +535,7 @@ class OC {
 			$_GET['app'] = $app;
 		}
 		self::$REQUESTEDFILE = (isset($_GET['getfile']) ? $_GET['getfile'] : null);
-		if (substr_count(self::$REQUESTEDFILE, '?') != 0) {
+		if (substr_count(self::$REQUESTEDFILE, '?') !== 0) {
 			$file = substr(self::$REQUESTEDFILE, 0, strpos(self::$REQUESTEDFILE, '?'));
 			$param = substr(self::$REQUESTEDFILE, strpos(self::$REQUESTEDFILE, '?') + 1);
 			parse_str($param, $get);
@@ -554,13 +554,13 @@ class OC {
 		}
 
 		// write error into log if locale can't be set
-		if (OC_Util::isSetLocaleWorking() == false) {
+		if (OC_Util::isSetLocaleWorking() === false) {
 			OC_Log::write('core',
 				'setting locale to en_US.UTF-8/en_US.UTF8 failed. Support is probably not installed on your system',
 				OC_Log::ERROR);
 		}
 		if (OC_Config::getValue('installed', false) && !self::checkUpgrade(false)) {
-			if (OC_Appconfig::getValue('core', 'backgroundjobs_mode', 'ajax') == 'ajax') {
+			if (OC_Appconfig::getValue('core', 'backgroundjobs_mode', 'ajax') === 'ajax') {
 				OC_Util::addScript('backgroundjobs');
 			}
 		}
@@ -669,7 +669,7 @@ class OC {
 		$file = OC::$REQUESTEDFILE;
 		$param = array('app' => $app, 'file' => $file);
 		// Handle app css files
-		if (substr($file, -3) == 'css') {
+		if (substr($file, -3) === 'css') {
 			self::loadCSSFile($param);
 			return;
 		}
@@ -686,7 +686,7 @@ class OC {
 			}
 		}
 		// Handle WebDAV
-		if ($_SERVER['REQUEST_METHOD'] == 'PROPFIND') {
+		if ($_SERVER['REQUEST_METHOD'] === 'PROPFIND') {
 			header('location: ' . OC_Helper::linkToRemote('webdav'));
 			return;
 		}
@@ -706,7 +706,7 @@ class OC {
 					$param['file'] = 'index.php';
 				}
 				$file_ext = substr($param['file'], -3);
-				if ($file_ext != 'php'
+				if ($file_ext !== 'php'
 					|| !self::loadAppScriptFile($param)
 				) {
 					header('HTTP/1.0 404 Not Found');

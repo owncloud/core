@@ -123,7 +123,7 @@ abstract class OC_Archive{
 		if(is_resource($dh)) {
 			$this->addFolder($path);
 			while (($file = readdir($dh)) !== false) {
-				if($file=='.' or $file=='..') {
+				if($file === '.' or $file === '..') {
 					continue;
 				}
 				if(is_dir($source.'/'.$file)) {

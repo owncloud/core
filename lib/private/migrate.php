@@ -88,7 +88,7 @@ class OC_Migrate{
 		}
 		self::$exporttype = $type;
 		// Userid?
-		if( self::$exporttype == 'user' ) {
+		if( self::$exporttype === 'user' ) {
 			// Check user exists
 			self::$uid = is_null($uid) ? OC_User::getUser() : $uid;
 			if(!OC_User::userExists(self::$uid)) {
@@ -96,13 +96,13 @@ class OC_Migrate{
 			}
 		}
 		// Calculate zipname
-		if( self::$exporttype == 'user' ) {
+		if( self::$exporttype === 'user' ) {
 			$zipname = 'oc_export_' . self::$uid . '_' . date("y-m-d_H-i-s") . '.zip';
 		} else {
 			$zipname = 'oc_export_' . self::$exporttype . '_' . date("y-m-d_H-i-s") . '.zip';
 		}
 		// Calculate path
-		if( self::$exporttype == 'user' ) {
+		if( self::$exporttype === 'user' ) {
 			self::$zippath = $datadir . '/' . self::$uid . '/' . $zipname;
 		} else {
 			if( !is_null( $path ) ) {
@@ -216,7 +216,7 @@ class OC_Migrate{
 			return json_encode( array( 'success' => false ) );
 		}
 		$json = json_decode( file_get_contents( $extractpath . 'export_info.json' ) );
-		if( $json->exporttype != $type ) {
+		if( $json->exporttype !== $type ) {
 			OC_Log::write( 'migration', 'Invalid import file', OC_Log::ERROR );
 			return json_encode( array( 'success' => false ) );
 		}
@@ -225,12 +225,12 @@ class OC_Migrate{
 		$currentuser = OC_User::getUser();
 
 		// Have we got a user if type is user
-		if( self::$exporttype == 'user' ) {
+		if( self::$exporttype === 'user' ) {
 			self::$uid = !is_null($uid) ? $uid : $currentuser;
 		}
 
 		// We need to be an admin if we are not importing our own data
-		if(($type == 'user' && self::$uid != $currentuser) || $type != 'user' ) {
+		if(($type === 'user' && self::$uid !== $currentuser) || $type !== 'user' ) {
 			if( !OC_User::isAdminUser($currentuser)) {
 				// Naughty.
 				OC_Log::write( 'migration', 'Import not permitted.', OC_Log::ERROR );
@@ -320,7 +320,7 @@ class OC_Migrate{
 			return false;
 		}
 		while (false !== ($obj = readdir($dh))) {
-			if($obj == '.' || $obj == '..') {
+			if($obj === '.' || $obj === '..') {
 				continue;
 			}
 			if (!@unlink($dir . '/' . $obj)) {
@@ -346,7 +346,7 @@ class OC_Migrate{
 			OC_Log::write( 'migration', 'Zip not found', OC_Log::ERROR );
 			return false;
 		}
-		if ( self::$zip->open( $path ) != true ) {
+		if ( self::$zip->open( $path ) !== true ) {
 			OC_Log::write( 'migration', "Failed to open zip file", OC_Log::ERROR );
 			return false;
 		}

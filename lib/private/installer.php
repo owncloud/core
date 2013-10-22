@@ -64,7 +64,7 @@ class OC_Installer{
 		}
 
 		//download the file if necesary
-		if($data['source']=='http') {
+		if($data['source'] === 'http') {
 			$path=OC_Helper::tmpFile();
 			if(!isset($data['href'])) {
 				throw new \Exception($l->t("No href specified when installing app from http"));
@@ -79,10 +79,10 @@ class OC_Installer{
 
 		//detect the archive type
 		$mime=OC_Helper::getMimeType($path);
-		if($mime=='application/zip') {
+		if($mime === 'application/zip') {
 			rename($path, $path.'.zip');
 			$path.='.zip';
-		}elseif($mime=='application/x-gzip') {
+		}elseif($mime === 'application/x-gzip') {
 			rename($path, $path.'.tgz');
 			$path.='.tgz';
 		}else{
@@ -97,7 +97,7 @@ class OC_Installer{
 			$archive->extract($extractDir);
 		} else {
 			OC_Helper::rmdirr($extractDir);
-			if($data['source']=='http') {
+			if($data['source'] === 'http') {
 				unlink($path);
 			}
 			throw new \Exception($l->t("Failed to open archive when installing app"));
@@ -109,7 +109,7 @@ class OC_Installer{
 			$dh=opendir($extractDir);
 			if(is_resource($dh)) {
 				while (($folder = readdir($dh)) !== false) {
-					if($folder[0]!='.' and is_dir($extractDir.'/'.$folder)) {
+					if($folder[0] !== '.' and is_dir($extractDir.'/'.$folder)) {
 						if(is_file($extractDir.'/'.$folder.'/appinfo/info.xml')) {
 							$extractDir.='/'.$folder;
 						}
@@ -119,7 +119,7 @@ class OC_Installer{
 		}
 		if(!is_file($extractDir.'/appinfo/info.xml')) {
 			OC_Helper::rmdirr($extractDir);
-			if($data['source']=='http') {
+			if($data['source'] === 'http') {
 				unlink($path);
 			}
 			throw new \Exception($l->t("App does not provide an info.xml file"));
@@ -141,13 +141,13 @@ class OC_Installer{
 		}
 
 		// check if shipped tag is set which is only allowed for apps that are shipped with ownCloud
-		if(isset($info['shipped']) and ($info['shipped']=='true')) {
+		if(isset($info['shipped']) and ($info['shipped'] === 'true')) {
 			OC_Helper::rmdirr($extractDir);
 			throw new \Exception($l->t("App can't be installed because it contains the <shipped>true</shipped> tag which is not allowed for non shipped apps"));
 		}
 
 		// check if the ocs version is the same as the version in info.xml/version
-		if(!isset($info['version']) or ($info['version']<>$data['appdata']['version'])) {
+		if(!isset($info['version']) or ($info['version'] !== $data['appdata']['version'])) {
 			OC_Helper::rmdirr($extractDir);
 			throw new \Exception($l->t("App can't be installed because the version in info.xml/version is not the same as the version reported from the app store"));
 		}
@@ -156,7 +156,7 @@ class OC_Installer{
 		//check if the destination directory already exists
 		if(is_dir($basedir)) {
 			OC_Helper::rmdirr($extractDir);
-			if($data['source']=='http') {
+			if($data['source'] === 'http') {
 				unlink($path);
 			}
 			throw new \Exception($l->t("App directory already exists"));
@@ -169,7 +169,7 @@ class OC_Installer{
 		//copy the app to the correct place
 		if(@!mkdir($basedir)) {
 			OC_Helper::rmdirr($extractDir);
-			if($data['source']=='http') {
+			if($data['source'] === 'http') {
 				unlink($path);
 			}
 			throw new \Exception($l->t("Can't create app folder. Please fix permissions. %s", array($basedir)));
@@ -215,7 +215,7 @@ class OC_Installer{
 	 */
 	public static function isInstalled( $app ) {
 
-		if( null == OC_Appconfig::getValue( $app, "installed_version" )) {
+		if( null === OC_Appconfig::getValue( $app, "installed_version" )) {
 			return false;
 		}
 
@@ -266,12 +266,12 @@ class OC_Installer{
 	public static function isUpdateAvailable( $app ) {
 		$ocsid=OC_Appconfig::getValue( $app, 'ocsid', '');
 
-		if($ocsid<>'') {
+		if($ocsid !== '') {
 
 			$ocsdata=OC_OCSClient::getApplication($ocsid);
 			$ocsversion= (string) $ocsdata['version'];
 			$currentversion=OC_App::getAppVersion($app);
-			if($ocsversion<>$currentversion) {
+			if($ocsversion !== $currentversion) {
 				return($ocsversion);
 
 			}else{
@@ -362,7 +362,7 @@ class OC_Installer{
 		foreach(OC::$APPSROOTS as $app_dir) {
 			if($dir = opendir( $app_dir['path'] )) {
 				while( false !== ( $filename = readdir( $dir ))) {
-					if( substr( $filename, 0, 1 ) != '.' and is_dir($app_dir['path']."/$filename") ) {
+					if( substr( $filename, 0, 1 ) !== '.' and is_dir($app_dir['path']."/$filename") ) {
 						if( file_exists( $app_dir['path']."/$filename/appinfo/app.php" )) {
 							if(!OC_Installer::isInstalled($filename)) {
 								$info=OC_App::getAppInfo($filename);
@@ -453,7 +453,7 @@ class OC_Installer{
 
 			// check if grep is installed
 			$grep = exec('which grep');
-			if($grep=='') {
+			if($grep === '') {
 				OC_Log::write('core',
 					'grep not installed. So checking the code of the app "'.$appname.'" was not possible',
 					OC_Log::ERROR);
@@ -465,7 +465,7 @@ class OC_Installer{
 				$cmd = 'grep -ri '.escapeshellarg($bl).' '.$folder.'';
 				$result = exec($cmd);
 				// bad pattern found
-				if($result<>'') {
+				if($result !== '') {
 					OC_Log::write('core',
 						'App "'.$appname.'" is using a not allowed call "'.$bl.'". Installation refused.',
 						OC_Log::ERROR);

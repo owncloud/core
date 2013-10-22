@@ -51,7 +51,7 @@ class View {
 	 * @return bool
 	 */
 	public function chroot($fakeRoot) {
-		if (!$fakeRoot == '') {
+		if (!$fakeRoot === '') {
 			if ($fakeRoot[0] !== '/') {
 				$fakeRoot = '/' . $fakeRoot;
 			}
@@ -75,7 +75,7 @@ class View {
 	 * @return string
 	 */
 	public function getRelativePath($path) {
-		if ($this->fakeRoot == '') {
+		if ($this->fakeRoot === '') {
 			return $path;
 		}
 		if (strpos($path, $this->fakeRoot) !== 0) {
@@ -172,14 +172,14 @@ class View {
 	}
 
 	public function is_dir($path) {
-		if ($path == '/') {
+		if ($path === '/') {
 			return true;
 		}
 		return $this->basicOperation('is_dir', $path);
 	}
 
 	public function is_file($path) {
-		if ($path == '/') {
+		if ($path === '/') {
 			return false;
 		}
 		return $this->basicOperation('is_file', $path);
@@ -233,7 +233,7 @@ class View {
 	}
 
 	public function file_exists($path) {
-		if ($path == '/') {
+		if ($path === '/') {
 			return true;
 		}
 		return $this->basicOperation('file_exists', $path);
@@ -353,7 +353,7 @@ class View {
 			$path1 = $this->getRelativePath($absolutePath1);
 			$path2 = $this->getRelativePath($absolutePath2);
 
-			if ($path1 == null or $path2 == null) {
+			if ($path1 === null or $path2 === null) {
 				return false;
 			}
 			$run = true;
@@ -379,7 +379,7 @@ class View {
 			if ($run) {
 				$mp1 = $this->getMountPoint($path1 . $postFix1);
 				$mp2 = $this->getMountPoint($path2 . $postFix2);
-				if ($mp1 == $mp2) {
+				if ($mp1 === $mp2) {
 					list($storage, $internalPath1) = Filesystem::resolvePath($absolutePath1 . $postFix1);
 					list(, $internalPath2) = Filesystem::resolvePath($absolutePath2 . $postFix2);
 					if ($storage) {
@@ -453,7 +453,7 @@ class View {
 			$path1 = $this->getRelativePath($absolutePath1);
 			$path2 = $this->getRelativePath($absolutePath2);
 
-			if ($path1 == null or $path2 == null) {
+			if ($path1 === null or $path2 === null) {
 				return false;
 			}
 			$run = true;
@@ -492,7 +492,7 @@ class View {
 			if ($run) {
 				$mp1 = $this->getMountPoint($path1 . $postFix1);
 				$mp2 = $this->getMountPoint($path2 . $postFix2);
-				if ($mp1 == $mp2) {
+				if ($mp1 === $mp2) {
 					list($storage, $internalPath1) = Filesystem::resolvePath($absolutePath1 . $postFix1);
 					list(, $internalPath2) = Filesystem::resolvePath($absolutePath2 . $postFix2);
 					if ($storage) {
@@ -623,7 +623,7 @@ class View {
 		$absolutePath = Filesystem::normalizePath($this->getAbsolutePath($path));
 		if (\OC_FileProxy::runPreProxies('hash', $absolutePath) && Filesystem::isValidPath($path)) {
 			$path = $this->getRelativePath($absolutePath);
-			if ($path == null) {
+			if ($path === null) {
 				return false;
 			}
 			if ($this->shouldEmitHooks($path)) {
@@ -667,7 +667,7 @@ class View {
 			and !Filesystem::isFileBlacklisted($path)
 		) {
 			$path = $this->getRelativePath($absolutePath);
-			if ($path == null) {
+			if ($path === null) {
 				return false;
 			}
 
@@ -681,7 +681,7 @@ class View {
 				}
 				$result = \OC_FileProxy::runPostProxies($operation, $this->getAbsolutePath($path), $result);
 				if ($this->shouldEmitHooks($path) && $result !== false) {
-					if ($operation != 'fopen') { //no post hooks for fopen, the file stream is still open
+					if ($operation !== 'fopen') { //no post hooks for fopen, the file stream is still open
 						$this->runHooks($hooks, $path, true);
 					}
 				}
@@ -724,7 +724,7 @@ class View {
 		$run = true;
 		if ($this->shouldEmitHooks($path)) {
 			foreach ($hooks as $hook) {
-				if ($hook != 'read') {
+				if ($hook !== 'read') {
 					\OC_Hook::emit(
 						Filesystem::CLASSNAME,
 						$prefix . $hook,

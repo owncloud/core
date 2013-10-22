@@ -101,7 +101,7 @@ class File {
 			$dh=$storage->opendir('/');
 			if(is_resource($dh)) {
 				while (($file = readdir($dh)) !== false) {
-					if($file!='.' and $file!='..' and ($prefix==='' || strpos($file, $prefix) === 0)) {
+					if($file !== '.' and $file !== '..' and ($prefix === '' || strpos($file, $prefix) === 0)) {
 						$storage->unlink('/'.$file);
 					}
 				}
@@ -119,7 +119,7 @@ class File {
 				return null;
 			}
 			while (($file = readdir($dh)) !== false) {
-				if($file!='.' and $file!='..') {
+				if($file !== '.' and $file !== '..') {
 					$mtime = $storage->filemtime('/'.$file);
 					if ($mtime < $now) {
 						$storage->unlink('/'.$file);
