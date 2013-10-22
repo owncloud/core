@@ -84,16 +84,20 @@ class OC_Mount_Config {
 				'token' => '#token'),
 				'custom' => 'google');
 
-		if(OC_Mount_Config::checkcurl()) $backends['\OC\Files\Storage\Swift']=array(
-			'backend' => 'OpenStack Object Storage',
-			'configuration' => array(
-				'user' => 'Username',
-				'tenant' => 'Tenantname (optional)',
-				'password' => '*password (optional)',
-				'key' => '*API Key (optional)',
-				'bucket' => 'Bucket',
-				'region' => 'Region',
-				'url' => 'URL (optional)'));
+		if(OC_Mount_Config::checkcurl()) {
+			$backends['\OC\Files\Storage\Swift'] = array(
+				'backend' => 'OpenStack Object Storage',
+				'configuration' => array(
+					'user' => 'Username',
+					'tenant' => 'Tenantname (optional)',
+					'password' => '*password (optional)',
+					'key' => '*API Key (optional)',
+					'bucket' => 'Bucket',
+					'region' => 'Region',
+					'url' => 'URL (optional)'
+				)
+			);
+		}
 
 		if(OC_Mount_Config::checksmbclient()) $backends['\OC\Files\Storage\SMB']=array(
 			'backend' => 'SMB / CIFS',
