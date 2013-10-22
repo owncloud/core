@@ -33,5 +33,10 @@ try {
 	//show the user a detailed error page
 	\OCP\Util::writeLog('index', $ex->getMessage(), \OCP\Util::FATAL);
 	OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
-	OC_Template::printExceptionErrorPage($ex);
+	if (strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest'){
+		OC_Template::printExceptionJson($ex);
+	}
+	else{
+		OC_Template::printExceptionErrorPage($ex);
+	}
 }

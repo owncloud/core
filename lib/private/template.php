@@ -293,7 +293,7 @@ class OC_Template extends \OC\Template\Base {
 				$hint = '<pre>'.$hint.'</pre>';
 			}
 			$l = OC_L10N::get('lib');
-			while (method_exists($exception, 'previous') && $exception = $exception->previous()) {
+			while (method_exists($exception, 'getPrevious') && $exception = $exception->getPrevious()) {
 				$error_msg .= '<br/>'.$l->t('Caused by:').' ';
 				if ($exception->getCode()) {
 					$error_msg .= '['.$exception->getCode().'] ';
@@ -307,5 +307,31 @@ class OC_Template extends \OC\Template\Base {
 			}
 		}
 		self::printErrorPage($error_msg, $hint);
+	}
+
+	public static function printExceptionJson(Exception $exception){
+		$message = $exception->getMessage();
+		$exceptionJson = array(
+			'code' => $exception->getCode()
+		);
+		if (defined('DEBUG') and DEBUG) {
+			$exceptionJson['stack'] = $exception->getTraceAsString();
+			// include cause
+			$l = OC_L10N::get('lib');
+			while (method_exists($exception, 'getPrevious') && $exception = $exception->getPrevious()) {
+				$message .= ' - '.$l->t('Caused by:').' ';
+				if ($exception->getCode()) {
+					$message .= '['.$exception->getCode().'] ';
+				}
+				$message .= $exception->getMessage() . "\n";
+			};
+		}
+		else{
+			if ($exception instanceof \OC\HintException){
+				$exceptionJson['hint'] = $exception->getHint();
+			}
+		}
+		$exceptionJson['message'] = $message;
+		\OCP\JSON::encodedPrint(array('exception' => $exceptionJson));
 	}
 }

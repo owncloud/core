@@ -695,6 +695,16 @@ function fillWindow(selector) {
 }
 
 $(document).ready(function(){
+	// catch ajax errors and display an exception dialog
+	$(document).bind('ajaxError', function(event, jqXHR, ajaxSettings, thrownError){
+		var exception = jqXHR.responseJSON && jqXHR.responseJSON.exception;
+		if (!exception){
+			return;
+		}
+		console.error(t('core', 'Server-side exception'), exception);
+		OC.dialogs.exception(exception, ajaxSettings);
+	});
+
 	sessionHeartBeat();
 
 	if(!SVGSupport()){ //replace all svg images with png images for browser that dont support svg
