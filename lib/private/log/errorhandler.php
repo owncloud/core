@@ -31,15 +31,19 @@ class ErrorHandler {
 		$error = error_get_last();
 		if($error && $this->logger) {
 			//ob_end_clean();
-			$msg = $error['message'] . ' at ' . $error['file'] . '#' . $error['line'];
-			$this->logger->critical($msg, $this->loggerContext);
+			$this->logger->critical(
+				$this->formatMessage($error['message'], $error['file'], $error['line']),
+				$this->loggerContext
+			);
 		}
 	}
 
 	// Uncaught exception handler
-	public function onException($exception) {
-		$msg = $exception->getMessage() . ' at ' . $exception->getFile() . '#' . $exception->getLine();
-		$this->logger->critical($msg, $this->loggerContext);
+	public function onException($ex) {
+		$this->logger->critical(
+			$this->formatMessage($ex->getMessage(), $ex->getFile(), $ex->getLine()),
+			$this->loggerContext
+		);
 	}
 
 	//Recoverable errors handler
@@ -47,7 +51,13 @@ class ErrorHandler {
 		if (error_reporting() === 0) {
 			return;
 		}
-		$msg = $message . ' at ' . $file . '#' . $line;
-		$this->logger->warning($msg, $this->loggerContext);
+		$this->logger->warning(
+			$this->formatMessage($message, $file, $line),
+			$this->loggerContext
+		);
+	}
+
+	protected function formatMessage($message, $file, $line) {
+		return "$message at $file#$line";
 	}
 }
