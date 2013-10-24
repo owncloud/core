@@ -1,6 +1,7 @@
 <?php
 /**
  * Copyright (c) 2013 Bart Visscher <bartv@thisnet.nl>
+ * Copyright (c) 2013 Andreas Fischer <bantu@owncloud.com>
  * This file is licensed under the Affero General Public License version 3 or
  * later.
  * See the COPYING-README file.
@@ -12,43 +13,40 @@ use OC\Log as LoggerInterface;
 
 class ErrorHandler {
 	/** @var LoggerInterface */
-	private static $logger;
+	protected $logger;
 
-	public static function register() {
-		$handler = new ErrorHandler();
-
-		set_error_handler(array($handler, 'onError'));
-		register_shutdown_function(array($handler, 'onShutdown'));
-		set_exception_handler(array($handler, 'onException'));
+	public function register() {
+		set_error_handler(array($this, 'onError'));
+		register_shutdown_function(array($this, 'onShutdown'));
+		set_exception_handler(array($this, 'onException'));
 	}
 
-	public static function setLogger(LoggerInterface $logger) {
-		self::$logger = $logger;
+	public function setLogger(LoggerInterface $logger) {
+		$this->logger = $logger;
 	}
 
 	//Fatal errors handler
-	public static function onShutdown() {
+	public function onShutdown() {
 		$error = error_get_last();
-		if($error && self::$logger) {
+		if($error && $this->logger) {
 			//ob_end_clean();
 			$msg = $error['message'] . ' at ' . $error['file'] . '#' . $error['line'];
-			self::$logger->critical($msg, array('app' => 'PHP'));
+			$this->logger->critical($msg, array('app' => 'PHP'));
 		}
 	}
 
 	// Uncaught exception handler
-	public static function onException($exception) {
+	public function onException($exception) {
 		$msg = $exception->getMessage() . ' at ' . $exception->getFile() . '#' . $exception->getLine();
-		self::$logger->critical($msg, array('app' => 'PHP'));
+		$this->logger->critical($msg, array('app' => 'PHP'));
 	}
 
 	//Recoverable errors handler
-	public static function onError($number, $message, $file, $line) {
+	public function onError($number, $message, $file, $line) {
 		if (error_reporting() === 0) {
 			return;
 		}
 		$msg = $message . ' at ' . $file . '#' . $line;
-		self::$logger->warning($msg, array('app' => 'PHP'));
-
+		$this->logger->warning($msg, array('app' => 'PHP'));
 	}
 }
