@@ -14,6 +14,7 @@ use OC\Log as LoggerInterface;
 class ErrorHandler {
 	/** @var LoggerInterface */
 	protected $logger;
+	protected $loggerContext = array('app' => 'PHP');
 
 	public function register() {
 		set_error_handler(array($this, 'onError'));
@@ -31,14 +32,14 @@ class ErrorHandler {
 		if($error && $this->logger) {
 			//ob_end_clean();
 			$msg = $error['message'] . ' at ' . $error['file'] . '#' . $error['line'];
-			$this->logger->critical($msg, array('app' => 'PHP'));
+			$this->logger->critical($msg, $this->loggerContext);
 		}
 	}
 
 	// Uncaught exception handler
 	public function onException($exception) {
 		$msg = $exception->getMessage() . ' at ' . $exception->getFile() . '#' . $exception->getLine();
-		$this->logger->critical($msg, array('app' => 'PHP'));
+		$this->logger->critical($msg, $this->loggerContext);
 	}
 
 	//Recoverable errors handler
@@ -47,6 +48,6 @@ class ErrorHandler {
 			return;
 		}
 		$msg = $message . ' at ' . $file . '#' . $line;
-		$this->logger->warning($msg, array('app' => 'PHP'));
+		$this->logger->warning($msg, $this->loggerContext);
 	}
 }
