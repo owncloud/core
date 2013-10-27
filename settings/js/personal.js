@@ -152,6 +152,8 @@ $(document).ready(function(){
 
 	});
 
+	$('.personalblock input[type=password]').placeholder();
+
     $('#displayName').keyup(function(){
         if ($('#displayName').val() !== '' ){
             if(typeof timeout !== 'undefined'){
