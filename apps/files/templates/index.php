@@ -65,8 +65,8 @@
 					</span>
 				</div>
 			</th>
-			<th <?php if (!$_['fileHeader']):?>class="hidden"<?php endif; ?> id="headerSize"><?php p($l->t('Size')); ?></th>
-			<th <?php if (!$_['fileHeader']):?>class="hidden"<?php endif; ?> id="headerDate">
+			<th class="hidden" id="headerSize"><?php p($l->t('Size')); ?></th>
+			<th class="hidden" id="headerDate">
 				<span id="modified"><?php p($l->t( 'Modified' )); ?></span>
 				<?php if ($_['permissions'] & OCP\PERMISSION_DELETE): ?>
 <!--					NOTE: Temporary fix to allow unsharing of files in root of Shared folder -->
