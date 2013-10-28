@@ -73,20 +73,29 @@ class Helper
 		$files = array();
 
 		foreach ($content as $i) {
-			$i['date'] = \OCP\Util::formatDate($i['mtime']);
+			$entry = array();
+
+			$entry['date'] = \OCP\Util::formatDate($i['mtime']);
 			if ($i['type'] === 'file') {
 				$fileinfo = pathinfo($i['name']);
-				$i['basename'] = $fileinfo['filename'];
+				$entry['basename'] = $fileinfo['filename'];
 				if (!empty($fileinfo['extension'])) {
-					$i['extension'] = '.' . $fileinfo['extension'];
+					$entry['extension'] = '.' . $fileinfo['extension'];
 				} else {
-					$i['extension'] = '';
+					$entry['extension'] = '';
 				}
 			}
 			$i['directory'] = $dir;
 			$i['isPreviewAvailable'] = \OC::$server->getPreviewManager()->isMimeSupported($i['mimetype']);
-			$i['icon'] = \OCA\Files\Helper::determineIcon($i);
-			$files[] = $i;
+			// only pick out the needed attributes
+			$entry['icon'] = \OCA\Files\Helper::determineIcon($i);
+			$entry['directory'] = $i['directory'];
+			$entry['name'] = $i['name'];
+			$entry['permissions'] = $i['permissions'];
+			$entry['mimetype'] = $i['mimetype'];
+			$entry['size'] = $i['size'];
+			$entry['type'] = $i['type'];
+			$files[] = $entry;
 		}
 
 		usort($files, array('\OCA\Files\Helper', 'fileCmp'));
