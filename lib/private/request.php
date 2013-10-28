@@ -181,4 +181,28 @@ class OC_Request {
 			return false;
 		}
 	}
+
+	/**
+	 * @brief Parse and return preferred language set in HTTP Accept-Language header
+	 * @returns array of preferred language, most preferred is the first element, return false if the header is not set
+	 */
+	 static public function parseAcceptLanguage() {
+		if(isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+			$preferred_lang = array();
+			// http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4
+			$accepted_languages = preg_split('/\s*,\s*/', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
+			foreach($accepted_languages as $accepted_language) {
+				$lang_tag = strtok($accepted_language, ';');
+				if ( strpos($lang_tag, '-') !== false ) {
+					list($primary_tag, $subtag) = explode('-', $lang_tag);
+					$preferred_lang[] = strtolower($primary_tag) . '_' . strtoupper($subtag);
+				} else {
+					$preferred_lang[] = strtolower($lang_tag);
+				}
+			}
+			return $preferred_lang;
+		} else {
+			return false;
+		}
+	 }
 }
