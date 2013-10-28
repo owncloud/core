@@ -57,25 +57,12 @@ if ($isIE8 && isset($_GET['dir'])){
 	exit();
 }
 
-$ajaxLoad = false;
 $files = array();
 $user = OC_User::getUser();
 if (\OC\Files\Cache\Upgrade::needUpgrade($user)) { //dont load anything if we need to upgrade the cache
 	$needUpgrade = true;
 	$freeSpace = 0;
 } else {
-	if ($isIE8){
-		// after the redirect above, the URL will have a format
-		// like "files#?dir=path" which means that no path was given
-		// (dir is not set). In that specific case, we don't return any
-		// files because the client will take care of switching the dir
-		// to the one from the hash, then ajax-load the initial file list
-		$files = array();
-		$ajaxLoad = true;
-	}
-	else{
-		$files = \OCA\Files\Helper::getFiles($dir);
-	}
 	$freeSpace = \OC\Files\Filesystem::free_space($dir);
 	$needUpgrade = false;
 }
@@ -84,11 +71,6 @@ if (\OC\Files\Cache\Upgrade::needUpgrade($user)) { //dont load anything if we ne
 $breadcrumb = \OCA\Files\Helper::makeBreadcrumb($dir);
 
 // make breadcrumb und filelist markup
-$list = new OCP\Template('files', 'part.list', '');
-$list->assign('files', $files);
-$list->assign('baseURL', OCP\Util::linkTo('files', 'index.php') . '?dir=');
-$list->assign('downloadURL', OCP\Util::linkToRoute('download', array('file' => '/')));
-$list->assign('isPublic', false);
 $breadcrumbNav = new OCP\Template('files', 'part.breadcrumb', '');
 $breadcrumbNav->assign('breadcrumb', $breadcrumb);
 $breadcrumbNav->assign('baseURL', OCP\Util::linkTo('files', 'index.php') . '?dir=');
@@ -119,14 +101,11 @@ if ($needUpgrade) {
 	}
 
 	$isCreatable = \OC\Files\Filesystem::isCreatable($dir . '/');
-	$fileHeader = (!isset($files) or count($files) > 0);
-	$emptyContent = ($isCreatable and !$fileHeader) or $ajaxLoad;
 
 	OCP\Util::addscript('files', 'fileactions');
 	OCP\Util::addscript('files', 'files');
 	OCP\Util::addscript('files', 'keyboardshortcuts');
 	$tmpl = new OCP\Template('files', 'index', 'user');
-	$tmpl->assign('fileList', $list->fetchPage());
 	$tmpl->assign('breadcrumb', $breadcrumbNav->fetchPage());
 	$tmpl->assign('dir', \OC\Files\Filesystem::normalizePath($dir));
 	$tmpl->assign('isCreatable', $isCreatable);
@@ -145,9 +124,6 @@ if ($needUpgrade) {
 	$tmpl->assign("allowShareWithLink", \OC_Appconfig::getValue('core', 'shareapi_allow_links', 'yes'));
 	$tmpl->assign("encryptionInitStatus", $encryptionInitStatus);
 	$tmpl->assign('disableSharing', false);
-	$tmpl->assign('ajaxLoad', $ajaxLoad);
-	$tmpl->assign('emptyContent', $emptyContent);
-	$tmpl->assign('fileHeader', $fileHeader);
 
 	$tmpl->printPage();
 }
