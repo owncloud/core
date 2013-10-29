@@ -1,4 +1,4 @@
-<form action="<?php echo OC_Helper::linkToRoute('core_lostpassword_reset', $_['args']) ?>" method="post">
+<form id="reset-password" action="<?php echo OC_Helper::linkToRoute('core_ajax_password_reset', $_['args']) ?>" method="post">
 	<fieldset>
 		<?php if($_['success']): ?>
 			<h1><?php echo $l->t('Your password was reset'); ?></h1>
@@ -12,3 +12,4 @@
 		<?php endif; ?>
 	</fieldset>
 </form>
+<?php OC_Util::addScript('core', "lostpassword"); ?>
