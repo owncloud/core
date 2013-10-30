@@ -23,13 +23,14 @@
 */
 
 class OC_OCS_Privatedata {
+	const privateDataPrefix = "privateData-";
 
 	public static function get($parameters) {
 		OC_Util::checkLoggedIn();
 		$user = OC_User::getUser();
 		$app = addslashes(strip_tags($parameters['app']));
 		$key = addslashes(strip_tags($parameters['key']));
-		$result = OC_OCS::getData($user, $app, $key);
+		$result = OC_OCS::getData($user, self::privateDataPrefix.$app, $key);
 		$xml = array();
 		foreach($result as $i=>$log) {
 			$xml[$i]['key']=$log['key'];
@@ -46,8 +47,8 @@ class OC_OCS_Privatedata {
 		$app = addslashes(strip_tags($parameters['app']));
 		$key = addslashes(strip_tags($parameters['key']));
 		$value = OC_OCS::readData('post', 'value', 'text');
-		if(OC_Preferences::setValue($user, $app, $key, $value)) {
-			return new OC_OCS_Result(null, 100);
+		if(OC_Preferences::setValue($user, self::privateDataPrefix.$app, $key, $value)) {
+			return new OC_OCS_Result(null, 104);
 		}
 	}
 
@@ -59,7 +60,7 @@ class OC_OCS_Privatedata {
 		if($key==="" or $app==="") {
 			return new OC_OCS_Result(null, 101); //key and app are NOT optional here
 		}
-		if(OC_Preferences::deleteKey($user, $app, $key)) {
+		if(OC_Preferences::deleteKey($user, self::privateDataPrefix.$app, $key)) {
 			return new OC_OCS_Result(null, 100);
 		}
 	}
