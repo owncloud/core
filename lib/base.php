@@ -284,6 +284,7 @@ class OC {
 		}
 
 		OC_Util::addStyle("styles");
+		OC_Util::addStyle('mobile');
 		OC_Util::addStyle("apps");
 		OC_Util::addStyle("fixes");
 		OC_Util::addStyle("multiselect");
