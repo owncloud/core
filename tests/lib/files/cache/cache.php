@@ -137,6 +137,38 @@ class Cache extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse($this->cache->inCache('folder/bar'));
 	}
 
+	/**
+	 * Tests that the root folder size calculation ignores the subdirs that have an unknown
+	 * size. This makes sure that quota calculation still works as it's based on the root
+	 * folder size.
+	 */
+	public function testRootFolderSizeIgnoresUnknownUpdate() {
+		$dir1 = 'knownsize';
+		$dir2 = 'unknownsize';
+		$fileData = array();
+		$fileData[''] = array('size' => -1, 'mtime' => 20, 'mimetype' => 'httpd/unix-directory');
+		$fileData[$dir1] = array('size' => 1000, 'mtime' => 20, 'mimetype' => 'httpd/unix-directory');
+		$fileData[$dir2] = array('size' => -1, 'mtime' => 25, 'mimetype' => 'httpd/unix-directory');
+
+		$this->cache->put('', $fileData['']);
+		$this->cache->put($dir1, $fileData[$dir1]);
+		$this->cache->put($dir2, $fileData[$dir2]);
+
+		$this->assertTrue($this->cache->inCache($dir1));
+		$this->assertTrue($this->cache->inCache($dir2));
+
+		// check that root size ignored the unknown sizes
+		$this->assertEquals(1000, $this->cache->calculateFolderSize(''));
+
+		// clean up
+		$this->cache->remove('');
+		$this->cache->remove($dir1);
+		$this->cache->remove($dir2);
+
+		$this->assertFalse($this->cache->inCache($dir1));
+		$this->assertFalse($this->cache->inCache($dir2));
+	}
+
 	function testStatus() {
 		$this->assertEquals(\OC\Files\Cache\Cache::NOT_FOUND, $this->cache->getStatus('foo'));
 		$this->cache->put('foo', array('size' => -1));
