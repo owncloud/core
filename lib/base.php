@@ -718,13 +718,14 @@ class OC {
 
 	protected static function handleLogin() {
 		OC_App::loadApps(array('prelogin'));
+		$isFormLogin = (isset($_POST["user"]) and isset($_POST['password']));
 		$error = array();
 		// remember was checked after last login
-		if (OC::tryRememberLogin()) {
+		if (!$isFormLogin and OC::tryRememberLogin()) {
 			$error[] = 'invalidcookie';
 
 			// Someone wants to log in :
-		} elseif (OC::tryFormLogin()) {
+		} else if (OC::tryFormLogin()) {
 			$error[] = 'invalidpassword';
 		}
 		OC_Util::displayLoginPage(array_unique($error));
