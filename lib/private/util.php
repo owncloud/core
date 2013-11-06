@@ -635,7 +635,20 @@ class OC_Util {
 			if ($defaultPage) {
 				$location = OC_Helper::makeURLAbsolute(OC::$WEBROOT.'/'.$defaultPage);
 			} else {
-				$location = OC_Helper::linkToAbsolute( 'files', 'index.php' );
+				$entries = OC_App::getNavigation();
+				//By default we redirect to the highest priority navigation entry, this is the files app that can not be disabled and is the top priority one
+				$link = $entries[0]['href'];
+				$navigationEntry = OC::$session->get('activeNavigationEntry');
+				//If there is an entry stored in session then try to redirect to that one
+				if (!is_null($navigationEntry)) {
+					foreach ($entries as $entry) {
+						if ($entry['id'] ===  $navigationEntry) {
+							$link = $entry['href'];
+							break;
+						}
+					}
+				}
+				$location = OC_Helper::makeURLAbsolute($link);
 			}
 		}
 		OC_Log::write('core', 'redirectToDefaultPage: '.$location, OC_Log::DEBUG);

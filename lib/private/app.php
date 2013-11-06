@@ -307,6 +307,7 @@ class OC_App{
 	 * highlighting the current position of the user.
 	 */
 	public static function setActiveNavigationEntry( $id ) {
+		OC::$session->set('activeNavigationEntry',$id);
 		OC::$server->getNavigationManager()->setActiveEntry($id);
 		return true;
 	}
