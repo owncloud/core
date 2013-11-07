@@ -31,8 +31,8 @@ if (!\OC_Util::runningOnWindows()) {
 				$firstmb = stream_get_contents($handle, 1048576); //1024 * 1024 = 1048576
 				file_put_contents($absPath, $firstmb);
 
-				//$cmd = 'ffmpeg -y  -i ' . escapeshellarg($absPath) . ' -f mjpeg -vframes 1 -ss 1 -s ' . escapeshellarg($maxX) . 'x' . escapeshellarg($maxY) . ' ' . $tmpPath;
-				$cmd = 'avconv -an -y -ss 1 -i ' . escapeshellarg($absPath) . ' -f mjpeg -vframes 1 ' . escapeshellarg($tmpPath);
+				//$cmd = 'ffmpeg -y  -i ' . escapeshellarg($absPath) . ' -f mjpeg -vframes 5 -ss 1 -s ' . escapeshellarg($maxX) . 'x' . escapeshellarg($maxY) . ' ' . $tmpPath;
+				$cmd = 'avconv -an -y -ss 1 -i ' . escapeshellarg($absPath) . ' -f mjpeg -vframes 5 ' . escapeshellarg($tmpPath);
 
 				shell_exec($cmd);
 
