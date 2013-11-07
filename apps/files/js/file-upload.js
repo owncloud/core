@@ -223,7 +223,7 @@ $(document).ready(function() {
 				//examine file
 				var file = data.files[0];
 			
-				if (file.type === '' && file.size === 4096) {
+				if ((file.type === '' && file.size === 4096) || file.size === 0) {
 					data.textStatus = 'dirorzero';
 					data.errorThrown = t('files', 'Unable to upload {filename} as it is a directory or has 0 bytes',
 						{filename: file.name}
