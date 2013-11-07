@@ -32,7 +32,7 @@ if (!\OC_Util::runningOnWindows()) {
 				file_put_contents($absPath, $firstmb);
 
 				//$cmd = 'ffmpeg -y  -i ' . escapeshellarg($absPath) . ' -f mjpeg -ss 1 -s ' . escapeshellarg($maxX) . 'x' . escapeshellarg($maxY) . ' ' . $tmpPath;
-				$cmd = 'avconv -an -y -ss 5 -i ' . escapeshellarg($absPath) . ' -f mjpeg ' . escapeshellarg($tmpPath);
+				$cmd = 'avconv -an -y -ss 5 -i ' . escapeshellarg($absPath) . ' -f mjpeg -vframes 1 ' . escapeshellarg($tmpPath);
 
 				shell_exec($cmd);
 
