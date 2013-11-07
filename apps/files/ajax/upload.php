@@ -87,6 +87,7 @@ $error = false;
 
 $maxUploadFileSize = $storageStats['uploadMaxFilesize'];
 $maxHumanFileSize = OCP\Util::humanFileSize($maxUploadFileSize);
+$usedSpacePercent = $storageStats['usedSpacePercent'];
 
 $totalSize = 0;
 foreach ($files['size'] as $size) {
@@ -95,7 +96,8 @@ foreach ($files['size'] as $size) {
 if ($maxUploadFileSize >= 0 and $totalSize > $maxUploadFileSize) {
 	OCP\JSON::error(array('data' => array('message' => $l->t('Not enough storage available'),
 		'uploadMaxFilesize' => $maxUploadFileSize,
-		'maxHumanFilesize' => $maxHumanFileSize)));
+		'maxHumanFilesize' => $maxHumanFileSize,
+		'usedSpacePercent' => $usedSpacePercent)));
 	exit();
 }
 
@@ -136,7 +138,8 @@ if (strpos($dir, '..') === false) {
 							'originalname' => $files['tmp_name'][$i],
 							'uploadMaxFilesize' => $maxUploadFileSize,
 							'maxHumanFilesize' => $maxHumanFileSize,
-							'permissions' => $meta['permissions'] & $allowedPermissions
+							'permissions' => $meta['permissions'] & $allowedPermissions,
+							'usedSpacePercent' => $usedSpacePercent
 						);
 					}
 
@@ -163,7 +166,8 @@ if (strpos($dir, '..') === false) {
 					'originalname' => $files['tmp_name'][$i],
 					'uploadMaxFilesize' => $maxUploadFileSize,
 					'maxHumanFilesize' => $maxHumanFileSize,
-					'permissions' => $meta['permissions'] & $allowedPermissions
+					'permissions' => $meta['permissions'] & $allowedPermissions,
+					'usedSpacePercent' => $usedSpacePercent
 				);
 			}
 		}

@@ -302,17 +302,16 @@ $(document).ready(function() {
 			fail: function(e, data) {
 				OC.Upload.log('fail', e, data);
 				if (typeof data.textStatus !== 'undefined' && data.textStatus !== 'success' ) {
+					//Hack to clear previous notifications and avoid the queue
+					OC.Notification.hide();
 					if (data.textStatus === 'abort') {
-						$('#notification').text(t('files', 'Upload cancelled.'));
+						OC.Notification.show(t('files', 'Upload cancelled.'));
 					} else {
 						// HTTP connection problem
-						$('#notification').text(data.errorThrown);
+						OC.Notification.show(data.errorThrown);
 					}
-					$('#notification').fadeIn();
 					//hide notification after 5 sec
-					setTimeout(function() {
-						$('#notification').fadeOut();
-					}, 5000);
+					setTimeout(OC.Notification.hide, 5000);
 				}
 				OC.Upload.deleteUpload(data);
 			},
@@ -332,10 +331,8 @@ $(document).ready(function() {
 					response = data.result[0].body.innerText;
 				}
 				var result=$.parseJSON(response);
-
 				delete data.jqXHR;
-
-				if (result.status === 'error' && result.data && result.data.message){
+				if (result.status !== 'undefined' && result.status === 'error' && result.data && result.data.message) {
 					data.textStatus = 'servererror';
 					data.errorThrown = result.data.message;
 					var fu = $(this).data('blueimp-fileupload') || $(this).data('fileupload');
@@ -358,6 +355,7 @@ $(document).ready(function() {
 					var fu = $(this).data('blueimp-fileupload') || $(this).data('fileupload');
 					fu._trigger('fail', e, data);
 				}
+				Files.updateMaxUploadFilesize(result);
 			},
 			/**
 			 * called after last upload
