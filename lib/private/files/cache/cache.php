@@ -512,7 +512,7 @@ class Cache {
 				'WHERE `parent` = ? AND `storage` = ?';
 			if ($isRoot) {
 				// filter out non-scanned dirs at the root
-				$sql .= ' AND size >= 0';
+				$sql .= ' AND `size` >= 0';
 			}
 			$result = \OC_DB::executeAudited($sql, array($id, $this->getNumericStorageId()));
 			if ($row = $result->fetchRow()) {
