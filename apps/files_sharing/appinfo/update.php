@@ -13,18 +13,18 @@ if (version_compare($installedVersion, '0.3', '<')) {
 	while ($row = $result->fetchRow()) {
 		$meta = $rootView->getFileInfo($$row['source']);
 		$itemSource = $meta['fileid'];
-		if ($itemSource != -1) {
+		if ($itemSource !== -1) {
 			$file = $meta;
-			if ($file['mimetype'] == 'httpd/unix-directory') {
+			if ($file['mimetype'] === 'httpd/unix-directory') {
 				$itemType = 'folder';
 			} else {
 				$itemType = 'file';
 			}
-			if ($row['permissions'] == 0) {
+			if ($row['permissions'] === 0) {
 				$permissions = OCP\PERMISSION_READ | OCP\PERMISSION_SHARE;
 			} else {
 				$permissions = OCP\PERMISSION_READ | OCP\PERMISSION_UPDATE | OCP\PERMISSION_SHARE;
-				if ($itemType == 'folder') {
+				if ($itemType === 'folder') {
 					$permissions |= OCP\PERMISSION_CREATE;
 				}
 			}
@@ -37,7 +37,7 @@ if (version_compare($installedVersion, '0.3', '<')) {
 				} else {
 					$groupShares[$shareWith][$itemSource] = true;
 				}
-			} else if ($row['uid_shared_with'] == 'public') {
+			} else if ($row['uid_shared_with'] === 'public') {
 				$shareType = OCP\Share::SHARE_TYPE_LINK;
 				$shareWith = null;
 			} else {

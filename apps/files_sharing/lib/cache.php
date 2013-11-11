@@ -118,7 +118,7 @@ class Shared_Cache extends Cache {
 	 * @return array
 	 */
 	public function getFolderContents($folder) {
-		if ($folder == '') {
+		if ((string)$folder === '') {
 			$files = \OCP\Share::getItemsSharedWith('file', \OC_Share_Backend_File::FORMAT_GET_FOLDER_CONTENTS);
 			foreach ($files as &$file) {
 				$file['mimetype'] = $this->getMimetype($file['mimetype']);
@@ -170,7 +170,7 @@ class Shared_Cache extends Cache {
 	 * @return bool
 	 */
 	public function inCache($file) {
-		if ($file == '') {
+		if ($file === '') {
 			return true;
 		}
 		return parent::inCache($file);
@@ -215,7 +215,7 @@ class Shared_Cache extends Cache {
 	 * @return int, Cache::NOT_FOUND, Cache::PARTIAL, Cache::SHALLOW or Cache::COMPLETE
 	 */
 	public function getStatus($file) {
-		if ($file == '') {
+		if ($file === '') {
 			return self::COMPLETE;
 		}
 		if ($cache = $this->getSourceCache($file)) {
