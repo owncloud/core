@@ -118,7 +118,7 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 		}
 
 		//update file status
-		$fs->setStatus($path);
+		$fs->setStatus($path, \OC\Files\FILE_UPLOADED);
 
 		return $this->getETagPropertyForPath($this->path);
 	}
