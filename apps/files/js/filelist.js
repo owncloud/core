@@ -659,20 +659,27 @@ var FileList={
 			$fileInfo.html(n('files', '%n file', '%n files', fileSummary.totalFiles));
 			$('.summary .filesize').html(humanFileSize(fileSummary.totalSize));
 
+			var getFirstCharacter = function($element) {
+				var html = $element.html();
+				if (typeof html !== 'undefined') {
+					return html.charAt(0);
+				}
+			}
+
 			// Show only what's necessary (may be hidden)
-			if ($dirInfo.html().charAt(0) === "0") {
+			if (getFirstCharacter($dirInfo) === "0") {
 				$dirInfo.hide();
 				$connector.hide();
 			} else {
 				$dirInfo.show();
 			}
-			if ($fileInfo.html().charAt(0) === "0") {
+			if (getFirstCharacter($fileInfo) === "0") {
 				$fileInfo.hide();
 				$connector.hide();
 			} else {
 				$fileInfo.show();
 			}
-			if ($dirInfo.html().charAt(0) !== "0" && $fileInfo.html().charAt(0) !== "0") {
+			if (getFirstCharacter($dirInfo) !== "0" && getFirstCharacter($fileInfo) !== "0") {
 				$connector.show();
 			}
 		}
