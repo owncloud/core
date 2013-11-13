@@ -506,9 +506,14 @@ class Cache {
 		$totalSize = 0;
 		$entry = $this->get($path);
 		if ($entry && $entry['mimetype'] === 'httpd/unix-directory') {
+			$isRoot = ($path === '/' or $path === '');
 			$id = $entry['fileid'];
 			$sql = 'SELECT SUM(`size`), MIN(`size`) FROM `*PREFIX*filecache` '.
 				'WHERE `parent` = ? AND `storage` = ?';
+			if ($isRoot) {
+				// filter out non-scanned dirs at the root
+				$sql .= ' AND `size` >= 0';
+			}
 			$result = \OC_DB::executeAudited($sql, array($id, $this->getNumericStorageId()));
 			if ($row = $result->fetchRow()) {
 				list($sum, $min) = array_values($row);
