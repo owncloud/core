@@ -303,16 +303,15 @@ $(document).ready(function() {
 				OC.Upload.log('fail', e, data);
 				if (typeof data.textStatus !== 'undefined' && data.textStatus !== 'success' ) {
 					if (data.textStatus === 'abort') {
-						$('#notification').text(t('files', 'Upload cancelled.'));
+						OC.Notification.show(t('files', 'Upload cancelled.'));
 					} else {
 						// HTTP connection problem
-						$('#notification').text(data.errorThrown);
+						OC.Notification.show(data.errorThrown);
 					}
-					$('#notification').fadeIn();
-					//hide notification after 5 sec
+					//hide notification after 10 sec
 					setTimeout(function() {
-						$('#notification').fadeOut();
-					}, 5000);
+						OC.Notification.hide();
+					}, 10000);
 				}
 				OC.Upload.deleteUpload(data);
 			},
@@ -404,7 +403,7 @@ $(document).ready(function() {
 				
 				$('#uploadprogresswrapper input.stop').fadeOut();
 				$('#uploadprogressbar').fadeOut();
-				
+			    Files.updateStorageStatistics();
 			});
 			fileupload.on('fileuploadfail', function(e, data) {
 				OC.Upload.log('progress handle fileuploadfail', e, data);
@@ -575,11 +574,12 @@ $(document).ready(function() {
 									tr.attr('data-size', result.data.size);
 									tr.attr('data-mime', result.data.mime);
 									tr.attr('data-id', result.data.id);
+									tr.attr('data-etag', result.data.etag);
 									tr.find('.filesize').text(humanFileSize(result.data.size));
 									var path = getPathForPreview(name);
-									lazyLoadPreview(path, result.data.mime, function(previewpath) {
+									Files.lazyLoadPreview(path, result.data.mime, function(previewpath) {
 										tr.find('td.filename').attr('style','background-image:url('+previewpath+')');
-									});
+									}, null, null, result.data.etag);
 									FileActions.display(tr.find('td.filename'), true);
 								} else {
 									OC.dialogs.alert(result.data.message, t('core', 'Could not create file'));
@@ -641,9 +641,9 @@ $(document).ready(function() {
 							tr.data('mime', mime).data('id', id);
 							tr.attr('data-id', id);
 							var path = $('#dir').val()+'/'+localName;
-							lazyLoadPreview(path, mime, function(previewpath) {
+							Files.lazyLoadPreview(path, mime, function(previewpath) {
 								tr.find('td.filename').attr('style', 'background-image:url('+previewpath+')');
-							});
+							}, null, null, data.etag);
 							FileActions.display(tr.find('td.filename'), true);
 						});
 						eventSource.listen('error',function(error) {

@@ -152,6 +152,9 @@ var FileList={
 		FileActions.display(tr.find('td.filename'), true);
 		return tr;
 	},
+	getCurrentDirectory: function(){
+		return $('#dir').val() || '/';
+	},
 	/**
 	 * @brief Changes the current directory and reload the file list.
 	 * @param targetDir target directory (non URL encoded)
@@ -167,6 +170,12 @@ var FileList={
 			return;
 		}
 		FileList.setCurrentDir(targetDir, changeUrl);
+		$('#fileList').trigger(
+			jQuery.Event('changeDirectory', {
+				dir: targetDir,
+				previousDir: currentDir
+			}
+		));
 		FileList.reload();
 	},
 	linkTo: function(dir) {
@@ -223,6 +232,10 @@ var FileList={
 			FileList.changeDirectory('/');
 			return;
 		}
+
+		// TODO: should rather return upload file size through
+		// the files list ajax call
+		Files.updateStorageStatistics(true);
 
 		if (result.data.permissions) {
 			FileList.setDirectoryPermissions(result.data.permissions);
@@ -329,9 +342,9 @@ var FileList={
 			tr.attr('data-id', id);
 		}
 		var path = getPathForPreview(name);
-		lazyLoadPreview(path, mime, function(previewpath) {
+		Files.lazyLoadPreview(path, mime, function(previewpath) {
 			tr.find('td.filename').attr('style','background-image:url('+previewpath+')');
-		});
+		}, null, null, tr.attr('data-etag'));
 		tr.find('td.filename').draggable(dragOptions);
 	},
 	isLoading:function(name) {
@@ -554,6 +567,7 @@ var FileList={
 						checkTrashStatus();
 						FileList.updateFileSummary();
 						FileList.updateEmptyContent();
+						Files.updateStorageStatistics();
 					} else {
 						$.each(files,function(index,file) {
 							var deleteAction = $('tr[data-file="'+files[i]+'"]').children("td.date").children(".action.delete");
@@ -563,24 +577,12 @@ var FileList={
 				});
 	},
 	createFileSummary: function() {
-		if ( $('#fileList tr').exists() ) {
-			var totalDirs = 0;
-			var totalFiles = 0;
-			var totalSize = 0;
-
-			// Count types and filesize
-			$.each($('tr[data-file]'), function(index, value) {
-				if ($(value).data('type') === 'dir') {
-					totalDirs++;
-				} else if ($(value).data('type') === 'file') {
-					totalFiles++;
-				}
-				totalSize += parseInt($(value).data('size'));
-			});
+		if( $('#fileList tr').exists() ) {
+			var summary = this._calculateFileSummary();
 
 			// Get translations
-			var directoryInfo = n('files', '%n folder', '%n folders', totalDirs);
-			var fileInfo = n('files', '%n file', '%n files', totalFiles);
+			var directoryInfo = n('files', '%n folder', '%n folders', summary.totalDirs);
+			var fileInfo = n('files', '%n file', '%n files', summary.totalFiles);
 
 			var infoVars = {
 				dirs: '<span class="dirinfo">'+directoryInfo+'</span><span class="connector">',
@@ -590,10 +592,10 @@ var FileList={
 			var info = t('files', '{dirs} and {files}', infoVars);
 
 			// don't show the filesize column, if filesize is NaN (e.g. in trashbin)
-			if (isNaN(totalSize)) {
+			if (isNaN(summary.totalSize)) {
 				var fileSize = '';
 			} else {
-				var fileSize = '<td class="filesize">'+humanFileSize(totalSize)+'</td>';
+				var fileSize = '<td class="filesize">'+humanFileSize(summary.totalSize)+'</td>';
 			}
 
 			var $summary = $('<tr class="summary"><td><span class="info">'+info+'</span></td>'+fileSize+'<td></td></tr>');
@@ -604,15 +606,35 @@ var FileList={
 			var $connector = $summary.find('.connector');
 
 			// Show only what's necessary, e.g.: no files: don't show "0 files"
-			if (totalDirs === 0) {
+			if (summary.totalDirs === 0) {
 				$dirInfo.hide();
 				$connector.hide();
 			}
-			if (totalFiles === 0) {
+			if (summary.totalFiles === 0) {
 				$fileInfo.hide();
 				$connector.hide();
 			}
 		}
+	},
+	_calculateFileSummary: function() {
+		var result = {
+			totalDirs: 0,
+			totalFiles: 0,
+			totalSize: 0
+		};
+		$.each($('tr[data-file]'), function(index, value) {
+			var $value = $(value);
+			if ($value.data('type') === 'dir') {
+				result.totalDirs++;
+			} else if ($value.data('type') === 'file') {
+				result.totalFiles++;
+			}
+			if ($value.data('size') !== undefined && $value.data('id') !== -1) {
+				//Skip shared as it does not count toward quota
+				result.totalSize += parseInt($value.data('size'));
+			}
+		});
+		return result;
 	},
 	updateFileSummary: function() {
 		var $summary = $('.summary');
@@ -627,28 +649,15 @@ var FileList={
 		}
 		// There's a summary and data -> Update the summary
 		else if ($('#fileList tr').length > 1 && $summary.length === 1) {
-			var totalDirs = 0;
-			var totalFiles = 0;
-			var totalSize = 0;
-			$.each($('tr[data-file]'), function(index, value) {
-				if ($(value).data('type') === 'dir') {
-					totalDirs++;
-				} else if ($(value).data('type') === 'file') {
-					totalFiles++;
-				}
-				if ($(value).data('size') !== undefined) {
-					totalSize += parseInt($(value).data('size'));
-				}
-			});
-
+			var fileSummary = this._calculateFileSummary();
 			var $dirInfo = $('.summary .dirinfo');
 			var $fileInfo = $('.summary .fileinfo');
 			var $connector = $('.summary .connector');
 
 			// Substitute old content with new translations
-			$dirInfo.html(n('files', '%n folder', '%n folders', totalDirs));
-			$fileInfo.html(n('files', '%n file', '%n files', totalFiles));
-			$('.summary .filesize').html(humanFileSize(totalSize));
+			$dirInfo.html(n('files', '%n folder', '%n folders', fileSummary.totalDirs));
+			$fileInfo.html(n('files', '%n file', '%n files', fileSummary.totalFiles));
+			$('.summary .filesize').html(humanFileSize(fileSummary.totalSize));
 
 			// Show only what's necessary (may be hidden)
 			if ($dirInfo.html().charAt(0) === "0") {
@@ -867,7 +876,7 @@ $(document).ready(function() {
 				data.context = FileList.addFile(file.name, file.size, date, false, false, param);
 
 				// update file data
-				data.context.attr('data-mime',file.mime).attr('data-id',file.id);
+				data.context.attr('data-mime',file.mime).attr('data-id',file.id).attr('data-etag', file.etag);
 
 				var permissions = data.context.data('permissions');
 				if (permissions !== file.permissions) {
@@ -877,9 +886,9 @@ $(document).ready(function() {
 				FileActions.display(data.context.find('td.filename'), true);
 
 				var path = getPathForPreview(file.name);
-				lazyLoadPreview(path, file.mime, function(previewpath) {
+				Files.lazyLoadPreview(path, file.mime, function(previewpath) {
 					data.context.find('td.filename').attr('style','background-image:url('+previewpath+')');
-				});
+				}, null, null, file.etag);
 			}
 		}
 	});

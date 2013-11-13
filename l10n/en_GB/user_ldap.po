@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2013-11-03 12:38-0500\n"
-"PO-Revision-Date: 2013-11-03 17:39+0000\n"
+"POT-Creation-Date: 2013-11-11 05:45-0500\n"
+"PO-Revision-Date: 2013-11-11 08:12+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/projects/p/owncloud/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -40,7 +40,7 @@ msgstr "The configuration is valid, but the Bind failed. Please check the server
 msgid ""
 "The configuration is invalid. Please have a look at the logs for further "
 "details."
-msgstr ""
+msgstr "The configuration is invalid. Please have a look at the logs for further details."
 
 #: ajax/wizard.php:32
 msgid "No action specified"
@@ -136,6 +136,10 @@ msgstr "Invalid Host"
 #: lib/wizard.php:910
 msgid "Could not find the desired feature"
 msgstr "Could not find the desired feature"
+
+#: templates/part.settingcontrols.php:2
+msgid "Save"
+msgstr "Save"
 
 #: templates/part.settingcontrols.php:4
 msgid "Test Configuration"

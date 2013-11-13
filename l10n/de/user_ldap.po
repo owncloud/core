@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2013-11-03 12:38-0500\n"
-"PO-Revision-Date: 2013-11-03 17:39+0000\n"
+"POT-Creation-Date: 2013-11-11 05:45-0500\n"
+"PO-Revision-Date: 2013-11-11 08:12+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/owncloud/language/de/)\n"
 "MIME-Version: 1.0\n"
@@ -43,7 +43,7 @@ msgstr "Die Konfiguration ist gültig aber die Verbindung ist fehlgeschlagen. Bi
 msgid ""
 "The configuration is invalid. Please have a look at the logs for further "
 "details."
-msgstr ""
+msgstr "Die Konfiguration ist ungültig. Weitere Details kannst Du in den Logdateien nachlesen."
 
 #: ajax/wizard.php:32
 msgid "No action specified"
@@ -139,6 +139,10 @@ msgstr "Ungültiger Host"
 #: lib/wizard.php:910
 msgid "Could not find the desired feature"
 msgstr "Konnte die gewünschte Funktion nicht finden"
+
+#: templates/part.settingcontrols.php:2
+msgid "Save"
+msgstr "Speichern"
 
 #: templates/part.settingcontrols.php:4
 msgid "Test Configuration"

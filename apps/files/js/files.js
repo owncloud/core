@@ -1,4 +1,40 @@
 Files={
+	// file space size sync
+	_updateStorageStatistics: function() {
+		Files._updateStorageStatisticsTimeout = null;
+		var currentDir = FileList.getCurrentDirectory(),
+			state = Files.updateStorageStatistics;
+		if (state.dir){
+			if (state.dir === currentDir) {
+				return;
+			}
+			// cancel previous call, as it was for another dir
+			state.call.abort();
+		}
+		state.dir = currentDir;
+		state.call = $.getJSON(OC.filePath('files','ajax','getstoragestats.php') + '?dir=' + encodeURIComponent(currentDir),function(response) {
+			state.dir = null;
+			state.call = null;
+			Files.updateMaxUploadFilesize(response);
+		});
+	},
+	updateStorageStatistics: function(force) {
+		if (!OC.currentUser) {
+			return;
+		}
+
+		// debounce to prevent calling too often
+		if (Files._updateStorageStatisticsTimeout) {
+			clearTimeout(Files._updateStorageStatisticsTimeout);
+		}
+		if (force) {
+			Files._updateStorageStatistics();
+		}
+		else {
+			Files._updateStorageStatisticsTimeout = setTimeout(Files._updateStorageStatistics, 250);
+		}
+	},
+
 	updateMaxUploadFilesize:function(response) {
 		if (response === undefined) {
 			return;
@@ -20,6 +56,17 @@ Files={
 		}
 
 	},
+
+	/**
+	 * Fix path name by removing double slash at the beginning, if any
+	 */
+	fixPath: function(fileName) {
+		if (fileName.substr(0, 2) == '//') {
+			return fileName.substr(1);
+		}
+		return fileName;
+	},
+
 	isFileNameValid:function (name) {
 		if (name === '.') {
 			throw t('files', '\'.\' is an invalid file name.');
@@ -340,30 +387,26 @@ $(document).ready(function() {
 	setTimeout ( "Files.displayStorageWarnings()", 100 );
 	OC.Notification.setDefault(Files.displayStorageWarnings);
 
-	// file space size sync
-	function update_storage_statistics() {
-		$.getJSON(OC.filePath('files','ajax','getstoragestats.php'),function(response) {
-			Files.updateMaxUploadFilesize(response);
-		});
-	}
+	// only possible at the moment if user is logged in
+	if (OC.currentUser) {
+		// start on load - we ask the server every 5 minutes
+		var updateStorageStatisticsInterval = 5*60*1000;
+		var updateStorageStatisticsIntervalId = setInterval(Files.updateStorageStatistics, updateStorageStatisticsInterval);
 
-	// start on load - we ask the server every 5 minutes
-	var update_storage_statistics_interval = 5*60*1000;
-	var update_storage_statistics_interval_id = setInterval(update_storage_statistics, update_storage_statistics_interval);
-
-	// Use jquery-visibility to de-/re-activate file stats sync
-	if ($.support.pageVisibility) {
-		$(document).on({
-			'show.visibility': function() {
-				if (!update_storage_statistics_interval_id) {
-					update_storage_statistics_interval_id = setInterval(update_storage_statistics, update_storage_statistics_interval);
+		// Use jquery-visibility to de-/re-activate file stats sync
+		if ($.support.pageVisibility) {
+			$(document).on({
+				'show.visibility': function() {
+					if (!updateStorageStatisticsIntervalId) {
+						updateStorageStatisticsIntervalId = setInterval(Files.updateStorageStatistics, updateStorageStatisticsInterval);
+					}
+				},
+				'hide.visibility': function() {
+					clearInterval(updateStorageStatisticsIntervalId);
+					updateStorageStatisticsIntervalId = 0;
 				}
-			},
-			'hide.visibility': function() {
-				clearInterval(update_storage_statistics_interval_id);
-				update_storage_statistics_interval_id = 0;
-			}
-		});
+			});
+		}
 	}
 
 	//scroll to and highlight preselected file
@@ -404,6 +447,7 @@ function scanFiles(force, dir, users) {
 	scannerEventSource.listen('done',function(count) {
 		scanFiles.scanning=false;
 		console.log('done after ' + count + ' files');
+		Files.updateStorageStatistics();
 	});
 	scannerEventSource.listen('user',function(user) {
 		console.log('scanning files for ' + user);
@@ -457,9 +501,9 @@ var createDragShadow = function(event) {
 			newtr.find('td.filename').attr('style','background-image:url('+OC.imagePath('core', 'filetypes/folder.png')+')');
 		} else {
 			var path = getPathForPreview(elem.name);
-			lazyLoadPreview(path, elem.mime, function(previewpath) {
+			Files.lazyLoadPreview(path, elem.mime, function(previewpath) {
 				newtr.find('td.filename').attr('style','background-image:url('+previewpath+')');
-			});
+			}, null, null, elem.etag);
 		}
 	});
 
@@ -469,7 +513,7 @@ var createDragShadow = function(event) {
 //options for file drag/drop
 var dragOptions={
 	revert: 'invalid', revertDuration: 300,
-	opacity: 0.7, zIndex: 100, appendTo: 'body', cursorAt: { left: -5, top: -5 },
+	opacity: 0.7, zIndex: 100, appendTo: 'body', cursorAt: { left: 24, top: 18 },
 	helper: createDragShadow, cursor: 'move',
 	stop: function(event, ui) {
 		$('#fileList tr td.filename').addClass('ui-draggable');
@@ -592,7 +636,7 @@ function procesSelection() {
 		if (selectedFiles.length>0) {
 			selection += n('files', '%n file', '%n files', selectedFiles.length);
 		}
-		$('#headerName>span.name').text(selection);
+		$('#headerName span.name').text(selection);
 		$('#modified').text('');
 		$('table').addClass('multiselect');
 	}
@@ -615,7 +659,8 @@ function getSelectedFilesTrash(property) {
 			name:$(element).attr('data-file'),
 			mime:$(element).data('mime'),
 			type:$(element).data('type'),
-			size:$(element).data('size')
+			size:$(element).data('size'),
+			etag:$(element).data('etag')
 		};
 		if (property) {
 			files.push(file[property]);
@@ -626,26 +671,28 @@ function getSelectedFilesTrash(property) {
 	return files;
 }
 
-function getMimeIcon(mime, ready) {
-	if (getMimeIcon.cache[mime]) {
-		ready(getMimeIcon.cache[mime]);
+Files.getMimeIcon = function(mime, ready) {
+	if (Files.getMimeIcon.cache[mime]) {
+		ready(Files.getMimeIcon.cache[mime]);
 	} else {
 		$.get( OC.filePath('files','ajax','mimeicon.php'), {mime: mime}, function(path) {
-			getMimeIcon.cache[mime]=path;
-			ready(getMimeIcon.cache[mime]);
+			Files.getMimeIcon.cache[mime]=path;
+			ready(Files.getMimeIcon.cache[mime]);
 		});
 	}
 }
-getMimeIcon.cache={};
+Files.getMimeIcon.cache={};
 
 function getPathForPreview(name) {
 	var path = $('#dir').val() + '/' + name;
 	return path;
 }
 
-function lazyLoadPreview(path, mime, ready, width, height) {
+Files.lazyLoadPreview = function(path, mime, ready, width, height, etag) {
 	// get mime icon url
-	getMimeIcon(mime, function(iconURL) {
+	Files.getMimeIcon(mime, function(iconURL) {
+		var urlSpec = {};
+		var previewURL;
 		ready(iconURL); // set mimeicon URL
 
 		// now try getting a preview thumbnail URL
@@ -655,25 +702,38 @@ function lazyLoadPreview(path, mime, ready, width, height) {
 		if ( ! height ) {
 			height = $('#filestable').data('preview-y');
 		}
-		if ( $('#publicUploadButtonMock').length ) {
-			var previewURL = OC.Router.generate('core_ajax_public_preview', {file: path, x:width, y:height, t:$('#dirToken').val()});
-		} else {
-			var previewURL = OC.Router.generate('core_ajax_preview', {file: path, x:width, y:height});
-		}
-		$.get(previewURL, function() {
-			previewURL = previewURL.replace('(', '%28');
-			previewURL = previewURL.replace(')', '%29');
-			previewURL += '&reload=true';
+		// note: the order of arguments must match the one
+		// from the server's template so that the browser
+		// knows it's the same file for caching
+		urlSpec.x = width;
+		urlSpec.y = height;
+		urlSpec.file = Files.fixPath(path);
 
-			// preload image to prevent delay
-			// this will make the browser cache the image
-			var img = new Image();
-			img.onload = function(){
-				//set preview thumbnail URL
-				ready(previewURL);
-			}
-			img.src = previewURL;
-		});
+		if (etag){
+			// use etag as cache buster
+			urlSpec.c = etag;
+		}
+		else {
+			console.warn('Files.lazyLoadPreview(): missing etag argument');
+		}
+
+		if ( $('#publicUploadButtonMock').length ) {
+			urlSpec.t = $('#dirToken').val();
+			previewURL = OC.Router.generate('core_ajax_public_preview', urlSpec);
+		} else {
+			previewURL = OC.Router.generate('core_ajax_preview', urlSpec);
+		}
+		previewURL = previewURL.replace('(', '%28');
+		previewURL = previewURL.replace(')', '%29');
+
+		// preload image to prevent delay
+		// this will make the browser cache the image
+		var img = new Image();
+		img.onload = function(){
+			//set preview thumbnail URL
+			ready(previewURL);
+		}
+		img.src = previewURL;
 	});
 }
 
