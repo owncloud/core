@@ -35,7 +35,15 @@ const SPACE_NOT_COMPUTED = -1;
 const SPACE_UNKNOWN = -2;
 const SPACE_UNLIMITED = -3;
 
+const FILE_NEW = 0;                   // new file but upload not completed
+const FILE_UPLOADED = 1;              // upload completed, file can be indexed by the file cache
+const FILE_CACHED = 2;                //file cache filled
+const FILE_META_INDEXED = 4;          //e.g. audio meta data
+const FILE_CONTENT_INDEXED = 8;       // e.g. pdf content
+const FILE_THUMBNAILS_GENERATED = 16; // gallery thumbnails generated
+
 class Filesystem {
+
 	/**
 	 * @var Mount\Manager $mounts
 	 */

@@ -63,21 +63,20 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 			return $this->createFileChunked($data);
 		}
 
-		// mark file as partial while uploading (ignored by the scanner)
-		$partpath = $this->path . '.part';
+		$path = $this->path;
 
 		// if file is located in /Shared we write the part file to the users
 		// root folder because we can't create new files in /shared
 		// we extend the name with a random number to avoid overwriting a existing file
-		if (dirname($partpath) === 'Shared') {
-			$partpath = pathinfo($partpath, PATHINFO_FILENAME) . rand() . '.part';
+		if (dirname($path) === 'Shared') {
+			$path = pathinfo($path, PATHINFO_FILENAME) . rand();
 		}
 
 		try {
-			$putOkay = $fs->file_put_contents($partpath, $data);
+			$putOkay = $fs->file_put_contents($path, $data);
 			if ($putOkay === false) {
 				\OC_Log::write('webdav', '\OC\Files\Filesystem::file_put_contents() failed', \OC_Log::ERROR);
-				$fs->unlink($partpath);
+				$fs->unlink($path);
 				// because we have no clue about the cause we can only throw back a 500/Internal Server Error
 				throw new Sabre_DAV_Exception();
 			}
@@ -100,12 +99,14 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 		}
 
 		// rename to correct path
-		$renameOkay = $fs->rename($partpath, $this->path);
-		$fileExists = $fs->file_exists($this->path);
-		if ($renameOkay === false || $fileExists === false) {
-			\OC_Log::write('webdav', '\OC\Files\Filesystem::rename() failed', \OC_Log::ERROR);
-			$fs->unlink($partpath);
-			throw new Sabre_DAV_Exception();
+		if ($path !== $this->path) {
+			$renameOkay = $fs->rename($path, $this->path);
+			$fileExists = $fs->file_exists($this->path);
+			if ($renameOkay === false || $fileExists === false) {
+				\OC_Log::write('webdav', '\OC\Files\Filesystem::rename() failed', \OC_Log::ERROR);
+				$fs->unlink($path);
+				throw new Sabre_DAV_Exception();
+			}
 		}
 
 		// allow sync clients to send the mtime along in a header
@@ -115,6 +116,9 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 				header('X-OC-MTime: accepted');
 			}
 		}
+
+		//update file status
+		$fs->setStatus($path, \OC\Files\FILE_UPLOADED);
 
 		return $this->getETagPropertyForPath($this->path);
 	}

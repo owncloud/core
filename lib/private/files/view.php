@@ -1061,6 +1061,31 @@ class View {
 	}
 
 	/**
+	 * set file status
+	 * @param string $path
+	 * @param int $status file status
+	 * @return bool
+	 */
+	public function setStatus($path, $status) {
+		list($storage, $internalPath) = $this->resolvePath($path);
+		if ($storage) {
+			return $storage->setStatus($internalPath, $status);
+		}
+	}
+
+	/**
+	 * get current file status
+	 * @param string $path
+	 * @return int
+	 */
+	public function getStatus($path) {
+		list($storage, $internalPath) = $this->resolvePath($path);
+		if ($storage) {
+			return $storage->getStatus($internalPath);
+		}
+	}
+
+	/**
 	 * Get the path of a file by id, relative to the view
 	 *
 	 * Note that the resulting path is not guarantied to be unique for the id, multiple paths can point to the same file
