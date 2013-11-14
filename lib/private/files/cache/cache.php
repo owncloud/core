@@ -146,7 +146,7 @@ class Cache {
 			$data['mtime'] = (int)$data['mtime'];
 			$data['storage_mtime'] = (int)$data['storage_mtime'];
 			$data['encrypted'] = (bool)$data['encrypted'];
-            $data['unencrypted_size'] = (int)$data['unencrypted_size'];
+			$data['unencrypted_size'] = (int)$data['unencrypted_size'];
 			$data['storage'] = $this->storageId;
 			$data['mimetype'] = $this->getMimetype($data['mimetype']);
 			$data['mimepart'] = $this->getMimetype($data['mimepart']);
