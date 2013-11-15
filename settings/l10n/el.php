@@ -2,8 +2,6 @@
 $TRANSLATIONS = array(
 "Unable to load list from App Store" => "Σφάλμα στην φόρτωση της λίστας από το App Store",
 "Authentication error" => "Σφάλμα πιστοποίησης",
-"Your display name has been changed." => "Το όνομα σας στην οθόνη άλλαξε. ",
-"Unable to change display name" => "Δεν είναι δυνατή η αλλαγή του ονόματος εμφάνισης",
 "Group already exists" => "Η ομάδα υπάρχει ήδη",
 "Unable to add group" => "Αδυναμία προσθήκης ομάδας",
 "Email saved" => "Το email αποθηκεύτηκε ",
@@ -89,7 +87,6 @@ $TRANSLATIONS = array(
 "Current password" => "Τρέχων συνθηματικό",
 "New password" => "Νέο συνθηματικό",
 "Change password" => "Αλλαγή συνθηματικού",
-"Display Name" => "Όνομα εμφάνισης",
 "Email" => "Ηλ. ταχυδρομείο",
 "Your email address" => "Η διεύθυνση ηλεκτρονικού ταχυδρομείου σας",
 "Fill in an email address to enable password recovery" => "Συμπληρώστε μια διεύθυνση ηλεκτρονικού ταχυδρομείου για να ενεργοποιηθεί η ανάκτηση συνθηματικού",
@@ -101,7 +98,6 @@ $TRANSLATIONS = array(
 "Language" => "Γλώσσα",
 "Help translate" => "Βοηθήστε στη μετάφραση",
 "WebDAV" => "WebDAV",
-"Use this address to <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">access your Files via WebDAV</a>" => "Χρήση αυτής της διεύθυνσης για <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">πρόσβαση των αρχείων σας μέσω WebDAV</a>",
 "Encryption" => "Κρυπτογράφηση",
 "Log-in password" => "Συνθηματικό εισόδου",
 "Login Name" => "Όνομα Σύνδεσης",
@@ -113,7 +109,6 @@ $TRANSLATIONS = array(
 "Other" => "Άλλο",
 "Username" => "Όνομα χρήστη",
 "Storage" => "Αποθήκευση",
-"change display name" => "αλλαγή ονόματος εμφάνισης",
 "set new password" => "επιλογή νέου κωδικού",
 "Default" => "Προκαθορισμένο"
 );

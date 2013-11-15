@@ -58,7 +58,9 @@ button, .button,
 }
 input[type="hidden"] { height:0; width:0; }
 input[type="text"], input[type="password"], input[type="search"], input[type="number"], input[type="email"], input[type="url"], textarea {
-	background:#f8f8f8; color:#555; cursor:text;
+	background: #fff;
+	color: #555;
+	cursor: text;
 	font-family: inherit; /* use default ownCloud font instead of default textarea monospace */
 }
 input[type="text"], input[type="password"], input[type="search"], input[type="number"], input[type="email"], input[type="url"] {
@@ -72,7 +74,7 @@ input[type="number"]:hover, input[type="number"]:focus, input[type="number"]:act
 input[type="email"]:hover, input[type="email"]:focus, input[type="email"]:active,
 input[type="url"]:hover, input[type="url"]:focus, input[type="url"]:active,
 textarea:hover, textarea:focus, textarea:active {
-	background-color:#fff; color:#333;
+	color: #333;
 	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; filter:alpha(opacity=100); opacity:1;
 }
 input[type="checkbox"] { margin:0; padding:0; height:auto; width:auto; }
@@ -200,7 +202,7 @@ input[type="submit"].enabled {
 	-moz-box-sizing:border-box; box-sizing:border-box;
 }
 #leftcontent, .leftcontent {
-	position:relative; overflow:auto; width:20em; height:100%;
+	position:relative; overflow:auto; width:256px; height:100%;
 	background:#f8f8f8; border-right:1px solid #ddd;
 	-moz-box-sizing:border-box; box-sizing:border-box;
 }
@@ -209,7 +211,11 @@ input[type="submit"].enabled {
 #leftcontent li.active, .leftcontent li.active { font-weight:bold; }
 #leftcontent li:hover, .leftcontent li:hover { color:#333; background:#ddd; }
 #leftcontent a { height:100%; display:block; margin:0; padding:0 1em 0 0; float:left; }
-#rightcontent, .rightcontent { position:fixed; top:6.4em; left:24.5em; overflow:auto }
+#rightcontent, .rightcontent { position:fixed; top:89px; left: 336px; overflow:auto }
+
+#controls + .leftcontent{
+	top: 44px;
+}
 
 #emptycontent {
 	font-size: 1.5em;
@@ -237,6 +243,7 @@ input[type="submit"].enabled {
 #body-login p.info,
 #body-login form fieldset legend,
 #body-login #datadirContent label,
+#body-login form fieldset .warning-info,
 #body-login form input[type="checkbox"]+label {
 	text-align: center;
 	color: #ccc;
@@ -253,6 +260,8 @@ input[type="submit"].enabled {
 }
 #body-login p.info a {
 	font-weight: bold;
+	padding: 13px;
+	margin: -13px;
 }
 #body-login #submit.login { margin-right:7px; } /* quick fix for log in button not being aligned with input fields, should be properly fixed by input field width later */
 
@@ -431,9 +440,14 @@ label.infield { cursor:text !important; top:1.05em; left:.85em; }
 	padding: 10px;
 	color: #d2322d;
 	background-color: rgba(0,0,0,.3);
-	text-align: center;
+	text-align: left;
 	border-radius: 3px;
 	cursor: default;
+}
+
+#body-login .update {
+	text-align: center;
+	color: #ccc;
 }
 
 #body-user .warning, #body-settings .warning {
@@ -466,7 +480,6 @@ label.infield { cursor:text !important; top:1.05em; left:.85em; }
 }
 #body-login .warning {
 	margin: 0 7px 5px;
-	font-weight: bold;
 }
 #body-login .warning legend {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
@@ -746,20 +759,27 @@ a.bookmarklet { background-color:#ddd; border:1px solid #ccc; padding:5px;paddin
 span.ui-icon {float: left; margin: 3px 7px 30px 0;}
 
 .loading { background: url('../img/loading.gif') no-repeat center; cursor: wait; }
+.loading-small { background: url('../img/loading-small.gif') no-repeat center; cursor: wait; }
 .move2trash { /* decrease spinner size */
 	width: 16px;
 	height: 16px;
 }
 
-
-/* ---- CATEGORIES ---- */
-#categoryform .scrollarea { position:absolute; left:10px; top:10px; right:10px; bottom:50px; overflow:auto; border:1px solid #ddd; background:#f8f8f8; }
-#categoryform .bottombuttons { position:absolute; bottom:10px;}
-#categoryform .bottombuttons * { float:left;}
-/*#categorylist { border:1px solid #ddd;}*/
-#categorylist li { background:#f8f8f8; padding:.3em .8em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; -webkit-transition:background-color 500ms; -moz-transition:background-color 500ms; -o-transition:background-color 500ms; transition:background-color 500ms; }
-#categorylist li:hover, #categorylist li:active { background:#eee; }
-#category_addinput { width:10em; }
+/* ---- TAGS ---- */
+#tagsdialog .content {
+	width: 100%; height: 280px;
+}
+#tagsdialog .scrollarea {
+	overflow:auto; border:1px solid #ddd;
+	width: 100%; height: 240px;
+}
+#tagsdialog .bottombuttons {
+	 width: 100%; height: 30px;
+}
+#tagsdialog .bottombuttons * { float:left;}
+#tagsdialog .taglist li { background:#f8f8f8; padding:.3em .8em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; -webkit-transition:background-color 500ms; -moz-transition:background-color 500ms; -o-transition:background-color 500ms; transition:background-color 500ms; }
+#tagsdialog .taglist li:hover, #tagsdialog .taglist li:active { background:#eee; }
+#tagsdialog .addinput { width: 90%; clear: both; }
 
 /* ---- APP SETTINGS ---- */
 .popup { background-color:white; border-radius:10px 10px 10px 10px; box-shadow:0 0 20px #888; color:#333; padding:10px; position:fixed !important; z-index:100; }
@@ -789,7 +809,8 @@ div.crumb {
 	background: url('../img/breadcrumb.svg') no-repeat right center;
 	height: 44px;
 }
-div.crumb a {
+div.crumb a,
+div.crumb span {
 	position: relative;
 	top: 12px;
 	padding: 14px 24px 14px 17px;

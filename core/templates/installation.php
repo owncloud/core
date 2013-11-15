@@ -39,7 +39,7 @@
 		<p><?php p($l->t('Your data directory and files are probably accessible from the internet because the .htaccess file does not work.'));?><br>
 		<?php print_unescaped($l->t(
 			'For information how to properly configure your server, please see the <a href="%s" target="_blank">documentation</a>.',
-			$theme->getDocBaseUrl().'/server/5.0/admin_manual/installation.html'
+			link_to_docs('admin-install')
 		)); ?></p>
 	</fieldset>
 	<?php endif; ?>
@@ -61,13 +61,13 @@
 		</p>
 	</fieldset>
 
-	<?php if(!$_['directoryIsSet'] OR !$_['dbIsSet']): ?>
+	<?php if(!$_['directoryIsSet'] OR !$_['dbIsSet'] OR count($_['errors']) > 0): ?>
 	<fieldset id="advancedHeader">
 		<legend><a id="showAdvanced"><?php p($l->t( 'Advanced' )); ?> <img class="svg" src="<?php print_unescaped(image_path('', 'actions/caret.svg')); ?>" /></a></legend>
 	</fieldset>
 	<?php endif; ?>
 
-	<?php if(!$_['directoryIsSet']): ?>
+	<?php if(!$_['directoryIsSet'] OR count($_['errors']) > 0): ?>
 	<fieldset id="datadirField">
 		<div id="datadirContent">
 			<label for="directory"><?php p($l->t( 'Data folder' )); ?></label>
@@ -78,7 +78,7 @@
 	</fieldset>
 	<?php endif; ?>
 
-	<?php if(!$_['dbIsSet']): ?>
+	<?php if(!$_['dbIsSet'] OR count($_['errors']) > 0): ?>
 	<fieldset id='databaseField'>
 		<?php if($_['hasMySQL'] or $_['hasPostgreSQL'] or $_['hasOracle'] or $_['hasMSSQL'])
 			$hasOtherDB = true; else $hasOtherDB =false; //other than SQLite ?>

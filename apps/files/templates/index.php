@@ -1,7 +1,6 @@
-<!--[if IE 8]><style>input[type="checkbox"]{padding:0;}table td{position:static !important;}</style><![endif]-->
 <div id="controls">
 	<?php print_unescaped($_['breadcrumb']); ?>
-		<div class="actions creatable <?php if (!$_['isCreatable']):?>hidden<?php endif; ?> <?php if (isset($_['files']) and count($_['files'])==0):?>emptycontent<?php endif; ?>">
+		<div class="actions creatable <?php if (!$_['isCreatable']):?>hidden<?php endif; ?>">
 			<div id="new" class="button">
 				<a><?php p($l->t('New'));?></a>
 				<ul>
@@ -38,19 +37,19 @@
 		</div>
 		<div id="file_action_panel"></div>
 		<div class="notCreatable notPublic <?php if ($_['isCreatable'] or $_['isPublic'] ):?>hidden<?php endif; ?>">
-			<div class="actions"><input type="button" disabled value="<?php p($l->t('You don’t have write permissions here.'))?>"></div>
+			<?php p($l->t('You don’t have permission to upload or create files here'))?>
 		</div>
 	<input type="hidden" name="permissions" value="<?php p($_['permissions']); ?>" id="permissions">
 </div>
 
-<div id="emptycontent" <?php if (!isset($_['files']) or !$_['isCreatable'] or count($_['files']) > 0 or $_['ajaxLoad']):?>class="hidden"<?php endif; ?>><?php p($l->t('Nothing in here. Upload something!'))?></div>
+<div id="emptycontent" <?php if (!$_['emptyContent']):?>class="hidden"<?php endif; ?>><?php p($l->t('Nothing in here. Upload something!'))?></div>
 
 <input type="hidden" id="disableSharing" data-status="<?php p($_['disableSharing']); ?>"></input>
 
 <table id="filestable" data-allow-public-upload="<?php p($_['publicUploadEnabled'])?>" data-preview-x="36" data-preview-y="36">
 	<thead>
 		<tr>
-			<th id='headerName'>
+			<th <?php if (!$_['fileHeader']):?>class="hidden"<?php endif; ?> id='headerName'>
 				<div id="headerName-container">
 					<input type="checkbox" id="select_all" />
 					<label for="select_all"></label>
@@ -66,8 +65,8 @@
 					</span>
 				</div>
 			</th>
-			<th id="headerSize"><?php p($l->t('Size')); ?></th>
-			<th id="headerDate">
+			<th <?php if (!$_['fileHeader']):?>class="hidden"<?php endif; ?> id="headerSize"><?php p($l->t('Size')); ?></th>
+			<th <?php if (!$_['fileHeader']):?>class="hidden"<?php endif; ?> id="headerDate">
 				<span id="modified"><?php p($l->t( 'Modified' )); ?></span>
 				<?php if ($_['permissions'] & OCP\PERMISSION_DELETE): ?>
 <!--					NOTE: Temporary fix to allow unsharing of files in root of Shared folder -->
@@ -115,3 +114,5 @@
 <input type="hidden" name="encryptedFiles" id="encryptedFiles" value="<?php $_['encryptedFiles'] ? p('1') : p('0'); ?>" />
 <input type="hidden" name="encryptedInitStatus" id="encryptionInitStatus" value="<?php p($_['encryptionInitStatus']) ?>" />
 <input type="hidden" name="mailNotificationEnabled" id="mailNotificationEnabled" value="<?php p($_['mailNotificationEnabled']) ?>" />
+<input type="hidden" name="allowShareWithLink" id="allowShareWithLink" value="<?php p($_['allowShareWithLink']) ?>" />
+

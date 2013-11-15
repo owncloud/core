@@ -5,6 +5,7 @@ namespace OC;
 use OC\AppFramework\Http\Request;
 use OC\AppFramework\Utility\SimpleContainer;
 use OC\Cache\UserCache;
+use OC\DB\ConnectionWrapper;
 use OC\Files\Node\Root;
 use OC\Files\View;
 use OCP\IServerContainer;
@@ -34,7 +35,6 @@ class Server extends SimpleContainer implements IServerContainer {
 				$requesttoken = false;
 			}
 
-
 			return new Request(
 				array(
 					'get' => $_GET,
@@ -46,7 +46,6 @@ class Server extends SimpleContainer implements IServerContainer {
 					'method' => (isset($_SERVER) && isset($_SERVER['REQUEST_METHOD']))
 						? $_SERVER['REQUEST_METHOD']
 						: null,
-					'params' => $params,
 					'urlParams' => $urlParams,
 					'requesttoken' => $requesttoken,
 				)
@@ -129,6 +128,9 @@ class Server extends SimpleContainer implements IServerContainer {
 		$this->registerService('UserCache', function($c) {
 			return new UserCache();
 		});
+		$this->registerService('ActivityManager', function($c) {
+			return new ActivityManager();
+		});
 		$this->registerService('AppManager', function($c) {
 			return new \OC\App\Manager(\OC::$APPSROOTS);
 		});
@@ -138,7 +140,6 @@ class Server extends SimpleContainer implements IServerContainer {
 				\OC_App::doUpgrade($app, $appName, $installedVersion, $currentVersion);
 			});
 			return $loader;
-
 		});
 	}
 
@@ -317,6 +318,15 @@ class Server extends SimpleContainer implements IServerContainer {
 	 * @return \OCP\IDBConnection
 	 */
 	function getDatabaseConnection() {
-		return \OC_DB::getConnection();
+		return new ConnectionWrapper(\OC_DB::getConnection());
+	}
+
+	/**
+	 * Returns the activity manager
+	 *
+	 * @return \OCP\Activity\IManager
+	 */
+	function getActivityManager() {
+		return $this->query('ActivityManager');
 	}
 }

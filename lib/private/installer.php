@@ -181,7 +181,11 @@ class OC_Installer{
 
 		//install the database
 		if(is_file($basedir.'/appinfo/database.xml')) {
-			OC_DB::createDbFromStructure($basedir.'/appinfo/database.xml');
+			if (OC_Appconfig::getValue($info['id'], 'installed_version') === null) {
+				OC_DB::createDbFromStructure($basedir.'/appinfo/database.xml');
+			} else {
+				OC_DB::updateDbFromStructure($basedir.'/appinfo/database.xml');
+			}
 		}
 
 		//run appinfo/install.php
@@ -259,7 +263,7 @@ class OC_Installer{
 	/**
 	 * @brief Check if an update for the app is available
 	 * @param $name name of the application
-	 * @returns empty string is no update available or the version number of the update
+	 * @return boolean false or the version number of the update
 	 *
 	 * The function will check if an update for a version is available
 	 */
@@ -275,11 +279,11 @@ class OC_Installer{
 				return($ocsversion);
 
 			}else{
-				return('');
+				return false;
 			}
 
 		}else{
-			return('');
+			return false;
 		}
 
 	}

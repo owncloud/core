@@ -1,5 +1,4 @@
 <?php
-
 /**
  * ownCloud - App Framework
  *
@@ -24,6 +23,7 @@
 
 namespace OCP\AppFramework\Http;
 
+use OCP\AppFramework\Http;
 
 /**
  * A renderer for JSON calls

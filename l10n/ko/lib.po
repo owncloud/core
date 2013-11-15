@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-10-06 19:07-0400\n"
-"PO-Revision-Date: 2013-10-02 13:20+0000\n"
-"Last-Translator: smallsnail <bjh13579@gmail.com>\n"
+"POT-Creation-Date: 2013-10-29 07:28-0400\n"
+"PO-Revision-Date: 2013-10-28 10:45+0000\n"
+"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Korean (http://www.transifex.com/projects/p/owncloud/language/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,51 +19,47 @@ msgstr ""
 "Language: ko\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: private/app.php:237
+#: private/app.php:243
 #, php-format
 msgid ""
 "App \"%s\" can't be installed because it is not compatible with this version"
 " of ownCloud."
 msgstr "현재 ownCloud 버전과 호환되지 않기 때문에 \"%s\" 앱을 설치할 수 없습니다."
 
-#: private/app.php:248
+#: private/app.php:255
 msgid "No app name specified"
 msgstr "앱 이름이 지정되지 않았습니다."
 
-#: private/app.php:352
+#: private/app.php:360
 msgid "Help"
 msgstr "도움말"
 
-#: private/app.php:365
+#: private/app.php:373
 msgid "Personal"
 msgstr "개인"
 
-#: private/app.php:376
+#: private/app.php:384
 msgid "Settings"
 msgstr "설정"
 
-#: private/app.php:388
+#: private/app.php:396
 msgid "Users"
 msgstr "사용자"
 
-#: private/app.php:401
+#: private/app.php:409
 msgid "Admin"
 msgstr "관리자"
 
-#: private/app.php:832
+#: private/app.php:873
 #, php-format
 msgid "Failed to upgrade \"%s\"."
 msgstr "\"%s\" 업그레이드에 실패했습니다."
 
-#: private/avatar.php:56
-msgid "Custom profile pictures don't work with encryption yet"
-msgstr "개개인의 프로필 사진은 아직은 암호화 되지 않습니다"
-
-#: private/avatar.php:64
+#: private/avatar.php:60
 msgid "Unknown filetype"
 msgstr "알수없는 파일형식"
 
-#: private/avatar.php:69
+#: private/avatar.php:65
 msgid "Invalid image"
 msgstr "잘못된 그림"
 
@@ -290,50 +286,50 @@ msgstr "<a href='%s'>설치 가이드</a>를 다시 한 번 확인하십시오."
 msgid "Could not find category \"%s\""
 msgstr "분류 \"%s\"을(를) 찾을 수 없습니다."
 
-#: private/template/functions.php:122
+#: private/template/functions.php:130
 msgid "seconds ago"
 msgstr "초 전"
 
-#: private/template/functions.php:123
+#: private/template/functions.php:131
 msgid "%n minute ago"
 msgid_plural "%n minutes ago"
 msgstr[0] "%n분 전 "
 
-#: private/template/functions.php:124
+#: private/template/functions.php:132
 msgid "%n hour ago"
 msgid_plural "%n hours ago"
 msgstr[0] "%n시간 전 "
 
-#: private/template/functions.php:125
+#: private/template/functions.php:133
 msgid "today"
 msgstr "오늘"
 
-#: private/template/functions.php:126
+#: private/template/functions.php:134
 msgid "yesterday"
 msgstr "어제"
 
-#: private/template/functions.php:128
+#: private/template/functions.php:136
 msgid "%n day go"
 msgid_plural "%n days ago"
 msgstr[0] "%n일 전 "
 
-#: private/template/functions.php:130
+#: private/template/functions.php:138
 msgid "last month"
 msgstr "지난 달"
 
-#: private/template/functions.php:131
+#: private/template/functions.php:139
 msgid "%n month ago"
 msgid_plural "%n months ago"
 msgstr[0] "%n달 전 "
 
-#: private/template/functions.php:133
+#: private/template/functions.php:141
 msgid "last year"
 msgstr "작년"
 
-#: private/template/functions.php:134
+#: private/template/functions.php:142
 msgid "years ago"
 msgstr "년 전"
 
-#: private/template.php:297
+#: private/template.php:297 public/util.php:103
 msgid "Caused by:"
 msgstr "원인: "

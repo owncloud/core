@@ -45,6 +45,7 @@ abstract class OC_Connector_Sabre_Node implements Sabre_DAV_INode, Sabre_DAV_IPr
 	 * @var string
 	 */
 	protected $path;
+
 	/**
 	 * node fileinfo cache
 	 * @var array
@@ -147,12 +148,6 @@ abstract class OC_Connector_Sabre_Node implements Sabre_DAV_INode, Sabre_DAV_IPr
 	 *  Even if the modification time is set to a custom value the access time is set to now.
 	 */
 	public function touch($mtime) {
-
-		// touch is only allowed if the update privilege is granted
-		if (!\OC\Files\Filesystem::isUpdatable($this->path)) {
-			throw new \Sabre_DAV_Exception_Forbidden();
-		}
-
 		\OC\Files\Filesystem::touch($this->path, $mtime);
 	}
 
@@ -197,6 +192,17 @@ abstract class OC_Connector_Sabre_Node implements Sabre_DAV_INode, Sabre_DAV_IPr
 	}
 
 	/**
+	 * removes all properties for this node and user
+	 */
+	public function removeProperties() {
+		$query = OC_DB::prepare( 'DELETE FROM `*PREFIX*properties`'
+		.' WHERE `userid` = ? AND `propertypath` = ?' );
+		$query->execute( array( OC_User::getUser(), $this->path));
+
+		$this->setPropertyCache(null);
+	}
+
+	/**
 	 * @brief Returns a list of properties for this nodes.;
 	 * @param array $properties
 	 * @return array
@@ -206,6 +212,7 @@ abstract class OC_Connector_Sabre_Node implements Sabre_DAV_INode, Sabre_DAV_IPr
 	 * properties should be returned
 	 */
 	public function getProperties($properties) {
+
 		if (is_null($this->property_cache)) {
 			$sql = 'SELECT * FROM `*PREFIX*properties` WHERE `userid` = ? AND `propertypath` = ?';
 			$result = OC_DB::executeAudited( $sql, array( OC_User::getUser(), $this->path ) );
@@ -231,8 +238,11 @@ abstract class OC_Connector_Sabre_Node implements Sabre_DAV_INode, Sabre_DAV_IPr
 
 		$props = array();
 		foreach($properties as $property) {
-			if (isset($this->property_cache[$property])) $props[$property] = $this->property_cache[$property];
+			if (isset($this->property_cache[$property])) {
+				$props[$property] = $this->property_cache[$property];
+			}
 		}
+
 		return $props;
 	}
 
@@ -254,5 +264,21 @@ abstract class OC_Connector_Sabre_Node implements Sabre_DAV_INode, Sabre_DAV_IPr
 			$this->fileView = \OC\Files\Filesystem::getView();
 		}
 		return $this->fileView;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getFileId()
+	{
+		$this->getFileinfoCache();
+
+		if (isset($this->fileinfo_cache['fileid'])) {
+			$instanceId = OC_Util::getInstanceId();
+			$id = sprintf('%08d', $this->fileinfo_cache['fileid']);
+			return $id . $instanceId;
+		}
+
+		return null;
 	}
 }

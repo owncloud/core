@@ -28,7 +28,7 @@ function determineIcon($file, $sharingRoot, $sharingToken) {
 	$relativePath = substr($file['path'], 6);
 	$relativePath = substr($relativePath, strlen($sharingRoot));
 	if($file['isPreviewAvailable']) {
-		return OCP\publicPreview_icon($relativePath, $sharingToken);
+		return OCP\publicPreview_icon($relativePath, $sharingToken) . '&c=' . $file['etag'];
 	}
 	return OCP\mimetype_icon($file['mimetype']);
 }
@@ -77,6 +77,7 @@ if (isset($path)) {
 				$hasher = new PasswordHash(8, $forcePortable);
 				if (!($hasher->CheckPassword($password.OC_Config::getValue('passwordsalt', ''),
 											 $linkItem['share_with']))) {
+					OCP\Util::addStyle('files_sharing', 'authenticate');
 					$tmpl = new OCP\Template('files_sharing', 'authenticate', 'guest');
 					$tmpl->assign('URL', $url);
 					$tmpl->assign('wrongpw', true);
@@ -101,6 +102,7 @@ if (isset($path)) {
 				|| \OC::$session->get('public_link_authenticated') !== $linkItem['id']
 			) {
 				// Prompt for password
+				OCP\Util::addStyle('files_sharing', 'authenticate');
 				$tmpl = new OCP\Template('files_sharing', 'authenticate', 'guest');
 				$tmpl->assign('URL', $url);
 				$tmpl->printPage();
@@ -232,8 +234,9 @@ if (isset($path)) {
 			$folder->assign('allowZipDownload', intval(OCP\Config::getSystemValue('allowZipDownload', true)));
 			$folder->assign('usedSpacePercent', 0);
 			$tmpl->assign('folder', $folder->fetchPage());
+			$maxInputFileSize = OCP\Config::getSystemValue('maxZipInputSize', OCP\Util::computerFileSize('800 MB'));
 			$allowZip = OCP\Config::getSystemValue('allowZipDownload', true)
-						&& $totalSize <= OCP\Config::getSystemValue('maxZipInputSize', OCP\Util::computerFileSize('800 MB'));
+						&& ( $maxInputFileSize === 0 || $totalSize <= $maxInputFileSize);
 			$tmpl->assign('allowZipDownload', intval($allowZip));
 			$tmpl->assign('downloadURL',
 				OCP\Util::linkToPublic('files') . $urlLinkIdentifiers . '&download&path=' . urlencode($getPath));

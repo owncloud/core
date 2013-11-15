@@ -1,32 +1,41 @@
 <?php
 /**
-* ownCloud
-*
-* @author Michael Gapczynski
-* @copyright 2012 Michael Gapczynski mtgap@owncloud.com
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU AFFERO GENERAL PUBLIC LICENSE for more details.
-*
-* You should have received a copy of the GNU Affero General Public
-* License along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * ownCloud
+ *
+ * @author Michael Gapczynski
+ * @copyright 2012 Michael Gapczynski mtgap@owncloud.com
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * Public interface of ownCloud for apps to use.
+ * Share Class
+ *
+ */
+
+// use OCP namespace for all classes that are considered public.
+// This means that they should be used by apps instead of the internal ownCloud classes
 namespace OCP;
 
 /**
-* This class provides the ability for apps to share their content between users.
-* Apps must create a backend class that implements OCP\Share_Backend and register it with this class.
-*
-* It provides the following hooks:
-*  - post_shared
-*/
+ * This class provides the ability for apps to share their content between users.
+ * Apps must create a backend class that implements OCP\Share_Backend and register it with this class.
+ *
+ * It provides the following hooks:
+ *  - post_shared
+ */
 class Share {
 
 	const SHARE_TYPE_USER = 0;
@@ -37,19 +46,19 @@ class Share {
 	const SHARE_TYPE_REMOTE = 6;
 
 	/** CRUDS permissions (Create, Read, Update, Delete, Share) using a bitmask
-	* Construct permissions for share() and setPermissions with Or (|) e.g.
-	* Give user read and update permissions: PERMISSION_READ | PERMISSION_UPDATE
-	*
-	* Check if permission is granted with And (&) e.g. Check if delete is
-	* granted: if ($permissions & PERMISSION_DELETE)
-	*
-	* Remove permissions with And (&) and Not (~) e.g. Remove the update
-	* permission: $permissions &= ~PERMISSION_UPDATE
-	*
-	* Apps are required to handle permissions on their own, this class only
-	* stores and manages the permissions of shares
-	* @see lib/public/constants.php
-	*/
+	 * Construct permissions for share() and setPermissions with Or (|) e.g.
+	 * Give user read and update permissions: PERMISSION_READ | PERMISSION_UPDATE
+	 *
+	 * Check if permission is granted with And (&) e.g. Check if delete is
+	 * granted: if ($permissions & PERMISSION_DELETE)
+	 *
+	 * Remove permissions with And (&) and Not (~) e.g. Remove the update
+	 * permission: $permissions &= ~PERMISSION_UPDATE
+	 *
+	 * Apps are required to handle permissions on their own, this class only
+	 * stores and manages the permissions of shares
+	 * @see lib/public/constants.php
+	 */
 
 	const FORMAT_NONE = -1;
 	const FORMAT_STATUSES = -2;
@@ -64,13 +73,13 @@ class Share {
 	private static $isResharingAllowed;
 
 	/**
-	* @brief Register a sharing backend class that implements OCP\Share_Backend for an item type
-	* @param string Item type
-	* @param string Backend class
-	* @param string (optional) Depends on item type
-	* @param array (optional) List of supported file extensions if this item type depends on files
-	* @return Returns true if backend is registered or false if error
-	*/
+	 * Register a sharing backend class that implements OCP\Share_Backend for an item type
+	 * @param string Item type
+	 * @param string Backend class
+	 * @param string (optional) Depends on item type
+	 * @param array (optional) List of supported file extensions if this item type depends on files
+	 * @return Returns true if backend is registered or false if error
+	 */
 	public static function registerBackend($itemType, $class, $collectionOf = null, $supportedFileExtensions = null) {
 		if (self::isEnabled()) {
 			if (!isset(self::$backendTypes[$itemType])) {
@@ -94,12 +103,11 @@ class Share {
 	}
 
 	/**
-	* @brief Check if the Share API is enabled
-	* @return Returns true if enabled or false
-	*
-	* The Share API is enabled by default if not configured
-	*
-	*/
+	 * Check if the Share API is enabled
+	 * @return Returns true if enabled or false
+	 *
+	 * The Share API is enabled by default if not configured
+	 */
 	public static function isEnabled() {
 		if (\OC_Appconfig::getValue('core', 'shareapi_enabled', 'yes') == 'yes') {
 			return true;
@@ -108,9 +116,10 @@ class Share {
 	}
 
 	/**
-	* @brief Prepare a path to be passed to DB as file_target
-	* @return string Prepared path
-	*/
+	 * Prepare a path to be passed to DB as file_target
+	 * @param string $path path
+	 * @return string Prepared path
+	 */
 	public static function prepFileTarget( $path ) {
 
 		// Paths in DB are stored with leading slashes, so add one if necessary
@@ -125,14 +134,14 @@ class Share {
 	}
 
 	/**
-	* @brief Find which users can access a shared item
-	* @param $path to the file
-	* @param $user owner of the file
-	* @param include owner to the list of users with access to the file
-	* @return array
-	* @note $path needs to be relative to user data dir, e.g. 'file.txt'
-	*       not '/admin/data/file.txt'
-	*/
+	 * Find which users can access a shared item
+	 * @param $path to the file
+	 * @param $user owner of the file
+	 * @param include owner to the list of users with access to the file
+	 * @return array
+	 * @note $path needs to be relative to user data dir, e.g. 'file.txt'
+	 *       not '/admin/data/file.txt'
+	 */
 	public static function getUsersSharingFile($path, $user, $includeOwner = false) {
 
 		$shares = array();
@@ -155,13 +164,13 @@ class Share {
 
 		while ($source !== -1) {
 
-			// Fetch all shares of this file path from DB
+			// Fetch all shares with another user
 			$query = \OC_DB::prepare(
 				'SELECT `share_with`
 				FROM
 				`*PREFIX*share`
 				WHERE
-				`item_source` = ? AND `share_type` = ?'
+				`item_source` = ? AND `share_type` = ? AND `item_type` IN (\'file\', \'folder\')'
 			);
 
 			$result = $query->execute(array($source, self::SHARE_TYPE_USER));
@@ -180,7 +189,7 @@ class Share {
 				FROM
 				`*PREFIX*share`
 				WHERE
-				`item_source` = ? AND `share_type` = ?'
+				`item_source` = ? AND `share_type` = ? AND `item_type` IN (\'file\', \'folder\')'
 			);
 
 			$result = $query->execute(array($source, self::SHARE_TYPE_GROUP));
@@ -201,7 +210,7 @@ class Share {
 					FROM
 					`*PREFIX*share`
 					WHERE
-					`item_source` = ? AND `share_type` = ?'
+					`item_source` = ? AND `share_type` = ? AND `item_type` IN (\'file\', \'folder\')'
 				);
 
 				$result = $query->execute(array($source, self::SHARE_TYPE_LINK));
@@ -232,12 +241,12 @@ class Share {
 	}
 
 	/**
-	* @brief Get the items of item type shared with the current user
-	* @param string Item type
-	* @param int Format (optional) Format type must be defined by the backend
-	* @param int Number of items to return (optional) Returns all by default
-	* @return Return depends on format
-	*/
+	 * Get the items of item type shared with the current user
+	 * @param string Item type
+	 * @param int Format (optional) Format type must be defined by the backend
+	 * @param int Number of items to return (optional) Returns all by default
+	 * @return Return depends on format
+	 */
 	public static function getItemsSharedWith($itemType, $format = self::FORMAT_NONE,
 		$parameters = null, $limit = -1, $includeCollections = false) {
 		return self::getItems($itemType, null, self::$shareTypeUserAndGroups, \OC_User::getUser(), null, $format,
@@ -245,12 +254,12 @@ class Share {
 	}
 
 	/**
-	* @brief Get the item of item type shared with the current user
-	* @param string $itemType
-	* @param string $ItemTarget
-	* @param int $format (optional) Format type must be defined by the backend
-	* @return Return depends on format
-	*/
+	 * Get the item of item type shared with the current user
+	 * @param string $itemType
+	 * @param string $ItemTarget
+	 * @param int $format (optional) Format type must be defined by the backend
+	 * @return Return depends on format
+	 */
 	public static function getItemSharedWith($itemType, $itemTarget, $format = self::FORMAT_NONE,
 		$parameters = null, $includeCollections = false) {
 		return self::getItems($itemType, $itemTarget, self::$shareTypeUserAndGroups, \OC_User::getUser(), null, $format,
@@ -258,7 +267,7 @@ class Share {
 	}
 
 	/**
-	 * @brief Get the item of item type shared with a given user by source
+	 * Get the item of item type shared with a given user by source
 	 * @param string $ItemType
 	 * @param string $ItemSource
 	 * @param string $user User user to whom the item was shared
@@ -307,12 +316,14 @@ class Share {
 	}
 
 	/**
-	* @brief Get the item of item type shared with the current user by source
-	* @param string Item type
-	* @param string Item source
-	* @param int Format (optional) Format type must be defined by the backend
-	* @return Return depends on format
-	*/
+	 * Get the item of item type shared with the current user by source
+	 * @param string Item type
+	 * @param string Item source
+	 * @param int Format (optional) Format type must be defined by the backend
+	 * @param mixed Parameters
+	 * @param bool include collections
+	 * @return Return depends on format
+	 */
 	public static function getItemSharedWithBySource($itemType, $itemSource, $format = self::FORMAT_NONE,
 		$parameters = null, $includeCollections = false) {
 		return self::getItems($itemType, $itemSource, self::$shareTypeUserAndGroups, \OC_User::getUser(), null, $format,
@@ -320,19 +331,19 @@ class Share {
 	}
 
 	/**
-	* @brief Get the item of item type shared by a link
-	* @param string Item type
-	* @param string Item source
-	* @param string Owner of link
-	* @return Item
-	*/
+	 * Get the item of item type shared by a link
+	 * @param string Item type
+	 * @param string Item source
+	 * @param string Owner of link
+	 * @return Item
+	 */
 	public static function getItemSharedWithByLink($itemType, $itemSource, $uidOwner) {
 		return self::getItems($itemType, $itemSource, self::SHARE_TYPE_LINK, null, $uidOwner, self::FORMAT_NONE,
 			null, 1);
 	}
 
 	/**
-	 * @brief Get the item shared by a token
+	 * Get the item shared by a token
 	 * @param string token
 	 * @return Item
 	 */
@@ -343,21 +354,14 @@ class Share {
 			\OC_Log::write('OCP\Share', \OC_DB::getErrorMessage($result) . ', token=' . $token, \OC_Log::ERROR);
 		}
 		$row = $result->fetchRow();
-
-		if (!empty($row['expiration'])) {
-			$now = new \DateTime();
-			$expirationDate = new \DateTime($row['expiration'], new \DateTimeZone('UTC'));
-			if ($now > $expirationDate) {
-				self::delete($row['id']);
-				return false;
-			}
+		if (self::expireItem($row)) {
+			return false;
 		}
-
 		return $row;
 	}
 
 	/**
-	 * @brief resolves reshares down to the last real share
+	 * resolves reshares down to the last real share
 	 * @param $linkItem
 	 * @return $fileOwner
 	 */
@@ -380,12 +384,14 @@ class Share {
 
 
 	/**
-	* @brief Get the shared items of item type owned by the current user
-	* @param string Item type
-	* @param int Format (optional) Format type must be defined by the backend
-	* @param int Number of items to return (optional) Returns all by default
-	* @return Return depends on format
-	*/
+	 * Get the shared items of item type owned by the current user
+	 * @param string Item type
+	 * @param int Format (optional) Format type must be defined by the backend
+	 * @param mixed Parameters
+	 * @param int Number of items to return (optional) Returns all by default
+	 * @param bool include collections
+	 * @return Return depends on format
+	 */
 	public static function getItemsShared($itemType, $format = self::FORMAT_NONE, $parameters = null,
 		$limit = -1, $includeCollections = false) {
 		return self::getItems($itemType, null, null, null, \OC_User::getUser(), $format,
@@ -393,12 +399,14 @@ class Share {
 	}
 
 	/**
-	* @brief Get the shared item of item type owned by the current user
-	* @param string Item type
-	* @param string Item source
-	* @param int Format (optional) Format type must be defined by the backend
-	* @return Return depends on format
-	*/
+	 * Get the shared item of item type owned by the current user
+	 * @param string Item type
+	 * @param string Item source
+	 * @param int Format (optional) Format type must be defined by the backend
+	 * @param mixed Parameters
+	 * @param bool include collections
+	 * @return Return depends on format
+	 */
 	public static function getItemShared($itemType, $itemSource, $format = self::FORMAT_NONE,
 	                                     $parameters = null, $includeCollections = false) {
 		return self::getItems($itemType, $itemSource, null, null, \OC_User::getUser(), $format,
@@ -406,13 +414,13 @@ class Share {
 	}
 
 	/**
-	* Get all users an item is shared with
-	* @param string Item type
-	* @param string Item source
-	* @param string Owner
-	* @param bool Include collections
-	* @return Return array of users
-	*/
+	 * Get all users an item is shared with
+	 * @param string Item type
+	 * @param string Item source
+	 * @param string Owner
+	 * @param bool Include collections
+	 * @return Return array of users
+	 */
 	public static function getUsersItemShared($itemType, $itemSource, $uidOwner, $includeCollections = false) {
 		$users = array();
 		$items = self::getItems($itemType, $itemSource, null, null, $uidOwner, self::FORMAT_NONE, null, -1, $includeCollections);
@@ -429,33 +437,45 @@ class Share {
 	}
 
 	/**
-	* @brief Share an item with a user, group, or via private link
-	* @param string Item type
-	* @param string Item source
-	* @param int SHARE_TYPE_USER, SHARE_TYPE_GROUP, or SHARE_TYPE_LINK
-	* @param string User or group the item is being shared with
-	* @param int CRUDS permissions
-	* @return bool|string Returns true on success or false on failure, Returns token on success for links
-	*/
-	public static function shareItem($itemType, $itemSource, $shareType, $shareWith, $permissions) {
+	 * Share an item with a user, group, or via private link
+	 * @param string $itemType
+	 * @param string $itemSource
+	 * @param int $shareType SHARE_TYPE_USER, SHARE_TYPE_GROUP, or SHARE_TYPE_LINK
+	 * @param string $shareWith User or group the item is being shared with
+	 * @param int $permissions CRUDS
+	 * @param null $itemSourceName
+	 * @throws \Exception
+	 * @internal param \OCP\Item $string type
+	 * @internal param \OCP\Item $string source
+	 * @internal param \OCP\SHARE_TYPE_USER $int , SHARE_TYPE_GROUP, or SHARE_TYPE_LINK
+	 * @internal param \OCP\User $string or group the item is being shared with
+	 * @internal param \OCP\CRUDS $int permissions
+	 * @return bool|string Returns true on success or false on failure, Returns token on success for links
+	 */
+	public static function shareItem($itemType, $itemSource, $shareType, $shareWith, $permissions, $itemSourceName = null) {
 		$uidOwner = \OC_User::getUser();
 		$sharingPolicy = \OC_Appconfig::getValue('core', 'shareapi_share_policy', 'global');
+
+		if (is_null($itemSourceName)) {
+			$itemSourceName = $itemSource;
+		}
+
 		// Verify share type and sharing conditions are met
 		if ($shareType === self::SHARE_TYPE_USER) {
 			if ($shareWith == $uidOwner) {
-				$message = 'Sharing '.$itemSource.' failed, because the user '.$shareWith.' is the item owner';
+				$message = 'Sharing '.$itemSourceName.' failed, because the user '.$shareWith.' is the item owner';
 				\OC_Log::write('OCP\Share', $message, \OC_Log::ERROR);
 				throw new \Exception($message);
 			}
 			if (!\OC_User::userExists($shareWith)) {
-				$message = 'Sharing '.$itemSource.' failed, because the user '.$shareWith.' does not exist';
+				$message = 'Sharing '.$itemSourceName.' failed, because the user '.$shareWith.' does not exist';
 				\OC_Log::write('OCP\Share', $message, \OC_Log::ERROR);
 				throw new \Exception($message);
 			}
 			if ($sharingPolicy == 'groups_only') {
 				$inGroup = array_intersect(\OC_Group::getUserGroups($uidOwner), \OC_Group::getUserGroups($shareWith));
 				if (empty($inGroup)) {
-					$message = 'Sharing '.$itemSource.' failed, because the user '
+					$message = 'Sharing '.$itemSourceName.' failed, because the user '
 						.$shareWith.' is not a member of any groups that '.$uidOwner.' is a member of';
 					\OC_Log::write('OCP\Share', $message, \OC_Log::ERROR);
 					throw new \Exception($message);
@@ -468,19 +488,19 @@ class Share {
 				// owner and is not a user share, this use case is for increasing
 				// permissions for a specific user
 				if ($checkExists['uid_owner'] != $uidOwner || $checkExists['share_type'] == $shareType) {
-					$message = 'Sharing '.$itemSource.' failed, because this item is already shared with '.$shareWith;
+					$message = 'Sharing '.$itemSourceName.' failed, because this item is already shared with '.$shareWith;
 					\OC_Log::write('OCP\Share', $message, \OC_Log::ERROR);
 					throw new \Exception($message);
 				}
 			}
 		} else if ($shareType === self::SHARE_TYPE_GROUP) {
 			if (!\OC_Group::groupExists($shareWith)) {
-				$message = 'Sharing '.$itemSource.' failed, because the group '.$shareWith.' does not exist';
+				$message = 'Sharing '.$itemSourceName.' failed, because the group '.$shareWith.' does not exist';
 				\OC_Log::write('OCP\Share', $message, \OC_Log::ERROR);
 				throw new \Exception($message);
 			}
 			if ($sharingPolicy == 'groups_only' && !\OC_Group::inGroup($uidOwner, $shareWith)) {
-				$message = 'Sharing '.$itemSource.' failed, because '
+				$message = 'Sharing '.$itemSourceName.' failed, because '
 					.$uidOwner.' is not a member of the group '.$shareWith;
 				\OC_Log::write('OCP\Share', $message, \OC_Log::ERROR);
 				throw new \Exception($message);
@@ -493,7 +513,7 @@ class Share {
 				// owner and is not a group share, this use case is for increasing
 				// permissions for a specific user
 				if ($checkExists['uid_owner'] != $uidOwner || $checkExists['share_type'] == $shareType) {
-					$message = 'Sharing '.$itemSource.' failed, because this item is already shared with '.$shareWith;
+					$message = 'Sharing '.$itemSourceName.' failed, because this item is already shared with '.$shareWith;
 					\OC_Log::write('OCP\Share', $message, \OC_Log::ERROR);
 					throw new \Exception($message);
 				}
@@ -535,14 +555,14 @@ class Share {
 					$token = \OC_Util::generateRandomBytes(self::TOKEN_LENGTH);
 				}
 				$result = self::put($itemType, $itemSource, $shareType, $shareWith, $uidOwner, $permissions,
-					null, $token);
+					null, $token, $itemSourceName);
 				if ($result) {
 					return $token;
 				} else {
 					return false;
 				}
 			}
-			$message = 'Sharing '.$itemSource.' failed, because sharing with links is not allowed';
+			$message = 'Sharing '.$itemSourceName.' failed, because sharing with links is not allowed';
 			\OC_Log::write('OCP\Share', $message, \OC_Log::ERROR);
 			throw new \Exception($message);
 			return false;
@@ -601,79 +621,59 @@ class Share {
 // 			return false;
 // 		} else {
 			// Put the item into the database
-			return self::put($itemType, $itemSource, $shareType, $shareWith, $uidOwner, $permissions);
+			return self::put($itemType, $itemSource, $shareType, $shareWith, $uidOwner, $permissions, null, null, $itemSourceName);
 // 		}
 	}
 
 	/**
-	* @brief Unshare an item from a user, group, or delete a private link
-	* @param string Item type
-	* @param string Item source
-	* @param int SHARE_TYPE_USER, SHARE_TYPE_GROUP, or SHARE_TYPE_LINK
-	* @param string User or group the item is being shared with
-	* @return Returns true on success or false on failure
-	*/
+	 * Unshare an item from a user, group, or delete a private link
+	 * @param string Item type
+	 * @param string Item source
+	 * @param int SHARE_TYPE_USER, SHARE_TYPE_GROUP, or SHARE_TYPE_LINK
+	 * @param string User or group the item is being shared with
+	 * @return Returns true on success or false on failure
+	 */
 	public static function unshare($itemType, $itemSource, $shareType, $shareWith) {
 		if ($item = self::getItems($itemType, $itemSource, $shareType, $shareWith, \OC_User::getUser(),
 			self::FORMAT_NONE, null, 1)) {
-			// Pass all the vars we have for now, they may be useful
-			\OC_Hook::emit('OCP\Share', 'pre_unshare', array(
-				'itemType' => $itemType,
-				'itemSource' => $itemSource,
-				'fileSource' => $item['file_source'],
-				'shareType' => $shareType,
-				'shareWith' => $shareWith,
-				'itemParent' => $item['parent'],
-			));
-			self::delete($item['id']);
-			\OC_Hook::emit('OCP\Share', 'post_unshare', array(
-					'itemType' => $itemType,
-					'itemSource' => $itemSource,
-					'shareType' => $shareType,
-					'shareWith' => $shareWith,
-					'itemParent' => $item['parent'],
-			));
+			self::unshareItem($item);
 			return true;
 		}
 		return false;
 	}
 
 	/**
-	* @brief Unshare an item from all users, groups, and remove all links
-	* @param string Item type
-	* @param string Item source
-	* @return Returns true on success or false on failure
-	*/
+	 * Unshare an item from all users, groups, and remove all links
+	 * @param string Item type
+	 * @param string Item source
+	 * @return Returns true on success or false on failure
+	 */
 	public static function unshareAll($itemType, $itemSource) {
 		if ($shares = self::getItemShared($itemType, $itemSource)) {
 			// Pass all the vars we have for now, they may be useful
-			\OC_Hook::emit('OCP\Share', 'pre_unshareAll', array(
+			$hookParams = array(
 				'itemType' => $itemType,
 				'itemSource' => $itemSource,
-				'shares' => $shares
-			));
+				'shares' => $shares,
+			);
+			\OC_Hook::emit('OCP\Share', 'pre_unshareAll', $hookParams);
 			foreach ($shares as $share) {
-				self::delete($share['id']);
+				self::unshareItem($share);
 			}
-			\OC_Hook::emit('OCP\Share', 'post_unshareAll', array(
-					'itemType' => $itemType,
-					'itemSource' => $itemSource,
-					'shares' => $shares
-			));
+			\OC_Hook::emit('OCP\Share', 'post_unshareAll', $hookParams);
 			return true;
 		}
 		return false;
 	}
 
 	/**
-	* @brief Unshare an item shared with the current user
-	* @param string Item type
-	* @param string Item target
-	* @return Returns true on success or false on failure
-	*
-	* Unsharing from self is not allowed for items inside collections
-	*
-	*/
+	 * Unshare an item shared with the current user
+	 * @param string Item type
+	 * @param string Item target
+	 * @return Returns true on success or false on failure
+	 *
+	 * Unsharing from self is not allowed for items inside collections
+	 */
 	public static function unshareFromSelf($itemType, $itemTarget) {
 		if ($item = self::getItemSharedWith($itemType, $itemTarget)) {
 			if ((int)$item['share_type'] === self::SHARE_TYPE_GROUP) {
@@ -703,7 +703,7 @@ class Share {
 		return false;
 	}
 	/**
-	 * @brief sent status if users got informed by mail about share
+	 * sent status if users got informed by mail about share
 	 * @param string $itemType
 	 * @param string $itemSource
 	 * @param int $shareType SHARE_TYPE_USER, SHARE_TYPE_GROUP, or SHARE_TYPE_LINK
@@ -722,19 +722,17 @@ class Share {
 		if($result === false) {
 			\OC_Log::write('OCP\Share', 'Couldn\'t set send mail status', \OC_Log::ERROR);
 		}
-
-
 	}
 
 	/**
-	* @brief Set the permissions of an item for a specific user or group
-	* @param string Item type
-	* @param string Item source
-	* @param int SHARE_TYPE_USER, SHARE_TYPE_GROUP, or SHARE_TYPE_LINK
-	* @param string User or group the item is being shared with
-	* @param int CRUDS permissions
-	* @return Returns true on success or false on failure
-	*/
+	 * Set the permissions of an item for a specific user or group
+	 * @param string Item type
+	 * @param string Item source
+	 * @param int SHARE_TYPE_USER, SHARE_TYPE_GROUP, or SHARE_TYPE_LINK
+	 * @param string User or group the item is being shared with
+	 * @param int CRUDS permissions
+	 * @return Returns true on success or false on failure
+	 */
 	public static function setPermissions($itemType, $itemSource, $shareType, $shareWith, $permissions) {
 		if ($item = self::getItems($itemType, $itemSource, $shareType, $shareWith,
 			\OC_User::getUser(), self::FORMAT_NONE, null, 1, false)) {
@@ -810,6 +808,13 @@ class Share {
 		throw new \Exception($message);
 	}
 
+	/**
+	 * Set expiration date for a share
+	 * @param string $itemType
+	 * @param string $itemSource
+	 * @param string $date expiration date
+	 * @return Share_Backend
+	 */
 	public static function setExpirationDate($itemType, $itemSource, $date) {
 		if ($items = self::getItems($itemType, $itemSource, null, null, \OC_User::getUser(),
 			self::FORMAT_NONE, null, -1, false)) {
@@ -831,10 +836,48 @@ class Share {
 	}
 
 	/**
-	* @brief Get the backend class for the specified item type
-	* @param string $itemType
-	* @return Share_Backend
-	*/
+	 * Checks whether a share has expired, calls unshareItem() if yes.
+	 * @param array $item Share data (usually database row)
+	 * @return bool True if item was expired, false otherwise.
+	 */
+	protected static function expireItem(array $item) {
+		if (!empty($item['expiration'])) {
+			$now = new \DateTime();
+			$expirationDate = new \DateTime($item['expiration'], new \DateTimeZone('UTC'));
+			if ($now > $expirationDate) {
+				self::unshareItem($item);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Unshares a share given a share data array
+	 * @param array $item Share data (usually database row)
+	 * @return null
+	 */
+	protected static function unshareItem(array $item) {
+		// Pass all the vars we have for now, they may be useful
+		$hookParams = array(
+			'itemType'		=> $item['item_type'],
+			'itemSource'	=> $item['item_source'],
+			'shareType'		=> $item['share_type'],
+			'shareWith'		=> $item['share_with'],
+			'itemParent'	=> $item['parent'],
+		);
+		\OC_Hook::emit('OCP\Share', 'pre_unshare', $hookParams + array(
+			'fileSource'	=> $item['file_source'],
+		));
+		self::delete($item['id']);
+		\OC_Hook::emit('OCP\Share', 'post_unshare', $hookParams);
+	}
+
+	/**
+	 * Get the backend class for the specified item type
+	 * @param string $itemType
+	 * @return Share_Backend
+	 */
 	public static function getBackend($itemType) {
 		if (isset(self::$backends[$itemType])) {
 			return self::$backends[$itemType];
@@ -860,12 +903,11 @@ class Share {
 	}
 
 	/**
-	* @brief Check if resharing is allowed
-	* @return Returns true if allowed or false
-	*
-	* Resharing is allowed by default if not configured
-	*
-	*/
+	 * Check if resharing is allowed
+	 * @return Returns true if allowed or false
+	 *
+	 * Resharing is allowed by default if not configured
+	 */
 	private static function isResharingAllowed() {
 		if (!isset(self::$isResharingAllowed)) {
 			if (\OC_Appconfig::getValue('core', 'shareapi_allow_resharing', 'yes') == 'yes') {
@@ -878,10 +920,10 @@ class Share {
 	}
 
 	/**
-	* @brief Get a list of collection item types for the specified item type
-	* @param string Item type
-	* @return array
-	*/
+	 * Get a list of collection item types for the specified item type
+	 * @param string Item type
+	 * @return array
+	 */
 	private static function getCollectionItemTypes($itemType) {
 		$collectionTypes = array($itemType);
 		foreach (self::$backendTypes as $type => $backend) {
@@ -902,21 +944,21 @@ class Share {
 	}
 
 	/**
-	* @brief Get shared items from the database
-	* @param string Item type
-	* @param string Item source or target (optional)
-	* @param int SHARE_TYPE_USER, SHARE_TYPE_GROUP, SHARE_TYPE_LINK, $shareTypeUserAndGroups, or $shareTypeGroupUserUnique
-	* @param string User or group the item is being shared with
-	* @param string User that is the owner of shared items (optional)
-	* @param int Format to convert items to with formatItems()
-	* @param mixed Parameters to pass to formatItems()
-	* @param int Number of items to return, -1 to return all matches (optional)
-	* @param bool Include collection item types (optional)
-	* @return mixed
-	*
-	* See public functions getItem(s)... for parameter usage
-	*
-	*/
+	 * Get shared items from the database
+	 * @param string Item type
+	 * @param string Item source or target (optional)
+	 * @param int SHARE_TYPE_USER, SHARE_TYPE_GROUP, SHARE_TYPE_LINK, $shareTypeUserAndGroups, or $shareTypeGroupUserUnique
+	 * @param string User or group the item is being shared with
+	 * @param string User that is the owner of shared items (optional)
+	 * @param int Format to convert items to with formatItems()
+	 * @param mixed Parameters to pass to formatItems()
+	 * @param int Number of items to return, -1 to return all matches (optional)
+	 * @param bool Include collection item types (optional)
+	 * @return mixed
+	 *
+	 * See public functions getItem(s)... for parameter usage
+	 *
+	 */
 	private static function getItems($itemType, $item = null, $shareType = null, $shareWith = null,
 		$uidOwner = null, $format = self::FORMAT_NONE, $parameters = null, $limit = -1,
 		$includeCollections = false, $itemShareWithBySource = false) {
@@ -960,6 +1002,10 @@ class Share {
 				$where = ' WHERE `item_type` = ?';
 				$queryArgs = array($itemType);
 			}
+		}
+		if (\OC_Appconfig::getValue('core', 'shareapi_allow_links', 'yes') !== 'yes') {
+			$where .= ' AND `share_type` != ?';
+			$queryArgs[] = self::SHARE_TYPE_LINK;
 		}
 		if (isset($shareType)) {
 			// Include all user and group items
@@ -1054,7 +1100,7 @@ class Share {
 		// TODO Optimize selects
 		if ($format == self::FORMAT_STATUSES) {
 			if ($itemType == 'file' || $itemType == 'folder') {
-				$select = '`*PREFIX*share`.`id`, `item_type`, `*PREFIX*share`.`parent`,'
+				$select = '`*PREFIX*share`.`id`, `item_type`, `item_source`, `*PREFIX*share`.`parent`,'
 					.' `share_type`, `file_source`, `path`, `expiration`, `storage`, `mail_send`';
 			} else {
 				$select = '`id`, `item_type`, `item_source`, `parent`, `share_type`, `expiration`, `mail_send`';
@@ -1062,7 +1108,7 @@ class Share {
 		} else {
 			if (isset($uidOwner)) {
 				if ($itemType == 'file' || $itemType == 'folder') {
-					$select = '`*PREFIX*share`.`id`, `item_type`, `*PREFIX*share`.`parent`,'
+					$select = '`*PREFIX*share`.`id`, `item_type`, `item_source`, `*PREFIX*share`.`parent`,'
 						.' `share_type`, `share_with`, `file_source`, `path`, `permissions`, `stime`,'
 						.' `expiration`, `token`, `storage`, `mail_send`';
 				} else {
@@ -1075,7 +1121,7 @@ class Share {
 						&& $format == \OC_Share_Backend_File::FORMAT_GET_FOLDER_CONTENTS
 						|| $format == \OC_Share_Backend_File::FORMAT_FILE_APP_ROOT
 					) {
-						$select = '`*PREFIX*share`.`id`, `item_type`, `*PREFIX*share`.`parent`, `uid_owner`, '
+						$select = '`*PREFIX*share`.`id`, `item_type`, `item_source`, `*PREFIX*share`.`parent`, `uid_owner`, '
 							.'`share_type`, `share_with`, `file_source`, `path`, `file_target`, '
 							.'`permissions`, `expiration`, `storage`, `*PREFIX*filecache`.`parent` as `file_parent`, '
 							.'`name`, `mtime`, `mimetype`, `mimepart`, `size`, `encrypted`, `etag`, `mail_send`';
@@ -1181,12 +1227,8 @@ class Share {
 					}
 				}
 			}
-			if (isset($row['expiration'])) {
-				$time = new \DateTime();
-				if ($row['expiration'] < date('Y-m-d H:i', $time->format('U') - $time->getOffset())) {
-					self::delete($row['id']);
-					continue;
-				}
+			if (self::expireItem($row)) {
+				continue;
 			}
 			// Check if resharing is allowed, if not remove share permission
 			if (isset($row['permissions']) && !self::isResharingAllowed()) {
@@ -1307,30 +1349,32 @@ class Share {
 	}
 
 	/**
-	* @brief Put shared item into the database
-	* @param string Item type
-	* @param string Item source
-	* @param int SHARE_TYPE_USER, SHARE_TYPE_GROUP, or SHARE_TYPE_LINK
-	* @param string User or group the item is being shared with
-	* @param int CRUDS permissions
-	* @param bool|array Parent folder target (optional)
-	* @return bool Returns true on success or false on failure
-	*/
+	 * Put shared item into the database
+	 * @param string Item type
+	 * @param string Item source
+	 * @param int SHARE_TYPE_USER, SHARE_TYPE_GROUP, or SHARE_TYPE_LINK
+	 * @param string User or group the item is being shared with
+	 * @param int CRUDS permissions
+	 * @param bool|array Parent folder target (optional)
+	 * @return bool Returns true on success or false on failure
+	 */
 	private static function put($itemType, $itemSource, $shareType, $shareWith, $uidOwner,
-		$permissions, $parentFolder = null, $token = null) {
+		$permissions, $parentFolder = null, $token = null, $itemSourceName = null) {
 		$backend = self::getBackend($itemType);
+
 		// Check if this is a reshare
 		if ($checkReshare = self::getItemSharedWithBySource($itemType, $itemSource, self::FORMAT_NONE, null, true)) {
+
 			// Check if attempting to share back to owner
 			if ($checkReshare['uid_owner'] == $shareWith && $shareType == self::SHARE_TYPE_USER) {
-				$message = 'Sharing '.$itemSource.' failed, because the user '.$shareWith.' is the original sharer';
+				$message = 'Sharing '.$itemSourceName.' failed, because the user '.$shareWith.' is the original sharer';
 				\OC_Log::write('OCP\Share', $message, \OC_Log::ERROR);
 				throw new \Exception($message);
 			}
 			// Check if share permissions is granted
 			if (self::isResharingAllowed() && (int)$checkReshare['permissions'] & PERMISSION_SHARE) {
 				if (~(int)$checkReshare['permissions'] & $permissions) {
-					$message = 'Sharing '.$itemSource
+					$message = 'Sharing '.$itemSourceName
 						.' failed, because the permissions exceed permissions granted to '.$uidOwner;
 					\OC_Log::write('OCP\Share', $message, \OC_Log::ERROR);
 					throw new \Exception($message);
@@ -1344,7 +1388,7 @@ class Share {
 					$filePath = $checkReshare['file_target'];
 				}
 			} else {
-				$message = 'Sharing '.$itemSource.' failed, because resharing is not allowed';
+				$message = 'Sharing '.$itemSourceName.' failed, because resharing is not allowed';
 				\OC_Log::write('OCP\Share', $message, \OC_Log::ERROR);
 				throw new \Exception($message);
 			}
@@ -1472,6 +1516,7 @@ class Share {
 				'id' => $parent,
 				'token' => $token
 			));
+
 			if ($parentFolder === true) {
 				// Return parent folders to preserve file target paths for potential children
 				return $parentFolders;
@@ -1543,15 +1588,15 @@ class Share {
 	}
 
 	/**
-	* @brief Generate a unique target for the item
-	* @param string Item type
-	* @param string Item source
-	* @param int SHARE_TYPE_USER, SHARE_TYPE_GROUP, or SHARE_TYPE_LINK
-	* @param string User or group the item is being shared with
-	* @param string The suggested target originating from a reshare (optional)
-	* @param int The id of the parent group share (optional)
-	* @return string Item target
-	*/
+	 * Generate a unique target for the item
+	 * @param string Item type
+	 * @param string Item source
+	 * @param int SHARE_TYPE_USER, SHARE_TYPE_GROUP, or SHARE_TYPE_LINK
+	 * @param string User or group the item is being shared with
+	 * @param string The suggested target originating from a reshare (optional)
+	 * @param int The id of the parent group share (optional)
+	 * @return string Item target
+	 */
 	private static function generateTarget($itemType, $itemSource, $shareType, $shareWith, $uidOwner,
 		$suggestedTarget = null, $groupParent = null) {
 		$backend = self::getBackend($itemType);
@@ -1659,11 +1704,11 @@ class Share {
 	}
 
 	/**
-	* @brief Delete all reshares of an item
-	* @param int Id of item to delete
-	* @param bool If true, exclude the parent from the delete (optional)
-	* @param string The user that the parent was shared with (optinal)
-	*/
+	 * Delete all reshares of an item
+	 * @param int Id of item to delete
+	 * @param bool If true, exclude the parent from the delete (optional)
+	 * @param string The user that the parent was shared with (optinal)
+	 */
 	private static function delete($parent, $excludeParent = false, $uidOwner = null) {
 		$ids = array($parent);
 		$parents = array($parent);
@@ -1719,9 +1764,24 @@ class Share {
 	}
 
 	/**
-	* Hook Listeners
-	*/
+	 * Delete all shares with type SHARE_TYPE_LINK
+	 */
+	public static function removeAllLinkShares() {
+		// Delete any link shares
+		$query = \OC_DB::prepare('SELECT `id` FROM `*PREFIX*share` WHERE `share_type` = ?');
+		$result = $query->execute(array(self::SHARE_TYPE_LINK));
+		while ($item = $result->fetchRow()) {
+			self::delete($item['id']);
+		}
+	}
 
+	/**
+	 * Hook Listeners
+	 */
+
+	/**
+	 * @param array arguments
+	 */
 	public static function post_deleteUser($arguments) {
 		// Delete any items shared with the deleted user
 		$query = \OC_DB::prepare('DELETE FROM `*PREFIX*share`'
@@ -1735,6 +1795,9 @@ class Share {
 		}
 	}
 
+	/**
+	 * @param array arguments
+	 */
 	public static function post_addToGroup($arguments) {
 		// Find the group shares and check if the user needs a unique target
 		$query = \OC_DB::prepare('SELECT * FROM `*PREFIX*share` WHERE `share_type` = ? AND `share_with` = ?');
@@ -1765,6 +1828,9 @@ class Share {
 		}
 	}
 
+	/**
+	 * @param array arguments
+	 */
 	public static function post_removeFromGroup($arguments) {
 		// TODO Don't call if user deleted?
 		$sql = 'SELECT `id`, `share_type` FROM `*PREFIX*share`'
@@ -1781,6 +1847,9 @@ class Share {
 		}
 	}
 
+	/**
+	 * @param array arguments
+	 */
 	public static function post_deleteGroup($arguments) {
 		$sql = 'SELECT `id` FROM `*PREFIX*share` WHERE `share_type` = ? AND `share_with` = ?';
 		$result = \OC_DB::executeAudited($sql, array(self::SHARE_TYPE_GROUP, $arguments['gid']));
@@ -1792,87 +1861,84 @@ class Share {
 }
 
 /**
-* Interface that apps must implement to share content.
-*/
+ * Interface that apps must implement to share content.
+ */
 interface Share_Backend {
 
 	/**
-	* @brief Get the source of the item to be stored in the database
-	* @param string Item source
-	* @param string Owner of the item
-	* @return mixed|array|false Source
-	*
-	* Return an array if the item is file dependent, the array needs two keys: 'item' and 'file'
-	* Return false if the item does not exist for the user
-	*
-	* The formatItems() function will translate the source returned back into the item
-	*/
+	 * Get the source of the item to be stored in the database
+	 * @param string Item source
+	 * @param string Owner of the item
+	 * @return mixed|array|false Source
+	 *
+	 * Return an array if the item is file dependent, the array needs two keys: 'item' and 'file'
+	 * Return false if the item does not exist for the user
+	 *
+	 * The formatItems() function will translate the source returned back into the item
+	 */
 	public function isValidSource($itemSource, $uidOwner);
 
 	/**
-	* @brief Get a unique name of the item for the specified user
-	* @param string Item source
-	* @param string|false User the item is being shared with
-	* @param array|null List of similar item names already existing as shared items
-	* @return string Target name
-	*
-	* This function needs to verify that the user does not already have an item with this name.
-	* If it does generate a new name e.g. name_#
-	*/
+	 * Get a unique name of the item for the specified user
+	 * @param string Item source
+	 * @param string|false User the item is being shared with
+	 * @param array|null List of similar item names already existing as shared items
+	 * @return string Target name
+	 *
+	 * This function needs to verify that the user does not already have an item with this name.
+	 * If it does generate a new name e.g. name_#
+	 */
 	public function generateTarget($itemSource, $shareWith, $exclude = null);
 
 	/**
-	* @brief Converts the shared item sources back into the item in the specified format
-	* @param array Shared items
-	* @param int Format
-	* @return ?
-	*
-	* The items array is a 3-dimensional array with the item_source as the
-	* first key and the share id as the second key to an array with the share
-	* info.
-	*
-	* The key/value pairs included in the share info depend on the function originally called:
-	* If called by getItem(s)Shared: id, item_type, item, item_source,
-	* share_type, share_with, permissions, stime, file_source
-	*
-	* If called by getItem(s)SharedWith: id, item_type, item, item_source,
-	* item_target, share_type, share_with, permissions, stime, file_source,
-	* file_target
-	*
-	* This function allows the backend to control the output of shared items with custom formats.
-	* It is only called through calls to the public getItem(s)Shared(With) functions.
-	*/
+	 * Converts the shared item sources back into the item in the specified format
+	 * @param array Shared items
+	 * @param int Format
+	 * @return ?
+	 *
+	 * The items array is a 3-dimensional array with the item_source as the
+	 * first key and the share id as the second key to an array with the share
+	 * info.
+	 *
+	 * The key/value pairs included in the share info depend on the function originally called:
+	 * If called by getItem(s)Shared: id, item_type, item, item_source,
+	 * share_type, share_with, permissions, stime, file_source
+	 *
+	 * If called by getItem(s)SharedWith: id, item_type, item, item_source,
+	 * item_target, share_type, share_with, permissions, stime, file_source,
+	 * file_target
+	 *
+	 * This function allows the backend to control the output of shared items with custom formats.
+	 * It is only called through calls to the public getItem(s)Shared(With) functions.
+	 */
 	public function formatItems($items, $format, $parameters = null);
 
 }
 
 /**
-* Interface for share backends that share content that is dependent on files.
-* Extends the Share_Backend interface.
-*/
+ * Interface for share backends that share content that is dependent on files.
+ * Extends the Share_Backend interface.
+ */
 interface Share_Backend_File_Dependent extends Share_Backend {
 
 	/**
-	* @brief Get the file path of the item
-	* @param
-	* @param
-	* @return
-	*/
+	 * Get the file path of the item
+	 */
 	public function getFilePath($itemSource, $uidOwner);
 
 }
 
 /**
-* Interface for collections of of items implemented by another share backend.
-* Extends the Share_Backend interface.
-*/
+ * Interface for collections of of items implemented by another share backend.
+ * Extends the Share_Backend interface.
+ */
 interface Share_Backend_Collection extends Share_Backend {
 
 	/**
-	* @brief Get the sources of the children of the item
-	* @param string Item source
-	* @return array Returns an array of children each inside an array with the keys: source, target, and file_path if applicable
-	*/
+	 * Get the sources of the children of the item
+	 * @param string Item source
+	 * @return array Returns an array of children each inside an array with the keys: source, target, and file_path if applicable
+	 */
 	public function getChildren($itemSource);
 
 }

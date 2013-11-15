@@ -147,7 +147,11 @@ var UserList = {
 		quotaSelect.on('change', function () {
 			var uid = $(this).parent().parent().attr('data-uid');
 			var quota = $(this).val();
-			setQuota(uid, quota);
+			setQuota(uid, quota, function(returnedQuota){
+				if (quota !== returnedQuota) {
+					$(quotaSelect).find(':selected').text(returnedQuota);
+				}
+			});
 		});
 	},
 	// From http://my.opera.com/GreyWyvern/blog/show.dml/1671288
@@ -428,9 +432,14 @@ $(document).ready(function () {
 	});
 
 	$('select.quota, select.quota-user').singleSelect().on('change', function () {
+		var select = $(this);
 		var uid = $(this).parent().parent().attr('data-uid');
 		var quota = $(this).val();
-		setQuota(uid, quota);
+		setQuota(uid, quota, function(returnedQuota){
+			if (quota !== returnedQuota) {
+				select.find(':selected').text(returnedQuota);
+			}
+		});
 	});
 
 	$('#newuser').submit(function (event) {
@@ -466,6 +475,18 @@ $(document).ready(function () {
 					if (result.data.groups) {
 						var addedGroups = result.data.groups;
 						UserList.availableGroups = $.unique($.merge(UserList.availableGroups, addedGroups));
+					}
+					if (result.data.homeExists){
+						OC.Notification.hide();
+						OC.Notification.show(t('settings', 'Warning: Home directory for user "{user}" already exists', {user: result.data.username}));
+						if (UserList.notificationTimeout){
+							window.clearTimeout(UserList.notificationTimeout);
+						}
+						UserList.notificationTimeout = window.setTimeout(
+							function(){
+								OC.Notification.hide();
+								UserList.notificationTimeout = null;
+							}, 10000);
 					}
 					if($('tr[data-uid="' + username + '"]').length === 0) {
 						UserList.add(username, username, result.data.groups, null, 'default', true);

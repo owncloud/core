@@ -6,13 +6,14 @@
 # Fatih Aşıcı <fatih.asici@gmail.com>, 2013
 # ismail yenigül <ismail.yenigul@surgate.com>, 2013
 # tridinebandim, 2013
+# volkangezer <volkangezer@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
-"Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-10-07 12:16-0400\n"
-"PO-Revision-Date: 2013-10-07 16:17+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"Report-Msgid-Bugs-To: translations@owncloud.org\n"
+"POT-Creation-Date: 2013-11-03 12:38-0500\n"
+"PO-Revision-Date: 2013-10-30 08:20+0000\n"
+"Last-Translator: volkangezer <volkangezer@gmail.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/owncloud/language/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,19 +21,15 @@ msgstr ""
 "Language: tr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: ajax/share.php:118 ajax/share.php:197
+#: ajax/share.php:119 ajax/share.php:198
 #, php-format
 msgid "%s shared »%s« with you"
 msgstr "%s  sizinle »%s« paylaşımında bulundu"
 
-#: ajax/share.php:168
+#: ajax/share.php:169
 #, php-format
 msgid "Couldn't send mail to following users: %s "
-msgstr ""
-
-#: ajax/share.php:327
-msgid "group"
-msgstr "grup"
+msgstr "Şu kullanıcılara posta gönderilemedi: %s"
 
 #: ajax/update.php:11
 msgid "Turned on maintenance mode"
@@ -59,64 +56,25 @@ msgstr "Dosya önbelleği güncellendi"
 msgid "... %d%% done ..."
 msgstr "%%%d tamamlandı ..."
 
-#: ajax/vcategories/add.php:26 ajax/vcategories/edit.php:25
-msgid "Category type not provided."
-msgstr "Kategori türü girilmedi."
-
-#: ajax/vcategories/add.php:30
-msgid "No category to add?"
-msgstr "Eklenecek kategori yok?"
-
-#: ajax/vcategories/add.php:37
-#, php-format
-msgid "This category already exists: %s"
-msgstr "Bu kategori zaten mevcut:  %s"
-
-#: ajax/vcategories/addToFavorites.php:26 ajax/vcategories/delete.php:27
-#: ajax/vcategories/favorites.php:24
-#: ajax/vcategories/removeFromFavorites.php:26
-msgid "Object type not provided."
-msgstr "Nesne türü desteklenmemektedir."
-
-#: ajax/vcategories/addToFavorites.php:30
-#: ajax/vcategories/removeFromFavorites.php:30
-#, php-format
-msgid "%s ID not provided."
-msgstr "%s ID belirtilmedi."
-
-#: ajax/vcategories/addToFavorites.php:35
-#, php-format
-msgid "Error adding %s to favorites."
-msgstr "%s favorilere eklenirken hata oluştu"
-
-#: ajax/vcategories/delete.php:35 js/oc-vcategories.js:136
-msgid "No categories selected for deletion."
-msgstr "Silmek için bir kategori seçilmedi"
-
-#: ajax/vcategories/removeFromFavorites.php:35
-#, php-format
-msgid "Error removing %s from favorites."
-msgstr "%s favorilere çıkarılırken hata oluştu"
-
 #: avatar/controller.php:62
 msgid "No image or file provided"
-msgstr ""
+msgstr "Resim veya dosya belirtilmedi"
 
 #: avatar/controller.php:81
 msgid "Unknown filetype"
-msgstr ""
+msgstr "Bilinmeyen dosya türü"
 
 #: avatar/controller.php:85
 msgid "Invalid image"
-msgstr ""
+msgstr "Geçersiz resim"
 
 #: avatar/controller.php:115 avatar/controller.php:142
 msgid "No temporary profile picture available, try again"
-msgstr ""
+msgstr "Kullanılabilir geçici profil resmi yok, tekrar deneyin"
 
 #: avatar/controller.php:135
 msgid "No crop data provided"
-msgstr ""
+msgstr "Kesme verisi sağlanmamış"
 
 #: js/config.php:32
 msgid "Sunday"
@@ -198,55 +156,55 @@ msgstr "Aralık"
 msgid "Settings"
 msgstr "Ayarlar"
 
-#: js/js.js:866
+#: js/js.js:858
 msgid "seconds ago"
 msgstr "saniye önce"
 
-#: js/js.js:867
+#: js/js.js:859
 msgid "%n minute ago"
 msgid_plural "%n minutes ago"
 msgstr[0] "%n dakika önce"
 msgstr[1] "%n dakika önce"
 
-#: js/js.js:868
+#: js/js.js:860
 msgid "%n hour ago"
 msgid_plural "%n hours ago"
 msgstr[0] "%n saat önce"
 msgstr[1] "%n saat önce"
 
-#: js/js.js:869
+#: js/js.js:861
 msgid "today"
 msgstr "bugün"
 
-#: js/js.js:870
+#: js/js.js:862
 msgid "yesterday"
 msgstr "dün"
 
-#: js/js.js:871
+#: js/js.js:863
 msgid "%n day ago"
 msgid_plural "%n days ago"
 msgstr[0] "%n gün önce"
 msgstr[1] "%n gün önce"
 
-#: js/js.js:872
+#: js/js.js:864
 msgid "last month"
 msgstr "geçen ay"
 
-#: js/js.js:873
+#: js/js.js:865
 msgid "%n month ago"
 msgid_plural "%n months ago"
 msgstr[0] "%n ay önce"
 msgstr[1] "%n ay önce"
 
-#: js/js.js:874
+#: js/js.js:866
 msgid "months ago"
 msgstr "ay önce"
 
-#: js/js.js:875
+#: js/js.js:867
 msgid "last year"
 msgstr "geçen yıl"
 
-#: js/js.js:876
+#: js/js.js:868
 msgid "years ago"
 msgstr "yıl önce"
 
@@ -256,7 +214,7 @@ msgstr "seç"
 
 #: js/oc-dialogs.js:146
 msgid "Error loading file picker template: {error}"
-msgstr ""
+msgstr "Dosya seçici şablonu yüklenirken hata: {error}"
 
 #: js/oc-dialogs.js:172
 msgid "Yes"
@@ -272,27 +230,27 @@ msgstr "Tamam"
 
 #: js/oc-dialogs.js:219
 msgid "Error loading message template: {error}"
-msgstr ""
+msgstr "İleti şablonu yüklenirken hata: {error}"
 
 #: js/oc-dialogs.js:347
 msgid "{count} file conflict"
 msgid_plural "{count} file conflicts"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{count} dosya çakışması"
+msgstr[1] "{count} dosya çakışması"
 
 #: js/oc-dialogs.js:361
 msgid "One file conflict"
-msgstr ""
+msgstr "Bir dosya çakışması"
 
 #: js/oc-dialogs.js:367
 msgid "Which files do you want to keep?"
-msgstr ""
+msgstr "Hangi dosyaları saklamak istiyorsunuz?"
 
 #: js/oc-dialogs.js:368
 msgid ""
 "If you select both versions, the copied file will have a number added to its"
 " name."
-msgstr ""
+msgstr "Eğer iki sürümü de seçerseniz, kopyalanan dosya ismine eklenmiş bir sayı içerecektir."
 
 #: js/oc-dialogs.js:376
 msgid "Cancel"
@@ -300,176 +258,192 @@ msgstr "İptal"
 
 #: js/oc-dialogs.js:386
 msgid "Continue"
-msgstr ""
+msgstr "Devam et"
 
 #: js/oc-dialogs.js:433 js/oc-dialogs.js:446
 msgid "(all selected)"
-msgstr ""
+msgstr "(tümü seçildi)"
 
 #: js/oc-dialogs.js:436 js/oc-dialogs.js:449
 msgid "({count} selected)"
-msgstr ""
+msgstr "({count} seçildi)"
 
 #: js/oc-dialogs.js:457
 msgid "Error loading file exists template"
-msgstr ""
+msgstr "Dosya mevcut şablonu yüklenirken hata"
 
-#: js/oc-vcategories.js:5 js/oc-vcategories.js:85 js/oc-vcategories.js:102
-#: js/oc-vcategories.js:117 js/oc-vcategories.js:132 js/oc-vcategories.js:162
-msgid "The object type is not specified."
-msgstr "Nesne türü belirtilmemiş."
-
-#: js/oc-vcategories.js:14 js/oc-vcategories.js:80 js/oc-vcategories.js:95
-#: js/oc-vcategories.js:110 js/oc-vcategories.js:125 js/oc-vcategories.js:136
-#: js/oc-vcategories.js:172 js/oc-vcategories.js:189 js/oc-vcategories.js:195
-#: js/oc-vcategories.js:199 js/share.js:130 js/share.js:143 js/share.js:150
-#: js/share.js:667 js/share.js:679
-msgid "Error"
-msgstr "Hata"
-
-#: js/oc-vcategories.js:179
-msgid "The app name is not specified."
-msgstr "uygulama adı belirtilmedi."
-
-#: js/oc-vcategories.js:194
-msgid "The required file {file} is not installed!"
-msgstr "İhtiyaç duyulan {file} dosyası kurulu değil."
-
-#: js/share.js:30 js/share.js:45 js/share.js:87
+#: js/share.js:51 js/share.js:66 js/share.js:106
 msgid "Shared"
 msgstr "Paylaşılan"
 
-#: js/share.js:90
+#: js/share.js:109
 msgid "Share"
 msgstr "Paylaş"
 
-#: js/share.js:132 js/share.js:707
+#: js/share.js:158 js/share.js:171 js/share.js:178 js/share.js:692
+#: js/share.js:704
+msgid "Error"
+msgstr "Hata"
+
+#: js/share.js:160 js/share.js:732
 msgid "Error while sharing"
 msgstr "Paylaşım sırasında hata  "
 
-#: js/share.js:143
+#: js/share.js:171
 msgid "Error while unsharing"
 msgstr "Paylaşım iptal ediliyorken hata"
 
-#: js/share.js:150
+#: js/share.js:178
 msgid "Error while changing permissions"
 msgstr "İzinleri değiştirirken hata oluştu"
 
-#: js/share.js:159
+#: js/share.js:187
 msgid "Shared with you and the group {group} by {owner}"
 msgstr " {owner} tarafından sizinle ve {group} ile paylaştırılmış"
 
-#: js/share.js:161
+#: js/share.js:189
 msgid "Shared with you by {owner}"
 msgstr "{owner} trafından sizinle paylaştırıldı"
 
-#: js/share.js:184
-msgid "Share with"
-msgstr "ile Paylaş"
+#: js/share.js:212
+msgid "Share with user or group …"
+msgstr "Kullanıcı veya grup ile paylaş.."
 
-#: js/share.js:189
-msgid "Share with link"
-msgstr "Bağlantı ile paylaş"
+#: js/share.js:218
+msgid "Share link"
+msgstr "Paylaşma bağlantısı"
 
-#: js/share.js:192
+#: js/share.js:221
 msgid "Password protect"
-msgstr "Şifre korunması"
+msgstr "Parola koruması"
 
-#: js/share.js:194 templates/installation.php:57 templates/login.php:32
+#: js/share.js:223 templates/installation.php:57 templates/login.php:32
 msgid "Password"
 msgstr "Parola"
 
-#: js/share.js:199
+#: js/share.js:228
 msgid "Allow Public Upload"
 msgstr "Herkes tarafından yüklemeye izin ver"
 
-#: js/share.js:203
+#: js/share.js:232
 msgid "Email link to person"
-msgstr "Kişiye e-posta linki"
+msgstr "Bağlantıyı e-posta ile gönder"
 
-#: js/share.js:204
+#: js/share.js:233
 msgid "Send"
 msgstr "Gönder"
 
-#: js/share.js:209
+#: js/share.js:238
 msgid "Set expiration date"
 msgstr "Son kullanma tarihini ayarla"
 
-#: js/share.js:210
+#: js/share.js:239
 msgid "Expiration date"
 msgstr "Son kullanım tarihi"
 
-#: js/share.js:243
+#: js/share.js:274
 msgid "Share via email:"
-msgstr "Eposta ile paylaş"
+msgstr "E-posta ile paylaş"
 
-#: js/share.js:246
+#: js/share.js:277
 msgid "No people found"
 msgstr "Kişi bulunamadı"
 
-#: js/share.js:284
+#: js/share.js:307 js/share.js:344
+msgid "group"
+msgstr "grup"
+
+#: js/share.js:318
 msgid "Resharing is not allowed"
 msgstr "Tekrar paylaşmaya izin verilmiyor"
 
-#: js/share.js:320
+#: js/share.js:360
 msgid "Shared in {item} with {user}"
 msgstr " {item} içinde  {user} ile paylaşılanlarlar"
 
-#: js/share.js:341
+#: js/share.js:382
 msgid "Unshare"
 msgstr "Paylaşılmayan"
 
-#: js/share.js:353
-msgid "notify user by email"
-msgstr ""
+#: js/share.js:390
+msgid "notify by email"
+msgstr "e-posta ile bildir"
 
-#: js/share.js:361
+#: js/share.js:393
 msgid "can edit"
 msgstr "düzenleyebilir"
 
-#: js/share.js:363
+#: js/share.js:395
 msgid "access control"
 msgstr "erişim kontrolü"
 
-#: js/share.js:366
+#: js/share.js:398
 msgid "create"
 msgstr "oluştur"
 
-#: js/share.js:369
+#: js/share.js:401
 msgid "update"
 msgstr "güncelle"
 
-#: js/share.js:372
+#: js/share.js:404
 msgid "delete"
 msgstr "sil"
 
-#: js/share.js:375
+#: js/share.js:407
 msgid "share"
 msgstr "paylaş"
 
-#: js/share.js:409 js/share.js:654
+#: js/share.js:449 js/share.js:679
 msgid "Password protected"
-msgstr "Paralo korumalı"
+msgstr "Parola korumalı"
 
-#: js/share.js:667
+#: js/share.js:692
 msgid "Error unsetting expiration date"
 msgstr "Geçerlilik tarihi tanımlama kaldırma hatası"
 
-#: js/share.js:679
+#: js/share.js:704
 msgid "Error setting expiration date"
 msgstr "Geçerlilik tarihi tanımlama hatası"
 
-#: js/share.js:694
+#: js/share.js:719
 msgid "Sending ..."
 msgstr "Gönderiliyor..."
 
-#: js/share.js:705
+#: js/share.js:730
 msgid "Email sent"
-msgstr "Eposta gönderildi"
+msgstr "E-posta gönderildi"
 
-#: js/share.js:729
+#: js/share.js:754
 msgid "Warning"
 msgstr "Uyarı"
+
+#: js/tags.js:4
+msgid "The object type is not specified."
+msgstr "Nesne türü belirtilmemiş."
+
+#: js/tags.js:13
+msgid "Enter new"
+msgstr "Yeni girin"
+
+#: js/tags.js:27
+msgid "Delete"
+msgstr "Sil"
+
+#: js/tags.js:31
+msgid "Add"
+msgstr "Ekle"
+
+#: js/tags.js:39
+msgid "Edit tags"
+msgstr "Etiketleri düzenle"
+
+#: js/tags.js:57
+msgid "Error loading dialog template: {error}"
+msgstr "İletişim şablonu yüklenirken hata: {error}"
+
+#: js/tags.js:261
+msgid "No tags selected for deletion."
+msgstr "Silmek için bir etiket seçilmedi."
 
 #: js/update.js:17
 msgid ""
@@ -491,27 +465,27 @@ msgstr "%s parola sıfırlama"
 msgid "Use the following link to reset your password: {link}"
 msgstr "Bu bağlantıyı kullanarak parolanızı sıfırlayın: {link}"
 
-#: lostpassword/templates/lostpassword.php:4
+#: lostpassword/templates/lostpassword.php:7
 msgid ""
 "The link to reset your password has been sent to your email.<br>If you do "
 "not receive it within a reasonable amount of time, check your spam/junk "
 "folders.<br>If it is not there ask your local administrator ."
-msgstr "Parolanızı değiştirme bağlantısı e-posta adresinize gönderildi.<br>I Eğer makül bir süre içerisinde mesajı almadıysanız spam/junk dizinini kontrol ediniz.<br> Eğer orada da bulamazsanız sistem yöneticinize sorunuz."
+msgstr "Parolanızı değiştirme bağlantısı e-posta adresinize gönderildi.<br>Eğer makül bir süre içerisinde mesajı almadıysanız spam/junk dizinini kontrol ediniz.<br> Eğer orada da bulamazsanız sistem yöneticinize sorunuz."
 
-#: lostpassword/templates/lostpassword.php:12
+#: lostpassword/templates/lostpassword.php:15
 msgid "Request failed!<br>Did you make sure your email/username was right?"
 msgstr "Isteği başarısız oldu!<br>E-posta / kullanıcı adınızı doğru olduğundan emin misiniz?"
 
-#: lostpassword/templates/lostpassword.php:15
+#: lostpassword/templates/lostpassword.php:18
 msgid "You will receive a link to reset your password via Email."
-msgstr "Parolanızı sıfırlamak için bir bağlantı Eposta olarak gönderilecek."
+msgstr "Parolanızı sıfırlamak için bir bağlantıyı e-posta olarak alacaksınız."
 
-#: lostpassword/templates/lostpassword.php:18 templates/installation.php:51
+#: lostpassword/templates/lostpassword.php:21 templates/installation.php:51
 #: templates/login.php:25
 msgid "Username"
 msgstr "Kullanıcı Adı"
 
-#: lostpassword/templates/lostpassword.php:22
+#: lostpassword/templates/lostpassword.php:25
 msgid ""
 "Your files are encrypted. If you haven't enabled the recovery key, there "
 "will be no way to get your data back after your password is reset. If you "
@@ -519,13 +493,13 @@ msgid ""
 "continue. Do you really want to continue?"
 msgstr "Dosyalarınız şifrelenmiş. Eğer kurtarma anahtarını aktif etmediyseniz parola sıfırlama işleminden sonra verilerinize erişmeniz imkansız olacak. Eğer ne yaptığınızdan emin değilseniz, devam etmeden önce sistem yöneticiniz ile irtibata geçiniz. Gerçekten devam etmek istiyor musunuz?"
 
-#: lostpassword/templates/lostpassword.php:24
+#: lostpassword/templates/lostpassword.php:27
 msgid "Yes, I really want to reset my password now"
 msgstr "Evet,Şu anda parolamı sıfırlamak istiyorum."
 
-#: lostpassword/templates/lostpassword.php:27
-msgid "Request reset"
-msgstr "Sıfırlama iste"
+#: lostpassword/templates/lostpassword.php:30
+msgid "Reset"
+msgstr "Sıfırla"
 
 #: lostpassword/templates/resetpassword.php:4
 msgid "Your password was reset"
@@ -551,7 +525,7 @@ msgstr "Kişisel"
 msgid "Users"
 msgstr "Kullanıcılar"
 
-#: strings.php:7 templates/layout.user.php:108
+#: strings.php:7 templates/layout.user.php:110
 msgid "Apps"
 msgstr "Uygulamalar"
 
@@ -562,6 +536,34 @@ msgstr "Yönetici"
 #: strings.php:9
 msgid "Help"
 msgstr "Yardım"
+
+#: tags/controller.php:22
+msgid "Error loading tags"
+msgstr "Etiketler yüklenirken hata"
+
+#: tags/controller.php:48
+msgid "Tag already exists"
+msgstr "Etiket zaten mevcut"
+
+#: tags/controller.php:64
+msgid "Error deleting tag(s)"
+msgstr "Etiket(ler) silinirken hata"
+
+#: tags/controller.php:75
+msgid "Error tagging"
+msgstr "Etiketleme hatası"
+
+#: tags/controller.php:86
+msgid "Error untagging"
+msgstr "Etiket kaldırılırken hata"
+
+#: tags/controller.php:97
+msgid "Error favoriting"
+msgstr "Beğenilirken hata"
+
+#: tags/controller.php:108
+msgid "Error unfavoriting"
+msgstr "Beğeniden kaldırılırken hata"
 
 #: templates/403.php:12
 msgid "Access forbidden"
@@ -579,26 +581,18 @@ msgid ""
 "just letting you know that %s shared %s with you.\n"
 "View it: %s\n"
 "\n"
-msgstr ""
+msgstr "Merhaba,\n\nSadece %s sizinle %s paylaşımını yaptığını bildiriyoruz.\nBuradan bakabilirsiniz: %s\n\n"
 
 #: templates/altmail.php:4
 #, php-format
 msgid ""
 "The share will expire on %s.\n"
 "\n"
-msgstr ""
+msgstr "Paylaşım %s tarihinde bitecektir.\n\n"
 
 #: templates/altmail.php:6 templates/mail.php:19
 msgid "Cheers!"
-msgstr ""
-
-#: templates/edit_categories_dialog.php:4
-msgid "Edit categories"
-msgstr "Kategorileri düzenle"
-
-#: templates/edit_categories_dialog.php:16
-msgid "Add"
-msgstr "Ekle"
+msgstr "Şerefe!"
 
 #: templates/installation.php:24 templates/installation.php:31
 #: templates/installation.php:38
@@ -687,14 +681,14 @@ msgstr "Kurulumu tamamla"
 
 #: templates/installation.php:184
 msgid "Finishing …"
-msgstr ""
+msgstr "Tamamlanıyor .."
 
-#: templates/layout.user.php:41
+#: templates/layout.user.php:43
 #, php-format
 msgid "%s is available. Get more information on how to update."
 msgstr "%s mevcuttur. Güncelleştirme hakkında daha fazla bilgi alın."
 
-#: templates/layout.user.php:69
+#: templates/layout.user.php:71
 msgid "Log out"
 msgstr "Çıkış yap"
 
@@ -706,19 +700,19 @@ msgstr "Otomatik oturum açma reddedildi!"
 msgid ""
 "If you did not change your password recently, your account may be "
 "compromised!"
-msgstr "Yakın zamanda parolanızı değiştirmedi iseniz hesabınız riske girebilir."
+msgstr "Yakın zamanda parolanızı değiştirmediyseniz hesabınız tehlikede olabilir!"
 
 #: templates/login.php:12
 msgid "Please change your password to secure your account again."
-msgstr "Hesabınızı korumak için lütfen parolanızı değiştirin."
+msgstr "Hesabınızı tekrar güvene almak için lütfen parolanızı değiştirin."
 
 #: templates/login.php:17
 msgid "Server side authentication failed!"
-msgstr ""
+msgstr "Sunucu taraflı yetkilendirme başarısız!"
 
 #: templates/login.php:18
 msgid "Please contact your administrator."
-msgstr ""
+msgstr "Lütfen sistem yöneticisi ile iletişime geçin."
 
 #: templates/login.php:38
 msgid "Lost your password?"
@@ -741,14 +735,33 @@ msgstr "Alternatif Girişler"
 msgid ""
 "Hey there,<br><br>just letting you know that %s shared »%s« with you.<br><a "
 "href=\"%s\">View it!</a><br><br>"
-msgstr ""
+msgstr "Merhaba, <br><br> %s sizinle »%s« paylaşımında bulundu.<br><a href=\"%s\">Paylaşımı gör!</a><br><br>İyi günler!"
 
 #: templates/mail.php:17
 #, php-format
 msgid "The share will expire on %s.<br><br>"
-msgstr ""
+msgstr "Bu paylaşım %s tarihinde dolacaktır.<br><br>"
 
-#: templates/update.php:3
+#: templates/update.admin.php:3
 #, php-format
 msgid "Updating ownCloud to version %s, this may take a while."
 msgstr "Owncloud %s versiyonuna güncelleniyor. Biraz zaman alabilir."
+
+#: templates/update.user.php:3
+msgid ""
+"This ownCloud instance is currently being updated, which may take a while."
+msgstr "Bu ownCloud örneği şu anda güncelleniyor, bu biraz zaman alabilir."
+
+#: templates/update.user.php:4
+msgid "Please reload this page after a short time to continue using ownCloud."
+msgstr "ownCloud kullanmaya devam etmek için kısa bir süre sonra lütfen sayfayı yenileyin."
+
+#: templates/update.user.php:5
+msgid ""
+"Contact your system administrator if this message persists or appeared "
+"unexpectedly."
+msgstr "Eğer bu ileti görünmeye devam ederse veya beklenmedik şekilde ortaya çıkmışsa sistem yöneticinizle iletişime geçin."
+
+#: templates/update.user.php:6
+msgid "Thank you for your patience."
+msgstr "Sabrınız için teşekkür ederiz."

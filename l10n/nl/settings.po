@@ -10,9 +10,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
-"Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-10-06 19:07-0400\n"
-"PO-Revision-Date: 2013-10-05 15:12+0000\n"
+"Report-Msgid-Bugs-To: translations@owncloud.org\n"
+"POT-Creation-Date: 2013-11-06 21:43-0500\n"
+"PO-Revision-Date: 2013-11-07 02:43+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/owncloud/language/nl/)\n"
 "MIME-Version: 1.0\n"
@@ -31,12 +31,12 @@ msgid "Authentication error"
 msgstr "Authenticatie fout"
 
 #: ajax/changedisplayname.php:31
-msgid "Your display name has been changed."
-msgstr "Uw weergavenaam is gewijzigd."
+msgid "Your full name has been changed."
+msgstr ""
 
 #: ajax/changedisplayname.php:34
-msgid "Unable to change display name"
-msgstr "Kon de weergavenaam niet wijzigen"
+msgid "Unable to change full name"
+msgstr ""
 
 #: ajax/creategroup.php:10
 msgid "Group already exists"
@@ -90,32 +90,32 @@ msgstr "Kon de app niet bijwerken."
 
 #: changepassword/controller.php:20
 msgid "Wrong password"
-msgstr ""
+msgstr "Onjuist wachtwoord"
 
 #: changepassword/controller.php:42
 msgid "No user supplied"
-msgstr ""
+msgstr "Geen gebruiker opgegeven"
 
 #: changepassword/controller.php:74
 msgid ""
 "Please provide an admin recovery password, otherwise all user data will be "
 "lost"
-msgstr ""
+msgstr "Voer een beheerdersherstelwachtwoord in, anders zullen alle gebruikersgegevens verloren gaan"
 
 #: changepassword/controller.php:79
 msgid ""
 "Wrong admin recovery password. Please check the password and try again."
-msgstr ""
+msgstr "Onjuist beheerdersherstelwachtwoord. Controleer het wachtwoord en probeer het opnieuw."
 
 #: changepassword/controller.php:87
 msgid ""
 "Back-end doesn't support password change, but the users encryption key was "
 "successfully updated."
-msgstr ""
+msgstr "De Back-end ondersteunt geen wachtwoordwijzigingen, maar de cryptosleutel van de gebruiker is succesvol bijgewerkt."
 
 #: changepassword/controller.php:92 changepassword/controller.php:103
 msgid "Unable to change password"
-msgstr ""
+msgstr "Kan wachtwoord niet wijzigen"
 
 #: js/apps.js:43
 msgid "Update to {appversion}"
@@ -161,15 +161,15 @@ msgstr "Bijwerken"
 msgid "Updated"
 msgstr "Bijgewerkt"
 
-#: js/personal.js:225
+#: js/personal.js:220
 msgid "Select a profile picture"
 msgstr "Kies een profielafbeelding"
 
-#: js/personal.js:270
+#: js/personal.js:265
 msgid "Decrypting files... Please wait, this can take some time."
 msgstr "Bestanden worden gedecodeerd... Even geduld alstublieft, dit kan even duren."
 
-#: js/personal.js:292
+#: js/personal.js:287
 msgid "Saving..."
 msgstr "Opslaan"
 
@@ -185,44 +185,68 @@ msgstr "ongedaan maken"
 msgid "Unable to remove user"
 msgstr "Kon gebruiker niet verwijderen"
 
-#: js/users.js:92 templates/users.php:26 templates/users.php:90
+#: js/users.js:95 templates/users.php:26 templates/users.php:90
 #: templates/users.php:118
 msgid "Groups"
 msgstr "Groepen"
 
-#: js/users.js:97 templates/users.php:92 templates/users.php:130
+#: js/users.js:100 templates/users.php:92 templates/users.php:130
 msgid "Group Admin"
 msgstr "Groep beheerder"
 
-#: js/users.js:120 templates/users.php:170
+#: js/users.js:123 templates/users.php:170
 msgid "Delete"
 msgstr "Verwijder"
 
-#: js/users.js:277
+#: js/users.js:284
 msgid "add group"
 msgstr "toevoegen groep"
 
-#: js/users.js:436
+#: js/users.js:451
 msgid "A valid username must be provided"
 msgstr "Er moet een geldige gebruikersnaam worden opgegeven"
 
-#: js/users.js:437 js/users.js:443 js/users.js:458
+#: js/users.js:452 js/users.js:458 js/users.js:473
 msgid "Error creating user"
 msgstr "Fout bij aanmaken gebruiker"
 
-#: js/users.js:442
+#: js/users.js:457
 msgid "A valid password must be provided"
 msgstr "Er moet een geldig wachtwoord worden opgegeven"
+
+#: js/users.js:481
+msgid "Warning: Home directory for user \"{user}\" already exists"
+msgstr "Waarschuwing: Home directory voor gebruiker \"{user}\" bestaat al"
 
 #: personal.php:45 personal.php:46
 msgid "__language_name__"
 msgstr "Nederlands"
 
-#: templates/admin.php:15
+#: templates/admin.php:8
+msgid "Everything (fatal issues, errors, warnings, info, debug)"
+msgstr "Alles (fatale problemen, fouten, waarschuwingen, info, debug)"
+
+#: templates/admin.php:9
+msgid "Info, warnings, errors and fatal issues"
+msgstr "Info, waarschuwingen, fouten en fatale problemen"
+
+#: templates/admin.php:10
+msgid "Warnings, errors and fatal issues"
+msgstr "Waarschuwingen, fouten en fatale problemen"
+
+#: templates/admin.php:11
+msgid "Errors and fatal issues"
+msgstr "Fouten en fatale problemen"
+
+#: templates/admin.php:12
+msgid "Fatal issues only"
+msgstr "Alleen fatale problemen"
+
+#: templates/admin.php:22
 msgid "Security Warning"
 msgstr "Beveiligingswaarschuwing"
 
-#: templates/admin.php:18
+#: templates/admin.php:25
 msgid ""
 "Your data directory and your files are probably accessible from the "
 "internet. The .htaccess file is not working. We strongly suggest that you "
@@ -231,36 +255,36 @@ msgid ""
 "root."
 msgstr "Uw data folder en uw bestanden zijn waarschijnlijk vanaf het internet bereikbaar.  Het .htaccess-bestand werkt niet.  We raden ten zeerste aan aan om uw webserver zodanig te configureren, dat de datamap niet bereikbaar is vanaf het internet of om uw datamap te verplaatsen naar een locatie buiten de document root van de webserver."
 
-#: templates/admin.php:29
+#: templates/admin.php:36
 msgid "Setup Warning"
 msgstr "Instellingswaarschuwing"
 
-#: templates/admin.php:32
+#: templates/admin.php:39
 msgid ""
 "Your web server is not yet properly setup to allow files synchronization "
 "because the WebDAV interface seems to be broken."
 msgstr "Uw webserver is nog niet goed ingesteld voor bestandssynchronisatie omdat de WebDAV interface verbroken lijkt."
 
-#: templates/admin.php:33
+#: templates/admin.php:40
 #, php-format
 msgid "Please double check the <a href=\"%s\">installation guides</a>."
 msgstr "Conntroleer de <a href='%s'>installatie handleiding</a> goed."
 
-#: templates/admin.php:44
+#: templates/admin.php:51
 msgid "Module 'fileinfo' missing"
 msgstr "Module 'fileinfo' ontbreekt"
 
-#: templates/admin.php:47
+#: templates/admin.php:54
 msgid ""
 "The PHP module 'fileinfo' is missing. We strongly recommend to enable this "
 "module to get best results with mime-type detection."
 msgstr "De PHP module 'fileinfo' ontbreekt. We adviseren met klem om deze module te activeren om de beste resultaten te bereiken voor mime-type detectie."
 
-#: templates/admin.php:58
+#: templates/admin.php:65
 msgid "Locale not working"
 msgstr "Taalbestand werkt niet"
 
-#: templates/admin.php:63
+#: templates/admin.php:70
 #, php-format
 msgid ""
 "System locale can't be set to %s. This means that there might be problems "
@@ -268,11 +292,11 @@ msgid ""
 "required packages on your system to support %s."
 msgstr "De systeemtaal kan niet worden ingesteld op %s. Hierdoor kunnen er problemen optreden met bepaalde karakters in bestandsnamen. Het wordt sterk aangeraden om de vereiste pakketen op uw systeem te installeren, zodat %s ondersteund wordt."
 
-#: templates/admin.php:75
+#: templates/admin.php:82
 msgid "Internet connection not working"
 msgstr "Internet verbinding werkt niet"
 
-#: templates/admin.php:78
+#: templates/admin.php:85
 msgid ""
 "This server has no working internet connection. This means that some of the "
 "features like mounting of external storage, notifications about updates or "
@@ -281,118 +305,118 @@ msgid ""
 "internet connection for this server if you want to have all features."
 msgstr "Deze server heeft geen actieve internetverbinding. Dat betekent dat sommige functies, zoals aankoppelen van externe opslag, notificaties over updates of installatie van apps van 3e partijen niet werken. Ook het benaderen van bestanden vanaf een remote locatie en het versturen van notificatie emails kan mislukken. We adviseren om de internetverbinding voor deze server in te schakelen als u alle functies wilt gebruiken."
 
-#: templates/admin.php:92
+#: templates/admin.php:99
 msgid "Cron"
 msgstr "Cron"
 
-#: templates/admin.php:99
+#: templates/admin.php:106
 msgid "Execute one task with each page loaded"
 msgstr "Bij laden van elke pagina één taak uitvoeren"
 
-#: templates/admin.php:107
+#: templates/admin.php:114
 msgid ""
-"cron.php is registered at a webcron service to call cron.php once a minute "
-"over http."
-msgstr "cron.php is geregistreerd bij een webcron service om cron.php eens per minuut aan te roepen via http."
+"cron.php is registered at a webcron service to call cron.php every 15 "
+"minutes over http."
+msgstr "cron.php is geregisteerd bij een webcron service om elke 15 minuten cron.php over http aan te roepen."
 
-#: templates/admin.php:115
-msgid "Use systems cron service to call the cron.php file once a minute."
-msgstr "Gebruik de systeem cron service om het bestand cron.php eens per minuut aan te roepen."
+#: templates/admin.php:122
+msgid "Use systems cron service to call the cron.php file every 15 minutes."
+msgstr "Gebruik de systeem cron service om cron.php elke 15 minuten aan te roepen."
 
-#: templates/admin.php:120
+#: templates/admin.php:127
 msgid "Sharing"
 msgstr "Delen"
 
-#: templates/admin.php:126
+#: templates/admin.php:133
 msgid "Enable Share API"
 msgstr "Activeren Share API"
 
-#: templates/admin.php:127
+#: templates/admin.php:134
 msgid "Allow apps to use the Share API"
 msgstr "Apps toestaan de Share API te gebruiken"
 
-#: templates/admin.php:134
+#: templates/admin.php:141
 msgid "Allow links"
 msgstr "Toestaan links"
 
-#: templates/admin.php:135
+#: templates/admin.php:142
 msgid "Allow users to share items to the public with links"
 msgstr "Toestaan dat gebruikers objecten met links delen met anderen"
 
-#: templates/admin.php:143
+#: templates/admin.php:150
 msgid "Allow public uploads"
 msgstr "Sta publieke uploads toe"
 
-#: templates/admin.php:144
+#: templates/admin.php:151
 msgid ""
 "Allow users to enable others to upload into their publicly shared folders"
 msgstr "Sta gebruikers toe anderen in hun publiek gedeelde mappen bestanden te uploaden"
 
-#: templates/admin.php:152
+#: templates/admin.php:159
 msgid "Allow resharing"
 msgstr "Toestaan opnieuw delen"
 
-#: templates/admin.php:153
+#: templates/admin.php:160
 msgid "Allow users to share items shared with them again"
 msgstr "Toestaan dat gebruikers objecten die anderen met hun gedeeld hebben zelf ook weer delen met anderen"
 
-#: templates/admin.php:160
+#: templates/admin.php:167
 msgid "Allow users to share with anyone"
 msgstr "Toestaan dat gebruikers met iedereen delen"
 
-#: templates/admin.php:163
+#: templates/admin.php:170
 msgid "Allow users to only share with users in their groups"
 msgstr "Instellen dat gebruikers alleen met leden binnen hun groepen delen"
 
-#: templates/admin.php:170
+#: templates/admin.php:177
 msgid "Allow mail notification"
-msgstr ""
-
-#: templates/admin.php:171
-msgid "Allow user to send mail notification for shared files"
-msgstr ""
+msgstr "Toestaan e-mailnotificaties"
 
 #: templates/admin.php:178
+msgid "Allow user to send mail notification for shared files"
+msgstr "Sta gebruikers toe om e-mailnotificaties  te versturen voor gedeelde bestanden"
+
+#: templates/admin.php:185
 msgid "Security"
 msgstr "Beveiliging"
 
-#: templates/admin.php:191
+#: templates/admin.php:198
 msgid "Enforce HTTPS"
 msgstr "Afdwingen HTTPS"
 
-#: templates/admin.php:193
+#: templates/admin.php:200
 #, php-format
 msgid "Forces the clients to connect to %s via an encrypted connection."
 msgstr "Dwingt de clients om een versleutelde verbinding te maken met %s"
 
-#: templates/admin.php:199
+#: templates/admin.php:206
 #, php-format
 msgid ""
 "Please connect to your %s via HTTPS to enable or disable the SSL "
 "enforcement."
 msgstr "Maak verbinding naar uw %s via HTTPS om een geforceerde versleutelde verbinding in- of uit te schakelen."
 
-#: templates/admin.php:211
+#: templates/admin.php:218
 msgid "Log"
 msgstr "Log"
 
-#: templates/admin.php:212
+#: templates/admin.php:219
 msgid "Log level"
 msgstr "Log niveau"
 
-#: templates/admin.php:243
+#: templates/admin.php:251
 msgid "More"
 msgstr "Meer"
 
-#: templates/admin.php:244
+#: templates/admin.php:252
 msgid "Less"
 msgstr "Minder"
 
-#: templates/admin.php:250 templates/personal.php:161
+#: templates/admin.php:258 templates/personal.php:169
 msgid "Version"
 msgstr "Versie"
 
-#: templates/admin.php:254 templates/personal.php:164
+#: templates/admin.php:262 templates/personal.php:172
 msgid ""
 "Developed by the <a href=\"http://ownCloud.org/contact\" "
 "target=\"_blank\">ownCloud community</a>, the <a "
@@ -484,8 +508,8 @@ msgid "Change password"
 msgstr "Wijzig wachtwoord"
 
 #: templates/personal.php:58 templates/users.php:88
-msgid "Display Name"
-msgstr "Weergavenaam"
+msgid "Full Name"
+msgstr ""
 
 #: templates/personal.php:73
 msgid "Email"
@@ -531,34 +555,34 @@ msgstr "Kies als profielafbeelding"
 msgid "Language"
 msgstr "Taal"
 
-#: templates/personal.php:119
+#: templates/personal.php:126
 msgid "Help translate"
 msgstr "Help met vertalen"
 
-#: templates/personal.php:125
+#: templates/personal.php:133
 msgid "WebDAV"
 msgstr "WebDAV"
 
-#: templates/personal.php:127
+#: templates/personal.php:135
 #, php-format
 msgid ""
-"Use this address to <a href=\"%s/server/5.0/user_manual/files/files.html\" "
-"target=\"_blank\">access your Files via WebDAV</a>"
-msgstr "Gebruik dit adres <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">toegang tot uw bestanden via WebDAV</a>"
+"Use this address to <a href=\"%s\" target=\"_blank\">access your Files via "
+"WebDAV</a>"
+msgstr "Gebruik deze link <a href=\"%s\" target=\"_blank\">om uw bestanden via WebDAV te benaderen</a>"
 
-#: templates/personal.php:138
+#: templates/personal.php:146
 msgid "Encryption"
 msgstr "Versleuteling"
 
-#: templates/personal.php:140
+#: templates/personal.php:148
 msgid "The encryption app is no longer enabled, decrypt all your file"
 msgstr "De encryptie-appplicatie is niet meer aanwezig, decodeer al uw bestanden"
 
-#: templates/personal.php:146
+#: templates/personal.php:154
 msgid "Log-in password"
 msgstr "Inlog-wachtwoord"
 
-#: templates/personal.php:151
+#: templates/personal.php:159
 msgid "Decrypt all Files"
 msgstr "Decodeer alle bestanden"
 
@@ -584,6 +608,10 @@ msgstr "Voer het herstel wachtwoord in om de gebruikersbestanden terug te halen 
 msgid "Default Storage"
 msgstr "Standaard Opslaglimiet"
 
+#: templates/users.php:44 templates/users.php:139
+msgid "Please enter storage quota (ex: \"512 MB\" or \"12 GB\")"
+msgstr "Geef de opslagquotering op (bijv. \"512 MB\" of \"12 GB\")"
+
 #: templates/users.php:48 templates/users.php:148
 msgid "Unlimited"
 msgstr "Ongelimiteerd"
@@ -601,8 +629,8 @@ msgid "Storage"
 msgstr "Opslaglimiet"
 
 #: templates/users.php:108
-msgid "change display name"
-msgstr "wijzig weergavenaam"
+msgid "change full name"
+msgstr ""
 
 #: templates/users.php:112
 msgid "set new password"

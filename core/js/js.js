@@ -746,15 +746,7 @@ $(document).ready(function(){
 	});
 
 	var setShowPassword = function(input, label) {
-		input.showPassword().keyup(function(){
-			if (input.val().length == 0) {
-				label.hide();
-			}
-			else {
-				label.css("display", "inline").show();
-			}
-		});
-		label.hide();
+		input.showPassword().keyup();
 	};
 	setShowPassword($('#adminpass'), $('label[for=show]'));
 	setShowPassword($('#pass2'), $('label[for=personal-show]'));
@@ -941,7 +933,7 @@ jQuery.fn.selectRange = function(start, end) {
  */
 jQuery.fn.exists = function(){
 	return this.length > 0;
-}
+};
 
 /**
  * Calls the server periodically every 15 mins to ensure that session doesnt

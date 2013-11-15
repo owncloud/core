@@ -32,27 +32,22 @@ class Shared_Updater {
 		$uid = \OCP\User::getUser();
 		$uidOwner = \OC\Files\Filesystem::getOwner($target);
 		$info = \OC\Files\Filesystem::getFileInfo($target);
+		$checkedUser = array($uidOwner);
 		// Correct Shared folders of other users shared with
 		$users = \OCP\Share::getUsersItemShared('file', $info['fileid'], $uidOwner, true);
 		if (!empty($users)) {
 			while (!empty($users)) {
 				$reshareUsers = array();
 				foreach ($users as $user) {
-					if ( $user !== $uidOwner ) {
+					if ( !in_array($user, $checkedUser) ) {
 						$etag = \OC\Files\Filesystem::getETag('');
 						\OCP\Config::setUserValue($user, 'files_sharing', 'etag', $etag);
 						// Look for reshares
 						$reshareUsers = array_merge($reshareUsers, \OCP\Share::getUsersItemShared('file', $info['fileid'], $user, true));
+						$checkedUser[] = $user;
 					}
 				}
 				$users = $reshareUsers;
-			}
-			// Correct folders of shared file owner
-			$target = substr($target, 8);
-			if ($uidOwner !== $uid && $source = \OC_Share_Backend_File::getSource($target)) {
-				\OC\Files\Filesystem::initMountPoints($uidOwner);
-				$source = '/'.$uidOwner.'/'.$source['path'];
-				\OC\Files\Cache\Updater::correctFolder($source, $info['mtime']);
 			}
 		}
 	}

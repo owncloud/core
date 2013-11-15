@@ -31,6 +31,7 @@ class Test_Files_Sharing_Api extends \PHPUnit_Framework_TestCase {
 
 	const TEST_FILES_SHARING_API_USER1 = "test-share-user1";
 	const TEST_FILES_SHARING_API_USER2 = "test-share-user2";
+	const TEST_FILES_SHARING_API_USER3 = "test-share-user3";
 
 	public $stateFilesEncryption;
 	public $filename;
@@ -54,10 +55,15 @@ class Test_Files_Sharing_Api extends \PHPUnit_Framework_TestCase {
 		// create users
 		self::loginHelper(\Test_Files_Sharing_Api::TEST_FILES_SHARING_API_USER1, true);
 		self::loginHelper(\Test_Files_Sharing_Api::TEST_FILES_SHARING_API_USER2, true);
+		self::loginHelper(\Test_Files_Sharing_Api::TEST_FILES_SHARING_API_USER3, true);
 
 	}
 
 	function setUp() {
+
+		//login as user1
+		\Test_Files_Sharing_Api::loginHelper(\Test_Files_Sharing_Api::TEST_FILES_SHARING_API_USER1);
+
 		$this->data = 'foobar';
 		$this->view = new \OC_FilesystemView('/' . \Test_Files_Sharing_Api::TEST_FILES_SHARING_API_USER1 . '/files');
 
@@ -97,15 +103,13 @@ class Test_Files_Sharing_Api extends \PHPUnit_Framework_TestCase {
 		// cleanup users
 		\OC_User::deleteUser(\Test_Files_Sharing_Api::TEST_FILES_SHARING_API_USER1);
 		\OC_User::deleteUser(\Test_Files_Sharing_Api::TEST_FILES_SHARING_API_USER2);
+		\OC_User::deleteUser(\Test_Files_Sharing_Api::TEST_FILES_SHARING_API_USER3);
 	}
 
 	/**
 	 * @medium
 	 */
 	function testCreateShare() {
-
-		//login as user1
-		\Test_Files_Sharing_Api::loginHelper(\Test_Files_Sharing_Api::TEST_FILES_SHARING_API_USER1);
 
 		// share to user
 
@@ -196,9 +200,9 @@ class Test_Files_Sharing_Api extends \PHPUnit_Framework_TestCase {
 		\OCP\Share::shareItem('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_LINK,
 				null, 1);
 
-		$params = array('itemSource' => $fileInfo['fileid']);
+		$_GET['path'] = $this->filename;
 
-		$result = Share\Api::getShare($params);
+		$result = Share\Api::getAllShares(array());
 
 		$this->assertTrue($result->succeeded());
 
@@ -209,6 +213,60 @@ class Test_Files_Sharing_Api extends \PHPUnit_Framework_TestCase {
 				\Test_Files_Sharing_Api::TEST_FILES_SHARING_API_USER2);
 
 		\OCP\Share::unshare('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_LINK, null);
+
+	}
+
+	/**
+	 * @medium
+	 * @depends testCreateShare
+	 */
+	function testGetShareFromSourceWithReshares() {
+
+		$fileInfo = $this->view->getFileInfo($this->filename);
+
+		// share the file as user1 to user2
+		\OCP\Share::shareItem('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_USER,
+				\Test_Files_Sharing_Api::TEST_FILES_SHARING_API_USER2, 31);
+
+		// login as user2 and reshare the file to user3
+		\Test_Files_Sharing_Api::loginHelper(\Test_Files_Sharing_Api::TEST_FILES_SHARING_API_USER2);
+
+		\OCP\Share::shareItem('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_USER,
+				\Test_Files_Sharing_Api::TEST_FILES_SHARING_API_USER3, 31);
+
+		// login as user1 again
+		\Test_Files_Sharing_Api::loginHelper(\Test_Files_Sharing_Api::TEST_FILES_SHARING_API_USER1);
+
+		$_GET['path'] = $this->filename;
+
+		$result = Share\Api::getAllShares(array());
+
+		$this->assertTrue($result->succeeded());
+
+		// test should return one share
+		$this->assertTrue(count($result->getData()) === 1);
+
+		// now also ask for the reshares
+		$_GET['reshares'] = 'true';
+
+		$result = Share\Api::getAllShares(array());
+
+		$this->assertTrue($result->succeeded());
+
+		// now we should get two shares, the initial share and the reshare
+		$this->assertTrue(count($result->getData()) === 2);
+
+		// unshare files again
+
+		\Test_Files_Sharing_Api::loginHelper(\Test_Files_Sharing_Api::TEST_FILES_SHARING_API_USER2);
+
+		\OCP\Share::unshare('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_USER,
+				\Test_Files_Sharing_Api::TEST_FILES_SHARING_API_USER3);
+
+		\Test_Files_Sharing_Api::loginHelper(\Test_Files_Sharing_Api::TEST_FILES_SHARING_API_USER1);
+
+		\OCP\Share::unshare('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_USER,
+				\Test_Files_Sharing_Api::TEST_FILES_SHARING_API_USER2);
 
 	}
 
@@ -295,7 +353,8 @@ class Test_Files_Sharing_Api extends \PHPUnit_Framework_TestCase {
 		$result = Share\Api::getShare($params);
 
 		$this->assertEquals(404, $result->getStatusCode());
-		$this->assertEquals('share doesn\'t exist', $result->getMeta()['message']);
+        $meta = $result->getMeta();
+		$this->assertEquals('share doesn\'t exist', $meta['message']);
 
 	}
 
@@ -351,7 +410,8 @@ class Test_Files_Sharing_Api extends \PHPUnit_Framework_TestCase {
 
 		$result = Share\Api::updateShare($params);
 
-		$this->assertTrue($result->succeeded(), $result->getMeta()['message']);
+        $meta = $result->getMeta();
+		$this->assertTrue($result->succeeded(), $meta['message']);
 
 		$items = \OCP\Share::getItemShared('file', $userShare['file_source']);
 

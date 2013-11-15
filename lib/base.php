@@ -69,8 +69,9 @@ class OC {
 	 * check if owncloud runs in cli mode
 	 */
 	public static $CLI = false;
-	/*
-	 * OC router
+
+	/**
+	 * @var OC_Router
 	 */
 	protected static $router = null;
 
@@ -180,7 +181,7 @@ class OC {
 			OC_Template::printErrorPage(
 				"Can't write into config directory!",
 				'This can usually be fixed by '
-					.'<a href="' . $defaults->getDocBaseUrl() . '/server/5.0/admin_manual/installation/installation_source.html#set-the-directory-permissions" target="_blank">giving the webserver write access to the config directory</a>.'
+					.'<a href="' . \OC_Helper::linkToDocs('admin-dir_permissions') . '" target="_blank">giving the webserver write access to the config directory</a>.'
 			);
 		}
 	}
@@ -223,7 +224,9 @@ class OC {
 			header('Retry-After: 120');
 
 			// render error page
-			OC_Template::printErrorPage('ownCloud is in maintenance mode');
+			$tmpl = new OC_Template('', 'update.user', 'guest');
+			$tmpl->printPage();
+			die();
 		}
 	}
 
@@ -239,7 +242,7 @@ class OC {
 					$minimizerJS = new OC_Minimizer_JS();
 					$minimizerJS->clearCache();
 					OC_Util::addscript('update');
-					$tmpl = new OC_Template('', 'update', 'guest');
+					$tmpl = new OC_Template('', 'update.admin', 'guest');
 					$tmpl->assign('version', OC_Util::getVersionString());
 					$tmpl->printPage();
 					exit();
@@ -258,6 +261,7 @@ class OC {
 		OC_Util::addScript("jquery-ui-1.10.0.custom");
 		OC_Util::addScript("jquery-showpassword");
 		OC_Util::addScript("jquery.infieldlabel");
+		OC_Util::addScript("jquery.placeholder");
 		OC_Util::addScript("jquery-tipsy");
 		OC_Util::addScript("compatibility");
 		OC_Util::addScript("jquery.ocdialog");
@@ -304,15 +308,9 @@ class OC {
 			self::$session = new \OC\Session\Internal(OC_Util::getInstanceId());
 			// if session cant be started break with http 500 error
 		} catch (Exception $e) {
-			OC_Log::write('core', 'Session could not be initialized',
-				OC_Log::ERROR);
-
-			header('HTTP/1.1 500 Internal Server Error');
-			OC_Util::addStyle("styles");
-			$error = 'Session could not be initialized. Please contact your ';
-			$error .= 'system administrator';
-
-			OC_Template::printErrorPage($error);
+			//show the user a detailed error page
+			OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
+			OC_Template::printExceptionErrorPage($e);
 		}
 
 		$sessionLifeTime = self::getSessionLifeTime();
@@ -344,6 +342,9 @@ class OC {
 		return OC_Config::getValue('session_lifetime', 60 * 60 * 24);
 	}
 
+	/**
+	 * @return OC_Router
+	 */
 	public static function getRouter() {
 		if (!isset(OC::$router)) {
 			OC::$router = new OC_Router();
@@ -431,6 +432,14 @@ class OC {
 		}
 
 		self::initPaths();
+		if (OC_Config::getValue('instanceid', false)) {
+			// \OC\Memcache\Cache has a hidden dependency on
+			// OC_Util::getInstanceId() for namespacing. See #5409.
+			try {
+				self::$loader->setMemoryCache(\OC\Memcache\Factory::createLowLatency('Autoloader'));
+			} catch(\Exception $ex) {
+			}
+		}
 		OC_Util::isSetLocaleWorking();
 
 		// set debug mode if an xdebug session is active
@@ -501,7 +510,7 @@ class OC {
 		// This includes plugins for users and filesystems as well
 		global $RUNTIME_NOAPPS;
 		global $RUNTIME_APPTYPES;
-		if (!$RUNTIME_NOAPPS) {
+		if (!$RUNTIME_NOAPPS && !self::checkUpgrade(false)) {
 			if ($RUNTIME_APPTYPES) {
 				OC_App::loadApps($RUNTIME_APPTYPES);
 			} else {
@@ -684,7 +693,11 @@ class OC {
 		}
 		// Handle WebDAV
 		if ($_SERVER['REQUEST_METHOD'] == 'PROPFIND') {
-			header('location: ' . OC_Helper::linkToRemote('webdav'));
+			// not allowed any more to prevent people
+			// mounting this root directly.
+			// Users need to mount remote.php/webdav instead.
+			header('HTTP/1.1 405 Method Not Allowed');
+			header('Status: 405 Method Not Allowed');
 			return;
 		}
 
@@ -760,6 +773,13 @@ class OC {
 		// logon via web form
 		elseif (OC::tryFormLogin()) {
 			$error[] = 'invalidpassword';
+			if ( OC_Config::getValue('log_authfailip', false) ) {
+				OC_Log::write('core', 'Login failed: user \''.$_POST["user"].'\' , wrong password, IP:'.$_SERVER['REMOTE_ADDR'],
+				OC_Log::WARN);
+			} else { 
+				OC_Log::write('core', 'Login failed: user \''.$_POST["user"].'\' , wrong password, IP:set log_authfailip=true in conf',
+                                OC_Log::WARN);
+			}
 		}
 
 		OC_Util::displayLoginPage(array_unique($error));
@@ -818,6 +838,7 @@ class OC {
 				OC_User::setMagicInCookie($_COOKIE['oc_username'], $token);
 				// login
 				OC_User::setUserId($_COOKIE['oc_username']);
+				OC_User::setDisplayName($_COOKIE['oc_username'], $_COOKIE['display_name']);
 				OC_Util::redirectToDefaultPage();
 				// doesn't return
 			}

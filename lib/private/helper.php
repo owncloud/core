@@ -59,6 +59,15 @@ class OC_Helper {
 	}
 
 	/**
+	 * @param $key
+	 * @return string url to the online documentation
+	 */
+	public static function linkToDocs($key) {
+		$theme = new OC_Defaults();
+		return $theme->getDocBaseUrl() . '/server/6.0/go.php?to=' . $key;
+	}
+
+	/**
 	 * @brief Creates an absolute url
 	 * @param string $app app
 	 * @param string $file file
@@ -81,7 +90,7 @@ class OC_Helper {
 	 * Returns a absolute url to the given app and file.
 	 */
 	public static function makeURLAbsolute($url) {
-		return OC::$server->getURLGenerator()->makeURLAbsolute($url);
+		return OC::$server->getURLGenerator()->getAbsoluteURL($url);
 	}
 
 	/**
@@ -222,11 +231,11 @@ class OC_Helper {
 	 * Returns the path to the preview of the file.
 	 */
 	public static function previewIcon($path) {
-		return self::linkToRoute( 'core_ajax_preview', array('x' => 36, 'y' => 36, 'file' => urlencode($path) ));
+		return self::linkToRoute( 'core_ajax_preview', array('x' => 36, 'y' => 36, 'file' => $path ));
 	}
 
 	public static function publicPreviewIcon( $path, $token ) {
-		return self::linkToRoute( 'core_ajax_public_preview', array('x' => 36, 'y' => 36, 'file' => urlencode($path), 't' => $token));
+		return self::linkToRoute( 'core_ajax_public_preview', array('x' => 36, 'y' => 36, 'file' => $path, 't' => $token));
 	}
 
 	/**
@@ -509,11 +518,11 @@ class OC_Helper {
 	 *
 	 * @param resource $source
 	 * @param resource $target
-	 * @return int the number of bytes copied
+	 * @return array the number of bytes copied and result
 	 */
 	public static function streamCopy($source, $target) {
 		if (!$source or !$target) {
-			return false;
+			return array(0, false);
 		}
 		$result = true;
 		$count = 0;
