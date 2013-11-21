@@ -28,8 +28,8 @@
 class OC_Files {
 	static $tmpFiles = array();
 
-	static public function getFileInfo($path){
-		return \OC\Files\Filesystem::getFileInfo($path);
+	static public function getFileInfo($path, $includeMountPoints = true){
+		return \OC\Files\Filesystem::getFileInfo($path, $includeMountPoints);
 	}
 
 	static public function getDirectoryContent($path){
@@ -131,9 +131,11 @@ class OC_Files {
 				if ($filesize > -1) {
 					header("Content-Length: ".$filesize);
 				}
-				list($storage) = \OC\Files\Filesystem::resolvePath($filename);
-				if ($storage instanceof \OC\Files\Storage\Local) {
-					self::addSendfileHeader(\OC\Files\Filesystem::getLocalFile($filename));
+				if ($xsendfile) {
+					list($storage) = \OC\Files\Filesystem::resolvePath(\OC\Files\Filesystem::getView()->getAbsolutePath($filename));
+					if ($storage instanceof \OC\Files\Storage\Local) {
+						self::addSendfileHeader(\OC\Files\Filesystem::getLocalFile($filename));
+					}
 				}
 			}
 		} elseif ($zip or !\OC\Files\Filesystem::file_exists($filename)) {

@@ -103,6 +103,20 @@ var LdapConfiguration = {
 		);
 	},
 
+	testConfiguration: function(onSuccess, onError) {
+		$.post(
+			OC.filePath('user_ldap','ajax','testConfiguration.php'),
+			$('#ldap').serialize(),
+			function (result) {
+				if (result.status === 'success') {
+					onSuccess(result);
+				} else {
+					onError(result);
+				}
+			}
+		);
+	},
+
 	clearMappings: function(mappingSubject) {
 		$.post(
 			OC.filePath('user_ldap','ajax','clearMappings.php'),
@@ -172,7 +186,7 @@ var LdapWizard = {
 		pwd		= $('#ldap_agent_password').val();
 		base	= $('#ldap_base').val();
 
-		if(host && port && agent && pwd && base) {
+		if((host && port  && base) && ((!agent && !pwd) || (agent && pwd))) {
 			$('.ldap_action_continue').removeAttr('disabled');
 			$('#ldapSettings').tabs('option', 'disabled', []);
 		} else {
@@ -187,24 +201,26 @@ var LdapWizard = {
 		user = $('#ldap_dn').val();
 		pass = $('#ldap_agent_password').val();
 
+		//FIXME: determine base dn with anonymous access
 		if(host && port && user && pass) {
 			param = 'action=guessBaseDN'+
 					'&ldap_serverconfig_chooser='+$('#ldap_serverconfig_chooser').val();
 
 			LdapWizard.showSpinner('#ldap_base');
+			$('#ldap_base').prop('disabled', 'disabled');
 			LdapWizard.ajax(param,
 				function(result) {
 					LdapWizard.applyChanges(result);
 					LdapWizard.hideSpinner('#ldap_base');
 					if($('#ldap_base').val()) {
-						$('#ldap_base').removeClass('invisible');
 						LdapWizard.hideInfoBox();
 					}
+					$('#ldap_base').prop('disabled', false);
 				},
 				function (result) {
 					LdapWizard.hideSpinner('#ldap_base');
-					$('#ldap_base').removeClass('invisible');
-					LdapWizard.showInfoBox('Please specify a port');
+					LdapWizard.showInfoBox('Please specify a Base DN');
+					LdapWizard.showInfoBox('Could not determine Base DN');
 				}
 			);
 		}
@@ -212,28 +228,28 @@ var LdapWizard = {
 
 	checkPort: function() {
 		host = $('#ldap_host').val();
-		user = $('#ldap_dn').val();
-		pass = $('#ldap_agent_password').val();
+		port = $('#ldap_port').val();
 
-		if(host && user && pass) {
+		if(host && !port) {
 			param = 'action=guessPortAndTLS'+
 					'&ldap_serverconfig_chooser='+$('#ldap_serverconfig_chooser').val();
 
 			LdapWizard.showSpinner('#ldap_port');
+			$('#ldap_port').prop('disabled', 'disabled');
 			LdapWizard.ajax(param,
 				function(result) {
 					LdapWizard.applyChanges(result);
 					LdapWizard.hideSpinner('#ldap_port');
 					if($('#ldap_port').val()) {
 						LdapWizard.checkBaseDN();
-						$('#ldap_port').removeClass('invisible');
+						$('#ldap_port').prop('disabled', false);
 						LdapWizard.hideInfoBox();
 					}
 				},
 				function (result) {
 					LdapWizard.hideSpinner('#ldap_port');
-					$('#ldap_port').removeClass('invisible');
-					LdapWizard.showInfoBox('Please specify the BaseDN');
+					$('#ldap_port').prop('disabled', false);
+					LdapWizard.showInfoBox('Please specify the port');
 				}
 			);
 		}
@@ -427,14 +443,16 @@ var LdapWizard = {
 
 	functionalityCheck: function() {
 		//criterias to enable the connection:
-		// - host, port, user filter, login filter
+		// - host, port, basedn, user filter, login filter
 		host        = $('#ldap_host').val();
 		port        = $('#ldap_port').val();
-		userfilter  = $('#ldap_dn').val();
-		loginfilter = $('#ldap_agent_password').val();
+		base        = $('#ldap_base').val();
+		userfilter  = $('#ldap_userlist_filter').val();
+		loginfilter = $('#ldap_login_filter').val();
 
 		//FIXME: activates a manually deactivated configuration.
-		if(host && port && userfilter && loginfilter) {
+		if(host && port && base && 	userfilter && loginfilter) {
+			LdapWizard.updateStatusIndicator(true);
 			if($('#ldap_configuration_active').is(':checked')) {
 				return;
 			}
@@ -445,6 +463,7 @@ var LdapWizard = {
 				$('#ldap_configuration_active').prop('checked', false);
 				LdapWizard.save($('#ldap_configuration_active')[0]);
 			}
+			LdapWizard.updateStatusIndicator(false);
 		}
 	},
 
@@ -461,13 +480,8 @@ var LdapWizard = {
 	},
 
 	init: function() {
-		if($('#ldap_port').val()) {
-			$('#ldap_port').removeClass('invisible');
-		}
-		if($('#ldap_base').val()) {
-			$('#ldap_base').removeClass('invisible');
-		}
 		LdapWizard.basicStatusCheck();
+		LdapWizard.functionalityCheck();
 	},
 
 	initGroupFilter: function() {
@@ -521,6 +535,8 @@ var LdapWizard = {
 	},
 
 	processChanges: function(triggerObj) {
+		LdapWizard.hideInfoBox();
+
 		if(triggerObj.id == 'ldap_host'
 		   || triggerObj.id == 'ldap_port'
 		   || triggerObj.id == 'ldap_dn'
@@ -546,6 +562,7 @@ var LdapWizard = {
 
 		if($('#ldapSettings').tabs('option', 'active') == 0) {
 			LdapWizard.basicStatusCheck();
+			LdapWizard.functionalityCheck();
 		}
 	},
 
@@ -646,14 +663,46 @@ var LdapWizard = {
 								   '#ldap_userfilter_groups',
 								   'userFilterGroupSelectState'
   								);
+	},
+
+	updateStatusIndicator: function(isComplete) {
+		if(isComplete) {
+			LdapConfiguration.testConfiguration(
+				//onSuccess
+				function(result) {
+					$('.ldap_config_state_indicator').text(t('user_ldap',
+						'Configuration OK'
+					));
+					$('.ldap_config_state_indicator').addClass('ldap_grey');
+					$('.ldap_config_state_indicator_sign').removeClass('error');
+					$('.ldap_config_state_indicator_sign').addClass('success');
+				},
+				//onError
+				function(result) {
+					$('.ldap_config_state_indicator').text(t('user_ldap',
+						'Configuration incorrect'
+					));
+					$('.ldap_config_state_indicator').removeClass('ldap_grey');
+					$('.ldap_config_state_indicator_sign').addClass('error');
+					$('.ldap_config_state_indicator_sign').removeClass('success');
+				}
+			);
+		} else {
+			$('.ldap_config_state_indicator').text(t('user_ldap',
+				'Configuration incomplete'
+			));
+			$('.ldap_config_state_indicator').removeClass('ldap_grey');
+			$('.ldap_config_state_indicator_sign').removeClass('error');
+			$('.ldap_config_state_indicator_sign').removeClass('success');
+		}
 	}
 };
 
 $(document).ready(function() {
 	$('#ldapAdvancedAccordion').accordion({ heightStyle: 'content', animate: 'easeInOutCirc'});
 	$('#ldapSettings').tabs({ beforeActivate: LdapWizard.onTabChange });
-	$('#ldap_submit').button();
-	$('#ldap_action_test_connection').button();
+	$('.ldap_submit').button();
+	$('.ldap_action_test_connection').button();
 	$('#ldap_action_delete_configuration').button();
 	LdapWizard.initMultiSelect($('#ldap_userfilter_groups'),
 							   'ldap_userfilter_groups',
@@ -682,23 +731,22 @@ $(document).ready(function() {
 		event.preventDefault();
 		LdapWizard.controlBack();
 	});
-	$('#ldap_action_test_connection').click(function(event){
+	$('.ldap_action_test_connection').click(function(event){
 		event.preventDefault();
-		$.post(
-			OC.filePath('user_ldap','ajax','testConfiguration.php'),
-			$('#ldap').serialize(),
-			function (result) {
-				if (result.status === 'success') {
-					OC.dialogs.alert(
-						result.message,
-						t('user_ldap', 'Connection test succeeded')
-					);
-				} else {
-					OC.dialogs.alert(
-						result.message,
-						t('user_ldap', 'Connection test failed')
-					);
-				}
+		LdapConfiguration.testConfiguration(
+			//onSuccess
+			function(result) {
+				OC.dialogs.alert(
+					result.message,
+					t('user_ldap', 'Connection test succeeded')
+				);
+			},
+			//onError
+			function(result) {
+				OC.dialogs.alert(
+					result.message,
+					t('user_ldap', 'Connection test failed')
+				);
 			}
 		);
 	});
@@ -716,18 +764,18 @@ $(document).ready(function() {
 		);
 	});
 
-	$('#ldap_submit').click(function(event) {
+	$('.ldap_submit').click(function(event) {
 		event.preventDefault();
 		$.post(
 			OC.filePath('user_ldap','ajax','setConfiguration.php'),
 			$('#ldap').serialize(),
 			function (result) {
-				bgcolor = $('#ldap_submit').css('background');
+				bgcolor = $('.ldap_submit').css('background');
 				if (result.status === 'success') {
 					//the dealing with colors is a but ugly, but the jQuery version in use has issues with rgba colors
-					$('#ldap_submit').css('background', '#fff');
-					$('#ldap_submit').effect('highlight', {'color':'#A8FA87'}, 5000, function() {
-						$('#ldap_submit').css('background', bgcolor);
+					$('.ldap_submit').css('background', '#fff');
+					$('.ldap_submit').effect('highlight', {'color':'#A8FA87'}, 5000, function() {
+						$('.ldap_submit').css('background', bgcolor);
 					});
 					//update the Label in the config chooser
 					caption = $('#ldap_serverconfig_chooser option:selected:first').text();
@@ -737,9 +785,9 @@ $(document).ready(function() {
 					$('#ldap_serverconfig_chooser option:selected:first').text(caption);
 
 				} else {
-					$('#ldap_submit').css('background', '#fff');
-					$('#ldap_submit').effect('highlight', {'color':'#E97'}, 5000, function() {
-						$('#ldap_submit').css('background', bgcolor);
+					$('.ldap_submit').css('background', '#fff');
+					$('.ldap_submit').effect('highlight', {'color':'#E97'}, 5000, function() {
+						$('.ldap_submit').css('background', bgcolor);
 					});
 				}
 			}

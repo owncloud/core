@@ -18,6 +18,15 @@
  * You should have received a copy of the GNU Affero General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+/**
+ * Public interface of ownCloud for apps to use.
+ * Share Class
+ *
+ */
+
+// use OCP namespace for all classes that are considered public.
+// This means that they should be used by apps instead of the internal ownCloud classes
 namespace OCP;
 
 /**
@@ -345,16 +354,9 @@ class Share {
 			\OC_Log::write('OCP\Share', \OC_DB::getErrorMessage($result) . ', token=' . $token, \OC_Log::ERROR);
 		}
 		$row = $result->fetchRow();
-
-		if (!empty($row['expiration'])) {
-			$now = new \DateTime();
-			$expirationDate = new \DateTime($row['expiration'], new \DateTimeZone('UTC'));
-			if ($now > $expirationDate) {
-				self::delete($row['id']);
-				return false;
-			}
+		if (is_array($row) and self::expireItem($row)) {
+			return false;
 		}
-
 		return $row;
 	}
 
@@ -634,23 +636,7 @@ class Share {
 	public static function unshare($itemType, $itemSource, $shareType, $shareWith) {
 		if ($item = self::getItems($itemType, $itemSource, $shareType, $shareWith, \OC_User::getUser(),
 			self::FORMAT_NONE, null, 1)) {
-			// Pass all the vars we have for now, they may be useful
-			\OC_Hook::emit('OCP\Share', 'pre_unshare', array(
-				'itemType' => $itemType,
-				'itemSource' => $itemSource,
-				'fileSource' => $item['file_source'],
-				'shareType' => $shareType,
-				'shareWith' => $shareWith,
-				'itemParent' => $item['parent'],
-			));
-			self::delete($item['id']);
-			\OC_Hook::emit('OCP\Share', 'post_unshare', array(
-					'itemType' => $itemType,
-					'itemSource' => $itemSource,
-					'shareType' => $shareType,
-					'shareWith' => $shareWith,
-					'itemParent' => $item['parent'],
-			));
+			self::unshareItem($item);
 			return true;
 		}
 		return false;
@@ -665,19 +651,16 @@ class Share {
 	public static function unshareAll($itemType, $itemSource) {
 		if ($shares = self::getItemShared($itemType, $itemSource)) {
 			// Pass all the vars we have for now, they may be useful
-			\OC_Hook::emit('OCP\Share', 'pre_unshareAll', array(
+			$hookParams = array(
 				'itemType' => $itemType,
 				'itemSource' => $itemSource,
-				'shares' => $shares
-			));
+				'shares' => $shares,
+			);
+			\OC_Hook::emit('OCP\Share', 'pre_unshareAll', $hookParams);
 			foreach ($shares as $share) {
-				self::delete($share['id']);
+				self::unshareItem($share);
 			}
-			\OC_Hook::emit('OCP\Share', 'post_unshareAll', array(
-					'itemType' => $itemType,
-					'itemSource' => $itemSource,
-					'shares' => $shares
-			));
+			\OC_Hook::emit('OCP\Share', 'post_unshareAll', $hookParams);
 			return true;
 		}
 		return false;
@@ -850,6 +833,44 @@ class Share {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Checks whether a share has expired, calls unshareItem() if yes.
+	 * @param array $item Share data (usually database row)
+	 * @return bool True if item was expired, false otherwise.
+	 */
+	protected static function expireItem(array $item) {
+		if (!empty($item['expiration'])) {
+			$now = new \DateTime();
+			$expirationDate = new \DateTime($item['expiration'], new \DateTimeZone('UTC'));
+			if ($now > $expirationDate) {
+				self::unshareItem($item);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Unshares a share given a share data array
+	 * @param array $item Share data (usually database row)
+	 * @return null
+	 */
+	protected static function unshareItem(array $item) {
+		// Pass all the vars we have for now, they may be useful
+		$hookParams = array(
+			'itemType'		=> $item['item_type'],
+			'itemSource'	=> $item['item_source'],
+			'shareType'		=> $item['share_type'],
+			'shareWith'		=> $item['share_with'],
+			'itemParent'	=> $item['parent'],
+		);
+		\OC_Hook::emit('OCP\Share', 'pre_unshare', $hookParams + array(
+			'fileSource'	=> $item['file_source'],
+		));
+		self::delete($item['id']);
+		\OC_Hook::emit('OCP\Share', 'post_unshare', $hookParams);
 	}
 
 	/**
@@ -1079,7 +1100,7 @@ class Share {
 		// TODO Optimize selects
 		if ($format == self::FORMAT_STATUSES) {
 			if ($itemType == 'file' || $itemType == 'folder') {
-				$select = '`*PREFIX*share`.`id`, `item_type`, `*PREFIX*share`.`parent`,'
+				$select = '`*PREFIX*share`.`id`, `item_type`, `item_source`, `*PREFIX*share`.`parent`,'
 					.' `share_type`, `file_source`, `path`, `expiration`, `storage`, `mail_send`';
 			} else {
 				$select = '`id`, `item_type`, `item_source`, `parent`, `share_type`, `expiration`, `mail_send`';
@@ -1087,7 +1108,7 @@ class Share {
 		} else {
 			if (isset($uidOwner)) {
 				if ($itemType == 'file' || $itemType == 'folder') {
-					$select = '`*PREFIX*share`.`id`, `item_type`, `*PREFIX*share`.`parent`,'
+					$select = '`*PREFIX*share`.`id`, `item_type`, `item_source`, `*PREFIX*share`.`parent`,'
 						.' `share_type`, `share_with`, `file_source`, `path`, `permissions`, `stime`,'
 						.' `expiration`, `token`, `storage`, `mail_send`';
 				} else {
@@ -1100,7 +1121,7 @@ class Share {
 						&& $format == \OC_Share_Backend_File::FORMAT_GET_FOLDER_CONTENTS
 						|| $format == \OC_Share_Backend_File::FORMAT_FILE_APP_ROOT
 					) {
-						$select = '`*PREFIX*share`.`id`, `item_type`, `*PREFIX*share`.`parent`, `uid_owner`, '
+						$select = '`*PREFIX*share`.`id`, `item_type`, `item_source`, `*PREFIX*share`.`parent`, `uid_owner`, '
 							.'`share_type`, `share_with`, `file_source`, `path`, `file_target`, '
 							.'`permissions`, `expiration`, `storage`, `*PREFIX*filecache`.`parent` as `file_parent`, '
 							.'`name`, `mtime`, `mimetype`, `mimepart`, `size`, `encrypted`, `etag`, `mail_send`';
@@ -1206,12 +1227,8 @@ class Share {
 					}
 				}
 			}
-			if (isset($row['expiration'])) {
-				$time = new \DateTime();
-				if ($row['expiration'] < date('Y-m-d H:i', $time->format('U') - $time->getOffset())) {
-					self::delete($row['id']);
-					continue;
-				}
+			if (self::expireItem($row)) {
+				continue;
 			}
 			// Check if resharing is allowed, if not remove share permission
 			if (isset($row['permissions']) && !self::isResharingAllowed()) {

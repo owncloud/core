@@ -18,6 +18,7 @@
 	float: right;
 	z-index: 1010;
 	padding: 10px;
+	font-weight: normal;
 }
 #new>a {
 	padding: 14px 10px;
@@ -320,8 +321,9 @@ table.dragshadow {
 	width:auto;
 }
 table.dragshadow td.filename {
-	padding-left:36px;
+	padding-left:60px;
 	padding-right:16px;
+	height: 36px;
 }
 table.dragshadow td.size {
 	padding-right:8px;
