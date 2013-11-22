@@ -86,8 +86,11 @@ a.unshare {
 	margin-right: 0;
 }
 
-#linkText,#linkPass,#expiration {
+#linkText,#linkPass,#expiration,#qrcode {
 	display:none;
+}
+#qrcodeImg {
+    margin-top: 5px;
 }
 
 #link #showPassword img {
@@ -95,7 +98,7 @@ a.unshare {
 	width:12px;
 }
 
-.reshare,#link label,#expiration label {
+.reshare,#link label,#expiration label,#qrcode label {
 	padding-left:.5em;
 }
 

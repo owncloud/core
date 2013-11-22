@@ -239,6 +239,18 @@ OC.Share={
 			html += '<input type="checkbox" name="expirationCheckbox" id="expirationCheckbox" value="1" /><label for="expirationCheckbox">'+t('core', 'Set expiration date')+'</label>';
 			html += '<input id="expirationDate" type="text" placeholder="'+t('core', 'Expiration date')+'" style="display:none; width:90%;" />';
 			html += '</div>';
+
+			var canvasSupported = !!document.createElement("canvas").getContext;
+
+			if(canvasSupported) {
+				html += '<div id="qrcode">';
+				html += '<input type="checkbox" name="qrcodeCheckbox" id="qrcodeCheckbox" value="1" /><label for="qrcodeCheckbox">'+t('core', 'Show QR-Code')+'</label>';
+				html += '<br />';
+				html += '<center>';
+				html += '<div id="qrcodeImg" style="display:none; width:60%;"></div>';
+				html += '</center>';
+				html += '</div>';
+			}
 			$(html).appendTo(appendTo);
 			// Reset item shares
 			OC.Share.itemShares = [];
@@ -464,6 +476,7 @@ OC.Share={
 			$('#linkPassText').attr('placeholder', t('core', 'Password protected'));
 		}
 		$('#expiration').show();
+		$('#qrcode').show();
 		$('#emailPrivateLink #email').show();
 		$('#emailPrivateLink #emailButton').show();
 		$('#allowPublicUploadWrapper').show();
@@ -488,6 +501,22 @@ OC.Share={
 		$('#expirationDate').datepicker({
 			dateFormat : 'dd-mm-yy'
 		});
+	},
+	showQRCode: function() {
+
+		$('#qrcodeImg').empty();
+
+		$('#qrcodeImg').qrcode({
+			'text': $('#linkText').val(),
+			'width': 180,
+			'height': 180
+		}); 
+
+		$('#qrcodeImg').slideDown();
+	},
+	hideQRCode: function() {
+
+		$('#qrcodeImg').slideUp();
 	}
 };
 
@@ -708,6 +737,14 @@ $(document).ready(function() {
 				}
 				$('#expirationDate').hide();
 			});
+		}
+	});
+
+	$(document).on('click', '#dropdown #qrcodeCheckbox', function() {
+		if (this.checked) {
+			OC.Share.showQRCode();
+		} else {
+			OC.Share.hideQRCode();
 		}
 	});
 
