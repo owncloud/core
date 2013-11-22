@@ -99,7 +99,9 @@ class OC_Request {
 	public static function scriptName() {
 		$name = $_SERVER['SCRIPT_NAME'];
 		if (OC_Config::getValue('overwritewebroot', '') !== '' and self::isOverwriteCondition()) {
-			$serverroot = str_replace("\\", '/', substr(__DIR__, 0, -4));
+			// Determine server root directory.
+			// Since request.php resides in lib/private, go up two directories
+			$serverroot = str_replace("\\", '/', realpath(__DIR__ . "/../../"));
 			$suburi = str_replace("\\", "/", substr(realpath($_SERVER["SCRIPT_FILENAME"]), strlen($serverroot)));
 			$name = OC_Config::getValue('overwritewebroot', '') . $suburi;
 		}
