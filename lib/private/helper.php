@@ -525,9 +525,10 @@ class OC_Helper {
 			return array(0, false);
 		}
 		$result = true;
-		$count = 0;
+        $count = 0;
+        $chunkSize = 1024 * 1024;
 		while (!feof($source)) {
-			if (($c = fwrite($target, fread($source, 8192))) === false) {
+			if (($c = fwrite($target, fread($source, $chunkSize))) === false) {
 				$result = false;
 			} else {
 				$count += $c;
