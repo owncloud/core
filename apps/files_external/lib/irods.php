@@ -3,6 +3,10 @@
  * Copyright (c) 2013 Thomas Müller <thomas.mueller@owncloud.com>
  * This file is licensed under the Affero General Public License version 3 or
  * later.
+ *
+ * The iRODS class was the result of a collaboration together with INCF (http://www.incf.org)
+ * and OwnCloud(tm).
+ *
  * See the COPYING-README file.
  */
 
