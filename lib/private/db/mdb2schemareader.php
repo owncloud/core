@@ -150,6 +150,9 @@ class MDB2SchemaReader {
 						case 'timestamp':
 							$type = 'datetime';
 							break;
+						case 'numeric':
+							$type = 'decimal';
+							break;
 					}
 					break;
 				case 'length':
@@ -186,14 +189,14 @@ class MDB2SchemaReader {
 			}
 		}
 		if (isset($name) && isset($type)) {
-			if (empty($options['default'])) {
+			if (isset($options['default']) && empty($options['default'])) {
 				if (empty($options['notnull']) || !$options['notnull']) {
 					unset($options['default']);
 					$options['notnull'] = false;
 				} else {
 					$options['default'] = '';
 				}
-				if ($type == 'integer') {
+				if ($type == 'integer' || $type == 'decimal') {
 					$options['default'] = 0;
 				} elseif ($type == 'boolean') {
 					$options['default'] = false;

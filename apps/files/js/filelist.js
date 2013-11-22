@@ -170,6 +170,12 @@ var FileList={
 			return;
 		}
 		FileList.setCurrentDir(targetDir, changeUrl);
+		$('#fileList').trigger(
+			jQuery.Event('changeDirectory', {
+				dir: targetDir,
+				previousDir: currentDir
+			}
+		));
 		FileList.reload();
 	},
 	linkTo: function(dir) {
@@ -563,8 +569,18 @@ var FileList={
 						FileList.updateEmptyContent();
 						Files.updateStorageStatistics();
 					} else {
+						if (result.status === 'error' && result.data.message) {
+							OC.Notification.show(result.data.message);
+						}
+						else {
+							OC.Notification.show(t('files', 'Error deleting file.'));
+						}
+						// hide notification after 10 sec
+						setTimeout(function() {
+							OC.Notification.hide();
+						}, 10000);
 						$.each(files,function(index,file) {
-							var deleteAction = $('tr[data-file="'+files[i]+'"]').children("td.date").children(".action.delete");
+							var deleteAction = $('tr[data-file="' + file + '"] .action.delete');
 							deleteAction.removeClass('progress-icon').addClass('delete-icon');
 						});
 					}
@@ -654,19 +670,19 @@ var FileList={
 			$('.summary .filesize').html(humanFileSize(fileSummary.totalSize));
 
 			// Show only what's necessary (may be hidden)
-			if ($dirInfo.html().charAt(0) === "0") {
+			if (fileSummary.totalDirs === 0) {
 				$dirInfo.hide();
 				$connector.hide();
 			} else {
 				$dirInfo.show();
 			}
-			if ($fileInfo.html().charAt(0) === "0") {
+			if (fileSummary.totalFiles === 0) {
 				$fileInfo.hide();
 				$connector.hide();
 			} else {
 				$fileInfo.show();
 			}
-			if ($dirInfo.html().charAt(0) !== "0" && $fileInfo.html().charAt(0) !== "0") {
+			if (fileSummary.totalDirs > 0 && fileSummary.totalFiles > 0) {
 				$connector.show();
 			}
 		}
@@ -717,7 +733,7 @@ var FileList={
 	},
 	filter:function(query) {
 		$('#fileList tr:not(.summary)').each(function(i,e) {
-			if ($(e).data('file').toLowerCase().indexOf(query.toLowerCase()) !== -1) {
+			if ($(e).data('file').toString().toLowerCase().indexOf(query.toLowerCase()) !== -1) {
 				$(e).addClass("searchresult");
 			} else {
 				$(e).removeClass("searchresult");

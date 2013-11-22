@@ -84,6 +84,8 @@ class Util {
 				$this->privateKeyPath =
 					'/owncloud_private_key/' . $this->userId . '.private.key'; // e.g. data/admin/admin.private.key
 				$this->isPublic = true;
+				// make sure that the owners home is mounted
+				\OC\Files\Filesystem::initMountPoints($GLOBALS['fileOwner']);
 			}
 
 		} else {
@@ -99,6 +101,8 @@ class Util {
 				$this->publicKeyDir . '/' . $this->userId . '.public.key'; // e.g. data/public-keys/admin.public.key
 			$this->privateKeyPath =
 				$this->encryptionDir . '/' . $this->userId . '.private.key'; // e.g. data/admin/admin.private.key
+			// make sure that the owners home is mounted
+			\OC\Files\Filesystem::initMountPoints($this->userId);
 		}
 	}
 
@@ -363,7 +367,7 @@ class Util {
 							// scanning every file like this
 							// will eat server resources :(
 							if (
-								Keymanager::getFileKey($this->view, $this->userId, $relPath)
+								Keymanager::getFileKey($this->view, $relPath)
 								&& $isEncryptedPath
 							) {
 
@@ -468,22 +472,19 @@ class Util {
 	 */
 	public function isEncryptedPath($path) {
 
-		// Disable encryption proxy so data retrieved is in its
-		// original form
-		$proxyStatus = \OC_FileProxy::$enabled;
-		\OC_FileProxy::$enabled = false;
+		$relPath = Helper::getPathToRealFile($path);
 
-		// we only need 24 byte from the last chunk
-		$data = '';
-		$handle = $this->view->fopen($path, 'r');
-		if (is_resource($handle) && !fseek($handle, -24, SEEK_END)) {
-			$data = fgets($handle);
+		if ($relPath === false) {
+			$relPath = Helper::stripUserFilesPath($path);
 		}
 
-		// re-enable proxy
-		\OC_FileProxy::$enabled = $proxyStatus;
+		$fileKey = Keymanager::getFileKey($this->view, $relPath);
 
-		return Crypt::isCatfileContent($data);
+		if ($fileKey === false) {
+			return false;
+		}
+
+		return true;
 
 	}
 
@@ -717,17 +718,17 @@ class Util {
 			// Encrypt unencrypted files
 			foreach ($found['encrypted'] as $encryptedFile) {
 
-				//get file info
-				$fileInfo = \OC\Files\Filesystem::getFileInfo($encryptedFile['path']);
-
 				//relative to data/<user>/file
 				$relPath = Helper::stripUserFilesPath($encryptedFile['path']);
+
+				//get file info
+				$fileInfo = \OC\Files\Filesystem::getFileInfo($relPath);
 
 				//relative to /data
 				$rawPath = $encryptedFile['path'];
 
 				//get timestamp
-				$timestamp = $this->view->filemtime($rawPath);
+				$timestamp = $fileInfo['mtime'];
 
 				//enable proxy to use OC\Files\View to access the original file
 				\OC_FileProxy::$enabled = true;
@@ -768,10 +769,10 @@ class Util {
 
 				$this->view->rename($relPath . '.part', $relPath);
 
-				$this->view->chroot($fakeRoot);
-
 				//set timestamp
-				$this->view->touch($rawPath, $timestamp);
+				$this->view->touch($relPath, $timestamp);
+
+				$this->view->chroot($fakeRoot);
 
 				// Add the file to the cache
 				\OC\Files\Filesystem::putFileInfo($relPath, array(
@@ -839,7 +840,7 @@ class Util {
 				$rawPath = '/' . $this->userId . '/files/' . $plainFile['path'];
 
 				// keep timestamp
-				$timestamp = $this->view->filemtime($rawPath);
+				$timestamp = $fileInfo['mtime'];
 
 				// Open plain file handle for binary reading
 				$plainHandle = $this->view->fopen($rawPath, 'rb');
@@ -859,11 +860,11 @@ class Util {
 
 					$this->view->rename($relPath . '.part', $relPath);
 
-					$this->view->chroot($fakeRoot);
-
 					// set timestamp
-					$this->view->touch($rawPath, $timestamp);
-					$encSize = $this->view->filesize($rawPath);
+					$this->view->touch($relPath, $timestamp);
+					$encSize = $this->view->filesize($relPath);
+
+					$this->view->chroot($fakeRoot);
 
 					// Add the file to the cache
 					\OC\Files\Filesystem::putFileInfo($relPath, array(
@@ -1057,7 +1058,7 @@ class Util {
 	private function decryptKeyfile($filePath, $privateKey) {
 
 		// Get the encrypted keyfile
-		$encKeyfile = Keymanager::getFileKey($this->view, $this->userId, $filePath);
+		$encKeyfile = Keymanager::getFileKey($this->view, $filePath);
 
 		// The file has a shareKey and must use it for decryption
 		$shareKey = Keymanager::getShareKey($this->view, $this->userId, $filePath);
@@ -1147,10 +1148,7 @@ class Util {
 		// Make sure that a share key is generated for the owner too
 		list($owner, $ownerPath) = $this->getUidAndFilename($filePath);
 
-		$pathinfo = pathinfo($ownerPath);
-		if(array_key_exists('extension', $pathinfo) && $pathinfo['extension'] === 'part') {
-			$ownerPath = $pathinfo['dirname'] . '/' . $pathinfo['filename'];
-		}
+		$ownerPath = \OCA\Encryption\Helper::stripPartialFileExtension($ownerPath);
 
 		$userIds = array();
 		if ($sharingEnabled) {

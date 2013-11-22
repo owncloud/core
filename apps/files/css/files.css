@@ -18,6 +18,7 @@
 	float: right;
 	z-index: 1010;
 	padding: 10px;
+	font-weight: normal;
 }
 #new>a {
 	padding: 14px 10px;
@@ -63,6 +64,9 @@
 	position: relative;
 	top: 44px;
 	width: 100%;
+}
+#filestable, #controls {
+	min-width: 680px;
 }
 #filestable tbody tr { background-color:#fff; height:2.5em; }
 #filestable tbody tr:hover, tbody tr:active {

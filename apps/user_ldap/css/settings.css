@@ -3,13 +3,9 @@
 	width: 60%;
 }
 
-.tablecell {
-	display: table-cell !important;
-	white-space: nowrap;
-}
-
 .tablerow {
 	display: table-row;
+	white-space: nowrap;
 }
 
 .tablerow input, .tablerow textarea {
@@ -78,6 +74,7 @@
 
 .wizSpinner {
 	height: 15px;
+	margin: 0.3em;
 }
 
 .ldapSettingControls {
@@ -100,7 +97,6 @@
 
 #ldap fieldset input, #ldap fieldset textarea {
  	width: 60%;
-	display: inline-block;
 }
 
 #ldap fieldset p input[type=checkbox] {
@@ -112,4 +108,22 @@ select[multiple=multiple] + button {
 	padding-top: 6px !important;
 	min-width: 40%;
 	max-width: 40%;
+}
+
+.ldap_config_state_indicator_sign {
+	display: inline-block;
+	height: 16px;
+	width: 16px;
+	vertical-align: text-bottom;
+}
+.ldap_config_state_indicator_sign.success {
+	background: #37ce02;
+	border-radius: 8px;
+}
+.ldap_config_state_indicator_sign.error {
+	background: #ce3702;
+}
+
+.ldap_grey {
+	color: #777;
 }
