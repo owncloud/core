@@ -154,7 +154,8 @@ class Test_DB extends PHPUnit_Framework_TestCase {
 		$table = '*PREFIX*'.$this->test_prefix.'timestamp';
 		$column = 'timestamptest';
 
-		$expectedFormat = 'Y-m-d H:i:s';
+		$conn = OC_DB::getConnection();
+		$expectedFormat = $conn->getDatabasePlatform()->getDateTimeFormatString();
 		$expected = new \DateTime;
 
 		$query = OC_DB::prepare("INSERT INTO `$table` (`$column`) VALUES (?)");
