@@ -73,5 +73,5 @@ if (version_compare($installedVersion, '0.3', '<')) {
 if (version_compare($installedVersion, '0.3.5', '<')) {
 	// delete all shares where the original file no longer exists
 	$removeShares = \OC_DB::prepare('DELETE FROM `*PREFIX*share` WHERE `file_source` IN (SELECT `file_source` FROM `*PREFIX*share` LEFT JOIN `*PREFIX*filecache` ON `file_source` = `*PREFIX*filecache`.`fileid` WHERE `*PREFIX*filecache`.`fileid` IS NULL AND `*PREFIX*share`.`item_type` IN (\'file\', \'folder\'))');
-	$result = $removeShares->execute(array(implode(',', $delArray)));
+	$result = $removeShares->execute();
 }
