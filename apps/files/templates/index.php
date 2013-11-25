@@ -1,6 +1,6 @@
 <div id="controls">
 	<?php print_unescaped($_['breadcrumb']); ?>
-		<div class="actions creatable <?php if (!$_['isCreatable']):?>hidden<?php endif; ?>">
+		<div class="actions creatable hidden">
 			<div id="new" class="button">
 				<a><?php p($l->t('New'));?></a>
 				<ul>
@@ -42,14 +42,14 @@
 	<input type="hidden" name="permissions" value="<?php p($_['permissions']); ?>" id="permissions">
 </div>
 
-<div id="emptycontent" <?php if (!$_['emptyContent']):?>class="hidden"<?php endif; ?>><?php p($l->t('Nothing in here. Upload something!'))?></div>
+<div id="emptycontent" class="hidden"><?php p($l->t('Nothing in here. Upload something!'))?></div>
 
 <input type="hidden" id="disableSharing" data-status="<?php p($_['disableSharing']); ?>"></input>
 
 <table id="filestable" data-allow-public-upload="<?php p($_['publicUploadEnabled'])?>" data-preview-x="36" data-preview-y="36">
 	<thead>
 		<tr>
-			<th <?php if (!$_['fileHeader']):?>class="hidden"<?php endif; ?> id='headerName'>
+			<th class="hidden" id='headerName'>
 				<div id="headerName-container">
 					<input type="checkbox" id="select_all" />
 					<label for="select_all"></label>
@@ -65,8 +65,8 @@
 					</span>
 				</div>
 			</th>
-			<th <?php if (!$_['fileHeader']):?>class="hidden"<?php endif; ?> id="headerSize"><?php p($l->t('Size')); ?></th>
-			<th <?php if (!$_['fileHeader']):?>class="hidden"<?php endif; ?> id="headerDate">
+			<th class="hidden" id="headerSize"><?php p($l->t('Size')); ?></th>
+			<th class="hidden" id="headerDate">
 				<span id="modified"><?php p($l->t( 'Modified' )); ?></span>
 				<?php if ($_['permissions'] & OCP\PERMISSION_DELETE): ?>
 <!--					NOTE: Temporary fix to allow unsharing of files in root of Shared folder -->
@@ -88,7 +88,6 @@
 		</tr>
 	</thead>
 	<tbody id="fileList">
-		<?php print_unescaped($_['fileList']); ?>
 	</tbody>
 </table>
 <div id="editor"></div><!-- FIXME Do not use this div in your app! It is deprecated and will be removed in the future! -->
@@ -108,7 +107,6 @@
 
 <!-- config hints for javascript -->
 <input type="hidden" name="filesApp" id="filesApp" value="1" />
-<input type="hidden" name="ajaxLoad" id="ajaxLoad" value="<?php p($_['ajaxLoad']); ?>" />
 <input type="hidden" name="allowZipDownload" id="allowZipDownload" value="<?php p($_['allowZipDownload']); ?>" />
 <input type="hidden" name="usedSpacePercent" id="usedSpacePercent" value="<?php p($_['usedSpacePercent']); ?>" />
 <?php if (!$_['isPublic']) :?>

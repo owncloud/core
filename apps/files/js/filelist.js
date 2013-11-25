@@ -1,19 +1,76 @@
 var FileList={
+	rowsPerPage: 20,
+	totalFiles: 0,
+	isEmpty: true,
 	useUndo:true,
-	postProcessList: function() {
-		$('#fileList tr').each(function() {
+	postProcessList: function(newEls) {
+		if (!newEls){
+			newEls = $('#fileList tr');
+		}
+		newEls.each(function() {
 			//little hack to set unescape filenames in attribute
+			//FIXME: find out whether this is still needed
 			$(this).attr('data-file',decodeURIComponent($(this).attr('data-file')));
 		});
 	},
-	update:function(fileListHtml) {
-		var $fileList = $('#fileList');
-		$fileList.empty().html(fileListHtml);
+	makeAppear: function($els){
+		// first make them invisible
+		$els.addClass('invisible');
+		// then defer animation
+		window.setTimeout(function(){
+			$els.removeClass('invisible');
+		}, 0);
+	},
+
+	/**
+	 * Updates the file list with the given files array as JSON
+	 */
+	update:function(filesArray, append) {
+		var $fileList = $('#fileList'),
+			currentDir = $('#dir').val(),
+		    max = filesArray.length;
+
+		if (!append){
+			$fileList.empty();
+			FileList.totalFiles = filesArray.length;
+			FileList.isEmpty = !filesArray.length;
+		}
+		else{
+			if (!filesArray.length){
+				return;
+			}
+		}
+
+		FileList.files = filesArray;
+
+		if (max > FileList.rowsPerPage){
+			max = FileList.rowsPerPage;
+		}
+
+		var newEls = [];
+		while (max > 0){
+			var file = filesArray.shift(),
+				downloadUrl = OC.Router.generate('download', { file: currentDir + '/' + name }),
+				fileEl = FileList.createRow(file.type, file.name, file.icon, downloadUrl, file.size, new Date(file.mtime), file.permissions);
+
+			newEls.push(fileEl);
+			// TODO: add extra attributes ?
+			$fileList.append(fileEl);
+			max--;
+		}
+
+		// convert to jQuery array
+		newEls = $($.map(newEls, function(el){return el.get();}));
+
+		FileList.makeAppear(newEls);
+
 		FileList.updateEmptyContent();
-		$fileList.find('tr').each(function () {
+
+		newEls.each(function () {
 			FileActions.display($(this).children('td.filename'));
 		});
 		$fileList.trigger(jQuery.Event("fileActionsReady"));
+
 		FileList.postProcessList();
 		// "Files" might not be loaded in extending apps
 		if (window.Files) {
@@ -128,6 +185,7 @@ var FileList={
 		if (hidden) {
 			tr.hide();
 		}
+		FileList.makeAppear(tr);
 		return tr;
 	},
 	addDir:function(name, size, lastModified, hidden) {
@@ -150,6 +208,7 @@ var FileList={
 			tr.hide();
 		}
 		FileActions.display(tr.find('td.filename'), true);
+		FileList.makeAppear(tr);
 		return tr;
 	},
 	getCurrentDirectory: function(){
@@ -230,6 +289,10 @@ var FileList={
 		if (result.status === 404) {
 			// go back home
 			FileList.changeDirectory('/');
+			return;
+		}
+		// aborted ?
+		if (result.status === 0){
 			return;
 		}
 
@@ -587,7 +650,7 @@ var FileList={
 				});
 	},
 	createFileSummary: function() {
-		if( $('#fileList tr').exists() ) {
+		if ( FileList.totalFiles > 0 ) {
 			var summary = this._calculateFileSummary();
 
 			// Get translations
@@ -647,10 +710,13 @@ var FileList={
 		return result;
 	},
 	updateFileSummary: function() {
-		var $summary = $('.summary');
+		var $summary = $('#fileList .summary');
+
+		// always make it the last element
+		$('#fileList tbody').append($summary.detach());
 
 		// Check if we should remove the summary to show "Upload something"
-		if ($('#fileList tr').length === 1 && $summary.length === 1) {
+		if (FileList.totalFiles === 0 && $summary.length === 1) {
 			$summary.remove();
 		}
 		// If there's no summary create one (createFileSummary checks if there's data)
@@ -658,7 +724,7 @@ var FileList={
 			FileList.createFileSummary();
 		}
 		// There's a summary and data -> Update the summary
-		else if ($('#fileList tr').length > 1 && $summary.length === 1) {
+		else if (FileList.totalFiles > 0 && $summary.length === 1) {
 			var fileSummary = this._calculateFileSummary();
 			var $dirInfo = $('.summary .dirinfo');
 			var $fileInfo = $('.summary .fileinfo');
@@ -691,8 +757,8 @@ var FileList={
 		var $fileList = $('#fileList');
 		var permissions = $('#permissions').val();
 		var isCreatable = (permissions & OC.PERMISSION_CREATE) !== 0;
-		$('#emptycontent').toggleClass('hidden', !isCreatable || $fileList.find('tr').exists());
-		$('#filestable th').toggleClass('hidden', $fileList.find('tr').exists() === false);
+		$('#emptycontent').toggleClass('hidden', !isCreatable || FileList.isEmpty);
+		$('#filestable th').toggleClass('hidden', !FileList.isEmpty);
 	},
 	showMask: function() {
 		// in case one was shown before
@@ -1031,11 +1097,19 @@ $(document).ready(function() {
 			}
 		};
 
-		if (parseInt($('#ajaxLoad').val(), 10) === 1) {
-			// need to initially switch the dir to the one from the hash (IE8)
-			FileList.changeDirectory(parseCurrentDirFromUrl(), false, true);
-		}
+		// trigger ajax load
+		FileList.changeDirectory(parseCurrentDirFromUrl(), false, true);
 	}
 
 	FileList.createFileSummary();
+
+	// init infinite scrolling
+	$('#filestable').after('<div style="height: 300px"></div>');
+	// TODO: unbind when no more files to display
+	$(window).on('scroll', function(ev){
+		var body = document.body;
+		if ( body.scrollTop + body.clientHeight >= body.scrollHeight - 32 ){
+			FileList.update(FileList.files, true);
+		}
+	});
 });

@@ -78,6 +78,17 @@
 #filestable tbody tr.searchresult {
 	background-color: rgb(240,240,240);
 }
+#filestable tbody tr{
+	opacity: 1;
+	transition: opacity 500ms;
+	-moz-transition: opacity 500ms;
+	-o-transition: opacity 500ms;
+	-ms-transition: opacity 500ms;
+	-webkit-transition: opacity 500ms;
+}
+#filestable tbody tr.invisible{
+	opacity:0;
+}
 tbody a { color:#000; }
 span.extension, span.uploading, td.date { color:#999; }
 span.extension { text-transform:lowercase; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)"; filter:alpha(opacity=70); opacity:.7; -webkit-transition:opacity 300ms; -moz-transition:opacity 300ms; -o-transition:opacity 300ms; transition:opacity 300ms; }

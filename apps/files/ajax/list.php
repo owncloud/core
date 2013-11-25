@@ -36,12 +36,7 @@ if($doBreadcrumb) {
 // make filelist
 $files = \OCA\Files\Helper::getFiles($dir);
 
-$list = new OCP\Template("files", "part.list", "");
-$list->assign('files', $files, false);
-$list->assign('baseURL', $baseUrl, false);
-$list->assign('downloadURL', OCP\Util::linkToRoute('download', array('file' => '/')));
-$list->assign('isPublic', false);
-$data['files'] = $list->fetchPage();
+$data['files'] = $files;
 $data['permissions'] = $permissions;
 
 OCP\JSON::success(array('data' => $data));
