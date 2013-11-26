@@ -188,6 +188,11 @@ class SFTP extends \OC\Files\Storage\Common {
 		}
 	}
 
+	public function deleteFileOrFolder($path) {
+		// no detection needed
+		return $this->unlink($path);
+	}
+
 	public function unlink($path) {
 		try {
 			return $this->client->delete($this->absPath($path), true);

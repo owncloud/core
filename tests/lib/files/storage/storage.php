@@ -246,7 +246,22 @@ abstract class Storage extends \PHPUnit_Framework_TestCase {
 		$this->instance->mkdir('folder/bar');
 		$this->instance->file_put_contents('folder/asd.txt', 'foobar');
 		$this->instance->file_put_contents('folder/bar/foo.txt', 'asd');
-		$this->instance->rmdir('folder');
+		$this->assertTrue($this->instance->rmdir('folder'));
+		$this->assertFalse($this->instance->file_exists('folder/asd.txt'));
+		$this->assertFalse($this->instance->file_exists('folder/bar/foo.txt'));
+		$this->assertFalse($this->instance->file_exists('folder/bar'));
+		$this->assertFalse($this->instance->file_exists('folder'));
+	}
+
+	public function testDeleteFileOrDir() {
+		$this->instance->mkdir('folder');
+		$this->instance->mkdir('folder/bar');
+		$this->instance->file_put_contents('folder/asd.txt', 'foobar');
+		$this->instance->file_put_contents('folder/bar/foo.txt', 'asd');
+		$this->instance->file_put_contents('folder/delfile.txt', 'foobar');
+		$this->assertTrue($this->instance->deleteFileOrDir('folder/delfile.txt'));
+		$this->assertFalse($this->instance->file_exists('folder/delfile.txt'));
+		$this->assertTrue($this->instance->deleteFileOrDir('folder'));
 		$this->assertFalse($this->instance->file_exists('folder/asd.txt'));
 		$this->assertFalse($this->instance->file_exists('folder/bar/foo.txt'));
 		$this->assertFalse($this->instance->file_exists('folder/bar'));
