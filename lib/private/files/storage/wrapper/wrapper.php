@@ -234,6 +234,15 @@ class Wrapper implements \OC\Files\Storage\Storage {
 	}
 
 	/**
+	 * Delete a file or directory
+	 * @param string $path
+	 * @return bool
+	 */
+	public function deleteFileOrDir($path) {
+		return $this->storage->deleteFileOrDir($path);
+	}
+
+	/**
 	 * see http://php.net/manual/en/function.rename.php
 	 *
 	 * @param string $path1
