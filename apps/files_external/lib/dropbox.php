@@ -63,17 +63,18 @@ class Dropbox extends \OC\Files\Storage\Common {
 	 * @brief Returns the path's metadata
 	 * @param $path path for which to return the metadata
 	 * @param $list if true, also return the directory's contents
+	 * @param $hash previously known hash, used to detect changes
 	 * @return directory contents if $list is true, file metadata if $list is
 	 * false, null if the file doesn't exist or "false" if the operation failed
 	 */
-	private function getMetaData($path, $list = false) {
+	private function getMetaData($path, $list = false, $hash = null) {
 		$path = $this->root.$path;
-		if ( ! $list && isset($this->metaData[$path])) {
+		if ( ! $list && ! $hash && isset($this->metaData[$path])) {
 			return $this->metaData[$path];
 		} else {
 			if ($list) {
 				try {
-					$response = $this->dropbox->getMetaData($path);
+					$response = $this->dropbox->getMetaData($path, 'true', $hash);
 				} catch (\Exception $exception) {
 					\OCP\Util::writeLog('files_external', $exception->getMessage(), \OCP\Util::ERROR);
 					return false;
@@ -96,7 +97,7 @@ class Dropbox extends \OC\Files\Storage\Common {
 				return $contents;
 			} else {
 				try {
-					$response = $this->dropbox->getMetaData($path, 'false');
+					$response = $this->dropbox->getMetaData($path, 'false', $hash);
 					if (!isset($response['is_deleted']) || !$response['is_deleted']) {
 						$this->metaData[$path] = $response;
 						return $response;
@@ -308,4 +309,31 @@ class Dropbox extends \OC\Files\Storage\Common {
 		return true;
 	}
 
+	public function hasUpdated($path, $time) {
+		// Dropbox doesn't have directory mtime, so need to use the Dropbox hash
+		// we stored as etag
+		$newData = $this->getMetaData($path, false);
+		// FIXME: might break if someone replaced a dir with a file with
+		// the same name before we got the update
+		if ($newData['is_dir']) {
+			$data = $this->getCache()->get($path);
+			return $newData['hash'] !== $data['etag'];
+		}
+		// use mtime for files
+		return parent::hasUpdated($path, $time);
+	}
+
+	public function getETag($path) {
+		// FIXME: ouch, we need to get the directory contents to
+		// get the hash value, maybe there is a more efficient way to do this ?
+		$metaData = $this->getMetaData($path, true);
+		// then retrieve the cached entry
+		$metaData = $this->getMetaData($path);
+		if ($metaData && isset($metaData['is_dir']) && $metaData['is_dir'] && isset($metaData['hash'])) {
+			// for directories
+			return $metaData['hash'];
+		}
+		// files need to use the regular etag algo (no hash)
+		return parent::getEtag($path);
+	}
 }
