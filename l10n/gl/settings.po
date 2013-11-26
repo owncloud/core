@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2013-11-21 21:06-0500\n"
-"PO-Revision-Date: 2013-11-22 02:06+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
+"POT-Creation-Date: 2013-11-26 10:45-0500\n"
+"PO-Revision-Date: 2013-11-26 14:23+0000\n"
+"Last-Translator: mbouzada <mbouzada@gmail.com>\n"
 "Language-Team: Galician (http://www.transifex.com/projects/p/owncloud/language/gl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -162,7 +162,7 @@ msgstr "Actualizado"
 msgid "Select a profile picture"
 msgstr "Seleccione unha imaxe para o perfil"
 
-#: js/personal.js:265
+#: js/personal.js:266
 msgid "Decrypting files... Please wait, this can take some time."
 msgstr "Descifrando ficheiros... isto pode levar un anaco."
 
@@ -283,20 +283,20 @@ msgstr "A configuración rexional non funciona"
 
 #: templates/admin.php:70
 msgid "System locale can not be set to a one which supports UTF-8."
-msgstr ""
+msgstr "Non é posíbel estabelecer a configuración rexional do sistema a unha que admita UTF-8."
 
 #: templates/admin.php:74
 msgid ""
 "This means that there might be problems with certain characters in file "
 "names."
-msgstr ""
+msgstr "Isto significa que pode haber problemas con certos caracteres en nomes de ficheiro."
 
 #: templates/admin.php:78
 #, php-format
 msgid ""
 "We strongly suggest to install the required packages on your system to "
 "support one of the following locales: %s."
-msgstr ""
+msgstr "Recomendamoslle que instale no sistema os paquetes necesarios para admitir unha das seguintes configuracións rexionais: %s."
 
 #: templates/admin.php:90
 msgid "Internet connection not working"
@@ -581,8 +581,8 @@ msgid "Encryption"
 msgstr "Cifrado"
 
 #: templates/personal.php:148
-msgid "The encryption app is no longer enabled, decrypt all your file"
-msgstr "o aplicativo de cifrado non está activado, descifrar todos os ficheiros"
+msgid "The encryption app is no longer enabled, please decrypt all your files"
+msgstr "O aplicativo de cifrado non está activado, descifre todos os ficheiros"
 
 #: templates/personal.php:154
 msgid "Log-in password"

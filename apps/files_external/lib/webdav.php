@@ -134,14 +134,6 @@ class DAV extends \OC\Files\Storage\Common{
 		}
 	}
 
-	public function isReadable($path) {
-		return true;//not properly supported
-	}
-
-	public function isUpdatable($path) {
-		return true;//not properly supported
-	}
-
 	public function file_exists($path) {
 		$this->init();
 		$path=$this->cleanPath($path);
@@ -242,6 +234,7 @@ class DAV extends \OC\Files\Storage\Common{
 		} else {
 			$this->file_put_contents($path, '');
 		}
+		return true;
 	}
 
 	public function getFile($path, $target) {

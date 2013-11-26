@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2013-11-21 21:06-0500\n"
-"PO-Revision-Date: 2013-11-22 02:06+0000\n"
+"POT-Creation-Date: 2013-11-26 04:02-0500\n"
+"PO-Revision-Date: 2013-11-26 09:02+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Slovenian (http://www.transifex.com/projects/p/owncloud/language/sl/)\n"
 "MIME-Version: 1.0\n"
@@ -163,7 +163,7 @@ msgstr "Posodobljeno"
 msgid "Select a profile picture"
 msgstr "Izbor slike profila"
 
-#: js/personal.js:265
+#: js/personal.js:266
 msgid "Decrypting files... Please wait, this can take some time."
 msgstr "Poteka odšifriranje datotek ... Opravilo je lahko dolgotrajno."
 
@@ -381,7 +381,7 @@ msgstr "Dovoli obvestila preko elektronske pošte"
 
 #: templates/admin.php:186
 msgid "Allow user to send mail notification for shared files"
-msgstr ""
+msgstr "Dovoli uporabniku poslati obvestila preko elektronske pošte za datoteke v souporabi"
 
 #: templates/admin.php:193
 msgid "Security"
@@ -394,7 +394,7 @@ msgstr "Zahtevaj uporabo HTTPS"
 #: templates/admin.php:208
 #, php-format
 msgid "Forces the clients to connect to %s via an encrypted connection."
-msgstr ""
+msgstr "Vsili povezavo odjemalca z %s preko šifrirane povezave."
 
 #: templates/admin.php:214
 #, php-format
@@ -582,7 +582,7 @@ msgid "Encryption"
 msgstr "Šifriranje"
 
 #: templates/personal.php:148
-msgid "The encryption app is no longer enabled, decrypt all your file"
+msgid "The encryption app is no longer enabled, please decrypt all your files"
 msgstr ""
 
 #: templates/personal.php:154
