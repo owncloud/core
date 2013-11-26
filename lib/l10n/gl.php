@@ -8,13 +8,15 @@ $TRANSLATIONS = array(
 "Users" => "Usuarios",
 "Admin" => "Administración",
 "Failed to upgrade \"%s\"." => "Non foi posíbel anovar «%s».",
+"Unknown filetype" => "Tipo de ficheiro descoñecido",
+"Invalid image" => "Imaxe incorrecta",
 "web services under your control" => "servizos web baixo o seu control",
 "cannot open \"%s\"" => "non foi posíbel abrir «%s»",
 "ZIP download is turned off." => "As descargas ZIP están desactivadas.",
 "Files need to be downloaded one by one." => "Os ficheiros necesitan seren descargados dun en un.",
 "Back to Files" => "Volver aos ficheiros",
 "Selected files too large to generate zip file." => "Os ficheiros seleccionados son demasiado grandes como para xerar un ficheiro zip.",
-"Download the files in smaller chunks, seperately or kindly ask your administrator." => "Descargue os ficheiros en cachos máis pequenos e por separado, ou pídallos amabelmente ao seu administrador.",
+"Please download the files separately in smaller chunks or kindly ask your administrator." => "Descargue os ficheiros en fragmentos máis pequenos e por separado, ou pídallos amabelmente ao seu administrador.",
 "No source specified when installing app" => "Non foi especificada ningunha orixe ao instalar aplicativos",
 "No href specified when installing app from http" => "Non foi especificada ningunha href ao instalar aplicativos",
 "No path specified when installing app from local file" => "Non foi especificada ningunha ruta ao instalar aplicativos desde un ficheiro local",
@@ -53,6 +55,7 @@ $TRANSLATIONS = array(
 "Set an admin password." => "Estabeleza un contrasinal de administrador",
 "Your web server is not yet properly setup to allow files synchronization because the WebDAV interface seems to be broken." => "O seu servidor web non está aínda configurado adecuadamente para permitir a sincronización de ficheiros xa que semella que a interface WebDAV non está a funcionar.",
 "Please double check the <a href='%s'>installation guides</a>." => "Volva comprobar as <a href='%s'>guías de instalación</a>",
+"Could not find category \"%s\"" => "Non foi posíbel atopar a categoría «%s»",
 "seconds ago" => "segundos atrás",
 "_%n minute ago_::_%n minutes ago_" => array("hai %n minuto","hai %n minutos"),
 "_%n hour ago_::_%n hours ago_" => array("hai %n hora","hai %n horas"),
@@ -63,7 +66,6 @@ $TRANSLATIONS = array(
 "_%n month ago_::_%n months ago_" => array("hai %n mes","hai %n meses"),
 "last year" => "último ano",
 "years ago" => "anos atrás",
-"Caused by:" => "Causado por:",
-"Could not find category \"%s\"" => "Non foi posíbel atopar a categoría «%s»"
+"Caused by:" => "Causado por:"
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

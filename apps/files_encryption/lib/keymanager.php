@@ -40,11 +40,14 @@ class Keymanager {
 	public static function getPrivateKey(\OC_FilesystemView $view, $user) {
 
 		$path = '/' . $user . '/' . 'files_encryption' . '/' . $user . '.private.key';
+		$key = false;
 
 		$proxyStatus = \OC_FileProxy::$enabled;
 		\OC_FileProxy::$enabled = false;
 
-		$key = $view->file_get_contents($path);
+		if ($view->file_exists($path)) {
+			$key = $view->file_get_contents($path);
+		}
 
 		\OC_FileProxy::$enabled = $proxyStatus;
 
@@ -149,10 +152,10 @@ class Keymanager {
 		}
 
 		// try reusing key file if part file
-		if (self::isPartialFilePath($targetPath)) {
+		if (Helper::isPartialFilePath($targetPath)) {
 
 			$result = $view->file_put_contents(
-				$basePath . '/' . self::fixPartialFilePath($targetPath) . '.key', $catfile);
+				$basePath . '/' . Helper::stripPartialFileExtension($targetPath) . '.key', $catfile);
 
 		} else {
 
@@ -167,63 +170,20 @@ class Keymanager {
 	}
 
 	/**
-	 * @brief Remove .path extension from a file path
-	 * @param string $path Path that may identify a .part file
-	 * @return string File path without .part extension
-	 * @note this is needed for reusing keys
-	 */
-	public static function fixPartialFilePath($path) {
-
-		if (preg_match('/\.part$/', $path) || preg_match('/\.etmp$/', $path)) {
-
-			$newLength = strlen($path) - 5;
-			$fPath = substr($path, 0, $newLength);
-
-			return $fPath;
-
-		} else {
-
-			return $path;
-
-		}
-
-	}
-
-	/**
-	 * @brief Check if a path is a .part file
-	 * @param string $path Path that may identify a .part file
-	 * @return bool
-	 */
-	public static function isPartialFilePath($path) {
-
-		if (preg_match('/\.part$/', $path) || preg_match('/\.etmp$/', $path)) {
-
-			return true;
-
-		} else {
-
-			return false;
-
-		}
-
-	}
-
-	/**
 	 * @brief retrieve keyfile for an encrypted file
 	 * @param \OC_FilesystemView $view
-	 * @param $userId
 	 * @param $filePath
 	 * @internal param \OCA\Encryption\file $string name
 	 * @return string file key or false
 	 * @note The keyfile returned is asymmetrically encrypted. Decryption
 	 * of the keyfile must be performed by client code
 	 */
-	public static function getFileKey(\OC_FilesystemView $view, $userId, $filePath) {
+	public static function getFileKey(\OC_FilesystemView $view, $filePath) {
 
 		$util = new Util($view, \OCP\User::getUser());
 
 		list($owner, $filename) = $util->getUidAndFilename($filePath);
-		$filename = self::fixPartialFilePath($filename);
+		$filename = Helper::stripPartialFileExtension($filename);
 		$filePath_f = ltrim($filename, '/');
 
 		// in case of system wide mount points the keys are stored directly in the data directory
@@ -382,8 +342,8 @@ class Keymanager {
 		foreach ($shareKeys as $userId => $shareKey) {
 
 			// try reusing key file if part file
-			if (self::isPartialFilePath($shareKeyPath)) {
-				$writePath = $basePath . '/' . self::fixPartialFilePath($shareKeyPath) . '.' . $userId . '.shareKey';
+			if (Helper::isPartialFilePath($shareKeyPath)) {
+				$writePath = $basePath . '/' . Helper::stripPartialFileExtension($shareKeyPath) . '.' . $userId . '.shareKey';
 			} else {
 				$writePath = $basePath . '/' . $shareKeyPath . '.' . $userId . '.shareKey';
 			}
@@ -419,7 +379,7 @@ class Keymanager {
 		$util = new Util($view, \OCP\User::getUser());
 
 		list($owner, $filename) = $util->getUidAndFilename($filePath);
-		$filename = self::fixPartialFilePath($filename);
+		$filename = Helper::stripPartialFileExtension($filename);
 		// in case of system wide mount points the keys are stored directly in the data directory
 		if ($util->isSystemWideMountPoint($filename)) {
 			$shareKeyPath = '/files_encryption/share-keys/' . $filename . '.' . $userId . '.shareKey';

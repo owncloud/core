@@ -8,6 +8,8 @@ $TRANSLATIONS = array(
 "Users" => "사용자",
 "Admin" => "관리자",
 "Failed to upgrade \"%s\"." => "\"%s\" 업그레이드에 실패했습니다.",
+"Unknown filetype" => "알수없는 파일형식",
+"Invalid image" => "잘못된 그림",
 "web services under your control" => "내가 관리하는 웹 서비스",
 "cannot open \"%s\"" => "\"%s\"을(를) 열 수 없습니다.",
 "ZIP download is turned off." => "ZIP 다운로드가 비활성화되었습니다.",
@@ -52,6 +54,7 @@ $TRANSLATIONS = array(
 "Set an admin password." => "관리자 비밀번호 설정",
 "Your web server is not yet properly setup to allow files synchronization because the WebDAV interface seems to be broken." => "WebDAV 인터페이스가 제대로 작동하지 않습니다. 웹 서버에서 파일 동기화를 사용할 수 있도록 설정이 제대로 되지 않은 것 같습니다.",
 "Please double check the <a href='%s'>installation guides</a>." => "<a href='%s'>설치 가이드</a>를 다시 한 번 확인하십시오.",
+"Could not find category \"%s\"" => "분류 \"%s\"을(를) 찾을 수 없습니다.",
 "seconds ago" => "초 전",
 "_%n minute ago_::_%n minutes ago_" => array("%n분 전 "),
 "_%n hour ago_::_%n hours ago_" => array("%n시간 전 "),
@@ -62,7 +65,6 @@ $TRANSLATIONS = array(
 "_%n month ago_::_%n months ago_" => array("%n달 전 "),
 "last year" => "작년",
 "years ago" => "년 전",
-"Caused by:" => "원인: ",
-"Could not find category \"%s\"" => "분류 \"%s\"을(를) 찾을 수 없습니다."
+"Caused by:" => "원인: "
 );
 $PLURAL_FORMS = "nplurals=1; plural=0;";

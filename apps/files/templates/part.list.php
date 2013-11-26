@@ -1,7 +1,7 @@
-<input type="hidden" id="disableSharing" data-status="<?php p($_['disableSharing']); ?>">
+<?php $totalfiles = 0;
+$totaldirs = 0;
+$totalsize = 0; ?>
 <?php foreach($_['files'] as $file):
-	//strlen('files/') => 6
-	$relativePath = substr($file['path'], 6);
 	// the bigger the file, the darker the shade of grey; megabytes*2
 	$simple_size_color = intval(160-$file['size']/(1024*1024)*2);
 	if($simple_size_color<0) $simple_size_color = 0;
@@ -16,32 +16,14 @@
 		data-type="<?php ($file['type'] == 'dir')?p('dir'):p('file')?>"
 		data-mime="<?php p($file['mimetype'])?>"
 		data-size="<?php p($file['size']);?>"
+		data-etag="<?php p($file['etag']);?>"
 		data-permissions="<?php p($file['permissions']); ?>">
 		<?php if($file['isPreviewAvailable']): ?>
 		<td class="filename svg preview-icon"
 		<?php else: ?>
 		<td class="filename svg"
 		<?php endif; ?>
-		<?php if($file['type'] == 'dir'): ?>
-			style="background-image:url(<?php print_unescaped(OCP\mimetype_icon('dir')); ?>)"
-		<?php else: ?>
-			<?php if($_['isPublic']): ?>
-				<?php
-				$relativePath = substr($relativePath, strlen($_['sharingroot']));
-				?>
-				<?php if($file['isPreviewAvailable']): ?>
-				style="background-image:url(<?php print_unescaped(OCP\publicPreview_icon($relativePath, $_['sharingtoken'])); ?>)"
-				<?php else: ?>
-				style="background-image:url(<?php print_unescaped(OCP\mimetype_icon($file['mimetype'])); ?>)"
-				<?php endif; ?>
-			<?php else: ?>
-				<?php if($file['isPreviewAvailable']): ?>
-				style="background-image:url(<?php print_unescaped(OCP\preview_icon($relativePath)); ?>)"
-				<?php else: ?>
-				style="background-image:url(<?php print_unescaped(OCP\mimetype_icon($file['mimetype'])); ?>)"
-				<?php endif; ?>
-			<?php endif; ?>
-		<?php endif; ?>
+		    style="background-image:url(<?php print_unescaped($file['icon']); ?>)"
 			>
 		<?php if(!isset($_['readonly']) || !$_['readonly']): ?>
 			<input id="select-<?php p($file['fileid']); ?>" type="checkbox" />
@@ -49,16 +31,15 @@
 		<?php endif; ?>
 		<?php if($file['type'] == 'dir'): ?>
 			<a class="name" href="<?php p(rtrim($_['baseURL'],'/').'/'.trim($directory,'/').'/'.$name); ?>" title="">
-		<?php else: ?>
-			<a class="name" href="<?php p(rtrim($_['downloadURL'],'/').'/'.trim($directory,'/').'/'.$name); ?>" title="">
-		<?php endif; ?>
-			<span class="nametext">
-				<?php if($file['type'] == 'dir'):?>
+				<span class="nametext">
 					<?php print_unescaped(htmlspecialchars($file['name']));?>
-				<?php else:?>
-					<?php print_unescaped(htmlspecialchars($file['basename']));?><span class='extension'><?php p($file['extension']);?></span>
-				<?php endif;?>
-			</span>
+				</span>
+		<?php else: ?>
+			<a class="name" href="<?php p(rtrim($_['downloadURL'],'/').'/'.trim($directory,'/').'/'.$name); ?>">
+				<label class="filetext" title="" for="select-<?php p($file['fileid']); ?>"></label>
+				<span class="nametext"><?php print_unescaped(htmlspecialchars($file['basename']));?><span class='extension'><?php p($file['extension']);?></span></span>
+			</a>
+		<?php endif; ?>
 			<?php if($file['type'] == 'dir'):?>
 				<span class="uploadtext" currentUploads="0">
 				</span>

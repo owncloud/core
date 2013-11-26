@@ -242,6 +242,34 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+<	 * @brief Test that data that is read by the crypto stream wrapper
+	 */
+	function testGetFileSize() {
+		\Test_Encryption_Util::loginHelper(\Test_Encryption_Util::TEST_ENCRYPTION_UTIL_USER1);
+
+		$filename = 'tmp-' . time();
+		$externalFilename = '/' . $this->userId . '/files/' . $filename;
+
+		// Test for 0 byte files
+		$problematicFileSizeData = "";
+		$cryptedFile = $this->view->file_put_contents($externalFilename, $problematicFileSizeData);
+		$this->assertTrue(is_int($cryptedFile));
+		$this->assertEquals($this->util->getFileSize($externalFilename), 0);
+		$decrypt = $this->view->file_get_contents($externalFilename);
+		$this->assertEquals($problematicFileSizeData, $decrypt);
+		$this->view->unlink($this->userId . '/files/' . $filename);
+
+		// Test a file with 18377 bytes as in https://github.com/owncloud/mirall/issues/1009
+		$problematicFileSizeData = str_pad("", 18377, "abc");
+		$cryptedFile = $this->view->file_put_contents($externalFilename, $problematicFileSizeData);
+		$this->assertTrue(is_int($cryptedFile));
+		$this->assertEquals($this->util->getFileSize($externalFilename), 18377);
+		$decrypt = $this->view->file_get_contents($externalFilename);
+		$this->assertEquals($problematicFileSizeData, $decrypt);
+		$this->view->unlink($this->userId . '/files/' . $filename);
+	}
+
+	/**
 	 * @medium
 	 */
 	function testIsSharedPath() {
@@ -251,6 +279,64 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue($this->util->isSharedPath($sharedPath));
 
 		$this->assertFalse($this->util->isSharedPath($path));
+	}
+
+	function testEncryptAll() {
+
+		$filename = "/encryptAll" . time() . ".txt";
+		$util = new Encryption\Util($this->view, $this->userId);
+
+		// disable encryption to upload a unencrypted file
+		\OC_App::disable('files_encryption');
+
+		$this->view->file_put_contents($this->userId . '/files/' . $filename, $this->dataShort);
+
+		$fileInfoUnencrypted = $this->view->getFileInfo($this->userId . '/files/' . $filename);
+
+		$this->assertTrue(is_array($fileInfoUnencrypted));
+
+		// enable file encryption again
+		\OC_App::enable('files_encryption');
+
+		// encrypt all unencrypted files
+		$util->encryptAll('/' . $this->userId . '/' . 'files');
+
+		$fileInfoEncrypted = $this->view->getFileInfo($this->userId . '/files/' . $filename);
+
+		$this->assertTrue(is_array($fileInfoEncrypted));
+
+		// check if mtime and etags unchanged
+		$this->assertEquals($fileInfoEncrypted['mtime'], $fileInfoUnencrypted['mtime']);
+		$this->assertEquals($fileInfoEncrypted['etag'], $fileInfoUnencrypted['etag']);
+
+		$this->view->unlink($this->userId . '/files/' . $filename);
+	}
+
+
+	function testDecryptAll() {
+
+		$filename = "/decryptAll" . time() . ".txt";
+		$util = new Encryption\Util($this->view, $this->userId);
+
+		$this->view->file_put_contents($this->userId . '/files/' . $filename, $this->dataShort);
+
+		$fileInfoEncrypted = $this->view->getFileInfo($this->userId . '/files/' . $filename);
+
+		$this->assertTrue(is_array($fileInfoEncrypted));
+
+		// encrypt all unencrypted files
+		$util->decryptAll('/' . $this->userId . '/' . 'files');
+
+		$fileInfoUnencrypted = $this->view->getFileInfo($this->userId . '/files/' . $filename);
+
+		$this->assertTrue(is_array($fileInfoUnencrypted));
+
+		// check if mtime and etags unchanged
+		$this->assertEquals($fileInfoEncrypted['mtime'], $fileInfoUnencrypted['mtime']);
+		$this->assertEquals($fileInfoEncrypted['etag'], $fileInfoUnencrypted['etag']);
+
+		$this->view->unlink($this->userId . '/files/' . $filename);
+
 	}
 
 	/**
@@ -333,7 +419,7 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 	/**
 	 * helper function to set migration status to the right value
 	 * to be able to test the migration path
-	 * 
+	 *
 	 * @param $status needed migration status for test
 	 * @param $user for which user the status should be set
 	 * @return boolean

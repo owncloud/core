@@ -37,7 +37,6 @@ class Util {
 	const MIGRATION_IN_PROGRESS = -1; // migration is running
 	const MIGRATION_OPEN = 0;         // user still needs to be migrated
 
-
 	private $view; // OC_FilesystemView object for filesystem operations
 	private $userId; // ID of the currently logged-in user
 	private $client; // Client side encryption mode flag
@@ -85,6 +84,8 @@ class Util {
 				$this->privateKeyPath =
 					'/owncloud_private_key/' . $this->userId . '.private.key'; // e.g. data/admin/admin.private.key
 				$this->isPublic = true;
+				// make sure that the owners home is mounted
+				\OC\Files\Filesystem::initMountPoints($GLOBALS['fileOwner']);
 			}
 
 		} else {
@@ -100,6 +101,8 @@ class Util {
 				$this->publicKeyDir . '/' . $this->userId . '.public.key'; // e.g. data/public-keys/admin.public.key
 			$this->privateKeyPath =
 				$this->encryptionDir . '/' . $this->userId . '.private.key'; // e.g. data/admin/admin.private.key
+			// make sure that the owners home is mounted
+			\OC\Files\Filesystem::initMountPoints($this->userId);
 		}
 	}
 
@@ -201,11 +204,12 @@ class Util {
 		if (false === $this->recoveryEnabledForUser()) {
 
 			// create database configuration
-			$sql = 'INSERT INTO `*PREFIX*encryption` (`uid`,`mode`,`recovery_enabled`) VALUES (?,?,?)';
+			$sql = 'INSERT INTO `*PREFIX*encryption` (`uid`,`mode`,`recovery_enabled`,`migration_status`) VALUES (?,?,?,?)';
 			$args = array(
 				$this->userId,
 				'server-side',
-				0
+				0,
+				self::MIGRATION_OPEN
 			);
 			$query = \OCP\DB::prepare($sql);
 			$query->execute($args);
@@ -329,72 +333,73 @@ class Util {
 			$this->view->is_dir($directory)
 			&& $handle = $this->view->opendir($directory)
 		) {
+			if(is_resource($handle)) {
+				while (false !== ($file = readdir($handle))) {
 
-			while (false !== ($file = readdir($handle))) {
+					if (
+						$file !== "."
+						&& $file !== ".."
+					) {
 
-				if (
-					$file !== "."
-					&& $file !== ".."
-				) {
+						$filePath = $directory . '/' . $this->view->getRelativePath('/' . $file);
+						$relPath = \OCA\Encryption\Helper::stripUserFilesPath($filePath);
 
-					$filePath = $directory . '/' . $this->view->getRelativePath('/' . $file);
-					$relPath = \OCA\Encryption\Helper::stripUserFilesPath($filePath);
+						// If the path is a directory, search
+						// its contents
+						if ($this->view->is_dir($filePath)) {
 
-					// If the path is a directory, search
-					// its contents
-					if ($this->view->is_dir($filePath)) {
+							$this->findEncFiles($filePath, $found);
 
-						$this->findEncFiles($filePath, $found);
+							// If the path is a file, determine
+							// its encryption status
+						} elseif ($this->view->is_file($filePath)) {
 
-						// If the path is a file, determine
-						// its encryption status
-					} elseif ($this->view->is_file($filePath)) {
+							// Disable proxies again, some-
+							// where they got re-enabled :/
+							\OC_FileProxy::$enabled = false;
 
-						// Disable proxies again, some-
-						// where they got re-enabled :/
-						\OC_FileProxy::$enabled = false;
+							$isEncryptedPath = $this->isEncryptedPath($filePath);
+							// If the file is encrypted
+							// NOTE: If the userId is
+							// empty or not set, file will
+							// detected as plain
+							// NOTE: This is inefficient;
+							// scanning every file like this
+							// will eat server resources :(
+							if (
+								Keymanager::getFileKey($this->view, $relPath)
+								&& $isEncryptedPath
+							) {
 
-						$isEncryptedPath = $this->isEncryptedPath($filePath);
-						// If the file is encrypted
-						// NOTE: If the userId is
-						// empty or not set, file will
-						// detected as plain
-						// NOTE: This is inefficient;
-						// scanning every file like this
-						// will eat server resources :(
-						if (
-							Keymanager::getFileKey($this->view, $this->userId, $relPath)
-							&& $isEncryptedPath
-						) {
+								$found['encrypted'][] = array(
+									'name' => $file,
+									'path' => $filePath
+								);
 
-							$found['encrypted'][] = array(
-								'name' => $file,
-								'path' => $filePath
-							);
+								// If the file uses old
+								// encryption system
+							} elseif (Crypt::isLegacyEncryptedContent($isEncryptedPath, $relPath)) {
 
-							// If the file uses old
-							// encryption system
-						} elseif (Crypt::isLegacyEncryptedContent($isEncryptedPath, $relPath)) {
+								$found['legacy'][] = array(
+									'name' => $file,
+									'path' => $filePath
+								);
 
-							$found['legacy'][] = array(
-								'name' => $file,
-								'path' => $filePath
-							);
+								// If the file is not encrypted
+							} else {
 
-							// If the file is not encrypted
-						} else {
+								$found['plain'][] = array(
+									'name' => $file,
+									'path' => $relPath
+								);
 
-							$found['plain'][] = array(
-								'name' => $file,
-								'path' => $relPath
-							);
+							}
 
 						}
 
 					}
 
 				}
-
 			}
 
 			\OC_FileProxy::$enabled = true;
@@ -467,22 +472,19 @@ class Util {
 	 */
 	public function isEncryptedPath($path) {
 
-		// Disable encryption proxy so data retrieved is in its
-		// original form
-		$proxyStatus = \OC_FileProxy::$enabled;
-		\OC_FileProxy::$enabled = false;
+		$relPath = Helper::getPathToRealFile($path);
 
-		// we only need 24 byte from the last chunk
-		$data = '';
-		$handle = $this->view->fopen($path, 'r');
-		if (is_resource($handle) && !fseek($handle, -24, SEEK_END)) {
-			$data = fgets($handle);
+		if ($relPath === false) {
+			$relPath = Helper::stripUserFilesPath($path);
 		}
 
-		// re-enable proxy
-		\OC_FileProxy::$enabled = $proxyStatus;
+		$fileKey = Keymanager::getFileKey($this->view, $relPath);
 
-		return Crypt::isCatfileContent($data);
+		if ($fileKey === false) {
+			return false;
+		}
+
+		return true;
 
 	}
 
@@ -507,11 +509,18 @@ class Util {
 		) {
 
 			// get the size from filesystem
-			$fullPath = $this->view->getLocalFile($path);
 			$size = $this->view->filesize($path);
 
+			// fast path, else the calculation for $lastChunkNr is bogus
+			if ($size === 0) {
+				\OC_FileProxy::$enabled = $proxyStatus;
+				return 0;
+			}
+
 			// calculate last chunk nr
-			$lastChunkNr = floor($size / 8192);
+			// next highest is end of chunks, one subtracted is last one
+			// we have to read the last chunk, we can't just calculate it (because of padding etc)
+			$lastChunkNr = ceil($size/ 8192) - 1;
 			$lastChunkSize = $size - ($lastChunkNr * 8192);
 
 			// open stream
@@ -709,17 +718,17 @@ class Util {
 			// Encrypt unencrypted files
 			foreach ($found['encrypted'] as $encryptedFile) {
 
-				//get file info
-				$fileInfo = \OC\Files\Filesystem::getFileInfo($encryptedFile['path']);
-
 				//relative to data/<user>/file
 				$relPath = Helper::stripUserFilesPath($encryptedFile['path']);
+
+				//get file info
+				$fileInfo = \OC\Files\Filesystem::getFileInfo($relPath);
 
 				//relative to /data
 				$rawPath = $encryptedFile['path'];
 
 				//get timestamp
-				$timestamp = $this->view->filemtime($rawPath);
+				$timestamp = $fileInfo['mtime'];
 
 				//enable proxy to use OC\Files\View to access the original file
 				\OC_FileProxy::$enabled = true;
@@ -760,10 +769,10 @@ class Util {
 
 				$this->view->rename($relPath . '.part', $relPath);
 
-				$this->view->chroot($fakeRoot);
-
 				//set timestamp
-				$this->view->touch($rawPath, $timestamp);
+				$this->view->touch($relPath, $timestamp);
+
+				$this->view->chroot($fakeRoot);
 
 				// Add the file to the cache
 				\OC\Files\Filesystem::putFileInfo($relPath, array(
@@ -831,7 +840,7 @@ class Util {
 				$rawPath = '/' . $this->userId . '/files/' . $plainFile['path'];
 
 				// keep timestamp
-				$timestamp = $this->view->filemtime($rawPath);
+				$timestamp = $fileInfo['mtime'];
 
 				// Open plain file handle for binary reading
 				$plainHandle = $this->view->fopen($rawPath, 'rb');
@@ -850,10 +859,10 @@ class Util {
 
 				$this->view->rename($relPath . '.part', $relPath);
 
-				$this->view->chroot($fakeRoot);
-
 				// set timestamp
-				$this->view->touch($rawPath, $timestamp);
+				$this->view->touch($relPath, $timestamp);
+
+				$this->view->chroot($fakeRoot);
 
 				// Add the file to the cache
 				\OC\Files\Filesystem::putFileInfo($relPath, array(
@@ -1047,7 +1056,7 @@ class Util {
 	private function decryptKeyfile($filePath, $privateKey) {
 
 		// Get the encrypted keyfile
-		$encKeyfile = Keymanager::getFileKey($this->view, $this->userId, $filePath);
+		$encKeyfile = Keymanager::getFileKey($this->view, $filePath);
 
 		// The file has a shareKey and must use it for decryption
 		$shareKey = Keymanager::getShareKey($this->view, $this->userId, $filePath);
@@ -1137,10 +1146,7 @@ class Util {
 		// Make sure that a share key is generated for the owner too
 		list($owner, $ownerPath) = $this->getUidAndFilename($filePath);
 
-		$pathinfo = pathinfo($ownerPath);
-		if(array_key_exists('extension', $pathinfo) && $pathinfo['extension'] === 'part') {
-			$ownerPath = $pathinfo['dirname'] . '/' . $pathinfo['filename'];
-		}
+		$ownerPath = \OCA\Encryption\Helper::stripPartialFileExtension($ownerPath);
 
 		$userIds = array();
 		if ($sharingEnabled) {
@@ -1277,7 +1283,18 @@ class Util {
 		// If no record is found
 		if (empty($migrationStatus)) {
 			\OCP\Util::writeLog('Encryption library', "Could not get migration status for " . $this->userId . ", no record found", \OCP\Util::ERROR);
-			return false;
+			// insert missing entry in DB with status open
+			$sql = 'INSERT INTO `*PREFIX*encryption` (`uid`,`mode`,`recovery_enabled`,`migration_status`) VALUES (?,?,?,?)';
+			$args = array(
+				$this->userId,
+				'server-side',
+				0,
+				self::MIGRATION_OPEN
+			);
+			$query = \OCP\DB::prepare($sql);
+			$query->execute($args);
+
+			return self::MIGRATION_OPEN;
 			// If a record is found
 		} else {
 			return (int)$migrationStatus[0];
@@ -1750,6 +1767,11 @@ class Util {
 	 */
 	public function initEncryption($params) {
 
+		$session = new \OCA\Encryption\Session($this->view);
+
+		// we tried to initialize the encryption app for this session
+		$session->setInitialized(\OCA\Encryption\Session::INIT_EXECUTED);
+
 		$encryptedKey = Keymanager::getPrivateKey($this->view, $params['uid']);
 
 		$privateKey = Crypt::decryptPrivateKey($encryptedKey, $params['password']);
@@ -1760,9 +1782,8 @@ class Util {
 			return false;
 		}
 
-		$session = new \OCA\Encryption\Session($this->view);
-
 		$session->setPrivateKey($privateKey);
+		$session->setInitialized(\OCA\Encryption\Session::INIT_SUCCESSFUL);
 
 		return $session;
 	}

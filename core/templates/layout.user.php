@@ -8,12 +8,14 @@
 
 	<head data-user="<?php p($_['user_uid']); ?>" data-requesttoken="<?php p($_['requesttoken']); ?>">
 		<title>
-			<?php p(!empty($_['application'])?$_['application'].' | ':'');
-			p($theme->getTitle());
-			p(trim($_['user_displayname']) != '' ?' ('.$_['user_displayname'].') ':'') ?>
+			<?php
+				p(!empty($_['application'])?$_['application'].' - ':'');
+				p($theme->getTitle());
+			?>
 		</title>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="apple-itunes-app" content="app-id=543672169">
 		<link rel="shortcut icon" href="<?php print_unescaped(image_path('', 'favicon.png')); ?>" />
 		<link rel="apple-touch-icon-precomposed" href="<?php print_unescaped(image_path('', 'favicon-touch.png')); ?>" />
@@ -49,6 +51,9 @@
 				<span id="expand" tabindex="0" role="link">
 					<span id="expandDisplayName"><?php  p(trim($_['user_displayname']) != '' ? $_['user_displayname'] : $_['user_uid']) ?></span>
 					<img class="svg" src="<?php print_unescaped(image_path('', 'actions/caret.svg')); ?>" />
+					<?php if ($_['enableAvatars']): ?>
+					<div class="avatardiv"></div>
+					<?php endif; ?>
 				</span>
 				<div id="expanddiv">
 				<?php foreach($_['settingsnavigation'] as $entry):?>
@@ -61,7 +66,7 @@
 					</li>
 				<?php endforeach; ?>
 					<li>
-						<a id="logout" href="<?php print_unescaped(link_to('', 'index.php')); ?>?logout=true">
+						<a id="logout" <?php print_unescaped(OC_User::getLogoutAttribute()); ?>>
 							<img class="svg" alt="" src="<?php print_unescaped(image_path('', 'actions/logout.svg')); ?>" />
 							<?php p($l->t('Log out'));?>
 						</a>

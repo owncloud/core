@@ -8,13 +8,15 @@ $TRANSLATIONS = array(
 "Users" => "Utilisateurs",
 "Admin" => "Administration",
 "Failed to upgrade \"%s\"." => "Echec de la mise à niveau \"%s\".",
+"Unknown filetype" => "Type de fichier inconnu",
+"Invalid image" => "Image invalide",
 "web services under your control" => "services web sous votre contrôle",
 "cannot open \"%s\"" => "impossible d'ouvrir \"%s\"",
 "ZIP download is turned off." => "Téléchargement ZIP désactivé.",
 "Files need to be downloaded one by one." => "Les fichiers nécessitent d'être téléchargés un par un.",
 "Back to Files" => "Retour aux Fichiers",
 "Selected files too large to generate zip file." => "Les fichiers sélectionnés sont trop volumineux pour être compressés.",
-"Download the files in smaller chunks, seperately or kindly ask your administrator." => "Télécharger les fichiers en parties plus petites, séparément ou demander avec bienveillance à votre administrateur.",
+"Please download the files separately in smaller chunks or kindly ask your administrator." => "Merci de télécharger les fichiers séparément en parties plus petites, ou demandez aimablement à votre administrateur.",
 "No source specified when installing app" => "Aucune source spécifiée pour installer l'application",
 "No href specified when installing app from http" => "Aucun href spécifié pour installer l'application par http",
 "No path specified when installing app from local file" => "Aucun chemin spécifié pour installer l'application depuis un fichier local",
@@ -53,6 +55,7 @@ $TRANSLATIONS = array(
 "Set an admin password." => "Spécifiez un mot de passe administrateur.",
 "Your web server is not yet properly setup to allow files synchronization because the WebDAV interface seems to be broken." => "Votre serveur web, n'est pas correctement configuré pour permettre la synchronisation des fichiers, car l'interface WebDav ne fonctionne pas comme il faut.",
 "Please double check the <a href='%s'>installation guides</a>." => "Veuillez vous référer au <a href='%s'>guide d'installation</a>.",
+"Could not find category \"%s\"" => "Impossible de trouver la catégorie \"%s\"",
 "seconds ago" => "il y a quelques secondes",
 "_%n minute ago_::_%n minutes ago_" => array("","il y a %n minutes"),
 "_%n hour ago_::_%n hours ago_" => array("","Il y a %n heures"),
@@ -63,7 +66,6 @@ $TRANSLATIONS = array(
 "_%n month ago_::_%n months ago_" => array("","Il y a %n mois"),
 "last year" => "l'année dernière",
 "years ago" => "il y a plusieurs années",
-"Caused by:" => "Causé par :",
-"Could not find category \"%s\"" => "Impossible de trouver la catégorie \"%s\""
+"Caused by:" => "Causé par :"
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n > 1);";
