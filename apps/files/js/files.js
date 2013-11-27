@@ -77,9 +77,6 @@ Files={
 		$.each($('#controls .actions>div'), function(index, action) {
 			Files.breadcrumbsWidth += $(action).get(0).offsetWidth;
 		});
-
-		// event handlers for breadcrumb items
-		$('#controls .crumb a').on('click', onClickBreadcrumb);
 	},
 
 	resizeBreadcrumbs: function (width, firstRun) {
@@ -637,10 +634,4 @@ function getUniqueName(name){
 		return getUniqueName(name);
 	}
 	return name;
-}
-
-function onClickBreadcrumb(e){
-	var $el = $(e.target).closest('.crumb');
-	e.preventDefault();
-	FileList.changeDirectory(decodeURIComponent($el.data('dir')));
 }
