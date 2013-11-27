@@ -65,7 +65,8 @@ class Dropbox extends \OC\Files\Storage\Common {
 	 * @param $list if true, also return the directory's contents
 	 * @param $hash previously known hash, used to detect changes
 	 * @return directory contents if $list is true, file metadata if $list is
-	 * false, null if the file doesn't exist or "false" if the operation failed
+	 * false, null if the file doesn't exist, "false" if the operation failed.
+	 * If a hash is passed, "true" might be returned if the metadata didn't change
 	 */
 	private function getMetaData($path, $list = false, $hash = null) {
 		$path = $this->root.$path;
@@ -74,7 +75,14 @@ class Dropbox extends \OC\Files\Storage\Common {
 		} else {
 			if ($list) {
 				try {
-					$response = $this->dropbox->getMetaData($path, 'true', $hash);
+					$response = $this->dropbox->getMetaData($path, 'true');
+					// FIXME: why does Dropbox rerturn 401 unauthorized when passing a hash !?
+					//$response = $this->dropbox->getMetaData($path, 'true', $hash);
+					// FIXME: HACK, checking the hash here
+					if ($hash && $hash === $response['hash']) {
+						// no changes
+						return true;
+					}
 				} catch (\Exception $exception) {
 					\OCP\Util::writeLog('files_external', $exception->getMessage(), \OCP\Util::ERROR);
 					return false;
@@ -312,22 +320,39 @@ class Dropbox extends \OC\Files\Storage\Common {
 	public function hasUpdated($path, $time) {
 		// Dropbox doesn't have directory mtime, so need to use the Dropbox hash
 		// we stored as etag
-		$newData = $this->getMetaData($path, false);
+		$data = $this->getCache()->get($path);
 		// FIXME: might break if someone replaced a dir with a file with
 		// the same name before we got the update
-		if ($newData['is_dir']) {
-			$data = $this->getCache()->get($path);
-			return $newData['hash'] !== $data['etag'];
+		if ($data['mimetype'] === 'httpd/unix-directory') {
+			$hash = $data['etag'];
+			$newData = $this->getMetaData($path, true, $hash);
+			return $newData !== true;
 		}
 		// use mtime for files
 		return parent::hasUpdated($path, $time);
 	}
 
 	public function getETag($path) {
-		// FIXME: ouch, we need to get the directory contents to
-		// get the hash value, maybe there is a more efficient way to do this ?
-		$metaData = $this->getMetaData($path, true);
 		// then retrieve the cached entry
+		$data = $this->getCache()->get($path);
+		// FIXME: might break if someone replaced a dir with a file with
+		// the same name before we got the update
+		if ($data && $data['mimetype'] === 'httpd/unix-directory' && isset($data['etag'])) {
+			// only check for changes
+			$metaData = $this->getMetaData($path, true, $data['etag']);
+			// no changes ?
+			if ($metaData === true) {
+				// return old etag
+				return $data['etag'];
+			}
+		}
+		else {
+			// FIXME: ouch, we need to get the directory contents to
+			// get the hash value, maybe there is a more efficient way to do this ?
+			$metaData = $this->getMetaData($path, true);
+		}
+
+		// this will get the cached entry for the directory
 		$metaData = $this->getMetaData($path);
 		if ($metaData && isset($metaData['is_dir']) && $metaData['is_dir'] && isset($metaData['hash'])) {
 			// for directories
