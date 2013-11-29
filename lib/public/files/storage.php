@@ -68,6 +68,14 @@ interface Storage {
 	public function rmdir($path);
 
 	/**
+	 * Deletes the given file or folder.
+	 *
+	 * @param string $path
+	 * @return bool
+	 */
+	public function deleteFileOrDir($path);
+
+	/**
 	 * see http://php.net/manual/en/function.opendir.php
 	 *
 	 * @param string $path

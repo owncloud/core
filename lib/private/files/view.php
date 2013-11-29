@@ -335,6 +335,10 @@ class View {
 		return $this->basicOperation('unlink', $path, array('delete'));
 	}
 
+	public function deleteFileOrDir($path) {
+		return $this->basicOperation('deleteFileOrDir', $path, array('delete'));
+	}
+
 	public function deleteAll($directory, $empty = false) {
 		return $this->rmdir($directory);
 	}

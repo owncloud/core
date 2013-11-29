@@ -141,6 +141,19 @@ abstract class Common implements \OC\Files\Storage\Storage {
 	}
 
 	/**
+	 * @brief Delete file or folder.
+	 * This implementation calls is_dir() first to find out whether to
+	 * use rmdir() or unlink()
+	 * @param string $path
+	 */
+	public function deleteFileOrDir($path) {
+		if ($this->is_dir($path)) {
+			return $this->rmdir($path);
+		}
+		return $this->unlink($path);
+	}
+
+	/**
 	 * @brief Deletes all files and folders recursively within a directory
 	 * @param string $directory The directory whose contents will be deleted
 	 * @param bool $empty Flag indicating whether directory will be emptied

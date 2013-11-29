@@ -626,6 +626,10 @@ class Filesystem {
 		return self::$defaultInstance->unlink($path);
 	}
 
+	static public function deleteFileOrDir($path) {
+		return self::$defaultInstance->deleteFileOrDir($path);
+	}
+
 	static public function rename($path1, $path2) {
 		return self::$defaultInstance->rename($path1, $path2);
 	}

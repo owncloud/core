@@ -145,6 +145,11 @@ class DAV extends \OC\Files\Storage\Common{
 		}
 	}
 
+	public function deleteFileOrFolder($path) {
+		// no detection needed
+		return $this->unlink($path);
+	}
+
 	public function unlink($path) {
 		$this->init();
 		return $this->simpleResponse('DELETE', $path, null, 204);

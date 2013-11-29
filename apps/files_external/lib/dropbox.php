@@ -183,6 +183,11 @@ class Dropbox extends \OC\Files\Storage\Common {
 		return false;
 	}
 
+	public function deleteFileOrFolder($path) {
+		// no detection needed
+		return $this->unlink($path);
+	}
+
 	public function unlink($path) {
 		try {
 			$this->dropbox->delete($this->root.$path);
