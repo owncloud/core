@@ -832,6 +832,12 @@ class Share {
 				$query = \OC_DB::prepare('UPDATE `*PREFIX*share` SET `expiration` = ? WHERE `id` = ?');
 				foreach ($items as $item) {
 					$query->execute(array($date, $item['id']));
+					\OC_Hook::emit('OCP\Share', 'post_set_expiration_date', array(
+						'itemType' => $itemType,
+						'itemSource' => $itemSource,
+						'date' => $date,
+						'uidOwner' => \OC_User::getUser()
+					));
 				}
 				return true;
 			}
