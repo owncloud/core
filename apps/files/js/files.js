@@ -515,7 +515,11 @@ var dragOptions={
 	revert: 'invalid', revertDuration: 300,
 	opacity: 0.7, zIndex: 100, appendTo: 'body', cursorAt: { left: 24, top: 18 },
 	helper: createDragShadow, cursor: 'move',
+	start: function(event, ui){
+		$(this).parent().fadeTo("fast", 0.2);
+	},
 	stop: function(event, ui) {
+		$(this).parent().fadeTo("slow", 1);
 		$('#fileList tr td.filename').addClass('ui-draggable');
 	}
 };
@@ -532,11 +536,14 @@ var folderDropOptions={
 		}
 
 		var target = $(this).closest('tr').data('file');
-
+		var tr = ui.draggable.parent();
+		var td = tr.children('td.filename');
+		var oldBackgroundImage = td.css('background-image');
 		var files = ui.helper.find('tr');
 		$(files).each(function(i,row) {
 			var dir = $(row).data('dir');
 			var file = $(row).data('filename');
+			td.css('background-image', 'url('+ OC.imagePath('core', 'loading.gif') + ')');
 			$.post(OC.filePath('files', 'ajax', 'move.php'), { dir: dir, file: file, target: dir+'/'+target }, function(result) {
 				if (result) {
 					if (result.status === 'success') {
@@ -557,6 +564,7 @@ var folderDropOptions={
 				} else {
 					OC.dialogs.alert(t('files', 'Error moving file'), t('files', 'Error'));
 				}
+				td.children('td.filename').css('background-image', oldBackgroundImage);
 			});
 		});
 	},
@@ -567,6 +575,9 @@ var crumbDropOptions={
 	drop: function( event, ui ) {
 		var target=$(this).data('dir');
 		var dir = $('#dir').val();
+		var tr = ui.draggable.parent();
+		var td = tr.children('td.filename');
+		var oldBackgroundImage = td.css('background-image');
 		while(dir.substr(0,1) === '/') {//remove extra leading /'s
 				dir=dir.substr(1);
 		}
@@ -581,6 +592,7 @@ var crumbDropOptions={
 		$(files).each(function(i,row) {
 			var dir = $(row).data('dir');
 			var file = $(row).data('filename');
+			td.css('background-image', 'url('+ OC.imagePath('core', 'loading.gif') + ')');
 			$.post(OC.filePath('files', 'ajax', 'move.php'), { dir: dir, file: file, target: target }, function(result) {
 				if (result) {
 					if (result.status === 'success') {
@@ -595,6 +607,7 @@ var crumbDropOptions={
 				} else {
 					OC.dialogs.alert(t('files', 'Error moving file'), t('files', 'Error'));
 				}
+				td.children('td.filename').css('background-image', oldBackgroundImage);
 			});
 		});
 	},
