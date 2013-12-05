@@ -79,6 +79,13 @@
 					value="<?php if(isset($_POST['query'])) {p($_POST['query']);};?>"
 					autocomplete="off" x-webkit-speech />
 			</form>
+
+			<noscript>
+				<div style="margin-left: 200px; margin-top: 10px; color: rgb(18, 141, 146); font-size: 15px">
+					The technology JavaScript is disabled, some features can work incorrectly.
+				</div>
+			</noscript>
+
 		</div></header>
 
 		<nav><div id="navigation">
