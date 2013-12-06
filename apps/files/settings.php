@@ -41,7 +41,7 @@ foreach( \OC\Files\Filesystem::getDirectoryContent( $dir ) as $i ) {
 $breadcrumb = array();
 $pathtohere = "/";
 foreach( explode( "/", $dir ) as $i ) {
-	if( $i != "" ) {
+	if( $i !== "" ) {
 		$pathtohere .= "$i/";
 		$breadcrumb[] = array( "dir" => $pathtohere, "name" => $i );
 	}

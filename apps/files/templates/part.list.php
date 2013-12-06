@@ -13,7 +13,7 @@ $totalsize = 0; ?>
 	$directory = \OCP\Util::encodePath($file['directory']); ?>
 	<tr data-id="<?php p($file['fileid']); ?>"
 		data-file="<?php p($name);?>"
-		data-type="<?php ($file['type'] == 'dir')?p('dir'):p('file')?>"
+		data-type="<?php ($file['type'] === 'dir')?p('dir'):p('file')?>"
 		data-mime="<?php p($file['mimetype'])?>"
 		data-size="<?php p($file['size']);?>"
 		data-etag="<?php p($file['etag']);?>"
@@ -29,7 +29,7 @@ $totalsize = 0; ?>
 			<input id="select-<?php p($file['fileid']); ?>" type="checkbox" />
 			<label for="select-<?php p($file['fileid']); ?>"></label>
 		<?php endif; ?>
-		<?php if($file['type'] == 'dir'): ?>
+		<?php if($file['type'] === 'dir'): ?>
 			<a class="name" href="<?php p(rtrim($_['baseURL'],'/').'/'.trim($directory,'/').'/'.$name); ?>" title="">
 				<span class="nametext">
 					<?php print_unescaped(htmlspecialchars($file['name']));?>
@@ -40,7 +40,7 @@ $totalsize = 0; ?>
 				<span class="nametext"><?php print_unescaped(htmlspecialchars($file['basename']));?><span class='extension'><?php p($file['extension']);?></span></span>
 			</a>
 		<?php endif; ?>
-			<?php if($file['type'] == 'dir'):?>
+			<?php if($file['type'] === 'dir'):?>
 				<span class="uploadtext" currentUploads="0">
 				</span>
 			<?php endif;?>
