@@ -840,32 +840,34 @@ class Util {
 				// Open enc file handle for binary writing, with same filename as original plain file
 				$encHandle = fopen('crypt://' . $rawPath . '.part', 'wb');
 
-				// Move plain file to a temporary location
-				$size = stream_copy_to_stream($plainHandle, $encHandle);
+				if (is_resource($encHandle)) {
+					// Move plain file to a temporary location
+					$size = stream_copy_to_stream($plainHandle, $encHandle);
 
-				fclose($encHandle);
-				fclose($plainHandle);
+					fclose($encHandle);
+					fclose($plainHandle);
 
-				$fakeRoot = $this->view->getRoot();
-				$this->view->chroot('/' . $this->userId . '/files');
+					$fakeRoot = $this->view->getRoot();
+					$this->view->chroot('/' . $this->userId . '/files');
 
-				$this->view->rename($relPath . '.part', $relPath);
+					$this->view->rename($relPath . '.part', $relPath);
 
-				// set timestamp
-				$this->view->touch($relPath, $timestamp);
+					// set timestamp
+					$this->view->touch($relPath, $timestamp);
+					$encSize = $this->view->filesize($relPath);
 
-				$this->view->chroot($fakeRoot);
+					$this->view->chroot($fakeRoot);
 
-				// Add the file to the cache
-				\OC\Files\Filesystem::putFileInfo($relPath, array(
-					'encrypted' => true,
-					'size' => $size,
-					'unencrypted_size' => $size,
-					'etag' => $fileInfo['etag']
-				));
+					// Add the file to the cache
+					\OC\Files\Filesystem::putFileInfo($relPath, array(
+						'encrypted' => true,
+						'size' => $encSize,
+						'unencrypted_size' => $size,
+						'etag' => $fileInfo['etag']
+					));
 
-				$encryptedFiles[] = $relPath;
-
+					$encryptedFiles[] = $relPath;
+				}
 			}
 
 			// Encrypt legacy encrypted files
