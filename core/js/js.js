@@ -889,7 +889,7 @@ OC.set=function(name, value) {
  * @param {type} start
  * @param {type} end
  */
-$.fn.selectRange = function(start, end) {
+jQuery.fn.selectRange = function(start, end) {
 	return this.each(function() {
 		if (this.setSelectionRange) {
 			this.focus();
