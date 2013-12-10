@@ -289,6 +289,20 @@ class OC_Archive_ZIP extends OC_Archive{
 
 		foreach ($files as $file) {
 			$localfile = $file['local'];
+			// Set host OS
+			fseek($fp, $file['central_offset'] + 5);
+			if (ftell($fp) === $file['central_offset'] + 5) {
+				$hostOS = unpack('C', fread($fp, 1));
+				// only change if ZipArchive didn't set anything
+				// this is a hint for some zip tools like Linux unzip
+				// and fixed encoding issues
+				if ($hostOS[1] === 0) {
+					fseek($fp, -1, SEEK_CUR);
+					// set to "*nix" (0x03)
+					fwrite($fp, pack('C', 3));
+				}
+			}
+
 			// Add the unicode flag in central file header.
 			fseek($fp, $file['central_offset'] + 8);
 			if (ftell($fp) === $file['central_offset'] + 8) {
