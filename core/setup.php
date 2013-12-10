@@ -63,6 +63,14 @@ if(isset($_POST['install']) AND $_POST['install']=='true') {
 	}
 	else {
 		header( 'Location: '.OC_Helper::linkToRoute( 'post_setup_check' ));
+
+		$auto_file = OC::$SERVERROOT."/config/autosetup.php";
+		if( file_exists( $auto_file )) {
+			OC_Log::write('core', 'Autosetup file found, setting up owncloud...', OC_Log::INFO);
+			include $auto_file;
+			unlink($auto_file);
+		}
+
 		exit();
 	}
 }
