@@ -302,6 +302,25 @@ class OC_Archive_ZIP extends OC_Archive{
 					fwrite($fp, pack('C', 3));
 				}
 			}
+			// Set correct file/dir permissions
+			fseek($fp, $file['central_offset'] + 38);
+			if (ftell($fp) === $file['central_offset'] + 38) {
+				$attrext = $file['attrext'];
+				if ($attrext === 0) {
+					// is dir ?
+					if (substr($file['name'], -1) === '/') {
+						// dir flag 04 + 0755 (rwxr-xr-x) octal
+						$attrext = 040755 << 0x10;
+						// MS-DOS directory flag
+						$attrext |= 0x10;
+					}
+					else {
+						// regular file flag 010 + 0644 (rw-r--r--) octal
+						$attrext = 0100644 << 0x10;
+					}
+					fwrite($fp, pack('V', $attrext));
+				}
+			}
 
 			// Add the unicode flag in central file header.
 			fseek($fp, $file['central_offset'] + 8);
