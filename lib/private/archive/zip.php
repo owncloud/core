@@ -44,8 +44,6 @@ class OC_Archive_ZIP extends OC_Archive{
 		}
 		if($result) {
 			$this->modified=true;
-			$this->close();//close and reopen to save the zip
-			$this->zip->open($this->path);
 		}
 		return $result;
 	}
