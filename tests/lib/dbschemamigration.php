@@ -7,6 +7,7 @@
  */
 
 class Test_DBSchemaMigration extends PHPUnit_Framework_TestCase {
+	protected $prefix;
 	protected $schema_file = 'static://test_db_scheme';
 	protected $schema_file2 = 'static://test_db_scheme2';
 	protected $table1;
@@ -16,21 +17,25 @@ class Test_DBSchemaMigration extends PHPUnit_Framework_TestCase {
 		$dbfile = OC::$SERVERROOT.'/tests/data/oc5.0.13/db_structure.xml';
 		$dbfile2 = OC::$SERVERROOT.'/tests/data/oc6.0.0/db_structure.xml';
 
-		$r = '_'.OC_Util::generateRandomBytes('4').'_';
 		$content = file_get_contents( $dbfile );
-		$content = str_replace( '*dbprefix*', '*dbprefix*'.$r, $content );
 		file_put_contents( $this->schema_file, $content );
 		$content = file_get_contents( $dbfile2 );
-		$content = str_replace( '*dbprefix*', '*dbprefix*'.$r, $content );
 		file_put_contents( $this->schema_file2, $content );
 
-		$prefix = OC_Config::getValue( "dbtableprefix", "oc_" );
+		$r = '_'.OC_Util::generateRandomBytes('4').'_';
+		$this->prefix = OC_Config::getValue( "dbtableprefix", "oc_" );
+		$prefix = $this->prefix . $r;
+		OC_Config::setValue( "dbtableprefix", $prefix );
 
-		$this->table1 = $prefix.$r.'appconfig';
-		$this->table2 = $prefix.$r.'storages';
+		$this->table1 = $prefix.'appconfig';
+		$this->table2 = $prefix.'storages';
 	}
 
 	public function tearDown() {
+		// reset db prefix
+		OC_Config::setValue( "dbtableprefix", $this->prefix );
+
+		// remove temp files
 		unlink($this->schema_file);
 		unlink($this->schema_file2);
 	}
