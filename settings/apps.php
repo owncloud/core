@@ -30,7 +30,7 @@ OC_App::setActiveNavigationEntry( "core_apps" );
 
 $combinedApps = OC_App::listAllApps();
 
-$tmpl = new OC_Template( "settings", "apps", "user" );
+$tmpl = new OC_Template( "settings", "apps/main", "user" );
 
 $tmpl->assign('apps', $combinedApps);
 
