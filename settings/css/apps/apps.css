@@ -1,0 +1,53 @@
+/**
+ * ownCloud - App Settings
+ * @author Raghu Nayyar
+ * @author Jan-Christoph Borchardt
+ * @copyright 2013 Raghu Nayyar <raghu.nayyar.007@gmail.com>
+ * @copyright 2013 Jan-Christoph Borchardt <http://jancborchardt.net>
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+.appinfo { margin: 1em 40px; }
+h3 { font-size: 1.4em; font-weight: bold; }
+ul.applist a {
+    height: 2.2em;
+    padding: 0.2em 0.2em 0.2em 0.8em !important;
+}
+ul.applist .app-external {
+    width: 100%;
+}
+li { color:#888; }
+li.active { color:#000; }
+#leftcontent .appwarning {
+    background: #fcc;
+}
+#leftcontent .appwarning:hover {
+    background: #fbb;
+}
+small.externalapp { color:#FFF; background-color:#BBB; font-weight:bold; font-size: 0.6em; margin: 0; padding: 0.1em 0.2em; border-radius: 4px;}
+small.externalapp.list { float: right; }
+small.recommendedapp { color:#FFF; background-color:#888; font-weight:bold; font-size: 0.6em; margin: 0; padding: 0.1em 0.2em; border-radius: 4px;}
+small.recommendedapp.list { float: right; }
+span.version { margin-left:1em; margin-right:1em; color:#555; }
+
+.app { position: relative; display: inline-block; padding: 0.2em 0 0.2em 0 !important; text-overflow: hidden; overflow: hidden; white-space: nowrap; /*transition: .2s max-width linear; -o-transition: .2s max-width linear; -moz-transition: .2s max-width linear; -webkit-transition: .2s max-width linear; -ms-transition: .2s max-width linear;*/ }
+.app.externalapp { max-width: 12.5em; }
+.app.recommendedapp { max-width: 12.5em; }
+/* Transition to complete width! */
+.app:hover, .app:active { max-width: inherit; }
+
+.appslink { text-decoration: underline; }
+.score { color:#666; font-weight:bold; font-size:0.8em; }
