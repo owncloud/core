@@ -1,6 +1,8 @@
-<ul class="applist">
+<ul>
 	<li>
-		<a class="app-external" target="_blank" href="http://owncloud.org/dev"><?php p($l->t('Add your App'));?> …</a>
+		<a class="app-external" target="_blank" href="http://owncloud.org/dev">
+			<?php p($l->t('Add your App'));?> …
+		</a>
 	</li>
 
 	<?php foreach($_['apps'] as $app):?>
@@ -10,10 +12,9 @@
 		<a class="app<?php if(!$app['internal']) p(' externalapp') ?>"
 			href="?appid=<?php p($app['id']) ?>"><?php p($app['name']) ?></a>
 		<?php  if(!$app['internal'])
-			print_unescaped('<small class="'.OC_Util::sanitizeHTML($app['internalclass']).' list">'.OC_Util::sanitizeHTML($app['internallabel']).'</small>') ?>
+			print_unescaped('<span class="'.OC_Util::sanitizeHTML($app['internalclass']).' list">'.OC_Util::sanitizeHTML($app['internallabel']).'</span>') ?>
 	</li>
 	<?php endforeach;?>
-
 	<li>
 		<a class="app-external" target="_blank" href="http://apps.owncloud.com"><?php p($l->t('More Apps'));?> …</a>
 	</li>
