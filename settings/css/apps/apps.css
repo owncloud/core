@@ -35,7 +35,9 @@
 #app-navigation .appwarning:hover {
     background: #fbb;
 }
-
+#app-navigation .active .app {
+	font-weight: 700;
+}
 #app-navigation .active span.externalapp {
 	position: absolute; right: 20px; top: 6px; padding: 5px;
 	background: #ccc;
