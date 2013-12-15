@@ -50,13 +50,21 @@
 	border-radius: 4px;
 }
 
+#app-content .name {
+	display:inline;
+}
+
 span.version {
 	margin-left:1em; margin-right:1em;
 	color:#555;
+	font-size:16px;
 }
 
 .externalapp, .recommendedapp {
 	max-width: 12.5em;
+	background: #ccc;
+	padding: 3px 6px;
+	border-radius: 4px;
 }
 
 .appslink {
