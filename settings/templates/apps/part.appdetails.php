@@ -1,8 +1,10 @@
 <?php
 /**
  * ownCloud - App Settings
+ * @author Robin Appelman
  * @author Raghu Nayyar
- * @copyright 2013 Raghu Nayyar <raghu.nayyar.007@gmail.com>
+ * @copyright (c) 2011, Robin Appelman <icewind1991@gmail.com>
+ * @copyright (c) 2013, Raghu Nayyar <raghu.nayyar.007@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
