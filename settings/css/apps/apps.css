@@ -24,6 +24,10 @@
  	padding-bottom: 0;
  }
 
+ #app-navigation li > a {
+ 	min-width:290px;
+ }
+
 .appinfo {
 	margin: 1em 40px;
 }
@@ -38,18 +42,11 @@
 #app-navigation .active .app {
 	font-weight: 700;
 }
-#app-navigation .active span.externalapp {
+#app-navigation span.externalapp, #app-navigation span.recommendedapp {
 	position: absolute; right: 20px; top: 6px; padding: 5px;
 	background: #ccc;
 	color: #fff;
 	font-weight: bold; font-size: 10px;
-	border-radius: 4px;
-}
-
-.recommendedapp {
-	color:#FFF; background-color:#888;
-	font-weight:bold; font-size: 0.6em;
-	margin: 0; padding: 0.1em 0.2em;
 	border-radius: 4px;
 }
 
