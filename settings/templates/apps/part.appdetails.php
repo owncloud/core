@@ -24,7 +24,7 @@
 		<?php p($l->t('Select an App'));?>
 	</h2>
 	<span class="version"></span>
-	<small class="externalapp"></small>
+	<span class="externalapp"></span>
 	<span class="score"></span>
 	<p class="description"></p>
 	<img src="" class="preview hidden" />

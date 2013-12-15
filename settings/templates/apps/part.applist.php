@@ -10,7 +10,7 @@
 		<?php if ( isset( $app['ocs_id'] ) ) { print_unescaped("data-id-ocs=\"{".OC_Util::sanitizeHTML($app['ocs_id'])."}\""); } ?>
 			data-type="<?php p($app['internal'] ? 'internal' : 'external') ?>" data-installed="1">
 		<a class="app<?php if(!$app['internal']) p(' externalapp') ?>"
-			href="?appid=<?php p($app['id']) ?>"><?php p($app['name']); ?></a>
+			href="?appid=<?php p($app['id']) ?>"><?php p($app['name']) ?></a>
 		<?php  if(!$app['internal'])
 			print_unescaped('<span class="'.OC_Util::sanitizeHTML($app['internalclass']).' list">'.OC_Util::sanitizeHTML($app['internallabel']).'</span>') ?>
 	</li>

@@ -8,10 +8,10 @@
 OC.Settings = OC.Settings || {};
 OC.Settings.Apps = OC.Settings.Apps || {
 	loadApp:function(app) {
-		var page = $('#rightcontent');
+		var page = $('#app-content');
 		page.find('p.license').show();
-		page.find('span.name').text(app.name);
-		page.find('small.externalapp').text(app.internallabel);
+		page.find('h2.name').text(app.name);
+		page.find('span.externalapp').text(app.internallabel);
 		if (app.version) {
 			page.find('span.version').text(app.version);
 		} else {
@@ -25,7 +25,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 		} else {
 			page.find('img.preview').hide();
 		}
-		page.find('small.externalapp').attr('style', 'visibility:visible');
+		page.find('span.externalapp').attr('style', 'visibility:visible');
 		page.find('span.author').text(app.author);
 
 		// FIXME licenses of downloaded apps go into app.licence, licenses of not-downloaded apps into app.license
@@ -53,21 +53,21 @@ OC.Settings.Apps = OC.Settings.Apps || {
 			page.find('span.score').show();
 			page.find('p.appslink').show();
 			page.find('a').attr('href', 'http://apps.owncloud.com/content/show.php?content=' + app.id);
-			page.find('small.externalapp').hide();
+			page.find('span.externalapp').hide();
 		} else {
 			page.find('p.appslink').hide();
 			page.find('span.score').hide();
 		}
-		if (typeof($('#leftcontent li[data-id="'+app.id+'"]').data('errormsg')) !== "undefined") {
+		if (typeof($('#app-navigation ul li[data-id="'+app.id+'"]').data('errormsg')) !== "undefined") {
 			page.find(".warning").show();
-			page.find(".warning").text($('#leftcontent li[data-id="'+app.id+'"]').data('errormsg'));
+			page.find(".warning").text($('#app-navigation ul li[data-id="'+app.id+'"]').data('errormsg'));
 		} else {
 			page.find(".warning").hide();
 		}
 	},
 	enableApp:function(appid, active, element) {
 		console.log('enableApp:', appid, active, element);
-		var appitem=$('#leftcontent li[data-id="'+appid+'"]');
+		var appitem=$('#app-navigation ul li[data-id="'+appid+'"]');
 		element.val(t('settings','Please wait....'));
 		if(active) {
 			$.post(OC.filePath('settings','ajax','disableapp.php'),{appid:appid},function(result) {
@@ -136,11 +136,11 @@ OC.Settings.Apps = OC.Settings.Apps || {
 	},
 
 	insertApp:function(appdata) {
-		var applist = $('#leftcontent li');
+		var applist = $('#app-navigation ul li');
 		var app =
 				$('<li data-id="' + appdata.id + '" data-type="external" data-installed="0">'
 				+ '<a class="app externalapp" href="' + OC.filePath('settings', 'apps', 'index.php') + '&appid=' + appdata.id+'">'
-				+ appdata.name+'</a><small class="externalapp list">3rd party</small></li>');
+				+ appdata.name+'</a><span class="externalapp list">3rd party</span></li>');
 		app.data('app', appdata);
 		var added = false;
 		applist.each(function() {
@@ -206,19 +206,19 @@ OC.Settings.Apps = OC.Settings.Apps || {
 };
 
 $(document).ready(function(){
-	$('#leftcontent li').each(function(index,li){
+	$('#app-navigation ul li').each(function(index,li){
 		var app = OC.get('appData_'+$(li).data('id'));
 		$(li).data('app',app);
 		$(this).find('span.hidden').remove();
 	});
-	$('#leftcontent li').keydown(function(event) {
+	$('#app-navigation ul li').keydown(function(event) {
 		if (event.which === 13 || event.which === 32) {
 			$(event.target).click();
 		}
 		return false;
 	});
 
-	$(document).on('click', '#leftcontent', function(event){
+	$(document).on('click', '#app-navigation ul', function(event){
 		var tgt = $(event.target);
 		if (tgt.is('li') || tgt.is('a')) {
 			var item = tgt.is('li') ? $(tgt) : $(tgt).parent();
@@ -227,7 +227,7 @@ $(document).ready(function(){
 		}
 		return false;
 	});
-	$('#rightcontent input.enable').click(function(){
+	$('#app-content input.enable').click(function(){
 		var element = $(this);
 		var appid=$(this).data('appid');
 		var active=$(this).data('active');
@@ -235,7 +235,7 @@ $(document).ready(function(){
 			OC.Settings.Apps.enableApp(appid, active, element);
 		}
 	});
-	$('#rightcontent input.update').click(function(){
+	$('#app-content input.update').click(function(){
 		var element = $(this);
 		var appid=$(this).data('appid');
 		if(appid) {
@@ -244,11 +244,11 @@ $(document).ready(function(){
 	});
 
 	if(appid) {
-		var item = $('#leftcontent li[data-id="'+appid+'"]');
+		var item = $('#app-navigation ul li[data-id="'+appid+'"]');
 		if(item) {
 			item.trigger('click');
 			item.addClass('active');
-			$('#leftcontent').animate({scrollTop: $(item).offset().top-70}, 'slow','swing');
+			$('#app-navigation ul').animate({scrollTop: $(item).offset().top-70}, 'slow','swing');
 		}
 	}
 });
