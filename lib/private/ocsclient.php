@@ -104,7 +104,7 @@ class OC_OCSClient{
 			$categoriesstring=$categories;
 		}
 
-		$version='&version='.implode('x', \OC_Util::getVersion());
+		$version='&version='.implode('x', range(1, \OC_Util::getVersion()[0]));
 		$filterurl='&filter='.urlencode($filter);
 		$url=OC_OCSClient::getAppStoreURL().'/content/data?categories='.urlencode($categoriesstring)
 			.'&sortmode=new&page='.urlencode($page).'&pagesize=100'.$filterurl.$version;
