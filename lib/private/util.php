@@ -997,7 +997,7 @@ class OC_Util {
 	 * If not, file_get_contents is used.
 	 */
 	public static function getUrlContent($url) {
-		if (function_exists('curl_init')) {
+		if (function_exists('curl_init') AND ini_get('open_basedir') === '' AND ini_get('safe_mode') === 'Off') {
 			$curl = curl_init();
 
 			curl_setopt($curl, CURLOPT_HEADER, 0);
