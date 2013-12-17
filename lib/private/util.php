@@ -1056,9 +1056,8 @@ class OC_Util {
 				} else {
 					$data = curl_exec($curl);
 				}
-				
-				curl_close($curl);
 			}
+			curl_close($curl);
 		} else {
 			$contextArray = null;
 
