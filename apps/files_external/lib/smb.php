@@ -9,6 +9,7 @@
 namespace OC\Files\Storage;
 
 use OC\Files\Stream\Dir;
+use SMB\AlreadyExistsException;
 use SMB\NotFoundException;
 use SMB\Server;
 
@@ -161,9 +162,15 @@ class SMB extends Common {
 	}
 
 	public function rename($source, $target) {
-		$this->share->rename($this->root . $source, $this->root . $target);
+		try {
+			$result = $this->share->rename($this->root . $source, $this->root . $target);
+		} catch (AlreadyExistsException $e) {
+			$this->unlink($target);
+			$result = $this->share->rename($this->root . $source, $this->root . $target);
+		}
 		$this->removeFromCache($this->root . $source);
 		$this->removeFromCache($this->root . $target);
+		return $result;
 	}
 
 	public function copy($source, $target) {
@@ -258,8 +265,12 @@ class SMB extends Common {
 	public function unlink($path) {
 		$path = trim($path, '/');
 		try {
-			$this->removeFromCache($this->root . $path);
-			$this->share->del($this->root . $path);
+			if ($this->is_dir($path)) {
+				return $this->rmdir($path);
+			} else {
+				$this->removeFromCache($this->root . $path);
+				return $this->share->del($this->root . $path);
+			}
 		} catch (NotFoundException $e) {
 			return false;
 		}
