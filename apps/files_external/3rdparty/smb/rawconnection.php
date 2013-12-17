@@ -66,7 +66,7 @@ class RawConnection {
 	/**
 	 * read a line of output
 	 *
-	 * @return array
+	 * @return string
 	 */
 	public function read() {
 		return trim(fgets($this->pipes[1]));

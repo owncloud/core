@@ -78,6 +78,8 @@ class Server {
 
 	/**
 	 * @return Share[]
+	 * @throws \SMB\AuthenticationException
+	 * @throws \SMB\InvalidHostException
 	 */
 	public function listShares() {
 		$user = escapeshellarg($this->getUser());
@@ -87,6 +89,11 @@ class Server {
 		$output = $connection->readAll();
 
 		$line = $output[0];
+
+		// disregard password prompt
+		if (substr($line, 0, 6) == 'Enter ' and count($output) > 1) {
+			$line = $output[1];
+		}
 
 		$line = rtrim($line, ')');
 		if (substr($line, -23) === ErrorCodes::LogonFailure) {

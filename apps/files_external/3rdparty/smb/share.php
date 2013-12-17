@@ -44,6 +44,7 @@ class Share {
 			' //' . $this->server->getHost() . '/' . $this->name;
 		$this->connection = new Connection($command);
 		$this->connection->write($this->server->getPassword());
+		$this->connection->readLine(); // discard password prompt
 		if (!$this->connection->isValid()) {
 			throw new ConnectionError();
 		}

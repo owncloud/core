@@ -21,26 +21,35 @@ class Connection extends RawConnection {
 	}
 
 	/**
-	 * get all unprocessed output from smbclient untill the next prompt
+	 * get all unprocessed output from smbclient until the next prompt
 	 *
 	 * @throws ConnectionError
-	 * @return array
+	 * @return string
 	 */
 	public function read() {
 		if (!$this->isValid()) {
 			throw new ConnectionError();
 		}
-		$line = parent::read(); //first line is prompt
+		$line = $this->readLine(); //first line is prompt
 		$this->checkConnectionError($line);
 
 		$output = array();
-		$line = parent::read();
+		$line = $this->readLine();
 		$length = strlen(self::DELIMITER);
 		while (substr($line, 0, $length) !== self::DELIMITER) { //next prompt functions as delimiter
 			$output[] .= $line;
 			$line = parent::read();
 		}
 		return $output;
+	}
+
+	/**
+	 * read a single line of unprocessed output
+	 *
+	 * @return string
+	 */
+	public function readLine() {
+		return parent::read();
 	}
 
 	/**
