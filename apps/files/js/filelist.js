@@ -422,12 +422,27 @@ var FileList={
 								}
 								tr.find('.fileactions').effect('highlight', {}, 5000);
 								tr.effect('highlight', {}, 5000);
+								// remove loading mark and recover old image
+								td.css('background-image', oldBackgroundImage);
+							}
+							else {
+								var fileInfo = result.data;
+								tr.attr('data-mime', fileInfo.mime);
+								tr.attr('data-etag', fileInfo.etag);
+								if (fileInfo.isPreviewAvailable) {
+									Files.lazyLoadPreview(fileInfo.directory + '/' + fileInfo.name, result.data.mime, function(previewpath) {
+										tr.find('td.filename').attr('style','background-image:url('+previewpath+')');
+									}, null, null, result.data.etag);
+								}
+								else {
+									tr.find('td.filename').removeClass('preview').attr('style','background-image:url('+fileInfo.icon+')');
+								}
 							}
 							// reinsert row
 							tr.detach();
 							FileList.insertElement( tr.attr('data-file'), tr.attr('data-type'),tr );
-							// remove loading mark and recover old image
-							td.css('background-image', oldBackgroundImage);
+							// update file actions in case the extension changed
+							FileActions.display( tr.find('td.filename'), true);
 						}
 					});
 				}
@@ -608,7 +623,7 @@ var FileList={
 				var fileSize = '<td class="filesize">'+humanFileSize(summary.totalSize)+'</td>';
 			}
 
-			var $summary = $('<tr class="summary"><td><span class="info">'+info+'</span></td>'+fileSize+'<td></td></tr>');
+			var $summary = $('<tr class="summary" data-file="undefined"><td><span class="info">'+info+'</span></td>'+fileSize+'<td></td></tr>');
 			$('#fileList').append($summary);
 
 			var $dirInfo = $summary.find('.dirinfo');

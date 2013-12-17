@@ -12,7 +12,14 @@ var oc_current_user = document.getElementsByTagName('head')[0].getAttribute('dat
 var oc_requesttoken = document.getElementsByTagName('head')[0].getAttribute('data-requesttoken');
 
 if (typeof oc_webroot === "undefined") {
-	oc_webroot = location.pathname.substr(0, location.pathname.lastIndexOf('/'));
+	oc_webroot = location.pathname;
+	var pos = oc_webroot.indexOf('/index.php/');
+	if (pos !== -1) {
+		oc_webroot = oc_webroot.substr(0, pos);
+	}
+	else {
+		oc_webroot = oc_webroot.substr(0, oc_webroot.lastIndexOf('/'));
+	}
 }
 if (oc_debug !== true || typeof console === "undefined" || typeof console.log === "undefined") {
 	if (!window.console) {
@@ -115,7 +122,7 @@ t.cache = {};
  */
 function n(app, text_singular, text_plural, count, vars) {
 	initL10N(app);
-	var identifier = '_' + text_singular + '__' + text_plural + '_';
+	var identifier = '_' + text_singular + '_::_' + text_plural + '_';
 	if( typeof( t.cache[app][identifier] ) !== 'undefined' ){
 		var translation = t.cache[app][identifier];
 		if ($.isArray(translation)) {
@@ -471,11 +478,11 @@ OC.Breadcrumb={
 	},
 	_show:function(container, dir, leafname, leaflink){
 		var self = this;
-		
+
 		this._clear(container);
-		
+
 		// show home + path in subdirectories
-		if (dir && dir !== '/') {
+		if (dir) {
 			//add home
 			var link = OC.linkTo('files','index.php');
 
@@ -502,7 +509,7 @@ OC.Breadcrumb={
 				}
 			});
 		}
-		
+
 		//add leafname
 		if (leafname && leaflink) {
 			this._push(container, leafname, leaflink);

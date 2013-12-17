@@ -8,7 +8,7 @@ $(document).ready(function() {
 			deleteAction.removeClass('delete-icon').addClass('progress-icon');
 			disableActions();
 			$.post(OC.filePath('files_trashbin', 'ajax', 'undelete.php'),
-					{files: JSON.stringify([filename]), dirlisting: tr.attr('data-dirlisting')},
+					{files: JSON.stringify([$('#dir').val() + '/' + filename]), dirlisting: tr.attr('data-dirlisting')},
 					function(result) {
 						for (var i = 0; i < result.data.success.length; i++) {
 							var row = document.getElementById(result.data.success[i].filename);
@@ -35,7 +35,7 @@ $(document).ready(function() {
 		deleteAction.removeClass('delete-icon').addClass('progress-icon');
 		disableActions();
 		$.post(OC.filePath('files_trashbin', 'ajax', 'delete.php'),
-				{files: JSON.stringify([filename]), dirlisting: tr.attr('data-dirlisting')},
+				{files: JSON.stringify([$('#dir').val() + '/' +filename]), dirlisting: tr.attr('data-dirlisting')},
 				function(result) {
 					for (var i = 0; i < result.data.success.length; i++) {
 						var row = document.getElementById(result.data.success[i].filename);
@@ -62,41 +62,6 @@ $(document).ready(function() {
 			// Uncheck all
 			$('td.filename input:checkbox').attr('checked', false);
 			$('td.filename input:checkbox').parent().parent().removeClass('selected');
-		}
-		procesSelection();
-	});
-
-	$('#fileList').on('click', 'td.filename a', function(event) {
-		if (event.shiftKey) {
-			event.preventDefault();
-			var last = $(lastChecked).parent().parent().prevAll().length;
-			var first = $(this).parent().parent().prevAll().length;
-			var start = Math.min(first, last);
-			var end = Math.max(first, last);
-			var rows = $(this).parent().parent().parent().children('tr');
-			for (var i = start; i < end; i++) {
-				$(rows).each(function(index) {
-					if (index == i) {
-						var checkbox = $(this).children().children('input:checkbox');
-						$(checkbox).attr('checked', 'checked');
-						$(checkbox).parent().parent().addClass('selected');
-					}
-				});
-			}
-		}
-		var checkbox = $(this).parent().children('input:checkbox');
-		lastChecked = checkbox;
-		if ($(checkbox).attr('checked')) {
-			$(checkbox).removeAttr('checked');
-			$(checkbox).parent().parent().removeClass('selected');
-			$('#select_all').removeAttr('checked');
-		} else {
-			$(checkbox).attr('checked', 'checked');
-			$(checkbox).parent().parent().toggleClass('selected');
-			var selectedCount = $('td.filename input:checkbox:checked').length;
-			if (selectedCount == $('td.filename input:checkbox').length) {
-				$('#select_all').attr('checked', 'checked');
-			}
 		}
 		procesSelection();
 	});
@@ -136,7 +101,8 @@ $(document).ready(function() {
 		var params = {};
 		if (allFiles) {
 			params = {
-			   allfiles: true
+			   allfiles: true,
+			   dir: $('#dir').val()
 			};
 		}
 		else {
@@ -181,6 +147,20 @@ $(document).ready(function() {
 				}
 		);
 
+	});
+
+	$('#fileList').on('click', 'td.filename input', function() {
+		var checkbox = $(this).parent().children('input:checkbox');
+		$(checkbox).parent().parent().toggleClass('selected');
+		if ($(checkbox).is(':checked')) {
+			var selectedCount = $('td.filename input:checkbox:checked').length;
+			if (selectedCount === $('td.filename input:checkbox').length) {
+				$('#select_all').prop('checked', true);
+			}
+		} else {
+			$('#select_all').prop('checked',false);
+		}
+		procesSelection();
 	});
 
 	$('#fileList').on('click', 'td.filename a', function(event) {
@@ -229,7 +209,7 @@ function getSelectedFiles(property){
 	elements.each(function(i,element){
 		var file={
 			name:$(element).attr('data-filename'),
-			file:$(element).attr('data-file'),
+			file:$('#dir').val() + "/" + $(element).attr('data-file'),
 			timestamp:$(element).attr('data-timestamp'),
 			type:$(element).attr('data-type'),
 			dirlisting:$(element).attr('data-dirlisting')

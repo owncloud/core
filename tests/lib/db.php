@@ -12,6 +12,21 @@ class Test_DB extends PHPUnit_Framework_TestCase {
 	protected static $schema_file = 'static://test_db_scheme';
 	protected $test_prefix;
 
+	/**
+	 * @var string
+	 */
+	private $table1;
+
+	/**
+	 * @var string
+	 */
+	private $table2;
+
+	/**
+	 * @var string
+	 */
+	private $table3;
+
 	public function setUp() {
 		$dbfile = OC::$SERVERROOT.'/tests/data/db_structure.xml';
 
@@ -146,41 +161,15 @@ class Test_DB extends PHPUnit_Framework_TestCase {
 
 	}
 
-	/**
-	* Tests whether the database is configured so it accepts and returns dates
-	* in the expected format.
-	*/
-	public function testTimestampDateFormat() {
-		$table = '*PREFIX*'.$this->test_prefix.'timestamp';
-		$column = 'timestamptest';
+	public function testUtf8Data() {
+		$table = "*PREFIX*{$this->table2}";
+		$expected = "Ћö雙喜\xE2\x80\xA2";
 
-		$expectedFormat = 'Y-m-d H:i:s';
-		$expected = new \DateTime;
+		$query = OC_DB::prepare("INSERT INTO `$table` (`fullname`, `uri`, `carddata`) VALUES (?, ?, ?)");
+		$result = $query->execute(array($expected, 'uri_1', 'This is a vCard'));
+		$this->assertEquals(1, $result);
 
-		$query = OC_DB::prepare("INSERT INTO `$table` (`$column`) VALUES (?)");
-		$result = $query->execute(array($expected->format($expectedFormat)));
-		$this->assertEquals(
-			1,
-			$result,
-			"Database failed to accept dates in the format '$expectedFormat'."
-		);
-
-		$id = OC_DB::insertid($table);
-		$query = OC_DB::prepare("SELECT * FROM `$table` WHERE `id` = ?");
-		$result = $query->execute(array($id));
-		$row = $result->fetchRow();
-
-		$actual = \DateTime::createFromFormat($expectedFormat, $row[$column]);
-		$this->assertInstanceOf(
-			'\DateTime',
-			$actual,
-			"Database failed to return dates in the format '$expectedFormat'."
-		);
-
-		$this->assertEquals(
-			$expected,
-			$actual,
-			'Failed asserting that the returned date is the same as the inserted.'
-		);
+		$actual = OC_DB::prepare("SELECT `fullname` FROM `$table`")->execute()->fetchOne();
+		$this->assertSame($expected, $actual);
 	}
 }

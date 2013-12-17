@@ -15,6 +15,20 @@ $levelLabels = array(
 
 <?php
 
+// is ssl working ?
+if (!$_['isConnectedViaHTTPS']) {
+	?>
+<fieldset class="personalblock">
+	<h2><?php p($l->t('Security Warning'));?></h2>
+
+	<span class="securitywarning">
+		<?php p($l->t('You are accessing %s via HTTP. We strongly suggest you configure your server to require using HTTPS instead.', $theme->getTitle())); ?>
+	</span>
+
+</fieldset>
+<?php
+}
+
 // is htaccess working ?
 if (!$_['htaccessworking']) {
 	?>
@@ -52,6 +66,20 @@ if (!$_['has_fileinfo']) {
 
 		<span class="connectionwarning">
 		<?php p($l->t('The PHP module \'fileinfo\' is missing. We strongly recommend to enable this module to get best results with mime-type detection.')); ?>
+	</span>
+
+</fieldset>
+<?php
+}
+
+// is PHP at least at 5.3.8?
+if ($_['old_php']) {
+	?>
+<fieldset class="personalblock">
+	<h2><?php p($l->t('Your PHP version is outdated'));?></h2>
+
+		<span class="connectionwarning">
+		<?php p($l->t('Your PHP version is outdated. We strongly recommend to update to 5.3.8 or newer because older versions are known to be broken. It is possible that this installation is not working correctly.')); ?>
 	</span>
 
 </fieldset>
