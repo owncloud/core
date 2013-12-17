@@ -221,11 +221,11 @@ class SMB extends Common {
 	}
 
 	public function isReadable($path) {
-		return true;
+		return $this->file_exists($path);
 	}
 
 	public function isUpdatable($path) {
-		return true;
+		return $this->file_exists($path);
 	}
 
 	public function mkdir($path) {
