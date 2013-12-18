@@ -64,6 +64,11 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 
 
 	function setUp() {
+		// delete migration status
+		$sql = 'DELETE FROM `*PREFIX*encryption`';
+		$query = \OCP\DB::prepare($sql);
+		$query->execute();
+
 		\OC_User::setUserId(\Test_Encryption_Util::TEST_ENCRYPTION_UTIL_USER1);
 		$this->userId = \Test_Encryption_Util::TEST_ENCRYPTION_UTIL_USER1;
 		$this->pass = \Test_Encryption_Util::TEST_ENCRYPTION_UTIL_USER1;
@@ -109,6 +114,11 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 		else {
 			OC_App::disable('files_trashbin');
 		}
+
+		// delete migration status
+		$sql = 'DELETE FROM `*PREFIX*encryption`';
+		$query = \OCP\DB::prepare($sql);
+		$query->execute();
 	}
 
 	public static function tearDownAfterClass() {
