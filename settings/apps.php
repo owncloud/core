@@ -25,12 +25,12 @@ OC_Util::checkAdminUser();
 OC_App::loadApps();
 
 // Load the files we need
-OC_Util::addStyle( "settings", "settings" );
+OC_Util::addStyle( "settings", "apps/apps" );
 OC_App::setActiveNavigationEntry( "core_apps" );
 
 $combinedApps = OC_App::listAllApps();
 
-$tmpl = new OC_Template( "settings", "apps", "user" );
+$tmpl = new OC_Template( "settings", "apps/main", "user" );
 
 $tmpl->assign('apps', $combinedApps);
 
