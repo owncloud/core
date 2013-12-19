@@ -81,7 +81,7 @@ if (version_compare($installedVersion, '0.3.5', '<')) {
   if (is_array($sharesFound) && !empty($sharesFound)) {
     $removeShares = \OC_DB::prepare('DELETE FROM `*PREFIX*share` WHERE `id` = ? )');
     foreach ($sharesFound as $share) {
-      $result = $removeShares->execute($share['id']);
+      $result = $removeShares->execute(array($share['id']));
     }
   }
 }
