@@ -1103,8 +1103,14 @@ class OC_Util {
 	 * @return bool|string
 	 */
 	public static function normalizeUnicode($value) {
+                if(class_exists('Normalizer')) {
+                        $class = 'Normalizer';
+                } else
 		if(class_exists('Patchwork\PHP\Shim\Normalizer')) {
-			$normalizedValue = \Patchwork\PHP\Shim\Normalizer::normalize($value);
+                        $class = 'Patchwork\PHP\Shim\Normalizer';
+                }
+                if(!empty($class)) {
+			$normalizedValue = $class::normalize($value);
 			if($normalizedValue === false) {
 				\OC_Log::write( 'core', 'normalizing failed for "' . $value . '"', \OC_Log::WARN);
 			} else {
