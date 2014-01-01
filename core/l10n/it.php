@@ -143,7 +143,7 @@ $TRANSLATIONS = array(
 "Your data directory and files are probably accessible from the internet because the .htaccess file does not work." => "La cartella dei dati e i file sono probabilmente accessibili da Internet poiché il file .htaccess non funziona.",
 "For information how to properly configure your server, please see the <a href=\"%s\" target=\"_blank\">documentation</a>." => "Per informazioni su come configurare correttamente il tuo server, vedi la <a href=\"%s\" target=\"_blank\">documentazione</a>.",
 "Create an <strong>admin account</strong>" => "Crea un <strong>account amministratore</strong>",
-"Advanced" => "Avanzat",
+"Advanced" => "Avanzato",
 "Data folder" => "Cartella dati",
 "Configure the database" => "Configura il database",
 "will be used" => "sarà utilizzato",
