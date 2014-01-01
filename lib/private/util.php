@@ -96,7 +96,7 @@ class OC_Util {
 		if($userQuota === 'default') {
 			$userQuota = OC_AppConfig::getValue('files', 'default_quota', 'none');
 		}
-		if($userQuota === 'none') {
+		if($userQuota === 'none' || $userQutoa === 'disallow') {
 			return \OC\Files\SPACE_UNLIMITED;
 		}else{
 			return OC_Helper::computerFileSize($userQuota);
