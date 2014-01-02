@@ -413,6 +413,7 @@ class OC {
 		self::$loader->registerPrefix('Sabre\\VObject', '3rdparty');
 		self::$loader->registerPrefix('Sabre_', '3rdparty');
 		self::$loader->registerPrefix('Patchwork', '3rdparty');
+		self::$loader->registerPrefix('Archive', '3rdparty');
 		spl_autoload_register(array(self::$loader, 'load'));
 
 		// set some stuff
