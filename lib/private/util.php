@@ -75,6 +75,11 @@ class OC_Util {
 				mkdir( $userDirectory, 0755, true );
 				OC_Util::copySkeleton($userDirectory);
 			}
+			if( OC_Preferences::getValue($user, 'files', 'quota') === 'disallow' ) {
+				chmod( $userDirectory, 0555 );
+			} else {
+				chmod( $userDirectory, 0755 );
+			}
 			//jail the user into his "home" directory
 			\OC\Files\Filesystem::init($user, $userDir);
 
@@ -91,7 +96,7 @@ class OC_Util {
 		if($userQuota === 'default') {
 			$userQuota = OC_AppConfig::getValue('files', 'default_quota', 'none');
 		}
-		if($userQuota === 'none') {
+		if($userQuota === 'none' || $userQutoa === 'disallow') {
 			return \OC\Files\SPACE_UNLIMITED;
 		}else{
 			return OC_Helper::computerFileSize($userQuota);

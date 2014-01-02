@@ -34,7 +34,7 @@ if($isadmin) {
 }
 
 // load preset quotas
-$quotaPreset=OC_Appconfig::getValue('files', 'quota_preset', '1 GB, 5 GB, 10 GB');
+$quotaPreset=OC_Appconfig::getValue('files', 'quota_preset', 'disallow, 1 GB, 5 GB, 10 GB');
 $quotaPreset=explode(',', $quotaPreset);
 foreach($quotaPreset as &$preset) {
 	$preset=trim($preset);

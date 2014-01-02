@@ -20,7 +20,7 @@ if(($username === '' && !OC_User::isAdminUser(OC_User::getUser()))
 
 //make sure the quota is in the expected format
 $quota=$_POST["quota"];
-if($quota !== 'none' and $quota !== 'default') {
+if($quota !== 'none' and $quota !== 'default' and $quota !== 'disallow') {
 	$quota= OC_Helper::computerFileSize($quota);
 	$quota=OC_Helper::humanFileSize($quota);
 }
