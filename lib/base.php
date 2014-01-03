@@ -172,6 +172,7 @@ class OC {
 			OC::$THIRDPARTYROOT . '/3rdparty/doctrine/dbal/lib' . PATH_SEPARATOR .
 			OC::$THIRDPARTYROOT . '/3rdparty/symfony/routing' . PATH_SEPARATOR .
 			OC::$THIRDPARTYROOT . '/3rdparty/symfony/console' . PATH_SEPARATOR .
+                        OC::$THIRDPARTYROOT . '/3rdparty/Pimple' . PATH_SEPARATOR .
 			implode($paths, PATH_SEPARATOR) . PATH_SEPARATOR .
 			get_include_path() . PATH_SEPARATOR .
 			OC::$SERVERROOT
