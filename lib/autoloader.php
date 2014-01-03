@@ -101,13 +101,14 @@ class Autoloader {
 		} elseif (strpos($class, 'Test\\') === 0) {
 			$paths[] = 'tests/lib/' . strtolower(str_replace('\\', '/', substr($class, 5)) . '.php');
 		} else {
-			foreach ($this->prefixPaths as $prefix => $dir) {
-				if (0 === strpos($class, $prefix)) {
-					$path = str_replace('\\', '/', $class) . '.php';
-					$path = str_replace('_', '/', $path);
-					$paths[] = $dir . '/' . $path;
-				}
+			$namespace = '';
+			$path = '';
+			if ($lastNsPos = strrpos($class, '\\')) {
+				$namespace = substr($class, 0, $lastNsPos);
+				$class = substr($class, $lastNsPos + 1);
+				$path = str_replace('\\', '/', $namespace) . '/';
 			}
+			$paths[] = $path . str_replace('_', '/', $class) . '.php';
 		}
 		return $paths;
 	}
