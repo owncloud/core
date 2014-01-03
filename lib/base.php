@@ -168,6 +168,10 @@ class OC {
 			OC::$SERVERROOT . '/lib/private' . PATH_SEPARATOR .
 			OC::$SERVERROOT . '/config' . PATH_SEPARATOR .
 			OC::$THIRDPARTYROOT . '/3rdparty' . PATH_SEPARATOR .
+			OC::$THIRDPARTYROOT . '/3rdparty/doctrine/common/lib' . PATH_SEPARATOR .
+			OC::$THIRDPARTYROOT . '/3rdparty/doctrine/dbal/lib' . PATH_SEPARATOR .
+			OC::$THIRDPARTYROOT . '/3rdparty/symfony/routing' . PATH_SEPARATOR .
+			OC::$THIRDPARTYROOT . '/3rdparty/symfony/console' . PATH_SEPARATOR .
 			implode($paths, PATH_SEPARATOR) . PATH_SEPARATOR .
 			get_include_path() . PATH_SEPARATOR .
 			OC::$SERVERROOT
@@ -406,13 +410,6 @@ class OC {
 		// register autoloader
 		require_once __DIR__ . '/autoloader.php';
 		self::$loader = new \OC\Autoloader();
-		self::$loader->registerPrefix('Doctrine\\Common', 'doctrine/common/lib');
-		self::$loader->registerPrefix('Doctrine\\DBAL', 'doctrine/dbal/lib');
-		self::$loader->registerPrefix('Symfony\\Component\\Routing', 'symfony/routing');
-		self::$loader->registerPrefix('Symfony\\Component\\Console', 'symfony/console');
-		self::$loader->registerPrefix('Sabre\\VObject', '3rdparty');
-		self::$loader->registerPrefix('Sabre_', '3rdparty');
-		self::$loader->registerPrefix('Patchwork', '3rdparty');
 		spl_autoload_register(array(self::$loader, 'load'));
 
 		// set some stuff
