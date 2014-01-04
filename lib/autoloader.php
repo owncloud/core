@@ -56,7 +56,7 @@ class Autoloader {
 	}
 
 	/**
-	 * get the possible paths for a class
+	 * get the possible paths for an OwnCloud class (findVendorClass is used for non-OC classes)
 	 *
 	 * @param string $class
 	 * @return array|bool an array of possible paths or false if the class is not part of ownCloud
@@ -100,17 +100,30 @@ class Autoloader {
 			$paths[] = 'tests/lib/' . strtolower(str_replace('_', '/', substr($class, 5)) . '.php');
 		} elseif (strpos($class, 'Test\\') === 0) {
 			$paths[] = 'tests/lib/' . strtolower(str_replace('\\', '/', substr($class, 5)) . '.php');
-		} else {
-			foreach ($this->prefixPaths as $prefix => $dir) {
-				if (0 === strpos($class, $prefix)) {
-					$path = str_replace('\\', '/', $class) . '.php';
-					$path = str_replace('_', '/', $path);
-					$paths[] = $dir . '/' . $path;
-				}
-			}
 		}
 		return $paths;
 	}
+
+	/**
+	 * get the PSR-0 class path for a vendor class (findClass is used for OwnCloud classes)
+	 * based on PSR-0 reference implementation
+	 *
+	 * @param string $class
+	 * @return string the class path
+	 */
+	public function findVendorClass($class) {
+		$class = trim($class, '\\');
+		$namespace = '';
+		$path = '';
+		if ($lastNsPos = strrpos($class, '\\')) {
+			$namespace = substr($class, 0, $lastNsPos);
+			$class = substr($class, $lastNsPos + 1);
+			$path = str_replace('\\', '/', $namespace) . '/';
+		}
+		$path.= str_replace('_', '/', $class) . '.php';
+		return $path;
+	}
+
 
 	/**
 	 * Load the specified class
@@ -127,9 +140,29 @@ class Autoloader {
 		if (!is_array($pathsToRequire)) {
 			// No cache or cache miss
 			$pathsToRequire = array();
-			foreach ($this->findClass($class) as $path) {
-				$fullPath = stream_resolve_include_path($path);
-				if ($fullPath) {
+			if (strpos($class, 'OC') === 0 || strpos($class, 'Test') === 0) {
+				// OwnCloud class, use findClass
+				foreach ($this->findClass($class) as $path) {
+					$fullPath = stream_resolve_include_path($path);
+					if ($fullPath) {
+						$pathsToRequire[] = $fullPath;
+					}
+				}
+			} else {
+				// Vendor class, use findVendorClass
+				$classPath = $this->findVendorClass($class);
+				$prefixPath = '';
+				// Build the path with OwnCloud's registered prefix if there is one for this class
+				foreach ($this->prefixPaths as $prefix => $dir) {
+					if (0 === strpos($class, $prefix)) {
+						$prefixPath = $dir . '/' . $classPath;
+					}
+				}
+				// Try resolving with the prefix, so we find OwnCloud's bundled copy first
+				if ($prefixPath && $fullPath = stream_resolve_include_path($prefixPath)) {
+					$pathsToRequire[] = $fullPath;
+				// No dice? Try with just the bare classpath, will find PSR-0 compliant copies anywhere in the include path
+				} elseif ($fullPath = stream_resolve_include_path($classPath)) {
 					$pathsToRequire[] = $fullPath;
 				}
 			}
