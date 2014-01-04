@@ -210,12 +210,6 @@ $CONFIG = array(
 		'writable' => true,
 	),
 ),
-'user_backends'=>array(
-	array(
-		'class'=>'OC_User_IMAP',
-		'arguments'=>array('{imap.gmail.com:993/imap/ssl}INBOX')
-	)
-),
 //links to custom clients
 'customclient_desktop' => '', //http://owncloud.org/sync-clients/
 'customclient_android' => '', //https://play.google.com/store/apps/details?id=com.owncloud.android
