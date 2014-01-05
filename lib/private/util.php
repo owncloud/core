@@ -351,7 +351,7 @@ class OC_Util {
 			}
 		} else if(!is_writable($CONFIG_DATADIRECTORY) or !is_readable($CONFIG_DATADIRECTORY)) {
 			$errors[] = array(
-				'error'=>'Data directory ('.$CONFIG_DATADIRECTORY.') not writable by ownCloud',
+				'error'=>'Data directory is ('.$CONFIG_DATADIRECTORY.') not writable.',
 				'hint'=>$permissionsHint
 			);
 		} else {
@@ -441,14 +441,14 @@ class OC_Util {
 			$errors[] = array(
 				'error'=>'PHP 5.3.3 or higher is required.',
 				'hint'=>'Please ask your server administrator to update PHP to the latest version.'
-					.' Your PHP version is no longer supported by ownCloud and the PHP community.'
+					.' Your PHP version is no longer supported by the PHP community.'
 			);
 			$webServerRestart = true;
 		}
 		if(function_exists('apache_get_modules') and in_array('mod_pagespeed', apache_get_modules())) {
 			$errors[] = array(
 				'error'=>'The Apache module mod_pagespeed is not supported.',
-				'hint'=>'Please ask your server administrator to disable mod_pagespeed. It is currently not compatible with ownCloud.'
+				'hint'=>'Please ask your server administrator to disable mod_pagespeed.'
 			);
 			$webServerRestart = true;
 		}
@@ -464,7 +464,7 @@ class OC_Util {
 			|| (strtolower(@ini_get('safe_mode')) == 'true')
 			|| (ini_get("safe_mode") == 1 ))) {
 			$errors[] = array(
-				'error'=>'PHP Safe Mode is enabled. ownCloud requires that it is disabled to work properly.',
+				'error'=>'PHP Safe Mode is enabled. It is requires that it is disabled to work properly.',
 				'hint'=>'PHP Safe Mode is a deprecated and mostly useless setting that should be disabled. '
 					.'Please ask your server administrator to disable it in php.ini or in your webserver config.'
 			);
@@ -472,7 +472,7 @@ class OC_Util {
 		}
 		if (get_magic_quotes_gpc() == 1 ) {
 			$errors[] = array(
-				'error'=>'Magic Quotes is enabled. ownCloud requires that it is disabled to work properly.',
+				'error'=>'Magic Quotes is enabled. It is requires that it is disabled to work properly.',
 				'hint'=>'Magic Quotes is a deprecated and mostly useless setting that should be disabled. '
 					.'Please ask your server administrator to disable it in php.ini or in your webserver config.'
 			);
