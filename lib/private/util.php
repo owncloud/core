@@ -445,6 +445,13 @@ class OC_Util {
 			);
 			$webServerRestart = true;
 		}
+		if(function_exists('apache_get_modules') and in_array('mod_pagespeed', apache_get_modules())) {
+			$errors[] = array(
+				'error'=>'The Apache module mod_pagespeed is not supported.',
+				'hint'=>'Please ask your server administrator to disable mod_pagespeed. It is currently not compatible with ownCloud.'
+			);
+			$webServerRestart = true;
+		}
 		if(!defined('PDO::ATTR_DRIVER_NAME')) {
 			$errors[] = array(
 				'error'=>'PHP PDO module is not installed.',
