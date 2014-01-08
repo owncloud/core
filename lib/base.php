@@ -541,9 +541,6 @@ class OC {
 			self::$session->set('user_id', '');
 		}
 
-		OC_User::useBackend(new OC_User_Database());
-		OC_Group::useBackend(new OC_Group_Database());
-
 		if (isset($_SERVER['PHP_AUTH_USER']) && self::$session->exists('user_id')
 			&& $_SERVER['PHP_AUTH_USER'] !== self::$session->get('loginname')) {
 			$sessionUser = self::$session->get('loginname');
@@ -565,9 +562,6 @@ class OC {
 				OC_App::loadApps();
 			}
 		}
-
-		//setup extra user backends
-		OC_User::setupBackends();
 
 		self::registerCacheHooks();
 		self::registerFilesystemHooks();
@@ -740,7 +734,6 @@ class OC {
 		// Someone is logged in :
 		if (OC_User::isLoggedIn()) {
 			OC_App::loadApps();
-			OC_User::setupBackends();
 			if (isset($_GET["logout"]) and ($_GET["logout"])) {
 				if (isset($_COOKIE['oc_token'])) {
 					OC_Preferences::deleteKey(OC_User::getUser(), 'login_token', $_COOKIE['oc_token']);
@@ -891,9 +884,6 @@ class OC {
 		}
 
 		OC_App::loadApps();
-
-		//setup extra user backends
-		OC_User::setupBackends();
 
 		if (OC_User::login($_POST["user"], $_POST["password"])) {
 			// setting up the time zone

@@ -53,6 +53,8 @@ class OC_Group {
 		}
 		self::$userManager = \OC_User::getManager();
 		self::$manager = new \OC\Group\Manager(self::$userManager);
+		self::useBackend(new \OC_Group_Database());
+
 		return self::$manager;
 	}
 
@@ -185,6 +187,7 @@ class OC_Group {
 	 * if the user exists at all.
 	 */
 	public static function getUserGroups($uid) {
+		self::getManager(); // init the group manager, also sets self::$userManager
 		$user = self::$userManager->get($uid);
 		if ($user) {
 			$groups = self::getManager()->getUserGroups($user);

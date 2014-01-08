@@ -116,6 +116,10 @@ class Server extends SimpleContainer implements IServerContainer {
 			$userSession->listen('\OC\User', 'logout', function () {
 				\OC_Hook::emit('OC_User', 'logout', array());
 			});
+
+			\OC_User::useBackend(new \OC_User_Database());
+			//setup extra user backends
+			\OC_User::setupBackends();
 			return $userSession;
 		});
 		$this->registerService('NavigationManager', function($c) {
