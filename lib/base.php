@@ -494,9 +494,8 @@ class OC {
 			if (defined('DEBUG') and DEBUG) {
 				set_exception_handler(array('OC_Template', 'printExceptionErrorPage'));
 			} else {
-				$errorHandler = new OC\Log\ErrorHandler;
+				$errorHandler = new OC\Log\ErrorHandler(OC_Log::$object);
 				$errorHandler->register();
-				$errorHandler->setLogger(OC_Log::$object);
 			}
 		}
 

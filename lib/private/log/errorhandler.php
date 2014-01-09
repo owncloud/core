@@ -16,14 +16,14 @@ class ErrorHandler {
 	protected $logger;
 	protected $loggerContext = array('app' => 'PHP');
 
+	public function __construct(LoggerInterface $logger) {
+		$this->logger = $logger;
+	}
+
 	public function register() {
 		set_error_handler(array($this, 'onError'));
 		register_shutdown_function(array($this, 'onShutdown'));
 		set_exception_handler(array($this, 'onException'));
-	}
-
-	public function setLogger(LoggerInterface $logger) {
-		$this->logger = $logger;
 	}
 
 	//Fatal errors handler
