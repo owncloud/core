@@ -756,7 +756,7 @@ window.FileList={
 			}
 		}
 
-		$(".lazy").lazyload();
+		$('#fileList .lazy').lazyload();
 	},
 	updateEmptyContent: function() {
 		var $fileList = $('#fileList');
@@ -851,7 +851,7 @@ window.FileList={
 $(document).ready(function() {
 	var isPublic = !!$('#isPublic').val();
 
-	$(".lazy").lazyload();
+	$('#fileList .lazy').lazyload();
 
 	// handle upload events
 	var file_upload_start = $('#file_upload_start');
