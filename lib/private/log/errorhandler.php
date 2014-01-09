@@ -16,8 +16,11 @@ class ErrorHandler {
 	protected $logger;
 	protected $loggerContext = array('app' => 'PHP');
 
-	public function __construct(LoggerInterface $logger) {
+	public function __construct(LoggerInterface $logger, array $loggerContext = null) {
 		$this->logger = $logger;
+		if ($loggerContext) {
+			$this->loggerContext = $loggerContext;
+		}
 	}
 
 	public function register() {
