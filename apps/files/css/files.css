@@ -7,11 +7,10 @@
 .actions input, .actions button, .actions .button { margin:0; float:left; }
 .actions .button a { color: #555; }
 .actions .button a:hover, .actions .button a:active { color: #333; }
-
 #new {
 	z-index: 1010;
 	float: left;
-	padding: 0 !important; /* override default control bar button padding */
+	padding: 0 !important;
 }
 #trash {
 	margin-right: 8px;
@@ -20,7 +19,7 @@
 	padding: 10px;
 	font-weight: normal;
 }
-#new>a {
+#new>A {
 	padding: 14px 10px;
 	position: relative;
 	top: 7px;
@@ -30,36 +29,42 @@
 	border-bottom-right-radius: 0;
 	border-bottom: none;
 }
-#new>ul {
+#new>UL {
 	display: none;
 	position: fixed;
 	min-width: 7em;
 	z-index: 10;
-	padding: .5em;
+	padding: 0.5em;
 	padding-bottom: 0;
 	margin-top: 14px;
 	margin-left: -1px;
-	text-align:left;
-	background: #f8f8f8;
-	border: 1px solid #ddd;
+	text-align: left;
+	background: #F8F8F8;
+	border: 1px solid #DDD;
 	border-radius: 5px;
 	border-top-left-radius: 0;
-	box-shadow:0 2px 7px rgba(170,170,170,.4);
+	box-shadow: 0 2px 7px rgba(170, 170, 170, 0.4);
 }
-#new>ul>li { height:36px; margin:.3em; padding-left:3em; padding-bottom:0.1em;
-		background-repeat:no-repeat; cursor:pointer; }
-#new>ul>li>p { cursor:pointer; padding-top: 7px; padding-bottom: 7px;}
-
+#new>UL>LI {
+	height: 36px;
+	margin: 0.3em;
+	padding-left: 3em;
+	padding-bottom: 0.1em;
+	background-repeat: no-repeat;
+	cursor: pointer;
+}
+#new>UL>LI>P {
+	cursor: pointer;
+	padding-top: 7px;
+	padding-bottom: 7px;
+}
 #new .error, #fileList .error {
-	color: #e9322d;
-	border-color: #e9322d;
+	color: #E9322D;
+	border-color: #E9322D;
 	-webkit-box-shadow: 0 0 6px #f8b9b7;
 	-moz-box-shadow: 0 0 6px #f8b9b7;
-	box-shadow: 0 0 6px #f8b9b7;
+	box-shadow: 0 0 6px #F8B9B7;
 }
-
-/* FILE TABLE */
-
 #filestable {
 	position: relative;
 	top: 44px;
@@ -68,60 +73,94 @@
 #filestable, #controls {
 	min-width: 680px;
 }
-#filestable tbody tr { background-color:#fff; height:2.5em; }
-#filestable tbody tr:hover, tbody tr:active {
-	background-color: rgb(240,240,240);
+#filestable TBODY TR {
+	background-color: #FFF;
+	height: 2.5em;
 }
-#filestable tbody tr.selected {
-	background-color: rgb(230,230,230);
+#filestable TBODY TR:hover, TBODY TR:active {
+	background-color: rgb(240, 240, 240);
 }
-#filestable tbody tr.searchresult {
-	background-color: rgb(240,240,240);
+#filestable TBODY TR.selected {
+	background-color: rgb(230, 230, 230);
 }
-tbody a { color:#000; }
-span.extension, span.uploading, td.date { color:#999; }
-span.extension { text-transform:lowercase; -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)"; filter:alpha(opacity=70); opacity:.7; -webkit-transition:opacity 300ms; -moz-transition:opacity 300ms; -o-transition:opacity 300ms; transition:opacity 300ms; }
-tr:hover span.extension { -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; filter:alpha(opacity=100); opacity:1; color:#777; }
-table tr.mouseOver td { background-color:#eee; }
-table th { height:2em; padding:0 .5em; color:#999; }
-table th .name {
+#filestable TBODY TR TD.canDrop {
+	box-shadow: 1px 1px 8px #BFBFBF;
+	font-size: 14px;
+	background-color: #F2F2F2;
+}
+#filestable TBODY TR.searchresult {
+	background-color: rgb(240, 240, 240);
+}
+TBODY A {
+	color: #000;
+}
+SPAN.extension, SPAN.uploading, TD.date {
+	color: #999;
+}
+SPAN.extension {
+	text-transform: lowercase;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+	filter: alpha(opacity=70);
+	opacity: .7;
+	-webkit-transition: opacity 300ms;
+	-moz-transition: opacity 300ms;
+	-o-transition: opacity 300ms;
+	transition: opacity 300ms;
+}
+TR:hover SPAN.extension {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	filter: alpha(opacity=100);
+	opacity: 1;
+	color: #777;
+}
+TABLE TR.mouseOver TD {
+	background-color: #EEE;
+}
+TABLE TH {
+	height: 2em;
+	padding: 0 0.5em;
+	color: #999;
+}
+TABLE TH .name {
 	position: absolute;
 	left: 55px;
 	top: 15px;
 }
-table th, table td { border-bottom:1px solid #ddd; text-align:left; font-weight:normal; }
-table td {
-	border-bottom: 1px solid #eee;
+TABLE TH, TABLE TD {
+	border-bottom: 1px solid #DDD;
+	text-align: left;
+	font-weight: normal;
+}
+TABLE TD {
+	border-bottom: 1px solid #EEE;
 	font-style: normal;
 	background-position: 8px center;
 	background-repeat: no-repeat;
 }
-table th#headerName {
+TABLE TH#headerName {
 	position: relative;
-	width: 100em; /* not really sure why this works better than 100% … table styling */
+	width: 100em;
 	padding: 0;
 }
 #headerName-container {
 	position: relative;
 	height: 50px;
 }
-table th#headerSize, table td.filesize {
+TABLE TH#headerSize, TABLE TD.filesize {
 	min-width: 3em;
 	padding: 0 1em;
 	text-align: right;
 }
-table th#headerDate, table td.date {
+TABLE TH#headerDate, TABLE TD.date {
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	position: relative;
 	min-width: 11em;
 }
-
-/* Multiselect bar */
 #filestable.multiselect {
 	top: 95px;
 }
-table.multiselect thead {
+TABLE.multiselect THEAD {
 	position: fixed;
 	top: 89px;
 	z-index: 10;
@@ -131,20 +170,22 @@ table.multiselect thead {
 	padding-left: 80px;
 	width: 100%;
 }
-
-table.multiselect thead th {
-	background-color: rgba(220,220,220,.8);
+TABLE.multiselect THEAD TH {
+	background-color: rgba(220, 220, 220, 0.8);
 	color: #000;
 	font-weight: bold;
 	border-bottom: 0;
 }
-table.multiselect #headerName {
+TABLE.multiselect #headerName {
 	position: relative;
 	width: 100%;
 }
-table td.selection, table th.selection, table td.fileaction { width:2em; text-align:center; }
-table td.filename a.name {
-	position:relative; /* Firefox needs to explicitly have this default set … */
+TABLE TD.selection, TABLE TH.selection, TABLE TD.fileaction {
+	width: 2em;
+	text-align: center;
+}
+TABLE TD.filename A.name {
+	position: relative;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	display: block;
@@ -152,17 +193,23 @@ table td.filename a.name {
 	vertical-align: middle;
 	padding: 0;
 }
-table tr[data-type="dir"] td.filename a.name span.nametext {font-weight:bold; }
-table td.filename input.filename {
+TABLE TR[data-type="dir"] TD.filename A.name SPAN.nametext {
+	font-weight: bold;
+}
+TABLE TD.filename INPUT.filename {
 	width: 80%;
 	font-size: 14px;
 	margin-top: 8px;
 	margin-left: 2px;
 	cursor: text;
 }
-table td.filename a, table td.login, table td.logout, table td.download, table td.upload, table td.create, table td.delete { padding:.2em .5em .5em .3em; }
-table td.filename .nametext, .uploadtext, .modified { float:left; padding:.3em 0; }
-
+TABLE TD.filename A, TABLE TD.login, TABLE TD.logout, TABLE TD.download, TABLE TD.upload, TABLE TD.create, TABLE TD.delete {
+	padding: 0.2em 0.5em 0.5em 0.3em;
+}
+TABLE TD.filename .nametext, .uploadtext, .modified {
+	float: left;
+	padding: 0.3em 0;
+}
 #modified {
 	position: absolute;
 	top: 15px;
@@ -170,9 +217,7 @@ table td.filename .nametext, .uploadtext, .modified { float:left; padding:.3em 0
 .modified {
 	position: relative;
 }
-
-/* TODO fix usability bug (accidental file/folder selection) */
-table td.filename .nametext {
+TABLE TD.filename .nametext {
 	position: absolute;
 	top: 16px;
 	left: 55px;
@@ -181,46 +226,42 @@ table td.filename .nametext {
 	text-overflow: ellipsis;
 	max-width: 800px;
 }
-table td.filename .uploadtext { font-weight:normal; margin-left:.5em; }
-table td.filename form { font-size:.85em; margin-left:3em; margin-right:3em; }
-
-.ie8 input[type="checkbox"]{
+TABLE TD.filename .uploadtext {
+	font-weight: normal;
+	margin-left: 0.5em;
+}
+TABLE TD.filename FORM {
+	font-size: 0.85em;
+	margin-left: 3em;
+	margin-right: 3em;
+}
+.ie8 INPUT[type="checkbox"] {
 	padding: 0;
 }
-
-/* File checkboxes */
-#fileList tr td.filename>input[type="checkbox"]:first-child {
+#fileList TR TD.filename>INPUT[type="checkbox"]:first-child {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
 	filter: alpha(opacity=0);
 	opacity: 0;
 	float: left;
-	margin: 32px 0 4px 32px; /* bigger clickable area doesn’t work in FF width:2.8em; height:2.4em;*/
+	margin: 32px 0 4px 32px;
 }
-/* Show checkbox when hovering, checked, or selected */
-#fileList tr:hover td.filename>input[type="checkbox"]:first-child,
-#fileList tr td.filename>input[type="checkbox"]:checked:first-child,
-#fileList tr.selected td.filename>input[type="checkbox"]:first-child {
+#fileList TR:hover TD.filename>INPUT[type="checkbox"]:first-child, #fileList TR TD.filename>INPUT[type="checkbox"]:checked:first-child, #fileList TR.selected TD.filename>INPUT[type="checkbox"]:first-child {
 	opacity: 1;
 }
-.lte9 #fileList tr:hover td.filename>input[type="checkbox"]:first-child,
-.lte9 #fileList tr td.filename>input[type="checkbox"][checked=checked]:first-child,
-.lte9 #fileList tr.selected td.filename>input[type="checkbox"]:first-child {
+.lte9 #fileList TR:hover TD.filename>INPUT[type="checkbox"]:first-child, .lte9 #fileList TR TD.filename>INPUT[type="checkbox"][checked=checked]:first-child, .lte9 #fileList TR.selected TD.filename>INPUT[type="checkbox"]:first-child {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 	filter: alpha(opacity=100);
 }
-
-/* Use label to have bigger clickable size for checkbox */
-#fileList tr td.filename>input[type="checkbox"] + label,
-#select_all + label {
+#fileList TR TD.filename>INPUT[type="checkbox"] + LABEL, #select_all + LABEL {
 	height: 50px;
 	position: absolute;
 	width: 50px;
 	z-index: 5;
 }
-#fileList tr td.filename>input[type="checkbox"] + label {
+#fileList TR TD.filename>INPUT[type="checkbox"] + LABEL {
 	left: 0;
 }
-#select_all + label {
+#select_all + LABEL {
 	top: 0;
 }
 #select_all {
@@ -228,37 +269,43 @@ table td.filename form { font-size:.85em; margin-left:3em; margin-right:3em; }
 	top: 18px;
 	left: 18px;
 }
-
-
-#fileList tr td.filename {
-	position:relative; width:100%;
-	-webkit-transition:background-image 500ms; -moz-transition:background-image 500ms; -o-transition:background-image 500ms; transition:background-image 500ms;
+#fileList TR TD.filename {
+	position: relative;
+	width: 100%;
+	-webkit-transition: background-image 500ms;
+	-moz-transition: background-image 500ms;
+	-o-transition: background-image 500ms;
+	transition: background-image 500ms;
 }
-
-#fileList tr td.filename a.name label {
+#fileList TR TD.filename A.name LABEL {
 	position: absolute;
 	width: 100%;
 	height: 50px;
 }
-
-#uploadsize-message,#delete-confirm { display:none; }
-
-/* File actions */
+#uploadsize-message, #delete-confirm {
+	display: none;
+}
 .fileactions {
 	position: absolute;
 	top: 14px;
 	right: 0;
 }
-
-#fileList img.move2trash { display:inline; margin:-.5em 0; padding:1em .5em 1em .5em !important; float:right; }
-#fileList a.action.delete {
+#fileList IMG.move2trash {
+	display: inline;
+	margin: -0.5em 0;
+	padding: 1em 0.5em !important;
+	float: right;
+}
+#fileList A.action.delete {
 	position: absolute;
 	right: 0;
 	padding: 9px 14px 19px !important;
 }
-a.action>img { max-height:16px; max-width:16px; vertical-align:text-bottom; }
-
-/* Actions for selected files */
+A.action>IMG {
+	max-height: 16px;
+	max-width: 16px;
+	vertical-align: text-bottom;
+}
 .selectedActions {
 	display: none;
 	position: absolute;
@@ -266,50 +313,45 @@ a.action>img { max-height:16px; max-width:16px; vertical-align:text-bottom; }
 	right: 0;
 	padding: 15px 8px;
 }
-.selectedActions a {
+.selectedActions A {
 	display: inline;
 	padding: 17px 5px;
 }
-.selectedActions a img {
-	position:relative;
-	top:.3em;
+.selectedActions A IMG {
+	position: relative;
+	top: 0.3em;
 }
-
-
-#fileList a.action {
+#fileList A.action {
 	display: inline;
-	margin: -.5em 0;
+	margin: -0.5em 0;
 	padding: 18px 8px !important;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
 	filter: alpha(opacity=0);
 	opacity: 0;
-	display:none;
+	display: none;
 }
-#fileList tr:hover a.action, #fileList a.action.permanent {
+#fileList TR:hover A.action, #fileList A.action.permanent {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
 	filter: alpha(opacity=50);
 	opacity: .5;
-	display:inline;
+	display: inline;
 }
-#fileList tr:hover a.action:hover {
+#fileList TR:hover A.action:hover {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 	filter: alpha(opacity=100);
 	opacity: 1;
-	display:inline;
+	display: inline;
 }
-
 .summary {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
 	filter: alpha(opacity=30);
 	opacity: .3;
 	height: 70px;
 }
-
-.summary:hover, .summary, table tr.summary td {
+.summary:hover, .summary, TABLE TR.summary TD {
 	background-color: transparent;
 }
-
-.summary td {
+.summary TD {
 	padding-top: 8px;
 	padding-bottom: 8px;
 	border-bottom: none;
@@ -317,19 +359,22 @@ a.action>img { max-height:16px; max-width:16px; vertical-align:text-bottom; }
 .summary .info {
 	margin-left: 55px;
 }
-
-#scanning-message{ top:40%; left:40%; position:absolute; display:none; }
-
-table.dragshadow {
-	width:auto;
+#scanning-message {
+	top: 40%;
+	left: 40%;
+	position: absolute;
+	display: none;
 }
-table.dragshadow td.filename {
-	padding-left:60px;
-	padding-right:16px;
+TABLE.dragshadow {
+	width: auto;
+}
+TABLE.dragshadow TD.filename {
+	padding-left: 60px;
+	padding-right: 16px;
 	height: 36px;
 }
-table.dragshadow td.size {
-	padding-right:8px;
+TABLE.dragshadow TD.size {
+	padding-right: 8px;
 }
 #upgrade {
 	width: 400px;
@@ -346,7 +391,7 @@ table.dragshadow td.size {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background-color: white;
+	background-color: #FFFFFF;
 	background-repeat: no-repeat no-repeat;
 	background-position: 50%;
 	opacity: 0.7;
@@ -357,6 +402,6 @@ table.dragshadow td.size {
 	-ms-transition: opacity 100ms;
 	-webkit-transition: opacity 100ms;
 }
-.mask.transparent{
+.mask.transparent {
 	opacity: 0;
 }
