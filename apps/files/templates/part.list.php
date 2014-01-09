@@ -19,11 +19,11 @@ $totalsize = 0; ?>
 		data-etag="<?php p($file['etag']);?>"
 		data-permissions="<?php p($file['permissions']); ?>">
 		<?php if(isset($file['isPreviewAvailable']) and $file['isPreviewAvailable']): ?>
-		<td class="filename svg preview-icon"
+		<td class="filename svg preview-icon lazy"
 		<?php else: ?>
-		<td class="filename svg"
+		<td class="filename svg lazy"
 		<?php endif; ?>
-		    style="background-image:url(<?php print_unescaped($file['icon']); ?>)"
+		    data-original="<?php print_unescaped($file['icon']); ?>"
 			>
 		<?php if(!isset($_['readonly']) || !$_['readonly']): ?>
 			<input id="select-<?php p($file['fileid']); ?>" type="checkbox" />
