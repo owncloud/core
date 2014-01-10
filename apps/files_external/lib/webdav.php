@@ -16,7 +16,7 @@ class DAV extends \OC\Files\Storage\Common{
 	private $root;
 	private $ready;
 	/**
-	 * @var \\Sabre\DAV\Client
+	 * @var \Sabre\DAV\Client
 	 */
 	private $client;
 
@@ -64,7 +64,7 @@ class DAV extends \OC\Files\Storage\Common{
 				'password' => $this->password,
 			);
 
-		$this->client = new \\Sabre\DAV\Client($settings);
+		$this->client = new \Sabre\DAV\Client($settings);
 
 		$caview = \OCP\Files::getStorage('files_external');
 		if ($caview) {
