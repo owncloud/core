@@ -7,12 +7,12 @@
  * @copyright Copyright (C) 2012 entreCables S.L. All rights reserved.
  * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
  */
-class OC_Connector_Sabre_QuotaPlugin extends Sabre_DAV_ServerPlugin {
+class OC_Connector_Sabre_QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 
 	/**
 	 * Reference to main server object
 	 *
-	 * @var Sabre_DAV_Server
+	 * @var \Sabre\DAV\Server
 	 */
 	private $server;
 
@@ -26,15 +26,15 @@ class OC_Connector_Sabre_QuotaPlugin extends Sabre_DAV_ServerPlugin {
 	/**
 	 * This initializes the plugin.
 	 *
-	 * This function is called by Sabre_DAV_Server, after
+	 * This function is called by \Sabre\DAV\Server, after
 	 * addPlugin is called.
 	 *
 	 * This method should set up the requires event subscriptions.
 	 *
-	 * @param Sabre_DAV_Server $server
+	 * @param \Sabre\DAV\Server $server
 	 * @return void
 	 */
-	public function initialize(Sabre_DAV_Server $server) {
+	public function initialize(\Sabre\DAV\Server $server) {
 
 		$this->server = $server;
 
@@ -46,7 +46,7 @@ class OC_Connector_Sabre_QuotaPlugin extends Sabre_DAV_ServerPlugin {
 	 * This method is called before any HTTP method and validates there is enough free space to store the file
 	 *
 	 * @param string $method
-	 * @throws Sabre_DAV_Exception
+	 * @throws \Sabre\DAV\Exception
 	 * @return bool
 	 */
 	public function checkQuota($uri, $data = null) {
@@ -55,10 +55,10 @@ class OC_Connector_Sabre_QuotaPlugin extends Sabre_DAV_ServerPlugin {
 			if (substr($uri, 0, 1)!=='/') {
 				$uri='/'.$uri;
 			}
-			list($parentUri, $newName) = Sabre_DAV_URLUtil::splitPath($uri);
+			list($parentUri, $newName) = \Sabre\DAV\URLUtil::splitPath($uri);
 			$freeSpace = $this->getFreeSpace($parentUri);
 			if ($freeSpace !== \OC\Files\SPACE_UNKNOWN && $length > $freeSpace) {
-				throw new Sabre_DAV_Exception_InsufficientStorage();
+				throw new \Sabre\DAV\Exception\InsufficientStorage();
 			}
 		}
 		return true;

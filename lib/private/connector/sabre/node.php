@@ -21,7 +21,7 @@
  *
  */
 
-abstract class OC_Connector_Sabre_Node implements Sabre_DAV_INode, Sabre_DAV_IProperties {
+abstract class OC_Connector_Sabre_Node implements \Sabre\DAV\INode, \Sabre\DAV\IProperties {
 	const GETETAG_PROPERTYNAME = '{DAV:}getetag';
 	const LASTMODIFIED_PROPERTYNAME = '{DAV:}lastmodified';
 
@@ -74,7 +74,7 @@ abstract class OC_Connector_Sabre_Node implements Sabre_DAV_INode, Sabre_DAV_IPr
 	 */
 	public function getName() {
 
-		list(, $name)  = Sabre_DAV_URLUtil::splitPath($this->path);
+		list(, $name)  = \Sabre\DAV\URLUtil::splitPath($this->path);
 		return $name;
 
 	}
@@ -88,11 +88,11 @@ abstract class OC_Connector_Sabre_Node implements Sabre_DAV_INode, Sabre_DAV_IPr
 
 		// rename is only allowed if the update privilege is granted
 		if (!\OC\Files\Filesystem::isUpdatable($this->path)) {
-			throw new \Sabre_DAV_Exception_Forbidden();
+			throw new \Sabre\DAV\Exception\Forbidden();
 		}
 
-		list($parentPath, ) = Sabre_DAV_URLUtil::splitPath($this->path);
-		list(, $newName) = Sabre_DAV_URLUtil::splitPath($name);
+		list($parentPath, ) = \Sabre\DAV\URLUtil::splitPath($this->path);
+		list(, $newName) = \Sabre\DAV\URLUtil::splitPath($name);
 
 		$newPath = $parentPath . '/' . $newName;
 		$oldPath = $this->path;
@@ -107,6 +107,9 @@ abstract class OC_Connector_Sabre_Node implements Sabre_DAV_INode, Sabre_DAV_IPr
 
 	}
 
+	/**
+	 * @param $fileinfo_cache
+	 */
 	public function setFileinfoCache($fileinfo_cache)
 	{
 		$this->fileinfo_cache = $fileinfo_cache;
@@ -154,7 +157,7 @@ abstract class OC_Connector_Sabre_Node implements Sabre_DAV_INode, Sabre_DAV_IPr
 	/**
 	 * @brief Updates properties on this node,
 	 * @param array $mutations
-	 * @see Sabre_DAV_IProperties::updateProperties
+	 * @see \Sabre\DAV\IProperties::updateProperties
 	 * @return bool|array
 	 */
 	public function updateProperties($properties) {

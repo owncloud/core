@@ -21,7 +21,7 @@
  *
  */
 
-class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_DAV_IFile {
+class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\DAV\IFile {
 
 	/**
 	 * Updates the data
@@ -41,7 +41,7 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 	 * return an ETag, and just return null.
 	 *
 	 * @param resource $data
-	 * @throws Sabre_DAV_Exception_Forbidden
+	 * @throws \Sabre\DAV\Exception\Forbidden
 	 * @return string|null
 	 */
 	public function put($data) {
@@ -50,12 +50,12 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 
 		if ($fs->file_exists($this->path) &&
 			!$fs->isUpdatable($this->path)) {
-			throw new \Sabre_DAV_Exception_Forbidden();
+			throw new \Sabre\DAV\Exception\Forbidden();
 		}
 
 		// throw an exception if encryption was disabled but the files are still encrypted
 		if (\OC_Util::encryptedFiles()) {
-			throw new \Sabre_DAV_Exception_ServiceUnavailable();
+			throw new \Sabre\DAV\Exception\ServiceUnavailable();
 		}
 
 		// chunked handling
@@ -79,11 +79,11 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 				\OC_Log::write('webdav', '\OC\Files\Filesystem::file_put_contents() failed', \OC_Log::ERROR);
 				$fs->unlink($partpath);
 				// because we have no clue about the cause we can only throw back a 500/Internal Server Error
-				throw new Sabre_DAV_Exception();
+				throw new \Sabre\DAV\Exception();
 			}
 		} catch (\OCP\Files\NotPermittedException $e) {
 			// a more general case - due to whatever reason the content could not be written
-			throw new Sabre_DAV_Exception_Forbidden($e->getMessage());
+			throw new \Sabre\DAV\Exception\Forbidden($e->getMessage());
 
 		} catch (\OCP\Files\EntityTooLargeException $e) {
 			// the file is too big to be stored
@@ -96,7 +96,7 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 		} catch (\OCP\Files\InvalidPathException $e) {
 			// the path for the file was not valid
 			// TODO: find proper http status code for this case
-			throw new Sabre_DAV_Exception_Forbidden($e->getMessage());
+			throw new \Sabre\DAV\Exception\Forbidden($e->getMessage());
 		}
 
 		// rename to correct path
@@ -105,7 +105,7 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 		if ($renameOkay === false || $fileExists === false) {
 			\OC_Log::write('webdav', '\OC\Files\Filesystem::rename() failed', \OC_Log::ERROR);
 			$fs->unlink($partpath);
-			throw new Sabre_DAV_Exception();
+			throw new \Sabre\DAV\Exception();
 		}
 
 		// allow sync clients to send the mtime along in a header
@@ -128,7 +128,7 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 
 		//throw exception if encryption is disabled but files are still encrypted
 		if (\OC_Util::encryptedFiles()) {
-			throw new \Sabre_DAV_Exception_ServiceUnavailable();
+			throw new \Sabre\DAV\Exception\ServiceUnavailable();
 		} else {
 			return \OC\Files\Filesystem::fopen($this->path, 'rb');
 		}
@@ -139,16 +139,16 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 	 * Delete the current file
 	 *
 	 * @return void
-	 * @throws Sabre_DAV_Exception_Forbidden
+	 * @throws \Sabre\DAV\Exception\Forbidden
 	 */
 	public function delete() {
 
 		if ($this->path === 'Shared') {
-			throw new \Sabre_DAV_Exception_Forbidden();
+			throw new \Sabre\DAV\Exception\Forbidden();
 		}
 
 		if (!\OC\Files\Filesystem::isDeletable($this->path)) {
-			throw new \Sabre_DAV_Exception_Forbidden();
+			throw new \Sabre\DAV\Exception\Forbidden();
 		}
 		\OC\Files\Filesystem::unlink($this->path);
 
@@ -208,11 +208,11 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 
 	private function createFileChunked($data)
 	{
-		list($path, $name) = \Sabre_DAV_URLUtil::splitPath($this->path);
+		list($path, $name) = \Sabre\DAV\URLUtil::splitPath($this->path);
 
 		$info = OC_FileChunking::decodeName($name);
 		if (empty($info)) {
-			throw new Sabre_DAV_Exception_NotImplemented();
+			throw new \Sabre\DAV\Exception\NotImplemented();
 		}
 		$chunk_handler = new OC_FileChunking($info);
 		$bytesWritten = $chunk_handler->store($info['index'], $data);
@@ -223,7 +223,7 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 				$expected = $_SERVER['CONTENT_LENGTH'];
 				if ($bytesWritten != $expected) {
 					$chunk_handler->remove($info['index']);
-					throw new Sabre_DAV_Exception_BadRequest(
+					throw new \Sabre\DAV\Exception\BadRequest(
 						'expected filesize ' . $expected . ' got ' . $bytesWritten);
 				}
 			}
@@ -243,7 +243,7 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 			if ($renameOkay === false || $fileExists === false) {
 				\OC_Log::write('webdav', '\OC\Files\Filesystem::rename() failed', \OC_Log::ERROR);
 				$fs->unlink($targetPath);
-				throw new Sabre_DAV_Exception();
+				throw new \Sabre\DAV\Exception();
 			}
 
 			// allow sync clients to send the mtime along in a header

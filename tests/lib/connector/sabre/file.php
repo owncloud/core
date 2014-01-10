@@ -9,7 +9,7 @@
 class Test_OC_Connector_Sabre_File extends PHPUnit_Framework_TestCase {
 
 	/**
-	 * @expectedException Sabre_DAV_Exception
+	 * @expectedException \Sabre\DAV\Exception
 	 */
 	public function testSimplePutFails() {
 		// setup
@@ -22,7 +22,7 @@ class Test_OC_Connector_Sabre_File extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @expectedException Sabre_DAV_Exception
+	 * @expectedException \Sabre\DAV\Exception
 	 */
 	public function testSimplePutFailsOnRename() {
 		// setup
@@ -36,7 +36,7 @@ class Test_OC_Connector_Sabre_File extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @expectedException Sabre_DAV_Exception_Forbidden
+	 * @expectedException \Sabre\DAV\Exception\Forbidden
 	 */
 	public function testDeleteSharedFails() {
 		$file = new OC_Connector_Sabre_File('Shared');

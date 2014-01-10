@@ -11,7 +11,7 @@ namespace Test\OC\Connector\Sabre;
 
 use OC_Connector_Sabre_Directory;
 use PHPUnit_Framework_TestCase;
-use Sabre_DAV_Exception_Forbidden;
+use \Sabre\DAV\Exception_Forbidden;
 
 class TestDoubleFileView extends \OC\Files\View{
 
@@ -38,7 +38,7 @@ class ObjectTree extends PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider moveFailedProvider
-	 * @expectedException Sabre_DAV_Exception_Forbidden
+	 * @expectedException \Sabre\DAV\Exception\Forbidden
 	 */
 	public function testMoveFailed($source, $dest, $updatables, $deletables) {
 		$this->moveTest($source, $dest, $updatables, $deletables);

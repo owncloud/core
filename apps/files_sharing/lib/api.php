@@ -299,6 +299,7 @@ class Api {
 				return self::updatePublicUpload($share, $params);
 			}
 		} catch (\Exception $e) {
+
 			return new \OC_OCS_Result(null, 400, $e->getMessage());
 		}
 

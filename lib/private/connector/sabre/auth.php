@@ -21,7 +21,7 @@
  *
  */
 
-class OC_Connector_Sabre_Auth extends Sabre_DAV_Auth_Backend_AbstractBasic {
+class OC_Connector_Sabre_Auth extends \Sabre\DAV\Auth\Backend\AbstractBasic {
 	/**
 	 * Validates a username and password
 	 *
@@ -71,7 +71,7 @@ class OC_Connector_Sabre_Auth extends Sabre_DAV_Auth_Backend_AbstractBasic {
 	  *
 	  * @return bool
 	  */
-	public function authenticate(Sabre_DAV_Server $server, $realm) {
+	public function authenticate(\Sabre\DAV\Server $server, $realm) {
 
 		if (OC_User::handleApacheAuth() || OC_User::isLoggedIn()) {
 			$user = OC_User::getUser();
