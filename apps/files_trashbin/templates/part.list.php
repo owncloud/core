@@ -21,17 +21,17 @@
 		data-dirlisting=0
 		<?php endif; ?>>
 		<?php if($file['isPreviewAvailable']): ?>
-		<td class="filename svg preview-icon"
+		<td class="filename svg preview-icon lazy"
 		<?php else: ?>
-		<td class="filename svg"
+		<td class="filename svg lazy"
 		<?php endif; ?>
 		<?php if($file['type'] === 'dir'): ?>
-			style="background-image:url(<?php print_unescaped(OCP\mimetype_icon('dir')); ?>)"
+			data-original="<?php print_unescaped(OCP\mimetype_icon('dir')); ?>"
 		<?php else: ?>
 				<?php if($file['isPreviewAvailable']): ?>
-				style="background-image:url(<?php print_unescaped(OCA\Files_Trashbin\Trashbin::preview_icon(!$_['dirlisting'] ? ($file['name'].'.d'.$file['timestamp']) : ($file['directory'].'/'.$file['name']))); ?>)"
+				data-original="<?php print_unescaped(OCA\Files_Trashbin\Trashbin::preview_icon(!$_['dirlisting'] ? ($file['name'].'.d'.$file['timestamp']) : ($file['directory'].'/'.$file['name']))); ?>"
 				<?php else: ?>
-				style="background-image:url(<?php print_unescaped(OCP\mimetype_icon($file['mimetype'])); ?>)"
+				data-original="<?php print_unescaped(OCP\mimetype_icon($file['mimetype'])); ?>"
 				<?php endif; ?>
 		<?php endif; ?>
 			>
