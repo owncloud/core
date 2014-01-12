@@ -518,16 +518,14 @@ var createDragShadow = function(event) {
 
 	$(selectedFiles).each(function(i,elem) {
 		var newtr = $('<tr/>').attr('data-dir', dir).attr('data-filename', elem.name).attr('data-origin', elem.origin);
-		newtr.append($('<td/>').addClass('filename').text(elem.name));
+		newtr.append($('<td/>').addClass('filename lazy').text(elem.name));
 		newtr.append($('<td/>').addClass('size').text(humanFileSize(elem.size)));
 		tbody.append(newtr);
 		if (elem.type === 'dir') {
-			newtr.find('td.filename').attr('style','background-image:url('+OC.imagePath('core', 'filetypes/folder.png')+')');
+			newtr.find('td.filename').attr('data-original',OC.imagePath('core', 'filetypes/folder.png'));
 		} else {
 			var path = getPathForPreview(elem.name);
-			Files.lazyLoadPreview(path, elem.mime, function(previewpath) {
-				newtr.find('td.filename').attr('style','background-image:url('+previewpath+')');
-			}, null, null, elem.etag);
+			newtr.find('td.filename').attr('data-original',Files.getPreviewIconURL(path, null, null, elem.etag));
 		}
 	});
 
@@ -548,6 +546,13 @@ var dragOptions={
 			else{
 				$(this).fadeTo(250, 0.2);
 			}
+			
+			$('.dragshadow .lazy').lazyload();
+		},
+		drag: function(event, ui) {
+			// force lazy image load check when the user drags more elements up into view
+			// when it is a long list. ordinarily only does this on scrolling not mouse movement.
+			$(window).scroll();
 		},
 		stop: function(event, ui) {
 			var $selectedFiles = $('td.filename input:checkbox:checked');
