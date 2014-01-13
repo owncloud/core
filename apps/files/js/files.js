@@ -563,6 +563,7 @@ var dragOptions={
 				$(this).fadeTo(250, 1);
 			}
 			$('#fileList tr td.filename').addClass('ui-draggable');
+			$('.dragshadow .lazy').removeLazyload();
 		}
 };
 // sane browsers support using the distance option

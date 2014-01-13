@@ -16,6 +16,15 @@
 (function($, window, document, undefined) {
     var $window = $(window);
 
+    $.fn.removeLazyload = function() {
+        this.each(function() {
+            if (this.removeLazyload) {
+                this.removeLazyload();
+                this.removeLazyload = null;
+            }
+        });
+    };
+
     $.fn.lazyload = function(options) {
         var elements = this;
         var $container;
@@ -95,6 +104,16 @@
                 }
             }
 
+            self.removeLazyload = function() {
+                self.loaded = true;
+
+                /* Remove image from array so it is not looped next time. */
+                var temp = $.grep(elements, function(e) {
+                                return (e !== self);
+                            });
+                elements = $(temp);
+            };
+
             /* When appear is triggered load original image. */
             $self.one("appear", function() {
                 if (!this.loaded) {
@@ -114,13 +133,7 @@
                             }
                             $self[settings.effect](settings.effect_speed);
 
-                            self.loaded = true;
-
-                            /* Remove image from array so it is not looped next time. */
-                            var temp = $.grep(elements, function(element) {
-                                return !element.loaded;
-                            });
-                            elements = $(temp);
+                            self.removeLazyload();
 
                             if (settings.load) {
                                 var elements_left = elements.length;
