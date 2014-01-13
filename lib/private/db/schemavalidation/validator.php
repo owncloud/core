@@ -40,7 +40,12 @@ class Validator {
 				if ($changedIndex->isPrimary() || $changedIndex->isUnique()) {
 
 					$columns = implode(',', $changedIndex->getColumns());
-					$sql = "select * from (select $columns, count(*) as c from $tableName group by $columns) where c > 1";
+					$sql = "
+						SELECT $columns, COUNT(*) AS c
+						FROM $tableName
+						GROUP BY $columns
+						HAVING c > 1
+					";
 					$result = $this->connection->query($sql);
 					$duplicates = $result->fetchAll();
 					if (!empty($duplicates)) {
