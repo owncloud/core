@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2013-11-29 14:08-0500\n"
-"PO-Revision-Date: 2013-11-29 19:08+0000\n"
+"POT-Creation-Date: 2013-12-20 01:55-0500\n"
+"PO-Revision-Date: 2013-12-20 06:23+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Slovak (Slovakia) (http://www.transifex.com/projects/p/owncloud/language/sk_SK/)\n"
 "MIME-Version: 1.0\n"
@@ -47,18 +47,23 @@ msgstr "Názov %s už používa priečinok s%. Prosím zvoľte iný názov."
 msgid "Not a valid source"
 msgstr "Neplatný zdroj"
 
-#: ajax/newfile.php:94
+#: ajax/newfile.php:86
+msgid ""
+"Server is not allowed to open URLs, please check the server configuration"
+msgstr ""
+
+#: ajax/newfile.php:103
 #, php-format
 msgid "Error while downloading %s to %s"
 msgstr "Chyba pri sťahovaní súboru %s do %s"
 
-#: ajax/newfile.php:128
+#: ajax/newfile.php:140
 msgid "Error when creating the file"
 msgstr "Chyba pri vytváraní súboru"
 
 #: ajax/newfolder.php:21
 msgid "Folder name cannot be empty."
-msgstr "Názov súboru nemôže byť prázdny."
+msgstr "Názov priečinka nemôže byť prázdny."
 
 #: ajax/newfolder.php:27
 msgid "Folder name must not contain \"/\". Please choose a different name."
@@ -158,7 +163,7 @@ msgstr "URL nemôže byť prázdna"
 
 #: js/file-upload.js:527 js/filelist.js:377
 msgid "In the home folder 'Shared' is a reserved filename"
-msgstr "V domovskej zložke je názov \"Shared\" vyhradený názov súboru"
+msgstr "V domovskom priečinku je názov \"Shared\" vyhradený názov súboru"
 
 #: js/file-upload.js:529 js/filelist.js:379
 msgid "{new_name} already exists"
@@ -171,6 +176,10 @@ msgstr "Nemožno vytvoriť súbor"
 #: js/file-upload.js:611
 msgid "Could not create folder"
 msgstr "Nemožno vytvoriť priečinok"
+
+#: js/file-upload.js:661
+msgid "Error fetching URL"
+msgstr ""
 
 #: js/fileactions.js:125
 msgid "Share"
@@ -202,7 +211,7 @@ msgstr "vrátiť"
 
 #: js/filelist.js:591
 msgid "Error deleting file."
-msgstr ""
+msgstr "Chyba pri mazaní súboru."
 
 #: js/filelist.js:609 js/filelist.js:683 js/files.js:631
 msgid "%n folder"
@@ -339,11 +348,11 @@ msgstr "Uložiť"
 
 #: templates/index.php:5
 msgid "New"
-msgstr "Nová"
+msgstr "Nový"
 
 #: templates/index.php:8
 msgid "New text file"
-msgstr ""
+msgstr "Nový textový súbor"
 
 #: templates/index.php:8
 msgid "Text file"
@@ -351,7 +360,7 @@ msgstr "Textový súbor"
 
 #: templates/index.php:10
 msgid "New folder"
-msgstr ""
+msgstr "Nový priečinok"
 
 #: templates/index.php:10
 msgid "Folder"
@@ -381,29 +390,25 @@ msgstr "Žiadny súbor. Nahrajte niečo!"
 msgid "Download"
 msgstr "Sťahovanie"
 
-#: templates/index.php:75 templates/index.php:76
-msgid "Unshare"
-msgstr "Zrušiť zdieľanie"
-
-#: templates/index.php:81 templates/index.php:82
+#: templates/index.php:73 templates/index.php:74
 msgid "Delete"
 msgstr "Zmazať"
 
-#: templates/index.php:95
+#: templates/index.php:86
 msgid "Upload too large"
 msgstr "Nahrávanie je príliš veľké"
 
-#: templates/index.php:97
+#: templates/index.php:88
 msgid ""
 "The files you are trying to upload exceed the maximum size for file uploads "
 "on this server."
 msgstr "Súbory, ktoré sa snažíte nahrať, presahujú maximálnu veľkosť pre nahratie súborov na tento server."
 
-#: templates/index.php:102
+#: templates/index.php:93
 msgid "Files are being scanned, please wait."
 msgstr "Čakajte, súbory sú prehľadávané."
 
-#: templates/index.php:105
+#: templates/index.php:96
 msgid "Current scanning"
 msgstr "Práve prezerané"
 

@@ -19,6 +19,10 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
+# Addition 17/12/2012 Frank Karlitschek (frank@owncloud.org)
+# On the official website http://www.phpclasses.org/smb4php the
+# license is listed as LGPL so we assume that this is
+# dual-licensed GPL/LGPL
 ###################################################################
 
 define ('SMB4PHP_VERSION', '0.8');
@@ -160,7 +164,7 @@ class smb {
 					$i = ($mode == 'servers') ? array ($name, "server") : array ($name, "workgroup", $master);
 					break;
 				case 'files':
-					list ($attr, $name) = preg_match ("/^(.*)[ ]+([D|A|H|S|R]+)$/", trim ($regs[1]), $regs2)
+					list ($attr, $name) = preg_match ("/^(.*)[ ]+([D|A|H|N|S|R]+)$/", trim ($regs[1]), $regs2)
 						? array (trim ($regs2[2]), trim ($regs2[1]))
 						: array ('', trim ($regs[1]));
 					list ($his, $im) = array (

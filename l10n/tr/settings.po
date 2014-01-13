@@ -6,13 +6,13 @@
 # DeeJaVu <ddejjavvu@gmail.com>, 2013
 # ismail yenigül <ismail.yenigul@surgate.com>, 2013
 # tridinebandim, 2013
-# volkangezer <volkangezer@gmail.com>, 2013
+# volkangezer <volkangezer@gmail.com>, 2013-2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2013-11-29 14:08-0500\n"
-"PO-Revision-Date: 2013-11-27 17:30+0000\n"
+"POT-Creation-Date: 2014-01-06 01:55-0500\n"
+"PO-Revision-Date: 2014-01-05 16:40+0000\n"
 "Last-Translator: volkangezer <volkangezer@gmail.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/owncloud/language/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -202,19 +202,19 @@ msgstr "Sil"
 msgid "add group"
 msgstr "grup ekle"
 
-#: js/users.js:451
+#: js/users.js:454
 msgid "A valid username must be provided"
 msgstr "Geçerli bir kullanıcı adı mutlaka sağlanmalı"
 
-#: js/users.js:452 js/users.js:458 js/users.js:473
+#: js/users.js:455 js/users.js:461 js/users.js:476
 msgid "Error creating user"
 msgstr "Kullanıcı oluşturulurken hata"
 
-#: js/users.js:457
+#: js/users.js:460
 msgid "A valid password must be provided"
 msgstr "Geçerli bir parola mutlaka sağlanmalı"
 
-#: js/users.js:481
+#: js/users.js:484
 msgid "Warning: Home directory for user \"{user}\" already exists"
 msgstr "Uyarı: \"{user}\" kullanıcısı için zaten bir Ev dizini mevcut"
 
@@ -224,15 +224,15 @@ msgstr "Türkçe"
 
 #: templates/admin.php:8
 msgid "Everything (fatal issues, errors, warnings, info, debug)"
-msgstr "Herşey(Ölümcül konular,hatalar,uyarılar,bilgi, debug)"
+msgstr "Her şey (Ölümcül konular, hatalar, uyarılar, bilgi, hata ayıklama)"
 
 #: templates/admin.php:9
 msgid "Info, warnings, errors and fatal issues"
-msgstr "Bilgi,uyarılar, hatalar ve ölümcül konular"
+msgstr "Bilgi, uyarılar, hatalar ve ölümcül konular"
 
 #: templates/admin.php:10
 msgid "Warnings, errors and fatal issues"
-msgstr "Uyarılar,hatalar ve ölümcül konular"
+msgstr "Uyarılar, hatalar ve ölümcül konular"
 
 #: templates/admin.php:11
 msgid "Errors and fatal issues"
@@ -244,7 +244,7 @@ msgstr "Sadece ölümcül konular"
 
 #: templates/admin.php:22 templates/admin.php:36
 msgid "Security Warning"
-msgstr "Güvenlik Uyarisi"
+msgstr "Güvenlik Uyarısı"
 
 #: templates/admin.php:25
 #, php-format
@@ -288,31 +288,42 @@ msgid ""
 msgstr "PHP modülü 'fileinfo' kayıp. MIME-tip tanıma ile en iyi sonuçları elde etmek için bu modülü etkinleştirmenizi öneririz."
 
 #: templates/admin.php:79
+msgid "Your PHP version is outdated"
+msgstr "PHP sürümünüz eski"
+
+#: templates/admin.php:82
+msgid ""
+"Your PHP version is outdated. We strongly recommend to update to 5.3.8 or "
+"newer because older versions are known to be broken. It is possible that "
+"this installation is not working correctly."
+msgstr "PHP sürümünüz eski. Eski sürümlerde sorun olduğundan 5.3.8 veya daha yeni bir sürüme güncellemenizi şiddetle tavsiye ederiz. Bu kurulumun da doğru çalışmaması da olasıdır."
+
+#: templates/admin.php:93
 msgid "Locale not working"
 msgstr "Locale çalışmıyor."
 
-#: templates/admin.php:84
+#: templates/admin.php:98
 msgid "System locale can not be set to a one which supports UTF-8."
 msgstr "Sistem yereli, UTF-8 destekleyenlerden biri olarak ayarlanamadı"
 
-#: templates/admin.php:88
+#: templates/admin.php:102
 msgid ""
 "This means that there might be problems with certain characters in file "
 "names."
 msgstr "Bu, dosya adlarında belirli karakterlerde problem olabileceği anlamına gelir."
 
-#: templates/admin.php:92
+#: templates/admin.php:106
 #, php-format
 msgid ""
 "We strongly suggest to install the required packages on your system to "
 "support one of the following locales: %s."
 msgstr "Şu dillerden birini desteklemesi için sisteminize gerekli paketleri kurmanızı şiddetle tavsiye ederiz: %s."
 
-#: templates/admin.php:104
+#: templates/admin.php:118
 msgid "Internet connection not working"
 msgstr "İnternet bağlantısı çalışmıyor"
 
-#: templates/admin.php:107
+#: templates/admin.php:121
 msgid ""
 "This server has no working internet connection. This means that some of the "
 "features like mounting of external storage, notifications about updates or "
@@ -321,118 +332,118 @@ msgid ""
 "internet connection for this server if you want to have all features."
 msgstr "Bu sunucunun çalışan bir internet bağlantısı yok. Bu, harici depolama alanı bağlama, güncelleştirme bildirimleri veya 3. parti uygulama kurma gibi bazı özellikler çalışmayacak demektir. Uzak dosyalara erişim ve e-posta ile bildirim gönderme de çalışmayacaktır. Eğer bu özelliklerin tamamını kullanmak istiyorsanız, sunucu için internet bağlantısını etkinleştirmenizi öneriyoruz."
 
-#: templates/admin.php:121
+#: templates/admin.php:135
 msgid "Cron"
 msgstr "Cron"
 
-#: templates/admin.php:128
+#: templates/admin.php:142
 msgid "Execute one task with each page loaded"
 msgstr "Yüklenen her sayfa ile bir görev çalıştır"
 
-#: templates/admin.php:136
+#: templates/admin.php:150
 msgid ""
 "cron.php is registered at a webcron service to call cron.php every 15 "
 "minutes over http."
-msgstr "cron.php, http üzerinden her 15 dakikada bir çağrılması için webcron hizmetine kaydedildi."
+msgstr "cron.php, http üzerinden her 15 dakikada bir çağrılması için webcron hizmetine kaydedilir."
 
-#: templates/admin.php:144
+#: templates/admin.php:158
 msgid "Use systems cron service to call the cron.php file every 15 minutes."
 msgstr "Cron.php dosyasını her 15 dakikada bir çağırmak için sistem cron hizmetini kullan."
 
-#: templates/admin.php:149
+#: templates/admin.php:163
 msgid "Sharing"
 msgstr "Paylaşım"
 
-#: templates/admin.php:155
+#: templates/admin.php:169
 msgid "Enable Share API"
-msgstr "Paylaşım API'sini etkinleştir."
+msgstr "Paylaşım API'sini etkinleştir"
 
-#: templates/admin.php:156
+#: templates/admin.php:170
 msgid "Allow apps to use the Share API"
 msgstr "Uygulamaların paylaşım API'sini kullanmasına izin ver"
 
-#: templates/admin.php:163
+#: templates/admin.php:177
 msgid "Allow links"
-msgstr "Bağlantıları izin ver."
+msgstr "Bağlantılara izin ver"
 
-#: templates/admin.php:164
+#: templates/admin.php:178
 msgid "Allow users to share items to the public with links"
-msgstr "Kullanıcıların nesneleri paylaşımı için herkese açık bağlantılara izin ver"
+msgstr "Kullanıcıların ögeleri paylaşması için herkese açık bağlantılara izin ver"
 
-#: templates/admin.php:172
+#: templates/admin.php:186
 msgid "Allow public uploads"
 msgstr "Herkes tarafından yüklemeye izin ver"
 
-#: templates/admin.php:173
+#: templates/admin.php:187
 msgid ""
 "Allow users to enable others to upload into their publicly shared folders"
-msgstr "Kullanıcıların, herkese açık dizinlerine, başkalarının dosya yüklemelerini etkinleştirmelerine izin ver."
+msgstr "Kullanıcıların, herkese açık dizinlerine, başkalarının dosya yüklemelerini etkinleştirmelerine izin ver"
 
-#: templates/admin.php:181
+#: templates/admin.php:195
 msgid "Allow resharing"
 msgstr "Paylaşıma izin ver"
 
-#: templates/admin.php:182
+#: templates/admin.php:196
 msgid "Allow users to share items shared with them again"
 msgstr "Kullanıcıların kendileri ile paylaşılan ögeleri yeniden paylaşmasına izin ver"
 
-#: templates/admin.php:189
+#: templates/admin.php:203
 msgid "Allow users to share with anyone"
-msgstr "Kullanıcıların herşeyi paylaşmalarına izin ver"
+msgstr "Kullanıcıların her şeyi paylaşmalarına izin ver"
 
-#: templates/admin.php:192
+#: templates/admin.php:206
 msgid "Allow users to only share with users in their groups"
 msgstr "Kullanıcıların sadece kendi gruplarındaki kullanıcılarla paylaşmasına izin ver"
 
-#: templates/admin.php:199
+#: templates/admin.php:213
 msgid "Allow mail notification"
 msgstr "Posta bilgilendirmesine izin ver"
 
-#: templates/admin.php:200
+#: templates/admin.php:214
 msgid "Allow user to send mail notification for shared files"
 msgstr "Paylaşılmış dosyalar için kullanıcının posta bildirimi göndermesine izin ver"
 
-#: templates/admin.php:207
+#: templates/admin.php:221
 msgid "Security"
 msgstr "Güvenlik"
 
-#: templates/admin.php:220
+#: templates/admin.php:234
 msgid "Enforce HTTPS"
 msgstr "HTTPS bağlantısına zorla"
 
-#: templates/admin.php:222
+#: templates/admin.php:236
 #, php-format
 msgid "Forces the clients to connect to %s via an encrypted connection."
-msgstr "İstemcileri %s a şifreli bir bağlantı ile bağlanmaya zorlar."
+msgstr "İstemcileri %s'a şifreli bir bağlantı ile bağlanmaya zorlar."
 
-#: templates/admin.php:228
+#: templates/admin.php:242
 #, php-format
 msgid ""
 "Please connect to your %s via HTTPS to enable or disable the SSL "
 "enforcement."
-msgstr "SSL zorlamasını etkinleştirmek ya da devre dışı bırakmak için lütfen ,%s a HTTPS ile bağlanın."
+msgstr "SSL zorlamasını etkinleştirmek ya da devre dışı bırakmak için lütfen ,%s'a HTTPS ile bağlanın."
 
-#: templates/admin.php:240
+#: templates/admin.php:254
 msgid "Log"
-msgstr "Kayıtlar"
+msgstr "Günlük"
 
-#: templates/admin.php:241
+#: templates/admin.php:255
 msgid "Log level"
 msgstr "Günlük seviyesi"
 
-#: templates/admin.php:273
+#: templates/admin.php:287
 msgid "More"
 msgstr "Daha fazla"
 
-#: templates/admin.php:274
+#: templates/admin.php:288
 msgid "Less"
 msgstr "Az"
 
-#: templates/admin.php:280 templates/personal.php:173
+#: templates/admin.php:294 templates/personal.php:173
 msgid "Version"
 msgstr "Sürüm"
 
-#: templates/admin.php:284 templates/personal.php:176
+#: templates/admin.php:298 templates/personal.php:176
 msgid ""
 "Developed by the <a href=\"http://ownCloud.org/contact\" "
 "target=\"_blank\">ownCloud community</a>, the <a "
@@ -497,7 +508,7 @@ msgstr "İlk Çalıştırma Sihirbazını yeniden göster"
 #: templates/personal.php:27
 #, php-format
 msgid "You have used <strong>%s</strong> of the available <strong>%s</strong>"
-msgstr "Kullandığınız:<strong>%s</strong> seçilebilecekler: <strong>%s</strong>"
+msgstr "Kullandığınız: <strong>%s</strong>. Kullanılabilir alan: <strong>%s</strong>"
 
 #: templates/personal.php:39 templates/users.php:23 templates/users.php:89
 msgid "Password"
@@ -529,7 +540,7 @@ msgstr "Tam Adı"
 
 #: templates/personal.php:73
 msgid "Email"
-msgstr "Eposta"
+msgstr "E-posta"
 
 #: templates/personal.php:75
 msgid "Your email address"
@@ -537,7 +548,7 @@ msgstr "E-posta adresiniz"
 
 #: templates/personal.php:76
 msgid "Fill in an email address to enable password recovery"
-msgstr "Parola kurtarmayı etkinleştirmek için bir eposta adresi girin"
+msgstr "Parola kurtarmayı etkinleştirmek için bir e-posta adresi girin"
 
 #: templates/personal.php:86
 msgid "Profile picture"
@@ -604,7 +615,7 @@ msgstr "Oturum açma parolası"
 
 #: templates/personal.php:163
 msgid "Decrypt all Files"
-msgstr "Tüm dosyaların şifresini çözme"
+msgstr "Tüm dosyaların şifresini çöz"
 
 #: templates/users.php:21
 msgid "Login Name"
@@ -616,7 +627,7 @@ msgstr "Oluştur"
 
 #: templates/users.php:36
 msgid "Admin Recovery Password"
-msgstr "Yönetici kurtarma parolası"
+msgstr "Yönetici Kurtarma Parolası"
 
 #: templates/users.php:37 templates/users.php:38
 msgid ""
@@ -630,7 +641,7 @@ msgstr "Varsayılan Depolama"
 
 #: templates/users.php:44 templates/users.php:139
 msgid "Please enter storage quota (ex: \"512 MB\" or \"12 GB\")"
-msgstr "Lütfen disk alanı kotasını girin(örnek: \"512MB\" veya \"12GB\")"
+msgstr "Lütfen disk alanı kotasını girin (örnek: \"512MB\" veya \"12GB\")"
 
 #: templates/users.php:48 templates/users.php:148
 msgid "Unlimited"

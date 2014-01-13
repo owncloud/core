@@ -16,6 +16,7 @@ $TRANSLATIONS = array(
 "Files need to be downloaded one by one." => "Els fitxers s'han de baixar d'un en un.",
 "Back to Files" => "Torna a Fitxers",
 "Selected files too large to generate zip file." => "Els fitxers seleccionats son massa grans per generar un fitxer zip.",
+"Please download the files separately in smaller chunks or kindly ask your administrator." => "Baixeu els fitxers separadament en petits trossos o pregunteu a l'administrador.",
 "No source specified when installing app" => "No heu especificat la font en instal·lar l'aplicació",
 "No href specified when installing app from http" => "No heu especificat href en instal·lar l'aplicació des de http",
 "No path specified when installing app from local file" => "No heu seleccionat el camí en instal·lar una aplicació des d'un fitxer local",
@@ -64,7 +65,6 @@ $TRANSLATIONS = array(
 "last month" => "el mes passat",
 "_%n month ago_::_%n months ago_" => array("fa %n mes","fa %n mesos"),
 "last year" => "l'any passat",
-"years ago" => "anys enrere",
-"Caused by:" => "Provocat per:"
+"years ago" => "anys enrere"
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

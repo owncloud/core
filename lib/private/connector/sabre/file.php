@@ -64,7 +64,7 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 		}
 
 		// mark file as partial while uploading (ignored by the scanner)
-		$partpath = $this->path . '.part';
+		$partpath = $this->path . '.ocTransferId' . rand() . '.part';
 
 		// if file is located in /Shared we write the part file to the users
 		// root folder because we can't create new files in /shared
@@ -242,7 +242,10 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 			$fileExists = $fs->file_exists($targetPath);
 			if ($renameOkay === false || $fileExists === false) {
 				\OC_Log::write('webdav', '\OC\Files\Filesystem::rename() failed', \OC_Log::ERROR);
-				$fs->unlink($targetPath);
+				// only delete if an error occurred and the target file was already created
+				if ($fileExists) {
+					$fs->unlink($targetPath);
+				}
 				throw new Sabre_DAV_Exception();
 			}
 

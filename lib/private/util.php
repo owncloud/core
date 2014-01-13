@@ -580,7 +580,7 @@ class OC_Util {
 		// Check if we are a user
 		if( !OC_User::isLoggedIn()) {
 			header( 'Location: '.OC_Helper::linkToAbsolute( '', 'index.php',
-				array('redirectUrl' => OC_Request::requestUri())
+				array('redirect_url' => OC_Request::requestUri())
 			));
 			exit();
 		}
@@ -1085,7 +1085,11 @@ class OC_Util {
 		}
 		// XCache
 		if (function_exists('xcache_clear_cache')) {
-			xcache_clear_cache(XC_TYPE_VAR, 0);
+			if (ini_get('xcache.admin.enable_auth')) {
+				OC_Log::write('core', 'XCache opcode cache will not be cleared because "xcache.admin.enable_auth" is enabled.', \OC_Log::WARN);
+			} else {
+				xcache_clear_cache(XC_TYPE_PHP, 0);
+			}
 		}
 		// Opcache (PHP >= 5.5)
 		if (function_exists('opcache_reset')) {
