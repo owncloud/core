@@ -126,6 +126,7 @@ abstract class OC_Archive{
 				if($file=='.' or $file=='..') {
 					continue;
 				}
+				$file = normalizeUnicode($file);
 				if(is_dir($source.'/'.$file)) {
 					$this->addRecursive($path.'/'.$file, $source.'/'.$file);
 				}else{
