@@ -41,10 +41,10 @@ class Validator {
 
 					$columns = implode(',', $changedIndex->getColumns());
 					$sql = "
-						SELECT $columns, COUNT(*) AS c
+						SELECT $columns
 						FROM $tableName
 						GROUP BY $columns
-						HAVING c > 1
+						HAVING COUNT(*) > 1
 					";
 					$result = $this->connection->query($sql);
 					$duplicates = $result->fetchAll();
