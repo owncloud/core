@@ -278,7 +278,7 @@ if (\OC_Util::runningOnWindows()) {
 			$files = array();
 			foreach (scandir($this->datadir . $dir) as $item) {
 				if ($item == '.' || $item == '..') continue;
-				$item = normalizeUnicode($item);				
+				$item = \OC_Util::normalizeUnicode($item);				
 				if (strstr(strtolower($item), strtolower($query)) !== false) {
 					$files[] = $dir . '/' . $item;
 				}

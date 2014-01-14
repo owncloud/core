@@ -72,7 +72,7 @@ class FileGlobal {
 			$dh=opendir($cache_dir);
 			if(is_resource($dh)) {
 				while (($file = readdir($dh)) !== false) {
-					$file = normalizeUnicode($file);
+					$file = \OC_Util::normalizeUnicode($file);
 					if($file!='.' and $file!='..' and ($prefix==='' || strpos($file, $prefix) === 0)) {
 						unlink($cache_dir.$file);
 					}
@@ -94,7 +94,7 @@ class FileGlobal {
 			$dh=opendir($cache_dir);
 			if(is_resource($dh)) {
 				while (($file = readdir($dh)) !== false) {
-					$file = normalizeUnicode($file);
+					$file = \OC_Util::normalizeUnicode($file);
 					if($file!='.' and $file!='..') {
 						$mtime = filemtime($cache_dir.$file);
 						if ($mtime < $now) {
