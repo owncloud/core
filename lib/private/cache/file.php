@@ -101,6 +101,7 @@ class File {
 			$dh=$storage->opendir('/');
 			if(is_resource($dh)) {
 				while (($file = readdir($dh)) !== false) {
+					$file = normalizeUnicode($file);
 					if($file!='.' and $file!='..' and ($prefix==='' || strpos($file, $prefix) === 0)) {
 						$storage->unlink('/'.$file);
 					}
@@ -119,6 +120,7 @@ class File {
 				return null;
 			}
 			while (($file = readdir($dh)) !== false) {
+				$file = normalizeUnicode($file);
 				if($file!='.' and $file!='..') {
 					$mtime = $storage->filemtime('/'.$file);
 					if ($mtime < $now) {

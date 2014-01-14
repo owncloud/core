@@ -211,6 +211,7 @@ class Scanner extends BasicEmitter {
 			\OC_DB::beginTransaction();
 			if (is_resource($dh)) {
 				while (($file = readdir($dh)) !== false) {
+					$file = \OC_Util::normalizeUnicode($file);
 					$child = ($path) ? $path . '/' . $file : $file;
 					if (!Filesystem::isIgnoredDir($file)) {
 						$newChildren[] = $file;

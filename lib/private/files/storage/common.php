@@ -229,6 +229,7 @@ abstract class Common implements \OC\Files\Storage\Storage {
 		if (is_resource($dh)) {
 			while (($file = readdir($dh)) !== false) {
 				if ($file !== '.' and $file !== '..') {
+					$file = normalizeUnicode($file);
 					if ($this->is_dir($path . '/' . $file)) {
 						mkdir($target . '/' . $file);
 						$this->addLocalFolder($path . '/' . $file, $target . '/' . $file);
@@ -247,6 +248,7 @@ abstract class Common implements \OC\Files\Storage\Storage {
 		if (is_resource($dh)) {
 			while (($item = readdir($dh)) !== false) {
 				if ($item == '.' || $item == '..') continue;
+				$item = normalizeUnicode($item);
 				if (strstr(strtolower($item), strtolower($query)) !== false) {
 					$files[] = $dir . '/' . $item;
 				}
