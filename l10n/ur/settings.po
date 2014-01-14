@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2013-12-04 18:12-0500\n"
-"PO-Revision-Date: 2013-12-04 23:13+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
-"Language-Team: Russian (Russia) (http://www.transifex.com/projects/p/owncloud/language/ru_RU/)\n"
+"POT-Creation-Date: 2014-01-07 01:55-0500\n"
+"PO-Revision-Date: 2014-01-06 23:45+0000\n"
+"Last-Translator: I Robot\n"
+"Language-Team: Urdu (http://www.transifex.com/projects/p/owncloud/language/ur/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ru_RU\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Language: ur\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ajax/apps/ocs.php:20
 msgid "Unable to load list from App Store"
@@ -147,7 +147,7 @@ msgstr ""
 
 #: js/apps.js:128
 msgid "Error"
-msgstr "Ошибка"
+msgstr ""
 
 #: js/apps.js:129 templates/apps.php:43
 msgid "Update"
@@ -192,25 +192,25 @@ msgstr ""
 
 #: js/users.js:123 templates/users.php:170
 msgid "Delete"
-msgstr "Удалить"
+msgstr ""
 
 #: js/users.js:284
 msgid "add group"
 msgstr ""
 
-#: js/users.js:451
+#: js/users.js:454
 msgid "A valid username must be provided"
 msgstr ""
 
-#: js/users.js:452 js/users.js:458 js/users.js:473
+#: js/users.js:455 js/users.js:461 js/users.js:476
 msgid "Error creating user"
 msgstr ""
 
-#: js/users.js:457
+#: js/users.js:460
 msgid "A valid password must be provided"
 msgstr ""
 
-#: js/users.js:481
+#: js/users.js:484
 msgid "Warning: Home directory for user \"{user}\" already exists"
 msgstr ""
 
@@ -429,7 +429,7 @@ msgstr ""
 
 #: templates/admin.php:287
 msgid "More"
-msgstr "Подробнее"
+msgstr ""
 
 #: templates/admin.php:288
 msgid "Less"
@@ -508,7 +508,7 @@ msgstr ""
 
 #: templates/personal.php:39 templates/users.php:23 templates/users.php:89
 msgid "Password"
-msgstr "Пароль"
+msgstr ""
 
 #: templates/personal.php:40
 msgid "Your password was changed"
@@ -619,7 +619,7 @@ msgstr ""
 
 #: templates/users.php:30
 msgid "Create"
-msgstr "Создать"
+msgstr ""
 
 #: templates/users.php:36
 msgid "Admin Recovery Password"
@@ -649,7 +649,7 @@ msgstr ""
 
 #: templates/users.php:87
 msgid "Username"
-msgstr "Имя пользователя"
+msgstr ""
 
 #: templates/users.php:94
 msgid "Storage"

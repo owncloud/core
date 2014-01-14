@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2013-12-20 01:55-0500\n"
-"PO-Revision-Date: 2013-12-20 06:23+0000\n"
-"Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
-"Language-Team: Russian (Russia) (http://www.transifex.com/projects/p/owncloud/language/ru_RU/)\n"
+"POT-Creation-Date: 2014-01-07 01:55-0500\n"
+"PO-Revision-Date: 2014-01-06 23:45+0000\n"
+"Last-Translator: I Robot\n"
+"Language-Team: Urdu (http://www.transifex.com/projects/p/owncloud/language/ur/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ru_RU\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Language: ur\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ajax/share.php:119 ajax/share.php:198
 #, php-format
@@ -150,61 +150,57 @@ msgstr ""
 
 #: js/js.js:398
 msgid "Settings"
-msgstr "Настройки"
+msgstr ""
 
-#: js/js.js:869
+#: js/js.js:872
 msgid "seconds ago"
 msgstr ""
 
-#: js/js.js:870
+#: js/js.js:873
 msgid "%n minute ago"
 msgid_plural "%n minutes ago"
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
 
-#: js/js.js:871
+#: js/js.js:874
 msgid "%n hour ago"
 msgid_plural "%n hours ago"
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
 
-#: js/js.js:872
+#: js/js.js:875
 msgid "today"
 msgstr ""
 
-#: js/js.js:873
+#: js/js.js:876
 msgid "yesterday"
 msgstr ""
 
-#: js/js.js:874
+#: js/js.js:877
 msgid "%n day ago"
 msgid_plural "%n days ago"
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
 
-#: js/js.js:875
+#: js/js.js:878
 msgid "last month"
 msgstr ""
 
-#: js/js.js:876
+#: js/js.js:879
 msgid "%n month ago"
 msgid_plural "%n months ago"
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
 
-#: js/js.js:877
+#: js/js.js:880
 msgid "months ago"
 msgstr ""
 
-#: js/js.js:878
+#: js/js.js:881
 msgid "last year"
 msgstr ""
 
-#: js/js.js:879
+#: js/js.js:882
 msgid "years ago"
 msgstr ""
 
@@ -218,11 +214,11 @@ msgstr ""
 
 #: js/oc-dialogs.js:172
 msgid "Yes"
-msgstr "Да"
+msgstr ""
 
 #: js/oc-dialogs.js:182
 msgid "No"
-msgstr "Нет"
+msgstr ""
 
 #: js/oc-dialogs.js:199
 msgid "Ok"
@@ -237,7 +233,6 @@ msgid "{count} file conflict"
 msgid_plural "{count} file conflicts"
 msgstr[0] ""
 msgstr[1] ""
-msgstr[2] ""
 
 #: js/oc-dialogs.js:361
 msgid "One file conflict"
@@ -255,7 +250,7 @@ msgstr ""
 
 #: js/oc-dialogs.js:376
 msgid "Cancel"
-msgstr "Отмена"
+msgstr ""
 
 #: js/oc-dialogs.js:386
 msgid "Continue"
@@ -279,12 +274,12 @@ msgstr ""
 
 #: js/share.js:109
 msgid "Share"
-msgstr "Сделать общим"
+msgstr ""
 
 #: js/share.js:158 js/share.js:171 js/share.js:178 js/share.js:707
 #: js/share.js:719 templates/installation.php:10
 msgid "Error"
-msgstr "Ошибка"
+msgstr ""
 
 #: js/share.js:160 js/share.js:747
 msgid "Error while sharing"
@@ -320,7 +315,7 @@ msgstr ""
 
 #: js/share.js:224 templates/installation.php:58 templates/login.php:38
 msgid "Password"
-msgstr "Пароль"
+msgstr ""
 
 #: js/share.js:229
 msgid "Allow Public Upload"
@@ -372,7 +367,7 @@ msgstr ""
 
 #: js/share.js:408
 msgid "can edit"
-msgstr "возможно редактирование"
+msgstr ""
 
 #: js/share.js:410
 msgid "access control"
@@ -416,7 +411,7 @@ msgstr ""
 
 #: js/share.js:769
 msgid "Warning"
-msgstr "Предупреждение"
+msgstr ""
 
 #: js/tags.js:4
 msgid "The object type is not specified."
@@ -428,7 +423,7 @@ msgstr ""
 
 #: js/tags.js:27
 msgid "Delete"
-msgstr "Удалить"
+msgstr ""
 
 #: js/tags.js:31
 msgid "Add"
@@ -488,7 +483,7 @@ msgstr ""
 #: lostpassword/templates/lostpassword.php:21 templates/installation.php:52
 #: templates/login.php:31
 msgid "Username"
-msgstr "Имя пользователя"
+msgstr ""
 
 #: lostpassword/templates/lostpassword.php:25
 msgid ""
@@ -540,7 +535,7 @@ msgstr ""
 
 #: strings.php:9
 msgid "Help"
-msgstr "Помощь"
+msgstr ""
 
 #: tags/controller.php:22
 msgid "Error loading tags"
