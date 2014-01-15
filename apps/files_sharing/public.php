@@ -2,6 +2,8 @@
 // Load other apps for file previews
 OC_App::loadApps();
 
+OCP\Util::addscript('files', 'jquery.lazyload');
+
 $appConfig = \OC::$server->getAppConfig();
 
 if ($appConfig->getValue('core', 'shareapi_allow_links', 'yes') !== 'yes') {
