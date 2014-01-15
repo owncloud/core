@@ -115,7 +115,7 @@ window.FileList={
 		tr.append(td);
 		return tr;
 	},
-	addFile:function(name, etag, size, lastModified, loading, hidden, param) {
+	addFile:function(name, size, lastModified, loading, hidden, param) {
 		var imgurl;
 		var filepath = getPathForPreview(name);
 
@@ -133,7 +133,7 @@ window.FileList={
 		if (loading) {
 			imgurl = OC.imagePath('core', 'loading.gif');
 		} else {
-			imgurl = Files.getPreviewIconURL(filepath, null, null, etag)
+			imgurl = Files.getPreviewIconURL(filepath, null, null, param.etag)
 		}
 		var tr = this.createRow(
 			'file',
@@ -985,9 +985,11 @@ $(document).ready(function() {
 				}
 				//should the file exist in the list remove it
 				FileList.remove(file.name);
+				
+				param.etag = file.etag;
 
 				// create new file context
-				data.context = FileList.addFile(file.name, file.etag, file.size, date, false, false, param);
+				data.context = FileList.addFile(file.name, file.size, date, false, false, param);
 
 				// update file data
 				data.context.attr('data-mime',file.mime).attr('data-id',file.id).attr('data-etag', file.etag);

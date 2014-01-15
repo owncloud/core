@@ -619,7 +619,7 @@ $(document).ready(function() {
 									// TODO: ideally addFile should be able to receive
 									// all attributes and set them automatically,
 									// and also auto-load the preview
-									var tr = FileList.addFile(name, result.data.etag, 0, date, false, hidden);
+									var tr = FileList.addFile(name, 0, date, false, hidden, {etag: result.data.etag});
 									tr.attr('data-size', result.data.size);
 									tr.attr('data-mime', result.data.mime);
 									tr.attr('data-id', result.data.id);
@@ -682,7 +682,7 @@ $(document).ready(function() {
 							var id = data.id;
 							$('#uploadprogressbar').fadeOut();
 							var date = new Date();
-							FileList.addFile(localName, data.etag, size, date, false, hidden);
+							FileList.addFile(localName, size, date, false, hidden, {etag: data.etag});
 							var tr = FileList.findFileEl(localName);
 							tr.data('mime', mime).data('id', id);
 							tr.attr('data-id', id);
