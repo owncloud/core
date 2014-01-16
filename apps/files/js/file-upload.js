@@ -167,9 +167,10 @@ OC.Upload = {
 		callbacks.onNoConflicts(selection);
 	}
 };
-
+// Used to keep track of how many files are going into a directory
+var file_dir_count = {};
 $(document).ready(function() {
-
+	
 	if ( $('#file_upload_start').exists() ) {
 
 		var file_upload_param = {
@@ -246,7 +247,7 @@ $(document).ready(function() {
 					data.textStatus = 'notenoughspace';
 					data.errorThrown = t('files', 'Not enough space available');
 				}
-			
+				
 				// end upload for whole selection on error
 				if (data.errorThrown) {
 					// trigger fileupload fail
@@ -297,13 +298,14 @@ $(document).ready(function() {
 			start: function(e) {
 				OC.Upload.log('start', e, null);
 			},
-			submit: function(e, data) {
+			submit: function(e, data) {                
 				OC.Upload.rememberUpload(data);
 				if ( ! data.formData ) {
 					// noone set update parameters, we set the minimum
 					data.formData = {
 						requesttoken: oc_requesttoken,
-								 dir: $('#dir').val()
+								 dir: $('#dir').val(),
+								 file_directory: data.files[0]['relativePath'],
 					};
 				}
 			},
@@ -379,12 +381,24 @@ $(document).ready(function() {
 		// initialize jquery fileupload (blueimp)
 		var fileupload = $('#file_upload_start').fileupload(file_upload_param);
 		window.file_upload_param = fileupload;
-
+		
 		if (supportAjaxUploadWithProgress()) {
 
 			// add progress handlers
 			fileupload.on('fileuploadadd', function(e, data) {
 				OC.Upload.log('progress handle fileuploadadd', e, data);
+				
+				dirName = data.files[0]['relativePath'].substring(0, data.files[0]['relativePath'].indexOf('/'));
+				
+				// make sure is set otherwise set it 
+				if(typeof(file_dir_count[dirName]) != 'undefined')
+				{
+					file_dir_count[dirName]++;
+				}
+				else
+				{
+					file_dir_count[dirName] = 1;
+				}
 				//show cancel button
 				//if (data.dataType !== 'iframe') { //FIXME when is iframe used? only for ie?
 				//	$('#uploadprogresswrapper input.stop').show();
