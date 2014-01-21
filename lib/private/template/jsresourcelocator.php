@@ -35,6 +35,9 @@ class JSResourceLocator extends ResourceLocator {
 		) {
 			return;
 		}
+		if (\OC::getRouter()->canMatch($app_url . '/' . $script . '.js')) {
+			return;
+		}
 		throw new \Exception('js file not found: script:'.$script);
 	}
 
