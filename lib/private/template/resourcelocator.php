@@ -55,13 +55,24 @@ abstract class ResourceLocator {
 	 */
 	protected function appendIfExist($root, $file, $webroot = null) {
 		if (is_file($root.'/'.$file)) {
-			if (!$webroot) {
-				$webroot = $this->mapping[$root];
-			}
-			$this->resources[] = array($root, $webroot, $file);
-			return true;
+			return $this->append($root, $file, $webroot);
 		}
 		return false;
+	}
+
+	/*
+	 * Append the $file resource at $root
+	 * @param $root path to check
+	 * @param $file the filename
+	 * @param $web base for path, default map $root to $webroot
+	 * @return boolean Always true
+	 */
+	protected function append($root, $file, $webroot = null) {
+		if (!$webroot) {
+			$webroot = $this->mapping[$root];
+		}
+		$this->resources[] = array($root, $webroot, $file);
+		return true;
 	}
 
 	public function getResources() {
