@@ -27,6 +27,7 @@ class Test_Encryption_Helper extends \PHPUnit_Framework_TestCase {
 	public static function tearDownAfterClass() {
 		// cleanup test user
 		\OC_User::deleteUser(\Test_Encryption_Helper::TEST_ENCRYPTION_HELPER_USER1);
+		\Test_Encryption_Util::cleanup();
 	}
 
 	/**

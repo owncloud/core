@@ -99,6 +99,7 @@ class Test_Encryption_Keymanager extends \PHPUnit_Framework_TestCase {
 
 		// cleanup test user
 		\OC_User::deleteUser(\Test_Encryption_Keymanager::TEST_USER);
+		\Test_Encryption_Util::cleanup();
 	}
 
 	/**

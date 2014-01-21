@@ -96,6 +96,7 @@ class Test_Encryption_Stream extends \PHPUnit_Framework_TestCase {
 	public static function tearDownAfterClass() {
 		// cleanup test user
 		\OC_User::deleteUser(\Test_Encryption_Stream::TEST_ENCRYPTION_STREAM_USER1);
+		\Test_Encryption_Util::cleanup();
 	}
 
 	function testStreamOptions() {
