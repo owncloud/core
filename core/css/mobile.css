@@ -1,0 +1,14 @@
+@media (max-width: 600px) {
+
+
+/* When hovering/tapping a row on mobile, hide file info and display the file actions instead */
+#filestable tr:hover .nametext,
+#filestable tr:hover .filesize,
+#filestable tr:hover .date {
+	display: none;
+}
+#filestable tr:hover .fileactions {
+	left: 44px;
+}
+
+}
