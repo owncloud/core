@@ -559,10 +559,9 @@ class OC {
 			$sessionUser = self::$session->get('loginname');
 			$serverUser = $_SERVER['PHP_AUTH_USER'];
 			OC_Log::write('core',
-				"Session loginname ($sessionUser) doesn't match SERVER[PHP_AUTH_USER] ($serverUser).",
+				"Overriding SERVER[PHP_AUTH_USER] ($serverUser) with session user-id ($sessionUser).",
 				OC_Log::WARN);
-			$url = 'http://' . $sessionUser . '@' . $_SERVER['SERVER_NAME'] . OC::$WEBROOT . OC::$SUBURI;
-			header("Location: $url");
+			OC_Util::redirectToDefaultPage($sessionUser);
 			exit();
 		}
 
