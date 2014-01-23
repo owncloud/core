@@ -407,6 +407,9 @@ class OC_Installer{
 			include OC_App::getAppPath($app)."/appinfo/install.php";
 		}
 		$info=OC_App::getAppInfo($app);
+		if (is_null($info)) {
+			return false;
+		}
 		OC_Appconfig::setValue($app, 'installed_version', OC_App::getAppVersion($app));
 
 		//set remote/public handelers
@@ -460,8 +463,7 @@ class OC_Installer{
 		);
 
 		// is the code checker enabled?
-		if(OC_Config::getValue('appcodechecker', false)) {
-
+		if(OC_Config::getValue('appcodechecker', true)) {
 			// check if grep is installed
 			$grep = exec('which grep');
 			if($grep=='') {

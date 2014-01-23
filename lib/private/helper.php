@@ -252,7 +252,7 @@ class OC_Helper {
 		if ($bytes < 1024) {
 			return "$bytes B";
 		}
-		$bytes = round($bytes / 1024, 1);
+		$bytes = round($bytes / 1024, 0);
 		if ($bytes < 1024) {
 			return "$bytes kB";
 		}
@@ -858,11 +858,13 @@ class OC_Helper {
 		if (!function_exists($function_name)) {
 			return false;
 		}
-		$disabled = explode(', ', ini_get('disable_functions'));
+		$disabled = explode(',', ini_get('disable_functions'));
+		$disabled = array_map('trim', $disabled);
 		if (in_array($function_name, $disabled)) {
 			return false;
 		}
-		$disabled = explode(', ', ini_get('suhosin.executor.func.blacklist'));
+		$disabled = explode(',', ini_get('suhosin.executor.func.blacklist'));
+		$disabled = array_map('trim', $disabled);
 		if (in_array($function_name, $disabled)) {
 			return false;
 		}

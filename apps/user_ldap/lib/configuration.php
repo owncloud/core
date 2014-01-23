@@ -129,6 +129,7 @@ class Configuration {
 					if(!empty($val) && strpos($val, 'attr:') === false) {
 						$val = 'attr:'.$val;
 					}
+					break;
 				case 'ldapBase':
 				case 'ldapBaseUsers':
 				case 'ldapBaseGroups':
@@ -140,11 +141,11 @@ class Configuration {
 				case 'ldapGroupFilterGroups':
 				case 'ldapLoginFilterAttributes':
 					$setMethod = 'setMultiLine';
-				default:
-					$this->$setMethod($key, $val);
-					if(is_array($applied)) {
-						$applied[] = $inputkey;
-					}
+					break;
+			}
+			$this->$setMethod($key, $val);
+			if(is_array($applied)) {
+				$applied[] = $inputkey;
 			}
 		}
 
@@ -308,7 +309,7 @@ class Configuration {
 			'ldap_user_filter_mode'				=> 0,
 			'ldap_userfilter_objectclass'		=> '',
 			'ldap_userfilter_groups'			=> '',
-			'ldap_login_filter'					=> 'uid=%uid',
+			'ldap_login_filter'					=> '',
 			'ldap_login_filter_mode'			=> 0,
 			'ldap_loginfilter_email'			=> 0,
 			'ldap_loginfilter_username'			=> 1,
