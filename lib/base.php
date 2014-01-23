@@ -561,9 +561,9 @@ class OC {
 			OC_Log::write('core',
 				"Session loginname ($sessionUser) doesn't match SERVER[PHP_AUTH_USER] ($serverUser).",
 				OC_Log::WARN);
-			header('WWW-Authenticate: Basic realm="Please Reauthenticate with ownCloud"');
-			header('HTTP/1.0 401 Unauthorized');
-			// OC_User::logout();
+			$url = 'http://' . $sessionUser . '@' . $_SERVER['SERVER_NAME'] . OC::$WEBROOT . OC::$SUBURI;
+			header("Location: $url");
+			exit();
 		}
 
 		// Load Apps
