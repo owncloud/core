@@ -971,8 +971,6 @@ $(document).ready(function() {
 					return;
 				}
 
-				$('#fileList .lazy').removeLazyload();				
-
 				// add as stand-alone row to filelist
 				var size=t('files', 'Pending');
 				if (data.files[0].size>=0) {
@@ -999,8 +997,10 @@ $(document).ready(function() {
 					data.context.attr('data-permissions', file.permissions);
 					data.context.data('permissions', file.permissions);
 				}
-				FileActions.display(data.context.find('td.filename'), true);
-				$('#fileList .lazy').lazyload();
+
+				var tds = data.context.find('td.filename');
+				FileActions.display(tds, true);
+				tds.lazyload();
 			}
 		}
 	});

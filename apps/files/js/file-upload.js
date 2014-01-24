@@ -625,8 +625,10 @@ $(document).ready(function() {
 									tr.attr('data-id', result.data.id);
 									tr.attr('data-etag', result.data.etag);
 									tr.find('.filesize').text(humanFileSize(result.data.size));
-									FileActions.display(tr.find('td.filename'), true);
-									$('#fileList .lazy').lazyload();
+
+									var tds = tr.find('td.filename');
+									FileActions.display(tds, true);
+									tds.lazyload();
 								} else {
 									OC.dialogs.alert(result.data.message, t('core', 'Could not create file'));
 								}
@@ -686,8 +688,10 @@ $(document).ready(function() {
 							var tr = FileList.findFileEl(localName);
 							tr.data('mime', mime).data('id', id);
 							tr.attr('data-id', id);
-							FileActions.display(tr.find('td.filename'), true);
-							$('#fileList .lazy').lazyload();
+
+							var tds = tr.find('td.filename');
+							FileActions.display(tds, true);
+							tds.lazyload();
 						});
 						eventSource.listen('error',function(error) {
 							$('#uploadprogressbar').fadeOut();
