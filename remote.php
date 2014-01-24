@@ -1,11 +1,12 @@
 <?php
 $RUNTIME_NOAPPS = true;
+$RUNTIME_ISREMOTE = true;
 
 try {
-
-	require_once 'lib/base.php';
+	require_once 'lib/private/request.php';
 	$path_info = OC_Request::getPathInfo();
 	if ($path_info === false || $path_info === '') {
+		require_once 'lib/private/response.php';
 		OC_Response::setStatus(OC_Response::STATUS_NOT_FOUND);
 		exit;
 	}
@@ -13,6 +14,9 @@ try {
 		$pos = strlen($path_info);
 	}
 	$service=substr($path_info, 1, $pos-1);
+
+	// init here because $service is needed in exception handler
+	require_once 'lib/base.php';
 
 	$file = OC_AppConfig::getValue('core', 'remote_' . $service);
 
@@ -45,5 +49,16 @@ try {
 } catch (Exception $ex) {
 	OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
 	\OCP\Util::writeLog('remote', $ex->getMessage(), \OCP\Util::FATAL);
-	OC_Template::printExceptionErrorPage($ex);
+	// hard-coded because we can't init Sabre when base.php failed
+	if ($service === 'webdav') {
+		print('<?xml version="1.0" encoding="utf-8"?>');
+		print('<d:error xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns">');
+		print('<s:exception>' . htmlspecialchars(get_class($ex)) . '</s:exception>');
+		print('<s:message>' . htmlspecialchars($ex->getMessage()) . '</s:message>');
+		//print('<s:sabredav-version>1.7.9</s:sabredav-version>');
+	  	print('</d:error>');
+	}
+	else {
+		OC_Template::printExceptionErrorPage($ex);
+	}
 }
