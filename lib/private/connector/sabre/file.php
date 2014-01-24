@@ -237,7 +237,7 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 			$targetFileHandle = $fs->fopen($targetPath, 'w');
 			$wouldBlock = false;
 			$lockReturn = flock($targetFileHandle, LOCK_EX | LOCK_NB, $wouldBlock);
-			if ($wouldBlock === true && $lockReturn === true) {
+			if ($wouldBlock === true && $lockReturn === false) {
 				throw new Sabre_DAV_Exception_BadRequest('target file is locked because of another parallel upload');
 			}
 
