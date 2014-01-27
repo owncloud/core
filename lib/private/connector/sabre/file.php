@@ -73,6 +73,13 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 			$partpath = pathinfo($partpath, PATHINFO_FILENAME) . rand() . '.part';
 		}
 
+		$targetFileHandle = $fs->fopen($this->path, 'c+');
+		// the file lock will be freed as soon as we leave the scope of this method
+		$lock = \OC\Files\Lock::write($targetFileHandle);
+		if ($lock === false) {
+			throw new Sabre_DAV_Exception_BadRequest('target file is locked because of another parallel upload');
+		}
+
 		try {
 			$putOkay = $fs->file_put_contents($partpath, $data);
 			if ($putOkay === false) {
@@ -234,10 +241,10 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 			$fs = $this->getFS();
 			$targetPath = $path . '/' . $info['name'];
 
-			$targetFileHandle = $fs->fopen($targetPath, 'w');
-			$wouldBlock = false;
-			$lockReturn = flock($targetFileHandle, LOCK_EX | LOCK_NB, $wouldBlock);
-			if ($wouldBlock === true && $lockReturn === false) {
+			$targetFileHandle = $fs->fopen($targetPath, 'c+');
+			// the file lock will be freed as soon as we leave the scope of this method
+			$lock = \OC\Files\Lock::write($targetFileHandle);
+			if ($lock === false) {
 				throw new Sabre_DAV_Exception_BadRequest('target file is locked because of another parallel upload');
 			}
 
@@ -248,9 +255,6 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 			// here is the final atomic rename
 			$renameOkay = $fs->rename($partFile, $targetPath);
 			$fileExists = $fs->file_exists($targetPath);
-
-			// unlock the file
-			flock($targetFileHandle, LOCK_UN);
 
 			// verify copy operations
 			if ($renameOkay === false || $fileExists === false) {
