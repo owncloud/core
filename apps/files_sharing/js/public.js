@@ -29,19 +29,19 @@ $(document).ready(function() {
 			}
 		}
 		FileActions.register('dir', 'Open', OC.PERMISSION_READ, '', function(filename) {
-			var tr = $('tr').filterAttr('data-file', filename);
+			var tr = FileList.findFileEl(filename);
 			if (tr.length > 0) {
 				window.location = $(tr).find('a.name').attr('href');
 			}
 		});
 		FileActions.register('file', 'Download', OC.PERMISSION_READ, '', function(filename) {
-			var tr = $('tr').filterAttr('data-file', filename);
+			var tr = FileList.findFileEl(filename);
 			if (tr.length > 0) {
 				window.location = $(tr).find('a.name').attr('href');
 			}
 		});
 		FileActions.register('dir', 'Download', OC.PERMISSION_READ, '', function(filename) {
-			var tr = $('tr').filterAttr('data-file', filename);
+			var tr = FileList.findFileEl(filename);
 			if (tr.length > 0) {
 				window.location = $(tr).find('a.name').attr('href')+'&download';
 			}
@@ -59,7 +59,8 @@ $(document).ready(function() {
 	});
 
 	// Add Uploadprogress Wrapper to controls bar
-	$('#controls').append($('#additional_controls div#uploadprogresswrapper'));
+	$('#controls').append($('#controls .actions div#uploadprogresswrapper'));
+	$('#uploadprogresswrapper').addClass('public_actions');
 
 	// Cancel upload trigger
 	$('#cancel_upload_button').click(function() {

@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2011, Robin Appelman <icewind1991@gmail.com>
+ *               2013, Morris Jobke <morris.jobke@gmail.com>
  * This file is licensed under the Affero General Public License version 3 or later.
  * See the COPYING-README file.
  */
@@ -164,12 +165,29 @@ $(document).ready(function(){
 
     $('#email').keyup(function(){
         if ($('#email').val() !== '' ){
+            // if this is the enter key changeEmailAddress() is already invoked
+            // so it doesn't need to be triggered again
+            if(event.keyCode === 13) {
+                return;
+            }
             if(typeof timeout !== 'undefined'){
                 clearTimeout(timeout);
             }
             timeout = setTimeout('changeEmailAddress()',1000);
         }
     });
+
+	$('#email').keypress(function(event){
+		// check for enter key and non empty email
+		if (event.keyCode === 13 && $('#email').val() !== '' ){
+			event.preventDefault()
+			// clear timeout of previous keyup event - prevents duplicate changeEmailAddress call
+			if(typeof timeout !== 'undefined'){
+				clearTimeout(timeout);
+			}
+			changeEmailAddress();
+		}
+	});
 
 	$("#languageinput").change( function(){
 		// Serialize the data
@@ -242,6 +260,17 @@ $(document).ready(function(){
 
 	$('#sendcropperbutton').click(function(){
 		sendCropData();
+	});
+
+	$('#pass2').strengthify({
+		zxcvbn: OC.linkTo('3rdparty','zxcvbn/js/zxcvbn.js'),
+		titles: [
+			t('core', 'Very weak password'),
+			t('core', 'Weak password'),
+			t('core', 'So-so password'),
+			t('core', 'Good password'),
+			t('core', 'Strong password')
+		]
 	});
 } );
 
