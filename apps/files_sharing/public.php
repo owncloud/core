@@ -30,6 +30,21 @@ if (isset($_GET['t'])) {
 		}
 	}
 }
+
+	if (isset($_GET['logout']) && !isset($_POST['password'])) {
+	  // Destroy session
+		$_SESSION['public_link_authenticated'] = null;
+
+		// Prompt for password
+		$tmpl = new OCP\Template('files_sharing', 'authenticate', 'guest');
+		$tmpl->assign('URL', OCP\Util::linkToPublic('files')
+										.(isset($_GET['t'])?'&t='.$_GET['t']:'')
+										.(isset($_GET['dir'])?'&dir='.$_GET['dir']:'')
+										.(isset($_GET['file'])?'&file='.$_GET['file']:''));
+		$tmpl->printPage();
+		exit();
+	}
+
 if (isset($path)) {
 	if (!isset($linkItem['item_type'])) {
 		OCP\Util::writeLog('share', 'No item type set for share id: ' . $linkItem['id'], \OCP\Util::ERROR);
@@ -144,6 +159,10 @@ if (isset($path)) {
 		$urlLinkIdentifiers= (isset($token)?'&t='.$token:'')
 							.(isset($_GET['dir'])?'&dir='.$_GET['dir']:'')
 							.(isset($_GET['file'])?'&file='.$_GET['file']:'');
+
+		$tmpl->assign('logout_path', OCP\Util::linkToPublic('files') 
+							.$urlLinkIdentifiers 
+							.'&logout=true');
 		// Show file list
 		if (\OC\Files\Filesystem::is_dir($path)) {
 			$tmpl->assign('dir', $getPath);
