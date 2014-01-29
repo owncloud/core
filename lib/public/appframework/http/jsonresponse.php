@@ -58,8 +58,10 @@ class JSONResponse extends Response {
 	 * Returns the rendered json
 	 * @return string the rendered json
 	 */
-	public function render(){
-		return json_encode($this->data);
+	public function render() {
+		return (is_array($this->data) && count($this->data))
+			? json_encode($this->data)
+			: null;
 	}
 
 	/**
