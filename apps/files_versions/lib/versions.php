@@ -17,7 +17,7 @@ namespace OCA\Files_Versions;
 
 class Storage {
 
-	const DEFAULTENABLED=true;
+	const DEFAULTENABLED='true';
 	const DEFAULTMAXSIZE=50; // unit: percentage; 50% of available disk space/quota
 	const VERSIONS_ROOT = 'files_versions/';
 
