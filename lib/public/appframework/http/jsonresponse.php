@@ -46,7 +46,7 @@ class JSONResponse extends Response {
 	 * @param array|object $data the object or array that should be transformed
 	 * @param int $statusCode the Http status code, defaults to 200
 	 */
-	public function __construct($data=array(), $statusCode=Http::STATUS_OK) {
+	public function __construct($data = null, $statusCode = Http::STATUS_OK) {
 		$this->data = $data;
 		$this->setStatus($statusCode);
 		$this->addHeader('X-Content-Type-Options', 'nosniff');
@@ -58,10 +58,8 @@ class JSONResponse extends Response {
 	 * Returns the rendered json
 	 * @return string the rendered json
 	 */
-	public function render() {
-		return (is_array($this->data) && count($this->data))
-			? json_encode($this->data)
-			: null;
+	public function render(){
+		return $this->data === null ? $this->data : json_encode($this->data);
 	}
 
 	/**
