@@ -54,6 +54,9 @@ class OC_User {
 
 	private static $_setupedBackends = array();
 
+	// bool, stores if a user want to access a resource anonymously, e.g if he opens a public link
+	private static $incognitoMode = false;
+
 	/**
 	 * @brief registers backend
 	 * @param string $backend name of the backend
@@ -243,6 +246,8 @@ class OC_User {
 			session_regenerate_id(true);
 			self::setUserId($uid);
 			self::setDisplayName($uid);
+			self::getUserSession()->setLoginName($uid);
+
 			OC_Hook::emit( "OC_User", "post_login", array( "uid" => $uid, 'password'=>'' ));
 			return true;
 		}
@@ -311,12 +316,21 @@ class OC_User {
 	 * Checks if the user is logged in
 	 */
 	public static function isLoggedIn() {
-		if (\OC::$session->get('user_id')) {
+		if (\OC::$session->get('user_id') && self::$incognitoMode === false) {
 			OC_App::loadApps(array('authentication'));
 			self::setupBackends();
 			return self::userExists(\OC::$session->get('user_id'));
 		}
 		return false;
+	}
+
+	/**
+	 * @brief set incognito mode, e.g. if a user wants to open a public link
+	 * @param bool $status
+	 */
+	public static function setIncognitoMode($status) {
+		self::$incognitoMode = $status;
+
 	}
 
 	/**
@@ -341,7 +355,7 @@ class OC_User {
 	 * @return bool
 	 */
 	public static function isAdminUser($uid) {
-		if (OC_Group::inGroup($uid, 'admin')) {
+		if (OC_Group::inGroup($uid, 'admin') && self::$incognitoMode === false) {
 			return true;
 		}
 		return false;
@@ -354,7 +368,7 @@ class OC_User {
 	 */
 	public static function getUser() {
 		$uid = OC::$session ? OC::$session->get('user_id') : null;
-		if (!is_null($uid)) {
+		if (!is_null($uid) && self::$incognitoMode === false) {
 			return $uid;
 		} else {
 			return false;
@@ -407,6 +421,22 @@ class OC_User {
 		$user = self::getManager()->get($uid);
 		if ($user) {
 			return $user->setPassword($password, $recoveryPassword);
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * @brief Check whether user can change his avatar
+	 * @param string $uid The username
+	 * @return bool
+	 *
+	 * Check whether a specified user can change his avatar
+	 */
+	public static function canUserChangeAvatar($uid) {
+		$user = self::getManager()->get($uid);
+		if ($user) {
+			return $user->canChangeAvatar();
 		} else {
 			return false;
 		}

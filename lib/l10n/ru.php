@@ -16,7 +16,7 @@ $TRANSLATIONS = array(
 "Files need to be downloaded one by one." => "Файлы должны быть загружены по одному.",
 "Back to Files" => "Назад к файлам",
 "Selected files too large to generate zip file." => "Выбранные файлы слишком велики, чтобы создать zip файл.",
-"Download the files in smaller chunks, seperately or kindly ask your administrator." => "Загрузите файл маленьшими порциями, раздельно или вежливо попросите Вашего администратора.",
+"Please download the files separately in smaller chunks or kindly ask your administrator." => "Загрузите файлы раздельно маленькими частями или вежливо попросите вашего администратора.",
 "No source specified when installing app" => "Не указан источник при установке приложения",
 "No href specified when installing app from http" => "Не указан атрибут href при установке приложения через http",
 "No path specified when installing app from local file" => "Не указан путь при установке приложения из локального файла",
@@ -65,7 +65,6 @@ $TRANSLATIONS = array(
 "last month" => "в прошлом месяце",
 "_%n month ago_::_%n months ago_" => array("%n месяц назад","%n месяца назад","%n месяцев назад"),
 "last year" => "в прошлом году",
-"years ago" => "несколько лет назад",
-"Caused by:" => "Вызвано:"
+"years ago" => "несколько лет назад"
 );
 $PLURAL_FORMS = "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);";

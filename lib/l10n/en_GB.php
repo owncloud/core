@@ -16,7 +16,7 @@ $TRANSLATIONS = array(
 "Files need to be downloaded one by one." => "Files need to be downloaded one by one.",
 "Back to Files" => "Back to Files",
 "Selected files too large to generate zip file." => "Selected files too large to generate zip file.",
-"Download the files in smaller chunks, seperately or kindly ask your administrator." => "Download the files in smaller chunks, seperately or kindly ask your administrator.",
+"Please download the files separately in smaller chunks or kindly ask your administrator." => "Please download the files separately in smaller chunks or kindly ask your administrator.",
 "No source specified when installing app" => "No source specified when installing app",
 "No href specified when installing app from http" => "No href specified when installing app from http",
 "No path specified when installing app from local file" => "No path specified when installing app from local file",
@@ -65,7 +65,6 @@ $TRANSLATIONS = array(
 "last month" => "last month",
 "_%n month ago_::_%n months ago_" => array("%n month ago","%n months ago"),
 "last year" => "last year",
-"years ago" => "years ago",
-"Caused by:" => "Caused by:"
+"years ago" => "years ago"
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

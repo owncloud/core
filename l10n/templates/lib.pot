@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud Core 6.0.0\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2013-11-09 01:44-0500\n"
+"POT-Creation-Date: 2014-01-08 01:55-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,51 +18,51 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: private/app.php:243
+#: private/app.php:245
 #, php-format
 msgid ""
 "App \"%s\" can't be installed because it is not compatible with this version "
 "of ownCloud."
 msgstr ""
 
-#: private/app.php:255
+#: private/app.php:257
 msgid "No app name specified"
 msgstr ""
 
-#: private/app.php:360
+#: private/app.php:362
 msgid "Help"
 msgstr ""
 
-#: private/app.php:373
+#: private/app.php:375
 msgid "Personal"
 msgstr ""
 
-#: private/app.php:384
+#: private/app.php:386
 msgid "Settings"
 msgstr ""
 
-#: private/app.php:396
+#: private/app.php:398
 msgid "Users"
 msgstr ""
 
-#: private/app.php:409
+#: private/app.php:411
 msgid "Admin"
 msgstr ""
 
-#: private/app.php:873
+#: private/app.php:875
 #, php-format
 msgid "Failed to upgrade \"%s\"."
 msgstr ""
 
-#: private/avatar.php:60
+#: private/avatar.php:66
 msgid "Unknown filetype"
 msgstr ""
 
-#: private/avatar.php:65
+#: private/avatar.php:71
 msgid "Invalid image"
 msgstr ""
 
-#: private/defaults.php:36
+#: private/defaults.php:34
 msgid "web services under your control"
 msgstr ""
 
@@ -89,7 +89,7 @@ msgstr ""
 
 #: private/files.php:254
 msgid ""
-"Download the files in smaller chunks, seperately or kindly ask your "
+"Please download the files separately in smaller chunks or kindly ask your "
 "administrator."
 msgstr ""
 
@@ -134,17 +134,17 @@ msgid ""
 "which is not allowed for non shipped apps"
 msgstr ""
 
-#: private/installer.php:152
+#: private/installer.php:159
 msgid ""
 "App can't be installed because the version in info.xml/version is not the "
 "same as the version reported from the app store"
 msgstr ""
 
-#: private/installer.php:162
+#: private/installer.php:169
 msgid "App directory already exists"
 msgstr ""
 
-#: private/installer.php:175
+#: private/installer.php:182
 #, php-format
 msgid "Can't create app folder. Please fix permissions. %s"
 msgstr ""
@@ -173,17 +173,17 @@ msgstr ""
 msgid "Images"
 msgstr ""
 
-#: private/setup/abstractdatabase.php:22
+#: private/setup/abstractdatabase.php:26
 #, php-format
 msgid "%s enter the database username."
 msgstr ""
 
-#: private/setup/abstractdatabase.php:25
+#: private/setup/abstractdatabase.php:29
 #, php-format
 msgid "%s enter the database name."
 msgstr ""
 
-#: private/setup/abstractdatabase.php:28
+#: private/setup/abstractdatabase.php:32
 #, php-format
 msgid "%s you may not use dots in the database name"
 msgstr ""
@@ -204,11 +204,11 @@ msgid "MySQL username and/or password not valid"
 msgstr ""
 
 #: private/setup/mysql.php:67 private/setup/oci.php:54
-#: private/setup/oci.php:121 private/setup/oci.php:147
-#: private/setup/oci.php:154 private/setup/oci.php:165
-#: private/setup/oci.php:172 private/setup/oci.php:181
-#: private/setup/oci.php:189 private/setup/oci.php:198
-#: private/setup/oci.php:204 private/setup/postgresql.php:89
+#: private/setup/oci.php:121 private/setup/oci.php:144
+#: private/setup/oci.php:151 private/setup/oci.php:162
+#: private/setup/oci.php:169 private/setup/oci.php:178
+#: private/setup/oci.php:186 private/setup/oci.php:195
+#: private/setup/oci.php:201 private/setup/postgresql.php:89
 #: private/setup/postgresql.php:98 private/setup/postgresql.php:115
 #: private/setup/postgresql.php:125 private/setup/postgresql.php:134
 #, php-format
@@ -216,10 +216,10 @@ msgid "DB Error: \"%s\""
 msgstr ""
 
 #: private/setup/mysql.php:68 private/setup/oci.php:55
-#: private/setup/oci.php:122 private/setup/oci.php:148
-#: private/setup/oci.php:155 private/setup/oci.php:166
-#: private/setup/oci.php:182 private/setup/oci.php:190
-#: private/setup/oci.php:199 private/setup/postgresql.php:90
+#: private/setup/oci.php:122 private/setup/oci.php:145
+#: private/setup/oci.php:152 private/setup/oci.php:163
+#: private/setup/oci.php:179 private/setup/oci.php:187
+#: private/setup/oci.php:196 private/setup/postgresql.php:90
 #: private/setup/postgresql.php:99 private/setup/postgresql.php:116
 #: private/setup/postgresql.php:126 private/setup/postgresql.php:135
 #, php-format
@@ -252,7 +252,7 @@ msgstr ""
 msgid "Oracle username and/or password not valid"
 msgstr ""
 
-#: private/setup/oci.php:173 private/setup/oci.php:205
+#: private/setup/oci.php:170 private/setup/oci.php:202
 #, php-format
 msgid "Offending command was: \"%s\", name: %s, password: %s"
 msgstr ""
@@ -269,13 +269,13 @@ msgstr ""
 msgid "Set an admin password."
 msgstr ""
 
-#: private/setup.php:184
+#: private/setup.php:195
 msgid ""
 "Your web server is not yet properly setup to allow files synchronization "
 "because the WebDAV interface seems to be broken."
 msgstr ""
 
-#: private/setup.php:185
+#: private/setup.php:196
 #, php-format
 msgid "Please double check the <a href='%s'>installation guides</a>."
 msgstr ""
@@ -331,8 +331,4 @@ msgstr ""
 
 #: private/template/functions.php:142
 msgid "years ago"
-msgstr ""
-
-#: private/template.php:297 public/util.php:108
-msgid "Caused by:"
 msgstr ""

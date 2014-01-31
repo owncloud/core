@@ -69,10 +69,18 @@ class Server extends SimpleContainer implements IServerContainer {
 			return new Root($manager, $view, $user);
 		});
 		$this->registerService('UserManager', function($c) {
-			return new \OC\User\Manager();
+			/**
+			 * @var SimpleContainer $c
+			 * @var \OC\AllConfig $config
+			 */
+			$config = $c->query('AllConfig');
+			return new \OC\User\Manager($config);
 		});
 		$this->registerService('UserSession', function($c) {
-			/** @var $c SimpleContainer */
+			/**
+			 * @var SimpleContainer $c
+			 * @var \OC\User\Manager $manager
+			 */
 			$manager = $c->query('UserManager');
 			$userSession = new \OC\User\Session($manager, \OC::$session);
 			$userSession->listen('\OC\User', 'preCreateUser', function ($uid, $password) {
@@ -120,7 +128,9 @@ class Server extends SimpleContainer implements IServerContainer {
 			return new \OC\L10N\Factory();
 		});
 		$this->registerService('URLGenerator', function($c) {
-			return new \OC\URLGenerator();
+			/** @var $c SimpleContainer */
+			$config = $c->query('AllConfig');
+			return new \OC\URLGenerator($config);
 		});
 		$this->registerService('AppHelper', function($c) {
 			return new \OC\AppHelper();
@@ -140,6 +150,9 @@ class Server extends SimpleContainer implements IServerContainer {
 				\OC_App::doUpgrade($app, $appName, $installedVersion, $currentVersion);
 			});
 			return $loader;
+		});
+		$this->registerService('AvatarManager', function($c) {
+			return new AvatarManager();
 		});
 	}
 
@@ -178,6 +191,15 @@ class Server extends SimpleContainer implements IServerContainer {
 	 */
 	function getTagManager() {
 		return $this->query('TagManager');
+	}
+
+	/**
+	 * Returns the avatar manager, used for avatar functionality
+	 *
+	 * @return \OCP\IAvatarManager
+	 */
+	function getAvatarManager() {
+		return $this->query('AvatarManager');
 	}
 
 	/**
@@ -247,7 +269,7 @@ class Server extends SimpleContainer implements IServerContainer {
 	}
 
 	/**
-	 * @return \OC\Config
+	 * @return \OCP\IConfig
 	 */
 	function getConfig() {
 		return $this->query('AllConfig');

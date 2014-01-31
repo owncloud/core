@@ -12,6 +12,11 @@ input#openid, input#webdav { width:20em; }
 	display: block;
 }
 
+.personalblock input[type="checkbox"] {
+	position: relative;
+	top: 2px;
+}
+
 /* Sync clients */
 .clientsbox { margin:12px; }
 .clientsbox h1 { font-size:40px; font-weight:bold; margin:50px 0 20px; }
@@ -126,6 +131,12 @@ span.version { margin-left:1em; margin-right:1em; color:#555; }
 .appslink { text-decoration: underline; }
 .score { color:#666; font-weight:bold; font-size:0.8em; }
 
+.appinfo .documentation {
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+
 /* LOG */
 #log { white-space:normal; }
 #lessLog { display:none; }
@@ -142,3 +153,16 @@ table.shareAPI td { padding-bottom: 0.8em; }
 /* HELP */
 .pressed {background-color:#DDD;}
 
+/* PASSWORD */
+.strengthify-wrapper {
+	position: absolute;
+	left: 189px;
+	width: 131px;
+	margin-top: -7px;
+}
+
+/* OPERA hack for strengthify*/
+doesnotexist:-o-prefocus, .strengthify-wrapper {
+	left: 185px;
+	width: 129px;
+}

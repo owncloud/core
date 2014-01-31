@@ -52,8 +52,8 @@ class Manager implements ManagerInterface {
 	/**
 	 * get all enabled apps
 	 */
-	public function getEnabledApps() {
-		if (isset($this->enabledApps)) {
+	public function getEnabledApps($forceRefresh = false) {
+		if (!$forceRefresh && isset($this->enabledApps)) {
 			return $this->enabledApps;
 		}
 		$values = \OC_Appconfig::getValues(false, 'enabled'); // TODO: DI
@@ -64,6 +64,7 @@ class Manager implements ManagerInterface {
 		  }
 		}
 		$this->enabledApps = array_unique($this->enabledApps);
+		sort($this->enabledApps);
 		return $this->enabledApps;
 	}
 

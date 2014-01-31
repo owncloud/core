@@ -7,6 +7,7 @@
 # alfsoft <alfsoft@gmail.com>, 2013
 # lord93 <lordakryl@gmail.com>, 2013
 # foool <andrglad@mail.ru>, 2013
+# Evgeniy Spitsyn <evgeniy@spitsyn.net>, 2013
 # jekader <jekader@gmail.com>, 2013
 # Mescalinich <insider.junk@gmail.com>, 2013
 # stushev <s-tushev@ya.ru>, 2013
@@ -22,9 +23,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2013-11-03 12:38-0500\n"
-"PO-Revision-Date: 2013-11-01 16:20+0000\n"
-"Last-Translator: vsapronov <vladimir.sapronov@gmail.com>\n"
+"POT-Creation-Date: 2013-12-24 01:55-0500\n"
+"PO-Revision-Date: 2013-12-22 17:10+0000\n"
+"Last-Translator: Evgeniy Spitsyn <evgeniy@spitsyn.net>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/owncloud/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -163,63 +164,63 @@ msgstr "Ноябрь"
 msgid "December"
 msgstr "Декабрь"
 
-#: js/js.js:387
+#: js/js.js:398
 msgid "Settings"
 msgstr "Конфигурация"
 
-#: js/js.js:858
+#: js/js.js:869
 msgid "seconds ago"
 msgstr "несколько секунд назад"
 
-#: js/js.js:859
+#: js/js.js:870
 msgid "%n minute ago"
 msgid_plural "%n minutes ago"
 msgstr[0] "%n минуту назад"
 msgstr[1] "%n минуты назад"
 msgstr[2] "%n минут назад"
 
-#: js/js.js:860
+#: js/js.js:871
 msgid "%n hour ago"
 msgid_plural "%n hours ago"
 msgstr[0] "%n час назад"
 msgstr[1] "%n часа назад"
 msgstr[2] "%n часов назад"
 
-#: js/js.js:861
+#: js/js.js:872
 msgid "today"
 msgstr "сегодня"
 
-#: js/js.js:862
+#: js/js.js:873
 msgid "yesterday"
 msgstr "вчера"
 
-#: js/js.js:863
+#: js/js.js:874
 msgid "%n day ago"
 msgid_plural "%n days ago"
 msgstr[0] "%n день назад"
 msgstr[1] "%n дня назад"
 msgstr[2] "%n дней назад"
 
-#: js/js.js:864
+#: js/js.js:875
 msgid "last month"
 msgstr "в прошлом месяце"
 
-#: js/js.js:865
+#: js/js.js:876
 msgid "%n month ago"
 msgid_plural "%n months ago"
 msgstr[0] "%n месяц назад"
 msgstr[1] "%n месяца назад"
 msgstr[2] "%n месяцев назад"
 
-#: js/js.js:866
+#: js/js.js:877
 msgid "months ago"
 msgstr "несколько месяцев назад"
 
-#: js/js.js:867
+#: js/js.js:878
 msgid "last year"
 msgstr "в прошлом году"
 
-#: js/js.js:868
+#: js/js.js:879
 msgid "years ago"
 msgstr "несколько лет назад"
 
@@ -296,12 +297,12 @@ msgstr "Общие"
 msgid "Share"
 msgstr "Открыть доступ"
 
-#: js/share.js:158 js/share.js:171 js/share.js:178 js/share.js:692
-#: js/share.js:704
+#: js/share.js:158 js/share.js:171 js/share.js:178 js/share.js:707
+#: js/share.js:719 templates/installation.php:10
 msgid "Error"
 msgstr "Ошибка"
 
-#: js/share.js:160 js/share.js:732
+#: js/share.js:160 js/share.js:747
 msgid "Error while sharing"
 msgstr "Ошибка при открытии доступа"
 
@@ -321,115 +322,115 @@ msgstr "{owner} открыл доступ для Вас и группы {group} 
 msgid "Shared with you by {owner}"
 msgstr "{owner} открыл доступ для Вас"
 
-#: js/share.js:212
+#: js/share.js:213
 msgid "Share with user or group …"
 msgstr "Поделиться с пользователем или группой..."
 
-#: js/share.js:218
+#: js/share.js:219
 msgid "Share link"
 msgstr "Поделиться ссылкой"
 
-#: js/share.js:221
+#: js/share.js:222
 msgid "Password protect"
 msgstr "Защитить паролем"
 
-#: js/share.js:223 templates/installation.php:57 templates/login.php:32
+#: js/share.js:224 templates/installation.php:58 templates/login.php:38
 msgid "Password"
 msgstr "Пароль"
 
-#: js/share.js:228
+#: js/share.js:229
 msgid "Allow Public Upload"
 msgstr "Разрешить открытую загрузку"
 
-#: js/share.js:232
+#: js/share.js:233
 msgid "Email link to person"
 msgstr "Почтовая ссылка на персону"
 
-#: js/share.js:233
+#: js/share.js:234
 msgid "Send"
 msgstr "Отправить"
 
-#: js/share.js:238
+#: js/share.js:239
 msgid "Set expiration date"
 msgstr "Установить срок доступа"
 
-#: js/share.js:239
+#: js/share.js:240
 msgid "Expiration date"
 msgstr "Дата окончания"
 
-#: js/share.js:274
+#: js/share.js:275
 msgid "Share via email:"
 msgstr "Поделится через электронную почту:"
 
-#: js/share.js:277
+#: js/share.js:278
 msgid "No people found"
 msgstr "Ни один человек не найден"
 
-#: js/share.js:307 js/share.js:344
+#: js/share.js:322 js/share.js:359
 msgid "group"
 msgstr "группа"
 
-#: js/share.js:318
+#: js/share.js:333
 msgid "Resharing is not allowed"
 msgstr "Общий доступ не разрешен"
 
-#: js/share.js:360
+#: js/share.js:375
 msgid "Shared in {item} with {user}"
 msgstr "Общий доступ к {item} с {user}"
 
-#: js/share.js:382
+#: js/share.js:397
 msgid "Unshare"
 msgstr "Закрыть общий доступ"
 
-#: js/share.js:390
+#: js/share.js:405
 msgid "notify by email"
 msgstr "уведомить по почте"
 
-#: js/share.js:393
+#: js/share.js:408
 msgid "can edit"
 msgstr "может редактировать"
 
-#: js/share.js:395
+#: js/share.js:410
 msgid "access control"
 msgstr "контроль доступа"
 
-#: js/share.js:398
+#: js/share.js:413
 msgid "create"
 msgstr "создать"
 
-#: js/share.js:401
+#: js/share.js:416
 msgid "update"
 msgstr "обновить"
 
-#: js/share.js:404
+#: js/share.js:419
 msgid "delete"
 msgstr "удалить"
 
-#: js/share.js:407
+#: js/share.js:422
 msgid "share"
 msgstr "открыть доступ"
 
-#: js/share.js:449 js/share.js:679
+#: js/share.js:694
 msgid "Password protected"
 msgstr "Защищено паролем"
 
-#: js/share.js:692
+#: js/share.js:707
 msgid "Error unsetting expiration date"
 msgstr "Ошибка при отмене срока доступа"
 
-#: js/share.js:704
+#: js/share.js:719
 msgid "Error setting expiration date"
 msgstr "Ошибка при установке срока доступа"
 
-#: js/share.js:719
+#: js/share.js:734
 msgid "Sending ..."
 msgstr "Отправляется ..."
 
-#: js/share.js:730
+#: js/share.js:745
 msgid "Email sent"
 msgstr "Письмо отправлено"
 
-#: js/share.js:754
+#: js/share.js:769
 msgid "Warning"
 msgstr "Предупреждение"
 
@@ -460,6 +461,10 @@ msgstr "Ошибка загрузки шаблона диалога: {error}"
 #: js/tags.js:261
 msgid "No tags selected for deletion."
 msgstr "Не выбраны меток для удаления."
+
+#: js/update.js:8
+msgid "Please reload the page."
+msgstr "Пожалуйста, перезагрузите страницу."
 
 #: js/update.js:17
 msgid ""
@@ -496,8 +501,8 @@ msgstr "Запрос не удался. Вы уверены, что email или
 msgid "You will receive a link to reset your password via Email."
 msgstr "На ваш адрес Email выслана ссылка для сброса пароля."
 
-#: lostpassword/templates/lostpassword.php:21 templates/installation.php:51
-#: templates/login.php:25
+#: lostpassword/templates/lostpassword.php:21 templates/installation.php:52
+#: templates/login.php:31
 msgid "Username"
 msgstr "Имя пользователя"
 
@@ -541,7 +546,7 @@ msgstr "Личное"
 msgid "Users"
 msgstr "Пользователи"
 
-#: strings.php:7 templates/layout.user.php:110
+#: strings.php:7 templates/layout.user.php:111
 msgid "Apps"
 msgstr "Приложения"
 
@@ -599,112 +604,117 @@ msgid ""
 "\n"
 msgstr "Здравствуйте,\n\nпросто даём вам знать, что %s расшарил %s для вас.\nПосмотреть: %s\n\n"
 
-#: templates/altmail.php:4
+#: templates/altmail.php:4 templates/mail.php:17
 #, php-format
-msgid ""
-"The share will expire on %s.\n"
-"\n"
-msgstr "Шара закончится %s\n\n"
+msgid "The share will expire on %s."
+msgstr "Доступ пропадет в %s"
 
-#: templates/altmail.php:6 templates/mail.php:19
+#: templates/altmail.php:7 templates/mail.php:20
 msgid "Cheers!"
 msgstr "Приветствуем!"
 
-#: templates/installation.php:24 templates/installation.php:31
-#: templates/installation.php:38
+#: templates/installation.php:25 templates/installation.php:32
+#: templates/installation.php:39
 msgid "Security Warning"
 msgstr "Предупреждение безопасности"
 
-#: templates/installation.php:25
+#: templates/installation.php:26
 msgid "Your PHP version is vulnerable to the NULL Byte attack (CVE-2006-7243)"
 msgstr "Ваша версия PHP уязвима к атаке NULL Byte (CVE-2006-7243)"
 
-#: templates/installation.php:26
+#: templates/installation.php:27
 #, php-format
 msgid "Please update your PHP installation to use %s securely."
 msgstr "Пожалуйста обновите Вашу PHP конфигурацию для безопасного использования %s."
 
-#: templates/installation.php:32
+#: templates/installation.php:33
 msgid ""
 "No secure random number generator is available, please enable the PHP "
 "OpenSSL extension."
 msgstr "Отсутствует защищенный генератор случайных чисел, пожалуйста, включите расширение PHP OpenSSL."
 
-#: templates/installation.php:33
+#: templates/installation.php:34
 msgid ""
 "Without a secure random number generator an attacker may be able to predict "
 "password reset tokens and take over your account."
 msgstr "Без защищенного генератора случайных чисел злоумышленник может предугадать токены сброса пароля и завладеть Вашей учетной записью."
 
-#: templates/installation.php:39
+#: templates/installation.php:40
 msgid ""
 "Your data directory and files are probably accessible from the internet "
 "because the .htaccess file does not work."
 msgstr "Ваша папка с данными и файлы возможно доступны из интернета потому что файл .htaccess не работает."
 
-#: templates/installation.php:41
+#: templates/installation.php:42
 #, php-format
 msgid ""
 "For information how to properly configure your server, please see the <a "
 "href=\"%s\" target=\"_blank\">documentation</a>."
 msgstr "Для информации, как правильно настроить Ваш сервер, пожалуйста загляните в <a hrev=\"%s\"target=\"blank\">документацию</a>."
 
-#: templates/installation.php:47
+#: templates/installation.php:48
 msgid "Create an <strong>admin account</strong>"
 msgstr "Создать <strong>учётную запись администратора</strong>"
 
-#: templates/installation.php:66
+#: templates/installation.php:67
 msgid "Advanced"
 msgstr "Дополнительно"
 
-#: templates/installation.php:73
+#: templates/installation.php:74
 msgid "Data folder"
 msgstr "Директория с данными"
 
-#: templates/installation.php:85
+#: templates/installation.php:86
 msgid "Configure the database"
 msgstr "Настройка базы данных"
 
-#: templates/installation.php:90 templates/installation.php:102
-#: templates/installation.php:113 templates/installation.php:124
-#: templates/installation.php:136
+#: templates/installation.php:91 templates/installation.php:103
+#: templates/installation.php:114 templates/installation.php:125
+#: templates/installation.php:137
 msgid "will be used"
 msgstr "будет использовано"
 
-#: templates/installation.php:148
+#: templates/installation.php:149
 msgid "Database user"
 msgstr "Пользователь базы данных"
 
-#: templates/installation.php:155
+#: templates/installation.php:156
 msgid "Database password"
 msgstr "Пароль базы данных"
 
-#: templates/installation.php:160
+#: templates/installation.php:161
 msgid "Database name"
 msgstr "Название базы данных"
 
-#: templates/installation.php:168
+#: templates/installation.php:169
 msgid "Database tablespace"
 msgstr "Табличое пространство базы данных"
 
-#: templates/installation.php:175
+#: templates/installation.php:176
 msgid "Database host"
 msgstr "Хост базы данных"
 
-#: templates/installation.php:184
+#: templates/installation.php:185
 msgid "Finish setup"
 msgstr "Завершить установку"
 
-#: templates/installation.php:184
+#: templates/installation.php:185
 msgid "Finishing …"
 msgstr "Завершаем..."
 
-#: templates/layout.user.php:43
+#: templates/layout.user.php:40
+msgid ""
+"This application requires JavaScript to be enabled for correct operation.  "
+"Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable "
+"JavaScript</a> and re-load this interface."
+msgstr "Это приложение требует включённый JavaScript для корректной работы. Пожалуйста, <a href=\"http://enable-javascript.com/\" target=\"_blank\">включите JavaScript</a> и перезагрузите интерфейс."
+
+#: templates/layout.user.php:44
 #, php-format
 msgid "%s is available. Get more information on how to update."
 msgstr "%s доступно. Получить дополнительную информацию о порядке обновления."
 
-#: templates/layout.user.php:71
+#: templates/layout.user.php:72 templates/singleuser.user.php:8
 msgid "Log out"
 msgstr "Выйти"
 
@@ -730,19 +740,19 @@ msgstr "Неудачная аутентификация с сервером!"
 msgid "Please contact your administrator."
 msgstr "Пожалуйста, свяжитесь с вашим администратором."
 
-#: templates/login.php:38
+#: templates/login.php:44
 msgid "Lost your password?"
 msgstr "Забыли пароль?"
 
-#: templates/login.php:43
+#: templates/login.php:49
 msgid "remember"
 msgstr "запомнить"
 
-#: templates/login.php:46
+#: templates/login.php:52
 msgid "Log in"
 msgstr "Войти"
 
-#: templates/login.php:52
+#: templates/login.php:58
 msgid "Alternative Logins"
 msgstr "Альтернативные имена пользователя"
 
@@ -753,10 +763,23 @@ msgid ""
 "href=\"%s\">View it!</a><br><br>"
 msgstr "Здравствуйте,<br><br>просто даём вам знать, что %s расшарил %s для вас.<br><a href=\"%s\">Посмотреть!</a><br><br>"
 
-#: templates/mail.php:17
-#, php-format
-msgid "The share will expire on %s.<br><br>"
-msgstr "Шара закончится %s.<br><br>"
+#: templates/singleuser.user.php:3
+msgid "This ownCloud instance is currently in single user mode."
+msgstr "Эта установка ownCloud в настоящее время в однопользовательском режиме."
+
+#: templates/singleuser.user.php:4
+msgid "This means only administrators can use the instance."
+msgstr "Это значит, что только администраторы могут использовать эту установку."
+
+#: templates/singleuser.user.php:5 templates/update.user.php:5
+msgid ""
+"Contact your system administrator if this message persists or appeared "
+"unexpectedly."
+msgstr "Обратитесь к вашему системному администратору если это сообщение не исчезает или появляется неожиданно."
+
+#: templates/singleuser.user.php:7 templates/update.user.php:6
+msgid "Thank you for your patience."
+msgstr "Спасибо за терпение."
 
 #: templates/update.admin.php:3
 #, php-format
@@ -770,14 +793,4 @@ msgstr "Производится обновление ownCloud, это може�
 
 #: templates/update.user.php:4
 msgid "Please reload this page after a short time to continue using ownCloud."
-msgstr "Перезагрузите эту страницу через короткое время чтобы продолжить использовать ownCloud."
-
-#: templates/update.user.php:5
-msgid ""
-"Contact your system administrator if this message persists or appeared "
-"unexpectedly."
-msgstr "Обратитесь к вашему системному администратору если это сообщение не исчезает или появляется неожиданно."
-
-#: templates/update.user.php:6
-msgid "Thank you for your patience."
-msgstr "Спасибо за ваше терпение."
+msgstr "Перезагрузите эту страницу через некоторое время чтобы продолжить использовать ownCloud."

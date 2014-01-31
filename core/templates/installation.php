@@ -6,18 +6,19 @@
 <form action="index.php" method="post">
 <input type="hidden" name="install" value="true" />
 	<?php if(count($_['errors']) > 0): ?>
-	<ul class="errors">
+	<fieldset class="warning">
+		<legend><strong><?php p($l->t('Error'));?></strong></legend>
 		<?php foreach($_['errors'] as $err): ?>
-		<li>
+		<p>
 			<?php if(is_array($err)):?>
 				<?php print_unescaped($err['error']); ?>
-				<p class='hint'><?php print_unescaped($err['hint']); ?></p>
+				<span class='hint'><?php print_unescaped($err['hint']); ?></span>
 			<?php else: ?>
 				<?php print_unescaped($err); ?>
 			<?php endif; ?>
-		</li>
+		</p>
 		<?php endforeach; ?>
-	</ul>
+	</fieldset>
 	<?php endif; ?>
 	<?php if($_['vulnerableToNullByte']): ?>
 	<fieldset class="warning">
@@ -53,11 +54,12 @@
 		</p>
 		<p class="infield groupbottom">
 			<input type="password" name="adminpass" data-typetoggle="#show" id="adminpass" placeholder=""
-				value="<?php p(OC_Helper::init_var('adminpass')); ?>" />
+				value="<?php p(OC_Helper::init_var('adminpass')); ?>" required />
 			<label for="adminpass" class="infield"><?php p($l->t( 'Password' )); ?></label>
 			<img class="svg" id="adminpass-icon" src="<?php print_unescaped(image_path('', 'actions/password.svg')); ?>" alt="" />
 			<input type="checkbox" id="show" name="show" />
 			<label for="show"></label>
+			<div class="strengthify-wrapper"></div>
 		</p>
 	</fieldset>
 

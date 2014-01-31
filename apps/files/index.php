@@ -36,6 +36,7 @@ OCP\Util::addscript('files', 'filelist');
 OCP\App::setActiveNavigationEntry('files_index');
 // Load the files
 $dir = isset($_GET['dir']) ? stripslashes($_GET['dir']) : '';
+$dir = \OC\Files\Filesystem::normalizePath($dir);
 // Redirect if directory does not exist
 if (!\OC\Files\Filesystem::is_dir($dir . '/')) {
 	header('Location: ' . OCP\Util::getScriptName() . '');
@@ -62,7 +63,6 @@ $files = array();
 $user = OC_User::getUser();
 if (\OC\Files\Cache\Upgrade::needUpgrade($user)) { //dont load anything if we need to upgrade the cache
 	$needUpgrade = true;
-	$freeSpace = 0;
 } else {
 	if ($isIE8){
 		// after the redirect above, the URL will have a format
@@ -76,7 +76,6 @@ if (\OC\Files\Cache\Upgrade::needUpgrade($user)) { //dont load anything if we ne
 	else{
 		$files = \OCA\Files\Helper::getFiles($dir);
 	}
-	$freeSpace = \OC\Files\Filesystem::free_space($dir);
 	$needUpgrade = false;
 }
 
@@ -107,7 +106,6 @@ if ($needUpgrade) {
 	// if the encryption app is disabled, than everything is fine (INIT_SUCCESSFUL status code)
 	$encryptionInitStatus = 2;
 	if (OC_App::isEnabled('files_encryption')) {
-		$publicUploadEnabled = 'no';
 		$session = new \OCA\Encryption\Session(new \OC\Files\View('/'));
 		$encryptionInitStatus = $session->getInitialized();
 	}
@@ -128,7 +126,7 @@ if ($needUpgrade) {
 	$tmpl = new OCP\Template('files', 'index', 'user');
 	$tmpl->assign('fileList', $list->fetchPage());
 	$tmpl->assign('breadcrumb', $breadcrumbNav->fetchPage());
-	$tmpl->assign('dir', \OC\Files\Filesystem::normalizePath($dir));
+	$tmpl->assign('dir', $dir);
 	$tmpl->assign('isCreatable', $isCreatable);
 	$tmpl->assign('permissions', $permissions);
 	$tmpl->assign('files', $files);

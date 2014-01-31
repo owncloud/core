@@ -134,6 +134,41 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @medium
+	 * @brief test detection of encrypted files
+	 */
+	function testIsEncryptedPath() {
+
+		$util = new Encryption\Util($this->view, $this->userId);
+
+		self::loginHelper($this->userId);
+
+		$unencryptedFile = '/tmpUnencrypted-' . uniqid() . '.txt';
+		$encryptedFile =  '/tmpEncrypted-' . uniqid() . '.txt';
+
+		// Disable encryption proxy to write a unencrypted file
+		$proxyStatus = \OC_FileProxy::$enabled;
+		\OC_FileProxy::$enabled = false;
+
+		$this->view->file_put_contents($this->userId . '/files/' . $unencryptedFile, $this->dataShort);
+
+		// Re-enable proxy - our work is done
+		\OC_FileProxy::$enabled = $proxyStatus;
+
+		// write a encrypted file
+		$this->view->file_put_contents($this->userId . '/files/' . $encryptedFile, $this->dataShort);
+
+		// test if both files are detected correctly
+		$this->assertFalse($util->isEncryptedPath($this->userId . '/files/' . $unencryptedFile));
+		$this->assertTrue($util->isEncryptedPath($this->userId . '/files/' . $encryptedFile));
+
+		// cleanup
+		$this->view->unlink($this->userId . '/files/' . $unencryptedFile, $this->dataShort);
+		$this->view->unlink($this->userId . '/files/' . $encryptedFile, $this->dataShort);
+
+	}
+
+	/**
+	 * @medium
 	 * @brief test setup of encryption directories
 	 */
 	function testSetupServerSide() {
@@ -219,7 +254,7 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 
 		\OC_User::setUserId(\Test_Encryption_Util::TEST_ENCRYPTION_UTIL_USER1);
 
-		$filename = '/tmp-' . time() . '.test';
+		$filename = '/tmp-' . uniqid() . '.test';
 
 		// Disable encryption proxy to prevent recursive calls
 		$proxyStatus = \OC_FileProxy::$enabled;
@@ -247,7 +282,7 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 	function testGetFileSize() {
 		\Test_Encryption_Util::loginHelper(\Test_Encryption_Util::TEST_ENCRYPTION_UTIL_USER1);
 
-		$filename = 'tmp-' . time();
+		$filename = 'tmp-' . uniqid();
 		$externalFilename = '/' . $this->userId . '/files/' . $filename;
 
 		// Test for 0 byte files
@@ -279,6 +314,64 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue($this->util->isSharedPath($sharedPath));
 
 		$this->assertFalse($this->util->isSharedPath($path));
+	}
+
+	function testEncryptAll() {
+
+		$filename = "/encryptAll" . uniqid() . ".txt";
+		$util = new Encryption\Util($this->view, $this->userId);
+
+		// disable encryption to upload a unencrypted file
+		\OC_App::disable('files_encryption');
+
+		$this->view->file_put_contents($this->userId . '/files/' . $filename, $this->dataShort);
+
+		$fileInfoUnencrypted = $this->view->getFileInfo($this->userId . '/files/' . $filename);
+
+		$this->assertTrue(is_array($fileInfoUnencrypted));
+
+		// enable file encryption again
+		\OC_App::enable('files_encryption');
+
+		// encrypt all unencrypted files
+		$util->encryptAll('/' . $this->userId . '/' . 'files');
+
+		$fileInfoEncrypted = $this->view->getFileInfo($this->userId . '/files/' . $filename);
+
+		$this->assertTrue(is_array($fileInfoEncrypted));
+
+		// check if mtime and etags unchanged
+		$this->assertEquals($fileInfoEncrypted['mtime'], $fileInfoUnencrypted['mtime']);
+		$this->assertEquals($fileInfoEncrypted['etag'], $fileInfoUnencrypted['etag']);
+
+		$this->view->unlink($this->userId . '/files/' . $filename);
+	}
+
+
+	function testDecryptAll() {
+
+		$filename = "/decryptAll" . uniqid() . ".txt";
+		$util = new Encryption\Util($this->view, $this->userId);
+
+		$this->view->file_put_contents($this->userId . '/files/' . $filename, $this->dataShort);
+
+		$fileInfoEncrypted = $this->view->getFileInfo($this->userId . '/files/' . $filename);
+
+		$this->assertTrue(is_array($fileInfoEncrypted));
+
+		// encrypt all unencrypted files
+		$util->decryptAll('/' . $this->userId . '/' . 'files');
+
+		$fileInfoUnencrypted = $this->view->getFileInfo($this->userId . '/files/' . $filename);
+
+		$this->assertTrue(is_array($fileInfoUnencrypted));
+
+		// check if mtime and etags unchanged
+		$this->assertEquals($fileInfoEncrypted['mtime'], $fileInfoUnencrypted['mtime']);
+		$this->assertEquals($fileInfoEncrypted['etag'], $fileInfoUnencrypted['etag']);
+
+		$this->view->unlink($this->userId . '/files/' . $filename);
+
 	}
 
 	/**
@@ -356,6 +449,12 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 		$params['uid'] = $user;
 		$params['password'] = $password;
 		OCA\Encryption\Hooks::login($params);
+	}
+
+	public static function logoutHelper() {
+		\OC_Util::tearDownFS();
+		\OC_User::setUserId('');
+		\OC\Files\Filesystem::tearDown();
 	}
 
 	/**

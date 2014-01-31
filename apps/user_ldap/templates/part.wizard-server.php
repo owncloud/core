@@ -32,7 +32,7 @@
 							/>
 						<span>
 							<input type="number" id="ldap_port" name="ldap_port"
-								class="invisible lwautosave"
+								class="lwautosave"
 								placeholder="<?php p($l->t('Port'));?>" />
 						</span>
 					</div>
@@ -41,7 +41,7 @@
 			<div class="tablerow">
 				<input type="text" id="ldap_dn" name="ldap_dn"
 				class="tablecell lwautosave"
-				placeholder="<?php p($l->t('User DN'));?>"
+				placeholder="<?php p($l->t('User DN'));?>" autocomplete="off"
 				title="<?php p($l->t('The DN of the client user with which the bind shall be done, e.g. uid=agent,dc=example,dc=com. For anonymous access, leave DN and Password empty.'));?>"
 				/>
 			</div>
@@ -49,14 +49,14 @@
 			<div class="tablerow">
 				<input type="password" id="ldap_agent_password"
 				class="tablecell lwautosave" name="ldap_agent_password"
-				placeholder="<?php p($l->t('Password'));?>"
+				placeholder="<?php p($l->t('Password'));?>" autocomplete="off"
 				title="<?php p($l->t('For anonymous access, leave DN and Password empty.'));?>"
 				/>
 			</div>
 
 			<div class="tablerow">
 				<textarea id="ldap_base" name="ldap_base"
-					class="tablecell invisible lwautosave"
+					class="tablecell lwautosave"
 					placeholder="<?php p($l->t('One Base DN per line'));?>"
 					title="<?php p($l->t('You can specify Base DN for users and groups in the Advanced tab'));?>">
 				</textarea>

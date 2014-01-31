@@ -244,7 +244,9 @@ class Share {
 	 * Get the items of item type shared with the current user
 	 * @param string Item type
 	 * @param int Format (optional) Format type must be defined by the backend
+	 * @param mixed Parameters (optional)
 	 * @param int Number of items to return (optional) Returns all by default
+	 * @param bool include collections (optional)
 	 * @return Return depends on format
 	 */
 	public static function getItemsSharedWith($itemType, $format = self::FORMAT_NONE,
@@ -256,8 +258,10 @@ class Share {
 	/**
 	 * Get the item of item type shared with the current user
 	 * @param string $itemType
-	 * @param string $ItemTarget
+	 * @param string $itemTarget
 	 * @param int $format (optional) Format type must be defined by the backend
+	 * @param mixed Parameters (optional)
+	 * @param bool include collections (optional)
 	 * @return Return depends on format
 	 */
 	public static function getItemSharedWith($itemType, $itemTarget, $format = self::FORMAT_NONE,
@@ -268,8 +272,8 @@ class Share {
 
 	/**
 	 * Get the item of item type shared with a given user by source
-	 * @param string $ItemType
-	 * @param string $ItemSource
+	 * @param string $itemType
+	 * @param string $itemSource
 	 * @param string $user User user to whom the item was shared
 	 * @return array Return list of items with file_target, permissions and expiration
 	 */
@@ -343,20 +347,29 @@ class Share {
 	}
 
 	/**
-	 * Get the item shared by a token
-	 * @param string token
-	 * @return Item
+	 * Based on the given token the share information will be returned - password protected shares will be verified
+	 * @param string $token
+	 * @return array | bool false will be returned in case the token is unknown or unauthorized
 	 */
-	public static function getShareByToken($token) {
+	public static function getShareByToken($token, $checkPasswordProtection = true) {
 		$query = \OC_DB::prepare('SELECT * FROM `*PREFIX*share` WHERE `token` = ?', 1);
 		$result = $query->execute(array($token));
 		if (\OC_DB::isError($result)) {
 			\OC_Log::write('OCP\Share', \OC_DB::getErrorMessage($result) . ', token=' . $token, \OC_Log::ERROR);
 		}
 		$row = $result->fetchRow();
-		if (self::expireItem($row)) {
+		if ($row === false) {
 			return false;
 		}
+		if (is_array($row) and self::expireItem($row)) {
+			return false;
+		}
+
+		// password protected shares need to be authenticated
+		if ($checkPasswordProtection && !\OCP\Share::checkPasswordProtectedShare($row)) {
+			return false;
+		}
+
 		return $row;
 	}
 
@@ -419,11 +432,13 @@ class Share {
 	 * @param string Item source
 	 * @param string Owner
 	 * @param bool Include collections
+	 * @praram bool check expire date
 	 * @return Return array of users
 	 */
-	public static function getUsersItemShared($itemType, $itemSource, $uidOwner, $includeCollections = false) {
+	public static function getUsersItemShared($itemType, $itemSource, $uidOwner, $includeCollections = false, $checkExpireDate = true) {
+
 		$users = array();
-		$items = self::getItems($itemType, $itemSource, null, null, $uidOwner, self::FORMAT_NONE, null, -1, $includeCollections);
+		$items = self::getItems($itemType, $itemSource, null, null, $uidOwner, self::FORMAT_NONE, null, -1, $includeCollections, false, $checkExpireDate);
 		if ($items) {
 			foreach ($items as $item) {
 				if ((int)$item['share_type'] === self::SHARE_TYPE_USER) {
@@ -649,7 +664,15 @@ class Share {
 	 * @return Returns true on success or false on failure
 	 */
 	public static function unshareAll($itemType, $itemSource) {
-		if ($shares = self::getItemShared($itemType, $itemSource)) {
+		// Get all of the owners of shares of this item.
+		$query = \OC_DB::prepare( 'SELECT `uid_owner` from `*PREFIX*share` WHERE `item_type`=? AND `item_source`=?' );
+		$result = $query->execute(array($itemType, $itemSource));
+		$shares = array();
+		// Add each owner's shares to the array of all shares for this item.
+		while ($row = $result->fetchRow()) {
+			$shares = array_merge($shares, self::getItems($itemType, $itemSource, null, null, $row['uid_owner']));
+		}
+		if (!empty($shares)) {
 			// Pass all the vars we have for now, they may be useful
 			$hookParams = array(
 				'itemType' => $itemType,
@@ -823,11 +846,12 @@ class Share {
 					$date = null;
 				} else {
 					$date = new \DateTime($date);
-					$date = date('Y-m-d H:i', $date->format('U') - $date->getOffset());
 				}
 				$query = \OC_DB::prepare('UPDATE `*PREFIX*share` SET `expiration` = ? WHERE `id` = ?');
+				$query->bindValue(1, $date, 'datetime');
 				foreach ($items as $item) {
-					$query->execute(array($date, $item['id']));
+					$query->bindValue(2, (int) $item['id']);
+					$query->execute();
 				}
 				return true;
 			}
@@ -843,8 +867,8 @@ class Share {
 	protected static function expireItem(array $item) {
 		if (!empty($item['expiration'])) {
 			$now = new \DateTime();
-			$expirationDate = new \DateTime($item['expiration'], new \DateTimeZone('UTC'));
-			if ($now > $expirationDate) {
+			$expires = new \DateTime($item['expiration']);
+			if ($now > $expires) {
 				self::unshareItem($item);
 				return true;
 			}
@@ -860,12 +884,14 @@ class Share {
 	protected static function unshareItem(array $item) {
 		// Pass all the vars we have for now, they may be useful
 		$hookParams = array(
-			'itemType'		=> $item['item_type'],
-			'itemSource'	=> $item['item_source'],
-			'shareType'		=> $item['share_type'],
-			'shareWith'		=> $item['share_with'],
-			'itemParent'	=> $item['parent'],
+			'itemType'      => $item['item_type'],
+			'itemSource'    => $item['item_source'],
+			'shareType'     => $item['share_type'],
+			'shareWith'     => $item['share_with'],
+			'itemParent'    => $item['parent'],
+			'uidOwner'      => $item['uid_owner'],
 		);
+
 		\OC_Hook::emit('OCP\Share', 'pre_unshare', $hookParams + array(
 			'fileSource'	=> $item['file_source'],
 		));
@@ -954,6 +980,8 @@ class Share {
 	 * @param mixed Parameters to pass to formatItems()
 	 * @param int Number of items to return, -1 to return all matches (optional)
 	 * @param bool Include collection item types (optional)
+	 * @param bool TODO (optional)
+	 * @prams bool check expire date
 	 * @return mixed
 	 *
 	 * See public functions getItem(s)... for parameter usage
@@ -961,7 +989,7 @@ class Share {
 	 */
 	private static function getItems($itemType, $item = null, $shareType = null, $shareWith = null,
 		$uidOwner = null, $format = self::FORMAT_NONE, $parameters = null, $limit = -1,
-		$includeCollections = false, $itemShareWithBySource = false) {
+		$includeCollections = false, $itemShareWithBySource = false, $checkExpireDate  = true) {
 		if (!self::isEnabled()) {
 			if ($limit == 1 || (isset($uidOwner) && isset($item))) {
 				return false;
@@ -1101,19 +1129,19 @@ class Share {
 		if ($format == self::FORMAT_STATUSES) {
 			if ($itemType == 'file' || $itemType == 'folder') {
 				$select = '`*PREFIX*share`.`id`, `item_type`, `item_source`, `*PREFIX*share`.`parent`,'
-					.' `share_type`, `file_source`, `path`, `expiration`, `storage`, `mail_send`';
+					.' `share_type`, `file_source`, `path`, `expiration`, `storage`, `share_with`, `mail_send`, `uid_owner`';
 			} else {
-				$select = '`id`, `item_type`, `item_source`, `parent`, `share_type`, `expiration`, `mail_send`';
+				$select = '`id`, `item_type`, `item_source`, `parent`, `share_type`, `share_with`, `expiration`, `mail_send`, `uid_owner`';
 			}
 		} else {
 			if (isset($uidOwner)) {
 				if ($itemType == 'file' || $itemType == 'folder') {
 					$select = '`*PREFIX*share`.`id`, `item_type`, `item_source`, `*PREFIX*share`.`parent`,'
 						.' `share_type`, `share_with`, `file_source`, `path`, `permissions`, `stime`,'
-						.' `expiration`, `token`, `storage`, `mail_send`';
+						.' `expiration`, `token`, `storage`, `mail_send`, `uid_owner`';
 				} else {
 					$select = '`id`, `item_type`, `item_source`, `parent`, `share_type`, `share_with`, `permissions`,'
-						.' `stime`, `file_source`, `expiration`, `token`, `mail_send`';
+						.' `stime`, `file_source`, `expiration`, `token`, `mail_send`, `uid_owner`';
 				}
 			} else {
 				if ($fileDependent) {
@@ -1227,8 +1255,10 @@ class Share {
 					}
 				}
 			}
-			if (self::expireItem($row)) {
-				continue;
+			if($checkExpireDate) {
+				if (self::expireItem($row)) {
+					continue;
+				}
 			}
 			// Check if resharing is allowed, if not remove share permission
 			if (isset($row['permissions']) && !self::isResharingAllowed()) {
@@ -1354,8 +1384,11 @@ class Share {
 	 * @param string Item source
 	 * @param int SHARE_TYPE_USER, SHARE_TYPE_GROUP, or SHARE_TYPE_LINK
 	 * @param string User or group the item is being shared with
+	 * @param string User that is the owner of shared item
 	 * @param int CRUDS permissions
 	 * @param bool|array Parent folder target (optional)
+	 * @param string token (optional)
+	 * @param string name of the source item (optional)
 	 * @return bool Returns true on success or false on failure
 	 */
 	private static function put($itemType, $itemSource, $shareType, $shareWith, $uidOwner,
@@ -1593,6 +1626,7 @@ class Share {
 	 * @param string Item source
 	 * @param int SHARE_TYPE_USER, SHARE_TYPE_GROUP, or SHARE_TYPE_LINK
 	 * @param string User or group the item is being shared with
+	 * @param string User that is the owner of shared item
 	 * @param string The suggested target originating from a reshare (optional)
 	 * @param int The id of the parent group share (optional)
 	 * @return string Item target
@@ -1780,6 +1814,7 @@ class Share {
 	 */
 
 	/**
+	 * Function that is called after a user is deleted. Cleans up the shares of that user.
 	 * @param array arguments
 	 */
 	public static function post_deleteUser($arguments) {
@@ -1796,6 +1831,8 @@ class Share {
 	}
 
 	/**
+	 * Function that is called after a user is added to a group.
+	 * TODO what does it do?
 	 * @param array arguments
 	 */
 	public static function post_addToGroup($arguments) {
@@ -1829,6 +1866,7 @@ class Share {
 	}
 
 	/**
+	 * Function that is called after a user is removed from a group. Shares are cleaned up.
 	 * @param array arguments
 	 */
 	public static function post_removeFromGroup($arguments) {
@@ -1848,6 +1886,7 @@ class Share {
 	}
 
 	/**
+	 * Function that is called after a group is removed. Cleans up the shares to that group.
 	 * @param array arguments
 	 */
 	public static function post_deleteGroup($arguments) {
@@ -1858,6 +1897,34 @@ class Share {
 		}
 	}
 
+	/**
+	 * In case a password protected link is not yet authenticated this function will return false
+	 *
+	 * @param array $linkItem
+	 * @return bool
+	 */
+	public static function checkPasswordProtectedShare(array $linkItem) {
+		if (!isset($linkItem['share_with'])) {
+			return true;
+		}
+		if (!isset($linkItem['share_type'])) {
+			return true;
+		}
+		if (!isset($linkItem['id'])) {
+			return true;
+		}
+
+		if ($linkItem['share_type'] != \OCP\Share::SHARE_TYPE_LINK) {
+			return true;
+		}
+
+		if ( \OC::$session->exists('public_link_authenticated')
+			&& \OC::$session->get('public_link_authenticated') === $linkItem['id'] ) {
+			return true;
+		}
+
+		return false;
+	}
 }
 
 /**
@@ -1894,7 +1961,7 @@ interface Share_Backend {
 	 * Converts the shared item sources back into the item in the specified format
 	 * @param array Shared items
 	 * @param int Format
-	 * @return ?
+	 * @return TODO
 	 *
 	 * The items array is a 3-dimensional array with the item_source as the
 	 * first key and the share id as the second key to an array with the share
@@ -1923,6 +1990,8 @@ interface Share_Backend_File_Dependent extends Share_Backend {
 
 	/**
 	 * Get the file path of the item
+	 * @param string Item source
+	 * @param string User that is the owner of shared item
 	 */
 	public function getFilePath($itemSource, $uidOwner);
 

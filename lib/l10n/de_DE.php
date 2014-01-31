@@ -16,7 +16,7 @@ $TRANSLATIONS = array(
 "Files need to be downloaded one by one." => "Die Dateien müssen einzeln heruntergeladen werden.",
 "Back to Files" => "Zurück zu \"Dateien\"",
 "Selected files too large to generate zip file." => "Die gewählten Dateien sind zu groß, um eine ZIP-Datei zu erstellen.",
-"Download the files in smaller chunks, seperately or kindly ask your administrator." => "Laden Sie die Dateien in kleineren, separaten, Stücken herunter oder bitten Sie Ihren Administrator.",
+"Please download the files separately in smaller chunks or kindly ask your administrator." => "Bitte laden Sie die Dateien einzeln in kleineren Teilen herunter oder bitten Sie Ihren Administrator.",
 "No source specified when installing app" => "Für die Installation der Applikation wurde keine Quelle angegeben",
 "No href specified when installing app from http" => "Der Link (href) wurde nicht angegeben um die Applikation per http zu installieren",
 "No path specified when installing app from local file" => "Bei der Installation der Applikation aus einer lokalen Datei wurde kein Pfad angegeben",
@@ -65,7 +65,6 @@ $TRANSLATIONS = array(
 "last month" => "Letzten Monat",
 "_%n month ago_::_%n months ago_" => array("Vor %n Monat","Vor %n Monaten"),
 "last year" => "Letztes Jahr",
-"years ago" => "Vor  Jahren",
-"Caused by:" => "Verursacht durch:"
+"years ago" => "Vor  Jahren"
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

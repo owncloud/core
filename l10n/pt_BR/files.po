@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2013-11-09 01:44-0500\n"
-"PO-Revision-Date: 2013-11-07 09:40+0000\n"
+"POT-Creation-Date: 2013-12-20 01:55-0500\n"
+"PO-Revision-Date: 2013-12-20 06:23+0000\n"
 "Last-Translator: Flávio Veras <flaviove@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/owncloud/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -49,12 +49,17 @@ msgstr "O nome %s já é usado na pasta %s. Por favor, escolha um nome diferente
 msgid "Not a valid source"
 msgstr "Não é uma fonte válida"
 
-#: ajax/newfile.php:94
+#: ajax/newfile.php:86
+msgid ""
+"Server is not allowed to open URLs, please check the server configuration"
+msgstr "Não é permitido ao servidor abrir URLs, por favor verificar a configuração do servidor."
+
+#: ajax/newfile.php:103
 #, php-format
 msgid "Error while downloading %s to %s"
 msgstr "Erro ao baixar %s para %s"
 
-#: ajax/newfile.php:128
+#: ajax/newfile.php:140
 msgid "Error when creating the file"
 msgstr "Erro ao criar o arquivo"
 
@@ -154,25 +159,29 @@ msgid ""
 "File upload is in progress. Leaving the page now will cancel the upload."
 msgstr "Upload em andamento. Sair da página agora resultará no cancelamento do envio."
 
-#: js/file-upload.js:519
+#: js/file-upload.js:523
 msgid "URL cannot be empty"
 msgstr "URL não pode estar vazia"
 
-#: js/file-upload.js:523 js/filelist.js:371
+#: js/file-upload.js:527 js/filelist.js:377
 msgid "In the home folder 'Shared' is a reserved filename"
 msgstr "Na pasta home 'Shared- Compartilhada' é um nome reservado"
 
-#: js/file-upload.js:525 js/filelist.js:373
+#: js/file-upload.js:529 js/filelist.js:379
 msgid "{new_name} already exists"
 msgstr "{new_name} já existe"
 
-#: js/file-upload.js:585
+#: js/file-upload.js:595
 msgid "Could not create file"
 msgstr "Não foi possível criar o arquivo"
 
-#: js/file-upload.js:601
+#: js/file-upload.js:611
 msgid "Could not create folder"
 msgstr "Não foi possível criar a pasta"
+
+#: js/file-upload.js:661
+msgid "Error fetching URL"
+msgstr "Erro ao buscar URL"
 
 #: js/fileactions.js:125
 msgid "Share"
@@ -186,39 +195,43 @@ msgstr "Excluir permanentemente"
 msgid "Rename"
 msgstr "Renomear"
 
-#: js/filelist.js:69 js/filelist.js:72 js/filelist.js:857
+#: js/filelist.js:69 js/filelist.js:72 js/filelist.js:889
 msgid "Pending"
 msgstr "Pendente"
 
-#: js/filelist.js:399
+#: js/filelist.js:405
 msgid "Could not rename file"
 msgstr "Não foi possível renomear o arquivo"
 
-#: js/filelist.js:518
+#: js/filelist.js:539
 msgid "replaced {new_name} with {old_name}"
 msgstr "Substituído {old_name} por {new_name} "
 
-#: js/filelist.js:518
+#: js/filelist.js:539
 msgid "undo"
 msgstr "desfazer"
 
-#: js/filelist.js:578 js/filelist.js:652 js/files.js:631
+#: js/filelist.js:591
+msgid "Error deleting file."
+msgstr "Erro eliminando o arquivo."
+
+#: js/filelist.js:609 js/filelist.js:683 js/files.js:631
 msgid "%n folder"
 msgid_plural "%n folders"
 msgstr[0] "%n pasta"
 msgstr[1] "%n pastas"
 
-#: js/filelist.js:579 js/filelist.js:653 js/files.js:637
+#: js/filelist.js:610 js/filelist.js:684 js/files.js:637
 msgid "%n file"
 msgid_plural "%n files"
 msgstr[0] "%n arquivo"
 msgstr[1] "%n arquivos"
 
-#: js/filelist.js:586
+#: js/filelist.js:617
 msgid "{dirs} and {files}"
 msgstr "{dirs} e {files}"
 
-#: js/filelist.js:796 js/filelist.js:834
+#: js/filelist.js:828 js/filelist.js:866
 msgid "Uploading %n file"
 msgid_plural "Uploading %n files"
 msgstr[0] "Enviando %n arquivo"
@@ -291,7 +304,7 @@ msgstr "Modificado"
 msgid "Invalid folder name. Usage of 'Shared' is reserved."
 msgstr "Nome da pasta inválido. Uso de 'Shared' é reservado."
 
-#: lib/app.php:88
+#: lib/app.php:101
 #, php-format
 msgid "%s could not be renamed"
 msgstr "%s não pode ser renomeado"
@@ -337,8 +350,16 @@ msgid "New"
 msgstr "Novo"
 
 #: templates/index.php:8
+msgid "New text file"
+msgstr "Novo arquivo texto"
+
+#: templates/index.php:8
 msgid "Text file"
 msgstr "Arquivo texto"
+
+#: templates/index.php:10
+msgid "New folder"
+msgstr "Nova pasta"
 
 #: templates/index.php:10
 msgid "Folder"
@@ -368,29 +389,25 @@ msgstr "Nada aqui.Carrege alguma coisa!"
 msgid "Download"
 msgstr "Baixar"
 
-#: templates/index.php:75 templates/index.php:76
-msgid "Unshare"
-msgstr "Descompartilhar"
-
-#: templates/index.php:81 templates/index.php:82
+#: templates/index.php:73 templates/index.php:74
 msgid "Delete"
 msgstr "Excluir"
 
-#: templates/index.php:95
+#: templates/index.php:86
 msgid "Upload too large"
 msgstr "Upload muito grande"
 
-#: templates/index.php:97
+#: templates/index.php:88
 msgid ""
 "The files you are trying to upload exceed the maximum size for file uploads "
 "on this server."
 msgstr "Os arquivos que você está tentando carregar excedeu o tamanho máximo para arquivos no servidor."
 
-#: templates/index.php:102
+#: templates/index.php:93
 msgid "Files are being scanned, please wait."
 msgstr "Arquivos sendo escaneados, por favor aguarde."
 
-#: templates/index.php:105
+#: templates/index.php:96
 msgid "Current scanning"
 msgstr "Scanning atual"
 

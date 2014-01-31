@@ -6,6 +6,13 @@ var FileList={
 			$(this).attr('data-file',decodeURIComponent($(this).attr('data-file')));
 		});
 	},
+	/**
+	 * Returns the tr element for a given file name
+	 */
+	findFileEl: function(fileName){
+		// use filterAttr to avoid escaping issues
+		return $('#fileList tr').filterAttr('data-file', fileName);
+	},
 	update:function(fileListHtml) {
 		var $fileList = $('#fileList');
 		$fileList.empty().html(fileListHtml);
@@ -20,6 +27,8 @@ var FileList={
 			Files.setupDragAndDrop();
 		}
 		FileList.updateFileSummary();
+		procesSelection();
+		
 		$fileList.trigger(jQuery.Event("updated"));
 	},
 	createRow:function(type, name, iconurl, linktarget, size, lastModified, permissions) {
@@ -170,6 +179,12 @@ var FileList={
 			return;
 		}
 		FileList.setCurrentDir(targetDir, changeUrl);
+		$('#fileList').trigger(
+			jQuery.Event('changeDirectory', {
+				dir: targetDir,
+				previousDir: currentDir
+			}
+		));
 		FileList.reload();
 	},
 	linkTo: function(dir) {
@@ -286,8 +301,12 @@ var FileList={
 		$('#filestable').toggleClass('hidden', show);
 	},
 	remove:function(name){
-		$('tr').filterAttr('data-file',name).find('td.filename').draggable('destroy');
-		$('tr').filterAttr('data-file',name).remove();
+		var fileEl = FileList.findFileEl(name);
+		if (fileEl.data('permissions') & OC.PERMISSION_DELETE) {
+			// file is only draggable when delete permissions are set
+			fileEl.find('td.filename').draggable('destroy');
+		}
+		fileEl.remove();
 		FileList.updateFileSummary();
 		if ( ! $('tr[data-file]').exists() ) {
 			$('#emptycontent').removeClass('hidden');
@@ -328,7 +347,7 @@ var FileList={
 		FileList.updateFileSummary();
 	},
 	loadingDone:function(name, id) {
-		var mime, tr = $('tr[data-file="'+name+'"]');
+		var mime, tr = FileList.findFileEl(name);
 		tr.data('loading', false);
 		mime = tr.data('mime');
 		tr.attr('data-mime', mime);
@@ -341,12 +360,12 @@ var FileList={
 		}, null, null, tr.attr('data-etag'));
 		tr.find('td.filename').draggable(dragOptions);
 	},
-	isLoading:function(name) {
-		return $('tr[data-file="'+name+'"]').data('loading');
+	isLoading:function(file) {
+		return FileList.findFileEl(file).data('loading');
 	},
 	rename:function(oldname) {
 		var tr, td, input, form;
-		tr = $('tr[data-file="'+oldname+'"]');
+		tr = FileList.findFileEl(oldname);
 		tr.data('renaming',true);
 		td = tr.children('td.filename');
 		input = $('<input type="text" class="filename"/>').val(oldname);
@@ -416,12 +435,27 @@ var FileList={
 								}
 								tr.find('.fileactions').effect('highlight', {}, 5000);
 								tr.effect('highlight', {}, 5000);
+								// remove loading mark and recover old image
+								td.css('background-image', oldBackgroundImage);
+							}
+							else {
+								var fileInfo = result.data;
+								tr.attr('data-mime', fileInfo.mime);
+								tr.attr('data-etag', fileInfo.etag);
+								if (fileInfo.isPreviewAvailable) {
+									Files.lazyLoadPreview(fileInfo.directory + '/' + fileInfo.name, result.data.mime, function(previewpath) {
+										tr.find('td.filename').attr('style','background-image:url('+previewpath+')');
+									}, null, null, result.data.etag);
+								}
+								else {
+									tr.find('td.filename').removeClass('preview').attr('style','background-image:url('+fileInfo.icon+')');
+								}
 							}
 							// reinsert row
 							tr.detach();
 							FileList.insertElement( tr.attr('data-file'), tr.attr('data-type'),tr );
-							// remove loading mark and recover old image
-							td.css('background-image', oldBackgroundImage);
+							// update file actions in case the extension changed
+							FileActions.display( tr.find('td.filename'), true);
 						}
 					});
 				}
@@ -479,14 +513,16 @@ var FileList={
 			form.trigger('submit');
 		});
 	},
-	inList:function(filename) {
-		return $('#fileList tr[data-file="'+filename+'"]').length;
+	inList:function(file) {
+		return FileList.findFileEl(file).length;
 	},
 	replace:function(oldName, newName, isNewFile) {
 		// Finish any existing actions
-		$('tr[data-file="'+oldName+'"]').hide();
-		$('tr[data-file="'+newName+'"]').hide();
-		var tr = $('tr[data-file="'+oldName+'"]').clone();
+		var oldFileEl = FileList.findFileEl(oldName);
+		var newFileEl = FileList.findFileEl(newName);
+		oldFileEl.hide();
+		newFileEl.hide();
+		var tr = oldFileEl.clone();
 		tr.attr('data-replace', 'true');
 		tr.attr('data-file', newName);
 		var td = tr.children('td.filename');
@@ -538,7 +574,7 @@ var FileList={
 			files=[files];
 		}
 		for (var i=0; i<files.length; i++) {
-			var deleteAction = $('tr[data-file="'+files[i]+'"]').children("td.date").children(".action.delete");
+			var deleteAction = FileList.findFileEl(files[i]).children("td.date").children(".action.delete");
 			deleteAction.removeClass('delete-icon').addClass('progress-icon');
 		}
 		// Finish any existing actions
@@ -552,7 +588,7 @@ var FileList={
 				function(result) {
 					if (result.status === 'success') {
 						$.each(files,function(index,file) {
-							var files = $('tr[data-file="'+file+'"]');
+							var files = FileList.findFileEl(file);
 							files.remove();
 							files.find('input[type="checkbox"]').removeAttr('checked');
 							files.removeClass('selected');
@@ -563,8 +599,18 @@ var FileList={
 						FileList.updateEmptyContent();
 						Files.updateStorageStatistics();
 					} else {
+						if (result.status === 'error' && result.data.message) {
+							OC.Notification.show(result.data.message);
+						}
+						else {
+							OC.Notification.show(t('files', 'Error deleting file.'));
+						}
+						// hide notification after 10 sec
+						setTimeout(function() {
+							OC.Notification.hide();
+						}, 10000);
 						$.each(files,function(index,file) {
-							var deleteAction = $('tr[data-file="'+files[i]+'"]').children("td.date").children(".action.delete");
+							var deleteAction = FileList.findFileEl(file).find('.action.delete');
 							deleteAction.removeClass('progress-icon').addClass('delete-icon');
 						});
 					}
@@ -592,7 +638,7 @@ var FileList={
 				var fileSize = '<td class="filesize">'+humanFileSize(summary.totalSize)+'</td>';
 			}
 
-			var $summary = $('<tr class="summary"><td><span class="info">'+info+'</span></td>'+fileSize+'<td></td></tr>');
+			var $summary = $('<tr class="summary" data-file="undefined"><td><span class="info">'+info+'</span></td>'+fileSize+'<td></td></tr>');
 			$('#fileList').append($summary);
 
 			var $dirInfo = $summary.find('.dirinfo');
@@ -654,19 +700,19 @@ var FileList={
 			$('.summary .filesize').html(humanFileSize(fileSummary.totalSize));
 
 			// Show only what's necessary (may be hidden)
-			if ($dirInfo.html().charAt(0) === "0") {
+			if (fileSummary.totalDirs === 0) {
 				$dirInfo.hide();
 				$connector.hide();
 			} else {
 				$dirInfo.show();
 			}
-			if ($fileInfo.html().charAt(0) === "0") {
+			if (fileSummary.totalFiles === 0) {
 				$fileInfo.hide();
 				$connector.hide();
 			} else {
 				$fileInfo.show();
 			}
-			if ($dirInfo.html().charAt(0) !== "0" && $fileInfo.html().charAt(0) !== "0") {
+			if (fileSummary.totalDirs > 0 && fileSummary.totalFiles > 0) {
 				$connector.show();
 			}
 		}
@@ -675,8 +721,9 @@ var FileList={
 		var $fileList = $('#fileList');
 		var permissions = $('#permissions').val();
 		var isCreatable = (permissions & OC.PERMISSION_CREATE) !== 0;
-		$('#emptycontent').toggleClass('hidden', !isCreatable || $fileList.find('tr').exists());
-		$('#filestable th').toggleClass('hidden', $fileList.find('tr').exists() === false);
+		var exists = $fileList.find('tr:first').exists();
+		$('#emptycontent').toggleClass('hidden', !isCreatable || exists);
+		$('#filestable th').toggleClass('hidden', !exists);
 	},
 	showMask: function() {
 		// in case one was shown before
@@ -705,7 +752,7 @@ var FileList={
 	},
 	scrollTo:function(file) {
 		//scroll to and highlight preselected file
-		var $scrolltorow = $('tr[data-file="'+file+'"]');
+		var $scrolltorow = FileList.findFileEl(file);
 		if ($scrolltorow.exists()) {
 			$scrolltorow.addClass('searchresult');
 			$(window).scrollTop($scrolltorow.position().top);
@@ -717,7 +764,7 @@ var FileList={
 	},
 	filter:function(query) {
 		$('#fileList tr:not(.summary)').each(function(i,e) {
-			if ($(e).data('file').toLowerCase().indexOf(query.toLowerCase()) !== -1) {
+			if ($(e).data('file').toString().toLowerCase().indexOf(query.toLowerCase()) !== -1) {
 				$(e).addClass("searchresult");
 			} else {
 				$(e).removeClass("searchresult");
@@ -733,6 +780,20 @@ var FileList={
 		$('#fileList tr.searchresult').each(function(i,e) {
 			$(e).removeClass("searchresult");
 		});
+	},
+
+	/**
+	 * Returns the download URL of the given file
+	 * @param filename file name of the file
+	 * @param dir optional directory in which the file name is, defaults to the current directory
+	 */
+	getDownloadUrl: function(filename, dir) {
+		var params = {
+			files: filename,
+			dir: dir || FileList.getCurrentDirectory(),
+			download: null
+		};
+		return OC.filePath('files', 'ajax', 'download.php') + '?' + OC.buildQueryString(params);
 	}
 };
 
@@ -917,7 +978,7 @@ $(document).ready(function() {
 	$('#notification').on('click', '.undo', function() {
 		if (FileList.deleteFiles) {
 			$.each(FileList.deleteFiles,function(index,file) {
-				$('tr[data-file="'+file+'"]').show();
+				FileList.findFileEl(file).show();
 			});
 			FileList.deleteCanceled=true;
 			FileList.deleteFiles=null;
@@ -927,10 +988,10 @@ $(document).ready(function() {
 				FileList.deleteCanceled = false;
 				FileList.deleteFiles = [FileList.replaceOldName];
 			} else {
-				$('tr[data-file="'+FileList.replaceOldName+'"]').show();
+				FileList.findFileEl(FileList.replaceOldName).show();
 			}
 			$('tr[data-replace="true"').remove();
-			$('tr[data-file="'+FileList.replaceNewName+'"]').show();
+			FileList.findFileEl(FileList.replaceNewName).show();
 			FileList.replaceCanceled = true;
 			FileList.replaceOldName = null;
 			FileList.replaceNewName = null;
@@ -945,7 +1006,8 @@ $(document).ready(function() {
 		});
 	});
 	$('#notification:first-child').on('click', '.suggest', function() {
-		$('tr[data-file="'+$('#notification > span').attr('data-oldName')+'"]').show();
+		var file = $('#notification > span').attr('data-oldName');
+		FileList.findFileEl(file).show();
 		OC.Notification.hide();
 	});
 	$('#notification:first-child').on('click', '.cancel', function() {

@@ -25,8 +25,9 @@ abstract class StreamWrapper extends Common {
 					$this->unlink($path . '/' . $file);
 				}
 			}
-			$success = rmdir($this->constructUrl($path));
-			clearstatcache();
+			$url = $this->constructUrl($path);
+			$success = rmdir($url);
+			clearstatcache(false, $url);
 			return $success;
 		} else {
 			return false;
@@ -38,15 +39,7 @@ abstract class StreamWrapper extends Common {
 	}
 
 	public function filetype($path) {
-		return filetype($this->constructUrl($path));
-	}
-
-	public function isReadable($path) {
-		return true; //not properly supported
-	}
-
-	public function isUpdatable($path) {
-		return true; //not properly supported
+		return @filetype($this->constructUrl($path));
 	}
 
 	public function file_exists($path) {
@@ -54,8 +47,11 @@ abstract class StreamWrapper extends Common {
 	}
 
 	public function unlink($path) {
-		$success = unlink($this->constructUrl($path));
-		clearstatcache();
+		$url = $this->constructUrl($path);
+		$success = unlink($url);
+		// normally unlink() is supposed to do this implicitly,
+		// but doing it anyway just to be sure
+		clearstatcache(false, $url);
 		return $success;
 	}
 
@@ -76,6 +72,7 @@ abstract class StreamWrapper extends Common {
 			}
 		} else {
 			$this->file_put_contents($path, '');
+			return true;
 		}
 	}
 

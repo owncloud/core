@@ -43,6 +43,13 @@ abstract class Storage extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * Check that the test() function works
+	 */
+	public function testTestFunction() {
+		$this->assertTrue($this->instance->test());
+	}
+
+	/**
 	 * @dataProvider directoryProvider
 	 */
 	public function testDirectories($directory) {
@@ -139,7 +146,15 @@ abstract class Storage extends \PHPUnit_Framework_TestCase {
 		$this->instance->rename('/source.txt', '/target2.txt');
 		$this->assertTrue($this->instance->file_exists('/target2.txt'));
 		$this->assertFalse($this->instance->file_exists('/source.txt'));
-		$this->assertEquals(file_get_contents($textFile), $this->instance->file_get_contents('/target.txt'));
+		$this->assertEquals(file_get_contents($textFile), $this->instance->file_get_contents('/target2.txt'));
+
+		// move to overwrite
+		$testContents = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$this->instance->file_put_contents('/target3.txt', $testContents);
+		$this->instance->rename('/target2.txt', '/target3.txt');
+		$this->assertTrue($this->instance->file_exists('/target3.txt'));
+		$this->assertFalse($this->instance->file_exists('/target2.txt'));
+		$this->assertEquals(file_get_contents($textFile), $this->instance->file_get_contents('/target3.txt'));
 	}
 
 	public function testLocal() {
@@ -182,8 +197,9 @@ abstract class Storage extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue($this->instance->hasUpdated('/lorem.txt', $ctimeStart - 5));
 		$this->assertTrue($this->instance->hasUpdated('/', $ctimeStart - 5));
 
-		$this->assertTrue(($ctimeStart - 5) <= $mTime);
-		$this->assertTrue($mTime <= ($ctimeEnd + 1));
+		// check that ($ctimeStart - 5) <= $mTime <= ($ctimeEnd + 1)
+		$this->assertGreaterThanOrEqual(($ctimeStart - 5), $mTime);
+		$this->assertLessThanOrEqual(($ctimeEnd + 1), $mTime);
 		$this->assertEquals(filesize($textFile), $this->instance->filesize('/lorem.txt'));
 
 		$stat = $this->instance->stat('/lorem.txt');
@@ -200,6 +216,17 @@ abstract class Storage extends \PHPUnit_Framework_TestCase {
 
 		$this->instance->unlink('/lorem.txt');
 		$this->assertTrue($this->instance->hasUpdated('/', $mtimeStart - 5));
+	}
+
+	public function testUnlink() {
+		$textFile = \OC::$SERVERROOT . '/tests/data/lorem.txt';
+		$this->instance->file_put_contents('/lorem.txt', file_get_contents($textFile));
+
+		$this->assertTrue($this->instance->file_exists('/lorem.txt'));
+
+		$this->assertTrue($this->instance->unlink('/lorem.txt'));
+
+		$this->assertFalse($this->instance->file_exists('/lorem.txt'));
 	}
 
 	public function testFOpen() {
@@ -224,7 +251,8 @@ abstract class Storage extends \PHPUnit_Framework_TestCase {
 
 	public function testTouchCreateFile() {
 		$this->assertFalse($this->instance->file_exists('foo'));
-		$this->instance->touch('foo');
+		// returns true on success
+		$this->assertTrue($this->instance->touch('foo'));
 		$this->assertTrue($this->instance->file_exists('foo'));
 	}
 
@@ -233,7 +261,19 @@ abstract class Storage extends \PHPUnit_Framework_TestCase {
 		$this->instance->mkdir('folder/bar');
 		$this->instance->file_put_contents('folder/asd.txt', 'foobar');
 		$this->instance->file_put_contents('folder/bar/foo.txt', 'asd');
-		$this->instance->rmdir('folder');
+		$this->assertTrue($this->instance->rmdir('folder'));
+		$this->assertFalse($this->instance->file_exists('folder/asd.txt'));
+		$this->assertFalse($this->instance->file_exists('folder/bar/foo.txt'));
+		$this->assertFalse($this->instance->file_exists('folder/bar'));
+		$this->assertFalse($this->instance->file_exists('folder'));
+	}
+
+	public function testRecursiveUnlink() {
+		$this->instance->mkdir('folder');
+		$this->instance->mkdir('folder/bar');
+		$this->instance->file_put_contents('folder/asd.txt', 'foobar');
+		$this->instance->file_put_contents('folder/bar/foo.txt', 'asd');
+		$this->assertTrue($this->instance->unlink('folder'));
 		$this->assertFalse($this->instance->file_exists('folder/asd.txt'));
 		$this->assertFalse($this->instance->file_exists('folder/bar/foo.txt'));
 		$this->assertFalse($this->instance->file_exists('folder/bar'));

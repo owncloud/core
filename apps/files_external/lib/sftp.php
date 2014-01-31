@@ -10,6 +10,7 @@ namespace OC\Files\Storage;
 set_include_path(get_include_path() . PATH_SEPARATOR .
 	\OC_App::getAppPath('files_external') . '/3rdparty/phpseclib/phpseclib');
 require 'Net/SFTP.php';
+require 'Net/SFTP/Stream.php';
 
 class SFTP extends \OC\Files\Storage\Common {
 	private $host;
@@ -94,15 +95,17 @@ class SFTP extends \OC\Files\Storage\Common {
 	private function writeHostKeys($keys) {
 		try {
 			$keyPath = $this->hostKeysPath();
-			$fp = fopen($keyPath, 'w');
-			foreach ($keys as $host => $key) {
-				fwrite($fp, $host . '::' . $key . "\n");
+			if ($keyPath && file_exists($keyPath)) {
+				$fp = fopen($keyPath, 'w');
+				foreach ($keys as $host => $key) {
+					fwrite($fp, $host . '::' . $key . "\n");
+				}
+				fclose($fp);
+				return true;
 			}
-			fclose($fp);
-			return true;
 		} catch (\Exception $e) {
-			return false;
 		}
+		return false;
 	}
 
 	private function readHostKeys() {
@@ -178,14 +181,6 @@ class SFTP extends \OC\Files\Storage\Common {
 		return false;
 	}
 
-	public function isReadable($path) {
-		return true;
-	}
-
-	public function isUpdatable($path) {
-		return true;
-	}
-
 	public function file_exists($path) {
 		try {
 			return $this->client->stat($this->absPath($path)) !== false;
@@ -211,16 +206,6 @@ class SFTP extends \OC\Files\Storage\Common {
 					if ( !$this->file_exists($path)) {
 						return false;
 					}
-
-					if (strrpos($path, '.')!==false) {
-						$ext=substr($path, strrpos($path, '.'));
-					} else {
-						$ext='';
-					}
-					$tmp = \OC_Helper::tmpFile($ext);
-					$this->getFile($absPath, $tmp);
-					return fopen($tmp, $mode);
-
 				case 'w':
 				case 'wb':
 				case 'a':
@@ -233,36 +218,12 @@ class SFTP extends \OC\Files\Storage\Common {
 				case 'x+':
 				case 'c':
 				case 'c+':
-					if (strrpos($path, '.')!==false) {
-						$ext=substr($path, strrpos($path, '.'));
-					} else {
-						$ext='';
-					}
-
-					$tmpFile=\OC_Helper::tmpFile($ext);
-					\OC\Files\Stream\Close::registerCallback(
-						$tmpFile,
-						array($this, 'writeBack')
-					);
-
-					if ($this->file_exists($path)) {
-						$this->getFile($absPath, $tmpFile);
-					}
-
-					self::$tempFiles[$tmpFile]=$absPath;
-					return fopen('close://'.$tmpFile, $mode);
+					// FIXME: make client login lazy to prevent it when using fopen()
+					return fopen($this->constructUrl($path), $mode);
 			}
 		} catch (\Exception $e) {
 		}
 		return false;
-	}
-
-	public function writeBack($tmpFile) {
-		if (array_key_exists($tmpFile, self::$tempFiles)) {
-			$this->uploadFile($tmpFile, self::$tempFiles[$tmpFile]);
-			unlink($tmpFile);
-			unset(self::$tempFiles[$tmpFile]);
-		}
 	}
 
 	public function touch($path, $mtime=null) {
@@ -291,6 +252,9 @@ class SFTP extends \OC\Files\Storage\Common {
 
 	public function rename($source, $target) {
 		try {
+			if (!$this->is_dir($target) && $this->file_exists($target)) {
+				$this->unlink($target);
+			}
 			return $this->client->rename(
 				$this->absPath($source),
 				$this->absPath($target)
@@ -311,5 +275,10 @@ class SFTP extends \OC\Files\Storage\Common {
 		} catch (\Exception $e) {
 			return false;
 		}
+	}
+
+	public function constructUrl($path) {
+		$url = 'sftp://'.$this->user.':'.$this->password.'@'.$this->host.$this->root.$path;
+		return $url;
 	}
 }

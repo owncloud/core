@@ -12,7 +12,6 @@ $TRANSLATIONS = array(
 "Files need to be downloaded one by one." => "Datnes var lejupielādēt tikai katru atsevišķi.",
 "Back to Files" => "Atpakaļ pie datnēm",
 "Selected files too large to generate zip file." => "Izvēlētās datnes ir pārāk lielas, lai izveidotu zip datni.",
-"Download the files in smaller chunks, seperately or kindly ask your administrator." => "Lejupielādējiet savus failus mazākās daļās, atsevišķi vai palūdziet tos administratoram.",
 "Application is not enabled" => "Lietotne nav aktivēta",
 "Authentication error" => "Autentifikācijas kļūda",
 "Token expired. Please reload page." => "Pilnvarai ir beidzies termiņš. Lūdzu, pārlādējiet lapu.",
@@ -49,7 +48,6 @@ $TRANSLATIONS = array(
 "last month" => "pagājušajā mēnesī",
 "_%n month ago_::_%n months ago_" => array("","","Pirms %n mēnešiem"),
 "last year" => "gājušajā gadā",
-"years ago" => "gadus atpakaļ",
-"Caused by:" => "Cēlonis:"
+"years ago" => "gadus atpakaļ"
 );
 $PLURAL_FORMS = "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);";

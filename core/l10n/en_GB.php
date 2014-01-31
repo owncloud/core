@@ -102,6 +102,7 @@ $TRANSLATIONS = array(
 "Edit tags" => "Edit tags",
 "Error loading dialog template: {error}" => "Error loading dialog template: {error}",
 "No tags selected for deletion." => "No tags selected for deletion.",
+"Please reload the page." => "Please reload the page.",
 "The update was unsuccessful. Please report this issue to the <a href=\"https://github.com/owncloud/core/issues\" target=\"_blank\">ownCloud community</a>." => "The update was unsuccessful. Please report this issue to the <a href=\"https://github.com/owncloud/core/issues\" target=\"_blank\">ownCloud community</a>.",
 "The update was successful. Redirecting you to ownCloud now." => "The update was successful. Redirecting you to ownCloud now.",
 "%s password reset" => "%s password reset",
@@ -132,7 +133,7 @@ $TRANSLATIONS = array(
 "Access forbidden" => "Access denied",
 "Cloud not found" => "Cloud not found",
 "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" => "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n",
-"The share will expire on %s.\n\n" => "The share will expire on %s.\n\n",
+"The share will expire on %s." => "The share will expire on %s.",
 "Cheers!" => "Cheers!",
 "Security Warning" => "Security Warning",
 "Your PHP version is vulnerable to the NULL Byte attack (CVE-2006-7243)" => "Your PHP version is vulnerable to the NULL Byte attack (CVE-2006-7243)",
@@ -153,6 +154,7 @@ $TRANSLATIONS = array(
 "Database host" => "Database host",
 "Finish setup" => "Finish setup",
 "Finishing …" => "Finishing …",
+"This application requires JavaScript to be enabled for correct operation.  Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable JavaScript</a> and re-load this interface." => "This application requires JavaScript to be enabled for correct operation.  Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable JavaScript</a> and re-load this interface.",
 "%s is available. Get more information on how to update." => "%s is available. Get more information on how to update.",
 "Log out" => "Log out",
 "Automatic logon rejected!" => "Automatic logon rejected!",
@@ -165,11 +167,12 @@ $TRANSLATIONS = array(
 "Log in" => "Log in",
 "Alternative Logins" => "Alternative Logins",
 "Hey there,<br><br>just letting you know that %s shared »%s« with you.<br><a href=\"%s\">View it!</a><br><br>" => "Hey there,<br><br>just letting you know that %s shared »%s« with you.<br><a href=\"%s\">View it!</a><br><br>",
-"The share will expire on %s.<br><br>" => "The share will expire on %s.<br><br>",
+"This ownCloud instance is currently in single user mode." => "This ownCloud instance is currently in single user mode.",
+"This means only administrators can use the instance." => "This means only administrators can use the instance.",
+"Contact your system administrator if this message persists or appeared unexpectedly." => "Contact your system administrator if this message persists or appeared unexpectedly.",
+"Thank you for your patience." => "Thank you for your patience.",
 "Updating ownCloud to version %s, this may take a while." => "Updating ownCloud to version %s, this may take a while.",
 "This ownCloud instance is currently being updated, which may take a while." => "This ownCloud instance is currently being updated, which may take a while.",
-"Please reload this page after a short time to continue using ownCloud." => "Please reload this page after a short time to continue using ownCloud.",
-"Contact your system administrator if this message persists or appeared unexpectedly." => "Contact your system administrator if this message persists or appeared unexpectedly.",
-"Thank you for your patience." => "Thank you for your patience."
+"Please reload this page after a short time to continue using ownCloud." => "Please reload this page after a short time to continue using ownCloud."
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

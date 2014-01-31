@@ -16,7 +16,7 @@ $TRANSLATIONS = array(
 "Files need to be downloaded one by one." => "Failai turi būti parsiunčiami vienas po kito.",
 "Back to Files" => "Atgal į Failus",
 "Selected files too large to generate zip file." => "Pasirinkti failai per dideli archyvavimui į ZIP.",
-"Download the files in smaller chunks, seperately or kindly ask your administrator." => "Atsisiųskite failus mažesnėmis dalimis atskirai, arba mandagiai prašykite savo administratoriaus.",
+"Please download the files separately in smaller chunks or kindly ask your administrator." => "Prašome atsisiųsti failus mažesnėmis dalimis atskirai, arba mandagiai prašykite savo administratoriaus.",
 "No source specified when installing app" => "Nenurodytas šaltinis diegiant programą",
 "No href specified when installing app from http" => "Nenurodytas href diegiant programą iš http",
 "No path specified when installing app from local file" => "Nenurodytas kelias diegiant programą iš vietinio failo",
@@ -65,7 +65,6 @@ $TRANSLATIONS = array(
 "last month" => "praeitą mėnesį",
 "_%n month ago_::_%n months ago_" => array("Prieš %n mėnesį","Prieš %n mėnesius","Prieš %n mėnesių"),
 "last year" => "praeitais metais",
-"years ago" => "prieš metus",
-"Caused by:" => "Iššaukė:"
+"years ago" => "prieš metus"
 );
 $PLURAL_FORMS = "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);";

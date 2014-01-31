@@ -181,7 +181,8 @@ OC.Share={
 	},
 	showDropDown:function(itemType, itemSource, appendTo, link, possiblePermissions, filename) {
 		var data = OC.Share.loadItem(itemType, itemSource);
-		var html = '<div id="dropdown" class="drop" data-item-type="'+itemType+'" data-item-source="'+itemSource+'"" data-item-source-name="'+filename+'">';
+		var dropDownEl;
+		var html = '<div id="dropdown" class="drop" data-item-type="'+itemType+'" data-item-source="'+itemSource+'">';
 		if (data !== false && data.reshare !== false && data.reshare.uid_owner !== undefined) {
 			if (data.reshare.share_type == OC.Share.SHARE_TYPE_GROUP) {
 				html += '<span class="reshare">'+t('core', 'Shared with you and the group {group} by {owner}', {group: escapeHTML(data.reshare.share_with), owner: escapeHTML(data.reshare.displayname_owner)})+'</span>';
@@ -190,6 +191,7 @@ OC.Share={
 			}
 			html += '<br />';
 		}
+
 		if (possiblePermissions & OC.PERMISSION_SHARE) {
 			// Determine the Allow Public Upload status.
 			// Used later on to determine if the
@@ -238,7 +240,8 @@ OC.Share={
 			html += '<input type="checkbox" name="expirationCheckbox" id="expirationCheckbox" value="1" /><label for="expirationCheckbox">'+t('core', 'Set expiration date')+'</label>';
 			html += '<input id="expirationDate" type="text" placeholder="'+t('core', 'Expiration date')+'" style="display:none; width:90%;" />';
 			html += '</div>';
-			$(html).appendTo(appendTo);
+			dropDownEl = $(html);
+			dropDownEl = dropDownEl.appendTo(appendTo);
 			// Reset item shares
 			OC.Share.itemShares = [];
 			if (data.shares) {
@@ -292,7 +295,21 @@ OC.Share={
 				var shareWith = selected.item.value.shareWith;
 				$(this).val(shareWith);
 				// Default permissions are Edit (CRUD) and Share
-				var permissions = OC.PERMISSION_ALL;
+				// Check if these permissions are possible
+				var permissions = OC.PERMISSION_READ;
+				if (possiblePermissions & OC.PERMISSION_UPDATE) {
+					permissions = permissions | OC.PERMISSION_UPDATE;
+				}
+				if (possiblePermissions & OC.PERMISSION_CREATE) {
+					permissions = permissions | OC.PERMISSION_CREATE;
+				}
+				if (possiblePermissions & OC.PERMISSION_DELETE) {
+					permissions = permissions | OC.PERMISSION_DELETE;
+				}
+				if (possiblePermissions & OC.PERMISSION_SHARE) {
+					permissions = permissions | OC.PERMISSION_SHARE;
+				}
+
 				OC.Share.share(itemType, itemSource, shareType, shareWith, permissions, itemSourceName, function() {
 					OC.Share.addShareWith(shareType, shareWith, selected.item.label, permissions, possiblePermissions);
 					$('#shareWith').val('');
@@ -317,8 +334,10 @@ OC.Share={
 		} else {
 			html += '<input id="shareWith" type="text" placeholder="'+t('core', 'Resharing is not allowed')+'" style="width:90%;" disabled="disabled"/>';
 			html += '</div>';
-			$(html).appendTo(appendTo);
+			dropDownEl = $(html);
+			dropDownEl.appendTo(appendTo);
 		}
+		dropDownEl.attr('data-item-source-name', filename);
 		$('#dropdown').show('blind', function() {
 			OC.Share.droppedDown = true;
 		});
@@ -446,7 +465,7 @@ OC.Share={
 		if (password != null) {
 			$('#linkPass').show('blind');
 			$('#showPassword').attr('checked', true);
-			$('#linkPassText').attr('placeholder', t('core', 'Password protected'));
+			$('#linkPassText').attr('placeholder', '**********');
 		}
 		$('#expiration').show();
 		$('#emailPrivateLink #email').show();
@@ -714,12 +733,16 @@ $(document).ready(function() {
 		var itemSource = $('#dropdown').data('item-source');
 		var file = $('tr').filterAttr('data-id', String(itemSource)).data('file');
 		var email = $('#email').val();
+		var expirationDate = '';
+		if ( $('#expirationCheckbox').is(':checked') === true ) {
+			expirationDate = $( "#expirationDate" ).val();
+		}
 		if (email != '') {
 			$('#email').prop('disabled', true);
 			$('#email').val(t('core', 'Sending ...'));
 			$('#emailButton').prop('disabled', true);
 
-			$.post(OC.filePath('core', 'ajax', 'share.php'), { action: 'email', toaddress: email, link: link, itemType: itemType, itemSource: itemSource, file: file},
+			$.post(OC.filePath('core', 'ajax', 'share.php'), { action: 'email', toaddress: email, link: link, itemType: itemType, itemSource: itemSource, file: file, expiration: expirationDate},
 				function(result) {
 					$('#email').prop('disabled', false);
 					$('#emailButton').prop('disabled', false);

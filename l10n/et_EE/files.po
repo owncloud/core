@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# pisike.sipelgas <pisike.sipelgas@gmail.com>, 2013
+# pisike.sipelgas <pisike.sipelgas@gmail.com>, 2013-2014
 # Rivo Zängov <eraser@eraser.ee>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2013-11-06 21:43-0500\n"
-"PO-Revision-Date: 2013-11-03 22:10+0000\n"
-"Last-Translator: Rivo Zängov <eraser@eraser.ee>\n"
+"POT-Creation-Date: 2014-01-07 01:55-0500\n"
+"PO-Revision-Date: 2014-01-06 07:20+0000\n"
+"Last-Translator: pisike.sipelgas <pisike.sipelgas@gmail.com>\n"
 "Language-Team: Estonian (Estonia) (http://www.transifex.com/projects/p/owncloud/language/et_EE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -48,12 +48,17 @@ msgstr "Nimi %s on juba kasutusel kataloogis %s. Palun vali mõni teine nimi."
 msgid "Not a valid source"
 msgstr "Pole korrektne lähteallikas"
 
-#: ajax/newfile.php:94
+#: ajax/newfile.php:86
+msgid ""
+"Server is not allowed to open URLs, please check the server configuration"
+msgstr "Server ei võimalda URL-ide avamist, palun kontrolli serveri seadistust"
+
+#: ajax/newfile.php:103
 #, php-format
 msgid "Error while downloading %s to %s"
 msgstr "Viga %s allalaadimisel %s"
 
-#: ajax/newfile.php:128
+#: ajax/newfile.php:140
 msgid "Error when creating the file"
 msgstr "Viga faili loomisel"
 
@@ -144,34 +149,38 @@ msgstr "Pole piisavalt ruumi"
 msgid "Upload cancelled."
 msgstr "Üleslaadimine tühistati."
 
-#: js/file-upload.js:345
+#: js/file-upload.js:344
 msgid "Could not get result from server."
 msgstr "Serverist ei saadud tulemusi"
 
-#: js/file-upload.js:437
+#: js/file-upload.js:436
 msgid ""
 "File upload is in progress. Leaving the page now will cancel the upload."
 msgstr "Faili üleslaadimine on töös. Lehelt lahkumine katkestab selle üleslaadimise."
 
-#: js/file-upload.js:520
+#: js/file-upload.js:523
 msgid "URL cannot be empty"
 msgstr "URL ei saa olla tühi"
 
-#: js/file-upload.js:524 js/filelist.js:371
+#: js/file-upload.js:527 js/filelist.js:377
 msgid "In the home folder 'Shared' is a reserved filename"
 msgstr "Kodukataloogis 'Shared' on reserveeritud failinimi"
 
-#: js/file-upload.js:526 js/filelist.js:373
+#: js/file-upload.js:529 js/filelist.js:379
 msgid "{new_name} already exists"
 msgstr "{new_name} on juba olemas"
 
-#: js/file-upload.js:586
+#: js/file-upload.js:595
 msgid "Could not create file"
 msgstr "Ei suuda luua faili"
 
-#: js/file-upload.js:602
+#: js/file-upload.js:611
 msgid "Could not create folder"
 msgstr "Ei suuda luua kataloogi"
+
+#: js/file-upload.js:661
+msgid "Error fetching URL"
+msgstr "Viga URL-i haaramisel"
 
 #: js/fileactions.js:125
 msgid "Share"
@@ -185,39 +194,43 @@ msgstr "Kustuta jäädavalt"
 msgid "Rename"
 msgstr "Nimeta ümber"
 
-#: js/filelist.js:69 js/filelist.js:72 js/filelist.js:857
+#: js/filelist.js:69 js/filelist.js:72 js/filelist.js:889
 msgid "Pending"
 msgstr "Ootel"
 
-#: js/filelist.js:399
+#: js/filelist.js:405
 msgid "Could not rename file"
 msgstr "Ei suuda faili ümber nimetada"
 
-#: js/filelist.js:518
+#: js/filelist.js:539
 msgid "replaced {new_name} with {old_name}"
 msgstr "asendas nime {old_name} nimega {new_name}"
 
-#: js/filelist.js:518
+#: js/filelist.js:539
 msgid "undo"
 msgstr "tagasi"
 
-#: js/filelist.js:578 js/filelist.js:652 js/files.js:631
+#: js/filelist.js:591
+msgid "Error deleting file."
+msgstr "Viga faili kustutamisel."
+
+#: js/filelist.js:609 js/filelist.js:683 js/files.js:631
 msgid "%n folder"
 msgid_plural "%n folders"
 msgstr[0] "%n kataloog"
 msgstr[1] "%n kataloogi"
 
-#: js/filelist.js:579 js/filelist.js:653 js/files.js:637
+#: js/filelist.js:610 js/filelist.js:684 js/files.js:637
 msgid "%n file"
 msgid_plural "%n files"
 msgstr[0] "%n fail"
 msgstr[1] "%n faili"
 
-#: js/filelist.js:586
+#: js/filelist.js:617
 msgid "{dirs} and {files}"
 msgstr "{dirs} ja {files}"
 
-#: js/filelist.js:796 js/filelist.js:834
+#: js/filelist.js:828 js/filelist.js:866
 msgid "Uploading %n file"
 msgid_plural "Uploading %n files"
 msgstr[0] "Laadin üles %n faili"
@@ -290,7 +303,7 @@ msgstr "Muudetud"
 msgid "Invalid folder name. Usage of 'Shared' is reserved."
 msgstr "Vigane kausta nimi. Nime 'Shared' kasutamine on reserveeritud."
 
-#: lib/app.php:88
+#: lib/app.php:101
 #, php-format
 msgid "%s could not be renamed"
 msgstr "%s ümbernimetamine ebaõnnestus"
@@ -336,8 +349,16 @@ msgid "New"
 msgstr "Uus"
 
 #: templates/index.php:8
+msgid "New text file"
+msgstr "Uus tekstifail"
+
+#: templates/index.php:8
 msgid "Text file"
 msgstr "Tekstifail"
+
+#: templates/index.php:10
+msgid "New folder"
+msgstr "Uus kaust"
 
 #: templates/index.php:10
 msgid "Folder"
@@ -367,29 +388,25 @@ msgstr "Siin pole midagi. Lae midagi üles!"
 msgid "Download"
 msgstr "Lae alla"
 
-#: templates/index.php:75 templates/index.php:76
-msgid "Unshare"
-msgstr "Lõpeta jagamine"
-
-#: templates/index.php:81 templates/index.php:82
+#: templates/index.php:73 templates/index.php:74
 msgid "Delete"
 msgstr "Kustuta"
 
-#: templates/index.php:95
+#: templates/index.php:86
 msgid "Upload too large"
 msgstr "Üleslaadimine on liiga suur"
 
-#: templates/index.php:97
+#: templates/index.php:88
 msgid ""
 "The files you are trying to upload exceed the maximum size for file uploads "
 "on this server."
 msgstr "Failid, mida sa proovid üles laadida, ületab serveri poolt üleslaetavatele failidele määratud maksimaalse suuruse."
 
-#: templates/index.php:102
+#: templates/index.php:93
 msgid "Files are being scanned, please wait."
 msgstr "Faile skannitakse, palun oota."
 
-#: templates/index.php:105
+#: templates/index.php:96
 msgid "Current scanning"
 msgstr "Praegune skannimine"
 

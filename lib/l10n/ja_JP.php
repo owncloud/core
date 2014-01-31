@@ -16,7 +16,7 @@ $TRANSLATIONS = array(
 "Files need to be downloaded one by one." => "ファイルは1つずつダウンロードする必要があります。",
 "Back to Files" => "ファイルに戻る",
 "Selected files too large to generate zip file." => "選択したファイルはZIPファイルの生成には大きすぎます。",
-"Download the files in smaller chunks, seperately or kindly ask your administrator." => "ファイルは、小さいファイルに分割されてダウンロードされます。もしくは、管理者にお尋ねください。",
+"Please download the files separately in smaller chunks or kindly ask your administrator." => "少しずつに分けてファイルをダウンロードするか、管理者に問い合わせてください。",
 "No source specified when installing app" => "アプリインストール時のソースが未指定",
 "No href specified when installing app from http" => "アプリインストール時のhttpの URL が未指定",
 "No path specified when installing app from local file" => "アプリインストール時のローカルファイルのパスが未指定",
@@ -65,7 +65,6 @@ $TRANSLATIONS = array(
 "last month" => "一月前",
 "_%n month ago_::_%n months ago_" => array("%n ヶ月前"),
 "last year" => "一年前",
-"years ago" => "年前",
-"Caused by:" => "原因:"
+"years ago" => "年前"
 );
 $PLURAL_FORMS = "nplurals=1; plural=0;";

@@ -139,11 +139,11 @@ class OC_App{
 	/**
 	 * get all enabled apps
 	 */
-	public static function getEnabledApps() {
+	public static function getEnabledApps($forceRefresh = false) {
 		if(!OC_Config::getValue('installed', false)) {
 			return array();
 		}
-		return self::getManager()->getEnabledApps();
+		return self::getManager()->getEnabledApps($forceRefresh);
 	}
 
 	/**
@@ -487,6 +487,10 @@ class OC_App{
 			}elseif($child->getName()=='description') {
 				$xml=(string)$child->asXML();
 				$data[$child->getName()]=substr($xml, 13, -14);//script <description> tags
+			}elseif($child->getName()=='documentation') {
+				foreach($child as $subchild) {
+					$data["documentation"][$subchild->getName()] = (string)$subchild;
+				}
 			}else{
 				$data[$child->getName()]=(string)$child;
 			}

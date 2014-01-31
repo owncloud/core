@@ -5,14 +5,15 @@
 # Translators:
 # Dharth <emilpg@gmail.com>, 2013
 # pablomillaquen <pablomillaquen@gmail.com>, 2013
+# Raul Fernandez Garcia <raulfg3@gmail.com>, 2013
 # Rubén del Campo <yo@rubendelcampo.es>, 2013
 # xhiena <xhiena@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
-"Report-Msgid-Bugs-To: http://bugs.owncloud.org/\n"
-"POT-Creation-Date: 2013-10-29 07:28-0400\n"
-"PO-Revision-Date: 2013-10-28 10:45+0000\n"
+"Report-Msgid-Bugs-To: translations@owncloud.org\n"
+"POT-Creation-Date: 2013-12-20 01:55-0500\n"
+"PO-Revision-Date: 2013-12-20 06:10+0000\n"
 "Last-Translator: I Robot <owncloud-bot@tmit.eu>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/owncloud/language/es/)\n"
 "MIME-Version: 1.0\n"
@@ -57,15 +58,15 @@ msgstr "Administración"
 msgid "Failed to upgrade \"%s\"."
 msgstr "Falló la actualización \"%s\"."
 
-#: private/avatar.php:60
+#: private/avatar.php:66
 msgid "Unknown filetype"
 msgstr "Tipo de archivo desconocido"
 
-#: private/avatar.php:65
+#: private/avatar.php:71
 msgid "Invalid image"
 msgstr "Imagen inválida"
 
-#: private/defaults.php:36
+#: private/defaults.php:34
 msgid "web services under your control"
 msgstr "Servicios web bajo su control"
 
@@ -74,27 +75,27 @@ msgstr "Servicios web bajo su control"
 msgid "cannot open \"%s\""
 msgstr "No se puede abrir \"%s\""
 
-#: private/files.php:226
+#: private/files.php:231
 msgid "ZIP download is turned off."
 msgstr "La descarga en ZIP está desactivada."
 
-#: private/files.php:227
+#: private/files.php:232
 msgid "Files need to be downloaded one by one."
 msgstr "Los archivos deben ser descargados uno por uno."
 
-#: private/files.php:228 private/files.php:256
+#: private/files.php:233 private/files.php:261
 msgid "Back to Files"
 msgstr "Volver a Archivos"
 
-#: private/files.php:253
+#: private/files.php:258
 msgid "Selected files too large to generate zip file."
 msgstr "Los archivos seleccionados son demasiado grandes para generar el archivo zip."
 
-#: private/files.php:254
+#: private/files.php:259
 msgid ""
-"Download the files in smaller chunks, seperately or kindly ask your "
+"Please download the files separately in smaller chunks or kindly ask your "
 "administrator."
-msgstr "Descargue los archivos en trozos más pequeños, por separado o solicítelos amablemente su administrador."
+msgstr "Descargue los archivos en trozos más pequeños, por separado o solicítelos amablemente a su administrador."
 
 #: private/installer.php:63
 msgid "No source specified when installing app"
@@ -137,17 +138,17 @@ msgid ""
 "which is not allowed for non shipped apps"
 msgstr "La aplicación no se puede instalar porque contiene la etiqueta\n<shipped>\ntrue\n</shipped>\nque no está permitida para aplicaciones no distribuidas"
 
-#: private/installer.php:152
+#: private/installer.php:159
 msgid ""
 "App can't be installed because the version in info.xml/version is not the "
 "same as the version reported from the app store"
 msgstr "La aplicación no puede ser instalada por que la versión en info.xml/version no es la misma que la establecida en la app store"
 
-#: private/installer.php:162
+#: private/installer.php:169
 msgid "App directory already exists"
 msgstr "El directorio de la aplicación ya existe"
 
-#: private/installer.php:175
+#: private/installer.php:182
 #, php-format
 msgid "Can't create app folder. Please fix permissions. %s"
 msgstr "No se puede crear la carpeta de la aplicación. Corrija los permisos. %s"
@@ -176,17 +177,17 @@ msgstr "Texto"
 msgid "Images"
 msgstr "Imágenes"
 
-#: private/setup/abstractdatabase.php:22
+#: private/setup/abstractdatabase.php:26
 #, php-format
 msgid "%s enter the database username."
 msgstr "%s ingresar el usuario de la base de datos."
 
-#: private/setup/abstractdatabase.php:25
+#: private/setup/abstractdatabase.php:29
 #, php-format
 msgid "%s enter the database name."
 msgstr "%s ingresar el nombre de la base de datos"
 
-#: private/setup/abstractdatabase.php:28
+#: private/setup/abstractdatabase.php:32
 #, php-format
 msgid "%s you may not use dots in the database name"
 msgstr "%s puede utilizar puntos en el nombre de la base de datos"
@@ -207,11 +208,11 @@ msgid "MySQL username and/or password not valid"
 msgstr "Usuario y/o contraseña de MySQL no válidos"
 
 #: private/setup/mysql.php:67 private/setup/oci.php:54
-#: private/setup/oci.php:121 private/setup/oci.php:147
-#: private/setup/oci.php:154 private/setup/oci.php:165
-#: private/setup/oci.php:172 private/setup/oci.php:181
-#: private/setup/oci.php:189 private/setup/oci.php:198
-#: private/setup/oci.php:204 private/setup/postgresql.php:89
+#: private/setup/oci.php:121 private/setup/oci.php:144
+#: private/setup/oci.php:151 private/setup/oci.php:162
+#: private/setup/oci.php:169 private/setup/oci.php:178
+#: private/setup/oci.php:186 private/setup/oci.php:195
+#: private/setup/oci.php:201 private/setup/postgresql.php:89
 #: private/setup/postgresql.php:98 private/setup/postgresql.php:115
 #: private/setup/postgresql.php:125 private/setup/postgresql.php:134
 #, php-format
@@ -219,10 +220,10 @@ msgid "DB Error: \"%s\""
 msgstr "Error BD: \"%s\""
 
 #: private/setup/mysql.php:68 private/setup/oci.php:55
-#: private/setup/oci.php:122 private/setup/oci.php:148
-#: private/setup/oci.php:155 private/setup/oci.php:166
-#: private/setup/oci.php:182 private/setup/oci.php:190
-#: private/setup/oci.php:199 private/setup/postgresql.php:90
+#: private/setup/oci.php:122 private/setup/oci.php:145
+#: private/setup/oci.php:152 private/setup/oci.php:163
+#: private/setup/oci.php:179 private/setup/oci.php:187
+#: private/setup/oci.php:196 private/setup/postgresql.php:90
 #: private/setup/postgresql.php:99 private/setup/postgresql.php:116
 #: private/setup/postgresql.php:126 private/setup/postgresql.php:135
 #, php-format
@@ -255,7 +256,7 @@ msgstr "No se pudo establecer la conexión a Oracle"
 msgid "Oracle username and/or password not valid"
 msgstr "Usuario y/o contraseña de Oracle no válidos"
 
-#: private/setup/oci.php:173 private/setup/oci.php:205
+#: private/setup/oci.php:170 private/setup/oci.php:202
 #, php-format
 msgid "Offending command was: \"%s\", name: %s, password: %s"
 msgstr "Comando infractor: \"%s\", nombre: %s, contraseña: %s"
@@ -272,13 +273,13 @@ msgstr "Configurar un nombre de usuario del administrador"
 msgid "Set an admin password."
 msgstr "Configurar la contraseña del administrador."
 
-#: private/setup.php:184
+#: private/setup.php:195
 msgid ""
 "Your web server is not yet properly setup to allow files synchronization "
 "because the WebDAV interface seems to be broken."
 msgstr "Su servidor web aún no está configurado adecuadamente para permitir sincronización de archivos ya que la interfaz WebDAV parece no estar funcionando."
 
-#: private/setup.php:185
+#: private/setup.php:196
 #, php-format
 msgid "Please double check the <a href='%s'>installation guides</a>."
 msgstr "Por favor, vuelva a comprobar las <a href='%s'>guías de instalación</a>."
@@ -335,7 +336,3 @@ msgstr "año pasado"
 #: private/template/functions.php:142
 msgid "years ago"
 msgstr "hace años"
-
-#: private/template.php:297 public/util.php:103
-msgid "Caused by:"
-msgstr "Causado por:"
