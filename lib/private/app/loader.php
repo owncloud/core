@@ -73,9 +73,9 @@ class Loader extends \OC\Hooks\BasicEmitter implements LoaderInterface {
 		if(!in_array($app, $this->loadedApps)
 			&& is_file($appFile = $this->manager->getInfo($app)->getDirectory().'/appinfo/app.php'))
 		{
+			$this->loadedApps[] = $app;
 			$this->checkUpgrade($app);
 			require_once $appFile;
-			$this->loadedApps[] = $app;
 		}
 	}
 
