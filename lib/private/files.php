@@ -124,7 +124,9 @@ class OC_Files {
 				header('Content-Length: ' . filesize($filename));
 				self::addSendfileHeader($filename);
 			}else{
+		\OC_Log::write('debug', 'Getting filesize for file: "' . $filename . '"', \OC_Log::DEBUG);
 				$filesize = \OC\Files\Filesystem::filesize($filename);
+		\OC_Log::write('debug', 'Got filesize for file: "' . $filename . '": ' . $filesize, \OC_Log::DEBUG);
 				header('Content-Type: '.\OC\Files\Filesystem::getMimeType($filename));
 				if ($filesize > -1) {
 					header("Content-Length: ".$filesize);

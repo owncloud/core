@@ -332,6 +332,7 @@ class Proxy extends \OC_FileProxy {
 	 * @return bool
 	 */
 	public function postFileSize($path, $size) {
+		\OC_Log::write('files_encryption', 'postFileSize: "' . $path . '", ' . $size, \OC_Log::DEBUG);
 
 		$view = new \OC_FilesystemView('/');
 
@@ -367,25 +368,33 @@ class Proxy extends \OC_FileProxy {
 			\OC_FileProxy::$enabled = $proxyState;
 		}
 
+		\OC_Log::write('files_encryption', 'got file info for "' . $path . '": ' . json_encode($fileInfo), \OC_Log::DEBUG);
+
 		// if file is encrypted return real file size
 		if (is_array($fileInfo) && $fileInfo['encrypted'] === true) {
 			// try to fix unencrypted file size if it doesn't look plausible
 			if ((int)$fileInfo['size'] > 0 && (int)$fileInfo['unencrypted_size'] === 0 ) {
+		\OC_Log::write('files_encryption', 'no unencrypted size', \OC_Log::DEBUG);
 				$fixSize = $util->getFileSize($path);
 				$fileInfo['unencrypted_size'] = $fixSize;
+		\OC_Log::write('files_encryption', 'fixSize=' . $fixSize, \OC_Log::DEBUG);
 				// put file info if not .part file
 				if (!Helper::isPartialFilePath($relativePath)) {
+		\OC_Log::write('files_encryption', 'putFileInfo with the new size: ' . $fixSize, \OC_Log::DEBUG);
 					$view->putFileInfo($path, $fileInfo);
 				}
 			}
 			$size = $fileInfo['unencrypted_size'];
+		\OC_Log::write('files_encryption', 'got size from unencrypted_size: ' . $size, \OC_Log::DEBUG);
 		} else {
 			// self healing if file was removed from file cache
+		\OC_Log::write('files_encryption', 'self healing if file was removed from file cache', \OC_Log::DEBUG);
 			if (!is_array($fileInfo)) {
 				$fileInfo = array();
 			}
 
 			$fixSize = $util->getFileSize($path);
+		\OC_Log::write('files_encryption', 'fixSize=' . $fixSize, \OC_Log::DEBUG);
 			if ($fixSize > 0) {
 				$size = $fixSize;
 
@@ -394,11 +403,13 @@ class Proxy extends \OC_FileProxy {
 
 				// put file info if not .part file
 				if (!Helper::isPartialFilePath($relativePath)) {
+		\OC_Log::write('files_encryption', 'putFileInfo with the new size: ' . $fixSize, \OC_Log::DEBUG);
 					$view->putFileInfo($path, $fileInfo);
 				}
 			}
 
 		}
+		\OC_Log::write('files_encryption', 'returned size for "' . $path . '": ' . $size, \OC_Log::DEBUG);
 		return $size;
 	}
 
