@@ -1,3 +1,4 @@
+Options +SymLinksIfOwnerMatch
 <IfModule mod_fcgid.c>
 <IfModule mod_setenvif.c>
 <IfModule mod_headers.c>
