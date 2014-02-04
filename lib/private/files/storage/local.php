@@ -309,5 +309,12 @@ if (\OC_Util::runningOnWindows()) {
 		public function isLocal() {
 			return true;
 		}
+
+		/**
+		 * {@inheritdoc}
+		 */
+		public function isLocal() {
+			return true;
+		}
 	}
 }

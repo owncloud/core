@@ -134,7 +134,7 @@ class OC_Files {
 					if ($storage instanceof \OC\Files\Storage\Wrapper\Wrapper) {
 						$storage = $storage->getWrapperStorage();
 					}
-					if ($storage instanceof \OC\Files\Storage\Local) {
+					if ($storage->isLocal()) {
 						self::addSendfileHeader(\OC\Files\Filesystem::getLocalFile($filename));
 					}
 				}
