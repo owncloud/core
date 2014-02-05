@@ -23,9 +23,24 @@ $isadmin = OC_User::isAdminUser(OC_User::getUser());
 $recoveryAdminEnabled = OC_App::isEnabled('files_encryption') &&
 					    OC_Appconfig::getValue( 'files_encryption', 'recoveryAdminEnabled' );
 
+//Pagination + search
+$limit = 30;
+$offset = null;
+$search = "";
+
+if ($_GET['page'] != null){ //Pagination
+	$limit = $_GET['page'] + 30;
+	$offset = $_GET['page'];		
+}
+
+
+if ($_GET['search'] != null){//Search
+	$search = $_GET['search'];
+}
+
 if($isadmin) {
 	$accessiblegroups = OC_Group::getGroups();
-	$accessibleusers = OC_User::getDisplayNames('', 30);
+	$accessibleusers = OC_User::getDisplayNames($search, $limit, $offset);
 	$subadmins = OC_SubAdmin::getAllSubAdmins();
 }else{
 	$accessiblegroups = OC_SubAdmin::getSubAdminsGroups(OC_User::getUser());
@@ -82,4 +97,6 @@ $tmpl->assign( 'default_quota', $defaultQuota);
 $tmpl->assign( 'defaultQuotaIsUserDefined', $defaultQuotaIsUserDefined);
 $tmpl->assign( 'recoveryAdminEnabled', $recoveryAdminEnabled);
 $tmpl->assign('enableAvatars', \OC_Config::getValue('enable_avatars', true));
+$tmpl->assign( 'offset', $offset); //Offset for pagination
+$tmpl->assign( 'search', $search); //Text Search
 $tmpl->printPage();

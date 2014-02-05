@@ -12,6 +12,12 @@ $_['subadmingroups'] = $allGroups;
 $items = array_flip($_['subadmingroups']);
 unset($items['admin']);
 $_['subadmingroups'] = array_flip($items);
+
+//Pagination + search
+$pageP = $_['offset'] - 30 ;
+$pageS = $_['offset'] + 30 ;
+$search = $_['search'];
+
 ?>
 
 <script type="text/javascript" src="<?php print_unescaped(OC_Helper::linkToRoute('isadmin'));?>"></script>
@@ -76,6 +82,13 @@ $_['subadmingroups'] = array_flip($items);
 				</select>
 			<?php endif; ?>
 	</div>
+</div>
+
+<!-- Pagination + search -->
+<div class='hascontrols' style='text-align:center'>
+	<a style='text-decoration:underline' href='/index.php/settings/users?page=<?php echo $pageP ?>&search=<?php echo $search ?>'>Page Precedente</a> - <a style='text-decoration:underline' href='/index.php/settings/users?page=<?php echo $pageS ?>&search=<?php echo $search ?>'>Page Suivante</a>
+	<br />
+	Search : <input type='text' id ='search'/>
 </div>
 
 <table class="hascontrols grid" data-groups="<?php p(json_encode($allGroups));?>">
@@ -176,3 +189,8 @@ $_['subadmingroups'] = array_flip($items);
 		<?php endforeach; ?>
 	</tbody>
 </table>
+
+<!-- Pagination -->
+<div style='text-align:center;position: relative;height: 40px;margin-top: 61px;'>
+	<a style='text-decoration:underline' href='/index.php/settings/users?page=<?php echo $pageP ?>&search=<?php echo $search ?>'>Page Precedente</a> - <a style='text-decoration:underline' href='/index.php/settings/users?page=<?php echo $pageS ?>&search=<?php echo $search ?>'>Page Suivante</a>
+</div>
