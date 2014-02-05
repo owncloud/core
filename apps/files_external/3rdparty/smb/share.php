@@ -84,7 +84,7 @@ class Share {
 
 		//last line is used space
 		array_pop($output);
-		$regex = '/^\s*(.*?)\s\s\s\s+(?:([DHARS]*)\s+)?([0-9]+)\s+(.*)$/';
+		$regex = '/^\s*(.*?)\s\s\s\s+(?:([NDHARS]*)\s+)?([0-9]+)\s+(.*)$/';
 		//2 spaces, filename, optional type, size, date
 		$content = array();
 		foreach ($output as $line) {
