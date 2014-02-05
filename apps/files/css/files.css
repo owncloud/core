@@ -137,11 +137,17 @@ table th#headerName {
 	position: relative;
 	height: 50px;
 }
+
+#filestable th#headerSize {
+	padding-right: 35px;
+}
+
 table th#headerSize, table td.filesize {
-	min-width: 48px;
-	padding: 0 16px;
+	min-width: 60px;
+	padding: 0 20px 0 0;
 	text-align: right;
 }
+
 table th#headerDate, table td.date {
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
@@ -201,12 +207,12 @@ table td.filename .nametext, .uploadtext, .modified { float:left; padding:14px 0
 	position: absolute;
 	top: 15px;
 }
-.modified {
+table th#headerSize, table td.filesize span, .modified {
 	position: relative;
 	padding-left: 8px;
+	padding-right:15px;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	width: 90%;
 }
 /* ellipsize long modified dates to make room for showing delete button */
 #fileList tr:hover .modified,
@@ -327,18 +333,31 @@ a.action>img { max-height:16px; max-width:16px; vertical-align:text-bottom; }
 
 
 #fileList a.action {
-	display: inline;
 	margin: -8px 0;
 	padding: 18px 8px;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
 	filter: alpha(opacity=0);
 	opacity: 0;
-	display:none;
+	display: none;
 }
 
 #fileList a.action[data-action="Rename"] {
-	padding:18px 14px !important;
+	padding: 18px 14px;
 }
+
+#fileList a.action[data-action="Download"] {
+	height: 50px;
+	width: 80px;
+	margin-bottom: 0;
+	margin-top: 0px;
+	padding-top: 14px;
+	position: absolute;
+	right: -17px;
+	top: -16px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+}
+
 #fileList tr:hover a.action, #fileList a.action.permanent {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
 	filter: alpha(opacity=50);
@@ -368,6 +387,10 @@ a.action>img { max-height:16px; max-width:16px; vertical-align:text-bottom; }
 	padding-bottom: 8px;
 	border-bottom: none;
 }
+.summary td.filesize {
+	padding-right: 34px;
+}
+
 .summary .info {
 	margin-left: 55px;
 }

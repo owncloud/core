@@ -52,7 +52,7 @@ $totalsize = 0; ?>
 		</td>
 		<td class="filesize"
 			style="color:rgb(<?php p($simple_size_color.','.$simple_size_color.','.$simple_size_color) ?>)">
-				<?php print_unescaped(OCP\human_file_size($file['size'])); ?>
+				<span><?php print_unescaped(OCP\human_file_size($file['size'])); ?></span>
 		</td>
 		<td class="date">
 			<span class="modified"

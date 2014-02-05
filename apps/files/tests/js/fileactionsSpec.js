@@ -33,6 +33,14 @@ describe('FileActions tests', function() {
 	afterEach(function() {
 		$('#dir, #permissions, #filestable').remove();
 	});
+	it('calling addFile() creates columns', function() {
+		var $tr = FileList.addFile('testName.txt', 1234, new Date(), false, false, {download_url: 'test/download/url'});
+
+		expect($tr.find('td.filename').length).toEqual(1);
+		expect($tr.find('td.filesize span').length).toEqual(1);
+		expect($tr.find('td.date span').length).toEqual(1);
+
+	});
 	it('calling display() sets file actions', function() {
 		// note: download_url is actually the link target, not the actual download URL...
 		var $tr = FileList.addFile('testName.txt', 1234, new Date(), false, false, {download_url: 'test/download/url'});

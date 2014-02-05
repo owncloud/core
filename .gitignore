@@ -85,6 +85,7 @@ nbproject
 
 # Node Modules
 /build/node_modules/
+/build/lib/
 
 # nodejs
 /build/lib/
