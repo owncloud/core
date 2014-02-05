@@ -179,7 +179,6 @@ table td.filename .nametext, .uploadtext, .modified { float:left; padding:14px 0
 	padding-left: 8px;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	width: 90%;
 }
 /* ellipsize long modified dates to make room for showing delete button */
 #fileList tr:hover .modified,
@@ -312,6 +311,17 @@ a.action>img { max-height:16px; max-width:16px; vertical-align:text-bottom; }
 #fileList a.action[data-action="Rename"] {
 	padding:18px 14px !important;
 }
+
+#fileList a.action[data-action="Versions"] {
+	position: absolute;
+	top:7px;
+	width: 100px;
+	box-sizing: border-box;
+	-moz-box-sizing:border-box;
+	text-align: right;
+	display: block !important;
+}
+
 #fileList tr:hover a.action, #fileList a.action.permanent {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
 	filter: alpha(opacity=50);

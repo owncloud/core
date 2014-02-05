@@ -115,13 +115,6 @@ var FileActions = {
 				var img = FileActions.icons[name],
 					actionText = t('files', name),
 					actionContainer = 'a.name>span.fileactions';
-
-				if (name === 'Rename') {
-					// rename has only an icon which appears behind
-					// the file name
-					actionText = '';
-					actionContainer = 'a.name span.nametext';
-				}
 				if (img.call) {
 					img = img(file);
 				}
@@ -129,13 +122,29 @@ var FileActions = {
 				if (img) {
 					html += '<img class ="svg" src="' + img + '" />';
 				}
-				html += '<span> ' + actionText + '</span></a>';
+				if (name === 'Rename') {
+					// rename has only an icon which appears behind
+					// the file name
+					actionText = '';
+					actionContainer = 'a.name span.nametext';
+				} else if (name === 'Versions') {
+					// Moves the Versions Button inside
+					// the date column
+					actionText = '';
+					actionContainer = 'td.date span.modified';
+				} else {
+					html += '<span> ' + actionText + '</span></a>';
+				}
 
 				var element = $(html);
 				element.data('action', name);
 				//alert(element);
 				element.on('click', {a: null, elem: parent, actionFunc: actions[name]}, actionHandler);
-				parent.find(actionContainer).append(element);
+				if (name === 'Versions') {
+					parent.parent().children().children().last().append(element);
+				} else {
+					parent.find(actionContainer).append(element);
+				}
 			}
 
 		};
