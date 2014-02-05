@@ -87,9 +87,6 @@ class Test_App extends PHPUnit_Framework_TestCase {
 		// copy array
 		$sortedApps = $apps;
 		sort($sortedApps);
-		// 'files' is always on top
-		unset($sortedApps[array_search('files', $sortedApps)]);
-		array_unshift($sortedApps, 'files');
 		$this->assertEquals($sortedApps, $apps);
 	}
 
