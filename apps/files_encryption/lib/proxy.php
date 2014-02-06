@@ -337,17 +337,26 @@ class Proxy extends \OC_FileProxy {
 		$view = new \OC_FilesystemView('/');
 
 		$userId = Helper::getUser($path);
+		\OC_Log::write('files_encryption', 'got user: ' . $userId, \OC_Log::DEBUG);
 		$util = new Util($view, $userId);
 
 		// if encryption is no longer enabled or if the files aren't migrated yet
 		// we return the default file size
 		if(!\OCP\App::isEnabled('files_encryption') ||
-				$util->getMigrationStatus() !== Util::MIGRATION_COMPLETED) {
+			$util->getMigrationStatus() !== Util::MIGRATION_COMPLETED) {
+
+			if(!\OCP\App::isEnabled('files_encryption')) {
+				\OC_Log::write('files_encryption', 'encryption app not enabled', \OC_Log::DEBUG);
+			}
+			else {
+				\OC_Log::write('files_encryption', 'migration not completed', \OC_Log::DEBUG);
+			}
 			return $size;
 		}
 
 		// if path is a folder do nothing
 		if ($view->is_dir($path)) {
+			\OC_Log::write('files_encryption', 'is_dir: ' . $path, \OC_Log::DEBUG);
 			return $size;
 		}
 
@@ -356,6 +365,7 @@ class Proxy extends \OC_FileProxy {
 
 		// if path is empty we cannot resolve anything
 		if (empty($relativePath)) {
+			\OC_Log::write('files_encryption', 'empty relative path: ' . $relativePath, \OC_Log::DEBUG);
 			return $size;
 		}
 
@@ -364,6 +374,7 @@ class Proxy extends \OC_FileProxy {
 		if (!Helper::isPartialFilePath($path)) {
 			$proxyState = \OC_FileProxy::$enabled;
 			\OC_FileProxy::$enabled = false;
+			\OC_Log::write('files_encryption', 'calling getFileInfo: ' . $path, \OC_Log::DEBUG);
 			$fileInfo = $view->getFileInfo($path);
 			\OC_FileProxy::$enabled = $proxyState;
 		}
