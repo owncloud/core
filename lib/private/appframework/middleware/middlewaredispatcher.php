@@ -26,7 +26,6 @@ namespace OC\AppFramework\Middleware;
 
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\Response;
-use OCP\AppFramework\MiddleWare;
 
 /**
  * This class is used to store and run all the middleware in correct order
@@ -56,7 +55,7 @@ class MiddlewareDispatcher {
 
 	/**
 	 * Adds a new middleware
-	 * @param Middleware $middleware the middleware which will be added
+	 * @param Middleware $middleWare the middleware which will be added
 	 */
 	public function registerMiddleware(Middleware $middleWare){
 		array_push($this->middlewares, $middleWare);
