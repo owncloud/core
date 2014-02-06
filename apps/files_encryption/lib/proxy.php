@@ -305,21 +305,31 @@ class Proxy extends \OC_FileProxy {
 	 * @return bool
 	 */
 	public function postFileSize($path, $size) {
+		\OC_Log::write('files_encryption', 'postFileSize: "' . $path . '", ' . $size, \OC_Log::DEBUG);
 
 		$view = new \OC_FilesystemView('/');
 
 		$userId = Helper::getUser($path);
+		\OC_Log::write('files_encryption', 'got user: ' . $userId, \OC_Log::DEBUG);
 		$util = new Util($view, $userId);
 
 		// if encryption is no longer enabled or if the files aren't migrated yet
 		// we return the default file size
 		if(!\OCP\App::isEnabled('files_encryption') ||
-				$util->getMigrationStatus() !== Util::MIGRATION_COMPLETED) {
+			$util->getMigrationStatus() !== Util::MIGRATION_COMPLETED) {
+
+			if(!\OCP\App::isEnabled('files_encryption')) {
+				\OC_Log::write('files_encryption', 'encryption app not enabled', \OC_Log::DEBUG);
+			}
+			else {
+				\OC_Log::write('files_encryption', 'migration not completed', \OC_Log::DEBUG);
+			}
 			return $size;
 		}
 
 		// if path is a folder do nothing
 		if ($view->is_dir($path)) {
+			\OC_Log::write('files_encryption', 'is_dir: ' . $path, \OC_Log::DEBUG);
 			return $size;
 		}
 
@@ -328,6 +338,7 @@ class Proxy extends \OC_FileProxy {
 
 		// if path is empty we cannot resolve anything
 		if (empty($relativePath)) {
+			\OC_Log::write('files_encryption', 'empty relative path: ' . $relativePath, \OC_Log::DEBUG);
 			return $size;
 		}
 
@@ -336,29 +347,38 @@ class Proxy extends \OC_FileProxy {
 		if (!Helper::isPartialFilePath($path)) {
 			$proxyState = \OC_FileProxy::$enabled;
 			\OC_FileProxy::$enabled = false;
+			\OC_Log::write('files_encryption', 'calling getFileInfo: ' . $path, \OC_Log::DEBUG);
 			$fileInfo = $view->getFileInfo($path);
 			\OC_FileProxy::$enabled = $proxyState;
 		}
+
+		\OC_Log::write('files_encryption', 'got file info for "' . $path . '": ' . json_encode($fileInfo), \OC_Log::DEBUG);
 
 		// if file is encrypted return real file size
 		if (is_array($fileInfo) && $fileInfo['encrypted'] === true) {
 			// try to fix unencrypted file size if it doesn't look plausible
 			if ((int)$fileInfo['size'] > 0 && (int)$fileInfo['unencrypted_size'] === 0 ) {
+		\OC_Log::write('files_encryption', 'no unencrypted size', \OC_Log::DEBUG);
 				$fixSize = $util->getFileSize($path);
 				$fileInfo['unencrypted_size'] = $fixSize;
+		\OC_Log::write('files_encryption', 'fixSize=' . $fixSize, \OC_Log::DEBUG);
 				// put file info if not .part file
 				if (!Helper::isPartialFilePath($relativePath)) {
+		\OC_Log::write('files_encryption', 'putFileInfo with the new size: ' . $fixSize, \OC_Log::DEBUG);
 					$view->putFileInfo($path, $fileInfo);
 				}
 			}
 			$size = $fileInfo['unencrypted_size'];
+		\OC_Log::write('files_encryption', 'got size from unencrypted_size: ' . $size, \OC_Log::DEBUG);
 		} else {
 			// self healing if file was removed from file cache
+		\OC_Log::write('files_encryption', 'self healing if file was removed from file cache', \OC_Log::DEBUG);
 			if (!is_array($fileInfo)) {
 				$fileInfo = array();
 			}
 
 			$fixSize = $util->getFileSize($path);
+		\OC_Log::write('files_encryption', 'fixSize=' . $fixSize, \OC_Log::DEBUG);
 			if ($fixSize > 0) {
 				$size = $fixSize;
 
@@ -367,11 +387,13 @@ class Proxy extends \OC_FileProxy {
 
 				// put file info if not .part file
 				if (!Helper::isPartialFilePath($relativePath)) {
+		\OC_Log::write('files_encryption', 'putFileInfo with the new size: ' . $fixSize, \OC_Log::DEBUG);
 					$view->putFileInfo($path, $fileInfo);
 				}
 			}
 
 		}
+		\OC_Log::write('files_encryption', 'returned size for "' . $path . '": ' . $size, \OC_Log::DEBUG);
 		return $size;
 	}
 
