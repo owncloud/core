@@ -150,16 +150,17 @@ class OC_Appconfig {
 	 * Sets a value. If the key did not exist before it will be created.
 	 */
 	public static function setValue($app, $key, $value) {
-		// Does the key exist? yes: update. No: insert
-		if (!self::hasKey($app, $key)) {
+		// try update first, then insert if it fails
+		$query = OC_DB::prepare('UPDATE `*PREFIX*appconfig` SET `configvalue` = ?'
+			. ' WHERE `appid` = ? AND `configkey` = ?');
+		$numRows = OC_DB::executeAudited($query, array($value, $app, $key));
+
+		if ($numRows === false || $numRows === 0) {
 			$query = OC_DB::prepare('INSERT INTO `*PREFIX*appconfig` ( `appid`, `configkey`, `configvalue` )'
 				. ' VALUES( ?, ?, ? )');
-			$query->execute(array($app, $key, $value));
-		} else {
-			$query = OC_DB::prepare('UPDATE `*PREFIX*appconfig` SET `configvalue` = ?'
-				. ' WHERE `appid` = ? AND `configkey` = ?');
-			$query->execute(array($value, $app, $key));
+			OC_DB::executeAudited($query, array($app, $key, $value));
 		}
+
 		// TODO where should this be documented?
 		\OC_Hook::emit('OC_Appconfig', 'post_set_value', array(
 			'app' => $app,
