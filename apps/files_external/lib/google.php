@@ -67,7 +67,7 @@ class Google extends \OC\Files\Storage\Common {
 	/**
 	 * Get the Google_DriveFile object for the specified path
 	 * @param string $path
-	 * @return Google_DriveFile
+	 * @return string
 	 */
 	private function getDriveFile($path) {
 		// Remove leading and trailing slashes

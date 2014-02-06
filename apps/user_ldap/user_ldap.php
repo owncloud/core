@@ -25,7 +25,6 @@
 
 namespace OCA\user_ldap;
 
-use OCA\user_ldap\lib\ILDAPWrapper;
 use OCA\user_ldap\lib\BackendUtility;
 
 class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
@@ -139,8 +138,8 @@ class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
 
 	/**
 	 * @brief Check if the password is correct
-	 * @param $uid The username
-	 * @param $password The password
+	 * @param string $uid The username
+	 * @param string $password The password
 	 * @returns true/false
 	 *
 	 * Check if the password is correct without logging in the user
