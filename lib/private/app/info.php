@@ -11,12 +11,17 @@ namespace OC\App;
 use OCP\App\IInfo as InfoInterface;
 
 class Info implements InfoInterface {
-	protected $appid;
-	protected $app_path;
+	protected $appId;
+	protected $appPath;
 
-	public function __construct($appid, $app_path) {
-		$this->appid = $appid;
-		$this->app_path = $app_path;
+	/**
+	 * @param string $appid the id of the app
+	 * @param string[] $appPath an array containing info of the app directory:
+	 * 		{"path" => the full path of the app directory, "url" => how to reach the app directory from the web}
+	 */
+	public function __construct($appid, $appPath) {
+		$this->appId = $appid;
+		$this->appPath = $appPath;
 	}
 
 	/**
@@ -51,7 +56,7 @@ class Info implements InfoInterface {
 	 * @return string
 	 */
 	public function getDirectory() {
-		return $this->app_path['path'].'/'.$this->appid;
+		return $this->appPath['path'].'/'.$this->appId;
 	}
 
 	/**
@@ -61,13 +66,13 @@ class Info implements InfoInterface {
 	 * @return string
 	 */
 	public function getWebPath() {
-		return \OC::$WEBROOT.$this->app_path['url'].'/'.$this->appid; // FIXME: remove WEBROOT
+		return \OC::$WEBROOT.$this->appPath['url'].'/'.$this->appId; // FIXME: remove WEBROOT
 	}
 
 	/**
 	 * @internal add getter function instead
 	 */
 	public function getData() {
-		return \OC_App::getAppInfo($this->appid); // TODO: refactor
+		return \OC_App::getAppInfo($this->appId); // TODO: refactor
 	}
 }

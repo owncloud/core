@@ -11,15 +11,15 @@ namespace OC\App;
 use OCP\App\IManager as ManagerInterface;
 
 class Manager implements ManagerInterface {
-	protected $approots;
-	protected $app_path = array();
-	protected $app_info = array();
+	protected $appRoots;
+	protected $appPath = array();
+	protected $appInfo = array();
 	protected $enabledApps;
 	protected $appTypes;
 	protected $installedVersions;
 
-	public function __construct(array $approots) {
-		$this->approots = $approots;
+	public function __construct(array $appRoots) {
+		$this->appRoots = $appRoots;
 		// TODO:appconfig
 	}
 
@@ -29,12 +29,12 @@ class Manager implements ManagerInterface {
 	 * @throws \OutOfBoundsException when not found
 	 */
 	protected function findAppInDirectories($appid) {
-		if (isset($this->app_path[$appid])) {
-			return $this->app_path[$appid];
+		if (isset($this->appPath[$appid])) {
+			return $this->appPath[$appid];
 		}
-		foreach ($this->approots as $dir) {
+		foreach ($this->appRoots as $dir) {
 			if (file_exists($dir['path'].'/'.$appid)) {
-				return $this->app_path[$appid] = $dir;
+				return $this->appPath[$appid] = $dir;
 			}
 		}
 		throw new \OutOfBoundsException('Directory for application "' . $appid . '" not found.');
@@ -166,11 +166,11 @@ class Manager implements ManagerInterface {
 	 * @throws \OutOfBoundsException when not app is not available/found
 	 */
 	public function getInfo( $app ) {
-		if (isset($this->app_info[$app])) {
-			return $this->app_info[$app];
+		if (isset($this->appInfo[$app])) {
+			return $this->appInfo[$app];
 		}
 		$app_path = $this->findAppInDirectories($app);
 		$info = new Info($app, $app_path);
-		return $this->app_info[$app] = $info;
+		return $this->appInfo[$app] = $info;
 	}
 }
