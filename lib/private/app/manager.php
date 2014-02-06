@@ -9,6 +9,7 @@
 namespace OC\App;
 
 use OCP\App\IManager as ManagerInterface;
+use OCP\IConfig;
 
 class Manager implements ManagerInterface {
 	protected $appRoots;
@@ -17,10 +18,11 @@ class Manager implements ManagerInterface {
 	protected $enabledApps;
 	protected $appTypes;
 	protected $installedVersions;
+	protected $config;
 
-	public function __construct(array $appRoots) {
+	public function __construct(array $appRoots, IConfig $config) {
 		$this->appRoots = $appRoots;
-		// TODO:appconfig
+		$this->config = $config;
 	}
 
 	/**
@@ -76,7 +78,7 @@ class Manager implements ManagerInterface {
 	 * This function set an app as enabled in appconfig.
 	 */
 	public function enableApp( $app ) {
-		\OC_Appconfig::setValue( $app, 'enabled', 'yes' ); // TODO: DI
+		$this->config->setAppValue($app, 'enabled', 'yes');
 		if (isset($this->enabledApps)) {
 			$this->enabledApps[] = $app;
 		}
@@ -91,7 +93,7 @@ class Manager implements ManagerInterface {
 	 */
 	public function disableApp( $app ) {
 		\OC_Hook::emit('OC_App', 'pre_disable', array('app' => $app)); // TODO: refactor
-		\OC_Appconfig::setValue( $app, 'enabled', 'no' ); // TODO: DI
+		$this->config->setAppValue($app, 'enabled', 'no');
 		$this->enabledApps = null;
 	}
 
@@ -143,7 +145,7 @@ class Manager implements ManagerInterface {
 			$appTypes = '';
 		}
 
-		\OC_Appconfig::setValue($app, 'types', $appTypes); // TODO: DI
+		$this->config->setAppValue($app, 'types', $appTypes);
 		$this->appTypes[$app] = $appTypes;
 	}
 
