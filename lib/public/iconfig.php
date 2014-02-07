@@ -72,6 +72,15 @@ interface IConfig {
 	 */
 	public function getAppValue($appName, $key, $default = '');
 
+	/**
+	 * Get multiply values, either the app or key can be used as wildcard by setting it to false
+	 *
+	 * @param string|bool $app
+	 * @param string|bool $key
+	 * @return string the value or $default
+	 */
+	public function getAppValues($app = false, $key = false);
+
 
 	/**
 	 * Set a user defined value

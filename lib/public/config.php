@@ -64,7 +64,7 @@ class Config {
 	public static function setSystemValue( $key, $value ) {
 		try {
 			\OC_Config::setValue( $key, $value );
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			return false;
 		}
 		return true;
@@ -85,6 +85,17 @@ class Config {
 	}
 
 	/**
+	 * Get multiply values, either the app or key can be used as wildcard by setting it to false
+	 *
+	 * @param string|bool $app
+	 * @param string|bool $key
+	 * @return string the value or $default
+	 */
+	public function getAppValues($app = false, $key = false ) {
+		return \OC_Appconfig::getValues($app, $key);
+	}
+
+	/**
 	 * Sets a value in the appconfig
 	 * @param string $app app
 	 * @param string $key key
@@ -96,7 +107,7 @@ class Config {
 	public static function setAppValue( $app, $key, $value ) {
 		try {
 			\OC_Appconfig::setValue( $app, $key, $value );
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			return false;
 		}
 		return true;
@@ -131,7 +142,7 @@ class Config {
 	public static function setUserValue( $user, $app, $key, $value ) {
 		try {
 			\OC_Preferences::setValue( $user, $app, $key, $value );
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			return false;
 		}
 		return true;
