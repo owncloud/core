@@ -31,7 +31,6 @@ class OC_App{
 	static private $adminForms = array();
 	static private $personalForms = array();
 	static private $appInfo = array();
-	static private $checkedApps = array();
 	static private $altLogin = array();
 
 	/**
