@@ -106,7 +106,11 @@ class App {
 	 * @return array
 	*/
 	public static function getAppInfo( $app, $path=false ) {
-		return \OC_App::getAppInfo( $app, $path);
+		if ($path) {
+			$reader = new \OC\App\InfoXMLReader();
+			return $reader->getInfo($app);
+		}
+		return \OC_App::getAppInfo( $app );
 	}
 
 	/**

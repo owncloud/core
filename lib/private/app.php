@@ -434,69 +434,12 @@ class OC_App{
 
 	/**
 	 * @brief Read all app metadata from the info.xml file
-	 * @param string $appid id of the app or the path of the info.xml file
-	 * @param boolean $path (optional)
+	 * @param string $appid id of the app
 	 * @return array
 	 * @note all data is read from info.xml, not just pre-defined fields
 	*/
-	public static function getAppInfo($appid, $path=false) {
-		if($path) {
-			$file=$appid;
-		}else{
-			if(isset(self::$appInfo[$appid])) {
-				return self::$appInfo[$appid];
-			}
-			$file= self::getAppPath($appid).'/appinfo/info.xml';
-		}
-		$data=array();
-		$content=@file_get_contents($file);
-		if(!$content) {
-			return null;
-		}
-		$xml = new SimpleXMLElement($content);
-		$data['info']=array();
-		$data['remote']=array();
-		$data['public']=array();
-		foreach($xml->children() as $child) {
-			/**
-			 * @var $child SimpleXMLElement
-			 */
-			if($child->getName()=='remote') {
-				foreach($child->children() as $remote) {
-					/**
-					 * @var $remote SimpleXMLElement
-					 */
-					$data['remote'][$remote->getName()]=(string)$remote;
-				}
-			}elseif($child->getName()=='public') {
-				foreach($child->children() as $public) {
-					/**
-					 * @var $public SimpleXMLElement
-					 */
-					$data['public'][$public->getName()]=(string)$public;
-				}
-			}elseif($child->getName()=='types') {
-				$data['types']=array();
-				foreach($child->children() as $type) {
-					/**
-					 * @var $type SimpleXMLElement
-					 */
-					$data['types'][]=$type->getName();
-				}
-			}elseif($child->getName()=='description') {
-				$xml=(string)$child->asXML();
-				$data[$child->getName()]=substr($xml, 13, -14);//script <description> tags
-			}elseif($child->getName()=='documentation') {
-				foreach($child as $subchild) {
-					$data["documentation"][$subchild->getName()] = (string)$subchild;
-				}
-			}else{
-				$data[$child->getName()]=(string)$child;
-			}
-		}
-		self::$appInfo[$appid]=$data;
-
-		return $data;
+	public static function getAppInfo($appid) {
+		return self::getManager()->getInfo($appid)->getData();
 	}
 
 	/**

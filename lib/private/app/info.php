@@ -13,6 +13,8 @@ use OCP\App\IInfo as InfoInterface;
 class Info implements InfoInterface {
 	protected $appId;
 	protected $appPath;
+	protected $appInfo;
+
 
 	/**
 	 * @param string $appid the id of the app
@@ -73,6 +75,12 @@ class Info implements InfoInterface {
 	 * @internal add getter function instead
 	 */
 	public function getData() {
-		return \OC_App::getAppInfo($this->appId); // TODO: refactor
+		if (!isset($this->appInfo)) {
+			$file = $this->getDirectory().'/appinfo/info.xml';
+			$reader = new \OC\App\InfoXMLReader();
+
+			$this->appInfo = $reader->getInfo($file);
+		}
+		return $this->appInfo;
 	}
 }
