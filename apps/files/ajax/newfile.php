@@ -1,8 +1,5 @@
 <?php
 
-// Init owncloud
-global $eventSource;
-
 if(!OC_User::isLoggedIn()) {
 	exit;
 }
@@ -18,31 +15,6 @@ if($source) {
 	$eventSource=new OC_EventSource();
 } else {
 	OC_JSON::callCheck();
-}
-
-function progress($notification_code, $severity, $message, $message_code, $bytes_transferred, $bytes_max) {
-	static $filesize = 0;
-	static $lastsize = 0;
-	global $eventSource;
-
-	switch($notification_code) {
-		case STREAM_NOTIFY_FILE_SIZE_IS:
-			$filesize = $bytes_max;
-			break;
-
-		case STREAM_NOTIFY_PROGRESS:
-			if ($bytes_transferred > 0) {
-				if (!isset($filesize)) {
-				} else {
-					$progress = (int)(($bytes_transferred/$filesize)*100);
-					if($progress>$lastsize) { //limit the number or messages send
-						$eventSource->send('progress', $progress);
-					}
-					$lastsize=$progress;
-				}
-			}
-			break;
-	}
 }
 
 $l10n = \OC_L10n::get('files');
@@ -97,7 +69,8 @@ if($source) {
 		exit();
 	}
 
-	$ctx = stream_context_create(null, array('notification' =>'progress'));
+	$notificationProxy = new \OC\StreamNotificationToEventSourceProxy($eventSource);
+	$ctx = stream_context_create(null, array('notification' => $notificationProxy->getCallback()));
 	$sourceStream=@fopen($source, 'rb', false, $ctx);
 	$result = 0;
 	if (is_resource($sourceStream)) {
