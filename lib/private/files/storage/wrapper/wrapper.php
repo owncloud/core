@@ -427,9 +427,19 @@ class Wrapper implements \OC\Files\Storage\Storage {
 
 	/**
 	 * Returns true
+	 *
 	 * @return true
 	 */
 	public function test() {
 		return $this->storage->test();
+	}
+
+	/**
+	 * check whether the storage should be shown
+	 *
+	 * @return bool
+	 */
+	public function isVisible() {
+		return $this->storage->isVisible();
 	}
 }

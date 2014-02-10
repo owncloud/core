@@ -370,4 +370,13 @@ abstract class Common implements \OC\Files\Storage\Storage {
 	public function free_space($path) {
 		return \OC\Files\SPACE_UNKNOWN;
 	}
+
+	/**
+	 * check whether the storage should be shown
+	 *
+	 * @return bool
+	 */
+	public function isVisible() {
+		return true;
+	}
 }

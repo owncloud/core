@@ -61,4 +61,10 @@ interface Storage extends \OCP\Files\Storage {
 	 */
 	public function getStorageCache();
 
+	/**
+	 * check whether the storage should be shown
+	 *
+	 * @return bool
+	 */
+	public function isVisible();
 }
