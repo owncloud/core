@@ -139,7 +139,7 @@ if ($needUpgrade) {
 	$tmpl->assign('freeSpace', $freeSpace);
 	$tmpl->assign('uploadLimit', $uploadLimit); // PHP upload limit
 	$tmpl->assign('allowZipDownload', intval(OCP\Config::getSystemValue('allowZipDownload', true)));
-	$tmpl->assign('usedSpacePercent', (int)$storageInfo['relative']);
+	$tmpl->assign('usedStoragePercent', (int)$storageInfo['relative']);
 	$tmpl->assign('isPublic', false);
 	$tmpl->assign('publicUploadEnabled', $publicUploadEnabled);
 	$tmpl->assign("encryptedFiles", \OCP\Util::encryptedFiles());

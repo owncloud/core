@@ -16,7 +16,7 @@ class Helper
 		return array('uploadMaxFilesize' => $maxUploadFilesize,
 					 'maxHumanFilesize'  => $maxHumanFilesize,
 					 'freeSpace' => $storageInfo['free'],
-					 'usedSpacePercent'  => (int)$storageInfo['relative']);
+					 'usedStoragePercent'  => (int)$storageInfo['relative']);
 	}
 
 	public static function determineIcon($file) {

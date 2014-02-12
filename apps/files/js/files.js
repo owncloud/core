@@ -55,7 +55,7 @@ var Files = {
 			$('#max_upload').val(response.data.uploadMaxFilesize);
 			$('#free_space').val(response.data.freeSpace);
 			$('#upload.button').attr('original-title', response.data.maxHumanFilesize);
-			$('#usedSpacePercent').val(response.data.usedSpacePercent);
+			$('#usedStoragePercent').val(response.data.usedStoragePercent);
 			Files.displayStorageWarnings();
 		}
 		if (response[0] === undefined) {
@@ -64,7 +64,7 @@ var Files = {
 		if (response[0].uploadMaxFilesize !== undefined) {
 			$('#max_upload').val(response[0].uploadMaxFilesize);
 			$('#upload.button').attr('original-title', response[0].maxHumanFilesize);
-			$('#usedSpacePercent').val(response[0].usedSpacePercent);
+			$('#usedStoragePercent').val(response[0].usedStoragePercent);
 			Files.displayStorageWarnings();
 		}
 
@@ -109,13 +109,13 @@ var Files = {
 			return;
 		}
 
-		var usedSpacePercent = $('#usedSpacePercent').val();
-		if (usedSpacePercent > 98) {
-			OC.Notification.show(t('files', 'Your storage is full, files can not be updated or synced anymore!'));
+		var usedStoragePercent = $('#usedStoragePercent').val();
+		if (usedStoragePercent > 98) {
+			OC.Notification.show(t('files', 'Your disk is full, files can not be updated or synced anymore!'));
 			return;
 		}
-		if (usedSpacePercent > 90) {
-			OC.Notification.show(t('files', 'Your storage is almost full ({usedSpacePercent}%)', {usedSpacePercent: usedSpacePercent}));
+		if (usedStoragePercent > 90) {
+			OC.Notification.show(t('files', 'Your disk is almost full ({usedStoragePercent}%)', {usedStoragePercent: usedStoragePercent}));
 		}
 	},
 

@@ -235,7 +235,7 @@ if (isset($path)) {
 			$folder->assign('freeSpace', $freeSpace);
 			$folder->assign('uploadLimit', $uploadLimit); // PHP upload limit
 			$folder->assign('allowZipDownload', intval(OCP\Config::getSystemValue('allowZipDownload', true)));
-			$folder->assign('usedSpacePercent', 0);
+			$folder->assign('usedStoragePercent', 0);
 			$folder->assign('fileHeader', $fileHeader);
 			$folder->assign('disableSharing', true);
 			$folder->assign('trash', false);
