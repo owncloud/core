@@ -442,4 +442,12 @@ class Wrapper implements \OC\Files\Storage\Storage {
 	public function isVisible() {
 		return $this->storage->isVisible();
 	}
+
+	/**
+	 * Returns the wrapped storage's value for isLocal()
+	 * @return bool wrapped storage's isLocal() value
+	 */
+	public function isLocal() {
+		return $this->storage->isLocal();
+	}
 }
