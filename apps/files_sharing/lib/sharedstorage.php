@@ -30,6 +30,7 @@ class Shared extends \OC\Files\Storage\Common {
 	private $sharedFolder;
 	private $files = array();
 	private $user;
+	private $visible;
 
 	public function __construct($arguments) {
 		$this->sharedFolder = $arguments['sharedFolder'];
@@ -453,6 +454,9 @@ class Shared extends \OC\Files\Storage\Common {
 	 * @return bool
 	 */
 	public function isVisible() {
-		return !\OCP\User::isLoggedIn() || \OCP\User::getUser() != $this->user || \OCP\Share::getItemsSharedWith('file');
+		if (is_null($this->visible)) {
+			$this->visible = !\OCP\User::isLoggedIn() || \OCP\User::getUser() != $this->user || \OCP\Share::getItemsSharedWith('file');;
+		}
+		return $this->visible;
 	}
 }
