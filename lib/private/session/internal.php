@@ -27,8 +27,9 @@ class Internal extends Memory {
 	}
 
 	public function __destruct() {
+		$this->data = array_merge($_SESSION, $this->data);
 		session_start();
-		$_SESSION = array_merge($_SESSION, $this->data);
+		$_SESSION = $this->data;
 		session_write_close();
 	}
 
