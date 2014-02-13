@@ -9,7 +9,7 @@
 namespace OC\App;
 
 use OCP\App\IManager as ManagerInterface;
-use OCP\IConfig;
+use OCP\IAppConfig;
 
 class Manager implements ManagerInterface {
 	protected $appRoots;
@@ -20,14 +20,18 @@ class Manager implements ManagerInterface {
 	protected $installedVersions;
 	protected $config;
 
-	public function __construct(array $appRoots, IConfig $config) {
+	/**
+	 * @param array $appRoots
+	 * @param \OCP\IAppConfig $config
+	 */
+	public function __construct(array $appRoots, IAppConfig $config) {
 		$this->appRoots = $appRoots;
 		$this->config = $config;
 	}
 
 	/**
 	 * @brief Locates the directory and webroot for this $appid
-	 * @param $app string appid
+	 * @param string $appid appid
 	 * @throws \OutOfBoundsException when not found
 	 */
 	protected function findAppInDirectories($appid) {
@@ -58,7 +62,7 @@ class Manager implements ManagerInterface {
 		if (!$forceRefresh && isset($this->enabledApps)) {
 			return $this->enabledApps;
 		}
-		$values = \OC_Appconfig::getValues(false, 'enabled'); // TODO: DI
+		$values = $this->config->getValues(false, 'enabled'); // TODO: DI
 		$this->enabledApps = array('files');
 		foreach($values as $app => $value) {
 		  if ($value === 'yes') {
@@ -78,7 +82,7 @@ class Manager implements ManagerInterface {
 	 * This function set an app as enabled in appconfig.
 	 */
 	public function enableApp( $app ) {
-		$this->config->setAppValue($app, 'enabled', 'yes');
+		$this->config->setValue($app, 'enabled', 'yes');
 		if (isset($this->enabledApps)) {
 			$this->enabledApps[] = $app;
 		}
@@ -93,7 +97,7 @@ class Manager implements ManagerInterface {
 	 */
 	public function disableApp( $app ) {
 		\OC_Hook::emit('OC_App', 'pre_disable', array('app' => $app)); // TODO: refactor
-		$this->config->setAppValue($app, 'enabled', 'no');
+		$this->config->setValue($app, 'enabled', 'no');
 		$this->enabledApps = null;
 	}
 
@@ -123,7 +127,7 @@ class Manager implements ManagerInterface {
 	 */
 	private function getAppTypes($app) {
 		if (!isset($this->appTypes)) {
-			$this->appTypes = \OC_Appconfig::getValues(false, 'types'); // TODO: DI
+			$this->appTypes = $this->config->getValues(false, 'types'); // TODO: DI
 		}
 
 		if (isset($this->appTypes[$app])) {
@@ -145,7 +149,7 @@ class Manager implements ManagerInterface {
 			$appTypes = '';
 		}
 
-		$this->config->setAppValue($app, 'types', $appTypes);
+		$this->config->setValue($app, 'types', $appTypes);
 		$this->appTypes[$app] = $appTypes;
 	}
 
@@ -156,7 +160,7 @@ class Manager implements ManagerInterface {
 		if (isset($this->installedVersions)) {
 			return $this->installedVersions;
 		}
-		$this->installedVersions = \OC_Appconfig::getValues(false, 'installed_version'); // TODO: DI
+		$this->installedVersions = $this->config->getValues(false, 'installed_version'); // TODO: DI
 		return $this->installedVersions;
 	}
 
