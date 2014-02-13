@@ -90,6 +90,10 @@ class OC_Util {
 		return true;
 	}
 
+	/**
+	 * @brief get user quota
+	 * @param string $user the user id, ex. from OC_User::getUser()
+	 */
 	public static function getUserQuota($user){
 		$userQuota = OC_Preferences::getValue($user, 'files', 'quota', 'default');
 		if($userQuota === 'default') {
