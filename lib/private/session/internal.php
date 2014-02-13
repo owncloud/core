@@ -23,9 +23,11 @@ class Internal extends Memory {
 			throw new \Exception('Failed to start session');
 		}
 		$this->data = $_SESSION;
+		session_write_close();
 	}
 
 	public function __destruct() {
+		session_start();
 		$_SESSION = array_merge($_SESSION, $this->data);
 		session_write_close();
 	}
@@ -46,5 +48,6 @@ class Internal extends Memory {
 		@session_regenerate_id(true);
 		@session_start();
 		$this->data = $_SESSION = array();
+		session_write_close();
 	}
 }
