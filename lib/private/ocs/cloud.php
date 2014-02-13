@@ -65,6 +65,7 @@ class OC_OCS_Cloud {
 		if($parameters['userid'] === OC_User::getUser()) {
 			// Self lookup
 			$storage = OC_Helper::getStorageInfo('/');
+			// XXX: this does not consider user quota ?
 			$quota = array(
 				'free' =>  $storage['free'],
 				'used' =>  $storage['used'],

@@ -56,7 +56,9 @@ var Files = {
 			$('#free_space').val(response.data.freeSpace);
 			$('#upload.button').attr('original-title', response.data.maxHumanFilesize);
 			$('#usedStoragePercent').val(response.data.usedStoragePercent);
+			$('#usedQuotaPercent').val(response.data.usedQuotaPercent);
 			Files.displayStorageWarnings();
+			Files.displayQuotaWarnings();
 		}
 		if (response[0] === undefined) {
 			return;
@@ -65,7 +67,9 @@ var Files = {
 			$('#max_upload').val(response[0].uploadMaxFilesize);
 			$('#upload.button').attr('original-title', response[0].maxHumanFilesize);
 			$('#usedStoragePercent').val(response[0].usedStoragePercent);
+			$('#usedQuotaPercent').val(response[0].usedQuotaPercent);
 			Files.displayStorageWarnings();
+			Files.displayQuotaWarnings();
 		}
 
 	},
@@ -116,6 +120,20 @@ var Files = {
 		}
 		if (usedStoragePercent > 90) {
 			OC.Notification.show(t('files', 'Your disk is almost full ({usedStoragePercent}%)', {usedStoragePercent: usedStoragePercent}));
+		}
+	},
+	displayQuotaWarnings: function() {
+		if (!OC.Notification.isHidden()) {
+			return;
+		}
+
+		var usedQuotaPercent = $('#usedQuotaPercent').val();
+		if (usedQuotaPercent > 98) {
+			OC.Notification.show(t('files', 'Your quota is full, files can not be updated or synced anymore!'));
+			return;
+		}
+		if (usedQuotaPercent > 90) {
+			OC.Notification.show(t('files', 'Your quota is almost full ({usedQuotaPercent}%)', {usedQuotaPercent: usedQuotaPercent}));
 		}
 	},
 
