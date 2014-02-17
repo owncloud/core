@@ -78,10 +78,6 @@ class OC {
 	 */
 	protected static $router = null;
 
-	/**
-	 * @var \OC\Session\Session
-	 */
-	public static $session = null;
 
 	/**
 	 * @var \OC\Autoloader $loader
@@ -341,6 +337,11 @@ class OC {
 		OC_Util::addStyle("jquery.ocdialog");
 	}
 
+	/**
+	 * Initialize the session
+	 *
+	 * @return \OC\Session\Internal|\OC\Session\Memory
+	 */
 	public static function initSession() {
 		// prevents javascript from accessing php session cookies
 		ini_set('session.cookie_httponly', '1;');
@@ -350,11 +351,11 @@ class OC {
 		ini_set('session.cookie_path', $cookie_path);
 
 		//set the session object to a dummy session so code relying on the session existing still works
-		self::$session = new \OC\Session\Memory('');
+		$session = new \OC\Session\Memory('');
 
 		try {
 			// set the session name to the instance id - which is unique
-			self::$session = new \OC\Session\Internal(OC_Util::getInstanceId());
+			$session = new \OC\Session\Internal(OC_Util::getInstanceId());
 			// if session cant be started break with http 500 error
 		} catch (Exception $e) {
 			//show the user a detailed error page
@@ -364,15 +365,15 @@ class OC {
 
 		$sessionLifeTime = self::getSessionLifeTime();
 		// regenerate session id periodically to avoid session fixation
-		if (!self::$session->exists('SID_CREATED')) {
-			self::$session->set('SID_CREATED', time());
-		} else if (time() - self::$session->get('SID_CREATED') > $sessionLifeTime / 2) {
+		if (!$session->exists('SID_CREATED')) {
+			$session->set('SID_CREATED', time());
+		} else if (time() - $session->get('SID_CREATED') > $sessionLifeTime / 2) {
 			session_regenerate_id(true);
-			self::$session->set('SID_CREATED', time());
+			$session->set('SID_CREATED', time());
 		}
 
 		// session timeout
-		if (self::$session->exists('LAST_ACTIVITY') && (time() - self::$session->get('LAST_ACTIVITY') > $sessionLifeTime)) {
+		if ($session->exists('LAST_ACTIVITY') && (time() - $session->get('LAST_ACTIVITY') > $sessionLifeTime)) {
 			if (isset($_COOKIE[session_name()])) {
 				setcookie(session_name(), '', time() - 42000, $cookie_path);
 			}
@@ -381,7 +382,9 @@ class OC {
 			session_start();
 		}
 
-		self::$session->set('LAST_ACTIVITY', time());
+		$session->set('LAST_ACTIVITY', time());
+
+		return $session;
 	}
 
 	/**
@@ -523,11 +526,6 @@ class OC {
 		self::$server = new \OC\Server();
 
 		self::initTemplateEngine();
-		if (!self::$CLI) {
-			self::initSession();
-		} else {
-			self::$session = new \OC\Session\Memory('');
-		}
 		self::checkConfig();
 		self::checkInstalled();
 		self::checkSSL();
@@ -551,21 +549,21 @@ class OC {
 
 		// User and Groups
 		if (!OC_Config::getValue("installed", false)) {
-			self::$session->set('user_id', '');
+			\OC::$server->getSession()->set('user_id', '');
 		}
 
 		OC_User::useBackend(new OC_User_Database());
 		OC_Group::useBackend(new OC_Group_Database());
 
-		if (isset($_SERVER['PHP_AUTH_USER']) && self::$session->exists('loginname')
-			&& $_SERVER['PHP_AUTH_USER'] !== self::$session->get('loginname')) {
-			$sessionUser = self::$session->get('loginname');
-			$serverUser = $_SERVER['PHP_AUTH_USER'];
-			OC_Log::write('core',
-				"Session loginname ($sessionUser) doesn't match SERVER[PHP_AUTH_USER] ($serverUser).",
-				OC_Log::WARN);
-			OC_User::logout();
-		}
+//		if (isset($_SERVER['PHP_AUTH_USER']) && self::$session->exists('loginname')
+//			&& $_SERVER['PHP_AUTH_USER'] !== self::$session->get('loginname')) {
+//			$sessionUser = self::$session->get('loginname');
+//			$serverUser = $_SERVER['PHP_AUTH_USER'];
+//			OC_Log::write('core',
+//				"Session loginname ($sessionUser) doesn't match SERVER[PHP_AUTH_USER] ($serverUser).",
+//				OC_Log::WARN);
+//			OC_User::logout();
+//		}
 
 		// Load Apps
 		// This includes plugins for users and filesystems as well
@@ -912,7 +910,7 @@ class OC {
 		if (OC_User::login($_POST["user"], $_POST["password"])) {
 			// setting up the time zone
 			if (isset($_POST['timezone-offset'])) {
-				self::$session->set('timezone', $_POST['timezone-offset']);
+				\OC::$server->getSession()->set('timezone', $_POST['timezone-offset']);
 			}
 
 			$userid = OC_User::getUser();

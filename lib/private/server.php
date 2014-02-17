@@ -29,8 +29,8 @@ class Server extends SimpleContainer implements IServerContainer {
 				$urlParams = array();
 			}
 
-			if (\OC::$session->exists('requesttoken')) {
-				$requesttoken = \OC::$session->get('requesttoken');
+			if (\OC::$server->getSession()->exists('requesttoken')) {
+				$requesttoken = \OC::$server->getSession()->get('requesttoken');
 			} else {
 				$requesttoken = false;
 			}
@@ -82,7 +82,7 @@ class Server extends SimpleContainer implements IServerContainer {
 			 * @var \OC\User\Manager $manager
 			 */
 			$manager = $c->query('UserManager');
-			$userSession = new \OC\User\Session($manager, \OC::$session);
+			$userSession = new \OC\User\Session($manager, \OC::$server->getSession());
 			$userSession->listen('\OC\User', 'preCreateUser', function ($uid, $password) {
 				\OC_Hook::emit('OC_User', 'pre_createUser', array('run' => true, 'uid' => $uid, 'password' => $password));
 			});
@@ -157,6 +157,12 @@ class Server extends SimpleContainer implements IServerContainer {
 			 */
 			$config = $c->getConfig();
 			return new \OC\BackgroundJob\JobList($c->getDatabaseConnection(), $config);
+		});
+		$this->registerService('Session', function ($c) {
+			if (\OC::$CLI) {
+				return new \OC\Session\Memory('');
+			}
+			return \OC::initSession();
 		});
 	}
 
@@ -335,7 +341,7 @@ class Server extends SimpleContainer implements IServerContainer {
 	 * @return \OCP\ISession
 	 */
 	function getSession() {
-		return \OC::$session;
+		return $this->query('Session');
 	}
 
 	/**

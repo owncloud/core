@@ -285,7 +285,7 @@ class OC_User {
 	 * @brief Sets user id for session and triggers emit
 	 */
 	public static function setUserId($uid) {
-		OC::$session->set('user_id', $uid);
+		\OC::$server->getSession()->set('user_id', $uid);
 	}
 
 	/**
@@ -319,10 +319,10 @@ class OC_User {
 	 * Checks if the user is logged in
 	 */
 	public static function isLoggedIn() {
-		if (\OC::$session->get('user_id') && self::$incognitoMode === false) {
+		if (\OC::$server->getSession()->get('user_id') && self::$incognitoMode === false) {
 			OC_App::loadApps(array('authentication'));
 			self::setupBackends();
-			return self::userExists(\OC::$session->get('user_id'));
+			return self::userExists(\OC::$server->getSession()->get('user_id'));
 		}
 		return false;
 	}
@@ -370,7 +370,7 @@ class OC_User {
 	 * @return string uid or false
 	 */
 	public static function getUser() {
-		$uid = OC::$session ? OC::$session->get('user_id') : null;
+		$uid = \OC::$server->getSession() ? \OC::$server->getSession()->get('user_id') : null;
 		if (!is_null($uid) && self::$incognitoMode === false) {
 			return $uid;
 		} else {

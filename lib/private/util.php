@@ -272,10 +272,10 @@ class OC_Util {
 	 * @description adjust to clients timezone if we know it
 	 */
 	public static function formatDate( $timestamp, $dateOnly=false) {
-		if(\OC::$session->exists('timezone')) {
+		if(\OC::$server->getSession()->exists('timezone')) {
 			$systemTimeZone = intval(date('O'));
 			$systemTimeZone = (round($systemTimeZone/100, 0)*60) + ($systemTimeZone%100);
-			$clientTimeZone = \OC::$session->get('timezone')*60;
+			$clientTimeZone = \OC::$server->getSession()->get('timezone')*60;
 			$offset = $clientTimeZone - $systemTimeZone;
 			$timestamp = $timestamp + $offset*60;
 		}
@@ -289,7 +289,7 @@ class OC_Util {
 	 */
 	public static function checkServer() {
 		// Assume that if checkServer() succeeded before in this session, then all is fine.
-		if(\OC::$session->exists('checkServer_suceeded') && \OC::$session->get('checkServer_suceeded')) {
+		if(\OC::$server->getSession()->exists('checkServer_suceeded') && \OC::$server->getSession()->get('checkServer_suceeded')) {
 			return array();
 		}
 
@@ -484,7 +484,7 @@ class OC_Util {
 		}
 
 		// Cache the result of this function
-		\OC::$session->set('checkServer_suceeded', count($errors) == 0);
+		\OC::$server->getSession()->set('checkServer_suceeded', count($errors) == 0);
 
 		return $errors;
 	}
@@ -698,13 +698,13 @@ class OC_Util {
 	 */
 	public static function callRegister() {
 		// Check if a token exists
-		if(!\OC::$session->exists('requesttoken')) {
+		if(!\OC::$server->getSession()->exists('requesttoken')) {
 			// No valid token found, generate a new one.
 			$requestToken = self::generateRandomBytes(20);
-			\OC::$session->set('requesttoken', $requestToken);
+			\OC::$server->getSession()->set('requesttoken', $requestToken);
 		} else {
 			// Valid token already exists, send it
-			$requestToken = \OC::$session->get('requesttoken');
+			$requestToken = \OC::$server->getSession()->get('requesttoken');
 		}
 		return($requestToken);
 	}

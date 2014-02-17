@@ -181,7 +181,7 @@ class Proxy extends \OC_FileProxy {
 
 		} elseif (
 			Crypt::mode() == 'server'
-			&& \OC::$session->exists('legacyenckey')
+			&& \OC::$server->getSession()->exists('legacyenckey')
 			&& Crypt::isEncryptedMeta($path)
 		) {
 			// Disable encryption proxy to prevent recursive calls
