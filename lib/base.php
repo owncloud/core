@@ -338,63 +338,6 @@ class OC {
 	}
 
 	/**
-	 * Initialize the session
-	 *
-	 * @return \OC\Session\Internal|\OC\Session\Memory
-	 */
-	public static function initSession() {
-		// prevents javascript from accessing php session cookies
-		ini_set('session.cookie_httponly', '1;');
-
-		// set the cookie path to the ownCloud directory
-		$cookie_path = OC::$WEBROOT ? : '/';
-		ini_set('session.cookie_path', $cookie_path);
-
-		//set the session object to a dummy session so code relying on the session existing still works
-		$session = new \OC\Session\Memory('');
-
-		try {
-			// set the session name to the instance id - which is unique
-			$session = new \OC\Session\Internal(OC_Util::getInstanceId());
-			// if session cant be started break with http 500 error
-		} catch (Exception $e) {
-			//show the user a detailed error page
-			OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
-			OC_Template::printExceptionErrorPage($e);
-		}
-
-		$sessionLifeTime = self::getSessionLifeTime();
-		// regenerate session id periodically to avoid session fixation
-		if (!$session->exists('SID_CREATED')) {
-			$session->set('SID_CREATED', time());
-		} else if (time() - $session->get('SID_CREATED') > $sessionLifeTime / 2) {
-			session_regenerate_id(true);
-			$session->set('SID_CREATED', time());
-		}
-
-		// session timeout
-		if ($session->exists('LAST_ACTIVITY') && (time() - $session->get('LAST_ACTIVITY') > $sessionLifeTime)) {
-			if (isset($_COOKIE[session_name()])) {
-				setcookie(session_name(), '', time() - 42000, $cookie_path);
-			}
-			session_unset();
-			session_destroy();
-			session_start();
-		}
-
-		$session->set('LAST_ACTIVITY', time());
-
-		return $session;
-	}
-
-	/**
-	 * @return int
-	 */
-	private static function getSessionLifeTime() {
-		return OC_Config::getValue('session_lifetime', 60 * 60 * 24);
-	}
-
-	/**
 	 * @return OC_Router
 	 */
 	public static function getRouter() {
@@ -542,10 +485,6 @@ class OC {
 			}
 			exit;
 		}
-
-		//try to set the session lifetime
-		$sessionLifeTime = self::getSessionLifeTime();
-		@ini_set('gc_maxlifetime', (string)$sessionLifeTime);
 
 		// User and Groups
 		if (!OC_Config::getValue("installed", false)) {

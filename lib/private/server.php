@@ -159,10 +159,7 @@ class Server extends SimpleContainer implements IServerContainer {
 			return new \OC\BackgroundJob\JobList($c->getDatabaseConnection(), $config);
 		});
 		$this->registerService('Session', function ($c) {
-			if (\OC::$CLI) {
-				return new \OC\Session\Memory('');
-			}
-			return \OC::initSession();
+			return \OC\Session\Factory::create();
 		});
 	}
 
