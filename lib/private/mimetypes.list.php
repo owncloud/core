@@ -29,6 +29,7 @@ return array(
 	'avi'=>'video/x-msvideo',
 	'bash' => 'text/x-shellscript',
 	'blend'=>'application/x-blender',
+	'bin' => 'application/x-bin',
 	'cc' => 'text/x-c',
 	'cdr' => 'application/coreldraw',
 	'cpp' => 'text/x-c++src',
