@@ -26,7 +26,14 @@ class Image extends Provider {
 		if($fileInfo['encrypted'] === true) {
 			$image->loadFromData(stream_get_contents($fileview->fopen($path, 'r')));
 		}else{
-			$image->loadFromFile($fileview->getLocalFile($path));
+			$preview = exif_thumbnail($fileview->getLocalFile($path), $maxX, $maxY);
+			if ($preview !== false) {
+				$image->loadFromData($preview);
+			}
+			else {
+				$image->loadFromFile($fileview->getLocalFile($path));
+			}
+			
 		}
 
 		return $image->valid() ? $image : false;
