@@ -15,16 +15,22 @@ class ErrorHandler {
 	/** @var LoggerInterface */
 	protected $logger;
 	protected $loggerContext = array('app' => 'PHP');
+	protected $debug;
 
-	public function __construct(LoggerInterface $logger, array $loggerContext = null) {
+	public function __construct(LoggerInterface $logger, array $loggerContext = null, $debug = false) {
 		$this->logger = $logger;
+		$this->debug = $debug;
 		if ($loggerContext) {
 			$this->loggerContext = $loggerContext;
 		}
 	}
 
 	public function register() {
-		set_error_handler(array($this, 'onError'));
+		if ($this->debug) {
+			set_error_handler(array($this, 'onAll'), E_ALL);
+		} else {
+			set_error_handler(array($this, 'onError'));
+		}
 		register_shutdown_function(array($this, 'onShutdown'));
 		set_exception_handler(array($this, 'onException'));
 	}
@@ -62,5 +68,13 @@ class ErrorHandler {
 
 	protected function formatMessage($message, $file, $line) {
 		return "$message at $file#$line";
+	}
+
+	//Recoverable handler which catch all errors, warnings and notices
+	public function onAll($number, $message, $file, $line) {
+		$this->logger->debug(
+			$this->formatMessage($message, $file, $line),
+			$this->loggerContext
+		);
 	}
 }

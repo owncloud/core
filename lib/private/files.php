@@ -83,7 +83,7 @@ class OC_Files {
 			if ($basename) {
 				$name = $basename . '.zip';
 			} else {
-				$name = 'owncloud.zip';
+				$name = 'download.zip';
 			}
 			
 			set_time_limit($executionTime);
@@ -131,7 +131,7 @@ class OC_Files {
 				}
 				if ($xsendfile) {
 					list($storage) = \OC\Files\Filesystem::resolvePath(\OC\Files\Filesystem::getView()->getAbsolutePath($filename));
-					if ($storage instanceof \OC\Files\Storage\Local) {
+					if ($storage->isLocal()) {
 						self::addSendfileHeader(\OC\Files\Filesystem::getLocalFile($filename));
 					}
 				}

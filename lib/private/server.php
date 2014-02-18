@@ -124,11 +124,16 @@ class Server extends SimpleContainer implements IServerContainer {
 		$this->registerService('AllConfig', function($c) {
 			return new \OC\AllConfig();
 		});
+		$this->registerService('AppConfig', function ($c) {
+			return new \OC\AppConfig(\OC_DB::getConnection());
+		});
 		$this->registerService('L10NFactory', function($c) {
 			return new \OC\L10N\Factory();
 		});
 		$this->registerService('URLGenerator', function($c) {
-			return new \OC\URLGenerator();
+			/** @var $c SimpleContainer */
+			$config = $c->query('AllConfig');
+			return new \OC\URLGenerator($config);
 		});
 		$this->registerService('AppHelper', function($c) {
 			return new \OC\AppHelper();
@@ -136,11 +141,22 @@ class Server extends SimpleContainer implements IServerContainer {
 		$this->registerService('UserCache', function($c) {
 			return new UserCache();
 		});
+		$this->registerService('MemCacheFactory', function ($c) {
+			$instanceId = \OC_Util::getInstanceId();
+			return new \OC\Memcache\Factory($instanceId);
+		});
 		$this->registerService('ActivityManager', function($c) {
 			return new ActivityManager();
 		});
 		$this->registerService('AvatarManager', function($c) {
 			return new AvatarManager();
+		});
+		$this->registerService('JobList', function ($c) {
+			/**
+			 * @var Server $c
+			 */
+			$config = $c->getConfig();
+			return new \OC\BackgroundJob\JobList($c->getDatabaseConnection(), $config);
 		});
 	}
 
@@ -257,10 +273,19 @@ class Server extends SimpleContainer implements IServerContainer {
 	}
 
 	/**
-	 * @return \OC\Config
+	 * @return \OCP\IConfig
 	 */
 	function getConfig() {
 		return $this->query('AllConfig');
+	}
+
+	/**
+	 * Returns the app config manager
+	 *
+	 * @return \OCP\IAppConfig
+	 */
+	function getAppConfig(){
+		return $this->query('AppConfig');
 	}
 
 	/**
@@ -296,6 +321,15 @@ class Server extends SimpleContainer implements IServerContainer {
 	}
 
 	/**
+	 * Returns an \OCP\CacheFactory instance
+	 *
+	 * @return \OCP\CacheFactory
+	 */
+	function getMemCacheFactory() {
+		return $this->query('MemCacheFactory');
+	}
+
+	/**
 	 * Returns the current session
 	 *
 	 * @return \OCP\ISession
@@ -320,5 +354,14 @@ class Server extends SimpleContainer implements IServerContainer {
 	 */
 	function getActivityManager() {
 		return $this->query('ActivityManager');
+	}
+
+	/**
+	 * Returns an job list for controlling background jobs
+	 *
+	 * @return \OCP\BackgroundJob\IJobList
+	 */
+	function getJobList(){
+		return $this->query('JobList');
 	}
 }

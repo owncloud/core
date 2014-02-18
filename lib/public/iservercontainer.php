@@ -114,6 +114,13 @@ interface IServerContainer {
 	function getConfig();
 
 	/**
+	 * Returns the app config manager
+	 *
+	 * @return \OCP\IAppConfig
+	 */
+	function getAppConfig();
+
+	/**
 	 * get an L10N instance
 	 * @param $app string appid
 	 * @return \OCP\IL10N
@@ -142,6 +149,13 @@ interface IServerContainer {
 	function getCache();
 
 	/**
+	 * Returns an \OCP\CacheFactory instance
+	 *
+	 * @return \OCP\ICacheFactory
+	 */
+	function getMemCacheFactory();
+
+	/**
 	 * Returns the current session
 	 *
 	 * @return \OCP\ISession
@@ -168,5 +182,12 @@ interface IServerContainer {
 	 * @return \OCP\IAvatarManager
 	 */
 	function getAvatarManager();
+
+	/**
+	 * Returns an job list for controlling background jobs
+	 *
+	 * @return \OCP\BackgroundJob\IJobList
+	 */
+	function getJobList();
 
 }
