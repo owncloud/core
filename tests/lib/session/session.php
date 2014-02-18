@@ -16,7 +16,7 @@ abstract class Session extends \PHPUnit_Framework_TestCase {
 	protected $instance;
 
 	public function tearDown() {
-		$this->instance->clear();
+		$this->instance->destroy();
 	}
 
 	public function testNotExistsEmpty() {
@@ -51,7 +51,7 @@ abstract class Session extends \PHPUnit_Framework_TestCase {
 
 	public function testNotExistsAfterClear() {
 		$this->instance->set('foo', 1);
-		$this->instance->clear();
+		$this->instance->destroy();
 		$this->assertFalse($this->instance->exists('foo'));
 	}
 

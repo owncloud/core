@@ -44,11 +44,8 @@ class Internal extends Memory {
 		parent::remove($key);
 	}
 
-	public function clear() {
-		session_unset();
-		@session_regenerate_id(true);
-		@session_start();
+	public function destroy() {
+		session_destroy();
 		$this->data = $_SESSION = array();
-		session_write_close();
 	}
 }

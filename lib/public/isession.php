@@ -71,8 +71,8 @@ interface ISession {
 	public function remove($key);
 
 	/**
-	 * Reset and recreate the session
+	 * Destroy the session
 	 */
-	public function clear();
+	public function destroy();
 
 }

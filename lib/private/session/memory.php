@@ -57,7 +57,7 @@ class Memory extends Session {
 		unset($this->data[$key]);
 	}
 
-	public function clear() {
+	public function destroy() {
 		$this->data = array();
 	}
 }
