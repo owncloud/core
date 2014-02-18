@@ -42,9 +42,9 @@ class iRODS extends \OC\Files\Storage\StreamWrapper{
 			}
 
 			// take user and password from the session
-			if ($this->use_logon_credentials && \OC::$session->exists('irods-credentials'))
+			if ($this->use_logon_credentials && \OC::$server->getSession()->exists('irods-credentials'))
 			{
-				$params = \OC::$session->get('irods-credentials');
+				$params = \OC::$server->getSession()->get('irods-credentials');
 				$this->user = $params['uid'];
 				$this->password = $params['password'];
 			}
@@ -60,7 +60,7 @@ class iRODS extends \OC\Files\Storage\StreamWrapper{
 	}
 
 	public static function login( $params ) {
-		\OC::$session->set('irods-credentials', $params);
+		\OC::$server->getSession()->set('irods-credentials', $params);
 	}
 
 	public function getId(){

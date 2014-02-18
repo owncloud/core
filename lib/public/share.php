@@ -1918,8 +1918,8 @@ class Share {
 			return true;
 		}
 
-		if ( \OC::$session->exists('public_link_authenticated')
-			&& \OC::$session->get('public_link_authenticated') === $linkItem['id'] ) {
+		if ( \OC::$server->getSession()->exists('public_link_authenticated')
+			&& \OC::$server->getSession()->get('public_link_authenticated') === $linkItem['id'] ) {
 			return true;
 		}
 
