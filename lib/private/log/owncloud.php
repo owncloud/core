@@ -45,7 +45,7 @@ class OC_Log_Owncloud {
 		* is_writable() on directories used to be pretty unreliable on Windows
 		* for at least some time.
 		*/
-		if (!file_exists(self::$logFile) && !@touch(self::$logFile)) {
+		if (!file_exists(self::$logFile) && !touch(self::$logFile)) {
 			self::$logFile = $defaultLogFile;
 		}
 	}
