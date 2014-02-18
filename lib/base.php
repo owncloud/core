@@ -58,6 +58,8 @@ class OC {
 	 */
 	public static $APPSROOTS = array();
 
+	public static $ISREMOTE = false;
+
 	public static $configDir;
 
 	/*
@@ -196,6 +198,9 @@ class OC {
 				echo "See " . \OC_Helper::linkToDocs('admin-dir_permissions') . "\n";
 				exit;
 			} else {
+				if (OC::$ISREMOTE) {
+					throw new Exception('Server configuration error: can\' write into config directory');
+				}
 				OC_Template::printErrorPage(
 					"Can't write into config directory!",
 					'This can usually be fixed by '
@@ -242,6 +247,10 @@ class OC {
 			header('Status: 503 Service Temporarily Unavailable');
 			header('Retry-After: 120');
 
+			if (OC::$ISREMOTE) {
+				throw new Exception('Service Temporarily Unavailable');
+			}
+
 			// render error page
 			$tmpl = new OC_Template('', 'update.user', 'guest');
 			$tmpl->printPage();
@@ -257,6 +266,10 @@ class OC {
 			header('HTTP/1.1 503 Service Temporarily Unavailable');
 			header('Status: 503 Service Temporarily Unavailable');
 			header('Retry-After: 120');
+
+			if (OC::$ISREMOTE) {
+				throw new Exception('Service Temporarily Unavailable');
+			}
 
 			// render error page
 			$tmpl = new OC_Template('', 'singleuser.user', 'guest');
@@ -283,6 +296,10 @@ class OC {
 	public static function checkUpgrade($showTemplate = true) {
 		if (self::needUpgrade()) {
 			if ($showTemplate && !OC_Config::getValue('maintenance', false)) {
+				if (OC::$ISREMOTE) {
+					throw new Exception('Upgrade Required');
+				}
+
 				OC_Config::setValue('theme', '');
 				$minimizerCSS = new OC_Minimizer_CSS();
 				$minimizerCSS->clearCache();
@@ -358,6 +375,9 @@ class OC {
 			// if session cant be started break with http 500 error
 		} catch (Exception $e) {
 			//show the user a detailed error page
+			if (OC::$ISREMOTE) {
+				throw $e;
+			}
 			OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
 			OC_Template::printExceptionErrorPage($e);
 		}
@@ -540,6 +560,9 @@ class OC {
 					echo $error['hint'] . "\n\n";
 				}
 			} else {
+				if (OC::$ISREMOTE) {
+					throw new Exception('Server Error');
+				}
 				OC_Template::printGuestPage('', 'error', array('errors' => $errors));
 			}
 			exit;
@@ -954,6 +977,12 @@ class OC {
 if (!isset($RUNTIME_NOAPPS)) {
 	$RUNTIME_NOAPPS = false;
 }
+
+if (!isset($RUNTIME_ISREMOTE)) {
+	$RUNTIME_ISREMOTE = false;
+}
+
+OC::$ISREMOTE = $RUNTIME_ISREMOTE;
 
 if (!function_exists('get_temp_dir')) {
 	function get_temp_dir() {
