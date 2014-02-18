@@ -68,7 +68,11 @@ class ErrorHandler {
 	//Recoverable handler which catch all errors, warnings and notices
 	public static function onAll($number, $message, $file, $line) {
 		$msg = $message . ' at ' . $file . '#' . $line;
-		self::$logger->debug(self::removePassword($msg), array('app' => 'PHP'));
+		if (is_object(self::$logger)) {
+			self::$logger->debug(self::removePassword($msg), array('app' => 'PHP'));
+		} else {
+			syslog(LOG_ERR, 'logger not initialized correctly: ' . self::removePassword($msg));
+		}
 
 	}
 
