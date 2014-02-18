@@ -48,7 +48,7 @@ class Manager implements ManagerInterface {
 
 	/**
 	 * @brief checks whether or not an app is enabled
-	 * @param $app string appid
+	 * @param string $app appid
 	 * @returns bool true when an app is enabled.
 	 */
 	public function isEnabled( $app ) {
@@ -76,7 +76,7 @@ class Manager implements ManagerInterface {
 
 	/**
 	 * @brief enables an app
-	 * @param mixed $app app
+	 * @param string $app app
 	 * @return void
 	 *
 	 * This function set an app as enabled in appconfig.
@@ -139,6 +139,7 @@ class Manager implements ManagerInterface {
 
 	/**
 	 * read app types from info.xml and cache them in the database
+	 * @param string $app
 	 */
 	public function setAppTypes($app) {
 		$appData = $this->getInfo($app)->getData();
@@ -166,7 +167,7 @@ class Manager implements ManagerInterface {
 
 	/**
 	 * @brief Get information about the app
-	 * @param $app string appid
+	 * @param string $app appid
 	 *
 	 * @return \OCP\App\IInfo|null
 	 * @throws \OutOfBoundsException when not app is not available/found
