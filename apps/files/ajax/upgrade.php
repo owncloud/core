@@ -1,6 +1,5 @@
 <?php
 set_time_limit(0); //scanning can take ages
-session_write_close();
 
 $user = OC_User::getUser();
 $eventSource = new OC_EventSource();

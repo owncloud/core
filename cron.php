@@ -48,8 +48,6 @@ try {
 
 	require_once 'lib/base.php';
 
-	session_write_close();
-
 	$logger = \OC_Log::$object;
 
 	// Don't do anything if ownCloud has not been installed
