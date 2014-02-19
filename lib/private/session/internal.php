@@ -16,6 +16,9 @@ namespace OC\Session;
  * @package OC\Session
  */
 class Internal extends Memory {
+
+	private $destroyed = false;
+
 	public function __construct($name) {
 		session_name($name);
 		session_start();
@@ -23,10 +26,17 @@ class Internal extends Memory {
 			throw new \Exception('Failed to start session');
 		}
 		$this->data = $_SESSION;
+		session_write_close();
 	}
 
 	public function __destruct() {
-		$_SESSION = array_merge($_SESSION, $this->data);
+		if ($this->destroyed) {
+			return;
+		}
+
+		$this->data = array_merge($_SESSION, $this->data);
+		session_start();
+		$_SESSION = $this->data;
 		session_write_close();
 	}
 
@@ -41,10 +51,16 @@ class Internal extends Memory {
 		parent::remove($key);
 	}
 
-	public function clear() {
-		session_unset();
-		@session_regenerate_id(true);
-		@session_start();
+	public function destroy() {
+		session_start();
 		$this->data = $_SESSION = array();
+
+		$params = session_get_cookie_params();
+		setcookie(session_name(), '', time() - 42000,
+			$params["path"], $params["domain"],
+			$params["secure"], $params["httponly"]
+		);
+
+		session_destroy();
 	}
 }
