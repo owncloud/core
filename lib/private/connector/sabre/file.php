@@ -73,6 +73,13 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 			$partpath = pathinfo($partpath, PATHINFO_FILENAME) . rand() . '.part';
 		}
 
+		$targetFileHandle = $fs->fopen($this->path, 'c+');
+		// the file lock will be freed as soon as we leave the scope of this method
+		$lock = \OC\Files\Lock::write($targetFileHandle);
+		if ($lock === false) {
+			throw new Sabre_DAV_Exception_BadRequest('target file is locked because of another parallel upload');
+		}
+
 		try {
 			$putOkay = $fs->file_put_contents($partpath, $data);
 			if ($putOkay === false) {
@@ -233,16 +240,26 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 		}
 
 		if ($chunk_handler->isComplete()) {
+			// lock the target file
+			$fs = $this->getFS();
+			$targetPath = $path . '/' . $info['name'];
+
+			$targetFileHandle = $fs->fopen($targetPath, 'c+');
+			// the file lock will be freed as soon as we leave the scope of this method
+			$lock = \OC\Files\Lock::write($targetFileHandle);
+			if ($lock === false) {
+				throw new Sabre_DAV_Exception_BadRequest('target file is locked because of another parallel upload');
+			}
 
 			// we first assembly the target file as a part file
 			$partFile = $path . '/' . $info['name'] . '.ocTransferId' . $info['transferid'] . '.part';
 			$chunk_handler->file_assemble($partFile);
 
 			// here is the final atomic rename
-			$fs = $this->getFS();
-			$targetPath = $path . '/' . $info['name'];
 			$renameOkay = $fs->rename($partFile, $targetPath);
 			$fileExists = $fs->file_exists($targetPath);
+
+			// verify copy operations
 			if ($renameOkay === false || $fileExists === false) {
 				\OC_Log::write('webdav', '\OC\Files\Filesystem::rename() failed', \OC_Log::ERROR);
 				// only delete if an error occurred and the target file was already created
