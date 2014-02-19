@@ -26,6 +26,7 @@ OCP\User::checkLoggedIn();
 
 // Load the files we need
 OCP\Util::addStyle('files', 'files');
+OCP\Util::addStyle('files', 'upload');
 OCP\Util::addscript('files', 'file-upload');
 OCP\Util::addscript('files', 'jquery.iframe-transport');
 OCP\Util::addscript('files', 'jquery.fileupload');
@@ -35,85 +36,66 @@ OCP\Util::addscript('files', 'filelist');
 OCP\App::setActiveNavigationEntry('files_index');
 // Load the files
 $dir = isset($_GET['dir']) ? stripslashes($_GET['dir']) : '';
+$dir = \OC\Files\Filesystem::normalizePath($dir);
+$dirInfo = \OC\Files\Filesystem::getFileInfo($dir);
 // Redirect if directory does not exist
-if (!\OC\Files\Filesystem::is_dir($dir . '/')) {
+if (!$dirInfo->getType() === 'dir') {
 	header('Location: ' . OCP\Util::getScriptName() . '');
 	exit();
 }
 
-function fileCmp($a, $b) {
-	if ($a['type'] == 'dir' and $b['type'] != 'dir') {
-		return -1;
-	} elseif ($a['type'] != 'dir' and $b['type'] == 'dir') {
-		return 1;
-	} else {
-		return strnatcasecmp($a['name'], $b['name']);
-	}
+$isIE8 = false;
+preg_match('/MSIE (.*?);/', $_SERVER['HTTP_USER_AGENT'], $matches);
+if (count($matches) > 0 && $matches[1] <= 8){
+	$isIE8 = true;
 }
 
+// if IE8 and "?dir=path" was specified, reformat the URL to use a hash like "#?dir=path"
+if ($isIE8 && isset($_GET['dir'])){
+	if ($dir === ''){
+		$dir = '/';
+	}
+	header('Location: ' . OCP\Util::linkTo('files', 'index.php') . '#?dir=' . \OCP\Util::encodePath($dir));
+	exit();
+}
+
+$ajaxLoad = false;
 $files = array();
 $user = OC_User::getUser();
 if (\OC\Files\Cache\Upgrade::needUpgrade($user)) { //dont load anything if we need to upgrade the cache
-	$content = array();
 	$needUpgrade = true;
-	$freeSpace = 0;
 } else {
-	$content = \OC\Files\Filesystem::getDirectoryContent($dir);
-	$freeSpace = \OC\Files\Filesystem::free_space($dir);
+	if ($isIE8){
+		// after the redirect above, the URL will have a format
+		// like "files#?dir=path" which means that no path was given
+		// (dir is not set). In that specific case, we don't return any
+		// files because the client will take care of switching the dir
+		// to the one from the hash, then ajax-load the initial file list
+		$files = array();
+		$ajaxLoad = true;
+	}
+	else{
+		$files = \OCA\Files\Helper::getFiles($dir);
+	}
 	$needUpgrade = false;
 }
-foreach ($content as $i) {
-	$i['date'] = OCP\Util::formatDate($i['mtime']);
-	if ($i['type'] == 'file') {
-		$fileinfo = pathinfo($i['name']);
-		$i['basename'] = $fileinfo['filename'];
-		if (!empty($fileinfo['extension'])) {
-			$i['extension'] = '.' . $fileinfo['extension'];
-		} else {
-			$i['extension'] = '';
-		}
-	}
-	$i['directory'] = $dir;
-	$i['isPreviewAvailable'] = \OCP\Preview::isMimeSupported($i['mimetype']);
-	$files[] = $i;
-}
 
-usort($files, "fileCmp");
+$config = \OC::$server->getConfig();
 
 // Make breadcrumb
-$breadcrumb = array();
-$pathtohere = '';
-foreach (explode('/', $dir) as $i) {
-	if ($i != '') {
-		$pathtohere .= '/' . $i;
-		$breadcrumb[] = array('dir' => $pathtohere, 'name' => $i);
-	}
-}
+$breadcrumb = \OCA\Files\Helper::makeBreadcrumb($dir);
 
 // make breadcrumb und filelist markup
 $list = new OCP\Template('files', 'part.list', '');
 $list->assign('files', $files);
 $list->assign('baseURL', OCP\Util::linkTo('files', 'index.php') . '?dir=');
 $list->assign('downloadURL', OCP\Util::linkToRoute('download', array('file' => '/')));
-$list->assign('disableSharing', false);
 $list->assign('isPublic', false);
 $breadcrumbNav = new OCP\Template('files', 'part.breadcrumb', '');
 $breadcrumbNav->assign('breadcrumb', $breadcrumb);
 $breadcrumbNav->assign('baseURL', OCP\Util::linkTo('files', 'index.php') . '?dir=');
 
-$permissions = OCP\PERMISSION_READ;
-if (\OC\Files\Filesystem::isCreatable($dir . '/')) {
-	$permissions |= OCP\PERMISSION_CREATE;
-}
-if (\OC\Files\Filesystem::isUpdatable($dir . '/')) {
-	$permissions |= OCP\PERMISSION_UPDATE;
-}
-if (\OC\Files\Filesystem::isDeletable($dir . '/')) {
-	$permissions |= OCP\PERMISSION_DELETE;
-}
-if (\OC\Files\Filesystem::isSharable($dir . '/')) {
-	$permissions |= OCP\PERMISSION_SHARE;
-}
+$permissions = $dirInfo->getPermissions();
 
 if ($needUpgrade) {
 	OCP\Util::addscript('files', 'upgrade');
@@ -122,10 +104,15 @@ if ($needUpgrade) {
 } else {
 	// information about storage capacities
 	$storageInfo=OC_Helper::getStorageInfo($dir);
+	$freeSpace=$storageInfo['free'];
+	$uploadLimit=OCP\Util::uploadLimit();
 	$maxUploadFilesize=OCP\Util::maxUploadFilesize($dir);
-	$publicUploadEnabled = \OC_Appconfig::getValue('core', 'shareapi_allow_public_upload', 'yes');
+	$publicUploadEnabled = $config->getAppValue('core', 'shareapi_allow_public_upload', 'yes');
+	// if the encryption app is disabled, than everything is fine (INIT_SUCCESSFUL status code)
+	$encryptionInitStatus = 2;
 	if (OC_App::isEnabled('files_encryption')) {
-		$publicUploadEnabled = 'no';
+		$session = new \OCA\Encryption\Session(new \OC\Files\View('/'));
+		$encryptionInitStatus = $session->getInitialized();
 	}
 
 	$trashEnabled = \OCP\App::isEnabled('files_trashbin');
@@ -133,25 +120,39 @@ if ($needUpgrade) {
 	if ($trashEnabled) {
 		$trashEmpty = \OCA\Files_Trashbin\Trashbin::isEmpty($user);
 	}
-	
+
+	$isCreatable = \OC\Files\Filesystem::isCreatable($dir . '/');
+	$fileHeader = (!isset($files) or count($files) > 0);
+	$emptyContent = ($isCreatable and !$fileHeader) or $ajaxLoad;
+
 	OCP\Util::addscript('files', 'fileactions');
 	OCP\Util::addscript('files', 'files');
 	OCP\Util::addscript('files', 'keyboardshortcuts');
 	$tmpl = new OCP\Template('files', 'index', 'user');
 	$tmpl->assign('fileList', $list->fetchPage());
 	$tmpl->assign('breadcrumb', $breadcrumbNav->fetchPage());
-	$tmpl->assign('dir', \OC\Files\Filesystem::normalizePath($dir));
-	$tmpl->assign('isCreatable', \OC\Files\Filesystem::isCreatable($dir . '/'));
+	$tmpl->assign('dir', $dir);
+	$tmpl->assign('isCreatable', $isCreatable);
 	$tmpl->assign('permissions', $permissions);
 	$tmpl->assign('files', $files);
 	$tmpl->assign('trash', $trashEnabled);
 	$tmpl->assign('trashEmpty', $trashEmpty);
-	$tmpl->assign('uploadMaxFilesize', $maxUploadFilesize);
+	$tmpl->assign('uploadMaxFilesize', $maxUploadFilesize); // minimium of freeSpace and uploadLimit
 	$tmpl->assign('uploadMaxHumanFilesize', OCP\Util::humanFileSize($maxUploadFilesize));
+	$tmpl->assign('freeSpace', $freeSpace);
+	$tmpl->assign('uploadLimit', $uploadLimit); // PHP upload limit
 	$tmpl->assign('allowZipDownload', intval(OCP\Config::getSystemValue('allowZipDownload', true)));
 	$tmpl->assign('usedSpacePercent', (int)$storageInfo['relative']);
 	$tmpl->assign('isPublic', false);
 	$tmpl->assign('publicUploadEnabled', $publicUploadEnabled);
 	$tmpl->assign("encryptedFiles", \OCP\Util::encryptedFiles());
+	$tmpl->assign("mailNotificationEnabled", $config->getAppValue('core', 'shareapi_allow_mail_notification', 'yes'));
+	$tmpl->assign("allowShareWithLink", $config->getAppValue('core', 'shareapi_allow_links', 'yes'));
+	$tmpl->assign("encryptionInitStatus", $encryptionInitStatus);
+	$tmpl->assign('disableSharing', false);
+	$tmpl->assign('ajaxLoad', $ajaxLoad);
+	$tmpl->assign('emptyContent', $emptyContent);
+	$tmpl->assign('fileHeader', $fileHeader);
+
 	$tmpl->printPage();
 }

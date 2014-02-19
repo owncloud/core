@@ -8,13 +8,14 @@ $TRANSLATIONS = array(
 "Users" => "使用者",
 "Admin" => "管理",
 "Failed to upgrade \"%s\"." => "升級失敗：%s",
+"Unknown filetype" => "未知的檔案類型",
+"Invalid image" => "無效的圖片",
 "web services under your control" => "由您控制的網路服務",
 "cannot open \"%s\"" => "無法開啓 %s",
 "ZIP download is turned off." => "ZIP 下載已關閉。",
 "Files need to be downloaded one by one." => "檔案需要逐一下載。",
 "Back to Files" => "回到檔案列表",
 "Selected files too large to generate zip file." => "選擇的檔案太大以致於無法產生壓縮檔。",
-"Download the files in smaller chunks, seperately or kindly ask your administrator." => "以小分割下載您的檔案，請詢問您的系統管理員。",
 "No source specified when installing app" => "沒有指定應用程式安裝來源",
 "No href specified when installing app from http" => "從 http 安裝應用程式，找不到 href 屬性",
 "No path specified when installing app from local file" => "從本地檔案安裝應用程式時沒有指定路徑",
@@ -53,6 +54,7 @@ $TRANSLATIONS = array(
 "Set an admin password." => "設定管理員密碼。",
 "Your web server is not yet properly setup to allow files synchronization because the WebDAV interface seems to be broken." => "您的網頁伺服器尚未被正確設定來進行檔案同步，因為您的 WebDAV 界面似乎無法使用。",
 "Please double check the <a href='%s'>installation guides</a>." => "請參考<a href='%s'>安裝指南</a>。",
+"Could not find category \"%s\"" => "找不到分類：\"%s\"",
 "seconds ago" => "幾秒前",
 "_%n minute ago_::_%n minutes ago_" => array("%n 分鐘前"),
 "_%n hour ago_::_%n hours ago_" => array("%n 小時前"),
@@ -62,8 +64,6 @@ $TRANSLATIONS = array(
 "last month" => "上個月",
 "_%n month ago_::_%n months ago_" => array("%n 個月前"),
 "last year" => "去年",
-"years ago" => "幾年前",
-"Caused by:" => "原因：",
-"Could not find category \"%s\"" => "找不到分類：\"%s\""
+"years ago" => "幾年前"
 );
 $PLURAL_FORMS = "nplurals=1; plural=0;";

@@ -8,13 +8,15 @@ $TRANSLATIONS = array(
 "Users" => "Użytkownicy",
 "Admin" => "Administrator",
 "Failed to upgrade \"%s\"." => "Błąd przy aktualizacji \"%s\".",
+"Unknown filetype" => "Nieznany typ pliku",
+"Invalid image" => "Błędne zdjęcie",
 "web services under your control" => "Kontrolowane serwisy",
 "cannot open \"%s\"" => "Nie można otworzyć \"%s\"",
 "ZIP download is turned off." => "Pobieranie ZIP jest wyłączone.",
 "Files need to be downloaded one by one." => "Pliki muszą zostać pobrane pojedynczo.",
 "Back to Files" => "Wróć do plików",
 "Selected files too large to generate zip file." => "Wybrane pliki są zbyt duże, aby wygenerować plik zip.",
-"Download the files in smaller chunks, seperately or kindly ask your administrator." => "Pobierz pliki w mniejszy kawałkach, oddzielnie lub poproś administratora o zwiększenie limitu.",
+"Please download the files separately in smaller chunks or kindly ask your administrator." => "Proszę ściągać pliki osobno w mniejszych paczkach lub poprosić administratora.",
 "No source specified when installing app" => "Nie określono źródła  podczas instalacji aplikacji",
 "No href specified when installing app from http" => "Nie określono linku skąd aplikacja ma być zainstalowana",
 "No path specified when installing app from local file" => "Nie określono lokalnego pliku z którego miała być instalowana aplikacja",
@@ -53,6 +55,7 @@ $TRANSLATIONS = array(
 "Set an admin password." => "Ustaw hasło administratora.",
 "Your web server is not yet properly setup to allow files synchronization because the WebDAV interface seems to be broken." => "Serwer internetowy nie jest jeszcze poprawnie skonfigurowany, aby umożliwić synchronizację plików, ponieważ interfejs WebDAV wydaje się być uszkodzony.",
 "Please double check the <a href='%s'>installation guides</a>." => "Sprawdź ponownie <a href='%s'>przewodniki instalacji</a>.",
+"Could not find category \"%s\"" => "Nie można odnaleźć kategorii \"%s\"",
 "seconds ago" => "sekund temu",
 "_%n minute ago_::_%n minutes ago_" => array("%n minute temu","%n minut temu","%n minut temu"),
 "_%n hour ago_::_%n hours ago_" => array("%n godzinę temu","%n godzin temu","%n godzin temu"),
@@ -62,8 +65,6 @@ $TRANSLATIONS = array(
 "last month" => "w zeszłym miesiącu",
 "_%n month ago_::_%n months ago_" => array("%n miesiąc temu","%n miesięcy temu","%n miesięcy temu"),
 "last year" => "w zeszłym roku",
-"years ago" => "lat temu",
-"Caused by:" => "Spowodowane przez:",
-"Could not find category \"%s\"" => "Nie można odnaleźć kategorii \"%s\""
+"years ago" => "lat temu"
 );
 $PLURAL_FORMS = "nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);";

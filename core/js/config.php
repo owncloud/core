@@ -55,6 +55,12 @@ $array = array(
 		)
 	),
 	"firstDay" => json_encode($l->l('firstday', 'firstday')) ,
+	"oc_config" => json_encode(
+		array(
+			'session_lifetime' => \OCP\Config::getSystemValue('session_lifetime', ini_get('session.gc_maxlifetime')),
+			'session_keepalive' => \OCP\Config::getSystemValue('session_keepalive', true)
+		)
+	)
 	);
 
 // Echo it

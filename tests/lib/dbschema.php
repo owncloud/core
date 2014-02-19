@@ -16,7 +16,7 @@ class Test_DBSchema extends PHPUnit_Framework_TestCase {
 		$dbfile = OC::$SERVERROOT.'/tests/data/db_structure.xml';
 		$dbfile2 = OC::$SERVERROOT.'/tests/data/db_structure2.xml';
 
-		$r = '_'.OC_Util::generateRandomBytes('4').'_';
+		$r = '_'.OC_Util::generateRandomBytes(4).'_';
 		$content = file_get_contents( $dbfile );
 		$content = str_replace( '*dbprefix*', '*dbprefix*'.$r, $content );
 		file_put_contents( $this->schema_file, $content );
@@ -103,7 +103,7 @@ class Test_DBSchema extends PHPUnit_Framework_TestCase {
 				break;
 		}
 		
-		$name = $result->fetchOne(); //FIXME checking with '$result->numRows() === 1' does not seem to work?
+		$name = $result->fetchOne();
 		if ($name === $table) {
 			return true;
 		} else {

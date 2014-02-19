@@ -1,24 +1,24 @@
 <?php
 /**
-* ownCloud
-*
-* @author Frank Karlitschek
-* @copyright 2012 Frank Karlitschek frank@owncloud.org
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU AFFERO GENERAL PUBLIC LICENSE for more details.
-*
-* You should have received a copy of the GNU Affero General Public
-* License along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*
-*/
+ * ownCloud
+ *
+ * @author Frank Karlitschek
+ * @copyright 2012 Frank Karlitschek frank@owncloud.org
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 
 /**
  * Public interface of ownCloud for apps to use.
@@ -27,7 +27,7 @@
  */
 
 /**
- * @brief use OCP namespace for all classes that are considered public.
+ * Use OCP namespace for all classes that are considered public.
  *
  * Classes that use this namespace are for use by apps, and not for use by internal
  * OC classes
@@ -40,9 +40,9 @@ namespace OCP;
  */
 class Config {
 	/**
-	 * @brief Gets a value from config.php
+	 * Gets a value from config.php
 	 * @param string $key key
-	 * @param string $default = null default value
+	 * @param mixed $default = null default value
 	 * @return string the value or $default
 	 *
 	 * This function gets the value from config.php. If it does not exist,
@@ -53,9 +53,9 @@ class Config {
 	}
 
 	/**
-	 * @brief Sets a value
+	 * Sets a value
 	 * @param string $key key
-	 * @param string $value value
+	 * @param mixed $value value
 	 * @return bool
 	 *
 	 * This function sets the value and writes the config.php. If the file can
@@ -71,7 +71,7 @@ class Config {
 	}
 
 	/**
-	 * @brief Gets the config value
+	 * Gets the config value
 	 * @param string $app app
 	 * @param string $key key
 	 * @param string $default = null, default value if the key does not exist
@@ -85,11 +85,11 @@ class Config {
 	}
 
 	/**
-	 * @brief sets a value in the appconfig
+	 * Sets a value in the appconfig
 	 * @param string $app app
 	 * @param string $key key
 	 * @param string $value value
-	 * @return string true/false
+	 * @return boolean true/false
 	 *
 	 * Sets a value. If the key did not exist before it will be created.
 	 */
@@ -103,7 +103,7 @@ class Config {
 	}
 
 	/**
-	 * @brief Gets the preference
+	 * Gets the preference
 	 * @param string $user user
 	 * @param string $app app
 	 * @param string $key key
@@ -118,12 +118,12 @@ class Config {
 	}
 
 	/**
-	 * @brief sets a value in the preferences
+	 * Sets a value in the preferences
 	 * @param string $user user
 	 * @param string $app app
 	 * @param string $key key
 	 * @param string $value value
-	 * @returns bool
+	 * @return bool
 	 *
 	 * Adds a value to the preferences. If the key did not exist before, it
 	 * will be added automagically.

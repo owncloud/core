@@ -9,7 +9,9 @@ if(!\OC_App::isEnabled('files_sharing')){
 	exit;
 }
 
-$file = array_key_exists('file', $_GET) ? (string) urldecode($_GET['file']) : '';
+\OC_User::setIncognitoMode(true);
+
+$file = array_key_exists('file', $_GET) ? (string) $_GET['file'] : '';
 $maxX = array_key_exists('x', $_GET) ? (int) $_GET['x'] : '36';
 $maxY = array_key_exists('y', $_GET) ? (int) $_GET['y'] : '36';
 $scalingUp = array_key_exists('scalingup', $_GET) ? (bool) $_GET['scalingup'] : true;
@@ -34,12 +36,17 @@ if(!isset($linkedItem['uid_owner']) || !isset($linkedItem['file_source'])) {
 	exit;
 }
 
-$userId = $linkedItem['uid_owner'];
+$rootLinkItem = OCP\Share::resolveReShare($linkedItem);
+$userId = $rootLinkItem['uid_owner'];
+
+OCP\JSON::checkUserExists($rootLinkItem['uid_owner']);
 \OC_Util::setupFS($userId);
+\OC\Files\Filesystem::initMountPoints($userId);
+$view = new \OC\Files\View('/' . $userId . '/files');
 
 $pathId = $linkedItem['file_source'];
-$path = \OC\Files\Filesystem::getPath($pathId);
-$pathInfo = \OC\Files\Filesystem::getFileInfo($path);
+$path = $view->getPath($pathId);
+$pathInfo = $view->getFileInfo($path);
 $sharedFile = null;
 
 if($linkedItem['item_type'] === 'folder') {
@@ -54,7 +61,7 @@ if($linkedItem['item_type'] === 'folder') {
 
 if($linkedItem['item_type'] === 'file') {
 	$parent = $pathInfo['parent'];
-	$path = \OC\Files\Filesystem::getPath($parent);
+	$path = $view->getPath($parent);
 	$sharedFile = $pathInfo['name'];
 }
 

@@ -8,13 +8,15 @@ $TRANSLATIONS = array(
 "Users" => "Kasutajad",
 "Admin" => "Admin",
 "Failed to upgrade \"%s\"." => "Ebaõnnestunud uuendus \"%s\".",
+"Unknown filetype" => "Tundmatu failitüüp",
+"Invalid image" => "Vigane pilt",
 "web services under your control" => "veebitenused sinu kontrolli all",
 "cannot open \"%s\"" => "ei suuda avada \"%s\"",
 "ZIP download is turned off." => "ZIP-ina allalaadimine on välja lülitatud.",
 "Files need to be downloaded one by one." => "Failid tuleb alla laadida ükshaaval.",
 "Back to Files" => "Tagasi failide juurde",
 "Selected files too large to generate zip file." => "Valitud failid on ZIP-faili loomiseks liiga suured.",
-"Download the files in smaller chunks, seperately or kindly ask your administrator." => "Laadi failid alla eraldi väiksemate osadena või küsi nõu oma süsteemiadminstraatorilt.",
+"Please download the files separately in smaller chunks or kindly ask your administrator." => "Palun laadi failid alla eraldi väiksemate osadena või palu abi oma süsteemihaldurilt.",
 "No source specified when installing app" => "Ühegi lähteallikat pole rakendi paigalduseks määratletud",
 "No href specified when installing app from http" => "Ühtegi aadressi pole määratletud rakendi paigalduseks veebist",
 "No path specified when installing app from local file" => "Ühtegi teed pole määratletud paigaldamaks rakendit kohalikust failist",
@@ -53,6 +55,7 @@ $TRANSLATIONS = array(
 "Set an admin password." => "Määra admini parool.",
 "Your web server is not yet properly setup to allow files synchronization because the WebDAV interface seems to be broken." => "Veebiserveri ei ole veel korralikult seadistatud võimaldamaks failide sünkroniseerimist, kuna WebDAV liides näib olevat mittetoimiv.",
 "Please double check the <a href='%s'>installation guides</a>." => "Palun tutvu veelkord <a href='%s'>paigalduse juhenditega</a>.",
+"Could not find category \"%s\"" => "Ei leia kategooriat \"%s\"",
 "seconds ago" => "sekundit tagasi",
 "_%n minute ago_::_%n minutes ago_" => array("","%n minutit tagasi"),
 "_%n hour ago_::_%n hours ago_" => array("","%n tundi tagasi"),
@@ -62,8 +65,6 @@ $TRANSLATIONS = array(
 "last month" => "viimasel kuul",
 "_%n month ago_::_%n months ago_" => array("","%n kuud tagasi"),
 "last year" => "viimasel aastal",
-"years ago" => "aastat tagasi",
-"Caused by:" => "Põhjustaja:",
-"Could not find category \"%s\"" => "Ei leia kategooriat \"%s\""
+"years ago" => "aastat tagasi"
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";
