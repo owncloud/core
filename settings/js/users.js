@@ -335,6 +335,13 @@ var UserList = {
 
 $(document).ready(function () {
 
+	/*Add Event for search action*/
+	$('#search').on('blur', function (event) {
+		window.location.replace("/index.php/settings/users?search="+$("#search").val());
+	});
+	
+	
+	
 	UserList.doSort();
 	UserList.availableGroups = $('#content table').data('groups');
 	$('tbody tr:last').bind('inview', function (event, isInView, visiblePartX, visiblePartY) {
