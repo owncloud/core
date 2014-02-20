@@ -19,7 +19,7 @@ php_value mbstring.func_overload 0
 </IfModule>
 <IfModule mod_rewrite.c>
 RewriteEngine on
-RewriteRule .* - [env=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteRule .* - [env=REMOTE_USER:%{HTTP:Authorization},last]
 RewriteRule ^.well-known/host-meta /public.php?service=host-meta [QSA,L]
 RewriteRule ^.well-known/host-meta.json /public.php?service=host-meta-json [QSA,L]
 RewriteRule ^.well-known/carddav /remote.php/carddav/ [R]
