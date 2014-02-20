@@ -1024,6 +1024,7 @@ class OC_Util {
 			curl_setopt($curl, CURLOPT_URL, $url);
 			curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
 			curl_setopt($curl, CURLOPT_MAXREDIRS, 10);
+			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
 
 			curl_setopt($curl, CURLOPT_USERAGENT, "ownCloud Server Crawler");
 			if(OC_Config::getValue('proxy', '') != '') {
@@ -1049,6 +1050,9 @@ class OC_Util {
 				$contextArray = array(
 					'http' => array(
 						'timeout' => 10
+					),
+					'ssl' => array(
+						'verify_peer' => true
 					)
 				);
 			}
