@@ -5,9 +5,12 @@
  * See the COPYING-README file.
  */
 
-OC_Util::checkAdminUser();
-OCP\JSON::callCheck();
+try {
+	OC_Util::checkAdminUser();
+	OCP\JSON::callCheck();
 
-OC_Config::setValue( 'forcessl', filter_var($_POST['enforceHTTPS'], FILTER_VALIDATE_BOOLEAN));
-
-echo 'true';
+	OC_Config::setValue('forcessl', filter_var($_POST['enforceHTTPS'], FILTER_VALIDATE_BOOLEAN));
+	echo 'true';
+} catch (\Exception $ex) {
+	echo 'false';
+}
