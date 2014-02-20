@@ -35,6 +35,14 @@ class JSResourceLocator extends ResourceLocator {
 		) {
 			return;
 		}
+		if (\OC::getRouter()->canMatch($app_url . '/' . $script . $this->form_factor . '.js')) {
+			$this->append($app_path, $script . $this->form_factor . '.js', $_SERVER['SCRIPT_NAME'] . $app_url);
+			return;
+		}
+		if (\OC::getRouter()->canMatch($app_url . '/' . $script . '.js')) {
+			$this->append($app_path, $script . '.js', $_SERVER['SCRIPT_NAME'] . $app_url);
+			return;
+		}
 		throw new \Exception('js file not found: script:'.$script);
 	}
 

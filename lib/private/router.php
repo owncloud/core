@@ -135,6 +135,17 @@ class OC_Router {
 	}
 
 	/**
+	 * Determine if the match can be made to a specific URL
+	 *
+	 * @param string $url The url to find
+	 * @returns boolean True if the URL matches a route
+	 */
+	public function canMatch($url) {
+		$matcher = new UrlMatcher($this->root, $this->context);
+		return ($matcher->match($url)) ? true : false;
+	}
+
+	/**
 	 * Get the url generator
 	 *
 	 */
