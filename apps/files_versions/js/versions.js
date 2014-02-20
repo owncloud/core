@@ -25,7 +25,7 @@ $(document).ready(function(){
 				var createDropDown = true;
 				// Check if drop down is already visible for a different file
 				if (($('#dropdown').length > 0) ) {
-					if ( $('#dropdown').hasClass('drop-versions') && file == $('#dropdown').data('file')) {
+					if ( $('#dropdown').hasClass('drop-versions') && file === $('#dropdown').data('file')) {
 						createDropDown = false;
 					}
 					$('#dropdown').remove();
