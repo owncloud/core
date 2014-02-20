@@ -66,15 +66,15 @@ class ErrorHandler {
 		);
 	}
 
-	protected function formatMessage($message, $file, $line) {
-		return "$message at $file#$line";
-	}
-
 	//Recoverable handler which catch all errors, warnings and notices
 	public function onAll($number, $message, $file, $line) {
 		$this->logger->debug(
 			$this->formatMessage($message, $file, $line),
 			$this->loggerContext
 		);
+	}
+
+	protected function formatMessage($message, $file, $line) {
+		return "$message at $file#$line";
 	}
 }
