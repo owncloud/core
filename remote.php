@@ -1,4 +1,5 @@
 <?php
+define("DISABLE_SESSION", 1);
 $RUNTIME_NOAPPS = true;
 
 try {
