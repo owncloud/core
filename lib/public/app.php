@@ -139,4 +139,24 @@ class App {
 	public static function getAppVersion( $app ) {
 		return \OC_App::getAppVersion( $app );
 	}
+
+	/**
+	 * This function loads all apps it can find. A directory contains an app if the
+	 * file /appinfo/app.php exists.
+	 * @param array $types If set only apps of those types are loaded
+	 * @return boolean
+	 *
+	 */
+	public static function loadApps( $types ) {
+		return \OC_App::loadApps( $types );
+	}
+
+	/**
+	 * Loads a specific app.
+	 * @param string $app The name of the app which will be loaded
+	 * @return boolean
+	 */
+	public static function loadApp( $app ) {
+		return \OC_App::loadApp( $app );
+    }
 }
