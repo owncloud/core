@@ -38,7 +38,8 @@ interface IHelper {
 	 * Gets the content of an URL by using CURL or a fallback if it is not
 	 * installed
 	 * @param string $url the url that should be fetched
+	 * @param bool $verifyCert Whether the SSL certificate should get verified (defaults to yes)
 	 * @return string the content of the webpage
 	 */
-	public function getUrlContent($url);
+	public function getUrlContent($url, $verifyCert);
 }
