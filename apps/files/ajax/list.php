@@ -34,8 +34,11 @@ if($doBreadcrumb) {
 	$data['breadcrumb'] = $breadcrumbNav->fetchPage();
 }
 
+$ratio = isset($_COOKIE['ratio']) ? $_COOKIE['ratio'] : 1;
+$ratio = ($ratio >= 2) ? 2 : 1;
+
 // make filelist
-$files = \OCA\Files\Helper::getFiles($dir);
+$files = \OCA\Files\Helper::getFiles($dir, $ratio);
 
 $list = new OCP\Template("files", "part.list", "");
 $list->assign('files', $files, false);

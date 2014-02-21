@@ -753,12 +753,18 @@ Files.lazyLoadPreview = function(path, mime, ready, width, height, etag) {
 		var previewURL;
 		ready(iconURL); // set mimeicon URL
 
+		var ratio = (window.devicePixelRatio) ? window.devicePixelRatio : 1;
+
 		// now try getting a preview thumbnail URL
 		if ( ! width ) {
 			width = $('#filestable').data('preview-x');
 		}
 		if ( ! height ) {
 			height = $('#filestable').data('preview-y');
+		}
+		if(ratio >= 2){
+			width *= 2;
+			height *= 2;
 		}
 		// note: the order of arguments must match the one
 		// from the server's template so that the browser
