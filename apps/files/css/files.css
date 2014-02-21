@@ -404,3 +404,8 @@ table.dragshadow td.size {
 .mask.transparent{
 	opacity: 0;
 }
+
+/* scale down high resolution previews */
+@media only screen and (-moz-min-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+	td.filename { background-size: 32px 32px;}
+}

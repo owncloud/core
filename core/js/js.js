@@ -989,6 +989,11 @@ OC.set=function(name, value) {
 	context[tail]=value;
 };
 
+if( document.cookie.indexOf('ratio') == -1) {
+	var ratio = (window.devicePixelRatio) ? window.devicePixelRatio : 1;
+	$.ajax(OC.webroot + '/core/ajax/setratio.php?ratio=' + ratio);
+}
+
 /**
  * select a range in an input field
  * @link http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area

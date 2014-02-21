@@ -59,6 +59,8 @@ if ($isIE8 && isset($_GET['dir'])){
 	exit();
 }
 
+$ratio = isset($_COOKIE['ratio']) ? $_COOKIE['ratio'] : 1;
+$ratio = ($ratio >= 2) ? 2 : 1;
 $ajaxLoad = false;
 $files = array();
 $user = OC_User::getUser();
@@ -75,7 +77,7 @@ if (\OC\Files\Cache\Upgrade::needUpgrade($user)) { //dont load anything if we ne
 		$ajaxLoad = true;
 	}
 	else{
-		$files = \OCA\Files\Helper::getFiles($dir);
+		$files = \OCA\Files\Helper::getFiles($dir, $ratio);
 	}
 	$needUpgrade = false;
 }

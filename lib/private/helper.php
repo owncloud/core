@@ -259,16 +259,17 @@ class OC_Helper {
 	/**
 	 * @brief get path to preview of file
 	 * @param string $path path
+	 * @param int $ratio the scaling ratio for previews
 	 * @return string the url
 	 *
 	 * Returns the path to the preview of the file.
 	 */
-	public static function previewIcon($path) {
-		return self::linkToRoute( 'core_ajax_preview', array('x' => 36, 'y' => 36, 'file' => $path ));
+	public static function previewIcon($path, $ratio = 1) {
+		return self::linkToRoute( 'core_ajax_preview', array('x' => 36 * $ratio, 'y' => 36 * $ratio, 'file' => $path ));
 	}
 
-	public static function publicPreviewIcon( $path, $token ) {
-		return self::linkToRoute( 'core_ajax_public_preview', array('x' => 36, 'y' => 36, 'file' => $path, 't' => $token));
+	public static function publicPreviewIcon( $path, $token , $ratio = 1) {
+		return self::linkToRoute( 'core_ajax_public_preview', array('x' => 36 * $ratio, 'y' => 36 * $ratio, 'file' => $path, 't' => $token));
 	}
 
 	/**

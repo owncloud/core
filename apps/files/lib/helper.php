@@ -19,7 +19,7 @@ class Helper
 					 'usedSpacePercent'  => (int)$storageInfo['relative']);
 	}
 
-	public static function determineIcon($file) {
+	public static function determineIcon($file, $ratio = 1) {
 		if($file['type'] === 'dir') {
 			$dir = $file['directory'];
 			$absPath = \OC\Files\Filesystem::getView()->getAbsolutePath($dir.'/'.$file['name']);
@@ -41,7 +41,7 @@ class Helper
 
 		if($file['isPreviewAvailable']) {
 			$pathForPreview = $file['directory'] . '/' . $file['name'];
-			return \OC_Helper::previewIcon($pathForPreview) . '&c=' . $file['etag'];
+			return \OC_Helper::previewIcon($pathForPreview, $ratio) . '&c=' . $file['etag'];
 		}
 		return \OC_Helper::mimetypeIcon($file['mimetype']);
 	}
@@ -67,9 +67,10 @@ class Helper
 	 * Retrieves the contents of the given directory and
 	 * returns it as a sorted array.
 	 * @param string $dir path to the directory
+	 * @param int $iconRatio the ratio to scale preview icons with
 	 * @return array of files
 	 */
-	public static function getFiles($dir) {
+	public static function getFiles($dir, $iconRatio = 1) {
 		$content = \OC\Files\Filesystem::getDirectoryContent($dir);
 		$files = array();
 
@@ -86,7 +87,7 @@ class Helper
 			}
 			$i['directory'] = $dir;
 			$i['isPreviewAvailable'] = \OC::$server->getPreviewManager()->isMimeSupported($i['mimetype']);
-			$i['icon'] = \OCA\Files\Helper::determineIcon($i);
+			$i['icon'] = \OCA\Files\Helper::determineIcon($i, $iconRatio);
 			$files[] = $i;
 		}
 
