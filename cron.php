@@ -50,6 +50,8 @@ try {
 
 	session_write_close();
 
+	$logger = \OC_Log::$object;
+
 	// Don't do anything if ownCloud has not been installed
 	if (!OC_Config::getValue('installed', false)) {
 		exit(0);
@@ -79,7 +81,7 @@ try {
 
 		// We call ownCloud from the CLI (aka cron)
 		if ($appmode != 'cron') {
-			// Use cron in feature!
+			// Use cron in future!
 			OC_BackgroundJob::setExecutionType('cron');
 		}
 
@@ -95,10 +97,10 @@ try {
 		touch(TemporaryCronClass::$lockfile);
 
 		// Work
-		$jobList = new \OC\BackgroundJob\JobList();
+		$jobList = \OC::$server->getJobList();
 		$jobs = $jobList->getAll();
 		foreach ($jobs as $job) {
-			$job->execute($jobList);
+			$job->execute($jobList, $logger);
 		}
 	} else {
 		// We call cron.php from some website
@@ -107,9 +109,9 @@ try {
 			OC_JSON::error(array('data' => array('message' => 'Backgroundjobs are using system cron!')));
 		} else {
 			// Work and success :-)
-			$jobList = new \OC\BackgroundJob\JobList();
+			$jobList = \OC::$server->getJobList();
 			$job = $jobList->getNext();
-			$job->execute($jobList);
+			$job->execute($jobList, $logger);
 			$jobList->setLastJob($job);
 			OC_JSON::success();
 		}

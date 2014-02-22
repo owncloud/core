@@ -67,7 +67,7 @@ class Google extends \OC\Files\Storage\Common {
 	/**
 	 * Get the Google_DriveFile object for the specified path
 	 * @param string $path
-	 * @return Google_DriveFile
+	 * @return string
 	 */
 	private function getDriveFile($path) {
 		// Remove leading and trailing slashes
@@ -206,14 +206,16 @@ class Google extends \OC\Files\Storage\Common {
 	public function rmdir($path) {
 		if (trim($path, '/') === '') {
 			$dir = $this->opendir($path);
-			while (($file = readdir($dh)) !== false) {
-				if (!\OC\Files\Filesystem::isIgnoredDir($file)) {
-					if (!$this->unlink($path.'/'.$file)) {
-						return false;
+			if(is_resource($dir)) {
+				while (($file = readdir($dir)) !== false) {
+					if (!\OC\Files\Filesystem::isIgnoredDir($file)) {
+						if (!$this->unlink($path.'/'.$file)) {
+							return false;
+						}
 					}
 				}
+				closedir($dir);
 			}
-			closedir($dir);
 			$this->driveFiles = array();
 			return true;
 		} else {
@@ -313,10 +315,6 @@ class Google extends \OC\Files\Storage\Common {
 				return false;
 			}
 		}
-	}
-
-	public function isReadable($path) {
-		return $this->file_exists($path);
 	}
 
 	public function isUpdatable($path) {
@@ -526,6 +524,7 @@ class Google extends \OC\Files\Storage\Common {
 	}
 
 	public function hasUpdated($path, $time) {
+		$appConfig = \OC::$server->getAppConfig();
 		if ($this->is_file($path)) {
 			return parent::hasUpdated($path, $time);
 		} else {
@@ -535,7 +534,7 @@ class Google extends \OC\Files\Storage\Common {
 			if ($folder) {
 				$result = false;
 				$folderId = $folder->getId();
-				$startChangeId = \OC_Appconfig::getValue('files_external', $this->getId().'cId');
+				$startChangeId = $appConfig->getValue('files_external', $this->getId().'cId');
 				$params = array(
 					'includeDeleted' => true,
 					'includeSubscribed' => true,
@@ -580,7 +579,7 @@ class Google extends \OC\Files\Storage\Common {
 						break;
 					}
 				}
-				\OC_Appconfig::setValue('files_external', $this->getId().'cId', $largestChangeId);
+				$appConfig->setValue('files_external', $this->getId().'cId', $largestChangeId);
 				return $result;
 			}
 		}

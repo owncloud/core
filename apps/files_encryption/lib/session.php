@@ -30,6 +30,11 @@ class Session {
 
 	private $view;
 
+	const NOT_INITIALIZED = '0';
+	const INIT_EXECUTED = '1';
+	const INIT_SUCCESSFUL = '2';
+
+
 	/**
 	 * @brief if session is started, check if ownCloud key pair is set up, if not create it
 	 * @param \OC_FilesystemView $view
@@ -46,11 +51,13 @@ class Session {
 
 		}
 
-		$publicShareKeyId = \OC_Appconfig::getValue('files_encryption', 'publicShareKeyId');
+		$appConfig = \OC::$server->getAppConfig();
+
+		$publicShareKeyId = $appConfig->getValue('files_encryption', 'publicShareKeyId');
 
 		if ($publicShareKeyId === null) {
 			$publicShareKeyId = 'pubShare_' . substr(md5(time()), 0, 8);
-			\OC_Appconfig::setValue('files_encryption', 'publicShareKeyId', $publicShareKeyId);
+			$appConfig->setValue('files_encryption', 'publicShareKeyId', $publicShareKeyId);
 		}
 
 		if (
@@ -113,6 +120,36 @@ class Session {
 	}
 
 	/**
+	 * @brief Sets status of encryption app
+	 * @param string $init  INIT_SUCCESSFUL, INIT_EXECUTED, NOT_INOITIALIZED
+	 * @return bool
+	 *
+	 * @note this doesn not indicate of the init was successful, we just remeber the try!
+	 */
+	public function setInitialized($init) {
+
+		\OC::$session->set('encryptionInitialized', $init);
+
+		return true;
+
+	}
+
+
+	/**
+	 * @brief Gets status if we already tried to initialize the encryption app
+	 * @returns init status INIT_SUCCESSFUL, INIT_EXECUTED, NOT_INOITIALIZED
+	 *
+	 * @note this doesn not indicate of the init was successful, we just remeber the try!
+	 */
+	public function getInitialized() {
+		if (!is_null(\OC::$session->get('encryptionInitialized'))) {
+			return \OC::$session->get('encryptionInitialized');
+		} else {
+			return self::NOT_INITIALIZED;
+		}
+	}
+
+	/**
 	 * @brief Gets user or public share private key from session
 	 * @returns string $privateKey The user's plaintext private key
 	 *
@@ -160,7 +197,7 @@ class Session {
 
 	/**
 	 * @brief Sets user legacy key to session
-	 * @param $legacyKey
+	 * @param string $legacyKey
 	 * @return bool
 	 */
 	public function setLegacyKey($legacyKey) {

@@ -5,6 +5,8 @@ $TRANSLATIONS = array(
 "Settings" => "Innstillinger",
 "Users" => "Brukere",
 "Admin" => "Admin",
+"Unknown filetype" => "Ukjent filtype",
+"Invalid image" => "Ugyldig bilde",
 "web services under your control" => "web tjenester du kontrollerer",
 "ZIP download is turned off." => "ZIP-nedlasting av avslått",
 "Files need to be downloaded one by one." => "Filene må lastes ned en om gangen",
@@ -18,16 +20,16 @@ $TRANSLATIONS = array(
 "Images" => "Bilder",
 "Your web server is not yet properly setup to allow files synchronization because the WebDAV interface seems to be broken." => "Din nettservev er ikke konfigurert korrekt for filsynkronisering. WebDAV ser ut til å ikke funkere.",
 "Please double check the <a href='%s'>installation guides</a>." => "Vennligst dobbelsjekk <a href='%s'>installasjonsguiden</a>.",
+"Could not find category \"%s\"" => "Kunne ikke finne kategori \"%s\"",
 "seconds ago" => "sekunder siden",
-"_%n minute ago_::_%n minutes ago_" => array("",""),
-"_%n hour ago_::_%n hours ago_" => array("",""),
+"_%n minute ago_::_%n minutes ago_" => array("","%n minutter siden"),
+"_%n hour ago_::_%n hours ago_" => array("","%n timer siden"),
 "today" => "i dag",
 "yesterday" => "i går",
-"_%n day go_::_%n days ago_" => array("",""),
+"_%n day go_::_%n days ago_" => array("","%n dager siden"),
 "last month" => "forrige måned",
-"_%n month ago_::_%n months ago_" => array("",""),
+"_%n month ago_::_%n months ago_" => array("","%n dager siden"),
 "last year" => "forrige år",
-"years ago" => "år siden",
-"Could not find category \"%s\"" => "Kunne ikke finne kategori \"%s\""
+"years ago" => "år siden"
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

@@ -1,5 +1,6 @@
 /**
  * Copyright (c) 2011, Robin Appelman <icewind1991@gmail.com>
+ *               2013, Morris Jobke <morris.jobke@gmail.com>
  * This file is licensed under the Affero General Public License version 3 or later.
  * See the COPYING-README file.
  */
@@ -31,9 +32,10 @@ function changeDisplayName(){
         // Ajax foo
         $.post( 'ajax/changedisplayname.php', post, function(data){
             if( data.status === "success" ){
-                $('#oldDisplayName').text($('#displayName').val());
+                $('#oldDisplayName').val($('#displayName').val());
                 // update displayName on the top right expand button
                 $('#expandDisplayName').text($('#displayName').val());
+                updateAvatar();
             }
             else{
                 $('#newdisplayname').val(data.data.displayName);
@@ -44,6 +46,84 @@ function changeDisplayName(){
     }
 }
 
+function updateAvatar (hidedefault) {
+	$headerdiv = $('#header .avatardiv');
+	$displaydiv = $('#displayavatar .avatardiv');
+
+	if(hidedefault) {
+		$headerdiv.hide();
+		$('#header .avatardiv').removeClass('avatardiv-shown');
+	} else {
+		$headerdiv.css({'background-color': ''});
+		$headerdiv.avatar(OC.currentUser, 32, true);
+		$('#header .avatardiv').addClass('avatardiv-shown');
+	}
+	$displaydiv.css({'background-color': ''});
+	$displaydiv.avatar(OC.currentUser, 128, true);
+}
+
+function showAvatarCropper() {
+	$cropper = $('#cropper');
+	$cropper.prepend("<img>");
+	$cropperImage = $('#cropper img');
+
+	$cropperImage.attr('src', OC.Router.generate('core_avatar_get_tmp')+'?requesttoken='+oc_requesttoken+'#'+Math.floor(Math.random()*1000));
+
+	// Looks weird, but on('load', ...) doesn't work in IE8
+	$cropperImage.ready(function(){
+		$('#displayavatar').hide();
+		$cropper.show();
+
+		$cropperImage.Jcrop({
+			onChange: saveCoords,
+			onSelect: saveCoords,
+			aspectRatio: 1,
+			boxHeight: 500,
+			boxWidth: 500,
+			setSelect: [0, 0, 300, 300]
+		});
+	});
+}
+
+function sendCropData() {
+	cleanCropper();
+
+	var cropperdata = $('#cropper').data();
+	var data = {
+		x: cropperdata.x,
+		y: cropperdata.y,
+		w: cropperdata.w,
+		h: cropperdata.h
+	};
+	$.post(OC.Router.generate('core_avatar_post_cropped'), {crop: data}, avatarResponseHandler);
+}
+
+function saveCoords(c) {
+	$('#cropper').data(c);
+}
+
+function cleanCropper() {
+	$cropper = $('#cropper');
+	$('#displayavatar').show();
+	$cropper.hide();
+	$('.jcrop-holder').remove();
+	$('#cropper img').removeData('Jcrop').removeAttr('style').removeAttr('src');
+	$('#cropper img').remove();
+}
+
+function avatarResponseHandler(data) {
+	$warning = $('#avatar .warning');
+	$warning.hide();
+	if (data.status === "success") {
+		updateAvatar();
+	} else if (data.data === "notsquare") {
+		showAvatarCropper();
+	} else {
+		$warning.show();
+		$warning.text(data.data.message);
+	}
+}
+
 $(document).ready(function(){
 	$("#passwordbutton").click( function(){
 		if ($('#pass1').val() !== '' && $('#pass2').val() !== '') {
@@ -52,14 +132,17 @@ $(document).ready(function(){
 			$('#passwordchanged').hide();
 			$('#passworderror').hide();
 			// Ajax foo
-			$.post( 'ajax/changepassword.php', post, function(data){
+			$.post(OC.Router.generate('settings_personal_changepassword'), post, function(data){
 				if( data.status === "success" ){
 					$('#pass1').val('');
 					$('#pass2').val('');
 					$('#passwordchanged').show();
-				}
-				else{
-					$('#passworderror').html( data.data.message );
+				} else{
+					if (typeof(data.data) !== "undefined") {
+						$('#passworderror').html(data.data.message);
+					} else {
+						$('#passworderror').html(t('Unable to change password'));
+					}
 					$('#passworderror').show();
 				}
 			});
@@ -77,24 +160,36 @@ $(document).ready(function(){
             if(typeof timeout !== 'undefined'){
                 clearTimeout(timeout);
             }
-            timeout = setTimeout('changeDisplayName()',1000);
+            timeout = setTimeout(changeDisplayName, 1000);
         }
     });
 
 
-    $('#email').keyup(function(){
+    $('#email').keyup(function(event){
         if ($('#email').val() !== '' ){
+            // if this is the enter key changeEmailAddress() is already invoked
+            // so it doesn't need to be triggered again
+            if(event.keyCode === 13) {
+                return;
+            }
             if(typeof timeout !== 'undefined'){
                 clearTimeout(timeout);
             }
-            timeout = setTimeout('changeEmailAddress()',1000);
+            timeout = setTimeout(changeEmailAddress, 1000);
         }
     });
 
-	$("#languageinput").chosen();
-	// Show only the not selectable optgroup
-	// Choosen only shows optgroup-labels if there are options in the optgroup
-	$(".languagedivider").remove();
+	$('#email').keypress(function(event){
+		// check for enter key and non empty email
+		if (event.keyCode === 13 && $('#email').val() !== '' ){
+			event.preventDefault()
+			// clear timeout of previous keyup event - prevents duplicate changeEmailAddress call
+			if(typeof timeout !== 'undefined'){
+				clearTimeout(timeout);
+			}
+			changeEmailAddress();
+		}
+	});
 
 	$("#languageinput").change( function(){
 		// Serialize the data
@@ -113,21 +208,76 @@ $(document).ready(function(){
 
 	$('button:button[name="submitDecryptAll"]').click(function() {
 		var privateKeyPassword = $('#decryptAll input:password[id="privateKeyPassword"]').val();
+		$('#decryptAll button:button[name="submitDecryptAll"]').prop("disabled", true);
+		$('#decryptAll input:password[name="privateKeyPassword"]').prop("disabled", true);
 		OC.Encryption.decryptAll(privateKeyPassword);
 	});
-	
+
 	$('#decryptAll input:password[name="privateKeyPassword"]').keyup(function(event) {
 		var privateKeyPassword = $('#decryptAll input:password[id="privateKeyPassword"]').val();
 		if (privateKeyPassword !== '' ) {
 			$('#decryptAll button:button[name="submitDecryptAll"]').removeAttr("disabled");
 			if(event.which === 13) {
+				$('#decryptAll button:button[name="submitDecryptAll"]').prop("disabled", true);
+				$('#decryptAll input:password[name="privateKeyPassword"]').prop("disabled", true);
 				OC.Encryption.decryptAll(privateKeyPassword);
 			}
 		} else {
 			$('#decryptAll button:button[name="submitDecryptAll"]').attr("disabled", "true");
 		}
 	});
-	
+
+	var uploadparms = {
+		done: function(e, data) {
+			avatarResponseHandler(data.result);
+		}
+	};
+
+	$('#uploadavatarbutton').click(function(){
+		$('#uploadavatar').click();
+	});
+
+	$('#uploadavatar').fileupload(uploadparms);
+
+	$('#selectavatar').click(function(){
+		OC.dialogs.filepicker(
+			t('settings', "Select a profile picture"),
+			function(path){
+				$.post(OC.Router.generate('core_avatar_post'), {path: path}, avatarResponseHandler);
+			},
+			false,
+			["image/png", "image/jpeg"]
+		);
+	});
+
+	$('#removeavatar').click(function(){
+		$.ajax({
+			type:	'DELETE',
+			url:	OC.Router.generate('core_avatar_delete'),
+			success: function(msg) {
+				updateAvatar(true);
+			}
+		});
+	});
+
+	$('#abortcropperbutton').click(function(){
+		cleanCropper();
+	});
+
+	$('#sendcropperbutton').click(function(){
+		sendCropData();
+	});
+
+	$('#pass2').strengthify({
+		zxcvbn: OC.linkTo('3rdparty','zxcvbn/js/zxcvbn.js'),
+		titles: [
+			t('core', 'Very weak password'),
+			t('core', 'Weak password'),
+			t('core', 'So-so password'),
+			t('core', 'Good password'),
+			t('core', 'Strong password')
+		]
+	});
 } );
 
 OC.Encryption = {
@@ -136,18 +286,19 @@ OC.Encryption = {
 		$.post('ajax/decryptall.php', {password:password}, function(data) {
 			if (data.status === "error") {
 				OC.Encryption.msg.finishedDecrypting('#decryptAll .msg', data);
+				$('#decryptAll input:password[name="privateKeyPassword"]').removeAttr("disabled");
 			} else {
 				OC.Encryption.msg.finishedDecrypting('#decryptAll .msg', data);
 			}
-		}
-		);
+		});
 	}
-}
+};
 
 OC.Encryption.msg={
 	startDecrypting:function(selector){
+		var spinner = '<img src="'+ OC.imagePath('core', 'loading-small.gif') +'">';
 		$(selector)
-			.html( t('files_encryption', 'Decrypting files... Please wait, this can take some time.') )
+			.html( t('files_encryption', 'Decrypting files... Please wait, this can take some time.') + ' ' + spinner )
 			.removeClass('success')
 			.removeClass('error')
 			.stop(true, true)
@@ -158,8 +309,7 @@ OC.Encryption.msg={
 			 $(selector).html( data.data.message )
 				.addClass('success')
 				.stop(true, true)
-				.delay(3000)
-				.fadeOut(900);
+				.delay(3000);
 		}else{
 			$(selector).html( data.data.message ).addClass('error');
 		}

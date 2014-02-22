@@ -11,8 +11,17 @@ var oc_webroot;
 var oc_current_user = document.getElementsByTagName('head')[0].getAttribute('data-user');
 var oc_requesttoken = document.getElementsByTagName('head')[0].getAttribute('data-requesttoken');
 
+window.oc_config = window.oc_config || {};
+
 if (typeof oc_webroot === "undefined") {
-	oc_webroot = location.pathname.substr(0, location.pathname.lastIndexOf('/'));
+	oc_webroot = location.pathname;
+	var pos = oc_webroot.indexOf('/index.php/');
+	if (pos !== -1) {
+		oc_webroot = oc_webroot.substr(0, pos);
+	}
+	else {
+		oc_webroot = oc_webroot.substr(0, oc_webroot.lastIndexOf('/'));
+	}
 }
 if (oc_debug !== true || typeof console === "undefined" || typeof console.log === "undefined") {
 	if (!window.console) {
@@ -41,8 +50,8 @@ function initL10N(app) {
 			t.cache[app] = [];
 		}
 	}
-	if (typeof t.plural_function == 'undefined') {
-		t.plural_function = function (n) {
+	if (typeof t.plural_function[app] == 'undefined') {
+		t.plural_function[app] = function (n) {
 			var p = (n != 1) ? 1 : 0;
 			return { 'nplural' : 2, 'plural' : p };
 		};
@@ -67,7 +76,7 @@ function initL10N(app) {
 			 Gettext._locale_data[domain].head.plural_func = eval("("+code+")");
 			 */
 			var code = 'var plural; var nplurals; '+pf+' return { "nplural" : nplurals, "plural" : (plural === true ? 1 : plural ? plural : 0) };';
-			t.plural_function = new Function("n", code);
+			t.plural_function[app] = new Function("n", code);
 		} else {
 			console.log("Syntax error in language file. Plural-Forms header is invalid ["+t.plural_forms+"]");
 		}
@@ -103,6 +112,10 @@ function t(app, text, vars, count){
 	}
 }
 t.cache = {};
+// different apps might or might not redefine the nplurals function correctly
+// this is to make sure that a "broken" app doesn't mess up with the
+// other app's plural function
+t.plural_function = {};
 
 /**
  * translate a string
@@ -115,11 +128,11 @@ t.cache = {};
  */
 function n(app, text_singular, text_plural, count, vars) {
 	initL10N(app);
-	var identifier = '_' + text_singular + '__' + text_plural + '_';
+	var identifier = '_' + text_singular + '_::_' + text_plural + '_';
 	if( typeof( t.cache[app][identifier] ) !== 'undefined' ){
 		var translation = t.cache[app][identifier];
 		if ($.isArray(translation)) {
-			var plural = t.plural_function(count);
+			var plural = t.plural_function[app](count);
 			return t(app, translation[plural.plural], vars, count);
 		}
 	}
@@ -242,6 +255,12 @@ var OC={
 		return link;
 	},
 	/**
+	 * Redirect to the target URL, can also be used for downloads.
+	 */
+	redirect: function(targetUrl) {
+		window.location = targetUrl;
+	},
+	/**
 	 * get the absolute path to an image file
 	 * @param app the app id to which the image belongs
 	 * @param file the name of the image file
@@ -322,6 +341,66 @@ var OC={
 		return date.getDate()+'.'+(date.getMonth()+1)+'.'+date.getFullYear()+', '+date.getHours()+':'+date.getMinutes();
 	},
 	/**
+	 * Parses a URL query string into a JS map
+	 * @param queryString query string in the format param1=1234&param2=abcde&param3=xyz
+	 * @return map containing key/values matching the URL parameters
+	 */
+	parseQueryString:function(queryString){
+		var parts,
+			components,
+			result = {},
+			key,
+			value;
+		if (!queryString){
+			return null;
+		}
+		if (queryString[0] === '?'){
+			queryString = queryString.substr(1);
+		}
+		parts = queryString.split('&');
+		for (var i = 0; i < parts.length; i++){
+			components = parts[i].split('=');
+			if (!components.length){
+				continue;
+			}
+			key = decodeURIComponent(components[0]);
+			if (!key){
+				continue;
+			}
+			value = components[1];
+			result[key] = value && decodeURIComponent(value);
+		}
+		return result;
+	},
+
+	/**
+	 * Builds a URL query from a JS map.
+	 * @param params parameter map
+	 * @return string containing a URL query (without question) mark
+	 */
+	buildQueryString: function(params) {
+		var s = '';
+		var first = true;
+		if (!params) {
+			return s;
+		}
+		for (var key in params) {
+			var value = params[key];
+			if (first) {
+				first = false;
+			}
+			else {
+				s += '&';
+			}
+			s += encodeURIComponent(key);
+			if (value !== null && typeof(value) !== 'undefined') {
+				s += '=' + encodeURIComponent(value);
+			}
+		}
+		return s;
+	},
+
+	/**
 	 * Opens a popup with the setting for an app.
 	 * @param appid String. The ID of the app e.g. 'calendar', 'contacts' or 'files'.
 	 * @param loadJS boolean or String. If true 'js/settings.js' is loaded. If it's a string
@@ -372,6 +451,9 @@ var OC={
 						.fail(function(jqxhr, settings, e) {
 							throw e;
 						});
+					}
+					if(!SVGSupport()) {
+						replaceSVG();
 					}
 				}).show();
 			}, 'html');
@@ -439,11 +521,11 @@ OC.Breadcrumb={
 	},
 	_show:function(container, dir, leafname, leaflink){
 		var self = this;
-		
+
 		this._clear(container);
-		
+
 		// show home + path in subdirectories
-		if (dir && dir !== '/') {
+		if (dir) {
 			//add home
 			var link = OC.linkTo('files','index.php');
 
@@ -470,7 +552,7 @@ OC.Breadcrumb={
 				}
 			});
 		}
-		
+
 		//add leafname
 		if (leafname && leaflink) {
 			this._push(container, leafname, leaflink);
@@ -662,8 +744,39 @@ function fillWindow(selector) {
 	console.warn("This function is deprecated! Use CSS instead");
 }
 
-$(document).ready(function(){
-	sessionHeartBeat();
+/**
+ * Initializes core
+ */
+function initCore() {
+
+	/**
+	 * Calls the server periodically to ensure that session doesn't
+	 * time out
+	 */
+	function initSessionHeartBeat(){
+		// interval in seconds
+		var interval = 900;
+		if (oc_config.session_lifetime) {
+			interval = Math.floor(oc_config.session_lifetime / 2);
+		}
+		// minimum one minute
+		if (interval < 60) {
+			interval = 60;
+		}
+		OC.Router.registerLoadedCallback(function(){
+			var url = OC.Router.generate('heartbeat');
+			setInterval(function(){
+				$.post(url);
+			}, interval * 1000);
+		});
+	}
+
+	// session heartbeat (defaults to enabled)
+	if (typeof(oc_config.session_keepalive) === 'undefined' ||
+		!!oc_config.session_keepalive) {
+
+		initSessionHeartBeat();
+	}
 
 	if(!SVGSupport()){ //replace all svg images with png images for browser that dont support svg
 		replaceSVG();
@@ -691,11 +804,17 @@ $(document).ready(function(){
 			}
 		}else if(event.keyCode===27){//esc
 			OC.search.hide();
+			if (FileList && typeof FileList.unfilter === 'function') { //TODO add hook system
+				FileList.unfilter();
+			}
 		}else{
 			var query=$('#searchbox').val();
 			if(OC.search.lastQuery!==query){
 				OC.search.lastQuery=query;
 				OC.search.currentResult=-1;
+				if (FileList && typeof FileList.filter === 'function') { //TODO add hook system
+						FileList.filter(query);
+				}
 				if(query.length>2){
 					OC.search(query);
 				}else{
@@ -708,15 +827,7 @@ $(document).ready(function(){
 	});
 
 	var setShowPassword = function(input, label) {
-		input.showPassword().keyup(function(){
-			if (input.val().length == 0) {
-				label.hide();
-			}
-			else {
-				label.css("display", "inline").show();
-			}
-		});
-		label.hide();
+		input.showPassword().keyup();
 	};
 	setShowPassword($('#adminpass'), $('label[for=show]'));
 	setShowPassword($('#pass2'), $('label[for=personal-show]'));
@@ -749,6 +860,7 @@ $(document).ready(function(){
 	// checkShowCredentials();
 	// $('input#user, input#password').keyup(checkShowCredentials);
 
+	// user menu
 	$('#settings #expand').keydown(function(event) {
 		if (event.which === 13 || event.which === 32) {
 			$('#expand').click()
@@ -761,7 +873,8 @@ $(document).ready(function(){
 	$('#settings #expanddiv').click(function(event){
 		event.stopPropagation();
 	});
-	$(document).click(function(){//hide the settings menu when clicking outside it
+	//hide the user menu when clicking outside it
+	$(document).click(function(){
 		$('#settings #expanddiv').slideUp(200);
 	});
 
@@ -773,12 +886,10 @@ $(document).ready(function(){
 	$('a.action.delete').tipsy({gravity:'e', fade:true, live:true});
 	$('a.action').tipsy({gravity:'s', fade:true, live:true});
 	$('td .modified').tipsy({gravity:'s', fade:true, live:true});
-
 	$('input').tipsy({gravity:'w', fade:true});
-	$('input[type=text]').focus(function(){
-		this.select();
-	});
-});
+}
+
+$(document).ready(initCore);
 
 /**
  * Filter Jquery selector by attribute value
@@ -795,7 +906,10 @@ function humanFileSize(size) {
 	order = Math.min(humanList.length - 1, order);
 	var readableFormat = humanList[order];
 	var relativeSize = (size / Math.pow(1024, order)).toFixed(1);
-	if(relativeSize.substr(relativeSize.length-2,2)=='.0'){
+	if(order < 2){
+		relativeSize = parseFloat(relativeSize).toFixed(0);
+	}
+	else if(relativeSize.substr(relativeSize.length-2,2)==='.0'){
 		relativeSize=relativeSize.substr(0,relativeSize.length-2);
 	}
 	return relativeSize + ' ' + readableFormat;
@@ -806,6 +920,13 @@ function formatDate(date){
 		date=new Date(date);
 	}
 	return $.datepicker.formatDate(datepickerFormatDate, date)+' '+date.getHours()+':'+((date.getMinutes()<10)?'0':'')+date.getMinutes();
+}
+
+// taken from http://stackoverflow.com/questions/1403888/get-url-parameter-with-jquery
+function getURLParameter(name) {
+	return decodeURI(
+			(RegExp(name + '=' + '(.+?)(&|$)').exec(location.search) || [, null])[1]
+			);
 }
 
 /**
@@ -868,13 +989,24 @@ OC.set=function(name, value) {
 	context[tail]=value;
 };
 
+// fix device width on windows phone
+(function() {
+	if ("-ms-user-select" in document.documentElement.style && navigator.userAgent.match(/IEMobile\/10\.0/)) {
+		var msViewportStyle = document.createElement("style");
+		msViewportStyle.appendChild(
+			document.createTextNode("@-ms-viewport{width:auto!important}")
+		);
+		document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+	}
+})();
+
 /**
  * select a range in an input field
  * @link http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
  * @param {type} start
  * @param {type} end
  */
-$.fn.selectRange = function(start, end) {
+jQuery.fn.selectRange = function(start, end) {
 	return this.each(function() {
 		if (this.setSelectionRange) {
 			this.focus();
@@ -890,14 +1022,11 @@ $.fn.selectRange = function(start, end) {
 };
 
 /**
- * Calls the server periodically every 15 mins to ensure that session doesnt
- * time out
+ * check if an element exists.
+ * allows you to write if ($('#myid').exists()) to increase readability
+ * @link http://stackoverflow.com/questions/31044/is-there-an-exists-function-for-jquery
  */
-function sessionHeartBeat(){
-	OC.Router.registerLoadedCallback(function(){
-		var url = OC.Router.generate('heartbeat');
-		setInterval(function(){
-			$.post(url);
-		}, 900000);
-	});
-}
+jQuery.fn.exists = function(){
+	return this.length > 0;
+};
+

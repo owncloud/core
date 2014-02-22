@@ -71,8 +71,8 @@ class Test_Util extends PHPUnit_Framework_TestCase {
 		$this->assertTrue(\OC_Util::isInternetConnectionEnabled());
 	}
 
-	function testGenerate_random_bytes() {
-		$result = strlen(OC_Util::generate_random_bytes(59));
+	function testGenerateRandomBytes() {
+		$result = strlen(OC_Util::generateRandomBytes(59));
 		$this->assertEquals(59, $result);
 	}
 
@@ -88,9 +88,67 @@ class Test_Util extends PHPUnit_Framework_TestCase {
 		OC_Config::deleteKey('mail_domain');
 	}
 
+	function testGetConfiguredEmailAddressFromConfig() {
+		OC_Config::setValue('mail_domain', 'example.com');
+		OC_Config::setValue('mail_from_address', 'owncloud');
+		$email = \OCP\Util::getDefaultEmailAddress("no-reply");
+		$this->assertEquals('owncloud@example.com', $email);
+		OC_Config::deleteKey('mail_domain');
+		OC_Config::deleteKey('mail_from_address');
+	}
+
 	function testGetInstanceIdGeneratesValidId() {
 		OC_Config::deleteKey('instanceid');
 		$this->assertStringStartsWith('oc', OC_Util::getInstanceId());
+	}
+
+	/**
+	 * Tests that the home storage is not wrapped when no quota exists.
+	 */
+	function testHomeStorageWrapperWithoutQuota() {
+		$user1 = uniqid();
+		\OC_User::createUser($user1, 'test');
+		OC_Preferences::setValue($user1, 'files', 'quota', 'none');
+		\OC_User::setUserId($user1);
+
+		\OC_Util::setupFS($user1);
+
+		$userMount = \OC\Files\Filesystem::getMountManager()->find('/' . $user1 . '/');
+		$this->assertNotNull($userMount);
+		$this->assertNotInstanceOf('\OC\Files\Storage\Wrapper\Quota', $userMount->getStorage());
+
+		// clean up
+		\OC_User::setUserId('');
+		\OC_User::deleteUser($user1);
+		OC_Preferences::deleteUser($user1);
+		\OC_Util::tearDownFS();
+	}
+
+	/**
+	 * Tests that the home storage is not wrapped when no quota exists.
+	 */
+	function testHomeStorageWrapperWithQuota() {
+		$user1 = uniqid();
+		\OC_User::createUser($user1, 'test');
+		OC_Preferences::setValue($user1, 'files', 'quota', '1024');
+		\OC_User::setUserId($user1);
+
+		\OC_Util::setupFS($user1);
+
+		$userMount = \OC\Files\Filesystem::getMountManager()->find('/' . $user1 . '/');
+		$this->assertNotNull($userMount);
+		$this->assertInstanceOf('\OC\Files\Storage\Wrapper\Quota', $userMount->getStorage());
+
+		// ensure that root wasn't wrapped
+		$rootMount = \OC\Files\Filesystem::getMountManager()->find('/');
+		$this->assertNotNull($rootMount);
+		$this->assertNotInstanceOf('\OC\Files\Storage\Wrapper\Quota', $rootMount->getStorage());
+
+		// clean up
+		\OC_User::setUserId('');
+		\OC_User::deleteUser($user1);
+		OC_Preferences::deleteUser($user1);
+		\OC_Util::tearDownFS();
 	}
 
 	/**
@@ -110,6 +168,54 @@ class Test_Util extends PHPUnit_Framework_TestCase {
 			array('', '/'),
 			array('public_html', 'public_html'),
 			array('442aa682de2a64db1e010f50e60fd9c9', 'local::C:\Users\ADMINI~1\AppData\Local\Temp\2/442aa682de2a64db1e010f50e60fd9c9/')
+		);
+	}
+
+	/**
+	 * @dataProvider filenameValidationProvider
+	 */
+	public function testFilenameValidation($file, $valid) {
+		// private API
+		$this->assertEquals($valid, \OC_Util::isValidFileName($file));
+		// public API
+		$this->assertEquals($valid, \OCP\Util::isValidFileName($file));
+	}
+
+	public function filenameValidationProvider() {
+		return array(
+			// valid names
+			array('boringname', true),
+			array('something.with.extension', true),
+			array('now with spaces', true),
+			array('.a', true),
+			array('..a', true),
+			array('.dotfile', true),
+			array('single\'quote', true),
+			array('  spaces before', true),
+			array('spaces after   ', true),
+			array('allowed chars including the crazy ones $%&_-^@!,()[]{}=;#', true),
+			array('汉字也能用', true),
+			array('und Ümläüte sind auch willkommen', true),
+			// disallowed names
+			array('', false),
+			array('     ', false),
+			array('.', false),
+			array('..', false),
+			array('back\\slash', false),
+			array('sl/ash', false),
+			array('lt<lt', false),
+			array('gt>gt', false),
+			array('col:on', false),
+			array('double"quote', false),
+			array('pi|pe', false),
+			array('dont?ask?questions?', false),
+			array('super*star', false),
+			array('new\nline', false),
+			// better disallow these to avoid unexpected trimming to have side effects
+			array(' ..', false),
+			array('.. ', false),
+			array('. ', false),
+			array(' .', false),
 		);
 	}
 }

@@ -9,8 +9,21 @@ OCP\JSON::callCheck();
 // Get data
 $dir = stripslashes($_POST["dir"]);
 $files = isset($_POST["file"]) ? $_POST["file"] : $_POST["files"];
+$allFiles = isset($_POST["allfiles"]) ? $_POST["allfiles"] : $_POST["allfiles"];
+if ($allFiles === 'true') {
+	$allFiles = true;
+}
 
-$files = json_decode($files);
+// delete all files in dir ?
+if ($allFiles) {
+	$files = array();
+	$fileList = \OC\Files\Filesystem::getDirectoryContent($dir);
+	foreach ($fileList as $fileInfo) {
+		$files[] = $fileInfo['name'];
+	}
+} else {
+	$files = json_decode($files);
+}
 $filesWithError = '';
 
 $success = true;
@@ -24,7 +37,7 @@ foreach ($files as $file) {
 }
 
 // get array with updated storage stats (e.g. max file size) after upload
-$storageStats = \OCA\files\lib\Helper::buildFileStorageStatistics($dir);
+$storageStats = \OCA\Files\Helper::buildFileStorageStatistics($dir);
 
 if ($success) {
 	OCP\JSON::success(array("data" => array_merge(array("dir" => $dir, "files" => $files), $storageStats)));

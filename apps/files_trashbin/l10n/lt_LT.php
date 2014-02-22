@@ -2,16 +2,12 @@
 $TRANSLATIONS = array(
 "Couldn't delete %s permanently" => "Nepavyko negrįžtamai ištrinti %s",
 "Couldn't restore %s" => "Nepavyko atkurti %s",
-"perform restore operation" => "atkurti",
 "Error" => "Klaida",
-"delete file permanently" => "failą ištrinti negrįžtamai",
-"Delete permanently" => "Ištrinti negrįžtamai",
-"Name" => "Pavadinimas",
-"Deleted" => "Ištrinti",
-"_%n folder_::_%n folders_" => array("","",""),
-"_%n file_::_%n files_" => array("","",""),
+"restored" => "atstatyta",
 "Nothing in here. Your trash bin is empty!" => "Nieko nėra. Jūsų šiukšliadėžė tuščia!",
+"Name" => "Pavadinimas",
 "Restore" => "Atstatyti",
+"Deleted" => "Ištrinti",
 "Delete" => "Ištrinti",
 "Deleted Files" => "Ištrinti failai"
 );

@@ -1,3 +1,15 @@
+/*
+ * Copyright (c) 2014
+ *
+ * This file is licensed under the Affero General Public License version 3
+ * or later.
+ *
+ * See the COPYING-README file.
+ *
+ */
+
+/* global OC, FileList, FileActions */
+
 // Override download path to files_sharing/public.php
 function fileDownloadPath(dir, file) {
 	var url = $('#downloadURL').val();
@@ -7,11 +19,7 @@ function fileDownloadPath(dir, file) {
 	return url;
 }
 
-var form_data;
-
 $(document).ready(function() {
-
-	$('#data-upload-form').tipsy({gravity:'ne', fade:true});
 
 	if (typeof FileActions !== 'undefined') {
 		var mimetype = $('#mimetype').val();
@@ -19,50 +27,49 @@ $(document).ready(function() {
 		if (mimetype.substr(0, mimetype.indexOf('/')) != 'image' && $('.publicpreview').length === 0) {
 			// Trigger default action if not download TODO
 			var action = FileActions.getDefault(mimetype, 'file', OC.PERMISSION_READ);
-			if (typeof action === 'undefined') {
-				$('#noPreview').show();
-				if (mimetype != 'httpd/unix-directory') {
-					// NOTE: Remove when a better file previewer solution exists
-					$('#content').remove();
-					$('table').remove();
-				}
-			} else {
+			if (typeof action !== 'undefined') {
 				action($('#filename').val());
 			}
 		}
 		FileActions.register('dir', 'Open', OC.PERMISSION_READ, '', function(filename) {
-			var tr = $('tr').filterAttr('data-file', filename);
+			var tr = FileList.findFileEl(filename);
 			if (tr.length > 0) {
 				window.location = $(tr).find('a.name').attr('href');
 			}
 		});
-		FileActions.register('file', 'Download', OC.PERMISSION_READ, '', function(filename) {
-			var tr = $('tr').filterAttr('data-file', filename);
-			if (tr.length > 0) {
-				window.location = $(tr).find('a.name').attr('href');
+
+		// override since the format is different
+		FileList.getDownloadUrl = function(filename, dir) {
+			if ($.isArray(filename)) {
+				filename = JSON.stringify(filename);
 			}
-		});
-		FileActions.register('dir', 'Download', OC.PERMISSION_READ, '', function(filename) {
-			var tr = $('tr').filterAttr('data-file', filename);
-			if (tr.length > 0) {
-				window.location = $(tr).find('a.name').attr('href')+'&download';
+			var path = dir || FileList.getCurrentDirectory();
+			var params = {
+				service: 'files',
+				t: $('#sharingToken').val(),
+				path: path,
+				download: null
+			};
+			if (filename) {
+				params.files = filename;
 			}
-		});
+			return OC.filePath('', '', 'public.php') + '?' + OC.buildQueryString(params);
+		};
 	}
 
-  // Add some form data to the upload handler
-  file_upload_param.formData = {
-    MAX_FILE_SIZE: $('#uploadMaxFilesize').val(),
-    requesttoken: $('#publicUploadRequestToken').val(),
-    dirToken: $('#dirToken').val(),
-    appname: 'files_sharing',
-    subdir: $('input#dir').val()
-  };
+	var file_upload_start = $('#file_upload_start');
+	file_upload_start.on('fileuploadadd', function(e, data) {
+		// Add custom data to the upload handler
+		data.formData = {
+			requesttoken: $('#publicUploadRequestToken').val(),
+			dirToken: $('#dirToken').val(),
+			subdir: $('input#dir').val()
+		};
+	});
 
-  // Add Uploadprogress Wrapper to controls bar
-  $('#controls').append($('#additional_controls div#uploadprogresswrapper'));
-
-  // Cancel upload trigger
-  $('#cancel_upload_button').click(Files.cancelUploads);
+	$(document).on('click', '#directLink', function() {
+		$(this).focus();
+		$(this).select();
+	});
 
 });

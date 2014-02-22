@@ -23,6 +23,8 @@ OC_JSON::checkLoggedIn();
 OCP\JSON::callCheck();
 OC_App::loadApps();
 
+$defaults = new \OCP\Defaults();
+
 if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSource'])) {
 	switch ($_POST['action']) {
 		case 'share':
@@ -33,15 +35,16 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 					if ($shareType === OCP\Share::SHARE_TYPE_LINK && $shareWith == '') {
 						$shareWith = null;
 					}
-					
+
 					$token = OCP\Share::shareItem(
 						$_POST['itemType'],
 						$_POST['itemSource'],
 						$shareType,
 						$shareWith,
-						$_POST['permissions']
+						$_POST['permissions'],
+						$_POST['itemSourceName']
 					);
-					
+
 					if (is_string($token)) {
 						OC_JSON::success(array('data' => array('token' => $token)));
 					} else {
@@ -81,45 +84,73 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 				($return) ? OC_JSON::success() : OC_JSON::error();
 			}
 			break;
+		case 'informRecipients':
+			$l = OC_L10N::get('core');
+			$shareType = (int) $_POST['shareType'];
+			$itemType = $_POST['itemType'];
+			$itemSource = $_POST['itemSource'];
+			$recipient = $_POST['recipient'];
+
+			if($shareType === \OCP\Share::SHARE_TYPE_USER) {
+				$recipientList[] = $recipient;
+			} elseif ($shareType === \OCP\Share::SHARE_TYPE_GROUP) {
+				$recipientList = \OC_Group::usersInGroup($recipient);
+			}
+			// don't send a mail to the user who shared the file
+			$recipientList = array_diff($recipientList, array(\OCP\User::getUser()));
+
+			$mailNotification = new OC\Share\MailNotifications();
+			$result = $mailNotification->sendInternalShareMail($recipientList, $itemSource, $itemType);
+
+			\OCP\Share::setSendMailStatus($itemType, $itemSource, $shareType, true);
+
+			if (empty($result)) {
+				OCP\JSON::success();
+			} else {
+				OCP\JSON::error(array(
+					'data' => array(
+						'message' => $l->t("Couldn't send mail to following users: %s ",
+								implode(', ', $result)
+								)
+						)
+					));
+			}
+			break;
+		case 'informRecipientsDisabled':
+			$itemSource = $_POST['itemSource'];
+			$shareType = $_POST['shareType'];
+			$itemType = $_POST['itemType'];
+			$recipient = $_POST['recipient'];
+			\OCP\Share::setSendMailStatus($itemType, $itemSource, $shareType, false);
+			OCP\JSON::success();
+			break;
+
 		case 'email':
 			// read post variables
-			$user = OCP\USER::getUser();
-			$displayName = OCP\User::getDisplayName();
-			$type = $_POST['itemType'];
 			$link = $_POST['link'];
 			$file = $_POST['file'];
 			$to_address = $_POST['toaddress'];
 
-			// enable l10n support
-			$l = OC_L10N::get('core');
+			$mailNotification = new \OC\Share\MailNotifications();
 
-			// setup the email
-			$subject = (string)$l->t('%s shared »%s« with you', array($displayName, $file));
+			$expiration = null;
+			if (isset($_POST['expiration']) && $_POST['expiration'] !== '') {
+				try {
+					$date = new DateTime($_POST['expiration']);
+					$expiration = $date->getTimestamp();
+				} catch (Exception $e) {
+					\OCP\Util::writeLog('sharing', "Couldn't read date: " . $e->getMessage(), \OCP\Util::ERROR);
+				}
 
-			$content = new OC_Template("core", "mail", "");
-			$content->assign ('link', $link);
-			$content->assign ('type', $type);
-			$content->assign ('user_displayname', $displayName);
-			$content->assign ('filename', $file);
-			$text = $content->fetchPage();
-
-			$content = new OC_Template("core", "altmail", "");
-			$content->assign ('link', $link);
-			$content->assign ('type', $type);
-			$content->assign ('user_displayname', $displayName);
-			$content->assign ('filename', $file);
-			$alttext = $content->fetchPage();
-
-			$default_from = OCP\Util::getDefaultEmailAddress('sharing-noreply');
-			$from_address = OCP\Config::getUserValue($user, 'settings', 'email', $default_from );
-
-			// send it out now
-			try {
-				OCP\Util::sendMail($to_address, $to_address, $subject, $text, $from_address, $displayName, 1, $alttext);
-				OCP\JSON::success();
-			} catch (Exception $exception) {
-				OCP\JSON::error(array('data' => array('message' => OC_Util::sanitizeHTML($exception->getMessage()))));
 			}
+
+			$result = $mailNotification->sendLinkShareMail($to_address, $file, $link, $expiration);
+			if($result === true) {
+				\OCP\JSON::success();
+			} else {
+				\OCP\JSON::error(array('data' => array('message' => OC_Util::sanitizeHTML($result))));
+			}
+
 			break;
 	}
 } else if (isset($_GET['fetch'])) {
@@ -193,7 +224,7 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 				while ($count < 15 && count($users) == $limit) {
 					$limit = 15 - $count;
 					if ($sharePolicy == 'groups_only') {
-						$users = OC_Group::DisplayNamesInGroups($groups, $_GET['search'], $limit, $offset);
+						$users = OC_Group::DisplayNamesInGroups($usergroups, $_GET['search'], $limit, $offset);
 					} else {
 						$users = OC_User::getDisplayNames($_GET['search'], $limit, $offset);
 					}
@@ -205,18 +236,19 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 							&& $uid != OC_User::getUser()) {
 							$shareWith[] = array(
 								'label' => $displayName,
-								'value' => array('shareType' => OCP\Share::SHARE_TYPE_USER,
-								'shareWith' => $uid)
+								'value' => array(
+									'shareType' => OCP\Share::SHARE_TYPE_USER,
+									'shareWith' => $uid)
 							);
 							$count++;
 						}
 					}
 				}
 				$count = 0;
-				
+
 				// enable l10n support
 				$l = OC_L10N::get('core');
-				
+
 				foreach ($groups as $group) {
 					if ($count < 15) {
 						if (!isset($_GET['itemShares'])
@@ -224,7 +256,7 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 							|| !is_array($_GET['itemShares'][OCP\Share::SHARE_TYPE_GROUP])
 							|| !in_array($group, $_GET['itemShares'][OCP\Share::SHARE_TYPE_GROUP])) {
 							$shareWith[] = array(
-								'label' => $group.' ('.$l->t('group').')',
+								'label' => $group,
 								'value' => array(
 									'shareType' => OCP\Share::SHARE_TYPE_GROUP,
 									'shareWith' => $group
@@ -236,6 +268,10 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 						break;
 					}
 				}
+				$sorter = new \OC\Share\SearchResultSorter($_GET['search'],
+														   'label',
+														   new \OC\Log());
+				usort($shareWith, array($sorter, 'sort'));
 				OC_JSON::success(array('data' => $shareWith));
 			}
 			break;

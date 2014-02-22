@@ -33,7 +33,7 @@ use \OC\BackgroundJob\JobList;
 /**
  * This class provides functions to register backgroundjobs in ownCloud
  *
- * To create a new backgroundjob create a new class that inharits from either \OC\BackgroundJob\Job,
+ * To create a new backgroundjob create a new class that inherits from either \OC\BackgroundJob\Job,
  * \OC\BackgroundJob\QueuedJob or \OC\BackgroundJob\TimedJob and register it using
  * \OCP\BackgroundJob->registerJob($job, $argument), $argument will be passed to the run() function
  * of the job when the job is executed.
@@ -44,7 +44,8 @@ use \OC\BackgroundJob\JobList;
  */
 class BackgroundJob {
 	/**
-	 * @brief get the execution type of background jobs
+	 * get the execution type of background jobs
+	 *
 	 * @return string
 	 *
 	 * This method returns the type how background jobs are executed. If the user
@@ -55,9 +56,10 @@ class BackgroundJob {
 	}
 
 	/**
-	 * @brief sets the background jobs execution type
+	 * sets the background jobs execution type
+	 *
 	 * @param string $type execution type
-	 * @return boolean
+	 * @return false|null
 	 *
 	 * This method sets the execution type of the background jobs. Possible types
 	 * are "none", "ajax", "webcron", "cron"
@@ -67,35 +69,37 @@ class BackgroundJob {
 	}
 
 	/**
-	 * @param \OC\BackgroundJob\Job|string $job
+	 * @param string $job
 	 * @param mixed $argument
 	 */
 	public static function registerJob($job, $argument = null) {
-		$jobList = new JobList();
+		$jobList = \OC::$server->getJobList();
 		$jobList->add($job, $argument);
 	}
 
 	/**
 	 * @deprecated
-	 * @brief creates a regular task
+	 * creates a regular task
 	 * @param string $klass class name
 	 * @param string $method method name
-	 * @return true
+	 * @return boolean|null
 	 */
 	public static function addRegularTask($klass, $method) {
-		self::registerJob('OC\BackgroundJob\Legacy\RegularJob', array($klass, $method));
-		return true;
+		if (!\OC::needUpgrade()) {
+			self::registerJob('OC\BackgroundJob\Legacy\RegularJob', array($klass, $method));
+			return true;
+		}
 	}
 
 	/**
 	 * @deprecated
-	 * @brief gets all regular tasks
+	 * gets all regular tasks
 	 * @return associative array
 	 *
 	 * key is string "$klass-$method", value is array( $klass, $method )
 	 */
 	static public function allRegularTasks() {
-		$jobList = new JobList();
+		$jobList = \OC::$server->getJobList();
 		$allJobs = $jobList->getAll();
 		$regularJobs = array();
 		foreach ($allJobs as $job) {
@@ -109,22 +113,22 @@ class BackgroundJob {
 
 	/**
 	 * @deprecated
-	 * @brief Gets one queued task
+	 * Gets one queued task
 	 * @param int $id ID of the task
-	 * @return associative array
+	 * @return BackgroundJob\IJob array
 	 */
 	public static function findQueuedTask($id) {
-		$jobList = new JobList();
+		$jobList = \OC::$server->getJobList();
 		return $jobList->getById($id);
 	}
 
 	/**
 	 * @deprecated
-	 * @brief Gets all queued tasks
+	 * Gets all queued tasks
 	 * @return array with associative arrays
 	 */
 	public static function allQueuedTasks() {
-		$jobList = new JobList();
+		$jobList = \OC::$server->getJobList();
 		$allJobs = $jobList->getAll();
 		$queuedJobs = array();
 		foreach ($allJobs as $job) {
@@ -139,12 +143,12 @@ class BackgroundJob {
 
 	/**
 	 * @deprecated
-	 * @brief Gets all queued tasks of a specific app
+	 * Gets all queued tasks of a specific app
 	 * @param string $app app name
 	 * @return array with associative arrays
 	 */
 	public static function queuedTaskWhereAppIs($app) {
-		$jobList = new JobList();
+		$jobList = \OC::$server->getJobList();
 		$allJobs = $jobList->getAll();
 		$queuedJobs = array();
 		foreach ($allJobs as $job) {
@@ -161,12 +165,12 @@ class BackgroundJob {
 
 	/**
 	 * @deprecated
-	 * @brief queues a task
+	 * queues a task
 	 * @param string $app app name
 	 * @param string $class class name
 	 * @param string $method method name
 	 * @param string $parameters all useful data as text
-	 * @return int id of task
+	 * @return boolean id of task
 	 */
 	public static function addQueuedTask($app, $class, $method, $parameters) {
 		self::registerJob('OC\BackgroundJob\Legacy\QueuedJob', array('app' => $app, 'klass' => $class, 'method' => $method, 'parameters' => $parameters));
@@ -175,14 +179,14 @@ class BackgroundJob {
 
 	/**
 	 * @deprecated
-	 * @brief deletes a queued task
+	 * deletes a queued task
 	 * @param int $id id of task
-	 * @return bool
+	 * @return boolean|null
 	 *
 	 * Deletes a report
 	 */
 	public static function deleteQueuedTask($id) {
-		$jobList = new JobList();
+		$jobList = \OC::$server->getJobList();
 		$job = $jobList->getById($id);
 		if ($job) {
 			$jobList->remove($job);

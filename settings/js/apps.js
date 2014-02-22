@@ -37,6 +37,30 @@ OC.Settings.Apps = OC.Settings.Apps || {
 		}
 		page.find('span.licence').text(appLicense);
 
+		var userDocumentation = false;
+		var adminDocumentation = false;
+		if (typeof(app.documentation) !== 'undefined') {
+			if (typeof(app.documentation.user) !== 'undefined') {
+				userDocumentation = true;
+				page.find('span.userDocumentation').html("<a id='userDocumentation' href='" + app.documentation.user + "'>" + t('settings', 'User Documentation') + "</a>");
+				page.find('p.documentation').show();
+			}
+			if (typeof(app.documentation.admin) !== 'undefined') {
+				adminDocumentation = true;
+				page.find('span.adminDocumentation').html("<a id='adminDocumentation' href='" + app.documentation.admin + "'>" + t('settings', 'Admin Documentation') + "</a>");
+				page.find('p.documentation').show();
+			}
+
+			if(userDocumentation && adminDocumentation) {
+				page.find('span.userDocumentation').after(', ');
+			}
+		}
+
+		if (typeof(app.website) !== 'undefined') {
+			page.find('p.website').show();
+			page.find('a#websitelink').attr('href', app.website);
+		}
+
 		if (app.update !== false) {
 			page.find('input.update').show();
 			page.find('input.update').data('appid', app.id);
@@ -51,8 +75,8 @@ OC.Settings.Apps = OC.Settings.Apps || {
 		page.find('input.enable').data('active', app.active);
 		if (app.internal === false) {
 			page.find('span.score').show();
-			page.find('p.appslink').show();
-			page.find('a').attr('href', 'http://apps.owncloud.com/content/show.php?content=' + app.id);
+			page.find('p.appstore').show();
+			page.find('a#appstorelink').attr('href', 'http://apps.owncloud.com/content/show.php?content=' + app.id);
 			page.find('small.externalapp').hide();
 		} else {
 			page.find('p.appslink').hide();
@@ -84,6 +108,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 				}
 				else {
 					appitem.data('active',false);
+					element.data('active',false);
 					OC.Settings.Apps.removeNavigation(appid);
 					appitem.removeClass('active');
 					element.val(t('settings','Enable'));
@@ -104,11 +129,12 @@ OC.Settings.Apps = OC.Settings.Apps || {
 				} else {
 					OC.Settings.Apps.addNavigation(appid);
 					appitem.data('active',true);
+					element.data('active',true);
 					appitem.addClass('active');
 					element.val(t('settings','Disable'));
 				}
 			},'json')
-			.fail(function() { 
+			.fail(function() {
 				OC.Settings.Apps.showErrorMessage(t('settings', 'Error while enabling app'));
 				appitem.data('errormsg', t('settings', 'Error while enabling app'));
 				appitem.data('active',false);
@@ -158,7 +184,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 			if(response.status === 'success'){
 				var navIds=response.nav_ids;
 				for(var i=0; i< navIds.length; i++){
-					$('#apps').children('li[data-id="'+navIds[i]+'"]').remove();
+					$('#apps .wrapper').children('li[data-id="'+navIds[i]+'"]').remove();
 				}
 			}
 		});

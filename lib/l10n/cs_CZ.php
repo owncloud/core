@@ -8,13 +8,15 @@ $TRANSLATIONS = array(
 "Users" => "Uživatelé",
 "Admin" => "Administrace",
 "Failed to upgrade \"%s\"." => "Selhala aktualizace verze \"%s\".",
+"Unknown filetype" => "Neznámý typ souboru",
+"Invalid image" => "Chybný obrázek",
 "web services under your control" => "webové služby pod Vaší kontrolou",
 "cannot open \"%s\"" => "nelze otevřít \"%s\"",
 "ZIP download is turned off." => "Stahování v ZIPu je vypnuto.",
 "Files need to be downloaded one by one." => "Soubory musí být stahovány jednotlivě.",
 "Back to Files" => "Zpět k souborům",
 "Selected files too large to generate zip file." => "Vybrané soubory jsou příliš velké pro vytvoření ZIP souboru.",
-"Download the files in smaller chunks, seperately or kindly ask your administrator." => "Stáhněte soubory po menších částech, samostatně, nebo se obraťte na správce.",
+"Please download the files separately in smaller chunks or kindly ask your administrator." => "Prosím stáhněte soubory odděleně po menších množstvích nebo požádejte vašeho správce.",
 "No source specified when installing app" => "Nebyl zadán zdroj při instalaci aplikace",
 "No href specified when installing app from http" => "Nebyl zadán odkaz pro instalaci aplikace z HTTP",
 "No path specified when installing app from local file" => "Nebyla zadána cesta pro instalaci aplikace z místního souboru",
@@ -53,6 +55,7 @@ $TRANSLATIONS = array(
 "Set an admin password." => "Zadejte heslo správce.",
 "Your web server is not yet properly setup to allow files synchronization because the WebDAV interface seems to be broken." => "Váš webový server není správně nastaven pro umožnění synchronizace, rozhraní WebDAV se zdá být rozbité.",
 "Please double check the <a href='%s'>installation guides</a>." => "Zkonzultujte, prosím, <a href='%s'>průvodce instalací</a>.",
+"Could not find category \"%s\"" => "Nelze nalézt kategorii \"%s\"",
 "seconds ago" => "před pár sekundami",
 "_%n minute ago_::_%n minutes ago_" => array("před %n minutou","před %n minutami","před %n minutami"),
 "_%n hour ago_::_%n hours ago_" => array("před %n hodinou","před %n hodinami","před %n hodinami"),
@@ -62,8 +65,6 @@ $TRANSLATIONS = array(
 "last month" => "minulý měsíc",
 "_%n month ago_::_%n months ago_" => array("před %n měsícem","před %n měsíci","před %n měsíci"),
 "last year" => "minulý rok",
-"years ago" => "před lety",
-"Caused by:" => "Příčina:",
-"Could not find category \"%s\"" => "Nelze nalézt kategorii \"%s\""
+"years ago" => "před lety"
 );
 $PLURAL_FORMS = "nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;";

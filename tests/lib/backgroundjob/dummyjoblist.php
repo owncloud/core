@@ -8,9 +8,6 @@
 
 namespace Test\BackgroundJob;
 
-class JobRun extends \Exception {
-}
-
 /**
  * Class DummyJobList
  *
@@ -23,6 +20,8 @@ class DummyJobList extends \OC\BackgroundJob\JobList {
 	private $jobs = array();
 
 	private $last = 0;
+
+	public function __construct(){}
 
 	/**
 	 * @param \OC\BackgroundJob\Job|string $job

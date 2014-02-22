@@ -1,24 +1,24 @@
 <?php
 /**
-* ownCloud
-*
-* @author Frank Karlitschek
-* @copyright 2012 Frank Karlitschek frank@owncloud.org
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU AFFERO GENERAL PUBLIC LICENSE for more details.
-*
-* You should have received a copy of the GNU Affero General Public
-* License along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*
-*/
+ * ownCloud
+ *
+ * @author Frank Karlitschek
+ * @copyright 2012 Frank Karlitschek frank@owncloud.org
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 
 /**
  * Public interface of ownCloud for apps to use.
@@ -35,7 +35,7 @@ namespace OCP;
  */
 class JSON {
 	/**
-	* @brief Encode and print $data in JSON format
+	* Encode and print $data in JSON format
 	* @param array $data The data to use
 	* @param string $setContentType the optional content type
 	* @return string json formatted string.
@@ -81,7 +81,7 @@ class JSON {
 	* parameter to the ajax call, then assign it to the template and finally
 	* add a hidden input field also named 'requesttoken' containing the value.
 	*
-	* @return string json formatted error string if not valid.
+	* @return \json|null json formatted error string if not valid.
 	*/
 	public static function callCheck() {
 		return(\OC_JSON::callCheck());
@@ -123,7 +123,7 @@ class JSON {
 	}
 
 	/**
-	* @brief set Content-Type header to jsonrequest
+	* Set Content-Type header to jsonrequest
 	* @param array $type The contwnt type header
 	* @return string json formatted string.
 	*/
@@ -167,6 +167,22 @@ class JSON {
 	* @return string json formatted string if not admin user.
 	*/
 	public static function checkAdminUser() {
-		return(\OC_JSON::checkAdminUser());
+		\OC_JSON::checkAdminUser();
+	}
+
+	/**
+	 * Encode JSON
+	 * @param array $data
+	 */
+	public static function encode($data) {
+		return(\OC_JSON::encode($data));
+	}
+
+	/**
+	 * Check is a given user exists - send json error msg if not
+	 * @param string $user
+	 */
+	public static function checkUserExists($user) {
+		\OC_JSON::checkUserExists($user);
 	}
 }

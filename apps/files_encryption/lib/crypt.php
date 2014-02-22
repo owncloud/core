@@ -33,6 +33,12 @@ require_once __DIR__ . '/../3rdparty/Crypt_Blowfish/Blowfish.php';
 
 class Crypt {
 
+	const ENCRYPTION_UNKNOWN_ERROR = -1;
+	const ENCRYPTION_NOT_INITIALIZED_ERROR = 1;
+	const ENCRYPTION_PRIVATE_KEY_NOT_VALID_ERROR = 2;
+	const ENCRYPTION_NO_SHARE_KEY_FOUND = 3;
+
+
 	/**
 	 * @brief return encryption mode client or server side encryption
 	 * @param string $user name (use system wide setting if name=null)
@@ -176,6 +182,7 @@ class Crypt {
 	 * @param $data
 	 * @param string $relPath The path of the file, relative to user/data;
 	 *        e.g. filename or /Docs/filename, NOT admin/files/filename
+	 * @param boolean $isCatFileContent
 	 * @return boolean
 	 */
 	public static function isLegacyEncryptedContent($isCatFileContent, $relPath) {
@@ -183,8 +190,8 @@ class Crypt {
 		// Fetch all file metadata from DB
 		$metadata = \OC\Files\Filesystem::getFileInfo($relPath, '');
 
-		// If a file is flagged with encryption in DB, but isn't a 
-		// valid content + IV combination, it's probably using the 
+		// If a file is flagged with encryption in DB, but isn't a
+		// valid content + IV combination, it's probably using the
 		// legacy encryption system
 		if (isset($metadata['encrypted'])
 			&& $metadata['encrypted'] === true
@@ -203,8 +210,8 @@ class Crypt {
 
 	/**
 	 * @brief Symmetrically encrypt a string
-	 * @param $plainContent
-	 * @param $iv
+	 * @param string $plainContent
+	 * @param string $iv
 	 * @param string $passphrase
 	 * @return string encrypted file content
 	 */
@@ -223,9 +230,9 @@ class Crypt {
 
 	/**
 	 * @brief Symmetrically decrypt a string
-	 * @param $encryptedContent
-	 * @param $iv
-	 * @param $passphrase
+	 * @param string $encryptedContent
+	 * @param string $iv
+	 * @param string $passphrase
 	 * @throws \Exception
 	 * @return string decrypted file content
 	 */
@@ -286,8 +293,7 @@ class Crypt {
 	 * @brief Symmetrically encrypts a string and returns keyfile content
 	 * @param string $plainContent content to be encrypted in keyfile
 	 * @param string $passphrase
-	 * @return bool|string
-	 * @return string encrypted content combined with IV
+	 * @return false|string encrypted content combined with IV
 	 * @note IV need not be specified, as it will be stored in the returned keyfile
 	 * and remain accessible therein.
 	 */
@@ -320,7 +326,7 @@ class Crypt {
 	 * @param $keyfileContent
 	 * @param string $passphrase
 	 * @throws \Exception
-	 * @return bool|string
+	 * @return string|false
 	 * @internal param string $source
 	 * @internal param string $target
 	 * @internal param string $key the decryption key
@@ -388,7 +394,7 @@ class Crypt {
 	 */
 	public static function multiKeyEncrypt($plainContent, array $publicKeys) {
 
-		// openssl_seal returns false without errors if $plainContent 
+		// openssl_seal returns false without errors if $plainContent
 		// is empty, so trigger our own error
 		if (empty($plainContent)) {
 
@@ -405,7 +411,7 @@ class Crypt {
 
 			$i = 0;
 
-			// Ensure each shareKey is labelled with its 
+			// Ensure each shareKey is labelled with its
 			// corresponding userId
 			foreach ($publicKeys as $userId => $publicKey) {
 
@@ -432,7 +438,7 @@ class Crypt {
 	 * @param $encryptedContent
 	 * @param $shareKey
 	 * @param $privateKey
-	 * @return bool
+	 * @return false|string
 	 * @internal param string $plainContent content to be encrypted
 	 * @returns string $plainContent decrypted string
 	 * @note symmetricDecryptFileContent() can be used to decrypt files created using this method
@@ -476,7 +482,7 @@ class Crypt {
 
 			}
 
-			// We encode the iv purely for string manipulation 
+			// We encode the iv purely for string manipulation
 			// purposes - it gets decoded before use
 			$iv = base64_encode($random);
 

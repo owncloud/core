@@ -23,26 +23,27 @@
 
 namespace OCA\user_ldap\lib;
 
-abstract class Proxy {
-	static private $connectors = array();
+use OCA\user_ldap\lib\Access;
 
-	public function __construct() {
+abstract class Proxy {
+	static private $accesses = array();
+	private $ldap = null;
+
+	public function __construct(ILDAPWrapper $ldap) {
+		$this->ldap = $ldap;
 		$this->cache = \OC_Cache::getGlobalCache();
 	}
 
-	private function addConnector($configPrefix) {
-		self::$connectors[$configPrefix] = new \OCA\user_ldap\lib\Connection($configPrefix);
+	private function addAccess($configPrefix) {
+		$connector = new Connection($this->ldap, $configPrefix);
+		self::$accesses[$configPrefix] = new Access($connector, $this->ldap);
 	}
 
-	protected function getConnector($configPrefix) {
-		if(!isset(self::$connectors[$configPrefix])) {
-			$this->addConnector($configPrefix);
+	protected function getAccess($configPrefix) {
+		if(!isset(self::$accesses[$configPrefix])) {
+			$this->addAccess($configPrefix);
 		}
-		return self::$connectors[$configPrefix];
-	}
-
-	protected function getConnectors() {
-		return self::$connectors;
+		return self::$accesses[$configPrefix];
 	}
 
 	protected function getUserCacheKey($uid) {
@@ -53,18 +54,27 @@ abstract class Proxy {
 		return 'group-'.$gid.'-lastSeenOn';
 	}
 
-	abstract protected function callOnLastSeenOn($id, $method, $parameters);
+	/**
+	 * @param boolean $passOnWhen
+	 * @param string $method
+	 */
+	abstract protected function callOnLastSeenOn($id, $method, $parameters, $passOnWhen);
+
+	/**
+	 * @param string $method
+	 */
 	abstract protected function walkBackends($id, $method, $parameters);
 
 	/**
 	 * @brief Takes care of the request to the User backend
 	 * @param $uid string, the uid connected to the request
-	 * @param $method string, the method of the user backend that shall be called
+	 * @param string $method string, the method of the user backend that shall be called
 	 * @param $parameters an array of parameters to be passed
 	 * @return mixed, the result of the specified method
 	 */
-	protected function handleRequest($id, $method, $parameters) {
-		if(!$result = $this->callOnLastSeenOn($id,  $method, $parameters)) {
+	protected function handleRequest($id, $method, $parameters, $passOnWhen = false) {
+		$result = $this->callOnLastSeenOn($id,  $method, $parameters, $passOnWhen);
+		if($result === $passOnWhen) {
 			$result = $this->walkBackends($id, $method, $parameters);
 		}
 		return $result;
@@ -78,6 +88,9 @@ abstract class Proxy {
 		return $prefix.md5($key);
 	}
 
+	/**
+	 * @param string $key
+	 */
 	public function getFromCache($key) {
 		if(!$this->isCached($key)) {
 			return null;
@@ -87,11 +100,17 @@ abstract class Proxy {
 		return unserialize(base64_decode($this->cache->get($key)));
 	}
 
+	/**
+	 * @param string $key
+	 */
 	public function isCached($key) {
 		$key = $this->getCacheKey($key);
 		return $this->cache->hasKey($key);
 	}
 
+	/**
+	 * @param string $key
+	 */
 	public function writeToCache($key, $value) {
 		$key   = $this->getCacheKey($key);
 		$value = base64_encode(serialize($value));

@@ -24,6 +24,21 @@ class Scanner extends \PHPUnit_Framework_TestCase {
 	 */
 	private $cache;
 
+	function setUp() {
+		$this->storage = new \OC\Files\Storage\Temporary(array());
+		$this->scanner = new \OC\Files\Cache\Scanner($this->storage);
+		$this->cache = new \OC\Files\Cache\Cache($this->storage);
+	}
+
+	function tearDown() {
+		if ($this->cache) {
+			$ids = $this->cache->getAll();
+			$permissionsCache = $this->storage->getPermissionsCache();
+			$permissionsCache->removeMultiple($ids, \OC_User::getUser());
+			$this->cache->clear();
+		}
+	}
+
 	function testFile() {
 		$data = "dummy file data\n";
 		$this->storage->file_put_contents('foo.txt', $data);
@@ -132,7 +147,7 @@ class Scanner extends \PHPUnit_Framework_TestCase {
 		$this->scanner->scan('');
 		$oldData = $this->cache->get('');
 		$this->storage->unlink('folder/bar.txt');
-		$this->cache->put('folder', array('mtime' => $this->storage->filemtime('folder')));
+		$this->cache->put('folder', array('mtime' => $this->storage->filemtime('folder'), 'storage_mtime' => $this->storage->filemtime('folder')));
 		$this->scanner->scan('', \OC\Files\Cache\Scanner::SCAN_SHALLOW, \OC\Files\Cache\Scanner::REUSE_SIZE);
 		$newData = $this->cache->get('');
 		$this->assertNotEquals($oldData['etag'], $newData['etag']);
@@ -184,18 +199,38 @@ class Scanner extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse($this->cache->inCache('folder/bar.txt'));
 	}
 
-	function setUp() {
-		$this->storage = new \OC\Files\Storage\Temporary(array());
-		$this->scanner = new \OC\Files\Cache\Scanner($this->storage);
-		$this->cache = new \OC\Files\Cache\Cache($this->storage);
+	public function testScanRemovedFile(){
+		$this->fillTestFolders();
+
+		$this->scanner->scan('');
+		$this->assertTrue($this->cache->inCache('folder/bar.txt'));
+		$this->storage->unlink('folder/bar.txt');
+		$this->scanner->scanFile('folder/bar.txt');
+		$this->assertFalse($this->cache->inCache('folder/bar.txt'));
 	}
 
-	function tearDown() {
-		if ($this->cache) {
-			$ids = $this->cache->getAll();
-			$permissionsCache = $this->storage->getPermissionsCache();
-			$permissionsCache->removeMultiple($ids, \OC_User::getUser());
-			$this->cache->clear();
-		}
+	public function testETagRecreation() {
+		$this->fillTestFolders();
+
+		$this->scanner->scan('folder/bar.txt');
+
+		// manipulate etag to simulate an empty etag
+		$this->scanner->scan('', \OC\Files\Cache\Scanner::SCAN_SHALLOW, \OC\Files\Cache\Scanner::REUSE_ETAG);
+		$data0 = $this->cache->get('folder/bar.txt');
+		$data1 = $this->cache->get('folder');
+		$data2 = $this->cache->get('');
+		$data0['etag'] = '';
+		$this->cache->put('folder/bar.txt', $data0);
+
+		// rescan
+		$this->scanner->scan('folder/bar.txt', \OC\Files\Cache\Scanner::SCAN_SHALLOW, \OC\Files\Cache\Scanner::REUSE_ETAG);
+
+		// verify cache content
+		$newData0 = $this->cache->get('folder/bar.txt');
+		$newData1 = $this->cache->get('folder');
+		$newData2 = $this->cache->get('');
+		$this->assertNotEmpty($newData0['etag']);
+		$this->assertNotEquals($data1['etag'], $newData1['etag']);
+		$this->assertNotEquals($data2['etag'], $newData2['etag']);
 	}
 }

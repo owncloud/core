@@ -64,6 +64,8 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 
 
 	function setUp() {
+		// login user
+		\Test_Encryption_Util::loginHelper(\Test_Encryption_Util::TEST_ENCRYPTION_UTIL_USER1);
 		\OC_User::setUserId(\Test_Encryption_Util::TEST_ENCRYPTION_UTIL_USER1);
 		$this->userId = \Test_Encryption_Util::TEST_ENCRYPTION_UTIL_USER1;
 		$this->pass = \Test_Encryption_Util::TEST_ENCRYPTION_UTIL_USER1;
@@ -129,6 +131,41 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals($this->keyfilesPath, $util->getPath('keyfilesPath'));
 		$this->assertEquals($this->publicKeyPath, $util->getPath('publicKeyPath'));
 		$this->assertEquals($this->privateKeyPath, $util->getPath('privateKeyPath'));
+
+	}
+
+	/**
+	 * @medium
+	 * @brief test detection of encrypted files
+	 */
+	function testIsEncryptedPath() {
+
+		$util = new Encryption\Util($this->view, $this->userId);
+
+		self::loginHelper($this->userId);
+
+		$unencryptedFile = '/tmpUnencrypted-' . uniqid() . '.txt';
+		$encryptedFile =  '/tmpEncrypted-' . uniqid() . '.txt';
+
+		// Disable encryption proxy to write a unencrypted file
+		$proxyStatus = \OC_FileProxy::$enabled;
+		\OC_FileProxy::$enabled = false;
+
+		$this->view->file_put_contents($this->userId . '/files/' . $unencryptedFile, $this->dataShort);
+
+		// Re-enable proxy - our work is done
+		\OC_FileProxy::$enabled = $proxyStatus;
+
+		// write a encrypted file
+		$this->view->file_put_contents($this->userId . '/files/' . $encryptedFile, $this->dataShort);
+
+		// test if both files are detected correctly
+		$this->assertFalse($util->isEncryptedPath($this->userId . '/files/' . $unencryptedFile));
+		$this->assertTrue($util->isEncryptedPath($this->userId . '/files/' . $encryptedFile));
+
+		// cleanup
+		$this->view->unlink($this->userId . '/files/' . $unencryptedFile, $this->dataShort);
+		$this->view->unlink($this->userId . '/files/' . $encryptedFile, $this->dataShort);
 
 	}
 
@@ -219,7 +256,7 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 
 		\OC_User::setUserId(\Test_Encryption_Util::TEST_ENCRYPTION_UTIL_USER1);
 
-		$filename = '/tmp-' . time() . '.test';
+		$filename = '/tmp-' . uniqid() . '.test';
 
 		// Disable encryption proxy to prevent recursive calls
 		$proxyStatus = \OC_FileProxy::$enabled;
@@ -242,6 +279,34 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+<	 * @brief Test that data that is read by the crypto stream wrapper
+	 */
+	function testGetFileSize() {
+		\Test_Encryption_Util::loginHelper(\Test_Encryption_Util::TEST_ENCRYPTION_UTIL_USER1);
+
+		$filename = 'tmp-' . uniqid();
+		$externalFilename = '/' . $this->userId . '/files/' . $filename;
+
+		// Test for 0 byte files
+		$problematicFileSizeData = "";
+		$cryptedFile = $this->view->file_put_contents($externalFilename, $problematicFileSizeData);
+		$this->assertTrue(is_int($cryptedFile));
+		$this->assertEquals($this->util->getFileSize($externalFilename), 0);
+		$decrypt = $this->view->file_get_contents($externalFilename);
+		$this->assertEquals($problematicFileSizeData, $decrypt);
+		$this->view->unlink($this->userId . '/files/' . $filename);
+
+		// Test a file with 18377 bytes as in https://github.com/owncloud/mirall/issues/1009
+		$problematicFileSizeData = str_pad("", 18377, "abc");
+		$cryptedFile = $this->view->file_put_contents($externalFilename, $problematicFileSizeData);
+		$this->assertTrue(is_int($cryptedFile));
+		$this->assertEquals($this->util->getFileSize($externalFilename), 18377);
+		$decrypt = $this->view->file_get_contents($externalFilename);
+		$this->assertEquals($problematicFileSizeData, $decrypt);
+		$this->view->unlink($this->userId . '/files/' . $filename);
+	}
+
+	/**
 	 * @medium
 	 */
 	function testIsSharedPath() {
@@ -251,6 +316,139 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue($this->util->isSharedPath($sharedPath));
 
 		$this->assertFalse($this->util->isSharedPath($path));
+	}
+
+	function testEncryptAll() {
+
+		$filename = "/encryptAll" . uniqid() . ".txt";
+		$util = new Encryption\Util($this->view, $this->userId);
+
+		// disable encryption to upload a unencrypted file
+		\OC_App::disable('files_encryption');
+
+		$this->view->file_put_contents($this->userId . '/files/' . $filename, $this->dataShort);
+
+		$fileInfoUnencrypted = $this->view->getFileInfo($this->userId . '/files/' . $filename);
+
+		$this->assertTrue($fileInfoUnencrypted instanceof \OC\Files\FileInfo);
+
+		// enable file encryption again
+		\OC_App::enable('files_encryption');
+
+		// encrypt all unencrypted files
+		$util->encryptAll('/' . $this->userId . '/' . 'files');
+
+		$fileInfoEncrypted = $this->view->getFileInfo($this->userId . '/files/' . $filename);
+
+		$this->assertTrue($fileInfoEncrypted instanceof \OC\Files\FileInfo);
+
+		// check if mtime and etags unchanged
+		$this->assertEquals($fileInfoEncrypted['mtime'], $fileInfoUnencrypted['mtime']);
+		$this->assertEquals($fileInfoEncrypted['etag'], $fileInfoUnencrypted['etag']);
+
+		$this->view->unlink($this->userId . '/files/' . $filename);
+	}
+
+
+	function testDecryptAll() {
+
+		$filename = "/decryptAll" . uniqid() . ".txt";
+		$util = new Encryption\Util($this->view, $this->userId);
+
+		$this->view->file_put_contents($this->userId . '/files/' . $filename, $this->dataShort);
+
+		$fileInfoEncrypted = $this->view->getFileInfo($this->userId . '/files/' . $filename);
+
+		$this->assertTrue($fileInfoEncrypted instanceof \OC\Files\FileInfo);
+		$this->assertEquals($fileInfoEncrypted['encrypted'], 1);
+
+		// decrypt all encrypted files
+		$result = $util->decryptAll('/' . $this->userId . '/' . 'files');
+
+		$this->assertTrue($result);
+
+		$fileInfoUnencrypted = $this->view->getFileInfo($this->userId . '/files/' . $filename);
+
+		$this->assertTrue($fileInfoUnencrypted instanceof \OC\Files\FileInfo);
+
+		// check if mtime and etags unchanged
+		$this->assertEquals($fileInfoEncrypted['mtime'], $fileInfoUnencrypted['mtime']);
+		$this->assertEquals($fileInfoEncrypted['etag'], $fileInfoUnencrypted['etag']);
+		// file should no longer be encrypted
+		$this->assertEquals(0, $fileInfoUnencrypted['encrypted']);
+
+		$this->view->unlink($this->userId . '/files/' . $filename);
+
+	}
+
+	function testDescryptAllWithBrokenFiles() {
+
+		$file1 = "/decryptAll1" . uniqid() . ".txt";
+		$file2 = "/decryptAll2" . uniqid() . ".txt";
+
+		$util = new Encryption\Util($this->view, $this->userId);
+
+		$this->view->file_put_contents($this->userId . '/files/' . $file1, $this->dataShort);
+		$this->view->file_put_contents($this->userId . '/files/' . $file2, $this->dataShort);
+
+		$fileInfoEncrypted1 = $this->view->getFileInfo($this->userId . '/files/' . $file1);
+		$fileInfoEncrypted2 = $this->view->getFileInfo($this->userId . '/files/' . $file2);
+
+		$this->assertTrue($fileInfoEncrypted1 instanceof \OC\Files\FileInfo);
+		$this->assertTrue($fileInfoEncrypted2 instanceof \OC\Files\FileInfo);
+		$this->assertEquals($fileInfoEncrypted1['encrypted'], 1);
+		$this->assertEquals($fileInfoEncrypted2['encrypted'], 1);
+
+		// rename keyfile for file1 so that the decryption for file1 fails
+		// Expected behaviour: decryptAll() returns false, file2 gets decrypted anyway
+		$this->view->rename($this->userId . '/files_encryption/keyfiles/' . $file1 . '.key',
+				$this->userId . '/files_encryption/keyfiles/' . $file1 . '.key.moved');
+
+		// decrypt all encrypted files
+		$result = $util->decryptAll('/' . $this->userId . '/' . 'files');
+
+		$this->assertFalse($result);
+
+		$fileInfoUnencrypted1 = $this->view->getFileInfo($this->userId . '/files/' . $file1);
+		$fileInfoUnencrypted2 = $this->view->getFileInfo($this->userId . '/files/' . $file2);
+
+		$this->assertTrue($fileInfoUnencrypted1 instanceof \OC\Files\FileInfo);
+		$this->assertTrue($fileInfoUnencrypted2 instanceof \OC\Files\FileInfo);
+
+		// file1 should be still encrypted; file2 should be decrypted
+		$this->assertEquals(1, $fileInfoUnencrypted1['encrypted']);
+		$this->assertEquals(0, $fileInfoUnencrypted2['encrypted']);
+
+		// keyfiles and share keys should still exist
+		$this->assertTrue($this->view->is_dir($this->userId . '/files_encryption/keyfiles/'));
+		$this->assertTrue($this->view->is_dir($this->userId . '/files_encryption/share-keys/'));
+
+		// rename the keyfile for file1 back
+		$this->view->rename($this->userId . '/files_encryption/keyfiles/' . $file1 . '.key.moved',
+				$this->userId . '/files_encryption/keyfiles/' . $file1 . '.key');
+
+		// try again to decrypt all encrypted files
+		$result = $util->decryptAll('/' . $this->userId . '/' . 'files');
+
+		$this->assertTrue($result);
+
+		$fileInfoUnencrypted1 = $this->view->getFileInfo($this->userId . '/files/' . $file1);
+		$fileInfoUnencrypted2 = $this->view->getFileInfo($this->userId . '/files/' . $file2);
+
+		$this->assertTrue($fileInfoUnencrypted1 instanceof \OC\Files\FileInfo);
+		$this->assertTrue($fileInfoUnencrypted2 instanceof \OC\Files\FileInfo);
+
+		// now both files should be decrypted
+		$this->assertEquals(0, $fileInfoUnencrypted1['encrypted']);
+		$this->assertEquals(0, $fileInfoUnencrypted2['encrypted']);
+
+		// keyfiles and share keys should be deleted
+		$this->assertFalse($this->view->is_dir($this->userId . '/files_encryption/keyfiles/'));
+		$this->assertFalse($this->view->is_dir($this->userId . '/files_encryption/share-keys/'));
+
+		$this->view->unlink($this->userId . '/files/' . $file1);
+		$this->view->unlink($this->userId . '/files/' . $file2);
+
 	}
 
 	/**
@@ -330,11 +528,17 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 		OCA\Encryption\Hooks::login($params);
 	}
 
+	public static function logoutHelper() {
+		\OC_Util::tearDownFS();
+		\OC_User::setUserId('');
+		\OC\Files\Filesystem::tearDown();
+	}
+
 	/**
 	 * helper function to set migration status to the right value
 	 * to be able to test the migration path
-	 * 
-	 * @param $status needed migration status for test
+	 *
+	 * @param integer $status needed migration status for test
 	 * @param $user for which user the status should be set
 	 * @return boolean
 	 */
