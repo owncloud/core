@@ -530,15 +530,17 @@ class Storage {
 			// if still not enough free space we rearrange the versions from all files
 			if ($availableSpace <= 0) {
 				$result = Storage::getAllVersions($uid);
-				$allVersions = $result['all'];
-
-				foreach ($result['by_file'] as $versions) {
-					list($toDeleteNew, $size) = self::getExpireList($time, $versions);
-					$toDelete = array_merge($toDelete, $toDeleteNew);
-					$sizeOfDeletedVersions += $size;
+				if (isset($result)) {
+					$allVersions = $result['all'];
+	
+					foreach ($result['by_file'] as $versions) {
+						list($toDeleteNew, $size) = self::getExpireList($time, $versions);
+						$toDelete = array_merge($toDelete, $toDeleteNew);
+						$sizeOfDeletedVersions += $size;
+					}
+					$availableSpace = $availableSpace + $sizeOfDeletedVersions;
+					$versionsSize = $versionsSize - $sizeOfDeletedVersions;
 				}
-				$availableSpace = $availableSpace + $sizeOfDeletedVersions;
-				$versionsSize = $versionsSize - $sizeOfDeletedVersions;
 			}
 
 			foreach($toDelete as $key => $path) {
