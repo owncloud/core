@@ -31,6 +31,7 @@ OCP\Util::addscript('files', 'file-upload');
 OCP\Util::addscript('files', 'jquery.iframe-transport');
 OCP\Util::addscript('files', 'jquery.fileupload');
 OCP\Util::addscript('files', 'jquery-visibility');
+OCP\Util::addscript('files', 'jquery.lazyload');
 OCP\Util::addscript('files', 'filelist');
 
 OCP\App::setActiveNavigationEntry('files_index');

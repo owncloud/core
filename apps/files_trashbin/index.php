@@ -17,6 +17,8 @@ OCP\Util::addScript('files_trashbin', 'filelist');
 OCP\Util::addscript('files', 'files');
 OCP\Util::addScript('files_trashbin', 'trash');
 
+OCP\Util::addscript('files', 'jquery.lazyload');
+
 $dir = isset($_GET['dir']) ? stripslashes($_GET['dir']) : '';
 
 $isIE8 = false;

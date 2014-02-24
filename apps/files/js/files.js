@@ -518,16 +518,14 @@ var createDragShadow = function(event) {
 
 	$(selectedFiles).each(function(i,elem) {
 		var newtr = $('<tr/>').attr('data-dir', dir).attr('data-filename', elem.name).attr('data-origin', elem.origin);
-		newtr.append($('<td/>').addClass('filename').text(elem.name));
+		newtr.append($('<td/>').addClass('filename lazy').text(elem.name));
 		newtr.append($('<td/>').addClass('size').text(humanFileSize(elem.size)));
 		tbody.append(newtr);
 		if (elem.type === 'dir') {
-			newtr.find('td.filename').attr('style','background-image:url('+OC.imagePath('core', 'filetypes/folder.png')+')');
+			newtr.find('td.filename').attr('data-original',OC.imagePath('core', 'filetypes/folder.png'));
 		} else {
 			var path = getPathForPreview(elem.name);
-			Files.lazyLoadPreview(path, elem.mime, function(previewpath) {
-				newtr.find('td.filename').attr('style','background-image:url('+previewpath+')');
-			}, null, null, elem.etag);
+			newtr.find('td.filename').attr('data-original',Files.getPreviewIconURL(path, null, null, elem.etag));
 		}
 	});
 
@@ -548,6 +546,13 @@ var dragOptions={
 			else{
 				$(this).fadeTo(250, 0.2);
 			}
+			
+			$('.dragshadow .lazy').lazyload();
+		},
+		drag: function(event, ui) {
+			// force lazy image load check when the user drags more elements up into view
+			// when it is a long list. ordinarily only does this on scrolling not mouse movement.
+			$(window).scroll();
 		},
 		stop: function(event, ui) {
 			var $selectedFiles = $('td.filename input:checkbox:checked');
@@ -558,6 +563,7 @@ var dragOptions={
 				$(this).fadeTo(250, 1);
 			}
 			$('#fileList tr td.filename').addClass('ui-draggable');
+			$('.dragshadow .lazy').removeLazyload();
 		}
 };
 // sane browsers support using the distance option
@@ -746,43 +752,52 @@ function getPathForPreview(name) {
 	return path;
 }
 
+// gets the preview icon url
+Files.getPreviewIconURL = function(path, width, height, etag) {
+	var urlSpec = {};
+	var previewURL;
+
+	if ( ! width ) {
+		width = $('#filestable').data('preview-x');
+	}
+	if ( ! height ) {
+		height = $('#filestable').data('preview-y');
+	}
+	// note: the order of arguments must match the one
+	// from the server's template so that the browser
+	// knows it's the same file for caching
+	urlSpec.x = width;
+	urlSpec.y = height;
+	urlSpec.file = Files.fixPath(path);
+
+	if (etag){
+		// use etag as cache buster
+		urlSpec.c = etag;
+	}
+	else {
+		console.warn('Files.getPreviewIconURL(): missing etag argument');
+	}
+
+	if ( $('#isPublic').length ) {
+		urlSpec.t = $('#dirToken').val();
+		previewURL = OC.Router.generate('core_ajax_public_preview', urlSpec);
+	} else {
+		previewURL = OC.Router.generate('core_ajax_preview', urlSpec);
+	}
+	previewURL = previewURL.replace('(', '%28');
+	previewURL = previewURL.replace(')', '%29');
+
+	return previewURL;
+}
+
+// sets the image preview based on the mime type first, then pre-loads the preview based on the actual file
 Files.lazyLoadPreview = function(path, mime, ready, width, height, etag) {
 	// get mime icon url
 	Files.getMimeIcon(mime, function(iconURL) {
-		var urlSpec = {};
-		var previewURL;
 		ready(iconURL); // set mimeicon URL
 
 		// now try getting a preview thumbnail URL
-		if ( ! width ) {
-			width = $('#filestable').data('preview-x');
-		}
-		if ( ! height ) {
-			height = $('#filestable').data('preview-y');
-		}
-		// note: the order of arguments must match the one
-		// from the server's template so that the browser
-		// knows it's the same file for caching
-		urlSpec.x = width;
-		urlSpec.y = height;
-		urlSpec.file = Files.fixPath(path);
-
-		if (etag){
-			// use etag as cache buster
-			urlSpec.c = etag;
-		}
-		else {
-			console.warn('Files.lazyLoadPreview(): missing etag argument');
-		}
-
-		if ( $('#isPublic').length ) {
-			urlSpec.t = $('#dirToken').val();
-			previewURL = OC.Router.generate('core_ajax_public_preview', urlSpec);
-		} else {
-			previewURL = OC.Router.generate('core_ajax_preview', urlSpec);
-		}
-		previewURL = previewURL.replace('(', '%28');
-		previewURL = previewURL.replace(')', '%29');
+		var previewURL = Files.getPreviewIconURL(path, width, height, etag);
 
 		// preload image to prevent delay
 		// this will make the browser cache the image

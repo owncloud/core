@@ -42,6 +42,8 @@ window.FileList={
 		return $('#fileList tr').filterAttr('data-file', fileName);
 	},
 	update:function(fileListHtml) {
+		$('#fileList .lazy').removeLazyload();
+
 		var $fileList = $('#fileList');
 		$fileList.empty().html(fileListHtml);
 		FileList.updateEmptyContent();
@@ -71,8 +73,9 @@ window.FileList={
 		});
 		// filename td
 		td = $('<td></td>').attr({
-			"class": "filename",
-			"style": 'background-image:url('+iconurl+'); background-size: 32px;'
+			"class": "filename lazy",
+			"style": 'background-size: 32px;',
+			"data-original": iconurl
 		});
 		var rand = Math.random().toString(16).slice(2);
 		td.append('<input id="select-'+rand+'" type="checkbox" /><label for="select-'+rand+'"></label>');
@@ -130,6 +133,7 @@ window.FileList={
 	},
 	addFile:function(name, size, lastModified, loading, hidden, param) {
 		var imgurl;
+		var filepath = getPathForPreview(name);
 
 		if (!param) {
 			param = {};
@@ -137,7 +141,7 @@ window.FileList={
 
 		var download_url = null;
 		if (!param.download_url) {
-			download_url = OC.Router.generate('download', { file: $('#dir').val()+'/'+name });
+			download_url = OC.Router.generate('download', { file: filepath });
 		} else {
 			download_url = param.download_url;
 		}
@@ -145,7 +149,7 @@ window.FileList={
 		if (loading) {
 			imgurl = OC.imagePath('core', 'loading.gif');
 		} else {
-			imgurl = OC.imagePath('core', 'filetypes/file.png');
+			imgurl = Files.getPreviewIconURL(filepath, null, null, param.etag)
 		}
 		var tr = this.createRow(
 			'file',
@@ -780,6 +784,8 @@ window.FileList={
 				$connector.show();
 			}
 		}
+
+		$('#fileList .lazy').lazyload();
 	},
 	updateEmptyContent: function() {
 		var $fileList = $('#fileList');
@@ -874,6 +880,8 @@ window.FileList={
 $(document).ready(function() {
 	var baseDir,
 		isPublic = !!$('#isPublic').val();
+
+	$('#fileList .lazy').lazyload();
 
 	// handle upload events
 	var file_upload_start = $('#file_upload_start');
@@ -1001,6 +1009,8 @@ $(document).ready(function() {
 				}
 				//should the file exist in the list remove it
 				FileList.remove(file.name);
+				
+				param.etag = file.etag;
 
 				// create new file context
 				data.context = FileList.addFile(file.name, file.size, date, false, false, param);
@@ -1013,12 +1023,10 @@ $(document).ready(function() {
 					data.context.attr('data-permissions', file.permissions);
 					data.context.data('permissions', file.permissions);
 				}
-				FileActions.display(data.context.find('td.filename'), true);
 
-				var path = getPathForPreview(file.name);
-				Files.lazyLoadPreview(path, file.mime, function(previewpath) {
-					data.context.find('td.filename').attr('style','background-image:url('+previewpath+')');
-				}, null, null, file.etag);
+				var tds = data.context.find('td.filename');
+				FileActions.display(tds, true);
+				tds.lazyload();
 			}
 		}
 	});
