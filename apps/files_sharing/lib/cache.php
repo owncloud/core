@@ -32,6 +32,9 @@ class Shared_Cache extends Cache {
 	private $storage;
 	private $files = array();
 
+	/**
+	 * @param \OC\Files\Storage\Shared $storage
+	 */
 	public function __construct($storage) {
 		$this->storage = $storage;
 	}
@@ -128,19 +131,15 @@ class Shared_Cache extends Cache {
 			foreach ($files as &$file) {
 				$file['mimetype'] = $this->getMimetype($file['mimetype']);
 				$file['mimepart'] = $this->getMimetype($file['mimepart']);
+				$file['usersPath'] = 'files/Shared/' . ltrim($file['path'], '/');
 			}
 			return $files;
 		} else {
-			if ($cache = $this->getSourceCache($folder)) {
+			$cache = $this->getSourceCache($folder);
+			if ($cache) {
 				$sourceFolderContent = $cache->getFolderContents($this->files[$folder]);
 				foreach ($sourceFolderContent as $key => $c) {
-					$ownerPathParts = explode('/', \OC_Filesystem::normalizePath($c['path']));
-					$userPathParts = explode('/', \OC_Filesystem::normalizePath($folder));
-					$usersPath = 'files/Shared/'.$userPathParts[1];
-					foreach (array_slice($ownerPathParts, 3) as $part) {
-						$usersPath .= '/'.$part;
-					}
-					$sourceFolderContent[$key]['usersPath'] = $usersPath;
+					$sourceFolderContent[$key]['usersPath'] = 'files/Shared/' . $folder . '/' . $c['name'];
 				}
 
 				return $sourceFolderContent;
@@ -393,7 +392,7 @@ class Shared_Cache extends Cache {
 	 * use the one with the highest id gives the best result with the background scanner, since that is most
 	 * likely the folder where we stopped scanning previously
 	 *
-	 * @return string|bool the path of the folder or false when no folder matched
+	 * @return boolean the path of the folder or false when no folder matched
 	 */
 	public function getIncomplete() {
 		return false;

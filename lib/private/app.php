@@ -49,7 +49,7 @@ class OC_App{
 
 	/**
 	 * @brief clean the appid
-	 * @param $app Appid that needs to be cleaned
+	 * @param string|boolean $app Appid that needs to be cleaned
 	 * @return string
 	 */
 	public static function cleanAppId($app) {
@@ -77,17 +77,6 @@ class OC_App{
 		    self::getLoader()->loadTypes($types);
 		}
 
-		if (!defined('DEBUG') || !DEBUG) {
-			if (is_null($types)
-				&& empty(OC_Util::$coreScripts)
-				&& empty(OC_Util::$coreStyles)) {
-				OC_Util::$coreScripts = OC_Util::$scripts;
-				OC_Util::$scripts = array();
-				OC_Util::$coreStyles = OC_Util::$styles;
-				OC_Util::$styles = array();
-			}
-		}
-		// return
 		return true;
 	}
 
@@ -204,7 +193,7 @@ class OC_App{
 	/**
 	 * @brief disables an app
 	 * @param string $app app
-	 * @return bool
+	 * @return boolean|null
 	 *
 	 * This function set an app as disabled in appconfig.
 	 */
@@ -282,7 +271,7 @@ class OC_App{
 
 	/**
 	 * @brief Returns the Settings Navigation
-	 * @return array
+	 * @return string
 	 *
 	 * This function returns an array containing all settings pages added. The
 	 * entries are sorted by the key 'order' ascending.
@@ -377,6 +366,7 @@ class OC_App{
 
 	/**
 	 * Get the path where to install apps
+	 * @return string
 	 */
 	public static function getInstallPath() {
 		if(OC_Config::getValue('appstoreenabled', true)==false) {
@@ -444,7 +434,7 @@ class OC_App{
 
 	/**
 	 * @brief Returns the navigation
-	 * @return array
+	 * @return string
 	 *
 	 * This function returns an array containing all entries added. The
 	 * entries are sorted by the key 'order' ascending. Additional to the keys
@@ -512,6 +502,8 @@ class OC_App{
 
 	/**
 	 * register an admin form to be shown
+	 * @param string $app
+	 * @param string $page
 	 */
 	public static function registerAdmin($app, $page) {
 		self::$adminForms[]= $app.'/'.$page.'.php';
@@ -728,6 +720,10 @@ class OC_App{
 
 	/**
 	 * perform the app upgrade
+	 * @param string $app
+	 * @param string $appName
+	 * @param string $installedVersion
+	 * @param string $currentVersion
 	 */
 	public static function doUpgrade($app, $appName, $installedVersion, $currentVersion) {
 		OC_Log::write($app, 'starting app upgrade from '.$installedVersion.' to '.$currentVersion, OC_Log::DEBUG);
@@ -742,6 +738,7 @@ class OC_App{
 		}
 		OC_Appconfig::setValue($app, 'installed_version', $currentVersion);
 	}
+
 	/**
 	 * check if the current enabled apps are compatible with the current
 	 * ownCloud version. disable them if not.

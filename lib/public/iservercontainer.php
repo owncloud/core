@@ -195,4 +195,11 @@ interface IServerContainer {
 	 */
 	function getAvatarManager();
 
+	/**
+	 * Returns an job list for controlling background jobs
+	 *
+	 * @return \OCP\BackgroundJob\IJobList
+	 */
+	function getJobList();
+
 }

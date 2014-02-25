@@ -51,11 +51,13 @@ class Session {
 
 		}
 
-		$publicShareKeyId = \OC_Appconfig::getValue('files_encryption', 'publicShareKeyId');
+		$appConfig = \OC::$server->getAppConfig();
+
+		$publicShareKeyId = $appConfig->getValue('files_encryption', 'publicShareKeyId');
 
 		if ($publicShareKeyId === null) {
 			$publicShareKeyId = 'pubShare_' . substr(md5(time()), 0, 8);
-			\OC_Appconfig::setValue('files_encryption', 'publicShareKeyId', $publicShareKeyId);
+			$appConfig->setValue('files_encryption', 'publicShareKeyId', $publicShareKeyId);
 		}
 
 		if (
@@ -195,7 +197,7 @@ class Session {
 
 	/**
 	 * @brief Sets user legacy key to session
-	 * @param $legacyKey
+	 * @param string $legacyKey
 	 * @return bool
 	 */
 	public function setLegacyKey($legacyKey) {

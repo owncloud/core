@@ -321,15 +321,16 @@ class Filesystem {
 			self::mount('\OC\Files\Storage\Local', array('datadir' => $root), $user);
 		}
 		$datadir = \OC_Config::getValue("datadirectory", \OC::$SERVERROOT . "/data");
+		$mount_file = \OC_Config::getValue("mount_file", $datadir . "/mount.json");
 
 		//move config file to it's new position
 		if (is_file(\OC::$SERVERROOT . '/config/mount.json')) {
-			rename(\OC::$SERVERROOT . '/config/mount.json', $datadir . '/mount.json');
+			rename(\OC::$SERVERROOT . '/config/mount.json', $mount_file);
 		}
 		// Load system mount points
-		if (is_file(\OC::$SERVERROOT . '/config/mount.php') or is_file($datadir . '/mount.json')) {
-			if (is_file($datadir . '/mount.json')) {
-				$mountConfig = json_decode(file_get_contents($datadir . '/mount.json'), true);
+		if (is_file(\OC::$SERVERROOT . '/config/mount.php') or is_file($mount_file)) {
+			if (is_file($mount_file)) {
+				$mountConfig = json_decode(file_get_contents($mount_file), true);
 			} elseif (is_file(\OC::$SERVERROOT . '/config/mount.php')) {
 				$mountConfig = $parser->parsePHP(file_get_contents(\OC::$SERVERROOT . '/config/mount.php'));
 			}
@@ -614,6 +615,9 @@ class Filesystem {
 		return self::$defaultInstance->touch($path, $mtime);
 	}
 
+	/**
+	 * @return string
+	 */
 	static public function file_get_contents($path) {
 		return self::$defaultInstance->file_get_contents($path);
 	}
@@ -638,6 +642,9 @@ class Filesystem {
 		return self::$defaultInstance->fopen($path, $mode);
 	}
 
+	/**
+	 * @return string
+	 */
 	static public function toTmpFile($path) {
 		return self::$defaultInstance->toTmpFile($path);
 	}
@@ -662,6 +669,9 @@ class Filesystem {
 		return self::$defaultInstance->search($query);
 	}
 
+	/**
+	 * @param string $query
+	 */
 	static public function searchByMime($query) {
 		return self::$defaultInstance->searchByMime($query);
 	}
@@ -727,14 +737,7 @@ class Filesystem {
 	 * @param string $path
 	 * @param boolean $includeMountPoints whether to add mountpoint sizes,
 	 * defaults to true
-	 * @return array
-	 *
-	 * returns an associative array with the following keys:
-	 * - size
-	 * - mtime
-	 * - mimetype
-	 * - encrypted
-	 * - versioned
+	 * @return \OC\Files\FileInfo
 	 */
 	public static function getFileInfo($path, $includeMountPoints = true) {
 		return self::$defaultInstance->getFileInfo($path, $includeMountPoints);

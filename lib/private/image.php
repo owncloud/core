@@ -34,7 +34,7 @@ class OC_Image {
 
 	/**
 	* @brief Get mime type for an image file.
-	* @param $filepath The path to a local image file.
+	* @param string|null $filepath The path to a local image file.
 	* @returns string The mime type if the it could be determined, otherwise an empty string.
 	*/
 	static public function getMimeTypeForFile($filePath) {
@@ -163,6 +163,7 @@ class OC_Image {
 	/**
 	* @brief Saves the image.
 	* @returns bool
+	* @param string $filePath
 	*/
 
 	public function save($filePath=null) {
@@ -230,7 +231,7 @@ class OC_Image {
 	}
 
 	/**
-	* @returns Returns the image resource in any.
+	* @returns resource Returns the image resource in any.
 	*/
 	public function resource() {
 		return $this->resource;
@@ -396,7 +397,7 @@ class OC_Image {
 	/**
 	* @brief Loads an image from an open file handle.
 	* It is the responsibility of the caller to position the pointer at the correct place and to close the handle again.
-	* @param $handle
+	* @param resource $handle
 	* @returns An image resource or false on error
 	*/
 	public function loadFromFileHandle($handle) {
@@ -563,7 +564,7 @@ class OC_Image {
 	 * Create a new image from file or URL
 	 * @link http://www.programmierer-forum.de/function-imagecreatefrombmp-laeuft-mit-allen-bitraten-t143137.htm
 	 * @version 1.00
-	 * @param string $filename <p>
+	 * @param string $fileName <p>
 	 * Path to the BMP image.
 	 * </p>
 	 * @return resource an image resource identifier on success, <b>FALSE</b> on errors.
@@ -704,7 +705,7 @@ class OC_Image {
 
 	/**
 	* @brief Resizes the image preserving ratio.
-	* @param $maxsize The maximum size of either the width or height.
+	* @param integer $maxSize The maximum size of either the width or height.
 	* @returns bool
 	*/
 	public function resize($maxSize) {
@@ -852,8 +853,8 @@ class OC_Image {
 
 	/**
 	 * @brief Resizes the image to fit within a boundry while preserving ratio.
-	 * @param $maxWidth
-	 * @param $maxHeight
+	 * @param integer $maxWidth
+	 * @param integer $maxHeight
 	 * @returns bool
 	 */
 	public function fitIn($maxWidth, $maxHeight) {
@@ -891,8 +892,7 @@ if ( ! function_exists( 'imagebmp') ) {
 	 * @link http://www.programmierer-forum.de/imagebmp-gute-funktion-gefunden-t143716.htm
 	 * @author mgutt <marc@gutt.it>
 	 * @version 1.00
-	 * @param resource $image
-	 * @param string $filename [optional] <p>The path to save the file to.</p>
+	 * @param string $fileName [optional] <p>The path to save the file to.</p>
 	 * @param int $bit [optional] <p>Bit depth, (default is 24).</p>
 	 * @param int $compression [optional]
 	 * @return bool <b>TRUE</b> on success or <b>FALSE</b> on failure.
@@ -1008,7 +1008,7 @@ if ( ! function_exists( 'exif_imagetype' ) ) {
 	/**
 	 * Workaround if exif_imagetype does not exist
 	 * @link http://www.php.net/manual/en/function.exif-imagetype.php#80383
-	 * @param string $filename
+	 * @param string $fileName
 	 * @return string|boolean
 	 */
 	function exif_imagetype ( $fileName ) {

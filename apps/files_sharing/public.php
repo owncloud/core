@@ -2,7 +2,9 @@
 // Load other apps for file previews
 OC_App::loadApps();
 
-if (\OC_Appconfig::getValue('core', 'shareapi_allow_links', 'yes') !== 'yes') {
+$appConfig = \OC::$server->getAppConfig();
+
+if ($appConfig->getValue('core', 'shareapi_allow_links', 'yes') !== 'yes') {
 	header('HTTP/1.0 404 Not Found');
 	$tmpl = new OCP\Template('', '404', 'guest');
 	$tmpl->printPage();
@@ -30,7 +32,8 @@ function determineIcon($file, $sharingRoot, $sharingToken) {
 	if($file['isPreviewAvailable']) {
 		return OCP\publicPreview_icon($relativePath, $sharingToken) . '&c=' . $file['etag'];
 	}
-	return OCP\mimetype_icon($file['mimetype']);
+	$icon = OCP\mimetype_icon($file['mimetype']);
+	return substr($icon, 0, -3) . 'svg';
 }
 
 if (isset($_GET['t'])) {
@@ -151,7 +154,7 @@ if (isset($path)) {
 		$tmpl->assign('dirToken', $linkItem['token']);
 		$tmpl->assign('sharingToken', $token);
 		$allowPublicUploadEnabled = (bool) ($linkItem['permissions'] & OCP\PERMISSION_CREATE);
-		if (OC_Appconfig::getValue('core', 'shareapi_allow_public_upload', 'yes') === 'no') {
+		if ($appConfig->getValue('core', 'shareapi_allow_public_upload', 'yes') === 'no') {
 			$allowPublicUploadEnabled = false;
 		}
 		if ($linkItem['item_type'] !== 'folder') {

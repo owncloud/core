@@ -35,7 +35,7 @@ class OC_Mount_Config {
 	* If the configuration parameter is a boolean, add a '!' to the beginning of the value
 	* If the configuration parameter is optional, add a '&' to the beginning of the value
 	* If the configuration parameter is hidden, add a '#' to the beginning of the value
-	* @return array
+	* @return string
 	*/
 	public static function getBackends() {
 
@@ -263,13 +263,13 @@ class OC_Mount_Config {
 
 	/**
 	* Add a mount point to the filesystem
-	* @param string Mount point
-	* @param string Backend class
+	* @param string $mountPoint Mount point
+	* @param string $class Backend class
 	* @param array Backend parameters for the class
-	* @param string MOUNT_TYPE_GROUP | MOUNT_TYPE_USER
-	* @param string User or group to apply mount to
+	* @param string $mountType MOUNT_TYPE_GROUP | MOUNT_TYPE_USER
+	* @param string $applicable User or group to apply mount to
 	* @param bool Personal or system mount point i.e. is this being called from the personal or admin page
-	* @return bool
+	* @return boolean
 	*/
 	public static function addMountPoint($mountPoint,
 										 $class,
@@ -277,15 +277,21 @@ class OC_Mount_Config {
 										 $mountType,
 										 $applicable,
 										 $isPersonal = false) {
+		$backends = self::getBackends();
 		$mountPoint = OC\Files\Filesystem::normalizePath($mountPoint);
 		if ($mountPoint === '' || $mountPoint === '/' || $mountPoint == '/Shared') {
 			// can't mount at root or "Shared" folder
 			return false;
 		}
+
+		if (!isset($backends[$class])) {
+			// invalid backend
+			return false;
+		}	
 		if ($isPersonal) {
 			// Verify that the mount point applies for the current user
 			// Prevent non-admin users from mounting local storage
-			if ($applicable != OCP\User::getUser() || $class == '\OC\Files\Storage\Local') {
+			if ($applicable !== OCP\User::getUser() || strtolower($class) === '\oc\files\storage\local') {
 				return false;
 			}
 			$mountPoint = '/'.$applicable.'/files/'.ltrim($mountPoint, '/');
@@ -343,7 +349,7 @@ class OC_Mount_Config {
 
 	/**
 	* Read the mount points in the config file into an array
-	* @param bool Personal or system config file
+	* @param boolean $isPersonal Personal or system config file
 	* @return array
 	*/
 	private static function readData($isPersonal) {
@@ -352,9 +358,9 @@ class OC_Mount_Config {
 			$phpFile = OC_User::getHome(OCP\User::getUser()).'/mount.php';
 			$jsonFile = OC_User::getHome(OCP\User::getUser()).'/mount.json';
 		} else {
-			$datadir = \OC_Config::getValue("datadirectory", \OC::$SERVERROOT . "/data");
 			$phpFile = OC::$SERVERROOT.'/config/mount.php';
-			$jsonFile = $datadir . '/mount.json';
+			$datadir = \OC_Config::getValue('datadirectory', \OC::$SERVERROOT . '/data/');
+			$jsonFile = \OC_Config::getValue('mount_file', $datadir . '/mount.json');
 		}
 		if (is_file($jsonFile)) {
 			$mountPoints = json_decode(file_get_contents($jsonFile), true);
@@ -374,13 +380,14 @@ class OC_Mount_Config {
 	* Write the mount points to the config file
 	* @param bool Personal or system config file
 	* @param array Mount points
+	* @param boolean $isPersonal
 	*/
 	private static function writeData($isPersonal, $data) {
 		if ($isPersonal) {
 			$file = OC_User::getHome(OCP\User::getUser()).'/mount.json';
 		} else {
-			$datadir = \OC_Config::getValue("datadirectory", \OC::$SERVERROOT . "/data");
-			$file = $datadir . '/mount.json';
+			$datadir = \OC_Config::getValue('datadirectory', \OC::$SERVERROOT . '/data/');
+			$file = \OC_Config::getValue('mount_file', $datadir . '/mount.json');
 		}
 		$content = json_encode($data);
 		@file_put_contents($file, $content);
