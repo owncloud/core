@@ -32,6 +32,9 @@ class OC_Files {
 		return \OC\Files\Filesystem::getFileInfo($path, $includeMountPoints);
 	}
 
+	/**
+	 * @param string $path
+	 */
 	static public function getDirectoryContent($path){
 		return \OC\Files\Filesystem::getDirectoryContent($path);
 	}
@@ -40,7 +43,7 @@ class OC_Files {
 	 * return the content of a file or return a zip file containing multiple files
 	 *
 	 * @param string $dir
-	 * @param string $file ; separated list of files to download
+	 * @param string $files ; separated list of files to download
 	 * @param boolean $only_header ; boolean to only send header of the request
 	 */
 	public static function get($dir, $files, $only_header = false) {
@@ -103,7 +106,12 @@ class OC_Files {
 			if ($xsendfile) {
 				$filename = OC_Helper::moveToNoClean($filename);
 			}
-			$name = $files . '.zip';
+			// downloading root ?
+			if ($files === '') {
+				$name = 'download.zip';
+			} else {
+				$name = $files . '.zip';
+			}
 			set_time_limit($executionTime);
 		} else {
 			$zip = false;
@@ -131,7 +139,7 @@ class OC_Files {
 				}
 				if ($xsendfile) {
 					list($storage) = \OC\Files\Filesystem::resolvePath(\OC\Files\Filesystem::getView()->getAbsolutePath($filename));
-					if ($storage instanceof \OC\Files\Storage\Local) {
+					if ($storage->isLocal()) {
 						self::addSendfileHeader(\OC\Files\Filesystem::getLocalFile($filename));
 					}
 				}
@@ -170,6 +178,9 @@ class OC_Files {
 		}
 	}
 
+	/**
+	 * @param false|string $filename
+	 */
 	private static function addSendfileHeader($filename) {
 		if (isset($_SERVER['MOD_X_SENDFILE_ENABLED'])) {
 			header("X-Sendfile: " . $filename);
@@ -194,10 +205,16 @@ class OC_Files {
 		}
 	}
 
+	/**
+	 * @param string $dir
+	 * @param ZipArchive $zip
+	 */
 	public static function zipAddDir($dir, $zip, $internalDir='') {
 		$dirname=basename($dir);
 		$zip->addEmptyDir($internalDir.$dirname);
 		$internalDir.=$dirname.='/';
+		// prevent absolute dirs
+		$internalDir = ltrim($internalDir, '/');
 		$files=OC_Files::getDirectoryContent($dir);
 		foreach($files as $file) {
 			$filename=$file['name'];
@@ -215,7 +232,7 @@ class OC_Files {
 	/**
 	 * checks if the selected files are within the size constraint. If not, outputs an error page.
 	 *
-	 * @param dir   $dir
+	 * @param string   $dir
 	 * @param files $files
 	 */
 	static function validateZipDownload($dir, $files) {

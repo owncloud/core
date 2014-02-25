@@ -15,7 +15,7 @@ class OC_Response {
 
 	/**
 	* @brief Enable response caching by sending correct HTTP headers
-	* @param $cache_time time to cache the response
+	* @param integer $cache_time time to cache the response
 	*  >0		cache time in seconds
 	*  0 and <0	enable default browser caching
 	*  null		cache indefinitly
@@ -80,7 +80,7 @@ class OC_Response {
 
 	/**
 	* @brief Send redirect response
-	* @param $location to redirect to
+	* @param string $location to redirect to
 	*/
 	static public function redirect($location) {
 		self::setStatus(self::STATUS_TEMPORARY_REDIRECT);
@@ -153,7 +153,11 @@ class OC_Response {
 	 * @param string $type disposition type, either 'attachment' or 'inline'
 	 */
 	static public function setContentDispositionHeader( $filename, $type = 'attachment' ) {
-		if (OC_Request::isUserAgent(array(OC_Request::USER_AGENT_IE, OC_Request::USER_AGENT_ANDROID_MOBILE_CHROME))) {
+		if (OC_Request::isUserAgent(array(
+				OC_Request::USER_AGENT_IE,
+				OC_Request::USER_AGENT_ANDROID_MOBILE_CHROME,
+				OC_Request::USER_AGENT_FREEBOX
+			))) {
 			header( 'Content-Disposition: ' . rawurlencode($type) . '; filename="' . rawurlencode( $filename ) . '"' );
 		} else {
 			header( 'Content-Disposition: ' . rawurlencode($type) . '; filename*=UTF-8\'\'' . rawurlencode( $filename )
@@ -163,7 +167,7 @@ class OC_Response {
 
 	/**
 	* @brief Send file as response, checking and setting caching headers
-	* @param $filepath of file to send
+	* @param string $filepath of file to send
 	*/
 	static public function sendFile($filepath) {
 		$fp = fopen($filepath, 'rb');

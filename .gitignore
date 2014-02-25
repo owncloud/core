@@ -2,6 +2,7 @@
 /data
 /owncloud
 /config/config.php
+/config/*.config.php
 /config/mount.php
 /apps/inc.php
 
@@ -88,6 +89,7 @@ nbproject
 # Tests - auto-generated files
 /data-autotest
 /tests/coverage*
+/tests/karma-coverage
 /tests/autoconfig*
 /tests/autotest*
 /tests/data/lorem-copy.txt

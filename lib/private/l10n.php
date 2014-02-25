@@ -99,6 +99,9 @@ class OC_L10N implements \OCP\IL10N {
 		$this->lang = $lang;
 	}
 
+	/**
+	 * @param string $transFile
+	 */
 	public function load($transFile) {
 		$this->app = true;
 		include $transFile;
@@ -115,7 +118,7 @@ class OC_L10N implements \OCP\IL10N {
 			return;
 		}
 		$app = OC_App::cleanAppId($this->app);
-		$lang = $this->lang;
+		$lang = str_replace(array('\0', '/', '\\', '..'), '', $this->lang);
 		$this->app = true;
 		// Find the right language
 		if(is_null($lang) || $lang == '') {
@@ -132,10 +135,10 @@ class OC_L10N implements \OCP\IL10N {
 			$i18ndir = self::findI18nDir($app);
 			// Localization is in /l10n, Texts are in $i18ndir
 			// (Just no need to define date/time format etc. twice)
-			if((OC_Helper::issubdirectory($i18ndir.$lang.'.php', OC_App::getAppPath($app).'/l10n/')
-				|| OC_Helper::issubdirectory($i18ndir.$lang.'.php', OC::$SERVERROOT.'/core/l10n/')
+			if((OC_Helper::issubdirectory($i18ndir.$lang.'.php', OC::$SERVERROOT.'/core/l10n/')
 				|| OC_Helper::issubdirectory($i18ndir.$lang.'.php', OC::$SERVERROOT.'/lib/l10n/')
 				|| OC_Helper::issubdirectory($i18ndir.$lang.'.php', OC::$SERVERROOT.'/settings')
+				|| OC_Helper::issubdirectory($i18ndir.$lang.'.php', OC_App::getAppPath($app).'/l10n/')
 				)
 				&& file_exists($i18ndir.$lang.'.php')) {
 				// Include the file, save the data from $CONFIG
@@ -160,7 +163,7 @@ class OC_L10N implements \OCP\IL10N {
 				}
 			}
 
-			if(file_exists(OC::$SERVERROOT.'/core/l10n/l10n-'.$lang.'.php')) {
+			if(file_exists(OC::$SERVERROOT.'/core/l10n/l10n-'.$lang.'.php') && OC_Helper::issubdirectory(OC::$SERVERROOT.'/core/l10n/l10n-'.$lang.'.php', OC::$SERVERROOT.'/core/l10n/')) {
 				// Include the file, save the data from $CONFIG
 				include OC::$SERVERROOT.'/core/l10n/l10n-'.$lang.'.php';
 				if(isset($LOCALIZATIONS) && is_array($LOCALIZATIONS)) {
@@ -529,6 +532,9 @@ class OC_L10N implements \OCP\IL10N {
 		return $available;
 	}
 
+	/**
+	 * @param string $lang
+	 */
 	public static function languageExists($app, $lang) {
 		if ($lang == 'en') {//english is always available
 			return true;

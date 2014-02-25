@@ -11,6 +11,8 @@ var oc_webroot;
 var oc_current_user = document.getElementsByTagName('head')[0].getAttribute('data-user');
 var oc_requesttoken = document.getElementsByTagName('head')[0].getAttribute('data-requesttoken');
 
+window.oc_config = window.oc_config || {};
+
 if (typeof oc_webroot === "undefined") {
 	oc_webroot = location.pathname;
 	var pos = oc_webroot.indexOf('/index.php/');
@@ -742,8 +744,39 @@ function fillWindow(selector) {
 	console.warn("This function is deprecated! Use CSS instead");
 }
 
-$(document).ready(function(){
-	sessionHeartBeat();
+/**
+ * Initializes core
+ */
+function initCore() {
+
+	/**
+	 * Calls the server periodically to ensure that session doesn't
+	 * time out
+	 */
+	function initSessionHeartBeat(){
+		// interval in seconds
+		var interval = 900;
+		if (oc_config.session_lifetime) {
+			interval = Math.floor(oc_config.session_lifetime / 2);
+		}
+		// minimum one minute
+		if (interval < 60) {
+			interval = 60;
+		}
+		OC.Router.registerLoadedCallback(function(){
+			var url = OC.Router.generate('heartbeat');
+			setInterval(function(){
+				$.post(url);
+			}, interval * 1000);
+		});
+	}
+
+	// session heartbeat (defaults to enabled)
+	if (typeof(oc_config.session_keepalive) === 'undefined' ||
+		!!oc_config.session_keepalive) {
+
+		initSessionHeartBeat();
+	}
 
 	if(!SVGSupport()){ //replace all svg images with png images for browser that dont support svg
 		replaceSVG();
@@ -827,6 +860,7 @@ $(document).ready(function(){
 	// checkShowCredentials();
 	// $('input#user, input#password').keyup(checkShowCredentials);
 
+	// user menu
 	$('#settings #expand').keydown(function(event) {
 		if (event.which === 13 || event.which === 32) {
 			$('#expand').click()
@@ -839,7 +873,8 @@ $(document).ready(function(){
 	$('#settings #expanddiv').click(function(event){
 		event.stopPropagation();
 	});
-	$(document).click(function(){//hide the settings menu when clicking outside it
+	//hide the user menu when clicking outside it
+	$(document).click(function(){
 		$('#settings #expanddiv').slideUp(200);
 	});
 
@@ -851,12 +886,10 @@ $(document).ready(function(){
 	$('a.action.delete').tipsy({gravity:'e', fade:true, live:true});
 	$('a.action').tipsy({gravity:'s', fade:true, live:true});
 	$('td .modified').tipsy({gravity:'s', fade:true, live:true});
-
 	$('input').tipsy({gravity:'w', fade:true});
-	$('input[type=text]').focus(function(){
-		this.select();
-	});
-});
+}
+
+$(document).ready(initCore);
 
 /**
  * Filter Jquery selector by attribute value
@@ -956,6 +989,17 @@ OC.set=function(name, value) {
 	context[tail]=value;
 };
 
+// fix device width on windows phone
+(function() {
+	if ("-ms-user-select" in document.documentElement.style && navigator.userAgent.match(/IEMobile\/10\.0/)) {
+		var msViewportStyle = document.createElement("style");
+		msViewportStyle.appendChild(
+			document.createTextNode("@-ms-viewport{width:auto!important}")
+		);
+		document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+	}
+})();
+
 /**
  * select a range in an input field
  * @link http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
@@ -986,15 +1030,3 @@ jQuery.fn.exists = function(){
 	return this.length > 0;
 };
 
-/**
- * Calls the server periodically every 15 mins to ensure that session doesnt
- * time out
- */
-function sessionHeartBeat(){
-	OC.Router.registerLoadedCallback(function(){
-		var url = OC.Router.generate('heartbeat');
-		setInterval(function(){
-			$.post(url);
-		}, 900000);
-	});
-}

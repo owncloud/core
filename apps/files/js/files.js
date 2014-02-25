@@ -1,4 +1,16 @@
-Files={
+/*
+ * Copyright (c) 2014
+ *
+ * This file is licensed under the Affero General Public License version 3
+ * or later.
+ *
+ * See the COPYING-README file.
+ *
+ */
+
+/* global OC, t, n, FileList, FileActions */
+/* global getURLParameter, isPublic */
+var Files = {
 	// file space size sync
 	_updateStorageStatistics: function() {
 		Files._updateStorageStatisticsTimeout = null;
@@ -68,17 +80,25 @@ Files={
 		return fileName;
 	},
 
-	isFileNameValid:function (name) {
-		if (name === '.') {
-			throw t('files', '\'.\' is an invalid file name.');
-		} else if (name.length === 0) {
+	/**
+	 * Checks whether the given file name is valid.
+	 * @param name file name to check
+	 * @return true if the file name is valid.
+	 * Throws a string exception with an error message if
+	 * the file name is not valid
+	 */
+	isFileNameValid: function (name) {
+		var trimmedName = name.trim();
+		if (trimmedName === '.' || trimmedName === '..') {
+			throw t('files', '"{name}" is an invalid file name.', {name: name});
+		} else if (trimmedName.length === 0) {
 			throw t('files', 'File name cannot be empty.');
 		}
-
 		// check for invalid characters
-		var invalid_characters = ['\\', '/', '<', '>', ':', '"', '|', '?', '*'];
+		var invalid_characters =
+			['\\', '/', '<', '>', ':', '"', '|', '?', '*', '\n'];
 		for (var i = 0; i < invalid_characters.length; i++) {
-			if (name.indexOf(invalid_characters[i]) !== -1) {
+			if (trimmedName.indexOf(invalid_characters[i]) !== -1) {
 				throw t('files', "Invalid name, '\\', '/', '<', '>', ':', '\"', '|', '?' and '*' are not allowed.");
 			}
 		}
@@ -344,23 +364,26 @@ $(document).ready(function() {
 	});
 
 	$('.download').click('click',function(event) {
-		var files=getSelectedFilesTrash('name');
-		var fileslist = JSON.stringify(files);
-		var dir=$('#dir').val()||'/';
-		OC.Notification.show(t('files','Your download is being prepared. This might take some time if the files are big.'));
-		// use special download URL if provided, e.g. for public shared files
-		var downloadURL = document.getElementById("downloadURL");
-		if ( downloadURL ) {
-			window.location = downloadURL.value+"&download&files=" + encodeURIComponent(fileslist);
-		} else {
-			window.location = OC.filePath('files', 'ajax', 'download.php') + '?'+ $.param({ dir: dir, files: fileslist });
+		var files;
+		var dir = FileList.getCurrentDirectory();
+		if (FileList.isAllSelected()) {
+			files = OC.basename(dir);
+			dir = OC.dirname(dir) || '/';
 		}
+		else {
+			files = getSelectedFilesTrash('name');
+		}
+		OC.Notification.show(t('files','Your download is being prepared. This might take some time if the files are big.'));
+		OC.redirect(FileList.getDownloadUrl(files, dir));
 		return false;
 	});
 
 	$('.delete-selected').click(function(event) {
 		var files=getSelectedFilesTrash('name');
 		event.preventDefault();
+		if (FileList.isAllSelected()) {
+			files = null;
+		}
 		FileList.do_delete(files);
 		return false;
 	});
@@ -385,7 +408,7 @@ $(document).ready(function() {
 	Files.resizeBreadcrumbs(width, true);
 
 	// display storage warnings
-	setTimeout ( "Files.displayStorageWarnings()", 100 );
+	setTimeout(Files.displayStorageWarnings, 100);
 	OC.Notification.setDefault(Files.displayStorageWarnings);
 
 	// only possible at the moment if user is logged in
@@ -655,10 +678,10 @@ function procesSelection() {
 		var totalSize = 0;
 		for(var i=0; i<selectedFiles.length; i++) {
 			totalSize+=selectedFiles[i].size;
-		};
+		}
 		for(var i=0; i<selectedFolders.length; i++) {
 			totalSize+=selectedFolders[i].size;
-		};
+		}
 		$('#headerSize').text(humanFileSize(totalSize));
 		var selection = '';
 		if (selectedFolders.length > 0) {
@@ -711,6 +734,9 @@ Files.getMimeIcon = function(mime, ready) {
 		ready(Files.getMimeIcon.cache[mime]);
 	} else {
 		$.get( OC.filePath('files','ajax','mimeicon.php'), {mime: mime}, function(path) {
+			if(SVGSupport()){
+				path = path.substr(0, path.length-4) + '.svg';
+			}
 			Files.getMimeIcon.cache[mime]=path;
 			ready(Files.getMimeIcon.cache[mime]);
 		});
@@ -760,20 +786,24 @@ Files.lazyLoadPreview = function(path, mime, ready, width, height, etag) {
 		}
 		previewURL = previewURL.replace('(', '%28');
 		previewURL = previewURL.replace(')', '%29');
+		previewURL += '&forceIcon=0';
 
 		// preload image to prevent delay
 		// this will make the browser cache the image
 		var img = new Image();
 		img.onload = function(){
-			//set preview thumbnail URL
-			ready(previewURL);
+			// if loading the preview image failed (no preview for the mimetype) then img.width will < 5
+			if (img.width > 5) {
+				ready(previewURL);
+			}
 		}
 		img.src = previewURL;
 	});
-}
+};
 
 function getUniqueName(name) {
 	if (FileList.findFileEl(name).exists()) {
+		var numMatch;
 		var parts=name.split('.');
 		var extension = "";
 		if (parts.length > 1) {
@@ -807,7 +837,7 @@ function checkTrashStatus() {
 
 function onClickBreadcrumb(e) {
 	var $el = $(e.target).closest('.crumb'),
-		$targetDir = $el.data('dir');
+		$targetDir = $el.data('dir'),
 		isPublic = !!$('#isPublic').val();
 
 	if ($targetDir !== undefined && !isPublic) {

@@ -336,7 +336,7 @@ class Storage {
 	 * @brief deletes used space for files versions in db if user was deleted
 	 *
 	 * @param type $uid id of deleted user
-	 * @return result of db delete operation
+	 * @return \OC_DB_StatementWrapper of db delete operation
 	 */
 	public static function deleteUser($uid) {
 		$query = \OC_DB::prepare('DELETE FROM `*PREFIX*files_versions` WHERE `user`=?');
@@ -372,7 +372,7 @@ class Storage {
 
 	/**
 	 * @brief returns all stored file versions from a given user
-	 * @param $uid id to the user
+	 * @param string $uid id of the user
 	 * @return array with contains two arrays 'all' which contains all versions sorted by age and 'by_file' which contains all versions sorted by filename
 	 */
 	private static function getAllVersions($uid) {
@@ -420,8 +420,8 @@ class Storage {
 
 	/**
 	 * @brief get list of files we want to expire
-	 * @param int $currentTime timestamp of current time
 	 * @param array $versions list of versions
+	 * @param integer $time
 	 * @return array containing the list of to deleted versions and the size of them
 	 */
 	protected static function getExpireList($time, $versions) {
@@ -487,7 +487,7 @@ class Storage {
 			$softQuota = true;
 			$quota = \OC_Preferences::getValue($uid, 'files', 'quota');
 			if ( $quota === null || $quota === 'default') {
-				$quota = \OC_Appconfig::getValue('files', 'default_quota');
+				$quota = \OC::$server->getAppConfig()->getValue('files', 'default_quota');
 			}
 			if ( $quota === null || $quota === 'none' ) {
 				$quota = \OC\Files\Filesystem::free_space('/');

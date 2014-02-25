@@ -204,47 +204,6 @@ class Proxy extends \OC_FileProxy {
 	}
 
 	/**
-	 * @brief When a file is deleted, remove its keyfile also
-	 */
-	public function preUnlink($path) {
-
-		$relPath = Helper::stripUserFilesPath($path);
-
-		// skip this method if the trash bin is enabled or if we delete a file
-		// outside of /data/user/files
-		if (\OCP\App::isEnabled('files_trashbin') || $relPath === false) {
-			return true;
-		}
-
-		// Disable encryption proxy to prevent recursive calls
-		$proxyStatus = \OC_FileProxy::$enabled;
-		\OC_FileProxy::$enabled = false;
-
-		$view = new \OC_FilesystemView('/');
-
-		$userId = \OCP\USER::getUser();
-
-		$util = new Util($view, $userId);
-
-		list($owner, $ownerPath) = $util->getUidAndFilename($relPath);
-
-		// Delete keyfile & shareKey so it isn't orphaned
-		if (!Keymanager::deleteFileKey($view, $ownerPath)) {
-			\OCP\Util::writeLog('Encryption library',
-				'Keyfile or shareKey could not be deleted for file "' . $ownerPath . '"', \OCP\Util::ERROR);
-		}
-
-		Keymanager::delAllShareKeys($view, $owner, $ownerPath);
-
-		\OC_FileProxy::$enabled = $proxyStatus;
-
-		// If we don't return true then file delete will fail; better
-		// to leave orphaned keyfiles than to disallow file deletion
-		return true;
-
-	}
-
-	/**
 	 * @param $path
 	 * @return bool
 	 */
@@ -303,7 +262,7 @@ class Proxy extends \OC_FileProxy {
 
 		} elseif (
 			self::shouldEncrypt($path)
-			and $meta ['mode'] !== 'r'
+			and $meta['mode'] !== 'r'
 				and $meta['mode'] !== 'rb'
 		) {
 			$result = fopen('crypt://' . $path, $meta['mode']);
@@ -324,7 +283,7 @@ class Proxy extends \OC_FileProxy {
 	public function postGetFileInfo($path, $data) {
 
 		// if path is a folder do nothing
-		if (\OCP\App::isEnabled('files_encryption') && is_array($data) && array_key_exists('size', $data)) {
+		if (\OCP\App::isEnabled('files_encryption') && $data !== false && array_key_exists('size', $data)) {
 
 			// Disable encryption proxy to prevent recursive calls
 			$proxyStatus = \OC_FileProxy::$enabled;
@@ -382,7 +341,7 @@ class Proxy extends \OC_FileProxy {
 		}
 
 		// if file is encrypted return real file size
-		if (is_array($fileInfo) && $fileInfo['encrypted'] === true) {
+		if ($fileInfo && $fileInfo['encrypted'] === true) {
 			// try to fix unencrypted file size if it doesn't look plausible
 			if ((int)$fileInfo['size'] > 0 && (int)$fileInfo['unencrypted_size'] === 0 ) {
 				$fixSize = $util->getFileSize($path);
@@ -395,7 +354,7 @@ class Proxy extends \OC_FileProxy {
 			$size = $fileInfo['unencrypted_size'];
 		} else {
 			// self healing if file was removed from file cache
-			if (!is_array($fileInfo)) {
+			if (!$fileInfo) {
 				$fileInfo = array();
 			}
 

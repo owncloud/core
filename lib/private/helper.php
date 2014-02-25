@@ -151,7 +151,33 @@ class OC_Helper {
 	 */
 	public static function mimetypeIcon($mimetype) {
 		$alias = array(
-			'application/xml' => 'code/xml',
+			'application/octet-stream' => 'file', // use file icon as fallback
+
+			'application/illustrator' => 'image',
+			'application/coreldraw' => 'image',
+			'application/x-gimp' => 'image',
+			'application/x-photoshop' => 'image',
+
+			'application/x-font-ttf' => 'font',
+			'application/font-woff' => 'font',
+			'application/vnd.ms-fontobject' => 'font',
+
+			'application/json' => 'text/code',
+			'application/x-perl' => 'text/code',
+			'application/x-php' => 'text/code',
+			'text/x-shellscript' => 'text/code',
+			'application/xml' => 'text/html',
+			'text/css' => 'text/code',
+			'application/x-tex' => 'text',
+
+			'application/x-compressed' => 'package/x-generic',
+			'application/x-7z-compressed' => 'package/x-generic',
+			'application/x-deb' => 'package/x-generic',
+			'application/x-gzip' => 'package/x-generic',
+			'application/x-rar-compressed' => 'package/x-generic',
+			'application/x-tar' => 'package/x-generic',
+			'application/zip' => 'package/x-generic',
+
 			'application/msword' => 'x-office/document',
 			'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'x-office/document',
 			'application/vnd.openxmlformats-officedocument.wordprocessingml.template' => 'x-office/document',
@@ -161,6 +187,7 @@ class OC_Helper {
 			'application/vnd.oasis.opendocument.text-template' => 'x-office/document',
 			'application/vnd.oasis.opendocument.text-web' => 'x-office/document',
 			'application/vnd.oasis.opendocument.text-master' => 'x-office/document',
+
 			'application/mspowerpoint' => 'x-office/presentation',
 			'application/vnd.ms-powerpoint' => 'x-office/presentation',
 			'application/vnd.openxmlformats-officedocument.presentationml.presentation' => 'x-office/presentation',
@@ -172,6 +199,7 @@ class OC_Helper {
 			'application/vnd.ms-powerpoint.slideshow.macroEnabled.12' => 'x-office/presentation',
 			'application/vnd.oasis.opendocument.presentation' => 'x-office/presentation',
 			'application/vnd.oasis.opendocument.presentation-template' => 'x-office/presentation',
+
 			'application/msexcel' => 'x-office/spreadsheet',
 			'application/vnd.ms-excel' => 'x-office/spreadsheet',
 			'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'x-office/spreadsheet',
@@ -182,6 +210,8 @@ class OC_Helper {
 			'application/vnd.ms-excel.sheet.binary.macroEnabled.12' => 'x-office/spreadsheet',
 			'application/vnd.oasis.opendocument.spreadsheet' => 'x-office/spreadsheet',
 			'application/vnd.oasis.opendocument.spreadsheet-template' => 'x-office/spreadsheet',
+			'text/csv' => 'x-office/spreadsheet',
+
 			'application/msaccess' => 'database',
 		);
 
@@ -804,18 +834,22 @@ class OC_Helper {
 	/**
 	 * @brief calculates the maximum upload size respecting system settings, free space and user quota
 	 *
-	 * @param $dir the current folder where the user currently operates
-	 * @return number of bytes representing
+	 * @param string $dir the current folder where the user currently operates
+	 * @param int $freeSpace the number of bytes free on the storage holding $dir, if not set this will be received from the storage directly
+	 * @return int number of bytes representing
 	 */
-	public static function maxUploadFilesize($dir) {
-		return min(self::freeSpace($dir), self::uploadLimit());
+	public static function maxUploadFilesize($dir, $freeSpace = null) {
+		if (is_null($freeSpace)){
+			$freeSpace = self::freeSpace($dir);
+		}
+		return min($freeSpace, self::uploadLimit());
 	}
 
 	/**
 	 * Calculate free space left within user quota
 	 * 
-	 * @param $dir the current folder where the user currently operates
-	 * @return number of bytes representing
+	 * @param string $dir the current folder where the user currently operates
+	 * @return int number of bytes representing
 	 */
 	public static function freeSpace($dir) {
 		$freeSpace = \OC\Files\Filesystem::free_space($dir);
