@@ -12,9 +12,6 @@ class Server {
 	const CLIENT = 'smbclient';
 	const LOCALE = 'en_US.UTF-8';
 
-	const CACHING_ENABLED = true;
-	const CACHING_DISABLED = false;
-
 	/**
 	 * @var string $host
 	 */
@@ -31,21 +28,14 @@ class Server {
 	private $password;
 
 	/**
-	 * @var bool $caching
-	 */
-	private $caching;
-
-	/**
 	 * @param string $host
 	 * @param string $user
 	 * @param string $password
-	 * @param bool $caching
 	 */
-	public function __construct($host, $user, $password, $caching = self::CACHING_DISABLED) {
+	public function __construct($host, $user, $password) {
 		$this->host = $host;
 		$this->user = $user;
 		$this->password = $password;
-		$this->caching = $caching;
 	}
 
 	/**
@@ -131,11 +121,7 @@ class Server {
 	 * @return Share
 	 */
 	public function getShare($name) {
-		if ($this->caching === self::CACHING_ENABLED) {
-			return new CachingShare($this, $name);
-		} else {
-			return new Share($this, $name);
-		}
+		return new Share($this, $name);
 	}
 
 	/**
