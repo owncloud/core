@@ -413,7 +413,7 @@ class OC {
 		}
 		OC_Config::$object = new \OC\Config(self::$configDir);
 
-
+		$memoryCache = false;
 		if (OC_Config::getValue('instanceid', false)) {
 			// \OC\Memcache\Cache has a hidden dependency on
 			// OC_Util::getInstanceId() for namespacing. See #5409.
