@@ -19,15 +19,15 @@ class AutoLoader extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLeadingSlashOnClassName() {
-		$this->assertEquals(\OC::$SERVERROOT.'/lib/files/storage/local.php', $this->loader->findClass('\OC\Files\Storage\Local'));
+		$this->assertEquals(\OC::$SERVERROOT.'/lib/private/files/storage/local.php', $this->loader->findClass('\OC\Files\Storage\Local'));
 	}
 
 	public function testNoLeadingSlashOnClassName() {
-		$this->assertEquals(\OC::$SERVERROOT.'/lib/files/storage/local.php', $this->loader->findClass('OC\Files\Storage\Local'));
+		$this->assertEquals(\OC::$SERVERROOT.'/lib/private/files/storage/local.php', $this->loader->findClass('OC\Files\Storage\Local'));
 	}
 
 	public function testLegacyPath() {
-		$this->assertEquals(\OC::$SERVERROOT.'/lib/legacy/config.php', $this->loader->findClass('OC_Config'));
+		$this->assertEquals(\OC::$SERVERROOT.'/lib/private/legacy/config.php', $this->loader->findClass('OC_Config'));
 	}
 
 	public function testClassPath() {
@@ -44,8 +44,8 @@ class AutoLoader extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrefix() {
-		$this->loader->registerPrefix('Sabre_', '3rdparty');
-		$this->assertEquals(\OC::$SERVERROOT.'/3rdparty/Sabre/DAV/Node.php', $this->loader->findClass('Sabre_DAV_Node'));
+		$this->loader->registerPrefix('XML_', '3rdparty');
+		$this->assertEquals(\OC::$SERVERROOT.'/3rdparty/XML/Parser.php', $this->loader->findClass('XML_Parser'));
 	}
 
 	public function testLoadTestNamespace() {
@@ -57,11 +57,11 @@ class AutoLoader extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLoadCoreNamespace() {
-		$this->assertEquals(\OC::$SERVERROOT.'/lib/files/storage/local.php', $this->loader->findClass('OC\Files\Storage\Local'));
+		$this->assertEquals(\OC::$SERVERROOT.'/lib/private/files/storage/local.php', $this->loader->findClass('OC\Files\Storage\Local'));
 	}
 
 	public function testLoadCore() {
-		$this->assertEquals(\OC::$SERVERROOT.'/lib/files/storage/local.php', $this->loader->findClass('OC_Files_Storage_Local'));
+		$this->assertEquals(\OC::$SERVERROOT.'/lib/private/files/storage/local.php', $this->loader->findClass('OC_Files_Storage_Local'));
 	}
 
 	public function testLoadPublicNamespace() {
