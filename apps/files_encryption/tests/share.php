@@ -178,7 +178,7 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 			'/' . \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER2 . '/files/Shared/' . $this->filename);
 
 		// check if data is the same as we previously written
-		$this->assertEquals($this->dataShort, $retrievedCryptedFile);
+		$this->assertSame($this->dataShort, $retrievedCryptedFile);
 
 		// cleanup
 		if ($withTeardown) {
@@ -239,7 +239,7 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 			'/' . \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER3 . '/files/Shared/' . $this->filename);
 
 		// check if data is the same as previously written
-		$this->assertEquals($this->dataShort, $retrievedCryptedFile);
+		$this->assertSame($this->dataShort, $retrievedCryptedFile);
 
 		// cleanup
 		if ($withTeardown) {
@@ -337,7 +337,7 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 			. $this->subfolder . $this->subsubfolder . '/' . $this->filename);
 
 		// check if data is the same
-		$this->assertEquals($this->dataShort, $retrievedCryptedFile);
+		$this->assertSame($this->dataShort, $retrievedCryptedFile);
 
 		// cleanup
 		if ($withTeardown) {
@@ -415,7 +415,7 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 			. $this->subsubfolder . '/' . $this->filename);
 
 		// check if data is the same
-		$this->assertEquals($this->dataShort, $retrievedCryptedFile);
+		$this->assertSame($this->dataShort, $retrievedCryptedFile);
 
 		// get the file info
 		$fileInfo = $this->view->getFileInfo(
@@ -445,7 +445,7 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 			'/' . \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER4 . '/files/Shared/' . $this->filename);
 
 		// check if data is the same
-		$this->assertEquals($this->dataShort, $retrievedCryptedFile);
+		$this->assertSame($this->dataShort, $retrievedCryptedFile);
 
 		// cleanup
 		if ($withTeardown) {
@@ -549,7 +549,7 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 		$retrievedCryptedFile = file_get_contents('crypt:///' . \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER1 . '/files/'  . $this->filename);
 
 		// check if data is the same as we previously written
-		$this->assertEquals($this->dataShort, $retrievedCryptedFile);
+		$this->assertSame($this->dataShort, $retrievedCryptedFile);
 
 		// tear down
 
@@ -627,7 +627,7 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 			'/' . \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER3 . '/files/Shared/' . $this->filename);
 
 		// check if data is the same as we previously written
-		$this->assertEquals($this->dataShort, $retrievedCryptedFile);
+		$this->assertSame($this->dataShort, $retrievedCryptedFile);
 
 		// login as admin
 		\Test_Encryption_Util::loginHelper(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER1);
@@ -836,8 +836,8 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 			'crypt:///' . \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER2 . '/files' . $this->folder1 . $this->subfolder . $this->subsubfolder . '/' . $this->filename);
 
 		// check if data is the same as we previously written
-		$this->assertEquals($this->dataShort, $retrievedCryptedFile1);
-		$this->assertEquals($this->dataShort, $retrievedCryptedFile2);
+		$this->assertSame($this->dataShort, $retrievedCryptedFile1);
+		$this->assertSame($this->dataShort, $retrievedCryptedFile2);
 
 		// cleanup
 		$this->view->chroot('/' . \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER2 . '/files/');
@@ -913,7 +913,7 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 		try {
 			\OCP\Share::shareItem('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_GROUP, \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_GROUP1, OCP\PERMISSION_ALL);
 		} catch (Exception $e) {
-			$this->assertEquals(0, strpos($e->getMessage(), "Following users are not set up for encryption"));
+			$this->assertSame(0, strpos($e->getMessage(), "Following users are not set up for encryption"));
 		}
 
 

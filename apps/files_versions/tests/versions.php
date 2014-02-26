@@ -43,17 +43,17 @@ class Test_Files_Versioning extends \PHPUnit_Framework_TestCase {
 		list($deleted, $size) = $testClass->callProtectedGetExpireList($startTime, $versions);
 
 		// we should have deleted 16 files each of the size 1
-		$this->assertEquals($sizeOfAllDeletedFiles, $size);
+		$this->assertSame($sizeOfAllDeletedFiles, $size);
 
 		// the deleted array should only contain versions which should be deleted
 		foreach($deleted as $key => $path) {
 			unset($versions[$key]);
-			$this->assertEquals("delete", substr($path, 0, strlen("delete")));
+			$this->assertSame("delete", substr($path, 0, strlen("delete")));
 		}
 
 		// the versions array should only contain versions which should be kept
 		foreach ($versions as $version) {
-			$this->assertEquals("keep", $version['path']);
+			$this->assertSame("keep", $version['path']);
 		}
 
 	}

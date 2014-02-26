@@ -83,13 +83,13 @@ class Test_Files_Sharing_Permissions extends Test_Files_Sharing_Base {
 	 */
 	function testGetPermissions() {
 		$sharedDirPerms = $this->sharedStorage->getPermissions('shareddir');
-		$this->assertEquals(31, $sharedDirPerms);
+		$this->assertSame(31, $sharedDirPerms);
 		$sharedDirPerms = $this->sharedStorage->getPermissions('shareddir/textfile.txt');
-		$this->assertEquals(31, $sharedDirPerms);
+		$this->assertSame(31, $sharedDirPerms);
 		$sharedDirRestrictedPerms = $this->sharedStorage->getPermissions('shareddirrestricted');
-		$this->assertEquals(7, $sharedDirRestrictedPerms);
+		$this->assertSame(7, $sharedDirRestrictedPerms);
 		$sharedDirRestrictedPerms = $this->sharedStorage->getPermissions('shareddirrestricted/textfile.txt');
-		$this->assertEquals(7, $sharedDirRestrictedPerms);
+		$this->assertSame(7, $sharedDirRestrictedPerms);
 	}
 
 	/**
@@ -97,14 +97,14 @@ class Test_Files_Sharing_Permissions extends Test_Files_Sharing_Base {
 	 */
 	function testGetDirectoryPermissions() {
 		$contents = $this->secondView->getDirectoryContent('files/Shared/shareddir');
-		$this->assertEquals('subdir', $contents[0]['name']);
-		$this->assertEquals(31, $contents[0]['permissions']);
-		$this->assertEquals('textfile.txt', $contents[1]['name']);
-		$this->assertEquals(31, $contents[1]['permissions']);
+		$this->assertSame('subdir', $contents[0]['name']);
+		$this->assertSame(31, $contents[0]['permissions']);
+		$this->assertSame('textfile.txt', $contents[1]['name']);
+		$this->assertSame(31, $contents[1]['permissions']);
 		$contents = $this->secondView->getDirectoryContent('files/Shared/shareddirrestricted');
-		$this->assertEquals('subdir', $contents[0]['name']);
-		$this->assertEquals(7, $contents[0]['permissions']);
-		$this->assertEquals('textfile1.txt', $contents[1]['name']);
-		$this->assertEquals(7, $contents[1]['permissions']);
+		$this->assertSame('subdir', $contents[0]['name']);
+		$this->assertSame(7, $contents[0]['permissions']);
+		$this->assertSame('textfile1.txt', $contents[1]['name']);
+		$this->assertSame(7, $contents[1]['permissions']);
 	}
 }

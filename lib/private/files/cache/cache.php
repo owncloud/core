@@ -128,25 +128,20 @@ class Cache {
 		$result = \OC_DB::executeAudited($sql, $params);
 		$data = $result->fetchRow();
 
-		//FIXME hide this HACK in the next database layer, or just use doctrine and get rid of MDB2 and PDO
-		//PDO returns false, MDB2 returns null, oracle always uses MDB2, so convert null to false
-		if ($data === null) {
-			$data = false;
-		}
-
 		//merge partial data
-		if (!$data and  is_string($file)) {
+		if (!$data and is_string($file)) {
 			if (isset($this->partial[$file])) {
 				$data = $this->partial[$file];
 			}
 		} else {
 			//fix types
 			$data['fileid'] = (int)$data['fileid'];
+			$data['parent'] = (int)$data['parent'];
 			$data['size'] = (int)$data['size'];
 			$data['mtime'] = (int)$data['mtime'];
 			$data['storage_mtime'] = (int)$data['storage_mtime'];
 			$data['encrypted'] = (bool)$data['encrypted'];
-            $data['unencrypted_size'] = (int)$data['unencrypted_size'];
+			$data['unencrypted_size'] = (int)$data['unencrypted_size'];
 			$data['storage'] = $this->storageId;
 			$data['mimetype'] = $this->getMimetype($data['mimetype']);
 			$data['mimepart'] = $this->getMimetype($data['mimepart']);
@@ -192,6 +187,8 @@ class Cache {
 					$file['encrypted_size'] = $file['size'];
 					$file['size'] = $file['unencrypted_size'];
 				}
+				$file['size']=(int)$file['size'];
+				$file['mtime']=(int)$file['mtime'];
 			}
 			return $files;
 		} else {
@@ -320,7 +317,7 @@ class Cache {
 		$sql = 'SELECT `fileid` FROM `*PREFIX*filecache` WHERE `storage` = ? AND `path_hash` = ?';
 		$result = \OC_DB::executeAudited($sql, array($this->getNumericStorageId(), $pathHash));
 		if ($row = $result->fetchRow()) {
-			return $row['fileid'];
+			return (int)$row['fileid'];
 		} else {
 			return -1;
 		}

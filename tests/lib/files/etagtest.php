@@ -65,7 +65,7 @@ class EtagTest extends \PHPUnit_Framework_TestCase {
 		$scanner = new \OC\Files\Utils\Scanner($user1);
 		$scanner->backgroundScan('/');
 
-		$this->assertEquals($originalEtags, $this->getEtags($files));
+		$this->assertSame($originalEtags, $this->getEtags($files));
 	}
 
 	/**

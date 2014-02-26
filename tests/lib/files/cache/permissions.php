@@ -24,24 +24,24 @@ class Permissions extends \PHPUnit_Framework_TestCase {
 		$ids = range(1, 10);
 		$user = uniqid();
 
-		$this->assertEquals(-1, $this->permissionsCache->get(1, $user));
+		$this->assertSame(-1, $this->permissionsCache->get(1, $user));
 		$this->assertNotContains($user, $this->permissionsCache->getUsers(1));
 		$this->permissionsCache->set(1, $user, 1);
-		$this->assertEquals(1, $this->permissionsCache->get(1, $user));
+		$this->assertSame(1, $this->permissionsCache->get(1, $user));
 		$this->assertContains($user, $this->permissionsCache->getUsers(1));
-		$this->assertEquals(-1, $this->permissionsCache->get(2, $user));
-		$this->assertEquals(-1, $this->permissionsCache->get(1, $user . '2'));
+		$this->assertSame(-1, $this->permissionsCache->get(2, $user));
+		$this->assertSame(-1, $this->permissionsCache->get(1, $user . '2'));
 
 		$this->permissionsCache->set(1, $user, 2);
-		$this->assertEquals(2, $this->permissionsCache->get(1, $user));
+		$this->assertSame(2, $this->permissionsCache->get(1, $user));
 
 		$this->permissionsCache->set(2, $user, 1);
-		$this->assertEquals(1, $this->permissionsCache->get(2, $user));
+		$this->assertSame(1, $this->permissionsCache->get(2, $user));
 
 		$this->permissionsCache->remove(1, $user);
-		$this->assertEquals(-1, $this->permissionsCache->get(1, $user));
+		$this->assertSame(-1, $this->permissionsCache->get(1, $user));
 		$this->permissionsCache->remove(1, $user . '2');
-		$this->assertEquals(1, $this->permissionsCache->get(2, $user));
+		$this->assertSame(1, $this->permissionsCache->get(2, $user));
 
 		$expected = array();
 		foreach ($ids as $id) {
@@ -70,6 +70,6 @@ class Permissions extends \PHPUnit_Framework_TestCase {
 		$permissionsCache->set($id, 'test', 1);
 
 		$scanner->scan('');
-		$this->assertEquals(-1, $permissionsCache->get($id, 'test'));
+		$this->assertSame(-1, $permissionsCache->get($id, 'test'));
 	}
 }

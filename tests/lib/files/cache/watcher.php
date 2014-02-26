@@ -48,7 +48,7 @@ class Watcher extends \PHPUnit_Framework_TestCase {
 		$updater->checkUpdate('');
 		$this->assertTrue($cache->inCache('bar.test'));
 		$cachedData = $cache->get('bar.test');
-		$this->assertEquals(3, $cachedData['size']);
+		$this->assertSame(3, $cachedData['size']);
 
 		$cache->put('bar.test', array('storage_mtime' => 10));
 		$storage->file_put_contents('bar.test', 'test data');
@@ -58,7 +58,7 @@ class Watcher extends \PHPUnit_Framework_TestCase {
 
 		$updater->checkUpdate('bar.test');
 		$cachedData = $cache->get('bar.test');
-		$this->assertEquals(9, $cachedData['size']);
+		$this->assertSame(9, $cachedData['size']);
 
 		$cache->put('folder', array('storage_mtime' => 10));
 
@@ -85,7 +85,7 @@ class Watcher extends \PHPUnit_Framework_TestCase {
 		$updater->checkUpdate('');
 
 		$entry = $cache->get('foo.txt');
-		$this->assertEquals('httpd/unix-directory', $entry['mimetype']);
+		$this->assertSame('httpd/unix-directory', $entry['mimetype']);
 		$this->assertFalse($cache->inCache('folder'));
 		$this->assertFalse($cache->inCache('folder/bar.txt'));
 
@@ -101,7 +101,7 @@ class Watcher extends \PHPUnit_Framework_TestCase {
 		$updater->checkUpdate('foo.txt');
 
 		$entry = $cache->get('foo.txt');
-		$this->assertEquals('httpd/unix-directory', $entry['mimetype']);
+		$this->assertSame('httpd/unix-directory', $entry['mimetype']);
 		$this->assertTrue($cache->inCache('foo.txt/bar.txt'));
 	}
 

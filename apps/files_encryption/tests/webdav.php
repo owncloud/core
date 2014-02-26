@@ -156,7 +156,7 @@ class Test_Encryption_Webdav extends \PHPUnit_Framework_TestCase {
 		$decrypt = file_get_contents('crypt:///' . $this->userId . '/files'. $filename);
 
 		// check if file content match with the written content
-		$this->assertEquals($this->dataShort, $decrypt);
+		$this->assertSame($this->dataShort, $decrypt);
 
 		// return filename for next test
 		return $filename;
@@ -179,7 +179,7 @@ class Test_Encryption_Webdav extends \PHPUnit_Framework_TestCase {
 		$content = $this->handleWebdavRequest();
 
 		// check if file content match with the written content
-		$this->assertEquals($this->dataShort, $content);
+		$this->assertSame($this->dataShort, $content);
 
 		// return filename for next test
 		return $filename;

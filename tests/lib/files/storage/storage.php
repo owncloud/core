@@ -47,7 +47,7 @@ abstract class Storage extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue($this->instance->isReadable('/'), 'Root folder is not readable');
 		$this->assertTrue($this->instance->is_dir('/'), 'Root folder is not a directory');
 		$this->assertFalse($this->instance->is_file('/'), 'Root folder is a file');
-		$this->assertEquals('dir', $this->instance->filetype('/'));
+		$this->assertSame('dir', $this->instance->filetype('/'));
 
 		//without this, any further testing would be useless, not an actual requirement for filestorage though
 		$this->assertTrue($this->instance->isUpdatable('/'), 'Root folder is not writable');
@@ -71,8 +71,8 @@ abstract class Storage extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue($this->instance->file_exists('/'.$directory));
 		$this->assertTrue($this->instance->is_dir('/'.$directory));
 		$this->assertFalse($this->instance->is_file('/'.$directory));
-		$this->assertEquals('dir', $this->instance->filetype('/'.$directory));
-		$this->assertEquals(0, $this->instance->filesize('/'.$directory));
+		$this->assertSame('dir', $this->instance->filetype('/'.$directory));
+		$this->assertSame(0, $this->instance->filesize('/'.$directory));
 		$this->assertTrue($this->instance->isReadable('/'.$directory));
 		$this->assertTrue($this->instance->isUpdatable('/'.$directory));
 
@@ -83,7 +83,7 @@ abstract class Storage extends \PHPUnit_Framework_TestCase {
 				$content[] = $file;
 			}
 		}
-		$this->assertEquals(array($directory), $content);
+		$this->assertSame(array($directory), $content);
 
 		$this->assertFalse($this->instance->mkdir('/'.$directory)); //cant create existing folders
 		$this->assertTrue($this->instance->rmdir('/'.$directory));
@@ -100,7 +100,7 @@ abstract class Storage extends \PHPUnit_Framework_TestCase {
 				$content[] = $file;
 			}
 		}
-		$this->assertEquals(array(), $content);
+		$this->assertSame(array(), $content);
 	}
 
 	public function directoryProvider()
@@ -123,31 +123,31 @@ abstract class Storage extends \PHPUnit_Framework_TestCase {
 		//fill a file with string data
 		$this->instance->file_put_contents('/lorem.txt', $sourceText);
 		$this->assertFalse($this->instance->is_dir('/lorem.txt'));
-		$this->assertEquals($sourceText, $this->instance->file_get_contents('/lorem.txt'), 'data returned from file_get_contents is not equal to the source data');
+		$this->assertSame($sourceText, $this->instance->file_get_contents('/lorem.txt'), 'data returned from file_get_contents is not equal to the source data');
 
 		//empty the file
 		$this->instance->file_put_contents('/lorem.txt', '');
-		$this->assertEquals('', $this->instance->file_get_contents('/lorem.txt'), 'file not emptied');
+		$this->assertSame('', $this->instance->file_get_contents('/lorem.txt'), 'file not emptied');
 	}
 
 	/**
 	 * test various known mimetypes
 	 */
 	public function testMimeType() {
-		$this->assertEquals('httpd/unix-directory', $this->instance->getMimeType('/'));
-		$this->assertEquals(false, $this->instance->getMimeType('/non/existing/file'));
+		$this->assertSame('httpd/unix-directory', $this->instance->getMimeType('/'));
+		$this->assertFalse($this->instance->getMimeType('/non/existing/file'));
 
 		$textFile = \OC::$SERVERROOT . '/tests/data/lorem.txt';
 		$this->instance->file_put_contents('/lorem.txt', file_get_contents($textFile, 'r'));
-		$this->assertEquals('text/plain', $this->instance->getMimeType('/lorem.txt'));
+		$this->assertSame('text/plain', $this->instance->getMimeType('/lorem.txt'));
 
 		$pngFile = \OC::$SERVERROOT . '/tests/data/logo-wide.png';
 		$this->instance->file_put_contents('/logo-wide.png', file_get_contents($pngFile, 'r'));
-		$this->assertEquals('image/png', $this->instance->getMimeType('/logo-wide.png'));
+		$this->assertSame('image/png', $this->instance->getMimeType('/logo-wide.png'));
 
 		$svgFile = \OC::$SERVERROOT . '/tests/data/logo-wide.svg';
 		$this->instance->file_put_contents('/logo-wide.svg', file_get_contents($svgFile, 'r'));
-		$this->assertEquals('image/svg+xml', $this->instance->getMimeType('/logo-wide.svg'));
+		$this->assertSame('image/svg+xml', $this->instance->getMimeType('/logo-wide.svg'));
 	}
 
 	public function testCopyAndMove() {
@@ -155,13 +155,13 @@ abstract class Storage extends \PHPUnit_Framework_TestCase {
 		$this->instance->file_put_contents('/source.txt', file_get_contents($textFile));
 		$this->instance->copy('/source.txt', '/target.txt');
 		$this->assertTrue($this->instance->file_exists('/target.txt'));
-		$this->assertEquals($this->instance->file_get_contents('/source.txt'), $this->instance->file_get_contents('/target.txt'));
+		$this->assertSame($this->instance->file_get_contents('/source.txt'), $this->instance->file_get_contents('/target.txt'));
 
 		$this->instance->rename('/source.txt', '/target2.txt');
 		$this->wait();
 		$this->assertTrue($this->instance->file_exists('/target2.txt'));
 		$this->assertFalse($this->instance->file_exists('/source.txt'));
-		$this->assertEquals(file_get_contents($textFile), $this->instance->file_get_contents('/target2.txt'));
+		$this->assertSame(file_get_contents($textFile), $this->instance->file_get_contents('/target2.txt'));
 
 		// move to overwrite
 		$testContents = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -169,7 +169,7 @@ abstract class Storage extends \PHPUnit_Framework_TestCase {
 		$this->instance->rename('/target2.txt', '/target3.txt');
 		$this->assertTrue($this->instance->file_exists('/target3.txt'));
 		$this->assertFalse($this->instance->file_exists('/target2.txt'));
-		$this->assertEquals(file_get_contents($textFile), $this->instance->file_get_contents('/target3.txt'));
+		$this->assertSame(file_get_contents($textFile), $this->instance->file_get_contents('/target3.txt'));
 	}
 
 	public function testLocal() {
@@ -177,7 +177,7 @@ abstract class Storage extends \PHPUnit_Framework_TestCase {
 		$this->instance->file_put_contents('/lorem.txt', file_get_contents($textFile));
 		$localFile = $this->instance->getLocalFile('/lorem.txt');
 		$this->assertTrue(file_exists($localFile));
-		$this->assertEquals(file_get_contents($localFile), file_get_contents($textFile));
+		$this->assertSame(file_get_contents($localFile), file_get_contents($textFile));
 
 		$this->instance->mkdir('/folder');
 		$this->instance->file_put_contents('/folder/lorem.txt', file_get_contents($textFile));
@@ -191,15 +191,15 @@ abstract class Storage extends \PHPUnit_Framework_TestCase {
 		// test below require to use instance->getLocalFile because the physical storage might be different
 		$localFile = $this->instance->getLocalFile('/folder/lorem.txt');
 		$this->assertTrue(file_exists($localFile));
-		$this->assertEquals(file_get_contents($localFile), file_get_contents($textFile));
+		$this->assertSame(file_get_contents($localFile), file_get_contents($textFile));
 
 		$localFile = $this->instance->getLocalFile('/folder/bar.txt');
 		$this->assertTrue(file_exists($localFile));
-		$this->assertEquals(file_get_contents($localFile), 'asd');
+		$this->assertSame(file_get_contents($localFile), 'asd');
 
 		$localFile = $this->instance->getLocalFile('/folder/recursive/file.txt');
 		$this->assertTrue(file_exists($localFile));
-		$this->assertEquals(file_get_contents($localFile), 'foo');
+		$this->assertSame(file_get_contents($localFile), 'foo');
 	}
 
 	public function testStat() {
@@ -215,16 +215,16 @@ abstract class Storage extends \PHPUnit_Framework_TestCase {
 		// check that ($ctimeStart - 5) <= $mTime <= ($ctimeEnd + 1)
 		$this->assertGreaterThanOrEqual(($ctimeStart - 5), $mTime);
 		$this->assertLessThanOrEqual(($ctimeEnd + 1), $mTime);
-		$this->assertEquals(filesize($textFile), $this->instance->filesize('/lorem.txt'));
+		$this->assertSame(filesize($textFile), $this->instance->filesize('/lorem.txt'));
 
 		$stat = $this->instance->stat('/lorem.txt');
 		//only size and mtime are required in the result
-		$this->assertEquals($stat['size'], $this->instance->filesize('/lorem.txt'));
-		$this->assertEquals($stat['mtime'], $mTime);
+		$this->assertSame($stat['size'], $this->instance->filesize('/lorem.txt'));
+		$this->assertSame($stat['mtime'], $mTime);
 
 		if ($this->instance->touch('/lorem.txt', 100) !== false) {
 			$mTime = $this->instance->filemtime('/lorem.txt');
-			$this->assertEquals($mTime, 100);
+			$this->assertSame($mTime, 100);
 		}
 
 		$mtimeStart = time();
@@ -262,7 +262,7 @@ abstract class Storage extends \PHPUnit_Framework_TestCase {
 
 		$fh = $this->instance->fopen('foo', 'r');
 		$content = stream_get_contents($fh);
-		$this->assertEquals(file_get_contents($textFile), $content);
+		$this->assertSame(file_get_contents($textFile), $content);
 	}
 
 	public function testTouchCreateFile() {

@@ -126,11 +126,11 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 	function testKeyPaths() {
 		$util = new Encryption\Util($this->view, $this->userId);
 
-		$this->assertEquals($this->publicKeyDir, $util->getPath('publicKeyDir'));
-		$this->assertEquals($this->encryptionDir, $util->getPath('encryptionDir'));
-		$this->assertEquals($this->keyfilesPath, $util->getPath('keyfilesPath'));
-		$this->assertEquals($this->publicKeyPath, $util->getPath('publicKeyPath'));
-		$this->assertEquals($this->privateKeyPath, $util->getPath('privateKeyPath'));
+		$this->assertSame($this->publicKeyDir, $util->getPath('publicKeyDir'));
+		$this->assertSame($this->encryptionDir, $util->getPath('encryptionDir'));
+		$this->assertSame($this->keyfilesPath, $util->getPath('keyfilesPath'));
+		$this->assertSame($this->publicKeyPath, $util->getPath('publicKeyPath'));
+		$this->assertSame($this->privateKeyPath, $util->getPath('privateKeyPath'));
 
 	}
 
@@ -174,7 +174,7 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 	 * @brief test setup of encryption directories
 	 */
 	function testSetupServerSide() {
-		$this->assertEquals(true, $this->util->setupServerSide($this->pass));
+		$this->assertTrue($this->util->setupServerSide($this->pass));
 	}
 
 	/**
@@ -182,7 +182,7 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 	 * @brief test checking whether account is ready for encryption,
 	 */
 	function testUserIsReady() {
-		$this->assertEquals(true, $this->util->ready());
+		$this->assertTrue($this->util->ready());
 	}
 
 	/**
@@ -223,7 +223,7 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 
 		$this->assertTrue(OCA\Encryption\Hooks::login($params));
 
-		$this->assertEquals($this->legacyKey, \OC::$session->get('legacyKey'));
+		$this->assertSame($this->legacyKey, \OC::$session->get('legacyKey'));
 	}
 
 	/**
@@ -238,11 +238,11 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 
 		$this->assertTrue($util->setRecoveryForUser(1));
 
-		$this->assertEquals(1, $util->recoveryEnabledForUser());
+		$this->assertSame(1, $util->recoveryEnabledForUser());
 
 		$this->assertTrue($util->setRecoveryForUser(0));
 
-		$this->assertEquals(0, $util->recoveryEnabledForUser());
+		$this->assertSame(0, $util->recoveryEnabledForUser());
 
 		// Return the setting to it's previous state
 		$this->assertTrue($util->setRecoveryForUser($enabled));
@@ -271,9 +271,9 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 
 		list($fileOwnerUid, $file) = $util->getUidAndFilename($filename);
 
-		$this->assertEquals(\Test_Encryption_Util::TEST_ENCRYPTION_UTIL_USER1, $fileOwnerUid);
+		$this->assertSame(\Test_Encryption_Util::TEST_ENCRYPTION_UTIL_USER1, $fileOwnerUid);
 
-		$this->assertEquals($file, $filename);
+		$this->assertSame($file, $filename);
 
 		$this->view->unlink($this->userId . '/files/' . $filename);
 	}
@@ -291,18 +291,18 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 		$problematicFileSizeData = "";
 		$cryptedFile = $this->view->file_put_contents($externalFilename, $problematicFileSizeData);
 		$this->assertTrue(is_int($cryptedFile));
-		$this->assertEquals($this->util->getFileSize($externalFilename), 0);
+		$this->assertSame(0, $this->util->getFileSize($externalFilename));
 		$decrypt = $this->view->file_get_contents($externalFilename);
-		$this->assertEquals($problematicFileSizeData, $decrypt);
+		$this->assertSame($problematicFileSizeData, $decrypt);
 		$this->view->unlink($this->userId . '/files/' . $filename);
 
 		// Test a file with 18377 bytes as in https://github.com/owncloud/mirall/issues/1009
 		$problematicFileSizeData = str_pad("", 18377, "abc");
 		$cryptedFile = $this->view->file_put_contents($externalFilename, $problematicFileSizeData);
 		$this->assertTrue(is_int($cryptedFile));
-		$this->assertEquals($this->util->getFileSize($externalFilename), 18377);
+		$this->assertSame(18377, $this->util->getFileSize($externalFilename));
 		$decrypt = $this->view->file_get_contents($externalFilename);
-		$this->assertEquals($problematicFileSizeData, $decrypt);
+		$this->assertSame($problematicFileSizeData, $decrypt);
 		$this->view->unlink($this->userId . '/files/' . $filename);
 	}
 
@@ -343,8 +343,8 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue($fileInfoEncrypted instanceof \OC\Files\FileInfo);
 
 		// check if mtime and etags unchanged
-		$this->assertEquals($fileInfoEncrypted['mtime'], $fileInfoUnencrypted['mtime']);
-		$this->assertEquals($fileInfoEncrypted['etag'], $fileInfoUnencrypted['etag']);
+		$this->assertSame($fileInfoEncrypted['mtime'], $fileInfoUnencrypted['mtime']);
+		$this->assertSame($fileInfoEncrypted['etag'], $fileInfoUnencrypted['etag']);
 
 		$this->view->unlink($this->userId . '/files/' . $filename);
 	}
@@ -360,7 +360,7 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 		$fileInfoEncrypted = $this->view->getFileInfo($this->userId . '/files/' . $filename);
 
 		$this->assertTrue($fileInfoEncrypted instanceof \OC\Files\FileInfo);
-		$this->assertEquals($fileInfoEncrypted['encrypted'], 1);
+		$this->assertTrue($fileInfoEncrypted['encrypted']);
 
 		// decrypt all encrypted files
 		$result = $util->decryptAll('/' . $this->userId . '/' . 'files');
@@ -372,10 +372,10 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue($fileInfoUnencrypted instanceof \OC\Files\FileInfo);
 
 		// check if mtime and etags unchanged
-		$this->assertEquals($fileInfoEncrypted['mtime'], $fileInfoUnencrypted['mtime']);
-		$this->assertEquals($fileInfoEncrypted['etag'], $fileInfoUnencrypted['etag']);
+		$this->assertSame($fileInfoEncrypted['mtime'], $fileInfoUnencrypted['mtime']);
+		$this->assertSame($fileInfoEncrypted['etag'], $fileInfoUnencrypted['etag']);
 		// file should no longer be encrypted
-		$this->assertEquals(0, $fileInfoUnencrypted['encrypted']);
+		$this->assertSame(0, $fileInfoUnencrypted['encrypted']);
 
 		$this->view->unlink($this->userId . '/files/' . $filename);
 
@@ -396,8 +396,8 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 
 		$this->assertTrue($fileInfoEncrypted1 instanceof \OC\Files\FileInfo);
 		$this->assertTrue($fileInfoEncrypted2 instanceof \OC\Files\FileInfo);
-		$this->assertEquals($fileInfoEncrypted1['encrypted'], 1);
-		$this->assertEquals($fileInfoEncrypted2['encrypted'], 1);
+		$this->assertTrue($fileInfoEncrypted1['encrypted']);
+		$this->assertTrue($fileInfoEncrypted2['encrypted']);
 
 		// rename keyfile for file1 so that the decryption for file1 fails
 		// Expected behaviour: decryptAll() returns false, file2 gets decrypted anyway
@@ -416,8 +416,8 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue($fileInfoUnencrypted2 instanceof \OC\Files\FileInfo);
 
 		// file1 should be still encrypted; file2 should be decrypted
-		$this->assertEquals(1, $fileInfoUnencrypted1['encrypted']);
-		$this->assertEquals(0, $fileInfoUnencrypted2['encrypted']);
+		$this->assertSame(1, $fileInfoUnencrypted1['encrypted']);
+		$this->assertSame(0, $fileInfoUnencrypted2['encrypted']);
 
 		// keyfiles and share keys should still exist
 		$this->assertTrue($this->view->is_dir($this->userId . '/files_encryption/keyfiles/'));
@@ -439,8 +439,8 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue($fileInfoUnencrypted2 instanceof \OC\Files\FileInfo);
 
 		// now both files should be decrypted
-		$this->assertEquals(0, $fileInfoUnencrypted1['encrypted']);
-		$this->assertEquals(0, $fileInfoUnencrypted2['encrypted']);
+		$this->assertSame(0, $fileInfoUnencrypted1['encrypted']);
+		$this->assertSame(0, $fileInfoUnencrypted2['encrypted']);
 
 		// keyfiles and share keys should be deleted
 		$this->assertFalse($this->view->is_dir($this->userId . '/files_encryption/keyfiles/'));
@@ -486,7 +486,7 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 
 		$this->assertTrue(OCA\Encryption\Hooks::login($params));
 
-		$this->assertEquals($this->legacyKey, \OC::$session->get('legacyKey'));
+		$this->assertSame($this->legacyKey, \OC::$session->get('legacyKey'));
 
 		$files = $util->findEncFiles('/' . \Test_Encryption_Util::TEST_ENCRYPTION_UTIL_LEGACY_USER . '/files/');
 

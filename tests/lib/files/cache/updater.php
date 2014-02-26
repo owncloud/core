@@ -90,27 +90,27 @@ class Updater extends \PHPUnit_Framework_TestCase {
 		$imageSize = filesize(\OC::$SERVERROOT . '/core/img/logo.png');
 		$this->cache->put('foo.txt', array('mtime' => 100, 'storage_mtime' => 150));
 		$rootCachedData = $this->cache->get('');
-		$this->assertEquals(3 * $textSize + $imageSize, $rootCachedData['size']);
+		$this->assertSame(3 * $textSize + $imageSize, $rootCachedData['size']);
 
 		$fooCachedData = $this->cache->get('foo.txt');
 		Filesystem::file_put_contents('foo.txt', 'asd');
 		$cachedData = $this->cache->get('foo.txt');
-		$this->assertEquals(3, $cachedData['size']);
-		$this->assertNotEquals($fooCachedData['etag'], $cachedData['etag']);
+		$this->assertSame(3, $cachedData['size']);
+		$this->assertNotSame($fooCachedData['etag'], $cachedData['etag']);
 		$cachedData = $this->cache->get('');
-		$this->assertEquals(2 * $textSize + $imageSize + 3, $cachedData['size']);
-		$this->assertNotEquals($rootCachedData['etag'], $cachedData['etag']);
+		$this->assertSame(2 * $textSize + $imageSize + 3, $cachedData['size']);
+		$this->assertNotSame($rootCachedData['etag'], $cachedData['etag']);
 		$rootCachedData = $cachedData;
 
 		$this->assertFalse($this->cache->inCache('bar.txt'));
 		Filesystem::file_put_contents('bar.txt', 'asd');
 		$this->assertTrue($this->cache->inCache('bar.txt'));
 		$cachedData = $this->cache->get('bar.txt');
-		$this->assertEquals(3, $cachedData['size']);
+		$this->assertSame(3, $cachedData['size']);
 		$mtime = $cachedData['mtime'];
 		$cachedData = $this->cache->get('');
-		$this->assertEquals(2 * $textSize + $imageSize + 2 * 3, $cachedData['size']);
-		$this->assertNotEquals($rootCachedData['etag'], $cachedData['etag']);
+		$this->assertSame(2 * $textSize + $imageSize + 2 * 3, $cachedData['size']);
+		$this->assertNotSame($rootCachedData['etag'], $cachedData['etag']);
 		$this->assertGreaterThanOrEqual($rootCachedData['mtime'], $mtime);
 	}
 
@@ -123,42 +123,42 @@ class Updater extends \PHPUnit_Framework_TestCase {
 		Filesystem::file_put_contents('folder/substorage/foo.txt', 'asd');
 		$this->assertTrue($cache2->inCache('foo.txt'));
 		$cachedData = $cache2->get('foo.txt');
-		$this->assertEquals(3, $cachedData['size']);
+		$this->assertSame(3, $cachedData['size']);
 		$mtime = $cachedData['mtime'];
 
 		$cachedData = $cache2->get('');
-		$this->assertNotEquals($substorageCachedData['etag'], $cachedData['etag']);
-		$this->assertEquals($mtime, $cachedData['mtime']);
+		$this->assertNotSame($substorageCachedData['etag'], $cachedData['etag']);
+		$this->assertSame($mtime, $cachedData['mtime']);
 
 		$cachedData = $this->cache->get('folder');
-		$this->assertNotEquals($folderCachedData['etag'], $cachedData['etag']);
-		$this->assertEquals($mtime, $cachedData['mtime']);
+		$this->assertNotSame($folderCachedData['etag'], $cachedData['etag']);
+		$this->assertSame($mtime, $cachedData['mtime']);
 	}
 
 	public function testDelete() {
 		$textSize = strlen("dummy file data\n");
 		$imageSize = filesize(\OC::$SERVERROOT . '/core/img/logo.png');
 		$rootCachedData = $this->cache->get('');
-		$this->assertEquals(3 * $textSize + $imageSize, $rootCachedData['size']);
+		$this->assertSame(3 * $textSize + $imageSize, $rootCachedData['size']);
 
 		$this->assertTrue($this->cache->inCache('foo.txt'));
 		Filesystem::unlink('foo.txt');
 		$this->assertFalse($this->cache->inCache('foo.txt'));
 		$cachedData = $this->cache->get('');
-		$this->assertEquals(2 * $textSize + $imageSize, $cachedData['size']);
-		$this->assertNotEquals($rootCachedData['etag'], $cachedData['etag']);
+		$this->assertSame(2 * $textSize + $imageSize, $cachedData['size']);
+		$this->assertNotSame($rootCachedData['etag'], $cachedData['etag']);
 		$this->assertGreaterThanOrEqual($rootCachedData['mtime'], $cachedData['mtime']);
 		$rootCachedData = $cachedData;
 
 		Filesystem::mkdir('bar_folder');
 		$this->assertTrue($this->cache->inCache('bar_folder'));
 		$cachedData = $this->cache->get('');
-		$this->assertNotEquals($rootCachedData['etag'], $cachedData['etag']);
+		$this->assertNotSame($rootCachedData['etag'], $cachedData['etag']);
 		$rootCachedData = $cachedData;
 		Filesystem::rmdir('bar_folder');
 		$this->assertFalse($this->cache->inCache('bar_folder'));
 		$cachedData = $this->cache->get('');
-		$this->assertNotEquals($rootCachedData['etag'], $cachedData['etag']);
+		$this->assertNotSame($rootCachedData['etag'], $cachedData['etag']);
 		$this->assertGreaterThanOrEqual($rootCachedData['mtime'], $cachedData['mtime']);
 	}
 
@@ -174,11 +174,11 @@ class Updater extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse($cache2->inCache('foo.txt'));
 
 		$cachedData = $cache2->get('');
-		$this->assertNotEquals($substorageCachedData['etag'], $cachedData['etag']);
+		$this->assertNotSame($substorageCachedData['etag'], $cachedData['etag']);
 		$this->assertGreaterThanOrEqual($substorageCachedData['mtime'], $cachedData['mtime']);
 
 		$cachedData = $this->cache->get('folder');
-		$this->assertNotEquals($folderCachedData['etag'], $cachedData['etag']);
+		$this->assertNotSame($folderCachedData['etag'], $cachedData['etag']);
 		$this->assertGreaterThanOrEqual($folderCachedData['mtime'], $cachedData['mtime']);
 	}
 
@@ -186,7 +186,7 @@ class Updater extends \PHPUnit_Framework_TestCase {
 		$textSize = strlen("dummy file data\n");
 		$imageSize = filesize(\OC::$SERVERROOT . '/core/img/logo.png');
 		$rootCachedData = $this->cache->get('');
-		$this->assertEquals(3 * $textSize + $imageSize, $rootCachedData['size']);
+		$this->assertSame(3 * $textSize + $imageSize, $rootCachedData['size']);
 
 		$this->assertTrue($this->cache->inCache('foo.txt'));
 		$fooCachedData = $this->cache->get('foo.txt');
@@ -195,19 +195,19 @@ class Updater extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse($this->cache->inCache('foo.txt'));
 		$this->assertTrue($this->cache->inCache('bar.txt'));
 		$cachedData = $this->cache->get('bar.txt');
-		$this->assertEquals($fooCachedData['fileid'], $cachedData['fileid']);
+		$this->assertSame($fooCachedData['fileid'], $cachedData['fileid']);
 		$mtime = $cachedData['mtime'];
 		$cachedData = $this->cache->get('');
-		$this->assertEquals(3 * $textSize + $imageSize, $cachedData['size']);
-		$this->assertNotEquals($rootCachedData['etag'], $cachedData['etag']);
+		$this->assertSame(3 * $textSize + $imageSize, $cachedData['size']);
+		$this->assertNotSame($rootCachedData['etag'], $cachedData['etag']);
 	}
 
 	public function testRenameExtension() {
 		$fooCachedData = $this->cache->get('foo.txt');
-		$this->assertEquals('text/plain', $fooCachedData['mimetype']);
+		$this->assertSame('text/plain', $fooCachedData['mimetype']);
 		Filesystem::rename('foo.txt', 'foo.abcd');
 		$fooCachedData = $this->cache->get('foo.abcd');
-		$this->assertEquals('application/octet-stream', $fooCachedData['mimetype']);
+		$this->assertSame('application/octet-stream', $fooCachedData['mimetype']);
 	}
 
 	public function testRenameWithMountPoints() {
@@ -223,18 +223,18 @@ class Updater extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse($cache2->inCache('foo.txt'));
 		$this->assertTrue($cache2->inCache('bar.txt'));
 		$cachedData = $cache2->get('bar.txt');
-		$this->assertEquals($fooCachedData['fileid'], $cachedData['fileid']);
+		$this->assertSame($fooCachedData['fileid'], $cachedData['fileid']);
 		$mtime = $cachedData['mtime'];
 
 		$cachedData = $cache2->get('');
-		$this->assertNotEquals($substorageCachedData['etag'], $cachedData['etag']);
+		$this->assertNotSame($substorageCachedData['etag'], $cachedData['etag']);
 		// rename can cause mtime change - invalid assert
-//		$this->assertEquals($mtime, $cachedData['mtime']);
+//		$this->assertSame($mtime, $cachedData['mtime']);
 
 		$cachedData = $this->cache->get('folder');
-		$this->assertNotEquals($folderCachedData['etag'], $cachedData['etag']);
+		$this->assertNotSame($folderCachedData['etag'], $cachedData['etag']);
 		// rename can cause mtime change - invalid assert
-//		$this->assertEquals($mtime, $cachedData['mtime']);
+//		$this->assertSame($mtime, $cachedData['mtime']);
 	}
 
 	public function testTouch() {
@@ -242,11 +242,11 @@ class Updater extends \PHPUnit_Framework_TestCase {
 		$fooCachedData = $this->cache->get('foo.txt');
 		Filesystem::touch('foo.txt');
 		$cachedData = $this->cache->get('foo.txt');
-		$this->assertNotEquals($fooCachedData['etag'], $cachedData['etag']);
+		$this->assertNotSame($fooCachedData['etag'], $cachedData['etag']);
 		$this->assertGreaterThanOrEqual($fooCachedData['mtime'], $cachedData['mtime']);
 
 		$cachedData = $this->cache->get('');
-		$this->assertNotEquals($rootCachedData['etag'], $cachedData['etag']);
+		$this->assertNotSame($rootCachedData['etag'], $cachedData['etag']);
 		$this->assertGreaterThanOrEqual($rootCachedData['mtime'], $cachedData['mtime']);
 		$rootCachedData = $cachedData;
 
@@ -255,15 +255,15 @@ class Updater extends \PHPUnit_Framework_TestCase {
 		$folderCachedData = $this->cache->get('folder');
 		Filesystem::touch('folder/bar.txt', $time);
 		$cachedData = $this->cache->get('folder/bar.txt');
-		$this->assertNotEquals($barCachedData['etag'], $cachedData['etag']);
-		$this->assertEquals($time, $cachedData['mtime']);
+		$this->assertNotSame($barCachedData['etag'], $cachedData['etag']);
+		$this->assertSame($time, $cachedData['mtime']);
 
 		$cachedData = $this->cache->get('folder');
-		$this->assertNotEquals($folderCachedData['etag'], $cachedData['etag']);
+		$this->assertNotSame($folderCachedData['etag'], $cachedData['etag']);
 
 		$cachedData = $this->cache->get('');
-		$this->assertNotEquals($rootCachedData['etag'], $cachedData['etag']);
-		$this->assertEquals($time, $cachedData['mtime']);
+		$this->assertNotSame($rootCachedData['etag'], $cachedData['etag']);
+		$this->assertSame($time, $cachedData['mtime']);
 	}
 
 	public function testTouchWithMountPoints() {
@@ -279,15 +279,15 @@ class Updater extends \PHPUnit_Framework_TestCase {
 		$time = 1371006070;
 		Filesystem::touch('folder/substorage/foo.txt', $time);
 		$cachedData = $cache2->get('foo.txt');
-		$this->assertNotEquals($fooCachedData['etag'], $cachedData['etag']);
-		$this->assertEquals($time, $cachedData['mtime']);
+		$this->assertNotSame($fooCachedData['etag'], $cachedData['etag']);
+		$this->assertSame($time, $cachedData['mtime']);
 
 		$cachedData = $cache2->get('');
-		$this->assertNotEquals($substorageCachedData['etag'], $cachedData['etag']);
+		$this->assertNotSame($substorageCachedData['etag'], $cachedData['etag']);
 
 		$cachedData = $this->cache->get('folder');
-		$this->assertNotEquals($folderCachedData['etag'], $cachedData['etag']);
-		$this->assertEquals($time, $cachedData['mtime']);
+		$this->assertNotSame($folderCachedData['etag'], $cachedData['etag']);
+		$this->assertSame($time, $cachedData['mtime']);
 	}
 
 	public function testUpdatePermissionsOnRescanOnlyForUpdatedFile() {
@@ -307,17 +307,17 @@ class Updater extends \PHPUnit_Framework_TestCase {
 		$permissionsCache->set($cache->getId('foo.png'), self::$user, 15);
 		FileSystem::file_put_contents('/foo.txt', 'asd');
 
-		$this->assertEquals(-1, $permissionsCache->get($cache->getId('foo.txt'), self::$user));
-		$this->assertEquals(15, $permissionsCache->get($cache->getId('foo.png'), self::$user));
+		$this->assertSame(-1, $permissionsCache->get($cache->getId('foo.txt'), self::$user));
+		$this->assertSame(15, $permissionsCache->get($cache->getId('foo.png'), self::$user));
 
 		FileSystem::getDirectoryContent('/');
 
-		$this->assertEquals(15, $permissionsCache->get($cache->getId('foo.png'), self::$user));
+		$this->assertSame(15, $permissionsCache->get($cache->getId('foo.png'), self::$user));
 
 		FileSystem::file_put_contents('/qwerty.txt', 'asd');
 		FileSystem::getDirectoryContent('/');
 
-		$this->assertEquals(15, $permissionsCache->get($cache->getId('foo.png'), self::$user));
+		$this->assertSame(15, $permissionsCache->get($cache->getId('foo.png'), self::$user));
 
 		\OC_User::setUserId($loggedInUser);
 	}

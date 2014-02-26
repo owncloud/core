@@ -140,9 +140,9 @@ class Test_Encryption_Keymanager extends \PHPUnit_Framework_TestCase {
 	 * @small
 	 */
 	function testGetFilenameFromShareKey() {
-		$this->assertEquals("file",
+		$this->assertSame("file",
 				\TestProtectedKeymanagerMethods::testGetFilenameFromShareKey("file.user.shareKey"));
-		$this->assertEquals("file.name.with.dots",
+		$this->assertSame("file.name.with.dots",
 				\TestProtectedKeymanagerMethods::testGetFilenameFromShareKey("file.name.with.dots.user.shareKey"));
 		$this->assertFalse(\TestProtectedKeymanagerMethods::testGetFilenameFromShareKey("file.txt"));
 	}

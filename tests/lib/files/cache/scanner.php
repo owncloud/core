@@ -44,20 +44,20 @@ class Scanner extends \PHPUnit_Framework_TestCase {
 		$this->storage->file_put_contents('foo.txt', $data);
 		$this->scanner->scanFile('foo.txt');
 
-		$this->assertEquals($this->cache->inCache('foo.txt'), true);
+		$this->assertSame($this->cache->inCache('foo.txt'), true);
 		$cachedData = $this->cache->get('foo.txt');
-		$this->assertEquals($cachedData['size'], strlen($data));
-		$this->assertEquals($cachedData['mimetype'], 'text/plain');
+		$this->assertSame($cachedData['size'], strlen($data));
+		$this->assertSame($cachedData['mimetype'], 'text/plain');
 		$this->assertNotEquals($cachedData['parent'], -1); //parent folders should be scanned automatically
 
 		$data = file_get_contents(\OC::$SERVERROOT . '/core/img/logo.png');
 		$this->storage->file_put_contents('foo.png', $data);
 		$this->scanner->scanFile('foo.png');
 
-		$this->assertEquals($this->cache->inCache('foo.png'), true);
+		$this->assertSame($this->cache->inCache('foo.png'), true);
 		$cachedData = $this->cache->get('foo.png');
-		$this->assertEquals($cachedData['size'], strlen($data));
-		$this->assertEquals($cachedData['mimetype'], 'image/png');
+		$this->assertSame($cachedData['size'], strlen($data));
+		$this->assertSame($cachedData['mimetype'], 'image/png');
 	}
 
 	private function fillTestFolders() {
@@ -73,11 +73,11 @@ class Scanner extends \PHPUnit_Framework_TestCase {
 		$this->fillTestFolders();
 
 		$this->scanner->scan('');
-		$this->assertEquals($this->cache->inCache(''), true);
-		$this->assertEquals($this->cache->inCache('foo.txt'), true);
-		$this->assertEquals($this->cache->inCache('foo.png'), true);
-		$this->assertEquals($this->cache->inCache('folder'), true);
-		$this->assertEquals($this->cache->inCache('folder/bar.txt'), true);
+		$this->assertSame($this->cache->inCache(''), true);
+		$this->assertSame($this->cache->inCache('foo.txt'), true);
+		$this->assertSame($this->cache->inCache('foo.png'), true);
+		$this->assertSame($this->cache->inCache('folder'), true);
+		$this->assertSame($this->cache->inCache('folder/bar.txt'), true);
 
 		$cachedDataText = $this->cache->get('foo.txt');
 		$cachedDataText2 = $this->cache->get('foo.txt');
@@ -85,27 +85,27 @@ class Scanner extends \PHPUnit_Framework_TestCase {
 		$cachedDataFolder = $this->cache->get('');
 		$cachedDataFolder2 = $this->cache->get('folder');
 
-		$this->assertEquals($cachedDataImage['parent'], $cachedDataText['parent']);
-		$this->assertEquals($cachedDataFolder['fileid'], $cachedDataImage['parent']);
-		$this->assertEquals($cachedDataFolder['size'], $cachedDataImage['size'] + $cachedDataText['size'] + $cachedDataText2['size']);
-		$this->assertEquals($cachedDataFolder2['size'], $cachedDataText2['size']);
+		$this->assertSame($cachedDataImage['parent'], $cachedDataText['parent']);
+		$this->assertSame($cachedDataFolder['fileid'], $cachedDataImage['parent']);
+		$this->assertSame($cachedDataFolder['size'], $cachedDataImage['size'] + $cachedDataText['size'] + $cachedDataText2['size']);
+		$this->assertSame($cachedDataFolder2['size'], $cachedDataText2['size']);
 	}
 
 	function testShallow() {
 		$this->fillTestFolders();
 
 		$this->scanner->scan('', \OC\Files\Cache\Scanner::SCAN_SHALLOW);
-		$this->assertEquals($this->cache->inCache(''), true);
-		$this->assertEquals($this->cache->inCache('foo.txt'), true);
-		$this->assertEquals($this->cache->inCache('foo.png'), true);
-		$this->assertEquals($this->cache->inCache('folder'), true);
-		$this->assertEquals($this->cache->inCache('folder/bar.txt'), false);
+		$this->assertSame($this->cache->inCache(''), true);
+		$this->assertSame($this->cache->inCache('foo.txt'), true);
+		$this->assertSame($this->cache->inCache('foo.png'), true);
+		$this->assertSame($this->cache->inCache('folder'), true);
+		$this->assertSame($this->cache->inCache('folder/bar.txt'), false);
 
 		$cachedDataFolder = $this->cache->get('');
 		$cachedDataFolder2 = $this->cache->get('folder');
 
-		$this->assertEquals(-1, $cachedDataFolder['size']);
-		$this->assertEquals(-1, $cachedDataFolder2['size']);
+		$this->assertSame(-1, $cachedDataFolder['size']);
+		$this->assertSame(-1, $cachedDataFolder2['size']);
 
 		$this->scanner->scan('folder', \OC\Files\Cache\Scanner::SCAN_SHALLOW);
 
@@ -128,7 +128,7 @@ class Scanner extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse($this->cache->inCache('folder/bar.txt'));
 		$this->assertFalse($this->cache->inCache('folder/2bar.txt'));
 		$cachedData = $this->cache->get('');
-		$this->assertEquals(-1, $cachedData['size']);
+		$this->assertSame(-1, $cachedData['size']);
 
 		$this->scanner->backgroundScan();
 
@@ -150,32 +150,32 @@ class Scanner extends \PHPUnit_Framework_TestCase {
 		$this->cache->put('folder', array('mtime' => $this->storage->filemtime('folder'), 'storage_mtime' => $this->storage->filemtime('folder')));
 		$this->scanner->scan('', \OC\Files\Cache\Scanner::SCAN_SHALLOW, \OC\Files\Cache\Scanner::REUSE_SIZE);
 		$newData = $this->cache->get('');
-		$this->assertNotEquals($oldData['etag'], $newData['etag']);
-		$this->assertEquals($oldData['size'], $newData['size']);
+		$this->assertNotSame($oldData['etag'], $newData['etag']);
+		$this->assertSame($oldData['size'], $newData['size']);
 
 		$oldData = $newData;
 		$this->scanner->scan('', \OC\Files\Cache\Scanner::SCAN_SHALLOW, \OC\Files\Cache\Scanner::REUSE_ETAG);
 		$newData = $this->cache->get('');
-		$this->assertEquals($oldData['etag'], $newData['etag']);
-		$this->assertEquals(-1, $newData['size']);
+		$this->assertSame($oldData['etag'], $newData['etag']);
+		$this->assertSame(-1, $newData['size']);
 
 		$this->scanner->scan('', \OC\Files\Cache\Scanner::SCAN_RECURSIVE);
 		$oldData = $this->cache->get('');
 		$this->assertNotEquals(-1, $oldData['size']);
 		$this->scanner->scanFile('', \OC\Files\Cache\Scanner::REUSE_ETAG + \OC\Files\Cache\Scanner::REUSE_SIZE);
 		$newData = $this->cache->get('');
-		$this->assertEquals($oldData['etag'], $newData['etag']);
-		$this->assertEquals($oldData['size'], $newData['size']);
+		$this->assertSame($oldData['etag'], $newData['etag']);
+		$this->assertSame($oldData['size'], $newData['size']);
 
 		$this->scanner->scan('', \OC\Files\Cache\Scanner::SCAN_RECURSIVE, \OC\Files\Cache\Scanner::REUSE_ETAG + \OC\Files\Cache\Scanner::REUSE_SIZE);
 		$newData = $this->cache->get('');
-		$this->assertEquals($oldData['etag'], $newData['etag']);
-		$this->assertEquals($oldData['size'], $newData['size']);
+		$this->assertSame($oldData['etag'], $newData['etag']);
+		$this->assertSame($oldData['size'], $newData['size']);
 
 		$this->scanner->scan('', \OC\Files\Cache\Scanner::SCAN_SHALLOW, \OC\Files\Cache\Scanner::REUSE_ETAG + \OC\Files\Cache\Scanner::REUSE_SIZE);
 		$newData = $this->cache->get('');
-		$this->assertEquals($oldData['etag'], $newData['etag']);
-		$this->assertEquals($oldData['size'], $newData['size']);
+		$this->assertSame($oldData['etag'], $newData['etag']);
+		$this->assertSame($oldData['size'], $newData['size']);
 	}
 
 	public function testRemovedFile() {
@@ -230,7 +230,7 @@ class Scanner extends \PHPUnit_Framework_TestCase {
 		$newData1 = $this->cache->get('folder');
 		$newData2 = $this->cache->get('');
 		$this->assertNotEmpty($newData0['etag']);
-		$this->assertNotEquals($data1['etag'], $newData1['etag']);
-		$this->assertNotEquals($data2['etag'], $newData2['etag']);
+		$this->assertNotSame($data1['etag'], $newData1['etag']);
+		$this->assertNotSame($data2['etag'], $newData2['etag']);
 	}
 }

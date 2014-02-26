@@ -105,14 +105,14 @@ class Test_OC_Files_App_Rename extends \PHPUnit_Framework_TestCase {
 		$result = $this->files->rename($dir, $oldname, $newname);
 
 		$this->assertTrue($result['success']);
-		$this->assertEquals(123, $result['data']['id']);
-		$this->assertEquals('new_name', $result['data']['name']);
-		$this->assertEquals('/test', $result['data']['directory']);
-		$this->assertEquals(18, $result['data']['size']);
-		$this->assertEquals('httpd/unix-directory', $result['data']['mime']);
+		$this->assertSame(123, $result['data']['id']);
+		$this->assertSame('new_name', $result['data']['name']);
+		$this->assertSame('/test', $result['data']['directory']);
+		$this->assertSame(18, $result['data']['size']);
+		$this->assertSame('httpd/unix-directory', $result['data']['mime']);
 		$icon = \OC_Helper::mimetypeIcon('dir');
 		$icon = substr($icon, 0, -3) . 'svg';
-		$this->assertEquals($icon, $result['data']['icon']);
+		$this->assertSame($icon, $result['data']['icon']);
 		$this->assertFalse($result['data']['isPreviewAvailable']);
 	}
 
@@ -161,15 +161,15 @@ class Test_OC_Files_App_Rename extends \PHPUnit_Framework_TestCase {
 		$result = $this->files->rename($dir, $oldname, $newname);
 
 		$this->assertTrue($result['success']);
-		$this->assertEquals(123, $result['data']['id']);
-		$this->assertEquals('newname', $result['data']['name']);
-		$this->assertEquals('/', $result['data']['directory']);
-		$this->assertEquals(18, $result['data']['size']);
-		$this->assertEquals('httpd/unix-directory', $result['data']['mime']);
-		$this->assertEquals('abcdef', $result['data']['etag']);
+		$this->assertSame(123, $result['data']['id']);
+		$this->assertSame('newname', $result['data']['name']);
+		$this->assertSame('/', $result['data']['directory']);
+		$this->assertSame(18, $result['data']['size']);
+		$this->assertSame('httpd/unix-directory', $result['data']['mime']);
+		$this->assertSame('abcdef', $result['data']['etag']);
 		$icon = \OC_Helper::mimetypeIcon('dir');
 		$icon = substr($icon, 0, -3) . 'svg';
-		$this->assertEquals($icon, $result['data']['icon']);
+		$this->assertSame($icon, $result['data']['icon']);
 		$this->assertFalse($result['data']['isPreviewAvailable']);
 	}
 
@@ -201,6 +201,6 @@ class Test_OC_Files_App_Rename extends \PHPUnit_Framework_TestCase {
 		$result = $this->files->rename($dir, $oldname, $newname);
 
 		$this->assertFalse($result['success']);
-		$this->assertEquals('targetnotfound', $result['data']['code']);
+		$this->assertSame('targetnotfound', $result['data']['code']);
 	}
 }

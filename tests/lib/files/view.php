@@ -61,22 +61,22 @@ class View extends \PHPUnit_Framework_TestCase {
 		$rootView = new \OC\Files\View('');
 
 		$cachedData = $rootView->getFileInfo('/foo.txt');
-		$this->assertEquals($textSize, $cachedData['size']);
-		$this->assertEquals('text/plain', $cachedData['mimetype']);
+		$this->assertSame($textSize, $cachedData['size']);
+		$this->assertSame('text/plain', $cachedData['mimetype']);
 		$this->assertNotEquals(-1, $cachedData['permissions']);
 
 		$cachedData = $rootView->getFileInfo('/');
-		$this->assertEquals($storageSize * 3, $cachedData['size']);
-		$this->assertEquals('httpd/unix-directory', $cachedData['mimetype']);
+		$this->assertSame($storageSize * 3, $cachedData['size']);
+		$this->assertSame('httpd/unix-directory', $cachedData['mimetype']);
 
 		// get cached data excluding mount points
 		$cachedData = $rootView->getFileInfo('/', false);
-		$this->assertEquals($storageSize, $cachedData['size']);
-		$this->assertEquals('httpd/unix-directory', $cachedData['mimetype']);
+		$this->assertSame($storageSize, $cachedData['size']);
+		$this->assertSame('httpd/unix-directory', $cachedData['mimetype']);
 
 		$cachedData = $rootView->getFileInfo('/folder');
-		$this->assertEquals($storageSize + $textSize, $cachedData['size']);
-		$this->assertEquals('httpd/unix-directory', $cachedData['mimetype']);
+		$this->assertSame($storageSize + $textSize, $cachedData['size']);
+		$this->assertSame('httpd/unix-directory', $cachedData['mimetype']);
 
 		$folderData = $rootView->getDirectoryContent('/');
 		/**
@@ -86,16 +86,16 @@ class View extends \PHPUnit_Framework_TestCase {
 		 * foo.txt
 		 * substorage
 		 */
-		$this->assertEquals(4, count($folderData));
-		$this->assertEquals('folder', $folderData[0]['name']);
-		$this->assertEquals('foo.png', $folderData[1]['name']);
-		$this->assertEquals('foo.txt', $folderData[2]['name']);
-		$this->assertEquals('substorage', $folderData[3]['name']);
+		$this->assertSame(4, count($folderData));
+		$this->assertSame('folder', $folderData[0]['name']);
+		$this->assertSame('foo.png', $folderData[1]['name']);
+		$this->assertSame('foo.txt', $folderData[2]['name']);
+		$this->assertSame('substorage', $folderData[3]['name']);
 
-		$this->assertEquals($storageSize + $textSize, $folderData[0]['size']);
-		$this->assertEquals($imageSize, $folderData[1]['size']);
-		$this->assertEquals($textSize, $folderData[2]['size']);
-		$this->assertEquals($storageSize, $folderData[3]['size']);
+		$this->assertSame($storageSize + $textSize, $folderData[0]['size']);
+		$this->assertSame($imageSize, $folderData[1]['size']);
+		$this->assertSame($textSize, $folderData[2]['size']);
+		$this->assertSame($storageSize, $folderData[3]['size']);
 
 		$folderData = $rootView->getDirectoryContent('/substorage');
 		/**
@@ -104,10 +104,10 @@ class View extends \PHPUnit_Framework_TestCase {
 		 * foo.png
 		 * foo.txt
 		 */
-		$this->assertEquals(3, count($folderData));
-		$this->assertEquals('folder', $folderData[0]['name']);
-		$this->assertEquals('foo.png', $folderData[1]['name']);
-		$this->assertEquals('foo.txt', $folderData[2]['name']);
+		$this->assertSame(3, count($folderData));
+		$this->assertSame('folder', $folderData[0]['name']);
+		$this->assertSame('foo.png', $folderData[1]['name']);
+		$this->assertSame('foo.txt', $folderData[2]['name']);
 
 		$folderView = new \OC\Files\View('/folder');
 		$this->assertEquals($rootView->getFileInfo('/folder'), $folderView->getFileInfo('/'));
@@ -117,10 +117,10 @@ class View extends \PHPUnit_Framework_TestCase {
 		$id = $rootView->putFileInfo('/foo.txt', array('encrypted' => true));
 		$cachedData = $rootView->getFileInfo('/foo.txt');
 		$this->assertTrue($cachedData['encrypted']);
-		$this->assertEquals($cachedData['fileid'], $id);
+		$this->assertSame($cachedData['fileid'], $id);
 
 		$this->assertFalse($rootView->getFileInfo('/non/existing'));
-		$this->assertEquals(array(), $rootView->getDirectoryContent('/non/existing'));
+		$this->assertSame(array(), $rootView->getDirectoryContent('/non/existing'));
 	}
 
 	/**
@@ -138,14 +138,14 @@ class View extends \PHPUnit_Framework_TestCase {
 
 		$cachedData = $rootView->getFileInfo('/foo.txt');
 		$id1 = $cachedData['fileid'];
-		$this->assertEquals('/foo.txt', $rootView->getPath($id1));
+		$this->assertSame('/foo.txt', $rootView->getPath($id1));
 
 		$cachedData = $rootView->getFileInfo('/substorage/foo.txt');
 		$id2 = $cachedData['fileid'];
-		$this->assertEquals('/substorage/foo.txt', $rootView->getPath($id2));
+		$this->assertSame('/substorage/foo.txt', $rootView->getPath($id2));
 
 		$folderView = new \OC\Files\View('/substorage');
-		$this->assertEquals('/foo.txt', $folderView->getPath($id2));
+		$this->assertSame('/foo.txt', $folderView->getPath($id2));
 		$this->assertNull($folderView->getPath($id1));
 	}
 
@@ -161,7 +161,7 @@ class View extends \PHPUnit_Framework_TestCase {
 
 		$rootView = new \OC\Files\View('');
 		$folderContent = $rootView->getDirectoryContent('/');
-		$this->assertEquals(4, count($folderContent));
+		$this->assertSame(4, count($folderContent));
 	}
 
 	function testCacheIncompleteFolder() {
@@ -170,11 +170,11 @@ class View extends \PHPUnit_Framework_TestCase {
 		$rootView = new \OC\Files\View('');
 
 		$entries = $rootView->getDirectoryContent('/');
-		$this->assertEquals(3, count($entries));
+		$this->assertSame(3, count($entries));
 
 		// /folder will already be in the cache but not scanned
 		$entries = $rootView->getDirectoryContent('/folder');
-		$this->assertEquals(1, count($entries));
+		$this->assertSame(1, count($entries));
 	}
 
 	public function testAutoScan() {
@@ -187,12 +187,12 @@ class View extends \PHPUnit_Framework_TestCase {
 		$rootView = new \OC\Files\View('');
 
 		$cachedData = $rootView->getFileInfo('/');
-		$this->assertEquals('httpd/unix-directory', $cachedData['mimetype']);
-		$this->assertEquals(-1, $cachedData['size']);
+		$this->assertSame('httpd/unix-directory', $cachedData['mimetype']);
+		$this->assertSame(-1, $cachedData['size']);
 
 		$folderData = $rootView->getDirectoryContent('/substorage/folder');
-		$this->assertEquals('text/plain', $folderData[0]['mimetype']);
-		$this->assertEquals($textSize, $folderData[0]['size']);
+		$this->assertSame('text/plain', $folderData[0]['mimetype']);
+		$this->assertSame($textSize, $folderData[0]['size']);
 	}
 
 	/**
@@ -209,10 +209,10 @@ class View extends \PHPUnit_Framework_TestCase {
 		$rootView = new \OC\Files\View('');
 
 		$results = $rootView->search('foo');
-		$this->assertEquals(6, count($results));
+		$this->assertSame(6, count($results));
 		$paths = array();
 		foreach ($results as $result) {
-			$this->assertEquals($result['path'], \OC\Files\Filesystem::normalizePath($result['path']));
+			$this->assertSame($result['path'], \OC\Files\Filesystem::normalizePath($result['path']));
 			$paths[] = $result['path'];
 		}
 		$this->assertContains('/foo.txt', $paths);
@@ -224,7 +224,7 @@ class View extends \PHPUnit_Framework_TestCase {
 
 		$folderView = new \OC\Files\View('/folder');
 		$results = $folderView->search('bar');
-		$this->assertEquals(2, count($results));
+		$this->assertSame(2, count($results));
 		$paths = array();
 		foreach ($results as $result) {
 			$paths[] = $result['path'];
@@ -233,7 +233,7 @@ class View extends \PHPUnit_Framework_TestCase {
 		$this->assertContains('/bar.txt', $paths);
 
 		$results = $folderView->search('foo');
-		$this->assertEquals(2, count($results));
+		$this->assertSame(2, count($results));
 		$paths = array();
 		foreach ($results as $result) {
 			$paths[] = $result['path'];
@@ -241,8 +241,8 @@ class View extends \PHPUnit_Framework_TestCase {
 		$this->assertContains('/anotherstorage/foo.txt', $paths);
 		$this->assertContains('/anotherstorage/foo.png', $paths);
 
-		$this->assertEquals(6, count($rootView->searchByMime('text')));
-		$this->assertEquals(3, count($folderView->searchByMime('text')));
+		$this->assertSame(6, count($rootView->searchByMime('text')));
+		$this->assertSame(3, count($folderView->searchByMime('text')));
 	}
 
 	/**
@@ -256,14 +256,14 @@ class View extends \PHPUnit_Framework_TestCase {
 		$rootView = new \OC\Files\View('');
 
 		$cachedData = $rootView->getFileInfo('foo.txt');
-		$this->assertEquals(16, $cachedData['size']);
+		$this->assertSame(16, $cachedData['size']);
 
 		$rootView->putFileInfo('foo.txt', array('storage_mtime' => 10));
 		$storage1->file_put_contents('foo.txt', 'foo');
 		clearstatcache();
 
 		$cachedData = $rootView->getFileInfo('foo.txt');
-		$this->assertEquals(3, $cachedData['size']);
+		$this->assertSame(3, $cachedData['size']);
 	}
 
 	/**
@@ -365,14 +365,14 @@ class View extends \PHPUnit_Framework_TestCase {
 		$rootView->touch('foo.txt', 500);
 
 		$cachedData = $rootView->getFileInfo('foo.txt');
-		$this->assertEquals(500, $cachedData['mtime']);
-		$this->assertEquals($oldCachedData['storage_mtime'], $cachedData['storage_mtime']);
+		$this->assertSame(500, $cachedData['mtime']);
+		$this->assertSame($oldCachedData['storage_mtime'], $cachedData['storage_mtime']);
 
 		$rootView->putFileInfo('foo.txt', array('storage_mtime' => 1000)); //make sure the watcher detects the change
 		$rootView->file_put_contents('foo.txt', 'asd');
 		$cachedData = $rootView->getFileInfo('foo.txt');
 		$this->assertGreaterThanOrEqual($cachedData['mtime'], $oldCachedData['mtime']);
-		$this->assertEquals($cachedData['storage_mtime'], $cachedData['mtime']);
+		$this->assertSame($cachedData['storage_mtime'], $cachedData['mtime']);
 	}
 
 	/**
@@ -395,7 +395,7 @@ class View extends \PHPUnit_Framework_TestCase {
 
 		$subView->file_put_contents('/foo.txt', 'asd');
 		$this->assertNotNull($this->hookPath);
-		$this->assertEquals('/substorage/foo.txt', $this->hookPath);
+		$this->assertSame('/substorage/foo.txt', $this->hookPath);
 	}
 
 	private $hookPath;
@@ -478,7 +478,7 @@ class View extends \PHPUnit_Framework_TestCase {
 		$this->hookPath = null;
 
 		$view->file_put_contents('/asd.txt', 'foo');
-		$this->assertEquals('/asd.txt', $this->createHookPath);
+		$this->assertSame('/asd.txt', $this->createHookPath);
 		$this->createHookPath = null;
 
 		$view->file_put_contents('/asd.txt', 'foo');
@@ -495,7 +495,7 @@ class View extends \PHPUnit_Framework_TestCase {
 		$view = new \OC\Files\View('');
 
 		$result = $view->resolvePath($pathToTest);
-		$this->assertEquals($expected, $result[1]);
+		$this->assertSame($expected, $result[1]);
 
 		$exists = $view->file_exists($pathToTest);
 		$this->assertTrue($exists);
@@ -563,6 +563,6 @@ class View extends \PHPUnit_Framework_TestCase {
 		$scanner->scanFile('test', \OC\Files\Cache\Scanner::REUSE_ETAG);
 
 		$info2 = $view->getFileInfo('/test/test');
-		$this->assertEquals($info['etag'], $info2['etag']);
+		$this->assertSame($info['etag'], $info2['etag']);
 	}
 }

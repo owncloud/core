@@ -246,7 +246,7 @@ class Util {
 		} else {
 			$row = $result->fetchRow();
 			if ($row && isset($row['recovery_enabled'])) {
-				$recoveryEnabled[] = $row['recovery_enabled'];
+				$recoveryEnabled[] = (int)$row['recovery_enabled'];
 			}
 		}
 
@@ -525,7 +525,7 @@ class Util {
 				$realSize = (($lastChunkNr * 6126) + strlen($lastChunkContent));
 
 				// store file size
-				$result = $realSize;
+				$result = (int)$realSize;
 			}
 		}
 

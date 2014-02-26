@@ -36,7 +36,7 @@ class Permissions {
 		$sql = 'SELECT `permissions` FROM `*PREFIX*permissions` WHERE `user` = ? AND `fileid` = ?';
 		$result = \OC_DB::executeAudited($sql, array($user, $fileId));
 		if ($row = $result->fetchRow()) {
-			return $row['permissions'];
+			return (int)$row['permissions'];
 		} else {
 			return -1;
 		}
@@ -78,7 +78,7 @@ class Permissions {
 		$result = \OC_DB::executeAudited($sql, $params);
 		$filePermissions = array();
 		while ($row = $result->fetchRow()) {
-			$filePermissions[$row['fileid']] = $row['permissions'];
+			$filePermissions[(int)$row['fileid']] = (int)$row['permissions'];
 		}
 		return $filePermissions;
 	}

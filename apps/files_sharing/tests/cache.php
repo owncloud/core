@@ -2,9 +2,8 @@
 /**
  * ownCloud
  *
- * @author Vincent Petry, Bjoern Schiessle
+ * @author Vincent Petry
  * @copyright 2014 Vincent Petry <pvince81@owncloud.com>
- *            2014 Bjoern Schiessle <schiessle@owncloud.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -221,7 +220,7 @@ class Test_Files_Sharing_Cache extends Test_Files_Sharing_Base {
 	 * @param array $results array of files
 	 */
 	private function verifyFiles($examples, $results) {
-		$this->assertEquals(count($examples), count($results));
+		$this->assertSame(count($examples), count($results));
 
 		foreach ($examples as $example) {
 			foreach ($results as $key => $result) {
@@ -242,7 +241,7 @@ class Test_Files_Sharing_Cache extends Test_Files_Sharing_Base {
 	 */
 	private function verifyKeys($example, $result) {
 		foreach ($example as $key => $value) {
-			$this->assertEquals($value, $result[$key]);
+			$this->assertSame($value, $result[$key]);
 		}
 	}
 

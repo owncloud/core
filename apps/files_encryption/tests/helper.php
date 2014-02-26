@@ -39,11 +39,11 @@ class Test_Encryption_Helper extends \PHPUnit_Framework_TestCase {
 
 		$this->assertTrue(Encryption\Helper::isPartialFilePath($partFilename));
 
-		$this->assertEquals('testfile.txt', Encryption\Helper::stripPartialFileExtension($partFilename));
+		$this->assertSame('testfile.txt', Encryption\Helper::stripPartialFileExtension($partFilename));
 
 		$this->assertFalse(Encryption\Helper::isPartialFilePath($filename));
 
-		$this->assertEquals('testfile.txt', Encryption\Helper::stripPartialFileExtension($filename));
+		$this->assertSame('testfile.txt', Encryption\Helper::stripPartialFileExtension($filename));
 	}
 
 
@@ -57,11 +57,11 @@ class Test_Encryption_Helper extends \PHPUnit_Framework_TestCase {
 
 		$this->assertTrue(Encryption\Helper::isPartialFilePath($partFilename));
 
-		$this->assertEquals('testfile.txt', Encryption\Helper::stripPartialFileExtension($partFilename));
+		$this->assertSame('testfile.txt', Encryption\Helper::stripPartialFileExtension($partFilename));
 
 		$this->assertFalse(Encryption\Helper::isPartialFilePath($filename));
 
-		$this->assertEquals('testfile.txt', Encryption\Helper::stripPartialFileExtension($filename));
+		$this->assertSame('testfile.txt', Encryption\Helper::stripPartialFileExtension($filename));
 	}
 
 	function testGetPathToRealFile() {
@@ -73,8 +73,8 @@ class Test_Encryption_Helper extends \PHPUnit_Framework_TestCase {
 		$versionPath = "/user/files_versions/foo/bar/test.txt.v456756835";
 		$cachePath = "/user/cache/transferid636483/foo/bar/test.txt";
 
-		$this->assertEquals($relativePath, Encryption\Helper::getPathToRealFile($versionPath));
-		$this->assertEquals($relativePath, Encryption\Helper::getPathToRealFile($cachePath));
+		$this->assertSame($relativePath, Encryption\Helper::getPathToRealFile($versionPath));
+		$this->assertSame($relativePath, Encryption\Helper::getPathToRealFile($cachePath));
 	}
 
 	function testGetUser() {
@@ -85,14 +85,14 @@ class Test_Encryption_Helper extends \PHPUnit_Framework_TestCase {
 		$path4 ="/" . "/" . self::TEST_ENCRYPTION_HELPER_USER1;
 
 		// if we are logged-in every path should return the currently logged-in user
-		$this->assertEquals(self::TEST_ENCRYPTION_HELPER_USER1, Encryption\Helper::getUser($path3));
+		$this->assertSame(self::TEST_ENCRYPTION_HELPER_USER1, Encryption\Helper::getUser($path3));
 
 		// now log out
 		\Test_Encryption_Util::logoutHelper();
 
 		// now we should only get the user from /user/files and user/cache paths
-		$this->assertEquals(self::TEST_ENCRYPTION_HELPER_USER1, Encryption\Helper::getUser($path1));
-		$this->assertEquals(self::TEST_ENCRYPTION_HELPER_USER1, Encryption\Helper::getUser($path2));
+		$this->assertSame(self::TEST_ENCRYPTION_HELPER_USER1, Encryption\Helper::getUser($path1));
+		$this->assertSame(self::TEST_ENCRYPTION_HELPER_USER1, Encryption\Helper::getUser($path2));
 
 		$this->assertFalse(Encryption\Helper::getUser($path3));
 		$this->assertFalse(Encryption\Helper::getUser($path4));
