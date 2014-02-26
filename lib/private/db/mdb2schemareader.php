@@ -8,6 +8,8 @@
 
 namespace OC\DB;
 
+use Doctrine\DBAL\Schema\Schema;
+
 class MDB2SchemaReader {
 	/**
 	 * @var string $DBNAME
@@ -36,11 +38,11 @@ class MDB2SchemaReader {
 
 	/**
 	 * @param string $file
-	 * @return \Doctrine\DBAL\Schema\Schema
+	 * @return Schema
 	 * @throws \DomainException
 	 */
 	public function loadSchemaFromFile($file) {
-		$schema = new \Doctrine\DBAL\Schema\Schema();
+		$schema = new Schema();
 		$xml = simplexml_load_file($file);
 		foreach ($xml->children() as $child) {
 			/**
@@ -64,7 +66,7 @@ class MDB2SchemaReader {
 	}
 
 	/**
-	 * @param\Doctrine\DBAL\Schema\Schema $schema
+	 * @param \Doctrine\DBAL\Schema\Schema $schema
 	 * @param \SimpleXMLElement $xml
 	 * @throws \DomainException
 	 */
@@ -78,7 +80,7 @@ class MDB2SchemaReader {
 				case 'name':
 					$name = (string)$child;
 					$name = str_replace('*dbprefix*', $this->DBTABLEPREFIX, $name);
-					$name = $this->platform->quoteIdentifier($name);
+					$name = $this->quoteIdentifier($name);
 					$table = $schema->createTable($name);
 					break;
 				case 'create':
@@ -117,7 +119,6 @@ class MDB2SchemaReader {
 					break;
 				default:
 					throw new \DomainException('Unknown element: ' . $child->getName());
-
 			}
 		}
 	}
@@ -136,7 +137,7 @@ class MDB2SchemaReader {
 			switch ($child->getName()) {
 				case 'name':
 					$name = (string)$child;
-					$name = $this->platform->quoteIdentifier($name);
+					$name = $this->quoteIdentifier($name);
 					break;
 				case 'type':
 					$type = (string)$child;
@@ -269,14 +270,13 @@ class MDB2SchemaReader {
 						switch ($field->getName()) {
 							case 'name':
 								$field_name = (string)$field;
-								$field_name = $this->platform->quoteIdentifier($field_name);
+								$field_name = $this->quoteIdentifier($field_name);
 								$fields[] = $field_name;
 								break;
 							case 'sorting':
 								break;
 							default:
 								throw new \DomainException('Unknown element: ' . $field->getName());
-
 						}
 					}
 					break;
@@ -312,6 +312,18 @@ class MDB2SchemaReader {
 			$result = false;
 		}
 		return (bool)$result;
+	}
+
+	/**
+	 * @param $name
+	 * @return string
+	 */
+	private function quoteIdentifier($name) {
+		// on mssql there is no need to quote the identifier
+		if ($this->platform->getName() !== 'mssql') {
+			return $this->platform->quoteIdentifier($name);
+		}
+		return $name;
 	}
 
 }
