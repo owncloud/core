@@ -291,7 +291,7 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 		$problematicFileSizeData = "";
 		$cryptedFile = $this->view->file_put_contents($externalFilename, $problematicFileSizeData);
 		$this->assertTrue(is_int($cryptedFile));
-		$this->assertSame($this->util->getFileSize($externalFilename), 0);
+		$this->assertSame(0, $this->util->getFileSize($externalFilename));
 		$decrypt = $this->view->file_get_contents($externalFilename);
 		$this->assertSame($problematicFileSizeData, $decrypt);
 		$this->view->unlink($this->userId . '/files/' . $filename);
@@ -300,7 +300,7 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 		$problematicFileSizeData = str_pad("", 18377, "abc");
 		$cryptedFile = $this->view->file_put_contents($externalFilename, $problematicFileSizeData);
 		$this->assertTrue(is_int($cryptedFile));
-		$this->assertSame($this->util->getFileSize($externalFilename), 18377);
+		$this->assertSame(18377, $this->util->getFileSize($externalFilename));
 		$decrypt = $this->view->file_get_contents($externalFilename);
 		$this->assertSame($problematicFileSizeData, $decrypt);
 		$this->view->unlink($this->userId . '/files/' . $filename);
@@ -360,7 +360,7 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 		$fileInfoEncrypted = $this->view->getFileInfo($this->userId . '/files/' . $filename);
 
 		$this->assertTrue($fileInfoEncrypted instanceof \OC\Files\FileInfo);
-		$this->assertSame($fileInfoEncrypted['encrypted'], 1);
+		$this->assertTrue($fileInfoEncrypted['encrypted']);
 
 		// decrypt all encrypted files
 		$result = $util->decryptAll('/' . $this->userId . '/' . 'files');
@@ -396,8 +396,8 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 
 		$this->assertTrue($fileInfoEncrypted1 instanceof \OC\Files\FileInfo);
 		$this->assertTrue($fileInfoEncrypted2 instanceof \OC\Files\FileInfo);
-		$this->assertSame($fileInfoEncrypted1['encrypted'], 1);
-		$this->assertSame($fileInfoEncrypted2['encrypted'], 1);
+		$this->assertTrue($fileInfoEncrypted1['encrypted']);
+		$this->assertTrue($fileInfoEncrypted2['encrypted']);
 
 		// rename keyfile for file1 so that the decryption for file1 fails
 		// Expected behaviour: decryptAll() returns false, file2 gets decrypted anyway
