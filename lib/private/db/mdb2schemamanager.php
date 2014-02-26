@@ -8,6 +8,9 @@
 
 namespace OC\DB;
 
+use Doctrine\DBAL\Schema\ColumnDiff;
+use Doctrine\DBAL\Schema\TableDiff;
+
 class MDB2SchemaManager {
 	/**
 	 * @var \OC\DB\Connection $conn
@@ -82,6 +85,11 @@ class MDB2SchemaManager {
 		$platform = $this->conn->getDatabasePlatform();
 		foreach($schemaDiff->changedTables as $tableDiff) {
 			$tableDiff->name = $platform->quoteIdentifier($tableDiff->name);
+
+			// adjust unsigned migrations on mssql
+			if ($platform->getName() === 'mssql') {
+				$this->applyMssqlFixes($tableDiff);
+			}
 		}
 		
 		if ($generateSql) {
@@ -169,5 +177,18 @@ class MDB2SchemaManager {
 		}
 
 		return $script;
+	}
+
+	/**
+	 * @param TableDiff $tableDiff
+	 */
+	private function applyMssqlFixes($tableDiff) {
+		$tableDiff->changedColumns = array_filter($tableDiff->changedColumns, function(&$changedColumn) {
+			/** @var $changedColumn ColumnDiff */
+			$changedColumn->changedProperties = array_filter($changedColumn->changedProperties, function($prop) {
+				return $prop !== 'unsigned';
+			});
+			return count($changedColumn->changedProperties) !== 0;
+		});
 	}
 }
