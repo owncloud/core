@@ -39,59 +39,61 @@ class Cache extends \PHPUnit_Framework_TestCase {
 		$file1 = 'foo';
 		$file2 = 'foo/bar';
 		$data1 = array('size' => 100, 'mtime' => 50, 'mimetype' => 'foo/folder');
-		$data2 = array('size' => 1000, 'mtime' => 20, 'mimetype' => 'foo/file');
+		$data2 = array('size' => 1000, 'mtime' => 20, 'mimetype' => 'foo/file', 'etag' => '1234');
 
 		$this->assertFalse($this->cache->inCache($file1));
-		$this->assertEquals($this->cache->get($file1), null);
+		// doctrine returns false when no result could be fetched
+		$this->assertSame($this->cache->get($file1), false);
 
 		$id1 = $this->cache->put($file1, $data1);
 		$this->assertTrue($this->cache->inCache($file1));
 		$cacheData1 = $this->cache->get($file1);
 		foreach ($data1 as $key => $value) {
-			$this->assertEquals($value, $cacheData1[$key]);
+			$this->assertSame($value, $cacheData1[$key]);
 		}
-		$this->assertEquals($cacheData1['mimepart'], 'foo');
-		$this->assertEquals($cacheData1['fileid'], $id1);
-		$this->assertEquals($id1, $this->cache->getId($file1));
+		$this->assertSame($cacheData1['mimepart'], 'foo');
+		$this->assertSame($cacheData1['fileid'], $id1);
+		$this->assertSame($id1, $this->cache->getId($file1));
 
 		$this->assertFalse($this->cache->inCache($file2));
 		$id2 = $this->cache->put($file2, $data2);
 		$this->assertTrue($this->cache->inCache($file2));
 		$cacheData2 = $this->cache->get($file2);
 		foreach ($data2 as $key => $value) {
-			$this->assertEquals($value, $cacheData2[$key]);
+			$this->assertSame($value, $cacheData2[$key]);
 		}
-		$this->assertEquals($cacheData1['fileid'], $cacheData2['parent']);
-		$this->assertEquals($cacheData2['fileid'], $id2);
-		$this->assertEquals($id2, $this->cache->getId($file2));
-		$this->assertEquals($id1, $this->cache->getParentId($file2));
+		$this->assertSame($cacheData1['fileid'], $cacheData2['parent']);
+		$this->assertSame($cacheData2['fileid'], $id2);
+		$this->assertSame($id2, $this->cache->getId($file2));
+		$this->assertSame($id1, $this->cache->getParentId($file2));
 
 		$newSize = 1050;
 		$newId2 = $this->cache->put($file2, array('size' => $newSize));
 		$cacheData2 = $this->cache->get($file2);
-		$this->assertEquals($newId2, $id2);
-		$this->assertEquals($cacheData2['size'], $newSize);
-		$this->assertEquals($cacheData1, $this->cache->get($file1));
+		$this->assertSame($newId2, $id2);
+		$this->assertSame($cacheData2['size'], $newSize);
+		$this->assertSame($cacheData1, $this->cache->get($file1));
 
 		$this->cache->remove($file2);
 		$this->assertFalse($this->cache->inCache($file2));
-		$this->assertEquals($this->cache->get($file2), null);
+		// doctrine returns false when no result could be fetched
+		$this->assertSame($this->cache->get($file2), false);
 		$this->assertTrue($this->cache->inCache($file1));
 
-		$this->assertEquals($cacheData1, $this->cache->get($id1));
+		$this->assertSame($cacheData1, $this->cache->get($id1));
 	}
 
 	public function testPartial() {
 		$file1 = 'foo';
 
 		$this->cache->put($file1, array('size' => 10));
-		$this->assertEquals(array('size' => 10), $this->cache->get($file1));
+		$this->assertSame(array('size' => 10), $this->cache->get($file1));
 
 		$this->cache->put($file1, array('mtime' => 15));
-		$this->assertEquals(array('size' => 10, 'mtime' => 15), $this->cache->get($file1));
+		$this->assertSame(array('size' => 10, 'mtime' => 15), $this->cache->get($file1));
 
 		$this->cache->put($file1, array('size' => 12));
-		$this->assertEquals(array('size' => 12, 'mtime' => 15), $this->cache->get($file1));
+		$this->assertSame(array('size' => 12, 'mtime' => 15), $this->cache->get($file1));
 	}
 
 	public function testFolder() {
@@ -100,19 +102,19 @@ class Cache extends \PHPUnit_Framework_TestCase {
 		$file3 = 'folder/foo';
 		$data1 = array('size' => 100, 'mtime' => 50, 'mimetype' => 'httpd/unix-directory');
 		$fileData = array();
-		$fileData['bar'] = array('size' => 1000, 'mtime' => 20, 'mimetype' => 'foo/file');
-		$fileData['foo'] = array('size' => 20, 'mtime' => 25, 'mimetype' => 'foo/file');
+		$fileData['bar'] = array('size' => 1000, 'mtime' => 20, 'mimetype' => 'foo/file', 'etag' => 'abcdefg');
+		$fileData['foo'] = array('size' => 20, 'mtime' => 25, 'mimetype' => 'foo/file', 'etag' => '123456789');
 
 		$this->cache->put($file1, $data1);
 		$this->cache->put($file2, $fileData['bar']);
 		$this->cache->put($file3, $fileData['foo']);
 
 		$content = $this->cache->getFolderContents($file1);
-		$this->assertEquals(count($content), 2);
+		$this->assertSame(count($content), 2);
 		foreach ($content as $cachedData) {
 			$data = $fileData[$cachedData['name']];
 			foreach ($data as $name => $value) {
-				$this->assertEquals($value, $cachedData[$name]);
+				$this->assertSame($value, $cachedData[$name]);
 			}
 		}
 
@@ -120,17 +122,17 @@ class Cache extends \PHPUnit_Framework_TestCase {
 		$fileData['unkownSize'] = array('size' => -1, 'mtime' => 25, 'mimetype' => 'foo/file');
 		$this->cache->put($file4, $fileData['unkownSize']);
 
-		$this->assertEquals(-1, $this->cache->calculateFolderSize($file1));
+		$this->assertSame(-1, $this->cache->calculateFolderSize($file1));
 
 		$fileData['unkownSize'] = array('size' => 5, 'mtime' => 25, 'mimetype' => 'foo/file');
 		$this->cache->put($file4, $fileData['unkownSize']);
 
-		$this->assertEquals(1025, $this->cache->calculateFolderSize($file1));
+		$this->assertSame(1025, $this->cache->calculateFolderSize($file1));
 
 		$this->cache->remove($file2);
 		$this->cache->remove($file3);
 		$this->cache->remove($file4);
-		$this->assertEquals(0, $this->cache->calculateFolderSize($file1));
+		$this->assertSame(0, $this->cache->calculateFolderSize($file1));
 
 		$this->cache->remove('folder');
 		$this->assertFalse($this->cache->inCache('folder/foo'));
@@ -151,32 +153,32 @@ class Cache extends \PHPUnit_Framework_TestCase {
 		$this->cache->put($file3, $fileData['foo']);
 
 		$content = $this->cache->getFolderContents($file1);
-		$this->assertEquals(count($content), 2);
+		$this->assertSame(count($content), 2);
 		foreach ($content as $cachedData) {
 			$data = $fileData[$cachedData['name']];
 			// indirect retrieval swaps  unencrypted_size and size
-			$this->assertEquals($data['unencrypted_size'], $cachedData['size']);
+			$this->assertSame($data['unencrypted_size'], $cachedData['size']);
 		}
 
 		$file4 = 'folder/unkownSize';
 		$fileData['unkownSize'] = array('size' => -1, 'mtime' => 25, 'mimetype' => 'foo/file');
 		$this->cache->put($file4, $fileData['unkownSize']);
 
-		$this->assertEquals(-1, $this->cache->calculateFolderSize($file1));
+		$this->assertSame(-1, $this->cache->calculateFolderSize($file1));
 
 		$fileData['unkownSize'] = array('size' => 5, 'mtime' => 25, 'mimetype' => 'foo/file');
 		$this->cache->put($file4, $fileData['unkownSize']);
 
-		$this->assertEquals(916, $this->cache->calculateFolderSize($file1));
+		$this->assertSame(916, $this->cache->calculateFolderSize($file1));
 		// direct cache entry retrieval returns the original values
 		$entry = $this->cache->get($file1);
-		$this->assertEquals(1025, $entry['size']);
-		$this->assertEquals(916, $entry['unencrypted_size']);
+		$this->assertSame(1025, $entry['size']);
+		$this->assertSame(916, $entry['unencrypted_size']);
 
 		$this->cache->remove($file2);
 		$this->cache->remove($file3);
 		$this->cache->remove($file4);
-		$this->assertEquals(0, $this->cache->calculateFolderSize($file1));
+		$this->assertSame(0, $this->cache->calculateFolderSize($file1));
 
 		$this->cache->remove('folder');
 		$this->assertFalse($this->cache->inCache('folder/foo'));
@@ -199,7 +201,7 @@ class Cache extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue($this->cache->inCache($dir2));
 
 		// check that root size ignored the unknown sizes
-		$this->assertEquals(-1, $this->cache->calculateFolderSize(''));
+		$this->assertSame(-1, $this->cache->calculateFolderSize(''));
 
 		// clean up
 		$this->cache->remove('');
@@ -211,13 +213,13 @@ class Cache extends \PHPUnit_Framework_TestCase {
 	}
 
 	function testStatus() {
-		$this->assertEquals(\OC\Files\Cache\Cache::NOT_FOUND, $this->cache->getStatus('foo'));
+		$this->assertSame(\OC\Files\Cache\Cache::NOT_FOUND, $this->cache->getStatus('foo'));
 		$this->cache->put('foo', array('size' => -1));
-		$this->assertEquals(\OC\Files\Cache\Cache::PARTIAL, $this->cache->getStatus('foo'));
+		$this->assertSame(\OC\Files\Cache\Cache::PARTIAL, $this->cache->getStatus('foo'));
 		$this->cache->put('foo', array('size' => -1, 'mtime' => 20, 'mimetype' => 'foo/file'));
-		$this->assertEquals(\OC\Files\Cache\Cache::SHALLOW, $this->cache->getStatus('foo'));
+		$this->assertSame(\OC\Files\Cache\Cache::SHALLOW, $this->cache->getStatus('foo'));
 		$this->cache->put('foo', array('size' => 10));
-		$this->assertEquals(\OC\Files\Cache\Cache::COMPLETE, $this->cache->getStatus('foo'));
+		$this->assertSame(\OC\Files\Cache\Cache::COMPLETE, $this->cache->getStatus('foo'));
 	}
 
 	function testSearch() {
@@ -233,14 +235,14 @@ class Cache extends \PHPUnit_Framework_TestCase {
 		$this->cache->put($file2, $fileData['foobar']);
 		$this->cache->put($file3, $fileData['foo']);
 
-		$this->assertEquals(2, count($this->cache->search('%foo%')));
-		$this->assertEquals(1, count($this->cache->search('foo')));
-		$this->assertEquals(1, count($this->cache->search('%folder%')));
-		$this->assertEquals(1, count($this->cache->search('folder%')));
-		$this->assertEquals(3, count($this->cache->search('%')));
+		$this->assertSame(2, count($this->cache->search('%foo%')));
+		$this->assertSame(1, count($this->cache->search('foo')));
+		$this->assertSame(1, count($this->cache->search('%folder%')));
+		$this->assertSame(1, count($this->cache->search('folder%')));
+		$this->assertSame(3, count($this->cache->search('%')));
 
-		$this->assertEquals(3, count($this->cache->searchByMime('foo')));
-		$this->assertEquals(2, count($this->cache->searchByMime('foo/file')));
+		$this->assertSame(3, count($this->cache->searchByMime('foo')));
+		$this->assertSame(2, count($this->cache->searchByMime('foo/file')));
 	}
 
 	function testMove() {
@@ -301,36 +303,36 @@ class Cache extends \PHPUnit_Framework_TestCase {
 		$data['size'] = 12;
 		$this->cache->put($file4, $data);
 
-		$this->assertEquals($file3, $this->cache->getIncomplete());
+		$this->assertSame($file3, $this->cache->getIncomplete());
 	}
 
 	function testNonExisting() {
 		$this->assertFalse($this->cache->get('foo.txt'));
-		$this->assertEquals(array(), $this->cache->getFolderContents('foo'));
+		$this->assertSame(array(), $this->cache->getFolderContents('foo'));
 	}
 
 	function testGetById() {
 		$storageId = $this->storage->getId();
 		$data = array('size' => 1000, 'mtime' => 20, 'mimetype' => 'foo/file');
 		$id = $this->cache->put('foo', $data);
-		$this->assertEquals(array($storageId, 'foo'), \OC\Files\Cache\Cache::getById($id));
+		$this->assertSame(array($storageId, 'foo'), \OC\Files\Cache\Cache::getById($id));
 	}
 
 	function testStorageMTime() {
 		$data = array('size' => 1000, 'mtime' => 20, 'mimetype' => 'foo/file');
 		$this->cache->put('foo', $data);
 		$cachedData = $this->cache->get('foo');
-		$this->assertEquals($data['mtime'], $cachedData['storage_mtime']); //if no storage_mtime is saved, mtime should be used
+		$this->assertSame($data['mtime'], $cachedData['storage_mtime']); //if no storage_mtime is saved, mtime should be used
 
 		$this->cache->put('foo', array('storage_mtime' => 30)); //when setting storage_mtime, mtime is also set
 		$cachedData = $this->cache->get('foo');
-		$this->assertEquals(30, $cachedData['storage_mtime']);
-		$this->assertEquals(30, $cachedData['mtime']);
+		$this->assertSame(30, $cachedData['storage_mtime']);
+		$this->assertSame(30, $cachedData['mtime']);
 
 		$this->cache->put('foo', array('mtime' => 25)); //setting mtime does not change storage_mtime
 		$cachedData = $this->cache->get('foo');
-		$this->assertEquals(30, $cachedData['storage_mtime']);
-		$this->assertEquals(25, $cachedData['mtime']);
+		$this->assertSame(30, $cachedData['storage_mtime']);
+		$this->assertSame(25, $cachedData['mtime']);
 	}
 
 	function testLongId() {
@@ -339,7 +341,7 @@ class Cache extends \PHPUnit_Framework_TestCase {
 		$storageId = $storage->getId();
 		$data = array('size' => 1000, 'mtime' => 20, 'mimetype' => 'foo/file');
 		$id = $cache->put('foo', $data);
-		$this->assertEquals(array(md5($storageId), 'foo'), \OC\Files\Cache\Cache::getById($id));
+		$this->assertSame(array(md5($storageId), 'foo'), \OC\Files\Cache\Cache::getById($id));
 	}
 
 	/**
@@ -382,7 +384,7 @@ class Cache extends \PHPUnit_Framework_TestCase {
 		$this->assertGreaterThan(0, $cacheMock->put('folder/' . $folderWith00F6, $data));
 
 		// this is our bug, we have two different hashes with the same name (Schön)
-		$this->assertEquals(2, count($cacheMock->getFolderContents('folder')));
+		$this->assertSame(2, count($cacheMock->getFolderContents('folder')));
 	}
 
 	/**
@@ -415,14 +417,14 @@ class Cache extends \PHPUnit_Framework_TestCase {
 		$unNormalizedFolderName = $this->cache->get('folder/' . $folderWith0308);
 
 		// check if folder name was normalized
-		$this->assertEquals($folderWith00F6, $unNormalizedFolderName['name']);
+		$this->assertSame($folderWith00F6, $unNormalizedFolderName['name']);
 
 		// put normalized folder
 		$this->assertTrue(is_array($this->cache->get('folder/' . $folderWith00F6)));
 		$this->assertGreaterThan(0, $this->cache->put('folder/' . $folderWith00F6, $data));
 
 		// at this point we should have only one folder named "Schön"
-		$this->assertEquals(1, count($this->cache->getFolderContents('folder')));
+		$this->assertSame(1, count($this->cache->getFolderContents('folder')));
 	}
 
 	public function tearDown() {

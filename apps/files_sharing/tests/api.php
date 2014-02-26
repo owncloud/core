@@ -233,7 +233,7 @@ class Test_Files_Sharing_Api extends Test_Files_Sharing_Base {
 		// get item to determine share ID
 		$result = \OCP\Share::getItemShared('file', $fileInfo['fileid']);
 
-		$this->assertEquals(1, count($result));
+		$this->assertSame(1, count($result));
 
 		// get first element
 		$share = reset($result);
@@ -245,7 +245,7 @@ class Test_Files_Sharing_Api extends Test_Files_Sharing_Base {
 		$this->assertTrue($result->succeeded());
 
 		// test should return one share created from testCreateShare()
-		$this->assertEquals(1, count($result->getData()));
+		$this->assertSame(1, count($result->getData()));
 
 		\OCP\Share::unshare('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_USER,
 			\Test_Files_Sharing_Api::TEST_FILES_SHARING_API_USER2);
@@ -363,9 +363,9 @@ class Test_Files_Sharing_Api extends Test_Files_Sharing_Base {
 
 		$result = Share\Api::getShare($params);
 
-		$this->assertEquals(404, $result->getStatusCode());
+		$this->assertSame(404, $result->getStatusCode());
         $meta = $result->getMeta();
-		$this->assertEquals('share doesn\'t exist', $meta['message']);
+		$this->assertSame('share doesn\'t exist', $meta['message']);
 
 	}
 
@@ -392,7 +392,7 @@ class Test_Files_Sharing_Api extends Test_Files_Sharing_Base {
 		$items = \OCP\Share::getItemShared('file', null);
 
 		// make sure that we found a link share and a user share
-		$this->assertEquals(count($items), 2);
+		$this->assertSame(count($items), 2);
 
 		$linkShare = null;
 		$userShare = null;
@@ -412,7 +412,7 @@ class Test_Files_Sharing_Api extends Test_Files_Sharing_Base {
 
 		// update permissions
 
-		$this->assertEquals('31', $userShare['permissions']);
+		$this->assertSame(31, $userShare['permissions']);
 
 		$params = array();
 		$params['id'] = $userShare['id'];
@@ -436,7 +436,7 @@ class Test_Files_Sharing_Api extends Test_Files_Sharing_Base {
 
 		$this->assertTrue(is_array($newUserShare));
 
-		$this->assertEquals('1', $newUserShare['permissions']);
+		$this->assertSame(1, $newUserShare['permissions']);
 
 		// update password for link share
 
@@ -487,7 +487,7 @@ class Test_Files_Sharing_Api extends Test_Files_Sharing_Base {
 		$items = \OCP\Share::getItemShared('file', null);
 
 		// make sure that we found a link share and a user share
-		$this->assertEquals(count($items), 1);
+		$this->assertSame(count($items), 1);
 
 		$linkShare = null;
 
@@ -522,7 +522,7 @@ class Test_Files_Sharing_Api extends Test_Files_Sharing_Base {
 		}
 
 		$this->assertTrue(is_array($updatedLinkShare));
-		$this->assertEquals(7, $updatedLinkShare['permissions']);
+		$this->assertSame(7, $updatedLinkShare['permissions']);
 
 		// cleanup
 
@@ -546,7 +546,7 @@ class Test_Files_Sharing_Api extends Test_Files_Sharing_Base {
 
 		$items = \OCP\Share::getItemShared('file', null);
 
-		$this->assertEquals(2, count($items));
+		$this->assertSame(2, count($items));
 
 		foreach ($items as $item) {
 			$result = Share\Api::deleteShare(array('id' => $item['id']));

@@ -35,30 +35,30 @@ class FTP extends Storage {
 						  'root' => '/',
 						  'secure' => false );
 		$instance = new \OC\Files\Storage\FTP($config);
-		$this->assertEquals('ftp://ftp:ftp@localhost/', $instance->constructUrl(''));
+		$this->assertSame('ftp://ftp:ftp@localhost/', $instance->constructUrl(''));
 
 		$config['secure'] = true;
 		$instance = new \OC\Files\Storage\FTP($config);
-		$this->assertEquals('ftps://ftp:ftp@localhost/', $instance->constructUrl(''));
+		$this->assertSame('ftps://ftp:ftp@localhost/', $instance->constructUrl(''));
 
 		$config['secure'] = 'false';
 		$instance = new \OC\Files\Storage\FTP($config);
-		$this->assertEquals('ftp://ftp:ftp@localhost/', $instance->constructUrl(''));
+		$this->assertSame('ftp://ftp:ftp@localhost/', $instance->constructUrl(''));
 
 		$config['secure'] = 'true';
 		$instance = new \OC\Files\Storage\FTP($config);
-		$this->assertEquals('ftps://ftp:ftp@localhost/', $instance->constructUrl(''));
+		$this->assertSame('ftps://ftp:ftp@localhost/', $instance->constructUrl(''));
 
 		$config['root'] = '';
 		$instance = new \OC\Files\Storage\FTP($config);
-		$this->assertEquals('ftps://ftp:ftp@localhost/somefile.txt', $instance->constructUrl('somefile.txt'));
+		$this->assertSame('ftps://ftp:ftp@localhost/somefile.txt', $instance->constructUrl('somefile.txt'));
 
 		$config['root'] = '/abc';
 		$instance = new \OC\Files\Storage\FTP($config);
-		$this->assertEquals('ftps://ftp:ftp@localhost/abc/somefile.txt', $instance->constructUrl('somefile.txt'));
+		$this->assertSame('ftps://ftp:ftp@localhost/abc/somefile.txt', $instance->constructUrl('somefile.txt'));
 
 		$config['root'] = '/abc/';
 		$instance = new \OC\Files\Storage\FTP($config);
-		$this->assertEquals('ftps://ftp:ftp@localhost/abc/somefile.txt', $instance->constructUrl('somefile.txt'));
+		$this->assertSame('ftps://ftp:ftp@localhost/abc/somefile.txt', $instance->constructUrl('somefile.txt'));
 	}
 }

@@ -130,7 +130,7 @@ class Test_User_Ldap_Direct extends \PHPUnit_Framework_TestCase {
 		\OC_User::useBackend($backend);
 
 		$result = $backend->checkPassword('roland', 'dt19');
-		$this->assertEquals('gunslinger', $result);
+		$this->assertSame('gunslinger', $result);
 	}
 
 	public function testCheckPasswordWrongPassword() {
@@ -162,7 +162,7 @@ class Test_User_Ldap_Direct extends \PHPUnit_Framework_TestCase {
 		\OC_User::useBackend($backend);
 
 		$result = \OCP\User::checkPassword('roland', 'dt19');
-		$this->assertEquals('gunslinger', $result);
+		$this->assertSame('gunslinger', $result);
 	}
 
 	public function testCheckPasswordPublicAPIWrongPassword() {
@@ -240,7 +240,7 @@ class Test_User_Ldap_Direct extends \PHPUnit_Framework_TestCase {
 		$backend = new UserLDAP($access);
 
 		$result = $backend->getUsers();
-		$this->assertEquals(3, count($result));
+		$this->assertSame(3, count($result));
 	}
 
 	public function testGetUsersLimitOffset() {
@@ -249,7 +249,7 @@ class Test_User_Ldap_Direct extends \PHPUnit_Framework_TestCase {
 		$backend = new UserLDAP($access);
 
 		$result = $backend->getUsers('', 1, 2);
-		$this->assertEquals(1, count($result));
+		$this->assertSame(1, count($result));
 	}
 
 	public function testGetUsersLimitOffset2() {
@@ -258,7 +258,7 @@ class Test_User_Ldap_Direct extends \PHPUnit_Framework_TestCase {
 		$backend = new UserLDAP($access);
 
 		$result = $backend->getUsers('', 2, 1);
-		$this->assertEquals(2, count($result));
+		$this->assertSame(2, count($result));
 	}
 
 	public function testGetUsersSearchWithResult() {
@@ -267,7 +267,7 @@ class Test_User_Ldap_Direct extends \PHPUnit_Framework_TestCase {
 		$backend = new UserLDAP($access);
 
 		$result = $backend->getUsers('yo');
-		$this->assertEquals(2, count($result));
+		$this->assertSame(2, count($result));
 	}
 
 	public function testGetUsersSearchEmptyResult() {
@@ -276,7 +276,7 @@ class Test_User_Ldap_Direct extends \PHPUnit_Framework_TestCase {
 		$backend = new UserLDAP($access);
 
 		$result = $backend->getUsers('nix');
-		$this->assertEquals(0, count($result));
+		$this->assertSame(0, count($result));
 	}
 
 	public function testGetUsersViaAPINoParam() {
@@ -286,7 +286,7 @@ class Test_User_Ldap_Direct extends \PHPUnit_Framework_TestCase {
 		\OC_User::useBackend($backend);
 
 		$result = \OCP\User::getUsers();
-		$this->assertEquals(3, count($result));
+		$this->assertSame(3, count($result));
 	}
 
 	public function testGetUsersViaAPILimitOffset() {
@@ -296,7 +296,7 @@ class Test_User_Ldap_Direct extends \PHPUnit_Framework_TestCase {
 		\OC_User::useBackend($backend);
 
 		$result = \OCP\User::getUsers('', 1, 2);
-		$this->assertEquals(1, count($result));
+		$this->assertSame(1, count($result));
 	}
 
 	public function testGetUsersViaAPILimitOffset2() {
@@ -306,7 +306,7 @@ class Test_User_Ldap_Direct extends \PHPUnit_Framework_TestCase {
 		\OC_User::useBackend($backend);
 
 		$result = \OCP\User::getUsers('', 2, 1);
-		$this->assertEquals(2, count($result));
+		$this->assertSame(2, count($result));
 	}
 
 	public function testGetUsersViaAPISearchWithResult() {
@@ -316,7 +316,7 @@ class Test_User_Ldap_Direct extends \PHPUnit_Framework_TestCase {
 		\OC_User::useBackend($backend);
 
 		$result = \OCP\User::getUsers('yo');
-		$this->assertEquals(2, count($result));
+		$this->assertSame(2, count($result));
 	}
 
 	public function testGetUsersViaAPISearchEmptyResult() {
@@ -326,7 +326,7 @@ class Test_User_Ldap_Direct extends \PHPUnit_Framework_TestCase {
 		\OC_User::useBackend($backend);
 
 		$result = \OCP\User::getUsers('nix');
-		$this->assertEquals(0, count($result));
+		$this->assertSame(0, count($result));
 	}
 
 	public function testUserExists() {
@@ -430,13 +430,13 @@ class Test_User_Ldap_Direct extends \PHPUnit_Framework_TestCase {
 
 		//absolut path
 		$result = $backend->getHome('gunslinger');
-		$this->assertEquals('/tmp/rolandshome/', $result);
+		$this->assertSame('/tmp/rolandshome/', $result);
 
 		//datadir-relativ path
 		$result = $backend->getHome('ladyofshadows');
 		$datadir = \OCP\Config::getSystemValue('datadirectory',
 											   \OC::$SERVERROOT.'/data');
-		$this->assertEquals($datadir.'/susannah/', $result);
+		$this->assertSame($datadir.'/susannah/', $result);
 
 		//no path at all – triggers OC default behaviour
 		$result = $backend->getHome('newyorker');
@@ -478,11 +478,11 @@ class Test_User_Ldap_Direct extends \PHPUnit_Framework_TestCase {
 
 		//with displayName
 		$result = $backend->getDisplayName('gunslinger');
-		$this->assertEquals('Roland Deschain', $result);
+		$this->assertSame('Roland Deschain', $result);
 
 		//empty displayname retrieved
 		$result = $backend->getDisplayName('newyorker');
-		$this->assertEquals(null, $result);
+		$this->assertNull($result);
 	}
 
 	public function testGetDisplayNamePublicAPI() {
@@ -494,11 +494,11 @@ class Test_User_Ldap_Direct extends \PHPUnit_Framework_TestCase {
 
 		//with displayName
 		$result = \OCP\User::getDisplayName('gunslinger');
-		$this->assertEquals('Roland Deschain', $result);
+		$this->assertSame('Roland Deschain', $result);
 
 		//empty displayname retrieved
 		$result = \OCP\User::getDisplayName('newyorker');
-		$this->assertEquals('newyorker', $result);
+		$this->assertSame('newyorker', $result);
 	}
 
 	//no test for getDisplayNames, because it just invokes getUsers and
@@ -528,7 +528,7 @@ class Test_User_Ldap_Direct extends \PHPUnit_Framework_TestCase {
 		$backend = new UserLDAP($access);
 
 		$result = $backend->countUsers();
-		$this->assertEquals(5, $result);
+		$this->assertSame(5, $result);
 	}
 
 	public function testCountUsersFailing() {

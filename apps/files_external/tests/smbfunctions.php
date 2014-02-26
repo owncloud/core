@@ -29,13 +29,13 @@ class SMBFunctions extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetId() {
-		$this->assertEquals('smb::test@smbhost//sharename//rootdir/', $this->instance->getId());
+		$this->assertSame('smb::test@smbhost//sharename//rootdir/', $this->instance->getId());
 	}
 
 	public function testConstructUrl() {
-		$this->assertEquals("smb://test:testpassword@smbhost/sharename/rootdir/abc", $this->instance->constructUrl('/abc'));
-		$this->assertEquals("smb://test:testpassword@smbhost/sharename/rootdir/abc", $this->instance->constructUrl('/abc/'));
-		$this->assertEquals("smb://test:testpassword@smbhost/sharename/rootdir/abc%2F", $this->instance->constructUrl('/abc/.'));
-		$this->assertEquals("smb://test:testpassword@smbhost/sharename/rootdir/abc%2Fdef", $this->instance->constructUrl('/abc/def'));
+		$this->assertSame("smb://test:testpassword@smbhost/sharename/rootdir/abc", $this->instance->constructUrl('/abc'));
+		$this->assertSame("smb://test:testpassword@smbhost/sharename/rootdir/abc", $this->instance->constructUrl('/abc/'));
+		$this->assertSame("smb://test:testpassword@smbhost/sharename/rootdir/abc%2F", $this->instance->constructUrl('/abc/.'));
+		$this->assertSame("smb://test:testpassword@smbhost/sharename/rootdir/abc%2Fdef", $this->instance->constructUrl('/abc/def'));
 	}
 }

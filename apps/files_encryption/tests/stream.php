@@ -111,7 +111,7 @@ class Test_Encryption_Stream extends \PHPUnit_Framework_TestCase {
 		$handle = $view->fopen($filename, 'r');
 
 		// check if stream is at position zero
-		$this->assertEquals(0, ftell($handle));
+		$this->assertSame(0, ftell($handle));
 
 		// set stream options
 		$this->assertTrue(flock($handle, LOCK_SH));
@@ -175,7 +175,7 @@ class Test_Encryption_Stream extends \PHPUnit_Framework_TestCase {
 		$handle = $view->fopen($filename, 'r');
 
 		// set stream options
-		$this->assertEquals(0, stream_set_write_buffer($handle, 1024));
+		$this->assertSame(0, stream_set_write_buffer($handle, 1024));
 
 		// tear down
 		$view->unlink($filename);
@@ -212,7 +212,7 @@ class Test_Encryption_Stream extends \PHPUnit_Framework_TestCase {
 		$contentFromTmpFile = stream_get_contents($handle);
 
 		// check if it was successful
-		$this->assertEquals($this->dataShort, $contentFromTmpFile);
+		$this->assertSame($this->dataShort, $contentFromTmpFile);
 
 		// clean up
 		unlink($tmpFilename);

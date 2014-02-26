@@ -88,10 +88,10 @@ class Test_Files_Sharing_Watcher extends Test_Files_Sharing_Base {
 
 		// the owner's parent dirs must have increase size
 		$newSizes = self::getOwnerDirSizes('files/container/shareddir');
-		$this->assertEquals($initialSizes[''] + $dataLen, $newSizes['']);
-		$this->assertEquals($initialSizes['files'] + $dataLen, $newSizes['files']);
-		$this->assertEquals($initialSizes['files/container'] + $dataLen, $newSizes['files/container']);
-		$this->assertEquals($initialSizes['files/container/shareddir'] + $dataLen, $newSizes['files/container/shareddir']);
+		$this->assertSame($initialSizes[''] + $dataLen, $newSizes['']);
+		$this->assertSame($initialSizes['files'] + $dataLen, $newSizes['files']);
+		$this->assertSame($initialSizes['files/container'] + $dataLen, $newSizes['files/container']);
+		$this->assertSame($initialSizes['files/container/shareddir'] + $dataLen, $newSizes['files/container/shareddir']);
 
 		// no more updates
 		$result = $this->sharedStorage->getWatcher()->checkUpdate('shareddir');
@@ -119,11 +119,11 @@ class Test_Files_Sharing_Watcher extends Test_Files_Sharing_Base {
 
 		// the owner's parent dirs must have increase size
 		$newSizes = self::getOwnerDirSizes('files/container/shareddir/subdir');
-		$this->assertEquals($initialSizes[''] + $dataLen, $newSizes['']);
-		$this->assertEquals($initialSizes['files'] + $dataLen, $newSizes['files']);
-		$this->assertEquals($initialSizes['files/container'] + $dataLen, $newSizes['files/container']);
-		$this->assertEquals($initialSizes['files/container/shareddir'] + $dataLen, $newSizes['files/container/shareddir']);
-		$this->assertEquals($initialSizes['files/container/shareddir/subdir'] + $dataLen, $newSizes['files/container/shareddir/subdir']);
+		$this->assertSame($initialSizes[''] + $dataLen, $newSizes['']);
+		$this->assertSame($initialSizes['files'] + $dataLen, $newSizes['files']);
+		$this->assertSame($initialSizes['files/container'] + $dataLen, $newSizes['files/container']);
+		$this->assertSame($initialSizes['files/container/shareddir'] + $dataLen, $newSizes['files/container/shareddir']);
+		$this->assertSame($initialSizes['files/container/shareddir/subdir'] + $dataLen, $newSizes['files/container/shareddir/subdir']);
 
 		// no more updates
 		$result = $this->sharedStorage->getWatcher()->checkUpdate('shareddir/subdir');

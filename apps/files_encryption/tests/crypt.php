@@ -122,12 +122,12 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 
 		$decrypted = Encryption\Crypt::decryptPrivateKey($crypted, 'hat');
 
-		$this->assertEquals($this->genPrivateKey, $decrypted);
+		$this->assertSame($this->genPrivateKey, $decrypted);
 
 		//test private key decrypt with wrong password
 		$wrongPasswd = Encryption\Crypt::decryptPrivateKey($crypted, 'hat2');
 
-		$this->assertEquals(false, $wrongPasswd);
+		$this->assertFalse($wrongPasswd);
 
 	}
 
@@ -146,7 +146,7 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 
 		$decrypt = Encryption\Crypt::symmetricDecryptFileContent($crypted, 'hat');
 
-		$this->assertEquals($this->dataShort, $decrypt);
+		$this->assertSame($this->dataShort, $decrypt);
 
 	}
 
@@ -196,7 +196,7 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 		$manualDecrypt = Encryption\Crypt::symmetricDecryptFileContent($retreivedCryptedFile, $plainKeyfile);
 
 		// Check that decrypted data matches
-		$this->assertEquals($this->dataShort, $manualDecrypt);
+		$this->assertSame($this->dataShort, $manualDecrypt);
 
 		// Teardown
 		$this->view->unlink($this->userId . '/files/' . $filename);
@@ -281,7 +281,7 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 
 		}
 
-		$this->assertEquals($this->dataLong . $this->dataLong, $decrypt);
+		$this->assertSame($this->dataLong . $this->dataLong, $decrypt);
 
 		// Teardown
 
@@ -316,7 +316,7 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 		// Get file decrypted contents
 		$decrypt = file_get_contents('crypt:///' . $this->userId . '/files/' . $filename);
 
-		$this->assertEquals($this->dataShort, $decrypt);
+		$this->assertSame($this->dataShort, $decrypt);
 
 		// tear down
 		$this->view->unlink($this->userId . '/files/' . $filename);
@@ -338,7 +338,7 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 		// Get file decrypted contents
 		$decrypt = file_get_contents('crypt:///' . $this->userId . '/files/' . $filename);
 
-		$this->assertEquals($this->dataLong, $decrypt);
+		$this->assertSame($this->dataLong, $decrypt);
 
 		// tear down
 		$this->view->unlink($this->userId . '/files/' . $filename);
@@ -368,7 +368,7 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 
 		$pair1 = Encryption\Crypt::createKeypair();
 
-		$this->assertEquals(2, count($pair1));
+		$this->assertSame(2, count($pair1));
 
 		$this->assertTrue(strlen($pair1['publicKey']) > 1);
 
@@ -382,7 +382,7 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 
 		$decrypt = Encryption\Crypt::multiKeyDecrypt($crypted['data'], $crypted['keys'][0], $pair1['privateKey']);
 
-		$this->assertEquals($this->dataShort, $decrypt);
+		$this->assertSame($this->dataShort, $decrypt);
 
 	}
 
@@ -396,7 +396,7 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 
 		$decrypted = Encryption\Crypt::legacyBlockDecrypt($crypted, $this->pass);
 
-		$this->assertEquals($this->dataShort, $decrypted);
+		$this->assertSame($this->dataShort, $decrypted);
 
 	}
 
@@ -410,7 +410,7 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 
 		$decrypted = Encryption\Crypt::legacyBlockDecrypt($crypted, $this->pass);
 
-		$this->assertEquals($this->dataLong, $decrypted);
+		$this->assertSame($this->dataLong, $decrypted);
 	}
 
 	/**
@@ -429,7 +429,7 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 		// Get file decrypted contents
 		$decrypt = file_get_contents('crypt:///' . $this->userId . '/files/' . $filename);
 
-		$this->assertEquals($this->dataLong, $decrypt);
+		$this->assertSame($this->dataLong, $decrypt);
 
 		$newFilename = 'tmp-new-' . uniqid();
 		$view = new \OC\Files\View('/' . $this->userId . '/files');
@@ -438,7 +438,7 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 		// Get file decrypted contents
 		$newDecrypt = file_get_contents('crypt:///'. $this->userId . '/files/' . $newFilename);
 
-		$this->assertEquals($this->dataLong, $newDecrypt);
+		$this->assertSame($this->dataLong, $newDecrypt);
 
 		// tear down
 		$view->unlink($newFilename);
@@ -460,7 +460,7 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 		// Get file decrypted contents
 		$decrypt = file_get_contents('crypt:///' . $this->userId . '/files/' . $filename);
 
-		$this->assertEquals($this->dataLong, $decrypt);
+		$this->assertSame($this->dataLong, $decrypt);
 
 		$newFolder = '/newfolder' . uniqid();
 		$newFilename = 'tmp-new-' . uniqid();
@@ -471,7 +471,7 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 		// Get file decrypted contents
 		$newDecrypt = file_get_contents('crypt:///' . $this->userId . '/files/' . $newFolder . '/' . $newFilename);
 
-		$this->assertEquals($this->dataLong, $newDecrypt);
+		$this->assertSame($this->dataLong, $newDecrypt);
 
 		// tear down
 		$view->unlink($newFolder);
@@ -498,7 +498,7 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 		// Get file decrypted contents
 		$decrypt = file_get_contents('crypt:///' . $this->userId . '/files/' . $folder . $filename);
 
-		$this->assertEquals($this->dataLong, $decrypt);
+		$this->assertSame($this->dataLong, $decrypt);
 
 		$newFolder = '/newfolder/subfolder' . uniqid();
 		$view->mkdir('/newfolder');
@@ -508,7 +508,7 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 		// Get file decrypted contents
 		$newDecrypt = file_get_contents('crypt:///' . $this->userId . '/files/' . $newFolder . $filename);
 
-		$this->assertEquals($this->dataLong, $newDecrypt);
+		$this->assertSame($this->dataLong, $newDecrypt);
 
 		// tear down
 		$view->unlink($newFolder);
@@ -530,7 +530,7 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 		// Get file decrypted contents
 		$decrypt = file_get_contents('crypt:///' . $this->userId . '/files/' . $filename);
 
-		$this->assertEquals($this->dataLong, $decrypt);
+		$this->assertSame($this->dataLong, $decrypt);
 
 		// change password
 		\OC_User::setPassword($this->userId, 'test', null);
@@ -543,7 +543,7 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 		// Get file decrypted contents
 		$newDecrypt = file_get_contents('crypt:///' . $this->userId . '/files/' . $filename);
 
-		$this->assertEquals($this->dataLong, $newDecrypt);
+		$this->assertSame($this->dataLong, $newDecrypt);
 
 		// tear down
 		// change password back
@@ -569,7 +569,7 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 		// Get file decrypted contents
 		$decrypt = $view->file_get_contents($filename);
 
-		$this->assertEquals($this->dataShort, $decrypt);
+		$this->assertSame($this->dataShort, $decrypt);
 
 		// Save long data as encrypted file using stream wrapper
 		$cryptedFileLong = $view->file_put_contents($filename, $this->dataLong);
@@ -580,7 +580,7 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 		// Get file decrypted contents
 		$decryptLong = $view->file_get_contents($filename);
 
-		$this->assertEquals($this->dataLong, $decryptLong);
+		$this->assertSame($this->dataLong, $decryptLong);
 
 		// tear down
 		$view->unlink($filename);
@@ -604,7 +604,7 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 		// Get file decrypted contents
 		$decrypt = $view->file_get_contents($filename);
 
-		$this->assertEquals($this->dataShort, $decrypt);
+		$this->assertSame($this->dataShort, $decrypt);
 
 		// tear down
 		$view->unlink($filename);
@@ -628,7 +628,7 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 		// Get file decrypted contents
 		$decrypt = $view->file_get_contents($filename);
 
-		$this->assertEquals($this->dataShort, $decrypt);
+		$this->assertSame($this->dataShort, $decrypt);
 
 		// tear down
 		$view->unlink($filename);
@@ -652,7 +652,7 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 		// Get file decrypted contents
 		$decrypt = fgets($handle);
 
-		$this->assertEquals($this->dataShort, $decrypt);
+		$this->assertSame($this->dataShort, $decrypt);
 
 		// tear down
 		$view->unlink($filename);
