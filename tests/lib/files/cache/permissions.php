@@ -48,12 +48,12 @@ class Permissions extends \PHPUnit_Framework_TestCase {
 			$this->permissionsCache->set($id, $user, 10 + $id);
 			$expected[$id] = 10 + $id;
 		}
-		$this->assertSame($expected, $this->permissionsCache->getMultiple($ids, $user));
+		$this->assertEquals($expected, $this->permissionsCache->getMultiple($ids, $user));
 
 		$this->permissionsCache->removeMultiple(array(10, 9), $user);
 		unset($expected[9]);
 		unset($expected[10]);
-		$this->assertSame($expected, $this->permissionsCache->getMultiple($ids, $user));
+		$this->assertEquals($expected, $this->permissionsCache->getMultiple($ids, $user));
 
 		$this->permissionsCache->removeMultiple($ids, $user);
 	}
