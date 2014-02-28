@@ -90,6 +90,9 @@ class MDB2SchemaManager {
 			if ($platform->getName() === 'mssql') {
 				$this->applyMssqlFixes($tableDiff);
 			}
+			foreach($tableDiff->changedColumns as $column) {
+				$column->oldColumnName = $platform->quoteIdentifier($column->oldColumnName);
+			}
 		}
 		
 		if ($generateSql) {
