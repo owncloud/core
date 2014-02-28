@@ -150,7 +150,7 @@ class Server extends SimpleContainer implements IServerContainer {
 		});
 		$this->registerService('AppManager', function($c) {
 			/** @var $c SimpleContainer */
-			return new \OC\App\Manager(\OC::$APPSROOTS, $c->query('AllConfig'));
+			return new \OC\App\Manager(\OC::$APPSROOTS, $c->query('AppConfig'));
 		});
 		$this->registerService('AppLoader', function($c) {
 			/** @var $c SimpleContainer */

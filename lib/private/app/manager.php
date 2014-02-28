@@ -62,7 +62,7 @@ class Manager implements ManagerInterface {
 		if (!$forceRefresh && isset($this->enabledApps)) {
 			return $this->enabledApps;
 		}
-		$values = $this->config->getValues(false, 'enabled'); // TODO: DI
+		$values = $this->config->getValues(false, 'enabled');
 		$this->enabledApps = array('files');
 		foreach($values as $app => $value) {
 		  if ($value === 'yes') {
@@ -169,7 +169,7 @@ class Manager implements ManagerInterface {
 	 * @brief Get information about the app
 	 * @param string $app appid
 	 *
-	 * @return \OCP\App\IInfo|null
+	 * @return \OC\App\Info
 	 * @throws \OutOfBoundsException when not app is not available/found
 	 */
 	public function getInfo( $app ) {

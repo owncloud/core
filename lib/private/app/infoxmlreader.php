@@ -8,7 +8,16 @@
 
 namespace OC\App;
 
+/**
+* Reader for the appinfo/info.xml file
+*/
 class InfoXMLReader {
+	/**
+	 * @brief Get information about an app
+	 * @param string $filename path to info.xml file
+	 *
+	 * @return array with information about the app
+	 */
 	public function getInfo($filename) {
 		$data = array();
 		$content = @file_get_contents($filename);
