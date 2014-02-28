@@ -78,7 +78,7 @@ class OC_TemplateLayout extends OC_Template {
 		} else {
 
 			// Add the js files
-			$jsfiles = self::findJavascriptFiles(OC_Util::$scripts);
+			$jsfiles = $this->findJavascriptFiles(OC_Util::$scripts);
 			$this->assign('jsfiles', array());
 			if (OC_Config::getValue('installed', false) && $renderas!='error') {
 				$this->append( 'jsfiles', OC_Helper::linkToRoute('js_config') . $versionParameter);
@@ -90,7 +90,7 @@ class OC_TemplateLayout extends OC_Template {
 			}
 
 			// Add the css files
-			$cssfiles = self::findStylesheetFiles(OC_Util::$styles);
+			$cssfiles = $this->findStylesheetFiles(OC_Util::$styles);
 			$this->assign('cssfiles', array());
 			foreach($cssfiles as $info) {
 				$web = $info[1];
@@ -105,7 +105,7 @@ class OC_TemplateLayout extends OC_Template {
 	 * @param array $styles
 	 * @return array
 	 */
-	static public function findStylesheetFiles($styles) {
+	private function findStylesheetFiles($styles) {
 		// Read the selected theme from the config file
 		$theme = OC_Util::getTheme();
 
@@ -123,7 +123,7 @@ class OC_TemplateLayout extends OC_Template {
 	 * @param array $scripts
 	 * @return array
 	 */
-	static public function findJavascriptFiles($scripts) {
+	private function findJavascriptFiles($scripts) {
 		// Read the selected theme from the config file
 		$theme = OC_Util::getTheme();
 
@@ -139,7 +139,7 @@ class OC_TemplateLayout extends OC_Template {
 
 	public function generateAssets()
 	{
-		$jsFiles = self::findJavascriptFiles(OC_Util::$scripts);
+		$jsFiles = $this->findJavascriptFiles(OC_Util::$scripts);
 		$jsHash = self::hashScriptNames($jsFiles);
 
 		if (!file_exists("assets/$jsHash.js")) {
@@ -155,7 +155,7 @@ class OC_TemplateLayout extends OC_Template {
 			$writer->writeAsset($jsCollection);
 		}
 
-		$cssFiles = self::findStylesheetFiles(OC_Util::$styles);
+		$cssFiles = $this->findStylesheetFiles(OC_Util::$styles);
 		$cssHash = self::hashScriptNames($cssFiles);
 
 		if (!file_exists("assets/$cssHash.css")) {
