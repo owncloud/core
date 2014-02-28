@@ -123,7 +123,7 @@ class OC_Files {
 			header("HTTP/1.0 403 Forbidden");
 			die('403 Forbidden');
 		}
-		if($only_header) {
+		if($only_header || $xsendfile) {
 			return ;
 		}
 		if ($zip) {
