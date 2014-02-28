@@ -400,8 +400,8 @@ class OC {
 	public static function bootstrap() {
 		// register simple autoloader to be safe
 		require_once __DIR__ . '/autoloader.php';
-		$loader = new \OC\Autoloader();
-		$loader->register();
+		self::$loader = new \OC\Autoloader();
+		self::$loader->register();
 
 		// calculate the server root directory
 		OC::$SERVERROOT = str_replace("\\", '/', substr(__DIR__, 0, -4));
@@ -413,21 +413,19 @@ class OC {
 		}
 		OC_Config::$object = new \OC\Config(self::$configDir);
 
-		$memoryCache = false;
 		if (OC_Config::getValue('instanceid', false)) {
 			// \OC\Memcache\Cache has a hidden dependency on
 			// OC_Util::getInstanceId() for namespacing. See #5409.
 			try {
 				$memoryCache = \OC\Memcache\Factory::createLowLatency('Autoloader');
+
+				// unload the non-caching loader and setup the caching loader
+				$loader = new \OC\CachingAutoloader($memoryCache);
+				$loader->register();
+				self::$loader->unregister();
+				self::$loader = $loader;
 			} catch (\Exception $ex) {
 			}
-		}
-		if ($memoryCache) {
-			self::$loader = new \OC\CachingAutoloader($memoryCache);
-			self::$loader->register();
-			$loader->unregister();
-		} else {
-			self::$loader = $loader;
 		}
 		self::$loader->registerPrefix('Doctrine\\Common', 'doctrine/common/lib');
 		self::$loader->registerPrefix('Doctrine\\DBAL', 'doctrine/dbal/lib');
