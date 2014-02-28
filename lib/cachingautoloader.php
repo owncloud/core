@@ -11,12 +11,16 @@ namespace OC;
 require_once __DIR__ . '/autoloader.php';
 
 class CachingAutoloader extends Autoloader {
+
+	/**
+	 * @var \OC\Memcache\Cache
+	 */
 	protected $memoryCache = null;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param object $cache   the cacher for class information
+	 * @param \OC\Memcache\Cache $cache the cache for class information
 	 *
 	 */
 	public function __construct($cache)
@@ -33,8 +37,8 @@ class CachingAutoloader extends Autoloader {
 		// Use the normal class loading path
 		$path = parent::findClass($class);
 		if (is_string($path)) {
-			// Save in our memory cache
-			$this->memoryCache->set($class, $path, 60); // cache 60 sec
+			// Save in our memory cache for 60 sec
+			$this->memoryCache->set($class, $path, 60);
 			return $path;
 		}
 		return false;
