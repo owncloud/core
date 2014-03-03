@@ -84,7 +84,11 @@ class MDB2SchemaManager {
 
 		$platform = $this->conn->getDatabasePlatform();
 		foreach($schemaDiff->changedTables as $tableDiff) {
-			$tableDiff->name = $platform->quoteIdentifier($tableDiff->name);
+			// no quoting on mssql - if the name of $tablediff is quoted the generated constraint
+			// names will no longer match the previous generated ones.
+			if ($platform->getName() !== 'mssql') {
+				$tableDiff->name = $platform->quoteIdentifier($tableDiff->name);
+			}
 
 			// adjust unsigned migrations on mssql
 			if ($platform->getName() === 'mssql') {
@@ -186,6 +190,8 @@ class MDB2SchemaManager {
 	 * @param TableDiff $tableDiff
 	 */
 	private function applyMssqlFixes($tableDiff) {
+
+		// strip off changes on the unsigned option - mssql does not support that option
 		$tableDiff->changedColumns = array_filter($tableDiff->changedColumns, function(&$changedColumn) {
 			/** @var $changedColumn ColumnDiff */
 			$changedColumn->changedProperties = array_filter($changedColumn->changedProperties, function($prop) {
@@ -193,5 +199,20 @@ class MDB2SchemaManager {
 			});
 			return count($changedColumn->changedProperties) !== 0;
 		});
+
+		// Until http://www.doctrine-project.org/jira/browse/DBAL-825 is resolved we need to tweak column type changes
+		// and add 'default' to the changed properties to trigger proper migration
+		$tableDiff->changedColumns = array_map(function($changedColumn) {
+			/** @var $changedColumn ColumnDiff */
+			if (!in_array('default', $changedColumn->changedProperties)) {
+				// 'default' is added if 'type' of 'fixed' are changed
+				if (in_array('type', $changedColumn->changedProperties) ||
+					in_array('fixed', $changedColumn->changedProperties)
+				) {
+					$changedColumn->changedProperties[] = 'default';
+				}
+			}
+			return $changedColumn;
+		}, $tableDiff->changedColumns);
 	}
 }
