@@ -106,6 +106,20 @@ $result = array();
 if (strpos($dir, '..') === false) {
 	$fileCount = count($files['name']);
 	for ($i = 0; $i < $fileCount; $i++) {
+		if (!\OCP\Util::isValidFileName($files['name'][$i])) {
+			$result[] = array(
+				'status' => 'invalidfilename',
+				'data' => array(
+					'message' =>
+						$l->t(
+							"Invalid name, '\\', '/', '<', '>', ':', '\"', '|', '?' and '*' are not allowed."
+						),
+					'name' => $files['name'][$i]
+				)
+			);
+			continue;
+		}
+
 		// $path needs to be normalized - this failed within drag'n'drop upload to a sub-folder
 		if (isset($_POST['resolution']) && $_POST['resolution']==='autorename') {
 			// append a number in brackets like 'filename (2).ext'
