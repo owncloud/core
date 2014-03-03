@@ -144,7 +144,6 @@ if (isset($path)) {
 		OCP\Util::addScript('files_sharing', 'public');
 		OCP\Util::addScript('files', 'fileactions');
 		OCP\Util::addScript('files', 'jquery.iframe-transport');
-		OCP\Util::addScript('files', 'jquery.fileupload');
 		$maxUploadFilesize=OCP\Util::maxUploadFilesize($path);
 		$tmpl = new OCP\Template('files_sharing', 'public', 'base');
 		$tmpl->assign('displayName', \OCP\User::getDisplayName($shareOwner));
@@ -159,6 +158,11 @@ if (isset($path)) {
 		}
 		if ($linkItem['item_type'] !== 'folder') {
 			$allowPublicUploadEnabled = false;
+		}
+		
+		if ($allowPublicUploadEnabled === true) {
+			// Only load the jQuery fileupload js if public upload is enabled
+			OCP\Util::addScript('files', 'jquery.fileupload');
 		}
 
 		$urlLinkIdentifiers= (isset($token)?'&t='.$token:'')
