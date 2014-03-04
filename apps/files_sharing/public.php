@@ -160,7 +160,7 @@ if (isset($path)) {
 		if ($linkItem['item_type'] !== 'folder') {
 			$allowPublicUploadEnabled = false;
 		}
-		
+
 		$urlLinkIdentifiers= (isset($token)?'&t='.$token:'')
 							.(isset($_GET['dir'])?'&dir='.$_GET['dir']:'')
 							.(isset($_GET['file'])?'&file='.$_GET['file']:'');
