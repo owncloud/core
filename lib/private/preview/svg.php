@@ -7,7 +7,9 @@
  */
 namespace OC\Preview;
 
-if (extension_loaded('imagick') && count(@\Imagick::queryFormats("SVG")) === 1) {
+use Imagick;
+
+if (extension_loaded('imagick') && count((new Imagick)->queryFormats('SVG')) === 1) {
 
 	class SVG extends Provider {
 
@@ -17,7 +19,7 @@ if (extension_loaded('imagick') && count(@\Imagick::queryFormats("SVG")) === 1) 
 
 		public function getThumbnail($path,$maxX,$maxY,$scalingup,$fileview) {
 			try{
-				$svg = new \Imagick();
+				$svg = new Imagick();
 				$svg->setBackgroundColor(new \ImagickPixel('transparent'));
 
 				$content = stream_get_contents($fileview->fopen($path, 'r'));

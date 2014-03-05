@@ -7,7 +7,9 @@
  */
 namespace OC\Preview;
 
-if (extension_loaded('imagick') && count(@\Imagick::queryFormats("PDF")) === 1) {
+use Imagick;
+
+if (extension_loaded('imagick') && count((new Imagick)->queryFormats('PDF')) === 1) {
 
 	class PDF extends Provider {
 
@@ -20,7 +22,7 @@ if (extension_loaded('imagick') && count(@\Imagick::queryFormats("PDF")) === 1) 
 
 			//create imagick object from pdf
 			try{
-				$pdf = new \imagick($tmpPath . '[0]');
+				$pdf = new Imagick($tmpPath . '[0]');
 				$pdf->setImageFormat('jpg');
 			} catch (\Exception $e) {
 				\OC_Log::write('core', $e->getmessage(), \OC_Log::ERROR);
