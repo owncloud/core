@@ -6,7 +6,7 @@
 <!--[if gt IE 9]><html class="ng-csp ie"><![endif]-->
 <!--[if !IE]><!--><html class="ng-csp"><!--<![endif]-->
 
-	<head data-requesttoken="<?php p($_['requesttoken']); ?>">
+<head data-requesttoken="<?php p($_['requesttoken']); ?>" data-trusteddomain="<?php p($_['trusteddomain']?'true':'false'); ?>">
 		<title>
 		<?php p($theme->getTitle()); ?>
 		</title>
@@ -39,6 +39,12 @@
 				<img src="<?php print_unescaped(image_path('', 'logo.svg')); ?>" class="svg" alt="<?php p($theme->getName()); ?>" />
 				<div id="logo-claim" style="display:none;"><?php p($theme->getLogoClaim()); ?></div>
 			</div></header>
+
+			<?php if (!$_['trusteddomain']) { ?>
+			<div class="error">
+				<?php p($l->t('Warning: you are accessing this page from an untrusted domain. Please contact your administrator to fix this.')); ?>
+			</div>
+			<?php } ?>
 
 			<?php print_unescaped($_['content']); ?>
 

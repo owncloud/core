@@ -17,6 +17,19 @@ class Base {
 	public function __construct( $template, $requesttoken, $l10n, $theme ) {
 		$this->vars = array();
 		$this->vars['requesttoken'] = $requesttoken;
+
+		// Check trusted domain
+		$this->vars['trusteddomain'] = true;
+		$trustedDomain = true;
+		$host = \OC_Request::serverHost();
+		// Verify that the host is a trusted domain if the trusted domains
+		// are defined
+		if (!\OC_Request::isTrustedDomain($host)
+			&& \OC_Config::getValue('trusted_domains', '') !== ''
+		) {
+			$this->vars['trusteddomain'] = false;
+		}
+
 		$this->l10n = $l10n;
 		$this->template = $template;
 		$this->theme = $theme;
