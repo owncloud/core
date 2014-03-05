@@ -63,15 +63,7 @@ class OC_Request {
 			}
 		}
 
-		// Verify that the host is a trusted domain if the trusted domains
-		// are defined
-		// If no trusted domain is provided the first trusted domain is returned
-		if(self::isTrustedDomain($host) || \OC_Config::getValue('trusted_domains', "") === "") {
-			return $host;
-		} else {
-			$trustedList = \OC_Config::getValue('trusted_domains', array(''));
-			return $trustedList[0];
-		}
+		return $host;
 	}
 
 	/**

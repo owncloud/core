@@ -6,7 +6,7 @@
 <!--[if gt IE 9]><html class="ng-csp ie"><![endif]-->
 <!--[if !IE]><!--><html class="ng-csp"><!--<![endif]-->
 
-	<head data-user="<?php p($_['user_uid']); ?>" data-requesttoken="<?php p($_['requesttoken']); ?>">
+	<head data-user="<?php p($_['user_uid']); ?>" data-requesttoken="<?php p($_['requesttoken']); ?>" data-trusteddomain="<?php p($_['trusteddomain']?'true':'false'); ?>">
 		<title>
 			<?php
 				p(!empty($_['application'])?$_['application'].' - ':'');

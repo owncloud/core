@@ -713,6 +713,15 @@ function fillWindow(selector) {
 function initCore() {
 
 	/**
+	 * Shows a warning if the current domain isn't trusted
+	 */
+	function checkDomain() {
+		if (!$('head').data('trusteddomain')) {
+			OC.Notification.show(t('core', 'Warning: you are accessing this page from an untrusted domain. Please contact your administrator to fix this.'));
+		}
+	}
+
+	/**
 	 * Calls the server periodically to ensure that session doesnt
 	 * time out
 	 */
@@ -733,6 +742,8 @@ function initCore() {
 			}, interval * 1000);
 		});
 	}
+
+	window.setTimeout(checkDomain, 0);
 
 	// session heartbeat (defalts to enabled)
 	if (typeof(oc_config.session_keepalive) === 'undefined' ||
