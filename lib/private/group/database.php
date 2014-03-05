@@ -43,6 +43,7 @@
 class OC_Group_Database extends OC_Group_Backend {
 
 	protected $cache_groups = array();
+	protected $cache_usergroups = array();
 
 	/**
 	 * @brief Try to create a new group
@@ -99,10 +100,7 @@ class OC_Group_Database extends OC_Group_Backend {
 	 */
 	public function inGroup( $uid, $gid ) {
 		// check
-		$stmt = OC_DB::prepare( "SELECT `uid` FROM `*PREFIX*group_user` WHERE `gid` = ? AND `uid` = ?" );
-		$result = $stmt->execute( array( $gid, $uid ));
-
-		return $result->fetchRow() ? true : false;
+		return empty($this->cache_usergroups[$uid][$gid]) ? true : false;
 	}
 
 	/**
@@ -149,15 +147,16 @@ class OC_Group_Database extends OC_Group_Backend {
 	 */
 	public function getUserGroups( $uid ) {
 		// No magic!
-		$stmt = OC_DB::prepare( "SELECT `gid` FROM `*PREFIX*group_user` WHERE `uid` = ?" );
-		$result = $stmt->execute( array( $uid ));
+		if (!isset($this->cache_usergroups[$uid])) {
+			$stmt = OC_DB::prepare( "SELECT `gid` FROM `*PREFIX*group_user` WHERE `uid` = ?" );
+			$result = $stmt->execute( array( $uid ));
 
-		$groups = array();
-		while( $row = $result->fetchRow()) {
-			$groups[] = $row["gid"];
+			while( $row = $result->fetchRow()) {
+				$this->cache_usergroups[$uid][$row['gid']] = $row['gid'];
+			}
 		}
 
-		return $groups;
+		return $this->cache_usergroups[$uid];
 	}
 
 	/**
@@ -170,6 +169,7 @@ class OC_Group_Database extends OC_Group_Backend {
 	 * Returns a list with all groups
 	 */
 	public function getGroups($search = '', $limit = null, $offset = null) {
+		// Not use param
 		if (empty($this->cache_groups)) {
 			$stmt = OC_DB::prepare('SELECT `gid` FROM `*PREFIX*groups` ORDER BY `gid' );
 			$result = $stmt->execute();
@@ -180,8 +180,6 @@ class OC_Group_Database extends OC_Group_Backend {
 
 		return $this->cache_groups;
 	}
-
-
 
 	/**
 	 * check if a group exists
