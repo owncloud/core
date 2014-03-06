@@ -6,13 +6,14 @@
  * See the COPYING-README file.
  */
 
-use Symfony\Component\Routing\Route;
+namespace OC\Route;
 
-class OC_Route extends Route {
+class Route extends \Symfony\Component\Routing\Route {
 	/**
 	 * Specify the method when this route is to be used
 	 *
 	 * @param string $method HTTP method (uppercase)
+	 * @return \OC\Route\Route
 	 */
 	public function method($method) {
 		$this->setRequirement('_method', strtoupper($method));
@@ -52,17 +53,10 @@ class OC_Route extends Route {
 	}
 
 	/**
-	 * Specify PATCH as the method to use with this route
-	 */
-	public function patch() {
-		$this->method('PATCH');
-		return $this;
-	}
-
-	/**
 	 * Defaults to use for this route
 	 *
 	 * @param array $defaults The defaults
+	 * @return \OC\Route\Route
 	 */
 	public function defaults($defaults) {
 		$action = $this->getDefault('action');
@@ -78,6 +72,7 @@ class OC_Route extends Route {
 	 * Requirements for this route
 	 *
 	 * @param array $requirements The requirements
+	 * @return \OC\Route\Route
 	 */
 	public function requirements($requirements) {
 		$method = $this->getRequirement('_method');
@@ -95,6 +90,7 @@ class OC_Route extends Route {
 	 * The action to execute when this route matches
 	 * @param string|callable $class the class or a callable
 	 * @param string $function the function to use with the class
+	 * @return \OC\Route\Route
 	 *
 	 * This function is called with $class set to a callable or
 	 * to the class with $function

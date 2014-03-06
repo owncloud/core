@@ -72,9 +72,9 @@ class OC {
 	 * check if owncloud runs in cli mode
 	 */
 	public static $CLI = false;
-
 	/**
-	 * @var OC_Router
+	 * OC router
+	 * @var \OC\Route\Router $router
 	 */
 	protected static $router = null;
 
@@ -393,8 +393,12 @@ class OC {
 	 */
 	public static function getRouter() {
 		if (!isset(OC::$router)) {
-			OC::$router = new OC_Router();
-			OC::$router->loadRoutes();
+			$cacheFactory = new \OC\Memcache\Factory();
+			if ($cacheFactory->isAvailable()) {
+				OC::$router = new \OC\Route\CachingRouter($cacheFactory->create('router'));
+			} else {
+				OC::$router = new \OC\Route\Router();
+			}
 		}
 
 		return OC::$router;
