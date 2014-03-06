@@ -23,8 +23,11 @@ class Image extends Provider {
 
 		$stream = $fileview->fopen($path, 'r');
 		$image = new \OC_Image();
+		$image->loadFromFileHandle($stream);
 
-		if (extension_loaded('imagick')) {
+		if ($image->valid() === false && extension_loaded('imagick')) {
+			rewind($stream);
+
 			$imagick = new \Imagick();
 			$mimeType = $fileInfo->getMimeType();
 
@@ -37,11 +40,6 @@ class Image extends Provider {
 					$image->loadFromData($imagick);
 				}
 			}
-		}
-
-		if($image->valid() === false) {
-			rewind($stream);
-			$image->loadFromFileHandle($stream);
 		}
 
 		fclose($stream);
