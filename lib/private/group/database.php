@@ -42,6 +42,16 @@
  */
 class OC_Group_Database extends OC_Group_Backend {
 
+	protected static $cache_groups     = array();
+	protected static $cache_usergroups = array();
+
+	/**
+	 * @brief COnstructor: load group in the cache
+	 */
+	public function OC_Group_Database() {
+		$this->loadGroups();
+	}
+
 	/**
 	 * @brief Try to create a new group
 	 * @param string $gid The name of the group to create
@@ -52,20 +62,13 @@ class OC_Group_Database extends OC_Group_Backend {
 	 */
 	public function createGroup( $gid ) {
 		// Check for existence
-		$stmt = OC_DB::prepare( "SELECT `gid` FROM `*PREFIX*groups` WHERE `gid` = ?" );
-		$result = $stmt->execute( array( $gid ));
-
-		if( $result->fetchRow() ) {
-			// Can not add an existing group
+		if ($this->groupExists($gid))
 			return false;
-		}
-		else{
-			// Add group and exit
-			$stmt = OC_DB::prepare( "INSERT INTO `*PREFIX*groups` ( `gid` ) VALUES( ? )" );
-			$result = $stmt->execute( array( $gid ));
-
-			return $result ? true : false;
-		}
+		
+		// Add group and exit
+		$stmt = OC_DB::prepare( "INSERT INTO `*PREFIX*groups` ( `gid` ) VALUES( ? )" );
+		$result = $stmt->execute( array( $gid ));
+		return $result ? true : false;
 	}
 
 	/**
@@ -97,10 +100,8 @@ class OC_Group_Database extends OC_Group_Backend {
 	 */
 	public function inGroup( $uid, $gid ) {
 		// check
-		$stmt = OC_DB::prepare( "SELECT `uid` FROM `*PREFIX*group_user` WHERE `gid` = ? AND `uid` = ?" );
-		$result = $stmt->execute( array( $gid, $uid ));
-
-		return $result->fetchRow() ? true : false;
+		$this->loadUserGroups( $uid );
+		return empty(self::$cache_usergroups[$uid][$gid]) ? false : true;
 	}
 
 	/**
@@ -138,6 +139,22 @@ class OC_Group_Database extends OC_Group_Backend {
 	}
 
 	/**
+	 * @brief load an user in the cache
+	 * @param string $uid Name of the user
+	 *
+	 */
+	protected function loadUserGroups($uid) {
+		if (!isset(self::$cache_usergroups[$uid])) {
+			$stmt = OC_DB::prepare( "SELECT `gid` FROM `*PREFIX*group_user` WHERE `uid` = ?" );
+			$result = $stmt->execute( array( $uid ));
+
+			while ($row = $result->fetchRow()) {
+				self::$cache_usergroups[$uid][$row['gid']] = $row['gid'];
+			}
+		}
+	}
+
+	/**
 	 * @brief Get all groups a user belongs to
 	 * @param string $uid Name of the user
 	 * @return array with group names
@@ -145,18 +162,23 @@ class OC_Group_Database extends OC_Group_Backend {
 	 * This function fetches all groups a user belongs to. It does not check
 	 * if the user exists at all.
 	 */
-	public function getUserGroups( $uid ) {
-		// No magic!
-		$stmt = OC_DB::prepare( "SELECT `gid` FROM `*PREFIX*group_user` WHERE `uid` = ?" );
-		$result = $stmt->execute( array( $uid ));
-
-		$groups = array();
-		while( $row = $result->fetchRow()) {
-			$groups[] = $row["gid"];
-		}
-
-		return $groups;
+	public function getUserGroups($uid) {
+			$this->loadUserGroups( $uid );
+			return self::$cache_usergroups[$uid];
 	}
+
+	/**
+	 * @brief load all groups in cache
+	 */
+	protected function loadGroups() {
+		if (empty(self::$cache_groups)) {
+			$stmt = OC_DB::prepare('SELECT `gid` FROM `*PREFIX*groups` ORDER BY `gid' );
+			$result = $stmt->execute();
+			while ($row = $result->fetchRow()) {
+				self::$cache_groups[$row['gid']] = $row['gid'];
+			}
+		}
+	} 
 
 	/**
 	 * @brief get a list of all groups
@@ -168,13 +190,8 @@ class OC_Group_Database extends OC_Group_Backend {
 	 * Returns a list with all groups
 	 */
 	public function getGroups($search = '', $limit = null, $offset = null) {
-		$stmt = OC_DB::prepare('SELECT `gid` FROM `*PREFIX*groups` WHERE `gid` LIKE ?', $limit, $offset);
-		$result = $stmt->execute(array($search.'%'));
-		$groups = array();
-		while ($row = $result->fetchRow()) {
-			$groups[] = $row['gid'];
-		}
-		return $groups;
+		// Not use param
+		return self::$cache_groups;
 	}
 
 	/**
@@ -183,12 +200,7 @@ class OC_Group_Database extends OC_Group_Backend {
 	 * @return bool
 	 */
 	public function groupExists($gid) {
-		$query = OC_DB::prepare('SELECT `gid` FROM `*PREFIX*groups` WHERE `gid` = ?');
-		$result = $query->execute(array($gid))->fetchOne();
-		if ($result) {
-			return true;
-		}
-		return false;
+		return empty(self::$cache_groups[$gid]) ? false : true;
 	}
 
 	/**
