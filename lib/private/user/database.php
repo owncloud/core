@@ -42,7 +42,10 @@ class OC_User_Database extends OC_User_Backend {
 	/**
 	 * @var PasswordHash
 	 */
-	static private $hasher = null;
+	private static $hasher = null;
+
+	protected static $cache = array();
+	protected static $cache_complete = false;
 
 	private function getHasher() {
 		if (!self::$hasher) {
@@ -64,16 +67,19 @@ class OC_User_Database extends OC_User_Backend {
 	 * itself, not in its subclasses.
 	 */
 	public function createUser($uid, $password) {
-		if ($this->userExists($uid)) {
-			return false;
-		} else {
+		if (!$this->userExists($uid)) {
 			$hasher = $this->getHasher();
 			$hash = $hasher->HashPassword($password . OC_Config::getValue('passwordsalt', ''));
 			$query = OC_DB::prepare('INSERT INTO `*PREFIX*users` ( `uid`, `password` ) VALUES( ?, ? )');
 			$result = $query->execute(array($uid, $hash));
-
-			return $result ? true : false;
+			
+			if ($result) {
+				self::$cache[$uid]['uid'] = $uid;
+				return true;
+			}
 		}
+
+		return false;
 	}
 
 	/**
@@ -123,10 +129,11 @@ class OC_User_Database extends OC_User_Backend {
 		if ($this->userExists($uid)) {
 			$query = OC_DB::prepare('UPDATE `*PREFIX*users` SET `displayname` = ? WHERE LOWER(`uid`) = ?');
 			$query->execute(array($displayName, $uid));
+			self::$cache[$uid]['displayname'] = $displayName;
 			return true;
-		} else {
-			return false;
 		}
+
+		return false;
 	}
 
 	/**
@@ -135,11 +142,9 @@ class OC_User_Database extends OC_User_Backend {
 	 * @return string display name
 	 */
 	public function getDisplayName($uid) {
-		$query = OC_DB::prepare('SELECT `displayname` FROM `*PREFIX*users` WHERE `uid` = ?');
-		$result = $query->execute(array($uid))->fetchAll();
-		$displayName = trim($result[0]['displayname'], ' ');
-		if (!empty($displayName)) {
-			return $displayName;
+		$this->loadUser($uid);
+		if (!empty(self::$cache[$uid]['displayname'])) {
+			return self::$cache[$uid]['displayname'];
 		} else {
 			return $uid;
 		}
@@ -183,23 +188,68 @@ class OC_User_Database extends OC_User_Backend {
 			$storedHash = $row['password'];
 			if ($storedHash[0] == '$') { //the new phpass based hashing
 				$hasher = $this->getHasher();
-				if ($hasher->CheckPassword($password . OC_Config::getValue('passwordsalt', ''), $storedHash)) {
+				if ($hasher->CheckPassword($password . OC_Config::getValue('passwordsalt', ''), $storedHash))
 					return $row['uid'];
-				} else {
-					return false;
-				}
-			} else { //old sha1 based hashing
-				if (sha1($password) == $storedHash) {
-					//upgrade to new hashing
-					$this->setPassword($row['uid'], $password);
-					return $row['uid'];
-				} else {
-					return false;
-				}
+
+			//old sha1 based hashing
+			} elseif (sha1($password) == $storedHash) {
+				//upgrade to new hashing
+				$this->setPassword($row['uid'], $password);
+				return $row['uid'];
 			}
-		} else {
-			return false;
 		}
+
+		return false;
+	}
+
+	/**
+	 * @brief Load an user in the cache
+	 * @param string $uid the username
+	 * @returns boolean
+	 */
+	protected function loadUser($uid) {
+		if (empty(self::$cache[$uid])) {
+			$query = OC_DB::prepare('SELECT `uid`, `displayname` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)');
+			$result = $query->execute(array($uid));
+
+			if (OC_DB::isError($result)) {
+				OC_Log::write('core', OC_DB::getErrorMessage($result), OC_Log::ERROR);
+				return false;
+			}
+
+			while ($row = $result->fetchRow()) {
+				self::$cache[$uid]['uid'] = $row['uid'];
+				self::$cache[$uid]['displayname'] = $row['displayname'];
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * @brief Load an user in the cache
+	 * @param string $uid the username
+	 * @returns boolean
+	 */
+	protected function loadUsers() {
+		if (!self::$cache_complete) {
+			$query = OC_DB::prepare('SELECT `uid`, `displayname` FROM `*PREFIX*users` ORDER BY `uid`');
+			$result = $query->execute(array($uid));
+
+			if (OC_DB::isError($result)) {
+				OC_Log::write('core', OC_DB::getErrorMessage($result), OC_Log::ERROR);
+				return false;
+			}
+
+			while ($row = $result->fetchRow()) {
+				self::$cache[$uid]['uid'] = $row['uid'];
+				self::$cache[$uid]['displayname'] = $row['displayname'];
+			}
+
+			self::$cache_complete = true;
+		}
+
+		return true;
 	}
 
 	/**
@@ -209,12 +259,12 @@ class OC_User_Database extends OC_User_Backend {
 	 * Get a list of all users.
 	 */
 	public function getUsers($search = '', $limit = null, $offset = null) {
-		$query = OC_DB::prepare('SELECT `uid` FROM `*PREFIX*users` WHERE LOWER(`uid`) LIKE LOWER(?)', $limit, $offset);
-		$result = $query->execute(array($search . '%'));
+		$this->loadUsers();
+
 		$users = array();
-		while ($row = $result->fetchRow()) {
-			$users[] = $row['uid'];
-		}
+		foreach (self::$cache as $uid => $value)
+			$users[] = $uid;
+
 		return $users;
 	}
 
@@ -224,26 +274,20 @@ class OC_User_Database extends OC_User_Backend {
 	 * @return boolean
 	 */
 	public function userExists($uid) {
-		$query = OC_DB::prepare('SELECT COUNT(*) FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)');
-		$result = $query->execute(array($uid));
-		if (OC_DB::isError($result)) {
-			OC_Log::write('core', OC_DB::getErrorMessage($result), OC_Log::ERROR);
-			return false;
-		}
-		return $result->fetchOne() > 0;
+		$this->loadUser($uid);
+		return empty(self::$cache[$uid]) ? false : true;
 	}
 
 	/**
 	 * @brief get the user's home directory
 	 * @param string $uid the username
-	 * @return string|false
+	 * @return boolean
 	 */
 	public function getHome($uid) {
-		if ($this->userExists($uid)) {
+		if ($this->userExists($uid))
 			return OC_Config::getValue("datadirectory", OC::$SERVERROOT . "/data") . '/' . $uid;
-		} else {
-			return false;
-		}
+
+		return false;
 	}
 
 	/**
@@ -256,16 +300,11 @@ class OC_User_Database extends OC_User_Backend {
 	/**
 	 * counts the users in the database
 	 *
-	 * @return false|string | bool
+	 * @return int | bool
 	 */
 	public function countUsers() {
-		$query = OC_DB::prepare('SELECT COUNT(*) FROM `*PREFIX*users`');
-		$result = $query->execute();
-		if (OC_DB::isError($result)) {
-			OC_Log::write('core', OC_DB::getErrorMessage($result), OC_Log::ERROR);
-			return false;
-		}
-		return $result->fetchOne();
+		$this->loadUsers();
+		return count(self::$cache);
 	}
 
 }
