@@ -21,13 +21,30 @@ class Image extends Provider {
 			return false;
 		}
 
+		$stream = $fileview->fopen($path, 'r');
 		$image = new \OC_Image();
-		//check if file is encrypted
-		if($fileInfo['encrypted'] === true) {
-			$image->loadFromData(stream_get_contents($fileview->fopen($path, 'r')));
-		}else{
-			$image->loadFromFile($fileview->getLocalFile($path));
+
+		if (extension_loaded('imagick')) {
+			$imagick = new \Imagick();
+			$mimeType = $fileInfo->getMimeType();
+
+			if(strpos($mimeType, '/')) {
+				list($part, $type) = explode('/', $mimeType);
+				if(count($imagick->queryFormats(strtoupper($type))) === 1) {
+					$imagick->readImageFile($stream);
+					$imagick->setImageFormat('png32');
+
+					$image->loadFromData($imagick);
+				}
+			}
 		}
+
+		if($image->valid() === false) {
+			rewind($stream);
+			$image->loadFromFileHandle($stream);
+		}
+
+		fclose($stream);
 
 		return $image->valid() ? $image : false;
 	}
