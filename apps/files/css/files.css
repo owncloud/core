@@ -123,6 +123,10 @@ table th#headerDate, table td.date {
 	min-width: 176px;
 	max-width: 176px;
 }
+table th#headerDate, table td.date span {
+	padding-left:8px;
+	padding-right:35px;
+}
 
 /* Multiselect bar */
 #filestable.multiselect {
@@ -313,13 +317,13 @@ a.action>img { max-height:16px; max-width:16px; vertical-align:text-bottom; }
 }
 
 #fileList a.action[data-action="Versions"] {
-	position: absolute;
-	top:7px;
-	width: 100px;
+	display: block !important; height: 50px; width: 100px;
+	margin-bottom: 0; margin-top: 0px;
+	padding-top: 14px !important;
+	position: absolute; top: 0px;
 	box-sizing: border-box;
-	-moz-box-sizing:border-box;
+	-moz-box-sizing: border-box;
 	text-align: right;
-	display: block !important;
 }
 
 #fileList tr:hover a.action, #fileList a.action.permanent {
