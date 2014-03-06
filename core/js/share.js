@@ -137,16 +137,15 @@ OC.Share={
 		return data;
 	},
 	share:function(itemType, itemSource, shareType, shareWith, permissions, itemSourceName, callback) {
-		$.post(OC.filePath('core', 'ajax', 'share.php'),
-			{
-				action: 'share',
-				itemType: itemType,
-				itemSource: itemSource,
-				shareType: shareType,
-				shareWith: shareWith,
-				permissions: permissions,
-				itemSourceName: itemSourceName
-			}, function (result) {
+		$.post(OC.filePath('core', 'ajax', 'share.php'), {
+			action: 'share',
+			itemType: itemType,
+			itemSource: itemSource,
+			shareType: shareType,
+			shareWith: shareWith,
+			permissions: permissions,
+			itemSourceName: itemSourceName
+		}, function (result) {
 			if (result && result.status === 'success') {
 				if (callback) {
 					callback(result.data);
