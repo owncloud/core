@@ -907,7 +907,7 @@ class View {
 			$dirLength = strlen($path);
 			foreach ($mountPoints as $mountPoint) {
 				$subStorage = Filesystem::getStorage($mountPoint);
-				if ($subStorage) {
+				if ($subStorage and $subStorage->isVisible()) {
 					$subCache = $subStorage->getCache('');
 
 					if ($subCache->getStatus('') === Cache\Cache::NOT_FOUND) {

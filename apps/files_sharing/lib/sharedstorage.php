@@ -29,9 +29,12 @@ class Shared extends \OC\Files\Storage\Common {
 
 	private $sharedFolder;
 	private $files = array();
+	private $user;
+	private $visible;
 
 	public function __construct($arguments) {
 		$this->sharedFolder = $arguments['sharedFolder'];
+		$this->user = $arguments['user'];
 	}
 
 	public function getId() {
@@ -393,14 +396,13 @@ class Shared extends \OC\Files\Storage\Common {
 	}
 
 	public static function setup($options) {
-		if (!\OCP\User::isLoggedIn() || \OCP\User::getUser() != $options['user']
-			|| \OCP\Share::getItemsSharedWith('file')
-		) {
-			$user_dir = $options['user_dir'];
-			\OC\Files\Filesystem::mount('\OC\Files\Storage\Shared',
-				array('sharedFolder' => '/Shared'),
-				$user_dir . '/Shared/');
-		}
+		$user_dir = $options['user_dir'];
+		\OC\Files\Filesystem::mount('\OC\Files\Storage\Shared',
+			array(
+				'sharedFolder' => '/Shared',
+				'user' => $options['user']
+			),
+			$user_dir . '/Shared/');
 	}
 
 	public function hasUpdated($path, $time) {
@@ -448,4 +450,15 @@ class Shared extends \OC\Files\Storage\Common {
 		return null;
 	}
 
+	/**
+	 * check whether the storage should be shown
+	 *
+	 * @return bool
+	 */
+	public function isVisible() {
+		if (is_null($this->visible)) {
+			$this->visible = !\OCP\User::isLoggedIn() || \OCP\User::getUser() != $this->user || \OCP\Share::getItemsSharedWith('file');;
+		}
+		return $this->visible;
+	}
 }

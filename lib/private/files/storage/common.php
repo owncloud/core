@@ -352,4 +352,13 @@ abstract class Common implements \OC\Files\Storage\Storage {
 		// default, which is not local
 		return false;
 	}
+
+	/**
+	 * check whether the storage should be shown
+	 *
+	 * @return bool
+	 */
+	public function isVisible() {
+		return true;
+	}
 }
