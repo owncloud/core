@@ -73,9 +73,29 @@ class Quota extends \Test\Files\Storage\Storage {
 		$instance = $this->getLimitedStorage(9);
 		$stream = $instance->fopen('foo', 'w+');
 		$this->assertEquals(6, fwrite($stream, 'foobar'));
-		$this->assertEquals(3, fwrite($stream, 'qwerty'));
+		// soft quota allows to write more
+		$this->assertEquals(6, fwrite($stream, 'qwerty'));
 		fclose($stream);
-		$this->assertEquals('foobarqwe', $instance->file_get_contents('foo'));
+		$this->assertEquals('foobarqwerty', $instance->file_get_contents('foo'));
+	}
+
+	public function testFWriteUnknownFreeSpace() {
+		$failStorage = $this->getMock(
+			'\OC\Files\Storage\Local',
+			array('free_space'),
+			array(array('datadir' => $this->tmpDir)));
+		$failStorage->expects($this->any())
+			->method('free_space')
+			->will($this->returnValue(-1));
+
+		$instance = new \OC\Files\Storage\Wrapper\Quota(array('storage' => $failStorage, 'quota' => 1000));
+
+		$stream = $instance->fopen('foo', 'w+');
+		$this->assertEquals(6, fwrite($stream, 'foobar'));
+		// soft quota allows to write more
+		$this->assertEquals(6, fwrite($stream, 'qwerty'));
+		fclose($stream);
+		$this->assertEquals('foobarqwerty', $instance->file_get_contents('foo'));
 	}
 
 	public function testReturnFalseWhenFopenFailed() {
@@ -108,14 +128,6 @@ class Quota extends \Test\Files\Storage\Storage {
 		$stream = $instance->fopen('foo', 'rb');
 		$meta = stream_get_meta_data($stream);
 		$this->assertEquals('plainfile', $meta['wrapper_type']);
-		fclose($stream);
-	}
-
-	public function testReturnQuotaStreamOnWrite() {
-		$instance = $this->getLimitedStorage(9);
-		$stream = $instance->fopen('foo', 'w+');
-		$meta = stream_get_meta_data($stream);
-		$this->assertEquals('user-space', $meta['wrapper_type']);
 		fclose($stream);
 	}
 
