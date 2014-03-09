@@ -81,13 +81,15 @@ class OC_Group_Database extends OC_Group_Backend {
 	public function deleteGroup( $gid ) {
 		// Delete the group
 		$stmt = OC_DB::prepare( "DELETE FROM `*PREFIX*groups` WHERE `gid` = ?" );
-		$stmt->execute( array( $gid ));
+		$result = $stmt->execute( array( $gid ));
 
-		// Delete the group-user relation
-		$stmt = OC_DB::prepare( "DELETE FROM `*PREFIX*group_user` WHERE `gid` = ?" );
-		$stmt->execute( array( $gid ));
+		if ($result) {
+			// Delete the group-user relation
+			$stmt = OC_DB::prepare( "DELETE FROM `*PREFIX*group_user` WHERE `gid` = ?" );
+			$result = $stmt->execute( array( $gid ));
+		}
 
-		return true;
+		return $result ? true : false;
 	}
 
 	/**
@@ -116,11 +118,12 @@ class OC_Group_Database extends OC_Group_Backend {
 		// No duplicate entries!
 		if( !$this->inGroup( $uid, $gid )) {
 			$stmt = OC_DB::prepare( "INSERT INTO `*PREFIX*group_user` ( `uid`, `gid` ) VALUES( ?, ? )" );
-			$stmt->execute( array( $uid, $gid ));
-			return true;
-		}else{
-			return false;
+			$result = $stmt->execute( array( $uid, $gid ));
+
+			return $result ? true : false;
 		}
+
+		return false;
 	}
 
 	/**
@@ -133,9 +136,9 @@ class OC_Group_Database extends OC_Group_Backend {
 	 */
 	public function removeFromGroup( $uid, $gid ) {
 		$stmt = OC_DB::prepare( "DELETE FROM `*PREFIX*group_user` WHERE `uid` = ? AND `gid` = ?" );
-		$stmt->execute( array( $uid, $gid ));
+		$result = $stmt->execute( array( $uid, $gid ));
 
-		return true;
+		return $result ? true : false;
 	}
 
 	/**
