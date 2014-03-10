@@ -173,7 +173,7 @@ class Share {
 				FROM
 				`*PREFIX*share`
 				WHERE
-				`item_source` = ? AND `share_type` = ? AND `item_type` IN (\'file\', \'folder\')'
+				`file_source` = ? AND `share_type` = ? AND `item_type` IN (\'file\', \'folder\')'
 			);
 
 			$result = $query->execute(array($source, self::SHARE_TYPE_USER));
@@ -192,7 +192,7 @@ class Share {
 				FROM
 				`*PREFIX*share`
 				WHERE
-				`item_source` = ? AND `share_type` = ? AND `item_type` IN (\'file\', \'folder\')'
+				`file_source` = ? AND `share_type` = ? AND `item_type` IN (\'file\', \'folder\')'
 			);
 
 			$result = $query->execute(array($source, self::SHARE_TYPE_GROUP));
@@ -213,7 +213,7 @@ class Share {
 					FROM
 					`*PREFIX*share`
 					WHERE
-					`item_source` = ? AND `share_type` = ? AND `item_type` IN (\'file\', \'folder\')'
+					`file_source` = ? AND `share_type` = ? AND `item_type` IN (\'file\', \'folder\')'
 				);
 
 				$result = $query->execute(array($source, self::SHARE_TYPE_LINK));
@@ -900,6 +900,10 @@ class Share {
 			'itemParent'    => $item['parent'],
 			'uidOwner'      => $item['uid_owner'],
 		);
+
+		if(isset($item['file_source'])) {
+			$hookParams['fileSource'] = $item['file_source'];
+		}
 
 		\OC_Hook::emit('OCP\Share', 'pre_unshare', $hookParams + array(
 			'fileSource'	=> $item['file_source'],
