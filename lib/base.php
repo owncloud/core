@@ -661,9 +661,9 @@ class OC {
 	 */
 	public static function registerPreviewHooks() {
 		OC_Hook::connect('OC_Filesystem', 'post_write', 'OC\Preview', 'post_write');
-		OC_Hook::connect('OC_Filesystem', 'delete', 'OC\Preview', 'post_delete');
-		OC_Hook::connect('\OCP\Versions', 'delete', 'OC\Preview', 'post_delete');
-		OC_Hook::connect('\OCP\Trashbin', 'delete', 'OC\Preview', 'post_delete');
+		OC_Hook::connect('OC_Filesystem', 'preDelete', 'OC\Preview', 'post_delete');
+		OC_Hook::connect('\OCP\Versions', 'preDelete', 'OC\Preview', 'post_delete');
+		OC_Hook::connect('\OCP\Trashbin', 'preDelete', 'OC\Preview', 'post_delete');
 	}
 
 	/**
