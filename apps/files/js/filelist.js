@@ -463,7 +463,7 @@ window.FileList={
 								if (newname.indexOf('.') > 0 && tr.data('type') !== 'dir') {
 									basename = newname.substr(0,newname.lastIndexOf('.'));
 								}
-								td.find('a.name span.nametext').text(basename);
+								td.find('a.name span.nametext span').text(basename);
 								if (newname.indexOf('.') > 0 && tr.data('type') !== 'dir') {
 									if ( ! td.find('a.name span.extension').exists() ) {
 										td.find('a.name span.nametext').append('<span class="extension"></span>');
@@ -506,7 +506,7 @@ window.FileList={
 				if (newname.indexOf('.') > 0 && tr.data('type') !== 'dir') {
 					basename = newname.substr(0, newname.lastIndexOf('.'));
 				}
-				td.find('a.name span.nametext').text(basename);
+				td.find('a.name span.nametext span').text(basename);
 				if (newname.indexOf('.') > 0 && tr.data('type') !== 'dir') {
 					if ( ! td.find('a.name span.extension').exists() ) {
 						td.find('a.name span.nametext').append('<span class="extension"></span>');
