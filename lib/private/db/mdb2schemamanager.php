@@ -57,6 +57,10 @@ class MDB2SchemaManager {
 	 */
 	public function updateDbFromStructure($file, $generateSql = false) {
 		$sm = $this->conn->getSchemaManager();
+		$platform = $this->conn->getDatabasePlatform();
+		if ($platform instanceof \Doctrine\DBAL\Platforms\MySqlPlatform) {
+			$platform->registerDoctrineTypeMapping('enum', 'string');
+		}
 		$fromSchema = $sm->createSchema();
 
 		$schemaReader = new MDB2SchemaReader(\OC_Config::getObject(), $this->conn->getDatabasePlatform());

@@ -71,6 +71,15 @@ class Test_DBSchema extends PHPUnit_Framework_TestCase {
 		$this->assertTableNotExist($this->table2);
 	}
 
+	public function testMySqlEnum() {
+		if (OC_Config::getValue( 'dbtype', 'sqlite' ) !== 'mysql') {
+			$this->markTestSkipped('ENUM type can only be found on MySql');
+		}
+		$sql = "CREATE TABLE `oc_test` ( `e` enum('a','b') NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+		\OC_DB::executeAudited($sql);
+		$this->testSchema();
+	}
+
 	public function tableExist($table) {
 
 		switch (OC_Config::getValue( 'dbtype', 'sqlite' )) {
