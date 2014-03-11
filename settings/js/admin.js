@@ -33,6 +33,7 @@ $(document).ready(function(){
 
 	$('#security').change(function(){
 		$.post(OC.filePath('settings','ajax','setsecurity.php'), { enforceHTTPS: $('#forcessl').val() },function(){} );
+		$.post(OC.filePath('settings','ajax','setsecurity.php'), { adminGroups: $('#admin_groups').val() },function(){} );
 	});
 
 	$('#mail_smtpauth').change(function() {

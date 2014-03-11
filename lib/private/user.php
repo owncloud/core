@@ -354,12 +354,30 @@ class OC_User {
 	}
 
 	/**
+	 * @brief Check if the user is in one of the groups
+	 * @param string $uid
+	 * @param array $gids
+	 */
+	private static function isInOneOfGroups($uid, $gids) {
+		foreach ($gids as $gid) {
+			if (OC_Group::inGroup($uid, $gid)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * @brief Check if the user is an admin user
 	 * @param string $uid uid of the admin
 	 * @return bool
 	 */
 	public static function isAdminUser($uid) {
-		if (OC_Group::inGroup($uid, 'admin') && self::$incognitoMode === false) {
+		$adminGroups = OC_Config::getValue('admin_groups');
+		if (is_null($adminGroups) || '' === $adminGroups) {
+			$adminGroups = 'admin';
+		}
+		if (self::isInOneOfGroups($uid, split(',', $adminGroups)) && self::$incognitoMode === false) {
 			return true;
 		}
 		return false;

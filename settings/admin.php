@@ -50,6 +50,7 @@ if (OC_Request::serverProtocol() === 'https') {
 }
 $tmpl->assign('isConnectedViaHTTPS', $connectedHTTPS);
 $tmpl->assign('enforceHTTPSEnabled', OC_Config::getValue( "forcessl", false));
+$tmpl->assign('adminGroups', OC_Config::getValue( "admin_groups", ''));
 
 $tmpl->assign('allowLinks', OC_Appconfig::getValue('core', 'shareapi_allow_links', 'yes'));
 $tmpl->assign('allowPublicUpload', OC_Appconfig::getValue('core', 'shareapi_allow_public_upload', 'yes'));

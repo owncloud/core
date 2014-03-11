@@ -268,6 +268,19 @@ if (!$_['internetconnectionworking']) {
 				?>
 			</td>
 		</tr>
+		<tr>
+			<td id="enable">
+				<label for="admin_groups"><?php p($l->t('Admin Groups'));?></label><input type="text" name="admin_groups"  id="admin_groups"  placeholder="<?php p($l->t('Optional; comma-separated'));?>"  title="<?php p($l->t('Admin Groups'));?>" value="<?php p($_['adminGroups']) ?>" /><br />
+				<em><?php p($l->t(
+					'Define admin groups, separeted by comma. Members of these groups can access the admin page. If not set, defaults to "admin".',
+					$theme->getName()
+				)); ?></em><br />
+				<em><?php p($l->t(
+					'Be careful not to misconfigure this, as you can no longer access the admin page then.',
+					$theme->getName()
+				)); ?></em>
+			</td>
+		</tr>
 	</table>
 </fieldset>
 
@@ -277,7 +290,7 @@ if (!$_['internetconnectionworking']) {
 	<p><?php p($l->t('This is used for sending out notifications.')); ?></p>
 
 	<p>
-		<label for="mail_smtpmode"><?php p($l->t( 'Send mode' )); ?></label> 
+		<label for="mail_smtpmode"><?php p($l->t( 'Send mode' )); ?></label>
 		<select name='mail_smtpmode' id='mail_smtpmode'>
 			<?php foreach ($mail_smtpmode as $smtpmode):
 				$selected = '';
