@@ -228,7 +228,7 @@ table td.filename .nametext {
 	left: 55px;
 }
 table td.filename .nametext span:not(.extension) {
-	max-width: 500px;
+	max-width: 400px;
 	text-overflow: ellipsis;
 	overflow: hidden;
 	position: relative;
