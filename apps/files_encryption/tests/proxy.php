@@ -69,6 +69,9 @@ class Test_Encryption_Proxy extends \PHPUnit_Framework_TestCase {
 	}
 
 	function setUp() {
+		// to make sure the cache follows file operations
+		\OC\Files\Cache\Updater::registerHooks();
+
 		// set user id
 		\OC_User::setUserId(\Test_Encryption_Proxy::TEST_ENCRYPTION_PROXY_USER1);
 		$this->userId = \Test_Encryption_Proxy::TEST_ENCRYPTION_PROXY_USER1;
@@ -81,7 +84,11 @@ class Test_Encryption_Proxy extends \PHPUnit_Framework_TestCase {
 		// init short data
 		$this->data = 'hats';
 		$this->filename = 'enc_proxy_tests-' . uniqid() . '.txt';
+	}
 
+	function tearDown() {
+		OC_Hook::clear();
+		\Test_Encryption_Util::cleanup();
 	}
 
 	public static function tearDownAfterClass() {

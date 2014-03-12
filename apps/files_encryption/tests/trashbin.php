@@ -110,6 +110,7 @@ class Test_Encryption_Trashbin extends \PHPUnit_Framework_TestCase {
 	public static function tearDownAfterClass() {
 		// cleanup test user
 		\OC_User::deleteUser(\Test_Encryption_Trashbin::TEST_ENCRYPTION_TRASHBIN_USER1);
+		\Test_Encryption_Util::cleanup();
 	}
 
 	/**

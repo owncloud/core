@@ -117,6 +117,7 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 		// cleanup test user
 		\OC_User::deleteUser(\Test_Encryption_Util::TEST_ENCRYPTION_UTIL_USER1);
 		\OC_User::deleteUser(\Test_Encryption_Util::TEST_ENCRYPTION_UTIL_LEGACY_USER);
+		self::cleanUp();
 	}
 
 	/**
@@ -532,6 +533,15 @@ class Test_Encryption_Util extends \PHPUnit_Framework_TestCase {
 		\OC_Util::tearDownFS();
 		\OC_User::setUserId('');
 		\OC\Files\Filesystem::tearDown();
+	}
+
+	/**
+	 * Remove key directories
+	 */
+	public static function cleanup() {
+		$view = new \OC_FilesystemView('/');
+		$view->unlink('owncloud_private_key');
+		$view->unlink('public-keys');
 	}
 
 	/**

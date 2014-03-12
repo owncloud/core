@@ -125,6 +125,7 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 		\OC_User::deleteUser(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER2);
 		\OC_User::deleteUser(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER3);
 		\OC_User::deleteUser(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER4);
+		\Test_Encryption_Util::cleanup();
 	}
 
 

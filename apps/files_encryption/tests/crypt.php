@@ -100,6 +100,7 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 	public static function tearDownAfterClass() {
 		// cleanup test user
 		\OC_User::deleteUser(\Test_Encryption_Crypt::TEST_ENCRYPTION_CRYPT_USER1);
+		\Test_Encryption_Util::cleanup();
 	}
 
 	/**

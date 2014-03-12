@@ -213,4 +213,14 @@ class Updater {
 	static public function deleteHook($params) {
 		self::deleteUpdate($params['path']);
 	}
+
+	/**
+	 * Register hooks for cache
+	 */
+	static public function registerHooks() {
+		\OC_Hook::connect('OC_Filesystem', 'post_write', '\OC\Files\Cache\Updater', 'writeHook');
+		\OC_Hook::connect('OC_Filesystem', 'post_touch', '\OC\Files\Cache\Updater', 'touchHook');
+		\OC_Hook::connect('OC_Filesystem', 'post_delete', '\OC\Files\Cache\Updater', 'deleteHook');
+		\OC_Hook::connect('OC_Filesystem', 'post_rename', '\OC\Files\Cache\Updater', 'renameHook');
+	}
 }
