@@ -221,19 +221,15 @@ class OC_Group_Database extends OC_Group_Backend {
 	 */
 	public function displayNamesInGroup($gid, $search = '', $limit = -1, $offset = 0) {
 		$displayNames = array();
-
-		$stmt = OC_DB::prepare('SELECT `*PREFIX*users`.`uid`, `*PREFIX*users`.`displayname`'
-			.' FROM `*PREFIX*users`'
-			.' INNER JOIN `*PREFIX*group_user` ON `*PREFIX*group_user`.`uid` = `*PREFIX*users`.`uid`'
-			.' WHERE `gid` = ? AND `*PREFIX*group_user`.`uid` LIKE ?',
-			$limit,
-			$offset);
-		$result = $stmt->execute(array($gid, $search.'%'));
-		$users = array();
-		while ($row = $result->fetchRow()) {
-			$displayName = trim($row['displayname'], ' ');
-			$displayNames[$row['uid']] = empty($displayName) ? $row['uid'] : $displayName;
+		$userManager = \OC_User::getManager();
+		$users = $this->usersInGroup($gid, $search, $limit, $offset);
+		foreach($users as $uid) {
+			$user = $userManager->get($uid);
+			if(!is_null($user)) {
+				$displayNames[$uid] = $user->getDisplayName();
+			}
 		}
+
 		return $displayNames;
 	}
 }

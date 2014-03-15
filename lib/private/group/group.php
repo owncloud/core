@@ -208,7 +208,7 @@ class Group {
 			if (!is_null($offset)) {
 				$offset -= count($userIds);
 			}
-			$users = $this->getVerifiedUsers($userIds);
+			$users += $this->getVerifiedUsers($userIds);
 			if (!is_null($limit) and $limit <= 0) {
 				return array_values($users);
 			}
