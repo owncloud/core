@@ -21,6 +21,8 @@
 					<?php endif;?>
 					<input type="hidden" id="upload_limit" value="<?php p($_['uploadLimit']) ?>">
 					<input type="hidden" id="free_space" value="<?php p($_['freeSpace']) ?>">
+					<input type="hidden" id="usedStoragePercent" value="<?php p($_['usedStoragePercent']) ?>">
+					<input type="hidden" id="usedQuotaPercent" value="<?php p($_['usedQuotaPercent']) ?>">
 					<?php if(isset($_['dirToken'])):?>
 					<input type="hidden" id="publicUploadRequestToken" name="requesttoken" value="<?php p($_['requesttoken']) ?>" />
 					<input type="hidden" id="dirToken" name="dirToken" value="<?php p($_['dirToken']) ?>" />
