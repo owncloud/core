@@ -7,6 +7,7 @@
  */
 
 namespace OC;
+
 use OC\Hooks\BasicEmitter;
 
 /**
@@ -37,6 +38,7 @@ class Updater extends BasicEmitter {
 
 	/**
 	 * Check if a new version is available
+	 *
 	 * @param string $updaterUrl the url to check, i.e. 'http://apps.owncloud.com/updater.php'
 	 * @return array | bool
 	 */
@@ -56,7 +58,7 @@ class Updater extends BasicEmitter {
 		$version = \OC_Util::getVersion();
 		$version['installed'] = \OC_Appconfig::getValue('core', 'installedat');
 		$version['updated'] = \OC_Appconfig::getValue('core', 'lastupdatedat');
-		$version['updatechannel'] = \OC_Util::getChannel(); 
+		$version['updatechannel'] = \OC_Util::getChannel();
 		$version['edition'] = \OC_Util::getEditionString();
 		$version['build'] = \OC_Util::getBuild();
 		$versionString = implode('x', $version);
@@ -119,6 +121,8 @@ class Updater extends BasicEmitter {
 
 
 		try {
+			$this->setDBCollation();
+
 			\OC_DB::updateDbFromStructure(\OC::$SERVERROOT . '/db_structure.xml');
 			$this->emit('\OC\Updater', 'dbUpgrade');
 
@@ -178,6 +182,41 @@ class Updater extends BasicEmitter {
 			}
 		}
 		$this->emit('\OC\Updater', 'filecacheDone');
+	}
+
+	/**
+	 * make sure the database collation is set to utf8_bin for mysql to prevent case insensitive string operations being default
+	 */
+	private function setDBCollation() {
+		if (\OC_Config::getValue('dbtype', 'sqlite3') !== 'mysql') {
+			return;
+		}
+		$db = \OC::$server->getDatabaseConnection();
+		$dbName = \OC_Config::getValue('dbname', 'owncloud');
+		$dbPrefix = \OC_Config::getValue('dbtableprefix', 'oc_');
+		$query = $db->prepare('SELECT COLLATION_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = ? AND table_schema = ?');
+		$query->execute(array($dbPrefix . 'appconfig', $dbName));
+		$row = $query->fetch();
+		// utf8_general_ci is the old default
+		if ($row['COLLATION_NAME'] === 'utf8_bin') {
+			return;
+		}
+		// at this point we know that we have to migrate, tell the user as early as possible since converting all table might take a while
+		$this->emit('\OC\Updater', 'dbCollationStart');
+		$query = $db->prepare('SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = ?');
+		$query->execute(array($dbName));
+		while ($row = $query->fetch()) {
+			// don't touch tables that arent ours
+			if (strpos($row['TABLE_NAME'], $dbPrefix) === 0) {
+				$convertQuery = $db->prepare('ALTER TABLE `' . $row['TABLE_NAME'] . '` CONVERT TO CHARACTER SET utf8 COLLATE utf8_bin;');
+				$convertQuery->execute();
+			}
+		}
+
+		// finally set the default collation for the database
+		$query = $db->prepare('ALTER DATABASE ' . $dbName . ' CHARACTER SET utf8 COLLATE utf8_bin;');
+		$query->execute();
+		$this->emit('\OC\Updater', 'dbCollationEnd');
 	}
 }
 

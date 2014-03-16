@@ -30,6 +30,12 @@ if (OC::checkUpgrade(false)) {
 		$eventSource->close();
 		OC_Config::setValue('maintenance', false);
 	});
+	$updater->listen('\OC\Updater', 'dbCollationStart', function () use ($eventSource, $l) {
+		$eventSource->send('success', (string)$l->t('Updating table collations, this can take a while'));
+	});
+	$updater->listen('\OC\Updater', 'dbCollationEnd', function () use ($eventSource, $l) {
+		$eventSource->send('success', (string)$l->t('Updated table collations'));
+	});
 
 	$updater->upgrade();
 
