@@ -54,6 +54,15 @@ class App {
 			'data'		=> NULL
 		);
 
+		if (!\OCP\Util::isValidFileName($newname)) {
+			$result['data'] = array('message' =>
+				(string)$this->l10n->t(
+					"Invalid name, '\\', '/', '<', '>', ':', '\"', '|', '?' and '*' are not allowed."
+				)
+			);
+			return $result;
+		}
+
 		// rename to "/Shared" is denied
 		if( $dir === '/' and $newname === 'Shared' ) {
 			$result['data'] = array(
