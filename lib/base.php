@@ -94,22 +94,7 @@ class OC {
 	public static $server = null;
 
 	public static function initPaths() {
-		// calculate the root directories
-		OC::$SERVERROOT = str_replace("\\", '/', substr(__DIR__, 0, -4));
-
-		// ensure we can find OC_Config
-		set_include_path(
-			OC::$SERVERROOT . '/lib' . PATH_SEPARATOR .
-			get_include_path()
-		);
-
-		if(defined('PHPUNIT_RUN') and PHPUNIT_RUN and is_dir(OC::$SERVERROOT . '/tests/config/')) {
-			self::$configDir = OC::$SERVERROOT . '/tests/config/';
-		} else {
-			self::$configDir = OC::$SERVERROOT . '/config/';
-		}
-		OC_Config::$object = new \OC\Config(self::$configDir);
-
+		// Calculate the sub-uri
 		OC::$SUBURI = str_replace("\\", "/", substr(realpath($_SERVER["SCRIPT_FILENAME"]), strlen(OC::$SERVERROOT)));
 		$scriptName = OC_Request::scriptName();
 		if (substr($scriptName, -1) == '/') {
@@ -123,6 +108,7 @@ class OC {
 			}
 		}
 
+		// set the webroot
 		OC::$WEBROOT = substr($scriptName, 0, strlen($scriptName) - strlen(OC::$SUBURI));
 
 		if (OC::$WEBROOT != '' and OC::$WEBROOT[0] !== '/') {
@@ -410,16 +396,45 @@ class OC {
 	}
 
 
-	public static function init() {
-		// register autoloader
+	public static function bootstrap() {
+		// register simple autoloader to be safe
 		require_once __DIR__ . '/autoloader.php';
 		self::$loader = new \OC\Autoloader();
+		self::$loader->register();
+
+		// calculate the server root directory
+		OC::$SERVERROOT = str_replace("\\", '/', substr(__DIR__, 0, -4));
+
+		if(defined('PHPUNIT_RUN') and PHPUNIT_RUN and is_dir(OC::$SERVERROOT . '/tests/config/')) {
+			self::$configDir = OC::$SERVERROOT . '/tests/config/';
+		} else {
+			self::$configDir = OC::$SERVERROOT . '/config/';
+		}
+		OC_Config::$object = new \OC\Config(self::$configDir);
+
+		if (OC_Config::getValue('instanceid', false)) {
+			// \OC\Memcache\Cache has a hidden dependency on
+			// OC_Util::getInstanceId() for namespacing. See #5409.
+			try {
+				$memoryCache = \OC\Memcache\Factory::createLowLatency('Autoloader');
+
+				// unload the non-caching loader and setup the caching loader
+				$loader = new \OC\CachingAutoloader($memoryCache);
+				$loader->register();
+				self::$loader->unregister();
+				self::$loader = $loader;
+			} catch (\Exception $ex) {
+			}
+		}
 		self::$loader->registerPrefix('Doctrine\\Common', 'doctrine/common/lib');
 		self::$loader->registerPrefix('Doctrine\\DBAL', 'doctrine/dbal/lib');
 		self::$loader->registerPrefix('Symfony\\Component\\Routing', 'symfony/routing');
 		self::$loader->registerPrefix('Symfony\\Component\\Console', 'symfony/console');
 		self::$loader->registerPrefix('Patchwork', '3rdparty');
-		spl_autoload_register(array(self::$loader, 'load'));
+	}
+
+	public static function init() {
+		self::bootstrap();
 
 		// set some stuff
 		//ob_start();
@@ -475,14 +490,6 @@ class OC {
 		}
 
 		self::initPaths();
-		if (OC_Config::getValue('instanceid', false)) {
-			// \OC\Memcache\Cache has a hidden dependency on
-			// OC_Util::getInstanceId() for namespacing. See #5409.
-			try {
-				self::$loader->setMemoryCache(\OC\Memcache\Factory::createLowLatency('Autoloader'));
-			} catch (\Exception $ex) {
-			}
-		}
 		OC_Util::isSetLocaleWorking();
 
 		// setup 3rdparty autoloader

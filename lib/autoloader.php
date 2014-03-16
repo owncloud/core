@@ -16,10 +16,22 @@ class Autoloader {
 	private $classPaths = array();
 
 	/**
-	 * Optional low-latency memory cache for class to path mapping.
-	 * @var \OC\Memcache\Cache
+	 * Registers this instance as an autoloader.
+	 *
+	 * @param Boolean $prepend Whether to prepend the autoloader or not
 	 */
-	protected $memoryCache;
+	public function register($prepend = false)
+	{
+		spl_autoload_register(array($this, 'load'), true, $prepend);
+	}
+
+	/**
+	 * Unregisters this instance as an autoloader.
+	 */
+	public function unregister()
+	{
+		spl_autoload_unregister(array($this, 'load'));
+	}
 
 	/**
 	 * Add a custom prefix to the autoloader
@@ -59,7 +71,7 @@ class Autoloader {
 	 * get the possible paths for a class
 	 *
 	 * @param string $class
-	 * @return array|bool an array of possible paths or false if the class is not part of ownCloud
+	 * @return string|bool the path to the class or false if the class is not part of ownCloud
 	 */
 	public function findClass($class) {
 		$class = trim($class, '\\');
@@ -109,7 +121,13 @@ class Autoloader {
 				}
 			}
 		}
-		return $paths;
+
+		foreach ($paths as $path) {
+			if ($fullPath = stream_resolve_include_path($path)) {
+				return $fullPath;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -119,38 +137,11 @@ class Autoloader {
 	 * @return bool
 	 */
 	public function load($class) {
-		$pathsToRequire = null;
-		if ($this->memoryCache) {
-			$pathsToRequire = $this->memoryCache->get($class);
+		$path = $this->findClass($class);
+
+		if (is_string($path)) {
+			require_once $path;
 		}
-
-		if (!is_array($pathsToRequire)) {
-			// No cache or cache miss
-			$pathsToRequire = array();
-			foreach ($this->findClass($class) as $path) {
-				$fullPath = stream_resolve_include_path($path);
-				if ($fullPath) {
-					$pathsToRequire[] = $fullPath;
-				}
-			}
-
-			if ($this->memoryCache) {
-				$this->memoryCache->set($class, $pathsToRequire, 60); // cache 60 sec
-			}
-		}
-
-		foreach ($pathsToRequire as $fullPath) {
-			require_once $fullPath;
-		}
-
 		return false;
-	}
-
-	/**
-	 * @brief Sets the optional low-latency cache for class to path mapping.
-	 * @param \OC\Memcache\Cache $memoryCache Instance of memory cache.
-	 */
-	public function setMemoryCache(\OC\Memcache\Cache $memoryCache = null) {
-		$this->memoryCache = $memoryCache;
 	}
 }
