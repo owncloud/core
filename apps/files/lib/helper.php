@@ -12,11 +12,15 @@ class Helper
 
 		// information about storage capacities
 		$storageInfo = \OC_Helper::getStorageInfo($dir);
+		$userQuota = getUserQuota(\OCP\User::getUser());
+		$userQuotaPercent = round(($storageInfo['used'] / $userQuota) * 10000 ) / 100;
 
 		return array('uploadMaxFilesize' => $maxUploadFilesize,
 					 'maxHumanFilesize'  => $maxHumanFilesize,
 					 'freeSpace' => $storageInfo['free'],
-					 'usedStoragePercent'  => (int)$storageInfo['relative']);
+					 'usedStoragePercent'  => (int)$storageInfo['relative'], //XXX: is it OK to expose storage usage to users?
+					 'usedQuotaPercent' => (int)$userQuotaPercent
+				 );
 	}
 
 	public static function determineIcon($file) {
