@@ -1,7 +1,65 @@
 <?php
 
-// fix webdav properties,add namespace in front of the property, update for OC4.5
 $installedVersion=OCP\Config::getAppValue('files', 'installed_version');
+
+if (version_compare($installedVersion, '1.1.8', '<')) {
+
+	// update wrong mimetypes
+	$wrongMimetypes = array(
+		'application/mspowerpoint' => 'application/vnd.ms-powerpoint',
+		'application/msexcel' => 'application/vnd.ms-excel',
+	);
+
+	$stmt = OC_DB::prepare('
+		UPDATE `*PREFIX*mimetypes`
+		SET    `mimetype` = ?
+		WHERE  `mimetype` = ?
+	');
+
+	foreach ($wrongMimetypes as $wrong => $correct) {
+		OC_DB::executeAudited($stmt, array($wrong, $correct));
+	}
+
+	$updatedMimetypes = array(
+		'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+		'xlsx' => 'application/vnd.ms-excel',
+		'pptx' => 'application/vnd.ms-powerpoint',
+	);
+	
+	// separate doc from docx etc
+	foreach ($updatedMimetypes as $extension => $mimetype ) {
+		$result = OC_DB::executeAudited('
+			SELECT count(`mimetype`)
+			FROM   `*PREFIX*mimetypes`
+			WHERE  `mimetype` = ?
+			',array($mimetype)
+		);
+
+		$exists = $result->fetchOne();
+
+		if ( ! $exists ) {
+			// insert mimetype
+			OC_DB::executeAudited('
+				INSERT INTO `*PREFIX*mimetypes` ( `mimetype` )
+				VALUES ( ? )
+				', array($mimetype)
+			);
+		}
+
+		// change mimetype for files with x extension
+		OC_DB::executeAudited('
+			UPDATE `*PREFIX*filecache`
+			SET `mimetype` = (
+				SELECT `id`
+				FROM `*PREFIX*mimetypes`
+				WHERE `mimetype` = ?
+			) WHERE `name` LIKE ?
+			', array($mimetype, '%.'.$extension)
+		);
+	}
+}
+
+// fix webdav properties,add namespace in front of the property, update for OC4.5
 if (version_compare($installedVersion, '1.1.6', '<')) {
 	// SQL92 string concatenation is ||, some of the DBMS don't know that
 	if (OC_Config::getValue('dbtype') === 'mysql') {
