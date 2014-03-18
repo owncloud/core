@@ -129,7 +129,7 @@ span.version { margin-left:1em; margin-right:1em; color:#555; }
 	white-space: nowrap;
 }
 .app.externalapp {
-	max-width: 185px;
+	max-width: 160px;
 }
 
 .appslink { text-decoration: underline; }
