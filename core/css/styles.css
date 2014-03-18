@@ -300,6 +300,7 @@ input[type="submit"].enabled {
 #leftcontent li:hover, .leftcontent li:hover { color:#333; background:#ddd; }
 #leftcontent a {
 	height: 100%;
+	width: 100%;
 	display: block;
 	margin: 0;
 	padding: 0 1em 0 0;
