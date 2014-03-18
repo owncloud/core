@@ -127,7 +127,14 @@ small.recommendedapp { color:#FFF; background-color:#888; font-weight:bold; font
 small.recommendedapp.list { float: right; }
 span.version { margin-left:1em; margin-right:1em; color:#555; }
 
-.app { position: relative; display: inline-block; padding: 0.2em 0 0.2em 0 !important; text-overflow: hidden; overflow: hidden; white-space: nowrap; /*transition: .2s max-width linear; -o-transition: .2s max-width linear; -moz-transition: .2s max-width linear; -webkit-transition: .2s max-width linear; -ms-transition: .2s max-width linear;*/ }
+.app {
+	position: relative;
+	display: inline-block;
+	padding: 0.2em 0 0.2em 0 !important;
+	text-overflow: hidden;
+	overflow: hidden;
+	white-space: nowrap;
+}
 .app.externalapp {
 	max-width: 145px;
 }

@@ -294,10 +294,6 @@ input[type="submit"].enabled {
 	padding: .5em .8em;
 	white-space: nowrap;
 	overflow: hidden;
-	-webkit-transition: background-color 200ms;
-	-moz-transition: background-color 200ms;
-	-o-transition: background-color 200ms;
-	transition: background-color 200ms;
 }
 #leftcontent li:hover, #leftcontent li:active, #leftcontent li.active, .leftcontent li:hover, .leftcontent li:active, .leftcontent li.active { background:#eee; }
 #leftcontent li.active, .leftcontent li.active { font-weight:bold; }
