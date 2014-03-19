@@ -361,6 +361,7 @@ $(document).ready(function() {
 			 */
 			done:function(e, data) {
 				OC.Upload.log('done', e, data);
+				$('.tipsy').remove(); // otherwise the 'Upload max.' tooltip remains visible
 				// handle different responses (json or body from iframe for ie)
 				var response;
 				if (typeof data.result === 'string') {
