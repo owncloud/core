@@ -320,6 +320,7 @@ $(document).ready(function() {
 			 */
 			start: function(e) {
 				OC.Upload.log('start', e, null);
+				$('.tipsy').remove(); // otherwise the 'Upload max.' tooltip remains visible
 			},
 			submit: function(e, data) {
 				OC.Upload.rememberUpload(data);
