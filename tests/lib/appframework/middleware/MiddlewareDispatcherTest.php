@@ -147,14 +147,14 @@ class MiddlewareDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$response = new Response();
 		$m1 = $this->getMock('\OCP\AppFramework\Middleware',
 				array('afterException', 'beforeController'));
-		$m1->expects($this->never())
-				->method('afterException');
+		$m1->expects($this->once())
+				->method('afterException')
+				->will($this->returnValue($response));
 
 		$m2 = $this->getMock('OCP\AppFramework\Middleware',
 				array('afterException', 'beforeController'));
-		$m2->expects($this->once())
-				->method('afterException')
-				->will($this->returnValue($response));
+		$m2->expects($this->never())
+				->method('afterException');
 
 		$this->dispatcher->registerMiddleware($m1);
 		$this->dispatcher->registerMiddleware($m2);
@@ -238,8 +238,8 @@ class MiddlewareDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$this->dispatcher->afterController($this->controller, $this->method, $this->response);
 
-		$this->assertEquals(2, $m1->afterControllerOrder);
-		$this->assertEquals(1, $m2->afterControllerOrder);
+		$this->assertEquals(1, $m1->afterControllerOrder);
+		$this->assertEquals(2, $m2->afterControllerOrder);
 	}
 
 
@@ -262,8 +262,8 @@ class MiddlewareDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$this->dispatcher->beforeOutput($this->controller, $this->method, $this->out);
 
-		$this->assertEquals(2, $m1->beforeOutputOrder);
-		$this->assertEquals(1, $m2->beforeOutputOrder);
+		$this->assertEquals(1, $m1->beforeOutputOrder);
+		$this->assertEquals(2, $m2->beforeOutputOrder);
 	}
 
 
@@ -282,7 +282,7 @@ class MiddlewareDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$this->dispatcher->beforeOutput($this->controller, $this->method, $this->out);
 
-		$this->assertEquals(2, $m1->beforeOutputOrder);
-		$this->assertEquals(1, $m2->beforeOutputOrder);
+		$this->assertEquals(1, $m1->beforeOutputOrder);
+		$this->assertEquals(2, $m2->beforeOutputOrder);
 	}
 }
