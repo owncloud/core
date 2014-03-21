@@ -532,11 +532,10 @@ class OC {
 			$sessionUser = self::$session->get('user_id');
 			$serverUser = $_SERVER['PHP_AUTH_USER'];
 			OC_Log::write('core',
-				"Session user-id ($sessionUser) doesn't match SERVER[PHP_AUTH_USER] ($serverUser).",
+				"Overriding SERVER[PHP_AUTH_USER] ($serverUser) with session user-id ($sessionUser).",
 				OC_Log::WARN);
-			header('WWW-Authenticate: Basic realm="Please Reauthenticate with ownCloud"');
-			header('HTTP/1.0 401 Unauthorized');
-			// OC_User::logout();
+			OC_Util::redirectToDefaultPage($sessionUser);
+			exit();
 		}
 
 		// Load Apps

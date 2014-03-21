@@ -636,7 +636,7 @@ class OC_Util {
 	 * @brief Redirect to the user default page
 	 * @return void
 	 */
-	public static function redirectToDefaultPage() {
+	public static function redirectToDefaultPage($basicUser) {
 		if(isset($_REQUEST['redirect_url'])) {
 			$location = OC_Helper::makeURLAbsolute(urldecode($_REQUEST['redirect_url']));
 		}
@@ -651,6 +651,9 @@ class OC_Util {
 			}
 		}
 		OC_Log::write('core', 'redirectToDefaultPage: '.$location, OC_Log::DEBUG);
+		if (isset($basicUser)) {
+			$location = preg_replace('/^(http|https):\/\/(.*)/i', '${1}://' . $basicUser . '@${2}', $location);
+		}
 		header( 'Location: '.$location );
 		exit();
 	}
