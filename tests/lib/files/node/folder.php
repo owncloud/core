@@ -155,7 +155,7 @@ class Folder extends \PHPUnit_Framework_TestCase {
 				array('fileid' => 3, 'path' => '/bar/foo/qwerty', 'name' => 'qwerty', 'size' => 200, 'mtime' => 55, 'mimetype' => 'httpd/unix-directory')
 			)));
 
-		$permissionsCache = $this->getMock('\OC\Files\Cache\Permissions', array(), array('/'));
+		$permissionsCache = $this->getMock('\OC\Files\Cache\Permissions', array(), array('/', null));
 		$permissionsCache->expects($this->once())
 			->method('getDirectoryPermissions')
 			->will($this->returnValue(array(2 => \OCP\PERMISSION_ALL)));

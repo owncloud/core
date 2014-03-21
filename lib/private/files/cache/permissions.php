@@ -15,9 +15,16 @@ class Permissions {
 	private $storageId;
 
 	/**
-	 * @param \OC\Files\Storage\Storage|string $storage
+	 * @var \OCP\IDBConnection $conn
 	 */
-	public function __construct($storage) {
+	private $conn;
+
+	/**
+	 * @param \OC\Files\Storage\Storage|string $storage
+	 * @param \OCP\IDBConnection $conn
+	 */
+	public function __construct($storage, $conn) {
+		$this->conn = $conn;
 		if ($storage instanceof \OC\Files\Storage\Storage) {
 			$this->storageId = $storage->getId();
 		} else {
@@ -34,8 +41,9 @@ class Permissions {
 	 */
 	public function get($fileId, $user) {
 		$sql = 'SELECT `permissions` FROM `*PREFIX*permissions` WHERE `user` = ? AND `fileid` = ?';
-		$result = \OC_DB::executeAudited($sql, array($user, $fileId));
-		if ($row = $result->fetchRow()) {
+		$query = $this->conn->prepare($sql);
+		$query->execute(array($user, $fileId));
+		if ($row = $query->fetch()) {
 			return $row['permissions'];
 		} else {
 			return -1;
@@ -55,7 +63,8 @@ class Permissions {
 		} else {
 			$sql = 'INSERT INTO `*PREFIX*permissions`(`permissions`, `user`, `fileid`) VALUES(?, ?,? )';
 		}
-		\OC_DB::executeAudited($sql, array($permissions, $user, $fileId));
+		$query = $this->conn->prepare($sql);
+		$query->execute(array($permissions, $user, $fileId));
 	}
 
 	/**
@@ -75,9 +84,10 @@ class Permissions {
 
 		$sql = 'SELECT `fileid`, `permissions` FROM `*PREFIX*permissions`'
 			. ' WHERE `fileid` IN (' . $inPart . ') AND `user` = ?';
-		$result = \OC_DB::executeAudited($sql, $params);
+		$query = $this->conn->prepare($sql);
+		$query->execute($params);
 		$filePermissions = array();
-		while ($row = $result->fetchRow()) {
+		while ($row = $query->fetch()) {
 			$filePermissions[$row['fileid']] = $row['permissions'];
 		}
 		return $filePermissions;
@@ -96,9 +106,10 @@ class Permissions {
 			INNER JOIN `*PREFIX*filecache` ON `*PREFIX*permissions`.`fileid` = `*PREFIX*filecache`.`fileid`
 			WHERE `*PREFIX*filecache`.`parent` = ? AND `*PREFIX*permissions`.`user` = ?';
 
-		$result = \OC_DB::executeAudited($sql, array($parentId, $user));
+		$query = $this->conn->prepare($sql);
+		$query->execute(array($parentId, $user));
 		$filePermissions = array();
-		while ($row = $result->fetchRow()) {
+		while ($row = $query->fetch()) {
 			$filePermissions[$row['fileid']] = $row['permissions'];
 		}
 		return $filePermissions;
@@ -112,17 +123,21 @@ class Permissions {
 	 */
 	public function remove($fileId, $user = null) {
 		if (is_null($user)) {
-			\OC_DB::executeAudited('DELETE FROM `*PREFIX*permissions` WHERE `fileid` = ?', array($fileId));
+			$sql = 'DELETE FROM `*PREFIX*permissions` WHERE `fileid` = ?';
+			$query = $this->conn->prepare($sql);
+			$query->execute(array($fileId));
 		} else {
 			$sql = 'DELETE FROM `*PREFIX*permissions` WHERE `fileid` = ? AND `user` = ?';
-			\OC_DB::executeAudited($sql, array($fileId, $user));
+			$query = $this->conn->prepare($sql);
+			$query->execute(array($fileId, $user));
 		}
 	}
 
 	public function removeMultiple($fileIds, $user) {
-		$query = \OC_DB::prepare('DELETE FROM `*PREFIX*permissions` WHERE `fileid` = ? AND `user` = ?');
+		$sql = 'DELETE FROM `*PREFIX*permissions` WHERE `fileid` = ? AND `user` = ?';
+		$query = $this->conn->prepare($sql);
 		foreach ($fileIds as $fileId) {
-			\OC_DB::executeAudited($query, array($fileId, $user));
+			$query->execute(array($fileId, $user));
 		}
 	}
 
@@ -133,9 +148,10 @@ class Permissions {
 	 */
 	public function getUsers($fileId) {
 		$sql = 'SELECT `user` FROM `*PREFIX*permissions` WHERE `fileid` = ?';
-		$result = \OC_DB::executeAudited($sql, array($fileId));
+		$query = $this->conn->prepare($sql);
+		$query->execute(array($fileId));
 		$users = array();
-		while ($row = $result->fetchRow()) {
+		while ($row = $query->fetch()) {
 			$users[] = $row['user'];
 		}
 		return $users;
