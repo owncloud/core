@@ -86,11 +86,8 @@ class Permissions {
 			. ' WHERE `fileid` IN (' . $inPart . ') AND `user` = ?';
 		$query = $this->conn->prepare($sql);
 		$query->execute($params);
-		$filePermissions = array();
-		while ($row = $query->fetch()) {
-			$filePermissions[$row['fileid']] = $row['permissions'];
-		}
-		return $filePermissions;
+
+		return $query->fetchAll(\PDO::FETCH_KEY_PAIR);
 	}
 
 	/**
@@ -108,11 +105,8 @@ class Permissions {
 
 		$query = $this->conn->prepare($sql);
 		$query->execute(array($parentId, $user));
-		$filePermissions = array();
-		while ($row = $query->fetch()) {
-			$filePermissions[$row['fileid']] = $row['permissions'];
-		}
-		return $filePermissions;
+
+		return $query->fetchAll(\PDO::FETCH_KEY_PAIR);
 	}
 
 	/**
@@ -145,15 +139,13 @@ class Permissions {
 	 * get the list of users which have permissions stored for a file
 	 *
 	 * @param int $fileId
+	 * @return string[]
 	 */
 	public function getUsers($fileId) {
 		$sql = 'SELECT `user` FROM `*PREFIX*permissions` WHERE `fileid` = ?';
 		$query = $this->conn->prepare($sql);
 		$query->execute(array($fileId));
-		$users = array();
-		while ($row = $query->fetch()) {
-			$users[] = $row['user'];
-		}
-		return $users;
+
+		return $query->fetchAll(\PDO::FETCH_COLUMN);
 	}
 }
