@@ -1032,11 +1032,12 @@ class OC_Util {
 	/**
 	 * @Brief Get file content via curl.
 	 * @param string $url Url to get content
+	 * @param bool $verifyCert Whether the SSL certificate should get verified (defaults to yes)
 	 * @return string of the response or false on error
 	 * This function get the content of a page via curl, if curl is enabled.
 	 * If not, file_get_contents is used.
 	 */
-	public static function getUrlContent($url) {
+	public static function getUrlContent($url, $verifyCert = true) {
 		if (function_exists('curl_init')) {
 			$curl = curl_init();
 
@@ -1046,6 +1047,7 @@ class OC_Util {
 			curl_setopt($curl, CURLOPT_URL, $url);
 			curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
 			curl_setopt($curl, CURLOPT_MAXREDIRS, 10);
+			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, $verifyCert);
 
 			curl_setopt($curl, CURLOPT_USERAGENT, "ownCloud Server Crawler");
 			if(OC_Config::getValue('proxy', '') != '') {
@@ -1071,6 +1073,9 @@ class OC_Util {
 				$contextArray = array(
 					'http' => array(
 						'timeout' => 10
+					),
+					'ssl' => array(
+						'verify_peer' => $verifyCert
 					)
 				);
 			}
