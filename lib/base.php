@@ -542,9 +542,9 @@ class OC {
 			$sessionUser = self::$session->get('loginname');
 			$serverUser = $_SERVER['PHP_AUTH_USER'];
 			OC_Log::write('core',
-				"Session loginname ($sessionUser) doesn't match SERVER[PHP_AUTH_USER] ($serverUser).",
+				"Overriding SERVER[PHP_AUTH_USER] ($serverUser) with session user-id ($sessionUser).",
 				OC_Log::WARN);
-			OC_User::logout();
+			OC_Util::redirectToDefaultPage($sessionUser);
 		}
 
 		// Load Apps
@@ -754,6 +754,10 @@ class OC {
 					OC_Preferences::deleteKey(OC_User::getUser(), 'login_token', $_COOKIE['oc_token']);
 				}
 				OC_User::logout();
+				if (isset($_SERVER['PHP_AUTH_USER'])) {
+					// clear current basic auth user from browser
+					OC_Util::redirectToDefaultPage("logout");
+				}
 				// redirect to webroot and add slash if webroot is empty
 				header("Location: " . OC::$WEBROOT.(empty(OC::$WEBROOT) ? '/' : ''));
 			} else {
