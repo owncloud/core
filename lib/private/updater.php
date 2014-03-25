@@ -76,7 +76,9 @@ class Updater extends BasicEmitter {
 		if ($xml == false) {
 			return array();
 		}
+		$loadEntities = libxml_disable_entity_loader(true);
 		$data = @simplexml_load_string($xml);
+		libxml_disable_entity_loader($loadEntities);
 
 		$tmp = array();
 		$tmp['version'] = $data->version;
@@ -102,6 +104,25 @@ class Updater extends BasicEmitter {
 			$this->log->debug('starting upgrade from ' . $installedVersion . ' to ' . $currentVersion, array('app' => 'core'));
 		}
 		$this->emit('\OC\Updater', 'maintenanceStart');
+
+		// create empty file in data dir, so we can later find
+		// out that this is indeed an ownCloud data directory
+		// (in case it didn't exist before)
+		file_put_contents(\OC_Config::getValue('datadirectory', \OC::$SERVERROOT.'/data').'/.ocdata', '');
+
+		/*
+		 * START CONFIG CHANGES FOR OLDER VERSIONS
+		 */
+		if (!\OC::$CLI && version_compare($installedVersion, '6.00.4', '<')) {
+			// Add the overwriteHost config if it is not existant
+			// This is added to prevent host header poisoning
+			\OC_Config::setValue('trusted_domains', \OC_Config::getValue('trusted_domains', array(\OC_Request::serverHost()))); 
+		}
+		/*
+		 * STOP CONFIG CHANGES FOR OLDER VERSIONS
+		 */
+
+
 		try {
 			\OC_DB::updateDbFromStructure(\OC::$SERVERROOT . '/db_structure.xml');
 			$this->emit('\OC\Updater', 'dbUpgrade');
@@ -120,6 +141,8 @@ class Updater extends BasicEmitter {
 		$repair = new Repair();
 		$repair->run();
 
+		//Invalidate update feed
+		\OC_Appconfig::setValue('core', 'lastupdatedat', 0);
 		\OC_Config::setValue('maintenance', false);
 		$this->emit('\OC\Updater', 'maintenanceEnd');
 	}
@@ -162,3 +185,4 @@ class Updater extends BasicEmitter {
 		$this->emit('\OC\Updater', 'filecacheDone');
 	}
 }
+

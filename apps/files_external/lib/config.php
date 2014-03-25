@@ -61,7 +61,7 @@ class OC_Mount_Config {
 			'configuration' => array(
 				'configured' => '#configured',
 				'app_key' => 'App key',
-				'app_secret' => 'App secret',
+				'app_secret' => '*App secret',
 				'token' => '#token',
 				'token_secret' => '#token_secret'),
 				'custom' => 'dropbox');
@@ -69,7 +69,7 @@ class OC_Mount_Config {
 		if(OC_Mount_Config::checkphpftp()) $backends['\OC\Files\Storage\FTP']=array(
 			'backend' => 'FTP',
 			'configuration' => array(
-				'host' => 'URL',
+				'host' => 'Hostname',
 				'user' => 'Username',
 				'password' => '*Password',
 				'root' => '&Root',
@@ -80,7 +80,7 @@ class OC_Mount_Config {
 			'configuration' => array(
 				'configured' => '#configured',
 				'client_id' => 'Client ID',
-				'client_secret' => 'Client secret',
+				'client_secret' => '*Client secret',
 				'token' => '#token'),
 				'custom' => 'google');
 
@@ -267,15 +267,21 @@ class OC_Mount_Config {
 										 $mountType,
 										 $applicable,
 										 $isPersonal = false) {
+		$backends = self::getBackends();
 		$mountPoint = OC\Files\Filesystem::normalizePath($mountPoint);
 		if ($mountPoint === '' || $mountPoint === '/' || $mountPoint == '/Shared') {
 			// can't mount at root or "Shared" folder
 			return false;
 		}
+
+		if (!isset($backends[$class])) {
+			// invalid backend
+			return false;
+		}	
 		if ($isPersonal) {
 			// Verify that the mount point applies for the current user
 			// Prevent non-admin users from mounting local storage
-			if ($applicable != OCP\User::getUser() || $class == '\OC\Files\Storage\Local') {
+			if ($applicable !== OCP\User::getUser() || strtolower($class) === '\oc\files\storage\local') {
 				return false;
 			}
 			$mountPoint = '/'.$applicable.'/files/'.ltrim($mountPoint, '/');

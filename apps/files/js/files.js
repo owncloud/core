@@ -67,10 +67,21 @@ Files={
 		return fileName;
 	},
 
-	isFileNameValid:function (name) {
-		if (name === '.') {
-			throw t('files', '\'.\' is an invalid file name.');
-		} else if (name.length === 0) {
+	/**
+	 * Checks whether the given file name is valid.
+	 * @param name file name to check
+	 * @return true if the file name is valid.
+	 * Throws a string exception with an error message if
+	 * the file name is not valid
+	 */
+	isFileNameValid: function (name, root) {
+		var trimmedName = name.trim();
+		if (trimmedName === '.'
+				|| trimmedName === '..'
+				|| (root === '/' &&  trimmedName.toLowerCase() === 'shared'))
+		{
+			throw t('files', '"{name}" is an invalid file name.', {name: name});
+		} else if (trimmedName.length === 0) {
 			throw t('files', 'File name cannot be empty.');
 		}
 
@@ -350,7 +361,12 @@ $(document).ready(function() {
 		// use special download URL if provided, e.g. for public shared files
 		var downloadURL = document.getElementById("downloadURL");
 		if ( downloadURL ) {
-			window.location = downloadURL.value+"&download&files=" + encodeURIComponent(fileslist);
+			// downloading all in root of public share ? (replacement for old "Download" button)
+			if ($('#isPublic').val() && dir === '/' && $('#select_all').is(':checked')) {
+				window.location = downloadURL.value;
+			} else {
+				window.location = downloadURL.value+"&download&files=" + encodeURIComponent(fileslist);
+			}
 		} else {
 			window.location = OC.filePath('files', 'ajax', 'download.php') + '?'+ $.param({ dir: dir, files: fileslist });
 		}

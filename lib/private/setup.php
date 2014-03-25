@@ -65,6 +65,7 @@ class OC_Setup {
 		OC_Config::setValue('passwordsalt', $salt);
 
 		//write the config file
+		OC_Config::setValue('trusted_domains', array(OC_Request::serverHost())); 
 		OC_Config::setValue('datadirectory', $datadir);
 		OC_Config::setValue('dbtype', $dbtype);
 		OC_Config::setValue('version', implode('.', OC_Util::getVersion()));
@@ -105,6 +106,10 @@ class OC_Setup {
 
 			//guess what this does
 			OC_Installer::installShippedApps();
+
+			// create empty file in data dir, so we can later find
+			// out that this is indeed an ownCloud data directory
+			file_put_contents(OC_Config::getValue('datadirectory', OC::$SERVERROOT.'/data').'/.ocdata', '');
 
 			//create htaccess files for apache hosts
 			if (isset($_SERVER['SERVER_SOFTWARE']) && strstr($_SERVER['SERVER_SOFTWARE'], 'Apache')) {

@@ -203,10 +203,12 @@ class OC_User {
 				OC_Preferences::deleteUser($uid);
 
 				// Delete user files in /data/
-				OC_Helper::rmdirr(\OC_User::getHome($uid));
+				$home = \OC_User::getHome($uid);
+				OC_Helper::rmdirr($home);
 
 				// Delete the users entry in the storage table
 				\OC\Files\Cache\Storage::remove('home::' . $uid);
+				\OC\Files\Cache\Storage::remove('local::' . $home . '/');
 
 				// Remove it from the Cache
 				self::getManager()->delete($uid);
@@ -227,6 +229,7 @@ class OC_User {
 	 * Log in a user and regenerate a new session - if the password is ok
 	 */
 	public static function login($uid, $password) {
+		session_regenerate_id(true);
 		return self::getUserSession()->login($uid, $password);
 	}
 
@@ -246,7 +249,6 @@ class OC_User {
 		OC_Hook::emit( "OC_User", "pre_login", array( "run" => &$run, "uid" => $uid ));
 
 		if($uid) {
-			session_regenerate_id(true);
 			self::setUserId($uid);
 			self::setDisplayName($uid);
 			self::getUserSession()->setLoginName($uid);

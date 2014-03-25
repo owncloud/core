@@ -896,6 +896,17 @@ class Access extends LDAPUtility {
 	}
 
 	/**
+	* @brief escapes (user provided) parts for LDAP filter
+	* @param String $input, the provided value
+	* @returns the escaped string
+	*/
+	public function escapeFilterPart($input) {
+		$search  = array('*', '\\', '(', ')');
+		$replace = array('\\*', '\\\\', '\\(', '\\)');
+		return str_replace($search, $replace, $input);
+	}
+
+	/**
 	 * @brief combines the input filters with AND
 	 * @param $filters array, the filters to connect
 	 * @returns the combined filter
@@ -1024,8 +1035,8 @@ class Access extends LDAPUtility {
 			return true;
 		}
 
-		//for now, supported attributes are entryUUID, nsuniqueid, objectGUID
-		$testAttributes = array('entryuuid', 'nsuniqueid', 'objectguid', 'guid');
+		//for now, supported attributes are entryUUID, nsuniqueid, objectGUID, ipaUniqueID
+		$testAttributes = array('entryuuid', 'nsuniqueid', 'objectguid', 'guid', 'ipauniqueid');
 
 		foreach($testAttributes as $attribute) {
 			$value = $this->readAttribute($dn, $attribute);

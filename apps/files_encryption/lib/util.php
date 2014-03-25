@@ -133,7 +133,6 @@ class Util {
 		// Set directories to check / create
 		$setUpDirs = array(
 			$this->userDir,
-			$this->userFilesDir,
 			$this->publicKeyDir,
 			$this->encryptionDir,
 			$this->keyfilesPath,
@@ -477,8 +476,22 @@ class Util {
 		// we only need 24 byte from the last chunk
 		$data = '';
 		$handle = $this->view->fopen($path, 'r');
-		if (is_resource($handle) && !fseek($handle, -24, SEEK_END)) {
-			$data = fgets($handle);
+		if (is_resource($handle)) {
+			// suppress fseek warining, we handle the case that fseek doesn't
+			// work in the else branch
+			if (@fseek($handle, -24, SEEK_END) === 0) {
+				$data = fgets($handle);
+			} else {
+				// if fseek failed on the storage we create a local copy from the file
+				// and read this one
+				fclose($handle);
+				$localFile = $this->view->getLocalFile($path);
+				$handle = fopen($localFile, 'r');
+				if (is_resource($handle) && fseek($handle, -24, SEEK_END) === 0) {
+					$data = fgets($handle);
+				}
+			}
+			fclose($handle);
 		}
 
 		// re-enable proxy
@@ -530,7 +543,20 @@ class Util {
 				$lastChunckPos = ($lastChunkNr * 8192);
 
 				// seek to end
-				fseek($stream, $lastChunckPos);
+				if (@fseek($stream, $lastChunckPos) === -1) {
+					// storage doesn't support fseek, we need a local copy
+					fclose($stream);
+					$localFile = $this->view->getLocalFile($path);
+					Helper::addTmpFileToMapper($localFile, $path);
+					$stream = fopen('crypt://' . $localFile, "r");
+					if (fseek($stream, $lastChunckPos) === -1) {
+						// if fseek also fails on the local storage, than
+						// there is nothing we can do
+						fclose($stream);
+						\OCP\Util::writeLog('Encryption library', 'couldn\'t determine size of "' . $path, \OCP\Util::ERROR);
+						return $result;
+					}
+				}
 
 				// get the content of the last chunk
 				$lastChunkContent = fread($stream, $lastChunkSize);
@@ -1781,6 +1807,14 @@ class Util {
 		$session->setInitialized(\OCA\Encryption\Session::INIT_SUCCESSFUL);
 
 		return $session;
+	}
+
+	/*
+	 * @brief remove encryption related keys from the session
+	 */
+	public function closeEncryptionSession() {
+		$session = new \OCA\Encryption\Session($this->view);
+		$session->closeSession();
 	}
 
 }
