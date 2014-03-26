@@ -43,7 +43,7 @@ class SMB extends Common {
 				$this->root .= '/';
 			}
 		} else {
-			throw new \Exception();
+			throw new \Exception('Invalid configuration');
 		}
 	}
 
