@@ -25,6 +25,8 @@
 
 namespace OC\Files;
 
+use OC\Files\Cache\Updater;
+
 class View {
 	private $fakeRoot = '';
 	private $internal_path_cache = array();
@@ -48,7 +50,7 @@ class View {
 	 * change the root to a fake root
 	 *
 	 * @param string $fakeRoot
-	 * @return bool
+	 * @return boolean|null
 	 */
 	public function chroot($fakeRoot) {
 		if (!$fakeRoot == '') {
@@ -308,6 +310,9 @@ class View {
 					fclose($target);
 					fclose($data);
 					if ($this->shouldEmitHooks($path) && $result !== false) {
+						Updater::writeHook(array(
+							'path' => $this->getHookPath($path)
+						));
 						if (!$exists) {
 							\OC_Hook::emit(
 								Filesystem::CLASSNAME,
@@ -352,6 +357,9 @@ class View {
 		return $this->basicOperation('unlink', $path, array('delete'));
 	}
 
+	/**
+	 * @param string $directory
+	 */
 	public function deleteAll($directory, $empty = false) {
 		return $this->rmdir($directory);
 	}
@@ -410,7 +418,7 @@ class View {
 						$result = $this->copy($path1, $path2);
 						if ($result === true) {
 							list($storage1, $internalPath1) = Filesystem::resolvePath($absolutePath1 . $postFix1);
-							$result = $storage1->deleteAll($internalPath1);
+							$result = $storage1->unlink($internalPath1);
 						}
 					} else {
 						$source = $this->fopen($path1 . $postFix1, 'r');
@@ -430,6 +438,7 @@ class View {
 				}
 				if ($this->shouldEmitHooks() && (Cache\Scanner::isPartialFile($path1) && !Cache\Scanner::isPartialFile($path2)) && $result !== false) {
 					// if it was a rename from a part file to a regular file it was a write and not a rename operation
+					Updater::writeHook(array('path' => $this->getHookPath($path2)));
 					\OC_Hook::emit(
 						Filesystem::CLASSNAME,
 						Filesystem::signal_post_write,
@@ -438,6 +447,10 @@ class View {
 						)
 					);
 				} elseif ($this->shouldEmitHooks() && $result !== false) {
+					Updater::renameHook(array(
+						'oldpath' => $this->getHookPath($path1),
+						'newpath' => $this->getHookPath($path2)
+					));
 					\OC_Hook::emit(
 						Filesystem::CLASSNAME,
 						Filesystem::signal_post_rename,
@@ -531,6 +544,8 @@ class View {
 						$source = $this->fopen($path1 . $postFix1, 'r');
 						$target = $this->fopen($path2 . $postFix2, 'w');
 						list($count, $result) = \OC_Helper::streamCopy($source, $target);
+						fclose($source);
+						fclose($target);
 					}
 				}
 				if ($this->shouldEmitHooks() && $result !== false) {
@@ -735,12 +750,28 @@ class View {
 		return (strlen($this->fakeRoot) > strlen($defaultRoot)) && (substr($this->fakeRoot, 0, strlen($defaultRoot) + 1) === $defaultRoot . '/');
 	}
 
+	/**
+	 * @param string[] $hooks
+	 * @param string $path
+	 * @param bool $post
+	 * @return bool
+	 */
 	private function runHooks($hooks, $path, $post = false) {
 		$path = $this->getHookPath($path);
 		$prefix = ($post) ? 'post_' : '';
 		$run = true;
 		if ($this->shouldEmitHooks($path)) {
 			foreach ($hooks as $hook) {
+				// manually triger updater hooks to ensure they are called first
+				if ($post) {
+					if ($hook == 'write') {
+						Updater::writeHook(array('path' => $path));
+					} elseif ($hook == 'touch') {
+						Updater::touchHook(array('path' => $path));
+					} else if ($hook == 'delete') {
+						Updater::deleteHook(array('path' => $path));
+					}
+				}
 				if ($hook != 'read') {
 					\OC_Hook::emit(
 						Filesystem::CLASSNAME,
@@ -812,7 +843,7 @@ class View {
 				$data = $cache->get($internalPath);
 			}
 
-			if ($data and $data['fileid']) {
+			if ($data and isset($data['fileid'])) {
 				if ($includeMountPoints and $data['mimetype'] === 'httpd/unix-directory') {
 					//add the sizes of other mountpoints to the folder
 					$mountPoints = Filesystem::getMountPoints($path);
@@ -874,12 +905,13 @@ class View {
 				$watcher->checkUpdate($internalPath);
 			}
 
+			$folderId = $cache->getId($internalPath);
 			$files = array();
-			$contents = $cache->getFolderContents($internalPath); //TODO: mimetype_filter
+			$contents = $cache->getFolderContents($internalPath, $folderId); //TODO: mimetype_filter
 			foreach ($contents as $content) {
 				$files[] = new FileInfo($path . '/' . $content['name'], $storage, $content['path'], $content);
 			}
-			$permissions = $permissionsCache->getDirectoryPermissions($cache->getId($internalPath), $user);
+			$permissions = $permissionsCache->getDirectoryPermissions($folderId, $user);
 
 			$ids = array();
 			foreach ($files as $i => $file) {

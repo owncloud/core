@@ -29,6 +29,10 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	 */
 	private $internalPath;
 
+	/**
+	 * @param string|boolean $path
+	 * @param Storage\Storage $storage
+	 */
 	public function __construct($path, $storage, $internalPath, $data) {
 		$this->path = $path;
 		$this->storage = $storage;
@@ -49,7 +53,13 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	}
 
 	public function offsetGet($offset) {
-		return $this->data[$offset];
+		if ($offset === 'type') {
+			return $this->getType();
+		} elseif (isset($this->data[$offset])) {
+			return $this->data[$offset];
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -140,10 +150,14 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	 * @return \OCP\Files\FileInfo::TYPE_FILE | \OCP\Files\FileInfo::TYPE_FOLDER
 	 */
 	public function getType() {
-		return $this->data['type'];
+		if (isset($this->data['type'])) {
+			return $this->data['type'];
+		} else {
+			return $this->getMimetype() === 'httpd/unix-directory' ? self::TYPE_FOLDER : self::TYPE_FILE;
+		}
 	}
 
-	public function getData(){
+	public function getData() {
 		return $this->data;
 	}
 

@@ -63,8 +63,10 @@ class Util {
 		$this->client = $client;
 		$this->userId = $userId;
 
-		$this->publicShareKeyId = \OC_Appconfig::getValue('files_encryption', 'publicShareKeyId');
-		$this->recoveryKeyId = \OC_Appconfig::getValue('files_encryption', 'recoveryKeyId');
+		$appConfig = \OC::$server->getAppConfig();
+
+		$this->publicShareKeyId = $appConfig->getValue('files_encryption', 'publicShareKeyId');
+		$this->recoveryKeyId = $appConfig->getValue('files_encryption', 'recoveryKeyId');
 
 		$this->userDir = '/' . $this->userId;
 		$this->fileFolderName = 'files';
@@ -133,7 +135,6 @@ class Util {
 		// Set directories to check / create
 		$setUpDirs = array(
 			$this->userDir,
-			$this->userFilesDir,
 			$this->publicKeyDir,
 			$this->encryptionDir,
 			$this->keyfilesPath,
@@ -569,7 +570,7 @@ class Util {
 
 
 	/**
-	 * @param $path
+	 * @param string $path
 	 * @return bool
 	 */
 	public function isSharedPath($path) {
@@ -1043,7 +1044,7 @@ class Util {
 	 * @brief Decrypt a keyfile
 	 * @param string $filePath
 	 * @param string $privateKey
-	 * @return bool|string
+	 * @return false|string
 	 */
 	private function decryptKeyfile($filePath, $privateKey) {
 
@@ -1122,12 +1123,15 @@ class Util {
 	/**
 	 * @brief Find, sanitise and format users sharing a file
 	 * @note This wraps other methods into a portable bundle
+	 * @param boolean $sharingEnabled
 	 */
 	public function getSharingUsersArray($sharingEnabled, $filePath, $currentUserId = false) {
 
+		$appConfig = \OC::$server->getAppConfig();
+
 		// Check if key recovery is enabled
 		if (
-			\OC_Appconfig::getValue('files_encryption', 'recoveryAdminEnabled')
+			$appConfig->getValue('files_encryption', 'recoveryAdminEnabled')
 			&& $this->recoveryEnabledForUser()
 		) {
 			$recoveryEnabled = true;
@@ -1156,7 +1160,7 @@ class Util {
 		// Admin UID to list of users to share to
 		if ($recoveryEnabled) {
 			// Find recoveryAdmin user ID
-			$recoveryKeyId = \OC_Appconfig::getValue('files_encryption', 'recoveryKeyId');
+			$recoveryKeyId = $appConfig->getValue('files_encryption', 'recoveryKeyId');
 			// Add recoveryAdmin to list of users sharing
 			$userIds[] = $recoveryKeyId;
 		}
@@ -1765,6 +1769,14 @@ class Util {
 		$session->setInitialized(\OCA\Encryption\Session::INIT_SUCCESSFUL);
 
 		return $session;
+	}
+
+	/*
+	 * @brief remove encryption related keys from the session
+	 */
+	public function closeEncryptionSession() {
+		$session = new \OCA\Encryption\Session($this->view);
+		$session->closeSession();
 	}
 
 }

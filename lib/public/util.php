@@ -89,14 +89,11 @@ class Util {
 	 */
 	public static function logException( $app, \Exception $ex ) {
 		$class = get_class($ex);
-		if ($class !== 'Exception') {
-			$message = $class . ': ';
-		}
-		$message .= $ex->getMessage();
+		$message = $class . ': ' . $ex->getMessage();
 		if ($ex->getCode()) {
 			$message .= ' [' . $ex->getCode() . ']';
 		}
-		\OCP\Util::writeLog($app, 'Exception: ' . $message, \OCP\Util::FATAL);
+		\OCP\Util::writeLog($app, $message, \OCP\Util::FATAL);
 		if (defined('DEBUG') and DEBUG) {
 			// also log stack trace
 			$stack = explode("\n", $ex->getTraceAsString());
@@ -269,7 +266,7 @@ class Util {
 		$host_name = \OC_Config::getValue('mail_domain', $host_name);
 		$defaultEmailAddress = $user_part.'@'.$host_name;
 
-		if (\OC_Mail::ValidateAddress($defaultEmailAddress)) {
+		if (\OC_Mail::validateAddress($defaultEmailAddress)) {
 			return $defaultEmailAddress;
 		}
 
@@ -485,5 +482,23 @@ class Util {
 	 */
 	public static function uploadLimit() {
 		return \OC_Helper::uploadLimit();
+	}
+
+	/**
+	 * Returns whether the given file name is valid
+	 * @param $file string file name to check
+	 * @return bool true if the file name is valid, false otherwise
+	 */
+	public static function isValidFileName($file) {
+		return \OC_Util::isValidFileName($file);
+	}
+
+	/**
+	 * @brief Generates a cryptographic secure pseudo-random string
+	 * @param Int $length of the random string
+	 * @return String
+	 */
+	public static function generateRandomBytes($length = 30) {
+		return \OC_Util::generateRandomBytes($length);
 	}
 }

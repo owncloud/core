@@ -53,6 +53,9 @@ $CONFIG = array(
 /* The optional authentication for the proxy to use to connect to the internet. The format is: [username]:[password] */
 "proxyuserpwd" => "",
 
+/* List of trusted domains, to prevent host header poisoning ownCloud is only using these Host headers */
+'trusted_domains' => array('demo.owncloud.org'),
+
 /* Theme to use for ownCloud */
 "theme" => "",
 
@@ -175,6 +178,12 @@ $CONFIG = array(
 /* Enable or disable the logging of IP addresses in case of webform auth failures */
 "log_authfailip" => false,
 
+/* Whether ownCloud should log the last successfull cron exec */
+"cron_log" => true,
+
+/* Whether http-basic username must equal username to login */
+"basic_auth" => true,
+
 /*
  * Configure the size in bytes log rotation should happen, 0 or false disables the rotation.
  * This rotates the current owncloud logfile to a new name, this way the total log usage
@@ -263,4 +272,10 @@ $CONFIG = array(
 
 /* whether usage of the instance should be restricted to admin users only */
 'singleuser' => false,
+
+/* all css and js files will be served by the web server statically in one js file and ons css file*/
+'asset-pipeline.enabled' => false,
+
+ /* where mount.json file should be stored, defaults to data/mount.json */
+ 'mount_file' => '',
 );
