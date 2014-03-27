@@ -46,7 +46,23 @@ class OC_Files {
 		header('Content-Transfer-Encoding: binary');
 		OC_Response::disableCaching();
 		if ($zip) {
+			header("Accept-Ranges: bytes");
 			header('Content-Type: application/zip');
+			
+			if (isset($_SERVER['HTTP_RANGE']) &&
+			   preg_match("/^bytes=([0-9]+)-([0-9]*)$/", $_SERVER['HTTP_RANGE'], $range)) {
+				
+				$zipSize = $zip->getZipSize();
+				$start = $range[1];
+				$end = $zipSize - 1;
+				
+				if ($zip->resumeAt($start)) {
+					header("Content-Range: bytes $range[1]-" . $end . "/" . $zipSize);
+					header("HTTP/1.1 206 Partial content");
+				}
+ 			}
+
+			header("Content-Length: ". $zip->getContentLength());
 		} else {
 			$filesize = \OC\Files\Filesystem::filesize($filename);
 			header('Content-Type: '.\OC\Files\Filesystem::getMimeType($filename));
@@ -87,7 +103,7 @@ class OC_Files {
 			$filename = $dir . '/' . $name;
 		} else {
 			$filename = $dir . '/' . $files;
-			if (\OC\Files\Filesystem::is_dir($dir . '/' . $files)) {
+			if (\OC\Files\Filesystem::is_dir($filename)) {
 				$get_type = GET_TYPE::ZIP_DIR;
 				// downloading root ?
 				if ($files === '') {
@@ -110,6 +126,20 @@ class OC_Files {
 		} else {
 			self::validateZipDownload($dir, $files);
 			$zip = new ZipStreamer(false);
+
+			if ($get_type === GET_TYPE::ZIP_DIR) {
+				$dir = $filename;
+				$dircontent = \OC\Files\Filesystem::getDirectoryContent($dir);
+				$files = array();
+				foreach ($dircontent as $file) {
+					$files[] = $file['name'];
+				}
+			}
+			foreach ($files as $file) {
+				$file = $dir . '/' . $file;
+				self::zipAdd($file, $zip);
+			}
+			$zip->finalize();
 		}
 		OC_Util::obEnd();
 		if ($zip or \OC\Files\Filesystem::isReadable($filename)) {
@@ -129,22 +159,10 @@ class OC_Files {
 		if ($zip) {
 			$executionTime = intval(ini_get('max_execution_time'));
 			set_time_limit(0);
-			if ($get_type === GET_TYPE::ZIP_FILES) {
-				foreach ($files as $file) {
-					$file = $dir . '/' . $file;
-					if (\OC\Files\Filesystem::is_file($file)) {
-						$fh = \OC\Files\Filesystem::fopen($file, 'r');
-						$zip->addFileFromStream($fh, basename($file));
-						fclose($fh);
-					} elseif (\OC\Files\Filesystem::is_dir($file)) {
-						self::zipAddDir($file, $zip);
-					}
-				}
-			} elseif ($get_type === GET_TYPE::ZIP_DIR) {
-				$file = $dir . '/' . $files;
-				self::zipAddDir($file, $zip);
-			}
-			$zip->finalize();
+			session_write_close();
+
+			$zip->startStreaming();
+
 			set_time_limit($executionTime);
 		} else {
 			if ($xsendfile) {
@@ -190,30 +208,31 @@ class OC_Files {
 	}
 
 	/**
-	 * @param string $dir
+	 * @param string $data
 	 * @param ZipStreamer $zip
 	 * @param string $internalDir
 	 */
-	public static function zipAddDir($dir, $zip, $internalDir='') {
-		$dirname=basename($dir);
-		$rootDir = $internalDir.$dirname;
-		if (!empty($rootDir)) {
-			$zip->addEmptyDir($rootDir);
-		}
-		$internalDir.=$dirname.='/';
-		// prevent absolute dirs
-		$internalDir = ltrim($internalDir, '/');
+	public static function zipAdd($data, $zip, $internalDir = '') {
+		$mtime = (\OC\Files\Filesystem::filemtime($data) === null) ? 0 : \OC\Files\Filesystem::filemtime($data);
 
-		$files=\OC\Files\Filesystem::getDirectoryContent($dir);
-		foreach($files as $file) {
-			$filename=$file['name'];
-			$file=$dir.'/'.$filename;
-			if(\OC\Files\Filesystem::is_file($file)) {
-				$fh = \OC\Files\Filesystem::fopen($file, 'r');
-				$zip->addFileFromStream($fh, $internalDir.$filename);
-				fclose($fh);
-			}elseif(\OC\Files\Filesystem::is_dir($file)) {
-				self::zipAddDir($file, $zip, $internalDir);
+		if (\OC\Files\Filesystem::is_file($data)) {
+			if ($fh = \OC\Files\Filesystem::fopen($data, 'rb')) {
+				$size = \OC\Files\Filesystem::filesize($data);
+				$mtime = \OC\Files\Filesystem::filemtime($data);
+				$zip->addFileFromStream($fh, $internalDir.basename($data), $size, $mtime);
+			}
+		} elseif (\OC\Files\Filesystem::is_dir($data)) {
+			$dirname=basename($data);
+			$rootDir = $internalDir.$dirname;
+			$internalDir.=$dirname.='/';
+			// prevent absolute dirs
+			$internalDir = ltrim($internalDir, '/');
+
+			$files=\OC\Files\Filesystem::getDirectoryContent($data);
+			foreach($files as $file) {
+				$filename=$file['name'];
+				$file=$data.'/'.$filename;
+				self::zipAdd($file, $zip, $internalDir);
 			}
 		}
 	}
