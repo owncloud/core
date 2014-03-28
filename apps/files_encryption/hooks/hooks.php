@@ -428,7 +428,7 @@ class Hooks {
 			$view = new \OC_FilesystemView('/');
 			$userId = \OCP\User::getUser();
 			$util = new Util($view, $userId);
-			$path = $util->fileIdToPath($params['itemSource']);
+			$path = $util->fileIdToPath($params['fileSource']);
 
 			// check if this is a re-share
 			if ($params['itemParent']) {
@@ -437,7 +437,7 @@ class Hooks {
 				$parent = $util->getShareParent($params['itemParent']);
 
 				// get target path
-				$targetPath = $util->fileIdToPath($params['itemSource']);
+				$targetPath = $path;
 				$targetPathSplit = array_reverse(explode('/', $targetPath));
 
 				// init values
@@ -471,7 +471,7 @@ class Hooks {
 			// get the path including mount point only if not a shared folder
 			if (strncmp($path, '/Shared', strlen('/Shared') !== 0)) {
 				// get path including the the storage mount point
-				$path = $util->getPathWithMountPoint($params['itemSource']);
+				$path = $util->getPathWithMountPoint($params['fileSource']);
 			}
 
 			// if we unshare a folder we need a list of all (sub-)files

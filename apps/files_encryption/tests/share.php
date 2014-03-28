@@ -213,25 +213,25 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 	function testReShareFile($withTeardown = true) {
 		$this->testShareFile(false);
 
-		// login as user1
+		// login as user2
 		\Test_Encryption_Util::loginHelper(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER2);
 
 		// get the file info
 		$fileInfo = $this->view->getFileInfo(
 			'/' . \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER2 . '/files/Shared/' . $this->filename);
 
-		// share the file with user2
+		// share the file with user3
 		\OCP\Share::shareItem('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_USER, \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER3, OCP\PERMISSION_ALL);
 
 		// login as admin
 		\Test_Encryption_Util::loginHelper(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER1);
 
-		// check if share key for user2 exists
+		// check if share key for user3 exists
 		$this->assertTrue($this->view->file_exists(
 			'/' . \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER1 . '/files_encryption/share-keys/'
 			. $this->filename . '.' . \Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER3 . '.shareKey'));
 
-		// login as user2
+		// login as user3
 		\Test_Encryption_Util::loginHelper(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER3);
 
 		// get file contents
