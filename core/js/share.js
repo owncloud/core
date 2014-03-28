@@ -468,7 +468,6 @@ OC.Share={
 			
 			var link = parent.location.protocol+'//'+location.host+OC.linkTo('', 'public.php')+'?service='+service+'&t='+token;
 
-			//var link = parent.location.protocol+'//'+location.host+OC.linkTo('', 'public.php')+'?service=files&t='+token;
 		}
 		$('#linkText').val(link);
 		$('#linkText').show('blind');
