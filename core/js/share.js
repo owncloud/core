@@ -460,7 +460,7 @@ OC.Share={
 		} else {
 			//TODO add path param when showing a link to file in a subfolder of a public link share
 			var service='';
-			if(linkSharetype=='folder' || linkSharetype=='file'){
+			if(linkSharetype === 'folder' || linkSharetype === 'file'){
 				service='files';
 			}else{
 				service=linkSharetype;
