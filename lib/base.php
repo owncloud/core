@@ -544,9 +544,10 @@ class OC {
 			$sessionUser = self::$session->get('loginname');
 			$serverUser = $_SERVER['PHP_AUTH_USER'];
 			OC_Log::write('core',
-				"Session loginname ($sessionUser) doesn't match SERVER[PHP_AUTH_USER] ($serverUser).",
+				"Overriding SERVER[PHP_AUTH_USER] ($serverUser) with session user-id ($sessionUser).",
 				OC_Log::WARN);
-			OC_User::logout();
+			OC_Util::redirectToDefaultPage($sessionUser);
+			exit();
 		}
 
 		// Load minimum set of apps - which is filesystem, authentication and logging
