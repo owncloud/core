@@ -3,6 +3,10 @@
  * Copyright (c) 2013 Thomas Müller <thomas.mueller@owncloud.com>
  * This file is licensed under the Affero General Public License version 3 or
  * later.
+ *
+ * The iRODS class was the result of a collaboration together with INCF (http://www.incf.org)
+ * and OwnCloud(tm).
+ *
  * See the COPYING-README file.
  */
 
@@ -86,6 +90,16 @@ class iRODS extends \OC\Files\Storage\StreamWrapper{
 
 		// url wrapper schema is named rods
 		return 'rods://'.$userWithZone.':'.$this->password.'@'.$this->host.':'.$this->port.$this->root.$path;
+	}
+
+	public function fopen($path, $mode) {
+		$fh = fopen($this->constructUrl($path), $mode);
+		if ($fh) {
+			// override the default 8k php stream chunk
+			// size for non-file streams.
+			stream_set_chunk_size($fh, 1024*1024);
+		}
+		return $fh;
 	}
 
 	public function filetype($path) {
