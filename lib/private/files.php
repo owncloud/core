@@ -127,18 +127,16 @@ class OC_Files {
 			self::validateZipDownload($dir, $files);
 			$zip = new ZipStreamer(false);
 
-			if ($get_type === GET_TYPE::ZIP_DIR) {
-				$dir = $filename;
-				$dircontent = \OC\Files\Filesystem::getDirectoryContent($dir);
-				$files = array();
-				foreach ($dircontent as $file) {
-					$files[] = $file['name'];
+			if ($get_type === GET_TYPE::ZIP_FILES) {
+				foreach ($files as $file) {
+					$file = $dir . '/' . $file;
+					self::zipAdd($file, $zip);
 				}
-			}
-			foreach ($files as $file) {
-				$file = $dir . '/' . $file;
+			} elseif ($get_type === GET_TYPE::ZIP_DIR) {
+				$file = $dir . '/' . $files;
 				self::zipAdd($file, $zip);
 			}
+			
 			$zip->finalize();
 		}
 		OC_Util::obEnd();
