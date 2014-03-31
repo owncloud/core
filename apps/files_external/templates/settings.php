@@ -90,7 +90,7 @@
 														print_unescaped(json_encode($mount['applicable']['users'])); ?>'>
 							<select class="chzn-select"
 									multiple style="width:20em;"
-									data-placeholder="<?php p($l->t('None set')); ?>">
+									data-placeholder="<?php p($l->t('No user or group')); ?>">
 								<option value="all" selected="selected"
 									<?php if (isset($mount['applicable']['users']) && in_array('all', $mount['applicable']['users'])) print_unescaped('selected="selected"');?> >
 									<?php p($l->t('All Users')); ?>
