@@ -91,7 +91,10 @@
 							<select class="chzn-select"
 									multiple style="width:20em;"
 									data-placeholder="<?php p($l->t('None set')); ?>">
-								<option value="all" <?php if (isset($mount['applicable']['users']) && in_array('all', $mount['applicable']['users'])) print_unescaped('selected="selected"');?> ><?php p($l->t('All Users')); ?></option>
+								<option value="all" selected="selected"
+									<?php if (isset($mount['applicable']['users']) && in_array('all', $mount['applicable']['users'])) print_unescaped('selected="selected"');?> >
+									<?php p($l->t('All Users')); ?>
+								</option>
 								<optgroup label="<?php p($l->t('Groups')); ?>">
 								<?php foreach ($_['groups'] as $group): ?>
 									<option value="<?php p($group); ?>(group)"
