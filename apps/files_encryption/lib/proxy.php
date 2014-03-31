@@ -128,6 +128,8 @@ class Proxy extends \OC_FileProxy {
 
 					// re-enable proxy - our work is done
 					\OC_FileProxy::$enabled = $proxyStatus;
+				} else {
+					return false;
 				}
 			}
 		}
@@ -344,7 +346,7 @@ class Proxy extends \OC_FileProxy {
 			\OC_FileProxy::$enabled = false;
 			$fileInfo = $view->getFileInfo($path);
 			\OC_FileProxy::$enabled = $proxyState;
-			if ($fileInfo['unencrypted_size'] > 0) {
+			if (isset($fileInfo['unencrypted_size']) && $fileInfo['unencrypted_size'] > 0) {
 				return $fileInfo['unencrypted_size'];
 			}
 			return $size;

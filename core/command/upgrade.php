@@ -34,9 +34,6 @@ class Upgrade extends Command {
 	 * @param OutputInterface $output output interface
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		global $RUNTIME_NOAPPS;
-
-		$RUNTIME_NOAPPS = true; //no apps, yet
 
 		require_once \OC::$SERVERROOT . '/lib/base.php';
 
@@ -58,15 +55,6 @@ class Upgrade extends Command {
 			});
 			$updater->listen('\OC\Updater', 'dbUpgrade', function () use($output) {
 				$output->writeln('<info>Updated database</info>');
-			});
-			$updater->listen('\OC\Updater', 'filecacheStart', function () use($output) {
-				$output->writeln('<info>Updating filecache, this may take really long...</info>');
-			});
-			$updater->listen('\OC\Updater', 'filecacheDone', function () use($output) {
-				$output->writeln('<info>Updated filecache</info>');
-			});
-			$updater->listen('\OC\Updater', 'filecacheProgress', function ($out) use($output) {
-				$output->writeln('... ' . $out . '% done ...');
 			});
 
 			$updater->listen('\OC\Updater', 'failure', function ($message) use($output) {

@@ -1,12 +1,10 @@
 <?php
 $TRANSLATIONS = array(
+"Expiration date is in the past." => "Datum preteka je v preteklosti.",
 "Couldn't send mail to following users: %s " => "Ni mogoče poslati sporočila za: %s",
 "Turned on maintenance mode" => "Vzdrževalni način je omogočen",
 "Turned off maintenance mode" => "Vzdrževalni način je onemogočen",
 "Updated database" => "Posodobljena podatkovna zbirka",
-"Updating filecache, this may take really long..." => "Poteka posodabljanje predpomnilnika datotek. Opravilo je lahko dolgotrajno ...",
-"Updated filecache" => "Predpomnilnik datotek je posodobljen",
-"... %d%% done ..." => "... %d%% končano ...",
 "No image or file provided" => "Ni podane datoteke ali slike",
 "Unknown filetype" => "Neznana vrsta datoteke",
 "Invalid image" => "Neveljavna slika",
@@ -124,6 +122,8 @@ $TRANSLATIONS = array(
 "To login page" => "Na prijavno stran",
 "New password" => "Novo geslo",
 "Reset password" => "Ponastavi geslo",
+"Mac OS X is not supported and %s will not work properly on this platform. Use it at your own risk! " => "Sistem Mac OS X ni podprt, zato %s ne bo deloval zanesljivo v tem okolju. Program uporabljate na lastno odgovornost! ",
+"For the best results, please consider using a GNU/Linux server instead." => "Za najbolj še rezultate je priporočljivo uporabljati strežnik GNU/Linux.",
 "Personal" => "Osebno",
 "Users" => "Uporabniki",
 "Apps" => "Programi",

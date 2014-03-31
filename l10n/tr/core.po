@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-03-13 01:55-0400\n"
-"PO-Revision-Date: 2014-03-12 10:51+0000\n"
+"POT-Creation-Date: 2014-03-28 01:55-0400\n"
+"PO-Revision-Date: 2014-03-27 19:31+0000\n"
 "Last-Translator: volkangezer <volkangezer@gmail.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/owncloud/language/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -21,7 +21,11 @@ msgstr ""
 "Language: tr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: ajax/share.php:112 ajax/share.php:154
+#: ajax/share.php:88
+msgid "Expiration date is in the past."
+msgstr "Son kullanma tarihi geçmişte."
+
+#: ajax/share.php:120 ajax/share.php:162
 #, php-format
 msgid "Couldn't send mail to following users: %s "
 msgstr "Şu kullanıcılara posta gönderilemedi: %s"
@@ -37,19 +41,6 @@ msgstr "Bakım kipi kapatıldı"
 #: ajax/update.php:17
 msgid "Updated database"
 msgstr "Veritabanı güncellendi"
-
-#: ajax/update.php:20
-msgid "Updating filecache, this may take really long..."
-msgstr "Dosya önbelleği güncelleniyor. Bu, gerçekten uzun sürebilir."
-
-#: ajax/update.php:23
-msgid "Updated filecache"
-msgstr "Dosya önbelleği güncellendi"
-
-#: ajax/update.php:26
-#, php-format
-msgid "... %d%% done ..."
-msgstr "%%%d tamamlandı ..."
 
 #: avatar/controller.php:62
 msgid "No image or file provided"
@@ -300,11 +291,11 @@ msgid "Share"
 msgstr "Paylaş"
 
 #: js/share.js:158 js/share.js:171 js/share.js:178 js/share.js:711
-#: js/share.js:723 templates/installation.php:10
+#: templates/installation.php:10
 msgid "Error"
 msgstr "Hata"
 
-#: js/share.js:160 js/share.js:755
+#: js/share.js:160 js/share.js:767
 msgid "Error while sharing"
 msgstr "Paylaşım sırasında hata  "
 
@@ -420,19 +411,19 @@ msgstr "Parola korumalı"
 msgid "Error unsetting expiration date"
 msgstr "Geçerlilik tarihi tanımlama kaldırma hatası"
 
-#: js/share.js:723
+#: js/share.js:729
 msgid "Error setting expiration date"
 msgstr "Geçerlilik tarihi tanımlama hatası"
 
-#: js/share.js:742
+#: js/share.js:754
 msgid "Sending ..."
 msgstr "Gönderiliyor..."
 
-#: js/share.js:753
+#: js/share.js:765
 msgid "Email sent"
 msgstr "E-posta gönderildi"
 
-#: js/share.js:777
+#: js/share.js:789
 msgid "Warning"
 msgstr "Uyarı"
 
@@ -499,7 +490,7 @@ msgid ""
 "The link to reset your password has been sent to your email.<br>If you do "
 "not receive it within a reasonable amount of time, check your spam/junk "
 "folders.<br>If it is not there ask your local administrator ."
-msgstr "Parolanızı değiştirme bağlantısı e-posta adresinize gönderildi.<br>Eğer makül bir süre içerisinde mesajı almadıysanız spam/junk dizinini kontrol ediniz.<br> Eğer orada da bulamazsanız sistem yöneticinize sorunuz."
+msgstr "Parolanızı değiştirme bağlantısı e-posta adresinize gönderildi.<br>Eğer makül bir süre içerisinde mesajı almadıysanız spam/junk/gereksiz dizinini kontrol ediniz.<br> Eğer yine bulamazsanız sistem yöneticinize sorunuz."
 
 #: lostpassword/templates/lostpassword.php:15
 msgid "Request failed!<br>Did you make sure your email/username was right?"
@@ -545,6 +536,18 @@ msgstr "Yeni parola"
 #: lostpassword/templates/resetpassword.php:11
 msgid "Reset password"
 msgstr "Parolayı sıfırla"
+
+#: setup/controller.php:138
+#, php-format
+msgid ""
+"Mac OS X is not supported and %s will not work properly on this platform. "
+"Use it at your own risk! "
+msgstr "Mac OS X desteklenmemediğinden %s bu platformda düzgün çalışmayacak. Kendi riskinizle kullanın!"
+
+#: setup/controller.php:142
+msgid ""
+"For the best results, please consider using a GNU/Linux server instead."
+msgstr "En iyi sonuçlar için GNU/Linux sunucusu kullanın."
 
 #: strings.php:5
 msgid "Personal"

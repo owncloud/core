@@ -1,12 +1,10 @@
 <?php
 $TRANSLATIONS = array(
+"Expiration date is in the past." => "Ha pasado la fecha de caducidad",
 "Couldn't send mail to following users: %s " => "No se pudo enviar el mensaje a los siguientes usuarios: %s",
 "Turned on maintenance mode" => "Modo mantenimiento activado",
 "Turned off maintenance mode" => "Modo mantenimiento desactivado",
 "Updated database" => "Base de datos actualizada",
-"Updating filecache, this may take really long..." => "Actualizando caché de archivos, esto puede tardar bastante tiempo...",
-"Updated filecache" => "Caché de archivos actualizada",
-"... %d%% done ..." => "... %d%% hecho ...",
 "No image or file provided" => "No se especificó ningún archivo o imagen",
 "Unknown filetype" => "Tipo de archivo desconocido",
 "Invalid image" => "Imagen inválida",
@@ -107,7 +105,7 @@ $TRANSLATIONS = array(
 "Edit tags" => "Editar etiquetas",
 "Error loading dialog template: {error}" => "Error cargando plantilla de diálogo: {error}",
 "No tags selected for deletion." => "No hay etiquetas seleccionadas para borrar.",
-"Please reload the page." => "Vuelva a cargar la página.",
+"Please reload the page." => "Recargue/Actualice la página",
 "The update was unsuccessful. Please report this issue to the <a href=\"https://github.com/owncloud/core/issues\" target=\"_blank\">ownCloud community</a>." => "La actualización ha fracasado. Por favor, informe de este problema a la <a href=\"https://github.com/owncloud/core/issues\" target=\"_blank\">Comunidad de ownCloud</a>.",
 "The update was successful. Redirecting you to ownCloud now." => "La actualización se ha realizado con éxito. Redireccionando a ownCloud ahora.",
 "%s password reset" => "%s restablecer contraseña",
@@ -124,6 +122,8 @@ $TRANSLATIONS = array(
 "To login page" => "A la página de inicio de sesión",
 "New password" => "Nueva contraseña",
 "Reset password" => "Restablecer contraseña",
+"Mac OS X is not supported and %s will not work properly on this platform. Use it at your own risk! " => "Mac OS X no está soportado y %s no funcionará bien en esta plataforma. ¡Úsela a su propio riesgo! ",
+"For the best results, please consider using a GNU/Linux server instead." => "Para óptimos resultados, considere utilizar un servidor GNU/Linux.",
 "Personal" => "Personal",
 "Users" => "Usuarios",
 "Apps" => "Aplicaciones",
@@ -179,6 +179,6 @@ $TRANSLATIONS = array(
 "Thank you for your patience." => "Gracias por su paciencia.",
 "Updating ownCloud to version %s, this may take a while." => "Actualizando ownCloud a la versión %s, esto puede demorar un tiempo.",
 "This ownCloud instance is currently being updated, which may take a while." => "Esta versión de owncloud se está actualizando, esto puede demorar un tiempo.",
-"Please reload this page after a short time to continue using ownCloud." => "Por favor , recargue esta instancia de onwcloud tras un corto periodo de tiempo y continue usándolo."
+"Please reload this page after a short time to continue using ownCloud." => "Por favor, recargue la página tras un corto periodo de tiempo para continuar usando ownCloud"
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

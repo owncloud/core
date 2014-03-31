@@ -1,12 +1,10 @@
 <?php
 $TRANSLATIONS = array(
+"Expiration date is in the past." => "Expiration date is in the past.",
 "Couldn't send mail to following users: %s " => "Couldn't send mail to following users: %s ",
 "Turned on maintenance mode" => "Turned on maintenance mode",
 "Turned off maintenance mode" => "Turned off maintenance mode",
 "Updated database" => "Updated database",
-"Updating filecache, this may take really long..." => "Updating filecache, this may take a really long time...",
-"Updated filecache" => "Updated filecache",
-"... %d%% done ..." => "... %d%% done ...",
 "No image or file provided" => "No image or file provided",
 "Unknown filetype" => "Unknown filetype",
 "Invalid image" => "Invalid image",
@@ -124,6 +122,8 @@ $TRANSLATIONS = array(
 "To login page" => "To login page",
 "New password" => "New password",
 "Reset password" => "Reset password",
+"Mac OS X is not supported and %s will not work properly on this platform. Use it at your own risk! " => "Mac OS X is not supported and %s will not work properly on this platform. Use it at your own risk! ",
+"For the best results, please consider using a GNU/Linux server instead." => "For the best results, please consider using a GNU/Linux server instead.",
 "Personal" => "Personal",
 "Users" => "Users",
 "Apps" => "Apps",

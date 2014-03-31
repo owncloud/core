@@ -1,12 +1,10 @@
 <?php
 $TRANSLATIONS = array(
+"Expiration date is in the past." => "La data de venciment és en el passat.",
 "Couldn't send mail to following users: %s " => "No s'ha pogut enviar correu als usuaris següents: %s",
 "Turned on maintenance mode" => "Activat el mode de manteniment",
 "Turned off maintenance mode" => "Desactivat el mode de manteniment",
 "Updated database" => "Actualitzada la base de dades",
-"Updating filecache, this may take really long..." => "Actualitzant la memòria de cau del fitxers, això pot trigar molt...",
-"Updated filecache" => "Actualitzada la memòria de cau dels fitxers",
-"... %d%% done ..." => "... %d%% fet ...",
 "No image or file provided" => "No s'han proporcionat imatges o fitxers",
 "Unknown filetype" => "Tipus de fitxer desconegut",
 "Invalid image" => "Imatge no vàlida",
@@ -124,6 +122,8 @@ $TRANSLATIONS = array(
 "To login page" => "A la pàgina d'inici de sessió",
 "New password" => "Contrasenya nova",
 "Reset password" => "Reinicialitza la contrasenya",
+"Mac OS X is not supported and %s will not work properly on this platform. Use it at your own risk! " => "Mac OS X no té suport i %s no funcionarà correctament en aquesta plataforma. Useu-ho al vostre risc!",
+"For the best results, please consider using a GNU/Linux server instead." => "Per millors resultats, millor considereu utilitzar un servidor GNU/Linux.",
 "Personal" => "Personal",
 "Users" => "Usuaris",
 "Apps" => "Aplicacions",
