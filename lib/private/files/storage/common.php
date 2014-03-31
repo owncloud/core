@@ -114,12 +114,15 @@ abstract class Common implements \OC\Files\Storage\Storage {
 			return false;
 		}
 		$data = stream_get_contents($handle);
+		fclose($handle);
 		return $data;
 	}
 
 	public function file_put_contents($path, $data) {
 		$handle = $this->fopen($path, "w");
-		return fwrite($handle, $data);
+		$count = fwrite($handle, $data);
+		fclose($handle);
+		return $count;
 	}
 
 	public function rename($path1, $path2) {
