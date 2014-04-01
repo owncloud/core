@@ -114,7 +114,8 @@ window.FileList={
 		td = $('<td></td>').attr({
 			"class": "filesize",
 			"style": 'color:rgb('+sizeColor+','+sizeColor+','+sizeColor+')'
-		}).text(simpleSize);
+		});
+		td.append($('<span></span>').text(simpleSize));
 		tr.append(td);
 
 		// date column

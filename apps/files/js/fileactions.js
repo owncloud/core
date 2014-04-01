@@ -129,12 +129,6 @@ var FileActions = {
 					actionText = displayName,
 					actionContainer = 'a.name>span.fileactions';
 
-				if (name === 'Rename') {
-					// rename has only an icon which appears behind
-					// the file name
-					actionText = '';
-					actionContainer = 'a.name span.nametext';
-				}
 				if (img.call) {
 					img = img(file);
 				}
@@ -142,12 +136,31 @@ var FileActions = {
 				if (img) {
 					html += '<img class ="svg" src="' + img + '" />';
 				}
-				html += '<span> ' + actionText + '</span></a>';
 
+				if (name === 'Rename') {
+					// rename has only an icon which appears behind
+					// the file name
+					actionText = '';
+					actionContainer = 'a.name span.nametext';
+				} else if (name === 'Download') {
+					// the Download button goes
+					// to the filesize column.
+					actionText = '';
+					actionContainer = 'td.filesize span';
+				} else {
+					html += '<span> ' + actionText + '</span></a>';
+				}
 				var element = $(html);
 				element.data('action', name);
 				element.on('click', {a: null, elem: parent, actionFunc: actions[name].action}, actionHandler);
-				parent.find(actionContainer).append(element);
+				if (name === 'Download') {
+					// cleanup old download buttons
+					parent.parent().find('td.filesize span .action').remove();
+					// add new download button
+					parent.parent().find(actionContainer).append(element);
+				} else {
+					parent.find(actionContainer).append(element);
+				}
 			}
 
 		};
@@ -223,7 +236,7 @@ $(document).ready(function () {
 	$('#fileList tr').each(function () {
 		FileActions.display($(this).children('td.filename'));
 	});
-	
+
 	$('#fileList').trigger(jQuery.Event("fileActionsReady"));
 
 });
