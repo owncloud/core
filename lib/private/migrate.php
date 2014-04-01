@@ -56,6 +56,9 @@ class OC_Migrate{
 	* @brief finds and loads the providers
 	*/
 	static private function findProviders() {
+		if(!empty(self::$providers)) {
+			return;
+		}
 		// Find the providers
 		$apps = OC_App::getAllApps();
 
