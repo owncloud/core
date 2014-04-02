@@ -38,7 +38,7 @@ $totalsize = 0; ?>
 		<?php if($file['type'] == 'dir'): ?>
 			<a class="name" href="<?php p(rtrim($_['baseURL'],'/').'/'.trim($directory,'/').'/'.$name); ?>" title="">
 				<span class="nametext">
-					<?php print_unescaped(htmlspecialchars($file['name']));?>
+					<span><?php print_unescaped(htmlspecialchars($file['name']));?></span>
 				</span>
 				<span class="uploadtext" currentUploads="0">
 				</span>
@@ -46,7 +46,10 @@ $totalsize = 0; ?>
 		<?php else: ?>
 			<a class="name" href="<?php p(rtrim($_['downloadURL'],'/').'/'.trim($directory,'/').'/'.$name); ?>">
 				<label class="filetext" title="" for="select-<?php p($file['fileid']); ?>"></label>
-				<span class="nametext"><?php print_unescaped(htmlspecialchars($file['basename']));?><span class='extension'><?php p($file['extension']);?></span></span>
+				<span class="nametext">
+					<span><?php print_unescaped(htmlspecialchars($file['basename']));?></span>
+					<span class='extension'><?php p($file['extension']);?></span>
+				</span>
 			</a>
 		<?php endif; ?>
 		</td>
