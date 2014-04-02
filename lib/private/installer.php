@@ -377,7 +377,7 @@ class OC_Installer{
 					if( substr( $filename, 0, 1 ) != '.' and is_dir($app_dir['path']."/$filename") ) {
 						if( file_exists( $app_dir['path']."/$filename/appinfo/app.php" )) {
 							if(!OC_Installer::isInstalled($filename)) {
-								$info=$reader->getInfo($filename);
+								$info = $reader->getInfo($app_dir['path']."/$filename/appinfo/info.xml");
 								$enabled = isset($info['default_enable']);
 								if( $enabled ) {
 									OC_Installer::installShippedApp($filename);
