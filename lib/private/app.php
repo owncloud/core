@@ -426,7 +426,7 @@ class OC_App {
 	/**
 	 * @brief Read all app metadata from the info.xml file
 	 * @param string $appid id of the app
-	 * @return array
+	 * @return array|null
 	 * @note all data is read from info.xml, not just pre-defined fields
 	*/
 	public static function getAppInfo($appid) {

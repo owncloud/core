@@ -127,7 +127,7 @@ class Manager implements ManagerInterface {
 	 */
 	private function getAppTypes($app) {
 		if (!isset($this->appTypes)) {
-			$this->appTypes = $this->config->getValues(false, 'types'); // TODO: DI
+			$this->appTypes = $this->config->getValues(false, 'types');
 		}
 
 		if (isset($this->appTypes[$app])) {
@@ -161,7 +161,7 @@ class Manager implements ManagerInterface {
 		if (isset($this->installedVersions)) {
 			return $this->installedVersions;
 		}
-		$this->installedVersions = $this->config->getValues(false, 'installed_version'); // TODO: DI
+		$this->installedVersions = $this->config->getValues(false, 'installed_version');
 		return $this->installedVersions;
 	}
 
