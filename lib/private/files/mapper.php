@@ -251,6 +251,14 @@ class Mapper
 			return md5($originalText);
 		}
 
-		return $text;
+		$components = explode('.', $text);
+		$components = array_map(function($item) use ($originalText) {
+			if (empty($item)) {
+				return md5($originalText);
+			}
+			return $item;
+		}, $components);
+
+		return implode('.', $components);
 	}
 }
