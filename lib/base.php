@@ -698,7 +698,10 @@ class OC {
 		}
 
 		// Test it the user is already authenticated using Apaches AuthType Basic... very usable in combination with LDAP
-		OC::tryBasicAuthLogin();
+		$basic_auth = OC_Config::getValue('basic_auth', true);
+		if ($basic_auth) {
+			OC::tryBasicAuthLogin();
+		}
 
 		if (!self::$CLI and (!isset($_GET["logout"]) or ($_GET["logout"] !== 'true'))) {
 			try {
