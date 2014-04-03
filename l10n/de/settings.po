@@ -350,7 +350,7 @@ msgstr "Sicherheitswarnung"
 msgid ""
 "You are accessing %s via HTTP. We strongly suggest you configure your server"
 " to require using HTTPS instead."
-msgstr "Du greifst auf %s via HTTP zu. Wir empfehlen Dir dringend, Deinen Server so konfigurieren, das stattdessen HTTPS verlangt wird."
+msgstr "Du greifst auf %s via HTTP zu. Wir empfehlen Dir dringend, Deinen Server so konfigurieren, dass stattdessen HTTPS verlangt wird."
 
 #: templates/admin.php:64
 msgid ""
