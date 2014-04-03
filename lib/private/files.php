@@ -22,7 +22,7 @@
  */
 
 // TODO: get rid of this using proper composer packages
-require_once 'mcnetic/phpzipstreamer/ZipStreamer.php';
+require_once 'mcnetic/phpzipstreamer/src/ZipStreamer.php';
 
 class GET_TYPE {
 	const FILE = 1;
@@ -109,7 +109,7 @@ class OC_Files {
 			}
 		} else {
 			self::validateZipDownload($dir, $files);
-			$zip = new ZipStreamer(false);
+			$zip = new ZipStreamer\ZipStreamer();
 		}
 		OC_Util::obEnd();
 		if ($zip or \OC\Files\Filesystem::isReadable($filename)) {
