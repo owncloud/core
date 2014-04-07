@@ -6,7 +6,7 @@
  * See the COPYING-README file.
  */
 
-namespace SMB;
+namespace Icewind\SMB;
 
 class Connection extends RawConnection {
 	const DELIMITER = 'smb:';

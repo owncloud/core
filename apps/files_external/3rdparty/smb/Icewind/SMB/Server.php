@@ -6,7 +6,7 @@
  * See the COPYING-README file.
  */
 
-namespace SMB;
+namespace Icewind\SMB;
 
 class Server {
 	const CLIENT = 'smbclient';
@@ -68,8 +68,8 @@ class Server {
 
 	/**
 	 * @return Share[]
-	 * @throws \SMB\AuthenticationException
-	 * @throws \SMB\InvalidHostException
+	 * @throws \Icewind\SMB\AuthenticationException
+	 * @throws \Icewind\SMB\InvalidHostException
 	 */
 	public function listShares() {
 		$user = escapeshellarg($this->getUser());

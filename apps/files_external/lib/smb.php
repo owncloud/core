@@ -9,20 +9,18 @@
 namespace OC\Files\Storage;
 
 use OC\Files\Stream\Dir;
-use SMB\AlreadyExistsException;
-use SMB\NotFoundException;
-use SMB\Server;
-
-require_once 'files_external/3rdparty/smb/autoload.php';
+use \Icewind\SMB\AlreadyExistsException;
+use \Icewind\SMB\NotFoundException;
+use \Icewind\SMB\Server;
 
 class SMB extends Common {
 	/**
-	 * @var \SMB\Share $share
+	 * @var \Icewind\SMB\Share $share
 	 */
 	private $share;
 
 	/**
-	 * @var \SMB\Server $server
+	 * @var \Icewind\SMB\Server $server
 	 */
 	private $server;
 
