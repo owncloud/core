@@ -826,55 +826,12 @@ class View {
 		 */
 		list($storage, $internalPath) = Filesystem::resolvePath($path);
 		$data = null;
-		if ($storage) {
-			$cache = $storage->getCache($internalPath);
-			$permissionsCache = $storage->getPermissionsCache($internalPath);
-			$user = \OC_User::getUser();
-
-			if (!$cache->inCache($internalPath)) {
-				if (!$storage->file_exists($internalPath)) {
-					return false;
-				}
-				$scanner = $storage->getScanner($internalPath);
-				$scanner->scan($internalPath, Cache\Scanner::SCAN_SHALLOW);
-			} else {
-				$watcher = $storage->getWatcher($internalPath);
-				$data = $watcher->checkUpdate($internalPath);
-			}
-
-			if (!is_array($data)) {
-				$data = $cache->get($internalPath);
-			}
-
-			if ($data and isset($data['fileid'])) {
-				if ($includeMountPoints and $data['mimetype'] === 'httpd/unix-directory') {
-					//add the sizes of other mountpoints to the folder
-					$mountPoints = Filesystem::getMountPoints($path);
-					foreach ($mountPoints as $mountPoint) {
-						$subStorage = Filesystem::getStorage($mountPoint);
-						if ($subStorage) {
-							$subCache = $subStorage->getCache('');
-							$rootEntry = $subCache->get('');
-							$data['size'] += isset($rootEntry['size']) ? $rootEntry['size'] : 0;
-						}
-					}
-				}
-
-				$permissions = $permissionsCache->get($data['fileid'], $user);
-				if ($permissions === -1) {
-					$permissions = $storage->getPermissions($internalPath);
-					$permissionsCache->set($data['fileid'], $user, $permissions);
-				}
-				$data['permissions'] = $permissions;
-			}
-		}
-		if (!$data) {
+		if ($storage and $storage->file_exists($internalPath)) {
+			$user = \OC::$server->getUserSession()->getUser();
+			return new LazyFileInfo($path, $storage, $internalPath, $user, $includeMountPoints);
+		} else {
 			return false;
 		}
-
-		$data = \OC_FileProxy::runPostProxies('getFileInfo', $path, $data);
-
-		return new FileInfo($path, $storage, $internalPath, $data);
 	}
 
 	/**
