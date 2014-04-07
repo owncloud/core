@@ -102,10 +102,10 @@ class LazyFileInfo extends FileInfo {
 	protected function loadPermissions() {
 		if (is_null($this->permissions)) {
 			$permissionsCache = $this->storage->getPermissionsCache($this->internalPath);
-			$permissions = $permissionsCache->get($this->getId(), $this->user->getUID());
-			if ($permissions === -1) {
+			$this->permissions = $permissionsCache->get($this->getId(), $this->user->getUID());
+			if ($this->permissions === -1) {
 				$this->permissions = $this->storage->getPermissions($this->internalPath);
-				$permissionsCache->set($this->getId(), $this->user->getUID(), $permissions);
+				$permissionsCache->set($this->getId(), $this->user->getUID(), $this->permissions);
 			}
 		}
 	}
