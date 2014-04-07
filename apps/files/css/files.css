@@ -128,11 +128,6 @@ table td {
 	background-position: 8px center;
 	background-repeat: no-repeat;
 }
-table th#headerName {
-	position: relative;
-	width: 9999px; /* not really sure why this works better than 100% … table styling */
-	padding: 0;
-}
 #headerName-container {
 	position: relative;
 	height: 50px;
@@ -152,29 +147,12 @@ table th#headerDate, table td.date {
 }
 
 /* Multiselect bar */
-#filestable.multiselect {
-	top: 95px;
-}
-table.multiselect thead {
-	position: fixed;
-	top: 89px;
-	z-index: 10;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	left: 0;
-	padding-left: 80px;
-	width: 100%;
-}
 
 table.multiselect thead th {
 	background-color: rgba(220,220,220,.8);
 	color: #000;
 	font-weight: bold;
-	border-bottom: 0;
-}
-table.multiselect #headerName {
-	position: relative;
-	width: 9999px; /* when we use 100%, the styling breaks on mobile … table styling */
+	border-bottom: 1px solid white;
 }
 table td.selection, table th.selection, table td.fileaction { width:32px; text-align:center; }
 table td.filename a.name {
