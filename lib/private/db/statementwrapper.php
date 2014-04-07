@@ -197,4 +197,20 @@ class OC_DB_StatementWrapper {
 	public function bindParam($column, &$variable, $type = null, $length = null){
 		return $this->statement->bindParam($column, $variable, $type, $length);
 	}
+
+
+	/**
+	 * Binds a PHP variable to a corresponding named or question mark placeholder in the
+	 * SQL statement that was use to prepare the statement.
+	 *
+	 * @param mixed $column Either the placeholder name or the 1-indexed placeholder index
+	 * @param mixed $variable The variable to bind
+	 * @param integer|null $type one of the  PDO::PARAM_* constants, defaults to PDO::PARAM_STR
+	 * @return boolean
+	 */
+	public function bindValue($column, $variable, $type = \PDO::PARAM_STR){
+		return $this->statement->bindValue($column, $variable, $type);
+	}
+
+
 }
