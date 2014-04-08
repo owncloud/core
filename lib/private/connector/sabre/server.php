@@ -165,7 +165,12 @@ class OC_Connector_Sabre_Server extends Sabre_DAV_Server {
 				if (isset($newProperties[200][$prop])) continue;
 
 				switch($prop) {
-					case '{DAV:}getlastmodified'       : if ($node->getLastModified()) $newProperties[200][$prop] = new Sabre_DAV_Property_GetLastModified($node->getLastModified()); break;
+					case '{DAV:}getlastmodified'       :
+						if ($node->getLastModified()) {
+							$newProperties[200][$prop]
+								= new Sabre_DAV_Property_GetLastModified((int)$node->getLastModified());
+						}
+						break;
 					case '{DAV:}getcontentlength'      :
 						if ($node instanceof Sabre_DAV_IFile) {
 							$size = $node->getSize();
