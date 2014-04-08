@@ -11,7 +11,6 @@ namespace Test\OC\Connector\Sabre;
 
 use OC_Connector_Sabre_Directory;
 use PHPUnit_Framework_TestCase;
-use \Sabre\DAV\Exception_Forbidden;
 
 class TestDoubleFileView extends \OC\Files\View{
 

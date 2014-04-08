@@ -23,7 +23,7 @@ class ObjectTree extends \Sabre\DAV\ObjectTree {
 	 * Returns the INode object for the requested path
 	 *
 	 * @param string $path
-	 * @throws \Sabre\DAV\Exception_NotFound
+	 * @throws \Sabre\DAV\Exception\NotFound
 	 * @return \Sabre\DAV\INode
 	 */
 	public function getNodeForPath($path) {
