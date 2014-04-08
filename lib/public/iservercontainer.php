@@ -114,8 +114,15 @@ interface IServerContainer {
 	function getConfig();
 
 	/**
+	 * Returns the app config manager
+	 *
+	 * @return \OCP\IAppConfig
+	 */
+	function getAppConfig();
+
+	/**
 	 * get an L10N instance
-	 * @param $app string appid
+	 * @param string $app appid
 	 * @return \OCP\IL10N
 	 */
 	function getL10N($app);
@@ -176,4 +183,17 @@ interface IServerContainer {
 	 */
 	function getAvatarManager();
 
+	/**
+	 * Returns an job list for controlling background jobs
+	 *
+	 * @return \OCP\BackgroundJob\IJobList
+	 */
+	function getJobList();
+
+	/**
+	 * Returns a router for generating and matching urls
+	 *
+	 * @return \OCP\Route\IRouter
+	 */
+	function getRouter();
 }

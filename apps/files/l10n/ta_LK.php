@@ -1,5 +1,6 @@
 <?php
 $TRANSLATIONS = array(
+"Invalid name, '\\', '/', '<', '>', ':', '\"', '|', '?' and '*' are not allowed." => "செல்லுபடியற்ற பெயர்,'\\', '/', '<', '>', ':', '\"', '|', '?' மற்றும் '*' ஆகியன அனுமதிக்கப்படமாட்டாது.",
 "No file was uploaded. Unknown error" => "ஒரு கோப்பும் பதிவேற்றப்படவில்லை. அறியப்படாத வழு",
 "There is no error, the file uploaded with success" => "இங்கு வழு இல்லை, கோப்பு வெற்றிகரமாக பதிவேற்றப்பட்டது",
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form" => "பதிவேற்றப்பட்ட கோப்பானது HTML  படிவத்தில் குறிப்பிடப்பட்டுள்ள MAX_FILE_SIZE  directive ஐ விட கூடியது",
@@ -13,14 +14,11 @@ $TRANSLATIONS = array(
 "{new_name} already exists" => "{new_name} ஏற்கனவே உள்ளது",
 "Share" => "பகிர்வு",
 "Rename" => "பெயர்மாற்றம்",
+"Error" => "வழு",
 "Pending" => "நிலுவையிலுள்ள",
-"replaced {new_name} with {old_name}" => "{new_name} ஆனது {old_name} இனால் மாற்றப்பட்டது",
-"undo" => "முன் செயல் நீக்கம் ",
 "_%n folder_::_%n folders_" => array("",""),
 "_%n file_::_%n files_" => array("",""),
 "_Uploading %n file_::_Uploading %n files_" => array("",""),
-"Invalid name, '\\', '/', '<', '>', ':', '\"', '|', '?' and '*' are not allowed." => "செல்லுபடியற்ற பெயர்,'\\', '/', '<', '>', ':', '\"', '|', '?' மற்றும் '*' ஆகியன அனுமதிக்கப்படமாட்டாது.",
-"Error" => "வழு",
 "Name" => "பெயர்",
 "Size" => "அளவு",
 "Modified" => "மாற்றப்பட்டது",

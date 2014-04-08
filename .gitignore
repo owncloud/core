@@ -2,6 +2,7 @@
 /data
 /owncloud
 /config/config.php
+/config/*.config.php
 /config/mount.php
 /apps/inc.php
 
@@ -84,6 +85,11 @@ nbproject
 
 # Node Modules
 /build/node_modules/
+
+# nodejs
+/build/lib/
+/npm-debug.log
+
 
 # Tests - auto-generated files
 /data-autotest
