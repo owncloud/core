@@ -36,7 +36,7 @@ class Test_OC_Connector_Sabre_File extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\Forbidden
+	 * @expectedException \Sabre\DAV\Exception\BadRequest
 	 */
 	public function testSimplePutInvalidChars() {
 		// setup
