@@ -5,6 +5,36 @@
  * See the COPYING-README file.
  */
 
+/* global OC, t */
+
+/**
+ * The callback will be fired as soon as enter is pressed by the
+ * user or 1 second after the last data entry
+ *
+ * @param callback
+ */
+jQuery.fn.keyUpDelayedOrEnter = function(callback){
+	var cb = callback;
+	var that = this;
+	this.keyup(_.debounce(function (event) {
+		// enter is already handled in keypress
+		if(event.keyCode === 13) {
+			return;
+		}
+		if (that.val() !== '') {
+			cb();
+		}
+	}, 1000));
+
+	this.keypress(function () {
+		if (event.keyCode === 13 && that.val() !== '' ){
+			event.preventDefault();
+			cb();
+		}
+	});
+};
+
+
 /**
  * Post the email address change to the server.
  */
@@ -42,30 +72,34 @@ function changeDisplayName(){
             }
             OC.msg.finishedSaving('#displaynameform .msg', data);
         });
-        return false;
     }
 }
 
 function updateAvatar (hidedefault) {
-	$headerdiv = $('#header .avatardiv');
-	$displaydiv = $('#displayavatar .avatardiv');
+	var $headerdiv = $('#header .avatardiv');
+	var $displaydiv = $('#displayavatar .avatardiv');
 
 	if(hidedefault) {
 		$headerdiv.hide();
+		$('#header .avatardiv').removeClass('avatardiv-shown');
 	} else {
 		$headerdiv.css({'background-color': ''});
 		$headerdiv.avatar(OC.currentUser, 32, true);
+		$('#header .avatardiv').addClass('avatardiv-shown');
 	}
 	$displaydiv.css({'background-color': ''});
 	$displaydiv.avatar(OC.currentUser, 128, true);
+
+	$('#removeavatar').show();
 }
 
 function showAvatarCropper() {
-	$cropper = $('#cropper');
+	var $cropper = $('#cropper');
 	$cropper.prepend("<img>");
-	$cropperImage = $('#cropper img');
+	var $cropperImage = $('#cropper img');
 
-	$cropperImage.attr('src', OC.Router.generate('core_avatar_get_tmp')+'?requesttoken='+oc_requesttoken+'#'+Math.floor(Math.random()*1000));
+	$cropperImage.attr('src',
+		OC.generateUrl('/avatar/tmp')+'?requesttoken='+oc_requesttoken+'#'+Math.floor(Math.random()*1000));
 
 	// Looks weird, but on('load', ...) doesn't work in IE8
 	$cropperImage.ready(function(){
@@ -86,14 +120,14 @@ function showAvatarCropper() {
 function sendCropData() {
 	cleanCropper();
 
-	var cropperdata = $('#cropper').data();
+	var cropperData = $('#cropper').data();
 	var data = {
-		x: cropperdata.x,
-		y: cropperdata.y,
-		w: cropperdata.w,
-		h: cropperdata.h
+		x: cropperData.x,
+		y: cropperData.y,
+		w: cropperData.w,
+		h: cropperData.h
 	};
-	$.post(OC.Router.generate('core_avatar_post_cropped'), {crop: data}, avatarResponseHandler);
+	$.post(OC.generateUrl('/avatar/cropped'), {crop: data}, avatarResponseHandler);
 }
 
 function saveCoords(c) {
@@ -101,7 +135,7 @@ function saveCoords(c) {
 }
 
 function cleanCropper() {
-	$cropper = $('#cropper');
+	var $cropper = $('#cropper');
 	$('#displayavatar').show();
 	$cropper.hide();
 	$('.jcrop-holder').remove();
@@ -110,7 +144,7 @@ function cleanCropper() {
 }
 
 function avatarResponseHandler(data) {
-	$warning = $('#avatar .warning');
+	var $warning = $('#avatar .warning');
 	$warning.hide();
 	if (data.status === "success") {
 		updateAvatar();
@@ -130,7 +164,7 @@ $(document).ready(function(){
 			$('#passwordchanged').hide();
 			$('#passworderror').hide();
 			// Ajax foo
-			$.post(OC.Router.generate('settings_personal_changepassword'), post, function(data){
+			$.post(OC.generateUrl('/settings/personal/changepassword'), post, function(data){
 				if( data.status === "success" ){
 					$('#pass1').val('');
 					$('#pass2').val('');
@@ -153,41 +187,8 @@ $(document).ready(function(){
 
 	});
 
-    $('#displayName').keyup(function(){
-        if ($('#displayName').val() !== '' ){
-            if(typeof timeout !== 'undefined'){
-                clearTimeout(timeout);
-            }
-            timeout = setTimeout('changeDisplayName()',1000);
-        }
-    });
-
-
-    $('#email').keyup(function(){
-        if ($('#email').val() !== '' ){
-            // if this is the enter key changeEmailAddress() is already invoked
-            // so it doesn't need to be triggered again
-            if(event.keyCode === 13) {
-                return;
-            }
-            if(typeof timeout !== 'undefined'){
-                clearTimeout(timeout);
-            }
-            timeout = setTimeout('changeEmailAddress()',1000);
-        }
-    });
-
-	$('#email').keypress(function(event){
-		// check for enter key and non empty email
-		if (event.keyCode === 13 && $('#email').val() !== '' ){
-			event.preventDefault()
-			// clear timeout of previous keyup event - prevents duplicate changeEmailAddress call
-			if(typeof timeout !== 'undefined'){
-				clearTimeout(timeout);
-			}
-			changeEmailAddress();
-		}
-	});
+	$('#displayName').keyUpDelayedOrEnter(changeDisplayName);
+	$('#email').keyUpDelayedOrEnter(changeEmailAddress);
 
 	$("#languageinput").change( function(){
 		// Serialize the data
@@ -206,6 +207,8 @@ $(document).ready(function(){
 
 	$('button:button[name="submitDecryptAll"]').click(function() {
 		var privateKeyPassword = $('#decryptAll input:password[id="privateKeyPassword"]').val();
+		$('#decryptAll button:button[name="submitDecryptAll"]').prop("disabled", true);
+		$('#decryptAll input:password[name="privateKeyPassword"]').prop("disabled", true);
 		OC.Encryption.decryptAll(privateKeyPassword);
 	});
 
@@ -214,6 +217,8 @@ $(document).ready(function(){
 		if (privateKeyPassword !== '' ) {
 			$('#decryptAll button:button[name="submitDecryptAll"]').removeAttr("disabled");
 			if(event.which === 13) {
+				$('#decryptAll button:button[name="submitDecryptAll"]').prop("disabled", true);
+				$('#decryptAll input:password[name="privateKeyPassword"]').prop("disabled", true);
 				OC.Encryption.decryptAll(privateKeyPassword);
 			}
 		} else {
@@ -237,7 +242,7 @@ $(document).ready(function(){
 		OC.dialogs.filepicker(
 			t('settings', "Select a profile picture"),
 			function(path){
-				$.post(OC.Router.generate('core_avatar_post'), {path: path}, avatarResponseHandler);
+				$.post(OC.generateUrl('/avatar/'), {path: path}, avatarResponseHandler);
 			},
 			false,
 			["image/png", "image/jpeg"]
@@ -247,9 +252,10 @@ $(document).ready(function(){
 	$('#removeavatar').click(function(){
 		$.ajax({
 			type:	'DELETE',
-			url:	OC.Router.generate('core_avatar_delete'),
-			success: function(msg) {
+			url:	OC.generateUrl('/avatar/'),
+			success: function() {
 				updateAvatar(true);
+				$('#removeavatar').hide();
 			}
 		});
 	});
@@ -272,6 +278,18 @@ $(document).ready(function(){
 			t('core', 'Strong password')
 		]
 	});
+
+	// does the user have a custom avatar? if he does hide #removeavatar
+	// needs to be this complicated because we can't check yet if an avatar has been loaded, because it's async
+	var url = OC.generateUrl(
+		'/avatar/{user}/{size}',
+		{user: OC.currentUser, size: 1}
+	) + '?requesttoken=' + oc_requesttoken;
+	$.get(url, function(result) {
+		if (typeof(result) === 'object') {
+			$('#removeavatar').hide();
+		}
+	});
 } );
 
 OC.Encryption = {
@@ -280,13 +298,13 @@ OC.Encryption = {
 		$.post('ajax/decryptall.php', {password:password}, function(data) {
 			if (data.status === "error") {
 				OC.Encryption.msg.finishedDecrypting('#decryptAll .msg', data);
+				$('#decryptAll input:password[name="privateKeyPassword"]').removeAttr("disabled");
 			} else {
 				OC.Encryption.msg.finishedDecrypting('#decryptAll .msg', data);
 			}
-		}
-		);
+		});
 	}
-}
+};
 
 OC.Encryption.msg={
 	startDecrypting:function(selector){
@@ -300,32 +318,10 @@ OC.Encryption.msg={
 	},
 	finishedDecrypting:function(selector, data){
 		if( data.status === "success" ){
-			 $(selector).html( data.data.message )
+			$(selector).html( data.data.message )
 				.addClass('success')
 				.stop(true, true)
 				.delay(3000);
-		}else{
-			$(selector).html( data.data.message ).addClass('error');
-		}
-	}
-};
-
-OC.msg={
-	startSaving:function(selector){
-		$(selector)
-			.html( t('settings', 'Saving...') )
-			.removeClass('success')
-			.removeClass('error')
-			.stop(true, true)
-			.show();
-	},
-	finishedSaving:function(selector, data){
-		if( data.status === "success" ){
-			 $(selector).html( data.data.message )
-				.addClass('success')
-				.stop(true, true)
-				.delay(3000)
-				.fadeOut(900);
 		}else{
 			$(selector).html( data.data.message ).addClass('error');
 		}

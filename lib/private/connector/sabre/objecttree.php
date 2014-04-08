@@ -38,7 +38,20 @@ class ObjectTree extends \Sabre\DAV\ObjectTree {
 			return $this->rootNode;
 		}
 
-		$info = $this->getFileView()->getFileInfo($path);
+		if (pathinfo($path, PATHINFO_EXTENSION) === 'part') {
+			// read from storage
+			$absPath = $this->getFileView()->getAbsolutePath($path);
+			list($storage, $internalPath) = Filesystem::resolvePath('/' . $absPath);
+			if ($storage) {
+				$scanner = $storage->getScanner($internalPath);
+				// get data directly
+				$info = $scanner->getData($internalPath);
+			}
+		}
+		else {
+			// read from cache
+			$info = $this->getFileView()->getFileInfo($path);
+		}
 
 		if (!$info) {
 			throw new \Sabre\DAV\Exception\NotFound('File with name ' . $path . ' could not be located');
@@ -81,6 +94,9 @@ class ObjectTree extends \Sabre\DAV\ObjectTree {
 		}
 		if ($sourceDir !== $destinationDir) {
 			// for a full move we need update privileges on sourcePath and sourceDir as well as destinationDir
+			if (ltrim($destinationDir, '/') === '' && strtolower($sourceNode->getName()) === 'shared') {
+				throw new \Sabre\DAV\Exception\Forbidden();
+			}
 			if (!$fs->isUpdatable($sourceDir)) {
 				throw new \Sabre\DAV\Exception\Forbidden();
 			}
@@ -90,6 +106,11 @@ class ObjectTree extends \Sabre\DAV\ObjectTree {
 			if (!$fs->isDeletable($sourcePath)) {
 				throw new \Sabre\DAV\Exception\Forbidden();
 			}
+		}
+
+		$fileName = basename($destinationPath);
+		if (!\OCP\Util::isValidFileName($fileName)) {
+			throw new \Sabre\DAV\Exception\BadRequest();
 		}
 
 		$renameOkay = $fs->rename($sourcePath, $destinationPath);

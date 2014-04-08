@@ -85,19 +85,24 @@ abstract class OC_Connector_Sabre_Node implements \Sabre\DAV\INode, \Sabre\DAV\I
 	 * @return void
 	 */
 	public function setName($name) {
+		$fs = $this->getFS();
 
 		// rename is only allowed if the update privilege is granted
-		if (!\OC\Files\Filesystem::isUpdatable($this->path)) {
+		if (!$fs->isUpdatable($this->path)) {
 			throw new \Sabre\DAV\Exception\Forbidden();
 		}
 
 		list($parentPath, ) = \Sabre\DAV\URLUtil::splitPath($this->path);
 		list(, $newName) = \Sabre\DAV\URLUtil::splitPath($name);
 
+		if (!\OCP\Util::isValidFileName($newName)) {
+			throw new \Sabre\DAV\Exception\BadRequest();
+		}
+
 		$newPath = $parentPath . '/' . $newName;
 		$oldPath = $this->path;
 
-		\OC\Files\Filesystem::rename($this->path, $newPath);
+		$fs->rename($this->path, $newPath);
 
 		$this->path = $newPath;
 
@@ -142,7 +147,6 @@ abstract class OC_Connector_Sabre_Node implements \Sabre\DAV\INode, \Sabre\DAV\I
 	public function getLastModified() {
 		$this->getFileinfoCache();
 		return $this->fileinfo_cache['mtime'];
-
 	}
 
 	/**
@@ -156,9 +160,9 @@ abstract class OC_Connector_Sabre_Node implements \Sabre\DAV\INode, \Sabre\DAV\I
 
 	/**
 	 * @brief Updates properties on this node,
-	 * @param array $mutations
+	 * @param array $properties
 	 * @see \Sabre\DAV\IProperties::updateProperties
-	 * @return bool|array
+	 * @return boolean
 	 */
 	public function updateProperties($properties) {
 		$existing = $this->getProperties(array());
@@ -270,7 +274,7 @@ abstract class OC_Connector_Sabre_Node implements \Sabre\DAV\INode, \Sabre\DAV\I
 	}
 
 	/**
-	 * @return mixed
+	 * @return string|null
 	 */
 	public function getFileId()
 	{

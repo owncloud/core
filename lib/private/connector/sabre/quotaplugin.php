@@ -45,8 +45,8 @@ class OC_Connector_Sabre_QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 	/**
 	 * This method is called before any HTTP method and validates there is enough free space to store the file
 	 *
-	 * @param string $method
 	 * @throws \Sabre\DAV\Exception
+	 * @param string $uri
 	 * @return bool
 	 */
 	public function checkQuota($uri, $data = null) {
@@ -56,8 +56,19 @@ class OC_Connector_Sabre_QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 				$uri='/'.$uri;
 			}
 			list($parentUri, $newName) = \Sabre\DAV\URLUtil::splitPath($uri);
+			$req = $this->server->httpRequest;
+			if ($req->getHeader('OC-Chunked')) {
+				$info = OC_FileChunking::decodeName($newName);
+				$chunkHandler = new OC_FileChunking($info);
+				// substract the already uploaded size to see whether
+				// there is still enough space for the remaining chunks
+				$length -= $chunkHandler->getCurrentSize();
+			}
 			$freeSpace = $this->getFreeSpace($parentUri);
 			if ($freeSpace !== \OC\Files\SPACE_UNKNOWN && $length > $freeSpace) {
+				if (isset($chunkHandler)) {
+					$chunkHandler->cleanup();
+				}
 				throw new \Sabre\DAV\Exception\InsufficientStorage();
 			}
 		}

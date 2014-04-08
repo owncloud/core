@@ -59,6 +59,13 @@ class App {
 			$result['data'] = array(
 				'message'	=> $this->l10n->t("Invalid folder name. Usage of 'Shared' is reserved.")
 			);
+		// rename to non-existing folder is denied
+		} else if (!$this->view->file_exists($dir)) {
+			$result['data'] = array('message' => (string)$this->l10n->t(
+					'The target folder has been moved or deleted.',
+					array($dir)),
+					'code' => 'targetnotfound'
+				);
 		// rename to existing file is denied
 		} else if ($this->view->file_exists($dir . '/' . $newname)) {
 			
@@ -77,22 +84,7 @@ class App {
 		) {
 			// successful rename
 			$meta = $this->view->getFileInfo($dir . '/' . $newname);
-			if ($meta['mimetype'] === 'httpd/unix-directory') {
-				$meta['type'] = 'dir';
-			}
-			else {
-				$meta['type'] = 'file';
-			}
-			$fileinfo = array(
-				'id' => $meta['fileid'],
-				'mime' => $meta['mimetype'],
-				'size' => $meta['size'],
-				'etag' => $meta['etag'],
-				'directory' => $dir,
-				'name' => $newname,
-				'isPreviewAvailable' => \OC::$server->getPreviewManager()->isMimeSupported($meta['mimetype']),
-				'icon' => \OCA\Files\Helper::determineIcon($meta)
-			);
+			$fileinfo = \OCA\Files\Helper::formatFileInfo($meta);
 			$result['success'] = true;
 			$result['data'] = $fileinfo;
 		} else {

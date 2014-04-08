@@ -62,7 +62,7 @@ class OC_Connector_Sabre_Principal implements Sabre\DAVACL\IPrincipalBackend {
 	 * Returns the list of members for a group-principal
 	 *
 	 * @param string $principal
-	 * @return array
+	 * @return string[]
 	 */
 	public function getGroupMemberSet($principal) {
 		// TODO: for now the group principal has only one member, the user itself

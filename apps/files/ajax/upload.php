@@ -8,6 +8,7 @@ OCP\JSON::setContentTypeHeader('text/plain');
 // If no token is sent along, rely on login only
 
 $allowedPermissions = OCP\PERMISSION_ALL;
+$errorCode = null;
 
 $l = OC_L10N::get('files');
 if (empty($_POST['dirToken'])) {
@@ -19,8 +20,13 @@ if (empty($_POST['dirToken'])) {
 		die();
 	}
 } else {
+	// TODO: ideally this code should be in files_sharing/ajax/upload.php
+	// and the upload/file transfer code needs to be refactored into a utility method
+	// that could be used there
+
 	// return only read permissions for public upload
 	$allowedPermissions = OCP\PERMISSION_READ;
+	$public_directory = !empty($_POST['subdir']) ? $_POST['subdir'] : '/';
 
 	$linkItem = OCP\Share::getShareByToken($_POST['dirToken']);
 	if ($linkItem === false) {
@@ -44,7 +50,7 @@ if (empty($_POST['dirToken'])) {
 		$dir = sprintf(
 			"/%s/%s",
 			$path,
-			isset($_POST['subdir']) ? $_POST['subdir'] : ''
+			$public_directory
 		);
 
 		if (!$dir || empty($dir) || $dir === false) {
@@ -56,6 +62,10 @@ if (empty($_POST['dirToken'])) {
 
 
 OCP\JSON::callCheck();
+if (!\OCP\App::isEnabled('files_encryption')) {
+	// encryption app need to create keys later, so can't close too early
+	\OC::$session->close();
+}
 
 
 // get array with current storage stats (e.g. max file size)
@@ -111,7 +121,14 @@ if (strpos($dir, '..') === false) {
 		} else {
 			$target = \OC\Files\Filesystem::normalizePath(stripslashes($dir).'/'.$files['name'][$i]);
 		}
-		
+
+		$directory = \OC\Files\Filesystem::normalizePath(stripslashes($dir));
+		if (isset($public_directory)) {
+			// If we are uploading from the public app,
+			// we want to send the relative path in the ajax request.
+			$directory = $public_directory;
+		}
+
 		if ( ! \OC\Files\Filesystem::file_exists($target)
 			|| (isset($_POST['resolution']) && $_POST['resolution']==='replace')
 		) {
@@ -125,20 +142,17 @@ if (strpos($dir, '..') === false) {
 
 					$meta = \OC\Files\Filesystem::getFileInfo($target);
 					if ($meta === false) {
-						$error = $l->t('Upload failed. Could not get file info.');
+						$error = $l->t('The target folder has been moved or deleted.');
+						$errorCode = 'targetnotfound';
 					} else {
-						$result[] = array('status' => 'success',
-							'mime' => $meta['mimetype'],
-							'mtime' => $meta['mtime'],
-							'size' => $meta['size'],
-							'id' => $meta['fileid'],
-							'name' => basename($target),
-							'etag' => $meta['etag'],
-							'originalname' => $files['tmp_name'][$i],
-							'uploadMaxFilesize' => $maxUploadFileSize,
-							'maxHumanFilesize' => $maxHumanFileSize,
-							'permissions' => $meta['permissions'] & $allowedPermissions
-						);
+						$data = \OCA\Files\Helper::formatFileInfo($meta);
+						$data['status'] = 'success';
+						$data['originalname'] = $files['tmp_name'][$i];
+						$data['uploadMaxFilesize'] = $maxUploadFileSize;
+						$data['maxHumanFilesize'] = $maxHumanFileSize;
+						$data['permissions'] = $meta['permissions'] & $allowedPermissions;
+						$data['directory'] = $directory;
+						$result[] = $data;
 					}
 
 				} else {
@@ -154,18 +168,15 @@ if (strpos($dir, '..') === false) {
 			if ($meta === false) {
 				$error = $l->t('Upload failed. Could not get file info.');
 			} else {
-				$result[] = array('status' => 'existserror',
-					'mime' => $meta['mimetype'],
-					'mtime' => $meta['mtime'],
-					'size' => $meta['size'],
-					'id' => $meta['fileid'],
-					'name' => basename($target),
-					'etag' => $meta['etag'],
-					'originalname' => $files['tmp_name'][$i],
-					'uploadMaxFilesize' => $maxUploadFileSize,
-					'maxHumanFilesize' => $maxHumanFileSize,
-					'permissions' => $meta['permissions'] & $allowedPermissions
-				);
+				$data = \OCA\Files\Helper::formatFileInfo($meta);
+				$data['permissions'] = $data['permissions'] & $allowedPermissions;
+				$data['status'] = 'existserror';
+				$data['originalname'] = $files['tmp_name'][$i];
+				$data['uploadMaxFilesize'] = $maxUploadFileSize;
+				$data['maxHumanFilesize'] = $maxHumanFileSize;
+				$data['permissions'] = $meta['permissions'] & $allowedPermissions;
+				$data['directory'] = $directory;
+				$result[] = $data;
 			}
 		}
 	}
@@ -177,5 +188,5 @@ if ($error === false) {
 	OCP\JSON::encodedPrint($result);
 	exit();
 } else {
-	OCP\JSON::error(array(array('data' => array_merge(array('message' => $error), $storageStats))));
+	OCP\JSON::error(array(array('data' => array_merge(array('message' => $error, 'code' => $errorCode), $storageStats))));
 }

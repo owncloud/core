@@ -57,14 +57,16 @@ class Util {
 	 * @param $userId
 	 * @param bool $client
 	 */
-	public function __construct(\OC_FilesystemView $view, $userId, $client = false) {
+	public function __construct($view, $userId, $client = false) {
 
 		$this->view = $view;
 		$this->client = $client;
 		$this->userId = $userId;
 
-		$this->publicShareKeyId = \OC_Appconfig::getValue('files_encryption', 'publicShareKeyId');
-		$this->recoveryKeyId = \OC_Appconfig::getValue('files_encryption', 'recoveryKeyId');
+		$appConfig = \OC::$server->getAppConfig();
+
+		$this->publicShareKeyId = $appConfig->getValue('files_encryption', 'publicShareKeyId');
+		$this->recoveryKeyId = $appConfig->getValue('files_encryption', 'recoveryKeyId');
 
 		$this->userDir = '/' . $this->userId;
 		$this->fileFolderName = 'files';
@@ -133,7 +135,6 @@ class Util {
 		// Set directories to check / create
 		$setUpDirs = array(
 			$this->userDir,
-			$this->userFilesDir,
 			$this->publicKeyDir,
 			$this->encryptionDir,
 			$this->keyfilesPath,
@@ -316,7 +317,8 @@ class Util {
 			$found = array(
 				'plain' => array(),
 				'encrypted' => array(),
-				'legacy' => array()
+				'legacy' => array(),
+				'broken' => array(),
 			);
 		}
 
@@ -327,10 +329,7 @@ class Util {
 			if(is_resource($handle)) {
 				while (false !== ($file = readdir($handle))) {
 
-					if (
-						$file !== "."
-						&& $file !== ".."
-					) {
+					if ($file !== "." && $file !== "..") {
 
 						$filePath = $directory . '/' . $this->view->getRelativePath('/' . $file);
 						$relPath = \OCA\Encryption\Helper::stripUserFilesPath($filePath);
@@ -357,15 +356,23 @@ class Util {
 							// NOTE: This is inefficient;
 							// scanning every file like this
 							// will eat server resources :(
-							if (
-								Keymanager::getFileKey($this->view, $this, $relPath)
-								&& $isEncryptedPath
-							) {
+							if ($isEncryptedPath) {
 
-								$found['encrypted'][] = array(
-									'name' => $file,
-									'path' => $filePath
-								);
+								$fileKey = Keymanager::getFileKey($this->view, $this, $relPath);
+								$shareKey = Keymanager::getShareKey($this->view, $this->userId, $this, $relPath);
+								// if file is encrypted but now file key is available, throw exception
+								if ($fileKey === false || $shareKey === false) {
+									\OCP\Util::writeLog('encryption library', 'No keys available to decrypt the file: ' . $filePath, \OCP\Util::ERROR);
+									$found['broken'][] = array(
+										'name' => $file,
+										'path' => $filePath,
+									);
+								} else {
+									$found['encrypted'][] = array(
+										'name' => $file,
+										'path' => $filePath,
+									);
+								}
 
 								// If the file uses old
 								// encryption system
@@ -425,25 +432,28 @@ class Util {
 		$proxyStatus = \OC_FileProxy::$enabled;
 		\OC_FileProxy::$enabled = false;
 
-		// we only need 24 byte from the last chunk
 		$data = '';
-		$handle = $this->view->fopen($path, 'r');
-		if (is_resource($handle)) {
-			// suppress fseek warining, we handle the case that fseek doesn't
-			// work in the else branch
-			if (@fseek($handle, -24, SEEK_END) === 0) {
-				$data = fgets($handle);
-			} else {
-				// if fseek failed on the storage we create a local copy from the file
-				// and read this one
-				fclose($handle);
-				$localFile = $this->view->getLocalFile($path);
-				$handle = fopen($localFile, 'r');
-				if (is_resource($handle) && fseek($handle, -24, SEEK_END) === 0) {
+
+		// we only need 24 byte from the last chunk
+		if ($this->view->file_exists($path)) {
+			$handle = $this->view->fopen($path, 'r');
+			if (is_resource($handle)) {
+				// suppress fseek warining, we handle the case that fseek doesn't
+				// work in the else branch
+				if (@fseek($handle, -24, SEEK_END) === 0) {
 					$data = fgets($handle);
+				} else {
+					// if fseek failed on the storage we create a local copy from the file
+					// and read this one
+					fclose($handle);
+					$localFile = $this->view->getLocalFile($path);
+					$handle = fopen($localFile, 'r');
+					if (is_resource($handle) && fseek($handle, -24, SEEK_END) === 0) {
+						$data = fgets($handle);
+					}
 				}
+				fclose($handle);
 			}
-			fclose($handle);
 		}
 
 		// re-enable proxy
@@ -563,7 +573,7 @@ class Util {
 
 
 	/**
-	 * @param $path
+	 * @param string $path
 	 * @return bool
 	 */
 	public function isSharedPath($path) {
@@ -768,6 +778,12 @@ class Util {
 			}
 
 			if (!$this->decryptVersions($decryptedFiles)) {
+				$successful = false;
+			}
+
+			// if there are broken encrypted files than the complete decryption
+			// was not successful
+			if (!empty($found['broken'])) {
 				$successful = false;
 			}
 
@@ -1031,7 +1047,7 @@ class Util {
 	 * @brief Decrypt a keyfile
 	 * @param string $filePath
 	 * @param string $privateKey
-	 * @return bool|string
+	 * @return false|string
 	 */
 	private function decryptKeyfile($filePath, $privateKey) {
 
@@ -1110,12 +1126,16 @@ class Util {
 	/**
 	 * @brief Find, sanitise and format users sharing a file
 	 * @note This wraps other methods into a portable bundle
+	 * @param boolean $sharingEnabled
+	 * @param string $filePath path relativ to current users files folder
 	 */
-	public function getSharingUsersArray($sharingEnabled, $filePath, $currentUserId = false) {
+	public function getSharingUsersArray($sharingEnabled, $filePath) {
+
+		$appConfig = \OC::$server->getAppConfig();
 
 		// Check if key recovery is enabled
 		if (
-			\OC_Appconfig::getValue('files_encryption', 'recoveryAdminEnabled')
+			$appConfig->getValue('files_encryption', 'recoveryAdminEnabled')
 			&& $this->recoveryEnabledForUser()
 		) {
 			$recoveryEnabled = true;
@@ -1128,12 +1148,14 @@ class Util {
 
 		$ownerPath = \OCA\Encryption\Helper::stripPartialFileExtension($ownerPath);
 
-		$userIds = array();
+		// always add owner to the list of users with access to the file
+		$userIds = array($owner);
+
 		if ($sharingEnabled) {
 
 			// Find out who, if anyone, is sharing the file
-			$result = \OCP\Share::getUsersSharingFile($ownerPath, $owner, true);
-			$userIds = $result['users'];
+			$result = \OCP\Share::getUsersSharingFile($ownerPath, $owner);
+			$userIds = \array_merge($userIds, $result['users']);
 			if ($result['public']) {
 				$userIds[] = $this->publicShareKeyId;
 			}
@@ -1144,14 +1166,9 @@ class Util {
 		// Admin UID to list of users to share to
 		if ($recoveryEnabled) {
 			// Find recoveryAdmin user ID
-			$recoveryKeyId = \OC_Appconfig::getValue('files_encryption', 'recoveryKeyId');
+			$recoveryKeyId = $appConfig->getValue('files_encryption', 'recoveryKeyId');
 			// Add recoveryAdmin to list of users sharing
 			$userIds[] = $recoveryKeyId;
-		}
-
-		// add current user if given
-		if ($currentUserId !== false) {
-			$userIds[] = $currentUserId;
 		}
 
 		// check if it is a group mount
@@ -1186,26 +1203,48 @@ class Util {
 	}
 
 	/**
+	 * @brief set migration status
+	 * @param int $status
+	 * @return boolean
+	 */
+	private function setMigrationStatus($status) {
+
+		$sql = 'UPDATE `*PREFIX*encryption` SET `migration_status` = ? WHERE `uid` = ?';
+		$args = array($status, $this->userId);
+		$query = \OCP\DB::prepare($sql);
+		$manipulatedRows = $query->execute($args);
+
+		if ($manipulatedRows === 1) {
+			$result = true;
+			\OCP\Util::writeLog('Encryption library', "Migration status set to " . self::MIGRATION_OPEN, \OCP\Util::INFO);
+		} else {
+			$result = false;
+			\OCP\Util::writeLog('Encryption library', "Could not set migration status to " . self::MIGRATION_OPEN, \OCP\Util::WARN);
+		}
+
+		return $result;
+	}
+
+	/**
 	 * @brief start migration mode to initially encrypt users data
 	 * @return boolean
 	 */
 	public function beginMigration() {
 
-		$return = false;
+		$result = $this->setMigrationStatus(self::MIGRATION_IN_PROGRESS);
 
-		$sql = 'UPDATE `*PREFIX*encryption` SET `migration_status` = ? WHERE `uid` = ? and `migration_status` = ?';
-		$args = array(self::MIGRATION_IN_PROGRESS, $this->userId, self::MIGRATION_OPEN);
-		$query = \OCP\DB::prepare($sql);
-		$manipulatedRows = $query->execute($args);
-
-		if ($manipulatedRows === 1) {
-			$return = true;
+		if ($result) {
 			\OCP\Util::writeLog('Encryption library', "Start migration to encryption mode for " . $this->userId, \OCP\Util::INFO);
 		} else {
 			\OCP\Util::writeLog('Encryption library', "Could not activate migration mode for " . $this->userId . ". Probably another process already started the initial encryption", \OCP\Util::WARN);
 		}
 
-		return $return;
+		return $result;
+	}
+
+	public function resetMigrationStatus() {
+		return $this->setMigrationStatus(self::MIGRATION_OPEN);
+
 	}
 
 	/**
@@ -1213,22 +1252,15 @@ class Util {
 	 * @return boolean
 	 */
 	public function finishMigration() {
+		$result = $this->setMigrationStatus(self::MIGRATION_COMPLETED);
 
-		$return = false;
-
-		$sql = 'UPDATE `*PREFIX*encryption` SET `migration_status` = ? WHERE `uid` = ? and `migration_status` = ?';
-		$args = array(self::MIGRATION_COMPLETED, $this->userId, self::MIGRATION_IN_PROGRESS);
-		$query = \OCP\DB::prepare($sql);
-		$manipulatedRows = $query->execute($args);
-
-		if ($manipulatedRows === 1) {
-			$return = true;
+		if ($result) {
 			\OCP\Util::writeLog('Encryption library', "Finish migration successfully for " . $this->userId, \OCP\Util::INFO);
 		} else {
 			\OCP\Util::writeLog('Encryption library', "Could not deactivate migration mode for " . $this->userId, \OCP\Util::WARN);
 		}
 
-		return $return;
+		return $result;
 	}
 
 	/**
@@ -1738,6 +1770,14 @@ class Util {
 		$session->setInitialized(\OCA\Encryption\Session::INIT_SUCCESSFUL);
 
 		return $session;
+	}
+
+	/*
+	 * @brief remove encryption related keys from the session
+	 */
+	public function closeEncryptionSession() {
+		$session = new \OCA\Encryption\Session($this->view);
+		$session->closeSession();
 	}
 
 }

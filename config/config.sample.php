@@ -41,7 +41,7 @@ $CONFIG = array(
 /* The automatic protocol detection of ownCloud can fail in certain reverse proxy situations. This option allows to manually override the protocol detection. For example "https" */
 "overwriteprotocol" => "",
 
-/* The automatic webroot detection of ownCloud can fail in certain reverse proxy situations. This option allows to manually override the automatic detection. For example "/domain.tld/ownCloud" */
+/* The automatic webroot detection of ownCloud can fail in certain reverse proxy situations. This option allows to manually override the automatic detection. For example "/domain.tld/ownCloud". The value "/" can be used to remove the root. */
 "overwritewebroot" => "",
 
 /* The automatic detection of ownCloud can fail in certain reverse proxy situations. This option allows to define a manually override condition as regular expression for the remote ip address. For example "^10\.0\.0\.[1-3]$" */
@@ -52,6 +52,9 @@ $CONFIG = array(
 
 /* The optional authentication for the proxy to use to connect to the internet. The format is: [username]:[password] */
 "proxyuserpwd" => "",
+
+/* List of trusted domains, to prevent host header poisoning ownCloud is only using these Host headers */
+'trusted_domains' => array('demo.owncloud.org'),
 
 /* Theme to use for ownCloud */
 "theme" => "",
@@ -79,6 +82,12 @@ $CONFIG = array(
 
 /* Domain name used by ownCloud for the sender mail address, e.g. no-reply@example.com */
 "mail_domain" => "example.com",
+
+/* FROM address used by ownCloud for the sender mail address, e.g. owncloud@example.com
+   This setting overwrites the built in 'sharing-noreply' and 'lostpassword-noreply'
+   FROM addresses, that ownCloud uses
+*/
+"mail_from_address" => "owncloud",
 
 /* Enable SMTP class debugging */
 "mail_smtpdebug" => false,
@@ -114,8 +123,14 @@ $CONFIG = array(
 /* Password to use for sendmail mail, depends on mail_smtpauth if this is used */
 "mail_smtppassword" => "",
 
-/* memcached hostname and port (Only used when xCache, APC and APCu are absent.) */
-"memcached_server" => array('localhost', 11211),
+/* memcached servers (Only used when xCache, APC and APCu are absent.) */
+"memcached_servers" => array(
+	// hostname, port and optional weight. Also see:
+	// http://www.php.net/manual/en/memcached.addservers.php
+	// http://www.php.net/manual/en/memcached.addserver.php
+	array('localhost', 11211),
+	//array('other.host.local', 11211),
+),
 
 /* How long should ownCloud keep deleted files in the trash bin, default value:  30 days */
 'trashbin_retention_obligation' => 30,
@@ -163,6 +178,12 @@ $CONFIG = array(
 /* Enable or disable the logging of IP addresses in case of webform auth failures */
 "log_authfailip" => false,
 
+/* Whether ownCloud should log the last successfull cron exec */
+"cron_log" => true,
+
+/* Whether http-basic username must equal username to login */
+"basic_auth" => true,
+
 /*
  * Configure the size in bytes log rotation should happen, 0 or false disables the rotation.
  * This rotates the current owncloud logfile to a new name, this way the total log usage
@@ -177,6 +198,13 @@ $CONFIG = array(
 
 /* Life time of a session after inactivity */
 "session_lifetime" => 60 * 60 * 24,
+
+/*
+ * Enable/disable session keep alive when a user is logged in in the Web UI.
+ * This is achieved by sending a "heartbeat" to the server to prevent
+ * the session timing out.
+ */
+"session_keepalive" => true,
 
 /* Custom CSP policy, changing this will overwrite the standard policy */
 "custom_csp_policy" => "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; frame-src *; img-src *; font-src 'self' data:; media-src *",
@@ -244,4 +272,19 @@ $CONFIG = array(
 
 /* whether usage of the instance should be restricted to admin users only */
 'singleuser' => false,
+
+/* all css and js files will be served by the web server statically in one js file and ons css file*/
+'asset-pipeline.enabled' => false,
+
+/* where mount.json file should be stored, defaults to data/mount.json */
+'mount_file' => '',
+
+/*
+ * Location of the cache folder, defaults to "data/$user/cache" where "$user" is the current user.
+ *
+ * When specified, the format will change to "$cache_path/$user" where "$cache_path" is the configured
+ * cache directory and "$user" is the user.
+ *
+ */
+'cache_path' => ''
 );

@@ -38,6 +38,31 @@ class Test_OC_Connector_Sabre_File extends PHPUnit_Framework_TestCase {
 	/**
 	 * @expectedException \Sabre\DAV\Exception\Forbidden
 	 */
+	public function testSimplePutInvalidChars() {
+		// setup
+		$file = new OC_Connector_Sabre_File('/super*star.txt');
+		$file->fileView = $this->getMock('\OC\Files\View', array('file_put_contents'), array(), '', FALSE);
+		$file->fileView->expects($this->any())->method('file_put_contents')->withAnyParameters()->will($this->returnValue(false));
+
+		// action
+		$etag = $file->put('test data');
+	}
+
+	/**
+	 * Test setting name with setName() with invalid chars
+	 * @expectedException \Sabre\DAV\Exception\BadRequest
+	 */
+	public function testSetNameInvalidChars() {
+		// setup
+		$file = new OC_Connector_Sabre_File('/test.txt');
+		$file->fileView = $this->getMock('\OC\Files\View', array('isUpdatable'), array(), '', FALSE);
+		$file->fileView->expects($this->any())->method('isUpdatable')->withAnyParameters()->will($this->returnValue(true));
+		$file->setName('/super*star.txt');
+	}
+
+	/**
+	 * @expectedException \Sabre\DAV\Exception\Forbidden
+	 */
 	public function testDeleteSharedFails() {
 		$file = new OC_Connector_Sabre_File('Shared');
 		$file->delete();

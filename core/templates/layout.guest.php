@@ -11,7 +11,7 @@
 		<?php p($theme->getTitle()); ?>
 		</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
 		<meta name="apple-itunes-app" content="app-id=543672169">
 		<link rel="shortcut icon" href="<?php print_unescaped(image_path('', 'favicon.png')); ?>" />
 		<link rel="apple-touch-icon-precomposed" href="<?php print_unescaped(image_path('', 'favicon-touch.png')); ?>" />
@@ -36,7 +36,7 @@
 	<body id="body-login">
 		<div class="wrapper"><!-- for sticky footer -->
 			<header><div id="header">
-				<img src="<?php print_unescaped(image_path('', 'logo.svg')); ?>" class="svg" alt="<?php p($theme->getName()); ?>" />
+				<div class="logo svg"></div>
 				<div id="logo-claim" style="display:none;"><?php p($theme->getLogoClaim()); ?></div>
 			</div></header>
 
