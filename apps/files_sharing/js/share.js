@@ -16,7 +16,7 @@ $(document).ready(function() {
 			}
 		});
 
-		FileActions.register('all', 'Share', OC.PERMISSION_READ, OC.imagePath('core', 'actions/share'), function(filename) {
+		FileActions.register('all', 'Share', OC.PERMISSION_SHARE, OC.imagePath('core', 'actions/share'), function(filename) {
 			if ($('#dir').val() == '/') {
 				var item = $('#dir').val() + filename;
 			} else {
