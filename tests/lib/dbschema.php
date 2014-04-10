@@ -80,6 +80,9 @@ class Test_DBSchema extends PHPUnit_Framework_TestCase {
 		$this->testSchema();
 	}
 
+	/**
+	 * @param string $table
+	 */
 	public function tableExist($table) {
 
 		switch (OC_Config::getValue( 'dbtype', 'sqlite' )) {

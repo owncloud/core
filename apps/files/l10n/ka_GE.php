@@ -21,16 +21,14 @@ $TRANSLATIONS = array(
 "Share" => "გაზიარება",
 "Delete permanently" => "სრულად წაშლა",
 "Rename" => "გადარქმევა",
+"Error" => "შეცდომა",
 "Pending" => "მოცდის რეჟიმში",
-"replaced {new_name} with {old_name}" => "{new_name} შეცვლილია {old_name}–ით",
-"undo" => "დაბრუნება",
 "_%n folder_::_%n folders_" => array(""),
 "_%n file_::_%n files_" => array(""),
 "_Uploading %n file_::_Uploading %n files_" => array(""),
 "Your storage is full, files can not be updated or synced anymore!" => "თქვენი საცავი გადაივსო. ფაილების განახლება და სინქრონიზირება ვერ მოხერხდება!",
 "Your storage is almost full ({usedSpacePercent}%)" => "თქვენი საცავი თითქმის გადაივსო ({usedSpacePercent}%)",
 "Your download is being prepared. This might take some time if the files are big." => "გადმოწერის მოთხოვნა მუშავდება. ის მოითხოვს გარკვეულ დროს რაგდან ფაილები არის დიდი ზომის.",
-"Error" => "შეცდომა",
 "Name" => "სახელი",
 "Size" => "ზომა",
 "Modified" => "შეცვლილია",
@@ -56,7 +54,6 @@ $TRANSLATIONS = array(
 "Upload too large" => "ასატვირთი ფაილი ძალიან დიდია",
 "The files you are trying to upload exceed the maximum size for file uploads on this server." => "ფაილის ზომა რომლის ატვირთვასაც თქვენ აპირებთ, აჭარბებს სერვერზე დაშვებულ მაქსიმუმს.",
 "Files are being scanned, please wait." => "მიმდინარეობს ფაილების სკანირება, გთხოვთ დაელოდოთ.",
-"Current scanning" => "მიმდინარე სკანირება",
-"Upgrading filesystem cache..." => "ფაილური სისტემის ქეშის განახლება...."
+"Current scanning" => "მიმდინარე სკანირება"
 );
 $PLURAL_FORMS = "nplurals=1; plural=0;";

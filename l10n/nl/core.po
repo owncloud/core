@@ -3,16 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# André Koot <meneer@tken.net>, 2013
+# André Koot <meneer@tken.net>, 2013-2014
 # kwillems <kwillems@zonnet.nl>, 2013
 # Jorcee <mail@jordyc.nl>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-03-11 01:54-0400\n"
-"PO-Revision-Date: 2014-03-11 05:54+0000\n"
-"Last-Translator: I Robot\n"
+"POT-Creation-Date: 2014-04-09 01:55-0400\n"
+"PO-Revision-Date: 2014-04-08 08:00+0000\n"
+"Last-Translator: André Koot <meneer@tken.net>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/owncloud/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,35 +20,26 @@ msgstr ""
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ajax/share.php:112
+#: ajax/share.php:87
+msgid "Expiration date is in the past."
+msgstr "De vervaldatum ligt in het verleden."
+
+#: ajax/share.php:119 ajax/share.php:161
 #, php-format
 msgid "Couldn't send mail to following users: %s "
 msgstr "Kon geen e-mail sturen aan de volgende gebruikers: %s"
 
-#: ajax/update.php:11
+#: ajax/update.php:10
 msgid "Turned on maintenance mode"
 msgstr "Onderhoudsmodus ingeschakeld"
 
-#: ajax/update.php:14
+#: ajax/update.php:13
 msgid "Turned off maintenance mode"
 msgstr "Onderhoudsmodus uitgeschakeld"
 
-#: ajax/update.php:17
+#: ajax/update.php:16
 msgid "Updated database"
 msgstr "Database bijgewerkt"
-
-#: ajax/update.php:20
-msgid "Updating filecache, this may take really long..."
-msgstr "Bijwerken bestandscache. Dit kan even duren..."
-
-#: ajax/update.php:23
-msgid "Updated filecache"
-msgstr "Bestandscache bijgewerkt"
-
-#: ajax/update.php:26
-#, php-format
-msgid "... %d%% done ..."
-msgstr "... %d%% gereed ..."
 
 #: avatar/controller.php:62
 msgid "No image or file provided"
@@ -146,63 +137,63 @@ msgstr "november"
 msgid "December"
 msgstr "december"
 
-#: js/js.js:458
+#: js/js.js:479
 msgid "Settings"
 msgstr "Instellingen"
 
-#: js/js.js:496
+#: js/js.js:564
 msgid "Saving..."
-msgstr ""
+msgstr "Opslaan"
 
-#: js/js.js:992
+#: js/js.js:1124
 msgid "seconds ago"
 msgstr "seconden geleden"
 
-#: js/js.js:993
+#: js/js.js:1125
 msgid "%n minute ago"
 msgid_plural "%n minutes ago"
 msgstr[0] ""
 msgstr[1] "%n minuten geleden"
 
-#: js/js.js:994
+#: js/js.js:1126
 msgid "%n hour ago"
 msgid_plural "%n hours ago"
 msgstr[0] ""
 msgstr[1] "%n uur geleden"
 
-#: js/js.js:995
+#: js/js.js:1127
 msgid "today"
 msgstr "vandaag"
 
-#: js/js.js:996
+#: js/js.js:1128
 msgid "yesterday"
 msgstr "gisteren"
 
-#: js/js.js:997
+#: js/js.js:1129
 msgid "%n day ago"
 msgid_plural "%n days ago"
 msgstr[0] ""
 msgstr[1] "%n dagen geleden"
 
-#: js/js.js:998
+#: js/js.js:1130
 msgid "last month"
 msgstr "vorige maand"
 
-#: js/js.js:999
+#: js/js.js:1131
 msgid "%n month ago"
 msgid_plural "%n months ago"
 msgstr[0] ""
 msgstr[1] "%n maanden geleden"
 
-#: js/js.js:1000
+#: js/js.js:1132
 msgid "months ago"
 msgstr "maanden geleden"
 
-#: js/js.js:1001
+#: js/js.js:1133
 msgid "last year"
 msgstr "vorig jaar"
 
-#: js/js.js:1002
+#: js/js.js:1134
 msgid "years ago"
 msgstr "jaar geleden"
 
@@ -241,54 +232,62 @@ msgid "One file conflict"
 msgstr "Een bestandsconflict"
 
 #: js/oc-dialogs.js:367
+msgid "New Files"
+msgstr "Nieuwe bestanden"
+
+#: js/oc-dialogs.js:368
+msgid "Already existing files"
+msgstr "Al aanwezige bestanden"
+
+#: js/oc-dialogs.js:370
 msgid "Which files do you want to keep?"
 msgstr "Welke bestanden wilt u bewaren?"
 
-#: js/oc-dialogs.js:368
+#: js/oc-dialogs.js:371
 msgid ""
 "If you select both versions, the copied file will have a number added to its"
 " name."
 msgstr "Als u beide versies selecteerde, zal het gekopieerde bestand een nummer aan de naam toegevoegd krijgen."
 
-#: js/oc-dialogs.js:376
+#: js/oc-dialogs.js:379
 msgid "Cancel"
 msgstr "Annuleer"
 
-#: js/oc-dialogs.js:386
+#: js/oc-dialogs.js:389
 msgid "Continue"
 msgstr "Verder"
 
-#: js/oc-dialogs.js:433 js/oc-dialogs.js:446
+#: js/oc-dialogs.js:436 js/oc-dialogs.js:449
 msgid "(all selected)"
 msgstr "(alles geselecteerd)"
 
-#: js/oc-dialogs.js:436 js/oc-dialogs.js:449
+#: js/oc-dialogs.js:439 js/oc-dialogs.js:452
 msgid "({count} selected)"
 msgstr "({count} geselecteerd)"
 
-#: js/oc-dialogs.js:457
+#: js/oc-dialogs.js:460
 msgid "Error loading file exists template"
 msgstr "Fout bij laden bestand bestaat al sjabloon"
 
 #: js/setup.js:84
 msgid "Very weak password"
-msgstr ""
+msgstr "Zeer zwak wachtwoord"
 
 #: js/setup.js:85
 msgid "Weak password"
-msgstr ""
+msgstr "Zwak wachtwoord"
 
 #: js/setup.js:86
 msgid "So-so password"
-msgstr ""
+msgstr "Matig wachtwoord"
 
 #: js/setup.js:87
 msgid "Good password"
-msgstr ""
+msgstr "Goed wachtwoord"
 
 #: js/setup.js:88
 msgid "Strong password"
-msgstr ""
+msgstr "Sterk wachtwoord"
 
 #: js/share.js:51 js/share.js:66 js/share.js:106
 msgid "Shared"
@@ -299,11 +298,11 @@ msgid "Share"
 msgstr "Delen"
 
 #: js/share.js:158 js/share.js:171 js/share.js:178 js/share.js:711
-#: js/share.js:723 templates/installation.php:10
+#: templates/installation.php:10
 msgid "Error"
 msgstr "Fout"
 
-#: js/share.js:160 js/share.js:755
+#: js/share.js:160 js/share.js:767
 msgid "Error while sharing"
 msgstr "Fout tijdens het delen"
 
@@ -419,19 +418,19 @@ msgstr "Wachtwoord beveiligd"
 msgid "Error unsetting expiration date"
 msgstr "Fout tijdens het verwijderen van de verval datum"
 
-#: js/share.js:723
+#: js/share.js:729
 msgid "Error setting expiration date"
 msgstr "Fout tijdens het instellen van de vervaldatum"
 
-#: js/share.js:742
+#: js/share.js:754
 msgid "Sending ..."
 msgstr "Versturen ..."
 
-#: js/share.js:753
+#: js/share.js:765
 msgid "Email sent"
 msgstr "E-mail verzonden"
 
-#: js/share.js:777
+#: js/share.js:789
 msgid "Warning"
 msgstr "Waarschuwing"
 
@@ -487,7 +486,7 @@ msgstr "%s wachtwoord reset"
 msgid ""
 "A problem has occurred whilst sending the email, please contact your "
 "administrator."
-msgstr ""
+msgstr "Er ontstond een probleem bij het versturen van het e-mailbericht, neem contact op met uw beheerder."
 
 #: lostpassword/templates/email.php:2
 msgid "Use the following link to reset your password: {link}"
@@ -544,6 +543,18 @@ msgstr "Nieuw wachtwoord"
 #: lostpassword/templates/resetpassword.php:11
 msgid "Reset password"
 msgstr "Reset wachtwoord"
+
+#: setup/controller.php:140
+#, php-format
+msgid ""
+"Mac OS X is not supported and %s will not work properly on this platform. "
+"Use it at your own risk! "
+msgstr "Mac OSX wordt niet ondersteund en %s zal niet goed werken op dit platform. Gebruik het op uw eigen risico!"
+
+#: setup/controller.php:144
+msgid ""
+"For the best results, please consider using a GNU/Linux server instead."
+msgstr "Voor het beste resultaat adviseren wij het gebruik van een GNU/Linux server."
 
 #: strings.php:5
 msgid "Personal"
@@ -665,7 +676,7 @@ msgstr "Maak een <strong>beheerdersaccount</strong> aan"
 
 #: templates/installation.php:70
 msgid "Storage & database"
-msgstr ""
+msgstr "Opslag & database"
 
 #: templates/installation.php:77
 msgid "Data folder"
@@ -766,7 +777,7 @@ msgstr "Alternatieve inlogs"
 msgid ""
 "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> "
 "with you.<br><a href=\"%s\">View it!</a><br><br>"
-msgstr ""
+msgstr "Hallo daar,<br><br>we willen even laten weten dat %s <strong>%s</strong> met u heeft gedeeld.<br><a href=\"%s\">Bekijk het!</a><br><br>"
 
 #: templates/singleuser.user.php:3
 msgid "This ownCloud instance is currently in single user mode."

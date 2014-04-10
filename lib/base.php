@@ -74,11 +74,6 @@ class OC {
 	public static $CLI = false;
 
 	/**
-	 * @var OC_Router
-	 */
-	protected static $router = null;
-
-	/**
 	 * @var \OC\Session\Session
 	 */
 	public static $session = null;
@@ -103,7 +98,9 @@ class OC {
 			get_include_path()
 		);
 
-		if(defined('PHPUNIT_RUN') and PHPUNIT_RUN and is_dir(OC::$SERVERROOT . '/tests/config/')) {
+		if(defined('PHPUNIT_CONFIG_DIR')) {
+			self::$configDir = OC::$SERVERROOT . '/' . PHPUNIT_CONFIG_DIR . '/';
+		} elseif(defined('PHPUNIT_RUN') and PHPUNIT_RUN and is_dir(OC::$SERVERROOT . '/tests/config/')) {
 			self::$configDir = OC::$SERVERROOT . '/tests/config/';
 		} else {
 			self::$configDir = OC::$SERVERROOT . '/config/';
@@ -308,6 +305,7 @@ class OC {
 		OC_Util::addScript("jquery.placeholder");
 		OC_Util::addScript("jquery-tipsy");
 		OC_Util::addScript("compatibility");
+		OC_Util::addScript("underscore");
 		OC_Util::addScript("jquery.ocdialog");
 		OC_Util::addScript("oc-dialogs");
 		OC_Util::addScript("js");
@@ -386,19 +384,6 @@ class OC {
 	private static function getSessionLifeTime() {
 		return OC_Config::getValue('session_lifetime', 60 * 60 * 24);
 	}
-
-	/**
-	 * @return OC_Router
-	 */
-	public static function getRouter() {
-		if (!isset(OC::$router)) {
-			OC::$router = new OC_Router();
-			OC::$router->loadRoutes();
-		}
-
-		return OC::$router;
-	}
-
 
 	public static function loadAppClassPaths() {
 		foreach (OC_APP::getEnabledApps() as $app) {
@@ -536,6 +521,7 @@ class OC {
 					echo $error['hint'] . "\n\n";
 				}
 			} else {
+				OC_Response::setStatus(OC_Response::STATUS_SERVICE_UNAVAILABLE);
 				OC_Template::printGuestPage('', 'error', array('errors' => $errors));
 			}
 			exit;
@@ -564,16 +550,10 @@ class OC {
 			OC_User::logout();
 		}
 
-		// Load Apps
-		// This includes plugins for users and filesystems as well
-		global $RUNTIME_NOAPPS;
-		global $RUNTIME_APPTYPES;
-		if (!$RUNTIME_NOAPPS && !self::checkUpgrade(false)) {
-			if ($RUNTIME_APPTYPES) {
-				OC_App::loadApps($RUNTIME_APPTYPES);
-			} else {
-				OC_App::loadApps();
-			}
+		// Load minimum set of apps - which is filesystem, authentication and logging
+		if (!self::checkUpgrade(false)) {
+			OC_App::loadApps(array('authentication'));
+			OC_App::loadApps(array('filesystem', 'logging'));
 		}
 
 		//setup extra user backends
@@ -661,7 +641,10 @@ class OC {
 	 */
 	public static function registerPreviewHooks() {
 		OC_Hook::connect('OC_Filesystem', 'post_write', 'OC\Preview', 'post_write');
-		OC_Hook::connect('OC_Filesystem', 'delete', 'OC\Preview', 'post_delete');
+		OC_Hook::connect('OC_Filesystem', 'preDelete', 'OC\Preview', 'prepare_delete_files');
+		OC_Hook::connect('\OCP\Versions', 'preDelete', 'OC\Preview', 'prepare_delete');
+		OC_Hook::connect('\OCP\Trashbin', 'preDelete', 'OC\Preview', 'prepare_delete');
+		OC_Hook::connect('OC_Filesystem', 'delete', 'OC\Preview', 'post_delete_files');
 		OC_Hook::connect('\OCP\Versions', 'delete', 'OC\Preview', 'post_delete');
 		OC_Hook::connect('\OCP\Trashbin', 'delete', 'OC\Preview', 'post_delete');
 	}
@@ -671,10 +654,10 @@ class OC {
 	 */
 	public static function registerShareHooks() {
 		if (\OC_Config::getValue('installed')) {
-			OC_Hook::connect('OC_User', 'post_deleteUser', 'OCP\Share', 'post_deleteUser');
-			OC_Hook::connect('OC_User', 'post_addToGroup', 'OCP\Share', 'post_addToGroup');
-			OC_Hook::connect('OC_User', 'post_removeFromGroup', 'OCP\Share', 'post_removeFromGroup');
-			OC_Hook::connect('OC_User', 'post_deleteGroup', 'OCP\Share', 'post_deleteGroup');
+			OC_Hook::connect('OC_User', 'post_deleteUser', 'OC\Share\Hooks', 'post_deleteUser');
+			OC_Hook::connect('OC_User', 'post_addToGroup', 'OC\Share\Hooks', 'post_addToGroup');
+			OC_Hook::connect('OC_User', 'post_removeFromGroup', 'OC\Share\Hooks', 'post_removeFromGroup');
+			OC_Hook::connect('OC_User', 'post_deleteGroup', 'OC\Share\Hooks', 'post_deleteGroup');
 		}
 	}
 
@@ -724,7 +707,7 @@ class OC {
 					OC_App::loadApps();
 				}
 				self::checkSingleUserMode();
-				OC::getRouter()->match(OC_Request::getRawPathInfo());
+				OC::$server->getRouter()->match(OC_Request::getRawPathInfo());
 				return;
 			} catch (Symfony\Component\Routing\Exception\ResourceNotFoundException $e) {
 				//header('HTTP/1.0 404 Not Found');
@@ -863,7 +846,7 @@ class OC {
 		) {
 			return false;
 		}
-		OC_App::loadApps(array('authentication'));
+
 		if (defined("DEBUG") && DEBUG) {
 			OC_Log::write('core', 'Trying to login from cookie', OC_Log::DEBUG);
 		}
@@ -935,7 +918,7 @@ class OC {
 		) {
 			return false;
 		}
-		OC_App::loadApps(array('authentication'));
+
 		if (OC_User::login($_SERVER["PHP_AUTH_USER"], $_SERVER["PHP_AUTH_PW"])) {
 			//OC_Log::write('core',"Logged in with HTTP Authentication", OC_Log::DEBUG);
 			OC_User::unsetMagicInCookie();
@@ -944,11 +927,6 @@ class OC {
 		return true;
 	}
 
-}
-
-// define runtime variables - unless this already has been done
-if (!isset($RUNTIME_NOAPPS)) {
-	$RUNTIME_NOAPPS = false;
 }
 
 if (!function_exists('get_temp_dir')) {
@@ -969,4 +947,3 @@ if (!function_exists('get_temp_dir')) {
 }
 
 OC::init();
-

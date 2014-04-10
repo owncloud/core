@@ -21,16 +21,14 @@ $TRANSLATIONS = array(
 "Share" => "Rhannu",
 "Delete permanently" => "Dileu'n barhaol",
 "Rename" => "Ailenwi",
+"Error" => "Gwall",
 "Pending" => "I ddod",
-"replaced {new_name} with {old_name}" => "newidiwyd {new_name} yn lle {old_name}",
-"undo" => "dadwneud",
 "_%n folder_::_%n folders_" => array("","","",""),
 "_%n file_::_%n files_" => array("","","",""),
 "_Uploading %n file_::_Uploading %n files_" => array("","","",""),
 "Your storage is full, files can not be updated or synced anymore!" => "Mae eich storfa'n llawn, ni ellir diweddaru a chydweddu ffeiliau mwyach!",
 "Your storage is almost full ({usedSpacePercent}%)" => "Mae eich storfa bron a bod yn llawn ({usedSpacePercent}%)",
 "Your download is being prepared. This might take some time if the files are big." => "Wrthi'n paratoi i lwytho i lawr. Gall gymryd peth amser os yw'r ffeiliau'n fawr.",
-"Error" => "Gwall",
 "Name" => "Enw",
 "Size" => "Maint",
 "Modified" => "Addaswyd",
@@ -55,7 +53,6 @@ $TRANSLATIONS = array(
 "Upload too large" => "Maint llwytho i fyny'n rhy fawr",
 "The files you are trying to upload exceed the maximum size for file uploads on this server." => "Mae'r ffeiliau rydych yn ceisio llwytho i fyny'n fwy na maint mwyaf llwytho ffeiliau i fyny ar y gweinydd hwn.",
 "Files are being scanned, please wait." => "Arhoswch, mae ffeiliau'n cael eu sganio.",
-"Current scanning" => "Sganio cyfredol",
-"Upgrading filesystem cache..." => "Uwchraddio storfa system ffeiliau..."
+"Current scanning" => "Sganio cyfredol"
 );
 $PLURAL_FORMS = "nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != 11) ? 2 : 3;";

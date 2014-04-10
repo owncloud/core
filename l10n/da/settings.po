@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Sappe, 2013
+# Sappe, 2013-2014
 # lodahl <leiflodahl@gmail.com>, 2013
 # Morten Juhl-Johansen Zölde-Fejér <morten@writtenandread.net>, 2013
 # Ole Holm Frandsen <froksen@gmail.com>, 2013
@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-03-11 01:54-0400\n"
-"PO-Revision-Date: 2014-03-11 05:55+0000\n"
-"Last-Translator: I Robot\n"
+"POT-Creation-Date: 2014-03-27 01:55-0400\n"
+"PO-Revision-Date: 2014-03-26 09:30+0000\n"
+"Last-Translator: Sappe\n"
 "Language-Team: Danish (http://www.transifex.com/projects/p/owncloud/language/da/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,11 +28,11 @@ msgstr ""
 
 #: admin/controller.php:73
 msgid "Saved"
-msgstr ""
+msgstr "Gemt"
 
 #: admin/controller.php:90
 msgid "test email settings"
-msgstr ""
+msgstr "test email indstillinger"
 
 #: admin/controller.php:91
 msgid "If you received this email, the settings seem to be correct."
@@ -45,22 +45,22 @@ msgstr ""
 
 #: admin/controller.php:99
 msgid "Email sent"
-msgstr ""
+msgstr "E-mail afsendt"
 
 #: admin/controller.php:101
 msgid "You need to set your user email before being able to send test emails."
 msgstr ""
 
-#: admin/controller.php:116 templates/admin.php:280
+#: admin/controller.php:116 templates/admin.php:299
 msgid "Send mode"
 msgstr ""
 
-#: admin/controller.php:118 templates/admin.php:293 templates/personal.php:159
+#: admin/controller.php:118 templates/admin.php:312 templates/personal.php:159
 msgid "Encryption"
 msgstr "Kryptering"
 
-#: admin/controller.php:120 templates/admin.php:317
-msgid "Authentification method"
+#: admin/controller.php:120 templates/admin.php:336
+msgid "Authentication method"
 msgstr ""
 
 #: ajax/apps/ocs.php:20
@@ -161,7 +161,7 @@ msgstr "Kunne ikke ændre kodeord"
 
 #: js/admin.js:73
 msgid "Sending..."
-msgstr ""
+msgstr "Sender..."
 
 #: js/apps.js:45 templates/help.php:4
 msgid "User Documentation"
@@ -169,7 +169,7 @@ msgstr "Brugerdokumentation"
 
 #: js/apps.js:50
 msgid "Admin Documentation"
-msgstr ""
+msgstr "Administrator Dokumentation"
 
 #: js/apps.js:67
 msgid "Update to {appversion}"
@@ -215,31 +215,31 @@ msgstr "Opdater"
 msgid "Updated"
 msgstr "Opdateret"
 
-#: js/personal.js:244
+#: js/personal.js:246
 msgid "Select a profile picture"
 msgstr "Vælg et profilbillede"
 
-#: js/personal.js:274
-msgid "Very weak password"
-msgstr ""
-
-#: js/personal.js:275
-msgid "Weak password"
-msgstr ""
-
-#: js/personal.js:276
-msgid "So-so password"
-msgstr ""
-
 #: js/personal.js:277
-msgid "Good password"
-msgstr ""
+msgid "Very weak password"
+msgstr "Meget svagt kodeord"
 
 #: js/personal.js:278
-msgid "Strong password"
-msgstr ""
+msgid "Weak password"
+msgstr "Svagt kodeord"
 
-#: js/personal.js:301
+#: js/personal.js:279
+msgid "So-so password"
+msgstr "Jævnt kodeord"
+
+#: js/personal.js:280
+msgid "Good password"
+msgstr "Godt kodeord"
+
+#: js/personal.js:281
+msgid "Strong password"
+msgstr "Stærkt kodeord"
+
+#: js/personal.js:316
 msgid "Decrypting files... Please wait, this can take some time."
 msgstr "Dekryptere filer... Vent venligst, dette kan tage lang tid. "
 
@@ -314,11 +314,11 @@ msgstr "Kun alvorlige fejl"
 
 #: templates/admin.php:16 templates/admin.php:23
 msgid "None"
-msgstr ""
+msgstr "Ingen"
 
 #: templates/admin.php:17
 msgid "Login"
-msgstr ""
+msgstr "Login"
 
 #: templates/admin.php:18
 msgid "Plain"
@@ -326,28 +326,28 @@ msgstr ""
 
 #: templates/admin.php:19
 msgid "NT LAN Manager"
-msgstr ""
+msgstr "NT LAN Manager"
 
 #: templates/admin.php:24
 msgid "SSL"
-msgstr ""
+msgstr "SSL"
 
 #: templates/admin.php:25
 msgid "TLS"
-msgstr ""
+msgstr "TLS"
 
-#: templates/admin.php:43 templates/admin.php:57
+#: templates/admin.php:47 templates/admin.php:61
 msgid "Security Warning"
 msgstr "Sikkerhedsadvarsel"
 
-#: templates/admin.php:46
+#: templates/admin.php:50
 #, php-format
 msgid ""
 "You are accessing %s via HTTP. We strongly suggest you configure your server"
 " to require using HTTPS instead."
 msgstr "Du tilgår %s via HTTP. Vi anbefaler at du konfigurerer din server til i stedet at kræve HTTPS."
 
-#: templates/admin.php:60
+#: templates/admin.php:64
 msgid ""
 "Your data directory and your files are probably accessible from the "
 "internet. The .htaccess file is not working. We strongly suggest that you "
@@ -356,68 +356,68 @@ msgid ""
 "root."
 msgstr "Din data mappe og dine filer er muligvis tilgængelige fra internettet. .htaccess filen virker ikke. Vi anbefaler på det kraftigste at du konfigurerer din webserver så data mappen ikke længere er tilgængelig, eller at du flytter data mappen uden for webserverens dokument rod.  "
 
-#: templates/admin.php:71
+#: templates/admin.php:75
 msgid "Setup Warning"
 msgstr "Opsætnings Advarsel"
 
-#: templates/admin.php:74
+#: templates/admin.php:78
 msgid ""
 "Your web server is not yet properly setup to allow files synchronization "
 "because the WebDAV interface seems to be broken."
 msgstr "Din webserver er endnu ikke sat op til at tillade fil synkronisering fordi WebDAV grænsefladen virker ødelagt."
 
-#: templates/admin.php:75
+#: templates/admin.php:79
 #, php-format
 msgid "Please double check the <a href=\"%s\">installation guides</a>."
 msgstr "Dobbelttjek venligst <a href='%s'>installations vejledningerne</a>."
 
-#: templates/admin.php:86
+#: templates/admin.php:90
 msgid "Module 'fileinfo' missing"
 msgstr "Module 'fileinfo' mangler"
 
-#: templates/admin.php:89
+#: templates/admin.php:93
 msgid ""
 "The PHP module 'fileinfo' is missing. We strongly recommend to enable this "
 "module to get best results with mime-type detection."
 msgstr "PHP modulet 'fileinfo' mangler. Vi anbefaler stærkt at aktivere dette modul til at få de bedste resultater med mime-type detektion."
 
-#: templates/admin.php:100
+#: templates/admin.php:104
 msgid "Your PHP version is outdated"
 msgstr "Din PHP-version er forældet"
 
-#: templates/admin.php:103
+#: templates/admin.php:107
 msgid ""
 "Your PHP version is outdated. We strongly recommend to update to 5.3.8 or "
 "newer because older versions are known to be broken. It is possible that "
 "this installation is not working correctly."
 msgstr "Din PHP-version er forældet. Vi anbefaler at du opgraderer til 5.3.8 eller nyere, fordi ældre versioner har kendte fejl. Det er derfor muligt at installationen ikke fungerer korrekt."
 
-#: templates/admin.php:114
+#: templates/admin.php:118
 msgid "Locale not working"
 msgstr "Landestandard fungerer ikke"
 
-#: templates/admin.php:119
+#: templates/admin.php:123
 msgid "System locale can not be set to a one which supports UTF-8."
 msgstr "Systemets locale kan ikke sættes til et der bruger UTF-8."
 
-#: templates/admin.php:123
+#: templates/admin.php:127
 msgid ""
 "This means that there might be problems with certain characters in file "
 "names."
 msgstr "Det betyder at der kan være problemer med visse tegn i filnavne."
 
-#: templates/admin.php:127
+#: templates/admin.php:131
 #, php-format
 msgid ""
 "We strongly suggest to install the required packages on your system to "
 "support one of the following locales: %s."
 msgstr "Vi anbefaler at du installerer den krævede pakke på dit system, for at understøtte følgende locales: %s."
 
-#: templates/admin.php:139
+#: templates/admin.php:143
 msgid "Internet connection not working"
 msgstr "Internetforbindelse fungerer ikke"
 
-#: templates/admin.php:142
+#: templates/admin.php:146
 msgid ""
 "This server has no working internet connection. This means that some of the "
 "features like mounting of external storage, notifications about updates or "
@@ -426,162 +426,178 @@ msgid ""
 "internet connection for this server if you want to have all features."
 msgstr "Denne ownCloud-server har ikke en fungerende forbindelse til internettet. Det betyder, at visse funktioner som montering af eksterne drev, oplysninger om opdatering eller installation af 3.-parts applikationer ikke fungerer. Det vil sandsynligvis heller ikke fungere at tilgå filer fra eksterne drev eller informationsemails. Vi opfordrer til at etablere forbindelse til internettet for denne server, såfremt du ønsker samtlige funktioner."
 
-#: templates/admin.php:156
+#: templates/admin.php:160
 msgid "Cron"
 msgstr "Cron"
 
-#: templates/admin.php:163
+#: templates/admin.php:167
+#, php-format
+msgid "Last cron was executed at %s."
+msgstr ""
+
+#: templates/admin.php:170
+#, php-format
+msgid ""
+"Last cron was executed at %s. This is more than an hour ago, something seems"
+" wrong."
+msgstr ""
+
+#: templates/admin.php:174
+msgid "Cron was not executed yet!"
+msgstr ""
+
+#: templates/admin.php:184
 msgid "Execute one task with each page loaded"
 msgstr "Udføre en opgave med hver side indlæst"
 
-#: templates/admin.php:171
+#: templates/admin.php:192
 msgid ""
 "cron.php is registered at a webcron service to call cron.php every 15 "
 "minutes over http."
 msgstr "cron.php er registreret til at en webcron service skal kalde cron.php hvert 15 minut over http."
 
-#: templates/admin.php:179
+#: templates/admin.php:200
 msgid "Use systems cron service to call the cron.php file every 15 minutes."
 msgstr "Brug systemets cron service til at kalde cron.php hvert 15. minut."
 
-#: templates/admin.php:184
+#: templates/admin.php:205
 msgid "Sharing"
 msgstr "Deling"
 
-#: templates/admin.php:190
+#: templates/admin.php:211
 msgid "Enable Share API"
 msgstr "Aktiver Share API"
 
-#: templates/admin.php:191
+#: templates/admin.php:212
 msgid "Allow apps to use the Share API"
 msgstr "Tillad apps til at bruge Share API"
 
-#: templates/admin.php:198
+#: templates/admin.php:219
 msgid "Allow links"
 msgstr "Tillad links"
 
-#: templates/admin.php:199
+#: templates/admin.php:220
 msgid "Allow users to share items to the public with links"
 msgstr "Tillad brugere at dele elementer til offentligheden med links"
 
-#: templates/admin.php:207
+#: templates/admin.php:227
 msgid "Allow public uploads"
 msgstr "Tillad offentlig upload"
 
-#: templates/admin.php:208
+#: templates/admin.php:228
 msgid ""
 "Allow users to enable others to upload into their publicly shared folders"
 msgstr "Tillad brugere at give andre mulighed for at uploade i deres offentligt delte mapper"
 
-#: templates/admin.php:216
+#: templates/admin.php:235
 msgid "Allow resharing"
 msgstr "Tillad videredeling"
 
-#: templates/admin.php:217
+#: templates/admin.php:236
 msgid "Allow users to share items shared with them again"
 msgstr "Tillad brugere at dele elementer delt med dem igen"
 
-#: templates/admin.php:224
+#: templates/admin.php:243
 msgid "Allow users to share with anyone"
 msgstr "Tillad brugere at dele med alle"
 
-#: templates/admin.php:227
+#: templates/admin.php:246
 msgid "Allow users to only share with users in their groups"
 msgstr "Tillad brugere at kun dele med brugerne i deres grupper"
 
-#: templates/admin.php:234
+#: templates/admin.php:253
 msgid "Allow mail notification"
 msgstr "Tillad mail underretninger"
 
-#: templates/admin.php:235
+#: templates/admin.php:254
 msgid "Allow user to send mail notification for shared files"
 msgstr "Tillad brugere at sende mail underretninger for delte filer"
 
-#: templates/admin.php:242
+#: templates/admin.php:261
 msgid "Security"
 msgstr "Sikkerhed"
 
-#: templates/admin.php:255
+#: templates/admin.php:274
 msgid "Enforce HTTPS"
 msgstr "Gennemtving HTTPS"
 
-#: templates/admin.php:257
+#: templates/admin.php:276
 #, php-format
 msgid "Forces the clients to connect to %s via an encrypted connection."
 msgstr "Tving klienten til at forbinde til %s via en kryptetet forbindelse."
 
-#: templates/admin.php:263
+#: templates/admin.php:282
 #, php-format
 msgid ""
 "Please connect to your %s via HTTPS to enable or disable the SSL "
 "enforcement."
 msgstr "Forbind venligst til din %s via HTTPS for at aktivere eller deaktivere SSL tvang."
 
-#: templates/admin.php:275
+#: templates/admin.php:294
 msgid "Email Server"
-msgstr ""
+msgstr "Email Server"
 
-#: templates/admin.php:277
+#: templates/admin.php:296
 msgid "This is used for sending out notifications."
 msgstr ""
 
-#: templates/admin.php:308
+#: templates/admin.php:327
 msgid "From address"
-msgstr ""
+msgstr "Fra adresse"
 
-#: templates/admin.php:330
+#: templates/admin.php:349
 msgid "Authentication required"
-msgstr ""
+msgstr "Godkendelse påkrævet"
 
-#: templates/admin.php:334
+#: templates/admin.php:353
 msgid "Server address"
-msgstr ""
-
-#: templates/admin.php:338
-msgid "Port"
-msgstr ""
-
-#: templates/admin.php:343
-msgid "Credentials"
-msgstr ""
-
-#: templates/admin.php:344
-msgid "SMTP Username"
-msgstr ""
-
-#: templates/admin.php:347
-msgid "SMTP Password"
-msgstr ""
-
-#: templates/admin.php:351
-msgid "Test email settings"
-msgstr ""
-
-#: templates/admin.php:352
-msgid "Send email"
-msgstr ""
+msgstr "Serveradresse"
 
 #: templates/admin.php:357
+msgid "Port"
+msgstr "Port"
+
+#: templates/admin.php:362
+msgid "Credentials"
+msgstr "Brugeroplysninger"
+
+#: templates/admin.php:363
+msgid "SMTP Username"
+msgstr "SMTP Brugernavn"
+
+#: templates/admin.php:366
+msgid "SMTP Password"
+msgstr "SMTP Kodeord"
+
+#: templates/admin.php:370
+msgid "Test email settings"
+msgstr "Test email indstillinger"
+
+#: templates/admin.php:371
+msgid "Send email"
+msgstr "Send email"
+
+#: templates/admin.php:376
 msgid "Log"
 msgstr "Log"
 
-#: templates/admin.php:358
+#: templates/admin.php:377
 msgid "Log level"
 msgstr "Log niveau"
 
-#: templates/admin.php:390
+#: templates/admin.php:409
 msgid "More"
 msgstr "Mere"
 
-#: templates/admin.php:391
+#: templates/admin.php:410
 msgid "Less"
 msgstr "Mindre"
 
-#: templates/admin.php:397 templates/personal.php:181
+#: templates/admin.php:416 templates/personal.php:181
 msgid "Version"
 msgstr "Version"
 
-#: templates/admin.php:401 templates/personal.php:184
+#: templates/admin.php:420 templates/personal.php:184
 msgid ""
 "Developed by the <a href=\"http://ownCloud.org/contact\" "
 "target=\"_blank\">ownCloud community</a>, the <a "
@@ -605,7 +621,7 @@ msgstr "Vælg en App"
 
 #: templates/apps.php:42
 msgid "Documentation:"
-msgstr ""
+msgstr "Dokumentation:"
 
 #: templates/apps.php:48
 msgid "See application page at apps.owncloud.com"
@@ -720,7 +736,7 @@ msgstr "Din avatar kommer fra din oprindelige konto."
 
 #: templates/personal.php:111
 msgid "Cancel"
-msgstr ""
+msgstr "Annuller"
 
 #: templates/personal.php:112
 msgid "Choose as profile image"

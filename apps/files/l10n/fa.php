@@ -23,16 +23,14 @@ $TRANSLATIONS = array(
 "Share" => "اشتراک‌گذاری",
 "Delete permanently" => "حذف قطعی",
 "Rename" => "تغییرنام",
+"Error" => "خطا",
 "Pending" => "در انتظار",
-"replaced {new_name} with {old_name}" => "{نام_جدید} با { نام_قدیمی} جایگزین شد.",
-"undo" => "بازگشت",
 "_%n folder_::_%n folders_" => array(""),
 "_%n file_::_%n files_" => array(""),
 "_Uploading %n file_::_Uploading %n files_" => array("در حال بارگذاری %n فایل"),
 "Your storage is full, files can not be updated or synced anymore!" => "فضای ذخیره ی شما کاملا پر است، بیش از این فایلها بهنگام یا همگام سازی نمی توانند بشوند!",
 "Your storage is almost full ({usedSpacePercent}%)" => "فضای ذخیره ی شما تقریبا پر است ({usedSpacePercent}%)",
 "Your download is being prepared. This might take some time if the files are big." => "دانلود شما در حال آماده شدن است. در صورتیکه پرونده ها بزرگ باشند ممکن است مدتی طول بکشد.",
-"Error" => "خطا",
 "Name" => "نام",
 "Size" => "اندازه",
 "Modified" => "تاریخ",
@@ -59,7 +57,6 @@ $TRANSLATIONS = array(
 "Upload too large" => "سایز فایل برای آپلود زیاد است(م.تنظیمات در php.ini)",
 "The files you are trying to upload exceed the maximum size for file uploads on this server." => "فایلها بیش از حد تعیین شده در این سرور هستند\nمترجم:با تغییر فایل php,ini میتوان این محدودیت را برطرف کرد",
 "Files are being scanned, please wait." => "پرونده ها در حال بازرسی هستند لطفا صبر کنید",
-"Current scanning" => "بازرسی کنونی",
-"Upgrading filesystem cache..." => "بهبود فایل سیستمی ذخیره گاه..."
+"Current scanning" => "بازرسی کنونی"
 );
 $PLURAL_FORMS = "nplurals=1; plural=0;";

@@ -21,16 +21,14 @@ $TRANSLATIONS = array(
 "Share" => "Дели",
 "Delete permanently" => "Обриши за стално",
 "Rename" => "Преименуј",
+"Error" => "Грешка",
 "Pending" => "На чекању",
-"replaced {new_name} with {old_name}" => "замењено {new_name} са {old_name}",
-"undo" => "опозови",
 "_%n folder_::_%n folders_" => array("","",""),
 "_%n file_::_%n files_" => array("","",""),
 "_Uploading %n file_::_Uploading %n files_" => array("","",""),
 "Your storage is full, files can not be updated or synced anymore!" => "Ваше складиште је пуно. Датотеке више не могу бити ажуриране ни синхронизоване.",
 "Your storage is almost full ({usedSpacePercent}%)" => "Ваше складиште је скоро па пуно ({usedSpacePercent}%)",
 "Your download is being prepared. This might take some time if the files are big." => "Припремам преузимање. Ово може да потраје ако су датотеке велике.",
-"Error" => "Грешка",
 "Name" => "Име",
 "Size" => "Величина",
 "Modified" => "Измењено",
@@ -55,7 +53,6 @@ $TRANSLATIONS = array(
 "Upload too large" => "Датотека је превелика",
 "The files you are trying to upload exceed the maximum size for file uploads on this server." => "Датотеке које желите да отпремите прелазе ограничење у величини.",
 "Files are being scanned, please wait." => "Скенирам датотеке…",
-"Current scanning" => "Тренутно скенирање",
-"Upgrading filesystem cache..." => "Дограђујем кеш система датотека…"
+"Current scanning" => "Тренутно скенирање"
 );
 $PLURAL_FORMS = "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);";

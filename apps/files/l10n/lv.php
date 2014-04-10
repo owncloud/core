@@ -23,9 +23,8 @@ $TRANSLATIONS = array(
 "Share" => "Dalīties",
 "Delete permanently" => "Dzēst pavisam",
 "Rename" => "Pārsaukt",
+"Error" => "Kļūda",
 "Pending" => "Gaida savu kārtu",
-"replaced {new_name} with {old_name}" => "aizvietoja {new_name} ar {old_name}",
-"undo" => "atsaukt",
 "_%n folder_::_%n folders_" => array("%n mapes","%n mape","%n mapes"),
 "_%n file_::_%n files_" => array("%n faili","%n fails","%n faili"),
 "_Uploading %n file_::_Uploading %n files_" => array("%n","Augšupielāde %n failu","Augšupielāde %n failus"),
@@ -33,7 +32,6 @@ $TRANSLATIONS = array(
 "Your storage is almost full ({usedSpacePercent}%)" => "Jūsu krātuve ir gandrīz pilna ({usedSpacePercent}%)",
 "Encryption was disabled but your files are still encrypted. Please go to your personal settings to decrypt your files." => "Šifrēšana tika atslēgta, tomēr jūsu faili joprojām ir šifrēti. Atšifrēt failus var Personiskajos uzstādījumos.",
 "Your download is being prepared. This might take some time if the files are big." => "Tiek sagatavota lejupielāde. Tas var aizņemt kādu laiciņu, ja datnes ir lielas.",
-"Error" => "Kļūda",
 "Name" => "Nosaukums",
 "Size" => "Izmērs",
 "Modified" => "Mainīts",
@@ -60,7 +58,6 @@ $TRANSLATIONS = array(
 "Upload too large" => "Datne ir par lielu, lai to augšupielādētu",
 "The files you are trying to upload exceed the maximum size for file uploads on this server." => "Augšupielādējamās datnes pārsniedz servera pieļaujamo datņu augšupielādes apjomu",
 "Files are being scanned, please wait." => "Datnes šobrīd tiek caurskatītas, lūdzu, uzgaidiet.",
-"Current scanning" => "Šobrīd tiek caurskatīts",
-"Upgrading filesystem cache..." => "Uzlabo datņu sistēmas kešatmiņu..."
+"Current scanning" => "Šobrīd tiek caurskatīts"
 );
 $PLURAL_FORMS = "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);";

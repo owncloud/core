@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-03-11 01:54-0400\n"
-"PO-Revision-Date: 2014-03-11 05:54+0000\n"
-"Last-Translator: I Robot\n"
+"POT-Creation-Date: 2014-04-09 01:55-0400\n"
+"PO-Revision-Date: 2014-04-08 16:21+0000\n"
+"Last-Translator: volkangezer <volkangezer@gmail.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/owncloud/language/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,35 +21,26 @@ msgstr ""
 "Language: tr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: ajax/share.php:112
+#: ajax/share.php:87
+msgid "Expiration date is in the past."
+msgstr "Son kullanma tarihi geçmişte."
+
+#: ajax/share.php:119 ajax/share.php:161
 #, php-format
 msgid "Couldn't send mail to following users: %s "
 msgstr "Şu kullanıcılara posta gönderilemedi: %s"
 
-#: ajax/update.php:11
+#: ajax/update.php:10
 msgid "Turned on maintenance mode"
 msgstr "Bakım kipi etkinleştirildi"
 
-#: ajax/update.php:14
+#: ajax/update.php:13
 msgid "Turned off maintenance mode"
 msgstr "Bakım kipi kapatıldı"
 
-#: ajax/update.php:17
+#: ajax/update.php:16
 msgid "Updated database"
 msgstr "Veritabanı güncellendi"
-
-#: ajax/update.php:20
-msgid "Updating filecache, this may take really long..."
-msgstr "Dosya önbelleği güncelleniyor. Bu, gerçekten uzun sürebilir."
-
-#: ajax/update.php:23
-msgid "Updated filecache"
-msgstr "Dosya önbelleği güncellendi"
-
-#: ajax/update.php:26
-#, php-format
-msgid "... %d%% done ..."
-msgstr "%%%d tamamlandı ..."
 
 #: avatar/controller.php:62
 msgid "No image or file provided"
@@ -147,63 +138,63 @@ msgstr "Kasım"
 msgid "December"
 msgstr "Aralık"
 
-#: js/js.js:458
+#: js/js.js:479
 msgid "Settings"
 msgstr "Ayarlar"
 
-#: js/js.js:496
+#: js/js.js:564
 msgid "Saving..."
-msgstr ""
+msgstr "Kaydediliyor..."
 
-#: js/js.js:992
+#: js/js.js:1124
 msgid "seconds ago"
-msgstr "saniye önce"
+msgstr "saniyeler önce"
 
-#: js/js.js:993
+#: js/js.js:1125
 msgid "%n minute ago"
 msgid_plural "%n minutes ago"
 msgstr[0] "%n dakika önce"
 msgstr[1] "%n dakika önce"
 
-#: js/js.js:994
+#: js/js.js:1126
 msgid "%n hour ago"
 msgid_plural "%n hours ago"
 msgstr[0] "%n saat önce"
 msgstr[1] "%n saat önce"
 
-#: js/js.js:995
+#: js/js.js:1127
 msgid "today"
 msgstr "bugün"
 
-#: js/js.js:996
+#: js/js.js:1128
 msgid "yesterday"
 msgstr "dün"
 
-#: js/js.js:997
+#: js/js.js:1129
 msgid "%n day ago"
 msgid_plural "%n days ago"
 msgstr[0] "%n gün önce"
 msgstr[1] "%n gün önce"
 
-#: js/js.js:998
+#: js/js.js:1130
 msgid "last month"
 msgstr "geçen ay"
 
-#: js/js.js:999
+#: js/js.js:1131
 msgid "%n month ago"
 msgid_plural "%n months ago"
 msgstr[0] "%n ay önce"
 msgstr[1] "%n ay önce"
 
-#: js/js.js:1000
+#: js/js.js:1132
 msgid "months ago"
 msgstr "ay önce"
 
-#: js/js.js:1001
+#: js/js.js:1133
 msgid "last year"
 msgstr "geçen yıl"
 
-#: js/js.js:1002
+#: js/js.js:1134
 msgid "years ago"
 msgstr "yıl önce"
 
@@ -242,54 +233,62 @@ msgid "One file conflict"
 msgstr "Bir dosya çakışması"
 
 #: js/oc-dialogs.js:367
+msgid "New Files"
+msgstr "Yeni Dosyalar"
+
+#: js/oc-dialogs.js:368
+msgid "Already existing files"
+msgstr "Zaten mevcut olan dosyalar"
+
+#: js/oc-dialogs.js:370
 msgid "Which files do you want to keep?"
 msgstr "Hangi dosyaları saklamak istiyorsunuz?"
 
-#: js/oc-dialogs.js:368
+#: js/oc-dialogs.js:371
 msgid ""
 "If you select both versions, the copied file will have a number added to its"
 " name."
-msgstr "Eğer iki sürümü de seçerseniz, kopyalanan dosya ismine eklenmiş bir sayı içerecektir."
+msgstr "İki sürümü de seçerseniz, kopyalanan dosyanın ismine bir sayı ilave edilecektir."
 
-#: js/oc-dialogs.js:376
+#: js/oc-dialogs.js:379
 msgid "Cancel"
 msgstr "İptal"
 
-#: js/oc-dialogs.js:386
+#: js/oc-dialogs.js:389
 msgid "Continue"
 msgstr "Devam et"
 
-#: js/oc-dialogs.js:433 js/oc-dialogs.js:446
+#: js/oc-dialogs.js:436 js/oc-dialogs.js:449
 msgid "(all selected)"
 msgstr "(tümü seçildi)"
 
-#: js/oc-dialogs.js:436 js/oc-dialogs.js:449
+#: js/oc-dialogs.js:439 js/oc-dialogs.js:452
 msgid "({count} selected)"
 msgstr "({count} seçildi)"
 
-#: js/oc-dialogs.js:457
+#: js/oc-dialogs.js:460
 msgid "Error loading file exists template"
 msgstr "Dosya mevcut şablonu yüklenirken hata"
 
 #: js/setup.js:84
 msgid "Very weak password"
-msgstr ""
+msgstr "Çok güçsüz parola"
 
 #: js/setup.js:85
 msgid "Weak password"
-msgstr ""
+msgstr "Güçsüz parola"
 
 #: js/setup.js:86
 msgid "So-so password"
-msgstr ""
+msgstr "Normal parola"
 
 #: js/setup.js:87
 msgid "Good password"
-msgstr ""
+msgstr "İyi parola"
 
 #: js/setup.js:88
 msgid "Strong password"
-msgstr ""
+msgstr "Güçlü parola"
 
 #: js/share.js:51 js/share.js:66 js/share.js:106
 msgid "Shared"
@@ -300,13 +299,13 @@ msgid "Share"
 msgstr "Paylaş"
 
 #: js/share.js:158 js/share.js:171 js/share.js:178 js/share.js:711
-#: js/share.js:723 templates/installation.php:10
+#: templates/installation.php:10
 msgid "Error"
 msgstr "Hata"
 
-#: js/share.js:160 js/share.js:755
+#: js/share.js:160 js/share.js:767
 msgid "Error while sharing"
-msgstr "Paylaşım sırasında hata  "
+msgstr "Paylaşım sırasında hata"
 
 #: js/share.js:171
 msgid "Error while unsharing"
@@ -420,19 +419,19 @@ msgstr "Parola korumalı"
 msgid "Error unsetting expiration date"
 msgstr "Geçerlilik tarihi tanımlama kaldırma hatası"
 
-#: js/share.js:723
+#: js/share.js:729
 msgid "Error setting expiration date"
 msgstr "Geçerlilik tarihi tanımlama hatası"
 
-#: js/share.js:742
+#: js/share.js:754
 msgid "Sending ..."
 msgstr "Gönderiliyor..."
 
-#: js/share.js:753
+#: js/share.js:765
 msgid "Email sent"
 msgstr "E-posta gönderildi"
 
-#: js/share.js:777
+#: js/share.js:789
 msgid "Warning"
 msgstr "Uyarı"
 
@@ -488,7 +487,7 @@ msgstr "%s parola sıfırlama"
 msgid ""
 "A problem has occurred whilst sending the email, please contact your "
 "administrator."
-msgstr ""
+msgstr "E-posta gönderilirken bir hata oluştu. Lütfen yönetinizle iletişime geçin."
 
 #: lostpassword/templates/email.php:2
 msgid "Use the following link to reset your password: {link}"
@@ -499,7 +498,7 @@ msgid ""
 "The link to reset your password has been sent to your email.<br>If you do "
 "not receive it within a reasonable amount of time, check your spam/junk "
 "folders.<br>If it is not there ask your local administrator ."
-msgstr "Parolanızı değiştirme bağlantısı e-posta adresinize gönderildi.<br>Eğer makül bir süre içerisinde mesajı almadıysanız spam/junk dizinini kontrol ediniz.<br> Eğer orada da bulamazsanız sistem yöneticinize sorunuz."
+msgstr "Parolanızı değiştirme bağlantısı e-posta adresinize gönderildi.<br>Eğer makül bir süre içerisinde mesajı almadıysanız spam/junk/gereksiz dizinini kontrol ediniz.<br> Eğer yine bulamazsanız sistem yöneticinize sorunuz."
 
 #: lostpassword/templates/lostpassword.php:15
 msgid "Request failed!<br>Did you make sure your email/username was right?"
@@ -545,6 +544,18 @@ msgstr "Yeni parola"
 #: lostpassword/templates/resetpassword.php:11
 msgid "Reset password"
 msgstr "Parolayı sıfırla"
+
+#: setup/controller.php:140
+#, php-format
+msgid ""
+"Mac OS X is not supported and %s will not work properly on this platform. "
+"Use it at your own risk! "
+msgstr "Mac OS X desteklenmemediğinden %s bu platformda düzgün çalışmayacak. Kendi riskinizle kullanın!"
+
+#: setup/controller.php:144
+msgid ""
+"For the best results, please consider using a GNU/Linux server instead."
+msgstr "En iyi sonuçlar için GNU/Linux sunucusu kullanın."
 
 #: strings.php:5
 msgid "Personal"
@@ -666,7 +677,7 @@ msgstr "Bir <strong>yönetici hesabı</strong> oluşturun"
 
 #: templates/installation.php:70
 msgid "Storage & database"
-msgstr ""
+msgstr "Depolama ve veritabanı"
 
 #: templates/installation.php:77
 msgid "Data folder"
@@ -706,7 +717,7 @@ msgstr "Kurulumu tamamla"
 
 #: templates/installation.php:150
 msgid "Finishing …"
-msgstr "Tamamlanıyor .."
+msgstr "Tamamlanıyor ..."
 
 #: templates/layout.user.php:40
 msgid ""
@@ -767,7 +778,7 @@ msgstr "Alternatif Girişler"
 msgid ""
 "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> "
 "with you.<br><a href=\"%s\">View it!</a><br><br>"
-msgstr ""
+msgstr "Merhaba, <br><br> %s sizinle <strong>%s</strong> paylaşımında bulundu.<br><a href=\"%s\">Paylaşımı gör!</a><br><br>"
 
 #: templates/singleuser.user.php:3
 msgid "This ownCloud instance is currently in single user mode."

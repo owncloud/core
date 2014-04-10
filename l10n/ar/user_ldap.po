@@ -3,12 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# m.shehab <shehab.mahmood@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-03-11 01:54-0400\n"
-"PO-Revision-Date: 2014-03-11 05:55+0000\n"
+"POT-Creation-Date: 2014-04-08 01:56-0400\n"
+"PO-Revision-Date: 2014-04-08 05:56+0000\n"
 "Last-Translator: I Robot\n"
 "Language-Team: Arabic (http://www.transifex.com/projects/p/owncloud/language/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -23,11 +24,11 @@ msgstr ""
 
 #: ajax/deleteConfiguration.php:34
 msgid "Failed to delete the server configuration"
-msgstr ""
+msgstr "تعذر حذف ملف إعدادات الخادم"
 
 #: ajax/testConfiguration.php:39
 msgid "The configuration is valid and the connection could be established!"
-msgstr ""
+msgstr "الإعدادت صحيحة"
 
 #: ajax/testConfiguration.php:42
 msgid ""
@@ -80,7 +81,7 @@ msgstr ""
 
 #: js/settings.js:128
 msgid "Success"
-msgstr ""
+msgstr "نجاح"
 
 #: js/settings.js:133
 msgid "Error"
@@ -243,7 +244,7 @@ msgstr ""
 
 #: templates/part.wizard-server.php:36
 msgid "Port"
-msgstr ""
+msgstr "المنفذ"
 
 #: templates/part.wizard-server.php:44
 msgid "User DN"
@@ -427,41 +428,52 @@ msgid ""
 "the group member attribute contains DNs.)"
 msgstr ""
 
-#: templates/settings.php:41
+#: templates/settings.php:40
+msgid "Paging chunksize"
+msgstr ""
+
+#: templates/settings.php:40
+msgid ""
+"Chunksize used for paged LDAP searches that may return bulky results like "
+"user or group enumeration. (Setting it 0 disables paged LDAP searches in "
+"those situations.)"
+msgstr ""
+
+#: templates/settings.php:42
 msgid "Special Attributes"
 msgstr ""
 
-#: templates/settings.php:43
+#: templates/settings.php:44
 msgid "Quota Field"
 msgstr ""
 
-#: templates/settings.php:44
+#: templates/settings.php:45
 msgid "Quota Default"
 msgstr ""
 
-#: templates/settings.php:44
+#: templates/settings.php:45
 msgid "in bytes"
 msgstr ""
 
-#: templates/settings.php:45
-msgid "Email Field"
-msgstr ""
-
 #: templates/settings.php:46
+msgid "Email Field"
+msgstr "خانة البريد الإلكتروني"
+
+#: templates/settings.php:47
 msgid "User Home Folder Naming Rule"
 msgstr ""
 
-#: templates/settings.php:46
+#: templates/settings.php:47
 msgid ""
 "Leave empty for user name (default). Otherwise, specify an LDAP/AD "
 "attribute."
 msgstr ""
 
-#: templates/settings.php:52
+#: templates/settings.php:53
 msgid "Internal Username"
 msgstr ""
 
-#: templates/settings.php:53
+#: templates/settings.php:54
 msgid ""
 "By default the internal username will be created from the UUID attribute. It"
 " makes sure that the username is unique and characters do not need to be "
@@ -477,15 +489,15 @@ msgid ""
 "effect only on newly mapped (added) LDAP users."
 msgstr ""
 
-#: templates/settings.php:54
+#: templates/settings.php:55
 msgid "Internal Username Attribute:"
 msgstr ""
 
-#: templates/settings.php:55
+#: templates/settings.php:56
 msgid "Override UUID detection"
 msgstr ""
 
-#: templates/settings.php:56
+#: templates/settings.php:57
 msgid ""
 "By default, the UUID attribute is automatically detected. The UUID attribute"
 " is used to doubtlessly identify LDAP users and groups. Also, the internal "
@@ -496,19 +508,19 @@ msgid ""
 "Changes will have effect only on newly mapped (added) LDAP users and groups."
 msgstr ""
 
-#: templates/settings.php:57
+#: templates/settings.php:58
 msgid "UUID Attribute for Users:"
 msgstr ""
 
-#: templates/settings.php:58
+#: templates/settings.php:59
 msgid "UUID Attribute for Groups:"
 msgstr ""
 
-#: templates/settings.php:59
+#: templates/settings.php:60
 msgid "Username-LDAP User Mapping"
 msgstr ""
 
-#: templates/settings.php:60
+#: templates/settings.php:61
 msgid ""
 "Usernames are used to store and assign (meta) data. In order to precisely "
 "identify and recognize users, each LDAP user will have a internal username. "
@@ -522,10 +534,10 @@ msgid ""
 "experimental stage."
 msgstr ""
 
-#: templates/settings.php:61
+#: templates/settings.php:62
 msgid "Clear Username-LDAP User Mapping"
 msgstr ""
 
-#: templates/settings.php:61
+#: templates/settings.php:62
 msgid "Clear Groupname-LDAP Group Mapping"
 msgstr ""

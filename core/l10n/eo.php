@@ -1,9 +1,6 @@
 <?php
 $TRANSLATIONS = array(
 "Updated database" => "Ĝisdatiĝis datumbazo",
-"Updating filecache, this may take really long..." => "Ĝisdatigante la dosierkaŝmemoron, ĉi tio povas daŭri tro longe...",
-"Updated filecache" => "Ĝisdatiĝis dosierkaŝmemoro",
-"... %d%% done ..." => "... %d%% plenumiĝis ...",
 "Unknown filetype" => "Ne konatas dosiertipo",
 "Invalid image" => "Ne validas bildo",
 "Sunday" => "dimanĉo",
@@ -26,6 +23,7 @@ $TRANSLATIONS = array(
 "November" => "Novembro",
 "December" => "Decembro",
 "Settings" => "Agordo",
+"Saving..." => "Konservante...",
 "seconds ago" => "sekundoj antaŭe",
 "_%n minute ago_::_%n minutes ago_" => array("antaŭ %n minuto","antaŭ %n minutoj"),
 "_%n hour ago_::_%n hours ago_" => array("antaŭ %n horo","antaŭ %n horoj"),
@@ -43,6 +41,7 @@ $TRANSLATIONS = array(
 "Ok" => "Akcepti",
 "_{count} file conflict_::_{count} file conflicts_" => array("{count} dosierkonflikto","{count} dosierkonfliktoj"),
 "One file conflict" => "Unu dosierkonflikto",
+"New Files" => "Novaj dosieroj",
 "Which files do you want to keep?" => "Kiujn dosierojn vi volas konservi?",
 "If you select both versions, the copied file will have a number added to its name." => "Se vi elektos ambaŭ eldonojn, la kopiota dosiero havos numeron aldonitan al sia nomo.",
 "Cancel" => "Nuligi",

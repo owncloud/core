@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Abderraouf Mehdi Bouhali <armbouhali@gmail.com>, 2014
 # blackcoder <tarek.taha@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-03-11 01:54-0400\n"
-"PO-Revision-Date: 2014-03-11 05:54+0000\n"
+"POT-Creation-Date: 2014-04-08 01:56-0400\n"
+"PO-Revision-Date: 2014-04-08 05:56+0000\n"
 "Last-Translator: I Robot\n"
 "Language-Team: Arabic (http://www.transifex.com/projects/p/owncloud/language/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -18,34 +19,25 @@ msgstr ""
 "Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: ajax/share.php:112
+#: ajax/share.php:87
+msgid "Expiration date is in the past."
+msgstr ""
+
+#: ajax/share.php:119 ajax/share.php:161
 #, php-format
 msgid "Couldn't send mail to following users: %s "
 msgstr ""
 
-#: ajax/update.php:11
+#: ajax/update.php:10
 msgid "Turned on maintenance mode"
 msgstr ""
 
-#: ajax/update.php:14
+#: ajax/update.php:13
 msgid "Turned off maintenance mode"
 msgstr ""
 
-#: ajax/update.php:17
+#: ajax/update.php:16
 msgid "Updated database"
-msgstr ""
-
-#: ajax/update.php:20
-msgid "Updating filecache, this may take really long..."
-msgstr ""
-
-#: ajax/update.php:23
-msgid "Updated filecache"
-msgstr ""
-
-#: ajax/update.php:26
-#, php-format
-msgid "... %d%% done ..."
 msgstr ""
 
 #: avatar/controller.php:62
@@ -54,11 +46,11 @@ msgstr ""
 
 #: avatar/controller.php:81
 msgid "Unknown filetype"
-msgstr ""
+msgstr "نوع الملف غير معروف"
 
 #: avatar/controller.php:85
 msgid "Invalid image"
-msgstr ""
+msgstr "الصورة غير صالحة"
 
 #: avatar/controller.php:115 avatar/controller.php:142
 msgid "No temporary profile picture available, try again"
@@ -70,7 +62,7 @@ msgstr ""
 
 #: js/config.php:36
 msgid "Sunday"
-msgstr "الاحد"
+msgstr "الأحد"
 
 #: js/config.php:37
 msgid "Monday"
@@ -144,19 +136,19 @@ msgstr "تشرين الثاني"
 msgid "December"
 msgstr "كانون الاول"
 
-#: js/js.js:458
+#: js/js.js:479
 msgid "Settings"
 msgstr "إعدادات"
 
-#: js/js.js:496
+#: js/js.js:564
 msgid "Saving..."
-msgstr ""
+msgstr "جاري الحفظ..."
 
-#: js/js.js:992
+#: js/js.js:1124
 msgid "seconds ago"
 msgstr "منذ ثواني"
 
-#: js/js.js:993
+#: js/js.js:1125
 msgid "%n minute ago"
 msgid_plural "%n minutes ago"
 msgstr[0] ""
@@ -166,7 +158,7 @@ msgstr[3] ""
 msgstr[4] ""
 msgstr[5] ""
 
-#: js/js.js:994
+#: js/js.js:1126
 msgid "%n hour ago"
 msgid_plural "%n hours ago"
 msgstr[0] ""
@@ -176,15 +168,15 @@ msgstr[3] ""
 msgstr[4] ""
 msgstr[5] ""
 
-#: js/js.js:995
+#: js/js.js:1127
 msgid "today"
 msgstr "اليوم"
 
-#: js/js.js:996
+#: js/js.js:1128
 msgid "yesterday"
 msgstr "يوم أمس"
 
-#: js/js.js:997
+#: js/js.js:1129
 msgid "%n day ago"
 msgid_plural "%n days ago"
 msgstr[0] ""
@@ -194,11 +186,11 @@ msgstr[3] ""
 msgstr[4] ""
 msgstr[5] ""
 
-#: js/js.js:998
+#: js/js.js:1130
 msgid "last month"
 msgstr "الشهر الماضي"
 
-#: js/js.js:999
+#: js/js.js:1131
 msgid "%n month ago"
 msgid_plural "%n months ago"
 msgstr[0] ""
@@ -208,15 +200,15 @@ msgstr[3] ""
 msgstr[4] ""
 msgstr[5] ""
 
-#: js/js.js:1000
+#: js/js.js:1132
 msgid "months ago"
 msgstr "شهر مضى"
 
-#: js/js.js:1001
+#: js/js.js:1133
 msgid "last year"
 msgstr "السنةالماضية"
 
-#: js/js.js:1002
+#: js/js.js:1134
 msgid "years ago"
 msgstr "سنة مضت"
 
@@ -259,42 +251,50 @@ msgid "One file conflict"
 msgstr ""
 
 #: js/oc-dialogs.js:367
-msgid "Which files do you want to keep?"
+msgid "New Files"
 msgstr ""
 
 #: js/oc-dialogs.js:368
+msgid "Already existing files"
+msgstr ""
+
+#: js/oc-dialogs.js:370
+msgid "Which files do you want to keep?"
+msgstr ""
+
+#: js/oc-dialogs.js:371
 msgid ""
 "If you select both versions, the copied file will have a number added to its"
 " name."
 msgstr ""
 
-#: js/oc-dialogs.js:376
+#: js/oc-dialogs.js:379
 msgid "Cancel"
 msgstr "الغاء"
 
-#: js/oc-dialogs.js:386
+#: js/oc-dialogs.js:389
 msgid "Continue"
 msgstr ""
 
-#: js/oc-dialogs.js:433 js/oc-dialogs.js:446
+#: js/oc-dialogs.js:436 js/oc-dialogs.js:449
 msgid "(all selected)"
 msgstr ""
 
-#: js/oc-dialogs.js:436 js/oc-dialogs.js:449
+#: js/oc-dialogs.js:439 js/oc-dialogs.js:452
 msgid "({count} selected)"
 msgstr ""
 
-#: js/oc-dialogs.js:457
+#: js/oc-dialogs.js:460
 msgid "Error loading file exists template"
 msgstr ""
 
 #: js/setup.js:84
 msgid "Very weak password"
-msgstr ""
+msgstr "كلمة السر ضعيفة جدا"
 
 #: js/setup.js:85
 msgid "Weak password"
-msgstr ""
+msgstr "كلمة السر ضعيفة"
 
 #: js/setup.js:86
 msgid "So-so password"
@@ -302,11 +302,11 @@ msgstr ""
 
 #: js/setup.js:87
 msgid "Good password"
-msgstr ""
+msgstr "كلمة السر جيدة"
 
 #: js/setup.js:88
 msgid "Strong password"
-msgstr ""
+msgstr "كلمة السر قوية"
 
 #: js/share.js:51 js/share.js:66 js/share.js:106
 msgid "Shared"
@@ -317,11 +317,11 @@ msgid "Share"
 msgstr "شارك"
 
 #: js/share.js:158 js/share.js:171 js/share.js:178 js/share.js:711
-#: js/share.js:723 templates/installation.php:10
+#: templates/installation.php:10
 msgid "Error"
 msgstr "خطأ"
 
-#: js/share.js:160 js/share.js:755
+#: js/share.js:160 js/share.js:767
 msgid "Error while sharing"
 msgstr "حصل خطأ عند عملية المشاركة"
 
@@ -437,19 +437,19 @@ msgstr "محمي بكلمة السر"
 msgid "Error unsetting expiration date"
 msgstr "حصل خطأ عند عملية إزالة تاريخ إنتهاء الصلاحية"
 
-#: js/share.js:723
+#: js/share.js:729
 msgid "Error setting expiration date"
 msgstr "حصل خطأ عند عملية تعيين تاريخ إنتهاء الصلاحية"
 
-#: js/share.js:742
+#: js/share.js:754
 msgid "Sending ..."
 msgstr "جاري الارسال ..."
 
-#: js/share.js:753
+#: js/share.js:765
 msgid "Email sent"
 msgstr "تم ارسال البريد الالكتروني"
 
-#: js/share.js:777
+#: js/share.js:789
 msgid "Warning"
 msgstr "تحذير"
 
@@ -499,7 +499,7 @@ msgstr "تم التحديث بنجاح , يتم اعادة توجيهك الان
 #: lostpassword/controller.php:70
 #, php-format
 msgid "%s password reset"
-msgstr ""
+msgstr "تمت إعادة ضبط كلمة مرور %s"
 
 #: lostpassword/controller.php:72
 msgid ""
@@ -541,7 +541,7 @@ msgstr ""
 
 #: lostpassword/templates/lostpassword.php:27
 msgid "Yes, I really want to reset my password now"
-msgstr ""
+msgstr "نعم، أريد إعادة ضبظ كلمة مروري"
 
 #: lostpassword/templates/lostpassword.php:30
 msgid "Reset"
@@ -562,6 +562,18 @@ msgstr "كلمات سر جديدة"
 #: lostpassword/templates/resetpassword.php:11
 msgid "Reset password"
 msgstr "تعديل كلمة السر"
+
+#: setup/controller.php:140
+#, php-format
+msgid ""
+"Mac OS X is not supported and %s will not work properly on this platform. "
+"Use it at your own risk! "
+msgstr ""
+
+#: setup/controller.php:144
+msgid ""
+"For the best results, please consider using a GNU/Linux server instead."
+msgstr ""
 
 #: strings.php:5
 msgid "Personal"
@@ -650,7 +662,7 @@ msgstr "Your PHP version is vulnerable to the NULL Byte attack (CVE-2006-7243)"
 #: templates/installation.php:27
 #, php-format
 msgid "Please update your PHP installation to use %s securely."
-msgstr ""
+msgstr "يرجى تحديث نسخة PHP لاستخدام %s بطريقة آمنة"
 
 #: templates/installation.php:33
 msgid ""
@@ -675,7 +687,7 @@ msgstr "مجلدات البيانات والملفات الخاصة قد تكو�
 msgid ""
 "For information how to properly configure your server, please see the <a "
 "href=\"%s\" target=\"_blank\">documentation</a>."
-msgstr ""
+msgstr "لمزيد من المعلومات عن كيفية إعداد خادمك، يرجى الاطلاع على <a href=\"%s\" target=\"_blank\">صفحة المساعدة</a>."
 
 #: templates/installation.php:48
 msgid "Create an <strong>admin account</strong>"

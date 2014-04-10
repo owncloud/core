@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-03-11 01:54-0400\n"
-"PO-Revision-Date: 2014-03-11 05:54+0000\n"
+"POT-Creation-Date: 2014-04-08 01:56-0400\n"
+"PO-Revision-Date: 2014-04-08 05:56+0000\n"
 "Last-Translator: I Robot\n"
 "Language-Team: Khmer (http://www.transifex.com/projects/p/owncloud/language/km/)\n"
 "MIME-Version: 1.0\n"
@@ -18,34 +18,25 @@ msgstr ""
 "Language: km\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ajax/share.php:112
+#: ajax/share.php:87
+msgid "Expiration date is in the past."
+msgstr ""
+
+#: ajax/share.php:119 ajax/share.php:161
 #, php-format
 msgid "Couldn't send mail to following users: %s "
 msgstr ""
 
-#: ajax/update.php:11
+#: ajax/update.php:10
 msgid "Turned on maintenance mode"
 msgstr ""
 
-#: ajax/update.php:14
+#: ajax/update.php:13
 msgid "Turned off maintenance mode"
 msgstr ""
 
-#: ajax/update.php:17
+#: ajax/update.php:16
 msgid "Updated database"
-msgstr ""
-
-#: ajax/update.php:20
-msgid "Updating filecache, this may take really long..."
-msgstr ""
-
-#: ajax/update.php:23
-msgid "Updated filecache"
-msgstr ""
-
-#: ajax/update.php:26
-#, php-format
-msgid "... %d%% done ..."
 msgstr ""
 
 #: avatar/controller.php:62
@@ -144,59 +135,59 @@ msgstr "ខែវិច្ឆិកា"
 msgid "December"
 msgstr "ខែធ្នូ"
 
-#: js/js.js:458
+#: js/js.js:479
 msgid "Settings"
 msgstr "ការកំណត់"
 
-#: js/js.js:496
+#: js/js.js:564
 msgid "Saving..."
-msgstr ""
+msgstr "កំពុង​រក្សាទុក"
 
-#: js/js.js:992
+#: js/js.js:1124
 msgid "seconds ago"
 msgstr "វិនាទី​មុន"
 
-#: js/js.js:993
+#: js/js.js:1125
 msgid "%n minute ago"
 msgid_plural "%n minutes ago"
 msgstr[0] "%n នាទី​មុន"
 
-#: js/js.js:994
+#: js/js.js:1126
 msgid "%n hour ago"
 msgid_plural "%n hours ago"
 msgstr[0] "%n ម៉ោង​មុន"
 
-#: js/js.js:995
+#: js/js.js:1127
 msgid "today"
 msgstr "ថ្ងៃនេះ"
 
-#: js/js.js:996
+#: js/js.js:1128
 msgid "yesterday"
 msgstr "ម្សិលមិញ"
 
-#: js/js.js:997
+#: js/js.js:1129
 msgid "%n day ago"
 msgid_plural "%n days ago"
 msgstr[0] "%n ថ្ងៃ​មុន"
 
-#: js/js.js:998
+#: js/js.js:1130
 msgid "last month"
 msgstr "ខែមុន"
 
-#: js/js.js:999
+#: js/js.js:1131
 msgid "%n month ago"
 msgid_plural "%n months ago"
 msgstr[0] "%n ខែ​មុន"
 
-#: js/js.js:1000
+#: js/js.js:1132
 msgid "months ago"
 msgstr "ខែ​មុន"
 
-#: js/js.js:1001
+#: js/js.js:1133
 msgid "last year"
 msgstr "ឆ្នាំ​មុន"
 
-#: js/js.js:1002
+#: js/js.js:1134
 msgid "years ago"
 msgstr "ឆ្នាំ​មុន"
 
@@ -234,32 +225,40 @@ msgid "One file conflict"
 msgstr ""
 
 #: js/oc-dialogs.js:367
-msgid "Which files do you want to keep?"
+msgid "New Files"
 msgstr ""
 
 #: js/oc-dialogs.js:368
+msgid "Already existing files"
+msgstr ""
+
+#: js/oc-dialogs.js:370
+msgid "Which files do you want to keep?"
+msgstr ""
+
+#: js/oc-dialogs.js:371
 msgid ""
 "If you select both versions, the copied file will have a number added to its"
 " name."
 msgstr ""
 
-#: js/oc-dialogs.js:376
+#: js/oc-dialogs.js:379
 msgid "Cancel"
 msgstr "លើកលែង"
 
-#: js/oc-dialogs.js:386
+#: js/oc-dialogs.js:389
 msgid "Continue"
 msgstr ""
 
-#: js/oc-dialogs.js:433 js/oc-dialogs.js:446
+#: js/oc-dialogs.js:436 js/oc-dialogs.js:449
 msgid "(all selected)"
 msgstr ""
 
-#: js/oc-dialogs.js:436 js/oc-dialogs.js:449
+#: js/oc-dialogs.js:439 js/oc-dialogs.js:452
 msgid "({count} selected)"
 msgstr ""
 
-#: js/oc-dialogs.js:457
+#: js/oc-dialogs.js:460
 msgid "Error loading file exists template"
 msgstr ""
 
@@ -292,11 +291,11 @@ msgid "Share"
 msgstr "ចែក​រំលែក"
 
 #: js/share.js:158 js/share.js:171 js/share.js:178 js/share.js:711
-#: js/share.js:723 templates/installation.php:10
+#: templates/installation.php:10
 msgid "Error"
 msgstr "កំហុស"
 
-#: js/share.js:160 js/share.js:755
+#: js/share.js:160 js/share.js:767
 msgid "Error while sharing"
 msgstr "កំហុស​ពេល​ចែក​រំលែក"
 
@@ -412,19 +411,19 @@ msgstr "បាន​ការ​ពារ​ដោយ​ពាក្យ​សម
 msgid "Error unsetting expiration date"
 msgstr ""
 
-#: js/share.js:723
+#: js/share.js:729
 msgid "Error setting expiration date"
 msgstr ""
 
-#: js/share.js:742
+#: js/share.js:754
 msgid "Sending ..."
 msgstr "កំពុង​ផ្ញើ ..."
 
-#: js/share.js:753
+#: js/share.js:765
 msgid "Email sent"
 msgstr "បាន​ផ្ញើ​អ៊ីមែល"
 
-#: js/share.js:777
+#: js/share.js:789
 msgid "Warning"
 msgstr "បម្រាម"
 
@@ -537,6 +536,18 @@ msgstr "ពាក្យ​សម្ងាត់​ថ្មី"
 #: lostpassword/templates/resetpassword.php:11
 msgid "Reset password"
 msgstr "កំណត់​ពាក្យ​សម្ងាត់​ម្ដង​ទៀត"
+
+#: setup/controller.php:140
+#, php-format
+msgid ""
+"Mac OS X is not supported and %s will not work properly on this platform. "
+"Use it at your own risk! "
+msgstr ""
+
+#: setup/controller.php:144
+msgid ""
+"For the best results, please consider using a GNU/Linux server instead."
+msgstr ""
 
 #: strings.php:5
 msgid "Personal"
