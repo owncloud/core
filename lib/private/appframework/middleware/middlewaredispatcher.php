@@ -39,18 +39,10 @@ class MiddlewareDispatcher {
 	private $middlewares;
 
 	/**
-	 * @var int counter which tells us what middlware was executed once an
-	 *                  exception occurs
-	 */
-	private $middlewareCounter;
-
-
-	/**
 	 * Constructor
 	 */
-	public function __construct(){
+	public function __construct() {
 		$this->middlewares = array();
-		$this->middlewareCounter = 0;
 	}
 
 
@@ -73,19 +65,16 @@ class MiddlewareDispatcher {
 
 
 	/**
-	 * This is being run in normal order before the controller is being
-	 * called which allows several modifications and checks
+	 * This is being run on each registered MiddleWare before the controller
+	 * is called which allows several modifications and checks
+	 * NOTE: The security MiddleWare will always be checked first.
 	 *
 	 * @param Controller $controller the controller that is being called
 	 * @param string $methodName the name of the method that will be called on
 	 *                           the controller
 	 */
-	public function beforeController(Controller $controller, $methodName){
-		// we need to count so that we know which middlewares we have to ask in
-		// case theres an exception
-		for($i=0; $i<count($this->middlewares); $i++){
-			$this->middlewareCounter++;
-			$middleware = $this->middlewares[$i];
+	public function beforeController(Controller $controller, $methodName) {
+		foreach ($this->middlewares as $middleware) {
 			$middleware->beforeController($controller, $methodName);
 		}
 	}
@@ -94,9 +83,10 @@ class MiddlewareDispatcher {
 	/**
 	 * This is being run when either the beforeController method or the
 	 * controller method itself is throwing an exception. The middleware is asked
-	 * in reverse order to handle the exception and to return a response.
+	 * in the order it was registered to handle the exception and to return a response.
 	 * If the response is null, it is assumed that the exception could not be
-	 * handled and the error will be thrown again
+	 * handled and the error will be thrown again.
+	 * NOTE: The security MiddleWare will always be checked first.
 	 *
 	 * @param Controller $controller the controller that is being called
 	 * @param string $methodName the name of the method that will be called on
@@ -106,9 +96,8 @@ class MiddlewareDispatcher {
 	 * exception
 	 * @throws \Exception the passed in exception if it cant handle it
 	 */
-	public function afterException(Controller $controller, $methodName, \Exception $exception){
-		for($i=$this->middlewareCounter-1; $i>=0; $i--){
-			$middleware = $this->middlewares[$i];
+	public function afterException(Controller $controller, $methodName, \Exception $exception) {
+		foreach ($this->middlewares as $middleware) {
 			try {
 				return $middleware->afterException($controller, $methodName, $exception);
 			} catch(\Exception $exception){
@@ -129,9 +118,8 @@ class MiddlewareDispatcher {
 	 * @param Response $response the generated response from the controller
 	 * @return Response a Response object
 	 */
-	public function afterController(Controller $controller, $methodName, Response $response){
-		for($i=count($this->middlewares)-1; $i>=0; $i--){
-			$middleware = $this->middlewares[$i];
+	public function afterController(Controller $controller, $methodName, Response $response) {
+		foreach ($this->middlewares as $middleware) {
 			$response = $middleware->afterController($controller, $methodName, $response);
 		}
 		return $response;
@@ -148,9 +136,8 @@ class MiddlewareDispatcher {
 	 * @param string $output the generated output from a response
 	 * @return string the output that should be printed
 	 */
-	public function beforeOutput(Controller $controller, $methodName, $output){
-		for($i=count($this->middlewares)-1; $i>=0; $i--){
-			$middleware = $this->middlewares[$i];
+	public function beforeOutput(Controller $controller, $methodName, $output) {
+		foreach ($this->middlewares as $middleware) {
 			$output = $middleware->beforeOutput($controller, $methodName, $output);
 		}
 		return $output;

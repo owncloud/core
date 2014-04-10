@@ -56,7 +56,7 @@ class SecurityMiddleware extends Middleware {
 	 * @param IAppContainer $app
 	 * @param IRequest $request
 	 */
-	public function __construct(IAppContainer $app, IRequest $request){
+	public function __construct(IAppContainer $app, IRequest $request) {
 		$this->app = $app;
 		$this->request = $request;
 	}
@@ -70,24 +70,26 @@ class SecurityMiddleware extends Middleware {
 	 * @param string $methodName the name of the method
 	 * @throws SecurityException when a security check fails
 	 */
-	public function beforeController($controller, $methodName){
+	public function beforeController($controller, $methodName) {
 
 		// get annotations from comments
 		$annotationReader = new MethodAnnotationReader($controller, $methodName);
 
 		// this will set the current navigation entry of the app, use this only
 		// for normal HTML requests and not for AJAX requests
-		$this->app->getServer()->getNavigationManager()->setActiveEntry($this->app->getAppName());
+		if (stripos($this->request->getHeader('Accept'), 'html') !== false) {
+			$this->app->getServer()->getNavigationManager()->setActiveEntry($this->app->getAppName());
+		}
 
 		// security checks
 		$isPublicPage = $annotationReader->hasAnnotation('PublicPage');
-		if(!$isPublicPage) {
-			if(!$this->app->isLoggedIn()) {
+		if (!$isPublicPage) {
+			if (!$this->app->isLoggedIn()) {
 				throw new SecurityException('Current user is not logged in', Http::STATUS_UNAUTHORIZED);
 			}
 
-			if(!$annotationReader->hasAnnotation('NoAdminRequired')) {
-				if(!$this->app->isAdminUser()) {
+			if (!$annotationReader->hasAnnotation('NoAdminRequired')) {
+				if (!$this->app->isAdminUser()) {
 					throw new SecurityException('Logged in user must be an admin', Http::STATUS_FORBIDDEN);
 				}
 			}
@@ -112,10 +114,10 @@ class SecurityMiddleware extends Middleware {
 	 * @throws \Exception the passed in exception if it cant handle it
 	 * @return Response a Response object or null in case that the exception could not be handled
 	 */
-	public function afterException($controller, $methodName, \Exception $exception){
-		if($exception instanceof SecurityException){
+	public function afterException($controller, $methodName, \Exception $exception) {
+		if ($exception instanceof SecurityException) {
 
-			if (stripos($this->request->getHeader('Accept'),'html')===false) {
+			if (stripos($this->request->getHeader('Accept'), 'html') === false) {
 
 				$response = new JSONResponse(
 					array('message' => $exception->getMessage()),
