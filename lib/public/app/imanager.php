@@ -41,7 +41,8 @@ interface IManager {
 	 * @brief Get information about the app
 	 * @param $app string appid
 	 *
-	 * @return \OCP\App\IInfo|null
+	 * @return \OCP\App\IInfo
+	 * @throws \OutOfBoundsException when not app is not available/found
 	 */
 	public function getInfo( $app );
 }
