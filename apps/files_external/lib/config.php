@@ -114,6 +114,34 @@ class OC_Mount_Config {
 	}
 
 	/**
+	 * Hook that updates credentials in dynamic mount points
+	 * @param array $params
+	 */
+	public static function updateDynamicMountPoints($credentials) {
+		$username = \OC::$session->get('loginname');
+
+		$mountPoints = self::getAbsoluteMountPoints($credentials['uid']);
+		foreach ($mountPoints as $mountPoint => $options) {
+			try {
+				$storage = new $options['class']($options['options']);
+				// Create/update personal mountpoint with username and password if dynamic
+				if ($storage->isDynamic()) {
+					$options['options']['user'] = $username;
+					$options['options']['password'] = $credentials['password'];
+					self::addMountPoint(substr($mountPoint, strlen($credentials['uid']) + 8),
+					                    $options['class'],
+					                    $options['options'],
+					                    'user',
+					                    $credentials['uid'],
+					                    true);
+				}
+			} catch (Exception $exception) {
+				\OCP\Util::logException('files_external', $exception);
+			}
+		}
+	}
+
+	/**
 	 * Returns the mount points for the given user.
 	 * The mount point is relative to the data directory.
 	 *

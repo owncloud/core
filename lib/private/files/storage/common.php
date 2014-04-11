@@ -344,6 +344,10 @@ abstract class Common implements \OC\Files\Storage\Storage {
 		return false;
 	}
 
+	public function isDynamic() {
+		return false;
+	}
+
 	/**
 	 * get the free space in the storage
 	 *
