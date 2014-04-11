@@ -118,7 +118,7 @@ class OC_Mount_Config {
 	 * @param array $params
 	 */
 	public static function updateDynamicMountPoints($credentials) {
-		$username = \OC::$session->get('loginname');
+		$username = \OC_User::getUserSession()->getLoginName();
 
 		$mountPoints = self::getAbsoluteMountPoints($credentials['uid']);
 		foreach ($mountPoints as $mountPoint => $options) {
