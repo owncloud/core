@@ -197,19 +197,15 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements Sabre_D
 	}
 
 	/**
-	 * Returns the mime-type for a file
-	 *
-	 * If null is returned, we'll assume application/octet-stream
-	 *
-	 * @return mixed
+	 * Returns "application/octet-stream" as hardcoded mimetype
+	 * while this has some disadvantages (e.g. Nautilus won't show
+	 * applications that can open the filetype) it is the only
+	 * reliable method to prevent a CSP bypass.
+	 *  
+	 * @return "application/octet-stream" 
 	 */
 	public function getContentType() {
-		if (isset($this->fileinfo_cache['mimetype'])) {
-			return $this->fileinfo_cache['mimetype'];
-		}
-
-		return \OC\Files\Filesystem::getMimeType($this->path);
-
+		return "application/octet-stream";
 	}
 
 	/**
