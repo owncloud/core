@@ -24,6 +24,7 @@ if (extension_loaded('imagick')) {
 			public function getThumbnail($path,$maxX,$maxY,$scalingup,$fileview) {
 				try{
 					$svg = new Imagick();
+					$svg->setResolution(5,5);
 					$svg->setBackgroundColor(new \ImagickPixel('transparent'));
 
 					$content = stream_get_contents($fileview->fopen($path, 'r'));

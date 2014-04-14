@@ -580,23 +580,6 @@ class Preview {
 			$newXsize = (int)$image->width();
 			$newYsize = (int)$image->height();
 
-			//create transparent background layer
-			$backgroundlayer = imagecreatetruecolor($x, $y);
-			$white = imagecolorallocate($backgroundlayer, 255, 255, 255);
-			imagefill($backgroundlayer, 0, 0, $white);
-
-			$image = $image->resource();
-
-			$mergeX = floor(abs($x - $newXsize) * 0.5);
-			$mergeY = floor(abs($y - $newYsize) * 0.5);
-
-			imagecopy($backgroundlayer, $image, $mergeX, $mergeY, 0, 0, $newXsize, $newYsize);
-
-			//$black = imagecolorallocate(0,0,0);
-			//imagecolortransparent($transparentlayer, $black);
-
-			$image = new \OC_Image($backgroundlayer);
-
 			$this->preview = $image;
 			return;
 		}
