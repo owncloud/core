@@ -53,6 +53,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 	 * @var int
 	 */
 	private $timeout = 15;
+	private $root = '<root>';
 
 	/**
 	 * @param string $path
@@ -71,6 +72,12 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 		if ($this->test) {
 			sleep($this->timeout);
 		}
+	}
+	private function cleanKey($path) {
+		if ($path == '.') {
+			return $this->root;
+		}
+		return $path;
 	}
 
 	public function __construct($params) {
@@ -118,11 +125,10 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 				throw new \Exception("Creation of bucket failed.");
 			}
 		}
-
 		if (!$this->file_exists('.')) {
 			$result = $this->connection->putObject(array(
 				'Bucket' => $this->bucket,
-				'Key'    => '.',
+				'Key'    => $this->cleanKey('.'),
 				'Body'   => '',
 				'ContentType' => 'httpd/unix-directory',
 				'ContentLength' => 0
@@ -167,7 +173,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 		try {
 			$result = $this->connection->doesObjectExist(
 				$this->bucket,
-				$path
+				$this->cleanKey($path)
 			);
 		} catch (S3Exception $e) {
 			\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
@@ -261,7 +267,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 
 			$result = $this->connection->headObject(array(
 				'Bucket' => $this->bucket,
-				'Key' => $path
+				'Key' => $this->cleanKey($path)
 			));
 
 			$stat = array();
@@ -291,8 +297,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			if ($path != '.') {
 				$path .= '/';
 			}
-
-			if ($this->connection->doesObjectExist($this->bucket, $path)) {
+			if ($this->connection->doesObjectExist($this->bucket, $this->cleanKey($path))) {
 				return 'dir';
 			}
 		} catch (S3Exception $e) {
@@ -309,7 +314,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 		try {
 			$result = $this->connection->deleteObject(array(
 				'Bucket' => $this->bucket,
-				'Key' => $path
+				'Key' => $this->cleanKey($path)
 			));
 			$this->testTimeout();
 		} catch (S3Exception $e) {
@@ -332,7 +337,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 				try {
 					$result = $this->connection->getObject(array(
 						'Bucket' => $this->bucket,
-						'Key' => $path,
+						'Key' => $this->cleanKey($path),
 						'SaveAs' => $tmpFile
 					));
 				} catch (S3Exception $e) {
@@ -380,7 +385,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			try {
 				$result = $this->connection->headObject(array(
 					'Bucket' => $this->bucket,
-					'Key' => $path
+					'Key' => $this->cleanKey($path)
 				));
 			} catch (S3Exception $e) {
 				\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
@@ -407,7 +412,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 				}
 				$result = $this->connection->copyObject(array(
 					'Bucket' => $this->bucket,
-					'Key' => $path,
+					'Key' => $this->cleanKey($path),
 					'Metadata' => $metadata,
 					'CopySource' => $this->bucket . '/' . $path
 				));
@@ -415,7 +420,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			} else {
 				$result = $this->connection->putObject(array(
 					'Bucket' => $this->bucket,
-					'Key' => $path,
+					'Key' => $this->cleanKey($path),
 					'Metadata' => $metadata
 				));
 				$this->testTimeout();
@@ -436,7 +441,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			try {
 				$result = $this->connection->copyObject(array(
 					'Bucket' => $this->bucket,
-					'Key' => $path2,
+					'Key' => $this->cleanKey($path2),
 					'CopySource' => $this->bucket . '/' . $path1
 				));
 				$this->testTimeout();
@@ -535,7 +540,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 		try {
 			$result= $this->connection->putObject(array(
 				'Bucket' => $this->bucket,
-				'Key' => self::$tmpFiles[$tmpFile],
+				'Key' => $this->cleanKey(self::$tmpFiles[$tmpFile]),
 				'SourceFile' => $tmpFile,
 				'ContentType' => \OC_Helper::getMimeType($tmpFile),
 				'ContentLength' => filesize($tmpFile)
