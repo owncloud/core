@@ -228,10 +228,11 @@ class OC_Files {
 		if (!OC_Config::getValue('allowZipDownload', true)) {
 			$l = OC_L10N::get('lib');
 			header("HTTP/1.0 409 Conflict");
+			$prev_site = getenv("HTTP_REFERER");
 			OC_Template::printErrorPage(
 					$l->t('ZIP download is turned off.'),
 					$l->t('Files need to be downloaded one by one.')
-						. '<br/><a href="javascript:history.back()">' . $l->t('Back to Files') . '</a>'
+						. '<br/><a href=' . $prev_site . '>' . $l->t('Back to Files') . '</a>'
 			);
 			exit;
 		}
@@ -255,10 +256,11 @@ class OC_Files {
 			if ($totalsize > $zipLimit) {
 				$l = OC_L10N::get('lib');
 				header("HTTP/1.0 409 Conflict");
+				$prev_site = getenv("HTTP_REFERER");
 				OC_Template::printErrorPage(
 						$l->t('Selected files too large to generate zip file.'),
 						$l->t('Please download the files separately in smaller chunks or kindly ask your administrator.')
-						.'<br/><a href="javascript:history.back()">'
+						.'<br/><a href='. $prev_site . '>'
 						. $l->t('Back to Files') . '</a>'
 				);
 				exit;
