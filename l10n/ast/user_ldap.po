@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-04-08 01:56-0400\n"
-"PO-Revision-Date: 2014-04-08 05:56+0000\n"
+"POT-Creation-Date: 2014-04-12 01:54-0400\n"
+"PO-Revision-Date: 2014-04-12 05:55+0000\n"
 "Last-Translator: I Robot\n"
 "Language-Team: Asturian (http://www.transifex.com/projects/p/owncloud/language/ast/)\n"
 "MIME-Version: 1.0\n"
@@ -84,7 +84,7 @@ msgstr ""
 
 #: js/settings.js:133
 msgid "Error"
-msgstr ""
+msgstr "Fallu"
 
 #: js/settings.js:838
 msgid "Configuration OK"
@@ -144,13 +144,13 @@ msgstr[1] ""
 msgid "Invalid Host"
 msgstr ""
 
-#: lib/wizard.php:963
+#: lib/wizard.php:983
 msgid "Could not find the desired feature"
 msgstr ""
 
 #: templates/part.settingcontrols.php:2
 msgid "Save"
-msgstr ""
+msgstr "Guardar"
 
 #: templates/part.settingcontrols.php:4
 msgid "Test Configuration"
@@ -250,7 +250,7 @@ msgstr ""
 
 #: templates/part.wizard-server.php:52
 msgid "Password"
-msgstr ""
+msgstr "Contraseña"
 
 #: templates/part.wizard-server.php:53
 msgid "For anonymous access, leave DN and Password empty."
@@ -285,7 +285,7 @@ msgstr ""
 
 #: templates/part.wizardcontrols.php:8
 msgid "Continue"
-msgstr ""
+msgstr "Continuar"
 
 #: templates/settings.php:11
 msgid ""
@@ -335,7 +335,7 @@ msgid "Only connect to the replica server."
 msgstr ""
 
 #: templates/settings.php:26
-msgid "Case insensitve LDAP server (Windows)"
+msgid "Case insensitive LDAP server (Windows)"
 msgstr ""
 
 #: templates/settings.php:27

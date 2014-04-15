@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-04-08 01:56-0400\n"
-"PO-Revision-Date: 2014-04-08 05:56+0000\n"
+"POT-Creation-Date: 2014-04-12 01:54-0400\n"
+"PO-Revision-Date: 2014-04-12 05:55+0000\n"
 "Last-Translator: I Robot\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/projects/p/owncloud/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -145,7 +145,7 @@ msgstr[1] "%s users found"
 msgid "Invalid Host"
 msgstr "Invalid Host"
 
-#: lib/wizard.php:963
+#: lib/wizard.php:983
 msgid "Could not find the desired feature"
 msgstr "Could not find the desired feature"
 
@@ -336,8 +336,8 @@ msgid "Only connect to the replica server."
 msgstr "Only connect to the replica server."
 
 #: templates/settings.php:26
-msgid "Case insensitve LDAP server (Windows)"
-msgstr "Case insensitve LDAP server (Windows)"
+msgid "Case insensitive LDAP server (Windows)"
+msgstr ""
 
 #: templates/settings.php:27
 msgid "Turn off SSL certificate validation."
@@ -422,14 +422,14 @@ msgstr "When switched on, groups that contain groups are supported. (Only works 
 
 #: templates/settings.php:40
 msgid "Paging chunksize"
-msgstr ""
+msgstr "Paging chunksize"
 
 #: templates/settings.php:40
 msgid ""
 "Chunksize used for paged LDAP searches that may return bulky results like "
 "user or group enumeration. (Setting it 0 disables paged LDAP searches in "
 "those situations.)"
-msgstr ""
+msgstr "Chunksize used for paged LDAP searches that may return bulky results like user or group enumeration. (Setting it 0 disables paged LDAP searches in those situations.)"
 
 #: templates/settings.php:42
 msgid "Special Attributes"

@@ -41,6 +41,7 @@ $server->setBaseUri($baseuri);
 $defaults = new OC_Defaults();
 $server->addPlugin(new \Sabre\DAV\Auth\Plugin($authBackend, $defaults->getName()));
 $server->addPlugin(new \Sabre\DAV\Locks\Plugin($lockBackend));
+$server->addPlugin(new \Sabre\DAV\Browser\Plugin(false));
 $server->addPlugin(new OC_Connector_Sabre_FilesPlugin());
 $server->addPlugin(new OC_Connector_Sabre_AbortedUploadDetectionPlugin());
 $server->addPlugin(new OC_Connector_Sabre_QuotaPlugin());
