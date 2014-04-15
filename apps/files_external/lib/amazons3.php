@@ -74,7 +74,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 		}
 	}
 	private function cleanKey($path) {
-		if ($path == '.') {
+		if ($path === '.') {
 			return $this->root;
 		}
 		return $path;
