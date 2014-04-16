@@ -87,9 +87,44 @@ class Test_App extends PHPUnit_Framework_TestCase {
 		// copy array
 		$sortedApps = $apps;
 		sort($sortedApps);
-		// 'files' is always on top
-		unset($sortedApps[array_search('files', $sortedApps)]);
-		array_unshift($sortedApps, 'files');
 		$this->assertEquals($sortedApps, $apps);
+	}
+
+	public function testGetAppInfo() {
+		$info = OC_App::getAppInfo('files');
+		$this->assertInternalType('array', $info);
+		$this->assertArrayHasKey('id', $info);
+		$this->assertArrayHasKey('name', $info);
+		$this->assertArrayHasKey('remote', $info);
+		$this->assertArrayHasKey('public', $info);
+		$this->assertEquals('files', $info['id']);
+	}
+
+	public function testGetEnabledApps() {
+		$enabledApps = OC_App::getEnabledApps();
+		$this->assertInternalType('array', $enabledApps);
+		$this->assertContains('files', $enabledApps);
+	}
+
+	public function testIsEnabled() {
+		$this->assertTrue(OC_App::isEnabled('files'));
+		$this->assertFalse(OC_App::isEnabled('files2'));
+	}
+
+	public function testEnableAndDisable() {
+		$app = 'test12345';
+		$this->assertFalse(OC_App::isEnabled($app));
+		OC_App::getManager()->enableApp($app);
+		$this->assertTrue(OC_App::isEnabled($app));
+		OC_App::getManager()->disableApp($app);
+		$this->assertFalse(OC_App::isEnabled($app));
+	}
+
+	public function testDisableEnableIsEnabled() {
+		$this->assertTrue(OC_App::isEnabled('files'));
+		$app = 'test12345';
+		OC_App::getManager()->disableApp($app);
+		OC_App::getManager()->enableApp($app);
+		$this->assertTrue(OC_App::isEnabled('files'));
 	}
 }

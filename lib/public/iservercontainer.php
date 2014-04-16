@@ -172,6 +172,18 @@ interface IServerContainer {
 	/**
 	 * Returns the current session
 	 *
+	 * @return \OCP\App\IManager
+	 */
+	function getAppManager();
+
+	/**
+	 * Returns the current session
+	 *
+	 * @return \OCP\App\ILoader
+	 */
+	function getAppLoader();
+
+	/**
 	 * @return \OCP\IDBConnection
 	 */
 	function getDatabaseConnection();

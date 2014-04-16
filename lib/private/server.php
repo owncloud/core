@@ -155,6 +155,18 @@ class Server extends SimpleContainer implements IServerContainer {
 		$this->registerService('ActivityManager', function($c) {
 			return new ActivityManager();
 		});
+		$this->registerService('AppManager', function($c) {
+			/** @var $c SimpleContainer */
+			return new \OC\App\Manager(\OC::$APPSROOTS, $c->query('AppConfig'));
+		});
+		$this->registerService('AppLoader', function($c) {
+			/** @var $c SimpleContainer */
+			$loader = new \OC\App\Loader($c->query('AppManager'));
+			$loader->listen('OC\\AppLoader', 'doUpgrade', function($app, $appName, $installedVersion, $currentVersion) {
+				\OC_App::doUpgrade($app, $appName, $installedVersion, $currentVersion);
+			});
+			return $loader;
+		});
 		$this->registerService('AvatarManager', function($c) {
 			return new AvatarManager();
 		});
@@ -355,6 +367,24 @@ class Server extends SimpleContainer implements IServerContainer {
 	 */
 	function getSession() {
 		return \OC::$session;
+	}
+
+	/**
+	 * Returns the app manager
+	 *
+	 * @return \OCP\App\IManager
+	 */
+	function getAppManager() {
+		return $this->query('AppManager');
+	}
+
+	/**
+	 * Returns the app loader
+	 *
+	 * @return \OCP\App\ILoader
+	 */
+	function getAppLoader() {
+		return $this->query('AppLoader');
 	}
 
 	/**
