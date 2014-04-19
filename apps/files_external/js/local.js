@@ -23,7 +23,7 @@ $(document).ready(function() {
 
 	$('#externalStorage').on('change', '#selectBackend', function(event) {
 		var tr = $('#externalStorage tbody tr').eq(-2);
-		if ($(tr).find('.backend').data('class') == '\\OC\\Files\\Storage\\Local') {
+		if ($(tr).find('.backend').data('class') === '\\OC\\Files\\Storage\\Local') {
 			var config = $(tr).find('td.configuration');
 			$(config).append('<span id="localroot"></span>');
 			$(config).append('<a class="button local-dir-up ui-state-disabled">&larr;</a>');
@@ -35,10 +35,10 @@ $(document).ready(function() {
 	$('#externalStorage').on('click', '.local-dir-up:not(.ui-state-disabled)', function(event) {
 		event.preventDefault();
 		var config = $(this).parent();
-		var last_span = $(config).find('span').last();
-		if ( $(last_span).attr('id') != 'localroot') {
-			var parent = $(last_span).parent();
-			$(last_span).remove();
+		var lastSpan = $(config).find('span').last();
+		if ( $(lastSpan).attr('id') !== 'localroot') {
+			var parent = $(lastSpan).parent();
+			$(lastSpan).remove();
 		}
 		$(config).find('span').last().find('select').trigger('change');
 	});
@@ -46,19 +46,20 @@ $(document).ready(function() {
 	$('#externalStorage').on('click', '.local-dir-down:not(.ui-state-disabled)', function(event) {
 		event.preventDefault();
 		var config = $(this).parent();
-		var last_span = $(config).find('span').last();
-		var last_select = $(last_span).find('select');
-		$.post(OC.filePath('files_external', 'ajax', 'local.php'), { path: $(last_select).find('option:selected').val(), isnotempty: true }, function(result) {
-			if (result && result.status == 'success') {
+                var downButton = $(config).find('.local-dir-down');
+		var lastSpan = $(config).find('span').last();
+		var lastSelect = $(lastSpan).find('select');
+		$.post(OC.filePath('files_external', 'ajax', 'local.php'), { path: $(lastSelect).find('option:selected').val(), isnotempty: true }, function(result) {
+			if (result && result.status === 'success') {
 				if (result.data) {
-					$(down_button).removeClass('ui-state-disabled');
-					$(last_span).append('<span id="'+$(last_select).attr('id')+'"></span>');
-					createDirSelector($(last_span).find('span'),$(last_select).find('option:selected').val());
+					$(downButton).removeClass('ui-state-disabled');
+					$(lastSpan).append('<span id="'+$(lastSelect).attr('id')+'"></span>');
+					createDirSelector($(lastSpan).find('span'),$(lastSelect).find('option:selected').val());
 				} else {
-					$(down_button).addClass('ui-state-disabled');
+					$(downButton).addClass('ui-state-disabled');
 				}
 			} else {
-				OC.dialogs.alert(result.data.message, t('files_external', 'Error getting the local directory listing in' + $(last_select).find('option:selected').val() ));
+				OC.dialogs.alert(result.data.message, t('files_external', 'Error getting the local directory listing in' + $(lastSelect).find('option:selected').val() ));
 			}
 		});
 	});
@@ -66,40 +67,44 @@ $(document).ready(function() {
 	$('#externalStorage').on('change', '.local-file-chooser', function(event) {
 		$(this).parent().find('span').remove();
 
-		var path = $(this).find('option:selected').val()
-		var up_button = $(this).parents('td.configuration').find('.local-dir-up');
-		var down_button = $(this).parents('td.configuration').find('.local-dir-down');
+		var path = $(this).find('option:selected').val();
+		var upButton = $(this).parents('td.configuration').find('.local-dir-up');
+		var downButton = $(this).parents('td.configuration').find('.local-dir-down');
 
-		if ($(this).parent().attr('id') == 'localroot')
-			$(up_button).addClass('ui-state-disabled');
-		else
-			$(up_button).removeClass('ui-state-disabled');
+		if ($(this).parent().attr('id') === 'localroot') {
+			$(upButton).addClass('ui-state-disabled');
+		} else {
+			$(upButton).removeClass('ui-state-disabled');
+		}
 
 		$.post(OC.filePath('files_external', 'ajax', 'local.php'), { path: path, isnotempty: true }, function(result) {
-			if (result && result.status == 'success') {
-				if (result.data)
-					$(down_button).removeClass('ui-state-disabled');
-				else
-					$(down_button).addClass('ui-state-disabled');
+			if (result && result.status === 'success') {
+				if (result.data) {
+					$(downButton).removeClass('ui-state-disabled');
+				} else {
+					$(downButton).addClass('ui-state-disabled');
+				}
 			} else {
 				OC.dialogs.alert(result.data.message, t('files_external', 'Error getting the local directory listing in' + path ));
 			}
 		});
-		if ($(this).parents('td.configuration').find('[data-parameter="datadir"]').val() != path) {
-			$(this).parents('td.configuration').find('[data-parameter="datadir"]').val(path)
+		if ($(this).parents('td.configuration').find('[data-parameter="datadir"]').val() !== path) {
+			$(this).parents('td.configuration').find('[data-parameter="datadir"]').val(path);
 		}
 	});
 
-	function createDirSelector(dir_span, path, trigger = true) {
+	function createDirSelector(dirSpan, path, trigger = true) {
 		$.post(OC.filePath('files_external', 'ajax', 'local.php'), { path: path }, function(result) {
-			if (result && result.status == 'success') {
-				$(dir_span).append('<select id="'+path+'" class="local-file-chooser"></select>');
+			if (result && result.status === 'success') {
+				$(dirSpan).append('<select id="'+path+'" class="local-file-chooser"></select>');
 				$.each(result.data, function (dir, path) {
-					$(dir_span).find('select')
+					$(dirSpan).find('select')
 					   .append($('<option></option>')
 					   .attr('value',path)
 					   .text(dir));
-				if (trigger) $(dir_span).find('select').trigger('change');
+					if (trigger) {
+						$(dirSpan).find('select').trigger('change');
+					}
 				});
 			} else {
 				OC.dialogs.alert(result.data.message, t('files_external', 'Error getting the local directory listing in ' + path ));
