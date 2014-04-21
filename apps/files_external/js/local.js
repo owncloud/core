@@ -1,4 +1,6 @@
 $(document).ready(function() {
+	var ajaxFilePath = OC.filePath('files_external', 'ajax', 'local.php');
+
 	//construct selectors for existing shares
 	$('#externalStorage tbody tr.\\\\OC\\\\Files\\\\Storage\\\\Local').each(function() {
 		var localPath = $(this).find('[data-parameter="datadir"]').val();
@@ -7,27 +9,30 @@ $(document).ready(function() {
 		$(config).append('<a class="button local-dir-up ui-state-disabled">&larr;</a>');
 		$(config).append('<a class="button local-dir-down ui-state-disabled">&rarr;</a>');
 
-		$.post(OC.filePath('files_external', 'ajax', 'local.php'), { path: localPath, ascendpath: true }, function(result) {
+		$.post(ajaxFilePath, { path: localPath, ascendpath: true }, function(result) {
 			if (result && result.status === 'success') {
 				var lastSpan = $(config).find('span').last();
 				var keys = Object.keys(result.data).sort();
 				var lastValue = result.data[keys[keys.length -1]];
+
+				var mySelect = function(value) {
+					return function(selector) {
+						$(selector).val(value);
+						if (value === lastValue) {
+							$(selector).trigger('change');
+						}
+					};
+				};
+
 				for(var i = 0; i < keys.length; i++) {
 					var key = keys[i];
-					var mySelect = function(value) {
-						return function(selector) {
-							$(selector).val(value);
-							if (value === lastValue) {
-								$(selector).trigger('change');
-							}
-						}
-					}
 					createDirSelector(lastSpan, key, mySelect(result.data[key]));
 					$(lastSpan).append('<span id="'+key+'"></span>');
 					lastSpan = $(lastSpan).find('span').last();
 				}
 			} else {
-				OC.dialogs.alert(result.data.message, t('files_external', 'Error getting the predecessors for ' + local_path ));
+				OC.dialogs.alert(result.data.message,
+					t('files_external', 'Error getting the predecessors for ' + localPath ));
 			}
 		});
 	});
@@ -65,7 +70,7 @@ $(document).ready(function() {
 		var lastSpan = $(config).find('span').last();
 		var lastSelect = $(lastSpan).find('select');
 		var currentPath = $(lastSelect).find('option:selected').val();
-		$.post(OC.filePath('files_external', 'ajax', 'local.php'), { path: currentPath, isnotempty: true }, function(result) {
+		$.post(ajaxFilePath, { path: currentPath, isnotempty: true }, function(result) {
 			if (result && result.status === 'success') {
 				if (result.data) {
 					$(downButton).removeClass('ui-state-disabled');
@@ -75,7 +80,8 @@ $(document).ready(function() {
 					$(downButton).addClass('ui-state-disabled');
 				}
 			} else {
-				OC.dialogs.alert(result.data.message, t('files_external', 'Error getting the local directory listing in' + currentPath ));
+				OC.dialogs.alert(result.data.message,
+					t('files_external', 'Error getting the local directory listing in' + currentPath ));
 			}
 		});
 	});
@@ -94,7 +100,7 @@ $(document).ready(function() {
 			$(upButton).removeClass('ui-state-disabled');
 		}
 
-		$.post(OC.filePath('files_external', 'ajax', 'local.php'), { path: path, isnotempty: true }, function(result) {
+		$.post(ajaxFilePath, { path: path, isnotempty: true }, function(result) {
 			if (result && result.status === 'success') {
 				if (result.data) {
 					$(downButton).removeClass('ui-state-disabled');
@@ -102,7 +108,8 @@ $(document).ready(function() {
 					$(downButton).addClass('ui-state-disabled');
 				}
 			} else {
-				OC.dialogs.alert(result.data.message, t('files_external', 'Error getting the local directory listing in' + path ));
+				OC.dialogs.alert(result.data.message,
+					t('files_external', 'Error getting the local directory listing in' + path ));
 			}
 		});
 		if ($(this).parents('td.configuration').find('[data-parameter="datadir"]').val() !== path) {
@@ -114,15 +121,12 @@ $(document).ready(function() {
 	//places a selector to $(dirSpan) with the subfolders of 'path'
 	//calls callback when (if) done if provided, or triggers the selector change otherwise
 	function createDirSelector(dirSpan, path, callback) {
-		$.post(OC.filePath('files_external', 'ajax', 'local.php'), { path: path }, function(result) {
+		$.post(ajaxFilePath, { path: path }, function(result) {
 			if (result && result.status === 'success') {
 				$(dirSpan).prepend('<select id="'+path+'" class="local-file-chooser"></select>');
 				var selector = $(dirSpan).find('select').first();
 				$.each(result.data, function (dir, path) {
-					$(selector)
-					   .append($('<option></option>')
-					   .attr('value',path)
-					   .text(dir));
+					$(selector).append('<option value="'+path+'">'+dir+'</option>');
 				});
 				if (typeof callback === 'function') {
 					callback(selector);
@@ -130,7 +134,8 @@ $(document).ready(function() {
 					$(dirSpan).find('select').trigger('change');
 				}
 			} else {
-				OC.dialogs.alert(result.data.message, t('files_external', 'Error getting the local directory listing in ' + path ));
+				OC.dialogs.alert(result.data.message,
+					t('files_external', 'Error getting the local directory listing in ' + path ));
 			}
 		});
 	}
