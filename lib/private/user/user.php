@@ -48,7 +48,7 @@ class User {
 	private $config;
 
 	/**
-	 * @var int $home
+	 * @var int $lastLogin
 	 */
 	private $lastLogin;
 
