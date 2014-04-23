@@ -303,6 +303,7 @@ class MappedLocal extends \OC\Files\Storage\Common{
 		foreach (scandir($physicalDir) as $item) {
 			if ($item == '.' || $item == '..')
 				continue;
+			$item = \OC_Util::normalizeUnicode($item);				
 			$physicalItem = $this->mapper->physicalToLogic($physicalDir.'/'.$item);
 			$item = substr($physicalItem, strlen($physicalDir)+1);
 
