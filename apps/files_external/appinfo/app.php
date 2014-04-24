@@ -34,7 +34,8 @@ OCP\Util::connectHook('OC_User', 'post_login', 'OC\Files\Storage\SMB_OC', 'login
 OC_Mount_Config::registerBackend('\OC\Files\Storage\Local', array(
 	'backend' => 'Local',
 	'configuration' => array(
-		'datadir' => 'Location')));
+		'datadir' => 'Location'),
+	'custom' => 'local'));
 
 OC_Mount_Config::registerBackend('\OC\Files\Storage\AmazonS3', array(
 	'backend' => 'Amazon S3',
