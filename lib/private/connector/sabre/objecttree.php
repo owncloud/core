@@ -11,7 +11,7 @@ namespace OC\Connector\Sabre;
 use OC\Files\FileInfo;
 use OC\Files\Filesystem;
 
-class ObjectTree extends \Sabre_DAV_ObjectTree {
+class ObjectTree extends \Sabre\DAV\ObjectTree {
 
 	/**
 	 * @var \OC\Files\View
@@ -39,9 +39,14 @@ class ObjectTree extends \Sabre_DAV_ObjectTree {
 	 * Returns the INode object for the requested path
 	 *
 	 * @param string $path
+<<<<<<< HEAD
+	 * @throws \Sabre\DAV\Exception\NotFound
+	 * @return \Sabre\DAV\INode
+=======
 	 * @throws \Sabre_DAV_Exception_ServiceUnavailable
 	 * @throws \Sabre_DAV_Exception_NotFound
 	 * @return \Sabre_DAV_INode
+>>>>>>> master
 	 */
 	public function getNodeForPath($path) {
 		if (!$this->fileView) {
@@ -79,7 +84,7 @@ class ObjectTree extends \Sabre_DAV_ObjectTree {
 		}
 
 		if (!$info) {
-			throw new \Sabre_DAV_Exception_NotFound('File with name ' . $path . ' could not be located');
+			throw new \Sabre\DAV\Exception\NotFound('File with name ' . $path . ' could not be located');
 		}
 
 		if ($info->getType() === 'dir') {
@@ -98,9 +103,13 @@ class ObjectTree extends \Sabre_DAV_ObjectTree {
 	 *
 	 * @param string $sourcePath The path to the file which should be moved
 	 * @param string $destinationPath The full destination path, so not just the destination parent node
+<<<<<<< HEAD
+	 * @throws \Sabre\DAV\Exception\Forbidden
+=======
 	 * @throws \Sabre_DAV_Exception_BadRequest
 	 * @throws \Sabre_DAV_Exception_ServiceUnavailable
 	 * @throws \Sabre_DAV_Exception_Forbidden
+>>>>>>> master
 	 * @return int
 	 */
 	public function move($sourcePath, $destinationPath) {
@@ -109,11 +118,11 @@ class ObjectTree extends \Sabre_DAV_ObjectTree {
 		}
 
 		$sourceNode = $this->getNodeForPath($sourcePath);
-		if ($sourceNode instanceof \Sabre_DAV_ICollection and $this->nodeExists($destinationPath)) {
-			throw new \Sabre_DAV_Exception_Forbidden('Could not copy directory ' . $sourceNode . ', target exists');
+		if ($sourceNode instanceof \Sabre\DAV\ICollection and $this->nodeExists($destinationPath)) {
+			throw new \Sabre\DAV\Exception\Forbidden('Could not copy directory ' . $sourceNode . ', target exists');
 		}
-		list($sourceDir,) = \Sabre_DAV_URLUtil::splitPath($sourcePath);
-		list($destinationDir,) = \Sabre_DAV_URLUtil::splitPath($destinationPath);
+		list($sourceDir,) = \Sabre\DAV\URLUtil::splitPath($sourcePath);
+		list($destinationDir,) = \Sabre\DAV\URLUtil::splitPath($destinationPath);
 
 		$isShareMountPoint = false;
 		list($storage, $internalPath) = \OC\Files\Filesystem::resolvePath( '/' . \OCP\User::getUser() . '/files/' . $sourcePath);
@@ -123,32 +132,32 @@ class ObjectTree extends \Sabre_DAV_ObjectTree {
 
 		// check update privileges
 		if (!$this->fileView->isUpdatable($sourcePath) && !$isShareMountPoint) {
-			throw new \Sabre_DAV_Exception_Forbidden();
+			throw new \Sabre\DAV\Exception\Forbidden();
 		}
 		if ($sourceDir !== $destinationDir) {
 			// for a full move we need update privileges on sourcePath and sourceDir as well as destinationDir
 			if (ltrim($destinationDir, '/') === '') {
-				throw new \Sabre_DAV_Exception_Forbidden();
+				throw new \Sabre\DAV\Exception\Forbidden();
 			}
 			if (!$this->fileView->isUpdatable($sourceDir)) {
-				throw new \Sabre_DAV_Exception_Forbidden();
+				throw new \Sabre\DAV\Exception\Forbidden();
 			}
 			if (!$this->fileView->isUpdatable($destinationDir)) {
-				throw new \Sabre_DAV_Exception_Forbidden();
+				throw new \Sabre\DAV\Exception\Forbidden();
 			}
 			if (!$this->fileView->isDeletable($sourcePath)) {
-				throw new \Sabre_DAV_Exception_Forbidden();
+				throw new \Sabre\DAV\Exception\Forbidden();
 			}
 		}
 
 		$fileName = basename($destinationPath);
 		if (!\OCP\Util::isValidFileName($fileName)) {
-			throw new \Sabre_DAV_Exception_BadRequest();
+			throw new \Sabre\DAV\Exception\BadRequest();
 		}
 
 		$renameOkay = $this->fileView->rename($sourcePath, $destinationPath);
 		if (!$renameOkay) {
-			throw new \Sabre_DAV_Exception_Forbidden('');
+			throw new \Sabre\DAV\Exception\Forbidden('');
 		}
 
 		// update properties
@@ -192,7 +201,7 @@ class ObjectTree extends \Sabre_DAV_ObjectTree {
 			}
 		}
 
-		list($destinationDir,) = \Sabre_DAV_URLUtil::splitPath($destination);
+		list($destinationDir,) = \Sabre\DAV\URLUtil::splitPath($destination);
 		$this->markDirty($destinationDir);
 	}
 }
