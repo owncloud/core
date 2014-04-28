@@ -51,7 +51,7 @@
 	margin: 5px;
 	padding-left: 42px;
 	padding-bottom: 2px;
-	background-position: initial;
+	background-position: left center;
 	cursor: pointer;
 }
 #new > ul > li > p {
@@ -310,7 +310,6 @@ a.action>img { max-height:16px; max-width:16px; vertical-align:text-bottom; }
 
 /* Actions for selected files */
 .selectedActions {
-	display: none;
 	position: absolute;
 	top: -1px;
 	right: 0;

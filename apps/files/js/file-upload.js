@@ -235,7 +235,7 @@ OC.Upload = {
 					var file = data.files[0];
 					try {
 						// FIXME: not so elegant... need to refactor that method to return a value
-						Files.isFileNameValid(file.name, FileList.getCurrentDirectory());
+						Files.isFileNameValid(file.name);
 					}
 					catch (errorMessage) {
 						data.textStatus = 'invalidcharacters';
@@ -555,8 +555,6 @@ OC.Upload = {
 					throw t('files', 'URL cannot be empty');
 				} else if (type !== 'web' && !Files.isFileNameValid(filename)) {
 					// Files.isFileNameValid(filename) throws an exception itself
-				} else if (FileList.getCurrentDirectory() === '/' && filename.toLowerCase() === 'shared') {
-					throw t('files', 'In the home folder \'Shared\' is a reserved filename');
 				} else if (FileList.inList(filename)) {
 					throw t('files', '{new_name} already exists', {new_name: filename});
 				} else {
@@ -608,7 +606,7 @@ OC.Upload = {
 								{dir:$('#dir').val(), filename:name},
 								function(result) {
 									if (result.status === 'success') {
-										FileList.add(result.data, {hidden: hidden, insert: true});
+										FileList.add(result.data, {hidden: hidden, animate: true});
 									} else {
 										OC.dialogs.alert(result.data.message, t('core', 'Could not create file'));
 									}
@@ -621,7 +619,7 @@ OC.Upload = {
 								{dir:$('#dir').val(), foldername:name},
 								function(result) {
 									if (result.status === 'success') {
-										FileList.add(result.data, {hidden: hidden, insert: true});
+										FileList.add(result.data, {hidden: hidden, animate: true});
 									} else {
 										OC.dialogs.alert(result.data.message, t('core', 'Could not create folder'));
 									}
@@ -659,7 +657,7 @@ OC.Upload = {
 								var file = data;
 								$('#uploadprogressbar').fadeOut();
 
-								FileList.add(file, {hidden: hidden, insert: true});
+								FileList.add(file, {hidden: hidden, animate: true});
 							});
 							eventSource.listen('error',function(error) {
 								$('#uploadprogressbar').fadeOut();

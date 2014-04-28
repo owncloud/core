@@ -54,7 +54,7 @@ $CONFIG = array(
 "proxyuserpwd" => "",
 
 /* List of trusted domains, to prevent host header poisoning ownCloud is only using these Host headers */
-'trusted_domains' => array('demo.owncloud.org'),
+'trusted_domains' => array('demo.owncloud.org', 'otherdomain.owncloud.org'),
 
 /* Theme to use for ownCloud */
 "theme" => "",
@@ -180,9 +180,6 @@ $CONFIG = array(
 
 /* Whether ownCloud should log the last successfull cron exec */
 "cron_log" => true,
-
-/* Whether http-basic username must equal username to login */
-"basic_auth" => true,
 
 /*
  * Configure the size in bytes log rotation should happen, 0 or false disables the rotation.

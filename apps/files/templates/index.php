@@ -19,7 +19,7 @@
 			</div>
 			<?php endif;?>
 			<div id="upload" class="button"
-				 title="<?php p($l->t('Upload') . ' max. '.$_['uploadMaxHumanFilesize']) ?>">
+				 title="<?php p($l->t('Upload (max. %s)', array($_['uploadMaxHumanFilesize']))) ?>">
 					<?php if($_['uploadMaxFilesize'] >= 0):?>
 					<input type="hidden" id="max_upload" name="MAX_FILE_SIZE" value="<?php p($_['uploadMaxFilesize']) ?>">
 					<?php endif;?>
@@ -91,6 +91,8 @@
 	</thead>
 	<tbody id="fileList">
 	</tbody>
+	<tfoot>
+	</tfoot>
 </table>
 <div id="editor"></div><!-- FIXME Do not use this div in your app! It is deprecated and will be removed in the future! -->
 <div id="uploadsize-message" title="<?php p($l->t('Upload too large'))?>">
