@@ -344,6 +344,11 @@ abstract class Common implements \OC\Files\Storage\Storage {
 		return false;
 	}
 
+	/**
+	 * check if storage requires updating of credentials on owner login
+	 *
+	 * @return bool
+	 */
 	public function isDynamic() {
 		return false;
 	}

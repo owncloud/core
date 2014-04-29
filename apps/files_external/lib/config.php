@@ -124,10 +124,12 @@ class OC_Mount_Config {
 		foreach ($mountPoints as $mountPoint => $options) {
 			try {
 				$storage = new $options['class']($options['options']);
-				// Create/update personal mountpoint with username and password if dynamic
 				if ($storage->isDynamic()) {
 					$options['options']['user'] = $username;
 					$options['options']['password'] = $credentials['password'];
+					// Remove '/uid/files/' from mount point [strlen(...) + 8]
+					// and create/update personal mountpoint with username and
+					// password from existing system mount configuration
 					self::addMountPoint(substr($mountPoint, strlen($credentials['uid']) + 8),
 					                    $options['class'],
 					                    $options['options'],
