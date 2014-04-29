@@ -502,10 +502,23 @@ class Util {
 
 			if (is_resource($stream)) {
 				// calculate last chunk position in the unencrypted stream
-				$lastChunckPos = ($lastChunkNr * 6126);
+				$lastChunkPos = ($lastChunkNr * 6126);
 
 				// seek to end
-				fseek($stream, $lastChunckPos)
+				if (@fseek($stream, $lastChunkPos) === -1) {
+					// storage doesn't support fseek, we need a local copy
+					fclose($stream);
+					$localFile = $this->view->getLocalFile($path);
+					Helper::addTmpFileToMapper($localFile, $path);
+					$stream = fopen('crypt://' . $localFile, "r");
+					if (fseek($stream, $lastChunkPos) === -1) {
+						// if fseek also fails on the local storage, than
+						// there is nothing we can do
+						fclose($stream);
+						\OCP\Util::writeLog('Encryption library', 'couldn\'t determine size of "' . $path, \OCP\Util::ERROR);
+						return $result;
+					}
+				}
 
 				// get the content of the last chunk (it won't read past the end, which is never more than 6126 away)
 				$lastChunkContent = fread($stream,6126);
