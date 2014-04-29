@@ -43,9 +43,6 @@ class Mapper
 	public function logicToPhysical($logicPath, $create) {
 		$physicalPath = $this->resolveLogicPath($logicPath);
 		if ($physicalPath !== null) {
-                    if (strpos(strtolower(php_uname('s')), 'win') !== false) {
-                        $physicalPath = iconv('UTF-8', 'windows-1250', $physicalPath);
-                    }
 			return $physicalPath;
 		}
 
@@ -57,9 +54,6 @@ class Mapper
 	 * @return string
 	 */
 	public function physicalToLogic($physicalPath) {
-                if (strpos(strtolower(php_uname('s')), 'win') !== false) {
-                    $physicalPath = iconv('windows-1250', 'UTF-8', $physicalPath);
-                }
 		$logicPath = $this->resolvePhysicalPath($physicalPath);
 		if ($logicPath !== null) {
 			return $logicPath;
