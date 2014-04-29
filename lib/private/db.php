@@ -373,6 +373,7 @@ class OC_DB {
 	public static function updateDbFromStructure($file) {
 		$schemaManager = self::getMDB2SchemaManager();
 		try {
+			$schemaManager->updateDbFromStructure($file, false, true);
 			$result = $schemaManager->updateDbFromStructure($file);
 		} catch (Exception $e) {
 			OC_Log::write('core', 'Failed to update database structure ('.$e.')', OC_Log::FATAL);

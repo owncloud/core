@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+ <name>*dbname*</name>
+ <create>false</create>
+ <overwrite>false</overwrite>
+
+ <charset>utf8</charset>
+
+ <table>
+
+  <name>*dbprefix*uniq_idx</name>
+
+  <declaration>
+
+   <field>
+    <name>userid</name>
+    <type>text</type>
+    <default></default>
+    <notnull>true</notnull>
+    <length>255</length>
+   </field>
+
+   <field>
+    <name>displayname</name>
+    <type>text</type>
+    <default></default>
+    <notnull>false</notnull>
+    <length>255</length>
+   </field>
+
+	  <index>
+		  <name>uniq_idx_userid</name>
+		  <primary>true</primary>
+		  <unique>true</unique>
+		  <field>
+			  <name>userid</name>
+			  <sorting>ascending</sorting>
+		  </field>
+	  </index>
+
+
+  </declaration>
+
+ </table>
+
+</database>

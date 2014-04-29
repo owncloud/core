@@ -8,6 +8,8 @@
 
 namespace OC\DB;
 
+use OC\DB\SchemaValidation\Validator;
+
 class MDB2SchemaManager {
 	/**
 	 * @var \OC\DB\Connection $conn
@@ -55,7 +57,7 @@ class MDB2SchemaManager {
 	 * @param string $file file to read structure from
 	 * @return string|boolean
 	 */
-	public function updateDbFromStructure($file, $generateSql = false) {
+	public function updateDbFromStructure($file, $generateSql = false, $runValidation = false) {
 		$sm = $this->conn->getSchemaManager();
 		$fromSchema = $sm->createSchema();
 
@@ -86,7 +88,12 @@ class MDB2SchemaManager {
 				$column->oldColumnName = $platform->quoteIdentifier($column->oldColumnName);
 			}
 		}
-		
+
+		if ($runValidation) {
+			$this->validateChangeScript($schemaDiff);
+			return true;
+		}
+
 		if ($generateSql) {
 			return $this->generateChangeScript($schemaDiff);
 		}
@@ -146,7 +153,7 @@ class MDB2SchemaManager {
 	}
 
 	/**
-	 * @param \Doctrine\DBAL\Schema\Schema $schema
+	 * @param \Doctrine\DBAL\Schema\SchemaDiff $schema
 	 * @return bool
 	 */
 	private function executeSchemaChange($schema) {
@@ -159,7 +166,7 @@ class MDB2SchemaManager {
 	}
 
 	/**
-	 * @param \Doctrine\DBAL\Schema\Schema $schema
+	 * @param \Doctrine\DBAL\Schema\SchemaDiff $schema
 	 * @return string
 	 */
 	public function generateChangeScript($schema) {
@@ -172,5 +179,14 @@ class MDB2SchemaManager {
 		}
 
 		return $script;
+	}
+
+	/**
+	 * @param \Doctrine\DBAL\Schema\SchemaDiff $schemaDiff
+	 */
+	public function validateChangeScript($schemaDiff) {
+
+		$validator = new Validator($this->conn, $schemaDiff);
+		$validator->analyse();
 	}
 }
