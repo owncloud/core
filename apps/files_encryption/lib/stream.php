@@ -159,7 +159,10 @@ class Stream {
 			}
 
 			$this->size = $this->rootView->filesize($this->rawPath);
+
 			// calculate unencrypted size
+			// the next block is a hack that only works on seekable encrypted streams
+			// it should be replace by something that works on all streams
 			fseek($this->handle,floor($this->size/8192)*8192,SEEK_SET);
 			$data=fread($this->handle,8192);
 			$result='';
@@ -170,7 +173,9 @@ class Stream {
 					$result = Crypt::symmetricDecryptFileContent($data, $this->plainKey);
 				}
 			}
+			rewind($this->handle);
 			$this->unencryptedSize = floor($this->size/8192)*6126 + strlen($result);
+
 		}
 
 		$this->position = 0;
@@ -210,38 +215,46 @@ class Stream {
 	 * @param int $whence
 	 * @return bool true if fseek was successful, otherwise false
 	 */
+	 
+	 // seeking the stream flushes the current block
+	 // next it tries to move the pointer on the encrypted stream to the beginning of the target block
+	 // if that works, it changes the position in the unencrypted stream
 	public function stream_seek($offset, $whence = SEEK_SET) {
 
 		$this->flush();
 
+		$return=false;
+
 		switch($whence) {
 			case SEEK_SET:
 				if($offset < $this->unencryptedSize && $offset >= 0) {
-					$this->position=$offset;
-					return true;
-				} else {
-					return false;
+					$newPosition=$offset;
+					if(fseek($this->handle, floor($newPosition/6126)*8192)===0) {
+						$return=true;
+					}
 				}
 				break;
 			case SEEK_CUR:
 				if($offset>=0) {
-					$this->position += $offset;
-					return true;
-				} else {
-					return false;
+					$newPosition=$offset+$this->position;
+					if(fseek($this->handle, floor($newPosition/6126)*8192)===0) {
+						$return=true;
+					}
 				}
 				break;
 			case SEEK_END:
 				if($this->unencryptedSize + $offset >= 0) {
-					$this->position = $this->unencryptedSize + $offset;
-					return true;
-				} else {
-					return false;
+					$newPosition=$this->unencryptedSize+$offset;
+					if(fseek($this->handle, floor($newPosition/6126)*8192)===0) {
+						$return=true;
+					}
 				}
 				break;
-			default:
-				return false;
 		}
+		if ($return) {
+			$this->position=$newPosition;
+		}
+		return $return;
 	}
 
 	/**
@@ -382,9 +395,6 @@ class Stream {
 		$proxyStatus = \OC_FileProxy::$enabled;
 		\OC_FileProxy::$enabled = false;
 
-		// Get the length of the unencrypted data that we are handling
-		$length = strlen($data);
-
 		// Get / generate the keyfile for the file we're handling
 		// If we're writing a new file (not overwriting an existing
 		// one), save the newly generated keyfile
@@ -394,6 +404,8 @@ class Stream {
 
 		}
 
+		$length=0;
+
 		// loop over $data to fit it in 6126 sized unencrypted blocks
 		while (strlen($data) > 0) {
 
@@ -402,26 +414,37 @@ class Stream {
 			// set the cache to the current 6126 block
 			$this->readCache();
 
-			// determine the relative position in the current block
-			$blockPosition=($this->position % 6126);
+			// only allow writes on seekable streams, or at the end of the encrypted stream
+			// for seekable streams the pointer is moved back to the beginning of the encrypted block
+			// flush will start writing there when the position moves to another block
+			if((fseek($this->handle, floor($this->position/6126)*8192) === 0) || (floor($this->position/6126)*8192 === $this->size)) {
 
-			// check if $data fits in current block
-			// if so, overwrite existing data (if any) and update the writeFlag (for flush())
-			// update position and liberate $data
-			if ($remainingLength<(6126 - $blockPosition)) {
-				$this->cache=substr($this->cache,0,$blockPosition).$data.substr($this->cache,$blockPosition+$remainingLength);
+				// switch the writeFlag so flush() will write the block
 				$this->writeFlag=1;
-				$this->position += $remainingLength;
-				$data = '';
-			// if $data doens't fit the current block, the fill the current block and reiterate
-			// after the block is filled, it is flushed and $data is updated
+
+				// determine the relative position in the current block
+				$blockPosition=($this->position % 6126);
+
+				// check if $data fits in current block
+				// if so, overwrite existing data (if any) and update the writeFlag (for flush())
+				// update position and liberate $data
+				if ($remainingLength<(6126 - $blockPosition)) {
+					$this->cache=substr($this->cache,0,$blockPosition).$data.substr($this->cache,$blockPosition+$remainingLength);
+					$this->position += $remainingLength;
+					$length += $remainingLength;
+					$data = '';
+				// if $data doens't fit the current block, the fill the current block and reiterate
+				// after the block is filled, it is flushed and $data is updated
+				} else {
+					$this->cache=substr($this->cache,0,$blockPosition).substr($data,0,6126-$blockPosition);
+					$this->flush();
+					$this->position += (6126 - $blockPosition);
+					$length += (6126 - $blockPosition);
+					$data = substr($data, 6126-$blockPosition);
+				}
+
 			} else {
-				$this->cache=substr($this->cache,0,$blockPosition).substr($data,0,6126-$blockPosition);
-				$this->writeFlag=1;
-				$this->flush();
-				$this->position += (6126 - $blockPosition);
-				$data = substr($data, 6126-$blockPosition);
-
+				$data='';
 			}
 
 		}
@@ -493,7 +516,6 @@ class Stream {
 		if ($this->writeFlag === 1) {
 			$this->getKey();
 			$encrypted = $this->preWriteEncrypt($this->cache, $this->plainKey);
-			fseek($this->handle, floor($this->position / 6126) * 8192 ,SEEK_SET);
 			fwrite($this->handle, $encrypted);
 			$this->writeFlag = 0;
 	                $this->size = max($this->size,ftell($this->handle));
@@ -507,7 +529,6 @@ class Stream {
 		// cache should always be empty string when this function is called
 		// don't try to fill the cache when trying to write at the end of the unencrypted file when it coincides with new block
 		if ($this->cache === '' && !($this->position===$this->unencryptedSize && ($this->position % 6126)===0)) {
-			fseek($this->handle, floor($this->position / 6126) * 8192, SEEK_SET);
 			$data = fread($this->handle, 8192);
 			$result = '';
 			if (strlen($data)) {
