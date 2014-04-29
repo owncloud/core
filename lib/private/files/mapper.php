@@ -13,6 +13,28 @@ class Mapper
 		$this->unchangedPhysicalRoot = $rootDir;
 	}
 
+        /**
+         * Changes by kamborio to fix problems with 'Latin script' characters in Windows
+         * 
+         * Intro: ownCloud does not work properly in Windows when characters such as áéíóú are used
+         *        This has been tested under IIS 7.5 with PHP 5.5 and MySQL 5.6
+         * 
+         * Problem: An exception occurred while executing
+         *          'INSERT INTO `oc_file_map` (`logic_path`, `physic_path`, `logic_path_hash`, `physic_path_hash`) VALUES (?, ?, ?, ?)'
+         *          : SQLSTATE[HY000]: General error: 1366 Incorrect string value: '\xE9.txt' for column 'logic_path' at row 1
+         * 
+         * Analysis: PHP Function readdir does not return the names of the files in UTF-8.
+         *           On my test environment readdir returns file names using windows-1250 charset
+         *           however the database charset is in UTF-8
+         * 
+         * Solution: Convert the file names to UTF-8 using iconv
+         * 
+         * Patch: The patch is ONLY for Windows (using php_uname('s') to detect the OS)
+         *        The patch has been applied to physicalToLogic (allows to store the MD5 correctly) and 
+         *        to logicToPhysical (allows to retrieve the right file name).
+         *        The patch MAY NOT work for other environments (i.e. if the code page IS NOT windows-1250)
+         */
+
 	/**
 	 * @param string $logicPath
 	 * @param bool $create indicates if the generated physical name shall be stored in the database or not

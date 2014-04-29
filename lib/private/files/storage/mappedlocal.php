@@ -30,6 +30,12 @@ class MappedLocal extends \OC\Files\Storage\Common{
 	public function getId(){
 		return 'local::'.$this->datadir;
 	}
+        static function fs() {
+            static $fs;
+            isset($fs) or $fs = new \COM('Scripting.FileSystemObject', null, CP_UTF8);
+            
+            return $fs;
+        }
 	public function mkdir($path) {
 		return @mkdir($this->buildPath($path), 0777, true);
 	}
@@ -64,21 +70,38 @@ class MappedLocal extends \OC\Files\Storage\Common{
 		$physicalPath= $this->buildPath($path);
 
 		$logicalPath = $this->mapper->physicalToLogic($physicalPath);
-		$dh = opendir($physicalPath);
-		if(is_resource($dh)) {
-			while (($file = readdir($dh)) !== false) {
-				if ($file === '.' or $file === '..') {
-					continue;
-				}
+                if (strpos(strtolower(php_uname('s')), 'win') !== false and class_exists('COM')) {
+                    $f = $this->fs()->GetFolder($physicalPath);
+                    foreach ($f->SubFolders as $file) {
+                        $logicalFilePath = $this->mapper->physicalToLogic($physicalPath.'/'.$file->Name);
 
-				$logicalFilePath = $this->mapper->physicalToLogic($physicalPath.'/'.$file);
+                        $file= $this->mapper->stripRootFolder($logicalFilePath, $logicalPath);
+                        $file = $this->stripLeading($file);
+                        $files[]= $file;
+                        }
+                    foreach ($f->Files as $file) {
+                        $logicalFilePath = $this->mapper->physicalToLogic($physicalPath.'/'.$file->Name);
 
-				$file= $this->mapper->stripRootFolder($logicalFilePath, $logicalPath);
-				$file = $this->stripLeading($file);
-				$files[]= $file;
-			}
-		}
+                        $file= $this->mapper->stripRootFolder($logicalFilePath, $logicalPath);
+                        $file = $this->stripLeading($file);
+                        $files[]= $file;
+                        }
+                } else {
+                    $dh = opendir($physicalPath);
+                    if(is_resource($dh)) {
+                            while (($file = readdir($dh)) !== false) {
+                                    if ($file === '.' or $file === '..') {
+                                            continue;
+                                    }
 
+                                    $logicalFilePath = $this->mapper->physicalToLogic($physicalPath.'/'.$file);
+
+                                    $file= $this->mapper->stripRootFolder($logicalFilePath, $logicalPath);
+                                    $file = $this->stripLeading($file);
+                                    $files[]= $file;
+                            }
+                    }
+                }
 		\OC\Files\Stream\Dir::register('local-win32'.$path, $files);
 		return opendir('fakedir://local-win32'.$path);
 	}
@@ -86,10 +109,18 @@ class MappedLocal extends \OC\Files\Storage\Common{
 		if(substr($path, -1)=='/') {
 			$path=substr($path, 0, -1);
 		}
-		return is_dir($this->buildPath($path));
+                if (strpos(strtolower(php_uname('s')), 'win') !== false and class_exists('COM')) {
+                    return $this->fs()->FolderExists($this->buildPath($path));
+                } else {
+                    return is_dir($this->buildPath($path));
+                }
 	}
 	public function is_file($path) {
-		return is_file($this->buildPath($path));
+                if (strpos(strtolower(php_uname('s')), 'win') !== false and class_exists('COM')) {
+                    return $this->fs()->FileExists($this->buildPath($path));
+                } else {
+                    return is_file($this->buildPath($path));
+                }
 	}
 	public function stat($path) {
 		$fullPath = $this->buildPath($path);
@@ -110,29 +141,33 @@ class MappedLocal extends \OC\Files\Storage\Common{
 		return $filetype;
 	}
 	public function filesize($path) {
-		if($this->is_dir($path)) {
-			return 0;
-		}else{
-			$fullPath = $this->buildPath($path);
-			$fileSize = filesize($fullPath);
-			if ($fileSize < 0) {
-				return self::getFileSizeFromOS($fullPath);
-			}
+                if($this->is_dir($path)) {
+                        return 0;
+                }else{
+                        $fullPath = $this->shortPath($path);
+                        $fileSize = filesize($fullPath);
+                        if ($fileSize < 0) {
+                                return self::getFileSizeFromOS($fullPath);
+                        }
 
-			return $fileSize;
-		}
-	}
+                        return $fileSize;
+                }
+        }
 	public function isReadable($path) {
-		return is_readable($this->buildPath($path));
+		return is_readable($this->shortPath($path));
 	}
 	public function isUpdatable($path) {
-		return is_writable($this->buildPath($path));
+		return is_writable($this->shortPath($path));
 	}
 	public function file_exists($path) {
-		return file_exists($this->buildPath($path));
+            if (strpos(strtolower(php_uname('s')), 'win') !== false and class_exists('COM')) {
+                return ($this->fs()->FileExists($this->buildPath($path)) or $this->fs()->FolderExists($this->buildPath($path)));
+            } else {
+                return file_exists($this->buildPath($path));
+            }
 	}
 	public function filemtime($path) {
-		return filemtime($this->buildPath($path));
+		return filemtime($this->shortPath($path));
 	}
 	public function touch($path, $mtime=null) {
 		// sets the modification time of the file to the given value.
@@ -192,7 +227,7 @@ class MappedLocal extends \OC\Files\Storage\Common{
 		return $return;
 	}
 	public function fopen($path, $mode) {
-		if($return=fopen($this->buildPath($path), $mode)) {
+                if($return=fopen($this->shortPath($path), $mode)) {
 			switch($mode) {
 				case 'r':
 					break;
@@ -326,6 +361,20 @@ class MappedLocal extends \OC\Files\Storage\Common{
 		return $this->filemtime($path)>$time;
 	}
 
+        private function shortPath($path) {
+                if (strpos(strtolower(php_uname('s')), 'win') !== false and class_exists('COM')) {
+                    if ($this->is_file($path)) {
+                        return $this->fs()->GetFile($this->buildPath($path))->ShortPath;
+                    } elseif ($this->is_dir($path)) {
+                        return $this->fs()->GetFolder($this->buildPath($path))->ShortPath;
+                    } else {
+                        return $this->buildPath($path);
+                    }
+                } else {
+                    return $this->buildPath($path);
+                }
+        }
+        
 	/**
 	 * @param string $path
 	 */
