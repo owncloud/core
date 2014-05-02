@@ -1187,6 +1187,7 @@ class Util {
 		$query = \OCP\DB::prepare($sql);
 		$manipulatedRows = $query->execute($args);
 
+		// FIXME: this will return 0 if the migration status already was $status
 		if ($manipulatedRows === 1) {
 			$result = true;
 			\OCP\Util::writeLog('Encryption library', "Migration status set to " . self::MIGRATION_OPEN, \OCP\Util::INFO);
