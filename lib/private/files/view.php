@@ -26,6 +26,7 @@
 namespace OC\Files;
 
 use OC\Files\Cache\Updater;
+use OCP\Files\IMovableStorage;
 
 class View {
 	private $fakeRoot = '';
@@ -405,18 +406,17 @@ class View {
 			if ($run) {
 				$mp1 = $this->getMountPoint($path1 . $postFix1);
 				$mp2 = $this->getMountPoint($path2 . $postFix2);
+				/**
+				 * @var \OC\Files\Storage\Storage $storage1
+				 */
 				list($storage1, $internalPath1) = Filesystem::resolvePath($absolutePath1 . $postFix1);
 				list(, $internalPath2) = Filesystem::resolvePath($absolutePath2 . $postFix2);
 				// if source and target are on the same storage we can call the rename operation from the
 				// storage. If it is a "Shared" file/folder we call always the rename operation of the
 				// shared storage to handle mount point renaming, etc correctly
-				if ($storage1 instanceof \OC\Files\Storage\Shared) {
-					if ($storage1) {
-						$result = $storage1->rename($absolutePath1, $absolutePath2);
-						\OC_FileProxy::runPostProxies('rename', $absolutePath1, $absolutePath2);
-					} else {
-						$result = false;
-					}
+				if ($storage1 instanceof IMovableStorage && Filesystem::normalizePath($mp1) === Filesystem::normalizePath($absolutePath1)) {
+					$result = $storage1->moveMountPoint($absolutePath1, $absolutePath2);
+					\OC_FileProxy::runPostProxies('rename', $absolutePath1, $absolutePath2);
 				} elseif ($mp1 == $mp2) {
 					if ($storage1) {
 						$result = $storage1->rename($internalPath1, $internalPath2);
