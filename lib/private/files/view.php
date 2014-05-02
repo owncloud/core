@@ -27,6 +27,7 @@ namespace OC\Files;
 
 use OC\Files\Cache\Updater;
 use OCP\Files\IMovableStorage;
+use OCP\Files\IRemovableStorage;
 
 class View {
 	private $fakeRoot = '';
@@ -162,6 +163,19 @@ class View {
 	}
 
 	public function rmdir($path) {
+		$absolutePath = Filesystem::normalizePath($this->getAbsolutePath($path));
+		list($storage, $internalPath) = Filesystem::resolvePath($absolutePath);
+		if (!$internalPath || $internalPath === '/') {
+			if ($storage instanceof IRemovableStorage) {
+				$this->runHooks(array('delete'), $path);
+				$result = $storage->removeMount($absolutePath);
+				$this->runHooks(array('delete'), $path, true);
+				return $result;
+			} else {
+				return false;
+			}
+		}
+
 		if ($this->is_dir($path)) {
 			return $this->basicOperation('rmdir', $path, array('delete'));
 		} else {
@@ -354,12 +368,15 @@ class View {
 		$postFix = (substr($path, -1, 1) === '/') ? '/' : '';
 		$absolutePath = Filesystem::normalizePath($this->getAbsolutePath($path));
 		list($storage, $internalPath) = Filesystem::resolvePath($absolutePath . $postFix);
-		if (!($storage instanceof \OC\Files\Storage\Shared) &&
-				(!$internalPath || $internalPath === '' || $internalPath === '/')) {
-			// do not allow deleting the storage's root / the mount point
-			// because for some storages it might delete the whole contents
-			// but isn't supposed to work that way
-			return false;
+		if (!$internalPath || $internalPath === '/') {
+			if ($storage instanceof IRemovableStorage) {
+				$this->runHooks(array('delete'), $path);
+				$result = $storage->removeMount($absolutePath);
+				$this->runHooks(array('delete'), $path, true);
+				return $result;
+			} else {
+				return false;
+			}
 		}
 		return $this->basicOperation('unlink', $path, array('delete'));
 	}
@@ -945,10 +962,13 @@ class View {
 								$permissions = $subStorage->getPermissions($rootEntry['path']);
 								$subPermissionsCache->set($rootEntry['fileid'], $user, $permissions);
 							}
-							// do not allow renaming/deleting the mount point if they are not shared files/folders
-							// for shared files/folders we use the permissions given by the owner
-							if ($subStorage instanceof \OC\Files\Storage\Shared) {
+							// do not allow renaming/deleting the mount point unless explicitly specified by the storage
+							if ($subStorage instanceof \OCP\Files\IRemovableStorage && $subStorage instanceof \OCP\Files\IMovableStorage) {
 								$rootEntry['permissions'] = $permissions;
+							} else if ($subStorage instanceof \OCP\Files\IRemovableStorage) {
+								$rootEntry['permissions'] = $permissions & (\OCP\PERMISSION_ALL - \OCP\PERMISSION_UPDATE);
+							} else if ($subStorage instanceof \OCP\Files\IMovableStorage) {
+								$rootEntry['permissions'] = $permissions & (\OCP\PERMISSION_ALL - \OCP\PERMISSION_DELETE);
 							} else {
 								$rootEntry['permissions'] = $permissions & (\OCP\PERMISSION_ALL - (\OCP\PERMISSION_UPDATE | \OCP\PERMISSION_DELETE));
 							}

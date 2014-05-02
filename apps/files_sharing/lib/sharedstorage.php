@@ -22,11 +22,13 @@
  */
 
 namespace OC\Files\Storage;
+use OCP\Files\IMovableStorage;
+use OCP\Files\IRemovableStorage;
 
 /**
  * Convert target path to source path and pass the function call to the correct storage provider
  */
-class Shared extends \OC\Files\Storage\Common implements \OCP\Files\IMovableStorage {
+class Shared extends \OC\Files\Storage\Common implements IMovableStorage, IRemovableStorage {
 
 	private $share;   // the shared resource
 	private $files = array();
@@ -583,4 +585,7 @@ class Shared extends \OC\Files\Storage\Common implements \OCP\Files\IMovableStor
 		return null;
 	}
 
+	public function removeMount($mountPoint) {
+		return \OCP\Share::unshareFromSelf($this->share['item_type'], $this->share['file_target']);
+	}
 }

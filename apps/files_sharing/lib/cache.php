@@ -217,6 +217,9 @@ class Shared_Cache extends Cache {
 	 */
 	public function remove($file) {
 		$file = ($file === false) ? '' : $file;
+		if ($file === '' or $file === '/') {
+			return;
+		}
 		if ($cache = $this->getSourceCache($file)) {
 			$cache->remove($this->files[$file]);
 		}
