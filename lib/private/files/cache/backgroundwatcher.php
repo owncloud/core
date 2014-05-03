@@ -37,7 +37,7 @@ class BackgroundWatcher {
 
 		if (count($mounts) === 0) {
 			//if the storage we need isn't mounted on default, try to find a user that has access to the storage
-			$permissionsCache = new Permissions($storageId);
+			$permissionsCache = new Permissions($storageId, \OC::$server->getDatabaseConnection());
 			$users = $permissionsCache->getUsers($id);
 			if (count($users) === 0) {
 				return;

@@ -268,7 +268,9 @@ abstract class Common implements \OC\Files\Storage\Storage {
 
 	public function getPermissionsCache($path = '') {
 		if (!isset($this->permissioncache)) {
-			$this->permissioncache = new \OC\Files\Cache\Permissions($this);
+			// TODO inject this
+			$conn = \OC::$server->getDatabaseConnection();
+			$this->permissioncache = new \OC\Files\Cache\Permissions($this, $conn);
 		}
 		return $this->permissioncache;
 	}

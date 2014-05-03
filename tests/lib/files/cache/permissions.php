@@ -17,7 +17,8 @@ class Permissions extends \PHPUnit_Framework_TestCase {
 	private $permissionsCache;
 
 	function setUp() {
-		$this->permissionsCache = new \OC\Files\Cache\Permissions('dummy');
+		$conn = \OC::$server->getDatabaseConnection();
+		$this->permissionsCache = new \OC\Files\Cache\Permissions('dummy', $conn);
 	}
 
 	function testSimple() {
