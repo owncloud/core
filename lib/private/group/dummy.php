@@ -28,7 +28,7 @@ class OC_Group_Dummy extends OC_Group_Backend {
 	private $groups=array();
 	/**
 	 * @brief Try to create a new group
-	 * @param $gid The name of the group to create
+	 * @param string $gid The name of the group to create
 	 * @returns true/false
 	 *
 	 * Trys to create a new group. If the group name already exists, false will
@@ -154,6 +154,16 @@ class OC_Group_Dummy extends OC_Group_Backend {
 			return $this->groups[$gid];
 		}else{
 			return array();
+		}
+	}
+
+	/**
+	 * @brief get the number of all users in a group
+	 * @returns int | bool
+	 */
+	public function countUsersInGroup($gid, $search = '', $limit = -1, $offset = 0) {
+		if(isset($this->groups[$gid])) {
+			return count($this->groups[$gid]);
 		}
 	}
 

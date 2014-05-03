@@ -26,7 +26,7 @@ namespace OC\AppFramework\Middleware\Security;
 
 use OC\AppFramework\Http;
 use OC\AppFramework\Http\Request;
-use OC\AppFramework\Http\RedirectResponse;
+use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\JSONResponse;
 
 
@@ -58,6 +58,9 @@ class SecurityMiddlewareTest extends \PHPUnit_Framework_TestCase {
 	}
 
 
+	/**
+	 * @param string $method
+	 */
 	private function checkNavEntry($method){
 		$api = $this->getAPI();
 
@@ -79,6 +82,10 @@ class SecurityMiddlewareTest extends \PHPUnit_Framework_TestCase {
 	}
 
 
+	/**
+	 * @param string $method
+	 * @param string $test
+	 */
 	private function ajaxExceptionStatus($method, $test, $status) {
 		$api = $this->getAPI();
 		$api->expects($this->any())
@@ -183,6 +190,10 @@ class SecurityMiddlewareTest extends \PHPUnit_Framework_TestCase {
 	}
 
 
+	/**
+	 * @param string $method
+	 * @param string $expects
+	 */
 	private function securityCheck($method, $expects, $shouldFail=false){
 		$api = $this->getAPI();
 		$api->expects($this->once())

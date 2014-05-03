@@ -31,7 +31,7 @@ class MappedLocal extends \OC\Files\Storage\Common{
 		return 'local::'.$this->datadir;
 	}
 	public function mkdir($path) {
-		return @mkdir($this->buildPath($path));
+		return @mkdir($this->buildPath($path), 0777, true);
 	}
 	public function rmdir($path) {
 		try {
@@ -39,17 +39,26 @@ class MappedLocal extends \OC\Files\Storage\Common{
 				new \RecursiveDirectoryIterator($this->buildPath($path)),
 				\RecursiveIteratorIterator::CHILD_FIRST
 			);
-			foreach ($it as $file) {
+			/**
+			 * RecursiveDirectoryIterator on an NFS path isn't iterable with foreach
+			 * This bug is fixed in PHP 5.5.9 or before
+			 * See #8376
+			 */
+			$it->rewind();
+			while ($it->valid()) {
 				/**
 				 * @var \SplFileInfo $file
 				 */
+				$file = $it->current();
 				if (in_array($file->getBasename(), array('.', '..'))) {
+					$it->next();
 					continue;
 				} elseif ($file->isDir()) {
 					rmdir($file->getPathname());
 				} elseif ($file->isFile() || $file->isLink()) {
 					unlink($file->getPathname());
 				}
+				$it->next();
 			}
 			if ($result = @rmdir($this->buildPath($path))) {
 				$this->cleanMapper($path);
@@ -210,6 +219,9 @@ class MappedLocal extends \OC\Files\Storage\Common{
 		return $return;
 	}
 
+	/**
+	 * @param string $dir
+	 */
 	private function delTree($dir, $isLogicPath=true) {
 		$dirRelative=$dir;
 		if ($isLogicPath) {
@@ -244,6 +256,9 @@ class MappedLocal extends \OC\Files\Storage\Common{
 		return $return;
 	}
 
+	/**
+	 * @param string $fullPath
+	 */
 	private static function getFileSizeFromOS($fullPath) {
 		$name = strtolower(php_uname('s'));
 		// Windows OS: we use COM to access the filesystem
@@ -270,7 +285,7 @@ class MappedLocal extends \OC\Files\Storage\Common{
 		return 0;
 	}
 
-	public function hash($path, $type, $raw=false) {
+	public function hash($type, $path, $raw=false) {
 		return hash_file($type, $this->buildPath($path), $raw);
 	}
 
@@ -288,6 +303,9 @@ class MappedLocal extends \OC\Files\Storage\Common{
 		return $this->buildPath($path);
 	}
 
+	/**
+	 * @param string $query
+	 */
 	protected function searchInDir($query, $dir='') {
 		$files=array();
 		$physicalDir = $this->buildPath($dir);
@@ -317,12 +335,18 @@ class MappedLocal extends \OC\Files\Storage\Common{
 		return $this->filemtime($path)>$time;
 	}
 
+	/**
+	 * @param string $path
+	 */
 	private function buildPath($path, $create=true) {
 		$path = $this->stripLeading($path);
 		$fullPath = $this->datadir.$path;
 		return $this->mapper->logicToPhysical($fullPath, $create);
 	}
 
+	/**
+	 * @param string $path
+	 */
 	private function cleanMapper($path, $isLogicPath=true, $recursive=true) {
 		$fullPath = $path;
 		if ($isLogicPath) {
@@ -331,6 +355,10 @@ class MappedLocal extends \OC\Files\Storage\Common{
 		$this->mapper->removePath($fullPath, $isLogicPath, $recursive);
 	}
 
+	/**
+	 * @param string $path1
+	 * @param string $path2
+	 */
 	private function copyMapping($path1, $path2) {
 		$path1 = $this->stripLeading($path1);
 		$path2 = $this->stripLeading($path2);
@@ -341,6 +369,9 @@ class MappedLocal extends \OC\Files\Storage\Common{
 		$this->mapper->copy($fullPath1, $fullPath2);
 	}
 
+	/**
+	 * @param string $path
+	 */
 	private function stripLeading($path) {
 		if(strpos($path, '/') === 0) {
 			$path = substr($path, 1);

@@ -7,16 +7,17 @@
  */
 
 /**
- * Prints an XSS escaped string
- * @param string $string the string which will be escaped and printed
+ * Prints a sanitized string
+ * @param string|array $string the string which will be escaped and printed
  */
 function p($string) {
 	print(OC_Util::sanitizeHTML($string));
 }
 
 /**
- * Prints an unescaped string
- * @param string $string the string which will be printed as it is
+ * Prints an unsanitized string - usage of this function may result into XSS.
+ * Consider using p() instead.
+ * @param string|array $string the string which will be printed as it is
  */
 function print_unescaped($string) {
 	print($string);
@@ -78,6 +79,9 @@ function preview_icon( $path ) {
 	return OC_Helper::previewIcon( $path );
 }
 
+/**
+ * @param string $path
+ */
 function publicPreview_icon ( $path, $token ) {
 	return OC_Helper::publicPreviewIcon( $path, $token );
 }
@@ -110,7 +114,7 @@ function strip_time($timestamp){
  * @param int $timestamp timestamp to format
  * @param int $fromTime timestamp to compare from, defaults to current time
  * @param bool $dateOnly whether to strip time information
- * @return formatted timestamp
+ * @return OC_L10N_String timestamp
  */
 function relative_modified_date($timestamp, $fromTime = null, $dateOnly = false) {
 	$l=OC_L10N::get('lib');

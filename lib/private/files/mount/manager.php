@@ -24,6 +24,13 @@ class Manager {
 	}
 
 	/**
+	 * @param string $mountPoint
+	 */
+	public function removeMount($mountPoint) {
+		unset($this->mounts[$mountPoint]);
+	}
+
+	/**
 	 * Find the mount for $path
 	 *
 	 * @param $path
@@ -106,7 +113,7 @@ class Manager {
 	 * Find mounts by numeric storage id
 	 *
 	 * @param string $id
-	 * @return Mount
+	 * @return Mount[]
 	 */
 	public function findByNumericId($id) {
 		$storageId = \OC\Files\Cache\Storage::getStorageId($id);

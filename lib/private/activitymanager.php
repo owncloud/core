@@ -46,7 +46,7 @@ class ActivityManager implements IManager {
 					$type,
 					$priority);
 				} catch (\Exception $ex) {
-					// TODO: log the excepetion
+					// TODO: log the exception
 				}
 			}
 
@@ -59,7 +59,6 @@ class ActivityManager implements IManager {
 	 *
 	 * $callable has to return an instance of OCA\Activity\IConsumer
 	 *
-	 * @param string $key
 	 * @param \Closure $callable
 	 */
 	function registerConsumer(\Closure $callable) {

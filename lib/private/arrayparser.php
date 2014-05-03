@@ -30,12 +30,20 @@ class ArrayParser {
 	const TYPE_STRING = 3;
 	const TYPE_ARRAY = 4;
 
+	/**
+	 * @param string $string
+	 * @return array|bool|int|null|string
+	 */
 	function parsePHP($string) {
 		$string = $this->stripPHPTags($string);
 		$string = $this->stripAssignAndReturn($string);
 		return $this->parse($string);
 	}
 
+	/**
+	 * @param string $string
+	 * @return string
+	 */
 	function stripPHPTags($string) {
 		$string = trim($string);
 		if (substr($string, 0, 5) === '<?php') {
@@ -47,6 +55,10 @@ class ArrayParser {
 		return $string;
 	}
 
+	/**
+	 * @param string $string
+	 * @return string
+	 */
 	function stripAssignAndReturn($string) {
 		$string = trim($string);
 		if (substr($string, 0, 6) === 'return') {
@@ -58,6 +70,10 @@ class ArrayParser {
 		return $string;
 	}
 
+	/**
+	 * @param string $string
+	 * @return array|bool|int|null|string
+	 */
 	function parse($string) {
 		$string = trim($string);
 		$string = trim($string, ';');
@@ -74,6 +90,10 @@ class ArrayParser {
 		return null;
 	}
 
+	/**
+	 * @param string $string
+	 * @return int
+	 */
 	function getType($string) {
 		$string = strtolower($string);
 		$first = substr($string, 0, 1);
@@ -90,19 +110,35 @@ class ArrayParser {
 		}
 	}
 
+	/**
+	 * @param string $string
+	 * @return string
+	 */
 	function parseString($string) {
 		return substr($string, 1, -1);
 	}
 
+	/**
+	 * @param string $string
+	 * @return int
+	 */
 	function parseNum($string) {
 		return intval($string);
 	}
 
+	/**
+	 * @param string $string
+	 * @return bool
+	 */
 	function parseBool($string) {
 		$string = strtolower($string);
 		return $string === 'true';
 	}
 
+	/**
+	 * @param string $string
+	 * @return array
+	 */
 	function parseArray($string) {
 		$body = substr($string, 5);
 		$body = trim($body);
@@ -131,6 +167,10 @@ class ArrayParser {
 		return $result;
 	}
 
+	/**
+	 * @param string $body
+	 * @return array
+	 */
 	function splitArray($body) {
 		$inSingleQuote = false;//keep track if we are inside quotes
 		$inDoubleQuote = false;

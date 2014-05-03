@@ -50,10 +50,10 @@ interface IAppContainer extends IContainer{
 	function getServer();
 
 	/**
-	 * @param Middleware $middleWare
+	 * @param string $middleWare
 	 * @return boolean
 	 */
-	function registerMiddleWare(Middleware $middleWare);
+	function registerMiddleWare($middleWare);
 
 	/**
 	 * @return boolean
@@ -66,8 +66,8 @@ interface IAppContainer extends IContainer{
 	function isAdminUser();
 
 	/**
-	 * @param $message
-	 * @param $level
+	 * @param string $message
+	 * @param string $level
 	 * @return mixed
 	 */
 	function log($message, $level);

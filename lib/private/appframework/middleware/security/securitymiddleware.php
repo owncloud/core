@@ -25,8 +25,8 @@
 namespace OC\AppFramework\Middleware\Security;
 
 use OC\AppFramework\Http;
-use OC\AppFramework\Http\RedirectResponse;
 use OC\AppFramework\Utility\MethodAnnotationReader;
+use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Middleware;
 use OCP\AppFramework\Http\Response;
 use OCP\AppFramework\Http\JSONResponse;
@@ -66,7 +66,7 @@ class SecurityMiddleware extends Middleware {
 	 * This runs all the security checks before a method call. The
 	 * security checks are determined by inspecting the controller method
 	 * annotations
-	 * @param string/Controller $controller the controllername or string
+	 * @param string $controller the controllername or string
 	 * @param string $methodName the name of the method
 	 * @throws SecurityException when a security check fails
 	 */

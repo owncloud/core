@@ -23,9 +23,6 @@
 *
 */
 
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Symfony\Component\Routing\Exception\MethodNotAllowedException;
-
 /**
  * Class to handle open collaboration services API requests
  *
@@ -35,13 +32,14 @@ class OC_OCS {
 	/**
 	* reads input date from get/post/cookies and converts the date to a special data-type
 	*
-	* @param string HTTP method to read the key from
-	* @param string Parameter to read
-	* @param string Variable type to format data
-	* @param mixed Default value to return if the key is not found
-	* @return mixed Data or if the key is not found and no default is set it will exit with a 400 Bad request
+	* @param string $method HTTP method to read the key from
+	* @param string $key Parameter to read
+	* @param string $type Variable type to format data
+	* @param string $default Default value to return if the key is not found
+	* @return string Data or if the key is not found and no default is set it will exit with a 400 Bad request
 	*/
 	public static function readData($method, $key, $type = 'raw', $default = null) {
+		$data = false;
 		if ($method == 'get') {
 			if (isset($_GET[$key])) {
 				$data = $_GET[$key];
@@ -96,7 +94,7 @@ class OC_OCS {
 
 	/**
 	* generated some debug information to make it easier to find faild API calls
-	* @return debug data string
+	* @return string data string
 	*/
 	private static function getDebugOutput() {
 		$txt='';
@@ -110,19 +108,19 @@ class OC_OCS {
 
 
 	/**
-	* generates the xml or json response for the API call from an multidimenional data array.
-	* @param string $format
-	* @param string $status
-	* @param string $statuscode
-	* @param string $message
-	* @param array $data
-	* @param string $tag
-	* @param string $tagattribute
-	* @param int $dimension
-	* @param int $itemscount
-	* @param int $itemsperpage
-	* @return string xml/json
-	*/
+	 * generates the xml or json response for the API call from an multidimenional data array.
+	 * @param string $format
+	 * @param string $status
+	 * @param string $statuscode
+	 * @param string $message
+	 * @param array $data
+	 * @param string $tag
+	 * @param string $tagattribute
+	 * @param int $dimension
+	 * @param int|string $itemscount
+	 * @param int|string $itemsperpage
+	 * @return string xml/json
+	 */
 	private static function generateXml($format, $status, $statuscode,
 		$message, $data=array(), $tag='', $tagattribute='', $dimension=-1, $itemscount='', $itemsperpage='') {
 		if($format=='json') {
@@ -214,6 +212,11 @@ class OC_OCS {
 		}
 	}
 
+	/**
+	 * @param $writer
+	 * @param $data
+	 * @param string $node
+	 */
 	public static function toXml($writer, $data, $node) {
 		foreach($data as $key => $value) {
 			if (is_numeric($key)) {

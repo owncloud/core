@@ -43,15 +43,32 @@ class Test_Util extends PHPUnit_Framework_TestCase {
 	}
 
 	function testSanitizeHTML() {
+		$badArray = array(
+			'While it is unusual to pass an array',
+			'this function actually <blink>supports</blink> it.',
+			'And therefore there needs to be a <script>alert("Unit"+\'test\')</script> for it!'
+		);
+		$goodArray = array(
+			'While it is unusual to pass an array',
+			'this function actually &lt;blink&gt;supports&lt;/blink&gt; it.',
+			'And therefore there needs to be a &lt;script&gt;alert(&quot;Unit&quot;+&#039;test&#039;)&lt;/script&gt; for it!'
+		);
+		$result = OC_Util::sanitizeHTML($badArray);
+		$this->assertEquals($goodArray, $result);
+
+		$badString = '<img onload="alert(1)" />';
+		$result = OC_Util::sanitizeHTML($badString);
+		$this->assertEquals('&lt;img onload=&quot;alert(1)&quot; /&gt;', $result);
+
 		$badString = "<script>alert('Hacked!');</script>";
 		$result = OC_Util::sanitizeHTML($badString);
-		$this->assertEquals("&lt;script&gt;alert(&#039;Hacked!&#039;);&lt;/script&gt;", $result);
+		$this->assertEquals('&lt;script&gt;alert(&#039;Hacked!&#039;);&lt;/script&gt;', $result);
 
-		$goodString = "This is an harmless string.";
+		$goodString = 'This is a good string without HTML.';
 		$result = OC_Util::sanitizeHTML($goodString);
-		$this->assertEquals("This is an harmless string.", $result);
+		$this->assertEquals('This is a good string without HTML.', $result);
 	}
-	
+
 	function testEncodePath(){
 		$component = '/§#@test%&^ä/-child';
 		$result = OC_Util::encodePath($component);
@@ -168,6 +185,54 @@ class Test_Util extends PHPUnit_Framework_TestCase {
 			array('', '/'),
 			array('public_html', 'public_html'),
 			array('442aa682de2a64db1e010f50e60fd9c9', 'local::C:\Users\ADMINI~1\AppData\Local\Temp\2/442aa682de2a64db1e010f50e60fd9c9/')
+		);
+	}
+
+	/**
+	 * @dataProvider filenameValidationProvider
+	 */
+	public function testFilenameValidation($file, $valid) {
+		// private API
+		$this->assertEquals($valid, \OC_Util::isValidFileName($file));
+		// public API
+		$this->assertEquals($valid, \OCP\Util::isValidFileName($file));
+	}
+
+	public function filenameValidationProvider() {
+		return array(
+			// valid names
+			array('boringname', true),
+			array('something.with.extension', true),
+			array('now with spaces', true),
+			array('.a', true),
+			array('..a', true),
+			array('.dotfile', true),
+			array('single\'quote', true),
+			array('  spaces before', true),
+			array('spaces after   ', true),
+			array('allowed chars including the crazy ones $%&_-^@!,()[]{}=;#', true),
+			array('汉字也能用', true),
+			array('und Ümläüte sind auch willkommen', true),
+			// disallowed names
+			array('', false),
+			array('     ', false),
+			array('.', false),
+			array('..', false),
+			array('back\\slash', false),
+			array('sl/ash', false),
+			array('lt<lt', false),
+			array('gt>gt', false),
+			array('col:on', false),
+			array('double"quote', false),
+			array('pi|pe', false),
+			array('dont?ask?questions?', false),
+			array('super*star', false),
+			array('new\nline', false),
+			// better disallow these to avoid unexpected trimming to have side effects
+			array(' ..', false),
+			array('.. ', false),
+			array('. ', false),
+			array(' .', false),
 		);
 	}
 }

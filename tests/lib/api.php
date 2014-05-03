@@ -9,6 +9,10 @@
 class Test_API extends PHPUnit_Framework_TestCase {
 
 	// Helps build a response variable
+
+	/**
+	 * @param string $message
+	 */
 	function buildResponse($shipped, $data, $code, $message=null) {
 		return array(
 			'shipped' => $shipped,
@@ -18,6 +22,10 @@ class Test_API extends PHPUnit_Framework_TestCase {
 	}
 
 	// Validate details of the result
+
+	/**
+	 * @param OC_OCS_Result $result
+	 */
 	function checkResult($result, $success) {
 		// Check response is of correct type
 		$this->assertInstanceOf('OC_OCS_Result', $result);
@@ -29,7 +37,7 @@ class Test_API extends PHPUnit_Framework_TestCase {
 	function dataProviderTestOneResult() {
 		return array(
 			array(100, true),
-			array(101, true),
+			array(101, false),
 			array(997, false),
 		);
 	}

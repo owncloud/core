@@ -176,7 +176,7 @@ class Wizard extends LDAPUtility {
 
 	/**
 	 * @brief return the state of the mode of the specified filter
-	 * @param $confkey string, contains the access key of the Configuration
+	 * @param string $confkey string, contains the access key of the Configuration
 	 */
 	private function getFilterMode($confkey) {
 		$mode = $this->configuration->$confkey;
@@ -240,6 +240,8 @@ class Wizard extends LDAPUtility {
 
 	/**
 	 * @brief detects the available LDAP groups
+	 * @param string $dbkey
+	 * @param string $confkey
 	 * @returns the instance's WizardResult instance
 	 */
 	private function determineGroups($dbkey, $confkey, $testMemberOf = true) {
@@ -483,7 +485,7 @@ class Wizard extends LDAPUtility {
 	/**
 	 * @brief sets the found value for the configuration key in the WizardResult
 	 * as well as in the Configuration instance
-	 * @param $key the configuration key
+	 * @param string $key the configuration key
 	 * @param $value the (detected) value
 	 * @return null
 	 *
@@ -554,7 +556,7 @@ class Wizard extends LDAPUtility {
 
 	/**
 	 * @brief Checks whether for a given BaseDN results will be returned
-	 * @param $base the BaseDN to test
+	 * @param string $base the BaseDN to test
 	 * @return bool true on success, false otherwise
 	 */
 	private function testBaseDN($base) {
@@ -567,6 +569,10 @@ class Wizard extends LDAPUtility {
 		//get a result set > 0 on a proper base
 		$rr = $this->ldap->search($cr, $base, 'objectClass=*', array('dn'), 0, 1);
 		if(!$this->ldap->isResource($rr)) {
+			$errorNo  = $this->ldap->errno($cr);
+			$errorMsg = $this->ldap->error($cr);
+			\OCP\Util::writeLog('user_ldap', 'Wiz: Could not search base '.$base.
+							' Error '.$errorNo.': '.$errorMsg, \OCP\Util::INFO);
 			return false;
 		}
 		$entries = $this->ldap->countEntries($cr, $rr);
@@ -615,7 +621,7 @@ class Wizard extends LDAPUtility {
 
 	/**
 	 * @brief creates an LDAP Filter from given configuration
-	 * @param $filterType int, for which use case the filter shall be created
+	 * @param integer $filterType int, for which use case the filter shall be created
 	 * can be any of self::LFILTER_USER_LIST, self::LFILTER_LOGIN or
 	 * self::LFILTER_GROUP_LIST
 	 * @return mixed, string with the filter on success, false otherwise
@@ -793,6 +799,7 @@ class Wizard extends LDAPUtility {
 		\OCP\Util::writeLog('user_ldap', 'Wiz: Setting LDAP Options ', \OCP\Util::DEBUG);
 		//set LDAP options
 		$this->ldap->setOption($cr, LDAP_OPT_PROTOCOL_VERSION, 3);
+		$this->ldap->setOption($cr, LDAP_OPT_REFERRALS, 0);
 		$this->ldap->setOption($cr, LDAP_OPT_NETWORK_TIMEOUT, self::LDAP_NW_TIMEOUT);
 		if($tls) {
 			$isTlsWorking = @$this->ldap->startTls($cr);
@@ -842,6 +849,9 @@ class Wizard extends LDAPUtility {
 		       || (empty($agent) &&  empty($pwd)));
 	}
 
+	/**
+	 * @param string[] $reqs
+	 */
 	private function checkRequirements($reqs) {
 		$this->checkAgentRequirements();
 		foreach($reqs as $option) {
@@ -856,16 +866,18 @@ class Wizard extends LDAPUtility {
 	/**
 	 * @brief does a cumulativeSearch on LDAP to get different values of a
 	 * specified attribute
-	 * @param $filters array, the filters that shall be used in the search
-	 * @param $attr the attribute of which a list of values shall be returned
+	 * @param string[] $filters array, the filters that shall be used in the search
+	 * @param string $attr the attribute of which a list of values shall be returned
 	 * @param $lfw bool, whether the last filter is a wildcard which shall not
 	 * be processed if there were already findings, defaults to true
-	 * @param $maxF string. if not null, this variable will have the filter that
+	 * @param int $dnReadLimit the amount of how many DNs should be analyzed.
+	 * The lower, the faster
+	 * @param string $maxF string. if not null, this variable will have the filter that
 	 * yields most result entries
 	 * @return mixed, an array with the values on success, false otherwise
 	 *
 	 */
-	private function cumulativeSearchOnAttribute($filters, $attr, $lfw = true, &$maxF = null) {
+	public function cumulativeSearchOnAttribute($filters, $attr, $lfw = true, $dnReadLimit = 3, &$maxF = null) {
 		$dnRead = array();
 		$foundItems = array();
 		$maxEntries = 0;
@@ -875,11 +887,16 @@ class Wizard extends LDAPUtility {
 		}
 		$base = $this->configuration->ldapBase[0];
 		$cr = $this->getConnection();
-		if(!is_resource($cr)) {
+		if(!$this->ldap->isResource($cr)) {
 			return false;
 		}
+		$lastFilter = null;
+		if(isset($filters[count($filters)-1])) {
+			$lastFilter = $filters[count($filters)-1];
+		}
 		foreach($filters as $filter) {
-			if($lfw && count($foundItems) > 0) {
+			if($lfw && $lastFilter === $filter && count($foundItems) > 0) {
+				//skip when the filter is a wildcard and results were found
 				continue;
 			}
 			$rr = $this->ldap->search($cr, $base, $filter, array($attr));
@@ -893,8 +910,10 @@ class Wizard extends LDAPUtility {
 					$maxEntries = $entries;
 					$maxF = $filter;
 				}
+				$dnReadCount = 0;
 				do {
 					$entry = $this->ldap->$getEntryFunc($cr, $rr);
+					$getEntryFunc = 'nextEntry';
 					if(!$this->ldap->isResource($entry)) {
 						continue 2;
 					}
@@ -907,13 +926,14 @@ class Wizard extends LDAPUtility {
 					$state = $this->getAttributeValuesFromEntry($attributes,
 																$attr,
 																$newItems);
+					$dnReadCount++;
 					$foundItems = array_merge($foundItems, $newItems);
 					$this->resultCache[$dn][$attr] = $newItems;
 					$dnRead[] = $dn;
-					$getEntryFunc = 'nextEntry';
 					$rr = $entry; //will be expected by nextEntry next round
-				} while($state === self::LRESULT_PROCESSED_SKIP
-						|| $this->ldap->isResource($entry));
+				} while(($state === self::LRESULT_PROCESSED_SKIP
+						|| $this->ldap->isResource($entry))
+						&& ($dnReadLimit === 0 || $dnReadCount < $dnReadLimit));
 			}
 		}
 
@@ -922,10 +942,10 @@ class Wizard extends LDAPUtility {
 
 	/**
 	 * @brief determines if and which $attr are available on the LDAP server
-	 * @param $objectclasses the objectclasses to use as search filter
-	 * @param $attr the attribute to look for
-	 * @param $dbkey the dbkey of the setting the feature is connected to
-	 * @param $confkey the confkey counterpart for the $dbkey as used in the
+	 * @param string[] $objectclasses the objectclasses to use as search filter
+	 * @param string $attr the attribute to look for
+	 * @param string $dbkey the dbkey of the setting the feature is connected to
+	 * @param string $confkey the confkey counterpart for the $dbkey as used in the
 	 * Configuration class
 	 * @param $po boolean, whether the objectClass with most result entries
 	 * shall be pre-selected via the result
@@ -941,9 +961,19 @@ class Wizard extends LDAPUtility {
 			$objectclasses[$key] = $p.$value;
 		}
 		$maxEntryObjC = '';
+
+		//how deep to dig?
+		//When looking for objectclasses, testing few entries is sufficient,
+		//when looking for group we need to get all names, though.
+		if(strtolower($attr) === 'objectclass') {
+			$dig = 3;
+		} else {
+			$dig = 0;
+		}
+
 		$availableFeatures =
 			$this->cumulativeSearchOnAttribute($objectclasses, $attr,
-											   true, $maxEntryObjC);
+											   true, $dig, $maxEntryObjC);
 		if(is_array($availableFeatures)
 		   && count($availableFeatures) > 0) {
 			natcasesort($availableFeatures);
@@ -971,7 +1001,7 @@ class Wizard extends LDAPUtility {
 	/**
 	 * @brief appends a list of values fr
 	 * @param $result resource, the return value from ldap_get_attributes
-	 * @param $attribute string, the attribute values to look for
+	 * @param string $attribute the attribute values to look for
 	 * @param &$known array, new values will be appended here
 	 * @return int, state on of the class constants LRESULT_PROCESSED_OK,
 	 * LRESULT_PROCESSED_INVALID or LRESULT_PROCESSED_SKIP
@@ -1010,6 +1040,7 @@ class Wizard extends LDAPUtility {
 			$this->configuration->ldapPort);
 
 		$this->ldap->setOption($cr, LDAP_OPT_PROTOCOL_VERSION, 3);
+		$this->ldap->setOption($cr, LDAP_OPT_REFERRALS, 0);
 		$this->ldap->setOption($cr, LDAP_OPT_NETWORK_TIMEOUT, self::LDAP_NW_TIMEOUT);
 		if($this->configuration->ldapTLS === 1) {
 			$this->ldap->startTls($cr);

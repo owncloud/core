@@ -35,7 +35,7 @@ if (\OC_Util::runningOnWindows()) {
 		}
 
 		public function mkdir($path) {
-			return @mkdir($this->datadir . $path);
+			return @mkdir($this->datadir . $path, 0777, true);
 		}
 
 		public function rmdir($path) {
@@ -44,17 +44,26 @@ if (\OC_Util::runningOnWindows()) {
 					new \RecursiveDirectoryIterator($this->datadir . $path),
 					\RecursiveIteratorIterator::CHILD_FIRST
 				);
-				foreach ($it as $file) {
+				/**
+				 * RecursiveDirectoryIterator on an NFS path isn't iterable with foreach
+				 * This bug is fixed in PHP 5.5.9 or before
+				 * See #8376
+				 */
+				$it->rewind();
+				while ($it->valid()) {
 					/**
 					 * @var \SplFileInfo $file
 					 */
+					$file = $it->current();
 					if (in_array($file->getBasename(), array('.', '..'))) {
+						$it->next();
 						continue;
 					} elseif ($file->isDir()) {
 						rmdir($file->getPathname());
 					} elseif ($file->isFile() || $file->isLink()) {
 						unlink($file->getPathname());
 					}
+					$it->next();
 				}
 				return rmdir($this->datadir . $path);
 			} catch (\UnexpectedValueException $e) {
@@ -203,6 +212,9 @@ if (\OC_Util::runningOnWindows()) {
 			return $return;
 		}
 
+		/**
+		 * @param string $dir
+		 */
 		private function delTree($dir) {
 			$dirRelative = $dir;
 			$dir = $this->datadir . $dir;
@@ -224,6 +236,9 @@ if (\OC_Util::runningOnWindows()) {
 			return $return;
 		}
 
+		/**
+		 * @param string $fullPath
+		 */
 		private static function getFileSizeFromOS($fullPath) {
 			$name = strtolower(php_uname('s'));
 			// Windows OS: we use COM to access the filesystem
@@ -250,7 +265,7 @@ if (\OC_Util::runningOnWindows()) {
 			return 0;
 		}
 
-		public function hash($path, $type, $raw = false) {
+		public function hash($type, $path, $raw = false) {
 			return hash_file($type, $this->datadir . $path, $raw);
 		}
 
@@ -274,6 +289,9 @@ if (\OC_Util::runningOnWindows()) {
 			return $this->datadir . $path;
 		}
 
+		/**
+		 * @param string $query
+		 */
 		protected function searchInDir($query, $dir = '') {
 			$files = array();
 			foreach (scandir($this->datadir . $dir) as $item) {
@@ -296,7 +314,18 @@ if (\OC_Util::runningOnWindows()) {
 		 * @return bool
 		 */
 		public function hasUpdated($path, $time) {
-			return $this->filemtime($path) > $time;
+			if ($this->file_exists($path)) {
+				return $this->filemtime($path) > $time;
+			} else {
+				return true;
+			}
+		}
+
+		/**
+		 * {@inheritdoc}
+		 */
+		public function isLocal() {
+			return true;
 		}
 	}
 }

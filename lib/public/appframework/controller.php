@@ -38,10 +38,10 @@ use OCP\IRequest;
 abstract class Controller {
 
 	/**
-	 * app container for dependency injection
-	 * @var \OCP\AppFramework\IAppContainer
+	 * app name
+	 * @var string
 	 */
-	protected $app;
+	protected $appName;
 
 	/**
 	 * current request
@@ -51,11 +51,11 @@ abstract class Controller {
 
 	/**
 	 * constructor of the controller
-	 * @param IAppContainer $app interface to the app
+	 * @param string $appName the name of the app
 	 * @param IRequest $request an instance of the request
 	 */
-	public function __construct(IAppContainer $app, IRequest $request){
-		$this->app = $app;
+	public function __construct($appName, IRequest $request){
+		$this->appName = $appName;
 		$this->request = $request;
 	}
 
@@ -68,7 +68,7 @@ abstract class Controller {
 	 *                     1. URL parameters
 	 *                     2. POST parameters
 	 *                     3. GET parameters
-	 * @param mixed $default If the key is not found, this value will be returned
+	 * @param string $default If the key is not found, this value will be returned
 	 * @return mixed the content of the array
 	 */
 	public function params($key, $default=null){
@@ -131,12 +131,12 @@ abstract class Controller {
 	 * @param array $params the template parameters in key => value structure
 	 * @param string $renderAs user renders a full page, blank only your template
 	 *                          admin an entry in the admin settings
-	 * @param array $headers set additional headers in name/value pairs
+	 * @param string[] $headers set additional headers in name/value pairs
 	 * @return \OCP\AppFramework\Http\TemplateResponse containing the page
 	 */
 	public function render($templateName, array $params=array(),
 							$renderAs='user', array $headers=array()){
-		$response = new TemplateResponse($this->app->getAppName(), $templateName);
+		$response = new TemplateResponse($this->appName, $templateName);
 		$response->setParams($params);
 		$response->renderAs($renderAs);
 

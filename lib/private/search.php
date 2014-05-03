@@ -38,7 +38,6 @@ class OC_Search{
 
 	/**
 	 * register a new search provider to be used
-	 * @param string $provider class name of a OC_Search_Provider
 	 */
 	public static function registerProvider($class, $options=array()) {
 		self::$registeredProviders[]=array('class'=>$class, 'options'=>$options);
@@ -46,7 +45,7 @@ class OC_Search{
 
 	/**
 	 * search all provider for $query
-	 * @param string query
+	 * @param string $query
 	 * @return array An array of OC_Search_Result's
 	 */
 	public static function search($query) {

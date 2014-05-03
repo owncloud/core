@@ -119,6 +119,22 @@ class Filesystem {
 	const signal_post_write = 'post_write';
 
 	/**
+	 * signal emitted before file/dir update
+	 *
+	 * @param string $path
+	 * @param bool $run changing this flag to false in hook handler will cancel event
+	 */
+	const signal_update = 'update';
+
+	/**
+	 * signal emitted after file/dir update
+	 *
+	 * @param string $path
+	 * @param bool $run changing this flag to false in hook handler will cancel event
+	 */
+	const signal_post_update = 'post_update';
+
+	/**
 	 * signal emits when reading file/dir
 	 *
 	 * @param string $path
@@ -320,78 +336,34 @@ class Filesystem {
 		else {
 			self::mount('\OC\Files\Storage\Local', array('datadir' => $root), $user);
 		}
-		$datadir = \OC_Config::getValue("datadirectory", \OC::$SERVERROOT . "/data");
 
-		//move config file to it's new position
-		if (is_file(\OC::$SERVERROOT . '/config/mount.json')) {
-			rename(\OC::$SERVERROOT . '/config/mount.json', $datadir . '/mount.json');
-		}
-		// Load system mount points
-		if (is_file(\OC::$SERVERROOT . '/config/mount.php') or is_file($datadir . '/mount.json')) {
-			if (is_file($datadir . '/mount.json')) {
-				$mountConfig = json_decode(file_get_contents($datadir . '/mount.json'), true);
-			} elseif (is_file(\OC::$SERVERROOT . '/config/mount.php')) {
-				$mountConfig = $parser->parsePHP(file_get_contents(\OC::$SERVERROOT . '/config/mount.php'));
-			}
-			if (isset($mountConfig['global'])) {
-				foreach ($mountConfig['global'] as $mountPoint => $options) {
-					self::mount($options['class'], $options['options'], $mountPoint);
-				}
-			}
-			if (isset($mountConfig['group'])) {
-				foreach ($mountConfig['group'] as $group => $mounts) {
-					if (\OC_Group::inGroup($user, $group)) {
-						foreach ($mounts as $mountPoint => $options) {
-							$mountPoint = self::setUserVars($user, $mountPoint);
-							foreach ($options as &$option) {
-								$option = self::setUserVars($user, $option);
-							}
-							self::mount($options['class'], $options['options'], $mountPoint);
-						}
-					}
-				}
-			}
-			if (isset($mountConfig['user'])) {
-				foreach ($mountConfig['user'] as $mountUser => $mounts) {
-					if ($mountUser === 'all' or strtolower($mountUser) === strtolower($user)) {
-						foreach ($mounts as $mountPoint => $options) {
-							$mountPoint = self::setUserVars($user, $mountPoint);
-							foreach ($options as &$option) {
-								$option = self::setUserVars($user, $option);
-							}
-							self::mount($options['class'], $options['options'], $mountPoint);
-						}
-					}
-				}
-			}
-		}
-		// Load personal mount points
-		if (is_file($root . '/mount.php') or is_file($root . '/mount.json')) {
-			if (is_file($root . '/mount.json')) {
-				$mountConfig = json_decode(file_get_contents($root . '/mount.json'), true);
-			} elseif (is_file($root . '/mount.php')) {
-				$mountConfig = $parser->parsePHP(file_get_contents($root . '/mount.php'));
-			}
-			if (isset($mountConfig['user'][$user])) {
-				foreach ($mountConfig['user'][$user] as $mountPoint => $options) {
-					self::mount($options['class'], $options['options'], $mountPoint);
-				}
-			}
-		}
+		self::mountCacheDir($user);
 
 		// Chance to mount for other storages
 		\OC_Hook::emit('OC_Filesystem', 'post_initMountPoints', array('user' => $user, 'user_dir' => $root));
 	}
 
 	/**
-	 * fill in the correct values for $user
-	 *
-	 * @param string $user
-	 * @param string $input
-	 * @return string
+	 * Mounts the cache directory
+	 * @param string $user user name
 	 */
-	private static function setUserVars($user, $input) {
-		return str_replace('$user', $user, $input);
+	private static function mountCacheDir($user) {
+		$cacheBaseDir = \OC_Config::getValue('cache_path', '');
+		if ($cacheBaseDir === '') {
+			// use local cache dir relative to the user's home
+			$subdir = 'cache';
+			$view = new \OC\Files\View('/' . $user);
+			if(!$view->file_exists($subdir)) {
+				$view->mkdir($subdir);
+			}
+		} else {
+			$cacheDir = rtrim($cacheBaseDir, '/') . '/' . $user;
+			if (!file_exists($cacheDir)) {
+				mkdir($cacheDir, 0770, true);
+			}
+			// mount external cache dir to "/$user/cache" mount point
+			self::mount('\OC\Files\Storage\Local', array('datadir' => $cacheDir), '/' . $user . '/cache');
+		}
 	}
 
 	/**
@@ -418,6 +390,9 @@ class Filesystem {
 	 * Returns path like /admin/files
 	 */
 	static public function getRoot() {
+		if (!self::$defaultInstance) {
+			return null;
+		}
 		return self::$defaultInstance->getRoot();
 	}
 
@@ -614,6 +589,9 @@ class Filesystem {
 		return self::$defaultInstance->touch($path, $mtime);
 	}
 
+	/**
+	 * @return string
+	 */
 	static public function file_get_contents($path) {
 		return self::$defaultInstance->file_get_contents($path);
 	}
@@ -638,6 +616,9 @@ class Filesystem {
 		return self::$defaultInstance->fopen($path, $mode);
 	}
 
+	/**
+	 * @return string
+	 */
 	static public function toTmpFile($path) {
 		return self::$defaultInstance->toTmpFile($path);
 	}
@@ -662,6 +643,9 @@ class Filesystem {
 		return self::$defaultInstance->search($query);
 	}
 
+	/**
+	 * @param string $query
+	 */
 	static public function searchByMime($query) {
 		return self::$defaultInstance->searchByMime($query);
 	}
@@ -727,14 +711,7 @@ class Filesystem {
 	 * @param string $path
 	 * @param boolean $includeMountPoints whether to add mountpoint sizes,
 	 * defaults to true
-	 * @return array
-	 *
-	 * returns an associative array with the following keys:
-	 * - size
-	 * - mtime
-	 * - mimetype
-	 * - encrypted
-	 * - versioned
+	 * @return \OC\Files\FileInfo
 	 */
 	public static function getFileInfo($path, $includeMountPoints = true) {
 		return self::$defaultInstance->getFileInfo($path, $includeMountPoints);
@@ -758,7 +735,7 @@ class Filesystem {
 	 *
 	 * @param string $directory path under datadirectory
 	 * @param string $mimetype_filter limit returned content to this mimetype or mimepart
-	 * @return array
+	 * @return \OC\Files\FileInfo[]
 	 */
 	public static function getDirectoryContent($directory, $mimetype_filter = '') {
 		return self::$defaultInstance->getDirectoryContent($directory, $mimetype_filter);

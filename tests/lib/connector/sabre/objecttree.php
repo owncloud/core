@@ -9,6 +9,7 @@
 namespace Test\OC\Connector\Sabre;
 
 
+use OC\Files\FileInfo;
 use OC_Connector_Sabre_Directory;
 use PHPUnit_Framework_TestCase;
 use Sabre_DAV_Exception_Forbidden;
@@ -32,6 +33,10 @@ class TestDoubleFileView extends \OC\Files\View{
 	public function rename($path1, $path2) {
 		return $this->canRename;
 	}
+
+	public function getRelativePath($path){
+		return $path;
+	}
 }
 
 class ObjectTree extends PHPUnit_Framework_TestCase {
@@ -52,6 +57,20 @@ class ObjectTree extends PHPUnit_Framework_TestCase {
 		$this->assertTrue(true);
 	}
 
+	/**
+	 * @dataProvider moveFailedInvalidCharsProvider
+	 * @expectedException Sabre_DAV_Exception_BadRequest
+	 */
+	public function testMoveFailedInvalidChars($source, $dest, $updatables, $deletables) {
+		$this->moveTest($source, $dest, $updatables, $deletables);
+	}
+
+	function moveFailedInvalidCharsProvider() {
+		return array(
+			array('a/b', 'a/c*', array('a' => false, 'a/b' => true, 'a/c*' => false), array()),
+		);
+	}
+
 	function moveFailedProvider() {
 		return array(
 			array('a/b', 'a/c', array('a' => false, 'a/b' => false, 'a/c' => false), array()),
@@ -66,6 +85,8 @@ class ObjectTree extends PHPUnit_Framework_TestCase {
 		return array(
 			array('a/b', 'a/c', array('a' => false, 'a/b' => true, 'a/c' => false), array()),
 			array('a/b', 'b/b', array('a' => true, 'a/b' => true, 'b' => true, 'b/b' => false), array('a/b' => true)),
+			// older files with special chars can still be renamed to valid names
+			array('a/b*', 'b/b', array('a' => true, 'a/b*' => true, 'b' => true, 'b/b' => false), array('a/b*' => true)),
 		);
 	}
 
@@ -75,10 +96,14 @@ class ObjectTree extends PHPUnit_Framework_TestCase {
 	 * @param $updatables
 	 */
 	private function moveTest($source, $dest, $updatables, $deletables) {
-		$rootDir = new OC_Connector_Sabre_Directory('');
+		$view = new TestDoubleFileView($updatables, $deletables);
+
+		$info = new FileInfo('', null, null, array());
+
+		$rootDir = new OC_Connector_Sabre_Directory($view, $info);
 		$objectTree = $this->getMock('\OC\Connector\Sabre\ObjectTree',
 			array('nodeExists', 'getNodeForPath'),
-			array($rootDir));
+			array($rootDir, $view));
 
 		$objectTree->expects($this->once())
 			->method('getNodeForPath')
@@ -86,7 +111,7 @@ class ObjectTree extends PHPUnit_Framework_TestCase {
 			->will($this->returnValue(false));
 
 		/** @var $objectTree \OC\Connector\Sabre\ObjectTree */
-		$objectTree->fileView = new TestDoubleFileView($updatables, $deletables);
+		$objectTree->init($rootDir, $view);
 		$objectTree->move($source, $dest);
 	}
 
