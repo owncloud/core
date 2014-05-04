@@ -96,16 +96,23 @@ class OC_OCS_Privatedata {
 		* As such a UNIQUE INDEX on user, app, key would be the more robust and
 		* thus desirable solution.
 		*/
-		$query = \OCP\DB::prepare('SELECT `value`  FROM `*PREFIX*privatedata` WHERE `user` = ? AND `app` = ? AND `key` = ? ');
-		$result = $query->execute(array($user, $app, $key));
+		$query = \OCP\DB::prepare('SELECT COUNT(`keyid`) FROM `*PREFIX*privatedata` WHERE `user` = ? AND `app` = ? AND `key` = ?');
+		$numRows = (int) $query->execute(array($user, $app, $key))->fetchOne();
 
-		if ($result->numRows() == 0) {
+		if ($numRows > 1) {
+			// This can happen as per the above. Delete all rows, perform one insert.
+			$query = \OCP\DB::prepare('DELETE FROM `*PREFIX*privatedata` WHERE `user` = ? AND `app` = ? AND `key` = ?');
+			$query->execute(array($user, $app, $key));
+			$numRows = 0;
+		}
+
+		if ($numRows == 0) {
 			// store in DB
 			$query = \OCP\DB::prepare('INSERT INTO `*PREFIX*privatedata` (`user`, `app`, `key`, `value`) VALUES(?, ?, ?, ?)');
 			$query->execute(array($user, $app, $key, $value));
 		} else {
 			// update in DB
-			$query = \OCP\DB::prepare('UPDATE `*PREFIX*privatedata` SET `value` = ?  WHERE `user` = ? AND `app` = ? AND `key` = ? ');
+			$query = \OCP\DB::prepare('UPDATE `*PREFIX*privatedata` SET `value` = ?  WHERE `user` = ? AND `app` = ? AND `key` = ?');
 			$query->execute(array($value, $user, $app, $key ));
 		}
 
