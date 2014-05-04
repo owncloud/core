@@ -69,7 +69,33 @@ class OC_OCS_Privatedata {
 		$key = addslashes(strip_tags($parameters['key']));
 		$value = OC_OCS::readData('post', 'value', 'text');
 
-		// check if key is already set
+		/*
+		* Check if there already is a row for this key.
+		*
+		* This SELECT query is required in order to mitigate insertion of
+		* duplicate rows on MySQL which otherwise may happen because
+		*
+		*  a) There is no UNIQUE INDEX preventing the insertion of such rows.
+		*     This is possibly due to relevant columns all being VARCHAR(255)
+		*     resulting in an index too large for MyISAM.
+		*
+		* and
+		*
+		*  b) MySQL returns zero affected rows for UPDATE queries that update
+		*     rows to the data they already contain.
+		*
+		* It should be noted that this only mitigates but not prevents the
+		* creation of duplicate rows as these may still be produced due to race
+		* conditions, e.g.
+		*
+		*  1. SELECT (Process 1)
+		*  2. SELECT (Process 2)
+		*  3. INSERT (Process 1)
+		*  4. INSERT (Process 2)
+		*
+		* As such a UNIQUE INDEX on user, app, key would be the more robust and
+		* thus desirable solution.
+		*/
 		$query = \OCP\DB::prepare('SELECT `value`  FROM `*PREFIX*privatedata` WHERE `user` = ? AND `app` = ? AND `key` = ? ');
 		$result = $query->execute(array($user, $app, $key));
 
