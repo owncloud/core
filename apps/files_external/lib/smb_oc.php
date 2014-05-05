@@ -22,7 +22,6 @@ class SMB_OC extends \OC\Files\Storage\SMB {
 			$password = isset($params['password']) ? $params['password'] : 'unset';
 
 			$root=isset($params['root'])?$params['root']:'/';
-			$share = '';
 
 			if ($this->username_as_share) {
 				$share = '/'.$user;
