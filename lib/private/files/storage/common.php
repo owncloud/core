@@ -349,7 +349,7 @@ abstract class Common implements \OC\Files\Storage\Storage {
 	 *
 	 * @return bool
 	 */
-	public function isDynamic() {
+	public function needCredentialsUpdate() {
 		return false;
 	}
 

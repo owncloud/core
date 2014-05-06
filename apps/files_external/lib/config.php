@@ -114,17 +114,17 @@ class OC_Mount_Config {
 	}
 
 	/**
-	 * Hook that updates credentials in dynamic mount points
+	 * Hook that updates credentials in mount points when needed
 	 * @param array $params
 	 */
-	public static function updateDynamicMountPoints($credentials) {
+	public static function updateMountPointCredentials($credentials) {
 		$username = \OC_User::getUserSession()->getLoginName();
 
 		$mountPoints = self::getAbsoluteMountPoints($credentials['uid']);
 		foreach ($mountPoints as $mountPoint => $options) {
 			try {
 				$storage = new $options['class']($options['options']);
-				if ($storage->isDynamic()) {
+				if ($storage->needCredentialsUpdate()) {
 					$options['options']['user'] = $username;
 					$options['options']['password'] = $credentials['password'];
 					// Remove '/uid/files/' from mount point [strlen(...) + 8]

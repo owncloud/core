@@ -640,9 +640,9 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 	}
 
 	/*
-	 * Test non-dynamic mount point for original behaviour
+	 * Test mount point without credentials update for original behaviour
 	 */
-	public function testNonDynamicMountPoint() {
+	public function testMountPointNoCredentialsUpdate() {
 		$this->assertTrue(
 			OC_Mount_Config::addMountPoint(
 				'/ext',
@@ -661,7 +661,7 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 		);
 
 		// simulate login
-		\OC_Mount_Config::updateDynamicMountPoints(
+		\OC_Mount_Config::updateMountPointCredentials(
 			array('uid' => self::TEST_USER1, 'password' => self::TEST_USER1)
 		);
 
@@ -676,9 +676,9 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 	}
 
 	/*
-	 * Test dynamic mount point for credential updating
+	 * Test mount point for credentials updating
 	 */
-	public function testDynamicMountPoint() {
+	public function testMountPointCredentialsUpdate() {
 		$this->assertTrue(
 			OC_Mount_Config::addMountPoint(
 				'/ext',
@@ -698,7 +698,7 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 		);
 
 		// simulate login
-		\OC_Mount_Config::updateDynamicMountPoints(
+		\OC_Mount_Config::updateMountPointCredentials(
 			array('uid' => self::TEST_USER1, 'password' => self::TEST_USER1)
 		);
 

@@ -74,7 +74,7 @@ class SMB_OC extends \OC\Files\Storage\SMB {
 		}
 	}
 
-	public function isDynamic() {
+	public function needCredentialsUpdate() {
 		return true;
 	}
 }
