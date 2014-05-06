@@ -325,12 +325,21 @@ class OC_DB {
 	}
 
 	/**
-	 * drop a table
+	 * drop a table - the database prefix will be prepended
 	 * @param string $tableName the table to drop
 	 */
 	public static function dropTable($tableName) {
-		$schemaManager = self::getMDB2SchemaManager();
-		$schemaManager->dropTable($tableName);
+
+		$tableName = OC_Config::getValue('dbtableprefix', 'oc_' ) . trim($tableName);
+
+		self::$connection->beginTransaction();
+
+		$platform = self::$connection->getDatabasePlatform();
+		$sql = $platform->getDropTableSQL($platform->quoteIdentifier($tableName));
+
+		self::$connection->query($sql);
+
+		self::$connection->commit();
 	}
 
 	/**
@@ -340,15 +349,6 @@ class OC_DB {
 	public static function removeDBStructure($file) {
 		$schemaManager = self::getMDB2SchemaManager();
 		$schemaManager->removeDBStructure($file);
-	}
-
-	/**
-	 * replaces the ownCloud tables with a new set
-	 * @param string $file path to the MDB2 xml db export file
-	 */
-	public static function replaceDB( $file ) {
-		$schemaManager = self::getMDB2SchemaManager();
-		$schemaManager->replaceDB($file);
 	}
 
 	/**
@@ -403,6 +403,58 @@ class OC_DB {
 			self::$connection->enableQueryStatementCaching();
 		} else {
 			self::$connection->disableQueryStatementCaching();
+		}
+	}
+
+	/**
+	 * Checks if a table exists in the database - the database prefix will be prepended
+	 *
+	 * @param string $table
+	 * @return bool
+	 * @throws DatabaseException
+	 */
+	public static function tableExists($table) {
+
+		$table = OC_Config::getValue('dbtableprefix', 'oc_' ) . trim($table);
+
+		$dbType = OC_Config::getValue( 'dbtype', 'sqlite' );
+		switch ($dbType) {
+			case 'sqlite':
+			case 'sqlite3':
+				$sql = "SELECT name FROM sqlite_master "
+					.  "WHERE type = 'table' AND name = ? "
+					.  "UNION ALL SELECT name FROM sqlite_temp_master "
+					.  "WHERE type = 'table' AND name = ?";
+				$result = \OC_DB::executeAudited($sql, array($table, $table));
+				break;
+			case 'mysql':
+				$sql = 'SHOW TABLES LIKE ?';
+				$result = \OC_DB::executeAudited($sql, array($table));
+				break;
+			case 'pgsql':
+				$sql = 'SELECT tablename AS table_name, schemaname AS schema_name '
+					.  'FROM pg_tables WHERE schemaname NOT LIKE \'pg_%\' '
+					.  'AND schemaname != \'information_schema\' '
+					.  'AND tablename = ?';
+				$result = \OC_DB::executeAudited($sql, array($table));
+				break;
+			case 'oci':
+				$sql = 'SELECT TABLE_NAME FROM USER_TABLES WHERE TABLE_NAME = ?';
+				$result = \OC_DB::executeAudited($sql, array($table));
+				break;
+			case 'mssql':
+				$sql = 'SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = ?';
+				$result = \OC_DB::executeAudited($sql, array($table));
+				break;
+			default:
+				throw new DatabaseException("Unknown database type: $dbType");
+		}
+
+		$name = $result->fetchOne();
+		if ($name === $table) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 }
