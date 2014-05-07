@@ -70,8 +70,8 @@ $config = \OC::$server->getConfig();
 $permissions = $dirInfo->getPermissions();
 
 // information about storage capacities
+$usageInfo = \OCA\Files\buildFileStorageStatistics($dir);
 $storageInfo=OC_Helper::getStorageInfo($dir, $dirInfo);
-$freeSpace=$storageInfo['free'];
 $uploadLimit=OCP\Util::uploadLimit();
 $maxUploadFilesize=OCP\Util::maxUploadFilesize($dir, $freeSpace);
 $publicUploadEnabled = $config->getAppValue('core', 'shareapi_allow_public_upload', 'yes');
@@ -98,7 +98,7 @@ $tmpl->assign('trash', $trashEnabled);
 $tmpl->assign('trashEmpty', $trashEmpty);
 $tmpl->assign('uploadMaxFilesize', $maxUploadFilesize); // minimium of freeSpace and uploadLimit
 $tmpl->assign('uploadMaxHumanFilesize', OCP\Util::humanFileSize($maxUploadFilesize));
-$tmpl->assign('freeSpace', $freeSpace);
+$tmpl->assign('freeSpace', $usageInfo['freeSpace']);
 $tmpl->assign('uploadLimit', $uploadLimit); // PHP upload limit
 $tmpl->assign('allowZipDownload', intval(OCP\Config::getSystemValue('allowZipDownload', true)));
 $tmpl->assign('usedStoragePercent', (int)$storageInfo['relative']);

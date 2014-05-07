@@ -7,16 +7,13 @@ class Helper
 	public static function buildFileStorageStatistics($dir) {
 		// information about storage capacities
 		$storageInfo = \OC_Helper::getStorageInfo($dir);
-
-		$l = new \OC_L10N('files');
-		$maxUploadFilesize = \OCP\Util::maxUploadFilesize($dir, $storageInfo['free']);
-		$maxHumanFilesize = \OCP\Util::humanFileSize($maxUploadFilesize);
-		$maxHumanFilesize = $l->t('Upload') . ' max. ' . $maxHumanFilesize;
-
-		// information about storage capacities
-		$storageInfo = \OC_Helper::getStorageInfo($dir);
 		$userQuota = getUserQuota(\OCP\User::getUser());
 		$userQuotaPercent = round(($storageInfo['used'] / $userQuota) * 10000 ) / 100;
+
+		$maxUploadFilesize = \OCP\Util::maxUploadFilesize($dir, $storageInfo['free']);
+		$maxHumanFilesize = \OCP\Util::humanFileSize($maxUploadFilesize);
+		$l = new \OC_L10N('files');
+		$maxHumanFilesize = $l->t('Upload') . ' max. ' . $maxHumanFilesize;
 
 		return array('uploadMaxFilesize' => $maxUploadFilesize,
 					 'maxHumanFilesize'  => $maxHumanFilesize,
