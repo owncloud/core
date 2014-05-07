@@ -14,15 +14,13 @@ OC_App::setActiveNavigationEntry( "admin" );
 
 $tmpl = new OC_Template( 'settings', 'admin', 'user');
 $forms=OC_App::getForms('admin');
-$htaccessworking=OC_Util::isHtAccessWorking();
+$htaccessworking=OC_Util::isHtaccessWorking();
 
 $entries=OC_Log_Owncloud::getEntries(3);
 $entriesremain = count(OC_Log_Owncloud::getEntries(4)) > 3;
 
 // Should we display sendmail as an option?
-if (findBinaryPath('sendmailsendmail')) {
-	$tmpl->assign('sendmail_is_available', true);
-}
+$tmpl->assign('sendmail_is_available', (bool) findBinaryPath('sendmailsendmail'));
 
 $tmpl->assign('loglevel', OC_Config::getValue( "loglevel", 2 ));
 $tmpl->assign('mail_domain', OC_Config::getValue( "mail_domain", '' ));
@@ -47,6 +45,10 @@ $tmpl->assign('backgroundjobs_mode', OC_Appconfig::getValue('core', 'backgroundj
 $tmpl->assign('cron_log', OC_Config::getValue('cron_log', true));
 $tmpl->assign('lastcron', OC_Appconfig::getValue('core', 'lastcron', false));
 $tmpl->assign('shareAPIEnabled', OC_Appconfig::getValue('core', 'shareapi_enabled', 'yes'));
+$tmpl->assign('shareDefaultExpireDateSet', OC_Appconfig::getValue('core', 'shareapi_default_expire_date', 'no'));
+$tmpl->assign('shareExpireAfterNDays', OC_Appconfig::getValue('core', 'shareapi_expire_after_n_days', '7'));
+$tmpl->assign('shareEnforceExpireDate', OC_Appconfig::getValue('core', 'shareapi_enforce_expire_date', 'no'));
+
 
 // Check if connected using HTTPS
 if (OC_Request::serverProtocol() === 'https') {

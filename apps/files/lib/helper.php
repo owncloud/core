@@ -13,7 +13,7 @@ class Helper
 		$maxUploadFilesize = \OCP\Util::maxUploadFilesize($dir, $storageInfo['free']);
 		$maxHumanFilesize = \OCP\Util::humanFileSize($maxUploadFilesize);
 		$l = new \OC_L10N('files');
-		$maxHumanFilesize = $l->t('Upload') . ' max. ' . $maxHumanFilesize;
+		$maxHumanFilesize = $l->t('Upload (max. %s)', array($maxHumanFilesize));
 
 		return array('uploadMaxFilesize' => $maxUploadFilesize,
 					 'maxHumanFilesize'  => $maxHumanFilesize,
@@ -41,8 +41,7 @@ class Helper
 					$sid = explode(':', $sid);
 					if ($sid[0] === 'shared') {
 						$icon = \OC_Helper::mimetypeIcon('dir-shared');
-					}
-					if ($sid[0] !== 'local' and $sid[0] !== 'home') {
+					} elseif ($sid[0] !== 'local' and $sid[0] !== 'home') {
 						$icon = \OC_Helper::mimetypeIcon('dir-external');
 					}
 				}
@@ -77,13 +76,14 @@ class Helper
 	/**
 	 * Formats the file info to be returned as JSON to the client.
 	 *
-	 * @param \OCP\Files\FileInfo file info
+	 * @param \OCP\Files\FileInfo $i
 	 * @return array formatted file info
 	 */
 	public static function formatFileInfo($i) {
 		$entry = array();
 
 		$entry['id'] = $i['fileid'];
+		$entry['parentId'] = $i['parent'];
 		$entry['date'] = \OCP\Util::formatDate($i['mtime']);
 		$entry['mtime'] = $i['mtime'] * 1000;
 		// only pick out the needed attributes
@@ -99,6 +99,9 @@ class Helper
 		$entry['etag'] = $i['etag'];
 		if (isset($i['displayname_owner'])) {
 			$entry['shareOwner'] = $i['displayname_owner'];
+		}
+		if (isset($i['is_share_mount_point'])) {
+			$entry['isShareMountPoint'] = $i['is_share_mount_point'];
 		}
 		return $entry;
 	}

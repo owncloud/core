@@ -1,5 +1,6 @@
 <?php
 $TRANSLATIONS = array(
+"Couldn't send mail to following users: %s " => "Kunne ikkje snede e-post til følgande brukarar: %s ",
 "Turned on maintenance mode" => "Skrudde på vedlikehaldsmodus",
 "Turned off maintenance mode" => "Skrudde av vedlikehaldsmodus",
 "Updated database" => "Database oppdatert",
@@ -37,7 +38,6 @@ $TRANSLATIONS = array(
 "_%n day ago_::_%n days ago_" => array("%n dag sidan","%n dagar sidan"),
 "last month" => "førre månad",
 "_%n month ago_::_%n months ago_" => array("%n månad sidan","%n månadar sidan"),
-"months ago" => "månadar sidan",
 "last year" => "i fjor",
 "years ago" => "år sidan",
 "Choose" => "Vel",

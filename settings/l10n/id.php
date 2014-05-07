@@ -1,5 +1,6 @@
 <?php
 $TRANSLATIONS = array(
+"Saved" => "Disimpan",
 "Email sent" => "Email terkirim",
 "Encryption" => "Enkripsi",
 "Unable to load list from App Store" => "Tidak dapat memuat daftar dari App Store",
@@ -36,6 +37,11 @@ $TRANSLATIONS = array(
 "Update" => "Perbarui",
 "Updated" => "Diperbarui",
 "Select a profile picture" => "Pilih foto profil",
+"Very weak password" => "Sandi sangat lemah",
+"Weak password" => "Sandi lemah",
+"So-so password" => "Sandi lumayan",
+"Good password" => "Sandi baik",
+"Strong password" => "Sandi kuat",
 "Decrypting files... Please wait, this can take some time." => "Mendeskripsi berkas... Modon tunggu, ini memerlukan beberapa saat.",
 "deleted" => "dihapus",
 "undo" => "urungkan",
@@ -87,7 +93,6 @@ $TRANSLATIONS = array(
 "Allow users to share with anyone" => "Izinkan pengguna untuk berbagi kepada siapa saja",
 "Allow users to only share with users in their groups" => "Hanya izinkan pengguna untuk berbagi dengan pengguna pada grup mereka sendiri",
 "Allow mail notification" => "Izinkan pemberitahuan email",
-"Allow user to send mail notification for shared files" => "Izinkan pengguna mengirim pemberitahuan email pada berkas yang dibagikan",
 "Security" => "Keamanan",
 "Enforce HTTPS" => "Selalu Gunakan HTTPS",
 "Forces the clients to connect to %s via an encrypted connection." => "Memaksa klien untuk menghubungkan ke %s menggunakan sambungan yang dienskripsi.",

@@ -1,5 +1,6 @@
 <?php
 $TRANSLATIONS = array(
+"Updated database" => "قاعدة بيانات المرفوعات",
 "Unknown filetype" => "نوع الملف غير معروف",
 "Invalid image" => "الصورة غير صالحة",
 "Sunday" => "الأحد",
@@ -31,7 +32,6 @@ $TRANSLATIONS = array(
 "_%n day ago_::_%n days ago_" => array("","","","","",""),
 "last month" => "الشهر الماضي",
 "_%n month ago_::_%n months ago_" => array("","","","","",""),
-"months ago" => "شهر مضى",
 "last year" => "السنةالماضية",
 "years ago" => "سنة مضت",
 "Choose" => "اختيار",
@@ -55,6 +55,7 @@ $TRANSLATIONS = array(
 "Share link" => "شارك الرابط",
 "Password protect" => "حماية كلمة السر",
 "Password" => "كلمة المرور",
+"Allow Public Upload" => "اسمح بالرفع للعامة",
 "Email link to person" => "ارسل الرابط بالبريد الى صديق",
 "Send" => "أرسل",
 "Set expiration date" => "تعيين تاريخ إنتهاء الصلاحية",

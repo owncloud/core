@@ -1,5 +1,6 @@
 <?php
 $TRANSLATIONS = array(
+"Saved" => "Gordeta",
 "Email sent" => "Eposta bidalia",
 "Encryption" => "Enkriptazioa",
 "Unable to load list from App Store" => "Ezin izan da App Dendatik zerrenda kargatu",
@@ -81,7 +82,6 @@ $TRANSLATIONS = array(
 "Allow users to share with anyone" => "Baimendu erabiltzaileak edonorekin elkarbanatzen",
 "Allow users to only share with users in their groups" => "Baimendu erabiltzaileak bakarrik bere taldeko erabiltzaileekin elkarbanatzen",
 "Allow mail notification" => "Baimendu posta bidezko jakinarazpenak",
-"Allow user to send mail notification for shared files" => "Baimendu erabiltzailea posta bidezko jakinarazpenak bidaltzen partekatutako fitxategietarako",
 "Security" => "Segurtasuna",
 "Enforce HTTPS" => "Behartu HTTPS",
 "Forces the clients to connect to %s via an encrypted connection." => "Bezeroak %s-ra konexio enkriptatu baten bidez konektatzera behartzen ditu.",

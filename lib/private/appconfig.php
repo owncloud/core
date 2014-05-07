@@ -71,6 +71,7 @@ class AppConfig implements \OCP\IAppConfig {
 
 	/**
 	 * @param string $app
+	 * @return \string[]
 	 */
 	private function getAppValues($app) {
 		$appCache = $this->getAppCache($app);
@@ -147,7 +148,7 @@ class AppConfig implements \OCP\IAppConfig {
 	 */
 	public function hasKey($app, $key) {
 		$values = $this->getAppValues($app);
-		return isset($values[$key]);
+		return array_key_exists($key, $values);
 	}
 
 	/**

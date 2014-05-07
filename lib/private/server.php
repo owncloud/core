@@ -35,6 +35,13 @@ class Server extends SimpleContainer implements IServerContainer {
 				$requesttoken = false;
 			}
 
+			if (defined('PHPUNIT_RUN') && PHPUNIT_RUN
+			&& in_array('fakeinput', stream_get_wrappers())) {
+				$stream = 'fakeinput://data';
+			} else {
+				$stream = 'php://input';
+			}
+
 			return new Request(
 				array(
 					'get' => $_GET,
@@ -48,7 +55,7 @@ class Server extends SimpleContainer implements IServerContainer {
 						: null,
 					'urlParams' => $urlParams,
 					'requesttoken' => $requesttoken,
-				)
+				), $stream
 			);
 		});
 		$this->registerService('PreviewManager', function($c) {
@@ -233,15 +240,23 @@ class Server extends SimpleContainer implements IServerContainer {
 	 * @return \OCP\Files\Folder
 	 */
 	function getUserFolder() {
-
-		$dir = '/files';
+		$dir = '/' . \OCP\User::getUser();
 		$root = $this->getRootFolder();
 		$folder = null;
+
 		if(!$root->nodeExists($dir)) {
 			$folder = $root->newFolder($dir);
 		} else {
 			$folder = $root->get($dir);
 		}
+
+		$dir = '/files';
+		if(!$folder->nodeExists($dir)) {
+			$folder = $folder->newFolder($dir);
+		} else {
+			$folder = $folder->get($dir);
+		}
+
 		return $folder;
 	}
 

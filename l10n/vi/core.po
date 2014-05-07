@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-03-22 01:55-0400\n"
-"PO-Revision-Date: 2014-03-22 05:55+0000\n"
+"POT-Creation-Date: 2014-04-30 01:55-0400\n"
+"PO-Revision-Date: 2014-04-29 10:02+0000\n"
 "Last-Translator: I Robot\n"
 "Language-Team: Vietnamese (http://www.transifex.com/projects/p/owncloud/language/vi/)\n"
 "MIME-Version: 1.0\n"
@@ -21,24 +21,24 @@ msgstr ""
 "Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ajax/share.php:88
+#: ajax/share.php:87
 msgid "Expiration date is in the past."
 msgstr ""
 
-#: ajax/share.php:120 ajax/share.php:162
+#: ajax/share.php:119 ajax/share.php:161
 #, php-format
 msgid "Couldn't send mail to following users: %s "
 msgstr "Không thể gửi thư cho người dùng: %s"
 
-#: ajax/update.php:11
+#: ajax/update.php:10
 msgid "Turned on maintenance mode"
 msgstr "Bật chế độ bảo trì"
 
-#: ajax/update.php:14
+#: ajax/update.php:13
 msgid "Turned off maintenance mode"
 msgstr "Tắt chế độ bảo trì"
 
-#: ajax/update.php:17
+#: ajax/update.php:16
 msgid "Updated database"
 msgstr "Cơ sở dữ liệu đã được cập nhật"
 
@@ -138,122 +138,126 @@ msgstr "Tháng 11"
 msgid "December"
 msgstr "Tháng 12"
 
-#: js/js.js:458
+#: js/js.js:483
 msgid "Settings"
 msgstr "Cài đặt"
 
-#: js/js.js:496
+#: js/js.js:583
 msgid "Saving..."
 msgstr "Đang lưu..."
 
-#: js/js.js:995
+#: js/js.js:1240
 msgid "seconds ago"
 msgstr "vài giây trước"
 
-#: js/js.js:996
+#: js/js.js:1241
 msgid "%n minute ago"
 msgid_plural "%n minutes ago"
 msgstr[0] "%n phút trước"
 
-#: js/js.js:997
+#: js/js.js:1242
 msgid "%n hour ago"
 msgid_plural "%n hours ago"
 msgstr[0] "%n giờ trước"
 
-#: js/js.js:998
+#: js/js.js:1243
 msgid "today"
 msgstr "hôm nay"
 
-#: js/js.js:999
+#: js/js.js:1244
 msgid "yesterday"
 msgstr "hôm qua"
 
-#: js/js.js:1000
+#: js/js.js:1245
 msgid "%n day ago"
 msgid_plural "%n days ago"
 msgstr[0] "%n ngày trước"
 
-#: js/js.js:1001
+#: js/js.js:1246
 msgid "last month"
 msgstr "tháng trước"
 
-#: js/js.js:1002
+#: js/js.js:1247
 msgid "%n month ago"
 msgid_plural "%n months ago"
 msgstr[0] "%n tháng trước"
 
-#: js/js.js:1003
-msgid "months ago"
-msgstr "tháng trước"
-
-#: js/js.js:1004
+#: js/js.js:1248
 msgid "last year"
 msgstr "năm trước"
 
-#: js/js.js:1005
+#: js/js.js:1249
 msgid "years ago"
 msgstr "năm trước"
 
-#: js/oc-dialogs.js:123
+#: js/oc-dialogs.js:125
 msgid "Choose"
 msgstr "Chọn"
 
-#: js/oc-dialogs.js:146
+#: js/oc-dialogs.js:151
 msgid "Error loading file picker template: {error}"
 msgstr "Lỗi khi tải mẫu tập tin picker: {error}"
 
-#: js/oc-dialogs.js:172
+#: js/oc-dialogs.js:177
 msgid "Yes"
 msgstr "Có"
 
-#: js/oc-dialogs.js:182
+#: js/oc-dialogs.js:187
 msgid "No"
 msgstr "Không"
 
-#: js/oc-dialogs.js:199
+#: js/oc-dialogs.js:204
 msgid "Ok"
 msgstr "Đồng ý"
 
-#: js/oc-dialogs.js:219
+#: js/oc-dialogs.js:224
 msgid "Error loading message template: {error}"
 msgstr "Lỗi khi tải mẫu thông điệp: {error}"
 
-#: js/oc-dialogs.js:347
+#: js/oc-dialogs.js:352
 msgid "{count} file conflict"
 msgid_plural "{count} file conflicts"
 msgstr[0] "{count} tập tin xung đột"
 
-#: js/oc-dialogs.js:361
+#: js/oc-dialogs.js:366
 msgid "One file conflict"
 msgstr "Một tập tin xung đột"
 
-#: js/oc-dialogs.js:367
+#: js/oc-dialogs.js:372
+msgid "New Files"
+msgstr "File mới"
+
+#: js/oc-dialogs.js:373
+msgid "Already existing files"
+msgstr ""
+
+#: js/oc-dialogs.js:375
 msgid "Which files do you want to keep?"
 msgstr "Bạn muốn tiếp tục với những tập tin nào?"
 
-#: js/oc-dialogs.js:368
+#: js/oc-dialogs.js:376
 msgid ""
 "If you select both versions, the copied file will have a number added to its"
 " name."
 msgstr "Nếu bạn chọn cả hai phiên bản, tập tin được sao chép sẽ được đánh thêm số vào tên của nó."
 
-#: js/oc-dialogs.js:376
+#: js/oc-dialogs.js:384
 msgid "Cancel"
 msgstr "Hủy"
 
-#: js/oc-dialogs.js:386
+#: js/oc-dialogs.js:394
 msgid "Continue"
 msgstr "Tiếp tục"
 
-#: js/oc-dialogs.js:433 js/oc-dialogs.js:446
+#: js/oc-dialogs.js:441 js/oc-dialogs.js:454
 msgid "(all selected)"
 msgstr "(Tất cả các lựa chọn)"
 
-#: js/oc-dialogs.js:436 js/oc-dialogs.js:449
+#: js/oc-dialogs.js:444 js/oc-dialogs.js:458
 msgid "({count} selected)"
 msgstr "({count} được chọn)"
 
-#: js/oc-dialogs.js:457
+#: js/oc-dialogs.js:466
 msgid "Error loading file exists template"
 msgstr "Lỗi khi tải tập tin mẫu đã tồn tại"
 
@@ -285,12 +289,12 @@ msgstr "Được chia sẻ"
 msgid "Share"
 msgstr "Chia sẻ"
 
-#: js/share.js:158 js/share.js:171 js/share.js:178 js/share.js:711
+#: js/share.js:158 js/share.js:171 js/share.js:178 js/share.js:734
 #: templates/installation.php:10
 msgid "Error"
 msgstr "Lỗi"
 
-#: js/share.js:160 js/share.js:767
+#: js/share.js:160 js/share.js:790
 msgid "Error while sharing"
 msgstr "Lỗi trong quá trình chia sẻ"
 
@@ -354,71 +358,71 @@ msgstr "Chia sẻ thông qua email"
 msgid "No people found"
 msgstr "Không tìm thấy người nào"
 
-#: js/share.js:324 js/share.js:363
+#: js/share.js:324 js/share.js:385
 msgid "group"
 msgstr "nhóm"
 
-#: js/share.js:335
+#: js/share.js:357
 msgid "Resharing is not allowed"
 msgstr "Chia sẻ lại không được cho phép"
 
-#: js/share.js:379
+#: js/share.js:401
 msgid "Shared in {item} with {user}"
 msgstr "Đã được chia sẽ trong {item} với {user}"
 
-#: js/share.js:401
+#: js/share.js:423
 msgid "Unshare"
 msgstr "Bỏ chia sẻ"
 
-#: js/share.js:409
+#: js/share.js:431
 msgid "notify by email"
 msgstr "Thông báo qua email"
 
-#: js/share.js:412
+#: js/share.js:434
 msgid "can edit"
 msgstr "có thể chỉnh sửa"
 
-#: js/share.js:414
+#: js/share.js:436
 msgid "access control"
 msgstr "quản lý truy cập"
 
-#: js/share.js:417
+#: js/share.js:439
 msgid "create"
 msgstr "tạo"
 
-#: js/share.js:420
+#: js/share.js:442
 msgid "update"
 msgstr "cập nhật"
 
-#: js/share.js:423
+#: js/share.js:445
 msgid "delete"
 msgstr "xóa"
 
-#: js/share.js:426
+#: js/share.js:448
 msgid "share"
 msgstr "chia sẻ"
 
-#: js/share.js:698
+#: js/share.js:721
 msgid "Password protected"
 msgstr "Mật khẩu bảo vệ"
 
-#: js/share.js:711
+#: js/share.js:734
 msgid "Error unsetting expiration date"
 msgstr "Lỗi không thiết lập ngày kết thúc"
 
-#: js/share.js:729
+#: js/share.js:752
 msgid "Error setting expiration date"
 msgstr "Lỗi cấu hình ngày kết thúc"
 
-#: js/share.js:754
+#: js/share.js:777
 msgid "Sending ..."
 msgstr "Đang gởi ..."
 
-#: js/share.js:765
+#: js/share.js:788
 msgid "Email sent"
 msgstr "Email đã được gửi"
 
-#: js/share.js:789
+#: js/share.js:812
 msgid "Warning"
 msgstr "Cảnh báo"
 
@@ -446,7 +450,7 @@ msgstr "Sửa thẻ"
 msgid "Error loading dialog template: {error}"
 msgstr "Lỗi khi tải mẫu hội thoại: {error}"
 
-#: js/tags.js:261
+#: js/tags.js:264
 msgid "No tags selected for deletion."
 msgstr "Không có thẻ nào được chọn để xóa"
 
@@ -532,14 +536,14 @@ msgstr "Mật khẩu mới"
 msgid "Reset password"
 msgstr "Khôi phục mật khẩu"
 
-#: setup/controller.php:138
+#: setup/controller.php:140
 #, php-format
 msgid ""
 "Mac OS X is not supported and %s will not work properly on this platform. "
 "Use it at your own risk! "
 msgstr ""
 
-#: setup/controller.php:142
+#: setup/controller.php:144
 msgid ""
 "For the best results, please consider using a GNU/Linux server instead."
 msgstr ""

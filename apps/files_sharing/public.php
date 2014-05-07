@@ -138,6 +138,7 @@ if (isset($path)) {
 
 			OCP\Util::addStyle('files', 'files');
 			OCP\Util::addStyle('files', 'upload');
+			OCP\Util::addScript('files', 'filesummary');
 			OCP\Util::addScript('files', 'breadcrumb');
 			OCP\Util::addScript('files', 'files');
 			OCP\Util::addScript('files', 'filelist');
@@ -165,12 +166,13 @@ if (isset($path)) {
 			$folder->assign('disableSharing', true);
 			$folder->assign('trash', false);
 			$tmpl->assign('folder', $folder->fetchPage());
-			$maxInputFileSize = OCP\Config::getSystemValue('maxZipInputSize', OCP\Util::computerFileSize('800 MB'));
 			$allowZip = OCP\Config::getSystemValue('allowZipDownload', true);
 			$tmpl->assign('allowZipDownload', intval($allowZip));
+			$tmpl->assign('showDownloadButton', intval($allowZip));
 			$tmpl->assign('downloadURL',
 				OCP\Util::linkToPublic('files') . $urlLinkIdentifiers . '&download&path=' . urlencode($getPath));
 		} else {
+			$tmpl->assign('showDownloadButton', true);
 			$tmpl->assign('dir', $dir);
 
 			// Show file preview if viewer is available

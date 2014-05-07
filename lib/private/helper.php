@@ -36,7 +36,7 @@ class OC_Helper {
 	 * @param array $parameters
 	 * @return
 	 * @internal param array $args with param=>value, will be appended to the returned url
-	 * @returns the url
+	 * @returns string the url
 	 *
 	 * Returns a url to the given app and file.
 	 */
@@ -78,7 +78,9 @@ class OC_Helper {
 	 * Returns a absolute url to the given app and file.
 	 */
 	public static function linkToAbsolute($app, $file, $args = array()) {
-		return self::linkTo($app, $file, $args);
+		return OC::$server->getURLGenerator()->getAbsoluteURL(
+			self::linkTo($app, $file, $args)
+		);
 	}
 
 	/**
@@ -112,8 +114,10 @@ class OC_Helper {
 	 * Returns a absolute url to the given service.
 	 */
 	public static function linkToRemote($service, $add_slash = true) {
-		return self::makeURLAbsolute(self::linkToRemoteBase($service))
-		. (($add_slash && $service[strlen($service) - 1] != '/') ? '/' : '');
+		return OC::$server->getURLGenerator()->getAbsoluteURL(
+			self::linkToRemoteBase($service)
+				. (($add_slash && $service[strlen($service) - 1] != '/') ? '/' : '')
+		);
 	}
 
 	/**
@@ -125,8 +129,12 @@ class OC_Helper {
 	 * Returns a absolute url to the given service.
 	 */
 	public static function linkToPublic($service, $add_slash = false) {
-		return self::linkToAbsolute('', 'public.php') . '?service=' . $service
-		. (($add_slash && $service[strlen($service) - 1] != '/') ? '/' : '');
+		return OC::$server->getURLGenerator()->getAbsoluteURL(
+			self::linkTo(
+				'', 'public.php') . '?service=' . $service
+				. (($add_slash && $service[strlen($service) - 1] != '/') ? '/' : ''
+			)
+		);
 	}
 
 	/**
@@ -306,6 +314,32 @@ class OC_Helper {
 	}
 
 	/**
+	 * @brief Make a php file size
+	 * @param int $bytes file size in bytes
+	 * @return string a php parseable file size
+	 *
+	 * Makes 2048 to 2k and 2^41 to 2048G
+	 */
+	public static function phpFileSize($bytes) {
+		if ($bytes < 0) {
+			return "?";
+		}
+		if ($bytes < 1024) {
+			return $bytes . "B";
+		}
+		$bytes = round($bytes / 1024, 1);
+		if ($bytes < 1024) {
+			return $bytes . "K";
+		}
+		$bytes = round($bytes / 1024, 1);
+		if ($bytes < 1024) {
+			return $bytes . "M";
+		}
+		$bytes = round($bytes / 1024, 1);
+		return $bytes . "G";
+	}
+
+	/**
 	 * @brief Make a computer file size
 	 * @param string $str file size in human readable format
 	 * @return int a file size in bytes
@@ -428,6 +462,16 @@ class OC_Helper {
 	 */
 	static function getMimeType($path) {
 		return self::getMimetypeDetector()->detect($path);
+	}
+
+	/**
+	 * Get a secure mimetype that won't expose potential XSS.
+	 *
+	 * @param string $mimeType
+	 * @return string
+	 */
+	static function getSecureMimeType($mimeType) {
+		return self::getMimetypeDetector()->getSecureMimeType($mimeType);
 	}
 
 	/**
