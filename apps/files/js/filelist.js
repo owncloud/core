@@ -1261,6 +1261,21 @@ window.FileList = {
 	 */
 	getSelectedFiles: function() {
 		return _.values(this._selectedFiles);
+	},
+	/**
+	* Toggle for hidden files
+	*/
+	toggleHidden: function() {
+		//get all the table rows with files and loop (each)
+		$('#fileList [data-file^="."]').each(function(){
+			$(this).toggle();
+		});
+
+		$('#fileList').bind('DOMNodeInserted DOMNodeRemoved', function(){
+			$('#fileList [data-file^="."]').each(function(){
+				$(this).hide();
+			});
+		});
 	}
 };
 
@@ -1543,5 +1558,13 @@ $(document).ready(function() {
 	setTimeout(function() {
 		FileList.changeDirectory(dir, false, true);
 	}, 0);
+	
+	// show/hide hidden files with SHIFT + '.'
+	$(window).keydown(function(event) { 
+		//+ fires event 190
+		if (event.shiftKey && event.which === 190) {
+			FileList.toggleHidden();
+		}
+	});
 });
 
