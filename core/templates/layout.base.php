@@ -26,7 +26,11 @@
 				foreach ($header['attributes'] as $name => $value) {
 					print_unescaped("$name='$value' ");
 				};
-				print_unescaped('/>');
+				if ($header['text'] !== null) {
+					print_unescaped('>'.$header['text'].'</'.$header['tag'].'>');
+				} else {
+					print_unescaped('/>');
+				}
 			?>
 		<?php endforeach; ?>
 	</head>
