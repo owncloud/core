@@ -158,10 +158,11 @@ if (isset($path)) {
 			$folder->assign('files', $files);
 			$folder->assign('uploadMaxFilesize', $maxUploadFilesize);
 			$folder->assign('uploadMaxHumanFilesize', OCP\Util::humanFileSize($maxUploadFilesize));
+			// XXX: use $shareOwner to calculate free space
 			$folder->assign('freeSpace', $freeSpace);
 			$folder->assign('uploadLimit', $uploadLimit); // PHP upload limit
 			$folder->assign('allowZipDownload', intval(OCP\Config::getSystemValue('allowZipDownload', true)));
-			$folder->assign('usedSpacePercent', 0);
+			$folder->assign('usedStoragePercent', 0);
 			$folder->assign('disableSharing', true);
 			$folder->assign('trash', false);
 			$tmpl->assign('folder', $folder->fetchPage());

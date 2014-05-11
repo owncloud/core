@@ -25,6 +25,8 @@
 					<?php endif;?>
 					<input type="hidden" id="upload_limit" value="<?php p($_['uploadLimit']) ?>">
 					<input type="hidden" id="free_space" value="<?php p($_['freeSpace']) ?>">
+					<input type="hidden" id="usedStoragePercent" value="<?php p($_['usedStoragePercent']) ?>">
+					<input type="hidden" id="usedQuotaPercent" value="<?php p($_['usedQuotaPercent']) ?>">
 					<?php if(isset($_['dirToken'])):?>
 					<input type="hidden" id="publicUploadRequestToken" name="requesttoken" value="<?php p($_['requesttoken']) ?>" />
 					<input type="hidden" id="dirToken" name="dirToken" value="<?php p($_['dirToken']) ?>" />
@@ -112,7 +114,7 @@
 <!-- config hints for javascript -->
 <input type="hidden" name="filesApp" id="filesApp" value="1" />
 <input type="hidden" name="allowZipDownload" id="allowZipDownload" value="<?php p($_['allowZipDownload']); ?>" />
-<input type="hidden" name="usedSpacePercent" id="usedSpacePercent" value="<?php p($_['usedSpacePercent']); ?>" />
+<input type="hidden" name="usedStoragePercent" id="usedStoragePercent" value="<?php p($_['usedStoragePercent']); ?>" />
 <?php if (!$_['isPublic']) :?>
 <input type="hidden" name="encryptedFiles" id="encryptedFiles" value="<?php $_['encryptedFiles'] ? p('1') : p('0'); ?>" />
 <input type="hidden" name="encryptedInitStatus" id="encryptionInitStatus" value="<?php p($_['encryptionInitStatus']) ?>" />
