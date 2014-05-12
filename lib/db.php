@@ -330,7 +330,7 @@ class OC_DB {
 	 *
 	 * SQL query via MDB2 prepare(), needs to be execute()'d!
 	 */
-	static public function prepare( $query , $limit = null, $offset = null, $isManipulation = null) {
+	static public function prepare( $query , $limit = null, $offset = null, $isManipulation = null, array $types = null) {
 
 		if (!is_null($limit) && $limit != -1) {
 			if (self::$backend == self::BACKEND_MDB2) {
@@ -375,9 +375,9 @@ class OC_DB {
 		if(self::$backend==self::BACKEND_MDB2) {
 			// differentiate between query and manipulation
 			if ($isManipulation) {
-				$result = self::$connection->prepare( $query, null, MDB2_PREPARE_MANIP );
+				$result = self::$connection->prepare( $query, $types, MDB2_PREPARE_MANIP );
 			} else {
-				$result = self::$connection->prepare( $query, null, MDB2_PREPARE_RESULT );
+				$result = self::$connection->prepare( $query, $types, MDB2_PREPARE_RESULT );
 			}
 
 			// Die if we have an error (error means: bad query, not 0 results!)
@@ -446,7 +446,7 @@ class OC_DB {
 						 . ' pass an array with \'limit\' and \'offset\' instead';
 				throw new DatabaseException($message, $stmt);
 			}
-			$stmt = array('sql' => $stmt, 'limit' => null, 'offset' => null);
+			$stmt = array('sql' => $stmt, 'limit' => null, 'offset' => null, 'types' => null);
 		}
 		if (is_array($stmt)){
 			// convert to prepared statement
@@ -456,11 +456,15 @@ class OC_DB {
 			}
 			if ( ! array_key_exists('limit', $stmt) ) {
 				$stmt['limit'] = null;
-			}
-			if ( ! array_key_exists('limit', $stmt) ) {
 				$stmt['offset'] = null;
 			}
-			$stmt = self::prepare($stmt['sql'], $stmt['limit'], $stmt['offset']);
+			if ( ! array_key_exists('offset', $stmt) ) {
+				$stmt['offset'] = null;
+			}
+			if ( ! array_key_exists('types', $stmt) ) {
+				$stmt['types'] = null;
+			}
+			$stmt = self::prepare($stmt['sql'], $stmt['limit'], $stmt['offset'], null, $stmt['types']);
 		}
 		if ($stmt instanceof PDOStatementWrapper || $stmt instanceof MDB2_Statement_Common) {
 			/** @var $stmt PDOStatementWrapper|MDB2_Statement_Common */
