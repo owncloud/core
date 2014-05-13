@@ -66,9 +66,10 @@
 			$(window).resize(function() {
 				self.parent = self.$dialog.parent().length > 0 ? self.$dialog.parent() : $('body');
 				var pos = self.parent.position();
+				var parentHeight = (self.parent.height()) ? self.parent.height() : $(window).height();
 				self.$dialog.css({
 					left: pos.left + (self.parent.width() - self.$dialog.outerWidth())/2,
-					top: pos.top + (self.parent.height() - self.$dialog.outerHeight())/2
+					top: pos.top + (parentHeight - self.$dialog.outerHeight())/2
 				});
 			});
 
