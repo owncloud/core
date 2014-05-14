@@ -215,6 +215,70 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * Test removing a system mount point
+	 */
+	public function testRemoveMountPointSystem() {
+		$mountType = OC_Mount_Config::MOUNT_TYPE_USER;
+		$applicable = 'all';
+		$isPersonal = false;
+
+		$this->assertTrue(
+			OC_Mount_Config::addMountPoint(
+				'/ext',
+				'\OC\Files\Storage\SFTP',
+				array(),
+				$mountType,
+				$applicable,
+				$isPersonal
+			)
+		);
+
+		$this->assertTrue(
+			OC_Mount_Config::removeMountPoint(
+				'/ext',
+				$mountType,
+				$applicable,
+				$isPersonal
+			)
+		);
+
+		$config = $this->readGlobalConfig();
+		$this->assertEquals(0, count($config));
+	}
+
+	/**
+	 * Test removing a personal mount point
+	 */
+	public function testRemoveMountPointPersonal() {
+		$mountType = OC_Mount_Config::MOUNT_TYPE_USER;
+		$applicable = self::TEST_USER1;
+		$isPersonal = true;
+
+		$this->assertTrue(
+			OC_Mount_Config::addMountPoint(
+				'/ext',
+				'\OC\Files\Storage\SFTP',
+				array(),
+				$mountType,
+				$applicable,
+				$isPersonal
+			)
+		);
+
+		$this->assertTrue(
+			OC_Mount_Config::removeMountPoint(
+				'/ext',
+				$mountType,
+				$applicable,
+				$isPersonal
+			)
+		);
+
+		$config = $this->readUserConfig();
+		$this->assertEquals(0, count($config));
+	}
+
+	/**
 	 * Provider for testing configurations with different
 	 * "applicable" values (all, user, groups)
 	 */
