@@ -839,12 +839,12 @@ class OC_Mount_Config {
 	 */
 	private static function isValidBackend($backend, $user = null) {
 		$backends = self::getBackends();
-		$personalBackends = self::getPersonalBackends();
 
 		if (isset($backends[$backend])) {
 			if (is_null($user)) {
 				return true;
 			} else {
+				$personalBackends = self::getPersonalBackends();
 				if (isset($personalBackends[$backend])) {
 					return true;
 				}
