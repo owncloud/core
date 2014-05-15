@@ -157,7 +157,6 @@ table th#headerName {
 	height: 50px;
 }
 table th#headerSize, table td.filesize {
-	min-width: 48px;
 	text-align: right;
 	padding: 0;
 }
@@ -169,6 +168,7 @@ table th#headerDate, table td.date {
 	box-sizing: border-box;
 	position: relative;
 	/* this can not be just width, both need to be set … table styling */
+	padding: 0 8px;
 	min-width: 176px;
 	max-width: 176px;
 }
@@ -205,14 +205,14 @@ table td.filename a.name {
 	box-sizing: border-box;
 	display: block;
 	height: 50px;
-	vertical-align: middle;
+	line-height: 50px;
 	padding: 0;
 }
 table tr[data-type="dir"] td.filename a.name span.nametext {font-weight:bold; }
 table td.filename input.filename {
 	width: 80%;
 	font-size: 14px;
-	margin-top: 8px;
+	margin-top: 0;
 	margin-left: 2px;
 	cursor: text;
 }
@@ -221,7 +221,7 @@ table td.filename .nametext, .uploadtext, .modified { float:left; padding:15px 0
 
 .modified {
 	position: relative;
-	padding-left: 8px;
+	padding-left: 15px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	width: 90%;
@@ -235,7 +235,6 @@ table td.filename .nametext, .uploadtext, .modified { float:left; padding:15px 0
 /* TODO fix usability bug (accidental file/folder selection) */
 table td.filename .nametext {
 	position: absolute;
-	top: 15px;
 	left: 55px;
 	padding: 0;
 	overflow: hidden;
@@ -243,7 +242,7 @@ table td.filename .nametext {
 	max-width: 800px;
 }
 table td.filename .uploadtext { font-weight:normal; margin-left:8px; }
-table td.filename form { font-size:14px; margin-left:48px; margin-right:48px; }
+table td.filename form { font-size:14px; margin-left:46px; height: 40px; padding-top: 10px}
 
 .ie8 input[type="checkbox"]{
 	padding: 0;
@@ -312,7 +311,6 @@ table td.filename form { font-size:14px; margin-left:48px; margin-right:48px; }
 /* File actions */
 .fileactions {
 	position: absolute;
-	top: 15px;
 	right: 0;
 	font-size: 11px;
 }
@@ -325,10 +323,6 @@ table td.filename form { font-size:14px; margin-left:48px; margin-right:48px; }
 }
 
 a.action>img { max-height:16px; max-width:16px; vertical-align:text-bottom; }
-
-.fileactions a.action > img{
-	margin-bottom: -1px;
-}
 
 /* Actions for selected files */
 .selectedActions {
@@ -350,6 +344,7 @@ a.action>img { max-height:16px; max-width:16px; vertical-align:text-bottom; }
 #fileList a.action {
 	display: inline;
 	padding: 18px 8px;
+	line-height: 50px;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
 	filter: alpha(opacity=0);
 	opacity: 0;
