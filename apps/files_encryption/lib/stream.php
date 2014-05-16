@@ -161,10 +161,15 @@ class Stream {
 			$this->size = $this->rootView->filesize($this->rawPath);
 
 			// calculate unencrypted size
-			// the next block is a hack that only works on seekable encrypted streams
-			// it should be replace by something that works on all streams
-			fseek($this->handle,floor($this->size/8192)*8192,SEEK_SET);
-			$data=fread($this->handle,8192);
+			if (fseek($this->handle,floor($this->size/8192)*8192,SEEK_SET) === 0) {
+				$data=fread($this->handle,8192);
+			} else {
+				$count=8192;
+				while ($count==8192) {
+					$data=fread($this->handle,8192);
+					$count=strlen($data);
+				}
+			}
 			$result='';
 			if(strlen($data)) {
 				if (!$this->getKey()) {
