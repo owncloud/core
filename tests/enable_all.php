@@ -22,3 +22,7 @@ enableApp('files_external');
 enableApp('user_ldap');
 enableApp('files_versions');
 
+// also enable apps passed like php -f enable_all.php news notes
+foreach($argv as $arg) {
+    enableApp($arg);
+}
