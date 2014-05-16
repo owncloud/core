@@ -4,13 +4,14 @@
 # 
 # Translators:
 # miki_mika1362 <miki_mika1362@yahoo.com>, 2013
+# hajibaba <majid.hajibaba@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-05-11 01:55-0400\n"
-"PO-Revision-Date: 2014-05-11 05:02+0000\n"
-"Last-Translator: I Robot\n"
+"POT-Creation-Date: 2014-05-16 01:54-0400\n"
+"PO-Revision-Date: 2014-05-15 14:16+0000\n"
+"Last-Translator: hajibaba <majid.hajibaba@gmail.com>\n"
 "Language-Team: Persian (http://www.transifex.com/projects/p/owncloud/language/fa/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -45,11 +46,11 @@ msgstr ""
 
 #: avatar/controller.php:81
 msgid "Unknown filetype"
-msgstr ""
+msgstr "نوع فایل ناشناخته"
 
 #: avatar/controller.php:85
 msgid "Invalid image"
-msgstr ""
+msgstr "عکس نامعتبر"
 
 #: avatar/controller.php:115 avatar/controller.php:142
 msgid "No temporary profile picture available, try again"
@@ -59,79 +60,79 @@ msgstr ""
 msgid "No crop data provided"
 msgstr ""
 
-#: js/config.php:36
+#: js/config.php:43
 msgid "Sunday"
 msgstr "یکشنبه"
 
-#: js/config.php:37
+#: js/config.php:44
 msgid "Monday"
 msgstr "دوشنبه"
 
-#: js/config.php:38
+#: js/config.php:45
 msgid "Tuesday"
 msgstr "سه شنبه"
 
-#: js/config.php:39
+#: js/config.php:46
 msgid "Wednesday"
 msgstr "چهارشنبه"
 
-#: js/config.php:40
+#: js/config.php:47
 msgid "Thursday"
 msgstr "پنجشنبه"
 
-#: js/config.php:41
+#: js/config.php:48
 msgid "Friday"
 msgstr "جمعه"
 
-#: js/config.php:42
+#: js/config.php:49
 msgid "Saturday"
 msgstr "شنبه"
 
-#: js/config.php:47
+#: js/config.php:54
 msgid "January"
 msgstr "ژانویه"
 
-#: js/config.php:48
+#: js/config.php:55
 msgid "February"
 msgstr "فبریه"
 
-#: js/config.php:49
+#: js/config.php:56
 msgid "March"
 msgstr "مارس"
 
-#: js/config.php:50
+#: js/config.php:57
 msgid "April"
 msgstr "آوریل"
 
-#: js/config.php:51
+#: js/config.php:58
 msgid "May"
 msgstr "می"
 
-#: js/config.php:52
+#: js/config.php:59
 msgid "June"
 msgstr "ژوئن"
 
-#: js/config.php:53
+#: js/config.php:60
 msgid "July"
 msgstr "جولای"
 
-#: js/config.php:54
+#: js/config.php:61
 msgid "August"
 msgstr "آگوست"
 
-#: js/config.php:55
+#: js/config.php:62
 msgid "September"
 msgstr "سپتامبر"
 
-#: js/config.php:56
+#: js/config.php:63
 msgid "October"
 msgstr "اکتبر"
 
-#: js/config.php:57
+#: js/config.php:64
 msgid "November"
 msgstr "نوامبر"
 
-#: js/config.php:58
+#: js/config.php:65
 msgid "December"
 msgstr "دسامبر"
 
@@ -150,12 +151,12 @@ msgstr "ثانیه‌ها پیش"
 #: js/js.js:1241
 msgid "%n minute ago"
 msgid_plural "%n minutes ago"
-msgstr[0] ""
+msgstr[0] "%n دقیقه قبل"
 
 #: js/js.js:1242
 msgid "%n hour ago"
 msgid_plural "%n hours ago"
-msgstr[0] ""
+msgstr[0] "%n ساعت قبل"
 
 #: js/js.js:1243
 msgid "today"
@@ -168,7 +169,7 @@ msgstr "دیروز"
 #: js/js.js:1245
 msgid "%n day ago"
 msgid_plural "%n days ago"
-msgstr[0] ""
+msgstr[0] "%n روز قبل"
 
 #: js/js.js:1246
 msgid "last month"
@@ -177,7 +178,7 @@ msgstr "ماه قبل"
 #: js/js.js:1247
 msgid "%n month ago"
 msgid_plural "%n months ago"
-msgstr[0] ""
+msgstr[0] "%n ماه قبل"
 
 #: js/js.js:1248
 msgid "last year"
@@ -187,74 +188,74 @@ msgstr "سال قبل"
 msgid "years ago"
 msgstr "سال‌های قبل"
 
-#: js/oc-dialogs.js:125
-msgid "Choose"
-msgstr "انتخاب کردن"
-
-#: js/oc-dialogs.js:151
-msgid "Error loading file picker template: {error}"
-msgstr ""
-
-#: js/oc-dialogs.js:177
+#: js/oc-dialogs.js:95 js/oc-dialogs.js:236
 msgid "Yes"
 msgstr "بله"
 
-#: js/oc-dialogs.js:187
+#: js/oc-dialogs.js:105 js/oc-dialogs.js:246
 msgid "No"
 msgstr "نه"
 
-#: js/oc-dialogs.js:204
+#: js/oc-dialogs.js:184
+msgid "Choose"
+msgstr "انتخاب کردن"
+
+#: js/oc-dialogs.js:210
+msgid "Error loading file picker template: {error}"
+msgstr ""
+
+#: js/oc-dialogs.js:263
 msgid "Ok"
 msgstr "قبول"
 
-#: js/oc-dialogs.js:224
+#: js/oc-dialogs.js:283
 msgid "Error loading message template: {error}"
 msgstr ""
 
-#: js/oc-dialogs.js:352
+#: js/oc-dialogs.js:411
 msgid "{count} file conflict"
 msgid_plural "{count} file conflicts"
 msgstr[0] ""
 
-#: js/oc-dialogs.js:366
+#: js/oc-dialogs.js:425
 msgid "One file conflict"
 msgstr ""
 
-#: js/oc-dialogs.js:372
+#: js/oc-dialogs.js:431
 msgid "New Files"
 msgstr "فایل های جدید"
 
-#: js/oc-dialogs.js:373
+#: js/oc-dialogs.js:432
 msgid "Already existing files"
 msgstr ""
 
-#: js/oc-dialogs.js:375
+#: js/oc-dialogs.js:434
 msgid "Which files do you want to keep?"
 msgstr ""
 
-#: js/oc-dialogs.js:376
+#: js/oc-dialogs.js:435
 msgid ""
 "If you select both versions, the copied file will have a number added to its"
 " name."
 msgstr ""
 
-#: js/oc-dialogs.js:384
+#: js/oc-dialogs.js:443
 msgid "Cancel"
 msgstr "منصرف شدن"
 
-#: js/oc-dialogs.js:394
+#: js/oc-dialogs.js:453
 msgid "Continue"
-msgstr ""
+msgstr "ادامه"
 
-#: js/oc-dialogs.js:441 js/oc-dialogs.js:454
+#: js/oc-dialogs.js:500 js/oc-dialogs.js:513
 msgid "(all selected)"
 msgstr ""
 
-#: js/oc-dialogs.js:444 js/oc-dialogs.js:458
+#: js/oc-dialogs.js:503 js/oc-dialogs.js:517
 msgid "({count} selected)"
 msgstr ""
 
-#: js/oc-dialogs.js:466
+#: js/oc-dialogs.js:525
 msgid "Error loading file exists template"
 msgstr ""
 
@@ -264,19 +265,19 @@ msgstr ""
 
 #: js/setup.js:85
 msgid "Weak password"
-msgstr ""
+msgstr "رمز عبور ضعیف"
 
 #: js/setup.js:86
 msgid "So-so password"
-msgstr ""
+msgstr "رمز عبور متوسط"
 
 #: js/setup.js:87
 msgid "Good password"
-msgstr ""
+msgstr "رمز عبور خوب"
 
 #: js/setup.js:88
 msgid "Strong password"
-msgstr ""
+msgstr "رمز عبور قوی"
 
 #: js/share.js:51 js/share.js:66 js/share.js:106
 msgid "Shared"
@@ -286,12 +287,12 @@ msgstr "اشتراک گذاشته شده"
 msgid "Share"
 msgstr "اشتراک‌گذاری"
 
-#: js/share.js:158 js/share.js:171 js/share.js:178 js/share.js:734
+#: js/share.js:158 js/share.js:171 js/share.js:178 js/share.js:747
 #: templates/installation.php:10
 msgid "Error"
 msgstr "خطا"
 
-#: js/share.js:160 js/share.js:790
+#: js/share.js:160 js/share.js:810
 msgid "Error while sharing"
 msgstr "خطا درحال به اشتراک گذاشتن"
 
@@ -319,107 +320,116 @@ msgstr ""
 msgid "Share link"
 msgstr "اشتراک گذاشتن لینک"
 
-#: js/share.js:223
+#: js/share.js:226
+msgid ""
+"The public link will expire no later than {days} days after it is created"
+msgstr ""
+
+#: js/share.js:228
+msgid "By default the public link will expire after {days} days"
+msgstr ""
+
+#: js/share.js:234
 msgid "Password protect"
 msgstr "نگهداری کردن رمز عبور"
 
-#: js/share.js:225 templates/installation.php:60 templates/login.php:40
+#: js/share.js:236 templates/installation.php:60 templates/login.php:40
 msgid "Password"
 msgstr "گذرواژه"
 
-#: js/share.js:230
+#: js/share.js:241
 msgid "Allow Public Upload"
 msgstr "اجازه آپلود عمومی"
 
-#: js/share.js:234
+#: js/share.js:245
 msgid "Email link to person"
 msgstr "پیوند ایمیل برای شخص."
 
-#: js/share.js:235
+#: js/share.js:246
 msgid "Send"
 msgstr "ارسال"
 
-#: js/share.js:240
+#: js/share.js:251
 msgid "Set expiration date"
 msgstr "تنظیم تاریخ انقضا"
 
-#: js/share.js:241
+#: js/share.js:252
 msgid "Expiration date"
 msgstr "تاریخ انقضا"
 
-#: js/share.js:277
+#: js/share.js:289
 msgid "Share via email:"
 msgstr "از طریق ایمیل به اشتراک بگذارید :"
 
-#: js/share.js:280
+#: js/share.js:292
 msgid "No people found"
 msgstr "کسی یافت نشد"
 
-#: js/share.js:324 js/share.js:385
+#: js/share.js:336 js/share.js:397
 msgid "group"
 msgstr "گروه"
 
-#: js/share.js:357
+#: js/share.js:369
 msgid "Resharing is not allowed"
 msgstr "اشتراک گذاری مجدد مجاز نمی باشد"
 
-#: js/share.js:401
+#: js/share.js:413
 msgid "Shared in {item} with {user}"
 msgstr "به اشتراک گذاشته شده در {بخش} با {کاربر}"
 
-#: js/share.js:423
+#: js/share.js:435
 msgid "Unshare"
 msgstr "لغو اشتراک"
 
-#: js/share.js:431
+#: js/share.js:443
 msgid "notify by email"
 msgstr ""
 
-#: js/share.js:434
+#: js/share.js:446
 msgid "can edit"
 msgstr "می توان ویرایش کرد"
 
-#: js/share.js:436
+#: js/share.js:448
 msgid "access control"
 msgstr "کنترل دسترسی"
 
-#: js/share.js:439
+#: js/share.js:451
 msgid "create"
 msgstr "ایجاد"
 
-#: js/share.js:442
+#: js/share.js:454
 msgid "update"
 msgstr "به روز"
 
-#: js/share.js:445
+#: js/share.js:457
 msgid "delete"
 msgstr "پاک کردن"
 
-#: js/share.js:448
+#: js/share.js:460
 msgid "share"
 msgstr "به اشتراک گذاشتن"
 
-#: js/share.js:721
+#: js/share.js:734
 msgid "Password protected"
 msgstr "نگهداری از رمز عبور"
 
-#: js/share.js:734
+#: js/share.js:747
 msgid "Error unsetting expiration date"
 msgstr "خطا در تنظیم نکردن تاریخ انقضا "
 
-#: js/share.js:752
+#: js/share.js:768
 msgid "Error setting expiration date"
 msgstr "خطا در تنظیم تاریخ انقضا"
 
-#: js/share.js:777
+#: js/share.js:797
 msgid "Sending ..."
 msgstr "درحال ارسال ..."
 
-#: js/share.js:788
+#: js/share.js:808
 msgid "Email sent"
 msgstr "ایمیل ارسال شد"
 
-#: js/share.js:812
+#: js/share.js:832
 msgid "Warning"
 msgstr "اخطار"
 
@@ -618,7 +628,7 @@ msgstr ""
 
 #: templates/altmail.php:7 templates/mail.php:20
 msgid "Cheers!"
-msgstr ""
+msgstr "سلامتی!"
 
 #: templates/installation.php:25 templates/installation.php:32
 #: templates/installation.php:39
@@ -665,7 +675,7 @@ msgstr "لطفا یک <strong> شناسه برای مدیر</strong> بسازی�
 
 #: templates/installation.php:70
 msgid "Storage & database"
-msgstr ""
+msgstr "انبارش و پایگاه داده"
 
 #: templates/installation.php:77
 msgid "Data folder"

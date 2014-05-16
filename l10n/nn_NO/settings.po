@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-05-11 01:55-0400\n"
-"PO-Revision-Date: 2014-05-11 05:02+0000\n"
+"POT-Creation-Date: 2014-05-16 01:54-0400\n"
+"PO-Revision-Date: 2014-05-16 05:54+0000\n"
 "Last-Translator: I Robot\n"
 "Language-Team: Norwegian Nynorsk (Norway) (http://www.transifex.com/projects/p/owncloud/language/nn_NO/)\n"
 "MIME-Version: 1.0\n"
@@ -54,7 +54,7 @@ msgstr ""
 msgid "Send mode"
 msgstr ""
 
-#: admin/controller.php:118 templates/admin.php:329 templates/personal.php:149
+#: admin/controller.php:118 templates/admin.php:329 templates/personal.php:150
 msgid "Encryption"
 msgstr "Kryptering"
 
@@ -101,6 +101,16 @@ msgstr ""
 msgid "Couldn't decrypt your files, check your password and try again"
 msgstr ""
 
+#: ajax/deletekeys.php:14
+msgid "Encryption keys deleted permanently"
+msgstr ""
+
+#: ajax/deletekeys.php:16
+msgid ""
+"Couldn't permanently delete your encryption keys, please check your "
+"owncloud.log or ask your administrator"
+msgstr ""
+
 #: ajax/lostpassword.php:12
 msgid "Email saved"
 msgstr "E-postadresse lagra"
@@ -116,6 +126,16 @@ msgstr "Klarte ikkje å sletta gruppa"
 #: ajax/removeuser.php:25
 msgid "Unable to delete user"
 msgstr "Klarte ikkje sletta brukaren"
+
+#: ajax/restorekeys.php:14
+msgid "Backups restored successfully"
+msgstr ""
+
+#: ajax/restorekeys.php:23
+msgid ""
+"Couldn't restore your encryption keys, please check your owncloud.log or ask"
+" your administrator"
+msgstr ""
 
 #: ajax/setlanguage.php:15
 msgid "Language changed"
@@ -172,7 +192,7 @@ msgstr "Bakstykket støttar ikkje passordendring, men krypteringsnøkkelen til b
 msgid "Unable to change password"
 msgstr "Klarte ikkje å endra passordet"
 
-#: js/admin.js:73
+#: js/admin.js:81
 msgid "Sending..."
 msgstr ""
 
@@ -228,33 +248,41 @@ msgstr "Oppdater"
 msgid "Updated"
 msgstr "Oppdatert"
 
-#: js/personal.js:243
+#: js/personal.js:256
 msgid "Select a profile picture"
 msgstr "Vel eit profilbilete"
 
-#: js/personal.js:274
+#: js/personal.js:287
 msgid "Very weak password"
 msgstr ""
 
-#: js/personal.js:275
+#: js/personal.js:288
 msgid "Weak password"
 msgstr ""
 
-#: js/personal.js:276
+#: js/personal.js:289
 msgid "So-so password"
 msgstr ""
 
-#: js/personal.js:277
+#: js/personal.js:290
 msgid "Good password"
 msgstr ""
 
-#: js/personal.js:278
+#: js/personal.js:291
 msgid "Strong password"
 msgstr ""
 
-#: js/personal.js:313
+#: js/personal.js:310
 msgid "Decrypting files... Please wait, this can take some time."
 msgstr "Dekrypterer filer … Ver venleg og vent, dette kan ta ei stund."
+
+#: js/personal.js:324
+msgid "Delete encryption keys permanently."
+msgstr ""
+
+#: js/personal.js:338
+msgid "Restore encryption keys."
+msgstr ""
 
 #: js/users.js:47
 msgid "deleted"
@@ -301,7 +329,7 @@ msgstr "Du må oppgje eit gyldig passord"
 msgid "Warning: Home directory for user \"{user}\" already exists"
 msgstr ""
 
-#: personal.php:48 personal.php:49
+#: personal.php:50 personal.php:51
 msgid "__language_name__"
 msgstr "Nynorsk"
 
@@ -489,61 +517,52 @@ msgstr "La app-ar bruka API-et til deling"
 msgid "Allow links"
 msgstr "Tillat lenkjer"
 
-#: templates/admin.php:220
-msgid "Allow users to share items to the public with links"
-msgstr "La brukarar dela ting offentleg med lenkjer"
-
-#: templates/admin.php:227
+#: templates/admin.php:225
 msgid "Allow public uploads"
 msgstr "Tillat offentlege opplastingar"
 
-#: templates/admin.php:228
-msgid ""
-"Allow users to enable others to upload into their publicly shared folders"
-msgstr "La brukarar tillata andre å lasta opp i deira offentleg delte mapper"
-
-#: templates/admin.php:235
-msgid "Allow resharing"
-msgstr "Tillat vidaredeling"
-
-#: templates/admin.php:236
-msgid "Allow users to share items shared with them again"
-msgstr "La brukarar vidaredela delte ting"
-
-#: templates/admin.php:243
-msgid "Allow users to share with anyone"
-msgstr "La brukarar dela med kven som helst"
-
-#: templates/admin.php:246
-msgid "Allow users to only share with users in their groups"
-msgstr "La brukarar dela berre med brukarar i deira grupper"
-
-#: templates/admin.php:253
-msgid "Allow mail notification"
-msgstr ""
-
-#: templates/admin.php:254
-msgid "Allow users to send mail notification for shared files"
-msgstr ""
-
-#: templates/admin.php:262
+#: templates/admin.php:229
 msgid "Set default expiration date"
 msgstr ""
 
-#: templates/admin.php:263
+#: templates/admin.php:231
 msgid "Expire after "
 msgstr ""
 
-#: templates/admin.php:266
+#: templates/admin.php:234
 msgid "days"
 msgstr ""
 
-#: templates/admin.php:269
+#: templates/admin.php:237
 msgid "Enforce expiration date"
 msgstr ""
 
+#: templates/admin.php:241
+msgid "Allow users to share items to the public with links"
+msgstr "La brukarar dela ting offentleg med lenkjer"
+
+#: templates/admin.php:251
+msgid "Allow resharing"
+msgstr "Tillat vidaredeling"
+
+#: templates/admin.php:252
+msgid "Allow users to share items shared with them again"
+msgstr "La brukarar vidaredela delte ting"
+
+#: templates/admin.php:259
+msgid "Allow users to share with anyone"
+msgstr "La brukarar dela med kven som helst"
+
+#: templates/admin.php:262
+msgid "Allow users to only share with users in their groups"
+msgstr "La brukarar dela berre med brukarar i deira grupper"
+
+#: templates/admin.php:269
+msgid "Allow mail notification"
+msgstr ""
+
 #: templates/admin.php:270
-msgid "Expire shares by default after N days"
+msgid "Allow users to send mail notification for shared files"
 msgstr ""
 
 #: templates/admin.php:278
@@ -626,11 +645,11 @@ msgstr "Meir"
 msgid "Less"
 msgstr "Mindre"
 
-#: templates/admin.php:433 templates/personal.php:171
+#: templates/admin.php:433 templates/personal.php:202
 msgid "Version"
 msgstr "Utgåve"
 
-#: templates/admin.php:437 templates/personal.php:174
+#: templates/admin.php:437 templates/personal.php:205
 msgid ""
 "Developed by the <a href=\"http://ownCloud.org/contact\" "
 "target=\"_blank\">ownCloud community</a>, the <a "
@@ -794,17 +813,32 @@ msgid ""
 "WebDAV</a>"
 msgstr ""
 
-#: templates/personal.php:151
+#: templates/personal.php:156
 msgid "The encryption app is no longer enabled, please decrypt all your files"
 msgstr ""
 
-#: templates/personal.php:157
+#: templates/personal.php:162
 msgid "Log-in password"
 msgstr "Innloggingspassord"
 
-#: templates/personal.php:162
+#: templates/personal.php:167
 msgid "Decrypt all Files"
 msgstr "Dekrypter alle filene"
+
+#: templates/personal.php:180
+msgid ""
+"Your encryption keys are moved to a backup location. If something went wrong"
+" you can restore the keys. Only delete them permanently if you are sure that"
+" all files are decrypted correctly."
+msgstr ""
+
+#: templates/personal.php:184
+msgid "Restore Encryption Keys"
+msgstr ""
+
+#: templates/personal.php:188
+msgid "Delete Encryption Keys"
+msgstr ""
 
 #: templates/users.php:19
 msgid "Login Name"
