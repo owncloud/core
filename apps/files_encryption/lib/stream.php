@@ -178,8 +178,16 @@ class Stream {
 					$result = Crypt::symmetricDecryptFileContent($data, $this->plainKey);
 				}
 			}
-			rewind($this->handle);
 			$this->unencryptedSize = floor($this->size/8192)*6126 + strlen($result);
+			if (rewind($this->handle) === false) {
+				fclose($this->handle);
+				if ($this->isLocalTmpFile) {
+					$this->handle = fopen($this->localTmpFile, $mode);
+				} else {
+					$this->handle = $this->rootView->fopen($this->rawPath, $mode);
+				}
+				
+			}
 
 		}
 
