@@ -490,12 +490,12 @@ class OC {
 
 		if (!defined('PHPUNIT_RUN')) {
 			if (defined('DEBUG') and DEBUG) {
-				OC\Log\ErrorHandler::register(true);
+				$errorHandler = new OC\Log\ErrorHandler(OC_Log::$object, null, true);
 				set_exception_handler(array('OC_Template', 'printExceptionErrorPage'));
 			} else {
-				OC\Log\ErrorHandler::register();
+				$errorHandler = new OC\Log\ErrorHandler(OC_Log::$object);
 			}
-			OC\Log\ErrorHandler::setLogger(OC_Log::$object);
+			$errorHandler->register();
 		}
 
 		// register the stream wrappers

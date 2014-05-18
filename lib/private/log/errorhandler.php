@@ -1,6 +1,7 @@
 <?php
 /**
  * Copyright (c) 2013 Bart Visscher <bartv@thisnet.nl>
+ * Copyright (c) 2013 Andreas Fischer <bantu@owncloud.com>
  * This file is licensed under the Affero General Public License version 3 or
  * later.
  * See the COPYING-README file.
@@ -12,64 +13,68 @@ use OC\Log as LoggerInterface;
 
 class ErrorHandler {
 	/** @var LoggerInterface */
-	private static $logger;
+	protected $logger;
+	protected $loggerContext = array('app' => 'PHP');
+	protected $debug;
 
-	/**
-	 * @brief remove password in URLs
-	 * @param string $msg
-	 * @return string
-	 */
-	protected static function removePassword($msg) {
-		return preg_replace('/\/\/(.*):(.*)@/', '//xxx:xxx@', $msg);
-	}
-
-	public static function register($debug=false) {
-		$handler = new ErrorHandler();
-
-		if ($debug) {
-			set_error_handler(array($handler, 'onAll'), E_ALL);
-		} else {
-			set_error_handler(array($handler, 'onError'));
+	public function __construct(LoggerInterface $logger, array $loggerContext = null, $debug = false) {
+		$this->logger = $logger;
+		$this->debug = $debug;
+		if ($loggerContext) {
+			$this->loggerContext = $loggerContext;
 		}
-		register_shutdown_function(array($handler, 'onShutdown'));
-		set_exception_handler(array($handler, 'onException'));
 	}
 
-	public static function setLogger(LoggerInterface $logger) {
-		self::$logger = $logger;
+	public function register() {
+		if ($this->debug) {
+			set_error_handler(array($this, 'onAll'), E_ALL);
+		} else {
+			set_error_handler(array($this, 'onError'));
+		}
+		register_shutdown_function(array($this, 'onShutdown'));
+		set_exception_handler(array($this, 'onException'));
 	}
 
 	//Fatal errors handler
-	public static function onShutdown() {
+	public function onShutdown() {
 		$error = error_get_last();
-		if($error && self::$logger) {
+		if($error && $this->logger) {
 			//ob_end_clean();
-			$msg = $error['message'] . ' at ' . $error['file'] . '#' . $error['line'];
-			self::$logger->critical(self::removePassword($msg), array('app' => 'PHP'));
+			$this->logger->critical(
+				$this->formatMessage($error['message'], $error['file'], $error['line']),
+				$this->loggerContext
+			);
 		}
 	}
 
 	// Uncaught exception handler
-	public static function onException($exception) {
-		$msg = $exception->getMessage() . ' at ' . $exception->getFile() . '#' . $exception->getLine();
-		self::$logger->critical(self::removePassword($msg), array('app' => 'PHP'));
+	public function onException($ex) {
+		$this->logger->critical(
+			$this->formatMessage($ex->getMessage(), $ex->getFile(), $ex->getLine()),
+			$this->loggerContext
+		);
 	}
 
 	//Recoverable errors handler
-	public static function onError($number, $message, $file, $line) {
+	public function onError($number, $message, $file, $line) {
 		if (error_reporting() === 0) {
 			return;
 		}
-		$msg = $message . ' at ' . $file . '#' . $line;
-		self::$logger->error(self::removePassword($msg), array('app' => 'PHP'));
-
+		$this->logger->warning(
+			$this->formatMessage($message, $file, $line),
+			$this->loggerContext
+		);
 	}
 
 	//Recoverable handler which catch all errors, warnings and notices
-	public static function onAll($number, $message, $file, $line) {
-		$msg = $message . ' at ' . $file . '#' . $line;
-		self::$logger->debug(self::removePassword($msg), array('app' => 'PHP'));
-
+	public function onAll($number, $message, $file, $line) {
+		$this->logger->debug(
+			$this->formatMessage($message, $file, $line),
+			$this->loggerContext
+		);
 	}
 
+	protected function formatMessage($message, $file, $line) {
+		return "$message at $file#$line";
+	}
 }
