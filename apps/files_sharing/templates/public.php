@@ -10,6 +10,11 @@
 <input type="hidden" name="sharingToken" value="<?php p($_['sharingToken']) ?>" id="sharingToken">
 <input type="hidden" name="filename" value="<?php p($_['filename']) ?>" id="filename">
 <input type="hidden" name="mimetype" value="<?php p($_['mimetype']) ?>" id="mimetype">
+<!-- magically make facebook load our picture right into the chat/timeline (perhaps the thumbnail size should be scaled or this make this configurable but i have no idead how to do this :)  /-->
+<?php if (substr($_['mimetype'], 0, strpos($_['mimetype'], '/')) == 'image'): ?>
+<link rel="image_src" href="<?php p(OCP\Util::linkToRoute( 'core_ajax_public_preview', array('x' => 128, 'y' => 128, 'file' => $_['directory_path'], 't' => $_['dirToken']))); ?>" />
+<?php endif; ?>
+<!-- this is where the magic ends /-->
 <header><div id="header" class="icon-noise <?php p((isset($_['folder']) ? 'share-folder' : 'share-file')) ?>">
 		<a href="<?php print_unescaped(link_to('', 'index.php')); ?>" title="" id="owncloud"><img class="svg"
 		                                                                                          src="<?php print_unescaped(image_path('', 'logo-wide.svg')); ?>" alt="<?php p($theme->getName()); ?>" /></a>
@@ -38,8 +43,8 @@
 					</video>
 				</div>
 			<?php else: ?>
+				<?php $size = \OC\Preview::isMimeSupported($_['mimetype']) ? 500 : 128 ?>
 				<div id="imgframe">
-					<?php $size = \OC\Preview::isMimeSupported($_['mimetype']) ? 500 : 128 ?>
 					<img
 						src="<?php p(OCP\Util::linkToRoute( 'core_ajax_public_preview', array('x' => $size, 'y' => $size, 'file' => $_['directory_path'], 't' => $_['dirToken']))); ?>"
 						class="publicpreview"
