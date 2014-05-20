@@ -12,7 +12,7 @@ DATABASEUSER=oc_autotest$EXECUTOR_NUMBER
 ADMINLOGIN=admin$EXECUTOR_NUMBER
 BASEDIR=$PWD
 
-DBCONFIGS="sqlite mysql pgsql oci"
+DBCONFIGS="sqlite mysql pgsql oci mssql"
 PHPUNIT=$(which phpunit)
 
 function print_syntax {
@@ -133,6 +133,23 @@ cat > ./tests/autoconfig-oci.php <<DELIM
 );
 DELIM
 
+cat > ./tests/autoconfig-mssql.php <<DELIM
+<?php
+\$AUTOCONFIG = array (
+  'installed' => false,
+  'dbtype' => 'mssqldbo',
+  'dbtableprefix' => 'oc_',
+  'adminlogin' => '$ADMINLOGIN',
+  'adminpass' => 'admin',
+  'directory' => '$DATADIR',
+  'dbuser' => '$DATABASEUSER',
+  'dbname' => '$DATABASENAME',
+  'dbhost' => '$MSSQL_HOST',
+  'dbport' => '$MSSQL_PORT',
+  'dbpass' => 'owncloud',
+);
+DELIM
+
 function execute_tests {
 	echo "Setup environment for $1 testing ..."
 	# back to root folder
@@ -152,6 +169,14 @@ function execute_tests {
 	# drop database
 	if [ "$1" == "mysql" ] ; then
 		mysql -u $DATABASEUSER -powncloud -e "DROP DATABASE $DATABASENAME"
+	fi
+	if [ "$1" == "mssql" ] ; then
+		echo "DROP DATABASE $DATABASENAME;" > mssql.sql
+		echo "CREATE DATABASE $DATABASENAME;" >> mssql.sql
+		echo "GO" >> mssql.sql
+
+		tsql -H $MSSQL_HOST -p $MSSQL_PORT -U $DATABASEUSER -P owncloud < mssql.sql
+		rm mssql.sql
 	fi
 	if [ "$1" == "pgsql" ] ; then
 		dropdb -U $DATABASEUSER $DATABASENAME
@@ -250,3 +275,6 @@ fi
 #  - DON'T TRY THIS AT HOME!
 #  - if you really need it: we feel sorry for you
 #
+# NOTES on mssql:
+#  - hostname of the mssql server will be taken from the environment variables $MSSQL_HOST
+#  - port is taken from $MSSQL_PORT

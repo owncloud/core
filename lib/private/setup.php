@@ -1,5 +1,7 @@
 <?php
 
+use OC\Setup\AbstractDatabase;
+
 class DatabaseSetupException extends \OC\HintException
 {
 }
@@ -10,6 +12,7 @@ class OC_Setup {
 		'pgsql' => '\OC\Setup\PostgreSQL',
 		'oci'   => '\OC\Setup\OCI',
 		'mssql' => '\OC\Setup\MSSQL',
+		'mssqldbo' => '\OC\Setup\MSSQLDBO',
 		'sqlite' => '\OC\Setup\Sqlite',
 		'sqlite3' => '\OC\Setup\Sqlite',
 	);
@@ -39,6 +42,7 @@ class OC_Setup {
 		}
 
 		$class = self::$dbSetupClasses[$dbtype];
+		/** @var $dbSetup AbstractDatabase */
 		$dbSetup = new $class(self::getTrans(), 'db_structure.xml');
 		$error = array_merge($error, $dbSetup->validate($options));
 
@@ -61,7 +65,7 @@ class OC_Setup {
 			$datadir = rtrim(realpath($datadir), '\\');
 		}
 
-		//use sqlite3 when available, otherise sqlite2 will be used.
+		//use sqlite3 when available, otherwise sqlite2 will be used.
 		if($dbtype=='sqlite' and class_exists('SQLite3')) {
 			$dbtype='sqlite3';
 		}

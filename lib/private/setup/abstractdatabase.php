@@ -51,4 +51,6 @@ abstract class AbstractDatabase {
 		$this->dbhost = $dbhost;
 		$this->tableprefix = $dbtableprefix;
 	}
+
+	public abstract function setupDatabase($username);
 }
