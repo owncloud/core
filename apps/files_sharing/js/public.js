@@ -23,7 +23,7 @@ OCA.Sharing.PublicApp = {
 		}
 		this._initialized = true;
 		// file list mode ?
-		if ($el.find('#filestable')) {
+		if ($el.find('#filestable') && OCA.Files.FileList) {
 			this.fileList = new OCA.Files.FileList(
 				$el,
 				{
@@ -156,16 +156,18 @@ $(document).ready(function() {
 	var App = OCA.Sharing.PublicApp;
 	App.initialize($('#preview'));
 
-	// HACK: for oc-dialogs previews that depends on Files:
-	Files.lazyLoadPreview = function(path, mime, ready, width, height, etag) {
-		return App.fileList.lazyLoadPreview({
-			path: path,
-			mime: mime,
-			callback: ready,
-			width: width,
-			height: height,
-			etag: etag
-		});
-	};
+	if (window.Files) {
+		// HACK: for oc-dialogs previews that depends on Files:
+		Files.lazyLoadPreview = function(path, mime, ready, width, height, etag) {
+			return App.fileList.lazyLoadPreview({
+				path: path,
+				mime: mime,
+				callback: ready,
+				width: width,
+				height: height,
+				etag: etag
+			});
+		};
+	}
 });
 

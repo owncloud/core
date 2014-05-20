@@ -13,7 +13,7 @@ $(document).ready(function() {
 
 	var sharesLoaded = false;
 
-	if (typeof OC.Share !== 'undefined' && typeof FileActions !== 'undefined') {
+	if (typeof OC.Share !== 'undefined' && typeof OCA.Files.FileList !== 'undefined') {
 		// TODO: make a separate class for this or a hook or jQuery event ?
 		var oldCreateRow = OCA.Files.FileList.prototype._createRow;
 		OCA.Files.FileList.prototype._createRow = function(fileData) {
