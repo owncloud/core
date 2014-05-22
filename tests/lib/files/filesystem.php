@@ -189,7 +189,11 @@ class Filesystem extends \PHPUnit_Framework_TestCase {
 
 		$homeMount = \OC\Files\Filesystem::getStorage('/' . $userId . '/');
 
-		$this->assertInstanceOf('\OC\Files\Storage\Home', $homeMount);
+		if ($homeMount instanceof \OC\Files\Storage\Wrapper\Quota) {
+			$this->assertInstanceOf('\OC\Files\Storage\Home', $homeMount->getWrapperStorage());
+		} else {
+			$this->assertInstanceOf('\OC\Files\Storage\Home', $homeMount);
+		}
 		$this->assertEquals('home::' . $userId, $homeMount->getId());
 
 		\OC_User::deleteUser($userId);
@@ -214,7 +218,11 @@ class Filesystem extends \PHPUnit_Framework_TestCase {
 
 		$homeMount = \OC\Files\Filesystem::getStorage('/' . $userId . '/');
 
-		$this->assertInstanceOf('\OC\Files\Storage\Home', $homeMount);
+		if ($homeMount instanceof \OC\Files\Storage\Wrapper\Quota) {
+			$this->assertInstanceOf('\OC\Files\Storage\Home', $homeMount->getWrapperStorage());
+		} else {
+			$this->assertInstanceOf('\OC\Files\Storage\Home', $homeMount);
+		}
 		$this->assertEquals('local::' . $datadir . '/' . $userId . '/', $homeMount->getId());
 
 		\OC_User::deleteUser($userId);
