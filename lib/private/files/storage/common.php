@@ -345,6 +345,15 @@ abstract class Common implements \OC\Files\Storage\Storage {
 	}
 
 	/**
+	 * check if storage requires updating of credentials on owner login
+	 *
+	 * @return bool
+	 */
+	public function needCredentialsUpdate() {
+		return false;
+	}
+
+	/**
 	 * get the free space in the storage
 	 *
 	 * @param string $path

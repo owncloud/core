@@ -114,6 +114,36 @@ class OC_Mount_Config {
 	}
 
 	/**
+	 * Hook that updates credentials in mount points when needed
+	 * @param array $params
+	 */
+	public static function updateMountPointCredentials($credentials) {
+		$username = \OC_User::getUserSession()->getLoginName();
+
+		$mountPoints = self::getAbsoluteMountPoints($credentials['uid']);
+		foreach ($mountPoints as $mountPoint => $options) {
+			try {
+				$storage = new $options['class']($options['options']);
+				if ($storage->needCredentialsUpdate()) {
+					$options['options']['user'] = $username;
+					$options['options']['password'] = $credentials['password'];
+					// Remove '/uid/files/' from mount point [strlen(...) + 8]
+					// and create/update personal mountpoint with username and
+					// password from existing system mount configuration
+					self::addMountPoint(substr($mountPoint, strlen($credentials['uid']) + 8),
+					                    $options['class'],
+					                    $options['options'],
+					                    'user',
+					                    $credentials['uid'],
+					                    true);
+				}
+			} catch (Exception $exception) {
+				\OCP\Util::logException('files_external', $exception);
+			}
+		}
+	}
+
+	/**
 	 * Returns the mount points for the given user.
 	 * The mount point is relative to the data directory.
 	 *

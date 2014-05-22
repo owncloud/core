@@ -53,6 +53,7 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 		\OC_Group::addToGroup(self::TEST_USER2, self::TEST_GROUP2);
 
 		\OC_User::setUserId(self::TEST_USER1);
+		\OC_User::getUserSession()->setLoginName(self::TEST_USER1);
 		$this->userHome = \OC_User::getHome(self::TEST_USER1);
 		mkdir($this->userHome);
 
@@ -634,5 +635,78 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('\OC\Files\Storage\SMB', $config[1]['class']);
 		$this->assertEquals('ext', $config[1]['mountpoint']);
 		$this->assertEquals($options2, $config[1]['options']);
+	}
+
+	/*
+	 * Test mount point without credentials update for original behaviour
+	 */
+	public function testMountPointNoCredentialsUpdate() {
+		$this->assertTrue(
+			OC_Mount_Config::addMountPoint(
+				'/ext',
+				'\OC\Files\Storage\SMB',
+				array(
+					'host' => 'smbhost',
+					'user' => 'smbuser',
+					'password' => 'smbpass',
+					'share' => 'smbshare',
+					'root' => 'smbroot'
+				),
+				OC_Mount_Config::MOUNT_TYPE_USER,
+				self::TEST_USER1,
+				false
+			)
+		);
+
+		// simulate login
+		\OC_Mount_Config::updateMountPointCredentials(
+			array('uid' => self::TEST_USER1, 'password' => self::TEST_USER1)
+		);
+
+		// ensure user and password are unchanged
+		$mountPoints = OC_Mount_Config::getAbsoluteMountPoints(self::TEST_USER1);
+		$this->assertEquals('smbuser',
+			$mountPoints['/'.self::TEST_USER1.'/files/ext']['options']['user']
+		);
+		$this->assertEquals('smbpass',
+			$mountPoints['/'.self::TEST_USER1.'/files/ext']['options']['password']
+		);
+	}
+
+	/*
+	 * Test mount point for credentials updating
+	 */
+	public function testMountPointCredentialsUpdate() {
+		$this->assertTrue(
+			OC_Mount_Config::addMountPoint(
+				'/ext',
+				'\OC\Files\Storage\SMB_OC',
+				array(
+					'host' => 'smbhost',
+					'username_as_share' => false,
+					'user' => 'smbuser',
+					'password' => 'smbpass',
+					'share' => 'smbshare',
+					'root' => 'smbroot'
+				),
+				OC_Mount_Config::MOUNT_TYPE_USER,
+				self::TEST_USER1,
+				false
+			)
+		);
+
+		// simulate login
+		\OC_Mount_Config::updateMountPointCredentials(
+			array('uid' => self::TEST_USER1, 'password' => self::TEST_USER1)
+		);
+
+		// ensure user and password are changed
+		$mountPoints = OC_Mount_Config::getAbsoluteMountPoints(self::TEST_USER1);
+		$this->assertEquals(self::TEST_USER1,
+			$mountPoints['/'.self::TEST_USER1.'/files/ext']['options']['user']
+		);
+		$this->assertEquals(self::TEST_USER1,
+			$mountPoints['/'.self::TEST_USER1.'/files/ext']['options']['password']
+		);
 	}
 }
