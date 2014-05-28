@@ -138,9 +138,11 @@ class Scanner extends BasicEmitter {
 											$parent = '';
 										}
 										$parentCacheData = $this->cache->get($parent);
-										$this->cache->update($parentCacheData['fileid'], array(
-											'etag' => $this->storage->getETag($parent),
-										));
+										if(Config::getSystemValue('enable_scan_to_cache', true)) {
+											$this->cache->update($parentCacheData['fileid'], array(
+												'etag' => $this->storage->getETag($parent),
+											));
+										}
 									}
 								}
 							}
@@ -299,7 +301,9 @@ class Scanner extends BasicEmitter {
 		$lastPath = null;
 		while (($path = $this->cache->getIncomplete()) !== false && $path !== $lastPath) {
 			$this->scan($path, self::SCAN_RECURSIVE, self::REUSE_ETAG);
-			$this->cache->correctFolderSize($path);
+			if(Config::getSystemValue('enable_scan_to_cache', true)) {
+				$this->cache->correctFolderSize($path);
+			}
 			$lastPath = $path;
 		}
 	}
