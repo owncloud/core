@@ -10,6 +10,7 @@ namespace OC\Files\Cache;
 
 use OC\Files\Filesystem;
 use OC\Hooks\BasicEmitter;
+use OCP\Config;
 
 /**
  * Class Scanner
@@ -156,12 +157,16 @@ class Scanner extends BasicEmitter {
 					}
 				}
 				if (!empty($newData)) {
-					$data['fileid'] = $this->cache->put($file, $newData);
+					if(Config::getSystemValue('enable_scan_to_cache', true)) {
+						$data['fileid'] = $this->cache->put($file, $newData);
+					}
 					$this->emit('\OC\Files\Cache\Scanner', 'postScanFile', array($file, $this->storageId));
 					\OC_Hook::emit('\OC\Files\Cache\Scanner', 'post_scan_file', array('path' => $file, 'storage' => $this->storageId));
 				}
 			} else {
-				$this->cache->remove($file);
+				if(Config::getSystemValue('enable_scan_to_cache', true)) {
+					$this->cache->remove($file);
+				}
 			}
 			return $data;
 		}
@@ -244,7 +249,9 @@ class Scanner extends BasicEmitter {
 			$removedChildren = \array_diff($existingChildren, $newChildren);
 			foreach ($removedChildren as $childName) {
 				$child = ($path) ? $path . '/' . $childName : $childName;
-				$this->cache->remove($child);
+				if(Config::getSystemValue('enable_scan_to_cache', true)) {
+					$this->cache->remove($child);
+				}
 			}
 			\OC_DB::commit();
 			if ($exceptionOccurred){
@@ -263,7 +270,9 @@ class Scanner extends BasicEmitter {
 					$size += $childSize;
 				}
 			}
-			$this->cache->put($path, array('size' => $size));
+			if(Config::getSystemValue('enable_scan_to_cache', true)) {
+				$this->cache->put($path, array('size' => $size));
+			}
 		}
 		$this->emit('\OC\Files\Cache\Scanner', 'postScanFolder', array($path, $this->storageId));
 		return $size;
