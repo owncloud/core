@@ -291,6 +291,9 @@ $CONFIG = array(
  * 1 -> check each file or folder at most once per request, recomended for general use if outside changes might happen
  * 2 -> check every time the filesystem is used, causes a performance hit when using external storages, not recomended for regular use
  */
-'filesystem_check_changes' => 1
+'filesystem_check_changes' => 1,
+
+/* When the filesystem is checked for changes made outside of owncloud, allow those changes to affect internal metadata storage */
+'enable_scan_to_cache' => true,
 
 );
