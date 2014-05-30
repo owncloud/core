@@ -1,5 +1,27 @@
 <?php
 
+/**
+ * In case background execution mode is ajax we execute one job within a remote call
+ */
+function executeBackgroundJobs() {
+	$appMode = OC_BackgroundJob::getExecutionType();
+	if ($appMode !== 'ajax') {
+		return;
+	}
+
+	// execute one job
+	try {
+		$logger = \OC_Log::$object;
+		$jobList = \OC::$server->getJobList();
+		$job = $jobList->getNext();
+		$job->execute($jobList, $logger);
+		$jobList->setLastJob($job);
+	} catch(Exception $ex) {
+		\OC::$server->getLogger()->error('Job execution failed: {exception}',
+			array('app' => 'core', 'exception' => $ex));
+	}
+}
+
 try {
 	require_once 'lib/base.php';
 	$path_info = OC_Request::getPathInfo();
@@ -40,6 +62,8 @@ try {
 			break;
 	}
 	$baseuri = OC::$WEBROOT . '/remote.php/'.$service.'/';
+	executeBackgroundJobs();
+
 	require_once $file;
 
 } catch (Exception $ex) {
