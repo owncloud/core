@@ -4,6 +4,35 @@
  * See the COPYING-README file.
  */
 
+/* global OC, t */
+
+/**
+ * The callback will be fired as soon as enter is pressed by the
+ * user or 1 second after the last data entry
+ *
+ * @param callback
+ */
+jQuery.fn.keyUpDelayedOrEnter = function(callback){
+	var cb = callback;
+	var that = this;
+	this.keyup(_.debounce(function (event) {
+		// enter is already handled in keypress
+		if(event.keyCode === 13) {
+			return;
+		}
+		if (that.val() !== '') {
+			cb();
+		}
+	}, 1000));
+
+	this.keypress(function (event) {
+		if (event.keyCode === 13 && that.val() !== '' ){
+			event.preventDefault();
+			cb();
+		}
+	});
+};
+
 /**
  * Post the email address change to the server.
  */
