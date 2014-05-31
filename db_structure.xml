@@ -1018,6 +1018,15 @@
 			</field>
 
 			<index>
+				<name>job_id_index</name>
+				<primary>true</primary>
+				<field>
+					<name>id</name>
+					<sorting>ascending</sorting>
+				</field>
+			</index>
+
+			<index>
 				<name>job_class_index</name>
 				<field>
 					<name>class</name>
