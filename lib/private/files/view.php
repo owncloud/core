@@ -26,6 +26,8 @@
 namespace OC\Files;
 
 use OC\Files\Cache\Updater;
+use OCP\Files\IMovableStorage;
+use OCP\Files\IRemovableStorage;
 
 class View {
 	private $fakeRoot = '';
@@ -161,6 +163,19 @@ class View {
 	}
 
 	public function rmdir($path) {
+		$absolutePath = Filesystem::normalizePath($this->getAbsolutePath($path));
+		list($storage, $internalPath) = Filesystem::resolvePath($absolutePath);
+		if (!$internalPath || $internalPath === '/') {
+			if ($storage instanceof IRemovableStorage) {
+				$this->runHooks(array('delete'), $path);
+				$result = $storage->removeMount($absolutePath);
+				$this->runHooks(array('delete'), $path, true);
+				return $result;
+			} else {
+				return false;
+			}
+		}
+
 		if ($this->is_dir($path)) {
 			return $this->basicOperation('rmdir', $path, array('delete'));
 		} else {
@@ -358,12 +373,15 @@ class View {
 		$postFix = (substr($path, -1, 1) === '/') ? '/' : '';
 		$absolutePath = Filesystem::normalizePath($this->getAbsolutePath($path));
 		list($storage, $internalPath) = Filesystem::resolvePath($absolutePath . $postFix);
-		if (!($storage instanceof \OC\Files\Storage\Shared) &&
-				(!$internalPath || $internalPath === '' || $internalPath === '/')) {
-			// do not allow deleting the storage's root / the mount point
-			// because for some storages it might delete the whole contents
-			// but isn't supposed to work that way
-			return false;
+		if (!$internalPath || $internalPath === '/') {
+			if ($storage instanceof IRemovableStorage) {
+				$this->runHooks(array('delete'), $path);
+				$result = $storage->removeMount($absolutePath);
+				$this->runHooks(array('delete'), $path, true);
+				return $result;
+			} else {
+				return false;
+			}
 		}
 		return $this->basicOperation('unlink', $path, array('delete'));
 	}
@@ -410,18 +428,17 @@ class View {
 			if ($run) {
 				$mp1 = $this->getMountPoint($path1 . $postFix1);
 				$mp2 = $this->getMountPoint($path2 . $postFix2);
+				/**
+				 * @var \OC\Files\Storage\Storage $storage1
+				 */
 				list($storage1, $internalPath1) = Filesystem::resolvePath($absolutePath1 . $postFix1);
 				list(, $internalPath2) = Filesystem::resolvePath($absolutePath2 . $postFix2);
 				// if source and target are on the same storage we can call the rename operation from the
 				// storage. If it is a "Shared" file/folder we call always the rename operation of the
 				// shared storage to handle mount point renaming, etc correctly
-				if ($storage1 instanceof \OC\Files\Storage\Shared) {
-					if ($storage1) {
-						$result = $storage1->rename($absolutePath1, $absolutePath2);
-						\OC_FileProxy::runPostProxies('rename', $absolutePath1, $absolutePath2);
-					} else {
-						$result = false;
-					}
+				if ($storage1 instanceof IMovableStorage && Filesystem::normalizePath($mp1) === Filesystem::normalizePath($absolutePath1)) {
+					$result = $storage1->moveMountPoint($absolutePath1, $absolutePath2);
+					\OC_FileProxy::runPostProxies('rename', $absolutePath1, $absolutePath2);
 				} elseif ($mp1 == $mp2) {
 					if ($storage1) {
 						$result = $storage1->rename($internalPath1, $internalPath2);
@@ -960,10 +977,13 @@ class View {
 								$permissions = $subStorage->getPermissions($rootEntry['path']);
 								$subPermissionsCache->set($rootEntry['fileid'], $user, $permissions);
 							}
-							// do not allow renaming/deleting the mount point if they are not shared files/folders
-							// for shared files/folders we use the permissions given by the owner
-							if ($subStorage instanceof \OC\Files\Storage\Shared) {
+							// do not allow renaming/deleting the mount point unless explicitly specified by the storage
+							if ($subStorage instanceof \OCP\Files\IRemovableStorage && $subStorage instanceof \OCP\Files\IMovableStorage) {
 								$rootEntry['permissions'] = $permissions;
+							} else if ($subStorage instanceof \OCP\Files\IRemovableStorage) {
+								$rootEntry['permissions'] = $permissions & (\OCP\PERMISSION_ALL - \OCP\PERMISSION_UPDATE);
+							} else if ($subStorage instanceof \OCP\Files\IMovableStorage) {
+								$rootEntry['permissions'] = $permissions & (\OCP\PERMISSION_ALL - \OCP\PERMISSION_DELETE);
 							} else {
 								$rootEntry['permissions'] = $permissions & (\OCP\PERMISSION_ALL - (\OCP\PERMISSION_UPDATE | \OCP\PERMISSION_DELETE));
 							}

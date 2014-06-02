@@ -22,11 +22,13 @@
  */
 
 namespace OC\Files\Storage;
+use OCP\Files\IMovableStorage;
+use OCP\Files\IRemovableStorage;
 
 /**
  * Convert target path to source path and pass the function call to the correct storage provider
  */
-class Shared extends \OC\Files\Storage\Common {
+class Shared extends \OC\Files\Storage\Common implements IMovableStorage, IRemovableStorage {
 
 	private $share;   // the shared resource
 	private $files = array();
@@ -296,7 +298,7 @@ class Shared extends \OC\Files\Storage\Common {
 	 * @param string $targetPath
 	 * @return bool
 	 */
-	private function renameMountPoint($sourcePath, $targetPath) {
+	public function moveMountPoint($sourcePath, $targetPath) {
 
 		// it shouldn't be possible to move a Shared storage into another one
 		list($targetStorage, ) = \OC\Files\Filesystem::resolvePath($targetPath);
@@ -367,24 +369,10 @@ class Shared extends \OC\Files\Storage\Common {
 	}
 
 	public function rename($path1, $path2) {
+		$relPath1 = $this->getMountPoint() . '/' . $path1;
+		$relPath2 = $this->getMountPoint() . '/' . $path2;
 
-		$sourceMountPoint = \OC\Files\Filesystem::getMountPoint($path1);
-		$targetMountPoint = \OC\Files\Filesystem::getMountPoint($path2);
-		$relPath1 = \OCA\Files_Sharing\Helper::stripUserFilesPath($path1);
-		$relPath2 = \OCA\Files_Sharing\Helper::stripUserFilesPath($path2);
-
-		// if we renamed the mount point we need to adjust the file_target in the
-		// database
-		if (\OC\Files\Filesystem::normalizePath($sourceMountPoint) === \OC\Files\Filesystem::normalizePath($path1)) {
-			return $this->renameMountPoint($path1, $path2);
-		}
-
-
-		if (	// Within the same mount point, we only need UPDATE permissions
-				($sourceMountPoint === $targetMountPoint && $this->isUpdatable($sourceMountPoint)) ||
-				// otherwise DELETE and CREATE permissions required
-				($this->isDeletable($path1) && $this->isCreatable(dirname($path2)))) {
-
+		if ($this->isUpdatable($path1) && $this->isUpdatable($path2)) {
 			$pathinfo = pathinfo($relPath1);
 			// for part files we need to ask for the owner and path from the parent directory because
 			// the file cache doesn't return any results for part files
@@ -608,4 +596,7 @@ class Shared extends \OC\Files\Storage\Common {
 		return null;
 	}
 
+	public function removeMount($mountPoint) {
+		return \OCP\Share::unshareFromSelf($this->share['item_type'], $this->share['file_target']);
+	}
 }
