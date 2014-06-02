@@ -172,7 +172,12 @@ class Server extends SimpleContainer implements IServerContainer {
 			 * @var Server $c
 			 */
 			$config = $c->getConfig();
-			return new \OC\BackgroundJob\JobList($c->getDatabaseConnection(), $config);
+			$cacheFactory = $c->getMemCacheFactory();
+			if ($cacheFactory->isAvailable()) {
+				return new \OC\BackgroundJob\MemCacheJobList($c->getDatabaseConnection(), $config, $cacheFactory->create('joblist'));
+			} else {
+				return new \OC\BackgroundJob\JobList($c->getDatabaseConnection(), $config);
+			}
 		});
 		$this->registerService('Router', function ($c){
 			/**
@@ -360,7 +365,7 @@ class Server extends SimpleContainer implements IServerContainer {
 	}
 
 	/**
-	 * Returns an \OCP\CacheFactory instance
+	 * Returns an \OCP\ICacheFactory instance
 	 *
 	 * @return \OCP\ICacheFactory
 	 */
