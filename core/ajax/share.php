@@ -264,8 +264,15 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 				$users = array();
 				$limit = 0;
 				$offset = 0;
+				for ($i = 0; $i < count($usergroups); $i++) {
+                                        OC_Log::write('core', 'Groups count : '.count($usergroups), OC_Log::DEBUG);
+                                        OC_Log::write('core', 'Group Name : '.$usergroups[$i], OC_Log::DEBUG);
+                                        OC_Log::write('core', 'Group Members : '.count(OC_Group::usersInGroup($usergroups[$i])), OC_Log::DEBUG);
+                                        $userlimit += count(OC_Group::usersInGroup($usergroups[$i]));
+                                        OC_Log::write('core', 'Userlimit : '.$userlimit, OC_Log::DEBUG);
+                                }
 				while ($count < 15 && count($users) == $limit) {
-					$limit = 15 - $count;
+                                        $limit = $userlimit - $count;
 					if ($sharePolicy == 'groups_only') {
 						$users = OC_Group::DisplayNamesInGroups($usergroups, $_GET['search'], $limit, $offset);
 					} else {
