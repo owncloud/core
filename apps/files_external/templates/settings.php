@@ -1,6 +1,7 @@
 <form id="files_external" class="section">
 	<h2><?php p($l->t('External Storage')); ?></h2>
 	<?php if (isset($_['dependencies']) and ($_['dependencies']<>'')) print_unescaped(''.$_['dependencies'].''); ?>
+	<?php $scripts = array(); ?>
 	<table id="externalStorage" class="grid" data-admin='<?php print_unescaped(json_encode($_['isAdminPage'])); ?>'>
 		<thead>
 			<tr>
@@ -76,8 +77,8 @@
 								<?php endif; ?>
 							<?php endif; ?>
 						<?php endforeach; ?>
-						<?php if (isset($_['backends'][$mount['class']]['custom']) && !in_array('files_external/js/'.$_['backends'][$mount['class']]['custom'], \OC_Util::$scripts)): ?>
-							<?php OCP\Util::addScript('files_external', $_['backends'][$mount['class']]['custom']); ?>
+						<?php if (isset($_['backends'][$mount['class']]['custom'])): ?>
+							<?php $scripts[] = $_['backends'][$mount['class']]['custom']; ?>
 						<?php endif; ?>
 					<?php endif; ?>
 				</td>
@@ -102,6 +103,9 @@
 		</tbody>
 	</table>
 	<br />
+	<?php foreach (array_unique($scripts) as $script): ?>
+		<?php OCP\Util::addScript('files_external', $script); ?>
+	<?php endforeach; ?>
 
 	<?php if ($_['isAdminPage']): ?>
 		<br />
