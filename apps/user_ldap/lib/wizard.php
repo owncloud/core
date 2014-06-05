@@ -254,7 +254,7 @@ class Wizard extends LDAPUtility {
 			throw new \Exception('Could not connect to LDAP');
 		}
 
-		$obclasses = array('posixGroup', 'group', 'zimbraDistributionList');
+		$obclasses = array('posixGroup', 'group', 'zimbraDistributionList', 'groupOfNames');
 		$this->determineFeature($obclasses, 'cn', $dbkey, $confkey);
 
 		if($testMemberOf) {
