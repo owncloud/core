@@ -1,0 +1,57 @@
+language: php
+php:
+  - 5.3
+  - 5.4
+  - 5.5
+  - hhvm
+
+env:
+  matrix:
+    - DB=sqlite
+
+before_script:
+  # setup databases
+  - wget https://raw.githubusercontent.com/owncloud/administration/master/travis-ci/setup_databases.sh
+  - bash ./setup_databases.sh $DB
+
+  # Additional PHP config
+  - if [[ $HHVM == false ]] ; then phpenv config-add build/travis.php.ini ; fi
+
+  # fetch PHPUnit and Ocular (for test coverage)
+  - wget https://scrutinizer-ci.com/ocular.phar
+
+  - touch config/config.php
+
+  # call setup for tests
+  - build/prepareTests.sh $DB
+
+script:
+  - phpunit --version
+  # Test lint
+  - if [[ $DB == 'sqlite' ]] ; then ant -f build/build.xml -Dbasedir=. prepare lint ; fi
+
+  # Run tests
+  - phpunit --configuration tests/phpunit-autotest.xml --log-junit tests/autotest-results-$DB.xml --coverage-clover tests/autotest-clover-$DB.xml --coverage-html tests/coverage-html-$DB
+  - if [[ $DB == 'mysql' ]] ; then ./autotest-js.sh ; fi
+
+  # Create coverage report
+  #- php ocular.phar code-coverage:upload --format=php-clover tests/autotest-clover-$DB.xml
+
+matrix:
+  include:
+    - php: 5.4
+      env: DB=mysql
+    - php: 5.4
+      env: DB=pgsql
+    - php: 5.4
+      env: DB=oracle
+  allow_failures:
+    - php: hhvm
+    - php: 5.5
+  fast_finish: true
+
+branches:
+  only:
+    - master
+    - stable5
+    - stable6
