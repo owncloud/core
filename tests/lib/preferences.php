@@ -43,8 +43,11 @@ class Test_Preferences extends PHPUnit_Framework_TestCase {
 		while ($row = $result->fetchRow()) {
 			$expected[] = $row['userid'];
 		}
+		sort($expected);
+		$users = \OC_Preferences::getUsers();
+		sort($users);
 
-		$this->assertEquals($expected, \OC_Preferences::getUsers());
+		$this->assertEquals($expected, $users);
 	}
 
 	public function testGetApps() {
@@ -54,8 +57,11 @@ class Test_Preferences extends PHPUnit_Framework_TestCase {
 		while ($row = $result->fetchRow()) {
 			$expected[] = $row['appid'];
 		}
+		sort($expected);
+		$apps = \OC_Preferences::getApps('Someuser');
+		sort($apps);
 
-		$this->assertEquals($expected, \OC_Preferences::getApps('Someuser'));
+		$this->assertEquals($expected, $apps);
 	}
 
 	public function testGetKeys() {
@@ -65,8 +71,11 @@ class Test_Preferences extends PHPUnit_Framework_TestCase {
 		while ($row = $result->fetchRow()) {
 			$expected[] = $row['configkey'];
 		}
+		sort($expected);
+		$keys = \OC_Preferences::getKeys('Someuser', 'getkeysapp');
+		sort($keys);
 
-		$this->assertEquals($expected, \OC_Preferences::getKeys('Someuser', 'getkeysapp'));
+		$this->assertEquals($expected, $keys);
 	}
 
 	public function testGetValue() {
