@@ -257,7 +257,9 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testReadWriteGlobalConfig($mountType, $applicable, $expectApplicableArray) {
 		// samba share test doesn't work on travis
-		$this->markTestSkipped('samba share test doesn\'t work on travis');
+		if (getenv('TRAVIS')) {
+			$this->markTestSkipped('samba share test doesn\'t work on travis');
+		}
 
 		$mountType = $mountType;
 		$applicable = $applicable;
@@ -299,7 +301,9 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testReadWritePersonalConfig() {
 		// samba share test doesn't work on travis
-		$this->markTestSkipped('samba share test doesn\'t work on travis');
+		if (getenv('TRAVIS')) {
+			$this->markTestSkipped('samba share test doesn\'t work on travis');
+		}
 
 		$mountType = OC_Mount_Config::MOUNT_TYPE_USER;
 		$applicable = self::TEST_USER1;
@@ -340,7 +344,9 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testPasswordObfuscation() {
 		// samba share test doesn't work on travis
-		$this->markTestSkipped('samba share test doesn\'t work on travis');
+		if (getenv('TRAVIS')) {
+			$this->markTestSkipped('samba share test doesn\'t work on travis');
+		}
 
 		$mountType = OC_Mount_Config::MOUNT_TYPE_USER;
 		$applicable = self::TEST_USER1;
@@ -383,7 +389,9 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testReadLegacyPassword() {
 		// samba share test doesn't work on travis
-		$this->markTestSkipped('samba share test doesn\'t work on travis');
+		if (getenv('TRAVIS')) {
+			$this->markTestSkipped('samba share test doesn\'t work on travis');
+		}
 
 		$mountType = OC_Mount_Config::MOUNT_TYPE_USER;
 		$applicable = self::TEST_USER1;
@@ -497,7 +505,9 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testMount($isPersonal, $mountType, $applicable, $testUser, $expectVisible) {
 		// samba share test doesn't work on travis
-		$this->markTestSkipped('samba share test doesn\'t work on travis');
+		if (getenv('TRAVIS')) {
+			$this->markTestSkipped('samba share test doesn\'t work on travis');
+		}
 
 		$mountConfig = array(
 			'host' => 'someost',
@@ -539,7 +549,9 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testConfigMerging() {
 		// samba share test doesn't work on travis
-		$this->markTestSkipped('samba share test doesn\'t work on travis');
+		if (getenv('TRAVIS')) {
+			$this->markTestSkipped('samba share test doesn\'t work on travis');
+		}
 
 		$mountType = OC_Mount_Config::MOUNT_TYPE_USER;
 		$isPersonal = false;
@@ -612,7 +624,9 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testRereadMountpointWithSamePath() {
 		// samba share test doesn't work on travis
-		$this->markTestSkipped('samba share test doesn\'t work on travis');
+		if (getenv('TRAVIS')) {
+			$this->markTestSkipped('samba share test doesn\'t work on travis');
+		}
 
 		$mountType = OC_Mount_Config::MOUNT_TYPE_USER;
 		$isPersonal = false;
@@ -746,7 +760,9 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testPriority($mounts, $expected) {
 		// samba share test doesn't work on travis
-		$this->markTestSkipped('samba share test doesn\'t work on travis');
+		if (getenv('TRAVIS')) {
+			$this->markTestSkipped('samba share test doesn\'t work on travis');
+		}
 
 		$mountConfig = array(
 			'host' => 'somehost',
@@ -782,7 +798,9 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testPriorityPersistence() {
 		// samba share test doesn't work on travis
-		$this->markTestSkipped('samba share test doesn\'t work on travis');
+		if (getenv('TRAVIS')) {
+			$this->markTestSkipped('samba share test doesn\'t work on travis');
+		}
 
 		$class = '\OC\Files\Storage\SMB';
 		$priority = 123;
