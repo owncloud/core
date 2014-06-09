@@ -21,8 +21,6 @@ before_script:
   # fetch PHPUnit and Ocular (for test coverage)
   - wget https://scrutinizer-ci.com/ocular.phar
 
-  - touch config/config.php
-
   # call setup for tests
   - build/prepareTests.sh $DB
 
