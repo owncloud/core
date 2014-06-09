@@ -42,17 +42,27 @@ class ErrorHandler {
 	//Fatal errors handler
 	public static function onShutdown() {
 		$error = error_get_last();
-		if($error && self::$logger) {
-			//ob_end_clean();
+		if (!empty($error)) {
 			$msg = $error['message'] . ' at ' . $error['file'] . '#' . $error['line'];
-			self::$logger->critical(self::removePassword($msg), array('app' => 'PHP'));
+			if(isset(self::$logger)) {
+				//ob_end_clean();
+				self::$logger->critical(self::removePassword($msg), array('app' => 'PHP'));
+			} else {
+				//If logger is not set use PHP error_log
+				error_log($msg);
+			}
 		}
 	}
 
 	// Uncaught exception handler
 	public static function onException($exception) {
 		$msg = $exception->getMessage() . ' at ' . $exception->getFile() . '#' . $exception->getLine();
-		self::$logger->critical(self::removePassword($msg), array('app' => 'PHP'));
+		if (isset(self::$logger)) {
+			self::$logger->critical(self::removePassword($msg), array('app' => 'PHP'));
+		} else {
+			//If logger is not set use PHP error_log
+			error_log($msg);
+		}
 	}
 
 	//Recoverable errors handler
@@ -61,15 +71,24 @@ class ErrorHandler {
 			return;
 		}
 		$msg = $message . ' at ' . $file . '#' . $line;
-		self::$logger->error(self::removePassword($msg), array('app' => 'PHP'));
-
+		if (isset(self::$logger)) {
+			self::$logger->error(self::removePassword($msg), array('app' => 'PHP'));
+		} else {
+			//If logger is not set, use PHP error_log
+			error_log($msg);   
+		}
 	}
 
 	//Recoverable handler which catch all errors, warnings and notices
 	public static function onAll($number, $message, $file, $line) {
+		if (error_reporting() === 0) {
+			return;
+		}
 		$msg = $message . ' at ' . $file . '#' . $line;
-		self::$logger->debug(self::removePassword($msg), array('app' => 'PHP'));
-
+		if (isset(self::$logger)) {
+			self::$logger->debug(self::removePassword($msg), array('app' => 'PHP'));
+		} else {
+			error_log($msg);
+		}
 	}
-
 }
