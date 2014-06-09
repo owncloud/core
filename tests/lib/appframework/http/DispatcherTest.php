@@ -221,7 +221,9 @@ class DispatcherTest extends \PHPUnit_Framework_TestCase {
 
 	public function testExceptionCallsAfterException() {
 		// TODO fails on PHP 5.3
-		$this->markTestSkipped('Fails on PHP 5.3');
+		if (version_compare(PHP_VERSION, '5.4.0', '<')) {
+			$this->markTestSkipped('Fails on PHP 5.3');
+		}
 		$out = 'yo';
 		$httpHeaders = 'Http';
 		$responseHeaders = array('hell' => 'yeah');
