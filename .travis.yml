@@ -18,22 +18,24 @@ before_script:
   # Additional PHP config
   - if [[ $HHVM == false ]] ; then phpenv config-add build/travis.php.ini ; fi
 
-  # fetch PHPUnit and Ocular (for test coverage)
-  - wget https://scrutinizer-ci.com/ocular.phar
+  # fetch Ocular (for test coverage upload)
+  #- wget https://scrutinizer-ci.com/ocular.phar
 
   # call setup for tests
   - build/prepareTests.sh $DB
 
 script:
   - phpunit --version
-  # Test lint
+  # Run PHP lint for each PHP version
   - if [[ $DB == 'sqlite' ]] ; then ant -f build/build.xml -Dbasedir=. prepare lint ; fi
 
   # Run tests
-  - phpunit --configuration tests/phpunit-autotest.xml --log-junit tests/autotest-results-$DB.xml --coverage-clover tests/autotest-clover-$DB.xml --coverage-html tests/coverage-html-$DB
+  - phpunit --configuration tests/phpunit-autotest.xml --coverage-clover tests/autotest-clover-$DB.xml
+
+  # Run JS tests just once (see test matrix - mysql is just run once)
   - if [[ $DB == 'mysql' ]] ; then ./autotest-js.sh ; fi
 
-  # Create coverage report
+  # Upload coverage report
   #- php ocular.phar code-coverage:upload --format=php-clover tests/autotest-clover-$DB.xml
 
 matrix:

@@ -128,10 +128,8 @@ php -f index.php | grep -i -C9999 error && echo "Error during setup" && exit 101
 echo "END INDEX"
 
 # prepare coverage report dirs and enable apps
-echo "Clean up directories and enable apps ..."
+echo "Enable apps ..."
 cd tests
-rm -rf coverage-html-$1
-mkdir coverage-html-$1
 php -f enable_all.php | grep -i -C9999 error && echo "Error during setup" && exit 101
 
 # show environment
