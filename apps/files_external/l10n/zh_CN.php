@@ -1,5 +1,6 @@
 <?php
 $TRANSLATIONS = array(
+"External storage" => "外部存储",
 "Local" => "本地",
 "Location" => "地点",
 "Amazon S3" => "Amazon S3",
@@ -23,12 +24,13 @@ $TRANSLATIONS = array(
 "Grant access" => "授权",
 "Please provide a valid Dropbox app key and secret." => "请提供有效的Dropbox应用key和secret",
 "Error configuring Google Drive storage" => "配置Google Drive存储时出错",
+"Personal" => "个人",
 "Saved" => "已保存",
 "<b>Note:</b> " => "<b>注意：</b>",
 " and " => "和",
+"Name" => "名称",
 "External Storage" => "外部存储",
 "Folder name" => "目录名称",
-"External storage" => "外部存储",
 "Configuration" => "配置",
 "Options" => "选项",
 "Available for" => "可用于",

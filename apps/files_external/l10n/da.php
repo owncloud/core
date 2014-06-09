@@ -1,5 +1,6 @@
 <?php
 $TRANSLATIONS = array(
+"External storage" => "Eksternt lager",
 "Local" => "Lokal",
 "Location" => "Placering",
 "Amazon S3" => "Amazon S3",
@@ -22,12 +23,13 @@ $TRANSLATIONS = array(
 "Grant access" => "Godkend adgang",
 "Please provide a valid Dropbox app key and secret." => "Angiv venligst en valid Dropbox app nøgle og hemmelighed",
 "Error configuring Google Drive storage" => "Fejl ved konfiguration af Google Drive plads",
+"Personal" => "Personligt",
 "Saved" => "Gemt",
 "<b>Note:</b> " => "<b>Note:</b> ",
 " and " => "og",
+"Name" => "Navn",
 "External Storage" => "Ekstern opbevaring",
 "Folder name" => "Mappenavn",
-"External storage" => "Eksternt lager",
 "Configuration" => "Opsætning",
 "Options" => "Valgmuligheder",
 "Available for" => "Tilgængelig for",

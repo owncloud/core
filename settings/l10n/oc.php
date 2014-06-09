@@ -20,13 +20,13 @@ $TRANSLATIONS = array(
 "Groups" => "Grops",
 "Group Admin" => "Grop Admin",
 "Delete" => "Escafa",
+"never" => "jamai",
 "__language_name__" => "__language_name__",
 "Login" => "Login",
 "Security Warning" => "Avertiment de securitat",
 "Cron" => "Cron",
 "Execute one task with each page loaded" => "Executa un prètfach amb cada pagina cargada",
 "Sharing" => "Al partejar",
-"Enable Share API" => "Activa API partejada",
 "Log" => "Jornal",
 "More" => "Mai d'aquò",
 "Add your App" => "Ajusta ton App",
@@ -46,7 +46,9 @@ $TRANSLATIONS = array(
 "Help translate" => "Ajuda a la revirada",
 "Login Name" => "Login",
 "Create" => "Crea",
+"Default Quota" => "Quota per defaut",
 "Other" => "Autres",
-"Username" => "Non d'usancièr"
+"Username" => "Non d'usancièr",
+"Quota" => "Quota"
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n > 1);";

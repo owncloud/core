@@ -34,6 +34,8 @@ class Hooks {
 	private static $renamedFiles = array();
 	// file for which we want to delete the keys after the delete operation was successful
 	private static $deleteFiles = array();
+	// file for which we want to delete the keys after the delete operation was successful
+	private static $umountedFiles = array();
 
 	/**
 	 * Startup encryption backend upon user login
@@ -51,16 +53,16 @@ class Hooks {
 		$view = new \OC\Files\View('/');
 
 		// ensure filesystem is loaded
-		if(!\OC\Files\Filesystem::$loaded) {
+		if (!\OC\Files\Filesystem::$loaded) {
 			\OC_Util::setupFS($params['uid']);
 		}
 
 		$privateKey = \OCA\Encryption\Keymanager::getPrivateKey($view, $params['uid']);
 
 		// if no private key exists, check server configuration
-		if(!$privateKey) {
+		if (!$privateKey) {
 			//check if all requirements are met
-			if(!Helper::checkRequirements() || !Helper::checkConfiguration()) {
+			if (!Helper::checkRequirements() || !Helper::checkConfiguration()) {
 				$error_msg = $l->t("Missing requirements.");
 				$hint = $l->t('Please make sure that PHP 5.3.3 or newer is installed and that OpenSSL together with the PHP extension is enabled and configured properly. For now, the encryption app has been disabled.');
 				\OC_App::disable('files_encryption');
@@ -90,6 +92,8 @@ class Hooks {
 			return false;
 		}
 
+		$result = true;
+
 		// If migration not yet done
 		if ($ready) {
 
@@ -97,15 +101,14 @@ class Hooks {
 
 			// Set legacy encryption key if it exists, to support
 			// depreciated encryption system
-			if (
-				$userView->file_exists('encryption.key')
-				&& $encLegacyKey = $userView->file_get_contents('encryption.key')
-			) {
+			if ($userView->file_exists('encryption.key')) {
+				$encLegacyKey = $userView->file_get_contents('encryption.key');
+				if ($encLegacyKey) {
 
-				$plainLegacyKey = Crypt::legacyDecrypt($encLegacyKey, $params['password']);
+					$plainLegacyKey = Crypt::legacyDecrypt($encLegacyKey, $params['password']);
 
-				$session->setLegacyKey($plainLegacyKey);
-
+					$session->setLegacyKey($plainLegacyKey);
+				}
 			}
 
 			// Encrypt existing user files
@@ -113,26 +116,24 @@ class Hooks {
 				$result = $util->encryptAll('/' . $params['uid'] . '/' . 'files', $session->getLegacyKey(), $params['password']);
 			} catch (\Exception $ex) {
 				\OCP\Util::writeLog('Encryption library', 'Initial encryption failed! Error: ' . $ex->getMessage(), \OCP\Util::FATAL);
-				$util->resetMigrationStatus();
-				\OCP\User::logout();
 				$result = false;
 			}
 
 			if ($result) {
-
 				\OC_Log::write(
-					'Encryption library', 'Encryption of existing files belonging to "' . $params['uid'] . '" completed'
-					, \OC_Log::INFO
-				);
-
+						'Encryption library', 'Encryption of existing files belonging to "' . $params['uid'] . '" completed'
+						, \OC_Log::INFO
+					);
 				// Register successful migration in DB
 				$util->finishMigration();
-
+			} else  {
+				\OCP\Util::writeLog('Encryption library', 'Initial encryption failed!', \OCP\Util::FATAL);
+				$util->resetMigrationStatus();
+				\OCP\User::logout();
 			}
 		}
 
-		return true;
-
+		return $result;
 	}
 
 	/**
@@ -531,8 +532,7 @@ class Hooks {
 	public static function preDisable($params) {
 		if ($params['app'] === 'files_encryption') {
 
-			$setMigrationStatus = \OC_DB::prepare('UPDATE `*PREFIX*encryption` SET `migration_status`=0');
-			$setMigrationStatus->execute();
+			\OC_Preferences::deleteAppFromAllUsers('files_encryption');
 
 			$session = new \OCA\Encryption\Session(new \OC\Files\View('/'));
 			$session->setInitialized(\OCA\Encryption\Session::NOT_INITIALIZED);
@@ -610,6 +610,59 @@ class Hooks {
 		self::$deleteFiles[$params[\OC\Files\Filesystem::signal_param_path]] = array(
 			'uid' => $owner,
 			'path' => $ownerPath);
+	}
+
+	/**
+	 * remember files/folders which get unmounted
+	 */
+	public static function preUmount($params) {
+		$path = $params[\OC\Files\Filesystem::signal_param_path];
+		$user = \OCP\USER::getUser();
+
+		$view = new \OC\Files\View();
+		$itemType = $view->is_dir('/' . $user . '/files' . $path) ? 'folder' : 'file';
+
+		$util = new Util($view, $user);
+		list($owner, $ownerPath) = $util->getUidAndFilename($path);
+
+		self::$umountedFiles[$params[\OC\Files\Filesystem::signal_param_path]] = array(
+			'uid' => $owner,
+			'path' => $ownerPath,
+			'itemType' => $itemType);
+	}
+
+	public static function postUmount($params) {
+
+		if (!isset(self::$umountedFiles[$params[\OC\Files\Filesystem::signal_param_path]])) {
+			return true;
+		}
+
+		$umountedFile = self::$umountedFiles[$params[\OC\Files\Filesystem::signal_param_path]];
+		$path = $umountedFile['path'];
+		$user = $umountedFile['uid'];
+		$itemType = $umountedFile['itemType'];
+
+		$view = new \OC\Files\View();
+		$util = new Util($view, $user);
+
+		// we don't need to remember the file any longer
+		unset(self::$umountedFiles[$params[\OC\Files\Filesystem::signal_param_path]]);
+
+		// if we unshare a folder we need a list of all (sub-)files
+		if ($itemType === 'folder') {
+			$allFiles = $util->getAllFiles($path);
+		} else {
+			$allFiles = array($path);
+		}
+
+		foreach ($allFiles as $path) {
+
+			// check if the user still has access to the file, otherwise delete share key
+			$sharingUsers = \OCP\Share::getUsersSharingFile($path, $user);
+			if (!in_array(\OCP\User::getUser(), $sharingUsers['users'])) {
+				Keymanager::delShareKey($view, array(\OCP\User::getUser()), $path);
+			}
+		}
 	}
 
 }

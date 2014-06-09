@@ -26,6 +26,7 @@
 namespace OC\Files;
 
 use OC\Files\Cache\Updater;
+use OC\Files\Mount\MoveableMount;
 
 class View {
 	private $fakeRoot = '';
@@ -357,13 +358,27 @@ class View {
 		}
 		$postFix = (substr($path, -1, 1) === '/') ? '/' : '';
 		$absolutePath = Filesystem::normalizePath($this->getAbsolutePath($path));
-		list($storage, $internalPath) = Filesystem::resolvePath($absolutePath . $postFix);
-		if (!($storage instanceof \OC\Files\Storage\Shared) &&
-				(!$internalPath || $internalPath === '' || $internalPath === '/')) {
-			// do not allow deleting the storage's root / the mount point
-			// because for some storages it might delete the whole contents
-			// but isn't supposed to work that way
-			return false;
+		$mount = Filesystem::getMountManager()->find($absolutePath . $postFix);
+		if ($mount->getInternalPath($absolutePath) === '') {
+			if ($mount instanceof MoveableMount) {
+				\OC_Hook::emit(
+						Filesystem::CLASSNAME, "umount",
+						array(Filesystem::signal_param_path => $path)
+						);
+				$result = $mount->removeMount();
+				if ($result) {
+					\OC_Hook::emit(
+							Filesystem::CLASSNAME, "post_umount",
+							array(Filesystem::signal_param_path => $path)
+							);
+				}
+				return $result;
+			} else {
+				// do not allow deleting the storage's root / the mount point
+				// because for some storages it might delete the whole contents
+				// but isn't supposed to work that way
+				return false;
+			}
 		}
 		return $this->basicOperation('unlink', $path, array('delete'));
 	}
@@ -410,18 +425,19 @@ class View {
 			if ($run) {
 				$mp1 = $this->getMountPoint($path1 . $postFix1);
 				$mp2 = $this->getMountPoint($path2 . $postFix2);
-				list($storage1, $internalPath1) = Filesystem::resolvePath($absolutePath1 . $postFix1);
+				$manager = Filesystem::getMountManager();
+				$mount = $manager->find($absolutePath1 . $postFix1);
+				$storage1 = $mount->getStorage();
+				$internalPath1 = $mount->getInternalPath($absolutePath1 . $postFix1);
 				list(, $internalPath2) = Filesystem::resolvePath($absolutePath2 . $postFix2);
-				// if source and target are on the same storage we can call the rename operation from the
-				// storage. If it is a "Shared" file/folder we call always the rename operation of the
-				// shared storage to handle mount point renaming, etc correctly
-				if ($storage1 instanceof \OC\Files\Storage\Shared) {
-					if ($storage1) {
-						$result = $storage1->rename($absolutePath1, $absolutePath2);
-						\OC_FileProxy::runPostProxies('rename', $absolutePath1, $absolutePath2);
-					} else {
-						$result = false;
-					}
+				if ($internalPath1 === '' and $mount instanceof MoveableMount) {
+					/**
+					 * @var \OC\Files\Mount\Mount | \OC\Files\Mount\MoveableMount $mount
+					 */
+					$sourceMountPoint = $mount->getMountPoint();
+					$result = $mount->moveMount($absolutePath2);
+					$manager->moveMount($sourceMountPoint, $mount->getMountPoint());
+					\OC_FileProxy::runPostProxies('rename', $absolutePath1, $absolutePath2);
 				} elseif ($mp1 == $mp2) {
 					if ($storage1) {
 						$result = $storage1->rename($internalPath1, $internalPath2);
@@ -678,6 +694,7 @@ class View {
 
 	/**
 	 * abstraction layer for basic filesystem functions: wrapper for \OC\Files\Storage\Storage
+	 *
 	 * @param string $operation
 	 * @param string $path
 	 * @param array $hooks (optional)
@@ -807,7 +824,8 @@ class View {
 	 * get the filesystem info
 	 *
 	 * @param string $path
-	 * @param boolean $includeMountPoints whether to add mountpoint sizes,
+	 * @param boolean|string $includeMountPoints true to add mountpoint sizes,
+	 * 'ext' to add only ext storage mount point sizes. Defaults to true.
 	 * defaults to true
 	 * @return \OC\Files\FileInfo|false
 	 */
@@ -826,8 +844,6 @@ class View {
 		$data = null;
 		if ($storage) {
 			$cache = $storage->getCache($internalPath);
-			$permissionsCache = $storage->getPermissionsCache($internalPath);
-			$user = \OC_User::getUser();
 
 			if (!$cache->inCache($internalPath)) {
 				if (!$storage->file_exists($internalPath)) {
@@ -847,23 +863,21 @@ class View {
 			if ($data and isset($data['fileid'])) {
 				if ($includeMountPoints and $data['mimetype'] === 'httpd/unix-directory') {
 					//add the sizes of other mountpoints to the folder
+					$extOnly = ($includeMountPoints === 'ext');
 					$mountPoints = Filesystem::getMountPoints($path);
 					foreach ($mountPoints as $mountPoint) {
 						$subStorage = Filesystem::getStorage($mountPoint);
 						if ($subStorage) {
+							// exclude shared storage ?
+							if ($extOnly && $subStorage instanceof \OC\Files\Storage\Shared) {
+								continue;
+							}
 							$subCache = $subStorage->getCache('');
 							$rootEntry = $subCache->get('');
 							$data['size'] += isset($rootEntry['size']) ? $rootEntry['size'] : 0;
 						}
 					}
 				}
-
-				$permissions = $permissionsCache->get($data['fileid'], $user);
-				if ($permissions === -1) {
-					$permissions = $storage->getPermissions($internalPath);
-					$permissionsCache->set($data['fileid'], $user, $permissions);
-				}
-				$data['permissions'] = $permissions;
 			}
 		}
 		if (!$data) {
@@ -889,14 +903,9 @@ class View {
 			return $result;
 		}
 		$path = Filesystem::normalizePath($this->fakeRoot . '/' . $directory);
-		/**
-		 * @var \OC\Files\Storage\Storage $storage
-		 * @var string $internalPath
-		 */
 		list($storage, $internalPath) = Filesystem::resolvePath($path);
 		if ($storage) {
 			$cache = $storage->getCache($internalPath);
-			$permissionsCache = $storage->getPermissionsCache($internalPath);
 			$user = \OC_User::getUser();
 
 			if ($cache->getStatus($internalPath) < Cache\Cache::COMPLETE) {
@@ -913,7 +922,6 @@ class View {
 			foreach ($contents as $content) {
 				$files[] = new FileInfo($path . '/' . $content['name'], $storage, $content['path'], $content);
 			}
-			$permissions = $permissionsCache->getDirectoryPermissions($folderId, $user);
 
 			$ids = array();
 			foreach ($files as $i => $file) {
@@ -922,15 +930,15 @@ class View {
 
 				if (!isset($permissions[$file['fileid']])) {
 					$permissions[$file['fileid']] = $storage->getPermissions($file['path']);
-					$permissionsCache->set($file['fileid'], $user, $permissions[$file['fileid']]);
 				}
 				$files[$i]['permissions'] = $permissions[$file['fileid']];
 			}
 
 			//add a folder for any mountpoint in this directory and add the sizes of other mountpoints to the folders
-			$mountPoints = Filesystem::getMountPoints($path);
+			$mounts = Filesystem::getMountManager()->findIn($path);
 			$dirLength = strlen($path);
-			foreach ($mountPoints as $mountPoint) {
+			foreach ($mounts as $mount) {
+				$mountPoint = $mount->getMountPoint();
 				$subStorage = Filesystem::getStorage($mountPoint);
 				if ($subStorage) {
 					$subCache = $subStorage->getCache('');
@@ -954,16 +962,11 @@ class View {
 						} else { //mountpoint in this folder, add an entry for it
 							$rootEntry['name'] = $relativePath;
 							$rootEntry['type'] = $rootEntry['mimetype'] === 'httpd/unix-directory' ? 'dir' : 'file';
-							$subPermissionsCache = $subStorage->getPermissionsCache('');
-							$permissions = $subPermissionsCache->get($rootEntry['fileid'], $user);
-							if ($permissions === -1) {
-								$permissions = $subStorage->getPermissions($rootEntry['path']);
-								$subPermissionsCache->set($rootEntry['fileid'], $user, $permissions);
-							}
+							$permissions = $rootEntry['permissions'];
 							// do not allow renaming/deleting the mount point if they are not shared files/folders
 							// for shared files/folders we use the permissions given by the owner
-							if ($subStorage instanceof \OC\Files\Storage\Shared) {
-								$rootEntry['permissions'] = $permissions;
+							if ($mount instanceof MoveableMount) {
+								$rootEntry['permissions'] = $permissions | \OCP\PERMISSION_UPDATE | \OCP\PERMISSION_DELETE;
 							} else {
 								$rootEntry['permissions'] = $permissions & (\OCP\PERMISSION_ALL - (\OCP\PERMISSION_UPDATE | \OCP\PERMISSION_DELETE));
 							}
@@ -1136,7 +1139,7 @@ class View {
 	 * Note that the resulting path is not guarantied to be unique for the id, multiple paths can point to the same file
 	 *
 	 * @param int $id
-	 * @return string
+	 * @return string|null
 	 */
 	public function getPath($id) {
 		$manager = Filesystem::getMountManager();
@@ -1149,12 +1152,14 @@ class View {
 			/**
 			 * @var \OC\Files\Mount\Mount $mount
 			 */
-			$cache = $mount->getStorage()->getCache();
-			$internalPath = $cache->getPathById($id);
-			if (is_string($internalPath)) {
-				$fullPath = $mount->getMountPoint() . $internalPath;
-				if (!is_null($path = $this->getRelativePath($fullPath))) {
-					return $path;
+			if ($mount->getStorage()) {
+				$cache = $mount->getStorage()->getCache();
+				$internalPath = $cache->getPathById($id);
+				if (is_string($internalPath)) {
+					$fullPath = $mount->getMountPoint() . $internalPath;
+					if (!is_null($path = $this->getRelativePath($fullPath))) {
+						return $path;
+					}
 				}
 			}
 		}

@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-05-11 01:55-0400\n"
-"PO-Revision-Date: 2014-05-11 05:02+0000\n"
-"Last-Translator: I Robot\n"
+"POT-Creation-Date: 2014-06-08 01:54-0400\n"
+"PO-Revision-Date: 2014-06-07 07:10+0000\n"
+"Last-Translator: vidaren <news@vidartysse.net>\n"
 "Language-Team: Norwegian Bokmål (Norway) (http://www.transifex.com/projects/p/owncloud/language/nb_NO/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,9 +19,49 @@ msgstr ""
 "Language: nb_NO\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: js/share.js:33
+#: appinfo/app.php:35 js/app.js:34
+msgid "Shared with you"
+msgstr "Delt med deg"
+
+#: appinfo/app.php:44 js/app.js:53
+msgid "Shared with others"
+msgstr "Delt med andre"
+
+#: appinfo/app.php:53 js/app.js:72
+msgid "Shared by link"
+msgstr "Delt med lenke"
+
+#: js/app.js:35
+msgid "No files have been shared with you yet."
+msgstr "Ingen filer er delt med deg ennå."
+
+#: js/app.js:54
+msgid "You haven't shared any files yet."
+msgstr "Du har ikke delt noen filer ennå."
+
+#: js/app.js:73
+msgid "You haven't shared any files by link yet."
+msgstr "Du har ikke delt noen filer med lenke ennå."
+
+#: js/settings-admin.js:10
+msgid "Could not load template"
+msgstr "Klarte ikke å laste mal"
+
+#: js/settings-admin.js:45
+msgid "Saved"
+msgstr "Lagret"
+
+#: js/settings-admin.js:64 templates/settings-admin.php:33
+msgid "Reset"
+msgstr "Nullstill"
+
+#: js/share.js:60
 msgid "Shared by {owner}"
 msgstr "Delt av {owner}"
+
+#: js/sharedfilelist.js:128
+msgid "Shared by"
+msgstr "Delt av"
 
 #: templates/authenticate.php:4
 msgid "This share is password-protected"
@@ -31,9 +71,17 @@ msgstr "Denne delingen er passordbeskyttet"
 msgid "The password is wrong. Try again."
 msgstr "Passordet er feil. Prøv på nytt."
 
-#: templates/authenticate.php:10
+#: templates/authenticate.php:10 templates/authenticate.php:12
 msgid "Password"
 msgstr "Passord"
+
+#: templates/list.php:16
+msgid "Name"
+msgstr "Navn"
+
+#: templates/list.php:20
+msgid "Share time"
+msgstr "Delingstidspunkt"
 
 #: templates/part.404.php:3
 msgid "Sorry, this link doesn’t seem to work anymore."
@@ -59,15 +107,31 @@ msgstr "deling er deaktivert"
 msgid "For more info, please ask the person who sent this link."
 msgstr "For mer informasjon, spør personen som sendte lenken."
 
-#: templates/public.php:21
+#: templates/public.php:20
 msgid "Download"
 msgstr "Last ned"
 
-#: templates/public.php:52
+#: templates/public.php:50
 #, php-format
 msgid "Download %s"
-msgstr ""
+msgstr "Last ned %s"
 
-#: templates/public.php:56
+#: templates/public.php:54
 msgid "Direct link"
 msgstr "Direkte lenke"
+
+#: templates/settings-admin.php:3
+msgid "Mail templates"
+msgstr "Epost-maler"
+
+#: templates/settings-admin.php:8
+msgid "Theme"
+msgstr "Tema"
+
+#: templates/settings-admin.php:17
+msgid "Template"
+msgstr "Mal"
+
+#: templates/settings-admin.php:35
+msgid "Save"
+msgstr "Lagre"

@@ -1,5 +1,6 @@
 <?php
 $TRANSLATIONS = array(
+"External storage" => "Externer Speicher",
 "Location" => "Ort",
 "Host" => "Host",
 "Username" => "Benutzername",
@@ -11,9 +12,10 @@ $TRANSLATIONS = array(
 "Grant access" => "Zugriff gestatten",
 "Please provide a valid Dropbox app key and secret." => "Bitte tragen Sie einen gültigen Dropbox-App-Key mit Secret ein.",
 "Error configuring Google Drive storage" => "Fehler beim Einrichten von Google Drive",
+"Personal" => "Persönlich",
+"Name" => "Name",
 "External Storage" => "Externer Speicher",
 "Folder name" => "Ordnername",
-"External storage" => "Externer Speicher",
 "Configuration" => "Konfiguration",
 "Options" => "Optionen",
 "Add storage" => "Speicher hinzufügen",

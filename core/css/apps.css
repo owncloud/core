@@ -1,4 +1,5 @@
-/* ---- APP STYLING ---- */
+/* APP STYLING -------------------------------------------------------------- */
+
 
 #app {
 	height: 100%;
@@ -8,17 +9,29 @@
 	-moz-box-sizing: border-box; box-sizing: border-box;
 }
 
+
+
+
+
+/* APP-NAVIGATION ------------------------------------------------------------*/
+
+
 /* Navigation: folder like structure */
 #app-navigation {
-	width: 300px;
+	width: 250px;
 	height: 100%;
 	float: left;
 	-moz-box-sizing: border-box; box-sizing: border-box;
 	background-color: #f8f8f8;
 	border-right: 1px solid #ccc;
 	padding-bottom: 44px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 #app-navigation > ul {
+	position: relative;
 	height: 100%;
 	overflow: auto;
 	-moz-box-sizing: border-box; box-sizing: border-box;
@@ -165,16 +178,26 @@
 
 
 
+
+
+/* APP-CONTENT ---------------------------------------------------------------*/
+
+
 /* Part where the content will be loaded into */
 #app-content {
+	position: relative;
 	height: 100%;
 	overflow-y: auto;
 }
 
+
+
+/* APP-SETTINGS ---------------------------------------------------------------*/
+
 /* settings area */
 #app-settings {
 	position: fixed;
-	width: 299px;
+	width: 249px;
 	bottom: 0;
 	border-top: 1px solid #ccc;
 }
@@ -194,6 +217,11 @@
 	/* restrict height of settings and make scrollable */
 	max-height: 300px;
 	overflow-y: auto;
+}
+
+/* display input fields at full width */
+#app-settings-content input[type='text'] {
+	width: 93%;
 }
 
 .settings-button {
@@ -276,4 +304,13 @@ button.loading {
 }
 .appear.transparent {
 	opacity: 0;
+}
+
+
+/* do not use italic typeface style, instead lighter color */
+em {
+	font-style: normal;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	filter: alpha(opacity=50);
+	opacity: .5;
 }

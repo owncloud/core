@@ -53,7 +53,7 @@ class OC_Util {
 
 		//if we aren't logged in, there is no use to set up the filesystem
 		if( $user != "" ) {
-			\OC\Files\Filesystem::addStorageWrapper(function($mountPoint, $storage){
+			\OC\Files\Filesystem::addStorageWrapper('oc_quota', function($mountPoint, $storage){
 				// set up quota for home storages, even for other users
 				// which can happen when using sharing
 
@@ -767,15 +767,12 @@ class OC_Util {
 		$urlGenerator = \OC::$server->getURLGenerator();
 		if(isset($_REQUEST['redirect_url'])) {
 			$location = urldecode($_REQUEST['redirect_url']);
-		}
-		else if (isset(OC::$REQUESTEDAPP) && !empty(OC::$REQUESTEDAPP)) {
-			$location = $urlGenerator->getAbsoluteURL('/index.php/apps/'.OC::$REQUESTEDAPP.'/index.php');
 		} else {
 			$defaultPage = OC_Appconfig::getValue('core', 'defaultpage');
 			if ($defaultPage) {
 				$location = $urlGenerator->getAbsoluteURL($defaultPage);
 			} else {
-				$location = $urlGenerator->getAbsoluteURL('/index.php/files/index.php');
+				$location = $urlGenerator->getAbsoluteURL('/index.php/apps/files');
 			}
 		}
 		OC_Log::write('core', 'redirectToDefaultPage: '.$location, OC_Log::DEBUG);
@@ -973,7 +970,7 @@ class OC_Util {
 		try {
 			// test PROPFIND
 			$client->propfind('', array('{DAV:}resourcetype'));
-		} catch (\Sabre_DAV_Exception_NotAuthenticated $e) {
+		} catch (\Sabre\DAV\Exception\NotAuthenticated $e) {
 			$return = true;
 		} catch (\Exception $e) {
 			OC_Log::write('core', 'isWebDAVWorking: NO - Reason: '.$e->getMessage(). ' ('.get_class($e).')', OC_Log::WARN);

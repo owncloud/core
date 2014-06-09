@@ -25,11 +25,38 @@ class Updater extends BasicEmitter {
 	 */
 	private $log;
 
+	private $simulateStepEnabled;
+
+	private $updateStepEnabled;
+
 	/**
 	 * @param \OC\Log $log
 	 */
 	public function __construct($log = null) {
 		$this->log = $log;
+		$this->simulateStepEnabled = true;
+		$this->updateStepEnabled = true;
+	}
+
+	/**
+	 * Sets whether the database migration simulation must
+	 * be enabled.
+	 * This can be set to false to skip this test.
+	 *
+	 * @param bool $flag true to enable simulation, false otherwise
+	 */
+	public function setSimulateStepEnabled($flag) {
+		$this->simulateStepEnabled = $flag;
+	}
+
+	/**
+	 * Sets whether the update must be performed.
+	 * This can be set to false to skip the actual update.
+	 *
+	 * @param bool $flag true to enable update, false otherwise
+	 */
+	public function setUpdateStepEnabled($flag) {
+		$this->updateStepEnabled = $flag;
 	}
 
 	/**
@@ -53,7 +80,7 @@ class Updater extends BasicEmitter {
 		$version = \OC_Util::getVersion();
 		$version['installed'] = \OC_Appconfig::getValue('core', 'installedat');
 		$version['updated'] = \OC_Appconfig::getValue('core', 'lastupdatedat');
-		$version['updatechannel'] = \OC_Util::getChannel(); 
+		$version['updatechannel'] = \OC_Util::getChannel();
 		$version['edition'] = \OC_Util::getEditionString();
 		$version['build'] = \OC_Util::getBuild();
 		$versionString = implode('x', $version);
@@ -92,6 +119,8 @@ class Updater extends BasicEmitter {
 	/**
 	 * runs the update actions in maintenance mode, does not upgrade the source files
 	 * except the main .htaccess file
+	 *
+	 * @return bool true if the operation succeeded, false otherwise
 	 */
 	public function upgrade() {
 		\OC_DB::enableCaching(false);
@@ -119,35 +148,82 @@ class Updater extends BasicEmitter {
 		if (!\OC::$CLI && version_compare($installedVersion, '6.90.1', '<')) {
 			// Add the trusted_domains config if it is not existant
 			// This is added to prevent host header poisoning
-			\OC_Config::setValue('trusted_domains', \OC_Config::getValue('trusted_domains', array(\OC_Request::serverHost()))); 
+			\OC_Config::setValue('trusted_domains', \OC_Config::getValue('trusted_domains', array(\OC_Request::serverHost())));
 		}
+
 		/*
 		 * STOP CONFIG CHANGES FOR OLDER VERSIONS
 		 */
 
+		$canUpgrade = false;
 
-		try {
-			\OC_DB::updateDbFromStructure(\OC::$SERVERROOT . '/db_structure.xml');
-			$this->emit('\OC\Updater', 'dbUpgrade');
+		// simulate DB upgrade
+		if ($this->simulateStepEnabled) {
+			try {
+				// simulate core DB upgrade
+				\OC_DB::simulateUpdateDbFromStructure(\OC::$SERVERROOT . '/db_structure.xml');
 
-		} catch (\Exception $exception) {
-			$this->emit('\OC\Updater', 'failure', array($exception->getMessage()));
+				// simulate apps DB upgrade
+				$version = \OC_Util::getVersion();
+				$apps = \OC_App::getEnabledApps();
+				foreach ($apps as $appId) {
+					$info = \OC_App::getAppInfo($appId);
+					if (\OC_App::isAppCompatible($version, $info) && \OC_App::shouldUpgrade($appId)) {
+						if (file_exists(\OC_App::getAppPath($appId) . '/appinfo/database.xml')) {
+							\OC_DB::simulateUpdateDbFromStructure(\OC_App::getAppPath($appId) . '/appinfo/database.xml');
+						}
+					}
+				}
+
+				$this->emit('\OC\Updater', 'dbSimulateUpgrade');
+
+				$canUpgrade = true;
+			} catch (\Exception $exception) {
+				$this->emit('\OC\Updater', 'failure', array($exception->getMessage()));
+			}
 		}
-		\OC_Config::setValue('version', implode('.', \OC_Util::getVersion()));
-		$disabledApps = \OC_App::checkAppsRequirements();
-		if (!empty($disabledApps)) {
-			$this->emit('\OC\Updater', 'disabledApps', array($disabledApps));
+		else {
+			$canUpgrade = true;
 		}
-		// load all apps to also upgrade enabled apps
-		\OC_App::loadApps();
 
-		$repair = new Repair();
-		$repair->run();
+		// upgrade from OC6 to OC7
+		// TODO removed it again for OC8
+		$sharePolicy = \OC_Appconfig::getValue('core', 'shareapi_share_policy', 'global');
+		if ($sharePolicy === 'groups_only') {
+			\OC_Appconfig::setValue('core', 'shareapi_only_share_with_group_members', 'yes');
+		}
 
-		//Invalidate update feed
-		\OC_Appconfig::setValue('core', 'lastupdatedat', 0);
+		if ($this->updateStepEnabled && $canUpgrade) {
+			// proceed with real upgrade
+			try {
+				// do the real upgrade
+				\OC_DB::updateDbFromStructure(\OC::$SERVERROOT . '/db_structure.xml');
+				$this->emit('\OC\Updater', 'dbUpgrade');
+
+			} catch (\Exception $exception) {
+				$this->emit('\OC\Updater', 'failure', array($exception->getMessage()));
+				return false;
+			}
+			// TODO: why not do this at the end ?
+			\OC_Config::setValue('version', implode('.', \OC_Util::getVersion()));
+			$disabledApps = \OC_App::checkAppsRequirements();
+			if (!empty($disabledApps)) {
+				$this->emit('\OC\Updater', 'disabledApps', array($disabledApps));
+			}
+			// load all apps to also upgrade enabled apps
+			\OC_App::loadApps();
+
+			$repair = new Repair();
+			$repair->run();
+
+			//Invalidate update feed
+			\OC_Appconfig::setValue('core', 'lastupdatedat', 0);
+		}
+
 		\OC_Config::setValue('maintenance', false);
 		$this->emit('\OC\Updater', 'maintenanceEnd');
+
+		return $canUpgrade;
 	}
 
 }

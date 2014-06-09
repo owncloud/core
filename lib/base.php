@@ -60,14 +60,11 @@ class OC {
 
 	public static $configDir;
 
-	/*
+	/**
 	 * requested app
 	 */
 	public static $REQUESTEDAPP = '';
-	/*
-	 * requested file of app
-	 */
-	public static $REQUESTEDFILE = '';
+
 	/**
 	 * check if owncloud runs in cli mode
 	 */
@@ -320,8 +317,7 @@ class OC {
 		OC_Util::addScript("jquery-migrate-1.2.1.min");
 		OC_Util::addScript("jquery-ui-1.10.0.custom");
 		OC_Util::addScript("jquery-showpassword");
-		OC_Util::addScript("jquery.infieldlabel");
-		OC_Util::addScript("jquery.placeholder");
+		OC_Util::addScript("placeholders");
 		OC_Util::addScript("jquery-tipsy");
 		OC_Util::addScript("compatibility");
 		OC_Util::addScript("underscore");
@@ -334,6 +330,8 @@ class OC {
 		//OC_Util::addScript( "multiselect" );
 		OC_Util::addScript('search', 'result');
 		OC_Util::addScript("oc-requesttoken");
+		OC_Util::addScript("apps");
+		OC_Util::addScript("snap");
 
 		// avatars
 		if (\OC_Config::getValue('enable_avatars', true) === true) {
@@ -344,8 +342,10 @@ class OC {
 		}
 
 		OC_Util::addStyle("styles");
+		OC_Util::addStyle("header");
 		OC_Util::addStyle("mobile");
 		OC_Util::addStyle("icons");
+		OC_Util::addStyle("fonts");
 		OC_Util::addStyle("apps");
 		OC_Util::addStyle("fixes");
 		OC_Util::addStyle("multiselect");
@@ -434,6 +434,9 @@ class OC {
 		self::$loader->registerPrefix('Pimple', '3rdparty/Pimple');
 		spl_autoload_register(array(self::$loader, 'load'));
 
+		// make a dummy session available as early as possible since error pages need it
+		self::$session = new \OC\Session\Memory('');
+
 		// set some stuff
 		//ob_start();
 		error_reporting(E_ALL | E_STRICT);
@@ -512,13 +515,13 @@ class OC {
 		}
 
 		if (!defined('PHPUNIT_RUN')) {
+			OC\Log\ErrorHandler::setLogger(OC_Log::$object);
 			if (defined('DEBUG') and DEBUG) {
 				OC\Log\ErrorHandler::register(true);
 				set_exception_handler(array('OC_Template', 'printExceptionErrorPage'));
 			} else {
 				OC\Log\ErrorHandler::register();
 			}
-			OC\Log\ErrorHandler::setLogger(OC_Log::$object);
 		}
 
 		// register the stream wrappers
@@ -569,12 +572,6 @@ class OC {
 		OC_User::useBackend(new OC_User_Database());
 		OC_Group::useBackend(new OC_Group_Database());
 
-		// Load minimum set of apps - which is filesystem, authentication and logging
-		if (!self::checkUpgrade(false)) {
-			OC_App::loadApps(array('authentication'));
-			OC_App::loadApps(array('filesystem', 'logging'));
-		}
-
 		//setup extra user backends
 		OC_User::setupBackends();
 
@@ -586,35 +583,6 @@ class OC {
 
 		//make sure temporary files are cleaned up
 		register_shutdown_function(array('OC_Helper', 'cleanTmp'));
-
-		//parse the given parameters
-		self::$REQUESTEDAPP = (isset($_GET['app']) && trim($_GET['app']) != '' && !is_null($_GET['app']) ? OC_App::cleanAppId(strip_tags($_GET['app'])) : OC_Config::getValue('defaultapp', 'files'));
-		if (substr_count(self::$REQUESTEDAPP, '?') != 0) {
-			$app = substr(self::$REQUESTEDAPP, 0, strpos(self::$REQUESTEDAPP, '?'));
-			$param = substr($_GET['app'], strpos($_GET['app'], '?') + 1);
-			parse_str($param, $get);
-			$_GET = array_merge($_GET, $get);
-			self::$REQUESTEDAPP = $app;
-			$_GET['app'] = $app;
-		}
-		self::$REQUESTEDFILE = (isset($_GET['getfile']) ? $_GET['getfile'] : null);
-		if (substr_count(self::$REQUESTEDFILE, '?') != 0) {
-			$file = substr(self::$REQUESTEDFILE, 0, strpos(self::$REQUESTEDFILE, '?'));
-			$param = substr(self::$REQUESTEDFILE, strpos(self::$REQUESTEDFILE, '?') + 1);
-			parse_str($param, $get);
-			$_GET = array_merge($_GET, $get);
-			self::$REQUESTEDFILE = $file;
-			$_GET['getfile'] = $file;
-		}
-		if (!is_null(self::$REQUESTEDFILE)) {
-			$subdir = OC_App::getAppPath(OC::$REQUESTEDAPP) . '/' . self::$REQUESTEDFILE;
-			$parent = OC_App::getAppPath(OC::$REQUESTEDAPP);
-			if (!OC_Helper::isSubDirectory($subdir, $parent)) {
-				self::$REQUESTEDFILE = null;
-				header('HTTP/1.0 404 Not Found');
-				exit;
-			}
-		}
 
 		if (OC_Config::getValue('installed', false) && !self::checkUpgrade(false)) {
 			if (OC_Appconfig::getValue('core', 'backgroundjobs_mode', 'ajax') == 'ajax') {
@@ -724,9 +692,10 @@ class OC {
 			OC::tryBasicAuthLogin();
 		}
 
+
 		if (!self::$CLI and (!isset($_GET["logout"]) or ($_GET["logout"] !== 'true'))) {
 			try {
-				if (!OC_Config::getValue('maintenance', false)) {
+				if (!OC_Config::getValue('maintenance', false) && !self::needUpgrade()) {
 					OC_App::loadApps();
 				}
 				self::checkSingleUserMode();
@@ -740,9 +709,17 @@ class OC {
 			}
 		}
 
-		$app = OC::$REQUESTEDAPP;
-		$file = OC::$REQUESTEDFILE;
-		$param = array('app' => $app, 'file' => $file);
+		// Load minimum set of apps
+		if (!self::checkUpgrade(false)) {
+			// For logged-in users: Load everything
+			if(OC_User::isLoggedIn()) {
+				OC_App::loadApps();
+			} else {
+				// For guests: Load only authentication, filesystem and logging
+				OC_App::loadApps(array('authentication'));
+				OC_App::loadApps(array('filesystem', 'logging'));
+			}
+		}
 
 		// Handle redirect URL for logged in users
 		if (isset($_REQUEST['redirect_url']) && OC_User::isLoggedIn()) {
@@ -765,11 +742,20 @@ class OC {
 			return;
 		}
 
-		// Someone is logged in :
+		// Redirect to index if the logout link is accessed without valid session
+		// this is needed to prevent "Token expired" messages while login if a session is expired
+		// @see https://github.com/owncloud/core/pull/8443#issuecomment-42425583
+		if(isset($_GET['logout']) && !OC_User::isLoggedIn()) {
+			header("Location: " . OC::$WEBROOT.(empty(OC::$WEBROOT) ? '/' : ''));
+			return;
+		}
+
+		// Someone is logged in
 		if (OC_User::isLoggedIn()) {
 			OC_App::loadApps();
 			OC_User::setupBackends();
 			if (isset($_GET["logout"]) and ($_GET["logout"])) {
+				OC_JSON::callCheck();
 				if (isset($_COOKIE['oc_token'])) {
 					OC_Preferences::deleteKey(OC_User::getUser(), 'login_token', $_COOKIE['oc_token']);
 				}
@@ -786,20 +772,13 @@ class OC {
 				// redirect to webroot and add slash if webroot is empty
 				header("Location: " . OC::$WEBROOT.(empty(OC::$WEBROOT) ? '/' : ''));
 			} else {
-				if (is_null($file)) {
-					$param['file'] = 'index.php';
-				}
-				$file_ext = substr($param['file'], -3);
-				if ($file_ext != 'php'
-					|| !self::loadAppScriptFile($param)
-				) {
-					header('HTTP/1.0 404 Not Found');
-				}
+				// Redirect to default application
+				OC_Util::redirectToDefaultPage();
 			}
-			return;
+		} else {
+			// Not handled and not logged in
+			self::handleLogin();
 		}
-		// Not handled and not logged in
-		self::handleLogin();
 	}
 
 	/**
@@ -930,6 +909,7 @@ class OC {
 			return false;
 		}
 
+		OC_JSON::callCheck();
 		OC_App::loadApps();
 
 		//setup extra user backends

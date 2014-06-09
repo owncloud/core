@@ -5,22 +5,22 @@
 # Translators:
 # Efstathios Iosifidis <iefstathios@gmail.com>, 2013-2014
 # Efstathios Iosifidis <iosifidis@opensuse.org>, 2013
-# KAT.RAT12 <spanish.katerina@gmail.com>, 2013
-# pe_ppe <peppe@cs.uoi.gr>, 2014
-# Teogramm <theodorewii121@hotmail.com>, 2013
-# Teogramm <theodorewii121@hotmail.com>, 2013
-# vkehayas <vkehayas@gmail.com>, 2013-2014
-# Wasilis <inactive+Wasilis@transifex.com>, 2013
-# Wasilis <inactive+Wasilis@transifex.com>, 2013
-# KAT.RAT12 <spanish.katerina@gmail.com>, 2013
+# Αικατερίνη Χ. Καταπόδη <spanish.katerina@gmail.com>, 2013
+# Spyros Melissovas <peppe@cs.uoi.gr>, 2014
+# Theodore Grammenos <theodorewii121@hotmail.com>, 2013
+# Theodore Grammenos <theodorewii121@hotmail.com>, 2013
+# Vassilis Kehayas <vkehayas@gmail.com>, 2013-2014
+# Wasilis Mandratzis <inactive+Wasilis@transifex.com>, 2013
+# Wasilis Mandratzis <inactive+Wasilis@transifex.com>, 2013
+# Αικατερίνη Χ. Καταπόδη <spanish.katerina@gmail.com>, 2013
 # Γιάννης Ανθυμίδης <yannanth@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-05-30 01:54-0400\n"
-"PO-Revision-Date: 2014-05-30 05:54+0000\n"
-"Last-Translator: I Robot\n"
+"POT-Creation-Date: 2014-06-09 01:54-0400\n"
+"PO-Revision-Date: 2014-06-08 16:30+0000\n"
+"Last-Translator: Vassilis Kehayas <vkehayas@gmail.com>\n"
 "Language-Team: Greek (http://www.transifex.com/projects/p/owncloud/language/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,11 +28,11 @@ msgstr ""
 "Language: el\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ajax/share.php:88
+#: ajax/share.php:90
 msgid "Expiration date is in the past."
 msgstr "Η ημερομηνία λήξης είναι στο παρελθόν."
 
-#: ajax/share.php:120 ajax/share.php:162
+#: ajax/share.php:122 ajax/share.php:164
 #, php-format
 msgid "Couldn't send mail to following users: %s "
 msgstr "Αδυναμία αποστολής μηνύματος στους ακόλουθους χρήστες: %s"
@@ -49,440 +49,468 @@ msgstr "Η κατάσταση συντήρησης απενεργοποιήθη�
 msgid "Updated database"
 msgstr "Ενημερωμένη βάση δεδομένων"
 
-#: ajax/update.php:24
+#: ajax/update.php:19
+msgid "Checked database schema update"
+msgstr "Έλεγχος ενημέρωσης σχήματος βάσης δεδομένων"
+
+#: ajax/update.php:27
 #, php-format
 msgid "Disabled incompatible apps: %s"
-msgstr ""
+msgstr "Απενεργοποιημένες μη συμβατές εφαρμογές: %s"
 
-#: avatar/controller.php:62
+#: avatar/controller.php:69
 msgid "No image or file provided"
 msgstr "Δεν δόθηκε εικόνα ή αρχείο"
 
-#: avatar/controller.php:81
+#: avatar/controller.php:86
 msgid "Unknown filetype"
 msgstr "Άγνωστος τύπος αρχείου"
 
-#: avatar/controller.php:85
+#: avatar/controller.php:90
 msgid "Invalid image"
 msgstr "Μη έγκυρη εικόνα"
 
-#: avatar/controller.php:115 avatar/controller.php:142
+#: avatar/controller.php:120 avatar/controller.php:147
 msgid "No temporary profile picture available, try again"
 msgstr "Δεν υπάρχει προσωρινή φωτογραφία προφίλ διαθέσιμη, δοκιμάστε ξανά"
 
-#: avatar/controller.php:135
+#: avatar/controller.php:140
 msgid "No crop data provided"
 msgstr "Δεν δόθηκαν δεδομένα περικοπής"
 
-#: js/config.php:43
+#: js/config.php:45
 msgid "Sunday"
 msgstr "Κυριακή"
 
-#: js/config.php:44
+#: js/config.php:46
 msgid "Monday"
 msgstr "Δευτέρα"
 
-#: js/config.php:45
+#: js/config.php:47
 msgid "Tuesday"
 msgstr "Τρίτη"
 
-#: js/config.php:46
+#: js/config.php:48
 msgid "Wednesday"
 msgstr "Τετάρτη"
 
-#: js/config.php:47
+#: js/config.php:49
 msgid "Thursday"
 msgstr "Πέμπτη"
 
-#: js/config.php:48
+#: js/config.php:50
 msgid "Friday"
 msgstr "Παρασκευή"
 
-#: js/config.php:49
+#: js/config.php:51
 msgid "Saturday"
 msgstr "Σάββατο"
 
-#: js/config.php:54
+#: js/config.php:56
 msgid "January"
 msgstr "Ιανουάριος"
 
-#: js/config.php:55
+#: js/config.php:57
 msgid "February"
 msgstr "Φεβρουάριος"
 
-#: js/config.php:56
+#: js/config.php:58
 msgid "March"
 msgstr "Μάρτιος"
 
-#: js/config.php:57
+#: js/config.php:59
 msgid "April"
 msgstr "Απρίλιος"
 
-#: js/config.php:58
+#: js/config.php:60
 msgid "May"
 msgstr "Μάϊος"
 
-#: js/config.php:59
+#: js/config.php:61
 msgid "June"
 msgstr "Ιούνιος"
 
-#: js/config.php:60
+#: js/config.php:62
 msgid "July"
 msgstr "Ιούλιος"
 
-#: js/config.php:61
+#: js/config.php:63
 msgid "August"
 msgstr "Αύγουστος"
 
-#: js/config.php:62
+#: js/config.php:64
 msgid "September"
 msgstr "Σεπτέμβριος"
 
-#: js/config.php:63
+#: js/config.php:65
 msgid "October"
 msgstr "Οκτώβριος"
 
-#: js/config.php:64
+#: js/config.php:66
 msgid "November"
 msgstr "Νοέμβριος"
 
-#: js/config.php:65
+#: js/config.php:67
 msgid "December"
 msgstr "Δεκέμβριος"
 
-#: js/js.js:487
+#: js/js.js:501
 msgid "Settings"
 msgstr "Ρυθμίσεις"
 
-#: js/js.js:587
+#: js/js.js:590
+msgid "File"
+msgstr "Αρχείο"
+
+#: js/js.js:591
+msgid "Folder"
+msgstr "Φάκελος"
+
+#: js/js.js:592
+msgid "Image"
+msgstr "Εικόνα"
+
+#: js/js.js:593
+msgid "Audio"
+msgstr "Ήχος"
+
+#: js/js.js:607
 msgid "Saving..."
 msgstr "Γίνεται αποθήκευση..."
 
-#: js/js.js:1211
+#: js/js.js:1271
 msgid "seconds ago"
 msgstr "δευτερόλεπτα πριν"
 
-#: js/js.js:1212
+#: js/js.js:1272
 msgid "%n minute ago"
 msgid_plural "%n minutes ago"
 msgstr[0] "%n λεπτό πριν"
 msgstr[1] "%n λεπτά πριν"
 
-#: js/js.js:1213
+#: js/js.js:1273
 msgid "%n hour ago"
 msgid_plural "%n hours ago"
 msgstr[0] "%n ώρα πριν"
 msgstr[1] "%n ώρες πριν"
 
-#: js/js.js:1214
+#: js/js.js:1274
 msgid "today"
 msgstr "σήμερα"
 
-#: js/js.js:1215
+#: js/js.js:1275
 msgid "yesterday"
 msgstr "χτες"
 
-#: js/js.js:1216
+#: js/js.js:1276
 msgid "%n day ago"
 msgid_plural "%n days ago"
 msgstr[0] "%n ημέρα πριν"
 msgstr[1] "%n ημέρες πριν"
 
-#: js/js.js:1217
+#: js/js.js:1277
 msgid "last month"
 msgstr "τελευταίο μήνα"
 
-#: js/js.js:1218
+#: js/js.js:1278
 msgid "%n month ago"
 msgid_plural "%n months ago"
 msgstr[0] "%n μήνας πριν"
 msgstr[1] "%n μήνες πριν"
 
-#: js/js.js:1219
+#: js/js.js:1279
 msgid "last year"
 msgstr "τελευταίο χρόνο"
 
-#: js/js.js:1220
+#: js/js.js:1280
 msgid "years ago"
 msgstr "χρόνια πριν"
 
-#: js/oc-dialogs.js:95 js/oc-dialogs.js:236
+#: js/oc-dialogs.js:109 js/oc-dialogs.js:250
 msgid "Yes"
 msgstr "Ναι"
 
-#: js/oc-dialogs.js:105 js/oc-dialogs.js:246
+#: js/oc-dialogs.js:119 js/oc-dialogs.js:260
 msgid "No"
 msgstr "Όχι"
 
-#: js/oc-dialogs.js:184
+#: js/oc-dialogs.js:198
 msgid "Choose"
 msgstr "Επιλέξτε"
 
-#: js/oc-dialogs.js:210
+#: js/oc-dialogs.js:224
 msgid "Error loading file picker template: {error}"
 msgstr "Σφάλμα κατά την φόρτωση προτύπου επιλογέα αρχείων: {σφάλμα}"
 
-#: js/oc-dialogs.js:263
+#: js/oc-dialogs.js:277
 msgid "Ok"
 msgstr "Οκ"
 
-#: js/oc-dialogs.js:283
+#: js/oc-dialogs.js:297
 msgid "Error loading message template: {error}"
 msgstr "Σφάλμα φόρτωσης προτύπου μηνυμάτων: {σφάλμα}"
 
-#: js/oc-dialogs.js:411
+#: js/oc-dialogs.js:425
 msgid "{count} file conflict"
 msgid_plural "{count} file conflicts"
 msgstr[0] "{count} αρχείο διαφέρει"
 msgstr[1] "{count} αρχεία διαφέρουν"
 
-#: js/oc-dialogs.js:425
+#: js/oc-dialogs.js:439
 msgid "One file conflict"
 msgstr "Ένα αρχείο διαφέρει"
 
-#: js/oc-dialogs.js:431
+#: js/oc-dialogs.js:445
 msgid "New Files"
 msgstr "Νέα Αρχεία"
 
-#: js/oc-dialogs.js:432
+#: js/oc-dialogs.js:446
 msgid "Already existing files"
 msgstr "Ήδη υπάρχοντα αρχεία"
 
-#: js/oc-dialogs.js:434
+#: js/oc-dialogs.js:448
 msgid "Which files do you want to keep?"
 msgstr "Ποια αρχεία θέλετε να κρατήσετε;"
 
-#: js/oc-dialogs.js:435
+#: js/oc-dialogs.js:449
 msgid ""
 "If you select both versions, the copied file will have a number added to its"
 " name."
 msgstr "Εάν επιλέξετε και τις δυο εκδοχές, ένας αριθμός θα προστεθεί στο αντιγραφόμενο αρχείο."
 
-#: js/oc-dialogs.js:443
+#: js/oc-dialogs.js:457
 msgid "Cancel"
 msgstr "Άκυρο"
 
-#: js/oc-dialogs.js:453
+#: js/oc-dialogs.js:467
 msgid "Continue"
 msgstr "Συνέχεια"
 
-#: js/oc-dialogs.js:500 js/oc-dialogs.js:513
+#: js/oc-dialogs.js:514 js/oc-dialogs.js:527
 msgid "(all selected)"
 msgstr "(όλα τα επιλεγμένα)"
 
-#: js/oc-dialogs.js:503 js/oc-dialogs.js:517
+#: js/oc-dialogs.js:517 js/oc-dialogs.js:531
 msgid "({count} selected)"
 msgstr "({count} επιλέχθησαν)"
 
-#: js/oc-dialogs.js:525
+#: js/oc-dialogs.js:539
 msgid "Error loading file exists template"
 msgstr "Σφάλμα κατά την φόρτωση του προτύπου ύπαρξης αρχείου"
 
-#: js/setup.js:84
+#: js/setup.js:92
 msgid "Very weak password"
 msgstr "Πολύ αδύναμο συνθηματικό"
 
-#: js/setup.js:85
+#: js/setup.js:93
 msgid "Weak password"
 msgstr "Αδύναμο συνθηματικό"
 
-#: js/setup.js:86
+#: js/setup.js:94
 msgid "So-so password"
 msgstr "Μέτριο συνθηματικό"
 
-#: js/setup.js:87
+#: js/setup.js:95
 msgid "Good password"
 msgstr "Καλό συνθηματικό"
 
-#: js/setup.js:88
+#: js/setup.js:96
 msgid "Strong password"
 msgstr "Δυνατό συνθηματικό"
 
-#: js/share.js:51 js/share.js:66 js/share.js:106
+#: js/share.js:109 js/share.js:199
 msgid "Shared"
 msgstr "Κοινόχρηστα"
 
-#: js/share.js:109
+#: js/share.js:202
+msgid "Shared by {owner}"
+msgstr "Διαμοιράστηκε από τον {owner}"
+
+#: js/share.js:205
+msgid "Shared with {recipients}"
+msgstr "Διαμοιράστηκε με {recipients}"
+
+#: js/share.js:211
 msgid "Share"
 msgstr "Διαμοιρασμός"
 
-#: js/share.js:173 js/share.js:186 js/share.js:193 js/share.js:800
+#: js/share.js:271 js/share.js:285 js/share.js:292 js/share.js:936
 #: templates/installation.php:10
 msgid "Error"
 msgstr "Σφάλμα"
 
-#: js/share.js:175 js/share.js:863
+#: js/share.js:273 js/share.js:999
 msgid "Error while sharing"
 msgstr "Σφάλμα κατά τον διαμοιρασμό"
 
-#: js/share.js:186
+#: js/share.js:285
 msgid "Error while unsharing"
 msgstr "Σφάλμα κατά το σταμάτημα του διαμοιρασμού"
 
-#: js/share.js:193
+#: js/share.js:292
 msgid "Error while changing permissions"
 msgstr "Σφάλμα κατά την αλλαγή των δικαιωμάτων"
 
-#: js/share.js:203
+#: js/share.js:302
 msgid "Shared with you and the group {group} by {owner}"
 msgstr "Διαμοιράστηκε με σας και με την ομάδα {group} του {owner}"
 
-#: js/share.js:205
+#: js/share.js:304
 msgid "Shared with you by {owner}"
 msgstr "Διαμοιράστηκε με σας από τον {owner}"
 
-#: js/share.js:229
+#: js/share.js:328
 msgid "Share with user or group …"
 msgstr "Διαμοιρασμός με χρήστη ή ομάδα ..."
 
-#: js/share.js:235
+#: js/share.js:334
 msgid "Share link"
 msgstr "Διαμοιρασμός συνδέσμου"
 
-#: js/share.js:241
+#: js/share.js:340
 msgid ""
 "The public link will expire no later than {days} days after it is created"
 msgstr "Ο δημόσιος σύνδεσμος θα απενεργοποιηθεί το πολύ {days} ημέρες μετά την δημιουργία του"
 
-#: js/share.js:243
+#: js/share.js:342
 msgid "By default the public link will expire after {days} days"
 msgstr "Ο δημόσιος σύνδεσμος θα απενεργοποιηθεί ερήμην μετά από {days} ημέρες"
 
-#: js/share.js:248
+#: js/share.js:347
 msgid "Password protect"
 msgstr "Προστασία συνθηματικού"
 
-#: js/share.js:250
+#: js/share.js:349
 msgid "Choose a password for the public link"
 msgstr "Επιλέξτε κωδικό για τον δημόσιο σύνδεσμο"
 
-#: js/share.js:256
+#: js/share.js:355
 msgid "Allow Public Upload"
 msgstr "Επιτρέπεται η Δημόσια Αποστολή"
 
-#: js/share.js:260
+#: js/share.js:359
 msgid "Email link to person"
 msgstr "Αποστολή συνδέσμου με email "
 
-#: js/share.js:261
+#: js/share.js:360
 msgid "Send"
 msgstr "Αποστολή"
 
-#: js/share.js:266
+#: js/share.js:365
 msgid "Set expiration date"
 msgstr "Ορισμός ημ. λήξης"
 
-#: js/share.js:267
+#: js/share.js:366
 msgid "Expiration date"
 msgstr "Ημερομηνία λήξης"
 
-#: js/share.js:304
+#: js/share.js:404
 msgid "Share via email:"
 msgstr "Διαμοιρασμός μέσω email:"
 
-#: js/share.js:307
+#: js/share.js:407
 msgid "No people found"
 msgstr "Δεν βρέθηκε άνθρωπος"
 
-#: js/share.js:355 js/share.js:416
+#: js/share.js:456 js/share.js:524
 msgid "group"
 msgstr "ομάδα"
 
-#: js/share.js:388
+#: js/share.js:489
 msgid "Resharing is not allowed"
 msgstr "Ξαναμοιρασμός δεν επιτρέπεται"
 
-#: js/share.js:432
+#: js/share.js:540
 msgid "Shared in {item} with {user}"
 msgstr "Διαμοιρασμός του {item} με τον {user}"
 
-#: js/share.js:454
+#: js/share.js:562
 msgid "Unshare"
 msgstr "Διακοπή διαμοιρασμού"
 
-#: js/share.js:462
+#: js/share.js:570
 msgid "notify by email"
 msgstr "ειδοποίηση με email"
 
-#: js/share.js:465
+#: js/share.js:573
 msgid "can edit"
 msgstr "δυνατότητα αλλαγής"
 
-#: js/share.js:467
+#: js/share.js:575
 msgid "access control"
 msgstr "έλεγχος πρόσβασης"
 
-#: js/share.js:470
+#: js/share.js:578
 msgid "create"
 msgstr "δημιουργία"
 
-#: js/share.js:473
+#: js/share.js:581
 msgid "update"
 msgstr "ενημέρωση"
 
-#: js/share.js:476
+#: js/share.js:584
 msgid "delete"
 msgstr "διαγραφή"
 
-#: js/share.js:479
+#: js/share.js:587
 msgid "share"
 msgstr "διαμοιρασμός"
 
-#: js/share.js:781
+#: js/share.js:917
 msgid "Password protected"
 msgstr "Προστασία με συνθηματικό"
 
-#: js/share.js:800
+#: js/share.js:936
 msgid "Error unsetting expiration date"
 msgstr "Σφάλμα κατά την διαγραφή της ημ. λήξης"
 
-#: js/share.js:821
+#: js/share.js:957
 msgid "Error setting expiration date"
 msgstr "Σφάλμα κατά τον ορισμό ημ. λήξης"
 
-#: js/share.js:850
+#: js/share.js:986
 msgid "Sending ..."
 msgstr "Αποστολή..."
 
-#: js/share.js:861
+#: js/share.js:997
 msgid "Email sent"
 msgstr "Το Email απεστάλη "
 
-#: js/share.js:885
+#: js/share.js:1021
 msgid "Warning"
 msgstr "Προειδοποίηση"
 
-#: js/tags.js:4
+#: js/tags.js:8
 msgid "The object type is not specified."
 msgstr "Δεν καθορίστηκε ο τύπος του αντικειμένου."
 
-#: js/tags.js:13
+#: js/tags.js:19
 msgid "Enter new"
 msgstr "Εισαγωγή νέου"
 
-#: js/tags.js:27
+#: js/tags.js:33
 msgid "Delete"
 msgstr "Διαγραφή"
 
-#: js/tags.js:31
+#: js/tags.js:43
 msgid "Add"
 msgstr "Προσθήκη"
 
-#: js/tags.js:39
+#: js/tags.js:57
 msgid "Edit tags"
 msgstr "Επεξεργασία ετικετών"
 
-#: js/tags.js:57
+#: js/tags.js:75
 msgid "Error loading dialog template: {error}"
 msgstr "Σφάλμα φόρτωσης προτύπου διαλόγων: {σφάλμα}"
 
-#: js/tags.js:264
+#: js/tags.js:288
 msgid "No tags selected for deletion."
 msgstr "Καμμία ετικέτα δεν επιλέχθηκε για διαγραφή."
 
 #: js/update.js:30
 msgid "Updating {productName} to version {version}, this may take a while."
-msgstr ""
+msgstr "Ενημέρωση του {productName} στην έκδοση {version}, αυτό μπορεί να διαρκέσει λίγη ώρα."
 
 #: js/update.js:43
 msgid "Please reload the page."
@@ -490,7 +518,7 @@ msgstr "Παρακαλώ επαναφορτώστε τη σελίδα."
 
 #: js/update.js:52
 msgid "The update was unsuccessful."
-msgstr ""
+msgstr "Η ενημέρωση δεν ήταν επιτυχής."
 
 #: js/update.js:61
 msgid "The update was successful. Redirecting you to ownCloud now."
@@ -526,12 +554,13 @@ msgstr "Η αίτηση απέτυχε! Βεβαιωθηκατε ότι το ema
 msgid "You will receive a link to reset your password via Email."
 msgstr "Θα λάβετε ένα σύνδεσμο για να επαναφέρετε τον κωδικό πρόσβασής σας μέσω ηλεκτρονικού ταχυδρομείου."
 
-#: lostpassword/templates/lostpassword.php:21 templates/installation.php:53
-#: templates/login.php:32
+#: lostpassword/templates/lostpassword.php:21
+#: lostpassword/templates/lostpassword.php:23 templates/installation.php:51
+#: templates/installation.php:54 templates/login.php:31 templates/login.php:35
 msgid "Username"
 msgstr "Όνομα χρήστη"
 
-#: lostpassword/templates/lostpassword.php:25
+#: lostpassword/templates/lostpassword.php:27
 msgid ""
 "Your files are encrypted. If you haven't enabled the recovery key, there "
 "will be no way to get your data back after your password is reset. If you "
@@ -539,11 +568,11 @@ msgid ""
 "continue. Do you really want to continue?"
 msgstr "Τα αρχεία σας είναι κρυπτογραφημένα. Εάν δεν έχετε ενεργοποιήσει το κλειδί ανάκτησης, δεν υπάρχει περίπτωση να έχετε πρόσβαση στα δεδομένα σας μετά την επαναφορά του συνθηματικού. Εάν δεν είστε σίγουροι τι να κάνετε, παρακαλώ επικοινωνήστε με τον διαχειριστή πριν συνεχίσετε. Θέλετε να συνεχίσετε;"
 
-#: lostpassword/templates/lostpassword.php:27
+#: lostpassword/templates/lostpassword.php:29
 msgid "Yes, I really want to reset my password now"
 msgstr "Ναι, θέλω να επαναφέρω το συνθηματικό μου τώρα."
 
-#: lostpassword/templates/lostpassword.php:30
+#: lostpassword/templates/lostpassword.php:32
 msgid "Reset"
 msgstr "Επαναφορά"
 
@@ -556,10 +585,11 @@ msgid "To login page"
 msgstr "Σελίδα εισόδου"
 
 #: lostpassword/templates/resetpassword.php:8
+#: lostpassword/templates/resetpassword.php:10
 msgid "New password"
 msgstr "Νέο συνθηματικό"
 
-#: lostpassword/templates/resetpassword.php:11
+#: lostpassword/templates/resetpassword.php:13
 msgid "Reset password"
 msgstr "Επαναφορά συνθηματικού"
 
@@ -583,7 +613,7 @@ msgstr "Προσωπικά"
 msgid "Users"
 msgstr "Χρήστες"
 
-#: strings.php:7 templates/layout.user.php:116
+#: strings.php:7 templates/layout.user.php:53 templates/layout.user.php:117
 msgid "Apps"
 msgstr "Εφαρμογές"
 
@@ -693,51 +723,59 @@ msgstr "Για πληροφορίες πως να ρυθμίσετε ορθά τ
 msgid "Create an <strong>admin account</strong>"
 msgstr "Δημιουργήστε έναν <strong>λογαριασμό διαχειριστή</strong>"
 
-#: templates/installation.php:60 templates/login.php:40
+#: templates/installation.php:59 templates/installation.php:62
+#: templates/login.php:41 templates/login.php:44
 msgid "Password"
 msgstr "Συνθηματικό"
 
-#: templates/installation.php:70
+#: templates/installation.php:72
 msgid "Storage & database"
 msgstr "Αποθήκευση & βάση δεδομένων"
 
-#: templates/installation.php:77
+#: templates/installation.php:79
 msgid "Data folder"
 msgstr "Φάκελος δεδομένων"
 
-#: templates/installation.php:90
+#: templates/installation.php:92
 msgid "Configure the database"
 msgstr "Ρύθμιση της βάσης δεδομένων"
 
-#: templates/installation.php:94
-msgid "will be used"
-msgstr "θα χρησιμοποιηθούν"
+#: templates/installation.php:96
+#, php-format
+msgid "Only %s is available."
+msgstr "Μόνο %s είναι διαθέσιμο."
 
-#: templates/installation.php:109
+#: templates/installation.php:111 templates/installation.php:113
 msgid "Database user"
 msgstr "Χρήστης της βάσης δεδομένων"
 
-#: templates/installation.php:118
+#: templates/installation.php:119 templates/installation.php:122
 msgid "Database password"
 msgstr "Συνθηματικό βάσης δεδομένων"
 
-#: templates/installation.php:123
+#: templates/installation.php:127 templates/installation.php:129
 msgid "Database name"
 msgstr "Όνομα βάσης δεδομένων"
 
-#: templates/installation.php:132
+#: templates/installation.php:137 templates/installation.php:139
 msgid "Database tablespace"
 msgstr "Κενά Πινάκων Βάσης Δεδομένων"
 
-#: templates/installation.php:140
+#: templates/installation.php:146 templates/installation.php:148
 msgid "Database host"
 msgstr "Διακομιστής βάσης δεδομένων"
 
-#: templates/installation.php:150
+#: templates/installation.php:157
+msgid ""
+"SQLite will be used as database. For larger installations we recommend to "
+"change this."
+msgstr "Η SQLIte θα χρησιμοποιηθεί ως βάση δεδομένων. Για μεγαλύτερες εγκαταστάσεις σας συνιστούμε να το αλλάξετε."
+
+#: templates/installation.php:159
 msgid "Finish setup"
 msgstr "Ολοκλήρωση εγκατάστασης"
 
-#: templates/installation.php:150
+#: templates/installation.php:159
 msgid "Finishing …"
 msgstr "Ολοκλήρωση..."
 
@@ -753,45 +791,45 @@ msgstr "Αυτή η εφαρμογή απαιτεί η JavaScript να είνα�
 msgid "%s is available. Get more information on how to update."
 msgstr "%s είναι διαθέσιμη. Δείτε περισσότερες πληροφορίες στο πώς να αναβαθμίσετε."
 
-#: templates/layout.user.php:74 templates/singleuser.user.php:8
+#: templates/layout.user.php:80 templates/singleuser.user.php:8
 msgid "Log out"
 msgstr "Αποσύνδεση"
 
-#: templates/login.php:9
+#: templates/login.php:11
 msgid "Automatic logon rejected!"
 msgstr "Απορρίφθηκε η αυτόματη σύνδεση!"
 
-#: templates/login.php:10
+#: templates/login.php:12
 msgid ""
 "If you did not change your password recently, your account may be "
 "compromised!"
 msgstr "Εάν δεν αλλάξατε το συνθηματικό σας προσφάτως, ο λογαριασμός μπορεί να έχει διαρρεύσει!"
 
-#: templates/login.php:12
+#: templates/login.php:14
 msgid "Please change your password to secure your account again."
 msgstr "Παρακαλώ αλλάξτε το συνθηματικό σας για να ασφαλίσετε πάλι τον λογαριασμό σας."
 
-#: templates/login.php:17
+#: templates/login.php:19
 msgid "Server side authentication failed!"
 msgstr "Η διαδικασία επικύρωσης απέτυχε από την πλευρά του διακομιστή!"
 
-#: templates/login.php:18
+#: templates/login.php:20
 msgid "Please contact your administrator."
 msgstr "Παρακαλώ επικοινωνήστε με τον διαχειριστή."
 
-#: templates/login.php:46
+#: templates/login.php:50
 msgid "Lost your password?"
 msgstr "Ξεχάσατε το συνθηματικό σας;"
 
-#: templates/login.php:51
+#: templates/login.php:55
 msgid "remember"
 msgstr "απομνημόνευση"
 
-#: templates/login.php:54
+#: templates/login.php:59
 msgid "Log in"
 msgstr "Είσοδος"
 
-#: templates/login.php:60
+#: templates/login.php:65
 msgid "Alternative Logins"
 msgstr "Εναλλακτικές Συνδέσεις"
 
@@ -823,26 +861,26 @@ msgstr "Σας ευχαριστούμε για την υπομονή σας."
 #: templates/update.admin.php:3
 #, php-format
 msgid "%s will be updated to version %s."
-msgstr ""
+msgstr "Το %s θα ενημερωθεί στην έκδοση %s."
 
 #: templates/update.admin.php:7
 msgid "The following apps will be disabled:"
-msgstr ""
+msgstr "Οι παρακάτω εφαρμογές θα απενεργοποιηθούν:"
 
 #: templates/update.admin.php:17
 #, php-format
 msgid "The theme %s has been disabled."
-msgstr ""
+msgstr "Το θέμα %s έχει απενεργοποιηθεί."
 
 #: templates/update.admin.php:21
 msgid ""
 "Please make sure that the database, the config folder and the data folder "
 "have been backed up before proceeding."
-msgstr ""
+msgstr "Παρακαλώ βεβαιωθείτε ότι έχουν ληψθεί αντίγραφα ασφαλείας της βάσης δεδομένων, του φακέλου ρυθμίσεων και του φακέλου δεδομένων πριν προχωρήσετε."
 
 #: templates/update.admin.php:23
 msgid "Start update"
-msgstr ""
+msgstr "Έναρξη ενημέρωσης"
 
 #: templates/update.user.php:3
 msgid ""

@@ -3,14 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# dixebra <davidlopezcastanon@gmail.com>, 2014
+# David López Castañón <davidlopezcastanon@gmail.com>, 2014
 # Iñigo Varela <ivarela@softastur.org>, 2014
+# Ḷḷumex03 <l.lumex03.tornes@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-05-11 01:55-0400\n"
-"PO-Revision-Date: 2014-05-11 05:02+0000\n"
+"POT-Creation-Date: 2014-06-09 01:54-0400\n"
+"PO-Revision-Date: 2014-06-08 15:20+0000\n"
 "Last-Translator: Iñigo Varela <ivarela@softastur.org>\n"
 "Language-Team: Asturian (http://www.transifex.com/projects/p/owncloud/language/ast/)\n"
 "MIME-Version: 1.0\n"
@@ -19,9 +20,49 @@ msgstr ""
 "Language: ast\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: js/share.js:33
+#: appinfo/app.php:35 js/app.js:34
+msgid "Shared with you"
+msgstr "Compartío contigo"
+
+#: appinfo/app.php:44 js/app.js:53
+msgid "Shared with others"
+msgstr "Compartío con otros"
+
+#: appinfo/app.php:53 js/app.js:72
+msgid "Shared by link"
+msgstr "Compartíu por enllaz"
+
+#: js/app.js:35
+msgid "No files have been shared with you yet."
+msgstr "Entá nun se compartieron ficheros contigo."
+
+#: js/app.js:54
+msgid "You haven't shared any files yet."
+msgstr "Entá nun compartiesti dengún ficheru."
+
+#: js/app.js:73
+msgid "You haven't shared any files by link yet."
+msgstr "Entá nun compartiesti nengún ficheru por enllaz."
+
+#: js/settings-admin.js:10
+msgid "Could not load template"
+msgstr "Nun pudo cargase la plantía"
+
+#: js/settings-admin.js:45
+msgid "Saved"
+msgstr "Guardáu"
+
+#: js/settings-admin.js:64 templates/settings-admin.php:33
+msgid "Reset"
+msgstr "Reaniciar"
+
+#: js/share.js:60
 msgid "Shared by {owner}"
 msgstr "Compartíu por {owner}"
+
+#: js/sharedfilelist.js:128
+msgid "Shared by"
+msgstr "Compartíu por"
 
 #: templates/authenticate.php:4
 msgid "This share is password-protected"
@@ -31,9 +72,17 @@ msgstr "Esta compartición tien contraseña protexida"
 msgid "The password is wrong. Try again."
 msgstr "La contraseña ye incorreuta. Inténtalo otra vegada."
 
-#: templates/authenticate.php:10
+#: templates/authenticate.php:10 templates/authenticate.php:12
 msgid "Password"
 msgstr "Contraseña"
+
+#: templates/list.php:16
+msgid "Name"
+msgstr "Nome"
+
+#: templates/list.php:20
+msgid "Share time"
+msgstr "Compartir hora"
 
 #: templates/part.404.php:3
 msgid "Sorry, this link doesn’t seem to work anymore."
@@ -59,15 +108,31 @@ msgstr "compartir ta desactiváu"
 msgid "For more info, please ask the person who sent this link."
 msgstr "Pa más información, entrúga-y a la persona qu'unvió esti enllaz"
 
-#: templates/public.php:21
+#: templates/public.php:20
 msgid "Download"
 msgstr "Baxar"
 
-#: templates/public.php:52
+#: templates/public.php:50
 #, php-format
 msgid "Download %s"
 msgstr "Descargar %s"
 
-#: templates/public.php:56
+#: templates/public.php:54
 msgid "Direct link"
 msgstr "Enllaz direutu"
+
+#: templates/settings-admin.php:3
+msgid "Mail templates"
+msgstr "Plantíes de corréu"
+
+#: templates/settings-admin.php:8
+msgid "Theme"
+msgstr "Tema"
+
+#: templates/settings-admin.php:17
+msgid "Template"
+msgstr "Plantía"
+
+#: templates/settings-admin.php:35
+msgid "Save"
+msgstr "Guardar"

@@ -478,7 +478,7 @@ class Share extends \OC\Share\Constants {
 	 */
 	public static function shareItem($itemType, $itemSource, $shareType, $shareWith, $permissions, $itemSourceName = null, \DateTime $expirationDate = null) {
 		$uidOwner = \OC_User::getUser();
-		$sharingPolicy = \OC_Appconfig::getValue('core', 'shareapi_share_policy', 'global');
+		$shareWithinGroupOnly = self::shareWithGroupMembersOnly();
 		$l = \OC_L10N::get('lib');
 
 		if (is_null($itemSourceName)) {
@@ -519,6 +519,11 @@ class Share extends \OC\Share\Constants {
 			}
 		}
 
+		// single file shares should never have delete permissions
+		if ($itemType === 'file') {
+			$permissions = (int)$permissions & ~\OCP\PERMISSION_DELETE;
+		}
+
 		// Verify share type and sharing conditions are met
 		if ($shareType === self::SHARE_TYPE_USER) {
 			if ($shareWith == $uidOwner) {
@@ -533,7 +538,7 @@ class Share extends \OC\Share\Constants {
 				\OC_Log::write('OCP\Share', sprintf($message, $itemSourceName, $shareWith), \OC_Log::ERROR);
 				throw new \Exception($message_t);
 			}
-			if ($sharingPolicy == 'groups_only') {
+			if ($shareWithinGroupOnly) {
 				$inGroup = array_intersect(\OC_Group::getUserGroups($uidOwner), \OC_Group::getUserGroups($shareWith));
 				if (empty($inGroup)) {
 					$message = 'Sharing %s failed, because the user '
@@ -563,7 +568,7 @@ class Share extends \OC\Share\Constants {
 				\OC_Log::write('OCP\Share', sprintf($message, $itemSourceName, $shareWith), \OC_Log::ERROR);
 				throw new \Exception($message_t);
 			}
-			if ($sharingPolicy == 'groups_only' && !\OC_Group::inGroup($uidOwner, $shareWith)) {
+			if ($shareWithinGroupOnly && !\OC_Group::inGroup($uidOwner, $shareWith)) {
 				$message = 'Sharing %s failed, because '
 					.'%s is not a member of the group %s';
 				$message_t = $l->t('Sharing %s failed, because %s is not a member of the group %s', array($itemSourceName, $uidOwner, $shareWith));
@@ -601,6 +606,7 @@ class Share extends \OC\Share\Constants {
 					$oldPermissions = $checkExists['permissions'];
 					//delete the old share
 					Helper::delete($checkExists['id']);
+					$updateExistingShare = true;
 				}
 
 				// Generate hash of password - same method as user passwords
@@ -621,6 +627,12 @@ class Share extends \OC\Share\Constants {
 					$message_t = $l->t('You need to provide a password to create a public link, only protected links are allowed');
 					\OC_Log::write('OCP\Share', $message, \OC_Log::ERROR);
 					throw new \Exception($message_t);
+				}
+
+				if (!empty($updateExistingShare) &&
+						self::isDefaultExpireDateEnabled() &&
+						empty($expirationDate)) {
+					$expirationDate = Helper::calcExpireDate();
 				}
 
 				// Generate token
@@ -712,33 +724,54 @@ class Share extends \OC\Share\Constants {
 	 * Unsharing from self is not allowed for items inside collections
 	 */
 	public static function unshareFromSelf($itemType, $itemTarget) {
-		$item = self::getItemSharedWith($itemType, $itemTarget);
-		if (!empty($item)) {
-			if ((int)$item['share_type'] === self::SHARE_TYPE_GROUP) {
-				// Insert an extra row for the group share and set permission
-				// to 0 to prevent it from showing up for the user
-				$query = \OC_DB::prepare('INSERT INTO `*PREFIX*share`'
+
+		$uid = \OCP\User::getUser();
+
+		if ($itemType === 'file' || $itemType === 'folder') {
+			$statement = 'SELECT * FROM `*PREFIX*share` WHERE `item_type` = ? and `file_target` = ?';
+		} else {
+			$statement = 'SELECT * FROM `*PREFIX*share` WHERE `item_type` = ? and `item_target` = ?';
+		}
+
+		$query = \OCP\DB::prepare($statement);
+		$result = $query->execute(array($itemType, $itemTarget));
+
+		$shares = $result->fetchAll();
+
+		$itemUnshared = false;
+		foreach ($shares as $share) {
+			if ((int)$share['share_type'] === \OCP\Share::SHARE_TYPE_USER &&
+					$share['share_with'] === $uid) {
+				Helper::delete($share['id']);
+				$itemUnshared = true;
+				break;
+			} elseif ((int)$share['share_type'] === \OCP\Share::SHARE_TYPE_GROUP) {
+				if (\OC_Group::inGroup($uid, $share['share_with'])) {
+					$groupShare = $share;
+				}
+			} elseif ((int)$share['share_type'] === self::$shareTypeGroupUserUnique &&
+					$share['share_with'] === $uid) {
+				$uniqueGroupShare = $share;
+			}
+		}
+
+		if (!$itemUnshared && isset($groupShare)) {
+			$query = \OC_DB::prepare('INSERT INTO `*PREFIX*share`'
 					.' (`item_type`, `item_source`, `item_target`, `parent`, `share_type`,'
 					.' `share_with`, `uid_owner`, `permissions`, `stime`, `file_source`, `file_target`)'
 					.' VALUES (?,?,?,?,?,?,?,?,?,?,?)');
-				$query->execute(array($item['item_type'], $item['item_source'], $item['item_target'],
-					$item['id'], self::$shareTypeGroupUserUnique,
-					\OC_User::getUser(), $item['uid_owner'], 0, $item['stime'], $item['file_source'],
-					$item['file_target']));
-				\OC_DB::insertid('*PREFIX*share');
-				// Delete all reshares by this user of the group share
-				Helper::delete($item['id'], true, \OC_User::getUser());
-			} else if ((int)$item['share_type'] === self::$shareTypeGroupUserUnique) {
-				// Set permission to 0 to prevent it from showing up for the user
-				$query = \OC_DB::prepare('UPDATE `*PREFIX*share` SET `permissions` = ? WHERE `id` = ?');
-				$query->execute(array(0, $item['id']));
-				Helper::delete($item['id'], true);
-			} else {
-				Helper::delete($item['id']);
-			}
-			return true;
+			$query->execute(array($groupShare['item_type'], $groupShare['item_source'], $groupShare['item_target'],
+				$groupShare['id'], self::$shareTypeGroupUserUnique,
+				\OC_User::getUser(), $groupShare['uid_owner'], 0, $groupShare['stime'], $groupShare['file_source'],
+				$groupShare['file_target']));
+			$itemUnshared = true;
+		} elseif (!$itemUnshared && isset($uniqueGroupShare)) {
+			$query = \OC_DB::prepare('UPDATE `*PREFIX*share` SET `permissions` = ? WHERE `id` = ?');
+			$query->execute(array(0, $uniqueGroupShare['id']));
+			$itemUnshared = true;
 		}
-		return false;
+
+		return $itemUnshared;
 	}
 
 	/**
@@ -860,28 +893,33 @@ class Share extends \OC\Share\Constants {
 	 */
 	public static function setExpirationDate($itemType, $itemSource, $date) {
 		$user = \OC_User::getUser();
-		$items = self::getItems($itemType, $itemSource, null, null, $user, self::FORMAT_NONE, null, -1, false);
-		if (!empty($items)) {
-			if ($date == '') {
-				$date = null;
-			} else {
-				$date = new \DateTime($date);
-			}
-			$query = \OC_DB::prepare('UPDATE `*PREFIX*share` SET `expiration` = ? WHERE `id` = ?');
-			$query->bindValue(1, $date, 'datetime');
-			foreach ($items as $item) {
-				$query->bindValue(2, (int) $item['id']);
-				$query->execute();
-				\OC_Hook::emit('OCP\Share', 'post_set_expiration_date', array(
-					'itemType' => $itemType,
-					'itemSource' => $itemSource,
-					'date' => $date,
-					'uidOwner' => $user
-				));
-			}
-			return true;
+
+		if ($date == '') {
+			$date = null;
+		} else {
+			$date = new \DateTime($date);
 		}
-		return false;
+		$query = \OC_DB::prepare('UPDATE `*PREFIX*share` SET `expiration` = ? WHERE `item_type` = ? AND `item_source` = ?  AND `uid_owner` = ? AND `share_type` = ?');
+		$query->bindValue(1, $date, 'datetime');
+		$query->bindValue(2, $itemType);
+		$query->bindValue(3, $itemSource);
+		$query->bindValue(4, $user);
+		$query->bindValue(5, \OCP\Share::SHARE_TYPE_LINK);
+
+		$result = $query->execute();
+
+		if ($result === 1) {
+			\OC_Hook::emit('OCP\Share', 'post_set_expiration_date', array(
+				'itemType' => $itemType,
+				'itemSource' => $itemSource,
+				'date' => $date,
+				'uidOwner' => $user
+			));
+		} else {
+			\OCP\Util::writeLog('sharing', "Couldn't set expire date'", \OCP\Util::ERROR);
+		}
+
+		return ($result === 1) ? true : false;
 	}
 
 	/**
@@ -891,29 +929,34 @@ class Share extends \OC\Share\Constants {
 	 */
 	protected static function expireItem(array $item) {
 
-		// calculate expire date
-		if (!empty($item['expiration'])) {
-			$userDefinedExpire = new \DateTime($item['expiration']);
-			$expires = $userDefinedExpire->getTimestamp();
-		} else {
-			$expires = null;
-		}
+		$result = false;
 
 		// only use default expire date for link shares
-		if((int)$item['share_type'] === self::SHARE_TYPE_LINK) {
+		if ((int) $item['share_type'] === self::SHARE_TYPE_LINK) {
+
+			// calculate expire date
+			if (!empty($item['expiration'])) {
+				$userDefinedExpire = new \DateTime($item['expiration']);
+				$expires = $userDefinedExpire->getTimestamp();
+			} else {
+				$expires = null;
+			}
+
+
 			// get default expire settings
 			$defaultSettings = Helper::getDefaultExpireSetting();
 			$expires = Helper::calculateExpireDate($defaultSettings, $item['stime'], $expires);
-		}
 
-		if (is_int($expires)) {
-			$now = time();
-			if ($now > $expires) {
-				self::unshareItem($item);
-				return true;
+
+			if (is_int($expires)) {
+				$now = time();
+				if ($now > $expires) {
+					self::unshareItem($item);
+					$result = true;
+				}
 			}
 		}
-		return false;
+		return $result;
 	}
 
 	/**
@@ -1744,10 +1787,10 @@ class Share extends \OC\Share\Constants {
 			if (isset($uidOwner)) {
 				if ($fileDependent) {
 					$select = '`*PREFIX*share`.`id`, `item_type`, `item_source`, `*PREFIX*share`.`parent`,'
-							. ' `share_type`, `share_with`, `file_source`, `path`, `permissions`, `stime`,'
+							. ' `share_type`, `share_with`, `file_source`, `path`, `*PREFIX*share`.`permissions`, `stime`,'
 							. ' `expiration`, `token`, `storage`, `mail_send`, `uid_owner`';
 				} else {
-					$select = '`id`, `item_type`, `item_source`, `parent`, `share_type`, `share_with`, `permissions`,'
+					$select = '`id`, `item_type`, `item_source`, `parent`, `share_type`, `share_with`, `*PREFIX*share`.`permissions`,'
 							. ' `stime`, `file_source`, `expiration`, `token`, `mail_send`, `uid_owner`';
 				}
 			} else {
@@ -1755,12 +1798,12 @@ class Share extends \OC\Share\Constants {
 					if ($format == \OC_Share_Backend_File::FORMAT_GET_FOLDER_CONTENTS || $format == \OC_Share_Backend_File::FORMAT_FILE_APP_ROOT) {
 						$select = '`*PREFIX*share`.`id`, `item_type`, `item_source`, `*PREFIX*share`.`parent`, `uid_owner`, '
 								. '`share_type`, `share_with`, `file_source`, `path`, `file_target`, `stime`, '
-								. '`permissions`, `expiration`, `storage`, `*PREFIX*filecache`.`parent` as `file_parent`, '
+								. '`*PREFIX*share`.`permissions`, `expiration`, `storage`, `*PREFIX*filecache`.`parent` as `file_parent`, '
 								. '`name`, `mtime`, `mimetype`, `mimepart`, `size`, `unencrypted_size`, `encrypted`, `etag`, `mail_send`';
 					} else {
 						$select = '`*PREFIX*share`.`id`, `item_type`, `item_source`, `item_target`,
 							`*PREFIX*share`.`parent`, `share_type`, `share_with`, `uid_owner`,
-							`file_source`, `path`, `file_target`, `permissions`, `stime`, `expiration`, `token`, `storage`, `mail_send`';
+							`file_source`, `path`, `file_target`, `*PREFIX*share`.`permissions`, `stime`, `expiration`, `token`, `storage`, `mail_send`';
 					}
 				}
 			}
@@ -1829,4 +1872,28 @@ class Share extends \OC\Share\Constants {
 			return $backend->formatItems($items, $format, $parameters);
 		}
 	}
+
+	/**
+	 * check if user can only share with group members
+	 * @return bool
+	 */
+	public static function shareWithGroupMembersOnly() {
+		$value = \OC_Appconfig::getValue('core', 'shareapi_only_share_with_group_members', 'no');
+		return ($value === 'yes') ? true : false;
+	}
+
+	public static function isDefaultExpireDateEnabled() {
+		$defaultExpireDateEnabled = \OCP\Config::getAppValue('core', 'shareapi_default_expire_date', 'no');
+		return ($defaultExpireDateEnabled === "yes") ? true : false;
+	}
+
+	public static function enforceDefaultExpireDate() {
+		$enforceDefaultExpireDate = \OCP\Config::getAppValue('core', 'shareapi_enforce_expire_date', 'no');
+		return ($enforceDefaultExpireDate === "yes") ? true : false;
+	}
+
+	public static function getExpireInterval() {
+		return (int)\OCP\Config::getAppValue('core', 'shareapi_expire_after_n_days', '7');
+	}
+
 }

@@ -1,5 +1,7 @@
 <?php
 $TRANSLATIONS = array(
+"You are accessing the server from an untrusted domain." => "Olet yhteydessä palvelimeen epäluotettavasta verkko-osoitteesta.",
+"Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domain\" setting in config/config.php. An example configuration is provided in config/config.sample.php." => "Ota yhteys ylläpitäjään. Jos olet tämän ownCloudin ylläpitäjä, määritä \"trusted_domain\"-asetus tiedostossa config/config.php. Esimerkkimääritys on nähtävillä tiedostossa config/config.sample.php.",
 "App \"%s\" can't be installed because it is not compatible with this version of ownCloud." => "Sovellusta \"%s\" ei voi asentaa, koska se ei ole yhteensopiva käytössä olevan ownCloud-version kanssa.",
 "No app name specified" => "Sovelluksen nimeä ei määritelty",
 "Help" => "Ohje",
@@ -11,10 +13,6 @@ $TRANSLATIONS = array(
 "Unknown filetype" => "Tuntematon tiedostotyyppi",
 "Invalid image" => "Virheellinen kuva",
 "web services under your control" => "verkkopalvelut hallinnassasi",
-"ZIP download is turned off." => "ZIP-lataus on poistettu käytöstä.",
-"Files need to be downloaded one by one." => "Tiedostot on ladattava yksittäin.",
-"Back to Files" => "Takaisin tiedostoihin",
-"Selected files too large to generate zip file." => "Valitut tiedostot ovat liian suurikokoisia mahtuakseen zip-tiedostoon.",
 "No source specified when installing app" => "Lähdettä ei määritelty sovellusta asennettaessa",
 "No href specified when installing app from http" => "Href-määritettä ei asetettu asennettaessa sovellusta http:n yli",
 "No path specified when installing app from local file" => "Polkua ei määritelty sovellusta asennettaessa paikallisesta tiedostosta",
@@ -30,9 +28,6 @@ $TRANSLATIONS = array(
 "Authentication error" => "Tunnistautumisvirhe",
 "Token expired. Please reload page." => "Valtuutus vanheni. Lataa sivu uudelleen.",
 "Unknown user" => "Tuntematon käyttäjä",
-"Files" => "Tiedostot",
-"Text" => "Teksti",
-"Images" => "Kuvat",
 "%s enter the database username." => "%s anna tietokannan käyttäjätunnus.",
 "%s enter the database name." => "%s anna tietokannan nimi.",
 "%s you may not use dots in the database name" => "%s et voi käyttää pisteitä tietokannan nimessä",
@@ -54,6 +49,7 @@ $TRANSLATIONS = array(
 "Please double check the <a href='%s'>installation guides</a>." => "Lue tarkasti <a href='%s'>asennusohjeet</a>.",
 "%s shared »%s« with you" => "%s jakoi kohteen »%s« kanssasi",
 "Sharing %s failed, because the file does not exist" => "Kohteen %s jakaminen epäonnistui, koska tiedostoa ei ole olemassa",
+"You are not allowed to share %s" => "Oikeutesi eivät riitä kohteen %s jakamiseen.",
 "Sharing %s failed, because the user %s is the item owner" => "Kohteen %s jakaminen epäonnistui, koska käyttäjä %s on kohteen omistaja",
 "Sharing %s failed, because the user %s does not exist" => "Kohteen %s jakaminen epäonnistui, koska käyttäjää %s ei ole olemassa",
 "Sharing %s failed, because this item is already shared with %s" => "Kohteen %s jakaminen epäonnistui, koska kohde on jo jaettu käyttäjän %s kanssa",
@@ -78,6 +74,7 @@ $TRANSLATIONS = array(
 "Only the following characters are allowed in a username: \"a-z\", \"A-Z\", \"0-9\", and \"_.@-\"" => "Vain seuraavat merkit ovat sallittuja käyttäjätunnuksessa: \"a-z\", \"A-Z\", \"0-9\" ja \"_.@-\"",
 "A valid username must be provided" => "Anna kelvollinen käyttäjätunnus",
 "A valid password must be provided" => "Anna kelvollinen salasana",
-"The username is already being used" => "Käyttäjätunnus on jo käytössä"
+"The username is already being used" => "Käyttäjätunnus on jo käytössä",
+"Could not obtain lock type %d on \"%s\"." => "Lukitustapaa %d ei saatu kohteelle \"%s\"."
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

@@ -5,16 +5,16 @@
 # Translators:
 # Efstathios Iosifidis <iefstathios@gmail.com>, 2014
 # Efstathios Iosifidis <iosifidis@opensuse.org>, 2013
-# pe_ppe <peppe@cs.uoi.gr>, 2014
-# vkehayas <vkehayas@gmail.com>, 2013-2014
+# Spyros Melissovas <peppe@cs.uoi.gr>, 2014
+# Vassilis Kehayas <vkehayas@gmail.com>, 2013-2014
 # Γιάννης Ανθυμίδης <yannanth@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-05-28 01:54-0400\n"
-"PO-Revision-Date: 2014-05-27 13:52+0000\n"
-"Last-Translator: pe_ppe <peppe@cs.uoi.gr>\n"
+"POT-Creation-Date: 2014-06-08 01:54-0400\n"
+"PO-Revision-Date: 2014-06-07 17:10+0000\n"
+"Last-Translator: Vassilis Kehayas <vkehayas@gmail.com>\n"
 "Language-Team: Greek (http://www.transifex.com/projects/p/owncloud/language/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,49 +22,49 @@ msgstr ""
 "Language: el\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: base.php:695
+#: base.php:678
 msgid "You are accessing the server from an untrusted domain."
 msgstr "Η προσπέλαση του διακομιστή γίνεται από μη έμπιστο τομέα."
 
-#: base.php:696
+#: base.php:679
 msgid ""
 "Please contact your administrator. If you are an administrator of this "
 "instance, configure the \"trusted_domain\" setting in config/config.php. An "
 "example configuration is provided in config/config.sample.php."
 msgstr "Παρακαλώ επικοινωνήστε με τον διαχειριστή συστημάτων σας. Αν είστε διαχειριστής αυτού του στιγμιοτύπο, ρυθμίστε το κλειδί \"trusted_domain\" στο αρχείο config/config.php. Ένα παράδειγμα παρέχεται στο αρχείο config/config.sample.php."
 
-#: private/app.php:236
+#: private/app.php:245
 #, php-format
 msgid ""
 "App \"%s\" can't be installed because it is not compatible with this version"
 " of ownCloud."
 msgstr "Η εφαρμογή \"%s\" δεν μπορεί να εγκατασταθεί επειδή δεν είναι συμβατή με αυτή την έκδοση του ownCloud."
 
-#: private/app.php:248
+#: private/app.php:261
 msgid "No app name specified"
 msgstr "Δεν προδιορίστηκε όνομα εφαρμογής"
 
-#: private/app.php:353
+#: private/app.php:367
 msgid "Help"
 msgstr "Βοήθεια"
 
-#: private/app.php:366
+#: private/app.php:380
 msgid "Personal"
 msgstr "Προσωπικά"
 
-#: private/app.php:377
+#: private/app.php:391
 msgid "Settings"
 msgstr "Ρυθμίσεις"
 
-#: private/app.php:389
+#: private/app.php:403
 msgid "Users"
 msgstr "Χρήστες"
 
-#: private/app.php:402
+#: private/app.php:416
 msgid "Admin"
 msgstr "Διαχείριση"
 
-#: private/app.php:880
+#: private/app.php:918
 #, php-format
 msgid "Failed to upgrade \"%s\"."
 msgstr "Αποτυχία αναβάθμισης του \"%s\"."
@@ -80,28 +80,6 @@ msgstr "Μη έγκυρη εικόνα"
 #: private/defaults.php:35
 msgid "web services under your control"
 msgstr "υπηρεσίες δικτύου υπό τον έλεγχό σας"
-
-#: private/files.php:235
-msgid "ZIP download is turned off."
-msgstr "Η λήψη ZIP απενεργοποιήθηκε."
-
-#: private/files.php:236
-msgid "Files need to be downloaded one by one."
-msgstr "Τα αρχεία πρέπει να ληφθούν ένα-ένα."
-
-#: private/files.php:237 private/files.php:264
-msgid "Back to Files"
-msgstr "Πίσω στα Αρχεία"
-
-#: private/files.php:262
-msgid "Selected files too large to generate zip file."
-msgstr "Τα επιλεγμένα αρχεία είναι μεγάλα ώστε να δημιουργηθεί αρχείο zip."
-
-#: private/files.php:263
-msgid ""
-"Please download the files separately in smaller chunks or kindly ask your "
-"administrator."
-msgstr "Παρακαλώ κάντε λήψη των αρχείων σε μικρότερα κομμάτια ή ζητήστε το από το διαχειριστή σας."
 
 #: private/installer.php:64
 msgid "No source specified when installing app"
@@ -174,18 +152,6 @@ msgstr "Το αναγνωριστικό έληξε. Παρακαλώ φορτώ�
 #: private/json.php:74
 msgid "Unknown user"
 msgstr "Άγνωστος χρήστης"
-
-#: private/search/provider/file.php:18 private/search/provider/file.php:36
-msgid "Files"
-msgstr "Αρχεία"
-
-#: private/search/provider/file.php:27 private/search/provider/file.php:34
-msgid "Text"
-msgstr "Κείμενο"
-
-#: private/search/provider/file.php:30
-msgid "Images"
-msgstr "Εικόνες"
 
 #: private/setup/abstractdatabase.php:26
 #, php-format
@@ -310,105 +276,105 @@ msgstr "Ο διαμοιρασμός του %s απέτυχε, γιατί το α
 msgid "You are not allowed to share %s"
 msgstr "Δεν επιτρέπεται να διαμοιράσετε τον πόρο %s"
 
-#: private/share/share.php:526
+#: private/share/share.php:531
 #, php-format
 msgid "Sharing %s failed, because the user %s is the item owner"
 msgstr "Ο διαμοιρασμός του %s απέτυχε, γιατί ο χρήστης %s είναι ο ιδιοκτήτης του αντικειμένου"
 
-#: private/share/share.php:532
+#: private/share/share.php:537
 #, php-format
 msgid "Sharing %s failed, because the user %s does not exist"
 msgstr "Ο διαμοιρασμός του %s απέτυχε, γιατί ο χρήστης %s δεν υπάρχει"
 
-#: private/share/share.php:541
+#: private/share/share.php:546
 #, php-format
 msgid ""
 "Sharing %s failed, because the user %s is not a member of any groups that %s"
 " is a member of"
 msgstr "Ο διαμοιρασμός του %s απέτυχε, γιατί ο χρήστης %s δεν είναι μέλος καμίας ομάδας στην οποία ο χρήστης %s είναι μέλος"
 
-#: private/share/share.php:554 private/share/share.php:582
+#: private/share/share.php:559 private/share/share.php:587
 #, php-format
 msgid "Sharing %s failed, because this item is already shared with %s"
 msgstr "Ο διαμοιρασμός του %s απέτυχε, γιατί το αντικείμενο είναι διαμοιρασμένο ήδη με τον χρήστη %s"
 
-#: private/share/share.php:562
+#: private/share/share.php:567
 #, php-format
 msgid "Sharing %s failed, because the group %s does not exist"
 msgstr "Ο διαμοιρασμός του %s απέτυχε, γιατί η ομάδα χρηστών %s δεν υπάρχει"
 
-#: private/share/share.php:569
+#: private/share/share.php:574
 #, php-format
 msgid "Sharing %s failed, because %s is not a member of the group %s"
 msgstr "Ο διαμοιρασμός του %s απέτυχε, γιατί ο χρήστης %s δεν είναι μέλος της ομάδας %s"
 
-#: private/share/share.php:621
+#: private/share/share.php:627
 msgid ""
 "You need to provide a password to create a public link, only protected links"
 " are allowed"
 msgstr "Πρέπει να εισάγετε έναν κωδικό για να δημιουργήσετε έναν δημόσιο σύνδεσμο. Μόνο προστατευμένοι σύνδεσμοι επιτρέπονται"
 
-#: private/share/share.php:641
+#: private/share/share.php:653
 #, php-format
 msgid "Sharing %s failed, because sharing with links is not allowed"
 msgstr "Ο διαμοιρασμός του %s απέτυχε, γιατί δεν επιτρέπεται ο διαμοιρασμός με συνδέσμους"
 
-#: private/share/share.php:648
+#: private/share/share.php:660
 #, php-format
 msgid "Share type %s is not valid for %s"
 msgstr "Ο τύπος διαμοιρασμού %s δεν είναι έγκυρος για το %s"
 
-#: private/share/share.php:787
+#: private/share/share.php:820
 #, php-format
 msgid ""
 "Setting permissions for %s failed, because the permissions exceed "
 "permissions granted to %s"
 msgstr "Ο ορισμός δικαιωμάτων για το %s απέτυχε, γιατί τα δικαιώματα υπερτερούν αυτά που είναι ορισμένα για το %s"
 
-#: private/share/share.php:848
+#: private/share/share.php:881
 #, php-format
 msgid "Setting permissions for %s failed, because the item was not found"
 msgstr "Ο ορισμός δικαιωμάτων για το %s απέτυχε, γιατί το αντικείμενο δεν βρέθηκε"
 
-#: private/share/share.php:959
+#: private/share/share.php:1002
 #, php-format
 msgid "Sharing backend %s must implement the interface OCP\\Share_Backend"
 msgstr "Το σύστημα διαμοιρασμού %s πρέπει να υλοποιεί την διεπαφή OCP\\Share_Backend"
 
-#: private/share/share.php:966
+#: private/share/share.php:1009
 #, php-format
 msgid "Sharing backend %s not found"
 msgstr "Το σύστημα διαμοιρασμού %s δεν βρέθηκε"
 
-#: private/share/share.php:972
+#: private/share/share.php:1015
 #, php-format
 msgid "Sharing backend for %s not found"
 msgstr "Το σύστημα διαμοιρασμού για το %s δεν βρέθηκε"
 
-#: private/share/share.php:1388
+#: private/share/share.php:1431
 #, php-format
 msgid "Sharing %s failed, because the user %s is the original sharer"
 msgstr "Ο διαμοιρασμός του %s απέτυχε, γιατί το αντικείμενο είναι διαμοιρασμένο αρχικά από τον χρήστη %s"
 
-#: private/share/share.php:1397
+#: private/share/share.php:1440
 #, php-format
 msgid ""
 "Sharing %s failed, because the permissions exceed permissions granted to %s"
 msgstr "Ο διαμοιρασμός του %s απέτυχε, γιατί τα δικαιώματα υπερτερούν αυτά που είναι ορισμένα για το %s"
 
-#: private/share/share.php:1413
+#: private/share/share.php:1456
 #, php-format
 msgid "Sharing %s failed, because resharing is not allowed"
 msgstr "Ο διαμοιρασμός του %s απέτυχε, γιατί δεν επιτρέπεται ο επαναδιαμοιρασμός"
 
-#: private/share/share.php:1425
+#: private/share/share.php:1468
 #, php-format
 msgid ""
 "Sharing %s failed, because the sharing backend for %s could not find its "
 "source"
 msgstr "Ο διαμοιρασμός του %s απέτυχε, γιατί δεν ήταν δυνατό να εντοπίσει την πηγή το σύστημα διαμοιρασμού για το %s "
 
-#: private/share/share.php:1439
+#: private/share/share.php:1482
 #, php-format
 msgid ""
 "Sharing %s failed, because the file could not be found in the file cache"
@@ -467,20 +433,25 @@ msgstr "τελευταίο χρόνο"
 msgid "years ago"
 msgstr "χρόνια πριν"
 
-#: private/user/manager.php:232
+#: private/user/manager.php:238
 msgid ""
 "Only the following characters are allowed in a username: \"a-z\", \"A-Z\", "
 "\"0-9\", and \"_.@-\""
 msgstr "Μόνο οι παρακάτων χαρακτήρες επιτρέπονται σε ένα όνομα χρήστη: \"a-z\", \"A-Z\", \"0-9\" και \"_.@-\""
 
-#: private/user/manager.php:237
+#: private/user/manager.php:243
 msgid "A valid username must be provided"
 msgstr "Πρέπει να δοθεί έγκυρο όνομα χρήστη"
 
-#: private/user/manager.php:241
+#: private/user/manager.php:247
 msgid "A valid password must be provided"
 msgstr "Πρέπει να δοθεί έγκυρο συνθηματικό"
 
-#: private/user/manager.php:246
+#: private/user/manager.php:252
 msgid "The username is already being used"
 msgstr "Το όνομα χρήστη είναι κατειλημμένο"
+
+#: public/files/locknotacquiredexception.php:39
+#, php-format
+msgid "Could not obtain lock type %d on \"%s\"."
+msgstr "Αδυναμία ανάκτησης τύπου κλειδιού %d στο \"%s\"."

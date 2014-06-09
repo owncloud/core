@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# សុវិចិត្រ Sovichet ទេព Tep, 2014
+# beth borin <borovin38@gmail.com>, 2014
+# Sovichet Tep, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-05-24 01:54-0400\n"
-"PO-Revision-Date: 2014-05-24 05:54+0000\n"
+"POT-Creation-Date: 2014-06-08 01:54-0400\n"
+"PO-Revision-Date: 2014-06-07 06:12+0000\n"
 "Last-Translator: I Robot\n"
 "Language-Team: Khmer (http://www.transifex.com/projects/p/owncloud/language/km/)\n"
 "MIME-Version: 1.0\n"
@@ -18,52 +19,52 @@ msgstr ""
 "Language: km\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: base.php:695
+#: base.php:678
 msgid "You are accessing the server from an untrusted domain."
 msgstr ""
 
-#: base.php:696
+#: base.php:679
 msgid ""
 "Please contact your administrator. If you are an administrator of this "
 "instance, configure the \"trusted_domain\" setting in config/config.php. An "
 "example configuration is provided in config/config.sample.php."
 msgstr ""
 
-#: private/app.php:236
+#: private/app.php:245
 #, php-format
 msgid ""
 "App \"%s\" can't be installed because it is not compatible with this version"
 " of ownCloud."
 msgstr "មិន​អាច​ដំឡើង​កម្មវិធី \"%s\" បាន ព្រោះ​តែ​វា​មិន​ត្រូវ​គ្នា​នឹង​កំណែ ownCloud នេះ​ទេ។"
 
-#: private/app.php:248
+#: private/app.php:261
 msgid "No app name specified"
 msgstr "មិន​បាន​បញ្ជាក់​ឈ្មោះ​កម្មវិធី"
 
-#: private/app.php:353
+#: private/app.php:367
 msgid "Help"
 msgstr "ជំនួយ"
 
-#: private/app.php:366
+#: private/app.php:380
 msgid "Personal"
 msgstr "ផ្ទាល់​ខ្លួន"
 
-#: private/app.php:377
+#: private/app.php:391
 msgid "Settings"
 msgstr "ការកំណត់"
 
-#: private/app.php:389
+#: private/app.php:403
 msgid "Users"
 msgstr "អ្នកប្រើ"
 
-#: private/app.php:402
+#: private/app.php:416
 msgid "Admin"
 msgstr "អ្នក​គ្រប់​គ្រង"
 
-#: private/app.php:880
+#: private/app.php:918
 #, php-format
 msgid "Failed to upgrade \"%s\"."
-msgstr ""
+msgstr "បរាជ័យ​ការធ្វើការបន្ទាន់សម័យ\"%s\"."
 
 #: private/avatar.php:66
 msgid "Unknown filetype"
@@ -76,28 +77,6 @@ msgstr "រូបភាព​មិន​ត្រឹម​ត្រូវ"
 #: private/defaults.php:35
 msgid "web services under your control"
 msgstr "សេវាកម្ម​វេប​ក្រោម​ការ​ការ​បញ្ជា​របស់​អ្នក"
-
-#: private/files.php:235
-msgid "ZIP download is turned off."
-msgstr "បាន​បិទ​ការ​ទាញ​យក ZIP ។"
-
-#: private/files.php:236
-msgid "Files need to be downloaded one by one."
-msgstr "ត្រូវ​ការ​ទាញ​យក​ឯកសារ​ម្ដង​មួយៗ។"
-
-#: private/files.php:237 private/files.php:264
-msgid "Back to Files"
-msgstr "ត្រឡប់​ទៅ​ឯកសារ"
-
-#: private/files.php:262
-msgid "Selected files too large to generate zip file."
-msgstr "ឯកសារ​ដែល​បាន​ជ្រើស មាន​ទំហំ​ធំ​ពេក​ក្នុង​ការ​បង្កើត​ជា zip ។"
-
-#: private/files.php:263
-msgid ""
-"Please download the files separately in smaller chunks or kindly ask your "
-"administrator."
-msgstr ""
 
 #: private/installer.php:64
 msgid "No source specified when installing app"
@@ -128,29 +107,29 @@ msgstr ""
 msgid "App can't be installed because of not allowed code in the App"
 msgstr ""
 
-#: private/installer.php:141
+#: private/installer.php:138
 msgid ""
 "App can't be installed because it is not compatible with this version of "
 "ownCloud"
 msgstr ""
 
-#: private/installer.php:147
+#: private/installer.php:144
 msgid ""
 "App can't be installed because it contains the <shipped>true</shipped> tag "
 "which is not allowed for non shipped apps"
 msgstr ""
 
-#: private/installer.php:160
+#: private/installer.php:157
 msgid ""
 "App can't be installed because the version in info.xml/version is not the "
 "same as the version reported from the app store"
 msgstr ""
 
-#: private/installer.php:170
+#: private/installer.php:167
 msgid "App directory already exists"
 msgstr "មាន​ទីតាំង​ផ្ទុក​កម្មវិធី​រួច​ហើយ"
 
-#: private/installer.php:183
+#: private/installer.php:180
 #, php-format
 msgid "Can't create app folder. Please fix permissions. %s"
 msgstr "មិន​អាច​បង្កើត​ថត​កម្មវិធី។ សូម​កែ​សម្រួល​សិទ្ធិ។ %s"
@@ -169,19 +148,7 @@ msgstr ""
 
 #: private/json.php:74
 msgid "Unknown user"
-msgstr ""
-
-#: private/search/provider/file.php:18 private/search/provider/file.php:36
-msgid "Files"
-msgstr "ឯកសារ"
-
-#: private/search/provider/file.php:27 private/search/provider/file.php:34
-msgid "Text"
-msgstr "អត្ថបទ"
-
-#: private/search/provider/file.php:30
-msgid "Images"
-msgstr "រូបភាព"
+msgstr "មិនស្គាល់អ្នកប្រើប្រាស់"
 
 #: private/setup/abstractdatabase.php:26
 #, php-format
@@ -306,105 +273,105 @@ msgstr ""
 msgid "You are not allowed to share %s"
 msgstr ""
 
-#: private/share/share.php:526
+#: private/share/share.php:531
 #, php-format
 msgid "Sharing %s failed, because the user %s is the item owner"
 msgstr ""
 
-#: private/share/share.php:532
+#: private/share/share.php:537
 #, php-format
 msgid "Sharing %s failed, because the user %s does not exist"
 msgstr ""
 
-#: private/share/share.php:541
+#: private/share/share.php:546
 #, php-format
 msgid ""
 "Sharing %s failed, because the user %s is not a member of any groups that %s"
 " is a member of"
 msgstr ""
 
-#: private/share/share.php:554 private/share/share.php:582
+#: private/share/share.php:559 private/share/share.php:587
 #, php-format
 msgid "Sharing %s failed, because this item is already shared with %s"
 msgstr ""
 
-#: private/share/share.php:562
+#: private/share/share.php:567
 #, php-format
 msgid "Sharing %s failed, because the group %s does not exist"
 msgstr ""
 
-#: private/share/share.php:569
+#: private/share/share.php:574
 #, php-format
 msgid "Sharing %s failed, because %s is not a member of the group %s"
 msgstr ""
 
-#: private/share/share.php:621
+#: private/share/share.php:627
 msgid ""
 "You need to provide a password to create a public link, only protected links"
 " are allowed"
 msgstr ""
 
-#: private/share/share.php:641
+#: private/share/share.php:653
 #, php-format
 msgid "Sharing %s failed, because sharing with links is not allowed"
 msgstr ""
 
-#: private/share/share.php:648
+#: private/share/share.php:660
 #, php-format
 msgid "Share type %s is not valid for %s"
 msgstr ""
 
-#: private/share/share.php:787
+#: private/share/share.php:820
 #, php-format
 msgid ""
 "Setting permissions for %s failed, because the permissions exceed "
 "permissions granted to %s"
 msgstr ""
 
-#: private/share/share.php:848
+#: private/share/share.php:881
 #, php-format
 msgid "Setting permissions for %s failed, because the item was not found"
 msgstr ""
 
-#: private/share/share.php:959
+#: private/share/share.php:1002
 #, php-format
 msgid "Sharing backend %s must implement the interface OCP\\Share_Backend"
 msgstr ""
 
-#: private/share/share.php:966
+#: private/share/share.php:1009
 #, php-format
 msgid "Sharing backend %s not found"
 msgstr ""
 
-#: private/share/share.php:972
+#: private/share/share.php:1015
 #, php-format
 msgid "Sharing backend for %s not found"
 msgstr ""
 
-#: private/share/share.php:1388
+#: private/share/share.php:1431
 #, php-format
 msgid "Sharing %s failed, because the user %s is the original sharer"
 msgstr ""
 
-#: private/share/share.php:1397
+#: private/share/share.php:1440
 #, php-format
 msgid ""
 "Sharing %s failed, because the permissions exceed permissions granted to %s"
 msgstr ""
 
-#: private/share/share.php:1413
+#: private/share/share.php:1456
 #, php-format
 msgid "Sharing %s failed, because resharing is not allowed"
 msgstr ""
 
-#: private/share/share.php:1425
+#: private/share/share.php:1468
 #, php-format
 msgid ""
 "Sharing %s failed, because the sharing backend for %s could not find its "
 "source"
 msgstr ""
 
-#: private/share/share.php:1439
+#: private/share/share.php:1482
 #, php-format
 msgid ""
 "Sharing %s failed, because the file could not be found in the file cache"
@@ -459,20 +426,25 @@ msgstr "ឆ្នាំ​មុន"
 msgid "years ago"
 msgstr "ឆ្នាំ​មុន"
 
-#: private/user/manager.php:232
+#: private/user/manager.php:238
 msgid ""
 "Only the following characters are allowed in a username: \"a-z\", \"A-Z\", "
 "\"0-9\", and \"_.@-\""
 msgstr ""
 
-#: private/user/manager.php:237
+#: private/user/manager.php:243
 msgid "A valid username must be provided"
 msgstr "ត្រូវ​ផ្ដល់​ឈ្មោះ​អ្នក​ប្រើ​ឲ្យ​បាន​ត្រឹម​ត្រូវ"
 
-#: private/user/manager.php:241
+#: private/user/manager.php:247
 msgid "A valid password must be provided"
 msgstr "ត្រូវ​ផ្ដល់​ពាក្យ​សម្ងាត់​ឲ្យ​បាន​ត្រឹម​ត្រូវ"
 
-#: private/user/manager.php:246
+#: private/user/manager.php:252
 msgid "The username is already being used"
+msgstr ""
+
+#: public/files/locknotacquiredexception.php:39
+#, php-format
+msgid "Could not obtain lock type %d on \"%s\"."
 msgstr ""

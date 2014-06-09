@@ -1,9 +1,21 @@
 <?php
 $TRANSLATIONS = array(
+"Shared with you" => "Condiviso con te",
+"Shared with others" => "Condiviso con altri",
+"Shared by link" => "Condiviso tramite collegamento",
+"No files have been shared with you yet." => "Non è stato ancora condiviso alcun file con te.",
+"You haven't shared any files yet." => "Non hai ancora condiviso alcun file.",
+"You haven't shared any files by link yet." => "Non hai ancora condiviso alcun file tramite collegamento.",
+"Could not load template" => "Impossibile caricare il modello",
+"Saved" => "Salvato",
+"Reset" => "Ripristina",
 "Shared by {owner}" => "Condiviso da {owner}",
+"Shared by" => "Condiviso da",
 "This share is password-protected" => "Questa condivione è protetta da password",
 "The password is wrong. Try again." => "La password è errata. Prova ancora.",
 "Password" => "Password",
+"Name" => "Nome",
+"Share time" => "Tempo di condivisione",
 "Sorry, this link doesn’t seem to work anymore." => "Spiacenti, questo collegamento sembra non essere più attivo.",
 "Reasons might be:" => "I motivi potrebbero essere:",
 "the item was removed" => "l'elemento è stato rimosso",
@@ -12,6 +24,10 @@ $TRANSLATIONS = array(
 "For more info, please ask the person who sent this link." => "Per ulteriori informazioni, chiedi alla persona che ti ha inviato il collegamento.",
 "Download" => "Scarica",
 "Download %s" => "Scarica %s",
-"Direct link" => "Collegamento diretto"
+"Direct link" => "Collegamento diretto",
+"Mail templates" => "Modelli di messaggio",
+"Theme" => "Tema",
+"Template" => "Modello",
+"Save" => "Salva"
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

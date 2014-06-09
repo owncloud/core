@@ -13,6 +13,15 @@
 
   <declaration>
 
+	  <field>
+		  <name>auto_id</name>
+		  <type>integer</type>
+		  <default>0</default>
+		  <notnull>true</notnull>
+		  <autoincrement>1</autoincrement>
+		  <length>4</length>
+	  </field>
+
    <field>
     <name>id</name>
     <type>text</type>
@@ -84,32 +93,6 @@
 		   <sorting>ascending</sorting>
 	   </field>
    </index>
-
-  </declaration>
-
- </table>
-
- <table>
-
-  <name>*dbprefix*files_trashsize</name>
-
-  <declaration>
-
-   <field>
-    <name>user</name>
-    <type>text</type>
-    <default></default>
-    <notnull>true</notnull>
-    <length>64</length>
-   </field>
-
-   <field>
-    <name>size</name>
-    <type>text</type>
-    <default></default>
-    <notnull>true</notnull>
-    <length>50</length>
-   </field>
 
   </declaration>
 

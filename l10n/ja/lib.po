@@ -4,17 +4,17 @@
 # 
 # Translators:
 # Daisuke Deguchi <ddeguchi@nagoya-u.jp>, 2013-2014
-# plazmism <gomidori@live.jp>, 2013-2014
+# タカハシ <gomidori@live.jp>, 2013-2014
 # Koichi MATSUMOTO <mzch@me.com>, 2013
 # kuromabo <md81bird@hitaki.net>, 2014
-# mikako, 2014
-# tt yn <tetuyano+transi@gmail.com>, 2013-2014
+# Mika Kobayashi, 2014
+# YANO Tetsu <tetuyano+transi@gmail.com>, 2013-2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-05-24 01:54-0400\n"
-"PO-Revision-Date: 2014-05-24 05:54+0000\n"
+"POT-Creation-Date: 2014-06-08 01:54-0400\n"
+"PO-Revision-Date: 2014-06-07 06:12+0000\n"
 "Last-Translator: I Robot\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/owncloud/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -23,49 +23,49 @@ msgstr ""
 "Language: ja_JP\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: base.php:695
+#: base.php:678
 msgid "You are accessing the server from an untrusted domain."
-msgstr "あなたはサーバに、信用が付与されていないドメインからアクセスしています。"
+msgstr "信頼されていないドメインからサーバーにアクセスしています。"
 
-#: base.php:696
+#: base.php:679
 msgid ""
 "Please contact your administrator. If you are an administrator of this "
 "instance, configure the \"trusted_domain\" setting in config/config.php. An "
 "example configuration is provided in config/config.sample.php."
 msgstr "管理者に連絡してください。このサーバーの管理者の場合は、\"trusted_domain\" の設定を config/config.php に設定してください。config/config.sample.php にサンプルの設定方法が記載してあります。"
 
-#: private/app.php:236
+#: private/app.php:245
 #, php-format
 msgid ""
 "App \"%s\" can't be installed because it is not compatible with this version"
 " of ownCloud."
 msgstr " \"%s\" アプリは、このバージョンのownCloudと互換性がないためインストールできません。"
 
-#: private/app.php:248
+#: private/app.php:261
 msgid "No app name specified"
 msgstr "アプリ名が未指定"
 
-#: private/app.php:353
+#: private/app.php:367
 msgid "Help"
 msgstr "ヘルプ"
 
-#: private/app.php:366
+#: private/app.php:380
 msgid "Personal"
 msgstr "個人"
 
-#: private/app.php:377
+#: private/app.php:391
 msgid "Settings"
 msgstr "設定"
 
-#: private/app.php:389
+#: private/app.php:403
 msgid "Users"
 msgstr "ユーザー"
 
-#: private/app.php:402
+#: private/app.php:416
 msgid "Admin"
 msgstr "管理"
 
-#: private/app.php:880
+#: private/app.php:918
 #, php-format
 msgid "Failed to upgrade \"%s\"."
 msgstr "\"%s\" へのアップグレードに失敗しました。"
@@ -81,28 +81,6 @@ msgstr "無効な画像"
 #: private/defaults.php:35
 msgid "web services under your control"
 msgstr "管理下のウェブサービス"
-
-#: private/files.php:235
-msgid "ZIP download is turned off."
-msgstr "ZIPダウンロードは無効です。"
-
-#: private/files.php:236
-msgid "Files need to be downloaded one by one."
-msgstr "ファイルは1つずつダウンロードする必要があります。"
-
-#: private/files.php:237 private/files.php:264
-msgid "Back to Files"
-msgstr "ファイルに戻る"
-
-#: private/files.php:262
-msgid "Selected files too large to generate zip file."
-msgstr "選択したファイルはZIPファイルの生成には大きすぎます。"
-
-#: private/files.php:263
-msgid ""
-"Please download the files separately in smaller chunks or kindly ask your "
-"administrator."
-msgstr "少しずつに分けてファイルをダウンロードするか、管理者に問い合わせてください。"
 
 #: private/installer.php:64
 msgid "No source specified when installing app"
@@ -133,29 +111,29 @@ msgstr "アプリにinfo.xmlファイルが入っていません"
 msgid "App can't be installed because of not allowed code in the App"
 msgstr "アプリで許可されないコードが入っているのが原因でアプリがインストールできません"
 
-#: private/installer.php:141
+#: private/installer.php:138
 msgid ""
 "App can't be installed because it is not compatible with this version of "
 "ownCloud"
 msgstr "アプリは、このバージョンのownCloudと互換性がないためインストールできません。"
 
-#: private/installer.php:147
+#: private/installer.php:144
 msgid ""
 "App can't be installed because it contains the <shipped>true</shipped> tag "
 "which is not allowed for non shipped apps"
 msgstr "非shippedアプリには許可されない<shipped>true</shipped>タグが含まれているためにアプリをインストールできません。"
 
-#: private/installer.php:160
+#: private/installer.php:157
 msgid ""
 "App can't be installed because the version in info.xml/version is not the "
 "same as the version reported from the app store"
 msgstr "info.xml/versionのバージョンがアプリストアのバージョンと合っていないため、アプリはインストールされません"
 
-#: private/installer.php:170
+#: private/installer.php:167
 msgid "App directory already exists"
 msgstr "アプリディレクトリはすでに存在します"
 
-#: private/installer.php:183
+#: private/installer.php:180
 #, php-format
 msgid "Can't create app folder. Please fix permissions. %s"
 msgstr "アプリフォルダーを作成できませんでした。%s のパーミッションを修正してください。"
@@ -175,18 +153,6 @@ msgstr "トークンが無効になりました。ページを再読込してく
 #: private/json.php:74
 msgid "Unknown user"
 msgstr "不明なユーザー"
-
-#: private/search/provider/file.php:18 private/search/provider/file.php:36
-msgid "Files"
-msgstr "ファイル"
-
-#: private/search/provider/file.php:27 private/search/provider/file.php:34
-msgid "Text"
-msgstr "TTY TDD"
-
-#: private/search/provider/file.php:30
-msgid "Images"
-msgstr "画像"
 
 #: private/setup/abstractdatabase.php:26
 #, php-format
@@ -309,107 +275,107 @@ msgstr "%s の共有に失敗しました。そのようなファイルは存在
 #: private/share/share.php:501
 #, php-format
 msgid "You are not allowed to share %s"
-msgstr ""
+msgstr "%s を共有することを許可されていません。"
 
-#: private/share/share.php:526
+#: private/share/share.php:531
 #, php-format
 msgid "Sharing %s failed, because the user %s is the item owner"
 msgstr "%s の共有に失敗しました。ユーザー %s がアイテム所有者です。"
 
-#: private/share/share.php:532
+#: private/share/share.php:537
 #, php-format
 msgid "Sharing %s failed, because the user %s does not exist"
 msgstr "%s の共有に失敗しました。ユーザー %s が存在しません。"
 
-#: private/share/share.php:541
+#: private/share/share.php:546
 #, php-format
 msgid ""
 "Sharing %s failed, because the user %s is not a member of any groups that %s"
 " is a member of"
 msgstr "%s の共有に失敗しました。ユーザー %s はどのグループにも属していません。%s は、??のメンバーです。"
 
-#: private/share/share.php:554 private/share/share.php:582
+#: private/share/share.php:559 private/share/share.php:587
 #, php-format
 msgid "Sharing %s failed, because this item is already shared with %s"
 msgstr "%s の共有に失敗しました。このアイテムは既に %s で共有されています。"
 
-#: private/share/share.php:562
+#: private/share/share.php:567
 #, php-format
 msgid "Sharing %s failed, because the group %s does not exist"
 msgstr "%s の共有に失敗しました。グループ %s は存在しません。"
 
-#: private/share/share.php:569
+#: private/share/share.php:574
 #, php-format
 msgid "Sharing %s failed, because %s is not a member of the group %s"
 msgstr "%s の共有に失敗しました。%s は、グループ %s のメンバーではありません。"
 
-#: private/share/share.php:621
+#: private/share/share.php:627
 msgid ""
 "You need to provide a password to create a public link, only protected links"
 " are allowed"
 msgstr "公開用リンクの作成にはパスワードの設定が必要です"
 
-#: private/share/share.php:641
+#: private/share/share.php:653
 #, php-format
 msgid "Sharing %s failed, because sharing with links is not allowed"
 msgstr "%s の共有に失敗しました。リンクでの共有は許可されていません。"
 
-#: private/share/share.php:648
+#: private/share/share.php:660
 #, php-format
 msgid "Share type %s is not valid for %s"
 msgstr "%s の共有方法は、%s には適用できません。"
 
-#: private/share/share.php:787
+#: private/share/share.php:820
 #, php-format
 msgid ""
 "Setting permissions for %s failed, because the permissions exceed "
 "permissions granted to %s"
 msgstr "%s の権限設定に失敗しました。%s に許可されている権限を越えています。"
 
-#: private/share/share.php:848
+#: private/share/share.php:881
 #, php-format
 msgid "Setting permissions for %s failed, because the item was not found"
 msgstr "%s の権限設定に失敗しました。アイテムが存在しません。"
 
-#: private/share/share.php:959
+#: private/share/share.php:1002
 #, php-format
 msgid "Sharing backend %s must implement the interface OCP\\Share_Backend"
 msgstr "%s のバックエンドの共有には、OCP\\Share_Backend　インターフェースを実装しなければなりません。"
 
-#: private/share/share.php:966
+#: private/share/share.php:1009
 #, php-format
 msgid "Sharing backend %s not found"
 msgstr "共有バックエンド %s が見つかりません"
 
-#: private/share/share.php:972
+#: private/share/share.php:1015
 #, php-format
 msgid "Sharing backend for %s not found"
 msgstr "%s のための共有バックエンドが見つかりません"
 
-#: private/share/share.php:1388
+#: private/share/share.php:1431
 #, php-format
 msgid "Sharing %s failed, because the user %s is the original sharer"
-msgstr "%s の共有に失敗しました。ユーザ %s が元々の共有者であるからです。"
+msgstr "%s の共有に失敗しました。ユーザー %s が元々の共有者であるからです。"
 
-#: private/share/share.php:1397
+#: private/share/share.php:1440
 #, php-format
 msgid ""
 "Sharing %s failed, because the permissions exceed permissions granted to %s"
 msgstr "%s の共有に失敗しました。%s に付与されている許可を超えているからです。"
 
-#: private/share/share.php:1413
+#: private/share/share.php:1456
 #, php-format
 msgid "Sharing %s failed, because resharing is not allowed"
 msgstr "%s の共有に失敗しました。再共有が許されていないからです。"
 
-#: private/share/share.php:1425
+#: private/share/share.php:1468
 #, php-format
 msgid ""
 "Sharing %s failed, because the sharing backend for %s could not find its "
 "source"
 msgstr "%s の共有に失敗しました。%s のバックエンド共有に必要なソースが見つかりませんでした。"
 
-#: private/share/share.php:1439
+#: private/share/share.php:1482
 #, php-format
 msgid ""
 "Sharing %s failed, because the file could not be found in the file cache"
@@ -464,20 +430,25 @@ msgstr "1年前"
 msgid "years ago"
 msgstr "年前"
 
-#: private/user/manager.php:232
+#: private/user/manager.php:238
 msgid ""
 "Only the following characters are allowed in a username: \"a-z\", \"A-Z\", "
 "\"0-9\", and \"_.@-\""
 msgstr "ユーザー名で利用できる文字列は、次のものです： \"a-z\", \"A-Z\", \"0-9\", and \"_.@-\""
 
-#: private/user/manager.php:237
+#: private/user/manager.php:243
 msgid "A valid username must be provided"
 msgstr "有効なユーザー名を指定する必要があります"
 
-#: private/user/manager.php:241
+#: private/user/manager.php:247
 msgid "A valid password must be provided"
 msgstr "有効なパスワードを指定する必要があります"
 
-#: private/user/manager.php:246
+#: private/user/manager.php:252
 msgid "The username is already being used"
-msgstr "ユーザ名はすでに使われています"
+msgstr "ユーザー名はすでに使われています"
+
+#: public/files/locknotacquiredexception.php:39
+#, php-format
+msgid "Could not obtain lock type %d on \"%s\"."
+msgstr "\"%s\" で %d タイプのロックを取得できませんでした。"

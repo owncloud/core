@@ -1,6 +1,9 @@
 <?php
 $TRANSLATIONS = array(
+"Shared by" => "Deilt af",
 "Password" => "Lykilorð",
-"Download" => "Niðurhal"
+"Name" => "Nafn",
+"Download" => "Niðurhal",
+"Save" => "Vista"
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

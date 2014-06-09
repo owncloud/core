@@ -100,6 +100,29 @@ class Test_Encryption_Hooks extends \PHPUnit_Framework_TestCase {
 		\OC_User::deleteUser(\Test_Encryption_Hooks::TEST_ENCRYPTION_HOOKS_USER2);
 	}
 
+	function testDisableHook() {
+		// encryption is enabled and running so we should have some user specific
+		// settings in oc_preferences
+		$query = \OC_DB::prepare('SELECT * FROM `*PREFIX*preferences` WHERE `appid` = ?');
+		$result = $query->execute(array('files_encryption'));
+		$row = $result->fetchRow();
+		$this->assertTrue(is_array($row));
+
+		// disabling the app should delete all user specific settings
+		\OCA\Encryption\Hooks::preDisable(array('app' => 'files_encryption'));
+
+		// check if user specific settings for the encryption app are really gone
+		$query = \OC_DB::prepare('SELECT * FROM `*PREFIX*preferences` WHERE `appid` = ?');
+		$result = $query->execute(array('files_encryption'));
+		$row = $result->fetchRow();
+		$this->assertFalse($row);
+
+		// relogin user to initialize the encryption again
+		$user =  \OCP\User::getUser();
+		\Test_Encryption_Util::loginHelper($user);
+
+	}
+
 	function testDeleteHooks() {
 
 		// remember files_trashbin state
@@ -234,14 +257,14 @@ class Test_Encryption_Hooks extends \PHPUnit_Framework_TestCase {
 
 		$this->assertTrue($result);
 
-		// now keys from user1s home should be gone
-		$this->assertFalse($this->rootView->file_exists(
+		// share key for user2 from user1s home should be gone, all other keys should still exists
+		$this->assertTrue($this->rootView->file_exists(
 			self::TEST_ENCRYPTION_HOOKS_USER1 . '/files_encryption/share-keys/'
 			. $this->filename . '.' . \Test_Encryption_Hooks::TEST_ENCRYPTION_HOOKS_USER1 . '.shareKey'));
 		$this->assertFalse($this->rootView->file_exists(
 				self::TEST_ENCRYPTION_HOOKS_USER1 . '/files_encryption/share-keys/'
 				. $this->filename . '.' . \Test_Encryption_Hooks::TEST_ENCRYPTION_HOOKS_USER2 . '.shareKey'));
-		$this->assertFalse($this->rootView->file_exists(
+		$this->assertTrue($this->rootView->file_exists(
 			self::TEST_ENCRYPTION_HOOKS_USER1 . '/files_encryption/keyfiles/' . $this->filename . '.key'));
 
 		// cleanup

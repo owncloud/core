@@ -5,20 +5,20 @@
 # Translators:
 # Efstathios Iosifidis <iefstathios@gmail.com>, 2013-2014
 # Efstathios Iosifidis <iosifidis@opensuse.org>, 2013
-# KAT.RAT12 <spanish.katerina@gmail.com>, 2013
-# pe_ppe <peppe@cs.uoi.gr>, 2014
-# Teogramm <theodorewii121@hotmail.com>, 2013
-# Teogramm <theodorewii121@hotmail.com>, 2013
-# vkehayas <vkehayas@gmail.com>, 2013
-# KAT.RAT12 <spanish.katerina@gmail.com>, 2013
+# Αικατερίνη Χ. Καταπόδη <spanish.katerina@gmail.com>, 2013
+# Spyros Melissovas <peppe@cs.uoi.gr>, 2014
+# Theodore Grammenos <theodorewii121@hotmail.com>, 2013
+# Theodore Grammenos <theodorewii121@hotmail.com>, 2013
+# Vassilis Kehayas <vkehayas@gmail.com>, 2013-2014
+# Αικατερίνη Χ. Καταπόδη <spanish.katerina@gmail.com>, 2013
 # Γιάννης Ανθυμίδης <yannanth@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-05-28 01:54-0400\n"
-"PO-Revision-Date: 2014-05-28 05:54+0000\n"
-"Last-Translator: I Robot\n"
+"POT-Creation-Date: 2014-06-09 01:54-0400\n"
+"PO-Revision-Date: 2014-06-08 16:00+0000\n"
+"Last-Translator: Vassilis Kehayas <vkehayas@gmail.com>\n"
 "Language-Team: Greek (http://www.transifex.com/projects/p/owncloud/language/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -56,15 +56,15 @@ msgstr "Το Email απεστάλη "
 msgid "You need to set your user email before being able to send test emails."
 msgstr "Πρέπει να ορίσετε το email του χρήστη πριν να είστε σε θέση να στείλετε δοκιμαστικά emails."
 
-#: admin/controller.php:116 templates/admin.php:331
+#: admin/controller.php:116 templates/admin.php:353
 msgid "Send mode"
 msgstr "Κατάσταση αποστολής"
 
-#: admin/controller.php:118 templates/admin.php:344 templates/personal.php:144
+#: admin/controller.php:118 templates/admin.php:366 templates/personal.php:144
 msgid "Encryption"
 msgstr "Κρυπτογράφηση"
 
-#: admin/controller.php:120 templates/admin.php:368
+#: admin/controller.php:120 templates/admin.php:390
 msgid "Authentication method"
 msgstr "Μέθοδος πιστοποίησης"
 
@@ -85,11 +85,11 @@ msgstr "Το πλήρες όνομά σας άλλαξε."
 msgid "Unable to change full name"
 msgstr "Δεν ήταν δυνατή η αλλαγή του πλήρους ονόματός σας"
 
-#: ajax/creategroup.php:10
+#: ajax/creategroup.php:11
 msgid "Group already exists"
 msgstr "Η ομάδα υπάρχει ήδη"
 
-#: ajax/creategroup.php:19
+#: ajax/creategroup.php:20
 msgid "Unable to add group"
 msgstr "Αδυναμία προσθήκης ομάδας"
 
@@ -202,7 +202,7 @@ msgstr "Αδυναμία αλλαγής συνθηματικού"
 msgid "Sending..."
 msgstr "Αποστέλεται..."
 
-#: js/apps.js:45 templates/help.php:4
+#: js/apps.js:45 templates/help.php:7
 msgid "User Documentation"
 msgstr "Τεκμηρίωση Χρήστη"
 
@@ -214,43 +214,43 @@ msgstr "Τεκμηρίωση Διαχειριστή"
 msgid "Update to {appversion}"
 msgstr "Ενημέρωση σε {appversion}"
 
-#: js/apps.js:73 js/apps.js:106 js/apps.js:134
+#: js/apps.js:73 js/apps.js:135 js/apps.js:168
 msgid "Disable"
 msgstr "Απενεργοποίηση"
 
-#: js/apps.js:73 js/apps.js:114 js/apps.js:127 js/apps.js:143
+#: js/apps.js:73 js/apps.js:144 js/apps.js:161 js/apps.js:192
 msgid "Enable"
 msgstr "Ενεργοποίηση"
 
-#: js/apps.js:95
+#: js/apps.js:124
 msgid "Please wait...."
 msgstr "Παρακαλώ περιμένετε..."
 
-#: js/apps.js:103 js/apps.js:104 js/apps.js:125
+#: js/apps.js:132 js/apps.js:133 js/apps.js:159
 msgid "Error while disabling app"
 msgstr "Σφάλμα κατά την απενεργοποίηση εισόδου"
 
-#: js/apps.js:124 js/apps.js:138 js/apps.js:139
+#: js/apps.js:158 js/apps.js:187 js/apps.js:188
 msgid "Error while enabling app"
 msgstr "Σφάλμα κατά την ενεργοποίηση της εφαρμογής"
 
-#: js/apps.js:149
+#: js/apps.js:197
 msgid "Updating...."
 msgstr "Ενημέρωση..."
 
-#: js/apps.js:152
+#: js/apps.js:200
 msgid "Error while updating app"
 msgstr "Σφάλμα κατά την ενημέρωση της εφαρμογής"
 
-#: js/apps.js:152
+#: js/apps.js:200
 msgid "Error"
 msgstr "Σφάλμα"
 
-#: js/apps.js:153 templates/apps.php:55
+#: js/apps.js:201 templates/apps.php:55
 msgid "Update"
 msgstr "Ενημέρωση"
 
-#: js/apps.js:156
+#: js/apps.js:204
 msgid "Updated"
 msgstr "Ενημερώθηκε"
 
@@ -290,48 +290,63 @@ msgstr "Οριστική διαγραφή των κλειδιων κρυπτογ
 msgid "Restore encryption keys."
 msgstr "Επαναφορά των κλειδιών κρυπτογράφησης."
 
-#: js/users.js:47
+#: js/users/deleteHandler.js:166
+msgid "Unable to delete "
+msgstr "Αδυναμία διαγραφής"
+
+#: js/users/groups.js:73 js/users/groups.js:178
+msgid "Error creating group"
+msgstr "Σφάλμα δημιουργίας ομάδας"
+
+#: js/users/groups.js:177
+msgid "A valid group name must be provided"
+msgstr "Πρέπει να δοθεί ένα έγκυρο όνομα ομάδας"
+
+#: js/users/groups.js:205 js/users/users.js:254
 msgid "deleted"
 msgstr "διαγράφηκε"
 
-#: js/users.js:47
+#: js/users/groups.js:206 js/users/users.js:255
 msgid "undo"
 msgstr "αναίρεση"
 
-#: js/users.js:79
-msgid "Unable to remove user"
-msgstr "Αδυναμία αφαίρεση χρήστη"
-
-#: js/users.js:101 templates/admin.php:280 templates/users.php:24
-#: templates/users.php:88 templates/users.php:116
+#: js/users/users.js:37 templates/admin.php:302
+#: templates/users/part.createuser.php:12 templates/users/part.userlist.php:10
+#: templates/users/part.userlist.php:41
 msgid "Groups"
 msgstr "Ομάδες"
 
-#: js/users.js:105 templates/users.php:90 templates/users.php:128
+#: js/users/users.js:41 templates/users/part.userlist.php:12
+#: templates/users/part.userlist.php:57
 msgid "Group Admin"
 msgstr "Ομάδα Διαχειριστών"
 
-#: js/users.js:127 templates/users.php:168
+#: js/users/users.js:63 templates/users/part.grouplist.php:44
+#: templates/users/part.userlist.php:108
 msgid "Delete"
 msgstr "Διαγραφή"
 
-#: js/users.js:310
+#: js/users/users.js:84 templates/users/part.userlist.php:98
+msgid "never"
+msgstr "ποτέ"
+
+#: js/users/users.js:371
 msgid "add group"
 msgstr "προσθήκη ομάδας"
 
-#: js/users.js:486
+#: js/users/users.js:568
 msgid "A valid username must be provided"
 msgstr "Πρέπει να δοθεί έγκυρο όνομα χρήστη"
 
-#: js/users.js:487 js/users.js:493 js/users.js:508
+#: js/users/users.js:569 js/users/users.js:575 js/users/users.js:590
 msgid "Error creating user"
 msgstr "Σφάλμα δημιουργίας χρήστη"
 
-#: js/users.js:492
+#: js/users/users.js:574
 msgid "A valid password must be provided"
 msgstr "Πρέπει να δοθεί έγκυρο συνθηματικό"
 
-#: js/users.js:516
+#: js/users/users.js:598
 msgid "Warning: Home directory for user \"{user}\" already exists"
 msgstr "Προειδοποίηση: Ο μητρικός κατάλογος του χρήστη \"{user}\" υπάρχει ήδη"
 
@@ -403,7 +418,7 @@ msgid ""
 "root."
 msgstr "Ο κατάλογος δεδομένων και τα αρχεία σας πιθανόν να είναι διαθέσιμα στο διαδίκτυο. Το αρχείο .htaccess δεν δουλεύει. Σας προτείνουμε ανεπιφύλακτα να ρυθμίσετε το διακομιστή σας με τέτοιο τρόπο ώστε ο κατάλογος δεδομένων να μην είναι πλέον προσβάσιμος ή να μετακινήσετε τον κατάλογο δεδομένων έξω από τη ρίζα του καταλόγου του διακομιστή."
 
-#: templates/admin.php:75
+#: templates/admin.php:75 templates/admin.php:90
 msgid "Setup Warning"
 msgstr "Ρύθμιση Προειδοποίησης"
 
@@ -418,53 +433,76 @@ msgstr "Ο διακομιστής σας δεν έχει ρυθμιστεί κα
 msgid "Please double check the <a href=\"%s\">installation guides</a>."
 msgstr "Ελέγξτε ξανά τις <a href=\"%s\">οδηγίες εγκατάστασης</a>."
 
-#: templates/admin.php:90
+#: templates/admin.php:93
+msgid ""
+"PHP is apparently setup to strip inline doc blocks. This will make several "
+"core apps inaccessible."
+msgstr "Ο PHP φαίνεται να είναι ρυθμισμένος ώστε να αφαιρεί μπλοκ εσωτερικών κειμένων (inline doc). Αυτό θα καταστήσει κύριες εφαρμογές μη-διαθέσιμες."
+
+#: templates/admin.php:94
+msgid ""
+"This is probably caused by a cache/accelerator such as Zend OPcache or "
+"eAccelerator."
+msgstr "Αυτό πιθανόν προκλήθηκε από προσωρινή μνήμη (cache)/επιταχυντή όπως τη Zend OPcache ή τον eAccelerator."
+
+#: templates/admin.php:105
+msgid "Database Performance Info"
+msgstr "Πληροφορίες Επίδοσης Βάσης Δεδομένων"
+
+#: templates/admin.php:108
+msgid ""
+"SQLite is used as database. For larger installations we recommend to change "
+"this. To migrate to another database use the command line tool: 'occ db"
+":convert-type'"
+msgstr "Ως βάση δεδομένων χρησιμοποιείται η SQLite. Για μεγαλύτερες εγκαταστάσεις συνιστούμε να την αλλάξετε. Για να μετακινηθείτε σε μια άλλη βάση δεδομένων χρησιμοποιείστε το εργαλείο γραμμής εντολών: 'occ db:convert-type'"
+
+#: templates/admin.php:119
 msgid "Module 'fileinfo' missing"
 msgstr "Η ενοτητα 'fileinfo' λειπει"
 
-#: templates/admin.php:93
+#: templates/admin.php:122
 msgid ""
 "The PHP module 'fileinfo' is missing. We strongly recommend to enable this "
 "module to get best results with mime-type detection."
 msgstr "Η PHP ενοτητα 'fileinfo' λειπει. Σας συνιστούμε να ενεργοποιήσετε αυτή την ενότητα για να έχετε καλύτερα αποτελέσματα με τον εντοπισμό τύπου MIME. "
 
-#: templates/admin.php:104
+#: templates/admin.php:133
 msgid "Your PHP version is outdated"
 msgstr "Η έκδοση PHP είναι απαρχαιωμένη"
 
-#: templates/admin.php:107
+#: templates/admin.php:136
 msgid ""
 "Your PHP version is outdated. We strongly recommend to update to 5.3.8 or "
 "newer because older versions are known to be broken. It is possible that "
 "this installation is not working correctly."
 msgstr "Η έκδοση PHP είναι απαρχαιωμένη. Συνιστούμε ανεπιφύλακτα να ενημερώσετε στην 5.3.8 ή νεώτερη καθώς παλαιότερες εκδόσεις είναι γνωστό πως περιέχουν σφάλματα. Είναι πιθανόν ότι αυτή η εγκατάσταση δεν λειτουργεί σωστά."
 
-#: templates/admin.php:118
+#: templates/admin.php:147
 msgid "Locale not working"
 msgstr "Η μετάφραση δεν δουλεύει"
 
-#: templates/admin.php:123
+#: templates/admin.php:152
 msgid "System locale can not be set to a one which supports UTF-8."
 msgstr "Οι ρυθμίσεις τοποθεσίας συστήματος δεν μπορούν να οριστούν σε κάποιες που δεν υποστηρίζουν UTF-8."
 
-#: templates/admin.php:127
+#: templates/admin.php:156
 msgid ""
 "This means that there might be problems with certain characters in file "
 "names."
 msgstr "Αυτό σημαίνει ότι μπορεί να υπάρχουν προβλήματα με κάποιους χαρακτήρες στα ονόματα αρχείων."
 
-#: templates/admin.php:131
+#: templates/admin.php:160
 #, php-format
 msgid ""
 "We strongly suggest to install the required packages on your system to "
 "support one of the following locales: %s."
 msgstr "Συνιστούμε σοβαρά να εγκαταστήσετε τα απαιτούμενα πακέτα στο σύστημά σας ώστε να υποστηρίζεται μια από τις ακόλουθες ρυθμίσεις τοποθεσίας: %s."
 
-#: templates/admin.php:143
+#: templates/admin.php:172
 msgid "Internet connection not working"
 msgstr "Η σύνδεση στο διαδίκτυο δεν δουλεύει"
 
-#: templates/admin.php:146
+#: templates/admin.php:175
 msgid ""
 "This server has no working internet connection. This means that some of the "
 "features like mounting of external storage, notifications about updates or "
@@ -473,206 +511,186 @@ msgid ""
 "internet connection for this server if you want to have all features."
 msgstr "Αυτός ο διακομιστής δεν έχει ενεργή σύνδεση στο διαδίκτυο. Αυτό σημαίνει ότι κάποιες υπηρεσίες όπως η σύνδεση με εξωτερικούς αποθηκευτικούς χώρους, ειδοποιήσεις περί ενημερώσεων ή η εγκατάσταση 3ων εφαρμογών δεν θα είναι διαθέσιμες. Η πρόσβαση απομακρυσμένων αρχείων και η αποστολή ειδοποιήσεων μέσω ηλεκτρονικού ταχυδρομείου μπορεί επίσης να μην είναι διαθέσιμες. Προτείνουμε να ενεργοποιήσετε την πρόσβαση στο διαδίκτυο για αυτόν το διακομιστή εάν θέλετε να χρησιμοποιήσετε όλες τις υπηρεσίες."
 
-#: templates/admin.php:160
+#: templates/admin.php:189
 msgid "Cron"
 msgstr "Cron"
 
-#: templates/admin.php:167
+#: templates/admin.php:196
 #, php-format
 msgid "Last cron was executed at %s."
 msgstr "Η τελευταία εκτέλεση του cron ήταν στις %s"
 
-#: templates/admin.php:170
+#: templates/admin.php:199
 #, php-format
 msgid ""
 "Last cron was executed at %s. This is more than an hour ago, something seems"
 " wrong."
 msgstr "Η τελευταία εκτέλεση του cron ήταν στις %s. Αυτό είναι πάνω από μια ώρα πριν, ίσως κάτι δεν πάει καλά."
 
-#: templates/admin.php:174
+#: templates/admin.php:203
 msgid "Cron was not executed yet!"
 msgstr "Η διεργασία cron δεν έχει εκτελεστεί ακόμα!"
 
-#: templates/admin.php:184
+#: templates/admin.php:213
 msgid "Execute one task with each page loaded"
 msgstr "Εκτελεί μια διεργασία κάθε φορά που φορτώνεται μια σελίδα"
 
-#: templates/admin.php:192
+#: templates/admin.php:221
 msgid ""
 "cron.php is registered at a webcron service to call cron.php every 15 "
 "minutes over http."
 msgstr "Το cron.php είναι καταχωρημένο σε μια υπηρεσία webcron ώστε να καλεί το cron.php κάθε 15 λεπτά μέσω http."
 
-#: templates/admin.php:200
+#: templates/admin.php:229
 msgid "Use systems cron service to call the cron.php file every 15 minutes."
 msgstr "Χρήση της υπηρεσίας cron του συστήματος για να καλεστεί το αρχείο cron.php κάθε 15 λεπτά."
 
-#: templates/admin.php:205
+#: templates/admin.php:234
 msgid "Sharing"
 msgstr "Διαμοιρασμός"
 
-#: templates/admin.php:211
-msgid "Enable Share API"
-msgstr "Ενεργοποίηση API διαμοιρασμού"
-
-#: templates/admin.php:212
+#: templates/admin.php:240
 msgid "Allow apps to use the Share API"
 msgstr "Επιτρέπει την χρήση του API διαμοιρασμού σε εφαρμογές "
 
-#: templates/admin.php:219
-msgid "Allow links"
-msgstr "Επιτρέπονται οι σύνδεσμοι"
+#: templates/admin.php:247
+msgid "Allow users to share via link"
+msgstr "Να επιτρέπεται σε χρήστες ο διαμοιρασμός μέσω συνδέσμου"
 
-#: templates/admin.php:223
+#: templates/admin.php:251
 msgid "Enforce password protection"
 msgstr "Επιβολή προστασίας με κωδικό"
 
-#: templates/admin.php:226
+#: templates/admin.php:254
 msgid "Allow public uploads"
 msgstr "Επιτρέπεται το κοινόχρηστο ανέβασμα"
 
-#: templates/admin.php:230
+#: templates/admin.php:258
 msgid "Set default expiration date"
 msgstr "Ορισμός ερήμην ημερομηνίας λήξης"
 
-#: templates/admin.php:232
+#: templates/admin.php:260
 msgid "Expire after "
 msgstr "Λήξη μετά από"
 
-#: templates/admin.php:235
+#: templates/admin.php:263
 msgid "days"
 msgstr "ημέρες"
 
-#: templates/admin.php:238
+#: templates/admin.php:266
 msgid "Enforce expiration date"
 msgstr "Επιβολή της ημερομηνίας λήξης"
 
-#: templates/admin.php:242
-msgid "Allow users to share items to the public with links"
-msgstr "Επιτρέπει τους χρήστες να διαμοιράζουν δημόσια με συνδέσμους"
-
-#: templates/admin.php:249
+#: templates/admin.php:276
 msgid "Allow resharing"
 msgstr "Επιτρέπεται ο επαναδιαμοιρασμός"
 
-#: templates/admin.php:250
-msgid "Allow users to share items shared with them again"
-msgstr "Επιτρέπει στους χρήστες να διαμοιράζουν ότι τους έχει διαμοιραστεί"
+#: templates/admin.php:283
+msgid "Restrict users to only share with users in their groups"
+msgstr "Να επιτρέπεται σε χρήστες ο διαμοιρασμός μόνο με χρήστες που ανήκουν στις ομάδες τους"
 
-#: templates/admin.php:257
-msgid "Allow users to share with anyone"
-msgstr "Επιτρέπεται στους χρήστες ο διαμοιρασμός με οποιονδήποτε"
-
-#: templates/admin.php:260
-msgid "Allow users to only share with users in their groups"
-msgstr "Επιτρέπεται στους χρήστες ο διαμοιρασμός μόνο με χρήστες της ίδιας ομάδας"
-
-#: templates/admin.php:267
-msgid "Allow mail notification"
-msgstr "Επιτρέπονται ειδοποιήσεις ηλεκτρονικού ταχυδρομείου"
-
-#: templates/admin.php:268
+#: templates/admin.php:290
 msgid "Allow users to send mail notification for shared files"
 msgstr "Επιτρέψτε στους χρήστες να στέλνουν ειδοποιήσεις μέσω ηλεκτρονικού ταχυδρομείου για κοινόχρηστα αρχεία"
 
-#: templates/admin.php:275
+#: templates/admin.php:297
 msgid "Exclude groups from sharing"
 msgstr "Εξαίρεση ομάδων από τον διαμοιρασμό"
 
-#: templates/admin.php:286
+#: templates/admin.php:308
 msgid ""
 "These groups will still be able to receive shares, but not to initiate them."
 msgstr "Αυτές οι ομάδες θα συνεχίσουν να λαμβάνουν διαμοιρασμούς, αλλά δεν θα είναι δυνατό να τους δημιουργήσουν."
 
-#: templates/admin.php:293
+#: templates/admin.php:315
 msgid "Security"
 msgstr "Ασφάλεια"
 
-#: templates/admin.php:306
+#: templates/admin.php:328
 msgid "Enforce HTTPS"
 msgstr "Επιβολή χρήσης HTTPS"
 
-#: templates/admin.php:308
+#: templates/admin.php:330
 #, php-format
 msgid "Forces the clients to connect to %s via an encrypted connection."
 msgstr "Επιβάλλει τους πελάτες να συνδέονται στο %s μέσω κρυπτογραφημένης σύνδεσης."
 
-#: templates/admin.php:314
+#: templates/admin.php:336
 #, php-format
 msgid ""
 "Please connect to your %s via HTTPS to enable or disable the SSL "
 "enforcement."
 msgstr "Παρακαλώ συνδεθείτε στο %s σας μέσω HTTPS για να ενεργοποιήσετε ή να απενεργοποιήσετε την επιβολή του SSL."
 
-#: templates/admin.php:326
+#: templates/admin.php:348
 msgid "Email Server"
 msgstr "Διακομιστής Email"
 
-#: templates/admin.php:328
+#: templates/admin.php:350
 msgid "This is used for sending out notifications."
 msgstr "Χρησιμοποιείται για αποστολή ειδοποιήσεων."
 
-#: templates/admin.php:359
+#: templates/admin.php:381
 msgid "From address"
 msgstr "Από τη διεύθυνση"
 
-#: templates/admin.php:360
+#: templates/admin.php:382
 msgid "mail"
-msgstr ""
+msgstr "ταχυδρομείο"
 
-#: templates/admin.php:381
+#: templates/admin.php:403
 msgid "Authentication required"
 msgstr "Απαιτείται πιστοποίηση"
 
-#: templates/admin.php:385
+#: templates/admin.php:407
 msgid "Server address"
 msgstr "Διεύθυνση διακομιστή"
 
-#: templates/admin.php:389
+#: templates/admin.php:411
 msgid "Port"
 msgstr "Θύρα"
 
-#: templates/admin.php:394
+#: templates/admin.php:416
 msgid "Credentials"
 msgstr "Πιστοποιητικά"
 
-#: templates/admin.php:395
+#: templates/admin.php:417
 msgid "SMTP Username"
 msgstr "Όνομα χρήστη SMTP"
 
-#: templates/admin.php:398
+#: templates/admin.php:420
 msgid "SMTP Password"
 msgstr "Συνθηματικό SMTP"
 
-#: templates/admin.php:402
+#: templates/admin.php:424
 msgid "Test email settings"
 msgstr "Δοκιμή ρυθμίσεων email"
 
-#: templates/admin.php:403
+#: templates/admin.php:425
 msgid "Send email"
 msgstr "Αποστολή email"
 
-#: templates/admin.php:408
+#: templates/admin.php:430
 msgid "Log"
 msgstr "Καταγραφές"
 
-#: templates/admin.php:409
+#: templates/admin.php:431
 msgid "Log level"
 msgstr "Επίπεδο καταγραφής"
 
-#: templates/admin.php:441
+#: templates/admin.php:463
 msgid "More"
 msgstr "Περισσότερα"
 
-#: templates/admin.php:442
+#: templates/admin.php:464
 msgid "Less"
 msgstr "Λιγότερα"
 
-#: templates/admin.php:448 templates/personal.php:196
+#: templates/admin.php:470 templates/personal.php:196
 msgid "Version"
 msgstr "Έκδοση"
 
-#: templates/admin.php:452 templates/personal.php:199
+#: templates/admin.php:474 templates/personal.php:199
 msgid ""
 "Developed by the <a href=\"http://ownCloud.org/contact\" "
 "target=\"_blank\">ownCloud community</a>, the <a "
@@ -710,23 +728,31 @@ msgstr "Δείτε την ιστοσελίδα της εφαρμογής"
 msgid "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>"
 msgstr "Άδεια χρήσης <span class=\"licence\"></span> από <span class=\"author\"></span>"
 
-#: templates/help.php:6
+#: templates/apps.php:58
+msgid "Enable only for specific groups"
+msgstr "Ενεργοποίηση μόνο για καθορισμένες ομάδες"
+
+#: templates/apps.php:60
+msgid "All"
+msgstr "Όλες"
+
+#: templates/help.php:13
 msgid "Administrator Documentation"
 msgstr "Τεκμηρίωση Διαχειριστή"
 
-#: templates/help.php:9
+#: templates/help.php:20
 msgid "Online Documentation"
 msgstr "Τεκμηρίωση στο Διαδίκτυο"
 
-#: templates/help.php:11
+#: templates/help.php:25
 msgid "Forum"
 msgstr "Φόρουμ"
 
-#: templates/help.php:14
+#: templates/help.php:33
 msgid "Bugtracker"
 msgstr "Bugtracker"
 
-#: templates/help.php:17
+#: templates/help.php:40
 msgid "Commercial Support"
 msgstr "Εμπορική Υποστήριξη"
 
@@ -743,7 +769,8 @@ msgstr "Προβολή Οδηγού Πρώτης Εκτέλεσης ξανά"
 msgid "You have used <strong>%s</strong> of the available <strong>%s</strong>"
 msgstr "Χρησιμοποιήσατε <strong>%s</strong> από τα <strong>%s</strong> διαθέσιμα"
 
-#: templates/personal.php:38 templates/users.php:21 templates/users.php:87
+#: templates/personal.php:38 templates/users/part.createuser.php:8
+#: templates/users/part.userlist.php:9
 msgid "Password"
 msgstr "Συνθηματικό"
 
@@ -767,7 +794,7 @@ msgstr "Νέο συνθηματικό"
 msgid "Change password"
 msgstr "Αλλαγή συνθηματικού"
 
-#: templates/personal.php:61 templates/users.php:86
+#: templates/personal.php:61 templates/users/part.userlist.php:8
 msgid "Full Name"
 msgstr "Πλήρες όνομα"
 
@@ -852,56 +879,85 @@ msgstr "Επαναφορά κλειδιών κρυπτογράφησης"
 msgid "Delete Encryption Keys"
 msgstr "Διαγραφή κλειδιών κρυπτογράφησης"
 
-#: templates/users.php:19
+#: templates/users/part.createuser.php:4
 msgid "Login Name"
 msgstr "Όνομα Σύνδεσης"
 
-#: templates/users.php:28
+#: templates/users/part.createuser.php:20
 msgid "Create"
 msgstr "Δημιουργία"
 
-#: templates/users.php:34
+#: templates/users/part.createuser.php:26
 msgid "Admin Recovery Password"
 msgstr "Κωδικός Επαναφοράς Διαχειριστή "
 
-#: templates/users.php:35 templates/users.php:36
+#: templates/users/part.createuser.php:27
+#: templates/users/part.createuser.php:28
 msgid ""
 "Enter the recovery password in order to recover the users files during "
 "password change"
 msgstr "Εισάγετε το συνθηματικό ανάκτησης ώστε να ανακτήσετε τα αρχεία χρηστών κατά την αλλαγή συνθηματικού"
 
-#: templates/users.php:40
-msgid "Default Storage"
-msgstr "Προκαθορισμένη Αποθήκευση "
+#: templates/users/part.createuser.php:32
+msgid "Search Users and Groups"
+msgstr "Αναζήτηση Χρηστών και Ομάδων"
 
-#: templates/users.php:42 templates/users.php:137
+#: templates/users/part.grouplist.php:5
+msgid "Add Group"
+msgstr "Προσθήκη Ομάδας"
+
+#: templates/users/part.grouplist.php:10
+msgid "Group"
+msgstr "Ομάδα"
+
+#: templates/users/part.grouplist.php:18
+msgid "Everyone"
+msgstr "Όλοι"
+
+#: templates/users/part.grouplist.php:29
+msgid "Admins"
+msgstr "Διαχειριστές"
+
+#: templates/users/part.setquota.php:7
+msgid "Default Quota"
+msgstr "Προεπιλεγμένο Όριο"
+
+#: templates/users/part.setquota.php:9 templates/users/part.userlist.php:66
 msgid "Please enter storage quota (ex: \"512 MB\" or \"12 GB\")"
 msgstr "Παρακαλώ εισάγετε επιτρεπόμενα μερίδια αποθηκευτικού χώρου (π.χ. \"512 MB\"  ή \"12 GB\")"
 
-#: templates/users.php:46 templates/users.php:146
+#: templates/users/part.setquota.php:11 templates/users/part.userlist.php:75
 msgid "Unlimited"
 msgstr "Απεριόριστο"
 
-#: templates/users.php:64 templates/users.php:161
+#: templates/users/part.setquota.php:26 templates/users/part.userlist.php:90
 msgid "Other"
 msgstr "Άλλο"
 
-#: templates/users.php:85
+#: templates/users/part.userlist.php:7
 msgid "Username"
 msgstr "Όνομα χρήστη"
 
-#: templates/users.php:92
-msgid "Storage"
-msgstr "Αποθήκευση"
+#: templates/users/part.userlist.php:14
+msgid "Quota"
+msgstr "Σύνολο Χώρου"
 
-#: templates/users.php:106
+#: templates/users/part.userlist.php:15
+msgid "Storage Location"
+msgstr "Τοποθεσία αποθηκευτικού χώρου"
+
+#: templates/users/part.userlist.php:16
+msgid "Last Login"
+msgstr "Τελευταία Σύνδεση"
+
+#: templates/users/part.userlist.php:30
 msgid "change full name"
 msgstr "αλλαγή πλήρους ονόματος"
 
-#: templates/users.php:110
+#: templates/users/part.userlist.php:34
 msgid "set new password"
 msgstr "επιλογή νέου κωδικού"
 
-#: templates/users.php:141
+#: templates/users/part.userlist.php:70
 msgid "Default"
 msgstr "Προκαθορισμένο"

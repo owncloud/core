@@ -1,6 +1,8 @@
 <?php
 $TRANSLATIONS = array(
 "Password" => "මුර පදය",
-"Download" => "බාන්න"
+"Name" => "නම",
+"Download" => "බාන්න",
+"Save" => "සුරකින්න"
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

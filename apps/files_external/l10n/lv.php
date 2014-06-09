@@ -1,5 +1,6 @@
 <?php
 $TRANSLATIONS = array(
+"External storage" => "Ārējā krātuve",
 "Location" => "Vieta",
 "Host" => "Resursdators",
 "Username" => "Lietotājvārds",
@@ -11,9 +12,10 @@ $TRANSLATIONS = array(
 "Grant access" => "Piešķirt pieeju",
 "Please provide a valid Dropbox app key and secret." => "Lūdzu, norādiet derīgu Dropbox lietotnes atslēgu un noslēpumu.",
 "Error configuring Google Drive storage" => "Kļūda, konfigurējot Google Drive krātuvi",
+"Personal" => "Personīgi",
+"Name" => "Nosaukums",
 "External Storage" => "Ārējā krātuve",
 "Folder name" => "Mapes nosaukums",
-"External storage" => "Ārējā krātuve",
 "Configuration" => "Konfigurācija",
 "Options" => "Opcijas",
 "Add storage" => "Pievienot krātuvi",

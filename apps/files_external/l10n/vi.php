@@ -1,5 +1,6 @@
 <?php
 $TRANSLATIONS = array(
+"External storage" => "Lưu trữ ngoài",
 "Location" => "Vị trí",
 "Host" => "Máy chủ",
 "Username" => "Tên đăng nhập",
@@ -11,9 +12,10 @@ $TRANSLATIONS = array(
 "Grant access" => "Cấp quyền truy cập",
 "Please provide a valid Dropbox app key and secret." => "Xin vui lòng cung cấp một ứng dụng Dropbox hợp lệ và mã bí mật.",
 "Error configuring Google Drive storage" => "Lỗi cấu hình lưu trữ Google Drive",
+"Personal" => "Cá nhân",
+"Name" => "Tên",
 "External Storage" => "Lưu trữ ngoài",
 "Folder name" => "Tên thư mục",
-"External storage" => "Lưu trữ ngoài",
 "Configuration" => "Cấu hình",
 "Options" => "Tùy chọn",
 "Add storage" => "Thêm bộ nhớ",

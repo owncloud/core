@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# espenbye <espenbye@me.com>, 2014
+# Espen Bye <espenbye@me.com>, 2014
 # Hans Nesse <>, 2013
 # vidaren <news@vidartysse.net>, 2014
 # Stein-Aksel Basma <stabasm@hotmail.com>, 2013
@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-05-28 01:54-0400\n"
-"PO-Revision-Date: 2014-05-28 05:54+0000\n"
-"Last-Translator: I Robot\n"
+"POT-Creation-Date: 2014-06-08 01:54-0400\n"
+"PO-Revision-Date: 2014-06-07 08:41+0000\n"
+"Last-Translator: vidaren <news@vidartysse.net>\n"
 "Language-Team: Norwegian Bokmål (Norway) (http://www.transifex.com/projects/p/owncloud/language/nb_NO/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +24,7 @@ msgstr ""
 #: admin/controller.php:66
 #, php-format
 msgid "Invalid value supplied for %s"
-msgstr ""
+msgstr "Ugyldig verdi angitt for %s"
 
 #: admin/controller.php:73
 msgid "Saved"
@@ -32,16 +32,16 @@ msgstr "Lagret"
 
 #: admin/controller.php:90
 msgid "test email settings"
-msgstr ""
+msgstr "test innstillinger for e-post"
 
 #: admin/controller.php:91
 msgid "If you received this email, the settings seem to be correct."
-msgstr ""
+msgstr "Hvis du mottok denne e-posten er innstillingene tydeligvis korrekte."
 
 #: admin/controller.php:94
 msgid ""
 "A problem occurred while sending the e-mail. Please revisit your settings."
-msgstr ""
+msgstr "Et problem oppstod under sending av e-posten. Sjekk innstillingene."
 
 #: admin/controller.php:99
 msgid "Email sent"
@@ -49,19 +49,19 @@ msgstr "E-post sendt"
 
 #: admin/controller.php:101
 msgid "You need to set your user email before being able to send test emails."
-msgstr ""
+msgstr "Du må sette e-postadressen for brukeren din før du kan teste sending av e-post."
 
-#: admin/controller.php:116 templates/admin.php:331
+#: admin/controller.php:116 templates/admin.php:353
 msgid "Send mode"
-msgstr ""
+msgstr "Sendemodus"
 
-#: admin/controller.php:118 templates/admin.php:344 templates/personal.php:144
+#: admin/controller.php:118 templates/admin.php:366 templates/personal.php:144
 msgid "Encryption"
 msgstr "Kryptering"
 
-#: admin/controller.php:120 templates/admin.php:368
+#: admin/controller.php:120 templates/admin.php:390
 msgid "Authentication method"
-msgstr ""
+msgstr "Autentiseringsmetode"
 
 #: ajax/apps/ocs.php:20
 msgid "Unable to load list from App Store"
@@ -80,37 +80,37 @@ msgstr "Ditt fulle navn er blitt endret."
 msgid "Unable to change full name"
 msgstr "Klarte ikke å endre fullt navn"
 
-#: ajax/creategroup.php:10
+#: ajax/creategroup.php:11
 msgid "Group already exists"
 msgstr "Gruppen finnes allerede"
 
-#: ajax/creategroup.php:19
+#: ajax/creategroup.php:20
 msgid "Unable to add group"
 msgstr "Kan ikke legge til gruppe"
 
 #: ajax/decryptall.php:31
 msgid "Files decrypted successfully"
-msgstr ""
+msgstr "Dekryptering av filer vellykket"
 
 #: ajax/decryptall.php:33
 msgid ""
 "Couldn't decrypt your files, please check your owncloud.log or ask your "
 "administrator"
-msgstr ""
+msgstr "Kunne ikke dekryptere filene dine. Sjekk owncloud.log eller spør administratoren"
 
 #: ajax/decryptall.php:36
 msgid "Couldn't decrypt your files, check your password and try again"
-msgstr ""
+msgstr "Kunne ikke dekryptere filene dine. Sjekk passordet ditt og prøv igjen"
 
 #: ajax/deletekeys.php:14
 msgid "Encryption keys deleted permanently"
-msgstr ""
+msgstr "Krypteringsnøkler permanent slettet"
 
 #: ajax/deletekeys.php:16
 msgid ""
 "Couldn't permanently delete your encryption keys, please check your "
 "owncloud.log or ask your administrator"
-msgstr ""
+msgstr "Kunne ikke slette krypteringsnøklene dine permanent. Sjekk owncloud.log eller spør administratoren"
 
 #: ajax/lostpassword.php:12
 msgid "Email saved"
@@ -130,13 +130,13 @@ msgstr "Kan ikke slette bruker"
 
 #: ajax/restorekeys.php:14
 msgid "Backups restored successfully"
-msgstr ""
+msgstr "Vellykket gjenoppretting fra sikkerhetskopier"
 
 #: ajax/restorekeys.php:23
 msgid ""
 "Couldn't restore your encryption keys, please check your owncloud.log or ask"
 " your administrator"
-msgstr ""
+msgstr "Kunne ikke gjenopprette krypteringsnøklene dine. Sjekk owncloud.log eller spør administratoren"
 
 #: ajax/setlanguage.php:15
 msgid "Language changed"
@@ -197,55 +197,55 @@ msgstr "Kunne ikke endre passord"
 msgid "Sending..."
 msgstr "Sender..."
 
-#: js/apps.js:45 templates/help.php:4
+#: js/apps.js:45 templates/help.php:7
 msgid "User Documentation"
 msgstr "Brukerdokumentasjon"
 
 #: js/apps.js:50
 msgid "Admin Documentation"
-msgstr ""
+msgstr "Admin-dokumentasjon"
 
 #: js/apps.js:67
 msgid "Update to {appversion}"
 msgstr "Oppdater til {appversion}"
 
-#: js/apps.js:73 js/apps.js:106 js/apps.js:134
+#: js/apps.js:73 js/apps.js:135 js/apps.js:168
 msgid "Disable"
-msgstr "Slå avBehandle "
+msgstr "Deaktiver "
 
-#: js/apps.js:73 js/apps.js:114 js/apps.js:127 js/apps.js:143
+#: js/apps.js:73 js/apps.js:144 js/apps.js:161 js/apps.js:192
 msgid "Enable"
 msgstr "Aktiver"
 
-#: js/apps.js:95
+#: js/apps.js:124
 msgid "Please wait...."
 msgstr "Vennligst vent..."
 
-#: js/apps.js:103 js/apps.js:104 js/apps.js:125
+#: js/apps.js:132 js/apps.js:133 js/apps.js:159
 msgid "Error while disabling app"
 msgstr "Deaktivering av app feilet"
 
-#: js/apps.js:124 js/apps.js:138 js/apps.js:139
+#: js/apps.js:158 js/apps.js:187 js/apps.js:188
 msgid "Error while enabling app"
 msgstr "Aktivering av app feilet"
 
-#: js/apps.js:149
+#: js/apps.js:197
 msgid "Updating...."
 msgstr "Oppdaterer..."
 
-#: js/apps.js:152
+#: js/apps.js:200
 msgid "Error while updating app"
 msgstr "Feil ved oppdatering av app"
 
-#: js/apps.js:152
+#: js/apps.js:200
 msgid "Error"
 msgstr "Feil"
 
-#: js/apps.js:153 templates/apps.php:55
+#: js/apps.js:201 templates/apps.php:55
 msgid "Update"
 msgstr "Oppdater"
 
-#: js/apps.js:156
+#: js/apps.js:204
 msgid "Updated"
 msgstr "Oppdatert"
 
@@ -263,7 +263,7 @@ msgstr "Svakt passord"
 
 #: js/personal.js:289
 msgid "So-so password"
-msgstr ""
+msgstr "So-so-passord"
 
 #: js/personal.js:290
 msgid "Good password"
@@ -279,54 +279,69 @@ msgstr "Dekrypterer filer... Vennligst vent, dette kan ta litt tid."
 
 #: js/personal.js:324
 msgid "Delete encryption keys permanently."
-msgstr ""
+msgstr "Slett krypteringsnøkler permanent."
 
 #: js/personal.js:338
 msgid "Restore encryption keys."
-msgstr ""
+msgstr "Gjenopprett krypteringsnøkler."
 
-#: js/users.js:47
+#: js/users/deleteHandler.js:166
+msgid "Unable to delete "
+msgstr "Kan ikke slette"
+
+#: js/users/groups.js:73 js/users/groups.js:178
+msgid "Error creating group"
+msgstr "Feil ved oppretting av gruppe"
+
+#: js/users/groups.js:177
+msgid "A valid group name must be provided"
+msgstr "Et gyldig gruppenavn må oppgis"
+
+#: js/users/groups.js:205 js/users/users.js:254
 msgid "deleted"
 msgstr "slettet"
 
-#: js/users.js:47
+#: js/users/groups.js:206 js/users/users.js:255
 msgid "undo"
 msgstr "angre"
 
-#: js/users.js:79
-msgid "Unable to remove user"
-msgstr "Kunne ikke slette bruker"
-
-#: js/users.js:101 templates/admin.php:280 templates/users.php:24
-#: templates/users.php:88 templates/users.php:116
+#: js/users/users.js:37 templates/admin.php:302
+#: templates/users/part.createuser.php:12 templates/users/part.userlist.php:10
+#: templates/users/part.userlist.php:41
 msgid "Groups"
 msgstr "Grupper"
 
-#: js/users.js:105 templates/users.php:90 templates/users.php:128
+#: js/users/users.js:41 templates/users/part.userlist.php:12
+#: templates/users/part.userlist.php:57
 msgid "Group Admin"
 msgstr "Gruppeadministrator"
 
-#: js/users.js:127 templates/users.php:168
+#: js/users/users.js:63 templates/users/part.grouplist.php:44
+#: templates/users/part.userlist.php:108
 msgid "Delete"
 msgstr "Slett"
 
-#: js/users.js:310
+#: js/users/users.js:84 templates/users/part.userlist.php:98
+msgid "never"
+msgstr "aldri"
+
+#: js/users/users.js:371
 msgid "add group"
 msgstr "legg til gruppe"
 
-#: js/users.js:486
+#: js/users/users.js:568
 msgid "A valid username must be provided"
 msgstr "Oppgi et gyldig brukernavn"
 
-#: js/users.js:487 js/users.js:493 js/users.js:508
+#: js/users/users.js:569 js/users/users.js:575 js/users/users.js:590
 msgid "Error creating user"
 msgstr "Feil ved oppretting av bruker"
 
-#: js/users.js:492
+#: js/users/users.js:574
 msgid "A valid password must be provided"
 msgstr "Oppgi et gyldig passord"
 
-#: js/users.js:516
+#: js/users/users.js:598
 msgid "Warning: Home directory for user \"{user}\" already exists"
 msgstr "Advarsel: Hjemmemappe for bruker \"{user}\" eksisterer allerede"
 
@@ -364,11 +379,11 @@ msgstr "Logg inn"
 
 #: templates/admin.php:18
 msgid "Plain"
-msgstr ""
+msgstr "Enkel"
 
 #: templates/admin.php:19
 msgid "NT LAN Manager"
-msgstr ""
+msgstr "NT LAN Manager"
 
 #: templates/admin.php:24
 msgid "SSL"
@@ -398,7 +413,7 @@ msgid ""
 "root."
 msgstr "Datamappen og filene dine er sannsynligvis tilgjengelig fra Internett fordi .htaccess-filen ikke fungerer. Vi anbefaler på det sterkeste at du konfigurerer web-serveren din slik at datamappen ikke lenger er tilgjengelig eller at du flytter datamappen ut av web-serverens dokument-rotmappe."
 
-#: templates/admin.php:75
+#: templates/admin.php:75 templates/admin.php:90
 msgid "Setup Warning"
 msgstr "Installasjonsadvarsel"
 
@@ -413,53 +428,76 @@ msgstr "Din nettservev er ikke konfigurert korrekt for filsynkronisering. WebDAV
 msgid "Please double check the <a href=\"%s\">installation guides</a>."
 msgstr "Vennligst dobbeltsjekk <a href=\"%s\">installasjonsveilederne</a>."
 
-#: templates/admin.php:90
+#: templates/admin.php:93
+msgid ""
+"PHP is apparently setup to strip inline doc blocks. This will make several "
+"core apps inaccessible."
+msgstr "Det ser ut for at PHP er satt opp til å fjerne innebygde doc blocks. Dette gjør at flere av kjerneapplikasjonene blir utilgjengelige."
+
+#: templates/admin.php:94
+msgid ""
+"This is probably caused by a cache/accelerator such as Zend OPcache or "
+"eAccelerator."
+msgstr "Dette forårsakes sannsynligvis av en bufrer/akselerator, som f.eks. Zend OPcache eller eAccelerator."
+
+#: templates/admin.php:105
+msgid "Database Performance Info"
+msgstr "Info om databaseytelse"
+
+#: templates/admin.php:108
+msgid ""
+"SQLite is used as database. For larger installations we recommend to change "
+"this. To migrate to another database use the command line tool: 'occ db"
+":convert-type'"
+msgstr "SQLite brukes som database. For større installasjoner anbefaler vi å endre dette. For å migrere til en annen database, bruk kommandolinjeverktøyet: 'occ db:convert-type'"
+
+#: templates/admin.php:119
 msgid "Module 'fileinfo' missing"
 msgstr "Modulen 'fileinfo' mangler"
 
-#: templates/admin.php:93
+#: templates/admin.php:122
 msgid ""
 "The PHP module 'fileinfo' is missing. We strongly recommend to enable this "
 "module to get best results with mime-type detection."
 msgstr "PHP modulen 'fileinfo' mangler. Vi anbefaler at du aktiverer denne modulen for å kunne detektere mime-typen korrekt."
 
-#: templates/admin.php:104
+#: templates/admin.php:133
 msgid "Your PHP version is outdated"
 msgstr "Din PHP-versjon er udatert"
 
-#: templates/admin.php:107
+#: templates/admin.php:136
 msgid ""
 "Your PHP version is outdated. We strongly recommend to update to 5.3.8 or "
 "newer because older versions are known to be broken. It is possible that "
 "this installation is not working correctly."
 msgstr "PHP-versjonen din er utdatert. Vi anbefaler på det sterkeste at du oppdaterer til 5.3.8 eller nyere fordi eldre versjoner ikke vil virke. Det er mulig at denne installasjoner ikke fungerer korrekt."
 
-#: templates/admin.php:118
+#: templates/admin.php:147
 msgid "Locale not working"
 msgstr "Språk virker ikke"
 
-#: templates/admin.php:123
+#: templates/admin.php:152
 msgid "System locale can not be set to a one which supports UTF-8."
 msgstr "Kan ikke sette systemets nasjonale innstillinger til en som støtter UTF-8."
 
-#: templates/admin.php:127
+#: templates/admin.php:156
 msgid ""
 "This means that there might be problems with certain characters in file "
 "names."
 msgstr "Dette betyr at det kan forekomme problemer med visse tegn i filnavn."
 
-#: templates/admin.php:131
+#: templates/admin.php:160
 #, php-format
 msgid ""
 "We strongly suggest to install the required packages on your system to "
 "support one of the following locales: %s."
 msgstr "Vi anbefaler på det sterkeste å installere pakkene som er nødvendig for at systemet skal støtte en av følgende nasjonale innstillinger: %s."
 
-#: templates/admin.php:143
+#: templates/admin.php:172
 msgid "Internet connection not working"
 msgstr "Ingen internettilkopling"
 
-#: templates/admin.php:146
+#: templates/admin.php:175
 msgid ""
 "This server has no working internet connection. This means that some of the "
 "features like mounting of external storage, notifications about updates or "
@@ -468,206 +506,186 @@ msgid ""
 "internet connection for this server if you want to have all features."
 msgstr "Denne serveren har ikke en fungerende Internett-tilkobling. Dette betyr at noen av funksjonene, slik som montering av ekstern lagring, påminnelser om oppdatering eller installering av 3-parts apper ikke fungerer. Fjerntilgang til filer og utsending av påminnelser i e-post virker kanskje ikke heller. Vi anbefaler at Internett-forbindelsen for denne serveren aktiveres hvis du vil ha full funksjonalitet."
 
-#: templates/admin.php:160
+#: templates/admin.php:189
 msgid "Cron"
 msgstr "Cron"
 
-#: templates/admin.php:167
+#: templates/admin.php:196
 #, php-format
 msgid "Last cron was executed at %s."
-msgstr ""
+msgstr "Siste cron ble utført %s."
 
-#: templates/admin.php:170
+#: templates/admin.php:199
 #, php-format
 msgid ""
 "Last cron was executed at %s. This is more than an hour ago, something seems"
 " wrong."
-msgstr ""
+msgstr "Siste cron ble utført %s. Dette er mer enn en time siden. Noe ser ut til å være galt."
 
-#: templates/admin.php:174
+#: templates/admin.php:203
 msgid "Cron was not executed yet!"
-msgstr ""
+msgstr "Cron er ikke utført ennå!"
 
-#: templates/admin.php:184
+#: templates/admin.php:213
 msgid "Execute one task with each page loaded"
 msgstr "Utfør en oppgave med hver side som blir lastet"
 
-#: templates/admin.php:192
+#: templates/admin.php:221
 msgid ""
 "cron.php is registered at a webcron service to call cron.php every 15 "
 "minutes over http."
 msgstr "cron.php er registrert i en webcron-tjeneste for å kalle cron.php hvert 15. minutt over http."
 
-#: templates/admin.php:200
+#: templates/admin.php:229
 msgid "Use systems cron service to call the cron.php file every 15 minutes."
 msgstr "Bruk systemets cron-tjeneste for å kalle cron.php hvert 15. minutt."
 
-#: templates/admin.php:205
+#: templates/admin.php:234
 msgid "Sharing"
 msgstr "Deling"
 
-#: templates/admin.php:211
-msgid "Enable Share API"
-msgstr "Aktiver API for Deling"
-
-#: templates/admin.php:212
+#: templates/admin.php:240
 msgid "Allow apps to use the Share API"
 msgstr "Tillat apps å bruke API for Deling"
 
-#: templates/admin.php:219
-msgid "Allow links"
-msgstr "Tillat lenker"
+#: templates/admin.php:247
+msgid "Allow users to share via link"
+msgstr "Tillat brukere å dele via lenke"
 
-#: templates/admin.php:223
+#: templates/admin.php:251
 msgid "Enforce password protection"
-msgstr ""
+msgstr "Tving passordbeskyttelse"
 
-#: templates/admin.php:226
+#: templates/admin.php:254
 msgid "Allow public uploads"
 msgstr "Tillat offentlig opplasting"
 
-#: templates/admin.php:230
+#: templates/admin.php:258
 msgid "Set default expiration date"
-msgstr ""
+msgstr "Sett standard utløpsdato"
 
-#: templates/admin.php:232
+#: templates/admin.php:260
 msgid "Expire after "
-msgstr ""
+msgstr "Utløper etter"
 
-#: templates/admin.php:235
+#: templates/admin.php:263
 msgid "days"
-msgstr ""
+msgstr "dager"
 
-#: templates/admin.php:238
+#: templates/admin.php:266
 msgid "Enforce expiration date"
-msgstr ""
+msgstr "Tving utløpsdato"
 
-#: templates/admin.php:242
-msgid "Allow users to share items to the public with links"
-msgstr "Tillat brukere å dele filer offentlig med lenker"
-
-#: templates/admin.php:249
+#: templates/admin.php:276
 msgid "Allow resharing"
 msgstr "TIllat videredeling"
 
-#: templates/admin.php:250
-msgid "Allow users to share items shared with them again"
-msgstr "Tillat brukere å dele filer som allerede har blitt delt med dem"
+#: templates/admin.php:283
+msgid "Restrict users to only share with users in their groups"
+msgstr "Begrens brukere til kun å dele med brukere i deres grupper"
 
-#: templates/admin.php:257
-msgid "Allow users to share with anyone"
-msgstr "Tillat brukere å dele med alle"
-
-#: templates/admin.php:260
-msgid "Allow users to only share with users in their groups"
-msgstr "Tillat kun deling med andre brukere i samme gruppe"
-
-#: templates/admin.php:267
-msgid "Allow mail notification"
-msgstr "Tillat påminnelser i e-post"
-
-#: templates/admin.php:268
+#: templates/admin.php:290
 msgid "Allow users to send mail notification for shared files"
-msgstr ""
+msgstr "Tlllat at brukere sender e-postvarsler for delte filer"
 
-#: templates/admin.php:275
+#: templates/admin.php:297
 msgid "Exclude groups from sharing"
-msgstr ""
+msgstr "Utelukk grupper fra deling"
 
-#: templates/admin.php:286
+#: templates/admin.php:308
 msgid ""
 "These groups will still be able to receive shares, but not to initiate them."
-msgstr ""
+msgstr "Disse gruppene vil fremdeles kunne motta delinger men ikke lage dem."
 
-#: templates/admin.php:293
+#: templates/admin.php:315
 msgid "Security"
 msgstr "Sikkerhet"
 
-#: templates/admin.php:306
+#: templates/admin.php:328
 msgid "Enforce HTTPS"
 msgstr "Tving HTTPS"
 
-#: templates/admin.php:308
+#: templates/admin.php:330
 #, php-format
 msgid "Forces the clients to connect to %s via an encrypted connection."
 msgstr "Tvinger klientene til å koble til %s via en kryptert forbindelse."
 
-#: templates/admin.php:314
+#: templates/admin.php:336
 #, php-format
 msgid ""
 "Please connect to your %s via HTTPS to enable or disable the SSL "
 "enforcement."
 msgstr "Vennligst koble til din %s via HTTPS for å aktivere eller deaktivere tvungen SSL."
 
-#: templates/admin.php:326
+#: templates/admin.php:348
 msgid "Email Server"
-msgstr ""
+msgstr "E-postserver"
 
-#: templates/admin.php:328
+#: templates/admin.php:350
 msgid "This is used for sending out notifications."
-msgstr ""
+msgstr "Dette brukes for utsending av varsler."
 
-#: templates/admin.php:359
+#: templates/admin.php:381
 msgid "From address"
 msgstr "Fra adresse"
 
-#: templates/admin.php:360
+#: templates/admin.php:382
 msgid "mail"
-msgstr ""
+msgstr "e-post"
 
-#: templates/admin.php:381
+#: templates/admin.php:403
 msgid "Authentication required"
-msgstr ""
+msgstr "Autentisering kreves"
 
-#: templates/admin.php:385
+#: templates/admin.php:407
 msgid "Server address"
 msgstr "Server-adresse"
 
-#: templates/admin.php:389
+#: templates/admin.php:411
 msgid "Port"
 msgstr "Port"
 
-#: templates/admin.php:394
+#: templates/admin.php:416
 msgid "Credentials"
-msgstr ""
+msgstr "Påloggingsdetaljer"
 
-#: templates/admin.php:395
+#: templates/admin.php:417
 msgid "SMTP Username"
 msgstr "SMTP-brukernavn"
 
-#: templates/admin.php:398
+#: templates/admin.php:420
 msgid "SMTP Password"
 msgstr "SMTP-passord"
 
-#: templates/admin.php:402
+#: templates/admin.php:424
 msgid "Test email settings"
-msgstr ""
+msgstr "Test innstillinger for e-post"
 
-#: templates/admin.php:403
+#: templates/admin.php:425
 msgid "Send email"
 msgstr "Send e-post"
 
-#: templates/admin.php:408
+#: templates/admin.php:430
 msgid "Log"
 msgstr "Logg"
 
-#: templates/admin.php:409
+#: templates/admin.php:431
 msgid "Log level"
 msgstr "Loggnivå"
 
-#: templates/admin.php:441
+#: templates/admin.php:463
 msgid "More"
 msgstr "Mer"
 
-#: templates/admin.php:442
+#: templates/admin.php:464
 msgid "Less"
 msgstr "Mindre"
 
-#: templates/admin.php:448 templates/personal.php:196
+#: templates/admin.php:470 templates/personal.php:196
 msgid "Version"
 msgstr "Versjon"
 
-#: templates/admin.php:452 templates/personal.php:199
+#: templates/admin.php:474 templates/personal.php:199
 msgid ""
 "Developed by the <a href=\"http://ownCloud.org/contact\" "
 "target=\"_blank\">ownCloud community</a>, the <a "
@@ -675,7 +693,7 @@ msgid ""
 "licensed under the <a href=\"http://www.gnu.org/licenses/agpl-3.0.html\" "
 "target=\"_blank\"><abbr title=\"Affero General Public "
 "License\">AGPL</abbr></a>."
-msgstr "Utviklet av<a href=\"http://ownCloud.org/contact\" target=\"_blank\">ownCloud sammfunnet</a>, <a href=\"https://github.com/owncloud\" target=\"_blank\">kildekoden</a> er lisensiert under <a href=\"http://www.gnu.org/licenses/agpl-3.0.html\" target=\"_blank\"><abbr title=\"Affero General Public License\">AGPL</abbr></a>."
+msgstr "Utviklet av <a href=\"http://ownCloud.org/contact\" target=\"_blank\">ownCloud sammfunnet</a>, <a href=\"https://github.com/owncloud\" target=\"_blank\">kildekoden</a> er lisensiert under <a href=\"http://www.gnu.org/licenses/agpl-3.0.html\" target=\"_blank\"><abbr title=\"Affero General Public License\">AGPL</abbr></a>."
 
 #: templates/apps.php:14
 msgid "Add your App"
@@ -699,29 +717,37 @@ msgstr "Se applikasjonens side på apps.owncloud.org"
 
 #: templates/apps.php:51
 msgid "See application website"
-msgstr ""
+msgstr "Vis applikasjonens nettsted"
 
 #: templates/apps.php:53
 msgid "<span class=\"licence\"></span>-licensed by <span class=\"author\"></span>"
 msgstr "<span class=\"licence\"></span>-lisensiert av <span class=\"author\"></span>"
 
-#: templates/help.php:6
+#: templates/apps.php:58
+msgid "Enable only for specific groups"
+msgstr "Aktiver kun for visse grupper"
+
+#: templates/apps.php:60
+msgid "All"
+msgstr "Alle"
+
+#: templates/help.php:13
 msgid "Administrator Documentation"
 msgstr "Administratordokumentasjon"
 
-#: templates/help.php:9
+#: templates/help.php:20
 msgid "Online Documentation"
 msgstr "Online dokumentasjon"
 
-#: templates/help.php:11
+#: templates/help.php:25
 msgid "Forum"
 msgstr "Forum"
 
-#: templates/help.php:14
+#: templates/help.php:33
 msgid "Bugtracker"
 msgstr "Feilsporing"
 
-#: templates/help.php:17
+#: templates/help.php:40
 msgid "Commercial Support"
 msgstr "Kommersiell støtte"
 
@@ -738,7 +764,8 @@ msgstr "Vis \"Førstegangs veiveiseren\" på nytt"
 msgid "You have used <strong>%s</strong> of the available <strong>%s</strong>"
 msgstr "Du har brukt <strong>%s</strong> av tilgjengelig <strong>%s</strong>"
 
-#: templates/personal.php:38 templates/users.php:21 templates/users.php:87
+#: templates/personal.php:38 templates/users/part.createuser.php:8
+#: templates/users/part.userlist.php:9
 msgid "Password"
 msgstr "Passord"
 
@@ -762,7 +789,7 @@ msgstr "Nytt passord"
 msgid "Change password"
 msgstr "Endre passord"
 
-#: templates/personal.php:61 templates/users.php:86
+#: templates/personal.php:61 templates/users/part.userlist.php:8
 msgid "Full Name"
 msgstr "Fullt navn"
 
@@ -778,7 +805,7 @@ msgstr "Din e-postadresse"
 msgid ""
 "Fill in an email address to enable password recovery and receive "
 "notifications"
-msgstr ""
+msgstr "Legg inn en e-postadresse for å aktivere passordgjenfinning og motta varsler"
 
 #: templates/personal.php:89
 msgid "Profile picture"
@@ -837,66 +864,95 @@ msgid ""
 "Your encryption keys are moved to a backup location. If something went wrong"
 " you can restore the keys. Only delete them permanently if you are sure that"
 " all files are decrypted correctly."
-msgstr ""
+msgstr "Krypteringsnøklene dine er flyttet til en plass for sikkerhetskopier. Hvis noe gikk galt kan du gjenopprette nøklene. Ikke slett dem permanent før du er ikker på at alle filer er dekryptert korrekt."
 
 #: templates/personal.php:178
 msgid "Restore Encryption Keys"
-msgstr ""
+msgstr "Gjenopprett krypteringsnøkler"
 
 #: templates/personal.php:182
 msgid "Delete Encryption Keys"
-msgstr ""
+msgstr "Slett krypteringsnøkler"
 
-#: templates/users.php:19
+#: templates/users/part.createuser.php:4
 msgid "Login Name"
 msgstr "Logginn navn"
 
-#: templates/users.php:28
+#: templates/users/part.createuser.php:20
 msgid "Create"
 msgstr "Opprett"
 
-#: templates/users.php:34
+#: templates/users/part.createuser.php:26
 msgid "Admin Recovery Password"
 msgstr "Administrativt gjenopprettingspassord"
 
-#: templates/users.php:35 templates/users.php:36
+#: templates/users/part.createuser.php:27
+#: templates/users/part.createuser.php:28
 msgid ""
 "Enter the recovery password in order to recover the users files during "
 "password change"
 msgstr "Legg inn gjenopprettingspassordet for å gjenopprette brukerfilene når passordet endres"
 
-#: templates/users.php:40
-msgid "Default Storage"
-msgstr "Standard lager"
+#: templates/users/part.createuser.php:32
+msgid "Search Users and Groups"
+msgstr "Søk i brukere og grupper"
 
-#: templates/users.php:42 templates/users.php:137
+#: templates/users/part.grouplist.php:5
+msgid "Add Group"
+msgstr "Legg til gruppe"
+
+#: templates/users/part.grouplist.php:10
+msgid "Group"
+msgstr "Gruppe"
+
+#: templates/users/part.grouplist.php:18
+msgid "Everyone"
+msgstr "Alle"
+
+#: templates/users/part.grouplist.php:29
+msgid "Admins"
+msgstr "Administratorer"
+
+#: templates/users/part.setquota.php:7
+msgid "Default Quota"
+msgstr "Standard Kvote"
+
+#: templates/users/part.setquota.php:9 templates/users/part.userlist.php:66
 msgid "Please enter storage quota (ex: \"512 MB\" or \"12 GB\")"
 msgstr "Legg inn lagringskvote (f.eks. \"512 MB\" eller \"12 GB\")"
 
-#: templates/users.php:46 templates/users.php:146
+#: templates/users/part.setquota.php:11 templates/users/part.userlist.php:75
 msgid "Unlimited"
 msgstr "Ubegrenset"
 
-#: templates/users.php:64 templates/users.php:161
+#: templates/users/part.setquota.php:26 templates/users/part.userlist.php:90
 msgid "Other"
 msgstr "Annet"
 
-#: templates/users.php:85
+#: templates/users/part.userlist.php:7
 msgid "Username"
 msgstr "Brukernavn"
 
-#: templates/users.php:92
-msgid "Storage"
-msgstr "Lager"
+#: templates/users/part.userlist.php:14
+msgid "Quota"
+msgstr "Kvote"
 
-#: templates/users.php:106
+#: templates/users/part.userlist.php:15
+msgid "Storage Location"
+msgstr "Lagringsplassering"
+
+#: templates/users/part.userlist.php:16
+msgid "Last Login"
+msgstr "Siste innlogging"
+
+#: templates/users/part.userlist.php:30
 msgid "change full name"
 msgstr "endre fullt navn"
 
-#: templates/users.php:110
+#: templates/users/part.userlist.php:34
 msgid "set new password"
 msgstr "sett nytt passord"
 
-#: templates/users.php:141
+#: templates/users/part.userlist.php:70
 msgid "Default"
 msgstr "Standard"

@@ -42,6 +42,7 @@ $TRANSLATIONS = array(
 "Error fetching URL" => "Fout bij ophalen URL",
 "Share" => "Delen",
 "Delete permanently" => "Verwijder definitief",
+"Delete" => "Verwijder",
 "Rename" => "Hernoem",
 "Your download is being prepared. This might take some time if the files are big." => "Uw download wordt voorbereid. Dit kan enige tijd duren bij grote bestanden.",
 "Pending" => "In behandeling",
@@ -68,10 +69,6 @@ $TRANSLATIONS = array(
 "File handling" => "Bestand",
 "Maximum upload size" => "Maximale bestandsgrootte voor uploads",
 "max. possible: " => "max. mogelijk: ",
-"Needed for multi-file and folder downloads." => "Nodig voor meerdere bestanden en mappen downloads.",
-"Enable ZIP-download" => "Zet ZIP-download aan",
-"0 is unlimited" => "0 is ongelimiteerd",
-"Maximum input size for ZIP files" => "Maximale grootte voor ZIP bestanden",
 "Save" => "Bewaren",
 "WebDAV" => "WebDAV",
 "Use this address to <a href=\"%s\" target=\"_blank\">access your Files via WebDAV</a>" => "Gebruik deze link <a href=\"%s\" target=\"_blank\">om uw bestanden via WebDAV te benaderen</a>",
@@ -85,9 +82,9 @@ $TRANSLATIONS = array(
 "You don’t have permission to upload or create files here" => "U hebt geen toestemming om hier te uploaden of bestanden te maken",
 "Nothing in here. Upload something!" => "Er bevindt zich hier niets. Upload een bestand!",
 "Download" => "Downloaden",
-"Delete" => "Verwijder",
 "Upload too large" => "Upload is te groot",
 "The files you are trying to upload exceed the maximum size for file uploads on this server." => "De bestanden die u probeert te uploaden zijn groter dan de maximaal toegestane  bestandsgrootte voor deze server.",
-"Files are being scanned, please wait." => "Bestanden worden gescand, even wachten."
+"Files are being scanned, please wait." => "Bestanden worden gescand, even wachten.",
+"Currently scanning" => "Nu aan het scannen"
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

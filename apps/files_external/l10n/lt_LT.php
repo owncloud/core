@@ -1,5 +1,6 @@
 <?php
 $TRANSLATIONS = array(
+"External storage" => "Išorinė saugykla",
 "Location" => "Vieta",
 "Host" => "Mazgas",
 "Username" => "Prisijungimo vardas",
@@ -11,9 +12,10 @@ $TRANSLATIONS = array(
 "Grant access" => "Suteikti priėjimą",
 "Please provide a valid Dropbox app key and secret." => "Prašome įvesti teisingus Dropbox \"app key\" ir \"secret\".",
 "Error configuring Google Drive storage" => "Klaida nustatinėjant Google Drive talpyklą",
+"Personal" => "Asmeniniai",
+"Name" => "Pavadinimas",
 "External Storage" => "Išorinės saugyklos",
 "Folder name" => "Katalogo pavadinimas",
-"External storage" => "Išorinė saugykla",
 "Configuration" => "Konfigūracija",
 "Options" => "Nustatymai",
 "Add storage" => "Pridėti saugyklą",

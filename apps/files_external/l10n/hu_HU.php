@@ -1,5 +1,6 @@
 <?php
 $TRANSLATIONS = array(
+"External storage" => "Külső tárolók",
 "Location" => "Hely",
 "Host" => "Kiszolgáló",
 "Username" => "Felhasználónév",
@@ -11,10 +12,11 @@ $TRANSLATIONS = array(
 "Grant access" => "Megadom a hozzáférést",
 "Please provide a valid Dropbox app key and secret." => "Adjon meg egy érvényes Dropbox app key-t és secretet!",
 "Error configuring Google Drive storage" => "A Google Drive tárolót nem sikerült beállítani",
+"Personal" => "Személyes",
 "Saved" => "Elmentve",
+"Name" => "Név",
 "External Storage" => "Külső tárolási szolgáltatások becsatolása",
 "Folder name" => "Mappanév",
-"External storage" => "Külső tárolók",
 "Configuration" => "Beállítások",
 "Options" => "Opciók",
 "Add storage" => "Tároló becsatolása",

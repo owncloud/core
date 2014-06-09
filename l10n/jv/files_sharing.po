@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-05-04 01:55-0400\n"
-"PO-Revision-Date: 2014-05-03 06:12+0000\n"
+"POT-Creation-Date: 2014-06-06 01:54-0400\n"
+"PO-Revision-Date: 2014-06-06 05:54+0000\n"
 "Last-Translator: I Robot\n"
 "Language-Team: Javanese (http://www.transifex.com/projects/p/owncloud/language/jv/)\n"
 "MIME-Version: 1.0\n"
@@ -17,8 +17,48 @@ msgstr ""
 "Language: jv\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: js/share.js:33
+#: appinfo/app.php:35 js/app.js:34
+msgid "Shared with you"
+msgstr ""
+
+#: appinfo/app.php:44 js/app.js:53
+msgid "Shared with others"
+msgstr ""
+
+#: appinfo/app.php:53 js/app.js:72
+msgid "Shared by link"
+msgstr ""
+
+#: js/app.js:35
+msgid "No files have been shared with you yet."
+msgstr ""
+
+#: js/app.js:54
+msgid "You haven't shared any files yet."
+msgstr ""
+
+#: js/app.js:73
+msgid "You haven't shared any files by link yet."
+msgstr ""
+
+#: js/settings-admin.js:10
+msgid "Could not load template"
+msgstr ""
+
+#: js/settings-admin.js:45
+msgid "Saved"
+msgstr ""
+
+#: js/settings-admin.js:64 templates/settings-admin.php:33
+msgid "Reset"
+msgstr ""
+
+#: js/share.js:55
 msgid "Shared by {owner}"
+msgstr ""
+
+#: js/sharedfilelist.js:128
+msgid "Shared by"
 msgstr ""
 
 #: templates/authenticate.php:4
@@ -29,8 +69,16 @@ msgstr ""
 msgid "The password is wrong. Try again."
 msgstr ""
 
-#: templates/authenticate.php:10
+#: templates/authenticate.php:10 templates/authenticate.php:12
 msgid "Password"
+msgstr ""
+
+#: templates/list.php:16
+msgid "Name"
+msgstr ""
+
+#: templates/list.php:20
+msgid "Share time"
 msgstr ""
 
 #: templates/part.404.php:3
@@ -57,15 +105,31 @@ msgstr ""
 msgid "For more info, please ask the person who sent this link."
 msgstr ""
 
-#: templates/public.php:21
+#: templates/public.php:20
 msgid "Download"
 msgstr "Njipuk"
 
-#: templates/public.php:53
+#: templates/public.php:50
 #, php-format
 msgid "Download %s"
 msgstr ""
 
-#: templates/public.php:57
+#: templates/public.php:54
 msgid "Direct link"
+msgstr ""
+
+#: templates/settings-admin.php:3
+msgid "Mail templates"
+msgstr ""
+
+#: templates/settings-admin.php:8
+msgid "Theme"
+msgstr ""
+
+#: templates/settings-admin.php:17
+msgid "Template"
+msgstr ""
+
+#: templates/settings-admin.php:35
+msgid "Save"
 msgstr ""

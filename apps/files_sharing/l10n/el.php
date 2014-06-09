@@ -1,9 +1,21 @@
 <?php
 $TRANSLATIONS = array(
+"Shared with you" => "Διαμοιρασμένο με εσάς",
+"Shared with others" => "Διαμοιρασμένο με άλλους",
+"Shared by link" => "Διαμοιρασμένο μέσω συνδέσμου",
+"No files have been shared with you yet." => "Κανένα αρχείο δνε έχει διαμοιραστεί ακόμα με εσάς.",
+"You haven't shared any files yet." => "Δεν έχετε διαμοιραστεί κανένα αρχείο ακόμα.",
+"You haven't shared any files by link yet." => "Δεν έχετε διαμοιραστεί κανένα αρχείο μέσω συνδέσμου ακόμα.",
+"Could not load template" => "Αδυναμία φόρτωσης προτύπου",
+"Saved" => "Αποθηκεύτηκαν",
+"Reset" => "Επαναφορά",
 "Shared by {owner}" => "Διαμοιράστηκε από τον {owner}",
+"Shared by" => "Διαμοιράστηκε από",
 "This share is password-protected" => "Αυτός ο κοινόχρηστος φάκελος προστατεύεται με κωδικό",
 "The password is wrong. Try again." => "Εσφαλμένος κωδικός πρόσβασης. Προσπαθήστε ξανά.",
 "Password" => "Κωδικός πρόσβασης",
+"Name" => "Όνομα",
+"Share time" => "Χρόνος διαμοιρασμού",
 "Sorry, this link doesn’t seem to work anymore." => "Συγγνώμη, αυτός ο σύνδεσμος μοιάζει να μην ισχύει πια.",
 "Reasons might be:" => "Οι λόγοι μπορεί να είναι:",
 "the item was removed" => "το αντικείμενο απομακρύνθηκε",
@@ -12,6 +24,10 @@ $TRANSLATIONS = array(
 "For more info, please ask the person who sent this link." => "Για περισσότερες πληροφορίες, παρακαλώ ρωτήστε το άτομο που σας έστειλε αυτόν τον σύνδεσμο.",
 "Download" => "Λήψη",
 "Download %s" => "Λήψη %s",
-"Direct link" => "Άμεσος σύνδεσμος"
+"Direct link" => "Άμεσος σύνδεσμος",
+"Mail templates" => "Πρότυπα αλληλογραφίας",
+"Theme" => "Θέμα",
+"Template" => "Πρότυπο",
+"Save" => "Αποθήκευση"
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

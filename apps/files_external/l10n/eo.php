@@ -1,5 +1,6 @@
 <?php
 $TRANSLATIONS = array(
+"External storage" => "Malena memorilo",
 "Local" => "Loka",
 "Location" => "Loko",
 "Amazon S3" => "Amazon S3",
@@ -35,12 +36,13 @@ $TRANSLATIONS = array(
 "Grant access" => "Doni alirpermeson",
 "Please provide a valid Dropbox app key and secret." => "Bonvolu provizi ŝlosilon de la aplikaĵo Dropbox validan kaj sekretan.",
 "Error configuring Google Drive storage" => "Eraro dum agordado de la memorservo Google Drive",
+"Personal" => "Persona",
 "Saved" => "Konservita",
 "<b>Note:</b> " => "<b>Noto:</b>",
 " and " => "kaj",
+"Name" => "Nomo",
 "External Storage" => "Malena memorilo",
 "Folder name" => "Dosierujnomo",
-"External storage" => "Malena memorilo",
 "Configuration" => "Agordo",
 "Options" => "Malneproj",
 "Available for" => "Disponebla por",
