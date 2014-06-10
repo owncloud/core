@@ -48,10 +48,10 @@ class OC_Log_Owncloud {
 		 * for at least some time.
 		 */
 		if (!file_exists(self::$logFile) && !@touch(self::$logFile)) {
-				// Ensure the data directory exists
-				if (!file_exists($dataDirectory)) {
-					@mkdir($dataDirectory, 0770, true);
-				}
+			// Ensure the data directory exists
+			if (!file_exists($dataDirectory)) {
+				@mkdir($dataDirectory, 0770, true);
+			}
 			self::$logFile = $defaultLogFile;
 		}
 	}
