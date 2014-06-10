@@ -122,24 +122,20 @@ if [ "$1" == "oracle" ] ; then
 	build/prepareTestsOracle.sh $DATABASENAME $DATABASEUSER $ADMINLOGIN $DATADIR
 fi
 
-# trigger installation
-echo "INDEX"
+echo "Trigger ownCloud installation"
 php -f index.php | grep -i -C9999 error && echo "Error during setup" && exit 101
-echo "END INDEX"
 
-# prepare coverage report dirs and enable apps
 echo "Enable apps ..."
 cd tests
 php -f enable_all.php | grep -i -C9999 error && echo "Error during setup" && exit 101
+cd $BASEDIR
 
 # show environment
-echo "owncloud configuration:"
+echo "ownCloud configuration:"
 cat $BASEDIR/config/config.php
 
-echo "data directory:"
+echo "ownCloud data directory:"
 ls -ll $DATADIR
 
 echo "owncloud.log:"
 cat $DATADIR/owncloud.log
-
-cd $BASEDIR
