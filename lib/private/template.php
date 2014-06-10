@@ -178,15 +178,14 @@ class OC_Template extends \OC\Template\Base {
 			$page = new OC_TemplateLayout($this->renderas, $this->app);
 
 			// Add custom headers
-			$page->assign('headers', $this->headers, false);
-			foreach(OC_Util::$headers as $header) {
+			foreach($this->headers as $header) {
 				$page->append('headers', $header);
 			}
 
-			$page->assign( "content", $data, false );
+			$page->assign('content', $data);
 			return $page->fetchPage();
 		}
-		else{
+		else {
 			return $data;
 		}
 	}

@@ -7,9 +7,6 @@
 class OC_Util {
 	const USER_AGENT = 'ownCloud Server Crawler';
 	
-	public static $scripts = array();
-	public static $styles = array();
-	public static $headers = array();
 	private static $rootMounted = false;
 	private static $fsSetup = false;
 
@@ -329,18 +326,11 @@ class OC_Util {
 	 *
 	 * @param string $application
 	 * @param string|null $file filename
+	 * @deprecated Use \OC_TemplateLayout::addScript instead
 	 * @return void
 	 */
 	public static function addScript($application, $file = null) {
-		if (is_null($file)) {
-			$file = $application;
-			$application = "";
-		}
-		if (!empty($application)) {
-			self::$scripts[] = "$application/js/$file";
-		} else {
-			self::$scripts[] = "js/$file";
-		}
+		\OC_TemplateLayout::addScript($application, $file);
 	}
 
 	/**
@@ -348,18 +338,11 @@ class OC_Util {
 	 *
 	 * @param string $application
 	 * @param string|null $file filename
+	 * @deprecated Use \OC_TemplateLayout::addStyle instead
 	 * @return void
 	 */
 	public static function addStyle($application, $file = null) {
-		if (is_null($file)) {
-			$file = $application;
-			$application = "";
-		}
-		if (!empty($application)) {
-			self::$styles[] = "$application/css/$file";
-		} else {
-			self::$styles[] = "css/$file";
-		}
+		\OC_TemplateLayout::addStyle($application, $file);
 	}
 
 	/**
@@ -368,14 +351,11 @@ class OC_Util {
 	 * @param string $tag tag name of the element
 	 * @param array $attributes array of attributes for the element
 	 * @param string $text the text content for the element
+	 * @deprecated Use \OC_TemplateLayout::addLayoutHeader instead
 	 * @return void
 	 */
 	public static function addHeader($tag, $attributes, $text = '') {
-		self::$headers[] = array(
-			'tag' => $tag,
-			'attributes' => $attributes,
-			'text' => $text
-		);
+		\OC_TemplateLayout::addLayoutHeader($tag, $attributes, $text);
 	}
 
 	/**
