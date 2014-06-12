@@ -307,7 +307,7 @@ class OC_Installer{
 			}
 			throw new \Exception($l->t("App does not provide an info.xml file"));
 		}
-		$reader = new \OC\App\InfoXMLReader();
+		$reader = OC::$server->getAppInfoXMLReader();
 		$info = $reader->getInfo($extractDir.'/appinfo/info.xml');
 		// check the code for not allowed calls
 		if(!$isShipped && !OC_Installer::checkCode($info['id'], $extractDir)) {
@@ -468,7 +468,7 @@ class OC_Installer{
 	 * This function installs all apps found in the 'apps' directory that should be enabled by default;
 	 */
 	public static function installShippedApps() {
-		$reader = new \OC\App\InfoXMLReader();
+		$reader = OC::$server->getAppInfoXMLReader();
 		foreach(OC::$APPSROOTS as $app_dir) {
 			if($dir = opendir( $app_dir['path'] )) {
 				while( false !== ( $filename = readdir( $dir ))) {

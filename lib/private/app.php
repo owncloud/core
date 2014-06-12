@@ -616,7 +616,7 @@ class OC_App {
 			}
 			$file = self::getAppPath($appId) . '/appinfo/info.xml';
 		}
-		$reader = new \OC\App\InfoXMLReader();
+		$reader = OC::$server->getAppInfoXMLReader();
 		self::$appInfo[$appId] = $reader->getInfo($file);
 
 		return self::$appInfo[$appId];
