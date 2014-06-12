@@ -254,7 +254,7 @@ class Wizard extends LDAPUtility {
 			throw new \Exception('Could not connect to LDAP');
 		}
 
-		$obclasses = array('posixGroup', 'group', 'zimbraDistributionList', '*');
+		$obclasses = array('posixGroup', 'group', 'zimbraDistributionList', 'groupOfNames');
 		$this->determineFeature($obclasses, 'cn', $dbkey, $confkey);
 
 		if($testMemberOf) {
@@ -948,6 +948,7 @@ class Wizard extends LDAPUtility {
 		if(!$cr) {
 			throw new \Exception('Could not connect to LDAP');
 		}
+		$lastFilterIsWildcard = ($objectclasses[count($objectclasses)-1] === '*');
 		$p = 'objectclass=';
 		foreach($objectclasses as $key => $value) {
 			$objectclasses[$key] = $p.$value;
@@ -963,9 +964,8 @@ class Wizard extends LDAPUtility {
 			$dig = 0;
 		}
 
-		$availableFeatures =
-			$this->cumulativeSearchOnAttribute($objectclasses, $attr,
-											   true, $dig, $maxEntryObjC);
+		$availableFeatures = $this->cumulativeSearchOnAttribute
+			($objectclasses, $attr, $lastFilterIsWildcard, $dig, $maxEntryObjC);
 		if(is_array($availableFeatures)
 		   && count($availableFeatures) > 0) {
 			natcasesort($availableFeatures);
