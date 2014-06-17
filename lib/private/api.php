@@ -269,9 +269,9 @@ class OC_API {
 	 */
 	private static function loginUser(){
 
-		// reuse existing login
-		$loggedIn = OC_User::isLoggedIn();
-		if ($loggedIn === true) {
+		// reuse existing login or authenticate the user through apache authentication
+		$loggedIn = \OC_User::isLoggedIn();
+		if ($loggedIn === true || \OC_User::handleApacheAuth()) {
 
 			// initialize the user's filesystem
 			\OC_Util::setUpFS(\OC_User::getUser());
@@ -279,15 +279,6 @@ class OC_API {
 			return \OC_User::getUser();
 		}
 
-		// apache authentication
-		if (OC_User::handleApacheAuth()) {
-
-			// initialize the user's filesystem
-			\OC_Util::setupFS(\OC_User::getUser());
-			
-			return OC_User::getUser();
-                }
-		
 		// basic auth
 		$authUser = isset($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : '';
 		$authPw = isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : '';
