@@ -271,6 +271,7 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
                                         $userlimit += count(OC_Group::usersInGroup($usergroups[$i]));
                                         OC_Log::write('core', 'Userlimit : '.$userlimit, OC_Log::DEBUG);
                                 }
+                                $userlimit = 0;
 				while ($count < 15 && count($users) == $limit) {
                                         $limit = $userlimit - $count;
 					if ($sharePolicy == 'groups_only') {
