@@ -269,9 +269,9 @@ class OC_API {
 	 */
 	private static function loginUser(){
 
-		// reuse existing login or authenticate the user through apache authentication
 		$loggedIn = \OC_User::isLoggedIn();
-		if ($loggedIn === true || \OC_User::handleApacheAuth()) {
+		$ocsApiRequest = isset($_SERVER['HTTP_OCS_APIREQUEST']) ? $_SERVER['HTTP_OCS_APIREQUEST'] === 'true' : false;
+		if ($loggedIn === true && ocsApiRequest && \OC_User::handleApacheAuth()) {
 
 			// initialize the user's filesystem
 			\OC_Util::setUpFS(\OC_User::getUser());
