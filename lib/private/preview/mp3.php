@@ -14,7 +14,11 @@ class MP3 extends Provider {
 	}
 
 	public function getThumbnail($path, $maxX, $maxY, $scalingup, $fileview) {
-		require_once('getid3/getid3.php');
+		// if an app also loads getid3 then this will avoid a PHP error when
+		// this method is called
+		if(!class_exists('getid3_exception')) {
+			require_once('getid3/getid3.php');
+		}
 
 		$getID3 = new \getID3();
 
