@@ -195,7 +195,13 @@ class OC_App {
 		}
 		sort($apps);
 		array_unshift($apps, 'files');
-		self::$enabledAppsCache = $apps;
+
+		// Only cache the app list, when the user is logged in.
+		// Otherwise we cache the list with disabled apps, although
+		// the apps are enabled for the user after he logged in.
+		if (\OC_User::isLoggedIn()) {
+			self::$enabledAppsCache = $apps;
+		}
 		return $apps;
 	}
 
