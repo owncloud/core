@@ -22,3 +22,5 @@ $CONFIG = array (
 if(substr(strtolower(PHP_OS), 0, 3) == "win") {
 	$CONFIG['openssl'] = array( 'config' => OC::$SERVERROOT.'/tests/data/openssl.cnf');
 }
+
+//$CONFIG['sftpsshkey'] = '/usr/share/nginx/www/xfragger.de/owncloud/id_rsa';

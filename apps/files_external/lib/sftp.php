@@ -7,10 +7,14 @@
  */
 namespace OC\Files\Storage;
 
+//why do i have to require this to make the unittest work?
+require_once dirname(__FILE__) . '/../../../3rdparty/phpseclib/phpseclib/phpseclib/Net/SFTP/Stream.php';
+
 class SFTP extends \OC\Files\Storage\Common {
 	private $host;
 	private $user;
 	private $password;
+	private $keyfile;
 	private $root;
 
 	private $client;
@@ -25,6 +29,24 @@ class SFTP extends \OC\Files\Storage\Common {
 		}
 		$this->user = $params['user'];
 		$this->password = $params['password'];
+
+		$this->keyfile = isset($params['usesshkey']) && $params['usesshkey'] ?
+			\OC_Config::getValue('sftpsshkey', null) :
+			null;
+
+		if (!!$this->keyfile && (!is_file($this->keyfile) || !is_readable($this->keyfile))) {
+			throw new \Exception('SSH key "' . $this->keyfile . '" is not existent or readable');
+		}
+
+		if ($this->keyfile) {
+			$key = new \Crypt_RSA();
+			if ($this->password) {
+				$key->setPassword($this->password);
+			}
+			$key->loadKey(file_get_contents($this->keyfile));
+			$this->password = $key;
+		}
+
 		$this->root
 			= isset($params['root']) ? $this->cleanPath($params['root']) : '/';
 
@@ -37,10 +59,10 @@ class SFTP extends \OC\Files\Storage\Common {
 		}
 
 		$hostKeys = $this->readHostKeys();
-		$this->client = new \Net_SFTP($this->host);
 
+		$this->client = new \Net_SFTP($this->host);
 		if (!$this->client->login($this->user, $this->password)) {
-			throw new \Exception('Login failed');
+			throw new \Exception('Login failed: ' . $this->client->getLastError());
 		}
 
 		$currentHostKey = $this->client->getServerPublicHostKey();
@@ -197,7 +219,6 @@ class SFTP extends \OC\Files\Storage\Common {
 
 	public function fopen($path, $mode) {
 		try {
-			$absPath = $this->absPath($path);
 			switch($mode) {
 				case 'r':
 				case 'rb':
@@ -217,7 +238,12 @@ class SFTP extends \OC\Files\Storage\Common {
 				case 'c':
 				case 'c+':
 					// FIXME: make client login lazy to prevent it when using fopen()
-					return fopen($this->constructUrl($path), $mode);
+					$context = null;
+					if (!!$this->keyfile) {
+						$opts = array('sftp'=>array('privkey'=>$this->password));
+						$context = stream_context_create($opts);
+					}
+					return fopen($this->constructUrl($path), $mode, null, $context);
 			}
 		} catch (\Exception $e) {
 		}
@@ -279,7 +305,11 @@ class SFTP extends \OC\Files\Storage\Common {
 	 * @param string $path
 	 */
 	public function constructUrl($path) {
-		$url = 'sftp://'.$this->user.':'.$this->password.'@'.$this->host.$this->root.$path;
+		$url = 'sftp://'.$this->user;
+		if (!$this->keyfile) {
+			$url .= ':'.$this->password.'';
+		}
+		$url .= '@'.$this->host.$this->root.$path;
 		return $url;
 	}
 }

@@ -167,12 +167,22 @@ OC_Mount_Config::registerBackend('\OC\Files\Storage\OwnCloud', array(
 		'secure' => '!'.$l->t('Secure https://'))));
 
 
+$sftp_config = array(
+	'host' => (string)$l->t('Host'),
+	'user' => (string)$l->t('Username'),
+	'password' => '*'.$l->t('Password'),
+	'root' => '&'.$l->t('Root')
+);
+
+//show "use ssh key" option, only if a ssh key is configured and existent, show notice if not
+if (($keypath = OC_Config::getValue("sftpsshkey", null)) && is_file($keypath) && is_readable($keypath)) {
+	$sftp_config['usesshkey'] = '!'.$l->t('Use SSH key from config.php');
+	$sftp_config['password'] = '&*'.$l->t('Passphrase for SSH key');
+}
+
 OC_Mount_Config::registerBackend('\OC\Files\Storage\SFTP', array(
 	'backend' => 'SFTP',
 	'priority' => 100,
-	'configuration' => array(
-		'host' => (string)$l->t('Host'),
-		'user' => (string)$l->t('Username'),
-		'password' => '*'.$l->t('Password'),
-		'root' => '&'.$l->t('Root'))));
+	'configuration' => $sftp_config
+));
 
