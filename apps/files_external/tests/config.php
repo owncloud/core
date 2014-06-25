@@ -86,11 +86,11 @@ return array(
 		'token_secret' => ''
 	),
 	'sftp' => array (
-		'run'=>true,
-		'host'=>'xfragger.de',
+		'run'=>false,
+		'host'=>'localhost',
 		'user'=>'test',
-		'password'=>'',
-		'usesshkey'=>true,
+		'password'=>'test',
+		'usesshkey'=>false,
 		'root'=>'/home/test'
 	)
 );
