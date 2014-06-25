@@ -24,7 +24,7 @@ class ConnectionFactory {
 		'mssqldbo' => array(
 			'adapter' => '\OC\DB\AdapterSQLSrv',
 			'charset' => 'UTF8',
-			'driverClass' =>  '\Realestate\MssqlBundle\Driver\PDODblib\Driver',
+			'driverClass' =>  'OC\DB\DBAL\Driver\PDODblib\Driver',
 			'wrapperClass' => 'OC\DB\Connection',
 		),
 		'mssql' => array(

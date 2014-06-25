@@ -2,7 +2,7 @@
 
 namespace OC\Setup;
 
-use Realestate\MssqlBundle\Driver\PDODblib\Driver;
+use OC\DB\DBAL\Driver\PDODblib\Driver;
 
 class MSSQLDBO extends AbstractDatabase {
 	public $dbprettyname = 'MS SQL Server';
