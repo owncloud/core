@@ -7,19 +7,16 @@
  */
 namespace OC\Files\Storage;
 
-//why do i have to require this to make the unittest work?
+//https://github.com/phpseclib/phpseclib/issues/391
 require_once dirname(__FILE__) . '/../../../3rdparty/phpseclib/phpseclib/phpseclib/Net/SFTP/Stream.php';
 
 class SFTP extends \OC\Files\Storage\Common {
 	private $host;
 	private $user;
 	private $password;
-	private $keyfile;
 	private $root;
 
 	private $client;
-
-	private static $tempFiles = array();
 
 	public function __construct($params) {
 		$this->host = $params['host'];
@@ -30,25 +27,21 @@ class SFTP extends \OC\Files\Storage\Common {
 		$this->user = $params['user'];
 		$this->password = $params['password'];
 
-		$this->keyfile = isset($params['usesshkey']) && $params['usesshkey'] ?
-			\OC_Config::getValue('sftpsshkey', null) :
-			null;
-
-		if (!!$this->keyfile && (!is_file($this->keyfile) || !is_readable($this->keyfile))) {
-			throw new \Exception('SSH key "' . $this->keyfile . '" is not existent or readable');
-		}
-
-		if ($this->keyfile) {
-			$key = new \Crypt_RSA();
-			if ($this->password) {
-				$key->setPassword($this->password);
+		if (!empty($params['usesshkey'])) {
+			if (($keyfile = \OC_Config::getValue('sftpsshkey'))) {
+				if (!is_file($keyfile) || !is_readable($keyfile)) {
+					throw new \Exception('SSH key "' . $keyfile . '" is not existent or readable');
+				}
+				$key = new \Crypt_RSA();
+				if ($this->password) {
+					$key->setPassword($this->password);
+				}
+				$key->loadKey(file_get_contents($keyfile));
+				$this->password = $key;
 			}
-			$key->loadKey(file_get_contents($this->keyfile));
-			$this->password = $key;
 		}
 
-		$this->root
-			= isset($params['root']) ? $this->cleanPath($params['root']) : '/';
+		$this->root = isset($params['root']) ? $this->cleanPath($params['root']) : '/';
 
 		if ($this->root[0] != '/') {
 			 $this->root = '/' . $this->root;
@@ -195,7 +188,7 @@ class SFTP extends \OC\Files\Storage\Common {
 			if ($stat['type'] == NET_SFTP_TYPE_DIRECTORY) {
 				return 'dir';
 			}
-		} catch (\Exeption $e) {
+		} catch (\Exception $e) {
 
 		}
 		return false;
@@ -238,11 +231,8 @@ class SFTP extends \OC\Files\Storage\Common {
 				case 'c':
 				case 'c+':
 					// FIXME: make client login lazy to prevent it when using fopen()
-					$context = null;
-					if (!!$this->keyfile) {
-						$opts = array('sftp'=>array('privkey'=>$this->password));
-						$context = stream_context_create($opts);
-					}
+					$opts = is_object($this->password) ? array('sftp' => array('privkey' => $this->password)) : array();
+					$context = stream_context_create($opts);
 					return fopen($this->constructUrl($path), $mode, null, $context);
 			}
 		} catch (\Exception $e) {
@@ -303,10 +293,11 @@ class SFTP extends \OC\Files\Storage\Common {
 
 	/**
 	 * @param string $path
+	 * @return string
 	 */
 	public function constructUrl($path) {
 		$url = 'sftp://'.$this->user;
-		if (!$this->keyfile) {
+		if (!is_object($this->password)) {
 			$url .= ':'.$this->password.'';
 		}
 		$url .= '@'.$this->host.$this->root.$path;
