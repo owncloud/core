@@ -461,6 +461,7 @@ class OC_DB {
 				$result = \OC_DB::executeAudited($sql, array($table));
 				break;
 			case 'mssql':
+			case 'mssqldbo':
 				$sql = 'SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = ?';
 				$result = \OC_DB::executeAudited($sql, array($table));
 				break;
