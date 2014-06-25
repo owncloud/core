@@ -12,6 +12,7 @@ use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Platforms\SQLServerPlatform;
 
 class MDB2SchemaManager {
 	/**
@@ -66,6 +67,8 @@ class MDB2SchemaManager {
 			return new MySQLMigrator($this->conn);
 		} else if ($platform instanceof PostgreSqlPlatform) {
 			return new Migrator($this->conn);
+		} else if ($platform instanceof SQLServerPlatform) {
+			return new SQLServerMigrator($this->conn);
 		} else {
 			return new NoCheckMigrator($this->conn);
 		}

@@ -29,7 +29,10 @@ class Migrator extends \PHPUnit_Framework_TestCase {
 	public function setUp() {
 		$this->connection = \OC_DB::getConnection();
 		if ($this->connection->getDriver() instanceof \Doctrine\DBAL\Driver\OCI8\Driver) {
-			$this->markTestSkipped('DB migration tests arent supported on OCI');
+			$this->markTestSkipped('DB migration tests are not supported on OCI');
+		}
+		if ($this->connection->getDriver() instanceof \Realestate\MssqlBundle\Driver\PDODblib\Driver) {
+			$this->markTestSkipped('DB migration tests are not supported on MS SQL');
 		}
 		$this->manager = new \OC\DB\MDB2SchemaManager($this->connection);
 		$this->tableName = 'test_' . uniqid();
