@@ -13,6 +13,11 @@ class Test_DBSchema extends PHPUnit_Framework_TestCase {
 	protected $table2;
 
 	public function setUp() {
+
+		if (\OC_DB::getConnection()->getDriver() instanceof \Realestate\MssqlBundle\Driver\PDODblib\Driver) {
+			$this->markTestSkipped('DB migration tests are not supported on MS SQL - yet');
+		}
+
 		$dbfile = OC::$SERVERROOT.'/tests/data/db_structure.xml';
 		$dbfile2 = OC::$SERVERROOT.'/tests/data/db_structure2.xml';
 
