@@ -76,8 +76,8 @@ if (version_compare(\OCP\Config::getAppValue('files', 'installed_version'), '1.1
 
 	$updatedMimetypes = array(
 		'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-		'xlsx' => 'application/vnd.ms-excel',
-		'pptx' => 'application/vnd.ms-powerpoint',
+		'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+		'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
 	);
 
 	$updateByNameStmt = OC_DB::prepare('
