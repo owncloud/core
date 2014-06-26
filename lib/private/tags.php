@@ -203,7 +203,7 @@ class Tags implements \OCP\ITags {
 
 		if(!is_null($result)) {
 			while( $row = $result->fetchRow()) {
-				$ids[] = (int)$row['objid'];
+				$ids[] = $row['objid'];
 			}
 		}
 

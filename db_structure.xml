@@ -1128,11 +1128,11 @@
 
 		<field>
 			<name>objid</name>
-			<type>integer</type>
+			<type>text</type>
 			<default>0</default>
 			<notnull>true</notnull>
 			<unsigned>true</unsigned>
-			<length>4</length>
+			<length>255</length>
 		</field>
 
 		<!-- Foreign Key vcategory::id -->
