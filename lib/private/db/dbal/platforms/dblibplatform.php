@@ -10,6 +10,14 @@ class DblibPlatform extends  \Realestate\MssqlBundle\Platforms\DblibPlatform
 	/**
 	 * {@inheritDoc}
 	 */
+	public function getDateTimeFormatString()
+	{
+		return 'Y-m-d H:i:s.000';
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function getClobTypeDeclarationSQL(array $field)
 	{
 		return 'VARCHAR(MAX)';
