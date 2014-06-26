@@ -30,7 +30,7 @@ class ConnectionFactory {
 		'mssql' => array(
 			'adapter' => '\OC\DB\AdapterSQLSrv',
 			'charset' => 'UTF8',
-			'driver' =>  'pdo_sqlsrv',
+			'driver' => 'pdo_sqlsrv',
 			'wrapperClass' => 'OC\DB\Connection',
 		),
 		'mysql' => array(
@@ -90,13 +90,14 @@ class ConnectionFactory {
 				$eventManager->addEventSubscriber(new \Doctrine\DBAL\Event\Listeners\OracleSessionInit);
 				break;
 			case 'mssqldbo':
-				$eventManager->addEventSubscriber(new SQLSessionInit('SET ANSI_NULLS ON
-SET ANSI_PADDING ON
-SET ANSI_WARNINGS ON
-SET ARITHABORT ON
-SET CONCAT_NULL_YIELDS_NULL ON
-SET NUMERIC_ROUNDABORT OFF
-SET QUOTED_IDENTIFIER ON'));
+				$eventManager->addEventSubscriber(new SQLSessionInit(
+					'SET ANSI_NULLS ON
+					SET ANSI_PADDING ON
+					SET ANSI_WARNINGS ON
+					SET ARITHABORT ON
+					SET CONCAT_NULL_YIELDS_NULL ON
+					SET NUMERIC_ROUNDABORT OFF
+					SET QUOTED_IDENTIFIER ON'));
 				break;
 		}
 		$connection = \Doctrine\DBAL\DriverManager::getConnection(
