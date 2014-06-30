@@ -222,12 +222,7 @@
 						actionText = displayName,
 						actionContainer = 'a.name>span.fileactions';
 
-					if (name === 'Rename') {
-						// rename has only an icon which appears behind
-						// the file name
-						actionText = '';
-						actionContainer = 'a.name span.nametext';
-					}
+
 					if (img.call) {
 						img = img(file);
 					}
@@ -235,11 +230,29 @@
 					if (img) {
 						html += '<img class ="svg" src="' + img + '" />';
 					}
-					html += '<span> ' + actionText + '</span></a>';
+
+					if (name === 'Rename') {
+						// rename has only an icon which appears behind
+						// the file name
+						actionText = '';
+						actionContainer = 'a.name span.nametext';
+					} else if (name === 'Versions') {
+						// Moves the Versions Button inside
+						// the date column
+						actionText = '';
+						actionContainer = 'td.date span.modified';
+					} else {
+						html += '<span> ' + actionText + '</span></a>';
+					}
 
 					var element = $(html);
 					element.data('action', name);
 					element.on('click', {a: null, elem: parent, actionFunc: actions[name].action}, actionHandler);
+					if (name === 'Versions') {
+						parent.parent().children().children().last().append(element);
+					} else {
+						parent.find(actionContainer).append(element);
+					}
 					parent.find(actionContainer).append(element);
 				}
 
