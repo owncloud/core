@@ -192,9 +192,10 @@ table th.column-last, table td.column-last {
 	max-width: 185px;
 }
 
-table th#headerDate, table td.date span {
+table th#headerDate,
+table td.date span {
 	padding-left: 8px;
-	padding-right: 45px;
+	padding-right: 35px;
 }
 
 /* Multiselect bar */
@@ -245,11 +246,12 @@ table td.filename .nametext, .uploadtext, .modified, .column-last>span:first-chi
 	position: relative;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	width: 80%
 }
 /* ellipsize long modified dates to make room for showing delete button */
 #fileList tr:hover .modified, #fileList tr:hover .column-last>span:first-child,
 #fileList tr:focus .modified, #fileList tr:focus .column-last>span:first-child {
-	width: 75%;
+	width: 63%;
 }
 
 /* TODO fix usability bug (accidental file/folder selection) */
