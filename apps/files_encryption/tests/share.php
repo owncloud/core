@@ -77,6 +77,10 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 		\OC_FileProxy::clearProxies();
 		\OC_FileProxy::register(new OCA\Encryption\Proxy());
 
+		// register file sharing backends
+		OCP\Share::registerBackend('file', 'OC_Share_Backend_File');
+		OCP\Share::registerBackend('folder', 'OC_Share_Backend_Folder', 'file');
+
 		// create users
 		\Test_Encryption_Util::loginHelper(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER1, true);
 		\Test_Encryption_Util::loginHelper(\Test_Encryption_Share::TEST_ENCRYPTION_SHARE_USER2, true);
@@ -104,6 +108,9 @@ class Test_Encryption_Share extends \PHPUnit_Framework_TestCase {
 
 		// we don't want to tests with app files_trashbin enabled
 		\OC_App::disable('files_trashbin');
+
+		// we need files_sharing enabled
+		\OC_App::enable('files_sharing');
 	}
 
 	function tearDown() {
