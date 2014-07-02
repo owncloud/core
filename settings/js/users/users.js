@@ -282,7 +282,7 @@ var UserList = {
 		if (UserList.updating) {
 			return;
 		}
-		$userList.css('display', 'none');
+		$userList.css('display', 'hidden');
 		$userList.siblings('.loading').css('visibility', 'visible');
 		UserList.updating = true;
 		if(gid === undefined) {
