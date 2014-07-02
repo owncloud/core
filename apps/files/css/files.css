@@ -188,8 +188,14 @@ table th.column-last, table td.column-last {
 	box-sizing: border-box;
 	position: relative;
 	/* this can not be just width, both need to be set … table styling */
-	min-width: 176px;
-	max-width: 176px;
+	min-width: 185px;
+	max-width: 185px;
+}
+
+table th#headerDate,
+table td.date span {
+	padding-left: 8px;
+	padding-right: 35px;
 }
 
 /* Multiselect bar */
@@ -240,12 +246,12 @@ table td.filename .nametext, .uploadtext, .modified, .column-last>span:first-chi
 	position: relative;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	width: 90%;
+	width: 80%
 }
 /* ellipsize long modified dates to make room for showing delete button */
 #fileList tr:hover .modified, #fileList tr:hover .column-last>span:first-child,
 #fileList tr:focus .modified, #fileList tr:focus .column-last>span:first-child {
-	width: 75%;
+	width: 63%;
 }
 
 /* TODO fix usability bug (accidental file/folder selection) */
@@ -394,6 +400,25 @@ table td.filename .uploadtext {
 
 #fileList .action.action-share-notification span, #fileList a {
 	cursor: default !important;
+}
+
+#fileList a.action[data-action="Versions"] {
+	display: block !important;
+	height: 50px;
+	width: 120px;
+	margin-bottom: 0;
+	margin-top: 0;
+	padding-top: 14px !important;
+	position: absolute; top: 0px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	text-align: right;
+}
+
+#fileList a.action[data-action="Versions"] img {
+	position: absolute;
+	top: 18px;
+	right: 10px;
 }
 
 a.action>img {

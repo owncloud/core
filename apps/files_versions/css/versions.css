@@ -1,5 +1,6 @@
 #dropdown.drop-versions {
 	width:320px;
+	right: -260px;
 }
 
 #found_versions li {
