@@ -386,7 +386,7 @@ class Wizard extends LDAPUtility {
 			throw new \Exception('Could not connect to LDAP');
 		}
 
-		$obclasses = array('inetOrgPerson', 'person', 'organizationalPerson',
+		$obclasses = array('computer', 'inetOrgPerson', 'person', 'organizationalPerson',
 						   'user', 'posixAccount', '*');
 		$filter = $this->configuration->ldapUserFilter;
 		//if filter is empty, it is probably the first time the wizard is called
