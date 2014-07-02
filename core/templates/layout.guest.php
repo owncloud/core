@@ -30,10 +30,10 @@
 	</head>
 
 	<body id="body-login">
+		<header><div id="header">
+			<img src="<?php print_unescaped(image_path('', 'logo.svg')); ?>" class="svg" alt="ownCloud" />
+		</div></header>
 		<div id="login">
-			<header><div id="header">
-				<img src="<?php print_unescaped(image_path('', 'logo.svg')); ?>" class="svg" alt="ownCloud" />
-			</div></header>
 			<?php print_unescaped($_['content']); ?>
 		</div>
 		<footer><p class="info"><a href="http://owncloud.org/">ownCloud</a> &ndash;
