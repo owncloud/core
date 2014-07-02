@@ -37,6 +37,16 @@ class Statement
 		$ret = $this->statement->execute($input_parameters);
 		if ($ret) {
 			$this->rows = $this->statement->fetchAll();
+
+			// due to crazy implementations in freetds we need to handle ' ' in a special manner
+			$this->rows = array_map(function ($row) {
+				return array_map(function($value) {
+					if ($value === ' ') {
+						return '';
+					}
+					return $value;
+				}, $row);
+			}, $this->rows);
 		}
 	}
 
