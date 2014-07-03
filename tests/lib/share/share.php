@@ -572,6 +572,14 @@ class Test_Share extends PHPUnit_Framework_TestCase {
 		);
 	}
 
+	public function testSetEmptyExpireDate() {
+		$this->shareUserTestFileAsLink();
+
+		$result = \OCP\Share::setExpirationDate('test', 'test.txt', '');
+
+		$this->assertTrue($result);
+	}
+
 	public function testUnshareAll() {
 		$this->shareUserTestFileWithUser($this->user1, $this->user2);
 		$this->shareUserTestFileWithUser($this->user2, $this->user3);
