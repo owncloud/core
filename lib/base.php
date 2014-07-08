@@ -321,6 +321,8 @@ class OC {
 		OC_Util::addScript("jquery-1.10.0.min");
 		OC_Util::addScript("jquery-migrate-1.2.1.min");
 		OC_Util::addScript("jquery-ui-1.10.0.custom");
+		//Add native Support for touch and punch events
+		OC_Util::addScript("jquery.ui.touch-punch");
 		OC_Util::addScript("jquery-showpassword");
 		OC_Util::addScript("placeholders");
 		OC_Util::addScript("jquery-tipsy");

@@ -390,6 +390,7 @@ var createDragShadow = function(event) {
 //start&stop handlers needs some cleaning up
 // TODO: move to FileList class
 var dragOptions={
+	handle: 'span.nametext',
 	revert: 'invalid',
 	revertDuration: 300,
 	opacity: 0.7,
