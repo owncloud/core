@@ -437,7 +437,7 @@ class OC_DB {
 				break;
 			case 'mysql':
 				$sql = 'SHOW TABLES LIKE ?';
-				$result = \OC_DB::executeAudited($sql, array($table));
+				$result = \OC_DB::executeAudited($sql, array($table . '%'));
 				break;
 			case 'pgsql':
 				$sql = 'SELECT tablename AS table_name, schemaname AS schema_name '
