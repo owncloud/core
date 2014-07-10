@@ -46,12 +46,6 @@ script:
   # Run tests
   - phpunit --configuration tests/phpunit-autotest.xml --coverage-clover tests/autotest-clover-$DB.xml --verbose --debug
 
-  # run without debug
-  - phpunit --configuration tests/phpunit-autotest.xml --coverage-clover tests/autotest-clover-$DB.xml --verbose
-
-  # run without debug and verbose
-  - phpunit --configuration tests/phpunit-autotest.xml --coverage-clover tests/autotest-clover-$DB.xml
-
   # Run JS tests just once (see test matrix - mysql is just run once)
   #- if [[ $DB == 'mysql' ]] ; then ./autotest-js.sh ; fi
 
