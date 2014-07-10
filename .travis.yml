@@ -44,10 +44,16 @@ script:
   - if [[ $DB == 'sqlite' ]] ; then ant -f build/build.xml -Dbasedir=. prepare lint ; fi
 
   # Run tests
+  - phpunit --configuration tests/phpunit-autotest.xml --coverage-clover tests/autotest-clover-$DB.xml --verbose --debug
+
+  # run without debug
+  - phpunit --configuration tests/phpunit-autotest.xml --coverage-clover tests/autotest-clover-$DB.xml --verbose
+
+  # run without debug and verbose
   - phpunit --configuration tests/phpunit-autotest.xml --coverage-clover tests/autotest-clover-$DB.xml
 
   # Run JS tests just once (see test matrix - mysql is just run once)
-  - if [[ $DB == 'mysql' ]] ; then ./autotest-js.sh ; fi
+  #- if [[ $DB == 'mysql' ]] ; then ./autotest-js.sh ; fi
 
   # Upload coverage report
   #- php ocular.phar code-coverage:upload --format=php-clover tests/autotest-clover-$DB.xml
