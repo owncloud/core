@@ -44,7 +44,7 @@ script:
   - if [[ $DB == 'sqlite' ]] ; then ant -f build/build.xml -Dbasedir=. prepare lint ; fi
 
   # Run tests
-  - phpunit --configuration tests/phpunit-autotest.xml --coverage-clover tests/autotest-clover-$DB.xml --verbose --debug apps/files_encryption/tests/
+  - phpunit --configuration tests/phpunit-autotest.xml --coverage-clover tests/autotest-clover-$DB.xml --verbose --debug apps/files_encryption/tests/*.php
 
   # Run JS tests just once (see test matrix - mysql is just run once)
   #- if [[ $DB == 'mysql' ]] ; then ./autotest-js.sh ; fi
