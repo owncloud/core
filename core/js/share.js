@@ -93,7 +93,7 @@ OC.Share={
 		}
 		// TODO: iterating over the files might be more efficient
 		for (item in OC.Share.statuses){
-			var image = OC.imagePath('core', 'actions/share');
+			var image = OC.imagePath('core', 'actions/shared');
 			var data = OC.Share.statuses[item];
 			var hasLink = data.link;
 			// Links override shared in terms of icon display
@@ -1029,6 +1029,11 @@ $(document).ready(function() {
 		var itemType = $('#dropdown').data('item-type');
 		var itemSource = $('#dropdown').data('item-source');
 		var file = $('tr').filterAttr('data-id', String(itemSource)).data('file');
+		
+		if(itemType !='file' || itemType !='folder'){
+		   file = $('a.share[data-item="'+itemSource+'"]').data('title');
+		}
+		
 		var email = $('#email').val();
 		var expirationDate = '';
 		if ( $('#expirationCheckbox').is(':checked') === true ) {
