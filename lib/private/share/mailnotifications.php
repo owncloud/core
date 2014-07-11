@@ -109,6 +109,19 @@ class MailNotifications {
 
 			$link = \OCP\Util::linkToAbsolute('files', 'index.php', array("dir" => $foldername));
 
+                        $hookParams = array(
+				'language'      => $this->l,
+				'senderDisplayName'      => $this->senderDisplayName,
+				'itemSource'      => $itemSource,
+				'itemType'      => $itemType,
+				'itemTarget'      => $items[0]['item_target'],
+				'itemLink'    => &$link,
+				'filename'    => &$filename,
+				'subject'    => &$subject,
+		         );
+		         
+                        \OC_Hook::emit('OCP\Share', 'share_internal_mail',$hookParams);
+
 			list($htmlMail, $alttextMail) = $this->createMailBody($filename, $link, $expiration);
 
 			// send it out now
