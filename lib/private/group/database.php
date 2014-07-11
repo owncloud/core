@@ -41,6 +41,44 @@
  * Class for group management in a SQL Database (e.g. MySQL, SQLite)
  */
 class OC_Group_Database extends OC_Group_Backend {
+	/**
+	 * @var null|string[] $allGroups
+	 */
+	private $allGroups = null;
+
+	/**
+	 * caches all group IDs in a array for the runtime
+	 * this is called only when all groups are fetched in getGroups in order
+	 * to reduce number of SQL calls, e.g. triggered by groupExists per group
+	 * @param string[] $groupIDs
+	 */
+	private function cacheAllGroups($groupIDs) {
+		$this->allGroups = $groupIDs;
+	}
+
+	/**
+	 * removes a group from the cache, if the latter was created
+	 * @param string $gid
+	 */
+	private function removeFromAllGroupsCache($gid) {
+		if(is_array($this->allGroups)) {
+			$flipped = array_keys($this->allGroups);
+			if(isset($flipped[$gid])) {
+				unset($flipped[$gid]);
+				$this->allGroups = array_flip($flipped);
+			}
+		}
+	}
+
+	/**
+	 * adds a group to the cache, if the latter was created
+	 * @param string $gid
+	 */
+	private function addToAllGroupsCache($gid) {
+		if(is_array($this->allGroups)) {
+			$this->allGroups[] = $gid;
+		}
+	}
 
 	/**
 	 * Try to create a new group
@@ -64,6 +102,8 @@ class OC_Group_Database extends OC_Group_Backend {
 			$stmt = OC_DB::prepare( "INSERT INTO `*PREFIX*groups` ( `gid` ) VALUES( ? )" );
 			$result = $stmt->execute( array( $gid ));
 
+			$this->addToAllGroupsCache($gid);
+
 			return $result ? true : false;
 		}
 	}
@@ -83,6 +123,8 @@ class OC_Group_Database extends OC_Group_Backend {
 		// Delete the group-user relation
 		$stmt = OC_DB::prepare( "DELETE FROM `*PREFIX*group_user` WHERE `gid` = ?" );
 		$stmt->execute( array( $gid ));
+
+		$this->removeFromAllGroupsCache($gid);
 
 		return true;
 	}
@@ -174,6 +216,9 @@ class OC_Group_Database extends OC_Group_Backend {
 		while ($row = $result->fetchRow()) {
 			$groups[] = $row['gid'];
 		}
+		if(intval($limit) < 1) {
+			$this->cacheAllGroups($groups);
+		}
 		return $groups;
 	}
 
@@ -183,6 +228,9 @@ class OC_Group_Database extends OC_Group_Backend {
 	 * @return bool
 	 */
 	public function groupExists($gid) {
+		if(is_array($this->allGroups)) {
+			return  in_array($gid, $this->allGroups);
+		}
 		$query = OC_DB::prepare('SELECT `gid` FROM `*PREFIX*groups` WHERE `gid` = ?');
 		$result = $query->execute(array($gid))->fetchOne();
 		if ($result) {

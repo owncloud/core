@@ -78,7 +78,7 @@ class GROUP_LDAP extends BackendUtility implements \OCP\GroupInterface {
 
 		//extra work if we don't get back user DNs
 		//TODO: this can be done with one LDAP query
-		if(strtolower($this->access->connection->ldapGroupMemberAssocAttr) === 'memberuid') {
+		if($this->areGroupMembersUIDs()) {
 			$dns = array();
 			foreach($members as $mid) {
 				$filter = str_replace('%uid', $mid, $this->access->connection->ldapLoginFilter);
@@ -100,7 +100,7 @@ class GROUP_LDAP extends BackendUtility implements \OCP\GroupInterface {
 	/**
 	 * @param string $dnGroup
 	 * @param array|null &$seen
-	 * @return array|mixed|null
+	 * @return array having the memberDNs as keys, not values!
 	 */
 	private function _groupMembers($dnGroup, &$seen = null) {
 		if ($seen === null) {
@@ -117,14 +117,23 @@ class GROUP_LDAP extends BackendUtility implements \OCP\GroupInterface {
 			return $this->access->connection->getFromCache($cacheKey);
 		}
 		$seen[$dnGroup] = 1;
-		$members = $this->access->readAttribute($dnGroup, $this->access->connection->ldapGroupMemberAssocAttr,
+		$isDN = !$this->areGroupMembersUIDs();
+		if($this->access->connection->isCached('membersIn-'.$dnGroup)) {
+			$members = $this->access->connection->getFromCache('membersIn-'.$dnGroup);
+		} else {
+			$members = $this->access->readAttribute($dnGroup, $this->access->connection->ldapGroupMemberAssocAttr,
 												$this->access->connection->ldapGroupFilter);
+		}
 		if (is_array($members)) {
-			foreach ($members as $memberDN) {
-				$allMembers[$memberDN] = 1;
+			foreach ($members as $memberID) {
+				if(!$isDN || $this->access->isDNPartOfBase($memberID, $this->access->connection->ldapBaseUsers)) {
+					//checking non-DNs here would be too costly
+					$allMembers[$memberID] = 1;
+				}
 				$nestedGroups = $this->access->connection->ldapNestedGroups;
-				if (!empty($nestedGroups)) {
-					$subMembers = $this->_groupMembers($memberDN, $seen);
+				if (!empty($nestedGroups) && $isDN) {
+					// Nested groups are AD, it only returns DNs
+					$subMembers = $this->_groupMembers($memberID, $seen);
 					if ($subMembers) {
 						$allMembers = array_merge($allMembers, $subMembers);
 					}
@@ -209,6 +218,18 @@ class GROUP_LDAP extends BackendUtility implements \OCP\GroupInterface {
 	}
 
 	/**
+	 * returns a filter to detect users in a primary group
+	 * @param string $groupID
+	 * @return string
+	 */
+	private function getInPrimaryGroupFilter($groupID) {
+		return $this->access->combineFilterWithAnd(array(
+			$this->access->connection->ldapUserFilter,
+			'primaryGroupID=' . $groupID
+		));
+	}
+
+	/**
 	 * returns a list of users that have the given group as primary group
 	 *
 	 * @param string $groupDN
@@ -222,13 +243,32 @@ class GROUP_LDAP extends BackendUtility implements \OCP\GroupInterface {
 			return array();
 		}
 
-		$filter = $this->access->combineFilterWithAnd(array(
-			$this->access->connection->ldapUserFilter,
-			'primaryGroupID=' . $groupID
-		));
-
 		$users = $this->access->fetchListOfUsers(
-			$filter,
+			$this->getInPrimaryGroupFilter($groupID),
+			array($this->access->connection->ldapUserDisplayName, 'dn'),
+			$limit,
+			$offset
+		);
+
+		return $users;
+	}
+
+	/**
+	 * returns the number of users that have the given group as primary group
+	 *
+	 * @param string $groupDN
+	 * @param $limit
+	 * @param int $offset
+	 * @return int
+	 */
+	public function countUsersInPrimaryGroup($groupDN, $limit = -1, $offset = 0) {
+		$groupID = $this->getGroupPrimaryGroupID($groupDN);
+		if($groupID === false) {
+			return 0;
+		}
+
+		$users = $this->access->countUsers(
+			$this->getInPrimaryGroupFilter($groupID),
 			array($this->access->connection->ldapUserDisplayName, 'dn'),
 			$limit,
 			$offset
@@ -281,7 +321,7 @@ class GROUP_LDAP extends BackendUtility implements \OCP\GroupInterface {
 			|| (strtolower($this->access->connection->ldapGroupMemberAssocAttr) === 'member')
 		) {
 			$uid = $userDN;
-		} else if(strtolower($this->access->connection->ldapGroupMemberAssocAttr) === 'memberuid') {
+		} else if($this->areGroupMembersUIDs()) {
 			$result = $this->access->readAttribute($userDN, 'uid');
 			$uid = $result[0];
 		} else {
@@ -389,9 +429,8 @@ class GROUP_LDAP extends BackendUtility implements \OCP\GroupInterface {
 		}
 
 		$groupUsers = array();
-		$isMemberUid = (strtolower($this->access->connection->ldapGroupMemberAssocAttr) === 'memberuid');
 		foreach($members as $member) {
-			if($isMemberUid) {
+			if($this->areGroupMembersUIDs()) {
 				//we got uids, need to get their DNs to 'translate' them to user names
 				$filter = $this->access->combineFilterWithAnd(array(
 					\OCP\Util::mb_str_replace('%uid', $member,
@@ -465,53 +504,67 @@ class GROUP_LDAP extends BackendUtility implements \OCP\GroupInterface {
 		if(empty($search)) {
 			$groupUsers = count($members);
 			$this->access->connection->writeToCache($cacheKey, $groupUsers);
+			$groupUsers += $this->countUsersInPrimaryGroup($groupDN);
 			return $groupUsers;
 		}
-		$isMemberUid =
-			(strtolower($this->access->connection->ldapGroupMemberAssocAttr)
-			=== 'memberuid');
 
 		//we need to apply the search filter
-		//alternatives that need to be checked:
-		//a) get all users by search filter and array_intersect them
-		//b) a, but only when less than 1k 10k ?k users like it is
-		//c) put all DNs|uids in a LDAP filter, combine with the search string
-		//   and let it count.
-		//For now this is not important, because the only use of this method
-		//does not supply a search string
 		$groupUsers = array();
+		$filterParts = array();
+		$searchFilterPart = $this->access->getFilterPartForUserSearch($search);
+		$bytes = 0;
+		$totalUsers = 0;
 		foreach($members as $member) {
-			if($isMemberUid) {
-				//we got uids, need to get their DNs to 'translate' them to user names
-				$filter = $this->access->combineFilterWithAnd(array(
-					\OCP\Util::mb_str_replace('%uid', $member,
-						$this->access->connection->ldapLoginFilter, 'UTF-8'),
-					$this->access->getFilterPartForUserSearch($search)
-				));
-				$ldap_users = $this->access->fetchListOfUsers($filter, 'dn');
-				if(count($ldap_users) < 1) {
-					continue;
+			if($this->areGroupMembersUIDs()) {
+				// we have user DNs. Now we need to apply the search pattern
+				// we prepare the filter to run an LDAP search only once
+				$filter = \OCP\Util::mb_str_replace('%uid', $member,
+						$this->access->connection->ldapLoginFilter, 'UTF-8');
+				$filterParts[] = $filter;
+				$bytes += strlen($filter);
+				if($bytes >= 9000000) {
+					// AD has a default input buffer of 10 MB, we do not want
+					// to take even the chance to exceed it
+					$filter = $this->access->combineFilterWithAnd(array(
+						$this->access->combineFilterWithOr($filterParts),
+						$searchFilterPart));
+					$totalUsers += $this->access->countUsers($filter, 'dn');
+					$bytes = 0;
+					$filterParts = array();
 				}
-				$groupUsers[] = $this->access->dn2username($ldap_users[0]);
 			} else {
-				//we need to apply the search filter now
+				// we need to apply the search filter now. Fortunately, reading
+				// is by far faster than searching
 				if(!$this->access->readAttribute($member,
 					$this->access->connection->ldapUserDisplayName,
 					$this->access->getFilterPartForUserSearch($search))) {
 					continue;
 				}
 				// dn2username will also check if the users belong to the allowed base
-				if($ocname = $this->access->dn2username($member)) {
-					$groupUsers[] = $ocname;
-				}
+				$totalUsers += 1;
 			}
+		}
+		if(count($filterParts) > 0) {
+			$filter = $this->access->combineFilterWithAnd(array(
+				$this->access->combineFilterWithOr($filterParts),
+				$searchFilterPart));
+			$totalUsers += $this->access->countUsers($filter, 'dn');
 		}
 
 		//and get users that have the group as primary
-		$primaryUsers = $this->getUsersInPrimaryGroup($groupDN);
-		$groupUsers = array_unique(array_merge($groupUsers, $primaryUsers));
+		$totalUsers += $this->countUsersInPrimaryGroup($groupDN);
 
-		return count($groupUsers);
+		return $totalUsers;
+	}
+
+	/**
+	 * returns whether attributes that indicate the group memberships have UIDs
+	 * as value or not (DNs is the other case)
+	 * @return bool
+	 */
+	private function areGroupMembersUIDs() {
+		return (strtolower($this->access->connection->ldapGroupMemberAssocAttr)
+			=== 'memberuid');
 	}
 
 	/**
@@ -548,7 +601,7 @@ class GROUP_LDAP extends BackendUtility implements \OCP\GroupInterface {
 		));
 		\OCP\Util::writeLog('user_ldap', 'getGroups Filter '.$filter, \OCP\Util::DEBUG);
 		$ldap_groups = $this->access->fetchListOfGroups($filter,
-				array($this->access->connection->ldapGroupDisplayName, 'dn'),
+				array($this->access->connection->ldapGroupDisplayName, 'dn', N),
 				$limit,
 				$offset);
 		$ldap_groups = $this->access->ownCloudGroupNames($ldap_groups);
@@ -573,6 +626,9 @@ class GROUP_LDAP extends BackendUtility implements \OCP\GroupInterface {
 	public function getGroups($search = '', $limit = -1, $offset = 0) {
 		if(!$this->enabled) {
 			return array();
+		}
+		if($limit === -1 || is_null($limit)) {
+			$this->access->fetchAllMappedGroups();
 		}
 		$pagingSize = $this->access->connection->ldapPagingSize;
 		if ((! $this->access->connection->hasPagedResultSupport)
