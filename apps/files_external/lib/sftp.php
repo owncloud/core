@@ -7,6 +7,9 @@
  */
 namespace OC\Files\Storage;
 
+//https://github.com/phpseclib/phpseclib/issues/391
+require_once dirname(__FILE__) . '/../../../3rdparty/phpseclib/phpseclib/phpseclib/Net/SFTP/Stream.php';
+
 class SFTP extends \OC\Files\Storage\Common {
 	private $host;
 	private $user;
@@ -14,8 +17,6 @@ class SFTP extends \OC\Files\Storage\Common {
 	private $root;
 
 	private $client;
-
-	private static $tempFiles = array();
 
 	public function __construct($params) {
 		$this->host = $params['host'];
@@ -25,8 +26,22 @@ class SFTP extends \OC\Files\Storage\Common {
 		}
 		$this->user = $params['user'];
 		$this->password = $params['password'];
-		$this->root
-			= isset($params['root']) ? $this->cleanPath($params['root']) : '/';
+
+		if (!empty($params['usesshkey'])) {
+			if (($keyfile = \OC_Config::getValue('sftpsshkey'))) {
+				if (!is_file($keyfile) || !is_readable($keyfile)) {
+					throw new \Exception('SSH key "' . $keyfile . '" is not existent or readable');
+				}
+				$key = new \Crypt_RSA();
+				if ($this->password) {
+					$key->setPassword($this->password);
+				}
+				$key->loadKey(file_get_contents($keyfile));
+				$this->password = $key;
+			}
+		}
+
+		$this->root = isset($params['root']) ? $this->cleanPath($params['root']) : '/';
 
 		if ($this->root[0] != '/') {
 			 $this->root = '/' . $this->root;
@@ -37,10 +52,10 @@ class SFTP extends \OC\Files\Storage\Common {
 		}
 
 		$hostKeys = $this->readHostKeys();
-		$this->client = new \Net_SFTP($this->host);
 
+		$this->client = new \Net_SFTP($this->host);
 		if (!$this->client->login($this->user, $this->password)) {
-			throw new \Exception('Login failed');
+			throw new \Exception('Login failed: ' . $this->client->getLastError());
 		}
 
 		$currentHostKey = $this->client->getServerPublicHostKey();
@@ -173,7 +188,7 @@ class SFTP extends \OC\Files\Storage\Common {
 			if ($stat['type'] == NET_SFTP_TYPE_DIRECTORY) {
 				return 'dir';
 			}
-		} catch (\Exeption $e) {
+		} catch (\Exception $e) {
 
 		}
 		return false;
@@ -197,7 +212,6 @@ class SFTP extends \OC\Files\Storage\Common {
 
 	public function fopen($path, $mode) {
 		try {
-			$absPath = $this->absPath($path);
 			switch($mode) {
 				case 'r':
 				case 'rb':
@@ -217,7 +231,9 @@ class SFTP extends \OC\Files\Storage\Common {
 				case 'c':
 				case 'c+':
 					// FIXME: make client login lazy to prevent it when using fopen()
-					return fopen($this->constructUrl($path), $mode);
+					$opts = is_object($this->password) ? array('sftp' => array('privkey' => $this->password)) : array();
+					$context = stream_context_create($opts);
+					return fopen($this->constructUrl($path), $mode, null, $context);
 			}
 		} catch (\Exception $e) {
 		}
@@ -277,9 +293,14 @@ class SFTP extends \OC\Files\Storage\Common {
 
 	/**
 	 * @param string $path
+	 * @return string
 	 */
 	public function constructUrl($path) {
-		$url = 'sftp://'.$this->user.':'.$this->password.'@'.$this->host.$this->root.$path;
+		$url = 'sftp://'.$this->user;
+		if (!is_object($this->password)) {
+			$url .= ':'.$this->password.'';
+		}
+		$url .= '@'.$this->host.$this->root.$path;
 		return $url;
 	}
 }

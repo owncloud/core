@@ -22,6 +22,9 @@
 
 namespace Test\Files\Storage;
 
+//why do i have to require this for unittesting?
+require_once __DIR__ . '/../lib/sftp.php';
+
 class SFTP extends Storage {
 	private $config;
 

@@ -1,5 +1,8 @@
 <?php
 
+//for SFTP Test with SSH key
+OC_Config::setValue('sftpsshkey', '/usr/share/nginx/www/xfragger.de/owncloud/id_rsa');
+
 // in case there are private configurations in the users home -> use them
 $privateConfigFile = $_SERVER['HOME'] . '/owncloud-extfs-test-config.php';
 if (file_exists($privateConfigFile)) {
@@ -87,6 +90,7 @@ return array(
 		'host'=>'localhost',
 		'user'=>'test',
 		'password'=>'test',
-		'root'=>'/test'
+		'usesshkey'=>false,
+		'root'=>'/home/test'
 	)
 );

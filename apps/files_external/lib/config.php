@@ -744,6 +744,8 @@ class OC_Mount_Config {
 				return $l->t('<b>Note:</b> The cURL support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it.', $backend);
 			case 'ftp':
 				return $l->t('<b>Note:</b> The FTP support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it.', $backend);
+			case 'sshkey':
+				return $l->t('<b>Note:</b> No SSH-Key in config or Key is not readable. Mounting of %s with private ssh-key is not possible.', $backend);
 			default:
 				return $l->t('<b>Note:</b> "%s" is not installed. Mounting of %s is not possible. Please ask your system administrator to install it.', array($module, $backend));
 		}
