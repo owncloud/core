@@ -29,7 +29,7 @@ use	OC\Contacts\LocalUsersAddressbookProvider;
  * Every user has *1* personal addressbook. The id of this addresbook is the
  * userid of the owner.
  */
-class LocalUsers extends AbstractBackend {
+class LocalUsers {
 
 	public $name = 'localusers';
 
@@ -80,7 +80,7 @@ class LocalUsers extends AbstractBackend {
 	 * {@inheritdoc}
 	 */
 	public function getAddressBooksForUser(array $options = array()) {
-		return array($this->getAddressBook($this->userid));
+		return array($this->getAddressBook('localusers'));
 	}
 
 	/**
@@ -89,7 +89,7 @@ class LocalUsers extends AbstractBackend {
 	 */
 	public function getAddressBook($addressBookId, array $options = array()) {
 
-		$this->tagManager->add('LocalUsers');
+//		$this->tagManager->add('LocalUsers');
 
 		return array(
 			'id' => $addressBookId,
@@ -106,6 +106,12 @@ class LocalUsers extends AbstractBackend {
 	 * There are as many contacts in this addressbook as in this ownCloud installation
 	 */
 	public function getContacts($addressBookId, array $options = array()) {
+		$users = \OCP\User::getUsers();
+		$contacts = array();
+		foreach($users as $userid){
+			$contacts[] = $this->getContact($addressBookId, $userid);
+		}
+		return $contacts;
 	}
 
 	/**
@@ -116,7 +122,14 @@ class LocalUsers extends AbstractBackend {
 	 * ownCloud username 'bar' the params would be: $addressbookid = 'foo'; $id = 'bar';
 	 */
 	public function getContact($addressBookId, $id, array $options = array()) {
-
+		$contact = array();
+		$contact['permissions'] = \OCP\PERMISSION_READ;
+		$contact['id'] = $id;
+		$contact['addressbookid'] = $addressBookId;
+		$contact['displayname'] = \OCP\User::getDisplayname($userid);
+		$contact['carddata'] = $this->carddata($id)->serialize();
+		$contact['lastmodified'] = time();
+		return $contact;
 	}
 
 	/**
@@ -130,5 +143,100 @@ class LocalUsers extends AbstractBackend {
 	public function lastModifiedAddressBook($addressBookId) {
 		return time();
 	}
+
+	private function carddata($id){
+		$vcard = \Sabre\VObject\Component::create('VCARD');
+		$vcard->FN = \OCP\User::getDisplayName($user);
+		$now = new \DateTime('now');
+		$vcard->REV = $now->format(\DateTime::W3C);
+
+		$appinfo = \OCP\App::getAppInfo('contacts');
+		$appversion = \OCP\App::getAppVersion('contacts');
+		$prodid = '-//ownCloud//NONSGML ' . $appinfo['name'] . ' ' . $appversion.'//EN';
+		$vcard->PRODID = $prodid;
+		$vcard->add('IMPP', 'x-owncloud-handle:' . $id, array("X-SERVICE-TYPE" => array("owncloud-handle")));
+
+//		AVATAR
+//		$photo = TemporaryPhoto::create(
+//			$this->cache,
+//			TemporaryPhoto::PHOTO_USER,
+//			$id // ownCloud user ID
+//		);
+//		$photo->getKey(); // cache contact photo
+//		$vcard->add('PHOTO', strval($photo->getImage()), array('ENCODING' => 'b','TYPE' => $photo->getMimeType()));
+//		 END AVATAR
+//
+//		 LOCALUSERS GROUP
+//		if(!isset($vcard->CATEGORIES)) {
+//			$vcard->add('CATEGORIES');
+//		}
+//		$vcard->CATEGORIES->addGroup('LocalUsers');
+//		$this->tagManager->tagAs($user, 'LocalUsers');
+		// END LOCLAUSERS GROUP
+
+		return $vcard;
+
+	}
+
+	/**
+	 * ###########
+	 * Everything below is copied from abstractbackend
+	 * ###########
+	 */
+
+	public function isActive($addressBookId = null) {
+		return true; // TODO add check if localUsers is active
+	}
+
+	/**
+	 * @brief Check if backend implements action for contacts
+	 * @param $actions bitwise-or'ed actions
+	 * @returns boolean
+	 *
+	 * Returns the supported actions as int to be
+	 * compared with \OCP\PERMISSION_CREATE etc.
+	 */
+	public function hasContactMethodFor($permission) {
+
+		return (bool)($this->getContactPermissions() & $permission);
+
+	}
+
+	/**
+	 * @brief Get all possible permissions for contacts based on what the backend implements.
+	 * @returns bitwise-or'ed actions
+	 *
+	 * Returns the supported actions as an int to be
+	 * compared with \OCP\PERMISSION_CREATE etc.
+	 */
+	protected function getContactPermissions() {
+		$permissions = 0;
+
+		foreach ($this->possibleContactPermissions as $permission => $methodName) {
+			if(method_exists($this, $methodName)) {
+				$permissions |= $permission;
+			}
+
+		}
+
+//\OCP\Util::writeLog('contacts', __METHOD__.', permissions' . $permissions, \OCP\Util::DEBUG);
+		return $permissions;
+	}
+
+	protected $possibleContactPermissions = array(
+		\OCP\PERMISSION_CREATE => 'createContact',
+		\OCP\PERMISSION_READ	=> 'getContact',
+		\OCP\PERMISSION_UPDATE	=> 'updateContact',
+		\OCP\PERMISSION_DELETE => 'deleteContact',
+	);
+
+	protected $possibleAddressBookPermissions = array(
+		\OCP\PERMISSION_CREATE => 'createAddressBook',
+		\OCP\PERMISSION_READ	=> 'getAddressBook',
+		\OCP\PERMISSION_UPDATE	=> 'updateAddressBook',
+		\OCP\PERMISSION_DELETE => 'deleteAddressBook',
+	);
+
+
 
 }

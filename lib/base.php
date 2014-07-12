@@ -975,7 +975,7 @@ class OC {
 		if(OC_Config::getValue('installed', false)){
 			$backend = new \OC\Contacts\Backend\LocaLusers(\OCP\User::getUser());
 			$addressBookInfo = $backend->getAddressBook(\OCP\User::getUser());
-			$addressBook = new \OC\Contacts\AddressBook($backend, $addressBookInfo);
+			$addressBook = new \OCP\Contacts\AddressBook($backend, $addressBookInfo);
 			\OCP\Contacts::registerAddressBook($addressBook->getSearchProvider());
 		}
 	}
