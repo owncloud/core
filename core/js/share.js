@@ -93,7 +93,7 @@ OC.Share={
 		}
 		// TODO: iterating over the files might be more efficient
 		for (item in OC.Share.statuses){
-			var image = OC.imagePath('core', 'actions/shared');
+			var image = OC.imagePath('core', 'actions/share');
 			var data = OC.Share.statuses[item];
 			var hasLink = data.link;
 			// Links override shared in terms of icon display
@@ -383,7 +383,8 @@ OC.Share={
 			html += '<input id="shareWith" type="text" placeholder="'+t('core', 'Share with user or group …')+'" />';
 			html += '<ul id="shareWithList">';
 			html += '</ul>';
-			var linksAllowed = $('#allowShareWithLink').val() === 'yes';
+		        var linksAllowed = OC.appConfig.core.allowShareWithLink === 'yes';
+			
 			if (link && linksAllowed) {
 				html += '<div id="link">';
 				html += '<input type="checkbox" name="linkCheckbox" id="linkCheckbox" value="1" /><label for="linkCheckbox">'+t('core', 'Share link')+'</label>';
@@ -612,7 +613,7 @@ OC.Share={
 			var showCrudsButton;
 			html += '<a href="#" class="unshare"><img class="svg" alt="'+t('core', 'Unshare')+'" title="'+t('core', 'Unshare')+'" src="'+OC.imagePath('core', 'actions/delete')+'"/></a>';
 			html += '<span class="username">' + escapeHTML(shareWithDisplayName) + '</span>';
-			var mailNotificationEnabled = $('input:hidden[name=mailNotificationEnabled]').val();
+			var mailNotificationEnabled = OC.appConfig.core.mailNotificationEnabled;
 			if (mailNotificationEnabled === 'yes') {
 				var checked = '';
 				if (mailSend === '1') {
@@ -1030,8 +1031,8 @@ $(document).ready(function() {
 		var itemSource = $('#dropdown').data('item-source');
 		var file = $('tr').filterAttr('data-id', String(itemSource)).data('file');
 		
-		if(itemType !='file' || itemType !='folder'){
-		   file = $('a.share[data-item="'+itemSource+'"]').data('title');
+		if(itemType !== 'file' || itemType !== 'folder'){
+		   file = $('a.share').filterAttr('data-item',String(itemSource)).data('title');
 		}
 		
 		var email = $('#email').val();
