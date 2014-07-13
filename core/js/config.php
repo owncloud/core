@@ -34,6 +34,9 @@ if ($defaultExpireDateEnabled) {
 	$enforceDefaultExpireDate = ($value === 'yes') ? true : false;
 }
 
+$mailNotificationEnabled = \OCP\Config::getAppValue('core', 'shareapi_allow_mail_notification', 'yes');
+$allowShareWithLink= \OCP\Config::getAppValue('core', 'shareapi_allow_links', 'yes');
+
 $array = array(
 	"oc_debug" => (defined('DEBUG') && DEBUG) ? 'true' : 'false',
 	"oc_isadmin" => OC_User::isAdminUser(OC_User::getUser()) ? 'true' : 'false',
@@ -83,6 +86,8 @@ $array = array(
 				'defaultExpireDateEnforced' => $enforceDefaultExpireDate,
 				'enforcePasswordForPublicLink' => \OCP\Util::isPublicLinkPasswordRequired(),
 				'sharingDisabledForUser' => \OCP\Util::isSharingDisabledForUser(),
+				'mailNotificationEnabled' => $mailNotificationEnabled,
+				'allowShareWithLink' => $allowShareWithLink,
 				)
 			)
 	),
