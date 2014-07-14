@@ -147,7 +147,7 @@ class LocalUsers {
 		if(!isset($vcard->CATEGORIES)) {
 			$vcard->add('CATEGORIES');
 		}
-		$vcard->CATEGORIES->addGroup('LocalUsers');
+//		$vcard->CATEGORIES->addGroup('LocalUsers');
 		$this->tagManager->tagAs($id, 'LocalUsers');
 		// END LOCLAUSERS GROUP
 

@@ -37,6 +37,7 @@ class LocalUsersAddressbookProvider implements \OCP\IAddressBook {
 	 */
 	public function __construct(AddressBook $addressBook) {
 		$this->addressBook = $addressBook;
+		$this->userManager = \OC::$server->getUserManager();
 	}
 
 	/**
@@ -46,20 +47,39 @@ class LocalUsersAddressbookProvider implements \OCP\IAddressBook {
 	 * @return array|false
 	 */
 	public function search($pattern, $searchProperties, $options) {
-		var_dump($pattern);
+		$localusers = $this->addressBook->getBackend();
 		if($pattern == '') {
 			// Fetch all contacts
-			$localusers = $this->addressBook->getBackend();
-			$contacts = $localusers->getContacts('localusers');
+			$users = $localusers->getContacts('localusers');
+			foreach($users as $user){
+				$ids[] = $user['id'];
+			}
 		} else {
-			if($searchProperties === 'FN'){
-				searchDisplayName
+			$ids = array();
+			$contacts = array();
+			foreach($searchProperties as $property){
+				if($property === 'FN'){
+					$users = $this->userManager->searchDisplayName($pattern);
+				} else if ($property === 'id'){
+					$users = $this->userManager->search($pattern);
+				}
+				foreach($users as $user){
+					$ids[] = $user->getUID();
+				}
 			}
 		}
 
-		var_export($contacts);
-
-		die();
+		foreach($ids as $id){
+			$contact = array(
+				"id" => $id,
+				"FN" => \OCP\User::getDisplayname($id),
+				"EMAIL" => array(),
+				"IMPP" => array(
+					"x-owncloud-handle:" . $id
+				)
+			);
+			$contacts[] = $contact;
+		}
 		return $contacts;
 	}
 
