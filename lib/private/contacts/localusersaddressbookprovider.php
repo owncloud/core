@@ -27,19 +27,6 @@ use OC\Contacts\Backend\LocalUsers;
 class LocalUsersAddressbookProvider implements \OCP\IAddressBook {
 
 	/**
-	 * The table that holds the contacts.
-	 * @var string
-	 */
-	private $cardsTableName = '*PREFIX*ocu_cards';
-
-	/**
-	 * The table that holds the properties of the contacts.
-	 * This is used to provice a search function.
-	 * @var string
-	 */
-	private $indexTableName = '*PREFIX*ocu_cards_properties';
-
-	/**
 	 * @var LocalUsers
 	 */
 	private $backend;
@@ -59,54 +46,25 @@ class LocalUsersAddressbookProvider implements \OCP\IAddressBook {
 	 * @return array|false
 	 */
 	public function search($pattern, $searchProperties, $options) {
-		// First make sure the database is updated
-		$this->addressBook->getBackend()->updateDatabase(\OCP\User::getUser());
-
-		$ids = array();
-		$results = array();
-		$query = 'SELECT DISTINCT `contactid` FROM `' . $this->indexTableName . '` WHERE (';
-		$params = array();
-		foreach ($searchProperties as $property) {
-			$params[] = $property;
-			$params[] = '%' . $pattern . '%';
-			$query .= '(`name` = ? AND `value` LIKE ?) OR ';
-		}
-		$query = substr($query, 0, strlen($query) - 4);
-		$query .= ')';
-
-		$stmt = \OCP\DB::prepare($query);
-		$result = $stmt->execute($params);
-
-		if (\OCP\DB::isError($result)) {
-			\OCP\Util::writeLog('contacts', __METHOD__ . 'DB error: ' . \OC_DB::getErrorMessage($result),
-				\OCP\Util::ERROR);
-			return false;
+		var_dump($pattern);
+		if($pattern == '') {
+			// Fetch all contacts
+			$localusers = $this->addressBook->getBackend();
+			$contacts = $localusers->getContacts('localusers');
+		} else {
+			if($searchProperties === 'FN'){
+				searchDisplayName
+			}
 		}
 
-		while ($row = $result->fetchRow()) {
-			$ids[] = $row['contactid'];
-		}
+		var_export($contacts);
 
-		if (count($ids) > 0) {
-			$query = 'SELECT `' . $this->cardsTableName . '`.`addressbookid`, `' . $this->indexTableName . '`.`contactid`, `'
-				. $this->indexTableName . '`.`name`, `' . $this->indexTableName . '`.`value` FROM `'
-				. $this->indexTableName . '`,`' . $this->cardsTableName . '` WHERE `'
-				. $this->cardsTableName . '`.`addressbookid` = \'' . \OCP\User::getUser() . '\' AND `'
-				. $this->indexTableName . '`.`contactid` = `' . $this->cardsTableName . '`.`id` AND `'
-				. $this->indexTableName . '`.`contactid` IN (' . join(',', array_fill(0, count($ids), '?')) . ')';
-
-			$stmt = \OCP\DB::prepare($query);
-			$result = $stmt->execute($ids);
-		}
-
-		while ($row = $result->fetchRow()) {
-			$this->getProperty($results, $row);
-		}
-		return $results;
+		die();
+		return $contacts;
 	}
 
 	public function getKey() {
-		return "localusers:" . \OCP\User::getUser();
+		return "localusers:localusers";
 	}
 
 	/**

@@ -34,28 +34,6 @@ class LocalUsers {
 	public $name = 'localusers';
 
 	/**
-	 * The table that holds the contacts.
-	 * @var string
-	 */
-	private $cardsTableName = '*PREFIX*ocu_cards';
-
-	/**
-	 * The table that holds the properties of the contacts.
-	 * This is used to provice a search function.
-	 * @var string
-	 */
-	private $indexTableName = '*PREFIX*ocu_cards_properties';
-
-	/**
-	 * All possible properties which can be stored in the $indexTableName.
-	 * @var string
-	 */
-	private $indexProperties = array(
-		'BDAY', 'UID', 'N', 'FN', 'TITLE', 'ROLE', 'NOTE', 'NICKNAME',
-		'ORG', 'CATEGORIES', 'EMAIL', 'TEL', 'IMPP', 'ADR', 'URL', 'GEO'
-	);
-
-	/**
 	 * language object
 	 * @var OC_L10N
 	 */
@@ -89,7 +67,7 @@ class LocalUsers {
 	 */
 	public function getAddressBook($addressBookId, array $options = array()) {
 
-//		$this->tagManager->add('LocalUsers');
+		$this->tagManager->add('LocalUsers');
 
 		return array(
 			'id' => $addressBookId,
@@ -126,7 +104,7 @@ class LocalUsers {
 		$contact['permissions'] = \OCP\PERMISSION_READ;
 		$contact['id'] = $id;
 		$contact['addressbookid'] = $addressBookId;
-		$contact['displayname'] = \OCP\User::getDisplayname($userid);
+		$contact['displayname'] = \OCP\User::getDisplayname($id);
 		$contact['carddata'] = $this->carddata($id)->serialize();
 		$contact['lastmodified'] = time();
 		return $contact;
@@ -151,27 +129,26 @@ class LocalUsers {
 		$vcard->REV = $now->format(\DateTime::W3C);
 
 		$appinfo = \OCP\App::getAppInfo('contacts');
-		$appversion = \OCP\App::getAppVersion('contacts');
 		$prodid = '-//ownCloud//NONSGML ' . $appinfo['name'] . ' ' . $appversion.'//EN';
 		$vcard->PRODID = $prodid;
 		$vcard->add('IMPP', 'x-owncloud-handle:' . $id, array("X-SERVICE-TYPE" => array("owncloud-handle")));
 
 //		AVATAR
-//		$photo = TemporaryPhoto::create(
-//			$this->cache,
-//			TemporaryPhoto::PHOTO_USER,
-//			$id // ownCloud user ID
-//		);
-//		$photo->getKey(); // cache contact photo
-//		$vcard->add('PHOTO', strval($photo->getImage()), array('ENCODING' => 'b','TYPE' => $photo->getMimeType()));
+		$photo = \OCA\Contacts\Utils\TemporaryPhoto::create(
+			$this->cache,
+			\OCA\Contacts\Utils\TemporaryPhoto::PHOTO_USER,
+			$id // ownCloud user ID
+		);
+		$photo->getKey(); // cache contact photo
+		$vcard->add('PHOTO', strval($photo->getImage()), array('ENCODING' => 'b','TYPE' => $photo->getMimeType()));
 //		 END AVATAR
-//
+
 //		 LOCALUSERS GROUP
-//		if(!isset($vcard->CATEGORIES)) {
-//			$vcard->add('CATEGORIES');
-//		}
-//		$vcard->CATEGORIES->addGroup('LocalUsers');
-//		$this->tagManager->tagAs($user, 'LocalUsers');
+		if(!isset($vcard->CATEGORIES)) {
+			$vcard->add('CATEGORIES');
+		}
+		$vcard->CATEGORIES->addGroup('LocalUsers');
+		$this->tagManager->tagAs($id, 'LocalUsers');
 		// END LOCLAUSERS GROUP
 
 		return $vcard;
