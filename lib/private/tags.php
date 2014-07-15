@@ -244,6 +244,7 @@ class Tags implements \OCP\ITags {
 					'uid' => $this->user,
 					'type' => $this->type,
 					'category' => $name,
+					'id' => null
 				)
 			);
 			if (\OCP\DB::isError($result)) {
