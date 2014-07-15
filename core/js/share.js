@@ -1032,7 +1032,8 @@ $(document).ready(function() {
 		var file = $('tr').filterAttr('data-id', String(itemSource)).data('file');
 		
 		if(itemType !== 'file' || itemType !== 'folder'){
-		   file = $('a.share').filterAttr('data-item',String(itemSource)).data('title');
+			//data-title contains the itemtitle e.g. the calender name or event title
+			file = $('a.share').filterAttr('data-item',String(itemSource)).data('title');
 		}
 		
 		var email = $('#email').val();
