@@ -9,8 +9,8 @@
 namespace OC\Hooks;
 
 abstract class LegacyEmitter extends BasicEmitter {
-	protected function emit($scope, $method, $arguments = array()) {
+	protected function emit($scope, $method, $arguments = array(), $abortable=false) {
 		\OC_Hook::emit($scope, $method, $arguments);
-		parent::emit($scope, $method, $arguments);
+		return parent::emit($scope, $method, $arguments, $abortable);
 	}
 }
