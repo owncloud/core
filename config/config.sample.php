@@ -321,7 +321,7 @@ $CONFIG = array(
  * and encryption will cause severe overhead because key files need to be fetched in addition to any requested file.
  *
  * One way to test is applying for a trystack account at http://trystack.org/
- */
+
 'objectstore' => array(
 	'class' => 'OC\\Files\\ObjectStore\\Swift',
 	'arguments' => array(
@@ -335,5 +335,5 @@ $CONFIG = array(
 		'serviceName' => 'swift', //dev-/trystack uses swift by default, the lib defaults to 'cloudFiles' if omitted
 	),
 ),
-
+ */
 );
