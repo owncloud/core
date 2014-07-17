@@ -16,8 +16,8 @@ namespace Test\Hooks;
  * @package Test\Hooks
  */
 class DummyEmitter extends \OC\Hooks\BasicEmitter {
-	public function emitEvent($scope, $method, $arguments = array()) {
-		$this->emit($scope, $method, $arguments);
+	public function emitEvent($scope, $method, $arguments = array(), $abortable=false) {
+		return $this->emit($scope, $method, $arguments, $abortable);
 	}
 }
 
@@ -275,5 +275,56 @@ class BasicEmitter extends \PHPUnit_Framework_TestCase {
 		$this->emitter->emitEvent('Test', 'test');
 
 		$this->assertTrue(true);
+	}
+
+	/**
+	 * Tests if returning false in a non-abortable is able to abort the hook (which should not be the case)
+	 */
+	public function testNonAbortable() {
+		$secondListenerInvoked = false;
+
+		/* The first registered listener returns false, as to abort an abortable hook */
+		$firstListener = function() {
+			return false;
+		};
+
+		$secondListener = function() use(&$secondListenerInvoked) {
+			$secondListenerInvoked = true;
+		};
+
+		$this->emitter->listen('Test', 'test', $firstListener);
+		$this->emitter->listen('Test', 'test', $secondListener);
+
+		/* We intentionally do not explicitly define the hook to be non-abortable here,
+		 * so the old behaviour of/interface to emit is tested as well.
+		 */
+		$result = $this->emitter->emitEvent('Test', 'test');
+
+		$this->assertTrue($secondListenerInvoked);
+		$this->assertTrue($result);
+	}
+
+	/**
+	 * Tests if returning false in an abortable hook actually aborts the hook.
+	 */
+	public function testAbortableAbort() {
+		$secondListenerInvoked = false;
+
+		/* The first registered listener returns false, as to abort an abortable hook */
+		$firstListener = function() {
+			return false;
+		};
+
+		$secondListener = function() use(&$secondListenerInvoked) {
+			$secondListenerInvoked = true;
+		};
+
+		$this->emitter->listen('Test', 'test', $firstListener);
+		$this->emitter->listen('Test', 'test', $secondListener);
+
+		$result = $this->emitter->emitEvent('Test', 'test', array(), true);
+
+		$this->assertFalse($secondListenerInvoked);
+		$this->assertFalse($result);
 	}
 }

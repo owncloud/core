@@ -13,8 +13,10 @@ class PublicEmitter extends BasicEmitter {
 	 * @param string $scope
 	 * @param string $method
 	 * @param array $arguments optional
+	 * @param bool $abortable optional Defines whether the hook is abortable or not
+	 * @return bool true if not aborted, false otherwise
 	 */
-	public function emit($scope, $method, $arguments = array()) {
-		parent::emit($scope, $method, $arguments);
+	public function emit($scope, $method, $arguments = array(), $abortable = false) {
+		return parent::emit($scope, $method, $arguments, $abortable);
 	}
 }

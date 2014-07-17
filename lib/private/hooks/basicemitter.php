@@ -77,13 +77,24 @@ abstract class BasicEmitter implements Emitter {
 	 * @param string $scope
 	 * @param string $method
 	 * @param array $arguments optional
+	 * @param bool $abortable optional Defines whether the hook is abortable or not
+	 * @return bool true if not aborted, false otherwise
 	 */
-	protected function emit($scope, $method, $arguments = array()) {
+	protected function emit($scope, $method, $arguments = array(), $abortable = false) {
 		$eventName = $scope . '::' . $method;
 		if (isset($this->listeners[$eventName])) {
 			foreach ($this->listeners[$eventName] as $callback) {
-				call_user_func_array($callback, $arguments);
+				$result = call_user_func_array($callback, $arguments);
+				if ($abortable && $result === false) {
+					/* If the hook is abortable and the result was false we do not want the execution to carry on
+					 * and return immediately
+					 */
+					return $result;
+				}
 			}
 		}
+
+		/* Not aborted or not abortable. For non-abortable calls to emit() this return value can safely be ignored. */
+		return true;
 	}
 }
