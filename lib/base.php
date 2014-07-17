@@ -433,10 +433,6 @@ class OC {
 		self::$loader = new \OC\Autoloader();
 		self::$loader->registerPrefix('Doctrine\\Common', 'doctrine/common/lib');
 		self::$loader->registerPrefix('Doctrine\\DBAL', 'doctrine/dbal/lib');
-		self::$loader->registerPrefix('Symfony\\Component\\Routing', 'symfony/routing');
-		self::$loader->registerPrefix('Symfony\\Component\\Console', 'symfony/console');
-		self::$loader->registerPrefix('Patchwork', '3rdparty');
-		self::$loader->registerPrefix('Pimple', '3rdparty/Pimple');
 		spl_autoload_register(array(self::$loader, 'load'));
 
 		// make a dummy session available as early as possible since error pages need it
@@ -504,13 +500,15 @@ class OC {
 			} catch (\Exception $ex) {
 			}
 		}
-		OC_Util::isSetLocaleWorking();
 
 		// setup 3rdparty autoloader
-		$vendorAutoLoad = OC::$THIRDPARTYROOT . '/3rdparty/autoload.php';
+		$vendorAutoLoad = OC::$THIRDPARTYROOT . '/3rdparty/server-components/autoload.php';
 		if (file_exists($vendorAutoLoad)) {
 			require_once $vendorAutoLoad;
 		}
+
+		OC_Util::isSetLocaleWorking();
+
 
 		// set debug mode if an xdebug session is active
 		if (!defined('DEBUG') || !DEBUG) {
