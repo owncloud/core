@@ -1,5 +1,4 @@
 <?php
-use ZipStreamer\ZipStreamer;
 
 /**
  * ownCloud
