@@ -134,20 +134,27 @@ class LocalUsers {
 		$vcard->add('IMPP', 'x-owncloud-handle:' . $id, array("X-SERVICE-TYPE" => array("owncloud-handle")));
 
 //		AVATAR
-		$photo = \OCA\Contacts\Utils\TemporaryPhoto::create(
-			$this->cache,
-			\OCA\Contacts\Utils\TemporaryPhoto::PHOTO_USER,
-			$id // ownCloud user ID
-		);
-		$photo->getKey(); // cache contact photo
-		$vcard->add('PHOTO', strval($photo->getImage()), array('ENCODING' => 'b','TYPE' => $photo->getMimeType()));
+		$localPath = \OCP\Config::getSystemValue('datadirectory') . '/' . $id . '/avatar.';
+		if (file_exists($localPath . 'png')){
+			$localPath .= 'png';
+			$photoExists = true;
+		} else if (file_exists($localPath . 'jpg')){
+			$localPath .= 'jpg';
+			$photoExists = true;
+		}
+
+		if($photoExists){
+			$image = new \OCP\Image();
+			$image->loadFromFile($localPath);
+			$vcard->add('PHOTO', $image->__toString(), array('ENCODING' => 'b','TYPE' => $image->mimeType()));
+		}
 //		 END AVATAR
 
 //		 LOCALUSERS GROUP
 		if(!isset($vcard->CATEGORIES)) {
 			$vcard->add('CATEGORIES');
 		}
-//		$vcard->CATEGORIES->addGroup('LocalUsers');
+		$vcard->CATEGORIES->addGroup('LocalUsers');
 		$this->tagManager->tagAs($id, 'LocalUsers');
 		// END LOCLAUSERS GROUP
 

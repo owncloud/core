@@ -28,7 +28,7 @@ use OCP\AppFramework\Http;
  * This class manages our addressbooks.
  */
 
-class Addressbook extends AbstractPIMCollection {
+class Addressbook {
 
 	/**
 	 * @brief language object
