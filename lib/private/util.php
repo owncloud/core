@@ -1337,7 +1337,7 @@ class OC_Util {
 	 * @param string $url
 	 * @return string|null
 	 */
-	private function getCrtPathForURL($url) {
+	private static function getCrtPathForURL($url) {
 		$parsed_url = parse_url($url);
 		if (!isset($parsed_url['host'])) {
 			return null;
@@ -1347,8 +1347,8 @@ class OC_Util {
 
 		$crtPath = null;
 		switch ($host) {
-			case 'api.apps.owncloud.com':
-				$crtPath = __DIR__ . '../../core/certs/appstore.crt';
+			case "api.owncloud.com":
+				$crtPath = __DIR__ . '/../../core/certs/appstore.crt';
 				break;
 
 			default:
