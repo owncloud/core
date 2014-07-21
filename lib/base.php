@@ -585,6 +585,7 @@ class OC {
 		self::registerPreviewHooks();
 		self::registerShareHooks();
 		self::registerLogRotate();
+		self::registerAddressBook();
 
 		//make sure temporary files are cleaned up
 		register_shutdown_function(array('OC_Helper', 'cleanTmp'));
@@ -968,6 +969,15 @@ class OC {
 			$_SERVER['HTTP_REQUESTTOKEN'] = OC_Util::callRegister();
 		}
 		return true;
+	}
+
+	private static function registerAddressBook(){
+		if(OC_Config::getValue('installed', false)){
+			$backend = new \OC\Contacts\Backend\LocaLusers(\OCP\User::getUser());
+			$addressBookInfo = $backend->getAddressBook(\OCP\User::getUser());
+			$addressBook = new \OCP\Contacts\AddressBook($backend, $addressBookInfo);
+			\OCP\Contacts::registerAddressBook($addressBook->getSearchProvider());
+		}
 	}
 
 }
