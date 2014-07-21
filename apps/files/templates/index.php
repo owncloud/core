@@ -16,4 +16,5 @@
 <input type="hidden" name="encryptedInitStatus" id="encryptionInitStatus" value="<?php p($_['encryptionInitStatus']) ?>" />
 <input type="hidden" name="mailNotificationEnabled" id="mailNotificationEnabled" value="<?php p($_['mailNotificationEnabled']) ?>" />
 <input type="hidden" name="allowShareWithLink" id="allowShareWithLink" value="<?php p($_['allowShareWithLink']) ?>" />
+<input type="hidden" name="publicBaseURL" id="publicBaseURL" value="<?php p($_['publicBaseURL']) ?>" />
 <?php endif;
