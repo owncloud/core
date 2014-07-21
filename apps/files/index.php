@@ -120,6 +120,7 @@ $tmpl->assign('isPublic', false);
 $tmpl->assign("encryptedFiles", \OCP\Util::encryptedFiles());
 $tmpl->assign("mailNotificationEnabled", $config->getAppValue('core', 'shareapi_allow_mail_notification', 'no'));
 $tmpl->assign("allowShareWithLink", $config->getAppValue('core', 'shareapi_allow_links', 'yes'));
+$tmpl->assign("publicBaseURL", \OC_Appconfig::getValue('core', 'shareapi_public_base_url'));
 $tmpl->assign("encryptionInitStatus", $encryptionInitStatus);
 $tmpl->assign('appNavigation', $nav);
 $tmpl->assign('appContents', $contentItems);

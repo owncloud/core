@@ -85,6 +85,15 @@ $(document).ready(function(){
 		$('#setDefaultExpireDate').toggleClass('hidden', !(this.checked && $('#shareapiDefaultExpireDate')[0].checked));
 	});
 
+	$('#allowLinks').change(function() {
+		if($('#allowLinks').attr('checked')) {
+			$('#publicBaseURL').removeAttr('disabled');
+		} else {
+			$('#publicBaseURL').attr('disabled', 'disabled');
+		}
+	});
+
+
 	$('#security').change(function(){
 		$.post(OC.filePath('settings','ajax','setsecurity.php'), { enforceHTTPS: $('#forcessl').val() },function(){} );
 	});

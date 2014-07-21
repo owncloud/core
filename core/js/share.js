@@ -671,8 +671,9 @@ OC.Share={
 				var file = $('#dir').val() + '/' + filename;
 			}
 			file = '/'+OC.currentUser+'/files'+file;
+			var publicBaseURL = $('input:hidden[name=publicBaseURL]').val();
 			// TODO: use oc webroot ?
-			var link = parent.location.protocol+'//'+location.host+OC.linkTo('', 'public.php')+'?service=files&'+type+'='+encodeURIComponent(file);
+			var link = (publicBaseURL ? publicBaseURL : parent.location.protocol+'//'+location.host)+OC.linkTo('', 'public.php')+'?service=files&'+type+'='+encodeURIComponent(file);
 		} else {
 			//TODO add path param when showing a link to file in a subfolder of a public link share
 			var service='';
@@ -682,8 +683,9 @@ OC.Share={
 				service=linkSharetype;
 			}
 
+			var publicBaseURL = $('input:hidden[name=publicBaseURL]').val();
 			// TODO: use oc webroot ?
-			var link = parent.location.protocol+'//'+location.host+OC.linkTo('', 'public.php')+'?service='+service+'&t='+token;
+			var link = (publicBaseURL ? publicBaseURL : parent.location.protocol+'//'+location.host)+OC.linkTo('', 'public.php')+'?service='+service+'&t='+token;
 
 		}
 		$('#linkText').val(link);

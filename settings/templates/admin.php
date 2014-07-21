@@ -244,6 +244,11 @@ if (!$_['internetconnectionworking']) {
 		</p>
 
 			<p id="publicLinkSettings" class="indent <?php if ($_['allowLinks'] !== 'yes' || $_['shareAPIEnabled'] === 'no') p('hidden'); ?>">
+				<input type="text" name="shareapi_public_base_url" id="publicBaseURL" style="width:280px;" 
+					value='<?php p($_['publicBaseURL']) ?>'
+					title="<?php p($l->t( 'Leave empty for autodetection' )); ?>" /><br />
+				<em><?php p($l->t( 'Base URL for public links' )); ?> </em><br />
+
 				<input type="checkbox" name="shareapi_enforce_links_password" id="enforceLinkPassword"
 						   value="1" <?php if ($_['enforceLinkPassword']) print_unescaped('checked="checked"'); ?> />
 				<label for="enforceLinkPassword"><?php p($l->t('Enforce password protection'));?></label><br/>

@@ -80,6 +80,7 @@ $tmpl->assign('enforceHTTPSEnabled', OC_Config::getValue( "forcessl", false));
 
 $tmpl->assign('allowLinks', OC_Appconfig::getValue('core', 'shareapi_allow_links', 'yes'));
 $tmpl->assign('enforceLinkPassword', \OCP\Util::isPublicLinkPasswordRequired());
+$tmpl->assign('publicBaseURL', OC_Appconfig::getValue('core', 'shareapi_public_base_url'));
 $tmpl->assign('allowPublicUpload', OC_Appconfig::getValue('core', 'shareapi_allow_public_upload', 'yes'));
 $tmpl->assign('allowResharing', OC_Appconfig::getValue('core', 'shareapi_allow_resharing', 'yes'));
 $tmpl->assign('allowMailNotification', OC_Appconfig::getValue('core', 'shareapi_allow_mail_notification', 'no'));
