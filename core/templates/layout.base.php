@@ -31,7 +31,24 @@
 		<?php endforeach; ?>
 	</head>
 	<?php flush(); ?>
-	<body id="body-public">
-		<?php print_unescaped($_['content']); ?>
+	
+        <body id="body-public">
+                <div class="wrapper"><!-- for sticky footer -->
+                        <div class="v-align"><!-- vertically centred box -->
+                                <header><div id="header">
+                                        <div class="logo svg"></div>
+                                        <div id="logo-claim" style="display:none;"><?php p($theme->getLogoClaim()); ?></div>
+                                </div></header>
+                            
+                                <?php print_unescaped($_['content']); ?>
+                        <div class="push"></div><!-- for sticky footer -->
+                        </div>
+		</div>
+                            
+                <footer>
+                        <p class="info">
+                                <?php print_unescaped($theme->getLongFooter()); ?>
+                        </p>
+                </footer>
 	</body>
 </html>

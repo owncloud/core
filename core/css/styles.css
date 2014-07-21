@@ -24,6 +24,12 @@ body {
 	height: auto;
 }
 
+#body-public {
+	text-align: center;
+        background-attachment: fixed; /* fix background gradient */
+	height: 100%; /* fix sticky footer */
+}
+
 #body-login {
 	text-align: center;
 	background: #1d2d44; /* Old browsers */
@@ -351,12 +357,17 @@ input[type="submit"].enabled {
 	padding: 5px;
 }
 
-#body-login div.buttons { text-align:center; }
+#body-login div.buttons { 
+	text-align:center; 
+}
+
+#body-public p.info,
 #body-login p.info {
 	width: 22em;
 	margin: 0 auto;
 	padding-top: 20px;
 }
+#body-public p.info a,
 #body-login p.info a {
 	font-weight: bold;
 	padding: 13px;
@@ -390,6 +401,14 @@ input[type="submit"].enabled {
 }
 
 /* strengthify wrapper */
+#body-public .strengthify-wrapper {
+	display: inline-block;
+	position: relative;
+	left: 15px;
+	top: -21px;
+	width: 100%;
+}
+
 #body-login .strengthify-wrapper {
 	display: inline-block;
 	position: relative;
@@ -399,6 +418,7 @@ input[type="submit"].enabled {
 }
 
 /* tipsy for the strengthify wrapper looks better with following font settings */
+#body-public .tipsy-inner, 
 #body-login .tipsy-inner {
 	font-weight: bold;
 	color: #ccc;
@@ -501,6 +521,7 @@ label.infield {
 }
 
 
+#body-public footer .info,
 #body-login footer .info {
 	white-space: nowrap;
 }
@@ -577,6 +598,7 @@ label.infield {
 	color: #ccc;
 }
 
+#body-public .v-align,
 #body-login .v-align {
 	width: inherit;
 }
@@ -659,11 +681,19 @@ label.infield {
 }
 
 /* Sticky footer */
+#body-public .wrapper {
+	min-height: 100%;
+	margin: 0 auto -115px;
+	width: 100%;
+}
+
 #body-login .wrapper {
 	min-height: 100%;
 	margin: 0 auto -70px;
 	width: 300px;
 }
+
+#body-public footer, #body-public .push,
 #body-login footer, #body-login .push {
 	height: 70px;
 }
