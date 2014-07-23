@@ -720,9 +720,9 @@ OC.Notification={
 	
 	/**
 	 * Shows a notification that disappears after x seconds, default is 
-	 * 3 seconds
+	 * 5 seconds
 	 * @param {string} Text message to show
-	 * @param {int} The timeout in milliseconds
+	 * @param {int} (Optional) The timeout in milliseconds
 	 * @param {boolean} (Optional) an indicator for HTML notifications (true) or text (false)
 	 */
 	 showTimeout: function(text,timeout,isHTML){
