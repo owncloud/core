@@ -725,14 +725,14 @@ OC.Notification={
 	 * @param {int} (Optional) The timeout in milliseconds
 	 * @param {boolean} (Optional) an indicator for HTML notifications (true) or text (false)
 	 */
-	 showTimeout: function(text,timeout,isHTML){
+	 showTimeout: function(text, timeout, isHTML) {
 	 	isHTML = (!isHTML) ? false : true;
 	 	OC.Notification.hide();
-		if(OC.Notification.notificationTimer){
+		if(OC.Notification.notificationTimer) {
 			clearTimeout(OC.Notification.notificationTimer)
 		}
 		timeout = (!timeout) ? 5000 : timeout;
-		if(isHTML){
+		if(isHTML) {
 			OC.Notification.showHtml(str);
 		} else {
 			OC.Notification.show(str);	
@@ -740,7 +740,7 @@ OC.Notification={
 		
 		OC.Notification.notificationTimer = setTimeout(function(){
 			OC.Notification.hide();
-		},timeout);
+		}, timeout);
 	 }
 	
 	/**
