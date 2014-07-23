@@ -69,8 +69,3 @@
 	</div>
 
 </div>
-<footer>
-	<p class="info">
-		<?php print_unescaped($theme->getLongFooter()); ?>
-	</p>
-</footer>

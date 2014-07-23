@@ -11,9 +11,8 @@
 
 /* HEADERS ------------------------------------------------------------------ */
 
-#body-user #header,
-#body-settings #header,
-#body-public #header {
+#body-user #header, #body-public #header,
+#body-settings #header{
 	position: fixed;
 	top: 0;
 	left: 0;
