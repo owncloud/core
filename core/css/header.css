@@ -226,8 +226,8 @@
 /* info part on the right, used e.g. for info on who shared something */
 .header-right {
 	position: absolute;
+	right: 0;
 	top: 0;
-        right: 0;
 	padding: 7px 5px;
 	color: #fff;
 	height: 100%;
