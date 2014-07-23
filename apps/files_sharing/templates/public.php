@@ -4,7 +4,7 @@
 </div>
 
 <input type="hidden" id="filesApp" name="filesApp" value="1">
-<input type="hidden" id="isGuest" name="isGuest" value="1">
+<input type="hidden" id="isPublic" name="isPublic" value="1">
 <input type="hidden" name="dir" value="<?php p($_['dir']) ?>" id="dir">
 <input type="hidden" name="downloadURL" value="<?php p($_['downloadURL']) ?>" id="downloadURL">
 <input type="hidden" name="sharingToken" value="<?php p($_['sharingToken']) ?>" id="sharingToken">
