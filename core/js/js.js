@@ -731,14 +731,13 @@ OC.Notification={
 		if(OC.Notification.notificationTimer){
 			clearTimeout(notificationTimer);
 		}
-		timeout = (!timeout) ? 3000 : timeout;
+		timeout = (!timeout) ? 5000 : timeout;
 		if(isHTML){
 			OC.Notification.showHtml(str);
-		}
-		else
-		{
+		} else {
 			OC.Notification.show(str);	
 		}
+		
 		OC.Notification.notificationTimer = setTimeout(function(){
 			OC.Notification.hide();
 		},timeout);
