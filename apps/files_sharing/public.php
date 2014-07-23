@@ -121,7 +121,7 @@ if (isset($path)) {
 		OCP\Util::addScript('files', 'jquery.iframe-transport');
 		OCP\Util::addScript('files', 'jquery.fileupload');
 		$maxUploadFilesize=OCP\Util::maxUploadFilesize($path);
-		$tmpl = new OCP\Template('files_sharing', 'public', 'base');
+		$tmpl = new OCP\Template('files_sharing', 'public', 'public');
 		$tmpl->assign('displayName', \OCP\User::getDisplayName($shareOwner));
 		$tmpl->assign('filename', $file);
 		$tmpl->assign('directory_path', $linkItem['file_target']);
