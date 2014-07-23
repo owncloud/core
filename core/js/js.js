@@ -729,7 +729,7 @@ OC.Notification={
 	 	isHTML = (!isHTML) ? false : true;
 	 	OC.Notification.hide();
 		if(OC.Notification.notificationTimer){
-			clearTimeout(notificationTimer);
+			clearTimeout(OC.Notification.notificationTimer)
 		}
 		timeout = (!timeout) ? 5000 : timeout;
 		if(isHTML){
