@@ -36,7 +36,7 @@
                 <div class="wrapper"><!-- for sticky footer -->
                         <div class="v-align"><!-- vertically centred box -->
                             <header>
-                                <div id="header" class="<?php p((isset($_['folder']) ? 'share-folder' : 'share-file')) ?>">
+                                <div id="header">
                                     <a href="<?php print_unescaped(link_to('', 'index.php')); ?>"title="" id="owncloud">
                                     <div class="logo-wide svg"></div>
                                     </a>
