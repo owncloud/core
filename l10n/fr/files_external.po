@@ -11,6 +11,7 @@
 # Gauth <gauthier@openux.org>, 2014
 # Romain DEP. <rom1dep@gmail.com>, 2014
 # themen <themen2004@gmail.com>, 2014
+# Maxime Auvy <maxime@open-freax.fr>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
@@ -113,7 +114,7 @@ msgstr "Activer le style de chemin"
 
 #: appinfo/app.php:77
 msgid "App key"
-msgstr "Clé App"
+msgstr "App key"
 
 #: appinfo/app.php:78
 msgid "App secret"
@@ -137,7 +138,7 @@ msgstr "Mot de passe"
 #: appinfo/app.php:91 appinfo/app.php:133 appinfo/app.php:143
 #: appinfo/app.php:154 appinfo/app.php:176
 msgid "Root"
-msgstr "Root"
+msgstr "Racine"
 
 #: appinfo/app.php:92
 msgid "Secure ftps://"
@@ -241,7 +242,7 @@ msgstr "Système"
 
 #: js/settings.js:325 js/settings.js:332
 msgid "Saved"
-msgstr "Sauvegarder"
+msgstr "Sauvegardé"
 
 #: lib/config.php:712
 msgid "<b>Note:</b> "

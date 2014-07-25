@@ -11,6 +11,7 @@
 # Gauth <gauthier@openux.org>, 2014
 # MathieuP, 2013
 # Ogre Sympathique, 2013
+# Maxime Auvy <maxime@open-freax.fr>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
@@ -40,7 +41,7 @@ msgstr "Erreur Inconnue "
 #: ajax/move.php:15
 #, php-format
 msgid "Could not move %s - File with this name already exists"
-msgstr "Impossible de déplacer %s - Un fichier possédant ce nom existe déjà"
+msgstr "Impossible de déplacer %s - Un fichier du même nom existe déjà"
 
 #: ajax/move.php:25 ajax/move.php:28
 #, php-format
@@ -114,30 +115,30 @@ msgstr "Aucun fichier n'a été envoyé. Erreur inconnue"
 
 #: ajax/upload.php:84
 msgid "There is no error, the file uploaded with success"
-msgstr "Aucune erreur, le fichier a été envoyé avec succès."
+msgstr "Aucune erreur, le fichier a été envoyé avec succès"
 
 #: ajax/upload.php:85
 msgid ""
 "The uploaded file exceeds the upload_max_filesize directive in php.ini: "
-msgstr "Le fichier envoyé dépasse l'instruction upload_max_filesize située dans le fichier php.ini:"
+msgstr "Le fichier envoyé dépasse l'instruction upload_max_filesize située dans le fichier php.ini :"
 
 #: ajax/upload.php:87
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
-msgstr "Le fichier envoyé dépasse l'instruction MAX_FILE_SIZE qui est spécifiée dans le formulaire HTML."
+msgstr "Le fichier envoyé dépasse l'instruction MAX_FILE_SIZE qui est spécifiée dans le formulaire HTML"
 
 #: ajax/upload.php:88
 msgid "The uploaded file was only partially uploaded"
-msgstr "Le fichier n'a été que partiellement envoyé."
+msgstr "Le fichier n'a été que partiellement envoyé"
 
 #: ajax/upload.php:89
 msgid "No file was uploaded"
-msgstr "Pas de fichier envoyé."
+msgstr "Pas de fichier envoyé"
 
 #: ajax/upload.php:90
 msgid "Missing a temporary folder"
-msgstr "Absence de dossier temporaire."
+msgstr "Absence de dossier temporaire"
 
 #: ajax/upload.php:91
 msgid "Failed to write to disk"
@@ -149,11 +150,11 @@ msgstr "Plus assez d'espace de stockage disponible"
 
 #: ajax/upload.php:173
 msgid "Upload failed. Could not find uploaded file"
-msgstr "L'envoi a échoué. Impossible de trouver le fichier envoyé."
+msgstr "L'envoi a échoué. Impossible de trouver le fichier envoyé"
 
 #: ajax/upload.php:183
 msgid "Upload failed. Could not get file info."
-msgstr "L'envoi a échoué. Impossible d'obtenir les informations du fichier."
+msgstr "L'envoi a échoué. Impossible d'obtenir les informations du fichier"
 
 #: ajax/upload.php:198
 msgid "Invalid directory."
@@ -223,7 +224,7 @@ msgstr "Supprimer"
 
 #: js/fileactions.js:297
 msgid "Disconnect storage"
-msgstr ""
+msgstr "L'espace de stockage est déconnecté"
 
 #: js/fileactions.js:299
 msgid "Unshare"
@@ -231,7 +232,7 @@ msgstr "Ne plus partager"
 
 #: js/fileactions.js:301
 msgid "Delete permanently"
-msgstr "Supprimer de façon définitive"
+msgstr "Supprimer définitivement"
 
 #: js/fileactions.js:342
 msgid "Rename"
@@ -320,13 +321,13 @@ msgid ""
 "Invalid private key for Encryption App. Please update your private key "
 "password in your personal settings to recover access to your encrypted "
 "files."
-msgstr "Votre clef privée pour l'application de chiffrement est invalide ! Veuillez mettre à jour le mot de passe de votre clef privée dans vos paramètres personnels pour récupérer l'accès à vos fichiers chiffrés."
+msgstr "Votre clé privée pour l'application de chiffrement est invalide ! Veuillez mettre à jour le mot de passe de votre clé privée dans vos paramètres personnels pour récupérer l'accès à vos fichiers chiffrés."
 
 #: js/files.js:148
 msgid ""
 "Encryption was disabled but your files are still encrypted. Please go to "
 "your personal settings to decrypt your files."
-msgstr "Le chiffrement était désactivé mais vos fichiers sont toujours chiffrés. Veuillez vous rendre sur vos Paramètres personnels pour déchiffrer vos fichiers."
+msgstr "Le chiffrement a été désactivé mais vos fichiers sont toujours chiffrés. Veuillez vous rendre sur vos Paramètres personnels pour déchiffrer vos fichiers."
 
 #: js/filesummary.js:182
 msgid "{dirs} and {files}"
