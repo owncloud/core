@@ -12,6 +12,7 @@
 # Ogre Sympathique, 2013
 # Romain DEP. <rom1dep@gmail.com>, 2014
 # themen <themen2004@gmail.com>, 2014
+# Maxime Auvy <maxime@open-freax.fr>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
@@ -57,7 +58,7 @@ msgid ""
 "Please contact your administrator. If you are an administrator of this "
 "instance, configure the \"trusted_domain\" setting in config/config.php. An "
 "example configuration is provided in config/config.sample.php."
-msgstr "Veuillez contacter votre administrateur. Si vous être l'administrateur de cette instance, il faut configurer la variable \"trusted_domain\" dans le fichier config/config.php. Un exemple de configuration est fournit dans le fichier config/config.sample.php."
+msgstr "Veuillez contacter votre administrateur. Si vous être l'administrateur de cette instance, il faut configurer la variable \"trusted_domain\" dans le fichier config/config.php. Un exemple de configuration est fourni dans le fichier config/config.sample.php."
 
 #: private/app.php:366
 msgid "Help"
@@ -192,7 +193,7 @@ msgstr "%s entrez le nom de la base de données."
 #: private/setup/abstractdatabase.php:32
 #, php-format
 msgid "%s you may not use dots in the database name"
-msgstr "%s vous nez pouvez pas utiliser de points dans le nom de la base de données"
+msgstr "%s vous ne pouvez pas utiliser de points dans le nom de la base de données"
 
 #: private/setup/mssql.php:20
 #, php-format
@@ -290,7 +291,7 @@ msgstr "Veuillez vous référer au <a href='%s'>guide d'installation</a>."
 #: private/share/mailnotifications.php:137
 #, php-format
 msgid "%s shared »%s« with you"
-msgstr "%s partagé »%s« avec vous"
+msgstr "%s a partagé »%s« avec vous"
 
 #: private/share/share.php:494
 #, php-format
@@ -338,7 +339,7 @@ msgstr "Le partage de %s a échoué car %s n'est pas membre du groupe %s"
 msgid ""
 "You need to provide a password to create a public link, only protected links"
 " are allowed"
-msgstr "Vous devez fournir un mot de passe pour créer un lien public, seul les liens protégés sont autorisées."
+msgstr "Vous devez fournir un mot de passe pour créer un lien public, seuls les liens protégés sont autorisées."
 
 #: private/share/share.php:653
 #, php-format
@@ -355,7 +356,7 @@ msgstr "Le type de partage %s n'est pas valide pour %s"
 msgid ""
 "Setting permissions for %s failed, because the permissions exceed "
 "permissions granted to %s"
-msgstr "Le réglage des permissions pour %s a échoué car les permissions dépassent celle accordée à %s"
+msgstr "Le réglage des permissions pour %s a échoué car les permissions dépassent celles accordées à %s"
 
 #: private/share/share.php:921
 #, php-format
@@ -418,14 +419,14 @@ msgstr "il y a quelques secondes"
 #: private/template/functions.php:135
 msgid "%n minute ago"
 msgid_plural "%n minutes ago"
-msgstr[0] ""
+msgstr[0] "il y a 1 minute"
 msgstr[1] "il y a %n minutes"
 
 #: private/template/functions.php:136
 msgid "%n hour ago"
 msgid_plural "%n hours ago"
-msgstr[0] ""
-msgstr[1] "Il y a %n heures"
+msgstr[0] "il y a 1 heure"
+msgstr[1] "il y a %n heures"
 
 #: private/template/functions.php:137
 msgid "today"
@@ -438,7 +439,7 @@ msgstr "hier"
 #: private/template/functions.php:140
 msgid "%n day go"
 msgid_plural "%n days ago"
-msgstr[0] ""
+msgstr[0] "il y a 1 jour"
 msgstr[1] "il y a %n jours"
 
 #: private/template/functions.php:142
@@ -448,8 +449,8 @@ msgstr "le mois dernier"
 #: private/template/functions.php:143
 msgid "%n month ago"
 msgid_plural "%n months ago"
-msgstr[0] ""
-msgstr[1] "Il y a %n mois"
+msgstr[0] "il y a 1 mois"
+msgstr[1] "il y a %n mois"
 
 #: private/template/functions.php:145
 msgid "last year"
@@ -577,7 +578,7 @@ msgstr "Magic Quotes est déprécié, inutile la plupart du temps, et doit être
 
 #: private/util.php:579
 msgid "PHP modules have been installed, but they are still listed as missing?"
-msgstr "Les modules PHP ont été installés mais sont toujours indiqués comme manquants ?"
+msgstr "Les modules PHP ont été installés, mais sont toujours indiqués comme manquants ?"
 
 #: private/util.php:580
 msgid "Please ask your server administrator to restart the web server."
@@ -599,7 +600,7 @@ msgstr "Une erreur s’est produite pendant la récupération du numéro de vers
 msgid ""
 "Please make sure you have PostgreSQL >= 9 or check the logs for more "
 "information about the error"
-msgstr "Veuillez vérifier que vous utilisez PostgreSQL >= 9 , ou regardez dans le journal d’erreur pour plus d’informations sur ce problème"
+msgstr "Veuillez vérifier que vous utilisez PostgreSQL >= 9 , ou regardez dans le journal d’erreurs pour plus d’informations sur ce problème"
 
 #: private/util.php:680
 msgid ""

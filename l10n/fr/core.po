@@ -14,6 +14,7 @@
 # Redouane Lakrache <red-0ne@smarty-concept.com>, 2013
 # Spanti Nicola <rydroid_trans@yahoo.fr>, 2013
 # themen <themen2004@gmail.com>, 2014
+# Maxime Auvy <maxime@open-freax.fr>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
@@ -35,7 +36,7 @@ msgstr "La date d'expiration est dans le passé."
 #: ajax/share.php:122 ajax/share.php:164
 #, php-format
 msgid "Couldn't send mail to following users: %s "
-msgstr "Impossible d'envoyer un mail aux utilisateurs suivant : %s"
+msgstr "Impossible d'envoyer un e-mail aux utilisateurs suivants : %s"
 
 #: ajax/update.php:10
 msgid "Turned on maintenance mode"
@@ -56,7 +57,7 @@ msgstr "Mise à jour du schéma de la base de données vérifiée"
 #: ajax/update.php:27
 #, php-format
 msgid "Disabled incompatible apps: %s"
-msgstr "Applications incompatibles désactivées: %s"
+msgstr "Applications incompatibles désactivées : %s"
 
 #: avatar/controller.php:69
 msgid "No image or file provided"
@@ -76,7 +77,7 @@ msgstr "Aucune image temporaire disponible pour le profil. Essayez à nouveau."
 
 #: avatar/controller.php:140
 msgid "No crop data provided"
-msgstr "Aucune donnée de culture fournie"
+msgstr "Aucune donnée de recadrage fournie"
 
 #: js/config.php:45
 msgid "Sunday"
@@ -228,14 +229,14 @@ msgstr "il y a plusieurs années"
 
 #: js/lostpassword.js:3 lostpassword/controller/lostcontroller.php:175
 msgid "Couldn't send reset email. Please contact your administrator."
-msgstr "Impossible d'envoyer l’émail de réinitialisation. Veuillez contacter votre administrateur."
+msgstr "Impossible d'envoyer l’e-mail de réinitialisation. Veuillez contacter votre administrateur."
 
 #: js/lostpassword.js:5
 msgid ""
 "The link to reset your password has been sent to your email. If you do not "
 "receive it within a reasonable amount of time, check your spam/junk "
 "folders.<br>If it is not there ask your local administrator."
-msgstr "Le lien permettant de réinitialiser votre mot de passe vous a été transmis à votre adresse email.<br>Si vous ne le recevez pas dans un délai raisonnable, vérifier votre boîte de pourriels.<br>Au besoin, contactez votre administrateur local."
+msgstr "Le lien permettant de réinitialiser votre mot de passe vous a été transmis à votre adresse e-mail.<br>Si vous ne le recevez pas dans un délai raisonnable, vérifiez votre boîte de pourriels.<br>Au besoin, contactez votre administrateur local."
 
 #: js/lostpassword.js:7
 msgid ""
@@ -243,7 +244,7 @@ msgid ""
 "will be no way to get your data back after your password is reset.<br />If "
 "you are not sure what to do, please contact your administrator before you "
 "continue. <br />Do you really want to continue?"
-msgstr "Vos fichiers sont chiffrés. Si vous n'avez pas activé la clef de récupération, il n'y aura plus aucun moyen de récupérer vos données une fois le mot de passe réinitialisé. Si vous n'êtes pas sûr de ce que vous faites, veuillez contacter votre administrateur avant de continuer. Voulez-vous vraiment continuer ?"
+msgstr "Vos fichiers sont chiffrés. Si vous n'avez pas activé la clé de récupération, il n'y aura plus aucun moyen de récupérer vos données une fois le mot de passe réinitialisé. Si vous n'êtes pas sûr de ce que vous faites, veuillez contacter votre administrateur avant de continuer. Voulez-vous vraiment continuer ?"
 
 #: js/lostpassword.js:10
 msgid "I know what I'm doing"
@@ -397,7 +398,7 @@ msgstr "Partager le lien"
 #: js/share.js:394
 msgid ""
 "The public link will expire no later than {days} days after it is created"
-msgstr "Ce lien public expirera au plus tard, dans {days} jours après sa création."
+msgstr "Ce lien public expirera au plus tard {days} jours après sa création."
 
 #: js/share.js:398
 msgid "Password protect"
@@ -405,7 +406,7 @@ msgstr "Protéger par un mot de passe"
 
 #: js/share.js:400
 msgid "Choose a password for the public link"
-msgstr "Choisissez un mot de passe pour le lien public."
+msgstr "Choisissez un mot de passe pour le lien public"
 
 #: js/share.js:406
 msgid "Allow Public Upload"
@@ -413,7 +414,7 @@ msgstr "Autoriser l'upload par les utilisateurs non enregistrés"
 
 #: js/share.js:410
 msgid "Email link to person"
-msgstr "Envoyez le lien par email"
+msgstr "Envoyez le lien par e-mail"
 
 #: js/share.js:411
 msgid "Send"
@@ -429,7 +430,7 @@ msgstr "Date d'expiration"
 
 #: js/share.js:455
 msgid "Share via email:"
-msgstr "Partager via e-mail :"
+msgstr "Partager par e-mail :"
 
 #: js/share.js:458
 msgid "No people found"
@@ -453,7 +454,7 @@ msgstr "Ne plus partager"
 
 #: js/share.js:621
 msgid "notify by email"
-msgstr "Notifier par email"
+msgstr "Notifier par e-mail"
 
 #: js/share.js:624
 msgid "can share"
@@ -497,7 +498,7 @@ msgstr "En cours d'envoi ..."
 
 #: js/share.js:1050
 msgid "Email sent"
-msgstr "Email envoyé"
+msgstr "E-mail envoyé"
 
 #: js/share.js:1074
 msgid "Warning"
@@ -545,7 +546,7 @@ msgstr "La mise à jour a échoué."
 
 #: js/update.js:61
 msgid "The update was successful. Redirecting you to ownCloud now."
-msgstr "La mise à jour a réussi. Vous êtes redirigé maintenant vers ownCloud."
+msgstr "La mise à jour a réussi. Vous êtes maintenant redirigé vers ownCloud."
 
 #: lostpassword/controller/lostcontroller.php:110
 msgid "Couldn't reset password because the token is invalid"
@@ -553,13 +554,13 @@ msgstr "Impossible de réinitialiser le mot de passe car le jeton est invalide."
 
 #: lostpassword/controller/lostcontroller.php:136
 msgid "Couldn't send reset email. Please make sure your username is correct."
-msgstr "Impossible d'envoyer l’émail de réinitialisation. Veuillez vérifier que votre nom d'utilisateur est correct."
+msgstr "Impossible d'envoyer l’e-mail de réinitialisation. Veuillez vérifier que votre nom d'utilisateur est correct."
 
 #: lostpassword/controller/lostcontroller.php:151
 msgid ""
 "Couldn't send reset email because there is no email address for this "
 "username. Please contact your administrator."
-msgstr "Impossible d'envoyer l'email de réinitialisation car il n'y a aucune adresse email pour cet utilisateur. Veuillez contacter votre administrateur."
+msgstr "Impossible d'envoyer l'e-mail de réinitialisation car il n'y a aucune adresse e-mail pour cet utilisateur. Veuillez contacter votre administrateur."
 
 #: lostpassword/controller/lostcontroller.php:168
 #, php-format
@@ -586,7 +587,7 @@ msgid ""
 "will be no way to get your data back after your password is reset. If you "
 "are not sure what to do, please contact your administrator before you "
 "continue. Do you really want to continue?"
-msgstr "Vos fichiers sont chiffrés. Si vous n'avez pas activé la clef de récupération, il n'y aura plus aucun moyen de récupérer vos données une fois le mot de passe réinitialisé. Si vous n'êtes pas sûr de ce que vous faites, veuillez contacter votre administrateur avant de continuer. Voulez-vous vraiment continuer ?"
+msgstr "Vos fichiers sont chiffrés. Si vous n'avez pas activé la clé de récupération, il n'y aura plus aucun moyen de récupérer vos données une fois le mot de passe réinitialisé. Si vous n'êtes pas sûr de ce que vous faites, veuillez contacter votre administrateur avant de continuer. Voulez-vous vraiment continuer ?"
 
 #: lostpassword/templates/lostpassword.php:15
 msgid "Yes, I really want to reset my password now"
@@ -780,7 +781,7 @@ msgstr "Serveur de la base de données"
 msgid ""
 "SQLite will be used as database. For larger installations we recommend to "
 "change this."
-msgstr "SQLite va être utilisée comme base de donnée. Pour des installations plus volumineuse, nous vous conseillons de changer ce réglage."
+msgstr "SQLite va être utilisée comme base de données. Pour des installations plus volumineuses, nous vous conseillons de changer ce réglage."
 
 #: templates/installation.php:159
 msgid "Finish setup"
@@ -857,7 +858,7 @@ msgstr "Cette instance de ownCloud est actuellement en mode utilisateur unique."
 
 #: templates/singleuser.user.php:4
 msgid "This means only administrators can use the instance."
-msgstr "Cela signifie que uniquement les administrateurs peuvent utiliser l'instance."
+msgstr "Cela signifie que seuls les administrateurs peuvent utiliser l'instance."
 
 #: templates/singleuser.user.php:5 templates/update.user.php:5
 msgid ""

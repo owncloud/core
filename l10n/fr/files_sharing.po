@@ -12,6 +12,7 @@
 # Romain DEP. <rom1dep@gmail.com>, 2014
 # Spanti Nicola <rydroid_trans@yahoo.fr>, 2014
 # themen <themen2004@gmail.com>, 2014
+# Maxime Auvy <maxime@open-freax.fr>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
@@ -60,15 +61,15 @@ msgstr "Vous ne partagez aucun de fichier par lien pour l'instant."
 
 #: js/external.js:48 js/external.js:59
 msgid "Do you want to add the remote share {name} from {owner}@{remote}?"
-msgstr ""
+msgstr "Voulez-vous ajouter le partage distant {name}, de {owner}@{remote} ?"
 
 #: js/external.js:51 js/external.js:62
 msgid "Remote share"
-msgstr ""
+msgstr "Partage distant"
 
 #: js/external.js:65
 msgid "Remote share password"
-msgstr ""
+msgstr "Mot de passe du partage distant"
 
 #: js/external.js:76
 msgid "Cancel"
@@ -76,7 +77,7 @@ msgstr "Annuler"
 
 #: js/external.js:77
 msgid "Add remote share"
-msgstr ""
+msgstr "Ajouter le partage distant"
 
 #: js/public.js:203
 msgid "No ownCloud installation found at {remote}"
@@ -157,8 +158,8 @@ msgstr "Partages Distants"
 
 #: templates/settings-admin.php:7
 msgid "Allow other instances to mount public links shared from this server"
-msgstr "Autorise d'autres instances à monter des liens publiques partagés depuis ce serveur"
+msgstr "Autorise d'autres instances à monter des liens publics partagés depuis ce serveur"
 
 #: templates/settings-admin.php:11
 msgid "Allow users to mount public link shares"
-msgstr "Autorise les utilisateurs à monter des liens de partages publiques"
+msgstr "Autorise les utilisateurs à monter des liens de partages publics"

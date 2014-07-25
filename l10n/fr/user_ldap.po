@@ -10,6 +10,7 @@
 # Patrice LACHANCE <patlachance@gmail.com>, 2013
 # Spanti Nicola <rydroid_trans@yahoo.fr>, 2014
 # themen <themen2004@gmail.com>, 2014
+# Maxime Auvy <maxime@open-freax.fr>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
@@ -99,11 +100,11 @@ msgstr "Erreur"
 
 #: js/settings.js:244
 msgid "Please specify a Base DN"
-msgstr "Veuillez spécifier une Base DN"
+msgstr "Veuillez spécifier un DN Racine"
 
 #: js/settings.js:245
 msgid "Could not determine Base DN"
-msgstr "Impossible de déterminer la Base DN"
+msgstr "Impossible de déterminer le DN Racine"
 
 #: js/settings.js:276
 msgid "Please specify the port"
@@ -246,7 +247,7 @@ msgstr "Nom d'utilisateur LDAP :"
 
 #: templates/part.wizard-loginfilter.php:16
 msgid "LDAP Email Address:"
-msgstr "Adresse email LDAP :"
+msgstr "Adresse e-mail LDAP :"
 
 #: templates/part.wizard-loginfilter.php:24
 msgid "Other Attributes:"
@@ -266,7 +267,7 @@ msgstr "1. Serveur"
 #: templates/part.wizard-server.php:13
 #, php-format
 msgid "%s. Server:"
-msgstr "%s. Serveur:"
+msgstr "%s. Serveur :"
 
 #: templates/part.wizard-server.php:18
 msgid "Add Server Configuration"
@@ -380,7 +381,7 @@ msgstr "Serveur de backup (réplique)"
 msgid ""
 "Give an optional backup host. It must be a replica of the main LDAP/AD "
 "server."
-msgstr "Fournir un serveur de backup optionnel.  Il doit s'agir d'une réplique du serveur LDAP/AD principal."
+msgstr "Fournir un serveur de backup optionnel. Il doit s'agir d'une réplique du serveur LDAP/AD principal."
 
 #: templates/settings.php:24
 msgid "Backup (Replica) Port"
@@ -508,7 +509,7 @@ msgstr "en bytes"
 
 #: templates/settings.php:46
 msgid "Email Field"
-msgstr "Champ Email"
+msgstr "Champ E-mail"
 
 #: templates/settings.php:47
 msgid "User Home Folder Naming Rule"
@@ -542,11 +543,11 @@ msgstr "Par défaut le nom d'utilisateur interne sera créé à partir de l'attr
 
 #: templates/settings.php:55
 msgid "Internal Username Attribute:"
-msgstr "Nom d'utilisateur interne:"
+msgstr "Nom d'utilisateur interne :"
 
 #: templates/settings.php:56
 msgid "Override UUID detection"
-msgstr "Surcharger la détection d'UUID"
+msgstr "Outrepasser la détection d'UUID"
 
 #: templates/settings.php:57
 msgid ""

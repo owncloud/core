@@ -9,6 +9,7 @@
 # Froozeify <froozeify@mail.com>, 2013
 # Lynda AMICHE, 2013
 # Ogre Sympathique, 2013-2014
+# Maxime Auvy <maxime@open-freax.fr>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
@@ -47,17 +48,17 @@ msgstr "Mot de passe changé avec succès "
 
 #: ajax/changeRecoveryPassword.php:51
 msgid "Could not change the password. Maybe the old password was not correct."
-msgstr "Ne peut pas changer le mot de passe. L'ancien mot de passe est peut-être incorrect."
+msgstr "Ne peut pas changer le mot de passe. L'ancien mot de passe était peut-être incorrect."
 
 #: ajax/updatePrivateKeyPassword.php:52
 msgid "Private key password successfully updated."
-msgstr "Mot de passe de la clé privé mis à jour avec succès."
+msgstr "Mot de passe de la clé privée mis à jour avec succès."
 
 #: ajax/updatePrivateKeyPassword.php:54
 msgid ""
 "Could not update the private key password. Maybe the old password was not "
 "correct."
-msgstr "Impossible de mettre à jour le mot de passe de la clé privé. Peut-être que l'ancien mot de passe n'était pas correcte."
+msgstr "Impossible de mettre à jour le mot de passe de la clé privée. Peut-être que l'ancien mot de passe n'était pas correct."
 
 #: files/error.php:12
 msgid ""
@@ -72,7 +73,7 @@ msgid ""
 "Your private key is not valid! Likely your password was changed outside of "
 "%s (e.g. your corporate directory). You can update your private key password"
 " in your personal settings to recover access to your encrypted files."
-msgstr "Votre clef privée est invalide ! Votre mot de passe a probablement été modifié hors de %s (ex. votre annuaire d'entreprise). Vous pouvez mettre à jour le mot de passe de votre clef privée dans les paramètres personnels pour pouvoir récupérer l'accès à vos fichiers chiffrés."
+msgstr "Votre clé privée est invalide ! Votre mot de passe a probablement été modifié hors de %s (ex. votre annuaire d'entreprise). Vous pouvez mettre à jour le mot de passe de votre clé privée dans les paramètres personnels pour pouvoir récupérer l'accès à vos fichiers chiffrés."
 
 #: files/error.php:19
 msgid ""
@@ -95,7 +96,7 @@ msgid ""
 "Please make sure that PHP 5.3.3 or newer is installed and that OpenSSL "
 "together with the PHP extension is enabled and configured properly. For now,"
 " the encryption app has been disabled."
-msgstr "Veuillez vous assurer qu'une version de PHP 5.3.3 ou supérieure est installée et qu'OpenSSL et son extension PHP sont activés et configurés correctement. En attendant, l'application de chiffrement été désactivée."
+msgstr "Veuillez vous assurer qu'une version de PHP 5.3.3 ou supérieure est installée et qu'OpenSSL et son extension PHP sont activés et configurés correctement. En attendant, l'application de chiffrement a été désactivée."
 
 #: hooks/hooks.php:300
 msgid "Following users are not set up for encryption:"
@@ -112,7 +113,7 @@ msgstr "Chiffrement initial en cours... Veuillez re-essayer ultérieurement."
 #: templates/invalid_private_key.php:8
 #, php-format
 msgid "Go directly to your %spersonal settings%s."
-msgstr "Allerz directement à vos %spersonal settings%s."
+msgstr "Allez directement à vos %spersonal settings%s."
 
 #: templates/settings-admin.php:2 templates/settings-personal.php:2
 msgid "Encryption"
@@ -121,11 +122,11 @@ msgstr "Chiffrement"
 #: templates/settings-admin.php:5
 msgid ""
 "Enable recovery key (allow to recover users files in case of password loss):"
-msgstr "Activer la clef de récupération (permet de récupérer les fichiers des utilisateurs en cas de perte de mot de passe)."
+msgstr "Activer la clé de récupération (permet de récupérer les fichiers des utilisateurs en cas de perte de mot de passe)."
 
 #: templates/settings-admin.php:9
 msgid "Recovery key password"
-msgstr "Mot de passe de la clef de récupération"
+msgstr "Mot de passe de la clé de récupération"
 
 #: templates/settings-admin.php:12
 msgid "Repeat Recovery key password"
@@ -133,23 +134,23 @@ msgstr "Répétez le mot de passe de la clé de récupération"
 
 #: templates/settings-admin.php:19 templates/settings-personal.php:50
 msgid "Enabled"
-msgstr "Activer"
+msgstr "Activé"
 
 #: templates/settings-admin.php:27 templates/settings-personal.php:58
 msgid "Disabled"
-msgstr "Désactiver"
+msgstr "Désactivé"
 
 #: templates/settings-admin.php:32
 msgid "Change recovery key password:"
-msgstr "Modifier le mot de passe de la clef de récupération :"
+msgstr "Modifier le mot de passe de la clé de récupération :"
 
 #: templates/settings-admin.php:38
 msgid "Old Recovery key password"
-msgstr "Ancien mot de passe de la clef de récupération"
+msgstr "Ancien mot de passe de la clé de récupération"
 
 #: templates/settings-admin.php:45
 msgid "New Recovery key password"
-msgstr "Nouveau mot de passe de la clef de récupération"
+msgstr "Nouveau mot de passe de la clé de récupération"
 
 #: templates/settings-admin.php:51
 msgid "Repeat New Recovery key password"
@@ -161,11 +162,11 @@ msgstr "Changer de mot de passe"
 
 #: templates/settings-personal.php:8
 msgid "Your private key password no longer match your log-in password:"
-msgstr "Le mot de passe de votre clef privée ne correspond plus à votre mot de passe de connexion :"
+msgstr "Le mot de passe de votre clé privée ne correspond plus à votre mot de passe de connexion :"
 
 #: templates/settings-personal.php:11
 msgid "Set your old private key password to your current log-in password."
-msgstr "Configurez le mot de passe de votre ancienne clef privée avec votre mot de passe courant de connexion. "
+msgstr "Configurez le mot de passe de votre ancienne clé privée avec votre mot de passe courant de connexion. "
 
 #: templates/settings-personal.php:13
 msgid ""
