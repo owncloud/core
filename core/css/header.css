@@ -31,11 +31,11 @@
 /* LOGO and APP NAME -------------------------------------------------------- */
 
 #owncloud {
-	position: absolute;
+	position: static;
+	float: left;
 	top: 0;
 	left: 0;
-	padding: 5px;
-	padding-bottom: 0;
+	padding: 5px 12px 0 12px;
 	height: 45px; /* header height */
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
@@ -67,11 +67,11 @@
 
 #header .menutoggle {
 	display: inline-block;
-	position: absolute;
+	position: static;
+	float: left;
 	left: 70px;
 	height: 27px;
-	padding-top: 18px;
-	padding-right: 10px;
+	padding: 18px 10px 0 6px;
 }
 
 /* hover effect for app switcher label */
@@ -83,9 +83,9 @@
 }
 .menutoggle:hover .header-appname,
 .menutoggle:hover .icon-caret,
-.menutoggle:focus .header-appname
-.menutoggle:focus .icon-caret
-.menutoggle.active .header-appname
+.menutoggle:focus .header-appname,
+.menutoggle:focus .icon-caret,
+.menutoggle.active .header-appname,
 .menutoggle.active .icon-caret {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 	filter: alpha(opacity=100);
@@ -100,7 +100,7 @@
 	font-size: 16px;
 	margin: 0;
 	margin-top: -24px;
-	padding: 7px 0 7px 5px;
+	padding: 7px 0 7px 6px;
 	vertical-align: middle;
 }
 /* show caret indicator next to logo to make clear it is tappable */
@@ -129,7 +129,9 @@
 	max-height: 85%;
 	margin-top: 0;
 	padding-bottom: 10px;
-	background-color: rgba(36, 40, 47, .97);
+	padding-left: 8px;
+	background-color: rgba(29,45,68,1);
+	border: none;
 	border-bottom-right-radius: 7px;
 	box-shadow: 0 0 7px rgba(29,45,68,.97);
 	display: none;
@@ -192,6 +194,10 @@
 	padding: 0;
 }
 
+#apps ul li:hover {
+	border-radius: 4px;
+}
+
 /* Apps management */
 #apps-management {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
@@ -218,7 +224,11 @@
 	opacity: .1;
 }
 
+/* SEARCH BOX ----------------------------------------------------------------*/
 
+#searchbox {
+	margin-right: 13px;
+}
 
 
 /* USER MENU -----------------------------------------------------------------*/
@@ -253,28 +263,53 @@
 	color: #bbb;
 	cursor: pointer;
 }
+
 #expand {
 	display: block;
-	padding: 7px 12px 6px 7px;
+	padding: 7px 12px 6px 15px;
 	cursor: pointer;
 }
 #expand * {
 	cursor: pointer;
 }
-#expand:hover, #expand:focus, #expand:active { color:#fff; }
-#expand img { -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)"; filter:alpha(opacity=70); opacity:.7; margin-bottom:-2px; }
-#expand:hover img, #expand:focus img, #expand:active img { -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; filter:alpha(opacity=100); opacity:1; }
+
+#expand:hover,
+#expand:focus,
+#expand:active {
+	color: #fff;
+}
+
+#expand img {
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+	filter:alpha(opacity=70);
+	opacity:.7;
+	margin-bottom:-2px;
+}
+
+#expand:hover img,
+#expand:focus img,
+#expand:active img {
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	filter:alpha(opacity=100);
+	opacity:1;
+}
+
 #expanddiv {
 	position: absolute;
 	right: 0;
 	top: 45px;
 	z-index: 150;
 	display: none;
-	background-color: #383c43;
-	border-bottom-left-radius:7px; border-bottom:1px #333 solid; border-left:1px #333 solid;
+	background-color: rgba(29,45,68,1);
+	border-bottom-left-radius:7px;
 	box-shadow:0 0 7px rgb(29,45,68);
 	-moz-box-sizing: border-box; box-sizing: border-box;
 }
+
+#expanddiv ul li:last-of-type:hover {
+	border-bottom-left-radius: 7px;
+}
+
 	#expanddiv a {
 		display: block;
 		height: 40px;
@@ -295,3 +330,12 @@
 		filter: alpha(opacity=100);
 		opacity: 1;
 	}
+
+/* global hover background color for all header elements */
+#owncloud:hover,
+#expand:hover,
+#expanddiv ul li:hover,
+#header .menutoggle:hover,
+#apps ul li:hover {
+	background-color: rgba(59,77,101,1);
+}
