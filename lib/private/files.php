@@ -21,8 +21,6 @@
  *
  */
 
-// TODO: get rid of this using proper composer packages
-require_once 'mcnetic/phpzipstreamer/ZipStreamer.php';
 
 class GET_TYPE {
 	const FILE = 1;
@@ -108,7 +106,7 @@ class OC_Files {
 				$xsendfile = false;
 			}
 		} else {
-			$zip = new ZipStreamer(false);
+			$zip = new ZipStreamer();
 		}
 		OC_Util::obEnd();
 		if ($zip or \OC\Files\Filesystem::isReadable($filename)) {

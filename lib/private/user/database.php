@@ -32,8 +32,7 @@
  * ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
  *
  */
-
-require_once 'phpass/PasswordHash.php';
+use Hautelook\Phpass\PasswordHash;
 
 /**
  * Class for user management in a SQL Database (e.g. MySQL, SQLite)
