@@ -1350,8 +1350,8 @@ class OC_Util {
 	 * @return void
 	 */
 	public static function clearOpcodeCache($path=NULL) {
-		// APC
-		if (function_exists('apc_clear_cache')) {
+		// APC, !APCu
+		if (function_exists('apc_clear_cache') && !function_exists('apcu_clear_cache')) {
 			apc_clear_cache();
 		}
 		// Zend Opcache
