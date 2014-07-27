@@ -1346,9 +1346,10 @@ class OC_Util {
 	 * Clear the opcode cache if one exists
 	 * This is necessary for writing to the config file
 	 * in case the opcode cache does not re-validate files
+	 * @param string $path of the configuration file
 	 * @return void
 	 */
-	public static function clearOpcodeCache() {
+	public static function clearOpcodeCache($path=NULL) {
 		// APC
 		if (function_exists('apc_clear_cache')) {
 			apc_clear_cache();
@@ -1366,7 +1367,10 @@ class OC_Util {
 			}
 		}
 		// Opcache (PHP >= 5.5)
-		if (function_exists('opcache_reset')) {
+		if ($path && function_exists('opcache_invalidate')) {
+			opcache_invalidate($path);
+
+		} else if (function_exists('opcache_reset')) {
 			opcache_reset();
 		}
 	}
