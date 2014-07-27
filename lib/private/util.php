@@ -1354,10 +1354,6 @@ class OC_Util {
 		if (function_exists('apc_clear_cache') && !function_exists('apcu_clear_cache')) {
 			apc_clear_cache();
 		}
-		// Zend Opcache
-		if (function_exists('accelerator_reset')) {
-			accelerator_reset();
-		}
 		// XCache
 		if (function_exists('xcache_clear_cache')) {
 			if (ini_get('xcache.admin.enable_auth')) {
@@ -1366,12 +1362,17 @@ class OC_Util {
 				xcache_clear_cache(XC_TYPE_PHP, 0);
 			}
 		}
-		// Opcache (PHP >= 5.5)
+		// Zend Opcache (>= 7.0.2, PHP >= 5.5)
 		if ($path && function_exists('opcache_invalidate')) {
 			opcache_invalidate($path);
 
+		// Zend Opcache (= 7.0.1)
 		} else if (function_exists('opcache_reset')) {
 			opcache_reset();
+
+		// Zend Opcache (version <= 7.0.0)
+		} else if (function_exists('accelerator_reset')) {
+			accelerator_reset();
 		}
 	}
 
