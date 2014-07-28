@@ -211,7 +211,7 @@ if (\OC_Util::runningOnWindows()) {
             
             $supportedModes = array('r', 'r+', 'w+', 'x+', 'a+', 'w', 'x', 'a');
 
-            if (array_search($mode, $supportedModes) === false) {
+            if (in_array($mode, $supportedModes)) {
                 return false;
             }
 
