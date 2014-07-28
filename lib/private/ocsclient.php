@@ -53,7 +53,7 @@ class OC_OCSClient{
 	* @param string $url
 	*/
 	private static function getOCSresponse($url) {
-		$data = \OC_Util::getUrlContent($url);
+		$data = \OC_Util::getUrlContent($url, true);
 		return($data);
 	}
 
