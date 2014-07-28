@@ -10,12 +10,7 @@
 <input type="hidden" name="sharingToken" value="<?php p($_['sharingToken']) ?>" id="sharingToken">
 <input type="hidden" name="filename" value="<?php p($_['filename']) ?>" id="filename">
 <input type="hidden" name="mimetype" value="<?php p($_['mimetype']) ?>" id="mimetype">
-<header><div id="header" class="<?php p((isset($_['folder']) ? 'share-folder' : 'share-file')) ?>">
-		<a href="<?php print_unescaped(link_to('', 'index.php')); ?>"
-			title="" id="owncloud">
-			<div class="logo-wide svg"></div>
-		</a>
-		<div id="logo-claim" style="display:none;"><?php p($theme->getLogoClaim()); ?></div>
+<header>
 		<div class="header-right">
 			<span id="details">
 				<span id="save" data-protected="<?php p($_['protected'])?>" data-owner="<?php p($_['displayName'])?>" data-name="<?php p($_['filename'])?>">
@@ -31,7 +26,7 @@
 				</a>
 			</span>
 		</div>
-</div></header>
+</header>
 <div id="content">
 	<div id="preview">
 		<?php if (isset($_['folder'])): ?>
@@ -68,9 +63,5 @@
 		<?php endif; ?>
 	</div>
 
+
 </div>
-<footer>
-	<p class="info">
-		<?php print_unescaped($theme->getLongFooter()); ?>
-	</p>
-</footer>

@@ -229,6 +229,7 @@
 .header-right {
 	position: absolute;
 	right: 0;
+	top: 0;
 	padding: 7px 5px;
 	color: #fff;
 	height: 100%;
@@ -236,6 +237,7 @@
 	white-space: nowrap;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
+        z-index: 120;
 }
 
 /* Profile picture in header */
