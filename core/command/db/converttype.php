@@ -99,7 +99,7 @@ class ConvertType extends Command {
 				'Converting to SQLite (sqlite3) is currently not supported.'
 			);
 		}
-		if ($type === 'mssql') {
+		if ($type === 'mssql' || $type === 'mssqldbo') {
 			throw new \InvalidArgumentException(
 				'Converting to Microsoft SQL Server (mssql) is currently not supported.'
 			);

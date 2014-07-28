@@ -177,8 +177,13 @@ class Migrator {
 		$schemaDiff = $this->getDiff($targetSchema, $connection);
 
 		$connection->beginTransaction();
-		foreach ($schemaDiff->toSql($connection->getDatabasePlatform()) as $sql) {
-			$connection->query($sql);
+		try {
+			foreach ($schemaDiff->toSql($connection->getDatabasePlatform()) as $sql) {
+				$connection->query($sql);
+			}
+		} catch(\Exception $e) {
+			$connection->rollBack();
+			throw $e;
 		}
 		$connection->commit();
 	}

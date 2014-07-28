@@ -63,6 +63,9 @@ class Test_Share extends PHPUnit_Framework_TestCase {
 		$this->resharing = OC_Appconfig::getValue('core', 'shareapi_allow_resharing', 'yes');
 		OC_Appconfig::setValue('core', 'shareapi_allow_resharing', 'yes');
 
+		$appConfig = \OC::$server->getAppConfig();
+		$appConfig->setValue('core', 'shareapi_enforce_links_password', 'no');
+
 		// 20 Minutes in the past, 20 minutes in the future.
 		$now = time();
 		$dateFormat = 'Y-m-d H:i:s';
