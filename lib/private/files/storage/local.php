@@ -208,22 +208,14 @@ if (\OC_Util::runningOnWindows()) {
 		}
 
 		public function fopen($path, $mode) {
-			if ($return = fopen($this->datadir . $path, $mode)) {
-				switch ($mode) {
-					case 'r':
-						break;
-					case 'r+':
-					case 'w+':
-					case 'x+':
-					case 'a+':
-						break;
-					case 'w':
-					case 'x':
-					case 'a':
-						break;
-				}
-			}
-			return $return;
+            
+            $supportedModes = array('r', 'r+', 'w+', 'x+', 'a+', 'w', 'x', 'a');
+
+            if (array_search($mode, $supportedModes) === false) {
+                return false;
+            }
+
+            return fopen($this->datadir . $path, $mode);
 		}
 
 		public function hash($type, $path, $raw = false) {
