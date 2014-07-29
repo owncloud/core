@@ -22,26 +22,6 @@ class Autoloader {
 	protected $memoryCache;
 
 	/**
-	 * Add a custom prefix to the autoloader
-	 *
-	 * @param string $prefix
-	 * @param string $path
-	 */
-	public function registerPrefix($prefix, $path) {
-		$this->prefixPaths[$prefix] = $path;
-	}
-
-	/**
-	 * Add a custom classpath to the autoloader
-	 *
-	 * @param string $class
-	 * @param string $path
-	 */
-	public function registerClass($class, $path) {
-		$this->classPaths[$class] = $path;
-	}
-
-	/**
 	 * disable the usage of the global classpath \OC::$CLASSPATH
 	 */
 	public function disableGlobalClassPath() {
