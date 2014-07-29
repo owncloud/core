@@ -31,6 +31,10 @@ class Swift extends \Test\Files\Storage\Storage {
 	private $objectStorage;
 
 	public function setUp() {
+		// TODO travis: objectstore tests with trystack are not very reliable. We need separate infrastructure for this
+		if (getenv('TRAVIS')) {
+ 			$this->markTestSkipped('objectstore tests are unreliable on travis');
+		}
 
 		\OC_App::disable('files_sharing');
 		\OC_App::disable('files_versions');
