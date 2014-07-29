@@ -40,15 +40,13 @@ class MySQL extends AbstractDatabase {
 						$this->createDBUser($connection);
 
 						break;
-					}
-					else {
+					} else {
 						//repeat with different username
 						$length=strlen((string)$i);
 						$adminUser=substr('oc_'.$username, 0, 16 - $length).$i;
 						$i++;
 					}
-				}
-				else {
+				} else {
 					break;
 				}
 			};
