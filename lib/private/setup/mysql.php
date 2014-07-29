@@ -14,35 +14,26 @@ class MySQL extends AbstractDatabase {
 		}
 		$oldUser=\OC_Config::getValue('dbuser', false);
 
-		//this should be enough to check for admin rights in mysql
-		$query="SELECT user FROM mysql.user WHERE user='$this->dbuser'";
-		if(mysql_query($query, $connection)) {
-			//use the admin login data for the new database user
+		if($this->dbuser!=$oldUser) {
+			//this should be enough to check for admin rights in mysql
+			$query="SELECT user FROM mysql.user WHERE user='$this->dbuser'";
+			if(mysql_query($query, $connection)) {
+				//use the admin login data for the new database user
 
-			//add prefix to the mysql user name to prevent collisions
-			$this->dbuser=substr('oc_'.$username, 0, 16);
-			if($this->dbuser!=$oldUser) {
+				//add prefix to the mysql user name to prevent collisions
+				$this->dbuser=substr('oc_'.$username, 0, 16);
 				//hash the password so we don't need to store the admin config in the config file
 				$this->dbpassword=\OC_Util::generateRandomBytes(30);
 
 				$this->createDBUser($connection);
-
-				\OC_Config::setValue('dbuser', $this->dbuser);
-				\OC_Config::setValue('dbpassword', $this->dbpassword);
 			}
 
-			//create the database
-			$this->createDatabase($connection);
+			\OC_Config::setValue('dbuser', $this->dbuser);
+			\OC_Config::setValue('dbpassword', $this->dbpassword);
 		}
-		else {
-			if($this->dbuser!=$oldUser) {
-				\OC_Config::setValue('dbuser', $this->dbuser);
-				\OC_Config::setValue('dbpassword', $this->dbpassword);
-			}
 
-			//create the database
-			$this->createDatabase($connection);
-		}
+		//create the database
+		$this->createDatabase($connection);
 
 		//fill the database if needed
 		$query='select count(*) from information_schema.tables'
