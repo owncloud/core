@@ -35,7 +35,7 @@ class MySQL extends AbstractDatabase {
 						//use the admin login data for the new database user
 						$this->dbuser=$adminUser;
 
-						//hash the password so we don't need to store the admin config in the config file
+						//create a random password so we don't need to store the admin password in the config file
 						$this->dbpassword=\OC_Util::generateRandomBytes(30);
 
 						$this->createDBUser($connection);
