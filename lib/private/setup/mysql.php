@@ -15,12 +15,11 @@ class MySQL extends AbstractDatabase {
 		//user already specified in config
 		$oldUser=\OC_Config::getValue('dbuser', false);
 
-		//we don't have this dbuser specified in config
+		//we don't have a dbuser specified in config
 		if($this->dbuser!=$oldUser) {
 			//add prefix to the admin username to prevent collisions
 			$adminUser=substr('oc_'.$username, 0, 16);
 
-			//endless loop
 			$i = 1;
 			while(true) {
 				//this should be enough to check for admin rights in mysql
@@ -44,7 +43,7 @@ class MySQL extends AbstractDatabase {
 					}
 					else {
 						//repeat with different username
-						$length=ceil(log10($i));
+						$length=strlen((string)$i);
 						$adminUser=substr('oc_'.$username, 0, 16 - $length).$i;
 						$i++;
 					}
