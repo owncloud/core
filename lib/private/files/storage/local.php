@@ -209,12 +209,6 @@ if (\OC_Util::runningOnWindows()) {
 
 		public function fopen($path, $mode) {
 
-			$supportedModes = array('r', 'r+', 'rb', 'w+', 'x+', 'a+', 'w', 'x', 'a');
-
-			if (!in_array($mode, $supportedModes)) {
-				return false;
-			}
-
 			return fopen($this->datadir . $path, $mode);
 		}
 
