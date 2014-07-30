@@ -247,7 +247,7 @@ class MappedLocal extends \OC\Files\Storage\Common {
 	public function fopen($path, $mode) {
 
 
-		$supportedModes = array('r', 'r+', 'w+', 'x+', 'a+', 'w', 'x', 'a');
+		$supportedModes = array('r', 'r+', 'rb', 'w+', 'x+', 'a+', 'w', 'x', 'a');
 
 		if (!in_array($mode, $supportedModes)) {
 			return false;
