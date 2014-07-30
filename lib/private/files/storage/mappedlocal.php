@@ -249,7 +249,7 @@ class MappedLocal extends \OC\Files\Storage\Common {
 
         $supportedModes = array('r', 'r+', 'w+', 'x+', 'a+', 'w', 'x', 'a');
 
-        if (in_array($mode, $supportedModes)) {
+        if (!in_array($mode, $supportedModes)) {
             return false;
         }
 
