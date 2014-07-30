@@ -79,7 +79,7 @@ class MappedLocal extends \OC\Files\Storage\Common {
 
 		$logicalPath = $this->mapper->physicalToLogic($physicalPath);
 		$dh = opendir($physicalPath);
-		if(is_resource($dh)) {
+		if (is_resource($dh)) {
 			while (($file = readdir($dh)) !== false) {
 				if ($file === '.' or $file === '..') {
 					continue;
@@ -87,9 +87,9 @@ class MappedLocal extends \OC\Files\Storage\Common {
 
 				$logicalFilePath = $this->mapper->physicalToLogic($physicalPath . '/' . $file);
 
-				$file= $this->mapper->stripRootFolder($logicalFilePath, $logicalPath);
+				$file = $this->mapper->stripRootFolder($logicalFilePath, $logicalPath);
 				$file = $this->stripLeading($file);
-				$files[]= $file;
+				$files[] = $file;
 			}
 		}
 
@@ -247,19 +247,19 @@ class MappedLocal extends \OC\Files\Storage\Common {
 	public function fopen($path, $mode) {
 
 
-        $supportedModes = array('r', 'r+', 'w+', 'x+', 'a+', 'w', 'x', 'a');
+		$supportedModes = array('r', 'r+', 'w+', 'x+', 'a+', 'w', 'x', 'a');
 
-        if (!in_array($mode, $supportedModes)) {
-            return false;
-        }
+		if (!in_array($mode, $supportedModes)) {
+			return false;
+		}
 
-        return fopen($this->buildPath($path), $mode);
+		return fopen($this->buildPath($path), $mode);
 	}
 
 	/**
 	 * @param string $dir
 	 */
-	private function delTree($dir, $isLogicPath=true) {
+	private function delTree($dir, $isLogicPath = true) {
 		$dirRelative = $dir;
 		if ($isLogicPath) {
 			$dir = $this->buildPath($dir);
@@ -373,7 +373,7 @@ class MappedLocal extends \OC\Files\Storage\Common {
 	/**
 	 * @param string $path
 	 */
-	private function cleanMapper($path, $isLogicPath = true, $recursive=true) {
+	private function cleanMapper($path, $isLogicPath = true, $recursive = true) {
 		$fullPath = $path;
 		if ($isLogicPath) {
 			$fullPath = $this->datadir . $path;
