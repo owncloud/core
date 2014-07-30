@@ -137,11 +137,11 @@ class OC {
 		
 		if (is_null(OC::$THIRDPARTYROOT) && is_null(OC::$THIRDPARTYWEBROOT)) {
 			if (file_exists(OC::$SERVERROOT . '/3rdparty')) {
-				OC::$THIRDPARTYROOT = OC::$SERVERROOT;
-				OC::$THIRDPARTYWEBROOT = OC::$WEBROOT;
+				OC::$THIRDPARTYROOT = OC::$SERVERROOT . '/3rdparty';
+			OC::$THIRDPARTYWEBROOT = OC::$WEBROOT . '/3rdparty';
 			} elseif (file_exists(OC::$SERVERROOT . '/../3rdparty')) {
-				OC::$THIRDPARTYWEBROOT = rtrim(dirname(OC::$WEBROOT), '/');
-				OC::$THIRDPARTYROOT = rtrim(dirname(OC::$SERVERROOT), '/');
+				OC::$THIRDPARTYWEBROOT = rtrim(dirname(OC::$WEBROOT), '/') . '/3rdparty';
+			OC::$THIRDPARTYROOT = rtrim(dirname(OC::$SERVERROOT), '/') . '/3rdparty';
 			}
 		}
 		if (is_null(OC::$THIRDPARTYROOT) || !file_exists(OC::$THIRDPARTYROOT)) {
