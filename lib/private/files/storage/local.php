@@ -208,14 +208,14 @@ if (\OC_Util::runningOnWindows()) {
 		}
 
 		public function fopen($path, $mode) {
-            
-            $supportedModes = array('r', 'r+', 'w+', 'x+', 'a+', 'w', 'x', 'a');
 
-            if (in_array($mode, $supportedModes)) {
-                return false;
-            }
+			$supportedModes = array('r', 'r+', 'w+', 'x+', 'a+', 'w', 'x', 'a');
 
-            return fopen($this->datadir . $path, $mode);
+			if (!in_array($mode, $supportedModes)) {
+				return false;
+			}
+
+			return fopen($this->datadir . $path, $mode);
 		}
 
 		public function hash($type, $path, $raw = false) {
