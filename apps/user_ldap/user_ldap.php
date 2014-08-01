@@ -245,7 +245,7 @@ class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
 	* Deletes a user
 	*/
 	public function deleteUser($uid) {
-		if ((OCP\App::isEnabled('enterprise_key') && preg_match('/^/ocs/v1\.php/cloud/users/.+/', $_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_METHOD'] === 'DELETE') {
+		if (OCP\App::isEnabled('enterprise_key') && preg_match('/^/ocs/v1\.php/cloud/users/.+/', $_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_METHOD'] === 'DELETE') {
 			// request to delete user has come from provisioning api
 			// assume the script that is making the api call is in the act of deleting the user from the directory
 			// return true to run clean up code in OC_User::deleteUser and fire hooks in OC\User\User::delete
