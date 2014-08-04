@@ -296,7 +296,7 @@ class Share extends \OC\Share\Constants {
 
 		// first check if there is a db entry for the specific user
 		$query = \OC_DB::prepare(
-				'SELECT `file_target`, `permissions`, `expiration`
+				'SELECT `file_target`,`item_target`, `permissions`, `expiration`
 					FROM
 					`*PREFIX*share`
 					WHERE
@@ -314,7 +314,7 @@ class Share extends \OC\Share\Constants {
 			$groups = \OC_Group::getUserGroups($user);
 
 			$query = \OC_DB::prepare(
-					'SELECT `file_target`, `permissions`, `expiration`
+					'SELECT `file_target`,`item_target`, `permissions`, `expiration`
 						FROM
 						`*PREFIX*share`
 						WHERE
@@ -1923,6 +1923,9 @@ class Share extends \OC\Share\Constants {
 		}
 		if (isset($row['file_source'])) {
 			$row['file_source'] = (int) $row['file_source'];
+		}
+		if (isset($row['item_source'])) {
+			$row['item_source'] = (int) $row['item_source'];
 		}
 		if (isset($row['permissions'])) {
 			$row['permissions'] = (int) $row['permissions'];
