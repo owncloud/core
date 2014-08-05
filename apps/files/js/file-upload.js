@@ -312,8 +312,33 @@ OC.Upload = {
 						var callbacks = {
 
 							onNoConflicts: function (selection) {
-								$.each(selection.uploads, function(i, upload) {
+								var already_created_folders = [];//array of folder names already created
+								$.each(selection.uploads, function(i, upload) {			
+									// changes current directory to relative file path
+									var baseDirrectory = FileList.getCurrentDirectory();
+									// check wheather the browser supporst relativePath property for now chrome does
+									if(upload.files[0].relativePath)
+									{
+										var folder_ar=upload.files[0].relativePath.slice(0,-1).split("/");
+										for (var i = 0; i < folder_ar.length; i++) {
+											// check if we have already created the folder 
+											if(already_created_folders.indexOf(folder_ar[i])>-1||FileList.findFileEl(folder_ar[i]).length==0)
+											{
+												if(folder_ar[i-1])
+												{
+													FileList.setCurrentDir(FileList.getCurrentDirectory()+'/'+folder_ar[i-1],false);
+												}
+												mkfolder(folder_ar[i]);
+												already_created_folders.push(folder_ar[i]);
+											}
+										};
+										// sets the working dirretory so the upload script can manage the upload
+										FileList.setCurrentDir(baseDirrectory+'/'+upload.files[0].relativePath.slice(0, - 1),false);
+									}
+
 									upload.submit();
+									FileList.setCurrentDir(baseDirrectory,false); //restores it back to normal
+									
 								});
 							},
 							onSkipConflicts: function (selection) {
@@ -433,6 +458,7 @@ OC.Upload = {
 				 */
 				stop: function(e, data) {
 					OC.Upload.log('stop', e, data);
+					FileList.reload();//so folders appear by using magic
 				}
 			};
 
