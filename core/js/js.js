@@ -1293,10 +1293,10 @@ function relative_modified_date(timestamp) {
 OC.Util = {
 	// TODO: remove original functions from global namespace
 	humanFileSize: humanFileSize,
-	
+
 	formatDate: function(date) {
 		if(typeof date=='number'){
-			date=new Date(date);
+			date=new Date(date*1000);
 		}
 		return $.datepicker.formatDate(datepickerFormatDate, date)+' '+date.getHours()+':'+((date.getMinutes()<10)?'0':'')+date.getMinutes();
 	},
