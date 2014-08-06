@@ -1,4 +1,5 @@
 <?php
+use ZipStreamer\ZipStreamer;
 
 /**
  * ownCloud
@@ -20,9 +21,6 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
-// TODO: get rid of this using proper composer packages
-require_once 'mcnetic/phpzipstreamer/ZipStreamer.php';
 
 class GET_TYPE {
 	const FILE = 1;
@@ -108,7 +106,7 @@ class OC_Files {
 				$xsendfile = false;
 			}
 		} else {
-			$zip = new ZipStreamer(false);
+			$zip = new ZipStreamer();
 		}
 		OC_Util::obEnd();
 		if ($zip or \OC\Files\Filesystem::isReadable($filename)) {
