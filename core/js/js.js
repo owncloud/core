@@ -392,7 +392,7 @@ var OC={
 	dialogs:OCdialogs,
 
 	/**
-	 * !! DEPRECEATED !! Please use OC.Util.formatDate()!
+	 * !! DEPRECATED !! Please use OC.Util.formatDate()!
 	 */
 	mtime2date:function(mtime) {
 		return OC.Util.formatDate(mtime);
@@ -1243,7 +1243,7 @@ function humanFileSize(size, skipSmallSizes) {
 }
 
 /**
- * !! DEPRECEATED !! Please use OC.Util.formatDate()!
+ * !! DEPRECATED !! Please use OC.Util.formatDate()!
  * Format an UNIX timestamp to a human understandable format
  * @param {number} date UNIX timestamp
  * @return {string} Human readable format
@@ -1293,6 +1293,7 @@ function relative_modified_date(timestamp) {
 OC.Util = {
 	// TODO: remove original functions from global namespace
 	humanFileSize: humanFileSize,
+	
 	formatDate: function(date) {
 		if(typeof date=='number'){
 			date=new Date(date);
