@@ -48,13 +48,7 @@ class PublicAuth extends \Sabre\DAV\Auth\Backend\AbstractBasic {
 		if (isset($linkItem['share_with'])) {
 			if ($linkItem['share_type'] == \OCP\Share::SHARE_TYPE_LINK) {
 				// Check Password
-				$forcePortable = (CRYPT_BLOWFISH != 1);
-				$hasher = new \PasswordHash(8, $forcePortable);
-				if (!$hasher->CheckPassword($password . $this->config->getSystemValue('passwordsalt', ''), $linkItem['share_with'])) {
-					return false;
-				} else {
-					return true;
-				}
+				return password_verify($password, $linkItem['share_with']);
 			} else {
 				return false;
 			}

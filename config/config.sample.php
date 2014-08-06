@@ -32,6 +32,9 @@ $CONFIG = array(
 /* Prefix for the ownCloud tables in the database */
 "dbtableprefix" => "",
 
+/* Define the cost used to hash the user passwords. */
+"hashingCost" => "",
+
 /* Define the salt used to hash the user passwords. All your user passwords are lost if you lose this string. */
 "passwordsalt" => "",
 
