@@ -113,7 +113,7 @@ $TRANSLATIONS = array(
 "Please upgrade your database version" => "Veuillez mettre à jour votre base de données",
 "Error occurred while checking PostgreSQL version" => "Une erreur s’est produite pendant la récupération du numéro de version de PostgreSQL",
 "Please make sure you have PostgreSQL >= 9 or check the logs for more information about the error" => "Veuillez vérifier que vous utilisez PostgreSQL >= 9 , ou regardez dans le journal d’erreur pour plus d’informations sur ce problème",
-"Please change the permissions to 0770 so that the directory cannot be listed by other users." => "Veuillez changer les permissions du répertoire en mode 0770 afin que son contenu puisse être listé par les autres utilisateurs.",
+"Please change the permissions to 0770 so that the directory cannot be listed by other users." => "Veuillez changer les permissions du répertoire en mode 0770 afin que son contenu ne puisse pas être listé par les autres utilisateurs.",
 "Data directory (%s) is readable by other users" => "Le répertoire (%s) est lisible par les autres utilisateurs",
 "Data directory (%s) is invalid" => "Le répertoire (%s) est invalide",
 "Please check that the data directory contains a file \".ocdata\" in its root." => "Veuillez vérifier que le répertoire de données contient un fichier \".ocdata\" à sa racine.",
