@@ -166,6 +166,8 @@ class MailNotifications {
 		$html->assign ('user_displayname', $this->senderDisplayName);
 		$html->assign ('filename', $filename);
 		$html->assign('expiration',  $formatedDate);
+		$image = new \OC_Image(\OC::$SERVERROOT.'/core/img/logo-mail.gif');
+		$html->assign('logo', $image);
 		$htmlMail = $html->fetchPage();
 
 		$alttext = new \OC_Template("core", "altmail", "");
