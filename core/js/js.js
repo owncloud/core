@@ -392,7 +392,7 @@ var OC={
 	dialogs:OCdialogs,
 
 	/**
-	 * !! DEPRECATED !! Please use OC.Util.formatDate()!
+	 * @deprecated in OC8. Please use OC.Util.formatDate().
 	 */
 	mtime2date:function(mtime) {
 		return OC.Util.formatDate(mtime);
@@ -1243,7 +1243,7 @@ function humanFileSize(size, skipSmallSizes) {
 }
 
 /**
- * !! DEPRECATED !! Please use OC.Util.formatDate()!
+ * @deprecated in OC8. Please use OC.Util.formatDate().
  * Format an UNIX timestamp to a human understandable format
  * @param {number} date UNIX timestamp
  * @return {string} Human readable format
