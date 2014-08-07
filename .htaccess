@@ -25,7 +25,15 @@ RewriteRule ^\.well-known/caldav /remote.php/caldav/ [R]
 RewriteRule ^apps/calendar/caldav\.php remote.php/caldav/ [QSA,L]
 RewriteRule ^apps/contacts/carddav\.php remote.php/carddav/ [QSA,L]
 RewriteRule ^remote/(.*) remote.php [QSA,L]
-RewriteRule ^test/([^/]*)$ index.php/apps/files_sharing/ajax/publicpreview.php?x=1280&y=899&a=true&t=$1&scalingup=0 [QSA,L]
+
+#Enable short share urls(eg: host.com/public/$1
+RewriteCond %{ENV:URI} ^$
+RewriteRule ^(.*)$ - [ENV=URI:$1]
+RewriteCond %{ENV:BASE} ^$
+RewriteCond %{ENV:URI}::%{REQUEST_URI} ^(.*)::(.*?)\1$
+RewriteRule ^ - [ENV=BASE:%2]
+RewriteRule ^public/(.*)$ %{ENV:BASE}index.php/apps/files_sharing/ajax/publicpreview.php?x=1280&y=899&a=true&t=$1&scalingup=0 [R,L]
+
 </IfModule>
 <IfModule mod_mime.c>
 AddType image/svg+xml svg svgz
