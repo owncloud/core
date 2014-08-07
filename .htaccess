@@ -32,7 +32,7 @@ RewriteRule ^(.*)$ - [ENV=URI:$1]
 RewriteCond %{ENV:BASE} ^$
 RewriteCond %{ENV:URI}::%{REQUEST_URI} ^(.*)::(.*?)\1$
 RewriteRule ^ - [ENV=BASE:%2]
-RewriteRule ^public/(.*)$ %{ENV:BASE}index.php/apps/files_sharing/ajax/publicpreview.php?x=1280&y=899&a=true&t=$1&scalingup=0 [R,L]
+RewriteRule ^public/(.*)$ %{ENV:BASE}index.php/apps/files_sharing/ajax/publicpreview.php?x=99999999&y=99999999&a=true&t=$1&scalingup=0 [R,L]
 
 </IfModule>
 <IfModule mod_mime.c>
