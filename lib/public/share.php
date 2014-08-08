@@ -306,6 +306,15 @@ class Share extends \OC\Share\Constants {
 	}
 
 	/**
+	 * Check if a backend class has been registered for the specified item type
+	 * @param string $itemType
+	 * @return boolean True if a backend has been registered, false otherwise.
+	 */
+	public static function hasBackend($itemType) {
+		return \OC\Share\Share::hasBackend($itemType);
+	}
+
+	/**
 	 * Get the backend class for the specified item type
 	 * @param string $itemType
 	 * @return Share_Backend
