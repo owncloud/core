@@ -23,10 +23,7 @@
 */
 
 class OC_OCS_Thumbnail {
-
 	public static function getThumbnail($parameters) {
-		\OC_Log::write('OCP\Thumbnail', $_GET['path'], \OC_Log::DEBUG);
-		#$preview = new \OC\Preview('', 'files', '/fun/21670_084.jpg', 50, 50, false);
 		$preview = new \OC\Preview('', 'files', $_GET['path'], 50, 50, false);
 		$image = $preview->getPreview();
 		return $image->show();
