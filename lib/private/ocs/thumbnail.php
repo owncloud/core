@@ -24,8 +24,11 @@
 
 class OC_OCS_Thumbnail {
 	public static function getThumbnail($parameters) {
-		$preview = new \OC\Preview('', 'files', $_GET['path'], 50, 50, false);
-		$image = $preview->getPreview();
-		return $image->show();
+		try {
+                        $preview = new \OC\Preview('', 'files', $_GET['path'], $_GET['x'], $_GET['y'], true);
+                        return $preview->showPreview('image/png');
+                } catch (Exception $e) {
+                        return null;
+                }
 	}
 }
