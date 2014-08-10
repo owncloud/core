@@ -37,7 +37,7 @@
 					<a href="#" class="svg icon-upload"></a>
 			</div>
 			<div id="uploadprogresswrapper">
-				<div id="uploadprogressbar"></div>
+				<div id="uploadprogressbar"><div id="uploadprogressbar-label">Uploading...</div></div>
 				<input type="button" class="stop icon-close"
 					style="display:none" value="" />
 			</div>
