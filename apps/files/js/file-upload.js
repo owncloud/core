@@ -462,9 +462,11 @@ OC.Upload = {
 					//TODO progressbar in row
 				});
 				fileupload.on('fileuploadprogressall', function(e, data) {
-					OC.Upload.log('progress handle fileuploadprogressall', e, data);
-					var progress = (data.loaded / data.total) * 100;
-					$('#uploadprogressbar').progressbar('value', progress);
+				 OC.Upload.log('progress handle fileuploadprogressall', e, data);
+				 var progress = (data.loaded / data.total) * 100;
+				 $('#uploadprogressbar').progressbar('value', progress);
+				  var labelText = data.loaded  + "/" + data.total + "MB - " + progress + "%"; //here it happens.
+				  $('#uploadprogressbar-label').text(labelText);
 				});
 				fileupload.on('fileuploadstop', function(e, data) {
 					OC.Upload.log('progress handle fileuploadstop', e, data);
