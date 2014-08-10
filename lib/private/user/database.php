@@ -33,7 +33,7 @@
  *
  */
 
-require_once 'phpass/PasswordHash.php';
+require_once OC::$THIRDPARTYROOT . '/phpass/PasswordHash.php';
 
 /**
  * Class for user management in a SQL Database (e.g. MySQL, SQLite)
