@@ -14,6 +14,23 @@ $TRANSLATIONS = array(
 "For more info, please ask the person who sent this link." => "자세한 정보는 링크를 보낸 사람에게 문의하십시오.",
 "Save" => "저장",
 "Download" => "다운로드",
-"Direct link" => "직접 링크"
+"Download %s" => "%s 다운로드",
+"Direct link" => "직접 링크",
+"Shared with you"=>"공유된 파일",
+"Shared with others"=>"공유한 파일",
+"Shared by link"=>"링크 공유 파일",
+"You haven't shared any files by link yet."=>"링크로 공유한 파일이 없습니다",
+"You haven't shared any files yet."=>"공유한 파일이 없습니다",
+"No files have been shared with you yet."=>"공유 받은 파일이 없습니다",
+"Server to server sharing is not enabled on this server" => "서버에서 서버로의 공유는 이 서버에서는 불가능 합니다",
+"Couldn't add remote share" => "원격 공유를 추가할 수 없습니다",
+"Add {name} from {owner}@{remote}"=>"{owner}@{remote} 가 {name}를 추가했습니다",
+"Add Share" =>" 공유 추가",
+"No ownCloud installation found at {remote}"=>"NCDrive를 {remote}에서 찾을 수 없습니다",
+"Invalid ownCloud url" => "틀린 NCDrive URL 입니다",
+"Share time" => "공유 시간",
+"Remote Shares" => "원격 공유들",
+"Allow other instances to mount public links shared from this server" => "이 서버에서 공유 공개 링크를 마운트하기 위해 다른 인스턴스를 허용",
+"Allow users to mount public link shares" => "사용자가 공용 링크 공유를 마운트 할 수 있도록 허용"
 );
 $PLURAL_FORMS = "nplurals=1; plural=0;";

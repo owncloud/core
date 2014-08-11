@@ -63,6 +63,12 @@ $TRANSLATIONS = array(
 "So-so password" => "그저 그런 암호",
 "Good password" => "좋은 암호",
 "Strong password" => "강력한 암호",
+"Forgot your password? Reset it!" =>"암호를 잊으셨나요? 클릭해서 재설정",
+"Couldn't send reset email because there is no email address for this username. Please contact your administrator." =>"설정된 이메일이 없어서 재설정 메일을 보낼 수 없습니다. 담당자에게 문의하십시오",
+"Couldn't reset password because the token is invalid" =>"토큰이 만료되어 암호를 재설정 할 수 없습니다",
+"Couldn't send reset email. Please contact your administrator."=>"암호 재설정 메일을 보낼 수 없습니다. 담당자에게 문의하세요",
+"The link to reset your password has been sent to your email. If you do not receive it within a reasonable amount of time, check your spam/junk folders.
+If it is not there ask your local administrator."=>"암호 재설정 메일이 보내졌습니다. 잠시 후에 메일이 보이지 않으면 스팸/정크 폴더를 체크해주세요. 메일이 오지 않았다면 담당자에게 문의해주세요",
 "Shared" => "공유됨",
 "Shared by {owner}" => "{owner} 님이 공유함",
 "Share" => "공유",
@@ -132,6 +138,7 @@ $TRANSLATIONS = array(
 "Cloud not found" => "클라우드를 찾을 수 없습니다",
 "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" => "안녕하세요,\n\n%s 님이 %s을(를) 공유하였음을 알려 드립니다.\n보기 링크: %s\n\n",
 "The share will expire on %s." => "이 공유는 %s 까지 유지됩니다.",
+'Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href="%s">View it!</a><br><br>' =>"안녕하세요,<br><br>%s 님이 %s을(를) 공유하였음을 알려 드립니다.<br><a href='%s'>공유 받기</a><br><br>",
 "Cheers!" => "감사합니다!",
 "Security Warning" => "보안 경고",
 "Your PHP version is vulnerable to the NULL Byte attack (CVE-2006-7243)" => "사용 중인 PHP 버전이 NULL 바이트 공격에 취약합니다 (CVE-2006-7243)",
@@ -169,5 +176,6 @@ $TRANSLATIONS = array(
 "Thank you for your patience." => "기다려 주셔서 감사합니다.",
 "This ownCloud instance is currently being updated, which may take a while." => "ownCloud 인스턴스가 현재 업데이트 중입니다. 잠시만 기다려 주십시오.",
 "Please reload this page after a short time to continue using ownCloud." => "잠시 후 페이지를 다시 불러온 다음 ownCloud를 사용해 주십시오."
+
 );
 $PLURAL_FORMS = "nplurals=1; plural=0;";

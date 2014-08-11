@@ -22,27 +22,27 @@ msgstr ""
 
 #: ajax/external.php:17
 msgid "Server to server sharing is not enabled on this server"
-msgstr ""
+msgstr "서버 에서 서버로의 공유가 이 서버에서는 불가능합니다"
 
 #: ajax/external.php:47
 msgid "Couldn't add remote share"
-msgstr ""
+msgstr "원격 공유를 추가할 수 없습니다"
 
 #: appinfo/app.php:33 js/app.js:34
 msgid "Shared with you"
-msgstr ""
+msgstr "당신과 함께 공유"
 
 #: appinfo/app.php:42 js/app.js:53
 msgid "Shared with others"
-msgstr ""
+msgstr "타인과 함께 공유"
 
 #: appinfo/app.php:51 js/app.js:72
 msgid "Shared by link"
-msgstr ""
+msgstr "링크로 공유"
 
 #: js/app.js:35
 msgid "No files have been shared with you yet."
-msgstr ""
+msgstr "당신과 공유한 파일이 아직 없습니다"
 
 #: js/app.js:54
 msgid "You haven't shared any files yet."

@@ -47,12 +47,12 @@ msgstr "데이터베이스 업데이트 됨"
 
 #: ajax/update.php:19
 msgid "Checked database schema update"
-msgstr ""
+msgstr "쉐마 업데이트를 위한 DB 체크 중"
 
 #: ajax/update.php:27
 #, php-format
 msgid "Disabled incompatible apps: %s"
-msgstr ""
+msgstr "적합하지 않은 앱을 비활성화 했습니다 : %s"
 
 #: avatar/controller.php:69
 msgid "No image or file provided"
@@ -164,11 +164,11 @@ msgstr "폴더"
 
 #: js/js.js:592
 msgid "Image"
-msgstr ""
+msgstr "이미지"
 
 #: js/js.js:593
 msgid "Audio"
-msgstr ""
+msgstr "오디오"
 
 #: js/js.js:607
 msgid "Saving..."
@@ -220,7 +220,7 @@ msgstr "년 전"
 
 #: js/lostpassword.js:3 lostpassword/controller/lostcontroller.php:175
 msgid "Couldn't send reset email. Please contact your administrator."
-msgstr ""
+msgstr "비밀번호 리셋 메일을 보낼 수 없습니다. 관리자에게 문의바랍니다"
 
 #: js/lostpassword.js:5
 msgid ""
@@ -228,18 +228,21 @@ msgid ""
 "receive it within a reasonable amount of time, check your spam/junk "
 "folders.<br>If it is not there ask your local administrator."
 msgstr ""
+"당신의 계정으로 비번리셋 메일이 전송되었습니다."
+"만약 시간 내에 메일을 받지 못했다면, 스팸/정크 메일함을 확인 바랍니다. "
+"<br>없다면 담당자에게 문의 바랍니다."
 
 #: js/lostpassword.js:7
 msgid ""
-"Your files are encrypted. If you haven't enabled the recovery key, there "
-"will be no way to get your data back after your password is reset.<br />If "
-"you are not sure what to do, please contact your administrator before you "
-"continue. <br />Do you really want to continue?"
+"당신의 파일은 암호화되었습니다. 복구 키가 없다면, "
+"비밀번호를 변경한 후 파일을 복구할 방법이 없습니다.<br /> "
+"그러기를 원치 않으시면, 비밀번호 리셋 과정을 계속 하기 전에 담당자에게 문의 바랍니다 "
+" <br />정말 계속하기 원하십니까?"
 msgstr ""
 
 #: js/lostpassword.js:10
 msgid "I know what I'm doing"
-msgstr ""
+msgstr "예, 파일을 날려도 됩니다"
 
 #: js/lostpassword.js:13 lostpassword/templates/resetpassword.php:9
 msgid "Reset password"
@@ -247,7 +250,7 @@ msgstr "암호 재설정"
 
 #: js/lostpassword.js:16
 msgid "Password can not be changed. Please contact your administrator."
-msgstr ""
+msgstr "암호를 변경 할 수 없습니다. 담당자에게 문의 바랍니다"
 
 #: js/oc-dialogs.js:109 js/oc-dialogs.js:257
 msgid "Yes"
@@ -284,11 +287,11 @@ msgstr "파일 1개 충돌"
 
 #: js/oc-dialogs.js:452
 msgid "New Files"
-msgstr ""
+msgstr "새 파일"
 
 #: js/oc-dialogs.js:453
 msgid "Already existing files"
-msgstr ""
+msgstr "이미 존재하는 파일들"
 
 #: js/oc-dialogs.js:455
 msgid "Which files do you want to keep?"
@@ -350,7 +353,7 @@ msgstr "{owner} 님이 공유함"
 
 #: js/share.js:205
 msgid "Shared with {recipients}"
-msgstr ""
+msgstr "{recipients} 에게 공유함"
 
 #: js/share.js:211
 msgid "Share"
@@ -392,11 +395,11 @@ msgstr "링크 공유"
 #: js/share.js:340
 msgid ""
 "The public link will expire no later than {days} days after it is created"
-msgstr ""
+msgstr "공용 URL은 만든지 {days}일 후에 만료됩니다."
 
 #: js/share.js:342
 msgid "By default the public link will expire after {days} days"
-msgstr ""
+msgstr "기본적으로 공용URL은 {days} 일까지 유효합니다"
 
 #: js/share.js:347
 msgid "Password protect"
@@ -404,7 +407,7 @@ msgstr "암호 보호"
 
 #: js/share.js:349
 msgid "Choose a password for the public link"
-msgstr ""
+msgstr "공용 URL의 암호를 입력해 주세요"
 
 #: js/share.js:355
 msgid "Allow Public Upload"
@@ -532,7 +535,7 @@ msgstr "삭제할 태그를 선택하지 않았습니다."
 
 #: js/update.js:30
 msgid "Updating {productName} to version {version}, this may take a while."
-msgstr ""
+msgstr "{productName} 가  {version} 로 업데이트 중입니다. 잠시 기다료 주세요"
 
 #: js/update.js:43
 msgid "Please reload the page."
@@ -540,7 +543,7 @@ msgstr "페이지를 새로 고치십시오."
 
 #: js/update.js:52
 msgid "The update was unsuccessful."
-msgstr ""
+msgstr "업데이트가 실패했습니다"
 
 #: js/update.js:61
 msgid "The update was successful. Redirecting you to ownCloud now."
@@ -548,17 +551,19 @@ msgstr "업데이트가 성공하였습니다. ownCloud로 돌아갑니다."
 
 #: lostpassword/controller/lostcontroller.php:110
 msgid "Couldn't reset password because the token is invalid"
-msgstr ""
+msgstr "토큰이 틀려서 암호를 초기화 할 수 없습니다"
 
 #: lostpassword/controller/lostcontroller.php:136
 msgid "Couldn't send reset email. Please make sure your username is correct."
-msgstr ""
+msgstr "암호 리셋 메일을 보낼 수 없습니다. 사용자 명이 바른지 확인바랍니다"
 
 #: lostpassword/controller/lostcontroller.php:151
 msgid ""
 "Couldn't send reset email because there is no email address for this "
 "username. Please contact your administrator."
 msgstr ""
+"이 사용자에 대한 이메일이 없어 리셋메일을 보낼 수 없습니다 "
+"담당자에게 문의해 주세요"
 
 #: lostpassword/controller/lostcontroller.php:168
 #, php-format
@@ -601,7 +606,7 @@ msgstr "새 암호"
 
 #: lostpassword/templates/resetpassword.php:6
 msgid "New Password"
-msgstr ""
+msgstr "새 암호"
 
 #: setup/controller.php:140
 #, php-format
@@ -609,11 +614,13 @@ msgid ""
 "Mac OS X is not supported and %s will not work properly on this platform. "
 "Use it at your own risk! "
 msgstr ""
+"맥 OS X는 지원하지 않습니다.  현재 OS에서 %s 는 적절히 동작하지 않을 것입니다. "
 
 #: setup/controller.php:144
 msgid ""
 "For the best results, please consider using a GNU/Linux server instead."
 msgstr ""
+"더 좋은 결과를 위해 , GNU/Linux server를 고려해 주세요."
 
 #: strings.php:5
 msgid "Personal"
@@ -753,7 +760,7 @@ msgstr "데이터베이스 설정"
 #: templates/installation.php:96
 #, php-format
 msgid "Only %s is available."
-msgstr ""
+msgstr "%s 만 사용 가능합니다"
 
 #: templates/installation.php:111 templates/installation.php:113
 msgid "Database user"
@@ -779,7 +786,7 @@ msgstr "데이터베이스 호스트"
 msgid ""
 "SQLite will be used as database. For larger installations we recommend to "
 "change this."
-msgstr ""
+msgstr "SQLite는 데이터베이스로 이용됩니다. 많은 수의 사용자를 위해서는 변경하여 주세요"
 
 #: templates/installation.php:159
 msgid "Finish setup"
@@ -829,7 +836,7 @@ msgstr "관리자에게 문의하십시오."
 
 #: templates/login.php:50
 msgid "Forgot your password? Reset it!"
-msgstr ""
+msgstr "암호를 잊으셨나요? 리셋 하세요"
 
 #: templates/login.php:55
 msgid "remember"
@@ -849,6 +856,8 @@ msgid ""
 "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> "
 "with you.<br><a href=\"%s\">View it!</a><br><br>"
 msgstr ""
+"안녕하세요?,<br><br> %s가 <strong>%s</strong> 를 당신과 함께"
+"공유합니다.<br><a href=\"%s\">View it!</a><br><br>"
 
 #: templates/singleuser.user.php:3
 msgid "This ownCloud instance is currently in single user mode."
@@ -871,26 +880,26 @@ msgstr "기다려 주셔서 감사합니다."
 #: templates/update.admin.php:3
 #, php-format
 msgid "%s will be updated to version %s."
-msgstr ""
+msgstr "%s 는 %s로 업데이트 될 것입니다"
 
 #: templates/update.admin.php:7
 msgid "The following apps will be disabled:"
-msgstr ""
+msgstr "다음의 앱들은 비활성화됩니다"
 
 #: templates/update.admin.php:17
 #, php-format
 msgid "The theme %s has been disabled."
-msgstr ""
+msgstr "테마 %s 는 비활성화 되었습니다"
 
 #: templates/update.admin.php:21
 msgid ""
 "Please make sure that the database, the config folder and the data folder "
 "have been backed up before proceeding."
-msgstr ""
+msgstr "DB를 확인해 주세요, 설정 촐더와 데이터 폴더는 진행전에 백업이 되어야합니다"
 
 #: templates/update.admin.php:23
 msgid "Start update"
-msgstr ""
+msgstr "업데이트 시작"
 
 #: templates/update.user.php:3
 msgid ""

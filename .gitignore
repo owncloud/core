@@ -43,6 +43,7 @@ CVS/*
 .svn/*
 RCS/*
 *.backup*
+*.*-tmp
 
 # kdevelop
 .kdev
@@ -89,6 +90,10 @@ nbproject
 # nodejs
 /build/lib/
 /npm-debug.log
+
+# sublime
+*.sublime*
+sftp-config.json
 
 
 # Tests - auto-generated files
