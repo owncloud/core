@@ -10,6 +10,7 @@
 namespace OC\Group;
 
 use OC\Hooks\PublicEmitter;
+use OCP\IGroupManager;
 
 /**
  * Class Manager
@@ -26,7 +27,7 @@ use OC\Hooks\PublicEmitter;
  *
  * @package OC\Group
  */
-class Manager extends PublicEmitter {
+class Manager extends PublicEmitter implements IGroupManager {
 	/**
 	 * @var \OC_Group_Backend[]|\OC_Group_Database[] $backends
 	 */
@@ -125,7 +126,7 @@ class Manager extends PublicEmitter {
 	 * @return \OC\Group\Group
 	 */
 	public function createGroup($gid) {
-		if (!$gid) {
+		if ($gid === '' || is_null($gid)) {
 			return false;
 		} else if ($group = $this->get($gid)) {
 			return $group;

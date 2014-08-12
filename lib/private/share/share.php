@@ -1114,7 +1114,7 @@ class Share extends \OC\Share\Constants {
 	 *
 	 * Resharing is allowed by default if not configured
 	 */
-	private static function isResharingAllowed() {
+	public static function isResharingAllowed() {
 		if (!isset(self::$isResharingAllowed)) {
 			if (\OC_Appconfig::getValue('core', 'shareapi_allow_resharing', 'yes') == 'yes') {
 				self::$isResharingAllowed = true;
@@ -1388,7 +1388,8 @@ class Share extends \OC\Share\Constants {
 					}
 					if ($mounts[$row['storage']]) {
 						$path = $mounts[$row['storage']]->getMountPoint().$row['path'];
-						$row['path'] = substr($path, $root);
+						$relPath = substr($path, $root); // path relative to data/user
+						$row['path'] = rtrim($relPath, '/');
 					}
 				}
 			}
