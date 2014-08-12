@@ -2,10 +2,8 @@
 /**
 * ownCloud
 *
-* @author Frank Karlitschek
-* @author Tom Needham
-* @copyright 2012 Frank Karlitschek frank@owncloud.org
-* @copyright 2012 Tom Needham tom@owncloud.com
+* @author Tobias Kaminsky
+* @copyright 2014
 *
 * This library is free software; you can redistribute it and/or
 * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -23,12 +21,15 @@
 */
 
 class OC_OCS_Thumbnail {
-	public static function getThumbnail($parameters) {
-		try {
+        public static function getThumbnail() {
+                if (!isset($_GET['x']) || !is_numeric($_GET['x']) || !isset($_GET['y']) || !is_numeric($_GET['y']) || !isset($_GET['path']) ){
+                        return new OC_OCS_Result(array("message" => "Parameters wrong!"), 101);
+                }
+                try {
                         $preview = new \OC\Preview('', 'files', $_GET['path'], $_GET['x'], $_GET['y'], true);
                         return $preview->showPreview('image/png');
                 } catch (Exception $e) {
-                        return null;
+                        return new OC_OCS_Result(array("Exception" => $e), 400);
                 }
-	}
+        }
 }
