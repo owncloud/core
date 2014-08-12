@@ -624,6 +624,10 @@
 				icon = icon || OC.imagePath('core', 'filetypes/file');
 			}
 
+			if(getURLParameter('scrollto') === name){
+				tr.addClass('searchresult');
+			}
+
 			// filename td
 			td = $('<td></td>').attr({
 				"class": "filename",

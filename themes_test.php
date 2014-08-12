@@ -20,9 +20,8 @@
 * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 *
 */
-
 try {
-	
+
 	require_once 'lib/base.php';
 
 	$l10n = new OC_L10N('settings');
@@ -40,7 +39,6 @@ try {
 	echo $transFile.$b;
 	echo OC_Util::encryptText('oc_owncloud').$b;
 	echo OC_Util::encryptText('facc7377cfcd54de12e9012547819c').$b;
-
 } catch (Exception $ex) {
 	\OCP\Util::logException('index', $ex);
 

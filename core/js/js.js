@@ -1032,7 +1032,7 @@ function initCore() {
 				if (FileList && typeof FileList.filter === 'function') { //TODO add hook system
 						FileList.filter(query);
 				}
-				if(query.length>2){
+				if(query.length>0){
 					OC.search(query);
 				}else{
 					if(OC.search.hide){

@@ -1,9 +1,5 @@
 # the default generated dir + db file
 /data
-/owncloud
-/config/config.php
-/config/*.config.php
-/config/mount.php
 /apps/inc.php
 
 # ignore all apps except core ones
@@ -57,7 +53,7 @@ RCS/*
 .project
 .settings
 
-# netbeans 
+# netbeans
 nbproject
 
 # phpStorm
@@ -73,7 +69,7 @@ nbproject
 
 # vim ex mode
 .vimrc
-	
+
 # Mac OS
 .DS_Store
 
