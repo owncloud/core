@@ -29,12 +29,6 @@ $CONFIG = array (
       'url' => '/apps',
       'writable' => true,
     ),
-    1 =>
-    array (
-      'path' => '/home/quisa137/webRoot/owncloud/apps2',
-      'url' => '/apps2',
-      'writable' => true,
-    ),
   ),
   'mail_smtpmode' => 'smtp',
   'mail_smtpname' => 'quisa137@gmail.com',
