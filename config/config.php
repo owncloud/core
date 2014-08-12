@@ -4,15 +4,16 @@ $CONFIG = array (
   'instanceid' => 'ocd9b6a106e1',
   'passwordsalt' => 'f9ad620e7072828d5388ab41796da8',
   'trusted_domains' =>
-  array (),
+  array (
+  ),
   'datadirectory' => '/home/quisa137/webRoot/owncloud/data',
   'dbtype' => 'mysql',
-  'version' => '7.0.1.0',
+  'version' => '7.0.1.1',
   'dbname' => 'owncloud',
   'dbhost' => 'localhost',
   'dbtableprefix' => 'oc_',
-  'dbuser' => OC_Util::decryptText('BqCevufLSOFBbl25yO1kb7SFAAjcm3BfP8H/55+e3Ks='),
-  'dbpassword' => OC_Util::decryptText('fHC8DCXRJ+bU9fRAdReAV2A07emZ84kdwd+BayfDIwmqVvlCnwuLte2Ct6avjMBd'),
+  'dbuser' => OC_Util::decryptText('BqCevufLSOFBbl25yO1kb7SFAAjcm3BfP8H/55+e3Ks=') . "\0" . '' . "\0" . '' . "\0" . '' . "\0" . '' . "\0" . '',
+  'dbpassword' => OC_Util::decryptText('fHC8DCXRJ+bU9fRAdReAV2A07emZ84kdwd+BayfDIwmqVvlCnwuLte2Ct6avjMBd') . "\0" . '' . "\0" . '',
   'installed' => true,
   'custom_csp_policy' => 'default-src \'self\'; script-src \'self\' \'unsafe-eval\' \'unsafe-inline\'; style-src \'self\' \'unsafe-inline\'; frame-src *; img-src *; font-src \'self\' data:; media-src *',
   'forcessl' => false,
@@ -41,5 +42,6 @@ $CONFIG = array (
   'mail_smtppassword' => 'dpffmdktkf',
   'mail_smtpport' => '587',
   'customclient_desktop' => '/agent/desktop/ncdrive-1.0.0-setup.exe',
+  'preview_libreoffice_path' => '/usr/bin/libreoffice',
 );
 ?>
