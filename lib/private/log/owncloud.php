@@ -31,7 +31,9 @@ namespace OC\Log;
 use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Monolog\Processor\IntrospectionProcessor;
 use OC;
+use OC\Log\Formatters\ownCloudFormatter;
 use OC\Log\Interfaces\LogHandlerInterface;
 use OC_Config;
 
@@ -55,8 +57,9 @@ class Owncloud implements LogHandlerInterface {
 
 	public function addHandler() {
 		$stream = new StreamHandler($this->logFile, OC_Config::getValue('loglevel', Logger::WARNING));
-		$stream->setFormatter(new JsonFormatter());
+		$stream->setFormatter(new ownCloudFormatter());
 		$this->monolog->pushHandler($stream);
+		$this->monolog->pushProcessor(new IntrospectionProcessor());
 	}
 
 	public function __call($method, $parameters) {
