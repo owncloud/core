@@ -403,17 +403,17 @@ class Util {
 			$stream = fopen('crypt://' . $path, "r");
 
 			if (is_resource($stream)) {
-				// calculate last chunk position
-				$lastChunckPos = ($lastChunkNr * 8192);
+				// calculate last chunk position in the unencrypted stream
+				$lastChunkPos = ($lastChunkNr * 6126);
 
 				// seek to end
-				if (@fseek($stream, $lastChunckPos) === -1) {
+				if (@fseek($stream, $lastChunkPos) === -1) {
 					// storage doesn't support fseek, we need a local copy
 					fclose($stream);
 					$localFile = $this->view->getLocalFile($path);
 					Helper::addTmpFileToMapper($localFile, $path);
 					$stream = fopen('crypt://' . $localFile, "r");
-					if (fseek($stream, $lastChunckPos) === -1) {
+					if (fseek($stream, $lastChunkPos) === -1) {
 						// if fseek also fails on the local storage, than
 						// there is nothing we can do
 						fclose($stream);
@@ -422,8 +422,8 @@ class Util {
 					}
 				}
 
-				// get the content of the last chunk
-				$lastChunkContent = fread($stream, $lastChunkSize);
+				// get the content of the last chunk (it won't read past the end, which is never more than 6126 away)
+				$lastChunkContent = fread($stream,6126);
 
 				// calc the real file size with the size of the last chunk
 				$realSize = (($lastChunkNr * 6126) + strlen($lastChunkContent));
