@@ -172,7 +172,7 @@ $CONFIG = array(
 /* File for the owncloud logger to log to, (default is ownloud.log in the data dir) */
 "logfile" => "",
 
-/* Loglevel to start logging at. 0=DEBUG, 1=INFO, 2=WARN, 3=ERROR (default is WARN) */
+/* Loglevel to start logging at. 100=DEBUG, 200=INFO, 300=WARN, 400=ERROR, 500=CRITICAL, 550=ALERT, 600=EMERGENCY (default is WARN) */
 "loglevel" => "",
 
 /* date format to be used while writing to the owncloud logfile */
