@@ -5,17 +5,20 @@
  * See the COPYING-README file.
  */
 
+use OC\Log\Owncloud;
+
 OC_JSON::checkAdminUser();
 
-$count=(isset($_GET['count']))?$_GET['count']:50;
-$offset=(isset($_GET['offset']))?$_GET['offset']:0;
+$count = (isset($_GET['count'])) ? $_GET['count'] : 50;
+$offset = (isset($_GET['offset'])) ? $_GET['offset'] : 0;
 
-$entries=OC_Log_Owncloud::getEntries($count, $offset);
+$log = new Owncloud();
+$entries = $log->getEntries($count, $offset);
 $data = array();
 
 OC_JSON::success(
 	array(
 		"data" => $entries,
-		"remain" => count(OC_Log_Owncloud::getEntries(1, $offset + $count)) !== 0,
+		"remain" => count($log->getEntries(1, $offset + $count)) !== 0,
 	)
 );

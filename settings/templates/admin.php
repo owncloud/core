@@ -3,13 +3,18 @@
  * This file is licensed under the Affero General Public License version 3 or later.
  * See the COPYING-README file.
  */
-$levels = array('Debug', 'Info', 'Warning', 'Error', 'Fatal');
+$levels = array(
+	'100' => 'Debug',
+	'200' => 'Info',
+	'300' => 'Warning',
+	'400' => 'Error',
+	'500' => 'Fatal');
 $levelLabels = array(
-	$l->t( 'Everything (fatal issues, errors, warnings, info, debug)' ),
-	$l->t( 'Info, warnings, errors and fatal issues' ),
-	$l->t( 'Warnings, errors and fatal issues' ),
-	$l->t( 'Errors and fatal issues' ),
-	$l->t( 'Fatal issues only' ),
+	'100' => $l->t( 'Everything (fatal issues, errors, warnings, info, debug)' ),
+	'200' => $l->t( 'Info, warnings, errors and fatal issues' ),
+	'300' => $l->t( 'Warnings, errors and fatal issues' ),
+	'400' => $l->t( 'Errors and fatal issues' ),
+	'500' => $l->t( 'Fatal issues only' ),
 );
 
 $mail_smtpauthtype = array(
@@ -427,31 +432,33 @@ if (!$_['internetconnectionworking']) {
 <div class="section">
 	<h2><?php p($l->t('Log'));?></h2>
 	<?php p($l->t('Log level'));?> <select name='loglevel' id='loglevel'>
-<?php for ($i = 0; $i < 5; $i++):
+<?php foreach ($levelLabels as $level => $label):
 	$selected = '';
-	if ($i == $_['loglevel']):
+	if ($level == $_['loglevel']):
 		$selected = 'selected="selected"';
 	endif; ?>
-		<option value='<?php p($i)?>' <?php p($selected) ?>><?php p($levelLabels[$i])?></option>
-<?php endfor;?>
+		<option value='<?php p($level)?>' <?php p($selected) ?>><?php p($label)?></option>
+<?php endforeach;?>
 </select>
 	<table id="log" class="grid">
-		<?php foreach ($_['entries'] as $entry): ?>
+		<?php
+
+		foreach ($_['entries'] as $entry): ?>
 		<tr>
 			<td>
 				<?php p($levels[$entry->level]);?>
 			</td>
 			<td>
-				<?php p($entry->app);?>
+				<?php p($entry->context->app);?>
 			</td>
 			<td>
 				<?php p($entry->message);?>
 			</td>
 			<td class="date">
-				<?php if(is_int($entry->time)){
-					p(OC_Util::formatDate($entry->time));
+				<?php if(is_int($entry->datetime->date)){
+					p(OC_Util::formatDate($entry->datetime->date));
 				} else {
-					p($entry->time);
+					p($entry->datetime->date);
 				}?>
 			</td>
 		</tr>
