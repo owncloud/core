@@ -26,87 +26,56 @@
  * Log is saved at data/owncloud.log (on default)
  */
 
-class OC_Log_Owncloud {
-	static protected $logFile;
+namespace OC\Log;
+
+use Monolog\Formatter\JsonFormatter;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+use OC;
+use OC\Log\Interfaces\LogHandlerInterface;
+use OC_Config;
+
+class Owncloud implements LogHandlerInterface {
 	static protected $reqId;
-
+	protected $logFile;
 	/**
-	 * Init class data
+	 * @var Logger
 	 */
-	public static function init() {
-		$defaultLogFile = OC_Config::getValue("datadirectory", OC::$SERVERROOT.'/data').'/owncloud.log';
-		self::$logFile = OC_Config::getValue("logfile", $defaultLogFile);
+	protected $monolog;
 
-		/*
-		* Fall back to default log file if specified logfile does not exist
-		* and can not be created. Error suppression is required in order to
-		* not end up in the error handler which will try to log the error.
-		* A better solution (compared to error suppression) would be checking
-		* !is_writable(dirname(self::$logFile)) before touch(), but
-		* is_writable() on directories used to be pretty unreliable on Windows
-		* for at least some time.
-		*/
-		if (!file_exists(self::$logFile) && !@touch(self::$logFile)) {
-			self::$logFile = $defaultLogFile;
-		}
+	public function __construct() {
+
+		$defaultLogFile = OC_Config::getValue("datadirectory", OC::$SERVERROOT . '/data') . '/owncloud.log';
+		$this->logFile = OC_Config::getValue("logfile", $defaultLogFile);
 	}
 
-	/**
-	 * write a message in the log
-	 * @param string $app
-	 * @param string $message
-	 * @param int $level
-	 */
-	public static function write($app, $message, $level) {
-		$minLevel=min(OC_Config::getValue( "loglevel", OC_Log::WARN ), OC_Log::ERROR);
-		if($level>=$minLevel) {
-			// default to ISO8601
-			$format = OC_Config::getValue('logdateformat', 'c');
-			$logtimezone=OC_Config::getValue( "logtimezone", 'UTC' );
-			try {
-				$timezone = new DateTimeZone($logtimezone);
-			} catch (Exception $e) {
-				$timezone = new DateTimeZone('UTC');
-			}
-			$time = new DateTime(null, $timezone);
-			// remove username/passwords from URLs before writing the to the log file
-			$time = $time->format($format);
-			if($minLevel == OC_Log::DEBUG) {
-				if(empty(self::$reqId)) {
-					self::$reqId = uniqid();
-				}
-				$reqId = self::$reqId;
-				$url = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '--';
-				$method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : '--';
-				$entry = compact('reqId', 'app', 'message', 'level', 'time', 'method', 'url');
-			}
-			else {
-				$entry = compact('app', 'message', 'level', 'time');
-			}
-			$entry = json_encode($entry);
-			$handle = @fopen(self::$logFile, 'a');
-			@chmod(self::$logFile, 0640);
-			if ($handle) {
-				fwrite($handle, $entry."\n");
-				fclose($handle);
-			} else {
-				// Fall back to error_log
-				error_log($entry);
-			}
-		}
+	public function setMonolog(Logger $logger) {
+		$this->monolog = $logger;
 	}
+
+	public function addHandler() {
+		$stream = new StreamHandler($this->logFile, OC_Config::getValue('loglevel', Logger::WARNING));
+		$stream->setFormatter(new JsonFormatter());
+		$this->monolog->pushHandler($stream);
+	}
+
+	public function __call($method, $parameters) {
+		$this->addHandler();
+		return $this->monolog->$method($parameters[0], $parameters[1]);
+	}
+
 
 	/**
 	 * get entries from the log in reverse chronological order
+	 *
 	 * @param int $limit
 	 * @param int $offset
 	 * @return array
 	 */
-	public static function getEntries($limit=50, $offset=0) {
-		self::init();
-		$minLevel=OC_Config::getValue( "loglevel", OC_Log::WARN );
+	public function getEntries($limit = 50, $offset = 0) {
+		$minLevel = OC_Config::getValue("loglevel", Logger::WARNING);
 		$entries = array();
-		$handle = @fopen(self::$logFile, 'rb');
+		$handle = @fopen($this->logFile, 'rb');
 		if ($handle) {
 			fseek($handle, 0, SEEK_END);
 			$pos = ftell($handle);
@@ -122,7 +91,7 @@ class OC_Log_Owncloud {
 						// Add the first character if at the start of the file,
 						// because it doesn't hit the else in the loop
 						if ($pos == 0) {
-							$line = $ch.$line;
+							$line = $ch . $line;
 						}
 						$entry = json_decode($line);
 						// Add the line as an entry if it is passed the offset and is equal or above the log level
@@ -136,7 +105,7 @@ class OC_Log_Owncloud {
 						$line = '';
 					}
 				} else {
-					$line = $ch.$line;
+					$line = $ch . $line;
 				}
 				$pos--;
 			}

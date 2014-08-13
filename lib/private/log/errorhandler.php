@@ -16,6 +16,7 @@ class ErrorHandler {
 
 	/**
 	 * remove password in URLs
+	 *
 	 * @param string $msg
 	 * @return string
 	 */
@@ -23,7 +24,7 @@ class ErrorHandler {
 		return preg_replace('/\/\/(.*):(.*)@/', '//xxx:xxx@', $msg);
 	}
 
-	public static function register($debug=false) {
+	public static function register($debug = false) {
 		$handler = new ErrorHandler();
 
 		if ($debug) {
@@ -42,7 +43,7 @@ class ErrorHandler {
 	//Fatal errors handler
 	public static function onShutdown() {
 		$error = error_get_last();
-		if($error && self::$logger) {
+		if ($error && self::$logger) {
 			//ob_end_clean();
 			$msg = $error['message'] . ' at ' . $error['file'] . '#' . $error['line'];
 			self::$logger->critical(self::removePassword($msg), array('app' => 'PHP'));

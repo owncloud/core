@@ -1,40 +1,62 @@
 <?php
+
 /**
  * Copyright (c) 2012 Bart Visscher <bartv@thisnet.nl>
  * This file is licensed under the Affero General Public License version 3 or
  * later.
  * See the COPYING-README file.
  */
+namespace OC\Log;
 
-class OC_Log_Syslog {
-	static protected $levels = array(
-		OC_Log::DEBUG => LOG_DEBUG,
-		OC_Log::INFO => LOG_INFO,
-		OC_Log::WARN => LOG_WARNING,
-		OC_Log::ERROR => LOG_ERR,
-		OC_Log::FATAL => LOG_CRIT,
-	);
+use Monolog\Formatter\JsonFormatter;
+use Monolog\Handler\SyslogHandler;
+use Monolog\Logger;
+use OC\Log\Interfaces\LogHandlerInterface;
+
+/**
+ * Class Syslog
+ *
+ * @package OC\Log
+ */
+class Syslog implements LogHandlerInterface{
 
 	/**
-	 * Init class data
+	 * @var Logger
 	 */
-	public static function init() {
-		openlog('ownCloud', LOG_PID | LOG_CONS, LOG_USER);
-		// Close at shutdown
-		register_shutdown_function('closelog');
+	protected $monolog;
+
+	/**
+	 * @param $monolog
+	 */
+	public function __construct($monolog) {
+		$this->monolog = $monolog;
 	}
 
 	/**
-	 * write a message in the log
-	 * @param string $app
-	 * @param string $message
-	 * @param int $level
+	 * @param Logger $logger
+	 * @return mixed|void
 	 */
-	public static function write($app, $message, $level) {
-		$minLevel = min(OC_Config::getValue("loglevel", OC_Log::WARN), OC_Log::ERROR);
-		if ($level >= $minLevel) {
-			$syslog_level = self::$levels[$level];
-			syslog($syslog_level, '{'.$app.'} '.$message);
-		}
+	public function setMonolog(Logger $logger) {
+		$this->monolog = $logger;
+	}
+
+	/**
+	 * Adds handlers so we know where to log and how to format
+	 */
+	public function addHandler() {
+		$stream = new SyslogHandler('ownCloud', LOG_USER, OC_Config::getValue('loglevel', Logger::WARNING), false, LOG_PID | LOG_CONS);
+		$stream->setFormatter(new JsonFormatter());
+		$this->monolog->pushHandler($stream);
+	}
+
+	/**
+	 * Dispatches relevent calls to the correct monolog method
+	 * @param $method
+	 * @param $parameters
+	 * @return mixed
+	 */
+	public function __call($method, $parameters) {
+		$this->addHandler();
+		return $this->monolog->$method($parameters[0], $parameters[1]);
 	}
 }
