@@ -142,6 +142,7 @@ class OC_Installer{
 	 * @brief Update an application
 	 * @param array $info
 	 * @param bool $isShipped
+	 * @return bool
 	 *
 	 * This function could work like described below, but currently it disables and then
 	 * enables the app again. This does result in an updated app.
@@ -280,9 +281,10 @@ class OC_Installer{
 	 * check an app's integrity
 	 * @param array $data
 	 * @param string $extractDir
+	 * @param $path
 	 * @param bool $isShipped
-	 * @return array
-	 * @throws \Exception
+	 * @return array|null
+	 * @throws Exception
 	 */
 	public static function checkAppsIntegrity($data = array(), $extractDir, $path, $isShipped=false) {
 		$l = \OC_L10N::get('lib');
@@ -308,11 +310,6 @@ class OC_Installer{
 			throw new \Exception($l->t("App does not provide an info.xml file"));
 		}
 		$info=OC_App::getAppInfo($extractDir.'/appinfo/info.xml', true);
-		// check the code for not allowed calls
-		if(!$isShipped && !OC_Installer::checkCode($info['id'], $extractDir)) {
-			OC_Helper::rmdirr($extractDir);
-			throw new \Exception($l->t("App can't be installed because of not allowed code in the App"));
-		}
 
 		// check if the app is compatible with this version of ownCloud
 		if(!OC_App::isAppCompatible(OC_Util::getVersion(), $info)) {
@@ -525,68 +522,4 @@ class OC_Installer{
 		return $info['id'];
 	}
 
-	/**
-	 * check the code of an app with some static code checks
-	 * @param string $folder the folder of the app to check
-	 * @return boolean true for app is o.k. and false for app is not o.k.
-	 */
-	public static function checkCode($appname, $folder) {
-		$blacklist=array(
-			'exec(',
-			'eval(',
-			// more evil pattern will go here later
-
-			// classes replaced by the public api
-			'OC_API::',
-			'OC_App::',
-			'OC_AppConfig::',
-			'OC_Avatar',
-			'OC_BackgroundJob::',
-			'OC_Config::',
-			'OC_DB::',
-			'OC_Files::',
-			'OC_Helper::',
-			'OC_Hook::',
-			'OC_Image::',
-			'OC_JSON::',
-			'OC_L10N::',
-			'OC_Log::',
-			'OC_Mail::',
-			'OC_Preferences::',
-			'OC_Request::',
-			'OC_Response::',
-			'OC_Template::',
-			'OC_User::',
-			'OC_Util::',
-		);
-
-		// is the code checker enabled?
-		if(OC_Config::getValue('appcodechecker', true)) {
-			// check if grep is installed
-			$grep = exec('command -v grep');
-			if($grep=='') {
-				OC_Log::write('core',
-					'grep not installed. So checking the code of the app "'.$appname.'" was not possible',
-					OC_Log::ERROR);
-				return true;
-			}
-
-			// iterate the bad patterns
-			foreach($blacklist as $bl) {
-				$cmd = 'grep -ri '.escapeshellarg($bl).' '.$folder.'';
-				$result = exec($cmd);
-				// bad pattern found
-				if($result<>'') {
-					OC_Log::write('core',
-						'App "'.$appname.'" is using a not allowed call "'.$bl.'". Installation refused.',
-						OC_Log::ERROR);
-					return false;
-				}
-			}
-			return true;
-
-		}else{
-			return true;
-		}
-	}
 }
