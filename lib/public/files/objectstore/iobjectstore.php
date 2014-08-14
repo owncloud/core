@@ -29,5 +29,12 @@ interface IObjectStore {
 	 * @throws Exception when something goes wrong, message will be logged
 	 */
 	 function deleteObject($urn);
-
+	
+	 /**
+         * @param string $urn the unified resource name used to identify the object
+	 * @param sring the path to the folder
+         * @return void
+         * @throws Exception when something goes wrong, message will be logged
+         */
+         function createFolder($urn, $path);
 }

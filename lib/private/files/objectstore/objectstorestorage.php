@@ -89,7 +89,14 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 
 		if ($parentExists) {
 			$data['etag'] = $this->getETag($path);
-			$this->getCache()->put($path, $data);
+			$fileId = $this->getCache()->put($path, $data);
+			try {
+				$this->objectStore->createFolder($this->getURN($fileId),$path);
+			} catch (\Exception $ex) {
+				$this->getCache()->remove($path);
+				\OCP\Util::writeLog('objectstore', 'Could not create object: ' . $ex->getMessage(), \OCP\Util::ERROR);
+				return false;
+			}
 			return true;
 		}
 		return false;

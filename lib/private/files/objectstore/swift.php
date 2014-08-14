@@ -143,5 +143,7 @@ class Swift implements IObjectStore {
 		$this->init();
 		$this->container->delete($recursive);
 	}
-
+	public function createFolder($urn, $path) {
+		// refers to https://github.com/owncloud/core/issues/10391 to see why it is empty
+	}
 }
