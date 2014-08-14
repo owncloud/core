@@ -324,6 +324,10 @@ class OC_Util {
 			$application = "";
 		}
 		if ( !empty( $application )) {
+			if ($application === 'bower') {
+				self::$scripts[] = "vendor/$file";
+				return true;
+			}
 			self::$scripts[] = "$application/js/$file";
 		} else {
 			self::$scripts[] = "js/$file";
@@ -343,6 +347,10 @@ class OC_Util {
 			$application = "";
 		}
 		if ( !empty( $application )) {
+			if ($application === 'bower') {
+				self::$styles[] = "vendor/$file";
+				return true;
+			}
 			self::$styles[] = "$application/css/$file";
 		} else {
 			self::$styles[] = "css/$file";
