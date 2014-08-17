@@ -239,7 +239,6 @@
 					ignoreNextLeave = true;
 				}
 
-				$('#filestable').css({'box-shadow' : 'inset 0px 0px 20px rgba(0, 0, 0, 0.1)', 'border' : '4px dashed #bb2b2b'});
 				$('#drophere').css({'display' : 'block'});
 				e.preventDefault();
 
@@ -250,7 +249,6 @@
 					ignoreNextLeave = false;
 					return;
 				}
-				$('#filestable').css({'box-shadow' : 'none', 'border' : 'none'});
 				$('#drophere').css({'display' : 'none'});
 			});
 
@@ -259,7 +257,6 @@
 			$('html, #app-navigation').on('drop', function(e) {
 				e.preventDefault();
 				e.stopPropagation();
-				$('#filestable').css({'box-shadow' : 'none', 'border' : 'none'});
 				$('#drophere').css({'display' : 'none'});
 				$(this).next().trigger(e); // needed for Opera
 			});
