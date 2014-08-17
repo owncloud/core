@@ -77,6 +77,26 @@
 	width: 100%;
 }
 
+#drophere {
+	position: fixed;
+	top: 50px;
+	width: 83%;
+	pointer-events: none; /* required for uploads into sub-directories */
+	height: 90%;
+	background-color: #fff;
+	display: none;
+	z-index: 1;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
+	filter: alpha(opacity=60);
+	opacity: .6;
+}
+
+#drophere p {
+	text-align: center;
+	vertical-align: middle;
+	line-height: 50;
+}
+
 /* make sure there's enough room for the file actions */
 #body-user #filestable {
 	min-width: 688px; /* 768 (mobile break) - 80 (nav width) */
