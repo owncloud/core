@@ -20,6 +20,8 @@
  *
  */
 
+use OC\Log;
+
 require_once 'public/constants.php';
 
 /**
@@ -492,7 +494,8 @@ class OC {
 		}
 
 		if (!defined('PHPUNIT_RUN')) {
-			OC\Log\ErrorHandler::setLogger(OC_Log::$object);
+
+			OC\Log\ErrorHandler::setLogger(new Log());
 			if (defined('DEBUG') and DEBUG) {
 				OC\Log\ErrorHandler::register(true);
 				set_exception_handler(array('OC_Template', 'printExceptionErrorPage'));

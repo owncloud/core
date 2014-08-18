@@ -12,29 +12,27 @@ use OC\Log;
 
 class Logger extends \PHPUnit_Framework_TestCase {
 	/**
-	 * @var \OCP\ILogger
+	 * @var Log
 	 */
 	private $logger;
 	static private $logs = array();
 
 	public function setUp() {
 		self::$logs = array();
-		$this->logger = new Log('Test\Logger');
+		$this->logger = new Log();
 	}
 
 	public function testInterpolation() {
-		$logger = $this->logger;
-		$logger->info('{Message {nothing} {user} {foo.bar} a}', array('user' => 'Bob', 'foo.bar' => 'Bar'));
 
-		$expected = array('1 {Message {nothing} Bob Bar a}');
-		$this->assertEquals($expected, $this->getLogs());
+		$this->logger->info('{Message {nothing} {user} {foo.bar} a}', array('user' => 'Bob', 'foo.bar' => 'Bar'));
+
+		$expected = '{Message {nothing} Bob Bar a}';
+		$entires = $this->getLogs();
+		$this->assertEquals($expected, $entires[0]->message);
 	}
 
 	private function getLogs() {
-		return self::$logs;
-	}
-
-	public static function write($app, $message, $level) {
-		self::$logs[]= "$level $message";
+		$log = new Log\Owncloud();
+		return $log->getEntries(1);
 	}
 }
