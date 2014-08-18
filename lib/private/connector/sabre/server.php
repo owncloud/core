@@ -96,6 +96,21 @@ class OC_Connector_Sabre_Server extends Sabre\DAV\Server {
 
 	}
 
+	public function createCollection($uri, array $resourceType, array $properties) {
+		parent::createCollection($uri, $resourceType, $properties);
+
+		// FIXME: this logic could be achieved by adding a "afterCreateCollection" event upstream
+
+		// only process if the collection is a directory
+		if (!in_array('{DAV:}collection', $resourceType)) {
+			return;
+		}
+
+		$node = $this->tree->getNodeForPath($uri);
+		$this->httpResponse->setHeader('OC-FileId', $node->getFileId());
+		$this->httpResponse->setHeader('Etag', $node->getEtag());
+	}
+
 	/**
 	 * Small helper to support PROPFIND with DEPTH_INFINITY.
 	 * @param string $path
