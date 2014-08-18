@@ -134,6 +134,10 @@ class Test_Encryption_Webdav extends \PHPUnit_Framework_TestCase {
 		// check if file was created
 		$this->assertTrue($this->view->file_exists('/' . $this->userId . '/files' . $filename));
 
+		$util = new \OCA\Encryption\Util($this->view, $this->userId);
+
+		$this->assertTrue($util->isEncryptedPath('/' . $this->userId . '/files' . $filename), 'file is not encrypted');
+
 		// check if key-file was created
 		$this->assertTrue($this->view->file_exists(
 			'/' . $this->userId . '/files_encryption/keyfiles/' . $filename . '.key'));
