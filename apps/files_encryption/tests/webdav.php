@@ -66,6 +66,10 @@ class Test_Encryption_Webdav extends \PHPUnit_Framework_TestCase {
 		\OC_FileProxy::clearProxies();
 		\OC_FileProxy::register(new OCA\Encryption\Proxy());
 
+		if(!in_array('crypt', stream_get_wrappers())) {
+			stream_wrapper_register('crypt', 'OCA\Encryption\Stream');
+		}
+
 		// create test user
 		\Test_Encryption_Util::loginHelper(\Test_Encryption_Webdav::TEST_ENCRYPTION_WEBDAV_USER1, true);
 
