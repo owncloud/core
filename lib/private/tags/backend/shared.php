@@ -44,22 +44,6 @@ class Shared extends Database {
 	private $owners;
 
 	/**
-	* Constructor.
-	*
-	* @param string $user The user whos data the object will operate on.
-	* @param string $type
-	*/
-	public function __construct(
-		$user,
-		$type,
-		$defaultTags = array()
-	) {
-		$this->user = $user;
-		$this->type = $type;
-		$this->loadTags($this->user, $this->type, $defaultTags);
-	}
-
-	/**
 	* Load shared tags for a given user and type.
 	*
 	* @param string $user The user whose tags we're querying for.

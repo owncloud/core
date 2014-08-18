@@ -51,22 +51,6 @@ class Database extends AbstractBackend {
 	const RELATION_TABLE = '*PREFIX*vcategory_to_object';
 
 	/**
-	* Constructor.
-	*
-	* @param string $user The user whose data the object will operate on.
-	* @param string $type
-	*/
-	public function __construct(
-		$user,
-		$type,
-		$defaultTags = array()
-	) {
-		$this->user = $user;
-		$this->type = $type;
-		$this->loadTags($this->user, $this->type, $defaultTags);
-	}
-
-	/**
 	* Load tags from db.
 	*
 	*/
