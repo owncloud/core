@@ -80,7 +80,7 @@
 #drophere {
 	position: fixed;
 	top: 90px;
-	width: 83%;
+	width: 90%;
 	pointer-events: none; /* required for uploads into sub-directories */
 	height: 87%;
 	background-color: #fff;
