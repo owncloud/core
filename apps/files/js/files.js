@@ -244,11 +244,7 @@
 
 			});
 
-			$(document).on('dragleave', function() {
-				if (ignoreNextLeave) {
-					ignoreNextLeave = false;
-					return;
-				}
+			$('html').on('dragleave', function() {
 				$('#drophere').css({'display' : 'none'});
 			});
 
