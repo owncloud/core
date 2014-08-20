@@ -1,10 +1,13 @@
 <?php
 /**
- * @author Clark Tomlinson  <fallen013@gmail.com>
+ * @author Clark Tomlinson  <clark@owncloud.com>
  * @since 8/20/14, 10:53 AM
  * @link http:/www.clarkt.com
  * @copyright Clark Tomlinson © 2014
  *
+ * This file is licensed under the Affero General Public License version 3 or
+ * later.
+ * See the COPYING-README file.
  */
 
 namespace OC;
@@ -16,9 +19,6 @@ use OC_JSON;
 use OC_User;
 use OC_Util;
 
-/**
- * Class Auth
- */
 class Auth {
 
 	/**
