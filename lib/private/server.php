@@ -54,8 +54,8 @@ class Server extends SimpleContainer implements IServerContainer {
 					'env' => $_ENV,
 					'cookies' => $_COOKIE,
 					'method' => (isset($_SERVER) && isset($_SERVER['REQUEST_METHOD']))
-							? $_SERVER['REQUEST_METHOD']
-							: null,
+						? $_SERVER['REQUEST_METHOD']
+						: null,
 					'urlParams' => $urlParams,
 					'requesttoken' => $requestToken,
 				), $stream
@@ -152,6 +152,13 @@ class Server extends SimpleContainer implements IServerContainer {
 			/** @var $c SimpleContainer */
 			$config = $c->query('AllConfig');
 			return new \OC\URLGenerator($config);
+		});
+		$this->registerService('Preferences', function ($c) {
+			/**
+			 * @var $c Server
+			 */
+			$c = $c->getConfig();
+			return new \OC\Preferences(\OC_DB::getConnection());
 		});
 		$this->registerService('AppHelper', function ($c) {
 			return new \OC\AppHelper();
@@ -462,5 +469,14 @@ class Server extends SimpleContainer implements IServerContainer {
 	 */
 	function getDb() {
 		return $this->query('Db');
+	}
+
+	/**
+	 * Returns an instance of preferences
+	 *
+	 * @return \OC\Preferences
+	 */
+	public function getPreferences() {
+		return $this->query('Preferences');
 	}
 }
