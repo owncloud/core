@@ -40,6 +40,35 @@ class OC_USER_WEBDAVAUTH extends OC_User_Backend {
 		return false;
 	}
 
+	private function generatePassword($length=9, $strength=0) {
+		$vowels = 'aeuy';
+		$consonants = 'bdghjmnpqrstvz';
+		if ($strength & 1) {
+			$consonants .= 'BDGHJLMNPQRSTVWXZ';
+		}
+		if ($strength & 2) {
+			$vowels .= "AEUY";
+		}
+		if ($strength & 4) {
+			$consonants .= '23456789';
+		}
+		if ($strength & 8) {
+			$consonants .= '@#$%';
+		}
+		$password = '';
+		$alt = time() % 2;
+		for ($i = 0; $i < $length; $i++) {
+			if ($alt == 1) {
+				$password .= $consonants[(rand() % strlen($consonants))];
+				$alt = 0;
+			} else {
+				$password .= $vowels[(rand() % strlen($vowels))];
+				$alt = 1;
+			}
+		}
+		return $password;
+	}
+
 	public function checkPassword( $uid, $password ) {
 		$arr = explode('://', $this->webdavauth_url, 2);
 		if( ! isset($arr) OR count($arr) !== 2) {
@@ -57,17 +86,19 @@ class OC_USER_WEBDAVAUTH extends OC_User_Backend {
 		$returncode= substr($headers[0], 9, 3);
 
 		if(substr($returncode, 0, 1) === '2') {
-                        $udb = new OC_User_Database();
-                        if($udb->userExists($uid)) {
-                                $udb->setPassword($uid, '');
-                        } else {
-                                $udb->createUser($uid, '');
-                                $uida=explode('@',$uid,2);
-                                if(($uida[1] || '') !== '') {
-                                        OC_Group::createGroup($uida[1]);
-                                        OC_Group::addToGroup($uid, $uida[1]);
-                                }
-                        }
+			$udb = new OC_User_Database();
+			if($udb->userExists($uid)) {
+				if($udb->checkPassword($uid, '')) {
+					$udb->setPassword($uid, generatePassword(15, 15));
+				}
+			} else {
+				$udb->createUser($uid, generatePassword(15, 15));
+				$uida=explode('@',$uid,2);
+				if(($uida[1] || '') !== '') {
+					OC_Group::createGroup($uida[1]);
+					OC_Group::addToGroup($uid, $uida[1]);
+				}
+			}
 			return $uid;
 		} else {
 			return false;
