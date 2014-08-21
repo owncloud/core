@@ -285,7 +285,7 @@ class Access extends LDAPUtility implements user\IUserTools {
 	 * @param boolean $isUser is it a user? otherwise group
 	 * @return string with the LDAP DN on success, otherwise false
 	 */
-	private function ocname2dn($name, $isUser) {
+	public function ocname2dn($name, $isUser) {
 		$table = $this->getMapTable($isUser);
 
 		$query = \OCP\DB::prepare('
@@ -623,41 +623,6 @@ class Access extends LDAPUtility implements user\IUserTools {
 		$this->connection->setConfiguration(array('ldapCacheTTL' => $originalTTL));
 
 		return $altName;
-	}
-
-	/**
-	 * retrieves all known groups from the mappings table
-	 * @return array with the results
-	 *
-	 * retrieves all known groups from the mappings table
-	 */
-	private function mappedGroups() {
-		return $this->mappedComponents(false);
-	}
-
-	/**
-	 * retrieves all known users from the mappings table
-	 * @return array with the results
-	 *
-	 * retrieves all known users from the mappings table
-	 */
-	private function mappedUsers() {
-		return $this->mappedComponents(true);
-	}
-
-	/**
-	 * @param boolean $isUsers
-	 * @return array
-	 */
-	private function mappedComponents($isUsers) {
-		$table = $this->getMapTable($isUsers);
-
-		$query = \OCP\DB::prepare('
-			SELECT `ldap_dn`, `owncloud_name`
-			FROM `'. $table . '`'
-		);
-
-		return $query->execute()->fetchAll();
 	}
 
 	/**

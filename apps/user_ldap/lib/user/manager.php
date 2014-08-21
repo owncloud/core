@@ -27,6 +27,7 @@ use OCA\user_ldap\lib\user\IUserTools;
 use OCA\user_ldap\lib\user\User;
 use OCA\user_ldap\lib\LogWrapper;
 use OCA\user_ldap\lib\FilesystemHelper;
+use OCA\UserLdap\User\OfflineUser;
 
 /**
  * Manager
@@ -130,6 +131,19 @@ class Manager {
 		}
 	}
 
+	public function getDeletedUser($id) {
+		\OC::$server->getLogger()->debug('Is the user dead? ' . $id, array('app' => 'user_ldap'));
+		$isDeletedUser = $this->ocConfig->getUserValue($id, 'user_ldap', 'isDeleted', 0);
+		if(intval($isDeletedUser) === 1) {
+			return new OfflineUser(
+				$id,
+				new \OC\Preferences(\OC_DB::getConnection()),
+				\OC::$server->getDatabaseConnection(),
+				$this->access);
+		}
+		return null;
+	}
+
 	/**
 	 * @brief returns a User object by it's DN or ownCloud username
 	 * @param string the DN or username of the user
@@ -161,7 +175,8 @@ class Manager {
 		if($dn !== false) {
 			return $this->createAndCache($dn, $id);
 		}
-		return null;
+		//maybe the user is marked as deleted?
+		return $this->getDeletedUser($id);
 	}
 
 }

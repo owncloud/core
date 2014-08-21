@@ -26,8 +26,14 @@
 namespace OCA\user_ldap;
 
 use OCA\user_ldap\lib\BackendUtility;
+use OCA\UserLdap\User\OfflineUser;
 
 class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
+	/**
+	 * @var string[] $homes
+	 */
+	protected $homes = array();
+
 	/**
 	 * checks whether the user is allowed to change his avatar in ownCloud
 	 * @param string $uid the ownCloud user name
@@ -159,14 +165,26 @@ class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
 	}
 
 	/**
-	* delete a user
+	* returns whether a user was deleted in LDAP
+	*
 	* @param string $uid The username of the user to delete
 	* @return bool
-	*
-	* Deletes a user
 	*/
 	public function deleteUser($uid) {
-		return false;
+		$pref = \OC::$server->getConfig();
+		$marked = $pref->getUserValue($uid, 'user_ldap', 'isDeleted', 0);
+		if(intval($marked) === 0) {
+			\OC::$server->getLogger()->debug('not marked as delted '.$uid, array('app' => 'user_ldap'));
+			return false;
+		}
+		\OC::$server->getLogger()->debug('IS marked as delted '.$uid, array('app' => 'user_ldap'));
+
+		//Get Home Directory out of user preferences so we can return it later,
+		//necessary for removing directories as done by OC_User.
+		$home = $pref->getUserValue($uid, 'user_ldap', 'homePath', false);
+		$this->homes[$uid] = $home;
+
+		return true;
 	}
 
 	/**
@@ -177,6 +195,10 @@ class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
 	public function getHome($uid) {
 		// user Exists check required as it is not done in user proxy!
 		if(!$this->userExists($uid)) {
+			if(isset($this->homes[$uid])) {
+				//a deleted user who needs some clean up
+				return $this->homes[$uid];
+			}
 			return false;
 		}
 
@@ -184,6 +206,7 @@ class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
 		if($this->access->connection->isCached($cacheKey)) {
 			return $this->access->connection->getFromCache($cacheKey);
 		}
+		$pref = \OC::$server->getConfig();
 		if(strpos($this->access->connection->homeFolderNamingRule, 'attr:') === 0) {
 			$attr = substr($this->access->connection->homeFolderNamingRule, strlen('attr:'));
 			$homedir = $this->access->readAttribute(
@@ -203,12 +226,17 @@ class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
 						\OC::$SERVERROOT.'/data' ) . '/' . $homedir[0];
 				}
 				$this->access->connection->writeToCache($cacheKey, $homedir);
+				//we need it to store it in the DB as well in case a user gets
+				//deleted so we can clean up afterwards
+				$pref->setUserValue($uid, 'user_ldap', 'homePath', $homedir);
+				//TODO: if home directory changes, the old one needs to be removed.
 				return $homedir;
 			}
 		}
 
 		//false will apply default behaviour as defined and done by OC_User
 		$this->access->connection->writeToCache($cacheKey, false);
+		$pref->setUserValue($uid, 'user_ldap', 'homePath', false);
 		return false;
 	}
 
