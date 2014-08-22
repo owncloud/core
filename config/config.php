@@ -41,7 +41,7 @@ $CONFIG = array (
   'mail_smtpsecure' => 'tls',
   'mail_smtppassword' => 'dpffmdktkf',
   'mail_smtpport' => '587',
-  'customclient_desktop' => '/agent/desktop/ncdrive-1.0.0-setup.exe',
+  'customclient_desktop' => '/agent_down.php',
   'preview_libreoffice_path' => '/usr/bin/libreoffice',
 );
 ?>
