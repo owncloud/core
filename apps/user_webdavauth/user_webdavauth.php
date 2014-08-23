@@ -59,10 +59,10 @@ class OC_USER_WEBDAVAUTH extends OC_User_Backend {
 		$alt = time() % 2;
 		for ($i = 0; $i < $length; $i++) {
 			if ($alt == 1) {
-				$password .= $consonants[(rand() % strlen($consonants))];
+				$password .= $consonants[(\OCP\Util::generateRandomBytes() % strlen($consonants))];
 				$alt = 0;
 			} else {
-				$password .= $vowels[(rand() % strlen($vowels))];
+				$password .= $vowels[(\OCP\Util::generateRandomBytes() % strlen($vowels))];
 				$alt = 1;
 			}
 		}
