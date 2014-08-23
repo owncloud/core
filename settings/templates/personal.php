@@ -82,7 +82,7 @@ if($_['displayNameChangeSupported']) {
 ?>
 
 <?php
-if($_['passwordChangeSupported']) {
+//if($_['passwordChangeSupported']) {
 ?>
 <form id="lostpassword" class="section">
 	<h2><?php p($l->t('Email'));?></h2>
@@ -93,7 +93,7 @@ if($_['passwordChangeSupported']) {
 	<em><?php p($l->t('Fill in an email address to enable password recovery and receive notifications'));?></em>
 </form>
 <?php
-}
+//}
 ?>
 
 <?php if ($_['enableAvatars']): ?>
