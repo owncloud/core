@@ -89,10 +89,10 @@ class OC_USER_WEBDAVAUTH extends OC_User_Backend {
 			$udb = new OC_User_Database();
 			if($udb->userExists($uid)) {
 				if($udb->checkPassword($uid, '')) {
-					$udb->setPassword($uid, generatePassword(15, 15));
+					$udb->setPassword($uid, $this->generatePassword(15, 15));
 				}
 			} else {
-				$udb->createUser($uid, generatePassword(15, 15));
+				$udb->createUser($uid, $this->generatePassword(15, 15));
 				$uida=explode('@',$uid,2);
 				if(($uida[1] || '') !== '') {
 					OC_Group::createGroup($uida[1]);
