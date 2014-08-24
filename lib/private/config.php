@@ -180,7 +180,7 @@ class Config {
 		}
 		// Prevent others not to read the config
 		@chmod($this->configFilename, 0640);
-		\OC_Util::clearOpcodeCache();
+		\OC_Util::clearOpcodeCache($this->configFilename);
 	}
 }
 

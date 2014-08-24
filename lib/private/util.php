@@ -1369,16 +1369,13 @@ class OC_Util {
 	 * Clear the opcode cache if one exists
 	 * This is necessary for writing to the config file
 	 * in case the opcode cache does not re-validate files
+	 * @param string $path of the configuration file
 	 * @return void
 	 */
-	public static function clearOpcodeCache() {
-		// APC
-		if (function_exists('apc_clear_cache')) {
+	public static function clearOpcodeCache($path=NULL) {
+		// APC, !APCu
+		if (function_exists('apc_clear_cache') && !function_exists('apcu_clear_cache')) {
 			apc_clear_cache();
-		}
-		// Zend Opcache
-		if (function_exists('accelerator_reset')) {
-			accelerator_reset();
 		}
 		// XCache
 		if (function_exists('xcache_clear_cache')) {
@@ -1388,9 +1385,17 @@ class OC_Util {
 				xcache_clear_cache(XC_TYPE_PHP, 0);
 			}
 		}
-		// Opcache (PHP >= 5.5)
-		if (function_exists('opcache_reset')) {
+		// Zend Opcache (>= 7.0.2, PHP >= 5.5)
+		if ($path && function_exists('opcache_invalidate')) {
+			opcache_invalidate($path);
+
+		// Zend Opcache (= 7.0.1)
+		} else if (function_exists('opcache_reset')) {
 			opcache_reset();
+
+		// Zend Opcache (version <= 7.0.0)
+		} else if (function_exists('accelerator_reset')) {
+			accelerator_reset();
 		}
 	}
 
