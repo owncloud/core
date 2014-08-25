@@ -208,7 +208,10 @@ class OC_Util {
 	 * @param string $userDirectory
 	 */
 	public static function copySkeleton($userDirectory) {
-		OC_Util::copyr(\OC::$SERVERROOT.'/core/skeleton' , $userDirectory);
+		$skeletonDirectory = OC_Config::getValue('skeletondirectory', \OC::$SERVERROOT.'/core/skeleton');
+		if (!empty($skeletonDirectory)) {
+			OC_Util::copyr($skeletonDirectory , $userDirectory);
+		}
 	}
 
 	/**
@@ -1462,7 +1465,18 @@ class OC_Util {
 		if (OC_Config::getValue('installed', false)) {
 			$installedVersion = OC_Config::getValue('version', '0.0.0');
 			$currentVersion = implode('.', OC_Util::getVersion());
-			return version_compare($currentVersion, $installedVersion, '>');
+			if (version_compare($currentVersion, $installedVersion, '>')) {
+				return true;
+			}
+
+			// also check for upgrades for apps
+			$apps = \OC_App::getEnabledApps();
+			foreach ($apps as $app) {
+				if (\OC_App::shouldUpgrade($app)) {
+					return true;
+				}
+			}
+			return false;
 		} else {
 			return false;
 		}

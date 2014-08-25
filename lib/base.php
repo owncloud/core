@@ -484,13 +484,6 @@ class OC {
 			require_once $vendorAutoLoad;
 		}
 
-		// set debug mode if an xdebug session is active
-		if (!defined('DEBUG') || !DEBUG) {
-			if (isset($_COOKIE['XDEBUG_SESSION'])) {
-				define('DEBUG', true);
-			}
-		}
-
 		if (!defined('PHPUNIT_RUN')) {
 			OC\Log\ErrorHandler::setLogger(OC_Log::$object);
 			if (defined('DEBUG') and DEBUG) {
@@ -692,6 +685,9 @@ class OC {
 
 		if (!OC_User::isLoggedIn()) {
 			// Test it the user is already authenticated using Apaches AuthType Basic... very usable in combination with LDAP
+			if (!OC_Config::getValue('maintenance', false) && !self::checkUpgrade(false)) {
+				OC_App::loadApps(array('authentication'));
+			}
 			OC::tryBasicAuthLogin();
 		}
 
@@ -846,13 +842,6 @@ class OC {
 		} // logon via web form
 		elseif (OC::tryFormLogin()) {
 			$error[] = 'invalidpassword';
-			if ( OC_Config::getValue('log_authfailip', false) ) {
-				OC_Log::write('core', 'Login failed: user \''.$_POST["user"].'\' , wrong password, IP:'.$_SERVER['REMOTE_ADDR'],
-				OC_Log::WARN);
-			} else {
-				OC_Log::write('core', 'Login failed: user \''.$_POST["user"].'\' , wrong password, IP:set log_authfailip=true in conf',
-                                OC_Log::WARN);
-			}
 		}
 
 		OC_Util::displayLoginPage(array_unique($error));

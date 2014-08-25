@@ -338,7 +338,6 @@
 			else {
 				files = _.pluck(this.getSelectedFiles(), 'name');
 			}
-			OC.Notification.show(t('files','Your download is being prepared. This might take some time if the files are big.'));
 			OC.redirect(this.getDownloadUrl(files, dir));
 			return false;
 		},
@@ -400,7 +399,7 @@
 		 * This appends/renders the next page of entries when reaching the bottom.
 		 */
 		_onScroll: function(e) {
-			if (this.$container.scrollTop() + this.$container.height() > this.$el.height() - 100) {
+			if (this.$container.scrollTop() + this.$container.height() > this.$el.height() - 300) {
 				this._nextPage(true);
 			}
 		},
@@ -1326,6 +1325,10 @@
 								if (!result || result.status === 'error') {
 									OC.dialogs.alert(result.data.message, t('core', 'Could not rename file'));
 									fileInfo = oldFileInfo;
+									if (result.data.code === 'sourcenotfound') {
+										self.remove(result.data.newname, {updateSummary: true});
+										return;
+									}
 								}
 								else {
 									fileInfo = result.data;

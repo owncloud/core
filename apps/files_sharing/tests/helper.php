@@ -19,37 +19,23 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+require_once __DIR__ . '/base.php';
 
-namespace OCA\Encryption\Exceptions;
+class Test_Files_Sharing_Helper extends Test_Files_Sharing_Base {
 
-/**
- * General encryption exception
- * Possible Error Codes:
- * 10 - unexpected end of encryption header
- * 20 - unexpected blog size
- * 30 - encryption header to large
- * 40 - unknown cipher
- * 50 - encryption failed
- */
-class EncryptionException extends \Exception {
-}
+	/**
+	 * test set and get share folder
+	 */
+	function testSetGetShareFolder() {
+		$this->assertSame('/', \OCA\Files_Sharing\Helper::getShareFolder());
 
-/**
- * Throw this exception if multi key encrytion fails
- *
- * Possible error codes:
- * 10 - empty plain content was given
- * 20 - openssl_seal failed
- */
-class MultiKeyEncryptException extends EncryptionException {
-}
+		\OCA\Files_Sharing\Helper::setShareFolder('/Shared');
 
-/**
- * Throw this encryption if multi key decryption failed
- *
- * Possible error codes:
- * 10 - empty encrypted content was given
- * 20 - openssl_open failed
- */
-class MultiKeyDecryptException extends EncryptionException {
+		$this->assertSame('/Shared', \OCA\Files_Sharing\Helper::getShareFolder());
+
+		// cleanup
+		\OCP\Config::deleteSystemValue('share_folder');
+
+	}
+
 }

@@ -185,9 +185,6 @@ $CONFIG = array(
  (watch out, this option can increase the size of your log file)*/
 "log_query" => false,
 
-/* Enable or disable the logging of IP addresses in case of webform auth failures */
-"log_authfailip" => false,
-
 /* Whether ownCloud should log the last successfull cron exec */
 "cron_log" => true,
 
@@ -224,6 +221,11 @@ $CONFIG = array(
  * directory. The sqlite database is also stored here, when sqlite is used.
  */
 // "datadirectory" => "",
+
+/* The directory where the skeleton files are located. These files will be copied to the data
+ * directory of new users. Leave empty to not copy any skeleton files.
+ */
+// "skeletondirectory" => "",
 
 /* Enable maintenance mode to disable ownCloud
    If you want to prevent users to login to ownCloud before you start doing some maintenance work,
@@ -276,6 +278,9 @@ $CONFIG = array(
 'openssl' => array(
 	//'config' => '/absolute/location/of/openssl.cnf',
 ),
+
+// default cipher used for file encryption, currently we support AES-128-CFB and AES-256-CFB
+'cipher' => 'AES-256-CFB',
 
 /* whether usage of the instance should be restricted to admin users only */
 'singleuser' => false,
@@ -335,5 +340,10 @@ $CONFIG = array(
 		'serviceName' => 'swift', //dev-/trystack uses swift by default, the lib defaults to 'cloudFiles' if omitted
 	),
 ),
+
+/**
+ * define default folder for shared files and folders
+ */
+'share_folder' => '/',
 
 );
