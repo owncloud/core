@@ -77,10 +77,10 @@ $CONFIG = array(
 /* Optional ownCloud default language - overrides automatic language detection on public pages like login or shared items. This has no effect on the user's language preference configured under "personal -> language" once they have logged in */
 "default_language" => "en",
 
-/* Path to the parent directory of the 3rdparty directory */
+/* Path to the 3rdparty directory */
 "3rdpartyroot" => "",
 
-/* URL to the parent directory of the 3rdparty directory, as seen by the browser */
+/* URL to the  3rdparty directory, as seen by the browser */
 "3rdpartyurl" => "",
 
 /* Default app to open on login.

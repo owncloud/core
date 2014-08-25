@@ -133,16 +133,17 @@ class OC {
 		}
 
 		// search the 3rdparty folder
+
 		OC::$THIRDPARTYROOT = OC_Config::getValue('3rdpartyroot', null);
 		OC::$THIRDPARTYWEBROOT = OC_Config::getValue('3rdpartyurl', null);
 		
 		if (empty(OC::$THIRDPARTYROOT) && empty(OC::$THIRDPARTYWEBROOT)) {
 			if (file_exists(OC::$SERVERROOT . '/3rdparty')) {
-				OC::$THIRDPARTYROOT = OC::$SERVERROOT;
-				OC::$THIRDPARTYWEBROOT = OC::$WEBROOT;
+				OC::$THIRDPARTYROOT = OC::$SERVERROOT . '/3rdparty';
+				OC::$THIRDPARTYWEBROOT = OC::$WEBROOT . '/3rdparty';
 			} elseif (file_exists(OC::$SERVERROOT . '/../3rdparty')) {
-				OC::$THIRDPARTYWEBROOT = rtrim(dirname(OC::$WEBROOT), '/');
-				OC::$THIRDPARTYROOT = rtrim(dirname(OC::$SERVERROOT), '/');
+				OC::$THIRDPARTYWEBROOT = rtrim(dirname(OC::$WEBROOT), '/') . '/3rdparty';
+				OC::$THIRDPARTYROOT = rtrim(dirname(OC::$SERVERROOT), '/') . '/3rdparty';
 			}
 		}
 		if (empty(OC::$THIRDPARTYROOT) || !file_exists(OC::$THIRDPARTYROOT)) {
@@ -185,7 +186,7 @@ class OC {
 		set_include_path(
 			OC::$SERVERROOT . '/lib/private' . PATH_SEPARATOR .
 			OC::$SERVERROOT . '/config' . PATH_SEPARATOR .
-			OC::$THIRDPARTYROOT . '/3rdparty' . PATH_SEPARATOR .
+			OC::$THIRDPARTYROOT . PATH_SEPARATOR .
 			implode(PATH_SEPARATOR, $paths) . PATH_SEPARATOR .
 			get_include_path() . PATH_SEPARATOR .
 			OC::$SERVERROOT
@@ -491,7 +492,7 @@ class OC {
 		OC_Util::isSetLocaleWorking();
 
 		// setup 3rdparty autoloader
-		$vendorAutoLoad = OC::$THIRDPARTYROOT . '/3rdparty/autoload.php';
+		$vendorAutoLoad = OC::$THIRDPARTYROOT . '/autoload.php';
 		if (file_exists($vendorAutoLoad)) {
 			require_once $vendorAutoLoad;
 		}
