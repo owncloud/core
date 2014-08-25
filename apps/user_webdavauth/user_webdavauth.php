@@ -40,35 +40,6 @@ class OC_USER_WEBDAVAUTH extends OC_User_Backend {
 		return false;
 	}
 
-	private function generatePassword($length=9, $strength=0) {
-		$vowels = 'aeuy';
-		$consonants = 'bdghjmnpqrstvz';
-		if ($strength & 1) {
-			$consonants .= 'BDGHJLMNPQRSTVWXZ';
-		}
-		if ($strength & 2) {
-			$vowels .= "AEUY";
-		}
-		if ($strength & 4) {
-			$consonants .= '23456789';
-		}
-		if ($strength & 8) {
-			$consonants .= '@#$%';
-		}
-		$password = '';
-		$alt = time() % 2;
-		for ($i = 0; $i < $length; $i++) {
-			if ($alt == 1) {
-				$password .= $consonants[(\OCP\Util::generateRandomBytes() % strlen($consonants))];
-				$alt = 0;
-			} else {
-				$password .= $vowels[(\OCP\Util::generateRandomBytes() % strlen($vowels))];
-				$alt = 1;
-			}
-		}
-		return $password;
-	}
-
 	public function checkPassword( $uid, $password ) {
 		$arr = explode('://', $this->webdavauth_url, 2);
 		if( ! isset($arr) OR count($arr) !== 2) {
@@ -89,10 +60,10 @@ class OC_USER_WEBDAVAUTH extends OC_User_Backend {
 			$udb = new OC_User_Database();
 			if($udb->userExists($uid)) {
 				if($udb->checkPassword($uid, '')) {
-					$udb->setPassword($uid, $this->generatePassword(15, 15));
+					$udb->setPassword($uid, \OCP\Util::generateRandomBytes(15));
 				}
 			} else {
-				$udb->createUser($uid, $this->generatePassword(15, 15));
+				$udb->createUser($uid, \OCP\Util::generateRandomBytes(15));
 				$uida=explode('@',$uid,2);
 				if(($uida[1] || '') !== '') {
 					OC_Group::createGroup($uida[1]);
