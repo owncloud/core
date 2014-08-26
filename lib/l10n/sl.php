@@ -1,11 +1,12 @@
 <?php
 $TRANSLATIONS = array(
+"Cannot write into \"config\" directory!" => "Mapa 'config' nima določenih ustreznih dovoljenj za pisanje!",
+"See %s" => "Oglejte si %s",
 "Help" => "Pomoč",
 "Personal" => "Osebno",
 "Settings" => "Nastavitve",
 "Users" => "Uporabniki",
 "Admin" => "Skrbništvo",
-"Failed to upgrade \"%s\"." => "Posodabljanje \"%s\" je spodletelo.",
 "No app name specified" => "Ni podanega imena programa",
 "Unknown filetype" => "Neznana vrsta datoteke",
 "Invalid image" => "Neveljavna slika",

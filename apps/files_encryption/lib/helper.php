@@ -49,6 +49,7 @@ class Helper {
 	public static function registerUserHooks() {
 
 		\OCP\Util::connectHook('OC_User', 'post_login', 'OCA\Encryption\Hooks', 'login');
+		\OCP\Util::connectHook('OC_User', 'logout', 'OCA\Encryption\Hooks', 'logout');
 		\OCP\Util::connectHook('OC_User', 'post_setPassword', 'OCA\Encryption\Hooks', 'setPassphrase');
 		\OCP\Util::connectHook('OC_User', 'pre_setPassword', 'OCA\Encryption\Hooks', 'preSetPassphrase');
 		\OCP\Util::connectHook('OC_User', 'post_createUser', 'OCA\Encryption\Hooks', 'postCreateUser');
@@ -62,7 +63,9 @@ class Helper {
 	public static function registerFilesystemHooks() {
 
 		\OCP\Util::connectHook('OC_Filesystem', 'rename', 'OCA\Encryption\Hooks', 'preRename');
-		\OCP\Util::connectHook('OC_Filesystem', 'post_rename', 'OCA\Encryption\Hooks', 'postRename');
+		\OCP\Util::connectHook('OC_Filesystem', 'post_rename', 'OCA\Encryption\Hooks', 'postRenameOrCopy');
+		\OCP\Util::connectHook('OC_Filesystem', 'copy', 'OCA\Encryption\Hooks', 'preCopy');
+		\OCP\Util::connectHook('OC_Filesystem', 'post_copy', 'OCA\Encryption\Hooks', 'postRenameOrCopy');
 		\OCP\Util::connectHook('OC_Filesystem', 'post_delete', 'OCA\Encryption\Hooks', 'postDelete');
 		\OCP\Util::connectHook('OC_Filesystem', 'delete', 'OCA\Encryption\Hooks', 'preDelete');
 		\OCP\Util::connectHook('OC_Filesystem', 'post_umount', 'OCA\Encryption\Hooks', 'postUmount');
@@ -141,18 +144,16 @@ class Helper {
 
 			$view->file_put_contents('/public-keys/' . $recoveryKeyId . '.public.key', $keypair['publicKey']);
 
-			// Encrypt private key empty passphrase
-			$encryptedPrivateKey = \OCA\Encryption\Crypt::symmetricEncryptFileContent($keypair['privateKey'], $recoveryPassword);
-
-			// Save private key
-			$view->file_put_contents('/owncloud_private_key/' . $recoveryKeyId . '.private.key', $encryptedPrivateKey);
+			$cipher = \OCA\Encryption\Helper::getCipher();
+			$encryptedKey = \OCA\Encryption\Crypt::symmetricEncryptFileContent($keypair['privateKey'], $recoveryPassword, $cipher);
+			if ($encryptedKey) {
+				Keymanager::setPrivateSystemKey($encryptedKey, $recoveryKeyId . '.private.key');
+				// Set recoveryAdmin as enabled
+				$appConfig->setValue('files_encryption', 'recoveryAdminEnabled', 1);
+				$return = true;
+			}
 
 			\OC_FileProxy::$enabled = true;
-
-			// Set recoveryAdmin as enabled
-			$appConfig->setValue('files_encryption', 'recoveryAdminEnabled', 1);
-
-			$return = true;
 
 		} else { // get recovery key and check the password
 			$util = new \OCA\Encryption\Util(new \OC\Files\View('/'), \OCP\User::getUser());
@@ -226,7 +227,6 @@ class Helper {
 
 		return $return;
 	}
-
 
 	/**
 	 * checks if access is public/anonymous user
@@ -474,6 +474,26 @@ class Helper {
 		}
 
 		return false;
+	}
+
+	/**
+	 * read the cipher used for encryption from the config.php
+	 *
+	 * @return string
+	 */
+	public static function getCipher() {
+
+		$cipher = \OCP\Config::getSystemValue('cipher', Crypt::DEFAULT_CIPHER);
+
+		if ($cipher !== 'AES-256-CFB' && $cipher !== 'AES-128-CFB') {
+			\OCP\Util::writeLog('files_encryption',
+					'wrong cipher defined in config.php, only AES-128-CFB and AES-256-CFB is supported. Fall back ' . Crypt::DEFAULT_CIPHER,
+					\OCP\Util::WARN);
+
+			$cipher = Crypt::DEFAULT_CIPHER;
+		}
+
+		return $cipher;
 	}
 }
 

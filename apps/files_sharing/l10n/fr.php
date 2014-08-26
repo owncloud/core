@@ -1,14 +1,19 @@
 <?php
 $TRANSLATIONS = array(
 "Server to server sharing is not enabled on this server" => "Le partage de serveur à serveur n'est pas activé sur ce serveur",
+"Invalid or untrusted SSL certificate" => "Certificat SSL invalide ou non-fiable",
 "Couldn't add remote share" => "Impossible d'ajouter un partage distant",
-"Shared with you" => "Partagé avec vous",
-"Shared with others" => "Partagé avec d'autres",
-"Shared by link" => "Partagé par lien",
+"Shared with you" => "Partagés avec vous",
+"Shared with others" => "Partagés avec d'autres",
+"Shared by link" => "Partagés par lien",
 "No files have been shared with you yet." => "Aucun fichier n'est partagé avec vous pour l'instant",
 "You haven't shared any files yet." => "Vous ne partagez pas de fichier pour l'instant",
-"You haven't shared any files by link yet." => "Vous ne partagez aucun de fichier par lien pour l'instant.",
+"You haven't shared any files by link yet." => "Vous n'avez aucun partage de fichier par lien pour le moment.",
+"Do you want to add the remote share {name} from {owner}@{remote}?" => "Voulez-vous ajouter le partage distant {name} de  {owner}@{remote} ?",
+"Remote share" => "Partage distant",
+"Remote share password" => "Mot de passe du partage distant",
 "Cancel" => "Annuler",
+"Add remote share" => "Ajouter un partage distant",
 "No ownCloud installation found at {remote}" => "Aucune installation ownCloud n'a été trouvée sur {remote}",
 "Invalid ownCloud url" => "URL ownCloud invalide",
 "Shared by" => "Partagé par",
@@ -27,8 +32,8 @@ $TRANSLATIONS = array(
 "Download" => "Télécharger",
 "Download %s" => "Télécharger %s",
 "Direct link" => "Lien direct",
-"Remote Shares" => "Partages Distants",
-"Allow other instances to mount public links shared from this server" => "Autorise d'autres instances à monter des liens publiques partagés depuis ce serveur",
-"Allow users to mount public link shares" => "Autorise les utilisateurs à monter des liens de partages publiques"
+"Remote Shares" => "Partages distants",
+"Allow other instances to mount public links shared from this server" => "Autoriser d'autres instances à monter des liens publics, partagés depuis ce serveur",
+"Allow users to mount public link shares" => "Autoriser des utilisateurs à monter des liens de partages publics"
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n > 1);";

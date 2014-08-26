@@ -13,6 +13,7 @@
  */
 namespace OC;
 
+use OC\Files\Filesystem;
 use OC\Preview\Provider;
 
 require_once 'preview/image.php';
@@ -476,12 +477,15 @@ class Preview {
 		$cached = $this->isCached($fileId);
 		if ($cached) {
 			$stream = $this->userView->fopen($cached, 'r');
-			$image = new \OC_Image();
-			$image->loadFromFileHandle($stream);
-			$this->preview = $image->valid() ? $image : null;
+			$this->preview = null;
+			if ($stream) {
+				$image = new \OC_Image();
+				$image->loadFromFileHandle($stream);
+				$this->preview = $image->valid() ? $image : null;
 
-			$this->resizeAndCrop();
-			fclose($stream);
+				$this->resizeAndCrop();
+				fclose($stream);
+			}
 		}
 
 		if (is_null($this->preview)) {
@@ -561,9 +565,15 @@ class Preview {
 		$realX = (int)$image->width();
 		$realY = (int)$image->height();
 
-		// compute $maxY using the aspect of the generated preview
+		// compute $maxY and $maxX using the aspect of the generated preview
 		if ($this->keepAspect) {
-			$y = $x / ($realX / $realY);
+			$ratio = $realX / $realY;
+			if($x / $ratio < $y) {
+				// width restricted
+				$y = $x / $ratio;
+			} else {
+				$x = $y * $ratio;
+			}
 		}
 
 		if ($x === $realX && $y === $realY) {
@@ -723,6 +733,35 @@ class Preview {
 
 		$preview = new Preview(\OC_User::getUser(), $prefix, $path);
 		$preview->deleteAllPreviews();
+	}
+
+	/**
+	 * Check if a preview can be generated for a file
+	 *
+	 * @param \OC\Files\FileInfo $file
+	 * @return bool
+	 */
+	public static function isAvailable($file) {
+		if (!\OC_Config::getValue('enable_previews', true)) {
+			return false;
+		}
+
+		//check if there are preview backends
+		if (empty(self::$providers)) {
+			self::initProviders();
+		}
+
+		//remove last element because it has the mimetype *
+		$providers = array_slice(self::$providers, 0, -1);
+		foreach ($providers as $supportedMimeType => $provider) {
+			/**
+			 * @var \OC\Preview\Provider $provider
+			 */
+			if (preg_match($supportedMimeType, $file->getMimetype())) {
+				return $provider->isAvailable($file);
+			}
+		}
+		return false;
 	}
 
 	/**

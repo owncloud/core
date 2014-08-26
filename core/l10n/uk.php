@@ -1,6 +1,5 @@
 <?php
 $TRANSLATIONS = array(
-"Expiration date is in the past." => "Термін дії минув.",
 "Couldn't send mail to following users: %s " => "Неможливо надіслати пошту наступним користувачам: %s ",
 "Turned on maintenance mode" => "Увімкнено захищений режим",
 "Turned off maintenance mode" => "Вимкнено захищений режим",
@@ -80,8 +79,6 @@ $TRANSLATIONS = array(
 "Send" => "Надіслати",
 "Set expiration date" => "Встановити термін дії",
 "Expiration date" => "Термін дії",
-"Share via email:" => "Опублікувати через Ел. пошту:",
-"No people found" => "Жодної людини не знайдено",
 "group" => "група",
 "Resharing is not allowed" => "Пере-публікація не дозволяється",
 "Shared in {item} with {user}" => "Опубліковано {item} для {user}",
@@ -154,9 +151,6 @@ $TRANSLATIONS = array(
 "Finishing …" => "Завершується ...",
 "%s is available. Get more information on how to update." => "%s доступний. Отримай більше інформації про те, як оновити.",
 "Log out" => "Вихід",
-"Automatic logon rejected!" => "Автоматичний вхід в систему відхилений!",
-"If you did not change your password recently, your account may be compromised!" => "Якщо Ви не міняли пароль останнім часом, Ваш обліковий запис може бути скомпрометованим!",
-"Please change your password to secure your account again." => "Будь ласка, змініть свій пароль, щоб знову захистити Ваш обліковий запис.",
 "Server side authentication failed!" => "Помилка аутентифікації на боці Сервера !",
 "Please contact your administrator." => "Будь ласка, зверніться до вашого Адміністратора.",
 "remember" => "запам'ятати",

@@ -17,9 +17,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-07-19 01:54-0400\n"
-"PO-Revision-Date: 2014-07-18 09:41+0000\n"
-"Last-Translator: Jaroslav Lichtblau <jaroslav@lichtblau.cz>\n"
+"POT-Creation-Date: 2014-08-26 01:54-0400\n"
+"PO-Revision-Date: 2014-08-26 05:23+0000\n"
+"Last-Translator: I Robot\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/owncloud/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,11 +27,7 @@ msgstr ""
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: ajax/share.php:90
-msgid "Expiration date is in the past."
-msgstr "Datum expirace je v minulosti."
-
-#: ajax/share.php:122 ajax/share.php:164
+#: ajax/share.php:117 ajax/share.php:159
 #, php-format
 msgid "Couldn't send mail to following users: %s "
 msgstr "Nebylo možné odeslat e-mail následujícím uživatelům: %s"
@@ -50,9 +46,18 @@ msgstr "Zaktualizována databáze"
 
 #: ajax/update.php:19
 msgid "Checked database schema update"
-msgstr "Aktualizace schéma databáze ověřeno"
+msgstr "Aktualizace schéma databáze byla ověřena"
 
-#: ajax/update.php:27
+#: ajax/update.php:22
+msgid "Checked database schema update for apps"
+msgstr "Aktualizace schéma databáze aplikací byla ověřena"
+
+#: ajax/update.php:25
+#, php-format
+msgid "Updated \"%s\" to %s"
+msgstr "Aktualizováno z \"%s\" na %s"
+
+#: ajax/update.php:33
 #, php-format
 msgid "Disabled incompatible apps: %s"
 msgstr "Zakázané nekompatibilní aplikace: %s"
@@ -229,16 +234,16 @@ msgstr "minulý rok"
 msgid "years ago"
 msgstr "před lety"
 
-#: js/lostpassword.js:3 lostpassword/controller/lostcontroller.php:175
+#: js/lostpassword.js:3 lostpassword/controller/lostcontroller.php:198
 msgid "Couldn't send reset email. Please contact your administrator."
-msgstr "Nelze odeslat email pro změnu hesla. "
+msgstr "Nepodařilo se odeslat email pro změnu hesla. Kontaktujte vašeho administrátora."
 
 #: js/lostpassword.js:5
 msgid ""
 "The link to reset your password has been sent to your email. If you do not "
 "receive it within a reasonable amount of time, check your spam/junk "
 "folders.<br>If it is not there ask your local administrator."
-msgstr "Odkaz na obnovení hesla byl odeslán na vaši e-mailovou adresu. Pokud jej v krátké době neobdržíte, zkontrolujte složku nevyžádané pošty a koš.<br>Pokud jej nenaleznete, kontaktujte svého správce systému."
+msgstr "Odkaz na obnovení hesla byl odeslán na vaši e-mailovou adresu. Pokud jej v krátké době neobdržíte, zkontrolujte složku nevyžádané pošty a koš.<br>Pokud jej nenaleznete, kontaktujte svého administrátora."
 
 #: js/lostpassword.js:7
 msgid ""
@@ -246,7 +251,7 @@ msgid ""
 "will be no way to get your data back after your password is reset.<br />If "
 "you are not sure what to do, please contact your administrator before you "
 "continue. <br />Do you really want to continue?"
-msgstr "Vaše soubory jsou šifrovány. Pokud jste nepovolili klíč pro obnovení, neexistuje způsob jak získat po změně hesla vaše data.<br />Pokud si nejste jisti co dělat, kontaktujte nejprve svého správce systému. <br />Opravdu si přejete pokračovat?"
+msgstr "Vaše soubory jsou šifrovány. Pokud jste nepovolili klíč pro obnovení, neexistuje způsob jak získat po změně hesla vaše data.<br />Pokud si nejste jisti co dělat, kontaktujte nejprve svého administrátora než budete pokračovat. <br />Opravdu si přejete pokračovat?"
 
 #: js/lostpassword.js:10
 msgid "I know what I'm doing"
@@ -258,7 +263,7 @@ msgstr "Obnovit heslo"
 
 #: js/lostpassword.js:16
 msgid "Password can not be changed. Please contact your administrator."
-msgstr "Heslo nelze změnit. Kontaktujte prosím svého správce systému."
+msgstr "Heslo nelze změnit. Kontaktujte prosím svého administrátora."
 
 #: js/oc-dialogs.js:108 js/oc-dialogs.js:255
 msgid "No"
@@ -365,12 +370,12 @@ msgstr "Sdíleno s {recipients}"
 msgid "Share"
 msgstr "Sdílet"
 
-#: js/share.js:326 js/share.js:340 js/share.js:347 js/share.js:989
+#: js/share.js:326 js/share.js:340 js/share.js:347 js/share.js:1002
 #: templates/installation.php:10
 msgid "Error"
 msgstr "Chyba"
 
-#: js/share.js:328 js/share.js:1052
+#: js/share.js:328 js/share.js:1065
 msgid "Error while sharing"
 msgstr "Chyba při sdílení"
 
@@ -401,7 +406,7 @@ msgstr "Sdílet odkaz"
 #: js/share.js:394
 msgid ""
 "The public link will expire no later than {days} days after it is created"
-msgstr "Veřejný odkaz nevyprší dříve než za {days} dní po svém vytvoření"
+msgstr "Veřejný odkaz vyprší nejpozději {days} dní od svého vytvoření"
 
 #: js/share.js:398
 msgid "Password protect"
@@ -431,79 +436,71 @@ msgstr "Nastavit datum vypršení platnosti"
 msgid "Expiration date"
 msgstr "Datum vypršení platnosti"
 
-#: js/share.js:455
-msgid "Share via email:"
-msgstr "Sdílet e-mailem:"
-
-#: js/share.js:458
-msgid "No people found"
-msgstr "Žádní lidé nenalezeni"
-
-#: js/share.js:507 js/share.js:575
+#: js/share.js:496 js/share.js:564
 msgid "group"
 msgstr "skupina"
 
-#: js/share.js:540
+#: js/share.js:529
 msgid "Resharing is not allowed"
 msgstr "Sdílení již sdílené položky není povoleno"
 
-#: js/share.js:591
+#: js/share.js:580
 msgid "Shared in {item} with {user}"
 msgstr "Sdíleno v {item} s {user}"
 
-#: js/share.js:613
+#: js/share.js:602
 msgid "Unshare"
 msgstr "Zrušit sdílení"
 
-#: js/share.js:621
+#: js/share.js:610
 msgid "notify by email"
 msgstr "upozornit e-mailem"
 
-#: js/share.js:624
+#: js/share.js:613
 msgid "can share"
 msgstr "může sdílet"
 
-#: js/share.js:627
+#: js/share.js:616
 msgid "can edit"
 msgstr "lze upravovat"
 
-#: js/share.js:629
+#: js/share.js:618
 msgid "access control"
 msgstr "řízení přístupu"
 
-#: js/share.js:632
+#: js/share.js:621
 msgid "create"
 msgstr "vytvořit"
 
-#: js/share.js:635
+#: js/share.js:624
 msgid "update"
 msgstr "aktualizovat"
 
-#: js/share.js:638
+#: js/share.js:627
 msgid "delete"
 msgstr "smazat"
 
-#: js/share.js:970
+#: js/share.js:983
 msgid "Password protected"
 msgstr "Chráněno heslem"
 
-#: js/share.js:989
+#: js/share.js:1002
 msgid "Error unsetting expiration date"
 msgstr "Chyba při odstraňování data vypršení platnosti"
 
-#: js/share.js:1010
+#: js/share.js:1023
 msgid "Error setting expiration date"
 msgstr "Chyba při nastavení data vypršení platnosti"
 
-#: js/share.js:1039
+#: js/share.js:1052
 msgid "Sending ..."
 msgstr "Odesílám ..."
 
-#: js/share.js:1050
+#: js/share.js:1063
 msgid "Email sent"
 msgstr "E-mail odeslán"
 
-#: js/share.js:1074
+#: js/share.js:1087
 msgid "Warning"
 msgstr "Varování"
 
@@ -537,7 +534,7 @@ msgstr "Žádné štítky nebyly vybrány ke smazání."
 
 #: js/update.js:30
 msgid "Updating {productName} to version {version}, this may take a while."
-msgstr "Aktualizuji {productName} na verzi {version}, Může to chvíli trvat."
+msgstr "Aktualizuji {productName} na verzi {version}, může to chvíli trvat."
 
 #: js/update.js:43
 msgid "Please reload the page."
@@ -545,27 +542,27 @@ msgstr "Načtěte stránku znovu, prosím."
 
 #: js/update.js:52
 msgid "The update was unsuccessful."
-msgstr "Aktualizace selhala."
+msgstr "Aktualizace nebyla úspěšná."
 
 #: js/update.js:61
 msgid "The update was successful. Redirecting you to ownCloud now."
 msgstr "Aktualizace byla úspěšná. Přesměrovávám na ownCloud."
 
-#: lostpassword/controller/lostcontroller.php:110
+#: lostpassword/controller/lostcontroller.php:133
 msgid "Couldn't reset password because the token is invalid"
-msgstr "Nelze změnit heslo kvůli neplatnému tokenu."
+msgstr "Heslo nebylo změněno kvůli neplatnému tokenu"
 
-#: lostpassword/controller/lostcontroller.php:136
+#: lostpassword/controller/lostcontroller.php:159
 msgid "Couldn't send reset email. Please make sure your username is correct."
 msgstr "Nelze odeslat email pro změnu hesla. Ujistěte se prosím, že zadáváte správné uživatelské jméno."
 
-#: lostpassword/controller/lostcontroller.php:151
+#: lostpassword/controller/lostcontroller.php:174
 msgid ""
 "Couldn't send reset email because there is no email address for this "
 "username. Please contact your administrator."
-msgstr "Nelze odeslat email pro změnu hesla, protože nebyla zadána e-mailová adresa pro toto užiatelské jméno. Kontaktujte prosím svého správce systému."
+msgstr "Nelze odeslat email pro změnu hesla, protože u tohoto uživatelského jména není uvedena e-mailová adresa. Kontaktujte prosím svého administrátora."
 
-#: lostpassword/controller/lostcontroller.php:168
+#: lostpassword/controller/lostcontroller.php:191
 #, php-format
 msgid "%s password reset"
 msgstr "reset hesla %s"
@@ -580,7 +577,7 @@ msgstr "E-mailem Vám bude zaslán odkaz pro obnovu hesla."
 
 #: lostpassword/templates/lostpassword.php:8
 #: lostpassword/templates/lostpassword.php:9 templates/installation.php:51
-#: templates/installation.php:54 templates/login.php:31 templates/login.php:35
+#: templates/installation.php:54 templates/login.php:23 templates/login.php:27
 msgid "Username"
 msgstr "Uživatelské jméno"
 
@@ -628,7 +625,7 @@ msgstr "Osobní"
 msgid "Users"
 msgstr "Uživatelé"
 
-#: strings.php:7 templates/layout.user.php:57 templates/layout.user.php:122
+#: strings.php:7 templates/layout.user.php:56 templates/layout.user.php:121
 msgid "Apps"
 msgstr "Aplikace"
 
@@ -691,7 +688,8 @@ msgstr "Hej ty tam,\n\njen ti chci dát vědět, že %s sdílel %s s tebou.\nZob
 msgid "The share will expire on %s."
 msgstr "Sdílení vyprší %s."
 
-#: templates/altmail.php:7 templates/mail.php:20
+#. TRANSLATORS term at the end of a mail
+#: templates/altmail.php:8 templates/mail.php:21
 msgid "Cheers!"
 msgstr "Ať slouží!"
 
@@ -739,7 +737,7 @@ msgid "Create an <strong>admin account</strong>"
 msgstr "Vytvořit <strong>účet správce</strong>"
 
 #: templates/installation.php:59 templates/installation.php:62
-#: templates/login.php:41 templates/login.php:44
+#: templates/login.php:33 templates/login.php:36
 msgid "Password"
 msgstr "Heslo"
 
@@ -794,57 +792,43 @@ msgstr "Dokončit nastavení"
 msgid "Finishing …"
 msgstr "Dokončuji..."
 
-#: templates/layout.user.php:44
+#: templates/layout.user.php:43
 msgid ""
 "This application requires JavaScript to be enabled for correct operation.  "
 "Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable "
 "JavaScript</a> and re-load this interface."
 msgstr "Tato aplikace vyžaduje pro svou správnou funkčnost povolený JavaScript. Prosím <a href=\"http://enable-javascript.com/\" target=\"_blank\">povolte JavaScript</a> a znovu načtěte toto rozhraní."
 
-#: templates/layout.user.php:48
+#: templates/layout.user.php:47
 #, php-format
 msgid "%s is available. Get more information on how to update."
 msgstr "%s je dostupná. Získejte více informací k postupu aktualizace."
 
-#: templates/layout.user.php:84 templates/singleuser.user.php:8
+#: templates/layout.user.php:83 templates/singleuser.user.php:8
 msgid "Log out"
 msgstr "Odhlásit se"
 
 #: templates/login.php:11
-msgid "Automatic logon rejected!"
-msgstr "Automatické přihlášení odmítnuto!"
-
-#: templates/login.php:12
-msgid ""
-"If you did not change your password recently, your account may be "
-"compromised!"
-msgstr "Pokud jste v nedávné době neměnili své heslo, Váš účet může být kompromitován!"
-
-#: templates/login.php:14
-msgid "Please change your password to secure your account again."
-msgstr "Změňte, prosím, své heslo pro opětovné zabezpečení Vašeho účtu."
-
-#: templates/login.php:19
 msgid "Server side authentication failed!"
 msgstr "Autentizace na serveru selhala!"
 
-#: templates/login.php:20
+#: templates/login.php:12
 msgid "Please contact your administrator."
 msgstr "Kontaktujte prosím vašeho správce."
 
-#: templates/login.php:50
+#: templates/login.php:42
 msgid "Forgot your password? Reset it!"
-msgstr "Zapomenuté heslo? Zresetujte si ho!"
+msgstr "Zapomenuté heslo? Nastavte si nové!"
 
-#: templates/login.php:55
+#: templates/login.php:47
 msgid "remember"
 msgstr "zapamatovat"
 
-#: templates/login.php:59
+#: templates/login.php:51
 msgid "Log in"
 msgstr "Přihlásit"
 
-#: templates/login.php:65
+#: templates/login.php:57
 msgid "Alternative Logins"
 msgstr "Alternativní přihlášení"
 
@@ -873,6 +857,28 @@ msgstr "Kontaktujte, prosím, správce systému, pokud se tato zpráva objevuje 
 msgid "Thank you for your patience."
 msgstr "Děkuji za trpělivost."
 
+#: templates/untrustedDomain.php:5
+msgid "You are accessing the server from an untrusted domain."
+msgstr "Přistupujete na server z nedůvěryhodné domény."
+
+#: templates/untrustedDomain.php:8
+msgid ""
+"Please contact your administrator. If you are an administrator of this "
+"instance, configure the \"trusted_domain\" setting in config/config.php. An "
+"example configuration is provided in config/config.sample.php."
+msgstr "Kontaktujte prosím správce. Pokud jste správce této instalace, nastavte \"trusted_domain\" v souboru config/config.php. Příklad konfigurace najdete v souboru config/config.sample.php."
+
+#: templates/untrustedDomain.php:10
+msgid ""
+"Depending on your configuration, as an administrator you might also be able "
+"to use the button below to trust this domain."
+msgstr ""
+
+#: templates/untrustedDomain.php:14
+#, php-format
+msgid "Add \"%s\" as trusted domain"
+msgstr ""
+
 #: templates/update.admin.php:3
 #, php-format
 msgid "%s will be updated to version %s."
@@ -885,17 +891,23 @@ msgstr "Následující aplikace budou zakázány:"
 #: templates/update.admin.php:17
 #, php-format
 msgid "The theme %s has been disabled."
-msgstr "%s vzhled byl zakázán."
+msgstr "Vzhled %s byl zakázán."
 
 #: templates/update.admin.php:21
 msgid ""
 "Please make sure that the database, the config folder and the data folder "
 "have been backed up before proceeding."
-msgstr "Před provedením dalšího kroku se prosím přesvědči, že databáze a  konfigurační a datový adresář byly zazálohovány.  "
+msgstr "Před provedením dalšího kroku se prosím ujistěte, že databáze a konfigurační a datový adresář byly zazálohovány.  "
 
 #: templates/update.admin.php:23
 msgid "Start update"
-msgstr "Aktualizovat"
+msgstr "Spustit aktualizaci"
+
+#: templates/update.admin.php:25
+msgid ""
+"To avoid timeouts with larger installations, you can instead run the "
+"following command from your installation directory:"
+msgstr "Abyste zabránili vypršení časového limitu u větších instalací, můžete namísto toho spustit následující příkaz v hlavním adresáři:"
 
 #: templates/update.user.php:3
 msgid ""

@@ -183,6 +183,7 @@ class OC_Helper {
 			'application/x-gzip' => 'package/x-generic',
 			'application/x-rar-compressed' => 'package/x-generic',
 			'application/x-tar' => 'package/x-generic',
+			'application/vnd.android.package-archive' => 'package/x-generic',
 			'application/zip' => 'package/x-generic',
 
 			'application/msword' => 'x-office/document',
@@ -578,8 +579,20 @@ class OC_Helper {
 	public static function tmpFile($postfix = '') {
 		$file = get_temp_dir() . '/' . md5(time() . rand()) . $postfix;
 		$fh = fopen($file, 'w');
-		fclose($fh);
-		self::$tmpFiles[] = $file;
+		if ($fh!==false){
+			fclose($fh);
+			self::$tmpFiles[] = $file;
+		} else {
+			OC_Log::write(
+				'OC_Helper',
+				sprintf(
+					'Can not create a temporary file in directory %s. Check it exists and has correct permissions',
+					get_temp_dir()
+				),
+				OC_Log::WARN
+			);
+			$file = false;
+		}
 		return $file;
 	}
 
@@ -886,7 +899,7 @@ class OC_Helper {
 	 */
 	public static function freeSpace($dir) {
 		$freeSpace = \OC\Files\Filesystem::free_space($dir);
-		if ($freeSpace !== \OC\Files\SPACE_UNKNOWN) {
+		if ($freeSpace !== \OCP\Files\FileInfo::SPACE_UNKNOWN) {
 			$freeSpace = max($freeSpace, 0);
 			return $freeSpace;
 		} else {
@@ -959,7 +972,7 @@ class OC_Helper {
 		}
 		if ($includeExtStorage) {
 			$quota = OC_Util::getUserQuota(\OCP\User::getUser());
-			if ($quota !== \OC\Files\SPACE_UNLIMITED) {
+			if ($quota !== \OCP\Files\FileInfo::SPACE_UNLIMITED) {
 				// always get free space / total space from root + mount points
 				$path = '';
 				return self::getGlobalStorageInfo();

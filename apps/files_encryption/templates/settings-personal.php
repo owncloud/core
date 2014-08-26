@@ -1,18 +1,21 @@
 <form id="encryption" class="section">
 	<h2><?php p( $l->t( 'Encryption' ) ); ?></h2>
 
-	<?php if ( $_["initialized"] === '1' ): ?>
+	<?php if ( $_["initialized"] === \OCA\Encryption\Session::NOT_INITIALIZED ): ?>
+
+	<?php p($l->t("Encryption App is enabled but your keys are not initialized, please log-out and log-in again")); ?>
+
+	<?php elseif ( $_["initialized"] === \OCA\Encryption\Session::INIT_EXECUTED ): ?>
 		<p>
 			<a name="changePKPasswd" />
 			<label for="changePrivateKeyPasswd">
-				<?php p( $l->t( "Your private key password no longer match your log-in password:" ) ); ?>
+				<em><?php p( $l->t( "Your private key password no longer matches your log-in password." ) ); ?></em>
 			</label>
 			<br />
-			<em><?php p( $l->t( "Set your old private key password to your current log-in password." ) ); ?>
+			<?php p( $l->t( "Set your old private key password to your current log-in password:" ) ); ?>
 			<?php if (  $_["recoveryEnabledForUser"] ):
 					p( $l->t( " If you don't remember your old password you can ask your administrator to recover your files." ) );
 			endif; ?>
-			</em>
 			<br />
 			<input
 				type="password"
@@ -33,9 +36,8 @@
 			</button>
 			<span class="msg"></span>
 		</p>
-	<?php endif; ?>
 
-	<?php if ( $_["recoveryEnabled"] && $_["privateKeySet"] ): ?>
+	<?php elseif ( $_["recoveryEnabled"] && $_["privateKeySet"] &&  $_["initialized"] === \OCA\Encryption\Session::INIT_SUCCESSFUL ): ?>
 		<br />
 		<p>
 			<label for="userEnableRecovery"><?php p( $l->t( "Enable password recovery:" ) ); ?></label>

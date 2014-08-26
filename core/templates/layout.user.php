@@ -39,7 +39,6 @@
 			?>
 		<?php endforeach; ?>
 	</head>
-	<?php flush(); ?>
 	<body id="<?php p($_['bodyid']);?>">
 	<noscript><div id="nojavascript"><div><?php print_unescaped($l->t('This application requires JavaScript to be enabled for correct operation.  Please <a href="http://enable-javascript.com/" target="_blank">enable JavaScript</a> and re-load this interface.')); ?></div></div></noscript>
 	<div id="notification-container">
@@ -91,7 +90,7 @@
 			<form class="searchbox" action="#" method="post">
 				<input id="searchbox" class="svg" type="search" name="query"
 					value="<?php if(isset($_POST['query'])) {p($_POST['query']);};?>"
-					autocomplete="off" x-webkit-speech />
+					autocomplete="off" />
 			</form>
 		</div></header>
 

@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-07-18 01:54-0400\n"
-"PO-Revision-Date: 2014-07-17 09:01+0000\n"
-"Last-Translator: Miguel Anxo Bouzada <mbouzada@gmail.com>\n"
+"POT-Creation-Date: 2014-08-26 01:54-0400\n"
+"PO-Revision-Date: 2014-08-26 05:02+0000\n"
+"Last-Translator: I Robot\n"
 "Language-Team: Galician (http://www.transifex.com/projects/p/owncloud/language/gl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -56,12 +56,12 @@ msgid ""
 "allowed."
 msgstr "Nome incorrecto, non se permite «\\», «/», «<», «>», «:», «\"», «|», «?» e «*»."
 
-#: ajax/newfile.php:76 ajax/newfolder.php:35 ajax/upload.php:159
-#: lib/app.php:77
+#: ajax/newfile.php:76 ajax/newfolder.php:35 ajax/upload.php:161
+#: lib/app.php:87
 msgid "The target folder has been moved or deleted."
 msgstr "O cartafol de destino foi movido ou eliminado."
 
-#: ajax/newfile.php:88 ajax/newfolder.php:47 lib/app.php:86
+#: ajax/newfile.php:88 ajax/newfolder.php:47 lib/app.php:96
 #, php-format
 msgid ""
 "The name %s is already used in the folder %s. Please choose a different "
@@ -77,12 +77,17 @@ msgid ""
 "Server is not allowed to open URLs, please check the server configuration"
 msgstr "O servidor non ten permisos para abrir os enderezos URL, comprobe a configuración do servidor"
 
-#: ajax/newfile.php:118
+#: ajax/newfile.php:126
+#, php-format
+msgid "The file exceeds your quota by %s"
+msgstr "O ficheiro excede a súa cota en %s"
+
+#: ajax/newfile.php:141
 #, php-format
 msgid "Error while downloading %s to %s"
 msgstr "Produciuse un erro ao descargar %s en %s"
 
-#: ajax/newfile.php:146
+#: ajax/newfile.php:169
 msgid "Error when creating the file"
 msgstr "Produciuse un erro ao crear o ficheiro"
 
@@ -94,62 +99,62 @@ msgstr "O nome de cartafol non pode estar baleiro."
 msgid "Error when creating the folder"
 msgstr "Produciuse un erro ao crear o cartafol"
 
-#: ajax/upload.php:19 ajax/upload.php:57
+#: ajax/upload.php:19 ajax/upload.php:59
 msgid "Unable to set upload directory."
 msgstr "Non é posíbel configurar o directorio de envíos."
 
-#: ajax/upload.php:33
+#: ajax/upload.php:35
 msgid "Invalid Token"
 msgstr "Marca incorrecta"
 
-#: ajax/upload.php:77
+#: ajax/upload.php:79
 msgid "No file was uploaded. Unknown error"
 msgstr "Non se enviou ningún ficheiro. Produciuse un erro descoñecido."
 
-#: ajax/upload.php:84
+#: ajax/upload.php:86
 msgid "There is no error, the file uploaded with success"
 msgstr "Non houbo erros, o ficheiro enviouse correctamente"
 
-#: ajax/upload.php:85
+#: ajax/upload.php:87
 msgid ""
 "The uploaded file exceeds the upload_max_filesize directive in php.ini: "
 msgstr "O ficheiro enviado excede a directiva indicada por upload_max_filesize de php.ini:"
 
-#: ajax/upload.php:87
+#: ajax/upload.php:89
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
 msgstr "O ficheiro enviado excede da directiva MAX_FILE_SIZE especificada no formulario HTML"
 
-#: ajax/upload.php:88
+#: ajax/upload.php:90
 msgid "The uploaded file was only partially uploaded"
 msgstr "O ficheiro so foi parcialmente enviado"
 
-#: ajax/upload.php:89
+#: ajax/upload.php:91
 msgid "No file was uploaded"
 msgstr "Non se enviou ningún ficheiro"
 
-#: ajax/upload.php:90
+#: ajax/upload.php:92
 msgid "Missing a temporary folder"
 msgstr "Falta o cartafol temporal"
 
-#: ajax/upload.php:91
+#: ajax/upload.php:93
 msgid "Failed to write to disk"
 msgstr "Produciuse un erro ao escribir no disco"
 
-#: ajax/upload.php:111
+#: ajax/upload.php:113
 msgid "Not enough storage available"
 msgstr "Non hai espazo de almacenamento abondo"
 
-#: ajax/upload.php:173
+#: ajax/upload.php:175
 msgid "Upload failed. Could not find uploaded file"
 msgstr "O envío fracasou. Non foi posíbel atopar o ficheiro enviado"
 
-#: ajax/upload.php:183
+#: ajax/upload.php:185
 msgid "Upload failed. Could not get file info."
 msgstr "O envío fracasou. Non foi posíbel obter información do ficheiro."
 
-#: ajax/upload.php:198
+#: ajax/upload.php:200
 msgid "Invalid directory."
 msgstr "O directorio é incorrecto."
 
@@ -161,49 +166,49 @@ msgstr "Ficheiros"
 msgid "All files"
 msgstr "Todos os ficheiros"
 
-#: js/file-upload.js:268
+#: js/file-upload.js:269
 msgid "Unable to upload {filename} as it is a directory or has 0 bytes"
 msgstr "Non é posíbel enviar {filename}, xa que ou é un directorio ou ten 0 bytes"
 
-#: js/file-upload.js:281
+#: js/file-upload.js:284
 msgid "Total file size {size1} exceeds upload limit {size2}"
 msgstr "O tamaño total do ficheiro {size1} excede do límite de envío {size2}"
 
-#: js/file-upload.js:292
+#: js/file-upload.js:295
 msgid ""
 "Not enough free space, you are uploading {size1} but only {size2} is left"
 msgstr "Non hai espazo libre abondo, o seu envío é de {size1} mais só dispón de {size2}"
 
-#: js/file-upload.js:369
+#: js/file-upload.js:372
 msgid "Upload cancelled."
 msgstr "Envío cancelado."
 
-#: js/file-upload.js:415
+#: js/file-upload.js:418
 msgid "Could not get result from server."
 msgstr "Non foi posíbel obter o resultado do servidor."
 
-#: js/file-upload.js:499
+#: js/file-upload.js:502
 msgid ""
 "File upload is in progress. Leaving the page now will cancel the upload."
 msgstr "O envío do ficheiro está en proceso. Saír agora da páxina cancelará o envío."
 
-#: js/file-upload.js:564
+#: js/file-upload.js:567
 msgid "URL cannot be empty"
 msgstr "O URL non pode quedar en branco."
 
-#: js/file-upload.js:568 js/filelist.js:1259
+#: js/file-upload.js:571 js/filelist.js:1290
 msgid "{new_name} already exists"
 msgstr "Xa existe un {new_name}"
 
-#: js/file-upload.js:623
+#: js/file-upload.js:626
 msgid "Could not create file"
 msgstr "Non foi posíbel crear o ficheiro"
 
-#: js/file-upload.js:639
+#: js/file-upload.js:642
 msgid "Could not create folder"
 msgstr "Non foi posíbel crear o cartafol"
 
-#: js/file-upload.js:686
+#: js/file-upload.js:689
 msgid "Error fetching URL"
 msgstr "Produciuse un erro ao obter o URL"
 
@@ -231,61 +236,55 @@ msgstr "Eliminar permanentemente"
 msgid "Rename"
 msgstr "Renomear"
 
-#: js/filelist.js:341
-msgid ""
-"Your download is being prepared. This might take some time if the files are "
-"big."
-msgstr "Está a prepararse a súa descarga. Isto pode levar bastante tempo se os ficheiros son grandes."
-
-#: js/filelist.js:675 js/filelist.js:1783
+#: js/filelist.js:685 js/filelist.js:1818
 msgid "Pending"
 msgstr "Pendentes"
 
-#: js/filelist.js:1210
+#: js/filelist.js:1241
 msgid "Error moving file."
 msgstr "Produciuse un erro ao mover o ficheiro."
 
-#: js/filelist.js:1218
+#: js/filelist.js:1249
 msgid "Error moving file"
 msgstr "Produciuse un erro ao mover o ficheiro"
 
-#: js/filelist.js:1218
+#: js/filelist.js:1249
 msgid "Error"
 msgstr "Erro"
 
-#: js/filelist.js:1307
+#: js/filelist.js:1338
 msgid "Could not rename file"
 msgstr "Non foi posíbel renomear o ficheiro"
 
-#: js/filelist.js:1425
+#: js/filelist.js:1460
 msgid "Error deleting file."
 msgstr "Produciuse un erro ao eliminar o ficheiro."
 
-#: js/filelist.js:1528 templates/list.php:61
+#: js/filelist.js:1563 templates/list.php:61
 msgid "Name"
 msgstr "Nome"
 
-#: js/filelist.js:1529 templates/list.php:72
+#: js/filelist.js:1564 templates/list.php:72
 msgid "Size"
 msgstr "Tamaño"
 
-#: js/filelist.js:1530 templates/list.php:75
+#: js/filelist.js:1565 templates/list.php:75
 msgid "Modified"
 msgstr "Modificado"
 
-#: js/filelist.js:1540 js/filesummary.js:141 js/filesummary.js:168
+#: js/filelist.js:1575 js/filesummary.js:141 js/filesummary.js:168
 msgid "%n folder"
 msgid_plural "%n folders"
 msgstr[0] "%n cartafol"
 msgstr[1] "%n cartafoles"
 
-#: js/filelist.js:1546 js/filesummary.js:142 js/filesummary.js:169
+#: js/filelist.js:1581 js/filesummary.js:142 js/filesummary.js:169
 msgid "%n file"
 msgid_plural "%n files"
 msgstr[0] "%n ficheiro"
 msgstr[1] "%n ficheiros"
 
-#: js/filelist.js:1676 js/filelist.js:1715
+#: js/filelist.js:1711 js/filelist.js:1750
 msgid "Uploading %n file"
 msgid_plural "Uploading %n files"
 msgstr[0] "Cargando %n ficheiro"
@@ -307,14 +306,14 @@ msgstr "O seu espazo de almacenamento está case cheo ({usedSpacePercent}%)"
 msgid ""
 "Encryption App is enabled but your keys are not initialized, please log-out "
 "and log-in again"
-msgstr "O aplicativo de cifrado está activado, mais as chaves non foron inicializadas, saia da sesión e volva a acceder de novo"
+msgstr "A aplicación de cifrado está activada, mais as chaves non foron inicializadas, saia da sesión e volva a acceder de novo"
 
 #: js/files.js:144
 msgid ""
 "Invalid private key for Encryption App. Please update your private key "
 "password in your personal settings to recover access to your encrypted "
 "files."
-msgstr "A chave privada para o aplicativo de cifrado non é correcta. Actualice o contrasinal da súa chave privada nos seus axustes persoais para recuperar o acceso aos seus ficheiros cifrados."
+msgstr "A chave privada para a aplicación de cifrado non é correcta. Actualice o contrasinal da súa chave privada nos seus axustes persoais para recuperar o acceso aos seus ficheiros cifrados."
 
 #: js/files.js:148
 msgid ""
@@ -326,7 +325,12 @@ msgstr "O cifrado foi desactivado, mais os ficheiros están cifrados. Vaia á co
 msgid "{dirs} and {files}"
 msgstr "{dirs} e {files}"
 
-#: lib/app.php:103
+#: lib/app.php:80
+#, php-format
+msgid "%s could not be renamed as it has been deleted"
+msgstr "Non é posíbel renomear %s xa que foi eliminado"
+
+#: lib/app.php:113
 #, php-format
 msgid "%s could not be renamed"
 msgstr "%s non pode cambiar de nome"

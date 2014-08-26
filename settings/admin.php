@@ -19,6 +19,7 @@ $htaccessworking=OC_Util::isHtaccessWorking();
 
 $entries=OC_Log_Owncloud::getEntries(3);
 $entriesremain = count(OC_Log_Owncloud::getEntries(4)) > 3;
+$config = \OC::$server->getConfig();
 
 // Should we display sendmail as an option?
 $tmpl->assign('sendmail_is_available', (bool) findBinaryPath('sendmail'));
@@ -39,6 +40,7 @@ $tmpl->assign('entriesremain', $entriesremain);
 $tmpl->assign('htaccessworking', $htaccessworking);
 $tmpl->assign('internetconnectionworking', OC_Util::isInternetConnectionEnabled() ? OC_Util::isInternetConnectionWorking() : false);
 $tmpl->assign('isLocaleWorking', OC_Util::isSetLocaleWorking());
+$tmpl->assign('isPhpCharSetUtf8', OC_Util::isPhpCharSetUtf8());
 $tmpl->assign('isAnnotationsWorking', OC_Util::isAnnotationsWorking());
 $tmpl->assign('isWebDavWorking', OC_Util::isWebDAVWorking());
 $tmpl->assign('has_fileinfo', OC_Util::fileInfoLoaded());
@@ -70,13 +72,15 @@ $tmpl->assign('groups', $groups);
 
 
 // Check if connected using HTTPS
-if (OC_Request::serverProtocol() === 'https') {
-	$connectedHTTPS = true;
-} else {
-	$connectedHTTPS = false;
-}
-$tmpl->assign('isConnectedViaHTTPS', $connectedHTTPS);
+$tmpl->assign('isConnectedViaHTTPS', OC_Request::serverProtocol() === 'https');
 $tmpl->assign('enforceHTTPSEnabled', OC_Config::getValue( "forcessl", false));
+
+// If the current webroot is non-empty but the webroot from the config is,
+// and system cron is used, the URL generator fails to build valid URLs.
+$shouldSuggestOverwriteWebroot = $config->getAppValue('core', 'backgroundjobs_mode', 'ajax') === 'cron' &&
+	\OC::$WEBROOT && \OC::$WEBROOT !== '/' &&
+	!$config->getSystemValue('overwritewebroot', '');
+$tmpl->assign('suggestedOverwriteWebroot', ($shouldSuggestOverwriteWebroot) ? \OC::$WEBROOT : '');
 
 $tmpl->assign('allowLinks', OC_Appconfig::getValue('core', 'shareapi_allow_links', 'yes'));
 $tmpl->assign('enforceLinkPassword', \OCP\Util::isPublicLinkPasswordRequired());
@@ -101,9 +105,11 @@ $tmpl->printPage();
  * @return null|string
  */
 function findBinaryPath($program) {
-	exec('command -v ' . escapeshellarg($program) . ' 2> /dev/null', $output, $returnCode);
-	if ($returnCode === 0 && count($output) > 0) {
-		return escapeshellcmd($output[0]);
+	if (OC_Helper::is_function_enabled('exec')) {
+		exec('command -v ' . escapeshellarg($program) . ' 2> /dev/null', $output, $returnCode);
+		if ($returnCode === 0 && count($output) > 0) {
+			return escapeshellcmd($output[0]);
+		}
 	}
 	return null;
 }

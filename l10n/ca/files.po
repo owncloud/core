@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-07-16 01:54-0400\n"
-"PO-Revision-Date: 2014-07-15 06:11+0000\n"
+"POT-Creation-Date: 2014-08-26 01:54-0400\n"
+"PO-Revision-Date: 2014-08-26 05:02+0000\n"
 "Last-Translator: I Robot\n"
 "Language-Team: Catalan (http://www.transifex.com/projects/p/owncloud/language/ca/)\n"
 "MIME-Version: 1.0\n"
@@ -59,12 +59,12 @@ msgid ""
 "allowed."
 msgstr "El nóm no és vàlid, '\\', '/', '<', '>', ':', '\"', '|', '?' i '*' no estan permesos."
 
-#: ajax/newfile.php:76 ajax/newfolder.php:35 ajax/upload.php:159
-#: lib/app.php:77
+#: ajax/newfile.php:76 ajax/newfolder.php:35 ajax/upload.php:161
+#: lib/app.php:87
 msgid "The target folder has been moved or deleted."
 msgstr "La carpeta de destí s'ha mogut o eliminat."
 
-#: ajax/newfile.php:88 ajax/newfolder.php:47 lib/app.php:86
+#: ajax/newfile.php:88 ajax/newfolder.php:47 lib/app.php:96
 #, php-format
 msgid ""
 "The name %s is already used in the folder %s. Please choose a different "
@@ -80,12 +80,17 @@ msgid ""
 "Server is not allowed to open URLs, please check the server configuration"
 msgstr "El servidor no té autorització per obrir URLs, comproveu la configuració del servidor"
 
-#: ajax/newfile.php:118
+#: ajax/newfile.php:126
+#, php-format
+msgid "The file exceeds your quota by %s"
+msgstr ""
+
+#: ajax/newfile.php:141
 #, php-format
 msgid "Error while downloading %s to %s"
 msgstr "S'ha produït un error en baixar %s a %s"
 
-#: ajax/newfile.php:146
+#: ajax/newfile.php:169
 msgid "Error when creating the file"
 msgstr "S'ha produït un error en crear el fitxer"
 
@@ -97,62 +102,62 @@ msgstr "El nom de la carpeta no pot ser buit."
 msgid "Error when creating the folder"
 msgstr "S'ha produït un error en crear la carpeta"
 
-#: ajax/upload.php:19 ajax/upload.php:57
+#: ajax/upload.php:19 ajax/upload.php:59
 msgid "Unable to set upload directory."
 msgstr "No es pot establir la carpeta de pujada."
 
-#: ajax/upload.php:33
+#: ajax/upload.php:35
 msgid "Invalid Token"
 msgstr "Testimoni no vàlid"
 
-#: ajax/upload.php:77
+#: ajax/upload.php:79
 msgid "No file was uploaded. Unknown error"
 msgstr "No s'ha carregat cap fitxer. Error desconegut"
 
-#: ajax/upload.php:84
+#: ajax/upload.php:86
 msgid "There is no error, the file uploaded with success"
 msgstr "No hi ha errors, el fitxer s'ha carregat correctament"
 
-#: ajax/upload.php:85
+#: ajax/upload.php:87
 msgid ""
 "The uploaded file exceeds the upload_max_filesize directive in php.ini: "
 msgstr "L’arxiu que voleu carregar supera el màxim definit en la directiva upload_max_filesize del php.ini:"
 
-#: ajax/upload.php:87
+#: ajax/upload.php:89
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
 msgstr "El fitxer carregat supera la directiva MAX_FILE_SIZE especificada al formulari HTML"
 
-#: ajax/upload.php:88
+#: ajax/upload.php:90
 msgid "The uploaded file was only partially uploaded"
 msgstr "El fitxer només s'ha carregat parcialment"
 
-#: ajax/upload.php:89
+#: ajax/upload.php:91
 msgid "No file was uploaded"
 msgstr "No s'ha carregat cap fitxer"
 
-#: ajax/upload.php:90
+#: ajax/upload.php:92
 msgid "Missing a temporary folder"
 msgstr "Falta un fitxer temporal"
 
-#: ajax/upload.php:91
+#: ajax/upload.php:93
 msgid "Failed to write to disk"
 msgstr "Ha fallat en escriure al disc"
 
-#: ajax/upload.php:111
+#: ajax/upload.php:113
 msgid "Not enough storage available"
 msgstr "No hi ha prou espai disponible"
 
-#: ajax/upload.php:173
+#: ajax/upload.php:175
 msgid "Upload failed. Could not find uploaded file"
 msgstr "La pujada ha fallat. El fitxer pujat no s'ha trobat."
 
-#: ajax/upload.php:183
+#: ajax/upload.php:185
 msgid "Upload failed. Could not get file info."
 msgstr "La pujada ha fallat. No s'ha pogut obtenir informació del fitxer."
 
-#: ajax/upload.php:198
+#: ajax/upload.php:200
 msgid "Invalid directory."
 msgstr "Directori no vàlid."
 
@@ -164,49 +169,49 @@ msgstr "Fitxers"
 msgid "All files"
 msgstr "Tots els fitxers"
 
-#: js/file-upload.js:268
+#: js/file-upload.js:269
 msgid "Unable to upload {filename} as it is a directory or has 0 bytes"
 msgstr "No es pot pujar {filename} perquè és una carpeta o té 0 bytes"
 
-#: js/file-upload.js:281
+#: js/file-upload.js:284
 msgid "Total file size {size1} exceeds upload limit {size2}"
 msgstr "Mida total del fitxer {size1} excedeix el límit de pujada {size2}"
 
-#: js/file-upload.js:292
+#: js/file-upload.js:295
 msgid ""
 "Not enough free space, you are uploading {size1} but only {size2} is left"
 msgstr "No hi ha prou espai lliure, està carregant {size1} però només pot {size2}"
 
-#: js/file-upload.js:369
+#: js/file-upload.js:372
 msgid "Upload cancelled."
 msgstr "La pujada s'ha cancel·lat."
 
-#: js/file-upload.js:415
+#: js/file-upload.js:418
 msgid "Could not get result from server."
 msgstr "No hi ha resposta del servidor."
 
-#: js/file-upload.js:499
+#: js/file-upload.js:502
 msgid ""
 "File upload is in progress. Leaving the page now will cancel the upload."
 msgstr "Hi ha una pujada en curs. Si abandoneu la pàgina la pujada es cancel·larà."
 
-#: js/file-upload.js:564
+#: js/file-upload.js:567
 msgid "URL cannot be empty"
 msgstr "L'URL no pot ser buit"
 
-#: js/file-upload.js:568 js/filelist.js:1259
+#: js/file-upload.js:571 js/filelist.js:1290
 msgid "{new_name} already exists"
 msgstr "{new_name} ja existeix"
 
-#: js/file-upload.js:623
+#: js/file-upload.js:626
 msgid "Could not create file"
 msgstr "No s'ha pogut crear el fitxer"
 
-#: js/file-upload.js:639
+#: js/file-upload.js:642
 msgid "Could not create folder"
 msgstr "No s'ha pogut crear la carpeta"
 
-#: js/file-upload.js:686
+#: js/file-upload.js:689
 msgid "Error fetching URL"
 msgstr "Error en obtenir la URL"
 
@@ -234,61 +239,55 @@ msgstr "Esborra permanentment"
 msgid "Rename"
 msgstr "Reanomena"
 
-#: js/filelist.js:341
-msgid ""
-"Your download is being prepared. This might take some time if the files are "
-"big."
-msgstr "S'està preparant la baixada. Pot trigar una estona si els fitxers són grans."
-
-#: js/filelist.js:675 js/filelist.js:1783
+#: js/filelist.js:685 js/filelist.js:1818
 msgid "Pending"
 msgstr "Pendent"
 
-#: js/filelist.js:1210
+#: js/filelist.js:1241
 msgid "Error moving file."
 msgstr "Error en moure el fitxer."
 
-#: js/filelist.js:1218
+#: js/filelist.js:1249
 msgid "Error moving file"
 msgstr "Error en moure el fitxer"
 
-#: js/filelist.js:1218
+#: js/filelist.js:1249
 msgid "Error"
 msgstr "Error"
 
-#: js/filelist.js:1307
+#: js/filelist.js:1338
 msgid "Could not rename file"
 msgstr "No es pot canviar el nom de fitxer"
 
-#: js/filelist.js:1425
+#: js/filelist.js:1460
 msgid "Error deleting file."
 msgstr "Error en esborrar el fitxer."
 
-#: js/filelist.js:1528 templates/list.php:61
+#: js/filelist.js:1563 templates/list.php:61
 msgid "Name"
 msgstr "Nom"
 
-#: js/filelist.js:1529 templates/list.php:72
+#: js/filelist.js:1564 templates/list.php:72
 msgid "Size"
 msgstr "Mida"
 
-#: js/filelist.js:1530 templates/list.php:75
+#: js/filelist.js:1565 templates/list.php:75
 msgid "Modified"
 msgstr "Modificat"
 
-#: js/filelist.js:1540 js/filesummary.js:141 js/filesummary.js:168
+#: js/filelist.js:1575 js/filesummary.js:141 js/filesummary.js:168
 msgid "%n folder"
 msgid_plural "%n folders"
 msgstr[0] "%n carpeta"
 msgstr[1] "%n carpetes"
 
-#: js/filelist.js:1546 js/filesummary.js:142 js/filesummary.js:169
+#: js/filelist.js:1581 js/filesummary.js:142 js/filesummary.js:169
 msgid "%n file"
 msgid_plural "%n files"
 msgstr[0] "%n fitxer"
 msgstr[1] "%n fitxers"
 
-#: js/filelist.js:1676 js/filelist.js:1715
+#: js/filelist.js:1711 js/filelist.js:1750
 msgid "Uploading %n file"
 msgid_plural "Uploading %n files"
 msgstr[0] "Pujant %n fitxer"
@@ -329,7 +328,12 @@ msgstr "L'encriptació s'ha desactivat però els vostres fitxers segueixen encri
 msgid "{dirs} and {files}"
 msgstr "{dirs} i {files}"
 
-#: lib/app.php:103
+#: lib/app.php:80
+#, php-format
+msgid "%s could not be renamed as it has been deleted"
+msgstr ""
+
+#: lib/app.php:113
 #, php-format
 msgid "%s could not be renamed"
 msgstr "%s no es pot canviar el nom"

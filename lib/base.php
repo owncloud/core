@@ -132,20 +132,25 @@ class OC {
 		}
 
 		// search the 3rdparty folder
-		if (OC_Config::getValue('3rdpartyroot', '') <> '' and OC_Config::getValue('3rdpartyurl', '') <> '') {
-			OC::$THIRDPARTYROOT = OC_Config::getValue('3rdpartyroot', '');
-			OC::$THIRDPARTYWEBROOT = OC_Config::getValue('3rdpartyurl', '');
-		} elseif (file_exists(OC::$SERVERROOT . '/3rdparty')) {
-			OC::$THIRDPARTYROOT = OC::$SERVERROOT;
-			OC::$THIRDPARTYWEBROOT = OC::$WEBROOT;
-		} elseif (file_exists(OC::$SERVERROOT . '/../3rdparty')) {
-			OC::$THIRDPARTYWEBROOT = rtrim(dirname(OC::$WEBROOT), '/');
-			OC::$THIRDPARTYROOT = rtrim(dirname(OC::$SERVERROOT), '/');
-		} else {
-			throw new Exception('3rdparty directory not found! Please put the ownCloud 3rdparty'
+		OC::$THIRDPARTYROOT = OC_Config::getValue('3rdpartyroot', null);
+		OC::$THIRDPARTYWEBROOT = OC_Config::getValue('3rdpartyurl', null);
+		
+		if (empty(OC::$THIRDPARTYROOT) && empty(OC::$THIRDPARTYWEBROOT)) {
+			if (file_exists(OC::$SERVERROOT . '/3rdparty')) {
+				OC::$THIRDPARTYROOT = OC::$SERVERROOT;
+				OC::$THIRDPARTYWEBROOT = OC::$WEBROOT;
+			} elseif (file_exists(OC::$SERVERROOT . '/../3rdparty')) {
+				OC::$THIRDPARTYWEBROOT = rtrim(dirname(OC::$WEBROOT), '/');
+				OC::$THIRDPARTYROOT = rtrim(dirname(OC::$SERVERROOT), '/');
+			}
+		}
+		if (empty(OC::$THIRDPARTYROOT) || !file_exists(OC::$THIRDPARTYROOT)) {
+			echo('3rdparty directory not found! Please put the ownCloud 3rdparty'
 				. ' folder in the ownCloud folder or the folder above.'
 				. ' You can also configure the location in the config.php file.');
+			return;
 		}
+		
 		// search the apps folder
 		$config_paths = OC_Config::getValue('apps_paths', array());
 		if (!empty($config_paths)) {
@@ -211,9 +216,11 @@ class OC {
 	public static function checkInstalled() {
 		// Redirect to installer if not installed
 		if (!OC_Config::getValue('installed', false) && OC::$SUBURI != '/index.php') {
-			if (!OC::$CLI) {
+			if (OC::$CLI) {
+				throw new Exception('Not installed');
+			} else {
 				$url = 'http://' . $_SERVER['SERVER_NAME'] . OC::$WEBROOT . '/index.php';
-				header("Location: $url");
+				header('Location: ' . $url);
 			}
 			exit();
 		}
@@ -272,7 +279,7 @@ class OC {
 	 * check if the instance needs to preform an upgrade
 	 *
 	 * @return bool
-	 * @deprecated use \OCP\Util::needUpgrade instead
+	 * @deprecated use \OCP\Util::needUpgrade() instead
 	 */
 	public static function needUpgrade() {
 		return \OCP\Util::needUpgrade();
@@ -473,29 +480,15 @@ class OC {
 		@ini_set('file_uploads', '50');
 
 		self::handleAuthHeaders();
-
 		self::initPaths();
-		if (OC_Config::getValue('instanceid', false)) {
-			// \OC\Memcache\Cache has a hidden dependency on
-			// OC_Util::getInstanceId() for namespacing. See #5409.
-			try {
-				self::$loader->setMemoryCache(\OC\Memcache\Factory::createLowLatency('Autoloader'));
-			} catch (\Exception $ex) {
-			}
-		}
+		self::registerAutoloaderCache();
+
 		OC_Util::isSetLocaleWorking();
 
 		// setup 3rdparty autoloader
 		$vendorAutoLoad = OC::$THIRDPARTYROOT . '/3rdparty/autoload.php';
 		if (file_exists($vendorAutoLoad)) {
 			require_once $vendorAutoLoad;
-		}
-
-		// set debug mode if an xdebug session is active
-		if (!defined('DEBUG') || !DEBUG) {
-			if (isset($_COOKIE['XDEBUG_SESSION'])) {
-				define('DEBUG', true);
-			}
 		}
 
 		if (!defined('PHPUNIT_RUN')) {
@@ -520,10 +513,10 @@ class OC {
 
 		self::initTemplateEngine();
 		OC_App::loadApps(array('session'));
-		if (!self::$CLI) {
-			self::initSession();
-		} else {
+		if (self::$CLI) {
 			self::$session = new \OC\Session\Memory('');
+		} else {
+			self::initSession();
 		}
 		self::checkConfig();
 		self::checkInstalled();
@@ -564,6 +557,7 @@ class OC {
 		self::registerPreviewHooks();
 		self::registerShareHooks();
 		self::registerLogRotate();
+		self::registerLocalAddressBook();
 
 		//make sure temporary files are cleaned up
 		register_shutdown_function(array('OC_Helper', 'cleanTmp'));
@@ -573,6 +567,26 @@ class OC {
 				OC_Util::addScript('backgroundjobs');
 			}
 		}
+
+		// Check whether the sample configuration has been copied
+		if(OC_Config::getValue('copied_sample_config', false)) {
+			$l = \OC_L10N::get('lib');
+			header('HTTP/1.1 503 Service Temporarily Unavailable');
+			header('Status: 503 Service Temporarily Unavailable');
+			OC_Template::printErrorPage(
+				$l->t('Sample configuration detected'),
+				$l->t('It has been detected that the sample configuration has been copied. This can break your installation and is unsupported. Please read the documentation before performing changes on config.php')
+			);
+			return;
+		}
+	}
+
+	private static function registerLocalAddressBook() {
+		self::$server->getContactsManager()->register(function() {
+			$userManager = \OC::$server->getUserManager();
+			\OC::$server->getContactsManager()->registerAddressBook(
+				new \OC\Contacts\LocalAddressBook($userManager));
+		});
 	}
 
 	/**
@@ -633,6 +647,23 @@ class OC {
 		}
 	}
 
+	protected static function registerAutoloaderCache() {
+		// The class loader takes an optional low-latency cache, which MUST be
+		// namespaced. The instanceid is used for namespacing, but might be
+		// unavailable at this point. Futhermore, it might not be possible to
+		// generate an instanceid via \OC_Util::getInstanceId() because the
+		// config file may not be writable. As such, we only register a class
+		// loader cache if instanceid is available without trying to create one.
+		$instanceId = OC_Config::getValue('instanceid', null);
+		if ($instanceId) {
+			try {
+				$memcacheFactory = new \OC\Memcache\Factory($instanceId);
+				self::$loader->setMemoryCache($memcacheFactory->createLowLatency('Autoloader'));
+			} catch (\Exception $ex) {
+			}
+		}
+	}
+
 	/**
 	 * Handle the request
 	 */
@@ -654,14 +685,13 @@ class OC {
 		if (!OC::$CLI
 			// overwritehost is always trusted
 			&& OC_Request::getOverwriteHost() === null
-			&& !OC_Request::isTrustedDomain($host)) {
-
+			&& !OC_Request::isTrustedDomain($host)
+		) {
 			header('HTTP/1.1 400 Bad Request');
 			header('Status: 400 Bad Request');
-			OC_Template::printErrorPage(
-				$l->t('You are accessing the server from an untrusted domain.'),
-				$l->t('Please contact your administrator. If you are an administrator of this instance, configure the "trusted_domain" setting in config/config.php. An example configuration is provided in config/config.sample.php.')
-			);
+			$tmpl = new OCP\Template('core', 'untrustedDomain', 'guest');
+			$tmpl->assign('domain', $_SERVER['SERVER_NAME']);
+			$tmpl->printPage();
 			return;
 		}
 
@@ -673,6 +703,9 @@ class OC {
 
 		if (!OC_User::isLoggedIn()) {
 			// Test it the user is already authenticated using Apaches AuthType Basic... very usable in combination with LDAP
+			if (!OC_Config::getValue('maintenance', false) && !self::checkUpgrade(false)) {
+				OC_App::loadApps(array('authentication'));
+			}
 			OC::tryBasicAuthLogin();
 		}
 
@@ -767,32 +800,6 @@ class OC {
 		}
 	}
 
-	/**
-	 * Load a PHP file belonging to the specified application
-	 * @param array $param The application and file to load
-	 * @return bool Whether the file has been found (will return 404 and false if not)
-	 * @deprecated This function will be removed in ownCloud 8 - use proper routing instead
-	 * @param $param
-	 * @return bool Whether the file has been found (will return 404 and false if not)
-	 */
-	public static function loadAppScriptFile($param) {
-		OC_App::loadApps();
-		$app = $param['app'];
-		$file = $param['file'];
-		$app_path = OC_App::getAppPath($app);
-		$file = $app_path . '/' . $file;
-
-		if (OC_App::isEnabled($app) && $app_path !== false && OC_Helper::issubdirectory($file, $app_path)) {
-			unset($app, $app_path);
-			if (file_exists($file)) {
-				require_once $file;
-				return true;
-			}
-		}
-		header('HTTP/1.0 404 Not Found');
-		return false;
-	}
-
 	protected static function handleAuthHeaders() {
 		//copy http auth headers for apache+php-fcgid work around
 		if (isset($_SERVER['HTTP_XAUTHORIZATION']) && !isset($_SERVER['HTTP_AUTHORIZATION'])) {
@@ -827,13 +834,6 @@ class OC {
 		} // logon via web form
 		elseif (OC::tryFormLogin()) {
 			$error[] = 'invalidpassword';
-			if ( OC_Config::getValue('log_authfailip', false) ) {
-				OC_Log::write('core', 'Login failed: user \''.$_POST["user"].'\' , wrong password, IP:'.$_SERVER['REMOTE_ADDR'],
-				OC_Log::WARN);
-			} else {
-				OC_Log::write('core', 'Login failed: user \''.$_POST["user"].'\' , wrong password, IP:set log_authfailip=true in conf',
-                                OC_Log::WARN);
-			}
 		}
 
 		OC_Util::displayLoginPage(array_unique($error));

@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-07-16 01:54-0400\n"
-"PO-Revision-Date: 2014-07-16 05:54+0000\n"
+"POT-Creation-Date: 2014-08-26 01:54-0400\n"
+"PO-Revision-Date: 2014-08-26 05:23+0000\n"
 "Last-Translator: I Robot\n"
 "Language-Team: Japanese (Japan) (http://www.transifex.com/projects/p/owncloud/language/ja_JP/)\n"
 "MIME-Version: 1.0\n"
@@ -24,11 +24,7 @@ msgstr ""
 "Language: ja_JP\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ajax/share.php:90
-msgid "Expiration date is in the past."
-msgstr "有効期限が切れています。"
-
-#: ajax/share.php:122 ajax/share.php:164
+#: ajax/share.php:117 ajax/share.php:159
 #, php-format
 msgid "Couldn't send mail to following users: %s "
 msgstr "次のユーザーにメールを送信できませんでした: %s"
@@ -49,7 +45,16 @@ msgstr "データベース更新完了"
 msgid "Checked database schema update"
 msgstr "指定データベースのスキーマを更新"
 
-#: ajax/update.php:27
+#: ajax/update.php:22
+msgid "Checked database schema update for apps"
+msgstr ""
+
+#: ajax/update.php:25
+#, php-format
+msgid "Updated \"%s\" to %s"
+msgstr ""
+
+#: ajax/update.php:33
 #, php-format
 msgid "Disabled incompatible apps: %s"
 msgstr "無効化された非互換アプリ：%s"
@@ -218,7 +223,7 @@ msgstr "1年前"
 msgid "years ago"
 msgstr "数年前"
 
-#: js/lostpassword.js:3 lostpassword/controller/lostcontroller.php:175
+#: js/lostpassword.js:3 lostpassword/controller/lostcontroller.php:198
 msgid "Couldn't send reset email. Please contact your administrator."
 msgstr "リセットメールを送信できませんでした。管理者に問い合わせてください。"
 
@@ -352,12 +357,12 @@ msgstr "{recipients} と共有"
 msgid "Share"
 msgstr "共有"
 
-#: js/share.js:326 js/share.js:340 js/share.js:347 js/share.js:989
+#: js/share.js:326 js/share.js:340 js/share.js:347 js/share.js:1002
 #: templates/installation.php:10
 msgid "Error"
 msgstr "エラー"
 
-#: js/share.js:328 js/share.js:1052
+#: js/share.js:328 js/share.js:1065
 msgid "Error while sharing"
 msgstr "共有でエラー発生"
 
@@ -418,79 +423,71 @@ msgstr "有効期限を設定"
 msgid "Expiration date"
 msgstr "有効期限"
 
-#: js/share.js:455
-msgid "Share via email:"
-msgstr "メール経由で共有:"
-
-#: js/share.js:458
-msgid "No people found"
-msgstr "ユーザーが見つかりません"
-
-#: js/share.js:507 js/share.js:575
+#: js/share.js:496 js/share.js:564
 msgid "group"
 msgstr "グループ"
 
-#: js/share.js:540
+#: js/share.js:529
 msgid "Resharing is not allowed"
 msgstr "再共有は許可されていません"
 
-#: js/share.js:591
+#: js/share.js:580
 msgid "Shared in {item} with {user}"
 msgstr "{item} 内で {user} と共有中"
 
-#: js/share.js:613
+#: js/share.js:602
 msgid "Unshare"
 msgstr "共有解除"
 
-#: js/share.js:621
+#: js/share.js:610
 msgid "notify by email"
 msgstr "メールで通知"
 
-#: js/share.js:624
+#: js/share.js:613
 msgid "can share"
 msgstr "共有可"
 
-#: js/share.js:627
+#: js/share.js:616
 msgid "can edit"
 msgstr "編集を許可"
 
-#: js/share.js:629
+#: js/share.js:618
 msgid "access control"
 msgstr "アクセス権限"
 
-#: js/share.js:632
+#: js/share.js:621
 msgid "create"
 msgstr "作成"
 
-#: js/share.js:635
+#: js/share.js:624
 msgid "update"
 msgstr "アップデート"
 
-#: js/share.js:638
+#: js/share.js:627
 msgid "delete"
 msgstr "削除"
 
-#: js/share.js:970
+#: js/share.js:983
 msgid "Password protected"
 msgstr "パスワード保護"
 
-#: js/share.js:989
+#: js/share.js:1002
 msgid "Error unsetting expiration date"
 msgstr "有効期限の未設定エラー"
 
-#: js/share.js:1010
+#: js/share.js:1023
 msgid "Error setting expiration date"
 msgstr "有効期限の設定でエラー発生"
 
-#: js/share.js:1039
+#: js/share.js:1052
 msgid "Sending ..."
 msgstr "送信中..."
 
-#: js/share.js:1050
+#: js/share.js:1063
 msgid "Email sent"
 msgstr "メールを送信しました"
 
-#: js/share.js:1074
+#: js/share.js:1087
 msgid "Warning"
 msgstr "警告"
 
@@ -538,21 +535,21 @@ msgstr "アップデートに失敗しました。"
 msgid "The update was successful. Redirecting you to ownCloud now."
 msgstr "アップデートに成功しました。今すぐownCloudにリダイレクトします。"
 
-#: lostpassword/controller/lostcontroller.php:110
+#: lostpassword/controller/lostcontroller.php:133
 msgid "Couldn't reset password because the token is invalid"
 msgstr "トークンが無効なため、パスワードをリセットできませんでした"
 
-#: lostpassword/controller/lostcontroller.php:136
+#: lostpassword/controller/lostcontroller.php:159
 msgid "Couldn't send reset email. Please make sure your username is correct."
 msgstr "リセットメールを送信できませんでした。ユーザー名が正しいことを確認してください。"
 
-#: lostpassword/controller/lostcontroller.php:151
+#: lostpassword/controller/lostcontroller.php:174
 msgid ""
 "Couldn't send reset email because there is no email address for this "
 "username. Please contact your administrator."
 msgstr "このユーザー名に紐付けられたメールアドレスがないため、リセットメールを送信できませんでした。管理者に問い合わせてください。"
 
-#: lostpassword/controller/lostcontroller.php:168
+#: lostpassword/controller/lostcontroller.php:191
 #, php-format
 msgid "%s password reset"
 msgstr "%s パスワードリセット"
@@ -567,7 +564,7 @@ msgstr "メールでパスワードをリセットするリンクが届きます
 
 #: lostpassword/templates/lostpassword.php:8
 #: lostpassword/templates/lostpassword.php:9 templates/installation.php:51
-#: templates/installation.php:54 templates/login.php:31 templates/login.php:35
+#: templates/installation.php:54 templates/login.php:23 templates/login.php:27
 msgid "Username"
 msgstr "ユーザー名"
 
@@ -615,7 +612,7 @@ msgstr "個人"
 msgid "Users"
 msgstr "ユーザー"
 
-#: strings.php:7 templates/layout.user.php:53 templates/layout.user.php:118
+#: strings.php:7 templates/layout.user.php:56 templates/layout.user.php:121
 msgid "Apps"
 msgstr "アプリ"
 
@@ -678,7 +675,8 @@ msgstr "こんにちは、\n\n%s があなたと %s を共有したことをお�
 msgid "The share will expire on %s."
 msgstr "共有は %s で有効期限が切れます。"
 
-#: templates/altmail.php:7 templates/mail.php:20
+#. TRANSLATORS term at the end of a mail
+#: templates/altmail.php:8 templates/mail.php:21
 msgid "Cheers!"
 msgstr "それでは！"
 
@@ -712,7 +710,7 @@ msgstr "セキュアな乱数生成器が無い場合、攻撃者がパスワー
 msgid ""
 "Your data directory and files are probably accessible from the internet "
 "because the .htaccess file does not work."
-msgstr ".htaccess ファイルが動作していないため、おそらくあなたのデータディレクトリもしくはファイルはインターネットからアクセス可能です。"
+msgstr ".htaccessファイルが動作していないため、おそらくあなたのデータディレクトリまたはファイルはインターネットからアクセス可能になっています。"
 
 #: templates/installation.php:42
 #, php-format
@@ -726,7 +724,7 @@ msgid "Create an <strong>admin account</strong>"
 msgstr "<strong>管理者アカウント</strong>を作成してください"
 
 #: templates/installation.php:59 templates/installation.php:62
-#: templates/login.php:41 templates/login.php:44
+#: templates/login.php:33 templates/login.php:36
 msgid "Password"
 msgstr "パスワード"
 
@@ -781,57 +779,43 @@ msgstr "セットアップを完了します"
 msgid "Finishing …"
 msgstr "作業を完了しています ..."
 
-#: templates/layout.user.php:40
+#: templates/layout.user.php:43
 msgid ""
 "This application requires JavaScript to be enabled for correct operation.  "
 "Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable "
 "JavaScript</a> and re-load this interface."
 msgstr "このアプリケーションを使用するにはJavaScriptが必要です。\n<a href=\"http://enable-javascript.com/\" target=\"_blank\">JavaScriptを有効にし</a>、インターフェースを更新してください。 "
 
-#: templates/layout.user.php:44
+#: templates/layout.user.php:47
 #, php-format
 msgid "%s is available. Get more information on how to update."
 msgstr "%s が利用可能です。アップデート方法について詳細情報を確認してください。"
 
-#: templates/layout.user.php:80 templates/singleuser.user.php:8
+#: templates/layout.user.php:83 templates/singleuser.user.php:8
 msgid "Log out"
 msgstr "ログアウト"
 
 #: templates/login.php:11
-msgid "Automatic logon rejected!"
-msgstr "自動ログインは拒否されました！"
-
-#: templates/login.php:12
-msgid ""
-"If you did not change your password recently, your account may be "
-"compromised!"
-msgstr "最近パスワードを変更していない場合、あなたのアカウントが危険にさらされている可能性があります!"
-
-#: templates/login.php:14
-msgid "Please change your password to secure your account again."
-msgstr "アカウント保護のため、パスワードを再度変更してください。"
-
-#: templates/login.php:19
 msgid "Server side authentication failed!"
 msgstr "サーバーサイドの認証に失敗しました！"
 
-#: templates/login.php:20
+#: templates/login.php:12
 msgid "Please contact your administrator."
 msgstr "管理者に問い合わせてください。"
 
-#: templates/login.php:50
+#: templates/login.php:42
 msgid "Forgot your password? Reset it!"
 msgstr "パスワードを忘れましたか？リセットします！"
 
-#: templates/login.php:55
+#: templates/login.php:47
 msgid "remember"
 msgstr "パスワードを保存"
 
-#: templates/login.php:59
+#: templates/login.php:51
 msgid "Log in"
 msgstr "ログイン"
 
-#: templates/login.php:65
+#: templates/login.php:57
 msgid "Alternative Logins"
 msgstr "代替ログイン"
 
@@ -860,6 +844,28 @@ msgstr "このメッセージが引き続きもしくは予期せず現れる場
 msgid "Thank you for your patience."
 msgstr "しばらくお待ちください。"
 
+#: templates/untrustedDomain.php:5
+msgid "You are accessing the server from an untrusted domain."
+msgstr "信頼されていないドメインからサーバーにアクセスしています。"
+
+#: templates/untrustedDomain.php:8
+msgid ""
+"Please contact your administrator. If you are an administrator of this "
+"instance, configure the \"trusted_domain\" setting in config/config.php. An "
+"example configuration is provided in config/config.sample.php."
+msgstr "管理者に連絡してください。このサーバーの管理者の場合は、\"trusted_domain\" の設定を config/config.php に設定してください。config/config.sample.php にサンプルの設定方法が記載してあります。"
+
+#: templates/untrustedDomain.php:10
+msgid ""
+"Depending on your configuration, as an administrator you might also be able "
+"to use the button below to trust this domain."
+msgstr ""
+
+#: templates/untrustedDomain.php:14
+#, php-format
+msgid "Add \"%s\" as trusted domain"
+msgstr ""
+
 #: templates/update.admin.php:3
 #, php-format
 msgid "%s will be updated to version %s."
@@ -878,17 +884,23 @@ msgstr "テーマ %s が無効になっています。"
 msgid ""
 "Please make sure that the database, the config folder and the data folder "
 "have been backed up before proceeding."
-msgstr "データベースを確認してください。実行前にconfig フォルダとdata フォルダをバックアップします。"
+msgstr "データベースを確認してください。実行前にconfigフォルダーとdataフォルダーをバックアップします。"
 
 #: templates/update.admin.php:23
 msgid "Start update"
 msgstr "アップデートを開始"
 
+#: templates/update.admin.php:25
+msgid ""
+"To avoid timeouts with larger installations, you can instead run the "
+"following command from your installation directory:"
+msgstr ""
+
 #: templates/update.user.php:3
 msgid ""
 "This ownCloud instance is currently being updated, which may take a while."
-msgstr "この ownCloud インスタンスは現在アップデート中のため、しばらく時間がかかります。"
+msgstr "このownCloudインスタンスは現在アップデート中のため、しばらく時間がかかります。"
 
 #: templates/update.user.php:4
 msgid "Please reload this page after a short time to continue using ownCloud."
-msgstr "ownCloud を続けて利用するには、しばらくした後でページをリロードしてください。"
+msgstr "ownCloudを続けて利用するには、しばらく待ってからページを再読み込みしてください。"

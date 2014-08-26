@@ -28,9 +28,11 @@
  * is considered secure.
  */
 return array(
+	'3gp' => array('video/3gpp', null),
 	'7z' => array('application/x-7z-compressed', null),
 	'accdb' => array('application/msaccess', null),
 	'ai' => array('application/illustrator', null),
+	'apk' => array('application/vnd.android.package-archive', null),
 	'avi' => array('video/x-msvideo', null),
 	'bash' => array('text/x-shellscript', null),
 	'blend' => array('application/x-blender', null),
@@ -137,6 +139,7 @@ return array(
 	'txt' => array('text/plain', null),
 	'vcard' => array('text/vcard', null),
 	'vcf' => array('text/vcard', null),
+	'vob' => array('video/dvd', null),
 	'wav' => array('audio/wav', null),
 	'webm' => array('video/webm', null),
 	'woff' => array('application/font-woff', null),

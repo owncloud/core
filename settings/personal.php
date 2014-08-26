@@ -39,7 +39,7 @@ $enableDecryptAll = $filesStillEncrypted || $backupKeysExists;
 
 // array of common languages
 $commonlangcodes = array(
-	'en', 'es', 'fr', 'de', 'de_DE', 'ja_JP', 'ar', 'ru', 'nl', 'it', 'pt_BR', 'pt_PT', 'da', 'fi_FI', 'nb_NO', 'sv', 'tr', 'zh_CN', 'ko'
+	'en', 'es', 'fr', 'de', 'de_DE', 'ja', 'ar', 'ru', 'nl', 'it', 'pt_BR', 'pt_PT', 'da', 'fi_FI', 'nb_NO', 'sv', 'tr', 'zh_CN', 'ko'
 );
 
 $languageNames=include 'languageCodes.php';
@@ -76,8 +76,8 @@ usort( $languages, function ($a, $b) {
 //links to clients
 $clients = array(
 	'desktop' => OC_Config::getValue('customclient_desktop', $defaults->getSyncClientUrl()),
-	'android' => OC_Config::getValue('customclient_android', 'https://play.google.com/store/apps/details?id=com.owncloud.android'),
-	'ios'     => OC_Config::getValue('customclient_ios', 'https://itunes.apple.com/us/app/owncloud/id543672169?mt=8')
+	'android' => OC_Config::getValue('customclient_android', $defaults->getAndroidClientUrl()),
+	'ios'     => OC_Config::getValue('customclient_ios', $defaults->getiOSClientUrl())
 );
 
 // Return template

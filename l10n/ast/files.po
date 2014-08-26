@@ -4,15 +4,15 @@
 # 
 # Translators:
 # Iñigo Varela <ivarela@softastur.org>, 2014
-# Ḷḷumex03 <l.lumex03.tornes@gmail.com>, 2014
+# Ḷḷumex03 <tornes@opmbx.org>, 2014
 # tebanpb <peruyero@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-07-16 01:54-0400\n"
-"PO-Revision-Date: 2014-07-15 16:31+0000\n"
-"Last-Translator: Ḷḷumex03 <l.lumex03.tornes@gmail.com>\n"
+"POT-Creation-Date: 2014-08-26 01:54-0400\n"
+"PO-Revision-Date: 2014-08-26 05:02+0000\n"
+"Last-Translator: I Robot\n"
 "Language-Team: Asturian (http://www.transifex.com/projects/p/owncloud/language/ast/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -57,12 +57,12 @@ msgid ""
 "allowed."
 msgstr "Nome inválidu, los caráuteres \"\\\", \"/\", \"<\", \">\", \":\", \"\", \"|\" \"?\" y \"*\" nun tán permitíos."
 
-#: ajax/newfile.php:76 ajax/newfolder.php:35 ajax/upload.php:159
-#: lib/app.php:77
+#: ajax/newfile.php:76 ajax/newfolder.php:35 ajax/upload.php:161
+#: lib/app.php:87
 msgid "The target folder has been moved or deleted."
 msgstr "La carpeta oxetivu movióse o desanicióse."
 
-#: ajax/newfile.php:88 ajax/newfolder.php:47 lib/app.php:86
+#: ajax/newfile.php:88 ajax/newfolder.php:47 lib/app.php:96
 #, php-format
 msgid ""
 "The name %s is already used in the folder %s. Please choose a different "
@@ -78,12 +78,17 @@ msgid ""
 "Server is not allowed to open URLs, please check the server configuration"
 msgstr "Nun se-y permite al sirvidor abrir URLs, por favor comprueba la configuración del sirvidor"
 
-#: ajax/newfile.php:118
+#: ajax/newfile.php:126
+#, php-format
+msgid "The file exceeds your quota by %s"
+msgstr "El ficheru perpasa la cuota por %s"
+
+#: ajax/newfile.php:141
 #, php-format
 msgid "Error while downloading %s to %s"
 msgstr "Fallu cuando se descargaba %s a %s"
 
-#: ajax/newfile.php:146
+#: ajax/newfile.php:169
 msgid "Error when creating the file"
 msgstr "Fallu cuando se creaba'l ficheru"
 
@@ -95,62 +100,62 @@ msgstr "El nome la carpeta nun pue tar baleru."
 msgid "Error when creating the folder"
 msgstr "Fallu cuando se creaba la carpeta"
 
-#: ajax/upload.php:19 ajax/upload.php:57
+#: ajax/upload.php:19 ajax/upload.php:59
 msgid "Unable to set upload directory."
 msgstr "Nun pue afitase la carpeta de xubida."
 
-#: ajax/upload.php:33
+#: ajax/upload.php:35
 msgid "Invalid Token"
 msgstr "Token inválidu"
 
-#: ajax/upload.php:77
+#: ajax/upload.php:79
 msgid "No file was uploaded. Unknown error"
 msgstr "Nun se xubió dengún ficheru. Fallu desconocíu"
 
-#: ajax/upload.php:84
+#: ajax/upload.php:86
 msgid "There is no error, the file uploaded with success"
 msgstr "Nun hai dengún fallu, el ficheru xubióse ensin problemes"
 
-#: ajax/upload.php:85
+#: ajax/upload.php:87
 msgid ""
 "The uploaded file exceeds the upload_max_filesize directive in php.ini: "
 msgstr "El ficheru xubíu perpasa la direutiva \"upload_max_filesize\" del ficheru php.ini"
 
-#: ajax/upload.php:87
+#: ajax/upload.php:89
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
 msgstr "El ficheru xubíu perpasa la direutiva \"MAX_FILE_SIZE\" especificada nel formulariu HTML"
 
-#: ajax/upload.php:88
+#: ajax/upload.php:90
 msgid "The uploaded file was only partially uploaded"
 msgstr "El ficheru xubióse de mou parcial"
 
-#: ajax/upload.php:89
+#: ajax/upload.php:91
 msgid "No file was uploaded"
 msgstr "Nun se xubió dengún ficheru"
 
-#: ajax/upload.php:90
+#: ajax/upload.php:92
 msgid "Missing a temporary folder"
 msgstr "Falta una carpeta temporal"
 
-#: ajax/upload.php:91
+#: ajax/upload.php:93
 msgid "Failed to write to disk"
 msgstr "Fallu al escribir al discu"
 
-#: ajax/upload.php:111
+#: ajax/upload.php:113
 msgid "Not enough storage available"
 msgstr "Nun hai abondu espaciu disponible"
 
-#: ajax/upload.php:173
+#: ajax/upload.php:175
 msgid "Upload failed. Could not find uploaded file"
 msgstr "Xubida fallida.  Nun pudo atopase'l ficheru xubíu."
 
-#: ajax/upload.php:183
+#: ajax/upload.php:185
 msgid "Upload failed. Could not get file info."
 msgstr "Falló la xubida.  Nun se pudo obtener la información del ficheru."
 
-#: ajax/upload.php:198
+#: ajax/upload.php:200
 msgid "Invalid directory."
 msgstr "Direutoriu non válidu."
 
@@ -162,49 +167,49 @@ msgstr "Ficheros"
 msgid "All files"
 msgstr "Tolos ficheros"
 
-#: js/file-upload.js:268
+#: js/file-upload.js:269
 msgid "Unable to upload {filename} as it is a directory or has 0 bytes"
 msgstr "Nun pudo xubise {filename}, paez que ye un directoriu o tien 0 bytes"
 
-#: js/file-upload.js:281
+#: js/file-upload.js:284
 msgid "Total file size {size1} exceeds upload limit {size2}"
 msgstr "El tamañu de ficheru total {size1} perpasa la llende de xuba {size2}"
 
-#: js/file-upload.js:292
+#: js/file-upload.js:295
 msgid ""
 "Not enough free space, you are uploading {size1} but only {size2} is left"
 msgstr "Nun hai abondu espaciu llibre, tas xubiendo {size1} pero namái falta {size2}"
 
-#: js/file-upload.js:369
+#: js/file-upload.js:372
 msgid "Upload cancelled."
 msgstr "Xuba encaboxada."
 
-#: js/file-upload.js:415
+#: js/file-upload.js:418
 msgid "Could not get result from server."
 msgstr "Nun pudo obtenese'l resultáu del sirvidor."
 
-#: js/file-upload.js:499
+#: js/file-upload.js:502
 msgid ""
 "File upload is in progress. Leaving the page now will cancel the upload."
 msgstr "La xuba del ficheru ta en progresu. Si dexes agora la páxina, va encaboxase la xuba."
 
-#: js/file-upload.js:564
+#: js/file-upload.js:567
 msgid "URL cannot be empty"
 msgstr "La URL nun pue tar balera"
 
-#: js/file-upload.js:568 js/filelist.js:1259
+#: js/file-upload.js:571 js/filelist.js:1290
 msgid "{new_name} already exists"
 msgstr "{new_name} yá existe"
 
-#: js/file-upload.js:623
+#: js/file-upload.js:626
 msgid "Could not create file"
 msgstr "Nun pudo crease'l ficheru"
 
-#: js/file-upload.js:639
+#: js/file-upload.js:642
 msgid "Could not create folder"
 msgstr "Nun pudo crease la carpeta"
 
-#: js/file-upload.js:686
+#: js/file-upload.js:689
 msgid "Error fetching URL"
 msgstr "Fallu obteniendo URL"
 
@@ -232,61 +237,55 @@ msgstr "Desaniciar dafechu"
 msgid "Rename"
 msgstr "Renomar"
 
-#: js/filelist.js:341
-msgid ""
-"Your download is being prepared. This might take some time if the files are "
-"big."
-msgstr "Ta preparándose la to descarga.  Esto podría llevar dalgún tiempu si los ficheros son grandes."
-
-#: js/filelist.js:675 js/filelist.js:1783
+#: js/filelist.js:685 js/filelist.js:1818
 msgid "Pending"
 msgstr "Pendiente"
 
-#: js/filelist.js:1210
+#: js/filelist.js:1241
 msgid "Error moving file."
 msgstr "Fallu moviendo'l ficheru."
 
-#: js/filelist.js:1218
+#: js/filelist.js:1249
 msgid "Error moving file"
 msgstr "Fallu moviendo'l ficheru"
 
-#: js/filelist.js:1218
+#: js/filelist.js:1249
 msgid "Error"
 msgstr "Fallu"
 
-#: js/filelist.js:1307
+#: js/filelist.js:1338
 msgid "Could not rename file"
 msgstr "Nun pudo renomase'l ficheru"
 
-#: js/filelist.js:1425
+#: js/filelist.js:1460
 msgid "Error deleting file."
 msgstr "Fallu desaniciando'l ficheru."
 
-#: js/filelist.js:1528 templates/list.php:61
+#: js/filelist.js:1563 templates/list.php:61
 msgid "Name"
 msgstr "Nome"
 
-#: js/filelist.js:1529 templates/list.php:72
+#: js/filelist.js:1564 templates/list.php:72
 msgid "Size"
 msgstr "Tamañu"
 
-#: js/filelist.js:1530 templates/list.php:75
+#: js/filelist.js:1565 templates/list.php:75
 msgid "Modified"
 msgstr "Modificáu"
 
-#: js/filelist.js:1540 js/filesummary.js:141 js/filesummary.js:168
+#: js/filelist.js:1575 js/filesummary.js:141 js/filesummary.js:168
 msgid "%n folder"
 msgid_plural "%n folders"
 msgstr[0] "%n carpeta"
 msgstr[1] "%n carpetes"
 
-#: js/filelist.js:1546 js/filesummary.js:142 js/filesummary.js:169
+#: js/filelist.js:1581 js/filesummary.js:142 js/filesummary.js:169
 msgid "%n file"
 msgid_plural "%n files"
 msgstr[0] "%n ficheru"
 msgstr[1] "%n ficheros"
 
-#: js/filelist.js:1676 js/filelist.js:1715
+#: js/filelist.js:1711 js/filelist.js:1750
 msgid "Uploading %n file"
 msgid_plural "Uploading %n files"
 msgstr[0] "Xubiendo %n ficheru"
@@ -327,7 +326,12 @@ msgstr "Deshabilitose'l cifráu pero los tos ficheros tovía tán cifraos.  Por 
 msgid "{dirs} and {files}"
 msgstr "{dirs} y {files}"
 
-#: lib/app.php:103
+#: lib/app.php:80
+#, php-format
+msgid "%s could not be renamed as it has been deleted"
+msgstr ""
+
+#: lib/app.php:113
 #, php-format
 msgid "%s could not be renamed"
 msgstr "Nun se puede renomar %s "
@@ -362,7 +366,7 @@ msgstr "WebDAV"
 msgid ""
 "Use this address to <a href=\"%s\" target=\"_blank\">access your Files via "
 "WebDAV</a>"
-msgstr "Usa esta direición <a href=\"%s/server/5.0/user_manual/files/files.html\" target=\"_blank\">p'acceder a los ficheros a traviés de WebDAV</a>"
+msgstr "Usa esta direición <a href=\"%s\" target=\"_blank\">p'acceder a los ficheros a traviés de WebDAV</a>"
 
 #: templates/list.php:5
 msgid "New"

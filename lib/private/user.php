@@ -64,7 +64,7 @@ class OC_User {
 	/**
 	 * registers backend
 	 * @param string $backend name of the backend
-	 * @deprecated Add classes by calling useBackend with a class instance instead
+	 * @deprecated Add classes by calling OC_User::useBackend() with a class instance instead
 	 * @return bool
 	 *
 	 * Makes a list of backends that can be used by other modules
@@ -337,7 +337,7 @@ class OC_User {
 	 * Checks if the user is logged in
 	 */
 	public static function isLoggedIn() {
-		if (\OC::$session->get('user_id') && self::$incognitoMode === false) {
+		if (\OC::$session->get('user_id') !== null && self::$incognitoMode === false) {
 			return self::userExists(\OC::$session->get('user_id'));
 		}
 		return false;

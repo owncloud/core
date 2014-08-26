@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# unixidzero <unixidzero@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-07-16 01:54-0400\n"
-"PO-Revision-Date: 2014-07-16 05:54+0000\n"
-"Last-Translator: I Robot\n"
+"POT-Creation-Date: 2014-08-26 01:54-0400\n"
+"PO-Revision-Date: 2014-08-26 05:23+0000\n"
+"Last-Translator: unixidzero <unixidzero@gmail.com>\n"
 "Language-Team: Azerbaijani (http://www.transifex.com/projects/p/owncloud/language/az/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,32 +18,37 @@ msgstr ""
 "Language: az\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ajax/share.php:90
-msgid "Expiration date is in the past."
-msgstr ""
-
-#: ajax/share.php:122 ajax/share.php:164
+#: ajax/share.php:117 ajax/share.php:159
 #, php-format
 msgid "Couldn't send mail to following users: %s "
-msgstr ""
+msgstr "Məktubu göstərilən istifadəçilərə göndərmək mümkün olmadı: %s"
 
 #: ajax/update.php:10
 msgid "Turned on maintenance mode"
-msgstr ""
+msgstr "Xidməti rejimə keçilmişdir"
 
 #: ajax/update.php:13
 msgid "Turned off maintenance mode"
-msgstr ""
+msgstr "Xidməti rejim söndürüldü"
 
 #: ajax/update.php:16
 msgid "Updated database"
-msgstr ""
+msgstr "Yenilənmiş verilənlər bazası"
 
 #: ajax/update.php:19
 msgid "Checked database schema update"
+msgstr "Baza sxeminin yenilənməsi yoxlanıldı"
+
+#: ajax/update.php:22
+msgid "Checked database schema update for apps"
 msgstr ""
 
-#: ajax/update.php:27
+#: ajax/update.php:25
+#, php-format
+msgid "Updated \"%s\" to %s"
+msgstr ""
+
+#: ajax/update.php:33
 #, php-format
 msgid "Disabled incompatible apps: %s"
 msgstr ""
@@ -53,15 +59,15 @@ msgstr ""
 
 #: avatar/controller.php:86
 msgid "Unknown filetype"
-msgstr ""
+msgstr "Fayl tipi bəlli deyil."
 
 #: avatar/controller.php:90
 msgid "Invalid image"
-msgstr ""
+msgstr "Yalnış şəkil"
 
 #: avatar/controller.php:120 avatar/controller.php:147
 msgid "No temporary profile picture available, try again"
-msgstr ""
+msgstr "Profaylın müvəqqəti şəklinə çatmaq mümkün olmadı, yenidən təkrarlayın."
 
 #: avatar/controller.php:140
 msgid "No crop data provided"
@@ -69,11 +75,11 @@ msgstr ""
 
 #: js/config.php:45
 msgid "Sunday"
-msgstr ""
+msgstr "Bazar"
 
 #: js/config.php:46
 msgid "Monday"
-msgstr ""
+msgstr "Bazar ertəsi"
 
 #: js/config.php:47
 msgid "Tuesday"
@@ -145,7 +151,7 @@ msgstr ""
 
 #: js/js.js:501
 msgid "Settings"
-msgstr ""
+msgstr "Quraşdırmalar"
 
 #: js/js.js:590
 msgid "File"
@@ -153,7 +159,7 @@ msgstr ""
 
 #: js/js.js:591
 msgid "Folder"
-msgstr ""
+msgstr "Qovluq"
 
 #: js/js.js:592
 msgid "Image"
@@ -165,7 +171,7 @@ msgstr ""
 
 #: js/js.js:607
 msgid "Saving..."
-msgstr ""
+msgstr "Saxlama..."
 
 #: js/js.js:1278
 msgid "seconds ago"
@@ -215,7 +221,7 @@ msgstr ""
 msgid "years ago"
 msgstr ""
 
-#: js/lostpassword.js:3 lostpassword/controller/lostcontroller.php:175
+#: js/lostpassword.js:3 lostpassword/controller/lostcontroller.php:198
 msgid "Couldn't send reset email. Please contact your administrator."
 msgstr ""
 
@@ -264,7 +270,7 @@ msgstr ""
 
 #: js/oc-dialogs.js:282
 msgid "Ok"
-msgstr ""
+msgstr "Oldu"
 
 #: js/oc-dialogs.js:302
 msgid "Error loading message template: {error}"
@@ -300,7 +306,7 @@ msgstr ""
 
 #: js/oc-dialogs.js:462
 msgid "Cancel"
-msgstr ""
+msgstr "Dayandır"
 
 #: js/oc-dialogs.js:472
 msgid "Continue"
@@ -348,14 +354,14 @@ msgstr ""
 
 #: js/share.js:266
 msgid "Share"
-msgstr ""
+msgstr "Yayımla"
 
-#: js/share.js:326 js/share.js:340 js/share.js:347 js/share.js:989
+#: js/share.js:326 js/share.js:340 js/share.js:347 js/share.js:1002
 #: templates/installation.php:10
 msgid "Error"
-msgstr ""
+msgstr "Səhv"
 
-#: js/share.js:328 js/share.js:1052
+#: js/share.js:328 js/share.js:1065
 msgid "Error while sharing"
 msgstr ""
 
@@ -406,7 +412,7 @@ msgstr ""
 
 #: js/share.js:411
 msgid "Send"
-msgstr ""
+msgstr "Göndər"
 
 #: js/share.js:416
 msgid "Set expiration date"
@@ -416,79 +422,71 @@ msgstr ""
 msgid "Expiration date"
 msgstr ""
 
-#: js/share.js:455
-msgid "Share via email:"
-msgstr ""
-
-#: js/share.js:458
-msgid "No people found"
-msgstr ""
-
-#: js/share.js:507 js/share.js:575
+#: js/share.js:496 js/share.js:564
 msgid "group"
-msgstr ""
+msgstr "qrup"
 
-#: js/share.js:540
+#: js/share.js:529
 msgid "Resharing is not allowed"
 msgstr ""
 
-#: js/share.js:591
+#: js/share.js:580
 msgid "Shared in {item} with {user}"
 msgstr ""
 
-#: js/share.js:613
+#: js/share.js:602
 msgid "Unshare"
 msgstr ""
 
-#: js/share.js:621
+#: js/share.js:610
 msgid "notify by email"
 msgstr ""
 
-#: js/share.js:624
+#: js/share.js:613
 msgid "can share"
-msgstr ""
+msgstr "yayımlaya bilərsiniz"
 
-#: js/share.js:627
+#: js/share.js:616
 msgid "can edit"
 msgstr ""
 
-#: js/share.js:629
+#: js/share.js:618
 msgid "access control"
 msgstr ""
 
-#: js/share.js:632
+#: js/share.js:621
 msgid "create"
 msgstr ""
 
-#: js/share.js:635
+#: js/share.js:624
 msgid "update"
 msgstr ""
 
-#: js/share.js:638
+#: js/share.js:627
 msgid "delete"
-msgstr ""
+msgstr "sil"
 
-#: js/share.js:970
+#: js/share.js:983
 msgid "Password protected"
 msgstr ""
 
-#: js/share.js:989
+#: js/share.js:1002
 msgid "Error unsetting expiration date"
 msgstr ""
 
-#: js/share.js:1010
+#: js/share.js:1023
 msgid "Error setting expiration date"
 msgstr ""
 
-#: js/share.js:1039
+#: js/share.js:1052
 msgid "Sending ..."
 msgstr ""
 
-#: js/share.js:1050
+#: js/share.js:1063
 msgid "Email sent"
-msgstr ""
+msgstr "Məktub göndərildi"
 
-#: js/share.js:1074
+#: js/share.js:1087
 msgid "Warning"
 msgstr ""
 
@@ -502,11 +500,11 @@ msgstr ""
 
 #: js/tags.js:33
 msgid "Delete"
-msgstr ""
+msgstr "Sil"
 
 #: js/tags.js:43
 msgid "Add"
-msgstr ""
+msgstr "Əlavə etmək"
 
 #: js/tags.js:57
 msgid "Edit tags"
@@ -536,21 +534,21 @@ msgstr ""
 msgid "The update was successful. Redirecting you to ownCloud now."
 msgstr ""
 
-#: lostpassword/controller/lostcontroller.php:110
+#: lostpassword/controller/lostcontroller.php:133
 msgid "Couldn't reset password because the token is invalid"
 msgstr ""
 
-#: lostpassword/controller/lostcontroller.php:136
+#: lostpassword/controller/lostcontroller.php:159
 msgid "Couldn't send reset email. Please make sure your username is correct."
 msgstr ""
 
-#: lostpassword/controller/lostcontroller.php:151
+#: lostpassword/controller/lostcontroller.php:174
 msgid ""
 "Couldn't send reset email because there is no email address for this "
 "username. Please contact your administrator."
 msgstr ""
 
-#: lostpassword/controller/lostcontroller.php:168
+#: lostpassword/controller/lostcontroller.php:191
 #, php-format
 msgid "%s password reset"
 msgstr ""
@@ -565,9 +563,9 @@ msgstr ""
 
 #: lostpassword/templates/lostpassword.php:8
 #: lostpassword/templates/lostpassword.php:9 templates/installation.php:51
-#: templates/installation.php:54 templates/login.php:31 templates/login.php:35
+#: templates/installation.php:54 templates/login.php:23 templates/login.php:27
 msgid "Username"
-msgstr ""
+msgstr "İstifadəçi adı"
 
 #: lostpassword/templates/lostpassword.php:13
 msgid ""
@@ -583,7 +581,7 @@ msgstr ""
 
 #: lostpassword/templates/lostpassword.php:18
 msgid "Reset"
-msgstr ""
+msgstr "Sıfırla"
 
 #: lostpassword/templates/resetpassword.php:5
 msgid "New password"
@@ -611,15 +609,15 @@ msgstr ""
 
 #: strings.php:6
 msgid "Users"
-msgstr ""
+msgstr "İstifadəçilər"
 
-#: strings.php:7 templates/layout.user.php:53 templates/layout.user.php:118
+#: strings.php:7 templates/layout.user.php:56 templates/layout.user.php:121
 msgid "Apps"
 msgstr ""
 
 #: strings.php:8
 msgid "Admin"
-msgstr ""
+msgstr "İnzibatçı"
 
 #: strings.php:9
 msgid "Help"
@@ -676,7 +674,8 @@ msgstr ""
 msgid "The share will expire on %s."
 msgstr ""
 
-#: templates/altmail.php:7 templates/mail.php:20
+#. TRANSLATORS term at the end of a mail
+#: templates/altmail.php:8 templates/mail.php:21
 msgid "Cheers!"
 msgstr ""
 
@@ -724,9 +723,9 @@ msgid "Create an <strong>admin account</strong>"
 msgstr ""
 
 #: templates/installation.php:59 templates/installation.php:62
-#: templates/login.php:41 templates/login.php:44
+#: templates/login.php:33 templates/login.php:36
 msgid "Password"
-msgstr ""
+msgstr "Şifrə"
 
 #: templates/installation.php:72
 msgid "Storage & database"
@@ -779,57 +778,43 @@ msgstr ""
 msgid "Finishing …"
 msgstr ""
 
-#: templates/layout.user.php:40
+#: templates/layout.user.php:43
 msgid ""
 "This application requires JavaScript to be enabled for correct operation.  "
 "Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable "
 "JavaScript</a> and re-load this interface."
 msgstr ""
 
-#: templates/layout.user.php:44
+#: templates/layout.user.php:47
 #, php-format
 msgid "%s is available. Get more information on how to update."
 msgstr ""
 
-#: templates/layout.user.php:80 templates/singleuser.user.php:8
+#: templates/layout.user.php:83 templates/singleuser.user.php:8
 msgid "Log out"
 msgstr ""
 
 #: templates/login.php:11
-msgid "Automatic logon rejected!"
-msgstr ""
-
-#: templates/login.php:12
-msgid ""
-"If you did not change your password recently, your account may be "
-"compromised!"
-msgstr ""
-
-#: templates/login.php:14
-msgid "Please change your password to secure your account again."
-msgstr ""
-
-#: templates/login.php:19
 msgid "Server side authentication failed!"
 msgstr ""
 
-#: templates/login.php:20
+#: templates/login.php:12
 msgid "Please contact your administrator."
 msgstr ""
 
-#: templates/login.php:50
+#: templates/login.php:42
 msgid "Forgot your password? Reset it!"
 msgstr ""
 
-#: templates/login.php:55
+#: templates/login.php:47
 msgid "remember"
 msgstr ""
 
-#: templates/login.php:59
+#: templates/login.php:51
 msgid "Log in"
 msgstr ""
 
-#: templates/login.php:65
+#: templates/login.php:57
 msgid "Alternative Logins"
 msgstr ""
 
@@ -858,6 +843,28 @@ msgstr ""
 msgid "Thank you for your patience."
 msgstr ""
 
+#: templates/untrustedDomain.php:5
+msgid "You are accessing the server from an untrusted domain."
+msgstr "Siz serverə inamsız domain-dən girməyə çalışırsız."
+
+#: templates/untrustedDomain.php:8
+msgid ""
+"Please contact your administrator. If you are an administrator of this "
+"instance, configure the \"trusted_domain\" setting in config/config.php. An "
+"example configuration is provided in config/config.sample.php."
+msgstr "Xahiş olunur inzibatçı ilə əlaqə saxlayasınız. Eger siz bu xidmətin inzibatçısısınizsa, \"trusted_domain\" configini config/config.php faylinda düzgün qeyd edin.  Config nüsxəsi config/config.sample.php faylında qeyd edilmişdir."
+
+#: templates/untrustedDomain.php:10
+msgid ""
+"Depending on your configuration, as an administrator you might also be able "
+"to use the button below to trust this domain."
+msgstr ""
+
+#: templates/untrustedDomain.php:14
+#, php-format
+msgid "Add \"%s\" as trusted domain"
+msgstr ""
+
 #: templates/update.admin.php:3
 #, php-format
 msgid "%s will be updated to version %s."
@@ -880,6 +887,12 @@ msgstr ""
 
 #: templates/update.admin.php:23
 msgid "Start update"
+msgstr ""
+
+#: templates/update.admin.php:25
+msgid ""
+"To avoid timeouts with larger installations, you can instead run the "
+"following command from your installation directory:"
 msgstr ""
 
 #: templates/update.user.php:3

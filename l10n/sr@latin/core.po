@@ -5,12 +5,13 @@
 # Translators:
 # Balša Lazarević <balsa.l@live.com>, 2014
 # Mile Jančić <lemi667@gmail.com>, 2013
+# Miroslav Mitic <miroslav@whitecircle-design.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-07-16 01:54-0400\n"
-"PO-Revision-Date: 2014-07-16 05:54+0000\n"
+"POT-Creation-Date: 2014-08-26 01:54-0400\n"
+"PO-Revision-Date: 2014-08-26 05:23+0000\n"
 "Last-Translator: I Robot\n"
 "Language-Team: Serbian (Latin) (http://www.transifex.com/projects/p/owncloud/language/sr@latin/)\n"
 "MIME-Version: 1.0\n"
@@ -19,11 +20,7 @@ msgstr ""
 "Language: sr@latin\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: ajax/share.php:90
-msgid "Expiration date is in the past."
-msgstr ""
-
-#: ajax/share.php:122 ajax/share.php:164
+#: ajax/share.php:117 ajax/share.php:159
 #, php-format
 msgid "Couldn't send mail to following users: %s "
 msgstr ""
@@ -44,7 +41,16 @@ msgstr ""
 msgid "Checked database schema update"
 msgstr ""
 
-#: ajax/update.php:27
+#: ajax/update.php:22
+msgid "Checked database schema update for apps"
+msgstr ""
+
+#: ajax/update.php:25
+#, php-format
+msgid "Updated \"%s\" to %s"
+msgstr ""
+
+#: ajax/update.php:33
 #, php-format
 msgid "Disabled incompatible apps: %s"
 msgstr ""
@@ -151,15 +157,15 @@ msgstr "Podešavanja"
 
 #: js/js.js:590
 msgid "File"
-msgstr ""
+msgstr "Fajl"
 
 #: js/js.js:591
 msgid "Folder"
-msgstr ""
+msgstr "Direktorijum"
 
 #: js/js.js:592
 msgid "Image"
-msgstr ""
+msgstr "Slika"
 
 #: js/js.js:593
 msgid "Audio"
@@ -176,16 +182,16 @@ msgstr "Pre par sekundi"
 #: js/js.js:1279
 msgid "%n minute ago"
 msgid_plural "%n minutes ago"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "pre %n minuta"
+msgstr[1] "pre %n minuta"
+msgstr[2] "pre %n minuta"
 
 #: js/js.js:1280
 msgid "%n hour ago"
 msgid_plural "%n hours ago"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "pre %n sat"
+msgstr[1] "pre %n sati"
+msgstr[2] "pre %n sati"
 
 #: js/js.js:1281
 msgid "today"
@@ -198,9 +204,9 @@ msgstr "juče"
 #: js/js.js:1283
 msgid "%n day ago"
 msgid_plural "%n days ago"
-msgstr[0] "Prije %n dan."
-msgstr[1] "Prije %n dana."
-msgstr[2] "Prije %n dana."
+msgstr[0] "Pre %n dan."
+msgstr[1] "Pre %n dana."
+msgstr[2] "Pre %n dana."
 
 #: js/js.js:1284
 msgid "last month"
@@ -221,7 +227,7 @@ msgstr "prošle godine"
 msgid "years ago"
 msgstr "pre nekoliko godina"
 
-#: js/lostpassword.js:3 lostpassword/controller/lostcontroller.php:175
+#: js/lostpassword.js:3 lostpassword/controller/lostcontroller.php:198
 msgid "Couldn't send reset email. Please contact your administrator."
 msgstr ""
 
@@ -242,7 +248,7 @@ msgstr ""
 
 #: js/lostpassword.js:10
 msgid "I know what I'm doing"
-msgstr ""
+msgstr "Znam šta radim"
 
 #: js/lostpassword.js:13 lostpassword/templates/resetpassword.php:9
 msgid "Reset password"
@@ -311,7 +317,7 @@ msgstr "Otkaži"
 
 #: js/oc-dialogs.js:472
 msgid "Continue"
-msgstr ""
+msgstr "Nastavi"
 
 #: js/oc-dialogs.js:519 js/oc-dialogs.js:532
 msgid "(all selected)"
@@ -327,23 +333,23 @@ msgstr ""
 
 #: js/setup.js:96
 msgid "Very weak password"
-msgstr ""
+msgstr "Veoma slaba lozinka"
 
 #: js/setup.js:97
 msgid "Weak password"
-msgstr ""
+msgstr "Slaba lozinka"
 
 #: js/setup.js:98
 msgid "So-so password"
-msgstr ""
+msgstr "Osrednja lozinka"
 
 #: js/setup.js:99
 msgid "Good password"
-msgstr ""
+msgstr "Dobra lozinka"
 
 #: js/setup.js:100
 msgid "Strong password"
-msgstr ""
+msgstr "Jaka lozinka"
 
 #: js/share.js:129 js/share.js:251
 msgid "Shared"
@@ -351,18 +357,18 @@ msgstr "Deljeno"
 
 #: js/share.js:257
 msgid "Shared with {recipients}"
-msgstr ""
+msgstr "Podeljeno sa {recipients}"
 
 #: js/share.js:266
 msgid "Share"
 msgstr "Podeli"
 
-#: js/share.js:326 js/share.js:340 js/share.js:347 js/share.js:989
+#: js/share.js:326 js/share.js:340 js/share.js:347 js/share.js:1002
 #: templates/installation.php:10
 msgid "Error"
 msgstr "Greška"
 
-#: js/share.js:328 js/share.js:1052
+#: js/share.js:328 js/share.js:1065
 msgid "Error while sharing"
 msgstr "Greška pri deljenju"
 
@@ -423,81 +429,73 @@ msgstr "Datum isteka"
 msgid "Expiration date"
 msgstr "Datum isteka"
 
-#: js/share.js:455
-msgid "Share via email:"
-msgstr "Deli putem e-maila"
-
-#: js/share.js:458
-msgid "No people found"
-msgstr "Nema pronađenih ljudi"
-
-#: js/share.js:507 js/share.js:575
+#: js/share.js:496 js/share.js:564
 msgid "group"
 msgstr ""
 
-#: js/share.js:540
+#: js/share.js:529
 msgid "Resharing is not allowed"
 msgstr "Dalje deljenje nije dozvoljeno"
 
-#: js/share.js:591
+#: js/share.js:580
 msgid "Shared in {item} with {user}"
 msgstr "Deljeno u {item} sa {user}"
 
-#: js/share.js:613
+#: js/share.js:602
 msgid "Unshare"
 msgstr "Ukljoni deljenje"
 
-#: js/share.js:621
+#: js/share.js:610
 msgid "notify by email"
 msgstr ""
 
-#: js/share.js:624
+#: js/share.js:613
 msgid "can share"
 msgstr ""
 
-#: js/share.js:627
+#: js/share.js:616
 msgid "can edit"
 msgstr "dozvoljene izmene"
 
-#: js/share.js:629
+#: js/share.js:618
 msgid "access control"
 msgstr "kontrola pristupa"
 
-#: js/share.js:632
+#: js/share.js:621
 msgid "create"
 msgstr "napravi"
 
-#: js/share.js:635
+#: js/share.js:624
 msgid "update"
 msgstr "ažuriranje"
 
-#: js/share.js:638
+#: js/share.js:627
 msgid "delete"
 msgstr "brisanje"
 
-#: js/share.js:970
+#: js/share.js:983
 msgid "Password protected"
 msgstr "Zaštćeno lozinkom"
 
-#: js/share.js:989
+#: js/share.js:1002
 msgid "Error unsetting expiration date"
 msgstr "Greška u uklanjanju datuma isteka"
 
-#: js/share.js:1010
+#: js/share.js:1023
 msgid "Error setting expiration date"
 msgstr "Greška u postavljanju datuma isteka"
 
-#: js/share.js:1039
+#: js/share.js:1052
 msgid "Sending ..."
 msgstr "Slanje..."
 
-#: js/share.js:1050
+#: js/share.js:1063
 msgid "Email sent"
 msgstr "Email poslat"
 
-#: js/share.js:1074
+#: js/share.js:1087
 msgid "Warning"
-msgstr ""
+msgstr "Upozorenje"
 
 #: js/tags.js:8
 msgid "The object type is not specified."
@@ -543,21 +541,21 @@ msgstr ""
 msgid "The update was successful. Redirecting you to ownCloud now."
 msgstr "Ažuriranje je uspelo. Prosleđivanje na ownCloud."
 
-#: lostpassword/controller/lostcontroller.php:110
+#: lostpassword/controller/lostcontroller.php:133
 msgid "Couldn't reset password because the token is invalid"
 msgstr ""
 
-#: lostpassword/controller/lostcontroller.php:136
+#: lostpassword/controller/lostcontroller.php:159
 msgid "Couldn't send reset email. Please make sure your username is correct."
 msgstr ""
 
-#: lostpassword/controller/lostcontroller.php:151
+#: lostpassword/controller/lostcontroller.php:174
 msgid ""
 "Couldn't send reset email because there is no email address for this "
 "username. Please contact your administrator."
 msgstr ""
 
-#: lostpassword/controller/lostcontroller.php:168
+#: lostpassword/controller/lostcontroller.php:191
 #, php-format
 msgid "%s password reset"
 msgstr ""
@@ -572,7 +570,7 @@ msgstr "Dobićete vezu za resetovanje lozinke putem e-pošte."
 
 #: lostpassword/templates/lostpassword.php:8
 #: lostpassword/templates/lostpassword.php:9 templates/installation.php:51
-#: templates/installation.php:54 templates/login.php:31 templates/login.php:35
+#: templates/installation.php:54 templates/login.php:23 templates/login.php:27
 msgid "Username"
 msgstr "Korisničko ime"
 
@@ -620,7 +618,7 @@ msgstr "Lično"
 msgid "Users"
 msgstr "Korisnici"
 
-#: strings.php:7 templates/layout.user.php:53 templates/layout.user.php:118
+#: strings.php:7 templates/layout.user.php:56 templates/layout.user.php:121
 msgid "Apps"
 msgstr "Programi"
 
@@ -683,7 +681,8 @@ msgstr ""
 msgid "The share will expire on %s."
 msgstr ""
 
-#: templates/altmail.php:7 templates/mail.php:20
+#. TRANSLATORS term at the end of a mail
+#: templates/altmail.php:8 templates/mail.php:21
 msgid "Cheers!"
 msgstr ""
 
@@ -731,7 +730,7 @@ msgid "Create an <strong>admin account</strong>"
 msgstr "Napravi <strong>administrativni nalog</strong>"
 
 #: templates/installation.php:59 templates/installation.php:62
-#: templates/login.php:41 templates/login.php:44
+#: templates/login.php:33 templates/login.php:36
 msgid "Password"
 msgstr "Lozinka"
 
@@ -786,57 +785,43 @@ msgstr "Završi podešavanje"
 msgid "Finishing …"
 msgstr ""
 
-#: templates/layout.user.php:40
+#: templates/layout.user.php:43
 msgid ""
 "This application requires JavaScript to be enabled for correct operation.  "
 "Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable "
 "JavaScript</a> and re-load this interface."
 msgstr ""
 
-#: templates/layout.user.php:44
+#: templates/layout.user.php:47
 #, php-format
 msgid "%s is available. Get more information on how to update."
 msgstr ""
 
-#: templates/layout.user.php:80 templates/singleuser.user.php:8
+#: templates/layout.user.php:83 templates/singleuser.user.php:8
 msgid "Log out"
 msgstr "Odjava"
 
 #: templates/login.php:11
-msgid "Automatic logon rejected!"
-msgstr "Automatsko logovanje odbijeno!"
-
-#: templates/login.php:12
-msgid ""
-"If you did not change your password recently, your account may be "
-"compromised!"
-msgstr ""
-
-#: templates/login.php:14
-msgid "Please change your password to secure your account again."
-msgstr ""
-
-#: templates/login.php:19
 msgid "Server side authentication failed!"
 msgstr ""
 
-#: templates/login.php:20
+#: templates/login.php:12
 msgid "Please contact your administrator."
 msgstr ""
 
-#: templates/login.php:50
+#: templates/login.php:42
 msgid "Forgot your password? Reset it!"
 msgstr ""
 
-#: templates/login.php:55
+#: templates/login.php:47
 msgid "remember"
 msgstr "upamti"
 
-#: templates/login.php:59
+#: templates/login.php:51
 msgid "Log in"
 msgstr "Prijavi se"
 
-#: templates/login.php:65
+#: templates/login.php:57
 msgid "Alternative Logins"
 msgstr ""
 
@@ -865,6 +850,28 @@ msgstr ""
 msgid "Thank you for your patience."
 msgstr ""
 
+#: templates/untrustedDomain.php:5
+msgid "You are accessing the server from an untrusted domain."
+msgstr ""
+
+#: templates/untrustedDomain.php:8
+msgid ""
+"Please contact your administrator. If you are an administrator of this "
+"instance, configure the \"trusted_domain\" setting in config/config.php. An "
+"example configuration is provided in config/config.sample.php."
+msgstr ""
+
+#: templates/untrustedDomain.php:10
+msgid ""
+"Depending on your configuration, as an administrator you might also be able "
+"to use the button below to trust this domain."
+msgstr ""
+
+#: templates/untrustedDomain.php:14
+#, php-format
+msgid "Add \"%s\" as trusted domain"
+msgstr ""
+
 #: templates/update.admin.php:3
 #, php-format
 msgid "%s will be updated to version %s."
@@ -887,6 +894,12 @@ msgstr ""
 
 #: templates/update.admin.php:23
 msgid "Start update"
+msgstr ""
+
+#: templates/update.admin.php:25
+msgid ""
+"To avoid timeouts with larger installations, you can instead run the "
+"following command from your installation directory:"
 msgstr ""
 
 #: templates/update.user.php:3

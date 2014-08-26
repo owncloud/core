@@ -3,14 +3,17 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# alihosseinnejad <ali1360@gmail.com>, 2014
+# Amir Keshavarz <pnetsale@gmail.com>, 2014
 # mahdi Kereshteh <miki_mika1362@yahoo.com>, 2013
 # majid hajibaba <majid.hajibaba@gmail.com>, 2014
+# Mohammad <mohammadsharifi666@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-07-16 01:54-0400\n"
-"PO-Revision-Date: 2014-07-16 05:54+0000\n"
+"POT-Creation-Date: 2014-08-26 01:54-0400\n"
+"PO-Revision-Date: 2014-08-26 05:23+0000\n"
 "Last-Translator: I Robot\n"
 "Language-Team: Persian (http://www.transifex.com/projects/p/owncloud/language/fa/)\n"
 "MIME-Version: 1.0\n"
@@ -19,39 +22,44 @@ msgstr ""
 "Language: fa\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ajax/share.php:90
-msgid "Expiration date is in the past."
-msgstr ""
-
-#: ajax/share.php:122 ajax/share.php:164
+#: ajax/share.php:117 ajax/share.php:159
 #, php-format
 msgid "Couldn't send mail to following users: %s "
-msgstr ""
+msgstr "ارسال ایمیل برای کاربران روبرو با شکست مواجه شد : %s"
 
 #: ajax/update.php:10
 msgid "Turned on maintenance mode"
-msgstr ""
+msgstr "حالت \" در دست تعمیر \" فعال شد ."
 
 #: ajax/update.php:13
 msgid "Turned off maintenance mode"
-msgstr ""
+msgstr "حالت \" در دست تعمیر \" غیرفعال شد ."
 
 #: ajax/update.php:16
 msgid "Updated database"
-msgstr ""
+msgstr "بروز رسانی پایگاه داده انجام شد ."
 
 #: ajax/update.php:19
 msgid "Checked database schema update"
 msgstr ""
 
-#: ajax/update.php:27
+#: ajax/update.php:22
+msgid "Checked database schema update for apps"
+msgstr ""
+
+#: ajax/update.php:25
+#, php-format
+msgid "Updated \"%s\" to %s"
+msgstr ""
+
+#: ajax/update.php:33
 #, php-format
 msgid "Disabled incompatible apps: %s"
-msgstr ""
+msgstr "اپ های ناسازگار غیرفعال شدند : %s"
 
 #: avatar/controller.php:69
 msgid "No image or file provided"
-msgstr ""
+msgstr "هیچ فایل یا تصویری وارد نشده است"
 
 #: avatar/controller.php:86
 msgid "Unknown filetype"
@@ -63,7 +71,7 @@ msgstr "عکس نامعتبر"
 
 #: avatar/controller.php:120 avatar/controller.php:147
 msgid "No temporary profile picture available, try again"
-msgstr ""
+msgstr "تصویر پروفایل موقت در حال حاضر در دسترس نیست ، دوباره تلاش کنید "
 
 #: avatar/controller.php:140
 msgid "No crop data provided"
@@ -151,7 +159,7 @@ msgstr "تنظیمات"
 
 #: js/js.js:590
 msgid "File"
-msgstr ""
+msgstr "فایل"
 
 #: js/js.js:591
 msgid "Folder"
@@ -159,11 +167,11 @@ msgstr "پوشه"
 
 #: js/js.js:592
 msgid "Image"
-msgstr ""
+msgstr "تصویر"
 
 #: js/js.js:593
 msgid "Audio"
-msgstr ""
+msgstr "صدا"
 
 #: js/js.js:607
 msgid "Saving..."
@@ -213,16 +221,16 @@ msgstr "سال قبل"
 msgid "years ago"
 msgstr "سال‌های قبل"
 
-#: js/lostpassword.js:3 lostpassword/controller/lostcontroller.php:175
+#: js/lostpassword.js:3 lostpassword/controller/lostcontroller.php:198
 msgid "Couldn't send reset email. Please contact your administrator."
-msgstr ""
+msgstr "ارسال ایمیل مجدد با مشکل مواجه شد . لطفا با مدیر سیستم تماس بگیرید ."
 
 #: js/lostpassword.js:5
 msgid ""
 "The link to reset your password has been sent to your email. If you do not "
 "receive it within a reasonable amount of time, check your spam/junk "
 "folders.<br>If it is not there ask your local administrator."
-msgstr ""
+msgstr "لینک تنظیم مجدد رمز عبور به ایمیل شما ارسال شده است.<br>اگر آن رادر یک زمان مشخصی دریافت نکرده اید، لطفا هرزنامه/ پوشه های ناخواسته را بررسی کنید.<br>در صورت نبودن از مدیر خود بپرسید."
 
 #: js/lostpassword.js:7
 msgid ""
@@ -230,19 +238,19 @@ msgid ""
 "will be no way to get your data back after your password is reset.<br />If "
 "you are not sure what to do, please contact your administrator before you "
 "continue. <br />Do you really want to continue?"
-msgstr ""
+msgstr "فایل های شما رمزگذاری شده اند. اگر شما کلید بازیابی را فعال نکرده اید، پس از راه اندازی مجدد رمزعبور هیچ راهی برای بازگشت اطلاعاتتان وجود نخواهد داشت.در صورت عدم اطمینان به انجام کار، لطفا ابتدا با مدیر خود تماس بگیرید. آیا واقعا میخواهید ادامه دهید ؟"
 
 #: js/lostpassword.js:10
 msgid "I know what I'm doing"
-msgstr ""
+msgstr "اطلاع از انجام این کار دارم"
 
 #: js/lostpassword.js:13 lostpassword/templates/resetpassword.php:9
 msgid "Reset password"
-msgstr "دوباره سازی گذرواژه"
+msgstr "تنظیم مجدد رمز عبور"
 
 #: js/lostpassword.js:16
 msgid "Password can not be changed. Please contact your administrator."
-msgstr ""
+msgstr "رمز عبور نمی تواند تغییر بکند . لطفا با مدیر سیستم تماس بگیرید ."
 
 #: js/oc-dialogs.js:108 js/oc-dialogs.js:255
 msgid "No"
@@ -258,7 +266,7 @@ msgstr "انتخاب کردن"
 
 #: js/oc-dialogs.js:229
 msgid "Error loading file picker template: {error}"
-msgstr ""
+msgstr "خطا در بارگذاری قالب انتخاب فایل : {error}"
 
 #: js/oc-dialogs.js:282
 msgid "Ok"
@@ -266,7 +274,7 @@ msgstr "قبول"
 
 #: js/oc-dialogs.js:302
 msgid "Error loading message template: {error}"
-msgstr ""
+msgstr "خطا در بارگذاری قالب پیام : {error}"
 
 #: js/oc-dialogs.js:430
 msgid "{count} file conflict"
@@ -275,7 +283,7 @@ msgstr[0] ""
 
 #: js/oc-dialogs.js:444
 msgid "One file conflict"
-msgstr ""
+msgstr "یک فایل متضاد"
 
 #: js/oc-dialogs.js:450
 msgid "New Files"
@@ -283,11 +291,11 @@ msgstr "فایل های جدید"
 
 #: js/oc-dialogs.js:451
 msgid "Already existing files"
-msgstr ""
+msgstr "فایل های موجود در حال حاضر "
 
 #: js/oc-dialogs.js:453
 msgid "Which files do you want to keep?"
-msgstr ""
+msgstr "کدام فایل ها را می خواهید نگه دارید ؟"
 
 #: js/oc-dialogs.js:454
 msgid ""
@@ -305,11 +313,11 @@ msgstr "ادامه"
 
 #: js/oc-dialogs.js:519 js/oc-dialogs.js:532
 msgid "(all selected)"
-msgstr ""
+msgstr "(همه انتخاب شده اند)"
 
 #: js/oc-dialogs.js:522 js/oc-dialogs.js:536
 msgid "({count} selected)"
-msgstr ""
+msgstr "({count} انتخاب شده)"
 
 #: js/oc-dialogs.js:544
 msgid "Error loading file exists template"
@@ -317,7 +325,7 @@ msgstr ""
 
 #: js/setup.js:96
 msgid "Very weak password"
-msgstr ""
+msgstr "رمز عبور بسیار ضعیف"
 
 #: js/setup.js:97
 msgid "Weak password"
@@ -341,18 +349,18 @@ msgstr "اشتراک گذاشته شده"
 
 #: js/share.js:257
 msgid "Shared with {recipients}"
-msgstr ""
+msgstr "به اشتراک گذاشته شده با {recipients}"
 
 #: js/share.js:266
 msgid "Share"
 msgstr "اشتراک‌گذاری"
 
-#: js/share.js:326 js/share.js:340 js/share.js:347 js/share.js:989
+#: js/share.js:326 js/share.js:340 js/share.js:347 js/share.js:1002
 #: templates/installation.php:10
 msgid "Error"
 msgstr "خطا"
 
-#: js/share.js:328 js/share.js:1052
+#: js/share.js:328 js/share.js:1065
 msgid "Error while sharing"
 msgstr "خطا درحال به اشتراک گذاشتن"
 
@@ -374,7 +382,7 @@ msgstr "به اشتراک گذاشته شده با شما توسط { دارند�
 
 #: js/share.js:383
 msgid "Share with user or group …"
-msgstr ""
+msgstr "به اشتراک گذاری با کاربر یا گروه"
 
 #: js/share.js:389
 msgid "Share link"
@@ -413,79 +421,71 @@ msgstr "تنظیم تاریخ انقضا"
 msgid "Expiration date"
 msgstr "تاریخ انقضا"
 
-#: js/share.js:455
-msgid "Share via email:"
-msgstr "از طریق ایمیل به اشتراک بگذارید :"
-
-#: js/share.js:458
-msgid "No people found"
-msgstr "کسی یافت نشد"
-
-#: js/share.js:507 js/share.js:575
+#: js/share.js:496 js/share.js:564
 msgid "group"
 msgstr "گروه"
 
-#: js/share.js:540
+#: js/share.js:529
 msgid "Resharing is not allowed"
 msgstr "اشتراک گذاری مجدد مجاز نمی باشد"
 
-#: js/share.js:591
+#: js/share.js:580
 msgid "Shared in {item} with {user}"
 msgstr "به اشتراک گذاشته شده در {بخش} با {کاربر}"
 
-#: js/share.js:613
+#: js/share.js:602
 msgid "Unshare"
 msgstr "لغو اشتراک"
 
-#: js/share.js:621
+#: js/share.js:610
 msgid "notify by email"
-msgstr ""
+msgstr "دریافت هشدار از طریق ایمیل"
 
-#: js/share.js:624
+#: js/share.js:613
 msgid "can share"
 msgstr "قابل به اشتراک گذاری"
 
-#: js/share.js:627
+#: js/share.js:616
 msgid "can edit"
 msgstr "می توان ویرایش کرد"
 
-#: js/share.js:629
+#: js/share.js:618
 msgid "access control"
 msgstr "کنترل دسترسی"
 
-#: js/share.js:632
+#: js/share.js:621
 msgid "create"
 msgstr "ایجاد"
 
-#: js/share.js:635
+#: js/share.js:624
 msgid "update"
 msgstr "به روز"
 
-#: js/share.js:638
+#: js/share.js:627
 msgid "delete"
 msgstr "پاک کردن"
 
-#: js/share.js:970
+#: js/share.js:983
 msgid "Password protected"
 msgstr "نگهداری از رمز عبور"
 
-#: js/share.js:989
+#: js/share.js:1002
 msgid "Error unsetting expiration date"
 msgstr "خطا در تنظیم نکردن تاریخ انقضا "
 
-#: js/share.js:1010
+#: js/share.js:1023
 msgid "Error setting expiration date"
 msgstr "خطا در تنظیم تاریخ انقضا"
 
-#: js/share.js:1039
+#: js/share.js:1052
 msgid "Sending ..."
 msgstr "درحال ارسال ..."
 
-#: js/share.js:1050
+#: js/share.js:1063
 msgid "Email sent"
 msgstr "ایمیل ارسال شد"
 
-#: js/share.js:1074
+#: js/share.js:1087
 msgid "Warning"
 msgstr "اخطار"
 
@@ -495,7 +495,7 @@ msgstr "نوع شی تعیین نشده است."
 
 #: js/tags.js:19
 msgid "Enter new"
-msgstr ""
+msgstr "مورد جدید را وارد کنید"
 
 #: js/tags.js:33
 msgid "Delete"
@@ -507,7 +507,7 @@ msgstr "افزودن"
 
 #: js/tags.js:57
 msgid "Edit tags"
-msgstr ""
+msgstr "ویرایش تگ ها"
 
 #: js/tags.js:75
 msgid "Error loading dialog template: {error}"
@@ -527,27 +527,27 @@ msgstr ""
 
 #: js/update.js:52
 msgid "The update was unsuccessful."
-msgstr ""
+msgstr "بروزرسانی موفقیت آمیز نبود."
 
 #: js/update.js:61
 msgid "The update was successful. Redirecting you to ownCloud now."
 msgstr "به روزرسانی موفقیت آمیز بود. در حال انتقال شما به OwnCloud."
 
-#: lostpassword/controller/lostcontroller.php:110
+#: lostpassword/controller/lostcontroller.php:133
 msgid "Couldn't reset password because the token is invalid"
 msgstr ""
 
-#: lostpassword/controller/lostcontroller.php:136
+#: lostpassword/controller/lostcontroller.php:159
 msgid "Couldn't send reset email. Please make sure your username is correct."
 msgstr ""
 
-#: lostpassword/controller/lostcontroller.php:151
+#: lostpassword/controller/lostcontroller.php:174
 msgid ""
 "Couldn't send reset email because there is no email address for this "
 "username. Please contact your administrator."
 msgstr ""
 
-#: lostpassword/controller/lostcontroller.php:168
+#: lostpassword/controller/lostcontroller.php:191
 #, php-format
 msgid "%s password reset"
 msgstr ""
@@ -562,7 +562,7 @@ msgstr "شما یک نامه الکترونیکی حاوی یک لینک جهت 
 
 #: lostpassword/templates/lostpassword.php:8
 #: lostpassword/templates/lostpassword.php:9 templates/installation.php:51
-#: templates/installation.php:54 templates/login.php:31 templates/login.php:35
+#: templates/installation.php:54 templates/login.php:23 templates/login.php:27
 msgid "Username"
 msgstr "نام کاربری"
 
@@ -610,7 +610,7 @@ msgstr "شخصی"
 msgid "Users"
 msgstr "کاربران"
 
-#: strings.php:7 templates/layout.user.php:53 templates/layout.user.php:118
+#: strings.php:7 templates/layout.user.php:56 templates/layout.user.php:121
 msgid "Apps"
 msgstr "  برنامه ها"
 
@@ -624,31 +624,31 @@ msgstr "راه‌نما"
 
 #: tags/controller.php:22
 msgid "Error loading tags"
-msgstr ""
+msgstr "خطا در هنگام بارگزاری تگ ها"
 
 #: tags/controller.php:48
 msgid "Tag already exists"
-msgstr ""
+msgstr "تگ از قبل وجود دارد"
 
 #: tags/controller.php:64
 msgid "Error deleting tag(s)"
-msgstr ""
+msgstr "خطا در هنگام حذف تگ (ها)"
 
 #: tags/controller.php:75
 msgid "Error tagging"
-msgstr ""
+msgstr "خطا در هنگام تگ گذاری"
 
 #: tags/controller.php:86
 msgid "Error untagging"
-msgstr ""
+msgstr "خطا در هنگام حذف تگ"
 
 #: tags/controller.php:97
 msgid "Error favoriting"
-msgstr ""
+msgstr "خطا هنگام افزودن به موارد محبوب"
 
 #: tags/controller.php:108
 msgid "Error unfavoriting"
-msgstr ""
+msgstr "خطا هنگام حذف از موارد محبوب"
 
 #: templates/403.php:12
 msgid "Access forbidden"
@@ -673,7 +673,8 @@ msgstr ""
 msgid "The share will expire on %s."
 msgstr ""
 
-#: templates/altmail.php:7 templates/mail.php:20
+#. TRANSLATORS term at the end of a mail
+#: templates/altmail.php:8 templates/mail.php:21
 msgid "Cheers!"
 msgstr "سلامتی!"
 
@@ -721,7 +722,7 @@ msgid "Create an <strong>admin account</strong>"
 msgstr "لطفا یک <strong> شناسه برای مدیر</strong> بسازید"
 
 #: templates/installation.php:59 templates/installation.php:62
-#: templates/login.php:41 templates/login.php:44
+#: templates/login.php:33 templates/login.php:36
 msgid "Password"
 msgstr "گذرواژه"
 
@@ -740,7 +741,7 @@ msgstr "پایگاه داده برنامه ریزی شدند"
 #: templates/installation.php:96
 #, php-format
 msgid "Only %s is available."
-msgstr ""
+msgstr "تنها %s موجود است."
 
 #: templates/installation.php:111 templates/installation.php:113
 msgid "Database user"
@@ -774,59 +775,45 @@ msgstr "اتمام نصب"
 
 #: templates/installation.php:159
 msgid "Finishing …"
-msgstr ""
+msgstr "در حال اتمام ..."
 
-#: templates/layout.user.php:40
+#: templates/layout.user.php:43
 msgid ""
 "This application requires JavaScript to be enabled for correct operation.  "
 "Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable "
 "JavaScript</a> and re-load this interface."
 msgstr ""
 
-#: templates/layout.user.php:44
+#: templates/layout.user.php:47
 #, php-format
 msgid "%s is available. Get more information on how to update."
 msgstr "%s در دسترس است. برای چگونگی به روز رسانی اطلاعات بیشتر را دریافت نمایید."
 
-#: templates/layout.user.php:80 templates/singleuser.user.php:8
+#: templates/layout.user.php:83 templates/singleuser.user.php:8
 msgid "Log out"
 msgstr "خروج"
 
 #: templates/login.php:11
-msgid "Automatic logon rejected!"
-msgstr "ورود به سیستم اتوماتیک ردشد!"
-
-#: templates/login.php:12
-msgid ""
-"If you did not change your password recently, your account may be "
-"compromised!"
-msgstr "اگر شما اخیرا رمزعبور را تغییر نداده اید، حساب شما در معرض خطر می باشد !"
-
-#: templates/login.php:14
-msgid "Please change your password to secure your account again."
-msgstr "لطفا رمز عبور خود را تغییر دهید تا مجددا حساب شما  در امان باشد."
-
-#: templates/login.php:19
 msgid "Server side authentication failed!"
 msgstr ""
 
-#: templates/login.php:20
+#: templates/login.php:12
 msgid "Please contact your administrator."
 msgstr ""
 
-#: templates/login.php:50
+#: templates/login.php:42
 msgid "Forgot your password? Reset it!"
 msgstr ""
 
-#: templates/login.php:55
+#: templates/login.php:47
 msgid "remember"
 msgstr "بیاد آوری"
 
-#: templates/login.php:59
+#: templates/login.php:51
 msgid "Log in"
 msgstr "ورود"
 
-#: templates/login.php:65
+#: templates/login.php:57
 msgid "Alternative Logins"
 msgstr "ورود متناوب"
 
@@ -853,6 +840,28 @@ msgstr ""
 
 #: templates/singleuser.user.php:7 templates/update.user.php:6
 msgid "Thank you for your patience."
+msgstr "از صبر شما متشکریم"
+
+#: templates/untrustedDomain.php:5
+msgid "You are accessing the server from an untrusted domain."
+msgstr ""
+
+#: templates/untrustedDomain.php:8
+msgid ""
+"Please contact your administrator. If you are an administrator of this "
+"instance, configure the \"trusted_domain\" setting in config/config.php. An "
+"example configuration is provided in config/config.sample.php."
+msgstr ""
+
+#: templates/untrustedDomain.php:10
+msgid ""
+"Depending on your configuration, as an administrator you might also be able "
+"to use the button below to trust this domain."
+msgstr ""
+
+#: templates/untrustedDomain.php:14
+#, php-format
+msgid "Add \"%s\" as trusted domain"
 msgstr ""
 
 #: templates/update.admin.php:3
@@ -877,6 +886,12 @@ msgstr ""
 
 #: templates/update.admin.php:23
 msgid "Start update"
+msgstr "اغاز به روز رسانی"
+
+#: templates/update.admin.php:25
+msgid ""
+"To avoid timeouts with larger installations, you can instead run the "
+"following command from your installation directory:"
 msgstr ""
 
 #: templates/update.user.php:3

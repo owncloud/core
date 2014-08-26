@@ -1,6 +1,7 @@
 <?php
 $TRANSLATIONS = array(
 "Server to server sharing is not enabled on this server" => "A partilha entre servidores não se encontra disponível",
+"Invalid or untrusted SSL certificate" => "Certificado SSL inválido ou não confiável",
 "Couldn't add remote share" => "Ocorreu um erro ao adicionar a partilha remota",
 "Shared with you" => "Partilhado consigo ",
 "Shared with others" => "Partilhado com outros",
@@ -8,7 +9,11 @@ $TRANSLATIONS = array(
 "No files have been shared with you yet." => "Ainda não partilhados quaisquer ficheuiros consigo.",
 "You haven't shared any files yet." => "Ainda não partilhou quaisquer ficheiros.",
 "You haven't shared any files by link yet." => "Ainda não partilhou quaisquer ficheiros por hiperligação.",
+"Do you want to add the remote share {name} from {owner}@{remote}?" => "Deseja adicionar a partilha remota {nome} de {proprietário}@{remoto}?",
+"Remote share" => "Partilha remota",
+"Remote share password" => "Password da partilha remota",
 "Cancel" => "Cancelar",
+"Add remote share" => "Adicionar partilha remota",
 "No ownCloud installation found at {remote}" => "Não foi encontrada uma instalação em {remote}",
 "Invalid ownCloud url" => "Endereço errado",
 "Shared by" => "Partilhado por",
@@ -23,6 +28,7 @@ $TRANSLATIONS = array(
 "the link expired" => "A hiperligação expirou",
 "sharing is disabled" => "a partilha está desativada",
 "For more info, please ask the person who sent this link." => "Para mais informação, por favor, pergunte à pessoa que lhe enviou esta hiperligação.",
+"Add to your ownCloud" => "Adicionar á sua ownCloud",
 "Download" => "Transferir",
 "Download %s" => "Transferir %s",
 "Direct link" => "Hiperligação direta",

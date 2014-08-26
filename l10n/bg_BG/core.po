@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-07-22 01:54-0400\n"
-"PO-Revision-Date: 2014-07-21 07:30+0000\n"
+"POT-Creation-Date: 2014-08-26 01:54-0400\n"
+"PO-Revision-Date: 2014-08-26 05:23+0000\n"
 "Last-Translator: Ivo\n"
 "Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/projects/p/owncloud/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
@@ -19,11 +19,7 @@ msgstr ""
 "Language: bg_BG\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ajax/share.php:90
-msgid "Expiration date is in the past."
-msgstr "Дата на изтичане е в миналото."
-
-#: ajax/share.php:122 ajax/share.php:164
+#: ajax/share.php:117 ajax/share.php:159
 #, php-format
 msgid "Couldn't send mail to following users: %s "
 msgstr "Неуспешно изпращане на имейл до следните потребители: %s."
@@ -44,7 +40,16 @@ msgstr "Базата данни обоновена."
 msgid "Checked database schema update"
 msgstr "Промяна на схемата на базата данни проверена."
 
-#: ajax/update.php:27
+#: ajax/update.php:22
+msgid "Checked database schema update for apps"
+msgstr "Промяна на схемата на базата данни за приложения проверена."
+
+#: ajax/update.php:25
+#, php-format
+msgid "Updated \"%s\" to %s"
+msgstr "Обновен \"%s\" до %s"
+
+#: ajax/update.php:33
 #, php-format
 msgid "Disabled incompatible apps: %s"
 msgstr "Изключени са несъвместимите програми: %s."
@@ -217,7 +222,7 @@ msgstr "последната година"
 msgid "years ago"
 msgstr "последните години"
 
-#: js/lostpassword.js:3 lostpassword/controller/lostcontroller.php:175
+#: js/lostpassword.js:3 lostpassword/controller/lostcontroller.php:198
 msgid "Couldn't send reset email. Please contact your administrator."
 msgstr "Неуспешено изпращане на имейл. Моля, свържи се с администратора."
 
@@ -352,12 +357,12 @@ msgstr "Споделено с {recipients}."
 msgid "Share"
 msgstr "Споделяне"
 
-#: js/share.js:326 js/share.js:340 js/share.js:347 js/share.js:989
+#: js/share.js:326 js/share.js:340 js/share.js:347 js/share.js:1002
 #: templates/installation.php:10
 msgid "Error"
 msgstr "Грешка"
 
-#: js/share.js:328 js/share.js:1052
+#: js/share.js:328 js/share.js:1065
 msgid "Error while sharing"
 msgstr "Грешка при споделянето."
 
@@ -418,79 +423,71 @@ msgstr "Посочи дата на изтичане"
 msgid "Expiration date"
 msgstr "Дата на изтичане"
 
-#: js/share.js:455
-msgid "Share via email:"
-msgstr "Сподели с имейл:"
-
-#: js/share.js:458
-msgid "No people found"
-msgstr "Не са открити хора"
-
-#: js/share.js:507 js/share.js:575
+#: js/share.js:496 js/share.js:564
 msgid "group"
 msgstr "група"
 
-#: js/share.js:540
+#: js/share.js:529
 msgid "Resharing is not allowed"
 msgstr "Повторно споделяне не е разрешено."
 
-#: js/share.js:591
+#: js/share.js:580
 msgid "Shared in {item} with {user}"
 msgstr "Споделено в {item} с {user}."
 
-#: js/share.js:613
+#: js/share.js:602
 msgid "Unshare"
 msgstr "Премахни споделяне"
 
-#: js/share.js:621
+#: js/share.js:610
 msgid "notify by email"
 msgstr "уведоми по имейла"
 
-#: js/share.js:624
+#: js/share.js:613
 msgid "can share"
 msgstr "може да споделя"
 
-#: js/share.js:627
+#: js/share.js:616
 msgid "can edit"
 msgstr "може да променя"
 
-#: js/share.js:629
+#: js/share.js:618
 msgid "access control"
 msgstr "контрол на достъпа"
 
-#: js/share.js:632
+#: js/share.js:621
 msgid "create"
 msgstr "Създаване"
 
-#: js/share.js:635
+#: js/share.js:624
 msgid "update"
 msgstr "Обновяване"
 
-#: js/share.js:638
+#: js/share.js:627
 msgid "delete"
-msgstr "Изтриване"
+msgstr "изтрий"
 
-#: js/share.js:970
+#: js/share.js:983
 msgid "Password protected"
 msgstr "Защитено с парола"
 
-#: js/share.js:989
+#: js/share.js:1002
 msgid "Error unsetting expiration date"
 msgstr "Грешка при премахване на дата за изтичане"
 
-#: js/share.js:1010
+#: js/share.js:1023
 msgid "Error setting expiration date"
 msgstr "Грешка при поставяне на дата за изтичане"
 
-#: js/share.js:1039
+#: js/share.js:1052
 msgid "Sending ..."
 msgstr "Изпращане ..."
 
-#: js/share.js:1050
+#: js/share.js:1063
 msgid "Email sent"
 msgstr "Имейла е изпратен"
 
-#: js/share.js:1074
+#: js/share.js:1087
 msgid "Warning"
 msgstr "Предупреждение"
 
@@ -504,7 +501,7 @@ msgstr "Въведи нов"
 
 #: js/tags.js:33
 msgid "Delete"
-msgstr "Изтриване"
+msgstr "Изтрий"
 
 #: js/tags.js:43
 msgid "Add"
@@ -538,21 +535,21 @@ msgstr "Обновяването неуспешно."
 msgid "The update was successful. Redirecting you to ownCloud now."
 msgstr "Обновяването е успешно. Пренасочване към твоя ownCloud сега."
 
-#: lostpassword/controller/lostcontroller.php:110
+#: lostpassword/controller/lostcontroller.php:133
 msgid "Couldn't reset password because the token is invalid"
 msgstr "Невалиден линк за промяна на паролата."
 
-#: lostpassword/controller/lostcontroller.php:136
+#: lostpassword/controller/lostcontroller.php:159
 msgid "Couldn't send reset email. Please make sure your username is correct."
 msgstr "Неуспешно изпращане на имейл за възстановяване на паролата. Моля, увери се, че потребителското име е правилно."
 
-#: lostpassword/controller/lostcontroller.php:151
+#: lostpassword/controller/lostcontroller.php:174
 msgid ""
 "Couldn't send reset email because there is no email address for this "
 "username. Please contact your administrator."
 msgstr "Неуспешно изпращане на имейл за възстановяване на паролата, защото липсва имейл свързан с това потребителско име. Моля свържи се с админстратора."
 
-#: lostpassword/controller/lostcontroller.php:168
+#: lostpassword/controller/lostcontroller.php:191
 #, php-format
 msgid "%s password reset"
 msgstr "Паролата на %s е променена."
@@ -567,7 +564,7 @@ msgstr "Ще получиш връзка за възстановяване на 
 
 #: lostpassword/templates/lostpassword.php:8
 #: lostpassword/templates/lostpassword.php:9 templates/installation.php:51
-#: templates/installation.php:54 templates/login.php:31 templates/login.php:35
+#: templates/installation.php:54 templates/login.php:23 templates/login.php:27
 msgid "Username"
 msgstr "Потребител"
 
@@ -615,7 +612,7 @@ msgstr "Лични"
 msgid "Users"
 msgstr "Потребители"
 
-#: strings.php:7 templates/layout.user.php:57 templates/layout.user.php:122
+#: strings.php:7 templates/layout.user.php:56 templates/layout.user.php:121
 msgid "Apps"
 msgstr "Приложения"
 
@@ -678,7 +675,8 @@ msgstr "Здрасти,\n\nсамо да те уведомя, че %s споде
 msgid "The share will expire on %s."
 msgstr "Споделянето ще изтече на %s."
 
-#: templates/altmail.php:7 templates/mail.php:20
+#. TRANSLATORS term at the end of a mail
+#: templates/altmail.php:8 templates/mail.php:21
 msgid "Cheers!"
 msgstr "Поздрави!"
 
@@ -726,7 +724,7 @@ msgid "Create an <strong>admin account</strong>"
 msgstr "Създаване на <strong>админ профил</strong>."
 
 #: templates/installation.php:59 templates/installation.php:62
-#: templates/login.php:41 templates/login.php:44
+#: templates/login.php:33 templates/login.php:36
 msgid "Password"
 msgstr "Парола"
 
@@ -781,57 +779,43 @@ msgstr "Завършване на настройките"
 msgid "Finishing …"
 msgstr "Завършване..."
 
-#: templates/layout.user.php:44
+#: templates/layout.user.php:43
 msgid ""
 "This application requires JavaScript to be enabled for correct operation.  "
 "Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable "
 "JavaScript</a> and re-load this interface."
 msgstr "Програмата изисква JavaScript, за да работи правилно. Моля, <a href=\"http://enable-javascript.com/\" target=\"_blank\">включи  JavaScript</a> и презареди страницата."
 
-#: templates/layout.user.php:48
+#: templates/layout.user.php:47
 #, php-format
 msgid "%s is available. Get more information on how to update."
 msgstr "%s е на разположение. Прочети повече как да обновиш. "
 
-#: templates/layout.user.php:84 templates/singleuser.user.php:8
+#: templates/layout.user.php:83 templates/singleuser.user.php:8
 msgid "Log out"
 msgstr "Отписване"
 
 #: templates/login.php:11
-msgid "Automatic logon rejected!"
-msgstr "Автоматичното вписване отказано!"
-
-#: templates/login.php:12
-msgid ""
-"If you did not change your password recently, your account may be "
-"compromised!"
-msgstr "Ако не си си променил паролата наскоро, профилът ти може да е компроменитран!"
-
-#: templates/login.php:14
-msgid "Please change your password to secure your account again."
-msgstr "Моля, промени паролата си, за да подсигуриш профила си."
-
-#: templates/login.php:19
 msgid "Server side authentication failed!"
 msgstr "Заверяването в сървъра неуспешно!"
 
-#: templates/login.php:20
+#: templates/login.php:12
 msgid "Please contact your administrator."
 msgstr "Моля, свържи се с админстратора."
 
-#: templates/login.php:50
+#: templates/login.php:42
 msgid "Forgot your password? Reset it!"
 msgstr "Забрави паролата? Възстанови я!"
 
-#: templates/login.php:55
+#: templates/login.php:47
 msgid "remember"
 msgstr "запомни"
 
-#: templates/login.php:59
+#: templates/login.php:51
 msgid "Log in"
 msgstr "Вписване"
 
-#: templates/login.php:65
+#: templates/login.php:57
 msgid "Alternative Logins"
 msgstr "Други Потребителски Имена"
 
@@ -860,6 +844,28 @@ msgstr "Свържи се със системния си администрат�
 msgid "Thank you for your patience."
 msgstr "Благодарим за търпението."
 
+#: templates/untrustedDomain.php:5
+msgid "You are accessing the server from an untrusted domain."
+msgstr "Свръзваш се със сървъра от неодобрен домейн."
+
+#: templates/untrustedDomain.php:8
+msgid ""
+"Please contact your administrator. If you are an administrator of this "
+"instance, configure the \"trusted_domain\" setting in config/config.php. An "
+"example configuration is provided in config/config.sample.php."
+msgstr "Моля, свържи се с администратора. Ако ти си администраторът, на този сървър, промени \"trusted_domain\" настройките в  config/config.php. Примерна конфигурация е приложена в config/config.sample.php."
+
+#: templates/untrustedDomain.php:10
+msgid ""
+"Depending on your configuration, as an administrator you might also be able "
+"to use the button below to trust this domain."
+msgstr "В зависимост от конфигурацията ти, като администратор може натискайки бутонът по-долу да отбележиш домейнът като сигурен."
+
+#: templates/untrustedDomain.php:14
+#, php-format
+msgid "Add \"%s\" as trusted domain"
+msgstr "Добави \"%s\" като сигурен домейн"
+
 #: templates/update.admin.php:3
 #, php-format
 msgid "%s will be updated to version %s."
@@ -883,6 +889,12 @@ msgstr "Моля, увери се, че си направил копия на б
 #: templates/update.admin.php:23
 msgid "Start update"
 msgstr "Започни обновяването"
+
+#: templates/update.admin.php:25
+msgid ""
+"To avoid timeouts with larger installations, you can instead run the "
+"following command from your installation directory:"
+msgstr "За да избегнеш таймаутове при по-големи инсталации, можеш да изпълниш следните команди в инсталанционната директория:"
 
 #: templates/update.user.php:3
 msgid ""

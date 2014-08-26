@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-07-16 01:54-0400\n"
-"PO-Revision-Date: 2014-07-15 20:51+0000\n"
-"Last-Translator: Vincenzo Reale <vinx.reale@gmail.com>\n"
+"POT-Creation-Date: 2014-08-26 01:54-0400\n"
+"PO-Revision-Date: 2014-08-26 05:02+0000\n"
+"Last-Translator: I Robot\n"
 "Language-Team: Italian (http://www.transifex.com/projects/p/owncloud/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -57,12 +57,12 @@ msgid ""
 "allowed."
 msgstr "Nome non valido, '\\', '/', '<', '>', ':', '\"', '|', '?' e '*' non sono consentiti."
 
-#: ajax/newfile.php:76 ajax/newfolder.php:35 ajax/upload.php:159
-#: lib/app.php:77
+#: ajax/newfile.php:76 ajax/newfolder.php:35 ajax/upload.php:161
+#: lib/app.php:87
 msgid "The target folder has been moved or deleted."
 msgstr "La cartella di destinazione è stata spostata o eliminata."
 
-#: ajax/newfile.php:88 ajax/newfolder.php:47 lib/app.php:86
+#: ajax/newfile.php:88 ajax/newfolder.php:47 lib/app.php:96
 #, php-format
 msgid ""
 "The name %s is already used in the folder %s. Please choose a different "
@@ -78,12 +78,17 @@ msgid ""
 "Server is not allowed to open URLs, please check the server configuration"
 msgstr "Al server non è permesso aprire URL, controlla la configurazione del server"
 
-#: ajax/newfile.php:118
+#: ajax/newfile.php:126
+#, php-format
+msgid "The file exceeds your quota by %s"
+msgstr "Il file supera la tua quota di %s"
+
+#: ajax/newfile.php:141
 #, php-format
 msgid "Error while downloading %s to %s"
 msgstr "Errore durante lo scaricamento di %s su %s"
 
-#: ajax/newfile.php:146
+#: ajax/newfile.php:169
 msgid "Error when creating the file"
 msgstr "Errore durante la creazione del file"
 
@@ -95,62 +100,62 @@ msgstr "Il nome della cartella non può essere vuoto."
 msgid "Error when creating the folder"
 msgstr "Errore durante la creazione della cartella"
 
-#: ajax/upload.php:19 ajax/upload.php:57
+#: ajax/upload.php:19 ajax/upload.php:59
 msgid "Unable to set upload directory."
 msgstr "Impossibile impostare una cartella di caricamento."
 
-#: ajax/upload.php:33
+#: ajax/upload.php:35
 msgid "Invalid Token"
 msgstr "Token non valido"
 
-#: ajax/upload.php:77
+#: ajax/upload.php:79
 msgid "No file was uploaded. Unknown error"
 msgstr "Nessun file è stato inviato. Errore sconosciuto"
 
-#: ajax/upload.php:84
+#: ajax/upload.php:86
 msgid "There is no error, the file uploaded with success"
 msgstr "Non ci sono errori, il file è stato caricato correttamente"
 
-#: ajax/upload.php:85
+#: ajax/upload.php:87
 msgid ""
 "The uploaded file exceeds the upload_max_filesize directive in php.ini: "
 msgstr "Il file caricato supera la direttiva upload_max_filesize in php.ini:"
 
-#: ajax/upload.php:87
+#: ajax/upload.php:89
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
 msgstr "Il file inviato supera la direttiva MAX_FILE_SIZE specificata nel modulo HTML"
 
-#: ajax/upload.php:88
+#: ajax/upload.php:90
 msgid "The uploaded file was only partially uploaded"
 msgstr "Il file è stato caricato solo parzialmente"
 
-#: ajax/upload.php:89
+#: ajax/upload.php:91
 msgid "No file was uploaded"
 msgstr "Nessun file è stato caricato"
 
-#: ajax/upload.php:90
+#: ajax/upload.php:92
 msgid "Missing a temporary folder"
 msgstr "Manca una cartella temporanea"
 
-#: ajax/upload.php:91
+#: ajax/upload.php:93
 msgid "Failed to write to disk"
 msgstr "Scrittura su disco non riuscita"
 
-#: ajax/upload.php:111
+#: ajax/upload.php:113
 msgid "Not enough storage available"
 msgstr "Spazio di archiviazione insufficiente"
 
-#: ajax/upload.php:173
+#: ajax/upload.php:175
 msgid "Upload failed. Could not find uploaded file"
 msgstr "Caricamento non riuscito. Impossibile trovare il file caricato."
 
-#: ajax/upload.php:183
+#: ajax/upload.php:185
 msgid "Upload failed. Could not get file info."
 msgstr "Caricamento non riuscito. Impossibile ottenere informazioni sul file."
 
-#: ajax/upload.php:198
+#: ajax/upload.php:200
 msgid "Invalid directory."
 msgstr "Cartella non valida."
 
@@ -162,49 +167,49 @@ msgstr "File"
 msgid "All files"
 msgstr "Tutti i file"
 
-#: js/file-upload.js:268
+#: js/file-upload.js:269
 msgid "Unable to upload {filename} as it is a directory or has 0 bytes"
 msgstr "Impossibile caricare {filename} poiché è una cartella oppure ha una dimensione di 0 byte."
 
-#: js/file-upload.js:281
+#: js/file-upload.js:284
 msgid "Total file size {size1} exceeds upload limit {size2}"
 msgstr "La dimensione totale del file {size1} supera il limite di caricamento {size2}"
 
-#: js/file-upload.js:292
+#: js/file-upload.js:295
 msgid ""
 "Not enough free space, you are uploading {size1} but only {size2} is left"
 msgstr "Spazio insufficiente, stai caricando {size1}, ma è rimasto solo {size2}"
 
-#: js/file-upload.js:369
+#: js/file-upload.js:372
 msgid "Upload cancelled."
 msgstr "Invio annullato"
 
-#: js/file-upload.js:415
+#: js/file-upload.js:418
 msgid "Could not get result from server."
 msgstr "Impossibile ottenere il risultato dal server."
 
-#: js/file-upload.js:499
+#: js/file-upload.js:502
 msgid ""
 "File upload is in progress. Leaving the page now will cancel the upload."
 msgstr "Caricamento del file in corso. La chiusura della pagina annullerà il caricamento."
 
-#: js/file-upload.js:564
+#: js/file-upload.js:567
 msgid "URL cannot be empty"
 msgstr "L'URL non può essere vuoto."
 
-#: js/file-upload.js:568 js/filelist.js:1259
+#: js/file-upload.js:571 js/filelist.js:1290
 msgid "{new_name} already exists"
 msgstr "{new_name} esiste già"
 
-#: js/file-upload.js:623
+#: js/file-upload.js:626
 msgid "Could not create file"
 msgstr "Impossibile creare il file"
 
-#: js/file-upload.js:639
+#: js/file-upload.js:642
 msgid "Could not create folder"
 msgstr "Impossibile creare la cartella"
 
-#: js/file-upload.js:686
+#: js/file-upload.js:689
 msgid "Error fetching URL"
 msgstr "Errore durante il recupero dello URL"
 
@@ -232,61 +237,55 @@ msgstr "Elimina definitivamente"
 msgid "Rename"
 msgstr "Rinomina"
 
-#: js/filelist.js:341
-msgid ""
-"Your download is being prepared. This might take some time if the files are "
-"big."
-msgstr "Il tuo scaricamento è in fase di preparazione. Ciò potrebbe richiedere del tempo se i file sono grandi."
-
-#: js/filelist.js:675 js/filelist.js:1783
+#: js/filelist.js:685 js/filelist.js:1818
 msgid "Pending"
 msgstr "In corso"
 
-#: js/filelist.js:1210
+#: js/filelist.js:1241
 msgid "Error moving file."
 msgstr "Errore durante lo spostamento del file."
 
-#: js/filelist.js:1218
+#: js/filelist.js:1249
 msgid "Error moving file"
 msgstr "Errore durante lo spostamento del file"
 
-#: js/filelist.js:1218
+#: js/filelist.js:1249
 msgid "Error"
 msgstr "Errore"
 
-#: js/filelist.js:1307
+#: js/filelist.js:1338
 msgid "Could not rename file"
 msgstr "Impossibile rinominare il file"
 
-#: js/filelist.js:1425
+#: js/filelist.js:1460
 msgid "Error deleting file."
 msgstr "Errore durante l'eliminazione del file."
 
-#: js/filelist.js:1528 templates/list.php:61
+#: js/filelist.js:1563 templates/list.php:61
 msgid "Name"
 msgstr "Nome"
 
-#: js/filelist.js:1529 templates/list.php:72
+#: js/filelist.js:1564 templates/list.php:72
 msgid "Size"
 msgstr "Dimensione"
 
-#: js/filelist.js:1530 templates/list.php:75
+#: js/filelist.js:1565 templates/list.php:75
 msgid "Modified"
 msgstr "Modificato"
 
-#: js/filelist.js:1540 js/filesummary.js:141 js/filesummary.js:168
+#: js/filelist.js:1575 js/filesummary.js:141 js/filesummary.js:168
 msgid "%n folder"
 msgid_plural "%n folders"
 msgstr[0] "%n cartella"
 msgstr[1] "%n cartelle"
 
-#: js/filelist.js:1546 js/filesummary.js:142 js/filesummary.js:169
+#: js/filelist.js:1581 js/filesummary.js:142 js/filesummary.js:169
 msgid "%n file"
 msgid_plural "%n files"
 msgstr[0] "%n file"
 msgstr[1] "%n file"
 
-#: js/filelist.js:1676 js/filelist.js:1715
+#: js/filelist.js:1711 js/filelist.js:1750
 msgid "Uploading %n file"
 msgid_plural "Uploading %n files"
 msgstr[0] "Caricamento di %n file in corso"
@@ -327,7 +326,12 @@ msgstr "La cifratura è stata disabilitata ma i tuoi file sono ancora cifrati. V
 msgid "{dirs} and {files}"
 msgstr "{dirs} e {files}"
 
-#: lib/app.php:103
+#: lib/app.php:80
+#, php-format
+msgid "%s could not be renamed as it has been deleted"
+msgstr "%s non può essere rinominato poiché è stato eliminato"
+
+#: lib/app.php:113
 #, php-format
 msgid "%s could not be renamed"
 msgstr "%s non può essere rinominato"

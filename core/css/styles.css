@@ -15,7 +15,7 @@ ul { list-style:none; }
 
 
 body {
-	background: #fefefe;
+	background-color: #ffffff;
 	font-weight: normal;
 	font-size: .8em;
 	line-height: 1.6em;
@@ -444,13 +444,15 @@ input[name='password-clone'] {
 .groupbottom {
 	position: relative;
 }
-#body-login .grouptop input {
+#body-login .grouptop input,
+.grouptop input {
 	margin-bottom: 0;
 	border-bottom: 0;
 	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;
 }
-#body-login .groupmiddle input {
+#body-login .groupmiddle input,
+.groupmiddle input {
 	margin-top: 0;
 	margin-bottom: 0;
 	border-top: 0;
@@ -458,7 +460,8 @@ input[name='password-clone'] {
 	border-radius: 0;
 	box-shadow: 0 1px 0 rgba(0,0,0,.1) inset !important;
 }
-#body-login .groupbottom input {
+#body-login .groupbottom input,
+.groupbottom input {
 	margin-top: 0;
 	border-top: 0;
 	border-top-right-radius: 0;
@@ -564,8 +567,8 @@ label.infield {
 #body-login .warning, #body-login .update, #body-login .error {
 	display: block;
 	padding: 10px;
-	color: #d2322d;
 	background-color: rgba(0,0,0,.3);
+	color: #fff;
 	text-align: left;
 	border-radius: 3px;
 	cursor: default;
@@ -595,8 +598,8 @@ label.infield {
 .warning legend,
 .warning a,
 .error a {
-	color: #d2322d !important;
-	font-weight: bold;
+	color: #fff !important;
+	font-weight: bold !important;
 }
 .error pre {
 	white-space: pre-wrap;
@@ -606,6 +609,10 @@ label.infield {
 .error-wide {
 	width: 700px;
 	margin-left: -200px !important;
+}
+
+.error-wide .button {
+	color: black !important;
 }
 
 /* Fixes for log in page, TODO should be removed some time */
@@ -677,19 +684,33 @@ label.infield {
 .center { text-align:center; }
 .inlineblock { display: inline-block; }
 
-#notification-container { position: fixed; top: 0px; width: 100%; text-align: center; z-index: 101; line-height: 1.2;}
+#notification-container {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	text-align: center;
+}
 #notification, #update-notification {
+	margin: 0 auto;
+	max-width: 60%;
 	z-index: 101;
 	background-color: #fc4;
 	border: 0;
-	padding: 0 .7em .3em;
+	padding: 1px 8px;
 	display: none;
 	position: relative;
 	top: 0;
 	border-bottom-left-radius: 3px;
 	border-bottom-right-radius: 3px;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+	filter:alpha(opacity=90);
+	opacity: .9;
 }
-#notification span, #update-notification span { cursor:pointer; font-weight:bold; margin-left:1em; }
+#notification span, #update-notification span {
+	cursor: pointer;
+	font-weight: bold;
+	margin-left: 1em;
+}
 
 tr .action:not(.permanent), .selectedActions a { -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; filter:alpha(opacity=0); opacity:0; }
 tr:hover .action, tr .action.permanent, .selectedActions a { -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"; filter:alpha(opacity=50); opacity:.5; }
@@ -750,14 +771,19 @@ a.bookmarklet { background-color:#ddd; border:1px solid #ccc; padding:5px;paddin
 #oc-dialog-filepicker-content .filelist .filename {
 	position: absolute;
 	top: 8px;
+	max-width: 60%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 #oc-dialog-filepicker-content .filelist img {
 	margin: 2px 1em 0 4px;
 }
 #oc-dialog-filepicker-content .filelist .date {
 	float: right;
-	margin-right: 1em;
-	margin-top: 8px;
+	margin-right: 10px;
+	margin-top: 0;
+	padding-top: 9px;
 }
 #oc-dialog-filepicker-content .filepicker_element_selected { background-color:lightblue;}
 .ui-dialog {position:fixed !important;}
@@ -853,6 +879,28 @@ div.crumb:active {
 .appear.transparent {
 	opacity: 0;
 }
+
+
+/* public footer */
+#body-public footer {
+	margin-top: 65px;
+	text-align: center;
+}
+
+#body-public footer .info {
+	color: #777;
+	text-align: center;
+	margin: 0 auto;
+	padding: 20px 0;
+}
+
+#body-public footer .info a {
+	color: #777;
+	font-weight: bold;
+	padding: 13px;
+	margin: -13px;
+}
+
 
 /* LEGACY FIX only - do not use fieldsets for settings */
 fieldset.warning legend, fieldset.update legend {

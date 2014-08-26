@@ -1,6 +1,5 @@
 <?php
 $TRANSLATIONS = array(
-"Expiration date is in the past." => "Verval datum is in die verlede.",
 "Turned on maintenance mode" => "Instandhouding aangeskakel",
 "Turned off maintenance mode" => "Instandhouding uitgeskakel",
 "No image or file provided" => "Geen prent of lêer voorsien",
@@ -66,8 +65,6 @@ $TRANSLATIONS = array(
 "Send" => "Stuur",
 "Set expiration date" => "Stel verval datum",
 "Expiration date" => "Verval datum",
-"Share via email:" => "Deel oor epos:",
-"No people found" => "Geen persoon gevind",
 "group" => "groep",
 "Resharing is not allowed" => "Hernieu deel is nie toegelaat nie ",
 "Shared in {item} with {user}" => "Gedeel in {item} met {user}",
@@ -119,9 +116,6 @@ $TRANSLATIONS = array(
 "Finish setup" => "Maak opstelling klaar",
 "%s is available. Get more information on how to update." => "%s is beskikbaar. Kry meer inligting oor opdatering.",
 "Log out" => "Teken uit",
-"Automatic logon rejected!" => "Automatiese aantekening afgekeur!",
-"If you did not change your password recently, your account may be compromised!" => "Jou rekening kan gekompromitteer wees, as jy jou wagwoord nie onlangs verander het nie.",
-"Please change your password to secure your account again." => "Verander asseblief jou wagwoord om jou rekening te beveilig",
 "remember" => "onthou",
 "Log in" => "Teken aan",
 "Alternative Logins" => "Alternatiewe aantekeninge",

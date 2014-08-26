@@ -1,6 +1,7 @@
 <?php
 $TRANSLATIONS = array(
 "Server to server sharing is not enabled on this server" => "Споделяне между сървъри не е разрешено на този сървър.",
+"Invalid or untrusted SSL certificate" => "Невалиден или ненадежден SSL сертификат",
 "Couldn't add remote share" => "Неуспешно добавяне на отдалечена споделена директория.",
 "Shared with you" => "Споделено с теб",
 "Shared with others" => "Споделено с други",
@@ -27,7 +28,7 @@ $TRANSLATIONS = array(
 "the link expired" => "връзката е изтекла",
 "sharing is disabled" => "споделянето е изключено",
 "For more info, please ask the person who sent this link." => "За повече информация, моля питай човека, който е изпратил тази връзка.",
-"Add to your ownCloud" => "Добави към твоя ownCloud",
+"Add to your ownCloud" => "Добави към своя ownCloud",
 "Download" => "Изтегли",
 "Download %s" => "Изтегли %s",
 "Direct link" => "Директна връзка",

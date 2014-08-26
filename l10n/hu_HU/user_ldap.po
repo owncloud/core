@@ -4,14 +4,15 @@
 # 
 # Translators:
 # ebela <bela@dandre.hu>, 2013-2014
-# Laszlo Tornoci <torlasz@gmail.com>, 2013
+# Laszlo Tornoci <torlasz@gmail.com>, 2013-2014
+# Melinda <ghostgirl1983@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-07-05 01:54-0400\n"
-"PO-Revision-Date: 2014-07-04 15:13+0000\n"
-"Last-Translator: I Robot\n"
+"POT-Creation-Date: 2014-08-26 01:54-0400\n"
+"PO-Revision-Date: 2014-08-25 20:41+0000\n"
+"Last-Translator: Laszlo Tornoci <torlasz@gmail.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/owncloud/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -74,7 +75,7 @@ msgstr "Tartsuk meg a beállításokat?"
 
 #: js/settings.js:93
 msgid "{nthServer}. Server"
-msgstr ""
+msgstr "{nthServer}. Kiszolgáló"
 
 #: js/settings.js:99
 msgid "Cannot add server configuration"
@@ -94,15 +95,15 @@ msgstr "Hiba"
 
 #: js/settings.js:244
 msgid "Please specify a Base DN"
-msgstr ""
+msgstr "Adja meg az alap/Base/ DN-t"
 
 #: js/settings.js:245
 msgid "Could not determine Base DN"
-msgstr ""
+msgstr "nem sikerült azonosítani az alap/Base/ DN-t"
 
 #: js/settings.js:276
 msgid "Please specify the port"
-msgstr ""
+msgstr "Add meg a portot"
 
 #: js/settings.js:780
 msgid "Configuration OK"
@@ -158,25 +159,25 @@ msgid_plural "%s users found"
 msgstr[0] "%s felhasználó van"
 msgstr[1] "%s felhasználó van"
 
-#: lib/wizard.php:317 lib/wizard.php:1051
+#: lib/wizard.php:321 lib/wizard.php:1057
 msgid "Could not find the desired feature"
 msgstr "A kívánt funkció nem található"
 
-#: lib/wizard.php:858 lib/wizard.php:870
+#: lib/wizard.php:864 lib/wizard.php:876
 msgid "Invalid Host"
 msgstr "Érvénytelen gépnév"
 
 #: settings.php:52
 msgid "Server"
-msgstr ""
+msgstr "Kiszolgáló"
 
 #: settings.php:53
 msgid "User Filter"
-msgstr ""
+msgstr "Felhasználói szűrő"
 
 #: settings.php:54
 msgid "Login Filter"
-msgstr ""
+msgstr "Bejelentkezési szűrő"
 
 #: settings.php:55
 msgid "Group Filter"
@@ -197,7 +198,7 @@ msgstr "Súgó"
 #: templates/part.wizard-groupfilter.php:4
 #, php-format
 msgid "Groups meeting these criteria are available in %s:"
-msgstr ""
+msgstr "A %s szolgáltatás azon csoportok létezését veszi figyelembe, amik a következő feltételeknek felelnek meg:"
 
 #: templates/part.wizard-groupfilter.php:8
 #: templates/part.wizard-userfilter.php:8
@@ -233,7 +234,7 @@ msgstr "csoport van"
 
 #: templates/part.wizard-loginfilter.php:4
 msgid "Users login with this attribute:"
-msgstr ""
+msgstr "A felhasználók ezzel az attribútummal jelentkeznek be:"
 
 #: templates/part.wizard-loginfilter.php:8
 msgid "LDAP Username:"
@@ -254,67 +255,67 @@ msgid ""
 "username in the login action. Example: \"uid=%%uid\""
 msgstr "Ez a szűrő érvényes a bejelentkezés megkísérlésekor. Ekkor az %%uid változó helyére a bejelentkezési név kerül. Például: \"uid=%%uid\""
 
-#: templates/part.wizard-server.php:6
-msgid "1. Server"
-msgstr ""
-
 #: templates/part.wizard-server.php:13
+msgid "1. Server"
+msgstr "1. Kiszolgáló"
+
+#: templates/part.wizard-server.php:20
 #, php-format
 msgid "%s. Server:"
-msgstr ""
+msgstr "%s. kiszolgáló"
 
-#: templates/part.wizard-server.php:18
+#: templates/part.wizard-server.php:25
 msgid "Add Server Configuration"
 msgstr "Új kiszolgáló beállításának hozzáadása"
 
-#: templates/part.wizard-server.php:21
+#: templates/part.wizard-server.php:28
 msgid "Delete Configuration"
-msgstr ""
+msgstr "Konfiguráció törlés"
 
-#: templates/part.wizard-server.php:30
+#: templates/part.wizard-server.php:37
 msgid "Host"
 msgstr "Kiszolgáló"
 
-#: templates/part.wizard-server.php:31
+#: templates/part.wizard-server.php:38
 msgid ""
 "You can omit the protocol, except you require SSL. Then start with ldaps://"
 msgstr "A protokoll előtag elhagyható, kivéve, ha SSL-t kíván használni. Ebben az esetben kezdje így:  ldaps://"
 
-#: templates/part.wizard-server.php:36
+#: templates/part.wizard-server.php:43
 msgid "Port"
 msgstr "Port"
 
-#: templates/part.wizard-server.php:44
+#: templates/part.wizard-server.php:51
 msgid "User DN"
 msgstr "A kapcsolódó felhasználó DN-je"
 
-#: templates/part.wizard-server.php:45
+#: templates/part.wizard-server.php:52
 msgid ""
 "The DN of the client user with which the bind shall be done, e.g. "
 "uid=agent,dc=example,dc=com. For anonymous access, leave DN and Password "
 "empty."
 msgstr "Annak a felhasználónak a DN-je, akinek a nevében bejelentkezve kapcsolódunk a kiszolgálóhoz, pl. uid=agent,dc=example,dc=com. Bejelentkezés nélküli eléréshez ne töltse ki a DN és Jelszó mezőket!"
 
-#: templates/part.wizard-server.php:52
+#: templates/part.wizard-server.php:59
 msgid "Password"
 msgstr "Jelszó"
 
-#: templates/part.wizard-server.php:53
+#: templates/part.wizard-server.php:60
 msgid "For anonymous access, leave DN and Password empty."
 msgstr "Bejelentkezés nélküli eléréshez ne töltse ki a DN és Jelszó mezőket!"
 
-#: templates/part.wizard-server.php:60
+#: templates/part.wizard-server.php:67
 msgid "One Base DN per line"
 msgstr "Soronként egy DN-gyökér"
 
-#: templates/part.wizard-server.php:61
+#: templates/part.wizard-server.php:68
 msgid "You can specify Base DN for users and groups in the Advanced tab"
 msgstr "A Haladó fülre kattintva külön DN-gyökér állítható be a felhasználók és a csoportok számára"
 
 #: templates/part.wizard-userfilter.php:4
 #, php-format
 msgid "Limit %s access to users meeting these criteria:"
-msgstr ""
+msgstr "Korlátozzuk a %s szolgáltatás elérését azokra a felhasználókra, akik megfelelnek a következő feltételeknek:"
 
 #: templates/part.wizard-userfilter.php:31
 #, php-format
@@ -336,7 +337,7 @@ msgstr "Folytatás"
 
 #: templates/settings.php:7
 msgid "Expert"
-msgstr ""
+msgstr "Gyakorlott"
 
 #: templates/settings.php:8
 msgid "Advanced"
@@ -391,7 +392,7 @@ msgstr "Csak a másodlagos (másolati) kiszolgálóhoz kapcsolódjunk."
 
 #: templates/settings.php:26
 msgid "Case insensitive LDAP server (Windows)"
-msgstr ""
+msgstr "Az LDAP-kiszolgáló nem tesz különbséget a kis- és nagybetűk között (Windows)"
 
 #: templates/settings.php:27
 msgid "Turn off SSL certificate validation."
@@ -472,18 +473,18 @@ msgstr "Egymásba ágyazott csoportok"
 msgid ""
 "When switched on, groups that contain groups are supported. (Only works if "
 "the group member attribute contains DNs.)"
-msgstr ""
+msgstr "Amikor be van kapcsolva, akkor azokat a csoportokat is kezelni tudjuk, melyekben a személyek mellett csoportok is vannak. (Csak akkor működik, ha a csoportok \"member\" attribútuma DN-eket tartalmaz.)"
 
 #: templates/settings.php:40
 msgid "Paging chunksize"
-msgstr ""
+msgstr "Lapméret paging esetén"
 
 #: templates/settings.php:40
 msgid ""
 "Chunksize used for paged LDAP searches that may return bulky results like "
 "user or group enumeration. (Setting it 0 disables paged LDAP searches in "
 "those situations.)"
-msgstr ""
+msgstr "A lapméret megadásával korlátozható az egy fordulóban kapott találatok száma, akkor is, ha az LDAP-keresés nagyon sok találatot ad, ha ezt az LDAP-kiszolgáló támogatja. (Ha 0-ra állítjuk, akkor ezáltal letiltjuk ezt a lapozó funkciót.)"
 
 #: templates/settings.php:42
 msgid "Special Attributes"
@@ -503,7 +504,7 @@ msgstr "bájtban"
 
 #: templates/settings.php:46
 msgid "Email Field"
-msgstr "Email mező"
+msgstr "E-mail mező"
 
 #: templates/settings.php:47
 msgid "User Home Folder Naming Rule"
@@ -533,7 +534,7 @@ msgid ""
 "behavior as before ownCloud 5 enter the user display name attribute in the "
 "following field. Leave it empty for default behavior. Changes will have "
 "effect only on newly mapped (added) LDAP users."
-msgstr "Alapértelmezetten a belső felhasználónév az UUID tulajdonságból jön létre. Ez biztosítja a felhasználónév egyediségét és hogy a nem kell konvertálni a karaktereket benne. A belső felhasználónévnél a megkötés az, hogy csak a következő karakterek engdélyezettek benne: [ a-zA-Z0-9_.@- ]. Ezeken a karaktereken kivül minden karakter le lesz cserélve az adott karakter ASCII kódtáblában használható párjára vagy ha ilyen nincs akkor egyszerűen ki lesz hagyva. Ha így mégis ütköznének a nevek akkor hozzá lesz füzve egy folyamatosan növekvő számláló rész. A  belső felhasználónevet lehet használni a felhasználó azonosítására a programon belül. Illetve ez lesz az alapáértelmezett neve a felhasználó kezdő könyvtárának az ownCloud-ban. Illetve..............................."
+msgstr "Alapértelmezetten a belső felhasználónév az UUID attribútumból jön létre. Ez biztosítja a felhasználónév egyediségét, ill. azt, hogy a karaktereket nem kell konvertálni benne. A belső felhasználónévben csak a következő karakterek engdélyezettek: [ a-zA-Z0-9_.@- ]. Minden más karakter vagy az ASCII kódtáblában levő megfelelőjére cserélődik ki, vagy ha ilyen nincs, akkor egyszerűen kihagyódik. Ha az így kapott nevek mégis ütköznének, akkor a végükön kiegészülnek egy növekvő sorszámmal. A  belső felhasználónév a programon belül azonosítja a felhasználót, valamint alapértelmezetten ez lesz a felhasználó személyes home könyvtárának a neve is. A belső felhasználónév adja a távoli elérések webcímének egy részét is, ilyenek pl. a *DAV szolgáltatások URL-jei. Ezzel a beállítással felülbírálhatjuk az alapértelmezett viselkedést. Ha az ownCloud 5-ös változata előtti viselkedést szeretné elérni, akkor a következő mezőben adja meg a felhasználó megjelenítési nevének attribútumát. Az alapértelmezett viselkedéshez hagyja üresen. A változtatás csak az újonnan létrejövő (újonnan megfeleltetett) LDAP felhasználók esetén érvényesül."
 
 #: templates/settings.php:55
 msgid "Internal Username Attribute:"

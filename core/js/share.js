@@ -231,7 +231,7 @@ OC.Share={
 		var shareFolderIcon;
 		var image = OC.imagePath('core', 'actions/share');
 		// update folder icon
-		if (type === 'dir' && (hasShares || hasLink)) {
+		if (type === 'dir' && (hasShares || hasLink || owner)) {
 			if (hasLink) {
 				shareFolderIcon = OC.imagePath('core', 'filetypes/folder-public');
 			}
@@ -436,30 +436,19 @@ OC.Share={
 						}
 					}
 					if (share.expiration != null) {
-						OC.Share.showExpirationDate(share.expiration);
+						OC.Share.showExpirationDate(share.expiration, share.stime);
 					}
 				});
 			}
 			$('#shareWith').autocomplete({minLength: 1, source: function(search, response) {
-	//			if (cache[search.term]) {
-	//				response(cache[search.term]);
-	//			} else {
 					$.get(OC.filePath('core', 'ajax', 'share.php'), { fetch: 'getShareWith', search: search.term, itemShares: OC.Share.itemShares }, function(result) {
 						if (result.status == 'success' && result.data.length > 0) {
 							$( "#shareWith" ).autocomplete( "option", "autoFocus", true );
 							response(result.data);
 						} else {
-							// Suggest sharing via email if valid email address
-//							var pattern = new RegExp(/^[+a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i);
-//							if (pattern.test(search.term)) {
-//								response([{label: t('core', 'Share via email:')+' '+search.term, value: {shareType: OC.Share.SHARE_TYPE_EMAIL, shareWith: search.term}}]);
-//							} else {
-								$( "#shareWith" ).autocomplete( "option", "autoFocus", false );
-								response([t('core', 'No people found')]);
-//							}
+							response();
 						}
 					});
-	//			}
 			},
 			focus: function(event, focused) {
 				event.preventDefault();
@@ -488,7 +477,7 @@ OC.Share={
 				if (possiblePermissions & OC.PERMISSION_DELETE) {
 					permissions = permissions | OC.PERMISSION_DELETE;
 				}
-				if (possiblePermissions & OC.PERMISSION_SHARE) {
+				if (oc_appconfig.core.resharingAllowed && (possiblePermissions & OC.PERMISSION_SHARE)) {
 					permissions = permissions | OC.PERMISSION_SHARE;
 				}
 
@@ -514,7 +503,7 @@ OC.Share={
 					.append( insert )
 					.appendTo( ul );
 			};
-			if (link) {
+			if (link && linksAllowed) {
 				$('#email').autocomplete({
 					minLength: 1,
 					source: function (search, response) {
@@ -620,7 +609,7 @@ OC.Share={
 				}
 				html += '<label><input type="checkbox" name="mailNotification" class="mailNotification" ' + checked + ' />'+t('core', 'notify by email')+'</label> ';
 			}
-			if (possiblePermissions & OC.PERMISSION_SHARE) {
+			if (oc_appconfig.core.resharingAllowed && (possiblePermissions & OC.PERMISSION_SHARE)) {
 				html += '<label><input type="checkbox" name="share" class="permissions" '+shareChecked+' data-permissions="'+OC.PERMISSION_SHARE+'" />'+t('core', 'can share')+'</label>';
 			}
 			if (possiblePermissions & OC.PERMISSION_CREATE || possiblePermissions & OC.PERMISSION_UPDATE || possiblePermissions & OC.PERMISSION_DELETE) {
@@ -716,7 +705,27 @@ OC.Share={
 	dirname:function(path) {
 		return path.replace(/\\/g,'/').replace(/\/[^\/]*$/, '');
 	},
-	showExpirationDate:function(date) {
+	/**
+	 * Displays the expiration date field
+	 *
+	 * @param {Date} date current expiration date
+	 * @param {int} [shareTime] share timestamp in seconds, defaults to now
+	 */
+	showExpirationDate:function(date, shareTime) {
+		var now = new Date();
+		// min date should always be the next day
+		var minDate = new Date();
+		minDate.setDate(minDate.getDate()+1);
+		var datePickerOptions = {
+			minDate: minDate,
+			maxDate: null
+		};
+		if (_.isNumber(shareTime)) {
+			shareTime = new Date(shareTime * 1000);
+		}
+		if (!shareTime) {
+			shareTime = now;
+		}
 		$('#expirationCheckbox').attr('checked', true);
 		$('#expirationDate').val(date);
 		$('#expirationDate').show('blind');
@@ -726,19 +735,23 @@ OC.Share={
 		});
 		if (oc_appconfig.core.defaultExpireDateEnforced) {
 			$('#expirationCheckbox').attr('disabled', true);
-			$.datepicker.setDefaults({
-				maxDate : new Date(date.replace(' 00:00:00', ''))
-			});
+			shareTime = OC.Util.stripTime(shareTime).getTime();
+			// max date is share date + X days
+			datePickerOptions.maxDate = new Date(shareTime + oc_appconfig.core.defaultExpireDate * 24 * 3600 * 1000);
 		}
 		if(oc_appconfig.core.defaultExpireDateEnabled) {
 			$('#defaultExpireMessage').show('blind');
 		}
+		$.datepicker.setDefaults(datePickerOptions);
 	}
 };
 
 $(document).ready(function() {
 
 	if(typeof monthNames != 'undefined'){
+		// min date should always be the next day
+		var minDate = new Date();
+		minDate.setDate(minDate.getDate()+1);
 		$.datepicker.setDefaults({
 			monthNames: monthNames,
 			monthNamesShort: $.map(monthNames, function(v) { return v.slice(0,3)+'.'; }),
@@ -746,7 +759,7 @@ $(document).ready(function() {
 			dayNamesMin: $.map(dayNames, function(v) { return v.slice(0,2); }),
 			dayNamesShort: $.map(dayNames, function(v) { return v.slice(0,3)+'.'; }),
 			firstDay: firstDay,
-			minDate : new Date()
+			minDate : minDate
 		});
 	}
 	$(document).on('click', 'a.share', function(event) {

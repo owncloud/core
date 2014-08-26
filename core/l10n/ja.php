@@ -1,6 +1,5 @@
 <?php
 $TRANSLATIONS = array(
-"Expiration date is in the past." => "有効期限が切れています。",
 "Couldn't send mail to following users: %s " => "次のユーザーにメールを送信できませんでした: %s",
 "Turned on maintenance mode" => "メンテナンスモードがオンになりました",
 "Turned off maintenance mode" => "メンテナンスモードがオフになりました",
@@ -94,8 +93,6 @@ $TRANSLATIONS = array(
 "Send" => "送信",
 "Set expiration date" => "有効期限を設定",
 "Expiration date" => "有効期限",
-"Share via email:" => "メール経由で共有:",
-"No people found" => "ユーザーが見つかりません",
 "group" => "グループ",
 "Resharing is not allowed" => "再共有は許可されていません",
 "Shared in {item} with {user}" => "{item} 内で {user} と共有中",
@@ -160,7 +157,7 @@ $TRANSLATIONS = array(
 "Please update your PHP installation to use %s securely." => "%s を安全に利用するため、インストールされているPHPをアップデートしてください。",
 "No secure random number generator is available, please enable the PHP OpenSSL extension." => "セキュアな乱数生成器が利用可能ではありません。PHPのOpenSSL拡張を有効にしてください。",
 "Without a secure random number generator an attacker may be able to predict password reset tokens and take over your account." => "セキュアな乱数生成器が無い場合、攻撃者がパスワードリセットのトークンを予測してアカウントを乗っ取られる可能性があります。",
-"Your data directory and files are probably accessible from the internet because the .htaccess file does not work." => ".htaccess ファイルが動作していないため、おそらくあなたのデータディレクトリもしくはファイルはインターネットからアクセス可能です。",
+"Your data directory and files are probably accessible from the internet because the .htaccess file does not work." => ".htaccessファイルが動作していないため、おそらくあなたのデータディレクトリまたはファイルはインターネットからアクセス可能になっています。",
 "For information how to properly configure your server, please see the <a href=\"%s\" target=\"_blank\">documentation</a>." => "サーバーを適正に設定する情報は、こちらの<a href=\"%s\" target=\"_blank\">ドキュメント</a>を参照してください。",
 "Create an <strong>admin account</strong>" => "<strong>管理者アカウント</strong>を作成してください",
 "Password" => "パスワード",
@@ -179,9 +176,6 @@ $TRANSLATIONS = array(
 "This application requires JavaScript to be enabled for correct operation.  Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable JavaScript</a> and re-load this interface." => "このアプリケーションを使用するにはJavaScriptが必要です。\n<a href=\"http://enable-javascript.com/\" target=\"_blank\">JavaScriptを有効にし</a>、インターフェースを更新してください。 ",
 "%s is available. Get more information on how to update." => "%s が利用可能です。アップデート方法について詳細情報を確認してください。",
 "Log out" => "ログアウト",
-"Automatic logon rejected!" => "自動ログインは拒否されました！",
-"If you did not change your password recently, your account may be compromised!" => "最近パスワードを変更していない場合、あなたのアカウントが危険にさらされている可能性があります!",
-"Please change your password to secure your account again." => "アカウント保護のため、パスワードを再度変更してください。",
 "Server side authentication failed!" => "サーバーサイドの認証に失敗しました！",
 "Please contact your administrator." => "管理者に問い合わせてください。",
 "Forgot your password? Reset it!" => "パスワードを忘れましたか？リセットします！",
@@ -193,12 +187,14 @@ $TRANSLATIONS = array(
 "This means only administrators can use the instance." => "これは、管理者のみがインスタンスを利用できることを意味しています。",
 "Contact your system administrator if this message persists or appeared unexpectedly." => "このメッセージが引き続きもしくは予期せず現れる場合は、システム管理者に連絡してください。",
 "Thank you for your patience." => "しばらくお待ちください。",
+"You are accessing the server from an untrusted domain." => "信頼されていないドメインからサーバーにアクセスしています。",
+"Please contact your administrator. If you are an administrator of this instance, configure the \"trusted_domain\" setting in config/config.php. An example configuration is provided in config/config.sample.php." => "管理者に連絡してください。このサーバーの管理者の場合は、\"trusted_domain\" の設定を config/config.php に設定してください。config/config.sample.php にサンプルの設定方法が記載してあります。",
 "%s will be updated to version %s." => "%s はバージョン %s にアップデートされました。",
 "The following apps will be disabled:" => "以下のアプリは無効です：",
 "The theme %s has been disabled." => "テーマ %s が無効になっています。",
-"Please make sure that the database, the config folder and the data folder have been backed up before proceeding." => "データベースを確認してください。実行前にconfig フォルダとdata フォルダをバックアップします。",
+"Please make sure that the database, the config folder and the data folder have been backed up before proceeding." => "データベースを確認してください。実行前にconfigフォルダーとdataフォルダーをバックアップします。",
 "Start update" => "アップデートを開始",
-"This ownCloud instance is currently being updated, which may take a while." => "この ownCloud インスタンスは現在アップデート中のため、しばらく時間がかかります。",
-"Please reload this page after a short time to continue using ownCloud." => "ownCloud を続けて利用するには、しばらくした後でページをリロードしてください。"
+"This ownCloud instance is currently being updated, which may take a while." => "このownCloudインスタンスは現在アップデート中のため、しばらく時間がかかります。",
+"Please reload this page after a short time to continue using ownCloud." => "ownCloudを続けて利用するには、しばらく待ってからページを再読み込みしてください。"
 );
 $PLURAL_FORMS = "nplurals=1; plural=0;";

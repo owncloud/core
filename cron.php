@@ -48,6 +48,11 @@ try {
 
 	require_once 'lib/base.php';
 
+	if (\OCP\Util::needUpgrade()) {
+		\OCP\Util::writeLog('cron', 'Update required, skipping cron', \OCP\Util::DEBUG);
+		exit();
+	}
+
 	// load all apps to get all api routes properly setup
 	OC_App::loadApps();
 
@@ -117,8 +122,10 @@ try {
 			// Work and success :-)
 			$jobList = \OC::$server->getJobList();
 			$job = $jobList->getNext();
-			$job->execute($jobList, $logger);
-			$jobList->setLastJob($job);
+			if ($job != null) {
+				$job->execute($jobList, $logger);
+				$jobList->setLastJob($job);
+			}
 			OC_JSON::success();
 		}
 	}

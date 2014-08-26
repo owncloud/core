@@ -274,10 +274,11 @@ class Share extends \OC\Share\Constants {
 	 * @param string $itemType
 	 * @param string $itemSource
 	 * @param int $shareType SHARE_TYPE_USER, SHARE_TYPE_GROUP, or SHARE_TYPE_LINK
+	 * @param string $recipient with whom was the item shared
 	 * @param bool $status
 	 */
-	public static function setSendMailStatus($itemType, $itemSource, $shareType, $status) {
-		return \OC\Share\Share::setSendMailStatus($itemType, $itemSource, $shareType, $status);
+	public static function setSendMailStatus($itemType, $itemSource, $shareType, $recipient, $status) {
+		return \OC\Share\Share::setSendMailStatus($itemType, $itemSource, $shareType, $recipient, $status);
 	}
 
 	/**
@@ -298,10 +299,11 @@ class Share extends \OC\Share\Constants {
 	 * @param string $itemType
 	 * @param string $itemSource
 	 * @param string $date expiration date
+	 * @param int $shareTime timestamp from when the file was shared
 	 * @return boolean
 	 */
-	public static function setExpirationDate($itemType, $itemSource, $date) {
-		return \OC\Share\Share::setExpirationDate($itemType, $itemSource, $date);
+	public static function setExpirationDate($itemType, $itemSource, $date, $shareTime = null) {
+		return \OC\Share\Share::setExpirationDate($itemType, $itemSource, $date, $shareTime);
 	}
 
 	/**
@@ -328,6 +330,15 @@ class Share extends \OC\Share\Constants {
 	 */
 	public static function checkPasswordProtectedShare(array $linkItem) {
 		return \OC\Share\Share::checkPasswordProtectedShare($linkItem);
+	}
+
+	/**
+	 * Check if resharing is allowed
+	 *
+	 * @return boolean true if allowed or false
+	 */
+	public static function isResharingAllowed() {
+		return \OC\Share\Share::isResharingAllowed();
 	}
 }
 

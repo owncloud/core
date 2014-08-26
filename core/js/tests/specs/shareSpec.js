@@ -44,6 +44,12 @@ describe('OC.Share tests', function() {
 
 			autocompleteStub = sinon.stub($.fn, 'autocomplete', function() {
 				// dummy container with the expected attributes
+				if (!$(this).length) {
+					// simulate the real autocomplete that returns
+					// nothing at all when no element is specified
+					// (and potentially break stuff)
+					return null;
+				}
 				var $el = $('<div></div>').data('ui-autocomplete', {});
 				return $el;
 			});
@@ -60,7 +66,7 @@ describe('OC.Share tests', function() {
 				'file',
 			   	123,
 			   	$container,
-				'http://localhost/dummylink',
+				true,
 				31,
 				'shared_file_name.txt'
 			);
@@ -73,7 +79,7 @@ describe('OC.Share tests', function() {
 				'file',
 			   	123,
 			   	$container,
-				'http://localhost/dummylink',
+				true,
 				31,
 				'shared_file_name.txt'
 			);
@@ -82,16 +88,6 @@ describe('OC.Share tests', function() {
 			expect($el.attr('data-item-type')).toEqual('file');
 			expect($el.attr('data-item-source')).toEqual('123');
 			// TODO: expect that other parts are rendered correctly
-		});
-		it('shows default expiration date when set', function() {
-			oc_appconfig.core.defaultExpireDateEnabled = "yes";
-			oc_appconfig.core.defaultExpireDate = '';
-			// TODO: expect that default date was set
-		});
-		it('shows default expiration date is set but disabled', function() {
-			oc_appconfig.core.defaultExpireDateEnabled = "no";
-			oc_appconfig.core.defaultExpireDate = '';
-			// TODO: expect that default date was NOT set
 		});
 		describe('Share with link', function() {
 			// TODO: test ajax calls
@@ -102,7 +98,7 @@ describe('OC.Share tests', function() {
 					'file',
 					123,
 					$container,
-					'http://localhost/dummylink',
+					true,		
 					31,
 					'shared_file_name.txt'
 				);
@@ -114,7 +110,7 @@ describe('OC.Share tests', function() {
 					'file',
 					123,
 					$container,
-					'http://localhost/dummylink',
+					true,		
 					31,
 					'shared_file_name.txt'
 				);
@@ -148,7 +144,7 @@ describe('OC.Share tests', function() {
 					'file',
 					123,
 					$container,
-					'http://localhost/dummylink',
+					true,
 					31,
 					'folder'
 				);
@@ -186,7 +182,7 @@ describe('OC.Share tests', function() {
 					'file',
 					456, // another file
 					$container,
-					'http://localhost/dummylink',
+					true,
 					31,
 					'folder'
 				);
@@ -240,7 +236,7 @@ describe('OC.Share tests', function() {
 					'folder',
 					123,
 					$container,
-					'http://localhost/dummylink',
+					true,
 					31,
 					'folder'
 				);
@@ -255,7 +251,7 @@ describe('OC.Share tests', function() {
 					'file',
 					456,
 					$container,
-					'http://localhost/dummylink',
+					true,
 					31,
 					'file_in_folder.txt'
 				);
@@ -264,6 +260,137 @@ describe('OC.Share tests', function() {
 				link = parent.location.protocol + '//' + location.host +
 					OC.linkTo('', 'public.php')+'?service=files&t=anothertoken';
 				expect($('#dropdown #linkText').val()).toEqual(link);
+			});
+			describe('expiration date', function() {
+				var shareData;
+				var shareItem;
+				var clock;
+				var expectedMinDate;
+
+				function showDropDown() {
+					OC.Share.showDropDown(
+						'file',
+						123,
+						$container,
+						true,
+						31,
+						'folder'
+					);
+				}
+
+				beforeEach(function() {
+					// pick a fake date
+					clock = sinon.useFakeTimers(new Date(2014, 0, 20, 14, 0, 0).getTime());
+					expectedMinDate = new Date(2014, 0, 21, 14, 0, 0);
+					shareItem = {
+						displayname_owner: 'root',
+						expiration: null,
+						file_source: 123,
+						file_target: '/folder',
+						id: 20,
+						item_source: '123',
+						item_type: 'folder',
+						mail_send: '0',
+						parent: null,
+						path: '/folder',
+						permissions: OC.PERMISSION_READ,
+						share_type: OC.Share.SHARE_TYPE_LINK,
+						share_with: null,
+						stime: 1403884258,
+						storage: 1,
+						token: 'tehtoken',
+						uid_owner: 'root'
+					};
+					shareData = {
+						reshare: [],
+						shares: []
+					};
+					loadItemStub.returns(shareData);
+					oc_appconfig.core.defaultExpireDate = 7;
+					oc_appconfig.core.defaultExpireDateEnabled = false;
+					oc_appconfig.core.defaultExpireDateEnforced = false;
+				});
+				afterEach(function() {
+					clock.restore();
+				});
+
+				it('does not check expiration date checkbox when no date was set', function() {
+					shareItem.expiration = null;
+					shareData.shares.push(shareItem);
+					showDropDown();
+					expect($('#dropdown [name=expirationCheckbox]').prop('checked')).toEqual(false);
+					expect($('#dropdown #expirationDate').val()).toEqual('');
+				});
+				it('does not check expiration date checkbox for new share', function() {
+					showDropDown();
+					expect($('#dropdown [name=expirationCheckbox]').prop('checked')).toEqual(false);
+					expect($('#dropdown #expirationDate').val()).toEqual('');
+				});
+				it('checks expiration date checkbox and populates field when expiration date was set', function() {
+					shareItem.expiration = 1234;
+					shareData.shares.push(shareItem);
+					showDropDown();
+					expect($('#dropdown [name=expirationCheckbox]').prop('checked')).toEqual(true);
+					expect($('#dropdown #expirationDate').val()).toEqual('1234');
+				});
+				it('sets default date when default date setting is enabled', function() {
+					/* jshint camelcase:false */
+					oc_appconfig.core.defaultExpireDateEnabled = true;
+					showDropDown();
+					$('#dropdown [name=linkCheckbox]').click();
+					// enabled by default
+					expect($('#dropdown [name=expirationCheckbox]').prop('checked')).toEqual(true);
+					// TODO: those zeros must go...
+					expect($('#dropdown #expirationDate').val()).toEqual('2014-1-27 00:00:00');
+
+					// disabling is allowed
+					$('#dropdown [name=expirationCheckbox]').click();
+					expect($('#dropdown [name=expirationCheckbox]').prop('checked')).toEqual(false);
+				});
+				it('enforces default date when enforced date setting is enabled', function() {
+					/* jshint camelcase:false */
+					oc_appconfig.core.defaultExpireDateEnabled = true;
+					oc_appconfig.core.defaultExpireDateEnforced = true;
+					showDropDown();
+					$('#dropdown [name=linkCheckbox]').click();
+					expect($('#dropdown [name=expirationCheckbox]').prop('checked')).toEqual(true);
+					// TODO: those zeros must go...
+					expect($('#dropdown #expirationDate').val()).toEqual('2014-1-27 00:00:00');
+
+					// disabling is not allowed
+					expect($('#dropdown [name=expirationCheckbox]').prop('disabled')).toEqual(true);
+					$('#dropdown [name=expirationCheckbox]').click();
+					expect($('#dropdown [name=expirationCheckbox]').prop('checked')).toEqual(true);
+				});
+				it('sets picker minDate to today and no maxDate by default', function() {
+					showDropDown();
+					$('#dropdown [name=linkCheckbox]').click();
+					$('#dropdown [name=expirationCheckbox]').click();
+					expect($.datepicker._defaults.minDate).toEqual(expectedMinDate);
+					expect($.datepicker._defaults.maxDate).toEqual(null);
+				});
+				it('limits the date range to X days after share time when enforced', function() {
+					/* jshint camelcase:false */
+					oc_appconfig.core.defaultExpireDateEnabled = true;
+					oc_appconfig.core.defaultExpireDateEnforced = true;
+					showDropDown();
+					$('#dropdown [name=linkCheckbox]').click();
+					expect($.datepicker._defaults.minDate).toEqual(expectedMinDate);
+					expect($.datepicker._defaults.maxDate).toEqual(new Date(2014, 0, 27, 0, 0, 0, 0));
+				});
+				it('limits the date range to X days after share time when enforced, even when redisplayed the next days', function() {
+					// item exists, was created two days ago
+					shareItem.expiration = '2014-1-27';
+					// share time has time component but must be stripped later
+					shareItem.stime = new Date(2014, 0, 20, 11, 0, 25).getTime() / 1000;
+					shareData.shares.push(shareItem);
+					/* jshint camelcase:false */
+					oc_appconfig.core.defaultExpireDateEnabled = true;
+					oc_appconfig.core.defaultExpireDateEnforced = true;
+					showDropDown();
+					expect($.datepicker._defaults.minDate).toEqual(expectedMinDate);
+					expect($.datepicker._defaults.maxDate).toEqual(new Date(2014, 0, 27, 0, 0, 0, 0));
+				});
 			});
 		});
 		describe('"sharesChanged" event', function() {
@@ -286,7 +413,7 @@ describe('OC.Share tests', function() {
 					'file',
 					123,
 					$container,
-					'http://localhost/dummylink',
+					true,
 					31,
 					'shared_file_name.txt'
 				);
@@ -441,7 +568,52 @@ describe('OC.Share tests', function() {
 			});
 		});
 
-		// TODO: add unit tests for folder icons
+		describe('displaying the folder icon', function() {
+			function checkIcon(expectedImage) {
+				var imageUrl = OC.TestUtil.getImageUrl($file.find('.filename'));
+				expectedIcon = OC.imagePath('core', expectedImage);
+				expect(imageUrl).toEqual(expectedIcon);
+			}
+
+			it('shows a plain folder icon for non-shared folders', function() {
+				$file.attr('data-type', 'dir');
+				OC.Share.markFileAsShared($file);
+
+				checkIcon('filetypes/folder');
+			});
+			it('shows a shared folder icon for folders shared with another user', function() {
+				$file.attr('data-type', 'dir');
+				OC.Share.markFileAsShared($file, true);
+
+				checkIcon('filetypes/folder-shared');
+			});
+			it('shows a shared folder icon for folders shared with the current user', function() {
+				$file.attr('data-type', 'dir');
+				$file.attr('data-share-owner', 'someoneelse');
+				OC.Share.markFileAsShared($file);
+
+				checkIcon('filetypes/folder-shared');
+			});
+			it('shows a link folder icon for folders shared with link', function() {
+				$file.attr('data-type', 'dir');
+				OC.Share.markFileAsShared($file, false, true);
+
+				checkIcon('filetypes/folder-public');
+			});
+			it('shows a link folder icon for folders shared with both link and another user', function() {
+				$file.attr('data-type', 'dir');
+				OC.Share.markFileAsShared($file, true, true);
+
+				checkIcon('filetypes/folder-public');
+			});
+			it('shows a link folder icon for folders reshared with link', function() {
+				$file.attr('data-type', 'dir');
+				$file.attr('data-share-owner', 'someoneelse');
+				OC.Share.markFileAsShared($file, false, true);
+
+				checkIcon('filetypes/folder-public');
+			});
+		});
 		// TODO: add unit tests for share recipients
 	});
 });

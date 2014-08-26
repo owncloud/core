@@ -19,8 +19,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-07-16 01:54-0400\n"
-"PO-Revision-Date: 2014-07-16 05:54+0000\n"
+"POT-Creation-Date: 2014-08-26 01:54-0400\n"
+"PO-Revision-Date: 2014-08-26 05:23+0000\n"
 "Last-Translator: I Robot\n"
 "Language-Team: Danish (http://www.transifex.com/projects/p/owncloud/language/da/)\n"
 "MIME-Version: 1.0\n"
@@ -29,11 +29,7 @@ msgstr ""
 "Language: da\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ajax/share.php:90
-msgid "Expiration date is in the past."
-msgstr "Udløbsdatoen er overskredet."
-
-#: ajax/share.php:122 ajax/share.php:164
+#: ajax/share.php:117 ajax/share.php:159
 #, php-format
 msgid "Couldn't send mail to following users: %s "
 msgstr "Kunne ikke sende mail til følgende brugere: %s"
@@ -54,7 +50,16 @@ msgstr "Opdaterede database"
 msgid "Checked database schema update"
 msgstr "Tjekket database schema opdatering"
 
-#: ajax/update.php:27
+#: ajax/update.php:22
+msgid "Checked database schema update for apps"
+msgstr ""
+
+#: ajax/update.php:25
+#, php-format
+msgid "Updated \"%s\" to %s"
+msgstr ""
+
+#: ajax/update.php:33
 #, php-format
 msgid "Disabled incompatible apps: %s"
 msgstr "Deaktiverer inkombatible apps: %s"
@@ -227,7 +232,7 @@ msgstr "sidste år"
 msgid "years ago"
 msgstr "år siden"
 
-#: js/lostpassword.js:3 lostpassword/controller/lostcontroller.php:175
+#: js/lostpassword.js:3 lostpassword/controller/lostcontroller.php:198
 msgid "Couldn't send reset email. Please contact your administrator."
 msgstr "Der opstod et problem under afsending af reset-emailen. Kontakt venligst systemadministratoren."
 
@@ -362,12 +367,12 @@ msgstr "Delt med {recipients}"
 msgid "Share"
 msgstr "Del"
 
-#: js/share.js:326 js/share.js:340 js/share.js:347 js/share.js:989
+#: js/share.js:326 js/share.js:340 js/share.js:347 js/share.js:1002
 #: templates/installation.php:10
 msgid "Error"
 msgstr "Fejl"
 
-#: js/share.js:328 js/share.js:1052
+#: js/share.js:328 js/share.js:1065
 msgid "Error while sharing"
 msgstr "Fejl under deling"
 
@@ -428,79 +433,71 @@ msgstr "Vælg udløbsdato"
 msgid "Expiration date"
 msgstr "Udløbsdato"
 
-#: js/share.js:455
-msgid "Share via email:"
-msgstr "Del via email:"
-
-#: js/share.js:458
-msgid "No people found"
-msgstr "Ingen personer fundet"
-
-#: js/share.js:507 js/share.js:575
+#: js/share.js:496 js/share.js:564
 msgid "group"
 msgstr "gruppe"
 
-#: js/share.js:540
+#: js/share.js:529
 msgid "Resharing is not allowed"
 msgstr "Videredeling ikke tilladt"
 
-#: js/share.js:591
+#: js/share.js:580
 msgid "Shared in {item} with {user}"
 msgstr "Delt i {item} med {user}"
 
-#: js/share.js:613
+#: js/share.js:602
 msgid "Unshare"
 msgstr "Fjern deling"
 
-#: js/share.js:621
+#: js/share.js:610
 msgid "notify by email"
 msgstr "Giv besked med mail"
 
-#: js/share.js:624
+#: js/share.js:613
 msgid "can share"
 msgstr "kan dele"
 
-#: js/share.js:627
+#: js/share.js:616
 msgid "can edit"
 msgstr "kan redigere"
 
-#: js/share.js:629
+#: js/share.js:618
 msgid "access control"
 msgstr "Adgangskontrol"
 
-#: js/share.js:632
+#: js/share.js:621
 msgid "create"
 msgstr "opret"
 
-#: js/share.js:635
+#: js/share.js:624
 msgid "update"
 msgstr "opdater"
 
-#: js/share.js:638
+#: js/share.js:627
 msgid "delete"
 msgstr "slet"
 
-#: js/share.js:970
+#: js/share.js:983
 msgid "Password protected"
 msgstr "Beskyttet med adgangskode"
 
-#: js/share.js:989
+#: js/share.js:1002
 msgid "Error unsetting expiration date"
 msgstr "Fejl ved fjernelse af udløbsdato"
 
-#: js/share.js:1010
+#: js/share.js:1023
 msgid "Error setting expiration date"
 msgstr "Fejl under sætning af udløbsdato"
 
-#: js/share.js:1039
+#: js/share.js:1052
 msgid "Sending ..."
 msgstr "Sender ..."
 
-#: js/share.js:1050
+#: js/share.js:1063
 msgid "Email sent"
 msgstr "E-mail afsendt"
 
-#: js/share.js:1074
+#: js/share.js:1087
 msgid "Warning"
 msgstr "Advarsel"
 
@@ -548,21 +545,21 @@ msgstr "Opdateringen mislykkedes."
 msgid "The update was successful. Redirecting you to ownCloud now."
 msgstr "Opdateringen blev udført korrekt. Du bliver nu viderestillet til ownCloud."
 
-#: lostpassword/controller/lostcontroller.php:110
+#: lostpassword/controller/lostcontroller.php:133
 msgid "Couldn't reset password because the token is invalid"
 msgstr "Kunne ikke nulstille kodeordet, fordi symboludtrykket er ugyldigt"
 
-#: lostpassword/controller/lostcontroller.php:136
+#: lostpassword/controller/lostcontroller.php:159
 msgid "Couldn't send reset email. Please make sure your username is correct."
 msgstr "Der opstod et problem under afsendelse af nulstillings-emailen. Kontroller venligst om dit brugernavnet er korrekt"
 
-#: lostpassword/controller/lostcontroller.php:151
+#: lostpassword/controller/lostcontroller.php:174
 msgid ""
 "Couldn't send reset email because there is no email address for this "
 "username. Please contact your administrator."
 msgstr "Der opstod et problem under afsendelse af nulstillings-emailen. Der ikke er nogen email adresse tilknyttet denne bruger konto. Kontakt venligst systemadministratoren"
 
-#: lostpassword/controller/lostcontroller.php:168
+#: lostpassword/controller/lostcontroller.php:191
 #, php-format
 msgid "%s password reset"
 msgstr "%s adgangskode nulstillet"
@@ -577,7 +574,7 @@ msgstr "Du vil modtage et link til at nulstille dit kodeord via email."
 
 #: lostpassword/templates/lostpassword.php:8
 #: lostpassword/templates/lostpassword.php:9 templates/installation.php:51
-#: templates/installation.php:54 templates/login.php:31 templates/login.php:35
+#: templates/installation.php:54 templates/login.php:23 templates/login.php:27
 msgid "Username"
 msgstr "Brugernavn"
 
@@ -625,7 +622,7 @@ msgstr "Personligt"
 msgid "Users"
 msgstr "Brugere"
 
-#: strings.php:7 templates/layout.user.php:53 templates/layout.user.php:118
+#: strings.php:7 templates/layout.user.php:56 templates/layout.user.php:121
 msgid "Apps"
 msgstr "Apps"
 
@@ -688,7 +685,8 @@ msgstr "Hej med dig\n\nDette blot for at lade dig vide, at %s har delt %s med di
 msgid "The share will expire on %s."
 msgstr "Delingen vil udløbe om %s."
 
-#: templates/altmail.php:7 templates/mail.php:20
+#. TRANSLATORS term at the end of a mail
+#: templates/altmail.php:8 templates/mail.php:21
 msgid "Cheers!"
 msgstr "Hej!"
 
@@ -736,7 +734,7 @@ msgid "Create an <strong>admin account</strong>"
 msgstr "Opret en <strong>administratorkonto</strong>"
 
 #: templates/installation.php:59 templates/installation.php:62
-#: templates/login.php:41 templates/login.php:44
+#: templates/login.php:33 templates/login.php:36
 msgid "Password"
 msgstr "Adgangskode"
 
@@ -791,57 +789,43 @@ msgstr "Afslut opsætning"
 msgid "Finishing …"
 msgstr "Færdigbehandler ..."
 
-#: templates/layout.user.php:40
+#: templates/layout.user.php:43
 msgid ""
 "This application requires JavaScript to be enabled for correct operation.  "
 "Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable "
 "JavaScript</a> and re-load this interface."
 msgstr "Programmet forudsætter at JavaScript er aktiveret for at kunne afvikles korrekt. <a href=\"http://enable-javascript.com/\" target=\"_blank\">Aktiver JavaScript</a> og genindlæs siden.."
 
-#: templates/layout.user.php:44
+#: templates/layout.user.php:47
 #, php-format
 msgid "%s is available. Get more information on how to update."
 msgstr "%s er tilgængelig. Få mere information om, hvordan du opdaterer."
 
-#: templates/layout.user.php:80 templates/singleuser.user.php:8
+#: templates/layout.user.php:83 templates/singleuser.user.php:8
 msgid "Log out"
 msgstr "Log ud"
 
 #: templates/login.php:11
-msgid "Automatic logon rejected!"
-msgstr "Automatisk login afvist!"
-
-#: templates/login.php:12
-msgid ""
-"If you did not change your password recently, your account may be "
-"compromised!"
-msgstr "Hvis du ikke har ændret din adgangskode for nylig, har nogen muligvis tiltvunget sig adgang til din konto!"
-
-#: templates/login.php:14
-msgid "Please change your password to secure your account again."
-msgstr "Skift adgangskode for at sikre din konto igen."
-
-#: templates/login.php:19
 msgid "Server side authentication failed!"
 msgstr "Server side godkendelse mislykkedes!"
 
-#: templates/login.php:20
+#: templates/login.php:12
 msgid "Please contact your administrator."
 msgstr "Kontakt venligst din administrator"
 
-#: templates/login.php:50
+#: templates/login.php:42
 msgid "Forgot your password? Reset it!"
 msgstr "Glemt din adgangskode? Nulstil det!"
 
-#: templates/login.php:55
+#: templates/login.php:47
 msgid "remember"
 msgstr "husk"
 
-#: templates/login.php:59
+#: templates/login.php:51
 msgid "Log in"
 msgstr "Log ind"
 
-#: templates/login.php:65
+#: templates/login.php:57
 msgid "Alternative Logins"
 msgstr "Alternative logins"
 
@@ -870,6 +854,28 @@ msgstr "Kontakt systemadministratoren, hvis denne meddelelse fortsætter eller o
 msgid "Thank you for your patience."
 msgstr "Tak for din tålmodighed."
 
+#: templates/untrustedDomain.php:5
+msgid "You are accessing the server from an untrusted domain."
+msgstr "Du tilgår serveren fra et utroværdigt domæne"
+
+#: templates/untrustedDomain.php:8
+msgid ""
+"Please contact your administrator. If you are an administrator of this "
+"instance, configure the \"trusted_domain\" setting in config/config.php. An "
+"example configuration is provided in config/config.sample.php."
+msgstr "Kontakt venligst din administrator. Hvis du er administrator, konfigurer \"trusted_domain\" indstillingen i config/config.php. Et eksempel kan ses i config/config.sample.php."
+
+#: templates/untrustedDomain.php:10
+msgid ""
+"Depending on your configuration, as an administrator you might also be able "
+"to use the button below to trust this domain."
+msgstr ""
+
+#: templates/untrustedDomain.php:14
+#, php-format
+msgid "Add \"%s\" as trusted domain"
+msgstr ""
+
 #: templates/update.admin.php:3
 #, php-format
 msgid "%s will be updated to version %s."
@@ -893,6 +899,12 @@ msgstr "Venligst sikrer dig en backup af databasen, config-mappen og data-mappen
 #: templates/update.admin.php:23
 msgid "Start update"
 msgstr "Begynd opdatering"
+
+#: templates/update.admin.php:25
+msgid ""
+"To avoid timeouts with larger installations, you can instead run the "
+"following command from your installation directory:"
+msgstr ""
 
 #: templates/update.user.php:3
 msgid ""
