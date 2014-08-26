@@ -46,6 +46,79 @@ class OC_Image {
 		}
 		return $imageType ? image_type_to_mime_type($imageType) : '';
 	}
+	
+	/**
+	* Get image-type for mime-type. Inverse of image_type_to_mime_type()
+	* @param $mtype One of the mime types with a corresponding image type.
+	* @param $swf Specify swf or swc for application/x-shockwave-flash
+	* @param $intelbyteorder Sets byte order for image/tiff
+	* @param $octet Sets type of octet stream. jpc, jpx and jb2 are valid values
+	* @return int One of the IMAGETYPE_XXX constants.
+	* @return null If $mimetype has no corresponding imagetype
+	*/
+	static public function getImageTypeForMimeType($mtype, $swf = true, $intelbyteorder = true, $octet = 'jpc') {
+		switch($mtype){
+			case 'image/gif':
+				$itype = IMAGETYPE_GIF;
+				break;
+			case 'image/jpeg':
+				$itype = IMAGETYPE_JPEG;
+				break;
+			case 'image/png':
+				$itype = IMAGETYPE_PNG;
+				break;
+			case 'application/x-shockwave-flash':
+				if ($swf) {
+					$itype = IMAGETYPE_SWF;
+				} else {
+					$itype = IMAGETYPE_SWC;
+				}
+				break;
+			case 'image/psd':
+				$itype = IMAGETYPE_PSD;
+				break;
+			case 'image/bmp':
+				$itype = IMAGETYPE_BMP;
+				break;
+			case 'image/tiff':
+				if ($intelbyteorder) {
+					$itype = IMAGETYPE_TIFF_II;
+				} else {
+					$itype = IMAGETYPE_TIFF_MM;
+				}
+				break;
+			case 'application/octet-stream':
+				if ($octet === 'jpc') {
+					$itype = IMAGETYPE_JPC;
+				} else if ($octet === 'jpx') {
+					$itype = IMAGETYPE_JPX;
+				} else if ($octet === 'jb2') {
+					$itype = IMAGETYPE_JB2;
+				} else {
+					$itype = null;
+				}
+				break;
+			case 'image/jp2':
+				$itype = IMAGETYPE_JP2;
+				break;
+			case 'image/iff':
+				$itype = IMAGETYPE_IFF;
+				break;
+			case 'image/vnd.wap.wbmp':
+				$itype = IMAGETYPE_WBMP;
+				break;
+			case 'image/xbm':
+				$itype = IMAGETYPE_XBM;
+				break;
+			case 'image/vnd.microsoft.icon':
+				$itype = IMAGETYPE_ICO;
+				break;
+			default:
+				$itype = null;
+		}
+		
+		return $itype;
+	}
 
 	/**
 	 * Constructor.
@@ -83,6 +156,14 @@ class OC_Image {
 	*/
 	public function mimeType() {
 		return $this->valid() ? $this->mimeType : '';
+	}
+
+	/**
+	* Returns the image type of the image or an empty string if no image is loaded.
+	* @return int
+	*/
+	public function imageType() {
+		return $this->valid() ? $this->imageType : '';
 	}
 
 	/**
@@ -534,6 +615,19 @@ class OC_Image {
 		}
 		return $this->resource;
 	}
+	
+	/**
+	* @brief Sets $this->resource from data in a string.
+	* @param $str A string of image data.
+	*/
+	private function setResourceFromString($str) {
+		$this->resource = @imagecreatefromstring($str);
+		if ($this->fileInfo) {
+			$this->mimeType = $this->fileInfo->buffer($str);
+			$this->imageType = self::getImageTypeForMimeType($this->mimeType());
+		}
+	}
+
 
 	/**
 	* Loads an image from a string of data.
@@ -544,10 +638,7 @@ class OC_Image {
 		if(is_resource($str)) {
 			return false;
 		}
-		$this->resource = @imagecreatefromstring($str);
-		if ($this->fileInfo) {
-			$this->mimeType = $this->fileInfo->buffer($str);
-		}
+		$this->setResourceFromString($str);
 		if(is_resource($this->resource)) {
 			imagealphablending($this->resource, false);
 			imagesavealpha($this->resource, true);
@@ -571,10 +662,7 @@ class OC_Image {
 		}
 		$data = base64_decode($str);
 		if($data) { // try to load from string data
-			$this->resource = @imagecreatefromstring($data);
-			if ($this->fileInfo) {
-				$this->mimeType = $this->fileInfo->buffer($data);
-			}
+			$this->setResourceFromString($data);
 			if(!$this->resource) {
 				OC_Log::write('core', 'OC_Image->loadFromBase64, couldn\'t load', OC_Log::DEBUG);
 				return false;
