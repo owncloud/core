@@ -472,6 +472,14 @@ describe('Core base tests', function() {
 					.toEqual(new Date(2014, 2, 24, 0, 0, 0, 0));
 			});
 		});
+		describe('formatDate', function() {
+			it('produces human readable dates from timestamps and date objects', function() {
+				expect(OC.Util.formatDate(0))
+					.toEqual('January 1, 1970 0:00');
+				expect(OC.Util.formatDate(46860))
+					.toEqual('January 1, 1970 13:01');
+			})
+		})
 	});
 });
 

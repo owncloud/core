@@ -390,10 +390,12 @@ var OC={
 		}
 	}, 500),
 	dialogs:OCdialogs,
+
+	/**
+	 * @deprecated in OC8. Please use OC.Util.formatDate().
+	 */
 	mtime2date:function(mtime) {
-		mtime = parseInt(mtime,10);
-		var date = new Date(1000*mtime);
-		return date.getDate()+'.'+(date.getMonth()+1)+'.'+date.getFullYear()+', '+date.getHours()+':'+date.getMinutes();
+		return OC.Util.formatDate(mtime);
 	},
 	
 	/**
@@ -1241,15 +1243,13 @@ function humanFileSize(size, skipSmallSizes) {
 }
 
 /**
+ * @deprecated in OC8. Please use OC.Util.formatDate().
  * Format an UNIX timestamp to a human understandable format
  * @param {number} date UNIX timestamp
  * @return {string} Human readable format
  */
 function formatDate(date){
-	if(typeof date=='number'){
-		date=new Date(date);
-	}
-	return $.datepicker.formatDate(datepickerFormatDate, date)+' '+date.getHours()+':'+((date.getMinutes()<10)?'0':'')+date.getMinutes();
+	return OC.Util.formatDate(date);
 }
 
 // 
@@ -1293,7 +1293,13 @@ function relative_modified_date(timestamp) {
 OC.Util = {
 	// TODO: remove original functions from global namespace
 	humanFileSize: humanFileSize,
-	formatDate: formatDate,
+
+	formatDate: function(date) {
+		if(typeof date=='number'){
+			date=new Date(date*1000);
+		}
+		return $.datepicker.formatDate(datepickerFormatDate, date)+' '+date.getHours()+':'+((date.getMinutes()<10)?'0':'')+date.getMinutes();
+	},
 	/**
 	 * Returns whether the browser supports SVG
 	 * @return {boolean} true if the browser supports SVG, false otherwise
