@@ -32,7 +32,8 @@ before_install:
 - sudo apt-get update
 - mkdir -p buildout-cache/downloads
 - python build/bootstrap.py
-- build/bin/buildout -N -t 3
+- cd build/
+- bin/buildout -N -t 3
 - sudo apt-get install apache2 libapache2-mod-fastcgi
 - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
 - sudo a2enmod rewrite actions fastcgi alias
