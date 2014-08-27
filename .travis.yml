@@ -85,7 +85,7 @@ script:
 
 after_success:
   - cd build/parts/test/
-  - "find -type f -exec curl -v -u $FTP_USER:$FTP_PASSWORD --ftp-create-dirs -T {} ftp://ci.owncloud.com/robotframework/{} \;"
+  - find -type f -exec curl -v -u $FTP_USER:$FTP_PASSWORD --ftp-create-dirs -T {} ftp://ci.owncloud.com/robotframework/{} \;
 
 branches:
   only:
