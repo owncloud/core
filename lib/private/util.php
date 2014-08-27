@@ -120,7 +120,7 @@ class OC_Util {
 				$userDirectory = $userRoot . '/files';
 				if( !is_dir( $userDirectory )) {
 					mkdir( $userDirectory, 0755, true );
-					OC_Util::copySkeleton($userDirectory);
+					OC_Hook::emit('OC_Filesystem', 'createHome', array('user' => $user));
 				}
 			}
 
@@ -204,18 +204,8 @@ class OC_Util {
 	}
 
 	/**
-	 * copies the user skeleton files into the fresh user home files
-	 * @param string $userDirectory
-	 */
-	public static function copySkeleton($userDirectory) {
-		$skeletonDirectory = OC_Config::getValue('skeletondirectory', \OC::$SERVERROOT.'/core/skeleton');
-		if (!empty($skeletonDirectory)) {
-			OC_Util::copyr($skeletonDirectory , $userDirectory);
-		}
-	}
-
-	/**
 	 * copies a directory recursively
+	 *
 	 * @param string $source
 	 * @param string $target
 	 * @return void
