@@ -276,35 +276,65 @@ abstract class Storage extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(file_get_contents($localFile), 'foo');
 	}
 
-	public function testStat() {
+	public function testFileHasUpdated() {
+		$textFile = \OC::$SERVERROOT . '/tests/data/lorem.txt';
+		$ctime = time();
+		$this->instance->file_put_contents('/lorem.txt', file_get_contents($textFile));
+		$this->wait();
+		$this->assertTrue($this->instance->hasUpdated('/lorem.txt', $ctime - 5));
+	}
+	public function testRootHasUpdatedAfterCreatingFile() {
+		$textFile = \OC::$SERVERROOT . '/tests/data/lorem.txt';
+		$ctime = time();
+		$this->instance->file_put_contents('/lorem.txt', file_get_contents($textFile));
+		$this->wait();
+		$this->assertTrue($this->instance->hasUpdated('/', $ctime - 5));
+	}
+	public function testRootHasUpdatedAfterUnlinkingFile() {
+		$textFile = \OC::$SERVERROOT . '/tests/data/lorem.txt';
+		$this->instance->file_put_contents('/lorem.txt', file_get_contents($textFile));
+		$this->wait();
+		$mtimeStart = time();
+		$this->instance->unlink('/lorem.txt');
+		$this->assertTrue($this->instance->hasUpdated('/', $mtimeStart - 5));
+	}
+
+	public function testMtime() {
 		$textFile = \OC::$SERVERROOT . '/tests/data/lorem.txt';
 		$ctimeStart = time();
 		$this->instance->file_put_contents('/lorem.txt', file_get_contents($textFile));
-		$this->assertTrue($this->instance->isReadable('/lorem.txt'));
 		$ctimeEnd = time();
+		$this->wait();
 		$mTime = $this->instance->filemtime('/lorem.txt');
-		$this->assertTrue($this->instance->hasUpdated('/lorem.txt', $ctimeStart - 5));
-		$this->assertTrue($this->instance->hasUpdated('/', $ctimeStart - 5));
-
 		// check that ($ctimeStart - 5) <= $mTime <= ($ctimeEnd + 1)
 		$this->assertGreaterThanOrEqual(($ctimeStart - 5), $mTime);
 		$this->assertLessThanOrEqual(($ctimeEnd + 1), $mTime);
-		$this->assertEquals(filesize($textFile), $this->instance->filesize('/lorem.txt'));
-
 		$stat = $this->instance->stat('/lorem.txt');
-		//only size and mtime are required in the result
-		$this->assertEquals($stat['size'], $this->instance->filesize('/lorem.txt'));
 		$this->assertEquals($stat['mtime'], $mTime);
+	}
 
+	public function testTouchSpecifiedMtime() {
 		if ($this->instance->touch('/lorem.txt', 100) !== false) {
 			$mTime = $this->instance->filemtime('/lorem.txt');
 			$this->assertEquals($mTime, 100);
 		}
+	}
 
-		$mtimeStart = time();
+	public function testFilesize() {
+		$textFile = \OC::$SERVERROOT . '/tests/data/lorem.txt';
+		$this->instance->file_put_contents('/lorem.txt', file_get_contents($textFile));
+		$this->wait();
+		$this->assertEquals(filesize($textFile), $this->instance->filesize('/lorem.txt'));
+	}
 
-		$this->instance->unlink('/lorem.txt');
-		$this->assertTrue($this->instance->hasUpdated('/', $mtimeStart - 5));
+	public function testStat() {
+		$textFile = \OC::$SERVERROOT . '/tests/data/lorem.txt';
+		$this->instance->file_put_contents('/lorem.txt', file_get_contents($textFile));
+		$this->wait();
+		$stat = $this->instance->stat('/lorem.txt');
+		//only size and mtime are required in the result
+		$this->assertEquals($stat['size'], $this->instance->filesize('/lorem.txt'));
+		$this->assertEquals($stat['mtime'], $this->instance->filemtime('/lorem.txt'));
 	}
 
 	public function testUnlink() {
