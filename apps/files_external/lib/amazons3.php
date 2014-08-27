@@ -445,8 +445,14 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 				return false;
 			}
 		} else {
+
+			/**
+			 * If path2 exists we are overwriting something. Directories in S3 are
+			 * virtual, so keys in path2 will not be removed when the directory is
+			 * overwritten. Therefore, remove path2 before continuing.
+			 */
 			if ($this->file_exists($path2)) {
-				return false;
+				$this->unlink($path2);
 			}
 
 			try {
@@ -482,28 +488,13 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 		$path1 = $this->normalizePath($path1);
 		$path2 = $this->normalizePath($path2);
 
-		if ($this->is_file($path1)) {
-			if ($this->copy($path1, $path2) === false) {
-				return false;
-			}
+		if ($this->copy($path1, $path2) === false) {
+			return false;
+		}
 
-			if ($this->unlink($path1) === false) {
-				$this->unlink($path2);
-				return false;
-			}
-		} else {
-			if ($this->file_exists($path2)) {
-				return false;
-			}
-
-			if ($this->copy($path1, $path2) === false) {
-				return false;
-			}
-
-			if ($this->rmdir($path1) === false) {
-				$this->rmdir($path2);
-				return false;
-			}
+		if ($this->unlink($path1) === false) {
+			$this->unlink($path2);
+			return false;
 		}
 
 		return true;
