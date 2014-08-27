@@ -1,0 +1,80 @@
+ownCloud – web services under your control
+
+* Store your files centrally, encrypted, on hardware controlled by you, with automatic backup & versioning
+* Work on- and offline synchronize your desktop apps or use online media player, photo gallery, feed reader etc.
+* Access everywhere it’s a web application you can reach easily with any device
+* Share files with your friends and coworkers
+
+http://ownCloud.org
+
+
+Thanks to all artists of included media!
+
+
+Images:
+
+Demo Image - Laser Towards Milky Ways Centre by Yuri Beletsky.jpg
+http://commons.wikimedia.org/wiki/File:Laser_Towards_Milky_Ways_Centre.jpg
+Creative Commons Attribution, http://creativecommons.org/licenses/by/3.0/
+
+Demo Image - Northern Lights by Joshua Strang.jpg
+http://commons.wikimedia.org/wiki/File:Polarlicht_2.jpg
+Public Domain
+
+Demo Image - ccc.jpg
+hacking.jpg
+mate.jpg
+r0ket.jpg
+by Christopher Schirner
+http://www.flickr.com/photos/pixelmurder/
+Creative Commons Attribution-ShareAlike, http://creativecommons.org/licenses/by-sa/3.0/
+
+
+Music:
+
+Demo MP3 - E.J. - Blick Zurück.mp3
+by E.J.
+Creative Commons Attribution-NonCommercial-ShareAlike, http://creativecommons.org/licenses/by-nc-sa/3.0/
+
+brokenkites - parameter reallocation
+by Brokenkites
+http://brokenkites.com
+Attribution-NonCommercial-NoDerivs, http://creativecommons.org/licenses/by-nc-nd/3.0/
+
+
+Code:
+
+Demo Code - Python.py
+by Albert Sweigart
+http://inventwithpython.com
+http://creativecommons.org/licenses/by-nc-sa/3.0/us/
+
+Demo Code - PHP.php
+by Robin Appelman
+GNU AFFERO GENERAL PUBLIC LICENSE
+
+Demo Code - C++.cc
+by xandy
+http://twitter.com/xandy
+Creative Commons Attribution-NonCommercial-ShareAlike, http://creativecommons.org/licenses/by-nc-sa/3.0/
+
+
+Videos:
+
+Demo Movie OGG - Big Bug Bunny Trailer.ogg
+Demo Movie MOV - Big Bug Bunny Trailer.mov
+http://bigbuckbunny.org
+Creative Commons Attribution, http://creativecommons.org/licenses/by/3.0/
+
+
+Other:
+
+Demo PDF - Alice's Adventures in Wonderland.pdf
+by Lewis Carroll
+http://gutenberg.org/ebooks/11
+Public Domain
+
+
+
+
+
