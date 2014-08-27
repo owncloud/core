@@ -21,24 +21,38 @@
 *
 */
 try {
-
 	require_once 'lib/base.php';
 
-	$l10n = new OC_L10N('settings');
-	print_r($l10n->getTranslations());
-	$b = '<br>';
-	$lang = 'ko';
-	$app = OC_App::cleanAppId('settings');
-	echo $app.$b;
-	echo OC_App::getAppPath($app).$b;
-	echo file_exists(OC_App::getAppPath($app).'/l10n/')?'true':'false';
-	echo $b;
-	$i18ndir = OC::$SERVERROOT.'/'.$app.'/l10n/';
-	echo $i18ndir.$b;
-	$transFile = strip_tags($i18ndir).strip_tags($lang).'.php';
-	echo $transFile.$b;
-	echo OC_Util::encryptText('oc_owncloud').$b;
-	echo OC_Util::encryptText('facc7377cfcd54de12e9012547819c').$b;
+	// $l = OC_L10N::get('files_sharing');
+
+	// OC::$CLASSPATH['OC_Share_Backend_File'] = 'files_sharing/lib/share/file.php';
+	// OC::$CLASSPATH['OC_Share_Backend_Folder'] = 'files_sharing/lib/share/folder.php';
+	// OC::$CLASSPATH['OC\Files\Storage\Shared'] = 'files_sharing/lib/sharedstorage.php';
+	// OC::$CLASSPATH['OC\Files\Cache\Shared_Cache'] = 'files_sharing/lib/cache.php';
+	// OC::$CLASSPATH['OC\Files\Cache\Shared_Permissions'] = 'files_sharing/lib/permissions.php';
+	// OC::$CLASSPATH['OC\Files\Cache\Shared_Updater'] = 'files_sharing/lib/updater.php';
+	// OC::$CLASSPATH['OC\Files\Cache\Shared_Watcher'] = 'files_sharing/lib/watcher.php';
+	// OC::$CLASSPATH['OCA\Files\Share\Api'] = 'files_sharing/lib/api.php';
+	// OC::$CLASSPATH['OCA\Files\Share\Maintainer'] = 'files_sharing/lib/maintainer.php';
+	// OC::$CLASSPATH['OCA\Files\Share\Proxy'] = 'files_sharing/lib/proxy.php';
+
+	// \OCP\App::registerAdmin('files_sharing', 'settings-admin');
+
+	// \OCA\Files_Sharing\Helper::registerHooks();
+
+	// OCP\Share::registerBackend('file', 'OC_Share_Backend_File');
+	// OCP\Share::registerBackend('folder', 'OC_Share_Backend_Folder', 'file');
+
+	// OCP\Util::addScript('files_sharing', 'share');
+	// OCP\Util::addScript('files_sharing', 'external');
+
+	// OC_FileProxy::register(new OCA\Files\Share\Proxy());
+
+	// $config = \OC::$server->getConfig();
+	//oc_owncloud / facc7377cfcd54de12e9012547819c
+	// // $share = \OC\Share\Share::getItemSharedWithUser('file','9','quisa137');
+	// $share = Helper::generateTarget('file', $itemSource, self::SHARE_TYPE_USER, 'quisa137','owncloud', $suggestedItemTarget, $parent);
+	// print_r($share);
 } catch (Exception $ex) {
 	\OCP\Util::logException('index', $ex);
 
@@ -46,3 +60,5 @@ try {
 	OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
 	OC_Template::printExceptionErrorPage($ex);
 }
+phpinfo();
+?>

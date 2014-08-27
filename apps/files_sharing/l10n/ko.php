@@ -31,6 +31,16 @@ $TRANSLATIONS = array(
 "Share time" => "공유 시간",
 "Remote Shares" => "원격 공유들",
 "Allow other instances to mount public links shared from this server" => "이 서버에서 공유 공개 링크를 마운트하기 위해 다른 인스턴스를 허용",
-"Allow users to mount public link shares" => "사용자가 공용 링크 공유를 마운트 할 수 있도록 허용"
+"Allow users to mount public link shares" => "사용자가 공용 링크 공유를 마운트 할 수 있도록 허용",
+"You created %1\$s" => "%1\$s 를 업로드했습니다",
+"%2\$s created %1\$s" => "%2\$s 가 %1\$s 를 업로드했습니다",
+"You changed %1\$s" => "%1\$s 를 변경했습니다",
+"%2\$s changed %1\$s" => "%2\$s 가 %1\$s 를 변경했습니다",
+"You deleted %1\$s" => "%1\$s 를 삭제했습니다",
+"%2\$s deleted %1\$s" => "%2\$s가 %1\$s 를 삭제했습니다",
+"You shared %1\$s with %2\$s" => "%1\$s 를 %2\$s 님과 공유했습니다",
+"You shared %1\$s with group %2\$s" => "%1\$s 를 %2\$s 그룹과 공유했습니다",
+"%2\$s shared %1\$s with you" => "%2\$s님이 %1\$s 를 공유했습니다",
+"You shared %1\$s via link" => "링크를 통해 %1\$s 를 공유했습니다",
 );
 $PLURAL_FORMS = "nplurals=1; plural=0;";

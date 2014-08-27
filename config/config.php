@@ -8,7 +8,7 @@ $CONFIG = array (
   ),
   'datadirectory' => '/home/quisa137/webRoot/owncloud/data',
   'dbtype' => 'mysql',
-  'version' => '7.0.1.1',
+  'version' => '7.0.2.0',
   'dbname' => 'owncloud',
   'dbhost' => 'localhost',
   'dbtableprefix' => 'oc_',
@@ -43,5 +43,9 @@ $CONFIG = array (
   'mail_smtpport' => '587',
   'customclient_desktop' => '/agent_down.php',
   'preview_libreoffice_path' => '/usr/bin/libreoffice',
+  // 'enable_previews' => true,
+  // 'preview_max_x' => 640,
+  // 'preview_max_y' => 640,
+  // 'preview_max_scale_factor' => 10,
 );
 ?>
