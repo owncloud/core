@@ -264,7 +264,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			$stat = array();
 			$stat['size'] = $result['ContentLength'] ? $result['ContentLength'] : 0;
 			if ($result['Metadata']['lastmodified']) {
-				$stat['mtime'] = strtotime($result['Metadata']['lastmodified']);
+				$stat['mtime'] = is_numeric($result['Metadata']['lastmodified']) ? intval($result['Metadata']['lastmodified']) : strtotime($result['Metadata']['lastmodified']);
 			} else {
 				$stat['mtime'] = strtotime($result['LastModified']);
 			}
