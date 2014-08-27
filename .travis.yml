@@ -23,6 +23,8 @@ matrix:
 env:
   global:
     - EXTERNAL=false
+    - secure: "HB1kkN7ExwlXsMduf3h6r+a8GeXobtTcuwGNQCkHICaAG+XQKK0CtuPKQkEa0o0kaYio4UoUcqkEQa3Ej+xpnlCLdfZbyfLFGyM1CxTvnSg2lZENXHAzQ2W2hwGgc1b6jPYGUWIv6GVjNB0sCu6Gz2Y/DHnEpr9FBd9Rdxed6SE="
+    - secure: "toor9TGKVBSl0O9ATwdozJpv0vqGcD7eqpH0KQ/Os3NXNECfldHmgiq3fGy7YP8qb05awHJ0TXuj4Lwmu7EfxWG8r9RnpnE+rq+cZ6HCp4OZD9Feo4TeMOyc/8R1FkRt5v7KOqALMlc1QoAMsnBw9vpJRCYIlQmp18qR5ZgrWfk="
   matrix:
     - DB=sqlite
 
@@ -81,6 +83,10 @@ script:
 
   # Run robot tests
   - ./builds/bin/pybot -d build/parts/test tests/robot
+
+after_success:
+  - cd build/parts/test/
+  - "find -type f -exec curl -v -u $FTP_USER:$FTP_PASSWORD --ftp-create-dirs -T {} ftp://ci.owncloud.com/robotframework/{} \;"
 
 branches:
   only:
