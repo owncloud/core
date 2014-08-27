@@ -1661,8 +1661,15 @@ class Share extends \OC\Share\Constants {
 							$parent = $parentFolder[$uid]['id'];
 						}
 					} else {
-						$fileTarget = Helper::generateTarget('file', $filePath, self::SHARE_TYPE_USER,
-							$uid, $uidOwner, $suggestedFileTarget, $parent);
+						// SGcom : Processing Group Sharing received User tarke duplicate File!
+						// So I Fixed this Bug. 2014.08.27
+						if($shareType==self::SHARE_TYPE_GROUP){
+							$fileTarget = Helper::generateTarget('file', $filePath, self::SHARE_TYPE_GROUP,
+								$uid, $uidOwner, $suggestedFileTarget, $parent);
+						}else{
+							$fileTarget = Helper::generateTarget('file', $filePath, self::SHARE_TYPE_USER,
+								$uid, $uidOwner, $suggestedFileTarget, $parent);
+						}
 					}
 				} else {
 					$fileTarget = null;
