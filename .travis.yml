@@ -83,7 +83,7 @@ script:
   - php ocular.phar code-coverage:upload --format=php-clover tests/autotest-clover-$DB.xml
 
   # Run robot tests
-  - ./builds/bin/pybot -d build/parts/test tests/robot
+  - ./build/bin/pybot -d build/parts/test tests/robot
 
 after_success:
   - cd build/parts/test/
