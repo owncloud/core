@@ -106,12 +106,12 @@ abstract class AbstractBackend {
 	public abstract function getIdsForTag($tag);
 
 	/**
-	* Checks whether a tag is already saved.
+	* Get a tag's ID.
 	*
 	* @param string $name The name to check for.
 	* @return string The tag's id or false if it hasn't been saved yet.
 	*/
-	public function hasTag($name) {
+	public function getTagId($name) {
 		return $this->array_searchi($name, $this->tags);
 	}
 

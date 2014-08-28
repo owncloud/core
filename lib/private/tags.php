@@ -115,7 +115,7 @@ class Tags implements \OCP\ITags {
 	*/
 	public function getTags() {
 		$tags = array();
-		foreach ($this->backends as $name => $backend)
+		foreach ($this->backends as $backend)
 			$tags += $backend->getUnsortedTags();
 
 		if(!count($tags))
@@ -145,12 +145,12 @@ class Tags implements \OCP\ITags {
 	* @return array An array of object ids or false on error.
 	*/
 	public function getIdsForTag($tag) {
-		foreach ($this->backends as $name => $backend)
-			if ($id = $backend->hasTag($tag))
+		foreach ($this->backends as $backend)
+			if (($id = $backend->getTagId($tag)) !== false)
 				break;
 
 		$ids = array();
-		foreach ($this->backends as $name => $backend)
+		foreach ($this->backends as $backend)
 			$ids += $backend->getIdsForTag($id);
 
 		return $ids;
@@ -160,12 +160,12 @@ class Tags implements \OCP\ITags {
 	* Checks whether a tag is already saved.
 	*
 	* @param string $name The name to check for.
-	* @return The tag's id, or false if no tag of that name has been saved yet.
+	* @return bool
 	*/
 	public function hasTag($name) {
-		foreach ($this->backends as $name => $backend)
-			if ($id = $backend->hasTag($name))
-				return $id;
+		foreach ($this->backends as $backend)
+			if ($backend->getTagId($name) !== false)
+				return true;
 
 		return false;
 	}
@@ -208,7 +208,7 @@ class Tags implements \OCP\ITags {
 		}
 
 		foreach ($this->backends as $name => $backend)
-			if ($id = $backend->hasTag($from))
+			if (($id = $backend->getTagId($from)) !== false)
 				return $backend->rename($id, $to);
 
 		\OCP\Util::writeLog('core', __METHOD__.', tag: ' . $from. ' does not exist', \OCP\Util::DEBUG);
@@ -312,7 +312,7 @@ class Tags implements \OCP\ITags {
 
 			$tagId = false;
 			foreach ($this->backends as $name => $backend) {
-				if ($tagId = $backend->hasTag($tag)) {
+				if (($tagId = $backend->getTagId($tag)) !== false) {
 					$backendToUse = $backend;
 					break;
 				}
@@ -352,7 +352,7 @@ class Tags implements \OCP\ITags {
 			}
 
 			foreach ($this->backends as $name => $backend)
-				if ($tagId = $backend->hasTag($tag))
+				if (($tagId = $backend->getTagId($tag)) !== false)
 					return $backend->unTag($objid, $tagId);
 
 			// Tag with given name not found.
@@ -386,7 +386,7 @@ class Tags implements \OCP\ITags {
 		foreach ($this->backends as $backendName => $backend) {
 			$tagsInBackend = array();
 			foreach ($names as $name) {
-				if ($backend->hasTag($name)) {
+				if (($backend->getTagId($name)) !== false) {
 					$tagsInBackend[] = $name;
 					unset($name);
 				}

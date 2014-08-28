@@ -34,13 +34,6 @@ class Database extends AbstractBackend {
 	public $name = 'local';
 
 	/**
-	 * Tags
-	 *
-	 * @var array
-	 */
-	protected $tags = array();
-
-	/**
 	 * Used for storing objectid/categoryname pairs while rescanning.
 	 *
 	 * @var array
@@ -217,7 +210,7 @@ class Database extends AbstractBackend {
 	public function addMultiple(array $names, $sync=false, $id = null) {
 		$newones = array();
 		foreach($names as $name) {
-			if(($this->hasTag($name) == false) && $name !== '') {
+			if(($this->getTagId($name) == false) && $name !== '') {
 				$newones[] = $name;
 			}
 			if(!is_null($id) ) {
@@ -236,7 +229,7 @@ class Database extends AbstractBackend {
 	/**
 	 * Save the list of tags and their object relations
 	 */
-	public function save() {
+	private function save() {
 		if(is_array($this->tags)) {
 			foreach($this->tags as $tag) {
 				try {
@@ -419,7 +412,7 @@ class Database extends AbstractBackend {
 		foreach($names as $name) {
 			$id = null;
 
-			if($this->hasTag($name)) {
+			if($this->getTagId($name) !== false) {
 				$id = $this->array_searchi($name, $this->tags);
 				unset($this->tags[$id]);
 			}
