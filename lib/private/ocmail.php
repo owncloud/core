@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2012 Frank Karlitschek <frank@owncloud.org>
+ * Copyright (c) 2014 Morris Jobke <hey@morrisjobke.de>
  * This file is licensed under the Affero General Public License version 3 or
  * later.
  * See the COPYING-README file.
