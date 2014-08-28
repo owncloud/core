@@ -226,4 +226,11 @@ interface IServerContainer {
 	 */
 	function getSearch();
 
+	/**
+	 * Returns a mail instance
+	 *
+	 * @return \OCP\IMail
+	 */
+	function getMail();
+
 }
