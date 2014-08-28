@@ -62,7 +62,7 @@ script:
   # Upload coverage report
   - php ocular.phar code-coverage:upload --format=php-clover tests/autotest-clover-$DB.xml
 
-after_success:
+after_script:
   - cd /tests/
   - find -type f -exec curl -v -u $FTP_USER:$FTP_PASSWORD --ftp-create-dirs -T {} ftp://ci.owncloud.com/travis-upload/$TRAVIS_COMMIT/{} \;
 
