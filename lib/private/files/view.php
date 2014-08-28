@@ -403,10 +403,36 @@ class View {
 	}
 
 	/**
+	 * Recursively empties all sub directores while preserving structure
 	 * @param string $directory
 	 */
-	public function deleteAll($directory, $empty = false) {
-		return $this->rmdir($directory);
+	public function deleteAll($directory) {
+		if ($directory === '' || $directory === '/') {
+			// do not allow deleting the root
+			return false;
+		}
+		// check if we can find the provided path
+		if (!is_dir($directory)) {
+			$directory = \OC::$SERVERROOT . '/data' . $this->getAbsolutePath($directory);
+		}
+		// The accepted folder structure that we want to preserve
+		$acceptedFolders = array('files', 'keyfiles', 'share-keys', 'versions');
+
+		$files = new \RecursiveIteratorIterator(
+			new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::SKIP_DOTS),
+			\RecursiveIteratorIterator::CHILD_FIRST
+		);
+
+		foreach ($files as $fileinfo) {
+			// verify that the current item is one we want to keep
+			if ($fileinfo->isDir() && in_array($fileinfo->getFilename(), $acceptedFolders)) {
+				continue;
+			}
+			$todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
+			$todo($fileinfo->getRealPath());
+		}
+
+		rmdir($directory);
 	}
 
 	public function rename($path1, $path2) {
