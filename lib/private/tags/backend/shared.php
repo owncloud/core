@@ -41,7 +41,7 @@ class Shared extends Database {
 	 *
 	 * @var string[]
 	 */
-	private $owners;
+	private $owners = array();
 
 	/**
 	* Load shared tags for a given user and type.
@@ -56,7 +56,7 @@ class Shared extends Database {
 	//
 	// FIXME: Ideally, we wouldn't need to nest getItemsSharedWith in this loop but just call it
 	// with its $includeCollections parameter set to true. Unfortunately, this fails currently.
-	$this->owners = array();
+	$allMaybeSharedItems = array();
 	foreach (Share::getCollectionItemTypes($type) as $collectionType) {
 		if (\OCP\Share::hasBackend($collectionType)) {
 			$allMaybeSharedItems[$collectionType] = \OCP\Share::getItemsSharedWith(
@@ -69,7 +69,6 @@ class Shared extends Database {
 	// We take a look at all shared items of the given $type (or of the collections it is part of)
 	// and find out their owners. Then, we gather the tags for the original $type from all owners,
 	// and return them as elements of a list that look like "Tag (owner)".
-	$allMaybeSharedItems = array();
 	foreach ($allMaybeSharedItems as $collectionType => $maybeSharedItems) {
 		foreach ($maybeSharedItems as $sharedItem) {
 			if (isset($sharedItem['id'])) { //workaround for https://github.com/owncloud/core/issues/2814
@@ -85,14 +84,14 @@ class Shared extends Database {
 	}
 
 	return $this->tags;
-	}
+}
 
 	public function getIdsForTag($tag) {
-	$ids = array();
-	foreach ($this->owners as $owner)
-		$ids += parent::getIdsForTagAndOwner($tag, $owner);
+		$ids = array();
+		foreach ($this->owners as $owner)
+			$ids += parent::getIdsForTagAndOwner($tag, $owner);
 
-	return $ids;
+		return $ids;
 	}
 
 }
