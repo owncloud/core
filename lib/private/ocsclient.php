@@ -26,6 +26,8 @@
  * database.
  */
 
+use ZendXml\Security as XmlSecurity;
+
 class OC_OCSClient{
 
 	/**
@@ -72,9 +74,7 @@ class OC_OCSClient{
 		if($xml==false) {
 			return null;
 		}
-		$loadEntities = libxml_disable_entity_loader(true);
-		$data =	simplexml_load_string($xml);
-		libxml_disable_entity_loader($loadEntities);
+		$data =	XmlSecurity::scan($xml);
 
 		$tmp=$data->data;
 		$cats=array();
@@ -120,9 +120,7 @@ class OC_OCSClient{
 		if($xml==false) {
 			return null;
 		}
-		$loadEntities = libxml_disable_entity_loader(true);
-		$data = simplexml_load_string($xml);
-		libxml_disable_entity_loader($loadEntities);
+		$data = XmlSecurity::scan($xml);
 
 		$tmp=$data->data->content;
 		for($i = 0; $i < count($tmp); $i++) {
@@ -165,9 +163,7 @@ class OC_OCSClient{
 			OC_Log::write('core', 'Unable to parse OCS content for app ' . $id, OC_Log::FATAL);
 			return null;
 		}
-		$loadEntities = libxml_disable_entity_loader(true);
-		$data = simplexml_load_string($xml);
-		libxml_disable_entity_loader($loadEntities);
+		$data = XmlSecurity::scan($xml);
 
 		$tmp=$data->data->content;
 		if (is_null($tmp)) {
@@ -213,9 +209,7 @@ class OC_OCSClient{
 			OC_Log::write('core', 'Unable to parse OCS content', OC_Log::FATAL);
 			return null;
 		}
-		$loadEntities = libxml_disable_entity_loader(true);
-		$data = simplexml_load_string($xml);
-		libxml_disable_entity_loader($loadEntities);
+		$data = XmlSecurity::scan($xml);
 
 		$tmp=$data->data->content;
 		$app=array();
