@@ -50,41 +50,45 @@ class Shared extends Database {
 	* @param string $type The type for which we're querying the corresponding tags.
 	*/
 	public function loadTags($user, $type, $defaultTags=array()) {
-	// First, we find out if $type is part of a collection (and if that collection is part of
-	// another one and so on). Of these collection types, along with our original $type, we make a
-	// list of the ones for which a sharing backend has been registered.
-	//
-	// FIXME: Ideally, we wouldn't need to nest getItemsSharedWith in this loop but just call it
-	// with its $includeCollections parameter set to true. Unfortunately, this fails currently.
-	$allMaybeSharedItems = array();
-	foreach (Share::getCollectionItemTypes($type) as $collectionType) {
-		if (\OCP\Share::hasBackend($collectionType)) {
-			$allMaybeSharedItems[$collectionType] = \OCP\Share::getItemsSharedWith(
-				$collectionType,
-				\OCP\Share::FORMAT_NONE
-			);
-		}
-	}
+		// First, we find out if $type is part of a collection (and if that collection is part of
+		// another one and so on).
+		if (!($collectionTypes = Share::getCollectionItemTypes($type)))
+			$collectionTypes[] = $type;
 
-	// We take a look at all shared items of the given $type (or of the collections it is part of)
-	// and find out their owners. Then, we gather the tags for the original $type from all owners,
-	// and return them as elements of a list that look like "Tag (owner)".
-	foreach ($allMaybeSharedItems as $collectionType => $maybeSharedItems) {
-		foreach ($maybeSharedItems as $sharedItem) {
-			if (isset($sharedItem['id'])) { //workaround for https://github.com/owncloud/core/issues/2814
-				$owner = $sharedItem['uid_owner'];
-				$this->owners[] = $owner;
-				// $displayname_owner = $sharedItem['displayname_owner'];
-				foreach (parent::loadTags($owner, $type, $defaultTags) as $id => $tag) {
-					// We might want to use some regular tag sharing backend for setting the target name.
-					$this->tags[$id] = $tag; // . ' (' . $owner . ')';
+		// Of these collection types, along with our original $type, we make a
+		// list of the ones for which a sharing backend has been registered.
+		//
+		// FIXME: Ideally, we wouldn't need to nest getItemsSharedWith in this loop but just call it
+		// with its $includeCollections parameter set to true. Unfortunately, this fails currently.
+		$allMaybeSharedItems = array();
+		foreach ($collectionTypes as $collectionType) {
+			if (\OCP\Share::hasBackend($collectionType)) {
+				$allMaybeSharedItems[$collectionType] = \OCP\Share::getItemsSharedWith(
+					$collectionType,
+					\OCP\Share::FORMAT_NONE
+				);
+			}
+		}
+
+		// We take a look at all shared items of the given $type (or of the collections it is part of)
+		// and find out their owners. Then, we gather the tags for the original $type from all owners,
+		// and return them as elements of a list that look like "Tag (owner)".
+		foreach ($allMaybeSharedItems as $collectionType => $maybeSharedItems) {
+			foreach ($maybeSharedItems as $sharedItem) {
+				if (isset($sharedItem['id'])) { //workaround for https://github.com/owncloud/core/issues/2814
+					$owner = $sharedItem['uid_owner'];
+					$this->owners[] = $owner;
+					// $displayname_owner = $sharedItem['displayname_owner'];
+					foreach (parent::loadTags($owner, $type, $defaultTags) as $id => $tag) {
+						// We might want to use some regular tag sharing backend for setting the target name.
+						$this->tags[$id] = $tag; // . ' (' . $owner . ')';
+					}
 				}
 			}
 		}
-	}
 
-	return $this->tags;
-}
+		return $this->tags;
+	}
 
 	public function getIdsForTag($tag) {
 		$ids = array();
