@@ -99,3 +99,8 @@ nbproject
 /tests/autotest*
 /tests/data/lorem-copy.txt
 /tests/data/testimage-copy.png
+
+# Robotframework Tests
+build/.installed.cfg
+build/bin/
+build/include/
