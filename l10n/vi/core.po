@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-07-16 01:54-0400\n"
-"PO-Revision-Date: 2014-07-16 05:54+0000\n"
+"POT-Creation-Date: 2014-08-28 01:54-0400\n"
+"PO-Revision-Date: 2014-08-28 05:23+0000\n"
 "Last-Translator: I Robot\n"
 "Language-Team: Vietnamese (http://www.transifex.com/projects/p/owncloud/language/vi/)\n"
 "MIME-Version: 1.0\n"
@@ -21,11 +21,7 @@ msgstr ""
 "Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ajax/share.php:90
-msgid "Expiration date is in the past."
-msgstr ""
-
-#: ajax/share.php:122 ajax/share.php:164
+#: ajax/share.php:117 ajax/share.php:159
 #, php-format
 msgid "Couldn't send mail to following users: %s "
 msgstr "Không thể gửi thư cho người dùng: %s"
@@ -46,7 +42,16 @@ msgstr "Cơ sở dữ liệu đã được cập nhật"
 msgid "Checked database schema update"
 msgstr ""
 
-#: ajax/update.php:27
+#: ajax/update.php:22
+msgid "Checked database schema update for apps"
+msgstr ""
+
+#: ajax/update.php:25
+#, php-format
+msgid "Updated \"%s\" to %s"
+msgstr ""
+
+#: ajax/update.php:33
 #, php-format
 msgid "Disabled incompatible apps: %s"
 msgstr ""
@@ -215,7 +220,7 @@ msgstr "năm trước"
 msgid "years ago"
 msgstr "năm trước"
 
-#: js/lostpassword.js:3 lostpassword/controller/lostcontroller.php:175
+#: js/lostpassword.js:3 lostpassword/controller/lostcontroller.php:198
 msgid "Couldn't send reset email. Please contact your administrator."
 msgstr ""
 
@@ -349,12 +354,12 @@ msgstr ""
 msgid "Share"
 msgstr "Chia sẻ"
 
-#: js/share.js:326 js/share.js:340 js/share.js:347 js/share.js:989
+#: js/share.js:326 js/share.js:340 js/share.js:347 js/share.js:1002
 #: templates/installation.php:10
 msgid "Error"
 msgstr "Lỗi"
 
-#: js/share.js:328 js/share.js:1052
+#: js/share.js:328 js/share.js:1065
 msgid "Error while sharing"
 msgstr "Lỗi trong quá trình chia sẻ"
 
@@ -415,79 +420,71 @@ msgstr "Đặt ngày kết thúc"
 msgid "Expiration date"
 msgstr "Ngày kết thúc"
 
-#: js/share.js:455
-msgid "Share via email:"
-msgstr "Chia sẻ thông qua email"
-
-#: js/share.js:458
-msgid "No people found"
-msgstr "Không tìm thấy người nào"
-
-#: js/share.js:507 js/share.js:575
+#: js/share.js:496 js/share.js:564
 msgid "group"
 msgstr "nhóm"
 
-#: js/share.js:540
+#: js/share.js:529
 msgid "Resharing is not allowed"
 msgstr "Chia sẻ lại không được cho phép"
 
-#: js/share.js:591
+#: js/share.js:580
 msgid "Shared in {item} with {user}"
 msgstr "Đã được chia sẽ trong {item} với {user}"
 
-#: js/share.js:613
+#: js/share.js:602
 msgid "Unshare"
 msgstr "Bỏ chia sẻ"
 
-#: js/share.js:621
+#: js/share.js:610
 msgid "notify by email"
 msgstr "Thông báo qua email"
 
-#: js/share.js:624
+#: js/share.js:613
 msgid "can share"
 msgstr "có thể chia sẽ"
 
-#: js/share.js:627
+#: js/share.js:616
 msgid "can edit"
 msgstr "có thể chỉnh sửa"
 
-#: js/share.js:629
+#: js/share.js:618
 msgid "access control"
 msgstr "quản lý truy cập"
 
-#: js/share.js:632
+#: js/share.js:621
 msgid "create"
 msgstr "tạo"
 
-#: js/share.js:635
+#: js/share.js:624
 msgid "update"
 msgstr "cập nhật"
 
-#: js/share.js:638
+#: js/share.js:627
 msgid "delete"
 msgstr "xóa"
 
-#: js/share.js:970
+#: js/share.js:983
 msgid "Password protected"
 msgstr "Mật khẩu bảo vệ"
 
-#: js/share.js:989
+#: js/share.js:1002
 msgid "Error unsetting expiration date"
 msgstr "Lỗi không thiết lập ngày kết thúc"
 
-#: js/share.js:1010
+#: js/share.js:1023
 msgid "Error setting expiration date"
 msgstr "Lỗi cấu hình ngày kết thúc"
 
-#: js/share.js:1039
+#: js/share.js:1052
 msgid "Sending ..."
 msgstr "Đang gởi ..."
 
-#: js/share.js:1050
+#: js/share.js:1063
 msgid "Email sent"
 msgstr "Email đã được gửi"
 
-#: js/share.js:1074
+#: js/share.js:1087
 msgid "Warning"
 msgstr "Cảnh báo"
 
@@ -535,21 +532,21 @@ msgstr ""
 msgid "The update was successful. Redirecting you to ownCloud now."
 msgstr "Cập nhật thành công .Hệ thống sẽ đưa bạn tới ownCloud."
 
-#: lostpassword/controller/lostcontroller.php:110
+#: lostpassword/controller/lostcontroller.php:133
 msgid "Couldn't reset password because the token is invalid"
 msgstr ""
 
-#: lostpassword/controller/lostcontroller.php:136
+#: lostpassword/controller/lostcontroller.php:159
 msgid "Couldn't send reset email. Please make sure your username is correct."
 msgstr ""
 
-#: lostpassword/controller/lostcontroller.php:151
+#: lostpassword/controller/lostcontroller.php:174
 msgid ""
 "Couldn't send reset email because there is no email address for this "
 "username. Please contact your administrator."
 msgstr ""
 
-#: lostpassword/controller/lostcontroller.php:168
+#: lostpassword/controller/lostcontroller.php:191
 #, php-format
 msgid "%s password reset"
 msgstr "%s thiết lập lại mật khẩu"
@@ -564,7 +561,7 @@ msgstr "Vui lòng kiểm tra Email để khôi phục lại mật khẩu."
 
 #: lostpassword/templates/lostpassword.php:8
 #: lostpassword/templates/lostpassword.php:9 templates/installation.php:51
-#: templates/installation.php:54 templates/login.php:31 templates/login.php:35
+#: templates/installation.php:54 templates/login.php:23 templates/login.php:27
 msgid "Username"
 msgstr "Tên đăng nhập"
 
@@ -612,7 +609,7 @@ msgstr "Cá nhân"
 msgid "Users"
 msgstr "Người dùng"
 
-#: strings.php:7 templates/layout.user.php:53 templates/layout.user.php:118
+#: strings.php:7 templates/layout.user.php:56 templates/layout.user.php:121
 msgid "Apps"
 msgstr "Ứng dụng"
 
@@ -675,7 +672,8 @@ msgstr "Xin chào,\n\nbáo cho bạn biết rằng %s đã chia sẽ %s với b�
 msgid "The share will expire on %s."
 msgstr "Chia sẻ này sẽ hết hiệu lực vào %s."
 
-#: templates/altmail.php:7 templates/mail.php:20
+#. TRANSLATORS term at the end of a mail
+#: templates/altmail.php:8 templates/mail.php:21
 msgid "Cheers!"
 msgstr "Chúc mừng!"
 
@@ -723,7 +721,7 @@ msgid "Create an <strong>admin account</strong>"
 msgstr "Tạo một <strong>tài khoản quản trị</strong>"
 
 #: templates/installation.php:59 templates/installation.php:62
-#: templates/login.php:41 templates/login.php:44
+#: templates/login.php:33 templates/login.php:36
 msgid "Password"
 msgstr "Mật khẩu"
 
@@ -778,57 +776,43 @@ msgstr "Cài đặt hoàn tất"
 msgid "Finishing …"
 msgstr "Đang hoàn thành ..."
 
-#: templates/layout.user.php:40
+#: templates/layout.user.php:43
 msgid ""
 "This application requires JavaScript to be enabled for correct operation.  "
 "Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable "
 "JavaScript</a> and re-load this interface."
 msgstr "Ứng dụng này yêu cầu JavaScript để hoạt động. Vui lòng <a href=\"http://enable-javascript.com/\" target=\"_blank\">kích hoạt JavaScript</a> và tải lại giao diện này."
 
-#: templates/layout.user.php:44
+#: templates/layout.user.php:47
 #, php-format
 msgid "%s is available. Get more information on how to update."
 msgstr "%s còn trống. Xem thêm thông tin cách cập nhật."
 
-#: templates/layout.user.php:80 templates/singleuser.user.php:8
+#: templates/layout.user.php:83 templates/singleuser.user.php:8
 msgid "Log out"
 msgstr "Đăng xuất"
 
 #: templates/login.php:11
-msgid "Automatic logon rejected!"
-msgstr "Tự động đăng nhập đã bị từ chối !"
-
-#: templates/login.php:12
-msgid ""
-"If you did not change your password recently, your account may be "
-"compromised!"
-msgstr "Nếu bạn không thay đổi mật khẩu gần đây của bạn, tài khoản của bạn có thể gặp nguy hiểm!"
-
-#: templates/login.php:14
-msgid "Please change your password to secure your account again."
-msgstr "Vui lòng thay đổi mật khẩu của bạn để đảm bảo tài khoản của bạn một lần nữa."
-
-#: templates/login.php:19
 msgid "Server side authentication failed!"
 msgstr "Xác thực phía máy chủ không thành công!"
 
-#: templates/login.php:20
+#: templates/login.php:12
 msgid "Please contact your administrator."
 msgstr "Vui lòng liên hệ với quản trị viên."
 
-#: templates/login.php:50
+#: templates/login.php:42
 msgid "Forgot your password? Reset it!"
 msgstr ""
 
-#: templates/login.php:55
+#: templates/login.php:47
 msgid "remember"
 msgstr "ghi nhớ"
 
-#: templates/login.php:59
+#: templates/login.php:51
 msgid "Log in"
 msgstr "Đăng nhập"
 
-#: templates/login.php:65
+#: templates/login.php:57
 msgid "Alternative Logins"
 msgstr "Đăng nhập khác"
 
@@ -857,6 +841,28 @@ msgstr "Liên hệ với người quản trị nếu lỗi này vẫn tồn tạ
 msgid "Thank you for your patience."
 msgstr "Cảm ơn sự kiên nhẫn của bạn."
 
+#: templates/untrustedDomain.php:5
+msgid "You are accessing the server from an untrusted domain."
+msgstr ""
+
+#: templates/untrustedDomain.php:8
+msgid ""
+"Please contact your administrator. If you are an administrator of this "
+"instance, configure the \"trusted_domain\" setting in config/config.php. An "
+"example configuration is provided in config/config.sample.php."
+msgstr ""
+
+#: templates/untrustedDomain.php:10
+msgid ""
+"Depending on your configuration, as an administrator you might also be able "
+"to use the button below to trust this domain."
+msgstr ""
+
+#: templates/untrustedDomain.php:14
+#, php-format
+msgid "Add \"%s\" as trusted domain"
+msgstr ""
+
 #: templates/update.admin.php:3
 #, php-format
 msgid "%s will be updated to version %s."
@@ -879,6 +885,12 @@ msgstr ""
 
 #: templates/update.admin.php:23
 msgid "Start update"
+msgstr ""
+
+#: templates/update.admin.php:25
+msgid ""
+"To avoid timeouts with larger installations, you can instead run the "
+"following command from your installation directory:"
 msgstr ""
 
 #: templates/update.user.php:3

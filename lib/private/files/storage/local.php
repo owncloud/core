@@ -208,22 +208,7 @@ if (\OC_Util::runningOnWindows()) {
 		}
 
 		public function fopen($path, $mode) {
-			if ($return = fopen($this->datadir . $path, $mode)) {
-				switch ($mode) {
-					case 'r':
-						break;
-					case 'r+':
-					case 'w+':
-					case 'x+':
-					case 'a+':
-						break;
-					case 'w':
-					case 'x':
-					case 'a':
-						break;
-				}
-			}
-			return $return;
+			return fopen($this->datadir . $path, $mode);
 		}
 
 		public function hash($type, $path, $raw = false) {
@@ -233,7 +218,7 @@ if (\OC_Util::runningOnWindows()) {
 		public function free_space($path) {
 			$space = @disk_free_space($this->datadir . $path);
 			if ($space === false || is_null($space)) {
-				return \OC\Files\SPACE_UNKNOWN;
+				return \OCP\Files\FileInfo::SPACE_UNKNOWN;
 			}
 			return $space;
 		}

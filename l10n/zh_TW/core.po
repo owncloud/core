@@ -4,14 +4,14 @@
 # 
 # Translators:
 # Chen-An Yeh <chnjsn1221@gmail.com>, 2013
-# Pellaeon Lin <nfsmwlin@gmail.com>, 2013
+# Pellaeon Lin <nfsmwlin@gmail.com>, 2013-2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-07-16 01:54-0400\n"
-"PO-Revision-Date: 2014-07-16 05:54+0000\n"
-"Last-Translator: I Robot\n"
+"POT-Creation-Date: 2014-08-28 01:54-0400\n"
+"PO-Revision-Date: 2014-08-28 05:23+0000\n"
+"Last-Translator: Pellaeon Lin <nfsmwlin@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/projects/p/owncloud/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,11 +19,7 @@ msgstr ""
 "Language: zh_TW\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ajax/share.php:90
-msgid "Expiration date is in the past."
-msgstr ""
-
-#: ajax/share.php:122 ajax/share.php:164
+#: ajax/share.php:117 ajax/share.php:159
 #, php-format
 msgid "Couldn't send mail to following users: %s "
 msgstr "無法寄送郵件給這些使用者：%s"
@@ -42,12 +38,21 @@ msgstr "已更新資料庫"
 
 #: ajax/update.php:19
 msgid "Checked database schema update"
-msgstr ""
+msgstr "已檢查資料庫格式更新"
 
-#: ajax/update.php:27
+#: ajax/update.php:22
+msgid "Checked database schema update for apps"
+msgstr "已檢查應用程式的資料庫格式更新"
+
+#: ajax/update.php:25
+#, php-format
+msgid "Updated \"%s\" to %s"
+msgstr "已更新 %s 到 %s"
+
+#: ajax/update.php:33
 #, php-format
 msgid "Disabled incompatible apps: %s"
-msgstr ""
+msgstr "停用不相容的應用程式：%s"
 
 #: avatar/controller.php:69
 msgid "No image or file provided"
@@ -159,11 +164,11 @@ msgstr "資料夾"
 
 #: js/js.js:592
 msgid "Image"
-msgstr ""
+msgstr "圖片"
 
 #: js/js.js:593
 msgid "Audio"
-msgstr ""
+msgstr "音訊"
 
 #: js/js.js:607
 msgid "Saving..."
@@ -213,16 +218,16 @@ msgstr "去年"
 msgid "years ago"
 msgstr "幾年前"
 
-#: js/lostpassword.js:3 lostpassword/controller/lostcontroller.php:175
+#: js/lostpassword.js:3 lostpassword/controller/lostcontroller.php:198
 msgid "Couldn't send reset email. Please contact your administrator."
-msgstr ""
+msgstr "無法寄送重設 email ，請聯絡系統管理員"
 
 #: js/lostpassword.js:5
 msgid ""
 "The link to reset your password has been sent to your email. If you do not "
 "receive it within a reasonable amount of time, check your spam/junk "
 "folders.<br>If it is not there ask your local administrator."
-msgstr ""
+msgstr "重設密碼的連結已經 email 至你的信箱，如果你在一段時間內沒收到，請檢查垃圾郵件資料夾，如果還是找不到，請聯絡系統管理員。"
 
 #: js/lostpassword.js:7
 msgid ""
@@ -230,11 +235,11 @@ msgid ""
 "will be no way to get your data back after your password is reset.<br />If "
 "you are not sure what to do, please contact your administrator before you "
 "continue. <br />Do you really want to continue?"
-msgstr ""
+msgstr "您的檔案是加密的，如果您沒有啟用救援金鑰，當您重設密碼之後將無法存取您的資料。<br/>如果不確定該怎麼做，請聯絡您的系統管理員。<br/>您確定要繼續嗎？"
 
 #: js/lostpassword.js:10
 msgid "I know what I'm doing"
-msgstr ""
+msgstr "我知道我在幹嘛"
 
 #: js/lostpassword.js:13 lostpassword/templates/resetpassword.php:9
 msgid "Reset password"
@@ -242,7 +247,7 @@ msgstr "重設密碼"
 
 #: js/lostpassword.js:16
 msgid "Password can not be changed. Please contact your administrator."
-msgstr ""
+msgstr "無法變更密碼，請聯絡您的系統管理員"
 
 #: js/oc-dialogs.js:108 js/oc-dialogs.js:255
 msgid "No"
@@ -283,7 +288,7 @@ msgstr "新檔案"
 
 #: js/oc-dialogs.js:451
 msgid "Already existing files"
-msgstr ""
+msgstr "已經存在的檔案"
 
 #: js/oc-dialogs.js:453
 msgid "Which files do you want to keep?"
@@ -341,18 +346,18 @@ msgstr "已分享"
 
 #: js/share.js:257
 msgid "Shared with {recipients}"
-msgstr ""
+msgstr "與 {recipients} 分享"
 
 #: js/share.js:266
 msgid "Share"
 msgstr "分享"
 
-#: js/share.js:326 js/share.js:340 js/share.js:347 js/share.js:989
+#: js/share.js:326 js/share.js:340 js/share.js:347 js/share.js:1002
 #: templates/installation.php:10
 msgid "Error"
 msgstr "錯誤"
 
-#: js/share.js:328 js/share.js:1052
+#: js/share.js:328 js/share.js:1065
 msgid "Error while sharing"
 msgstr "分享時發生錯誤"
 
@@ -391,7 +396,7 @@ msgstr "密碼保護"
 
 #: js/share.js:400
 msgid "Choose a password for the public link"
-msgstr ""
+msgstr "為公開連結選一個密碼"
 
 #: js/share.js:406
 msgid "Allow Public Upload"
@@ -413,79 +418,71 @@ msgstr "指定到期日"
 msgid "Expiration date"
 msgstr "到期日"
 
-#: js/share.js:455
-msgid "Share via email:"
-msgstr "透過電子郵件分享："
-
-#: js/share.js:458
-msgid "No people found"
-msgstr "沒有找到任何人"
-
-#: js/share.js:507 js/share.js:575
+#: js/share.js:496 js/share.js:564
 msgid "group"
 msgstr "群組"
 
-#: js/share.js:540
+#: js/share.js:529
 msgid "Resharing is not allowed"
 msgstr "不允許重新分享"
 
-#: js/share.js:591
+#: js/share.js:580
 msgid "Shared in {item} with {user}"
 msgstr "已和 {user} 分享 {item}"
 
-#: js/share.js:613
+#: js/share.js:602
 msgid "Unshare"
 msgstr "取消分享"
 
-#: js/share.js:621
+#: js/share.js:610
 msgid "notify by email"
 msgstr "以 email 通知"
 
-#: js/share.js:624
+#: js/share.js:613
 msgid "can share"
 msgstr "可分享"
 
-#: js/share.js:627
+#: js/share.js:616
 msgid "can edit"
 msgstr "可編輯"
 
-#: js/share.js:629
+#: js/share.js:618
 msgid "access control"
 msgstr "存取控制"
 
-#: js/share.js:632
+#: js/share.js:621
 msgid "create"
 msgstr "建立"
 
-#: js/share.js:635
+#: js/share.js:624
 msgid "update"
 msgstr "更新"
 
-#: js/share.js:638
+#: js/share.js:627
 msgid "delete"
 msgstr "刪除"
 
-#: js/share.js:970
+#: js/share.js:983
 msgid "Password protected"
 msgstr "受密碼保護"
 
-#: js/share.js:989
+#: js/share.js:1002
 msgid "Error unsetting expiration date"
 msgstr "取消到期日設定失敗"
 
-#: js/share.js:1010
+#: js/share.js:1023
 msgid "Error setting expiration date"
 msgstr "設定到期日發生錯誤"
 
-#: js/share.js:1039
+#: js/share.js:1052
 msgid "Sending ..."
 msgstr "正在傳送…"
 
-#: js/share.js:1050
+#: js/share.js:1063
 msgid "Email sent"
 msgstr "Email 已寄出"
 
-#: js/share.js:1074
+#: js/share.js:1087
 msgid "Warning"
 msgstr "警告"
 
@@ -519,35 +516,35 @@ msgstr "沒有選擇要刪除的標籤"
 
 #: js/update.js:30
 msgid "Updating {productName} to version {version}, this may take a while."
-msgstr ""
+msgstr "正在更新 {productName} 到版本 {version} ，請稍候"
 
 #: js/update.js:43
 msgid "Please reload the page."
-msgstr ""
+msgstr "請重新整理頁面"
 
 #: js/update.js:52
 msgid "The update was unsuccessful."
-msgstr ""
+msgstr "更新失敗"
 
 #: js/update.js:61
 msgid "The update was successful. Redirecting you to ownCloud now."
 msgstr "升級成功，正將您重新導向至 ownCloud 。"
 
-#: lostpassword/controller/lostcontroller.php:110
+#: lostpassword/controller/lostcontroller.php:133
 msgid "Couldn't reset password because the token is invalid"
-msgstr ""
+msgstr "無法重設密碼因為 token 無效"
 
-#: lostpassword/controller/lostcontroller.php:136
+#: lostpassword/controller/lostcontroller.php:159
 msgid "Couldn't send reset email. Please make sure your username is correct."
-msgstr ""
+msgstr "無法寄送重設 email ，請確認您的帳號輸入正確"
 
-#: lostpassword/controller/lostcontroller.php:151
+#: lostpassword/controller/lostcontroller.php:174
 msgid ""
 "Couldn't send reset email because there is no email address for this "
 "username. Please contact your administrator."
-msgstr ""
+msgstr "無法寄送重設 email ，因為這個帳號沒有設定 email 地址，請聯絡您的系統管理員"
 
-#: lostpassword/controller/lostcontroller.php:168
+#: lostpassword/controller/lostcontroller.php:191
 #, php-format
 msgid "%s password reset"
 msgstr "%s 密碼重設"
@@ -562,7 +559,7 @@ msgstr "重設密碼的連結將會寄到您的電子郵件信箱。"
 
 #: lostpassword/templates/lostpassword.php:8
 #: lostpassword/templates/lostpassword.php:9 templates/installation.php:51
-#: templates/installation.php:54 templates/login.php:31 templates/login.php:35
+#: templates/installation.php:54 templates/login.php:23 templates/login.php:27
 msgid "Username"
 msgstr "使用者名稱"
 
@@ -588,19 +585,19 @@ msgstr "新密碼"
 
 #: lostpassword/templates/resetpassword.php:6
 msgid "New Password"
-msgstr ""
+msgstr "新密碼"
 
 #: setup/controller.php:140
 #, php-format
 msgid ""
 "Mac OS X is not supported and %s will not work properly on this platform. "
 "Use it at your own risk! "
-msgstr ""
+msgstr "不支援 Mac OS X 而且 %s 在這個平台上面無法正常運作，請自行衡量風險！"
 
 #: setup/controller.php:144
 msgid ""
 "For the best results, please consider using a GNU/Linux server instead."
-msgstr ""
+msgstr "請考慮使用 GNU/Linux 伺服器以取得最好的效果"
 
 #: strings.php:5
 msgid "Personal"
@@ -610,7 +607,7 @@ msgstr "個人"
 msgid "Users"
 msgstr "使用者"
 
-#: strings.php:7 templates/layout.user.php:53 templates/layout.user.php:118
+#: strings.php:7 templates/layout.user.php:56 templates/layout.user.php:121
 msgid "Apps"
 msgstr "應用程式"
 
@@ -636,7 +633,7 @@ msgstr "刪除標籤出錯"
 
 #: tags/controller.php:75
 msgid "Error tagging"
-msgstr ""
+msgstr "貼標籤發生錯誤"
 
 #: tags/controller.php:86
 msgid "Error untagging"
@@ -671,9 +668,10 @@ msgstr "嗨，\n\n%s 和你分享了 %s ，到這裡看它：%s\n"
 #: templates/altmail.php:4 templates/mail.php:17
 #, php-format
 msgid "The share will expire on %s."
-msgstr ""
+msgstr "這個分享將會於 %s 過期"
 
-#: templates/altmail.php:7 templates/mail.php:20
+#. TRANSLATORS term at the end of a mail
+#: templates/altmail.php:8 templates/mail.php:21
 msgid "Cheers!"
 msgstr "太棒了！"
 
@@ -721,13 +719,13 @@ msgid "Create an <strong>admin account</strong>"
 msgstr "建立一個<strong>管理者帳號</strong>"
 
 #: templates/installation.php:59 templates/installation.php:62
-#: templates/login.php:41 templates/login.php:44
+#: templates/login.php:33 templates/login.php:36
 msgid "Password"
 msgstr "密碼"
 
 #: templates/installation.php:72
 msgid "Storage & database"
-msgstr ""
+msgstr "儲存空間和資料庫"
 
 #: templates/installation.php:79
 msgid "Data folder"
@@ -740,7 +738,7 @@ msgstr "設定資料庫"
 #: templates/installation.php:96
 #, php-format
 msgid "Only %s is available."
-msgstr ""
+msgstr "剩下 %s 可使用"
 
 #: templates/installation.php:111 templates/installation.php:113
 msgid "Database user"
@@ -766,7 +764,7 @@ msgstr "資料庫主機"
 msgid ""
 "SQLite will be used as database. For larger installations we recommend to "
 "change this."
-msgstr ""
+msgstr "將會使用 SQLite 作為資料庫，在大型安裝中建議使用其他種資料庫"
 
 #: templates/installation.php:159
 msgid "Finish setup"
@@ -776,57 +774,43 @@ msgstr "完成設定"
 msgid "Finishing …"
 msgstr "即將完成…"
 
-#: templates/layout.user.php:40
+#: templates/layout.user.php:43
 msgid ""
 "This application requires JavaScript to be enabled for correct operation.  "
 "Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable "
 "JavaScript</a> and re-load this interface."
-msgstr ""
+msgstr "這個應用程式需要啟用 Javascript 才能正常運作，請<a href=\"http://enable-javascript.com/\" target=\"_blank\">啟用 Javascript</a> 然後重新載入頁面"
 
-#: templates/layout.user.php:44
+#: templates/layout.user.php:47
 #, php-format
 msgid "%s is available. Get more information on how to update."
 msgstr "%s 已經釋出，瞭解更多資訊以進行更新。"
 
-#: templates/layout.user.php:80 templates/singleuser.user.php:8
+#: templates/layout.user.php:83 templates/singleuser.user.php:8
 msgid "Log out"
 msgstr "登出"
 
 #: templates/login.php:11
-msgid "Automatic logon rejected!"
-msgstr "自動登入被拒！"
-
-#: templates/login.php:12
-msgid ""
-"If you did not change your password recently, your account may be "
-"compromised!"
-msgstr "如果您最近並未更改密碼，您的帳號可能已經遭到入侵！"
-
-#: templates/login.php:14
-msgid "Please change your password to secure your account again."
-msgstr "請更改您的密碼以再次取得您帳戶的控制權。"
-
-#: templates/login.php:19
 msgid "Server side authentication failed!"
 msgstr "伺服器端認證失敗！"
 
-#: templates/login.php:20
+#: templates/login.php:12
 msgid "Please contact your administrator."
 msgstr "請聯絡系統管理員。"
 
-#: templates/login.php:50
+#: templates/login.php:42
 msgid "Forgot your password? Reset it!"
-msgstr ""
+msgstr "忘了密碼？重設它！"
 
-#: templates/login.php:55
+#: templates/login.php:47
 msgid "remember"
 msgstr "記住"
 
-#: templates/login.php:59
+#: templates/login.php:51
 msgid "Log in"
 msgstr "登入"
 
-#: templates/login.php:65
+#: templates/login.php:57
 msgid "Alternative Logins"
 msgstr "其他登入方法"
 
@@ -835,15 +819,15 @@ msgstr "其他登入方法"
 msgid ""
 "Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> "
 "with you.<br><a href=\"%s\">View it!</a><br><br>"
-msgstr ""
+msgstr "嗨，<br><br>%s 與你分享了<strong>%s</strong>。<br><a href=\"%s\">檢視</a><br><br>"
 
 #: templates/singleuser.user.php:3
 msgid "This ownCloud instance is currently in single user mode."
-msgstr ""
+msgstr "這個 ownCloud 伺服器目前運作於單一使用者模式"
 
 #: templates/singleuser.user.php:4
 msgid "This means only administrators can use the instance."
-msgstr ""
+msgstr "這表示只有系統管理員能夠使用"
 
 #: templates/singleuser.user.php:5 templates/update.user.php:5
 msgid ""
@@ -855,29 +839,57 @@ msgstr "若這個訊息持續出現，請聯絡系統管理員"
 msgid "Thank you for your patience."
 msgstr "感謝您的耐心"
 
+#: templates/untrustedDomain.php:5
+msgid "You are accessing the server from an untrusted domain."
+msgstr "你正在從一個未信任的網域存取伺服器"
+
+#: templates/untrustedDomain.php:8
+msgid ""
+"Please contact your administrator. If you are an administrator of this "
+"instance, configure the \"trusted_domain\" setting in config/config.php. An "
+"example configuration is provided in config/config.sample.php."
+msgstr "請聯絡您的系統管理員，如果您就是系統管理員，請設定 config/config.php 中的 \"trusted_domain\" 選項。範例設定提供於 config/config.sample.php"
+
+#: templates/untrustedDomain.php:10
+msgid ""
+"Depending on your configuration, as an administrator you might also be able "
+"to use the button below to trust this domain."
+msgstr "依照設定而定，您身為系統管理員可能也可以使用底下的按鈕來信任這個網域"
+
+#: templates/untrustedDomain.php:14
+#, php-format
+msgid "Add \"%s\" as trusted domain"
+msgstr "將 %s 加入到信任的網域"
+
 #: templates/update.admin.php:3
 #, php-format
 msgid "%s will be updated to version %s."
-msgstr ""
+msgstr "%s 將會被升級到版本 %s"
 
 #: templates/update.admin.php:7
 msgid "The following apps will be disabled:"
-msgstr ""
+msgstr "這些應用程式會被停用："
 
 #: templates/update.admin.php:17
 #, php-format
 msgid "The theme %s has been disabled."
-msgstr ""
+msgstr "主題 %s 已經被停用"
 
 #: templates/update.admin.php:21
 msgid ""
 "Please make sure that the database, the config folder and the data folder "
 "have been backed up before proceeding."
-msgstr ""
+msgstr "在繼續之前，請備份資料庫、config 目錄及資料目錄"
 
 #: templates/update.admin.php:23
 msgid "Start update"
-msgstr ""
+msgstr "開始升級"
+
+#: templates/update.admin.php:25
+msgid ""
+"To avoid timeouts with larger installations, you can instead run the "
+"following command from your installation directory:"
+msgstr "在大型安裝上，為了避免升級請求逾時，你也可以在安裝目錄執行下列指令："
 
 #: templates/update.user.php:3
 msgid ""

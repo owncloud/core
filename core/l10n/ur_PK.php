@@ -1,6 +1,5 @@
 <?php
 $TRANSLATIONS = array(
-"Expiration date is in the past." => "ختم ہونے کی تاریخ ماضی میں ہے.",
 "Turned on maintenance mode" => "بحالی موڈ چالو ہے",
 "Turned off maintenance mode" => "بحالی موڈ بند ہے",
 "Updated database" => "اپ ڈیٹ ہوئ ڈیٹا بیس",
@@ -75,8 +74,6 @@ $TRANSLATIONS = array(
 "Send" => "بھجیں",
 "Set expiration date" => "تاریخ معیاد سیٹ کریں",
 "Expiration date" => "تاریخ معیاد",
-"Share via email:" => "ای میل کے زریعے ارسال کریں",
-"No people found" => "کوئ شخص موجود نہیں ",
 "group" => "مجموعہ",
 "Resharing is not allowed" => "دوبارہ اشتراک کی اجازت نہیں",
 "Shared in {item} with {user}" => "شراکت میں {آئٹم}اور {مستخدم}",
@@ -134,9 +131,6 @@ $TRANSLATIONS = array(
 "Finishing …" => "تکمیل ...",
 "%s is available. Get more information on how to update." => "%s دستیاب ہے. اپ ڈیٹ کرنے کے  بارے میں مزید معلومات حاصل کریں.",
 "Log out" => "لاگ آؤٹ",
-"Automatic logon rejected!" => "آٹومیٹک لاگ ان مسترد",
-"If you did not change your password recently, your account may be compromised!" => "آپ نے حال ہی میں اپنا پاس ورڈ تبدیل نہیں کیا تو، آپ کے اکاؤنٹ سے سمجھوتہ ہو سکتا ہے",
-"Please change your password to secure your account again." => "براہ مہربانی پھر سے اکاونٹ محفوظ کرنے کے لیے  اپنا پاس ورڈ تبدیل کریں.",
 "remember" => "یاد رکھیں",
 "Log in" => "لاگ ان",
 "Alternative Logins" => "متبادل لاگ ان ",

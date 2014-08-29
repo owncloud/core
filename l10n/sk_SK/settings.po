@@ -3,14 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# helix84 <helix84@centrum.sk>, 2014
 # Marián Hvolka <marian.hvolka@stuba.sk>, 2013-2014
 # martin, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-07-10 04:58-0400\n"
-"PO-Revision-Date: 2014-07-10 07:11+0000\n"
+"POT-Creation-Date: 2014-08-28 01:54-0400\n"
+"PO-Revision-Date: 2014-08-28 05:23+0000\n"
 "Last-Translator: I Robot\n"
 "Language-Team: Slovak (Slovakia) (http://www.transifex.com/projects/p/owncloud/language/sk_SK/)\n"
 "MIME-Version: 1.0\n"
@@ -49,15 +50,15 @@ msgstr "Email odoslaný"
 msgid "You need to set your user email before being able to send test emails."
 msgstr "Musíte nastaviť svoj po​​užívateľský email, než budete môcť odoslať testovací email."
 
-#: admin/controller.php:116 templates/admin.php:337
+#: admin/controller.php:116 templates/admin.php:368
 msgid "Send mode"
 msgstr "Mód odosielania"
 
-#: admin/controller.php:118 templates/admin.php:350 templates/personal.php:156
+#: admin/controller.php:118 templates/admin.php:381 templates/personal.php:156
 msgid "Encryption"
 msgstr "Šifrovanie"
 
-#: admin/controller.php:120 templates/admin.php:374
+#: admin/controller.php:120 templates/admin.php:405
 msgid "Authentication method"
 msgstr "Autentifikačná metóda"
 
@@ -162,7 +163,7 @@ msgstr "Nie je možné pridať používateľa do skupiny %s"
 msgid "Unable to remove user from group %s"
 msgstr "Nie je možné odstrániť používateľa zo skupiny %s"
 
-#: ajax/updateapp.php:41
+#: ajax/updateapp.php:44
 msgid "Couldn't update app."
 msgstr "Nemožno aktualizovať aplikáciu."
 
@@ -195,7 +196,15 @@ msgstr "Úložisko nepodporuje zmenu hesla, ale šifrovací kľúč používate�
 msgid "Unable to change password"
 msgstr "Zmena hesla sa nepodarila"
 
-#: js/admin.js:128
+#: js/admin.js:45
+msgid "Are you really sure you want add \"{domain}\" as trusted domain?"
+msgstr ""
+
+#: js/admin.js:46
+msgid "Add trusted domain"
+msgstr ""
+
+#: js/admin.js:146
 msgid "Sending..."
 msgstr "Odosielam..."
 
@@ -307,63 +316,63 @@ msgstr "Obnoviť šifrovacie kľúče."
 msgid "Unable to delete {objName}"
 msgstr "Nemožno vymazať {objName}"
 
-#: js/users/groups.js:73 js/users/groups.js:178
+#: js/users/groups.js:94 js/users/groups.js:202
 msgid "Error creating group"
 msgstr "Chyba pri vytváraní skupiny"
 
-#: js/users/groups.js:177
+#: js/users/groups.js:201
 msgid "A valid group name must be provided"
 msgstr "Musíte zadať platný názov skupiny"
 
-#: js/users/groups.js:205
+#: js/users/groups.js:229
 msgid "deleted {groupName}"
 msgstr "vymazaná {groupName}"
 
-#: js/users/groups.js:206 js/users/users.js:265
+#: js/users/groups.js:230 js/users/users.js:300
 msgid "undo"
 msgstr "vrátiť"
 
-#: js/users/users.js:37 templates/admin.php:292
+#: js/users/users.js:49 templates/admin.php:323
 #: templates/users/part.createuser.php:12 templates/users/part.userlist.php:10
 #: templates/users/part.userlist.php:41
 msgid "Groups"
 msgstr "Skupiny"
 
-#: js/users/users.js:41 templates/users/part.userlist.php:12
+#: js/users/users.js:53 templates/users/part.userlist.php:12
 #: templates/users/part.userlist.php:57
 msgid "Group Admin"
 msgstr "Správca skupiny"
 
-#: js/users/users.js:63 templates/users/part.grouplist.php:46
+#: js/users/users.js:75 templates/users/part.grouplist.php:46
 #: templates/users/part.userlist.php:108
 msgid "Delete"
 msgstr "Zmazať"
 
-#: js/users/users.js:85 templates/users/part.userlist.php:98
+#: js/users/users.js:96 templates/users/part.userlist.php:98
 msgid "never"
 msgstr "nikdy"
 
-#: js/users/users.js:264
+#: js/users/users.js:299
 msgid "deleted {userName}"
 msgstr "vymazané {userName}"
 
-#: js/users/users.js:381
+#: js/users/users.js:435
 msgid "add group"
 msgstr "pridať skupinu"
 
-#: js/users/users.js:578
+#: js/users/users.js:653
 msgid "A valid username must be provided"
 msgstr "Musíte zadať platné používateľské meno"
 
-#: js/users/users.js:579 js/users/users.js:585 js/users/users.js:600
+#: js/users/users.js:654 js/users/users.js:660 js/users/users.js:675
 msgid "Error creating user"
 msgstr "Chyba pri vytváraní používateľa"
 
-#: js/users/users.js:584
+#: js/users/users.js:659
 msgid "A valid password must be provided"
 msgstr "Musíte zadať platné heslo"
 
-#: js/users/users.js:608
+#: js/users/users.js:691
 msgid "Warning: Home directory for user \"{user}\" already exists"
 msgstr "Upozornenie: Domovský priečinok používateľa \"{user}\" už existuje"
 
@@ -371,62 +380,62 @@ msgstr "Upozornenie: Domovský priečinok používateľa \"{user}\" už existuje
 msgid "__language_name__"
 msgstr "Slovensky"
 
-#: templates/admin.php:8
+#: templates/admin.php:12
 msgid "Everything (fatal issues, errors, warnings, info, debug)"
 msgstr "Všetko (fatálne problémy, chyby, upozornenia, info, debug)"
 
-#: templates/admin.php:9
+#: templates/admin.php:13
 msgid "Info, warnings, errors and fatal issues"
 msgstr "Info, upozornenia, chyby a fatálne problémy"
 
-#: templates/admin.php:10
+#: templates/admin.php:14
 msgid "Warnings, errors and fatal issues"
 msgstr "Upozornenia, chyby a fatálne problémy"
 
-#: templates/admin.php:11
+#: templates/admin.php:15
 msgid "Errors and fatal issues"
 msgstr "Chyby a fatálne problémy"
 
-#: templates/admin.php:12
+#: templates/admin.php:16
 msgid "Fatal issues only"
 msgstr "Len fatálne problémy"
 
-#: templates/admin.php:16 templates/admin.php:23
+#: templates/admin.php:20 templates/admin.php:27
 msgid "None"
 msgstr "Žiadny"
 
-#: templates/admin.php:17
+#: templates/admin.php:21
 msgid "Login"
 msgstr "Prihlásenie"
 
-#: templates/admin.php:18
+#: templates/admin.php:22
 msgid "Plain"
 msgstr "Neformátovaný"
 
-#: templates/admin.php:19
+#: templates/admin.php:23
 msgid "NT LAN Manager"
 msgstr "NT LAN Manager"
 
-#: templates/admin.php:24
+#: templates/admin.php:28
 msgid "SSL"
 msgstr "SSL"
 
-#: templates/admin.php:25
+#: templates/admin.php:29
 msgid "TLS"
 msgstr "TLS"
 
-#: templates/admin.php:47 templates/admin.php:61
+#: templates/admin.php:51 templates/admin.php:65
 msgid "Security Warning"
 msgstr "Bezpečnostné upozornenie"
 
-#: templates/admin.php:50
+#: templates/admin.php:54
 #, php-format
 msgid ""
 "You are accessing %s via HTTP. We strongly suggest you configure your server"
 " to require using HTTPS instead."
 msgstr "Do %s máte prístup cez HTTP. Dôrazne odporúčame nakonfigurovať server tak, aby namiesto toho vyžadoval použitie HTTPS."
 
-#: templates/admin.php:64
+#: templates/admin.php:68
 msgid ""
 "Your data directory and your files are probably accessible from the "
 "internet. The .htaccess file is not working. We strongly suggest that you "
@@ -435,91 +444,102 @@ msgid ""
 "root."
 msgstr "Váš priečinok s dátami aj vaše súbory sú pravdepodobne prístupné z internetu. Súbor .htaccess nefunguje. Odporúčame nakonfigurovať webový server tak, aby priečinok s dátami nebol naďalej prístupný, alebo presunúť priečinok s dátami mimo priestor sprístupňovaný webovým serverom."
 
-#: templates/admin.php:75 templates/admin.php:90
+#: templates/admin.php:79 templates/admin.php:94
 msgid "Setup Warning"
 msgstr "Nastavenia oznámení a upozornení"
 
-#: templates/admin.php:78
+#: templates/admin.php:82
 msgid ""
 "Your web server is not yet properly setup to allow files synchronization "
 "because the WebDAV interface seems to be broken."
 msgstr "Váš webový server nie je správne nastavený na synchronizáciu, pretože rozhranie WebDAV je poškodené."
 
-#: templates/admin.php:79
+#: templates/admin.php:83
 #, php-format
 msgid "Please double check the <a href=\"%s\">installation guides</a>."
 msgstr "Skontrolujte prosím znovu <a href=\"%s\">inštalačnú príručku</a>."
 
-#: templates/admin.php:93
+#: templates/admin.php:97
 msgid ""
 "PHP is apparently setup to strip inline doc blocks. This will make several "
 "core apps inaccessible."
-msgstr ""
+msgstr "PHP je zjavne nastavené, aby odstraňovalo bloky vloženej dokumentácie. To zneprístupní niekoľko základných aplikácií."
 
-#: templates/admin.php:94
+#: templates/admin.php:98
 msgid ""
 "This is probably caused by a cache/accelerator such as Zend OPcache or "
 "eAccelerator."
 msgstr "To je pravdepodobne spôsobené cache/akcelerátorom ako napr. Zend OPcache alebo eAccelerator."
 
-#: templates/admin.php:105
+#: templates/admin.php:109
 msgid "Database Performance Info"
 msgstr "Informácie o výkone databázy"
 
-#: templates/admin.php:108
+#: templates/admin.php:112
 msgid ""
 "SQLite is used as database. For larger installations we recommend to change "
 "this. To migrate to another database use the command line tool: 'occ db"
 ":convert-type'"
 msgstr "Ako databáza je použitá SQLite. Pre väčšie inštalácie vám to odporúčame zmeniť. Na prenos do inej databázy použite nástroj príkazového riadka: \"occ db:convert-typ\""
 
-#: templates/admin.php:119
+#: templates/admin.php:123
 msgid "Module 'fileinfo' missing"
 msgstr "Chýba modul 'fileinfo'"
 
-#: templates/admin.php:122
+#: templates/admin.php:126
 msgid ""
 "The PHP module 'fileinfo' is missing. We strongly recommend to enable this "
 "module to get best results with mime-type detection."
 msgstr "Chýba modul 'fileinfo'. Dôrazne doporučujeme ho povoliť pre dosiahnutie najlepších výsledkov zisťovania mime-typu."
 
-#: templates/admin.php:133
+#: templates/admin.php:137
 msgid "Your PHP version is outdated"
 msgstr "Vaša PHP verzia je zastaraná"
 
-#: templates/admin.php:136
+#: templates/admin.php:140
 msgid ""
 "Your PHP version is outdated. We strongly recommend to update to 5.3.8 or "
 "newer because older versions are known to be broken. It is possible that "
 "this installation is not working correctly."
 msgstr "Táto verzia PHP je zastaraná. Dôrazne vám odporúčame aktualizovať na verziu 5.3.8 alebo novšiu, lebo staršie verzie sú chybné. Je možné, že táto inštalácia nebude fungovať správne."
 
-#: templates/admin.php:147
+#: templates/admin.php:151
+msgid "PHP charset is not set to UTF-8"
+msgstr "Znaková sada PHP nie je nastavená na UTF-8"
+
+#: templates/admin.php:154
+msgid ""
+"PHP charset is not set to UTF-8. This can cause major issues with non-ASCII "
+"characters in file names. We highly recommend to change the value of "
+"'default_charset' php.ini to 'UTF-8'."
+msgstr "Predvolená znaková sada PHP nie je nastavená na UTF-8. To môže spôsobiť veľké problémy v prípade ne-ASCII znakov v názvoch súborov. Dôrazne odporúčame zmeniť hodnotu \"default_charset\" v php.ini  na \"UTF-8\"."
+
+#: templates/admin.php:165
 msgid "Locale not working"
 msgstr "Lokalizácia nefunguje"
 
-#: templates/admin.php:152
+#: templates/admin.php:170
 msgid "System locale can not be set to a one which supports UTF-8."
 msgstr "Nie je možné nastaviť znakovú sadu, ktorá podporuje UTF-8."
 
-#: templates/admin.php:156
+#: templates/admin.php:174
 msgid ""
 "This means that there might be problems with certain characters in file "
 "names."
 msgstr "To znamená, že sa môžu vyskytnúť problémy s niektorými znakmi v názvoch súborov."
 
-#: templates/admin.php:160
+#: templates/admin.php:178
 #, php-format
 msgid ""
 "We strongly suggest to install the required packages on your system to "
 "support one of the following locales: %s."
 msgstr "Dôrazne doporučujeme nainštalovať na váš systém požadované balíčky podporujúce jednu z nasledovných znakových sád: %s."
 
-#: templates/admin.php:172
+#: templates/admin.php:190
 msgid "Internet connection not working"
 msgstr "Pripojenie na internet nefunguje"
 
-#: templates/admin.php:175
+#: templates/admin.php:193
 msgid ""
 "This server has no working internet connection. This means that some of the "
 "features like mounting of external storage, notifications about updates or "
@@ -528,186 +548,199 @@ msgid ""
 "internet connection for this server if you want to have all features."
 msgstr "Server nemá funkčné pripojenie k internetu. Niektoré moduly ako napr. externé úložisko, oznámenie o dostupných aktualizáciách alebo inštalácia aplikácií tretích strán nebudú fungovať. Prístup k súborom z iných miest a odosielanie oznamovacích emailov tiež nemusí fungovať. Ak chcete využívať všetky vlastnosti ownCloudu, odporúčame povoliť pripojenie k internetu tomuto serveru."
 
-#: templates/admin.php:189
+#: templates/admin.php:203
+msgid "URL generation in notification emails"
+msgstr ""
+
+#: templates/admin.php:206
+#, php-format
+msgid ""
+"If your installation is not installed in the root of the domain and uses "
+"system cron, there can be issues with the URL generation. To avoid these "
+"problems, please set the \"overwritewebroot\" option in your config.php file"
+" to the webroot path of your installation (Suggested: \"%s\")"
+msgstr ""
+
+#: templates/admin.php:220
 msgid "Cron"
 msgstr "Cron"
 
-#: templates/admin.php:196
+#: templates/admin.php:227
 #, php-format
 msgid "Last cron was executed at %s."
 msgstr "Posledný cron bol spustený %s."
 
-#: templates/admin.php:199
+#: templates/admin.php:230
 #, php-format
 msgid ""
 "Last cron was executed at %s. This is more than an hour ago, something seems"
 " wrong."
 msgstr "Posledný cron bol spustený %s. To je viac ako pred hodinou. Zdá sa, že niečo nie je vporiadku."
 
-#: templates/admin.php:203
+#: templates/admin.php:234
 msgid "Cron was not executed yet!"
 msgstr "Cron sa ešte nespustil!"
 
-#: templates/admin.php:213
+#: templates/admin.php:244
 msgid "Execute one task with each page loaded"
 msgstr "Vykonať jednu úlohu s každým načítaní stránky"
 
-#: templates/admin.php:221
+#: templates/admin.php:252
 msgid ""
 "cron.php is registered at a webcron service to call cron.php every 15 "
 "minutes over http."
 msgstr "cron.php je zaregistrovaná v službe WebCron a zavolá cron.php každých 15 minút cez http."
 
-#: templates/admin.php:229
+#: templates/admin.php:260
 msgid "Use system's cron service to call the cron.php file every 15 minutes."
-msgstr ""
+msgstr "Použiť systémovú službu cron na spúšťanie súboru cron.php každých 15 minút."
 
-#: templates/admin.php:234
+#: templates/admin.php:265
 msgid "Sharing"
 msgstr "Zdieľanie"
 
-#: templates/admin.php:238
+#: templates/admin.php:269
 msgid "Allow apps to use the Share API"
 msgstr "Povoliť aplikáciám používať API na zdieľanie"
 
-#: templates/admin.php:243
+#: templates/admin.php:274
 msgid "Allow users to share via link"
 msgstr "Povoliť používateľom zdieľanie pomocou odkazov"
 
-#: templates/admin.php:249
+#: templates/admin.php:280
 msgid "Enforce password protection"
 msgstr "Vynútiť ochranu heslom"
 
-#: templates/admin.php:252
+#: templates/admin.php:283
 msgid "Allow public uploads"
 msgstr "Povoliť verejné nahrávanie súborov"
 
-#: templates/admin.php:256
+#: templates/admin.php:287
 msgid "Set default expiration date"
 msgstr "Nastaviť predvolený dátum expirácie"
 
-#: templates/admin.php:260
+#: templates/admin.php:291
 msgid "Expire after "
 msgstr "Platnosť do"
 
-#: templates/admin.php:263
+#: templates/admin.php:294
 msgid "days"
 msgstr "dni"
 
-#: templates/admin.php:266
+#: templates/admin.php:297
 msgid "Enforce expiration date"
 msgstr "Vynútiť dátum expirácie"
 
-#: templates/admin.php:271
+#: templates/admin.php:302
 msgid "Allow resharing"
 msgstr "Povoliť zdieľanie ďalej"
 
-#: templates/admin.php:276
+#: templates/admin.php:307
 msgid "Restrict users to only share with users in their groups"
 msgstr "Povoliť používateľom zdieľanie len medzi nimi v rámci skupiny"
 
-#: templates/admin.php:281
+#: templates/admin.php:312
 msgid "Allow users to send mail notification for shared files"
 msgstr "Povoliť používateľom zasielať emailom oznámenie o zdieľaní súborov"
 
-#: templates/admin.php:286
+#: templates/admin.php:317
 msgid "Exclude groups from sharing"
 msgstr "Vybrať skupiny zo zdieľania"
 
-#: templates/admin.php:298
+#: templates/admin.php:329
 msgid ""
 "These groups will still be able to receive shares, but not to initiate them."
 msgstr "Tieto skupiny budú môcť stále zdieľať, ale sami nemôžu zdieľať ostatným."
 
-#: templates/admin.php:303
+#: templates/admin.php:334
 msgid "Security"
 msgstr "Zabezpečenie"
 
-#: templates/admin.php:314
+#: templates/admin.php:345
 msgid "Enforce HTTPS"
 msgstr "Vynútiť HTTPS"
 
-#: templates/admin.php:316
+#: templates/admin.php:347
 #, php-format
 msgid "Forces the clients to connect to %s via an encrypted connection."
 msgstr "Vynúti pripájanie klientov k %s šifrovaným pripojením."
 
-#: templates/admin.php:322
+#: templates/admin.php:353
 #, php-format
 msgid ""
 "Please connect to your %s via HTTPS to enable or disable the SSL "
 "enforcement."
 msgstr "Pripojte sa k %s cez HTTPS pre povolenie alebo zakázanie vynútenia SSL."
 
-#: templates/admin.php:332
+#: templates/admin.php:363
 msgid "Email Server"
 msgstr "Email server"
 
-#: templates/admin.php:334
+#: templates/admin.php:365
 msgid "This is used for sending out notifications."
 msgstr "Používa sa na odosielanie upozornení."
 
-#: templates/admin.php:365
+#: templates/admin.php:396
 msgid "From address"
 msgstr "Z adresy"
 
-#: templates/admin.php:366
+#: templates/admin.php:397
 msgid "mail"
 msgstr "email"
 
-#: templates/admin.php:387
+#: templates/admin.php:418
 msgid "Authentication required"
 msgstr "Vyžaduje sa overenie"
 
-#: templates/admin.php:391
+#: templates/admin.php:422
 msgid "Server address"
 msgstr "Adresa servera"
 
-#: templates/admin.php:395
+#: templates/admin.php:426
 msgid "Port"
 msgstr "Port"
 
-#: templates/admin.php:400
+#: templates/admin.php:431
 msgid "Credentials"
 msgstr "Prihlasovanie údaje"
 
-#: templates/admin.php:401
+#: templates/admin.php:432
 msgid "SMTP Username"
 msgstr "SMTP používateľské meno"
 
-#: templates/admin.php:404
+#: templates/admin.php:435
 msgid "SMTP Password"
 msgstr "SMTP heslo"
 
-#: templates/admin.php:408
+#: templates/admin.php:439
 msgid "Test email settings"
 msgstr "Nastavenia testovacieho emailu"
 
-#: templates/admin.php:409
+#: templates/admin.php:440
 msgid "Send email"
 msgstr "Odoslať email"
 
-#: templates/admin.php:414
+#: templates/admin.php:445
 msgid "Log"
 msgstr "Záznam"
 
-#: templates/admin.php:415
+#: templates/admin.php:446
 msgid "Log level"
 msgstr "Úroveň záznamu"
 
-#: templates/admin.php:447
+#: templates/admin.php:478
 msgid "More"
 msgstr "Viac"
 
-#: templates/admin.php:448
+#: templates/admin.php:479
 msgid "Less"
 msgstr "Menej"
 
-#: templates/admin.php:454 templates/personal.php:208
+#: templates/admin.php:485 templates/personal.php:208
 msgid "Version"
 msgstr "Verzia"
 
-#: templates/admin.php:458 templates/personal.php:211
+#: templates/admin.php:489 templates/personal.php:211
 msgid ""
 "Developed by the <a href=\"http://ownCloud.org/contact\" "
 "target=\"_blank\">ownCloud community</a>, the <a "
@@ -785,7 +818,7 @@ msgid ""
 "\t\tor\n"
 "\t\t<a href=\"https://owncloud.org/promote\"\n"
 "\t\t\ttarget=\"_blank\">spread the word</a>!"
-msgstr ""
+msgstr "Ak chcete podporiť projekt\n\t\t<a href=\"https://owncloud.org/contribute\"\n\t\t\ttarget=\"_blank\">pridajte sa do vývoja</a>\n\t\talebo\n\t\t<a href=\"https://owncloud.org/promote\"\n\t\t\ttarget=\"_blank\">pomáhajte šíriť povedomie</a>!"
 
 #: templates/personal.php:31
 msgid "Show First Run Wizard again"

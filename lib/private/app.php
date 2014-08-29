@@ -62,6 +62,9 @@ class OC_App {
 	 * if $types is set, only apps of those types will be loaded
 	 */
 	public static function loadApps($types = null) {
+		if (OC_Config::getValue('maintenance', false)) {
+			return false;
+		}
 		// Load the enabled apps here
 		$apps = self::getEnabledApps();
 		// prevent app.php from printing output
@@ -81,10 +84,14 @@ class OC_App {
 	 * load a single app
 	 *
 	 * @param string $app
+	 * @param bool $checkUpgrade whether an upgrade check should be done
+	 * @throws \OC\NeedsUpdateException
 	 */
-	public static function loadApp($app) {
+	public static function loadApp($app, $checkUpgrade = true) {
 		if (is_file(self::getAppPath($app) . '/appinfo/app.php')) {
-			self::checkUpgrade($app);
+			if ($checkUpgrade and self::shouldUpgrade($app)) {
+				throw new \OC\NeedsUpdateException();
+			}
 			require_once $app . '/appinfo/app.php';
 		}
 	}
@@ -172,6 +179,7 @@ class OC_App {
 		if (!$forceRefresh && !empty(self::$enabledAppsCache)) {
 			return self::$enabledAppsCache;
 		}
+		$apps = array();
 		$appConfig = \OC::$server->getAppConfig();
 		$appStatus = $appConfig->getValues(false, 'enabled');
 		$user = \OC_User::getUser();
@@ -832,7 +840,8 @@ class OC_App {
 			foreach ($appList as $app) {
 				foreach ($remoteApps AS $key => $remote) {
 					if ($app['name'] === $remote['name'] ||
-						$app['ocsid'] ===  $remote['id']) {
+						(isset($app['ocsid']) &&
+						$app['ocsid'] ===  $remote['id'])) {
 						unset($remoteApps[$key]);
 					}
 				}
@@ -952,39 +961,6 @@ class OC_App {
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * check if the app needs updating and update when needed
-	 *
-	 * @param string $app
-	 */
-	public static function checkUpgrade($app) {
-		if (in_array($app, self::$checkedApps)) {
-			return;
-		}
-		self::$checkedApps[] = $app;
-		if (!self::shouldUpgrade($app)) {
-			return;
-		}
-		$versions = self::getAppVersions();
-		$installedVersion = $versions[$app];
-		$currentVersion = OC_App::getAppVersion($app);
-		OC_Log::write(
-			$app,
-			'starting app upgrade from ' . $installedVersion . ' to ' . $currentVersion,
-			OC_Log::DEBUG
-		);
-		$info = self::getAppInfo($app);
-		try {
-			OC_App::updateApp($app);
-			OC_Hook::emit('update', 'success', 'Updated ' . $info['name'] . ' app');
-		} catch (Exception $e) {
-			OC_Hook::emit('update', 'failure', 'Failed to update ' . $info['name'] . ' app: ' . $e->getMessage());
-			$l = OC_L10N::get('lib');
-			throw new RuntimeException($l->t('Failed to upgrade "%s".', array($app)), 0, $e);
-		}
-		OC_Appconfig::setValue($app, 'installed_version', OC_App::getAppVersion($app));
 	}
 
 	/**
@@ -1165,7 +1141,7 @@ class OC_App {
 	 */
 	public static function updateApp($appId) {
 		if (file_exists(self::getAppPath($appId) . '/appinfo/preupdate.php')) {
-			self::loadApp($appId);
+			self::loadApp($appId, false);
 			include self::getAppPath($appId) . '/appinfo/preupdate.php';
 		}
 		if (file_exists(self::getAppPath($appId) . '/appinfo/database.xml')) {
@@ -1175,7 +1151,7 @@ class OC_App {
 			return false;
 		}
 		if (file_exists(self::getAppPath($appId) . '/appinfo/update.php')) {
-			self::loadApp($appId);
+			self::loadApp($appId, false);
 			include self::getAppPath($appId) . '/appinfo/update.php';
 		}
 
@@ -1192,6 +1168,9 @@ class OC_App {
 		}
 
 		self::setAppTypes($appId);
+
+		$version = \OC_App::getAppVersion($appId);
+		\OC_Appconfig::setValue($appId, 'installed_version', $version);
 
 		return true;
 	}

@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-07-16 01:54-0400\n"
-"PO-Revision-Date: 2014-07-16 05:54+0000\n"
-"Last-Translator: I Robot\n"
+"POT-Creation-Date: 2014-08-28 01:54-0400\n"
+"PO-Revision-Date: 2014-08-28 05:23+0000\n"
+"Last-Translator: Maciej Przybecki <maciej.przybecki@gmail.com>\n"
 "Language-Team: Polish (http://www.transifex.com/projects/p/owncloud/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,11 +22,7 @@ msgstr ""
 "Language: pl\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: ajax/share.php:90
-msgid "Expiration date is in the past."
-msgstr "Data wygaśnięcia jest w przeszłości"
-
-#: ajax/share.php:122 ajax/share.php:164
+#: ajax/share.php:117 ajax/share.php:159
 #, php-format
 msgid "Couldn't send mail to following users: %s "
 msgstr "Nie można było wysłać wiadomości do następujących użytkowników: %s"
@@ -47,7 +43,16 @@ msgstr "Zaktualizuj bazę"
 msgid "Checked database schema update"
 msgstr "Sprawdzono aktualizację schematu bazy danych"
 
-#: ajax/update.php:27
+#: ajax/update.php:22
+msgid "Checked database schema update for apps"
+msgstr "Sprawdzono aktualizację schematu bazy danych dla aplikacji"
+
+#: ajax/update.php:25
+#, php-format
+msgid "Updated \"%s\" to %s"
+msgstr "Zaktualizowano \"%s\" do %s"
+
+#: ajax/update.php:33
 #, php-format
 msgid "Disabled incompatible apps: %s"
 msgstr "Wyłączone niekompatybilne aplikacja: %s"
@@ -224,7 +229,7 @@ msgstr "w zeszłym roku"
 msgid "years ago"
 msgstr "lat temu"
 
-#: js/lostpassword.js:3 lostpassword/controller/lostcontroller.php:175
+#: js/lostpassword.js:3 lostpassword/controller/lostcontroller.php:198
 msgid "Couldn't send reset email. Please contact your administrator."
 msgstr "Nie mogę wysłać maila resetującego. Skontaktuj się z administratorem."
 
@@ -360,12 +365,12 @@ msgstr "Współdzielony z {recipients}"
 msgid "Share"
 msgstr "Udostępnij"
 
-#: js/share.js:326 js/share.js:340 js/share.js:347 js/share.js:989
+#: js/share.js:326 js/share.js:340 js/share.js:347 js/share.js:1002
 #: templates/installation.php:10
 msgid "Error"
 msgstr "Błąd"
 
-#: js/share.js:328 js/share.js:1052
+#: js/share.js:328 js/share.js:1065
 msgid "Error while sharing"
 msgstr "Błąd podczas współdzielenia"
 
@@ -426,79 +431,71 @@ msgstr "Ustaw datę wygaśnięcia"
 msgid "Expiration date"
 msgstr "Data wygaśnięcia"
 
-#: js/share.js:455
-msgid "Share via email:"
-msgstr "Współdziel poprzez e-mail:"
-
-#: js/share.js:458
-msgid "No people found"
-msgstr "Nie znaleziono ludzi"
-
-#: js/share.js:507 js/share.js:575
+#: js/share.js:496 js/share.js:564
 msgid "group"
 msgstr "grupa"
 
-#: js/share.js:540
+#: js/share.js:529
 msgid "Resharing is not allowed"
 msgstr "Współdzielenie nie jest możliwe"
 
-#: js/share.js:591
+#: js/share.js:580
 msgid "Shared in {item} with {user}"
 msgstr "Współdzielone w {item} z {user}"
 
-#: js/share.js:613
+#: js/share.js:602
 msgid "Unshare"
 msgstr "Zatrzymaj współdzielenie"
 
-#: js/share.js:621
+#: js/share.js:610
 msgid "notify by email"
 msgstr "powiadom przez emaila"
 
-#: js/share.js:624
+#: js/share.js:613
 msgid "can share"
 msgstr "może współdzielić"
 
-#: js/share.js:627
+#: js/share.js:616
 msgid "can edit"
 msgstr "może edytować"
 
-#: js/share.js:629
+#: js/share.js:618
 msgid "access control"
 msgstr "kontrola dostępu"
 
-#: js/share.js:632
+#: js/share.js:621
 msgid "create"
 msgstr "utwórz"
 
-#: js/share.js:635
+#: js/share.js:624
 msgid "update"
 msgstr "uaktualnij"
 
-#: js/share.js:638
+#: js/share.js:627
 msgid "delete"
 msgstr "usuń"
 
-#: js/share.js:970
+#: js/share.js:983
 msgid "Password protected"
 msgstr "Zabezpieczone hasłem"
 
-#: js/share.js:989
+#: js/share.js:1002
 msgid "Error unsetting expiration date"
 msgstr "Błąd podczas usuwania daty wygaśnięcia"
 
-#: js/share.js:1010
+#: js/share.js:1023
 msgid "Error setting expiration date"
 msgstr "Błąd podczas ustawiania daty wygaśnięcia"
 
-#: js/share.js:1039
+#: js/share.js:1052
 msgid "Sending ..."
 msgstr "Wysyłanie..."
 
-#: js/share.js:1050
+#: js/share.js:1063
 msgid "Email sent"
 msgstr "E-mail wysłany"
 
-#: js/share.js:1074
+#: js/share.js:1087
 msgid "Warning"
 msgstr "Ostrzeżenie"
 
@@ -546,21 +543,21 @@ msgstr "Aktualizacja nie powiodła się."
 msgid "The update was successful. Redirecting you to ownCloud now."
 msgstr "Aktualizacji zakończyła się powodzeniem. Przekierowuję do ownCloud."
 
-#: lostpassword/controller/lostcontroller.php:110
+#: lostpassword/controller/lostcontroller.php:133
 msgid "Couldn't reset password because the token is invalid"
 msgstr "Nie można zresetować hasła, ponieważ token jest niepoprawny"
 
-#: lostpassword/controller/lostcontroller.php:136
+#: lostpassword/controller/lostcontroller.php:159
 msgid "Couldn't send reset email. Please make sure your username is correct."
 msgstr "Nie mogę wysłać maila resetującego. Sprawdź czy nazwa użytkownika jest poprawna."
 
-#: lostpassword/controller/lostcontroller.php:151
+#: lostpassword/controller/lostcontroller.php:174
 msgid ""
 "Couldn't send reset email because there is no email address for this "
 "username. Please contact your administrator."
 msgstr "Nie mogę wysłać maila resetującego. Sprawdź czy nazwa użytkownika  lub adres email jest poprawny. Skontaktuj się z administratorem."
 
-#: lostpassword/controller/lostcontroller.php:168
+#: lostpassword/controller/lostcontroller.php:191
 #, php-format
 msgid "%s password reset"
 msgstr "%s reset hasła"
@@ -575,7 +572,7 @@ msgstr "Odnośnik służący do resetowania hasła zostanie wysłany na adres e-
 
 #: lostpassword/templates/lostpassword.php:8
 #: lostpassword/templates/lostpassword.php:9 templates/installation.php:51
-#: templates/installation.php:54 templates/login.php:31 templates/login.php:35
+#: templates/installation.php:54 templates/login.php:23 templates/login.php:27
 msgid "Username"
 msgstr "Nazwa użytkownika"
 
@@ -623,7 +620,7 @@ msgstr "Osobiste"
 msgid "Users"
 msgstr "Użytkownicy"
 
-#: strings.php:7 templates/layout.user.php:53 templates/layout.user.php:118
+#: strings.php:7 templates/layout.user.php:56 templates/layout.user.php:121
 msgid "Apps"
 msgstr "Aplikacje"
 
@@ -686,7 +683,8 @@ msgstr "Witaj,\n\ntylko informuję, że %s współdzieli z Tobą %s.\nZobacz tut
 msgid "The share will expire on %s."
 msgstr "Ten zasób wygaśnie %s"
 
-#: templates/altmail.php:7 templates/mail.php:20
+#. TRANSLATORS term at the end of a mail
+#: templates/altmail.php:8 templates/mail.php:21
 msgid "Cheers!"
 msgstr "Pozdrawiam!"
 
@@ -734,7 +732,7 @@ msgid "Create an <strong>admin account</strong>"
 msgstr "Utwórz <strong>konta administratora</strong>"
 
 #: templates/installation.php:59 templates/installation.php:62
-#: templates/login.php:41 templates/login.php:44
+#: templates/login.php:33 templates/login.php:36
 msgid "Password"
 msgstr "Hasło"
 
@@ -789,57 +787,43 @@ msgstr "Zakończ konfigurowanie"
 msgid "Finishing …"
 msgstr "Kończę ..."
 
-#: templates/layout.user.php:40
+#: templates/layout.user.php:43
 msgid ""
 "This application requires JavaScript to be enabled for correct operation.  "
 "Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable "
 "JavaScript</a> and re-load this interface."
 msgstr "Ta aplikacja wymaga włączenia JavaScript do poprawnego działania. Proszę <a href=\"http://enable-javascript.com/\" target=\"_blank\">włączyć JavaScript</a> i przeładować stronę."
 
-#: templates/layout.user.php:44
+#: templates/layout.user.php:47
 #, php-format
 msgid "%s is available. Get more information on how to update."
 msgstr "%s jest dostępna. Dowiedz się więcej na temat aktualizacji."
 
-#: templates/layout.user.php:80 templates/singleuser.user.php:8
+#: templates/layout.user.php:83 templates/singleuser.user.php:8
 msgid "Log out"
 msgstr "Wyloguj"
 
 #: templates/login.php:11
-msgid "Automatic logon rejected!"
-msgstr "Automatyczne logowanie odrzucone!"
-
-#: templates/login.php:12
-msgid ""
-"If you did not change your password recently, your account may be "
-"compromised!"
-msgstr "Jeśli hasło było dawno niezmieniane, twoje konto może być zagrożone!"
-
-#: templates/login.php:14
-msgid "Please change your password to secure your account again."
-msgstr "Zmień swoje hasło, aby ponownie zabezpieczyć swoje konto."
-
-#: templates/login.php:19
 msgid "Server side authentication failed!"
 msgstr "Uwierzytelnianie po stronie serwera nie powiodło się!"
 
-#: templates/login.php:20
+#: templates/login.php:12
 msgid "Please contact your administrator."
 msgstr "Skontaktuj się z administratorem"
 
-#: templates/login.php:50
+#: templates/login.php:42
 msgid "Forgot your password? Reset it!"
 msgstr "Nie pamiętasz hasła? Zresetuj je!"
 
-#: templates/login.php:55
+#: templates/login.php:47
 msgid "remember"
 msgstr "pamiętaj"
 
-#: templates/login.php:59
+#: templates/login.php:51
 msgid "Log in"
 msgstr "Zaloguj"
 
-#: templates/login.php:65
+#: templates/login.php:57
 msgid "Alternative Logins"
 msgstr "Alternatywne loginy"
 
@@ -868,6 +852,28 @@ msgstr "Skontaktuj się z administratorem, jeśli ten komunikat pojawił się n
 msgid "Thank you for your patience."
 msgstr "Dziękuję za cierpliwość."
 
+#: templates/untrustedDomain.php:5
+msgid "You are accessing the server from an untrusted domain."
+msgstr "Dostajesz się do serwera z niezaufanej domeny."
+
+#: templates/untrustedDomain.php:8
+msgid ""
+"Please contact your administrator. If you are an administrator of this "
+"instance, configure the \"trusted_domain\" setting in config/config.php. An "
+"example configuration is provided in config/config.sample.php."
+msgstr "Proszę skontaktuj się z administratorem. Jeśli jesteś administratorem tej instancji, skonfiguruj parametr \"trusted_domain\" w pliku config/config.php. Przykładowa konfiguracja jest dostępna w pliku config/config.sample.php."
+
+#: templates/untrustedDomain.php:10
+msgid ""
+"Depending on your configuration, as an administrator you might also be able "
+"to use the button below to trust this domain."
+msgstr "W zależności od konfiguracji, jako administrator możesz także użyć poniższego przycisku aby zaufać tej domenie."
+
+#: templates/untrustedDomain.php:14
+#, php-format
+msgid "Add \"%s\" as trusted domain"
+msgstr "Dodaj \"%s\" jako domenę zaufaną"
+
 #: templates/update.admin.php:3
 #, php-format
 msgid "%s will be updated to version %s."
@@ -891,6 +897,12 @@ msgstr "Proszę się upewnić, że baza danych, folder konfiguracji oraz folder 
 #: templates/update.admin.php:23
 msgid "Start update"
 msgstr "Rozpocznij aktualizację"
+
+#: templates/update.admin.php:25
+msgid ""
+"To avoid timeouts with larger installations, you can instead run the "
+"following command from your installation directory:"
+msgstr "Aby uniknąć timeout-ów przy większych instalacjach, możesz zamiast tego uruchomić następującą komendę w katalogu Twojej instalacji:"
 
 #: templates/update.user.php:3
 msgid ""

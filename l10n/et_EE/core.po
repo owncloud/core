@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-07-16 01:54-0400\n"
-"PO-Revision-Date: 2014-07-16 05:54+0000\n"
+"POT-Creation-Date: 2014-08-28 01:54-0400\n"
+"PO-Revision-Date: 2014-08-28 05:23+0000\n"
 "Last-Translator: I Robot\n"
 "Language-Team: Estonian (Estonia) (http://www.transifex.com/projects/p/owncloud/language/et_EE/)\n"
 "MIME-Version: 1.0\n"
@@ -19,11 +19,7 @@ msgstr ""
 "Language: et_EE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ajax/share.php:90
-msgid "Expiration date is in the past."
-msgstr "Aegumise kuupäev on minevikus."
-
-#: ajax/share.php:122 ajax/share.php:164
+#: ajax/share.php:117 ajax/share.php:159
 #, php-format
 msgid "Couldn't send mail to following users: %s "
 msgstr "Kirja saatmine järgnevatele kasutajatele ebaõnnestus: %s "
@@ -44,7 +40,16 @@ msgstr "Uuendatud andmebaas"
 msgid "Checked database schema update"
 msgstr "Andmebaasi skeemi uuendus kontrollitud"
 
-#: ajax/update.php:27
+#: ajax/update.php:22
+msgid "Checked database schema update for apps"
+msgstr ""
+
+#: ajax/update.php:25
+#, php-format
+msgid "Updated \"%s\" to %s"
+msgstr ""
+
+#: ajax/update.php:33
 #, php-format
 msgid "Disabled incompatible apps: %s"
 msgstr "Keelatud mitteühilduvad rakendid: %s"
@@ -217,7 +222,7 @@ msgstr "viimasel aastal"
 msgid "years ago"
 msgstr "aastat tagasi"
 
-#: js/lostpassword.js:3 lostpassword/controller/lostcontroller.php:175
+#: js/lostpassword.js:3 lostpassword/controller/lostcontroller.php:198
 msgid "Couldn't send reset email. Please contact your administrator."
 msgstr "Ei suutnud lähtestada e-maili. Palun kontakteeru süsteemihalduriga."
 
@@ -352,12 +357,12 @@ msgstr "Jagatud {recipients}"
 msgid "Share"
 msgstr "Jaga"
 
-#: js/share.js:326 js/share.js:340 js/share.js:347 js/share.js:989
+#: js/share.js:326 js/share.js:340 js/share.js:347 js/share.js:1002
 #: templates/installation.php:10
 msgid "Error"
 msgstr "Viga"
 
-#: js/share.js:328 js/share.js:1052
+#: js/share.js:328 js/share.js:1065
 msgid "Error while sharing"
 msgstr "Viga jagamisel"
 
@@ -418,79 +423,71 @@ msgstr "Määra aegumise kuupäev"
 msgid "Expiration date"
 msgstr "Aegumise kuupäev"
 
-#: js/share.js:455
-msgid "Share via email:"
-msgstr "Jaga e-postiga:"
-
-#: js/share.js:458
-msgid "No people found"
-msgstr "Ühtegi inimest ei leitud"
-
-#: js/share.js:507 js/share.js:575
+#: js/share.js:496 js/share.js:564
 msgid "group"
 msgstr "grupp"
 
-#: js/share.js:540
+#: js/share.js:529
 msgid "Resharing is not allowed"
 msgstr "Edasijagamine pole lubatud"
 
-#: js/share.js:591
+#: js/share.js:580
 msgid "Shared in {item} with {user}"
 msgstr "Jagatud {item} kasutajaga {user}"
 
-#: js/share.js:613
+#: js/share.js:602
 msgid "Unshare"
 msgstr "Lõpeta jagamine"
 
-#: js/share.js:621
+#: js/share.js:610
 msgid "notify by email"
 msgstr "teavita e-postiga"
 
-#: js/share.js:624
+#: js/share.js:613
 msgid "can share"
 msgstr "saab jagada"
 
-#: js/share.js:627
+#: js/share.js:616
 msgid "can edit"
 msgstr "saab muuta"
 
-#: js/share.js:629
+#: js/share.js:618
 msgid "access control"
 msgstr "ligipääsukontroll"
 
-#: js/share.js:632
+#: js/share.js:621
 msgid "create"
 msgstr "loo"
 
-#: js/share.js:635
+#: js/share.js:624
 msgid "update"
 msgstr "uuenda"
 
-#: js/share.js:638
+#: js/share.js:627
 msgid "delete"
 msgstr "kustuta"
 
-#: js/share.js:970
+#: js/share.js:983
 msgid "Password protected"
 msgstr "Parooliga kaitstud"
 
-#: js/share.js:989
+#: js/share.js:1002
 msgid "Error unsetting expiration date"
 msgstr "Viga aegumise kuupäeva eemaldamisel"
 
-#: js/share.js:1010
+#: js/share.js:1023
 msgid "Error setting expiration date"
 msgstr "Viga aegumise kuupäeva määramisel"
 
-#: js/share.js:1039
+#: js/share.js:1052
 msgid "Sending ..."
 msgstr "Saatmine ..."
 
-#: js/share.js:1050
+#: js/share.js:1063
 msgid "Email sent"
 msgstr "E-kiri on saadetud"
 
-#: js/share.js:1074
+#: js/share.js:1087
 msgid "Warning"
 msgstr "Hoiatus"
 
@@ -538,21 +535,21 @@ msgstr "Uuendus ebaõnnestus."
 msgid "The update was successful. Redirecting you to ownCloud now."
 msgstr "Uuendus oli edukas. Kohe suunatakse Sind ownCloudi."
 
-#: lostpassword/controller/lostcontroller.php:110
+#: lostpassword/controller/lostcontroller.php:133
 msgid "Couldn't reset password because the token is invalid"
 msgstr "Ei saanud parooli taastada, kuna märgend on vigane"
 
-#: lostpassword/controller/lostcontroller.php:136
+#: lostpassword/controller/lostcontroller.php:159
 msgid "Couldn't send reset email. Please make sure your username is correct."
 msgstr "Ei suutnud lähtestada e-maili. Palun veendu, et kasutajatunnus on õige."
 
-#: lostpassword/controller/lostcontroller.php:151
+#: lostpassword/controller/lostcontroller.php:174
 msgid ""
 "Couldn't send reset email because there is no email address for this "
 "username. Please contact your administrator."
 msgstr "Ei suutnud lähtestada e-maili, kuna sellel kasutajal pole e-posti määratud. Palun kontakteeru süsteemihalduriga."
 
-#: lostpassword/controller/lostcontroller.php:168
+#: lostpassword/controller/lostcontroller.php:191
 #, php-format
 msgid "%s password reset"
 msgstr "%s parooli lähtestus"
@@ -567,7 +564,7 @@ msgstr "Sinu parooli taastamise link saadetakse sulle e-postile."
 
 #: lostpassword/templates/lostpassword.php:8
 #: lostpassword/templates/lostpassword.php:9 templates/installation.php:51
-#: templates/installation.php:54 templates/login.php:31 templates/login.php:35
+#: templates/installation.php:54 templates/login.php:23 templates/login.php:27
 msgid "Username"
 msgstr "Kasutajanimi"
 
@@ -615,7 +612,7 @@ msgstr "Isiklik"
 msgid "Users"
 msgstr "Kasutajad"
 
-#: strings.php:7 templates/layout.user.php:53 templates/layout.user.php:118
+#: strings.php:7 templates/layout.user.php:56 templates/layout.user.php:121
 msgid "Apps"
 msgstr "Rakendused"
 
@@ -678,7 +675,8 @@ msgstr "Tere,\n\n%s jagas sulle välja %s.\nVaata siit: %s\n\n"
 msgid "The share will expire on %s."
 msgstr "Jagamine aegub %s."
 
-#: templates/altmail.php:7 templates/mail.php:20
+#. TRANSLATORS term at the end of a mail
+#: templates/altmail.php:8 templates/mail.php:21
 msgid "Cheers!"
 msgstr "Terekest!"
 
@@ -726,7 +724,7 @@ msgid "Create an <strong>admin account</strong>"
 msgstr "Loo <strong>admini konto</strong>"
 
 #: templates/installation.php:59 templates/installation.php:62
-#: templates/login.php:41 templates/login.php:44
+#: templates/login.php:33 templates/login.php:36
 msgid "Password"
 msgstr "Parool"
 
@@ -781,57 +779,43 @@ msgstr "Lõpeta seadistamine"
 msgid "Finishing …"
 msgstr "Lõpetamine ..."
 
-#: templates/layout.user.php:40
+#: templates/layout.user.php:43
 msgid ""
 "This application requires JavaScript to be enabled for correct operation.  "
 "Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable "
 "JavaScript</a> and re-load this interface."
 msgstr "See rakendus vajab toimimiseks JavaScripti. Palun <a href=\"http://enable-javascript.com/\" target=\"_blank\">luba JavaScript</a> ning laadi see leht uuesti."
 
-#: templates/layout.user.php:44
+#: templates/layout.user.php:47
 #, php-format
 msgid "%s is available. Get more information on how to update."
 msgstr "%s on saadaval. Vaata lähemalt kuidas uuendada."
 
-#: templates/layout.user.php:80 templates/singleuser.user.php:8
+#: templates/layout.user.php:83 templates/singleuser.user.php:8
 msgid "Log out"
 msgstr "Logi välja"
 
 #: templates/login.php:11
-msgid "Automatic logon rejected!"
-msgstr "Automaatne sisselogimine lükati tagasi!"
-
-#: templates/login.php:12
-msgid ""
-"If you did not change your password recently, your account may be "
-"compromised!"
-msgstr "Kui sa ei muutnud oma parooli hiljuti, siis võib su kasutajakonto olla ohustatud!"
-
-#: templates/login.php:14
-msgid "Please change your password to secure your account again."
-msgstr "Palun muuda parooli, et oma kasutajakonto uuesti turvata."
-
-#: templates/login.php:19
 msgid "Server side authentication failed!"
 msgstr "Serveripoolne autentimine ebaõnnestus!"
 
-#: templates/login.php:20
+#: templates/login.php:12
 msgid "Please contact your administrator."
 msgstr "Palun kontakteeru oma süsteemihalduriga."
 
-#: templates/login.php:50
+#: templates/login.php:42
 msgid "Forgot your password? Reset it!"
 msgstr "Unustasid parooli? Taasta see!"
 
-#: templates/login.php:55
+#: templates/login.php:47
 msgid "remember"
 msgstr "pea meeles"
 
-#: templates/login.php:59
+#: templates/login.php:51
 msgid "Log in"
 msgstr "Logi sisse"
 
-#: templates/login.php:65
+#: templates/login.php:57
 msgid "Alternative Logins"
 msgstr "Alternatiivsed sisselogimisviisid"
 
@@ -860,6 +844,28 @@ msgstr "Kontakteeru oma süsteemihalduriga, kui see teade püsib või on tekkinu
 msgid "Thank you for your patience."
 msgstr "Täname kannatlikkuse eest."
 
+#: templates/untrustedDomain.php:5
+msgid "You are accessing the server from an untrusted domain."
+msgstr "Sa kasutad serverit usalduseta asukohast"
+
+#: templates/untrustedDomain.php:8
+msgid ""
+"Please contact your administrator. If you are an administrator of this "
+"instance, configure the \"trusted_domain\" setting in config/config.php. An "
+"example configuration is provided in config/config.sample.php."
+msgstr "Palun võta ühendust oma saidi administraatoriga. Kui sa oled ise administraator, siis seadista failis config/config.php sätet \"trusted_domain\". Näidis seadistused leiad failist config/config.sample.php."
+
+#: templates/untrustedDomain.php:10
+msgid ""
+"Depending on your configuration, as an administrator you might also be able "
+"to use the button below to trust this domain."
+msgstr ""
+
+#: templates/untrustedDomain.php:14
+#, php-format
+msgid "Add \"%s\" as trusted domain"
+msgstr ""
+
 #: templates/update.admin.php:3
 #, php-format
 msgid "%s will be updated to version %s."
@@ -883,6 +889,12 @@ msgstr "Enne jätkamist veendu, et andmebaas, seadete ning andmete kataloog on v
 #: templates/update.admin.php:23
 msgid "Start update"
 msgstr "Käivita uuendus"
+
+#: templates/update.admin.php:25
+msgid ""
+"To avoid timeouts with larger installations, you can instead run the "
+"following command from your installation directory:"
+msgstr ""
 
 #: templates/update.user.php:3
 msgid ""

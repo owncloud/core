@@ -11,9 +11,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-07-16 01:54-0400\n"
-"PO-Revision-Date: 2014-07-16 05:54+0000\n"
-"Last-Translator: I Robot\n"
+"POT-Creation-Date: 2014-08-28 01:54-0400\n"
+"PO-Revision-Date: 2014-08-28 05:23+0000\n"
+"Last-Translator: Alexander Gabilondo <alexgabi@openmailbox.org>\n"
 "Language-Team: Basque (http://www.transifex.com/projects/p/owncloud/language/eu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,11 +21,7 @@ msgstr ""
 "Language: eu\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ajax/share.php:90
-msgid "Expiration date is in the past."
-msgstr "Muga data iraganekoa da"
-
-#: ajax/share.php:122 ajax/share.php:164
+#: ajax/share.php:117 ajax/share.php:159
 #, php-format
 msgid "Couldn't send mail to following users: %s "
 msgstr "Ezin izan da posta bidali hurrengo erabiltzaileei: %s"
@@ -44,9 +40,18 @@ msgstr "Datu basea eguneratu da"
 
 #: ajax/update.php:19
 msgid "Checked database schema update"
-msgstr "Egiaztatutako datu-basearen eskemaren eguneraketa"
+msgstr "Egiaztatuta datu-basearen zerbitzariaren eguneraketa"
 
-#: ajax/update.php:27
+#: ajax/update.php:22
+msgid "Checked database schema update for apps"
+msgstr "Egiaztatuta aplikazioen datu-basearen zerbitzariaren eguneraketa"
+
+#: ajax/update.php:25
+#, php-format
+msgid "Updated \"%s\" to %s"
+msgstr "\"%s\" %s-ra eguneratua"
+
+#: ajax/update.php:33
 #, php-format
 msgid "Disabled incompatible apps: %s"
 msgstr "Bateragarriak ez diren desgaitutako aplikazioak: %s"
@@ -219,7 +224,7 @@ msgstr "joan den urtean"
 msgid "years ago"
 msgstr "urte"
 
-#: js/lostpassword.js:3 lostpassword/controller/lostcontroller.php:175
+#: js/lostpassword.js:3 lostpassword/controller/lostcontroller.php:198
 msgid "Couldn't send reset email. Please contact your administrator."
 msgstr "Ezin da berrezartzeko eposta bidali. Mesedez jarri harremetan zure administradorearekin."
 
@@ -354,12 +359,12 @@ msgstr "{recipients}-rekin partekatua."
 msgid "Share"
 msgstr "Elkarbanatu"
 
-#: js/share.js:326 js/share.js:340 js/share.js:347 js/share.js:989
+#: js/share.js:326 js/share.js:340 js/share.js:347 js/share.js:1002
 #: templates/installation.php:10
 msgid "Error"
 msgstr "Errorea"
 
-#: js/share.js:328 js/share.js:1052
+#: js/share.js:328 js/share.js:1065
 msgid "Error while sharing"
 msgstr "Errore bat egon da elkarbanatzean"
 
@@ -420,79 +425,71 @@ msgstr "Ezarri muga data"
 msgid "Expiration date"
 msgstr "Muga data"
 
-#: js/share.js:455
-msgid "Share via email:"
-msgstr "Elkarbanatu eposta bidez:"
-
-#: js/share.js:458
-msgid "No people found"
-msgstr "Ez da inor aurkitu"
-
-#: js/share.js:507 js/share.js:575
+#: js/share.js:496 js/share.js:564
 msgid "group"
 msgstr "taldea"
 
-#: js/share.js:540
+#: js/share.js:529
 msgid "Resharing is not allowed"
 msgstr "Berriz elkarbanatzea ez dago baimendua"
 
-#: js/share.js:591
+#: js/share.js:580
 msgid "Shared in {item} with {user}"
 msgstr "{user}ekin {item}-n elkarbanatuta"
 
-#: js/share.js:613
+#: js/share.js:602
 msgid "Unshare"
 msgstr "Ez elkarbanatu"
 
-#: js/share.js:621
+#: js/share.js:610
 msgid "notify by email"
 msgstr "jakinarazi eposta bidez"
 
-#: js/share.js:624
+#: js/share.js:613
 msgid "can share"
 msgstr "elkarbana dezake"
 
-#: js/share.js:627
+#: js/share.js:616
 msgid "can edit"
 msgstr "editatu dezake"
 
-#: js/share.js:629
+#: js/share.js:618
 msgid "access control"
 msgstr "sarrera kontrola"
 
-#: js/share.js:632
+#: js/share.js:621
 msgid "create"
 msgstr "sortu"
 
-#: js/share.js:635
+#: js/share.js:624
 msgid "update"
 msgstr "eguneratu"
 
-#: js/share.js:638
+#: js/share.js:627
 msgid "delete"
 msgstr "ezabatu"
 
-#: js/share.js:970
+#: js/share.js:983
 msgid "Password protected"
 msgstr "Pasahitzarekin babestuta"
 
-#: js/share.js:989
+#: js/share.js:1002
 msgid "Error unsetting expiration date"
 msgstr "Errorea izan da muga data kentzean"
 
-#: js/share.js:1010
+#: js/share.js:1023
 msgid "Error setting expiration date"
 msgstr "Errore bat egon da muga data ezartzean"
 
-#: js/share.js:1039
+#: js/share.js:1052
 msgid "Sending ..."
 msgstr "Bidaltzen ..."
 
-#: js/share.js:1050
+#: js/share.js:1063
 msgid "Email sent"
 msgstr "Eposta bidalia"
 
-#: js/share.js:1074
+#: js/share.js:1087
 msgid "Warning"
 msgstr "Abisua"
 
@@ -540,21 +537,21 @@ msgstr "Eguneraketak ez du arrakasta izan."
 msgid "The update was successful. Redirecting you to ownCloud now."
 msgstr "Eguneraketa ongi egin da. Orain zure ownClouderea berbideratua izango zara."
 
-#: lostpassword/controller/lostcontroller.php:110
+#: lostpassword/controller/lostcontroller.php:133
 msgid "Couldn't reset password because the token is invalid"
 msgstr "Ezin izan da pasahitza berrezarri tokena baliogabea delako"
 
-#: lostpassword/controller/lostcontroller.php:136
+#: lostpassword/controller/lostcontroller.php:159
 msgid "Couldn't send reset email. Please make sure your username is correct."
 msgstr "Ezin izan da berrezartzeko eposta bidali. Ziurtatu zure erabiltzaile izena egokia dela."
 
-#: lostpassword/controller/lostcontroller.php:151
+#: lostpassword/controller/lostcontroller.php:174
 msgid ""
 "Couldn't send reset email because there is no email address for this "
 "username. Please contact your administrator."
 msgstr "Ezin izan da berrezartzeko eposta bidali erabiltzaile izen honetarako eposta helbiderik ez dagoelako. Mesedez harremanetan jarri kudeatzailearekin."
 
-#: lostpassword/controller/lostcontroller.php:168
+#: lostpassword/controller/lostcontroller.php:191
 #, php-format
 msgid "%s password reset"
 msgstr "%s pasahitza berrezarri"
@@ -569,7 +566,7 @@ msgstr "Zure pashitza berrezartzeko lotura bat jasoko duzu Epostaren bidez."
 
 #: lostpassword/templates/lostpassword.php:8
 #: lostpassword/templates/lostpassword.php:9 templates/installation.php:51
-#: templates/installation.php:54 templates/login.php:31 templates/login.php:35
+#: templates/installation.php:54 templates/login.php:23 templates/login.php:27
 msgid "Username"
 msgstr "Erabiltzaile izena"
 
@@ -617,7 +614,7 @@ msgstr "Pertsonala"
 msgid "Users"
 msgstr "Erabiltzaileak"
 
-#: strings.php:7 templates/layout.user.php:53 templates/layout.user.php:118
+#: strings.php:7 templates/layout.user.php:56 templates/layout.user.php:121
 msgid "Apps"
 msgstr "Aplikazioak"
 
@@ -680,7 +677,8 @@ msgstr "Kaixo\n\n%s-ek %s zurekin partekatu duela jakin dezazun.\nIkusi ezazu: %
 msgid "The share will expire on %s."
 msgstr "Elkarbanaketa %s-n iraungiko da."
 
-#: templates/altmail.php:7 templates/mail.php:20
+#. TRANSLATORS term at the end of a mail
+#: templates/altmail.php:8 templates/mail.php:21
 msgid "Cheers!"
 msgstr "Ongi izan!"
 
@@ -728,7 +726,7 @@ msgid "Create an <strong>admin account</strong>"
 msgstr "Sortu <strong>kudeatzaile kontu<strong> bat"
 
 #: templates/installation.php:59 templates/installation.php:62
-#: templates/login.php:41 templates/login.php:44
+#: templates/login.php:33 templates/login.php:36
 msgid "Password"
 msgstr "Pasahitza"
 
@@ -783,57 +781,43 @@ msgstr "Bukatu konfigurazioa"
 msgid "Finishing …"
 msgstr "Bukatzen..."
 
-#: templates/layout.user.php:40
+#: templates/layout.user.php:43
 msgid ""
 "This application requires JavaScript to be enabled for correct operation.  "
 "Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable "
 "JavaScript</a> and re-load this interface."
 msgstr "Aplikazio honek ongi funtzionatzeko JavaScript gaitua behar du. Mesedez  <a href=\"http://enable-javascript.com/\" target=\"_blank\">gaitu JavaScript</a> eta birkargatu interfaze hau."
 
-#: templates/layout.user.php:44
+#: templates/layout.user.php:47
 #, php-format
 msgid "%s is available. Get more information on how to update."
 msgstr "%s erabilgarri dago. Eguneratzeaz argibide gehiago eskuratu."
 
-#: templates/layout.user.php:80 templates/singleuser.user.php:8
+#: templates/layout.user.php:83 templates/singleuser.user.php:8
 msgid "Log out"
 msgstr "Saioa bukatu"
 
 #: templates/login.php:11
-msgid "Automatic logon rejected!"
-msgstr "Saio hasiera automatikoa ez onartuta!"
-
-#: templates/login.php:12
-msgid ""
-"If you did not change your password recently, your account may be "
-"compromised!"
-msgstr "Zure pasahitza orain dela gutxi ez baduzu aldatu, zure kontua arriskuan egon daiteke!"
-
-#: templates/login.php:14
-msgid "Please change your password to secure your account again."
-msgstr "Mesedez aldatu zure pasahitza zure kontua berriz segurtatzeko."
-
-#: templates/login.php:19
 msgid "Server side authentication failed!"
 msgstr "Zerbitzari aldeko autentifikazioak huts egin du!"
 
-#: templates/login.php:20
+#: templates/login.php:12
 msgid "Please contact your administrator."
 msgstr "Mesedez jarri harremetan zure administradorearekin."
 
-#: templates/login.php:50
+#: templates/login.php:42
 msgid "Forgot your password? Reset it!"
 msgstr "Pasahitza ahaztu duzu? Berrezarri!"
 
-#: templates/login.php:55
+#: templates/login.php:47
 msgid "remember"
 msgstr "gogoratu"
 
-#: templates/login.php:59
+#: templates/login.php:51
 msgid "Log in"
 msgstr "Hasi saioa"
 
-#: templates/login.php:65
+#: templates/login.php:57
 msgid "Alternative Logins"
 msgstr "Beste erabiltzaile izenak"
 
@@ -862,6 +846,28 @@ msgstr "Jarri harremanetan zure sistema administratzailearekin mezu hau irauten 
 msgid "Thank you for your patience."
 msgstr "Milesker zure patzientziagatik."
 
+#: templates/untrustedDomain.php:5
+msgid "You are accessing the server from an untrusted domain."
+msgstr "Zerbitzaria domeinu ez fidagarri batetik eskuratzen ari zara."
+
+#: templates/untrustedDomain.php:8
+msgid ""
+"Please contact your administrator. If you are an administrator of this "
+"instance, configure the \"trusted_domain\" setting in config/config.php. An "
+"example configuration is provided in config/config.sample.php."
+msgstr "Mesedez harremanetan jarri kudeatzailearekin. Zu kudeatzailea bazara, konfiguratu \"trusted_domain\" ezarpena config/config.php fitxategian. Adibidezko konfigurazko bat  config/config.sample.php fitxategian dago."
+
+#: templates/untrustedDomain.php:10
+msgid ""
+"Depending on your configuration, as an administrator you might also be able "
+"to use the button below to trust this domain."
+msgstr "Zure ezarpenen gorabehera, administratzaile bezala posible duzu ere azpiko botoia erabiltzea fidatzeko domeinu horrekin."
+
+#: templates/untrustedDomain.php:14
+#, php-format
+msgid "Add \"%s\" as trusted domain"
+msgstr "Gehitu \"%s\" domeinu fidagarri gisa"
+
 #: templates/update.admin.php:3
 #, php-format
 msgid "%s will be updated to version %s."
@@ -885,6 +891,12 @@ msgstr "Ekin aurretik egiazta ezazu datu basearen, ezarpenen karpetaren eta datu
 #: templates/update.admin.php:23
 msgid "Start update"
 msgstr "Hasi eguneraketa"
+
+#: templates/update.admin.php:25
+msgid ""
+"To avoid timeouts with larger installations, you can instead run the "
+"following command from your installation directory:"
+msgstr "Instalazio handien itxarote-denbora saihesteko, ondoko komandoa exekuta dezakezu instalazio direktoriotik:"
 
 #: templates/update.user.php:3
 msgid ""

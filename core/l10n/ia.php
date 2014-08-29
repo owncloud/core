@@ -1,6 +1,5 @@
 <?php
 $TRANSLATIONS = array(
-"Expiration date is in the past." => "Data de expiration es in le passato.",
 "Turned on maintenance mode" => "Activate modo de mantenentia",
 "Turned off maintenance mode" => "De-activar modo de mantenentia",
 "Updated database" => "Base de datos actualisate",
@@ -79,8 +78,6 @@ $TRANSLATIONS = array(
 "Send" => "Invia",
 "Set expiration date" => "Fixa data de expiration",
 "Expiration date" => "Data de expiration",
-"Share via email:" => "Compartir via e-posta:",
-"No people found" => "Il trovava nulle persona",
 "group" => "gruppo",
 "Resharing is not allowed" => "Il non es permittite compartir plus que un vice",
 "Shared in {item} with {user}" => "Compartite in  {item} con {user}",
@@ -139,8 +136,6 @@ $TRANSLATIONS = array(
 "Finish setup" => "Terminar configuration",
 "Finishing …" => "Terminante ...",
 "Log out" => "Clauder le session",
-"Automatic logon rejected!" => "Accesso de autorisation refusate!",
-"Please change your password to secure your account again." => "Pro favor modifica tu contrasigno pro asssecurar de nove tu conto",
 "Server side authentication failed!" => "Il falleva authentication de latere servitor!",
 "Please contact your administrator." => "Pro favor continge tu administrator.",
 "remember" => "memora",

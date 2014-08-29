@@ -6,13 +6,14 @@
  * See the COPYING-README file.
  */
 
-use OC\Core\LostPassword\Application;
+use OC\Core\Application;
 
 $application = new Application();
 $application->registerRoutes($this, array('routes' => array(
 		array('name' => 'lost#email', 'url' => '/lostpassword/email', 'verb' => 'POST'),
 		array('name' => 'lost#resetform', 'url' => '/lostpassword/reset/form/{token}/{userId}', 'verb' => 'GET'),
 		array('name' => 'lost#setPassword', 'url' => '/lostpassword/set/{token}/{userId}', 'verb' => 'POST'),
+		array('name' => 'user#getDisplayNames', 'url' => '/displaynames', 'verb' => 'POST'),
 	)
 ));
 
@@ -80,7 +81,8 @@ $this->create('core_ajax_preview', '/core/preview')
 	->actionInclude('core/ajax/preview.php');
 $this->create('core_ajax_preview', '/core/preview.png')
 	->actionInclude('core/ajax/preview.php');
-
+$this->create('core_ajax_update', '/core/ajax/update.php')
+	->actionInclude('core/ajax/update.php');
 // Avatar routes
 $this->create('core_avatar_get_tmp', '/avatar/tmp')
 	->get()
@@ -97,16 +99,6 @@ $this->create('core_avatar_delete', '/avatar/')
 $this->create('core_avatar_post_cropped', '/avatar/cropped')
 	->post()
 	->action('OC\Core\Avatar\Controller', 'postCroppedAvatar');
-
-// Not specifically routed
-$this->create('app_index_script', '/apps/{app}/')
-	->defaults(array('file' => 'index.php'))
-	//->requirements(array('file' => '.*.php'))
-	->action('OC', 'loadAppScriptFile');
-$this->create('app_script', '/apps/{app}/{file}')
-	->defaults(array('file' => 'index.php'))
-	->requirements(array('file' => '.*.php'))
-	->action('OC', 'loadAppScriptFile');
 
 // used for heartbeat
 $this->create('heartbeat', '/heartbeat')->action(function(){

@@ -62,6 +62,12 @@ $CONFIG = array(
 /* List of trusted domains, to prevent host header poisoning ownCloud is only using these Host headers */
 'trusted_domains' => array('demo.owncloud.org', 'otherdomain.owncloud.org:8080'),
 
+/* List of trusted proxy servers */
+'trusted_proxies' => array('203.0.113.45', '198.51.100.128'),
+
+/* Headers that should be trusted as client IP address in combination with `trusted_proxies` */
+'forwarded_for_headers' => array('HTTP_X_FORWARDED', 'HTTP_FORWARDED_FOR'),
+
 /* Theme to use for ownCloud */
 "theme" => "",
 
@@ -172,6 +178,10 @@ $CONFIG = array(
 /* File for the owncloud logger to log to, (default is ownloud.log in the data dir) */
 "logfile" => "",
 
+/* This entry is just here to show a warning in case somebody copied the sample configuration. DO NOT ADD THIS SWITCH TO YOUR CONFIGURATION!  */
+/* If you, brave person, have read until here be aware that you should not modify *ANY* settings in this file without reading the documentation */
+"copied_sample_config" => true,
+
 /* Loglevel to start logging at. 0=DEBUG, 1=INFO, 2=WARN, 3=ERROR (default is WARN) */
 "loglevel" => "",
 
@@ -184,9 +194,6 @@ $CONFIG = array(
 /* Append all database queries and parameters to the log file.
  (watch out, this option can increase the size of your log file)*/
 "log_query" => false,
-
-/* Enable or disable the logging of IP addresses in case of webform auth failures */
-"log_authfailip" => false,
 
 /* Whether ownCloud should log the last successfull cron exec */
 "cron_log" => true,
@@ -224,6 +231,11 @@ $CONFIG = array(
  * directory. The sqlite database is also stored here, when sqlite is used.
  */
 // "datadirectory" => "",
+
+/* The directory where the skeleton files are located. These files will be copied to the data
+ * directory of new users. Leave empty to not copy any skeleton files.
+ */
+// "skeletondirectory" => "",
 
 /* Enable maintenance mode to disable ownCloud
    If you want to prevent users to login to ownCloud before you start doing some maintenance work,
@@ -277,6 +289,9 @@ $CONFIG = array(
 	//'config' => '/absolute/location/of/openssl.cnf',
 ),
 
+// default cipher used for file encryption, currently we support AES-128-CFB and AES-256-CFB
+'cipher' => 'AES-256-CFB',
+
 /* whether usage of the instance should be restricted to admin users only */
 'singleuser' => false,
 
@@ -284,7 +299,7 @@ $CONFIG = array(
 'asset-pipeline.enabled' => false,
 
 /* where mount.json file should be stored, defaults to data/mount.json */
-'mount_file' => '',
+// 'mount_file' => 'data/mount.json',
 
 /*
  * Location of the cache folder, defaults to "data/$user/cache" where "$user" is the current user.
@@ -335,5 +350,10 @@ $CONFIG = array(
 		'serviceName' => 'swift', //dev-/trystack uses swift by default, the lib defaults to 'cloudFiles' if omitted
 	),
 ),
+
+/**
+ * define default folder for shared files and folders
+ */
+'share_folder' => '/',
 
 );

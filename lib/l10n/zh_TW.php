@@ -1,11 +1,11 @@
 <?php
 $TRANSLATIONS = array(
+"Cannot write into \"config\" directory!" => "無法寫入 config 目錄！",
 "Help" => "說明",
 "Personal" => "個人",
 "Settings" => "設定",
 "Users" => "使用者",
 "Admin" => "管理",
-"Failed to upgrade \"%s\"." => "升級失敗：%s",
 "No app name specified" => "沒有指定應用程式名稱",
 "Unknown filetype" => "未知的檔案類型",
 "Invalid image" => "無效的圖片",

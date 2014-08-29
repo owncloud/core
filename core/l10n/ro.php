@@ -1,6 +1,5 @@
 <?php
 $TRANSLATIONS = array(
-"Expiration date is in the past." => "Data de expirare este în trecut.",
 "Couldn't send mail to following users: %s " => "Nu s-a putut trimite mesajul către următorii utilizatori: %s",
 "Turned on maintenance mode" => "Modul mentenanță a fost activat",
 "Turned off maintenance mode" => "Modul mentenanță a fost dezactivat",
@@ -79,8 +78,6 @@ $TRANSLATIONS = array(
 "Send" => "Expediază",
 "Set expiration date" => "Specifică data expirării",
 "Expiration date" => "Data expirării",
-"Share via email:" => "Distribuie prin email:",
-"No people found" => "Nici o persoană găsită",
 "group" => "grup",
 "Resharing is not allowed" => "Repartajarea nu este permisă",
 "Shared in {item} with {user}" => "Distribuie in {item} si {user}",
@@ -143,9 +140,6 @@ $TRANSLATIONS = array(
 "Finish setup" => "Finalizează instalarea",
 "%s is available. Get more information on how to update." => "%s este disponibil. Vezi mai multe informații despre procesul de actualizare.",
 "Log out" => "Ieșire",
-"Automatic logon rejected!" => "Autentificare automată respinsă!",
-"If you did not change your password recently, your account may be compromised!" => "Dacă nu ți-ai schimbat parola recent, contul tău ar putea fi compromis!",
-"Please change your password to secure your account again." => "Te rog schimbă-ți parola pentru a-ți securiza din nou contul.",
 "Forgot your password? Reset it!" => "Ți-ai uitat parola? Resetează!",
 "remember" => "amintește",
 "Log in" => "Autentificare",

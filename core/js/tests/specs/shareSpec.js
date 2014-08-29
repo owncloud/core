@@ -44,6 +44,12 @@ describe('OC.Share tests', function() {
 
 			autocompleteStub = sinon.stub($.fn, 'autocomplete', function() {
 				// dummy container with the expected attributes
+				if (!$(this).length) {
+					// simulate the real autocomplete that returns
+					// nothing at all when no element is specified
+					// (and potentially break stuff)
+					return null;
+				}
 				var $el = $('<div></div>').data('ui-autocomplete', {});
 				return $el;
 			});
@@ -60,7 +66,7 @@ describe('OC.Share tests', function() {
 				'file',
 			   	123,
 			   	$container,
-				'http://localhost/dummylink',
+				true,
 				31,
 				'shared_file_name.txt'
 			);
@@ -73,7 +79,7 @@ describe('OC.Share tests', function() {
 				'file',
 			   	123,
 			   	$container,
-				'http://localhost/dummylink',
+				true,
 				31,
 				'shared_file_name.txt'
 			);
@@ -92,7 +98,7 @@ describe('OC.Share tests', function() {
 					'file',
 					123,
 					$container,
-					'http://localhost/dummylink',
+					true,		
 					31,
 					'shared_file_name.txt'
 				);
@@ -104,7 +110,7 @@ describe('OC.Share tests', function() {
 					'file',
 					123,
 					$container,
-					'http://localhost/dummylink',
+					true,		
 					31,
 					'shared_file_name.txt'
 				);
@@ -138,7 +144,7 @@ describe('OC.Share tests', function() {
 					'file',
 					123,
 					$container,
-					'http://localhost/dummylink',
+					true,
 					31,
 					'folder'
 				);
@@ -176,7 +182,7 @@ describe('OC.Share tests', function() {
 					'file',
 					456, // another file
 					$container,
-					'http://localhost/dummylink',
+					true,
 					31,
 					'folder'
 				);
@@ -230,7 +236,7 @@ describe('OC.Share tests', function() {
 					'folder',
 					123,
 					$container,
-					'http://localhost/dummylink',
+					true,
 					31,
 					'folder'
 				);
@@ -245,7 +251,7 @@ describe('OC.Share tests', function() {
 					'file',
 					456,
 					$container,
-					'http://localhost/dummylink',
+					true,
 					31,
 					'file_in_folder.txt'
 				);
@@ -259,13 +265,14 @@ describe('OC.Share tests', function() {
 				var shareData;
 				var shareItem;
 				var clock;
+				var expectedMinDate;
 
 				function showDropDown() {
 					OC.Share.showDropDown(
 						'file',
 						123,
 						$container,
-						'http://localhost/dummylink',
+						true,
 						31,
 						'folder'
 					);
@@ -274,6 +281,7 @@ describe('OC.Share tests', function() {
 				beforeEach(function() {
 					// pick a fake date
 					clock = sinon.useFakeTimers(new Date(2014, 0, 20, 14, 0, 0).getTime());
+					expectedMinDate = new Date(2014, 0, 21, 14, 0, 0);
 					shareItem = {
 						displayname_owner: 'root',
 						expiration: null,
@@ -358,7 +366,7 @@ describe('OC.Share tests', function() {
 					showDropDown();
 					$('#dropdown [name=linkCheckbox]').click();
 					$('#dropdown [name=expirationCheckbox]').click();
-					expect($.datepicker._defaults.minDate).toEqual(new Date());
+					expect($.datepicker._defaults.minDate).toEqual(expectedMinDate);
 					expect($.datepicker._defaults.maxDate).toEqual(null);
 				});
 				it('limits the date range to X days after share time when enforced', function() {
@@ -367,7 +375,7 @@ describe('OC.Share tests', function() {
 					oc_appconfig.core.defaultExpireDateEnforced = true;
 					showDropDown();
 					$('#dropdown [name=linkCheckbox]').click();
-					expect($.datepicker._defaults.minDate).toEqual(new Date());
+					expect($.datepicker._defaults.minDate).toEqual(expectedMinDate);
 					expect($.datepicker._defaults.maxDate).toEqual(new Date(2014, 0, 27, 0, 0, 0, 0));
 				});
 				it('limits the date range to X days after share time when enforced, even when redisplayed the next days', function() {
@@ -380,7 +388,7 @@ describe('OC.Share tests', function() {
 					oc_appconfig.core.defaultExpireDateEnabled = true;
 					oc_appconfig.core.defaultExpireDateEnforced = true;
 					showDropDown();
-					expect($.datepicker._defaults.minDate).toEqual(new Date());
+					expect($.datepicker._defaults.minDate).toEqual(expectedMinDate);
 					expect($.datepicker._defaults.maxDate).toEqual(new Date(2014, 0, 27, 0, 0, 0, 0));
 				});
 			});
@@ -405,7 +413,7 @@ describe('OC.Share tests', function() {
 					'file',
 					123,
 					$container,
-					'http://localhost/dummylink',
+					true,
 					31,
 					'shared_file_name.txt'
 				);
@@ -560,7 +568,52 @@ describe('OC.Share tests', function() {
 			});
 		});
 
-		// TODO: add unit tests for folder icons
+		describe('displaying the folder icon', function() {
+			function checkIcon(expectedImage) {
+				var imageUrl = OC.TestUtil.getImageUrl($file.find('.filename'));
+				expectedIcon = OC.imagePath('core', expectedImage);
+				expect(imageUrl).toEqual(expectedIcon);
+			}
+
+			it('shows a plain folder icon for non-shared folders', function() {
+				$file.attr('data-type', 'dir');
+				OC.Share.markFileAsShared($file);
+
+				checkIcon('filetypes/folder');
+			});
+			it('shows a shared folder icon for folders shared with another user', function() {
+				$file.attr('data-type', 'dir');
+				OC.Share.markFileAsShared($file, true);
+
+				checkIcon('filetypes/folder-shared');
+			});
+			it('shows a shared folder icon for folders shared with the current user', function() {
+				$file.attr('data-type', 'dir');
+				$file.attr('data-share-owner', 'someoneelse');
+				OC.Share.markFileAsShared($file);
+
+				checkIcon('filetypes/folder-shared');
+			});
+			it('shows a link folder icon for folders shared with link', function() {
+				$file.attr('data-type', 'dir');
+				OC.Share.markFileAsShared($file, false, true);
+
+				checkIcon('filetypes/folder-public');
+			});
+			it('shows a link folder icon for folders shared with both link and another user', function() {
+				$file.attr('data-type', 'dir');
+				OC.Share.markFileAsShared($file, true, true);
+
+				checkIcon('filetypes/folder-public');
+			});
+			it('shows a link folder icon for folders reshared with link', function() {
+				$file.attr('data-type', 'dir');
+				$file.attr('data-share-owner', 'someoneelse');
+				OC.Share.markFileAsShared($file, false, true);
+
+				checkIcon('filetypes/folder-public');
+			});
+		});
 		// TODO: add unit tests for share recipients
 	});
 });

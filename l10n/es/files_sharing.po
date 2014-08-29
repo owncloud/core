@@ -17,9 +17,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-07-16 01:54-0400\n"
-"PO-Revision-Date: 2014-07-16 05:54+0000\n"
-"Last-Translator: I Robot\n"
+"POT-Creation-Date: 2014-08-17 01:54-0400\n"
+"PO-Revision-Date: 2014-08-16 07:10+0000\n"
+"Last-Translator: Artopal <artopal@fastmail.fm>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/owncloud/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,7 +31,11 @@ msgstr ""
 msgid "Server to server sharing is not enabled on this server"
 msgstr "Compartir entre servidores no está habilitado en este servidor"
 
-#: ajax/external.php:47
+#: ajax/external.php:38
+msgid "Invalid or untrusted SSL certificate"
+msgstr "Certificado SSL inválido o no confiable"
+
+#: ajax/external.php:52
 msgid "Couldn't add remote share"
 msgstr "No se puede añadir un compartido remoto"
 
@@ -39,11 +43,11 @@ msgstr "No se puede añadir un compartido remoto"
 msgid "Shared with you"
 msgstr "Compartido contigo"
 
-#: appinfo/app.php:42 js/app.js:53
+#: appinfo/app.php:45 js/app.js:53
 msgid "Shared with others"
 msgstr "Compartido con otros"
 
-#: appinfo/app.php:51 js/app.js:72
+#: appinfo/app.php:54 js/app.js:72
 msgid "Shared by link"
 msgstr "Compartido por medio de enlaces"
 
@@ -79,15 +83,15 @@ msgstr "Cancelar"
 msgid "Add remote share"
 msgstr "Añadir recurso compartido remoto"
 
-#: js/public.js:203
+#: js/public.js:204
 msgid "No ownCloud installation found at {remote}"
 msgstr "No se encontró una instalación de ownCloud en {remote}"
 
-#: js/public.js:204
+#: js/public.js:205
 msgid "Invalid ownCloud url"
 msgstr "URL de ownCloud inválido"
 
-#: js/sharedfilelist.js:123
+#: js/sharedfilelist.js:128
 msgid "Shared by"
 msgstr "Compartido por"
 
@@ -135,20 +139,20 @@ msgstr "compartir está desactivado"
 msgid "For more info, please ask the person who sent this link."
 msgstr "Para mayor información, contacte a la persona que le envió el enlace."
 
-#: templates/public.php:22
+#: templates/public.php:27
 msgid "Add to your ownCloud"
 msgstr "Agregue su propio ownCloud"
 
-#: templates/public.php:30
+#: templates/public.php:35
 msgid "Download"
 msgstr "Descargar"
 
-#: templates/public.php:61
+#: templates/public.php:66
 #, php-format
 msgid "Download %s"
 msgstr "Descargar %s"
 
-#: templates/public.php:65
+#: templates/public.php:70
 msgid "Direct link"
 msgstr "Enlace directo"
 

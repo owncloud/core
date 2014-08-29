@@ -1,6 +1,7 @@
 <?php
 $TRANSLATIONS = array(
 "Server to server sharing is not enabled on this server" => "Współdzielenie między serwerami nie jest uruchomione na tym serwerze",
+"Invalid or untrusted SSL certificate" => "Niewłaściwy lub niezaufany certyfikat SSL",
 "Couldn't add remote share" => "Nie można dodać zdalnego folderu",
 "Shared with you" => "Współdzielony z Tobą",
 "Shared with others" => "Współdzielony z innymi",
@@ -25,7 +26,7 @@ $TRANSLATIONS = array(
 "Reasons might be:" => "Możliwe powody:",
 "the item was removed" => "element został usunięty",
 "the link expired" => "link wygasł",
-"sharing is disabled" => "Udostępnianie jest wyłączone",
+"sharing is disabled" => "udostępnianie jest wyłączone",
 "For more info, please ask the person who sent this link." => "Aby uzyskać więcej informacji proszę poprosić osobę, która wysłał ten link.",
 "Add to your ownCloud" => "Dodaj do twojego ownCloud",
 "Download" => "Pobierz",

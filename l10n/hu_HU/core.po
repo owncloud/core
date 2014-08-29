@@ -3,17 +3,19 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# beni1999 <beni1099@gmail.com>, 2014
 # David Szilagyi <inactive+sherlock79@transifex.com>, 2013
 # ebela <bela@dandre.hu>, 2013
 # János Fehér <feher.janos@mindworks.hu>, 2014
 # Laszlo Tornoci <torlasz@gmail.com>, 2013-2014
+# Melinda <ghostgirl1983@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-07-16 01:54-0400\n"
-"PO-Revision-Date: 2014-07-16 05:54+0000\n"
-"Last-Translator: I Robot\n"
+"POT-Creation-Date: 2014-08-28 01:54-0400\n"
+"PO-Revision-Date: 2014-08-28 05:23+0000\n"
+"Last-Translator: Laszlo Tornoci <torlasz@gmail.com>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/owncloud/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,11 +23,7 @@ msgstr ""
 "Language: hu_HU\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ajax/share.php:90
-msgid "Expiration date is in the past."
-msgstr "Múltbéli lejárati idő."
-
-#: ajax/share.php:122 ajax/share.php:164
+#: ajax/share.php:117 ajax/share.php:159
 #, php-format
 msgid "Couldn't send mail to following users: %s "
 msgstr "Nem sikerült e-mailt küldeni a következő felhasználóknak: %s"
@@ -44,16 +42,25 @@ msgstr "Az adatbázis frissítése megtörtént"
 
 #: ajax/update.php:19
 msgid "Checked database schema update"
-msgstr "Az adatbázis séma frissítését ellenőrztük"
+msgstr "Az adatbázis séma frissítését ellenőriztük"
 
-#: ajax/update.php:27
+#: ajax/update.php:22
+msgid "Checked database schema update for apps"
+msgstr "Az adatbázis séma frissítését ellenőriztük az alkalmazásokra vontakozóan"
+
+#: ajax/update.php:25
+#, php-format
+msgid "Updated \"%s\" to %s"
+msgstr "Frissítettük  \"%s\"-t erre: %s"
+
+#: ajax/update.php:33
 #, php-format
 msgid "Disabled incompatible apps: %s"
 msgstr "Letiltásra került inkompatibilis alkalmazások: %s"
 
 #: avatar/controller.php:69
 msgid "No image or file provided"
-msgstr "Nincs kép vagy file megadva"
+msgstr "Nincs kép vagy fájl megadva"
 
 #: avatar/controller.php:86
 msgid "Unknown filetype"
@@ -219,16 +226,16 @@ msgstr "tavaly"
 msgid "years ago"
 msgstr "több éve"
 
-#: js/lostpassword.js:3 lostpassword/controller/lostcontroller.php:175
+#: js/lostpassword.js:3 lostpassword/controller/lostcontroller.php:198
 msgid "Couldn't send reset email. Please contact your administrator."
-msgstr ""
+msgstr "Visszaállítási e-mail nem küldhető. Kérjük, lépjen kapcsolatba a rendszergazdával."
 
 #: js/lostpassword.js:5
 msgid ""
 "The link to reset your password has been sent to your email. If you do not "
 "receive it within a reasonable amount of time, check your spam/junk "
 "folders.<br>If it is not there ask your local administrator."
-msgstr ""
+msgstr "A jelszó felülírásához a linket e-mailben elküldtük. Ha a levél elfogadható időn belül nem érkezik meg, ellenőrizze a spam/levélszemét mappát.<br>Ha nincs ott, kérdezze meg a helyi rendszergazdát."
 
 #: js/lostpassword.js:7
 msgid ""
@@ -236,11 +243,11 @@ msgid ""
 "will be no way to get your data back after your password is reset.<br />If "
 "you are not sure what to do, please contact your administrator before you "
 "continue. <br />Do you really want to continue?"
-msgstr ""
+msgstr "Az Ön állományai titkosítva vannak. Ha nem engedélyezte korábban az adatok visszanyeréséhez szükséges kulcs használatát, akkor a jelszó megváltoztatását követően nem fog hozzáférni az adataihoz. Ha nem biztos abban, hogy mit kellene tennie, akkor kérdezze meg a rendszergazdát, mielőtt továbbmenne. Biztos, hogy folytatni kívánja?"
 
 #: js/lostpassword.js:10
 msgid "I know what I'm doing"
-msgstr ""
+msgstr "Tudom mit csinálok."
 
 #: js/lostpassword.js:13 lostpassword/templates/resetpassword.php:9
 msgid "Reset password"
@@ -248,7 +255,7 @@ msgstr "Jelszó-visszaállítás"
 
 #: js/lostpassword.js:16
 msgid "Password can not be changed. Please contact your administrator."
-msgstr ""
+msgstr "A jelszót nem lehet visszaállítani. Kérjük, lépjen kapcsolatba a redszergazdával."
 
 #: js/oc-dialogs.js:108 js/oc-dialogs.js:255
 msgid "No"
@@ -282,7 +289,7 @@ msgstr[1] "{count} fájl ütközik"
 
 #: js/oc-dialogs.js:444
 msgid "One file conflict"
-msgstr "Egy file ütközik"
+msgstr "Egy fájl ütközik"
 
 #: js/oc-dialogs.js:450
 msgid "New Files"
@@ -354,12 +361,12 @@ msgstr "Megosztva ővelük: {recipients}"
 msgid "Share"
 msgstr "Megosztás"
 
-#: js/share.js:326 js/share.js:340 js/share.js:347 js/share.js:989
+#: js/share.js:326 js/share.js:340 js/share.js:347 js/share.js:1002
 #: templates/installation.php:10
 msgid "Error"
 msgstr "Hiba"
 
-#: js/share.js:328 js/share.js:1052
+#: js/share.js:328 js/share.js:1065
 msgid "Error while sharing"
 msgstr "Nem sikerült létrehozni a megosztást"
 
@@ -420,79 +427,71 @@ msgstr "Legyen lejárati idő"
 msgid "Expiration date"
 msgstr "A lejárati idő"
 
-#: js/share.js:455
-msgid "Share via email:"
-msgstr "Megosztás emaillel:"
-
-#: js/share.js:458
-msgid "No people found"
-msgstr "Nincs találat"
-
-#: js/share.js:507 js/share.js:575
+#: js/share.js:496 js/share.js:564
 msgid "group"
 msgstr "csoport"
 
-#: js/share.js:540
+#: js/share.js:529
 msgid "Resharing is not allowed"
 msgstr "Ezt az állományt csak a tulajdonosa oszthatja meg másokkal"
 
-#: js/share.js:591
+#: js/share.js:580
 msgid "Shared in {item} with {user}"
 msgstr "Megosztva {item}-ben {user}-rel"
 
-#: js/share.js:613
+#: js/share.js:602
 msgid "Unshare"
 msgstr "A megosztás visszavonása"
 
-#: js/share.js:621
+#: js/share.js:610
 msgid "notify by email"
-msgstr "email értesítés"
+msgstr "e-mail értesítés"
 
-#: js/share.js:624
+#: js/share.js:613
 msgid "can share"
 msgstr "megosztható"
 
-#: js/share.js:627
+#: js/share.js:616
 msgid "can edit"
 msgstr "módosíthat"
 
-#: js/share.js:629
+#: js/share.js:618
 msgid "access control"
 msgstr "jogosultság"
 
-#: js/share.js:632
+#: js/share.js:621
 msgid "create"
 msgstr "létrehoz"
 
-#: js/share.js:635
+#: js/share.js:624
 msgid "update"
 msgstr "szerkeszt"
 
-#: js/share.js:638
+#: js/share.js:627
 msgid "delete"
 msgstr "töröl"
 
-#: js/share.js:970
+#: js/share.js:983
 msgid "Password protected"
 msgstr "Jelszóval van védve"
 
-#: js/share.js:989
+#: js/share.js:1002
 msgid "Error unsetting expiration date"
 msgstr "Nem sikerült a lejárati időt törölni"
 
-#: js/share.js:1010
+#: js/share.js:1023
 msgid "Error setting expiration date"
 msgstr "Nem sikerült a lejárati időt beállítani"
 
-#: js/share.js:1039
+#: js/share.js:1052
 msgid "Sending ..."
 msgstr "Küldés ..."
 
-#: js/share.js:1050
+#: js/share.js:1063
 msgid "Email sent"
-msgstr "Az emailt elküldtük"
+msgstr "Az e-mailt elküldtük"
 
-#: js/share.js:1074
+#: js/share.js:1087
 msgid "Warning"
 msgstr "Figyelmeztetés"
 
@@ -540,21 +539,21 @@ msgstr "A frissítés nem sikerült."
 msgid "The update was successful. Redirecting you to ownCloud now."
 msgstr "A frissítés sikeres volt. Visszairányítjuk az ownCloud szolgáltatáshoz."
 
-#: lostpassword/controller/lostcontroller.php:110
+#: lostpassword/controller/lostcontroller.php:133
 msgid "Couldn't reset password because the token is invalid"
-msgstr ""
+msgstr "Nem lehet a jelszót törölni, mert a token érvénytelen."
 
-#: lostpassword/controller/lostcontroller.php:136
+#: lostpassword/controller/lostcontroller.php:159
 msgid "Couldn't send reset email. Please make sure your username is correct."
-msgstr ""
+msgstr "Visszaállítási e-mail nem küldhető. Kérjük, lépjen kapcsolatba a rendszergazdával. "
 
-#: lostpassword/controller/lostcontroller.php:151
+#: lostpassword/controller/lostcontroller.php:174
 msgid ""
 "Couldn't send reset email because there is no email address for this "
 "username. Please contact your administrator."
-msgstr ""
+msgstr "Visszaállítási e-mail nem küldhető, mert nem tartozik e-mail cím ehhez a felhasználóhoz. Kérjük, lépjen kapcsolatba a rendszergazdával."
 
-#: lostpassword/controller/lostcontroller.php:168
+#: lostpassword/controller/lostcontroller.php:191
 #, php-format
 msgid "%s password reset"
 msgstr "%s jelszó visszaállítás"
@@ -565,11 +564,11 @@ msgstr "Használja ezt a linket a jelszó ismételt beállításához: {link}"
 
 #: lostpassword/templates/lostpassword.php:6
 msgid "You will receive a link to reset your password via Email."
-msgstr "Egy emailben fog értesítést kapni a jelszóbeállítás módjáról."
+msgstr "Egy e-mailben fog értesítést kapni a jelszóbeállítás módjáról."
 
 #: lostpassword/templates/lostpassword.php:8
 #: lostpassword/templates/lostpassword.php:9 templates/installation.php:51
-#: templates/installation.php:54 templates/login.php:31 templates/login.php:35
+#: templates/installation.php:54 templates/login.php:23 templates/login.php:27
 msgid "Username"
 msgstr "Felhasználónév"
 
@@ -595,14 +594,14 @@ msgstr "Az új jelszó"
 
 #: lostpassword/templates/resetpassword.php:6
 msgid "New Password"
-msgstr ""
+msgstr "Új jelszó"
 
 #: setup/controller.php:140
 #, php-format
 msgid ""
 "Mac OS X is not supported and %s will not work properly on this platform. "
 "Use it at your own risk! "
-msgstr "A Mac OS X nem támogatott és %s nem lesz teljesen működőképes. Felhasználás csak saját felelősségre!"
+msgstr "A Mac OS X nem támogatott és %s nem lesz teljesen működőképes. Csak saját felelősségre használja!"
 
 #: setup/controller.php:144
 msgid ""
@@ -617,7 +616,7 @@ msgstr "Személyes"
 msgid "Users"
 msgstr "Felhasználók"
 
-#: strings.php:7 templates/layout.user.php:53 templates/layout.user.php:118
+#: strings.php:7 templates/layout.user.php:56 templates/layout.user.php:121
 msgid "Apps"
 msgstr "Alkalmazások"
 
@@ -680,7 +679,8 @@ msgstr "Üdv!\\n\n\\n\nÉrtesítjük, hogy %s megosztotta Önnel a következőt:
 msgid "The share will expire on %s."
 msgstr "A megosztás lejár ekkor %s"
 
-#: templates/altmail.php:7 templates/mail.php:20
+#. TRANSLATORS term at the end of a mail
+#: templates/altmail.php:8 templates/mail.php:21
 msgid "Cheers!"
 msgstr "Üdv."
 
@@ -728,7 +728,7 @@ msgid "Create an <strong>admin account</strong>"
 msgstr "<strong>Rendszergazdai belépés</strong> létrehozása"
 
 #: templates/installation.php:59 templates/installation.php:62
-#: templates/login.php:41 templates/login.php:44
+#: templates/login.php:33 templates/login.php:36
 msgid "Password"
 msgstr "Jelszó"
 
@@ -783,57 +783,43 @@ msgstr "A beállítások befejezése"
 msgid "Finishing …"
 msgstr "Befejezés ..."
 
-#: templates/layout.user.php:40
+#: templates/layout.user.php:43
 msgid ""
 "This application requires JavaScript to be enabled for correct operation.  "
 "Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable "
 "JavaScript</a> and re-load this interface."
 msgstr "Az alkalmazás megfelelő működéséhez szükség van JavaScriptre. <a href=\"http://enable-javascript.com/\" target=\"_blank\">Engedélyezze a JavaScriptet</a> és frissítse az oldalt!"
 
-#: templates/layout.user.php:44
+#: templates/layout.user.php:47
 #, php-format
 msgid "%s is available. Get more information on how to update."
 msgstr "%s rendelkezésre áll. További információ a frissítéshez."
 
-#: templates/layout.user.php:80 templates/singleuser.user.php:8
+#: templates/layout.user.php:83 templates/singleuser.user.php:8
 msgid "Log out"
 msgstr "Kilépés"
 
 #: templates/login.php:11
-msgid "Automatic logon rejected!"
-msgstr "Az automatikus bejelentkezés sikertelen!"
-
-#: templates/login.php:12
-msgid ""
-"If you did not change your password recently, your account may be "
-"compromised!"
-msgstr "Ha mostanában nem módosította a jelszavát, akkor lehetséges, hogy idegenek jutottak be a rendszerbe az Ön nevében!"
-
-#: templates/login.php:14
-msgid "Please change your password to secure your account again."
-msgstr "A biztonsága érdekében változtassa meg a jelszavát!"
-
-#: templates/login.php:19
 msgid "Server side authentication failed!"
 msgstr "A szerveroldali hitelesítés sikertelen!"
 
-#: templates/login.php:20
+#: templates/login.php:12
 msgid "Please contact your administrator."
 msgstr "Kérjük, lépjen kapcsolatba a rendszergazdával."
 
-#: templates/login.php:50
+#: templates/login.php:42
 msgid "Forgot your password? Reset it!"
-msgstr ""
+msgstr "Elfelejtette a jelszavát? Állítsa vissza!"
 
-#: templates/login.php:55
+#: templates/login.php:47
 msgid "remember"
 msgstr "emlékezzen"
 
-#: templates/login.php:59
+#: templates/login.php:51
 msgid "Log in"
 msgstr "Bejelentkezés"
 
-#: templates/login.php:65
+#: templates/login.php:57
 msgid "Alternative Logins"
 msgstr "Alternatív bejelentkezés"
 
@@ -862,6 +848,28 @@ msgstr "Ha ez az üzenet ismételten vagy indokolatlanul megjelenik, akkor keres
 msgid "Thank you for your patience."
 msgstr "Köszönjük a türelmét."
 
+#: templates/untrustedDomain.php:5
+msgid "You are accessing the server from an untrusted domain."
+msgstr "A kiszolgálót nem megbízható tartományból éri el."
+
+#: templates/untrustedDomain.php:8
+msgid ""
+"Please contact your administrator. If you are an administrator of this "
+"instance, configure the \"trusted_domain\" setting in config/config.php. An "
+"example configuration is provided in config/config.sample.php."
+msgstr "Kérjük keresse fel a rendszergazdát! Ha ennek a telepítésnek Ön a rendszergazdája, akkor állítsa be a config/config.php állományban a \"trusted_domain\" paramétert! A config/config.sample.php állományban talál példát a beállításra."
+
+#: templates/untrustedDomain.php:10
+msgid ""
+"Depending on your configuration, as an administrator you might also be able "
+"to use the button below to trust this domain."
+msgstr "A beállításoktól függően, rendszergazdaként lehetséges, hogy az alábbi gombot is használhatja a tartomány megbízhatóvá tételéhez."
+
+#: templates/untrustedDomain.php:14
+#, php-format
+msgid "Add \"%s\" as trusted domain"
+msgstr "Adjuk hozzá \"%s\"-t a megbízható tartományokhoz!"
+
 #: templates/update.admin.php:3
 #, php-format
 msgid "%s will be updated to version %s."
@@ -885,6 +893,12 @@ msgstr "Kérjük gondoskodjon róla, hogy elmentse az adatbázist, a konfigurác
 #: templates/update.admin.php:23
 msgid "Start update"
 msgstr "A frissítés megkezdése"
+
+#: templates/update.admin.php:25
+msgid ""
+"To avoid timeouts with larger installations, you can instead run the "
+"following command from your installation directory:"
+msgstr "Nagyobb telepítések esetén úgy kerülhetők el az időtúllépések, ha inkább a következő parancsot adja ki a telepítési alkönyvtárban:"
 
 #: templates/update.user.php:3
 msgid ""

@@ -265,8 +265,8 @@ class Share extends \OC\Share\Constants {
 	 *
 	 * Unsharing from self is not allowed for items inside collections
 	 */
-	public static function unshareFromSelf($itemType, $itemTarget) {
-		return \OC\Share\Share::unshareFromSelf($itemType, $itemTarget);
+	public static function unshareFromSelf($itemType, $itemOrigin, $originIsSource = false) {
+		return \OC\Share\Share::unshareFromSelf($itemType, $itemOrigin, $originIsSource);
 	}
 
 	/**
@@ -274,10 +274,11 @@ class Share extends \OC\Share\Constants {
 	 * @param string $itemType
 	 * @param string $itemSource
 	 * @param int $shareType SHARE_TYPE_USER, SHARE_TYPE_GROUP, or SHARE_TYPE_LINK
+	 * @param string $recipient with whom was the item shared
 	 * @param bool $status
 	 */
-	public static function setSendMailStatus($itemType, $itemSource, $shareType, $status) {
-		return \OC\Share\Share::setSendMailStatus($itemType, $itemSource, $shareType, $status);
+	public static function setSendMailStatus($itemType, $itemSource, $shareType, $recipient, $status) {
+		return \OC\Share\Share::setSendMailStatus($itemType, $itemSource, $shareType, $recipient, $status);
 	}
 
 	/**
@@ -329,6 +330,15 @@ class Share extends \OC\Share\Constants {
 	 */
 	public static function checkPasswordProtectedShare(array $linkItem) {
 		return \OC\Share\Share::checkPasswordProtectedShare($linkItem);
+	}
+
+	/**
+	 * Check if resharing is allowed
+	 *
+	 * @return boolean true if allowed or false
+	 */
+	public static function isResharingAllowed() {
+		return \OC\Share\Share::isResharingAllowed();
 	}
 }
 

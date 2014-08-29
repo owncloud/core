@@ -243,10 +243,10 @@ class DAV extends \OC\Files\Storage\Common {
 			if (isset($response['{DAV:}quota-available-bytes'])) {
 				return (int)$response['{DAV:}quota-available-bytes'];
 			} else {
-				return \OC\Files\SPACE_UNKNOWN;
+				return \OCP\Files\FileInfo::SPACE_UNKNOWN;
 			}
 		} catch (\Exception $e) {
-			return \OC\Files\SPACE_UNKNOWN;
+			return \OCP\Files\FileInfo::SPACE_UNKNOWN;
 		}
 	}
 
@@ -295,6 +295,7 @@ class DAV extends \OC\Files\Storage\Common {
 			\OCP\Util::writeLog("webdav client", 'curl GET ' . curl_getinfo($curl, CURLINFO_EFFECTIVE_URL) . ' returned status code ' . $statusCode, \OCP\Util::ERROR);
 		}
 		curl_close($curl);
+		fclose($source);
 		$this->removeCachedFile($target);
 	}
 

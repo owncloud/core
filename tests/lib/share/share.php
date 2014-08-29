@@ -314,6 +314,25 @@ class Test_Share extends PHPUnit_Framework_TestCase {
 		$this->assertTrue(in_array('test.txt', $to_test));
 		$this->assertTrue(in_array('test1.txt', $to_test));
 
+		// Unshare from self
+		$this->assertTrue(OCP\Share::unshareFromSelf('test', 'test.txt'));
+		$this->assertEquals(array('test1.txt'), OCP\Share::getItemsSharedWith('test', Test_Share_Backend::FORMAT_TARGET));
+
+		// Unshare from self via source
+		$this->assertTrue(OCP\Share::unshareFromSelf('test', 'share.txt', true));
+		$this->assertEquals(array(), OCP\Share::getItemsSharedWith('test', Test_Share_Backend::FORMAT_TARGET));
+
+		OC_User::setUserId($this->user1);
+		$this->assertTrue(OCP\Share::shareItem('test', 'test.txt', OCP\Share::SHARE_TYPE_USER, $this->user2, OCP\PERMISSION_READ));
+		OC_User::setUserId($this->user3);
+		$this->assertTrue(OCP\Share::shareItem('test', 'share.txt', OCP\Share::SHARE_TYPE_USER, $this->user2, OCP\PERMISSION_READ));
+
+		OC_User::setUserId($this->user2);
+		$to_test = OCP\Share::getItemsSharedWith('test', Test_Share_Backend::FORMAT_TARGET);
+		$this->assertEquals(2, count($to_test));
+		$this->assertTrue(in_array('test.txt', $to_test));
+		$this->assertTrue(in_array('test1.txt', $to_test));
+
 		// Remove user
 		OC_User::setUserId($this->user1);
 		OC_User::deleteUser($this->user1);
@@ -372,6 +391,39 @@ class Test_Share extends PHPUnit_Framework_TestCase {
 
 		$shares = OCP\Share::getItemsShared('test');
 		$this->assertSame(2, count($shares));
+
+	}
+
+	/*
+	 * if user is in a group excluded from resharing, then the share permission should
+	 * be removed
+	 */
+	public function testShareWithUserAndUserIsExcludedFromResharing() {
+
+		OC_User::setUserId($this->user1);
+		$this->assertTrue(
+			OCP\Share::shareItem('test', 'test.txt', OCP\Share::SHARE_TYPE_USER, $this->user4, OCP\PERMISSION_ALL),
+			'Failed asserting that user 1 successfully shared text.txt with user 4.'
+		);
+		$this->assertContains(
+			'test.txt',
+			OCP\Share::getItemShared('test', 'test.txt', Test_Share_Backend::FORMAT_SOURCE),
+			'Failed asserting that test.txt is a shared file of user 1.'
+		);
+
+		// exclude group2 from sharing
+		\OC_Appconfig::setValue('core', 'shareapi_exclude_groups_list', $this->group2);
+		\OC_Appconfig::setValue('core', 'shareapi_exclude_groups', "yes");
+
+		OC_User::setUserId($this->user4);
+
+		$share = OCP\Share::getItemSharedWith('test', 'test.txt');
+
+		$this->assertSame(\OCP\PERMISSION_ALL & ~OCP\PERMISSION_SHARE, $share['permissions'],
+				'Failed asserting that user 4 is excluded from re-sharing');
+
+		\OC_Appconfig::deleteKey('core', 'shareapi_exclude_groups_list');
+		\OC_Appconfig::deleteKey('core', 'shareapi_exclude_groups');
 
 	}
 
@@ -535,6 +587,11 @@ class Test_Share extends PHPUnit_Framework_TestCase {
 		OC_User::setUserId($this->user2);
 		$this->assertEquals(array('test.txt'), OCP\Share::getItemsSharedWith('test', Test_Share_Backend::FORMAT_TARGET));
 
+		// Unshare from self via source
+		OC_User::setUserId($this->user1);
+		$this->assertTrue(OCP\Share::unshareFromSelf('test', 'share.txt', true));
+		$this->assertEquals(array(), OCP\Share::getItemsSharedWith('test', Test_Share_Backend::FORMAT_TARGET));
+
 		// Remove group
 		OC_Group::deleteGroup($this->group1);
 		OC_User::setUserId($this->user4);
@@ -596,6 +653,32 @@ class Test_Share extends PHPUnit_Framework_TestCase {
 			OCP\Share::getShareByToken($token),
 			'Failed asserting that an expired share could not be found.'
 		);
+	}
+
+	public function testShareItemWithLinkAndDefaultExpireDate() {
+		OC_User::setUserId($this->user1);
+
+		\OC_Appconfig::setValue('core', 'shareapi_default_expire_date', 'yes');
+		\OC_Appconfig::setValue('core', 'shareapi_expire_after_n_days', '2');
+
+		$token = OCP\Share::shareItem('test', 'test.txt', OCP\Share::SHARE_TYPE_LINK, null, OCP\PERMISSION_READ);
+		$this->assertInternalType(
+			'string',
+			$token,
+			'Failed asserting that user 1 successfully shared text.txt as link with token.'
+		);
+
+		// share should have default expire date
+
+		$row = $this->getShareByValidToken($token);
+		$this->assertNotEmpty(
+			$row['expiration'],
+			'Failed asserting that the returned row has an default expiration date.'
+		);
+
+		\OC_Appconfig::deleteKey('core', 'shareapi_default_expire_date');
+		\OC_Appconfig::deleteKey('core', 'shareapi_expire_after_n_days');
+
 	}
 
 	public function testUnshareAll() {

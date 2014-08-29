@@ -237,7 +237,8 @@ OC.Settings.Apps = OC.Settings.Apps || {
 				element.val(t('settings','Uninstall'));
 			} else {
 				OC.Settings.Apps.removeNavigation(appid);
-				appitem.removeClass('active');
+				var appItem = $('#app-navigation li').filterAttr('data-id', appid);
+				appItem.removeClass('active');
 			}
 		},'json');
 	},
@@ -283,7 +284,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 					if(container.children('li[data-id="'+entry.id+'"]').length === 0){
 						var li=$('<li></li>');
 						li.attr('data-id', entry.id);
-						var img= $('<img class="icon"/>').attr({ src: entry.icon});
+						var img= $('<img class="app-icon"/>').attr({ src: entry.icon});
 						var a=$('<a></a>').attr('href', entry.href);
 						var filename=$('<span></span>');
 						filename.text(entry.name);
@@ -398,7 +399,7 @@ $(document).ready(function(){
 		if(item) {
 			item.trigger('click');
 			item.addClass('active');
-			$('#app-navigation').animate({scrollTop: $(item).offset().top-70}, 'slow','swing');
+			$('#app-navigation').animate({scrollTop: item.offset().top-70}, 'slow','swing');
 		}
 	}
 

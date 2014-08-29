@@ -28,6 +28,8 @@
 		_sharedWithUser: false,
 		_linksOnly: false,
 
+		_clientSideSort: true,
+
 		initialize: function($el, options) {
 			OCA.Files.FileList.prototype.initialize.apply(this, arguments);
 			if (this.initialized) {
@@ -59,6 +61,9 @@
 			$tr.attr('data-share-id', _.pluck(fileData.shares, 'id').join(','));
 			if (this._sharedWithUser) {
 				$tr.attr('data-share-owner', fileData.shareOwner);
+				$tr.attr('data-mounttype', 'shared-root');
+				var permission = parseInt($tr.attr('data-permissions')) | OC.PERMISSION_DELETE;
+				$tr.attr('data-permissions', permission);
 			}
 			return $tr;
 		},

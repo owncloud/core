@@ -31,6 +31,9 @@ class Swift extends \Test\Files\Storage\Storage {
 	private $objectStorage;
 
 	public function setUp() {
+		if (!getenv('RUN_OBJECTSTORE_TESTS')) {
+			$this->markTestSkipped('objectstore tests are unreliable on travis');
+		}
 
 		\OC_App::disable('files_sharing');
 		\OC_App::disable('files_versions');
@@ -80,6 +83,11 @@ class Swift extends \Test\Files\Storage\Storage {
 	}
 
 	public function testStat() {
+		// TODO travis
+		if (getenv('TRAVIS')) {
+			$this->markTestSkipped('Fails on travis - connection times out sometimes');
+		}
+
 		$textFile = \OC::$SERVERROOT . '/tests/data/lorem.txt';
 		$ctimeStart = time();
 		$this->instance->file_put_contents('/lorem.txt', file_get_contents($textFile));

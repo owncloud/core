@@ -603,6 +603,7 @@ class OC_Image {
 		$meta = unpack('vtype/Vfilesize/Vreserved/Voffset', fread($fh, 14));
 		// check for bitmap
 		if ($meta['type'] != 19778) {
+			fclose($fh);
 			trigger_error('imagecreatefrombmp: ' . $fileName . ' is not a bitmap!', E_USER_WARNING);
 			return false;
 		}
@@ -626,6 +627,7 @@ class OC_Image {
 			if ($meta['imagesize'] < 1) {
 				$meta['imagesize'] = @filesize($fileName) - $meta['offset'];
 				if ($meta['imagesize'] < 1) {
+					fclose($fh);
 					trigger_error('imagecreatefrombmp: Can not obtain filesize of ' . $fileName . '!', E_USER_WARNING);
 					return false;
 				}
@@ -666,6 +668,7 @@ class OC_Image {
 						break;
 					case 16:
 						if (!($part = substr($data, $p, 2))) {
+							fclose($fh);
 							trigger_error($error, E_USER_WARNING);
 							return $im;
 						}
@@ -712,6 +715,7 @@ class OC_Image {
 						$color[1] = $palette[ $color[1] + 1 ];
 						break;
 					default:
+						fclose($fh);
 						trigger_error('imagecreatefrombmp: '
 							. $fileName . ' has ' . $meta['bits'] . ' bits and this is not supported!',
 							E_USER_WARNING);
@@ -870,6 +874,14 @@ class OC_Image {
 			imagedestroy($process);
 			return false;
 		}
+
+		// preserve transparency
+		if($this->imageType == IMAGETYPE_GIF or $this->imageType == IMAGETYPE_PNG) {
+			imagecolortransparent($process, imagecolorallocatealpha($process, 0, 0, 0, 127));
+			imagealphablending($process, false);
+			imagesavealpha($process, true);
+		}
+
 		imagecopyresampled($process, $this->resource, 0, 0, $x, $y, $w, $h, $w, $h);
 		if ($process == false) {
 			OC_Log::write('core', __METHOD__.'(): Error resampling process image '.$w.'x'.$h, OC_Log::ERROR);

@@ -1,5 +1,6 @@
 <?php
 $TRANSLATIONS = array(
+"Unknown error" => "অজানা জটিলতা",
 "Could not move %s - File with this name already exists" => "%s কে স্থানান্তর করা সম্ভব হলো না -  এই নামের ফাইল বিদ্যমান",
 "Could not move %s" => "%s  কে স্থানান্তর করা সম্ভব হলো না",
 "File name cannot be empty." => "ফাইলের নামটি ফাঁকা রাখা যাবে না।",
@@ -14,6 +15,7 @@ $TRANSLATIONS = array(
 "Failed to write to disk" => "ডিস্কে লিখতে ব্যর্থ",
 "Invalid directory." => "ভুল ডিরেক্টরি",
 "Files" => "ফাইল",
+"All files" => "সব ফাইল",
 "Upload cancelled." => "আপলোড বাতিল করা হয়েছে।",
 "File upload is in progress. Leaving the page now will cancel the upload." => "ফাইল আপলোড চলমান। এই পৃষ্ঠা পরিত্যাগ করলে আপলোড বাতিল করা হবে।",
 "{new_name} already exists" => "{new_name} টি বিদ্যমান",
@@ -36,6 +38,7 @@ $TRANSLATIONS = array(
 "WebDAV" => "WebDAV",
 "New" => "নতুন",
 "Text file" => "টেক্সট ফাইল",
+"New folder" => "নব ফােলডার",
 "Folder" => "ফোল্ডার",
 "From link" => " লিংক থেকে",
 "Nothing in here. Upload something!" => "এখানে কিছুই নেই। কিছু আপলোড করুন !",

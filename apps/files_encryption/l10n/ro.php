@@ -9,10 +9,10 @@ $TRANSLATIONS = array(
 "Private key password successfully updated." => "Cheia privata a fost actualizata cu succes",
 "Could not update the private key password. Maybe the old password was not correct." => "Nu am putut actualiza parola pentru cheia privata. Poate ca parola veche este incorecta.",
 "Encryption" => "Încriptare",
+"Encryption App is enabled but your keys are not initialized, please log-out and log-in again" => "Aplicatia de criptare este activata dar tastatura nu este initializata , va rugam deconectati-va si reconectati-va",
 "Enabled" => "Activat",
 "Disabled" => "Dezactivat",
 "Change Password" => "Schimbă parola",
-"Your private key password no longer match your log-in password:" => "Parola cheii private nu se mai potriveste cu parola ta de logare:",
 "File recovery settings updated" => "Setarile pentru recuperarea fisierelor au fost actualizate",
 "Could not update file recovery" => "Nu am putut actualiza recuperarea de fisiere"
 );

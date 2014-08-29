@@ -1,4 +1,9 @@
 <?php /** @var $l OC_L10N */ ?>
+<?php $thumbSize=1024; ?>
+<?php if ( \OC\Preview::isMimeSupported($_['mimetype'])): /* This enables preview images for links (e.g. on Facebook, Google+, ...)*/?>
+	<link rel="image_src" href="<?php p(OCP\Util::linkToRoute( 'core_ajax_public_preview', array('x' => $thumbSize, 'y' => $thumbSize, 'file' => $_['directory_path'], 't' => $_['dirToken']))); ?>" />
+<?php endif; ?>
+
 <div id="notification-container">
 	<div id="notification" style="display: none;"></div>
 </div>
@@ -42,7 +47,7 @@
 				</div>
 			<?php elseif (substr($_['mimetype'], 0, strpos($_['mimetype'], '/')) == 'video'): ?>
 				<div id="imgframe">
-					<video tabindex="0" controls="" autoplay="">
+					<video tabindex="0" controls="" preload="none">
 						<source src="<?php p($_['downloadURL']); ?>" type="<?php p($_['mimetype']); ?>" />
 					</video>
 				</div>

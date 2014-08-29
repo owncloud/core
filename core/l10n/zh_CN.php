@@ -1,6 +1,5 @@
 <?php
 $TRANSLATIONS = array(
-"Expiration date is in the past." => "过期日期已过。",
 "Couldn't send mail to following users: %s " => "发送失败，用户如下: %s ",
 "Turned on maintenance mode" => "启用维护模式",
 "Turned off maintenance mode" => "关闭维护模式",
@@ -94,8 +93,6 @@ $TRANSLATIONS = array(
 "Send" => "发送",
 "Set expiration date" => "设置过期日期",
 "Expiration date" => "过期日期",
-"Share via email:" => "通过Email共享",
-"No people found" => "未找到此人",
 "group" => "组",
 "Resharing is not allowed" => "不允许二次共享",
 "Shared in {item} with {user}" => "在 {item} 与 {user} 共享。",
@@ -179,9 +176,6 @@ $TRANSLATIONS = array(
 "This application requires JavaScript to be enabled for correct operation.  Please <a href=\"http://enable-javascript.com/\" target=\"_blank\">enable JavaScript</a> and re-load this interface." => "此程序需要启用JavaScript才能正常运行。请<a href=\"http://enable-javascript.com/\" target=\"_blank\">启用JavaScript</a> 并重新加载此接口。",
 "%s is available. Get more information on how to update." => "%s 可用。获取更多关于如何升级的信息。",
 "Log out" => "注销",
-"Automatic logon rejected!" => "自动登录被拒绝！",
-"If you did not change your password recently, your account may be compromised!" => "如果您没有最近修改您的密码，您的帐户可能会受到影响！",
-"Please change your password to secure your account again." => "请修改您的密码，以保护您的账户安全。",
 "Server side authentication failed!" => "服务端验证失败！",
 "Please contact your administrator." => "请联系你的管理员。",
 "Forgot your password? Reset it!" => "忘记密码？立即重置！",
@@ -193,6 +187,7 @@ $TRANSLATIONS = array(
 "This means only administrators can use the instance." => "这意味着只有管理员才能在实例上操作。",
 "Contact your system administrator if this message persists or appeared unexpectedly." => "如果这个消息一直存在或不停出现，请联系你的系统管理员。",
 "Thank you for your patience." => "感谢让你久等了。",
+"You are accessing the server from an untrusted domain." => "您正在访问来自不信任域名的服务器。",
 "%s will be updated to version %s." => "%s 将会更新到版本 %s。",
 "The following apps will be disabled:" => "以下应用将会被禁用：",
 "The theme %s has been disabled." => "%s 主题已被禁用。",

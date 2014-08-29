@@ -90,6 +90,13 @@
 		_sortComparator: null,
 
 		/**
+		 * Whether to do a client side sort.
+		 * When false, clicking on a table header will call reload().
+		 * When true, clicking on a table header will simply resort the list.
+		 */
+		_clientSideSort: false,
+
+		/**
 		 * Current directory
 		 */
 		_currentDirectory: null,
@@ -338,7 +345,6 @@
 			else {
 				files = _.pluck(this.getSelectedFiles(), 'name');
 			}
-			OC.Notification.show(t('files','Your download is being prepared. This might take some time if the files are big.'));
 			OC.redirect(this.getDownloadUrl(files, dir));
 			return false;
 		},
@@ -368,17 +374,16 @@
 			sort = $target.attr('data-sort');
 			if (sort) {
 				if (this._sort === sort) {
-					this.setSort(sort, (this._sortDirection === 'desc')?'asc':'desc');
+					this.setSort(sort, (this._sortDirection === 'desc')?'asc':'desc', true);
 				}
 				else {
 					if ( sort === 'name' ) {	//default sorting of name is opposite to size and mtime
-						this.setSort(sort, 'asc');
+						this.setSort(sort, 'asc', true);
 					}
 					else {
-						this.setSort(sort, 'desc');
+						this.setSort(sort, 'desc', true);
 					}
 				}
-				this.reload();
 			}
 		},
 
@@ -400,7 +405,7 @@
 		 * This appends/renders the next page of entries when reaching the bottom.
 		 */
 		_onScroll: function(e) {
-			if (this.$container.scrollTop() + this.$container.height() > this.$el.height() - 100) {
+			if (this.$container.scrollTop() + this.$container.height() > this.$el.height() - 300) {
 				this._nextPage(true);
 			}
 		},
@@ -698,7 +703,7 @@
 				"class": "modified",
 				"title": formatDate(mtime),
 				"style": 'color:rgb('+modifiedColor+','+modifiedColor+','+modifiedColor+')'
-			}).text( relative_modified_date(mtime / 1000) ));
+			}).text(OC.Util.relativeModifiedDate(mtime)));
 			tr.find('.filesize').text(simpleSize);
 			tr.append(td);
 			return tr;
@@ -915,8 +920,9 @@
 		 *
 		 * @param sort sort attribute name
 		 * @param direction sort direction, one of "asc" or "desc"
+		 * @param update true to update the list, false otherwise (default)
 		 */
-		setSort: function(sort, direction) {
+		setSort: function(sort, direction, update) {
 			var comparator = FileList.Comparators[sort] || FileList.Comparators.name;
 			this._sort = sort;
 			this._sortDirection = (direction === 'desc')?'desc':'asc';
@@ -938,6 +944,15 @@
 				.removeClass(this.SORT_INDICATOR_DESC_CLASS)
 				.toggleClass('hidden', false)
 				.addClass(direction === 'desc' ? this.SORT_INDICATOR_DESC_CLASS : this.SORT_INDICATOR_ASC_CLASS);
+			if (update) {
+				if (this._clientSideSort) {
+					this.files.sort(this._sortComparator);
+					this.setFiles(this.files);
+				}
+				else {
+					this.reload();
+				}
+			}
 		},
 
 		/**
@@ -1320,8 +1335,12 @@
 							success: function(result) {
 								var fileInfo;
 								if (!result || result.status === 'error') {
-									OC.dialogs.alert(result.data.message, t('core', 'Could not rename file'));
+									OC.dialogs.alert(result.data.message, t('files', 'Could not rename file'));
 									fileInfo = oldFileInfo;
+									if (result.data.code === 'sourcenotfound') {
+										self.remove(result.data.newname, {updateSummary: true});
+										return;
+									}
 								}
 								else {
 									fileInfo = result.data;

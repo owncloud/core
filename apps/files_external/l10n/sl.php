@@ -1,5 +1,7 @@
 <?php
 $TRANSLATIONS = array(
+"Fetching request tokens failed. Verify that your Dropbox app key and secret are correct." => "Pridobivanje žetonov za zahteve je spodletelo. Preverite, da sta ključ in skrivno geslo programa Dropbox navedena pravilno.",
+"Fetching access tokens failed. Verify that your Dropbox app key and secret are correct." => "Pridobivanje žetonov za dostop je spodletelo. Preverite, da sta ključ in skrivno geslo programa Dropbox navedena pravilno.",
 "Please provide a valid Dropbox app key and secret." => "Vpisati je treba veljaven ključ programa in kodo za Dropbox",
 "Step 1 failed. Exception: %s" => "1. korak je spodletel. Izjemna napaka: %s",
 "Step 2 failed. Exception: %s" => "2. korak je spodletel. Izjemna napaka: %s",
@@ -9,6 +11,7 @@ $TRANSLATIONS = array(
 "Amazon S3" => "Amazon S3",
 "Key" => "Ključ",
 "Secret" => "Skrivni ključ",
+"Bucket" => "Pomnilniško vedro",
 "Amazon S3 and compliant" => "Amazon S3 in podobno",
 "Access Key" => "Ključ za dostop",
 "Secret Key" => "Skrivni ključ",
@@ -28,7 +31,9 @@ $TRANSLATIONS = array(
 "Client secret" => "Skrivni ključ odjemalca",
 "OpenStack Object Storage" => "Shramba predmeta OpenStack",
 "Username (required)" => "Uporabniško ime (zahtevano)",
+"Bucket (required)" => "Pomnilniško vedro (zahtevano)",
 "Region (optional for OpenStack Object Storage)" => "Območje (zahtevano za shrambo predmeta OpenStack)",
+"API Key (required for Rackspace Cloud Files)" => "Ključ programskega vmesnika (API) (zahtevan je za datoteke v oblaku Rackspace)",
 "Tenantname (required for OpenStack Object Storage)" => "Ime uporabnika (zahtevano za shrambo predmeta OpenStack)",
 "Password (required for OpenStack Object Storage)" => "Geslo (zahtevano za shrambo predmeta OpenStack)",
 "Service Name (required for OpenStack Object Storage)" => "Ime storitve (zahtevano za shrambo predmeta OpenStack)",

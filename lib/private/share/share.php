@@ -595,6 +595,7 @@ class Share extends \OC\Share\Constants {
 			$shareWith['group'] = $group;
 			$shareWith['users'] = array_diff(\OC_Group::usersInGroup($group), array($uidOwner));
 		} else if ($shareType === self::SHARE_TYPE_LINK) {
+			$updateExistingShare = false;
 			if (\OC_Appconfig::getValue('core', 'shareapi_allow_links', 'yes') == 'yes') {
 
 				// when updating a link share
@@ -629,7 +630,7 @@ class Share extends \OC\Share\Constants {
 					throw new \Exception($message_t);
 				}
 
-				if (!empty($updateExistingShare) &&
+				if ($updateExistingShare === false &&
 						self::isDefaultExpireDateEnabled() &&
 						empty($expirationDate)) {
 					$expirationDate = Helper::calcExpireDate();
@@ -718,23 +719,24 @@ class Share extends \OC\Share\Constants {
 	/**
 	 * Unshare an item shared with the current user
 	 * @param string $itemType
-	 * @param string $itemTarget
+	 * @param string $itemOrigin Item target or source
+	 * @param boolean $originIsSource true if $itemOrigin is the source, false if $itemOrigin is the target (optional)
 	 * @return boolean true on success or false on failure
 	 *
 	 * Unsharing from self is not allowed for items inside collections
 	 */
-	public static function unshareFromSelf($itemType, $itemTarget) {
-
+	public static function unshareFromSelf($itemType, $itemOrigin, $originIsSource = false) {
+		$originType = ($originIsSource) ? 'source' : 'target';
 		$uid = \OCP\User::getUser();
 
 		if ($itemType === 'file' || $itemType === 'folder') {
-			$statement = 'SELECT * FROM `*PREFIX*share` WHERE `item_type` = ? and `file_target` = ?';
+			$statement = 'SELECT * FROM `*PREFIX*share` WHERE `item_type` = ? and `file_' . $originType . '` = ?';
 		} else {
-			$statement = 'SELECT * FROM `*PREFIX*share` WHERE `item_type` = ? and `item_target` = ?';
+			$statement = 'SELECT * FROM `*PREFIX*share` WHERE `item_type` = ? and `item_' . $originType . '` = ?';
 		}
 
 		$query = \OCP\DB::prepare($statement);
-		$result = $query->execute(array($itemType, $itemTarget));
+		$result = $query->execute(array($itemType, $itemOrigin));
 
 		$shares = $result->fetchAll();
 
@@ -819,17 +821,18 @@ class Share extends \OC\Share\Constants {
 	 * @param string $itemType
 	 * @param string $itemSource
 	 * @param int $shareType SHARE_TYPE_USER, SHARE_TYPE_GROUP, or SHARE_TYPE_LINK
+	 * @param string $recipient with whom was the file shared
 	 * @param boolean $status
 	 */
-	public static function setSendMailStatus($itemType, $itemSource, $shareType, $status) {
+	public static function setSendMailStatus($itemType, $itemSource, $shareType, $recipient, $status) {
 		$status = $status ? 1 : 0;
 
 		$query = \OC_DB::prepare(
 				'UPDATE `*PREFIX*share`
 					SET `mail_send` = ?
-					WHERE `item_type` = ? AND `item_source` = ? AND `share_type` = ?');
+					WHERE `item_type` = ? AND `item_source` = ? AND `share_type` = ? AND `share_with` = ?');
 
-		$result = $query->execute(array($status, $itemType, $itemSource, $shareType));
+		$result = $query->execute(array($status, $itemType, $itemSource, $shareType, $recipient));
 
 		if($result === false) {
 			\OC_Log::write('OCP\Share', 'Couldn\'t set send mail status', \OC_Log::ERROR);
@@ -925,7 +928,7 @@ class Share extends \OC\Share\Constants {
 	}
 
 	/**
-	 * validate expire date if it meets all constraints
+	 * validate expiration date if it meets all constraints
 	 *
 	 * @param string $expireDate well formate date string, e.g. "DD-MM-YYYY"
 	 * @param string $shareTime timestamp when the file was shared
@@ -955,16 +958,16 @@ class Share extends \OC\Share\Constants {
 			$maxDays = \OCP\Config::getAppValue('core', 'shareapi_expire_after_n_days', '7');
 			$maxDate->add(new \DateInterval('P' . $maxDays . 'D'));
 			if ($date > $maxDate) {
-				$warning = 'Can not set expire date. Shares can not expire later then ' . $maxDays . ' after they where shared';
-				$warning_t = $l->t('Can not set expire date. Shares can not expire later then %s after they where shared', array($maxDays));
+				$warning = 'Cannot set expiration date. Shares cannot expire later than ' . $maxDays . ' after they have been shared';
+				$warning_t = $l->t('Cannot set expiration date. Shares cannot expire later than %s after they have been shared', array($maxDays));
 				\OCP\Util::writeLog('OCP\Share', $warning, \OCP\Util::WARN);
 				throw new \Exception($warning_t);
 			}
 		}
 
 		if ($date < $today) {
-			$message = 'Can not set expire date. Expire date is in the past';
-			$message_t = $l->t('Can not set expire date. Expire date is in the past');
+			$message = 'Cannot set expiration date. Expiration date is in the past';
+			$message_t = $l->t('Cannot set expiration date. Expiration date is in the past');
 			\OCP\Util::writeLog('OCP\Share', $message, \OCP\Util::WARN);
 			throw new \Exception($message_t);
 		}
@@ -1017,10 +1020,10 @@ class Share extends \OC\Share\Constants {
 
 		$result = false;
 
-		// only use default expire date for link shares
+		// only use default expiration date for link shares
 		if ((int) $item['share_type'] === self::SHARE_TYPE_LINK) {
 
-			// calculate expire date
+			// calculate expiration date
 			if (!empty($item['expiration'])) {
 				$userDefinedExpire = new \DateTime($item['expiration']);
 				$expires = $userDefinedExpire->getTimestamp();
@@ -1029,7 +1032,7 @@ class Share extends \OC\Share\Constants {
 			}
 
 
-			// get default expire settings
+			// get default expiration settings
 			$defaultSettings = Helper::getDefaultExpireSetting();
 			$expires = Helper::calculateExpireDate($defaultSettings, $item['stime'], $expires);
 
@@ -1113,7 +1116,7 @@ class Share extends \OC\Share\Constants {
 	 *
 	 * Resharing is allowed by default if not configured
 	 */
-	private static function isResharingAllowed() {
+	public static function isResharingAllowed() {
 		if (!isset(self::$isResharingAllowed)) {
 			if (\OC_Appconfig::getValue('core', 'shareapi_allow_resharing', 'yes') == 'yes') {
 				self::$isResharingAllowed = true;
@@ -1387,7 +1390,8 @@ class Share extends \OC\Share\Constants {
 					}
 					if ($mounts[$row['storage']]) {
 						$path = $mounts[$row['storage']]->getMountPoint().$row['path'];
-						$row['path'] = substr($path, $root);
+						$relPath = substr($path, $root); // path relative to data/user
+						$row['path'] = rtrim($relPath, '/');
 					}
 				}
 			}
@@ -1397,7 +1401,7 @@ class Share extends \OC\Share\Constants {
 				}
 			}
 			// Check if resharing is allowed, if not remove share permission
-			if (isset($row['permissions']) && !self::isResharingAllowed()) {
+			if (isset($row['permissions']) && (!self::isResharingAllowed() | \OC_Util::isSharingDisabledForUser())) {
 				$row['permissions'] &= ~\OCP\PERMISSION_SHARE;
 			}
 			// Add display names to result

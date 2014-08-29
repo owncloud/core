@@ -11,15 +11,15 @@
 # Josef Moravec <josef.moravec@gmail.com>, 2014
 # Lenka <mrs.jenkins.oh.yeah@gmail.com>, 2013
 # MICHAL D. <black23@gmail.com>, 2014
-# Petr Šťastný <petr@stastny.eu>, 2013
+# Petr Šťastný <petr@stastny.eu>, 2013-2014
 # Tomáš Chvátal <tomas.chvatal@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-07-17 01:54-0400\n"
-"PO-Revision-Date: 2014-07-16 18:21+0000\n"
-"Last-Translator: Jaroslav Lichtblau <jaroslav@lichtblau.cz>\n"
+"POT-Creation-Date: 2014-08-28 01:54-0400\n"
+"PO-Revision-Date: 2014-08-28 05:02+0000\n"
+"Last-Translator: Petr Šťastný <petr@stastny.eu>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/owncloud/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -64,12 +64,12 @@ msgid ""
 "allowed."
 msgstr "Neplatný název, znaky '\\', '/', '<', '>', ':', '\"', '|', '?' a '*' nejsou povoleny."
 
-#: ajax/newfile.php:76 ajax/newfolder.php:35 ajax/upload.php:159
-#: lib/app.php:77
+#: ajax/newfile.php:76 ajax/newfolder.php:35 ajax/upload.php:161
+#: lib/app.php:87
 msgid "The target folder has been moved or deleted."
 msgstr "Cílová složka byla přesunuta nebo smazána."
 
-#: ajax/newfile.php:88 ajax/newfolder.php:47 lib/app.php:86
+#: ajax/newfile.php:88 ajax/newfolder.php:47 lib/app.php:96
 #, php-format
 msgid ""
 "The name %s is already used in the folder %s. Please choose a different "
@@ -85,12 +85,17 @@ msgid ""
 "Server is not allowed to open URLs, please check the server configuration"
 msgstr "Server není oprávněn otevírat adresy URL. Ověřte, prosím, konfiguraci serveru."
 
-#: ajax/newfile.php:118
+#: ajax/newfile.php:126
+#, php-format
+msgid "The file exceeds your quota by %s"
+msgstr "Soubor překračuje povolenou kvótu o %s"
+
+#: ajax/newfile.php:141
 #, php-format
 msgid "Error while downloading %s to %s"
 msgstr "Chyba při stahování %s do %s"
 
-#: ajax/newfile.php:146
+#: ajax/newfile.php:169
 msgid "Error when creating the file"
 msgstr "Chyba při vytváření souboru"
 
@@ -102,62 +107,62 @@ msgstr "Název složky nemůže být prázdný."
 msgid "Error when creating the folder"
 msgstr "Chyba při vytváření složky"
 
-#: ajax/upload.php:19 ajax/upload.php:57
+#: ajax/upload.php:19 ajax/upload.php:59
 msgid "Unable to set upload directory."
 msgstr "Nelze nastavit adresář pro nahrané soubory."
 
-#: ajax/upload.php:33
+#: ajax/upload.php:35
 msgid "Invalid Token"
 msgstr "Neplatný token"
 
-#: ajax/upload.php:77
+#: ajax/upload.php:79
 msgid "No file was uploaded. Unknown error"
 msgstr "Žádný soubor nebyl odeslán. Neznámá chyba"
 
-#: ajax/upload.php:84
+#: ajax/upload.php:86
 msgid "There is no error, the file uploaded with success"
 msgstr "Soubor byl odeslán úspěšně"
 
-#: ajax/upload.php:85
+#: ajax/upload.php:87
 msgid ""
 "The uploaded file exceeds the upload_max_filesize directive in php.ini: "
 msgstr "Odesílaný soubor přesahuje velikost upload_max_filesize povolenou v php.ini:"
 
-#: ajax/upload.php:87
+#: ajax/upload.php:89
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form"
 msgstr "Odeslaný soubor přesáhl svou velikostí parametr MAX_FILE_SIZE specifikovaný ve formuláři HTML"
 
-#: ajax/upload.php:88
+#: ajax/upload.php:90
 msgid "The uploaded file was only partially uploaded"
 msgstr "Soubor byl odeslán pouze částečně"
 
-#: ajax/upload.php:89
+#: ajax/upload.php:91
 msgid "No file was uploaded"
 msgstr "Žádný soubor nebyl odeslán"
 
-#: ajax/upload.php:90
+#: ajax/upload.php:92
 msgid "Missing a temporary folder"
 msgstr "Chybí adresář pro dočasné soubory"
 
-#: ajax/upload.php:91
+#: ajax/upload.php:93
 msgid "Failed to write to disk"
 msgstr "Zápis na disk selhal"
 
-#: ajax/upload.php:111
+#: ajax/upload.php:113
 msgid "Not enough storage available"
 msgstr "Nedostatek dostupného úložného prostoru"
 
-#: ajax/upload.php:173
+#: ajax/upload.php:175
 msgid "Upload failed. Could not find uploaded file"
 msgstr "Nahrávání selhalo. Nepodařilo se nalézt nahraný soubor."
 
-#: ajax/upload.php:183
+#: ajax/upload.php:185
 msgid "Upload failed. Could not get file info."
 msgstr "Nahrávání selhalo. Nepodařilo se získat informace o souboru."
 
-#: ajax/upload.php:198
+#: ajax/upload.php:200
 msgid "Invalid directory."
 msgstr "Neplatný adresář"
 
@@ -169,49 +174,49 @@ msgstr "Soubory"
 msgid "All files"
 msgstr "Všechny soubory"
 
-#: js/file-upload.js:268
+#: js/file-upload.js:269
 msgid "Unable to upload {filename} as it is a directory or has 0 bytes"
 msgstr "Nelze nahrát soubor {filename}, protože je to buď adresář nebo má velikost 0 bytů"
 
-#: js/file-upload.js:281
+#: js/file-upload.js:284
 msgid "Total file size {size1} exceeds upload limit {size2}"
 msgstr "Celková velikost souboru {size1} překračuje povolenou velikost pro nahrávání {size2}"
 
-#: js/file-upload.js:292
+#: js/file-upload.js:295
 msgid ""
 "Not enough free space, you are uploading {size1} but only {size2} is left"
 msgstr "Není dostatek místa pro uložení, velikost souboru je {size1}, zbývá pouze {size2}"
 
-#: js/file-upload.js:369
+#: js/file-upload.js:372
 msgid "Upload cancelled."
 msgstr "Odesílání zrušeno."
 
-#: js/file-upload.js:415
+#: js/file-upload.js:418
 msgid "Could not get result from server."
 msgstr "Nepodařilo se získat výsledek ze serveru."
 
-#: js/file-upload.js:499
+#: js/file-upload.js:502
 msgid ""
 "File upload is in progress. Leaving the page now will cancel the upload."
 msgstr "Probíhá odesílání souboru. Opuštění stránky způsobí zrušení nahrávání."
 
-#: js/file-upload.js:564
+#: js/file-upload.js:567
 msgid "URL cannot be empty"
 msgstr "URL nemůže zůstat prázdná"
 
-#: js/file-upload.js:568 js/filelist.js:1259
+#: js/file-upload.js:571 js/filelist.js:1290
 msgid "{new_name} already exists"
 msgstr "{new_name} již existuje"
 
-#: js/file-upload.js:623
+#: js/file-upload.js:626
 msgid "Could not create file"
 msgstr "Nepodařilo se vytvořit soubor"
 
-#: js/file-upload.js:639
+#: js/file-upload.js:642
 msgid "Could not create folder"
 msgstr "Nepodařilo se vytvořit složku"
 
-#: js/file-upload.js:686
+#: js/file-upload.js:689
 msgid "Error fetching URL"
 msgstr "Chyba při načítání URL"
 
@@ -239,63 +244,57 @@ msgstr "Trvale odstranit"
 msgid "Rename"
 msgstr "Přejmenovat"
 
-#: js/filelist.js:341
-msgid ""
-"Your download is being prepared. This might take some time if the files are "
-"big."
-msgstr "Vaše soubory ke stažení se připravují. Pokud jsou velké, může to chvíli trvat."
-
-#: js/filelist.js:675 js/filelist.js:1783
+#: js/filelist.js:685 js/filelist.js:1818
 msgid "Pending"
 msgstr "Nevyřízené"
 
-#: js/filelist.js:1210
+#: js/filelist.js:1241
 msgid "Error moving file."
 msgstr "Chyba při přesunu souboru."
 
-#: js/filelist.js:1218
+#: js/filelist.js:1249
 msgid "Error moving file"
 msgstr "Chyba při přesunu souboru"
 
-#: js/filelist.js:1218
+#: js/filelist.js:1249
 msgid "Error"
 msgstr "Chyba"
 
-#: js/filelist.js:1307
+#: js/filelist.js:1338
 msgid "Could not rename file"
 msgstr "Nepodařilo se přejmenovat soubor"
 
-#: js/filelist.js:1425
+#: js/filelist.js:1460
 msgid "Error deleting file."
 msgstr "Chyba při mazání souboru."
 
-#: js/filelist.js:1528 templates/list.php:61
+#: js/filelist.js:1563 templates/list.php:61
 msgid "Name"
 msgstr "Název"
 
-#: js/filelist.js:1529 templates/list.php:72
+#: js/filelist.js:1564 templates/list.php:72
 msgid "Size"
 msgstr "Velikost"
 
-#: js/filelist.js:1530 templates/list.php:75
+#: js/filelist.js:1565 templates/list.php:75
 msgid "Modified"
 msgstr "Upraveno"
 
-#: js/filelist.js:1540 js/filesummary.js:141 js/filesummary.js:168
+#: js/filelist.js:1575 js/filesummary.js:141 js/filesummary.js:168
 msgid "%n folder"
 msgid_plural "%n folders"
 msgstr[0] "%n složka"
 msgstr[1] "%n složky"
 msgstr[2] "%n složek"
 
-#: js/filelist.js:1546 js/filesummary.js:142 js/filesummary.js:169
+#: js/filelist.js:1581 js/filesummary.js:142 js/filesummary.js:169
 msgid "%n file"
 msgid_plural "%n files"
 msgstr[0] "%n soubor"
 msgstr[1] "%n soubory"
 msgstr[2] "%n souborů"
 
-#: js/filelist.js:1676 js/filelist.js:1715
+#: js/filelist.js:1711 js/filelist.js:1750
 msgid "Uploading %n file"
 msgid_plural "Uploading %n files"
 msgstr[0] "Nahrávám %n soubor"
@@ -337,7 +336,12 @@ msgstr "Šifrování bylo vypnuto, vaše soubory jsou však stále zašifrované
 msgid "{dirs} and {files}"
 msgstr "{dirs} a {files}"
 
-#: lib/app.php:103
+#: lib/app.php:80
+#, php-format
+msgid "%s could not be renamed as it has been deleted"
+msgstr "%s nelze přejmenovat, protože byl smazán"
+
+#: lib/app.php:113
 #, php-format
 msgid "%s could not be renamed"
 msgstr "%s nemůže být přejmenován"
@@ -372,7 +376,7 @@ msgstr "WebDAV"
 msgid ""
 "Use this address to <a href=\"%s\" target=\"_blank\">access your Files via "
 "WebDAV</a>"
-msgstr "Použijte <a href=\"%s\" target=\"_blank\">tuto adresu pro přístup k vašim souborům přes WebDAV</a>"
+msgstr "Použijte tuto adresu pro <a href=\"%s\" target=\"_blank\">přístup k vašim souborům přes WebDAV</a>"
 
 #: templates/list.php:5
 msgid "New"
