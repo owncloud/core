@@ -1150,15 +1150,6 @@ class OC_Util {
 	}
 
 	/**
-	 * Check if the connection to the internet is disabled on purpose
-	 *
-	 * @return string
-	 */
-	public static function isInternetConnectionEnabled() {
-		return \OC_Config::getValue("has_internet_connection", true);
-	}
-
-	/**
 	 * clear all levels of output buffering
 	 *
 	 * @return void
