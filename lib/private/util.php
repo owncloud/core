@@ -1150,39 +1150,6 @@ class OC_Util {
 	}
 
 	/**
-	 * Check if the ownCloud server can connect to the internet
-	 *
-	 * @return bool
-	 */
-	public static function isInternetConnectionWorking() {
-		// in case there is no internet connection on purpose return false
-		if (self::isInternetConnectionEnabled() === false) {
-			return false;
-		}
-
-		// in case the connection is via proxy return true to avoid connecting to owncloud.org
-		if (OC_Config::getValue('proxy', '') != '') {
-			return true;
-		}
-
-		// try to connect to owncloud.org to see if http connections to the internet are possible.
-		$connected = @fsockopen("www.owncloud.org", 80);
-		if ($connected) {
-			fclose($connected);
-			return true;
-		} else {
-			// second try in case one server is down
-			$connected = @fsockopen("apps.owncloud.com", 80);
-			if ($connected) {
-				fclose($connected);
-				return true;
-			} else {
-				return false;
-			}
-		}
-	}
-
-	/**
 	 * Check if the connection to the internet is disabled on purpose
 	 *
 	 * @return string

@@ -180,23 +180,9 @@ if (!$_['isLocaleWorking']) {
 	</span>
 
 </div>
+
 <?php
 }
-
-// is internet connection working ?
-if (!$_['internetconnectionworking']) {
-	?>
-	<div class="section">
-		<h2><?php p($l->t('Internet connection not working'));?></h2>
-
-		<span class="connectionwarning">
-		<?php p($l->t('This server has no working internet connection. This means that some of the features like mounting of external storage, notifications about updates or installation of 3rd party apps don´t work. Accessing files from remote and sending of notification emails might also not work. We suggest to enable internet connection for this server if you want to have all features.')); ?>
-	</span>
-
-	</div>
-<?php
-}
-
 if ($_['suggestedOverwriteWebroot']) {
 	?>
 	<div class="section">
