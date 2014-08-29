@@ -114,16 +114,6 @@ class OC_Util {
 				return $storage;
 			});
 
-			// copy skeleton for local storage only
-			if ( ! isset( $objectStore ) ) {
-				$userRoot = OC_User::getHome($user);
-				$userDirectory = $userRoot . '/files';
-				if( !is_dir( $userDirectory )) {
-					mkdir( $userDirectory, 0755, true );
-					OC_Hook::emit('OC_Filesystem', 'createHome', array('user' => $user));
-				}
-			}
-
 			$userDir = '/'.$user.'/files';
 
 			//jail the user into his "home" directory
@@ -131,6 +121,9 @@ class OC_Util {
 
 			$fileOperationProxy = new OC_FileProxy_FileOperations();
 			OC_FileProxy::register($fileOperationProxy);
+
+			//trigger creation of user home and /files folder, fires hooks
+			\OC::$server->getUserFolder();
 
 			OC_Hook::emit('OC_Filesystem', 'setup', array('user' => $user, 'user_dir' => $userDir));
 		}

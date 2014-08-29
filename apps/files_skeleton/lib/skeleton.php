@@ -20,23 +20,94 @@
 
 namespace OCA\Files_Skeleton;
 
+use OC\Files\Cache\Scanner;
+use OC\Files\Filesystem;
+use OCA\Encryption\Session;
+use OCP\App;
+use OCP\Config;
+use OCP\Files\Folder;
+use OCP\Util;
+
 class Skeleton {
 
-	public static function copySkeleton($params) {
-		$user = \OC::$server->getUserManager()->get($params['user']);
-		if ($user) {
-			$skeletonDirectory = \OCP\Config::getSystemValue('skeletondirectory', \OC::$SERVERROOT . '/core/skeleton');
-			$userDirectory = $user->getHome() . '/files';
+	/*
+	 * @var boolean $copySkeleton flag indicating if the skeleton needs to be copied
+	 */
+	private static $copySkeleton = false;
 
-			if (!empty($skeletonDirectory)) {
-				\OCP\Util::writeLog(
+	/**
+	 * copies the skeleton to the users /files
+	 *
+	 * @param array $params
+	 */
+	public static function copySkeleton($params) {
+		if (isset($params['user'])) {
+			// we were called by the createUserFiles hook
+			$user = $params['user'];
+		} else if (isset($params['uid']) && self::$copySkeleton) {
+			// we were called by the post_login hook
+			$user = $params['uid'];
+
+			// check that the encryption has been fully initialized
+			if (App::isEnabled('files_encryption')
+				&& \OC::$session->get('encryptionInitialized') !== Session::INIT_SUCCESSFUL
+			) {
+				Util::writeLog(
 					'files_skeleton',
-					'copying skeleton for '.$user->getDisplayName().' ('.$user->getUID().') from '.$skeletonDirectory.' to '.$userDirectory,
-					\OCP\Util::DEBUG
+					'files_skeleton has received the post_login hook before files_encryption has been initialized. '.
+					'This race condition might be avoided by increasing the inode number of the files_skeleton app '.
+					'folder above the inode number of the files_encryption app, eg. by copying, deleting and renaming '.
+					'the copy of the files_skeleton app folder.',
+					Util::ERROR
 				);
-				\OC_Util::copyr($skeletonDirectory, $userDirectory);
+				return;
+			}
+		} else {
+			return;
+		}
+		$userDirectory = \OC::$server->getUserFolder();
+		$skeletonDirectory = Config::getSystemValue('skeletondirectory', \OC::$SERVERROOT . '/core/skeleton');
+
+		if (!empty($skeletonDirectory)) {
+			Util::writeLog(
+				'files_skeleton',
+				'copying skeleton for '.$user.' from '.$skeletonDirectory.' to '.$userDirectory->getFullPath('/'),
+				Util::DEBUG
+			);
+			self::copyr($skeletonDirectory, $userDirectory);
+			// update the file cache
+			$userDirectory->getStorage()->getScanner()->scan('', Scanner::SCAN_RECURSIVE);
+		}
+	}
+
+	/**
+	 * copies a directory recursively
+	 *
+	 * @param string $source
+	 * @param Folder $target
+	 * @return void
+	 */
+	public static function copyr($source, Folder $target) {
+		$dir = opendir($source);
+		while (false !== ($file = readdir($dir))) {
+			if (!Filesystem::isIgnoredDir($file)) {
+				if (is_dir($source . '/' . $file)) {
+					$child = $target->newFolder($file);
+					self::copyr($source . '/' . $file, $child);
+				} else {
+					$child = $target->newFile($file);
+					stream_copy_to_stream(fopen($source . '/' . $file,'r'), $child->fopen('w'));
+				}
 			}
 		}
+		closedir($dir);
+	}
+
+	/*
+	 * called by the OC_Filesystem createUserFiles Hook
+	 */
+	public static function setCopySkeletonFlag() {
+		self::$copySkeleton = true;
 	}
 
 }

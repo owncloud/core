@@ -18,6 +18,18 @@
  *
  */
 
-// Filesystem setup hook
-\OCP\Util::connectHook('OC_Filesystem', 'createHome', '\OCA\Files_Skeleton\Skeleton', 'copySkeleton');
+/* FIXME copying the skeleton currently only works correctly because the
+ * files_encryption post_login hook is executed before the files_skeleton
+ * post_login hook, due to their names happening to be in this order
+ */
 
+if (\OCP\App::isEnabled('files_encryption')) {
+	// Use two hooks to allow encryption to initialize correctly before copying
+	// 1. when the files folder is created remember to copy the skeleton
+	\OCP\Util::connectHook('OC_Filesystem', 'createUserFiles', '\OCA\Files_Skeleton\Skeleton', 'setCopySkeletonFlag');
+
+	// 2. when setup is complete trigger the actual copying.
+	\OCP\Util::connectHook('OC_User', 'post_login', '\OCA\Files_Skeleton\Skeleton', 'copySkeleton');
+} else {
+	\OCP\Util::connectHook('OC_Filesystem', 'createUserFiles', '\OCA\Files_Skeleton\Skeleton', 'copySkeleton');
+}
