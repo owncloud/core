@@ -16,16 +16,17 @@ class InfoXMLReader {
 	 * @brief Get information about an app
 	 * @param string $filename path to info.xml file
 	 *
+	 * @throws \Exception when the file is not found or is empty
 	 * @return array with information about the app
 	 */
 	public function parseInfo($filename) {
 		if (!file_exists($filename)) {
-			return null;
+			throw new Exception('info.xml file not found: '.$filename);
 		}
 		$data = array();
 		$content = @file_get_contents($filename);
 		if (!$content) {
-			return null;
+			throw new Exception('info.xml file is empty or unreadable: '.$filename);
 		}
 		$xml = new \SimpleXMLElement($content);
 		$data['info'] = array();
