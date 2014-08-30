@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) 2013 Bart Visscher <bartv@thisnet.nl>
+ * Copyright (c) 2013,2014 Bart Visscher <bartv@thisnet.nl>
  * This file is licensed under the Affero General Public License version 3 or
  * later.
  * See the COPYING-README file.
@@ -18,7 +18,7 @@ class InfoXMLReader {
 	 *
 	 * @return array with information about the app
 	 */
-	public function getInfo($filename) {
+	public function parseInfo($filename) {
 		if (!file_exists($filename)) {
 			return null;
 		}

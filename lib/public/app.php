@@ -110,7 +110,7 @@ class App {
 	public static function getAppInfo( $app, $path=false ) {
 		if ($path) {
 			$reader = OC::$server->getAppInfoXMLReader();
-			return $reader->getInfo($app);
+			return $reader->parseInfo($app);
 		}
 		return \OC_App::getAppInfo( $app );
 	}
