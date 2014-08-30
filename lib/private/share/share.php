@@ -1077,6 +1077,15 @@ class Share extends \OC\Share\Constants {
 	}
 
 	/**
+	 * Check if a backend class has been registered for the specified item type
+	 * @param string $itemType
+	 * @return boolean True if a backend has been registered, false otherwise.
+	 */
+	public static function hasBackend($itemType) {
+		return isset(self::$backendTypes[$itemType]);
+	}
+
+	/**
 	 * Get the backend class for the specified item type
 	 * @param string $itemType
 	 * @throws \Exception
@@ -1132,7 +1141,7 @@ class Share extends \OC\Share\Constants {
 	 * @param string $itemType
 	 * @return array
 	 */
-	private static function getCollectionItemTypes($itemType) {
+	public static function getCollectionItemTypes($itemType) {
 		$collectionTypes = array($itemType);
 		foreach (self::$backendTypes as $type => $backend) {
 			if (in_array($backend['collectionOf'], $collectionTypes)) {
@@ -1140,7 +1149,7 @@ class Share extends \OC\Share\Constants {
 			}
 		}
 		// TODO Add option for collections to be collection of themselves, only 'folder' does it now...
-		if (!self::getBackend($itemType) instanceof \OCP\Share_Backend_Collection || $itemType != 'folder') {
+		if (isset(self::$backendTypes[$itemType]) && (!self::getBackend($itemType) instanceof \OCP\Share_Backend_Collection || $itemType != 'folder')) {
 			unset($collectionTypes[0]);
 		}
 		// Return array if collections were found or the item type is a
