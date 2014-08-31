@@ -60,13 +60,21 @@ $(document).ready(function(){
 function revertFile(file, revision) {
 
 	$.ajax({
-		type: 'GET',
-		url: OC.linkTo('files_versions', 'ajax/rollbackVersion.php'),
+		type: 'POST',
+		url: OC.linkToOCS('apps/files_versions/api/v1') + 'versions?format=json',
 		dataType: 'json',
-		data: {file: file, revision: revision},
+		data: {
+			action: 'revert',
+			path: file,
+	   		revision: revision
+		},
+		// FIXME: synchronous ajax calls lock up the browser
 		async: false,
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader('OCS-APIREQUEST', 'true');
+		},
 		success: function(response) {
-			if (response.status === 'error') {
+			if (response.ocs.meta.status === 'error') {
 				OC.Notification.show( t('files_version', 'Failed to revert {file} to revision {timestamp}.', {file:file, timestamp:formatDate(revision * 1000)}) );
 			} else {
 				$('#dropdown').hide('blind', function() {
@@ -116,13 +124,23 @@ function createVersionsDropdown(filename, files, fileList) {
 	function getVersions(start) {
 		$.ajax({
 			type: 'GET',
-			url: OC.filePath('files_versions', 'ajax', 'getVersions.php'),
+			url: OC.linkToOCS('apps/files_versions/api/v1') + 'versions',
 			dataType: 'json',
-			data: {source: files, start: start},
+			data: {
+				format: 'json',
+				path: files,
+				start: start,
+				count: 5
+			},
+			// FIXME: synchronous ajax calls lock up the browser
 			async: false,
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader('OCS-APIREQUEST', 'true');
+			},
 			success: function(result) {
-				var versions = result.data.versions;
-				if (result.data.endReached === true) {
+				var data = result.ocs.data;
+				var versions = data.versions;
+				if (data.endReached === true) {
 					$("#show-more-versions").css("display", "none");
 				} else {
 					$("#show-more-versions").css("display", "block");

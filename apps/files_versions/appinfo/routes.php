@@ -11,10 +11,28 @@ function() {
 	require_once __DIR__ . '/../ajax/preview.php';
 });
 
-$this->create('files_versions_ajax_getVersions', 'ajax/getVersions.php')
-	->actionInclude('files_versions/ajax/getVersions.php');
-$this->create('files_versions_ajax_rollbackVersion', 'ajax/rollbackVersion.php')
-	->actionInclude('files_versions/ajax/rollbackVersion.php');
-
 // Register with the capabilities API
-OC_API::register('get', '/cloud/capabilities', array('OCA\Files_Versions\Capabilities', 'getCapabilities'), 'files_versions', OC_API::USER_AUTH);
+OCP\API::register(
+	'get',
+	'/cloud/capabilities',
+	array('OCA\Files_Versions\Capabilities', 'getCapabilities'),
+	'files_versions',
+	OC_API::USER_AUTH
+);
+
+OCP\API::register(
+	'get',
+	'/apps/files_versions/api/v1/versions',
+	array('\OCA\Files_Versions\Api', 'getVersions'),
+	'files_versions',
+	OC_API::USER_AUTH
+);
+
+OCP\API::register(
+	'post',
+	'/apps/files_versions/api/v1/versions',
+	array('\OCA\Files_Versions\Api', 'processVersion'),
+	'files_versions',
+	OC_API::USER_AUTH
+);
+
