@@ -60,7 +60,9 @@ class Api {
 	}
 
 	/**
-	 * Returns the versions of a given file
+	 * Processes a version.
+	 * If the "action" POST paramter is set to "revert", it will revert the version
+	 * to an older revision.
 	 *
 	 * @param array $params
 	 * @return \OC_OCS_Result share information
