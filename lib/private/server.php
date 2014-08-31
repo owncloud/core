@@ -203,6 +203,9 @@ class Server extends SimpleContainer implements IServerContainer {
 		$this->registerService('Db', function ($c) {
 			return new Db();
 		});
+		$this->registerService('Mail', function ($c) {
+			return new OCMail();
+		});
 	}
 
 	/**
@@ -473,5 +476,14 @@ class Server extends SimpleContainer implements IServerContainer {
 	 */
 	function getDb() {
 		return $this->query('Db');
+	}
+
+	/**
+	 * Returns an instance of the mail facade
+	 *
+	 * @return \OCP\IMail
+	 */
+	function getMail() {
+		return $this->query('Mail');
 	}
 }
