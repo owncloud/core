@@ -16,6 +16,7 @@ exports.config = {
   // Use on Commmandline:
   // protractor ... --params.login.user=abc --params.login.password=123
   params: {
+    wait: 15000,
     baseUrl: "http://127.0.0.1/",
     login: {
       user: 'admin',
@@ -24,11 +25,27 @@ exports.config = {
   },
 
   suites: {
+    basic: [
+      'tests/login/**/*_spec.js',
+      'tests/users/**/*_spec.js',
+      'tests/files/**/*_spec.js',
+      'tests/share/**/*_spec.js',
+    ],
+    community: [
+      'tests/apps/**/*_spec.js',
+    ],
+    nightly: [
+      'tests/login/**/*_spec.js',
+      'tests/users/**/*_spec.js',
+      'tests/files/**/*_spec.js',
+      'tests/share/**/*_spec.js',
+    ],
     install: 'tests/install/**/*_spec.js',
     login:  'tests/login/**/*_spec.js',
     apps:  'tests/apps/**/*_spec.js',
     files: 'tests/files/**/*_spec.js',
     share: 'tests/share/**/*_spec.js',
+    users: 'tests/users/**/*_spec.js',
   },
 
   // seleniumAddress: 'http://0.0.0.0:4444/wd/hub',
@@ -47,6 +64,7 @@ exports.config = {
     global.isAngularSite = function(flag){
       browser.ignoreSynchronization = !flag;
     };
+
     browser.driver.manage().window().setSize(1000, 800);
     browser.driver.manage().window().maximize();
     

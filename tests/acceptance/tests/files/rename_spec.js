@@ -1,99 +1,93 @@
+/*
+ * Copyright (c) 2014
+ *
+ * This file is licensed under the Affero General Public License version 3
+ * or later.
+ *
+ * See the COPYING-README file.
+ *
+ */
+
 var Page = require('../helper/page.js')
 var LoginPage = require('../pages/login.page.js');
 var FilesPage = require('../pages/files.page.js');
 
-// =============================================== RENAME FOLDER =================================== //
-// ================================================================================================= //
+//================ FOLDERS =============================================================//
+//======================================================================================//
 
 describe('Rename Folder', function() {
   var params = browser.params;
-  var page;
   var filesPage;
   
   beforeEach(function() {
     isAngularSite(false);
-    page = new Page();
     filesPage = new FilesPage(params.baseUrl);
     filesPage.getAsUser(params.login.user, params.login.password);
   });
 
   it('should rename a folder', function() {
-    filesPage.createNewFolder('testFolder');
-    filesPage.renameFile('testFolder', 'newFolder');
-    browser.wait(function() {
-      return(filesPage.listFiles());
-    }, 3000);
-    expect(filesPage.listFiles()).toContain('newFolder');
+    filesPage.createFolder('testFolder');
+    filesPage.renameFolder('testFolder', 'newFolder').then(function() {
+      expect(filesPage.listFiles()).toContain('newFolder');
+    });
   });
 
   it('should show alert message if foldername already in use', function() {
-    filesPage.createNewFolder('testFolder');
-    filesPage.renameFile('testFolder', 'newFolder');
-    browser.wait(function() {
-      return(filesPage.listFiles());
-    }, 3000);
-    expect(filesPage.alertWarning.isDisplayed()).toBeTruthy();
+    filesPage.createFolder('testFolder');
+    filesPage.renameFolder('testFolder', 'newFolder').then(function() {
+      expect(filesPage.alertWarning.isDisplayed()).toBeTruthy();
+    });
   });
 
   it('should show alert message if using forbidden characters', function() {
-    filesPage.renameFile('newFolder', 'new:Folder');
-    browser.wait(function() {
-      return(filesPage.listFiles());
-    }, 3000);
-    expect(filesPage.alertWarning.isDisplayed()).toBeTruthy();
+    filesPage.renameFolder('newFolder', 'new:Folder').then(function() {
+      expect(filesPage.alertWarning.isDisplayed()).toBeTruthy();
+    });
   });
 
   it('should rename a file using special characters', function() {
-    filesPage.get(); // TODO: reload cause warning alerts don't disappear
-    filesPage.renameFile('testFolder', 'sP€c!@L B-)');
-    browser.wait(function() {
-      return(filesPage.listFiles());
-    }, 3000);
-    expect(filesPage.listFiles()).toContain('sP€c!@L B-)');
+    filesPage.renameFolder('testFolder', 'sP€c!@L B-)').then(function() {
+      expect(filesPage.listFiles()).toContain('sP€c!@L B-)');
+    });
   });
 
   it('should show alert message if newName is empty', function() {
-    filesPage.renameFile('newFolder', "");
-    browser.wait(function() {
-      return(filesPage.listFiles());
-    }, 3000);
-    expect(filesPage.alertWarning.isDisplayed()).toBeTruthy();
-    filesPage.deleteFile('newFolder');
-    filesPage.deleteFile('sP€c!@L B-)');
+    filesPage.renameFolder('newFolder', "").then(function() {
+      expect(filesPage.alertWarning.isDisplayed()).toBeTruthy();
+    });
+  });
+
+  it('clean up', function() {
+    filesPage.deleteFolder('newFolder');
+    filesPage.deleteFolder('sP€c!@L B-)');  
   });
 }); 
 
-// =============================================== RENAME FILES ==================================== //
-// ================================================================================================= //
+//================ FILES ===============================================================//
+//======================================================================================//
 
 describe('Rename Files', function() {
   var params = browser.params;
-  var page;
   var filesPage;
   
   beforeEach(function() {
     isAngularSite(false);
-    page = new Page();
     filesPage = new FilesPage(params.baseUrl);
     filesPage.getAsUser(params.login.user, params.login.password);
   });
 
   it('should rename a txt file', function() {
-    filesPage.createNewTxtFile('testText');
-    filesPage.renameFile('testText.txt', 'newText.txt');
-    browser.wait(function() {
-      return(filesPage.listFiles());
-    }, 3000);
-    expect(filesPage.listFiles()).toContain('newText');
+    filesPage.createTxtFile('testText');
+    filesPage.renameFile('testText.txt', 'newText.txt').then(function() {
+      expect(filesPage.listFiles()).toContain('newText');
+    });
   });
 
   it('should show alert message if filename is already in use', function() {
-    filesPage.createNewTxtFile('testText');
-    filesPage.renameFile('testText.txt', 'newText.txt');
-    browser.wait(function() {
-      return(filesPage.listFiles());
-    }, 3000);
-    expect(filesPage.alertWarning.isDisplayed()).toBeTruthy();
+    filesPage.createTxtFile('testText');
+    filesPage.renameFile('testText.txt', 'newText.txt').then(function() {
+      expect(filesPage.alertWarning.isDisplayed()).toBeTruthy();
+    });
   });
 
   // it('should rename a file with the same name but changed capitalization', function() {
@@ -112,28 +106,24 @@ describe('Rename Files', function() {
   // });
 
   it('should rename a file using special characters', function() {
-    filesPage.renameFile('newText.txt', 'sP€c!@L B-).txt');
-    browser.wait(function() {
-      return(filesPage.listFiles());
-    }, 3000);
-    expect(filesPage.listFiles()).toContain('sP€c!@L B-)');
+    filesPage.renameFile('newText.txt', 'sP€c!@L B-).txt').then(function() {
+      expect(filesPage.listFiles()).toContain('sP€c!@L B-)');
+    })
   });
 
   it('should show alert message if newName is empty', function() {
-    filesPage.get(); // TODO: reload cause warning alerts don't disappear
-    filesPage.renameFile('sP€c!@L B-).txt', '');
-    browser.wait(function() {
-      return(filesPage.listFiles());
-    }, 3000);
-    expect(filesPage.alertWarning.isDisplayed()).toBeTruthy();
+    filesPage.renameFile('sP€c!@L B-).txt', '').then(function() {
+      expect(filesPage.alertWarning.isDisplayed()).toBeTruthy();
+    });
   });
 
   it('should rename a file by taking off the file extension', function() {
-    filesPage.renameFile('testText.txt', 'Without Subfix');
-    browser.wait(function() {
-      return(filesPage.listFiles());
-    }, 3000);
-    expect(filesPage.listFiles()).toContain('Without Subfix');
+    filesPage.renameFile('testText.txt', 'Without Subfix').then(function() {
+      expect(filesPage.listFiles()).toContain('Without Subfix');
+    });
+  });
+  
+  it('clean up', function() {
     filesPage.deleteFile('Without Subfix');
     filesPage.deleteFile('sP€c!@L B-).txt');
   });

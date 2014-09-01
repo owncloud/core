@@ -36,6 +36,8 @@ protractor protractor_conf.js --params.baseUrl="http://127.0.0.1/ownClouds/test-
 protractor protractor_conf.js --params.baseUrl="http://127.0.0.1/ownClouds/test-community-7.0.1/" --specs tests/login/newUser_spec.js
 ```
 
+Please ensure to have a "/" at then end of the baseUrl.
+
 More Test Suites
 ----------------
 

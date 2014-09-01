@@ -1,3 +1,13 @@
+/*
+ * Copyright (c) 2014
+ *
+ * This file is licensed under the Affero General Public License version 3
+ * or later.
+ *
+ * See the COPYING-README file.
+ *
+ */
+
 var InstallPage = require('../pages/install.page.js');
 var Screenshot = require('../helper/screenshot.js');
 
