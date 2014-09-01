@@ -81,3 +81,10 @@ OC_API::register(
 	'core',
 	OC_API::USER_AUTH
 );
+OC_API::register(
+        'get',
+        '/thumbnail',
+	array('OC_OCS_Thumbnail', 'getThumbnail'),
+	'core',
+	OC_API::USER_AUTH
+);
