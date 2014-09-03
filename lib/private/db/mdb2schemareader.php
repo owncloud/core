@@ -8,6 +8,8 @@
 
 namespace OC\DB;
 
+use ZendXml\Security as XmlSecurity;
+
 class MDB2SchemaReader {
 	/**
 	 * @var string $DBNAME
@@ -41,9 +43,7 @@ class MDB2SchemaReader {
 	 */
 	public function loadSchemaFromFile($file) {
 		$schema = new \Doctrine\DBAL\Schema\Schema();
-		$loadEntities = libxml_disable_entity_loader(false);
-		$xml = simplexml_load_file($file);
-		libxml_disable_entity_loader($loadEntities);
+		$xml = XmlSecurity::scan($file);
 		foreach ($xml->children() as $child) {
 			/**
 			 * @var \SimpleXMLElement $child

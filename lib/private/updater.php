@@ -9,6 +9,7 @@
 namespace OC;
 
 use OC\Hooks\BasicEmitter;
+use ZendXml\Security as XmlSecurity;
 
 /**
  * Class that handles autoupdating of ownCloud
@@ -102,9 +103,7 @@ class Updater extends BasicEmitter {
 		if ($xml == false) {
 			return array();
 		}
-		$loadEntities = libxml_disable_entity_loader(true);
-		$data = @simplexml_load_string($xml);
-		libxml_disable_entity_loader($loadEntities);
+		$data = @XmlSecurity::scan($xml);
 
 		$tmp = array();
 		$tmp['version'] = $data->version;
