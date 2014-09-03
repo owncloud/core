@@ -1,3 +1,4 @@
+<!--[]-->
 <!DOCTYPE html>
 <!--[if lt IE 7]><html class="ng-csp ie ie6 lte9 lte8 lte7" data-placeholder-focus="false"><![endif]-->
 <!--[if IE 7]><html class="ng-csp ie ie7 lte9 lte8 lte7" data-placeholder-focus="false"><![endif]-->
@@ -7,6 +8,9 @@
 <!--[if !IE]><!--><html class="ng-csp" data-placeholder-focus="false"><!--<![endif]-->
 
 	<head data-user="<?php p($_['user_uid']); ?>" data-requesttoken="<?php p($_['requesttoken']); ?>">
+	<!--[if !HTML5]>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<![endif]-->
 		<title>
 			<?php
 				p(!empty($_['application'])?$_['application'].' - ':'');
