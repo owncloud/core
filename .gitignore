@@ -1,6 +1,7 @@
 # the default generated dir + db file
 /data
 /apps/inc.php
+/config/config.php
 
 # ignore all apps except core ones
 /apps*/*
@@ -91,6 +92,8 @@ nbproject
 # sublime
 *.sublime*
 sftp-config.json
+# apache
+.htaccess
 
 
 # Tests - auto-generated files
@@ -101,3 +104,4 @@ sftp-config.json
 /tests/autotest*
 /tests/data/lorem-copy.txt
 /tests/data/testimage-copy.png
+config/config.php

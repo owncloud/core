@@ -53,7 +53,10 @@ try {
 	// // $share = \OC\Share\Share::getItemSharedWithUser('file','9','quisa137');
 	// $share = Helper::generateTarget('file', $itemSource, self::SHARE_TYPE_USER, 'quisa137','owncloud', $suggestedItemTarget, $parent);
 	// print_r($share);
+	echo OC_Util::encryptText('oc_owncloud').'<br>';
+    echo OC_Util::encryptText('089204a40c9bdd8c2274e8864390d5').'<br>';
 } catch (Exception $ex) {
+	print_r($ex);
 	\OCP\Util::logException('index', $ex);
 
 	//show the user a detailed error page
