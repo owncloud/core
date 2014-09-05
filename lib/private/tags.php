@@ -35,8 +35,6 @@
 
 namespace OC;
 
-use OC\Tags\Backend\Database;
-
 class Tags implements \OCP\ITags {
 
 	/**
