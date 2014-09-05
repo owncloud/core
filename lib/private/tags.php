@@ -184,7 +184,7 @@ class Tags implements \OCP\ITags {
 			\OCP\Util::writeLog('core', __METHOD__.', Cannot add an empty tag', \OCP\Util::DEBUG);
 			return false;
 		}
-		if($this->hasTag($name)) {
+		if($this->backends['local']->getTagId($name) !== false) {
 			\OCP\Util::writeLog('core', __METHOD__.', name: ' . $name. ' exists already', \OCP\Util::DEBUG);
 			return false;
 		}
