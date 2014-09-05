@@ -143,9 +143,12 @@ class Tags implements \OCP\ITags {
 	* @return array An array of object ids or false on error.
 	*/
 	public function getIdsForTag($tag) {
-		foreach ($this->backends as $backend)
-			if (($id = $backend->getTagId($tag)) !== false)
-				break;
+		if (is_numeric($tag))
+			$id = $tag;
+		else
+			foreach ($this->backends as $backend)
+				if (($id = $backend->getTagId($tag)) !== false)
+					break;
 
 		$ids = array();
 		foreach ($this->backends as $backend)
