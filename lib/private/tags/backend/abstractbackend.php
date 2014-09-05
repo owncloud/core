@@ -192,6 +192,6 @@ abstract class AbstractBackend {
 		if(!is_array($haystack)) {
 			return false;
 		}
-		return array_search(strtolower($needle), array_map('strtolower', $haystack));
+		return array_search(strtolower($needle), array_map(function($tag) { return strtolower($tag->name); }, $haystack));
 	}
 }

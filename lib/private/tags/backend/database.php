@@ -24,6 +24,28 @@
 
 namespace OC\Tags\Backend;
 
+class Tag {
+	public $id;
+	public $name;
+	public $owner;
+
+	/**
+	* Constructor.
+	*
+	*/
+	public function __construct($id, $name, $owner) {
+		$this->id = $id;
+		$this->name = $name;
+		$this->owner = $owner;
+	}
+
+	public function getDisplayName() {
+		if ($this->owner != \OCP\User::getUser())
+			return $this->name . ' ('. $this->owner . ')';
+		return $this->name;
+	}
+}
+
 class Database extends AbstractBackend {
 
 	/**
@@ -65,7 +87,7 @@ class Database extends AbstractBackend {
 
 		if(!is_null($result)) {
 			while( $row = $result->fetchRow()) {
-				$this->tags[$row['id']] = $row['category'];
+				$this->tags[$row['id']] = new Tag($row['id'], $row['category'], $user);
 			}
 		}
 
@@ -177,7 +199,7 @@ class Database extends AbstractBackend {
 	*
 	* @param string $from The id of the existing tag
 	* @param string $to The new name of the tag.
-	* @return bool
+	* @return Tag|bool The renamed Tag object, or false on error.
 	*/
 	public function rename($id, $to) {
 		$sql = 'UPDATE `' . self::TAG_TABLE . '` SET `category` = ? '
@@ -194,8 +216,8 @@ class Database extends AbstractBackend {
 				\OCP\Util::ERROR);
 			return false;
 		}
-		$this->tags[$id] = $to;
-		return true;
+		$this->tags[$id]->name = $to;
+		return $this->tags[$id];
 	}
 
 	/**

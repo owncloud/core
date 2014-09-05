@@ -103,10 +103,10 @@ class Tags implements \OCP\ITags {
 	/**
 	* Get the tags for a specific user.
 	*
-	* This returns an array with id/name maps:
+	* This returns an array with id/name/owner maps:
 	* [
-	* 	['id' => 0, 'name' = 'First tag'],
-	* 	['id' => 1, 'name' = 'Second tag'],
+	* 	['id' => 0, 'name' = 'First tag', 'owner' = 'Tags owner'],
+	* 	['id' => 1, 'name' = 'Second tag', 'owner' = 'Tags owner'],
 	* ]
 	*
 	* @return array
@@ -119,19 +119,15 @@ class Tags implements \OCP\ITags {
 		if(!count($tags))
 			return array();
 
-		uasort($tags, 'strnatcasecmp');
-		$tagMap = array();
+		usort($tags, function($a, $b) {
+			return strnatcasecmp($a->name, $b->name);
+		});
 
-		foreach($tags as $tagId => $tagName) {
-			if($tagName !== self::TAG_FAVORITE) {
-				$tagMap[] = array(
-					'id' => $tagId,
-					'name' => $tagName
-					);
-			}
-		}
+		$tags = array_filter($tags, function ($t) {
+			return $t->name !== self::TAG_FAVORITE;
+		});
 
-		return $tagMap;
+		return (array) $tags;
 	}
 
 	/**
