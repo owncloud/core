@@ -6,7 +6,7 @@ $CONFIG = array (
   'trusted_domains' =>
   array (
   ),
-  'datadirectory' => $OC::SERVERROOT.'data',
+  'datadirectory' => OC::$SERVERROOT.'/data',
   'dbtype' => 'mysql',
   'version' => '7.0.2.1',
   'dbname' => 'oc_owncloud',
