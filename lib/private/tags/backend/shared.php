@@ -37,13 +37,6 @@ class Shared extends Database {
 	public $name = 'shared';
 
 	/**
-	 * The shared tags' owners;
-	 *
-	 * @var string[]
-	 */
-	private $owners = array();
-
-	/**
 	* Load shared tags for a given user and type.
 	*
 	* @param string $user The user whose tags we're querying for.
@@ -70,6 +63,7 @@ class Shared extends Database {
 			}
 		}
 
+		$this->tags = array();
 		// We take a look at all shared items of the given $type (or of the collections it is part of)
 		// and find out their owners. Then, we gather the tags for the original $type from all owners,
 		// and return them as elements of a list that look like "Tag (owner)".
@@ -77,25 +71,11 @@ class Shared extends Database {
 			foreach ($maybeSharedItems as $sharedItem) {
 				if (isset($sharedItem['id'])) { //workaround for https://github.com/owncloud/core/issues/2814
 					$owner = $sharedItem['uid_owner'];
-					$this->owners[] = $owner;
-					// $displayname_owner = $sharedItem['displayname_owner'];
-					foreach (parent::loadTags($owner, $type, $defaultTags) as $id => $tag) {
-						// We might want to use some regular tag sharing backend for setting the target name.
-						$this->tags[$id] = $tag; // . ' (' . $owner . ')';
-					}
+					$this->tags += parent::loadTags($owner, $type, $defaultTags);
 				}
 			}
 		}
 
 		return $this->tags;
 	}
-
-	public function getIdsForTag($tag) {
-		$ids = array();
-		foreach ($this->owners as $owner)
-			$ids += parent::getIdsForTagAndOwner($tag, $owner);
-
-		return $ids;
-	}
-
 }
