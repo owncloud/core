@@ -120,11 +120,11 @@ class Tags implements \OCP\ITags {
 			return array();
 
 		usort($tags, function($a, $b) {
-			return strnatcasecmp($a->name, $b->name);
+			return strnatcasecmp($a->category, $b->category);
 		});
 
 		$tags = array_filter($tags, function ($t) {
-			return $t->name !== self::TAG_FAVORITE;
+			return $t->category !== self::TAG_FAVORITE;
 		});
 
 		return (array) $tags;
@@ -317,7 +317,7 @@ class Tags implements \OCP\ITags {
 
 			if(!$tagId) {
 				// Add new tag to this user's tags (i.e. using the local backend).
-				$tagId = $backendToUse->add($tag)->id;
+				$tagId = $backendToUse->add($tag)->getId();
 			}
 
 		} else {

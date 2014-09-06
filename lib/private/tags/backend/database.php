@@ -24,25 +24,29 @@
 
 namespace OC\Tags\Backend;
 
-class Tag {
-	public $id;
-	public $name;
-	public $owner;
+use \OCP\AppFramework\Db\Entity;
+
+class Tag extends Entity {
+
+	public $uid; // owner
+	public $type;
+	public $category; // tag name
 
 	/**
 	* Constructor.
 	*
 	*/
-	public function __construct($id, $name, $owner) {
-		$this->id = $id;
-		$this->name = $name;
-		$this->owner = $owner;
+
+	public function __construct($uid, $type, $category) {
+		$this->uid = $uid;
+		$this->type = $type;
+		$this->category = $category;
 	}
 
 	public function getDisplayName() {
-		if ($this->owner != \OCP\User::getUser())
-			return $this->name . ' ('. $this->owner . ')';
-		return $this->name;
+		if ($this->uid != \OCP\User::getUser())
+			return $this->category . ' ('. $this->uid . ')';
+		return $this->category;
 	}
 }
 
@@ -87,7 +91,8 @@ class Database extends AbstractBackend {
 
 		if(!is_null($result)) {
 			while( $row = $result->fetchRow()) {
-				$this->tags[$row['id']] = new Tag($row['id'], $row['category'], $user);
+				$this->tags[$row['id']] = new Tag($user, $type, $row['category']);
+				$this->tags[$row['id']]->setId($row['id']);
 			}
 		}
 
@@ -190,7 +195,8 @@ class Database extends AbstractBackend {
 		}
 		$id = \OCP\DB::insertid(self::TAG_TABLE);
 		\OCP\Util::writeLog('core', __METHOD__.', id: ' . $id, \OCP\Util::DEBUG);
-		$this->tags[$id] = new Tag($id, $name, $this->user);
+		$this->tags[$id] = new Tag($this->user, $this->type, $name);
+		$this->tags[$id]->setId($id);
 		return $this->tags[$id];
 	}
 
@@ -216,7 +222,7 @@ class Database extends AbstractBackend {
 				\OCP\Util::ERROR);
 			return false;
 		}
-		$this->tags[$id]->name = $to;
+		$this->tags[$id]->category = $to;
 		return $this->tags[$id];
 	}
 
@@ -233,7 +239,7 @@ class Database extends AbstractBackend {
 		$newones = array();
 		foreach($names as $name) {
 			if(($this->getTagId($name) == false) && $name !== '') {
-				$newones[] = new Tag(null, $name, $this->user); // No IDs until save()d in DB.
+				$newones[] = new Tag($this->user, $this->type, $name); // No IDs until save()d in DB.
 			}
 			if(!is_null($id) ) {
 				// Insert $objectid, $categoryid  pairs if not exist.
@@ -259,7 +265,7 @@ class Database extends AbstractBackend {
 						array(
 							'uid' => $this->user,
 							'type' => $this->type,
-							'category' => $tag->name,
+							'category' => $tag->category,
 						));
 				} catch(\Exception $e) {
 					\OCP\Util::writeLog('core', __METHOD__.', exception: '.$e->getMessage(),
