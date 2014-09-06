@@ -190,8 +190,8 @@ class Database extends AbstractBackend {
 		}
 		$id = \OCP\DB::insertid(self::TAG_TABLE);
 		\OCP\Util::writeLog('core', __METHOD__.', id: ' . $id, \OCP\Util::DEBUG);
-		$this->tags[$id] = $name;
-		return $id;
+		$this->tags[$id] = new Tag($id, $name, $this->user);
+		return $id; // or $this->tags[$id] ?
 	}
 
 	/**
@@ -233,7 +233,7 @@ class Database extends AbstractBackend {
 		$newones = array();
 		foreach($names as $name) {
 			if(($this->getTagId($name) == false) && $name !== '') {
-				$newones[] = $name;
+				$newones[] = new Tag(null, $name, $this->user); // No IDs until save()d in DB.
 			}
 			if(!is_null($id) ) {
 				// Insert $objectid, $categoryid  pairs if not exist.
@@ -259,7 +259,7 @@ class Database extends AbstractBackend {
 						array(
 							'uid' => $this->user,
 							'type' => $this->type,
-							'category' => $tag,
+							'category' => $tag->name,
 						));
 				} catch(\Exception $e) {
 					\OCP\Util::writeLog('core', __METHOD__.', exception: '.$e->getMessage(),
