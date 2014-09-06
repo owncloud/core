@@ -317,7 +317,7 @@ class Tags implements \OCP\ITags {
 
 			if(!$tagId) {
 				// Add new tag to this user's tags (i.e. using the local backend).
-				$tagId = $backendToUse->add($tag);
+				$tagId = $backendToUse->add($tag)->id;
 			}
 
 		} else {

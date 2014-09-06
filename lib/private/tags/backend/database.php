@@ -164,7 +164,7 @@ class Database extends AbstractBackend {
 	* Add a new tag.
 	*
 	* @param string $name A string with a name of the tag
-	* @return false|string the id of the added tag or false on error.
+	* @return false|string The newly created Tag object or false on error.
 	*/
 	public function add($name) {
 		try {
@@ -191,7 +191,7 @@ class Database extends AbstractBackend {
 		$id = \OCP\DB::insertid(self::TAG_TABLE);
 		\OCP\Util::writeLog('core', __METHOD__.', id: ' . $id, \OCP\Util::DEBUG);
 		$this->tags[$id] = new Tag($id, $name, $this->user);
-		return $id; // or $this->tags[$id] ?
+		return $this->tags[$id];
 	}
 
 	/**
