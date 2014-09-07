@@ -185,7 +185,7 @@ class Tags implements \OCP\ITags {
 			return false;
 		}
 
-		return $this->backends['local']->add($name);
+		return $this->backends['local']->add($name)->getId();
 	}
 
 	/**
@@ -205,8 +205,8 @@ class Tags implements \OCP\ITags {
 		}
 
 		foreach ($this->backends as $name => $backend)
-			if (($id = $backend->getTagId($from)) !== false)
-				return $backend->rename($id, $to);
+			if ($backend->getTagId($from) !== false)
+				return $backend->rename($from, $to);
 
 		\OCP\Util::writeLog('core', __METHOD__.', tag: ' . $from. ' does not exist', \OCP\Util::DEBUG);
 		return false;
@@ -298,6 +298,7 @@ class Tags implements \OCP\ITags {
 	* @return boolean Returns false on error.
 	*/
 	public function tagAs($objid, $tag) {
+		$tagId = $tag;
 		$backendToUse = $this->backends['local']; // Default backend
 		if(is_string($tag) && !is_numeric($tag)) {
 			$tag = trim($tag);
@@ -388,7 +389,7 @@ class Tags implements \OCP\ITags {
 					unset($name);
 				}
 			}
-			$success &= $backend->delete($tagsInBackend);
+			$success &= $backend->deleteTags($tagsInBackend);
 		}
 		return $success;
 	}
