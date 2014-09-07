@@ -24,7 +24,9 @@
 
 namespace OC\Tags\Backend;
 
-use \OCP\AppFramework\Db\Entity;
+use \OCP\IDb,
+	\OCP\AppFramework\Db\Entity,
+	\OCP\AppFramework\Db\Mapper;
 
 class Tag extends Entity {
 
@@ -37,10 +39,10 @@ class Tag extends Entity {
 	*
 	*/
 
-	public function __construct($uid, $type, $category) {
-		$this->uid = $uid;
-		$this->type = $type;
-		$this->category = $category;
+	public function __construct($uid = null, $type = null, $category = null) {
+		$this->setUid($uid);
+		$this->setType($type);
+		$this->setCategory($category);
 	}
 
 	public function getDisplayName() {
@@ -50,7 +52,7 @@ class Tag extends Entity {
 	}
 }
 
-class Database extends AbstractBackend {
+class Database extends Mapper {
 
 	/**
 	 * The name of the backend.
@@ -59,6 +61,14 @@ class Database extends AbstractBackend {
 	 */
 	public $name = 'local';
 
+
+	/**
+	 * The tags this backend holds.
+	 *
+	 * @var array
+	 */
+	protected $tags = array();
+
 	/**
 	 * Used for storing objectid/categoryname pairs while rescanning.
 	 *
@@ -66,8 +76,28 @@ class Database extends AbstractBackend {
 	 */
 	private static $relations = array();
 
-	const TAG_TABLE = '*PREFIX*vcategory';
 	const RELATION_TABLE = '*PREFIX*vcategory_to_object';
+
+
+	/**
+	* Constructor.
+	*
+	* @param string $user The user whose data the object will operate on.
+	* @param string $type
+	*/
+	public function __construct(
+		$user,
+		$type,
+		$defaultTags = array(),
+		$db = null
+	) {
+		if ($db === null)
+			$db = new \OC\AppFramework\Db\Db();
+		parent::__construct($db, 'vcategory', 'OC\Tags\Backend\Tag');
+		$this->user = $user;
+		$this->type = $type;
+		$this->loadTags($this->user, $this->type, $defaultTags);
+	}
 
 	/**
 	* Load tags from db.
@@ -75,31 +105,35 @@ class Database extends AbstractBackend {
 	*/
 	public function loadTags($user, $type, $defaultTags=array()) {
 		$this->tags = array();
-		$result = null;
-		$sql = 'SELECT `id`, `category` FROM `' . self::TAG_TABLE . '` '
+		$sql = 'SELECT `id`, `uid`, `type`, `category` FROM `' . $this->getTableName() . '` '
 			. 'WHERE `uid` = ? AND `type` = ? ORDER BY `category`';
 		try {
-			$stmt = \OCP\DB::prepare($sql);
-			$result = $stmt->execute(array($user, $type));
-			if (\OCP\DB::isError($result)) {
-				\OCP\Util::writeLog('core', __METHOD__. ', DB error: ' . \OCP\DB::getErrorMessage($result), \OCP\Util::ERROR);
-			}
+			$this->tags = $this->findEntities($sql, array($user, $type));
 		} catch(\Exception $e) {
 			\OCP\Util::writeLog('core', __METHOD__.', exception: '.$e->getMessage(),
 				\OCP\Util::ERROR);
-		}
-
-		if(!is_null($result)) {
-			while( $row = $result->fetchRow()) {
-				$this->tags[$row['id']] = new Tag($user, $type, $row['category']);
-				$this->tags[$row['id']]->setId($row['id']);
-			}
 		}
 
 		if(count($defaultTags) > 0 && count($this->tags) === 0) {
 			$this->addMultiple($defaultTags, true);
 		}
 
+		return $this->tags;
+	}
+
+	/**
+	* Check if any tags are saved for this type and user.
+	*
+	* @return boolean.
+	*/
+	public function isEmpty() {
+		return count($this->tags) === 0;
+	}
+
+	/**
+	 * Get a list of all tags stored in the backend.
+	 */
+	public function getUnsortedTags() {
 		return $this->tags;
 	}
 
@@ -126,7 +160,7 @@ class Database extends AbstractBackend {
 				\OCP\Util::writeLog('core', __METHOD__.', Cannot use empty tag names', \OCP\Util::DEBUG);
 				return false;
 			}
-			$tagId = $this->array_searchi($tag, $this->tags);
+			$tagId = $this->getTagId($tag);
 		}
 
 		if($tagId === false) {
@@ -144,8 +178,7 @@ class Database extends AbstractBackend {
 		// straight-forward solution to this problem.
 
 		try {
-			$stmt = \OCP\DB::prepare($sql);
-			$result = $stmt->execute(array($tagId));
+			$result = $this->execute($sql, array($tagId));
 			if (\OCP\DB::isError($result)) {
 				\OCP\Util::writeLog('core', __METHOD__. 'DB error: ' . \OCP\DB::getErrorMessage($result), \OCP\Util::ERROR);
 				return false;
@@ -165,6 +198,29 @@ class Database extends AbstractBackend {
 		return $ids;
 	}
 
+
+	/**
+	* Get a tag's ID.
+	*
+	* @param string $name The name to check for.
+	* @return string The tag's id or false if it hasn't been saved yet.
+	*/
+	public function getTagId($name) {
+		if (($key = $this->array_searchi($name, $this->tags)) === false)
+			return false;
+		return $this->tags[$key]->getId();
+	}
+
+	/**
+	* Checks whether a tag given by id is already saved.
+	*
+	* @param int $id The id to check for.
+	* @return bool False if the tag hasn't been saved yet.
+	*/
+	public function hasTagId($id) {
+		return array_key_exists($id, $this->tags);
+	}
+
 	/**
 	* Add a new tag.
 	*
@@ -173,31 +229,16 @@ class Database extends AbstractBackend {
 	*/
 	public function add($name) {
 		try {
-			$result = \OCP\DB::insertIfNotExist(
-				self::TAG_TABLE,
-				array(
-					'uid' => $this->user,
-					'type' => $this->type,
-					'category' => $name,
-				)
-			);
-			if (\OCP\DB::isError($result)) {
-				\OCP\Util::writeLog('core', __METHOD__. 'DB error: ' . \OCP\DB::getErrorMessage($result), \OCP\Util::ERROR);
-				return false;
-			} elseif((int)$result === 0) {
-				\OCP\Util::writeLog('core', __METHOD__.', Tag already exists: ' . $name, \OCP\Util::DEBUG);
-				return false;
-			}
+			$tag = new Tag($this->user, $this->type, $name);
+			$tag = $this->insert($tag);
+			$this->tags[$tag->getId()] = $tag; // FIXME: if not exists!
 		} catch(\Exception $e) {
 			\OCP\Util::writeLog('core', __METHOD__.', exception: '.$e->getMessage(),
 				\OCP\Util::ERROR);
 			return false;
 		}
-		$id = \OCP\DB::insertid(self::TAG_TABLE);
-		\OCP\Util::writeLog('core', __METHOD__.', id: ' . $id, \OCP\Util::DEBUG);
-		$this->tags[$id] = new Tag($this->user, $this->type, $name);
-		$this->tags[$id]->setId($id);
-		return $this->tags[$id];
+		\OCP\Util::writeLog('core', __METHOD__.', id: ' . $tag->getId(), \OCP\Util::DEBUG);
+		return $this->tags[$tag->getId()];
 	}
 
 	/**
@@ -207,23 +248,18 @@ class Database extends AbstractBackend {
 	* @param string $to The new name of the tag.
 	* @return Tag|bool The renamed Tag object, or false on error.
 	*/
-	public function rename($id, $to) {
-		$sql = 'UPDATE `' . self::TAG_TABLE . '` SET `category` = ? '
-			. 'WHERE `type` = ? AND `id` = ?';
+	public function rename($name, $to) {
 		try {
-			$stmt = \OCP\DB::prepare($sql);
-			$result = $stmt->execute(array($to, $this->type, $id));
-			if (\OCP\DB::isError($result)) {
-				\OCP\Util::writeLog('core', __METHOD__. 'DB error: ' . \OCP\DB::getErrorMessage($result), \OCP\Util::ERROR);
-				return false;
-			}
+			$key = $this->array_searchi($name, $this->tags);
+			$tag = $this->tags[$key];
+			$tag->setCategory($to);
+			$this->tags[$key] = $this->update($tag);
 		} catch(\Exception $e) {
 			\OCP\Util::writeLog('core', __METHOD__.', exception: '.$e->getMessage(),
 				\OCP\Util::ERROR);
 			return false;
 		}
-		$this->tags[$id]->category = $to;
-		return $this->tags[$id];
+		return $this->tags[$key];
 	}
 
 	/**
@@ -239,7 +275,7 @@ class Database extends AbstractBackend {
 		$newones = array();
 		foreach($names as $name) {
 			if(($this->getTagId($name) == false) && $name !== '') {
-				$newones[] = new Tag($this->user, $this->type, $name); // No IDs until save()d in DB.
+				$newones[] = new Tag($this->user, $this->type, $name);
 			}
 			if(!is_null($id) ) {
 				// Insert $objectid, $categoryid  pairs if not exist.
@@ -259,14 +295,9 @@ class Database extends AbstractBackend {
 	 */
 	private function save() {
 		if(is_array($this->tags)) {
-			foreach($this->tags as $tag) {
+			foreach($this->tags as &$tag) {
 				try {
-					\OCP\DB::insertIfNotExist(self::TAG_TABLE,
-						array(
-							'uid' => $this->user,
-							'type' => $this->type,
-							'category' => $tag->category,
-						));
+					$tag = $this->insert($tag); // FIXME: if not exists!
 				} catch(\Exception $e) {
 					\OCP\Util::writeLog('core', __METHOD__.', exception: '.$e->getMessage(),
 						\OCP\Util::ERROR);
@@ -280,7 +311,7 @@ class Database extends AbstractBackend {
 			// For some reason this is needed or array_search(i) will return 0..?
 			ksort($tags);
 			foreach(self::$relations as $relation) {
-				$tagId = $this->array_searchi($relation['tag'], $tags);
+				$tagId = $this->getTagId($relation['tag']);
 				\OCP\Util::writeLog('core', __METHOD__ . 'catid, ' . $relation['tag'] . ' ' . $tagId, \OCP\Util::DEBUG);
 				if($tagId) {
 					try {
@@ -314,9 +345,9 @@ class Database extends AbstractBackend {
 		// Find all objectid/tagId pairs.
 		$result = null;
 		try {
-			$stmt = \OCP\DB::prepare('SELECT `id` FROM `' . self::TAG_TABLE . '` '
-				. 'WHERE `uid` = ?');
-			$result = $stmt->execute(array($arguments['uid']));
+			$sql = 'SELECT `id` FROM `' . $this->getTableName() . '` '
+				. 'WHERE `uid` = ?';
+			$result = $this->execute($sql, array($arguments['uid']));
 			if (\OCP\DB::isError($result)) {
 				\OCP\Util::writeLog('core', __METHOD__. 'DB error: ' . \OCP\DB::getErrorMessage($result), \OCP\Util::ERROR);
 			}
@@ -327,11 +358,11 @@ class Database extends AbstractBackend {
 
 		if(!is_null($result)) {
 			try {
-				$stmt = \OCP\DB::prepare('DELETE FROM `' . self::RELATION_TABLE . '` '
-					. 'WHERE `categoryid` = ?');
+				$sql = 'DELETE FROM `' . self::RELATION_TABLE . '` '
+					. 'WHERE `categoryid` = ?';
 				while( $row = $result->fetchRow()) {
 					try {
-						$stmt->execute(array($row['id']));
+						$this->execute($sql, array($row['id']));
 					} catch(\Exception $e) {
 						\OCP\Util::writeLog('core', __METHOD__.', exception: '.$e->getMessage(),
 							\OCP\Util::ERROR);
@@ -343,9 +374,8 @@ class Database extends AbstractBackend {
 			}
 		}
 		try {
-			$stmt = \OCP\DB::prepare('DELETE FROM `' . self::TAG_TABLE . '` '
-				. 'WHERE `uid` = ?');
-			$result = $stmt->execute(array($arguments['uid']));
+			$sql = 'DELETE FROM `' . $this->getTableName() . '` ' . 'WHERE `uid` = ?';
+			$result = $this->execute($sql, array($arguments['uid']));
 			if (\OCP\DB::isError($result)) {
 				\OCP\Util::writeLog('core', __METHOD__. ', DB error: ' . \OCP\DB::getErrorMessage($result), \OCP\Util::ERROR);
 			}
@@ -372,8 +402,7 @@ class Database extends AbstractBackend {
 			$query .= 'WHERE `objid` IN (' . str_repeat('?,', count($ids)-1) . '?) ';
 			$query .= 'AND `type`= ?';
 			$updates[] = $this->type;
-			$stmt = \OCP\DB::prepare($query);
-			$result = $stmt->execute($updates);
+			$result = $this->execute($query, $updates);
 			if (\OCP\DB::isError($result)) {
 				\OCP\Util::writeLog('core', __METHOD__. 'DB error: ' . \OCP\DB::getErrorMessage($result), \OCP\Util::ERROR);
 				return false;
@@ -420,8 +449,7 @@ class Database extends AbstractBackend {
 		try {
 			$sql = 'DELETE FROM `' . self::RELATION_TABLE . '` '
 					. 'WHERE `objid` = ? AND `categoryid` = ? AND `type` = ?';
-			$stmt = \OCP\DB::prepare($sql);
-			$stmt->execute(array($objid, $tagId, $this->type));
+			$this->execute($sql, array($objid, $tagId, $this->type));
 		} catch(\Exception $e) {
 			\OCP\Util::writeLog('core', __METHOD__.', exception: '.$e->getMessage(),
 				\OCP\Util::ERROR);
@@ -436,32 +464,26 @@ class Database extends AbstractBackend {
 	* @param string[] $names An array of tags to delete
 	* @return bool Returns false on error
 	*/
-	public function delete($names) {
+	public function deleteTags($names) {
 		foreach($names as $name) {
 			$id = null;
-
-			if($this->getTagId($name) !== false) {
-				$id = $this->array_searchi($name, $this->tags);
-				unset($this->tags[$id]);
-			}
-			try {
-				$stmt = \OCP\DB::prepare('DELETE FROM `' . self::TAG_TABLE . '` WHERE '
-					. '`type` = ? AND `category` = ?');
-				$result = $stmt->execute(array($this->type, $name));
-				if (\OCP\DB::isError($result)) {
-					\OCP\Util::writeLog('core', __METHOD__. 'DB error: ' . \OCP\DB::getErrorMessage($result), \OCP\Util::ERROR);
+			if(($key = $this->array_searchi($name, $this->tags)) !== false) {
+				try {
+					$tag = $this->tags[$key];
+					$id = $tag->getId();
+					$this->delete($tag);
+					unset($this->tags[$key]);
+				} catch(\Exception $e) {
+					\OCP\Util::writeLog('core', __METHOD__ . ', exception: '
+						. $e->getMessage(), \OCP\Util::ERROR);
+					return false;
 				}
-			} catch(\Exception $e) {
-				\OCP\Util::writeLog('core', __METHOD__ . ', exception: '
-					. $e->getMessage(), \OCP\Util::ERROR);
-				return false;
 			}
 			if(!is_null($id) && $id !== false) {
 				try {
 					$sql = 'DELETE FROM `' . self::RELATION_TABLE . '` '
 							. 'WHERE `categoryid` = ?';
-					$stmt = \OCP\DB::prepare($sql);
-					$result = $stmt->execute(array($id));
+					$result = $this->execute($sql, array($id));
 					if (\OCP\DB::isError($result)) {
 						\OCP\Util::writeLog('core',
 							__METHOD__. 'DB error: ' . \OCP\DB::getErrorMessage($result),
@@ -476,5 +498,13 @@ class Database extends AbstractBackend {
 			}
 		}
 		return true;
+	}
+
+	// case-insensitive array_search
+	protected function array_searchi($needle, $haystack) {
+		if(!is_array($haystack)) {
+			return false;
+		}
+		return array_search(strtolower($needle), array_map(function($tag) { return strtolower($tag->getCategory()); }, $haystack));
 	}
 }
