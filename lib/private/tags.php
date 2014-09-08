@@ -185,7 +185,7 @@ class Tags implements \OCP\ITags {
 			return false;
 		}
 
-		return $this->backends['local']->add($name);
+		return $this->backends['local']->add($name)->getId();
 	}
 
 	/**
@@ -298,6 +298,7 @@ class Tags implements \OCP\ITags {
 	* @return boolean Returns false on error.
 	*/
 	public function tagAs($objid, $tag) {
+		$tagId = $tag;
 		$backendToUse = $this->backends['local']; // Default backend
 		if(is_string($tag) && !is_numeric($tag)) {
 			$tag = trim($tag);
