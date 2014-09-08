@@ -71,7 +71,7 @@ class Shared extends Database {
 			foreach ($maybeSharedItems as $sharedItem) {
 				if (isset($sharedItem['id'])) { //workaround for https://github.com/owncloud/core/issues/2814
 					$owner = $sharedItem['uid_owner'];
-					$this->tags += parent::loadTags($owner, $type, $defaultTags);
+					$this->tags = array_merge($this->tags, parent::loadTags($owner, $type, $defaultTags));
 				}
 			}
 		}

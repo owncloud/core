@@ -114,7 +114,7 @@ class Tags implements \OCP\ITags {
 	public function getTags() {
 		$tags = array();
 		foreach ($this->backends as $backend)
-			$tags += $backend->getUnsortedTags();
+			$tags = array_merge($tags, $backend->getUnsortedTags());
 
 		if(!count($tags))
 			return array();
@@ -384,7 +384,10 @@ class Tags implements \OCP\ITags {
 		foreach ($this->backends as $backendName => $backend) {
 			$tagsInBackend = array();
 			foreach ($names as $name) {
-				if (($backend->getTagId($name)) !== false) {
+				// FIXME: If we're given a tag name (not ID), this will delete tags of that name
+				// from all backends.
+				if ((is_numeric($name) && ($backend->hasTagId($name) !== false)) ||
+					(($backend->getTagId($name)) !== false)) {
 					$tagsInBackend[] = $name;
 					unset($name);
 				}

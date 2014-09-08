@@ -218,7 +218,7 @@ class Database extends Mapper {
 	* @return bool False if the tag hasn't been saved yet.
 	*/
 	public function hasTagId($id) {
-		return array_key_exists($id, $this->tags);
+		return $this->array_searchi($id, $this->tags, 'id');
 	}
 
 	/**
@@ -467,7 +467,9 @@ class Database extends Mapper {
 	public function deleteTags($names) {
 		foreach($names as $name) {
 			$id = null;
-			if(($key = $this->array_searchi($name, $this->tags)) !== false) {
+			if ((is_numeric($name) &&
+				(($key = $this->array_searchi($name, $this->tags, 'id')) !== false)) ||
+				(($key = $this->array_searchi($name, $this->tags)) !== false)) {
 				try {
 					$tag = $this->tags[$key];
 					$id = $tag->getId();
@@ -501,10 +503,12 @@ class Database extends Mapper {
 	}
 
 	// case-insensitive array_search
-	protected function array_searchi($needle, $haystack) {
+	protected function array_searchi($needle, $haystack, $mem='category') {
 		if(!is_array($haystack)) {
 			return false;
 		}
-		return array_search(strtolower($needle), array_map(function($tag) { return strtolower($tag->getCategory()); }, $haystack));
+		return array_search(strtolower($needle), array_map(function($tag) use($mem) {
+															return strtolower($tag->$mem);
+															}, $haystack));
 	}
 }
