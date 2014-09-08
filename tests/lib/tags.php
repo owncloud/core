@@ -58,7 +58,7 @@ class Test_Tags extends PHPUnit_Framework_TestCase {
 
 		foreach($tags as $tag) {
 			$result = $tagger->add($tag);
-			$this->assertGreaterThan(0, $result->id, 'add() returned an ID <= 0');
+			$this->assertGreaterThan(0, $result, 'add() returned an ID <= 0');
 			$this->assertTrue((bool)$result);
 		}
 
@@ -94,7 +94,7 @@ class Test_Tags extends PHPUnit_Framework_TestCase {
 		$this->assertTrue($tagger->isEmpty());
 
 		$result = $tagger->add('Tag');
-		$this->assertGreaterThan(0, $result->id, 'add() returned an ID <= 0');
+		$this->assertGreaterThan(0, $result, 'add() returned an ID <= 0');
 		$this->assertNotEquals(false, $result, 'add() returned false');
 		$this->assertFalse($tagger->isEmpty());
 	}
