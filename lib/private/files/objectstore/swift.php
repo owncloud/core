@@ -142,5 +142,14 @@ class Swift implements IObjectStore {
 		$this->init();
 		$this->container->delete($recursive);
 	}
-
+	
+	/**
+	 * @param string $urn the unified resource name used to identify the object
+	 * @param string $path the path to the folder to be created
+	 * @return void
+	 * @throws Exception when something goes wrong, message will be logged
+	 */
+	public function createFolder($urn, $path) {
+		// not store folders
+	}
 }
