@@ -100,7 +100,6 @@
 }
 
 #app-navigation-toggle {
-	position: fixed;
 	display: inline-block !important;
 	top: 45px;
 	left: 0;
