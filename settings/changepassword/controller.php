@@ -2,6 +2,9 @@
 
 namespace OC\Settings\ChangePassword;
 
+use ZxcvbnPhp\Zxcvbn;
+
+
 class Controller {
 	public static function changePersonalPassword($args) {
 		// Check if we are an user
@@ -17,6 +20,16 @@ class Controller {
 			\OC_JSON::error(array("data" => array("message" => $l->t("Wrong password")) ));
 			exit();
 		}
+
+		$zxcvbn = new Zxcvbn();
+		$strength = $zxcvbn->passwordStrength($password);
+
+		if($strength['score'] < \OC_Config::getValue("min_password_strength", "-1") ) {
+			$l = new \OC_L10n('settings');
+			\OC_JSON::error(array("data" => array("message" => $l->t("Password is not strong enough.")) ));
+			exit();	
+		}
+
 		if (!is_null($password) && \OC_User::setPassword($username, $password)) {
 			\OC_JSON::success();
 		} else {
