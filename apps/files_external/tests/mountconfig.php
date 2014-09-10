@@ -20,8 +20,6 @@
  *
  */
 
-require_once __DIR__ . '/../../../lib/base.php';
-
 class Test_Mount_Config_Dummy_Storage {
 	public function test() {
 		return true;
@@ -222,7 +220,7 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 		return array(
 			// applicable to "all"
 			array(
-				OC_Mount_Config::MOUNT_TYPE_USER,
+				'user',
 				'all',
 				array(
 					'users' => array('all'),
@@ -231,7 +229,7 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 			),
 			// applicable to single user
 			array(
-				OC_Mount_Config::MOUNT_TYPE_USER,
+				'user',
 				self::TEST_USER1,
 				array(
 					'users' => array(self::TEST_USER1),
@@ -240,7 +238,7 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 			),
 			// applicable to single group
 			array(
-				OC_Mount_Config::MOUNT_TYPE_GROUP,
+				'group',
 				self::TEST_GROUP1,
 				array(
 					'users' => array(),
@@ -434,7 +432,7 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 			// system mount point for all users
 			array(
 				false,
-				OC_Mount_Config::MOUNT_TYPE_USER,
+				'user',
 				'all',
 				self::TEST_USER1,
 				true,
@@ -442,7 +440,7 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 			// system mount point for a specific user
 			array(
 				false,
-				OC_Mount_Config::MOUNT_TYPE_USER,
+				'user',
 				self::TEST_USER1,
 				self::TEST_USER1,
 				true,
@@ -450,7 +448,7 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 			// system mount point for a specific group
 			array(
 				false,
-				OC_Mount_Config::MOUNT_TYPE_GROUP,
+				'group',
 				self::TEST_GROUP1,
 				self::TEST_USER1,
 				true,
@@ -458,7 +456,7 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 			// user mount point
 			array(
 				true,
-				OC_Mount_Config::MOUNT_TYPE_USER,
+				'user',
 				self::TEST_USER1,
 				self::TEST_USER1,
 				true,
@@ -468,7 +466,7 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 			// system mount point for another user
 			array(
 				false,
-				OC_Mount_Config::MOUNT_TYPE_USER,
+				'user',
 				self::TEST_USER2,
 				self::TEST_USER1,
 				false,
@@ -476,7 +474,7 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 			// system mount point for a specific group
 			array(
 				false,
-				OC_Mount_Config::MOUNT_TYPE_GROUP,
+				'group',
 				self::TEST_GROUP2,
 				self::TEST_USER1,
 				false,
@@ -484,7 +482,7 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 			// user mount point
 			array(
 				true,
-				OC_Mount_Config::MOUNT_TYPE_USER,
+				'user',
 				self::TEST_USER1,
 				self::TEST_USER2,
 				false,
@@ -687,13 +685,13 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 			array(
 				array(
 					'isPersonal' => false,
-					'mountType' => OC_Mount_Config::MOUNT_TYPE_GROUP,
+					'mountType' => 'group',
 					'applicable' => self::TEST_GROUP1,
 					'priority' => 50
 				),
 				array(
 					'isPersonal' => false,
-					'mountType' => OC_Mount_Config::MOUNT_TYPE_GROUP,
+					'mountType' => 'group',
 					'applicable' => self::TEST_GROUP1B,
 					'priority' => 60
 				)
@@ -705,13 +703,13 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 			array(
 				array(
 					'isPersonal' => false,
-					'mountType' => OC_Mount_Config::MOUNT_TYPE_USER,
+					'mountType' => 'user',
 					'applicable' => self::TEST_USER1,
 					'priority' => 2000
 				),
 				array(
 					'isPersonal' => true,
-					'mountType' => OC_Mount_Config::MOUNT_TYPE_USER,
+					'mountType' => 'user',
 					'applicable' => self::TEST_USER1,
 					'priority' => null
 				)
@@ -723,19 +721,19 @@ class Test_Mount_Config extends \PHPUnit_Framework_TestCase {
 			array(
 				array(
 					'isPersonal' => false,
-					'mountType' => OC_Mount_Config::MOUNT_TYPE_USER,
+					'mountType' => 'user',
 					'applicable' => 'all',
 					'priority' => 70
 				),
 				array(
 					'isPersonal' => false,
-					'mountType' => OC_Mount_Config::MOUNT_TYPE_GROUP,
+					'mountType' => 'group',
 					'applicable' => self::TEST_GROUP1,
 					'priority' => 60
 				),
 				array(
 					'isPersonal' => false,
-					'mountType' => OC_Mount_Config::MOUNT_TYPE_USER,
+					'mountType' => 'user',
 					'applicable' => self::TEST_USER1,
 					'priority' => 50
 				)
