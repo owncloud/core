@@ -210,8 +210,8 @@ class Manager extends PublicEmitter implements IGroupManager {
 			return array();
 		}
 		// only user backends have the capability to do a complex search for users
-		$groupUsers  = $group->searchUsers('', $limit, $offset);
 		$search = trim($search);
+		$groupUsers  = $group->searchUsers($search, $limit, $offset);
 		if(!empty($search)) {
 			//TODO: for OC 7 earliest: user backend should get a method to check selected users against a pattern
 			$filteredUsers = $this->userManager->search($search);
