@@ -169,7 +169,7 @@ class Session implements IUserSession, Emitter {
 	/**
 	 * get the login name of the current user
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	public function getLoginName() {
 		if ($this->activeUser) {
@@ -183,6 +183,21 @@ class Session implements IUserSession, Emitter {
 				return null;
 			}
 		}
+	}
+
+	/**
+	 * Checks whether the user has administrative privileges
+	 *
+	 * @return bool
+	 */
+	public function isAdmin() {
+		$currentUser = $this->getLoginName();
+
+		if($currentUser === null) {
+			return false;
+		}
+
+		return \OC_User::isAdminUser($currentUser);
 	}
 
 	/**

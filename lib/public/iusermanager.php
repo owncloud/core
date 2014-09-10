@@ -69,6 +69,16 @@ interface IUserManager {
 	public function checkPassword($loginname, $password);
 
 	/**
+	 * Changes the password for the specified user
+	 *
+	 * @param string $loginname
+	 * @param string $password
+	 * @throws \Exception If the password cannot be changed
+	 * @return bool True on success
+	 */
+	public function setPassword($loginname, $password);
+
+	/**
 	 * search by user id
 	 *
 	 * @param string $pattern

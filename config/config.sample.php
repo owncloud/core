@@ -360,7 +360,7 @@ $CONFIG = array(
 'share_folder' => '/',
 
 /**
- * Minimum password strength for changing of passwords via a user profile from: 0-5.
+ * Minimum password strength for changing of passwords via the user settings from: -1 to 4.
  * Correlates to the following messages when changing:
  * -1: Disabled
  * 0: Very weak password
@@ -369,6 +369,6 @@ $CONFIG = array(
  * 3: Good password
  * 4: Strong password
  */
-'min_password_strength' => '-1',
+'min_password_strength' => -1,
 
 );

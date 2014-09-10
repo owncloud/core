@@ -413,7 +413,7 @@ var UserList = {
 
 						}
 						if (response.data.message) {
-							OC.Notification.show(response.data.message);
+							OC.Notification.show(response.message);
 						}
 					}
 				);

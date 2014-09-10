@@ -170,10 +170,10 @@ $(document).ready(function () {
 					$('#pass2').val('');
 					$('#passwordchanged').show();
 				} else {
-					if (typeof(data.data) !== "undefined") {
-						$('#passworderror').html(data.data.message);
+					if (typeof(data) !== "undefined") {
+						$('#passworderror').text(data.message);
 					} else {
-						$('#passworderror').html(t('Unable to change password'));
+						$('#passworderror').text(t('Unable to change password'));
 					}
 					$('#passworderror').show();
 				}
