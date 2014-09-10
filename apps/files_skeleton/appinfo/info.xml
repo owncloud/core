@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<info>
+	<id>files_skeleton</id>
+	<name>Skeleton Files</name>
+	<description>This app will copy default files for new users.</description>
+	<licence>AGPL</licence>
+	<author>Jörn Dreyer</author>
+	<requiremin>7</requiremin>
+	<shipped>true</shipped>
+	<default_enable/>
+	<types>
+		<filesystem/>
+	</types>
+	<!-- FIXME
+	<ocsid>…</ocsid>
+	-->
+</info>
