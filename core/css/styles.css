@@ -927,6 +927,22 @@ fieldset.warning legend + p, fieldset.update legend + p {
 }
 
 
+/* make jQuery UI look more like ownCloud */
+.ui-widget-header,
+.ui-widget-content {
+	background: none !important;
+	border: none !important;
+}
+.ui-tabs .ui-tabs-nav li {
+	border: 1px solid #ddd;
+}
+.ui-tabs,
+.ui-tabs .ui-tabs-nav,
+.ui-tabs .ui-tabs-panel {
+	padding: 0 !important;
+}
+
+
 /* for IE10 */
 @-ms-viewport {
 	width: device-width;
