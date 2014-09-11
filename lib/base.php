@@ -543,7 +543,9 @@ class OC {
 		OC_Group::useBackend(new OC_Group_Database());
 
 		//setup extra user backends
-		OC_User::setupBackends();
+		if (!self::checkUpgrade(false)) {
+			OC_User::setupBackends();
+		}
 
 		self::registerCacheHooks();
 		self::registerFilesystemHooks();
@@ -559,6 +561,21 @@ class OC {
 			if (OC_Appconfig::getValue('core', 'backgroundjobs_mode', 'ajax') == 'ajax') {
 				OC_Util::addScript('backgroundjobs');
 			}
+		}
+
+		$host = OC_Request::insecureServerHost();
+		// if the host passed in headers isn't trusted
+		if (!OC::$CLI
+			// overwritehost is always trusted
+			&& OC_Request::getOverwriteHost() === null
+			&& !OC_Request::isTrustedDomain($host)
+		) {
+			header('HTTP/1.1 400 Bad Request');
+			header('Status: 400 Bad Request');
+			$tmpl = new OCP\Template('core', 'untrustedDomain', 'guest');
+			$tmpl->assign('domain', $_SERVER['SERVER_NAME']);
+			$tmpl->printPage();
+			return;
 		}
 	}
 
@@ -659,21 +676,6 @@ class OC {
 			$controller = new OC\Core\Setup\Controller();
 			$controller->run($_POST);
 			exit();
-		}
-
-		$host = OC_Request::insecureServerHost();
-		// if the host passed in headers isn't trusted
-		if (!OC::$CLI
-			// overwritehost is always trusted
-			&& OC_Request::getOverwriteHost() === null
-			&& !OC_Request::isTrustedDomain($host)) {
-
-			header('HTTP/1.1 400 Bad Request');
-			header('Status: 400 Bad Request');
-			$tmpl = new OCP\Template('core', 'untrustedDomain', 'guest');
-			$tmpl->assign('domain', $_SERVER['SERVER_NAME']);
-			$tmpl->printPage();
-			return;
 		}
 
 		$request = OC_Request::getPathInfo();
