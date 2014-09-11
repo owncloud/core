@@ -1,4 +1,5 @@
 <form id="ldap" action="#" method="post" class="section">
+	<h2>LDAP</h2>
 	<div id="ldapSettings">
 	<ul>
 		<?php foreach($_['toc'] as $id => $title) { ?>
