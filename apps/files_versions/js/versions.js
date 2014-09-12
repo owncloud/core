@@ -28,23 +28,27 @@ $(document).ready(function(){
 				// Specify icon for hitory button
 				return OC.imagePath('core','actions/history');
 			}, function(filename, context){
+				var $dropdown = $('#dropdown.drop-versions');
 				// Action to perform when clicked
 				if (scanFiles.scanning){return;}//workaround to prevent additional http request block scanning feedback
 
 				var file = context.dir.replace(/(?!<=\/)$|\/$/, '/' + filename);
-				var createDropDown = true;
-				// Check if drop down is already visible for a different file
-				if (($('#dropdown').length > 0) ) {
-					if ( $('#dropdown').hasClass('drop-versions') && file == $('#dropdown').data('file')) {
-						createDropDown = false;
-					}
-					$('#dropdown').remove();
-					$('tr').removeClass('mouseOver');
+				// if action triggered on the same file and the dropdown is already open
+				if ($dropdown.length && file === $dropdown.attr('data-file')) {
+					// let the click automatically close the dropdown
+					return;
 				}
 
-				if(createDropDown === true) {
-					createVersionsDropdown(filename, file, context.fileList);
-				}
+				$dropdown = createVersionsDropdown(filename, file, context.fileList);
+				$dropdown.one('show', function() {
+					// FIXME: doesn't work when toggling between dropdowns
+					$dropdown.closest('tr').addClass('mouseOver');
+				});
+				$dropdown.one('hide', function() {
+					$dropdown.closest('tr').removeClass('mouseOver');
+					$dropdown.remove();
+				});
+				OC.showMenu($dropdown);
 			}, t('files_versions', 'Versions')
 		);
 	}
@@ -69,11 +73,10 @@ function revertFile(file, revision) {
 			if (response.status === 'error') {
 				OC.Notification.show( t('files_version', 'Failed to revert {file} to revision {timestamp}.', {file:file, timestamp:formatDate(revision * 1000)}) );
 			} else {
-				$('#dropdown').hide('blind', function() {
-					$('#dropdown').closest('tr').find('.modified:first').html(relative_modified_date(revision));
-					$('#dropdown').remove();
-					$('tr').removeClass('mouseOver');
-				});
+				var $dropdown = $('#dropdown.drop-versions');
+				if ($dropdown.length) {
+					OC.hideMenu();
+				}
 			}
 		}
 	});
@@ -89,6 +92,7 @@ function createVersionsDropdown(filename, files, fileList) {
 	var start = 0;
 	var fileEl;
 
+	var $dropdown;
 	var html = '<div id="dropdown" class="drop drop-versions" data-file="'+escapeHTML(files)+'">';
 	html += '<div id="private">';
 	html += '<ul id="found_versions">';
@@ -96,12 +100,12 @@ function createVersionsDropdown(filename, files, fileList) {
 	html += '</div>';
 	html += '<input type="button" value="'+ t('files_versions', 'More versions...') + '" name="show-more-versions" id="show-more-versions" style="display: none;" />';
 
+	$dropdown = $(html);
 	if (filename) {
 		fileEl = fileList.findFileEl(filename);
-		fileEl.addClass('mouseOver');
-		$(html).appendTo(fileEl.find('td.filename'));
+		$dropdown.appendTo(fileEl.find('td.filename'));
 	} else {
-		$(html).appendTo($('thead .share'));
+		$dropdown.appendTo($('thead .share'));
 	}
 
 	getVersions(start);
@@ -132,7 +136,7 @@ function createVersionsDropdown(filename, files, fileList) {
 						addVersion(row);
 					});
 				} else {
-					$('<div style="text-align:center;">'+ t('files_versions', 'No other versions available') + '</div>').appendTo('#dropdown');
+					$('<div style="text-align:center;">'+ t('files_versions', 'No other versions available') + '</div>').appendTo('#dropdown.drop-versions');
 				}
 				$('#found_versions').change(function() {
 					var revision = parseInt($(this).val());
@@ -173,18 +177,6 @@ function createVersionsDropdown(filename, files, fileList) {
 		version.appendTo('#found_versions');
 	}
 
-	$('#dropdown').show('blind');
+	return $dropdown;
 }
 
-$(this).click(
-	function(event) {
-	if ($('#dropdown').has(event.target).length === 0 && $('#dropdown').hasClass('drop-versions')) {
-		$('#dropdown').hide('blind', function() {
-			$('#dropdown').remove();
-			$('tr').removeClass('mouseOver');
-		});
-	}
-
-
-	}
-);

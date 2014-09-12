@@ -351,7 +351,7 @@ OC.Share={
 	showDropDown:function(itemType, itemSource, appendTo, link, possiblePermissions, filename) {
 		var data = OC.Share.loadItem(itemType, itemSource);
 		var dropDownEl;
-		var html = '<div id="dropdown" class="drop" data-item-type="'+itemType+'" data-item-source="'+itemSource+'">';
+		var html = '<div id="dropdown" class="drop drop-shares" data-item-type="'+itemType+'" data-item-source="'+itemSource+'">';
 		if (data !== false && data.reshare !== false && data.reshare.uid_owner !== undefined) {
 			if (data.reshare.share_type == OC.Share.SHARE_TYPE_GROUP) {
 				html += '<span class="reshare">'+t('core', 'Shared with you and the group {group} by {owner}', {group: escapeHTML(data.reshare.share_with), owner: escapeHTML(data.reshare.displayname_owner)})+'</span>';
@@ -532,26 +532,30 @@ OC.Share={
 			dropDownEl.appendTo(appendTo);
 		}
 		dropDownEl.attr('data-item-source-name', filename);
-		$('#dropdown').show('blind', function() {
-			OC.Share.droppedDown = true;
-		});
 		if ($('html').hasClass('lte9')){
-			$('#dropdown input[placeholder]').placeholder();
+			dropDownEl.find('input[placeholder]').placeholder();
 		}
+		OC.showMenu(dropDownEl);
+		OC.Share.droppedDown = true;
+		// TODO: move this to the files' app share action
+		dropDownEl.closest('tr').addClass('mouseOver');
+		dropDownEl.one('hide', function() {
+			OC.Share.currentShares = null;
+			OC.Share.droppedDown = false;
+			if (typeof FileActions !== 'undefined') {
+				dropDownEl.closest('tr').removeClass('mouseOver');
+			}
+			dropDownEl.remove();
+		});
 		$('#shareWith').focus();
+		return dropDownEl;
 	},
 	hideDropDown:function(callback) {
-		OC.Share.currentShares = null;
-		$('#dropdown').hide('blind', function() {
-			OC.Share.droppedDown = false;
-			$('#dropdown').remove();
-			if (typeof FileActions !== 'undefined') {
-				$('tr').removeClass('mouseOver');
-			}
-			if (callback) {
-				callback.call();
-			}
-		});
+		// TODO: deprecated
+		OC.hideMenu();
+		if (callback) {
+			callback.call();
+		}
 	},
 	addShareWith:function(shareType, shareWith, shareWithDisplayName, permissions, possiblePermissions, mailSend, collection) {
 		var shareItem = {
@@ -776,26 +780,11 @@ $(document).ready(function() {
 			if ($(this).data('link') !== undefined && $(this).data('link') == true) {
 				link = true;
 			}
-			if (OC.Share.droppedDown) {
-				if (itemSource != $('#dropdown').data('item')) {
-					OC.Share.hideDropDown(function () {
-						OC.Share.showDropDown(itemType, itemSource, appendTo, link, possiblePermissions);
-					});
-				} else {
-					OC.Share.hideDropDown();
-				}
+			if (OC.Share.droppedDown && itemSource === $('#dropdown').data('item')) {
+				OC.Share.hideDropDown();
 			} else {
 				OC.Share.showDropDown(itemType, itemSource, appendTo, link, possiblePermissions);
 			}
-		}
-	});
-
-	$(this).click(function(event) {
-		var target = $(event.target);
-		var isMatched = !target.is('.drop, .ui-datepicker-next, .ui-datepicker-prev, .ui-icon')
-			&& !target.closest('#ui-datepicker-div').length && !target.closest('.ui-autocomplete').length;
-		if (OC.Share.droppedDown && isMatched && $('#dropdown').has(event.target).length === 0) {
-			OC.Share.hideDropDown();
 		}
 	});
 

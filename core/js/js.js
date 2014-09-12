@@ -531,20 +531,7 @@ var OC={
 	registerMenu: function($toggle, $menuEl) {
 		$menuEl.addClass('menu');
 		$toggle.on('click.menu', function(event) {
-			if ($menuEl.is(OC._currentMenu)) {
-				$menuEl.slideUp(OC.menuSpeed);
-				OC._currentMenu = null;
-				OC._currentMenuToggle = null;
-				return false;
-			}
-			// another menu was open?
-			else if (OC._currentMenu) {
-				// close it
-				OC._currentMenu.hide();
-			}
-			$menuEl.slideToggle(OC.menuSpeed);
-			OC._currentMenu = $menuEl;
-			OC._currentMenuToggle = $toggle;
+			OC.showMenu($menuEl, $toggle);
 			return false;
 		});
 	},
@@ -561,6 +548,52 @@ var OC={
 		}
 		$toggle.off('click.menu').removeClass('menutoggle');
 		$menuEl.removeClass('menu');
+	},
+
+	/**
+	 * Displays the given menu (even if not registered)
+	 * Triggers a "show" event on the menu element after the animation.
+	 * @param $menuEl menu element
+	 * @param [$toggle] optional toggle element
+	 */
+	showMenu: function($menuEl, $toggle) {
+		console.log('showMenu: ', $menuEl);
+		// this class makes it possible to click inside
+		$menuEl.addClass('menu');
+		if ($menuEl.is(OC._currentMenu)) {
+			OC.hideMenu($menuEl);
+			return;
+		}
+		// another menu was open?
+		else if (OC._currentMenu) {
+			// close it
+			OC._currentMenu.hide();
+		}
+		$menuEl.slideDown(OC.menuSpeed, function() {
+			$menuEl.trigger(new $.Event('show'));
+		});
+		OC._currentMenu = $menuEl;
+		OC._currentMenuToggle = $toggle;
+	},
+
+	/**
+	 * Hides the given menu.
+	 * Triggers a "hide" event on the menu element after the animation.
+	 * @param [$menuEl] menu element, defaults to the current menu
+	 */
+	hideMenu: function($menuEl, callback) {
+		console.log('hideMenu: ', $menuEl);
+		if (!$menuEl) {
+			$menuEl = OC._currentMenu;
+		}
+		if (!$menuEl) {
+			return;
+		}
+		$menuEl.slideUp(OC.menuSpeed, function() {
+			$menuEl.trigger(new $.Event('hide'));
+		});
+		OC._currentMenu = null;
+		OC._currentMenuToggle = null;
 	},
 
 	/**
@@ -1101,15 +1134,11 @@ function initCore() {
 	// toggle for menus
 	$(document).on('mouseup.closemenus', function(event) {
 		var $el = $(event.target);
-		if ($el.closest('.menu').length || $el.closest('.menutoggle').length) {
+		if ($el.closest('.menu').length || $el.closest('.menutoggle').length || $el.closest('.ui-autocomplete').length) {
 			// don't close when clicking on the menu directly or a menu toggle
 			return false;
 		}
-		if (OC._currentMenu) {
-			OC._currentMenu.slideUp(OC.menuSpeed);
-		}
-		OC._currentMenu = null;
-		OC._currentMenuToggle = null;
+		OC.hideMenu();
 	});
 
 

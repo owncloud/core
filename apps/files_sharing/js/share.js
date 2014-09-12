@@ -85,19 +85,18 @@
 				}
 
 				var appendTo = $tr.find('td.filename');
+				var $dropdown;
 				// Check if drop down is already visible for a different file
 				if (OC.Share.droppedDown) {
 					if ($tr.attr('data-id') !== $('#dropdown').attr('data-item-source')) {
 						OC.Share.hideDropDown(function () {
-							$tr.addClass('mouseOver');
 							OC.Share.showDropDown(itemType, $tr.data('id'), appendTo, true, possiblePermissions, filename);
 						});
 					} else {
 						OC.Share.hideDropDown();
 					}
 				} else {
-					$tr.addClass('mouseOver');
-					OC.Share.showDropDown(itemType, $tr.data('id'), appendTo, true, possiblePermissions, filename);
+					$dropdown = OC.Share.showDropDown(itemType, $tr.data('id'), appendTo, true, possiblePermissions, filename);
 				}
 				$('#dropdown').on('sharesChanged', function(ev) {
 					// files app current cannot show recipients on load, so we don't update the
