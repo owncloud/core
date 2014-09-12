@@ -1648,6 +1648,8 @@ class Share extends \OC\Share\Constants {
 			foreach ($shareWith['users'] as $uid) {
 				$itemTarget = Helper::generateTarget($itemType, $itemSource, self::SHARE_TYPE_USER, $uid,
 					$uidOwner, $suggestedItemTarget, $parent);
+				
+				//itemSource don`t duplicate.
 				if (isset($fileSource)) {
 					if ($parentFolder) {
 						if ($parentFolder === true) {
@@ -1661,14 +1663,16 @@ class Share extends \OC\Share\Constants {
 							$parent = $parentFolder[$uid]['id'];
 						}
 					} else {
-						// SGcom : Processing Group Sharing received User tarke duplicate File!
+						// SGcom : Processing Group Sharing received User take duplicate File!
 						// So I Fixed this Bug. 2014.08.27
-						if($shareType==self::SHARE_TYPE_GROUP){
-							$fileTarget = Helper::generateTarget('file', $filePath, self::SHARE_TYPE_GROUP,
-								$uid, $uidOwner, $suggestedFileTarget, $parent);
-						}else{
-							$fileTarget = Helper::generateTarget('file', $filePath, self::SHARE_TYPE_USER,
-								$uid, $uidOwner, $suggestedFileTarget, $parent);
+						switch ($shareType) {
+							case self::SHARE_TYPE_GROUP:
+								$fileTarget = Helper::generateTarget('file', $filePath, self::SHARE_TYPE_GROUP,
+										$uid, $uidOwner, $suggestedFileTarget, $parent);
+								break;
+							default:
+								$fileTarget = Helper::generateTarget('file', $filePath, self::SHARE_TYPE_USER,
+										$uid, $uidOwner, $suggestedFileTarget, $parent);
 						}
 					}
 				} else {
@@ -1868,7 +1872,38 @@ class Share extends \OC\Share\Constants {
 
 		return false;
 	}
-
+	/**
+	 * Check Shared File Owned
+	 * 
+	 * @param string $user
+	 * @param integer $source
+	 * @return boolean
+	 */
+	public static function checkOwned($user,$source){
+		$select = 'count(`*PREFIX*share`.`id`) as cnt';
+		$where = ' where (share_with = ? or uid_owner = ?) and item_source = ?';
+		$queryLimit = 1;
+		$query = \OC_DB::prepare('SELECT '.$select.' FROM `*PREFIX*share` '.$where, $queryLimit);
+		$count = 0;
+		
+		$queryArgs[] = $user;
+		$queryArgs[] = $user;
+		$queryArgs[] = $source;
+		
+		$result = $query->execute($queryArgs);
+		
+		if (\OC_DB::isError($result)) {
+			\OC_Log::write('OCP\Share',
+					\OC_DB::getErrorMessage($result) . ', select=' . $select . ' where=' . $where,
+					\OC_Log::ERROR);
+		}
+		
+		if ($row = $result->fetchRow()) {
+			$count = (int)$row['cnt'];
+		}
+		return ($count>0);
+	}
+	
 	/**
 	 * construct select statement
 	 * @param int $format
