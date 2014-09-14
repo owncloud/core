@@ -13,7 +13,6 @@
  */
 namespace OC;
 
-use OC\Files\Filesystem;
 use OC\Preview\Provider;
 
 require_once 'preview/image.php';
@@ -35,8 +34,18 @@ class Preview {
 	private $configMaxX;
 	private $configMaxY;
 
-	//fileview object
+	/**
+	 * @var null|Files\View
+	 */
 	private $fileView = null;
+
+	/**
+	 * view for accessing thumbnail cache
+	 * DO NOT USE FOR THUMBNAIL CREATION ITSELF AS THIS
+	 * VIEW IS NOT NECESSARILY OWNED BY THE CURRENT USER
+	 * USE fileView instead
+	 * @var null|Files\View
+	 */
 	private $userView = null;
 
 	//vars
@@ -85,8 +94,8 @@ class Preview {
 		if ($user === '') {
 			$user = \OC_User::getUser();
 		}
-		$this->fileView = new \OC\Files\View('/' . $user . '/' . $root);
-		$this->userView = new \OC\Files\View('/' . $user);
+		$this->fileView = new Files\View('/' . $user . '/' . $root);
+		$this->buildUserView($user);
 
 		//set config
 		$this->configMaxX = \OC_Config::getValue('preview_max_x', null);
@@ -475,6 +484,8 @@ class Preview {
 		}
 		$fileId = $fileInfo->getId();
 
+		$this->updateUserViewIfShared($fileInfo);
+
 		$cached = $this->isCached($fileId);
 		if ($cached) {
 			$stream = $this->userView->fopen($cached, 'r');
@@ -535,6 +546,7 @@ class Preview {
 
 	/**
 	 * show preview
+	 * @param string $mimeType
 	 * @return void
 	 */
 	public function showPreview($mimeType = null) {
@@ -664,6 +676,7 @@ class Preview {
 
 	/**
 	 * register a new preview provider to be used
+	 * @param string $class
 	 * @param array $options
 	 * @return void
 	 */
@@ -717,8 +730,8 @@ class Preview {
 		$view = new \OC\Files\View('/' . \OC_User::getUser() . '/' . $prefix);
 		$info = $view->getFileInfo($path);
 
-		\OC\Preview::$deleteFileMapper = array_merge(
-			\OC\Preview::$deleteFileMapper,
+		Preview::$deleteFileMapper = array_merge(
+			Preview::$deleteFileMapper,
 			array(
 				Files\Filesystem::normalizePath($view->getAbsolutePath($path)) => $info,
 			)
@@ -744,6 +757,10 @@ class Preview {
 	 */
 	public static function isAvailable($file) {
 		if (!\OC_Config::getValue('enable_previews', true)) {
+			return false;
+		}
+
+		if (!($file instanceof Files\FileInfo)) {
 			return false;
 		}
 
@@ -804,5 +821,35 @@ class Preview {
 			return $preview;
 		}
 		return $preview;
+	}
+
+
+	/**
+	 * replace file view objects with the view of the file owner
+	 * given that the file is shared
+	 * @param \OC\Files\FileInfo $fileInfo
+	 * @return void
+	 */
+	private function updateUserViewIfShared(Files\FileInfo $fileInfo) {
+		if (!($this->userView instanceof Files\View)) {
+			return;
+		}
+
+		$currentUser = $this->userView->getFileInfo('/')->getStorage()->getOwner('/');
+		$filesOwner = $fileInfo->getStorage()->getOwner($fileInfo->getInternalPath());
+
+		if ($currentUser !== $filesOwner) {
+			$this->buildUserView($filesOwner);
+		}
+	}
+
+
+	/**
+	 * build $this->userView object
+	 * @param string $userId
+	 * @return void
+	 */
+	private function buildUserView($userId) {
+		$this->userView = new Files\View('/' . $userId);
 	}
 }
