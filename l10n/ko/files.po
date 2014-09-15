@@ -25,15 +25,15 @@ msgstr ""
 
 #: ajax/list.php:38
 msgid "Storage not available"
-msgstr ""
+msgstr "스토리지 사용불가능"
 
 #: ajax/list.php:45
 msgid "Storage invalid"
-msgstr ""
+msgstr "스토리지 부적합"
 
 #: ajax/list.php:52
 msgid "Unknown error"
-msgstr ""
+msgstr "알려지지않은 에러"
 
 #: ajax/move.php:15
 #, php-format
@@ -52,7 +52,7 @@ msgstr "파일 이름이 비어 있을 수 없습니다."
 #: ajax/newfile.php:63
 #, php-format
 msgid "\"%s\" is an invalid file name."
-msgstr ""
+msgstr "\ %s \ 부적합한 파일 입니다"
 
 #: ajax/newfile.php:69 ajax/newfolder.php:28 js/files.js:110
 msgid ""
@@ -239,7 +239,7 @@ msgstr "대기 중"
 
 #: js/filelist.js:1195
 msgid "Error moving file."
-msgstr ""
+msgstr "파일 이동 오류"
 
 #: js/filelist.js:1203
 msgid "Error moving file"
@@ -327,7 +327,7 @@ msgstr "%s의 이름을 변경할 수 없습니다"
 #: lib/helper.php:23 templates/list.php:25
 #, php-format
 msgid "Upload (max. %s)"
-msgstr ""
+msgstr "최대업로드는 %s"
 
 #: templates/admin.php:6
 msgid "File handling"
@@ -408,4 +408,4 @@ msgstr "파일을 검색하고 있습니다. 기다려 주십시오."
 
 #: templates/list.php:101
 msgid "Currently scanning"
-msgstr ""
+msgstr "guswo 스캔중입니다"

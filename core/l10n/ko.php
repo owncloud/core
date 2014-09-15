@@ -63,6 +63,11 @@ $TRANSLATIONS = array(
 "So-so password" => "그저 그런 암호",
 "Good password" => "좋은 암호",
 "Strong password" => "강력한 암호",
+"Forgot your password? Reset it!" =>"암호를 잊으셨나요? 클릭해서 재설정",
+"Couldn't send reset email because there is no email address for this username. Please contact your administrator." =>"설정된 이메일이 없어서 재설정 메일을 보낼 수 없습니다. 담당자에게 문의하십시오",
+"Couldn't reset password because the token is invalid" =>"토큰이 만료되어 암호를 재설정 할 수 없습니다",
+"Couldn't send reset email. Please contact your administrator."=>"암호 재설정 메일을 보낼 수 없습니다. 담당자에게 문의하세요",
+"The link to reset your password has been sent to your email. If you do not receive it within a reasonable amount of time, check your spam/junk folders.<br>If it is not there ask your local administrator."=>"암호 재설정 메일이 보내졌습니다. 잠시 후에 메일이 보이지 않으면 스팸/정크 폴더를 체크해주세요. <br>메일이 오지 않았다면 담당자에게 문의해주세요",
 "Shared" => "공유됨",
 "Shared by {owner}" => "{owner} 님이 공유함",
 "Share" => "공유",
@@ -70,7 +75,8 @@ $TRANSLATIONS = array(
 "Error while sharing" => "공유하는 중 오류 발생",
 "Error while unsharing" => "공유 해제하는 중 오류 발생",
 "Error while changing permissions" => "권한 변경하는 중 오류 발생",
-"Shared with you and the group {group} by {owner}" => "{owner} 님이 여러분 및 그룹 {group}와(과) 공유 중",
+"%s shared »%s« with you" => "%s님이 귀하에게 '%s'을(를) 공유합니다.",
+"Shared with you and the group {group} by {owner}" => "{owner} 님이 그룹 {group}와(과) 공유 중",
 "Shared with you by {owner}" => "{owner} 님이 공유 중",
 "Share with user or group …" => "사용자 및 그룹과 공유...",
 "Share link" => "링크 공유",
@@ -110,6 +116,8 @@ $TRANSLATIONS = array(
 "The update was successful. Redirecting you to ownCloud now." => "업데이트가 성공하였습니다. ownCloud로 돌아갑니다.",
 "%s password reset" => "%s 암호 재설정",
 "Use the following link to reset your password: {link}" => "다음 링크를 사용하여 암호를 재설정할 수 있습니다: {link}",
+'Password Reset'=>'암호 재설정',
+'New Password'=>'새 암호',
 "You will receive a link to reset your password via Email." => "이메일로 암호 재설정 링크를 보냈습니다.",
 "Username" => "사용자 이름",
 "Your files are encrypted. If you haven't enabled the recovery key, there will be no way to get your data back after your password is reset. If you are not sure what to do, please contact your administrator before you continue. Do you really want to continue?" => "저장된 파일은 암호화되어 있습니다. 복구 키를 활성화하지 않았다면 암호를 초기화한 후 데이터를 복구할 수 없습니다. 무엇을 해야 할 지 모르겠으면 진행하기 전에 시스템 관리자에게 연락하십시오. 계속 진행하시겠습니까?",
@@ -132,6 +140,7 @@ $TRANSLATIONS = array(
 "Cloud not found" => "클라우드를 찾을 수 없습니다",
 "Hey there,\n\njust letting you know that %s shared %s with you.\nView it: %s\n\n" => "안녕하세요,\n\n%s 님이 %s을(를) 공유하였음을 알려 드립니다.\n보기 링크: %s\n\n",
 "The share will expire on %s." => "이 공유는 %s 까지 유지됩니다.",
+'Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href="%s">View it!</a><br><br>' =>"NCDrive - Share Information Mail<br><br>공유자 - %s<br>공유명 - %s<br><br><a href='%s'>공유 내용 보기</a><br><br>",
 "Cheers!" => "감사합니다!",
 "Security Warning" => "보안 경고",
 "Your PHP version is vulnerable to the NULL Byte attack (CVE-2006-7243)" => "사용 중인 PHP 버전이 NULL 바이트 공격에 취약합니다 (CVE-2006-7243)",
@@ -169,5 +178,6 @@ $TRANSLATIONS = array(
 "Thank you for your patience." => "기다려 주셔서 감사합니다.",
 "This ownCloud instance is currently being updated, which may take a while." => "ownCloud 인스턴스가 현재 업데이트 중입니다. 잠시만 기다려 주십시오.",
 "Please reload this page after a short time to continue using ownCloud." => "잠시 후 페이지를 다시 불러온 다음 ownCloud를 사용해 주십시오."
+
 );
 $PLURAL_FORMS = "nplurals=1; plural=0;";

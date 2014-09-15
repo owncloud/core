@@ -75,6 +75,8 @@ $TRANSLATIONS = array(
 "Download" => "다운로드",
 "Upload too large" => "업로드한 파일이 너무 큼",
 "The files you are trying to upload exceed the maximum size for file uploads on this server." => "이 파일이 서버에서 허용하는 최대 업로드 가능 용량보다 큽니다.",
-"Files are being scanned, please wait." => "파일을 검색하고 있습니다. 기다려 주십시오."
+"Files are being scanned, please wait." => "파일을 검색하고 있습니다. 기다려 주십시오.",
+"All files"=>"모든 파일",
+"Storage not available"=>"저장소를 사용할 수 없습니다"
 );
 $PLURAL_FORMS = "nplurals=1; plural=0;";

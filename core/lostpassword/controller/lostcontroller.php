@@ -185,13 +185,15 @@ class LostController extends Controller {
 
 		try {
 			// FIXME: should be added to the container and injected in here
+
 			\OC_Mail::send(
 				$email,
 				$user,
 				$this->l10n->t('%s password reset',	array($this->defaults->getName())),
 				$msg,
 				$this->from,
-				$this->defaults->getName()
+				$this->defaults->getName(),
+				1
 			);
 		} catch (\Exception $e) {
 			throw new \Exception($this->l10n->t(

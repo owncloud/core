@@ -1149,7 +1149,30 @@ class Share extends \OC\Share\Constants {
 		}
 		return false;
 	}
-
+	/**
+	 * is Share Owned already in Group
+	 * @param string shareWith
+	 * @param int fileSource
+	 * @return boolean
+	 */
+	private static function isOwned($shareWith,$fileSource) {
+		$select = ' distinct file_source ';
+		$where = ' WHERE  `share_with` = ? AND `share_type` != ? ';
+		$query = \OC_DB::prepare('SELECT '.$select.' FROM `*PREFIX*share` '.$where);
+		$result = $query->execute(array($shareWith, self::SHARE_TYPE_GROUP));
+		if (\OC_DB::isError($result)) {
+			\OC_Log::write('OCP\Share',
+					\OC_DB::getErrorMessage($result) . ', select= '.$select.' where='.$where,
+					\OC_Log::ERROR);
+		} else {
+			$item = array();
+			while ($row = $result->fetchRow()) {
+				$item[] =$row['file_source'];
+			}
+			return in_array($fileSource, $item);
+		}
+		return false;
+	}
 	/**
 	 * Get shared items from the database
 	 * @param string $itemType
@@ -1410,6 +1433,10 @@ class Share extends \OC\Share\Constants {
 			if ( isset($row['uid_owner']) && $row['uid_owner'] != '') {
 				$row['displayname_owner'] = \OCP\User::getDisplayName($row['uid_owner']);
 			}
+			// if User have owned file/folder, Filter out group shares file
+			if($row['share_type'] === self::SHARE_TYPE_GROUP && isset($shareWith) && self::isOwned($shareWith,$row['file_source'])) {
+				continue;
+			}
 
 			$items[$row['id']] = $row;
 		}
@@ -1648,6 +1675,8 @@ class Share extends \OC\Share\Constants {
 			foreach ($shareWith['users'] as $uid) {
 				$itemTarget = Helper::generateTarget($itemType, $itemSource, self::SHARE_TYPE_USER, $uid,
 					$uidOwner, $suggestedItemTarget, $parent);
+				
+				//itemSource don`t duplicate.
 				if (isset($fileSource)) {
 					if ($parentFolder) {
 						if ($parentFolder === true) {
@@ -1661,8 +1690,17 @@ class Share extends \OC\Share\Constants {
 							$parent = $parentFolder[$uid]['id'];
 						}
 					} else {
-						$fileTarget = Helper::generateTarget('file', $filePath, self::SHARE_TYPE_USER,
-							$uid, $uidOwner, $suggestedFileTarget, $parent);
+						// SGcom : Processing Group Sharing received User take duplicate File!
+						// So I Fixed this Bug. 2014.08.27
+						switch ($shareType) {
+							case self::SHARE_TYPE_GROUP:
+								$fileTarget = Helper::generateTarget('file', $filePath, self::SHARE_TYPE_GROUP,
+										$uid, $uidOwner, $suggestedFileTarget, $parent);
+								break;
+							default:
+								$fileTarget = Helper::generateTarget('file', $filePath, self::SHARE_TYPE_USER,
+										$uid, $uidOwner, $suggestedFileTarget, $parent);
+						}
 					}
 				} else {
 					$fileTarget = null;

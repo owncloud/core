@@ -1,10 +1,8 @@
 # the default generated dir + db file
 /data
-/owncloud
-/config/config.php
-/config/*.config.php
-/config/mount.php
 /apps/inc.php
+/config/config.php
+themes_test.php
 
 # ignore all apps except core ones
 /apps*/*
@@ -35,6 +33,7 @@
 *~
 *.orig
 *.class
+*.log
 .cvsignore
 Thumbs.db
 *.py[co]
@@ -43,6 +42,7 @@ CVS/*
 .svn/*
 RCS/*
 *.backup*
+*.*-tmp
 
 # kdevelop
 .kdev
@@ -56,7 +56,7 @@ RCS/*
 .project
 .settings
 
-# netbeans 
+# netbeans
 nbproject
 
 # phpStorm
@@ -72,7 +72,7 @@ nbproject
 
 # vim ex mode
 .vimrc
-	
+
 # Mac OS
 .DS_Store
 
@@ -89,6 +89,12 @@ nbproject
 # nodejs
 /build/lib/
 /npm-debug.log
+
+# sublime
+*.sublime*
+sftp-config.json
+# apache
+.htaccess
 
 
 # Tests - auto-generated files
