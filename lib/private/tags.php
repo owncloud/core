@@ -34,7 +34,8 @@
 
 namespace OC;
 
-use \OCP\AppFramework\Db\Mapper;
+use \OCP\AppFramework\Db\Mapper,
+    \OCP\IDb;
 
 class Tags extends Mapper implements \OCP\ITags {
 
@@ -66,6 +67,13 @@ class Tags extends Mapper implements \OCP\ITags {
 	 */
 	private $user = null;
 
+	/**
+	 * Are we including tags for shared items?
+	 *
+	 * @var bool
+	 */
+	private $includeShared = null;
+
 	const RELATION_TABLE = '*PREFIX*vcategory_to_object';
 
 	const TAG_FAVORITE = '_$!<Favorite>!$_';
@@ -73,16 +81,19 @@ class Tags extends Mapper implements \OCP\ITags {
 	/**
 	* Constructor.
 	*
-	* @param string $user The user whos data the object will operate on.
-	* @param string $type
+	* @param string $user The user whose data the object will operate on.
+	* @param string $type The type of items for which tags will be loaded.
+	* @param boolean $includeShared Whether to include tags for items shared with this user by others.
+	* @param IDb $db Instance of the Db abstraction layer.
 	*/
-	public function __construct($user, $type, $defaultTags = array(), $db = null) {
+	public function __construct($user, $type, $defaultTags = array(), $includeShared = false, IDb $db = null) {
 		if ($db === null)
 			$db = new \OC\AppFramework\Db\Db();
 		parent::__construct($db, 'vcategory', 'OC\Tag');
 
 		$this->user = $user;
 		$this->type = $type;
+		$this->includeShared = $includeShared;
 		$this->loadTags($defaultTags);
 	}
 
@@ -92,11 +103,17 @@ class Tags extends Mapper implements \OCP\ITags {
 	*/
 	protected function loadTags($defaultTags=array()) {
 		$this->tags = array();
+		$this->owners = array($this->user);
+		if ($this->includeShared) {
+			$this->owners = array_merge($this->owners, \OC\Share\Share::getSharedItemsOwners($this->user, $this->type, true));
+			$this->backend = \OC\Share\Share::getBackend($this->type);
+		}
+
 		$result = null;
 		$sql = 'SELECT `id`, `uid`, `type`, `category` FROM `' . $this->getTableName() . '` '
-			. 'WHERE `uid` = ? AND `type` = ? ORDER BY `category`';
+			. 'WHERE `uid` IN (' . str_repeat('?,', count($this->owners)-1) . '?) AND `type` = ? ORDER BY `category`';
 		try {
-			$this->tags = $this->findEntities($sql, array($this->user, $this->type));
+			$this->tags = $this->findEntities($sql, array_merge($this->owners, array($this->type)));
 		} catch(\Exception $e) {
 			\OCP\Util::writeLog('core', __METHOD__.', exception: '.$e->getMessage(),
 				\OCP\Util::ERROR);
@@ -107,7 +124,6 @@ class Tags extends Mapper implements \OCP\ITags {
 		}
 		\OCP\Util::writeLog('core', __METHOD__.', tags: ' . print_r($this->tags, true),
 			\OCP\Util::DEBUG);
-
 	}
 
 	/**
@@ -203,7 +219,22 @@ class Tags extends Mapper implements \OCP\ITags {
 
 		if(!is_null($result)) {
 			while( $row = $result->fetchRow()) {
-				$ids[] = (int)$row['objid'];
+				$id = (int)$row['objid'];
+
+				if ($this->includeShared) {
+					// We have to check if we are really allowed to access the
+					// items that are tagged with $tag. To that end, we ask the
+					// corresponding sharing backend if the item identified by $id
+					// is owned by any of $this->owners.
+					foreach ($this->owners as $owner) {
+						if ($this->backend->isValidSource($id, $owner)) {
+							$ids[] = $id;
+							break;
+						}
+					}
+				} else {
+					$ids[] = $id;
+				}
 			}
 		}
 
