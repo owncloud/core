@@ -1149,7 +1149,30 @@ class Share extends \OC\Share\Constants {
 		}
 		return false;
 	}
-
+	/**
+	 * is Share Owned already in Group
+	 * @param string shareWith
+	 * @param int fileSource
+	 * @return boolean
+	 */
+	private static function isOwned($shareWith,$fileSource) {
+		$select = ' distinct file_source ';
+		$where = ' WHERE  `share_with` = ? AND `share_type` != ? ';
+		$query = \OC_DB::prepare('SELECT '.$select.' FROM `*PREFIX*share` '.$where);
+		$result = $query->execute(array($shareWith, self::SHARE_TYPE_GROUP));
+		if (\OC_DB::isError($result)) {
+			\OC_Log::write('OCP\Share',
+					\OC_DB::getErrorMessage($result) . ', select= '.$select.' where='.$where,
+					\OC_Log::ERROR);
+		} else {
+			$item = array();
+			while ($row = $result->fetchRow()) {
+				$item[] =$row['file_source'];
+			}
+			return in_array($fileSource, $item);
+		}
+		return false;
+	}
 	/**
 	 * Get shared items from the database
 	 * @param string $itemType
@@ -1409,6 +1432,10 @@ class Share extends \OC\Share\Constants {
 			}
 			if ( isset($row['uid_owner']) && $row['uid_owner'] != '') {
 				$row['displayname_owner'] = \OCP\User::getDisplayName($row['uid_owner']);
+			}
+			// if User have owned file/folder, Filter out group shares file
+			if($row['share_type'] === self::SHARE_TYPE_GROUP && isset($shareWith) && self::isOwned($shareWith,$row['file_source'])) {
+				continue;
 			}
 
 			$items[$row['id']] = $row;
@@ -1872,38 +1899,7 @@ class Share extends \OC\Share\Constants {
 
 		return false;
 	}
-	/**
-	 * Check Shared File Owned
-	 * 
-	 * @param string $user
-	 * @param integer $source
-	 * @return boolean
-	 */
-	public static function checkOwned($user,$source){
-		$select = 'count(`*PREFIX*share`.`id`) as cnt';
-		$where = ' where (share_with = ? or uid_owner = ?) and item_source = ?';
-		$queryLimit = 1;
-		$query = \OC_DB::prepare('SELECT '.$select.' FROM `*PREFIX*share` '.$where, $queryLimit);
-		$count = 0;
-		
-		$queryArgs[] = $user;
-		$queryArgs[] = $user;
-		$queryArgs[] = $source;
-		
-		$result = $query->execute($queryArgs);
-		
-		if (\OC_DB::isError($result)) {
-			\OC_Log::write('OCP\Share',
-					\OC_DB::getErrorMessage($result) . ', select=' . $select . ' where=' . $where,
-					\OC_Log::ERROR);
-		}
-		
-		if ($row = $result->fetchRow()) {
-			$count = (int)$row['cnt'];
-		}
-		return ($count>0);
-	}
-	
+
 	/**
 	 * construct select statement
 	 * @param int $format
