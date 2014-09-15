@@ -27,7 +27,7 @@ class File {
 		if (\OC_User::isLoggedIn()) {
 			$rootView = new View();
 			$user = \OC::$server->getUserSession()->getUser();
-			Filesystem::initMountPoints($user->getUID());
+			\OC::$server->setupFilesystem(\OC_User::getUser());
 			if (!$rootView->file_exists('/' . $user->getUID() . '/cache')) {
 				$rootView->mkdir('/' . $user->getUID() . '/cache');
 			}

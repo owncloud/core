@@ -35,7 +35,7 @@ class Shared_Updater {
 		// $path points to the mount point which is a virtual folder, so we start with
 		// the parent
 		$path = '/files' . dirname($path);
-		\OC\Files\Filesystem::initMountPoints($user);
+		\OC::$server->setupFilesystem($user);
 		$view = new \OC\Files\View('/' . $user);
 		if ($view->file_exists($path)) {
 			while ($path !== dirname($path)) {

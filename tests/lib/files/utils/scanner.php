@@ -64,7 +64,8 @@ class Scanner extends \Test\TestCase {
 		$storage->file_put_contents('foo.txt', 'qwerty');
 		$storage->file_put_contents('folder/bar.txt', 'qwerty');
 
-		$scanner = new TestScanner('', \OC::$server->getDatabaseConnection());
+		$userFolder = $this->getMock('\OCP\Files\Folder');
+		$scanner = new TestScanner('', \OC::$server->getDatabaseConnection(), $userFolder);
 		$scanner->addMount($mount);
 
 		$scanner->scan('');
@@ -86,7 +87,8 @@ class Scanner extends \Test\TestCase {
 		$storage->file_put_contents('foo.txt', 'qwerty');
 		$storage->file_put_contents('folder/bar.txt', 'qwerty');
 
-		$scanner = new TestScanner('', \OC::$server->getDatabaseConnection());
+		$userFolder = $this->getMock('\OCP\Files\Folder');
+		$scanner = new TestScanner('', \OC::$server->getDatabaseConnection(), $userFolder);
 		$scanner->addMount($mount);
 
 		$scanner->scan('');
@@ -113,7 +115,8 @@ class Scanner extends \Test\TestCase {
 		$storage->file_put_contents('foo.txt', 'qwerty');
 		$storage->file_put_contents('folder/bar.txt', 'qwerty');
 
-		$scanner = new TestScanner('', \OC::$server->getDatabaseConnection());
+		$userFolder = $this->getMock('\OCP\Files\Folder');
+		$scanner = new TestScanner('', \OC::$server->getDatabaseConnection(), $userFolder);
 		$originalPropagator = $scanner->getPropagator();
 		$scanner->setPropagator($propagator);
 		$scanner->addMount($mount);

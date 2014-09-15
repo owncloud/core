@@ -55,15 +55,22 @@ class Server extends SimpleContainer implements IServerContainer {
 			$tagMapper = $c->query('TagMapper');
 			return new TagManager($tagMapper, $c->getUserSession());
 		});
+		$this->registerService('FilesystemFactory', function (Server $c) {
+			\OC_App::loadApps(array('filesystem'));
+			$config = $c->getConfig();
+			if ($config->getSystemValue('objectstore', false)) {
+				return new \OC\Files\ObjectStoreFactory($config);
+			} else {
+				return new \OC\Files\Factory($config);
+			}
+		});
 		$this->registerService('RootFolder', function (Server $c) {
-			// TODO: get user and user manager from container as well
-			$user = \OC_User::getUser();
-			/** @var $c SimpleContainer */
-			$userManager = $c->query('UserManager');
-			$user = $userManager->get($user);
-			$manager = \OC\Files\Filesystem::getMountManager();
-			$view = new View();
-			return new Root($manager, $view, $user);
+			$userSession = $c->getUserSession();
+			$user = $userSession->getUser();
+			$factory = $c->getFilesystemFactory();
+			\OC\Files\Filesystem::$activeUser = $user;
+			\OC\Files\Filesystem::$loaded = true;
+			return $factory->getRoot();
 		});
 		$this->registerService('UserManager', function (Server $c) {
 			$config = $c->getConfig();
@@ -387,12 +394,36 @@ class Server extends SimpleContainer implements IServerContainer {
 	}
 
 	/**
+	 * Returns filesystem factory
+	 *
+	 * @return \OC\Files\Factory
+	 */
+	function getFilesystemFactory() {
+		return $this->query('FilesystemFactory');
+	}
+
+	/**
 	 * Returns the root folder of ownCloud's data directory
 	 *
 	 * @return \OCP\Files\Folder
 	 */
 	function getRootFolder() {
 		return $this->query('RootFolder');
+	}
+
+	/**
+	 * Setup the filesystem for a user
+	 *
+	 * @param string $userId
+	 */
+	function setupFilesystem($userId) {
+		/** @var \OC\Files\Node\Root $root */
+		$this->getRootFolder();
+		$user = $this->getUserManager()->get($userId);
+		if ($user) {
+			$factory = \OC::$server->getFilesystemFactory();
+			$factory->getUserFolder($user);
+		}
 	}
 
 	/**
@@ -407,42 +438,13 @@ class Server extends SimpleContainer implements IServerContainer {
 			if (!$user) {
 				return null;
 			}
-			$userId = $user->getUID();
 		} else {
 			$user = $this->getUserManager()->get($userId);
 		}
-		\OC\Files\Filesystem::initMountPoints($userId);
-		$dir = '/' . $userId;
-		$root = $this->getRootFolder();
-		$folder = null;
+		$factory = $this->getFilesystemFactory();
 
-		if (!$root->nodeExists($dir)) {
-			$folder = $root->newFolder($dir);
-		} else {
-			$folder = $root->get($dir);
-		}
-
-		$dir = '/files';
-		if (!$folder->nodeExists($dir)) {
-			$folder = $folder->newFolder($dir);
-
-			if (\OCP\App::isEnabled('files_encryption')) {
-				// disable encryption proxy to prevent recursive calls
-				$proxyStatus = \OC_FileProxy::$enabled;
-				\OC_FileProxy::$enabled = false;
-			}
-
-			\OC_Util::copySkeleton($user, $folder);
-
-			if (\OCP\App::isEnabled('files_encryption')) {
-				// re-enable proxy - our work is done
-				\OC_FileProxy::$enabled = $proxyStatus;
-			}
-		} else {
-			$folder = $folder->get($dir);
-		}
-
-		return $folder;
+		$userFolder = $factory->getUserFolder($user);
+		return $userFolder->get('/files');
 	}
 
 	/**

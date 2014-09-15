@@ -48,7 +48,7 @@ class Test_OC_Files_App_Rename extends \Test\TestCase {
 		\OC_User::createUser(self::$user, 'password');
 		\OC_User::setUserId(self::$user);
 
-		\OC\Files\Filesystem::init(self::$user, '/' . self::$user . '/files');
+		\OC_Util::setupFS(self::$user);
 
 		$l10nMock = $this->getMock('\OC_L10N', array('t'), array(), '', false);
 		$l10nMock->expects($this->any())

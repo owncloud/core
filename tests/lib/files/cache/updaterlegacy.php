@@ -34,7 +34,9 @@ class UpdaterLegacy extends \Test\TestCase {
 
 	private static $user;
 
-	protected function setUp() {
+	private $userBackend;
+
+	public function setUp() {
 		parent::setUp();
 
 		// remember files_encryption state
@@ -61,10 +63,14 @@ class UpdaterLegacy extends \Test\TestCase {
 			self::$user = $this->getUniqueID();
 		}
 
-		\OC_User::createUser(self::$user, 'password');
+		if (!$this->userBackend) {
+			$this->userBackend = new \OC_User_Dummy();
+			$this->userBackend->createUser(self::$user, 'foo');
+		}
+		\OC_User::useBackend($this->userBackend);
 		\OC_User::setUserId(self::$user);
 
-		Filesystem::init(self::$user, '/' . self::$user . '/files');
+		\OC_Util::setupFS(self::$user);
 
 		Filesystem::clearMounts();
 		Filesystem::mount($this->storage, array(), '/' . self::$user . '/files');

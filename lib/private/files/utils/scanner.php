@@ -40,13 +40,20 @@ class Scanner extends PublicEmitter {
 	protected $db;
 
 	/**
+	 * @var \OCP\Files\Folder
+	 */
+	protected $userFolder;
+
+	/**
 	 * @param string $user
 	 * @param \OCP\IDBConnection $db
+	 * @param \OCP\Files\Folder $userFolder
 	 */
-	public function __construct($user, $db) {
+	public function __construct($user, $db, $userFolder) {
 		$this->user = $user;
 		$this->propagator = new ChangePropagator(new View(''));
 		$this->db = $db;
+		$this->userFolder = $userFolder;
 	}
 
 	/**
@@ -56,12 +63,11 @@ class Scanner extends PublicEmitter {
 	 * @return \OC\Files\Mount\MountPoint[]
 	 */
 	protected function getMounts($dir) {
-		//TODO: move to the node based fileapi once that's done
-		\OC_Util::tearDownFS();
-		\OC_Util::setupFS($this->user);
-		$absolutePath = Filesystem::getView()->getAbsolutePath($dir);
+		/** @var \OC\Files\Node\Root $root */
+		$root = $this->userFolder->getRoot();
+		$mountManager = $root->getMountManager();
+		$absolutePath=$this->userFolder->getFullPath($dir);
 
-		$mountManager = Filesystem::getMountManager();
 		$mounts = $mountManager->findIn($absolutePath);
 		$mounts[] = $mountManager->find($absolutePath);
 		$mounts = array_reverse($mounts); //start with the mount of $dir

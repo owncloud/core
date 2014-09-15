@@ -10,6 +10,7 @@ namespace Test\Files\Node;
 
 use OC\Files\Cache\Cache;
 use OC\Files\Node\Root;
+use OC\Files\Storage\Loader;
 use OC\Files\Storage\Temporary;
 use OC\Files\View;
 use OC\User\User;
@@ -37,7 +38,7 @@ class IntegrationTests extends \Test\TestCase {
 		parent::setUp();
 
 		$this->originalStorage = \OC\Files\Filesystem::getStorage('/');
-		\OC\Files\Filesystem::init('', '');
+		\OC_Util::setupFS();
 		\OC\Files\Filesystem::clearMounts();
 		$manager = \OC\Files\Filesystem::getMountManager();
 
@@ -51,7 +52,7 @@ class IntegrationTests extends \Test\TestCase {
 		$user = new User($this->getUniqueID('user'), new \OC_User_Dummy);
 		\OC_User::setUserId($user->getUID());
 		$this->view = new View();
-		$this->root = new Root($manager, $this->view, $user);
+		$this->root = new \OC\Files\Node\Root($manager, new Loader(), $this->view);
 		$storage = new Temporary(array());
 		$subStorage = new Temporary(array());
 		$this->storages[] = $storage;

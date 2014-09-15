@@ -32,9 +32,7 @@ class Preview extends TestCase {
 		// this gets called by each test in this test class
 		$this->user = $this->getUniqueID();
 		\OC_User::setUserId($this->user);
-		\OC\Files\Filesystem::init($this->user, '/' . $this->user . '/files');
-
-		\OC\Files\Filesystem::mount('OC\Files\Storage\Temporary', array(), '/');
+		$this->clearFileSystem();
 
 		$this->rootView = new \OC\Files\View('');
 		$this->rootView->mkdir('/'.$this->user);

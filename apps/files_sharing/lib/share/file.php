@@ -74,7 +74,7 @@ class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 			return $target;
 		}
 
-		\OC\Files\Filesystem::initMountPoints($shareWith);
+		\OC::$server->setupFilesystem($shareWith);
 		$view = new \OC\Files\View('/' . $shareWith . '/files');
 
 		if (!$view->is_dir($shareFolder)) {

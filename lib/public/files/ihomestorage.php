@@ -20,5 +20,10 @@
 namespace OCP\Files;
 
 interface IHomeStorage {
-
+	/**
+	 * Get the user to which the home storage belongs
+	 *
+	 * @return \OCP\IUser
+	 */
+	public function getUser();
 }

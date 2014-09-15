@@ -27,7 +27,7 @@ class Test_Helper_Storage extends \Test\TestCase {
 		$this->storage = \OC\Files\Filesystem::getStorage('/');
 		\OC\Files\Filesystem::tearDown();
 		\OC_User::setUserId($this->user);
-		\OC\Files\Filesystem::init($this->user, '/' . $this->user . '/files');
+		\OC_Util::setupFS($this->user);
 		\OC\Files\Filesystem::clearMounts();
 
 		$this->storageMock = null;

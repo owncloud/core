@@ -8,6 +8,7 @@
 
 namespace Test\Files\Node;
 
+use OC\Files\Storage\StorageFactory as Loader;
 use OC\Files\FileInfo;
 
 class Node extends \Test\TestCase {
@@ -294,7 +295,7 @@ class Node extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = new \OC\Files\Node\Root($manager, $view, $this->user);
+		$root = new \OC\Files\Node\Root($manager, new Loader(), $view);
 		$root->listen('\OC\Files', 'preTouch', $preListener);
 		$root->listen('\OC\Files', 'postTouch', $postListener);
 
