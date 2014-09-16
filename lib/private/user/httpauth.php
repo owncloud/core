@@ -149,7 +149,7 @@ class OC_User_HTTPAuth extends OC_User_Backend implements \OCP\Authentication\IA
 		setcookie('oc_http_auth_user', '', time()-3600, \OC::$WEBROOT);
 		setcookie('oc_http_auth_token', '', time()-3600, \OC::$WEBROOT);
 		$storedToken = \OC_Appconfig::getValue('core', 'http_auth_token_' . $authUser);
-		\OC_Appconfig::deleteKey('core', 'http_auth_token' . $authUser);
+		\OC_Appconfig::deleteKey('core', 'http_auth_token_' . $authUser);
 		
 		// test that the tokens match.
 		if ($authToken === $storedToken) {
@@ -170,13 +170,14 @@ class OC_User_HTTPAuth extends OC_User_Backend implements \OCP\Authentication\IA
 	 * Make sure all cookies (and stored token) are cleaned up on OC logout
 	 */
 	public static function httpLogout() {
+		$user = OCP\User::getUser();
 		unset($_COOKIE["oc_http_auth_user"]);
 		unset($_COOKIE["oc_http_auth_token"]);
 		unset($_COOKIE["oc_http_auth_identified"]);
 		setcookie('oc_http_auth_user', '', time()-3600, \OC::$WEBROOT);
 		setcookie('oc_http_auth_token', '', time()-3600, \OC::$WEBROOT);
 		setcookie('oc_http_auth_identified', '', time()-3600, \OC::$WEBROOT);
-		\OC_Appconfig::deleteKey('core', 'http_auth_token');
+		\OC_Appconfig::deleteKey('core', 'http_auth_token_' . $user);
 		// If the login was HTTP authed, set oc_http_auth_status to a value
 		// that will be treated as 'failure' by isSessionActive() - this lets
 		// an HTTP-authed user switch to password auth...
