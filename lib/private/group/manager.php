@@ -191,7 +191,6 @@ class Manager extends PublicEmitter implements IGroupManager {
 		$groupIds = array();
 		foreach ($this->backends as $backend) {
 			$groupIds = array_merge($groupIds, $backend->getUserGroups($user->getUID()));
-			
 		}
 		return $groupIds;
 	}
@@ -210,7 +209,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 			return array();
 		}
 		// only user backends have the capability to do a complex search for users
-		$groupUsers  = $group->searchUsers('', $limit, $offset);
+		$groupUsers  = $group->searchUsers($search, $limit, $offset);
 		$search = trim($search);
 		if(!empty($search)) {
 			//TODO: for OC 7 earliest: user backend should get a method to check selected users against a pattern

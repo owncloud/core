@@ -365,7 +365,7 @@ class Manager extends \PHPUnit_Framework_TestCase {
 
 		$backend->expects($this->once())
 			->method('usersInGroup')
-			->with('testgroup', '', -1, 0)
+			->with('testgroup', 'user3', -1, 0)
 			->will($this->returnValue(array('user2', 'user33')));
 
 		/**
