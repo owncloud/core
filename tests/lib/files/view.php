@@ -581,6 +581,9 @@ class View extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLongPath() {
+		if (!getenv('EXECUTE_LONG_PATH')) {
+			$this->markTestSkipped('testLongPath() is skipped because execution takes forever.');
+		}
 
 		$storage = new \OC\Files\Storage\Temporary(array());
 		\OC\Files\Filesystem::mount($storage, array(), '/');
