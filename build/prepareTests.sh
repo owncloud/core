@@ -26,7 +26,7 @@ do
   shift
   case $key in
     --help)
-      echo "usage $0 -d mysql -h localhost -n oc_testing -u user -p password -a admin_pass $0 --help --oc_version OC50 --rc_version RC07 --db_type mysql --db_name oc_testing --db_user root --db_password password"
+      echo "usage $0 -d mysql -h localhost -n oc_testing -u user -p password -a admin_pass“
       exit 0
       ;;
     -d|--db_type)        
