@@ -149,7 +149,7 @@ class OC_User_HTTPAuth extends OC_User_Backend implements \OCP\Authentication\IA
 		setcookie('oc_http_auth_user', '', time()-3600, \OC::$WEBROOT);
 		setcookie('oc_http_auth_token', '', time()-3600, \OC::$WEBROOT);
 		$storedToken = \OC_Appconfig::getValue('core', 'http_auth_token_' . $authUser);
-		\OC_Appconfig::deleteKey('core', 'http_auth_token');
+		\OC_Appconfig::deleteKey('core', 'http_auth_token' . $authUser);
 		
 		// test that the tokens match.
 		if ($authToken === $storedToken) {
