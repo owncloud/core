@@ -11,7 +11,7 @@ namespace OC\Files\Storage;
 use OCP\Files\StorageNotAvailableException;
 use Sabre\DAV\Exception;
 
-class DAV extends \OC\Files\Storage\Common {
+class DAV extends Common {
 	protected $password;
 	protected $user;
 	protected $host;
@@ -167,32 +167,16 @@ class DAV extends \OC\Files\Storage\Common {
 		switch ($mode) {
 			case 'r':
 			case 'rb':
-				if (!$this->file_exists($path)) {
-					return false;
-				}
-				//straight up curl instead of sabredav here, sabredav put's the entire get result in memory
-				$curl = curl_init();
-				$fp = fopen('php://temp', 'r+');
-				curl_setopt($curl, CURLOPT_USERPWD, $this->user . ':' . $this->password);
-				curl_setopt($curl, CURLOPT_URL, $this->createBaseUri() . $this->encodePath($path));
-				curl_setopt($curl, CURLOPT_FILE, $fp);
-				curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-				if ($this->secure === true) {
-					curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
-					curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
-					if ($this->certPath) {
-						curl_setopt($curl, CURLOPT_CAINFO, $this->certPath);
-					}
-				}
-
-				curl_exec($curl);
-				$statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-				if ($statusCode !== 200) {
-					\OCP\Util::writeLog("webdav client", 'curl GET ' . curl_getinfo($curl, CURLINFO_EFFECTIVE_URL) . ' returned status code ' . $statusCode, \OCP\Util::ERROR);
-				}
-				curl_close($curl);
-				rewind($fp);
-				return $fp;
+				$auth = sprintf('Authorization: Basic %s',
+					base64_encode($this->user . ':' . $this->password));
+				$context = stream_context_create(array(
+					'http' => array(
+						'method' => 'GET',
+						'header' => $auth
+					)
+				));
+				$url = $this->createBaseUri() . $this->encodePath($path);
+				return fopen($url, $mode, false, $context);
 			case 'w':
 			case 'wb':
 			case 'a':
