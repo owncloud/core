@@ -10,7 +10,9 @@
 
 DATABASENAME=oc_autotest
 DATABASEUSER=oc_autotest
+DATABASEPASS=oc_autotest
 ADMINLOGIN=admin
+ADMINPASS=admin
 BASEDIR=$PWD
 
 # check for database parameter
@@ -66,7 +68,7 @@ if [ "$1" == "sqlite" ] ; then
 	'dbtype' => 'sqlite',
 	'dbtableprefix' => 'oc_',
 	'adminlogin' => '$ADMINLOGIN',
-	'adminpass' => 'admin',
+	'adminpass' => '$ADMINPASS',
 	'directory' => '$DATADIR',
 );
 DELIM
@@ -83,12 +85,12 @@ if [ "$1" == "mysql" ] ; then
 	'dbtype' => 'mysql',
 	'dbtableprefix' => 'oc_',
 	'adminlogin' => '$ADMINLOGIN',
-	'adminpass' => 'admin',
+	'adminpass' => '$ADMINPASS',
 	'directory' => '$DATADIR',
 	'dbuser' => '$DATABASEUSER',
 	'dbname' => '$DATABASENAME',
-	'dbhost' => 'localhost',
-	'dbpass' => 'owncloud',
+	'dbhost' => '$DATABASEHOST',
+	'dbpass' => '$DATABASEPASS',
 );
 DELIM
 fi
@@ -104,12 +106,12 @@ if [ "$1" == "pgsql" ] ; then
 	'dbtype' => 'pgsql',
 	'dbtableprefix' => 'oc_',
 	'adminlogin' => '$ADMINLOGIN',
-	'adminpass' => 'admin',
+	'adminpass' => '$ADMINPASS',
 	'directory' => '$DATADIR',
 	'dbuser' => '$DATABASEUSER',
 	'dbname' => '$DATABASENAME',
-	'dbhost' => 'localhost',
-	'dbpass' => 'owncloud',
+	'dbhost' => '$DATABASEHOST',
+	'dbpass' => '$DATABASEPASS',
 );
 DELIM
 
