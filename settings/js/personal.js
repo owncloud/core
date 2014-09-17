@@ -123,7 +123,7 @@ function avatarResponseHandler(data) {
 
 $(document).ready(function(){
 	$("#passwordbutton").click( function(){
-		if ($('#pass1').val() !== '' && $('#pass2').val() !== '') {
+		if ($('#pass1').val() !== '' && $('#pass2').val() !== '' && $('#pass3').val() !== '') {
 			// Serialize the data
 			var post = $( "#passwordform" ).serialize();
 			$('#passwordchanged').hide();
@@ -133,12 +133,13 @@ $(document).ready(function(){
 				if( data.status === "success" ){
 					$('#pass1').val('');
 					$('#pass2').val('');
+					$('#pass3').val('');
 					$('#passwordchanged').show();
 				} else{
 					if (typeof(data.data) !== "undefined") {
 						$('#passworderror').html(data.data.message);
 					} else {
-						$('#passworderror').html(t('Unable to change password'));
+						$('#passworderror').html(t('settings', 'Unable to change password'));
 					}
 					$('#passworderror').show();
 				}
@@ -146,6 +147,7 @@ $(document).ready(function(){
 			return false;
 		} else {
 			$('#passwordchanged').hide();
+			$('#passworderror').html(t('settings', 'Please fill every field'));
 			$('#passworderror').show();
 			return false;
 		}

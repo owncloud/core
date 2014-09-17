@@ -8,6 +8,10 @@
 				<label for="password" class="infield"><?php echo $l->t( 'New password' ); ?></label>
 				<input type="password" name="password" id="password" value="" required />
 			</p>
+			<p class="infield">
+				<label for="confirm-password" class="infield"><?php echo $l->t( 'Confirm password' ); ?></label>
+				<input type="password" name="confirm-password" id="confirm-password" value="" required />
+			</p>
 			<input type="submit" id="submit" value="<?php echo $l->t('Reset password'); ?>" />
 		<?php endif; ?>
 	</fieldset>

@@ -12,15 +12,28 @@ class Controller {
 		\OC_App::loadApps();
 
 		$username = \OC_User::getUser();
+		$confirmpassword = isset($_POST['confirm-password']) ? $_POST['confirm-password'] : null;
 		$password = isset($_POST['personal-password']) ? $_POST['personal-password'] : null;
 		$oldPassword = isset($_POST['oldpassword']) ? $_POST['oldpassword'] : '';
 
+		if (	is_null($confirmpassword) || empty($confirmpassword) ||
+			is_null($password) || empty($password) ||
+			is_null($oldPassword) || empty($oldPassword)) {
+			$l = new \OC_L10n('settings');
+			\OC_JSON::error(array("data" => array("message" => $l->t("Please fill every field")) ));
+			exit();
+		}
+		if ($confirmpassword !== $password) {
+			$l = new \OC_L10n('settings');
+			\OC_JSON::error(array("data" => array("message" => $l->t("Password and Confirm Password must be equal")) ));
+			exit();
+		}
 		if (!\OC_User::checkPassword($username, $oldPassword)) {
 			$l = new \OC_L10n('settings');
 			\OC_JSON::error(array("data" => array("message" => $l->t("Wrong password")) ));
 			exit();
 		}
-		if (!is_null($password) && \OC_User::setPassword($username, $password)) {
+		if (\OC_User::setPassword($username, $password)) {
 			\OC_JSON::success();
 		} else {
 			\OC_JSON::error();
