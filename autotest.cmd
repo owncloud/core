@@ -10,16 +10,7 @@
 set DATADIR=data-autotest
 set BASEDIR=%~dp0
 
-:: create autoconfig for sqlite, mysql, postgresql and mssql
-echo ^<?php                                      > .\tests\autoconfig-sqlite.php
-echo $AUTOCONFIG ^= array ^(                     >> .\tests\autoconfig-sqlite.php
-echo  'installed' ^=^> false^,                   >> .\tests\autoconfig-sqlite.php
-echo  'dbtype' ^=^> 'sqlite'^,                   >> .\tests\autoconfig-sqlite.php
-echo  'dbtableprefix' ^=^> 'oc_'^,               >> .\tests\autoconfig-sqlite.php
-echo  'adminlogin' ^=^> 'admin'^,                >> .\tests\autoconfig-sqlite.php
-echo  'adminpass' ^=^> 'admin'^,                 >> .\tests\autoconfig-sqlite.php
-echo  'directory' ^=^> '%BASEDIR%%DATADIR%'^,    >> .\tests\autoconfig-sqlite.php
-echo ^)^;                                        >> .\tests\autoconfig-sqlite.php
+:: create autoconfig for mysql, postgresql and mssql
 
 echo ^<?php                                      > .\tests\autoconfig-mysql.php
 echo $AUTOCONFIG ^= array ^(                     >> .\tests\autoconfig-mysql.php
@@ -70,7 +61,6 @@ echo localhost:5432:*:oc_autotest:owncloud > %APPDATA%\postgresql\pgpass.conf
 ::
 if [%1] == [] (
 	echo "Running on all database backends"
-	call:execute_tests "sqlite"
 	call:execute_tests "mysql"
 	call:execute_tests "mssql"
 	::call:execute_tests "ora"
