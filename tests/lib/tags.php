@@ -117,7 +117,7 @@ class Test_Tags extends PHPUnit_Framework_TestCase {
 		$defaultTags = array('Friends', 'Family', 'Wrok', 'Other');
 		$tagger = $this->tagMgr->load($this->objectType, $defaultTags);
 
-		$this->assertTrue($tagger->rename('Wrok', 'Work'));
+		$this->assertTrue((bool)$tagger->rename('Wrok', 'Work'));
 		$this->assertTrue($tagger->hasTag('Work'));
 		$this->assertFalse($tagger->hastag('Wrok'));
 		$this->assertFalse($tagger->rename('Wrok', 'Work'));
