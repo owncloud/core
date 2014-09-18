@@ -163,14 +163,20 @@ class OC_Request {
 	* Returns the server protocol
 	* @return string the server protocol
 	*
-	* Returns the server protocol. It respects reverse proxy servers and load balancers
+	* Returns the server protocol. It respects one or more reverse proxies servers
+	* and load balancers
 	*/
 	public static function serverProtocol() {
 		if(OC_Config::getValue('overwriteprotocol', '') !== '' and self::isOverwriteCondition('protocol')) {
 			return OC_Config::getValue('overwriteprotocol');
 		}
 		if (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
-			$proto = strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']);
+			if (strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], ",") !== false) {
+				$parts = explode(',', $_SERVER['HTTP_X_FORWARDED_PROTO']);
+				$proto = strtolower(trim(current($parts)));
+			} else {
+				$proto = strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']);
+			}
 			// Verify that the protocol is always HTTP or HTTPS
 			// default to http if an invalid value is provided
 			return $proto === 'https' ? 'https' : 'http';
