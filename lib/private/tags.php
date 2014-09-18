@@ -297,8 +297,7 @@ class Tags extends Mapper implements \OCP\ITags {
 			return false;
 		}
 
-		$key = $this->array_searchi($from, $this->tags); // FIXME: owner. or renameById() ?
-		if($key === false) {
+		if(($key = $this->getTagByNameOrId($from)) === false) {
 			\OCP\Util::writeLog('core', __METHOD__.', tag: ' . $from. ' does not exist', \OCP\Util::DEBUG);
 			return false;
 		}
@@ -583,7 +582,7 @@ class Tags extends Mapper implements \OCP\ITags {
 	/**
 	* Delete tags from the database.
 	*
-	* @param string[] $names An array of tags to delete
+	* @param string[] $names An array of tags (names or IDs) to delete
 	* @return bool Returns false on error
 	*/
 	public function delete($names) {
@@ -599,8 +598,7 @@ class Tags extends Mapper implements \OCP\ITags {
 		foreach($names as $name) {
 			$id = null;
 
-			if($this->hasTag($name)) {
-				$key = $this->array_searchi($name, $this->tags);
+			if (($key = $this->getTagByNameOrId($name)) !== false) {
 				$tag = $this->tags[$key];
 				$id = $tag->getId();
 				unset($this->tags[$key]);
@@ -657,11 +655,29 @@ class Tags extends Mapper implements \OCP\ITags {
 	* Get a tag's ID.
 	*
 	* @param string $name The tag name to look for.
-	* @return string The tag's id or false if it hasn't been saved yet.
+	* @return string|bool The tag's id or false if it hasn't been saved yet.
 	*/
 	private function getTagId($name) {
 		if (($key = $this->array_searchi($name, $this->tags)) === false)
 			return false;
 		return $this->tags[$key]->getId();
+	}
+
+	/**
+	* Get a tag by its name or ID.
+	*
+	* @param string $tag The tag name or ID to look for.
+	* @return integer|bool The tag object's offset within the $this->tags
+	*                      array or false if it doesn't exist.
+	*/
+	private function getTagByNameOrId($tag) {
+		if (is_numeric($tag))
+			$search = 'id';
+		else
+			$search = 'category';
+
+		if (($key = $this->array_searchi($tag, $this->tags, $search)) === false)
+			return false;
+		return $key;
 	}
 }
