@@ -713,9 +713,6 @@ class OC {
 			self::checkUpgrade();
 		}
 
-		// Test it the user is already authenticated using Apaches AuthType Basic... very usable in combination with LDAP
-		OC::tryBasicAuthLogin();
-
 		if (!self::$CLI and (!isset($_GET["logout"]) or ($_GET["logout"] !== 'true'))) {
 			try {
 				if (!OC_Config::getValue('maintenance', false)) {
@@ -860,7 +857,8 @@ class OC {
 		} // remember was checked after last login
 		elseif (OC::tryRememberLogin()) {
 			$error[] = 'invalidcookie';
-		} // logon via web form
+		} // logon via web form or basic auth
+		elseif (OC::tryBasicAuthLogin()) {}
 		elseif (OC::tryFormLogin()) {
 			$error[] = 'invalidpassword';
 			if ( OC_Config::getValue('log_authfailip', false) ) {
