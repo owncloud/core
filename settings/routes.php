@@ -6,8 +6,18 @@
  * See the COPYING-README file.
  */
 
-/** @var $this OCP\Route\IRouter */
+namespace OC\Settings;
 
+$application = new Application();
+$application->registerRoutes($this, array(
+	'routes' => array(
+		array('name' => 'ChangePassword#changePersonalPassword', 'url' => '/settings/personal/changepassword', 'verb' => 'POST'),
+		array('name' => 'ChangePassword#changeUserPassword', 'url' => '/settings/users/changepassword', 'verb' => 'POST')
+	)
+));
+
+
+/** @var $this \OCP\Route\IRouter */
 // Settings pages
 $this->create('settings_help', '/settings/help')
 	->actionInclude('settings/help.php');
@@ -43,17 +53,11 @@ $this->create('settings_ajax_togglesubadmins', '/settings/ajax/togglesubadmins.p
 	->actionInclude('settings/ajax/togglesubadmins.php');
 $this->create('settings_ajax_removegroup', '/settings/ajax/removegroup.php')
 	->actionInclude('settings/ajax/removegroup.php');
-$this->create('settings_users_changepassword', '/settings/users/changepassword')
-	->post()
-	->action('OC\Settings\ChangePassword\Controller', 'changeUserPassword');
 $this->create('settings_ajax_changedisplayname', '/settings/ajax/changedisplayname.php')
 	->actionInclude('settings/ajax/changedisplayname.php');
 $this->create('settings_ajax_changegorupname', '/settings/ajax/changegroupname.php')
 	->actionInclude('settings/ajax/changegroupname.php');	
 // personal
-$this->create('settings_personal_changepassword', '/settings/personal/changepassword')
-	->post()
-	->action('OC\Settings\ChangePassword\Controller', 'changePersonalPassword');
 $this->create('settings_ajax_lostpassword', '/settings/ajax/lostpassword.php')
 	->actionInclude('settings/ajax/lostpassword.php');
 $this->create('settings_ajax_setlanguage', '/settings/ajax/setlanguage.php')

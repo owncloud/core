@@ -173,6 +173,25 @@ class Manager extends PublicEmitter implements IUserManager {
 	}
 
 	/**
+	 * Changes the password for the specified user
+	 *
+	 * @param string $loginname
+	 * @param string $password
+	 * @throws \Exception If the password cannot be changed
+	 * @return bool True on success
+	 */
+	public function setPassword($loginname, $password) {
+		$result = \OC_User::setPassword($loginname, $password);
+
+		if($result === false) {
+			throw new \Exception('Password could not be changed.');
+		}
+
+		return true;
+	}
+
+
+	/**
 	 * search by user id
 	 *
 	 * @param string $pattern
