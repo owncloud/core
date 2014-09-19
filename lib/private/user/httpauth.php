@@ -101,29 +101,26 @@ class OC_User_HTTPAuth extends OC_User_Backend implements \OCP\Authentication\IA
 	 */
 	public function isSessionActive() {
 		if (OC_User::isLoggedIn()) {
-			if (!empty($_COOKIE["oc_http_auth_status"])) {
-				if ($_COOKIE["oc_http_auth_status"] === "authed") {
-					return true;
-				}
+			if (!empty($_COOKIE["oc_http_auth_status"]) && $_COOKIE["oc_http_auth_status"] === "authed") {
+				return true;
 			}
 			return false;
-		} else {
-			$requestUri = urldecode(OC_Request::requestUri());
-			if (strpos($requestUri, 'remote.php') !== false) {
-				return false;
-			}
-			if (empty($_COOKIE["oc_http_auth_status"]) || ($_COOKIE["oc_http_auth_status"] === "authed")) {
-				setcookie("oc_http_auth_status", "init", time() + 120, \OC::$WEBROOT);
-				header('Location: ' . OC_Helper::linkToAbsolute('', 'server_auth.php',
-						array('redirect_url' => OC_Request::requestUri())
-					));
-				exit();
-			} else if ($_COOKIE["oc_http_auth_status"] === "preauth") {
-				return true;
-			} else {
-				return false;
-			}
 		}
+		if (!empty($_COOKIE["oc_http_auth_status"]) && $_COOKIE["oc_http_auth_status"] === "preauth") {
+			return true;
+		}
+		$requestUri = urldecode(OC_Request::requestUri());
+		if (strpos($requestUri, 'remote.php') !== false) {
+			return false;
+		}
+		if (empty($_COOKIE["oc_http_auth_status"]) || ($_COOKIE["oc_http_auth_status"] === "authed")) {
+			setcookie("oc_http_auth_status", "init", time() + 120, \OC::$WEBROOT);
+			header('Location: ' . OC_Helper::linkToAbsolute('', 'server_auth.php',
+					array('redirect_url' => OC_Request::requestUri())
+					));
+			exit();
+		}
+		return false;
 	}
 
 	/**
