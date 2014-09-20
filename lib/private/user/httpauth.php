@@ -31,60 +31,59 @@
  *
  * You should configure your web server such that REMOTE_USER will only be set
  * for /server_auth.php if a user has authenticated correctly. You do *not*
- * need to configure server authentication for the rest of ownCloud.
+ * need to configure server authentication for the rest of ownCloud (and you
+ * should not, if you want to allow authentication by other means as a
+ * fallback).
+ *
+ * For optimal functionality, set your web server's 401 ErrorDocument for
+ * server_auth.php to server_auth_failed.php.
  */
 
 OC_Hook::connect('OC_User', 'logout', 'OC_User_HTTPAuth', 'httpLogout');
+OC_Hook::connect('OC_User', 'pre_login', 'OC_User_HTTPAuth', 'httpPreLogin');
+OC_Hook::connect('OC_User', 'post_login', 'OC_User_HTTPAuth', 'httpPostLogin');
 
 class OC_User_HTTPAuth extends OC_User_Backend implements \OCP\Authentication\IApacheBackend {
 	/**
 	 * Has a user been authenticated by the server?
 	 *
 	 * If a user is already logged in, returns 'true' if oc_http_auth_status
-	 * cookie is set to 'authed', indicating the current user authenticated via
-	 * HTTP. Returns 'false' otherwise. Note that it's not safe to assume
-	 * isSessionActive() is only hit during a login procedure; there's a
-	 * couple of other paths that hit it. Handling it this way if a user is
-	 * logged in protects against some failures hit in testing.
+	 * is set to 'authed', indicating the current user authenticated via
+	 * HTTP. Returns 'false' otherwise.
 	 *
 	 * If no user is logged in at present, the following logic occurs.
-	 * 
-	 * 1. If the request URI contains 'remote.php' we assume it's a DAV request
-	 * and bail out, returning 'false'; DAV isn't going to work properly via
-	 * HTTP auth in most (any?) cases. You can trivially 'spoof' this mechanism
-	 * by appending ?remote.php to an otherwise-valid request, but this
-	 * shouldn't be a security issue of any kind because you'd still have to
-	 * auth through some other mechanism to get anywhere after doing that.
 	 *
-	 * 2. If oc_http_auth_status is empty or 'authed', we redirect to the
+	 * 1. If oc_http_auth_status is 'preauth', return 'true'. This indicates the
+	 * HTTP authentication script (server_auth.php) ran on the previous request
+	 * and successfully checked that a user is authenticated and populated
+	 * oc_http_auth_user that will be read by getCurrentUserId() after we
+	 * return 'true'.
+	 *
+	 * 2. If the request URI contains 'remote.php' we assume it's a DAV request
+	 * and bail out, returning 'false'. This is obviously fake-able, but faking
+	 * it doesn't *get* you anywhere, so it's not really a problem.
+	 *
+	 * 3. If oc_http_auth_status is empty or 'authed', we redirect to the
 	 * authentication page, server_auth.php, which does the work of checking
-	 * whether the server has authenticated a user, sets some cookies if one
-	 * is - including setting oc_http_auth_status to 'preauth' - and redirects
-	 * back here (where we'll hit the 'preauth' state below).
+	 * whether the server has authenticated a user, sets oc_http_auth_status to
+	 * 'preauth', sets a session variable to identify the authenticated user,
+	 * and directs back here.
 	 
-	 * Empty indicates a sort of 'base state' - first ever attempt, or first
-	 * attempt for a long time, or after logout or some other condition has
-	 * cleared the cookie.
+	 * Empty indicates a first ever attempt, first attempt for a long time, or
+	 * after logout or some other condition in this backend has cleared the
+	 * variable intentionally to trigger a new HTTP auth attempt.
 	 *
-	 * 'authed' but no user is logged in indicates the OC user session has gone
+	 * 'authed' but no user logged in indicates the OC user session has gone
 	 * away for some reason, and we should run back through the auth process and
-	 * set up a new one.
+	 * set up a new one. This state shouldn't ever get hit, but let's be safe.
 	 *
-	 * Before redirecting, we set oc_http_auth_status to 'init', with a short
-	 * expiry. The point of this is that if server authentication fails on
-	 * server_auth.php, it won't run at all. The server admin can configure its
-	 * 401 error to redirect back here, though, and then we catch the 'init'
-	 * state and treat it as a failure, thus falling through to password
-	 * auth. The short expiry gives the user a couple of minutes to login via
-	 * password auth, otherwise the next reload will try HTTP auth again.
-	 *
-	 * 3. If oc_http_auth_status is 'preauth', return 'true'. This is the
-	 * value set by the HTTP authentication script (server_auth.php) when we
-	 * have run it and it has successfully checked that a user is authenticated
-	 * and populated some other cookies with values that will be read by
-	 * getCurrentUserId(). This is the expected state when we are in the middle
-	 * of HTTP authentication (after we were already hit once and decided to
-	 * hand off to server_auth.php).
+	 * Before redirecting, we set oc_http_auth_status to 'init'. The point of
+	 * this is to catch failed HTTP auth attempts and skip HTTP auth on the next
+	 * try. If server authentication fails on server_auth.php, it may not run at
+	 * all, so we can't rely on being able to set this there. If the server
+	 * admin configures the server as intended, the user will be directed back
+	 * to index.php and so here, and we will catch the 'init' state and fail
+	 * out on this second request.
 	 *
 	 * 4. If oc_http_auth_status is anything else, we treat this as a failure
 	 * and return 'false'. If we're being called as part of an auth/login
@@ -101,20 +100,21 @@ class OC_User_HTTPAuth extends OC_User_Backend implements \OCP\Authentication\IA
 	 */
 	public function isSessionActive() {
 		if (OC_User::isLoggedIn()) {
-			if (!empty($_COOKIE["oc_http_auth_status"]) && $_COOKIE["oc_http_auth_status"] === "authed") {
+			if (!empty($_SESSION["oc_http_auth_status"]) && $_SESSION["oc_http_auth_status"] === "authed") {
 				return true;
 			}
 			return false;
 		}
-		if (!empty($_COOKIE["oc_http_auth_status"]) && $_COOKIE["oc_http_auth_status"] === "preauth") {
+		if (!empty($_SESSION["oc_http_auth_status"]) && $_SESSION["oc_http_auth_status"] === "preauth") {
 			return true;
 		}
 		$requestUri = urldecode(OC_Request::requestUri());
 		if (strpos($requestUri, 'remote.php') !== false) {
 			return false;
 		}
-		if (empty($_COOKIE["oc_http_auth_status"]) || ($_COOKIE["oc_http_auth_status"] === "authed")) {
-			setcookie("oc_http_auth_status", "init", time() + 120, \OC::$WEBROOT);
+		if (empty($_SESSION["oc_http_auth_status"]) || ($_SESSION["oc_http_auth_status"] === "authed")) {
+			$_SESSION['oc_http_auth_status'] = "init";
+			session_write_close();
 			header('Location: ' . OC_Helper::linkToAbsolute('', 'server_auth.php',
 					array('redirect_url' => OC_Request::requestUri())
 					));
@@ -138,53 +138,57 @@ class OC_User_HTTPAuth extends OC_User_Backend implements \OCP\Authentication\IA
 	 */
 	public function getCurrentUserId() {
 		$user = NULL;
-		// read in the values server_auth.php gave us, then unset the cookies
-		$authUser = $_COOKIE["oc_http_auth_user"];
-		$authToken = $_COOKIE["oc_http_auth_token"];
-		unset($_COOKIE["oc_http_auth_user"]);
-		unset($_COOKIE["oc_http_auth_token"]);
-		setcookie('oc_http_auth_user', '', time()-3600, \OC::$WEBROOT);
-		setcookie('oc_http_auth_token', '', time()-3600, \OC::$WEBROOT);
-		$storedToken = \OC_Appconfig::getValue('core', 'http_auth_token_' . $authUser);
-		\OC_Appconfig::deleteKey('core', 'http_auth_token_' . $authUser);
-		
-		// test that the tokens match.
-		if ($authToken === $storedToken) {
-			if (OC_User::userExists($authUser)) {
-				$user = $authUser;
-				// stolen from user/session.php
-				$expires = time() + \OC_Config::getValue('remember_login_cookie_lifetime', 60 * 60 * 24 * 15);
-				// This should really happen in a postLogin hook, but this is
-				// probably good enough. You could conceivably wind up in a
-				// loop if loginWithApache() somehow failed after this is set.				
-				setcookie("oc_http_auth_status", "authed", $expires, \OC::$WEBROOT);
-			}
+		$session = \OC::$server->getSession();
+		$authUser = $_SESSION["oc_http_auth_user"];
+		if (OC_User::userExists($authUser)) {
+			$user = $authUser;
 		}
 		return $user;
 	}
+
+	/**
+	 * Poke the auth state at pre-login - this helps user flip between HTTP
+	 * auth and fallback. If we are in the HTTP auth path ("preauth"), leave
+	 * it alone, it'll get set to "authed" in the post-login hook. Otherwise,
+	 * we're in a fallback path, so unset it to make the next attempt try
+	 * HTTP auth again.
+	 */
+	public static function httpPreLogin($parameters) {
+		if (!empty($_SESSION["oc_http_auth_status"]) && $_SESSION["oc_http_auth_status"] == "preauth") {
+			return;
+		}
+		$session = \OC::$server->getSession();
+		$session->remove('oc_http_auth_status');
+	}
+
+	/**
+	 * At post-login, if we're on the HTTP auth path, status should now be
+	 * "authed".
+	 */
+	public static function httpPostLogin($parameters) {
+		if (!empty($_SESSION["oc_http_auth_status"]) && $_SESSION["oc_http_auth_status"] == "preauth") {
+			$session = \OC::$server->getSession();
+			$session->set('oc_http_auth_status', "authed");
+		}
+	}
 	
 	/**
-	 * Make sure all cookies (and stored token) are cleaned up on OC logout
+	 * Make sure all session variables are cleaned up on OC logout
 	 */
 	public static function httpLogout() {
+		$session = \OC::$server->getSession();
 		$user = OCP\User::getUser();
-		unset($_COOKIE["oc_http_auth_user"]);
-		unset($_COOKIE["oc_http_auth_token"]);
-		unset($_COOKIE["oc_http_auth_identified"]);
-		setcookie('oc_http_auth_user', '', time()-3600, \OC::$WEBROOT);
-		setcookie('oc_http_auth_token', '', time()-3600, \OC::$WEBROOT);
-		setcookie('oc_http_auth_identified', '', time()-3600, \OC::$WEBROOT);
-		\OC_Appconfig::deleteKey('core', 'http_auth_token_' . $user);
+		$session->remove('oc_http_auth_user');
 		// If the login was HTTP authed, set oc_http_auth_status to a value
 		// that will be treated as 'failure' by isSessionActive() - this lets
 		// an HTTP-authed user switch to password auth...
-		if ($_COOKIE["oc_http_auth_status"] === "authed") {
-			setcookie("oc_http_auth_status", "logout", time() + 120, \OC::$WEBROOT);
+		if (!empty($_SESSION["oc_http_auth_status"]) && $_SESSION["oc_http_auth_status"] === "authed") {
+			$session->set('oc_http_auth_status', "logout");
 		// ...and if it was set to anything else, clear it, which will make
-		// HTTP auth 'active' again for the next pass.
+		// HTTP auth 'active' again for the next pass. pre-login hook should've
+		// done this anyway, but...
 		} else {
-			unset($_COOKIE["oc_http_auth_status"]);
-			setcookie('oc_http_auth_status', '', time()-3600, \OC::$WEBROOT);
+			$session->remove('oc_http_auth_status');
 		}
 	}
 }

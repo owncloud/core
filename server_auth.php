@@ -22,18 +22,7 @@
 
 try {
 	require_once 'lib/base.php';
-	$secure_cookie = \OC_Config::getValue("forcessl", false); //stolen from user/session.php
-	$shortexpires = time() + 120;
-
-	// We set 'init' before coming here to catch the case where this page
-	// 401s and redirects back. If we're running, status is now 'unsure' again,
-	// so let's unset
-	unset($_COOKIE["oc_http_auth_status"]);
-	unset($_COOKIE["oc_http_auth_user"]);
-	unset($_COOKIE["oc_http_auth_token"]);
-	setcookie('oc_http_auth_status', '', time()-3600, \OC::$WEBROOT);
-	setcookie('oc_http_auth_user', '', time()-3600, \OC::$WEBROOT);
-	setcookie('oc_http_auth_token', '', time()-3600, \OC::$WEBROOT);
+	unset($_SESSION["oc_http_auth_user"]);
 
 	// Do we have an authed user?
 	$remoteuser = NULL;
@@ -47,18 +36,16 @@ try {
 	if ($remoteuser) {
 		// Set up stuff to tell index.php there's an authed user (and who it is)
 		// and then send the browser back there
-		$token = \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate(32);
-		setcookie("oc_http_auth_status", "preauth", $shortexpires, \OC::$WEBROOT);
-		setcookie("oc_http_auth_user", $remoteuser, $shortexpires, \OC::$WEBROOT, '', $secure_cookie);
-		setcookie("oc_http_auth_token", $token, $shortexpires, \OC::$WEBROOT, '', $secure_cookie);
-		\OC_Appconfig::setValue('core', 'http_auth_token_' . $remoteuser, $token);
+		$_SESSION['oc_http_auth_status'] = "preauth";
+		$_SESSION['oc_http_auth_user'] = $remoteuser;
 		// This magically seems to redirect to the right place. Thanks, OC.
-		OC_Util::redirectToDefaultPage();
-	} else {
-		setcookie("oc_http_auth_status", "failure", $shortexpires, \OC::$WEBROOT);
+		session_write_close();
 		OC_Util::redirectToDefaultPage();
 	}
-	
+	$_SESSION['oc_http_auth_status'] = "failure";
+	session_write_close();
+	OC_Util::redirectToDefaultPage();
+
 } catch (\OC\ServiceUnavailableException $ex) {
 	OC_Response::setStatus(OC_Response::STATUS_SERVICE_UNAVAILABLE);
 	\OCP\Util::writeLog('server_auth', $ex->getMessage(), \OCP\Util::FATAL);
