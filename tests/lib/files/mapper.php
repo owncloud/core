@@ -34,47 +34,46 @@ class Mapper extends \Test\TestCase {
 		$this->mapper = new \OC\Files\Mapper('D:/');
 	}
 
-	public function slugifyPathData() {
+	public function slugifyData() {
 		return array(
-			// with extension
-			array('D:/text.txt', 'D:/text.txt'),
-			array('D:/text-2.txt', 'D:/text.txt', 2),
-			array('D:/a/b/text.txt', 'D:/a/b/text.txt'),
-
-			// without extension
-			array('D:/text', 'D:/text'),
-			array('D:/text-2', 'D:/text', 2),
-			array('D:/a/b/text', 'D:/a/b/text'),
-
-			// with double dot
-			array('D:/text.text.txt', 'D:/text.text.txt'),
-			array('D:/text.text-2.txt', 'D:/text.text.txt', 2),
-			array('D:/a/b/text.text.txt', 'D:/a/b/text.text.txt'),
-
-			// foldername and filename with periods
-			array('D:/folder.name.with.periods', 'D:/folder.name.with.periods'),
-			array('D:/folder.name.with.periods/test-2.txt', 'D:/folder.name.with.periods/test.txt', 2),
-			array('D:/folder.name.with.periods/test.txt', 'D:/folder.name.with.periods/test.txt'),
-
-			// foldername and filename with periods and spaces
-			array('D:/folder.name.with.peri-ods', 'D:/folder.name.with.peri ods'),
-			array('D:/folder.name.with.peri-ods/te-st-2.t-x-t', 'D:/folder.name.with.peri ods/te st.t x t', 2),
-			array('D:/folder.name.with.peri-ods/te-st.t-x-t', 'D:/folder.name.with.peri ods/te st.t x t'),
-
-			/**
-			 * If a foldername is empty, after we stripped out some unicode and other characters,
-			 * the resulting name must be reproducable otherwise uploading a file into that folder
-			 * will not write the file into the same folder.
-			 */
-			array('D:/' . md5('ありがとう'), 'D:/ありがとう'),
-			array('D:/' . md5('ありがとう') . '/issue6722.txt', 'D:/ありがとう/issue6722.txt'),
+			array('text.txt', 'text.txt'),
+			array('folder.name.with.peri ods', 'folder.name.with.peri-ods'),
+			array('te st.t x t', 'te-st.t-x-t'),
+			array('ありがとう', md5('ありがとう')),
 		);
 	}
 
 	/**
-	 * @dataProvider slugifyPathData
+	 * @dataProvider slugifyData
 	 */
-	public function testSlugifyPath($slug, $path, $index = null) {
-		$this->assertEquals($slug, $this->mapper->slugifyPath($path, $index));
+	public function testSlugify($fileName, $expected) {
+		$this->assertEquals($expected, \Test_Helper::invokePrivate($this->mapper, 'slugify', array($fileName)));
+	}
+
+	public function addIndexToFilenameData() {
+		return array(
+			// with extension
+			array('text.txt', null, 'text.txt'),
+			array('text.txt', 0, 'text.txt'),
+			array('text.txt', 2, 'text-2.txt'),
+
+			// without extension
+			array('text', null, 'text'),
+			array('text', 0, 'text'),
+			array('text', 2, 'text-2'),
+
+			// with multiple dots
+			array('text.text.txt', null, 'text.text.txt'),
+			array('text.text.txt', 0, 'text.text.txt'),
+			array('text.text.txt', 2, 'text.text-2.txt'),
+			array('text.text.text.txt', 2, 'text.text.text-2.txt'),
+		);
+	}
+
+	/**
+	 * @dataProvider addIndexToFilenameData
+	 */
+	public function testAddIndexToFilename($fileName, $index, $expected) {
+		$this->assertEquals($expected, \Test_Helper::invokePrivate($this->mapper, 'addIndexToFilename', array($fileName, $index)));
 	}
 }
