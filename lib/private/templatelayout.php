@@ -12,6 +12,9 @@ use Assetic\Filter\CssRewriteFilter;
  */
 
 class OC_TemplateLayout extends OC_Template {
+	private static $scripts=array();
+	private static $styles=array();
+	private static $headers=array();
 
 	/**
 	 * @param string $renderas
@@ -43,7 +46,7 @@ class OC_TemplateLayout extends OC_Template {
 			}
 
 			// Add navigation entry
-			$this->assign( 'application', '', false );
+			$this->assign( 'application', '');
 			$this->assign( 'appid', $appid );
 			$navigation = OC_App::getNavigation();
 			$this->assign( 'navigation', $navigation);
@@ -80,8 +83,8 @@ class OC_TemplateLayout extends OC_Template {
 		} else {
 
 			// Add the js files
-			$jsfiles = self::findJavascriptFiles(OC_Util::$scripts);
-			$this->assign('jsfiles', array(), false);
+			$jsfiles = $this->findJavascriptFiles(self::$scripts);
+			$this->assign('jsfiles', array());
 			if (OC_Config::getValue('installed', false) && $renderas!='error') {
 				$this->append( 'jsfiles', OC_Helper::linkToRoute('js_config') . $versionParameter);
 			}
@@ -92,7 +95,7 @@ class OC_TemplateLayout extends OC_Template {
 			}
 
 			// Add the css files
-			$cssfiles = self::findStylesheetFiles(OC_Util::$styles);
+			$cssfiles = $this->findStylesheetFiles(self::$styles);
 			$this->assign('cssfiles', array());
 			foreach($cssfiles as $info) {
 				$web = $info[1];
@@ -101,13 +104,67 @@ class OC_TemplateLayout extends OC_Template {
 				$this->append( 'cssfiles', $web.'/'.$file . $versionParameter);
 			}
 		}
+		$this->assign('headers', self::$headers);
+	}
+
+	/**
+	 * add a javascript file
+	 *
+	 * @param string $application
+	 * @param string|null $file filename
+	 * @return void
+	 */
+	public static function addScript($application, $file = null) {
+		if (is_null($file)) {
+			$file = $application;
+			$application = "";
+		}
+		if (!empty( $application)) {
+			self::$scripts[] = "$application/js/$file";
+		} else {
+			self::$scripts[] = "js/$file";
+		}
+	}
+
+	/**
+	 * add a css file
+	 *
+	 * @param string $application
+	 * @param string|null $file filename
+	 * @return void
+	 */
+	public static function addStyle($application, $file = null) {
+		if (is_null($file)) {
+			$file = $application;
+			$application = "";
+		}
+		if (!empty( $application)) {
+			self::$styles[] = "$application/css/$file";
+		} else {
+			self::$styles[] = "css/$file";
+		}
+	}
+
+	/**
+	 * Add a custom element to the header
+	 * @param string $tag tag name of the element
+	 * @param array $attributes array of attributes for the element
+	 * @param string $text the text content for the element
+	 * @return void
+	 */
+	public static function addLayoutHeader($tag, $attributes, $text = '') {
+		self::$headers[] = array(
+			'tag' => $tag,
+			'attributes' => $attributes,
+			'text' => $text
+		);
 	}
 
 	/**
 	 * @param array $styles
 	 * @return array
 	 */
-	static public function findStylesheetFiles($styles) {
+	private function findStylesheetFiles($styles) {
 		// Read the selected theme from the config file
 		$theme = OC_Util::getTheme();
 
@@ -125,7 +182,7 @@ class OC_TemplateLayout extends OC_Template {
 	 * @param array $scripts
 	 * @return array
 	 */
-	static public function findJavascriptFiles($scripts) {
+	private function findJavascriptFiles($scripts) {
 		// Read the selected theme from the config file
 		$theme = OC_Util::getTheme();
 
@@ -141,7 +198,7 @@ class OC_TemplateLayout extends OC_Template {
 
 	public function generateAssets()
 	{
-		$jsFiles = self::findJavascriptFiles(OC_Util::$scripts);
+		$jsFiles = $this->findJavascriptFiles(self::$scripts);
 		$jsHash = self::hashScriptNames($jsFiles);
 
 		if (!file_exists("assets/$jsHash.js")) {
@@ -157,7 +214,7 @@ class OC_TemplateLayout extends OC_Template {
 			$writer->writeAsset($jsCollection);
 		}
 
-		$cssFiles = self::findStylesheetFiles(OC_Util::$styles);
+		$cssFiles = $this->findStylesheetFiles(self::$styles);
 		$cssHash = self::hashScriptNames($cssFiles);
 
 		if (!file_exists("assets/$cssHash.css")) {
