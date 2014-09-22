@@ -15,6 +15,12 @@ class TemporaryNoTouch extends \OC\Files\Storage\Temporary {
 	}
 }
 
+class DummyHandler {
+	public function unlink($path) {
+		return true;
+	}
+}
+
 class View extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @var \OC\Files\Storage\Storage[] $storages
@@ -734,5 +740,44 @@ class View extends \PHPUnit_Framework_TestCase {
 			array('hasUpdated', 0),
 			array('putFileInfo', array()),
 		);
+	}
+
+	public function testHandler() {
+		$storage = $this->getTestStorage();
+		\OC\Files\Filesystem::mount($storage, array(), '/');
+
+		$handler = $this->getMock('DummyHandler', array('unlink'));
+		$handler->expects($this->once())
+				->method('unlink')
+				->with($this->equalTo('/foo.txt'))
+				->will($this->returnValue(true));
+
+		$rootView = new \OC\Files\View('');
+		$rootView->setHandler('unlink', $handler);
+		$rootView->file_put_contents('/foo.txt', 'asd');
+
+		$this->assertTrue($rootView->unlink('foo.txt'));
+
+		$this->assertTrue($rootView->file_exists('foo.txt'));
+	}
+
+	public function testGetHandler() {
+		$handler = new DummyHandler();
+		$view = new \OC\Files\View('');
+		$view->setHandler('unlink', $handler);
+		$this->assertEquals($handler, $view->getHandler('unlink'));
+	}
+
+	/**
+	 * @expectedException \OCP\Files\InvalidHandlerException
+	 */
+	public function testBadHandler() {
+		$storage = $this->getTestStorage();
+		\OC\Files\Filesystem::mount($storage, array(), '/');
+
+		$handler = new DummyHandler();
+
+		$rootView = new \OC\Files\View('');
+		$rootView->setHandler('move', $handler);
 	}
 }

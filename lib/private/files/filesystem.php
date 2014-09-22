@@ -793,4 +793,25 @@ class Filesystem {
 	static public function getETag($path) {
 		return self::$defaultInstance->getETag($path);
 	}
+
+	/**
+	 * return the handler object for an operation on the default view
+	 *
+	 * @param string $operation
+	 * @return object|null
+	 */
+	static public function getHandler($operation) {
+		return self::$defaultInstance->getHandler($operation);
+	}
+
+	/**
+	 * set the handler object for an operation on the default view
+	 *
+	 * @param string $operation
+	 * @param object|null $handler
+	 * @throws \OCP\Files\InvalidHandlerException
+	 */
+	static public function setHandler($operation, $handler) {
+		return self::$defaultInstance->setHandler($operation, $handler);
+	}
 }

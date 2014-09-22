@@ -157,45 +157,41 @@ class Trashbin {
 		$proxyStatus = \OC_FileProxy::$enabled;
 		\OC_FileProxy::$enabled = false;
 		$trashPath = '/files_trashbin/files/' . $filename . '.d' . $timestamp;
-		try {
-			$sizeOfAddedFiles = self::copy_recursive('/files/'.$file_path, $trashPath, $view);
-		} catch (\OCA\Files_Trashbin\Exceptions\CopyRecursiveException $e) {
-			$sizeOfAddedFiles = false;
-			if ($view->file_exists($trashPath)) {
-				$view->deleteAll($trashPath);
-			}
+		if (!$view->rename('/files/'.$file_path, $trashPath)) {
 			\OC_Log::write('files_trashbin', 'Couldn\'t move ' . $file_path . ' to the trash bin', \OC_log::ERROR);
+			return false;
 		}
 		\OC_FileProxy::$enabled = $proxyStatus;
 
-		if ($sizeOfAddedFiles !== false) {
-			$size = $sizeOfAddedFiles;
-			$query = \OC_DB::prepare("INSERT INTO `*PREFIX*files_trash` (`id`,`timestamp`,`location`,`user`) VALUES (?,?,?,?)");
-			$result = $query->execute(array($filename, $timestamp, $location, $user));
-			if (!$result) {
-				\OC_Log::write('files_trashbin', 'trash bin database couldn\'t be updated', \OC_log::ERROR);
-			}
-			\OCP\Util::emitHook('\OCA\Files_Trashbin\Trashbin', 'post_moveToTrash', array('filePath' => \OC\Files\Filesystem::normalizePath($file_path),
-				'trashPath' => \OC\Files\Filesystem::normalizePath($filename . '.d' . $timestamp)));
-
-			$size += self::retainVersions($file_path, $filename, $timestamp);
-			$size += self::retainEncryptionKeys($file_path, $filename, $timestamp);
-
-			// if owner !== user we need to also add a copy to the owners trash
-			if ($user !== $owner) {
-				self::copyFilesToOwner($file_path, $owner, $ownerPath, $timestamp);
-			}
+		if ($view->is_dir($trashPath)) {
+			$size = self::calculateSize(new \OC\Files\View('/'.$user.$trashPath));
+		} else {
+			$size = $view->filesize($trashPath);
 		}
+		$query = \OC_DB::prepare("INSERT INTO `*PREFIX*files_trash` (`id`,`timestamp`,`location`,`user`) VALUES (?,?,?,?)");
+		$result = $query->execute(array($filename, $timestamp, $location, $user));
+		if (!$result) {
+			\OC_Log::write('files_trashbin', 'trash bin database couldn\'t be updated', \OC_log::ERROR);
+			$view->rename($trashPath, '/files/'.$file_path);
+			return false;
+		}
+		\OCP\Util::emitHook('\OCA\Files_Trashbin\Trashbin', 'post_moveToTrash', array('filePath' => \OC\Files\Filesystem::normalizePath($file_path),
+			'trashPath' => \OC\Files\Filesystem::normalizePath($filename . '.d' . $timestamp)));
 
-		$userTrashSize += $size;
-		$userTrashSize -= self::expire($userTrashSize, $user);
+		$size += self::retainVersions($file_path, $filename, $timestamp);
+		$size += self::retainEncryptionKeys($file_path, $filename, $timestamp);
 
-		// if owner !== user we also need to update the owners trash size
-		if ($owner !== $user) {
+		// if owner !== user we need to also add a copy to the owners trash
+		if ($user !== $owner) {
+			self::copyFilesToOwner($file_path, $owner, $ownerPath, $timestamp);
 			$ownerTrashSize = self::getTrashbinSize($owner);
 			$ownerTrashSize += $size;
 			$ownerTrashSize -= self::expire($ownerTrashSize, $owner);
 		}
+
+		$userTrashSize += $size;
+		$userTrashSize -= self::expire($userTrashSize, $user);
+		return true;
 	}
 
 	/**
@@ -995,8 +991,8 @@ class Trashbin {
 	 * register hooks
 	 */
 	public static function registerHooks() {
-		//Listen to delete file signal
-		\OCP\Util::connectHook('OC_Filesystem', 'delete', "OCA\Files_Trashbin\Hooks", "remove_hook");
+		//Listen for filesystem init to set handler
+		\OCP\Util::connectHook('OC_Filesystem', 'setup', "OCA\Files_Trashbin\Hooks", "setup_hook");
 		//Listen to delete user signal
 		\OCP\Util::connectHook('OC_User', 'pre_deleteUser', "OCA\Files_Trashbin\Hooks", "deleteUser_hook");
 		//Listen to post write hook
@@ -1022,5 +1018,20 @@ class Trashbin {
 
 	public static function preview_icon($path) {
 		return \OC_Helper::linkToRoute('core_ajax_trashbin_preview', array('x' => 36, 'y' => 36, 'file' => $path));
+	}
+
+	/**
+	 * handler proxy for unlink
+	 * @param string $path
+	 */
+	public function unlink($path) {
+		return Trashbin::move2trash($path);
+	}
+	/**
+	 * handler proxy for rmdir
+	 * @param string $path
+	 */
+	public function rmdir($path) {
+		return Trashbin::move2trash($path);
 	}
 }

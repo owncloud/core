@@ -36,6 +36,8 @@ class View {
 	 */
 	protected $updater;
 
+	protected $handlers = array();
+
 	public function __construct($root = '') {
 		$this->fakeRoot = $root;
 		$this->updater = new Updater($this);
@@ -735,6 +737,36 @@ class View {
 	}
 
 	/**
+	 * return the handler object for an operation
+	 *
+	 * @param string $operation
+	 * @return object|null
+	 */
+	public function getHandler($operation) {
+		if (isset($this->handlers[$operation])) {
+			return $this->handlers[$operation];
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * set the handler object for an operation
+	 *
+	 * @param string $operation
+	 * @param object|null $handler
+ 	 * @throws \OCP\Files\InvalidHandlerException
+	*/
+	public function setHandler($operation, $handler) {
+		if (is_null($handler) ||
+			(is_object($handler) && method_exists($handler, $operation)) ) {
+			$this->handlers[$operation] = $handler;
+		} else {
+			throw new \OCP\Files\InvalidHandlerException();
+		}
+	}
+
+	/**
 	 * abstraction layer for basic filesystem functions: wrapper for \OC\Files\Storage\Storage
 	 *
 	 * @param string $operation
@@ -762,10 +794,18 @@ class View {
 			$run = $this->runHooks($hooks, $path);
 			list($storage, $internalPath) = Filesystem::resolvePath($absolutePath . $postFix);
 			if ($run and $storage) {
-				if (!is_null($extraParam)) {
-					$result = $storage->$operation($internalPath, $extraParam);
+				if (($handler = $this->getHandler($operation))) {
+					if (!is_null($extraParam)) {
+						$result = $handler->$operation($path, $extraParam);
+					} else {
+						$result = $handler->$operation($path);
+					}
 				} else {
-					$result = $storage->$operation($internalPath);
+					if (!is_null($extraParam)) {
+						$result = $storage->$operation($internalPath, $extraParam);
+					} else {
+						$result = $storage->$operation($internalPath);
+					}
 				}
 
 				$result = \OC_FileProxy::runPostProxies($operation, $this->getAbsolutePath($path), $result);
