@@ -3,13 +3,18 @@
 # ownCloud - prepareTestOracle.sh
 #
 # @author Morris Jobke
+# @author Martin Reinhardt
 # @copyright 2014 Morris Jobke hey@morrisjobke.de
+# @copyright 2014 Martin Reinhardt contact@martinreinhardt-online.de
 #
 
-DATABASENAME=$1
-DATABASEUSER=$2
-ADMINLOGIN=$3
-DATADIR=$4
+DB_HOST=$1
+DB_NAME=$2
+DB_USER=$3
+DB_PASS=$4
+ADMIN_USER=$4
+ADMIN_PASS=$6
+DATADIR=$7
 
 # set oracle home if it is not set
 TRAVIS_ORACLE_HOME="/usr/lib/oracle/xe/app/oracle/product/10.2.0/server"
@@ -20,13 +25,13 @@ echo "Load Oracle environment variables so that we can run 'sqlplus'."
 
 echo "drop the database"
 sqlplus64 -s -l / as sysdba <<EOF
-	drop user $DATABASENAME cascade;
+	drop user ${DB_NAME} cascade;
 EOF
 
 echo "create the database"
 sqlplus64 -s -l / as sysdba <<EOF
-	create user $DATABASENAME identified by owncloud;
-	alter user $DATABASENAME default tablespace users
+	create user ${DB_NAME} identified by owncloud;
+	alter user ${DB_NAME} default tablespace users
 	temporary tablespace temp
 	quota unlimited on users;
 	grant create session
@@ -37,7 +42,7 @@ sqlplus64 -s -l / as sysdba <<EOF
 	, create view
 	, create synonym
 	, alter session
-	to $DATABASENAME;
+	to ${DB_NAME};
 	exit;
 EOF
 
@@ -53,13 +58,13 @@ cat > ./config/autoconfig.php <<DELIM
   'installed' => false,
   'dbtype' => 'oci',
   'dbtableprefix' => 'oc_',
-  'adminlogin' => '$ADMINLOGIN',
-  'adminpass' => 'admin',
+  'adminlogin' => '${ADMIN_USER}',
+  'adminpass' => '${ADMIN_PASS}',
   'directory' => '$DATADIR',
-  'dbuser' => '$DATABASEUSER',
-  'dbname' => 'XE',
-  'dbhost' => 'localhost',
-  'dbpass' => 'owncloud',
+  'dbhost' => '${DB_HOST}',
+  'dbuser' => '${DB_USER}',
+  'dbname' => '${DB_NAME}',
+  'dbpass' => '${DB_PASS}',
 );
 DELIM
 
