@@ -1,7 +1,7 @@
 <?php /** @var $l OC_L10N */ ?>
 <?php $_['appNavigation']->printPage(); ?>
 <div id="app-content">
-	<div id="drophere"><p><?php p($l->t( 'Drop file(s) here' )); ?></p></div>
+	<div id="drophere"><p><?php p($l->t( 'Drop files here' )); ?></p></div>
 		<?php foreach ($_['appContents'] as $content) { ?>
 		<div id="app-content-<?php p($content['id']) ?>" class="hidden viewcontainer">
 		<?php print_unescaped($content['content']) ?>
