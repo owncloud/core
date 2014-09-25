@@ -17,10 +17,10 @@
 
 	};
 
-	Page.prototype.moveMouseTo = function(locator) {
-		var ele = element(locator);
-		return browser.actions().mouseMove(ele).perform();
-	};
+  // Page.prototype.moveMouseTo = function(locator) {
+  //   var ele = element(locator);
+  //   return browser.actions().mouseMove(ele).perform();
+  // };
 
 	Page.toggleAppsMenu = function() {
 		var el = element(this.appsMenuId());
@@ -192,7 +192,7 @@
     browser.actions().mouseMove(elem).perform();
     return browser.wait(function() {
       // works just for td elements at the moment
-      return element(by.css('td:hover')).isDisplayed();
+      return element(by.css('td:hover')).isPresent();
     });
   };
 

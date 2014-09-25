@@ -120,7 +120,7 @@
   };
 
   FilesPage.prototype.deleteButtonId = function(fileName) {
-    return by.css("tr[data-file='" + fileName +  "'] .action.delete.icon-delete");
+    return by.css("tr[data-file='" + fileName +  "'] .action.delete.delete-icon");
   };
 
 //================ NAVIGATION ==========================================================//
@@ -289,8 +289,10 @@
 
   FilesPage.prototype.deleteFile = function(fileName) {
     var Page = require('../helper/page.js');
-    Page.moveMouseTo(this.fileListElemId(fileName));
-    return element(this.deleteButtonId(fileName)).click();
+    var deleteButton = this.deleteButtonId(fileName);
+    return Page.moveMouseTo(this.fileListElemId(fileName)).then(function(){
+      return element(deleteButton).click();
+    });
   };
 
   /**

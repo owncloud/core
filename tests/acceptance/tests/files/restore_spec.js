@@ -27,7 +27,6 @@ describe('Restore Folders', function() {
     filesPage.getAsUser(params.login.user, params.login.password);
   });
 
-
   it('should restore a emtpy folder that has been deleted', function() {
     filesPage.createFolder('Empty');
     filesPage.deleteFolder('Empty');
@@ -70,8 +69,9 @@ it('should restore a non empty folder that has been deleted', function() {
     filesPage.restoreFolder(0);
     filesPage.get();
     expect(filesPage.listFiles()).toContain('sameFolderName (Wiederhergestellt)'); //for german ownclouds
-    filesPage.deleteFolder('sameFolderName');
-    filesPage.deleteFolder('sameFolderName (Wiederhergestellt)');
+    filesPage.deleteFolder('sameFolderName').then(function(){
+      filesPage.deleteFolder('sameFolderName (Wiederhergestellt)');  
+    });
   });
 
   it('should restore a sub folder when the root folder has been deleted separately', function() {
