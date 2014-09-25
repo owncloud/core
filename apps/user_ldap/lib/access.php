@@ -700,6 +700,24 @@ class Access extends LDAPUtility implements user\IUserTools {
 
 	/**
 	 * @param string $filter
+	 * @param string $dnBranch
+	 * @param string|string[] $attr
+	 * @param int $limit
+	 * @param int $offset
+	 * @return array
+	 */
+	public function fetchListOfUsersBranchMembers($filter, $dnBranch, $attr, $limit = null, $offset = null) {
+		$userFilter = $this->combineFilterWithAnd(array(
+			$this->connection->ldapUserFilter,
+			$this->getFilterPartForUserSearch($filter)
+		));
+
+		return $this->fetchList($this->search(
+			$userFilter, $dnBranch, $attr, $limit, $offset), (count($attr) > 1));
+	}
+
+	/**
+	 * @param string $filter
 	 * @param string|string[] $attr
 	 * @param int $limit
 	 * @param int $offset
