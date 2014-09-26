@@ -38,6 +38,7 @@ use OCA\Encryption;
  */
 class Test_Encryption_Webdav extends \PHPUnit_Framework_TestCase {
 
+	const TEST_DAV_DUMMY_USER = "dummy-crypt-user-dav";
 	const TEST_ENCRYPTION_WEBDAV_USER1 = "test-webdav-user1";
 
 	public $userId;
@@ -55,6 +56,8 @@ class Test_Encryption_Webdav extends \PHPUnit_Framework_TestCase {
 		// reset backend
 		\OC_User::clearBackends();
 		\OC_User::useBackend('database');
+		
+		\Test_Encryption_Util::loginHelper(\Test_Encryption_Webdav::TEST_DAV_DUMMY_USER, true, true, false);
 
 		// Filesystem related hooks
 		\OCA\Encryption\Helper::registerFilesystemHooks();

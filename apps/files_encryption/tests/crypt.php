@@ -25,6 +25,7 @@ use OCA\Encryption;
  */
 class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 
+	const TEST_DUMMY_USER = 'dummy-crypt-user';
 	const TEST_ENCRYPTION_CRYPT_USER1 = "test-crypt-user1";
 
 	public $userId;
@@ -45,6 +46,8 @@ class Test_Encryption_Crypt extends \PHPUnit_Framework_TestCase {
 		// reset backend
 		\OC_User::clearBackends();
 		\OC_User::useBackend('database');
+		
+		\Test_Encryption_Util::loginHelper(\Test_Encryption_Crypt::TEST_DUMMY_USER, true, true, false);
 
 		// Filesystem related hooks
 		\OCA\Encryption\Helper::registerFilesystemHooks();
