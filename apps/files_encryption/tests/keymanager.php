@@ -362,8 +362,9 @@ class Test_Encryption_Keymanager extends \PHPUnit_Framework_TestCase {
 	 */
 	function testDeleteFileKey() {
 
-		$this->view->mkdir('/'.Test_Encryption_Keymanager::TEST_USER.'/files/folder1');
-		$this->view->file_put_contents('/'.Test_Encryption_Keymanager::TEST_USER.'/files/folder1/existingFile.txt', 'data');
+		$filesView = new \OC\Files\View('/'.Test_Encryption_Keymanager::TEST_USER . '/files');
+		$filesView->mkdir('/folder1');
+		$filesView->file_put_contents('/folder1/existingFile.txt', 'data');
 
 		// create folder structure for some dummy file key files
 		$this->view->mkdir('/'.Test_Encryption_Keymanager::TEST_USER.'/files_encryption/keyfiles/folder1');
@@ -387,7 +388,7 @@ class Test_Encryption_Keymanager extends \PHPUnit_Framework_TestCase {
 			'/'.Test_Encryption_Keymanager::TEST_USER.'/files_encryption/keyfiles/folder1/existingFile.txt.key'));
 
 		// cleanup
-		$this->view->deleteAll('/'.Test_Encryption_Keymanager::TEST_USER.'/files/folder1');
+		$filesView->deleteAll('/folder1');
 
 	}
 
@@ -395,9 +396,9 @@ class Test_Encryption_Keymanager extends \PHPUnit_Framework_TestCase {
 	 * @medium
 	 */
 	function testDeleteFileKeyFolder() {
-
-		$this->view->mkdir('/'.Test_Encryption_Keymanager::TEST_USER.'/files/folder1');
-		$this->view->file_put_contents('/'.Test_Encryption_Keymanager::TEST_USER.'/files/folder1/existingFile.txt', 'data');
+		$filesView = new \OC\Files\View('/'.Test_Encryption_Keymanager::TEST_USER . '/files/');
+		$filesView->mkdir('folder1');
+		$filesView->file_put_contents('/folder1/existingFile.txt', 'data');
 
 		// create folder structure for some dummy file key files
 		$this->view->mkdir('/'.Test_Encryption_Keymanager::TEST_USER.'/files_encryption/keyfiles/folder1');
@@ -416,7 +417,7 @@ class Test_Encryption_Keymanager extends \PHPUnit_Framework_TestCase {
 			'/'.Test_Encryption_Keymanager::TEST_USER.'/files_encryption/keyfiles/folder1/existingFile.txt.key'));
 
 		// delete folder
-		$this->view->unlink('/'.Test_Encryption_Keymanager::TEST_USER.'/files/folder1');
+		$filesView->unlink('/folder1');
 		// create dummy keyfile
 		$this->view->file_put_contents('/'.Test_Encryption_Keymanager::TEST_USER.'/files_encryption/keyfiles/folder1/dummyFile.txt.key', 'data');
 
@@ -428,7 +429,7 @@ class Test_Encryption_Keymanager extends \PHPUnit_Framework_TestCase {
 			'/'.Test_Encryption_Keymanager::TEST_USER.'/files_encryption/keyfiles/folder1'));
 
 		// cleanup
-		$this->view->deleteAll('/'.Test_Encryption_Keymanager::TEST_USER.'/files/folder1');
+		$filesView->deleteAll('/folder1');
 
 	}
 
