@@ -33,17 +33,29 @@ class Tag extends Entity {
 	/**
 	* Constructor.
 	*
+	* @param string $uid The tag's owner
+	* @param string $type The tag's type
+	* @param string $category The tag's name
 	*/
-
 	public function __construct($uid = null, $type = null, $category = null) {
 		$this->setUid($uid);
 		$this->setType($type);
 		$this->setCategory($category);
 	}
 
+	/**
+	* Returns the tag's name as it should be displayed.
+	*
+	* @return string
+	*
+	* If the tag belongs to the current user, simply returns the tag's name.
+	* Otherwise, the tag's name is returned with it's owner's name appended
+	* in parentheses, like "Tag (owner)".
+	*/
 	public function getDisplayName() {
-		if ($this->uid != \OCP\User::getUser())
+		if ($this->uid != \OCP\User::getUser()) {
 			return $this->category . ' ('. $this->uid . ')';
+		}
 		return $this->category;
 	}
 }
