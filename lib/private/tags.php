@@ -87,8 +87,9 @@ class Tags extends Mapper implements \OCP\ITags {
 	* @param IDb $db Instance of the Db abstraction layer.
 	*/
 	public function __construct($user, $type, $defaultTags = array(), $includeShared = false, IDb $db = null) {
-		if ($db === null)
+		if ($db === null) {
 			$db = new \OC\AppFramework\Db\Db();
+		}
 		parent::__construct($db, 'vcategory', 'OC\Tag');
 
 		$this->user = $user;
@@ -658,8 +659,9 @@ class Tags extends Mapper implements \OCP\ITags {
 	* @return string|bool The tag's id or false if it hasn't been saved yet.
 	*/
 	private function getTagId($name) {
-		if (($key = $this->array_searchi($name, $this->tags)) === false)
+		if (($key = $this->array_searchi($name, $this->tags)) === false) {
 			return false;
+		}
 		return $this->tags[$key]->getId();
 	}
 
@@ -671,10 +673,11 @@ class Tags extends Mapper implements \OCP\ITags {
 	*                      array or false if it doesn't exist.
 	*/
 	private function getTagByNameOrId($tag) {
-		if (is_numeric($tag))
+		if (is_numeric($tag)) {
 			$search = 'id';
-		else
+		} else {
 			$search = 'category';
+		}
 
 		if (($key = $this->array_searchi($tag, $this->tags, $search)) === false)
 			return false;
