@@ -24,11 +24,6 @@
 	float: right !important;
 }
 
-.ldapWizardControls {
-	width: 60%;
-	text-align: right;
-}
-
 .ldapWizardInfo {
 	width: 100% !important;
 	height: 50px;
@@ -109,6 +104,9 @@ select[multiple=multiple] + button {
 	max-width: 40%;
 }
 
+.ldap_help {
+	padding: 10px;
+}
 .ldap_config_state_indicator_sign {
 	display: inline-block;
 	height: 16px;

@@ -933,6 +933,9 @@ fieldset.warning legend + p, fieldset.update legend + p {
 	background: none !important;
 	border: none !important;
 }
+.ui-widget-header {
+	border-bottom: 1px solid #eee !important;
+}
 .ui-tabs .ui-tabs-nav li {
 	border: 1px solid #ddd;
 }
