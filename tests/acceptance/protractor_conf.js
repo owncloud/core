@@ -1,96 +1,97 @@
-// An example configuration file.
+/* globals browser, exports, global, jasmine, require */
+
 exports.config = {
-  // Do not start a Selenium Standalone sever - only run this using chrome.
-  chromeOnly: true,
-  chromeDriver: './node_modules/protractor/selenium/chromedriver',
+	// Do not start a Selenium Standalone sever - only run this using chrome.
+	chromeOnly: true,
+	chromeDriver: './node_modules/protractor/selenium/chromedriver',
 
-  // Capabilities to be passed to the webdriver instance.
-  // See https://sites.google.com/a/chromium.org/chromedriver/capabilities
-  capabilities: {
-    'browserName': 'chrome',
-    'chromeOptions': {
-      'args': ['show-fps-counter=true', '--test-type', '--ignore-certificate-errors']
-    }
-  },
-  
-  // Use on Commmandline:
-  // protractor ... --params.login.user=abc --params.login.password=123
-  params: {
-    wait: 15000,
-    baseUrl: "http://127.0.0.1/",
-    login: {
-      user: 'admin',
-      password: 'password'
-    }
-  },
+	// Capabilities to be passed to the webdriver instance.
+	// See https://sites.google.com/a/chromium.org/chromedriver/capabilities
+	capabilities: {
+		'browserName': 'chrome',
+		'chromeOptions': {
+			'args': ['show-fps-counter=true', '--test-type', '--ignore-certificate-errors']
+		}
+	},
 
-  suites: {
-    basic: [
-      'tests/login/**/*_spec.js',
-      'tests/users/**/*_spec.js',
-      'tests/files/**/*_spec.js',
-      'tests/share/**/*_spec.js',
-    ],
-    community: [
-      'tests/apps/**/*_spec.js',
-    ],
-    nightly: [
-      'tests/login/**/*_spec.js',
-      'tests/users/**/*_spec.js',
-      'tests/files/**/*_spec.js',
-      'tests/share/**/*_spec.js',
-    ],
-    install: 'tests/install/**/*_spec.js',
-    login:  'tests/login/**/*_spec.js',
-    apps:  'tests/apps/**/*_spec.js',
-    files: 'tests/files/**/*_spec.js',
-    share: 'tests/share/**/*_spec.js',
-    users: 'tests/users/**/*_spec.js',
-  },
+	// Use on Commmandline:
+	// protractor ... --params.login.user=abc --params.login.password=123
+	params: {
+		wait: 15000,
+		baseUrl: "http://127.0.0.1/oc/core",
+		login: {
+			user: 'admin',
+			password: 'admin'
+		}
+	},
 
-  // seleniumAddress: 'http://0.0.0.0:4444/wd/hub',
+	suites: {
+		basic: [
+			'tests/login/**/*_spec.js',
+			'tests/users/**/*_spec.js',
+			'tests/files/**/*_spec.js',
+			'tests/share/**/*_spec.js'
+		],
+		community: [
+			'tests/apps/**/*_spec.js'
+		],
+		nightly: [
+			'tests/login/**/*_spec.js',
+			'tests/users/**/*_spec.js',
+			'tests/files/**/*_spec.js',
+			'tests/share/**/*_spec.js'
+		],
+		install: 'tests/install/**/*_spec.js',
+		login:  'tests/login/**/*_spec.js',
+		apps:  'tests/apps/**/*_spec.js',
+		files: 'tests/files/**/*_spec.js',
+		share: 'tests/share/**/*_spec.js',
+		users: 'tests/users/**/*_spec.js'
+	},
 
-  // Options to be passed to Jasmine-node.
-  jasmineNodeOpts: {
-    silent: true,
-    showColors: true,
-    onComplete: null,
-    isVerbose: true,
-    includeStackTrace: true,
-    defaultTimeoutInterval: 180000
-  },
-  
-  onPrepare: function(){
-    global.isAngularSite = function(flag){
-      browser.ignoreSynchronization = !flag;
-    };
+	// seleniumAddress: 'http://0.0.0.0:4444/wd/hub',
 
-    browser.driver.manage().window().setSize(1000, 800);
-    browser.driver.manage().window().maximize();
-    
-    require('jasmine-spec-reporter');
-    // add jasmine spec reporter
-    var spec_reporter = new jasmine.SpecReporter({
-      displayStacktrace: false,     // display stacktrace for each failed assertion
-      displayFailuresSummary: false, // display summary of all failures after execution
-      displaySuccessfulSpec: true,  // display each successful spec
-      displayFailedSpec: true,      // display each failed spec
-      displaySkippedSpec: false,    // display each skipped spec
-      displaySpecDuration: true,   // display each spec duration
-      colors: {
-        success: 'green',
-        failure: 'red',
-        skipped: 'cyan'
-      },
-      prefixes: {
-        success: '✓ ',
-        failure: '✗ ',
-        skipped: '- '
-      }
-    });
-    global.display = spec_reporter.display;
-    jasmine.getEnv().addReporter(spec_reporter);
-  }
+	// Options to be passed to Jasmine-node.
+	jasmineNodeOpts: {
+		silent: true,
+		showColors: true,
+		onComplete: null,
+		isVerbose: true,
+		includeStackTrace: true,
+		defaultTimeoutInterval: 180000
+	},
+
+	onPrepare: function(){
+		global.isAngularSite = function(flag){
+			browser.ignoreSynchronization = !flag;
+		};
+
+		browser.driver.manage().window().setSize(1000, 800);
+		browser.driver.manage().window().maximize();
+
+		require('jasmine-spec-reporter');
+		// add jasmine spec reporter
+		var specReporter = new jasmine.SpecReporter({
+			displayStacktrace: false,     // display stacktrace for each failed assertion
+			displayFailuresSummary: false, // display summary of all failures after execution
+			displaySuccessfulSpec: true,  // display each successful spec
+			displayFailedSpec: true,      // display each failed spec
+			displaySkippedSpec: false,    // display each skipped spec
+			displaySpecDuration: true,   // display each spec duration
+			colors: {
+				success: 'green',
+				failure: 'red',
+				skipped: 'cyan'
+			},
+			prefixes: {
+				success: '✓ ',
+				failure: '✗ ',
+				skipped: '- '
+			}
+		});
+		global.display = specReporter.display;
+		jasmine.getEnv().addReporter(specReporter);
+	}
 };
 
 
