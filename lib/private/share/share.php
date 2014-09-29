@@ -1166,8 +1166,9 @@ class Share extends \OC\Share\Constants {
 	public static function getSharedItemsOwners($user, $type, $includeCollections = false, $includeOwner = false) {
 		// First, we find out if $type is part of a collection (and if that collection is part of
 		// another one and so on).
-		if (!$includeCollections || !$collectionTypes = self::getCollectionItemTypes($type))
+		if (!$includeCollections || !$collectionTypes = self::getCollectionItemTypes($type)) {
 			$collectionTypes[] = $type;
+		}
 
 		// Of these collection types, along with our original $type, we make a
 		// list of the ones for which a sharing backend has been registered.
@@ -1185,8 +1186,9 @@ class Share extends \OC\Share\Constants {
 		}
 
 		$owners = array();
-		if ($includeOwner)
+		if ($includeOwner) {
 			$owners[] = $user;
+		}
 
 		// We take a look at all shared items of the given $type (or of the collections it is part of)
 		// and find out their owners. Then, we gather the tags for the original $type from all owners,
