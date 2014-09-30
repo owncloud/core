@@ -129,9 +129,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			$result = $this->connection->putObject(array(
 				'Bucket' => $this->bucket,
 				'Key'    => $this->cleanKey('.'),
-				'Body'   => '',
-				'ContentType' => 'httpd/unix-directory',
-				'ContentLength' => 0
+				'ContentType' => 'httpd/unix-directory'
 			));
 			$this->testTimeout();
 		}
@@ -148,9 +146,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			$result = $this->connection->putObject(array(
 				'Bucket' => $this->bucket,
 				'Key'    => $path . '/',
-				'Body'   => '',
-				'ContentType' => 'httpd/unix-directory',
-				'ContentLength' => 0
+				'ContentType' => 'httpd/unix-directory'
 			));
 			$this->testTimeout();
 		} catch (S3Exception $e) {
