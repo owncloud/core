@@ -42,9 +42,9 @@ class OracleConnection extends Connection {
 	/*
 	 * {@inheritDoc}
 	 */
-	public function delete($tableName, array $identifier) {
-		$tableName = $this->quoteIdentifier($tableName);
+	public function delete($tableExpression, array $identifier, array $types = array()) {
+		$tableName = $this->quoteIdentifier($tableExpression);
 		$identifier = $this->quoteKeys($identifier);
-		return parent::delete($tableName, $identifier);
+		return parent::delete($tableName, $identifier, $types);
 	}
 }
