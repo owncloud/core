@@ -112,11 +112,11 @@
   };
 
   FilesPage.prototype.disableReshareButtonId = function(userName) {
-    return by.css("li[title='" + userName + "'] label input[name='share']");
+    return by.css("li[title='" + userName + "'] input[name='share']");
   };
 
   FilesPage.prototype.disableEditButtonId = function(userName) {
-    return by.css("li[title='" + userName + "'] label input[name='edit']");
+    return by.css("li[title='" + userName + "'] input[name='edit']");
   };
 
   FilesPage.prototype.deleteButtonId = function(fileName) {
