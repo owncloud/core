@@ -1,4 +1,5 @@
 <?php
+use Sabre\DAV\Locks\LockInfo;
 
 /**
  * ownCloud
@@ -118,10 +119,10 @@ class OC_Connector_Sabre_Locks extends \Sabre\DAV\Locks\Backend\AbstractBackend 
 	 * Locks a uri
 	 *
 	 * @param string $uri
-	 * @param \Sabre\DAV\Locks\LockInfo $lockInfo
+	 * @param LockInfo $lockInfo
 	 * @return bool
 	 */
-	public function lock($uri, \Sabre\DAV\Locks\LockInfo $lockInfo) {
+	public function lock($uri, LockInfo $lockInfo) {
 
 		list($user, $path) = $this->resolveUserAndPath($uri);
 
@@ -198,9 +199,8 @@ class OC_Connector_Sabre_Locks extends \Sabre\DAV\Locks\Backend\AbstractBackend 
 
 	private function resolveUserAndPath($uri) {
 
-		$uriParts = explode('/', $uri);
-		$shared = array_shift($uriParts);
-		if ($shared === 'Shared') {
+		list($storage, $internalPath) = \OC\Files\Filesystem::resolvePath($uri);
+		if($storage instanceof \OC\Files\Storage\Shared) {
 			$itemTarget = array_shift($uriParts);
 
 			// resolve the path down to it's physical existence
@@ -220,7 +220,7 @@ class OC_Connector_Sabre_Locks extends \Sabre\DAV\Locks\Backend\AbstractBackend 
 			return array($resolved['uid_owner'], $targetPath);
 		}
 
-		// file/folder from users own dataspace
+		// file/folder from users own data space
 		return array(OC_User::getUser(), $uri);
 	}
 
