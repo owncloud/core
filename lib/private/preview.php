@@ -22,7 +22,7 @@ require_once 'preview/mp3.php';
 require_once 'preview/svg.php';
 require_once 'preview/txt.php';
 require_once 'preview/office.php';
-require_once 'preview/bitmappreview.php';
+require_once 'preview/bitmap.php';
 
 class Preview {
 	//the thumbnail folder
