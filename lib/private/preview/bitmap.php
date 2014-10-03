@@ -13,7 +13,7 @@ if (extension_loaded('imagick')) {
 
 	$checkImagick = new Imagick();
 
-		class BitmapPreview extends Provider {
+		class Bitmap extends Provider {
 
 			public function getMimeType() {
 				return null;
@@ -47,7 +47,7 @@ if (extension_loaded('imagick')) {
 		if(count($checkImagick->queryFormats('PDF')) === 1) {
 		
 			//.pdf
-			class PDF extends BitmapPreview {
+			class PDF extends Bitmap {
 
 				public function getMimeType() {
 					return '/application\/pdf/';
@@ -61,7 +61,7 @@ if (extension_loaded('imagick')) {
 		if(count($checkImagick->queryFormats('TIFF')) === 1) {
 		
 			//.tiff
-			class TIFF extends BitmapPreview {
+			class TIFF extends Bitmap {
 
 				public function getMimeType() {
 					return '/image\/tiff/';
@@ -75,7 +75,7 @@ if (extension_loaded('imagick')) {
 		if(count($checkImagick->queryFormats('AI')) === 1) {
 		
 			//.ai
-			class Illustrator extends BitmapPreview {
+			class Illustrator extends Bitmap {
 
 				public function getMimeType() {
 					return '/application\/illustrator/';
@@ -90,7 +90,7 @@ if (extension_loaded('imagick')) {
 		if(count($checkImagick->queryFormats('EPS')) === 1) {
 
 			//.eps
-			class Postscript extends BitmapPreview {
+			class Postscript extends Bitmap {
 
 				public function getMimeType() {
 					return '/application\/postscript/';
@@ -104,7 +104,7 @@ if (extension_loaded('imagick')) {
 		if(count($checkImagick->queryFormats('PSD')) === 1) {
 		
 			//.psd
-			class Photoshop extends BitmapPreview {
+			class Photoshop extends Bitmap {
 
 				public function getMimeType() {
 					return '/application\/x-photoshop/';
