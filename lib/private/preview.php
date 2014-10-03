@@ -690,7 +690,10 @@ class Preview {
  		 *  - OC\Preview\SVG
 		 *  - OC\Preview\Movies
 		 *  - OC\Preview\PDF
-		 *  - OC\Preview\Tiff
+		 *  - OC\Preview\TIFF
+		 *  - OC\Preview\Illustrator
+		 *  - OC\Preview\Postscript
+		 *  - OC\Preview\Photoshop
 		 */
 		if(empty(self::$enabledProviders)) {
 			self::$enabledProviders = \OC::$server->getConfig()->getSystemValue('enabledPreviewProviders', array(
