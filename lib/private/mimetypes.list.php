@@ -61,6 +61,7 @@ return array(
 	'dv' => array('video/dv', null),
 	'eot' => array('application/vnd.ms-fontobject', null),
 	'epub' => array('application/epub+zip', null),
+	'eps' => array('application/postscript', null),
 	'exe' => array('application/x-ms-dos-executable', null),
 	'flac' => array('audio/flac', null),
 	'flv' => array('video/x-flv', null),
