@@ -19,11 +19,10 @@ use OCP\Files\NotFoundException;
 require_once 'preview/image.php';
 require_once 'preview/movies.php';
 require_once 'preview/mp3.php';
-require_once 'preview/pdf.php';
 require_once 'preview/svg.php';
 require_once 'preview/txt.php';
 require_once 'preview/office.php';
-require_once 'preview/tiff.php';
+require_once 'preview/bitmappreview.php';
 
 class Preview {
 	//the thumbnail folder
