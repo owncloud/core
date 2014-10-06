@@ -105,13 +105,9 @@ class User implements IUser {
 	 * @return bool
 	 */
 	public function setDisplayName($displayName) {
-		if ($this->canChangeDisplayName()) {
-			$this->displayName = $displayName;
-			$result = $this->backend->setDisplayName($this->uid, $displayName);
-			return $result !== false;
-		} else {
-			return false;
-		}
+		$this->displayName = $displayName;
+		$result = $this->backend->setDisplayName($this->uid, $displayName);
+		return $result !== false;
 	}
 
 	/**
