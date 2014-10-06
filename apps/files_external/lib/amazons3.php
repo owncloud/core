@@ -86,7 +86,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			throw new \Exception("Access Key, Secret and Bucket have to be configured.");
 		}
 
-		$this->id = 'amazon::' . $params['key'] . md5($params['secret']);
+		$this->id = 'amazon::' . $params['key'] . md5($params['secret']) . $params['bucket'];
 
 		$this->bucket = $params['bucket'];
 		$scheme = ($params['use_ssl'] === 'false') ? 'http' : 'https';
