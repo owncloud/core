@@ -461,54 +461,44 @@ class OC_Mount_Config {
 										 $applicable,
 										 $isPersonal = false,
 										 $priority = null) {
-		$backends = self::getBackends();
 		$mountPoint = OC\Files\Filesystem::normalizePath($mountPoint);
-		if ($mountPoint === '' || $mountPoint === '/') {
-			// can't mount at root folder
-			return false;
-		}
 
-		if (!isset($backends[$class])) {
-			// invalid backend
-			return false;
-		}
+		$user = \OCP\User::getUser();
 		if ($isPersonal) {
 			// Verify that the mount point applies for the current user
-			// Prevent non-admin users from mounting local storage and other disabled backends
-			$allowed_backends = self::getPersonalBackends();
-			if ($applicable != OCP\User::getUser() || !isset($allowed_backends[$class])) {
+			if ($applicable != $user) {
 				return false;
 			}
-			$mountPoint = '/'.$applicable.'/files/'.ltrim($mountPoint, '/');
 		} else {
-			$mountPoint = '/$user/files/'.ltrim($mountPoint, '/');
+			$user = null;
 		}
 
+		if (!self::isValidBackend($class, $user) || !self::isValidMountPoint($mountPoint)) {
+			return false;
+		}
+
+		$mountPath = self::getMountPath($mountPoint, $user);
+
 		$mount = array($applicable => array(
-			$mountPoint => array(
+			$mountPath => array(
 				'class' => $class,
 				'options' => self::encryptPasswords($classOptions))
 			)
 		);
 		if (! $isPersonal && !is_null($priority)) {
-			$mount[$applicable][$mountPoint]['priority'] = $priority;
+			$mount[$applicable][$mountPath]['priority'] = $priority;
 		}
 
-		$mountPoints = self::readData($isPersonal ? OCP\User::getUser() : NULL);
+		$mountPoints = self::readData($user);
 		$mountPoints = self::mergeMountPoints($mountPoints, $mount, $mountType);
 
 		// Set default priority if none set
-		if (!isset($mountPoints[$mountType][$applicable][$mountPoint]['priority'])) {
-			if (isset($backends[$class]['priority'])) {
-				$mountPoints[$mountType][$applicable][$mountPoint]['priority']
-					= $backends[$class]['priority'];
-			} else {
-				$mountPoints[$mountType][$applicable][$mountPoint]['priority']
-					= 100;
-			}
+		if (!isset($mountPoints[$mountType][$applicable][$mountPath]['priority'])) {
+			$mountPoints[$mountType][$applicable][$mountPath]['priority']
+				= self::getBackendDefaultPriority($class);
 		}
 
-		self::writeData($isPersonal ? OCP\User::getUser() : NULL, $mountPoints);
+		self::writeData($user, $mountPoints);
 
 		return self::getBackendStatus($class, $classOptions, $isPersonal);
 	}
@@ -522,27 +512,23 @@ class OC_Mount_Config {
 	* @return bool
 	*/
 	public static function removeMountPoint($mountPoint, $mountType, $applicable, $isPersonal = false) {
-		// Verify that the mount point applies for the current user
+		$mountPoint = OC\Files\Filesystem::normalizePath($mountPoint);
+
+		$user = \OCP\User::getUser();
 		if ($isPersonal) {
-			if ($applicable != OCP\User::getUser()) {
+			// Verify that the mount point applies for the current user
+			if ($applicable != $user) {
 				return false;
 			}
-			$mountPoint = '/'.$applicable.'/files/'.ltrim($mountPoint, '/');
 		} else {
-			$mountPoint = '/$user/files/'.ltrim($mountPoint, '/');
+			$user = null;
 		}
-		$mountPoint = \OC\Files\Filesystem::normalizePath($mountPoint);
-		$mountPoints = self::readData($isPersonal ? OCP\User::getUser() : NULL);
-		// Remove mount point
-		unset($mountPoints[$mountType][$applicable][$mountPoint]);
-		// Unset parent arrays if empty
-		if (empty($mountPoints[$mountType][$applicable])) {
-			unset($mountPoints[$mountType][$applicable]);
-			if (empty($mountPoints[$mountType])) {
-				unset($mountPoints[$mountType]);
-			}
-		}
-		self::writeData($isPersonal ? OCP\User::getUser() : NULL, $mountPoints);
+
+		$mountPath = self::getMountPath($mountPoint, $user);
+
+		$mountPoints = self::readData($user);
+		$mountPoints = self::unmergeMountPoints($mountPoints, $mountType, $applicable, $mountPath);
+		self::writeData($user, $mountPoints);
 		return true;
 	}
 
@@ -790,6 +776,89 @@ class OC_Mount_Config {
 			$data[$mountType] = $mountPoint;
 		}
 		return $data;
+	}
+
+	/**
+	 * Removes a mount point
+	 * @param array $data Mount points
+	 * @param string $mountType
+	 * @param string $applicable
+	 * @param string $mountPath
+	 * @return array
+	 */
+	private static function unmergeMountPoints($data, $mountType, $applicable, $mountPath) {
+		unset($data[$mountType][$applicable][$mountPath]);
+		// Unset parent arrays if empty
+		if (empty($data[$mountType][$applicable])) {
+			unset($data[$mountType][$applicable]);
+			if (empty($data[$mountType])) {
+				unset($data[$mountType]);
+			}
+		}
+		return $data;
+	}
+
+	/**
+	 * Checks a backend for validity
+	 * @param string $backend
+	 * @param string|null $user Null for non-personal backends
+	 * @return bool
+	 */
+	private static function isValidBackend($backend, $user = null) {
+		$backends = self::getBackends();
+
+		if (isset($backends[$backend])) {
+			if (is_null($user)) {
+				return true;
+			} else {
+				$personalBackends = self::getPersonalBackends();
+				if (isset($personalBackends[$backend])) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Checks mount point for validity
+	 * @param string $mountPoint
+	 * @return bool
+	 */
+	private static function isValidMountPoint($mountPoint) {
+		if ($mountPoint === '' || $mountPoint === '/') {
+			// can't mount at root folder
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Gets the full mount path for a mount point
+	 * @param string $mountPoint
+	 * @param string|null $user Null for path with '$user' placeholder
+	 * @return string
+	 */
+	private static function getMountPath($mountPoint, $user = null) {
+		if (is_null($user)) {
+			return '/$user/files/'.ltrim($mountPoint, '/');
+		} else {
+			return '/'.$user.'/files/'.ltrim($mountPoint, '/');
+		}
+	}
+
+	/**
+	 * Gets the default priority for a backend
+	 * @param string $backend
+	 * @return int
+	 */
+	private static function getBackendDefaultPriority($backend) {
+		$backends = self::getBackends();
+		if (isset($backends[$backend]['priority'])) {
+			return $backends[$backend]['priority'];
+		} else {
+			return 100;
+		}
 	}
 
 	/**
