@@ -36,8 +36,10 @@ class Access extends LDAPUtility implements user\IUserTools {
 	//never ever check this var directly, always use getPagedSearchResultState
 	protected $pagedSearchedSuccessful;
 
-	protected $cookies = array();
-
+	/**
+	 * @var array $mappedGroups
+	 */
+	protected $mappedGroups = array();
 
 	public function __construct(Connection $connection, ILDAPWrapper $ldap,
 		user\Manager $userManager) {
@@ -241,6 +243,11 @@ class Access extends LDAPUtility implements user\IUserTools {
 	 * @return string with the LDAP DN on success, otherwise false
 	 */
 	public function groupname2dn($name) {
+		if(   isset($this->mappedGroups['byOcName'])
+		   && $this->mappedGroups['byOcName'][$name]) {
+			//saves an SQL query
+			return $this->mappedGroups['byOcName'][$name];
+		}
 		$dn = $this->ocname2dn($name, false);
 
 		if($dn) {
@@ -454,10 +461,38 @@ class Access extends LDAPUtility implements user\IUserTools {
 	}
 
 	/**
+	 * reads all known groups from the mappings table. This is to avoid
+	 * too many read operations on a bulk read (getGroups without limit).
+	 * The group information is cached in an array.
+	 */
+	public function fetchAllMappedGroups() {
+		$query = \OCP\DB::prepare('
+				SELECT `owncloud_name`, `ldap_dn`
+				FROM `'.$this->getMapTable(false).'`'
+		);
+		$res = $query->execute(array());
+		if(!isset($this->mappedGroups['byDN'])) {
+			$this->mappedGroups['byDN'] = array();
+		}
+		if(!isset($this->mappedGroups['byOcName'])) {
+			$this->mappedGroups['byOcName'] = array();
+		}
+		while($row = $res->fetchRow()) {
+			//for fast access by array key on both DN and owncloud name
+			$this->mappedGroups['byDN'][$row['ldap_dn']] = $row['owncloud_name'];
+			$this->mappedGroups['byOcName'][$row['owncloud_name']] = $row['ldap_dn'];
+		}
+	}
+
+	/**
 	 * @param string $dn
 	 * @return bool|string
 	 */
 	private function findMappedGroup($dn) {
+		if(isset($this->mappedGroups['byDN'][$dn])) {
+			return $this->mappedGroups['byDN'][$dn];
+		}
+
 		static $query = null;
 		if(is_null($query)) {
 			$query = \OCP\DB::prepare('
@@ -495,11 +530,36 @@ class Access extends LDAPUtility implements user\IUserTools {
 					//cache the user names so it does not need to be retrieved
 					//again later (e.g. sharing dialogue).
 					$this->cacheUserDisplayName($ocName, $nameByLDAP);
+				} else {
+					$memberAttr = $this->connection->ldapGroupMemberAssocAttr;
+					$members = isset($ldapObject[$memberAttr]) ? $ldapObject[$memberAttr] : array();
+					$this->cacheGroupMembers($ldapObject['dn'], $members);
 				}
+				$this->cacheExisting($ocName, $isUsers);
 			}
 			continue;
 		}
 		return $ownCloudNames;
+	}
+
+	/**
+	 * writes the members of a group to the global cache
+	 * @param string $dn
+	 * @param array $members
+	 */
+	public function cacheGroupMembers($dn, $members) {
+		$this->connection->writeToCache('membersIn-'.$dn, $members);
+	}
+
+	/**
+	 * sets the state of exisiting to true for the given LDAP object
+	 * @param string $ocName
+	 * @param bool $isUser
+	 */
+	public function cacheExisting($ocName, $isUser) {
+		if(!$isUser) {
+			$this->connection->writeToCache('groupExists'.$ocName, true);
+		}
 	}
 
 	/**
@@ -682,6 +742,9 @@ class Access extends LDAPUtility implements user\IUserTools {
 			//make sure that email address is retrieved prior to login, so user
 			//will be notified when something is shared with him
 			$this->userManager->get($ocName)->update();
+		} else {
+			$this->mappedGroups['byDN'][$dn] = $ocName;
+			$this->mappedGroups['byOcName'][$ocName] = $dn;
 		}
 
 		return true;
@@ -1349,7 +1412,7 @@ class Access extends LDAPUtility implements user\IUserTools {
 	 * @param string[] $bases array containing the allowed base DN or DNs
 	 * @return bool
 	 */
-	private function isDNPartOfBase($dn, $bases) {
+	public function isDNPartOfBase($dn, $bases) {
 		$belongsToBase = false;
 		$bases = $this->sanitizeDN($bases);
 
