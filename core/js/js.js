@@ -652,6 +652,7 @@ OC.msg={
 OC.Notification={
 	queuedNotifications: [],
 	getDefaultNotificationFunction: null,
+	notificationTimer: 0
 	
 	/**
 	 * @param callback
@@ -713,6 +714,32 @@ OC.Notification={
 			OC.Notification.queuedNotifications.push($('<div/>').text(text).html());
 		}
 	},
+	
+	
+	/**
+	 * Shows a notification that disappears after x seconds, default is 
+	 * 5 seconds
+	 * @param [string] Text message to show
+	 * @param {int} [timeout] The timeout in milliseconds
+	 * @param {boolean} [isHTML] an indicator for HTML notifications (true) or text (false)
+	 */
+	 showTimeout: function(text, timeout, isHTML) {
+	 	isHTML = (!isHTML) ? false : true;
+	 	OC.Notification.hide();
+		if(OC.Notification.notificationTimer) {
+			clearTimeout(OC.Notification.notificationTimer)
+		}
+		timeout = (!timeout) ? 5000 : timeout;
+		if(isHTML) {
+			OC.Notification.showHtml(str);
+		} else {
+			OC.Notification.show(str);	
+		}
+		
+		OC.Notification.notificationTimer = setTimeout(function(){
+			OC.Notification.hide();
+		}, timeout);
+	 }
 	
 	/**
 	 * Returns whether a notification is hidden. 
