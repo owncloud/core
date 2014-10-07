@@ -66,6 +66,10 @@ class Test_Encryption_Webdav extends \PHPUnit_Framework_TestCase {
 		\OC_FileProxy::clearProxies();
 		\OC_FileProxy::register(new OCA\Encryption\Proxy());
 
+		if(!in_array('crypt', stream_get_wrappers())) {
+			stream_wrapper_register('crypt', 'OCA\Encryption\Stream');
+		}
+
 		// create test user
 		\Test_Encryption_Util::loginHelper(\Test_Encryption_Webdav::TEST_ENCRYPTION_WEBDAV_USER1, true);
 
@@ -133,6 +137,10 @@ class Test_Encryption_Webdav extends \PHPUnit_Framework_TestCase {
 
 		// check if file was created
 		$this->assertTrue($this->view->file_exists('/' . $this->userId . '/files' . $filename));
+
+		$util = new \OCA\Encryption\Util($this->view, $this->userId);
+
+		$this->assertTrue($util->isEncryptedPath('/' . $this->userId . '/files' . $filename), 'file is not encrypted');
 
 		// check if key-file was created
 		$this->assertTrue($this->view->file_exists(
