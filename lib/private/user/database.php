@@ -33,30 +33,16 @@
  *
  */
 
-require_once 'phpass/PasswordHash.php';
-
 /**
  * Class for user management in a SQL Database (e.g. MySQL, SQLite)
  */
 class OC_User_Database extends OC_User_Backend {
-	/**
-	 * @var PasswordHash
-	 */
-	private static $hasher = null;
 
 	private $cache = array();
 
-	private function getHasher() {
-		if (!self::$hasher) {
-			//we don't want to use DES based crypt(), since it doesn't return a hash with a recognisable prefix
-			$forcePortable = (CRYPT_BLOWFISH != 1);
-			self::$hasher = new PasswordHash(8, $forcePortable);
-		}
-		return self::$hasher;
-	}
-
 	/**
 	 * Create a new user
+	 *
 	 * @param string $uid The username of the user to create
 	 * @param string $password The password of the new user
 	 * @return bool
@@ -66,8 +52,7 @@ class OC_User_Database extends OC_User_Backend {
 	 */
 	public function createUser($uid, $password) {
 		if (!$this->userExists($uid)) {
-			$hasher = $this->getHasher();
-			$hash = $hasher->HashPassword($password . OC_Config::getValue('passwordsalt', ''));
+			$hash = password_hash($password, PASSWORD_BCRYPT, array('cost' => OC::$server->getConfig()->getSystemValue('hashingCost')));
 			$query = OC_DB::prepare('INSERT INTO `*PREFIX*users` ( `uid`, `password` ) VALUES( ?, ? )');
 			$result = $query->execute(array($uid, $hash));
 
@@ -79,6 +64,7 @@ class OC_User_Database extends OC_User_Backend {
 
 	/**
 	 * delete a user
+	 *
 	 * @param string $uid The username of the user to delete
 	 * @return bool
 	 *
@@ -98,6 +84,7 @@ class OC_User_Database extends OC_User_Backend {
 
 	/**
 	 * Set password
+	 *
 	 * @param string $uid The username
 	 * @param string $password The new password
 	 * @return bool
@@ -106,8 +93,7 @@ class OC_User_Database extends OC_User_Backend {
 	 */
 	public function setPassword($uid, $password) {
 		if ($this->userExists($uid)) {
-			$hasher = $this->getHasher();
-			$hash = $hasher->HashPassword($password . OC_Config::getValue('passwordsalt', ''));
+			$hash = password_hash($password, PASSWORD_BCRYPT, array('cost' => OC::$server->getConfig()->getSystemValue('hashingCost')));
 			$query = OC_DB::prepare('UPDATE `*PREFIX*users` SET `password` = ? WHERE `uid` = ?');
 			$result = $query->execute(array($hash, $uid));
 
@@ -119,6 +105,7 @@ class OC_User_Database extends OC_User_Backend {
 
 	/**
 	 * Set display name
+	 *
 	 * @param string $uid The username
 	 * @param string $displayName The new display name
 	 * @return bool
@@ -139,6 +126,7 @@ class OC_User_Database extends OC_User_Backend {
 
 	/**
 	 * get display name of the user
+	 *
 	 * @param string $uid user ID of the user
 	 * @return string display name
 	 */
@@ -149,6 +137,7 @@ class OC_User_Database extends OC_User_Backend {
 
 	/**
 	 * Get a list of all display names
+	 *
 	 * @return array an array of  all displayNames (value) and the correspondig uids (key)
 	 *
 	 * Get a list of all display names and user ids.
@@ -169,6 +158,7 @@ class OC_User_Database extends OC_User_Backend {
 
 	/**
 	 * Check if the password is correct
+	 *
 	 * @param string $uid The username
 	 * @param string $password The password
 	 * @return string
@@ -183,14 +173,21 @@ class OC_User_Database extends OC_User_Backend {
 		$row = $result->fetchRow();
 		if ($row) {
 			$storedHash = $row['password'];
-			if ($storedHash[0] === '$') { //the new phpass based hashing
-				$hasher = $this->getHasher();
-				if ($hasher->CheckPassword($password . OC_Config::getValue('passwordsalt', ''), $storedHash)) {
-					return $row['uid'];
-				}
 
-			//old sha1 based hashing
-			} elseif (sha1($password) === $storedHash) {
+			if (password_verify($password, $storedHash)) {
+				// Check and see if our password needs to be rehashed
+				if (password_needs_rehash($storedHash, PASSWORD_BCRYPT)) {
+					$this->setPassword($row['uid'], $password);
+				}
+				return $row['uid'];
+				// Check to see if we are dealing with a legacy password (phpass)
+			} elseif (password_verify($password . OC::$server->getConfig()->getSystemValue('passwordsalt'), $storedHash)) {
+				// Check and see if our password needs to be rehashed
+				if (password_needs_rehash($storedHash, PASSWORD_BCRYPT)) {
+					$this->setPassword($row['uid'], $password);
+				}
+				return $row['uid'];
+			} elseif (sha1($password) === $storedHash) { //old sha1 based hashing
 				//upgrade to new hashing
 				$this->setPassword($row['uid'], $password);
 				return $row['uid'];
@@ -202,6 +199,7 @@ class OC_User_Database extends OC_User_Backend {
 
 	/**
 	 * Load an user in the cache
+	 *
 	 * @param string $uid the username
 	 * @return boolean
 	 */
@@ -226,6 +224,7 @@ class OC_User_Database extends OC_User_Backend {
 
 	/**
 	 * Get a list of all users
+	 *
 	 * @return array an array of all uids
 	 *
 	 * Get a list of all users.
@@ -242,6 +241,7 @@ class OC_User_Database extends OC_User_Backend {
 
 	/**
 	 * check if a user exists
+	 *
 	 * @param string $uid the username
 	 * @return boolean
 	 */
@@ -252,6 +252,7 @@ class OC_User_Database extends OC_User_Backend {
 
 	/**
 	 * get the user's home directory
+	 *
 	 * @param string $uid the username
 	 * @return string|false
 	 */

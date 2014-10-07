@@ -1,7 +1,5 @@
 <?php
 // Load other apps for file previews
-use OCA\Files_Sharing\Helper;
-
 OC_App::loadApps();
 
 $appConfig = \OC::$server->getAppConfig();
@@ -13,12 +11,8 @@ if ($appConfig->getValue('core', 'shareapi_allow_links', 'yes') !== 'yes') {
 	exit();
 }
 
-// Legacy sharing links via public.php have the token in $GET['t']
 if (isset($_GET['t'])) {
 	$token = $_GET['t'];
-}
-
-if (isset($token)) {
 	$linkItem = OCP\Share::getShareByToken($token, false);
 	if (is_array($linkItem) && isset($linkItem['uid_owner'])) {
 		// seems to be a valid share
@@ -57,10 +51,7 @@ if (isset($path)) {
 			$password = $_POST['password'];
 			if ($linkItem['share_type'] == OCP\Share::SHARE_TYPE_LINK) {
 				// Check Password
-				$forcePortable = (CRYPT_BLOWFISH != 1);
-				$hasher = new PasswordHash(8, $forcePortable);
-				if (!($hasher->CheckPassword($password.OC_Config::getValue('passwordsalt', ''),
-											 $linkItem['share_with']))) {
+				if (!password_verify($password, $linkItem['share_with'])) {
 					OCP\Util::addStyle('files_sharing', 'authenticate');
 					$tmpl = new OCP\Template('files_sharing', 'authenticate', 'guest');
 					$tmpl->assign('URL', $url);
@@ -69,11 +60,11 @@ if (isset($path)) {
 					exit();
 				} else {
 					// Save item id in session for future requests
-					\OC::$server->getSession()->set('public_link_authenticated', $linkItem['id']);
+					\OC::$session->set('public_link_authenticated', $linkItem['id']);
 				}
 			} else {
-				OCP\Util::writeLog('share', 'Unknown share type '.$linkItem['share_type']
-										   .' for share id '.$linkItem['id'], \OCP\Util::ERROR);
+				OCP\Util::writeLog('share', 'Unknown share type ' . $linkItem['share_type']
+					. ' for share id ' . $linkItem['id'], \OCP\Util::ERROR);
 				header('HTTP/1.0 404 Not Found');
 				$tmpl = new OCP\Template('', '404', 'guest');
 				$tmpl->printPage();
@@ -82,8 +73,8 @@ if (isset($path)) {
 
 		} else {
 			// Check if item id is set in session
-			if ( ! \OC::$server->getSession()->exists('public_link_authenticated')
-				|| \OC::$server->getSession()->get('public_link_authenticated') !== $linkItem['id']
+			if (!\OC::$session->exists('public_link_authenticated')
+				|| \OC::$session->get('public_link_authenticated') !== $linkItem['id']
 			) {
 				// Prompt for password
 				OCP\Util::addStyle('files_sharing', 'authenticate');
@@ -95,7 +86,7 @@ if (isset($path)) {
 		}
 	}
 	$basePath = $path;
-	$rootName = \OC_Util::basename($path);
+	$rootName = basename($path);
 	if (isset($_GET['path']) && \OC\Files\Filesystem::isReadable($basePath . $_GET['path'])) {
 		$getPath = \OC\Files\Filesystem::normalizePath($_GET['path']);
 		$path .= $getPath;
@@ -106,15 +97,12 @@ if (isset($path)) {
 	$file = basename($path);
 	// Download the file
 	if (isset($_GET['download'])) {
-		if (!\OCP\App::isEnabled('files_encryption')) {
-			// encryption app requires the session to store the keys in
-			\OC::$server->getSession()->close();
-		}
+		\OC::$server->getSession()->close();
 		if (isset($_GET['files'])) { // download selected files
 			$files = $_GET['files'];
 			$files_list = json_decode($files);
 			// in case we get only a single file
-			if ($files_list === NULL ) {
+			if ($files_list === null) {
 				$files_list = array($files);
 			}
 			OC_Files::get($path, $files_list, $_SERVER['REQUEST_METHOD'] == 'HEAD');
@@ -123,6 +111,7 @@ if (isset($path)) {
 		}
 		exit();
 	} else {
+
 		OCP\Util::addScript('files', 'file-upload');
 		OCP\Util::addStyle('files_sharing', 'public');
 		OCP\Util::addStyle('files_sharing', 'mobile');
@@ -130,7 +119,7 @@ if (isset($path)) {
 		OCP\Util::addScript('files', 'fileactions');
 		OCP\Util::addScript('files', 'jquery.iframe-transport');
 		OCP\Util::addScript('files', 'jquery.fileupload');
-		$maxUploadFilesize=OCP\Util::maxUploadFilesize($path);
+		$maxUploadFilesize = OCP\Util::maxUploadFilesize($path);
 		$tmpl = new OCP\Template('files_sharing', 'public', 'base');
 		$tmpl->assign('displayName', \OCP\User::getDisplayName($shareOwner));
 		$tmpl->assign('filename', $file);
@@ -138,12 +127,11 @@ if (isset($path)) {
 		$tmpl->assign('mimetype', \OC\Files\Filesystem::getMimeType($path));
 		$tmpl->assign('dirToken', $linkItem['token']);
 		$tmpl->assign('sharingToken', $token);
-		$tmpl->assign('server2serversharing', Helper::isOutgoingServer2serverShareEnabled());
 		$tmpl->assign('protected', isset($linkItem['share_with']) ? 'true' : 'false');
 
-		$urlLinkIdentifiers= (isset($token)?'&t='.$token:'')
-							.(isset($_GET['dir'])?'&dir='.$_GET['dir']:'')
-							.(isset($_GET['file'])?'&file='.$_GET['file']:'');
+		$urlLinkIdentifiers = (isset($token) ? '&t=' . $token : '')
+			. (isset($_GET['dir']) ? '&dir=' . $_GET['dir'] : '')
+			. (isset($_GET['file']) ? '&file=' . $_GET['file'] : '');
 		// Show file list
 		if (\OC\Files\Filesystem::is_dir($path)) {
 			$tmpl->assign('dir', $getPath);
@@ -157,10 +145,10 @@ if (isset($path)) {
 			OCP\Util::addscript('files', 'keyboardshortcuts');
 			$files = array();
 			$rootLength = strlen($basePath) + 1;
-			$maxUploadFilesize=OCP\Util::maxUploadFilesize($path);
+			$maxUploadFilesize = OCP\Util::maxUploadFilesize($path);
 
-			$freeSpace=OCP\Util::freeSpace($path);
-			$uploadLimit=OCP\Util::uploadLimit();
+			$freeSpace = OCP\Util::freeSpace($path);
+			$uploadLimit = OCP\Util::uploadLimit();
 			$folder = new OCP\Template('files', 'list', '');
 			$folder->assign('dir', $getPath);
 			$folder->assign('dirToken', $linkItem['token']);
@@ -185,7 +173,7 @@ if (isset($path)) {
 				$tmpl->assign('downloadURL', OCP\Util::linkToPublic('files') . $urlLinkIdentifiers . '&download');
 			} else {
 				$tmpl->assign('downloadURL', OCP\Util::linkToPublic('files')
-										.$urlLinkIdentifiers.'&download&path='.urlencode($getPath));
+					. $urlLinkIdentifiers . '&download&path=' . urlencode($getPath));
 			}
 		}
 		$tmpl->printPage();

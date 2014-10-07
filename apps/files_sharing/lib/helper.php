@@ -3,7 +3,6 @@
 namespace OCA\Files_Sharing;
 
 use OC_Config;
-use PasswordHash;
 
 class Helper {
 
@@ -99,10 +98,7 @@ class Helper {
 		if ($password !== null) {
 			if ($linkItem['share_type'] == \OCP\Share::SHARE_TYPE_LINK) {
 				// Check Password
-				$forcePortable = (CRYPT_BLOWFISH != 1);
-				$hasher = new PasswordHash(8, $forcePortable);
-				if (!($hasher->CheckPassword($password.OC_Config::getValue('passwordsalt', ''),
-											 $linkItem['share_with']))) {
+				if (!(password_verify($password, $linkItem['share_with']))) {
 					return false;
 				} else {
 					// Save item id in session for future requests
