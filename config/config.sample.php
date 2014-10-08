@@ -42,7 +42,7 @@ $CONFIG = array(
 "forcessl" => false,
 
 /* Blacklist a specific file and disallow the upload of files with this name - WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING. */
-"blacklisted_files" => array('.htaccess'),
+"blacklisted_files" => array('.htaccess', '.user.ini'),
 
 /* The automatic hostname detection of ownCloud can fail in certain reverse proxy and CLI/cron situations. This option allows to manually override the automatic detection. You can also add a port. For example "www.example.com:88" */
 "overwritehost" => "",
