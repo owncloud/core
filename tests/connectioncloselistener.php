@@ -9,7 +9,7 @@
 /**
  * Starts a new session before each test execution
  */
-class ConectionCloseListener implements PHPUnit_Framework_TestListener {
+class ConnectionCloseListener implements PHPUnit_Framework_TestListener {
 
 	public function addError(PHPUnit_Framework_Test $test, Exception $e, $time) {
 	}
@@ -30,14 +30,14 @@ class ConectionCloseListener implements PHPUnit_Framework_TestListener {
 	}
 
 	public function endTest(PHPUnit_Framework_Test $test, $time) {
-		// Close the db connection.
-		\OC_DB::getConnection()->close();
 	}
 
 	public function startTestSuite(PHPUnit_Framework_TestSuite $suite) {
 	}
 
 	public function endTestSuite(PHPUnit_Framework_TestSuite $suite) {
+		// Close the db connection.
+		\OC_DB::getConnection()->close();
 	}
 
 }
