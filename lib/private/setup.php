@@ -91,6 +91,7 @@ class OC_Setup {
 		\OC::$server->getConfig()->setSystemValue('version', implode('.', OC_Util::getVersion()));
 
 		try {
+			chdir(OC::$SERVERROOT);
 			$dbSetup->initialize($options);
 			$dbSetup->setupDatabase($username);
 		} catch (DatabaseSetupException $e) {
