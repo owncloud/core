@@ -572,6 +572,21 @@ class OC_Mount_Config {
 		}
 		$mountPoint = \OC\Files\Filesystem::normalizePath($mountPoint);
 		$mountPoints = self::readData($isPersonal ? OCP\User::getUser() : null);
+
+		$options = $mountPoints[$mountType][$applicable][$mountPoint];
+		if (isset($options['options'])) {
+			$options['options'] = self::decryptPasswords($options['options']);
+		}
+		if ($isPersonal) {
+			$mount = new \OCA\Files_External\PersonalMount($options['class'], $mountPoint, $options['options'], $loader);
+		} else{
+			$mount = new \OC\Files\Mount\Mount($options['class'], $mountPoint, $options['options'], $loader);
+		}
+		$storageId = $mount->getStorageId();
+		if (!empty($storageId)) {
+			// delete storage and cache entries
+			\OC\Files\Cache\Storage::remove($storageId);
+		}
 		// Remove mount point
 		unset($mountPoints[$mountType][$applicable][$mountPoint]);
 		// Unset parent arrays if empty
