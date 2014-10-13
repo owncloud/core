@@ -69,6 +69,9 @@ $previewSupported = OC\Preview::isMimeSupported($_['mimetype']) ? 'true' : 'fals
 					<img class="svg" alt="" src="<?php print_unescaped(OCP\image_path("core", "actions/download.svg")); ?>"/>
 					<?php p($l->t('Download %s', array($_['filename'])))?>
 				</a>
+				<div>
+					<?php p($l->t("Size")) ?>: <?php p($_['fileSize']) ?>
+				</div>
 			</div>
 			<div class="directLink">
 				<label for="directLink"><?php p($l->t('Direct link')) ?></label>
