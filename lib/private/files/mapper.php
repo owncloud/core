@@ -55,7 +55,6 @@ class Mapper
 		    } else {
 			\OC_DB::executeAudited('DELETE FROM `*PREFIX*file_map` WHERE `physic_path` LIKE ?', array($path."%"));
 		    }
-		    return;
 		}
 
 		if ($isLogicPath) {
