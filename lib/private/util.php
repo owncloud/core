@@ -986,7 +986,9 @@ class OC_Util {
 	 * file in the data directory and trying to access via http
 	 */
 	public static function isHtaccessWorking() {
-		if (!OC::$server->getConfig()->getSystemValue('check_for_working_htaccess', true)) {
+		if (!OC::$server->getConfig()->getSystemValue('check_for_working_htaccess', true)
+			|| (\OC::$CLI && OC::$server->getConfig()->getSystemValue('overwrite.cli.url', false) !== false)
+		) {
 			return true;
 		}
 
