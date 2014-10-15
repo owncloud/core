@@ -31,5 +31,7 @@
 	</filter>
 	<listeners>
 		<listener class="StartSessionListener" file="startsessionlistener.php" />
+		<listener class="ConnectionCloseListener" file="connectioncloselistener.php"/>
+		<listener class="TestCleanupListener" file="testcleanuplistener.php">
 	</listeners>
 </phpunit>
