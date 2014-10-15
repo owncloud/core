@@ -140,7 +140,7 @@ if (isset($path)) {
 		$tmpl->assign('sharingToken', $token);
 		$tmpl->assign('server2serversharing', Helper::isOutgoingServer2serverShareEnabled());
 		$tmpl->assign('protected', isset($linkItem['share_with']) ? 'true' : 'false');
-		$tmpl->assign('fileSize',  OC_Helper::humanFileSize(filesize(\OC\Files\Filesystem::getLocalFile($path))));
+		$tmpl->assign('fileSize',  OC_Helper::humanFileSize(\OC\Files\Filesystem::filesize($path)));
 
 		$urlLinkIdentifiers= (isset($token)?'&t='.$token:'')
 							.(isset($_GET['dir'])?'&dir='.$_GET['dir']:'')
