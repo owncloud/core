@@ -12,23 +12,22 @@ class Controller {
 	public function run($post) {
 		// Check for autosetup:
 		$post = $this->loadAutoConfig($post);
-		$opts = $this->getSystemInfo();
 
 		if(isset($post['install']) AND $post['install']=='true') {
 			// We have to launch the installation process :
 			$e = \OC_Setup::install($post);
-			$errors = array('errors' => $e);
 
-			if(count($e) > 0) {
-				$options = array_merge($opts, $post, $errors);
-				$this->display($options);
-			} else {
+			if(count($e) === 0) {
 				$this->finishSetup();
+				return;
+			} else {
+				$post = array_merge($post, array('errors' => $e));
 			}
-		} else {
-			$options = array_merge($opts, $post);
-			$this->display($options);
 		}
+
+		$opts = $this->getSystemInfo();
+		$options = array_merge($opts, $post);
+		$this->display($options);
 	}
 
 	public function display($post) {
