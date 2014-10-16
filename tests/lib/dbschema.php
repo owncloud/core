@@ -38,10 +38,6 @@ class Test_DBSchema extends PHPUnit_Framework_TestCase {
 	 * @medium
 	 */
 	public function testSchema() {
-		$connection = \OC_DB::getConnection();
-		if ($connection->getDriver() instanceof \Doctrine\DBAL\Driver\OCI8\Driver) {
-			$this->markTestIncomplete('There is an issue in the schema migration currently.');
-		}
 		$this->doTestSchemaCreating();
 		$this->doTestSchemaChanging();
 		$this->doTestSchemaDumping();
