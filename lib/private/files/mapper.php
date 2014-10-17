@@ -50,14 +50,19 @@ class Mapper
 	public function removePath($path, $isLogicPath, $recursive) {
 		if ($recursive) {
 		    //Recurive remove only for directories
+		    
+		    
 		    if (substr($path, -1, 1) !== '/') {
-		    	$path .= '/';
+		    	$rpath = $path . '/%';
+		    }
+		    else {
+		    	$rpath = $path .  '%';
 		    }
 
 		    if ($isLogicPath) {
-		        \OC_DB::executeAudited('DELETE FROM `*PREFIX*file_map` WHERE `logic_path` LIKE ?', array($path.'%'));
+		        \OC_DB::executeAudited('DELETE FROM `*PREFIX*file_map` WHERE `logic_path` LIKE ?', array($rpath));
 		    } else {
-			\OC_DB::executeAudited('DELETE FROM `*PREFIX*file_map` WHERE `physic_path` LIKE ?', array($path.'%'));
+			\OC_DB::executeAudited('DELETE FROM `*PREFIX*file_map` WHERE `physic_path` LIKE ?', array($rpath));
 		    }
 		}
 
