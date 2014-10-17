@@ -135,6 +135,11 @@ class OC_App {
 			self::$appTypes = OC_Appconfig::getValues(false, 'types');
 		}
 
+		// TODO workaround for handed in instance of \OC\App\Contacts instead of string
+		if(gettype($app) !== 'string') {
+			return array();
+		}
+
 		if (isset(self::$appTypes[$app])) {
 			return explode(',', self::$appTypes[$app]);
 		} else {
