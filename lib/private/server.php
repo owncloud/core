@@ -14,6 +14,7 @@ use OC\Security\Crypto;
 use OC\Security\SecureRandom;
 use OCP\IServerContainer;
 use OCP\ISession;
+use OC\Chat\BackendManager;
 
 /**
  * Class Server
@@ -216,8 +217,18 @@ class Server extends SimpleContainer implements IServerContainer {
 			$config = $c->query('AllConfig');
 			return new HTTPHelper($config);
 		});
+		$this->registerService('ChatBackendManager', function(SimpleContainer $c){
+			return new BackendManager();
+		});
 	}
 
+	/**
+	 * @return \OCP\Chat\IBackendManager
+	 */
+	public function getChatBackendManager(){
+		return $this->query('ChatBackendManager');
+	}
+	
 	/**
 	 * @return \OCP\Contacts\IManager
 	 */
