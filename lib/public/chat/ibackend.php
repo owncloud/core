@@ -42,4 +42,10 @@ interface IBackend{
 	 * @return array
 	 */
 	public function getConfig();
+
+	/**
+	 * Converts this object to an array to be encoded as JSON
+	 * @return array
+	 */
+	public function toArray();
 }
