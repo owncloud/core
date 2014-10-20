@@ -485,6 +485,19 @@ class OC_User {
 		}
 	}
 
+    /**
+     * Check whether user can set his email address
+     * @param string $uid The username
+     * @return bool
+     *
+     * Check whether a specified user can change his email address
+     */
+    public static function canUserSetEmailAddress($uid)
+    {
+        $user = self::getManager()->get($uid);
+        return ($user) ? $user->canSetEmailAddress() : false;
+    }
+
 	/**
 	 * Check whether user can change his display name
 	 * @param string $uid The username

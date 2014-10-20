@@ -82,6 +82,13 @@ interface IUser {
 	 */
 	public function canChangePassword();
 
+    /**
+     * check if the user can set his email address
+     *
+     * @return bool
+     */
+    public function canSetEmailAddress();
+
 	/**
 	 * check if the backend supports changing display names
 	 *
