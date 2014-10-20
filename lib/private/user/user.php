@@ -225,7 +225,7 @@ class User implements IUser {
 	}
 
     /**
-     * check if setting email address is allowed independent within the config
+     * check if setting email address is allowed within the config
      * independent of the used backend
      *
      * @return bool
