@@ -139,11 +139,7 @@ class Config {
 	 * will be added automagically.
 	 */
 	public static function setUserValue( $user, $app, $key, $value ) {
-		try {
-			\OC_Preferences::setValue( $user, $app, $key, $value );
-		} catch (\Exception $e) {
-			return false;
-		}
+		\OC_Preferences::setValue( $user, $app, $key, $value );
 		return true;
 	}
 }
