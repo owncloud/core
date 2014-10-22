@@ -149,6 +149,9 @@ class Mapper
 				}
 				array_pop($pathArray);
 			} else {
+				if (substr($pathElement, -2) === '\\.') {
+					$pathElement = substr($pathElement, 0, -2);
+				}
 				array_push($pathArray, $pathElement);
 			}
 		}
@@ -168,9 +171,10 @@ class Mapper
 		$logicPath = $this->resolveRelativePath($logicPath);
 
 		if ($logicPath === $this->unchangedPhysicalRoot ||
-			$logicPath . '/' === $this->unchangedPhysicalRoot) {
+			$logicPath . '/' === $this->unchangedPhysicalRoot ||
+			$logicPath . '\\' === $this->unchangedPhysicalRoot) {
 			// If the path is the physical root, we are done with the recursion
-			return rtrim($logicPath, '/');
+			return $logicPath;
 		}
 
 		$resolvedLogicPath = $this->resolveLogicPath($logicPath);
