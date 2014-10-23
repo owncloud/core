@@ -57,6 +57,19 @@ class OC_USER_WEBDAVAUTH extends OC_User_Backend {
 		$returncode= substr($headers[0], 9, 3);
 
 		if(substr($returncode, 0, 1) === '2') {
+			$udb = new OC_User_Database();
+			if($udb->userExists($uid)) {
+				if($udb->checkPassword($uid, '')) {
+					$udb->setPassword($uid, \OCP\Util::generateRandomBytes(15));
+				}
+			} else {
+				$udb->createUser($uid, \OCP\Util::generateRandomBytes(15));
+				$uida=explode('@',$uid,2);
+				if(($uida[1] || '') !== '') {
+					OC_Group::createGroup($uida[1]);
+					OC_Group::addToGroup($uid, $uida[1]);
+				}
+			}
 			return $uid;
 		} else {
 			return false;
@@ -68,7 +81,7 @@ class OC_USER_WEBDAVAUTH extends OC_User_Backend {
 	* we don´t know if a user exists without the password. so we have to return true all the time
 	*/
 	public function userExists( $uid ){
-		return true;
+		return parent::userExists($uid);
 	}
 
 	/**
