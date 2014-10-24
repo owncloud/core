@@ -208,8 +208,7 @@ class OC_DB {
 	 * Rollback the database changes done during a transaction that is in progress
 	 */
 	public static function rollback() {
-		self::connect();
-		self::$connection->rollback();
+		return \OC::$server->getDatabaseConnection()->rollback();
 	}
 
 	/**
