@@ -93,6 +93,7 @@ $tmpl->assign('commonlanguages', $commonlanguages);
 $tmpl->assign('activelanguage', $userLang);
 $tmpl->assign('passwordChangeSupported', OC_User::canUserChangePassword(OC_User::getUser()));
 $tmpl->assign('displayNameChangeSupported', OC_User::canUserChangeDisplayName(OC_User::getUser()));
+$tmpl->assign('setEmailAllowed', OC_User::canUserSetEmailAddress(OC_User::getUser()));
 $tmpl->assign('displayName', OC_User::getDisplayName());
 $tmpl->assign('enableDecryptAll' , $enableDecryptAll);
 $tmpl->assign('backupKeysExists' , $backupKeysExists);

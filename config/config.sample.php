@@ -172,6 +172,13 @@ $CONFIG = array(
 'allow_user_to_change_display_name' => true,
 
 /**
+ * Allow setting email address independent of the used backend
+ * ``true`` allows users to set (and change) their email address (on their Personal
+ * pages), and ``false`` prevents them from changing their email address.
+ */
+'allow_user_to_set_email_address' => true,
+
+/**
  * Lifetime of the remember login cookie, which is set when the user clicks the
  * ``remember`` checkbox on the login screen. The default is 15 days, expressed
  * in seconds.

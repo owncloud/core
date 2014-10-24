@@ -100,7 +100,9 @@ if($_['displayNameChangeSupported']) {
 ?>
 
 <?php
-if($_['passwordChangeSupported']) {
+if(($_['passwordChangeSupported'])
+|| ($_['setEmailAllowed']))
+{
 ?>
 <form id="lostpassword" class="section">
 	<h2><?php p($l->t('Email'));?></h2>
@@ -108,7 +110,13 @@ if($_['passwordChangeSupported']) {
 		placeholder="<?php p($l->t('Your email address'));?>"
 		autocomplete="on" autocapitalize="off" autocorrect="off" />
 	<span class="msg"></span><br />
-	<em><?php p($l->t('Fill in an email address to enable password recovery and receive notifications'));?></em>
+	<em>
+    <?php
+    ($_['passwordChangeSupported'])
+        ? p($l->t('Fill in an email address to enable password recovery and receive notifications'))
+        : p($l->t('Fill in an email address to receive notifications'));
+    ?>
+    </em>
 </form>
 <?php
 }

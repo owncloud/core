@@ -222,6 +222,7 @@ class User implements IUser {
 
 	/**
 	 * check if the backend supports changing display names
+	 * or the config variable is set to TRUE
 	 *
 	 * @return bool
 	 */
@@ -232,6 +233,17 @@ class User implements IUser {
 			return $this->backend->implementsActions(\OC_USER_BACKEND_SET_DISPLAYNAME);
 		}
 	}
+
+    /**
+     * check if setting email address is allowed within the config
+     * independent of the used backend
+     *
+     * @return bool
+     */
+    public function canSetEmailAddress()
+    {
+        return ($this->config and $this->config->getSystemValue('allow_user_to_set_email_address') === false) ? false : true;
+    }
 
 	/**
 	 * check if the user is enabled
