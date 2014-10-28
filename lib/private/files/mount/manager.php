@@ -16,10 +16,42 @@ class Manager {
 	 */
 	private $mounts = array();
 
+	private $rootView;
+
+	public function __construct() {
+		$this->rootView = new \OC\Files\View('/');
+	}
+
 	/**
 	 * @param Mount $mount
 	 */
 	public function addMount(Mount $mount) {
+		$path = $mount->getMountPoint();
+
+		if ($path !== '/' &&
+			$path !== '' &&
+			$path !== '.' &&
+			// home storage is mounted over the user's home folder, no conflict
+			!$mount->getStorage()->instanceOfStorage('\OCP\Files\IHomeStorage') &&
+			$this->rootView->file_exists($path)) {
+
+			$newMountPoint = \OCA\Files_Sharing\Helper::generateUniqueTarget(
+				\OC\Files\Filesystem::normalizePath($path),
+				array(),
+				$this->rootView
+			);
+			// try renaming the new mount point itself
+			$success = false;
+			if ($mount instanceof MoveableMount) {
+				$success = $mount->moveMount($newMountPoint);
+			}
+
+			if (!$success) {
+				// then try renaming the target instead
+				$this->rootView->rename($path, $newMountPoint);
+			}
+		}
+
 		$this->mounts[$mount->getMountPoint()] = $mount;
 	}
 
