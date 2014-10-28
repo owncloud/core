@@ -72,6 +72,7 @@ class DAV extends \OC\Files\Storage\Common {
 			'baseUri' => $this->createBaseUri(),
 			'userName' => $this->user,
 			'password' => $this->password,
+			'authType' => \Sabre\DAV\Client::AUTH_BASIC,
 		);
 
 		$this->client = new \Sabre\DAV\Client($settings);
