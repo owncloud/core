@@ -127,6 +127,11 @@ $CONFIG = array(
 ),
 
 /**
+ * sqlite3 journal mode can be specified using this config parameter - can be 'WAL' or 'OFF'
+ */
+'sqlite.journal_mode' => 'OFF',
+
+/**
  * Indicates whether the ownCloud instance was installed successfully; ``true``
  * indicates a successful installation, and ``false`` indicates an unsuccessful
  * installation.
