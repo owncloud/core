@@ -42,6 +42,10 @@ class Test_DBSchema extends PHPUnit_Framework_TestCase {
 	 * @medium
 	 */
 	public function testSchema() {
+		$platform = \OC_DB::getConnection()->getDatabasePlatform();
+		if ($platform instanceof \Doctrine\DBAL\Platforms\SQLServerPlatform) {
+			$this->markTestSkipped("Test not relevant on MSSQL");
+		}
 		$this->doTestSchemaCreating();
 		$this->doTestSchemaChanging();
 		$this->doTestSchemaDumping();
