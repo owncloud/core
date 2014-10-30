@@ -33,9 +33,6 @@ class Migrator extends \PHPUnit_Framework_TestCase {
 		if ($this->connection->getDatabasePlatform() instanceof OraclePlatform) {
 			$this->markTestSkipped('DB migration tests are not supported on OCI');
 		}
-		if ($this->connection->getDatabasePlatform() instanceof SQLServerPlatform) {
-			$this->markTestSkipped('DB migration tests are not supported on MSSQL');
-		}
 		$this->manager = new \OC\DB\MDB2SchemaManager($this->connection);
 		$this->tableName = 'test_' . uniqid();
 	}
