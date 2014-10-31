@@ -199,6 +199,8 @@ function relative_modified_date($timestamp, $fromTime = null, $dateOnly = false)
 	else if($timediff < 2678400) { return $l->n('%n day go', '%n days ago', $diffdays); }
 	// 86400 * 60 days = 518400
 	else if($timediff < 5184000) { return $l->t('last month'); }
+	// 86400 * 30,5 * 8 = 21081600 (if the file is younger than 8 months)
+	else if($timediff < 21081600) { return $l->n('%n month ago', '%n months ago', $diffmonths); }
 	else if((date('n', $fromTime)-$diffmonths) > 0) { return $l->n('%n month ago', '%n months ago', $diffmonths); }
 	// 86400 * 365.25 days * 2 = 63113852
 	else if($timediff < 63113852) { return $l->t('last year'); }
