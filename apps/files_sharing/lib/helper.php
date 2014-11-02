@@ -204,6 +204,7 @@ class Helper {
 	 * @return string $path
 	 */
 	public static function generateUniqueTarget($path, $excludeList, $view) {
+		// TODO: move this function to \OC_Filesystem or \OC_View
 		$pathinfo = pathinfo($path);
 		$ext = (isset($pathinfo['extension'])) ? '.'.$pathinfo['extension'] : '';
 		$name = $pathinfo['filename'];

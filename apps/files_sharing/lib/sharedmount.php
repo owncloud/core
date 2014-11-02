@@ -31,7 +31,7 @@ class SharedMount extends Mount implements MoveableMount {
 	 * check if the parent folder exists otherwise move the mount point up
 	 */
 	private static function verifyMountPoint(&$share) {
-
+		// TODO: refactor and rely on the mount manager's conflict detection instead
 		$mountPoint = basename($share['file_target']);
 		$parent = dirname($share['file_target']);
 
