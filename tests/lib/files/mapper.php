@@ -76,4 +76,81 @@ class Mapper extends \Test\TestCase {
 	public function testAddIndexToFilename($fileName, $index, $expected) {
 		$this->assertEquals($expected, \Test_Helper::invokePrivate($this->mapper, 'addIndexToFilename', array($fileName, $index)));
 	}
+
+	public function logicToPhysicalData() {
+		return array(
+			array(
+				array(
+					array('text.txt', 'text.txt'),
+				), 'Plain ASCII file, no modification required',
+			),
+			array(
+				array(
+					array('text.txt', 'text.txt'),
+				), 'Plain ASCII file, no modification required',
+			),
+			array(
+				array(
+					array(' text.txt ', 'text.txt'),
+				), 'Remove leading and trailing spaces from file names',
+			),
+			array(
+				array(
+					array('te xt .txt', 'te-xt-.txt'),
+				), 'Replace spaces in file names with dashes',
+			),
+			array(
+				array(
+					array('teöxtä.txt', 'teoxta.txt'),
+				), 'Replace simple non-ascii characters with ascii replacement',
+			),
+			array(
+				array(
+					array('te xt .txt', 'te-xt-.txt'),
+					array('te€xt€.txt', 'te-xt--1.txt'),
+					array('te xt .txt', 'te-xt-.txt'),
+				), 'Hash collision and reusing the first hash',
+			),
+			array(
+				array(
+					array('fol@der', 'fol-der'),
+					array('fol der/test1.txt', 'fol-der-1/test1.txt'),
+					array('fol€der/test1.txt', 'fol-der-2/test1.txt'),
+					array('fol der/test2.txt', 'fol-der-1/test2.txt'),
+					array('fol€der/test2.txt', 'fol-der-2/test2.txt'),
+					array('fol@der/test1.txt', 'fol-der/test1.txt'),
+					array('fol@der-1', 'fol-der-1-1'),
+					array('fol€der', 'fol-der-2'),
+				), 'Hash collision on folder names',
+			),
+		);
+	}
+
+	protected $testPath = 'D:/issue/11103/';
+
+	/**
+	 * @dataProvider logicToPhysicalData
+	 */
+	public function testLogicToPhysical($paths, $explain) {
+		$mapper = new \OC\Files\Mapper($this->testPath);
+		$mapper->removePath($this->testPath, false, true);
+		$this->assertEmptyMapPath($this->testPath);
+
+		foreach ($paths as $pathData) {
+			list($logical, $physical) = $pathData;
+			$this->assertEquals($this->testPath . $physical, $mapper->logicToPhysical($this->testPath . $logical, true), $explain);
+		}
+	}
+
+	protected function assertEmptyMapPath($path) {
+		$query = \OC_DB::prepare('SELECT `physic_path` FROM `*PREFIX*file_map` WHERE `physic_path` LIKE ?');
+		$result = $query->execute(array($path . '%'));
+
+		$paths = array();
+		while ($row = $result->fetchRow()) {
+			$paths[] = $row['physic_path'];
+		}
+
+		$this->assertEmpty($paths, 'The map table should not contain entries for physical path: ' . $path);
+	}
 }
