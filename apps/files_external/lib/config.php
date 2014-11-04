@@ -182,11 +182,11 @@ class OC_Mount_Config {
 			$mounts = $mountConfig[self::MOUNT_TYPE_USER]['all'];
 			foreach ($mounts as $mountPoint => $options) {
 				$mountPoint = self::setUserVars($user, $mountPoint);
+				$options['personal'] = false;
+				$options['options'] = self::decryptPasswords($options['options']);
 				foreach ($options as &$option) {
 					$option = self::setUserVars($user, $option);
 				}
-				$options['personal'] = false;
-				$options['options'] = self::decryptPasswords($options['options']);
 				if (!isset($options['priority'])) {
 					$options['priority'] = $backends[$options['class']]['priority'];
 				}
@@ -206,11 +206,11 @@ class OC_Mount_Config {
 				if (\OC_Group::inGroup($user, $group)) {
 					foreach ($mounts as $mountPoint => $options) {
 						$mountPoint = self::setUserVars($user, $mountPoint);
+						$options['personal'] = false;
+						$options['options'] = self::decryptPasswords($options['options']);
 						foreach ($options as &$option) {
 							$option = self::setUserVars($user, $option);
 						}
-						$options['personal'] = false;
-						$options['options'] = self::decryptPasswords($options['options']);
 						if (!isset($options['priority'])) {
 							$options['priority'] = $backends[$options['class']]['priority'];
 						}
@@ -233,11 +233,11 @@ class OC_Mount_Config {
 				if (strtolower($mountUser) === strtolower($user)) {
 					foreach ($mounts as $mountPoint => $options) {
 						$mountPoint = self::setUserVars($user, $mountPoint);
+						$options['personal'] = false;
+						$options['options'] = self::decryptPasswords($options['options']);
 						foreach ($options as &$option) {
 							$option = self::setUserVars($user, $option);
 						}
-						$options['personal'] = false;
-						$options['options'] = self::decryptPasswords($options['options']);
 						if (!isset($options['priority'])) {
 							$options['priority'] = $backends[$options['class']]['priority'];
 						}
@@ -284,7 +284,13 @@ class OC_Mount_Config {
 	 * @return string
 	 */
 	private static function setUserVars($user, $input) {
-		return str_replace('$user', $user, $input);
+		$output = str_replace('$user', $user, $input);
+		if( \OC::$server->getSession()->exists('smb-credentials') ) {
+			$params_auth = \OC::$server->getSession()->get('smb-credentials');
+			$output = str_replace('$uid', $params_auth['uid'], $output);
+			$output = str_replace('$password', $params_auth['password'], $output);
+		}
+		return $output;
 	}
 
 
