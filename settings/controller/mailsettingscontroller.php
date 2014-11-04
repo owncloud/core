@@ -28,12 +28,12 @@ class MailSettingsController extends Controller {
 	private $config;
 	/** @var Session */
 	private $userSession;
-	/** @var \OC_Defaults */
-	private $defaults;
 	/** @var \OC_Mail */
 	private $mail;
 	/** @var string */
 	private $defaultMailAddress;
+	/** @var string */
+	private $defaultSenderName;
 
 	/**
 	 * @param string $appName
@@ -41,25 +41,25 @@ class MailSettingsController extends Controller {
 	 * @param IL10N $l10n
 	 * @param IConfig $config
 	 * @param Session $userSession
-	 * @param \OC_Defaults $defaults
 	 * @param \OC_Mail $mail
 	 * @param string $defaultMailAddress
+	 * @param string $defaultSenderName
 	 */
 	public function __construct($appName,
 								IRequest $request,
 								IL10N $l10n,
 								IConfig $config,
 								Session $userSession,
-								\OC_Defaults $defaults,
 								\OC_Mail $mail,
-								$defaultMailAddress) {
+								$defaultMailAddress,
+								$defaultSenderName) {
 		parent::__construct($appName, $request);
 		$this->l10n = $l10n;
 		$this->config = $config;
 		$this->userSession = $userSession;
-		$this->defaults = $defaults;
 		$this->mail = $mail;
 		$this->defaultMailAddress = $defaultMailAddress;
+		$this->defaultSenderName = $defaultSenderName;
 	}
 
 	/**
@@ -136,7 +136,7 @@ class MailSettingsController extends Controller {
 					$this->l10n->t('test email settings'),
 					$this->l10n->t('If you received this email, the settings seem to be correct.'),
 					$this->defaultMailAddress,
-					$this->defaults->getName()
+					$this->defaultSenderName
 				);
 			} catch (\Exception $e) {
 				return array('data' =>

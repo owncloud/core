@@ -40,9 +40,9 @@ class Application extends App {
 				$c->query('L10N'),
 				$c->query('Config'),
 				$c->query('UserSession'),
-				$c->query('Defaults'),
 				$c->query('Mail'),
-				$c->query('DefaultMailAddress')
+				Util::getDefaultEmailAddress('no-reply'),
+				Util::getDefaultSenderName()
 			);
 		});
 		$container->registerService('AppSettingsController', function(SimpleContainer $c) {
@@ -67,12 +67,6 @@ class Application extends App {
 		});
 		$container->registerService('Mail', function(SimpleContainer $c) {
 			return new \OC_Mail;
-		});
-		$container->registerService('Defaults', function(SimpleContainer $c) {
-			return new \OC_Defaults;
-		});
-		$container->registerService('DefaultMailAddress', function(SimpleContainer $c) {
-			return Util::getDefaultEmailAddress('no-reply');
 		});
 	}
 }

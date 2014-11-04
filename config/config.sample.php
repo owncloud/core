@@ -239,6 +239,11 @@ $CONFIG = array(
 'mail_from_address' => 'owncloud',
 
 /**
+ * FROM sender name that overrides the sender name of system emails, e.g. ``My ownCloud``.
+ */
+'mail_from_name' => '',
+
+/**
  * Enable SMTP class debugging.
  */
 'mail_smtpdebug' => false,

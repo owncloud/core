@@ -252,12 +252,34 @@ class Util {
 	}
 
 	/**
+	 * Returns the default sender name for emails
+	 *
+	 * If the configuration value 'mail_from_name' is set in
+	 * config.php, this value will override the $defaultName that
+	 * is passed to this function
+	 *
+	 * If neither is set, the name as defined in the theme is used.
+	 *
+	 * @param string $defaultName A default name to use, when the config is not set
+	 * @return string
+	 */
+	public static function getDefaultSenderName($defaultName = '') {
+		// Use the new config and fall back to the given default name
+		$senderName = \OC::$server->getConfig()->getSystemValue('mail_from_name', $defaultName);
+		if ($senderName) {
+			return $senderName;
+		}
+
+		// If neither is set, fall back to the name in the theme
+		$defaults = new \OC_Defaults();
+		return $defaults->getName();
+	}
+
+	/**
 	 * Returns the default email address
-	 * @param string $user_part the user part of the address
-	 * @return string the default email address
 	 *
 	 * Assembles a default email address (using the server hostname
-	 * and the given user part, and returns it
+	 * and the given user part) and returns it
 	 * Example: when given lostpassword-noreply as $user_part param,
 	 *     and is currently accessed via http(s)://example.com/,
 	 *     it would return 'lostpassword-noreply@example.com'
@@ -265,19 +287,22 @@ class Util {
 	 * If the configuration value 'mail_from_address' is set in
 	 * config.php, this value will override the $user_part that
 	 * is passed to this function
+	 *
+	 * @param string $user_part the user part of the address
+	 * @return string the default email address
 	 */
-	public static function getDefaultEmailAddress($user_part) {
-		$user_part = \OC_Config::getValue('mail_from_address', $user_part);
-		$host_name = self::getServerHostName();
-		$host_name = \OC_Config::getValue('mail_domain', $host_name);
-		$defaultEmailAddress = $user_part.'@'.$host_name;
+	public static function getDefaultEmailAddress($userPart) {
+		$userPart = \OC::$server->getConfig()->getSystemValue('mail_from_address', $userPart);
+		$hostName = \OC::$server->getConfig()->getSystemValue('mail_domain', self::getServerHostName());
+		$defaultEmailAddress = $userPart . '@' . $hostName;
 
 		if (\OC_Mail::validateAddress($defaultEmailAddress)) {
 			return $defaultEmailAddress;
 		}
 
-		// in case we cannot build a valid email address from the hostname let's fallback to 'localhost.localdomain'
-		return $user_part.'@localhost.localdomain';
+		// In case, we cannot build a valid email address from the hostname,
+		// let's fallback to 'localhost.localdomain'
+		return $userPart . '@localhost.localdomain';
 	}
 
 	/**

@@ -39,7 +39,8 @@ class LostController extends Controller {
 	 * @var IL10N
 	 */
 	protected $l10n;
-	protected $from;
+	protected $fromEmailAddress;
+	protected $fromSenderName;
 	protected $isDataEncrypted;
 
 	/**
@@ -60,14 +61,16 @@ class LostController extends Controller {
 	                            IL10N $l10n,
 	                            IConfig $config,
 	                            IUserSession $userSession,
-	                            $from,
+	                            $fromEmailAddress,
+	                            $fromSenderName,
 	                            $isDataEncrypted) {
 		parent::__construct($appName, $request);
 		$this->urlGenerator = $urlGenerator;
 		$this->userManager = $userManager;
 		$this->defaults = $defaults;
 		$this->l10n = $l10n;
-		$this->from = $from;
+		$this->fromEmailAddress = $fromEmailAddress;
+		$this->fromSenderName = $fromSenderName;
 		$this->isDataEncrypted = $isDataEncrypted;
 		$this->config = $config;
 		$this->userSession = $userSession;
@@ -190,8 +193,8 @@ class LostController extends Controller {
 				$user,
 				$this->l10n->t('%s password reset',	array($this->defaults->getName())),
 				$msg,
-				$this->from,
-				$this->defaults->getName()
+				$this->fromEmailAddress,
+				$this->fromSenderName
 			);
 		} catch (\Exception $e) {
 			throw new \Exception($this->l10n->t(

@@ -13,6 +13,7 @@ namespace OC\Core;
 use \OCP\AppFramework\App;
 use OC\Core\LostPassword\Controller\LostController;
 use OC\Core\User\UserController;
+use OCP\Util;
 
 class Application extends App {
 
@@ -35,7 +36,8 @@ class Application extends App {
 				$c->query('ServerContainer')->getL10N('core'),
 				$c->query('ServerContainer')->getConfig(),
 				$c->query('ServerContainer')->getUserSession(),
-				\OCP\Util::getDefaultEmailAddress('lostpassword-noreply'),
+				Util::getDefaultEmailAddress('lostpassword-noreply'),
+				Util::getDefaultSenderName(),
 				\OC_App::isEnabled('files_encryption')
 			);
 		});
