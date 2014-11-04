@@ -46,9 +46,10 @@ class Test_Files_Versioning extends \Test\TestCase {
 		\OCA\Files_Versions\Hooks::connectHooks();
 		\OCP\Util::connectHook('OC_Filesystem', 'setup', '\OC\Files\Storage\Shared', 'setup');
 
-		// create test user
-		self::loginHelper(self::TEST_VERSIONS_USER2, true);
-		self::loginHelper(self::TEST_VERSIONS_USER, true);
+		$backend = new OC_User_Dummy();
+		\OC_User::useBackend($backend);
+		$backend->createUser(self::TEST_VERSIONS_USER, self::TEST_VERSIONS_USER);
+		$backend->createUser(self::TEST_VERSIONS_USER2, self::TEST_VERSIONS_USER2);
 	}
 
 	public static function tearDownAfterClass() {
