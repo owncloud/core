@@ -2092,6 +2092,9 @@ class Share extends \OC\Share\Constants {
 		if (isset($row['file_source'])) {
 			$row['file_source'] = (int) $row['file_source'];
 		}
+		if (isset($row['item_source'])) {
+			$row['item_source'] = (int) $row['item_source'];
+		}
 		if (isset($row['permissions'])) {
 			$row['permissions'] = (int) $row['permissions'];
 		}
