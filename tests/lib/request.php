@@ -194,6 +194,53 @@ class Test_Request extends PHPUnit_Framework_TestCase {
 		unset($_SERVER['SERVER_NAME']);
 	}
 
+	public function testServerProtocol() {
+		unset($_SERVER['HTTP_X_FORWARDED_PROTO']);
+		unset($_SERVER['HTTP_HTTPS']);
+		unset($_SERVER['REMOTE_ADDR']);
+		OC_Config::deleteKey('overwriteprotocol');
+		OC_Config::deleteKey('overwritecondaddr');
+
+		OC_Config::setValue('overwriteprotocol', 'https');
+		OC_Config::setValue('overwritecondaddr', '');
+		$proto = OC_Request::serverProtocol();
+		$this->assertEquals('https', $proto);
+
+		OC_Config::setValue('overwriteprotocol', 'https');
+		OC_Config::setValue('overwritecondaddr', '^somehost\..*$');
+		$_SERVER['REMOTE_ADDR'] = 'somehost.test:8080';
+		$proto = OC_Request::serverProtocol();
+		$this->assertEquals('https', $proto);
+
+		// Following checks without overwriting the protocol
+		OC_Config::setValue('overwriteprotocol', '');
+
+		unset($_SERVER['HTTP_X_FORWARDED_PROTO']);
+		unset($_SERVER['HTTP_HTTPS']);
+		$proto = OC_Request::serverProtocol();
+		$this->assertEquals('http', $proto);
+
+		unset($_SERVER['HTTP_X_FORWARDED_PROTO']);
+		$_SERVER['HTTP_HTTPS'] = 'on';
+		$proto = OC_Request::serverProtocol();
+		$this->assertEquals('https', $proto);
+
+		$_SERVER['HTTP_X_FORWARDED_PROTO'] = 'https';
+		$proto = OC_Request::serverProtocol();
+		$this->assertEquals('https', $proto);
+
+		$_SERVER['HTTP_X_FORWARDED_PROTO'] = 'https,http,http';
+		$proto = OC_Request::serverProtocol();
+		$this->assertEquals('https', $proto);
+
+		// clean up
+		unset($_SERVER['HTTP_X_FORWARDED_PROTO']);
+		unset($_SERVER['HTTP_PROTO']);
+		unset($_SERVER['REMOTE_ADDR']);
+		OC_Config::deleteKey('overwriteprotocol');
+		OC_Config::deleteKey('overwritecondaddr');
+	}
+
 	public function testGetOverwriteHost() {
 		unset($_SERVER['REMOTE_ADDR']);
 		OC_Config::deleteKey('overwritecondaddr');
