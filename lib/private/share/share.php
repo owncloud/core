@@ -331,10 +331,11 @@ class Share extends \OC\Share\Constants {
 						FROM
 						`*PREFIX*share`
 						WHERE
-						`' . $column . '` = ? AND `item_type` = ? AND `share_with` in (?)'
+						`' . $column . '` = ? AND `item_type` = ? AND `share_with` in (' .
+						implode(',', array_fill(0, count($groups), '?')) . ')'
 					);
 
-			$result = \OC_DB::executeAudited($query, array($itemSource, $itemType, implode(',', $groups)));
+			$result = \OC_DB::executeAudited($query, array_merge(array($itemSource, $itemType), $groups));
 
 			while ($row = $result->fetchRow()) {
 				$shares[] = $row;
