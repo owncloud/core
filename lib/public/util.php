@@ -128,12 +128,34 @@ class Util {
 	}
 
 	/**
+	 * add a css file from the vendor sub folder
+	 *
+	 * @param string $application application id
+	 * @param string|null $file filename
+	 * @return void
+	 */
+	public static function addVendorStyle($application, $file = null) {
+		\OC_Util::addVendorStyle( $application, $file );
+	}
+
+	/**
 	 * add a javascript file
 	 * @param string $application
 	 * @param string $file
 	 */
 	public static function addScript( $application, $file = null ) {
 		\OC_Util::addScript( $application, $file );
+	}
+
+	/**
+	 * add a javascript file from the vendor sub folder
+	 *
+	 * @param string $application application id
+	 * @param string|null $file filename
+	 * @return void
+	 */
+	public static function addVendorScript($application, $file = null) {
+		\OC_Util::addVendorScript( $application, $file );
 	}
 
 	/**
