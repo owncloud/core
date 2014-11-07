@@ -1,0 +1,84 @@
+{
+    "name": "kriswallsmith/assetic",
+    "minimum-stability": "dev",
+    "description": "Asset Management for PHP",
+    "keywords": [ "assets", "compression", "minification" ],
+    "homepage": "https://github.com/kriswallsmith/assetic",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kris Wallsmith",
+            "email": "kris.wallsmith@gmail.com",
+            "homepage": "http://kriswallsmith.net/"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.1",
+        "symfony/process": "~2.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4",
+        "twig/twig": "~1.6",
+        "leafo/lessphp": "*",
+        "leafo/scssphp": "*",
+        "ptachoire/cssembed": "*",
+        "leafo/scssphp-compass": "*",
+
+        "cssmin/cssmin": "*",
+        "mrclay/minify": "*",
+        "kamicane/packager": "*",
+        "joliclic/javascript-packer": "*",
+        "patchwork/jsqueeze": "~1.0",
+        "psr/log": "~1.0"
+    },
+    "suggest": {
+        "twig/twig": "Assetic provides the integration with the Twig templating engine",
+        "leafo/lessphp": "Assetic provides the integration with the lessphp LESS compiler",
+        "leafo/scssphp": "Assetic provides the integration with the scssphp SCSS compiler",
+        "ptachoire/cssembed": "Assetic provides the integration with phpcssembed to embed data uris",
+        "leafo/scssphp-compass": "Assetic provides the integration with the SCSS compass plugin",
+        "patchwork/jsqueeze": "Assetic provides the integration with the JSqueeze JavaScript compressor"
+    },
+    "autoload": {
+        "psr-0": { "Assetic": "src/" },
+        "files": [ "src/functions.php" ]
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.2-dev"
+        }
+    },
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "cssmin/cssmin",
+                "version": "3.0.1",
+                "dist": { "url": "http://cssmin.googlecode.com/files/cssmin-v3.0.1.php", "type": "file" },
+                "autoload": { "classmap": [ "cssmin-v3.0.1.php" ] }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "kamicane/packager",
+                "version": "1.0",
+                "dist": { "url": "https://github.com/kamicane/packager/archive/1.0.zip", "type": "zip" },
+                "autoload": { "classmap": [ "." ] }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "joliclic/javascript-packer",
+                "version": "1.1",
+                "dist": { "url": "http://joliclic.free.fr/php/javascript-packer/telechargement.php?id=2&action=telecharger", "type": "zip" },
+                "autoload": { "classmap": [ "class.JavaScriptPacker.php" ] }
+            }
+        }
+    ]
+}
