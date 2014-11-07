@@ -326,19 +326,21 @@ class Share extends \OC\Share\Constants {
 		if(empty($shares) && $user !== null) {
 			$groups = \OC_Group::getUserGroups($user);
 
-			$query = \OC_DB::prepare(
-					'SELECT *
-						FROM
-						`*PREFIX*share`
-						WHERE
-						`' . $column . '` = ? AND `item_type` = ? AND `share_with` in (' .
-						implode(',', array_fill(0, count($groups), '?')) . ')'
-					);
+			if(count($groups) > 0) {
+				$query = \OC_DB::prepare(
+						'SELECT *
+							FROM
+							`*PREFIX*share`
+							WHERE
+							`' . $column . '` = ? AND `item_type` = ? AND `share_with` in (' .
+							implode(',', array_fill(0, count($groups), '?')) . ')'
+						);
 
-			$result = \OC_DB::executeAudited($query, array_merge(array($itemSource, $itemType), $groups));
+				$result = \OC_DB::executeAudited($query, array_merge(array($itemSource, $itemType), $groups));
 
-			while ($row = $result->fetchRow()) {
-				$shares[] = $row;
+				while ($row = $result->fetchRow()) {
+					$shares[] = $row;
+				}
 			}
 		}
 
