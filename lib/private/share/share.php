@@ -326,7 +326,7 @@ class Share extends \OC\Share\Constants {
 		if(empty($shares) && $user !== null) {
 			$groups = \OC_Group::getUserGroups($user);
 
-			if(count($groups) > 0) {
+			if(!empty($groups)) {
 				$query = \OC_DB::prepare(
 						'SELECT *
 							FROM
