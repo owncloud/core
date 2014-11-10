@@ -19,7 +19,7 @@
 * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class Test_Share extends PHPUnit_Framework_TestCase {
+class Test_Share extends \Test\TestCase {
 
 	protected $itemType;
 	protected $userBackend;
@@ -34,7 +34,9 @@ class Test_Share extends PHPUnit_Framework_TestCase {
 	protected $dateInFuture;
 	protected $dateInPast;
 
-	public function setUp() {
+	protected function setUp() {
+		parent::setUp();
+
 		OC_User::clearBackends();
 		OC_User::useBackend('dummy');
 		$this->user1 = uniqid('user1_');
@@ -70,10 +72,12 @@ class Test_Share extends PHPUnit_Framework_TestCase {
 		$this->dateInFuture = date($dateFormat, $now + 20 * 60);
 	}
 
-	public function tearDown() {
+	protected function tearDown() {
 		$query = OC_DB::prepare('DELETE FROM `*PREFIX*share` WHERE `item_type` = ?');
 		$query->execute(array('test'));
 		OC_Appconfig::setValue('core', 'shareapi_allow_resharing', $this->resharing);
+
+		parent::tearDown();
 	}
 
 	public function testShareInvalidShareType() {
