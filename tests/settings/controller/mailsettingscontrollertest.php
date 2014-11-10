@@ -14,11 +14,13 @@ use \OC\Settings\Application;
 /**
  * @package OC\Settings\Controller
  */
-class MailSettingscontrollerTest extends \PHPUnit_Framework_TestCase {
+class MailSettingscontrollerTest extends \Test\TestCase {
 
 	private $container;
 
 	protected function setUp() {
+		parent::setUp();
+
 		$app = new Application();
 		$this->container = $app->getContainer();
 		$this->container['Config'] = $this->getMockBuilder('\OCP\IConfig')
