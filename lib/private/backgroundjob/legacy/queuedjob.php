@@ -10,7 +10,7 @@ namespace OC\BackgroundJob\Legacy;
 
 class QueuedJob extends \OC\BackgroundJob\QueuedJob {
 	public function run($argument) {
-		$class = $argument['klass'];
+		$class = $argument['class'];
 		$method = $argument['method'];
 		$parameters = $argument['parameters'];
 		if (is_callable(array($class, $method))) {

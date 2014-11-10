@@ -80,13 +80,13 @@ class BackgroundJob {
 	/**
 	 * @deprecated
 	 * creates a regular task
-	 * @param string $klass class name
+	 * @param string $class class name
 	 * @param string $method method name
 	 * @return boolean|null
 	 */
-	public static function addRegularTask($klass, $method) {
+	public static function addRegularTask($class, $method) {
 		if (!\OC::needUpgrade()) {
-			self::registerJob('OC\BackgroundJob\Legacy\RegularJob', array($klass, $method));
+			self::registerJob('OC\BackgroundJob\Legacy\RegularJob', array($class, $method));
 			return true;
 		}
 	}
@@ -96,7 +96,7 @@ class BackgroundJob {
 	 * gets all regular tasks
 	 * @return array
 	 *
-	 * key is string "$klass-$method", value is array( $klass, $method )
+	 * key is string "$class-$method", value is array( $class, $method )
 	 */
 	static public function allRegularTasks() {
 		$jobList = \OC::$server->getJobList();
@@ -173,7 +173,7 @@ class BackgroundJob {
 	 * @return boolean id of task
 	 */
 	public static function addQueuedTask($app, $class, $method, $parameters) {
-		self::registerJob('OC\BackgroundJob\Legacy\QueuedJob', array('app' => $app, 'klass' => $class, 'method' => $method, 'parameters' => $parameters));
+		self::registerJob('OC\BackgroundJob\Legacy\QueuedJob', array('app' => $app, 'class' => $class, 'method' => $method, 'parameters' => $parameters));
 		return true;
 	}
 
