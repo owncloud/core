@@ -66,7 +66,7 @@ class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
 		$dn = $ldap_users[0];
 
 		$user = $this->access->userManager->get($dn);
-		if($user->getUsername() !== false) {
+		if($user !== null && $user->getUsername() !== false) {
 			//are the credentials OK?
 			if(!$this->access->areCredentialsValid($dn, $password)) {
 				return false;
