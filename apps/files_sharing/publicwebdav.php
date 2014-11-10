@@ -46,7 +46,7 @@ $server->subscribeEvent('beforeMethod', function () use ($server, $objectTree, $
 
 	if (!$isWritable) {
 		\OC\Files\Filesystem::addStorageWrapper('readonly', function ($mountPoint, $storage) {
-			return new \OCA\Files_Sharing\ReadOnlyWrapper(array('storage' => $storage));
+			return new \OC\Files\Storage\Wrapper\PermissionsMask(array('storage' => $storage, \OCP\PERMISSION_READ));
 		});
 	}
 
