@@ -29,8 +29,6 @@
  */
 namespace OC\Files\Storage;
 
-require_once __DIR__ . '/../3rdparty/Dropbox/autoload.php';
-
 class Dropbox extends \OC\Files\Storage\Common {
 
 	private $dropbox;
