@@ -11,7 +11,6 @@ namespace OCA\Files_Sharing;
 use OC\Files\Filesystem;
 use OC\Files\Mount\MountPoint;
 use OC\Files\Mount\MoveableMount;
-use OC\Files\Storage\Wrapper\PermissionsMask;
 use OC\Files\View;
 
 /**
@@ -33,13 +32,6 @@ class SharedMount extends MountPoint implements MoveableMount {
 		$arguments['owner'] = $this->share['uid_owner'];
 		$arguments['mountpoint'] = $absMountPoint;
 		$arguments['mask'] = $this->share['permissions'];
-
-		Filesystem::initMountPoints($this->share['uid_owner']);
-		$rootView = new View('');
-		$sourcePath = $rootView->getPath($this->share['file_source']);
-		$mount = \OC\Files\Filesystem::getMountManager()->find($sourcePath);
-		$arguments['storage'] = $mount->getStorage();
-		$arguments['root'] = $mount->getInternalPath($sourcePath);
 
 		parent::__construct($storage, $absMountPoint, $arguments, $loader);
 	}

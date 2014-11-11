@@ -113,7 +113,6 @@ class Test_Files_Sharing_Storage extends OCA\Files_sharing\Tests\TestCase {
 		// create part file
 		$result = $user2View->file_put_contents($this->folder. '/foo.txt.part', 'some test data');
 
-		$this->assertTrue(is_int($result));
 		// rename part file to real file
 		$result = $user2View->rename($this->folder. '/foo.txt.part', $this->folder. '/foo.txt');
 

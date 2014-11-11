@@ -94,29 +94,4 @@ class Shared extends Jail implements ISharedStorage {
 	public function resolveSource($path) {
 		return array($this->storage, $this->getSourcePath($path));
 	}
-
-	public static function setup($options) {
-		$shares = \OCP\Share::getItemsSharedWithUser('file', $options['user']);
-		$manager = Filesystem::getMountManager();
-		$loader = Filesystem::getLoader();
-		if (!\OCP\User::isLoggedIn() || \OCP\User::getUser() != $options['user']
-			|| $shares
-		) {
-			foreach ($shares as $share) {
-				// don't mount shares where we have no permissions
-				if ($share['permissions'] > 0) {
-					$mount = new SharedMount(
-						'\OC\Files\Storage\Shared',
-						$options['user_dir'] . '/' . $share['file_target'],
-						array(
-							'share' => $share,
-							'user' => $options['user']
-						),
-						$loader
-					);
-					$manager->addMount($mount);
-				}
-			}
-		}
-	}
 }
