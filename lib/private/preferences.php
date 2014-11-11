@@ -289,6 +289,27 @@ class Preferences {
 		return $users;
 	}
 
+    /**
+     * Gets the users for a preference key
+     * @param string $app
+     * @param string $key
+     * @return array
+     */
+    public function getUsersForKey($app, $key) {
+        $userValues = array();
+
+        $query = 'SELECT `userid`, `configvalue` '
+            . ' FROM `*PREFIX*preferences` '
+            . ' WHERE `appid` = ? AND `configkey` = ? ';
+
+        $result = $this->conn->executeQuery($query, array($app, $key));
+
+        while ($row = $result->fetch()) {
+            $userValues[$row['userid']] = $row['configvalue'];
+        }
+
+        return $userValues;
+    }
 	/**
 	 * Deletes a key
 	 * @param string $user user

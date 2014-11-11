@@ -172,6 +172,27 @@ class Test_Preferences_Object extends PHPUnit_Framework_TestCase {
 		$query->execute(array('testGetUsersForValue'));
 	}
 
+	public function testGetByKeyUsers()
+	{
+		// Prepare data
+		$query = \OC_DB::prepare('INSERT INTO `*PREFIX*preferences` VALUES(?, ?, ?, ?)');
+		$query->execute(array('SomeUser', 'testGetUsersForKey', 'somekey', 'somevalue'));
+		$query->execute(array('AnotherUser', 'testGetUsersForKey', 'somekey', 'someothervalue'));
+		$query->execute(array('MissingUser', 'testGetUsersForKey', 'anotherkey', 'someothervalue'));
+		$query->execute(array('AUser', 'testGetUsersForKey', 'somekey', 'Avalue'));
+
+		$preferences = new OC\Preferences(\OC_DB::getConnection());
+		$result = $preferences->getUsersForKey('testGetUsersForKey', 'somekey');
+		//sort($result);
+		$this->assertEquals(array('AnotherUser' => 'someothervalue', 
+			'AUser' => 'Avalue', 
+			'SomeUser' => 'somevalue'), $result);
+
+		// Clean DB after the test
+		$query = \OC_DB::prepare('DELETE FROM `*PREFIX*preferences` WHERE `appid` = ?');
+		$query->execute(array('testGetUsersForKey'));
+	}	
+
 	public function testDeleteKey()
 	{
 		$connectionMock = $this->getMock('\OC\DB\Connection', array(), array(), '', false);
