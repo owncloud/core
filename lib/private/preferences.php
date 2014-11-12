@@ -290,10 +290,10 @@ class Preferences {
 	}
 
     /**
-     * Gets the users for a preference key
+     * Gets the users and values for a preference key
      * @param string $app
      * @param string $key
-     * @return array
+     * @return array Example array('UserId' => 'value');
      */
     public function getUsersForKey($app, $key) {
         $userValues = array();
