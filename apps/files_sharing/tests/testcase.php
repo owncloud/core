@@ -53,6 +53,7 @@ abstract class TestCase extends \Test\TestCase {
 
 		// remember files_encryption state
 		self::$stateFilesEncryption = \OC_App::isEnabled('files_encryption');
+		\OC_FileProxy::clearProxies();
 
 		//we don't want to tests with app files_encryption enabled
 		\OC_App::disable('files_encryption');
