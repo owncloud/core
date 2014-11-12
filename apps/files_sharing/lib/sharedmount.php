@@ -23,10 +23,16 @@ class SharedMount extends MountPoint implements MoveableMount {
 
 	protected $share;
 
+	/**
+	 * @var string
+	 */
+	protected $relativeMountPoint;
+
 	public function __construct($storage, $mountpoint, $arguments = null, $loader = null) {
 		// first update the mount point before creating the parent
 		$newMountPoint = $this->verifyMountPoint($arguments['share'], $arguments['user']);
 		$absMountPoint = '/' . $arguments['user'] . '/files' . $newMountPoint;
+		$this->relativeMountPoint = $newMountPoint;
 		$this->share = $arguments['share'];
 		$arguments['owner'] = $this->share['uid_owner'];
 		$arguments['mountpoint'] = $absMountPoint;
@@ -130,6 +136,7 @@ class SharedMount extends MountPoint implements MoveableMount {
 	public function moveMount($target) {
 
 		$relTargetPath = $this->stripUserFilesPath($target);
+		$this->relativeMountPoint = $relTargetPath;
 		$share = $this->share;
 
 		$result = true;
@@ -180,7 +187,7 @@ class SharedMount extends MountPoint implements MoveableMount {
 				$result = $result && \OCP\Share::unshareFromSelf($share['item_type'], $share['file_target']);
 			}
 		}
-		$result = $result && \OCP\Share::unshareFromSelf($this->share['item_type'], $this->getStorage()->getMountPoint());
+		$result = $result && \OCP\Share::unshareFromSelf($this->share['item_type'], $this->relativeMountPoint);
 
 		return $result;
 	}
