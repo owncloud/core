@@ -16,6 +16,14 @@ class Manager {
 	 */
 	private $mounts = array();
 
+	private function formatMountPoint($mountPoint) {
+		$mountPoint = Filesystem::normalizePath($mountPoint);
+		if (strlen($mountPoint) > 1) {
+			$mountPoint .= '/';
+		}
+		return $mountPoint;
+	}
+
 	/**
 	 * @param MountPoint $mount
 	 */
@@ -27,10 +35,7 @@ class Manager {
 	 * @param string $mountPoint
 	 */
 	public function removeMount($mountPoint) {
-		$mountPoint = Filesystem::normalizePath($mountPoint);
-		if (strlen($mountPoint) > 1) {
-			$mountPoint .= '/';
-		}
+		$mountPoint = $this->formatMountPoint($mountPoint);
 		unset($this->mounts[$mountPoint]);
 	}
 
@@ -39,6 +44,8 @@ class Manager {
 	 * @param string $target
 	 */
 	public function moveMount($mountPoint, $target){
+		$mountPoint = $this->formatMountPoint($mountPoint);
+		$target = $this->formatMountPoint($target);
 		$this->mounts[$target] = $this->mounts[$mountPoint];
 		unset($this->mounts[$mountPoint]);
 	}
