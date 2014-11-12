@@ -21,18 +21,15 @@
  *
  */
 
-namespace OC\Files\Storage;
+namespace OCA\Files_Sharing;
 
-use OC\Files\Filesystem;
 use OC\Files\Storage\Wrapper\Jail;
 use OC\Files\Storage\Wrapper\PermissionsMask;
-use OCA\Files_Sharing\ISharedStorage;
-use OCA\Files_Sharing\SharedMount;
 
 /**
  * Convert target path to source path and pass the function call to the correct storage provider
  */
-class Shared extends Jail implements ISharedStorage {
+class SharedStorage extends Jail implements ISharedStorage {
 
 	/**
 	 * @var string
@@ -44,9 +41,15 @@ class Shared extends Jail implements ISharedStorage {
 	 */
 	private $owner;
 
+	/**
+	 * @var string
+	 */
+	private $displayName;
+
 	public function __construct($arguments) {
 		$this->mountPoint = $arguments['mountpoint'];
 		$this->owner = $arguments['owner'];
+		$this->displayName = $arguments['displayname'];
 		$this->rootPath = $arguments['root'];
 
 		// since we cant extends 2 wrappers, we apply the permissions mask wrapper manually
@@ -82,6 +85,14 @@ class Shared extends Jail implements ISharedStorage {
 
 	public function getOwner($path) {
 		return $this->owner;
+	}
+
+	public function getCache($path = '', $storage = null) {
+		if (!$storage) {
+			$storage = $this;
+		}
+		$sourceCache = $this->storage->getCache($this->getSourcePath($path), $storage);
+		return new SharedCache($sourceCache, $this->rootPath, $this->owner, $this->displayName);
 	}
 
 	public function getWatcher($path = '', $storage = null) {

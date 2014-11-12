@@ -12,6 +12,7 @@ use OC\Files\Filesystem;
 use OC\Files\Mount\Manager;
 use OC\Files\Storage\Loader;
 use OCP\Files\Folder;
+use OCP\IUserManager;
 
 /**
  * Setup shared storages for users
@@ -31,19 +32,25 @@ class MountManager {
 	 */
 	private $root;
 
-	function __construct(Manager $mountManager, Loader $storageLoader, Folder $root) {
+	private $userManager;
+
+	function __construct(Manager $mountManager, Loader $storageLoader, IUserManager $userManager, Folder $root) {
 		$this->mountManager = $mountManager;
 		$this->storageLoader = $storageLoader;
+		$this->userManager = $userManager;
 		$this->root = $root;
 	}
 
 
 	public function setupMounts($options) {
-		$shares = \OCP\Share::getItemsSharedWithUser('file', $options['user']);
+		/** @var \OCP\IUser $user */
+		$user = $options['user_object'];
+		$shares = \OCP\Share::getItemsSharedWithUser('file', $user->getUID());
 		foreach ($shares as $share) {
+			$owner = $this->userManager->get($share['uid_owner']);
 			// don't mount shares where we have no permissions
 			if ($share['permissions'] > 0) {
-				Filesystem::initMountPoints($share['uid_owner']); //TODO move to filesystem factory once that's merged
+				Filesystem::initMountPoints($owner->getUID()); //TODO move to filesystem factory once that's merged
 				$sourceFiles = $this->root->getById($share['file_source']);
 				if (count($sourceFiles) === 0) {
 					throw new \Exception('Cant find source file for share');
@@ -51,11 +58,12 @@ class MountManager {
 				$sourceFile = $sourceFiles[0];
 
 				$mount = new SharedMount(
-					'\OC\Files\Storage\Shared',
+					'\OCA\Files_Sharing\SharedStorage',
 					$options['user_dir'] . '/' . $share['file_target'],
 					array(
 						'share' => $share,
-						'user' => $options['user'],
+						'user' => $user->getUID(),
+						'displayname' => $owner->getDisplayName(),
 						'storage' => $sourceFile->getStorage(),
 						'root' => $sourceFile->getInternalPath()
 					),
@@ -76,6 +84,7 @@ class MountManager {
 		$manager = new MountManager(
 			\OC\Files\Filesystem::getMountManager(),
 			\OC\Files\Filesystem::getLoader(),
+			\OC::$server->getUserManager(),
 			\OC::$server->getRootFolder()
 		);
 		$manager->setupMounts($options);

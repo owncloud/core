@@ -8,7 +8,6 @@
 
 namespace OCA\Files_Sharing;
 
-use OC\Files\Filesystem;
 use OC\Files\Mount\MountPoint;
 use OC\Files\Mount\MoveableMount;
 use OC\Files\View;
@@ -18,7 +17,7 @@ use OC\Files\View;
  */
 class SharedMount extends MountPoint implements MoveableMount {
 	/**
-	 * @var \OC\Files\Storage\Shared $storage
+	 * @var \OCA\Files_Sharing\SharedStorage $storage
 	 */
 	protected $storage = null;
 
@@ -44,14 +43,16 @@ class SharedMount extends MountPoint implements MoveableMount {
 		$mountPoint = basename($share['file_target']);
 		$parent = dirname($share['file_target']);
 
-		while (!\OC\Files\Filesystem::is_dir($parent)) {
+		$view = new View('/' . $user . '/files');
+
+		while (!$view->is_dir($parent)) {
 			$parent = dirname($parent);
 		}
 
 		$newMountPoint = \OCA\Files_Sharing\Helper::generateUniqueTarget(
 			\OC\Files\Filesystem::normalizePath($parent . '/' . $mountPoint),
 			array(),
-			new \OC\Files\View('/' . $user . '/files')
+			$view
 		);
 
 		if ($newMountPoint !== $share['file_target']) {
@@ -179,7 +180,7 @@ class SharedMount extends MountPoint implements MoveableMount {
 				$result = $result && \OCP\Share::unshareFromSelf($share['item_type'], $share['file_target']);
 			}
 		}
-		$result = $result && \OCP\Share::unshareFromSelf($this->share['item_type'], $this->getMountPoint());
+		$result = $result && \OCP\Share::unshareFromSelf($this->share['item_type'], $this->getStorage()->getMountPoint());
 
 		return $result;
 	}
