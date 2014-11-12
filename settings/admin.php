@@ -53,7 +53,8 @@ $template->assign('shareExcludedGroupsList', implode('|', $excludedGroupsList));
 
 // Check if connected using HTTPS
 $template->assign('isConnectedViaHTTPS', OC_Request::serverProtocol() === 'https');
-$template->assign('enforceHTTPSEnabled', $config->getSystemValue("forcessl", false));
+$template->assign('enforceHTTPSEnabled', $config->getSystemValue('forcessl', false));
+$template->assign('forceSSLforSubdomainsEnabled', $config->getSystemValue('forceSSLforSubdomains', false));
 
 // If the current web root is non-empty but the web root from the config is,
 // and system cron is used, the URL generator fails to build valid URLs.
@@ -92,7 +93,7 @@ $formsMap = array_map(function ($form) {
 		$anchor = str_replace(' ', '-', $anchor);
 
 		return array(
-			'anchor' => $anchor,
+			'anchor' => 'goto-' . $anchor,
 			'section-name' => $sectionName,
 			'form' => $form
 		);
