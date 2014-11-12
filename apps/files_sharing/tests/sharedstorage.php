@@ -210,7 +210,12 @@ class Test_Files_Sharing_Storage extends OCA\Files_sharing\Tests\TestCase {
 
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER2);
 		$this->assertTrue($rootView->file_exists('/' . self::TEST_FILES_SHARING_API_USER2 . '/files/' . $this->folder));
-		OC_Hook::emit('OC_Filesystem', 'setup', array('user' => self::TEST_FILES_SHARING_API_USER3, 'user_dir' => \OC_User::getHome(self::TEST_FILES_SHARING_API_USER3)));
+		$userObject = \OC::$server->getUserManager()->get(self::TEST_FILES_SHARING_API_USER3);
+		OC_Hook::emit('OC_Filesystem', 'post_initMountPoints', array(
+			'user' => self::TEST_FILES_SHARING_API_USER3,
+			'user_dir' => \OC_User::getHome(self::TEST_FILES_SHARING_API_USER3),
+			'user_object' => $userObject
+		));
 
 		$this->assertTrue($rootView->file_exists('/' . self::TEST_FILES_SHARING_API_USER3 . '/files/' . $this->filename));
 

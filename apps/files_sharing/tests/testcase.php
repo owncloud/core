@@ -64,7 +64,7 @@ abstract class TestCase extends \Test\TestCase {
 		// clear share hooks
 		\OC_Hook::clear('OCP\\Share');
 		\OC::registerShareHooks();
-		\OCP\Util::connectHook('OC_Filesystem', 'setup', '\OC\Files\Storage\Shared', 'setup');
+		\OCP\Util::connectHook('OC_Filesystem', 'post_initMountPoints', '\OCA\Files_Sharing\MountManager', 'setup');
 
 		// create users
 		$backend = new \OC_User_Dummy();
