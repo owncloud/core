@@ -878,4 +878,12 @@ $CONFIG = array(
  */
 'copied_sample_config' => true,
 
+/**
+ * In case a cron execution dies unexpected the lock file (preventing parallel execution)
+ * will not be removed and as a result subsequent cron executions will never be executed.
+ *
+ * This timeout (in minutes) specifies after which period of time the lock file is allowed to be ignored.
+ */
+'cron.lockfile.timeout' => 30,
+
 );
