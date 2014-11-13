@@ -1,0 +1,15 @@
+{
+    "name": "james-heinrich/getid3",
+    "description": "PHP script that extracts useful information from popular multimedia file formats",
+    "homepage": "http://www.getid3.org/",
+    "keywords": ["php","tags","codecs"],
+    "type": "library",
+    "license": "GPL",
+    "require":
+    {
+        "php": ">=5.3.0"
+    },
+    "autoload": {
+        "classmap": ["getid3/getid3.php"]
+    }
+}

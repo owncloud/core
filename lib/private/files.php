@@ -22,7 +22,7 @@
  */
 
 // TODO: get rid of this using proper composer packages
-require_once 'mcnetic/phpzipstreamer/ZipStreamer.php';
+require_once 'mcnetic/phpzipstreamer/src/ZipStreamer.php';
 
 class GET_TYPE {
 	const FILE = 1;

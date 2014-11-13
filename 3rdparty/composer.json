@@ -1,0 +1,44 @@
+{
+	"name": "owncloud/3rdparty",
+	"description": "All 3rdparty components",
+	"license": "MIT",
+	"config": {
+		"vendor-dir": "."
+	},
+	"repositories": [
+		{
+			"type":"package",
+			"package": {
+				"name": "mcnetic/phpzipstreamer",
+				"version":"master",
+				"source": {
+					"url": "https://github.com/McNetic/PHPZipStreamer.git",
+					"type": "git",
+					"reference":"master"
+				}
+			}
+		}
+	],
+	"require": {
+		"sabre/dav" : "1.8.10",
+		"doctrine/dbal": "2.5.*@dev",
+		"mcnetic/phpzipstreamer": "dev-master@dev",
+		"kriswallsmith/assetic": "1.2.*@dev",
+		"phpmailer/phpmailer": "v5.2.8",
+		"phpseclib/phpseclib": "*",
+		"rackspace/php-opencloud": "v1.9.2",
+		"james-heinrich/getid3": "dev-master",
+		"ircmaxell/random-lib": "v1.0.0",
+		"bantu/ini-get-wrapper": "v1.0.1",
+		"natxet/CssMin": "dev-master",
+		"mrclay/minify": "dev-master",
+		"punic/punic": "1.1.0",
+		"pear/archive_tar": "1.3.13",
+		"pear/pear_exception": "1.0.*@dev",
+		"patchwork/utf8": "~1.1",
+		"symfony/console": "~2.5",
+		"symfony/routing": "~2.5",
+		"pimple/pimple": "~3.0",
+		"ircmaxell/password-compat": "1.0.*"
+	}
+}

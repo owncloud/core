@@ -1,0 +1,27 @@
+{
+    "name": "ircmaxell/security-lib",
+    "type": "library",
+	"version": "1.0.0",
+    "description": "A Base Security Library",
+    "keywords": [],
+    "homepage": "https://github.com/ircmaxell/PHP-SecurityLib",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Anthony Ferrara",
+            "email": "ircmaxell@ircmaxell.com",
+            "homepage": "http://blog.ircmaxell.com"
+        }
+    ],
+    "require-dev": {
+        "mikey179/vfsStream": "1.1.*"
+    },
+    "require": {
+        "php": ">=5.3.2"
+    },
+    "autoload": {
+        "psr-0": {
+            "SecurityLib": "lib"
+        }
+    }
+}

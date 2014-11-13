@@ -1,0 +1,32 @@
+{
+    "name": "rackspace/php-opencloud",
+    "description": "PHP SDK for Rackspace/OpenStack APIs",
+    "keywords": ["rackspace", "openstack", "opencloud", "swift", "nova"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jamie Hannaford",
+            "email": "jamie.hannaford@rackspace.com",
+            "homepage" : "https://github.com/jamiehannaford"
+        },
+        {
+            "name": "Glen Campbell",
+            "email": "glen.campbell@rackspace.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "OpenCloud": ["lib/", "tests/"]
+        }
+    },
+    "require": {
+        "php" : ">=5.3.3",
+        "guzzle/http" : "3.8.*@dev"
+    },
+    "require-dev" : {
+        "guzzle/guzzle": "dev-master",
+        "psr/log": "1.0.*",
+        "satooshi/php-coveralls": "0.6.*@dev"
+    }
+}
