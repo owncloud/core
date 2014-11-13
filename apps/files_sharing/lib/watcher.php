@@ -26,7 +26,7 @@ namespace OC\Files\Cache;
  */
 class Shared_Watcher extends Watcher {
 	/**
-	 * @var \OC\Files\Storage\Shared
+	 * @var \OCA\Files_Sharing\SharedStorage
 	 */
 	protected $storage;
 
