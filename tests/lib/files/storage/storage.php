@@ -22,6 +22,9 @@
 
 namespace Test\Files\Storage;
 
+use OC\Files\CachingChunkHandler;
+use OC\Files\Storage\Temporary;
+
 abstract class Storage extends \Test\TestCase {
 	/**
 	 * @var \OC\Files\Storage\Storage instance
@@ -532,5 +535,29 @@ abstract class Storage extends \Test\TestCase {
 		$this->assertTrue($this->instance->instanceOfStorage('\OCP\Files\Storage'));
 		$this->assertTrue($this->instance->instanceOfStorage(get_class($this->instance)));
 		$this->assertFalse($this->instance->instanceOfStorage('\OC'));
+	}
+
+	public function testChunkedUpload() {
+		$chunkHandler = $this->instance->getChunkHandler();
+		$this->assertInstanceOf('\OCP\Files\IChunkHandler', $chunkHandler);
+
+		if ($chunkHandler instanceof CachingChunkHandler) {
+			$chunkHandler->setFileCache(new \OC\Cache\File(new Temporary(array())));
+		}
+
+		$transferId = uniqid('transfer-');
+		$return = $chunkHandler->storeChunk('chunk-test-01.txt', 0, 2, 10, '0123456789', $transferId);
+		$this->assertTrue(is_array($return));
+		$this->assertFalse($return['complete']);
+		$this->assertEquals(10, $return['bytesWritten']);
+		$this->assertEquals(10, $return['actualSize']);
+
+		$return = $chunkHandler->storeChunk('chunk-test-01.txt', 1, 2, 10, '0123456789', $transferId);
+		$this->assertTrue(is_array($return));
+		$this->assertTrue($return['complete']);
+		$this->assertEquals(10, $return['bytesWritten']);
+		$this->assertEquals(20, $return['actualSize']);
+
+		$this->instance->file_exists('chunk-test-01.txt');
 	}
 }

@@ -19,6 +19,8 @@ class CachingChunkHandler implements \OCP\Files\IChunkHandler {
 	 */
 	private $storage;
 
+	private $cache;
+
 	public function __construct(Storage $storage) {
 		$this->storage = $storage;
 	}
@@ -40,12 +42,14 @@ class CachingChunkHandler implements \OCP\Files\IChunkHandler {
 			'chunkcount' => $numberOfChunk,
 			''
 		);
-		$chunkHandler = new \OC_FileChunking($info);
+		$chunkHandler = new \OC_FileChunking($info, $this->cache);
 		$bytesWritten = $chunkHandler->store($index, $data);
 		if ($bytesWritten != $chunkSize) {
 			$chunkHandler->remove($index);
 		}
 		$complete = false;
+		$actualSize = $chunkHandler->getCurrentSize();
+
 		if ($chunkHandler->isComplete()) {
 			$complete = true;
 			$f = $this->storage->fopen("/files" . $fileName, 'w');
@@ -56,7 +60,11 @@ class CachingChunkHandler implements \OCP\Files\IChunkHandler {
 		return array(
 			'complete' => $complete,
 			'bytesWritten' => $bytesWritten,
-			'actualSize' => $chunkHandler->getCurrentSize()
+			'actualSize' => $actualSize
 		);
+	}
+
+	public function setFileCache($cache) {
+		$this->cache = $cache;
 	}
 }

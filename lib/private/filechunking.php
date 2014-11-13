@@ -19,8 +19,9 @@ class OC_FileChunking {
 	/**
 	 * @param string[] $info
 	 */
-	public function __construct($info) {
+	public function __construct($info, $cache = null) {
 		$this->info = $info;
+		$this->cache = $cache;
 	}
 
 	public function getPrefix() {
