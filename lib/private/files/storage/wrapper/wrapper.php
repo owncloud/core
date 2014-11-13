@@ -8,6 +8,8 @@
 
 namespace OC\Files\Storage\Wrapper;
 
+use OCP\Files\IChunkHandler;
+
 class Wrapper implements \OC\Files\Storage\Storage {
 	/**
 	 * @var \OC\Files\Storage\Storage $storage
@@ -464,5 +466,14 @@ class Wrapper implements \OC\Files\Storage\Storage {
 	 */
 	public function __call($method, $args) {
 		return call_user_func_array(array($this->storage, $method), $args);
+	}
+
+	/**
+	 * Returns the storage specific chunk handler
+	 *
+	 * @return IChunkHandler
+	 */
+	public function getChunkHandler() {
+		return $this->storage->getChunkHandler();
 	}
 }

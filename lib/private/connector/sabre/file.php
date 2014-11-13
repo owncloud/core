@@ -238,37 +238,43 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\
 		if (empty($info)) {
 			throw new \Sabre\DAV\Exception\NotImplemented();
 		}
-		$chunk_handler = new OC_FileChunking($info);
-		$bytesWritten = $chunk_handler->store($info['index'], $data);
+
+		// we first assembly the target file as a part file
+		$targetPath = $path . '/' . $info['name'];
+		if (isset($_SERVER['CONTENT_LENGTH'])) {
+			$expected = $_SERVER['CONTENT_LENGTH'];
+		} else {
+			$expected = -1;
+		}
+		$partFilePath = $path . '/' . $info['name'] . '.ocTransferId' . $info['transferid'] . '.part';
+		/** @var \OC\Files\Storage\Storage $storage */
+		list($storage,) = $this->fileView->resolvePath($partFilePath);
+		$storeData = $storage->getChunkHandler()->storeChunk($partFilePath, $info['index'], $info['chunkcount'], $expected, $data, $info['transferid']);
+		$bytesWritten = $storeData['bytesWritten'];
 
 		//detect aborted upload
 		if (isset ($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'PUT' ) {
 			if (isset($_SERVER['CONTENT_LENGTH'])) {
-				$expected = $_SERVER['CONTENT_LENGTH'];
 				if ($bytesWritten != $expected) {
-					$chunk_handler->remove($info['index']);
 					throw new \Sabre\DAV\Exception\BadRequest(
 						'expected filesize ' . $expected . ' got ' . $bytesWritten);
 				}
 			}
 		}
 
-		if ($chunk_handler->isComplete()) {
+		if ($storeData['complete']) {
 
 			try {
-				// we first assembly the target file as a part file
-				$partFile = $path . '/' . $info['name'] . '.ocTransferId' . $info['transferid'] . '.part';
-				$chunk_handler->file_assemble($partFile);
 
 				// here is the final atomic rename
-				$targetPath = $path . '/' . $info['name'];
-				$renameOkay = $this->fileView->rename($partFile, $targetPath);
-				$fileExists = $this->fileView->file_exists($targetPath);
+				// TODO: will this properly trigger all hooks
+				$renameOkay = $storage->rename('/files' . $partFilePath, '/files' . $targetPath);
+				$fileExists = $storage->file_exists('/files' . $targetPath);
 				if ($renameOkay === false || $fileExists === false) {
-					\OC_Log::write('webdav', '\OC\Files\Filesystem::rename() failed', \OC_Log::ERROR);
+					\OC::$server->getLogger()->error('\OC\Files\Filesystem::rename() failed', array('app'=>'webdav'));
 					// only delete if an error occurred and the target file was already created
 					if ($fileExists) {
-						$this->fileView->unlink($targetPath);
+						$storage->unlink('/files' . $targetPath);
 					}
 					throw new \Sabre\DAV\Exception('Could not rename part file assembled from chunks');
 				}
@@ -276,7 +282,8 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\
 				// allow sync clients to send the mtime along in a header
 				$mtime = OC_Request::hasModificationTime();
 				if ($mtime !== false) {
-					if($this->fileView->touch($targetPath, $mtime)) {
+					// TODO: will this update the cache properly - e.g. smb where we cannot change the mtime ???
+					if($storage->touch('/files' . $targetPath, $mtime)) {
 						header('X-OC-MTime: accepted');
 					}
 				}

@@ -335,4 +335,11 @@ interface Storage {
 	 * @return bool
 	 */
 	public function instanceOfStorage($class);
+
+	/**
+	 * Returns the storage specific chunk handler
+	 *
+	 * @return IChunkHandler
+	 */
+	public function getChunkHandler();
 }

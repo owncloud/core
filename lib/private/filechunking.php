@@ -25,9 +25,9 @@ class OC_FileChunking {
 
 	public function getPrefix() {
 		$name = $this->info['name'];
-		$transferid = $this->info['transferid'];
+		$transferId = $this->info['transferid'];
 
-		return $name.'-chunking-'.$transferid.'-';
+		return $name.'-chunking-'.$transferId.'-';
 	}
 
 	protected function getCache() {
@@ -72,7 +72,7 @@ class OC_FileChunking {
 	 *
 	 * @return integer assembled file size
 	 *
-	 * @throws \OC\InsufficientStorageException when file could not be fully
+	 * @throws \OCP\Files\NotEnoughSpaceException when file could not be fully
 	 * assembled due to lack of free space
 	 */
 	public function assemble($f) {
@@ -124,35 +124,6 @@ class OC_FileChunking {
 		$cache->remove($prefix.$index);
 	}
 
-	public function signature_split($orgfile, $input) {
-		$info = unpack('n', fread($input, 2));
-		$blocksize = $info[1];
-		$this->info['transferid'] = mt_rand();
-		$count = 0;
-		$needed = array();
-		$cache = $this->getCache();
-		$prefix = $this->getPrefix();
-		while (!feof($orgfile)) {
-			$new_md5 = fread($input, 16);
-			if (feof($input)) {
-				break;
-			}
-			$data = fread($orgfile, $blocksize);
-			$org_md5 = md5($data, true);
-			if ($org_md5 == $new_md5) {
-				$cache->set($prefix.$count, $data);
-			} else {
-				$needed[] = $count;
-			}
-			$count++;
-		}
-		return array(
-			'transferid' => $this->info['transferid'],
-			'needed' => $needed,
-			'count' => $count,
-		);
-	}
-
 	/**
 	 * Assembles the chunks into the file specified by the path.
 	 * Also triggers the relevant hooks and proxies.
@@ -161,7 +132,7 @@ class OC_FileChunking {
 	 *
 	 * @return boolean assembled file size or false if file could not be created
 	 *
-	 * @throws \OC\InsufficientStorageException when file could not be fully
+	 * @throws \OCP\Files\NotEnoughSpaceException when file could not be fully
 	 * assembled due to lack of free space
 	 */
 	public function file_assemble($path) {
