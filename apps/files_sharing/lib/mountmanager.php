@@ -45,6 +45,9 @@ class MountManager {
 	public function setupMounts($options) {
 		/** @var \OCP\IUser $user */
 		$user = $options['user_object'];
+		if (!$user) {
+			return;
+		}
 		$shares = \OCP\Share::getItemsSharedWithUser('file', $user->getUID());
 		foreach ($shares as $share) {
 			$owner = $this->userManager->get($share['uid_owner']);
