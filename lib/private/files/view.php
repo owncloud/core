@@ -926,6 +926,15 @@ class View {
 						}
 					}
 				}
+				if (empty($data['etag'])) {
+					\OC_Log::write(
+						'core',
+						'Existing file "' . $path . '" has no etag, generating a new one',
+						\OC_Log::DEBUG
+					);
+					$data['etag'] = $storage->getETag($data['path']);
+					$cache->update($data['fileid'], array('etag' => $data['etag']));
+				}
 			}
 		}
 		if (!$data) {
