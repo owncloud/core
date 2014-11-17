@@ -27,9 +27,27 @@ class Test_Util extends PHPUnit_Framework_TestCase {
 
 	public function formatDateData() {
 		return array(
+			// Basic tests
 			array(1350129205, false, null, 'October 13, 2012 at 11:53:25 AM GMT+0'),
 			array(1102831200, true, null, 'December 12, 2004'),
+
+			// Test different timezone
 			array(1350129205, false, 'Europe/Berlin', 'October 13, 2012 at 1:53:25 PM GMT+0'),
+
+			// Test format and width options
+			array(1350129205, array('format' => 'date', 'width' => 'long'), null, 'October 13, 2012'),
+			array(1350129205, array('format' => 'date', 'width' => 'short'), null, '10/13/12'),
+			array(1350129205, array('format' => 'time', 'width' => 'long'), null, '11:53:25 AM GMT+0'),
+			array(1350129205, array('format' => 'time', 'width' => 'short'), null, '11:53 AM'),
+			array(1350129205, array('format' => 'datetime', 'width' => 'long'), null, 'October 13, 2012 at 11:53:25 AM GMT+0'),
+			array(1350129205, array('format' => 'datetime', 'width' => 'long|short'), null, 'October 13, 2012 at 11:53 AM'),
+			array(1350129205, array('format' => 'datetime', 'width' => 'short|long'), null, '10/13/12 at 11:53:25 AM GMT+0'),
+			array(1350129205, array('format' => 'datetime', 'width' => 'short'), null, '10/13/12, 11:53 AM'),
+
+			// Test relative days
+			array(time(), array('format' => 'date', 'width' => 'long^'), null, 'Today'),
+			array(time() - 86400, array('format' => 'date', 'width' => 'long^'), null, 'Yesterday'),
+			array(time() + 86400, array('format' => 'date', 'width' => 'long^'), null, 'Tomorrow'),
 		);
 	}
 
@@ -41,6 +59,27 @@ class Test_Util extends PHPUnit_Framework_TestCase {
 
 		$result = OC_Util::formatDate($timestamp, $options, $timezone);
 		$this->assertEquals($expected, $result);
+	}
+
+	public function formatDateStartsWithData() {
+		return array(
+			array(time(), array('format' => 'date', 'width' => 'long^'), 'Today'),
+			array(time() - 86400, array('format' => 'date', 'width' => 'long^'), 'Yesterday'),
+			array(time() + 86400, array('format' => 'date', 'width' => 'long^'), 'Tomorrow'),
+			array(time(), array('format' => 'datetime', 'width' => 'long^'), 'Today'),
+			array(time() - 86400, array('format' => 'datetime', 'width' => 'long^'), 'Yesterday'),
+			array(time() + 86400, array('format' => 'datetime', 'width' => 'long^'), 'Tomorrow'),
+		);
+	}
+
+	/**
+	 * @dataProvider formatDateStartsWithData
+	 */
+	function testFormatDateStartsWith($timestamp, $options, $expected) {
+		date_default_timezone_set("UTC");
+
+		$result = OC_Util::formatDate($timestamp, $options);
+		$this->assertStringStartsWith($expected, $result);
 	}
 
 	/**
