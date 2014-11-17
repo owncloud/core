@@ -208,6 +208,23 @@ class View extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals($textSize, $folderData[0]['size']);
 	}
 
+	public function testRepairEmptyEtag() {
+		$storage1 = $this->getTestStorage(true);
+		\OC\Files\Filesystem::mount($storage1, array(), '/');
+
+		$cache = $storage1->getCache();
+		// clear etag
+		$cache->put('foo.txt', array('etag' => ''));
+		$check = $cache->get('foo.txt');
+		// just to make sure the etag clearing worked
+		$this->assertEmpty($check['etag']);
+
+		$rootView = new \OC\Files\View('');
+
+		$cachedData = $rootView->getFileInfo('/foo.txt');
+		$this->assertNotEmpty($cachedData['etag']);
+	}
+
 	/**
 	 * @medium
 	 */
