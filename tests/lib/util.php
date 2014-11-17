@@ -25,23 +25,21 @@ class Test_Util extends PHPUnit_Framework_TestCase {
 		$this->assertTrue(is_string($edition));
 	}
 
-	function testFormatDate() {
-		date_default_timezone_set("UTC");
-
-		$result = OC_Util::formatDate(1350129205);
-		$expected = 'October 13, 2012 at 11:53:25 AM GMT+0';
-		$this->assertEquals($expected, $result);
-
-		$result = OC_Util::formatDate(1102831200, true);
-		$expected = 'December 12, 2004';
-		$this->assertEquals($expected, $result);
+	public function formatDateData() {
+		return array(
+			array(1350129205, false, null, 'October 13, 2012 at 11:53:25 AM GMT+0'),
+			array(1102831200, true, null, 'December 12, 2004'),
+			array(1350129205, false, 'Europe/Berlin', 'October 13, 2012 at 1:53:25 PM GMT+0'),
+		);
 	}
 
-	function testFormatDateWithTZ() {
+	/**
+	 * @dataProvider formatDateData
+	 */
+	function testFormatDate($timestamp, $options, $timezone, $expected) {
 		date_default_timezone_set("UTC");
 
-		$result = OC_Util::formatDate(1350129205, false, 'Europe/Berlin');
-		$expected = 'October 13, 2012 at 1:53:25 PM GMT+0';
+		$result = OC_Util::formatDate($timestamp, $options, $timezone);
 		$this->assertEquals($expected, $result);
 	}
 
