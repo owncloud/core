@@ -432,12 +432,25 @@ class OC_Util {
 	 * formats a timestamp in the "right" way
 	 *
 	 * @param int $timestamp
-	 * @param bool $dateOnly option to omit time from the result
+	 * @param array|boolean $options The following options are available:
+	 *			format		=> Can be date, datetime or time
+	 *			language	=> \OC_L10N object which should be used
+	 *			width		=> It can be 'full', 'long', 'medium', 'short' or a combination for date+time like 'full|short'
+	 *							You can also append an asterisk ('^') to the date part.
+	 *							If so, special day names may be used (like 'Today', 'Yesterday', 'Tomorrow') instead of the date part.
+	 *				If $options is false, the current language and width full are used with format datetime
+	 *				If $options is true, the current language and width full are used with format date
 	 * @param DateTimeZone|string $timeZone where the given timestamp shall be converted to
 	 * @return string timestamp
 	 * @description adjust to clients timezone if we know it
 	 */
-	public static function formatDate($timestamp, $dateOnly = false, $timeZone = null) {
+	public static function formatDate($timestamp, $options = false, $timeZone = null) {
+		if (!$options) {
+			$options = array('format' => 'datetime');
+		} else if ($options === true) {
+			$options = array('format' => 'date');
+		}
+
 		if (is_null($timeZone)) {
 			if (\OC::$server->getSession()->exists('timezone')) {
 				$systemTimeZone = intval(date('O'));
@@ -454,8 +467,14 @@ class OC_Util {
 			$offset = $timeZone->getOffset($dt);
 			$timestamp += $offset;
 		}
-		$l = \OC::$server->getL10N('lib');
-		return $l->l($dateOnly ? 'date' : 'datetime', $timestamp);
+
+		if (isset($options['language']) && $options['language'] instanceof \OC_L10N) {
+			$l = $options['language'];
+		} else {
+			$l = \OC::$server->getL10N('lib');
+		}
+
+		return $l->l($options['format'], $timestamp, $options);
 	}
 
 	/**
