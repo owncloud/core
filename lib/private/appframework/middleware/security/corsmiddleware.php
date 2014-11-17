@@ -37,6 +37,15 @@ class CORSMiddleware extends Middleware {
 		$this->reflector = $reflector;
 	}
 
+	/**
+	 * Register the call before the session middleware closes the session
+	 *
+	 * @param \OCP\AppFramework\Controller $controller
+	 * @param string $methodName
+	 */
+	public function beforeController($controller, $methodName) {
+		\OCP\Util::callRegister();
+	}
 
 	/**
 	 * This is being run after a successful controllermethod call and allows
