@@ -228,7 +228,13 @@ class User extends \PHPUnit_Framework_TestCase {
 			->method('implementsActions')
 			->will($this->returnValue(false));
 
-		$allConfig = new AllConfig();
+		$allConfig = $this->getMock('\OC\AllConfig');
+		$allConfig->expects($this->any())
+			->method('getUserValue')
+			->will($this->returnValue(true));
+		$allConfig->expects($this->any())
+			->method('getSystemValue')
+			->will($this->returnValue(''));
 
 		$user = new \OC\User\User('foo', $backend, null, $allConfig);
 		$this->assertEquals(\OC_Config::getValue("datadirectory", \OC::$SERVERROOT . "/data") . '/foo', $user->getHome());

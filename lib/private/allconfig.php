@@ -13,6 +13,20 @@ namespace OC;
  * Class to combine all the configuration options ownCloud offers
  */
 class AllConfig implements \OCP\IConfig {
+	/** @var SystemConfig */
+	private $systemConfig;
+	/** @var AppConfig */
+	private $appConfig;
+
+	/**
+	 * @param SystemConfig $systemConfig
+	 * @param AppConfig $appConfig
+	 */
+	function __construct(SystemConfig $systemConfig, AppConfig $appConfig) {
+		$this->systemConfig = $systemConfig;
+		$this->appConfig = $appConfig;
+	}
+
 	/**
 	 * Sets a new system wide value
 	 *
@@ -20,7 +34,7 @@ class AllConfig implements \OCP\IConfig {
 	 * @param mixed $value the value that should be stored
 	 */
 	public function setSystemValue($key, $value) {
-		\OCP\Config::setSystemValue($key, $value);
+		$this->systemConfig->setValue($key, $value);
 	}
 
 	/**
@@ -31,7 +45,7 @@ class AllConfig implements \OCP\IConfig {
 	 * @return mixed the value or $default
 	 */
 	public function getSystemValue($key, $default = '') {
-		return \OCP\Config::getSystemValue($key, $default);
+		return $this->systemConfig->getValue($key, $default);
 	}
 
 	/**
@@ -40,7 +54,7 @@ class AllConfig implements \OCP\IConfig {
 	 * @param string $key the key of the value, under which it was saved
 	 */
 	public function deleteSystemValue($key) {
-		\OCP\Config::deleteSystemValue($key);
+		$this->systemConfig->deleteValue($key);
 	}
 
 	/**
@@ -50,7 +64,7 @@ class AllConfig implements \OCP\IConfig {
 	 * @return string[] the keys stored for the app
 	 */
 	public function getAppKeys($appName) {
-		return \OC::$server->getAppConfig()->getKeys($appName);
+		return $this->appConfig->getKeys($appName);
 	}
 
 	/**
@@ -61,7 +75,7 @@ class AllConfig implements \OCP\IConfig {
 	 * @param string $value the value that should be stored
 	 */
 	public function setAppValue($appName, $key, $value) {
-		\OCP\Config::setAppValue($appName, $key, $value);
+		$this->appConfig->setValue($appName, $key, $value);
 	}
 
 	/**
@@ -73,7 +87,7 @@ class AllConfig implements \OCP\IConfig {
 	 * @return string the saved value
 	 */
 	public function getAppValue($appName, $key, $default = '') {
-		return \OCP\Config::getAppValue($appName, $key, $default);
+		return $this->appConfig->getValue($appName, $key, $default);
 	}
 
 	/**
@@ -83,7 +97,7 @@ class AllConfig implements \OCP\IConfig {
 	 * @param string $key the key of the value, under which it was saved
 	 */
 	public function deleteAppValue($appName, $key) {
-		\OC_Appconfig::deleteKey($appName, $key);
+		$this->appConfig->deleteKey($appName, $key);
 	}
 
 
@@ -96,7 +110,7 @@ class AllConfig implements \OCP\IConfig {
 	 * @param string $value the value that you want to store
 	 */
 	public function setUserValue($userId, $appName, $key, $value) {
-		\OCP\Config::setUserValue($userId, $appName, $key, $value);
+		\OC_Preferences::setValue($userId, $appName, $key, $value);
 	}
 
 	/**
@@ -109,7 +123,7 @@ class AllConfig implements \OCP\IConfig {
 	 * @return string
 	 */
 	public function getUserValue($userId, $appName, $key, $default = '') {
-		return \OCP\Config::getUserValue($userId, $appName, $key, $default);
+		return \OC_Preferences::getValue($userId, $appName, $key, $default);
 	}
 
 	/**
