@@ -30,7 +30,7 @@ class Test_Files_Sharing_Update_Routine extends OCA\Files_Sharing\Tests\TestCase
 
 	const TEST_FOLDER_NAME = '/folder_share_api_test';
 
-	function setUp() {
+	protected function setUp() {
 		parent::setUp();
 
 		$this->folder = self::TEST_FOLDER_NAME;
@@ -43,7 +43,7 @@ class Test_Files_Sharing_Update_Routine extends OCA\Files_Sharing\Tests\TestCase
 		$this->view->file_put_contents($this->folder . '/' . $this->filename, $this->data);
 	}
 
-	function tearDown() {
+	protected function tearDown() {
 		$this->view->unlink($this->filename);
 		$this->view->deleteAll($this->folder);
 
