@@ -343,23 +343,6 @@ class Preferences {
 
 		unset($this->cache[$user]);
 	}
-
-	/**
-	 * Remove app from all users
-	 * @param string $app app
-	 *
-	 * Removes all keys in preferences belonging to the app.
-	 */
-	public function deleteAppFromAllUsers($app) {
-		$where = array(
-			'appid' => $app,
-		);
-		$this->conn->delete('*PREFIX*preferences', $where);
-
-		foreach ($this->cache as &$userCache) {
-			unset($userCache[$app]);
-		}
-	}
 }
 
 require_once __DIR__ . '/legacy/' . basename(__FILE__);
