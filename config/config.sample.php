@@ -878,4 +878,10 @@ $CONFIG = array(
  */
 'copied_sample_config' => true,
 
+/**
+ * Under certain (legal) conditions user enumeration cannot be allowed to the user.
+ * This is to be seen as a global configuration to be used in many places - e.g. sharing drop down.
+ */
+'privacy.allow-user-enumeration' => true,
+
 );
