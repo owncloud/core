@@ -71,6 +71,32 @@ class Node extends \Test\TestCase {
 		$this->assertEquals(1, $node->getId());
 	}
 
+	public function testGetFileInfo() {
+		$manager = $this->getMock('\OC\Files\Mount\Manager');
+		/**
+		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 */
+		$view = $this->getMock('\OC\Files\View');
+		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$root->expects($this->any())
+			->method('getUser')
+			->will($this->returnValue($this->user));
+
+		$fileInfoMock = $this->getMock('\OCP\Files\FileInfo');
+		$fileInfoMock->expects($this->any())
+			->method('getEtag')
+			->will($this->returnValue('qwerty'));
+
+		$view->expects($this->once())
+			->method('getFileInfo')
+			->with('/bar/foo')
+			->will($this->returnValue($fileInfoMock));
+
+		$node = new \OC\Files\Node\File($root, $view, '/bar/foo');
+		$info = $node->getFileInfo();
+		$this->assertEquals('qwerty', $info->getEtag());
+	}
+
 	public function testGetSize() {
 		$manager = $this->getMock('\OC\Files\Mount\Manager');
 		/**

@@ -201,6 +201,10 @@ class Node implements \OCP\Files\Node {
 		return basename($this->path);
 	}
 
+	public function getFileInfo() {
+		return $this->view->getFileInfo($this->path);
+	}
+
 	/**
 	 * @param string $path
 	 * @return string

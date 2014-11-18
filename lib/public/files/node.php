@@ -179,4 +179,11 @@ interface Node {
 	 * @return string
 	 */
 	public function getName();
+
+	/**
+	 * Get the detailed file info
+	 *
+	 * @return \OCP\Files\FileInfo
+	 */
+	public function getFileInfo();
 }
