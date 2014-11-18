@@ -28,7 +28,6 @@ class Test_Preferences extends \Test\TestCase {
 
 		$query->execute(array("Deleteuser", "deleteapp", "deletekey", "somevalue"));
 		$query->execute(array("Deleteuser", "deleteapp", "somekey", "somevalue"));
-		$query->execute(array("Deleteuser", "someapp", "somekey", "somevalue"));
 	}
 
 	public static function tearDownAfterClass() {
@@ -164,13 +163,6 @@ class Test_Preferences extends \Test\TestCase {
 		$this->assertTrue(\OC_Preferences::deleteUser('Deleteuser'));
 		$query = \OC_DB::prepare('SELECT `configvalue` FROM `*PREFIX*preferences` WHERE `userid` = ?');
 		$result = $query->execute(array('Deleteuser'));
-		$this->assertEquals(0, count($result->fetchAll()));
-	}
-
-	public function testDeleteAppFromAllUsers() {
-		$this->assertTrue(\OC_Preferences::deleteAppFromAllUsers('someapp'));
-		$query = \OC_DB::prepare('SELECT `configvalue` FROM `*PREFIX*preferences` WHERE `appid` = ?');
-		$result = $query->execute(array('someapp'));
 		$this->assertEquals(0, count($result->fetchAll()));
 	}
 }

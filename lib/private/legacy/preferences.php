@@ -132,16 +132,4 @@ class OC_Preferences{
 		self::$object->deleteUser( $user );
 		return true;
 	}
-
-	/**
-	 * Remove app from all users
-	 * @param string $app app
-	 * @return bool
-	 *
-	 * Removes all keys in preferences belonging to the app.
-	 */
-	public static function deleteAppFromAllUsers( $app ) {
-		self::$object->deleteAppFromAllUsers( $app );
-		return true;
-	}
 }
