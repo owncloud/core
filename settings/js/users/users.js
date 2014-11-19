@@ -360,6 +360,7 @@ var UserList = {
 					}, 0);
 				}
 				UserList.updating = false;
+				filter.tryUnlock();
 			});
 	},
 

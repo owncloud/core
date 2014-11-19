@@ -148,7 +148,7 @@ GroupList = {
 					});
 				}
 				GroupList.updating = false;
-
+				filter.tryUnlock();
 			}
 		);
 	},
@@ -251,6 +251,7 @@ GroupList = {
 		return ($(element).closest('li').data('gid') || '').toString();
 	},
 	getEveryoneCount: function () {
+		filter.lock();
 		$.ajax({
 			type: "GET",
 			dataType: "json",
@@ -258,6 +259,7 @@ GroupList = {
 		}).success(function (data) {
 			$('#everyonegroup').data('usercount', data.count);
 			$('#everyonecount').text(data.count);
+			filter.tryUnlock();
 		});
 	}
 };

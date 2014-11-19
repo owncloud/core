@@ -54,6 +54,7 @@ UserManagementFilter.prototype.init = function() {
  * taken care of
  */
 UserManagementFilter.prototype.run = _.debounce(function() {
+		this.lock();
 		this.userList.empty();
 		this.userList.update(GroupList.getCurrentGID());
 		if(this.filterGroups) {
@@ -64,6 +65,16 @@ UserManagementFilter.prototype.run = _.debounce(function() {
 	},
 	300
 );
+
+UserManagementFilter.prototype.lock = function() {
+	this.filterInput.attr('disabled', 'disabled');
+}
+
+UserManagementFilter.prototype.tryUnlock = function() {
+	if(this.userList.updating !== true && this.groupList.updating !== true) {
+		this.filterInput.removeAttr('disabled');
+	}
+}
 
 /**
  * @brief returns the filter String
