@@ -8,22 +8,6 @@
  */
 
 class Test_Preferences_Object extends \Test\TestCase {
-	public function testGetUsers()
-	{
-		$statementMock = $this->getMock('\Doctrine\DBAL\Statement', array(), array(), '', false);
-		$statementMock->expects($this->exactly(2))
-			->method('fetchColumn')
-			->will($this->onConsecutiveCalls('foo', false));
-		$connectionMock = $this->getMock('\OC\DB\Connection', array(), array(), '', false);
-		$connectionMock->expects($this->once())
-			->method('executeQuery')
-			->with($this->equalTo('SELECT DISTINCT `userid` FROM `*PREFIX*preferences`'))
-			->will($this->returnValue($statementMock));
-
-		$preferences = new OC\Preferences($connectionMock);
-		$apps = $preferences->getUsers();
-		$this->assertEquals(array('foo'), $apps);
-	}
 
 	public function testSetValue()
 	{
