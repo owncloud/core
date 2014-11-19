@@ -57,11 +57,10 @@ class MailNotifications {
 		$this->senderId = $sender;
 
 		$this->from = \OCP\Util::getDefaultEmailAddress('sharing-noreply');
+		$this->senderDisplayName = \OCP\Util::getDefaultSenderName(\OCP\User::getDisplayName());
 		if ($this->senderId) {
 			$this->from = \OCP\Config::getUserValue($this->senderId, 'settings', 'email', $this->from);
 			$this->senderDisplayName = \OCP\User::getDisplayName($this->senderId);
-		} else {
-			$this->senderDisplayName = \OCP\User::getDisplayName();
 		}
 	}
 
