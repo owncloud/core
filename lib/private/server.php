@@ -150,7 +150,8 @@ class Server extends SimpleContainer implements IServerContainer {
 		});
 		$this->registerService('AllConfig', function (Server $c) {
 			return new \OC\AllConfig(
-				$c->getSystemConfig()
+				$c->getSystemConfig(),
+				$c->getDatabaseConnection()
 			);
 		});
 		$this->registerService('SystemConfig', function ($c) {
