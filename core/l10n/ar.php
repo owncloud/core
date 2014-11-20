@@ -121,6 +121,7 @@ $TRANSLATIONS = array(
 "Please change your password to secure your account again." => "الرجاء إعادة تعيين كلمة السر لتأمين حسابك.",
 "remember" => "تذكر",
 "Log in" => "أدخل",
-"Alternative Logins" => "اسماء دخول بديلة"
+"Alternative Logins" => "اسماء دخول بديلة",
+"Username" : "إسم المستخدم",
 );
 $PLURAL_FORMS = "nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;";

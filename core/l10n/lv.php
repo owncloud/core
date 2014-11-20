@@ -114,6 +114,7 @@ $TRANSLATIONS = array(
 "Please change your password to secure your account again." => "Lūdzu, nomainiet savu paroli, lai atkal nodrošinātu savu kontu.",
 "remember" => "atcerēties",
 "Log in" => "Ierakstīties",
-"Alternative Logins" => "Alternatīvās pieteikšanās"
+"Alternative Logins" => "Alternatīvās pieteikšanās",
+"Username" : "Lietotājvārds",
 );
 $PLURAL_FORMS = "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);";

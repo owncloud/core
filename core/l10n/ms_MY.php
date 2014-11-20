@@ -60,6 +60,7 @@ $TRANSLATIONS = array(
 "Finish setup" => "Setup selesai",
 "Log out" => "Log keluar",
 "remember" => "ingat",
-"Log in" => "Log masuk"
+"Log in" => "Log masuk",
+"Username" : "Nama pengguna",
 );
 $PLURAL_FORMS = "nplurals=1; plural=0;";

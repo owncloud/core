@@ -44,6 +44,7 @@ $TRANSLATIONS = array(
 "Delete" => "ਹਟਾਓ",
 "Username" => "ਯੂਜ਼ਰ-ਨਾਂ",
 "Security Warning" => "ਸੁਰੱਖਿਆ ਚੇਤਾਵਨੀ",
-"Password" => "ਪਾਸਵਰ"
+"Password" => "ਪਾਸਵਰ",
+"Username" : "ਯੂਜ਼ਰ-ਨਾਂ",
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

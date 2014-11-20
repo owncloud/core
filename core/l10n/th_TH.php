@@ -106,6 +106,7 @@ $TRANSLATIONS = array(
 "If you did not change your password recently, your account may be compromised!" => "หากคุณยังไม่ได้เปลี่ยนรหัสผ่านของคุณเมื่อเร็วๆนี้, บัญชีของคุณอาจถูกบุกรุกโดยผู้อื่น",
 "Please change your password to secure your account again." => "กรุณาเปลี่ยนรหัสผ่านของคุณอีกครั้ง เพื่อป้องกันบัญชีของคุณให้ปลอดภัย",
 "remember" => "จำรหัสผ่าน",
-"Log in" => "เข้าสู่ระบบ"
+"Log in" => "เข้าสู่ระบบ",
+"Username" : "ชื่อผู้ใช้งาน",
 );
 $PLURAL_FORMS = "nplurals=1; plural=0;";

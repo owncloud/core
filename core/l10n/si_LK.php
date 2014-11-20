@@ -81,6 +81,7 @@ $TRANSLATIONS = array(
 "Finish setup" => "ස්ථාපනය කිරීම අවසන් කරන්න",
 "Log out" => "නික්මීම",
 "remember" => "මතක තබාගන්න",
-"Log in" => "ප්‍රවේශවන්න"
+"Log in" => "ප්‍රවේශවන්න",
+"Username" : "පරිශීලක නම",
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

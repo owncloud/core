@@ -123,6 +123,7 @@ $TRANSLATIONS = array(
 "Please change your password to secure your account again." => "لطفا رمز عبور خود را تغییر دهید تا مجددا حساب شما  در امان باشد.",
 "remember" => "بیاد آوری",
 "Log in" => "ورود",
-"Alternative Logins" => "ورود متناوب"
+"Alternative Logins" => "ورود متناوب",
+"Username" : "نام کاربری",
 );
 $PLURAL_FORMS = "nplurals=1; plural=0;";

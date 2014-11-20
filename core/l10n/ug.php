@@ -51,6 +51,7 @@ $TRANSLATIONS = array(
 "Security Warning" => "بىخەتەرلىك ئاگاھلاندۇرۇش",
 "Password" => "ئىم",
 "Finish setup" => "تەڭشەك تامام",
-"Log out" => "تىزىمدىن چىق"
+"Log out" => "تىزىمدىن چىق",
+"Username" : "ئىشلەتكۈچى ئاتى",
 );
 $PLURAL_FORMS = "nplurals=1; plural=0;";

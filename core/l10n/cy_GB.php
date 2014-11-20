@@ -106,6 +106,7 @@ $TRANSLATIONS = array(
 "Please change your password to secure your account again." => "Newidiwch eich cyfrinair i ddiogleu eich cyfrif eto.",
 "remember" => "cofio",
 "Log in" => "Mewngofnodi",
-"Alternative Logins" => "Mewngofnodiadau Amgen"
+"Alternative Logins" => "Mewngofnodiadau Amgen",
+"Username" : "Enw defnyddiwr",
 );
 $PLURAL_FORMS = "nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != 11) ? 2 : 3;";

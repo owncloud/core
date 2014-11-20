@@ -78,6 +78,7 @@ $TRANSLATIONS = array(
 "If you did not change your password recently, your account may be compromised!" => "如果你近期未曾更改密碼, 你的帳號可能被洩露!",
 "Please change your password to secure your account again." => "請更改你的密碼以保護你的帳戶",
 "remember" => "記住",
-"Log in" => "登入"
+"Log in" => "登入",
+"Username" : "用戶名稱",
 );
 $PLURAL_FORMS = "nplurals=1; plural=0;";

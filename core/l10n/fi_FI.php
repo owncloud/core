@@ -199,5 +199,6 @@ $TRANSLATIONS = array(
 "File not found" => "Tiedostoa ei löytynyt",
 "The specified document has not been found on the server." => "Määritettyä asiakirjaa ei löytynyt palvelimelta.",
 "You can click here to return to %s." => "Napsauta tästä palataksesi %siin.",
+"Username" : "Käyttäjätunnus",
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

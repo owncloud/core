@@ -138,6 +138,7 @@ $TRANSLATIONS = array(
 "remember" => "memora",
 "Log in" => "Aperir session",
 "Alternative Logins" => "Accessos de autorisation alternative",
-"Thank you for your patience." => "Gratias pro tu patientia."
+"Thank you for your patience." => "Gratias pro tu patientia.",
+"Username" : "Nomine de usator",
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

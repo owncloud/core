@@ -52,6 +52,7 @@ $TRANSLATIONS = array(
 "Database name" => "डेटाबेस का नाम",
 "Finish setup" => "सेटअप समाप्त करे",
 "Log out" => "लोग  आउट",
-"remember" => "याद रखें"
+"remember" => "याद रखें",
+"Username" : "प्रयोक्ता का नाम",
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

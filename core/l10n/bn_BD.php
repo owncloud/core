@@ -95,6 +95,7 @@ $TRANSLATIONS = array(
 "Finish setup" => "সেটআপ সুসম্পন্ন কর",
 "Log out" => "প্রস্থান",
 "remember" => "মনে রাখ",
-"Log in" => "প্রবেশ"
+"Log in" => "প্রবেশ",
+"Username" : "ব্যবহারকারী",
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

@@ -201,6 +201,7 @@ $TRANSLATIONS = array(
 "Please make sure that the database, the config folder and the data folder have been backed up before proceeding." => "Enantes de siguir, asegúrate de que se fizo una copia de seguridá de la base de datos, la carpeta de configuración y la carpeta de datos.",
 "Start update" => "Aniciar anovamientu",
 "This ownCloud instance is currently being updated, which may take a while." => "Esta instancia de OwnCloud ta anguaño anovándose, polo que pue tardar un pocoñín.",
-"Please reload this page after a short time to continue using ownCloud." => "Por favor, recarga esta páxina dempués d'un tiempu pa siguir usando ownCloud"
+"Please reload this page after a short time to continue using ownCloud." => "Por favor, recarga esta páxina dempués d'un tiempu pa siguir usando ownCloud",
+"Username" : "Nome d'usuariu",
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

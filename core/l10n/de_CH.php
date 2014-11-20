@@ -119,6 +119,7 @@ $TRANSLATIONS = array(
 "Please change your password to secure your account again." => "Bitte ändern Sie Ihr Passwort, um Ihr Konto wieder zu sichern.",
 "remember" => "merken",
 "Log in" => "Einloggen",
-"Alternative Logins" => "Alternative Logins"
+"Alternative Logins" => "Alternative Logins",
+"Username" : "Benutzername",
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";
