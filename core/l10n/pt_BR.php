@@ -205,5 +205,6 @@ $TRANSLATIONS = array(
 "File not found" => "Arquivo não encontrado",
 "The specified document has not been found on the server." => "O documento especificado não foi encontrado no servidor.",
 "You can click here to return to %s." => "Você pode clicar aqui para retornar para %s.",
+"Username" : "Nome de usuário",
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n > 1);";

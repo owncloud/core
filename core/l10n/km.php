@@ -111,6 +111,7 @@ $TRANSLATIONS = array(
 "Please change your password to secure your account again." => "សូម​ប្ដូរ​ពាក្យ​សម្ងាត់​របស់​អ្នក ដើម្បី​ការពារ​គណនី​របស់​អ្នក។",
 "remember" => "ចងចាំ",
 "Log in" => "ចូល",
-"Alternative Logins" => "ការ​ចូល​ជំនួស"
+"Alternative Logins" => "ការ​ចូល​ជំនួស",
+"Username" : "ឈ្មោះ​អ្នកប្រើ",
 );
 $PLURAL_FORMS = "nplurals=1; plural=0;";

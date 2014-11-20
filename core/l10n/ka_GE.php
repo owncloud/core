@@ -108,6 +108,7 @@ $TRANSLATIONS = array(
 "Please change your password to secure your account again." => "გთხოვთ შეცვალოთ თქვენი პაროლი, თქვენი ანგარიშის დასაცავად.",
 "remember" => "დამახსოვრება",
 "Log in" => "შესვლა",
-"Alternative Logins" => "ალტერნატიული Login–ი"
+"Alternative Logins" => "ალტერნატიული Login–ი",
+"Username" : "მომხმარებლის სახელი",
 );
 $PLURAL_FORMS = "nplurals=1; plural=0;";

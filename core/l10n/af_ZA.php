@@ -125,6 +125,7 @@ $TRANSLATIONS = array(
 "remember" => "onthou",
 "Log in" => "Teken aan",
 "Alternative Logins" => "Alternatiewe aantekeninge",
-"Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" => "Halo daar,<br><br>wou jou net laat weet dat %s <strong>%s</strong> met jou gedeel het.<br><a href=\"%s\">Sien alles!</a><br><br>"
+"Hey there,<br><br>just letting you know that %s shared <strong>%s</strong> with you.<br><a href=\"%s\">View it!</a><br><br>" => "Halo daar,<br><br>wou jou net laat weet dat %s <strong>%s</strong> met jou gedeel het.<br><a href=\"%s\">Sien alles!</a><br><br>",
+"Username" : "Gebruikersnaam",
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

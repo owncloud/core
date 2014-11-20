@@ -111,6 +111,7 @@ $TRANSLATIONS = array(
 "Please change your password to secure your account again." => "נא לשנות את הססמה שלך כדי לאבטח את חשבונך מחדש.",
 "remember" => "שמירת הססמה",
 "Log in" => "כניסה",
-"Alternative Logins" => "כניסות אלטרנטיביות"
+"Alternative Logins" => "כניסות אלטרנטיביות",
+"Username" : "שם משתמש",
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

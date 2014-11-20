@@ -126,6 +126,7 @@ $TRANSLATIONS = array(
 "Please change your password to secure your account again." => "Te rog schimbă-ți parola pentru a-ți securiza din nou contul.",
 "remember" => "amintește",
 "Log in" => "Autentificare",
-"Alternative Logins" => "Conectări alternative"
+"Alternative Logins" => "Conectări alternative",
+"Username" : "Nume utilizator",
 );
 $PLURAL_FORMS = "nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));";

@@ -30,6 +30,7 @@ $TRANSLATIONS = array(
 "Database name" => "ناوی داتابه‌یس",
 "Database host" => "هۆستی داتابه‌یس",
 "Finish setup" => "كۆتایی هات ده‌ستكاریه‌كان",
-"Log out" => "چوونەدەرەوە"
+"Log out" => "چوونەدەرەوە",
+"Username" : "ناوی به‌کارهێنه‌ر",
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

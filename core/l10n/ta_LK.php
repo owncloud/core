@@ -97,6 +97,7 @@ $TRANSLATIONS = array(
 "If you did not change your password recently, your account may be compromised!" => "உங்களுடைய கடவுச்சொல்லை அண்மையில் மாற்றவில்லையின், உங்களுடைய கணக்கு சமரசமாகிவிடும்!",
 "Please change your password to secure your account again." => "உங்களுடைய கணக்கை மீண்டும் பாதுகாக்க தயவுசெய்து உங்களுடைய கடவுச்சொல்லை மாற்றவும்.",
 "remember" => "ஞாபகப்படுத்துக",
-"Log in" => "புகுபதிகை"
+"Log in" => "புகுபதிகை",
+"Username" : "பயனாளர் பெயர்",
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

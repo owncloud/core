@@ -44,6 +44,7 @@ $TRANSLATIONS = array(
 "Error while changing permissions" => "Ocurrió un error mientras se cambiaban los permisos",
 "The object type is not specified." => "El tipo de objeto no está especificado.",
 "Username" => "Usuario",
-"Password" => "Clave"
+"Password" => "Clave",
+"Username" : "Usuario",
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

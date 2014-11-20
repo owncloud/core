@@ -86,6 +86,7 @@ $TRANSLATIONS = array(
 "Finish setup" => "Configuracion acabada",
 "Log out" => "Sortida",
 "remember" => "bremba-te",
-"Log in" => "Dintrada"
+"Log in" => "Dintrada",
+"Username" : "Non d'usancièr",
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n > 1);";

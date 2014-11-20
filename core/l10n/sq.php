@@ -115,6 +115,7 @@ $TRANSLATIONS = array(
 "Please change your password to secure your account again." => "Ju lutemi, ndryshoni kodin për ta siguruar përsëri llogarinë tuaj.",
 "remember" => "kujto",
 "Log in" => "Hyrje",
-"Alternative Logins" => "Hyrje alternative"
+"Alternative Logins" => "Hyrje alternative",
+"Username" : "Përdoruesi",
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

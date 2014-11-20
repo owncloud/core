@@ -162,6 +162,7 @@ $TRANSLATIONS = array(
 "Contact your system administrator if this message persists or appeared unexpectedly." => "Contacte con su administrador de sistemas si este mensaje persiste o aparece de forma inesperada.",
 "Thank you for your patience." => "Gracias por su paciencia.",
 "This ownCloud instance is currently being updated, which may take a while." => "Esta versión de ownCloud se está actualizando, esto puede demorar un tiempo.",
-"Please reload this page after a short time to continue using ownCloud." => "Por favor, recargue esta instancia de onwcloud tras un corto periodo de tiempo y continue usándolo."
+"Please reload this page after a short time to continue using ownCloud." => "Por favor, recargue esta instancia de onwcloud tras un corto periodo de tiempo y continue usándolo.",
+"Username" : "Nombre de usuario",
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

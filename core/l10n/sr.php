@@ -99,6 +99,7 @@ $TRANSLATIONS = array(
 "If you did not change your password recently, your account may be compromised!" => "Ако ускоро не промените лозинку ваш налог може бити компромитован!",
 "Please change your password to secure your account again." => "Промените лозинку да бисте обезбедили налог.",
 "remember" => "упамти",
-"Log in" => "Пријава"
+"Log in" => "Пријава",
+"Username" : "Корисничко име",
 );
 $PLURAL_FORMS = "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);";

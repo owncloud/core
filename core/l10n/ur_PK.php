@@ -141,6 +141,7 @@ $TRANSLATIONS = array(
 "remember" => "یاد رکھیں",
 "Log in" => "لاگ ان",
 "Alternative Logins" => "متبادل لاگ ان ",
-"Thank you for your patience." => "آپ کے صبر کا شکریہ"
+"Thank you for your patience." => "آپ کے صبر کا شکریہ",
+"Username" : "یوزر نیم",
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

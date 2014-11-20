@@ -139,6 +139,7 @@ $TRANSLATIONS = array(
 "remember" => "memori",
 "Log in" => "Ensaluti",
 "Alternative Logins" => "Alternativaj ensalutoj",
-"Thank you for your patience." => "Dankon pro via pacienco."
+"Thank you for your patience." => "Dankon pro via pacienco.",
+"Username" : "Uzantonomo",
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

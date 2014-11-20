@@ -146,6 +146,7 @@ $TRANSLATIONS = array(
 "Contact your system administrator if this message persists or appeared unexpectedly." => "Контактирајте го вашиот систем администратор до колку оваа порака продолжи да се појавува или пак се појавува ненадејно.",
 "Thank you for your patience." => "Благодариме на вашето трпение.",
 "This ownCloud instance is currently being updated, which may take a while." => "Оваа инстанца на ownCloud во моментов се надградува, што може малку да потрае.",
-"Please reload this page after a short time to continue using ownCloud." => "Повторно вчитајте ја оваа страница по кратко време за да продолжите да го користите ownCloud."
+"Please reload this page after a short time to continue using ownCloud." => "Повторно вчитајте ја оваа страница по кратко време за да продолжите да го користите ownCloud.",
+"Username" : "Корисничко име",
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;";

@@ -131,6 +131,7 @@ $TRANSLATIONS = array(
 "Please change your password to secure your account again." => "Ver venleg og endra passordet for å gjera kontoen din trygg igjen.",
 "remember" => "hugs",
 "Log in" => "Logg inn",
-"Alternative Logins" => "Alternative innloggingar"
+"Alternative Logins" => "Alternative innloggingar",
+"Username" : "Brukarnamn",
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

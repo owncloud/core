@@ -133,6 +133,7 @@ $TRANSLATIONS = array(
 "remember" => "verhalen",
 "Log in" => "Umellen",
 "Alternative Logins" => "Alternativ Umeldungen",
-"Thank you for your patience." => "Merci fir deng Gedold."
+"Thank you for your patience." => "Merci fir deng Gedold.",
+"Username" : "Benotzernumm",
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";

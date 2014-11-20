@@ -205,5 +205,6 @@ $TRANSLATIONS = array(
 "File not found" => "Dosya bulunamadı",
 "The specified document has not been found on the server." => "Belirtilen dosya sunucuda bulunamadı.",
 "You can click here to return to %s." => "%s ana sayfasına dönmek için buraya tıklayabilirsiniz.",
+"Username" : "Kullanıcı Adı",
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n > 1);";

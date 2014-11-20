@@ -54,6 +54,7 @@ $TRANSLATIONS = array(
 "Database name" => "Database အမည်",
 "Finish setup" => "တပ်ဆင်ခြင်းပြီးပါပြီ။",
 "remember" => "မှတ်မိစေသည်",
-"Log in" => "ဝင်ရောက်ရန်"
+"Log in" => "ဝင်ရောက်ရန်",
+"Username" : "သုံးစွဲသူအမည်",
 );
 $PLURAL_FORMS = "nplurals=1; plural=0;";

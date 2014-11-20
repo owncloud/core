@@ -102,6 +102,7 @@ $TRANSLATIONS = array(
 "If you did not change your password recently, your account may be compromised!" => "Ef þú breyttir ekki lykilorðinu þínu fyrir skömmu, er mögulegt að einhver annar hafi komist inn á aðganginn þinn.",
 "Please change your password to secure your account again." => "Vinsamlegast breyttu lykilorðinu þínu til að tryggja öryggi þitt.",
 "remember" => "muna eftir mér",
-"Log in" => "<strong>Skrá inn</strong>"
+"Log in" => "<strong>Skrá inn</strong>",
+"Username" : "Notendanafn",
 );
 $PLURAL_FORMS = "nplurals=2; plural=(n != 1);";
