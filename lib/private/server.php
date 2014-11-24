@@ -250,6 +250,12 @@ class Server extends SimpleContainer implements IServerContainer {
 			$groupManager = $c->getGroupManager();
 			return new \OC\App\AppManager($userSession, $appConfig, $groupManager);
 		});
+		$this->registerService('DateTimeFormatter', function(Server $c) {
+			$timeZone = $this->getTimeZone();
+			$language = $c->getConfig()->getUserValue(\OC_User::getUser(), 'core', 'lang', null);
+
+			return new \OC\DateTimeFormatter($timeZone, new \OC_L10N('lib', $language));
+		});
 	}
 
 	/**
@@ -646,5 +652,25 @@ class Server extends SimpleContainer implements IServerContainer {
 	 */
 	function getWebRoot() {
 		return $this->webRoot;
+	}
+
+	public function getTimeZone() {
+		$timeZone = $this->getConfig()->getUserValue(\OC_User::getUser(), 'core', 'timezone', null);
+		if ($timeZone === null) {
+			if ($this->getSession()->exists('timezone')) {
+				$offsetHours = \OC::$server->getSession()->get('timezone');
+				// Note: the timeZone name is the invers to the offset,
+				// so a positive offset means negative timeZone
+				// and the otherway around.
+				if ($offsetHours > 0) {
+					return new \DateTimeZone('Etc/GMT-' . $offsetHours);
+				} else {
+					return new \DateTimeZone('Etc/GMT+' . abs($offsetHours));
+				}
+			} else {
+				return new \DateTimeZone('UTC');
+			}
+		}
+		return new \DateTimeZone($timeZone);
 	}
 }
