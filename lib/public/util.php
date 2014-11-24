@@ -160,12 +160,19 @@ class Util {
 	/**
 	 * formats a timestamp in the "right" way
 	 * @param int $timestamp $timestamp
-	 * @param bool $dateOnly option to omit time from the result
+	 * @param array|boolean $options The following options are available:
+	 *			format		=> Can be date, datetime or time
+	 *			language	=> \OC_L10N object which should be used
+	 *			width		=> It can be 'full', 'long', 'medium', 'short' or a combination for date+time like 'full|short'
+	 *							You can also append an asterisk ('^') to the date part.
+	 *							If so, special day names may be used (like 'Today', 'Yesterday', 'Tomorrow') instead of the date part.
+	 *				If $options is false, the current language and width full are used with format datetime
+	 *				If $options is true, the current language and width full are used with format date
 	 * @param DateTimeZone|string $timeZone where the given timestamp shall be converted to
 	 * @return string timestamp
 	 */
-	public static function formatDate($timestamp, $dateOnly=false, $timeZone = null) {
-		return(\OC_Util::formatDate($timestamp, $dateOnly, $timeZone));
+	public static function formatDate($timestamp, $options = false, $timeZone = null) {
+		return(\OC_Util::formatDate($timestamp, $options, $timeZone));
 	}
 
 	/**
