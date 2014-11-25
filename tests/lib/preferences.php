@@ -222,20 +222,4 @@ class Test_Preferences_Object extends \Test\TestCase {
 		$preferences = new OC\Preferences($connectionMock);
 		$preferences->deleteUser('grg');
 	}
-
-	public function testDeleteAppFromAllUsers()
-	{
-		$connectionMock = $this->getMock('\OC\DB\Connection', array(), array(), '', false);
-		$connectionMock->expects($this->once())
-			->method('delete')
-			->with($this->equalTo('*PREFIX*preferences'),
-				$this->equalTo(
-					array(
-						'appid' => 'bar',
-					)
-				));
-
-		$preferences = new OC\Preferences($connectionMock);
-		$preferences->deleteAppFromAllUsers('bar');
-	}
 }
