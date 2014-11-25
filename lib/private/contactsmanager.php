@@ -63,10 +63,9 @@ namespace OC {
 			}
 
 			if ($addressBook->getPermissions() & \OCP\PERMISSION_DELETE) {
-				return null;
+				return $addressBook->delete($id);
 			}
-
-			return $addressBook->delete($id);
+			return null;
 		}
 
 		/**
@@ -84,10 +83,10 @@ namespace OC {
 			}
 
 			if ($addressBook->getPermissions() & \OCP\PERMISSION_CREATE) {
-				return null;
+				return $addressBook->createOrUpdate($properties);
 			}
 
-			return $addressBook->createOrUpdate($properties);
+			return null;
 		}
 
 		/**
