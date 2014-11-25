@@ -68,25 +68,6 @@ class Preferences {
 	}
 
 	/**
-	 * Get all users using the preferences
-	 * @return array an array of user ids
-	 *
-	 * This function returns a list of all users that have at least one entry
-	 * in the preferences table.
-	 */
-	public function getUsers() {
-		$query = 'SELECT DISTINCT `userid` FROM `*PREFIX*preferences`';
-		$result = $this->conn->executeQuery($query);
-
-		$users = array();
-		while ($userid = $result->fetchColumn()) {
-			$users[] = $userid;
-		}
-
-		return $users;
-	}
-
-	/**
 	 * @param string $user
 	 * @return array[]
 	 */
@@ -106,19 +87,6 @@ class Preferences {
 		}
 		$this->cache[$user] = $data;
 		return $data;
-	}
-
-	/**
-	 * Get all apps of an user
-	 * @param string $user user
-	 * @return integer[] with app ids
-	 *
-	 * This function returns a list of all apps of the user that have at least
-	 * one entry in the preferences table.
-	 */
-	public function getApps($user) {
-		$data = $this->getUserValues($user);
-		return array_keys($data);
 	}
 
 	/**
@@ -223,73 +191,6 @@ class Preferences {
 	}
 
 	/**
-	 * Gets the preference for an array of users
-	 * @param string $app
-	 * @param string $key
-	 * @param array $users
-	 * @return array Mapped values: userid => value
-	 */
-	public function getValueForUsers($app, $key, $users) {
-		if (empty($users) || !is_array($users)) {
-			return array();
-		}
-
-		$chunked_users = array_chunk($users, 50, true);
-		$placeholders_50 = implode(',', array_fill(0, 50, '?'));
-
-		$userValues = array();
-		foreach ($chunked_users as $chunk) {
-			$queryParams = $chunk;
-			array_unshift($queryParams, $key);
-			array_unshift($queryParams, $app);
-
-			$placeholders = (sizeof($chunk) == 50) ? $placeholders_50 : implode(',', array_fill(0, sizeof($chunk), '?'));
-
-			$query = 'SELECT `userid`, `configvalue` '
-				. ' FROM `*PREFIX*preferences` '
-				. ' WHERE `appid` = ? AND `configkey` = ?'
-				. ' AND `userid` IN (' . $placeholders . ')';
-			$result = $this->conn->executeQuery($query, $queryParams);
-
-			while ($row = $result->fetch()) {
-				$userValues[$row['userid']] = $row['configvalue'];
-			}
-		}
-
-		return $userValues;
-	}
-
-	/**
-	 * Gets the users for a preference
-	 * @param string $app
-	 * @param string $key
-	 * @param string $value
-	 * @return array
-	 */
-	public function getUsersForValue($app, $key, $value) {
-		$users = array();
-
-		$query = 'SELECT `userid` '
-			. ' FROM `*PREFIX*preferences` '
-			. ' WHERE `appid` = ? AND `configkey` = ? AND ';
-
-		if (\OC_Config::getValue( 'dbtype', 'sqlite' ) === 'oci') {
-			//FIXME oracle hack: need to explicitly cast CLOB to CHAR for comparison
-			$query .= ' to_char(`configvalue`)= ?';
-		} else {
-			$query .= ' `configvalue` = ?';
-		}
-
-		$result = $this->conn->executeQuery($query, array($app, $key, $value));
-
-		while ($row = $result->fetch()) {
-			$users[] = $row['userid'];
-		}
-
-		return $users;
-	}
-
-	/**
 	 * Deletes a key
 	 * @param string $user user
 	 * @param string $app app
@@ -342,23 +243,6 @@ class Preferences {
 		$this->conn->delete('*PREFIX*preferences', $where);
 
 		unset($this->cache[$user]);
-	}
-
-	/**
-	 * Remove app from all users
-	 * @param string $app app
-	 *
-	 * Removes all keys in preferences belonging to the app.
-	 */
-	public function deleteAppFromAllUsers($app) {
-		$where = array(
-			'appid' => $app,
-		);
-		$this->conn->delete('*PREFIX*preferences', $where);
-
-		foreach ($this->cache as &$userCache) {
-			unset($userCache[$app]);
-		}
 	}
 }
 

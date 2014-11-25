@@ -117,33 +117,6 @@ class Test_Preferences_Object extends \Test\TestCase {
 		$preferences->setValue('grg', 'bar', 'foo', 'v2');
 	}
 
-	public function testGetUserValues()
-	{
-		$query = \OC_DB::prepare('INSERT INTO `*PREFIX*preferences` VALUES(?, ?, ?, ?)');
-		$query->execute(array('SomeUser', 'testGetUserValues', 'somekey', 'somevalue'));
-		$query->execute(array('AnotherUser', 'testGetUserValues', 'somekey', 'someothervalue'));
-		$query->execute(array('AUser', 'testGetUserValues', 'somekey', 'somevalue'));
-
-		$preferences = new OC\Preferences(\OC_DB::getConnection());
-		$users = array('SomeUser', 'AnotherUser', 'NoValueSet');
-
-		$values = $preferences->getValueForUsers('testGetUserValues', 'somekey', $users);
-		$this->assertUserValues($values);
-
-		// Add a lot of users so the array is chunked
-		for ($i = 1; $i <= 75; $i++) {
-			array_unshift($users, 'NoValueBefore#' . $i);
-			array_push($users, 'NoValueAfter#' . $i);
-		}
-
-		$values = $preferences->getValueForUsers('testGetUserValues', 'somekey', $users);
-		$this->assertUserValues($values);
-
-		// Clean DB after the test
-		$query = \OC_DB::prepare('DELETE FROM `*PREFIX*preferences` WHERE `appid` = ?');
-		$query->execute(array('testGetUserValues'));
-	}
-
 	protected function assertUserValues($values) {
 		$this->assertEquals(2, sizeof($values));
 
@@ -152,24 +125,6 @@ class Test_Preferences_Object extends \Test\TestCase {
 
 		$this->assertArrayHasKey('AnotherUser', $values);
 		$this->assertEquals('someothervalue', $values['AnotherUser']);
-	}
-
-	public function testGetValueUsers()
-	{
-		// Prepare data
-		$query = \OC_DB::prepare('INSERT INTO `*PREFIX*preferences` VALUES(?, ?, ?, ?)');
-		$query->execute(array('SomeUser', 'testGetUsersForValue', 'somekey', 'somevalue'));
-		$query->execute(array('AnotherUser', 'testGetUsersForValue', 'somekey', 'someothervalue'));
-		$query->execute(array('AUser', 'testGetUsersForValue', 'somekey', 'somevalue'));
-
-		$preferences = new OC\Preferences(\OC_DB::getConnection());
-		$result = $preferences->getUsersForValue('testGetUsersForValue', 'somekey', 'somevalue');
-		sort($result);
-		$this->assertEquals(array('AUser', 'SomeUser'), $result);
-
-		// Clean DB after the test
-		$query = \OC_DB::prepare('DELETE FROM `*PREFIX*preferences` WHERE `appid` = ?');
-		$query->execute(array('testGetUsersForValue'));
 	}
 
 	public function testDeleteKey()
@@ -221,21 +176,5 @@ class Test_Preferences_Object extends \Test\TestCase {
 
 		$preferences = new OC\Preferences($connectionMock);
 		$preferences->deleteUser('grg');
-	}
-
-	public function testDeleteAppFromAllUsers()
-	{
-		$connectionMock = $this->getMock('\OC\DB\Connection', array(), array(), '', false);
-		$connectionMock->expects($this->once())
-			->method('delete')
-			->with($this->equalTo('*PREFIX*preferences'),
-				$this->equalTo(
-					array(
-						'appid' => 'bar',
-					)
-				));
-
-		$preferences = new OC\Preferences($connectionMock);
-		$preferences->deleteAppFromAllUsers('bar');
 	}
 }

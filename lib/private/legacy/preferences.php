@@ -28,28 +28,6 @@ OC_Preferences::$object = new \OC\Preferences(OC_DB::getConnection());
  */
 class OC_Preferences{
 	public static $object;
-	/**
-	 * Get all users using the preferences
-	 * @return array an array of user ids
-	 *
-	 * This function returns a list of all users that have at least one entry
-	 * in the preferences table.
-	 */
-	public static function getUsers() {
-		return self::$object->getUsers();
-	}
-
-	/**
-	 * Get all apps of a user
-	 * @param string $user user
-	 * @return integer[] with app ids
-	 *
-	 * This function returns a list of all apps of the user that have at least
-	 * one entry in the preferences table.
-	 */
-	public static function getApps( $user ) {
-		return self::$object->getApps( $user );
-	}
 
 	/**
 	 * Get the available keys for an app
@@ -130,18 +108,6 @@ class OC_Preferences{
 	 */
 	public static function deleteUser( $user ) {
 		self::$object->deleteUser( $user );
-		return true;
-	}
-
-	/**
-	 * Remove app from all users
-	 * @param string $app app
-	 * @return bool
-	 *
-	 * Removes all keys in preferences belonging to the app.
-	 */
-	public static function deleteAppFromAllUsers( $app ) {
-		self::$object->deleteAppFromAllUsers( $app );
 		return true;
 	}
 }
