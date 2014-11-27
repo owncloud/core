@@ -180,7 +180,7 @@ class OC {
 		foreach (OC::$APPSROOTS as $path) {
 			$paths[] = $path['path'];
 			if(!file_exists($path['path'])) {
-				throw new Exception(sprintf('App directory %s not found! Please put the ownCloud apps folder in the'
+				throw new HintException(sprintf('App directory %s not found! Please put the ownCloud apps folder in the'
 					. 'ownCloud folder or the folder above. '
 					. 'You can also configure the location in the config.php file.', $path['path']));
 			}
