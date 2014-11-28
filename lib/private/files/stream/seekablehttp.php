@@ -118,7 +118,7 @@ class SeekableHttp {
             return FALSE;
         }
 
-        $available_count = min( $this->read_bytes - $this->position, $count); 
+	$this->wait_for_position($this->position + $count)
 
         fseek($this->temp_file, $this->position);
 
