@@ -7,10 +7,15 @@ namespace OC\Files;
  */
 class Mapper
 {
+	/** @var string Unchanged root path as has been given to the constructor */
 	private $unchangedPhysicalRoot;
+	/** @var string Cleaned root path without relative path segments */
+	private $resolvePhysicalRoot;
 
 	public function __construct($rootDir) {
 		$this->unchangedPhysicalRoot = $rootDir;
+		// Resolve ./, ../ and // so we can compare it to the resolved links we get alter on.
+		$this->resolvePhysicalRoot = $this->resolveRelativePath($rootDir);
 	}
 
 	/**
@@ -170,9 +175,9 @@ class Mapper
 	private function create($logicPath, $store) {
 		$logicPath = $this->resolveRelativePath($logicPath);
 
-		if ($logicPath === $this->unchangedPhysicalRoot ||
-			$logicPath . '/' === $this->unchangedPhysicalRoot ||
-			$logicPath . '\\' === $this->unchangedPhysicalRoot) {
+		if ($logicPath === $this->resolvePhysicalRoot ||
+			$logicPath . '/' === $this->resolvePhysicalRoot ||
+			$logicPath . '\\' === $this->resolvePhysicalRoot) {
 			// If the path is the physical root, we are done with the recursion
 			return $logicPath;
 		}
