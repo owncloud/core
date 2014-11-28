@@ -89,6 +89,8 @@ function human_file_size( $bytes ) {
  * @param int $timestamp unix timestamp
  * @param boolean $dateOnly
  * @return \OC_L10N_String human readable interpretation of the timestamp
+ *
+ * @deprecated Use \OC::$server->query('DateTimeFormatter') instead
  */
 function relative_modified_date( $timestamp, $dateOnly = false ) {
 	return(\relative_modified_date($timestamp, null, $dateOnly));
