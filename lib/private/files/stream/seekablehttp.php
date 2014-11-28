@@ -13,14 +13,14 @@ class SeekableHttp {
     public $context;
 
     // keeps track of the number of bytes written to the temporary file
-    var $read_bytes = 0;
+    var $readBytes = 0;
 
     // context used to download the file
     var $curl;
-    var $multi_curl;
+    var $multiCurl;
 
     // a file resource pointing to a temporary file where we store the download 
-    var $temp_file;
+    var $tempFile;
 
     // different than null as long as we are downloading from the remote server
     var $active;
@@ -29,12 +29,12 @@ class SeekableHttp {
     // protocol wants the next read to happen 
     var $position = 0;
 
-    function write_to_temp($res, $data) {
+    function writeToTemp($res, $data) {
 
         // write the newly received data at the end of the temporary file
-        fseek($this->temp_file, $this->read_bytes);
-        $written = fwrite($this->temp_file, $data);
-        $this->read_bytes += $written;
+        fseek($this->tempFile, $this->readBytes);
+        $written = fwrite($this->tempFile, $data);
+        $this->readBytes += $written;
         return $written;
 
     }
@@ -42,7 +42,7 @@ class SeekableHttp {
     public function stream_open($path, $mode, $options, &$opened_path) {
 
         // open the temporary file that will store the partial download
-        $this->temp_file = fopen('php://temp', 'rwb');
+        $this->tempFile = fopen('php://temp', 'rwb');
 
         // setup the download
         $this->curl = curl_init();
@@ -71,17 +71,17 @@ class SeekableHttp {
 
         // set a callback that will be called when new data comes in
         curl_setopt($this->curl, CURLOPT_WRITEFUNCTION, 
-                        array($this, 'write_to_temp'));
+                        array($this, 'writeToTemp'));
 
-        $this->multi_curl = curl_multi_init();
+        $this->multiCurl = curl_multi_init();
 
-        curl_multi_add_handle($this->multi_curl,$this->curl);
+        curl_multi_add_handle($this->multiCurl,$this->curl);
 
         $this->active = null;
 
         // start the download
         do {
-            $mrc = curl_multi_exec($this->multi_curl, $this->active);
+            $mrc = curl_multi_exec($this->multiCurl, $this->active);
         } while ($mrc == CURLM_CALL_MULTI_PERFORM);
 
         if ( $mrc != CURLM_OK ) {
@@ -106,8 +106,8 @@ class SeekableHttp {
 
         }
 
-        curl_multi_remove_handle($this->multi_curl, $this->curl);
-        curl_multi_close($this->multi_curl);
+        curl_multi_remove_handle($this->multiCurl, $this->curl);
+        curl_multi_close($this->multiCurl);
 
     }
 
@@ -118,11 +118,11 @@ class SeekableHttp {
             return FALSE;
         }
 
-	$this->wait_for_position($this->position + $count)
+	$this->waitForPosition($this->position + $count)
 
-        fseek($this->temp_file, $this->position);
+        fseek($this->tempFile, $this->position);
 
-        $data = fread($this->temp_file, $available_count);
+        $data = fread($this->tempFile, $available_count);
 
         $this->position += strlen($data);
 
@@ -134,13 +134,13 @@ class SeekableHttp {
         return $this->position;
     }
 
-    function wait_data() {
+    function waitData() {
         // wait for incoming data
-        if (curl_multi_select($this->multi_curl) != -1) {
+        if (curl_multi_select($this->multiCurl) != -1) {
 
             // read the data
             do {
-                $mrc = curl_multi_exec($this->multi_curl, $this->active);
+                $mrc = curl_multi_exec($this->multiCurl, $this->active);
             } while ($mrc == CURLM_CALL_MULTI_PERFORM);
 
 
@@ -153,27 +153,27 @@ class SeekableHttp {
         }
     }
 
-    function wait_for_end() {
+    function waitForEnd() {
         // wait until the download is over
         while ( $this->active) {
-            $this->wait_data();
+            $this->waitData();
         }
     }
 
-    function wait_for_position($position) {
+    function waitForPosition($position) {
         // wait until we read past the position or the download is over
-        while ( $position >= $this->read_bytes && $this->active) {
-            $this->wait_data();
+        while ( $position >= $this->readBytes && $this->active) {
+            $this->waitData();
         }
     }
 
     public function stream_eof() {
 
         // here we could rely on the Content-Lenght field of the header
-        $this->wait_for_position($this->position);
+        $this->waitForPosition($this->position);
 
         // return FALSE if the request is past the end of the file
-        return $this->position >= $this->read_bytes ;
+        return $this->position >= $this->readBytes ;
     }
 
     public function stream_set_option($option, $arg1, $arg2) {
@@ -193,9 +193,9 @@ class SeekableHttp {
         switch ($whence) {
             case SEEK_SET:
 
-                $this->wait_for_position($offset);
+                $this->waitForPosition($offset);
 
-                if ($this->read_bytes > $offset) {
+                if ($this->readBytes > $offset) {
                     $this->position = $offset;
                     return TRUE;
                 } else {
@@ -211,7 +211,7 @@ class SeekableHttp {
             case SEEK_END:
 
                 // here we could rely on the Content-Lenght field of the header
-                $this->wait_for_end();
+                $this->waitForEnd();
                 return $this->stream_seek($this->position + $offset, SEEK_SET);
 
             default:
