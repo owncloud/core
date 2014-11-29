@@ -118,7 +118,7 @@ class SeekableHttp {
             return FALSE;
         }
 
-	$this->waitForPosition($this->position + $count)
+	$this->waitForPosition($this->position + $count);
 
         fseek($this->tempFile, $this->position);
 
