@@ -69,6 +69,11 @@ class Migrator {
 		 * @var \Doctrine\DBAL\Schema\Table[] $tables
 		 */
 		$tables = $targetSchema->getTables();
+		
+		$r=new ReflectionClass('\Doctrine\DBAL\Schema\AbstractSchemaManager')
+		if($r->hasMethod('setPrefixFilterString'))
+			$this->connection->getSchemaManager()->setPrefixFilterString(
+				\OCP\Config::getSystemValue('dbtableprefix'));
 
 		$existingTables = $this->connection->getSchemaManager()->listTableNames();
 
