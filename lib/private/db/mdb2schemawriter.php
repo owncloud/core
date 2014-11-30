@@ -19,6 +19,11 @@ class OC_DB_MDB2SchemaWriter {
 		$xml->addChild('create', 'true');
 		$xml->addChild('overwrite', 'false');
 		$xml->addChild('charset', 'utf8');
+		
+		$r=new ReflectionClass('\Doctrine\DBAL\Schema\AbstractSchemaManager')
+		if($r->hasMethod('setPrefixFilterString'))
+			$sm->setPrefixFilterString(\OCP\Config::getSystemValue('dbtableprefix'));
+		
 		foreach ($sm->listTables() as $table) {
 			self::saveTable($table, $xml->addChild('table'));
 		}
