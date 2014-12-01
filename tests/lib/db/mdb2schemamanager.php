@@ -31,9 +31,6 @@ class MDB2SchemaManager extends \Test\TestCase {
 		if ($connection->getDatabasePlatform() instanceof OraclePlatform) {
 			$this->markTestSkipped('Adding auto increment columns in Oracle is not supported.');
 		}
-		if ($connection->getDatabasePlatform() instanceof SQLServerPlatform) {
-			$this->markTestSkipped('DB migration tests are not supported on MSSQL');
-		}
 
 		$manager = new \OC\DB\MDB2SchemaManager($connection);
 
