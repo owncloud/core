@@ -243,24 +243,25 @@ class Mapper
 	 */
 	private function slugify($text) {
 		$originalText = $text;
-		// replace non letter or digits or dots by -
+
+		// Replace non letter or digits or dots by -
 		$text = preg_replace('~[^\\pL\d\.]+~u', '-', $text);
 
-		// trim
+		// Trim trailing and leading dashes
 		$text = trim($text, '-');
 
-		// transliterate
+		// Transliterate (replaces utf8 with their ascii brothers, eg. öäü => oau)
 		if (function_exists('iconv')) {
 			$text = iconv('utf-8', 'us-ascii//TRANSLIT//IGNORE', $text);
 		}
 
-		// lowercase
+		// Lowercase the string
 		$text = strtolower($text);
 
-		// remove unwanted characters
+		// Remove unwanted characters (everything apart from a-z 0-9 - (dash) and . (dot) )
 		$text = preg_replace('~[^-\w\.]+~', '', $text);
-		
-		// trim ending dots (for security reasons and win compatibility)
+
+		// Trim ending dots (for security reasons and win compatibility)
 		$text = preg_replace('~\.+$~', '', $text);
 
 		if (empty($text)) {
