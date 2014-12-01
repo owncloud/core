@@ -41,5 +41,15 @@ class MappedLocalWithDottedDataDir extends Storage {
 		unset($this->instance);
 		parent::tearDown();
 	}
+
+	/**
+	 * @dataProvider directoryProvider
+	 */
+	public function testDirectories($directory) {
+		if ($directory !== 'folder') {
+			$this->markTestSkipped('[Windows] Folder names "' . $directory . '" is renamed by the file mapper and can not be tested.');
+		}
+		parent::testDirectories($directory);
+	}
 }
 
