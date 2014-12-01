@@ -64,6 +64,15 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\
 			throw new \Sabre\DAV\Exception\ServiceUnavailable();
 		}
 
+		$control = \OC::$server->getWorkFlowCenter();
+		$fileMetaData = array(
+			'name' => $this->path,
+//			'mime' => ;
+		);
+		foreach($control->getHandlers() as $handler) {
+			$handler->validateMetaData($fileMetaData);
+		}
+
 		$fileName = basename($this->path);
 		if (!\OCP\Util::isValidFileName($fileName)) {
 			throw new \Sabre\DAV\Exception\BadRequest();
@@ -78,9 +87,17 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\
 		$partFilePath = $this->path . '.ocTransferId' . rand() . '.part';
 
 		try {
+			$fileMetaData['partFile'] = $partFilePath;
+			foreach($control->getHandlers() as $handler) {
+				$handler->writePartFile($fileMetaData);
+			}
+
 			$putOkay = $this->fileView->file_put_contents($partFilePath, $data);
 			if ($putOkay === false) {
 				\OC_Log::write('webdav', '\OC\Files\Filesystem::file_put_contents() failed', \OC_Log::ERROR);
+				foreach($control->getHandlers() as $handler) {
+					$handler->unlinkPartFile($fileMetaData);
+				}
 				$this->fileView->unlink($partFilePath);
 				// because we have no clue about the cause we can only throw back a 500/Internal Server Error
 				throw new \Sabre\DAV\Exception('Could not write file contents');
