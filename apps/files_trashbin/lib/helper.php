@@ -55,12 +55,11 @@ class Helper
 							$originalPath = substr($originalPath, 0, -1);
 						}
 					}
+					$isDir = $view->is_dir($dir . '/' . $entryName);
 					$i = array(
 						'name' => $id,
 						'mtime' => $timestamp,
-						'mimetype' => \OC_Helper::getFileNameMimeType($id),
-						'type' => $view->is_dir($dir . '/' . $entryName) ? 'dir' : 'file',
-						'directory' => ($dir === '/') ? '' : $dir,
+						'mimetype' => $isDir ? 'httpd/unix-directory' : \OC_Helper::getFileNameMimeType($id),
 					);
 					if ($originalPath) {
 						$i['extraData'] = $originalPath.'/'.$id;
@@ -87,6 +86,7 @@ class Helper
 		foreach ($fileInfos as $i) {
 			$entry = \OCA\Files\Helper::formatFileInfo($i);
 			$entry['id'] = $id++;
+			unset($entry['path']); // not needed for trashbin
 			$entry['etag'] = $entry['mtime']; // add fake etag, it is only needed to identify the preview image
 			$entry['permissions'] = \OCP\Constants::PERMISSION_READ;
 			if (\OCP\App::isEnabled('files_encryption')) {

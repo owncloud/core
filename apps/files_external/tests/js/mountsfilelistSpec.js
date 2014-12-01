@@ -83,14 +83,14 @@ describe('OCA.External.FileList tests', function() {
 					data: [{
 						name: 'smb mount',
 						path: '/mount points',
-						type: 'dir',
+						mimetype: 'httpd/unix-directory',
 						backend: 'SMB',
 						scope: 'personal',
 						permissions: OC.PERMISSION_READ | OC.PERMISSION_DELETE
 					}, {
 						name: 'sftp mount',
 						path: '/another mount points',
-						type: 'dir',
+						mimetype: 'httpd/unix-directory',
 						backend: 'SFTP',
 						scope: 'system',
 						permissions: OC.PERMISSION_READ

@@ -40,7 +40,6 @@ describe('OCA.Files.FileList tests', function() {
 			name += i + '.txt';
 			files.push({
 				id: i,
-				type: 'file',
 				name: name,
 				mimetype: 'text/plain',
 				size: i * 2,
@@ -93,7 +92,6 @@ describe('OCA.Files.FileList tests', function() {
 
 		testFiles = [{
 			id: 1,
-			type: 'file',
 			name: 'One.txt',
 			mimetype: 'text/plain',
 			size: 12,
@@ -101,7 +99,6 @@ describe('OCA.Files.FileList tests', function() {
 			permissions: OC.PERMISSION_ALL
 		}, {
 			id: 2,
-			type: 'file',
 			name: 'Two.jpg',
 			mimetype: 'image/jpeg',
 			size: 12049,
@@ -109,7 +106,6 @@ describe('OCA.Files.FileList tests', function() {
 			permissions: OC.PERMISSION_ALL
 		}, {
 			id: 3,
-			type: 'file',
 			name: 'Three.pdf',
 			mimetype: 'application/pdf',
 			size: 58009,
@@ -117,7 +113,6 @@ describe('OCA.Files.FileList tests', function() {
 			permissions: OC.PERMISSION_ALL
 		}, {
 			id: 4,
-			type: 'dir',
 			name: 'somedir',
 			mimetype: 'httpd/unix-directory',
 			size: 250,
@@ -159,7 +154,6 @@ describe('OCA.Files.FileList tests', function() {
 		it('generates file element with correct attributes when calling add() with file data', function() {
 			var fileData = {
 				id: 18,
-				type: 'file',
 				name: 'testName.txt',
 				mimetype: 'text/plain',
 				size: '1234',
@@ -188,7 +182,6 @@ describe('OCA.Files.FileList tests', function() {
 		it('generates dir element with correct attributes when calling add() with dir data', function() {
 			var fileData = {
 				id: 19,
-				type: 'dir',
 				name: 'testFolder',
 				mimetype: 'httpd/unix-directory',
 				size: '1234',
@@ -214,7 +207,6 @@ describe('OCA.Files.FileList tests', function() {
 		});
 		it('generates file element with default attributes when calling add() with minimal data', function() {
 			var fileData = {
-				type: 'file',
 				name: 'testFile.txt'
 			};
 
@@ -236,8 +228,8 @@ describe('OCA.Files.FileList tests', function() {
 		});
 		it('generates dir element with default attributes when calling add() with minimal data', function() {
 			var fileData = {
-				type: 'dir',
-				name: 'testFolder'
+				name: 'testFolder',
+				mimetype: 'httpd/unix-directory'
 			};
 			clock.tick(123456);
 			var $tr = fileList.add(fileData);
@@ -257,8 +249,8 @@ describe('OCA.Files.FileList tests', function() {
 		});
 		it('generates file element with zero size when size is explicitly zero', function() {
 			var fileData = {
-				type: 'dir',
 				name: 'testFolder',
+				mimetype: 'httpd/unix-directory',
 				size: '0'
 			};
 			var $tr = fileList.add(fileData);
@@ -267,7 +259,6 @@ describe('OCA.Files.FileList tests', function() {
 		it('adds new file to the end of the list', function() {
 			var $tr;
 			var fileData = {
-				type: 'file',
 				name: 'ZZZ.txt'
 			};
 			fileList.setFiles(testFiles);
@@ -287,7 +278,6 @@ describe('OCA.Files.FileList tests', function() {
 		it('inserts new file at correct position', function() {
 			var $tr;
 			var fileData = {
-				type: 'file',
 				name: 'P comes after O.txt'
 			};
 			for (var i = 0; i < testFiles.length; i++) {
@@ -301,8 +291,8 @@ describe('OCA.Files.FileList tests', function() {
 		it('inserts new folder at correct position in insert mode', function() {
 			var $tr;
 			var fileData = {
-				type: 'dir',
-				name: 'somedir2 comes after somedir'
+				name: 'somedir2 comes after somedir',
+				mimetype: 'httpd/unix-directory'
 			};
 			for (var i = 0; i < testFiles.length; i++) {
 				fileList.add(testFiles[i]);
@@ -314,7 +304,6 @@ describe('OCA.Files.FileList tests', function() {
 		it('inserts new file at the end correctly', function() {
 			var $tr;
 			var fileData = {
-				type: 'file',
 				name: 'zzz.txt'
 			};
 			for (var i = 0; i < testFiles.length; i++) {
@@ -327,7 +316,6 @@ describe('OCA.Files.FileList tests', function() {
 		it('removes empty content message and shows summary when adding first file', function() {
 			var $summary;
 			var fileData = {
-				type: 'file',
 				name: 'first file.txt',
 				size: 12
 			};
@@ -519,7 +507,6 @@ describe('OCA.Files.FileList tests', function() {
 				status: 'success',
 				data: {
 					name: 'Tu_after_three.txt',
-					type: 'file'
 				}
 			}));
 
@@ -665,8 +652,7 @@ describe('OCA.Files.FileList tests', function() {
 			fakeServer.requests[0].respond(200, {'Content-Type': 'application/json'}, JSON.stringify({
 				status: 'success',
 				data: {
-					name: 'One.txt',
-					type: 'file'
+					name: 'One.txt'
 				}
 			}));
 
@@ -694,8 +680,7 @@ describe('OCA.Files.FileList tests', function() {
 			fakeServer.requests[0].respond(200, {'Content-Type': 'application/json'}, JSON.stringify({
 				status: 'success',
 				data: {
-					name: 'One.txt',
-					type: 'file'
+					name: 'One.txt'
 				}
 			}));
 
@@ -708,8 +693,7 @@ describe('OCA.Files.FileList tests', function() {
 			fakeServer.requests[1].respond(200, {'Content-Type': 'application/json'}, JSON.stringify({
 				status: 'success',
 				data: {
-					name: 'Two.jpg',
-					type: 'file'
+					name: 'Two.jpg'
 				}
 			}));
 
@@ -790,8 +774,8 @@ describe('OCA.Files.FileList tests', function() {
 		it('only add file if in same current directory', function() {
 			$('#dir').val('/current dir');
 			var fileData = {
-				type: 'file',
 				name: 'testFile.txt',
+				mimetype: 'httpd/unix-directory',
 				directory: '/current dir'
 			};
 			var $tr = fileList.add(fileData);
@@ -869,7 +853,6 @@ describe('OCA.Files.FileList tests', function() {
 		it('inserts into the DOM if insertion point is in the visible page ', function() {
 			fileList.add({
 				id: 2000,
-				type: 'file',
 				name: 'File with index 15b.txt'
 			});
 			expect($('#fileList tr').length).toEqual(21);
@@ -878,7 +861,6 @@ describe('OCA.Files.FileList tests', function() {
 		it('does not inserts into the DOM if insertion point is not the visible page ', function() {
 			fileList.add({
 				id: 2000,
-				type: 'file',
 				name: 'File with index 28b.txt'
 			});
 			expect($('#fileList tr').length).toEqual(20);
@@ -890,7 +872,6 @@ describe('OCA.Files.FileList tests', function() {
 		it('appends into the DOM when inserting a file after the last visible element', function() {
 			fileList.add({
 				id: 2000,
-				type: 'file',
 				name: 'File with index 19b.txt'
 			});
 			expect($('#fileList tr').length).toEqual(21);
@@ -907,7 +888,6 @@ describe('OCA.Files.FileList tests', function() {
 			fileList._nextPage(true);
 			fileList.add({
 				id: 2000,
-				type: 'file',
 				name: 'File with index 88.txt'
 			});
 			expect($('#fileList tr').length).toEqual(66);
@@ -951,7 +931,6 @@ describe('OCA.Files.FileList tests', function() {
 		});
 		it('renders default icon for file when none provided and no preview is available', function() {
 			var fileData = {
-				type: 'file',
 				name: 'testFile.txt'
 			};
 			var $tr = fileList.add(fileData);
@@ -961,8 +940,8 @@ describe('OCA.Files.FileList tests', function() {
 		});
 		it('renders default icon for dir when none provided and no preview is available', function() {
 			var fileData = {
-				type: 'dir',
-				name: 'test dir'
+				name: 'test dir',
+				mimetype: 'httpd/unix-directory'
 			};
 			var $tr = fileList.add(fileData);
 			var $td = $tr.find('td.filename');
@@ -971,8 +950,7 @@ describe('OCA.Files.FileList tests', function() {
 		});
 		it('renders provided icon for file when provided', function() {
 			var fileData = {
-				type: 'file',
-				name: 'test dir',
+				name: 'test pdf',
 				icon: OC.webroot + '/core/img/filetypes/application-pdf.svg'
 			};
 			var $tr = fileList.add(fileData);
@@ -982,8 +960,7 @@ describe('OCA.Files.FileList tests', function() {
 		});
 		it('renders preview when no icon was provided and preview is available', function() {
 			var fileData = {
-				type: 'file',
-				name: 'test dir',
+				name: 'test image',
 				isPreviewAvailable: true
 			};
 			var $tr = fileList.add(fileData);
@@ -996,8 +973,7 @@ describe('OCA.Files.FileList tests', function() {
 		});
 		it('renders default file type icon when no icon was provided and no preview is available', function() {
 			var fileData = {
-				type: 'file',
-				name: 'test dir',
+				name: 'test image',
 				isPreviewAvailable: false
 			};
 			var $tr = fileList.add(fileData);
@@ -1508,14 +1484,12 @@ describe('OCA.Files.FileList tests', function() {
 					id: 1,
 					name: 'One.txt',
 					mimetype: 'text/plain',
-					type: 'file',
 					size: 12,
 					etag: 'abc',
 					permissions: OC.PERMISSION_ALL
 				});
 				expect(files[1]).toEqual({
 					id: 3,
-					type: 'file',
 					name: 'Three.pdf',
 					mimetype: 'application/pdf',
 					size: 58009,
@@ -1524,7 +1498,6 @@ describe('OCA.Files.FileList tests', function() {
 				});
 				expect(files[2]).toEqual({
 					id: 4,
-					type: 'dir',
 					name: 'somedir',
 					mimetype: 'httpd/unix-directory',
 					size: 250,
@@ -1540,14 +1513,12 @@ describe('OCA.Files.FileList tests', function() {
 					id: 1,
 					name: 'One.txt',
 					mimetype: 'text/plain',
-					type: 'file',
 					size: 12,
 					etag: 'abc',
 					permissions: OC.PERMISSION_ALL
 				});
 				expect(files[1]).toEqual({
 					id: 4,
-					type: 'dir',
 					name: 'somedir',
 					mimetype: 'httpd/unix-directory',
 					size: 250,
@@ -1782,7 +1753,6 @@ describe('OCA.Files.FileList tests', function() {
 			);
 			var newFileData = {
 				id: 999,
-				type: 'file',
 				name: 'new file.txt',
 				mimetype: 'text/plain',
 				size: 40001,
@@ -1828,7 +1798,6 @@ describe('OCA.Files.FileList tests', function() {
 			);
 			var newFileData = {
 				id: 999,
-				type: 'file',
 				name: 'new file.txt',
 				mimetype: 'text/plain',
 				size: 40001,

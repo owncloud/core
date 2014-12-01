@@ -37,7 +37,7 @@ class Helper
 	 * @return string icon URL
 	 */
 	public static function determineIcon($file) {
-		if($file['type'] === 'dir') {
+		if($file->getType() === 'dir') {
 			$icon = \OC_Helper::mimetypeIcon('dir');
 			// TODO: move this part to the client side, using mountType
 			if ($file->isShared()) {
@@ -107,21 +107,19 @@ class Helper
 	public static function formatFileInfo(FileInfo $i) {
 		$entry = array();
 
-		$entry['id'] = $i['fileid'];
+		$entry['id'] = $i->getId();
 		$entry['parentId'] = $i['parent'];
-		$entry['date'] = \OCP\Util::formatDate($i['mtime']);
-		$entry['mtime'] = $i['mtime'] * 1000;
+		$entry['mtime'] = $i->getMTime() * 1000;
 		// only pick out the needed attributes
 		$entry['icon'] = \OCA\Files\Helper::determineIcon($i);
 		if (\OC::$server->getPreviewManager()->isAvailable($i)) {
 			$entry['isPreviewAvailable'] = true;
 		}
 		$entry['name'] = $i->getName();
-		$entry['permissions'] = $i['permissions'];
-		$entry['mimetype'] = $i['mimetype'];
-		$entry['size'] = $i['size'];
-		$entry['type'] = $i['type'];
-		$entry['etag'] = $i['etag'];
+		$entry['permissions'] = $i->getPermissions();
+		$entry['mimetype'] = $i->getMimeType();
+		$entry['size'] = $i->getSize();
+		$entry['etag'] = $i->getEtag();
 		if (isset($i['displayname_owner'])) {
 			$entry['shareOwner'] = $i['displayname_owner'];
 		}

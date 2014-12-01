@@ -50,7 +50,6 @@ describe('OCA.Sharing.Util tests', function() {
 
 		testFiles = [{
 			id: 1,
-			type: 'file',
 			name: 'One.txt',
 			path: '/subdir',
 			mimetype: 'text/plain',
@@ -93,10 +92,9 @@ describe('OCA.Sharing.Util tests', function() {
 			OC.Share.statuses = {};
 			fileList.setFiles([{
 				id: 1,
-				type: 'dir',
 				name: 'One',
 				path: '/subdir',
-				mimetype: 'text/plain',
+				mimetype: 'httpd/unix-directory',
 				size: 12,
 				permissions: OC.PERMISSION_ALL,
 				etag: 'abc'
@@ -112,10 +110,9 @@ describe('OCA.Sharing.Util tests', function() {
 			var $action, $tr;
 			fileList.setFiles([{
 				id: 1,
-				type: 'dir',
 				name: 'One',
 				path: '/subdir',
-				mimetype: 'text/plain',
+				mimetype: 'httpd/unix-directory',
 				size: 12,
 				permissions: OC.PERMISSION_ALL,
 				etag: 'abc'
@@ -133,10 +130,9 @@ describe('OCA.Sharing.Util tests', function() {
 			OC.Share.statuses = {1: {link: true, path: '/subdir'}};
 			fileList.setFiles([{
 				id: 1,
-				type: 'dir',
 				name: 'One',
 				path: '/subdir',
-				mimetype: 'text/plain',
+				mimetype: 'httpd/unix-directory',
 				size: 12,
 				permissions: OC.PERMISSION_ALL,
 				etag: 'abc'
@@ -153,10 +149,9 @@ describe('OCA.Sharing.Util tests', function() {
 			var $action, $tr;
 			fileList.setFiles([{
 				id: 1,
-				type: 'dir',
-				name: 'One.txt',
+				name: 'One',
 				path: '/subdir',
-				mimetype: 'text/plain',
+				mimetype: 'httpd/unix-directory',
 				size: 12,
 				permissions: OC.PERMISSION_ALL,
 				shareOwner: 'User One',
@@ -173,10 +168,9 @@ describe('OCA.Sharing.Util tests', function() {
 			var $action, $tr;
 			fileList.setFiles([{
 				id: 1,
-				type: 'dir',
-				name: 'One.txt',
+				name: 'One',
 				path: '/subdir',
-				mimetype: 'text/plain',
+				mimetype: 'httpd/unix-directory',
 				size: 12,
 				permissions: OC.PERMISSION_ALL,
 				recipientsDisplayName: 'User One, User Two',
@@ -194,10 +188,9 @@ describe('OCA.Sharing.Util tests', function() {
 			var $action, $tr;
 			fileList.setFiles([{
 				id: 1,
-				type: 'dir',
 				name: 'One',
 				path: '/subdir',
-				mimetype: 'text/plain',
+				mimetype: 'httpd/unix-directory',
 				size: 12,
 				permissions: OC.PERMISSION_CREATE,
 				etag: 'abc',
@@ -235,7 +228,6 @@ describe('OCA.Sharing.Util tests', function() {
 			OC.Share.statuses = {};
 			fileList.setFiles([{
 				id: 1,
-				type: 'file',
 				name: 'One.txt',
 				path: '/subdir',
 				mimetype: 'text/plain',
@@ -272,7 +264,6 @@ describe('OCA.Sharing.Util tests', function() {
 			OC.Share.statuses = {1: {link: false, path: '/subdir'}};
 			fileList.setFiles([{
 				id: 1,
-				type: 'file',
 				name: 'One.txt',
 				path: '/subdir',
 				mimetype: 'text/plain',
@@ -308,7 +299,6 @@ describe('OCA.Sharing.Util tests', function() {
 			OC.Share.statuses = {1: {link: false, path: '/subdir'}};
 			fileList.setFiles([{
 				id: 1,
-				type: 'file',
 				name: 'One.txt',
 				path: '/subdir',
 				mimetype: 'text/plain',
@@ -340,7 +330,6 @@ describe('OCA.Sharing.Util tests', function() {
 			OC.Share.statuses = {1: {link: false, path: '/subdir'}};
 			fileList.setFiles([{
 				id: 1,
-				type: 'file',
 				name: 'One.txt',
 				path: '/subdir',
 				mimetype: 'text/plain',
@@ -377,7 +366,6 @@ describe('OCA.Sharing.Util tests', function() {
 			OC.Share.statuses = {1: {link: false, path: '/subdir'}};
 			fileList.setFiles([{
 				id: 1,
-				type: 'file',
 				name: 'One.txt',
 				path: '/subdir',
 				mimetype: 'text/plain',
