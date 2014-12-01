@@ -82,11 +82,6 @@ class SharedStorage extends Jail implements ISharedStorage {
 		return 'shared::' . $this->mountPoint;
 	}
 
-
-	public function getOwner($path) {
-		return $this->owner;
-	}
-
 	public function getCache($path = '', $storage = null) {
 		if (!$storage) {
 			$storage = $this;
