@@ -228,10 +228,8 @@ class ConvertType extends Command {
 	}
 
 	protected function getTables(Connection $db) {
-		$r=new ReflectionClass('\Doctrine\DBAL\Schema\AbstractSchemaManager')
-			if($r->hasMethod('setPrefixFilterString'))
-				$db->getSchemaManager()->setPrefixFilterString(
-					\OCP\Config::getSystemValue('dbtableprefix'));
+		$db->getConfiguration()->
+			setFilterSchemaAssetsExpression('^'.$this->config->getSystemValue('dbtableprefix'));
 		return $db->getSchemaManager()->listTableNames();
 	}
 
