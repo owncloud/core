@@ -48,15 +48,21 @@ class Mapper
 	 * @return void
 	 */
 	public function removePath($path, $isLogicPath, $recursive) {
-		if ($recursive) {
-			$path=$path.'%';
+		$fieldName = ($isLogicPath) ? 'logic_path' : 'physic_path';
+
+		// The mapper only has paths without trailing slashes, so we remove it here
+		if (substr($path, -1) === '/' || substr($path, -1) === '\\') {
+			$path = substr($path, 0, -1);
 		}
 
-		if ($isLogicPath) {
-			\OC_DB::executeAudited('DELETE FROM `*PREFIX*file_map` WHERE `logic_path` LIKE ?', array($path));
-		} else {
-			\OC_DB::executeAudited('DELETE FROM `*PREFIX*file_map` WHERE `physic_path` LIKE ?', array($path));
+		if ($recursive) {
+			// Remove paths that start with the path, followed by a /
+			// Forcing the slash is important, see the following comment:
+			// https://github.com/owncloud/core/pull/11583#issuecomment-61470073
+			\OC_DB::executeAudited('DELETE FROM `*PREFIX*file_map` WHERE `' . $fieldName . '` LIKE ?', array($path . '/%'));
 		}
+
+		\OC_DB::executeAudited('DELETE FROM `*PREFIX*file_map` WHERE `' . $fieldName . '` = ?', array($path));
 	}
 
 	/**
