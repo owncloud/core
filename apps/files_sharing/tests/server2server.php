@@ -21,7 +21,7 @@
  *
  */
 
-use OCA\Files_sharing\Tests\TestCase;
+use OCA\Files_Sharing\Tests\TestCase;
 
 /**
  * Class Test_Files_Sharing_Api
@@ -35,10 +35,15 @@ class Test_Files_Sharing_S2S_OCS_API extends TestCase {
 	protected function setUp() {
 		parent::setUp();
 
+		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
+
 		$this->s2s = new \OCA\Files_Sharing\API\Server2Server();
 	}
 
 	protected function tearDown() {
+		$query = \OCP\DB::prepare('DELETE FROM `*PREFIX*share_external`');
+		$query->execute();
+
 		parent::tearDown();
 	}
 
@@ -51,10 +56,11 @@ class Test_Files_Sharing_S2S_OCS_API extends TestCase {
 		$_POST['token'] = 'token';
 		$_POST['name'] = 'name';
 		$_POST['owner'] = 'owner';
-		$_POST['shareWith'] = 'admin';
+		$_POST['shareWith'] = self::TEST_FILES_SHARING_API_USER2;
 		$_POST['remote_id'] = 1;
 
 		$result = $this->s2s->createShare(null);
+
 		$this->assertTrue($result->succeeded());
 
 		$query = \OCP\DB::prepare('SELECT * FROM `*PREFIX*share_external` WHERE `remote_id` = ?');
@@ -65,7 +71,7 @@ class Test_Files_Sharing_S2S_OCS_API extends TestCase {
 		$this->assertSame('token', $data['share_token']);
 		$this->assertSame('/name', $data['name']);
 		$this->assertSame('owner', $data['owner']);
-		$this->assertSame('admin', $data['user']);
+		$this->assertSame(self::TEST_FILES_SHARING_API_USER2, $data['user']);
 		$this->assertSame('1', $data['remote_id']);
 		$this->assertSame('0', $data['accepted']);
 	}
@@ -77,7 +83,7 @@ class Test_Files_Sharing_S2S_OCS_API extends TestCase {
 			(`share_type`, `uid_owner`, `item_type`, `item_source`, `item_target`, `file_source`, `file_target`, `permissions`, `stime`, `token`)
 			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 			');
-		$dummy->execute(array(\OCP\Share::SHARE_TYPE_REMOTE, 'admin', 'file', '1', '/1', '1', '/test.txt', '1', time(), 'token'));
+		$dummy->execute(array(\OCP\Share::SHARE_TYPE_REMOTE, self::TEST_FILES_SHARING_API_USER1, 'file', '1', '/1', '1', '/test.txt', '1', time(), 'token'));
 
 		$verify = \OCP\DB::prepare('SELECT * FROM `*PREFIX*share`');
 		$result = $verify->execute();
@@ -85,12 +91,11 @@ class Test_Files_Sharing_S2S_OCS_API extends TestCase {
 		$this->assertSame(1, count($data));
 
 		$_POST['token'] = 'token';
-		$this->s2s->declineShare(array('id' => '1'));
+		$this->s2s->declineShare(array('id' => $data[0]['id']));
 
 		$verify = \OCP\DB::prepare('SELECT * FROM `*PREFIX*share`');
 		$result = $verify->execute();
 		$data = $result->fetchAll();
 		$this->assertEmpty($data);
-
 	}
 }
