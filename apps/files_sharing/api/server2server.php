@@ -42,7 +42,7 @@ class Server2Server {
 		$name = isset($_POST['name']) ? $_POST['name'] : null;
 		$owner = isset($_POST['owner']) ? $_POST['owner'] : null;
 		$shareWith = isset($_POST['shareWith']) ? $_POST['shareWith'] : null;
-		$remoteId = isset($_POST['remote_id']) ? $_POST['remote_id'] : null;
+		$remoteId = isset($_POST['remote_id']) ? (int)$_POST['remote_id'] : null;
 
 		if ($remote && $token && $name && $owner && $remoteId && $shareWith) {
 
