@@ -96,7 +96,6 @@ class Test_Files_Sharing_S2S_OCS_API extends TestCase {
 		$verify = \OCP\DB::prepare('SELECT * FROM `*PREFIX*share`');
 		$result = $verify->execute();
 		$data = $result->fetchAll();
-		print_r($data);
 		$this->assertEmpty($data);
 	}
 }
