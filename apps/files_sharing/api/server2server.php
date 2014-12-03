@@ -34,6 +34,7 @@ class Server2Server {
 	public function createShare($params) {
 
 		if (!$this->isS2SEnabled(true)) {
+			print('Server does not support server-to-server sharing');
 			return \OC_OCS_Result(null, 503, 'Server does not support server-to-server sharing');
 		}
 
@@ -47,10 +48,12 @@ class Server2Server {
 		if ($remote && $token && $name && $owner && $remoteId && $shareWith) {
 
 			if(!\OCP\Util::isValidFileName($name)) {
+				print('invalid file name: ' . $name);
 				return new \OC_OCS_Result(null, 400, 'The mountpoint name contains invalid characters.');
 			}
 
 			if (!\OCP\User::userExists($shareWith)) {
+				print('user does not exists: ' . $shareWith);
 				return new \OC_OCS_Result(null, 400, 'User does not exists');
 			}
 
@@ -68,10 +71,12 @@ class Server2Server {
 
 				return new \OC_OCS_Result();
 			} catch (\Exception $e) {
+				print('Exception: ' . $e->getMessage());
 				return new \OC_OCS_Result(null, 500, 'server can not add remote share, ' . $e->getMessage());
 			}
 		}
 
+		print("missing parameter");
 		return new \OC_OCS_Result(null, 400, 'server can not add remote share, missing parameter');
 	}
 
