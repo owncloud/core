@@ -707,7 +707,7 @@ class Share extends \OC\Share\Constants {
 		// check if it is a valid itemType
 		self::getBackend($itemType);
 
-		$items = self::getItemSharedWithUser($itemType, $itemSource, $shareWith, null, $shareType);
+		$items = self::getItemSharedWithUser($itemType, $itemSource, $shareWith, $owner, $shareType);
 
 		$toDelete = array();
 		$newParent = null;

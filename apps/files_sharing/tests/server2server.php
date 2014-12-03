@@ -36,6 +36,7 @@ class Test_Files_Sharing_S2S_OCS_API extends TestCase {
 		parent::setUp();
 
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
+		\OCP\Share::registerBackend('test', 'Test_Share_Backend');
 
 		$this->s2s = new \OCA\Files_Sharing\API\Server2Server();
 	}
@@ -83,7 +84,7 @@ class Test_Files_Sharing_S2S_OCS_API extends TestCase {
 			(`share_type`, `uid_owner`, `item_type`, `item_source`, `item_target`, `file_source`, `file_target`, `permissions`, `stime`, `token`)
 			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 			');
-		$dummy->execute(array(\OCP\Share::SHARE_TYPE_REMOTE, self::TEST_FILES_SHARING_API_USER1, 'file', '1', '/1', '1', '/test.txt', '1', time(), 'token'));
+		$dummy->execute(array(\OCP\Share::SHARE_TYPE_REMOTE, self::TEST_FILES_SHARING_API_USER1, 'test', '1', '/1', '1', '/test.txt', '1', time(), 'token'));
 
 		$verify = \OCP\DB::prepare('SELECT * FROM `*PREFIX*share`');
 		$result = $verify->execute();
