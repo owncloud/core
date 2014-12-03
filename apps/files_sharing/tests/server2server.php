@@ -73,8 +73,8 @@ class Test_Files_Sharing_S2S_OCS_API extends TestCase {
 		$this->assertSame('/name', $data['name']);
 		$this->assertSame('owner', $data['owner']);
 		$this->assertSame(self::TEST_FILES_SHARING_API_USER2, $data['user']);
-		$this->assertSame('1', $data['remote_id']);
-		$this->assertSame('0', $data['accepted']);
+		$this->assertSame(1, (int)$data['remote_id']);
+		$this->assertSame(0, (int)$data['accepted']);
 	}
 
 
