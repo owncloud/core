@@ -40,6 +40,10 @@ class Mapper extends \Test\TestCase {
 			array('folder.name.with.peri ods', 'folder.name.with.peri-ods'),
 			array('te st.t x t', 'te-st.t-x-t'),
 			array('ありがとう', md5('ありがとう')),
+			array('text.txt.', 'text.txt'),
+			array('.text.txt', '.text.txt'),
+			array('text.txt..', 'text.txt'),
+			array('text.txt . .', 'text.txt-.-'),
 		);
 	}
 

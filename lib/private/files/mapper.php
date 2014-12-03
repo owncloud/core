@@ -262,7 +262,7 @@ class Mapper
 		$text = preg_replace('~[^-\w\.]+~', '', $text);
 
 		// Trim ending dots (for security reasons and win compatibility)
-		$text = preg_replace('~\.+$~', '', $text);
+		$text = rtrim($text, '.');
 
 		if (empty($text)) {
 			/**
