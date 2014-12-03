@@ -175,7 +175,7 @@ class Server2Server {
 	 * @return array
 	 */
 	private function getShare($id, $token) {
-		$query = \OCP\DB::prepare('SELECT * FROM `*PREFIX*share` WHERE id= ? AND token = ?');
+		$query = \OCP\DB::prepare('SELECT * FROM `*PREFIX*share` WHERE `id` = ? AND `token` = ?');
 		$query->execute(array($id, $token));
 		$share = $query->fetchRow();
 
