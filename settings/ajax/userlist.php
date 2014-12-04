@@ -60,7 +60,7 @@ if (OC_User::isAdminUser(OC_User::getUser())) {
 			'displayname' => $displayname,
 			'groups' => OC_Group::getUserGroups($uid),
 			'subadmin' => OC_SubAdmin::getSubAdminsGroups($uid),
-			'quota' => OC_Preferences::getValue($uid, 'files', 'quota', 'default'),
+			'quota' => \OC::$server->getConfig()->getUserValue($uid, 'files', 'quota', 'default'),
 			'storageLocation' => $user->getHome(),
 			'lastLogin' => $user->getLastLogin(),
 		);
@@ -83,7 +83,7 @@ if (OC_User::isAdminUser(OC_User::getUser())) {
 			'name' => $uid,
 			'displayname' => $user->getDisplayName(),
 			'groups' => $userGroups,
-			'quota' => OC_Preferences::getValue($uid, 'files', 'quota', 'default'),
+			'quota' => \OC::$server->getConfig()->getUserValue($uid, 'files', 'quota', 'default'),
 			'storageLocation' => $user->getHome(),
 			'lastLogin' => $user->getLastLogin(),
 		);
