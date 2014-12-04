@@ -103,7 +103,7 @@ class OC_Group {
 		$group = self::getManager()->get($gid);
 		if ($group) {
 			if ($group->delete()) {
-				OC_Hook::emit("OC_User", "post_deleteGroup", array("gid" => $gid));
+				OC_Hook::emit("OC_Group", "post_deleteGroup", array("gid" => $gid));
 				return true;
 			}
 		}

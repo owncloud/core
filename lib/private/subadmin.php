@@ -20,7 +20,7 @@
  *
  */
 OC_Hook::connect('OC_User', 'post_deleteUser', 'OC_SubAdmin', 'post_deleteUser');
-OC_Hook::connect('OC_User', 'post_deleteGroup', 'OC_SubAdmin', 'post_deleteGroup');
+OC_Hook::connect('OC_Group', 'post_deleteGroup', 'OC_SubAdmin', 'post_deleteGroup');
 /**
  * This class provides all methods needed for managing groups.
  *
