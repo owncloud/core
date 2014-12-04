@@ -201,8 +201,15 @@ class Node implements \OCP\Files\Node {
 		return basename($this->path);
 	}
 
-	public function getFileInfo() {
-		return $this->view->getFileInfo($this->path);
+	/**
+	 * @return array of extra metadata
+	 */
+	public function getMetaData() {
+		$fileInfo = $this->view->getFileInfo($this->path);
+		if ($fileInfo instanceof \OC\Files\FileInfo) {
+			return $fileInfo->getData();
+		}
+		return array();
 	}
 
 	/**

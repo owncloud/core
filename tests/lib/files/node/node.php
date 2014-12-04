@@ -71,7 +71,7 @@ class Node extends \Test\TestCase {
 		$this->assertEquals(1, $node->getId());
 	}
 
-	public function testGetFileInfo() {
+	public function testGetMetaData() {
 		$manager = $this->getMock('\OC\Files\Mount\Manager');
 		/**
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
@@ -82,19 +82,16 @@ class Node extends \Test\TestCase {
 			->method('getUser')
 			->will($this->returnValue($this->user));
 
-		$fileInfoMock = $this->getMock('\OCP\Files\FileInfo');
-		$fileInfoMock->expects($this->any())
-			->method('getEtag')
-			->will($this->returnValue('qwerty'));
+		$fileInfo = new \OC\Files\FileInfo('', null, '', array('custom' => 'qwerty'));
 
 		$view->expects($this->once())
 			->method('getFileInfo')
 			->with('/bar/foo')
-			->will($this->returnValue($fileInfoMock));
+			->will($this->returnValue($fileInfo));
 
 		$node = new \OC\Files\Node\File($root, $view, '/bar/foo');
-		$info = $node->getFileInfo();
-		$this->assertEquals('qwerty', $info->getEtag());
+		$data = $node->getMetaData();
+		$this->assertEquals('qwerty', $data['custom']);
 	}
 
 	public function testGetSize() {

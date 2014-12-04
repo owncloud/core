@@ -181,9 +181,9 @@ interface Node {
 	public function getName();
 
 	/**
-	 * Get the detailed file info
+	 * Get custom metadata
 	 *
-	 * @return \OCP\Files\FileInfo
+	 * @return array of custom metadata
 	 */
-	public function getFileInfo();
+	public function getMetaData();
 }
