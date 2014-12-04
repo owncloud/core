@@ -253,6 +253,50 @@ class Server extends SimpleContainer implements IServerContainer {
 	}
 
 	/**
+	 * @var array of name => \Closure[] pairs
+	 */
+	var $onServiceClosures = array();
+
+	/**
+	 * register a closure to be executed when a service becomes available
+	 *
+	 * @param string $name name of the service to register another backend for
+	 * @param \Closure $closure the closure to be called on service creation
+	 */
+	function onServiceAvailable($name, \Closure $closure) {
+		if ($this->offsetExists($name)) {
+			$closure($this->query($name));
+		} else {
+			if (!isset($this->onServiceClosures[$name])) {
+				$this->onServiceClosures[$name] = array();
+			}
+			$this->onServiceClosures[$name][] = $closure;
+		}
+	}
+
+	/**
+	 * The given closure is call the first time the given service is queried.
+	 * The closure has to return the instance for the given service.
+	 * Created instance will be cached in case $shared is true.
+	 *
+	 * Will notify service observers registered with onServiceAvailable when their service becomes available.
+	 * The closures are not removed and will be reexecuted whenever a service is re-registered.
+	 *
+	 * @param string $name name of the service to register another backend for
+	 * @param \Closure $closure the closure to be called on service creation
+	 * @param bool $shared
+	 */
+	function registerService($name, \Closure $closure, $shared = true) {
+		parent::registerService($name, $closure, $shared);
+
+		if (isset($this->onServiceClosures[$name])) {
+			foreach ($this->onServiceClosures[$name] as $c) {
+				$c($this->query($name));
+			}
+		}
+	}
+
+	/**
 	 * @return \OCP\Contacts\IManager
 	 */
 	function getContactsManager() {
