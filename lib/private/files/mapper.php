@@ -63,6 +63,13 @@ class Mapper
 		}
 
 		\OC_DB::executeAudited('DELETE FROM `*PREFIX*file_map` WHERE `' . $fieldName . '` = ?', array($path));
+
+		$cleanRelativePath = $this->resolveRelativePath($path);
+		if ($path !== $cleanRelativePath) {
+			// In case we somehow ended up deleting a path `foo/../bar`
+			// we also need to make sure to delete the path `bar`
+			$this->removePath($cleanRelativePath, $isLogicPath, $recursive);
+		}
 	}
 
 	/**
