@@ -34,6 +34,75 @@ class Mapper extends \Test\TestCase {
 		$this->mapper = new \OC\Files\Mapper('D:/');
 	}
 
+	public function removePathData() {
+		return array(
+			array('h€llo', false),
+			array('h€llo', true),
+			array('h€llo/', false),
+			array('h€llo/', true),
+
+			array('h€llo', false, false),
+			array('h€llo', true, false),
+			array('h€llo/', false, false),
+			array('h€llo/', true, false),
+
+			array('test/../h€llo', false),
+			array('test/../h€llo', true),
+			array('test/../h€llo/', false),
+			array('test/../h€llo/', true),
+
+			array('test/../h€llo', false, false),
+			array('test/../h€llo', true, false),
+			array('test/../h€llo/', false, false),
+			array('test/../h€llo/', true, false),
+		);
+	}
+
+	/**
+	 * @dataProvider removePathData
+	 */
+	public function testRemovePath($removePath, $recursive, $isLogical = true) {
+		$dataDir = 'D:\\testing/';
+		$mapper = new \OC\Files\Mapper($dataDir);
+		$removePathSlash = (substr($removePath, -1) == '/') ? $removePath : $removePath . '/';
+
+		$physicalEuro	= $mapper->logicToPhysical($dataDir . 'h€llo-h€llo.txt', true);
+		$physicalAt		= $mapper->logicToPhysical($dataDir . 'h€llo-h@llo.txt', true);
+		$physicalHello	= $mapper->logicToPhysical($dataDir . $removePath, true);
+		$physicalRecur	= $mapper->logicToPhysical($dataDir . $removePathSlash . 'recursivetest', true);
+		$physicalSubDir	= $mapper->logicToPhysical($dataDir . $removePathSlash . 'recursivetest/subdir.txt', true);
+
+		if ($isLogical) {
+			$mapper->removePath($dataDir . $removePath, true, $recursive);
+		} {
+			$mapper->removePath($physicalHello, false, $recursive);
+		}
+
+		$sql = 'SELECT * FROM `*PREFIX*file_map`';
+		$result = \OC_DB::executeAudited($sql);
+		$paths = array();
+		while ($row = $result->fetchRow()) {
+			$paths[$row['physic_path']] = $row;
+		}
+
+		$assertHasKey = 'The mapper entry should NOT have been deleted';
+		$assertNotHasKey = 'The mapper entry should have been deleted';
+
+		$this->assertArrayHasKey($physicalEuro, $paths, $assertHasKey);
+		$this->assertArrayHasKey($physicalAt, $paths, $assertHasKey);
+		$this->assertArrayNotHasKey($physicalHello, $paths, $assertNotHasKey);
+
+		if ($recursive) {
+			$this->assertArrayNotHasKey($physicalRecur, $paths, $assertNotHasKey);
+			$this->assertArrayNotHasKey($physicalSubDir, $paths, $assertNotHasKey);
+		} else {
+			$this->assertArrayHasKey($physicalRecur, $paths, $assertHasKey);
+			$this->assertArrayHasKey($physicalSubDir, $paths, $assertHasKey);
+		}
+
+		$mapper->removePath($dataDir, true, true);
+	}
+
 	public function slugifyPathData() {
 		return array(
 			// with extension
