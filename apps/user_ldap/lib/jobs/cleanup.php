@@ -6,7 +6,7 @@
  * See the COPYING-README file.
  */
 
-namespace OCA\user_ldap\lib;
+namespace OCA\User_LDAP\Jobs;
 
 use \OCA\user_ldap\User_Proxy;
 

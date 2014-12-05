@@ -8,8 +8,6 @@
 
 namespace OCA\user_ldap\tests;
 
-require_once __DIR__ . '/../../appinfo/classpath.php';
-
 class Test_CleanUp extends \PHPUnit_Framework_TestCase {
 	public function getMocks() {
 		$mocks = array();
@@ -39,7 +37,7 @@ class Test_CleanUp extends \PHPUnit_Framework_TestCase {
 		$args['ocConfig']->expects($this->never())
 			->method('getSystemValue');
 
-		$bgJob = new \OCA\user_ldap\lib\CleanUp();
+		$bgJob = new \OCA\User_LDAP\Jobs\CleanUp();
 		$bgJob->setArguments($args);
 
 		$result = $bgJob->isCleanUpAllowed();
@@ -59,7 +57,7 @@ class Test_CleanUp extends \PHPUnit_Framework_TestCase {
 		$args['ocConfig']->expects($this->never())
 			->method('getSystemValue');
 
-		$bgJob = new \OCA\user_ldap\lib\CleanUp();
+		$bgJob = new \OCA\User_LDAP\Jobs\CleanUp();
 		$bgJob->setArguments($args);
 
 		$result = $bgJob->isCleanUpAllowed();
@@ -82,7 +80,7 @@ class Test_CleanUp extends \PHPUnit_Framework_TestCase {
 			->method('getSystemValue')
 			->will($this->returnValue(false));
 
-		$bgJob = new \OCA\user_ldap\lib\CleanUp();
+		$bgJob = new \OCA\User_LDAP\Jobs\CleanUp();
 		$bgJob->setArguments($args);
 
 		$result = $bgJob->isCleanUpAllowed();
@@ -105,7 +103,7 @@ class Test_CleanUp extends \PHPUnit_Framework_TestCase {
 			->method('getSystemValue')
 			->will($this->returnValue(true));
 
-		$bgJob = new \OCA\user_ldap\lib\CleanUp();
+		$bgJob = new \OCA\User_LDAP\Jobs\CleanUp();
 		$bgJob->setArguments($args);
 
 		$result = $bgJob->isCleanUpAllowed();
@@ -124,7 +122,7 @@ class Test_CleanUp extends \PHPUnit_Framework_TestCase {
 				`directory_uuid` AS `uuid`
 			FROM `*PREFIX*ldap_user_mapping`'";
 
-		$bgJob = new \OCA\user_ldap\lib\CleanUp();
+		$bgJob = new \OCA\User_LDAP\Jobs\CleanUp();
 		$bgJob->setArguments($args);
 
 		if(version_compare(\PHPUnit_Runner_Version::id(), '3.8', '<')) {
@@ -149,7 +147,7 @@ class Test_CleanUp extends \PHPUnit_Framework_TestCase {
 	public function test_OffsetResetIsNecessary() {
 		$args = $this->getMocks();
 
-		$bgJob = new \OCA\user_ldap\lib\CleanUp();
+		$bgJob = new \OCA\User_LDAP\Jobs\CleanUp();
 		$bgJob->setArguments($args);
 
 		$result = $bgJob->isOffsetResetNecessary($bgJob->getChunkSize() - 1);
@@ -162,7 +160,7 @@ class Test_CleanUp extends \PHPUnit_Framework_TestCase {
 	public function test_OffsetResetIsNotNecessary() {
 		$args = $this->getMocks();
 
-		$bgJob = new \OCA\user_ldap\lib\CleanUp();
+		$bgJob = new \OCA\User_LDAP\Jobs\CleanUp();
 		$bgJob->setArguments($args);
 
 		$result = $bgJob->isOffsetResetNecessary($bgJob->getChunkSize());

@@ -21,7 +21,7 @@
  *
  */
 
-namespace OCA\UserLdap\User;
+namespace OCA\User_LDAP\User;
 
 use OCA\user_ldap\lib\Access;
 

@@ -27,7 +27,7 @@ use OCA\user_ldap\lib\user\IUserTools;
 use OCA\user_ldap\lib\user\User;
 use OCA\user_ldap\lib\LogWrapper;
 use OCA\user_ldap\lib\FilesystemHelper;
-use OCA\UserLdap\User\OfflineUser;
+use OCA\User_LDAP\User\OfflineUser;
 
 /**
  * Manager
