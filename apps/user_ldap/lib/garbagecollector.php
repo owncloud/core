@@ -21,7 +21,7 @@
  *
  */
 
-namespace OCA\User_LDAP\GarbageCollector;
+namespace OCA\User_LDAP;
 
 use OCA\User_LDAP\User\OfflineUser;
 use OCA\user_ldap\lib\Access;
