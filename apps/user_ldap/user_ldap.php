@@ -27,6 +27,7 @@ namespace OCA\user_ldap;
 
 use OCA\user_ldap\lib\BackendUtility;
 use OCA\User_LDAP\User\OfflineUser;
+use OCA\User_LDAP\User\User;
 
 class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
 	/**
@@ -41,7 +42,7 @@ class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
 	 */
 	public function canChangeAvatar($uid) {
 		$user = $this->access->userManager->get($uid);
-		if(is_null($user)) {
+		if(!$user instanceof User) {
 			return false;
 		}
 		if($user->getAvatarImage() === false) {
@@ -71,7 +72,7 @@ class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
 		}
 		$dn = $ldap_users[0];
 		$user = $this->access->userManager->get($dn);
-		if(is_null($user)) {
+		if(!$user instanceof User) {
 			\OCP\Util::writeLog('user_ldap',
 				'LDAP Login: Could not get user object for DN ' . $dn .
 				'. Maybe the LDAP entry has no set display name attribute?',
@@ -160,7 +161,10 @@ class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
 		}
 
 		$this->access->connection->writeToCache('userExists'.$uid, true);
-		$user->update();
+		if($user instanceof User) {
+			//deleted users don't and can't be updated
+			$user->update();
+		}
 		return true;
 	}
 
@@ -181,7 +185,7 @@ class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
 
 		//Get Home Directory out of user preferences so we can return it later,
 		//necessary for removing directories as done by OC_User.
-		$home = $pref->getUserValue($uid, 'user_ldap', 'homePath', false);
+		$home = $pref->getUserValue($uid, 'user_ldap', 'homePath', '');
 		$this->homes[$uid] = $home;
 
 		return true;
@@ -190,12 +194,12 @@ class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
 	/**
 	* get the user's home directory
 	* @param string $uid the username
-	* @return boolean
+	* @return string|bool
 	*/
 	public function getHome($uid) {
 		// user Exists check required as it is not done in user proxy!
 		if(!$this->userExists($uid)) {
-			if(isset($this->homes[$uid])) {
+			if(isset($this->homes[$uid]) && !empty($this->homes[$uid])) {
 				//a deleted user who needs some clean up
 				return $this->homes[$uid];
 			}
@@ -236,7 +240,7 @@ class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
 
 		//false will apply default behaviour as defined and done by OC_User
 		$this->access->connection->writeToCache($cacheKey, false);
-		$pref->setUserValue($uid, 'user_ldap', 'homePath', false);
+		$pref->setUserValue($uid, 'user_ldap', 'homePath', '');
 		return false;
 	}
 

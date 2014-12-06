@@ -100,7 +100,7 @@ class CleanUp extends \OC\BackgroundJob\TimedJob {
 		if(!is_array($users)) {
 			//something wrong? Let's start from the beginning next time and
 			//abort
-			$this->setOffset(0, true);
+			$this->setOffset(true);
 			return;
 		}
 		$resetOffset = $this->isOffsetResetNecessary(count($users));
@@ -140,7 +140,7 @@ class CleanUp extends \OC\BackgroundJob\TimedJob {
 	 * @return bool
 	 */
 	private function isCleanUpEnabled() {
-		return $this->ocConfig->getSystemValue('ldapUserCleanupEnabled', false);
+		return (bool)$this->ocConfig->getSystemValue('ldapUserCleanupEnabled', '0');
 	}
 
 	/**
@@ -165,7 +165,7 @@ class CleanUp extends \OC\BackgroundJob\TimedJob {
 	 */
 	private function checkUsers($users) {
 		foreach($users as $user) {
-			$this->checkUser($user, $this->ocConfig);
+			$this->checkUser($user);
 		}
 	}
 
@@ -188,7 +188,7 @@ class CleanUp extends \OC\BackgroundJob\TimedJob {
 	 * @param int $offset
 	 * @return array
 	 */
-	private function getMappedUsers($limit, $offset) {
+	public function getMappedUsers($limit, $offset) {
 		$query = $this->db->prepare('
 			SELECT
 				`ldap_dn` AS `dn`,
