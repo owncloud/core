@@ -204,7 +204,7 @@ class OC_User {
 					OC_Group::removeFromGroup($uid, $i);
 				}
 				// Delete the user's keys in preferences
-				OC_Preferences::deleteUser($uid);
+				\OC::$server->getConfig()->deleteAllUserValues($uid);
 
 				// Delete user files in /data/
 				OC_Helper::rmdirr(\OC_User::getHome($uid));
