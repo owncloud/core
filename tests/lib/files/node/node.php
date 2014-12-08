@@ -77,6 +77,29 @@ class Node extends \Test\TestCase {
 		$this->assertEquals(1, $node->getId());
 	}
 
+	public function testGetMetaData() {
+		$manager = $this->getMock('\OC\Files\Mount\Manager');
+		/**
+		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 */
+		$view = $this->getMock('\OC\Files\View');
+		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$root->expects($this->any())
+			->method('getUser')
+			->will($this->returnValue($this->user));
+
+		$fileInfo = new \OC\Files\FileInfo('', null, '', array('custom' => 'qwerty'));
+
+		$view->expects($this->once())
+			->method('getFileInfo')
+			->with('/bar/foo')
+			->will($this->returnValue($fileInfo));
+
+		$node = new \OC\Files\Node\File($root, $view, '/bar/foo');
+		$data = $node->getMetaData();
+		$this->assertEquals('qwerty', $data['custom']);
+	}
+
 	public function testGetSize() {
 		$manager = $this->getMock('\OC\Files\Mount\Manager');
 		/**

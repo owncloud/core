@@ -179,4 +179,11 @@ interface Node {
 	 * @return string
 	 */
 	public function getName();
+
+	/**
+	 * Get custom metadata
+	 *
+	 * @return array of custom metadata
+	 */
+	public function getMetaData();
 }

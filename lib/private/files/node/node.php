@@ -221,6 +221,17 @@ class Node implements \OCP\Files\Node, FileInfo {
 	}
 
 	/**
+	 * @return array of extra metadata
+	 */
+	public function getMetaData() {
+		$fileInfo = $this->view->getFileInfo($this->path);
+		if ($fileInfo instanceof \OC\Files\FileInfo) {
+			return $fileInfo->getData();
+		}
+		return array();
+	}
+
+	/**
 	 * @param string $path
 	 * @return string
 	 */
