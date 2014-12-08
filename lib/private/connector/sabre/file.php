@@ -267,7 +267,15 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\
 			try {
 
 				// here is the final atomic rename
-				// TODO: will this properly trigger all hooks
+				// trigger hooks for post processing
+				$targetFileExists = $storage->file_exists('/files' . $targetPath);
+				$run = $this->runPreHooks($targetFileExists, '/files' . $targetPath);
+				if (!$run) {
+					\OC::$server->getLogger()->error('Hook execution on {file} failed', array('app' => 'webdav', 'file' => $targetPath));
+					// delete part file
+					$storage->unlink('/files' . $partFilePath);
+					throw new \Sabre\DAV\Exception('Upload rejected');
+				}
 				$renameOkay = $storage->rename('/files' . $partFilePath, '/files' . $targetPath);
 				$fileExists = $storage->file_exists('/files' . $targetPath);
 				if ($renameOkay === false || $fileExists === false) {
@@ -276,8 +284,15 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\
 					if ($fileExists) {
 						$storage->unlink('/files' . $targetPath);
 					}
+					$partFileExists = $storage->file_exists('/files' . $partFilePath);
+					if ($partFileExists) {
+						$storage->unlink('/files' . $partFilePath);
+					}
 					throw new \Sabre\DAV\Exception('Could not rename part file assembled from chunks');
 				}
+
+				// trigger hooks for post processing
+				$this->runPostHooks($targetFileExists, '/files' . $targetPath);
 
 				// allow sync clients to send the mtime along in a header
 				$mtime = OC_Request::hasModificationTime();
@@ -296,5 +311,44 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\
 		}
 
 		return null;
+	}
+
+	private function runPreHooks($fileExists, $path) {
+		$run = true;
+		if(!$fileExists) {
+			OC_Hook::emit(
+				\OC\Files\Filesystem::CLASSNAME,
+				\OC\Files\Filesystem::signal_create,
+				array(
+					\OC\Files\Filesystem::signal_param_path => $path,
+					\OC\Files\Filesystem::signal_param_run => &$run
+				)
+			);
+		}
+		OC_Hook::emit(
+			\OC\Files\Filesystem::CLASSNAME,
+			\OC\Files\Filesystem::signal_write,
+			array(
+				\OC\Files\Filesystem::signal_param_path => $path,
+				\OC\Files\Filesystem::signal_param_run => &$run
+			)
+		);
+
+		return $run;
+	}
+
+	private function runPostHooks($fileExists, $path) {
+		if(!$fileExists) {
+			OC_Hook::emit(
+				\OC\Files\Filesystem::CLASSNAME,
+				\OC\Files\Filesystem::signal_post_create,
+				array( \OC\Files\Filesystem::signal_param_path => $path)
+			);
+		}
+		OC_Hook::emit(
+			\OC\Files\Filesystem::CLASSNAME,
+			\OC\Files\Filesystem::signal_post_write,
+			array( \OC\Files\Filesystem::signal_param_path => $path)
+		);
 	}
 }
