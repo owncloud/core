@@ -1083,14 +1083,20 @@ class Access extends LDAPUtility implements user\IUserTools {
 	}
 
 	/**
-	* escapes (user provided) parts for LDAP filter
+	* escapes (user provided) parts for LDAP filter. If $input starts with an
+	* asterisk, it will be preserved.
 	* @param string $input, the provided value
 	* @return string the escaped string
 	*/
 	public function escapeFilterPart($input) {
+		$asterisk = '';
+		if($input[0] === '*') {
+			$asterisk = '*';
+			$input = mb_substr($input, 1, null, 'UTF-8');
+		}
 		$search  = array('*', '\\', '(', ')');
 		$replace = array('\\*', '\\\\', '\\(', '\\)');
-		return str_replace($search, $replace, $input);
+		return $asterisk . str_replace($search, $replace, $input);
 	}
 
 	/**
