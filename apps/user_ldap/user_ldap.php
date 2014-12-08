@@ -27,7 +27,7 @@ namespace OCA\user_ldap;
 
 use OCA\user_ldap\lib\BackendUtility;
 use OCA\User_LDAP\User\OfflineUser;
-use OCA\User_LDAP\User\User;
+use OCA\User_LDAP\lib\User\User;
 
 class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
 	/**
