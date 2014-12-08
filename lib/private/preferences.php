@@ -179,5 +179,3 @@ class Preferences {
 		$this->config->deleteAppFromAllUsers($app);
 	}
 }
-
-require_once __DIR__ . '/legacy/' . basename(__FILE__);

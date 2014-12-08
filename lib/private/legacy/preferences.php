@@ -21,15 +21,11 @@
  *
  */
 
-OC_Preferences::$object = new \OC\Preferences(OC_DB::getConnection());
 /**
  * This class provides an easy way for storing user preferences.
  * @deprecated use \OCP\IConfig methods instead
  */
 class OC_Preferences{
-	/** @var \OC\Preferences */
-	public static $object;
-
 	/**
 	 * Get the available keys for an app
 	 * @param string $user user
