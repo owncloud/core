@@ -134,9 +134,9 @@ class Preferences {
 
 	/**
 	 * Gets the users for a preference
-	 * @param $app
-	 * @param $key
-	 * @param $value
+	 * @param string $app
+	 * @param string $key
+	 * @param string $value
 	 * @return array
 	 * @deprecated use getUsersForUserValue of \OCP\IConfig instead
 	 */
