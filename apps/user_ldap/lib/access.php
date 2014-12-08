@@ -626,6 +626,19 @@ class Access extends LDAPUtility implements user\IUserTools {
 	}
 
 	/**
+	 * removes a user from the mappings table
+	 * @param string $ocName
+	 */
+	public function unmapUser($ocName) {
+		$table = $this->getMapTable(true);
+		$delete = \OCP\DB::prepare('
+			DELETE FROM `' . $table . '`
+			WHERE `owncloud_name` = ?
+		');
+		$delete->execute(array($ocName));
+	}
+
+	/**
 	 * inserts a new user or group into the mappings table
 	 * @param string $dn the record in question
 	 * @param string $ocName the name to use in ownCloud
