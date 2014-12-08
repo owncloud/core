@@ -9,6 +9,8 @@
 namespace OCA\User_LDAP\Jobs;
 
 use \OCA\user_ldap\User_Proxy;
+use \OCA\user_ldap\lib\Helper;
+use \OCA\user_ldap\lib\LDAP;
 
 /**
  * Class CleanUp
