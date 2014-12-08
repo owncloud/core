@@ -42,6 +42,7 @@
 
 class OC_FileProxy{
 	private static $proxies=array();
+	private static $wrapperSetup = false;
 	public static $enabled=true;
 
 	/**
@@ -64,6 +65,19 @@ class OC_FileProxy{
 	 * @param OC_FileProxy $proxy
 	 */
 	public static function register($proxy) {
+		if (!self::$wrapperSetup){
+			self::$wrapperSetup = true;
+			\OC\Files\Filesystem::addStorageWrapper('proxy', function($mountPoint, \OC\Files\Storage\Storage $storage) {
+				if($storage->instanceOfStorage('\OC\Files\Storage\Wrapper\Proxy')) {
+					return $storage;
+				} else {
+					return new \OC\Files\Storage\Wrapper\Proxy(array(
+						'storage' => $storage,
+						'mountpoint' => $mountPoint
+					));
+				}
+			});
+		}
 		self::$proxies[]=$proxy;
 	}
 

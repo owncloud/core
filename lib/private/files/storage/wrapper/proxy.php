@@ -14,8 +14,9 @@ namespace OC\Files\Storage\Wrapper;
 class Proxy extends Wrapper {
 	private $mountPoint;
 
-	public function __construct($mountPoint) {
-		$this->mountPoint = $mountPoint;
+	public function __construct($arguments) {
+		parent::__construct($arguments);
+		$this->mountPoint = $arguments['mountpoint'];
 	}
 
 	private function runPreProxies($operation, $path, &$data = null) {
@@ -36,7 +37,7 @@ class Proxy extends Wrapper {
 	 */
 	public function mkdir($path) {
 		$this->runPreProxies(__FUNCTION__, $path);
-		$result = $this->mkdir($path);
+		$result = $this->storage->mkdir($path);
 		return $this->runPostProxies(__FUNCTION__, $path, $result);
 	}
 
