@@ -9,87 +9,83 @@
 namespace OCA\Files_Sharing;
 
 use OC\Files\Filesystem;
-use OC\Files\Mount\Manager;
+use OC\Files\Mount\MountPoint;
 use OC\Files\Storage\Loader;
-use OCP\Files\Folder;
+use OCP\Files\Config\IMountProvider;
+use OCP\Files\Mount\IMountManager;
+use OCP\Files\Storage\IStorageFactory;
+use OCP\IUser;
 use OCP\IUserManager;
 
 /**
  * Setup shared storages for users
  */
-class MountManager {
+class MountManager implements IMountProvider {
 	/**
-	 * @var \OC\Files\Mount\Manager
+	 * @var \OCP\Files\Mount\IMountManager
 	 */
 	private $mountManager;
-	/**
-	 * @var \OC\Files\Storage\Loader
-	 */
-	private $storageLoader;
-
-	/**
-	 * @var \OCP\Files\Folder
-	 */
-	private $root;
 
 	private $userManager;
 
-	function __construct(Manager $mountManager, Loader $storageLoader, IUserManager $userManager, Folder $root) {
-		$this->mountManager = $mountManager;
-		$this->storageLoader = $storageLoader;
+	function __construct(IUserManager $userManager, IMountManager $mountManager) {
 		$this->userManager = $userManager;
-		$this->root = $root;
+		$this->mountManager = $mountManager;
 	}
 
-
-	public function setupMounts($options) {
-		/** @var \OCP\IUser $user */
-		$user = $options['user_object'];
-		if (!$user) {
-			return;
-		}
+	/**
+	 * Get all mount points applicable for the user
+	 *
+	 * @param \OCP\IUser $user
+	 * @param \OCP\Files\Storage\IStorageFactory $factory
+	 * @return \OCP\Files\Mount\IMountPoint[]
+	 */
+	public function getMountsForUser(IUser $user, IStorageFactory $factory) {
 		$shares = \OCP\Share::getItemsSharedWithUser('file', $user->getUID());
+		$userDir = '/' . $user->getUID() . '/files';
+		$mounts = [];
 		foreach ($shares as $share) {
 			$owner = $this->userManager->get($share['uid_owner']);
 			// don't mount shares where we have no permissions
 			if ($share['permissions'] > 0) {
+				$sourceId = $share['file_source'];
+				$targetPath = $userDir . '/' . $share['file_target'];
 				Filesystem::initMountPoints($owner->getUID()); //TODO move to filesystem factory once that's merged
-				$sourceFiles = $this->root->getById($share['file_source']);
-				if (count($sourceFiles) === 0) {
-					throw new \Exception('Cant find source file for share');
-				}
-				$sourceFile = $sourceFiles[0];
+				$root = \OC::$server->getRootFolder();
+				$sourceNode = $root->getById($sourceId)[0];
 
-				$mount = new SharedMount(
+				$mounts[] = new SharedMount(
 					'\OCA\Files_Sharing\SharedStorage',
-					$options['user_dir'] . '/' . $share['file_target'],
+					$targetPath,
 					array(
 						'share' => $share,
 						'user' => $user->getUID(),
 						'displayname' => $owner->getDisplayName(),
-						'storage' => $sourceFile->getStorage(),
-						'root' => $sourceFile->getInternalPath()
+						'storage' => $sourceNode->getStorage(),
+						'root' => $sourceNode->getInternalPath()
 					),
-					$this->storageLoader
+					$factory
 				);
-				$this->mountManager->addMount($mount);
+
+				$subMounts = $this->mountManager->findIn($sourceNode->getPath());
+				foreach ($subMounts as $mount) {
+					$mounts[] = $this->copyMountPoint($mount, $sourceNode->getPath(), $targetPath, $factory);
+				}
 			}
-		}
+		};
+		return $mounts;
 	}
 
 	/**
-	 * We use a static wrapper since getting an instance requires the storage loader and mount manager, which require the
-	 * filesystem to be setup
-	 *
-	 * @param array $options
+	 * @param \OCP\Files\Mount\IMountPoint $mount
+	 * @param string $sourcePath
+	 * @param string $targetPath
+	 * @param \OCP\Files\Storage\IStorageFactory $factory
+	 * @return \OC\Files\Mount\MountPoint
 	 */
-	public static function setup($options) {
-		$manager = new MountManager(
-			\OC\Files\Filesystem::getMountManager(),
-			\OC\Files\Filesystem::getLoader(),
-			\OC::$server->getUserManager(),
-			\OC::$server->getRootFolder()
-		);
-		$manager->setupMounts($options);
+	private function copyMountPoint($mount, $sourcePath, $targetPath, $factory) {
+		$relMountPoint = substr($mount->getMountPoint(), strlen($sourcePath));
+		$newMountPoint = $targetPath . $relMountPoint;
+		return new MountPoint($mount->getStorage(), $newMountPoint, array(), $factory);
 	}
 }
