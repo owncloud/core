@@ -131,6 +131,12 @@ class Manager {
 		}
 	}
 
+	/**
+	 * checks whether the specified user is marked for deletion and if so
+	 * returns an instance, otherwise null
+	 * @param string $id
+	 * @return \OCA\User_LDAP\User\OfflineUser|null
+	 */
 	public function getDeletedUser($id) {
 		\OC::$server->getLogger()->debug('Is the user dead? ' . $id, array('app' => 'user_ldap'));
 		$isDeletedUser = $this->ocConfig->getUserValue($id, 'user_ldap', 'isDeleted', 0);

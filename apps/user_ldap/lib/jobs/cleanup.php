@@ -121,7 +121,7 @@ class CleanUp extends \OC\BackgroundJob\TimedJob {
 
 	/**
 	 * checks whether cleaning up LDAP users is allowed
-	 * @return true
+	 * @return bool
 	 */
 	public function isCleanUpAllowed() {
 		try {

@@ -96,6 +96,7 @@ class GarbageCollector {
 
 	/**
 	 * returns all LDAP users that are marked as deleted
+	 * @param int|null $offset
 	 * @return \OCA\User_LDAP\User\OfflineUser[]
 	 */
 	public function getDeletedUsers($offset = null) {
