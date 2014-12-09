@@ -1186,12 +1186,16 @@ function formatDate(timestamp){
  * Get the value of a URL parameter
  * @link http://stackoverflow.com/questions/1403888/get-url-parameter-with-jquery
  * @param {string} name URL parameter
+ * @param {string} url URL
  * @return {string}
  */
-function getURLParameter(name) {
-	return decodeURI(
-			(RegExp(name + '=' + '(.+?)(&|$)').exec(location.search) || [, null])[1]
-			);
+function getURLParameter (name, url) {
+	if ('undefined' === typeof url) {
+		url = location.search;
+	}
+	return decodeURIComponent(
+		(new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(url) || [, ""])[1].replace(/\+/g, '%20')
+	) || null;
 }
 
 /**
