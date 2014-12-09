@@ -296,7 +296,7 @@ class Filesystem {
 		self::$defaultInstance = new View($root);
 
 		if (!self::$mounts) {
-			self::$mounts = new Mount\Manager();
+			self::$mounts = \OC::$server->getMountManager();
 		}
 
 		//load custom mount config
@@ -309,7 +309,7 @@ class Filesystem {
 
 	static public function initMounts() {
 		if (!self::$mounts) {
-			self::$mounts = new Mount\Manager();
+			self::$mounts = \OC::$server->getMountManager();
 		}
 	}
 
