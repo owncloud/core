@@ -35,20 +35,20 @@ class ShowRemnants extends Command {
 		);
 
 		$table = $this->getHelperSet()->get('table');
-		$table->setHeaders(array('ownCloud name', 'Display Name', 'LDAP UID', 'LDAP DN', 'Last Login', 'Dir'));
+		$table->setHeaders(array('ownCloud name', 'Display Name', 'LDAP UID', 'LDAP DN', 'Last Login', 'Dir', 'Sharer'));
 		$rows = array();
 		$offset = 0;
 		do {
 			$resultSet = $gc->getDeletedUsers($offset);
 			$offset += count($resultSet);
 			foreach($resultSet as $user) {
-				$hAS = $user->hasActiveShares ? 'Y' : 'N';
+				$hAS = $user->getHasActiveShares() ? 'Y' : 'N';
 				$rows[] = array(
 					$user->getOCName(),
 					$user->getDisplayName(),
 					$user->getUid(),
 					$user->getDN(),
-					$user->getLastLogin(),
+					\OCP\Util::formatDate($user->getLastLogin()),
 					$user->getHomePath(),
 					$hAS
 				);
