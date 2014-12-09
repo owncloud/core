@@ -31,9 +31,9 @@ use OCA\User_LDAP\lib\User\User;
 
 class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
 	/**
-	 * @var string[] $homes
+	 * @var string[] $homesToKill
 	 */
-	protected $homes = array();
+	protected $homesToKill = array();
 
 	/**
 	 * checks whether the user is allowed to change his avatar in ownCloud
@@ -64,13 +64,15 @@ class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
 		$uid = $this->access->escapeFilterPart($uid);
 
 		//find out dn of the user name
+		$attrs = array($this->access->connection->ldapUserDisplayName, 'dn',
+			'uid', 'samaccountname');
 		$filter = \OCP\Util::mb_str_replace(
 			'%uid', $uid, $this->access->connection->ldapLoginFilter, 'UTF-8');
-		$ldap_users = $this->access->fetchListOfUsers($filter, 'dn');
-		if(count($ldap_users) < 1) {
+		$users = $this->access->fetchListOfUsers($filter, $attrs);
+		if(count($users) < 1) {
 			return false;
 		}
-		$dn = $ldap_users[0];
+		$dn = $users[0]['dn'];
 		$user = $this->access->userManager->get($dn);
 		if(!$user instanceof User) {
 			\OCP\Util::writeLog('user_ldap',
@@ -86,6 +88,13 @@ class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
 			}
 
 			$user->markLogin();
+			$dpn = $users[0][$this->access->connection->ldapUserDisplayName];
+			$user->storeDisplayName($dpn);
+			if(isset($users[0]['uid'])) {
+				$user->storeLDAPUserName($users[0]['uid']);
+			} else if(isset($users[0]['samaccountname'])) {
+				$user->storeLDAPUserName($users[0]['samaccountname']);
+			}
 
 			return $user->getUsername();
 		}
@@ -186,7 +195,7 @@ class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
 		//Get Home Directory out of user preferences so we can return it later,
 		//necessary for removing directories as done by OC_User.
 		$home = $pref->getUserValue($uid, 'user_ldap', 'homePath', '');
-		$this->homes[$uid] = $home;
+		$this->homesToKill[$uid] = $home;
 		$this->access->unmapUser($uid);
 
 		return true;
@@ -200,11 +209,12 @@ class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
 	public function getHome($uid) {
 		// user Exists check required as it is not done in user proxy!
 		if(!$this->userExists($uid)) {
-			if(isset($this->homes[$uid]) && !empty($this->homes[$uid])) {
-				//a deleted user who needs some clean up
-				return $this->homes[$uid];
-			}
 			return false;
+		}
+
+		if(isset($this->homesToKill[$uid]) && !empty($this->homesToKill[$uid])) {
+			//a deleted user who needs some clean up
+			return $this->homesToKill[$uid];
 		}
 
 		$cacheKey = 'getHome'.$uid;
