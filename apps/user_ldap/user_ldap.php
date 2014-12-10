@@ -159,6 +159,10 @@ class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
 				$this->access->connection->ldapHost, \OCP\Util::DEBUG);
 			$this->access->connection->writeToCache('userExists'.$uid, false);
 			return false;
+		} else if($user instanceof OfflineUser) {
+			//express check for users marked as deleted. Returning true is
+			//necessary for cleanup
+			return true;
 		}
 		$dn = $user->getDN();
 		//check if user really still exists by reading its entry
@@ -170,10 +174,7 @@ class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
 		}
 
 		$this->access->connection->writeToCache('userExists'.$uid, true);
-		if($user instanceof User) {
-			//deleted users don't and can't be updated
-			$user->update();
-		}
+		$user->update();
 		return true;
 	}
 

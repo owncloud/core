@@ -132,28 +132,45 @@ class Manager {
 	}
 
 	/**
-	 * checks whether the specified user is marked for deletion and if so
-	 * returns an instance, otherwise null
+	 * Checks whether the specified user is marked as deleted
+	 * @param string $id the ownCloud user name
+	 * @return bool
+	 */
+	public function isDeletedUser($id) {
+		$isDeleted = $this->ocConfig->getUserValue(
+			$id, 'user_ldap', 'isDeleted', 0);
+		return intval($isDeleted) === 1;
+	}
+
+	/**
+	 * creates and returns an instance of OfflineUser for the specified user
 	 * @param string $id
-	 * @return \OCA\User_LDAP\User\OfflineUser|null
+	 * @return \OCA\User_LDAP\User\OfflineUser
 	 */
 	public function getDeletedUser($id) {
-		\OC::$server->getLogger()->debug('Is the user dead? ' . $id, array('app' => 'user_ldap'));
-		$isDeletedUser = $this->ocConfig->getUserValue($id, 'user_ldap', 'isDeleted', 0);
-		if(intval($isDeletedUser) === 1) {
-			return new OfflineUser(
-				$id,
-				new \OC\Preferences(\OC_DB::getConnection()),
-				\OC::$server->getDatabaseConnection(),
-				$this->access);
+		return new OfflineUser(
+			$id,
+			new \OC\Preferences(\OC_DB::getConnection()),
+			\OC::$server->getDatabaseConnection(),
+			$this->access);
+	}
+
+	protected function createInstancyByUserName($id) {
+		//most likely a uid. Check whether it is a deleted user
+		if($this->isDeletedUser($id)) {
+			return $this->getDeletedUser($id);
 		}
-		return null;
+		$dn = $this->access->username2dn($id);
+		if($dn !== false) {
+			return $this->createAndCache($dn, $id);
+		}
+		throw new \Exception('Could not create User instance');
 	}
 
 	/**
 	 * @brief returns a User object by it's DN or ownCloud username
 	 * @param string the DN or username of the user
-	 * @return \OCA\user_ldap\lib\User | null
+	 * @return \OCA\user_ldap\lib\user\User | \OCA\user_ldap\User\OfflineUser | null
 	 */
 	public function get($id) {
 		$this->checkAccess();
@@ -163,26 +180,19 @@ class Manager {
 			return $this->users['byUid'][$id];
 		}
 
-		if(!$this->access->stringResemblesDN($id) ) {
-			//most likely a uid
-			$dn = $this->access->username2dn($id);
-			if($dn !== false) {
-				return $this->createAndCache($dn, $id);
-			}
-		} else {
-			//so it's a DN
+		if($this->access->stringResemblesDN($id) ) {
 			$uid = $this->access->dn2username($id);
 			if($uid !== false) {
 				return $this->createAndCache($id, $uid);
 			}
 		}
-		//either funny uid or invalid. Assume funny to be on the safe side.
-		$dn = $this->access->username2dn($id);
-		if($dn !== false) {
-			return $this->createAndCache($dn, $id);
+
+		try {
+			$user = $this->createInstancyByUserName($id);
+			return $user;
+		} catch (\Exception $e) {
+			return null;
 		}
-		//maybe the user is marked as deleted?
-		return $this->getDeletedUser($id);
 	}
 
 }
