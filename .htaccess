@@ -11,6 +11,7 @@ php_value upload_max_filesize 513M
 php_value post_max_size 513M
 php_value memory_limit 512M
 php_value mbstring.func_overload 0
+php_value magic_quotes_gpc off
 <IfModule env_module>
   SetEnv htaccessWorking true
 </IfModule>
