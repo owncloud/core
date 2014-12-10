@@ -62,7 +62,6 @@ abstract class TestCase extends \Test\TestCase {
 		\OCA\Files_Encryption\Helper::registerShareHooks();
 
 		\OC::registerShareHooks();
-		\OCP\Util::connectHook('OC_Filesystem', 'setup', '\OC\Files\Storage\Shared', 'setup');
 
 		// clear and register hooks
 		\OC_FileProxy::clearProxies();
