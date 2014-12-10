@@ -594,7 +594,7 @@ OC.Notification={
 					OC.Notification.getDefaultNotificationFunction.call();
 				}
 			}
-			if (callback) {
+			if (jQuery.isFunction(callback)) {
 				callback.call();
 			}
 			$('#notification').empty();
@@ -643,6 +643,12 @@ OC.Notification={
 		return ($("#notification").text() === '');
 	}
 };
+
+// Hide Notification message on click
+$(document).ready(function() {
+	$("#notification").on('click', OC.Notification.hide);
+});
+
 
 /**
  * Breadcrumb class
