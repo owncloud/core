@@ -1187,7 +1187,7 @@ function formatDate(timestamp){
  * @link http://stackoverflow.com/questions/1403888/get-url-parameter-with-jquery
  * @param {string} name URL parameter
  * @param {string} url URL
- * @return {string}
+ * @return {string|null}
  */
 function getURLParameter (name, url) {
 	if ('undefined' === typeof url) {

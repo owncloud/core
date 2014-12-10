@@ -322,6 +322,20 @@ describe('Core base tests', function() {
 			setIntervalStub.restore();
 		});
 	});
+	describe('Get URL parameter', function() {
+		it('Extract parameter value from passed URL', function() {
+			var parameter = getURLParameter ('file', 'http://localhost/index.php?service=files&file=%C3%A9l%C3%A9phant.jpg');
+			expect(parameter).toEqual('éléphant.jpg');
+		});
+		it('Return null if parameter from passed URL is empty', function() {
+			var parameter = getURLParameter ('file', 'http://localhost/index.php?service=files&file=');
+			expect(parameter).toEqual(null);
+		});
+		it('Return null if parameter is not in the passed URL', function() {
+			var parameter = getURLParameter ('files', 'http://localhost/index.php?service=files&file=%C3%A9l%C3%A9phant.jpg');
+			expect(parameter).toEqual(null);
+		});
+	});
 	describe('Parse query string', function() {
 		it('Parses query string from full URL', function() {
 			var query = OC.parseQueryString('http://localhost/stuff.php?q=a&b=x');
