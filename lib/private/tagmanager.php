@@ -57,7 +57,7 @@ class TagManager implements \OCP\ITagManager {
 	* @param TagMapper $mapper Instance of the TagMapper abstraction layer.
 	* @param \OCP\IUserSession $userSession the user session
 	*/
-	public function __construct(TagMapper $mapper, $userSession) {
+	public function __construct(TagMapper $mapper, \OCP\IUserSession $userSession) {
 		$this->mapper = $mapper;
 		$this->userSession = $userSession;
 
@@ -74,7 +74,7 @@ class TagManager implements \OCP\ITagManager {
 	* logged in user
 	* @return \OCP\ITags
 	*/
-	public function load($type, $defaultTags = array(), $includeShared = false, $user = null) {
+	public function load($type, $defaultTags = array(), $includeShared = false, \OCP\IUser $user = null) {
 		if (is_null($user)) {
 			$user = $this->userSession->getUser();
 		}

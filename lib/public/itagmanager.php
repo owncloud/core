@@ -53,5 +53,5 @@ interface ITagManager {
 	* logged in user
 	* @return \OCP\ITags
 	*/
-	public function load($type, $defaultTags = array(), $includeShared = false, $user = null);
+	public function load($type, $defaultTags = array(), $includeShared = false, \OCP\IUser $user = null);
 }
