@@ -89,7 +89,7 @@
 <script id="filestable-row" type="text/x-handlebars-template">
 	<tr 
 		data-id="{{id}}"
-		data-type="{{ŧype}}"
+		data-type="{{type}}"
 		data-size="{{size}}"
 		data-file="{{fileName}}"
 		data-mime="{{mime}}"
