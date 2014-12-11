@@ -45,8 +45,15 @@ class CleanUp extends \OC\BackgroundJob\TimedJob {
 	 */
 	protected $ldapHelper;
 
+	/**
+	 * @var int $defaultIntervalMin in minutes
+	 */
+	protected $defaultIntervalMin = 51;
+
 	public function __construct() {
-		$this->setInterval(23 * 60);
+		$minutes = \OC::$server->getConfig()->getSystemValue(
+			'ldapUserCleanupInterval', strval($this->defaultIntervalMin));
+		$this->setInterval(intval($minutes) * 60);
 	}
 
 	/**
@@ -97,7 +104,6 @@ class CleanUp extends \OC\BackgroundJob\TimedJob {
 		if(!$this->isCleanUpAllowed()) {
 			return;
 		}
-
 		$users = $this->getMappedUsers($this->limit, $this->getOffset());
 		if(!is_array($users)) {
 			//something wrong? Let's start from the beginning next time and
@@ -142,7 +148,8 @@ class CleanUp extends \OC\BackgroundJob\TimedJob {
 	 * @return bool
 	 */
 	private function isCleanUpEnabled() {
-		return (bool)$this->ocConfig->getSystemValue('ldapUserCleanupEnabled', '0');
+		return (bool)$this->ocConfig->getSystemValue(
+			'ldapUserCleanupInterval', strval($this->defaultIntervalMin));
 	}
 
 	/**
