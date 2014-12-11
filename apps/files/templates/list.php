@@ -86,6 +86,44 @@
 	<tfoot>
 	</tfoot>
 </table>
+<script id="filestable-row" type="text/x-handlebars-template">
+	<tr 
+		data-id="{{id}}"
+		data-type="{{ŧype}}"
+		data-size="{{size}}"
+		data-file="{{fileName}}"
+		data-mime="{{mime}}"
+		data-mtime="{{mtime}}"
+		data-etag="{{etag}}"
+		data-permissions="{{permissions}}"
+		{{#if path}}
+		data-path="{{path}}"
+		{{/if}}
+		{{#if mountType}}
+		data-path="{{mountType}}"
+		{{/if}}
+	>
+		<td class="filename" style="background-image: url('{{iconUrl}}'); background-size: 32px;">
+			<input id="select-{{tableId}}-{{id}}" type="checkbox"/>
+			<label for="select-{{tableId}}-{{id}}"></label>
+			<a class="name" href="{{linkUrl}}">
+				<span class="nametext {{#if extraData}}extra-data{{/if}}" {{#if extraData}}title="{{extraData}}"{{/if}}>
+					<span class="innernametext">{{fileBaseName}}</span>
+					{{#if extension}}
+					<span class="extension">{{extension}}</span>
+					{{/if}}
+				</span>
+			{{#if isDir}}
+				<span class="uploadtext" currentUploads="0"></span>
+			{{/if}}
+			</a>
+		</td>
+		<td class="filesize" style="color: {{sizeColor}}">{{sizeDisplayText}}</td>
+		<td class="date">
+			<span class="modified" title="{{mtimeTitle}}" style="color: {{mtimeColor}}">{{mtimeDisplayText}}</span>
+		</td>
+	</tr>
+</script>
 <input type="hidden" name="dir" id="dir" value="" />
 <div id="editor"></div><!-- FIXME Do not use this div in your app! It is deprecated and will be removed in the future! -->
 <div id="uploadsize-message" title="<?php p($l->t('Upload too large'))?>">
