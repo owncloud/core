@@ -294,7 +294,7 @@ class Cache extends \Test\TestCase {
 		$id4 = $this->cache->put($file4, $fileData['foo2']);
 		$id5 = $this->cache->put($file5, $fileData['foo3']);
 
-		$tagManager = \OC::$server->getTagManager()->load('files', null, null, $user);
+		$tagManager = \OC::$server->getTagManager()->load('files', null, null, $userId);
 		$this->assertTrue($tagManager->tagAs($id1, 'tag1'));
 		$this->assertTrue($tagManager->tagAs($id1, 'tag2'));
 		$this->assertTrue($tagManager->tagAs($id2, 'tag2'));

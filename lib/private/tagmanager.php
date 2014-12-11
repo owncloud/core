@@ -70,15 +70,15 @@ class TagManager implements \OCP\ITagManager {
 	* @param string $type The type identifier e.g. 'contact' or 'event'.
 	* @param array $defaultTags An array of default tags to be used if none are stored.
 	* @param boolean $includeShared Whether to include tags for items shared with this user by others.
-	* @param \OCP\IUser $user user for which to retrieve the tags, defaults to the currently
+	* @param string $userId user for which to retrieve the tags, defaults to the currently
 	* logged in user
 	* @return \OCP\ITags
 	*/
-	public function load($type, $defaultTags = array(), $includeShared = false, \OCP\IUser $user = null) {
-		if (is_null($user)) {
-			$user = $this->userSession->getUser();
+	public function load($type, $defaultTags = array(), $includeShared = false, $userId = null) {
+		if (is_null($userId)) {
+			$userId = $this->userSession->getUser()->getUId();
 		}
-		return new Tags($this->mapper, $user->getUId(), $type, $defaultTags, $includeShared);
+		return new Tags($this->mapper, $userId, $type, $defaultTags, $includeShared);
 	}
 
 }
