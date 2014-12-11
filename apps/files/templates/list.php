@@ -100,7 +100,7 @@
 		data-path="{{path}}"
 		{{/if}}
 		{{#if mountType}}
-		data-path="{{mountType}}"
+		data-mounttype="{{mountType}}"
 		{{/if}}
 	>
 		<td class="filename" style="background-image: url('{{iconUrl}}'); background-size: 32px;">
