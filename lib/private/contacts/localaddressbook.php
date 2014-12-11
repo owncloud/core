@@ -56,10 +56,12 @@ class LocalAddressBook implements \OCP\IAddressBook {
 				if($property === 'FN') {
 					$result = $this->userManager->searchDisplayName($pattern);
 				} else if ($property === 'id') {
-					$result = $this->userManager->search($pattern);
+					$result = $this->userManager->get($pattern);
 				}
 				if (is_array($result)) {
 					$users = array_merge($users, $result);
+				} else {
+					$users[] = $result;
 				}
 			}
 		}
