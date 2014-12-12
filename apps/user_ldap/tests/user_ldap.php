@@ -121,7 +121,7 @@ class Test_User_Ldap_Direct extends \PHPUnit_Framework_TestCase {
 			   ->method('fetchListOfUsers')
 			   ->will($this->returnCallback(function($filter) {
 					if($filter === 'roland') {
-						return array('dnOfRoland,dc=test');
+						return array(array('dn' => 'dnOfRoland,dc=test'));
 					}
 					return array();
 			   }));

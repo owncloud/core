@@ -88,8 +88,10 @@ class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
 			}
 
 			$user->markLogin();
-			$dpn = $users[0][$this->access->connection->ldapUserDisplayName];
-			$user->storeDisplayName($dpn);
+			if(isset($users[0][$this->access->connection->ldapUserDisplayName])) {
+				$dpn = $users[0][$this->access->connection->ldapUserDisplayName];
+				$user->storeDisplayName($dpn);
+			}
 			if(isset($users[0]['uid'])) {
 				$user->storeLDAPUserName($users[0]['uid']);
 			} else if(isset($users[0]['samaccountname'])) {
