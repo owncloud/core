@@ -27,7 +27,7 @@ use OCA\user_ldap\lib\user\IUserTools;
 use OCA\user_ldap\lib\user\User;
 use OCA\user_ldap\lib\LogWrapper;
 use OCA\user_ldap\lib\FilesystemHelper;
-use OCA\User_LDAP\User\OfflineUser;
+use OCA\user_ldap\lib\user\OfflineUser;
 
 /**
  * Manager
@@ -145,7 +145,7 @@ class Manager {
 	/**
 	 * creates and returns an instance of OfflineUser for the specified user
 	 * @param string $id
-	 * @return \OCA\User_LDAP\User\OfflineUser
+	 * @return \OCA\user_ldap\lib\user\OfflineUser
 	 */
 	public function getDeletedUser($id) {
 		return new OfflineUser(
@@ -170,7 +170,7 @@ class Manager {
 	/**
 	 * @brief returns a User object by it's DN or ownCloud username
 	 * @param string the DN or username of the user
-	 * @return \OCA\user_ldap\lib\user\User | \OCA\user_ldap\User\OfflineUser | null
+	 * @return \OCA\user_ldap\lib\user\User | \OCA\user_ldap\lib\user\OfflineUser | null
 	 */
 	public function get($id) {
 		$this->checkAccess();

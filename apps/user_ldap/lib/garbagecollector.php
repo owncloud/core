@@ -23,7 +23,7 @@
 
 namespace OCA\User_LDAP;
 
-use OCA\User_LDAP\User\OfflineUser;
+use OCA\user_ldap\lib\user\OfflineUser;
 use OCA\user_ldap\lib\Access;
 
 /**
@@ -75,7 +75,7 @@ class GarbageCollector {
 	/**
 	 * reads LDAP users marked as deleted from the database
 	 * @param int $offset
-	 * @return \OCA\User_LDAP\User\OfflineUser[]
+	 * @return OCA\user_ldap\lib\user\OfflineUser[]
 	 */
 	private function fetchDeletedUsers($offset) {
 		$deletedUsers = $this->preferences->getUsersForValue(
@@ -97,7 +97,7 @@ class GarbageCollector {
 	/**
 	 * returns all LDAP users that are marked as deleted
 	 * @param int|null $offset
-	 * @return \OCA\User_LDAP\User\OfflineUser[]
+	 * @return OCA\user_ldap\lib\user\OfflineUser[]
 	 */
 	public function getDeletedUsers($offset = null) {
 		$key = $this->getDeletedUsersCacheKey($this->limit, $offset);
