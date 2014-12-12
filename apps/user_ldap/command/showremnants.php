@@ -22,7 +22,7 @@ class ShowRemnants extends Command {
 
 	protected function configure() {
 		$this
-			->setName('ldap:showRemnants')
+			->setName('ldap:show-remnants')
 			->setDescription('shows which users are not available on LDAP anymore, but have remnants in ownCloud.')
 		;
 	}
