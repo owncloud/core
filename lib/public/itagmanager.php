@@ -54,4 +54,11 @@ interface ITagManager {
 	* @return \OCP\ITags
 	*/
 	public function load($type, $defaultTags = array(), $includeShared = false, $userId = null);
+
+	/**
+	 * Delete all tags and relations for the given user id.
+	 *
+	 * @param string $userId user id
+	 */
+	public function deleteTagsForUser($userId);
 }
