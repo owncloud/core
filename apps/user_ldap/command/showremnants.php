@@ -14,7 +14,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use OCA\User_LDAP\GarbageCollector;
+use OCA\user_ldap\lib\user\DeletedUsersIndex;
 use OCA\User_LDAP\lib\Connection;
 use OCA\User_LDAP\lib\Access;
 
@@ -28,7 +28,7 @@ class ShowRemnants extends Command {
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$gc = new GarbageCollector(
+		$dui = new DeletedUsersIndex(
 			new \OC\Preferences(\OC_DB::getConnection()),
 			\OC::$server->getDatabaseConnection(),
 			$this->getAccess()
@@ -42,7 +42,7 @@ class ShowRemnants extends Command {
 		$rows = array();
 		$offset = 0;
 		do {
-			$resultSet = $gc->getDeletedUsers($offset);
+			$resultSet = $dui->getUsers($offset);
 			$offset += count($resultSet);
 			foreach($resultSet as $user) {
 				$hAS = $user->getHasActiveShares() ? 'Y' : 'N';

@@ -21,16 +21,16 @@
  *
  */
 
-namespace OCA\User_LDAP;
+namespace OCA\user_ldap\lib\user;
 
 use OCA\user_ldap\lib\user\OfflineUser;
 use OCA\user_ldap\lib\Access;
 
 /**
- * Class GarbageCollector
+ * Class DeletedUsersIndex
  * @package OCA\User_LDAP
  */
-class GarbageCollector {
+class DeletedUsersIndex {
 	/**
 	 * @var \OC\Preferences $preferences
 	 */
@@ -89,7 +89,7 @@ class GarbageCollector {
 
 		$this->deletedUsers[$key] = $userObjects;
 		if(count($userObjects) > 0) {
-			$this->hasDeletedUsers();
+			$this->hasUsers();
 		}
 		return $this->deletedUsers[$key];
 	}
@@ -99,7 +99,7 @@ class GarbageCollector {
 	 * @param int|null $offset
 	 * @return OCA\user_ldap\lib\user\OfflineUser[]
 	 */
-	public function getDeletedUsers($offset = null) {
+	public function getUsers($offset = null) {
 		$key = $this->getDeletedUsersCacheKey($this->limit, $offset);
 		if(is_array($this->deletedUsers) && isset($this->deletedUsers[$key])) {
 			return $this->deletedUsers[$key];
@@ -111,7 +111,7 @@ class GarbageCollector {
 	 * whether at least one user was detected as deleted
 	 * @return bool
 	 */
-	public function hasDeletedUsers() {
+	public function hasUsers() {
 		if($this->deletedUsers === false) {
 			$this->fetchDeletedUsers(0);
 		}
