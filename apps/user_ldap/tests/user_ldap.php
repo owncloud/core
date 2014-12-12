@@ -228,6 +228,24 @@ class Test_User_Ldap_Direct extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse($result);
 	}
 
+	public function testDeleteUserCancel() {
+		$access = $this->getAccessMock();
+		$backend = new UserLDAP($access);
+		$result = $backend->deleteUser('notme');
+		$this->assertFalse($result);
+	}
+
+	public function testDeleteUserSuccess() {
+		$access = $this->getAccessMock();
+		$backend = new UserLDAP($access);
+
+		$pref = \OC::$server->getConfig();
+		$pref->setUserValue('jeremy', 'user_ldap', 'isDeleted', 1);
+
+		$result = $backend->deleteUser('jeremy');
+		$this->assertTrue($result);
+	}
+
 	/**
 	 * Prepares the Access mock for getUsers tests
 	 * @param \OCA\user_ldap\lib\Access $access mock
