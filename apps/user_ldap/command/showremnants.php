@@ -34,8 +34,11 @@ class ShowRemnants extends Command {
 			$this->getAccess()
 		);
 
+		/** @var \Symfony\Component\Console\Helper\Table $table */
 		$table = $this->getHelperSet()->get('table');
-		$table->setHeaders(array('ownCloud name', 'Display Name', 'LDAP UID', 'LDAP DN', 'Last Login', 'Dir', 'Sharer'));
+		$table->setHeaders(array(
+			'ownCloud name', 'Display Name', 'LDAP UID', 'LDAP DN', 'Last Login',
+			'Dir', 'Sharer'));
 		$rows = array();
 		$offset = 0;
 		do {
@@ -43,12 +46,14 @@ class ShowRemnants extends Command {
 			$offset += count($resultSet);
 			foreach($resultSet as $user) {
 				$hAS = $user->getHasActiveShares() ? 'Y' : 'N';
+				$lastLogin = ($user->getLastLogin() > 0) ?
+					\OCP\Util::formatDate($user->getLastLogin()) : '-';
 				$rows[] = array(
 					$user->getOCName(),
 					$user->getDisplayName(),
 					$user->getUid(),
 					$user->getDN(),
-					\OCP\Util::formatDate($user->getLastLogin()),
+					$lastLogin,
 					$user->getHomePath(),
 					$hAS
 				);
