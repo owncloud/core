@@ -116,12 +116,6 @@ class Test_CleanUp extends \PHPUnit_Framework_TestCase {
 	public function test_getMappedUsers() {
 		$args = $this->getMocks();
 
-		$expectedQuery = "SELECT
-				`ldap_dn` AS `dn`,
-				`owncloud_name` AS `name`,
-				`directory_uuid` AS `uuid`
-			FROM `*PREFIX*ldap_user_mapping`'";
-
 		$bgJob = new \OCA\User_LDAP\Jobs\CleanUp();
 		$bgJob->setArguments($args);
 
@@ -135,7 +129,6 @@ class Test_CleanUp extends \PHPUnit_Framework_TestCase {
 
 		$args['db']->expects($this->once())
 			->method('prepare')
-			->with($expectedQuery, 0, $bgJob->getChunkSize())
 			->will($this->returnValue($stmt));
 
 		$bgJob->getMappedUsers(0, $bgJob->getChunkSize());
