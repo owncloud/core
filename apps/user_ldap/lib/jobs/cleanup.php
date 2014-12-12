@@ -46,7 +46,7 @@ class CleanUp extends \OC\BackgroundJob\TimedJob {
 	protected $ldapHelper;
 
 	/**
-	 * @var int $defaultIntervalMin in minutes
+	 * @var int $defaultIntervalMin default interval in minutes
 	 */
 	protected $defaultIntervalMin = 51;
 
