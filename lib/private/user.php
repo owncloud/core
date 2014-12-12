@@ -198,7 +198,6 @@ class OC_User {
 
 			// if delete was successful we clean-up the rest
 			if ($result) {
-				\OC::$server->getLogger()->debug('User was deleted ' . $uid, array('app' => 'core'));
 
 				// We have to delete the user from all groups
 				foreach (OC_Group::getUserGroups($uid) as $i) {
@@ -219,7 +218,6 @@ class OC_User {
 
 			return $result;
 		} else {
-			\OC::$server->getLogger()->debug('Could not get user ' . $uid, array('app' => 'core'));
 			return false;
 		}
 	}

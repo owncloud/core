@@ -188,10 +188,13 @@ class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
 		$pref = \OC::$server->getConfig();
 		$marked = $pref->getUserValue($uid, 'user_ldap', 'isDeleted', 0);
 		if(intval($marked) === 0) {
-			\OC::$server->getLogger()->debug('not marked as delted '.$uid, array('app' => 'user_ldap'));
+			\OC::$server->getLogger()->notice(
+				'User '.$uid . ' is not marked as deleted, not cleaning up.',
+				array('app' => 'user_ldap'));
 			return false;
 		}
-		\OC::$server->getLogger()->debug('IS marked as delted '.$uid, array('app' => 'user_ldap'));
+		\OC::$server->getLogger()->info('Cleaning up after user ' . $uid,
+			array('app' => 'user_ldap'));
 
 		//Get Home Directory out of user preferences so we can return it later,
 		//necessary for removing directories as done by OC_User.
