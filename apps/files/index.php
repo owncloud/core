@@ -24,6 +24,8 @@
 // Check if we are a user
 OCP\User::checkLoggedIn();
 
+\OC_Util::addVendorScript('core', 'handlebars/handlebars');
+
 // Load the files we need
 OCP\Util::addStyle('files', 'files');
 OCP\Util::addStyle('files', 'upload');
