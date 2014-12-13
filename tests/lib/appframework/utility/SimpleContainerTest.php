@@ -81,6 +81,12 @@ class SimpleContainerTest extends \Test\TestCase {
     }
 
 
+    public function testInstancesOnlyOnce() {
+        $object = $this->container->query('OC\AppFramework\Utility\ClassEmptyConstructor');
+        $object2 = $this->container->query('OC\AppFramework\Utility\ClassEmptyConstructor');
+        $this->assertSame($object, $object2);
+    }
+
     public function testNoConstructorSimple() {
         echo class_exists('ClassSimpleConstructor');
         $this->container->registerParameter('test', 'abc');

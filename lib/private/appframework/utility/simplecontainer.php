@@ -88,7 +88,9 @@ class SimpleContainer extends \Pimple\Container implements \OCP\IContainer {
 		if ($this->offsetExists($name)) {
 			return $this->offsetGet($name);
 		} else {
-			return $this->resolve($name);
+			$object = $this->resolve($name);
+			$this->registerParameter($name, $object);
+			return $object;
 		}
 	}
 
