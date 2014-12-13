@@ -126,8 +126,8 @@ describe('OCA.Sharing.App tests', function() {
 
 			fileListIn.setFiles([{
 				name: 'testdir',
-				type: 'dir',
 				path: '/somewhere/inside/subdir',
+				mimetype: 'httpd/unix-directory',
 				counterParts: ['user2'],
 				shareOwner: 'user2'
 			}]);

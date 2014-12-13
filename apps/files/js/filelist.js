@@ -536,7 +536,6 @@
 				id: parseInt($el.attr('data-id'), 10),
 				name: $el.attr('data-file'),
 				mimetype: $el.attr('data-mime'),
-				type: $el.attr('data-type'),
 				size: parseInt($el.attr('data-size'), 10),
 				etag: $el.attr('data-etag'),
 				permissions: parseInt($el.attr('data-permissions'), 10)
@@ -648,16 +647,12 @@
 			var td, simpleSize, basename, extension, sizeColor,
 				icon = OC.Util.replaceSVGIcon(fileData.icon),
 				name = fileData.name,
-				type = fileData.type || 'file',
 				mtime = parseInt(fileData.mtime, 10) || new Date().getTime(),
 				mime = fileData.mimetype,
+				type = (mime === 'httpd/unix-directory') ? 'dir' : 'file',
 				path = fileData.path,
 				linkUrl;
 			options = options || {};
-
-			if (type === 'dir') {
-				mime = mime || 'httpd/unix-directory';
-			}
 
 			//containing tr
 			var tr = $('<tr></tr>').attr({
@@ -870,8 +865,7 @@
 		 */
 		_renderRow: function(fileData, options) {
 			options = options || {};
-			var type = fileData.type || 'file',
-				mime = fileData.mimetype,
+			var mime = fileData.mimetype,
 				path = fileData.path || this.getCurrentDirectory(),
 				permissions = parseInt(fileData.permissions, 10) || 0;
 
@@ -879,9 +873,6 @@
 				permissions = permissions | OC.PERMISSION_UPDATE;
 			}
 
-			if (type === 'dir') {
-				mime = mime || 'httpd/unix-directory';
-			}
 			var tr = this._createRow(
 				fileData,
 				options
@@ -894,7 +885,7 @@
 				filenameTd.draggable(this._dragOptions);
 			}
 			// allow dropping on folders
-			if (this._folderDropOptions && fileData.type === 'dir') {
+			if (this._folderDropOptions && mime === 'httpd/unix-directory') {
 				filenameTd.droppable(this._folderDropOptions);
 			}
 
@@ -2054,10 +2045,10 @@
 		 * 0 if they are identify, 1 otherwise.
 		 */
 		name: function(fileInfo1, fileInfo2) {
-			if (fileInfo1.type === 'dir' && fileInfo2.type !== 'dir') {
+			if (fileInfo1.mimetype === 'httpd/unix-directory' && fileInfo2.mimetype !== 'httpd/unix-directory') {
 				return -1;
 			}
-			if (fileInfo1.type !== 'dir' && fileInfo2.type === 'dir') {
+			if (fileInfo1.mimetype !== 'httpd/unix-directory' && fileInfo2.mimetype === 'httpd/unix-directory') {
 				return 1;
 			}
 			return OC.Util.naturalSortCompare(fileInfo1.name, fileInfo2.name);

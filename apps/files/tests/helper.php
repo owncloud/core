@@ -24,7 +24,7 @@ class Test_Files_Helper extends \Test\TestCase {
 				'mtime' => $mtime,
 				'type' => $isDir ? 'dir' : 'file',
 				'mimetype' => $isDir ? 'httpd/unix-directory' : 'application/octet-stream'
-			)	
+			)
 		);
 	}
 
@@ -93,4 +93,164 @@ class Test_Files_Helper extends \Test\TestCase {
 		);
 	}
 
+	private function getMockStorage($storageId) {
+		$storage = $this->getMock('\OCP\Files\Storage');
+		$storage->expects($this->any())
+			->method('getId')
+			->will($this->returnValue($storageId));
+
+		return $storage;
+	}
+
+	function fileInfoDataProvider() {
+		return array(
+			array(
+				// regular file
+				new \OC\Files\FileInfo(
+					'/userid/files/storage/subdir/test.txt',
+					$this->getMockStorage('home::user1'),
+					'/subdir/test.txt',
+					array(
+						'fileid' => 123,
+						'parent' => 888,
+						'name' => 'test.txt',
+						'size' => 998,
+						'mtime' => 12345,
+						'type' => 'file',
+						'mimetype' => 'text/plain',
+						'permissions' => 31,
+						'etag' => 'deadbeef',
+						'extraData' => array('custom' => 'data'),
+					)
+				),
+				array(
+					'id' => 123,
+					'parentId' => 888,
+					'mtime' => 12345000,
+					'icon' => '/core/img/filetypes/text.svg',
+					'isPreviewAvailable' => true,
+					'name' => 'test.txt',
+					'path' => '/storage/subdir',
+					'permissions' => 31,
+					'mimetype' => 'text/plain',
+					'size' => 998,
+					'etag' => 'deadbeef',
+					'extraData' => array('custom' => 'data'),
+				),
+			),
+			array(
+				// folder
+				new \OC\Files\FileInfo(
+					'/userid/files/storage/subdir/test',
+					$this->getMockStorage('home::user1'),
+					'/subdir/test',
+					array(
+						'fileid' => 123,
+						'parent' => 888,
+						'name' => 'test',
+						'size' => 998,
+						'mtime' => 12345,
+						'mimetype' => 'httpd/unix-directory',
+						'permissions' => 31,
+						'etag' => 'deadbeef',
+						'extraData' => array('custom' => 'data'),
+					)
+				),
+				array(
+					'id' => 123,
+					'parentId' => 888,
+					'mtime' => 12345000,
+					'icon' => '/core/img/filetypes/folder.svg',
+					'name' => 'test',
+					'path' => '/storage/subdir',
+					'permissions' => 31,
+					'mimetype' => 'httpd/unix-directory',
+					'size' => 998,
+					'etag' => 'deadbeef',
+					'extraData' => array('custom' => 'data'),
+				),
+			),
+			array(
+				// shared folder
+				new \OC\Files\FileInfo(
+					'/userid/files/storage/subdir/test',
+					$this->getMockStorage('shared::user1'),
+					'/subdir/test',
+					array(
+						'fileid' => 123,
+						'parent' => 888,
+						'name' => 'test',
+						'size' => 998,
+						'mtime' => 12345,
+						'mimetype' => 'httpd/unix-directory',
+						'permissions' => 31,
+						'etag' => 'deadbeef',
+						'extraData' => array('custom' => 'data'),
+						'displayname_owner' => 'User One',
+						'is_share_mount_point' => true
+					)
+				),
+				array(
+					'id' => 123,
+					'parentId' => 888,
+					'mtime' => 12345000,
+					'icon' => '/core/img/filetypes/folder-shared.svg',
+					'name' => 'test',
+					'path' => '/storage/subdir',
+					'permissions' => 31,
+					'mimetype' => 'httpd/unix-directory',
+					'size' => 998,
+					'etag' => 'deadbeef',
+					'mountType' => 'shared',
+					'extraData' => array('custom' => 'data'),
+					'shareOwner' => 'User One',
+					'isShareMountPoint' => true
+				),
+			),
+			array(
+				// external folder
+				new \OC\Files\FileInfo(
+					'/userid/files/storage/subdir/test',
+					$this->getMockStorage('smb::'),
+					'/subdir/test',
+					array(
+						'fileid' => 123,
+						'parent' => 888,
+						'name' => 'test',
+						'size' => 998,
+						'mtime' => 12345,
+						'mimetype' => 'httpd/unix-directory',
+						'permissions' => 31,
+						'etag' => 'deadbeef',
+						'extraData' => array('custom' => 'data'),
+						'displayname_owner' => 'User One',
+						'is_share_mount_point' => true
+					)
+				),
+				array(
+					'id' => 123,
+					'parentId' => 888,
+					'mtime' => 12345000,
+					'icon' => '/core/img/filetypes/folder-external.svg',
+					'name' => 'test',
+					'path' => '/storage/subdir',
+					'permissions' => 31,
+					'mimetype' => 'httpd/unix-directory',
+					'size' => 998,
+					'etag' => 'deadbeef',
+					'mountType' => 'external',
+					'extraData' => array('custom' => 'data'),
+					'shareOwner' => 'User One',
+					'isShareMountPoint' => true
+				),
+			),
+		);
+	}
+
+	/**
+	 * @dataProvider fileInfoDataProvider
+	 */
+	public function testFormatFileInfo($fileInfo, $formattedData) {
+		$this->assertEquals($formattedData, \OCA\Files\Helper::formatFileInfo($fileInfo));
+	}
 }

@@ -48,7 +48,7 @@
 		 * @param update whether to update the display
 		 */
 		add: function(file, update) {
-			if (file.type === 'dir' || file.mime === 'httpd/unix-directory') {
+			if (file.type === 'dir' || file.mimetype === 'httpd/unix-directory') {
 				this.summary.totalDirs++;
 			}
 			else {
@@ -65,7 +65,7 @@
 		 * @param update whether to update the display
 		 */
 		remove: function(file, update) {
-			if (file.type === 'dir' || file.mime === 'httpd/unix-directory') {
+			if (file.type === 'dir' || file.mimetype === 'httpd/unix-directory') {
 				this.summary.totalDirs--;
 			}
 			else {
@@ -96,7 +96,7 @@
 
 			for (var i = 0; i < files.length; i++) {
 				file = files[i];
-				if (file.type === 'dir' || file.mime === 'httpd/unix-directory') {
+				if (file.type === 'dir' || file.mimetype === 'httpd/unix-directory') {
 					summary.totalDirs++;
 				}
 				else {

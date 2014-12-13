@@ -54,7 +54,7 @@ class Api {
 		$entry = array(
 			'name' => basename($mountPoint),
 			'path' => $path,
-			'type' => 'dir',
+			'mimetype' => 'httpd/unix-directory',
 			'backend' => $mountConfig['backend'],
 			'scope' => ( $isSystemMount ? 'system' : 'personal' ),
 			'permissions' => $permissions
