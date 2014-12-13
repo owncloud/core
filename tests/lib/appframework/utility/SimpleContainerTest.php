@@ -26,7 +26,7 @@ interface TestInterface {}
 
 class ClassEmptyConstructor {}
 
-class ClassSimpleConstructor {
+class ClassSimpleConstructor implements IInterfaceConstructor {
     public $test;
     public function __construct($test) {
         $this->test = $test;
@@ -37,6 +37,16 @@ class ClassComplexConstructor {
     public $class;
     public $test;
     public function __construct(ClassSimpleConstructor $class, $test) {
+        $this->class = $class;
+        $this->test = $test;
+    }
+}
+
+interface IInterfaceConstructor {}
+class ClassInterfaceConstructor {
+    public $class;
+    public $test;
+    public function __construct(IInterfaceConstructor $class, $test) {
         $this->class = $class;
         $this->test = $test;
     }
@@ -60,7 +70,7 @@ class SimpleContainerTest extends \Test\TestCase {
 
 
     /**
-     * @expectedException \OC\AppFramework\Utility\QueryException
+     * @expectedException \OCP\AppFramework\QueryException
      */
     public function testNothingRegistered() {
         $this->container->query('something really hard');
@@ -68,7 +78,7 @@ class SimpleContainerTest extends \Test\TestCase {
 
 
     /**
-     * @expectedException \OC\AppFramework\Utility\QueryException
+     * @expectedException \OCP\AppFramework\QueryException
      */
     public function testNotAClass() {
         $this->container->query('\OC\AppFramework\Utility\TestInterface');
@@ -87,8 +97,7 @@ class SimpleContainerTest extends \Test\TestCase {
         $this->assertSame($object, $object2);
     }
 
-    public function testNoConstructorSimple() {
-        echo class_exists('ClassSimpleConstructor');
+    public function testConstructorSimple() {
         $this->container->registerParameter('test', 'abc');
         $object = $this->container->query(
             'OC\AppFramework\Utility\ClassSimpleConstructor'
@@ -98,8 +107,7 @@ class SimpleContainerTest extends \Test\TestCase {
     }
 
 
-    public function testNoConstructorComplex() {
-        echo class_exists('ClassSimpleConstructor');
+    public function testConstructorComplex() {
         $this->container->registerParameter('test', 'abc');
         $object = $this->container->query(
             'OC\AppFramework\Utility\ClassComplexConstructor'
@@ -110,11 +118,24 @@ class SimpleContainerTest extends \Test\TestCase {
     }
 
 
+    public function testNoConstructorComplexInterface() {
+        $this->container->registerParameter('test', 'abc');
+        $this->container->registerService(
+        'OC\AppFramework\Utility\IInterfaceConstructor', function ($c) {
+            return $c->query('OC\AppFramework\Utility\ClassSimpleConstructor');
+        });
+        $object = $this->container->query(
+            'OC\AppFramework\Utility\ClassInterfaceConstructor'
+        );
+        $this->assertTrue($object instanceof ClassInterfaceConstructor);
+        $this->assertEquals('abc', $object->class->test);
+        $this->assertEquals('abc', $object->test);
+    }
+
     /**
-     * @expectedException \OC\AppFramework\Utility\QueryException
+     * @expectedException \OCP\AppFramework\QueryException
      */
-    public function testNoConstructorComplexNoTestParameterFound() {
-        echo class_exists('ClassSimpleConstructor');
+    public function testConstructorComplexNoTestParameterFound() {
         $object = $this->container->query(
             'OC\AppFramework\Utility\ClassComplexConstructor'
         );

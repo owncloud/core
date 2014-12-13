@@ -24,8 +24,8 @@
 
 namespace OC\AppFramework;
 
-use OC\AppFramework\DependencyInjection\DIContainer;
-
+use \OC\AppFramework\DependencyInjection\DIContainer;
+use \OCP\AppFramework\QueryException;
 
 /**
  * Entry point for every request in your app. You can consider this as your
@@ -62,7 +62,7 @@ class App {
 		// first try $controllerName then go for \OCA\AppName\Controller\$controllerName
 		try {
 			$controller = $container->query($controllerName);
-		} catch(QueryExcpetion $e) {
+		} catch(QueryException $e) {
 			$appNameSpace = App::buildAppNamespace($appName);
 			$controllerName = $appNameSpace . '\\Controller\\' . $controllerName;
 			$controller = $container->query($controllerName);

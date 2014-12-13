@@ -308,8 +308,6 @@ class Router implements IRouter {
 
 			$applicationClassName = $appNameSpace . '\\AppInfo\\Application';
 
-			error_log($applicationClassName);
-
 			if (class_exists($applicationClassName)) {
 				$application = new $applicationClassName();
 			} else {

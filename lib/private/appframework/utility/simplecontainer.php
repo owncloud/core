@@ -22,6 +22,8 @@
 
 namespace OC\AppFramework\Utility;
 
+use \OCP\AppFramework\QueryException;
+
 /**
  * Class SimpleContainer
  *
@@ -89,7 +91,9 @@ class SimpleContainer extends \Pimple\Container implements \OCP\IContainer {
 			return $this->offsetGet($name);
 		} else {
 			$object = $this->resolve($name);
-			$this->registerParameter($name, $object);
+			$this->registerService($name, function () use ($object) {
+				return $object;
+			});
 			return $object;
 		}
 	}

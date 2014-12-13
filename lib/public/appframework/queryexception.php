@@ -20,6 +20,9 @@
  *
  */
 
-namespace OC\AppFramework\Utility;
+namespace OCP\AppFramework;
 
-class QueryException extends \Exception {}
+use Exception;
+
+
+class QueryException extends Exception {}
