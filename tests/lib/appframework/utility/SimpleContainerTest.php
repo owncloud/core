@@ -104,4 +104,15 @@ class SimpleContainerTest extends \Test\TestCase {
     }
 
 
+    /**
+     * @expectedException \OC\AppFramework\Utility\QueryException
+     */
+    public function testNoConstructorComplexNoTestParameterFound() {
+        echo class_exists('ClassSimpleConstructor');
+        $object = $this->container->query(
+            'OC\AppFramework\Utility\ClassComplexConstructor'
+        );
+    }
+
+
 }
