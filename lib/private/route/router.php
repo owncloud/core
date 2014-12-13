@@ -304,12 +304,11 @@ class Router implements IRouter {
 	 */
 	private function setupRoutes($routes, $appName) {
 		if (is_array($routes)) {
-			$appNameSpace = '';
-			foreach (explode('_', $appName) as $part) {
-				$appNameSpace .= ucfirst($part);
-			}
+			$appNameSpace = App::buildAppNamespace($appName);
 
-			$applicationClassName = 'OCA\\' . $appNameSpace . '\\AppInfo\\Application';
+			$applicationClassName = $appNameSpace . '\\AppInfo\\Application';
+
+			error_log($applicationClassName);
 
 			if (class_exists($applicationClassName)) {
 				$application = new $applicationClassName();

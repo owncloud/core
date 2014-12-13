@@ -37,6 +37,12 @@ use OC\AppFramework\routing\RouteConfig;
  * to be registered using IContainer::registerService
  */
 class App {
+
+	public static function buildAppNamespace($appName, $topNamespace='OCA\\') {
+		return \OC\AppFramework\App::buildAppNamespace($appName, $topNamespace);
+	}
+
+
 	/**
 	 * @param array $urlParams an array with variables extracted from the routes
 	 */

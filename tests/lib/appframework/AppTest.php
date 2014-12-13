@@ -77,6 +77,18 @@ class AppTest extends \Test\TestCase {
 	}
 
 
+	public function testBuildAppNamespace() {
+		$ns = App::buildAppNamespace('some_app');
+		$this->assertEquals('OCA\SomeApp', $ns);
+	}
+
+
+	public function testBuildAppNamespaceCore() {
+		$ns = App::buildAppNamespace('some_app', 'OC\\');
+		$this->assertEquals('OC\SomeApp', $ns);
+	}
+
+
 	/*
 	FIXME: this complains about shit headers which are already sent because
 	of the content length. Would be cool if someone could fix this

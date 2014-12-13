@@ -36,6 +36,15 @@ use OC\AppFramework\DependencyInjection\DIContainer;
 class App {
 
 
+	public static function buildAppNamespace($appName, $topNamespace='OCA\\') {
+		$appNameSpace = '';
+		foreach (explode('_', $appName) as $part) {
+			$appNameSpace .= ucfirst($part);
+		}
+		return $topNamespace .= $appNameSpace;
+	}
+
+
 	/**
 	 * Shortcut for calling a controller method and printing the result
 	 * @param string $controllerName the name of the controller under which it is
@@ -48,7 +57,16 @@ class App {
 		if (!is_null($urlParams)) {
 			$container['urlParams'] = $urlParams;
 		}
-		$controller = $container[$controllerName];
+		$appName = $container['AppName'];
+
+		// first try $controllerName then go for \OCA\AppName\Controller\$controllerName
+		try {
+			$controller = $container->query($controllerName);
+		} catch(QueryExcpetion $e) {
+			$appNameSpace = App::buildAppNamespace($appName);
+			$controllerName = $appNameSpace . '\\Controller\\' . $controllerName;
+			$controller = $container->query($controllerName);
+		}
 
 		// initialize the dispatcher and run all the middleware before the controller
 		$dispatcher = $container['Dispatcher'];
