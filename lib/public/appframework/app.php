@@ -48,8 +48,8 @@ class App {
 	 * the transformed app id, defaults to OCA\
 	 * @return string the starting namespace for the app
 	 */
-	public static function buildAppNamespace($appName, $topNamespace='OCA\\') {
-		return \OC\AppFramework\App::buildAppNamespace($appName, $topNamespace);
+	public static function buildAppNamespace($appId, $topNamespace='OCA\\') {
+		return \OC\AppFramework\App::buildAppNamespace($appId, $topNamespace);
 	}
 
 
