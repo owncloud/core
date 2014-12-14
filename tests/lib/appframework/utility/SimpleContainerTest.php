@@ -24,7 +24,7 @@ namespace OC\AppFramework\Utility;
 
 interface TestInterface {}
 
-class ClassEmptyConstructor {}
+class ClassEmptyConstructor implements IInterfaceConstructor {}
 
 class ClassSimpleConstructor implements IInterfaceConstructor {
     public $test;
@@ -118,7 +118,7 @@ class SimpleContainerTest extends \Test\TestCase {
     }
 
 
-    public function testNoConstructorComplexInterface() {
+    public function testConstructorComplexInterface() {
         $this->container->registerParameter('test', 'abc');
         $this->container->registerService(
         'OC\AppFramework\Utility\IInterfaceConstructor', function ($c) {
@@ -131,6 +131,25 @@ class SimpleContainerTest extends \Test\TestCase {
         $this->assertEquals('abc', $object->class->test);
         $this->assertEquals('abc', $object->test);
     }
+
+
+    public function tesOverrideService() {
+        $this->container->registerParameter('test', 'abc');
+        $this->container->registerService(
+        'OC\AppFramework\Utility\IInterfaceConstructor', function ($c) {
+            return $c->query('OC\AppFramework\Utility\ClassSimpleConstructor');
+        });
+        $this->container->registerService(
+        'OC\AppFramework\Utility\IInterfaceConstructor', function ($c) {
+            return $c->query('OC\AppFramework\Utility\ClassEmptyConstructor');
+        });
+        $object = $this->container->query(
+            'OC\AppFramework\Utility\ClassInterfaceConstructor'
+        );
+        $this->assertTrue($object instanceof ClassEmptyConstructor);
+        $this->assertEquals('abc', $object->test);
+    }
+
 
     /**
      * @expectedException \OCP\AppFramework\QueryException

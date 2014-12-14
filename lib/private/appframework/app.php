@@ -68,6 +68,8 @@ class App {
 			$controller = $container->query($controllerName);
 		}
 
+		error_log($controller);
+
 		// initialize the dispatcher and run all the middleware before the controller
 		$dispatcher = $container['Dispatcher'];
 
