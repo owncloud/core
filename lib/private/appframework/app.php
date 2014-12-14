@@ -36,9 +36,18 @@ use \OCP\AppFramework\QueryException;
 class App {
 
 
-	public static function buildAppNamespace($appName, $topNamespace='OCA\\') {
+	/**
+	 * Turns an app id into a namespace by convetion. The id is split at the
+	 * underscores, all parts are camelcased and reassembled. e.g.:
+	 * some_app_id -> OCA\SomeAppId
+	 * @param string $appId the app id
+	 * @param string $topNamespace the namespace which should be prepended to
+	 * the transformed app id, defaults to OCA\
+	 * @return string the starting namespace for the app
+	 */
+	public static function buildAppNamespace($appId, $topNamespace='OCA\\') {
 		$appNameSpace = '';
-		foreach (explode('_', $appName) as $part) {
+		foreach (explode('_', $appId) as $part) {
 			$appNameSpace .= ucfirst($part);
 		}
 		return $topNamespace .= $appNameSpace;
