@@ -211,7 +211,7 @@ class UsersController extends Controller {
 
 		return new DataResponse(
 			$this->formatUserForIndex($user, $userGroups),
-			Http::STATUS_OK
+			Http::STATUS_CREATED
 		);
 
 	}
@@ -280,6 +280,7 @@ class UsersController extends Controller {
 	 * Set the mail address of a user
 	 *
 	 * @NoAdminRequired
+	 * @NoSubadminRequired
 	 *
 	 * @param string $id
 	 * @param string $mailAddress
@@ -296,7 +297,7 @@ class UsersController extends Controller {
 				array(
 					'status' => 'error',
 					'data' => array(
-						'message' => (string)$this->l10n->t('Authentication error')
+						'message' => (string)$this->l10n->t('Forbidden')
 					)
 				),
 				Http::STATUS_FORBIDDEN

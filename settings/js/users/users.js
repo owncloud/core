@@ -718,17 +718,19 @@ $(document).ready(function () {
 				if (event.keyCode === 13) {
 					if (event.keyCode === 13) {
 						if ($(this).val().length > 0) {
-							$.post(
-								OC.generateUrl('/settings/users/{id}/mailAddress', {id: uid}),
-								{mailAddress: $(this).val()}
-
-							).fail(function (result) {
+							$input.blur();
+							$.ajax({
+								type: 'PUT',
+								url: OC.generateUrl('/settings/users/{id}/mailAddress', {id: uid}),
+								data: {
+									mailAddress: $(this).val()
+								}
+							}).fail(function (result) {
 								OC.Notification.show(result.responseJSON.data.message);
 								// reset the values
 								$tr.data('mailAddress', mailAddress);
 								$tr.children('.mailAddress').children('span').text(escapeHTML(mailAddress));
 							});
-							$input.blur();
 						} else {
 							$input.blur();
 						}

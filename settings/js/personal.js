@@ -46,10 +46,13 @@ function changeEmailAddress () {
 	emailInfo.defaultValue = emailInfo.val();
 	OC.msg.startSaving('#lostpassword .msg');
 	var post = $("#lostpassword").serializeArray();
-	$.post(
-		OC.generateUrl('/settings/users/{id}/mailAddress', {id: OC.currentUser}),
-		{mailAddress: post[0].value}
-	).done(function(result){
+	$.ajax({
+		type: 'PUT',
+		url: OC.generateUrl('/settings/users/{id}/mailAddress', {id: OC.currentUser}),
+		data: {
+			mailAddress: post[0].value
+		}
+	}).done(function(result){
 		// I know the following 4 lines look weird, but that is how it works
 		// in jQuery -  for success the first parameter is the result
 		//              for failure the first parameter is the result object

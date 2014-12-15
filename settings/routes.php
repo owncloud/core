@@ -23,7 +23,7 @@ $application->registerRoutes($this, array(
 		array('name' => 'SecuritySettings#enforceSSL', 'url' => '/settings/admin/security/ssl', 'verb' => 'POST'),
 		array('name' => 'SecuritySettings#enforceSSLForSubdomains', 'url' => '/settings/admin/security/ssl/subdomains', 'verb' => 'POST'),
 		array('name' => 'SecuritySettings#trustedDomains', 'url' => '/settings/admin/security/trustedDomains', 'verb' => 'POST'),
-		array('name' => 'Users#setMailAddress', 'url' => '/settings/users/{id}/mailAddress', 'verb' => 'POST'),
+		array('name' => 'Users#setMailAddress', 'url' => '/settings/users/{id}/mailAddress', 'verb' => 'PUT'),
 	)
 ));
 
