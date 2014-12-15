@@ -81,7 +81,8 @@ class UsersController extends Controller {
 			'quota' => $this->config->getUserValue($user->getUID(), 'files', 'quota', 'default'),
 			'storageLocation' => $user->getHome(),
 			'lastLogin' => $user->getLastLogin(),
-			'backend' => $user->getBackendClassName()
+			'backend' => $user->getBackendClassName(),
+			'email' => $this->config->getUserValue($user->getUID(), 'settings', 'email', '')
 		);
 	}
 
@@ -205,14 +206,12 @@ class UsersController extends Controller {
 			}
 		}
 
+		// fetch users groups
+		$userGroups = $this->groupManager->getUserGroupIds($user);
+
 		return new DataResponse(
-			array(
-				'username' => $username,
-				'groups' => $this->groupManager->getUserGroupIds($user),
-				'storageLocation' => $user->getHome(),
-				'backend' => $user->getBackendClassName()
-			),
-			Http::STATUS_CREATED
+			$this->formatUserForIndex($user, $userGroups),
+			Http::STATUS_OK
 		);
 
 	}
@@ -274,6 +273,72 @@ class UsersController extends Controller {
 				)
 			),
 			Http::STATUS_FORBIDDEN
+		);
+	}
+
+	/**
+	 * Set the mail address of a user
+	 *
+	 * @NoAdminRequired
+	 *
+	 * @param string $id
+	 * @param string $mailAddress
+	 * @return DataResponse
+	 *
+	 * TODO: Tidy up and write unit tests - code is mainly static method calls
+	 */
+	public function setMailAddress($id, $mailAddress) {
+		// FIXME: Remove this static function call at some point…
+		if($this->userSession->getUser()->getUID() !== $id &&
+			!$this->isAdmin &&
+			!\OC_SubAdmin::isUserAccessible($this->userSession->getUser()->getUID(), $id)) {
+			return new DataResponse(
+				array(
+					'status' => 'error',
+					'data' => array(
+						'message' => (string)$this->l10n->t('Authentication error')
+					)
+				),
+				Http::STATUS_FORBIDDEN
+			);
+		}
+
+		if($mailAddress !== '' && !\OC_Mail::validateAddress($mailAddress)) {
+			return new DataResponse(
+				array(
+					'status' => 'error',
+					'data' => array(
+						'message' => (string)$this->l10n->t('Invalid mail address')
+					)
+				),
+				Http::STATUS_UNPROCESSABLE_ENTITY
+			);
+		}
+
+		if($id === '{id}'){
+			return new DataResponse(
+				array(
+					'status' => 'error',
+					'data' => array(
+						'message' => (string)$this->l10n->t('Invalid user')
+					)
+				),
+				Http::STATUS_UNPROCESSABLE_ENTITY
+			);
+		}
+
+		$this->config->setUserValue($id, 'settings', 'email', $mailAddress);
+
+		return new DataResponse(
+			array(
+				'status' => 'success',
+				'data' => array(
+					'username' => $id,
+					'mailAddress' => $mailAddress,
+					'message' => (string)$this->l10n->t('Email saved')
+				)
+			),
+			Http::STATUS_OK
 		);
 	}
 
