@@ -723,7 +723,7 @@ $(document).ready(function () {
 								{mailAddress: $(this).val()}
 
 							).fail(function (result) {
-								OC.Notification.show(result.responeJSON.data.message);
+								OC.Notification.show(result.responseJSON.data.message);
 								// reset the values
 								$tr.data('mailAddress', mailAddress);
 								$tr.children('.mailAddress').children('span').text(escapeHTML(mailAddress));

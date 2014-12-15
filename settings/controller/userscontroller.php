@@ -315,7 +315,8 @@ class UsersController extends Controller {
 			);
 		}
 
-		if($id === '{id}'){
+		$user = $this->userManager->get($id);
+		if(!$user){
 			return new DataResponse(
 				array(
 					'status' => 'error',
@@ -324,6 +325,18 @@ class UsersController extends Controller {
 					)
 				),
 				Http::STATUS_UNPROCESSABLE_ENTITY
+			);
+		}
+
+		if(!$user->canChangeDisplayName()){
+			return new DataResponse(
+				array(
+					'status' => 'error',
+					'data' => array(
+						'message' => (string)$this->l10n->t('Unable to change mail address')
+					)
+				),
+				Http::STATUS_FORBIDDEN
 			);
 		}
 
