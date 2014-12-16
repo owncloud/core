@@ -710,7 +710,7 @@ $(document).ready(function () {
 		var $tr = $td.closest('tr');
 		var uid = UserList.getUID($td);
 		var mailAddress = escapeHTML(UserList.getMailAddress($td));
-		var $input = $('<input type="text" value="' + mailAddress + '">');
+		var $input = $('<input type="text">').val(mailAddress);
 		$td.children('span').replaceWith($input);
 		$input
 			.focus()
@@ -729,7 +729,7 @@ $(document).ready(function () {
 								OC.Notification.show(result.responseJSON.data.message);
 								// reset the values
 								$tr.data('mailAddress', mailAddress);
-								$tr.children('.mailAddress').children('span').text(escapeHTML(mailAddress));
+								$tr.children('.mailAddress').children('span').text(mailAddress);
 							});
 						} else {
 							$input.blur();
@@ -739,8 +739,9 @@ $(document).ready(function () {
 			})
 			.blur(function () {
 				var mailAddress = $input.val();
+				var $span = $('<span>').text(mailAddress);
 				$tr.data('mailAddress', mailAddress);
-				$input.replaceWith('<span>' + escapeHTML(mailAddress) + '</span>');
+				$input.replaceWith($span);
 			});
 	});
 
