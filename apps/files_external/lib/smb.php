@@ -45,7 +45,7 @@ class SMB extends \OC\Files\Storage\StreamWrapper{
 		return 'smb::' . $this->user . '@' . $this->host . '/' . $this->share . '/' . $this->root;
 	}
 
-	public function constructUrl($path) {
+	public function constructUrl($path, $withCredentials = true) {
 		if (substr($path, -1)=='/') {
 			$path = substr($path, 0, -1);
 		}
@@ -55,9 +55,12 @@ class SMB extends \OC\Files\Storage\StreamWrapper{
 		// remove trailing dots which some versions of samba don't seem to like
 		$path = rtrim($path, '.');
 		$path = urlencode($path);
-		$user = urlencode($this->user);
-		$pass = urlencode($this->password);
-		return 'smb://'.$user.':'.$pass.'@'.$this->host.$this->share.$this->root.$path;
+		if ($withCredentials) {
+			$user = urlencode($this->user);
+			$pass = urlencode($this->password);
+			return 'smb://'.$user.':'.$pass.'@'.$this->host.$this->share.$this->root.$path;
+		}
+		return 'smb://'.$this->host.$this->share.$this->root.$path;
 	}
 
 	public function stat($path) {
@@ -141,6 +144,19 @@ class SMB extends \OC\Files\Storage\StreamWrapper{
 	public static function checkDependencies() {
 		$smbClientExists = (bool) \OC_Helper::findBinaryPath('smbclient');
 		return $smbClientExists ? true : array('smbclient');
+	}
+
+	/**
+	 * A custom storage implementation can return an url for direct download of a give file.
+	 *
+	 * For now the returned array can hold the parameter url - in future more attributes might follow.
+	 *
+	 * @param string $path
+	 * @return array
+	 */
+	public function getDirectDownload($path) {
+		// FIXME: we need a global mount config which enables/disables direct download links
+		return $this->constructUrl($path, false);
 	}
 
 }
