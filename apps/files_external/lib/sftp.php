@@ -39,12 +39,20 @@ class SFTP extends \OC\Files\Storage\Common {
 
 		$this->host = $params['host'];
 		
+		//deals with sftp://server example
 		$proto = strpos($this->host, '://');
-
-		
 		if ($proto != false) {
 			$this->host = substr($this->host, $proto+3);
 		}
+
+		//deals with server:port
+		$HasPort = strpos($this->host,':');
+		if($HasPort != false){
+			$pieces = explode(":", $this->host);
+			$this->host = $pieces[0];
+			$this->port = $pieces[1];
+		}
+
 		$this->user = $params['user'];
 		$this->password = $params['password'];
 		$this->root
