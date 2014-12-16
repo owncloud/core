@@ -24,8 +24,8 @@
 
 namespace OC\AppFramework;
 
-use OC\AppFramework\DependencyInjection\DIContainer;
-
+use \OC\AppFramework\DependencyInjection\DIContainer;
+use \OCP\AppFramework\QueryException;
 
 /**
  * Entry point for every request in your app. You can consider this as your
@@ -34,6 +34,24 @@ use OC\AppFramework\DependencyInjection\DIContainer;
  * Handles all the dependency injection, controllers and output flow
  */
 class App {
+
+
+	/**
+	 * Turns an app id into a namespace by convetion. The id is split at the
+	 * underscores, all parts are camelcased and reassembled. e.g.:
+	 * some_app_id -> OCA\SomeAppId
+	 * @param string $appId the app id
+	 * @param string $topNamespace the namespace which should be prepended to
+	 * the transformed app id, defaults to OCA\
+	 * @return string the starting namespace for the app
+	 */
+	public static function buildAppNamespace($appId, $topNamespace='OCA\\') {
+		$appNameSpace = '';
+		foreach (explode('_', $appId) as $part) {
+			$appNameSpace .= ucfirst($part);
+		}
+		return $topNamespace .= $appNameSpace;
+	}
 
 
 	/**
@@ -48,7 +66,16 @@ class App {
 		if (!is_null($urlParams)) {
 			$container['urlParams'] = $urlParams;
 		}
-		$controller = $container[$controllerName];
+		$appName = $container['AppName'];
+
+		// first try $controllerName then go for \OCA\AppName\Controller\$controllerName
+		try {
+			$controller = $container->query($controllerName);
+		} catch(QueryException $e) {
+			$appNameSpace = App::buildAppNamespace($appName);
+			$controllerName = $appNameSpace . '\\Controller\\' . $controllerName;
+			$controller = $container->query($controllerName);
+		}
 
 		// initialize the dispatcher and run all the middleware before the controller
 		$dispatcher = $container['Dispatcher'];

@@ -66,6 +66,10 @@ class DIContainer extends SimpleContainer implements IAppContainer{
 		/**
 		 * Http
 		 */
+		$this->registerService('OCP\\IRequest', function($c) {
+			return $c->query('Request');
+		});
+
 		$this->registerService('Request', function($c) {
 			/** @var $c SimpleContainer */
 			/** @var $server SimpleContainer */
