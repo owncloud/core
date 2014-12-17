@@ -47,6 +47,11 @@ class Session implements IUserSession, Emitter {
 	protected $activeUser;
 
 	/**
+	 * @var bool
+	 */
+	private $incognitoState = false;
+
+	/**
 	 * @param \OCP\IUserManager $manager
 	 * @param \OCP\ISession $session
 	 */
@@ -105,7 +110,39 @@ class Session implements IUserSession, Emitter {
 	}
 
 	/**
-	 * set the currently active user
+	 * Used to enable or disable the incognito mode
+	 *
+	 * @deprecated The incognito mode has been implemented as work-around around
+	 * 				ownCloud applications that otherwise construct the wrong path
+	 * 				when handling public files. One example includes the encryption
+	 * 				app which otherwise seems to use the wrong encryption keys.
+	 * 				If your app requires this mode it might be a better choice to
+	 * 				fix the underlying problems before relying on this method.
+	 * @link https://github.com/owncloud/core/issues/12888
+	 * @param bool $state True for enabling the incognito mode, false for disabling it.
+	 */
+	public function setIncognitoMode($state) {
+		$this->incognitoState = $state;
+	}
+
+	/**
+	 * Get the current incognito state of the
+	 *
+	 * @deprecated The incognito mode has been implemented as work-around around
+	 * 				ownCloud applications that otherwise construct the wrong path
+	 * 				when handling public files. One example includes the encryption
+	 * 				app which otherwise seems to use the wrong encryption keys.
+	 * 				If your app requires this mode it might be a better choice to
+	 * 				fix the underlying problems before relying on this method.
+	 * @link https://github.com/owncloud/core/issues/12888
+	 * @return bool True if incognito mode is enabled, false otherwise
+	 */
+	public function isIncognito() {
+		return $this->incognitoState;
+	}
+
+	/**
+	 * Set the currently active user
 	 *
 	 * @param \OC\User\User|null $user
 	 */
@@ -119,11 +156,18 @@ class Session implements IUserSession, Emitter {
 	}
 
 	/**
-	 * get the current active user
+	 * Get the current active user
+	 * This function is influenced by the incognito mode an thus
+	 * might also return null when the incognito mode is enabled.
+	 * (for example on public sharing pages)
 	 *
-	 * @return \OC\User\User
+	 * @return \OCP\IUser|null IUser or null when no user found
 	 */
 	public function getUser() {
+		if($this->isIncognito()) {
+			return null;
+		}
+
 		if ($this->activeUser) {
 			return $this->activeUser;
 		} else {
@@ -153,9 +197,13 @@ class Session implements IUserSession, Emitter {
 	/**
 	 * get the login name of the current user
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	public function getLoginName() {
+		if($this->isIncognito()) {
+			return null;
+		}
+
 		if ($this->activeUser) {
 			return $this->session->get('loginname');
 		} else {

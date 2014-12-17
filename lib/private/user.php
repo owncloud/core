@@ -59,8 +59,6 @@ class OC_User {
 
 	private static $_setupedBackends = array();
 
-	// bool, stores if a user want to access a resource anonymously, e.g if he opens a public link
-	private static $incognitoMode = false;
 
 	/**
 	 * registers backend
@@ -324,8 +322,8 @@ class OC_User {
 	 * @return bool
 	 */
 	public static function isLoggedIn() {
-		if (\OC::$server->getSession()->get('user_id') !== null && self::$incognitoMode === false) {
-			return self::userExists(\OC::$server->getSession()->get('user_id'));
+		if (!is_null(\OC::$server->getUserSession()->getUser())) {
+			return self::userExists(\OC::$server->getUserSession()->getUser()->getUID());
 		}
 
 		// Check whether the user has authenticated using Basic Authentication
@@ -338,11 +336,12 @@ class OC_User {
 
 	/**
 	 * set incognito mode, e.g. if a user wants to open a public link
-	 * @param bool $status
+	 *
+	 * @deprecated Use \OCP\IUserSession::setIncognitoMode
+	 * @param bool $state
 	 */
-	public static function setIncognitoMode($status) {
-		self::$incognitoMode = $status;
-
+	public static function setIncognitoMode($state) {
+		\OC::$server->getUserSession()->setIncognitoMode($state);
 	}
 
 	/**
@@ -367,21 +366,21 @@ class OC_User {
 	 * @return bool
 	 */
 	public static function isAdminUser($uid) {
-		if (OC_Group::inGroup($uid, 'admin') && self::$incognitoMode === false) {
+		if (OC_Group::inGroup($uid, 'admin')) {
 			return true;
 		}
 		return false;
 	}
 
-
 	/**
 	 * get the user id of the user currently logged in.
+	 *
+	 * @deprecated Use \OC::$server->getUserSession()->getUser()->getUID()
 	 * @return string uid or false
 	 */
 	public static function getUser() {
-		$uid = \OC::$server->getSession() ? \OC::$server->getSession()->get('user_id') : null;
-		if (!is_null($uid) && self::$incognitoMode === false) {
-			return $uid;
+		if (!is_null(\OC::$server->getUserSession()->getUser())) {
+			return \OC::$server->getUserSession()->getUser()->getUID();
 		} else {
 			return false;
 		}
@@ -389,32 +388,28 @@ class OC_User {
 
 	/**
 	 * get the display name of the user currently logged in.
+	 *
+	 * @deprecated Use \OC::$server->getUserManager()->get($uid)->getDisplayName()
 	 * @param string $uid
-	 * @return string uid or false
+	 * @return string|false uid or false
 	 */
 	public static function getDisplayName($uid = null) {
-		if ($uid) {
-			$user = self::getManager()->get($uid);
-			if ($user) {
-				return $user->getDisplayName();
-			} else {
-				return $uid;
-			}
-		} else {
-			$user = self::getUserSession()->getUser();
-			if ($user) {
-				return $user->getDisplayName();
-			} else {
-				return false;
-			}
+		if($uid === null) {
+			$uid = \OC::$server->getUserSession()->getUser()->getUID();
 		}
+
+		$user = \OC::$server->getUserManager()->get($uid);
+
+		if(is_null($user)) {
+			return false;
+		}
+
+		return $user->getDisplayName();
 	}
 
 	/**
 	 * Autogenerate a password
 	 * @return string
-	 *
-	 * generates a password
 	 */
 	public static function generatePassword() {
 		return \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate(30);
@@ -426,8 +421,6 @@ class OC_User {
 	 * @param string $password The new password
 	 * @param string $recoveryPassword for the encryption app to reset encryption keys
 	 * @return bool
-	 *
-	 * Change the password of a user
 	 */
 	public static function setPassword($uid, $password, $recoveryPassword = null) {
 		$user = self::getManager()->get($uid);

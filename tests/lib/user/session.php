@@ -34,6 +34,27 @@ class Session extends \Test\TestCase {
 		$this->assertEquals('foo', $user->getUID());
 	}
 
+	public function testGetUserWithIncognitoMode() {
+		$session = $this->getMock('\OC\Session\Memory', array(), array(''));
+		$session->method('get')
+			->with('user_id')
+			->will($this->returnValue('foo'));
+
+		$backend = $this->getMock('OC_User_Dummy');
+		$backend->method('userExists')
+			->with('foo')
+			->will($this->returnValue(true));
+
+		$manager = new \OC\User\Manager();
+		$manager->registerBackend($backend);
+
+		$userSession = new \OC\User\Session($manager, $session);
+		$userSession->setIncognitoMode(true);
+		$this->assertSame(null, $userSession->getUser());
+		$userSession->setIncognitoMode(false);
+		$this->assertSame('foo', $userSession->getUser()->getUID());
+	}
+
 	public function testSetUser() {
 		$session = $this->getMock('\OC\Session\Memory', array(), array(''));
 		$session->expects($this->once())
