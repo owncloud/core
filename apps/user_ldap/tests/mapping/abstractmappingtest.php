@@ -8,7 +8,7 @@
 
 namespace OCA\user_ldap\tests\mapping;
 
-abstract class AbstractMappingTest extends \PHPUnit_Framework_TestCase {
+abstract class AbstractMappingTest extends \Test\TestCase {
 	abstract public function getMapper(\OCP\IDBConnection $dbMock);
 
 	/**
