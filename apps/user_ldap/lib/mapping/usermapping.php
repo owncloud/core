@@ -6,11 +6,11 @@
 * See the COPYING-README file.
 */
 
-namespace OCA\UserLDAP\Mapping;
+namespace OCA\User_LDAP\Mapping;
 
 /**
 * Class UserMapping
-* @package OCA\UserLDAP\Mapping
+* @package OCA\User_LDAP\Mapping
 */
 class UserMapping extends AbstractMapping {
 

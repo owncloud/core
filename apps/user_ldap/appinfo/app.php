@@ -21,10 +21,6 @@
 *
 */
 
-OC::$CLASSPATH['OCA\UserLDAP\Mapping\AbstractMapping'] = 'user_ldap/lib/mapping/abstractmapping.php';
-OC::$CLASSPATH['OCA\UserLDAP\Mapping\UserMapping']     = 'user_ldap/lib/mapping/usermapping.php';
-OC::$CLASSPATH['OCA\UserLDAP\Mapping\GroupMapping']    = 'user_ldap/lib/mapping/groupmapping.php';
-
 OCP\App::registerAdmin('user_ldap', 'settings');
 
 $configPrefixes = OCA\user_ldap\lib\Helper::getServerConfigurationPrefixes(true);
@@ -39,8 +35,8 @@ if(count($configPrefixes) === 1) {
 	$connector = new OCA\user_ldap\lib\Connection($ldapWrapper, $configPrefixes[0]);
 	$ldapAccess = new OCA\user_ldap\lib\Access($connector, $ldapWrapper, $userManager);
 	$dbc = \OC::$server->getDatabaseConnection();
-	$ldapAccess->setUserMapper(new OCA\UserLDAP\Mapping\UserMapping($dbc));
-	$ldapAccess->setGroupMapper(new OCA\UserLDAP\Mapping\GroupMapping($dbc));
+	$ldapAccess->setUserMapper(new OCA\User_LDAP\Mapping\UserMapping($dbc));
+	$ldapAccess->setGroupMapper(new OCA\User_LDAP\Mapping\GroupMapping($dbc));
 	$userBackend  = new OCA\user_ldap\USER_LDAP($ldapAccess);
 	$groupBackend = new OCA\user_ldap\GROUP_LDAP($ldapAccess);
 } else if(count($configPrefixes) > 1) {

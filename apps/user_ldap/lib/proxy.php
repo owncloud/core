@@ -24,8 +24,8 @@
 namespace OCA\user_ldap\lib;
 
 use OCA\user_ldap\lib\Access;
-use OCA\UserLDAP\Mapping\UserMapping;
-use OCA\UserLDAP\Mapping\GroupMapping;
+use OCA\User_LDAP\Mapping\UserMapping;
+use OCA\User_LDAP\Mapping\GroupMapping;
 
 abstract class Proxy {
 	static private $accesses = array();

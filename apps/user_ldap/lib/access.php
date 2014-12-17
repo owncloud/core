@@ -23,7 +23,7 @@
 
 namespace OCA\user_ldap\lib;
 
-use OCA\UserLDAP\Mapping\AbstractMapping;
+use OCA\User_LDAP\Mapping\AbstractMapping;
 
 /**
  * Class Access

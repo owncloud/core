@@ -21,8 +21,8 @@
  *
  */
 
-use OCA\UserLDAP\Mapping\UserMapping;
-use OCA\UserLDAP\Mapping\GroupMapping;
+use OCA\User_LDAP\Mapping\UserMapping;
+use OCA\User_LDAP\Mapping\GroupMapping;
 
 // Check user and app status
 OCP\JSON::checkAdminUser();

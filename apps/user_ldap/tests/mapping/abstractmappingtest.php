@@ -50,7 +50,7 @@ abstract class AbstractMappingTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * calls map() on the given mapper and asserts result for true
-	 * @param \OCA\UserLDAP\Mapping\AbstractMapping $mapper
+	 * @param \OCA\User_LDAP\Mapping\AbstractMapping $mapper
 	 * @param array $data
 	 */
 	protected function mapEntries($mapper, $data) {
@@ -64,7 +64,7 @@ abstract class AbstractMappingTest extends \PHPUnit_Framework_TestCase {
 	 * initalizes environment for a test run and returns an array with
 	 * test objects. Preparing environment means that all mappings are cleared
 	 * first and then filled with test entries.
-	 * @return array 0 = \OCA\UserLDAP\Mapping\AbstractMapping, 1 = array of
+	 * @return array 0 = \OCA\User_LDAP\Mapping\AbstractMapping, 1 = array of
 	 * users or groups
 	 */
 	private function initTest() {
