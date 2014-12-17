@@ -2045,7 +2045,27 @@ class Share extends \OC\Share\Constants {
 		$query->bindValue(13, $shareData['expiration'], 'datetime');
 		$result = $query->execute();
 
-		return $result ? \OC::$server->getDatabaseConnection()->lastInsertId() : false;
+		$id = false;
+		if ($result) {
+			$id =  \OC::$server->getDatabaseConnection()->lastInsertId();
+			// Fallback, if lastInterId() doesn't work we need to perform a select
+			// to get the ID (seems to happen sometimes on Oracle)
+			if (!$id) {
+				$getId = \OC_DB::prepare('
+					SELECT `id`
+					FROM`*PREFIX*share`
+					WHERE `uid_owner` = ? AND `item_target` = ? AND `item_source` = ? AND `stime` = ?
+					');
+				$r = $getId->execute(array($shareData['uidOwner'], $shareData['itemTarget'], $shareData['itemSource'], $shareData['shareTime']));
+				if ($r) {
+					$row = $r->fetchRow();
+					$id = $row['id'];
+				}
+			}
+
+		}
+
+		return $id;
 
 	}
 	/**
