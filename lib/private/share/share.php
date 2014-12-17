@@ -2045,7 +2045,13 @@ class Share extends \OC\Share\Constants {
 		$query->bindValue(13, $shareData['expiration'], 'datetime');
 		$result = $query->execute();
 
-		return $result ? \OC::$server->getDatabaseConnection()->lastInsertId() : false;
+		$id = $result ? \OC::$server->getDatabaseConnection()->lastInsertId() : false;
+
+		if($id) {
+			return $id;
+		}
+
+		return $result ? true : false;
 
 	}
 	/**
