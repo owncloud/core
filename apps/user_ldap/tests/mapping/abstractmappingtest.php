@@ -98,6 +98,22 @@ abstract class AbstractMappingTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * tests unmap() for both successfuly and not successful removing of
+	 * mapping entries
+	 */
+	public function testUnmap() {
+		list($mapper, $data) = $this->initTest();
+
+		foreach($data as $entry) {
+			$result = $mapper->unmap($entry['name']);
+			$this->assertTrue($result);
+		}
+
+		$result = $mapper->unmap('notAnEntry');
+		$this->assertFalse($result);
+	}
+
+	/**
 	 * tests getDNByName(), getNameByDN() and getNameByUUID() for successful
 	 * and unsuccessful requests.
 	 */

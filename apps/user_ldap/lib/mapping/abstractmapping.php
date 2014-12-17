@@ -171,6 +171,23 @@ abstract class AbstractMapping {
 	}
 
 	/**
+	 * removes a mapping based on the owncloud_name of the entry
+	 * @param string $name
+	 * @param return bool
+	 */
+	public function unmap($name) {
+		$qry = $this->dbc->prepare('
+			DELETE FROM `'. $this->getTableName() .'`
+			WHERE `owncloud_name` = ?', 1);
+
+		$res = $qry->execute(array($name));
+		if($res === true) {
+			return ($qry->rowCount() === 1);
+		}
+		return false;
+	}
+
+	/**
 	 * Truncate's the mapping table
 	 * @return bool
 	 */
