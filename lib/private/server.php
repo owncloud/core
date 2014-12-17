@@ -2,6 +2,7 @@
 
 namespace OC;
 
+use bantu\IniGetWrapper\IniGetWrapper;
 use OC\AppFramework\Http\Request;
 use OC\AppFramework\Db\Db;
 use OC\AppFramework\Utility\SimpleContainer;
@@ -11,7 +12,6 @@ use OC\Diagnostics\EventLogger;
 use OC\Diagnostics\QueryLogger;
 use OC\Files\Config\StorageManager;
 use OC\Security\CertificateManager;
-use OC\DB\ConnectionWrapper;
 use OC\Files\Node\Root;
 use OC\Files\View;
 use OC\Security\Crypto;
@@ -87,8 +87,7 @@ class Server extends SimpleContainer implements IServerContainer {
 		});
 		$this->registerService('TagManager', function (Server $c) {
 			$tagMapper = $c->query('TagMapper');
-			$user = \OC_User::getUser();
-			return new TagManager($tagMapper, $user);
+			return new TagManager($tagMapper, $c->getUserSession());
 		});
 		$this->registerService('RootFolder', function (Server $c) {
 			// TODO: get user and user manager from container as well
@@ -275,15 +274,26 @@ class Server extends SimpleContainer implements IServerContainer {
 			$groupManager = $c->getGroupManager();
 			return new \OC\App\AppManager($userSession, $appConfig, $groupManager);
 		});
+		$this->registerService('DateTimeZone', function(Server $c) {
+			return new DateTimeZone(
+				$c->getConfig(),
+				$c->getSession()
+			);
+		});
 		$this->registerService('DateTimeFormatter', function(Server $c) {
-			$timeZone = $c->getTimeZone();
 			$language = $c->getConfig()->getUserValue($c->getSession()->get('user_id'), 'core', 'lang', null);
 
-			return new \OC\DateTimeFormatter($timeZone, $c->getL10N('lib', $language));
+			return new DateTimeFormatter(
+				$c->getDateTimeZone()->getTimeZone(),
+				$c->getL10N('lib', $language)
+			);
 		});
 		$this->registerService('MountConfigManager', function () {
 			$loader = \OC\Files\Filesystem::getLoader();
 			return new \OC\Files\Config\MountProviderCollection($loader);
+		});
+		$this->registerService('IniWrapper', function ($c) {
+			return new IniGetWrapper();
 		});
 	}
 
@@ -358,6 +368,7 @@ class Server extends SimpleContainer implements IServerContainer {
 		} else {
 			$user = $this->getUserManager()->get($userId);
 		}
+		\OC\Files\Filesystem::initMountPoints($userId);
 		$dir = '/' . $userId;
 		$root = $this->getRootFolder();
 		$folder = null;
@@ -693,28 +704,17 @@ class Server extends SimpleContainer implements IServerContainer {
 	}
 
 	/**
-	 * Get the timezone of the current user, based on his session information and config data
-	 *
-	 * @return \DateTimeZone
+	 * @return \OCP\IDateTimeZone
 	 */
-	public function getTimeZone() {
-		$timeZone = $this->getConfig()->getUserValue($this->getSession()->get('user_id'), 'core', 'timezone', null);
-		if ($timeZone === null) {
-			if ($this->getSession()->exists('timezone')) {
-				$offsetHours = $this->getSession()->get('timezone');
-				// Note: the timeZone name is the inverse to the offset,
-				// so a positive offset means negative timeZone
-				// and the other way around.
-				if ($offsetHours > 0) {
-					return new \DateTimeZone('Etc/GMT-' . $offsetHours);
-				} else {
-					return new \DateTimeZone('Etc/GMT+' . abs($offsetHours));
-				}
-			} else {
-				return new \DateTimeZone('UTC');
-			}
-		}
-		return new \DateTimeZone($timeZone);
+	public function getDateTimeZone() {
+		return $this->query('DateTimeZone');
+	}
+
+	/**
+	 * @return \OCP\IDateTimeFormatter
+	 */
+	public function getDateTimeFormatter() {
+		return $this->query('DateTimeFormatter');
 	}
 
 	/**
@@ -722,5 +722,14 @@ class Server extends SimpleContainer implements IServerContainer {
 	 */
 	function getMountProviderCollection(){
 		return $this->query('MountConfigManager');
+	}
+
+	/**
+	 * Get the IniWrapper
+	 *
+	 * @return IniGetWrapper
+	 */
+	public function getIniWrapper() {
+		return $this->query('IniWrapper');
 	}
 }

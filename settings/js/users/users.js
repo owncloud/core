@@ -12,9 +12,7 @@ var filter;
 
 var UserList = {
 	availableGroups: [],
-	offset: 30, //The first 30 users are there. No prob, if less in total.
-				//hardcoded in settings/users.php
-
+	offset: 0,
 	usersToLoad: 10, //So many users will be loaded when user scrolls down
 	currentGid: '',
 
@@ -30,20 +28,33 @@ var UserList = {
 		this.$el.find('.quota-user').singleSelect().on('change', this.onQuotaSelect);
 	},
 
-	add: function (username, displayname, groups, subadmin, quota, storageLocation, lastLogin, sort) {
+	add: function (username, displayname, groups, subadmin, quota, storageLocation, lastLogin, sort, backend) {
 		var $tr = $userListBody.find('tr:first-child').clone();
+		// this removes just the `display:none` of the template row
+		$tr.removeAttr('style');
 		var subAdminsEl;
 		var subAdminSelect;
 		var groupsSelect;
+
+		/**
+		 * Avatar or placeholder
+		 */
 		if ($tr.find('div.avatardiv').length){
 			$tr.find('.avatardiv').imageplaceholder(username, displayname);
 			$('div.avatardiv', $tr).avatar(username, 32);
 		}
+
+		/**
+		 * add username and displayname to row (in data and visible markup
+		 */
 		$tr.data('uid', username);
 		$tr.data('displayname', displayname);
 		$tr.find('td.name').text(username);
 		$tr.find('td.displayName > span').text(displayname);
 
+		/**
+		 * groups and subadmins
+		 */
 		// make them look like the multiselect buttons
 		// until they get time to really get initialized
 		groupsSelect = $('<select multiple="multiple" class="groupsselect multiselect button" data-placehoder="Groups" title="' + t('settings', 'no group') + '"></select>')
@@ -67,6 +78,10 @@ var UserList = {
 		if (subAdminsEl.length > 0) {
 			subAdminsEl.append(subAdminSelect);
 		}
+
+		/**
+		 * remove action
+		 */
 		if ($tr.find('td.remove img').length === 0 && OC.currentUser !== username) {
 			var deleteImage = $('<img class="svg action">').attr({
 				src: OC.imagePath('core', 'actions/delete')
@@ -78,6 +93,10 @@ var UserList = {
 		} else if (OC.currentUser === username) {
 			$tr.find('td.remove a').remove();
 		}
+
+		/**
+		 * quota
+		 */
 		var $quotaSelect = $tr.find('.quota-user');
 		if (quota === 'default') {
 			$quotaSelect
@@ -91,8 +110,20 @@ var UserList = {
 				$quotaSelect.append('<option value="' + escapeHTML(quota) + '" selected="selected">' + escapeHTML(quota) + '</option>');
 			}
 		}
+
+		/**
+		 * storage location
+		 */
 		$tr.find('td.storageLocation').text(storageLocation);
 
+		/**
+		 * user backend
+		 */
+		$tr.find('td.userBackend').text(backend);
+
+		/**
+		 * last login
+		 */
 		var lastLoginRel = t('settings', 'never');
 		var lastLoginAbs = lastLoginRel;
 		if(lastLogin !== 0) {
@@ -107,6 +138,10 @@ var UserList = {
 		var tooltip = $('<div>').html($($tdLastLogin.attr('original-title')).text(lastLoginAbs)).html();
 		$tdLastLogin.tipsy({gravity:'s', fade:true, html:true});
 		$tdLastLogin.attr('title', tooltip);
+
+		/**
+		 * append generated row to user list
+		 */
 		$tr.appendTo($userList);
 		if(UserList.isEmpty === true) {
 			//when the list was emptied, one row was left, necessary to keep
@@ -116,6 +151,10 @@ var UserList = {
 			UserList.isEmpty = false;
 			UserList.checkUsersToLoad();
 		}
+
+		/**
+		 * sort list
+		 */
 		if (sort) {
 			UserList.doSort();
 		}
@@ -338,7 +377,7 @@ var UserList = {
 					if(UserList.has(user.name)) {
 						return true;
 					}
-					var $tr = UserList.add(user.name, user.displayname, user.groups, user.subadmin, user.quota, user.storageLocation, user.lastLogin, false);
+					var $tr = UserList.add(user.name, user.displayname, user.groups, user.subadmin, user.quota, user.storageLocation, user.lastLogin, false, user.backend);
 					$tr.addClass('appear transparent');
 					trs.push($tr);
 					loadedUsers++;
@@ -697,7 +736,7 @@ $(document).ready(function () {
 						}, 10000);
 				}
 				if(!UserList.has(username)) {
-					UserList.add(username, username, result.groups, null, 'default', result.storageLocation, 0, true);
+					UserList.add(username, username, result.groups, null, 'default', result.storageLocation, 0, true, result.backend);
 				}
 				$('#newusername').focus();
 				GroupList.incEveryoneCount();
@@ -709,24 +748,29 @@ $(document).ready(function () {
 	// Option to display/hide the "Storage location" column
 	$('#CheckboxStorageLocation').click(function() {
 		if ($('#CheckboxStorageLocation').is(':checked')) {
-			$("#headerStorageLocation").show();
-			$("#userlist td.storageLocation").show();
+			$("#userlist .storageLocation").show();
 		} else {
-			$("#headerStorageLocation").hide();
-			$("#userlist td.storageLocation").hide();
+			$("#userlist .storageLocation").hide();
 		}
 	});
 	// Option to display/hide the "Last Login" column
 	$('#CheckboxLastLogin').click(function() {
 		if ($('#CheckboxLastLogin').is(':checked')) {
-			$("#headerLastLogin").show();
-			$("#userlist td.lastLogin").show();
+			$("#userlist .lastLogin").show();
 		} else {
-			$("#headerLastLogin").hide();
-			$("#userlist td.lastLogin").hide();
+			$("#userlist .lastLogin").hide();
+		}
+	});
+	// Option to display/hide the "Last Login" column
+	$('#CheckboxUserBackend').click(function() {
+		if ($('#CheckboxUserBackend').is(':checked')) {
+			$("#userlist .userBackend").show();
+		} else {
+			$("#userlist .userBackend").hide();
 		}
 	});
 
-
+	// trigger loading of users on startup
+	UserList.update(UserList.currentGid);
 
 });

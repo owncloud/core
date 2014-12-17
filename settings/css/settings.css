@@ -94,8 +94,11 @@ td.password>img,td.displayName>img, td.remove>a, td.quota>img { visibility:hidde
 td.password, td.quota, td.displayName { width:12em; cursor:pointer; }
 td.password>span, td.quota>span, rd.displayName>span { margin-right: 1.2em; color: #C7C7C7; }
 span.usersLastLoginTooltip { white-space: nowrap; }
-th#headerLastLogin, td.lastLogin { display : none; }
-th#headerStorageLocation, td.storageLocation { display : none; }
+#userlist .storageLocation,
+#userlist .userBackend,
+#userlist .lastLogin {
+	display : none;
+}
 
 td.remove { width:1em; padding-right:1em; }
 tr:hover>td.password>span, tr:hover>td.displayName>span { margin:0; cursor:pointer; }
@@ -198,6 +201,11 @@ span.version { margin-left:1em; margin-right:1em; color:#555; }
 
 #app-category-2 {
 	border-bottom: 1px solid #e8e8e8;
+}
+
+.app-dependencies {
+	margin-top: 10px;
+	color: #c33;
 }
 
 .missing-dependencies {

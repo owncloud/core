@@ -66,6 +66,7 @@ var OC={
 	PERMISSION_DELETE:8,
 	PERMISSION_SHARE:16,
 	PERMISSION_ALL:31,
+	TAG_FAVORITE: '_$!<Favorite>!$_',
 	/* jshint camelcase: false */
 	webroot:oc_webroot,
 	appswebroots:(typeof oc_appswebroots !== 'undefined') ? oc_appswebroots:false,
@@ -212,6 +213,24 @@ var OC={
 	},
 
 	/**
+	 * URI-Encodes a file path but keep the path slashes.
+	 *
+	 * @param path path
+	 * @return encoded path
+	 */
+	encodePath: function(path) {
+		if (!path) {
+			return path;
+		}
+		var parts = path.split('/');
+		var result = [];
+		for (var i = 0; i < parts.length; i++) {
+			result.push(encodeURIComponent(parts[i]));
+		}
+		return result.join('/');
+	},
+
+	/**
 	 * Load a script for the server and load it. If the script is already loaded,
 	 * the event handler will be called directly
 	 * @param {string} app the app id to which the script belongs
@@ -292,7 +311,14 @@ var OC={
 	search: _.debounce(function(query){
 		if(query){
 			OC.addStyle('search','results');
-			$.getJSON(OC.filePath('search','ajax','search.php')+'?query='+encodeURIComponent(query), function(results){
+			var classList = document.getElementById('content').className.split(/\s+/);
+			var inApps = [];
+			for (var i = 0; i < classList.length; i++) {
+				if (classList[i].indexOf('app-') === 0) {
+					var inApps = [classList[i].substr(4)];
+				}
+			}
+			$.getJSON(OC.generateUrl('search/ajax/search.php'), {inApps:inApps, query:query}, function(results){
 				OC.search.lastResults=results;
 				OC.search.showResults(results);
 			});
@@ -496,6 +522,87 @@ var OC={
 	getLocale: function() {
 		return $('html').prop('lang');
 	}
+};
+
+/**
+ * @namespace OC.Plugins
+ */
+OC.Plugins = {
+	/**
+	 * @type Array.<OC.Plugin>
+	 */
+	_plugins: {},
+
+	/**
+	 * Register plugin
+	 *
+	 * @param {String} targetName app name / class name to hook into
+	 * @param {OC.Plugin} plugin
+	 */
+	register: function(targetName, plugin) {
+		var plugins = this._plugins[targetName];
+		if (!plugins) {
+			plugins = this._plugins[targetName] = [];
+		}
+		plugins.push(plugin);
+	},
+
+	/**
+	 * Returns all plugin registered to the given target
+	 * name / app name / class name.
+	 *
+	 * @param {String} targetName app name / class name to hook into
+	 * @return {Array.<OC.Plugin>} array of plugins
+	 */
+	getPlugins: function(targetName) {
+		return this._plugins[targetName] || [];
+	},
+
+	/**
+	 * Call attach() on all plugins registered to the given target name.
+	 *
+	 * @param {String} targetName app name / class name
+	 * @param {Object} object to be extended
+	 * @param {Object} [options] options
+	 */
+	attach: function(targetName, targetObject, options) {
+		var plugins = this.getPlugins(targetName);
+		for (var i = 0; i < plugins.length; i++) {
+			if (plugins[i].attach) {
+				plugins[i].attach(targetObject, options);
+			}
+		}
+	},
+
+	/**
+	 * Call detach() on all plugins registered to the given target name.
+	 *
+	 * @param {String} targetName app name / class name
+	 * @param {Object} object to be extended
+	 * @param {Object} [options] options
+	 */
+	detach: function(targetName, targetObject, options) {
+		var plugins = this.getPlugins(targetName);
+		for (var i = 0; i < plugins.length; i++) {
+			if (plugins[i].detach) {
+				plugins[i].detach(targetObject, options);
+			}
+		}
+	},
+
+	/**
+	 * Plugin
+	 *
+	 * @todo make this a real class in the future
+	 * @typedef {Object} OC.Plugin
+	 *
+	 * @property {String} name plugin name
+	 * @property {Function} attach function that will be called when the
+	 * plugin is attached
+	 * @property {Function} [detach] function that will be called when the
+	 * plugin is detached
+	 */
+
 };
 
 /**
