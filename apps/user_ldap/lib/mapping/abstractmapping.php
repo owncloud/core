@@ -53,7 +53,7 @@ abstract class AbstractMapping {
 	 * @param string $compareCol
 	 * @param string $search
 	 * @throws \Exception
-	 * @return string|bool
+	 * @return string|false
 	 */
 	protected function getXbyY($fetchCol, $compareCol, $search) {
 		if(!$this->isColNameValid($fetchCol)) {
@@ -76,10 +76,21 @@ abstract class AbstractMapping {
 	}
 
 	/**
+	 * Performs a DELETE or UPDATE query to the database.
+	 * @param \Doctrine\DBAL\Driver\Statement $query
+	 * @param array $parameters
+	 * @bool true if at least one row was modified, false otherwise
+	 */
+	protected function modify($query, $parameters) {
+		$result = $query->execute($parameters);
+		return ($result === true && $query->rowCount() > 0);
+	}
+
+	/**
 	 * Gets the LDAP DN based on the provided name.
 	 * Replaces Access::ocname2dn
 	 * @param string $name
-	 * @return string|bool
+	 * @return string|false
 	 */
 	public function getDNByName($name) {
 		return $this->getXbyY('ldap_dn', 'owncloud_name', $name);
@@ -97,20 +108,14 @@ abstract class AbstractMapping {
 			SET `ldap_dn` = ?
 			WHERE `directory_uuid` = ?
 		');
-		$result = $query->execute(array($fdn, $uuid));
-		if($result === true) {
-			if($query->rowCount() > 0) {
-				return true;
-			}
-		}
 
-		return false;
+		return $this->modify($query, array($fdn, $uuid));
 	}
 
 	/**
 	 * Gets the name based on the provided LDAP DN.
 	 * @param string $fdn
-	 * @return string|bool
+	 * @return string|false
 	 */
 	public function getNameByDN($fdn) {
 		return $this->getXbyY('owncloud_name', 'ldap_dn', $fdn);
@@ -141,7 +146,7 @@ abstract class AbstractMapping {
 	/**
 	 * Gets the name based on the provided LDAP DN.
 	 * @param string $fdn
-	 * @return string|bool
+	 * @return string|false
 	 */
 	public function getNameByUUID($uuid) {
 		return $this->getXbyY('owncloud_name', 'directory_uuid', $uuid);
@@ -176,15 +181,11 @@ abstract class AbstractMapping {
 	 * @param return bool
 	 */
 	public function unmap($name) {
-		$qry = $this->dbc->prepare('
+		$query = $this->dbc->prepare('
 			DELETE FROM `'. $this->getTableName() .'`
 			WHERE `owncloud_name` = ?', 1);
 
-		$res = $qry->execute(array($name));
-		if($res === true) {
-			return ($qry->rowCount() === 1);
-		}
-		return false;
+		return $this->modify($query, array($name));
 	}
 
 	/**

@@ -266,7 +266,7 @@ class Access extends LDAPUtility implements user\IUserTools {
 	/**
 	 * returns the LDAP DN for the given internal ownCloud name of the group
 	 * @param string $name the ownCloud name in question
-	 * @return string|bool LDAP DN on success, otherwise false
+	 * @return string|false LDAP DN on success, otherwise false
 	 */
 	public function groupname2dn($name) {
 		return $this->groupMapper->getDNbyName($name);
