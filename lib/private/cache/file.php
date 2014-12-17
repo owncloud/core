@@ -9,8 +9,18 @@
 
 namespace OC\Cache;
 
+use OC\Files\View;
+use OCP\Files\Storage;
+
 class File {
+	/**
+	 * @var View|Storage
+	 */
 	protected $storage;
+
+	public function __construct($storage = null) {
+		$this->storage = $storage;
+	}
 
 	/**
 	 * Returns the cache storage for the logged in user

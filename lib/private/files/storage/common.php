@@ -8,8 +8,10 @@
 
 namespace OC\Files\Storage;
 
+use OC\Files\CachingChunkHandler;
 use OC\Files\Filesystem;
 use OC\Files\Cache\Watcher;
+use OCP\Files\IChunkHandler;
 
 /**
  * Storage backend class for providing common filesystem operation methods
@@ -437,4 +439,14 @@ abstract class Common implements \OC\Files\Storage\Storage {
 	public function instanceOfStorage($class) {
 		return is_a($this, $class);
 	}
+
+	/**
+	 * Returns the storage specific chunk handler
+	 *
+	 * @return IChunkHandler
+	 */
+	public function getChunkHandler() {
+		return new CachingChunkHandler($this);
+	}
+
 }
