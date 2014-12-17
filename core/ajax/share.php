@@ -309,6 +309,15 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 						break;
 					}
 				}
+
+				$allowUserEnumeration = \OCP\Config::getAppValue('core', 'privacy.allow-user-enumeration', false);
+				if (!$allowUserEnumeration) {
+					$searchTerm = $_GET['search'];
+					$shareWith = array_filter($shareWith, function($user) use ($searchTerm) {
+						return $user['label'] === $searchTerm;
+					});
+				}
+
 				$sorter = new \OC\Share\SearchResultSorter($_GET['search'],
 														   'label',
 														   new \OC\Log());
