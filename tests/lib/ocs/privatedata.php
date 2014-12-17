@@ -25,7 +25,6 @@ class Test_OC_OCS_Privatedata extends \Test\TestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		\OC::$server->getSession()->set('user_id', 'user1');
 		$this->appKey = $this->getUniqueID('app');
 	}
 

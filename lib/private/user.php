@@ -289,7 +289,8 @@ class OC_User {
 	 * Sets user id for session and triggers emit
 	 */
 	public static function setUserId($uid) {
-		\OC::$server->getSession()->set('user_id', $uid);
+		$user = \OC::$server->getUserManager()->get($uid);
+		\OC::$server->getUserSession()->setUser($user);
 	}
 
 	/**
@@ -324,8 +325,8 @@ class OC_User {
 	 * @return bool
 	 */
 	public static function isLoggedIn() {
-		if (\OC::$server->getSession()->get('user_id') !== null && self::$incognitoMode === false) {
-			return self::userExists(\OC::$server->getSession()->get('user_id'));
+		if (\OC::$server->getUserSession()->getUser() !== null && self::$incognitoMode === false) {
+			return self::userExists(\OC::$server->getUserSession()->getUser()->getUID());
 		}
 
 		// Check whether the user has authenticated using Basic Authentication
@@ -379,9 +380,8 @@ class OC_User {
 	 * @return string uid or false
 	 */
 	public static function getUser() {
-		$uid = \OC::$server->getSession() ? \OC::$server->getSession()->get('user_id') : null;
-		if (!is_null($uid) && self::$incognitoMode === false) {
-			return $uid;
+		if (!is_null(\OC::$server->getUserSession()->getUser()) && self::$incognitoMode === false) {
+			return \OC::$server->getUserSession()->getUser()->getUID();
 		} else {
 			return false;
 		}

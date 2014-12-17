@@ -16,6 +16,7 @@ namespace OC;
 use OCP\IConfig;
 use OCP\IDateTimeZone;
 use OCP\ISession;
+use OCP\IUserSession;
 
 class DateTimeZone implements IDateTimeZone {
 	/** @var IConfig */
@@ -24,14 +25,19 @@ class DateTimeZone implements IDateTimeZone {
 	/** @var ISession */
 	protected $session;
 
+	/** @var IUserSession */
+	protected $userSession;
+
 	/**
-	 * Constructor
-	 *
 	 * @param IConfig $config
+	 * @param IUserSession $userSession
 	 * @param ISession $session
 	 */
-	public function __construct(IConfig $config, ISession $session) {
+	public function __construct(IConfig $config,
+								IUserSession $userSession,
+								ISession $session) {
 		$this->config = $config;
+		$this->userSession = $userSession;
 		$this->session = $session;
 	}
 
@@ -41,7 +47,7 @@ class DateTimeZone implements IDateTimeZone {
 	 * @return \DateTimeZone
 	 */
 	public function getTimeZone() {
-		$timeZone = $this->config->getUserValue($this->session->get('user_id'), 'core', 'timezone', null);
+		$timeZone = $this->config->getUserValue($this->userSession->getUser()->getUID(), 'core', 'timezone', null);
 		if ($timeZone === null) {
 			if ($this->session->exists('timezone')) {
 				$offsetHours = $this->session->get('timezone');

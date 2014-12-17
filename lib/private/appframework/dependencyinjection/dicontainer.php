@@ -204,8 +204,14 @@ class DIContainer extends SimpleContainer implements IAppContainer{
 		return \OC_User::isAdminUser($uid);
 	}
 
+	/**
+	 * @return string|null UID of currently logged-in user or null
+	 */
 	private function getUserId() {
-		return \OC::$server->getSession()->get('user_id');
+		if(!is_null(\OC::$server->getUserSession()->getUser())) {
+			return \OC::$server->getUserSession()->getUser()->getUID();
+		}
+		return null;
 	}
 
 	/**
