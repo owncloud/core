@@ -63,9 +63,9 @@ translation('settings');
 					</label>
 				</p>
 				<p>
-					<input type="checkbox" name="MailAddress" value="MailAddress" id="CheckboxMailAddress">
-					<label for="CheckboxMailAddress">
-						<?php p($l->t('Show mail address')) ?>
+					<input type="checkbox" name="EmailAddress" value="EmailAddress" id="CheckboxEmailAddress">
+					<label for="CheckboxEmailAddress">
+						<?php p($l->t('Show email address')) ?>
 					</label>
 				</p>
 			</div>

@@ -716,24 +716,22 @@ $(document).ready(function () {
 			.focus()
 			.keypress(function (event) {
 				if (event.keyCode === 13) {
-					if (event.keyCode === 13) {
-						if ($(this).val().length > 0) {
-							$input.blur();
-							$.ajax({
-								type: 'PUT',
-								url: OC.generateUrl('/settings/users/{id}/mailAddress', {id: uid}),
-								data: {
-									mailAddress: $(this).val()
-								}
-							}).fail(function (result) {
-								OC.Notification.show(result.responseJSON.data.message);
-								// reset the values
-								$tr.data('mailAddress', mailAddress);
-								$tr.children('.mailAddress').children('span').text(mailAddress);
-							});
-						} else {
-							$input.blur();
-						}
+					if ($(this).val().length > 0) {
+						$input.blur();
+						$.ajax({
+							type: 'PUT',
+							url: OC.generateUrl('/settings/users/{id}/mailAddress', {id: uid}),
+							data: {
+								mailAddress: $(this).val()
+							}
+						}).fail(function (result) {
+							OC.Notification.show(result.responseJSON.data.message);
+							// reset the values
+							$tr.data('mailAddress', mailAddress);
+							$tr.children('.mailAddress').children('span').text(mailAddress);
+						});
+					} else {
+						$input.blur();
 					}
 				}
 			})
@@ -822,8 +820,8 @@ $(document).ready(function () {
 		}
 	});
 	// Option to display/hide the "Mail Address" column
-	$('#CheckboxMailAddress').click(function() {
-		if ($('#CheckboxMailAddress').is(':checked')) {
+	$('#CheckboxEmailAddress').click(function() {
+		if ($('#CheckboxEmailAddress').is(':checked')) {
 			$("#userlist .mailAddress").show();
 		} else {
 			$("#userlist .mailAddress").hide();

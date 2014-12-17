@@ -296,9 +296,9 @@ class UsersController extends Controller {
 	 */
 	public function setMailAddress($id, $mailAddress) {
 		// FIXME: Remove this static function call at some point…
-		if($this->userSession->getUser()->getUID() !== $id &&
-			!$this->isAdmin &&
-			!\OC_SubAdmin::isUserAccessible($this->userSession->getUser()->getUID(), $id)) {
+		if($this->userSession->getUser()->getUID() !== $id
+			&& !$this->isAdmin
+			&& !\OC_SubAdmin::isUserAccessible($this->userSession->getUser()->getUID(), $id)) {
 			return new DataResponse(
 				array(
 					'status' => 'error',
