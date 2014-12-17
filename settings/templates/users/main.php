@@ -62,6 +62,12 @@ translation('settings');
 						<?php p($l->t('Show user backend')) ?>
 					</label>
 				</p>
+				<p>
+					<input type="checkbox" name="EmailAddress" value="EmailAddress" id="CheckboxEmailAddress">
+					<label for="CheckboxEmailAddress">
+						<?php p($l->t('Show email address')) ?>
+					</label>
+				</p>
 			</div>
 		</div>
 	</div>
