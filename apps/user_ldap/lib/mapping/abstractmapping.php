@@ -183,7 +183,7 @@ abstract class AbstractMapping {
 	public function unmap($name) {
 		$query = $this->dbc->prepare('
 			DELETE FROM `'. $this->getTableName() .'`
-			WHERE `owncloud_name` = ?', 1);
+			WHERE `owncloud_name` = ?');
 
 		return $this->modify($query, array($name));
 	}
