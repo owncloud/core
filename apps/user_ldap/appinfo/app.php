@@ -34,6 +34,9 @@ if(count($configPrefixes) === 1) {
 		new \OCP\Image());
 	$connector = new OCA\user_ldap\lib\Connection($ldapWrapper, $configPrefixes[0]);
 	$ldapAccess = new OCA\user_ldap\lib\Access($connector, $ldapWrapper, $userManager);
+	$dbc = \OC::$server->getDatabaseConnection();
+	$ldapAccess->setUserMapper(new OCA\User_LDAP\Mapping\UserMapping($dbc));
+	$ldapAccess->setGroupMapper(new OCA\User_LDAP\Mapping\GroupMapping($dbc));
 	$userBackend  = new OCA\user_ldap\USER_LDAP($ldapAccess);
 	$groupBackend = new OCA\user_ldap\GROUP_LDAP($ldapAccess);
 } else if(count($configPrefixes) > 1) {
@@ -62,3 +65,6 @@ if(OCP\App::isEnabled('user_webdavauth')) {
 		'user_ldap and user_webdavauth are incompatible. You may experience unexpected behaviour',
 		OCP\Util::WARN);
 }
+
+
+// only a comment to make jenkins see changes and run a test. 
