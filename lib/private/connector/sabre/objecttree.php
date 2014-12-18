@@ -101,9 +101,9 @@ class ObjectTree extends \Sabre\DAV\ObjectTree {
 		}
 
 		if ($info->getType() === 'dir') {
-			$node = new \OC_Connector_Sabre_Directory($this->fileView, $info);
+			$node = new Directory($this->fileView, $info);
 		} else {
-			$node = new \OC_Connector_Sabre_File($this->fileView, $info);
+			$node = new File($this->fileView, $info);
 		}
 
 		$this->cache[$path] = $node;

@@ -21,7 +21,12 @@
  *
  */
 
-class OC_Connector_Sabre_Auth extends \Sabre\DAV\Auth\Backend\AbstractBasic {
+namespace OC\Connector\Sabre;
+
+use OC_User;
+use OC_Util;
+
+class Auth extends \Sabre\DAV\Auth\Backend\AbstractBasic {
 	/**
 	 * Validates a username and password
 	 *

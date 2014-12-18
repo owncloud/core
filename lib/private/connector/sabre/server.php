@@ -9,8 +9,13 @@
  * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
  */
 
+namespace OC\Connector\Sabre;
+
+use OC_App;
+use OC_FileChunking;
+
 /**
- * Class OC_Connector_Sabre_Server
+ * Class \OC\Connector\Sabre\Server
  *
  * This class reimplements some methods from @see \Sabre\DAV\Server.
  *
@@ -26,7 +31,7 @@
  *
  * @see \Sabre\DAV\Server
  */
-class OC_Connector_Sabre_Server extends Sabre\DAV\Server {
+class Server extends \Sabre\DAV\Server {
 
 	/**
 	 * @var string

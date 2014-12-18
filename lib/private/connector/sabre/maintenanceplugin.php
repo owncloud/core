@@ -9,7 +9,11 @@
  * @license AGPL3
  */
 
-class OC_Connector_Sabre_MaintenancePlugin extends \Sabre\DAV\ServerPlugin
+namespace OC\Connector\Sabre;
+
+use OC_Config;
+
+class MaintenancePlugin extends \Sabre\DAV\ServerPlugin
 {
 
 	/**
@@ -48,7 +52,7 @@ class OC_Connector_Sabre_MaintenancePlugin extends \Sabre\DAV\ServerPlugin
 		if (OC_Config::getValue('maintenance', false)) {
 			throw new \Sabre\DAV\Exception\ServiceUnavailable();
 		}
-		if (OC::checkUpgrade(false)) {
+		if (\OC::checkUpgrade(false)) {
 			throw new \Sabre\DAV\Exception\ServiceUnavailable('Upgrade needed');
 		}
 

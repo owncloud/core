@@ -10,8 +10,7 @@ namespace Test\OC\Connector\Sabre;
 
 
 use OC\Files\FileInfo;
-use OC_Connector_Sabre_Directory;
-use PHPUnit_Framework_TestCase;
+use OC\Connector\Sabre\Directory;
 
 class TestDoubleFileView extends \OC\Files\View {
 
@@ -103,7 +102,7 @@ class ObjectTree extends \Test\TestCase {
 
 		$info = new FileInfo('', null, null, array(), null);
 
-		$rootDir = new OC_Connector_Sabre_Directory($view, $info);
+		$rootDir = new \OC\Connector\Sabre\Directory($view, $info);
 		$objectTree = $this->getMock('\OC\Connector\Sabre\ObjectTree',
 			array('nodeExists', 'getNodeForPath'),
 			array($rootDir, $view));

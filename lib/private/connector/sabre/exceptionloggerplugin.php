@@ -9,7 +9,9 @@
  * @license AGPL3
  */
 
-class OC_Connector_Sabre_ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin
+namespace OC\Connector\Sabre;
+
+class ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin
 {
 	private $nonFatalExceptions = array(
 		'Sabre\DAV\Exception\NotAuthenticated' => true,

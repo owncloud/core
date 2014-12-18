@@ -9,7 +9,11 @@
  * @license AGPL3
  */
 
-class OC_Connector_Sabre_FilesPlugin extends \Sabre\DAV\ServerPlugin
+namespace OC\Connector\Sabre;
+
+use OC_FileChunking;
+
+class FilesPlugin extends \Sabre\DAV\ServerPlugin
 {
 
 	// namespace
@@ -57,7 +61,7 @@ class OC_Connector_Sabre_FilesPlugin extends \Sabre\DAV\ServerPlugin
 	 */
 	public function beforeGetProperties($path, \Sabre\DAV\INode $node, array &$requestedProperties, array &$returnedProperties) {
 
-		if ($node instanceof OC_Connector_Sabre_Node) {
+		if ($node instanceof Node) {
 
 			$fileIdPropertyName = '{' . self::NS_OWNCLOUD . '}id';
 			$permissionsPropertyName = '{' . self::NS_OWNCLOUD . '}permissions';
@@ -68,7 +72,7 @@ class OC_Connector_Sabre_FilesPlugin extends \Sabre\DAV\ServerPlugin
 				unset($requestedProperties[array_search($permissionsPropertyName, $requestedProperties)]);
 			}
 
-			/** @var $node OC_Connector_Sabre_Node */
+			/** @var $node Node */
 			$fileId = $node->getFileId();
 			if (!is_null($fileId)) {
 				$returnedProperties[200][$fileIdPropertyName] = $fileId;
@@ -80,10 +84,10 @@ class OC_Connector_Sabre_FilesPlugin extends \Sabre\DAV\ServerPlugin
 			}
 		}
 
-		if ($node instanceof OC_Connector_Sabre_Directory) {
+		if ($node instanceof Directory) {
 			$sizePropertyName = '{' . self::NS_OWNCLOUD . '}size';
 
-			/** @var $node OC_Connector_Sabre_Directory */
+			/** @var $node Directory */
 			$returnedProperties[200][$sizePropertyName] = $node->getSize();
 		}
 	}
@@ -108,7 +112,7 @@ class OC_Connector_Sabre_FilesPlugin extends \Sabre\DAV\ServerPlugin
 			return;
 		}
 		$node = $this->server->tree->getNodeForPath($filePath);
-		if ($node instanceof OC_Connector_Sabre_Node) {
+		if ($node instanceof Node) {
 			$fileId = $node->getFileId();
 			if (!is_null($fileId)) {
 				$this->server->httpResponse->setHeader('OC-FileId', $fileId);

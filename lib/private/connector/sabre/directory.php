@@ -21,7 +21,14 @@
  *
  */
 
-class OC_Connector_Sabre_Directory extends OC_Connector_Sabre_Node
+namespace OC\Connector\Sabre;
+
+use OC_DB;
+use OC_FileChunking;
+use OC_Helper;
+use OC_User;
+
+class Directory extends Node
 	implements \Sabre\DAV\ICollection, \Sabre\DAV\IQuota {
 
 	/**
@@ -80,7 +87,7 @@ class OC_Connector_Sabre_Directory extends OC_Connector_Sabre_Node
 			$path = $this->fileView->getAbsolutePath($this->path) . '/' . $name;
 			// using a dummy FileInfo is acceptable here since it will be refreshed after the put is complete
 			$info = new \OC\Files\FileInfo($path, null, null, array(), null);
-			$node = new OC_Connector_Sabre_File($this->fileView, $info);
+			$node = new File($this->fileView, $info);
 			return $node->put($data);
 		} catch (\OCP\Files\StorageNotAvailableException $e) {
 			throw new \Sabre\DAV\Exception\ServiceUnavailable($e->getMessage());
@@ -132,9 +139,9 @@ class OC_Connector_Sabre_Directory extends OC_Connector_Sabre_Node
 		}
 
 		if ($info['mimetype'] == 'httpd/unix-directory') {
-			$node = new OC_Connector_Sabre_Directory($this->fileView, $info);
+			$node = new Directory($this->fileView, $info);
 		} else {
-			$node = new OC_Connector_Sabre_File($this->fileView, $info);
+			$node = new File($this->fileView, $info);
 		}
 		return $node;
 	}

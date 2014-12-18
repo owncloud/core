@@ -211,14 +211,14 @@ class Webdav extends TestCase {
 	 */
 	function handleWebdavRequest($body = false) {
 		// Backends
-		$authBackend = new \OC_Connector_Sabre_Auth();
-		$lockBackend = new \OC_Connector_Sabre_Locks();
-		$requestBackend = new \OC_Connector_Sabre_Request();
+		$authBackend = new \OC\Connector\Sabre\Auth();
+		$lockBackend = new \OC\Connector\Sabre\Locks();
+		$requestBackend = new \OC\Connector\Sabre\Request();
 
 		// Create ownCloud Dir
 		$root = '/' . $this->userId . '/files';
 		$view = new \OC\Files\View($root);
-		$publicDir = new \OC_Connector_Sabre_Directory($view, $view->getFileInfo(''));
+		$publicDir = new \OC\Connector\Sabre\Directory($view, $view->getFileInfo(''));
 		$objectTree = new \OC\Connector\Sabre\ObjectTree();
 		$mountManager = \OC\Files\Filesystem::getMountManager();
 		$objectTree->init($publicDir, $view, $mountManager);
@@ -232,8 +232,8 @@ class Webdav extends TestCase {
 		$server->addPlugin(new \Sabre\DAV\Auth\Plugin($authBackend, 'ownCloud'));
 		$server->addPlugin(new \Sabre\DAV\Locks\Plugin($lockBackend));
 		$server->addPlugin(new \Sabre\DAV\Browser\Plugin(false)); // Show something in the Browser, but no upload
-		$server->addPlugin(new \OC_Connector_Sabre_QuotaPlugin($view));
-		$server->addPlugin(new \OC_Connector_Sabre_MaintenancePlugin());
+		$server->addPlugin(new \OC\Connector\Sabre\QuotaPlugin($view));
+		$server->addPlugin(new \OC\Connector\Sabre\MaintenancePlugin());
 		$server->debugExceptions = true;
 
 		// And off we go!

@@ -1,4 +1,7 @@
 <?php
+
+namespace OC\Connector\Sabre;
+
 use Sabre\DAV\URLUtil;
 
 /**
@@ -8,7 +11,7 @@ use Sabre\DAV\URLUtil;
  * @copyright Copyright (C) 2012 entreCables S.L. All rights reserved.
  * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
  */
-class OC_Connector_Sabre_QuotaPlugin extends \Sabre\DAV\ServerPlugin {
+class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 
 	/**
 	 * @var \OC\Files\View
