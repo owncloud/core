@@ -1296,8 +1296,9 @@ class View {
 
 		$result = false;
 
-		list($targetStorage,) = \OC\Files\Filesystem::resolvePath($target);
-		if ($targetStorage->instanceOfStorage('\OCP\Files\IHomeStorage')) {
+		$targetMount  = Filesystem::getMountManager()->find($target);
+		$targetStorage = $targetMount->getStorage();
+		if ($targetStorage->instanceOfStorage('\OCP\Files\IHomeStorage') and !($targetMount instanceof MoveableMount)) {
 			$result = true;
 		} else {
 			\OCP\Util::writeLog('files',
