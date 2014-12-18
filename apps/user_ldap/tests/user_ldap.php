@@ -30,6 +30,7 @@ use \OCA\user_ldap\lib\ILDAPWrapper;
 class Test_User_Ldap_Direct extends \Test\TestCase {
 	protected $backend;
 	protected $access;
+	protected $configMock;
 
 	protected function setUp() {
 		parent::setUp();
@@ -57,8 +58,9 @@ class Test_User_Ldap_Direct extends \Test\TestCase {
 									$conMethods,
 									array($lw, null, null));
 
+		$this->configMock = $this->getMock('\OCP\IConfig');
 		$um = new \OCA\user_ldap\lib\user\Manager(
-				$this->getMock('\OCP\IConfig'),
+				$this->configMock,
 				$this->getMock('\OCA\user_ldap\lib\FilesystemHelper'),
 				$this->getMock('\OCA\user_ldap\lib\LogWrapper'),
 				$this->getMock('\OCP\IAvatarManager'),
@@ -123,7 +125,7 @@ class Test_User_Ldap_Direct extends \Test\TestCase {
 			   ->method('fetchListOfUsers')
 			   ->will($this->returnCallback(function($filter) {
 					if($filter === 'roland') {
-						return array('dnOfRoland,dc=test');
+						return array(array('dn'=> 'dnOfRoland,dc=test'));
 					}
 					return array();
 			   }));
@@ -473,14 +475,18 @@ class Test_User_Ldap_Direct extends \Test\TestCase {
 				   }
 			   }));
 
+		$datadir = \OCP\Config::getSystemValue('datadirectory',
+											   \OC::$SERVERROOT.'/data');
+		$this->configMock->expects($this->once())
+			->method('getSystemValue')
+			->will($this->returnValue($datadir));
+
 		//absolut path
 		$result = $backend->getHome('gunslinger');
 		$this->assertEquals('/tmp/rolandshome/', $result);
 
 		//datadir-relativ path
 		$result = $backend->getHome('ladyofshadows');
-		$datadir = \OCP\Config::getSystemValue('datadirectory',
-											   \OC::$SERVERROOT.'/data');
 		$this->assertEquals($datadir.'/susannah/', $result);
 
 		//no path at all – triggers OC default behaviour

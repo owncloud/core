@@ -55,29 +55,31 @@ class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
 	 */
 	public function checkPassword($uid, $password) {
 		$uid = $this->access->escapeFilterPart($uid);
+		$attrs = $this->access->userManager->getAttributes();
 
 		//find out dn of the user name
 		$filter = \OCP\Util::mb_str_replace(
 			'%uid', $uid, $this->access->connection->ldapLoginFilter, 'UTF-8');
-		$ldap_users = $this->access->fetchListOfUsers($filter, 'dn');
-		if(count($ldap_users) < 1) {
+		$ldapResult = $this->access->fetchListOfUsers($filter, $attrs, 1);
+		if(count($ldapResult) < 1) {
 			return false;
 		}
-		$dn = $ldap_users[0];
-		$user = $this->access->userManager->get($dn);
+		$userEntry = $ldapResult[0];
+		$user = $this->access->userManager->get($userEntry['dn']);
 		if(is_null($user)) {
 			\OCP\Util::writeLog('user_ldap',
-				'LDAP Login: Could not get user object for DN ' . $dn .
+				'LDAP Login: Could not get user object for DN ' . $userEntry['dn'] .
 				'. Maybe the LDAP entry has no set display name attribute?',
 				\OCP\Util::WARN);
 			return false;
 		}
 		if($user->getUsername() !== false) {
 			//are the credentials OK?
-			if(!$this->access->areCredentialsValid($dn, $password)) {
+			if(!$this->access->areCredentialsValid($userEntry['dn'], $password)) {
 				return false;
 			}
-
+			$this->access->cacheUserExists($user->getUsername());
+			$user->processAttributes($userEntry);
 			$user->markLogin();
 
 			return $user->getUsername();
@@ -172,7 +174,7 @@ class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
 	/**
 	* get the user's home directory
 	* @param string $uid the username
-	* @return boolean
+	* @return string|false
 	*/
 	public function getHome($uid) {
 		// user Exists check required as it is not done in user proxy!
@@ -184,32 +186,12 @@ class USER_LDAP extends BackendUtility implements \OCP\UserInterface {
 		if($this->access->connection->isCached($cacheKey)) {
 			return $this->access->connection->getFromCache($cacheKey);
 		}
-		if(strpos($this->access->connection->homeFolderNamingRule, 'attr:') === 0) {
-			$attr = substr($this->access->connection->homeFolderNamingRule, strlen('attr:'));
-			$homedir = $this->access->readAttribute(
-						$this->access->username2dn($uid), $attr);
-			if($homedir && isset($homedir[0])) {
-				$path = $homedir[0];
-				//if attribute's value is an absolute path take this, otherwise append it to data dir
-				//check for / at the beginning or pattern c:\ resp. c:/
-				if(
-					'/' === $path[0]
-					|| (3 < strlen($path) && ctype_alpha($path[0])
-						&& $path[1] === ':' && ('\\' === $path[2] || '/' === $path[2]))
-				) {
-					$homedir = $path;
-				} else {
-					$homedir = \OCP\Config::getSystemValue('datadirectory',
-						\OC::$SERVERROOT.'/data' ) . '/' . $homedir[0];
-				}
-				$this->access->connection->writeToCache($cacheKey, $homedir);
-				return $homedir;
-			}
-		}
 
-		//false will apply default behaviour as defined and done by OC_User
-		$this->access->connection->writeToCache($cacheKey, false);
-		return false;
+		$user = $this->access->userManager->get($uid);
+		$path = $user->getHomePath();
+		$this->access->cacheUserHome($uid, $path);
+
+		return $path;
 	}
 
 	/**

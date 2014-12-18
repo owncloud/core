@@ -537,6 +537,16 @@ class Access extends LDAPUtility implements user\IUserTools {
 	}
 
 	/**
+	 * caches the user display name
+	 * @param string $ocName the internal ownCloud username
+	 * @param string|false $home the home directory path
+	 */
+	public function cacheUserHome($ocName, $home) {
+		$cacheKey = 'getHome'.$ocName;
+		$this->connection->writeToCache($cacheKey, $home);
+	}
+
+	/**
 	 * creates a unique name for internal ownCloud use for users. Don't call it directly.
 	 * @param string $name the display name of the object
 	 * @return string with with the name to use in ownCloud or false if unsuccessful
