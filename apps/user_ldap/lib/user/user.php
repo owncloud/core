@@ -140,6 +140,46 @@ class User {
 	}
 
 	/**
+	 * processes results from LDAP for attributes as returned by getAttributesToRead()
+	 * @param array $ldapEntry the user entry as retrieved from LDAP
+	 */
+	public function processAttributes($ldapEntry) {
+		$this->markRefreshTime();
+		//Quota
+		if(isset($ldapEntry[$this->connection->ldapQuotaAttribute])) {
+			$this->updateQuota($ldapEntry[$this->connection->ldapQuotaAttribute]);
+		}
+		//Email
+		if(isset($ldapEntry[$this->connection->ldapEmailAttribute])) {
+			$this->updateEmail($ldapEntry[$this->connection->ldapEmailAttribute]);
+		}
+		//displayName
+		if(isset($ldapEntry[$this->connection->ldapUserDisplayName])) {
+			$displayName = $ldapEntry[$this->connection->ldapUserDisplayName];
+			if(!empty($displayName)) {
+				$this->access->cacheUserDisplayName($this->getUsername(), $displayName);
+			}
+		}
+		//homePath
+		if(strpos($this->connection->homeFolderNamingRule, 'attr:') === 0) {
+			$attr = substr($this->connection->homeFolderNamingRule, strlen('attr:'));
+			if(isset($ldapEntry[$attr])) {
+				$this->access->cacheUserHome(
+					$this->getUsername(), $this->getHomePath($ldapEntry[$attr]));
+			}
+		}
+		//Avatar
+		$attrs = array('jpegphoto', 'thumbnailphoto');
+		foreach ($attrs as $attr)  {
+			if(isset($ldapEntry[$attr])) {
+				$this->avatarImage = $ldapEntry[$attr];
+				$this->updateAvatar();
+				break;
+			}
+		}
+	}
+
+	/**
 	 * @brief returns the LDAP DN of the user
 	 * @return string
 	 */
@@ -175,6 +215,38 @@ class User {
 		}
 
 		return $this->avatarImage;
+	}
+
+	/**
+	 * returns the home directory of the user if specified by LDAP settings
+	 * @param string $valueFromLDAP i known; avoids a read operation on LDAP
+	 * @return string|false
+	 */
+	public function getHomePath($valueFromLDAP = null) {
+		$path = $valueFromLDAP;
+		if(is_null($valueFromLDAP)) {
+			if(strpos($this->connection->homeFolderNamingRule, 'attr:') === 0) {
+				$attr = substr($this->connection->homeFolderNamingRule, strlen('attr:'));
+				$result = $this->access->readAttribute($this->getDN(), $attr);
+				if($result && isset($result[0])) {
+					$path = $result[0];
+				}
+			}
+		}
+		if(empty($path)) {
+			return false;
+		}
+		//if attribute's value is an absolute path take this, otherwise append it to data dir
+		//check for / at the beginning or pattern c:\ resp. c:/
+		if('/' === $path[0]
+		   || (3 < strlen($path) && ctype_alpha($path[0])
+		   && $path[1] === ':' && ('\\' === $path[2] || '/' === $path[2]))) {
+			$homeDir = $path;
+		} else {
+			$homeDir = $this->config->getSystemValue(
+				'datadirectory', \OC::$SERVERROOT.'/data') . '/' . $path;
+		}
+		return $homeDir;
 	}
 
 	/**
@@ -228,50 +300,57 @@ class User {
 	}
 
 	/**
-	 * @brief fetches the email from LDAP and stores it as ownCloud user value
+	 * fetches the email from LDAP and stores it as ownCloud user value
+	 * @param string $valueFromLDAP if known, to save an LDAP read request
 	 * @return null
 	 */
-	public function updateEmail() {
+	public function updateEmail($valueFromLDAP = null) {
 		if($this->wasRefreshed('email')) {
 			return;
 		}
 
-		$email = null;
-		$emailAttribute = $this->connection->ldapEmailAttribute;
-		if(!empty($emailAttribute)) {
-			$aEmail = $this->access->readAttribute($this->dn, $emailAttribute);
-			if($aEmail && (count($aEmail) > 0)) {
-				$email = $aEmail[0];
-			}
-			if(!is_null($email)) {
-				$this->config->setUserValue(
-					$this->uid, 'settings', 'email', $email);
-			}
+		$email = $valueFromLDAP;
+		if(is_null($valueFromLDAP)) {
+			$emailAttribute = $this->connection->ldapEmailAttribute;
+				if(!empty($emailAttribute)) {
+					$aEmail = $this->access->readAttribute($this->dn, $emailAttribute);
+					if(is_array($aEmail) && (count($aEmail) > 0)) {
+						$email = $aEmail[0];
+					}
+				}
+		}
+
+		if(!is_null($email)) {
+			$this->config->setUserValue(
+				$this->uid, 'settings', 'email', $email);
 		}
 	}
 
 	/**
-	 * @brief fetches the quota from LDAP and stores it as ownCloud user value
+	 * fetches the quota from LDAP and stores it as ownCloud user value
+	 * @param string $valueFromLDAP the quota attribute's value can be passed,
+	 * to save the readAttribute request
 	 * @return null
 	 */
-	public function updateQuota() {
+	public function updateQuota($valueFromLDAP = null) {
 		if($this->wasRefreshed('quota')) {
 			return;
 		}
 
-		$quota = null;
-		$quotaDefault = $this->connection->ldapQuotaDefault;
-		$quotaAttribute = $this->connection->ldapQuotaAttribute;
-		if(!empty($quotaDefault)) {
-			$quota = $quotaDefault;
-		}
-		if(!empty($quotaAttribute)) {
-			$aQuota = $this->access->readAttribute($this->dn, $quotaAttribute);
+		//can be null
+		$quota = !is_null($valueFromLDAP) ? $valueFromLDAP
+			: $this->connection->ldapQuotaDefault;
+		if(is_null($valueFromLDAP)) {
+			$quotaAttribute = $this->connection->ldapQuotaAttribute;
+			if(!empty($quotaAttribute)) {
+				$aQuota = $this->access->readAttribute($this->dn, $quotaAttribute);
 
-			if($aQuota && (count($aQuota) > 0)) {
-				$quota = $aQuota[0];
+				if($aQuota && (count($aQuota) > 0)) {
+					$quota = $aQuota[0];
+				}
 			}
 		}
+
 		if(!is_null($quota)) {
 			$this->config->setUserValue($this->uid, 'files', 'quota', $quota);
 		}

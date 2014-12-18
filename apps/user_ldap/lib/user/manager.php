@@ -131,6 +131,31 @@ class Manager {
 	}
 
 	/**
+	 * returns a list of attributes that will be processed further, e.g. quota,
+	 * email, displayname, or others.
+	 * @return string[]
+	 */
+	public function getAttributes() {
+		$attrs = array('dn', 'jpegphoto', 'thumbnailphoto');
+		$possible = array(
+			$this->access->connection->ldapQuotaAttribute,
+			$this->access->connection->ldapEmailAttribute,
+			$this->access->connection->ldapUserDisplayName,
+		);
+		foreach($possible as $attr) {
+			if(!is_null($attr)) {
+				$attrs[] = $attr;
+			}
+		}
+		$homeRule = $this->access->connection->homeFolderNamingRule;
+		if(strpos($homeRule, 'attr:') === 0) {
+			$attrs[] = substr($homeRule, strlen('attr:'));
+		}
+
+		return $attrs;
+	}
+
+	/**
 	 * @brief returns a User object by it's DN or ownCloud username
 	 * @param string the DN or username of the user
 	 * @return \OCA\user_ldap\lib\User | null
