@@ -4,7 +4,11 @@
 </div>
 <div id='notification'></div>
 
-<div id="emptycontent" class="hidden"><?php p($l->t('Nothing in here. Your trash bin is empty!'))?></div>
+<div id="emptycontent" class="hidden">
+	<div class="icon-delete"></div>
+	<h2><?php p($l->t('No deleted files')); ?></h2>
+	<p><?php p($l->t('You will be able to recover deleted files from here')); ?></p>
+</div>
 
 <input type="hidden" name="dir" value="" id="dir">
 
@@ -14,11 +18,13 @@
 			<th id='headerName' class="hidden column-name">
 				<div id="headerName-container">
 					<input type="checkbox" id="select_all_trash" class="select-all"/>
-					<label for="select_all_trash"></label>
+					<label for="select_all_trash">
+						<span class="hidden-visually"><?php p($l->t('Select all'))?></span>
+					</label>
 					<a class="name sort columntitle" data-sort="name"><span><?php p($l->t( 'Name' )); ?></span><span class="sort-indicator"></span></a>
 					<span id="selectedActionsList" class='selectedActions'>
 						<a href="" class="undelete">
-							<img class="svg" alt="<?php p($l->t( 'Restore' )); ?>"
+							<img class="svg" alt=""
 								 src="<?php print_unescaped(OCP\image_path("core", "actions/history.svg")); ?>" />
 							<?php p($l->t('Restore'))?>
 						</a>
@@ -30,7 +36,7 @@
 				<span class="selectedActions">
 					<a href="" class="delete-selected">
 						<?php p($l->t('Delete'))?>
-						<img class="svg" alt="<?php p($l->t('Delete'))?>"
+						<img class="svg" alt=""
 							src="<?php print_unescaped(OCP\image_path("core", "actions/delete.svg")); ?>" />
 					</a>
 				</span>

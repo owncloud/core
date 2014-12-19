@@ -45,6 +45,16 @@ class UsersControllerTest extends \Test\TestCase {
 			->will($this->returnCallback(function($text, $parameters = array()) {
 				return vsprintf($text, $parameters);
 			}));
+		$this->container['Defaults'] = $this->getMockBuilder('\OC_Defaults')
+			->disableOriginalConstructor()->getMock();
+		$this->container['Mail'] = $this->getMockBuilder('\OC_Mail')
+			->disableOriginalConstructor()->getMock();
+		$this->container['DefaultMailAddress'] = 'no-reply@owncloud.com';
+		$this->container['Logger'] = $this->getMockBuilder('\OCP\ILogger')
+			->disableOriginalConstructor()->getMock();
+		$this->container['URLGenerator'] = $this->getMockBuilder('\OCP\IURLGenerator')
+			->disableOriginalConstructor()->getMock();
+
 		$this->usersController = $this->container['UsersController'];
 
 	}
@@ -57,7 +67,7 @@ class UsersControllerTest extends \Test\TestCase {
 		$foo = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$foo
-			->expects($this->exactly(3))
+			->expects($this->exactly(4))
 			->method('getUID')
 			->will($this->returnValue('foo'));
 		$foo
@@ -77,7 +87,7 @@ class UsersControllerTest extends \Test\TestCase {
 		$admin = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$admin
-			->expects($this->exactly(3))
+			->expects($this->exactly(4))
 			->method('getUID')
 			->will($this->returnValue('admin'));
 		$admin
@@ -99,7 +109,7 @@ class UsersControllerTest extends \Test\TestCase {
 		$bar = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$bar
-			->expects($this->exactly(3))
+			->expects($this->exactly(4))
 			->method('getUID')
 			->will($this->returnValue('bar'));
 		$bar
@@ -141,9 +151,11 @@ class UsersControllerTest extends \Test\TestCase {
 			->with('bar')
 			->will($this->returnValue($bar));
 		$this->container['Config']
-			->expects($this->exactly(3))
+			->expects($this->exactly(6))
 			->method('getUserValue')
-			->will($this->onConsecutiveCalls(1024, 404, 2323));
+			->will($this->onConsecutiveCalls(1024, 'foo@bar.com',
+											404, 'admin@bar.com',
+											2323, 'bar@dummy.com'));
 
 		$expectedResponse = new DataResponse(
 			array(
@@ -155,7 +167,8 @@ class UsersControllerTest extends \Test\TestCase {
 					'quota' => 1024,
 					'storageLocation' => '/home/foo',
 					'lastLogin' => 500,
-					'backend' => 'OC_User_Database'
+					'backend' => 'OC_User_Database',
+					'email' => 'foo@bar.com'
 				),
 				1 => array(
 					'name' => 'admin',
@@ -165,7 +178,8 @@ class UsersControllerTest extends \Test\TestCase {
 					'quota' => 404,
 					'storageLocation' => '/home/admin',
 					'lastLogin' => 12,
-					'backend' => 'OC_User_Dummy'
+					'backend' => 'OC_User_Dummy',
+					'email' => 'admin@bar.com'
 				),
 				2 => array(
 					'name' => 'bar',
@@ -175,7 +189,8 @@ class UsersControllerTest extends \Test\TestCase {
 					'quota' => 2323,
 					'storageLocation' => '/home/bar',
 					'lastLogin' => 3999,
-					'backend' => 'OC_User_Dummy'
+					'backend' => 'OC_User_Dummy',
+					'email' => 'bar@dummy.com'
 				),
 			)
 		);
@@ -187,7 +202,7 @@ class UsersControllerTest extends \Test\TestCase {
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
 		$user
-			->expects($this->exactly(3))
+			->expects($this->exactly(4))
 			->method('getUID')
 			->will($this->returnValue('foo'));
 		$user
@@ -231,7 +246,8 @@ class UsersControllerTest extends \Test\TestCase {
 					'quota' => null,
 					'storageLocation' => '/home/foo',
 					'lastLogin' => 500,
-					'backend' => 'OC_User_Database'
+					'backend' => 'OC_User_Database',
+					'email' => null
 				)
 			)
 		);
@@ -266,6 +282,9 @@ class UsersControllerTest extends \Test\TestCase {
 			->method('getHome')
 			->will($this->returnValue('/home/user'));
 		$user
+			->method('getUID')
+			->will($this->returnValue('foo'));
+		$user
 			->expects($this->once())
 			->method('getBackendClassName')
 			->will($this->returnValue('bar'));
@@ -278,10 +297,15 @@ class UsersControllerTest extends \Test\TestCase {
 
 		$expectedResponse = new DataResponse(
 			array(
-				'username' => 'foo',
+				'name' => 'foo',
 				'groups' => null,
 				'storageLocation' => '/home/user',
-				'backend' => 'bar'
+				'backend' => 'bar',
+				'lastLogin' => null,
+				'displayname' => null,
+				'quota' => null,
+				'subadmin' => array(),
+				'email' => null
 			),
 			Http::STATUS_CREATED
 		);
@@ -302,6 +326,9 @@ class UsersControllerTest extends \Test\TestCase {
 		$user
 			->method('getHome')
 			->will($this->returnValue('/home/user'));
+		$user
+			->method('getUID')
+			->will($this->returnValue('foo'));
 		$user
 			->expects($this->once())
 			->method('getBackendClassName')
@@ -340,10 +367,15 @@ class UsersControllerTest extends \Test\TestCase {
 
 		$expectedResponse = new DataResponse(
 			array(
-				'username' => 'foo',
+				'name' => 'foo',
 				'groups' => array('NewGroup', 'ExistingGroup'),
 				'storageLocation' => '/home/user',
-				'backend' => 'bar'
+				'backend' => 'bar',
+				'lastLogin' => null,
+				'displayname' => null,
+				'quota' => null,
+				'subadmin' => array(),
+				'email' => null
 			),
 			Http::STATUS_CREATED
 		);
@@ -471,6 +503,66 @@ class UsersControllerTest extends \Test\TestCase {
 		);
 		$response = $this->usersController->destroy('UserToDelete');
 		$this->assertEquals($expectedResponse, $response);
+	}
+
+	/**
+	 * test if an invalid mail result in a failure response
+	 */
+	public function testCreateUnsuccessfulWithInvalidEMail() {
+		/**
+		 * FIXME: Disabled due to missing DI on mail class.
+		 * TODO: Re-enable when https://github.com/owncloud/core/pull/12085 is merged.
+		 */
+		$this->markTestSkipped('Disable test until OC_Mail is rewritten.');
+
+		$this->container['Mail']
+			->expects($this->once())
+			->method('validateAddress')
+			->will($this->returnValue(false));
+
+		$expectedResponse = new DataResponse(
+			array(
+				'message' => 'Invalid mail address'
+			),
+			Http::STATUS_UNPROCESSABLE_ENTITY
+		);
+		$response = $this->usersController->create('foo', 'password', array(), 'invalidMailAdress');
+		$this->assertEquals($expectedResponse, $response);
+	}
+
+	/**
+	 * test if a valid mail result in a successful mail send
+	 */
+	public function testCreateSuccessfulWithValidEMail() {
+		/**
+		 * FIXME: Disabled due to missing DI on mail class.
+		 * TODO: Re-enable when https://github.com/owncloud/core/pull/12085 is merged.
+		 */
+		$this->markTestSkipped('Disable test until OC_Mail is rewritten.');
+
+		$this->container['Mail']
+			->expects($this->once())
+			->method('validateAddress')
+			->will($this->returnValue(true));
+		$this->container['Mail']
+			->expects($this->once())
+			->method('send')
+			->with(
+				$this->equalTo('validMail@Adre.ss'),
+				$this->equalTo('foo'),
+				$this->anything(),
+				$this->anything(),
+				$this->anything(),
+				$this->equalTo('no-reply@owncloud.com'),
+				$this->equalTo(1),
+				$this->anything()
+			);
+		$this->container['Logger']
+			->expects($this->never())
+			->method('error');
+
+		$response = $this->usersController->create('foo', 'password', array(), 'validMail@Adre.ss');
+		$this->assertEquals(Http::STATUS_CREATED, $response->getStatus());
 	}
 
 }

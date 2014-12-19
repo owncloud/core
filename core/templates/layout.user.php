@@ -40,10 +40,16 @@
 		<?php endif; ?>
 	</div>
 	<header><div id="header">
-			<a href="<?php print_unescaped(link_to('', 'index.php')); ?>" title="" id="owncloud">
-				<div class="logo-icon svg"></div>
+			<a href="<?php print_unescaped(link_to('', 'index.php')); ?>"
+				title="" id="owncloud" tabindex="-1">
+				<div class="logo-icon svg">
+					<h1 class="hidden-visually">
+						<?php p($theme->getName()); ?>
+					</h1>
+				</div>
 			</a>
-			<a href="#" class="menutoggle" tabindex="1">
+
+			<a href="#" class="menutoggle" tabindex="2">
 				<h1 class="header-appname">
 					<?php
 						if(OC_Util::getEditionString() === '') {
@@ -55,13 +61,19 @@
 				</h1>
 				<div class="icon-caret svg"></div>
 			</a>
+
+			<div id="skip-to-content">
+				<a href="#app-content" tabindex="1"><?php p($l->t('Skip to content')); ?></a>
+			</div>
+
 			<div id="logo-claim" style="display:none;"><?php p($theme->getLogoClaim()); ?></div>
 			<div id="settings" class="svg">
-				<div id="expand" tabindex="3" role="link">
+				<div id="expand" tabindex="4" role="link">
 					<?php if ($_['enableAvatars']): ?>
 					<div class="avatardiv<?php if ($_['userAvatarSet']) { print_unescaped(' avatardiv-shown"'); } else { print_unescaped('" style="display: none"'); } ?>>
 						<?php if ($_['userAvatarSet']): ?>
-							<img src="<?php p(link_to('', 'index.php').'/avatar/'.$_['user_uid'].'/32?requesttoken='.$_['requesttoken']); ?>">
+							<img src="<?php p(link_to('', 'index.php').'/avatar/'.$_['user_uid'].'/32?requesttoken='.$_['requesttoken']); ?>"
+								alt="" />
 						<?php endif; ?>
 					</div>
 					<?php endif; ?>
@@ -90,9 +102,12 @@
 			</div>
 
 			<form class="searchbox" action="#" method="post">
+				<label for="searchbox" class="hidden-visually">
+					<?php p($l->t('Search'));?>
+				</label>
 				<input id="searchbox" class="svg" type="search" name="query"
 					value="<?php if(isset($_POST['query'])) {p($_POST['query']);};?>"
-					autocomplete="off" tabindex="2" />
+					autocomplete="off" tabindex="3" />
 			</form>
 		</div></header>
 

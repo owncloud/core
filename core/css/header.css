@@ -7,6 +7,22 @@
 	-ms-user-select: none;
 }
 
+#skip-to-content a {
+	position: absolute;
+	left: -10000px;
+	top: auto;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+#skip-to-content a:focus {
+	left: 76px;
+	top: -9px;
+	color: #fff;
+	width: auto;
+	height: auto;
+}
+
 
 
 /* HEADERS ------------------------------------------------------------------ */
@@ -48,9 +64,6 @@
 	height: 120px;
 	margin: 0 auto;
 }
-#header .logo h1 {
-	display: none;
-}
 
 #header .logo-wide {
 	background-image: url(../img/logo-wide.svg);
@@ -86,9 +99,9 @@
 }
 .menutoggle:hover .header-appname,
 .menutoggle:hover .icon-caret,
-.menutoggle:focus .header-appname
-.menutoggle:focus .icon-caret
-.menutoggle.active .header-appname
+.menutoggle:focus .header-appname,
+.menutoggle:focus .icon-caret,
+.menutoggle.active .header-appname,
 .menutoggle.active .icon-caret {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 	filter: alpha(opacity=100);

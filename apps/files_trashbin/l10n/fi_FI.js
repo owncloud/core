@@ -8,7 +8,8 @@ OC.L10N.register(
     "Delete permanently" : "Poista pysyvästi",
     "Error" : "Virhe",
     "restored" : "palautettu",
-    "Nothing in here. Your trash bin is empty!" : "Tyhjää täynnä! Roskakorissa ei ole mitään.",
+    "No deleted files" : "Ei poistettuja tiedostoja",
+    "You will be able to recover deleted files from here" : "Voit palauttaa poistettuja tiedostoja tätä kautta",
     "Name" : "Nimi",
     "Deleted" : "Poistettu",
     "Delete" : "Poista"

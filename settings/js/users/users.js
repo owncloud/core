@@ -28,7 +28,25 @@ var UserList = {
 		this.$el.find('.quota-user').singleSelect().on('change', this.onQuotaSelect);
 	},
 
-	add: function (username, displayname, groups, subadmin, quota, storageLocation, lastLogin, sort, backend) {
+	/**
+	 * Add a user row from user object
+	 *
+	 * @param user object containing following keys:
+	 * 			{
+	 * 				'name': 			'username',
+	 * 				'displayname': 		'Users display name',
+	 * 				'groups': 			['group1', 'group2'],
+	 * 				'subadmin': 		['group4', 'group5'],
+	 *				'quota': 			'10 GB',
+	 *				'storageLocation':	'/srv/www/owncloud/data/username',
+	 *				'lastLogin':		'1418632333'
+	 *				'backend':			'LDAP',
+	 *				'email':			'username@example.org'
+	 * 			}
+	 * @param sort
+	 * @returns table row created for this user
+	 */
+	add: function (user, sort) {
 		var $tr = $userListBody.find('tr:first-child').clone();
 		// this removes just the `display:none` of the template row
 		$tr.removeAttr('style');
@@ -40,17 +58,19 @@ var UserList = {
 		 * Avatar or placeholder
 		 */
 		if ($tr.find('div.avatardiv').length){
-			$tr.find('.avatardiv').imageplaceholder(username, displayname);
-			$('div.avatardiv', $tr).avatar(username, 32);
+			$tr.find('.avatardiv').imageplaceholder(user.name, user.displayname);
+			$('div.avatardiv', $tr).avatar(user.name, 32);
 		}
 
 		/**
 		 * add username and displayname to row (in data and visible markup
 		 */
-		$tr.data('uid', username);
-		$tr.data('displayname', displayname);
-		$tr.find('td.name').text(username);
-		$tr.find('td.displayName > span').text(displayname);
+		$tr.data('uid', user.name);
+		$tr.data('displayname', user.displayname);
+		$tr.data('mailAddress', user.email);
+		$tr.find('td.name').text(user.name);
+		$tr.find('td.displayName > span').text(user.displayname);
+		$tr.find('td.mailAddress > span').text(user.email);
 
 		/**
 		 * groups and subadmins
@@ -58,13 +78,13 @@ var UserList = {
 		// make them look like the multiselect buttons
 		// until they get time to really get initialized
 		groupsSelect = $('<select multiple="multiple" class="groupsselect multiselect button" data-placehoder="Groups" title="' + t('settings', 'no group') + '"></select>')
-			.data('username', username)
-			.data('user-groups', groups);
+			.data('username', user.name)
+			.data('user-groups', user.groups);
 		if ($tr.find('td.subadmins').length > 0) {
 			subAdminSelect = $('<select multiple="multiple" class="subadminsselect multiselect button" data-placehoder="subadmins" title="' + t('settings', 'no group') + '">')
-				.data('username', username)
-				.data('user-groups', groups)
-				.data('subadmin', subadmin);
+				.data('username', user.name)
+				.data('user-groups', user.groups)
+				.data('subadmin', user.subadmin);
 			$tr.find('td.subadmins').empty();
 		}
 		$.each(this.availableGroups, function (i, group) {
@@ -82,7 +102,7 @@ var UserList = {
 		/**
 		 * remove action
 		 */
-		if ($tr.find('td.remove img').length === 0 && OC.currentUser !== username) {
+		if ($tr.find('td.remove img').length === 0 && OC.currentUser !== user.name) {
 			var deleteImage = $('<img class="svg action">').attr({
 				src: OC.imagePath('core', 'actions/delete')
 			});
@@ -90,7 +110,7 @@ var UserList = {
 				.attr({ href: '#', 'original-title': t('settings', 'Delete')})
 				.append(deleteImage);
 			$tr.find('td.remove').append(deleteLink);
-		} else if (OC.currentUser === username) {
+		} else if (OC.currentUser === user.name) {
 			$tr.find('td.remove a').remove();
 		}
 
@@ -98,37 +118,37 @@ var UserList = {
 		 * quota
 		 */
 		var $quotaSelect = $tr.find('.quota-user');
-		if (quota === 'default') {
+		if (user.quota === 'default') {
 			$quotaSelect
 				.data('previous', 'default')
 				.find('option').attr('selected', null)
 				.first().attr('selected', 'selected');
 		} else {
-			if ($quotaSelect.find('option').filterAttr('value', quota).length > 0) {
-				$quotaSelect.find('option').filterAttr('value', quota).attr('selected', 'selected');
+			if ($quotaSelect.find('option').filterAttr('value', user.quota).length > 0) {
+				$quotaSelect.find('option').filterAttr('value', user.quota).attr('selected', 'selected');
 			} else {
-				$quotaSelect.append('<option value="' + escapeHTML(quota) + '" selected="selected">' + escapeHTML(quota) + '</option>');
+				$quotaSelect.append('<option value="' + escapeHTML(user.quota) + '" selected="selected">' + escapeHTML(user.quota) + '</option>');
 			}
 		}
 
 		/**
 		 * storage location
 		 */
-		$tr.find('td.storageLocation').text(storageLocation);
+		$tr.find('td.storageLocation').text(user.storageLocation);
 
 		/**
 		 * user backend
 		 */
-		$tr.find('td.userBackend').text(backend);
+		$tr.find('td.userBackend').text(user.backend);
 
 		/**
 		 * last login
 		 */
 		var lastLoginRel = t('settings', 'never');
 		var lastLoginAbs = lastLoginRel;
-		if(lastLogin !== 0) {
-			lastLoginRel = OC.Util.relativeModifiedDate(lastLogin);
-			lastLoginAbs = OC.Util.formatDate(lastLogin);
+		if(user.lastLogin !== 0) {
+			lastLoginRel = OC.Util.relativeModifiedDate(user.lastLogin);
+			lastLoginAbs = OC.Util.formatDate(user.lastLogin);
 		}
 		var $tdLastLogin = $tr.find('td.lastLogin');
 		$tdLastLogin.text(lastLoginRel);
@@ -329,6 +349,9 @@ var UserList = {
 	getDisplayName: function(element) {
 		return ($(element).closest('tr').data('displayname') || '').toString();
 	},
+	getMailAddress: function(element) {
+		return ($(element).closest('tr').data('mailAddress') || '').toString();
+	},
 	initDeleteHandling: function() {
 		//set up handler
 		UserDeleteHandler = new DeleteHandler('/settings/users/users', 'username',
@@ -353,9 +376,12 @@ var UserList = {
 			UserDeleteHandler.deleteEntry();
 		});
 	},
-	update: function (gid) {
+	update: function (gid, limit) {
 		if (UserList.updating) {
 			return;
+		}
+		if(!limit) {
+			limit = UserList.usersToLoad;
 		}
 		$userList.siblings('.loading').css('visibility', 'visible');
 		UserList.updating = true;
@@ -366,7 +392,7 @@ var UserList = {
 		var pattern = filter.getPattern();
 		$.get(
 			OC.generateUrl('/settings/users/users'),
-			{ offset: UserList.offset, limit: UserList.usersToLoad, gid: gid, pattern: pattern },
+			{ offset: UserList.offset, limit: limit, gid: gid, pattern: pattern },
 			function (result) {
 				var loadedUsers = 0;
 				var trs = [];
@@ -377,7 +403,7 @@ var UserList = {
 					if(UserList.has(user.name)) {
 						return true;
 					}
-					var $tr = UserList.add(user.name, user.displayname, user.groups, user.subadmin, user.quota, user.storageLocation, user.lastLogin, false, user.backend);
+					var $tr = UserList.add(user, user.lastLogin, false, user.backend);
 					$tr.addClass('appear transparent');
 					trs.push($tr);
 					loadedUsers++;
@@ -385,6 +411,8 @@ var UserList = {
 				if (result.length > 0) {
 					UserList.doSort();
 					$userList.siblings('.loading').css('visibility', 'hidden');
+					// reset state on load
+					UserList.noMoreEntries = false;
 				}
 				else {
 					UserList.noMoreEntries = true;
@@ -537,7 +565,7 @@ var UserList = {
 			return;
 		}
 		if (UserList.scrollArea.scrollTop() + UserList.scrollArea.height() > UserList.scrollArea.get(0).scrollHeight - 500) {
-			UserList.update(UserList.currentGid, true);
+			UserList.update(UserList.currentGid);
 		}
 	},
 
@@ -681,6 +709,45 @@ $(document).ready(function () {
 			});
 	});
 
+	$userListBody.on('click', '.mailAddress', function (event) {
+		event.stopPropagation();
+		var $td = $(this).closest('td');
+		var $tr = $td.closest('tr');
+		var uid = UserList.getUID($td);
+		var mailAddress = escapeHTML(UserList.getMailAddress($td));
+		var $input = $('<input type="text">').val(mailAddress);
+		$td.children('span').replaceWith($input);
+		$input
+			.focus()
+			.keypress(function (event) {
+				if (event.keyCode === 13) {
+					if ($(this).val().length > 0) {
+						$input.blur();
+						$.ajax({
+							type: 'PUT',
+							url: OC.generateUrl('/settings/users/{id}/mailAddress', {id: uid}),
+							data: {
+								mailAddress: $(this).val()
+							}
+						}).fail(function (result) {
+							OC.Notification.show(result.responseJSON.data.message);
+							// reset the values
+							$tr.data('mailAddress', mailAddress);
+							$tr.children('.mailAddress').children('span').text(mailAddress);
+						});
+					} else {
+						$input.blur();
+					}
+				}
+			})
+			.blur(function () {
+				var mailAddress = $input.val();
+				var $span = $('<span>').text(mailAddress);
+				$tr.data('mailAddress', mailAddress);
+				$input.replaceWith($span);
+			});
+	});
+
 	// init the quota field select box after it is shown the first time
 	$('#app-settings').one('show', function() {
 		$(this).find('#default_quota').singleSelect().on('change', UserList.onQuotaSelect);
@@ -690,6 +757,7 @@ $(document).ready(function () {
 		event.preventDefault();
 		var username = $('#newusername').val();
 		var password = $('#newuserpassword').val();
+		var email = $('#newemail').val();
 		if ($.trim(username) === '') {
 			OC.dialogs.alert(
 				t('settings', 'A valid username must be provided'),
@@ -702,14 +770,24 @@ $(document).ready(function () {
 				t('settings', 'Error creating user'));
 			return false;
 		}
-		var groups = $('#newusergroups').val();
+		if(!$('#CheckboxMailOnUserCreate').is(':checked')) {
+			email = '';
+		}
+		if ($('#CheckboxMailOnUserCreate').is(':checked') && $.trim(email) === '') {
+			OC.dialogs.alert(
+				t('settings', 'A valid email must be provided'),
+				t('settings', 'Error creating user'));
+			return false;
+		}
+		var groups = $('#newusergroups').val() || [];
 		$('#newuser').get(0).reset();
 		$.post(
 			OC.generateUrl('/settings/users/users'),
 			{
 				username: username,
 				password: password,
-				groups: groups
+				groups: groups,
+				email: email
 			},
 			function (result) {
 				if (result.groups) {
@@ -723,20 +801,8 @@ $(document).ready(function () {
 						GroupList.setUserCount($li, userCount + 1);
 					}
 				}
-				if (result.homeExists){
-					OC.Notification.hide();
-					OC.Notification.show(t('settings', 'Warning: Home directory for user "{user}" already exists', {user: result.username}));
-					if (UserList.notificationTimeout){
-						window.clearTimeout(UserList.notificationTimeout);
-					}
-					UserList.notificationTimeout = window.setTimeout(
-						function(){
-							OC.Notification.hide();
-							UserList.notificationTimeout = null;
-						}, 10000);
-				}
 				if(!UserList.has(username)) {
-					UserList.add(username, username, result.groups, null, 'default', result.storageLocation, 0, true, result.backend);
+					UserList.add(result, true);
 				}
 				$('#newusername').focus();
 				GroupList.incEveryoneCount();
@@ -761,7 +827,15 @@ $(document).ready(function () {
 			$("#userlist .lastLogin").hide();
 		}
 	});
-	// Option to display/hide the "Last Login" column
+	// Option to display/hide the "Mail Address" column
+	$('#CheckboxEmailAddress').click(function() {
+		if ($('#CheckboxEmailAddress').is(':checked')) {
+			$("#userlist .mailAddress").show();
+		} else {
+			$("#userlist .mailAddress").hide();
+		}
+	});
+	// Option to display/hide the "User Backend" column
 	$('#CheckboxUserBackend').click(function() {
 		if ($('#CheckboxUserBackend').is(':checked')) {
 			$("#userlist .userBackend").show();
@@ -769,8 +843,23 @@ $(document).ready(function () {
 			$("#userlist .userBackend").hide();
 		}
 	});
+	// Option to display/hide the "E-Mail" input field
+	$('#CheckboxMailOnUserCreate').click(function() {
+		if ($('#CheckboxMailOnUserCreate').is(':checked')) {
+			$("#newemail").show();
+		} else {
+			$("#newemail").hide();
+		}
+	});
+
+	// calculate initial limit of users to load
+	var initialUserCountLimit = 20,
+		containerHeight = $('#app-content').height();
+	if(containerHeight > 40) {
+		initialUserCountLimit = Math.floor(containerHeight/40);
+	}
 
 	// trigger loading of users on startup
-	UserList.update(UserList.currentGid);
+	UserList.update(UserList.currentGid, initialUserCountLimit);
 
 });

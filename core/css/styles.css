@@ -192,9 +192,10 @@ input[type="submit"]:hover, input[type="submit"]:focus,
 input[type="button"]:hover, input[type="button"]:focus,
 button:hover, button:focus,
 .button:hover, .button:focus,
+.button a:focus,
 select:hover, select:focus, select:active {
-	background-color:rgba(250,250,250,.9);
-	color:#333;
+	background-color: rgba(255, 255, 255, .95);
+	color: #111;
 }
 input[type="submit"] img, input[type="button"] img, button img, .button img { cursor:pointer; }
 #header .button {
@@ -327,6 +328,20 @@ input[type="submit"].enabled {
 	text-align: center;
 	top: 30%;
 	width: 100%;
+}
+#emptycontent h2 {
+	font-size: 22px;
+	margin-bottom: 10px;
+}
+#emptycontent [class^="icon-"],
+#emptycontent [class*=" icon-"] {
+	background-size: 64px;
+	height: 64px;
+	width: 64px;
+	margin: 0 auto 15px;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	filter: alpha(opacity=50);
+	opacity: .5;
 }
 
 
@@ -711,7 +726,18 @@ label.infield {
 
 
 /* VARIOUS REUSABLE SELECTORS */
-.hidden { display:none; }
+.hidden {
+	display: none;
+}
+.hidden-visually {
+	position: absolute;
+	left:-10000px;
+	top: auto;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
 .bold { font-weight:bold; }
 .center { text-align:center; }
 .inlineblock { display: inline-block; }
@@ -949,6 +975,7 @@ div.crumb a.ellipsislink {
 /* some feedback for hover/tap on breadcrumbs */
 div.crumb:hover,
 div.crumb:focus,
+div.crumb a:focus,
 div.crumb:active {
 	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
 	filter:alpha(opacity=70);

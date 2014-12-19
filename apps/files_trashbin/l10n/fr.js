@@ -8,7 +8,8 @@ OC.L10N.register(
     "Delete permanently" : "Supprimer de façon définitive",
     "Error" : "Erreur",
     "restored" : "restauré",
-    "Nothing in here. Your trash bin is empty!" : "Il n'y a rien ici. Votre corbeille est vide !",
+    "No deleted files" : "Aucun fichier supprimé",
+    "You will be able to recover deleted files from here" : "Vous pourrez restaurer vos fichiers supprimés ici",
     "Name" : "Nom",
     "Deleted" : "Effacé",
     "Delete" : "Supprimer"

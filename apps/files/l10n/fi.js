@@ -9,8 +9,8 @@ OC.L10N.register(
     "_Uploading %n file_::_Uploading %n files_" : ["",""],
     "Favorite" : "Suosikit",
     "Save" : "Tallenna",
+    "Settings" : "Asetukset",
     "New folder" : "Luo kansio",
-    "Folder" : "Kansio",
-    "Nothing in here. Upload something!" : "Ei sisältöä. Siirrä tänne jotakin!"
+    "Folder" : "Kansio"
 },
 "nplurals=2; plural=(n != 1);");

@@ -5,6 +5,7 @@
     "No file was uploaded" : "Nulle file esseva incargate.",
     "Missing a temporary folder" : "Manca un dossier temporari",
     "Files" : "Files",
+    "Home" : "Domo",
     "Delete" : "Deler",
     "Unshare" : "Leva compartir",
     "Error" : "Error",
@@ -17,11 +18,11 @@
     "Upload (max. %s)" : "Incargar (max. %s)",
     "Maximum upload size" : "Dimension maxime de incargamento",
     "Save" : "Salveguardar",
+    "Settings" : "Configurationes",
     "New" : "Nove",
     "Text file" : "File de texto",
     "New folder" : "Nove dossier",
     "Folder" : "Dossier",
-    "Nothing in here. Upload something!" : "Nihil hic. Incarga alcun cosa!",
     "Download" : "Discargar",
     "Upload too large" : "Incargamento troppo longe"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

@@ -7,6 +7,7 @@ OC.L10N.register(
     "No file was uploaded" : "Nijedan fajl nije poslat",
     "Missing a temporary folder" : "Nedostaje privremena fascikla",
     "Files" : "Fajlovi",
+    "Home" : "Kuća",
     "Rename" : "Preimenij",
     "Delete" : "Obriši",
     "Unshare" : "Ukljoni deljenje",
@@ -19,8 +20,8 @@ OC.L10N.register(
     "_Uploading %n file_::_Uploading %n files_" : ["","",""],
     "Maximum upload size" : "Maksimalna veličina pošiljke",
     "Save" : "Snimi",
+    "Settings" : "Podešavanja",
     "Folder" : "Direktorijum",
-    "Nothing in here. Upload something!" : "Ovde nema ničeg. Pošaljite nešto!",
     "Download" : "Preuzmi",
     "Upload too large" : "Pošiljka je prevelika",
     "The files you are trying to upload exceed the maximum size for file uploads on this server." : "Fajlovi koje želite da pošaljete prevazilaze ograničenje maksimalne veličine pošiljke na ovom serveru."
