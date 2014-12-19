@@ -20,7 +20,7 @@ use OCP\IUserManager;
 /**
  * Setup shared storages for users
  */
-class MountManager implements IMountProvider {
+class ShareMountProvider implements IMountProvider {
 	/**
 	 * @var \OCP\Files\Mount\IMountManager
 	 */
