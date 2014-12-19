@@ -29,6 +29,8 @@ class CacheJail extends CacheWrapper {
 	protected function getSourcePath($path) {
 		if ($path === '') {
 			return $this->root;
+		} else if ($this->root === '') {
+			return $path;
 		} else {
 			return $this->root . '/' . $path;
 		}
