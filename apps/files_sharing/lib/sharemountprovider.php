@@ -53,8 +53,7 @@ class ShareMountProvider implements IMountProvider {
 				Filesystem::initMountPoints($owner->getUID()); //TODO move to filesystem factory once that's merged
 				$root = \OC::$server->getRootFolder();
 				$sourceNodes = $root->getById($sourceId);
-				if (count($sourceNodes) > 0) {
-					$sourceNode = $sourceNodes[0];
+				if ($sourceNode = $this->selectSourceNode($sourceNodes)) {
 
 					$mounts[] = new SharedMount(
 						'\OCA\Files_Sharing\SharedStorage',
@@ -77,6 +76,21 @@ class ShareMountProvider implements IMountProvider {
 			}
 		};
 		return $mounts;
+	}
+
+	/**
+	 * Get the original file from all paths pointing to the source file
+	 *
+	 * @param \OCP\Files\Node [] $nodes
+	 * @return \OCP\Files\Node
+	 */
+	private function selectSourceNode($nodes) {
+		foreach ($nodes as $node) {
+			if (!$node->getStorage()->instanceOfStorage('\OCA\Files_Sharing\SharedStorage')) {
+				return $node;
+			}
+		}
+		return null;
 	}
 
 	/**
