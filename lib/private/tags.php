@@ -228,8 +228,8 @@ class Tags implements \OCP\ITags {
 					$entry = $entries[$objId][] = $row['category'];
 				}
 				if (\OCP\DB::isError($result)) {
-				\OCP\Util::writeLog('core', __METHOD__. 'DB error: ' . \OCP\DB::getErrorMessage($result), \OCP\Util::ERROR);
-				return false;
+				    \OCP\Util::writeLog('core', __METHOD__. 'DB error: ' . \OCP\DB::getErrorMessage($result), \OCP\Util::ERROR);
+				    return false;
 				}
 			}
 		} catch(\Exception $e) {
