@@ -110,8 +110,25 @@ class OC_Request {
 			return true;
 		}
 
-		return in_array($domain, $trustedList);
+		// Allow access from an explicitly listed domain
+		if( in_array($domain, $trustedList)) {
+			return true;
+		}
+
+		// If a value contains a *, apply glob-style matching. Any second * is ignored.
+		foreach ($trustedList as $trusted) {
+			$star = strpos($trusted, '*');
+			if($star !== false) {
+				if(    strpos( $domain, substr($trusted, 0,      $star )                   ) !== false
+				    && strrpos($domain, substr($trusted, $star+1       ), -strlen($trusted)) !== false )
+				{
+					return true;
+				}
+			}
+		}
+		return false;
 	}
+
 
 	/**
 	 * Returns the unverified server host from the headers without checking
