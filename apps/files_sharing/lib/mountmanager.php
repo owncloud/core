@@ -52,24 +52,27 @@ class MountManager implements IMountProvider {
 				$targetPath = $userDir . '/' . $share['file_target'];
 				Filesystem::initMountPoints($owner->getUID()); //TODO move to filesystem factory once that's merged
 				$root = \OC::$server->getRootFolder();
-				$sourceNode = $root->getById($sourceId)[0];
+				$sourceNodes = $root->getById($sourceId);
+				if (count($sourceNodes) > 0) {
+					$sourceNode = $sourceNodes[0];
 
-				$mounts[] = new SharedMount(
-					'\OCA\Files_Sharing\SharedStorage',
-					$targetPath,
-					array(
-						'share' => $share,
-						'user' => $user->getUID(),
-						'displayname' => $owner->getDisplayName(),
-						'storage' => $sourceNode->getStorage(),
-						'root' => $sourceNode->getInternalPath()
-					),
-					$factory
-				);
+					$mounts[] = new SharedMount(
+						'\OCA\Files_Sharing\SharedStorage',
+						$targetPath,
+						array(
+							'share' => $share,
+							'user' => $user->getUID(),
+							'displayname' => $owner->getDisplayName(),
+							'storage' => $sourceNode->getStorage(),
+							'root' => $sourceNode->getInternalPath()
+						),
+						$factory
+					);
 
-				$subMounts = $this->mountManager->findIn($sourceNode->getPath());
-				foreach ($subMounts as $mount) {
-					$mounts[] = $this->copyMountPoint($mount, $sourceNode->getPath(), $targetPath, $factory);
+					$subMounts = $this->mountManager->findIn($sourceNode->getPath());
+					foreach ($subMounts as $mount) {
+						$mounts[] = $this->copyMountPoint($mount, $sourceNode->getPath(), $targetPath, $factory);
+					}
 				}
 			}
 		};
