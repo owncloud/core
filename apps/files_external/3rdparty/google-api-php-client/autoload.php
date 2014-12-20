@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2013 Google Inc.
+ * Copyright 2014 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,19 @@
  * limitations under the License.
  */
 
-require_once realpath(dirname(__FILE__) . '/../../../autoload.php');
-
-class Google_Auth_Exception extends Google_Exception
-{
+function google_api_php_client_autoload($className) {
+  $classPath = explode('_', $className);
+  if ($classPath[0] != 'Google') {
+    return;
+  }
+  if (count($classPath) > 3) {
+    // Maximum class file path depth in this project is 3.
+    $classPath = array_slice($classPath, 0, 3);
+  }
+  $filePath = dirname(__FILE__) . '/src/' . implode('/', $classPath) . '.php';
+  if (file_exists($filePath)) {
+    require_once($filePath);
+  }
 }
+
+spl_autoload_register('google_api_php_client_autoload');
