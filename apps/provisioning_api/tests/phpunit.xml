@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<phpunit bootstrap="bootstrap.php"
+		 strict="true"
+		 verbose="true"
+		 timeoutForSmallTests="900"
+		 timeoutForMediumTests="900"
+		 timeoutForLargeTests="900"
+		>
+	<testsuite name='ownCloud - Provisioning App Tests'>
+		<directory suffix='Test.php'>.</directory>
+	</testsuite>
+	<!-- filters for code coverage -->
+	<filter>
+		<whitelist>
+			<directory suffix=".php">../../provisioning_api</directory>
+			<exclude>
+				<directory suffix=".php">../../provisioning_api/l10n</directory>
+				<directory suffix=".php">../../provisioning_api/tests</directory>
+			</exclude>
+		</whitelist>
+	</filter>
+	<logging>
+		<!-- and this is where your report will be written -->
+		<log type="coverage-clover" target="./clover.xml"/>
+	</logging>
+</phpunit>
+
