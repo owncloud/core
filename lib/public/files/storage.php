@@ -335,4 +335,14 @@ interface Storage {
 	 * @return bool
 	 */
 	public function instanceOfStorage($class);
+
+	/**
+	 * get a cache instance for the storage
+	 *
+	 * @param string $path
+	 * @param \OCP\Files\Storage (optional) the storage to pass to the cache
+	 * @return \OCP\Files\ICache
+	 */
+	public function getCache($path = '', $storage = null);
+
 }
