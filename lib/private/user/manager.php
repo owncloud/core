@@ -261,6 +261,13 @@ class Manager extends PublicEmitter implements IUserManager {
 			if ($backend->implementsActions(\OC_User_Backend::CREATE_USER)) {
 				$backend->createUser($uid, $password);
 				$user = $this->getUserObject($uid, $backend);
+
+				// make sure that the users file system is initialized before we
+				// emit the post hook
+				if (!\OC_User::isLoggedIn()) {
+					\OC_Util::setupFS($uid);
+				}
+
 				$this->emit('\OC\User', 'postCreateUser', array($user, $password));
 				return $user;
 			}

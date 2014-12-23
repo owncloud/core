@@ -189,6 +189,8 @@ class Test_Util extends \Test\TestCase {
 		\OC::$server->getConfig()->setUserValue($user1, 'files', 'quota', '1024');
 		\OC_User::setUserId($user1);
 
+		// make sure that we set up the file system again after the quota was set
+		\OC_Util::tearDownFS();
 		\OC_Util::setupFS($user1);
 
 		$userMount = \OC\Files\Filesystem::getMountManager()->find('/' . $user1 . '/');
