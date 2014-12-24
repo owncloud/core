@@ -4,7 +4,7 @@
 
 	<form name="filesForm" class="section" action="#" method="post">
 		<h2><?php p($l->t('File handling')); ?></h2>
-		<label for="maxUploadSize"><?php p($l->t( 'Maximum upload size' )); ?> </label>
+		<label for="maxUploadSize"><?php p($l->t( 'Maximum upload size (B)' )); ?> </label>
 		<input type="text" name='maxUploadSize' id="maxUploadSize" value='<?php p($_['uploadMaxFilesize']) ?>'/>
 		<?php if($_['displayMaxPossibleUploadSize']):?>
 			(<?php p($l->t('max. possible: ')); p($_['maxPossibleUploadSize']) ?>)
