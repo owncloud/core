@@ -164,6 +164,8 @@ class OC_Response {
 				OC_Request::USER_AGENT_FREEBOX
 			))) {
 			header( 'Content-Disposition: ' . rawurlencode($type) . '; filename="' . rawurlencode( $filename ) . '"' );
+		} elseif (OC_Request::isUserAgent(array(OC_Request::USER_AGENT_SAFARI))) {
+        		header( 'Content-Disposition: ' . rawurlencode($type) . '; filename="' . $filename . '"' );
 		} else {
 			header( 'Content-Disposition: ' . rawurlencode($type) . '; filename*=UTF-8\'\'' . rawurlencode( $filename )
 												 . '; filename="' . rawurlencode( $filename ) . '"' );
