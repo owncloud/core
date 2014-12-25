@@ -12,6 +12,7 @@ class OC_Request {
 	// Android Chrome user agent: https://developers.google.com/chrome/mobile/docs/user-agent
 	const USER_AGENT_ANDROID_MOBILE_CHROME = '#Android.*Chrome/[.0-9]*#';
 	const USER_AGENT_FREEBOX = '#^Mozilla/5\.0$#';
+	const USER_AGENT_SAFARI = '/^.+(Windows|Macintosh|iPhone|iPad)(?!.*Chrome).+(Safari).+$/i';  // http://planet-green.com/archives/90
 	const REGEX_LOCALHOST = '/^(127\.0\.0\.1|localhost)$/';
 	static protected $reqId;
 
