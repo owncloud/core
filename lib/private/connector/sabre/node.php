@@ -1,8 +1,5 @@
 <?php
 
-use Sabre\DAV\URLUtil;
-use OC\Connector\Sabre\TagList;
-
 /**
  * ownCloud
  *
@@ -23,7 +20,15 @@ use OC\Connector\Sabre\TagList;
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-abstract class OC_Connector_Sabre_Node implements \Sabre\DAV\INode, \Sabre\DAV\IProperties {
+
+namespace OC\Connector\Sabre;
+
+use OC_DB;
+use OC_User;
+use OC_Util;
+use Sabre\DAV\URLUtil;
+
+abstract class Node implements \Sabre\DAV\INode, \Sabre\DAV\IProperties {
 	const GETETAG_PROPERTYNAME = '{DAV:}getetag';
 	const LASTMODIFIED_PROPERTYNAME = '{DAV:}lastmodified';
 

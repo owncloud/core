@@ -14,14 +14,14 @@ class Test_OC_Connector_Sabre_QuotaPlugin extends \Test\TestCase {
 	private $server;
 
 	/**
-	 * @var OC_Connector_Sabre_QuotaPlugin
+	 * @var \OC\Connector\Sabre\QuotaPlugin
 	 */
 	private $plugin;
 
 	private function init($quota) {
 		$view = $this->buildFileViewMock($quota);
 		$this->server = new \Sabre\DAV\Server();
-		$this->plugin = new OC_Connector_Sabre_QuotaPlugin($view);
+		$this->plugin = new \OC\Connector\Sabre\QuotaPlugin($view);
 		$this->plugin->initialize($this->server);
 	}
 

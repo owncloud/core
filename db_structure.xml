@@ -565,7 +565,7 @@
 	<table>
 
 		<!--
-		Locks held by WebDAV clients via OC_Connector_Sabre_Locks.
+		Locks held by WebDAV clients via \OC\Connector\Sabre\Locks.
 		-->
 		<name>*dbprefix*locks</name>
 

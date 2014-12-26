@@ -21,7 +21,13 @@
  *
  */
 
-class OC_Connector_Sabre_Locks extends \Sabre\DAV\Locks\Backend\AbstractBackend {
+namespace OC\Connector\Sabre;
+
+use OC_Config;
+use OC_DB;
+use OC_User;
+
+class Locks extends \Sabre\DAV\Locks\Backend\AbstractBackend {
 
 	/**
 	 * Returns a list of \Sabre\DAV\Locks_LockInfo objects

@@ -27,7 +27,7 @@ class Test_OC_Connector_Sabre_Directory extends \Test\TestCase {
 			->method('getPath')
 			->will($this->returnValue(''));
 
-		return new OC_Connector_Sabre_Directory($this->view, $this->info);
+		return new \OC\Connector\Sabre\Directory($this->view, $this->info);
 	}
 
 	/**

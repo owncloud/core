@@ -24,13 +24,13 @@
  */
 
 // Backends
-$authBackend = new OC_Connector_Sabre_Auth();
-$lockBackend = new OC_Connector_Sabre_Locks();
-$requestBackend = new OC_Connector_Sabre_Request();
+$authBackend = new \OC\Connector\Sabre\Auth();
+$lockBackend = new \OC\Connector\Sabre\Locks();
+$requestBackend = new \OC\Connector\Sabre\Request();
 
 // Fire up server
 $objectTree = new \OC\Connector\Sabre\ObjectTree();
-$server = new OC_Connector_Sabre_Server($objectTree);
+$server = new \OC\Connector\Sabre\Server($objectTree);
 $server->httpRequest = $requestBackend;
 $server->setBaseUri($baseuri);
 
@@ -39,9 +39,9 @@ $defaults = new OC_Defaults();
 $server->addPlugin(new \Sabre\DAV\Auth\Plugin($authBackend, $defaults->getName()));
 $server->addPlugin(new \Sabre\DAV\Locks\Plugin($lockBackend));
 $server->addPlugin(new \Sabre\DAV\Browser\Plugin(false, false)); // Show something in the Browser, but no upload
-$server->addPlugin(new OC_Connector_Sabre_FilesPlugin());
-$server->addPlugin(new OC_Connector_Sabre_MaintenancePlugin());
-$server->addPlugin(new OC_Connector_Sabre_ExceptionLoggerPlugin('webdav'));
+$server->addPlugin(new \OC\Connector\Sabre\FilesPlugin());
+$server->addPlugin(new \OC\Connector\Sabre\MaintenancePlugin());
+$server->addPlugin(new \OC\Connector\Sabre\ExceptionLoggerPlugin('webdav'));
 
 // wait with registering these until auth is handled and the filesystem is setup
 $server->subscribeEvent('beforeMethod', function () use ($server, $objectTree) {
@@ -50,11 +50,11 @@ $server->subscribeEvent('beforeMethod', function () use ($server, $objectTree) {
 
 	// Create ownCloud Dir
 	$mountManager = \OC\Files\Filesystem::getMountManager();
-	$rootDir = new OC_Connector_Sabre_Directory($view, $rootInfo);
+	$rootDir = new \OC\Connector\Sabre\Directory($view, $rootInfo);
 	$objectTree->init($rootDir, $view, $mountManager);
 
 	$server->addPlugin(new \OC\Connector\Sabre\TagsPlugin($objectTree, \OC::$server->getTagManager()));
-	$server->addPlugin(new OC_Connector_Sabre_QuotaPlugin($view));
+	$server->addPlugin(new \OC\Connector\Sabre\QuotaPlugin($view));
 }, 30); // priority 30: after auth (10) and acl(20), before lock(50) and handling the request
 
 // And off we go!
