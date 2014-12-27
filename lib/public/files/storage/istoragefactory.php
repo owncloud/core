@@ -23,6 +23,14 @@ interface IStorageFactory {
 	public function addStorageWrapper($wrapperName, $callback);
 
 	/**
+	 * Check if a storage wrapper is registered
+	 *
+	 * @param string $wrapperName
+	 * @return bool
+	 */
+	public function isRegistered($wrapperName);
+
+	/**
 	 * @param string|boolean $mountPoint
 	 * @param string $class
 	 * @param array $arguments

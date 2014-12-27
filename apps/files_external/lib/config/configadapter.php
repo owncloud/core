@@ -22,10 +22,10 @@ class ConfigAdapter implements IMountProvider {
 	 * Get all mountpoints applicable for the user
 	 *
 	 * @param \OCP\IUser $user
-	 * @param \OCP\Files\Storage\IStorageFactory $loader
+	 * @param \OCP\Files\Storage\IStorageFactory $factory
 	 * @return \OCP\Files\Mount\IMountPoint[]
 	 */
-	public function getMountsForUser(IUser $user, IStorageFactory $loader) {
+	public function getMountsForUser(IUser $user, IStorageFactory $factory) {
 		$mountPoints = \OC_Mount_Config::getAbsoluteMountPoints($user->getUID());
 		$mounts = array();
 		foreach ($mountPoints as $mountPoint => $options) {
@@ -35,9 +35,9 @@ class ConfigAdapter implements IMountProvider {
 			}
 			$mountOptions = isset($options['mountOptions']) ? $options['mountOptions'] : [];
 			if (isset($options['personal']) && $options['personal']) {
-				$mounts[] = new PersonalMount($options['class'], $mountPoint, $options['options'], $loader, $mountOptions);
+				$mounts[] = new PersonalMount($options['class'], $mountPoint, $options['options'], $factory, $mountOptions);
 			} else {
-				$mounts[] = new MountPoint($options['class'], $mountPoint, $options['options'], $loader, $mountOptions);
+				$mounts[] = new MountPoint($options['class'], $mountPoint, $options['options'], $factory, $mountOptions);
 			}
 		}
 		return $mounts;

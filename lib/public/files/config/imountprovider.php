@@ -19,8 +19,8 @@ interface IMountProvider {
 	 * Get all mountpoints applicable for the user
 	 *
 	 * @param \OCP\IUser $user
-	 * @param \OCP\Files\Storage\IStorageFactory $loader
+	 * @param \OCP\Files\Storage\IStorageFactory $factory
 	 * @return \OCP\Files\Mount\IMountPoint[]
 	 */
-	public function getMountsForUser(IUser $user, IStorageFactory $loader);
+	public function getMountsForUser(IUser $user, IStorageFactory $factory);
 }

@@ -444,7 +444,7 @@ class Test_Files_Sharing_Cache extends TestCase {
 		$this->assertTrue(\OC\Files\Filesystem::file_exists('/test.txt'));
 		list($sharedStorage) = \OC\Files\Filesystem::resolvePath('/' . self::TEST_FILES_SHARING_API_USER2 . '/files/test.txt');
 		/**
-		 * @var \OC\Files\Storage\Shared $sharedStorage
+		 * @var \OCA\Files_Sharing\SharedStorage $sharedStorage
 		 */
 
 		$sharedCache = $sharedStorage->getCache();
@@ -465,7 +465,7 @@ class Test_Files_Sharing_Cache extends TestCase {
 		$this->assertTrue(\OC\Files\Filesystem::file_exists('/foo'));
 		list($sharedStorage) = \OC\Files\Filesystem::resolvePath('/' . self::TEST_FILES_SHARING_API_USER2 . '/files/foo');
 		/**
-		 * @var \OC\Files\Storage\Shared $sharedStorage
+		 * @var \OCA\Files_Sharing\SharedStorage $sharedStorage
 		 */
 
 		$sharedCache = $sharedStorage->getCache();

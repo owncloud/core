@@ -911,7 +911,7 @@ class OC_Helper {
 		}
 		$quota = 0;
 		$storage = $rootInfo->getStorage();
-		if ($includeExtStorage && $storage->instanceOfStorage('\OC\Files\Storage\Shared')) {
+		if ($includeExtStorage && $storage->instanceOfStorage('\OCA\Files_Sharing\SharedStorage')) {
 			$includeExtStorage = false;
 		}
 		if ($includeExtStorage) {

@@ -170,14 +170,17 @@ class Filesystem {
 	private static $loader;
 
 	/**
+	 * @param string $wrapperName
 	 * @param callable $wrapper
 	 */
 	public static function addStorageWrapper($wrapperName, $wrapper) {
-		self::getLoader()->addStorageWrapper($wrapperName, $wrapper);
+		if(!self::getLoader()->isRegistered($wrapperName)) {
+			self::getLoader()->addStorageWrapper($wrapperName, $wrapper);
 
-		$mounts = self::getMountManager()->getAll();
-		foreach ($mounts as $mount) {
-			$mount->wrapStorage($wrapper);
+			$mounts = self::getMountManager()->getAll();
+			foreach ($mounts as $mount) {
+				$mount->wrapStorage($wrapper);
+			}
 		}
 	}
 
@@ -296,7 +299,7 @@ class Filesystem {
 		self::$defaultInstance = new View($root);
 
 		if (!self::$mounts) {
-			self::$mounts = new Mount\Manager();
+			self::$mounts = \OC::$server->getMountManager();
 		}
 
 		//load custom mount config
@@ -309,7 +312,7 @@ class Filesystem {
 
 	static public function initMounts() {
 		if (!self::$mounts) {
-			self::$mounts = new Mount\Manager();
+			self::$mounts = \OC::$server->getMountManager();
 		}
 	}
 
@@ -375,7 +378,7 @@ class Filesystem {
 			$mounts = $mountConfigManager->getMountsForUser($userObject);
 			array_walk($mounts, array(self::$mounts, 'addMount'));
 		}
-		\OC_Hook::emit('OC_Filesystem', 'post_initMountPoints', array('user' => $user, 'user_dir' => $root));
+		\OC_Hook::emit('OC_Filesystem', 'post_initMountPoints', array('user' => $user, 'user_dir' => $root, 'user_object' => $userObject));
 	}
 
 	/**

@@ -113,7 +113,6 @@ class Test_Files_Sharing_Storage extends OCA\Files_sharing\Tests\TestCase {
 		// create part file
 		$result = $user2View->file_put_contents($this->folder. '/foo.txt.part', 'some test data');
 
-		$this->assertTrue(is_int($result));
 		// rename part file to real file
 		$result = $user2View->rename($this->folder. '/foo.txt.part', $this->folder. '/foo.txt');
 
@@ -211,7 +210,8 @@ class Test_Files_Sharing_Storage extends OCA\Files_sharing\Tests\TestCase {
 
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER2);
 		$this->assertTrue($rootView->file_exists('/' . self::TEST_FILES_SHARING_API_USER2 . '/files/' . $this->folder));
-		OC_Hook::emit('OC_Filesystem', 'setup', array('user' => self::TEST_FILES_SHARING_API_USER3, 'user_dir' => \OC_User::getHome(self::TEST_FILES_SHARING_API_USER3)));
+		$userObject = \OC::$server->getUserManager()->get(self::TEST_FILES_SHARING_API_USER3);
+		\OC\Files\Filesystem::initMountPoints(self::TEST_FILES_SHARING_API_USER3);
 
 		$this->assertTrue($rootView->file_exists('/' . self::TEST_FILES_SHARING_API_USER3 . '/files/' . $this->filename));
 

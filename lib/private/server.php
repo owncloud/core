@@ -295,6 +295,9 @@ class Server extends SimpleContainer implements IServerContainer {
 		$this->registerService('IniWrapper', function ($c) {
 			return new IniGetWrapper();
 		});
+		$this->registerService('MountManager', function () {
+			return new \OC\Files\Mount\Manager();
+		});
 	}
 
 	/**
@@ -731,5 +734,12 @@ class Server extends SimpleContainer implements IServerContainer {
 	 */
 	public function getIniWrapper() {
 		return $this->query('IniWrapper');
+	}
+
+	/**
+	 * @return \OCP\Files\Mount\IMountManager
+	 */
+	function getMountManager() {
+		return $this->query('MountManager');
 	}
 }
