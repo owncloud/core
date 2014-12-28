@@ -879,7 +879,7 @@ class OC_Mount_Config {
 				'o' => $config['options']
 			)
 		);
-		return hash('md5', $data);
+		return md5($data);
 	}
 
 	private static function addStorageIdToConfig($user) {
