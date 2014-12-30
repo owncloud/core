@@ -13,7 +13,7 @@
 	</description>
 	<licence>AGPL</licence>
 	<author>Tom Needham</author>
-	<requiremin>8</requiremin>
+	<requiremin>7.8</requiremin>
 	<shipped>true</shipped>
 	<default_enable/>
 	<documentation>
