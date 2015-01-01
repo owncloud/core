@@ -132,7 +132,7 @@ if (!OC_Util::runningOnWindows()) {
 			'user' => (string)$l->t('Username'),
 			'password' => '*'.$l->t('Password'),
 			'share' => (string)$l->t('Share'),
-			'root' => '&'.$l->t('Root')),
+			'root' => '&'.$l->t('Subfolder')),
 		'has_dependencies' => true));
 
 	OC_Mount_Config::registerBackend('\OC\Files\Storage\SMB_OC', array(
@@ -142,7 +142,7 @@ if (!OC_Util::runningOnWindows()) {
 				'host' => (string)$l->t('Host'),
 				'username_as_share' => '!'.$l->t('Username as share'),
 				'share' => '&'.$l->t('Share'),
-				'root' => '&'.$l->t('Root')),
+				'root' => '&'.$l->t('Subfolder')),
 		'has_dependencies' => true));
 }
 
