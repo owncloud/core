@@ -42,8 +42,9 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 
 	public static function tearDownAfterClass() {
 		$dataDir = \OC::$server->getConfig()->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data-autotest');
+		$isMySQL = \OC::$server->getConfig()->getSystemValue('dbtype', 'sqlite') === 'mysql';
 
-		self::tearDownAfterClassCleanFileMapper($dataDir);
+		self::tearDownAfterClassCleanFileMapper($dataDir, $isMySQL);
 		self::tearDownAfterClassCleanStorages();
 		self::tearDownAfterClassCleanFileCache();
 		self::tearDownAfterClassCleanStrayDataFiles($dataDir);
@@ -56,10 +57,11 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 	/**
 	 * Remove all entries from the files map table
 	 * @param string $dataDir
+	 * @param bool $isMySQL
 	 */
-	static protected function tearDownAfterClassCleanFileMapper($dataDir) {
+	static protected function tearDownAfterClassCleanFileMapper($dataDir, $isMySQL) {
 		if (\OC_Util::runningOnWindows()) {
-			$mapper = new \OC\Files\Mapper($dataDir);
+			$mapper = new \OC\Files\Mapper($dataDir, $isMySQL);
 			$mapper->removePath($dataDir, true, true);
 		}
 	}

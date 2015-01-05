@@ -5,12 +5,22 @@ namespace OC\Files;
 /**
  * class Mapper is responsible to translate logical paths to physical paths and reverse
  */
-class Mapper
-{
+class Mapper {
+	/** @var string */
 	private $unchangedPhysicalRoot;
 
-	public function __construct($rootDir) {
+	/** @var bool */
+	private $isMySQL;
+
+	/**
+	 * Constructor
+	 *
+	 * @param string $rootDir
+	 * @param bool $isMySQL
+	 */
+	public function __construct($rootDir, $isMySQL) {
 		$this->unchangedPhysicalRoot = $rootDir;
+		$this->isMySQL = $isMySQL;
 	}
 
 	/**
@@ -41,6 +51,10 @@ class Mapper
 		return $physicalPath;
 	}
 
+	protected function preparePathForLikeQuery($path) {
+		return ($this->isMySQL) ? str_replace('\\', '\\\\', $path) : $path;
+	}
+
 	/**
 	 * @param string $path
 	 * @param bool $isLogicPath indicates if $path is logical or physical
@@ -59,7 +73,10 @@ class Mapper
 			// Remove paths that start with the path, followed by a /
 			// Forcing the slash is important, see the following comment:
 			// https://github.com/owncloud/core/pull/11583#issuecomment-61470073
-			\OC_DB::executeAudited('DELETE FROM `*PREFIX*file_map` WHERE `' . $fieldName . '` LIKE ?', array($path . '/%'));
+			\OC_DB::executeAudited(
+				'DELETE FROM `*PREFIX*file_map` WHERE `' . $fieldName . '` LIKE ?',
+				array($this->preparePathForLikeQuery($path . '/%'))
+			);
 		}
 
 		\OC_DB::executeAudited('DELETE FROM `*PREFIX*file_map` WHERE `' . $fieldName . '` = ?', array($path));
