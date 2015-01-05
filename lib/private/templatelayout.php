@@ -4,6 +4,7 @@ use Assetic\Asset\FileAsset;
 use Assetic\AssetWriter;
 use Assetic\Filter\CssRewriteFilter;
 use Assetic\Filter\CssImportFilter;
+use OC\Assetic\SeparatorFilter; // waiting on upstream
 
 /**
  * Copyright (c) 2012 Bart Visscher <bartv@thisnet.nl>
@@ -146,7 +147,9 @@ class OC_TemplateLayout extends OC_Template {
 			$jsFiles = array_map(function ($item) {
 				$root = $item[0];
 				$file = $item[2];
-				return new FileAsset($root . '/' . $file, array(), $root, $file);
+				return new FileAsset($root . '/' . $file, array(
+					new SeparatorFilter(';')
+				), $root, $file);
 			}, $jsFiles);
 			$jsCollection = new AssetCollection($jsFiles);
 			$jsCollection->setTargetPath("assets/$jsHash.js");
