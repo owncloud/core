@@ -68,12 +68,12 @@ class Proxy extends \OC_FileProxy {
 			$path = dirname($path);
 		}
 
-		// we don't encrypt server-to-server shares
+		// we don't encrypt server-to-server shares and if the storage
+		// is a mounted ownCloud
+		/** @var \OC\Files\Storage\Storage $storage */
 		list($storage, ) = \OC\Files\Filesystem::resolvePath($path);
-		/**
-		 * @var \OCP\Files\Storage $storage
-		 */
-		if ($storage->instanceOfStorage('OCA\Files_Sharing\External\Storage')) {
+		if ($storage->instanceOfStorage('OCA\Files_Sharing\External\Storage') ||
+                    $storage->instanceOfStorage('OC\Files\Storage\OwnCloud')) {
 			return true;
 		}
 
