@@ -42,9 +42,10 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 
 	public static function tearDownAfterClass() {
 		$dataDir = \OC::$server->getConfig()->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data-autotest');
-		$isMySQL = \OC::$server->getConfig()->getSystemValue('dbtype', 'sqlite') === 'mysql';
+		$dbType = \OC::$server->getConfig()->getSystemValue('dbtype', 'sqlite');
+		$requireDoubleBackslashes = in_array($dbType, array('mysql', 'pgsql'));
 
-		self::tearDownAfterClassCleanFileMapper($dataDir, $isMySQL);
+		self::tearDownAfterClassCleanFileMapper($dataDir, $requireDoubleBackslashes);
 		self::tearDownAfterClassCleanStorages();
 		self::tearDownAfterClassCleanFileCache();
 		self::tearDownAfterClassCleanStrayDataFiles($dataDir);
@@ -57,11 +58,11 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 	/**
 	 * Remove all entries from the files map table
 	 * @param string $dataDir
-	 * @param bool $isMySQL
+	 * @param bool $requireDoubleBackslashes
 	 */
-	static protected function tearDownAfterClassCleanFileMapper($dataDir, $isMySQL) {
+	static protected function tearDownAfterClassCleanFileMapper($dataDir, $requireDoubleBackslashes) {
 		if (\OC_Util::runningOnWindows()) {
-			$mapper = new \OC\Files\Mapper($dataDir, $isMySQL);
+			$mapper = new \OC\Files\Mapper($dataDir, $requireDoubleBackslashes);
 			$mapper->removePath($dataDir, true, true);
 		}
 	}

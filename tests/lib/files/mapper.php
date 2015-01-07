@@ -31,7 +31,9 @@ class Mapper extends \Test\TestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$this->mapper = new \OC\Files\Mapper('D:/', \OC::$server->getConfig()->getSystemValue('dbtype', 'sqlite') === 'mysql');
+
+		$dbType = \OC::$server->getConfig()->getSystemValue('dbtype', 'sqlite');
+		$this->mapper = new \OC\Files\Mapper('D:/', in_array($dbType, array('mysql', 'pgsql')));
 	}
 
 	public function removePathData() {
@@ -63,7 +65,8 @@ class Mapper extends \Test\TestCase {
 	 */
 	public function testRemovePath($removePath, $recursive, $isLogical = true) {
 		$dataDir = 'D:\\testing/';
-		$mapper = new \OC\Files\Mapper($dataDir, \OC::$server->getConfig()->getSystemValue('dbtype', 'sqlite') === 'mysql');
+		$dbType = \OC::$server->getConfig()->getSystemValue('dbtype', 'sqlite');
+		$mapper = new \OC\Files\Mapper($dataDir, in_array($dbType, array('mysql', 'pgsql')));
 		$removePathSlash = (substr($removePath, -1) == '/') ? $removePath : $removePath . '/';
 
 		$physicalEuro	= $mapper->logicToPhysical($dataDir . 'h€llo-h€llo.txt', true);

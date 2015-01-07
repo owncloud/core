@@ -10,17 +10,17 @@ class Mapper {
 	private $unchangedPhysicalRoot;
 
 	/** @var bool */
-	private $isMySQL;
+	private $requireDoubleBackslashes;
 
 	/**
 	 * Constructor
 	 *
 	 * @param string $rootDir
-	 * @param bool $isMySQL
+	 * @param bool $requireDoubleBackslashes
 	 */
-	public function __construct($rootDir, $isMySQL) {
+	public function __construct($rootDir, $requireDoubleBackslashes) {
 		$this->unchangedPhysicalRoot = $rootDir;
-		$this->isMySQL = $isMySQL;
+		$this->requireDoubleBackslashes = $requireDoubleBackslashes;
 	}
 
 	/**
@@ -51,8 +51,12 @@ class Mapper {
 		return $physicalPath;
 	}
 
+	/**
+	 * @param string $path
+	 * @return string
+	 */
 	protected function preparePathForLikeQuery($path) {
-		return ($this->isMySQL) ? str_replace('\\', '\\\\', $path) : $path;
+		return ($this->requireDoubleBackslashes) ? str_replace('\\', '\\\\', $path) : $path;
 	}
 
 	/**

@@ -20,7 +20,8 @@ class MappedLocal extends \OC\Files\Storage\Common {
 			$this->datadir .= '/';
 		}
 
-		$this->mapper = new \OC\Files\Mapper($this->datadir, \OC::$server->getConfig()->getSystemValue('dbtype', 'sqlite') === 'mysql');
+		$dbType = \OC::$server->getConfig()->getSystemValue('dbtype', 'sqlite');
+		$this->mapper = new \OC\Files\Mapper($this->datadir, in_array($dbType, array('mysql', 'pgsql')));
 	}
 
 	public function __destruct() {
