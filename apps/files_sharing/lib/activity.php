@@ -170,7 +170,7 @@ class Activity implements \OCP\Activity\IExtension {
 	 * In case no grouping is required false is to be returned.
 	 *
 	 * @param array $activity
-	 * @return integer|false
+	 * @return boolean
 	 */
 	public function getGroupParameter($activity) {
 		return false;
@@ -181,7 +181,7 @@ class Activity implements \OCP\Activity\IExtension {
 	 * and 'apps' which hold arrays with the relevant entries.
 	 * If no further entries are to be added false is no be returned.
 	 *
-	 * @return array|false
+	 * @return boolean
 	 */
 	public function getNavigation() {
 		return false;
