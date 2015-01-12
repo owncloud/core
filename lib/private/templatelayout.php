@@ -5,7 +5,7 @@ use Assetic\AssetWriter;
 use Assetic\Filter\CssImportFilter;
 use Assetic\Filter\CssMinFilter;
 use Assetic\Filter\CssRewriteFilter;
-use Assetic\Filter\JSMinFilter;
+use Assetic\Filter\JShrinkFilter;
 use OC\Assetic\SeparatorFilter; // waiting on upstream
 
 /**
@@ -170,7 +170,7 @@ class OC_TemplateLayout extends OC_Template {
 					), $root, $file);
 				}
 				return new FileAsset($root . '/' . $file, array(
-					new JSMinFilter(),
+					new JShrinkFilter(),
 					new SeparatorFilter(';')
 				), $root, $file);
 			}, $jsFiles);
