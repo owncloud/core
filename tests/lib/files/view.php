@@ -302,6 +302,7 @@ class View extends \Test\TestCase {
 
 		$rootView = new \OC\Files\View('');
 		$rootView->mkdir('substorage/emptyfolder');
+		$fileInfo = $rootView->getFileInfo('substorage');
 		$rootView->copy('substorage', 'anotherfolder');
 		$this->assertTrue($rootView->is_dir('/anotherfolder'));
 		$this->assertTrue($rootView->is_dir('/substorage'));
@@ -313,6 +314,12 @@ class View extends \Test\TestCase {
 		$this->assertTrue($rootView->file_exists('/substorage/foo.txt'));
 		$this->assertTrue($rootView->file_exists('/substorage/foo.png'));
 		$this->assertTrue($rootView->file_exists('/substorage/folder/bar.txt'));
+		$fileInfo2 = $rootView->getFileInfo('substorage');
+		$fileInfo3 = $rootView->getFileInfo('anotherfolder');
+		// file id of original stays
+		$this->assertEquals($fileInfo->getId(), $fileInfo2->getId());
+		// file id of copy is different
+		$this->assertNotEquals($fileInfo->getId(), $fileInfo3->getId());
 	}
 
 	/**
@@ -325,13 +332,29 @@ class View extends \Test\TestCase {
 		\OC\Files\Filesystem::mount($storage2, array(), '/substorage');
 
 		$rootView = new \OC\Files\View('');
+		$fileInfo = $rootView->getFileInfo('foo.txt');
 		$rootView->rename('foo.txt', 'substorage/folder/foo.txt');
+
 		$this->assertFalse($rootView->file_exists('foo.txt'));
 		$this->assertTrue($rootView->file_exists('substorage/folder/foo.txt'));
+		$fileInfo2 = $rootView->getFileInfo('substorage/folder/foo.txt');
+		// file id stays the same after move
+		$this->assertEquals($fileInfo->getId(), $fileInfo2->getId());
+
+		$fileInfoFolder = $rootView->getFileInfo('substorage/folder');
 		$rootView->rename('substorage/folder', 'anotherfolder');
 		$this->assertFalse($rootView->is_dir('substorage/folder'));
 		$this->assertTrue($rootView->file_exists('anotherfolder/foo.txt'));
 		$this->assertTrue($rootView->file_exists('anotherfolder/bar.txt'));
+
+		// file id of folder stays the same after move
+		$fileInfoFolder2 = $rootView->getFileInfo('anotherfolder');
+		$this->assertEquals($fileInfoFolder->getId(), $fileInfoFolder2->getId());
+
+		// file id of folder contentts stays the same as well
+		$fileInfo2 = $rootView->getFileInfo('anotherfolder/foo.txt');
+		$this->assertEquals($fileInfo->getId(), $fileInfo2->getId());
+
 	}
 
 	/**
@@ -693,6 +716,7 @@ class View extends \Test\TestCase {
 		$newFolderInfo = $view->getFileInfo('/test');
 
 		$this->assertNotEquals($newFolderInfo->getEtag(), $oldFolderInfo->getEtag());
+		$this->assertEquals($newFolderInfo->getId(), $oldFolderInfo->getId());
 	}
 
 	/**
@@ -745,6 +769,26 @@ class View extends \Test\TestCase {
 		}
 
 		call_user_func(array($rootView, $operation), $longPath, $param0);
+	}
+
+	public function testOverwriteFileKeepsId() {
+		$storage1 = $this->getTestStorage();
+		\OC\Files\Filesystem::mount($storage1, array(), '/');
+
+		$rootView = new \OC\Files\View('');
+		$fileInfo = $rootView->getFileInfo('foo.txt');
+
+		$rootView->file_put_contents('foo.txt', 'changed');
+
+		$fileInfo2 = $rootView->getFileInfo('foo.txt');
+		$this->assertEquals($fileInfo->getId(), $fileInfo2->getId());
+
+		$fh = $rootView->fopen('foo.txt');
+		fwrite($fh, 'bla');
+		fclose($fh);
+
+		$fileInfo3 = $rootView->getFileInfo('foo.txt');
+		$this->assertEquals($fileInfo->getId(), $fileInfo3->getId());
 	}
 
 	public function tooLongPathDataProvider() {
