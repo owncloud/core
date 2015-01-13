@@ -22,6 +22,21 @@ class CachingRouter extends Router {
 		parent::__construct();
 	}
 
+	protected function loadCollection($collection, $files) {
+		$key = 'collection:' . $collection;
+		if ($this->cache->hasKey($key)) {
+			return unserialize($this->cache->get($key));
+		}
+		$object = parent::loadCollection($collection, $files);
+		try {
+			$serialized = serialize($object);
+			$this->cache->set($key, $serialized, 3600);
+		} catch (\Exception $e) {
+			// unable to serialize routes
+		}
+		return $object;
+	}
+
 	/**
 	 * Generate url based on $name and $parameters
 	 *
