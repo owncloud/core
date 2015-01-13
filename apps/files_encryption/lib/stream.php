@@ -89,6 +89,16 @@ class Stream {
 	private $session;
 	private $privateKey;
 
+	protected function getUID() {
+		$user = \OC::$server->getUserSession()->getUser();
+
+		if ($user) {
+			return $user->getUID();
+		}
+
+		return '';
+	}
+
 	/**
 	 * @param string $path raw path relative to data/
 	 * @param string $mode
@@ -136,7 +146,7 @@ class Stream {
 		switch ($fileType) {
 			case Util::FILE_TYPE_FILE:
 				$this->relPath = Helper::stripUserFilesPath($this->rawPath);
-				$this->userId = \OC::$server->getUserSession()->getUser()->getUID();
+				$this->userId = $this->getUID();
 				break;
 			case Util::FILE_TYPE_VERSION:
 				$this->relPath = Helper::getPathFromVersion($this->rawPath);
@@ -145,7 +155,7 @@ class Stream {
 			case Util::FILE_TYPE_CACHE:
 				$this->relPath = Helper::getPathFromCachedFile($this->rawPath);
 				Helper::mkdirr($this->rawPath, new \OC\Files\View('/'));
-				$this->userId = \OC::$server->getUserSession()->getUser()->getUID();
+				$this->userId = $this->getUID();
 				break;
 			default:
 				\OCP\Util::writeLog('Encryption library', 'failed to open file "' . $this->rawPath . '" expecting a path to "files", "files_versions" or "cache"', \OCP\Util::ERROR);
