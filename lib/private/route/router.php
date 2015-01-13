@@ -127,28 +127,39 @@ class Router implements IRouter {
 		}
 		\OC::$server->getEventLogger()->start('loadroutes' . $requestedApp, 'Loading Routes');
 		foreach ($routingFiles as $app => $file) {
-			if (!isset($this->loadedApps[$app])) {
-				$this->loadedApps[$app] = true;
-				$this->useCollection($app);
-				$this->requireRouteFile($file, $app);
-				$collection = $this->getCollection($app);
-				$collection->addPrefix('/apps/' . $app);
-				$this->root->addCollection($collection);
-			}
-		}
-		if (!isset($this->loadedApps['core'])) {
-			$this->loadedApps['core'] = true;
-			$this->useCollection('root');
-			require_once 'settings/routes.php';
-			require_once 'core/routes.php';
-
-			// include ocs routes
-			require_once 'ocs/routes.php';
-			$collection = $this->getCollection('ocs');
-			$collection->addPrefix('/ocs');
+			$collection = $this->loadCollection($app, $file);
+			$collection->addPrefix('/apps/' . $app);
 			$this->root->addCollection($collection);
 		}
+		$this->loadCollection('root', array(
+			'settings/routes.php',
+			'core/routes.php'
+		));
+		$collection = $this->loadCollection('ocs', 'ocs/routes.php');
+		$collection->addPrefix('/ocs');
+		$this->root->addCollection($collection);
+
+		$this->useCollection('root');
 		\OC::$server->getEventLogger()->end('loadroutes' . $requestedApp);
+	}
+
+	/**
+	 * @param string $collection
+	 * @param array|string $files
+	 * @return \Symfony\Component\Routing\RouteCollection
+	 */
+	protected function loadCollection($collection, $files) {
+		if (!is_array($files)) {
+			$files = array($files);
+		}
+		if (!isset($this->loadedApps[$collection])) {
+			$this->loadedApps[$collection] = true;
+			$this->useCollection($collection);
+			foreach ($files as $file) {
+				$this->requireRouteFile($file, $collection);
+			}
+		}
+		return $this->getCollection($collection);
 	}
 
 	/**
@@ -287,7 +298,7 @@ class Router implements IRouter {
 	 * @param string $file the route file location to include
 	 * @param string $appName
 	 */
-	private function requireRouteFile($file, $appName) {
+	protected function requireRouteFile($file, $appName) {
 		$this->setupRoutes(include_once $file, $appName);
 	}
 
