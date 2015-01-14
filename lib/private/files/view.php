@@ -483,26 +483,26 @@ class View {
 				);
 			}
 			if ($run) {
-				$mp1 = $this->getMountPoint($path1 . $postFix1);
-				$mp2 = $this->getMountPoint($path2 . $postFix2);
-				$manager = Filesystem::getMountManager();
-				$mount = $manager->find($absolutePath1 . $postFix1);
-				$storage1 = $mount->getStorage();
-				$internalPath1 = $mount->getInternalPath($absolutePath1 . $postFix1);
-				list(, $internalPath2) = Filesystem::resolvePath($absolutePath2 . $postFix2);
-				if ($internalPath1 === '' and $mount instanceof MoveableMount) {
+				$mount1 = $this->getMount($path1);
+				$mount2 = $this->getMount($path2);
+				$storage1 = $mount1->getStorage();
+				$storage2 = $mount1->getStorage();
+				$internalPath1 = $mount1->getInternalPath($absolutePath1);
+				$internalPath2 = $mount2->getInternalPath($absolutePath2);
+
+				if ($internalPath1 === '' and $mount1 instanceof MoveableMount) {
 					if ($this->isTargetAllowed($absolutePath2)) {
 						/**
-						 * @var \OC\Files\Mount\MountPoint | \OC\Files\Mount\MoveableMount $mount
+						 * @var \OC\Files\Mount\MountPoint | \OC\Files\Mount\MoveableMount $mount1
 						 */
-						$sourceMountPoint = $mount->getMountPoint();
-						$result = $mount->moveMount($absolutePath2);
-						$manager->moveMount($sourceMountPoint, $mount->getMountPoint());
+						$sourceMountPoint = $mount1->getMountPoint();
+						$result = $mount1->moveMount($absolutePath2);
+						Filesystem::getMountManager()->moveMount($sourceMountPoint, $mount1->getMountPoint());
 						\OC_FileProxy::runPostProxies('rename', $absolutePath1, $absolutePath2);
 					} else {
 						$result = false;
 					}
-				} elseif ($mp1 == $mp2) {
+				} elseif ($storage1 == $storage2) {
 					if ($storage1) {
 						$result = $storage1->rename($internalPath1, $internalPath2);
 						\OC_FileProxy::runPostProxies('rename', $absolutePath1, $absolutePath2);
