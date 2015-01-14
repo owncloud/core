@@ -475,7 +475,10 @@ class OC {
 		// setup 3rdparty autoloader
 		$vendorAutoLoad = OC::$THIRDPARTYROOT . '/3rdparty/autoload.php';
 		if (file_exists($vendorAutoLoad)) {
-			require_once $vendorAutoLoad;
+			$vendorAutoloader = require_once $vendorAutoLoad;
+			// chain with \OC\Autoloader for memcaching
+			$vendorAutoloader->unregister();
+			self::$loader->addFinder(array($vendorAutoloader, 'findFile'), true);
 		} else {
 			OC_Response::setStatus(OC_Response::STATUS_SERVICE_UNAVAILABLE);
 			OC_Template::printErrorPage('Composer autoloader not found, unable to continue.');
