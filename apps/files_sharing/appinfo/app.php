@@ -69,3 +69,10 @@ if ($config->getAppValue('core', 'shareapi_enabled', 'yes') === 'yes') {
 		}
 	}
 }
+
+$mountProviderCollection = \OC::$server->getMountProviderCollection();
+$mountProvider = new \OCA\Files_Sharing\ShareMountProvider(
+	\OC::$server->getUserManager(),
+	\OC::$server->getMountManager()
+);
+$mountProviderCollection->registerProvider($mountProvider);

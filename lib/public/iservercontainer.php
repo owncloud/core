@@ -317,4 +317,9 @@ interface IServerContainer {
 	 * @return \bantu\IniGetWrapper\IniGetWrapper
 	 */
 	 function getIniWrapper();
+
+	/**
+	 * @return \OCP\Files\Mount\IMountManager
+	 */
+	function getMountManager();
 }

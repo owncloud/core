@@ -17,6 +17,15 @@ class StorageFactory implements IStorageFactory {
 	private $storageWrappers = array();
 
 	/**
+	 * [
+	 *     $mountPoint => string[]
+	 * ]
+	 *
+	 * @var array
+	 */
+	private $appliedWrappers = [];
+
+	/**
 	 * allow modifier storage behaviour by adding wrappers around storages
 	 *
 	 * $callback should be a function of type (string $mountPoint, Storage $storage) => Storage
@@ -26,6 +35,16 @@ class StorageFactory implements IStorageFactory {
 	 */
 	public function addStorageWrapper($wrapperName, $callback) {
 		$this->storageWrappers[$wrapperName] = $callback;
+	}
+
+	/**
+	 * Check if a storage wrapper is registered
+	 *
+	 * @param string $wrapperName
+	 * @return bool
+	 */
+	public function isRegistered($wrapperName) {
+		return isset($this->storageWrappers[$wrapperName]);
 	}
 
 	/**
@@ -46,8 +65,14 @@ class StorageFactory implements IStorageFactory {
 	 * @return \OCP\Files\Storage
 	 */
 	public function wrap($mountPoint, $storage) {
-		foreach ($this->storageWrappers as $wrapper) {
-			$storage = $wrapper($mountPoint, $storage);
+		if (!isset($this->appliedWrappers[$mountPoint])) {
+			$this->appliedWrappers[$mountPoint] = [];
+		}
+		foreach ($this->storageWrappers as $wrapperName => $wrapper) {
+			if (array_search($wrapperName, $this->appliedWrappers[$mountPoint]) === false) {
+				$storage = $wrapper($mountPoint, $storage);
+			}
+			$this->appliedWrappers[$mountPoint][] = $wrapperName;
 		}
 		return $storage;
 	}

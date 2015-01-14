@@ -53,6 +53,7 @@ abstract class TestCase extends \Test\TestCase {
 
 		// remember files_encryption state
 		self::$stateFilesEncryption = \OC_App::isEnabled('files_encryption');
+		\OC_FileProxy::clearProxies();
 
 		//we don't want to tests with app files_encryption enabled
 		\OC_App::disable('files_encryption');
@@ -64,7 +65,7 @@ abstract class TestCase extends \Test\TestCase {
 		// clear share hooks
 		\OC_Hook::clear('OCP\\Share');
 		\OC::registerShareHooks();
-		\OCP\Util::connectHook('OC_Filesystem', 'setup', '\OC\Files\Storage\Shared', 'setup');
+		\OCP\Util::connectHook('OC_Filesystem', 'post_initMountPoints', '\OCA\Files_Sharing\MountManager', 'setup');
 
 		// create users
 		$backend = new \OC_User_Dummy();

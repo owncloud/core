@@ -27,6 +27,7 @@ namespace OC\Files;
 
 use OC\Files\Cache\Updater;
 use OC\Files\Mount\MoveableMount;
+use OCA\Files_Sharing\ISharedStorage;
 
 class View {
 	private $fakeRoot = '';
@@ -945,7 +946,7 @@ class View {
 						$subStorage = Filesystem::getStorage($mountPoint);
 						if ($subStorage) {
 							// exclude shared storage ?
-							if ($extOnly && $subStorage instanceof \OC\Files\Storage\Shared) {
+							if ($extOnly && $subStorage instanceof ISharedStorage) {
 								continue;
 							}
 							$subCache = $subStorage->getCache('');
@@ -1307,8 +1308,9 @@ class View {
 
 		$result = false;
 
-		list($targetStorage,) = \OC\Files\Filesystem::resolvePath($target);
-		if ($targetStorage->instanceOfStorage('\OCP\Files\IHomeStorage')) {
+		$targetMount  = Filesystem::getMountManager()->find($target);
+		$targetStorage = $targetMount->getStorage();
+		if ($targetStorage->instanceOfStorage('\OCP\Files\IHomeStorage') and !($targetMount instanceof MoveableMount)) {
 			$result = true;
 		} else {
 			\OCP\Util::writeLog('files',
