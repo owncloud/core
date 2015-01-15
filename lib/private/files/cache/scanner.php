@@ -346,6 +346,7 @@ class Scanner extends BasicEmitter {
 				// log and ignore
 				\OC_Log::write('core', 'Exception while scanning file "' . $child . '": ' . $ex->getMessage(), \OC_Log::DEBUG);
 				$exceptionOccurred = true;
+			} catch (\Exception $e) {
 			}
 		}
 		$removedChildren = \array_diff(array_keys($existingChildren), $newChildren);
@@ -365,11 +366,14 @@ class Scanner extends BasicEmitter {
 		}
 
 		foreach ($childQueue as $child => $childData) {
-			$childSize = $this->scanChildren($child, self::SCAN_RECURSIVE, $reuse, $childData);
-			if ($childSize === -1) {
-				$size = -1;
-			} else if ($size !== -1) {
-				$size += $childSize;
+			try {
+				$childSize = $this->scanChildren($child, self::SCAN_RECURSIVE, $reuse, $childData);
+				if ($childSize === -1) {
+					$size = -1;
+				} else if ($size !== -1) {
+					$size += $childSize;
+				}
+			} catch (\Exception $e) {
 			}
 		}
 		if (!is_array($folderData) or !isset($folderData['size']) or $folderData['size'] !== $size) {
@@ -400,10 +404,13 @@ class Scanner extends BasicEmitter {
 	public function backgroundScan() {
 		$lastPath = null;
 		while (($path = $this->cache->getIncomplete()) !== false && $path !== $lastPath) {
-			$this->scan($path, self::SCAN_RECURSIVE, self::REUSE_ETAG);
-			\OC_Hook::emit('Scanner', 'correctFolderSize', array('path' => $path));
-			if ($this->cacheActive) {
-				$this->cache->correctFolderSize($path);
+			try {
+				$this->scan($path, self::SCAN_RECURSIVE, self::REUSE_ETAG);
+				\OC_Hook::emit('Scanner', 'correctFolderSize', array('path' => $path));
+				if ($this->cacheActive) {
+					$this->cache->correctFolderSize($path);
+				}
+			} catch (\Exception $e) {
 			}
 			$lastPath = $path;
 		}

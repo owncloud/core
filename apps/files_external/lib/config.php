@@ -497,6 +497,8 @@ class OC_Mount_Config {
 				if ($storage->test($isPersonal)) {
 					return self::STATUS_SUCCESS;
 				}
+			} catch (\OCP\Files\StorageNotAvailableException $e) {
+				// this is normal
 			} catch (Exception $exception) {
 				\OCP\Util::logException('files_external', $exception);
 			}
