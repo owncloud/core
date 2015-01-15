@@ -47,7 +47,7 @@ class SFTP extends \OC\Files\Storage\Common {
 
 		//deals with server:port
 		$HasPort = strpos($this->host,':');
-		if($HasPort != false){
+		if($HasPort != false) {
 			$pieces = explode(":", $this->host);
 			$this->host = $pieces[0];
 			$this->port = $pieces[1];
@@ -79,7 +79,7 @@ class SFTP extends \OC\Files\Storage\Common {
 		}
 
 		$hostKeys = $this->readHostKeys();
-		$this->client = new \Net_SFTP($this->host,$this->port);
+		$this->client = new \Net_SFTP($this->host, $this->port);
 
 		// The SSH Host Key MUST be verified before login().
 		$currentHostKey = $this->client->getServerPublicHostKey();
@@ -331,4 +331,5 @@ class SFTP extends \OC\Files\Storage\Common {
 		$url = 'sftp://'.$this->user.'@'.$this->host.':'.$this->port.$this->root.$path;
 		return $url;
 	}
+
 }
