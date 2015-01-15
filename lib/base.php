@@ -828,6 +828,11 @@ class OC {
 			$_SERVER['HTTP_AUTHORIZATION'] = $_SERVER['HTTP_XAUTHORIZATION'];
 		}
 
+		// Workaround for PHP-FPM without mod_rewrite see https://github.com/owncloud/core/issues/13398#issuecomment-70138390
+		if (!isset($_SERVER['HTTP_AUTHORIZATION']) && isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])) {
+			$_SERVER['HTTP_AUTHORIZATION'] = 'Basic '. base64_encode($_SERVER['PHP_AUTH_USER'].':'.$_SERVER['PHP_AUTH_PW']);
+		}
+
 		// Extract PHP_AUTH_USER/PHP_AUTH_PW from other headers if necessary.
 		$vars = array(
 			'HTTP_AUTHORIZATION', // apache+php-cgi work around
