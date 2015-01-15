@@ -281,7 +281,7 @@ class Cache {
 	function buildParts(array $data) {
 		$fields = array(
 			'path', 'parent', 'name', 'mimetype', 'size', 'mtime', 'storage_mtime', 'encrypted', 'unencrypted_size',
-			'etag', 'permissions');
+			'etag', 'permissions', 'fileid');
 		$params = array();
 		$queryParts = array();
 		foreach ($data as $name => $value) {
