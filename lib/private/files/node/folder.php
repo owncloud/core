@@ -223,7 +223,7 @@ class Folder extends Node implements \OCP\Files\Folder {
 	 * @return \OC\Files\Node\Node[]
 	 */
 	public function search($query) {
-		return $this->searchCommon('search', array('%' . $query . '%'));
+		return $this->wrapResults($this->view->search($query));
 	}
 
 	/**
@@ -233,7 +233,7 @@ class Folder extends Node implements \OCP\Files\Folder {
 	 * @return Node[]
 	 */
 	public function searchByMime($mimetype) {
-		return $this->searchCommon('searchByMime', array($mimetype));
+		return $this->wrapResults($this->view->searchByMime($mimetype));
 	}
 
 	/**
@@ -244,7 +244,20 @@ class Folder extends Node implements \OCP\Files\Folder {
 	 * @return Node[]
 	 */
 	public function searchByTag($tag, $userId) {
-		return $this->searchCommon('searchByTag', array($tag, $userId));
+		return $this->wrapResults($this->view->searchByTag($tag, $userId));
+	}
+
+	/**
+	 * Wrap an array of results or FileInfo into an array of Nodes
+	 *
+	 * @param \OCP\Files\FileInfo[] $results
+	 * @return \OC\Files\Node\Node[]
+	 */
+	private function wrapResults(array $results) {
+		foreach ($results as &$result) {
+			$result = $this->createNode($this->normalizePath($this->path . '/' . $result->getInternalPath()), $result);
+		}
+		return $results;
 	}
 
 	/**
@@ -253,6 +266,7 @@ class Folder extends Node implements \OCP\Files\Folder {
 	 * @return \OC\Files\Node\Node[]
 	 */
 	private function searchCommon($method, $args) {
+		// FIXME: throw away this method!
 		$files = array();
 		$rootLength = strlen($this->path);
 		/**
@@ -264,30 +278,46 @@ class Folder extends Node implements \OCP\Files\Folder {
 
 		$cache = $storage->getCache('');
 
+		$mountPoints = array();
+		$mounts = $this->root->getMountsIn($this->path);
+		foreach ($mounts as $mount) {
+			$storage = $mount->getStorage();
+			if ($storage) {
+				$mountPoints[] = array($storage, substr($mount->getMountPoint(), $rootLength));
+			}
+		}
+
 		$results = call_user_func_array(array($cache, $method), $args);
 		foreach ($results as $result) {
 			if ($internalRootLength === 0 or substr($result['path'], 0, $internalRootLength) === $internalPath) {
+				$isOverlapped = false;
+				$internalPath = substr($result['path'], $internalRootLength);
+				// need to exclude results if their folder was
+				// overlapped by a mount point
+				foreach ($mountPoints as list(, $mountPoint)) {
+					if (substr('/' . $internalPath, 0, strlen($mountPoint)) === $mountPoint) {
+						$isOverlapped = true;
+						break;
+					}
+				}
+				if ($isOverlapped) {
+					continue;
+				}
 				$result['internalPath'] = $result['path'];
-				$result['path'] = substr($result['path'], $internalRootLength);
+				$result['path'] = $internalPath;
 				$result['storage'] = $storage;
 				$files[] = $result;
 			}
 		}
 
-		$mounts = $this->root->getMountsIn($this->path);
-		foreach ($mounts as $mount) {
-			$storage = $mount->getStorage();
-			if ($storage) {
-				$cache = $storage->getCache('');
-
-				$relativeMountPoint = substr($mount->getMountPoint(), $rootLength);
-				$results = call_user_func_array(array($cache, $method), $args);
-				foreach ($results as $result) {
-					$result['internalPath'] = $result['path'];
-					$result['path'] = $relativeMountPoint . $result['path'];
-					$result['storage'] = $storage;
-					$files[] = $result;
-				}
+		foreach ($mountPoints as list($subStorage, $relativeMountPoint)) {
+			$subCache = $subStorage->getCache('');
+			$results = call_user_func_array(array($subCache, $method), $args);
+			foreach ($results as $result) {
+				$result['internalPath'] = $result['path'];
+				$result['path'] = $relativeMountPoint . $result['path'];
+				$result['storage'] = $subStorage;
+				$files[] = $result;
 			}
 		}
 
