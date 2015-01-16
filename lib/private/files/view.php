@@ -1188,37 +1188,50 @@ class View {
 		$rootLength = strlen($this->fakeRoot);
 
 		$mount = $this->getMount('');
-		$mountPoint = $mount->getMountPoint();
+		$rootMountPoint = $mount->getMountPoint();
 		$storage = $mount->getStorage();
 		if ($storage) {
 			$cache = $storage->getCache('');
+			$mounts = Filesystem::getMountManager()->findIn($this->fakeRoot);
+			$mountPoints = array();
+			foreach ($mounts as $mount) {
+				$storage = $mount->getStorage();
+				if ($storage) {
+					$mountPoints[] = array($storage, $mount->getMountPoint());
+				}
+			}
 
 			$results = call_user_func_array(array($cache, $method), $args);
 			foreach ($results as $result) {
-				if (substr($mountPoint . $result['path'], 0, $rootLength + 1) === $this->fakeRoot . '/') {
+				if (substr($rootMountPoint . $result['path'], 0, $rootLength + 1) === $this->fakeRoot . '/') {
 					$internalPath = $result['path'];
-					$path = $mountPoint . $result['path'];
-					$result['path'] = substr($mountPoint . $result['path'], $rootLength);
+					$isOverlapping = false;
+					foreach ($mountPoints as list(,$mountPoint)) {
+						if (substr('/' . $internalPath, 0, strlen($mountPoint)) === $mountPoint) {
+							$isOverlapping = true;
+							break;
+						}
+					}
+					if ($isOverlapping) {
+						continue;
+					}
+					$path = $rootMountPoint . $result['path'];
+					$result['path'] = substr($rootMountPoint . $result['path'], $rootLength);
 					$files[] = new FileInfo($path, $storage, $internalPath, $result, $mount);
 				}
 			}
 
-			$mounts = Filesystem::getMountManager()->findIn($this->fakeRoot);
-			foreach ($mounts as $mount) {
-				$mountPoint = $mount->getMountPoint();
-				$storage = $mount->getStorage();
-				if ($storage) {
-					$cache = $storage->getCache('');
+			foreach ($mountPoints as list($subStorage, $mountPoint)) {
+				$cache = $subStorage->getCache('');
 
-					$relativeMountPoint = substr($mountPoint, $rootLength);
-					$results = call_user_func_array(array($cache, $method), $args);
-					if ($results) {
-						foreach ($results as $result) {
-							$internalPath = $result['path'];
-							$result['path'] = rtrim($relativeMountPoint . $result['path'], '/');
-							$path = rtrim($mountPoint . $internalPath, '/');
-							$files[] = new FileInfo($path, $storage, $internalPath, $result, $mount);
-						}
+				$relativeMountPoint = substr($mountPoint, $rootLength);
+				$results = call_user_func_array(array($cache, $method), $args);
+				if ($results) {
+					foreach ($results as $result) {
+						$internalPath = $result['path'];
+						$result['path'] = rtrim($relativeMountPoint . $result['path'], '/');
+						$path = rtrim($mountPoint . $internalPath, '/');
+						$files[] = new FileInfo($path, $subStorage, $internalPath, $result, $mount);
 					}
 				}
 			}

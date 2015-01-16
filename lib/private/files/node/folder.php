@@ -264,30 +264,46 @@ class Folder extends Node implements \OCP\Files\Folder {
 
 		$cache = $storage->getCache('');
 
+		$mountPoints = array();
+		$mounts = $this->root->getMountsIn($this->path);
+		foreach ($mounts as $mount) {
+			$storage = $mount->getStorage();
+			if ($storage) {
+				$mountPoints[] = array($storage, substr($mount->getMountPoint(), $rootLength));
+			}
+		}
+
 		$results = call_user_func_array(array($cache, $method), $args);
 		foreach ($results as $result) {
 			if ($internalRootLength === 0 or substr($result['path'], 0, $internalRootLength) === $internalPath) {
+				$isOverlapped = false;
+				$internalPath = substr($result['path'], $internalRootLength);
+				// need to exclude results if their folder was
+				// overlapped by a mount point
+				foreach ($mountPoints as list(, $mountPoint)) {
+					if (substr('/' . $internalPath, 0, strlen($mountPoint)) === $mountPoint) {
+						$isOverlapped = true;
+						break;
+					}
+				}
+				if ($isOverlapped) {
+					continue;
+				}
 				$result['internalPath'] = $result['path'];
-				$result['path'] = substr($result['path'], $internalRootLength);
+				$result['path'] = $internalPath;
 				$result['storage'] = $storage;
 				$files[] = $result;
 			}
 		}
 
-		$mounts = $this->root->getMountsIn($this->path);
-		foreach ($mounts as $mount) {
-			$storage = $mount->getStorage();
-			if ($storage) {
-				$cache = $storage->getCache('');
-
-				$relativeMountPoint = substr($mount->getMountPoint(), $rootLength);
-				$results = call_user_func_array(array($cache, $method), $args);
-				foreach ($results as $result) {
-					$result['internalPath'] = $result['path'];
-					$result['path'] = $relativeMountPoint . $result['path'];
-					$result['storage'] = $storage;
-					$files[] = $result;
-				}
+		foreach ($mountPoints as list($subStorage, $relativeMountPoint)) {
+			$subCache = $subStorage->getCache('');
+			$results = call_user_func_array(array($subCache, $method), $args);
+			foreach ($results as $result) {
+				$result['internalPath'] = $result['path'];
+				$result['path'] = $relativeMountPoint . $result['path'];
+				$result['storage'] = $subStorage;
+				$files[] = $result;
 			}
 		}
 
