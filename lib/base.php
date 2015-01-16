@@ -841,6 +841,13 @@ class OC {
 				break;
 			}
 		}
+
+		// Set HTTP auth headers for HTTP Authentication with PHP-CGI
+		if(isset($_GET['Authorization']) && preg_match('/Basic\s+(.*)$/i', $_GET['Authorization'], $matches)) {
+			list($name, $password) = explode(':', base64_decode($matches[1]));
+			$_SERVER['PHP_AUTH_USER'] = strip_tags($name);
+			$_SERVER['PHP_AUTH_PW'] = strip_tags($password);
+		}
 	}
 
 	protected static function handleLogin() {
