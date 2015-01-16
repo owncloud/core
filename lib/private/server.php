@@ -175,7 +175,7 @@ class Server extends SimpleContainer implements IServerContainer {
 			return new \OC\SystemConfig();
 		});
 		$this->registerService('AppConfig', function ($c) {
-			return new \OC\AppConfig(\OC_DB::getConnection());
+			return new \OC\AppConfig(\OC_DB::getConnection(), $c->getMemCacheFactory()->create('AppConfig'));
 		});
 		$this->registerService('L10NFactory', function ($c) {
 			return new \OC\L10N\Factory();

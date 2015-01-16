@@ -47,31 +47,17 @@ class AppConfig implements \OCP\IAppConfig {
 	 */
 	protected $conn;
 
-	private $cache = array();
+	private $cache;
 
-	private $appsLoaded = array();
-
-	/**
-	 * @var string[]
-	 */
-	private $apps = null;
+	private $cacheTime = 600; // 10 minutes
 
 	/**
 	 * @param \OC\DB\Connection $conn
+	 * @param \OC\Memcache\Cache
 	 */
-	public function __construct(Connection $conn) {
+	public function __construct(Connection $conn, \OC\Memcache\Cache $cache) {
 		$this->conn = $conn;
-	}
-
-	/**
-	 * @param string $app
-	 * @return string[]
-	 */
-	private function getAppCache($app) {
-		if (!isset($this->cache[$app])) {
-			$this->cache[$app] = array();
-		}
-		return $this->cache[$app];
+		$this->cache = $cache;
 	}
 
 	/**
@@ -79,18 +65,19 @@ class AppConfig implements \OCP\IAppConfig {
 	 * @return \string[]
 	 */
 	private function getAppValues($app) {
-		$appCache = $this->getAppCache($app);
-		if (array_search($app, $this->appsLoaded) === false) {
-			$query = 'SELECT `configvalue`, `configkey` FROM `*PREFIX*appconfig`'
-				. ' WHERE `appid` = ?';
-			$result = $this->conn->executeQuery($query, array($app));
-			while ($row = $result->fetch()) {
-				$appCache[$row['configkey']] = $row['configvalue'];
-			}
-			$this->appsLoaded[] = $app;
+		$cacheKey = 'app/' . $app;
+		if ($values = $this->cache->get($cacheKey)) {
+			return $values;
 		}
-		$this->cache[$app] = $appCache;
-		return $appCache;
+		$values = array();
+		$query = 'SELECT `configvalue`, `configkey` FROM `*PREFIX*appconfig`'
+			. ' WHERE `appid` = ?';
+		$result = $this->conn->executeQuery($query, array($app));
+		while ($row = $result->fetch()) {
+			$values[$row['configkey']] = $row['configvalue'];
+		}
+		$this->cache->set($cacheKey, $values, $this->cacheTime);
+		return $values;
 	}
 
 	/**
@@ -102,8 +89,8 @@ class AppConfig implements \OCP\IAppConfig {
 	 * entry in the appconfig table.
 	 */
 	public function getApps() {
-		if (is_array($this->apps)) {
-			return $this->apps;
+		if ($values = $this->cache->get('apps')) {
+			return $values;
 		}
 		$query = 'SELECT DISTINCT `appid` FROM `*PREFIX*appconfig` ORDER BY `appid`';
 		$result = $this->conn->executeQuery($query);
@@ -112,7 +99,7 @@ class AppConfig implements \OCP\IAppConfig {
 		while ($appid = $result->fetchColumn()) {
 			$apps[] = $appid;
 		}
-		$this->apps = $apps;
+		$this->cache->set('apps', $apps, $this->cacheTime);
 		return $apps;
 	}
 
@@ -175,6 +162,7 @@ class AppConfig implements \OCP\IAppConfig {
 	 */
 	public function setValue($app, $key, $value) {
 		// Does the key exist? no: insert, yes: update.
+		$this->cache->remove('app/' . $app);
 		if (!$this->hasKey($app, $key)) {
 			$data = array(
 				'appid' => $app,
@@ -196,13 +184,9 @@ class AppConfig implements \OCP\IAppConfig {
 			);
 			$this->conn->update('*PREFIX*appconfig', $data, $where);
 		}
-		if (!isset($this->cache[$app])) {
-			$this->cache[$app] = array();
-		}
-		if (is_array($this->apps) and array_search($app, $this->apps) === false) {
-			$this->apps[$app] = $app;
-		}
-		$this->cache[$app][$key] = $value;
+		$this->cache->remove('app/' . $app);
+		$this->cache->remove('key/' . $key);
+		$this->cache->remove('apps');
 	}
 
 	/**
@@ -218,9 +202,8 @@ class AppConfig implements \OCP\IAppConfig {
 			'configkey' => $key,
 		);
 		$this->conn->delete('*PREFIX*appconfig', $where);
-		if (isset($this->cache[$app]) and isset($this->cache[$app][$key])) {
-			unset($this->cache[$app][$key]);
-		}
+		$this->cache->remove('app/' . $app);
+		$this->cache->remove('key/' . $key);
 	}
 
 	/**
@@ -236,12 +219,13 @@ class AppConfig implements \OCP\IAppConfig {
 			'appid' => $app,
 		);
 		$this->conn->delete('*PREFIX*appconfig', $where);
-		unset($this->cache[$app]);
-		unset($this->apps[$app]);
+		$this->cache->remove('app/' . $app);
+		$this->cache->remove('apps');
+		$this->cache->clear('key/');
 	}
 
 	/**
-	 * get multiply values, either the app or key can be used as wildcard by setting it to false
+	 * get multiple values, either the app or key can be used as wildcard by setting it to false
 	 *
 	 * @param string|false $app
 	 * @param string|false $key
@@ -255,6 +239,10 @@ class AppConfig implements \OCP\IAppConfig {
 		if ($app !== false) {
 			return $this->getAppValues($app);
 		} else {
+			$cacheKey = 'key/' . $key;
+			if ($values = $this->cache->get($cacheKey)) {
+				return $values;
+			}
 			$query = 'SELECT `configvalue`, `appid` FROM `*PREFIX*appconfig` WHERE `configkey` = ?';
 			$result = $this->conn->executeQuery($query, array($key));
 
@@ -263,6 +251,7 @@ class AppConfig implements \OCP\IAppConfig {
 				$values[$row['appid']] = $row['configvalue'];
 			}
 
+			$this->cache->set($cacheKey, $values, $this->cacheTime);
 			return $values;
 		}
 	}
