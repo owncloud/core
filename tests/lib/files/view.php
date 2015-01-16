@@ -271,6 +271,41 @@ class View extends \Test\TestCase {
 	}
 
 	/**
+	 * Search in a substorage that is mounted onto an existing folder
+	 * that already contained data.
+	 * The data from the hidden folder must not be returned.
+	 *
+	 * @medium
+	 */
+	function testSearchWithOverlappingMount() {
+		$storage1 = $this->getTestStorage();
+		\OC\Files\Filesystem::mount($storage1, array(), '/');
+		$storage1->mkdir('mountpoint');
+		$storage1->file_put_contents('mountpoint/hiddenfoo.txt', 'dummy');
+		$scanner = $storage1->getScanner();
+		$scanner->scan('');
+		$storage2 = $this->getTestStorage();
+
+		// make second storage overlap existing "/mountpoint" folder
+		\OC\Files\Filesystem::mount($storage2, array(), '/mountpoint');
+
+		$rootView = new \OC\Files\View('');
+
+		$results = $rootView->search('foo');
+		$this->assertEquals(4, count($results));
+		$paths = array();
+		foreach ($results as $result) {
+			$this->assertEquals($result['path'], \OC\Files\Filesystem::normalizePath($result['path']));
+			$paths[] = $result['path'];
+		}
+		$this->assertContains('/foo.txt', $paths);
+		$this->assertContains('/foo.png', $paths);
+		$this->assertNotContains('/mountpoint/hiddenfoo.txt', $paths);
+		$this->assertContains('/mountpoint/foo.txt', $paths);
+		$this->assertContains('/mountpoint/foo.png', $paths);
+	}
+
+	/**
 	 * @medium
 	 */
 	function testWatcher() {

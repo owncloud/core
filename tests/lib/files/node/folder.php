@@ -544,6 +544,73 @@ class Folder extends \Test\TestCase {
 		$this->assertEquals(2, count($result));
 	}
 
+	/**
+	 * Search in a substorage that is mounted onto an existing folder
+	 * that already contained data.
+	 * The data from the hidden folder must not be returned.
+	 */
+	public function testSearchSubStoragesOverlap() {
+		$manager = $this->getMock('\OC\Files\Mount\Manager');
+		/**
+		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 */
+		$view = $this->getMock('\OC\Files\View');
+		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$root->expects($this->any())
+			->method('getUser')
+			->will($this->returnValue($this->user));
+		$storage = $this->getMock('\OC\Files\Storage\Storage');
+		$cache = $this->getMock('\OC\Files\Cache\Cache', array(), array(''));
+		$subCache = $this->getMock('\OC\Files\Cache\Cache', array(), array(''));
+		$subStorage = $this->getMock('\OC\Files\Storage\Storage');
+		$subMount = $this->getMock('\OC\Files\Mount\MountPoint', array(), array(null, ''));
+
+		$subMount->expects($this->once())
+			->method('getStorage')
+			->will($this->returnValue($subStorage));
+
+		$subMount->expects($this->once())
+			->method('getMountPoint')
+			->will($this->returnValue('/root/mountpoint/'));
+
+		$storage->expects($this->once())
+			->method('getCache')
+			->will($this->returnValue($cache));
+
+		$subStorage->expects($this->once())
+			->method('getCache')
+			->will($this->returnValue($subCache));
+
+		$cache->expects($this->once())
+			->method('search')
+			->with('%qw%')
+			->will($this->returnValue(array(
+				array('fileid' => 3, 'path' => 'root/mountpoint/sub/qwerty', 'name' => 'qwerty', 'size' => 200, 'mtime' => 55, 'mimetype' => 'text/plain')
+			)));
+
+		$subCache->expects($this->once())
+			->method('search')
+			->with('%qw%')
+			->will($this->returnValue(array(
+				array('fileid' => 4, 'path' => 'sub/qweasd', 'name' => 'qweasd', 'size' => 200, 'mtime' => 55, 'mimetype' => 'text/plain')
+			)));
+
+		$root->expects($this->once())
+			->method('getMountsIn')
+			->with('/root')
+			->will($this->returnValue(array($subMount)));
+
+		$view->expects($this->once())
+			->method('resolvePath')
+			->will($this->returnValue(array($storage, 'root')));
+
+
+		$node = new \OC\Files\Node\Folder($root, $view, '/root');
+		$result = $node->search('qw');
+		$this->assertEquals(1, count($result));
+		$this->assertEquals('qweasd', $result[0]->getName());
+	}
+
 	public function testIsSubNode() {
 		$file = new Node(null, null, '/foo/bar');
 		$folder = new \OC\Files\Node\Folder(null, null, '/foo');
