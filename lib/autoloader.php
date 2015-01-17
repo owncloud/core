@@ -15,11 +15,17 @@ class Autoloader {
 
 	private $classPaths = array();
 
+	private $finders = array();
+
 	/**
 	 * Optional low-latency memory cache for class to path mapping.
 	 * @var \OC\Memcache\Cache
 	 */
 	protected $memoryCache;
+
+	public function __construct() {
+		$this->addFinder(array($this, 'findClass'));
+	}
 
 	/**
 	 * disable the usage of the global classpath \OC::$CLASSPATH
@@ -90,18 +96,24 @@ class Autoloader {
 	 * @return bool
 	 */
 	public function load($class) {
-		$pathsToRequire = null;
-		if ($this->memoryCache) {
+		$pathsToRequire = array();
+		if ($this->memoryCache && $this->memoryCache->hasKey($class)) {
 			$pathsToRequire = $this->memoryCache->get($class);
-		}
-
-		if (!is_array($pathsToRequire)) {
-			// No cache or cache miss
-			$pathsToRequire = array();
-			foreach ($this->findClass($class) as $path) {
-				$fullPath = stream_resolve_include_path($path);
-				if ($fullPath) {
-					$pathsToRequire[] = $fullPath;
+		} else {
+			foreach ($this->finders as $finder) {
+				if (($found = $finder($class))) {
+					if (!is_array($found)) {
+						$found = array($found);
+					}
+					foreach ($found as $path) {
+						$fullPath = stream_resolve_include_path($path);
+						if ($fullPath) {
+							$pathsToRequire[] = $fullPath;
+						}
+					}
+					if ($pathsToRequire) {
+						break;
+					}
 				}
 			}
 
@@ -115,6 +127,18 @@ class Autoloader {
 		}
 
 		return false;
+	}
+
+	/**
+	 * @param callable $func called as $func($class), returns array|string
+	 * @param bool $prepend Prepend finder rather than append
+	 */
+	public function addFinder(callable $func, $prepend = false) {
+		if ($prepend) {
+			array_unshift($this->finders, $func);
+		} else {
+			$this->finders[] = $func;
+		}
 	}
 
 	/**
