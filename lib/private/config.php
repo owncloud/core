@@ -163,13 +163,12 @@ class Config {
 		$content .= ";\n";
 
 		touch ($this->configFilePath);
-		$filePointer = fopen($this->configFilePath, 'r+');
 
 		// Prevent others not to read the config
 		chmod($this->configFilePath, 0640);
 
 		// File does not exist, this can happen when doing a fresh install
-		if(!is_resource ($filePointer)) {
+		if(!file_exists($this->configFilePath)) {
 			$url = \OC_Helper::linkToDocs('admin-dir_permissions');
 			throw new HintException(
 				"Can't write into config directory!",
@@ -177,17 +176,8 @@ class Config {
 				.'<a href="' . $url . '" target="_blank">giving the webserver write access to the config directory</a>.');
 		}
 
-		// Try to acquire a file lock
-		if(!flock($filePointer, LOCK_EX)) {
-			throw new \Exception(sprintf('Could not acquire an exclusive lock on the config file %s', $this->configFilePath));
-		}
-
-		// Write the config and release the lock
-		ftruncate ($filePointer, 0);
-		fwrite($filePointer, $content);
-		fflush($filePointer);
-		flock($filePointer, LOCK_UN);
-		fclose($filePointer);
+		// Write the config
+		file_put_contents($this->configFilePath, $content, LOCK_EX);
 
 		// Clear the opcode cache
 		\OC_Util::clearOpcodeCache();
