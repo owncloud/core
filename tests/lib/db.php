@@ -204,6 +204,34 @@ class Test_DB extends \Test\TestCase {
 		$this->assertSame($expected, $actual);
 	}
 
+	public function backslashData() {
+		return [
+			['', array()],
+			['WHERE `fullname` = ?', array('Contain\\ABackslash')],
+			['WHERE `fullname` LIKE ?', array('Contain\\ABackslash')],
+			['WHERE `fullname` LIKE ?', array('Contain\\A%')],
+			['WHERE `fullname` LIKE ?', array('%n\\ABackslash')],
+		];
+	}
+
+	/**
+	 * @param $whereQuery
+	 * @param $arguments
+	 * @throws \OC\DatabaseException
+	 * @dataProvider backslashData
+	 */
+	public function testBackslashData($whereQuery, $arguments) {
+		$table = '*PREFIX*' . $this->table2;
+		$expected = 'Contain\\ABackslash';
+
+		$query = OC_DB::prepare("INSERT INTO `$table` (`fullname`, `uri`, `carddata`) VALUES (?, ?, ?)");
+		$result = $query->execute(array($expected, 'uri_1', 'This is a vCard'));
+		$this->assertEquals(1, $result);
+
+		$actual = OC_DB::prepare("SELECT `fullname` FROM `$table` " . $whereQuery)->execute($arguments)->fetchOne();
+		$this->assertSame($expected, $actual);
+	}
+
 	public function testDecimal() {
 		$table = "*PREFIX*" . $this->table4;
 		$rowname = 'decimaltest';
