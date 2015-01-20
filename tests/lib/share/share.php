@@ -44,11 +44,13 @@ class Test_Share extends \Test\TestCase {
 		$this->user2 = $this->getUniqueID('user2_');
 		$this->user3 = $this->getUniqueID('user3_');
 		$this->user4 = $this->getUniqueID('user4_');
+		$this->user5 = $this->getUniqueID('user5_');
 		$this->groupAndUser = $this->getUniqueID('groupAndUser_');
 		OC_User::createUser($this->user1, 'pass');
 		OC_User::createUser($this->user2, 'pass');
 		OC_User::createUser($this->user3, 'pass');
 		OC_User::createUser($this->user4, 'pass');
+		OC_User::createUser($this->user5, 'pass');
 		OC_User::createUser($this->groupAndUser, 'pass');
 		OC_User::setUserId($this->user1);
 		OC_Group::clearBackends();
@@ -608,6 +610,38 @@ class Test_Share extends \Test\TestCase {
 		$this->assertEquals(array(), OCP\Share::getItemsSharedWith('test', Test_Share_Backend::FORMAT_TARGET));
 		OC_User::setUserId($this->user3);
 		$this->assertEquals(array(), OCP\Share::getItemsShared('test'));
+	}
+
+	public function testShareWithGroupWithNameConflict() {
+		$this->loginAsUser($this->user1, true);
+
+		$view1 = new \OC\Files\View('/' . $this->user1 . '/files');
+		$this->assertNotFalse($view1->file_put_contents('conflictfile.txt', 'dummy'));
+
+		$this->loginAsUser($this->user5, true);
+		$view2 = new \OC\Files\View('/' . $this->user5 . '/files');
+		$this->assertNotFalse($view2->file_put_contents('conflictfile.txt', 'dummy'));
+		$fileId = $view2->getFileInfo('conflictfile.txt')->getId();
+		OCP\Share::shareItem(
+			'file',
+			$fileId,
+			OCP\Share::SHARE_TYPE_GROUP,
+			$this->group1,
+			\OCP\Constants::PERMISSION_ALL
+		);
+
+		$items = OCP\Share::getItemsSharedWithUser('file', $this->user1, Test_Share_Backend::FORMAT_TARGET);
+		$this->assertEquals('conflictfile (2).txt', $items[0]['name']);
+
+		$this->loginAsUser($this->user1, true);
+		$view1 = new \OC\Files\View('/' . $this->user1 . '/files');
+		$this->assertTrue($view1->rename('conflictfile (2).txt', 'renamed.txt'));
+
+		$this->loginAsUser($this->user5, true);
+
+		$items = OCP\Share::getItemsSharedWithUser('file', $this->user1, Test_Share_Backend::FORMAT_TARGET);
+		$this->assertEquals('renamed.txt', $items[0]['name']);
+
 	}
 
 
