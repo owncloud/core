@@ -55,7 +55,7 @@ class AppSettingsController extends Controller {
 	 */
 	public function listCategories() {
 
-		if(!is_null($this->cache->get('listCategories'))) {
+		if($this->cache->hasKey('listCategories')) {
 			return $this->cache->get('listCategories');
 		}
 		$categories = [
@@ -87,7 +87,7 @@ class AppSettingsController extends Controller {
 	 * @return array
 	 */
 	public function listApps($category = 0) {
-		if(!is_null($this->cache->get('listApps-'.$category))) {
+		if($this->cache->hasKey('listApps-'.$category)) {
 			$apps = $this->cache->get('listApps-'.$category);
 		} else {
 			switch ($category) {
