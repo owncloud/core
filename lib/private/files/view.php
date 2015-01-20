@@ -1037,7 +1037,17 @@ class View {
 
 					if ($subCache->getStatus('') === Cache\Cache::NOT_FOUND) {
 						$subScanner = $subStorage->getScanner('');
-						$subScanner->scanFile('');
+						try {
+							$subScanner->scanFile('');
+						} catch (\OCP\Files\StorageNotAvailableException $e) {
+							continue;
+						} catch (\OCP\Files\StorageInvalidException $e) {
+							continue;
+						} catch (\Exception $e) {
+							// sometimes when the storage is not available it can be any exception
+							\OC_Log::write('core', 'Exception while scanning storage "' . $subStorage->getId() . '": ' . $e->getMessage(), \OC_Log::ERROR);
+							continue;
+						}
 					}
 
 					$rootEntry = $subCache->get('');
