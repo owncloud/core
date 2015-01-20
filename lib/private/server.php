@@ -277,11 +277,12 @@ class Server extends SimpleContainer implements IServerContainer {
 		$this->registerService('DateTimeZone', function(Server $c) {
 			return new DateTimeZone(
 				$c->getConfig(),
+				$c->getUserSession(),
 				$c->getSession()
 			);
 		});
 		$this->registerService('DateTimeFormatter', function(Server $c) {
-			$language = $c->getConfig()->getUserValue($c->getSession()->get('user_id'), 'core', 'lang', null);
+			$language = $c->getConfig()->getUserValue($c->getUserSession()->getUser()->getUID(), 'core', 'lang', null);
 
 			return new DateTimeFormatter(
 				$c->getDateTimeZone()->getTimeZone(),

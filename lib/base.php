@@ -568,8 +568,8 @@ class OC {
 		$systemConfig = \OC::$server->getSystemConfig();
 
 		// User and Groups
-		if (!$systemConfig->getValue("installed", false)) {
-			self::$server->getSession()->set('user_id', '');
+		if (!$systemConfig->getValue('installed', false)) {
+			self::$server->getUserSession()->logout();
 		}
 
 		OC_User::useBackend(new OC_User_Database());
