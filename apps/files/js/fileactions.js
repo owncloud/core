@@ -432,7 +432,8 @@
 				},
 				render: _.bind(this._renderDeleteAction, this),
 				actionHandler: function(fileName, context) {
-					context.fileList.do_delete(fileName, context.dir);
+					OC.dialogs.confirm(t('files','Delete "'+filename+'"?'),t('files','Confirm Delete'),function(answer){ if(answer){
+				context.fileList.do_delete(filename, context.dir);
 					$('.tipsy').remove();
 				}
 			});
