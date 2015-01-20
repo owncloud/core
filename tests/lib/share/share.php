@@ -613,12 +613,12 @@ class Test_Share extends \Test\TestCase {
 	}
 
 	public function testShareWithGroupWithNameConflict() {
-		$this->loginAsUser($this->user1, true);
+		$this->loginAsUser($this->user1);
 
 		$view1 = new \OC\Files\View('/' . $this->user1 . '/files');
 		$this->assertNotFalse($view1->file_put_contents('conflictfile.txt', 'dummy'));
 
-		$this->loginAsUser($this->user5, true);
+		$this->loginAsUser($this->user5);
 		$view2 = new \OC\Files\View('/' . $this->user5 . '/files');
 		$this->assertNotFalse($view2->file_put_contents('conflictfile.txt', 'dummy'));
 		$fileId = $view2->getFileInfo('conflictfile.txt')->getId();
@@ -633,11 +633,11 @@ class Test_Share extends \Test\TestCase {
 		$items = OCP\Share::getItemsSharedWithUser('file', $this->user1, Test_Share_Backend::FORMAT_TARGET);
 		$this->assertEquals('conflictfile (2).txt', $items[0]['name']);
 
-		$this->loginAsUser($this->user1, true);
+		$this->loginAsUser($this->user1);
 		$view1 = new \OC\Files\View('/' . $this->user1 . '/files');
 		$this->assertTrue($view1->rename('conflictfile (2).txt', 'renamed.txt'));
 
-		$this->loginAsUser($this->user5, true);
+		$this->loginAsUser($this->user5);
 
 		$items = OCP\Share::getItemsSharedWithUser('file', $this->user1, Test_Share_Backend::FORMAT_TARGET);
 		$this->assertEquals('renamed.txt', $items[0]['name']);
