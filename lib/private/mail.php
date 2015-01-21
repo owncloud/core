@@ -61,6 +61,9 @@ class OC_Mail {
 		$mailo->Port = $SMTPPORT;
 		$mailo->SMTPAuth = $SMTPAUTH;
 		$mailo->SMTPDebug = $SMTPDEBUG;
+		if ($mailo->SMTPDebug) {
+			$mailo->Debugoutput = 'error_log';
+		}
 		$mailo->SMTPSecure = $SMTPSECURE;
 		$mailo->AuthType = $SMTPAUTHTYPE;
 		$mailo->Username = $SMTPUSERNAME;
