@@ -35,6 +35,16 @@ class StorageFactory implements IStorageFactory {
 	}
 
 	/**
+	 * Remove a storage wrapper by name.
+	 * Note: internal method only to be used for cleanup
+	 *
+	 * @param string $wrapperName
+	 */
+	public function removeStorageWrapper($wrapperName) {
+		unset($this->storageWrappers[$wrapperName]);
+	}
+
+	/**
 	 * Create an instance of a storage and apply the registered storage wrappers
 	 *
 	 * @param string|boolean $mountPoint
