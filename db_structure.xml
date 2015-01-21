@@ -1242,7 +1242,6 @@
 		</field>
 
 		<index>
-			<primary>true</primary>
 			<unique>true</unique>
 			<name>keyid_index</name>
 			<field>
