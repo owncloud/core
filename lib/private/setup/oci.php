@@ -16,8 +16,10 @@ class OCI extends AbstractDatabase {
 		}
 		// allow empty hostname for oracle
 		$this->dbhost = $config['dbhost'];
+		\OC_Config::transactionBegin();
 		\OC_Config::setValue('dbhost', $this->dbhost);
 		\OC_Config::setValue('dbtablespace', $this->dbtablespace);
+		\OC_Config::transactionCommit();
 	}
 
 	public function validate($config) {
@@ -87,22 +89,16 @@ class OCI extends AbstractDatabase {
 			$this->dbpassword=substr($this->dbpassword, 0, 30);
 
 			$this->createDBUser($connection);
-
-			\OC_Config::setValue('dbuser', $this->dbuser);
-			\OC_Config::setValue('dbname', $this->dbuser);
-			\OC_Config::setValue('dbpassword', $this->dbpassword);
-
-			//create the database not necessary, oracle implies user = schema
-			//$this->createDatabase($this->dbname, $this->dbuser, $connection);
-		} else {
-
-			\OC_Config::setValue('dbuser', $this->dbuser);
-			\OC_Config::setValue('dbname', $this->dbname);
-			\OC_Config::setValue('dbpassword', $this->dbpassword);
-
-			//create the database not necessary, oracle implies user = schema
-			//$this->createDatabase($this->dbname, $this->dbuser, $connection);
 		}
+
+		\OC_Config::transactionBegin();
+		\OC_Config::setValue('dbuser', $this->dbuser);
+		\OC_Config::setValue('dbname', $this->dbname);
+		\OC_Config::setValue('dbpassword', $this->dbpassword);
+		\OC_Config::transactionCommit();
+
+		//create the database not necessary, oracle implies user = schema
+		//$this->createDatabase($this->dbname, $this->dbuser, $connection);
 
 		//FIXME check tablespace exists: select * from user_tablespaces
 

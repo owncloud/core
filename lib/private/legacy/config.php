@@ -67,4 +67,33 @@ class OC_Config {
 	public static function deleteKey($key) {
 		self::$object->deleteKey($key);
 	}
+
+	/**
+	 * Begins a transaction
+	 *
+	 * Config changes are no longer written to the config.php file, until
+	 * transactionCommit() is being called. The changes can be reverted by
+	 * transactionRollback()
+	 */
+	public static function transactionBegin() {
+		self::$object->transactionBegin();
+	}
+
+	/**
+	 * Commits a transaction
+	 *
+	 * The config.php file is only written if a value changed
+	 */
+	public static function transactionCommit() {
+		self::$object->transactionCommit();
+	}
+
+	/**
+	 * Rolls back a transaction
+	 *
+	 * It re-reads the configs from the config.php and throws away any changes
+	 */
+	public static function transactionRollback() {
+		self::$object->transactionRollback();
+	}
 }

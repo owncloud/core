@@ -174,6 +174,8 @@ class OC_Setup {
 			$dbType='sqlite3';
 		}
 
+		\OC::$server->getConfig()->systemConfigTransactionBegin();
+
 		//generate a random salt that is used to salt the local user passwords
 		$salt = \OC::$server->getSecureRandom()->getLowStrengthGenerator()->generate(30);
 		\OC::$server->getConfig()->setSystemValue('passwordsalt', $salt);
@@ -188,6 +190,8 @@ class OC_Setup {
 		\OC::$server->getConfig()->setSystemValue('overwrite.cli.url', \OC_Request::serverProtocol() . '://' . \OC_Request::serverHost() . OC::$WEBROOT);
 		\OC::$server->getConfig()->setSystemValue('dbtype', $dbType);
 		\OC::$server->getConfig()->setSystemValue('version', implode('.', OC_Util::getVersion()));
+
+		\OC::$server->getConfig()->systemConfigTransactionCommit();
 
 		try {
 			$dbSetup->initialize($options);

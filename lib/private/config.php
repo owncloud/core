@@ -27,6 +27,11 @@ class Config {
 	/** @var bool */
 	protected $debugMode;
 
+	/** @var bool */
+	protected $transaction = false;
+	/** @var bool */
+	protected $transactionDirty = false;
+
 	/**
 	 * @param string $configDir Path to the config dir, needs to end with '/'
 	 * @param string $fileName (Optional) Name of the config file. Defaults to config.php
@@ -37,6 +42,41 @@ class Config {
 		$this->configFileName = $fileName;
 		$this->readData();
 		$this->debugMode = (defined('DEBUG') && DEBUG);
+	}
+
+	/**
+	 * Begins a transaction
+	 *
+	 * Config changes are no longer written to the config.php file, until
+	 * transactionCommit() is being called. The changes can be reverted by
+	 * transactionRollback()
+	 */
+	public function transactionBegin() {
+		$this->transaction = true;
+	}
+
+	/**
+	 * Commits a transaction
+	 *
+	 * The config.php file is only written if a value changed
+	 */
+	public function transactionCommit() {
+		$this->transaction = false;
+		if ($this->transactionDirty) {
+			$this->writeData();
+		}
+		$this->transactionDirty = false;
+	}
+
+	/**
+	 * Rolls back a transaction
+	 *
+	 * It re-reads the configs from the config.php and throws away the changes
+	 */
+	public function transactionRollback() {
+		$this->transaction = false;
+		$this->transactionDirty = false;
+		$this->readData();
 	}
 
 	/**
@@ -76,11 +116,13 @@ class Config {
 	 *
 	 */
 	public function setValue($key, $value) {
-		// Add change
-		$this->cache[$key] = $value;
+		if (!isset($this->cache[$key]) || $this->cache[$key] !== $value) {
+			// Add change
+			$this->cache[$key] = $value;
 
-		// Write changes
-		$this->writeData();
+			// Write changes
+			$this->writeData();
+		}
 	}
 
 	/**
@@ -153,6 +195,12 @@ class Config {
 	 * @throws \Exception If no file lock can be acquired
 	 */
 	private function writeData() {
+		if ($this->transaction) {
+			// We should write the config on commit
+			$this->transactionDirty = true;
+			return;
+		}
+
 		// Create a php file ...
 		$content = "<?php\n";
 		if ($this->debugMode) {

@@ -402,4 +402,33 @@ class AllConfig implements \OCP\IConfig {
 
 		return $userIDs;
 	}
+
+	/**
+	 * Begins a transaction
+	 *
+	 * Config changes are no longer written to the config.php file, until
+	 * systemConfigTransactionCommit() is being called. The changes can be
+	 * reverted by systemConfigTransactionRollback()
+	 */
+	public function systemConfigTransactionBegin() {
+		$this->systemConfig->transactionBegin();
+	}
+
+	/**
+	 * Commits a transaction
+	 *
+	 * The config.php file is only written if a value changed
+	 */
+	public function systemConfigTransactionCommit() {
+		$this->systemConfig->transactionCommit();
+	}
+
+	/**
+	 * Rolls back a transaction
+	 *
+	 * It re-reads the configs from the config.php and throws away any changes
+	 */
+	public function systemConfigTransactionRollback() {
+		$this->systemConfig->transactionRollback();
+	}
 }

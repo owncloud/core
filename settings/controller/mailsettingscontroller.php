@@ -84,6 +84,7 @@ class MailSettingsController extends Controller {
 									$mail_smtpport) {
 
 		$params = get_defined_vars();
+		$this->config->systemConfigTransactionBegin();
 		foreach($params as $key => $value) {
 			if(empty($value)) {
 				$this->config->deleteSystemValue($key);
@@ -97,6 +98,7 @@ class MailSettingsController extends Controller {
 			$this->config->deleteSystemValue('mail_smtpname');
 			$this->config->deleteSystemValue('mail_smtppassword');
 		}
+		$this->config->systemConfigTransactionCommit();
 
 		return array('data' =>
 			array('message' =>
@@ -113,8 +115,10 @@ class MailSettingsController extends Controller {
 	 * @return array
 	 */
 	public function storeCredentials($mail_smtpname, $mail_smtppassword) {
+		$this->config->systemConfigTransactionBegin();
 		$this->config->setSystemValue('mail_smtpname', $mail_smtpname);
 		$this->config->setSystemValue('mail_smtppassword', $mail_smtppassword);
+		$this->config->systemConfigTransactionCommit();
 
 		return array('data' =>
 			array('message' =>
