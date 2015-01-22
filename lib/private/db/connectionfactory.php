@@ -10,6 +10,7 @@ namespace OC\DB;
 use Doctrine\DBAL\Event\Listeners\OracleSessionInit;
 use Doctrine\DBAL\Event\Listeners\SQLSessionInit;
 use Doctrine\DBAL\Event\Listeners\MysqlSessionInit;
+use PDO;
 
 /**
 * Takes care of creating and configuring Doctrine connections.
@@ -134,15 +135,22 @@ class ConnectionFactory {
 	public function createConnectionParams($config) {
 		$type = $config->getValue('dbtype', 'sqlite');
 
-		$connectionParams = array(
+		$driverOptions = $config->getValue('dbdriveroptions', []);
+		$connectionParams = [
 			'user' => $config->getValue('dbuser', ''),
 			'password' => $config->getValue('dbpassword', ''),
-		);
+			'driverOptions' => $driverOptions
+		];
+
+		//additional driver options, eg. for mysql ssl
 		$name = $config->getValue('dbname', 'owncloud');
 
 		if ($this->normalizeType($type) === 'sqlite3') {
 			$dataDir = $config->getValue("datadirectory", \OC::$SERVERROOT . '/data');
 			$connectionParams['path'] = $dataDir . '/' . $name . '.db';
+
+			$connectionParams['driverOptions'][PDO::ATTR_TIMEOUT] =
+				(int)$config->getValue('sqlite.timeout-in-seconds', 60);
 		} else {
 			$host = $config->getValue('dbhost', '');
 			if (strpos($host, ':')) {
@@ -160,12 +168,6 @@ class ConnectionFactory {
 
 		$connectionParams['tablePrefix'] = $config->getValue('dbtableprefix', 'oc_');
 		$connectionParams['sqlite.journal_mode'] = $config->getValue('sqlite.journal_mode', 'WAL');
-
-		//additional driver options, eg. for mysql ssl
-		$driverOptions = $config->getValue('dbdriveroptions', null);
-		if ($driverOptions) {
-			$connectionParams['driverOptions'] = $driverOptions;
-		}
 
 		return $connectionParams;
 	}
