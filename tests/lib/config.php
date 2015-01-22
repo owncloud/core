@@ -71,6 +71,58 @@ class Test_Config extends \Test\TestCase {
 		$this->assertEquals($expected, $content);
 	}
 
+	public function testTransactionRollback() {
+		$this->config->transactionBegin();
+		$expectedConfig = $this->initialConfig;
+
+		// Value is written to the attribute ...
+		$this->config->setValue('foo', 'moo');
+		$this->config->deleteKey('alcohol_free');
+		$expectedConfig['foo'] = 'moo';
+		unset($expectedConfig['alcohol_free']);
+		$this->assertAttributeEquals($expectedConfig, 'cache', $this->config);
+
+		// ... but not the the file.
+		$content = file_get_contents($this->configFile);
+		$this->assertEquals(self::TESTCONTENT, $content);
+
+		// Rollback the transaciton, attributes are reset ...
+		$this->config->transactionRollback();
+		$expectedConfig['foo'] = 'bar';
+		$expectedConfig['alcohol_free'] = false;
+		$this->assertAttributeEquals($expectedConfig, 'cache', $this->config);
+
+		// ... and the file is still unchanged
+		$content = file_get_contents($this->configFile);
+		$this->assertEquals(self::TESTCONTENT, $content);
+	}
+
+	public function testTransactionCommit() {
+		$this->config->transactionBegin();
+		$expectedConfig = $this->initialConfig;
+
+		// Value is written to the attribute ...
+		$this->config->setValue('foo', 'moo');
+		$this->config->deleteKey('alcohol_free');
+		$expectedConfig['foo'] = 'moo';
+		unset($expectedConfig['alcohol_free']);
+		$this->assertAttributeEquals($expectedConfig, 'cache', $this->config);
+
+		// ... but not the the file.
+		$content = file_get_contents($this->configFile);
+		$this->assertEquals(self::TESTCONTENT, $content);
+
+		// Commit the transaciton, attributes are still the same ...
+		$this->config->transactionCommit();
+		$this->assertAttributeEquals($expectedConfig, 'cache', $this->config);
+
+		// ... and the file has been updated
+		$content = file_get_contents($this->configFile);
+		$expected = "<?php\n\$CONFIG = array (\n  'foo' => 'moo',\n  'beers' => \n  array (\n    0 => 'Appenzeller',\n  " .
+			"  1 => 'Guinness',\n    2 => 'Kölsch',\n  ),\n);\n";
+		$this->assertEquals($expected, $content);
+	}
+
 	public function testDeleteKey() {
 		$this->config->deleteKey('foo');
 		$expectedConfig = $this->initialConfig;
