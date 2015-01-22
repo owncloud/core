@@ -56,3 +56,8 @@ $this->create('sharing_external_test_remote', '/testremote')
 		'/apps/files_sharing/api/v1/shares/{id}',
 		array('\OCA\Files_Sharing\API\Local', 'deleteShare'),
 		'files_sharing');
+
+\OC_API::register('get',
+		'/apps/files_sharing/api/v1/sharewith',
+		array('\OCA\Files_Sharing\API\Local', 'shareWith'),
+		'files_sharing');

@@ -1333,4 +1333,55 @@ class Test_Files_Sharing_Api extends TestCase {
 		\OC::$server->getAppConfig()->setValue('core', 'shareapi_enforce_expire_date', 'no');
 
 	}
+
+    /**
+     * @medium
+     */
+    public function testShareWith() {
+		//TODO: Mock config etc
+		$appConfig = \OC::$server->getConfig();
+
+		//Helper functions
+		$filter_user = function($item) {
+			return $item['shareType'] == \OCP\Share::SHARE_TYPE_USER;
+		};
+		$filter_group = function($item) {
+			return $item['shareType'] == \OCP\Share::SHARE_TYPE_GROUP;
+		};
+		$getShareWith = function($item) {
+			return $item['shareWith'];
+		};
+
+		//Test if the test users and groups are in the list
+		//Except of course for test user 1 since we cannot share with ourself
+		$appConfig->setAppValue('core', 'shareapi_only_share_with_group_members', 'no');
+		$result = \OCA\Files_Sharing\API\Local::shareWith();
+		$this->assertTrue($result->succeeded());
+
+		$data = $result->getData();
+		$users = array_map($getShareWith, array_filter($data, $filter_user));
+		$groups = array_map($getShareWith, array_filter($data, $filter_group));
+		$this->assertFalse(in_array(\Test_Files_Sharing_Api::TEST_FILES_SHARING_API_USER1, $users));
+		$this->assertTrue(in_array(\Test_Files_Sharing_Api::TEST_FILES_SHARING_API_USER2, $users));
+		$this->assertTrue(in_array(\Test_Files_Sharing_Api::TEST_FILES_SHARING_API_USER3, $users));
+		$this->assertTrue(in_array(\Test_Files_Sharing_Api::TEST_FILES_SHARING_API_GROUP1, $groups));
+		$this->assertTrue(in_array("group", $groups));
+
+		//Test if we get the correct result if we only allow sharing within our group
+		//TODO: extend setup so we can also check for users
+		$appConfig->setAppValue('core', 'shareapi_only_share_with_group_members', 'yes');
+		$result = \OCA\Files_Sharing\API\Local::shareWith();
+		$this->assertTrue($result->succeeded());
+
+		$data = $result->getData();
+		$users = array_map($getShareWith, array_filter($data, $filter_user));
+		$groups = array_map($getShareWith, array_filter($data, $filter_group));
+		$this->assertFalse(in_array(\Test_Files_Sharing_Api::TEST_FILES_SHARING_API_USER1, $users));
+		$this->assertTrue(in_array(\Test_Files_Sharing_Api::TEST_FILES_SHARING_API_USER2, $users));
+		$this->assertTrue(in_array(\Test_Files_Sharing_Api::TEST_FILES_SHARING_API_USER3, $users));
+		$this->assertFalse(in_array(\Test_Files_Sharing_Api::TEST_FILES_SHARING_API_GROUP1, $groups));
+		$this->assertTrue(in_array("group", $groups));
+
+		$appConfig->setAppValue('core', 'shareapi_only_share_with_group_members', 'no');
+    }
 }
