@@ -30,21 +30,20 @@ class Application extends App {
 
 		$container = $this->getContainer();
 		$server = $container->getServer();
-
 		/**
 		 * Controllers
 		 */
-		$container->registerService('ShareController', function(SimpleContainer $c) use ($server) {
+		$container->registerService('ShareController', function(SimpleContainer $c) {
 			return new ShareController(
 				$c->query('AppName'),
 				$c->query('Request'),
 				$c->query('UserSession'),
-				$server->getAppConfig(),
-				$server->getConfig(),
+				$c->query('OCP\IAppConfig'),
+				$c->query('OCP\IConfig'),
 				$c->query('URLGenerator'),
-				$server->getUserManager(),
-				$server->getLogger(),
-				$server->getActivityManager()
+				$c->query('OCP\IUserManager'),
+				$c->query('OCP\ILogger'),
+				$c->query('OCP\Activity\IManager')
 			);
 		});
 		$container->registerService('ExternalSharesController', function(SimpleContainer $c) {
@@ -59,33 +58,33 @@ class Application extends App {
 		/**
 		 * Core class wrappers
 		 */
-		$container->registerService('UserSession', function(SimpleContainer $c) use ($server) {
-			return $server->getUserSession();
+		$container->registerService('UserSession', function(SimpleContainer $c) {
+			return $c->query('OCP\IUserSession');
 		});
-		$container->registerService('URLGenerator', function(SimpleContainer $c) use ($server){
-			return $server->getUrlGenerator();
+		$container->registerService('URLGenerator', function(SimpleContainer $c) {
+			return $c->query('OCP\IURLGenerator');
 		});
 		$container->registerService('IsIncomingShareEnabled', function(SimpleContainer $c) {
 			return Helper::isIncomingServer2serverShareEnabled();
 		});
-		$container->registerService('ExternalManager', function(SimpleContainer $c) use ($server){
+		$container->registerService('ExternalManager', function(SimpleContainer $c) use ($server) {
 			return new \OCA\Files_Sharing\External\Manager(
-					$server->getDatabaseConnection(),
-					\OC\Files\Filesystem::getMountManager(),
-					\OC\Files\Filesystem::getLoader(),
-					$server->getUserSession(),
-					$server->getHTTPHelper()
+				$c->query('OCP\IDBConnection'),
+				\OC\Files\Filesystem::getMountManager(),
+				\OC\Files\Filesystem::getLoader(),
+				$c->query('OCP\IUserSession'),
+				$server->getHTTPHelper()
 			);
 		});
 
 		/**
 		 * Middleware
 		 */
-		$container->registerService('SharingCheckMiddleware', function(SimpleContainer $c) use ($server){
+		$container->registerService('SharingCheckMiddleware', function(SimpleContainer $c) {
 			return new SharingCheckMiddleware(
 				$c->query('AppName'),
-				$server->getConfig(),
-				$server->getAppManager()
+				$c->query('OCP\IConfig'),
+				$c->query('OCP\\IAppManager')
 			);
 		});
 
