@@ -23,9 +23,19 @@ class Scanner extends \OC\Files\Cache\Scanner {
 		$this->scanAll();
 	}
 
-	public function scanFile($path, $reuseExisting = 0) {
+	/**
+	 * Scan a single file and store it in the cache.
+	 * If an exception happened while accessing the external storage,
+	 * the storage will be checked for availability and removed
+	 * if it is not available any more.
+	 *
+	 * @param string $file file to scan
+	 * @param int $reuseExisting
+	 * @return array an array of metadata of the scanned file
+	 */
+	public function scanFile($file, $reuseExisting = 0) {
 		try {
-			return parent::scanFile($path, $reuseExisting);
+			return parent::scanFile($file, $reuseExisting);
 		} catch (ForbiddenException $e) {
 			$this->storage->checkStorageAvailability();
 		} catch (NotFoundException $e) {
@@ -35,11 +45,16 @@ class Scanner extends \OC\Files\Cache\Scanner {
 			$this->storage->checkStorageAvailability();
 		} catch (StorageInvalidException $e) {
 			$this->storage->checkStorageAvailability();
-		} catch (StorageNotAvailable $e) {
+		} catch (StorageNotAvailableException $e) {
 			$this->storage->checkStorageAvailability();
 		}
 	}
 
+	/**
+	 * Checks the remote share for changes.
+	 * If changes are available, scan them and update
+	 * the cache.
+	 */
 	public function scanAll() {
 		try {
 			$data = $this->storage->getShareInfo();
@@ -56,8 +71,7 @@ class Scanner extends \OC\Files\Cache\Scanner {
 		} else {
 			throw new \Exception(
 				'Error while scanning remote share: "' .
-				$this->storage->getRemote() . '" ' .
-				$e->getMessage()
+				$this->storage->getRemote() . '"'
 			);
 		}
 	}
