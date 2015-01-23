@@ -1045,7 +1045,12 @@ class View {
 							continue;
 						} catch (\Exception $e) {
 							// sometimes when the storage is not available it can be any exception
-							\OC_Log::write('core', 'Exception while scanning storage "' . $subStorage->getId() . '": ' . $e->getMessage(), \OC_Log::ERROR);
+							\OCP\Util::writeLog(
+								'core',
+								'Exception while scanning storage "' . $subStorage->getId() . '": ' .
+								get_class($e) . ': ' . $e->getMessage(),
+								\OC_Log::ERROR
+							);
 							continue;
 						}
 					}
