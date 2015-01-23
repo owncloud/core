@@ -23,9 +23,25 @@ class StorageFactory implements IStorageFactory {
 	 *
 	 * @param string $wrapperName
 	 * @param callable $callback
+	 * @return true if the wrapper was added, false if there was already a wrapper with this
+	 * name registered
 	 */
 	public function addStorageWrapper($wrapperName, $callback) {
+		if (isset($this->storageWrappers[$wrapperName])) {
+			return false;
+		}
 		$this->storageWrappers[$wrapperName] = $callback;
+		return true;
+	}
+
+	/**
+	 * Remove a storage wrapper by name.
+	 * Note: internal method only to be used for cleanup
+	 *
+	 * @param string $wrapperName
+	 */
+	public function removeStorageWrapper($wrapperName) {
+		unset($this->storageWrappers[$wrapperName]);
 	}
 
 	/**
