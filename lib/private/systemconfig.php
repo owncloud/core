@@ -46,4 +46,44 @@ class SystemConfig {
 	public function deleteValue($key) {
 		\OC_Config::deleteKey($key);
 	}
+
+	/**
+	 * Begins a transaction
+	 *
+	 * Config changes are no longer written to the config.php file, until
+	 * transactionCommit() is being called. The changes can be reverted by
+	 * transactionRollback()
+	 */
+	public function transaction() {
+		\OC_Config::transactionBegin();
+	}
+
+	/**
+	 * Begins a transaction
+	 *
+	 * Config changes are no longer written to the config.php file, until
+	 * transactionCommit() is being called. The changes can be reverted by
+	 * transactionRollback()
+	 */
+	public function transactionBegin() {
+		\OC_Config::transactionBegin();
+	}
+
+	/**
+	 * Commits a transaction
+	 *
+	 * The config.php file is only written if a value changed
+	 */
+	public function transactionCommit() {
+		\OC_Config::transactionCommit();
+	}
+
+	/**
+	 * Rolls back a transaction
+	 *
+	 * It re-reads the configs from the config.php and throws away any changes
+	 */
+	public function transactionRollback() {
+		\OC_Config::transactionRollback();
+	}
 }

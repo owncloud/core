@@ -41,9 +41,11 @@ abstract class AbstractDatabase {
 		$dbhost = !empty($config['dbhost']) ? $config['dbhost'] : 'localhost';
 		$dbtableprefix = isset($config['dbtableprefix']) ? $config['dbtableprefix'] : 'oc_';
 
+		\OC_Config::transactionBegin();
 		\OC_Config::setValue('dbname', $dbname);
 		\OC_Config::setValue('dbhost', $dbhost);
 		\OC_Config::setValue('dbtableprefix', $dbtableprefix);
+		\OC_Config::transactionCommit();
 
 		$this->dbuser = $dbuser;
 		$this->dbpassword = $dbpass;

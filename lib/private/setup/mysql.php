@@ -51,8 +51,10 @@ class MySQL extends AbstractDatabase {
 				}
 			};
 
+			\OC_Config::transactionBegin();
 			\OC_Config::setValue('dbuser', $this->dbuser);
 			\OC_Config::setValue('dbpassword', $this->dbpassword);
+			\OC_Config::transactionCommit();
 		}
 
 		//create the database

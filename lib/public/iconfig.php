@@ -176,4 +176,27 @@ interface IConfig {
 	 * @return array of user IDs
 	 */
 	public function getUsersForUserValue($appName, $key, $value);
+
+	/**
+	 * Begins a transaction
+	 *
+	 * Config changes are no longer written to the config.php file, until
+	 * systemConfigTransactionCommit() is being called. The changes can be
+	 * reverted by systemConfigTransactionRollback()
+	 */
+	public function systemConfigTransactionBegin();
+
+	/**
+	 * Commits a transaction
+	 *
+	 * The config.php file is only written if a value changed
+	 */
+	public function systemConfigTransactionCommit();
+
+	/**
+	 * Rolls back a transaction
+	 *
+	 * It re-reads the configs from the config.php and throws away any changes
+	 */
+	public function systemConfigTransactionRollback();
 }

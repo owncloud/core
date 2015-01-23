@@ -21,8 +21,10 @@ class MSSQL extends AbstractDatabase {
 					$this->trans->t('You need to enter either an existing account or the administrator.'));
 		}
 
+		\OC_Config::transactionBegin();
 		\OC_Config::setValue('dbuser', $this->dbuser);
 		\OC_Config::setValue('dbpassword', $this->dbpassword);
+		\OC_Config::transactionCommit();
 
 		$this->createDBLogin($masterConnection);
 
