@@ -175,7 +175,10 @@ class Filesystem {
 	 * @param callable $wrapper
 	 */
 	public static function addStorageWrapper($wrapperName, $wrapper) {
-		self::getLoader()->addStorageWrapper($wrapperName, $wrapper);
+		if (!self::getLoader()->addStorageWrapper($wrapperName, $wrapper)) {
+			// do not re-wrap if storage with this name already existed
+			return;
+		}
 
 		$mounts = self::getMountManager()->getAll();
 		foreach ($mounts as $mount) {
@@ -183,6 +186,11 @@ class Filesystem {
 		}
 	}
 
+	/**
+	 * Returns the storage factory
+	 *
+	 * @return \OCP\Files\Storage\IStorageFactory
+	 */
 	public static function getLoader() {
 		if (!self::$loader) {
 			self::$loader = new StorageFactory();
@@ -190,6 +198,11 @@ class Filesystem {
 		return self::$loader;
 	}
 
+	/**
+	 * Returns the mount manager
+	 *
+	 * @return \OC\Files\Filesystem\Mount\Manager
+	 */
 	public static function getMountManager() {
 		if (!self::$mounts) {
 			\OC_Util::setupFS();
