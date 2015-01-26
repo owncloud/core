@@ -48,6 +48,25 @@ class Preview extends TestCase {
 		parent::tearDown();
 	}
 
+	public function testIsMaxSizeWorking() {
+
+		$maxX = 250;
+		$maxY = 250;
+
+		\OC_Config::setValue('preview_max_x', $maxX);
+		\OC_Config::setValue('preview_max_y', $maxY);
+
+		$sampleFile = '/'.$this->user.'/files/test.txt';
+
+		$this->rootView->file_put_contents($sampleFile, 'dummy file data');
+
+		$preview = new \OC\Preview($this->user, 'files/', 'test.txt', 1000, 1000);
+		$image = $preview->getPreview();
+
+		$this->assertEquals($image->width(), $maxX);
+		$this->assertEquals($image->height(), $maxY);
+	}
+
 	public function testIsPreviewDeleted() {
 
 		$sampleFile = '/'.$this->user.'/files/test.txt';
@@ -94,25 +113,6 @@ class Preview extends TestCase {
 		$preview->deleteAllPreviews();
 
 		$this->assertEquals($this->rootView->is_dir($thumbCacheFolder), false);
-	}
-
-	public function testIsMaxSizeWorking() {
-
-		$maxX = 250;
-		$maxY = 250;
-
-		\OC_Config::setValue('preview_max_x', $maxX);
-		\OC_Config::setValue('preview_max_y', $maxY);
-
-		$sampleFile = '/'.$this->user.'/files/test.txt';
-
-		$this->rootView->file_put_contents($sampleFile, 'dummy file data');
-
-		$preview = new \OC\Preview($this->user, 'files/', 'test.txt', 1000, 1000);
-		$image = $preview->getPreview();
-
-		$this->assertEquals($image->width(), $maxX);
-		$this->assertEquals($image->height(), $maxY);
 	}
 
 	public function txtBlacklist() {
