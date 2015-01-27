@@ -523,11 +523,47 @@ class Filesystem {
 	 * @param string $filename
 	 * @return bool
 	 */
-	static public function isFileBlacklisted($filename) {
-		$blacklist = \OC_Config::getValue('blacklisted_files', array('.htaccess'));
-		$filename = strtolower(basename($filename));
-		return (in_array($filename, $blacklist));
-	}
+    static public function isFileBlacklisted($filename) {
+
+        // get all groups for logged in user
+        $usergroups = \OC_Group::getUserGroups(\OC::$server->getUserSession()->getUser()->getUID());
+
+        // get global b&wlists
+        $blacklist = \OC_Config::getValue('blacklisted_files', array('.htaccess'));
+        $whitelist = \OC_Config::getValue('whitelisted_files', array());
+
+        // get b&wlists for all groups
+        $groups_blacklists = \OC_Config::getValue('groups_blacklisted_files', array());
+        $groups_whitelists = \OC_Config::getValue('groups_whitelisted_files', array());
+
+        // filter group-based b&wlists for user groups
+        $groups_blacklists = array_intersect_key($groups_blacklists, array_flip($usergroups));
+        $groups_whitelists = array_intersect_key($groups_whitelists, array_flip($usergroups));
+
+        // merge users group-based b&wlists with global one
+        foreach($groups_blacklists as $group_blacklist) {
+            $blacklist = array_merge($blacklist, $group_blacklist);
+        }
+        foreach($groups_whitelists as $group_whitelist) {
+            $whitelist = array_merge($whitelist, $group_whitelist);
+        }
+
+        $blacklist = array_unique($blacklist);
+        $whitelist = array_unique($whitelist);
+
+        $filename = trim(strtolower(basename($filename)));
+        foreach($blacklist as $black_pattern) {
+            if(preg_match(str_replace('\*', '.*', '/^' . preg_quote($black_pattern) . '$/i'), $filename)) {
+                foreach($whitelist as $white_pattern) {
+                    if(preg_match(str_replace('\*', '.*', '/^' . preg_quote($white_pattern) . '$/i'), $filename)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
+    }
 
 	/**
 	 * check if the directory should be ignored when scanning

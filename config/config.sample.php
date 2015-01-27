@@ -891,3 +891,35 @@ $CONFIG = array(
 'secret' => 'ICertainlyShouldHaveChangedTheDefaultSecret',
 
 );
+
+/**
+ * Blacklist a specific file or files and disallow the upload of files
+ * with this name. ``.htaccess`` is blocked by default.
+ * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
+ * Wildcards (*) are supported for file names.
+ */
+'blacklisted_files' => array(
+	'.htaccess', // default entry
+),
+
+'whitelisted_files' => array(
+),
+
+'groups_blacklisted_files' => array(
+	'admin' => array(
+	),
+),
+
+'groups_whitelisted_files' => array(
+    'admin' => array(
+    ),
+),
+
+/* these blacklisted groups won't be proposed for sharing */
+'share_blacklisted_groups' => array(
+    'dontsharewithme'
+),
+
+
+);
+

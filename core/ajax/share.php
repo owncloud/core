@@ -257,6 +257,9 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 					$usergroups = OC_Group::getUserGroups(OC_User::getUser());
 					$groups = array_intersect($groups, $usergroups);
 				}
+				// don't propose some blacklisted groups for sharing, e.g. if they are only used for rights management
+				$blacklist_groups = \OC_Config::getValue('share_blacklisted_groups', array());
+				$groups = array_diff($groups, $blacklist_groups);
 				$count = 0;
 				$users = array();
 				$limit = 0;
