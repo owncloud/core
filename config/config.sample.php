@@ -880,6 +880,11 @@ $CONFIG = array(
     ),
 ),
 
+/* these blacklisted groups won't be proposed for sharing */
+'share_blacklisted_groups' => array(
+    'dontsharewithme'
+),
+
 
 );
 
