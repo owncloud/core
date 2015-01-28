@@ -129,6 +129,11 @@ class OC_Util {
 			//trigger creation of user home and /files folder
 			\OC::$server->getUserFolder($user);
 
+			// install storage availability wrapper
+			\OC\Files\Filesystem::addStorageWrapper('oc_availability', function ($mountPoint, $storage) {
+				return new \OC\Files\Storage\Wrapper\Availability(['storage' => $storage]);
+			});
+
 			OC_Hook::emit('OC_Filesystem', 'setup', array('user' => $user, 'user_dir' => $userDir));
 		}
 		\OC::$server->getEventLogger()->end('setup_fs');
