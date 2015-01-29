@@ -508,6 +508,12 @@ $CONFIG = array(
 'cron_log' => true,
 
 /**
+ * Location of the lock file for cron executions can be specified here.
+ * Default is within the data dir
+ */
+'cron.lockfile.location' => '',
+
+/**
  * Enables log rotation and limits the total size of logfiles. The default is 0,
  * or no rotation. Specify a size in bytes, for example 104857600 (100 megabytes
  * = 100 * 1024 * 1024 bytes). A new logfile is created with a new name when the
