@@ -44,7 +44,7 @@ class Activity implements \OCP\Activity\IExtension {
 		$l = \OC::$server->getL10N('files_sharing', $languageCode);
 		return array(
 			self::TYPE_REMOTE_SHARE => $l->t('A file or folder was shared from <strong>another server</strong>'),
-			self::TYPE_PUBLIC_LINKS => $l->t('A public shared file or folder was <strong>downloaded</strong>'),
+			self::TYPE_PUBLIC_LINKS => $l->t('A publicly shared file or folder was <strong>downloaded</strong>'),
 		);
 	}
 
