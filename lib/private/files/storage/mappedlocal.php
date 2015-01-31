@@ -16,7 +16,7 @@ class MappedLocal extends \OC\Files\Storage\Common {
 
 	public function __construct($arguments) {
 		$this->datadir = $arguments['datadir'];
-		if (substr($this->datadir, -1) !== '/') {
+		if (substr($this->datadir, -1) !== '/' && substr($this->datadir, -1) !== '\\') {
 			$this->datadir .= '/';
 		}
 

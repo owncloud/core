@@ -7,10 +7,15 @@ namespace OC\Files;
  */
 class Mapper
 {
+	/** @var string Unchanged root path as has been given to the constructor */
 	private $unchangedPhysicalRoot;
+	/** @var string Cleaned root path without relative path segments */
+	private $resolvePhysicalRoot;
 
 	public function __construct($rootDir) {
 		$this->unchangedPhysicalRoot = $rootDir;
+		// Resolve ./, ../ and // so we can compare it to the resolved links we get alter on.
+		$this->resolvePhysicalRoot = $this->resolveRelativePath($rootDir);
 	}
 
 	/**
@@ -149,6 +154,9 @@ class Mapper
 				}
 				array_pop($pathArray);
 			} else {
+				if (substr($pathElement, -2) === '\\.') {
+					$pathElement = substr($pathElement, 0, -2);
+				}
 				array_push($pathArray, $pathElement);
 			}
 		}
@@ -166,17 +174,33 @@ class Mapper
 	 */
 	private function create($logicPath, $store) {
 		$logicPath = $this->resolveRelativePath($logicPath);
-		$index = 0;
 
-		// create the slugified path
-		$physicalPath = $this->slugifyPath($logicPath);
-
-		// detect duplicates
-		while ($this->resolvePhysicalPath($physicalPath) !== null) {
-			$physicalPath = $this->slugifyPath($logicPath, $index++);
+		if ($logicPath === $this->resolvePhysicalRoot ||
+			$logicPath . '/' === $this->resolvePhysicalRoot ||
+			$logicPath . '\\' === $this->resolvePhysicalRoot) {
+			// If the path is the physical root, we are done with the recursion
+			return $logicPath;
 		}
 
-		// insert the new path mapping if requested
+		$resolvedLogicPath = $this->resolveLogicPath($logicPath);
+		if ($resolvedLogicPath !== null) {
+			// If the path has a mapper entry, we are done with the recursion
+			return $resolvedLogicPath;
+		}
+
+		// Didn't find the path so we use the parentPath and append the slugified fileName
+		$physicalParentPath = $this->create(dirname($logicPath), $store);
+		$logicFileName = basename($logicPath);
+		$slugifiedLogicFileName = $this->slugify($logicFileName);
+
+		// Detect duplicate fileNames after they have been slugified
+		$index = 0;
+		$physicalPath = $physicalParentPath . '/' . $slugifiedLogicFileName;
+		while ($this->resolvePhysicalPath($physicalPath) !== null) {
+			$physicalPath = $physicalParentPath . '/' . $this->addIndexToFilename($slugifiedLogicFileName, $index++);
+		}
+
+		// Insert the new path mapping if requested
 		if ($store) {
 			$this->insert($logicPath, $physicalPath);
 		}
@@ -191,38 +215,24 @@ class Mapper
 	}
 
 	/**
-	 * @param integer $index
+	 * @param string $fileName
+	 * @param int $index
+	 * @return string
 	 */
-	public function slugifyPath($path, $index = null) {
-		$path = $this->stripRootFolder($path, $this->unchangedPhysicalRoot);
-
-		$pathElements = explode('/', $path);
-		$sluggedElements = array();
-
-		foreach ($pathElements as $pathElement) {
-			// remove empty elements
-			if (empty($pathElement)) {
-				continue;
-			}
-
-			$sluggedElements[] = self::slugify($pathElement);
+	private function addIndexToFilename($fileName, $index = 0) {
+		if (!$index) {
+			return $fileName;
 		}
 
-		// apply index to file name
-		if ($index !== null) {
-			$last = array_pop($sluggedElements);
-			
-			// if filename contains periods - add index number before last period
-			if (preg_match('~\.[^\.]+$~i', $last, $extension)) {
-				array_push($sluggedElements, substr($last, 0, -(strlen($extension[0]))) . '-' . $index . $extension[0]);
-			} else {
-				// if filename doesn't contain periods add index ofter the last char
-				array_push($sluggedElements, $last . '-' . $index);
-			}
+		// if filename contains periods - add index number before last period
+		if (preg_match('~\.[^\.]+$~i', $fileName, $extension)) {
+			$fileName = substr($fileName, 0, -(strlen($extension[0]))) . '-' . $index . $extension[0];
+		} else {
+			// if filename doesn't contain periods add index after the last char
+			$fileName .= '-' . $index;
 		}
 
-		$sluggedPath = $this->unchangedPhysicalRoot.implode('/', $sluggedElements);
-		return $this->resolveRelativePath($sluggedPath);
+		return $fileName;
 	}
 
 	/**
@@ -233,25 +243,26 @@ class Mapper
 	 */
 	private function slugify($text) {
 		$originalText = $text;
-		// replace non letter or digits or dots by -
+
+		// Replace non letter or digits or dots by -
 		$text = preg_replace('~[^\\pL\d\.]+~u', '-', $text);
 
-		// trim
+		// Trim trailing and leading dashes
 		$text = trim($text, '-');
 
-		// transliterate
+		// Transliterate (replaces utf8 with their ascii brothers, eg. öäü => oau)
 		if (function_exists('iconv')) {
 			$text = iconv('utf-8', 'us-ascii//TRANSLIT//IGNORE', $text);
 		}
 
-		// lowercase
+		// Lowercase the string
 		$text = strtolower($text);
 
-		// remove unwanted characters
+		// Remove unwanted characters (everything apart from a-z 0-9 - (dash) and . (dot) )
 		$text = preg_replace('~[^-\w\.]+~', '', $text);
-		
-		// trim ending dots (for security reasons and win compatibility)
-		$text = preg_replace('~\.+$~', '', $text);
+
+		// Trim ending dots (for security reasons and win compatibility)
+		$text = rtrim($text, '.');
 
 		if (empty($text)) {
 			/**

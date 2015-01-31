@@ -34,47 +34,127 @@ class Mapper extends \Test\TestCase {
 		$this->mapper = new \OC\Files\Mapper('D:/');
 	}
 
-	public function slugifyPathData() {
+	public function slugifyData() {
 		return array(
-			// with extension
-			array('D:/text.txt', 'D:/text.txt'),
-			array('D:/text-2.txt', 'D:/text.txt', 2),
-			array('D:/a/b/text.txt', 'D:/a/b/text.txt'),
-
-			// without extension
-			array('D:/text', 'D:/text'),
-			array('D:/text-2', 'D:/text', 2),
-			array('D:/a/b/text', 'D:/a/b/text'),
-
-			// with double dot
-			array('D:/text.text.txt', 'D:/text.text.txt'),
-			array('D:/text.text-2.txt', 'D:/text.text.txt', 2),
-			array('D:/a/b/text.text.txt', 'D:/a/b/text.text.txt'),
-
-			// foldername and filename with periods
-			array('D:/folder.name.with.periods', 'D:/folder.name.with.periods'),
-			array('D:/folder.name.with.periods/test-2.txt', 'D:/folder.name.with.periods/test.txt', 2),
-			array('D:/folder.name.with.periods/test.txt', 'D:/folder.name.with.periods/test.txt'),
-
-			// foldername and filename with periods and spaces
-			array('D:/folder.name.with.peri-ods', 'D:/folder.name.with.peri ods'),
-			array('D:/folder.name.with.peri-ods/te-st-2.t-x-t', 'D:/folder.name.with.peri ods/te st.t x t', 2),
-			array('D:/folder.name.with.peri-ods/te-st.t-x-t', 'D:/folder.name.with.peri ods/te st.t x t'),
-
-			/**
-			 * If a foldername is empty, after we stripped out some unicode and other characters,
-			 * the resulting name must be reproducable otherwise uploading a file into that folder
-			 * will not write the file into the same folder.
-			 */
-			array('D:/' . md5('ありがとう'), 'D:/ありがとう'),
-			array('D:/' . md5('ありがとう') . '/issue6722.txt', 'D:/ありがとう/issue6722.txt'),
+			array('text.txt', 'text.txt'),
+			array('folder.name.with.peri ods', 'folder.name.with.peri-ods'),
+			array('te st.t x t', 'te-st.t-x-t'),
+			array('ありがとう', md5('ありがとう')),
+			array('text.txt.', 'text.txt'),
+			array('.text.txt', '.text.txt'),
+			array('text.txt..', 'text.txt'),
+			array('text.txt . .', 'text.txt-.-'),
 		);
 	}
 
 	/**
-	 * @dataProvider slugifyPathData
+	 * @dataProvider slugifyData
 	 */
-	public function testSlugifyPath($slug, $path, $index = null) {
-		$this->assertEquals($slug, $this->mapper->slugifyPath($path, $index));
+	public function testSlugify($fileName, $expected) {
+		$this->assertEquals($expected, \Test_Helper::invokePrivate($this->mapper, 'slugify', array($fileName)));
+	}
+
+	public function addIndexToFilenameData() {
+		return array(
+			// with extension
+			array('text.txt', null, 'text.txt'),
+			array('text.txt', 0, 'text.txt'),
+			array('text.txt', 2, 'text-2.txt'),
+
+			// without extension
+			array('text', null, 'text'),
+			array('text', 0, 'text'),
+			array('text', 2, 'text-2'),
+
+			// with multiple dots
+			array('text.text.txt', null, 'text.text.txt'),
+			array('text.text.txt', 0, 'text.text.txt'),
+			array('text.text.txt', 2, 'text.text-2.txt'),
+			array('text.text.text.txt', 2, 'text.text.text-2.txt'),
+		);
+	}
+
+	/**
+	 * @dataProvider addIndexToFilenameData
+	 */
+	public function testAddIndexToFilename($fileName, $index, $expected) {
+		$this->assertEquals($expected, \Test_Helper::invokePrivate($this->mapper, 'addIndexToFilename', array($fileName, $index)));
+	}
+
+	public function logicToPhysicalData() {
+		return array(
+			array(
+				array(
+					array('text.txt', 'text.txt'),
+				), 'Plain ASCII file, no modification required',
+			),
+			array(
+				array(
+					array('text.txt', 'text.txt'),
+				), 'Plain ASCII file, no modification required',
+			),
+			array(
+				array(
+					array(' text.txt ', 'text.txt'),
+				), 'Remove leading and trailing spaces from file names',
+			),
+			array(
+				array(
+					array('te xt .txt', 'te-xt-.txt'),
+				), 'Replace spaces in file names with dashes',
+			),
+			array(
+				array(
+					array('teöxtä.txt', 'teoxta.txt'),
+				), 'Replace simple non-ascii characters with ascii replacement',
+			),
+			array(
+				array(
+					array('te xt .txt', 'te-xt-.txt'),
+					array('te€xt€.txt', 'te-xt--1.txt'),
+					array('te xt .txt', 'te-xt-.txt'),
+				), 'Hash collision and reusing the first hash',
+			),
+			array(
+				array(
+					array('fol@der', 'fol-der'),
+					array('fol der/test1.txt', 'fol-der-1/test1.txt'),
+					array('fol€der/test1.txt', 'fol-der-2/test1.txt'),
+					array('fol der/test2.txt', 'fol-der-1/test2.txt'),
+					array('fol€der/test2.txt', 'fol-der-2/test2.txt'),
+					array('fol@der/test1.txt', 'fol-der/test1.txt'),
+					array('fol@der-1', 'fol-der-1-1'),
+					array('fol€der', 'fol-der-2'),
+				), 'Hash collision on folder names',
+			),
+		);
+	}
+
+	protected $testPath = 'D:/issue/11103/';
+
+	/**
+	 * @dataProvider logicToPhysicalData
+	 */
+	public function testLogicToPhysical($paths, $explain) {
+		$mapper = new \OC\Files\Mapper($this->testPath);
+		$mapper->removePath($this->testPath, false, true);
+		$this->assertEmptyMapPath($this->testPath);
+
+		foreach ($paths as $pathData) {
+			list($logical, $physical) = $pathData;
+			$this->assertEquals($this->testPath . $physical, $mapper->logicToPhysical($this->testPath . $logical, true), $explain);
+		}
+	}
+
+	protected function assertEmptyMapPath($path) {
+		$query = \OC_DB::prepare('SELECT `physic_path` FROM `*PREFIX*file_map` WHERE `physic_path` LIKE ?');
+		$result = $query->execute(array($path . '%'));
+
+		$paths = array();
+		while ($row = $result->fetchRow()) {
+			$paths[] = $row['physic_path'];
+		}
+
+		$this->assertEmpty($paths, 'The map table should not contain entries for physical path: ' . $path);
 	}
 }
