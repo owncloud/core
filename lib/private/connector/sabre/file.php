@@ -86,7 +86,15 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\
 		}
 
 		try {
-			$putOkay = $this->fileView->file_put_contents($partFilePath, $data);
+			$metaData = [];
+			// allow sync clients to send the mtime along in a header
+			$request = \OC::$server->getRequest();
+			if (isset($request->server['HTTP_X_OC_MTIME'])) {
+				$metaData['mtime'] = $request->server['HTTP_X_OC_MTIME'];
+				header('X-OC-MTime: accepted');
+			}
+
+			$putOkay = $this->fileView->file_put_contents($partFilePath, $data, $metaData);
 			if ($putOkay === false) {
 				\OC_Log::write('webdav', '\OC\Files\Filesystem::file_put_contents() failed', \OC_Log::ERROR);
 				$this->fileView->unlink($partFilePath);
@@ -148,13 +156,6 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\
 				}
 			}
 
-			// allow sync clients to send the mtime along in a header
-			$request = \OC::$server->getRequest();
-			if (isset($request->server['HTTP_X_OC_MTIME'])) {
-				if($this->fileView->touch($this->path, $request->server['HTTP_X_OC_MTIME'])) {
-					header('X-OC-MTime: accepted');
-				}
-			}
 			$this->refreshInfo();
 		} catch (\OCP\Files\StorageNotAvailableException $e) {
 			throw new \Sabre\DAV\Exception\ServiceUnavailable("Failed to check file size: ".$e->getMessage());
