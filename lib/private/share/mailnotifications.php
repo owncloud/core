@@ -61,6 +61,7 @@ class MailNotifications {
 			$this->from = \OCP\Config::getUserValue($this->senderId, 'settings', 'email', $this->from);
 			$this->senderDisplayName = \OCP\User::getDisplayName($this->senderId);
 		} else {
+			$this->from = \OCP\Config::getUserValue(\OCP\User::getUser(), 'settings', 'email', $this->from);
 			$this->senderDisplayName = \OCP\User::getDisplayName();
 		}
 	}
