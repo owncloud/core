@@ -28,7 +28,7 @@ class Capabilities {
 			'bigfilechunking' => true,
 		);
 
-		if ($this->config->getSystemValue('enable_previews', true) == true) {
+		if ($this->config->getSystemValue('enable_previews', true) === true) {
 			$res["thumbnails"] = true;
 		}
 

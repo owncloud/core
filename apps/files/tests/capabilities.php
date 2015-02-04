@@ -6,12 +6,12 @@
   * See the COPYING-README file.
   */
 
-use OCA\Files;
+use OCA\Files\Tests;
 
 /**
  * Class Test_Files_Capabilties
  */
-class Test_Files_Capabilities extends \PHPUnit_Framework_TestCase {
+class Test_Files_Capabilities extends \Test\TestCase {
 
 	/**
 	 * Test for the general part in each return statement and assert
@@ -38,19 +38,18 @@ class Test_Files_Capabilities extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @covers OCA\Files\Capabilities::getCaps
 	 */
-	public function testCapabilities() {
-		/*
-		 * Test for thumbnails
-		 */
+	public function test_thumbnails() {
 		$map = array(
 			array('enable_previews', true, true)
 		);
 		$result = $this->getResults($map);
 		$this->assertArrayHasKey('thumbnails', $result);
+	}
 
-		/*
-		 * Test for no thumbnails
-		 */
+	/**
+	 * @covers OCA\Files\Capabilities::getCaps
+	 */
+	public function test_no_thumbnails() {
 		$map = array(
 			array('enable_previews', true, false)
 		);
