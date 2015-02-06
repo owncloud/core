@@ -125,7 +125,7 @@ class OC_Connector_Sabre_FilesPlugin extends \Sabre\DAV\ServerPlugin
 			}
 
 			// file chunking ongoing -> bye bye
-			if ($node instanceof OC_Connector_Sabre_File && !$node->$isChunkingComplete) {
+			if ($node instanceof OC_Connector_Sabre_File && !$node->isChunkingComplete) {
 				return;
 			}
 			$eTag = $node->getETag();
