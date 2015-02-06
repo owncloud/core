@@ -23,6 +23,9 @@
 
 class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\DAV\IFile {
 
+	/** @var bool */
+	public $isChunkingComplete = true;
+
 	/**
 	 * Updates the data
 	 *
@@ -255,6 +258,9 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\
 	 */
 	private function createFileChunked($data)
 	{
+		// mark chunking complete
+		$this->isChunkingComplete = false;
+
 		list($path, $name) = \Sabre\DAV\URLUtil::splitPath($this->path);
 
 		$info = OC_FileChunking::decodeName($name);
@@ -311,6 +317,8 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\
 					}
 				}
 
+				// mark chunking complete
+				$this->isChunkingComplete = true;
 				$info = $this->fileView->getFileInfo($targetPath);
 				return $info->getEtag();
 			} catch (\OCP\Files\StorageNotAvailableException $e) {
