@@ -11,18 +11,28 @@ namespace OCA\Files;
 
 class Capabilities {
 
+	/** @var \OCP\IConfig */
 	private $config;
 
-	public function __construct($config) {
+	/**
+	 * @param \OCP\IConfig $config
+	 */
+	public function __construct(\OCP\IConfig $config) {
 		$this->config = $config;
 	}
 
+	/**
+	 * @return \OC_OCS_Result
+	 */
 	public static function getCapabilities() {
 		$config = \OC::$server->getConfig();
 		$cap = new Capabilities($config);
 		return $cap->getCaps();
 	}
 
+	/**
+	 * @return \OC-OCS_Result
+	 */
 	public function getCaps() {
 		$res = array(
 			'bigfilechunking' => true,
