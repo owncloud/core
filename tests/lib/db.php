@@ -386,4 +386,15 @@ class Test_DB extends \Test\TestCase {
 		$result = $query->execute(array('%ba%'));
 		$this->assertCount(1, $result->fetchAll());
 	}
+
+	public function testMD5() {
+		$table = "*PREFIX*{$this->table2}";
+
+		$query = OC_DB::prepare("INSERT INTO `$table` (`fullname`, `uri`, `carddata`) VALUES (?, ?, ?)");
+		$query->execute(array('foobar', 'foo', 'bar'));
+
+		$query = OC_DB::prepare("SELECT MD5(`fullname`) FROM `$table` WHERE `fullname` LIKE ?");
+		$result = $query->execute(array('foobar'));
+		$this->assertEquals(md5('foobar'), $result->fetchOne());
+	}
 }
