@@ -33,6 +33,7 @@ class AdapterSqlite extends Adapter {
 		$statement = str_replace( '`', '"', $statement );
 		$statement = str_ireplace( 'NOW()', 'datetime(\'now\')', $statement );
 		$statement = str_ireplace( 'UNIX_TIMESTAMP()', 'strftime(\'%s\',\'now\')', $statement );
+		$statement = preg_replace('/CONCAT\(([^)]+?), ?([^)]+?)\)/i', '$1 || $2', $statement);
 		return $statement;
 	}
 
