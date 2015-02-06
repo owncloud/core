@@ -18,9 +18,9 @@ class Capabilities {
 	}
 
 	public static function getCapabilities() {
-        $config = \OC::$server->getConfig();
-	    $cap = new Capabilities($config);
-	    return $cap->getCaps();
+		$config = \OC::$server->getConfig();
+		$cap = new Capabilities($config);
+		return $cap->getCaps();
 	}
 
 	public function getCaps() {
