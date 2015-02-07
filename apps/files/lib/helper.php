@@ -16,8 +16,10 @@ use OCP\Files\FileInfo;
 class Helper
 {
 	public static function buildFileStorageStatistics($dir) {
+		$info = \OC\Files\Filesystem::getFileInfo($dir, false);
+
 		// information about storage capacities
-		$storageInfo = \OC_Helper::getStorageInfo($dir);
+		$storageInfo = \OC_Helper::getStorageInfo($dir, $info);
 
 		$l = new \OC_L10N('files');
 		$maxUploadFileSize = \OCP\Util::maxUploadFilesize($dir, $storageInfo['free']);
@@ -26,8 +28,9 @@ class Helper
 
 		return array('uploadMaxFilesize' => $maxUploadFileSize,
 					 'maxHumanFilesize'  => $maxHumanFileSize,
-					 'freeSpace' => $storageInfo['free'],
-					 'usedSpacePercent'  => (int)$storageInfo['relative']);
+					 'freeSpace'         => $storageInfo['free'],
+					 'usedSpacePercent'  => (int)$storageInfo['relative'],
+					 'permissions'       => $info->getPermissions());
 	}
 
 	/**

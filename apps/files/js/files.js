@@ -63,7 +63,10 @@
 				$('#free_space').val(response.data.freeSpace);
 				$('#upload.button').attr('original-title', response.data.maxHumanFilesize);
 				$('#usedSpacePercent').val(response.data.usedSpacePercent);
-				Files.displayStorageWarnings();
+				if (response.data.permissions & OC.PERMISSION_CREATE) {
+					console.log(response.data);
+					Files.displayStorageWarnings();
+				}
 			}
 			if (response[0] === undefined) {
 				return;
@@ -72,7 +75,9 @@
 				$('#max_upload').val(response[0].uploadMaxFilesize);
 				$('#upload.button').attr('original-title', response[0].maxHumanFilesize);
 				$('#usedSpacePercent').val(response[0].usedSpacePercent);
-				Files.displayStorageWarnings();
+				if (response.data.permissions & OC.PERMISSION_CREATE) {
+					Files.displayStorageWarnings();
+				}
 			}
 
 		},
