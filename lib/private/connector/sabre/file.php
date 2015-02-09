@@ -302,6 +302,15 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\
 					$partFile = $path . '/' . $info['name'] . '.ocTransferId' . $info['transferid'] . '.part';
 					$chunk_handler->file_assemble($partFile);
 
+					// allow sync clients to send the mtime along in a header
+					$mtime = OC_Request::hasModificationTime();
+					if ($mtime !== false) {
+						// touch early, the mtime will be kept after rename
+						if($this->fileView->touch($partFile, $mtime)) {
+							header('X-OC-MTime: accepted');
+						}
+					}
+
 					// here is the final atomic rename
 					$renameOkay = $this->fileView->rename($partFile, $targetPath);
 					$fileExists = $this->fileView->file_exists($targetPath);
@@ -318,13 +327,6 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\
 					$chunk_handler->file_assemble($targetPath);
 				}
 
-				// allow sync clients to send the mtime along in a header
-				$mtime = OC_Request::hasModificationTime();
-				if ($mtime !== false) {
-					if($this->fileView->touch($targetPath, $mtime)) {
-						header('X-OC-MTime: accepted');
-					}
-				}
 
 				$info = $this->fileView->getFileInfo($targetPath);
 				return $info->getEtag();
