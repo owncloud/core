@@ -42,8 +42,10 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 
 	public static function tearDownAfterClass() {
 		$dataDir = \OC::$server->getConfig()->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data-autotest');
+		$dbType = \OC::$server->getConfig()->getSystemValue('dbtype', 'sqlite');
+		$requireDoubleBackslashes = in_array($dbType, array('mysql', 'pgsql'));
 
-		self::tearDownAfterClassCleanFileMapper($dataDir);
+		self::tearDownAfterClassCleanFileMapper($dataDir, $requireDoubleBackslashes);
 		self::tearDownAfterClassCleanStorages();
 		self::tearDownAfterClassCleanFileCache();
 		self::tearDownAfterClassCleanStrayDataFiles($dataDir);
@@ -56,10 +58,11 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 	/**
 	 * Remove all entries from the files map table
 	 * @param string $dataDir
+	 * @param bool $requireDoubleBackslashes
 	 */
-	static protected function tearDownAfterClassCleanFileMapper($dataDir) {
+	static protected function tearDownAfterClassCleanFileMapper($dataDir, $requireDoubleBackslashes) {
 		if (\OC_Util::runningOnWindows()) {
-			$mapper = new \OC\Files\Mapper($dataDir);
+			$mapper = new \OC\Files\Mapper($dataDir, $requireDoubleBackslashes);
 			$mapper->removePath($dataDir, true, true);
 		}
 	}

@@ -5,12 +5,22 @@ namespace OC\Files;
 /**
  * class Mapper is responsible to translate logical paths to physical paths and reverse
  */
-class Mapper
-{
+class Mapper {
+	/** @var string */
 	private $unchangedPhysicalRoot;
 
-	public function __construct($rootDir) {
+	/** @var bool */
+	private $requireDoubleBackslashes;
+
+	/**
+	 * Constructor
+	 *
+	 * @param string $rootDir
+	 * @param bool $requireDoubleBackslashes
+	 */
+	public function __construct($rootDir, $requireDoubleBackslashes) {
 		$this->unchangedPhysicalRoot = $rootDir;
+		$this->requireDoubleBackslashes = $requireDoubleBackslashes;
 	}
 
 	/**
@@ -43,19 +53,43 @@ class Mapper
 
 	/**
 	 * @param string $path
+	 * @return string
+	 */
+	protected function preparePathForLikeQuery($path) {
+		return ($this->requireDoubleBackslashes) ? str_replace('\\', '\\\\', $path) : $path;
+	}
+
+	/**
+	 * @param string $path
 	 * @param bool $isLogicPath indicates if $path is logical or physical
 	 * @param boolean $recursive
 	 * @return void
 	 */
 	public function removePath($path, $isLogicPath, $recursive) {
-		if ($recursive) {
-			$path=$path.'%';
+		$fieldName = ($isLogicPath) ? 'logic_path' : 'physic_path';
+
+		// The mapper only has paths without trailing slashes, so we remove it here
+		if (substr($path, -1) === '/' || substr($path, -1) === '\\') {
+			$path = substr($path, 0, -1);
 		}
 
-		if ($isLogicPath) {
-			\OC_DB::executeAudited('DELETE FROM `*PREFIX*file_map` WHERE `logic_path` LIKE ?', array($path));
-		} else {
-			\OC_DB::executeAudited('DELETE FROM `*PREFIX*file_map` WHERE `physic_path` LIKE ?', array($path));
+		if ($recursive) {
+			// Remove paths that start with the path, followed by a /
+			// Forcing the slash is important, see the following comment:
+			// https://github.com/owncloud/core/pull/11583#issuecomment-61470073
+			\OC_DB::executeAudited(
+				'DELETE FROM `*PREFIX*file_map` WHERE `' . $fieldName . '` LIKE ?',
+				array($this->preparePathForLikeQuery($path . '/%'))
+			);
+		}
+
+		\OC_DB::executeAudited('DELETE FROM `*PREFIX*file_map` WHERE `' . $fieldName . '` = ?', array($path));
+
+		$cleanRelativePath = $this->resolveRelativePath($path);
+		if ($path !== $cleanRelativePath) {
+			// In case we somehow ended up deleting a path `foo/../bar`
+			// we also need to make sure to delete the path `bar`
+			$this->removePath($cleanRelativePath, $isLogicPath, $recursive);
 		}
 	}
 
