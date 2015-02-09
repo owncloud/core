@@ -21,20 +21,43 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace OCA\Files_Sharing;
 
-class Hooks {
 
-	public static function deleteUser($params) {
-		$manager = new External\Manager(
-			\OC::$server->getDatabaseConnection(),
-			\OC\Files\Filesystem::getMountManager(),
-			\OC\Files\Filesystem::getLoader(),
-			\OC::$server->getHTTPHelper(),
-			\OC::$server->getShareRequestQueue(),
-			$params['uid']);
+namespace OCP\Share;
 
-		$manager->removeUserShares($params['uid']);
-	}
+interface IRequestQueue {
 
+	/**
+	 * add post request to message queue
+	 *
+	 * @param string $url
+	 * @param array $data
+	 * @param string $uid
+	 * @return boolean
+	 */
+	public function addToRequestQueue($url, array $data, $uid);
+
+	/**
+	 * update request in mq, either increase the number of 'tries' or remove it
+	 * if the max. number of 'tries' is reached
+	 *
+	 * @param array $request
+	 */
+	public function updateRequest(array $request);
+
+	/**
+	 * remove request from queue
+	 *
+	 * @param array $request
+	 */
+	public function removeRequest(array $request);
+
+	/**
+	 * select request we want to execute
+	 *
+	 * @param int $limit
+	 * @return array
+	 */
+	public function getRequests($limit = 0);
 }
+

@@ -39,19 +39,27 @@ class Manager {
 	private $httpHelper;
 
 	/**
+	 * @var \OCP\Share\IRequestQueue
+	 */
+	private $requestQueue;
+
+	/**
 	 * @param \OCP\IDBConnection $connection
 	 * @param \OC\Files\Mount\Manager $mountManager
 	 * @param \OC\Files\Storage\StorageFactory $storageLoader
 	 * @param \OC\HTTPHelper $httpHelper
+	 * @param \OCP\Share\IRequestQueue
 	 * @param string $uid
 	 */
-	public function __construct(\OCP\IDBConnection $connection, \OC\Files\Mount\Manager $mountManager,
-								\OC\Files\Storage\StorageFactory $storageLoader, \OC\HTTPHelper $httpHelper, $uid) {
+	public function __construct(\OCP\IDBConnection $connection, \OC\Files\Mount\Manager $mountManager, 
+								\OC\Files\Storage\StorageFactory $storageLoader, \OC\HTTPHelper $httpHelper,
+								\OCP\Share\IRequestQueue $requestQueue, $uid) {
 		$this->connection = $connection;
 		$this->mountManager = $mountManager;
 		$this->storageLoader = $storageLoader;
 		$this->httpHelper = $httpHelper;
 		$this->uid = $uid;
+		$this->requestQueue = $requestQueue;
 	}
 
 	/**
@@ -179,13 +187,21 @@ class Manager {
 	 */
 	private function sendFeedbackToRemote($remote, $token, $id, $feedback) {
 
-		$url = $remote . \OCP\Share::BASE_PATH_TO_SHARE_API . '/' . $id . '/' . $feedback . '?format=' . \OCP\Share::RESPONSE_FORMAT;
+		$url = rtrim($remote, '/') . \OCP\Share::BASE_PATH_TO_SHARE_API . '/' . $id . '/' . $feedback . '?format=' . \OCP\Share::RESPONSE_FORMAT;
 		$fields = array('token' => $token);
 
 		$result = $this->httpHelper->post($url, $fields);
 		$status = json_decode($result['result'], true);
 
-		return ($result['success'] && $status['ocs']['meta']['statuscode'] === 100);
+		if ($result['success']) {
+			if ($status['ocs']['meta']['statuscode'] === 100) {
+				return true;
+			}
+		} else {
+			$this->requestQueue->addToRequestQueue($url, $fields, $this->uid);
+		}
+
+		return false;
 	}
 
 	/**
@@ -199,6 +215,7 @@ class Manager {
 				\OC\Files\Filesystem::getMountManager(),
 				\OC\Files\Filesystem::getLoader(),
 				\OC::$server->getHTTPHelper(),
+				\OC::$server->getShareRequestQueue(),
 				$params['user']
 		);
 

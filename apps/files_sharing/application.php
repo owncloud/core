@@ -76,6 +76,7 @@ class Application extends App {
 					\OC\Files\Filesystem::getMountManager(),
 					\OC\Files\Filesystem::getLoader(),
 					$server->getHTTPHelper(),
+					\OC::$server->getShareRequestQueue(),
 					$uid
 			);
 		});

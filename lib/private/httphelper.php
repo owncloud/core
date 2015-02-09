@@ -201,7 +201,7 @@ class HTTPHelper {
 	 *
 	 * @param string $url
 	 * @param array $fields data send by the request
-	 * @return bool
+	 * @return array
 	 */
 	public function post($url, array $fields) {
 
