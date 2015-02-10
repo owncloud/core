@@ -40,8 +40,9 @@ class Updater {
 	 *
 	 * @param string $path
 	 * @param int $time
+	 * @param int $fileId file id to use
 	 */
-	public function update($path, $time = null) {
+	public function update($path, $time = null, $fileId = null) {
 		/**
 		 * @var \OC\Files\Storage\Storage $storage
 		 * @var string $internalPath
@@ -51,7 +52,11 @@ class Updater {
 			$this->propagator->addChange($path);
 			$cache = $storage->getCache($internalPath);
 			$scanner = $storage->getScanner($internalPath);
-			$data = $scanner->scan($internalPath, Scanner::SCAN_SHALLOW);
+			if ($fileId !== null) {
+				$data = $scanner->scanFile($internalPath, 0, $fileId);
+			} else {
+				$data = $scanner->scan($internalPath, Scanner::SCAN_SHALLOW);
+			}
 			$this->correctParentStorageMtime($storage, $internalPath);
 			$cache->correctFolderSize($internalPath, $data);
 			$this->propagator->propagateChanges($time);
@@ -120,8 +125,13 @@ class Updater {
 				$this->propagator->addChange($source);
 				$this->propagator->addChange($target);
 			} else {
+				$cache1 = $sourceStorage->getCache($sourceInternalPath);
+				$oldId = $cache1->getId($sourceInternalPath);
 				$this->remove($source);
-				$this->update($target);
+				// preserve the old file id
+				// this could either insert or replace an existing entry
+				// for that file
+				$this->update($target, null, $oldId);
 			}
 			$this->propagator->propagateChanges();
 		}
