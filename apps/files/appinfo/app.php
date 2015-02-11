@@ -31,7 +31,7 @@
 	return [
 		'id' => 'files_index',
 		'order' => 0,
-		'href' => \OCP\Util::linkTo('files', 'index.php'),
+		'href' => \OC::$server->getURLGenerator()->linkToRoute('files_index'),
 		'icon' => \OCP\Util::imagePath('core', 'places/files.svg'),
 		'name' => $l->t('Files'),
 	];

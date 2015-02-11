@@ -240,6 +240,18 @@ $CONFIG = array(
 	)
 ),
 
+/**
+ * In combination with utilities like ``mod_rewrite`` ownCloud is able to work
+ * with clean URLs. This means that the ``index.php`` gets removed from the URL
+ * visible to the user and the URL is therefore shorter and by some people
+ * considered cleaner.
+ *
+ * Setting this switch to ``true`` requires to have the the web server properly
+ * configured as well, ownCloud comes with an example configuration for Apache in
+ * combination with ``mod_rewrite`` those rules can be seen and enabled in the
+ * ``.htaccess`` file in the ownCloud root folder.
+ */
+'front_controller_active' => false,
 
 /**
  * Mail Parameters

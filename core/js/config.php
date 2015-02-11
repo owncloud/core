@@ -100,6 +100,7 @@ $array = array(
 			'version'			=> implode('.', OC_Util::getVersion()),
 			'versionstring'		=> OC_Util::getVersionString(),
 			'enable_avatars'	=> \OC::$server->getConfig()->getSystemValue('enable_avatars', true),
+			'modRewriteWorking'	=> \OC::$server->getConfig()->getSystemValue('front_controller_active', false),
 		)
 	),
 	"oc_appconfig" => json_encode(
