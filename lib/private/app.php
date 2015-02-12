@@ -200,6 +200,7 @@ class OC_App {
 	 * @param bool $all whether to return apps for all users, not only the
 	 * currently logged in one
 	 * @return array
+	 * @deprecated use methods from \OC\App\AppManager instead
 	 */
 	public static function getEnabledApps($forceRefresh = false, $all = false) {
 		if (!OC_Config::getValue('installed', false)) {

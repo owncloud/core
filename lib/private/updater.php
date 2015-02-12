@@ -36,17 +36,29 @@ class Updater extends BasicEmitter {
 	 */
 	private $config;
 
+	/** @var \OC\App\AppManager */
+	private $appManager;
+
 	private $simulateStepEnabled;
 
 	private $updateStepEnabled;
 
 	/**
+	 * @param HTTPHelper $httpHelper
+	 * @param \OCP\IAppConfig $config
+	 * @param App\AppManager $appManager
 	 * @param \OC\Log $log
 	 */
-	public function __construct($httpHelper, $config,  $log = null) {
+	public function __construct(
+		HTTPHelper $httpHelper,
+		\OCP\IAppConfig $config,
+		App\AppManager $appManager,
+		Log $log = null
+	) {
 		$this->httpHelper = $httpHelper;
 		$this->log = $log;
 		$this->config = $config;
+		$this->appManager = $appManager;
 		$this->simulateStepEnabled = true;
 		$this->updateStepEnabled = true;
 	}
@@ -291,6 +303,34 @@ class Updater extends BasicEmitter {
 		include \OC_App::getAppPath($appId) . '/appinfo/preupdate.php';
 	}
 
+	/**
+	 * returns apps sorted by a selection of types: authentication, filesystem,
+	 * logging and the rest being categorized as others
+	 *
+	 * @return array The return array looks like this (in this order):
+	 *
+	 * The return array looks like this (in this order):
+	 * array(
+	 * 'authentication' = string[],
+	 * 'filesystem'     = string[],
+	 * 'logging'        = string[],
+	 * 'other'          = string[]
+	 * )
+	 * The type arrays always contain the AppID.
+	 */
+	public function sortAppsByType() {
+		$priorityTypes = array('authentication', 'filesystem', 'logging');
+		$pseudoOtherType = 'other';
+		$stacks = [];
+
+		foreach ($priorityTypes as $type) {
+			$stacks[$type] = $this->appManager->getEnabledAppsOfType($type);
+		}
+		$stacks[$pseudoOtherType] = $this->appManager->getEnabledAppsOfNoPriority();
+
+		return $stacks;
+	}
+
 
 	/**
 	 * upgrades all apps within a major ownCloud upgrade. Also loads "priority"
@@ -299,27 +339,9 @@ class Updater extends BasicEmitter {
 	 * @throws NeedsUpdateException
 	 */
 	protected function doAppUpgrade() {
-		$apps = \OC_App::getEnabledApps();
-		$priorityTypes = array('authentication', 'filesystem', 'logging');
+		$stacks = $this->sortAppsByType();
 		$pseudoOtherType = 'other';
-		$stacks = array($pseudoOtherType => array());
-
-		foreach ($apps as $appId) {
-			$priorityType = false;
-			foreach ($priorityTypes as $type) {
-				if(!isset($stacks[$type])) {
-					$stacks[$type] = array();
-				}
-				if (\OC_App::isType($appId, $type)) {
-					$stacks[$type][] = $appId;
-					$priorityType = true;
-					break;
-				}
-			}
-			if (!$priorityType) {
-				$stacks[$pseudoOtherType][] = $appId;
-			}
-		}
+		
 		foreach ($stacks as $type => $stack) {
 			foreach ($stack as $appId) {
 				if (\OC_App::shouldUpgrade($appId)) {

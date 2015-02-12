@@ -184,6 +184,9 @@ class Server extends SimpleContainer implements IServerContainer {
 			$config = $c->getConfig();
 			return new \OC\URLGenerator($config);
 		});
+		$this->registerService('AppCacheFactory', function ($c) {
+			return new \OC\App\AppCacheFactory();
+		});
 		$this->registerService('AppHelper', function ($c) {
 			return new \OC\AppHelper();
 		});
@@ -274,7 +277,8 @@ class Server extends SimpleContainer implements IServerContainer {
 			$userSession = $c->getUserSession();
 			$appConfig = $c->getAppConfig();
 			$groupManager = $c->getGroupManager();
-			return new \OC\App\AppManager($userSession, $appConfig, $groupManager);
+			$appCacheFactory = $c->getAppCacheFactory();
+			return new \OC\App\AppManager($userSession, $appConfig, $groupManager, $appCacheFactory);
 		});
 		$this->registerService('DateTimeZone', function(Server $c) {
 			return new DateTimeZone(
@@ -402,6 +406,10 @@ class Server extends SimpleContainer implements IServerContainer {
 		}
 
 		return $folder;
+	}
+
+	function getAppCacheFactory() {
+		return $this->query('AppCacheFactory');
 	}
 
 	/**
