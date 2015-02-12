@@ -8,6 +8,9 @@ $application = new Application();
 $application->registerRoutes($this, [
 	'resources' => [
 		'ExternalShares' => ['url' => '/api/externalShares'],
+	],
+	'routes' => [
+		['name' => 'settings#personal', 'url' => '/settings', 'verb' => 'POST'],
 	]
 ]);
 
