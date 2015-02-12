@@ -14,7 +14,7 @@ use OC\Files\Mount\MoveableMount;
 use OCP\Files\StorageInvalidException;
 use OCP\Files\StorageNotAvailableException;
 
-class ObjectTree extends \Sabre\DAV\ObjectTree {
+class ObjectTree extends \Sabre\DAV\Tree {
 
 	/**
 	 * @var \OC\Files\View
@@ -101,9 +101,9 @@ class ObjectTree extends \Sabre\DAV\ObjectTree {
 		}
 
 		if ($info->getType() === 'dir') {
-			$node = new \OC_Connector_Sabre_Directory($this->fileView, $info);
+			$node = new \OC\Connector\Sabre\Directory($this->fileView, $info);
 		} else {
-			$node = new \OC_Connector_Sabre_File($this->fileView, $info);
+			$node = new \OC\Connector\Sabre\File($this->fileView, $info);
 		}
 
 		$this->cache[$path] = $node;
@@ -130,8 +130,8 @@ class ObjectTree extends \Sabre\DAV\ObjectTree {
 		if ($sourceNode instanceof \Sabre\DAV\ICollection and $this->nodeExists($destinationPath)) {
 			throw new \Sabre\DAV\Exception\Forbidden('Could not copy directory ' . $sourceNode . ', target exists');
 		}
-		list($sourceDir,) = \Sabre\DAV\URLUtil::splitPath($sourcePath);
-		list($destinationDir,) = \Sabre\DAV\URLUtil::splitPath($destinationPath);
+		list($sourceDir,) = \Sabre\HTTP\URLUtil::splitPath($sourcePath);
+		list($destinationDir,) = \Sabre\HTTP\URLUtil::splitPath($destinationPath);
 
 		$isMovableMount = false;
 		$sourceMount = $this->mountManager->find($this->fileView->getAbsolutePath($sourcePath));
@@ -166,12 +166,6 @@ class ObjectTree extends \Sabre\DAV\ObjectTree {
 		} catch (\OCP\Files\StorageNotAvailableException $e) {
 			throw new \Sabre\DAV\Exception\ServiceUnavailable($e->getMessage());
 		}
-
-		// update properties
-		$query = \OC_DB::prepare('UPDATE `*PREFIX*properties` SET `propertypath` = ?'
-			. ' WHERE `userid` = ? AND `propertypath` = ?');
-		$query->execute(array(\OC\Files\Filesystem::normalizePath($destinationPath), \OC_User::getUser(),
-			\OC\Files\Filesystem::normalizePath($sourcePath)));
 
 		$this->markDirty($sourceDir);
 		$this->markDirty($destinationDir);
@@ -213,7 +207,7 @@ class ObjectTree extends \Sabre\DAV\ObjectTree {
 			throw new \Sabre\DAV\Exception\ServiceUnavailable($e->getMessage());
 		}
 
-		list($destinationDir,) = \Sabre\DAV\URLUtil::splitPath($destination);
+		list($destinationDir,) = \Sabre\HTTP\URLUtil::splitPath($destination);
 		$this->markDirty($destinationDir);
 	}
 }
