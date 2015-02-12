@@ -9,6 +9,7 @@
 namespace OCA\Files_Sharing\External;
 
 use OC\Files\Filesystem;
+use OC\Share\RequestQueue;
 
 class Manager {
 	const STORAGE = '\OCA\Files_Sharing\External\Storage';
@@ -38,9 +39,7 @@ class Manager {
 	 */
 	private $httpHelper;
 
-	/**
-	 * @var \OCP\Share\IRequestQueue
-	 */
+	/** @var RequestQueue */
 	private $requestQueue;
 
 	/**
@@ -48,18 +47,18 @@ class Manager {
 	 * @param \OC\Files\Mount\Manager $mountManager
 	 * @param \OC\Files\Storage\StorageFactory $storageLoader
 	 * @param \OC\HTTPHelper $httpHelper
-	 * @param \OCP\Share\IRequestQueue
 	 * @param string $uid
 	 */
 	public function __construct(\OCP\IDBConnection $connection, \OC\Files\Mount\Manager $mountManager, 
 								\OC\Files\Storage\StorageFactory $storageLoader, \OC\HTTPHelper $httpHelper,
-								\OCP\Share\IRequestQueue $requestQueue, $uid) {
+								$uid) {
 		$this->connection = $connection;
 		$this->mountManager = $mountManager;
 		$this->storageLoader = $storageLoader;
 		$this->httpHelper = $httpHelper;
 		$this->uid = $uid;
-		$this->requestQueue = $requestQueue;
+		// TODO: injecting RequestQueue is reasonable once $connection is moved out of this class
+		$this->requestQueue = new RequestQueue($connection);
 	}
 
 	/**
@@ -215,7 +214,6 @@ class Manager {
 				\OC\Files\Filesystem::getMountManager(),
 				\OC\Files\Filesystem::getLoader(),
 				\OC::$server->getHTTPHelper(),
-				\OC::$server->getShareRequestQueue(),
 				$params['user']
 		);
 

@@ -211,9 +211,6 @@ class Server extends SimpleContainer implements IServerContainer {
 			$config = $c->getConfig();
 			return new \OC\BackgroundJob\JobList($c->getDatabaseConnection(), $config);
 		});
-		$this->registerService('ShareRequestQueue', function (Server $c) {
-			return new \OC\Share\RequestQueue($c->getDatabaseConnection());
-		});
 		$this->registerService('Router', function (Server $c) {
 			$cacheFactory = $c->getMemCacheFactory();
 			if ($cacheFactory->isAvailable()) {
@@ -559,15 +556,6 @@ class Server extends SimpleContainer implements IServerContainer {
 	 */
 	function getJobList() {
 		return $this->query('JobList');
-	}
-
-	/**
-	 * Return share request queue
-	 *
-	 * @return \OCP\Share\IRequestQueue
-	 */
-	function getShareRequestQueue() {
-		return $this->query('ShareRequestQueue');
 	}
 
 	/**

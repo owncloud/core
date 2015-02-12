@@ -23,7 +23,8 @@
 
 namespace OC\Share\BackgroundJob;
 
-use OC\DB\Connection;
+use OC\Share\RequestQueue;
+use OCP\IConfig;
 
 class ShareRequests extends \OC\BackgroundJob\TimedJob {
 
@@ -33,14 +34,20 @@ class ShareRequests extends \OC\BackgroundJob\TimedJob {
 	/** @var \OCP\IConfig */
 	protected $config;
 
-	/** @var \OCP\Share\IRequestQueue */
+	/** @var RequestQueue */
 	protected $requestQueue;
 
-	public function __construct() {
+	public function __construct(IConfig $config = null, RequestQueue $requestQueue = null) {
 		// Run every 15 minutes
 		$this->setInterval(15 * 60);
-		$this->config = \OC::$server->getConfig();
-		$this->requestQueue = \OC::$server->getShareRequestQueue();
+		$this->config = $config;
+		$this->requestQueue = $requestQueue;
+		if (is_null($config)) {
+			$this->config = \OC::$server->getConfig();
+		}
+		if (is_null($requestQueue)) {
+			$this->requestQueue = new RequestQueue(\OC::$server->getDatabaseConnection());
+		}
 	}
 
 	protected function run($argument) {
@@ -57,7 +64,7 @@ class ShareRequests extends \OC\BackgroundJob\TimedJob {
 	 *
 	 * @param int $limit Number of requests we want to send
 	 */
-	protected function runStep($limit = 0) {
+	public function runStep($limit = 0) {
 
 		$requests = $this->requestQueue->getRequests($limit);
 

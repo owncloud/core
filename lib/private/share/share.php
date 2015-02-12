@@ -2324,13 +2324,13 @@ class Share extends \OC\Share\Constants {
 	/**
 	 * send server-to-server unshare to remote server
 	 *
-	 * @param string remote url
+	 * @param string $remote url
 	 * @param int $id share id
 	 * @param string $token
 	 * @return bool
 	 */
 	private static function sendRemoteUnshare($remote, $id, $token) {
-		$requestQueue = \OC::$server->getShareRequestQueue();
+		$requestQueue = new RequestQueue(\OC::$server->getDatabaseConnection());
 		$url = $remote . self::BASE_PATH_TO_SHARE_API . '/' . $id . '/unshare?format=' . self::RESPONSE_FORMAT;
 		$fields = array('token' => $token, 'format' => 'json');
 		$result = self::tryHttpPost($url, $fields);

@@ -1,4 +1,5 @@
 <?php
+use OC\Share\RequestQueue;
 
 /**
  * ownCloud
@@ -23,12 +24,12 @@
 
 class RequestQueueTest extends \Test\TestCase {
 
-	/** @var \OCP\Share\IRequestQueue */
+	/** @var RequestQueue */
 	protected $requestQueue;
 
 	protected function setUp() {
 		parent::setUp();
-		$this->requestQueue = new \OC\Share\RequestQueue(\OC::$server->getDatabaseConnection());
+		$this->requestQueue = new RequestQueue(\OC::$server->getDatabaseConnection());
 		for ($i = 0; $i < 10; $i++) {
 			$this->assertTrue(
 				$this->populateShareQueue('www.owncloud.org', array('token' => $i), 'user1', 'https://', $i % 6)

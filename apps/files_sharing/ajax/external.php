@@ -6,6 +6,8 @@
  * See the COPYING-README file.
  */
 
+use OC\Share\RequestQueue;
+
 OCP\JSON::callCheck();
 OCP\JSON::checkLoggedIn();
 OCP\JSON::checkAppEnabled('files_sharing');
@@ -35,7 +37,6 @@ $externalManager = new \OCA\Files_Sharing\External\Manager(
 		\OC\Files\Filesystem::getMountManager(),
 		\OC\Files\Filesystem::getLoader(),
 		\OC::$server->getHTTPHelper(),
-		\OC::$server->getShareRequestQueue(),
 		\OC::$server->getUserSession()->getUser()->getUID()
 );
 

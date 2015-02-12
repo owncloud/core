@@ -23,6 +23,8 @@
 
 namespace OCA\Files_Sharing\API;
 
+use OC\Share\RequestQueue;
+
 class Server2Server {
 
 	/**
@@ -61,7 +63,6 @@ class Server2Server {
 					\OC\Files\Filesystem::getMountManager(),
 					\OC\Files\Filesystem::getLoader(),
 					\OC::$server->getHTTPHelper(),
-					\OC::$server->getShareRequestQueue(),
 					$shareWith
 				);
 

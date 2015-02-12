@@ -23,13 +23,12 @@
 
 namespace OC\Share;
 
-class RequestQueue implements \OCP\Share\IRequestQueue {
+class RequestQueue {
 
 	/** @var \OC\DB\Connection */
 	protected $connection;
 
 	/**
-	 *
 	 * @param \OCP\IDBConnection $connection
 	 */
 	public function __construct(\OCP\IDBConnection $connection) {
@@ -59,7 +58,7 @@ class RequestQueue implements \OCP\Share\IRequestQueue {
 	}
 
 	/**
-	 * update numnber of tries for the request
+	 * update number of tries for the request
 	 *
 	 * @param array $request
 	 */
@@ -108,7 +107,7 @@ class RequestQueue implements \OCP\Share\IRequestQueue {
 	 * split protocol from URL
 	 *
 	 * @param string $url
-	 * @return array with protcol, and rest of the URL
+	 * @return array with protocol, and rest of the URL
 	 */
 	protected function splitProtocol($url) {
 		if (strpos($url, 'https://') === 0) {

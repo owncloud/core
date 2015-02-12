@@ -154,7 +154,6 @@ class Test_Files_Sharing_S2S_OCS_API extends TestCase {
 			\OC\Files\Filesystem::getMountManager(),
 			\OC\Files\Filesystem::getLoader(),
 			\OC::$server->getHTTPHelper(),
-			\OC::$server->getShareRequestQueue(),
 			$toDelete
 			);
 
