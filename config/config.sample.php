@@ -732,8 +732,9 @@ $CONFIG = array(
  * Use this if LibreOffice/OpenOffice requires additional arguments.
  */
 'preview_office_cl_parameters' =>
-	' --headless --nologo --nofirststartwizard --invisible --norestore '.
-	'-convert-to pdf -outdir ',
+        " -env:UserInstallation=file://' . escapeshellarg($tmpDir . '/owncloud-' . \OC_Util::getInstanceId().'/') . " .
+        "' --headless --nologo --nofirststartwizard --invisible --norestore " .
+	"--convert-to pdf --outdir ";
 
 /**
  * Only register providers that have been explicitly enabled
