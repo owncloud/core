@@ -28,12 +28,12 @@ if($_POST) {
 	OCP\JSON::callCheck();
 
 	if(isset($_POST['webdav_url'])) {
-		OC_CONFIG::setValue('user_webdavauth_url', strip_tags($_POST['webdav_url']));
+		\OC::$server->getConfig()->setSystemValue('user_webdavauth_url', $_POST['webdav_url']);
 	}
 }
 
 // fill template
-$tmpl = new OC_Template( 'user_webdavauth', 'settings');
-$tmpl->assign( 'webdav_url', OC_Config::getValue( "user_webdavauth_url" ));
+$tmpl = new OC_Template('user_webdavauth', 'settings');
+$tmpl->assign('webdav_url', \OC::$server->getConfig()->getSystemValue('user_webdavauth_url'));
 
 return $tmpl->fetchPage();

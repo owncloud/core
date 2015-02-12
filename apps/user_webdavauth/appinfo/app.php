@@ -3,6 +3,7 @@
  * @author Felix Moeller <mail@felixmoeller.de>
  * @author Frank Karlitschek <frank@owncloud.org>
  * @author j-ed <juergen@eisfair.org>
+ * @author Lukas Reschke <lukas@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -20,17 +21,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-require_once OC_App::getAppPath('user_webdavauth').'/user_webdavauth.php';
 
-OC_APP::registerAdmin('user_webdavauth', 'settings');
+namespace OCA\user_webdavauth\AppInfo;
 
-OC_User::registerBackend("WEBDAVAUTH");
-OC_User::useBackend( "WEBDAVAUTH" );
+use OCA\user_webdavauth\USER_WEBDAVAUTH;
+use OCP\Util;
 
-// add settings page to navigation
-$entry = array(
-	'id' => "user_webdavauth_settings",
-	'order'=>1,
-	'href' => OC_Helper::linkTo( "user_webdavauth", "settings.php" ),
-	'name' => 'WEBDAVAUTH'
+
+$userBackend  = new USER_WEBDAVAUTH(
+	\OC::$server->getConfig(),
+	\OC::$server->getDb(),
+	\OC::$server->getHTTPHelper(),
+	\OC::$server->getLogger(),
+	\OC::$server->getUserManager(),
+	\OC::$SERVERROOT
 );
+\OC_User::useBackend($userBackend);
+
+Util::addTranslations('user_webdavauth');
+\OC_APP::registerAdmin('user_webdavauth', 'settings');
