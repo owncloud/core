@@ -71,15 +71,19 @@ class ShareRequests extends \OC\BackgroundJob\TimedJob {
 		foreach ($requests as $request) {
 			$data = json_decode($request['data'], true);
 			if ($request['protocol'] === 'http://' || $request['protocol'] === 'https://') {
-				$this->post($request['protocol'], $request['url'], $data, $request['uid']);
+				$response = $this->post($request['protocol'], $request['url'], $data, $request['uid']);
 			} else {
-				$this->tryProtocol($request['url'], $data, $request['uid']);
+				$response = $this->tryProtocol($request['url'], $data, $request['uid']);
 			}
 
-			if ((int)$request['tries'] < 5) {
-				$this->requestQueue->updateRequest($request);
-			} else {
+			if ($response['success'] === true) {
 				$this->requestQueue->removeRequest($request);
+			} else {
+				if ((int)$request['tries'] < 5) {
+					$this->requestQueue->updateRequest($request);
+				} else {
+					$this->requestQueue->removeRequest($request);
+				}
 			}
 		}
 	}

@@ -22,7 +22,9 @@ class ShareRequestsTest extends \Test\TestCase {
 		$job = $this->getMock('OC\Share\BackgroundJob\ShareRequests',
 			['post'],
 			[$this->config, $queue]);
-		$job->expects($this->any())->method('post')->willReturn(true);
+		$job->expects($this->any())->method('post')->willReturn(
+			['success' => true]
+		);
 		/** @var OC\Share\BackgroundJob\ShareRequests $job */
 		$job->runStep(1);
 	}
@@ -36,7 +38,26 @@ class ShareRequestsTest extends \Test\TestCase {
 		$job = $this->getMock('OC\Share\BackgroundJob\ShareRequests',
 			['post'],
 			[$this->config, $queue]);
-		$job->expects($this->any())->method('post')->willReturn(false);
+		$job->expects($this->any())->method('post')->willReturn(
+			['success' => false]
+		);
+
+		/** @var OC\Share\BackgroundJob\ShareRequests $job */
+		$job->runStep(1);
+	}
+
+	public function testRequestIsRemovedIfFailingTooOften() {
+
+		// mock the queue
+		$queue = $this->mockQueue('removeRequest', 5);
+
+		// mock the job - necessary to bypass httphelper
+		$job = $this->getMock('OC\Share\BackgroundJob\ShareRequests',
+			['post'],
+			[$this->config, $queue]);
+		$job->expects($this->any())->method('post')->willReturn(
+			['success' => false]
+		);
 
 		/** @var OC\Share\BackgroundJob\ShareRequests $job */
 		$job->runStep(1);
@@ -45,12 +66,12 @@ class ShareRequestsTest extends \Test\TestCase {
 	/**
 	 * @return PHPUnit_Framework_MockObject_MockObject
 	 */
-	private function mockQueue($expectedMethod) {
+	private function mockQueue($expectedMethod, $tries = 0) {
 		/** @var PHPUnit_Framework_MockObject_MockObject $queue */
 		$queue = $this->getMockBuilder('OC\Share\RequestQueue')
 			->disableOriginalConstructor()->getMock();
 		$queue->expects($this->any())->method('getRequests')->willReturn([
-			['url' => 'http://example.com', 'data' => '[]', 'protocol' => '', 'uid' => 'peter', 'tries' => 0]
+			['url' => 'http://example.com', 'data' => '[]', 'protocol' => '', 'uid' => 'peter', 'tries' => $tries]
 		]);
 		$queue->expects($this->once())->method($expectedMethod);
 		return $queue;
