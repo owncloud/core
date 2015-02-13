@@ -23,6 +23,8 @@
 
 namespace OCA\Files_Sharing\API;
 
+use OC\Share\RequestQueue;
+
 class Server2Server {
 
 	/**

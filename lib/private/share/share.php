@@ -2331,16 +2331,31 @@ class Share extends \OC\Share\Constants {
 	/**
 	 * send server-to-server unshare to remote server
 	 *
-	 * @param string remote url
+	 * @param string $remote url
 	 * @param int $id share id
 	 * @param string $token
 	 * @return bool
 	 */
 	private static function sendRemoteUnshare($remote, $id, $token) {
+		$requestQueue = new RequestQueue(\OC::$server->getDatabaseConnection());
 		$url = $remote . self::BASE_PATH_TO_SHARE_API . '/' . $id . '/unshare?format=' . self::RESPONSE_FORMAT;
 		$fields = array('token' => $token, 'format' => 'json');
 		$result = self::tryHttpPost($url, $fields);
 		$status = json_decode($result['result'], true);
+
+		if ($result['success'] === false) {
+			$user = \OC::$server->getUserSession()->getUser();
+			if ($user) {
+				$uid = $user->getUID();
+				$requestQueue->addToRequestQueue($url, $fields, $uid);
+			} else {
+				\OCP\Util::writeLog(
+					'OCP\Share'
+					, 'Could not add request to message queue, could not determine uid'
+					, \OCP\Util::ERROR
+				);
+			}
+		}
 
 		return ($result['success'] && $status['ocs']['meta']['statuscode'] === 100);
 	}

@@ -221,4 +221,5 @@ class Helper extends \OC\Share\Constants {
 
 		return $expires;
 	}
+
 }

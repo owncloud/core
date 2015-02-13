@@ -49,4 +49,5 @@ class Test_Share_Helper extends \Test\TestCase {
 		$result = \OC\Share\Helper::calculateExpireDate($defaultExpireSettings, $creationTime, $userExpireDate);
 		$this->assertSame($expected, $result);
 	}
+
 }

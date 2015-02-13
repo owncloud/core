@@ -9,6 +9,7 @@
 namespace OCA\Files_Sharing\External;
 
 use OC\Files\Filesystem;
+use OC\Share\RequestQueue;
 
 class Manager {
 	const STORAGE = '\OCA\Files_Sharing\External\Storage';
@@ -38,6 +39,9 @@ class Manager {
 	 */
 	private $httpHelper;
 
+	/** @var RequestQueue */
+	private $requestQueue;
+
 	/**
 	 * @param \OCP\IDBConnection $connection
 	 * @param \OC\Files\Mount\Manager $mountManager
@@ -45,13 +49,16 @@ class Manager {
 	 * @param \OC\HTTPHelper $httpHelper
 	 * @param string $uid
 	 */
-	public function __construct(\OCP\IDBConnection $connection, \OC\Files\Mount\Manager $mountManager,
-								\OC\Files\Storage\StorageFactory $storageLoader, \OC\HTTPHelper $httpHelper, $uid) {
+	public function __construct(\OCP\IDBConnection $connection, \OC\Files\Mount\Manager $mountManager, 
+								\OC\Files\Storage\StorageFactory $storageLoader, \OC\HTTPHelper $httpHelper,
+								$uid) {
 		$this->connection = $connection;
 		$this->mountManager = $mountManager;
 		$this->storageLoader = $storageLoader;
 		$this->httpHelper = $httpHelper;
 		$this->uid = $uid;
+		// TODO: injecting RequestQueue is reasonable once $connection is moved out of this class
+		$this->requestQueue = new RequestQueue($connection);
 	}
 
 	/**
@@ -179,13 +186,21 @@ class Manager {
 	 */
 	private function sendFeedbackToRemote($remote, $token, $id, $feedback) {
 
-		$url = $remote . \OCP\Share::BASE_PATH_TO_SHARE_API . '/' . $id . '/' . $feedback . '?format=' . \OCP\Share::RESPONSE_FORMAT;
+		$url = rtrim($remote, '/') . \OCP\Share::BASE_PATH_TO_SHARE_API . '/' . $id . '/' . $feedback . '?format=' . \OCP\Share::RESPONSE_FORMAT;
 		$fields = array('token' => $token);
 
 		$result = $this->httpHelper->post($url, $fields);
 		$status = json_decode($result['result'], true);
 
-		return ($result['success'] && $status['ocs']['meta']['statuscode'] === 100);
+		if ($result['success']) {
+			if ($status['ocs']['meta']['statuscode'] === 100) {
+				return true;
+			}
+		} else {
+			$this->requestQueue->addToRequestQueue($url, $fields, $this->uid);
+		}
+
+		return false;
 	}
 
 	/**

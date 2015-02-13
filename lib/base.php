@@ -20,6 +20,9 @@
  *
  */
 
+use OC\Share\BackgroundJob\ShareRequests;
+use OC\Share\RequestQueue;
+
 require_once 'public/constants.php';
 
 /**
@@ -692,6 +695,8 @@ class OC {
 			OC_Hook::connect('OC_User', 'post_addToGroup', 'OC\Share\Hooks', 'post_addToGroup');
 			OC_Hook::connect('OC_User', 'post_removeFromGroup', 'OC\Share\Hooks', 'post_removeFromGroup');
 			OC_Hook::connect('OC_User', 'post_deleteGroup', 'OC\Share\Hooks', 'post_deleteGroup');
+
+			\OC::$server->getJobList()->add(new ShareRequests());
 		}
 	}
 

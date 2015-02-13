@@ -6,6 +6,8 @@
  * See the COPYING-README file.
  */
 
+use OC\Share\RequestQueue;
+
 OCP\JSON::callCheck();
 OCP\JSON::checkLoggedIn();
 OCP\JSON::checkAppEnabled('files_sharing');

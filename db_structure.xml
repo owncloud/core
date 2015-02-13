@@ -949,6 +949,68 @@
 	<table>
 
 		<!--
+		sharing message queue
+		-->
+		<name>*dbprefix*share_mq</name>
+
+		<declaration>
+
+			<field>
+				<name>id</name>
+				<autoincrement>1</autoincrement>
+				<type>integer</type>
+				<default>0</default>
+				<notnull>true</notnull>
+				<length>4</length>
+			</field>
+
+			<!-- URL to which the message should be send -->
+			<field>
+				<name>url</name>
+				<type>text</type>
+				<notnull>true</notnull>
+				<length>255</length>
+			</field>
+
+			<!-- used protocol -->
+			<field>
+				<name>protocol</name>
+				<type>text</type>
+				<default></default>
+				<length>8</length>
+			</field>
+
+			<!-- post values -->
+			<field>
+				<name>data</name>
+				<type>text</type>
+				<notnull>true</notnull>
+				<length>255</length>
+			</field>
+
+			<field>
+				<name>uid</name>
+				<type>text</type>
+				<notnull>true</notnull>
+				<length>64</length>
+			</field>
+
+			<!-- number of tries -->
+			<field>
+				<name>tries</name>
+				<type>integer</type>
+				<default>0</default>
+				<notnull>true</notnull>
+				<length>4</length>
+			</field>
+
+		</declaration>
+
+	</table>
+
+	<table>
+
+		<!--
 		Scheduled background jobs.
 		See OC\BackgroundJob\JobList.
 		-->
