@@ -191,6 +191,7 @@ class OC_Setup {
 		]);
 
 		try {
+			chdir(OC::$SERVERROOT);
 			$dbSetup->initialize($options);
 			$dbSetup->setupDatabase($username);
 		} catch (\OC\DatabaseSetupException $e) {
