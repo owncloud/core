@@ -276,9 +276,10 @@ class Server extends SimpleContainer implements IServerContainer {
 		$this->registerService('AppManager', function(Server $c) {
 			$userSession = $c->getUserSession();
 			$appConfig = $c->getAppConfig();
+			$userManager = $c->getUserManager();
 			$groupManager = $c->getGroupManager();
 			$appCacheFactory = $c->getAppCacheFactory();
-			return new \OC\App\AppManager($userSession, $appConfig, $groupManager, $appCacheFactory);
+			return new \OC\App\AppManager($userSession, $appConfig, $userManager, $groupManager, $appCacheFactory);
 		});
 		$this->registerService('DateTimeZone', function(Server $c) {
 			return new DateTimeZone(

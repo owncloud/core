@@ -46,13 +46,13 @@ class Updater extends BasicEmitter {
 	/**
 	 * @param HTTPHelper $httpHelper
 	 * @param \OCP\IAppConfig $config
-	 * @param App\AppManager $appManager
+	 * @param \OCP\App\IAppManager $appManager
 	 * @param \OC\Log $log
 	 */
 	public function __construct(
 		HTTPHelper $httpHelper,
 		\OCP\IAppConfig $config,
-		App\AppManager $appManager,
+		\OCP\App\IAppManager $appManager,
 		Log $log = null
 	) {
 		$this->httpHelper = $httpHelper;

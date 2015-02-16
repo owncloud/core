@@ -57,19 +57,21 @@ class Manager extends \PHPUnit_Framework_TestCase {
 	public function testEnableApp() {
 		$userSession = $this->getMock('\OCP\IUserSession');
 		$groupManager = $this->getMock('\OCP\IGroupManager');
+		$userManager = $this->getMock('\OCP\IUserManager');
 		$appCacheFactory = new \OC\App\AppCacheFactory();
 		$appConfig = $this->getAppConfig();
-		$manager = new \OC\App\AppManager($userSession, $appConfig, $groupManager, $appCacheFactory);
+		$manager = new \OC\App\AppManager($userSession, $appConfig, $userManager, $groupManager, $appCacheFactory);
 		$manager->enableApp('test');
 		$this->assertEquals('yes', $appConfig->getValue('test', 'enabled', 'no'));
 	}
 
 	public function testDisableApp() {
 		$userSession = $this->getMock('\OCP\IUserSession');
+		$userManager = $this->getMock('\OCP\IUserManager');
 		$groupManager = $this->getMock('\OCP\IGroupManager');
 		$appCacheFactory = new \OC\App\AppCacheFactory();
 		$appConfig = $this->getAppConfig();
-		$manager = new \OC\App\AppManager($userSession, $appConfig, $groupManager, $appCacheFactory);
+		$manager = new \OC\App\AppManager($userSession, $appConfig, $userManager, $groupManager, $appCacheFactory);
 		$manager->disableApp('test');
 		$this->assertEquals('no', $appConfig->getValue('test', 'enabled', 'no'));
 	}
@@ -79,11 +81,12 @@ class Manager extends \PHPUnit_Framework_TestCase {
 			new Group('group1', array(), null),
 			new Group('group2', array(), null)
 		);
+		$userManager = $this->getMock('\OCP\IUserManager');
 		$groupManager = $this->getMock('\OCP\IGroupManager');
 		$userSession = $this->getMock('\OCP\IUserSession');
 		$appCacheFactory = new \OC\App\AppCacheFactory();
 		$appConfig = $this->getAppConfig();
-		$manager = new \OC\App\AppManager($userSession, $appConfig, $groupManager, $appCacheFactory);
+		$manager = new \OC\App\AppManager($userSession, $appConfig, $userManager, $groupManager, $appCacheFactory);
 		$manager->enableAppForGroups('test', $groups);
 		$this->assertEquals('["group1","group2"]', $appConfig->getValue('test', 'enabled', 'no'));
 	}
@@ -91,20 +94,21 @@ class Manager extends \PHPUnit_Framework_TestCase {
 	public function testIsInstalledEnabled() {
 		$userSession = $this->getMock('\OCP\IUserSession');
 		$groupManager = $this->getMock('\OCP\IGroupManager');
+		$userManager = $this->getMock('\OCP\IUserManager');
 		$appCacheFactory = new \OC\App\AppCacheFactory();
 		$appConfig = $this->getAppConfig();
-		$manager = new \OC\App\AppManager($userSession, $appConfig, $groupManager, $appCacheFactory);
+		$manager = new \OC\App\AppManager($userSession, $appConfig, $userManager, $groupManager, $appCacheFactory);
 		$appConfig->setValue('test', 'enabled', 'yes');
-		$tmp  = $manager->getEnabledApps();
 		$this->assertTrue($manager->isInstalled('test'));
 	}
 
 	public function testIsInstalledDisabled() {
 		$userSession = $this->getMock('\OCP\IUserSession');
+		$userManager = $this->getMock('\OCP\IUserManager');
 		$groupManager = $this->getMock('\OCP\IGroupManager');
 		$appCacheFactory = new \OC\App\AppCacheFactory();
 		$appConfig = $this->getAppConfig();
-		$manager = new \OC\App\AppManager($userSession, $appConfig, $groupManager, $appCacheFactory);
+		$manager = new \OC\App\AppManager($userSession, $appConfig, $userManager, $groupManager, $appCacheFactory);
 		$appConfig->setValue('test', 'enabled', 'no');
 		$this->assertFalse($manager->isInstalled('test'));
 	}
@@ -112,19 +116,21 @@ class Manager extends \PHPUnit_Framework_TestCase {
 	public function testIsInstalledEnabledForGroups() {
 		$userSession = $this->getMock('\OCP\IUserSession');
 		$groupManager = $this->getMock('\OCP\IGroupManager');
+		$userManager = $this->getMock('\OCP\IUserManager');
 		$appCacheFactory = new \OC\App\AppCacheFactory();
 		$appConfig = $this->getAppConfig();
-		$manager = new \OC\App\AppManager($userSession, $appConfig, $groupManager, $appCacheFactory);
+		$manager = new \OC\App\AppManager($userSession, $appConfig, $userManager, $groupManager, $appCacheFactory);
 		$appConfig->setValue('test', 'enabled', '["foo"]');
 		$this->assertTrue($manager->isInstalled('test'));
 	}
 
 	public function testIsEnabledForUserEnabled() {
 		$userSession = $this->getMock('\OCP\IUserSession');
+		$userManager = $this->getMock('\OCP\IUserManager');
 		$groupManager = $this->getMock('\OCP\IGroupManager');
 		$appCacheFactory = new \OC\App\AppCacheFactory();
 		$appConfig = $this->getAppConfig();
-		$manager = new \OC\App\AppManager($userSession, $appConfig, $groupManager, $appCacheFactory);
+		$manager = new \OC\App\AppManager($userSession, $appConfig, $userManager, $groupManager, $appCacheFactory);
 		$appConfig->setValue('test', 'enabled', 'yes');
 		$user = new User('user1', null);
 		$this->assertTrue($manager->isEnabledForUser('test', $user));
@@ -133,9 +139,10 @@ class Manager extends \PHPUnit_Framework_TestCase {
 	public function testIsEnabledForUserDisabled() {
 		$userSession = $this->getMock('\OCP\IUserSession');
 		$groupManager = $this->getMock('\OCP\IGroupManager');
+		$userManager = $this->getMock('\OCP\IUserManager');
 		$appCacheFactory = new \OC\App\AppCacheFactory();
 		$appConfig = $this->getAppConfig();
-		$manager = new \OC\App\AppManager($userSession, $appConfig, $groupManager, $appCacheFactory);
+		$manager = new \OC\App\AppManager($userSession, $appConfig, $userManager, $groupManager, $appCacheFactory);
 		$appConfig->setValue('test', 'enabled', 'no');
 		$user = new User('user1', null);
 		$this->assertFalse($manager->isEnabledForUser('test', $user));
@@ -144,6 +151,7 @@ class Manager extends \PHPUnit_Framework_TestCase {
 	public function testIsEnabledForUserEnabledForGroup() {
 		$userSession = $this->getMock('\OCP\IUserSession');
 		$groupManager = $this->getMock('\OCP\IGroupManager');
+		$userManager = $this->getMock('\OCP\IUserManager');
 		$appCacheFactory = new \OC\App\AppCacheFactory();
 		$user = new User('user1', null);
 
@@ -153,13 +161,14 @@ class Manager extends \PHPUnit_Framework_TestCase {
 			->will($this->returnValue(array('foo', 'bar')));
 
 		$appConfig = $this->getAppConfig();
-		$manager = new \OC\App\AppManager($userSession, $appConfig, $groupManager, $appCacheFactory);
+		$manager = new \OC\App\AppManager($userSession, $appConfig, $userManager, $groupManager, $appCacheFactory);
 		$appConfig->setValue('test', 'enabled', '["foo"]');
 		$this->assertTrue($manager->isEnabledForUser('test', $user));
 	}
 
 	public function testIsEnabledForUserDisabledForGroup() {
 		$userSession = $this->getMock('\OCP\IUserSession');
+		$userManager = $this->getMock('\OCP\IUserManager');
 		$groupManager = $this->getMock('\OCP\IGroupManager');
 		$appCacheFactory = new \OC\App\AppCacheFactory();
 		$user = new User('user1', null);
@@ -170,24 +179,26 @@ class Manager extends \PHPUnit_Framework_TestCase {
 			->will($this->returnValue(array('bar')));
 
 		$appConfig = $this->getAppConfig();
-		$manager = new \OC\App\AppManager($userSession, $appConfig, $groupManager, $appCacheFactory);
+		$manager = new \OC\App\AppManager($userSession, $appConfig, $userManager, $groupManager, $appCacheFactory);
 		$appConfig->setValue('test', 'enabled', '["foo"]');
 		$this->assertFalse($manager->isEnabledForUser('test', $user));
 	}
 
 	public function testIsEnabledForUserLoggedOut() {
 		$userSession = $this->getMock('\OCP\IUserSession');
+		$userManager = $this->getMock('\OCP\IUserManager');
 		$groupManager = $this->getMock('\OCP\IGroupManager');
 		$appCacheFactory = new \OC\App\AppCacheFactory();
 
 		$appConfig = $this->getAppConfig();
-		$manager = new \OC\App\AppManager($userSession, $appConfig, $groupManager, $appCacheFactory);
+		$manager = new \OC\App\AppManager($userSession, $appConfig, $userManager, $groupManager, $appCacheFactory);
 		$appConfig->setValue('test', 'enabled', '["foo"]');
 		$this->assertFalse($manager->IsEnabledForUser('test'));
 	}
 
 	public function testIsEnabledForUserLoggedIn() {
 		$userSession = $this->getMock('\OCP\IUserSession');
+		$userManager = $this->getMock('\OCP\IUserManager');
 		$groupManager = $this->getMock('\OCP\IGroupManager');
 		$appCacheFactory = new \OC\App\AppCacheFactory();
 		$user = new User('user1', null);
@@ -201,18 +212,19 @@ class Manager extends \PHPUnit_Framework_TestCase {
 			->will($this->returnValue(array('foo', 'bar')));
 
 		$appConfig = $this->getAppConfig();
-		$manager = new \OC\App\AppManager($userSession, $appConfig, $groupManager, $appCacheFactory);
+		$manager = new \OC\App\AppManager($userSession, $appConfig, $userManager, $groupManager, $appCacheFactory);
 		$appConfig->setValue('test', 'enabled', '["foo"]');
 		$this->assertTrue($manager->isEnabledForUser('test'));
 	}
 
 	public function testGetAllEnabledApps() {
 		$userSession = $this->getMock('\OCP\IUserSession');
+		$userManager = $this->getMock('\OCP\IUserManager');
 		$groupManager = $this->getMock('\OCP\IGroupManager');
 		$appCacheFactory = new \OC\App\AppCacheFactory();
 		$appConfig = $this->getAppConfig();
 
-		$manager = new \OC\App\AppManager($userSession, $appConfig, $groupManager, $appCacheFactory);
+		$manager = new \OC\App\AppManager($userSession, $appConfig, $userManager, $groupManager, $appCacheFactory);
 		$appConfig->setValue('app1', 'enabled', 'yes');
 		$appConfig->setValue('app2', 'enabled', 'no');
 		$appConfig->setValue('app3', 'enabled', '["groupX"]');
@@ -226,9 +238,11 @@ class Manager extends \PHPUnit_Framework_TestCase {
 		$appCacheFactory = new \OC\App\AppCacheFactory();
 		$appConfig = $this->getAppConfig();
 
-		$user = new User('userX', null);
-		$userSession->expects($this->once())
-			->method('getUser')
+		$dummyBackend = $this->getMock('\OC_User_Interface');
+		$user = new User('userX', $dummyBackend);
+		$userManager = $this->getMock('\OCP\IUserManager');
+		$userManager->expects($this->once())
+			->method('get')
 			->will($this->returnValue($user));
 
 		$groupManager->expects($this->exactly(4))
@@ -236,7 +250,7 @@ class Manager extends \PHPUnit_Framework_TestCase {
 			->with($user)
 			->will($this->returnValue(array('foo', 'bar')));
 
-		$manager = new \OC\App\AppManager($userSession, $appConfig, $groupManager, $appCacheFactory);
+		$manager = new \OC\App\AppManager($userSession, $appConfig, $userManager, $groupManager, $appCacheFactory);
 		$appConfig->setValue('app1', 'enabled', 'yes');
 		$appConfig->setValue('app2', 'enabled', 'no');
 		$appConfig->setValue('app3', 'enabled', '["groupX"]');
@@ -249,11 +263,12 @@ class Manager extends \PHPUnit_Framework_TestCase {
 
 	public function testClearInstalledAppsCache() {
 		$userSession = $this->getMock('\OCP\IUserSession');
+		$userManager = $this->getMock('\OCP\IUserManager');
 		$groupManager = $this->getMock('\OCP\IGroupManager');
 		$appCacheFactory = new \OC\App\AppCacheFactory();
 		$appConfig = $this->getAppConfig();
 
-		$manager = new \OC\App\AppManager($userSession, $appConfig, $groupManager, $appCacheFactory);
+		$manager = new \OC\App\AppManager($userSession, $appConfig, $userManager, $groupManager, $appCacheFactory);
 		$appConfig->setValue('app1', 'enabled', 'yes');
 		$appConfig->setValue('app2', 'enabled', 'no');
 		$appConfig->setValue('app3', 'enabled', '["groupX"]');
@@ -269,11 +284,12 @@ class Manager extends \PHPUnit_Framework_TestCase {
 
 	public function testGetAppsOfType() {
 		$userSession = $this->getMock('\OCP\IUserSession');
+		$userManager = $this->getMock('\OCP\IUserManager');
 		$groupManager = $this->getMock('\OCP\IGroupManager');
 		$appCacheFactory = new \OC\App\AppCacheFactory();
 		$appConfig = $this->getAppConfig();
 
-		$manager = new \OC\App\AppManager($userSession, $appConfig, $groupManager, $appCacheFactory);
+		$manager = new \OC\App\AppManager($userSession, $appConfig, $userManager, $groupManager, $appCacheFactory);
 		$appConfig->setValue('app1', 'enabled', 'yes');
 		$appConfig->setValue('app1', 'types', 'productivity');
 		$appConfig->setValue('app2', 'enabled', 'no');

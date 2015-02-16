@@ -12,6 +12,7 @@ namespace OC\App;
 use OCP\App\IAppManager;
 use OCP\IAppConfig;
 use OCP\IGroupManager;
+use OCP\IUserManager;
 use OCP\IUserSession;
 
 class AppManager implements IAppManager {
@@ -35,16 +36,22 @@ class AppManager implements IAppManager {
 
 	/** @var  AppCacheFactory */
 	private $appCacheFactory;
+	/**
+	 * @var \OCP\IUserManager
+	 */
+	private $userManager;
 
 	/**
 	 * @param \OCP\IUserSession $userSession
 	 * @param \OCP\IAppConfig $appConfig
+	 * @param \OCP\IUserManager $userManager
 	 * @param \OCP\IGroupManager $groupManager
 	 * @param AppCacheFactory $appCacheFactory
 	 */
 	public function __construct(
 		IUserSession $userSession,
 		IAppConfig $appConfig,
+		IUserManager $userManager,
 		IGroupManager $groupManager,
 		AppCacheFactory $appCacheFactory
 	) {
@@ -53,6 +60,7 @@ class AppManager implements IAppManager {
 		$this->groupManager = $groupManager;
 		$this->appCacheFactory = $appCacheFactory;
 		$this->appCache = $this->appCacheFactory->get();
+		$this->userManager = $userManager;
 	}
 
 	/**
@@ -101,7 +109,9 @@ class AppManager implements IAppManager {
 	private function cacheEnabledAppsWithType() {
 		if(!$this->appCache->isPropertyIndexed('type')) {
 			$values = $this->appConfig->getValues(false, 'types');
-			$this->appCache->addData($values, 'type');
+			if(is_array($values)) {
+				$this->appCache->addData($values, 'type');
+			}
 		}
 	}
 
@@ -164,7 +174,7 @@ class AppManager implements IAppManager {
 		if(!is_string($userID)) {
 			throw new \InvalidArgumentException('String expected');
 		}
-		$user = $this->userSession->getUser($userID);
+		$user = $this->userManager->get($userID);
 		if(is_null($user)) {
 			throw new \Exception('User ' . $userID . ' could not be retrieved');
 		}
