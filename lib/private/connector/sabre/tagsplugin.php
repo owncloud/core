@@ -213,6 +213,11 @@ class TagsPlugin extends \Sabre\DAV\ServerPlugin
 			$tags = $this->getTagger()->getTagsForObjects($fileIds);
 			if ($tags) {
 				$this->cachedTags = $tags;
+				$emptyFileIds = array_diff($fileIds, array_keys($tags));
+				// also cache the ones that were not found
+				foreach ($emptyFileIds as $fileId) {
+					$this->cachedTags[$fileId] = [];
+				}
 			}
 		}
 	}
