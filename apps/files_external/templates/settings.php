@@ -17,9 +17,7 @@
 		<?php foreach ($_['mounts'] as $mount): ?>
 			<tr <?php print_unescaped(isset($mount['mountpoint']) ? 'class="'.OC_Util::sanitizeHTML($mount['class']).'"' : 'id="addMountPoint"'); ?>>
 				<td class="status">
-				<?php if (isset($mount['status'])): ?>
-					<span class="<?php p(($mount['status']) ? 'success' : 'error'); ?>"></span>
-				<?php endif; ?>
+					<span></span>
 				</td>
 				<td class="mountPoint"><input type="text" name="mountPoint"
 											  value="<?php p(isset($mount['mountpoint']) ? $mount['mountpoint'] : ''); ?>"

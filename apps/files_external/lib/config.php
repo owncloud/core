@@ -354,8 +354,7 @@ class OC_Mount_Config {
 						'backend' => $backends[$mount['class']]['backend'],
 						'priority' => $mount['priority'],
 						'options' => $mount['options'],
-						'applicable' => array('groups' => array($group), 'users' => array()),
-						'status' => self::getBackendStatus($mount['class'], $mount['options'], false)
+						'applicable' => array('groups' => array($group), 'users' => array())
 					);
 					$hash = self::makeConfigHash($config);
 					// If an existing config exists (with same class, mountpoint and options)
@@ -388,8 +387,7 @@ class OC_Mount_Config {
 						'backend' => $backends[$mount['class']]['backend'],
 						'priority' => $mount['priority'],
 						'options' => $mount['options'],
-						'applicable' => array('groups' => array(), 'users' => array($user)),
-						'status' => self::getBackendStatus($mount['class'], $mount['options'], false)
+						'applicable' => array('groups' => array(), 'users' => array($user))
 					);
 					$hash = self::makeConfigHash($config);
 					// If an existing config exists (with same class, mountpoint and options)
@@ -429,8 +427,7 @@ class OC_Mount_Config {
 					// Remove '/uid/files/' from mount point
 					'mountpoint' => substr($mountPoint, strlen($uid) + 8),
 					'backend' => $backEnds[$mount['class']]['backend'],
-					'options' => $mount['options'],
-					'status' => self::getBackendStatus($mount['class'], $mount['options'], true)
+					'options' => $mount['options']
 				);
 			}
 		}
@@ -444,10 +441,19 @@ class OC_Mount_Config {
 	 * @param array $options backend configuration options
 	 * @return bool true if the connection succeeded, false otherwise
 	 */
-	private static function getBackendStatus($class, $options, $isPersonal) {
+	public static function getBackendStatus($class, $options, $isPersonal) {
 		if (self::$skipTest) {
 			return true;
 		}
+		if ($isPersonal) {
+			$allowed_backends = self::getPersonalBackends();
+		} else {
+			$allowed_backends = self::getBackends();
+		}
+		if (!isset($allowed_backends[$class])) {
+			return false;
+		}
+
 		foreach ($options as &$option) {
 			$option = self::setUserVars(OCP\User::getUser(), $option);
 		}

@@ -32,23 +32,13 @@ function highlightInput($input) {
 }
 
 OC.MountConfig={
-	saveStorage:function($tr, callback) {
-		var mountPoint = $tr.find('.mountPoint input').val();
-		var oldMountPoint = $tr.find('.mountPoint input').data('mountpoint');
-		if (mountPoint === '') {
-			return false;
-		}
-		var statusSpan = $tr.find('.status span');
-		var backendClass = $tr.find('.backend').data('class');
-		var configuration = $tr.find('.configuration input');
-		var addMountPoint = true;
-		if (configuration.length < 1) {
-			return false;
-		}
+	getClassOptions: function(configuration) {
 		var classOptions = {};
+		var isValid = false;
 		$.each(configuration, function(index, input) {
+			isValid = true;
 			if ($(input).val() === '' && !$(input).hasClass('optional')) {
-				addMountPoint = false;
+				isValid = false;
 				return false;
 			}
 			if ($(input).is(':checkbox')) {
@@ -61,10 +51,28 @@ OC.MountConfig={
 				classOptions[$(input).data('parameter')] = $(input).val();
 			}
 		});
+		if (isValid) {
+			return classOptions;
+		}
+	},
+
+	saveStorage:function($tr, callback) {
+		var mountPoint = $tr.find('.mountPoint input').val();
+		var oldMountPoint = $tr.find('.mountPoint input').data('mountpoint');
+		if (mountPoint === '') {
+			return false;
+		}
+		var statusSpan = $tr.find('.status span');
+		var backendClass = $tr.find('.backend').data('class');
+		var configuration = $tr.find('.configuration input');
+		if (configuration.length < 1) {
+			return false;
+		}
 		if ($('#externalStorage').data('admin') === true) {
 			var multiselect = getSelection($tr);
 		}
-		if (addMountPoint) {
+		var classOptions = OC.MountConfig.getClassOptions(configuration);
+		if (classOptions) {
 			var status = false;
 			if ($('#externalStorage').data('admin') === true) {
 				var isPersonal = false;
@@ -179,6 +187,33 @@ OC.MountConfig={
 			}
 			return status;
 		}
+	},
+
+	updateStatus: function(tr) {
+		var statusSpan = $(tr).find('.status span');
+		statusSpan.addClass('loading-small').removeClass('error success');
+		var isPersonal = true;
+		if ($('#externalStorage').data('admin') === true) {
+			isPersonal = false;
+		}
+		var classOptions = OC.MountConfig.getClassOptions($(tr).find('.configuration input'));
+		if (!classOptions) {
+			return false;
+		}
+		$.ajax({type: 'POST',
+			url: OC.generateUrl('apps/files_external/status'),
+			data: {
+				'class': $(tr).find('.backend').data('class'),
+				classOptions: classOptions,
+				isPersonal: isPersonal,
+			},
+			success: function(result) {
+				status = updateStatus(statusSpan, result);
+			},
+			error: function(result){
+				status = updateStatus(statusSpan, result);
+			}
+		});
 	}
 };
 
@@ -308,6 +343,11 @@ $(document).ready(function() {
 		}
 	}
 	addSelect2($('tr:not(#addMountPoint) .applicableUsers'));
+
+	// Fire ajax requests for backend status
+	$externalStorage.find('tr:not(#addMountPoint)').each(function(iter, tr) {
+		OC.MountConfig.updateStatus(tr);
+	});
 	
 	$externalStorage.on('change', '#selectBackend', function() {
 		var $tr = $(this).closest('tr');
@@ -320,7 +360,6 @@ $(document).ready(function() {
 			$tr.find('.mountPoint input').val(suggestMountPoint(selected));
 		}
 		$tr.addClass(backendClass);
-		$tr.find('.status').append('<span></span>');
 		$tr.find('.backend').data('class', backendClass);
 		var configurations = $(this).data('configurations');
 		var $td = $tr.find('td.configuration');
@@ -419,7 +458,7 @@ $(document).ready(function() {
 	});
 
 	$externalStorage.on('click', '.status>span', function() {
-		OC.MountConfig.saveStorage($(this).closest('tr'));
+		OC.MountConfig.updateStatus($(this).closest('tr'));
 	});
 
 	$('#sslCertificate').on('click', 'td.remove>img', function() {

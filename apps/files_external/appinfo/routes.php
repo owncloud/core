@@ -57,6 +57,8 @@ $this->create('files_external_google', 'ajax/google.php')
 
 $this->create('files_external_list_applicable', '/applicable')
 	->actionInclude('files_external/ajax/applicable.php');
+$this->create('files_external_get_status', '/status')
+	->actionInclude('files_external/ajax/status.php');
 
 \OC_API::register('get',
 		'/apps/files_external/api/v1/mounts',
