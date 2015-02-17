@@ -36,7 +36,7 @@ class Updater extends BasicEmitter {
 	 */
 	private $config;
 
-	/** @var \OC\App\AppManager */
+	/** @var \OCP\App\IAppManager */
 	private $appManager;
 
 	private $simulateStepEnabled;
