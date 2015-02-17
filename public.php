@@ -16,7 +16,7 @@ try {
 	$request = \OC::$server->getRequest();
 	$pathInfo = $request->getPathInfo();
 	if (!$pathInfo && !isset($request->server['service'])) {
-		header('HTTP/1.0 404 Not Found');
+		header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
 		exit;
 	} elseif (isset($request->server['service'])) {
 		$service = $request->server['service'];
@@ -25,8 +25,8 @@ try {
 		list($service) = explode('/', $pathInfo);
 	}
 	$file = OCP\CONFIG::getAppValue('core', 'public_' . strip_tags($service));
-	if (is_null($file)) {
-		header('HTTP/1.0 404 Not Found');
+	if ($file === null) {
+		header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found');
 		exit;
 	}
 
