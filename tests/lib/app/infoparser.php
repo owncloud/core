@@ -11,7 +11,7 @@ namespace Test\App;
 
 use OC;
 
-class InfoParser extends \PHPUnit_Framework_TestCase {
+class InfoParser extends \Test\TestCase {
 
 	/**
 	 * @var \OC\App\InfoParser
@@ -58,5 +58,34 @@ class InfoParser extends \PHPUnit_Framework_TestCase {
 			array('expected-info.json', 'valid-info.xml'),
 			array(null, 'invalid-info.xml'),
 		);
+	}
+
+	/**
+	 * Providers for the app data values
+	 */
+	function appDescriptionProvider() {
+		return [
+			[
+				['description' => " \t  This is a multiline \n test with \n \t \n \n some new lines   "],
+				['description' => "This is a multiline test with\n\nsome new lines"]
+			],
+			[
+				['description' => " \t  This is a multiline \n test with \n \t   some new lines   "],
+				['description' => "This is a multiline test with some new lines"]
+			],
+			[
+				['not-a-description' => " \t  This is a multiline \n test with \n \t   some new lines   "],
+				['not-a-description' => " \t  This is a multiline \n test with \n \t   some new lines   "]
+			],
+		];
+	}
+
+	/**
+	 * Test app info parser
+	 *
+	 * @dataProvider appDescriptionProvider
+	 */
+	public function testFormatDescription($data, $expected) {
+		$this->assertEquals($expected, $this->parser->formatDescription($data));
 	}
 }
