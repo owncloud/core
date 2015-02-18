@@ -75,7 +75,6 @@ class Cache {
 		if (!isset(self::$mimetypeIds[$mime])) {
 			try {
 				$result = \OC_DB::executeAudited('INSERT INTO `*PREFIX*mimetypes`(`mimetype`) VALUES(?)', array($mime));
-                $result->closeCursor();
 				self::$mimetypeIds[$mime] = \OC_DB::insertid('*PREFIX*mimetypes');
 				self::$mimetypes[self::$mimetypeIds[$mime]] = $mime;
 			} catch (\Doctrine\DBAL\DBALException $e) {
