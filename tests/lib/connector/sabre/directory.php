@@ -167,7 +167,7 @@ class Test_OC_Connector_Sabre_Directory extends \Test\TestCase {
 			->method('getStorage')
 			->will($this->returnValue($storage));
 
-		$dir = new OC_Connector_Sabre_Directory($this->view, $this->info);
+		$dir = new \OC\Connector\Sabre\Directory($this->view, $this->info);
 		$this->assertEquals([200, 800], $dir->getQuotaInfo()); //200 used, 800 free
 	}
 }

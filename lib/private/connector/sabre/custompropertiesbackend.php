@@ -159,8 +159,8 @@ class CustomPropertiesBackend implements \Sabre\DAV\PropertyStorage\Backend\Back
 
 	/**
 	 * Returns a list of properties for this nodes.;
-	 * @param \OC\Connector\Sabre\Node $node
-	 * @param array|null $requestedProperties requested properties or "null" for all
+	 * @param \OC\onnector\Sabre\Node $node
+	 * @param array $requestedProperties requested properties or empty array for "all"
 	 * @return array
 	 * @note The properties list is a list of propertynames the client
 	 * requested, encoded as xmlnamespace#tagName, for example:
@@ -211,7 +211,7 @@ class CustomPropertiesBackend implements \Sabre\DAV\PropertyStorage\Backend\Back
 	 *
 	 * @return bool
 	 */
-	public function updateProperties($node, $properties) {
+	private function updateProperties($node, $properties) {
 		$path = $node->getPath();
 
 		$deleteStatement = $this->connection->prepare(
@@ -230,7 +230,7 @@ class CustomPropertiesBackend implements \Sabre\DAV\PropertyStorage\Backend\Back
 		);
 
 		// TODO: use "insert or update" strategy ?
-		$existing = $this->getProperties($node, null);
+		$existing = $this->getProperties($node, array());
 		$this->connection->beginTransaction();
 		foreach ($properties as $propertyName => $propertyValue) {
 			// If it was null, we need to delete the property
