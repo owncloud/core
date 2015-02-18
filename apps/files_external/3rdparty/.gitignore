@@ -1,0 +1,4 @@
+aws/aws-sdk-php/tests
+aws/aws-sdk-php/compatibility-test.php
+guzzle/guzzle/tests
+symfony/event-dispatcher/Symfony/Component/EventDispatcher/Tests

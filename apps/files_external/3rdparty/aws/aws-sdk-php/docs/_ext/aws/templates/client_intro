@@ -1,0 +1,76 @@
+====================================================================================
+{{serviceFullName}}{% if specifiedApiVersion %} ({{specifiedApiVersion}}){% endif %}
+====================================================================================
+
+This guide focuses on the AWS SDK for PHP client for `{{ serviceFullName }} <{{ doc_url }}>`_. This guide assumes that
+you have already downloaded and installed the AWS SDK for PHP. See :doc:`installation` for more information on
+getting started.
+
+{% if specifiedApiVersion %}
+**Note:** This guide is for the **{{ specifiedApiVersion }}** API version of {{ serviceFullName }}. You may also be
+interested in the :doc:`guide for the latest API version of {{ serviceFullName }} <service-{{ namespace|lower }}>`.
+{% endif %}
+
+Creating a client
+-----------------
+
+First you need to create a client object using one of the following techniques.
+
+Factory method
+~~~~~~~~~~~~~~
+
+The easiest way to get up and running quickly is to use the ``Aws\{{namespace}}\{{namespace}}Client::factory()`` method
+and provide your credential profile (via the ``profile`` option), which identifies the set of credentials you want to
+use from your ``~/.aws/credentials`` file (see :ref:`credential_profiles`).
+
+{% if not globalEndpoint -%}
+A ``region`` parameter is required. You can find a list of available regions
+using the `Regions and Endpoints <http://docs.aws.amazon.com/general/latest/gr/rande.html>`_
+reference.
+{% endif %}
+
+.. code-block:: php
+
+    use Aws\{{namespace}}\{{namespace}}Client;
+
+    $client = {{namespace}}Client::factory(array(
+        'profile' => '<profile in your aws credentials file>'{% if not globalEndpoint -%},
+        'region'  => '<region name>'{% endif %}{% if specifiedApiVersion -%},
+        'version' => '{{specifiedApiVersion}}'{% endif %}
+    ));
+
+You can provide your credential profile like in the preceding example, specify your access keys directly (via ``key``
+and ``secret``), or you can choose to omit any credential information if you are using `AWS Identity and Access
+Management (IAM) roles for EC2 instances <http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/UsingIAM.html#UsingIAMrolesWithAmazonEC2Instances>`_
+or credentials sourced from the ``AWS_ACCESS_KEY_ID`` and ``AWS_SECRET_ACCESS_KEY`` environment variables.
+
+.. note::
+
+    The ``profile`` option and AWS credential file support is only available for version 2.6.1 of the SDK and higher.
+    We recommend that all users update their copies of the SDK to take advantage of this feature, which is a safer way
+    to specify credentials than explicitly providing ``key`` and ``secret``.
+
+Service builder
+~~~~~~~~~~~~~~~
+
+A more robust way to connect to {{ serviceFullName }} is through the service builder. This allows you to specify
+credentials and other configuration settings in a configuration file. These settings can then be shared across all
+clients so that you only have to specify your settings once.
+
+.. code-block:: php
+
+    use Aws\Common\Aws;
+
+    // Create a service builder using a configuration file
+    $aws = Aws::factory('/path/to/my_config.json');
+
+    // Get the client from the builder by namespace
+    {% if specifiedApiVersion -%}
+    $client = $aws->get('{{ namespace|lower() }}_{{ apiVersionSuffix|replace("_", "") }}');
+    {% else -%}
+    $client = $aws->get('{{ namespace }}');
+    {% endif %}
+
+For more information about configuration files, see :doc:`configuration`.
+
+.. _{{ namespace }}{{ apiVersionSuffix }}_operations:

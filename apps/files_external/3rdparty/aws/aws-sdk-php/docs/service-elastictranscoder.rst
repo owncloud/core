@@ -1,0 +1,3 @@
+.. service:: ElasticTranscoder
+
+.. apiref:: ElasticTranscoder

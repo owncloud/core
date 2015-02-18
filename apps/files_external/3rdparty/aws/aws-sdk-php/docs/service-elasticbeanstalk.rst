@@ -1,0 +1,3 @@
+.. service:: ElasticBeanstalk
+
+.. apiref:: ElasticBeanstalk

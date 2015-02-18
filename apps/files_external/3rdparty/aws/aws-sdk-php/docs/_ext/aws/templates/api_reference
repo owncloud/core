@@ -1,0 +1,28 @@
+
+API Reference
+-------------
+
+Please see the `{{ serviceFullName }} Client API reference <http://docs.aws.amazon.com/aws-sdk-php/latest/class-Aws.{{ namespace }}{{ apiVersionSuffix }}.{{ namespace }}Client.html>`_
+for a details about all of the available methods, including descriptions of the inputs and outputs.
+
+{# Here we are creating a list-table. The contents of a list-table looks like:
+    * - Foo
+      - Bar
+    * - Baz
+      - Bam
+
+    We must also ensure that the same number of columns are available for each table row.
+#}
+
+.. list-table::
+    :header-rows: 0
+    :stub-columns: 0
+    :class: two-column
+
+    {% for key, op in description.operations.iteritems() %}
+    {% if loop.index is odd %}* {% else %}  {% endif %}- `{{ key }} <http://docs.aws.amazon.com/aws-sdk-php/latest/class-Aws.{{ namespace}}{{ apiVersionSuffix }}.{{ namespace }}Client.html#_{{ op.magicMethod }}>`_
+    {%- if op.documentationUrl %}  (`service docs <{{ op.documentationUrl}}>`_){%- endif %}
+    {%- if loop.last and loop.index is odd %}
+      -
+    {%- endif %}
+    {% endfor %}

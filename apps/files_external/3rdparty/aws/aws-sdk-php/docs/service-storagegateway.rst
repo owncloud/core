@@ -1,0 +1,3 @@
+.. service:: StorageGateway
+
+.. apiref:: StorageGateway

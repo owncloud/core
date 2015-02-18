@@ -1,0 +1,20 @@
+language: php
+
+php:
+  - 5.3
+  - 5.4
+  - 5.5
+  - 5.6
+  - hhvm
+
+before_script:
+  - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ] && [ $(php -r "echo PHP_MINOR_VERSION;") -le 4 ]; then echo "extension = apc.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi;'
+  - composer self-update
+  - composer install --no-interaction --prefer-source --dev
+
+script: vendor/bin/phpunit
+
+matrix:
+  allow_failures:
+    - php: hhvm
+  fast_finish: true

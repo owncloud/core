@@ -1,0 +1,21 @@
+Some AWS operations return truncated results that require subsequent requests in order to retrieve the entire result
+set. The subsequent requests typically require pagination tokens or markers from the previous request in order to
+retrieve the next set of results. Working with these tokens can be cumbersome, since you must manually keep track of
+them, and the API for each service you are using may differ in the names and details of the tokens.
+
+The AWS SDK for PHP has a feature called **Iterators** that allow you to retrieve an *entire* result set without
+manually handling pagination tokens or markers. The Iterators in the SDK implement PHP's ``Iterator`` interface, which
+allows you to easily enumerate or iterate through resources from a result set with ``foreach``.
+
+Operations that start with ``List`` or ``Describe``, or any other operations that are designed to return multiple
+records can be used with Iterators. To use an Iterator, you must call the ``getIterator()`` method of the client and
+provide the operation name. The following is an example of creating an Amazon S3 ``ListObjects`` Iterator, to iterate
+over objects in a bucket.
+
+.. code-block:: php
+
+    $iterator = $client->getIterator('ListObjects', array('Bucket' => 'my-bucket'));
+
+    foreach ($iterator as $object) {
+        echo $object['Key'] . "\n";
+    }

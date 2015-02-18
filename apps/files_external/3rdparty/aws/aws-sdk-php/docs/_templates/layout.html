@@ -1,0 +1,36 @@
+{%- extends "!layout.html" %}
+
+{%- block nav_links %}
+<li><a href="{{ pathto(master_doc) }}">Docs</a></li>
+<li><a href="http://docs.aws.amazon.com/aws-sdk-php/latest/">API Docs</a></li>
+<li><a href="http://blogs.aws.amazon.com/php">Blog</a></li>
+<li><a href="https://forums.aws.amazon.com/forum.jspa?forumID=80">Forum</a></li>
+<li><a href="https://github.com/aws/aws-sdk-php/issues">Issues</a></li>
+<li><a href="https://packagist.org/packages/aws/aws-sdk-php">Packagist</a></li>
+<li><a href="http://aws.amazon.com/sdkforphp">Homepage</a></li>
+<li><a href="/aws-sdk-php/guide/latest/aws-sdk-php-guide.pdf">PDF</a></li>
+{%- endblock %}
+
+{%- block content %}
+<!-- REGION_DISCLAIMER_DO_NOT_REMOVE -->
+{{ super() }}
+{%- endblock %}
+
+{% block ga %}
+{% if theme_google_analytics_account %}
+<!-- BEGIN-URCHIN-TRACKER -->
+<script type="text/javascript" src="https://d36cz9buwru1tt.cloudfront.net/amznUrchin.js"></script>
+<!-- END-URCHIN-TRACKER -->
+<!-- SiteCatalyst code version: H.25.2.
+  Copyright 1996-2012 Adobe, Inc. All Rights Reserved
+  More info available at http://www.omniture.com -->
+<script type="text/javascript" src="https://d36cz9buwru1tt.cloudfront.net/js/sitecatalyst/s_code.min.js"></script>
+<script type="text/javascript"><!--
+s.prop66='AWS SDK for PHP'; s.eVar66='D=c66';
+s.prop65='User Guide'; s.eVar65='D=c65';
+var s_code=s.t();if(s_code)document.write(s_code);
+//--></script>
+<script type="text/javascript"><!--if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+'-')//--></script>
+<noscript><img src="http://amazonwebservices.d2.sc.omtrdc.net/b/ss/awsamazondev/1/H.25.2--NS/0" height="1" width="1" border="0" alt=""></noscript><!--/DO NOT REMOVE/--><!-- End SiteCatalyst code version: H.25.2. -->
+{% endif %}
+{% endblock %}

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="./tests/bootstrap.php"
+         colors="true">
+
+    <!-- Dummy values used to provide credentials. No need to change these. -->
+    <php>
+        <server name="AWS_ACCESS_KEY_ID" value="foo" />
+        <server name="AWS_SECRET_ACCESS_KEY" value="bar" />
+    </php>
+
+    <testsuites>
+        <testsuite name="Aws">
+            <directory>tests/Aws/Tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <!-- Exclude the integration tests in regular unit tests -->
+    <groups>
+        <exclude>
+            <group>integration</group>
+            <group>performance</group>
+        </exclude>
+    </groups>
+
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./src/Aws</directory>
+            <exclude>
+                <directory suffix="Interface.php">./src/Aws</directory>
+                <directory>./src/Aws/**/Enum</directory>
+                <directory>./src/Aws/**/Resources</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+
+</phpunit>
