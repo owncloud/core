@@ -3,6 +3,7 @@
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Roeland Jago Douma <roeland@famdouma.nl>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -21,12 +22,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
 namespace OCA\Files_Sharing;
 
 use OC\AppFramework\Utility\SimpleContainer;
 use OCA\Files_Sharing\Controllers\ExternalSharesController;
 use OCA\Files_Sharing\Controllers\ShareController;
+use OCA\Files_Sharing\Controllers\AjaxController;
 use OCA\Files_Sharing\Middleware\SharingCheckMiddleware;
 use \OCP\AppFramework\App;
 
@@ -69,12 +70,24 @@ class Application extends App {
 				$c->query('ExternalManager')
 			);
 		});
+		$container->registerService('AjaxController', function(SimpleContainer $c) use ($server) {
+			return new AjaxController(
+				$c->query('AppName'),
+				$c->query('Request'),
+				$server->getConfig(),
+				$c->query('Session'),
+				$server->getLogger()
+			);
+		});
 
 		/**
 		 * Core class wrappers
 		 */
 		$container->registerService('UserSession', function(SimpleContainer $c) use ($server) {
 			return $server->getUserSession();
+		});
+		$container->registerService('Session', function(SimpleContainer $c) use ($server) {
+			return $server->getSession();
 		});
 		$container->registerService('URLGenerator', function(SimpleContainer $c) use ($server){
 			return $server->getUrlGenerator();
