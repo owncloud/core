@@ -75,6 +75,7 @@ class Cache {
 		if (!isset(self::$mimetypeIds[$mime])) {
 			try {
 				$result = \OC_DB::executeAudited('INSERT INTO `*PREFIX*mimetypes`(`mimetype`) VALUES(?)', array($mime));
+                $result->closeCursor();
 				self::$mimetypeIds[$mime] = \OC_DB::insertid('*PREFIX*mimetypes');
 				self::$mimetypes[self::$mimetypeIds[$mime]] = $mime;
 			} catch (\Doctrine\DBAL\DBALException $e) {
@@ -101,6 +102,7 @@ class Cache {
 				self::$mimetypeIds[$row['mimetype']] = $row['id'];
 				self::$mimetypes[$row['id']] = $row['mimetype'];
 			}
+            $result->closeCursor();
 		}
 	}
 
@@ -126,7 +128,8 @@ class Cache {
 				FROM `*PREFIX*filecache` ' . $where;
 		$result = \OC_DB::executeAudited($sql, $params);
 		$data = $result->fetchRow();
-
+        $result->closeCursor();
+        
 		//FIXME hide this HACK in the next database layer, or just use doctrine and get rid of MDB2 and PDO
 		//PDO returns false, MDB2 returns null, oracle always uses MDB2, so convert null to false
 		if ($data === null) {
@@ -182,6 +185,7 @@ class Cache {
 					FROM `*PREFIX*filecache` WHERE `parent` = ? ORDER BY `name` ASC';
 			$result = \OC_DB::executeAudited($sql, array($fileId));
 			$files = $result->fetchAll();
+            $result->closeCursor();
 			foreach ($files as &$file) {
 				$file['mimetype'] = $this->getMimetype($file['mimetype']);
 				$file['mimepart'] = $this->getMimetype($file['mimepart']);
@@ -325,7 +329,9 @@ class Cache {
 
 		$sql = 'SELECT `fileid` FROM `*PREFIX*filecache` WHERE `storage` = ? AND `path_hash` = ?';
 		$result = \OC_DB::executeAudited($sql, array($this->getNumericStorageId(), $pathHash));
-		if ($row = $result->fetchRow()) {
+        $row = $result->fetchRow();
+        $result->closeCursor();
+		if ($row ) {
 			return $row['fileid'];
 		} else {
 			return -1;
@@ -410,6 +416,7 @@ class Cache {
 			$sql = 'SELECT `path`, `fileid` FROM `*PREFIX*filecache` WHERE `storage` = ? AND `path` LIKE ?';
 			$result = \OC_DB::executeAudited($sql, array($this->getNumericStorageId(), $source . '/%'));
 			$childEntries = $result->fetchAll();
+            $result->closeCursor();
 			$sourceLength = strlen($source);
 			\OC_DB::beginTransaction();
 			$query = \OC_DB::prepare('UPDATE `*PREFIX*filecache` SET `path` = ?, `path_hash` = ? WHERE `fileid` = ?');
@@ -448,7 +455,10 @@ class Cache {
 		$pathHash = md5($file);
 		$sql = 'SELECT `size` FROM `*PREFIX*filecache` WHERE `storage` = ? AND `path_hash` = ?';
 		$result = \OC_DB::executeAudited($sql, array($this->getNumericStorageId(), $pathHash));
-		if ($row = $result->fetchRow()) {
+        $row = $result->fetchRow();
+        $result->closeCursor();
+                
+		if ($row) {
 			if ((int)$row['size'] === -1) {
 				return self::SHALLOW;
 			} else {
@@ -491,6 +501,7 @@ class Cache {
 			$row['mimepart'] = $this->getMimetype($row['mimepart']);
 			$files[] = $row;
 		}
+        $result->closeCursor();
 		return $files;
 	}
 
@@ -516,6 +527,7 @@ class Cache {
 			$row['mimepart'] = $this->getMimetype($row['mimepart']);
 			$files[] = $row;
 		}
+        $result->closeCursor();
 		return $files;
 	}
 
@@ -561,6 +573,7 @@ class Cache {
 		while ($row = $result->fetchRow()) {
 			$files[] = $row;
 		}
+        $result->closeCursor();
 		return $files;
 	}
 
@@ -643,6 +656,7 @@ class Cache {
 		while ($row = $result->fetchRow()) {
 			$ids[] = $row['fileid'];
 		}
+        $result->closeCursor();
 		return $ids;
 	}
 
@@ -659,7 +673,9 @@ class Cache {
 		$query = \OC_DB::prepare('SELECT `path` FROM `*PREFIX*filecache`'
 			. ' WHERE `storage` = ? AND `size` = -1 ORDER BY `fileid` DESC', 1);
 		$result = \OC_DB::executeAudited($query, array($this->getNumericStorageId()));
-		if ($row = $result->fetchRow()) {
+        $row = $result->fetchRow();
+        $result->closeCursor();
+		if ($row) {
 			return $row['path'];
 		} else {
 			return false;
@@ -675,7 +691,10 @@ class Cache {
 	public function getPathById($id) {
 		$sql = 'SELECT `path` FROM `*PREFIX*filecache` WHERE `fileid` = ? AND `storage` = ?';
 		$result = \OC_DB::executeAudited($sql, array($id, $this->getNumericStorageId()));
-		if ($row = $result->fetchRow()) {
+        $row = $result->fetchRow();
+        $result->closeCursor();
+                
+		if ($row) {
 			// Oracle stores empty strings as null...
 			if ($row['path'] === null) {
 				return '';
@@ -697,7 +716,9 @@ class Cache {
 	static public function getById($id) {
 		$sql = 'SELECT `storage`, `path` FROM `*PREFIX*filecache` WHERE `fileid` = ?';
 		$result = \OC_DB::executeAudited($sql, array($id));
-		if ($row = $result->fetchRow()) {
+        $row = $result->fetchRow();
+        $result->closeCursor();
+		if ($row) {
 			$numericId = $row['storage'];
 			$path = $row['path'];
 		} else {
