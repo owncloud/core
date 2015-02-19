@@ -12,6 +12,7 @@ if (OC::checkUpgrade(false)) {
 	$updater = new \OC\Updater(
 			\OC::$server->getHTTPHelper(),
 			\OC::$server->getAppConfig(),
+			\OC::$server->getAppManager(),
 			\OC_Log::$object
 	);
 	$updater->listen('\OC\Updater', 'maintenanceStart', function () use ($eventSource, $l) {

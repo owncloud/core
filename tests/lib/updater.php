@@ -27,7 +27,7 @@ class UpdaterTest extends \Test\TestCase {
 	 * @dataProvider versionCompatibilityTestData
 	 */
 	public function testIsUpgradePossible($oldVersion, $newVersion, $result) {
-		$updater = new Updater(\OC::$server->getHTTPHelper(), \OC::$server->getConfig());
+		$updater = new Updater(\OC::$server->getHTTPHelper(), \OC::$server->getAppConfig(), \OC::$server->getAppManager());
 		$this->assertSame($result, $updater->isUpgradePossible($oldVersion, $newVersion));
 	}
 
@@ -101,7 +101,61 @@ class UpdaterTest extends \Test\TestCase {
 
 		$mockedHTTPHelper->expects($this->once())->method('getUrlContent')->will($this->returnValue($content));
 
-		return new Updater($mockedHTTPHelper, $mockedAppConfig);
+		$mockedAppManager = $this->getMockBuilder('\OC\App\AppManager')
+			->disableOriginalConstructor()
+			->getMock();
+
+		return new Updater($mockedHTTPHelper, $mockedAppConfig, $mockedAppManager);
+	}
+
+	public function testSortAppsByType() {
+		$mockedAppManager = $this->getMockBuilder('\OC\App\AppManager')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$mockedAppManager->expects($this->exactly(3))
+			->method('getEnabledAppsOfType')
+			->will($this->returnCallback(function($type) {
+				if($type === 'authentication') {
+					return array('phonebookauth', 'pawauth');
+				}
+				if($type === 'filesystem') {
+					return array('spacefs', 'undergroundfs', 'hyperfs');
+				}
+				if($type === 'logging') {
+					return array('nulllog');
+				}
+				return array();
+			}));
+
+		$mockedAppManager->expects($this->once())
+			->method('getEnabledAppsOfNoPriority')
+			->will($this->returnValue(
+				array('catpictures', 'soundnotifications', 'comics', 'calc.exe'))
+			);
+
+		$updater = new Updater(
+			\OC::$server->getHTTPHelper(),
+			\OC::$server->getAppConfig(),
+			$mockedAppManager);
+
+		$stacks = $updater->sortAppsByType();
+		$this->assertSame(count($stacks), 4);
+		$this->assertTrue(is_array($stacks['authentication']));
+		$this->assertTrue(is_array($stacks['filesystem']));
+		$this->assertTrue(is_array($stacks['logging']));
+		$this->assertTrue(is_array($stacks['other']));
+		$this->assertSame(count($stacks['authentication']), 2);
+		$this->assertSame(count($stacks['filesystem']), 3);
+		$this->assertSame(count($stacks['logging']), 1);
+		$this->assertSame(count($stacks['other']), 4);
+
+		//test stack order
+		$categories = array('authentication', 'filesystem', 'logging', 'other');
+		foreach($stacks as $category => $apps) {
+			$this->assertSame($category, array_shift($categories));
+		}
+
 	}
 
 }
