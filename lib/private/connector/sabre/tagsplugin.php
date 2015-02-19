@@ -210,7 +210,7 @@ class TagsPlugin extends \Sabre\DAV\ServerPlugin
 				$tags = array();
 			}
 
-			$this->cachedTags = array_merge($this->cachedTags, $tags);
+			$this->cachedTags = $this->cachedTags + $tags;
 			$emptyFileIds = array_diff($fileIds, array_keys($tags));
 			// also cache the ones that were not found
 			foreach ($emptyFileIds as $fileId) {
