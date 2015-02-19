@@ -30,6 +30,24 @@ use \Sabre\HTTP\ResponseInterface;
 class CustomPropertiesBackend implements \Sabre\DAV\PropertyStorage\Backend\BackendInterface {
 
 	/**
+	 * Ignored properties
+	 *
+	 * @var array
+	 */
+	private $ignoredProperties = array(
+		'{DAV:}getcontentlength',
+		'{DAV:}getcontenttype',
+		'{DAV:}getetag',
+		'{DAV:}quota-used-bytes',
+		'{DAV:}quota-available-bytes',
+		'{DAV:}quota-available-bytes',
+		'{http://owncloud.org/ns}permissions',
+		'{http://owncloud.org/ns}downloadURL',
+		'{http://owncloud.org/ns}dDC',
+		'{http://owncloud.org/ns}size',
+	);
+
+	/**
 	 * @var \Sabre\DAV\Tree
 	 */
 	private $tree;
@@ -81,12 +99,7 @@ class CustomPropertiesBackend implements \Sabre\DAV\PropertyStorage\Backend\Back
 		// these might appear
 		$requestedProps = array_diff(
 			$requestedProps,
-			array(
-				'{DAV:}getcontentlength',
-				'{DAV:}getcontenttype',
-				'{DAV:}quota-used-bytes',
-				'{DAV:}quota-available-bytes',
-			)
+			$this->ignoredProperties
 		);
 
 		if (empty($requestedProps)) {
