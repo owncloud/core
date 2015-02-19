@@ -258,7 +258,7 @@ class Mapper
 		// trim ending dots (for security reasons and win compatibility)
 		$text = preg_replace('~\.+$~', '', $text);
 
-		if (empty($text) || \OC\Files\Filesystem::isFileBlacklisted($text)) {
+		if (empty($text) || \OC\Files\Filesystem::isFileBlacklisted($text) || isset($text[250])) {
 			/**
 			 * Item slug would be empty. Previously we used uniqid() here.
 			 * However this means that the behaviour is not reproducible, so
@@ -269,6 +269,10 @@ class Mapper
 			 * filename. In this case we just use the same workaround by
 			 * returning the secure md5 hash of the original name.
 			 *
+			 * Another problematic case would be, if the file/folder name is
+			 * longer then 260 characters. To ensure we don't exceed this with
+			 * our anti-name-collision, we switch to md5 when the name is longer
+			 * then 250 characters.
 			 *
 			 * If there would be a md5() hash collision, the deduplicate check
 			 * will spot this and append an index later, so this should not be

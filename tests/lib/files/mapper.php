@@ -77,6 +77,8 @@ class Mapper extends \Test\TestCase {
 			array('D:/' . md5(' .htaccess'), 'D:/ .htaccess'),
 			array('D:/' . md5('.htaccess '), 'D:/.htaccess '),
 			array('D:/' . md5(' .htaccess '), 'D:/ .htaccess '),
+			array('D:/' . md5(str_repeat('a', 275)), 'D:/' . str_repeat('a', 275)),
+			array('D:' . str_repeat('/' . md5(str_repeat('a', 275)), 15), 'D:' . str_repeat('/' . str_repeat('a', 275), 15)),
 		);
 	}
 
