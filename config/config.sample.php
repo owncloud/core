@@ -510,6 +510,8 @@ $CONFIG = array(
 /**
  * Location of the lock file for cron executions can be specified here.
  * Default is within the data dir
+ * Because the cron lock file is accessed in regular intervals, it may prevent enabled disk drives from spinning down.
+ * A different location for this file can solve such issues
  */
 'cron.lockfile.location' => '',
 
