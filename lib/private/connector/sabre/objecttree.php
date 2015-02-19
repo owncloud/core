@@ -28,8 +28,6 @@ class ObjectTree extends \Sabre\DAV\Tree {
 
 	/**
 	 * Creates the object
-	 *
-	 * This method expects the rootObject to be passed as a parameter
 	 */
 	public function __construct() {
 	}
@@ -43,6 +41,35 @@ class ObjectTree extends \Sabre\DAV\Tree {
 		$this->rootNode = $rootNode;
 		$this->fileView = $view;
 		$this->mountManager = $mountManager;
+	}
+
+	/**
+	 * If the given path is a chunked file name, converts it
+	 * to the real file name. Only applies if the OC-CHUNKED header
+	 * is present.
+	 *
+	 * @param string $path chunk file path to convert
+	 * 
+	 * @return string path to real file
+	 */
+	private function resolveChunkFile($path) {
+		if (isset($_SERVER['HTTP_OC_CHUNKED'])) {
+			// resolve to real file name to find the proper node
+			list($dir, $name) = \Sabre\HTTP\URLUtil::splitPath($path);
+			if ($dir == '/' || $dir == '.') {
+				$dir = '';
+			}
+
+			$info = \OC_FileChunking::decodeName($name);
+			// only replace path if it was really the chunked file
+			if (isset($info['transferid'])) {
+				// getNodePath is called for multiple nodes within a chunk
+				// upload call
+				$path = $dir . '/' . $info['name'];
+				$path = ltrim($path, '/');
+			}
+		}
+		return $path;
 	}
 
 	/**
@@ -86,12 +113,15 @@ class ObjectTree extends \Sabre\DAV\Tree {
 				$info = null;
 			}
 		} else {
+			// resolve chunk file name to real name, if applicable
+			$path = $this->resolveChunkFile($path);
+
 			// read from cache
 			try {
 				$info = $this->fileView->getFileInfo($path);
 			} catch (StorageNotAvailableException $e) {
 				throw new \Sabre\DAV\Exception\ServiceUnavailable('Storage not available');
-			} catch (StorageInvalidException $e){
+			} catch (StorageInvalidException $e) {
 				throw new \Sabre\DAV\Exception\NotFound('Storage ' . $path . ' is invalid');
 			}
 		}

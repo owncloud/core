@@ -174,7 +174,13 @@ class Directory extends \OC\Connector\Sabre\Node
 	 * @return bool
 	 */
 	public function childExists($name) {
-
+		// note: here we do NOT resolve the chunk file name to the real file name
+		// to make sure we return false when checking for file existence with a chunk
+		// file name.
+		// This is to make sure that "createFile" is still triggered
+		// (required old code) instead of "updateFile".
+		//
+		// TODO: resolve chunk file name here and implement "updateFile"
 		$path = $this->path . '/' . $name;
 		return $this->fileView->file_exists($path);
 
