@@ -73,7 +73,7 @@ class TagsPlugin extends \Sabre\DAV\ServerPlugin
 		$this->tree = $tree;
 		$this->tagManager = $tagManager;
 		$this->tagger = null;
-		$this->cachedTags = null;
+		$this->cachedTags = array();
 	}
 
 	/**
@@ -194,7 +194,7 @@ class TagsPlugin extends \Sabre\DAV\ServerPlugin
 
 		// need prefetch ?
 		if ($node instanceof \OC\Connector\Sabre\Directory
-			&& $propFind->getDepth() === 1
+			&& $propFind->getDepth() !== 0
 			&& (!is_null($propFind->getStatus(self::TAGS_PROPERTYNAME))
 			|| !is_null($propFind->getStatus(self::FAVORITE_PROPERTYNAME))
 		)) {
@@ -210,7 +210,7 @@ class TagsPlugin extends \Sabre\DAV\ServerPlugin
 				$tags = array();
 			}
 
-			$this->cachedTags = $tags;
+			$this->cachedTags = array_merge($this->cachedTags, $tags);
 			$emptyFileIds = array_diff($fileIds, array_keys($tags));
 			// also cache the ones that were not found
 			foreach ($emptyFileIds as $fileId) {

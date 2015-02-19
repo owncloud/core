@@ -107,7 +107,7 @@ class CustomPropertiesBackend implements \Sabre\DAV\PropertyStorage\Backend\Back
 		}
 
 		if ($node instanceof \OC\Connector\Sabre\Directory
-			&& $propFind->getDepth() === 1
+			&& $propFind->getDepth() !== 0
 		) {
 			// note: pre-fetching only supported for depth <= 1
 			$this->loadChildrenProperties($node, $requestedProps);
