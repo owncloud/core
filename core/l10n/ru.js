@@ -219,5 +219,10 @@ OC.L10N.register(
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "Чтобы избежать задержек в крупных установках, вы можете выполнить следующую команду в каталоге установки:",
     "This %s instance is currently being updated, which may take a while." : "Этот экземпляр %s в данный момент обновляется. Это может занять некоторое время.",
     "This page will refresh itself when the %s instance is available again." : "Эта страница обновится, когда экземпляр %s снова станет доступен."
-},
-"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");
+}, function(n) {
+		var plural;
+		var nplurals;
+		nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);
+		return { "nplural" : nplurals, "plural" : (plural === true ? 1 : plural ? plural : 0) };
+	}
+);
