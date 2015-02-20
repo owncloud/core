@@ -70,7 +70,9 @@ class CustomPropertiesBackend implements \Sabre\DAV\PropertyStorage\Backend\Back
 	private $cache = [];
 
 	/**
-	 * @param \Sabre\DAV\Tree
+	 * @param \Sabre\DAV\Tree $tree node tree
+	 * @param \OCP\IDBConnection $connection database connection
+	 * @param \OCP\IUser $user owner of the tree and properties
 	 */
 	public function __construct(
 		\Sabre\DAV\Tree $tree,

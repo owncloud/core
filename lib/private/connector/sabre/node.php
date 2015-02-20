@@ -152,7 +152,7 @@ abstract class Node implements \Sabre\DAV\INode {
 	 *
 	 * Return null if the ETag can not effectively be determined
 	 *
-	 * @return mixed
+	 * @return string
 	 */
 	public function getETag() {
 		return '"' . $this->info->getEtag() . '"';
