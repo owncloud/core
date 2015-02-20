@@ -45,6 +45,11 @@ if ! [ \( -w config -a ! -f config/config.php \) -o \( -f config/config.php -a -
 	exit 1
 fi
 
+# test whether PHP is properly configured to execute unit tests
+if ./tests/setupcheck.php 2>&1 | grep ERROR; then
+  exit 1
+fi
+
 if [ "$1" ]; then
 	FOUND=0
 	for DBCONFIG in $DBCONFIGS; do
