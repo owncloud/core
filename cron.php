@@ -23,15 +23,15 @@
 // Unfortunately we need this class for shutdown function
 class TemporaryCronClass {
 	public static $sent = false;
-	public static $lockfile = "";
-	public static $keeplock = false;
+	public static $lockFile = "";
+	public static $keepLock = false;
 }
 
 // We use this function to handle (unexpected) shutdowns
 function handleUnexpectedShutdown() {
-	// Delete lockfile
-	if (!TemporaryCronClass::$keeplock && file_exists(TemporaryCronClass::$lockfile)) {
-		unlink(TemporaryCronClass::$lockfile);
+	// Delete lock file
+	if (!TemporaryCronClass::$keepLock && file_exists(TemporaryCronClass::$lockFile)) {
+		unlink(TemporaryCronClass::$lockFile);
 	}
 
 	// Say goodbye if the app did not shutdown properly
@@ -74,8 +74,8 @@ try {
 	\OC::$server->getTempManager()->cleanOld();
 
 	// Exit if background jobs are disabled!
-	$appmode = OC_BackgroundJob::getExecutionType();
-	if ($appmode == 'none') {
+	$appMode = OC_BackgroundJob::getExecutionType();
+	if ($appMode == 'none') {
 		TemporaryCronClass::$sent = true;
 		if (OC::$CLI) {
 			echo 'Background Jobs are disabled!' . PHP_EOL;
@@ -87,24 +87,27 @@ try {
 
 	if (OC::$CLI) {
 		// Create lock file first
-		TemporaryCronClass::$lockfile = OC_Config::getValue("datadirectory", OC::$SERVERROOT . '/data') . '/cron.lock';
+		$config = \OC::$server->getConfig();
+		$lockFileLocation = $config->getSystemValue("datadirectory", OC::$SERVERROOT . '/data');
+		$lockFileLocation = $config->getSystemValue("cron.lockfile.location", $lockFileLocation);
+		TemporaryCronClass::$lockFile = "$lockFileLocation/cron.lock";
 
 		// We call ownCloud from the CLI (aka cron)
-		if ($appmode != 'cron') {
+		if ($appMode != 'cron') {
 			// Use cron in future!
 			OC_BackgroundJob::setExecutionType('cron');
 		}
 
-		// check if backgroundjobs is still running
-		if (file_exists(TemporaryCronClass::$lockfile)) {
-			TemporaryCronClass::$keeplock = true;
+		// check if background jobs is still running
+		if (file_exists(TemporaryCronClass::$lockFile)) {
+			TemporaryCronClass::$keepLock = true;
 			TemporaryCronClass::$sent = true;
 			echo "Another instance of cron.php is still running!" . PHP_EOL;
 			exit(1);
 		}
 
 		// Create a lock file
-		touch(TemporaryCronClass::$lockfile);
+		touch(TemporaryCronClass::$lockFile);
 
 		// Work
 		$jobList = \OC::$server->getJobList();
@@ -114,7 +117,7 @@ try {
 		}
 	} else {
 		// We call cron.php from some website
-		if ($appmode == 'cron') {
+		if ($appMode == 'cron') {
 			// Cron is cron :-P
 			OC_JSON::error(array('data' => array('message' => 'Backgroundjobs are using system cron!')));
 		} else {
@@ -133,7 +136,7 @@ try {
 	TemporaryCronClass::$sent = true;
 	// Log the successful cron execution
 	if (\OC::$server->getConfig()->getSystemValue('cron_log', true)) {
-		\OC::$server->getAppConfig()->setValue('core', 'lastcron', time());
+		\OC::$server->getConfig()->setAppValue('core', 'lastcron', time());
 	}
 	exit();
 
