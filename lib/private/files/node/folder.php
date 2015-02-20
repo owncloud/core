@@ -255,10 +255,9 @@ class Folder extends Node implements \OCP\Files\Folder {
 	private function searchCommon($method, $args) {
 		$files = array();
 		$rootLength = strlen($this->path);
-		/**
-		 * @var \OC\Files\Storage\Storage $storage
-		 */
-		list($storage, $internalPath) = $this->view->resolvePath($this->path);
+		$mount = $this->root->getMount($this->path);
+		$storage = $mount->getStorage();
+		$internalPath=$mount->getInternalPath($this->path);
 		$internalPath = rtrim($internalPath, '/') . '/';
 		$internalRootLength = strlen($internalPath);
 

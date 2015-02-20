@@ -8,9 +8,7 @@
 
 namespace Test\Files\Node;
 
-use OC\Files\Cache\Cache;
-use OC\Files\Node\Root;
-use OC\Files\Storage\Loader;
+use OC\Files\Storage\StorageFactory as Loader;
 use OC\Files\Storage\Temporary;
 use OC\Files\View;
 use OC\User\User;

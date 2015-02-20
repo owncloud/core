@@ -10,16 +10,23 @@ namespace OC\Files;
 
 use OC\Files\Mount\Manager;
 use OC\Files\Node\Root;
-use OC\Files\Storage\StorageFactory as Loader;
+use OC\Files\Storage\StorageFactory;
 use OC\Files\Storage\Wrapper\Quota;
 use OC\Hooks\BasicEmitter;
+use OCP\Files\Config\IMountProviderCollection;
 use OCP\Files\FileInfo;
+use OCP\IUser;
 
 class Factory extends BasicEmitter {
 	/**
 	 * @var \OCP\IConfig
 	 */
 	protected $config;
+
+	/**
+	 * @var \OCP\Files\Config\IMountProviderCollection
+	 */
+	protected $mountProvider;
 
 	/**
 	 * @var \OC\Files\Node\Root
@@ -32,10 +39,19 @@ class Factory extends BasicEmitter {
 	protected $userFolders = array();
 
 	/**
-	 * @param \OCP\IConfig $config
+	 * @var \OC\Files\Storage\StorageFactory
 	 */
-	public function __construct($config) {
+	private $storageFactory;
+
+	/**
+	 * @param \OCP\IConfig $config
+	 * @param \OCP\Files\Config\IMountProviderCollection $mountProvider
+	 * @param \OC\Files\Storage\StorageFactory $storageFactory
+	 */
+	public function __construct($config, IMountProviderCollection $mountProvider, StorageFactory $storageFactory) {
 		$this->config = $config;
+		$this->mountProvider = $mountProvider;
+		$this->storageFactory = $storageFactory;
 	}
 
 	/**
@@ -44,7 +60,7 @@ class Factory extends BasicEmitter {
 	 * @param \OC\Files\Mount\Manager $mountManager
 	 * @param \OC\Files\Storage\StorageFactory $storageLoader
 	 */
-	protected function mountRoot($mountManager, $storageLoader) {
+	protected function mountRoot(Manager $mountManager, StorageFactory $storageLoader) {
 		// mount local file backend as root
 		$configDataDirectory = $this->config->getSystemValue("datadirectory", \OC::$SERVERROOT . "/data");
 		//first set up the local "root" storage
@@ -66,10 +82,17 @@ class Factory extends BasicEmitter {
 			'legacy' => $legacy
 		), $storageLoader);
 		$mountManager->addMount($mount);
+	}
 
+	/**
+	 * setup any mounts provided by apps
+	 *
+	 * @param \OC\Files\Mount\Manager $mountManager
+	 * @param \OCP\IUser $user
+	 */
+	protected function setupFromProviders(Manager $mountManager, IUser $user) {
 		// Chance to mount for other storages
-		$mountConfigManager = \OC::$server->getMountProviderCollection();
-		$mounts = $mountConfigManager->getMountsForUser($user);
+		$mounts = $this->mountProvider->getMountsForUser($user);
 		array_walk($mounts, array($mountManager, 'addMount'));
 	}
 
@@ -127,10 +150,8 @@ class Factory extends BasicEmitter {
 			return $this->root;
 		}
 		$mountManager = new Manager();
-		$storageLoader = new Loader();
 		\OC::$server->getEventLogger()->start('setup_fs_root', 'Setup filesystem root');
-
-		$storageLoader->addStorageWrapper('oc_quota', function ($mountPoint, $storage) {
+		$this->storageFactory->addStorageWrapper('oc_quota', function ($mountPoint, $storage) {
 			/**
 			 * @var \OC\Files\Storage\Storage $storage
 			 */
@@ -149,9 +170,9 @@ class Factory extends BasicEmitter {
 			return $storage;
 		});
 
-		$this->mountRoot($mountManager, $storageLoader);
+		$this->mountRoot($mountManager, $this->storageFactory);
 		\OC::$server->getEventLogger()->end('setup_fs_root');
-		$this->root = new Root($mountManager, $storageLoader, new View(''));
+		$this->root = new Root($mountManager, $this->storageFactory, new View(''));
 		return $this->root;
 	}
 
@@ -171,6 +192,7 @@ class Factory extends BasicEmitter {
 		if (is_null($mountManager->getMount('/' . $user->getUID()))) {
 			\OC::$server->getEventLogger()->start('setup_fs_' . $user->getUID(), 'Setup filesystem for ' . $user->getUID());
 			$this->mountUserFolder($mountManager, $storageLoader, $user);
+			$this->setupFromProviders($mountManager, $user);
 			$this->setupCacheDir($mountManager, $storageLoader, $user);
 			$this->copySkeleton($user);
 			\OC_Hook::emit('OC_Filesystem', 'post_initMountPoints', array('user' => $user->getUID(), 'user_dir' => $user->getHome()));

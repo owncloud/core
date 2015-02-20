@@ -11,7 +11,7 @@ namespace OC\Files;
 class ObjectStoreFactory extends Factory {
 	/**
 	 * @param \OC\Files\Mount\Manager $mountManager
-	 * @param \OC\Files\Storage\Loader $storageLoader
+	 * @param \OC\Files\Storage\StorageFactory $storageLoader
 	 */
 	protected function mountRoot($mountManager, $storageLoader) {
 		$config = $this->config->getSystemValue('objectstore');

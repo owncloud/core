@@ -13,6 +13,7 @@ use OC\Diagnostics\EventLogger;
 use OC\Diagnostics\QueryLogger;
 use OC\Mail\Mailer;
 use OC\Memcache\ArrayCache;
+use OC\Files\Storage\StorageFactory;
 use OC\Security\CertificateManager;
 use OC\Files\Node\Root;
 use OC\Files\View;
@@ -55,13 +56,18 @@ class Server extends SimpleContainer implements IServerContainer {
 			$tagMapper = $c->query('TagMapper');
 			return new TagManager($tagMapper, $c->getUserSession());
 		});
+		$this->registerService('StorageFactory', function () {
+			return new StorageFactory();
+		});
 		$this->registerService('FilesystemFactory', function (Server $c) {
 			\OC_App::loadApps(array('filesystem'));
 			$config = $c->getConfig();
+			$mountProvider = $c->getMountProviderCollection();
+			$storageFactory = $c->query('StorageFactory');
 			if ($config->getSystemValue('objectstore', false)) {
-				return new \OC\Files\ObjectStoreFactory($config);
+				return new \OC\Files\ObjectStoreFactory($config, $mountProvider, $storageFactory);
 			} else {
-				return new \OC\Files\Factory($config);
+				return new \OC\Files\Factory($config, $mountProvider, $storageFactory);
 			}
 		});
 		$this->registerService('RootFolder', function (Server $c) {
@@ -284,8 +290,8 @@ class Server extends SimpleContainer implements IServerContainer {
 				$c->getL10N('lib', $language)
 			);
 		});
-		$this->registerService('MountConfigManager', function () {
-			$loader = \OC\Files\Filesystem::getLoader();
+		$this->registerService('MountConfigManager', function (Server $c) {
+			$loader = $c->query('StorageFactory');
 			return new \OC\Files\Config\MountProviderCollection($loader);
 		});
 		$this->registerService('IniWrapper', function ($c) {
