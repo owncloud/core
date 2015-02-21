@@ -1,5 +1,7 @@
 <?php
 
+namespace OC\Connector\Sabre;
+
 /**
  * ownCloud
  *
@@ -9,7 +11,7 @@
  * @license AGPL3
  */
 
-class OC_Connector_Sabre_ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin
+class ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin
 {
 	private $nonFatalExceptions = array(
 		'Sabre\DAV\Exception\NotAuthenticated' => true,
@@ -44,7 +46,7 @@ class OC_Connector_Sabre_ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin
 	 */
 	public function initialize(\Sabre\DAV\Server $server) {
 
-		$server->subscribeEvent('exception', array($this, 'logException'), 10);
+		$server->on('exception', array($this, 'logException'), 10);
 	}
 
 	/**
