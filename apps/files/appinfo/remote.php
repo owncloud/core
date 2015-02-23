@@ -27,6 +27,8 @@
  *
  */
 // Backends
+use OC\Connector\Sabre\DevelopmentPlugin;
+
 $authBackend = new OC_Connector_Sabre_Auth();
 $lockBackend = new OC_Connector_Sabre_Locks();
 $requestBackend = new OC_Connector_Sabre_Request();
@@ -45,6 +47,11 @@ $server->addPlugin(new \Sabre\DAV\Browser\Plugin(false, false)); // Show somethi
 $server->addPlugin(new OC_Connector_Sabre_FilesPlugin());
 $server->addPlugin(new OC_Connector_Sabre_MaintenancePlugin());
 $server->addPlugin(new OC_Connector_Sabre_ExceptionLoggerPlugin('webdav'));
+
+// adding webdav development plugin for client development
+if (\OC::$server->getConfig()->getSystemValue('enable.development.plugin')) {
+	$server->addPlugin(new DevelopmentPlugin());
+}
 
 // wait with registering these until auth is handled and the filesystem is setup
 $server->subscribeEvent('beforeMethod', function () use ($server, $objectTree) {
