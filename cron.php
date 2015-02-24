@@ -51,6 +51,21 @@ function handleUnexpectedShutdown() {
 	}
 }
 
+/**
+ * Exclusively create a lock file.
+ *
+ * @param string $lockf lock file name.
+ * @return bool TRUE if lock file was created and FALSE other wise.
+ */
+function createLockFile($lockf) {
+	$f = fopen($lockf, 'x');
+	if ($f === FALSE) {
+		return FALSE;
+	}
+	fclose($f);
+	return TRUE;
+}
+
 try {
 
 	require_once 'lib/base.php';
@@ -103,15 +118,13 @@ try {
 		}
 
 		// check if backgroundjobs is still running
-		if (file_exists(TemporaryCronClass::$lockfile)) {
+		if (!createLockFile(TemporaryCronClass::$lockfile)) {
 			TemporaryCronClass::$keeplock = true;
 			TemporaryCronClass::$sent = true;
 			echo "Another instance of cron.php is still running!" . PHP_EOL;
 			exit(1);
 		}
 
-		// Create a lock file
-		touch(TemporaryCronClass::$lockfile);
 
 		// Work
 		$jobList = \OC::$server->getJobList();
