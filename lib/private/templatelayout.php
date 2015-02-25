@@ -1,4 +1,36 @@
 <?php
+/**
+ * @author Adam Williamson <awilliam@redhat.com>
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Bernhard Posselt <dev@bernhard-posselt.com>
+ * @author Christopher Schäpers <kondou@ts.unde.re>
+ * @author Clark Tomlinson <fallen013@gmail.com>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Michael Gapczynski <gapczynskim@gmail.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Remco Brenninkmeijer <requist1@starmail.nl>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Victor Dubiniuk <dubiniuk@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ */
 use Assetic\Asset\AssetCollection;
 use Assetic\Asset\FileAsset;
 use Assetic\AssetWriter;
@@ -34,9 +66,9 @@ class OC_TemplateLayout extends OC_Template {
 		$this->config = \OC::$server->getConfig();
 
 		// Decide which page we show
-		if( $renderAs == 'user' ) {
+		if($renderAs == 'user') {
 			parent::__construct( 'core', 'layout.user' );
-			if(in_array(OC_APP::getCurrentApp(), array('settings','admin', 'help'))!==false) {
+			if(in_array(OC_App::getCurrentApp(), ['settings','admin', 'help']) !== false) {
 				$this->assign('bodyid', 'body-settings');
 			}else{
 				$this->assign('bodyid', 'body-user');
@@ -45,7 +77,8 @@ class OC_TemplateLayout extends OC_Template {
 			// Update notification
 			if($this->config->getSystemValue('updatechecker', true) === true &&
 				OC_User::isAdminUser(OC_User::getUser())) {
-				$updater = new \OC\Updater(\OC::$server->getHTTPHelper(), \OC::$server->getAppConfig());
+				$updater = new \OC\Updater(\OC::$server->getHTTPHelper(),
+					\OC::$server->getConfig());
 				$data = $updater->check();
 
 				if(isset($data['version']) && $data['version'] != '' and $data['version'] !== Array()) {
@@ -72,9 +105,9 @@ class OC_TemplateLayout extends OC_Template {
 				}
 			}
 			$userDisplayName = OC_User::getDisplayName();
-			$this->assign( 'user_displayname', $userDisplayName );
-			$this->assign( 'user_uid', OC_User::getUser() );
-			$this->assign( 'appsmanagement_active', strpos(OC_Request::requestUri(), OC_Helper::linkToRoute('settings_apps')) === 0 );
+			$this->assign('user_displayname', $userDisplayName);
+			$this->assign('user_uid', OC_User::getUser());
+			$this->assign('appsmanagement_active', strpos(\OC::$server->getRequest()->getRequestUri(), OC_Helper::linkToRoute('settings_apps')) === 0 );
 			$this->assign('enableAvatars', $this->config->getSystemValue('enable_avatars', true));
 			$this->assign('userAvatarSet', \OC_Helper::userAvatarSet(OC_User::getUser()));
 		} else if ($renderAs == 'error') {
@@ -92,7 +125,9 @@ class OC_TemplateLayout extends OC_Template {
 
 
 		if(empty(self::$versionHash)) {
-			self::$versionHash = md5(implode(',', OC_App::getAppVersions()));
+			$v = OC_App::getAppVersions();
+			$v['core'] = implode('.', \OC_Util::getVersion());
+			self::$versionHash = md5(implode(',', $v));
 		}
 
 		$useAssetPipeline = self::isAssetPipelineEnabled();
@@ -214,7 +249,7 @@ class OC_TemplateLayout extends OC_Template {
 	}
 
 	/**
-	 * Converts the absolute filepath to a relative path from \OC::$SERVERROOT
+	 * Converts the absolute file path to a relative path from \OC::$SERVERROOT
 	 * @param string $filePath Absolute path
 	 * @return string Relative path
 	 * @throws Exception If $filePath is not under \OC::$SERVERROOT

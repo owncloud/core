@@ -1,11 +1,25 @@
 <?php
 /**
- * Copyright (c) 2014 Robin Appelman <icewind@owncloud.com>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
-
 namespace OCA\Files_Sharing\External;
 
 use OC\Files\Filesystem;
@@ -142,27 +156,47 @@ class Storage extends DAV implements ISharedStorage {
 		$this->updateChecked = true;
 		try {
 			return parent::hasUpdated('', $time);
+		} catch (StorageInvalidException $e) {
+			// check if it needs to be removed
+			$this->checkStorageAvailability();
+			throw $e;
 		} catch (StorageNotAvailableException $e) {
-			// see if we can find out why the share is unavailable\
-			try {
-				$this->getShareInfo();
-			} catch (NotFoundException $shareException) {
-				// a 404 can either mean that the share no longer exists or there is no ownCloud on the remote
-				if ($this->testRemote()) {
-					// valid ownCloud instance means that the public share no longer exists
-					// since this is permanent (re-sharing the file will create a new token)
-					// we remove the invalid storage
-					$this->manager->removeShare($this->mountPoint);
-					$this->manager->getMountManager()->removeMount($this->mountPoint);
-					throw new StorageInvalidException();
-				} else {
-					// ownCloud instance is gone, likely to be a temporary server configuration error
-					throw $e;
-				}
-			} catch (\Exception $shareException) {
-				// todo, maybe handle 403 better and ask the user for a new password
+			// check if it needs to be removed or just temp unavailable
+			$this->checkStorageAvailability();
+			throw $e;
+		}
+	}
+
+	/**
+	 * Check whether this storage is permanently or temporarily
+	 * unavailable
+	 *
+	 * @throws \OCP\Files\StorageNotAvailableException
+	 * @throws \OCP\Files\StorageInvalidException
+	 */
+	public function checkStorageAvailability() {
+		// see if we can find out why the share is unavailable
+		try {
+			$this->getShareInfo();
+		} catch (NotFoundException $e) {
+			// a 404 can either mean that the share no longer exists or there is no ownCloud on the remote
+			if ($this->testRemote()) {
+				// valid ownCloud instance means that the public share no longer exists
+				// since this is permanent (re-sharing the file will create a new token)
+				// we remove the invalid storage
+				$this->manager->removeShare($this->mountPoint);
+				$this->manager->getMountManager()->removeMount($this->mountPoint);
+				throw new StorageInvalidException();
+			} else {
+				// ownCloud instance is gone, likely to be a temporary server configuration error
 				throw $e;
 			}
+		} catch (ForbiddenException $e) {
+			// auth error, remove share for now (provide a dialog in the future)
+			$this->manager->removeShare($this->mountPoint);
+			$this->manager->getMountManager()->removeMount($this->mountPoint);
+			throw new StorageInvalidException();
+		} catch (\Exception $e) {
 			throw $e;
 		}
 	}
@@ -194,7 +228,7 @@ class Storage extends DAV implements ISharedStorage {
 		$remote = $this->getRemote();
 		$token = $this->getToken();
 		$password = $this->getPassword();
-		$url = $remote . '/index.php/apps/files_sharing/shareinfo?t=' . $token;
+		$url = rtrim($remote, '/') . '/index.php/apps/files_sharing/shareinfo?t=' . $token;
 
 		$ch = curl_init();
 

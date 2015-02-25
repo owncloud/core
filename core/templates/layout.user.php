@@ -21,8 +21,8 @@
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<meta name="apple-mobile-web-app-title" content="<?php p((!empty($_['application']) && $_['appid']!='files')? $_['application']:'ownCloud'); ?>">
 		<meta name="mobile-web-app-capable" content="yes">
-		<link rel="shortcut icon" type="image/png" href="<?php print_unescaped(image_path('', 'favicon.png')); ?>" />
-		<link rel="apple-touch-icon-precomposed" href="<?php print_unescaped(image_path('', 'favicon-touch.png')); ?>" />
+		<link rel="shortcut icon" type="image/png" href="<?php print_unescaped(image_path($_['appid'], 'favicon.png')); ?>" />
+		<link rel="apple-touch-icon-precomposed" href="<?php print_unescaped(image_path($_['appid'], 'favicon-touch.png')); ?>" />
 		<?php foreach($_['cssfiles'] as $cssfile): ?>
 			<link rel="stylesheet" href="<?php print_unescaped($cssfile); ?>" type="text/css" media="screen" />
 		<?php endforeach; ?>
@@ -32,7 +32,7 @@
 		<?php print_unescaped($_['headers']); ?>
 	</head>
 	<body id="<?php p($_['bodyid']);?>">
-	<noscript><div id="nojavascript"><div><?php print_unescaped($l->t('This application requires JavaScript for correct operation. Please <a href="http://enable-javascript.com/" target="_blank">enable JavaScript</a> and reload the page.')); ?></div></div></noscript>
+	<?php include('layout.noscript.warning.php'); ?>
 	<div id="notification-container">
 		<div id="notification"></div>
 		<?php if ($_['updateAvailable']): ?>

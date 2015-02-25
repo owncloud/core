@@ -1,11 +1,26 @@
 <?php
 /**
- * Copyright (c) 2014 Robin Appelman <icewind@owncloud.com>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Bjoern Schiessle <schiessle@owncloud.com>
+ * @author Joas Schilling <nickvergessen@gmx.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Robin Appelman <icewind@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
-
 namespace OC\Security;
 
 use OC\Files\Filesystem;
@@ -16,15 +31,22 @@ use OCP\ICertificateManager;
  */
 class CertificateManager implements ICertificateManager {
 	/**
-	 * @var \OCP\IUser
+	 * @var string
 	 */
-	protected $user;
+	protected $uid;
 
 	/**
-	 * @param \OCP\IUser $user
+	 * @var \OC\Files\View
 	 */
-	public function __construct($user) {
-		$this->user = $user;
+	protected $view;
+
+	/**
+	 * @param string $uid
+	 * @param \OC\Files\View $view relative zu data/
+	 */
+	public function __construct($uid, \OC\Files\View $view) {
+		$this->uid = $uid;
+		$this->view = $view;
 	}
 
 	/**
@@ -34,18 +56,18 @@ class CertificateManager implements ICertificateManager {
 	 */
 	public function listCertificates() {
 		$path = $this->getPathToCertificates() . 'uploads/';
-		if (!is_dir($path)) {
+		if (!$this->view->is_dir($path)) {
 			return array();
 		}
 		$result = array();
-		$handle = opendir($path);
+		$handle = $this->view->opendir($path);
 		if (!is_resource($handle)) {
 			return array();
 		}
 		while (false !== ($file = readdir($handle))) {
 			if ($file != '.' && $file != '..') {
 				try {
-					$result[] = new Certificate(file_get_contents($path . $file), $file);
+					$result[] = new Certificate($this->view->file_get_contents($path . $file), $file);
 				} catch(\Exception $e) {}
 			}
 		}
@@ -60,10 +82,10 @@ class CertificateManager implements ICertificateManager {
 		$path = $this->getPathToCertificates();
 		$certs = $this->listCertificates();
 
-		$fh_certs = fopen($path . '/rootcerts.crt', 'w');
+		$fh_certs = $this->view->fopen($path . '/rootcerts.crt', 'w');
 		foreach ($certs as $cert) {
 			$file = $path . '/uploads/' . $cert->getName();
-			$data = file_get_contents($file);
+			$data = $this->view->file_get_contents($file);
 			if (strpos($data, 'BEGIN CERTIFICATE')) {
 				fwrite($fh_certs, $data);
 				fwrite($fh_certs, "\r\n");
@@ -87,17 +109,14 @@ class CertificateManager implements ICertificateManager {
 		}
 
 		$dir = $this->getPathToCertificates() . 'uploads/';
-		if (!file_exists($dir)) {
-			//path might not exist (e.g. non-standard OC_User::getHome() value)
-			//in this case create full path using 3rd (recursive=true) parameter.
-			//note that we use "normal" php filesystem functions here since the certs need to be local
-			mkdir($dir, 0700, true);
+		if (!$this->view->file_exists($dir)) {
+			$this->view->mkdir($dir);
 		}
 
 		try {
 			$file = $dir . $name;
 			$certificateObject = new Certificate($certificate, $name);
-			file_put_contents($file, $certificate);
+			$this->view->file_put_contents($file, $certificate);
 			$this->createCertificateBundle();
 			return $certificateObject;
 		} catch (\Exception $e) {
@@ -117,8 +136,8 @@ class CertificateManager implements ICertificateManager {
 			return false;
 		}
 		$path = $this->getPathToCertificates() . 'uploads/';
-		if (file_exists($path . $name)) {
-			unlink($path . $name);
+		if ($this->view->file_exists($path . $name)) {
+			$this->view->unlink($path . $name);
 			$this->createCertificateBundle();
 		}
 		return true;
@@ -134,7 +153,7 @@ class CertificateManager implements ICertificateManager {
 	}
 
 	private function getPathToCertificates() {
-		$path = $this->user ? $this->user->getHome() . '/files_external/' : '/files_external/';
+		$path = is_null($this->uid) ? '/files_external/' : '/' . $this->uid . '/files_external/';
 
 		return $path;
 	}

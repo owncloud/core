@@ -1,31 +1,28 @@
 <?php
 /**
- * ownCloud
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Thomas Tanghus <thomas@tanghus.net>
  *
- * @author Thomas Müller
- * @copyright 2013 Thomas Müller deepdiver@owncloud.com
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
-/**
- * Public interface of ownCloud for apps to use.
- * Request interface
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
 // use OCP namespace for all classes that are considered public.
 // This means that they should be used by apps instead of the internal ownCloud classes
 namespace OCP;
@@ -127,4 +124,76 @@ interface IRequest {
 	 * @return bool true if CSRF check passed
 	 */
 	public function passesCSRFCheck();
+
+	/**
+	 * Returns an ID for the request, value is not guaranteed to be unique and is mostly meant for logging
+	 * If `mod_unique_id` is installed this value will be taken.
+	 * @return string
+	 */
+	public function getId();
+
+	/**
+	 * Returns the remote address, if the connection came from a trusted proxy
+	 * and `forwarded_for_headers` has been configured then the IP address
+	 * specified in this header will be returned instead.
+	 * Do always use this instead of $_SERVER['REMOTE_ADDR']
+	 * @return string IP address
+	 */
+	public function getRemoteAddress();
+
+	/**
+	 * Returns the server protocol. It respects reverse proxy servers and load
+	 * balancers.
+	 * @return string Server protocol (http or https)
+	 */
+	public function getServerProtocol();
+
+	/**
+	* Returns the request uri, even if the website uses one or more
+	* reverse proxies
+	* @return string
+	*/
+	public function getRequestUri();
+
+	/**
+	 * Get raw PathInfo from request (not urldecoded)
+	 * @throws \Exception
+	 * @return string Path info
+	 */
+	public function getRawPathInfo();
+
+	/**
+	 * Get PathInfo from request
+	 * @throws \Exception
+	 * @return string|false Path info or false when not found
+	 */
+	public function getPathInfo();
+
+	/**
+	 * Returns the script name, even if the website uses one or more
+	 * reverse proxies
+	 * @return string the script name
+	 */
+	public function getScriptName();
+
+	/**
+	 * Checks whether the user agent matches a given regex
+	 * @param array $agent array of agent names
+	 * @return bool true if at least one of the given agent matches, false otherwise
+	 */
+	public function isUserAgent(array $agent);
+
+	/**
+	 * Returns the unverified server host from the headers without checking
+	 * whether it is a trusted domain
+	 * @return string Server host
+	 */
+	public function getInsecureServerHost();
+
+	/**
+	 * Returns the server host from the headers, or the first configured
+	 * trusted domain if the host isn't in the trusted list
+	 * @return string Server host
+	 */
+	public function getServerHost();
 }

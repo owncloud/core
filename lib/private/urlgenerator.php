@@ -1,12 +1,31 @@
 <?php
 /**
- * Copyright (c) 2013 Bart Visscher <bartv@thisnet.nl>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Joas Schilling <nickvergessen@gmx.de>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Thomas Tanghus <thomas@tanghus.net>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
 namespace OC;
 use OC_Defaults;
 use OCP\IURLGenerator;
@@ -32,8 +51,7 @@ class URLGenerator implements IURLGenerator {
 	/**
 	 * Creates an url using a defined route
 	 * @param string $route
-	 * @param array $parameters
-	 * @internal param array $args with param=>value, will be appended to the returned url
+	 * @param array $parameters args with param=>value, will be appended to the returned url
 	 * @return string the url
 	 *
 	 * Returns a url to the given route.
@@ -45,9 +63,8 @@ class URLGenerator implements IURLGenerator {
 
 	/**
 	 * Creates an absolute url using a defined route
-	 * @param string $route
-	 * @param array $parameters
-	 * @internal param array $args with param=>value, will be appended to the returned url
+	 * @param string $routeName
+	 * @param array $arguments args with param=>value, will be appended to the returned url
 	 * @return string the url
 	 *
 	 * Returns an absolute url to the given route.
@@ -172,7 +189,8 @@ class URLGenerator implements IURLGenerator {
 			? ''
 			: \OC::$WEBROOT;
 
-		return \OC_Request::serverProtocol() . '://' . \OC_Request::serverHost(). $webRoot . $separator . $url;
+		$request = \OC::$server->getRequest();
+		return $request->getServerProtocol() . '://' . $request->getServerHost() . $webRoot . $separator . $url;
 	}
 
 	/**

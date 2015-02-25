@@ -1,26 +1,29 @@
 <?php
-
 /**
- * ownCloud - Core
+ * @author Christopher Schäpers <kondou@ts.unde.re>
+ * @author Frank Karlitschek <frank@owncloud.org>
+ * @author Jakob Sack <mail@jakobsack.de>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
  *
- * @author Morris Jobke
- * @copyright 2013 Morris Jobke morris.jobke@gmail.com
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
 OCP\JSON::checkLoggedIn();
 OCP\JSON::callCheck();
 \OC::$server->getSession()->close();
@@ -30,9 +33,9 @@ $files = new \OCA\Files\App(
 	\OC::$server->getL10N('files')
 );
 $result = $files->rename(
-	isset($_GET['dir']) ? $_GET['dir'] : '',
-	isset($_GET['file']) ? $_GET['file'] : '',
-	isset($_GET['newname']) ? $_GET['newname'] : ''
+	isset($_GET['dir']) ? (string)$_GET['dir'] : '',
+	isset($_GET['file']) ? (string)$_GET['file'] : '',
+	isset($_GET['newname']) ? (string)$_GET['newname'] : ''
 );
 
 if($result['success'] === true){

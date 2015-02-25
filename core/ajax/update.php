@@ -1,4 +1,29 @@
 <?php
+/**
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Michael Gapczynski <gapczynskim@gmail.com>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Victor Dubiniuk <dubiniuk@owncloud.com>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ */
 set_time_limit(0);
 require_once '../../lib/base.php';
 
@@ -11,9 +36,12 @@ if (OC::checkUpgrade(false)) {
 	$eventSource = \OC::$server->createEventSource();
 	$updater = new \OC\Updater(
 			\OC::$server->getHTTPHelper(),
-			\OC::$server->getAppConfig(),
+			\OC::$server->getConfig(),
 			\OC_Log::$object
 	);
+	$incompatibleApps = [];
+	$disabledThirdPartyApps = [];
+
 	$updater->listen('\OC\Updater', 'maintenanceStart', function () use ($eventSource, $l) {
 		$eventSource->send('success', (string)$l->t('Turned on maintenance mode'));
 	});
@@ -32,13 +60,11 @@ if (OC::checkUpgrade(false)) {
 	$updater->listen('\OC\Updater', 'appUpgrade', function ($app, $version) use ($eventSource, $l) {
 		$eventSource->send('success', (string)$l->t('Updated "%s" to %s', array($app, $version)));
 	});
-	$updater->listen('\OC\Updater', 'disabledApps', function ($appList) use ($eventSource, $l) {
-		$list = array();
-		foreach ($appList as $appId) {
-			$info = OC_App::getAppInfo($appId);
-			$list[] = $info['name'] . ' (' . $info['id'] . ')';
-		}
-		$eventSource->send('success', (string)$l->t('Disabled incompatible apps: %s', implode(', ', $list)));
+	$updater->listen('\OC\Updater', 'incompatibleAppDisabled', function ($app) use (&$incompatibleApps) {
+		$incompatibleApps[]= $app;
+	});
+	$updater->listen('\OC\Updater', 'thirdPartyAppDisabled', function ($app) use (&$disabledThirdPartyApps) {
+		$disabledThirdPartyApps[]= $app;
 	});
 	$updater->listen('\OC\Updater', 'failure', function ($message) use ($eventSource) {
 		$eventSource->send('failure', $message);
@@ -47,6 +73,15 @@ if (OC::checkUpgrade(false)) {
 	});
 
 	$updater->upgrade();
+
+	if (!empty($incompatibleApps)) {
+		$eventSource->send('notice',
+			(string)$l->t('Following incompatible apps have been disabled: %s', implode(', ', $incompatibleApps)));
+	}
+	if (!empty($disabledThirdPartyApps)) {
+		$eventSource->send('notice',
+			(string)$l->t('Following 3rd party apps have been disabled: %s', implode(', ', $disabledThirdPartyApps)));
+	}
 
 	$eventSource->send('done', '');
 	$eventSource->close();

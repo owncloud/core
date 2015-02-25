@@ -74,6 +74,7 @@
 	display: block;
 	width: 100%;
 	line-height: 44px;
+	min-height: 44px;
 	padding: 0 12px;
 	overflow: hidden;
 	-moz-box-sizing: border-box; box-sizing: border-box;
@@ -483,6 +484,9 @@ button.loading {
 	padding: 30px;
 	color: #555;
 	border-top: 1px solid #ddd;
+}
+.section.hidden {
+	display: none !important;
 }
 /* no top border for first settings item */
 #app-content > .section:first-child {

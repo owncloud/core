@@ -1,28 +1,33 @@
 <?php
-
 /**
- * ownCloud
- *
- * @copyright (C) 2014 ownCloud, Inc.
- *
- * @author Florin Peter <owncloud@florin-peter.de>
  * @author Bjoern Schiessle <schiessle@owncloud.com>
+ * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Florin Peter <github@florin-peter.de>
+ * @author Joas Schilling <nickvergessen@gmx.de>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Owen Winkler <a_github@midnightcircus.com>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This library is distributed in the hope that it will be useful,
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
 namespace OCA\Files_Encryption;
 
 /**
@@ -293,8 +298,8 @@ class Helper {
 	public static function getUserFromPath($path) {
 		$split = self::splitPath($path);
 
-		if (count($split) > 3 && (
-			$split[2] === 'files' || $split[2] === 'files_versions' || $split[2] === 'cache')) {
+		if (count($split) > 2 && (
+			$split[2] === 'files' || $split[2] === 'files_versions' || $split[2] === 'cache' || $split[2] === 'files_trashbin')) {
 
 			$user = $split[1];
 

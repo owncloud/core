@@ -1,11 +1,26 @@
 <?php
 /**
- * Copyright (c) 2014 Robin Appelman <icewind@owncloud.com>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Bjoern Schiessle <schiessle@owncloud.com>
+ * @author Michael Gapczynski <gapczynskim@gmail.com>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
-
 namespace OC\Files\Cache;
 
 /**
@@ -31,6 +46,9 @@ class Updater {
 	}
 
 	public function propagate($path, $time = null) {
+		if (Scanner::isPartialFile($path)) {
+			return;
+		}
 		$this->propagator->addChange($path);
 		$this->propagator->propagateChanges($time);
 	}
@@ -42,6 +60,9 @@ class Updater {
 	 * @param int $time
 	 */
 	public function update($path, $time = null) {
+		if(Scanner::isPartialFile($path)) {
+			return;
+		}
 		/**
 		 * @var \OC\Files\Storage\Storage $storage
 		 * @var string $internalPath
@@ -64,6 +85,9 @@ class Updater {
 	 * @param string $path
 	 */
 	public function remove($path) {
+		if (Scanner::isPartialFile($path)) {
+			return;
+		}
 		/**
 		 * @var \OC\Files\Storage\Storage $storage
 		 * @var string $internalPath
@@ -88,6 +112,9 @@ class Updater {
 	 * @param string $target
 	 */
 	public function rename($source, $target) {
+		if (Scanner::isPartialFile($source) or Scanner::isPartialFile($target)) {
+			return;
+		}
 		/**
 		 * @var \OC\Files\Storage\Storage $sourceStorage
 		 * @var \OC\Files\Storage\Storage $targetStorage

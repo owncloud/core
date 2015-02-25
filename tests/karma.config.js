@@ -53,7 +53,8 @@ module.exports = function(config) {
 					// up with the global namespace/classes/state
 					'apps/files_sharing/js/app.js',
 					'apps/files_sharing/js/sharedfilelist.js',
-					'apps/files_sharing/js/share.js'
+					'apps/files_sharing/js/share.js',
+					'apps/files_sharing/js/external.js'
 				],
 				testFiles: ['apps/files_sharing/tests/js/*.js']
 			},
@@ -70,9 +71,13 @@ module.exports = function(config) {
 			{
 				name: 'settings',
 				srcFiles: [
+					'settings/js/apps.js',
 					'settings/js/users/deleteHandler.js'
 				],
-				testFiles: ['settings/tests/js/users/deleteHandlerSpec.js']
+				testFiles: [
+					'settings/tests/js/appsSpec.js',
+					'settings/tests/js/users/deleteHandlerSpec.js'
+				]
 			}
 		];
 	}

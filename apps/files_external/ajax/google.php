@@ -1,4 +1,30 @@
 <?php
+/**
+ * @author Adam Williamson <awilliam@redhat.com>
+ * @author Christopher Schäpers <kondou@ts.unde.re>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Michael Gapczynski <gapczynskim@gmail.com>
+ * @author Michael Gapczynski <GapczynskiM@gmail.com>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Volkan Gezer <volkangezer@gmail.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ */
 set_include_path(get_include_path().PATH_SEPARATOR.
 	\OC_App::getAppPath('files_external').'/3rdparty/google-api-php-client/src');
 require_once 'Google/Client.php';
@@ -10,9 +36,9 @@ $l = \OC::$server->getL10N('files_external');
 
 if (isset($_POST['client_id']) && isset($_POST['client_secret']) && isset($_POST['redirect'])) {
 	$client = new Google_Client();
-	$client->setClientId($_POST['client_id']);
-	$client->setClientSecret($_POST['client_secret']);
-	$client->setRedirectUri($_POST['redirect']);
+	$client->setClientId((string)$_POST['client_id']);
+	$client->setClientSecret((string)$_POST['client_secret']);
+	$client->setRedirectUri((string)$_POST['redirect']);
 	$client->setScopes(array('https://www.googleapis.com/auth/drive'));
 	$client->setAccessType('offline');
 	if (isset($_POST['step'])) {
@@ -30,7 +56,7 @@ if (isset($_POST['client_id']) && isset($_POST['client_secret']) && isset($_POST
 			}
 		} else if ($step == 2 && isset($_POST['code'])) {
 			try {
-				$token = $client->authenticate($_POST['code']);
+				$token = $client->authenticate((string)$_POST['code']);
 				OCP\JSON::success(array('data' => array(
 					'token' => $token
 				)));

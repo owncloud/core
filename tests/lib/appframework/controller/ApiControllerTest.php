@@ -4,7 +4,7 @@
  * ownCloud - App Framework
  *
  * @author Bernhard Posselt
- * @copyright 2012 Bernhard Posselt nukeawhale@gmail.com
+ * @copyright 2012 Bernhard Posselt <dev@bernhard-posselt.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -25,18 +25,20 @@
 namespace OCP\AppFramework;
 
 use OC\AppFramework\Http\Request;
-use OCP\AppFramework\Http\TemplateResponse;
 
 
 class ChildApiController extends ApiController {};
 
 
 class ApiControllerTest extends \Test\TestCase {
-
+    /** @var ChildApiController */
+    protected $controller;
 
     public function testCors() {
         $request = new Request(
-            array('server' => array('HTTP_ORIGIN' => 'test'))
+            ['server' => ['HTTP_ORIGIN' => 'test']],
+            $this->getMock('\OCP\Security\ISecureRandom'),
+            $this->getMock('\OCP\IConfig')
         );
         $this->controller = new ChildApiController('app', $request, 'verbs',
             'headers', 100);

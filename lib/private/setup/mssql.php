@@ -1,11 +1,31 @@
 <?php
-
+/**
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Joas Schilling <nickvergessen@gmx.de>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ */
 namespace OC\Setup;
 
 class MSSQL extends AbstractDatabase {
 	public $dbprettyname = 'MS SQL Server';
 
-	public function setupDatabase() {
+	public function setupDatabase($username) {
 		//check if the database user has admin right
 		$masterConnectionInfo = array( "Database" => "master", "UID" => $this->dbuser, "PWD" => $this->dbpassword);
 
@@ -21,8 +41,10 @@ class MSSQL extends AbstractDatabase {
 					$this->trans->t('You need to enter either an existing account or the administrator.'));
 		}
 
-		\OC_Config::setValue('dbuser', $this->dbuser);
-		\OC_Config::setValue('dbpassword', $this->dbpassword);
+		\OC_Config::setValues([
+			'dbuser'		=> $this->dbuser,
+			'dbpassword'	=> $this->dbpassword,
+		]);
 
 		$this->createDBLogin($masterConnection);
 

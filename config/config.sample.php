@@ -55,7 +55,7 @@ $CONFIG = array(
  *
  * @deprecated This salt is deprecated and only used for legacy-compatibility, developers
  * should *NOT* use this value for anything nowadays.
- * 
+ *
  *'passwordsalt' => 'd3c944a9af095aa08f',
  */
 'passwordsalt' => '',
@@ -229,9 +229,9 @@ $CONFIG = array(
 'skeletondirectory' => '',
 
 /**
- * The ``user_backends`` app allows you to configure alternate authentication
- * backends. Supported backends are IMAP (OC_User_IMAP), SMB (OC_User_SMB), and
- * FTP (OC_User_FTP).
+ * The ``user_backends`` app (which needs to be enabled first) allows you to
+ * configure alternate authentication backends. Supported backends are:
+ * IMAP (OC_User_IMAP), SMB (OC_User_SMB), and FTP (OC_User_FTP).
  */
 'user_backends' => array(
 	array(
@@ -508,6 +508,16 @@ $CONFIG = array(
 'cron_log' => true,
 
 /**
+ * Location of the lock file for cron executions can be specified here.
+ * Default is within the tmp directory. The file is named in the following way
+ *   owncloud-server-$INSTANCEID-cron.lock
+ * where $INSTANCEID is the string specified in the instanceid field.
+ * Because the cron lock file is accessed in regular intervals, it may prevent enabled disk drives from spinning down.
+ * A different location for this file can solve such issues.
+ */
+'cron.lockfile.location' => '',
+
+/**
  * Enables log rotation and limits the total size of logfiles. The default is 0,
  * or no rotation. Specify a size in bytes, for example 104857600 (100 megabytes
  * = 100 * 1024 * 1024 bytes). A new logfile is created with a new name when the
@@ -621,6 +631,18 @@ $CONFIG = array(
  * original size. A value of ``1`` or ``null`` disables scaling.
  */
 'preview_max_scale_factor' => 10,
+
+/**
+ * max file size for generating image previews with imagegd (default behaviour)
+ * If the image is bigger, it'll try other preview generators,
+ * but will most likely show the default mimetype icon
+ *
+ * Value represents the maximum filesize in megabytes
+ * Default is 50
+ * Set to -1 for no limit
+ */
+'preview_max_filesize_image' => 50,
+
 /**
  * custom path for LibreOffice/OpenOffice binary
  */
@@ -657,6 +679,10 @@ $CONFIG = array(
  *  - OC\Preview\StarOffice
  *  - OC\Preview\SVG
  *  - OC\Preview\TIFF
+ *
+ * .. note:: Troubleshooting steps for the MS Word previews are available
+ *    at the :doc:`collaborative_documents_configuration` section
+ *    of the Administrators Manual.
  *
  * The following providers are not available in Microsoft Windows:
  *
@@ -914,15 +940,6 @@ $CONFIG = array(
 ),
 
 /**
- * Custom CSP policy, changing this will overwrite the standard policy
- */
-'custom_csp_policy' =>
-	"default-src 'self'; script-src 'self' 'unsafe-eval'; ".
-	"style-src 'self' 'unsafe-inline'; frame-src *; img-src *; ".
-	"font-src 'self' data:; media-src *; connect-src *",
-
-
-/**
  * All other config options
  */
 
@@ -942,6 +959,16 @@ $CONFIG = array(
  * `trusted_proxies`
  */
 'forwarded_for_headers' => array('HTTP_X_FORWARDED', 'HTTP_FORWARDED_FOR'),
+
+/**
+ * max file size for animating gifs on public-sharing-site.
+ * If the gif is bigger, it'll show a static preview
+ *
+ * Value represents the maximum filesize in megabytes
+ * Default is 10
+ * Set to -1 for no limit
+ */
+'max_filesize_animated_gifs_public_sharing' => 10,
 
 /**
  * This entry is just here to show a warning in case somebody copied the sample

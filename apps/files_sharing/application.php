@@ -1,13 +1,25 @@
 <?php
 /**
- * @author Lukas Reschke
- * @copyright 2014 Lukas Reschke lukas@owncloud.com
+ * @author Bjoern Schiessle <schiessle@owncloud.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
-
 namespace OCA\Files_Sharing;
 
 use OC\AppFramework\Utility\SimpleContainer;
@@ -69,12 +81,14 @@ class Application extends App {
 			return Helper::isIncomingServer2serverShareEnabled();
 		});
 		$container->registerService('ExternalManager', function(SimpleContainer $c) use ($server){
+			$user = $server->getUserSession()->getUser();
+			$uid = $user ? $user->getUID() : null;
 			return new \OCA\Files_Sharing\External\Manager(
 					$server->getDatabaseConnection(),
 					\OC\Files\Filesystem::getMountManager(),
 					\OC\Files\Filesystem::getLoader(),
-					$server->getUserSession(),
-					$server->getHTTPHelper()
+					$server->getHTTPHelper(),
+					$uid
 			);
 		});
 

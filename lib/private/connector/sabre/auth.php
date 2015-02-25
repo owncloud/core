@@ -1,27 +1,7 @@
 <?php
+namespace OC\Connector\Sabre;
 
-/**
- * ownCloud
- *
- * @author Jakob Sack
- * @copyright 2011 Jakob Sack kde@jakobsack.de
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
- *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
-class OC_Connector_Sabre_Auth extends \Sabre\DAV\Auth\Backend\AbstractBasic {
+class Auth extends \Sabre\DAV\Auth\Backend\AbstractBasic {
 	const DAV_AUTHENTICATED = 'AUTHENTICATED_TO_DAV_BACKEND';
 
 	/**
@@ -51,17 +31,20 @@ class OC_Connector_Sabre_Auth extends \Sabre\DAV\Auth\Backend\AbstractBasic {
 	 * @return bool
 	 */
 	protected function validateUserPass($username, $password) {
-		if (OC_User::isLoggedIn() &&
-			$this->isDavAuthenticated($username)
+		if (\OC_User::isLoggedIn() &&
+			$this->isDavAuthenticated(\OC_User::getUser())
 		) {
-			OC_Util::setupFS(OC_User::getUser());
+			\OC_Util::setupFS(\OC_User::getUser());
 			\OC::$server->getSession()->close();
 			return true;
 		} else {
-			OC_Util::setUpFS(); //login hooks may need early access to the filesystem
-			if(OC_User::login($username, $password)) {
-				OC_Util::setUpFS(OC_User::getUser());
-				\OC::$server->getSession()->set(self::DAV_AUTHENTICATED, $username);
+			\OC_Util::setUpFS(); //login hooks may need early access to the filesystem
+			if(\OC_User::login($username, $password)) {
+			        // make sure we use owncloud's internal username here
+			        // and not the HTTP auth supplied one, see issue #14048
+			        $ocUser = \OC_User::getUser();
+				\OC_Util::setUpFS($ocUser);
+				\OC::$server->getSession()->set(self::DAV_AUTHENTICATED, $ocUser);
 				\OC::$server->getSession()->close();
 				return true;
 			} else {
@@ -79,7 +62,7 @@ class OC_Connector_Sabre_Auth extends \Sabre\DAV\Auth\Backend\AbstractBasic {
 	 * @return string|null
 	 */
 	public function getCurrentUser() {
-		$user = OC_User::getUser();
+		$user = \OC_User::getUser();
 		if($user && $this->isDavAuthenticated($user)) {
 			return $user;
 		}
@@ -110,11 +93,11 @@ class OC_Connector_Sabre_Auth extends \Sabre\DAV\Auth\Backend\AbstractBasic {
 	 * @return bool
 	 */
 	private function auth(\Sabre\DAV\Server $server, $realm) {
-		if (OC_User::handleApacheAuth() ||
-			(OC_User::isLoggedIn() && is_null(\OC::$server->getSession()->get(self::DAV_AUTHENTICATED)))
+		if (\OC_User::handleApacheAuth() ||
+			(\OC_User::isLoggedIn() && is_null(\OC::$server->getSession()->get(self::DAV_AUTHENTICATED)))
 		) {
-			$user = OC_User::getUser();
-			OC_Util::setupFS($user);
+			$user = \OC_User::getUser();
+			\OC_Util::setupFS($user);
 			$this->currentUser = $user;
 			\OC::$server->getSession()->close();
 			return true;

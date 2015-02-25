@@ -1,31 +1,29 @@
 <?php
 /**
- * ownCloud
+ * @author Bernhard Reiter <ockham@raz.or.at>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
+ * @author Thomas Tanghus <thomas@tanghus.net>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @author Thomas Tanghus
- * @copyright 2013 Thomas Tanghus <thomas@tanghus.net>
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
-/**
- * Public interface of ownCloud for apps to use.
- * Tags interface
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
 // use OCP namespace for all classes that are considered public.
 // This means that they should be used by apps instead of the internal ownCloud classes
 namespace OCP;
@@ -97,7 +95,7 @@ interface ITags {
 	* Throws an exception if the tag could not be found.
 	*
 	* @param string|integer $tag Tag id or name.
-	* @return array An array of object ids or false on error.
+	* @return array|false An array of object ids or false on error.
 	*/
 	public function getIdsForTag($tag);
 
@@ -123,7 +121,7 @@ interface ITags {
 	* Add a new tag.
 	*
 	* @param string $name A string with a name of the tag
-	* @return int the id of the added tag or false if it already exists.
+	* @return int|false the id of the added tag or false if it already exists.
 	*/
 	public function add($name);
 
@@ -158,7 +156,7 @@ interface ITags {
 	/**
 	* Get favorites for an object type
 	*
-	* @return array An array of object ids.
+	* @return array|false An array of object ids.
 	*/
 	public function getFavorites();
 

@@ -1,9 +1,24 @@
 <?php
 /**
- * Copyright (c) 2013 Thomas Müller thomas.mueller@tmit.eu
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Bjoern Schiessle <schiessle@owncloud.com>
+ * @author Joas Schilling <nickvergessen@gmx.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
 namespace OC;
@@ -24,6 +39,19 @@ class ActivityManager implements IManager {
 	 * @var \Closure[]
 	 */
 	private $extensions = array();
+
+	/** @var array list of filters "name" => "is valid" */
+	protected $validFilters = array(
+		'all'	=> true,
+		'by'	=> true,
+		'self'	=> true,
+	);
+
+	/** @var array list of type icons "type" => "css class" */
+	protected $typeIcons = array();
+
+	/** @var array list of special parameters "app" => ["text" => ["parameter" => "type"]] */
+	protected $specialParameters = array();
 
 	/**
 	 * @param $app
@@ -109,24 +137,6 @@ class ActivityManager implements IManager {
 	}
 
 	/**
-	 * @param array $types
-	 * @param string $filter
-	 * @return array
-	 */
-	function filterNotificationTypes($types, $filter) {
-		foreach($this->extensions as $extension) {
-			$c = $extension();
-			if ($c instanceof IExtension) {
-				$result = $c->filterNotificationTypes($types, $filter);
-				if (is_array($result)) {
-					$types = $result;
-				}
-			}
-		}
-		return $types;
-	}
-
-	/**
 	 * @param string $method
 	 * @return array
 	 */
@@ -142,6 +152,30 @@ class ActivityManager implements IManager {
 			}
 		}
 		return $defaultTypes;
+	}
+
+	/**
+	 * @param string $type
+	 * @return string
+	 */
+	function getTypeIcon($type) {
+		if (isset($this->typeIcons[$type])) {
+			return $this->typeIcons[$type];
+		}
+
+		foreach($this->extensions as $extension) {
+			$c = $extension();
+			if ($c instanceof IExtension) {
+				$icon = $c->getTypeIcon($type);
+				if (is_string($icon)) {
+					$this->typeIcons[$type] = $icon;
+					return $icon;
+				}
+			}
+		}
+
+		$this->typeIcons[$type] = '';
+		return '';
 	}
 
 	/**
@@ -173,35 +207,27 @@ class ActivityManager implements IManager {
 	 * @return array|false
 	 */
 	function getSpecialParameterList($app, $text) {
+		if (isset($this->specialParameters[$app][$text])) {
+			return $this->specialParameters[$app][$text];
+		}
+
+		if (!isset($this->specialParameters[$app])) {
+			$this->specialParameters[$app] = array();
+		}
+
 		foreach($this->extensions as $extension) {
 			$c = $extension();
 			if ($c instanceof IExtension) {
 				$specialParameter = $c->getSpecialParameterList($app, $text);
 				if (is_array($specialParameter)) {
+					$this->specialParameters[$app][$text] = $specialParameter;
 					return $specialParameter;
 				}
 			}
 		}
 
+		$this->specialParameters[$app][$text] = false;
 		return false;
-	}
-
-	/**
-	 * @param string $type
-	 * @return string
-	 */
-	function getTypeIcon($type) {
-		foreach($this->extensions as $extension) {
-			$c = $extension();
-			if ($c instanceof IExtension) {
-				$icon = $c->getTypeIcon($type);
-				if (is_string($icon)) {
-					return $icon;
-				}
-			}
-		}
-
-		return '';
 	}
 
 	/**
@@ -249,16 +275,44 @@ class ActivityManager implements IManager {
 	 * @return boolean
 	 */
 	function isFilterValid($filterValue) {
+		if (isset($this->validFilters[$filterValue])) {
+			return $this->validFilters[$filterValue];
+		}
+
 		foreach($this->extensions as $extension) {
 			$c = $extension();
 			if ($c instanceof IExtension) {
 				if ($c->isFilterValid($filterValue) === true) {
+					$this->validFilters[$filterValue] = true;
 					return true;
 				}
 			}
 		}
 
+		$this->validFilters[$filterValue] = false;
 		return false;
+	}
+
+	/**
+	 * @param array $types
+	 * @param string $filter
+	 * @return array
+	 */
+	function filterNotificationTypes($types, $filter) {
+		if (!$this->isFilterValid($filter)) {
+			return $types;
+		}
+
+		foreach($this->extensions as $extension) {
+			$c = $extension();
+			if ($c instanceof IExtension) {
+				$result = $c->filterNotificationTypes($types, $filter);
+				if (is_array($result)) {
+					$types = $result;
+				}
+			}
+		}
+		return $types;
 	}
 
 	/**
@@ -266,6 +320,9 @@ class ActivityManager implements IManager {
 	 * @return array
 	 */
 	function getQueryForFilter($filter) {
+		if (!$this->isFilterValid($filter)) {
+			return [null, null];
+		}
 
 		$conditions = array();
 		$parameters = array();

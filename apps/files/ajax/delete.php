@@ -1,13 +1,40 @@
 <?php
-
+/**
+ * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Bjoern Schiessle <schiessle@owncloud.com>
+ * @author Frank Karlitschek <frank@owncloud.org>
+ * @author Jakob Sack <mail@jakobsack.de>
+ * @author Joas Schilling <nickvergessen@gmx.de>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ */
 OCP\JSON::checkLoggedIn();
 OCP\JSON::callCheck();
 \OC::$server->getSession()->close();
 
 
 // Get data
-$dir = isset($_POST['dir']) ? $_POST['dir'] : '';
-$allFiles = isset($_POST["allfiles"]) ? $_POST["allfiles"] : false;
+$dir = isset($_POST['dir']) ? (string)$_POST['dir'] : '';
+$allFiles = isset($_POST["allfiles"]) ? (string)$_POST["allfiles"] : false;
 
 // delete all files in dir ?
 if ($allFiles === 'true') {
@@ -17,7 +44,7 @@ if ($allFiles === 'true') {
 		$files[] = $fileInfo['name'];
 	}
 } else {
-	$files = isset($_POST["file"]) ? $_POST["file"] : $_POST["files"];
+	$files = isset($_POST["file"]) ? (string)$_POST["file"] : (string)$_POST["files"];
 	$files = json_decode($files);
 }
 $filesWithError = '';
@@ -36,7 +63,12 @@ foreach ($files as $file) {
 }
 
 // get array with updated storage stats (e.g. max file size) after upload
-$storageStats = \OCA\Files\Helper::buildFileStorageStatistics($dir);
+try {
+	$storageStats = \OCA\Files\Helper::buildFileStorageStatistics($dir);
+} catch(\OCP\Files\NotFoundException $e) {
+	OCP\JSON::error(['data' => ['message' => 'File not found']]);
+	return;
+}
 
 if ($success) {
 	OCP\JSON::success(array("data" => array_merge(array("dir" => $dir, "files" => $files), $storageStats)));

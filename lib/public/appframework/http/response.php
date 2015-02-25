@@ -1,30 +1,28 @@
 <?php
 /**
- * ownCloud - App Framework
+ * @author Bernhard Posselt <dev@bernhard-posselt.com>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Thomas Tanghus <thomas@tanghus.net>
  *
- * @author Bernhard Posselt, Thomas Tanghus, Bart Visscher
- * @copyright 2012 Bernhard Posselt <dev@bernhard-posselt.com>
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
-/**
- * Public interface of ownCloud for apps to use.
- * AppFramework\HTTP\Response class
- */
-
 namespace OCP\AppFramework\Http;
 
 use OCP\AppFramework\Http;
@@ -71,6 +69,9 @@ class Response {
 	 * @var string
 	 */
 	private $ETag;
+
+	/** @var ContentSecurityPolicy|null Used Content-Security-Policy */
+	private $contentSecurityPolicy = null;
 
 
 	/**
@@ -186,12 +187,18 @@ class Response {
 	 * @return array the headers
 	 */
 	public function getHeaders() {
-		$mergeWith = array();
+		$mergeWith = [];
 
 		if($this->lastModified) {
 			$mergeWith['Last-Modified'] =
 				$this->lastModified->format(\DateTime::RFC2822);
 		}
+
+		// Build Content-Security-Policy and use default if none has been specified
+		if(is_null($this->contentSecurityPolicy)) {
+			$this->setContentSecurityPolicy(new ContentSecurityPolicy());
+		}
+		$this->headers['Content-Security-Policy'] = $this->contentSecurityPolicy->buildPolicy();
 
 		if($this->ETag) {
 			$mergeWith['ETag'] = '"' . $this->ETag . '"';
@@ -219,6 +226,25 @@ class Response {
 		$this->status = $status;
 
 		return $this;
+	}
+
+	/**
+	 * Set a Content-Security-Policy
+	 * @param ContentSecurityPolicy $csp Policy to set for the response object
+	 * @return $this
+	 */
+	public function setContentSecurityPolicy(ContentSecurityPolicy $csp) {
+		$this->contentSecurityPolicy = $csp;
+		return $this;
+	}
+
+	/**
+	 * Get the currently used Content-Security-Policy
+	 * @return ContentSecurityPolicy|null Used Content-Security-Policy or null if
+	 *                                    none specified.
+	 */
+	public function getContentSecurityPolicy() {
+		return $this->contentSecurityPolicy;
 	}
 
 

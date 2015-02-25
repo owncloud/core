@@ -1,5 +1,25 @@
 <?php
-
+/**
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Michael Gapczynski <GapczynskiM@gmail.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ */
 OCP\JSON::checkAppEnabled('files_external');
 OCP\JSON::callCheck();
 
@@ -20,4 +40,4 @@ if ($_POST['isPersonal'] == 'true') {
 	$isPersonal = false;
 }
 
-OC_Mount_Config::removeMountPoint($_POST['mountPoint'], $_POST['mountType'], $_POST['applicable'], $isPersonal);
+OC_Mount_Config::removeMountPoint((string)$_POST['mountPoint'], (string)$_POST['mountType'], (string)$_POST['applicable'], $isPersonal);

@@ -1,11 +1,35 @@
 <?php
 /**
- * Copyright (c) 2012 Robin Appelman <icewind@owncloud.com>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Andreas Fischer <bantu@owncloud.com>
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Bjoern Schiessle <schiessle@owncloud.com>
+ * @author Florin Peter <github@florin-peter.de>
+ * @author Joas Schilling <nickvergessen@gmx.de>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Michael Gapczynski <gapczynskim@gmail.com>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author TheSFReader <TheSFReader@gmail.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Victor Dubiniuk <dubiniuk@owncloud.com>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
-
 namespace OC\Files\Cache;
 
 /**
@@ -74,9 +98,11 @@ class Cache {
 
 		if (!isset(self::$mimetypeIds[$mime])) {
 			try {
-				$result = \OC_DB::executeAudited('INSERT INTO `*PREFIX*mimetypes`(`mimetype`) VALUES(?)', array($mime));
-				self::$mimetypeIds[$mime] = \OC_DB::insertid('*PREFIX*mimetypes');
-				self::$mimetypes[self::$mimetypeIds[$mime]] = $mime;
+				$connection = \OC_DB::getConnection();
+				$connection->insertIfNotExist('*PREFIX*mimetypes', [
+					'mimetype'	=> $mime,
+				]);
+				$this->loadMimetypes();
 			} catch (\Doctrine\DBAL\DBALException $e) {
 				\OC_Log::write('core', 'Exception during mimetype insertion: ' . $e->getmessage(), \OC_Log::DEBUG);
 				return -1;
@@ -95,6 +121,8 @@ class Cache {
 	}
 
 	public function loadMimetypes() {
+		self::$mimetypeIds = self::$mimetypes = array();
+
 		$result = \OC_DB::executeAudited('SELECT `id`, `mimetype` FROM `*PREFIX*mimetypes`', array());
 		if ($result) {
 			while ($row = $result->fetchRow()) {
@@ -193,6 +221,9 @@ class Cache {
 					$file['size'] = $file['unencrypted_size'];
 				}
 				$file['permissions'] = (int)$file['permissions'];
+				$file['mtime'] = (int)$file['mtime'];
+				$file['storage_mtime'] = (int)$file['storage_mtime'];
+				$file['size'] = 0 + $file['size'];
 			}
 			return $files;
 		} else {
@@ -408,12 +439,14 @@ class Cache {
 			$result = \OC_DB::executeAudited($sql, array($this->getNumericStorageId(), $source . '/%'));
 			$childEntries = $result->fetchAll();
 			$sourceLength = strlen($source);
+			\OC_DB::beginTransaction();
 			$query = \OC_DB::prepare('UPDATE `*PREFIX*filecache` SET `path` = ?, `path_hash` = ? WHERE `fileid` = ?');
 
 			foreach ($childEntries as $child) {
 				$targetPath = $target . substr($child['path'], $sourceLength);
 				\OC_DB::executeAudited($query, array($targetPath, md5($targetPath), $child['fileid']));
 			}
+			\OC_DB::commit();
 		}
 
 		$sql = 'UPDATE `*PREFIX*filecache` SET `path` = ?, `path_hash` = ?, `name` = ?, `parent` =? WHERE `fileid` = ?';
@@ -434,7 +467,7 @@ class Cache {
 	/**
 	 * @param string $file
 	 *
-	 * @return int, Cache::NOT_FOUND, Cache::PARTIAL, Cache::SHALLOW or Cache::COMPLETE
+	 * @return int Cache::NOT_FOUND, Cache::PARTIAL, Cache::SHALLOW or Cache::COMPLETE
 	 */
 	public function getStatus($file) {
 		// normalize file
@@ -596,6 +629,7 @@ class Cache {
 				'WHERE `parent` = ? AND `storage` = ?';
 			$result = \OC_DB::executeAudited($sql, array($id, $this->getNumericStorageId()));
 			if ($row = $result->fetchRow()) {
+				$result->closeCursor();
 				list($sum, $min, $unencryptedSum) = array_values($row);
 				$sum = 0 + $sum;
 				$min = 0 + $min;
@@ -618,6 +652,8 @@ class Cache {
 				if ($totalSize !== -1 and $unencryptedSum > 0) {
 					$totalSize = $unencryptedSum;
 				}
+			} else {
+				$result->closeCursor();
 			}
 		}
 		return $totalSize;
@@ -684,7 +720,7 @@ class Cache {
 	 * instead does a global search in the cache table
 	 *
 	 * @param int $id
-	 * @return array, first element holding the storage id, second the path
+	 * @return array first element holding the storage id, second the path
 	 */
 	static public function getById($id) {
 		$sql = 'SELECT `storage`, `path` FROM `*PREFIX*filecache` WHERE `fileid` = ?';

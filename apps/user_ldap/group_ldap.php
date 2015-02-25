@@ -1,26 +1,31 @@
 <?php
-
 /**
- * ownCloud – LDAP group backend
+ * @author Alexander Bergolth <leo@strike.wu.ac.at>
+ * @author Andreas Fischer <bantu@owncloud.com>
+ * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Christopher Schäpers <kondou@ts.unde.re>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @author Arthur Schiwon
- * @copyright 2012 Arthur Schiwon blizzz@owncloud.com
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
 namespace OCA\user_ldap;
 
 use OCA\user_ldap\lib\Access;
@@ -249,32 +254,71 @@ class GROUP_LDAP extends BackendUtility implements \OCP\GroupInterface {
 	}
 
 	/**
+	 * returns a filter for a "users in primary group" search or count operation
+	 *
+	 * @param string $groupDN
+	 * @param string $search
+	 * @return string
+	 * @throws \Exception
+	 */
+	private function prepareFilterForUsersInPrimaryGroup($groupDN, $search = '') {
+		$groupID = $this->getGroupPrimaryGroupID($groupDN);
+		if($groupID === false) {
+			throw new \Exception('Not a valid group');
+		}
+
+		$filterParts = [];
+		$filterParts[] = $this->access->getFilterForUserCount();
+		if(!empty($search)) {
+			$filterParts[] = $this->access->getFilterPartForUserSearch($search);
+		}
+		$filterParts[] = 'primaryGroupID=' . $groupID;
+
+		$filter = $this->access->combineFilterWithAnd($filterParts);
+
+		return $filter;
+	}
+
+	/**
 	 * returns a list of users that have the given group as primary group
 	 *
 	 * @param string $groupDN
-	 * @param $limit
+	 * @param string $search
+	 * @param int $limit
 	 * @param int $offset
 	 * @return string[]
 	 */
-	public function getUsersInPrimaryGroup($groupDN, $limit = -1, $offset = 0) {
-		$groupID = $this->getGroupPrimaryGroupID($groupDN);
-		if($groupID === false) {
+	public function getUsersInPrimaryGroup($groupDN, $search = '', $limit = -1, $offset = 0) {
+		try {
+			$filter = $this->prepareFilterForUsersInPrimaryGroup($groupDN, $search);
+			return $this->access->fetchListOfUsers(
+				$filter,
+				array($this->access->connection->ldapUserDisplayName, 'dn'),
+				$limit,
+				$offset
+			);
+		} catch (\Exception $e) {
 			return array();
 		}
+	}
 
-		$filter = $this->access->combineFilterWithAnd(array(
-			$this->access->connection->ldapUserFilter,
-			'primaryGroupID=' . $groupID
-		));
-
-		$users = $this->access->fetchListOfUsers(
-			$filter,
-			array($this->access->connection->ldapUserDisplayName, 'dn'),
-			$limit,
-			$offset
-		);
-
-		return $users;
+	/**
+	 * returns the number of users that have the given group as primary group
+	 *
+	 * @param string $groupDN
+	 * @param string $search
+	 * @param int $limit
+	 * @param int $offset
+	 * @return int
+	 */
+	public function countUsersInPrimaryGroup($groupDN, $search = '', $limit = -1, $offset = 0) {
+		try {
+			$filter = $this->prepareFilterForUsersInPrimaryGroup($groupDN, $search);
+			$users = $this->access->countUsers($filter, array('dn'), $limit, $offset);
+			return (int)$users;
+		} catch (\Exception $e) {
+			return 0;
+		}
 	}
 
 	/**
@@ -405,6 +449,7 @@ class GROUP_LDAP extends BackendUtility implements \OCP\GroupInterface {
 		if(!$this->groupExists($gid)) {
 			return array();
 		}
+		$search = $this->access->escapeFilterPart($search, true);
 		$cacheKey = 'usersInGroup-'.$gid.'-'.$search.'-'.$limit.'-'.$offset;
 		// check for cache of the exact query
 		$groupUsers = $this->access->connection->getFromCache($cacheKey);
@@ -473,7 +518,7 @@ class GROUP_LDAP extends BackendUtility implements \OCP\GroupInterface {
 		$groupUsers = array_slice($groupUsers, $offset, $limit);
 
 		//and get users that have the group as primary
-		$primaryUsers = $this->getUsersInPrimaryGroup($groupDN, $limit, $offset);
+		$primaryUsers = $this->getUsersInPrimaryGroup($groupDN, $search, $limit, $offset);
 		$groupUsers = array_unique(array_merge($groupUsers, $primaryUsers));
 
 		$this->access->connection->writeToCache($cacheKey, $groupUsers);
@@ -512,10 +557,13 @@ class GROUP_LDAP extends BackendUtility implements \OCP\GroupInterface {
 		}
 
 		if(empty($search)) {
-			$groupUsers = count($members);
+			$primaryUsers = $this->countUsersInPrimaryGroup($groupDN, '');
+			$groupUsers = count($members) + $primaryUsers;
+
 			$this->access->connection->writeToCache($cacheKey, $groupUsers);
 			return $groupUsers;
 		}
+		$search = $this->access->escapeFilterPart($search, true);
 		$isMemberUid =
 			(strtolower($this->access->connection->ldapGroupMemberAssocAttr)
 			=== 'memberuid');
@@ -557,10 +605,9 @@ class GROUP_LDAP extends BackendUtility implements \OCP\GroupInterface {
 		}
 
 		//and get users that have the group as primary
-		$primaryUsers = $this->getUsersInPrimaryGroup($groupDN);
-		$groupUsers = array_unique(array_merge($groupUsers, $primaryUsers));
+		$primaryUsers = $this->countUsersInPrimaryGroup($groupDN, $search);
 
-		return count($groupUsers);
+		return count($groupUsers) + $primaryUsers;
 	}
 
 	/**
@@ -623,6 +670,7 @@ class GROUP_LDAP extends BackendUtility implements \OCP\GroupInterface {
 		if(!$this->enabled) {
 			return array();
 		}
+		$search = $this->access->escapeFilterPart($search, true);
 		$pagingSize = $this->access->connection->ldapPagingSize;
 		if ((! $this->access->connection->hasPagedResultSupport)
 		   	|| empty($pagingSize)) {

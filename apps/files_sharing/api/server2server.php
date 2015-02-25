@@ -1,26 +1,23 @@
 <?php
 /**
- * ownCloud - OCS API for server-to-server shares
- *
- * @copyright (C) 2014 ownCloud, Inc.
- *
  * @author Bjoern Schiessle <schiessle@owncloud.com>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This library is distributed in the hope that it will be useful,
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
 namespace OCA\Files_Sharing\API;
 
 class Server2Server {
@@ -34,7 +31,7 @@ class Server2Server {
 	public function createShare($params) {
 
 		if (!$this->isS2SEnabled(true)) {
-			return new \OC_OCS_Result(null, 503, 'Server does not support server-to-server sharing');
+			return new \OC_OCS_Result(null, 503, 'Server does not support federated cloud sharing');
 		}
 
 		$remote = isset($_POST['remote']) ? $_POST['remote'] : null;
@@ -60,8 +57,9 @@ class Server2Server {
 					\OC::$server->getDatabaseConnection(),
 					\OC\Files\Filesystem::getMountManager(),
 					\OC\Files\Filesystem::getLoader(),
-					\OC::$server->getUserSession(),
-					\OC::$server->getHTTPHelper());
+					\OC::$server->getHTTPHelper(),
+					$shareWith
+				);
 
 			$name = \OCP\Files::buildNotExistingFileName('/', $name);
 
@@ -93,7 +91,7 @@ class Server2Server {
 	public function acceptShare($params) {
 
 		if (!$this->isS2SEnabled()) {
-			return new \OC_OCS_Result(null, 503, 'Server does not support server-to-server sharing');
+			return new \OC_OCS_Result(null, 503, 'Server does not support federated cloud sharing');
 		}
 
 		$id = $params['id'];
@@ -120,7 +118,7 @@ class Server2Server {
 	public function declineShare($params) {
 
 		if (!$this->isS2SEnabled()) {
-			return new \OC_OCS_Result(null, 503, 'Server does not support server-to-server sharing');
+			return new \OC_OCS_Result(null, 503, 'Server does not support federated cloud sharing');
 		}
 
 		$id = $params['id'];
@@ -151,7 +149,7 @@ class Server2Server {
 	public function unshare($params) {
 
 		if (!$this->isS2SEnabled()) {
-			return new \OC_OCS_Result(null, 503, 'Server does not support server-to-server sharing');
+			return new \OC_OCS_Result(null, 503, 'Server does not support federated cloud sharing');
 		}
 
 		$id = $params['id'];

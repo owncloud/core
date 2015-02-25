@@ -1,33 +1,39 @@
 <?php
 /**
- * Copyright (c) 2012 Robin Appelman <icewind@owncloud.com>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
- */
-
-/**
- * Class for abstraction of filesystem functions
- * This class won't call any filesystem functions for itself but will pass them to the correct OC_Filestorage object
- * this class should also handle all the file permission related stuff
+ * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Bjoern Schiessle <schiessle@owncloud.com>
+ * @author Christopher Schäpers <kondou@ts.unde.re>
+ * @author Florin Peter <github@florin-peter.de>
+ * @author Georg Ehrke <georg@ownCloud.com>
+ * @author Joas Schilling <nickvergessen@gmx.de>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Michael Gapczynski <gapczynskim@gmail.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Sam Tuke <mail@samtuke.com>
+ * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
+ * @author Stephan Peijnik <speijnik@anexia-it.com>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
- * Hooks provided:
- *   read(path)
- *   write(path, &run)
- *   post_write(path)
- *   create(path, &run) (when a file is created, both create and write will be emitted in that order)
- *   post_create(path)
- *   delete(path, &run)
- *   post_delete(path)
- *   rename(oldpath,newpath, &run)
- *   post_rename(oldpath,newpath)
- *   copy(oldpath,newpath, &run) (if the newpath doesn't exists yes, copy, create and write will be emitted in that order)
- *   post_rename(oldpath,newpath)
- *   post_initMountPoints(user, user_dir)
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- *   the &run parameter can be set to false to prevent the operation from occurring
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
-
 namespace OC\Files;
 
 use OC\Files\Storage\StorageFactory;
@@ -175,14 +181,18 @@ class Filesystem {
 	 * @param callable $wrapper
 	 */
 	public static function addStorageWrapper($wrapperName, $wrapper) {
-		self::getLoader()->addStorageWrapper($wrapperName, $wrapper);
-
 		$mounts = self::getMountManager()->getAll();
-		foreach ($mounts as $mount) {
-			$mount->wrapStorage($wrapper);
+		if (!self::getLoader()->addStorageWrapper($wrapperName, $wrapper, $mounts)) {
+			// do not re-wrap if storage with this name already existed
+			return;
 		}
 	}
 
+	/**
+	 * Returns the storage factory
+	 *
+	 * @return \OCP\Files\Storage\IStorageFactory
+	 */
 	public static function getLoader() {
 		if (!self::$loader) {
 			self::$loader = new StorageFactory();
@@ -190,6 +200,11 @@ class Filesystem {
 		return self::$loader;
 	}
 
+	/**
+	 * Returns the mount manager
+	 *
+	 * @return \OC\Files\Mount\Manager
+	 */
 	public static function getMountManager() {
 		if (!self::$mounts) {
 			\OC_Util::setupFS();
@@ -284,7 +299,7 @@ class Filesystem {
 		}
 		$mount = self::$mounts->find($path);
 		if ($mount) {
-			return array($mount->getStorage(), $mount->getInternalPath($path));
+			return array($mount->getStorage(), rtrim($mount->getInternalPath($path), '/'));
 		} else {
 			return array(null, null);
 		}
@@ -534,9 +549,11 @@ class Filesystem {
 	 * @return bool
 	 */
 	static public function isFileBlacklisted($filename) {
+		$filename = self::normalizePath($filename);
+
 		$blacklist = \OC_Config::getValue('blacklisted_files', array('.htaccess'));
 		$filename = strtolower(basename($filename));
-		return (in_array($filename, $blacklist));
+		return in_array($filename, $blacklist);
 	}
 
 	/**
@@ -712,9 +729,18 @@ class Filesystem {
 	 * Fix common problems with a file path
 	 * @param string $path
 	 * @param bool $stripTrailingSlash
+	 * @param bool $isAbsolutePath
 	 * @return string
 	 */
 	public static function normalizePath($path, $stripTrailingSlash = true, $isAbsolutePath = false) {
+		/**
+		 * FIXME: This is a workaround for existing classes and files which call
+		 *        this function with another type than a valid string. This
+		 *        conversion should get removed as soon as all existing
+		 *        function calls have been fixed.
+		 */
+		$path = (string)$path;
+
 		$cacheKey = json_encode([$path, $stripTrailingSlash, $isAbsolutePath]);
 
 		if(isset(self::$normalizedPathCache[$cacheKey])) {
@@ -724,6 +750,9 @@ class Filesystem {
 		if ($path == '') {
 			return '/';
 		}
+
+		//normalize unicode if possible
+		$path = \OC_Util::normalizeUnicode($path);
 
 		//no windows style slashes
 		$path = str_replace('\\', '/', $path);
@@ -760,9 +789,6 @@ class Filesystem {
 		if (substr($path, -2) == '/.') {
 			$path = substr($path, 0, -2);
 		}
-
-		//normalize unicode if possible
-		$path = \OC_Util::normalizeUnicode($path);
 
 		$normalizedPath = $windows_drive_letter . $path;
 		self::$normalizedPathCache[$cacheKey] = $normalizedPath;

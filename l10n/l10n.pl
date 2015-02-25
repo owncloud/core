@@ -44,7 +44,7 @@ sub crawlFiles{
 			push( @found, crawlFiles( $dir.'/'.$i ));
 		}
 		else{
-			push(@found,$dir.'/'.$i) if $i =~ /\.js$/ || $i =~ /\.php$/;
+			push(@found,$dir.'/'.$i) if $i =~ /.*(?<!\.min)\.js$/ || $i =~ /\.php$/;
 		}
 	}
 
@@ -153,8 +153,11 @@ elsif( $task eq 'write' ){
 				elsif( defined( $string->msgstr_n() )){
 					# plural translations
 					my @variants = ();
-					my $identifier = $string->msgid()."::".$string->msgid_plural();
-					$identifier =~ s/"/_/g;
+					my $msgid = $string->msgid();
+					$msgid =~ s/^"(.*)"$/$1/;
+					my $msgid_plural = $string->msgid_plural();
+					$msgid_plural =~ s/^"(.*)"$/$1/;
+					my $identifier = "_" . $msgid."_::_".$msgid_plural . "_";
 
 					foreach my $variant ( sort { $a <=> $b} keys( %{$string->msgstr_n()} )){
 						push( @variants, $string->msgstr_n()->{$variant} );

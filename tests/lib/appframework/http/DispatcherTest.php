@@ -24,7 +24,6 @@
 
 namespace OC\AppFramework\Http;
 
-use OC\AppFramework\Middleware\MiddlewareDispatcher;
 use OC\AppFramework\Utility\ControllerMethodReflector;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\JSONResponse;
@@ -33,6 +32,10 @@ use OCP\AppFramework\Controller;
 
 
 class TestController extends Controller {
+	/**
+	 * @param string $appName
+	 * @param \OCP\IRequest $request
+	 */
 	public function __construct($appName, $request) {
 		parent::__construct($appName, $request);
 	}
@@ -40,6 +43,9 @@ class TestController extends Controller {
 	/**
 	 * @param int $int
 	 * @param bool $bool
+	 * @param int $test
+	 * @param int $test2
+	 * @return array
 	 */
 	public function exec($int, $bool, $test=4, $test2=1) {
 		$this->registerResponder('text', function($in) {
@@ -52,6 +58,9 @@ class TestController extends Controller {
 	/**
 	 * @param int $int
 	 * @param bool $bool
+	 * @param int $test
+	 * @param int $test2
+	 * @return DataResponse
 	 */
 	public function execDataResponse($int, $bool, $test=4, $test2=1) {
 		return new DataResponse(array(
@@ -67,6 +76,7 @@ class DispatcherTest extends \Test\TestCase {
 	private $dispatcher;
 	private $controllerMethod;
 	private $response;
+	private $request;
 	private $lastModified;
 	private $etag;
 	private $http;
@@ -276,13 +286,17 @@ class DispatcherTest extends \Test\TestCase {
 
 
 	public function testControllerParametersInjected() {
-		$this->request = new Request(array(
-			'post' => array(
+		$this->request = new Request(
+			[
+				'post' => [
 				'int' => '3',
 				'bool' => 'false'
-			),
-			'method' => 'POST'
-		));
+				],
+				'method' => 'POST'
+			],
+			$this->getMock('\OCP\Security\ISecureRandom'),
+			$this->getMock('\OCP\IConfig')
+		);
 		$this->dispatcher = new Dispatcher(
 			$this->http, $this->middlewareDispatcher, $this->reflector,
 			$this->request
@@ -298,14 +312,18 @@ class DispatcherTest extends \Test\TestCase {
 
 
 	public function testControllerParametersInjectedDefaultOverwritten() {
-		$this->request = new Request(array(
-			'post' => array(
-				'int' => '3',
-				'bool' => 'false',
-				'test2' => 7
-			),
-			'method' => 'POST'
-		));
+		$this->request = new Request(
+			[
+				'post' => [
+					'int' => '3',
+					'bool' => 'false',
+					'test2' => 7
+				],
+				'method' => 'POST',
+			],
+			$this->getMock('\OCP\Security\ISecureRandom'),
+			$this->getMock('\OCP\IConfig')
+		);
 		$this->dispatcher = new Dispatcher(
 			$this->http, $this->middlewareDispatcher, $this->reflector,
 			$this->request
@@ -322,16 +340,20 @@ class DispatcherTest extends \Test\TestCase {
 
 
 	public function testResponseTransformedByUrlFormat() {
-		$this->request = new Request(array(
-			'post' => array(
-				'int' => '3',
-				'bool' => 'false'
-			),
-			'urlParams' => array(
-				'format' => 'text'
-			),
-			'method' => 'GET'
-		));
+		$this->request = new Request(
+			[
+				'post' => [
+					'int' => '3',
+					'bool' => 'false'
+				],
+				'urlParams' => [
+					'format' => 'text'
+				],
+				'method' => 'GET'
+			],
+			$this->getMock('\OCP\Security\ISecureRandom'),
+			$this->getMock('\OCP\IConfig')
+		);
 		$this->dispatcher = new Dispatcher(
 			$this->http, $this->middlewareDispatcher, $this->reflector,
 			$this->request
@@ -347,16 +369,20 @@ class DispatcherTest extends \Test\TestCase {
 
 
 	public function testResponseTransformsDataResponse() {
-		$this->request = new Request(array(
-			'post' => array(
-				'int' => '3',
-				'bool' => 'false'
-			),
-			'urlParams' => array(
-				'format' => 'json'
-			),
-			'method' => 'GET'
-		));
+		$this->request = new Request(
+			[
+				'post' => [
+					'int' => '3',
+					'bool' => 'false'
+				],
+				'urlParams' => [
+					'format' => 'json'
+				],
+				'method' => 'GET'
+			],
+			$this->getMock('\OCP\Security\ISecureRandom'),
+			$this->getMock('\OCP\IConfig')
+		);
 		$this->dispatcher = new Dispatcher(
 			$this->http, $this->middlewareDispatcher, $this->reflector,
 			$this->request
@@ -372,17 +398,21 @@ class DispatcherTest extends \Test\TestCase {
 
 
 	public function testResponseTransformedByAcceptHeader() {
-		$this->request = new Request(array(
-			'post' => array(
-				'int' => '3',
-				'bool' => 'false'
-			),
-			'server' => array(
-				'HTTP_ACCEPT' => 'application/text, test',
-				'HTTP_CONTENT_TYPE' => 'application/x-www-form-urlencoded'
-			),
-			'method' => 'PUT'
-		));
+		$this->request = new Request(
+			[
+				'post' => [
+					'int' => '3',
+					'bool' => 'false'
+				],
+				'server' => [
+					'HTTP_ACCEPT' => 'application/text, test',
+					'HTTP_CONTENT_TYPE' => 'application/x-www-form-urlencoded'
+				],
+				'method' => 'PUT'
+			],
+			$this->getMock('\OCP\Security\ISecureRandom'),
+			$this->getMock('\OCP\IConfig')
+		);
 		$this->dispatcher = new Dispatcher(
 			$this->http, $this->middlewareDispatcher, $this->reflector,
 			$this->request
@@ -398,19 +428,23 @@ class DispatcherTest extends \Test\TestCase {
 
 
 	public function testResponsePrimarilyTransformedByParameterFormat() {
-		$this->request = new Request(array(
-			'post' => array(
-				'int' => '3',
-				'bool' => 'false'
-			),
-			'get' => array(
-				'format' => 'text'
-			),
-			'server' => array(
-				'HTTP_ACCEPT' => 'application/json, test'
-			),
-			'method' => 'POST'
-		));
+		$this->request = new Request(
+			[
+				'post' => [
+					'int' => '3',
+					'bool' => 'false'
+				],
+				'get' => [
+					'format' => 'text'
+				],
+				'server' => [
+					'HTTP_ACCEPT' => 'application/json, test'
+				],
+				'method' => 'POST'
+			],
+			$this->getMock('\OCP\Security\ISecureRandom'),
+			$this->getMock('\OCP\IConfig')
+		);
 		$this->dispatcher = new Dispatcher(
 			$this->http, $this->middlewareDispatcher, $this->reflector,
 			$this->request

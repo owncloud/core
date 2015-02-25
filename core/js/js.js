@@ -116,17 +116,30 @@ var OC={
 
 	/**
 	 * Generates the absolute url for the given relative url, which can contain parameters.
+	 * Parameters will be URL encoded automatically.
 	 * @param {string} url
-	 * @param params
+	 * @param [params] params
+	 * @param [options] options
+	 * @param {bool} [options.escape=true] enable/disable auto escape of placeholders (by default enabled)
 	 * @return {string} Absolute URL for the given relative URL
 	 */
-	generateUrl: function(url, params) {
+	generateUrl: function(url, params, options) {
+		var defaultOptions = {
+				escape: true
+			},
+			allOptions = options || {};
+		_.defaults(allOptions, defaultOptions);
+
 		var _build = function (text, vars) {
 			var vars = vars || [];
 			return text.replace(/{([^{}]*)}/g,
 				function (a, b) {
-					var r = vars[b];
-					return typeof r === 'string' || typeof r === 'number' ? r : a;
+					var r = (vars[b]);
+					if(allOptions.escape) {
+						return (typeof r === 'string' || typeof r === 'number') ? encodeURIComponent(r) : encodeURIComponent(a);
+					} else {
+						return (typeof r === 'string' || typeof r === 'number') ? r : a;
+					}
 				}
 			);
 		};
@@ -1213,7 +1226,7 @@ $.fn.filterAttr = function(attr_name, attr_value) {
 function humanFileSize(size, skipSmallSizes) {
 	var humanList = ['B', 'kB', 'MB', 'GB', 'TB'];
 	// Calculate Log with base 1024: size = 1024 ** order
-	var order = size?Math.floor(Math.log(size) / Math.log(1024)):0;
+	var order = size > 0 ? Math.floor(Math.log(size) / Math.log(1024)) : 0;
 	// Stay in range of the byte sizes that are defined
 	order = Math.min(humanList.length - 1, order);
 	var readableFormat = humanList[order];

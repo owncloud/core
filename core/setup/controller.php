@@ -1,12 +1,30 @@
 <?php
 /**
- * Copyright (c) 2013 Bart Visscher <bartv@thisnet.nl>
- * Copyright (c) 2014 Lukas Reschke <lukas@owncloud.com>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author ideaship <ideaship@users.noreply.github.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Volkan Gezer <volkangezer@gmail.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
-
 namespace OC\Core\Setup;
 
 use bantu\IniGetWrapper\IniGetWrapper;
@@ -57,7 +75,7 @@ class Controller {
 
 		if(isset($post['install']) AND $post['install']=='true') {
 			// We have to launch the installation process :
-			$e = \OC_Setup::install($post);
+			$e = \OC\Setup::install($post);
 			$errors = array('errors' => $e);
 
 			if(count($e) > 0) {
@@ -100,7 +118,7 @@ class Controller {
 
 	public function loadAutoConfig($post) {
 		if( file_exists($this->autoConfigFile)) {
-			\OC_Log::write('core', 'Autoconfig file found, setting up owncloud...', \OC_Log::INFO);
+			\OC_Log::write('core', 'Autoconfig file found, setting up ownCloud…', \OC_Log::INFO);
 			$AUTOCONFIG = array();
 			include $this->autoConfigFile;
 			$post = array_merge ($post, $AUTOCONFIG);
@@ -127,14 +145,10 @@ class Controller {
 	 * in case of errors/warnings
 	 */
 	public function getSystemInfo() {
-		$setup = new \OC_Setup($this->config);
+		$setup = new \OC\Setup($this->config);
 		$databases = $setup->getSupportedDatabases();
 
 		$dataDir = $this->config->getSystemValue('datadirectory', \OC::$SERVERROOT.'/data');
-		$vulnerableToNullByte = false;
-		if(@file_exists(__FILE__."\0Nullbyte")) { // Check if the used PHP version is vulnerable to the NULL Byte attack (CVE-2006-7243)
-			$vulnerableToNullByte = true;
-		} 
 
 		$errors = array();
 
@@ -145,7 +159,7 @@ class Controller {
 		$htAccessWorking = true;
 		if (is_dir($dataDir) && is_writable($dataDir)) {
 			// Protect data directory here, so we can test if the protection is working
-			\OC_Setup::protectDataDirectory();
+			\OC\Setup::protectDataDirectory();
 
 			try {
 				$htAccessWorking = \OC_Util::isHtaccessWorking();
@@ -174,7 +188,7 @@ class Controller {
 			$errors[] = array(
 				'error' => $this->l10n->t(
 					'It seems that this %s instance is running on a 32-bit PHP environment and the open_basedir has been configured in php.ini. ' .
-					'This will lead to problems with files over 4GB and is highly discouraged.',
+					'This will lead to problems with files over 4 GB and is highly discouraged.',
 					$this->defaults->getName()
 				),
 				'hint' => $this->l10n->t('Please remove the open_basedir setting within your php.ini or switch to 64-bit PHP.')
@@ -184,7 +198,7 @@ class Controller {
 			$errors[] = array(
 				'error' => $this->l10n->t(
 					'It seems that this %s instance is running on a 32-bit PHP environment and cURL is not installed. ' .
-					'This will lead to problems with files over 4GB and is highly discouraged.',
+					'This will lead to problems with files over 4 GB and is highly discouraged.',
 					$this->defaults->getName()
 				),
 				'hint' => $this->l10n->t('Please install the cURL extension and restart your webserver.')
@@ -200,7 +214,6 @@ class Controller {
 			'databases' => $databases,
 			'directory' => $dataDir,
 			'htaccessWorking' => $htAccessWorking,
-			'vulnerableToNullByte' => $vulnerableToNullByte,
 			'errors' => $errors,
 		);
 	}

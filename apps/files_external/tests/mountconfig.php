@@ -1,26 +1,35 @@
 <?php
 /**
- * ownCloud
+ * @author Bjoern Schiessle <schiessle@owncloud.com>
+ * @author Joas Schilling <nickvergessen@gmx.de>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @author Vincent Petry
- * Copyright (c) 2013 Vincent Petry <pvince81@owncloud.com>
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
 class Test_Mount_Config_Dummy_Storage {
+	public function __construct($params) {
+		if (isset($params['simulateFail']) && $params['simulateFail'] == true) {
+			throw new \Exception('Simulated config validation fail');
+		}
+	}
+
 	public function test() {
 		return true;
 	}
@@ -81,6 +90,13 @@ class Test_Mount_Config extends \Test\TestCase {
 
 	protected function setUp() {
 		parent::setUp();
+
+		OC_Mount_Config::registerBackend('Test_Mount_Config_Dummy_Storage', array(
+				'backend' => 'dummy',
+				'priority' => 150,
+				'configuration' => array()
+			)
+		);
 
 		\OC_User::createUser(self::TEST_USER1, self::TEST_USER1);
 		\OC_User::createUser(self::TEST_USER2, self::TEST_USER2);
@@ -184,7 +200,13 @@ class Test_Mount_Config extends \Test\TestCase {
 		$applicable = 'all';
 		$isPersonal = false;
 
-		$this->assertEquals(true, OC_Mount_Config::addMountPoint('/ext', '\OC\Files\Storage\SFTP', array(), $mountType, $applicable, $isPersonal));
+		$storageOptions = array(
+			'host' => 'localhost',
+			'user' => 'testuser',
+			'password' => '12345',
+		);
+
+		$this->assertEquals(true, OC_Mount_Config::addMountPoint('/ext', '\OC\Files\Storage\SFTP', $storageOptions, $mountType, $applicable, $isPersonal));
 
 		$config = $this->readGlobalConfig();
 		$this->assertEquals(1, count($config));
@@ -205,7 +227,13 @@ class Test_Mount_Config extends \Test\TestCase {
 		$applicable = self::TEST_USER1;
 		$isPersonal = true;
 
-		$this->assertEquals(true, OC_Mount_Config::addMountPoint('/ext', '\OC\Files\Storage\SFTP', array(), $mountType, $applicable, $isPersonal));
+		$storageOptions = array(
+			'host' => 'localhost',
+			'user' => 'testuser',
+			'password' => '12345',
+		);
+
+		$this->assertEquals(true, OC_Mount_Config::addMountPoint('/ext', '\OC\Files\Storage\SFTP', $storageOptions, $mountType, $applicable, $isPersonal));
 
 		$config = $this->readUserConfig();
 		$this->assertEquals(1, count($config));
@@ -236,8 +264,14 @@ class Test_Mount_Config extends \Test\TestCase {
 			implode(',', array_keys($this->allBackends))
 		);
 
+		$storageOptions = array(
+			'host' => 'localhost',
+			'user' => 'testuser',
+			'password' => '12345',
+		);
+
 		// non-local but forbidden
-		$this->assertFalse(OC_Mount_Config::addMountPoint('/ext', '\OC\Files\Storage\SFTP', array(), $mountType, $applicable, $isPersonal));
+		$this->assertFalse(OC_Mount_Config::addMountPoint('/ext', '\OC\Files\Storage\SFTP', $storageOptions, $mountType, $applicable, $isPersonal));
 
 		$this->assertFalse(file_exists($this->userHome . '/mount.json'));
 	}
@@ -629,7 +663,8 @@ class Test_Mount_Config extends \Test\TestCase {
 			'host' => 'someost',
 			'user' => 'someuser',
 			'password' => 'somepassword',
-			'root' => 'someroot'
+			'root' => 'someroot',
+			'share' => '',
 		);
 
 		// add mount point as "test" user
@@ -872,7 +907,8 @@ class Test_Mount_Config extends \Test\TestCase {
 			'host' => 'somehost',
 			'user' => 'someuser',
 			'password' => 'somepassword',
-			'root' => 'someroot'
+			'root' => 'someroot',
+			'share' => '',
 		);
 
 		// Add mount points
@@ -908,7 +944,8 @@ class Test_Mount_Config extends \Test\TestCase {
 			'host' => 'somehost',
 			'user' => 'someuser',
 			'password' => 'somepassword',
-			'root' => 'someroot'
+			'root' => 'someroot',
+			'share' => '',
 		);
 
 		$this->assertTrue(
@@ -954,7 +991,8 @@ class Test_Mount_Config extends \Test\TestCase {
 			'host' => 'somehost',
 			'user' => 'someuser',
 			'password' => 'somepassword',
-			'root' => 'someroot'
+			'root' => 'someroot',
+			'share' => '',
 		);
 
 		// Create personal mount point
@@ -981,5 +1019,30 @@ class Test_Mount_Config extends \Test\TestCase {
 			$mountPointsOther['/'.self::TEST_USER1.'/files/ext']['class']);
 		$this->assertEquals($mountConfig,
 			$mountPointsOther['/'.self::TEST_USER1.'/files/ext']['options']);
+	}
+
+	public function testAllowWritingIncompleteConfigIfStorageContructorFails() {
+		$storageClass = 'Test_Mount_Config_Dummy_Storage';
+		$mountType = 'user';
+		$applicable = 'all';
+		$isPersonal = false;
+
+		$this->assertTrue(
+			OC_Mount_Config::addMountPoint(
+				'/ext',
+				$storageClass,
+				array('simulateFail' => true),
+				$mountType,
+				$applicable,
+				$isPersonal
+			)
+		);
+
+		// config can be retrieved afterwards
+		$mounts = OC_Mount_Config::getSystemMountPoints();
+		$this->assertEquals(1, count($mounts));
+
+		// no storage id was set
+		$this->assertFalse(isset($mounts[0]['storage_id']));
 	}
 }

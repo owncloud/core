@@ -1,10 +1,47 @@
 <?php
 /**
- * Copyright (c) 2012 Robin Appelman <icewind@owncloud.com>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Bjoern Schiessle <schiessle@owncloud.com>
+ * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Florin Peter <github@florin-peter.de>
+ * @author Jesus Macias <jmacias@full-on-net.com>
+ * @author Joas Schilling <nickvergessen@gmx.de>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Klaas Freitag <freitag@owncloud.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Luke Policinski <lpolicinski@gmail.com>
+ * @author Michael Gapczynski <gapczynskim@gmail.com>
+ * @author Michael Gapczynski <GapczynskiM@gmail.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Roman Geber <rgeber@owncloudapps.com>
+ * @author Sam Tuke <mail@samtuke.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Thomas Tanghus <thomas@tanghus.net>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
+namespace OC\Files;
+
+use OC\Files\Cache\Updater;
+use OC\Files\Mount\MoveableMount;
 
 /**
  * Class to provide access to ownCloud filesystem via a "view", and methods for
@@ -22,12 +59,6 @@
  * Filesystem functions are not called directly; they are passed to the correct
  * \OC\Files\Storage\Storage object
  */
-
-namespace OC\Files;
-
-use OC\Files\Cache\Updater;
-use OC\Files\Mount\MoveableMount;
-
 class View {
 	private $fakeRoot = '';
 
@@ -36,7 +67,15 @@ class View {
 	 */
 	protected $updater;
 
+	/**
+	 * @param string $root
+	 * @throws \Exception If $root contains an invalid path
+	 */
 	public function __construct($root = '') {
+		if(!Filesystem::isValidPath($root)) {
+			throw new \Exception();
+		}
+
 		$this->fakeRoot = $root;
 		$this->updater = new Updater($this);
 	}
@@ -87,6 +126,11 @@ class View {
 		if ($this->fakeRoot == '') {
 			return $path;
 		}
+
+		if (rtrim($path,'/') === rtrim($this->fakeRoot, '/')) {
+			return '/';
+		}
+
 		if (strpos($path, $this->fakeRoot) !== 0) {
 			return null;
 		} else {
@@ -237,11 +281,19 @@ class View {
 		return $this->basicOperation('opendir', $path, array('read'));
 	}
 
+	/**
+	 * @param $handle
+	 * @return mixed
+	 */
 	public function readdir($handle) {
 		$fsLocal = new Storage\Local(array('datadir' => '/'));
 		return $fsLocal->readdir($handle);
 	}
 
+	/**
+	 * @param string $path
+	 * @return bool|mixed
+	 */
 	public function is_dir($path) {
 		if ($path == '/') {
 			return true;
@@ -249,6 +301,10 @@ class View {
 		return $this->basicOperation('is_dir', $path);
 	}
 
+	/**
+	 * @param string $path
+	 * @return bool|mixed
+	 */
 	public function is_file($path) {
 		if ($path == '/') {
 			return false;
@@ -256,18 +312,35 @@ class View {
 		return $this->basicOperation('is_file', $path);
 	}
 
+	/**
+	 * @param string $path
+	 * @return mixed
+	 */
 	public function stat($path) {
 		return $this->basicOperation('stat', $path);
 	}
 
+	/**
+	 * @param string $path
+	 * @return mixed
+	 */
 	public function filetype($path) {
 		return $this->basicOperation('filetype', $path);
 	}
 
+	/**
+	 * @param string $path
+	 * @return mixed
+	 */
 	public function filesize($path) {
 		return $this->basicOperation('filesize', $path);
 	}
 
+	/**
+	 * @param string $path
+	 * @return bool|mixed
+	 * @throws \OCP\Files\InvalidPathException
+	 */
 	public function readfile($path) {
 		$this->assertPathLength($path);
 		@ob_end_clean();
@@ -284,18 +357,34 @@ class View {
 		return false;
 	}
 
+	/**
+	 * @param string $path
+	 * @return mixed
+	 */
 	public function isCreatable($path) {
 		return $this->basicOperation('isCreatable', $path);
 	}
 
+	/**
+	 * @param string $path
+	 * @return mixed
+	 */
 	public function isReadable($path) {
 		return $this->basicOperation('isReadable', $path);
 	}
 
+	/**
+	 * @param string $path
+	 * @return mixed
+	 */
 	public function isUpdatable($path) {
 		return $this->basicOperation('isUpdatable', $path);
 	}
 
+	/**
+	 * @param string $path
+	 * @return bool|mixed
+	 */
 	public function isDeletable($path) {
 		$absolutePath = $this->getAbsolutePath($path);
 		$mount = Filesystem::getMountManager()->find($absolutePath);
@@ -305,10 +394,18 @@ class View {
 		return $this->basicOperation('isDeletable', $path);
 	}
 
+	/**
+	 * @param string $path
+	 * @return mixed
+	 */
 	public function isSharable($path) {
 		return $this->basicOperation('isSharable', $path);
 	}
 
+	/**
+	 * @param string $path
+	 * @return bool|mixed
+	 */
 	public function file_exists($path) {
 		if ($path == '/') {
 			return true;
@@ -316,10 +413,19 @@ class View {
 		return $this->basicOperation('file_exists', $path);
 	}
 
+	/**
+	 * @param string $path
+	 * @return mixed
+	 */
 	public function filemtime($path) {
 		return $this->basicOperation('filemtime', $path);
 	}
 
+	/**
+	 * @param string $path
+	 * @param int|string $mtime
+	 * @return bool
+	 */
 	public function touch($path, $mtime = null) {
 		if (!is_null($mtime) and !is_numeric($mtime)) {
 			$mtime = strtotime($mtime);
@@ -347,10 +453,19 @@ class View {
 		return true;
 	}
 
+	/**
+	 * @param string $path
+	 * @return mixed
+	 */
 	public function file_get_contents($path) {
 		return $this->basicOperation('file_get_contents', $path, array('read'));
 	}
 
+	/**
+	 * @param bool $exists
+	 * @param string $path
+	 * @param bool $run
+	 */
 	protected function emit_file_hooks_pre($exists, $path, &$run) {
 		if (!$exists) {
 			\OC_Hook::emit(Filesystem::CLASSNAME, Filesystem::signal_create, array(
@@ -369,6 +484,10 @@ class View {
 		));
 	}
 
+	/**
+	 * @param bool $exists
+	 * @param string $path
+	 */
 	protected function emit_file_hooks_post($exists, $path) {
 		if (!$exists) {
 			\OC_Hook::emit(Filesystem::CLASSNAME, Filesystem::signal_post_create, array(
@@ -384,6 +503,11 @@ class View {
 		));
 	}
 
+	/**
+	 * @param string $path
+	 * @param mixed $data
+	 * @return bool|mixed
+	 */
 	public function file_put_contents($path, $data) {
 		if (is_resource($data)) { //not having to deal with streams in file_put_contents makes life easier
 			$absolutePath = Filesystem::normalizePath($this->getAbsolutePath($path));
@@ -423,6 +547,10 @@ class View {
 		}
 	}
 
+	/**
+	 * @param string $path
+	 * @return bool|mixed
+	 */
 	public function unlink($path) {
 		if ($path === '' || $path === '/') {
 			// do not allow deleting the root
@@ -511,7 +639,7 @@ class View {
 					}
 				} else {
 					if ($this->is_dir($path1)) {
-						$result = $this->copy($path1, $path2);
+						$result = $this->copy($path1, $path2, true);
 						if ($result === true) {
 							$result = $storage1->rmdir($internalPath1);
 						}
@@ -519,6 +647,7 @@ class View {
 						$source = $this->fopen($path1 . $postFix1, 'r');
 						$target = $this->fopen($path2 . $postFix2, 'w');
 						list($count, $result) = \OC_Helper::streamCopy($source, $target);
+						$this->touch($path2, $this->filemtime($path1));
 
 						// close open handle - especially $source is necessary because unlink below will
 						// throw an exception on windows because the file is locked
@@ -526,7 +655,7 @@ class View {
 						fclose($target);
 
 						if ($result !== false) {
-							$storage1->unlink($internalPath1);
+							$result &= $storage1->unlink($internalPath1);
 						}
 					}
 				}
@@ -536,16 +665,18 @@ class View {
 					if ($this->shouldEmitHooks()) {
 						$this->emit_file_hooks_post($exists, $path2);
 					}
-				} elseif ($this->shouldEmitHooks() && $result !== false) {
+				} elseif ($result) {
 					$this->updater->rename($path1, $path2);
-					\OC_Hook::emit(
-						Filesystem::CLASSNAME,
-						Filesystem::signal_post_rename,
-						array(
-							Filesystem::signal_param_oldpath => $this->getHookPath($path1),
-							Filesystem::signal_param_newpath => $this->getHookPath($path2)
-						)
-					);
+					if ($this->shouldEmitHooks($path1) and $this->shouldEmitHooks($path2)) {
+						\OC_Hook::emit(
+							Filesystem::CLASSNAME,
+							Filesystem::signal_post_rename,
+							array(
+								Filesystem::signal_param_oldpath => $this->getHookPath($path1),
+								Filesystem::signal_param_newpath => $this->getHookPath($path2)
+							)
+						);
+					}
 				}
 				return $result;
 			} else {
@@ -556,7 +687,13 @@ class View {
 		}
 	}
 
-	public function copy($path1, $path2) {
+	/**
+	 * @param string $path1
+	 * @param string $path2
+	 * @param bool $preserveMtime
+	 * @return bool|mixed
+	 */
+	public function copy($path1, $path2, $preserveMtime = false) {
 		$postFix1 = (substr($path1, -1, 1) === '/') ? '/' : '';
 		$postFix2 = (substr($path2, -1, 1) === '/') ? '/' : '';
 		$absolutePath1 = Filesystem::normalizePath($this->getAbsolutePath($path1));
@@ -601,10 +738,13 @@ class View {
 				} else {
 					if ($this->is_dir($path1) && ($dh = $this->opendir($path1))) {
 						$result = $this->mkdir($path2);
+						if ($preserveMtime) {
+							$this->touch($path2, $this->filemtime($path1));
+						}
 						if (is_resource($dh)) {
 							while (($file = readdir($dh)) !== false) {
 								if (!Filesystem::isIgnoredDir($file)) {
-									$result = $this->copy($path1 . '/' . $file, $path2 . '/' . $file);
+									$result = $this->copy($path1 . '/' . $file, $path2 . '/' . $file, $preserveMtime);
 								}
 							}
 						}
@@ -612,6 +752,9 @@ class View {
 						$source = $this->fopen($path1 . $postFix1, 'r');
 						$target = $this->fopen($path2 . $postFix2, 'w');
 						list($count, $result) = \OC_Helper::streamCopy($source, $target);
+						if($preserveMtime) {
+							$this->touch($path2, $this->filemtime($path1));
+						}
 						fclose($source);
 						fclose($target);
 					}
@@ -675,6 +818,11 @@ class View {
 		return $this->basicOperation('fopen', $path, $hooks, $mode);
 	}
 
+	/**
+	 * @param string $path
+	 * @return bool|string
+	 * @throws \OCP\Files\InvalidPathException
+	 */
 	public function toTmpFile($path) {
 		$this->assertPathLength($path);
 		if (Filesystem::isValidPath($path)) {
@@ -692,6 +840,12 @@ class View {
 		}
 	}
 
+	/**
+	 * @param string $tmpFile
+	 * @param string $path
+	 * @return bool|mixed
+	 * @throws \OCP\Files\InvalidPathException
+	 */
 	public function fromTmpFile($tmpFile, $path) {
 		$this->assertPathLength($path);
 		if (Filesystem::isValidPath($path)) {
@@ -723,11 +877,23 @@ class View {
 		}
 	}
 
+
+	/**
+	 * @param string $path
+	 * @return mixed
+	 * @throws \OCP\Files\InvalidPathException
+	 */
 	public function getMimeType($path) {
 		$this->assertPathLength($path);
 		return $this->basicOperation('getMimeType', $path);
 	}
 
+	/**
+	 * @param string $type
+	 * @param string $path
+	 * @param bool $raw
+	 * @return bool|null|string
+	 */
 	public function hash($type, $path, $raw = false) {
 		$postFix = (substr($path, -1, 1) === '/') ? '/' : '';
 		$absolutePath = Filesystem::normalizePath($this->getAbsolutePath($path));
@@ -753,6 +919,11 @@ class View {
 		return null;
 	}
 
+	/**
+	 * @param string $path
+	 * @return mixed
+	 * @throws \OCP\Files\InvalidPathException
+	 */
 	public function free_space($path = '/') {
 		$this->assertPathLength($path);
 		return $this->basicOperation('free_space', $path);
@@ -794,10 +965,10 @@ class View {
 
 				$result = \OC_FileProxy::runPostProxies($operation, $this->getAbsolutePath($path), $result);
 
-				if (in_array('delete', $hooks)) {
+				if (in_array('delete', $hooks) and $result) {
 					$this->updater->remove($path);
 				}
-				if (in_array('write', $hooks)) {
+				if (in_array('write', $hooks) and $operation !== 'fopen') {
 					$this->updater->update($path);
 				}
 				if (in_array('touch', $hooks)) {
@@ -1037,7 +1208,22 @@ class View {
 
 					if ($subCache->getStatus('') === Cache\Cache::NOT_FOUND) {
 						$subScanner = $subStorage->getScanner('');
-						$subScanner->scanFile('');
+						try {
+							$subScanner->scanFile('');
+						} catch (\OCP\Files\StorageNotAvailableException $e) {
+							continue;
+						} catch (\OCP\Files\StorageInvalidException $e) {
+							continue;
+						} catch (\Exception $e) {
+							// sometimes when the storage is not available it can be any exception
+							\OCP\Util::writeLog(
+								'core',
+								'Exception while scanning storage "' . $subStorage->getId() . '": ' .
+								get_class($e) . ': ' . $e->getMessage(),
+								\OCP\Util::ERROR
+							);
+							continue;
+						}
 					}
 
 					$rootEntry = $subCache->get('');
@@ -1293,7 +1479,7 @@ class View {
 		$maxLen = min(PHP_MAXPATHLEN, 4000);
 		// Check for the string length - performed using isset() instead of strlen()
 		// because isset() is about 5x-40x faster.
-		if(isset($path[$maxLen])) {
+		if (isset($path[$maxLen])) {
 			$pathLen = strlen($path);
 			throw new \OCP\Files\InvalidPathException("Path length($pathLen) exceeds max path length($maxLen): $path");
 		}
@@ -1329,7 +1515,7 @@ class View {
 	 * @return \OCP\Files\FileInfo
 	 */
 	private function getPartFileInfo($path) {
-		$mount  = $this->getMount($path);
+		$mount = $this->getMount($path);
 		$storage = $mount->getStorage();
 		$internalPath = $mount->getInternalPath($this->getAbsolutePath($path));
 		return new FileInfo(

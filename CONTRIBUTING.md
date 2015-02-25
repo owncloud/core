@@ -16,25 +16,29 @@ If you have questions about how to install or use ownCloud, please direct these 
   - [Android client](https://github.com/owncloud/android/issues)
   - [iOS client](https://github.com/owncloud/ios-issues/issues)
   - [Desktop client](https://github.com/owncloud/mirall/issues)
+  - [Documentation](https://github.com/owncloud/documentation/issues)
   - Apps:
+      - [Activity](https://github.com/owncloud/activity/issues)
       - [Bookmarks](https://github.com/owncloud/bookmarks/issues)
       - [Calendar](https://github.com/owncloud/calendar/issues)
       - [Contacts](https://github.com/owncloud/contacts/issues)
       - [Documents](https://github.com/owncloud/documents/issues)
+      - [Gallery](https://github.com/owncloud/gallery/issues)
       - [Mail](https://github.com/owncloud/mail/issues)
       - [Music](https://github.com/owncloud/music/issues)
       - [News](https://github.com/owncloud/news/issues)
       - [Notes](https://github.com/owncloud/notes/issues)
       - [Shorty](https://github.com/owncloud/shorty/issues)
-      - [All other apps](https://github.com/owncloud/apps/issues) (e.g. Pictures, Tasks, ...)
+      - [Tasks](https://github.com/owncloud/tasks/issues)
+      - [All other apps](https://github.com/owncloud/apps/issues)
 * Report the issue using our [template][template], it includes all the information we need to track down the issue.
 
 Help us to maximize the effort we can spend fixing issues and adding new features, by not reporting duplicate issues.
 
 [template]: https://raw.github.com/owncloud/core/master/issue_template.md
-[mailinglist]: http://mailman.owncloud.org/mailman/listinfo/owncloud
-[forum]: http://forum.owncloud.org/
-[irc]: http://webchat.freenode.net/?channels=owncloud&uio=d4
+[mailinglist]: https://mailman.owncloud.org/mailman/listinfo/owncloud
+[forum]: https://forum.owncloud.org/
+[irc]: https://webchat.freenode.net/?channels=owncloud&uio=d4
 
 ## Contributing to Source Code
 
@@ -44,8 +48,12 @@ Before we're able to merge your code into the ownCloud core, you need to sign ou
 
 Please read the [Developer Manuals][devmanual] to learn how to create your first application or how to test the ownCloud code with PHPUnit.
 
-[agreement]: http://owncloud.org/about/contributor-agreement/
-[devmanual]: http://owncloud.org/dev
+In order to constantly increase the quality of our software we can no longer accept pull request which submit un-tested code.
+It is a must have that changed and added code segments are unit tested.
+In some areas unit testing is hard (aka almost impossible) as of today - in these areas refactoring WHILE fixing a bug is encouraged to enable unit testing.
+
+[agreement]: https://owncloud.org/about/contributor-agreement/
+[devmanual]: https://owncloud.org/dev
 
 ## Translations
 Please submit translations via [Transifex][transifex].

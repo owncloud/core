@@ -1,25 +1,33 @@
 <?php
 /**
- * ownCloud
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Bjoern Schiessle <schiessle@owncloud.com>
+ * @author Christopher Schäpers <kondou@ts.unde.re>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Michael Gapczynski <gapczynskim@gmail.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @author Bjoern Schiessle, Michael Gapczynski
- * @copyright 2012 Michael Gapczynski <mtgap@owncloud.com>
- *            2014 Bjoern Schiessle <schiessle@owncloud.com>
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
-
 namespace OC\Files\Cache;
 
 use OCP\Share_Backend_Collection;
@@ -45,7 +53,7 @@ class Shared_Cache extends Cache {
 	 * Get the source cache of a shared file or folder
 	 *
 	 * @param string $target Shared target file path
-	 * @return \OC\Files\Cache\Cache
+	 * @return \OC\Files\Cache\Cache|false
 	 */
 	private function getSourceCache($target) {
 		if ($target === false || $target === $this->storage->getMountPoint()) {
@@ -82,7 +90,7 @@ class Shared_Cache extends Cache {
 	 * get the stored metadata of a file or folder
 	 *
 	 * @param string|int $file
-	 * @return array
+	 * @return array|false
 	 */
 	public function get($file) {
 		if (is_string($file)) {
@@ -148,7 +156,7 @@ class Shared_Cache extends Cache {
 	 * get the metadata of all files stored in $folder
 	 *
 	 * @param string $folderId
-	 * @return array
+	 * @return array|false
 	 */
 	public function getFolderContentsById($folderId) {
 		$cache = $this->getSourceCache('');
@@ -178,7 +186,7 @@ class Shared_Cache extends Cache {
 	 * @param string $file
 	 * @param array $data
 	 *
-	 * @return int file id
+	 * @return int|false file id
 	 */
 	public function put($file, array $data) {
 		$file = ($file === false) ? '' : $file;

@@ -1,5 +1,36 @@
 <?php
-
+/**
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Bernhard Posselt <dev@bernhard-posselt.com>
+ * @author Bernhard Reiter <ockham@raz.or.at>
+ * @author Bjoern Schiessle <schiessle@owncloud.com>
+ * @author Christopher Schäpers <kondou@ts.unde.re>
+ * @author Joas Schilling <nickvergessen@gmx.de>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Sander <brantje@gmail.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Thomas Tanghus <thomas@tanghus.net>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ */
 namespace OC;
 
 use bantu\IniGetWrapper\IniGetWrapper;
@@ -10,7 +41,6 @@ use OC\Cache\UserCache;
 use OC\Diagnostics\NullQueryLogger;
 use OC\Diagnostics\EventLogger;
 use OC\Diagnostics\QueryLogger;
-use OC\Files\Config\StorageManager;
 use OC\Security\CertificateManager;
 use OC\Files\Node\Root;
 use OC\Files\View;
@@ -18,6 +48,7 @@ use OC\Security\Crypto;
 use OC\Security\Hasher;
 use OC\Security\SecureRandom;
 use OC\Diagnostics\NullEventLogger;
+use OC\Security\TrustedDomainHelper;
 use OCP\IServerContainer;
 use OCP\ISession;
 use OC\Tagging\TagMapper;
@@ -42,48 +73,11 @@ class Server extends SimpleContainer implements IServerContainer {
 		$this->registerService('ContactsManager', function ($c) {
 			return new ContactsManager();
 		});
-		$this->registerService('Request', function (Server $c) {
-			if (isset($c['urlParams'])) {
-				$urlParams = $c['urlParams'];
-			} else {
-				$urlParams = array();
-			}
-
-			if ($c->getSession()->exists('requesttoken')) {
-				$requestToken = $c->getSession()->get('requesttoken');
-			} else {
-				$requestToken = false;
-			}
-
-			if (defined('PHPUNIT_RUN') && PHPUNIT_RUN
-				&& in_array('fakeinput', stream_get_wrappers())
-			) {
-				$stream = 'fakeinput://data';
-			} else {
-				$stream = 'php://input';
-			}
-
-			return new Request(
-				array(
-					'get' => $_GET,
-					'post' => $_POST,
-					'files' => $_FILES,
-					'server' => $_SERVER,
-					'env' => $_ENV,
-					'cookies' => $_COOKIE,
-					'method' => (isset($_SERVER) && isset($_SERVER['REQUEST_METHOD']))
-						? $_SERVER['REQUEST_METHOD']
-						: null,
-					'urlParams' => $urlParams,
-					'requesttoken' => $requestToken,
-				), $stream
-			);
-		});
 		$this->registerService('PreviewManager', function ($c) {
 			return new PreviewManager();
 		});
 		$this->registerService('TagMapper', function(Server $c) {
-			return new TagMapper($c->getDb());
+			return new TagMapper($c->getDatabaseConnection());
 		});
 		$this->registerService('TagManager', function (Server $c) {
 			$tagMapper = $c->query('TagMapper');
@@ -249,7 +243,9 @@ class Server extends SimpleContainer implements IServerContainer {
 		});
 		$this->registerService('HTTPHelper', function (Server $c) {
 			$config = $c->getConfig();
-			return new HTTPHelper($config, new \OC\Security\CertificateManager($c->getUserSession()->getUser()));
+			$user = $c->getUserSession()->getUser();
+			$uid = $user ? $user->getUID() : null;
+			return new HTTPHelper($config, new \OC\Security\CertificateManager($uid, new \OC\Files\View()));
 		});
 		$this->registerService('EventLogger', function (Server $c) {
 			if (defined('DEBUG') and DEBUG) {
@@ -295,6 +291,9 @@ class Server extends SimpleContainer implements IServerContainer {
 		$this->registerService('IniWrapper', function ($c) {
 			return new IniGetWrapper();
 		});
+		$this->registerService('TrustedDomainHelper', function ($c) {
+			return new TrustedDomainHelper($this->getConfig());
+		});
 	}
 
 	/**
@@ -309,10 +308,54 @@ class Server extends SimpleContainer implements IServerContainer {
 	 * currently being processed is returned from this method.
 	 * In case the current execution was not initiated by a web request null is returned
 	 *
+	 * FIXME: This should be queried as well. However, due to our totally awesome
+	 * static code a lot of tests do stuff like $_SERVER['foo'] which obviously
+	 * will not work with that approach. We even have some integration tests in our
+	 * unit tests which setup a complete webserver. Once the code is all non-static
+	 * or we don't have such mixed integration/unit tests setup anymore this can
+	 * get moved out again.
+	 *
 	 * @return \OCP\IRequest|null
 	 */
 	function getRequest() {
-		return $this->query('Request');
+		if (isset($this['urlParams'])) {
+			$urlParams = $this['urlParams'];
+		} else {
+			$urlParams = array();
+		}
+
+		if ($this->getSession()->exists('requesttoken')) {
+			$requestToken = $this->getSession()->get('requesttoken');
+		} else {
+			$requestToken = false;
+		}
+
+		if (defined('PHPUNIT_RUN') && PHPUNIT_RUN
+			&& in_array('fakeinput', stream_get_wrappers())
+		) {
+			$stream = 'fakeinput://data';
+		} else {
+			$stream = 'php://input';
+		}
+
+		return new Request(
+			[
+				'get' => $_GET,
+				'post' => $_POST,
+				'files' => $_FILES,
+				'server' => $_SERVER,
+				'env' => $_ENV,
+				'cookies' => $_COOKIE,
+				'method' => (isset($_SERVER) && isset($_SERVER['REQUEST_METHOD']))
+					? $_SERVER['REQUEST_METHOD']
+					: null,
+				'urlParams' => $urlParams,
+				'requesttoken' => $requestToken,
+			],
+			$this->getSecureRandom(),
+			$this->getConfig(),
+			$stream
+		);
 	}
 
 	/**
@@ -612,7 +655,7 @@ class Server extends SimpleContainer implements IServerContainer {
 
 	/**
 	 * Returns an instance of the db facade
-	 *
+	 * @deprecated use getDatabaseConnection, will be removed in ownCloud 10
 	 * @return \OCP\IDb
 	 */
 	function getDb() {
@@ -631,18 +674,19 @@ class Server extends SimpleContainer implements IServerContainer {
 	/**
 	 * Get the certificate manager for the user
 	 *
-	 * @param \OCP\IUser $user (optional) if not specified the current loggedin user is used
+	 * @param string $uid (optional) if not specified the current loggedin user is used
 	 * @return \OCP\ICertificateManager
 	 */
-	function getCertificateManager($user = null) {
-		if (is_null($user)) {
+	function getCertificateManager($uid = null) {
+		if (is_null($uid)) {
 			$userSession = $this->getUserSession();
 			$user = $userSession->getUser();
 			if (is_null($user)) {
 				return null;
 			}
+			$uid = $user->getUID();
 		}
-		return new CertificateManager($user);
+		return new CertificateManager($uid, new \OC\Files\View());
 	}
 
 	/**
@@ -731,5 +775,14 @@ class Server extends SimpleContainer implements IServerContainer {
 	 */
 	public function getIniWrapper() {
 		return $this->query('IniWrapper');
+	}
+
+	/**
+	 * Get the trusted domain helper
+	 *
+	 * @return TrustedDomainHelper
+	 */
+	public function getTrustedDomainHelper() {
+		return $this->query('TrustedDomainHelper');
 	}
 }

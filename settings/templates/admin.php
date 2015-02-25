@@ -114,8 +114,18 @@ if ($_['databaseOverload']) {
 <div class="section">
 	<h2><?php p($l->t('Database Performance Info'));?></h2>
 
-	<p class="securitywarning">
-		<?php p($l->t('SQLite is used as database. For larger installations we recommend to change this. To migrate to another database use the command line tool: \'occ db:convert-type\'')); ?>
+	<p>
+		<strong>
+			<?php p($l->t('SQLite is used as database. For larger installations we recommend to switch to a different database backend.')); ?>
+		</strong>
+	</p>
+	<p>
+		<strong>
+			<?php p($l->t('Especially when using the desktop client for file syncing the use of SQLite is discouraged.')); ?>
+		</strong>
+	</p>
+	<p>
+		<?php p($l->t('To migrate to another database use the command line tool: \'occ db:convert-type\'')); ?>
 	</p>
 
 </div>
@@ -133,9 +143,24 @@ if ($_['WindowsWarning']) {
 	</p>
 
 </div>
+
 <?php
 }
 
+// APCU Warning if outdated
+if ($_['ApcuOutdatedWarning']) {
+	?>
+	<div class="section">
+		<h2><?php p($l->t('APCu below version 4.0.6 installed'));?></h2>
+
+		<p class="securitywarning">
+			<?php p($l->t('APCu below version 4.0.6 is installed, for stability and performance reasons we recommend to update to a newer APCu version.')); ?>
+		</p>
+
+	</div>
+
+<?php
+}
 // if module fileinfo available?
 if (!$_['has_fileinfo']) {
 	?>
@@ -450,7 +475,7 @@ if ($_['suggestedOverwriteCliUrl']) {
 			<label for="mail_smtpname"><?php p($l->t( 'Credentials' )); ?></label>
 			<input type="text" name='mail_smtpname' id="mail_smtpname" placeholder="<?php p($l->t('SMTP Username'))?>"
 				   value='<?php p($_['mail_smtpname']) ?>' />
-			<input type="password" name='mail_smtppassword' id="mail_smtppassword"
+			<input type="password" name='mail_smtppassword' id="mail_smtppassword" autocomplete="off"
 				   placeholder="<?php p($l->t('SMTP Password'))?>" value='<?php p($_['mail_smtppassword']) ?>' />
 			<input id="mail_credentials_settings_submit" type="button" value="<?php p($l->t('Store credentials')) ?>">
 		</p>
@@ -506,7 +531,7 @@ if ($_['suggestedOverwriteCliUrl']) {
 	<?php if ($_['logFileSize'] > (100 * 1024 * 1024)): ?>
 	<br>
 	<em>
-		<?php p($l->t('The logfile is bigger than 100MB. Downloading it may take some time!')); ?>
+		<?php p($l->t('The logfile is bigger than 100 MB. Downloading it may take some time!')); ?>
 	</em>
 	<?php endif; ?>
 	<?php endif; ?>
@@ -515,11 +540,7 @@ if ($_['suggestedOverwriteCliUrl']) {
 <div class="section">
 	<h2><?php p($l->t('Version'));?></h2>
 	<strong><?php p($theme->getTitle()); ?></strong> <?php p(OC_Util::getHumanVersion()) ?>
-<?php if (OC_Util::getEditionString() === ''): ?>
-	<p>
-		<?php print_unescaped($l->t('Developed by the <a href="http://ownCloud.org/contact" target="_blank">ownCloud community</a>, the <a href="https://github.com/owncloud" target="_blank">source code</a> is licensed under the <a href="http://www.gnu.org/licenses/agpl-3.0.html" target="_blank"><abbr title="Affero General Public License">AGPL</abbr></a>.')); ?>
-	</p>
-<?php endif; ?>
+	<?php include('settings.development.notice.php'); ?>
 </div>
 
 <div class="section credits-footer">

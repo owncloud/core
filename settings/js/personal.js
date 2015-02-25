@@ -110,7 +110,7 @@ function showAvatarCropper () {
 	var $cropperImage = $('#cropper img');
 
 	$cropperImage.attr('src',
-		OC.generateUrl('/avatar/tmp') + '?requesttoken=' + oc_requesttoken + '#' + Math.floor(Math.random() * 1000));
+		OC.generateUrl('/avatar/tmp') + '?requesttoken=' + encodeURIComponent(oc_requesttoken) + '#' + Math.floor(Math.random() * 1000));
 
 	// Looks weird, but on('load', ...) doesn't work in IE8
 	$cropperImage.ready(function () {
@@ -182,20 +182,25 @@ $(document).ready(function () {
 				if (data.status === "success") {
 					$('#pass1').val('');
 					$('#pass2').val('');
-					$('#passwordchanged').show();
+					// Hide a possible errormsg and show successmsg
+					$('#password-changed').removeClass('hidden').addClass('inlineblock');
+					$('#password-error').removeClass('inlineblock').addClass('hidden');
 				} else {
 					if (typeof(data.data) !== "undefined") {
 						$('#passworderror').html(data.data.message);
 					} else {
 						$('#passworderror').html(t('Unable to change password'));
 					}
-					$('#passworderror').show();
+					// Hide a possible successmsg and show errormsg
+					$('#password-changed').removeClass('inlineblock').addClass('hidden');
+					$('#password-error').removeClass('hidden').addClass('inlineblock');
 				}
 			});
 			return false;
 		} else {
-			$('#passwordchanged').hide();
-			$('#passworderror').show();
+			// Hide a possible successmsg and show errormsg
+			$('#password-changed').removeClass('inlineblock').addClass('hidden');
+			$('#password-error').removeClass('hidden').addClass('inlineblock');
 			return false;
 		}
 
@@ -311,7 +316,7 @@ $(document).ready(function () {
 	var url = OC.generateUrl(
 		'/avatar/{user}/{size}',
 		{user: OC.currentUser, size: 1}
-	) + '?requesttoken=' + oc_requesttoken;
+	) + '?requesttoken=' + encodeURIComponent(oc_requesttoken);
 	$.get(url, function (result) {
 		if (typeof(result) === 'object') {
 			$('#removeavatar').hide();

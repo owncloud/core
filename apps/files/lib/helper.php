@@ -1,11 +1,30 @@
 <?php
 /**
- * Copyright (c) 2014 Vincent Petry <pvince81@owncloud.com>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Bjoern Schiessle <schiessle@owncloud.com>
+ * @author brumsel <brumsel@losecatcher.de>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
-
 namespace OCA\Files;
 
 use OCP\Files\FileInfo;
@@ -13,21 +32,26 @@ use OCP\Files\FileInfo;
 /**
  * Helper class for manipulating file information
  */
-class Helper
-{
+class Helper {
+	/**
+	 * @param string $dir
+	 * @return array
+	 * @throws \OCP\Files\NotFoundException
+	 */
 	public static function buildFileStorageStatistics($dir) {
 		// information about storage capacities
 		$storageInfo = \OC_Helper::getStorageInfo($dir);
-
 		$l = new \OC_L10N('files');
 		$maxUploadFileSize = \OCP\Util::maxUploadFilesize($dir, $storageInfo['free']);
 		$maxHumanFileSize = \OCP\Util::humanFileSize($maxUploadFileSize);
 		$maxHumanFileSize = $l->t('Upload (max. %s)', array($maxHumanFileSize));
 
-		return array('uploadMaxFilesize' => $maxUploadFileSize,
-					 'maxHumanFilesize'  => $maxHumanFileSize,
-					 'freeSpace' => $storageInfo['free'],
-					 'usedSpacePercent'  => (int)$storageInfo['relative']);
+		return [
+			'uploadMaxFilesize' => $maxUploadFileSize,
+			'maxHumanFilesize'  => $maxHumanFileSize,
+			'freeSpace' => $storageInfo['free'],
+			'usedSpacePercent'  => (int)$storageInfo['relative']
+		];
 	}
 
 	/**

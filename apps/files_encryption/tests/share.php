@@ -1,25 +1,30 @@
 <?php
 /**
- * ownCloud
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Bjoern Schiessle <schiessle@owncloud.com>
+ * @author Florin Peter <github@florin-peter.de>
+ * @author Joas Schilling <nickvergessen@gmx.de>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @author Florin Peter
- * @copyright 2013 Florin Peter <owncloud@florin-peter.de>
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
 namespace OCA\Files_Encryption\Tests;
 
 /**
@@ -89,6 +94,8 @@ class Share extends TestCase {
 
 		// login as first user
 		self::loginHelper(self::TEST_ENCRYPTION_SHARE_USER1);
+
+		$this->createMocks();
 	}
 
 	protected function tearDown() {
@@ -98,6 +105,8 @@ class Share extends TestCase {
 		} else {
 			\OC_App::disable('files_trashbin');
 		}
+
+		$this->restoreHttpHelper();
 
 		parent::tearDown();
 	}
@@ -115,18 +124,43 @@ class Share extends TestCase {
 		parent::tearDownAfterClass();
 	}
 
-	/**
-	 * @medium
-	 */
-	function testDeclineServer2ServerShare() {
-
+	private function createMocks() {
 		$config = $this->getMockBuilder('\OCP\IConfig')
 				->disableOriginalConstructor()->getMock();
 		$certificateManager = $this->getMock('\OCP\ICertificateManager');
 		$httpHelperMock = $this->getMockBuilder('\OC\HTTPHelper')
 				->setConstructorArgs(array($config, $certificateManager))
 				->getMock();
-		$httpHelperMock->expects($this->once())->method('post')->with($this->anything())->will($this->returnValue(true));
+		$httpHelperMock->expects($this->any())->method('post')->with($this->anything())->will($this->returnValue(array('success' => true, 'result' => "{'ocs' : { 'meta' : { 'statuscode' : 100 }}}")));
+
+		$this->registerHttpHelper($httpHelperMock);
+	}
+
+	/**
+	 * Register an http helper mock for testing purposes.
+	 * @param $httpHelper http helper mock
+	 */
+	private function registerHttpHelper($httpHelper) {
+		$this->oldHttpHelper = \OC::$server->query('HTTPHelper');
+		\OC::$server->registerService('HTTPHelper', function ($c) use ($httpHelper) {
+			return $httpHelper;
+		});
+	}
+
+	/**
+	 * Restore the original http helper
+	 */
+	private function restoreHttpHelper() {
+		$oldHttpHelper = $this->oldHttpHelper;
+		\OC::$server->registerService('HTTPHelper', function ($c) use ($oldHttpHelper) {
+			return $oldHttpHelper;
+		});
+	}
+
+	/**
+	 * @medium
+	 */
+	function testDeclineServer2ServerShare() {
 
 		self::loginHelper(self::TEST_ENCRYPTION_SHARE_USER1);
 
@@ -134,7 +168,7 @@ class Share extends TestCase {
 		$cryptedFile = file_put_contents('crypt:///' . self::TEST_ENCRYPTION_SHARE_USER1 . '/files/'  . $this->filename, $this->dataShort);
 
 		// test that data was successfully written
-		$this->assertTrue(is_int($cryptedFile));
+		$this->assertInternalType('int', $cryptedFile);
 
 		// get the file info from previous created file
 		$fileInfo = $this->view->getFileInfo(
@@ -167,38 +201,14 @@ class Share extends TestCase {
 
 		$share = $query->fetch();
 
-		$this->registerHttpHelper($httpHelperMock);
 		$_POST['token'] = $token;
 		$s2s = new \OCA\Files_Sharing\API\Server2Server();
 		$s2s->declineShare(array('id' => $share['id']));
-		$this->restoreHttpHelper();
 
 		$this->assertFalse($this->view->file_exists(
 			'/' . self::TEST_ENCRYPTION_SHARE_USER1 . '/files_encryption/keys/'
 			. $this->filename . '/' . $publicShareKeyId . '.shareKey'));
 
-	}
-
-
-	/**
-	 * Register an http helper mock for testing purposes.
-	 * @param $httpHelper http helper mock
-	 */
-	private function registerHttpHelper($httpHelper) {
-		$this->oldHttpHelper = \OC::$server->query('HTTPHelper');
-		\OC::$server->registerService('HTTPHelper', function ($c) use ($httpHelper) {
-			return $httpHelper;
-		});
-	}
-
-	/**
-	 * Restore the original http helper
-	 */
-	private function restoreHttpHelper() {
-		$oldHttpHelper = $this->oldHttpHelper;
-		\OC::$server->registerService('HTTPHelper', function ($c) use ($oldHttpHelper) {
-			return $oldHttpHelper;
-		});
 	}
 
 	/**
@@ -213,7 +223,7 @@ class Share extends TestCase {
 		$cryptedFile = file_put_contents('crypt:///' . self::TEST_ENCRYPTION_SHARE_USER1 . '/files/' . $this->filename, $this->dataShort);
 
 		// test that data was successfully written
-		$this->assertTrue(is_int($cryptedFile));
+		$this->assertInternalType('int', $cryptedFile);
 
 		// disable encryption proxy to prevent recursive calls
 		$proxyStatus = \OC_FileProxy::$enabled;
@@ -224,7 +234,7 @@ class Share extends TestCase {
 			'/' . self::TEST_ENCRYPTION_SHARE_USER1 . '/files/' . $this->filename);
 
 		// check if we have a valid file info
-		$this->assertTrue($fileInfo instanceof \OC\Files\FileInfo);
+		$this->assertInstanceOf('\OC\Files\FileInfo', $fileInfo);
 
 		// check if the unencrypted file size is stored
 		$this->assertGreaterThan(0, $fileInfo['unencrypted_size']);
@@ -407,7 +417,7 @@ class Share extends TestCase {
 			. $this->filename, $this->dataShort);
 
 		// test that data was successfully written
-		$this->assertTrue(is_int($cryptedFile));
+		$this->assertInternalType('int', $cryptedFile);
 
 		// disable encryption proxy to prevent recursive calls
 		$proxyStatus = \OC_FileProxy::$enabled;
@@ -418,7 +428,7 @@ class Share extends TestCase {
 			'/' . self::TEST_ENCRYPTION_SHARE_USER1 . '/files' . $this->folder1);
 
 		// check if we have a valid file info
-		$this->assertTrue($fileInfo instanceof \OC\Files\FileInfo);
+		$this->assertInstanceOf('\OC\Files\FileInfo', $fileInfo);
 
 		// re-enable the file proxy
 		\OC_FileProxy::$enabled = $proxyStatus;
@@ -496,7 +506,7 @@ class Share extends TestCase {
 			. $this->subfolder);
 
 		// check if we have a valid file info
-		$this->assertTrue($fileInfoSubFolder instanceof \OC\Files\FileInfo);
+		$this->assertInstanceOf('\OC\Files\FileInfo', $fileInfoSubFolder);
 
 		// re-enable the file proxy
 		\OC_FileProxy::$enabled = $proxyStatus;
@@ -530,7 +540,7 @@ class Share extends TestCase {
 			. $this->subsubfolder . '/' . $this->filename);
 
 		// check if we have fileInfos
-		$this->assertTrue($fileInfo instanceof \OC\Files\FileInfo);
+		$this->assertInstanceOf('\OC\Files\FileInfo', $fileInfo);
 
 		// share the file with user3
 		\OCP\Share::shareItem('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_USER, self::TEST_ENCRYPTION_SHARE_USER4, \OCP\Constants::PERMISSION_ALL);
@@ -607,15 +617,15 @@ class Share extends TestCase {
 	}
 
 
-	function testPublicShareFile() {
+	function testRemoteShareFile() {
 		// login as admin
-		self::loginHelper(self::TEST_ENCRYPTION_SHARE_USER1);
+		//self::loginHelper(self::TEST_ENCRYPTION_SHARE_USER1);
 
 		// save file with content
 		$cryptedFile = file_put_contents('crypt:///' . self::TEST_ENCRYPTION_SHARE_USER1 . '/files/'  . $this->filename, $this->dataShort);
 
 		// test that data was successfully written
-		$this->assertTrue(is_int($cryptedFile));
+		$this->assertInternalType('int', $cryptedFile);
 
 		// disable encryption proxy to prevent recursive calls
 		$proxyStatus = \OC_FileProxy::$enabled;
@@ -626,7 +636,63 @@ class Share extends TestCase {
 			'/' . self::TEST_ENCRYPTION_SHARE_USER1 . '/files/' . $this->filename);
 
 		// check if we have a valid file info
-		$this->assertTrue($fileInfo instanceof \OC\Files\FileInfo);
+		$this->assertInstanceOf('\OC\Files\FileInfo', $fileInfo);
+
+		// check if the unencrypted file size is stored
+		$this->assertGreaterThan(0, $fileInfo['unencrypted_size']);
+
+		// re-enable the file proxy
+		\OC_FileProxy::$enabled = $proxyStatus;
+
+		// share the file
+		\OCP\Share::shareItem('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_REMOTE, 'user1@server1', \OCP\Constants::PERMISSION_ALL);
+
+		$publicShareKeyId = \OC::$server->getAppConfig()->getValue('files_encryption', 'publicShareKeyId');
+
+		// check if share key for public exists
+		$this->assertTrue($this->view->file_exists(
+			'/' . self::TEST_ENCRYPTION_SHARE_USER1 . '/files_encryption/keys/'
+			. $this->filename . '/' . $publicShareKeyId . '.shareKey'));
+
+		// unshare the file
+		\OCP\Share::unshare('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_REMOTE, 'user1@server1');
+
+		// check if share key not exists
+		$this->assertFalse($this->view->file_exists(
+			'/' . self::TEST_ENCRYPTION_SHARE_USER1 . '/files_encryption/keys/'
+			. $this->filename . '/' . $publicShareKeyId . '.shareKey'));
+
+		// cleanup
+		$this->view->chroot('/' . self::TEST_ENCRYPTION_SHARE_USER1 . '/files/');
+		$this->view->unlink($this->filename);
+		$this->view->chroot('/');
+
+		// check if share key not exists
+		$this->assertFalse($this->view->file_exists(
+			'/' . self::TEST_ENCRYPTION_SHARE_USER1 . '/files_encryption/keys/'
+			. $this->filename . '/' . self::TEST_ENCRYPTION_SHARE_USER1 . '.shareKey'));
+	}
+
+	function testPublicShareFile() {
+		// login as admin
+		self::loginHelper(self::TEST_ENCRYPTION_SHARE_USER1);
+
+		// save file with content
+		$cryptedFile = file_put_contents('crypt:///' . self::TEST_ENCRYPTION_SHARE_USER1 . '/files/'  . $this->filename, $this->dataShort);
+
+		// test that data was successfully written
+		$this->assertInternalType('int', $cryptedFile);
+
+		// disable encryption proxy to prevent recursive calls
+		$proxyStatus = \OC_FileProxy::$enabled;
+		\OC_FileProxy::$enabled = false;
+
+		// get the file info from previous created file
+		$fileInfo = $this->view->getFileInfo(
+			'/' . self::TEST_ENCRYPTION_SHARE_USER1 . '/files/' . $this->filename);
+
+		// check if we have a valid file info
+		$this->assertInstanceOf('\OC\Files\FileInfo', $fileInfo);
 
 		// check if the unencrypted file size is stored
 		$this->assertGreaterThan(0, $fileInfo['unencrypted_size']);
@@ -693,7 +759,7 @@ class Share extends TestCase {
 		$cryptedFile = file_put_contents('crypt:///' . self::TEST_ENCRYPTION_SHARE_USER1 . '/files/' . $this->filename, $this->dataShort);
 
 		// test that data was successfully written
-		$this->assertTrue(is_int($cryptedFile));
+		$this->assertInternalType('int', $cryptedFile);
 
 		// disable encryption proxy to prevent recursive calls
 		$proxyStatus = \OC_FileProxy::$enabled;
@@ -704,7 +770,7 @@ class Share extends TestCase {
 			'/' . self::TEST_ENCRYPTION_SHARE_USER1 . '/files/' . $this->filename);
 
 		// check if we have a valid file info
-		$this->assertTrue($fileInfo instanceof \OC\Files\FileInfo);
+		$this->assertInstanceOf('\OC\Files\FileInfo', $fileInfo);
 
 		// check if the unencrypted file size is stored
 		$this->assertGreaterThan(0, $fileInfo['unencrypted_size']);
@@ -799,8 +865,8 @@ class Share extends TestCase {
 			. $this->filename, $this->dataShort);
 
 		// test that data was successfully written
-		$this->assertTrue(is_int($cryptedFile1));
-		$this->assertTrue(is_int($cryptedFile2));
+		$this->assertInternalType('int', $cryptedFile1);
+		$this->assertInternalType('int', $cryptedFile2);
 
 		// check if share key for admin and recovery exists
 		$this->assertTrue($this->view->file_exists(
@@ -906,8 +972,8 @@ class Share extends TestCase {
 			. $this->filename, $this->dataShort);
 
 		// test that data was successfully written
-		$this->assertTrue(is_int($cryptedFile1));
-		$this->assertTrue(is_int($cryptedFile2));
+		$this->assertInternalType('int', $cryptedFile1);
+		$this->assertInternalType('int', $cryptedFile2);
 
 		// check if share key for user and recovery exists
 		$this->assertTrue($this->view->file_exists(
@@ -994,7 +1060,7 @@ class Share extends TestCase {
 		$cryptedFile = file_put_contents('crypt:///' . self::TEST_ENCRYPTION_SHARE_USER1 . '/files/' . $this->filename, $this->dataShort);
 
 		// test that data was successfully written
-		$this->assertTrue(is_int($cryptedFile));
+		$this->assertInternalType('int', $cryptedFile);
 
 		// disable encryption proxy to prevent recursive calls
 		$proxyStatus = \OC_FileProxy::$enabled;
@@ -1005,7 +1071,7 @@ class Share extends TestCase {
 			'/' . self::TEST_ENCRYPTION_SHARE_USER1 . '/files/' . $this->filename);
 
 		// check if we have a valid file info
-		$this->assertTrue($fileInfo instanceof \OC\Files\FileInfo);
+		$this->assertInstanceOf('\OC\Files\FileInfo', $fileInfo);
 
 		// check if the unencrypted file size is stored
 		$this->assertGreaterThan(0, $fileInfo['unencrypted_size']);
@@ -1077,14 +1143,14 @@ class Share extends TestCase {
 		$cryptedFile = file_put_contents('crypt:///' . self::TEST_ENCRYPTION_SHARE_USER1 . '/files/' . $this->filename, $this->dataShort);
 
 		// test that data was successfully written
-		$this->assertTrue(is_int($cryptedFile));
+		$this->assertInternalType('int', $cryptedFile);
 
 		// get the file info from previous created file
 		$fileInfo = $this->view->getFileInfo(
 			'/' . self::TEST_ENCRYPTION_SHARE_USER1 . '/files/' . $this->filename);
 
 		// check if we have a valid file info
-		$this->assertTrue($fileInfo instanceof \OC\Files\FileInfo);
+		$this->assertInstanceOf('\OC\Files\FileInfo', $fileInfo);
 
 		// share the file
 		\OCP\Share::shareItem('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_USER, self::TEST_ENCRYPTION_SHARE_USER2, \OCP\Constants::PERMISSION_ALL);
@@ -1143,14 +1209,14 @@ class Share extends TestCase {
 		$cryptedFile = file_put_contents('crypt:///' . self::TEST_ENCRYPTION_SHARE_USER1 . '/files/' . $this->filename, $this->dataShort);
 
 		// test that data was successfully written
-		$this->assertTrue(is_int($cryptedFile));
+		$this->assertInternalType('int', $cryptedFile);
 
 		// get the file info from previous created file
 		$fileInfo = $this->view->getFileInfo(
 			'/' . self::TEST_ENCRYPTION_SHARE_USER1 . '/files/' . $this->filename);
 
 		// check if we have a valid file info
-		$this->assertTrue($fileInfo instanceof \OC\Files\FileInfo);
+		$this->assertInstanceOf('\OC\Files\FileInfo', $fileInfo);
 
 		// share the file
 		\OCP\Share::shareItem('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_GROUP, self::TEST_ENCRYPTION_SHARE_GROUP1, \OCP\Constants::PERMISSION_ALL);
@@ -1222,7 +1288,7 @@ class Share extends TestCase {
 		$cryptedFile = \OC\Files\Filesystem::file_put_contents($folder . $filename, $this->dataShort);
 
 		// Test that data was successfully written
-		$this->assertTrue(is_int($cryptedFile));
+		$this->assertInternalType('int', $cryptedFile);
 
 		// Get file decrypted contents
 		$decrypt = \OC\Files\Filesystem::file_get_contents($folder . $filename);
@@ -1234,7 +1300,7 @@ class Share extends TestCase {
 
 		// get the file info from previous created file
 		$fileInfo = \OC\Files\Filesystem::getFileInfo('/newfolder');
-		$this->assertTrue($fileInfo instanceof \OC\Files\FileInfo);
+		$this->assertInstanceOf('\OC\Files\FileInfo', $fileInfo);
 
 		// share the folder
 		\OCP\Share::shareItem('folder', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_USER, self::TEST_ENCRYPTION_SHARE_USER2, \OCP\Constants::PERMISSION_ALL);
@@ -1280,7 +1346,7 @@ class Share extends TestCase {
 		$cryptedFile = \OC\Files\Filesystem::file_put_contents($folder . $filename, $this->dataShort);
 
 		// Test that data was successfully written
-		$this->assertTrue(is_int($cryptedFile));
+		$this->assertInternalType('int', $cryptedFile);
 
 		// Get file decrypted contents
 		$decrypt = \OC\Files\Filesystem::file_get_contents($folder . $filename);
@@ -1292,7 +1358,7 @@ class Share extends TestCase {
 
 		// get the file info from previous created file
 		$fileInfo = \OC\Files\Filesystem::getFileInfo($folder);
-		$this->assertTrue($fileInfo instanceof \OC\Files\FileInfo);
+		$this->assertInstanceOf('\OC\Files\FileInfo', $fileInfo);
 
 		// share the folder
 		\OCP\Share::shareItem('folder', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_USER, self::TEST_ENCRYPTION_SHARE_USER2, \OCP\Constants::PERMISSION_ALL);

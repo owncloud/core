@@ -1,26 +1,33 @@
 <?php
-
 /**
- * ownCloud – LDAP Wizard
+ * @author Alexander Bergolth <leo@strike.wu.ac.at>
+ * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Jean-Louis Dupond <jean-louis@dupond.be>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
+ * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  *
- * @author Arthur Schiwon
- * @copyright 2013 Arthur Schiwon blizzz@owncloud.com
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
 namespace OCA\user_ldap\lib;
 
 class Wizard extends LDAPUtility {
@@ -110,7 +117,7 @@ class Wizard extends LDAPUtility {
 			return false;
 		}
 		$groupsTotal = ($groupsTotal !== false) ? $groupsTotal : 0;
-		$output = self::$l->n('%s group found', '%s groups found', $groupsTotal, $groupsTotal);
+		$output = self::$l->n('%s group found', '%s groups found', $groupsTotal, array($groupsTotal));
 		$this->result->addChange('ldap_group_count', $output);
 		return $this->result;
 	}
@@ -124,7 +131,7 @@ class Wizard extends LDAPUtility {
 
 		$usersTotal = $this->countEntries($filter, 'users');
 		$usersTotal = ($usersTotal !== false) ? $usersTotal : 0;
-		$output = self::$l->n('%s user found', '%s users found', $usersTotal, $usersTotal);
+		$output = self::$l->n('%s user found', '%s users found', $usersTotal, array($usersTotal));
 		$this->result->addChange('ldap_user_count', $output);
 		return $this->result;
 	}
@@ -314,7 +321,7 @@ class Wizard extends LDAPUtility {
 
 	/**
 	 * detects the available LDAP attributes
-	 * @return array The instance's WizardResult instance
+	 * @return array|false The instance's WizardResult instance
 	 * @throws \Exception
 	 */
 	private function getUserAttributes() {
@@ -348,7 +355,7 @@ class Wizard extends LDAPUtility {
 
 	/**
 	 * detects the available LDAP groups
-	 * @return WizardResult the instance's WizardResult instance
+	 * @return WizardResult|false the instance's WizardResult instance
 	 */
 	public function determineGroupsForGroups() {
 		return $this->determineGroups('ldap_groupfilter_groups',
@@ -358,7 +365,7 @@ class Wizard extends LDAPUtility {
 
 	/**
 	 * detects the available LDAP groups
-	 * @return WizardResult the instance's WizardResult instance
+	 * @return WizardResult|false the instance's WizardResult instance
 	 */
 	public function determineGroupsForUsers() {
 		return $this->determineGroups('ldap_userfilter_groups',
@@ -370,7 +377,7 @@ class Wizard extends LDAPUtility {
 	 * @param string $dbKey
 	 * @param string $confKey
 	 * @param bool $testMemberOf
-	 * @return WizardResult the instance's WizardResult instance
+	 * @return WizardResult|false the instance's WizardResult instance
 	 * @throws \Exception
 	 */
 	private function determineGroups($dbKey, $confKey, $testMemberOf = true) {
@@ -467,7 +474,7 @@ class Wizard extends LDAPUtility {
 
 	/**
 	 * Detects the available object classes
-	 * @return WizardResult the instance's WizardResult instance
+	 * @return WizardResult|false the instance's WizardResult instance
 	 * @throws \Exception
 	 */
 	public function determineGroupObjectClasses() {
@@ -524,7 +531,7 @@ class Wizard extends LDAPUtility {
 	}
 
 	/**
-	 * @return WizardResult
+	 * @return WizardResult|false
 	 * @throws \Exception
 	 */
 	public function getGroupFilter() {
@@ -548,7 +555,7 @@ class Wizard extends LDAPUtility {
 	}
 
 	/**
-	 * @return WizardResult
+	 * @return WizardResult|false
 	 * @throws \Exception
 	 */
 	public function getUserListFilter() {
@@ -850,13 +857,23 @@ class Wizard extends LDAPUtility {
 						}
 						$base = $this->configuration->ldapBase[0];
 						foreach($cns as $cn) {
-							$rr = $this->ldap->search($cr, $base, 'cn=' . $cn, array('dn'));
+							$rr = $this->ldap->search($cr, $base, 'cn=' . $cn, array('dn', 'primaryGroupToken'));
 							if(!$this->ldap->isResource($rr)) {
 								continue;
 							}
 							$er = $this->ldap->firstEntry($cr, $rr);
+							$attrs = $this->ldap->getAttributes($cr, $er);
 							$dn = $this->ldap->getDN($cr, $er);
-							$filter .= '(memberof=' . $dn . ')';
+							if(empty($dn)) {
+								continue;
+							}
+							$filterPart = '(memberof=' . $dn . ')';
+							if(isset($attrs['primaryGroupToken'])) {
+								$pgt = $attrs['primaryGroupToken'][0];
+								$primaryFilterPart = '(primaryGroupID=' . $pgt .')';
+								$filterPart = '(|' . $filterPart . $primaryFilterPart . ')';
+							}
+							$filter .= $filterPart;
 						}
 						$filter .= ')';
 					}
@@ -1146,7 +1163,7 @@ class Wizard extends LDAPUtility {
 	 * Configuration class
 	 * @param bool $po whether the objectClass with most result entries
 	 * shall be pre-selected via the result
-	 * @return array, list of found items.
+	 * @return array|false list of found items.
 	 * @throws \Exception
 	 */
 	private function determineFeature($objectclasses, $attr, $dbkey, $confkey, $po = false) {

@@ -1,27 +1,42 @@
 <?php
 /**
- * ownCloud
+ * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Brice Maron <brice@bmaron.net>
+ * @author Christopher Schäpers <kondou@ts.unde.re>
+ * @author Felix Moeller <mail@felixmoeller.de>
+ * @author Frank Karlitschek <frank@owncloud.org>
+ * @author Georg Ehrke <georg@owncloud.com>
+ * @author Jakob Sack <mail@jakobsack.de>
+ * @author Joas Schilling <nickvergessen@gmx.de>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Kamil Domanski <kdomanski@kdemail.net>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author root <root@oc.(none)>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Thomas Tanghus <thomas@tanghus.net>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Witali Rott <info@hlop.eu>
  *
- * @author Robin Appelman
- * @copyright 2012 Frank Karlitschek frank@owncloud.org
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * @author Georg Ehrke
- * @copytight 2014 Georg Ehrke georg@ownCloud.com
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
- *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+use OC\OCSClient;
 
 /**
  * This class provides the functionality needed to install, update and remove plugins/apps
@@ -205,8 +220,8 @@ class OC_Installer{
 	 * @throws Exception
 	 */
 	public static function updateAppByOCSId($ocsid) {
-		$appdata = OC_OCSClient::getApplication($ocsid);
-		$download = OC_OCSClient::getApplicationDownload($ocsid, 1);
+		$appdata = OCSClient::getApplication($ocsid);
+		$download = OCSClient::getApplicationDownload($ocsid, 1);
 
 		if (isset($download['downloadlink']) && trim($download['downloadlink']) !== '') {
 			$download['downloadlink'] = str_replace(' ', '%20', $download['downloadlink']);
@@ -241,7 +256,7 @@ class OC_Installer{
 			if(!isset($data['href'])) {
 				throw new \Exception($l->t("No href specified when installing app from http"));
 			}
-			copy($data['href'], $path);
+			file_put_contents($path, \OC_Util::getUrlContent($data['href']));
 		}else{
 			if(!isset($data['path'])) {
 				throw new \Exception($l->t("No path specified when installing app from local file"));
@@ -308,7 +323,7 @@ class OC_Installer{
 		}
 		$info=OC_App::getAppInfo($extractDir.'/appinfo/info.xml', true);
 		// check the code for not allowed calls
-		if(!$isShipped && !OC_Installer::checkCode($info['id'], $extractDir)) {
+		if(!$isShipped && !OC_Installer::checkCode($extractDir)) {
 			OC_Helper::rmdirr($extractDir);
 			throw new \Exception($l->t("App can't be installed because of not allowed code in the App"));
 		}
@@ -368,7 +383,7 @@ class OC_Installer{
 
 		if($ocsid<>'') {
 
-			$ocsdata=OC_OCSClient::getApplication($ocsid);
+			$ocsdata=OCSClient::getApplication($ocsid);
 			$ocsversion= (string) $ocsdata['version'];
 			$currentversion=OC_App::getAppVersion($app);
 			if (version_compare($ocsversion, $currentversion, '>')) {
@@ -511,7 +526,7 @@ class OC_Installer{
 			OC_Appconfig::setValue($app, 'ocsid', $info['ocsid']);
 		}
 
-		//set remote/public handelers
+		//set remote/public handlers
 		foreach($info['remote'] as $name=>$path) {
 			OCP\CONFIG::setAppValue('core', 'remote_'.$name, $app.'/'.$path);
 		}
@@ -529,59 +544,15 @@ class OC_Installer{
 	 * @param string $folder the folder of the app to check
 	 * @return boolean true for app is o.k. and false for app is not o.k.
 	 */
-	public static function checkCode($appname, $folder) {
-		$blacklist=array(
-			// classes replaced by the public api
-			'OC_API::',
-			'OC_App::',
-			'OC_AppConfig::',
-			'OC_Avatar',
-			'OC_BackgroundJob::',
-			'OC_Config::',
-			'OC_DB::',
-			'OC_Files::',
-			'OC_Helper::',
-			'OC_Hook::',
-			'OC_Image::',
-			'OC_JSON::',
-			'OC_L10N::',
-			'OC_Log::',
-			'OC_Mail::',
-			'OC_Preferences::',
-			'OC_Request::',
-			'OC_Response::',
-			'OC_Template::',
-			'OC_User::',
-			'OC_Util::',
-		);
-
+	public static function checkCode($folder) {
 		// is the code checker enabled?
-		if(OC_Config::getValue('appcodechecker', true)) {
-			// check if grep is installed
-			$grep = \OC_Helper::findBinaryPath('grep');
-			if (!$grep) {
-				OC_Log::write('core',
-					'grep not installed. So checking the code of the app "'.$appname.'" was not possible',
-					OC_Log::ERROR);
-				return true;
-			}
-
-			// iterate the bad patterns
-			foreach($blacklist as $bl) {
-				$cmd = 'grep --include \\*.php -ri '.escapeshellarg($bl).' '.$folder.'';
-				$result = exec($cmd);
-				// bad pattern found
-				if($result<>'') {
-					OC_Log::write('core',
-						'App "'.$appname.'" is using a not allowed call "'.$bl.'". Installation refused.',
-						OC_Log::ERROR);
-					return false;
-				}
-			}
-			return true;
-
-		}else{
+		if(!OC_Config::getValue('appcodechecker', false)) {
 			return true;
 		}
+
+		$codeChecker = new \OC\App\CodeChecker();
+		$errors = $codeChecker->analyseFolder($folder);
+
+		return empty($errors);
 	}
 }

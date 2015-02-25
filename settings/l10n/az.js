@@ -1,6 +1,7 @@
 OC.L10N.register(
     "settings",
     {
+    "Security" : "Təhlükəsizlik",
     "Authentication error" : "Təyinat metodikası",
     "Your full name has been changed." : "Sizin tam adınız dəyişdirildi.",
     "Unable to change full name" : "Tam adı dəyişmək olmur",
@@ -22,7 +23,6 @@ OC.L10N.register(
     "No user supplied" : "Heç bir istifadəçiyə mənimsədilmir",
     "Please provide an admin recovery password, otherwise all user data will be lost" : "Xahış olunur inzibatçı geriyə qayıdış şifrəsini təqdim edəsiniz, əks halda bütün istfadəçi datası itəcək.",
     "Wrong admin recovery password. Please check the password and try again." : "İnzibatçı geriyə qayıdış şifrəsi yalnışdır. Xahiş olunur şifrəni yoxlayıb yenidən təkrar edəsiniz.",
-    "Back-end doesn't support password change, but the users encryption key was successfully updated." : "İnzibatçı mərkəzi şifrə dəyişilməsini dəstəkləmir ancaq, istifadəçi şifrələnmə açarı uğurla yeniləndi.",
     "Unable to change password" : "Şifrəni dəyişmək olmur",
     "Saved" : "Saxlanıldı",
     "test email settings" : "sınaq məktubu quraşdırmaları",
@@ -86,6 +86,7 @@ OC.L10N.register(
     "PHP charset is not set to UTF-8" : "PHP simvol tipi UTF-8 deyil",
     "Send mode" : "Göndərmə rejimi",
     "Authentication method" : "Qeydiyyat metodikası",
+    "Authentication required" : "Qeydiyyat tələb edilir",
     "More" : "Yenə",
     "by" : "onunla",
     "User Documentation" : "İstifadəçi sənədləri",

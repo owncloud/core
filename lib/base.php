@@ -1,25 +1,54 @@
 <?php
 /**
- * ownCloud
+ * @author Adam Williamson <awilliam@redhat.com>
+ * @author Andreas Fischer <bantu@owncloud.com>
+ * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Bernhard Posselt <dev@bernhard-posselt.com>
+ * @author Bjoern Schiessle <schiessle@owncloud.com>
+ * @author Christopher Schäpers <kondou@ts.unde.re>
+ * @author davidgumberg <davidnoizgumberg@gmail.com>
+ * @author Florian Scholz <florianscholz@bgstyle.de>
+ * @author Florin Peter <github@florin-peter.de>
+ * @author Frank Karlitschek <frank@owncloud.org>
+ * @author Georg Ehrke <georg@owncloud.com>
+ * @author Georg Ehrke <georg@ownCloud.com>
+ * @author Jakob Sack <mail@jakobsack.de>
+ * @author Jan-Christoph Borchardt <hey@jancborchardt.net>
+ * @author Joas Schilling <nickvergessen@gmx.de>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author marc0s <marcos@tenak.net>
+ * @author Michael Gapczynski <gapczynskim@gmail.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Owen Winkler <a_github@midnightcircus.com>
+ * @author Ramiro Aparicio <rapariciog@gmail.com>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author scolebrook <scolebrook@mac.com>
+ * @author Stefan Herbrechtsmeier <stefan@herbrechtsmeier.net>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Thomas Tanghus <thomas@tanghus.net>
+ * @author Victor Dubiniuk <dubiniuk@owncloud.com>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Volkan Gezer <volkangezer@gmail.com>
  *
- * @author Frank Karlitschek
- * @copyright 2012 Frank Karlitschek frank@owncloud.org
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
 require_once 'public/constants.php';
 
 /**
@@ -100,7 +129,18 @@ class OC {
 		OC_Config::$object = new \OC\Config(self::$configDir);
 
 		OC::$SUBURI = str_replace("\\", "/", substr(realpath($_SERVER["SCRIPT_FILENAME"]), strlen(OC::$SERVERROOT)));
-		$scriptName = OC_Request::scriptName();
+		/**
+		 * FIXME: The following line is required because of a cyclic dependency
+		 *        on IRequest.
+		 */
+		$params = [
+			'server' => [
+				'SCRIPT_NAME' => $_SERVER['SCRIPT_NAME'],
+				'SCRIPT_FILENAME' => $_SERVER['SCRIPT_FILENAME'],
+			],
+		];
+		$fakeRequest = new \OC\AppFramework\Http\Request($params, null, new \OC\AllConfig(new \OC\SystemConfig()));
+		$scriptName = $fakeRequest->getScriptName();
 		if (substr($scriptName, -1) == '/') {
 			$scriptName .= 'index.php';
 			//make sure suburi follows the same rules as scriptName
@@ -112,18 +152,22 @@ class OC {
 			}
 		}
 
-		if (substr($scriptName, 0 - strlen(OC::$SUBURI)) === OC::$SUBURI) {
-			OC::$WEBROOT = substr($scriptName, 0, 0 - strlen(OC::$SUBURI));
-
-			if (OC::$WEBROOT != '' && OC::$WEBROOT[0] !== '/') {
-				OC::$WEBROOT = '/' . OC::$WEBROOT;
-			}
-		} else {
-			// The scriptName is not ending with OC::$SUBURI
-			// This most likely means that we are calling from CLI.
-			// However some cron jobs still need to generate
-			// a web URL, so we use overwritewebroot as a fallback.
+		if (OC::$CLI) {
 			OC::$WEBROOT = OC_Config::getValue('overwritewebroot', '');
+		} else {
+			if (substr($scriptName, 0 - strlen(OC::$SUBURI)) === OC::$SUBURI) {
+				OC::$WEBROOT = substr($scriptName, 0, 0 - strlen(OC::$SUBURI));
+
+				if (OC::$WEBROOT != '' && OC::$WEBROOT[0] !== '/') {
+					OC::$WEBROOT = '/' . OC::$WEBROOT;
+				}
+			} else {
+				// The scriptName is not ending with OC::$SUBURI
+				// This most likely means that we are calling from CLI.
+				// However some cron jobs still need to generate
+				// a web URL, so we use overwritewebroot as a fallback.
+				OC::$WEBROOT = OC_Config::getValue('overwritewebroot', '');
+			}
 		}
 
 		// search the 3rdparty folder
@@ -217,6 +261,9 @@ class OC {
 	}
 
 	public static function checkInstalled() {
+		if (defined('OC_CONSOLE')) {
+			return;
+		}
 		// Redirect to installer if not installed
 		if (!\OC::$server->getSystemConfig()->getValue('installed', false) && OC::$SUBURI != '/index.php') {
 			if (OC::$CLI) {
@@ -230,6 +277,8 @@ class OC {
 	}
 
 	public static function checkSSL() {
+		$request = \OC::$server->getRequest();
+
 		// redirect to https site if configured
 		if (\OC::$server->getSystemConfig()->getValue('forcessl', false)) {
 			// Default HSTS policy
@@ -240,15 +289,16 @@ class OC {
 				$header .= '; includeSubDomains';
 			}
 			header($header);
-			ini_set('session.cookie_secure', 'on');
-			if (OC_Request::serverProtocol() <> 'https' and !OC::$CLI) {
-				$url = 'https://' . OC_Request::serverHost() . OC_Request::requestUri();
+			ini_set('session.cookie_secure', true);
+
+			if ($request->getServerProtocol() <> 'https' && !OC::$CLI) {
+				$url = 'https://' . $request->getServerHost() . $request->getRequestUri();
 				header("Location: $url");
 				exit();
 			}
 		} else {
 			// Invalidate HSTS headers
-			if (OC_Request::serverProtocol() === 'https') {
+			if ($request->getServerProtocol() === 'https') {
 				header('Strict-Transport-Security: max-age=0');
 			}
 		}
@@ -391,7 +441,7 @@ class OC {
 
 	public static function initSession() {
 		// prevents javascript from accessing php session cookies
-		ini_set('session.cookie_httponly', '1;');
+		ini_set('session.cookie_httponly', true);
 
 		// set the cookie path to the ownCloud directory
 		$cookie_path = OC::$WEBROOT ? : '/';
@@ -470,6 +520,8 @@ class OC {
 		spl_autoload_register(array(self::$loader, 'load'));
 		$loaderEnd = microtime(true);
 
+		self::$CLI = (php_sapi_name() == 'cli');
+
 		self::initPaths();
 
 		// setup 3rdparty autoloader
@@ -478,7 +530,10 @@ class OC {
 			require_once $vendorAutoLoad;
 		} else {
 			OC_Response::setStatus(OC_Response::STATUS_SERVICE_UNAVAILABLE);
-			OC_Template::printErrorPage('Composer autoloader not found, unable to continue.');
+			// we can't use the template error page here, because this needs the
+			// DI container which isn't available yet
+			print('Composer autoloader not found, unable to continue. Check the folder "3rdparty".');
+			exit();
 		}
 
 		// setup the basic server
@@ -492,7 +547,6 @@ class OC {
 		if (defined('DEBUG') && DEBUG) {
 			ini_set('display_errors', 1);
 		}
-		self::$CLI = (php_sapi_name() == 'cli');
 
 		date_default_timezone_set('UTC');
 		ini_set('arg_separator.output', '&amp;');
@@ -609,18 +663,24 @@ class OC {
 			return;
 		}
 
-		$host = OC_Request::insecureServerHost();
-		// if the host passed in headers isn't trusted
+		$request = \OC::$server->getRequest();
+		$host = $request->getInsecureServerHost();
+		/**
+		 * if the host passed in headers isn't trusted
+		 * FIXME: Should not be in here at all :see_no_evil:
+		 */
 		if (!OC::$CLI
-			// overwritehost is always trusted
-			&& OC_Request::getOverwriteHost() === null
-			&& !OC_Request::isTrustedDomain($host)
+			// overwritehost is always trusted, workaround to not have to make
+			// \OC\AppFramework\Http\Request::getOverwriteHost public
+			&& self::$server->getConfig()->getSystemValue('overwritehost') === ''
+			&& !\OC::$server->getTrustedDomainHelper()->isTrustedDomain($host)
+			&& self::$server->getConfig()->getSystemValue('installed', false)
 		) {
 			header('HTTP/1.1 400 Bad Request');
 			header('Status: 400 Bad Request');
 
 			$tmpl = new OCP\Template('core', 'untrustedDomain', 'guest');
-			$tmpl->assign('domain', $_SERVER['SERVER_NAME']);
+			$tmpl->assign('domain', $request->server['SERVER_NAME']);
 			$tmpl->printPage();
 
 			exit();
@@ -716,6 +776,7 @@ class OC {
 	 * Handle the request
 	 */
 	public static function handleRequest() {
+
 		\OC::$server->getEventLogger()->start('handle_request', 'Handle request');
 		$systemConfig = \OC::$server->getSystemConfig();
 		// load all the classpaths from the enabled apps so they are available
@@ -730,11 +791,14 @@ class OC {
 			exit();
 		}
 
-		$request = OC_Request::getPathInfo();
+		$request = \OC::$server->getRequest()->getPathInfo();
 		if (substr($request, -3) !== '.js') { // we need these files during the upgrade
 			self::checkMaintenanceMode();
 			self::checkUpgrade();
 		}
+
+		// Always load authentication apps
+		OC_App::loadApps(['authentication']);
 
 		// Load minimum set of apps
 		if (!self::checkUpgrade(false)
@@ -744,8 +808,7 @@ class OC {
 			if(OC_User::isLoggedIn()) {
 				OC_App::loadApps();
 			} else {
-				// For guests: Load only authentication, filesystem and logging
-				OC_App::loadApps(array('authentication'));
+				// For guests: Load only filesystem and logging
 				OC_App::loadApps(array('filesystem', 'logging'));
 				\OC_User::tryBasicAuthLogin();
 			}
@@ -754,13 +817,12 @@ class OC {
 		if (!self::$CLI and (!isset($_GET["logout"]) or ($_GET["logout"] !== 'true'))) {
 			try {
 				if (!$systemConfig->getValue('maintenance', false) && !\OCP\Util::needUpgrade()) {
-					OC_App::loadApps(array('authentication'));
 					OC_App::loadApps(array('filesystem', 'logging'));
 					OC_App::loadApps();
 				}
 				self::checkSingleUserMode();
 				OC_Util::setupFS();
-				OC::$server->getRouter()->match(OC_Request::getRawPathInfo());
+				OC::$server->getRouter()->match(\OC::$server->getRequest()->getRawPathInfo());
 				return;
 			} catch (Symfony\Component\Routing\Exception\ResourceNotFoundException $e) {
 				//header('HTTP/1.0 404 Not Found');
@@ -846,19 +908,24 @@ class OC {
 	protected static function handleLogin() {
 		OC_App::loadApps(array('prelogin'));
 		$error = array();
+		$messages = [];
 
-		// auth possible via apache module?
-		if (OC::tryApacheAuth()) {
-			$error[] = 'apacheauthfailed';
-		} // remember was checked after last login
-		elseif (OC::tryRememberLogin()) {
-			$error[] = 'invalidcookie';
-		} // logon via web form
-		elseif (OC::tryFormLogin()) {
-			$error[] = 'invalidpassword';
+		try {
+			// auth possible via apache module?
+			if (OC::tryApacheAuth()) {
+				$error[] = 'apacheauthfailed';
+			} // remember was checked after last login
+			elseif (OC::tryRememberLogin()) {
+				$error[] = 'invalidcookie';
+			} // logon via web form
+			elseif (OC::tryFormLogin()) {
+				$error[] = 'invalidpassword';
+			}
+		} catch (\OC\User\LoginException $e) {
+			$messages[] = $e->getMessage();
 		}
 
-		OC_Util::displayLoginPage(array_unique($error));
+		OC_Util::displayLoginPage(array_unique($error), $messages);
 	}
 
 	/**
@@ -886,7 +953,7 @@ class OC {
 
 		// if return is true we are logged in -> redirect to the default page
 		if ($return === true) {
-			$_REQUEST['redirect_url'] = \OC_Request::requestUri();
+			$_REQUEST['redirect_url'] = \OC::$server->getRequest()->getRequestUri();
 			OC_Util::redirectToDefaultPage();
 			exit;
 		}
@@ -951,13 +1018,13 @@ class OC {
 		//setup extra user backends
 		OC_User::setupBackends();
 
-		if (OC_User::login($_POST["user"], $_POST["password"])) {
+		if (OC_User::login((string)$_POST["user"], (string)$_POST["password"])) {
 			$userId = OC_User::getUser();
 
 			// setting up the time zone
 			if (isset($_POST['timezone-offset'])) {
-				self::$server->getSession()->set('timezone', $_POST['timezone-offset']);
-				self::$server->getConfig()->setUserValue($userId, 'core', 'timezone', $_POST['timezone']);
+				self::$server->getSession()->set('timezone', (string)$_POST['timezone-offset']);
+				self::$server->getConfig()->setUserValue($userId, 'core', 'timezone', (string)$_POST['timezone']);
 			}
 
 			self::cleanupLoginTokens($userId);

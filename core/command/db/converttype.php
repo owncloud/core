@@ -1,13 +1,29 @@
 <?php
 /**
- * Copyright (c) 2013 Bart Visscher <bartv@thisnet.nl>
- * Copyright (c) 2014 Andreas Fischer <bantu@owncloud.com>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Andreas Fischer <bantu@owncloud.com>
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Joas Schilling <nickvergessen@gmx.de>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author tbelau666 <thomas.belau@gmx.de>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author unclejamal3000 <andreas.pramhaas@posteo.de>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
 namespace OC\Core\Command\Db;
 
 use \OCP\IConfig;
@@ -282,17 +298,19 @@ class ConvertType extends Command {
 	protected function saveDBInfo(InputInterface $input) {
 		$type = $input->getArgument('type');
 		$username = $input->getArgument('username');
-		$dbhost = $input->getArgument('hostname');
-		$dbname = $input->getArgument('database');
+		$dbHost = $input->getArgument('hostname');
+		$dbName = $input->getArgument('database');
 		$password = $input->getOption('password');
 		if ($input->getOption('port')) {
-			$dbhost .= ':'.$input->getOption('port');
+			$dbHost .= ':'.$input->getOption('port');
 		}
 
-		$this->config->setSystemValue('dbtype', $type);
-		$this->config->setSystemValue('dbname', $dbname);
-		$this->config->setSystemValue('dbhost', $dbhost);
-		$this->config->setSystemValue('dbuser', $username);
-		$this->config->setSystemValue('dbpassword', $password);
+		$this->config->setSystemValues([
+			'dbtype'		=> $type,
+			'dbname'		=> $dbName,
+			'dbhost'		=> $dbHost,
+			'dbuser'		=> $username,
+			'dbpassword'	=> $password,
+		]);
 	}
 }

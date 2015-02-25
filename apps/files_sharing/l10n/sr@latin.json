@@ -21,6 +21,7 @@
     "Invalid ownCloud url" : "Neispravan ownCloud url",
     "Share" : "Podeli",
     "Shared by" : "Deljeno od strane",
+    "A file or folder has been <strong>shared</strong>" : "Fijl ili direktorijum je <strong>podeljen</strong>",
     "A file or folder was shared from <strong>another server</strong>" : "Fajl ili direktorijum je deljen sa <strong>drugog servera</strong>",
     "A public shared file or folder was <strong>downloaded</strong>" : "Javni deljeni fajl ili direktorijum je <strong>preuzet</strong>",
     "You received a new remote share from %s" : "Primili ste novi udaljeni deljeni resurs od %s",
@@ -29,6 +30,11 @@
     "%1$s unshared %2$s from you" : "%1$s je prekinuo deljenje %2$s sa Vama",
     "Public shared folder %1$s was downloaded" : "Javni deljeni direktorijum %1$s je preuzet",
     "Public shared file %1$s was downloaded" : "Javni deljeni fajl %1$s je preuzet",
+    "You shared %1$s with %2$s" : "Delili ste %1$s sa %2$s",
+    "You shared %1$s with group %2$s" : "Delili ste %1$s sa grupom %2$s",
+    "%2$s shared %1$s with you" : "%2$s je delio %1$s sa Vama",
+    "You shared %1$s via link" : "Delili ste %1$s pomoću prečice",
+    "Shares" : "Deljenja",
     "This share is password-protected" : "Ovaj deljeni resurs je zaštićen lozinkom",
     "The password is wrong. Try again." : "Lozinka je netačna. Pokušajte ponovo.",
     "Password" : "Lozinka",
@@ -45,7 +51,6 @@
     "Download" : "Preuzmi",
     "Download %s" : "Preuzmi %s",
     "Direct link" : "Direktna prečica",
-    "Server-to-Server Sharing" : "Deljenje od servera do servera",
     "Allow users on this server to send shares to other servers" : "Dozvoli korisnicima na ovom serveru da šalju deljene resurse na druge servere",
     "Allow users on this server to receive shares from other servers" : "Dozvoli korisnicima na ovom serveru da primaju deljene resurse sa drugih servera"
 },"pluralForm" :"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);"

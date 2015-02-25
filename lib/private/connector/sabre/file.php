@@ -1,27 +1,7 @@
 <?php
+namespace OC\Connector\Sabre;
 
-/**
- * ownCloud
- *
- * @author Jakob Sack
- * @copyright 2011 Jakob Sack kde@jakobsack.de
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
- *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
-class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\DAV\IFile {
+class File extends \OC\Connector\Sabre\Node implements \Sabre\DAV\IFile {
 
 	/**
 	 * Updates the data
@@ -41,11 +21,12 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\
 	 * return an ETag, and just return null.
 	 *
 	 * @param resource $data
+	 *
 	 * @throws \Sabre\DAV\Exception\Forbidden
-	 * @throws OC_Connector_Sabre_Exception_UnsupportedMediaType
+	 * @throws \OC\Connector\Sabre\Exception\UnsupportedMediaType
 	 * @throws \Sabre\DAV\Exception\BadRequest
 	 * @throws \Sabre\DAV\Exception
-	 * @throws OC_Connector_Sabre_Exception_EntityTooLarge
+	 * @throws \OC\Connector\Sabre\Exception\EntityTooLarge
 	 * @throws \Sabre\DAV\Exception\ServiceUnavailable
 	 * @return string|null
 	 */
@@ -64,7 +45,7 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\
 			throw new \Sabre\DAV\Exception\ServiceUnavailable("Encryption is disabled");
 		}
 
-		$fileName = basename($this->path);
+		$fileName = basename($this->info->getPath());
 		if (!\OCP\Util::isValidFileName($fileName)) {
 			throw new \Sabre\DAV\Exception\BadRequest();
 		}
@@ -74,8 +55,8 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\
 			return $this->createFileChunked($data);
 		}
 
-		list($storage, ) = $this->fileView->resolvePath($this->path);
-		$needsPartFile = $this->needsPartFile($storage);
+		list($storage,) = $this->fileView->resolvePath($this->path);
+		$needsPartFile = $this->needsPartFile($storage) && (strlen($this->path) > 1);
 
 		if ($needsPartFile) {
 			// mark file as partial while uploading (ignored by the scanner)
@@ -99,11 +80,11 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\
 
 		} catch (\OCP\Files\EntityTooLargeException $e) {
 			// the file is too big to be stored
-			throw new OC_Connector_Sabre_Exception_EntityTooLarge($e->getMessage());
+			throw new \OC\Connector\Sabre\Exception\EntityTooLarge($e->getMessage());
 
 		} catch (\OCP\Files\InvalidContentException $e) {
 			// the file content is not permitted
-			throw new OC_Connector_Sabre_Exception_UnsupportedMediaType($e->getMessage());
+			throw new \OC\Connector\Sabre\Exception\UnsupportedMediaType($e->getMessage());
 
 		} catch (\OCP\Files\InvalidPathException $e) {
 			// the path for the file was not valid
@@ -111,7 +92,7 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\
 			throw new \Sabre\DAV\Exception\Forbidden($e->getMessage());
 		} catch (\OCP\Files\LockNotAcquiredException $e) {
 			// the file is currently being written to by another process
-			throw new OC_Connector_Sabre_Exception_FileLocked($e->getMessage(), $e->getCode(), $e);
+			throw new \OC\Connector\Sabre\Exception\FileLocked($e->getMessage(), $e->getCode(), $e);
 		} catch (\OCA\Files_Encryption\Exception\EncryptionException $e) {
 			throw new \Sabre\DAV\Exception\Forbidden($e->getMessage());
 		} catch (\OCP\Files\StorageNotAvailableException $e) {
@@ -144,14 +125,14 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\
 				}
 				catch (\OCP\Files\LockNotAcquiredException $e) {
 					// the file is currently being written to by another process
-					throw new OC_Connector_Sabre_Exception_FileLocked($e->getMessage(), $e->getCode(), $e);
+					throw new \OC\Connector\Sabre\Exception\FileLocked($e->getMessage(), $e->getCode(), $e);
 				}
 			}
 
 			// allow sync clients to send the mtime along in a header
-			$mtime = OC_Request::hasModificationTime();
-			if ($mtime !== false) {
-				if($this->fileView->touch($this->path, $mtime)) {
+			$request = \OC::$server->getRequest();
+			if (isset($request->server['HTTP_X_OC_MTIME'])) {
+				if($this->fileView->touch($this->path, $request->server['HTTP_X_OC_MTIME'])) {
 					header('X-OC-MTime: accepted');
 				}
 			}
@@ -165,8 +146,9 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\
 
 	/**
 	 * Returns the data
-	 *
 	 * @return string|resource
+	 * @throws \Sabre\DAV\Exception\Forbidden
+	 * @throws \Sabre\DAV\Exception\ServiceUnavailable
 	 */
 	public function get() {
 
@@ -187,9 +169,8 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\
 
 	/**
 	 * Delete the current file
-	 *
-	 * @return void
 	 * @throws \Sabre\DAV\Exception\Forbidden
+	 * @throws \Sabre\DAV\Exception\ServiceUnavailable
 	 */
 	public function delete() {
 		if (!$this->info->isDeletable()) {
@@ -204,19 +185,6 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\
 		} catch (\OCP\Files\StorageNotAvailableException $e) {
 			throw new \Sabre\DAV\Exception\ServiceUnavailable("Failed to unlink: ".$e->getMessage());
 		}
-
-		// remove properties
-		$this->removeProperties();
-
-	}
-
-	/**
-	 * Returns the size of the node, in bytes
-	 *
-	 * @return int|float
-	 */
-	public function getSize() {
-		return $this->info->getSize();
 	}
 
 	/**
@@ -236,6 +204,9 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\
 		return \OC_Helper::getSecureMimeType($mimeType);
 	}
 
+	/**
+	 * @return array|false
+	 */
 	public function getDirectDownload() {
 		if (\OCP\App::isEnabled('encryption')) {
 			return [];
@@ -252,16 +223,20 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\
 	/**
 	 * @param resource $data
 	 * @return null|string
+	 * @throws \Sabre\DAV\Exception
+	 * @throws \Sabre\DAV\Exception\BadRequest
+	 * @throws \Sabre\DAV\Exception\NotImplemented
+	 * @throws \Sabre\DAV\Exception\ServiceUnavailable
 	 */
 	private function createFileChunked($data)
 	{
-		list($path, $name) = \Sabre\DAV\URLUtil::splitPath($this->path);
+		list($path, $name) = \Sabre\HTTP\URLUtil::splitPath($this->path);
 
-		$info = OC_FileChunking::decodeName($name);
+		$info = \OC_FileChunking::decodeName($name);
 		if (empty($info)) {
 			throw new \Sabre\DAV\Exception\NotImplemented();
 		}
-		$chunk_handler = new OC_FileChunking($info);
+		$chunk_handler = new \OC_FileChunking($info);
 		$bytesWritten = $chunk_handler->store($info['index'], $data);
 
 		//detect aborted upload
@@ -304,9 +279,9 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\
 				}
 
 				// allow sync clients to send the mtime along in a header
-				$mtime = OC_Request::hasModificationTime();
-				if ($mtime !== false) {
-					if($this->fileView->touch($targetPath, $mtime)) {
+				$request = \OC::$server->getRequest();
+				if (isset($request->server['HTTP_X_OC_MTIME'])) {
+					if($this->fileView->touch($targetPath, $request->server['HTTP_X_OC_MTIME'])) {
 						header('X-OC-MTime: accepted');
 					}
 				}
@@ -325,9 +300,8 @@ class OC_Connector_Sabre_File extends OC_Connector_Sabre_Node implements \Sabre\
 	 * Returns whether a part file is needed for the given storage
 	 * or whether the file can be assembled/uploaded directly on the
 	 * target storage.
-	 *
-	 * @param \OCP\Files\Storage $storage storage to check
-	 * @param bool true if the storage needs part file handling
+	 * @param \OCP\Files\Storage $storage
+	 * @return bool true if the storage needs part file handling
 	 */
 	private function needsPartFile($storage) {
 		// TODO: in the future use ChunkHandler provided by storage

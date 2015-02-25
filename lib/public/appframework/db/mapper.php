@@ -1,32 +1,28 @@
 <?php
-
 /**
- * ownCloud - App Framework
+ * @author Bernhard Posselt <dev@bernhard-posselt.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @author Bernhard Posselt
- * @author Morris Jobke
- * @copyright 2012 Bernhard Posselt dev@bernhard-posselt.com
- * @copyright 2013 Morris Jobke morris.jobke@gmail.com
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
-
 namespace OCP\AppFramework\Db;
 
-use \OCP\IDb;
+use \OCP\IDBConnection;
 
 
 /**
@@ -40,12 +36,12 @@ abstract class Mapper {
 	protected $db;
 
 	/**
-	 * @param IDb $db Instance of the Db abstraction layer
-	 * @param string $tableName the name of the table. set this to allow entity 
+	 * @param IDBConnection $db Instance of the Db abstraction layer
+	 * @param string $tableName the name of the table. set this to allow entity
 	 * @param string $entityClass the name of the entity that the sql should be
 	 * mapped to queries without using sql
 	 */
-	public function __construct(IDb $db, $tableName, $entityClass=null){
+	public function __construct(IDBConnection $db, $tableName, $entityClass=null){
 		$this->db = $db;
 		$this->tableName = '*PREFIX*' . $tableName;
 
@@ -70,10 +66,13 @@ abstract class Mapper {
 	/**
 	 * Deletes an entity from the table
 	 * @param Entity $entity the entity that should be deleted
+	 * @return Entity the deleted entity
 	 */
 	public function delete(Entity $entity){
 		$sql = 'DELETE FROM `' . $this->tableName . '` WHERE `id` = ?';
-		$this->execute($sql, array($entity->getId()));
+		$stmt = $this->execute($sql, [$entity->getId()]);
+		$stmt->closeCursor();
+		return $entity;
 	}
 
 
@@ -88,14 +87,14 @@ abstract class Mapper {
 		$properties = $entity->getUpdatedFields();
 		$values = '';
 		$columns = '';
-		$params = array();
+		$params = [];
 
 		// build the fields
 		$i = 0;
 		foreach($properties as $property => $updated) {
 			$column = $entity->propertyToColumn($property);
 			$getter = 'get' . ucfirst($property);
-			
+
 			$columns .= '`' . $column . '`';
 			$values .= '?';
 
@@ -105,17 +104,20 @@ abstract class Mapper {
 				$values .= ',';
 			}
 
-			array_push($params, $entity->$getter());
+			$params[] = $entity->$getter();
 			$i++;
 
 		}
 
 		$sql = 'INSERT INTO `' . $this->tableName . '`(' .
 				$columns . ') VALUES(' . $values . ')';
-		
-		$this->execute($sql, $params);
 
-		$entity->setId((int) $this->db->getInsertId($this->tableName));
+		$stmt = $this->execute($sql, $params);
+
+		$entity->setId((int) $this->db->lastInsertId($this->tableName));
+
+		$stmt->closeCursor();
+
 		return $entity;
 	}
 
@@ -147,7 +149,7 @@ abstract class Mapper {
 		unset($properties['id']);
 
 		$columns = '';
-		$params = array();
+		$params = [];
 
 		// build the fields
 		$i = 0;
@@ -155,7 +157,7 @@ abstract class Mapper {
 
 			$column = $entity->propertyToColumn($property);
 			$getter = 'get' . ucfirst($property);
-			
+
 			$columns .= '`' . $column . '` = ?';
 
 			// only append colon if there are more entries
@@ -163,15 +165,16 @@ abstract class Mapper {
 				$columns .= ',';
 			}
 
-			array_push($params, $entity->$getter());
+			$params[] = $entity->$getter();
 			$i++;
 		}
 
-		$sql = 'UPDATE `' . $this->tableName . '` SET ' . 
+		$sql = 'UPDATE `' . $this->tableName . '` SET ' .
 				$columns . ' WHERE `id` = ?';
-		array_push($params, $id);
+		$params[] = $id;
 
-		$this->execute($sql, $params);
+		$stmt = $this->execute($sql, $params);
+		$stmt->closeCursor();
 
 		return $entity;
 	}
@@ -185,8 +188,8 @@ abstract class Mapper {
 	 * @param int $offset from which row we want to start
 	 * @return \PDOStatement the database query result
 	 */
-	protected function execute($sql, array $params=array(), $limit=null, $offset=null){
-		$query = $this->db->prepareQuery($sql, $limit, $offset);
+	protected function execute($sql, array $params=[], $limit=null, $offset=null){
+		$query = $this->db->prepare($sql, $limit, $offset);
 
 		$index = 1;  // bindParam is 1 indexed
 		foreach($params as $param) {
@@ -199,18 +202,20 @@ abstract class Mapper {
 				case 'boolean':
 					$pdoConstant = \PDO::PARAM_BOOL;
 					break;
-				
+
 				default:
 					$pdoConstant = \PDO::PARAM_STR;
 					break;
 			}
-			
+
 			$query->bindValue($index, $param, $pdoConstant);
 
 			$index++;
 		}
 
-		return $query->execute();
+		$query->execute();
+
+		return $query;
 	}
 
 
@@ -226,14 +231,16 @@ abstract class Mapper {
 	 * @throws MultipleObjectsReturnedException if more than one item exist
 	 * @return array the result as row
 	 */
-	protected function findOneQuery($sql, array $params=array(), $limit=null, $offset=null){
-		$result = $this->execute($sql, $params, $limit, $offset);
-		$row = $result->fetch();
+	protected function findOneQuery($sql, array $params=[], $limit=null, $offset=null){
+		$stmt = $this->execute($sql, $params, $limit, $offset);
+		$row = $stmt->fetch();
 
 		if($row === false || $row === null){
+			$stmt->closeCursor();
 			throw new DoesNotExistException('No matching entry found');
 		}
-		$row2 = $result->fetch();
+		$row2 = $stmt->fetch();
+		$stmt->closeCursor();
 		//MDB2 returns null, PDO and doctrine false when no row is available
 		if( ! ($row2 === false || $row2 === null )) {
 			throw new MultipleObjectsReturnedException('More than one result');
@@ -262,14 +269,16 @@ abstract class Mapper {
 	 * @param int $offset from which row we want to start
 	 * @return array all fetched entities
 	 */
-	protected function findEntities($sql, array $params=array(), $limit=null, $offset=null) {
-		$result = $this->execute($sql, $params, $limit, $offset);
+	protected function findEntities($sql, array $params=[], $limit=null, $offset=null) {
+		$stmt = $this->execute($sql, $params, $limit, $offset);
 
-		$entities = array();
-		
-		while($row = $result->fetch()){
+		$entities = [];
+
+		while($row = $stmt->fetch()){
 			$entities[] = $this->mapRowToEntity($row);
 		}
+
+		$stmt->closeCursor();
 
 		return $entities;
 	}
@@ -286,7 +295,7 @@ abstract class Mapper {
 	 * @throws MultipleObjectsReturnedException if more than one item exist
 	 * @return Entity the entity
 	 */
-	protected function findEntity($sql, array $params=array(), $limit=null, $offset=null){
+	protected function findEntity($sql, array $params=[], $limit=null, $offset=null){
 		return $this->mapRowToEntity($this->findOneQuery($sql, $params, $limit, $offset));
 	}
 

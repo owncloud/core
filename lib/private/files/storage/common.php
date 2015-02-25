@@ -1,11 +1,37 @@
 <?php
 /**
- * Copyright (c) 2012 Robin Appelman <icewind@owncloud.com>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Bjoern Schiessle <schiessle@owncloud.com>
+ * @author hkjolhede <hkjolhede@gmail.com>
+ * @author Joas Schilling <nickvergessen@gmx.de>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Michael Gapczynski <gapczynskim@gmail.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Sam Tuke <mail@samtuke.com>
+ * @author scambra <sergio@entrecables.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
-
 namespace OC\Files\Storage;
 
 use OC\Files\Filesystem;
@@ -343,7 +369,7 @@ abstract class Common implements \OC\Files\Storage\Storage {
 	 * get the owner of a path
 	 *
 	 * @param string $path The path to get the owner
-	 * @return string uid or false
+	 * @return string|false uid or false
 	 */
 	public function getOwner($path) {
 		return \OC_User::getUser();
@@ -353,10 +379,10 @@ abstract class Common implements \OC\Files\Storage\Storage {
 	 * get the ETag for a file or folder
 	 *
 	 * @param string $path
-	 * @return string
+	 * @return string|false
 	 */
 	public function getETag($path) {
-		$ETagFunction = \OC_Connector_Sabre_Node::$ETagFunction;
+		$ETagFunction = \OC\Connector\Sabre\Node::$ETagFunction;
 		if ($ETagFunction) {
 			$hash = call_user_func($ETagFunction, $path);
 			return $hash;
@@ -400,7 +426,7 @@ abstract class Common implements \OC\Files\Storage\Storage {
 	 * get the free space in the storage
 	 *
 	 * @param string $path
-	 * @return int
+	 * @return int|false
 	 */
 	public function free_space($path) {
 		return \OCP\Files\FileInfo::SPACE_UNKNOWN;
@@ -445,7 +471,7 @@ abstract class Common implements \OC\Files\Storage\Storage {
 	 * For now the returned array can hold the parameter url - in future more attributes might follow.
 	 *
 	 * @param string $path
-	 * @return array
+	 * @return array|false
 	 */
 	public function getDirectDownload($path) {
 		return [];

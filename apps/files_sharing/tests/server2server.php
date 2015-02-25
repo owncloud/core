@@ -1,26 +1,23 @@
 <?php
 /**
- * ownCloud - test server-to-server OCS API
- *
- * @copyright (c) ownCloud, Inc.
- *
  * @author Bjoern Schiessle <schiessle@owncloud.com>
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This library is distributed in the hope that it will be useful,
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
 use OCA\Files_Sharing\Tests\TestCase;
 
 /**
@@ -30,6 +27,14 @@ class Test_Files_Sharing_S2S_OCS_API extends TestCase {
 
 	const TEST_FOLDER_NAME = '/folder_share_api_test';
 
+	/**
+	 * @var \OCP\IDBConnection
+	 */
+	private $connection;
+
+	/**
+	 * @var \OCA\Files_Sharing\API\Server2Server
+	 */
 	private $s2s;
 
 	protected function setUp() {
@@ -49,6 +54,8 @@ class Test_Files_Sharing_S2S_OCS_API extends TestCase {
 		$this->registerHttpHelper($httpHelperMock);
 
 		$this->s2s = new \OCA\Files_Sharing\API\Server2Server();
+
+		$this->connection = \OC::$server->getDatabaseConnection();
 	}
 
 	protected function tearDown() {
@@ -132,4 +139,71 @@ class Test_Files_Sharing_S2S_OCS_API extends TestCase {
 		$data = $result->fetchAll();
 		$this->assertEmpty($data);
 	}
+
+	/**
+	 * @dataProvider dataTestDeleteUser
+	 */
+	function testDeleteUser($toDelete, $expected, $remainingUsers) {
+		$this->createDummyS2SShares();
+
+		$manager = new OCA\Files_Sharing\External\Manager(
+			\OC::$server->getDatabaseConnection(),
+			\OC\Files\Filesystem::getMountManager(),
+			\OC\Files\Filesystem::getLoader(),
+			\OC::$server->getHTTPHelper(),
+			$toDelete
+			);
+
+		$manager->removeUserShares($toDelete);
+
+		$query = $this->connection->prepare('SELECT `user` FROM `*PREFIX*share_external`');
+		$query->execute();
+		$result = $query->fetchAll();
+
+		foreach ($result as $r) {
+			$remainingShares[$r['user']] = isset($remainingShares[$r['user']]) ? $remainingShares[$r['user']] + 1 : 1;
+		}
+
+		$this->assertSame($remainingUsers, count($remainingShares));
+
+		foreach ($expected as $key => $value) {
+			if ($key === $toDelete) {
+				$this->assertArrayNotHasKey($key, $remainingShares);
+			} else {
+				$this->assertSame($value, $remainingShares[$key]);
+			}
+		}
+
+	}
+
+	function dataTestDeleteUser() {
+		return array(
+			array('user1', array('user1' => 0, 'user2' => 3, 'user3' => 3), 2),
+			array('user2', array('user1' => 4, 'user2' => 0, 'user3' => 3), 2),
+			array('user3', array('user1' => 4, 'user2' => 3, 'user3' => 0), 2),
+			array('user4', array('user1' => 4, 'user2' => 3, 'user3' => 3), 3),
+		);
+	}
+
+	private function createDummyS2SShares() {
+		$query = $this->connection->prepare('
+			INSERT INTO `*PREFIX*share_external`
+			(`remote`, `share_token`, `password`, `name`, `owner`, `user`, `mountpoint`, `mountpoint_hash`, `remote_id`, `accepted`)
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+			');
+
+		$users = array('user1', 'user2', 'user3');
+
+		for ($i = 0; $i < 10; $i++) {
+			$user = $users[$i%3];
+			$query->execute(array('remote', 'token', 'password', 'name', 'owner', $user, 'mount point', $i, $i, 0));
+		}
+
+		$query = $this->connection->prepare('SELECT `id` FROM `*PREFIX*share_external`');
+		$query->execute();
+		$dummyEntries = $query->fetchAll();
+
+		$this->assertSame(10, count($dummyEntries));
+	}
+
 }

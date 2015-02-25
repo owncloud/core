@@ -1,17 +1,44 @@
 <?php
 /**
- * Copyright (c) 2014 Vincent Petry <PVince81@owncloud.com>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
 namespace OC;
 
 class NaturalSort {
 	private static $instance;
 	private $collator;
+	private $cache = array();
+
+	/**
+	 * Instantiate a new \OC\NaturalSort instance.
+	 * @param object $injectedCollator
+	 */
+	public function __construct($injectedCollator = null) {
+		// inject an instance of \Collator('en_US') to force using the php5-intl Collator
+		// or inject an instance of \OC\NaturalSort_DefaultCollator to force using Owncloud's default collator
+		if (isset($injectedCollator)) {
+			$this->collator = $injectedCollator;
+			\OC_Log::write('core', 'forced use of '.get_class($injectedCollator), \OC_Log::DEBUG);
+		}
+	}
 
 	/**
 	 * Split the given string in chunks of numbers and strings
@@ -21,13 +48,15 @@ class NaturalSort {
 	private function naturalSortChunkify($t) {
 		// Adapted and ported to PHP from
 		// http://my.opera.com/GreyWyvern/blog/show.dml/1671288
+		if (isset($this->cache[$t])) {
+			return $this->cache[$t];
+		}
 		$tz = array();
 		$x = 0;
 		$y = -1;
 		$n = null;
-		$length = strlen($t);
 
-		while ($x < $length) {
+		while (isset($t[$x])) {
 			$c = $t[$x];
 			// only include the dot in strings
 			$m = ((!$n && $c === '.') || ($c >= '0' && $c <= '9'));
@@ -40,6 +69,7 @@ class NaturalSort {
 			$tz[$y] .= $c;
 			$x++;
 		}
+		$this->cache[$t] = $tz;
 		return $tz;
 	}
 
@@ -75,14 +105,13 @@ class NaturalSort {
 		// instead of ["test.txt", "test (2).txt"]
 		$aa = self::naturalSortChunkify($a);
 		$bb = self::naturalSortChunkify($b);
-		$alen = count($aa);
-		$blen = count($bb);
 
-		for ($x = 0; $x < $alen && $x < $blen; $x++) {
+		for ($x = 0; isset($aa[$x]) && isset($bb[$x]); $x++) {
 			$aChunk = $aa[$x];
 			$bChunk = $bb[$x];
 			if ($aChunk !== $bChunk) {
-				if (is_numeric($aChunk) && is_numeric($bChunk)) {
+				// test first character (character comparison, not number comparison)
+				if ($aChunk[0] >= '0' && $aChunk[0] <= '9' && $bChunk[0] >= '0' && $bChunk[0] <= '9') {
 					$aNum = (int)$aChunk;
 					$bNum = (int)$bChunk;
 					return $aNum - $bNum;
@@ -90,7 +119,7 @@ class NaturalSort {
 				return self::getCollator()->compare($aChunk, $bChunk);
 			}
 		}
-		return $alen - $blen;
+		return count($aa) - count($bb);
 	}
 
 	/**

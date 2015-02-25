@@ -1,18 +1,30 @@
 <?php
 /**
- * @author Lukas Reschke
- * @author Thomas Müller
- * @copyright 2014 Lukas Reschke lukas@owncloud.com, 2014 Thomas Müller deepdiver@owncloud.com
+ * @author Joas Schilling <nickvergessen@gmx.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
-
 namespace OC\Settings\Controller;
 
 use OC\App\DependencyAnalyzer;
 use OC\App\Platform;
+use OC\OCSClient;
 use \OCP\AppFramework\Controller;
 use OCP\ICacheFactory;
 use OCP\IRequest;
@@ -63,15 +75,17 @@ class AppSettingsController extends Controller {
 			['id' => 1, 'displayName' => (string)$this->l10n->t('Not enabled')],
 		];
 
-		if($this->config->getSystemValue('appstoreenabled', true)) {
+		if(OCSClient::isAppStoreEnabled()) {
 			$categories[] = ['id' => 2, 'displayName' => (string)$this->l10n->t('Recommended')];
 			// apps from external repo via OCS
-			$ocs = \OC_OCSClient::getCategories();
-			foreach($ocs as $k => $v) {
-				$categories[] = array(
-					'id' => $k,
-					'displayName' => str_replace('ownCloud ', '', $v)
-				);
+			$ocs = OCSClient::getCategories();
+			if ($ocs) {
+				foreach($ocs as $k => $v) {
+					$categories[] = array(
+						'id' => $k,
+						'displayName' => str_replace('ownCloud ', '', $v)
+					);
+				}
 			}
 		}
 
@@ -93,10 +107,7 @@ class AppSettingsController extends Controller {
 			switch ($category) {
 				// installed apps
 				case 0:
-					$apps = \OC_App::listAllApps(true);
-					$apps = array_filter($apps, function ($app) {
-						return $app['active'];
-					});
+					$apps = $this->getInstalledApps();
 					usort($apps, function ($a, $b) {
 						$a = (string)$a['name'];
 						$b = (string)$b['name'];
@@ -124,15 +135,31 @@ class AppSettingsController extends Controller {
 				default:
 					if ($category === 2) {
 						$apps = \OC_App::getAppstoreApps('approved');
-						$apps = array_filter($apps, function ($app) {
-							return isset($app['internalclass']) && $app['internalclass'] === 'recommendedapp';
-						});
+						if ($apps) {
+							$apps = array_filter($apps, function ($app) {
+								return isset($app['internalclass']) && $app['internalclass'] === 'recommendedapp';
+							});
+						}
 					} else {
 						$apps = \OC_App::getAppstoreApps('approved', $category);
 					}
 					if (!$apps) {
 						$apps = array();
+					} else {
+						// don't list installed apps
+						$installedApps = $this->getInstalledApps();
+						$installedApps = array_map(function ($app) {
+							if (isset($app['ocsid'])) {
+								return $app['ocsid'];
+							}
+							return $app['id'];
+						}, $installedApps);
+						$apps = array_filter($apps, function ($app) use ($installedApps) {
+							return !in_array($app['id'], $installedApps);
+						});
 					}
+
+					// sort by score
 					usort($apps, function ($a, $b) {
 						$a = (int)$a['score'];
 						$b = (int)$b['score'];
@@ -173,5 +200,16 @@ class AppSettingsController extends Controller {
 		$this->cache->set('listApps-'.$category, $apps, 300);
 
 		return ['apps' => $apps, 'status' => 'success'];
+	}
+
+	/**
+	 * @return array
+	 */
+	private function getInstalledApps() {
+		$apps = \OC_App::listAllApps(true);
+		$apps = array_filter($apps, function ($app) {
+			return $app['active'];
+		});
+		return $apps;
 	}
 }

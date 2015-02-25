@@ -1,7 +1,59 @@
 <?php
-
 /**
- * Class for utility functions
+ * @author Adam Williamson <awilliam@redhat.com>
+ * @author Andreas Fischer <bantu@owncloud.com>
+ * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Bernhard Posselt <dev@bernhard-posselt.com>
+ * @author Birk Borkason <daniel.niccoli@gmail.com>
+ * @author Bjoern Schiessle <schiessle@owncloud.com>
+ * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Brice Maron <brice@bmaron.net>
+ * @author Christian Reiner <github@christian-reiner.info>
+ * @author Christopher Schäpers <kondou@ts.unde.re>
+ * @author Clark Tomlinson <fallen013@gmail.com>
+ * @author Diederik de Haas <diederik@cknow.org>
+ * @author Florin Peter <github@florin-peter.de>
+ * @author Frank Karlitschek <frank@owncloud.org>
+ * @author Georg Ehrke <georg@owncloud.com>
+ * @author Georg Ehrke <georg@ownCloud.com>
+ * @author helix84 <helix84@centrum.sk>
+ * @author Jakob Sack <mail@jakobsack.de>
+ * @author Joan <aseques@gmail.com>
+ * @author Joas Schilling <nickvergessen@gmx.de>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Markus Goetz <markus@woboq.com>
+ * @author Marvin Thomas Rabe <mrabe@marvinrabe.de>
+ * @author Michael Gapczynski <gapczynskim@gmail.com>
+ * @author Michael Göhler <somebody.here@gmx.de>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
+ * @author Stefan Rado <owncloud@sradonia.net>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Thomas Schmidt <tschmidt@suse.de>
+ * @author Thomas Tanghus <thomas@tanghus.net>
+ * @author Victor Dubiniuk <dubiniuk@owncloud.com>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Volkan Gezer <volkangezer@gmail.com>
+ * @author Yann VERRY <yann@verry.org>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
 class OC_Util {
@@ -10,6 +62,10 @@ class OC_Util {
 	public static $headers = array();
 	private static $rootMounted = false;
 	private static $fsSetup = false;
+
+	protected static function getAppManager() {
+		return \OC::$server->getAppManager();
+	}
 
 	private static function initLocalStorageRootFS() {
 		// mount local file backend as root
@@ -494,7 +550,7 @@ class OC_Util {
 		}
 
 		$webServerRestart = false;
-		$setup = new OC_Setup($config);
+		$setup = new OC\Setup($config);
 		$availableDatabases = $setup->getSupportedDatabases();
 		if (empty($availableDatabases)) {
 			$errors[] = array(
@@ -503,11 +559,6 @@ class OC_Util {
 			);
 			$webServerRestart = true;
 		}
-
-		//common hint for all file permissions error messages
-		$permissionsHint = $l->t('Permissions can usually be fixed by '
-			. '%sgiving the webserver write access to the root directory%s.',
-			array('<a href="' . \OC_Helper::linkToDocs('admin-dir_permissions') . '" target="_blank">', '</a>'));
 
 		// Check if config folder is writable.
 		if (!is_writable(OC::$configDir) or !is_readable(OC::$configDir)) {
@@ -549,6 +600,10 @@ class OC_Util {
 					);
 				}
 			} else if (!is_writable($CONFIG_DATADIRECTORY) or !is_readable($CONFIG_DATADIRECTORY)) {
+				//common hint for all file permissions error messages
+				$permissionsHint = $l->t('Permissions can usually be fixed by '
+					. '%sgiving the webserver write access to the root directory%s.',
+					array('<a href="' . \OC_Helper::linkToDocs('admin-dir_permissions') . '" target="_blank">', '</a>'));
 				$errors[] = array(
 					'error' => 'Data directory (' . $CONFIG_DATADIRECTORY . ') not writable by ownCloud',
 					'hint' => $permissionsHint
@@ -571,6 +626,7 @@ class OC_Util {
 		// classes = class_exists
 		// functions = function_exists
 		// defined = defined
+		// ini = ini_get
 		// If the dependency is not found the missing module name is shown to the EndUser
 		$dependencies = array(
 			'classes' => array(
@@ -591,9 +647,14 @@ class OC_Util {
 			),
 			'defined' => array(
 				'PDO::ATTR_DRIVER_NAME' => 'PDO'
-			)
+			),
+			'ini' => [
+				'mbstring.func_overload' => 0,
+				'output_buffering' => false,
+			],
 		);
 		$missingDependencies = array();
+		$invalidIniSettings = [];
 		$moduleHint = $l->t('Please ask your server administrator to install the module.');
 
 		foreach ($dependencies['classes'] as $class => $module) {
@@ -611,12 +672,35 @@ class OC_Util {
 				$missingDependencies[] = $module;
 			}
 		}
+		foreach($dependencies['ini'] as $setting => $expected) {
+			$iniWrapper = \OC::$server->getIniWrapper();
+			if(is_bool($expected)) {
+				if($iniWrapper->getBool($setting) !== $expected) {
+					$invalidIniSettings[] = [$setting, $expected];
+				}
+			}
+			if(is_int($expected)) {
+				if($iniWrapper->getNumeric($setting) !== $expected) {
+					$invalidIniSettings[] = [$setting, $expected];
+				}
+			}
+		}
 
 		foreach($missingDependencies as $missingDependency) {
 			$errors[] = array(
 				'error' => $l->t('PHP module %s not installed.', array($missingDependency)),
 				'hint' => $moduleHint
 			);
+			$webServerRestart = true;
+		}
+		foreach($invalidIniSettings as $setting) {
+			if(is_bool($setting[1])) {
+				$setting[1] = ($setting[1]) ? 'on' : 'off';
+			}
+			$errors[] = [
+				'error' => $l->t('PHP setting "%s" is not set to "%s".', [$setting[0], var_export($setting[1], true)]),
+				'hint' =>  $l->t('Adjusting this setting in php.ini will make ownCloud run again')
+			];
 			$webServerRestart = true;
 		}
 
@@ -628,10 +712,30 @@ class OC_Util {
 			);
 			$webServerRestart = true;
 		}
+
+		/**
+		 * PHP 5.6 ships with a PHP setting which throws notices by default for a
+		 * lot of endpoints. Thus we need to ensure that the value is set to -1
+		 *
+		 * FIXME: Due to https://github.com/owncloud/core/pull/13593#issuecomment-71178078
+		 * this check is disabled for HHVM at the moment. This should get re-evaluated
+		 * at a later point.
+		 *
+		 * @link https://github.com/owncloud/core/issues/13592
+		 */
+		if(version_compare(phpversion(), '5.6.0', '>=') &&
+			!self::runningOnHhvm() &&
+			\OC::$server->getIniWrapper()->getNumeric('always_populate_raw_post_data') !== -1) {
+			$errors[] = array(
+				'error' => $l->t('PHP is configured to populate raw post data. Since PHP 5.6 this will lead to PHP throwing notices for perfectly valid code.'),
+				'hint' => $l->t('To fix this issue set <code>always_populate_raw_post_data</code> to <code>-1</code> in your php.ini')
+			);
+		}
+
 		if (!self::isAnnotationsWorking()) {
 			$errors[] = array(
-				'error' => 'PHP is apparently setup to strip inline doc blocks. This will make several core apps inaccessible.',
-				'hint' => 'This is probably caused by a cache/accelerator such as Zend OPcache or eAccelerator.'
+				'error' => $l->t('PHP is apparently setup to strip inline doc blocks. This will make several core apps inaccessible.'),
+				'hint' => $l->t('This is probably caused by a cache/accelerator such as Zend OPcache or eAccelerator.')
 			);
 		}
 
@@ -782,12 +886,14 @@ class OC_Util {
 
 	/**
 	 * @param array $errors
+	 * @param string[] $messages
 	 */
-	public static function displayLoginPage($errors = array()) {
+	public static function displayLoginPage($errors = array(), $messages = []) {
 		$parameters = array();
 		foreach ($errors as $value) {
 			$parameters[$value] = true;
 		}
+		$parameters['messages'] = $messages;
 		if (!empty($_REQUEST['user'])) {
 			$parameters["username"] = $_REQUEST['user'];
 			$parameters['user_autofocus'] = false;
@@ -796,8 +902,7 @@ class OC_Util {
 			$parameters['user_autofocus'] = true;
 		}
 		if (isset($_REQUEST['redirect_url'])) {
-			$redirectUrl = $_REQUEST['redirect_url'];
-			$parameters['redirect_url'] = urlencode($redirectUrl);
+			$parameters['redirect_url'] = $_REQUEST['redirect_url'];
 		}
 
 		$parameters['alt_login'] = OC_App::getAlternativeLogIns();
@@ -829,8 +934,11 @@ class OC_Util {
 		// Check if we are a user
 		if (!OC_User::isLoggedIn()) {
 			header('Location: ' . OC_Helper::linkToAbsolute('', 'index.php',
-					array('redirect_url' => OC_Request::requestUri())
-				));
+					[
+						'redirect_url' => \OC::$server->getRequest()->getRequestUri()
+					]
+				)
+			);
 			exit();
 		}
 	}
@@ -906,7 +1014,7 @@ class OC_Util {
 				// find the first app that is enabled for the current user
 				foreach ($defaultApps as $defaultApp) {
 					$defaultApp = OC_App::cleanAppId(strip_tags($defaultApp));
-					if (OC_App::isEnabled($defaultApp)) {
+					if (static::getAppManager()->isEnabledForUser($defaultApp)) {
 						$appId = $defaultApp;
 						break;
 					}
@@ -1179,16 +1287,6 @@ class OC_Util {
 	}
 
 	/**
-	 * Checks if a secure random number generator is available
-	 *
-	 * @return true
-	 * @deprecated Function will be removed in the future and does only return true.
-	 */
-	public static function secureRNGAvailable() {
-		return true;
-	}
-
-	/**
 	 * Get URL content
 	 * @param string $url Url to get content
 	 * @deprecated Use \OC::$server->getHTTPHelper()->getUrlContent($url);
@@ -1224,6 +1322,15 @@ class OC_Util {
 	}
 
 	/**
+	 * Checks whether server is running on HHVM
+	 *
+	 * @return bool True if running on HHVM, false otherwise
+	 */
+	public static function runningOnHhvm() {
+		return defined('HHVM_VERSION');
+	}
+
+	/**
 	 * Handles the case that there may not be a theme, then check if a "default"
 	 * theme exists and take that one
 	 *
@@ -1239,6 +1346,32 @@ class OC_Util {
 		}
 
 		return $theme;
+	}
+
+	/**
+	 * Clear a single file from the opcode cache
+	 * This is useful for writing to the config file
+	 * in case the opcode cache does not re-validate files
+	 * Returns true if successful, false if unsuccessful:
+	 * caller should fall back on clearing the entire cache
+	 * with clearOpcodeCache() if unsuccessful
+	 *
+	 * @param string $path the path of the file to clear from the cache
+	 * @return bool true if underlying function returns true, otherwise false
+	 */
+	public static function deleteFromOpcodeCache($path) {
+		$ret = false;
+		if ($path) {
+			// APC >= 3.1.1
+			if (function_exists('apc_delete_file')) {
+				$ret = @apc_delete_file($path);
+			}
+			// Zend OpCache >= 7.0.0, PHP >= 5.5.0
+			if (function_exists('opcache_invalidate')) {
+				$ret = opcache_invalidate($path);
+			}
+		}
+		return $ret;
 	}
 
 	/**
@@ -1369,10 +1502,12 @@ class OC_Util {
 	}
 
 	/**
+	 * Check if PhpCharset config is UTF-8
+	 *
 	 * @return string
 	 */
 	public static function isPhpCharSetUtf8() {
-		return ini_get('default_charset') === 'UTF-8';
+		return strtoupper(ini_get('default_charset')) === 'UTF-8';
 	}
 
 }

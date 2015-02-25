@@ -1,16 +1,8 @@
 <?php
 
-/**
- * ownCloud
- *
- * @author Vincent Petry
- * @copyright 2014 Vincent Petry <pvince81@owncloud.com>
- *
- * @license AGPL3
- */
+namespace OC\Connector\Sabre;
 
-class OC_Connector_Sabre_ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin
-{
+class ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin {
 	private $nonFatalExceptions = array(
 		'Sabre\DAV\Exception\NotAuthenticated' => true,
 		// the sync client uses this to find out whether files exist,
@@ -44,7 +36,7 @@ class OC_Connector_Sabre_ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin
 	 */
 	public function initialize(\Sabre\DAV\Server $server) {
 
-		$server->subscribeEvent('exception', array($this, 'logException'), 10);
+		$server->on('exception', array($this, 'logException'), 10);
 	}
 
 	/**

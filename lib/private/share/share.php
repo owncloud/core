@@ -1,25 +1,38 @@
 <?php
 /**
- * ownCloud
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Bernhard Reiter <ockham@raz.or.at>
+ * @author Bjoern Schiessle <schiessle@owncloud.com>
+ * @author Christopher Schäpers <kondou@ts.unde.re>
+ * @author Daniel Hansson <enoch85@gmail.com>
+ * @author Joas Schilling <nickvergessen@gmx.de>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Michael Kuhn <suraia@ikkoku.de>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Sebastian Döll <sebastian.doell@libasys.de>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Volkan Gezer <volkangezer@gmail.com>
  *
- * @author Bjoern Schiessle, Michael Gapczynski
- * @copyright 2012 Michael Gapczynski <mtgap@owncloud.com>
- *            2014 Bjoern Schiessle <schiessle@owncloud.com>
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
-
 namespace OC\Share;
 
 /**
@@ -103,6 +116,7 @@ class Share extends \OC\Share\Constants {
 
 		$shares = $sharePaths = $fileTargets = array();
 		$publicShare = false;
+		$remoteShare = false;
 		$source = -1;
 		$cache = false;
 
@@ -170,21 +184,38 @@ class Share extends \OC\Share\Constants {
 
 			//check for public link shares
 			if (!$publicShare) {
-				$query = \OC_DB::prepare(
-					'SELECT `share_with`
-					FROM
-					`*PREFIX*share`
-					WHERE
-					`item_source` = ? AND `share_type` = ? AND `item_type` IN (\'file\', \'folder\')'
+				$query = \OC_DB::prepare('
+					SELECT `share_with`
+					FROM `*PREFIX*share`
+					WHERE `item_source` = ? AND `share_type` = ? AND `item_type` IN (\'file\', \'folder\')', 1
 				);
 
 				$result = $query->execute(array($source, self::SHARE_TYPE_LINK));
 
 				if (\OCP\DB::isError($result)) {
-					\OCP\Util::writeLog('OCP\Share', \OC_DB::getErrorMessage($result), \OC_Log::ERROR);
+					\OCP\Util::writeLog('OCP\Share', \OC_DB::getErrorMessage($result), \OCP\Util::ERROR);
 				} else {
 					if ($result->fetchRow()) {
 						$publicShare = true;
+					}
+				}
+			}
+
+			//check for remote share
+			if (!$remoteShare) {
+				$query = \OC_DB::prepare('
+					SELECT `share_with`
+					FROM `*PREFIX*share`
+					WHERE `item_source` = ? AND `share_type` = ? AND `item_type` IN (\'file\', \'folder\')', 1
+				);
+
+				$result = $query->execute(array($source, self::SHARE_TYPE_REMOTE));
+
+				if (\OCP\DB::isError($result)) {
+					\OCP\Util::writeLog('OCP\Share', \OC_DB::getErrorMessage($result), \OCP\Util::ERROR);
+				} else {
+					if ($result->fetchRow()) {
+						$remoteShare = true;
 					}
 				}
 			}
@@ -234,7 +265,7 @@ class Share extends \OC\Share\Constants {
 			return $sharePaths;
 		}
 
-		return array("users" => array_unique($shares), "public" => $publicShare);
+		return array('users' => array_unique($shares), 'public' => $publicShare, 'remote' => $remoteShare);
 	}
 
 	/**
@@ -337,27 +368,29 @@ class Share extends \OC\Share\Constants {
 		if(empty($shares) && $user !== null) {
 			$groups = \OC_Group::getUserGroups($user);
 
-			$where = 'WHERE `' . $column . '` = ? AND `item_type` = ? AND `share_with` in (?)';
-			$arguments = array($itemSource, $itemType, $groups);
-			$types = array(null, null, \Doctrine\DBAL\Connection::PARAM_STR_ARRAY);
+			if (!empty($groups)) {
+				$where = 'WHERE `' . $column . '` = ? AND `item_type` = ? AND `share_with` in (?)';
+				$arguments = array($itemSource, $itemType, $groups);
+				$types = array(null, null, \Doctrine\DBAL\Connection::PARAM_STR_ARRAY);
 
-			if ($owner !== null) {
-				$where .= ' AND `uid_owner` = ?';
-				$arguments[] = $owner;
-				$types[] = null;
-			}
+				if ($owner !== null) {
+					$where .= ' AND `uid_owner` = ?';
+					$arguments[] = $owner;
+					$types[] = null;
+				}
 
-			// TODO: inject connection, hopefully one day in the future when this
-			// class isn't static anymore...
-			$conn = \OC_DB::getConnection();
-			$result = $conn->executeQuery(
-				'SELECT * FROM `*PREFIX*share` ' . $where,
-				$arguments,
-				$types
-			);
+				// TODO: inject connection, hopefully one day in the future when this
+				// class isn't static anymore...
+				$conn = \OC_DB::getConnection();
+				$result = $conn->executeQuery(
+					'SELECT * FROM `*PREFIX*share` ' . $where,
+					$arguments,
+					$types
+				);
 
-			while ($row = $result->fetch()) {
-				$shares[] = $row;
+				while ($row = $result->fetch()) {
+					$shares[] = $row;
+				}
 			}
 		}
 
@@ -704,6 +737,7 @@ class Share extends \OC\Share\Constants {
 			$token = \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate(self::TOKEN_LENGTH, \OCP\Security\ISecureRandom::CHAR_LOWER . \OCP\Security\ISecureRandom::CHAR_UPPER .
 				\OCP\Security\ISecureRandom::CHAR_DIGITS);
 
+			$shareWith = rtrim($shareWith, '/');
 			$shareId = self::put($itemType, $itemSource, $shareType, $shareWith, $uidOwner, $permissions, null, $token, $itemSourceName);
 
 			$send = false;
@@ -971,7 +1005,8 @@ class Share extends \OC\Share\Constants {
 			if ($item['permissions'] & ~$permissions) {
 				// If share permission is removed all reshares must be deleted
 				if (($item['permissions'] & \OCP\Constants::PERMISSION_SHARE) && (~$permissions & \OCP\Constants::PERMISSION_SHARE)) {
-					Helper::delete($item['id'], true);
+					// delete all shares, keep parent and group children
+					Helper::delete($item['id'], true, null, null, true);
 				} else {
 					$ids = array();
 					$parents = array($item['id']);
@@ -1144,13 +1179,20 @@ class Share extends \OC\Share\Constants {
 	 * @return null
 	 */
 	protected static function unshareItem(array $item, $newParent = null) {
+
+		$shareType = (int)$item['share_type'];
+		$shareWith = null;
+		if ($shareType !== \OCP\Share::SHARE_TYPE_LINK) {
+			$shareWith = $item['share_with'];
+		}
+
 		// Pass all the vars we have for now, they may be useful
 		$hookParams = array(
 			'id'            => $item['id'],
 			'itemType'      => $item['item_type'],
 			'itemSource'    => $item['item_source'],
-			'shareType'     => (int)$item['share_type'],
-			'shareWith'     => $item['share_with'],
+			'shareType'     => $shareType,
+			'shareWith'     => $shareWith,
 			'itemParent'    => $item['parent'],
 			'uidOwner'      => $item['uid_owner'],
 		);
@@ -1828,7 +1870,7 @@ class Share extends \OC\Share\Constants {
 			$sourceId = ($itemType === 'file' || $itemType === 'folder') ? $fileSource : $itemSource;
 			$sourceExists = self::getItemSharedWithBySource($itemType, $sourceId, self::FORMAT_NONE, null, true, $user);
 
-			$shareType = ($isGroupShare) ? self::$shareTypeGroupUserUnique : $shareType;
+			$userShareType = ($isGroupShare) ? self::$shareTypeGroupUserUnique : $shareType;
 
 			if ($sourceExists) {
 				$fileTarget = $sourceExists['file_target'];
@@ -1841,12 +1883,12 @@ class Share extends \OC\Share\Constants {
 
 			} elseif(!$sourceExists && !$isGroupShare)  {
 
-				$itemTarget = Helper::generateTarget($itemType, $itemSource, $shareType, $user,
+				$itemTarget = Helper::generateTarget($itemType, $itemSource, $userShareType, $user,
 					$uidOwner, $suggestedItemTarget, $parent);
 				if (isset($fileSource)) {
 					if ($parentFolder) {
 						if ($parentFolder === true) {
-							$fileTarget = Helper::generateTarget('file', $filePath, $shareType, $user,
+							$fileTarget = Helper::generateTarget('file', $filePath, $userShareType, $user,
 								$uidOwner, $suggestedFileTarget, $parent);
 							if ($fileTarget != $groupFileTarget) {
 								$parentFolders[$user]['folder'] = $fileTarget;
@@ -1856,7 +1898,7 @@ class Share extends \OC\Share\Constants {
 							$parent = $parentFolder[$user]['id'];
 						}
 					} else {
-						$fileTarget = Helper::generateTarget('file', $filePath, $shareType,
+						$fileTarget = Helper::generateTarget('file', $filePath, $userShareType,
 							$user, $uidOwner, $suggestedFileTarget, $parent);
 					}
 				} else {
@@ -1887,7 +1929,7 @@ class Share extends \OC\Share\Constants {
 				'itemType'			=> $itemType,
 				'itemSource'		=> $itemSource,
 				'itemTarget'		=> $itemTarget,
-				'shareType'			=> $shareType,
+				'shareType'			=> $userShareType,
 				'shareWith'			=> $user,
 				'uidOwner'			=> $uidOwner,
 				'permissions'		=> $permissions,
@@ -2277,7 +2319,7 @@ class Share extends \OC\Share\Constants {
 		if ($user && $remote) {
 			$url = $remote . self::BASE_PATH_TO_SHARE_API . '?format=' . self::RESPONSE_FORMAT;
 
-			$local = \OC::$server->getURLGenerator()->getAbsoluteURL('');
+			$local = \OC::$server->getURLGenerator()->getAbsoluteURL('/');
 
 			$fields = array(
 				'shareWith' => $user,

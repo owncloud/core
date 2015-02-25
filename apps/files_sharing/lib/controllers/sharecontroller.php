@@ -1,14 +1,27 @@
 <?php
 /**
- * @author Clark Tomlinson <clark@owncloud.com>
+ * @author Bjoern Schiessle <schiessle@owncloud.com>
+ * @author Georg Ehrke <georg@owncloud.com>
+ * @author Joas Schilling <nickvergessen@gmx.de>
  * @author Lukas Reschke <lukas@owncloud.com>
- * @copyright 2014 Clark Tomlinson & Lukas Reschke
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
  *
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
-
 namespace OCA\Files_Sharing\Controllers;
 
 use OC;
@@ -131,7 +144,7 @@ class ShareController extends Controller {
 	 *
 	 * @param string $token
 	 * @param string $path
-	 * @return TemplateResponse
+	 * @return TemplateResponse|RedirectResponse
 	 */
 	public function showShare($token, $path = '') {
 		\OC_User::setIncognitoMode(true);
@@ -142,7 +155,6 @@ class ShareController extends Controller {
 			return new TemplateResponse('core', '404', array(), 'guest');
 		}
 
-		$linkItem = OCP\Share::getShareByToken($token, false);
 		$shareOwner = $linkItem['uid_owner'];
 		$originalSharePath = null;
 		$rootLinkItem = OCP\Share::resolveReShare($linkItem);
@@ -176,7 +188,9 @@ class ShareController extends Controller {
 		$shareTmpl['server2serversharing'] = Helper::isOutgoingServer2serverShareEnabled();
 		$shareTmpl['protected'] = isset($linkItem['share_with']) ? 'true' : 'false';
 		$shareTmpl['dir'] = '';
-		$shareTmpl['fileSize'] = \OCP\Util::humanFileSize(\OC\Files\Filesystem::filesize($originalSharePath));
+		$nonHumanFileSize = \OC\Files\Filesystem::filesize($originalSharePath);
+		$shareTmpl['nonHumanFileSize'] = $nonHumanFileSize;
+		$shareTmpl['fileSize'] = \OCP\Util::humanFileSize($nonHumanFileSize);
 
 		// Show file list
 		if (Filesystem::is_dir($originalSharePath)) {
@@ -202,6 +216,7 @@ class ShareController extends Controller {
 		}
 
 		$shareTmpl['downloadURL'] = $this->urlGenerator->linkToRouteAbsolute('files_sharing.sharecontroller.downloadShare', array('token' => $token));
+		$shareTmpl['maxSizeAnimateGif'] = $this->config->getSystemValue('max_filesize_animated_gifs_public_sharing', 10);
 
 		return new TemplateResponse($this->appName, 'public', $shareTmpl, 'base');
 	}
@@ -228,26 +243,48 @@ class ShareController extends Controller {
 			}
 		}
 
-		$originalSharePath = self::getPath($token);
-
-		if (isset($originalSharePath) && Filesystem::isReadable($originalSharePath . $path)) {
-			$originalSharePath = Filesystem::normalizePath($originalSharePath . $path);
-			$type = \OC\Files\Filesystem::is_dir($originalSharePath) ? 'folder' : 'file';
-			$args = $type === 'folder' ? array('dir' => $originalSharePath) : array('dir' => dirname($originalSharePath), 'scrollto' => basename($originalSharePath));
-			$linkToFile = \OCP\Util::linkToAbsolute('files', 'index.php', $args);
-			$subject = $type === 'folder' ? Activity::SUBJECT_PUBLIC_SHARED_FOLDER_DOWNLOADED : Activity::SUBJECT_PUBLIC_SHARED_FILE_DOWNLOADED;
-			$this->activityManager->publishActivity(
-					'files_sharing', $subject, array($originalSharePath), '', array(), $originalSharePath,
-					$linkToFile, $linkItem['uid_owner'], Activity::TYPE_PUBLIC_LINKS, Activity::PRIORITY_MEDIUM);
-		}
-
+		$files_list = null;
 		if (!is_null($files)) { // download selected files
 			$files_list = json_decode($files);
 			// in case we get only a single file
-			if ($files_list === NULL) {
+			if ($files_list === null) {
 				$files_list = array($files);
 			}
+		}
 
+		$originalSharePath = self::getPath($token);
+
+		// Create the activities
+		if (isset($originalSharePath) && Filesystem::isReadable($originalSharePath . $path)) {
+			$originalSharePath = Filesystem::normalizePath($originalSharePath . $path);
+			$isDir = \OC\Files\Filesystem::is_dir($originalSharePath);
+
+			$activities = [];
+			if (!$isDir) {
+				// Single file public share
+				$activities[$originalSharePath] = Activity::SUBJECT_PUBLIC_SHARED_FILE_DOWNLOADED;
+			} else if (!empty($files_list)) {
+				// Only some files are downloaded
+				foreach ($files_list as $file) {
+					$filePath = Filesystem::normalizePath($originalSharePath . '/' . $file);
+					$isDir = \OC\Files\Filesystem::is_dir($filePath);
+					$activities[$filePath] = ($isDir) ? Activity::SUBJECT_PUBLIC_SHARED_FOLDER_DOWNLOADED : Activity::SUBJECT_PUBLIC_SHARED_FILE_DOWNLOADED;
+				}
+			} else {
+				// The folder is downloaded
+				$activities[$originalSharePath] = Activity::SUBJECT_PUBLIC_SHARED_FOLDER_DOWNLOADED;
+			}
+
+			foreach ($activities as $filePath => $subject) {
+				$this->activityManager->publishActivity(
+					'files_sharing', $subject, array($filePath), '', array(),
+					$filePath, '', $linkItem['uid_owner'], Activity::TYPE_PUBLIC_LINKS, Activity::PRIORITY_MEDIUM
+				);
+			}
+		}
+
+		// download selected files
+		if (!is_null($files)) {
 			// FIXME: The exit is required here because otherwise the AppFramework is trying to add headers as well
 			// after dispatching the request which results in a "Cannot modify header information" notice.
 			OC_Files::get($originalSharePath, $files_list, $_SERVER['REQUEST_METHOD'] == 'HEAD');

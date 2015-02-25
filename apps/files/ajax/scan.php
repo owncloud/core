@@ -1,11 +1,37 @@
 <?php
+/**
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Robin Appelman <icewind@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ */
 set_time_limit(0); //scanning can take ages
+
+\OCP\JSON::checkLoggedIn();
+\OCP\JSON::callCheck();
+
 \OC::$server->getSession()->close();
 
 $force = (isset($_GET['force']) and ($_GET['force'] === 'true'));
-$dir = isset($_GET['dir']) ? $_GET['dir'] : '';
+$dir = isset($_GET['dir']) ? (string)$_GET['dir'] : '';
 if (isset($_GET['users'])) {
-	OC_JSON::checkAdminUser();
+	\OCP\JSON::checkAdminUser();
 	if ($_GET['users'] === 'all') {
 		$users = OC_User::getUsers();
 	} else {

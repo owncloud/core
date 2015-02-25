@@ -1,27 +1,28 @@
 <?php
-
 /**
- * ownCloud - App Framework
+ * @author Bernhard Posselt <dev@bernhard-posselt.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @author Bernhard Posselt
- * @copyright 2012 Bernhard Posselt <dev@bernhard-posselt.com>
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
-
 namespace OC\AppFramework\Core;
 use OCP\AppFramework\IApi;
 
@@ -136,7 +137,7 @@ class API implements IApi{
 	 * @param string $slotName name of slot, in another word, this is the
 	 *               name of the method that will be called when registered
 	 *               signal is emitted.
-	 * @return bool, always true
+	 * @return bool always true
 	 */
 	public function connectHook($signalClass, $signalName, $slotClass, $slotName) {
 		return \OCP\Util::connectHook($signalClass, $signalName, $slotClass, $slotName);
@@ -148,7 +149,7 @@ class API implements IApi{
 	 * @param string $signalClass class name of emitter
 	 * @param string $signalName name of signal
 	 * @param array $params default: array() array with additional data
-	 * @return bool, true if slots exists or false if not
+	 * @return bool true if slots exists or false if not
 	 */
 	public function emitHook($signalClass, $signalName, $params = array()) {
 		return  \OCP\Util::emitHook($signalClass, $signalName, $params);

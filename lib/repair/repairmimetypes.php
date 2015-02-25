@@ -1,12 +1,25 @@
 <?php
 /**
- * Copyright (c) 2014 Vincent Petry <pvince81@owncloud.com>
- * Copyright (c) 2014 Jörn Dreyer jfd@owncloud.com
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Normal Ra <normalraw@gmail.com>
+ * @author Olivier Paroz <github@oparoz.com>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
-
 namespace OC\Repair;
 
 use OC\Hooks\BasicEmitter;
@@ -16,6 +29,102 @@ class RepairMimeTypes extends BasicEmitter implements \OC\RepairStep {
 	public function getName() {
 		return 'Repair mime types';
 	}
+	
+	private static function existsStmt() {
+		return \OC_DB::prepare('
+			SELECT count(`mimetype`)
+			FROM   `*PREFIX*mimetypes`
+			WHERE  `mimetype` = ?
+		');
+	}
+
+	private static function getIdStmt() {
+		return \OC_DB::prepare('
+			SELECT `id`
+			FROM   `*PREFIX*mimetypes`
+			WHERE  `mimetype` = ?
+		');
+	}
+
+	private static function insertStmt() {
+		return \OC_DB::prepare('
+			INSERT INTO `*PREFIX*mimetypes` ( `mimetype` )
+			VALUES ( ? )
+		');
+	}
+
+	private static function updateWrongStmt() {
+		return \OC_DB::prepare('
+			UPDATE `*PREFIX*filecache`
+			SET `mimetype` = (
+				SELECT `id`
+				FROM `*PREFIX*mimetypes`
+				WHERE `mimetype` = ?
+			) WHERE `mimetype` = ?
+		');
+	}
+	
+	private static function deleteStmt() {
+		return \OC_DB::prepare('
+			DELETE FROM `*PREFIX*mimetypes`
+			WHERE `id` = ?
+		');
+	}	
+		
+	private static function updateByNameStmt() {
+		return \OC_DB::prepare('
+			UPDATE `*PREFIX*filecache`
+			SET `mimetype` = (
+				SELECT `id`
+				FROM `*PREFIX*mimetypes`
+				WHERE `mimetype` = ?
+			) WHERE `name` LIKE ?
+		');
+	}
+	
+	private function repairMimetypes($wrongMimetypes) {
+		foreach ($wrongMimetypes as $wrong => $correct) {
+			// do we need to remove a wrong mimetype?
+			$result = \OC_DB::executeAudited(self::getIdStmt(), array($wrong));
+			$wrongId = $result->fetchOne();
+
+			if ($wrongId !== false) {
+				// do we need to insert the correct mimetype?
+				$result = \OC_DB::executeAudited(self::existsStmt(), array($correct));
+				$exists = $result->fetchOne();
+
+				if ( ! is_null($correct) ) {
+					if ( ! $exists ) {
+						// insert mimetype
+						\OC_DB::executeAudited(self::insertStmt(), array($correct));
+					}
+
+					// change wrong mimetype to correct mimetype in filecache
+					\OC_DB::executeAudited(self::updateWrongStmt(), array($correct, $wrongId));
+				}
+				
+				// delete wrong mimetype
+				\OC_DB::executeAudited(self::deleteStmt(), array($wrongId));
+
+			}
+		}
+	}
+	
+	private function updateMimetypes($updatedMimetypes) {
+	
+		foreach ($updatedMimetypes as $extension => $mimetype ) {
+			$result = \OC_DB::executeAudited(self::existsStmt(), array($mimetype));
+			$exists = $result->fetchOne();
+
+			if ( ! $exists ) {
+				// insert mimetype
+				\OC_DB::executeAudited(self::insertStmt(), array($mimetype));
+			}
+
+			// change mimetype for files with x extension
+			\OC_DB::executeAudited(self::updateByNameStmt(), array($mimetype, '%.'.$extension));
+		}
+	}
 
 	private function fixOfficeMimeTypes() {
 		// update wrong mimetypes
@@ -24,64 +133,7 @@ class RepairMimeTypes extends BasicEmitter implements \OC\RepairStep {
 			'application/msexcel' => 'application/vnd.ms-excel',
 		);
 
-		$existsStmt = \OC_DB::prepare('
-			SELECT count(`mimetype`)
-			FROM   `*PREFIX*mimetypes`
-			WHERE  `mimetype` = ?
-		');
-
-		$getIdStmt = \OC_DB::prepare('
-			SELECT `id`
-			FROM   `*PREFIX*mimetypes`
-			WHERE  `mimetype` = ?
-		');
-
-		$insertStmt = \OC_DB::prepare('
-			INSERT INTO `*PREFIX*mimetypes` ( `mimetype` )
-			VALUES ( ? )
-		');
-
-		$updateWrongStmt = \OC_DB::prepare('
-			UPDATE `*PREFIX*filecache`
-			SET `mimetype` = (
-				SELECT `id`
-				FROM `*PREFIX*mimetypes`
-				WHERE `mimetype` = ?
-			) WHERE `mimetype` = ?
-		');
-
-		$deleteStmt = \OC_DB::prepare('
-			DELETE FROM `*PREFIX*mimetypes`
-			WHERE `id` = ?
-		');
-
-		foreach ($wrongMimetypes as $wrong => $correct) {
-
-
-			// do we need to remove a wrong mimetype?
-			$result = \OC_DB::executeAudited($getIdStmt, array($wrong));
-			$wrongId = $result->fetchOne();
-
-			if ($wrongId !== false) {
-
-				// do we need to insert the correct mimetype?
-				$result = \OC_DB::executeAudited($existsStmt, array($correct));
-				$exists = $result->fetchOne();
-
-				if ( ! $exists ) {
-					// insert mimetype
-					\OC_DB::executeAudited($insertStmt, array($correct));
-				}
-
-				// change wrong mimetype to correct mimetype in filecache
-				\OC_DB::executeAudited($updateWrongStmt, array($correct, $wrongId));
-
-				// delete wrong mimetype
-				\OC_DB::executeAudited($deleteStmt, array($wrongId));
-
-			}
-
-		}
+		self::repairMimetypes($wrongMimetypes);
 
 		$updatedMimetypes = array(
 			'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -89,66 +141,46 @@ class RepairMimeTypes extends BasicEmitter implements \OC\RepairStep {
 			'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
 		);
 
-		$updateByNameStmt = \OC_DB::prepare('
-			UPDATE `*PREFIX*filecache`
-			SET `mimetype` = (
-				SELECT `id`
-				FROM `*PREFIX*mimetypes`
-				WHERE `mimetype` = ?
-			) WHERE `name` LIKE ?
-		');
 
 		// separate doc from docx etc
-		foreach ($updatedMimetypes as $extension => $mimetype ) {
-			$result = \OC_DB::executeAudited($existsStmt, array($mimetype));
-			$exists = $result->fetchOne();
-
-			if ( ! $exists ) {
-				// insert mimetype
-				\OC_DB::executeAudited($insertStmt, array($mimetype));
-			}
-
-			// change mimetype for files with x extension
-			\OC_DB::executeAudited($updateByNameStmt, array($mimetype, '%.'.$extension));
-		}
+		self::updateMimetypes($updatedMimetypes);
+		
 	}
+	
+	private function fixApkMimeType() {
+		$updatedMimetypes = array(
+			'apk' => 'application/vnd.android.package-archive',
+		);
 
-	private function fixAPKMimeType() {
-		$existsStmt = \OC_DB::prepare('
-			SELECT count(`mimetype`)
-			FROM   `*PREFIX*mimetypes`
-			WHERE  `mimetype` = ?
-		');
+		self::updateMimetypes($updatedMimetypes);
+	}
+	
+	private function fixFontsMimeTypes() {
+		// update wrong mimetypes
+		$wrongMimetypes = array(
+			'font' => null,
+			'font/opentype' => 'application/font-sfnt',
+			'application/x-font-ttf' => 'application/font-sfnt',
+		);
 
-		$insertStmt = \OC_DB::prepare('
-			INSERT INTO `*PREFIX*mimetypes` ( `mimetype` )
-			VALUES ( ? )
-		');
+		self::repairMimetypes($wrongMimetypes);
+	
+		$updatedMimetypes = array(
+			'ttf' => 'application/font-sfnt',
+			'otf' => 'application/font-sfnt',
+			'pfb' => 'application/x-font',
+		);
 
+		self::updateMimetypes($updatedMimetypes);
+	}
+	
+	private function fixPostscriptMimeType() {
+		$updatedMimetypes = array(
+			'eps' => 'application/postscript',
+			'ps' => 'application/postscript',
+		);
 
-		$updateByNameStmt = \OC_DB::prepare('
-			UPDATE `*PREFIX*filecache`
-			SET `mimetype` = (
-				SELECT `id`
-				FROM `*PREFIX*mimetypes`
-				WHERE `mimetype` = ?
-			) WHERE `name` LIKE ?
-		');
-
-
-		$mimeTypeExtension = 'apk';
-		$mimeTypeName = 'application/vnd.android.package-archive';
-
-		$result = \OC_DB::executeAudited($existsStmt, array($mimeTypeName));
-		$exists = $result->fetchOne();
-
-		if ( ! $exists ) {
-			// insert mimetype
-			\OC_DB::executeAudited($insertStmt, array($mimeTypeName));
-		}
-
-		// change mimetype for files with x extension
-		\OC_DB::executeAudited($updateByNameStmt, array($mimeTypeName, '%.'.$mimeTypeExtension));
+		self::updateMimetypes($updatedMimetypes);
 	}
 
 	/**
@@ -158,10 +190,17 @@ class RepairMimeTypes extends BasicEmitter implements \OC\RepairStep {
 		if ($this->fixOfficeMimeTypes()) {
 			$this->emit('\OC\Repair', 'info', array('Fixed office mime types'));
 		}
-
-		if ($this->fixAPKMimeType()) {
+		
+		if ($this->fixApkMimeType()) {
 			$this->emit('\OC\Repair', 'info', array('Fixed APK mime type'));
+		}
+		
+		if ($this->fixFontsMimeTypes()) {
+			$this->emit('\OC\Repair', 'info', array('Fixed fonts mime types'));
+		}
+		
+		if ($this->fixPostscriptMimeType()) {
+			$this->emit('\OC\Repair', 'info', array('Fixed Postscript mime types'));
 		}
 	}
 }
-

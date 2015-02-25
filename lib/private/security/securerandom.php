@@ -1,11 +1,23 @@
 <?php
 /**
- * Copyright (c) 2014 Lukas Reschke <lukas@owncloud.com>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Lukas Reschke <lukas@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
-
 namespace OC\Security;
 
 use RandomLib;
@@ -64,8 +76,7 @@ class SecureRandom implements ISecureRandom {
 	 * Generate a random string of specified length.
 	 * @param string $length The length of the generated string
 	 * @param string $characters An optional list of characters to use if no characterlist is
-	 * 							specified 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ./
-	 * 							is used.
+	 * 							specified all valid base64 characters are used.
 	 * @return string
 	 * @throws \Exception If the generator is not initialized.
 	 */

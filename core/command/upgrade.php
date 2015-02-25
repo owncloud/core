@@ -1,11 +1,27 @@
 <?php
 /**
- * Copyright (c) 2013 Owen Winkler <ringmaster@midnightcircus.com>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Andreas Fischer <bantu@owncloud.com>
+ * @author Owen Winkler <a_github@midnightcircus.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Victor Dubiniuk <dubiniuk@owncloud.com>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
-
 namespace OC\Core\Command;
 
 use OC\Updater;
@@ -84,7 +100,8 @@ class Upgrade extends Command {
 
 		if(\OC::checkUpgrade(false)) {
 			$self = $this;
-			$updater = new Updater(\OC::$server->getHTTPHelper(), \OC::$server->getAppConfig());
+			$updater = new Updater(\OC::$server->getHTTPHelper(),
+				\OC::$server->getConfig());
 
 			$updater->setSimulateStepEnabled($simulateStepEnabled);
 			$updater->setUpdateStepEnabled($updateStepEnabled);
@@ -106,8 +123,17 @@ class Upgrade extends Command {
 			$updater->listen('\OC\Updater', 'dbSimulateUpgrade', function () use($output) {
 				$output->writeln('<info>Checked database schema update</info>');
 			});
-			$updater->listen('\OC\Updater', 'disabledApps', function ($appList) use($output) {
-				$output->writeln('<info>Disabled incompatible apps: ' . implode(', ', $appList) . '</info>');
+			$updater->listen('\OC\Updater', 'incompatibleAppDisabled', function ($app) use($output) {
+				$output->writeln('<info>Disabled incompatible app: ' . $app . '</info>');
+			});
+			$updater->listen('\OC\Updater', 'thirdPartyAppDisabled', function ($app) use($output) {
+				$output->writeln('<info>Disabled 3rd-party app: ' . $app . '</info>');
+			});
+			$updater->listen('\OC\Updater', 'appUpgradeCheck', function () use ($output) {
+				$output->writeln('<info>Checked database schema update for apps</info>');
+			});
+			$updater->listen('\OC\Updater', 'appUpgrade', function ($app, $version) use ($output) {
+				$output->writeln("<info>Updated <$app> to $version</info>");
 			});
 
 			$updater->listen('\OC\Updater', 'failure', function ($message) use($output, $self) {

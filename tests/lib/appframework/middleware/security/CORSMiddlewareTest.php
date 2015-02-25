@@ -32,7 +32,13 @@ class CORSMiddlewareTest extends \Test\TestCase {
 	 */
 	public function testSetCORSAPIHeader() {
 		$request = new Request(
-			array('server' => array('HTTP_ORIGIN' => 'test'))
+			[
+				'server' => [
+					'HTTP_ORIGIN' => 'test'
+				]
+			],
+			$this->getMock('\OCP\Security\ISecureRandom'),
+			$this->getMock('\OCP\IConfig')
 		);
 		$this->reflector->reflect($this, __FUNCTION__);
 		$middleware = new CORSMiddleware($request, $this->reflector);
@@ -45,7 +51,13 @@ class CORSMiddlewareTest extends \Test\TestCase {
 
 	public function testNoAnnotationNoCORSHEADER() {
 		$request = new Request(
-			array('server' => array('HTTP_ORIGIN' => 'test'))
+			[
+				'server' => [
+					'HTTP_ORIGIN' => 'test'
+				]
+			],
+			$this->getMock('\OCP\Security\ISecureRandom'),
+			$this->getMock('\OCP\IConfig')
 		);
 		$middleware = new CORSMiddleware($request, $this->reflector);
 
@@ -59,7 +71,11 @@ class CORSMiddlewareTest extends \Test\TestCase {
 	 * @CORS
 	 */
 	public function testNoOriginHeaderNoCORSHEADER() {
-		$request = new Request();
+		$request = new Request(
+			[],
+			$this->getMock('\OCP\Security\ISecureRandom'),
+			$this->getMock('\OCP\IConfig')
+		);
 		$this->reflector->reflect($this, __FUNCTION__);
 		$middleware = new CORSMiddleware($request, $this->reflector);
 
@@ -75,14 +91,20 @@ class CORSMiddlewareTest extends \Test\TestCase {
 	 */
 	public function testCorsIgnoredIfWithCredentialsHeaderPresent() {
 		$request = new Request(
-			array('server' => array('HTTP_ORIGIN' => 'test'))
+			[
+				'server' => [
+					'HTTP_ORIGIN' => 'test'
+				]
+			],
+			$this->getMock('\OCP\Security\ISecureRandom'),
+			$this->getMock('\OCP\IConfig')
 		);
 		$this->reflector->reflect($this, __FUNCTION__);
 		$middleware = new CORSMiddleware($request, $this->reflector);
 
 		$response = new Response();
 		$response->addHeader('AcCess-control-Allow-Credentials ', 'TRUE');
-		$response = $middleware->afterController($this, __FUNCTION__, $response);
+		$middleware->afterController($this, __FUNCTION__, $response);
 	}
 
 }

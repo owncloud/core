@@ -1,8 +1,29 @@
 <?php
-
 /**
- * This class manages the hooks. It basically provides two functions: adding
- * slots and emitting signals.
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Jakob Sack <mail@jakobsack.de>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Sam Tuke <mail@samtuke.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
 class OC_Hook{
 	static private $registered = array();
@@ -52,7 +73,7 @@ class OC_Hook{
 	 * @param string $signalclass class name of emitter
 	 * @param string $signalname name of signal
 	 * @param mixed $params default: array() array with additional data
-	 * @return bool, true if slots exists or false if not
+	 * @return bool true if slots exists or false if not
 	 *
 	 * Emits a signal. To get data from the slot use references!
 	 *

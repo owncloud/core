@@ -1,5 +1,29 @@
 <?php
-
+/**
+ * @author Brice Maron <brice@bmaron.net>
+ * @author Christopher Schäpers <kondou@ts.unde.re>
+ * @author Georg Ehrke <georg@owncloud.com>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ */
 try {
 	require_once 'lib/base.php';
 
@@ -11,17 +35,18 @@ try {
 		exit;
 	}
 
-	$path_info = OC_Request::getPathInfo();
-	if ($path_info === false || $path_info === '') {
+	$request = \OC::$server->getRequest();
+	$pathInfo = $request->getPathInfo();
+	if ($pathInfo === false || $pathInfo === '') {
 		OC_Response::setStatus(OC_Response::STATUS_NOT_FOUND);
 		exit;
 	}
-	if (!$pos = strpos($path_info, '/', 1)) {
-		$pos = strlen($path_info);
+	if (!$pos = strpos($pathInfo, '/', 1)) {
+		$pos = strlen($pathInfo);
 	}
-	$service=substr($path_info, 1, $pos-1);
+	$service=substr($pathInfo, 1, $pos-1);
 
-	$file = \OC::$server->getAppConfig()->getValue('core', 'remote_' . $service);
+	$file = \OC::$server->getConfig()->getAppValue('core', 'remote_' . $service);
 
 	if(is_null($file)) {
 		OC_Response::setStatus(OC_Response::STATUS_NOT_FOUND);

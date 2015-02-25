@@ -1,24 +1,47 @@
 <?php
-
+/**
+ * @author Andreas Fischer <bantu@owncloud.com>
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Georg Ehrke <georg@owncloud.com>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Victor Dubiniuk <dubiniuk@owncloud.com>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ */
 // Init owncloud
 global $eventSource;
 
-if(!OC_User::isLoggedIn()) {
-	exit;
-}
+\OCP\JSON::checkLoggedIn();
+\OCP\JSON::callCheck();
 
 \OC::$server->getSession()->close();
 
 // Get the params
-$dir = isset( $_REQUEST['dir'] ) ? '/'.trim($_REQUEST['dir'], '/\\') : '';
-$filename = isset( $_REQUEST['filename'] ) ? trim($_REQUEST['filename'], '/\\') : '';
-$content = isset( $_REQUEST['content'] ) ? $_REQUEST['content'] : '';
-$source = isset( $_REQUEST['source'] ) ? trim($_REQUEST['source'], '/\\') : '';
+$dir = isset( $_REQUEST['dir'] ) ? '/'.trim((string)$_REQUEST['dir'], '/\\') : '';
+$filename = isset( $_REQUEST['filename'] ) ? trim((string)$_REQUEST['filename'], '/\\') : '';
+$content = isset( $_REQUEST['content'] ) ? (string)$_REQUEST['content'] : '';
+$source = isset( $_REQUEST['source'] ) ? trim((string)$_REQUEST['source'], '/\\') : '';
 
 if($source) {
 	$eventSource = \OC::$server->createEventSource();
-} else {
-	OC_JSON::callCheck();
 }
 
 function progress($notification_code, $severity, $message, $message_code, $bytes_transferred, $bytes_max) {
@@ -138,7 +161,7 @@ if($source) {
 				}
 			}
 		}
-		$result=\OC\Files\Filesystem::file_put_contents($target, $sourceStream);
+		$result = \OC\Files\Filesystem::file_put_contents($target, $sourceStream);
 	}
 	if($result) {
 		$meta = \OC\Files\Filesystem::getFileInfo($target);

@@ -1,11 +1,25 @@
 <?php
 /**
- * Copyright (c) 2014 Robin Appelman <icewind@owncloud.com>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
-
 namespace OC\Files\Cache\Wrapper;
 
 use OC\Files\Cache\Cache;
@@ -152,7 +166,7 @@ class CacheWrapper extends Cache {
 	/**
 	 * @param string $file
 	 *
-	 * @return int, Cache::NOT_FOUND, Cache::PARTIAL, Cache::SHALLOW or Cache::COMPLETE
+	 * @return int Cache::NOT_FOUND, Cache::PARTIAL, Cache::SHALLOW or Cache::COMPLETE
 	 */
 	public function getStatus($file) {
 		return $this->cache->getStatus($file);
@@ -260,7 +274,7 @@ class CacheWrapper extends Cache {
 	 * instead does a global search in the cache table
 	 *
 	 * @param int $id
-	 * @return array, first element holding the storage id, second the path
+	 * @return array first element holding the storage id, second the path
 	 */
 	static public function getById($id) {
 		return parent::getById($id);

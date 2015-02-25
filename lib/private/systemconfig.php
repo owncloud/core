@@ -1,14 +1,24 @@
 <?php
 /**
- * Copyright (c) 2014 Morris Jobke <hey@morrisjobke.de>
- *               2013 Bart Visscher <bartv@thisnet.nl>
+ * @author Joas Schilling <nickvergessen@gmx.de>
+ * @author Morris Jobke <hey@morrisjobke.de>
  *
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
 namespace OC;
 
 /**
@@ -25,6 +35,16 @@ class SystemConfig {
 	 */
 	public function setValue($key, $value) {
 		\OC_Config::setValue($key, $value);
+	}
+
+	/**
+	 * Sets and deletes values and writes the config.php
+	 *
+	 * @param array $configs Associative array with `key => value` pairs
+	 *                       If value is null, the config key will be deleted
+	 */
+	public function setValues(array $configs) {
+		\OC_Config::setValues($configs);
 	}
 
 	/**

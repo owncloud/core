@@ -1,30 +1,25 @@
 <?php
 /**
- * ownCloud
+ * @author Bjoern Schiessle <schiessle@owncloud.com>
+ * @author Joas Schilling <nickvergessen@gmx.de>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @author Thomas Müller
- * @copyright 2014 Thomas Müller deepdiver@owncloud.com
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
-/**
- * Public interface of ownCloud for apps to use.
- * Activity/IExtension interface
- */
-
 // use OCP namespace for all classes that are considered public.
 // This means that they should be used by apps instead of the internal ownCloud classes
 namespace OCP\Activity;
@@ -47,16 +42,6 @@ interface IExtension {
 	public function getNotificationTypes($languageCode);
 
 	/**
-	 * The extension can filter the types based on the filter if required.
-	 * In case no filter is to be applied false is to be returned unchanged.
-	 *
-	 * @param array $types
-	 * @param string $filter
-	 * @return array|false
-	 */
-	public function filterNotificationTypes($types, $filter);
-
-	/**
 	 * For a given method additional types to be displayed in the settings can be returned.
 	 * In case no additional types are to be added false is to be returned.
 	 *
@@ -64,6 +49,15 @@ interface IExtension {
 	 * @return array|false
 	 */
 	public function getDefaultTypes($method);
+
+	/**
+	 * A string naming the css class for the icon to be used can be returned.
+	 * If no icon is known for the given type false is to be returned.
+	 *
+	 * @param string $type
+	 * @return string|false
+	 */
+	public function getTypeIcon($type);
 
 	/**
 	 * The extension can translate a given message to the requested languages.
@@ -90,16 +84,7 @@ interface IExtension {
 	 * @param string $text
 	 * @return array|false
 	 */
-	function getSpecialParameterList($app, $text);
-
-	/**
-	 * A string naming the css class for the icon to be used can be returned.
-	 * If no icon is known for the given type false is to be returned.
-	 *
-	 * @param string $type
-	 * @return string|false
-	 */
-	public function getTypeIcon($type);
+	public function getSpecialParameterList($app, $text);
 
 	/**
 	 * The extension can define the parameter grouping by returning the index as integer.
@@ -126,6 +111,16 @@ interface IExtension {
 	 * @return boolean
 	 */
 	public function isFilterValid($filterValue);
+
+	/**
+	 * The extension can filter the types based on the filter if required.
+	 * In case no filter is to be applied false is to be returned unchanged.
+	 *
+	 * @param array $types
+	 * @param string $filter
+	 * @return array|false
+	 */
+	public function filterNotificationTypes($types, $filter);
 
 	/**
 	 * For a given filter the extension can specify the sql query conditions including parameters for that query.

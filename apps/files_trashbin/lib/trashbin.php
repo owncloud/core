@@ -1,25 +1,39 @@
 <?php
 /**
- * ownCloud - trash bin
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Bastien Ho <bastienho@urbancube.fr>
+ * @author Bjoern Schiessle <schiessle@owncloud.com>
+ * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Florin Peter <github@florin-peter.de>
+ * @author Georg Ehrke <georg@owncloud.com>
+ * @author Joas Schilling <nickvergessen@gmx.de>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Qingping Hou <dave2008713@gmail.com>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Sjors van der Pluijm <sjors@desjors.nl>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Victor Dubiniuk <dubiniuk@owncloud.com>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @author Bjoern Schiessle
- * @copyright 2013 Bjoern Schiessle schiessle@owncloud.com
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
 namespace OCA\Files_Trashbin;
 
 use OC\Files\Filesystem;
@@ -152,7 +166,6 @@ class Trashbin {
 
 		self::setUpTrash($user);
 
-		$view = new \OC\Files\View('/' . $user);
 		$path_parts = pathinfo($file_path);
 
 		$filename = $path_parts['basename'];
@@ -167,6 +180,9 @@ class Trashbin {
 		$trashPath = '/files_trashbin/files/' . $filename . '.d' . $timestamp;
 		try {
 			$sizeOfAddedFiles = $view->filesize('/files/' . $file_path);
+			if ($view->file_exists($trashPath)) {
+				$view->unlink($trashPath);
+			}
 			$view->rename('/files/' . $file_path, $trashPath);
 		} catch (\OCA\Files_Trashbin\Exceptions\CopyRecursiveException $e) {
 			$sizeOfAddedFiles = false;
@@ -176,6 +192,11 @@ class Trashbin {
 			\OC_Log::write('files_trashbin', 'Couldn\'t move ' . $file_path . ' to the trash bin', \OC_log::ERROR);
 		}
 		\OC_FileProxy::$enabled = $proxyStatus;
+
+		if ($view->file_exists('/files/' . $file_path)) { // failed to delete the original file, abort
+			$view->unlink($trashPath);
+			return false;
+		}
 
 		if ($sizeOfAddedFiles !== false) {
 			$size = $sizeOfAddedFiles;
@@ -928,6 +949,9 @@ class Trashbin {
 		\OCP\Util::connectHook('OC_User', 'pre_deleteUser', 'OCA\Files_Trashbin\Hooks', 'deleteUser_hook');
 		//Listen to post write hook
 		\OCP\Util::connectHook('OC_Filesystem', 'post_write', 'OCA\Files_Trashbin\Hooks', 'post_write_hook');
+		// pre and post-rename, disable trash logic for the copy+unlink case
+		\OCP\Util::connectHook('OC_Filesystem', 'rename', 'OCA\Files_Trashbin\Storage', 'preRenameHook');
+		\OCP\Util::connectHook('OC_Filesystem', 'post_rename', 'OCA\Files_Trashbin\Storage', 'postRenameHook');
 	}
 
 	/**

@@ -1,13 +1,29 @@
 <?php
-
 /**
- * Copyright (c) 2013, Sam Tuke <samtuke@owncloud.com>
- * This file is licensed under the Affero General Public License version 3 or later.
- * See the COPYING-README file.
+ * @author Bjoern Schiessle <schiessle@owncloud.com>
+ * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Florin Peter <github@florin-peter.de>
+ * @author Joas Schilling <nickvergessen@gmx.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Sam Tuke <mail@samtuke.com>
  *
- * Script to handle admin settings for encrypted key recovery
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
-
 use OCA\Files_Encryption\Helper;
 
 \OCP\JSON::checkAdminUser();
@@ -43,7 +59,7 @@ $recoveryKeyId = \OC::$server->getAppConfig()->getValue('files_encryption', 'rec
 
 if (isset($_POST['adminEnableRecovery']) && $_POST['adminEnableRecovery'] === '1') {
 
-	$return = Helper::adminEnableRecovery($recoveryKeyId, $_POST['recoveryPassword']);
+	$return = Helper::adminEnableRecovery($recoveryKeyId, (string)$_POST['recoveryPassword']);
 
 	// Return success or failure
 	if ($return) {
@@ -57,7 +73,7 @@ if (isset($_POST['adminEnableRecovery']) && $_POST['adminEnableRecovery'] === '1
 	isset($_POST['adminEnableRecovery'])
 	&& '0' === $_POST['adminEnableRecovery']
 ) {
-	$return = Helper::adminDisableRecovery($_POST['recoveryPassword']);
+	$return = Helper::adminDisableRecovery((string)$_POST['recoveryPassword']);
 
 	if ($return) {
 		$successMessage = $l->t('Recovery key successfully disabled');

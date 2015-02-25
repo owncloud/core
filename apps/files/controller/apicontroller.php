@@ -1,11 +1,26 @@
 <?php
 /**
- * Copyright (c) 2014 Lukas Reschke <lukas@owncloud.com>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Joas Schilling <nickvergessen@gmx.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Tobias Kaminsky <tobias@kaminsky.me>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
-
 namespace OCA\Files\Controller;
 
 use OCP\AppFramework\Http;
@@ -17,18 +32,26 @@ use OCP\AppFramework\Http\DownloadResponse;
 use OC\Preview;
 use OCA\Files\Service\TagService;
 
+/**
+ * Class ApiController
+ *
+ * @package OCA\Files\Controller
+ */
 class ApiController extends Controller {
-
-	/**
-	 * @var TagService $tagService
-	 */
+	/** @var TagService */
 	private $tagService;
 
-	public function __construct($appName, IRequest $request, TagService $tagService){
+	/**
+	 * @param string $appName
+	 * @param IRequest $request
+	 * @param TagService $tagService
+	 */
+	public function __construct($appName,
+								IRequest $request,
+								TagService $tagService){
 		parent::__construct($appName, $request);
 		$this->tagService = $tagService;
 	}
-
 
 	/**
 	 * Gets a thumbnail of the specified file
@@ -66,20 +89,31 @@ class ApiController extends Controller {
 	 * @CORS
 	 *
 	 * @param string $path path
-	 * @param array  $tags array of tags
+	 * @param array|string $tags array of tags
+	 * @return DataResponse
 	 */
 	public function updateFileTags($path, $tags = null) {
-		$result = array();
+		$result = [];
 		// if tags specified or empty array, update tags
 		if (!is_null($tags)) {
 			try {
 				$this->tagService->updateFileTags($path, $tags);
 			} catch (\OCP\Files\NotFoundException $e) {
-				return new DataResponse($e->getMessage(), Http::STATUS_NOT_FOUND);
+				return new DataResponse([
+					'message' => $e->getMessage()
+				], Http::STATUS_NOT_FOUND);
+			} catch (\OCP\Files\StorageNotAvailableException $e) {
+				return new DataResponse([
+					'message' => $e->getMessage()
+				], Http::STATUS_SERVICE_UNAVAILABLE);
+			} catch (\Exception $e) {
+				return new DataResponse([
+					'message' => $e->getMessage()
+				], Http::STATUS_NOT_FOUND);
 			}
 			$result['tags'] = $tags;
 		}
-		return new DataResponse($result, Http::STATUS_OK);
+		return new DataResponse($result);
 	}
 
 	/**
@@ -88,7 +122,8 @@ class ApiController extends Controller {
 	 * @NoAdminRequired
 	 * @CORS
 	 *
-	 * @param array $tagName tag name to filter by
+	 * @param array|string $tagName tag name to filter by
+	 * @return DataResponse
 	 */
 	public function getFilesByTag($tagName) {
 		$files = array();
@@ -96,11 +131,15 @@ class ApiController extends Controller {
 		foreach ($fileInfos as &$fileInfo) {
 			$file = \OCA\Files\Helper::formatFileInfo($fileInfo);
 			$parts = explode('/', dirname($fileInfo->getPath()), 4);
-			$file['path'] = '/' . $parts[3];
-			$file['tags'] = array($tagName);
+			if(isset($parts[3])) {
+				$file['path'] = '/' . $parts[3];
+			} else {
+				$file['path'] = '/';
+			}
+			$file['tags'] = [$tagName];
 			$files[] = $file;
 		}
-		return new DataResponse(array('files' => $files), Http::STATUS_OK);
+		return new DataResponse(['files' => $files]);
 	}
 
 }

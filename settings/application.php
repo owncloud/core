@@ -1,13 +1,25 @@
 <?php
 /**
- * @author Lukas Reschke
- * @copyright 2014 Lukas Reschke lukas@owncloud.com
+ * @author Georg Ehrke <georg@owncloud.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
  *
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
-
 namespace OC\Settings;
 
 use OC\Settings\Controller\AppSettingsController;
@@ -16,6 +28,7 @@ use OC\Settings\Controller\LogSettingsController;
 use OC\Settings\Controller\MailSettingsController;
 use OC\Settings\Controller\SecuritySettingsController;
 use OC\Settings\Controller\UsersController;
+use OC\Settings\Factory\SubAdminFactory;
 use OC\Settings\Middleware\SubadminMiddleware;
 use \OCP\AppFramework\App;
 use OCP\IContainer;
@@ -90,7 +103,9 @@ class Application extends App {
 				$c->query('Defaults'),
 				$c->query('Mail'),
 				$c->query('DefaultMailAddress'),
-				$c->query('URLGenerator')
+				$c->query('URLGenerator'),
+				$c->query('OCP\\App\\IAppManager'),
+				$c->query('SubAdminFactory')
 			);
 		});
 		$container->registerService('LogSettingsController', function(IContainer $c) {
@@ -143,6 +158,10 @@ class Application extends App {
 		/** FIXME: Remove once OC_SubAdmin is non-static and mockable */
 		$container->registerService('IsSubAdmin', function(IContainer $c) {
 			return \OC_Subadmin::isSubAdmin(\OC_User::getUser());
+		});
+		/** FIXME: Remove once OC_SubAdmin is non-static and mockable */
+		$container->registerService('SubAdminFactory', function(IContainer $c) {
+			return new SubAdminFactory();
 		});
 		$container->registerService('Mail', function(IContainer $c) {
 			return new \OC_Mail;

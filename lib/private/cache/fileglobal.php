@@ -1,11 +1,28 @@
 <?php
 /**
- * Copyright (c) 2012 Bart Visscher <bartv@thisnet.nl>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Thomas Tanghus <thomas@tanghus.net>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
-
 namespace OC\Cache;
 
 class FileGlobal {
@@ -52,7 +69,7 @@ class FileGlobal {
 	public function hasKey($key) {
 		$key = $this->fixKey($key);
 		$cache_dir = self::getCacheDir();
-		if ($cache_dir && is_file($cache_dir.$key)) {
+		if ($cache_dir && is_file($cache_dir.$key) && is_readable($cache_dir.$key)) {
 			$mtime = filemtime($cache_dir.$key);
 			if ($mtime < time()) {
 				unlink($cache_dir.$key);
@@ -81,31 +98,6 @@ class FileGlobal {
 				while (($file = readdir($dh)) !== false) {
 					if($file!='.' and $file!='..' and ($prefix==='' || strpos($file, $prefix) === 0)) {
 						unlink($cache_dir.$file);
-					}
-				}
-			}
-		}
-	}
-
-	static public function gc() {
-		$appConfig = \OC::$server->getAppConfig();
-		$last_run = $appConfig->getValue('core', 'global_cache_gc_lastrun', 0);
-		$now = time();
-		if (($now - $last_run) < 300) {
-			// only do cleanup every 5 minutes
-			return;
-		}
-		$appConfig->setValue('core', 'global_cache_gc_lastrun', $now);
-		$cache_dir = self::getCacheDir();
-		if($cache_dir and is_dir($cache_dir)) {
-			$dh=opendir($cache_dir);
-			if(is_resource($dh)) {
-				while (($file = readdir($dh)) !== false) {
-					if($file!='.' and $file!='..') {
-						$mtime = filemtime($cache_dir.$file);
-						if ($mtime < $now) {
-							unlink($cache_dir.$file);
-						}
 					}
 				}
 			}

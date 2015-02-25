@@ -26,6 +26,8 @@ describe('OC.Share tests', function() {
 		var oldAppConfig;
 		var loadItemStub;
 		var autocompleteStub;
+		var oldEnableAvatars;
+		var avatarStub;
 
 		beforeEach(function() {
 			$('#testArea').append($('<div id="shareContainer"></div>'));
@@ -54,6 +56,10 @@ describe('OC.Share tests', function() {
 				var $el = $('<div></div>').data('ui-autocomplete', {});
 				return $el;
 			});
+
+			oldEnableAvatars = oc_config.enable_avatars;
+			oc_config.enable_avatars = false;
+			avatarStub = sinon.stub($.fn, 'avatar');
 		});
 		afterEach(function() {
 			/* jshint camelcase:false */
@@ -61,6 +67,8 @@ describe('OC.Share tests', function() {
 			loadItemStub.restore();
 
 			autocompleteStub.restore();
+			avatarStub.restore();
+			oc_config.enable_avatars = oldEnableAvatars;
 			$('#dropdown').remove();
 		});
 		it('calls loadItem with the correct arguments', function() {
@@ -405,6 +413,80 @@ describe('OC.Share tests', function() {
 				});
 			});
 		});
+		describe('check for avatar', function() {
+			beforeEach(function() {
+				loadItemStub.returns({
+					reshare: [],
+					shares: [{
+						id: 100,
+						item_source: 123,
+						permissions: 31,
+						share_type: OC.Share.SHARE_TYPE_USER,
+						share_with: 'user1',
+						share_with_displayname: 'User One'
+					},{
+						id: 101,
+						item_source: 123,
+						permissions: 31,
+						share_type: OC.Share.SHARE_TYPE_GROUP,
+						share_with: 'group',
+						share_with_displayname: 'group'
+					}]
+				});
+			});
+
+			describe('avatars enabled', function() {
+				beforeEach(function() {
+					oc_config.enable_avatars = true;
+					OC.Share.showDropDown(
+						'file',
+						123,
+						$container,
+						true,
+						31,
+						'shared_file_name.txt'
+					);
+				});
+
+				afterEach(function() {
+					oc_config.enable_avatars = false;
+				});
+
+				it('test correct function call', function() {
+					expect(avatarStub.calledOnce).toEqual(true);
+					var args = avatarStub.getCall(0).args;
+
+
+					expect($('#shareWithList').children().length).toEqual(2);
+
+					expect($('#avatar-user1').length).toEqual(1);
+					expect(args.length).toEqual(2);
+					expect(args[0]).toEqual('user1');
+				});
+
+				it('test no avatar for groups', function() {
+					expect($('#shareWithList').children().length).toEqual(2);
+					expect($('#shareWithList li:nth-child(2) .avatar').attr('id')).not.toBeDefined();
+				});
+			});
+
+			describe('avatars disabled', function() {
+				beforeEach(function() {
+					OC.Share.showDropDown(
+						'file',
+						123,
+						$container,
+						true,
+						31,
+						'shared_file_name.txt'
+					);
+				});
+
+				it('no avatar classes', function() {
+					expect($('.avatar').length).toEqual(0);
+				});
+			});
+		});
 		describe('"sharesChanged" event', function() {
 			var autocompleteOptions;
 			var handler;
@@ -702,17 +784,17 @@ describe('OC.Share tests', function() {
 			it('displays the user name part of a remote share owner', function() {
 				checkOwner(
 					'User One@someserver.com',
-					'User One',
+					'User One@…',
 					'User One@someserver.com'
 				);
 				checkOwner(
 					'User One@someserver.com/',
-					'User One',
+					'User One@…',
 					'User One@someserver.com'
 				);
 				checkOwner(
 					'User One@someserver.com/root/of/owncloud',
-					'User One',
+					'User One@…',
 					'User One@someserver.com'
 				);
 			});

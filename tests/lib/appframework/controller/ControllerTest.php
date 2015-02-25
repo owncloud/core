@@ -66,15 +66,17 @@ class ControllerTest extends \Test\TestCase {
 		parent::setUp();
 
 		$request = new Request(
-			array(
-				'get' => array('name' => 'John Q. Public', 'nickname' => 'Joey'),
-				'post' => array('name' => 'Jane Doe', 'nickname' => 'Janey'),
-				'urlParams' => array('name' => 'Johnny Weissmüller'),
-				'files' => array('file' => 'filevalue'),
-				'env' => array('PATH' => 'daheim'),
-				'session' => array('sezession' => 'kein'),
+			[
+				'get' => ['name' => 'John Q. Public', 'nickname' => 'Joey'],
+				'post' => ['name' => 'Jane Doe', 'nickname' => 'Janey'],
+				'urlParams' => ['name' => 'Johnny Weissmüller'],
+				'files' => ['file' => 'filevalue'],
+				'env' => ['PATH' => 'daheim'],
+				'session' => ['sezession' => 'kein'],
 				'method' => 'hi',
-			)
+			],
+			$this->getMock('\OCP\Security\ISecureRandom'),
+			$this->getMock('\OCP\IConfig')
 		);
 
 		$this->app = $this->getMock('OC\AppFramework\DependencyInjection\DIContainer',
@@ -171,11 +173,12 @@ class ControllerTest extends \Test\TestCase {
 
 
 	public function testFormatDataResponseJSON() {
-		$expectedHeaders = array(
+		$expectedHeaders = [
 			'test' => 'something',
 			'Cache-Control' => 'no-cache, must-revalidate',
-			'Content-Type' => 'application/json; charset=utf-8'
-		);
+			'Content-Type' => 'application/json; charset=utf-8',
+			'Content-Security-Policy' => "default-src 'none';script-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline';img-src 'self';font-src 'self';connect-src 'self';media-src 'self'",
+		];
 
 		$response = $this->controller->customDataResponse(array('hi'));
 		$response = $this->controller->buildResponse($response, 'json');

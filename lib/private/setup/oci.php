@@ -1,5 +1,28 @@
 <?php
-
+/**
+ * @author Andreas Fischer <bantu@owncloud.com>
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Joas Schilling <nickvergessen@gmx.de>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Victor Dubiniuk <dubiniuk@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ */
 namespace OC\Setup;
 
 class OCI extends AbstractDatabase {
@@ -16,8 +39,11 @@ class OCI extends AbstractDatabase {
 		}
 		// allow empty hostname for oracle
 		$this->dbhost = $config['dbhost'];
-		\OC_Config::setValue('dbhost', $this->dbhost);
-		\OC_Config::setValue('dbtablespace', $this->dbtablespace);
+
+		\OC_Config::setValues([
+			'dbhost'		=> $this->dbhost,
+			'dbtablespace'	=> $this->dbtablespace,
+		]);
 	}
 
 	public function validate($config) {
@@ -72,37 +98,32 @@ class OCI extends AbstractDatabase {
 		$result = oci_execute($stmt);
 		if($result) {
 			$row = oci_fetch_row($stmt);
+
+			if ($row[0] > 0) {
+				//use the admin login data for the new database user
+
+				//add prefix to the oracle user name to prevent collisions
+				$this->dbuser='oc_'.$username;
+				//create a new password so we don't need to store the admin config in the config file
+				$this->dbpassword=\OC_Util::generateRandomBytes(30);
+
+				//oracle passwords are treated as identifiers:
+				//  must start with alphanumeric char
+				//  needs to be shortened to 30 bytes, as the two " needed to escape the identifier count towards the identifier length.
+				$this->dbpassword=substr($this->dbpassword, 0, 30);
+
+				$this->createDBUser($connection);
+			}
 		}
-		if($result and $row[0] > 0) {
-			//use the admin login data for the new database user
 
-			//add prefix to the oracle user name to prevent collisions
-			$this->dbuser='oc_'.$username;
-			//create a new password so we don't need to store the admin config in the config file
-			$this->dbpassword=\OC_Util::generateRandomBytes(30);
+		\OC_Config::setValues([
+			'dbuser'		=> $this->dbuser,
+			'dbname'		=> $this->dbname,
+			'dbpassword'	=> $this->dbpassword,
+		]);
 
-			//oracle passwords are treated as identifiers:
-			//  must start with alphanumeric char
-			//  needs to be shortened to 30 bytes, as the two " needed to escape the identifier count towards the identifier length.
-			$this->dbpassword=substr($this->dbpassword, 0, 30);
-
-			$this->createDBUser($connection);
-
-			\OC_Config::setValue('dbuser', $this->dbuser);
-			\OC_Config::setValue('dbname', $this->dbuser);
-			\OC_Config::setValue('dbpassword', $this->dbpassword);
-
-			//create the database not necessary, oracle implies user = schema
-			//$this->createDatabase($this->dbname, $this->dbuser, $connection);
-		} else {
-
-			\OC_Config::setValue('dbuser', $this->dbuser);
-			\OC_Config::setValue('dbname', $this->dbname);
-			\OC_Config::setValue('dbpassword', $this->dbpassword);
-
-			//create the database not necessary, oracle implies user = schema
-			//$this->createDatabase($this->dbname, $this->dbuser, $connection);
-		}
+		//create the database not necessary, oracle implies user = schema
+		//$this->createDatabase($this->dbname, $this->dbuser, $connection);
 
 		//FIXME check tablespace exists: select * from user_tablespaces
 

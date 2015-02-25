@@ -1,5 +1,28 @@
 <?php
-
+/**
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Michael Gapczynski <GapczynskiM@gmail.com>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Volkan Gezer <volkangezer@gmail.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ */
 require_once __DIR__ . '/../3rdparty/Dropbox/autoload.php';
 
 OCP\JSON::checkAppEnabled('files_external');
@@ -8,13 +31,13 @@ OCP\JSON::callCheck();
 $l = \OC::$server->getL10N('files_external');
 
 if (isset($_POST['app_key']) && isset($_POST['app_secret'])) {
-	$oauth = new Dropbox_OAuth_Curl($_POST['app_key'], $_POST['app_secret']);
+	$oauth = new Dropbox_OAuth_Curl((string)$_POST['app_key'], (string)$_POST['app_secret']);
 	if (isset($_POST['step'])) {
 		switch ($_POST['step']) {
 			case 1:
 				try {
 					if (isset($_POST['callback'])) {
-						$callback = $_POST['callback'];
+						$callback = (string)$_POST['callback'];
 					} else {
 						$callback = null;
 					}
@@ -31,7 +54,7 @@ if (isset($_POST['app_key']) && isset($_POST['app_secret'])) {
 			case 2:
 				if (isset($_POST['request_token']) && isset($_POST['request_token_secret'])) {
 					try {
-						$oauth->setToken($_POST['request_token'], $_POST['request_token_secret']);
+						$oauth->setToken((string)$_POST['request_token'], (string)$_POST['request_token_secret']);
 						$token = $oauth->getAccessToken();
 						OCP\JSON::success(array('access_token' => $token['token'],
 												'access_token_secret' => $token['token_secret']));

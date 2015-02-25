@@ -1,30 +1,28 @@
 <?php
 /**
- * ownCloud
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @author Robin Appelman
- * @copyright 2012 Robin Appelman icewind@owncloud.com
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
-/**
- * Public interface of ownCloud for apps to use.
- * Files/Storage interface
- */
-
 // use OCP namespace for all classes that are considered public.
 // This means that they should be used by apps instead of the internal ownCloud classes
 namespace OCP\Files;
@@ -72,7 +70,7 @@ interface Storage {
 	 * see http://php.net/manual/en/function.opendir.php
 	 *
 	 * @param string $path
-	 * @return resource
+	 * @return resource|false
 	 */
 	public function opendir($path);
 
@@ -97,7 +95,7 @@ interface Storage {
 	 * only the following keys are required in the result: size and mtime
 	 *
 	 * @param string $path
-	 * @return array
+	 * @return array|false
 	 */
 	public function stat($path);
 
@@ -105,7 +103,7 @@ interface Storage {
 	 * see http://php.net/manual/en/function.filetype.php
 	 *
 	 * @param string $path
-	 * @return bool
+	 * @return string|false
 	 */
 	public function filetype($path);
 
@@ -114,7 +112,7 @@ interface Storage {
 	 * The result for filesize when called on a folder is required to be 0
 	 *
 	 * @param string $path
-	 * @return int
+	 * @return int|false
 	 */
 	public function filesize($path);
 
@@ -179,7 +177,7 @@ interface Storage {
 	 * see http://php.net/manual/en/function.filemtime.php
 	 *
 	 * @param string $path
-	 * @return int
+	 * @return int|false
 	 */
 	public function filemtime($path);
 
@@ -187,7 +185,7 @@ interface Storage {
 	 * see http://php.net/manual/en/function.file_get_contents.php
 	 *
 	 * @param string $path
-	 * @return string
+	 * @return string|false
 	 */
 	public function file_get_contents($path);
 
@@ -231,7 +229,7 @@ interface Storage {
 	 *
 	 * @param string $path
 	 * @param string $mode
-	 * @return resource
+	 * @return resource|false
 	 */
 	public function fopen($path, $mode);
 
@@ -240,7 +238,7 @@ interface Storage {
 	 * The mimetype for a folder is required to be "httpd/unix-directory"
 	 *
 	 * @param string $path
-	 * @return string
+	 * @return string|false
 	 */
 	public function getMimeType($path);
 
@@ -250,7 +248,7 @@ interface Storage {
 	 * @param string $type
 	 * @param string $path
 	 * @param bool $raw
-	 * @return string
+	 * @return string|false
 	 */
 	public function hash($type, $path, $raw = false);
 
@@ -258,7 +256,7 @@ interface Storage {
 	 * see http://php.net/manual/en/function.free_space.php
 	 *
 	 * @param string $path
-	 * @return int
+	 * @return int|false
 	 */
 	public function free_space($path);
 
@@ -266,7 +264,7 @@ interface Storage {
 	 * search for occurrences of $query in file names
 	 *
 	 * @param string $query
-	 * @return array
+	 * @return array|false
 	 */
 	public function search($query);
 
@@ -285,7 +283,7 @@ interface Storage {
 	 * The local version of the file can be temporary and doesn't have to be persistent across requests
 	 *
 	 * @param string $path
-	 * @return string
+	 * @return string|false
 	 */
 	public function getLocalFile($path);
 
@@ -294,7 +292,7 @@ interface Storage {
 	 * The local version of the folder can be temporary and doesn't have to be persistent across requests
 	 *
 	 * @param string $path
-	 * @return string
+	 * @return string|false
 	 */
 	public function getLocalFolder($path);
 	/**
@@ -313,7 +311,7 @@ interface Storage {
 	 * get the ETag for a file or folder
 	 *
 	 * @param string $path
-	 * @return string
+	 * @return string|false
 	 */
 	public function getETag($path);
 
@@ -342,7 +340,7 @@ interface Storage {
 	 * For now the returned array can hold the parameter url - in future more attributes might follow.
 	 *
 	 * @param string $path
-	 * @return array
+	 * @return array|false
 	 */
 	public function getDirectDownload($path);
 }

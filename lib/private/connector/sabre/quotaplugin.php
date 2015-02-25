@@ -1,5 +1,6 @@
 <?php
-use Sabre\DAV\URLUtil;
+
+namespace OC\Connector\Sabre;
 
 /**
  * This plugin check user quota and deny creating files when they exceeds the quota.
@@ -8,7 +9,7 @@ use Sabre\DAV\URLUtil;
  * @copyright Copyright (C) 2012 entreCables S.L. All rights reserved.
  * @license http://code.google.com/p/sabredav/wiki/License Modified BSD License
  */
-class OC_Connector_Sabre_QuotaPlugin extends \Sabre\DAV\ServerPlugin {
+class QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 
 	/**
 	 * @var \OC\Files\View
@@ -44,8 +45,8 @@ class OC_Connector_Sabre_QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 
 		$this->server = $server;
 
-		$server->subscribeEvent('beforeWriteContent', array($this, 'checkQuota'), 10);
-		$server->subscribeEvent('beforeCreateFile', array($this, 'checkQuota'), 10);
+		$server->on('beforeWriteContent', array($this, 'checkQuota'), 10);
+		$server->on('beforeCreateFile', array($this, 'checkQuota'), 10);
 	}
 
 	/**
@@ -62,11 +63,11 @@ class OC_Connector_Sabre_QuotaPlugin extends \Sabre\DAV\ServerPlugin {
 			if (substr($uri, 0, 1) !== '/') {
 				$uri = '/' . $uri;
 			}
-			list($parentUri, $newName) = URLUtil::splitPath($uri);
+			list($parentUri, $newName) = \Sabre\HTTP\URLUtil::splitPath($uri);
 			$req = $this->server->httpRequest;
 			if ($req->getHeader('OC-Chunked')) {
-				$info = OC_FileChunking::decodeName($newName);
-				$chunkHandler = new OC_FileChunking($info);
+				$info = \OC_FileChunking::decodeName($newName);
+				$chunkHandler = new \OC_FileChunking($info);
 				// subtract the already uploaded size to see whether
 				// there is still enough space for the remaining chunks
 				$length -= $chunkHandler->getCurrentSize();

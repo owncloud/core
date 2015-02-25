@@ -1,11 +1,26 @@
 <?php
 /**
- * Copyright (c) 2014 Robin Appelman <icewind@owncloud.com>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Bjoern Schiessle <schiessle@owncloud.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
-
 OCP\JSON::callCheck();
 OCP\JSON::checkLoggedIn();
 OCP\JSON::checkAppEnabled('files_sharing');
@@ -34,28 +49,78 @@ $externalManager = new \OCA\Files_Sharing\External\Manager(
 		\OC::$server->getDatabaseConnection(),
 		\OC\Files\Filesystem::getMountManager(),
 		\OC\Files\Filesystem::getLoader(),
-		\OC::$server->getUserSession(),
-		\OC::$server->getHTTPHelper()
+		\OC::$server->getHTTPHelper(),
+		\OC::$server->getUserSession()->getUser()->getUID()
 );
 
 $name = OCP\Files::buildNotExistingFileName('/', $name);
 
 // check for ssl cert
 if (substr($remote, 0, 5) === 'https' and !OC_Util::getUrlContent($remote)) {
-	\OCP\JSON::error(array('data' => array('message' => $l->t("Invalid or untrusted SSL certificate"))));
+	\OCP\JSON::error(array('data' => array('message' => $l->t('Invalid or untrusted SSL certificate'))));
 	exit;
 } else {
 	$mount = $externalManager->addShare($remote, $token, $password, $name, $owner, true);
+
 	/**
 	 * @var \OCA\Files_Sharing\External\Storage $storage
 	 */
 	$storage = $mount->getStorage();
+	try {
+		// check if storage exists
+		$storage->checkStorageAvailability();
+	} catch (\OCP\Files\StorageInvalidException $e) {
+		// note: checkStorageAvailability will already remove the invalid share
+		\OCP\Util::writeLog(
+			'files_sharing',
+			'Invalid remote storage: ' . get_class($e) . ': ' . $e->getMessage(),
+			\OCP\Util::DEBUG
+		);
+		\OCP\JSON::error(
+			array(
+				'data' => array(
+					'message' => $l->t('Could not authenticate to remote share, password might be wrong')
+				)
+			)
+		);
+		exit();
+	} catch (\Exception $e) {
+		\OCP\Util::writeLog(
+			'files_sharing',
+			'Invalid remote storage: ' . get_class($e) . ': ' . $e->getMessage(),
+			\OCP\Util::DEBUG
+		);
+		$externalManager->removeShare($mount->getMountPoint());
+		\OCP\JSON::error(array('data' => array('message' => $l->t('Storage not valid'))));
+		exit();
+	}
 	$result = $storage->file_exists('');
 	if ($result) {
-		$storage->getScanner()->scanAll();
-		\OCP\JSON::success();
+		try {
+			$storage->getScanner()->scanAll();
+			\OCP\JSON::success();
+		} catch (\OCP\Files\StorageInvalidException $e) {
+			\OCP\Util::writeLog(
+				'files_sharing',
+				'Invalid remote storage: ' . get_class($e) . ': ' . $e->getMessage(),
+				\OCP\Util::DEBUG
+			);
+			\OCP\JSON::error(array('data' => array('message' => $l->t('Storage not valid'))));
+		} catch (\Exception $e) {
+			\OCP\Util::writeLog(
+				'files_sharing',
+				'Invalid remote storage: ' . get_class($e) . ': ' . $e->getMessage(),
+				\OCP\Util::DEBUG
+			);
+			\OCP\JSON::error(array('data' => array('message' => $l->t('Couldn\'t add remote share'))));
+		}
 	} else {
 		$externalManager->removeShare($mount->getMountPoint());
-		\OCP\JSON::error(array('data' => array('message' => $l->t("Couldn't add remote share"))));
+		\OCP\Util::writeLog(
+			'files_sharing',
+			'Couldn\'t add remote share',
+			\OCP\Util::DEBUG
+		);
+		\OCP\JSON::error(array('data' => array('message' => $l->t('Couldn\'t add remote share'))));
 	}
 }

@@ -1,5 +1,26 @@
 <?php
-
+/**
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Christopher Schäpers <kondou@ts.unde.re>
+ * @author eduardo <eduardo@vnexu.net>
+ * @author Joas Schilling <nickvergessen@gmx.de>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ */
 namespace OC\Setup;
 
 class PostgreSQL extends AbstractDatabase {
@@ -43,20 +64,15 @@ class PostgreSQL extends AbstractDatabase {
 			$this->dbpassword=\OC_Util::generateRandomBytes(30);
 
 			$this->createDBUser($connection);
-
-			\OC_Config::setValue('dbuser', $this->dbuser);
-			\OC_Config::setValue('dbpassword', $this->dbpassword);
-
-			//create the database
-			$this->createDatabase($connection);
 		}
-		else {
-			\OC_Config::setValue('dbuser', $this->dbuser);
-			\OC_Config::setValue('dbpassword', $this->dbpassword);
 
-			//create the database
-			$this->createDatabase($connection);
-		}
+		\OC_Config::setValues([
+			'dbuser'		=> $this->dbuser,
+			'dbpassword'	=> $this->dbpassword,
+		]);
+
+		//create the database
+		$this->createDatabase($connection);
 
 		// the connection to dbname=postgres is not needed anymore
 		pg_close($connection);

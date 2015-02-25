@@ -1,25 +1,26 @@
 <?php
 /**
- * ownCloud - App Framework
+ * @author Bernhard Posselt <dev@bernhard-posselt.com>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @author Bernhard Posselt
- * @copyright 2014 Bernhard Posselt <dev@bernhard-posselt.com>
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
 namespace OC\AppFramework\Utility;
 
 use \OCP\AppFramework\QueryException;
@@ -33,8 +34,8 @@ class SimpleContainer extends \Pimple\Container implements \OCP\IContainer {
 
 
 	/**
-	 * @param ReflectionClass $class the class to instantiate
-	 * @return stdClass the created class
+	 * @param \ReflectionClass $class the class to instantiate
+	 * @return \stdClass the created class
 	 */
 	private function buildClass(\ReflectionClass $class) {
 		$constructor = $class->getConstructor();
@@ -63,6 +64,7 @@ class SimpleContainer extends \Pimple\Container implements \OCP\IContainer {
 	 * If a parameter is not registered in the container try to instantiate it
 	 * by using reflection to find out how to build the class
 	 * @param string $name the class name to resolve
+	 * @return \stdClass
 	 * @throws QueryException if the class could not be found or instantiated
 	 */
 	private function resolve($name) {
@@ -84,7 +86,7 @@ class SimpleContainer extends \Pimple\Container implements \OCP\IContainer {
 	/**
 	 * @param string $name name of the service to query for
 	 * @return mixed registered service for the given $name
-	 * @throws QueryExcpetion if the query could not be resolved
+	 * @throws QueryException if the query could not be resolved
 	 */
 	public function query($name) {
 		if ($this->offsetExists($name)) {

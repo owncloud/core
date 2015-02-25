@@ -1,5 +1,28 @@
 <?php
-
+/**
+ * @author infoneo <infoneo@yahoo.pl>
+ * @author Joas Schilling <nickvergessen@gmx.de>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ */
 namespace OC\Files;
 
 /**
@@ -115,6 +138,8 @@ class Mapper
 
 	/**
 	 * @param string $logicPath
+	 * @return null
+	 * @throws \OC\DatabaseException
 	 */
 	private function resolveLogicPath($logicPath) {
 		$logicPath = $this->resolveRelativePath($logicPath);
@@ -162,7 +187,8 @@ class Mapper
 
 	/**
 	 * @param string $logicPath
-	 * @param boolean $store
+	 * @param bool $store
+	 * @return string
 	 */
 	private function create($logicPath, $store) {
 		$logicPath = $this->resolveRelativePath($logicPath);
@@ -191,7 +217,9 @@ class Mapper
 	}
 
 	/**
-	 * @param integer $index
+	 * @param string $path
+	 * @param int $index
+	 * @return string
 	 */
 	public function slugifyPath($path, $index = null) {
 		$path = $this->stripRootFolder($path, $this->unchangedPhysicalRoot);
@@ -205,7 +233,7 @@ class Mapper
 				continue;
 			}
 
-			$sluggedElements[] = self::slugify($pathElement);
+			$sluggedElements[] = $this->slugify($pathElement);
 		}
 
 		// apply index to file name
@@ -253,12 +281,17 @@ class Mapper
 		// trim ending dots (for security reasons and win compatibility)
 		$text = preg_replace('~\.+$~', '', $text);
 
-		if (empty($text)) {
+		if (empty($text) || \OC\Files\Filesystem::isFileBlacklisted($text)) {
 			/**
 			 * Item slug would be empty. Previously we used uniqid() here.
 			 * However this means that the behaviour is not reproducible, so
 			 * when uploading files into a "empty" folder, the folders name is
 			 * different.
+			 *
+			 * The other case is, that the slugified name would be a blacklisted
+			 * filename. In this case we just use the same workaround by
+			 * returning the secure md5 hash of the original name.
+			 *
 			 *
 			 * If there would be a md5() hash collision, the deduplicate check
 			 * will spot this and append an index later, so this should not be

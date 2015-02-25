@@ -2,8 +2,10 @@ OC.L10N.register(
     "files_sharing",
     {
     "Server to server sharing is not enabled on this server" : "Neste servidor non está activada a compartición de servidor a servidor",
-    "The mountpoint name contains invalid characters." : "O nome do punto de montaxe contén caracteres inválidos.",
+    "The mountpoint name contains invalid characters." : "O nome do punto de montaxe contén caracteres incorrectos",
     "Invalid or untrusted SSL certificate" : "Certificado SSL incorrecto ou non fiábel",
+    "Could not authenticate to remote share, password might be wrong" : "Non foi pisíbel autenticar na compartición remota, o contrasinal podería ser erróneo",
+    "Storage not valid" : "Almacenamento incorrecto",
     "Couldn't add remote share" : "Non foi posíbel engadir a compartición remota",
     "Shared with you" : "Compartido con vostede",
     "Shared with others" : "Compartido con outros",
@@ -23,6 +25,7 @@ OC.L10N.register(
     "Invalid ownCloud url" : "URL incorrecta do ownCloud",
     "Share" : "Compartir",
     "Shared by" : "Compartido por",
+    "A file or folder has been <strong>shared</strong>" : "<strong>Compartiuse</strong> un ficheiro ou cartafol",
     "A file or folder was shared from <strong>another server</strong>" : "Compartiuse un ficheiro ou cartafol desde <strong>outro servidor</strong>",
     "A public shared file or folder was <strong>downloaded</strong>" : "Foi <strong>descargado</strong> un ficheiro ou cartafol público",
     "You received a new remote share from %s" : "Recibiu unha compartición remota de %s",
@@ -31,6 +34,11 @@ OC.L10N.register(
     "%1$s unshared %2$s from you" : "%1$s deixou de compartir %2$s con vostede",
     "Public shared folder %1$s was downloaded" : "Foi descargado o cartafol público %1$s",
     "Public shared file %1$s was downloaded" : "Foi descargado o ficheiro público %1$s",
+    "You shared %1$s with %2$s" : "Compartiu %1$s con %2$s",
+    "You shared %1$s with group %2$s" : "Compartiu %1$s co grupo %2$s",
+    "%2$s shared %1$s with you" : "%2$s compartiu %1$s con vostede",
+    "You shared %1$s via link" : "Vostede compartiu %1$s mediante ligazón",
+    "Shares" : "Comparticións",
     "This share is password-protected" : "Esta compartición está protexida con contrasinal",
     "The password is wrong. Try again." : "O contrasinal é incorrecto. Ténteo de novo.",
     "Password" : "Contrasinal",
@@ -47,8 +55,8 @@ OC.L10N.register(
     "Download" : "Descargar",
     "Download %s" : "Descargar %s",
     "Direct link" : "Ligazón directa",
-    "Server-to-Server Sharing" : "Compartición Servidor-a-Servidor",
-    "Allow users on this server to send shares to other servers" : "Permitir aos ususarios de este servidor enviar comparticións a outros servidores",
-    "Allow users on this server to receive shares from other servers" : "Permitir aos usuarios de este servidor recibir comparticións de outros servidores"
+    "Federated Cloud Sharing" : "Compartición de nube federada",
+    "Allow users on this server to send shares to other servers" : "Permitir aos usuarios deste servidor enviar comparticións a outros servidores",
+    "Allow users on this server to receive shares from other servers" : "Permitir aos usuarios deste servidor recibir comparticións de outros servidores"
 },
 "nplurals=2; plural=(n != 1);");

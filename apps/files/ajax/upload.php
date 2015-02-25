@@ -1,5 +1,36 @@
 <?php
-
+/**
+ * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Bjoern Schiessle <schiessle@owncloud.com>
+ * @author Florian Pritz <bluewind@xinu.at>
+ * @author Frank Karlitschek <frank@owncloud.org>
+ * @author Joas Schilling <nickvergessen@gmx.de>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Luke Policinski <lpolicinski@gmail.com>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Roman Geber <rgeber@owncloudapps.com>
+ * @author TheSFReader <TheSFReader@gmail.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ */
 \OC::$server->getSession()->close();
 
 // Firefox and Konqueror tries to download application/json for me.  --Arthur
@@ -16,7 +47,7 @@ $l = \OC::$server->getL10N('files');
 if (empty($_POST['dirToken'])) {
 	// The standard case, files are uploaded through logged in users :)
 	OCP\JSON::checkLoggedIn();
-	$dir = isset($_POST['dir']) ? $_POST['dir'] : "";
+	$dir = isset($_POST['dir']) ? (string)$_POST['dir'] : '';
 	if (!$dir || empty($dir) || $dir === false) {
 		OCP\JSON::error(array('data' => array_merge(array('message' => $l->t('Unable to set upload directory.')))));
 		die();
@@ -30,9 +61,9 @@ if (empty($_POST['dirToken'])) {
 
 	// return only read permissions for public upload
 	$allowedPermissions = \OCP\Constants::PERMISSION_READ;
-	$publicDirectory = !empty($_POST['subdir']) ? $_POST['subdir'] : '/';
+	$publicDirectory = !empty($_POST['subdir']) ? (string)$_POST['subdir'] : '/';
 
-	$linkItem = OCP\Share::getShareByToken($_POST['dirToken']);
+	$linkItem = OCP\Share::getShareByToken((string)$_POST['dirToken']);
 	if ($linkItem === false) {
 		OCP\JSON::error(array('data' => array_merge(array('message' => $l->t('Invalid Token')))));
 		die();

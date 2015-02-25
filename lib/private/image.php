@@ -1,19 +1,37 @@
 <?php
-
 /**
- * ownCloud
+ * @author Andreas Fischer <bantu@owncloud.com>
+ * @author Bartek Przybylski <bart.p.pl@gmail.com>
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Bjoern Schiessle <schiessle@owncloud.com>
+ * @author Byron Marohn <combustible@live.com>
+ * @author Christopher Schäpers <kondou@ts.unde.re>
+ * @author Georg Ehrke <georg@owncloud.com>
+ * @author j-ed <juergen@eisfair.org>
+ * @author Johannes Willnecker <johannes@willnecker.com>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Olivier Paroz <github@oparoz.com>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Thomas Tanghus <thomas@tanghus.net>
  *
- * @author Thomas Tanghus
- * @copyright 2011 Thomas Tanghus <thomas@tanghus.net>
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- */
-
-/**
- * Class for basic image manipulation
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
 class OC_Image {
 	protected $resource = false; // tmp resource.
@@ -391,7 +409,7 @@ class OC_Image {
 				$rotate = 90;
 				break;
 		}
-		if($flip) {
+		if($flip && function_exists('imageflip')) {
 			imageflip($this->resource, IMG_FLIP_HORIZONTAL);
 		}
 		if ($rotate) {
@@ -467,7 +485,6 @@ class OC_Image {
 	public function loadFromFile($imagePath = false) {
 		// exif_imagetype throws "read error!" if file is less than 12 byte
 		if (!@is_file($imagePath) || !file_exists($imagePath) || filesize($imagePath) < 12 || !is_readable($imagePath)) {
-			$this->logger->debug('OC_Image->loadFromFile, could not load: ' . (string)urlencode($imagePath), array('app' => 'core'));
 			return false;
 		}
 		$iType = exif_imagetype($imagePath);
