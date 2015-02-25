@@ -578,10 +578,16 @@ class View {
 	}
 
 	/**
-	 * @param string $path1
-	 * @param string $path2
+	 * Rename/move a file or folder from the source path to target path.
+	 *
+	 * @param string $path1 source path
+	 * @param string $path2 target path
+	 *
 	 * @return bool|mixed
-	 */
+	 * 
+	 * @throws \OCP\Files\NotEnoughSpaceException
+	 *
+	 **/
 	public function rename($path1, $path2) {
 		$postFix1 = (substr($path1, -1, 1) === '/') ? '/' : '';
 		$postFix2 = (substr($path2, -1, 1) === '/') ? '/' : '';
@@ -663,6 +669,9 @@ class View {
 
 						if ($result !== false) {
 							$result &= $storage1->unlink($internalPath1);
+						} else {
+							// delete partially written target file
+							$storage2->unlink($internalPath2);
 						}
 					}
 				}
@@ -695,10 +704,15 @@ class View {
 	}
 
 	/**
-	 * @param string $path1
-	 * @param string $path2
-	 * @param bool $preserveMtime
+	 * Copy a file/folder from the source path to target path
+	 *
+	 * @param string $path1 source path
+	 * @param string $path2 target path
+	 * @param bool $preserveMtime whether to preserve mtime on the copy
+	 *
 	 * @return bool|mixed
+	 *
+	 * @throws \OCP\Files\NotEnoughSpaceException
 	 */
 	public function copy($path1, $path2, $preserveMtime = false) {
 		$postFix1 = (substr($path1, -1, 1) === '/') ? '/' : '';
@@ -764,12 +778,16 @@ class View {
 						$source = $this->fopen($path1 . $postFix1, 'r');
 						$target = $this->fopen($path2 . $postFix2, 'w');
 						list(, $result) = \OC_Helper::streamCopy($source, $target);
-						if($preserveMtime) {
+						if($result && $preserveMtime) {
 							$this->touch($path2, $this->filemtime($path1));
 						}
 						fclose($source);
 						fclose($target);
 					}
+				}
+				if (!$result) {
+					// delete partially written target file
+					$storage2->unlink($internalPath2);
 				}
 				$this->updater->update($path2);
 				if ($this->shouldEmitHooks() && $result !== false) {
