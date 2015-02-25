@@ -243,6 +243,11 @@ span.securitywarning, span.connectionwarning, .setupwarning {
 	color:#C33;
 	font-weight:bold;
 }
+
+#maxUploadSizeUnit {
+	vertical-align: top;
+}
+
 #shareAPI p { padding-bottom: 0.8em; }
 #shareAPI input#shareapiExpireAfterNDays {width: 25px;}
 #shareAPI .indent {
