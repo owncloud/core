@@ -116,9 +116,12 @@ class ObjectTree extends \Sabre\DAV\ObjectTree {
 	 *
 	 * @param string $sourcePath The path to the file which should be moved
 	 * @param string $destinationPath The full destination path, so not just the destination parent node
+	 *
 	 * @throws \Sabre\DAV\Exception\BadRequest
 	 * @throws \Sabre\DAV\Exception\ServiceUnavailable
 	 * @throws \Sabre\DAV\Exception\Forbidden
+	 * @throws \Sabre\DAV\Exception\InsufficientStorage
+	 *
 	 * @return int
 	 */
 	public function move($sourcePath, $destinationPath) {
@@ -163,6 +166,8 @@ class ObjectTree extends \Sabre\DAV\ObjectTree {
 			if (!$renameOkay) {
 				throw new \Sabre\DAV\Exception\Forbidden('');
 			}
+		} catch (\OCP\Files\NotEnoughSpaceException $e) {
+			throw new \Sabre\DAV\Exception\InsufficientStorage($e->getMessage());
 		} catch (\OCP\Files\StorageNotAvailableException $e) {
 			throw new \Sabre\DAV\Exception\ServiceUnavailable($e->getMessage());
 		}
@@ -184,9 +189,12 @@ class ObjectTree extends \Sabre\DAV\ObjectTree {
 	 * This method must work recursively and delete the destination
 	 * if it exists
 	 *
-	 * @param string $source
-	 * @param string $destination
+	 * @param string $source source path
+	 * @param string $destination destination path
+	 *
 	 * @throws \Sabre\DAV\Exception\ServiceUnavailable
+	 * @throws \Sabre\DAV\Exception\InsufficientStorage
+	 *
 	 * @return void
 	 */
 	public function copy($source, $destination) {
@@ -196,7 +204,9 @@ class ObjectTree extends \Sabre\DAV\ObjectTree {
 
 		try {
 			if ($this->fileView->is_file($source)) {
-				$this->fileView->copy($source, $destination);
+				if (!$this->fileView->copy($source, $destination)) {
+					throw new \Sabre\DAV\Exception\Forbidden('');
+				}
 			} else {
 				$this->fileView->mkdir($destination);
 				$dh = $this->fileView->opendir($source);
@@ -204,11 +214,15 @@ class ObjectTree extends \Sabre\DAV\ObjectTree {
 					while (($subNode = readdir($dh)) !== false) {
 
 						if ($subNode == '.' || $subNode == '..') continue;
-						$this->copy($source . '/' . $subNode, $destination . '/' . $subNode);
-
+						$copyOkay = $this->copy($source . '/' . $subNode, $destination . '/' . $subNode);
+						if (!$copyOkay) {
+							throw new \Sabre\DAV\Exception\Forbidden('');
+						}
 					}
 				}
 			}
+		} catch (\OCP\Files\NotEnoughSpaceException $e) {
+			throw new \Sabre\DAV\Exception\InsufficientStorage($e->getMessage());
 		} catch (\OCP\Files\StorageNotAvailableException $e) {
 			throw new \Sabre\DAV\Exception\ServiceUnavailable($e->getMessage());
 		}

@@ -109,7 +109,7 @@ class Quota extends Wrapper {
 		if ($free < 0 or $this->getSize($source) < $free) {
 			return $this->storage->copy($source, $target);
 		} else {
-			return false;
+			throw new \OCP\Files\NotEnoughSpaceException();
 		}
 	}
 

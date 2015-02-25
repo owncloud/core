@@ -543,6 +543,41 @@ class View {
 	}
 
 	/**
+	 * Check whether there is enough space on the target storage
+	 * to accomodate for the source file
+	 *
+	 * @param \OCP\Storage $sourceStorage source storage
+	 * @param string $sourcePath source path relative to the source storage
+	 * @param \OCP\Storage $targetStorage target storage
+	 * @param string $targetPath target path relative to the target storage
+	 * 
+	 * @return boolean true if there is enough space, false otherwise
+	 */
+	private function checkAvailableSpaceForCopy($sourceStorage, $sourcePath, $targetStorage, $targetPath) {
+		$sourceCache = $sourceStorage->getCache();
+		$sourceData = $sourceCache->get($sourcePath);
+		$sourceSize = null;
+		if (is_array($sourceData) and isset($sourceData['size'])) {
+			if (isset($sourceData['unencrypted_size'])
+				&& $sourceData['unencrypted_size'] > 0
+			) {
+				// better be safe and use unencrypted size
+				$sourceSize = $sourceData['unencrypted_size'];
+			} else {
+				$sourceSize = $sourceData['size'];
+			}
+		}
+
+		if (!is_null($sourceSize)) {
+			$targetFreeSpace = $targetStorage->free_space(dirname($targetPath));
+			if ($sourceSize > $targetFreeSpace) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
 	 * @param string $path1
 	 * @param string $path2
 	 * @return bool|mixed
@@ -586,7 +621,7 @@ class View {
 				$mount = $manager->find($absolutePath1 . $postFix1);
 				$storage1 = $mount->getStorage();
 				$internalPath1 = $mount->getInternalPath($absolutePath1 . $postFix1);
-				list(, $internalPath2) = Filesystem::resolvePath($absolutePath2 . $postFix2);
+				list($storage2, $internalPath2) = Filesystem::resolvePath($absolutePath2 . $postFix2);
 				if ($internalPath1 === '' and $mount instanceof MoveableMount) {
 					if ($this->isTargetAllowed($absolutePath2)) {
 						/**
@@ -613,9 +648,12 @@ class View {
 							$result = $storage1->rmdir($internalPath1);
 						}
 					} else {
+						if (!$this->checkAvailableSpaceForCopy($storage1, $internalPath1, $storage2, $internalPath2)) {
+							throw new \OCP\Files\NotEnoughSpaceException();
+						}
 						$source = $this->fopen($path1 . $postFix1, 'r');
 						$target = $this->fopen($path2 . $postFix2, 'w');
-						list($count, $result) = \OC_Helper::streamCopy($source, $target);
+						list(, $result) = \OC_Helper::streamCopy($source, $target);
 						$this->touch($path2, $this->filemtime($path1));
 
 						// close open handle - especially $source is necessary because unlink below will
@@ -698,7 +736,7 @@ class View {
 				$mp2 = $this->getMountPoint($path2 . $postFix2);
 				if ($mp1 == $mp2) {
 					list($storage, $internalPath1) = Filesystem::resolvePath($absolutePath1 . $postFix1);
-					list(, $internalPath2) = Filesystem::resolvePath($absolutePath2 . $postFix2);
+					list($storage2, $internalPath2) = Filesystem::resolvePath($absolutePath2 . $postFix2);
 					if ($storage) {
 						$result = $storage->copy($internalPath1, $internalPath2);
 					} else {
@@ -718,9 +756,14 @@ class View {
 							}
 						}
 					} else {
+						list($storage, $internalPath1) = Filesystem::resolvePath($absolutePath1 . $postFix1);
+						list($storage2, $internalPath2) = Filesystem::resolvePath($absolutePath2 . $postFix2);
+						if (!$this->checkAvailableSpaceForCopy($storage, $internalPath1, $storage2, $internalPath2)) {
+							throw new \OCP\Files\NotEnoughSpaceException();
+						}
 						$source = $this->fopen($path1 . $postFix1, 'r');
 						$target = $this->fopen($path2 . $postFix2, 'w');
-						list($count, $result) = \OC_Helper::streamCopy($source, $target);
+						list(, $result) = \OC_Helper::streamCopy($source, $target);
 						if($preserveMtime) {
 							$this->touch($path2, $this->filemtime($path1));
 						}
