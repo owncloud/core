@@ -430,8 +430,17 @@
 				files = _.pluck(this.getSelectedFiles(), 'name');
 			}
 			var obj=this;
-			OC.dialogs.confirm(t('files','Delete the selected files?'),t('files','Confirm Delete'),function(answer){ if(answer){
-			obj.do_delete(files);}});
+			OC.dialogs.confirm(
+				t('files','Delete the selected files?'),
+				t('files','Confirm Delete'),
+				function(answer)
+				{ 
+					if(answer)
+					{
+						obj.do_delete(files);
+					}
+				}
+			);
 			event.preventDefault();
 			return false;
 		},
@@ -949,7 +958,7 @@
 						mime: mime,
 						etag: fileData.etag,
 						callback: function(url) {
-							iconDiv.css('background-image', 'url("' + url + '")');
+							iconDiv.css('background-image', 'url(' + url + ')');
 						}
 					});
 				}
@@ -961,7 +970,7 @@
 						};
 					var previewUrl = this.generatePreviewUrl(urlSpec);
 					previewUrl = previewUrl.replace('(', '%28').replace(')', '%29');
-					iconDiv.css('background-image', 'url("' + previewUrl + '")');
+					iconDiv.css('background-image', 'url(' + previewUrl + ')');
 				}
 			}
 			return tr;
@@ -1011,7 +1020,6 @@
 		 * @param changeUrl true to also update the URL, false otherwise (default)
 		 */
 		_setCurrentDir: function(targetDir, changeUrl) {
-			targetDir = targetDir.replace(/\\/g, '/');
 			var previousDir = this.getCurrentDirectory(),
 				baseDir = OC.basename(targetDir);
 

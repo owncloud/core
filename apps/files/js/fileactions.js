@@ -432,8 +432,17 @@
 				},
 				render: _.bind(this._renderDeleteAction, this),
 				actionHandler: function(fileName, context) {
-					OC.dialogs.confirm(t('files','Delete "'+filename+'"?'),t('files','Confirm Delete'),function(answer){ if(answer){
-				context.fileList.do_delete(filename, context.dir);
+					OC.dialogs.confirm(
+						t('files','Delete "'+fileName+'"?'),
+						t('files','Confirm Delete'),
+						function(answer)
+						{ 
+							if(answer)
+							{
+					context.fileList.do_delete(fileName, context.dir);
+							}
+						},
+						true);
 					$('.tipsy').remove();
 				}
 			});
