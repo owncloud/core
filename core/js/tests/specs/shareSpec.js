@@ -60,6 +60,7 @@ describe('OC.Share tests', function() {
 			oldEnableAvatars = oc_config.enable_avatars;
 			oc_config.enable_avatars = false;
 			avatarStub = sinon.stub($.fn, 'avatar');
+			$('#testArea').append('<table id="filestable" data-allow-public-upload="yes"></table>');
 		});
 		afterEach(function() {
 			/* jshint camelcase:false */
@@ -100,6 +101,20 @@ describe('OC.Share tests', function() {
 			// TODO: expect that other parts are rendered correctly
 		});
 		describe('Share with link', function() {
+			function showDropDown(itemType) {
+				if (_.isUndefined(itemType)) {
+					itemType = 'file';
+				}
+				OC.Share.showDropDown(
+					itemType,
+					123,
+					$container,
+					true,
+					31,
+					'name-' + itemType
+				);
+			}
+
 			// TODO: test ajax calls
 			// TODO: test password field visibility (whenever enforced or not)
 			it('shows share with link checkbox when allowed', function() {
@@ -271,22 +286,28 @@ describe('OC.Share tests', function() {
 					OC.generateUrl('/s/') + 'anothertoken';
 				expect($('#dropdown #linkText').val()).toEqual(link);
 			});
+			it('saves link share', function() {
+				var req, params;
+				showDropDown();
+				$('#dropdown [name=linkCheckbox]').click();
+				expect(fakeServer.requests.length).toEqual(1);
+				req = fakeServer.requests[0];
+				expect(req.url).toEqual(OC.webroot + '/index.php/core/ajax/share.php');
+				params = OC.parseQueryString(req.requestBody);
+				expect(params.action).toEqual('share');
+				expect(params.itemType).toEqual('file');
+				expect(params.itemSource).toEqual('123');
+				expect(params.shareType).toEqual('' + OC.Share.SHARE_TYPE_LINK);
+				expect(params.shareWith).toEqual('');
+				expect(params.permissions).toEqual('1');
+				expect(params.itemSourceName).toEqual('name-file');
+				expect(params.expirationDate).toEqual('');
+			});
 			describe('expiration date', function() {
 				var shareData;
 				var shareItem;
 				var clock;
 				var expectedMinDate;
-
-				function showDropDown() {
-					OC.Share.showDropDown(
-						'file',
-						123,
-						$container,
-						true,
-						31,
-						'folder'
-					);
-				}
 
 				beforeEach(function() {
 					// pick a fake date
@@ -410,6 +431,78 @@ describe('OC.Share tests', function() {
 					showDropDown();
 					expect($.datepicker._defaults.minDate).toEqual(expectedMinDate);
 					expect($.datepicker._defaults.maxDate).toEqual(new Date(2014, 0, 27, 0, 0, 0, 0));
+				});
+				it('saves expiration date after changing', function() {
+					var req, params;
+					showDropDown();
+					$('#dropdown [name=linkCheckbox]').click();
+					expect(fakeServer.requests.length).toEqual(1);
+					$('#dropdown [name=expirationCheckbox]').click();
+					$('#dropdown #expirationDate').val('27-01-2014').trigger('change');
+					expect(fakeServer.requests.length).toEqual(2);
+					req = fakeServer.requests[1];
+					expect(req.url).toEqual(OC.webroot + '/index.php/core/ajax/share.php');
+					params = OC.parseQueryString(req.requestBody);
+					expect(params.action).toEqual('setExpirationDate');
+					expect(params.itemType).toEqual('file');
+					expect(params.itemSource).toEqual('123');
+					expect(params.date).toEqual('27-01-2014');
+				});
+			});
+			describe('password protect', function() {
+				it('saves share after setting password', function() {
+					var req, params;
+					showDropDown();
+					$('#dropdown [name=linkCheckbox]').click();
+					expect(fakeServer.requests.length).toEqual(1);
+					$('#dropdown [name=showPassword]').click();
+					$('#dropdown #expirationCheckbox').click();
+					$('#dropdown #expirationDate').val('27-01-2014');
+					$('#dropdown #linkPassText').val('thepassword').trigger('focusout');
+					expect(fakeServer.requests.length).toEqual(2);
+					req = fakeServer.requests[1];
+					expect(req.url).toEqual(OC.webroot + '/index.php/core/ajax/share.php');
+					params = OC.parseQueryString(req.requestBody);
+					expect(params.action).toEqual('share');
+					expect(params.itemType).toEqual('file');
+					expect(params.itemSource).toEqual('123');
+					expect(params.shareType).toEqual('' + OC.Share.SHARE_TYPE_LINK);
+					expect(params.shareWith).toEqual('thepassword');
+					expect(params.permissions).toEqual('1');
+					expect(params.itemSourceName).toEqual('name-file');
+					expect(params.expirationDate).toEqual('27-01-2014');
+				});
+			});
+			describe('allow upload', function() {
+				it('does not show checkbox for files', function() {
+					showDropDown('file');
+					$('#dropdown [name=linkCheckbox]').click();
+					expect($('#dropdown [name=allowPublicUpload]').length).toEqual(0);
+				});
+				it('does not show checkbox if public upload is globally disabled', function() {
+					$('#filestable').data('allow-public-upload', 'no'); // ugh
+					showDropDown('folder');
+					$('#dropdown [name=linkCheckbox]').click();
+					expect($('#dropdown [name=allowPublicUpload]').length).toEqual(0);
+				});
+				it('saves share after allowing upload', function() {
+					var req, params;
+					showDropDown('folder');
+					$('#dropdown [name=linkCheckbox]').click();
+					expect(fakeServer.requests.length).toEqual(1);
+					$('#dropdown [name=allowPublicUpload]').click();
+					expect(fakeServer.requests.length).toEqual(2);
+					req = fakeServer.requests[1];
+					expect(req.url).toEqual(OC.webroot + '/index.php/core/ajax/share.php');
+					params = OC.parseQueryString(req.requestBody);
+					expect(params.action).toEqual('share');
+					expect(params.itemType).toEqual('folder');
+					expect(params.itemSource).toEqual('123');
+					expect(params.shareType).toEqual('' + OC.Share.SHARE_TYPE_LINK);
+					expect(params.shareWith).toEqual('');
+					expect(params.permissions).toEqual('7');
+					expect(params.itemSourceName).toEqual('name-folder');
+					expect(params.expirationDate).toEqual('');
 				});
 			});
 		});

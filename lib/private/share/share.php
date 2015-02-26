@@ -1859,6 +1859,7 @@ class Share extends \OC\Share\Constants {
 
 		$preHookData['itemTarget'] = ($isGroupShare) ? $groupItemTarget : $itemTarget;
 		$preHookData['shareWith'] = ($isGroupShare) ? $shareWith['group'] : $shareWith;
+		$isLinkShare = $shareType === self::SHARE_TYPE_LINK;
 
 		\OC_Hook::emit('OCP\Share', 'pre_shared', $preHookData);
 
