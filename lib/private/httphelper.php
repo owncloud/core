@@ -156,7 +156,7 @@ class HTTPHelper {
 	/**
 	 * Returns the response headers of a HTTP URL without following redirects
 	 * @param string $location Needs to be a HTTPS or HTTP URL
-	 * @return array
+	 * @return array|false an indexed or associative array with the headers, or false on failure.
 	 */
 	public function getHeaders($location) {
 		stream_context_set_default($this->getDefaultContextArray());

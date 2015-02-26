@@ -753,6 +753,8 @@ class Server extends SimpleContainer implements IServerContainer {
 	}
 
 	/**
+	 * Get the timezone of the current user, based on his session information and config data
+	 *
 	 * @return \OCP\IDateTimeZone
 	 */
 	public function getDateTimeZone() {
