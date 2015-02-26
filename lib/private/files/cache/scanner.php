@@ -213,12 +213,27 @@ class Scanner extends BasicEmitter {
 	protected function addToCache($path, $data, $fileId = -1) {
 		\OC_Hook::emit('Scanner', 'addToCache', array('file' => $path, 'data' => $data));
 		$this->emit('\OC\Files\Cache\Scanner', 'addToCache', array($path, $this->storageId, $data));
+		if ($this->storage->instanceOfStorage('OCP\Files\Storage\IAttribute') and $fileId === -1) {
+			$oldId = (int)$this->storage->getAttribute($path, 'oc-file-id');
+			if ($oldId and $oldId !== $fileId) {
+				\OC::$server->getLogger()->warning('Found "new" file with existing file id: ' . $path);
+				if ($this->cache->getPathById($oldId)) { // check if the file is moved externally or deleted from the cache
+					$fileId = $oldId;
+				}
+			}
+		} else {
+			$oldId = false;
+		}
 		if ($this->cacheActive) {
 			if ($fileId !== -1) {
 				$this->cache->update($fileId, $data);
 				return $fileId;
 			} else {
-				return $this->cache->put($path, $data);
+				$fileId = $this->cache->put($path, $data, $oldId);
+				if ($this->storage->instanceOfStorage('OCP\Files\Storage\IAttribute')) {
+					$this->storage->setAttribute($path, 'oc-file-id', $fileId);
+				}
+				return $fileId;
 			}
 		} else {
 			return -1;

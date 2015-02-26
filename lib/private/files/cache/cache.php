@@ -100,7 +100,7 @@ class Cache {
 			try {
 				$connection = \OC_DB::getConnection();
 				$connection->insertIfNotExist('*PREFIX*mimetypes', [
-					'mimetype'	=> $mime,
+					'mimetype' => $mime,
 				]);
 				$this->loadMimetypes();
 			} catch (\Doctrine\DBAL\DBALException $e) {
@@ -236,10 +236,11 @@ class Cache {
 	 *
 	 * @param string $file
 	 * @param array $data
-	 *
+	 * @param bool | int $fileId
 	 * @return int file id
+	 * @throws \OC\DatabaseException
 	 */
-	public function put($file, array $data) {
+	public function put($file, array $data, $fileId = false) {
 		if (($id = $this->getId($file)) > -1) {
 			$this->update($id, $data);
 			return $id;
@@ -267,6 +268,10 @@ class Cache {
 			list($queryParts, $params) = $this->buildParts($data);
 			$queryParts[] = '`storage`';
 			$params[] = $this->getNumericStorageId();
+			if ($fileId) {
+				$queryParts[] = 'fileid';
+				$params[] = $fileId;
+			}
 			$valuesPlaceholder = array_fill(0, count($queryParts), '?');
 
 			$sql = 'INSERT INTO `*PREFIX*filecache` (' . implode(', ', $queryParts) . ')'
