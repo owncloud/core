@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = $vendorDir;
 
 return array(
+    'League\\Flysystem\\' => array($vendorDir . '/league/flysystem/src'),
     'Icewind\\Streams\\Tests\\' => array($vendorDir . '/icewind/streams/tests'),
     'Icewind\\Streams\\' => array($vendorDir . '/icewind/streams/src'),
     'Icewind\\SMB\\Test\\' => array($vendorDir . '/icewind/smb/tests'),
