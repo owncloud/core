@@ -1135,8 +1135,9 @@
 			return true;
 		},
 
-		updateStorageStatistics: function(force) {
-			OCA.Files.Files.updateStorageStatistics(this.getCurrentDirectory(), force);
+		updateStorageStatistics: function(force, detectChanges) {
+			detectChanges = detectChanges || false;
+			OCA.Files.Files.updateStorageStatistics(this.getCurrentDirectory(), force, detectChanges);
 		},
 
 		getAjaxUrl: function(action, params) {
