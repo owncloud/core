@@ -283,11 +283,11 @@ abstract class Storage extends \Test\TestCase {
 		$this->assertTrue($this->instance->isReadable('/lorem.txt'));
 		$ctimeEnd = time();
 		$mTime = $this->instance->filemtime('/lorem.txt');
-		$this->assertTrue($this->instance->hasUpdated('/lorem.txt', $ctimeStart - 5));
-		$this->assertTrue($this->instance->hasUpdated('/', $ctimeStart - 5));
+		$this->assertTrue($this->instance->hasUpdated('/lorem.txt', $ctimeStart - 61));
+		$this->assertTrue($this->instance->hasUpdated('/', $ctimeStart - 61));
 
 		// check that ($ctimeStart - 5) <= $mTime <= ($ctimeEnd + 1)
-		$this->assertGreaterThanOrEqual(($ctimeStart - 5), $mTime);
+		$this->assertGreaterThanOrEqual(($ctimeStart - 61), $mTime);
 		$this->assertLessThanOrEqual(($ctimeEnd + 1), $mTime);
 		$this->assertEquals(filesize($textFile), $this->instance->filesize('/lorem.txt'));
 
@@ -304,7 +304,7 @@ abstract class Storage extends \Test\TestCase {
 		$mtimeStart = time();
 
 		$this->instance->unlink('/lorem.txt');
-		$this->assertTrue($this->instance->hasUpdated('/', $mtimeStart - 5));
+		$this->assertTrue($this->instance->hasUpdated('/', $mtimeStart - 61));
 	}
 
 	public function testUnlink() {
