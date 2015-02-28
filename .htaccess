@@ -49,3 +49,7 @@ Options -Indexes
     Header set Cache-Control "max-age=7200, public"
   </FilesMatch>
 </IfModule>
+<IfModule mod_reqtimeout.c>
+RequestReadTimeout header=0
+RequestReadTimeout body=0
+</IfModule>
