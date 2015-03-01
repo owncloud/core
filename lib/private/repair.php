@@ -38,6 +38,7 @@ use OC\Repair\RemoveGetETagEntries;
 use OC\Repair\SqliteAutoincrement;
 use OC\Repair\DropOldTables;
 use OC\Repair\FillETags;
+use OC\Repair\FixLoginName;
 use OC\Repair\InnoDB;
 use OC\Repair\RepairConfig;
 use OC\Repair\RepairLegacyStorages;
@@ -111,6 +112,7 @@ class Repair extends BasicEmitter {
 			new DropOldTables(\OC_DB::getConnection()),
 			new DropOldJobs(\OC::$server->getJobList()),
 			new RemoveGetETagEntries(\OC_DB::getConnection()),
+			new FixLoginName(\OC_DB::getConnection()),
 		);
 	}
 
