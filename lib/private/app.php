@@ -1149,6 +1149,29 @@ class OC_App {
 				);
 			}
 
+			$appPath =self::getAppPath($app);
+			if(is_file( $appPath. '/appinfo/checksum.json')) {
+				$checksums = file_get_contents($appPath.'/appinfo/checksum.json');
+				$checksums = json_decode($checksums);
+				foreach ($checksums as $file=>$checksum) {
+					$filePath = $appPath . '/' . $file;
+					if (file_exists($filePath)){
+						if(md5_file($filePath) !== $checksum){
+							throw new \Exception(
+								$l->t('App \"%s\" cannot be installed because the checksum of following file is no correct: %s',
+									array($info['name'], $file)
+								)
+							);
+						}
+					} else {
+						throw new \Exception(
+							$l->t('App \"%s\" cannot be installed because the following file is not found on the filesystem: %s',
+								array($info['name'], $file)
+							)
+						);
+					}
+				}
+			}
 			$config->setAppValue($app, 'enabled', 'yes');
 			if (isset($appData['id'])) {
 				$config->setAppValue($app, 'ocsid', $appData['id']);
