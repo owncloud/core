@@ -563,13 +563,13 @@ class OC {
 		\OC::$server->getEventLogger()->start('init_session', 'Initialize session');
 		OC_App::loadApps(array('session'));
 		if (!self::$CLI) {
+			self::checkSSL();
 			self::initSession();
 		}
 		\OC::$server->getEventLogger()->end('init_session');
 		self::initTemplateEngine();
 		self::checkConfig();
 		self::checkInstalled();
-		self::checkSSL();
 		OC_Response::addSecurityHeaders();
 
 		$errors = OC_Util::checkServer(\OC::$server->getConfig());
