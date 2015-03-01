@@ -18,6 +18,13 @@ interface IUser {
 	public function getUID();
 
 	/**
+	 * Get the login name, which is used as part of the user's credentials
+	 *
+	 * @return string
+	 */
+	public function getLoginName();
+
+	/**
 	 * get the display name for the user, if no specific display name is set it will fallback to the user id
 	 *
 	 * @return string
