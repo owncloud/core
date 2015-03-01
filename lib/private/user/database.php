@@ -50,8 +50,8 @@ class OC_User_Database extends OC_User_Backend implements \OCP\IUserBackend {
 	 */
 	public function createUser($uid, $password) {
 		if (!$this->userExists($uid)) {
-			$query = OC_DB::prepare('INSERT INTO `*PREFIX*users` ( `uid`, `password` ) VALUES( ?, ? )');
-			$result = $query->execute(array($uid, \OC::$server->getHasher()->hash($password)));
+			$query = OC_DB::prepare('INSERT INTO `*PREFIX*users` ( `uid`, `loginname`, `password` ) VALUES( ?, ?, ? )');
+			$result = $query->execute(array($uid, $uid, \OC::$server->getHasher()->hash($password)));
 
 			return $result ? true : false;
 		}
@@ -118,6 +118,16 @@ class OC_User_Database extends OC_User_Backend implements \OCP\IUserBackend {
 	}
 
 	/**
+	 * Get login name of the user
+	 * @param string $uid user ID of the user
+	 * @return string The user's login name
+	 */
+	public function getLoginName($uid) {
+		$this->loadUser($uid);
+		return $this->cache[$uid]['loginname'];
+	}
+
+	/**
 	 * get display name of the user
 	 * @param string $uid user ID of the user
 	 * @return string display name
@@ -148,28 +158,28 @@ class OC_User_Database extends OC_User_Backend implements \OCP\IUserBackend {
 
 	/**
 	 * Check if the password is correct
-	 * @param string $uid The username
+	 * @param string $loginname The user's login name
 	 * @param string $password The password
 	 * @return string
 	 *
 	 * Check if the password is correct without logging in the user
 	 * returns the user id or false
 	 */
-	public function checkPassword($uid, $password) {
-		$query = OC_DB::prepare('SELECT `uid`, `password` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)');
-		$result = $query->execute(array($uid));
+	public function checkPassword($loginname, $password) {
+		$query = OC_DB::prepare('SELECT `uid`, `password` FROM `*PREFIX*users` WHERE LOWER(`loginname`) = LOWER(?)');
+		$result = $query->execute(array($loginname));
 
 		$row = $result->fetchRow();
 		if ($row) {
+			$uid = $row['uid'];
 			$storedHash = $row['password'];
 			$newHash = '';
-			if(\OC::$server->getHasher()->verify($password, $storedHash, $newHash)) {
-				if(!empty($newHash)) {
+			if (\OC::$server->getHasher()->verify($password, $storedHash, $newHash)) {
+				if (!empty($newHash)) {
 					$this->setPassword($uid, $password);
 				}
 				return $row['uid'];
 			}
-
 		}
 
 		return false;
@@ -182,7 +192,7 @@ class OC_User_Database extends OC_User_Backend implements \OCP\IUserBackend {
 	 */
 	private function loadUser($uid) {
 		if (empty($this->cache[$uid])) {
-			$query = OC_DB::prepare('SELECT `uid`, `displayname` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)');
+			$query = OC_DB::prepare('SELECT `uid`, `loginname`, `displayname` FROM `*PREFIX*users` WHERE LOWER(`uid`) = LOWER(?)');
 			$result = $query->execute(array($uid));
 
 			if (OC_DB::isError($result)) {
@@ -192,6 +202,7 @@ class OC_User_Database extends OC_User_Backend implements \OCP\IUserBackend {
 
 			while ($row = $result->fetchRow()) {
 				$this->cache[$uid]['uid'] = $row['uid'];
+				$this->cache[$uid]['loginname'] = $row['loginname'];
 				$this->cache[$uid]['displayname'] = $row['displayname'];
 			}
 		}
