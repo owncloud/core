@@ -301,6 +301,15 @@ class USER_LDAP extends BackendUtility implements \OCP\IUserBackend, \OCP\UserIn
 	}
 
 	/**
+	 * Get login name of the user
+	 * @param string $uid user ID of the user
+	 * @return string The user's login name
+	 */
+	public function getLoginName($uid) {
+		return $uid;
+	}
+
+	/**
 	 * get display name of the user
 	 * @param string $uid user ID of the user
 	 * @return string|false display name

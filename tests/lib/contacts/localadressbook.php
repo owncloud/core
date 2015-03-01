@@ -49,11 +49,16 @@ class SimpleUserForTesting implements \OCP\IUser {
 	public function __construct($uid, $displayName) {
 
 		$this->uid = $uid;
+		$this->loginName = $uid;
 		$this->displayName = $displayName;
 	}
 
 	public function getUID() {
 		return $this->uid;
+	}
+
+	public function getLoginName() {
+		return $this->loginName;
 	}
 
 	public function getDisplayName() {
