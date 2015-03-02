@@ -8,6 +8,8 @@
 
 namespace OC\Files\Storage;
 
+use OCP\Files\Storage\IAttribute;
+
 if (\OC_Util::runningOnWindows()) {
 	class Local extends MappedLocal {
 
@@ -17,7 +19,7 @@ if (\OC_Util::runningOnWindows()) {
 	/**
 	 * for local filestore, we only have to map the paths
 	 */
-	class Local extends \OC\Files\Storage\Common {
+	class Local extends \OC\Files\Storage\Common implements IAttribute {
 		protected $datadir;
 
 		public function __construct($arguments) {
@@ -311,6 +313,34 @@ if (\OC_Util::runningOnWindows()) {
 				);
 			} else {
 				return parent::getETag($path);
+			}
+		}
+
+		/**
+		 * Set an attribute on a file
+		 *
+		 * @param string $path
+		 * @param string $name
+		 * @param string $value
+		 */
+		public function setAttribute($path, $name, $value) {
+			if (function_exists('xattr_set')) {
+				xattr_set($this->getSourcePath($path), $name, $value);
+			}
+		}
+
+		/**
+		 * Get an attribute from a file
+		 *
+		 * @param string $path
+		 * @param string $name
+		 * @return string | bool
+		 */
+		public function getAttribute($path, $name) {
+			if (function_exists('xattr_get')) {
+				return xattr_get($this->getSourcePath($path), $name);
+			} else {
+				return false;
 			}
 		}
 	}
