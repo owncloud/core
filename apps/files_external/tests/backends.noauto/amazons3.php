@@ -4,7 +4,7 @@
  * ownCloud
  *
  * @author Michael Gapczynski
- * @author Christian Berendt 
+ * @author Christian Berendt
  * @copyright 2012 Michael Gapczynski mtgap@owncloud.com
  * @copyright 2013 Christian Berendt berendt@b1-systems.de
  *
