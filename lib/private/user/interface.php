@@ -56,13 +56,6 @@ interface OC_User_Interface {
 	public function userExists($uid);
 
 	/**
-	 * Get login name of the user
-	 * @param string $uid user ID of the user
-	 * @return string The user's login name
-	 */
-	public function getLoginName($uid);
-
-	/**
 	 * get display name of the user
 	 * @param string $uid user ID of the user
 	 * @return string display name
