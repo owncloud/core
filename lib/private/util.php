@@ -574,6 +574,7 @@ class OC_Util {
 		// functions = function_exists
 		// defined = defined
 		// ini = ini_get
+		// module = apacheModuleEnabled
 		// If the dependency is not found the missing module name is shown to the EndUser
 		// When adding new checks always verify that they pass on Travis as well
 		// for ini settings, see https://github.com/owncloud/administration/blob/master/travis-ci/custom.ini
@@ -602,8 +603,14 @@ class OC_Util {
 				'output_buffering' => false,
 				'default_charset' => 'UTF-8',
 			],
+			'modules' => array(
+				'mod_pagespeed' => 'mod_pagespeed',
+				'mod_reqtimeout' => 'mod_reqtimeout',
+				'mod_deflate' => 'mod_deflate'
+			),
 		);
 		$missingDependencies = array();
+		$problematicModules = array();
 		$invalidIniSettings = [];
 		$moduleHint = $l->t('Please ask your server administrator to install the module.');
 
@@ -647,6 +654,11 @@ class OC_Util {
 					}
 				}
 			}
+			foreach ($dependencies['modules'] as $checkModule => $module) {
+				if (self::apacheModuleEnabled($checkModule)) {
+					$problematicModules[] = $module;
+				}
+			}
 		}
 
 		foreach($missingDependencies as $missingDependency) {
@@ -672,6 +684,14 @@ class OC_Util {
 				'error' => $l->t('PHP %s or higher is required.', '5.4.0'),
 				'hint' => $l->t('Please ask your server administrator to update PHP to the latest version.'
 					. ' Your PHP version is no longer supported by ownCloud and the PHP community.')
+			);
+			$webServerRestart = true;
+		}
+		foreach($problematicModules as $problematicModule) {
+			$errors[] = array(
+				'error' => $l->t('The Apache module %s is enabled.', array($problematicModule)),
+				'hint' => $l->t('This module can cause various issues when enabled.'
+					. ' Please ask your server administrator to disable it.')
 			);
 			$webServerRestart = true;
 		}
@@ -1464,4 +1484,17 @@ class OC_Util {
 		}
 	}
 
+	/**
+	 * Check if an apache module is enabled.
+	 *
+	 * @param string $module The module to check
+	 * @return bool true if the module is enabled, false otherwise
+	 */
+	private static function apacheModuleEnabled($module) {
+		if (function_exists('apache_get_modules')) {
+			return in_array($module, apache_get_modules());
+		} else {
+			return false;
+		}
+	}
 }
