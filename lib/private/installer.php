@@ -61,7 +61,7 @@ class OC_Installer{
 	 * @throws \Exception
 	 * @return integer
 	 */
-	public static function installApp( $data = array()) {
+	public static function installApp( $data = array(), array &$messages = array()) {
 		$l = \OC::$server->getL10N('lib');
 
 		list($extractDir, $path) = self::downloadApp($data);
@@ -70,11 +70,26 @@ class OC_Installer{
 		$basedir=OC_App::getInstallPath().'/'.$info['id'];
 		//check if the destination directory already exists
 		if(is_dir($basedir)) {
-			OC_Helper::rmdirr($extractDir);
-			if($data['source']=='http') {
-				unlink($path);
+			// Try to move the old app code into a backup folder so we can install the new version
+			// See https://github.com/owncloud/core/issues/14711
+			$backupPath = '-backup';
+			$i = 0;
+			while (is_dir($basedir . $backupPath)) {
+				$i++;
+				$backupPath = '-backup-' . $i;
 			}
-			throw new \Exception($l->t("App directory already exists"));
+
+			rename($basedir, $basedir . $backupPath);
+
+			if(is_dir($basedir)) {
+				OC_Helper::rmdirr($extractDir);
+				if($data['source']=='http') {
+					unlink($path);
+				}
+				throw new \Exception($l->t("App directory already exists"));
+			} else {
+				$messages[] = (string) $l->t('There was already a "%s" directory. It has been renamed to "%s"', [$info['id'], $info['id'] . $backupPath]);
+			}
 		}
 
 		if(!empty($data['pretent'])) {

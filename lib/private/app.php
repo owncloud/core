@@ -270,15 +270,16 @@ class OC_App {
 	 * enables an app
 	 * @param mixed $app app
 	 * @param array $groups (optional) when set, only these groups will have access to the app
+	 * @param array &$messages List of potential messages for the user
 	 * @throws \Exception
 	 * @return void
 	 *
 	 * This function set an app as enabled in appconfig.
 	 */
-	public static function enable($app, $groups = null) {
+	public static function enable($app, $groups = null, array &$messages = array()) {
 		self::$enabledAppsCache = array(); // flush
 		if (!OC_Installer::isInstalled($app)) {
-			$app = self::installApp($app);
+			$app = self::installApp($app, $messages);
 		}
 
 		if (!is_null($groups)) {
@@ -292,14 +293,14 @@ class OC_App {
 	 * @param string $app
 	 * @return int
 	 */
-	public static function downloadApp($app) {
+	public static function downloadApp($app, array &$messages = array()) {
 		$appData=OC_OCSClient::getApplication($app);
 		$download=OC_OCSClient::getApplicationDownload($app, 1);
 		if(isset($download['downloadlink']) and $download['downloadlink']!='') {
 			// Replace spaces in download link without encoding entire URL
 			$download['downloadlink'] = str_replace(' ', '%20', $download['downloadlink']);
 			$info = array('source'=>'http', 'href'=>$download['downloadlink'], 'appdata'=>$appData);
-			$app=OC_Installer::installApp($info);
+			$app=OC_Installer::installApp($info, $messages);
 		}
 		return $app;
 	}
@@ -1058,11 +1059,12 @@ class OC_App {
 
 	/**
 	 * @param mixed $app
+	 * @param array &$messages List of potential messages for the user
 	 * @return bool
 	 * @throws Exception if app is not compatible with this version of ownCloud
 	 * @throws Exception if no app-name was specified
 	 */
-	public static function installApp($app) {
+	public static function installApp($app, array &$messages = array()) {
 		$l = \OC::$server->getL10N('core');
 		$config = \OC::$server->getConfig();
 		$appData=OC_OCSClient::getApplication($app);
@@ -1071,12 +1073,12 @@ class OC_App {
 		if(!is_numeric($app)) {
 			$shippedVersion=self::getAppVersion($app);
 			if($appData && version_compare($shippedVersion, $appData['version'], '<')) {
-				$app = self::downloadApp($app);
+				$app = self::downloadApp($app, $messages);
 			} else {
 				$app = OC_Installer::installShippedApp($app);
 			}
 		}else{
-			$app = self::downloadApp($app);
+			$app = self::downloadApp($app, $messages);
 		}
 
 		if($app!==false) {

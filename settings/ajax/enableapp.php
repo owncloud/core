@@ -6,11 +6,16 @@ OCP\JSON::callCheck();
 $groups = isset($_POST['groups']) ? $_POST['groups'] : null;
 
 try {
-	OC_App::enable(OC_App::cleanAppId($_POST['appid']), $groups);
+	$messages = [];
+	OC_App::enable(OC_App::cleanAppId($_POST['appid']), $groups, $messages);
 	// FIXME: Clear the cache - move that into some sane helper method
 	\OC::$server->getMemCacheFactory()->create('settings')->remove('listApps-0');
 	\OC::$server->getMemCacheFactory()->create('settings')->remove('listApps-1');
-	OC_JSON::success();
+	if (!empty($messages)) {
+		OC_JSON::success(['data' => ['messages' => $messages]]);
+	} else {
+		OC_JSON::success();
+	}
 } catch (Exception $e) {
 	OC_Log::write('core', $e->getMessage(), OC_Log::ERROR);
 	OC_JSON::error(array("data" => array("message" => $e->getMessage()) ));
