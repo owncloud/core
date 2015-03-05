@@ -8,6 +8,8 @@
 
 namespace OC\Core\Avatar;
 
+use OC\Avatar;
+
 class Controller {
 	public static function getAvatar($args) {
 		\OC_JSON::checkLoggedIn();
@@ -24,7 +26,7 @@ class Controller {
 			$size = 64;
 		}
 
-		$avatar = new \OC_Avatar($user);
+		$avatar = new Avatar($user);
 		$image = $avatar->get($size);
 
 		\OC_Response::disableCaching();
@@ -103,7 +105,7 @@ class Controller {
 		$user = \OC_User::getUser();
 
 		try {
-			$avatar = new \OC_Avatar($user);
+			$avatar = new Avatar($user);
 			$avatar->remove();
 			\OC_JSON::success();
 		} catch (\Exception $e) {
@@ -152,7 +154,7 @@ class Controller {
 		$image = new \OC_Image($tmpavatar);
 		$image->crop($crop['x'], $crop['y'], $crop['w'], $crop['h']);
 		try {
-			$avatar = new \OC_Avatar($user);
+			$avatar = new Avatar($user);
 			$avatar->set($image->data());
 			// Clean up
 			\OC\Cache::remove('tmpavatar');
