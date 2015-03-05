@@ -197,6 +197,9 @@ OC.Settings.Apps = OC.Settings.Apps || {
 					element.val(t('settings','Disable'));
 					var app = OC.Settings.Apps.State.apps[appId];
 					app.active = true;
+					if (result.data.messages) {
+						OC.Settings.Apps.showErrorMessage(appId, result.data.messages);
+					}
 
 					if (OC.Settings.Apps.isType(app, 'filesystem') || OC.Settings.Apps.isType(app, 'prelogin') ||
 						OC.Settings.Apps.isType(app, 'authentication') || OC.Settings.Apps.isType(app, 'logging')) {
