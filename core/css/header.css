@@ -286,28 +286,45 @@
 	top: 45px;
 	z-index: 2000;
 	display: none;
-	background-color: #383c43;
 	border-bottom-left-radius: 7px;
-	box-shadow: 0 0 7px rgb(29,45,68);
+	background-color: rgb(255, 255, 255);
+	border: 1px solid rgb(204, 204, 204);
+	-webkit-box-shadow: 0px 0px 20px rgba(29,45,68,.4);
+	-moz-box-shadow: 0px 0px 20px rgba(29,45,68,.4);
+	box-shadow: 0px 0px 20px rgba(29,45,68,.4);
 	-moz-box-sizing: border-box; box-sizing: border-box;
 }
 	#expanddiv a {
+		color: rgb(89, 126, 145);
 		display: block;
 		height: 40px;
-		color: #fff;
-		padding: 4px 12px 0;
-		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
-		filter: alpha(opacity=70);
-		opacity: .7;
+		padding: 4px 12px;
+		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+		filter:alpha(opacity=100);
+		opacity:1;
 		-moz-box-sizing: border-box;
 		box-sizing: border-box;
 	}
 	#expanddiv a img {
 		margin-bottom: -3px;
 		margin-right: 6px;
+		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=45)";
+		filter:alpha(opacity=45);
+		opacity:.45;
 	}
-	#expanddiv a:hover, #expanddiv a:focus, #expanddiv a:active {
-		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-		filter: alpha(opacity=100);
-		opacity: 1;
+	#expanddiv li {
+		border-bottom: 1px solid rgb(221, 221, 221);
+		white-space: nowrap; /* prevent icons and text wrapping for short usernames */
+	}
+	#expanddiv a:hover,
+	#expanddiv a:focus,
+	#expanddiv a.active {
+		background-color: rgb(243, 243, 243);
+	}
+	#expanddiv a:hover img,
+	#expanddiv a:focus img,
+	#expanddiv a.active img {
+		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
+		filter:alpha(opacity=60);
+		opacity:.6;
 	}
