@@ -33,8 +33,11 @@ class CheckConsistency extends TestCase {
 			'oc_',
 			\OC::$server->getDatabaseConnection());
 
+		$output = $this->getMock('\Symfony\Component\Console\Output\OutputInterface')
+			->method
+
 		\Test_Helper::invokePrivate($c, 'execute',
 			[$this->getMock('\Symfony\Component\Console\Input\InputInterface'),
-			$this->getMock('\Symfony\Component\Console\Output\OutputInterface')]);
+			$output]);
 	}
 }
