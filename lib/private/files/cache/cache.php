@@ -248,11 +248,17 @@ class Cache {
 				return trim($item, "`");
 			}, $queryParts);
 			$values = array_combine($queryParts, $params);
-			if (\OC::$server->getDatabaseConnection()->insertIfNotExist('*PREFIX*filecache', $values)) {
+			if (\OC::$server->getDatabaseConnection()->insertIfNotExist('*PREFIX*filecache', $values, [
+				'storage',
+				'path_hash',
+			])) {
 				return (int)\OC_DB::insertid('*PREFIX*filecache');
 			}
 
-			return $this->getId($file);
+			// The file was created in the mean time
+			$id = $this->getId($file);
+			$this->update($id, $data);
+			return $id;
 		}
 	}
 
