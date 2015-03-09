@@ -252,7 +252,10 @@ class Cache {
 				return (int)\OC_DB::insertid('*PREFIX*filecache');
 			}
 
-			return $this->getId($file);
+			// The file was created in the mean time
+			$id = $this->getId($file);
+			$this->update($id, $data);
+			return $id;
 		}
 	}
 
