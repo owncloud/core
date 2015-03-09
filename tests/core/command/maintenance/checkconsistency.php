@@ -18,9 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>
  */
 
-namespace Tests\Core\Command\Maintenance;
+namespace Test\Core\Command\Maintenance;
 
-use Symfony\Component\Console\Input\InputArgument;
 use Test\TestCase;
 
 class CheckConsistency extends TestCase {
@@ -35,7 +34,7 @@ class CheckConsistency extends TestCase {
 			\OC::$server->getDatabaseConnection());
 
 		\Test_Helper::invokePrivate($c, 'execute',
-			$this->getMock('\Symfony\Component\Console\Input\InputInterface'),
-			$this->getMock('\Symfony\Component\Console\Input\InputInterface'));
+			[$this->getMock('\Symfony\Component\Console\Input\InputInterface'),
+			$this->getMock('\Symfony\Component\Console\Output\OutputInterface')]);
 	}
 }
