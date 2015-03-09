@@ -219,7 +219,9 @@ class Server extends SimpleContainer implements IServerContainer {
 			$config = $c->getConfig();
 			$user = $c->getUserSession()->getUser();
 			$uid = $user ? $user->getUID() : null;
-			return new HTTPHelper($config, new \OC\Security\CertificateManager($uid, new \OC\Files\View()));
+			return new HTTPHelper($config,
+				new \OC\Security\CertificateManager($uid, new \OC\Files\View()),
+				$c->getCommandBus());
 		});
 		$this->registerService('EventLogger', function (Server $c) {
 			if (defined('DEBUG') and DEBUG) {
