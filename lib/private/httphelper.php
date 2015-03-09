@@ -31,10 +31,14 @@ class HTTPHelper {
 	 */
 	public function __construct(IConfig $config,
 								ICertificateManager $certificateManager,
-								IBus $commandBus) {
+								IBus $commandBus = null) {
 		$this->config = $config;
 		$this->certificateManager = $certificateManager;
 		$this->commandBus = $commandBus;
+		if (is_null($this->commandBus)) {
+			$this->commandBus = \OC::$server->getCommandBus();
+
+		}
 
 	}
 
