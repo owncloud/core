@@ -18,7 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>
  */
 
-namespace OC\Tests\Core\Command\Maintenance;
+namespace Tests\Core\Command\Maintenance;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Test\TestCase;
@@ -29,7 +29,9 @@ class CheckConsistency extends TestCase {
 		\OC::$server->getDatabaseConnection()->executeUpdate(
 			'INSERT INTO oc_storages (id) VALUES ("local::/data/dir/old/username/")');
 
-		$c = new \OC\Core\Command\Maintenance\CheckConsistency('/data/dir/new', 'oc_',
+		$c = new \OC\Core\Command\Maintenance\CheckConsistency(
+			'/data/dir/new',
+			'oc_',
 			\OC::$server->getDatabaseConnection());
 
 		\Test_Helper::invokePrivate($c, 'execute',
