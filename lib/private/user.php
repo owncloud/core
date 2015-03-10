@@ -530,7 +530,7 @@ class OC_User {
 	 * returns the user id or false
 	 */
 	public static function checkPassword($loginname, $password) {
-		$manager = \OC::$server->getUserManager();
+		$manager = self::getManager();
 		$username = $manager->checkPassword($loginname, $password);
 		if ($username !== false) {
 			return $username->getUID();
