@@ -54,7 +54,7 @@ class SharedMount extends MountPoint implements MoveableMount {
 			$parent = Helper::getShareFolder();
 		}
 
-		$newMountPoint = \OCA\Files_Sharing\Helper::generateUniqueTarget(
+		$newMountPoint = \OCA\Files_Sharing\Legacy\Helper::generateUniqueTarget(
 				\OC\Files\Filesystem::normalizePath($parent . '/' . $mountPoint),
 				array(),
 				new \OC\Files\View('/' . $user . '/files')

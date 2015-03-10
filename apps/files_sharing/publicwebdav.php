@@ -24,7 +24,7 @@
  *
  */
 
-if (OCA\Files_Sharing\Helper::isOutgoingServer2serverShareEnabled() === false) {
+if (OCA\Files_Sharing\Legacy\Helper::isOutgoingServer2serverShareEnabled() === false) {
 	return false;
 }
 

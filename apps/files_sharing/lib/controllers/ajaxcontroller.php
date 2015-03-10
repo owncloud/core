@@ -24,7 +24,7 @@ use OCP\AppFramework\Controller;
 use OCP\IRequest;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
-use OCA\Files_Sharing\Helper2;
+use OCA\Files_Sharing\Helper;
 use OC\Files\Filesystem;
 use OCP\IConfig;
 use OCP\ISession;
@@ -85,7 +85,7 @@ class AjaxController extends Controller {
 		$sortAttribute = $sort;
 		$sortDirection = ($sortdirection === 'desc');
 
-		$helper = new Helper2($this->session, $this->logger);
+		$helper = new Helper($this->session, $this->logger);
 		try {
 			$data = $helper->setupFromToken($t, $dir);
 		} catch (InvalidTokenException $e) {

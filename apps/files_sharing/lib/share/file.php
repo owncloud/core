@@ -71,7 +71,7 @@ class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 	 * @return string
 	 */
 	public function generateTarget($filePath, $shareWith, $exclude = null) {
-		$shareFolder = \OCA\Files_Sharing\Helper::getShareFolder();
+		$shareFolder = \OCA\Files_Sharing\Legacy\Helper::getShareFolder();
 		$target = \OC\Files\Filesystem::normalizePath($shareFolder . '/' . basename($filePath));
 
 		// for group shares we return the target right away
@@ -95,7 +95,7 @@ class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 
 		$excludeList = (is_array($exclude)) ? $exclude : array();
 
-		return \OCA\Files_Sharing\Helper::generateUniqueTarget($target, $excludeList, $view);
+		return \OCA\Files_Sharing\Legacy\Helper::generateUniqueTarget($target, $excludeList, $view);
 	}
 
 	public function formatItems($items, $format, $parameters = null) {
@@ -173,7 +173,7 @@ class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 	 */
 	public function isShareTypeAllowed($shareType) {
 		if ($shareType === \OCP\Share::SHARE_TYPE_REMOTE) {
-			return \OCA\Files_Sharing\Helper::isOutgoingServer2serverShareEnabled();
+			return \OCA\Files_Sharing\Legacy\Helper::isOutgoingServer2serverShareEnabled();
 		}
 
 		return true;

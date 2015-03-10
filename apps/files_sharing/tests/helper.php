@@ -50,12 +50,12 @@ class Test_Files_Sharing_Helper extends TestCase {
 	 * test set and get share folder
 	 */
 	function testSetGetShareFolder() {
-		$this->assertSame('/', \OCA\Files_Sharing\Helper::getShareFolder());
+		$this->assertSame('/', \OCA\Files_Sharing\Legacy\Helper::getShareFolder());
 
-		\OCA\Files_Sharing\Helper::setShareFolder('/Shared/Folder');
+		\OCA\Files_Sharing\Legacy\Helper::setShareFolder('/Shared/Folder');
 
-		$sharedFolder = \OCA\Files_Sharing\Helper::getShareFolder();
-		$this->assertSame('/Shared/Folder', \OCA\Files_Sharing\Helper::getShareFolder());
+		$sharedFolder = \OCA\Files_Sharing\Legacy\Helper::getShareFolder();
+		$this->assertSame('/Shared/Folder', \OCA\Files_Sharing\Legacy\Helper::getShareFolder());
 		$this->assertTrue(\OC\Files\Filesystem::is_dir($sharedFolder));
 
 		// cleanup

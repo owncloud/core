@@ -42,7 +42,7 @@ use OCP\AppFramework\Http\NotFoundResponse;
 use OC\URLGenerator;
 use OC\AppConfig;
 use OCP\ILogger;
-use OCA\Files_Sharing\Helper;
+use OCA\Files_Sharing\Legacy\Helper;
 use OCP\User;
 use OCP\Util;
 use OCA\Files_Sharing\Activity;

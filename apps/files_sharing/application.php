@@ -96,7 +96,7 @@ class Application extends App {
 			return $server->getUserManager();
 		});
 		$container->registerService('IsIncomingShareEnabled', function(SimpleContainer $c) {
-			return Helper::isIncomingServer2serverShareEnabled();
+			return OCA\Files_Sharing\Legacy\Helper::isIncomingServer2serverShareEnabled();
 		});
 		$container->registerService('ExternalManager', function(SimpleContainer $c) use ($server){
 			$user = $server->getUserSession()->getUser();

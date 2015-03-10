@@ -65,7 +65,7 @@ class Shared_Updater {
 		}
 
 		// Correct Shared folders of other users shared with
-		$shares = \OCA\Files_Sharing\Helper::getSharesFromItem($target);
+		$shares = \OCA\Files_Sharing\Legacy\Helper::getSharesFromItem($target);
 
 		foreach ($shares as $share) {
 			if ((int)$share['share_type'] === \OCP\Share::SHARE_TYPE_USER) {

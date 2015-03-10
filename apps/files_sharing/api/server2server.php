@@ -228,9 +228,9 @@ class Server2Server {
 		$result = \OCP\App::isEnabled('files_sharing');
 
 		if ($incoming) {
-			$result = $result && \OCA\Files_Sharing\Helper::isIncomingServer2serverShareEnabled();
+			$result = $result && \OCA\Files_Sharing\Legacy\Helper::isIncomingServer2serverShareEnabled();
 		} else {
-			$result = $result && \OCA\Files_Sharing\Helper::isOutgoingServer2serverShareEnabled();
+			$result = $result && \OCA\Files_Sharing\Legacy\Helper::isOutgoingServer2serverShareEnabled();
 		}
 
 		return $result;
