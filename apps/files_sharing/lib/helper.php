@@ -36,6 +36,7 @@ use OCA\Files_Sharing\Exceptions\LinkItemException;
 use OCA\Files_Sharing\Exceptions\ItemTypeException;
 use OCA\Files_Sharing\Exceptions\AuthenticationException;
 use OCA\Files_Sharing\Exceptions\InvalidUserException;
+use OCA\Files_Sharing\Exceptions\DirNotAvailableException;
 
 class Helper {
 
@@ -115,7 +116,11 @@ class Helper {
 
 		$basePath = $path;
 
-		if ($relativePath !== null && \OC\Files\Filesystem::isReadable($basePath . $relativePath)) {
+		if ($relativePath !== null) {
+			if (!\OC\Files\Filesystem::is_dir($basePath . $relativePath) ||
+			    !\OC\Files\Filesystem::isReadable($basePath . $relativePath)) {
+				throw new DirNotAvailableException();
+			}
 			$path .= \OC\Files\Filesystem::normalizePath($relativePath);
 		}
 

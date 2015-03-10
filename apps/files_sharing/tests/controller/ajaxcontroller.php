@@ -23,6 +23,7 @@ namespace OCA\Files_Sharing\Controller;
 use OC\Files\Filesystem;
 use OCA\Files_Sharing\Application;
 use OCP\AppFramework\IAppContainer;
+use OCP\AppFramework\Http;
 use OCP\Security\ISecureRandom;
 use OC\Files\View;
 use OCP\Share;
@@ -100,7 +101,7 @@ class AjaxControllerTest extends \Test\Testcase {
 		$response = $this->ajaxController->getList($this->token.'x', '/');
 
 		$this->assertCount(0, $response->getData());
-		$this->assertEquals(404, $response->getStatus());
+		$this->assertEquals(Http::STATUS_NOT_FOUND, $response->getStatus());
 	}
 
 	public function testInvalidAuth() {
@@ -109,7 +110,7 @@ class AjaxControllerTest extends \Test\Testcase {
 		$response = $this->ajaxController->getList($this->token, '/');
 
 		$this->assertCount(0, $response->getData());
-		$this->assertEquals(403, $response->getStatus());
+		$this->assertEquals(Http::STATUS_FORBIDDEN, $response->getStatus());
 	}
 
 	public function testBasicResponse() {
@@ -119,7 +120,7 @@ class AjaxControllerTest extends \Test\Testcase {
 
 		$response = $this->ajaxController->getList($this->token, '/');
 
-		$this->assertEquals(200, $response->getStatus());
+		$this->assertEquals(Http::STATUS_OK, $response->getStatus());
 		$this->assertCount(2, $response->getData());
 
 		$this->assertArrayHasKey('status', $response->getData());
@@ -179,7 +180,7 @@ class AjaxControllerTest extends \Test\Testcase {
 
 		$response = $this->ajaxController->getList($this->token, '/bar');
 
-		$this->assertEquals(200, $response->getStatus());
+		$this->assertEquals(Http::STATUS_OK, $response->getStatus());
 		$this->assertCount(2, $response->getData());
 
 		$this->assertArrayHasKey('status', $response->getData());
@@ -187,13 +188,16 @@ class AjaxControllerTest extends \Test\Testcase {
 	}
 
 	/**
-	 * TODO: Test what happens when we pass an invalid subdir
+	 * Invalid subdir should throw 404
 	 */
 	public function testInvalidSubFolder() {
+		$linkItem = \OCP\Share::getShareByToken($this->token, false);
+		$this->container['Session']->method('exists')->willReturn(true);
+		$this->container['Session']->method('get')->willReturn($linkItem['id']);
+
+		$response = $this->ajaxController->getList($this->token, '/baz');
+
+		$this->assertEquals(Http::STATUS_NOT_FOUND, $response->getStatus());
+		$this->assertCount(0, $response->getData());
 	}
-
-	/**
-	 * TODO: Test sorting?
-	 */
-
 }

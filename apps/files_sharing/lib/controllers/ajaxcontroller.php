@@ -31,6 +31,7 @@ use OCP\ISession;
 use OCP\ILogger;
 use OCA\Files_Sharing\Exceptions\InvalidTokenException;
 use OCA\Files_Sharing\Exceptions\AuthenticationException;
+use OCA\Files_Sharing\Exceptions\DirNotAvailableException;
 
 /**
  * Class AjaxController
@@ -92,6 +93,8 @@ class AjaxController extends Controller {
 			return new DataResponse([], Http::STATUS_NOT_FOUND);
 		} catch (AuthenticationException $e) {
 			return new DataResponse([], Http::STATUS_FORBIDDEN);
+		} catch (DirNotAvailableException $e) {
+			return new DataResponse([], Http::STATUS_NOT_FOUND);
 		} catch (\Exception $e) {
 			return new DataResponse([], Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
