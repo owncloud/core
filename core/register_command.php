@@ -19,8 +19,8 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\Maintenance\Mode(\OC::$server->getConfig()));
 	$application->add(new OC\Core\Command\Maintenance\CheckConsistency(
 		\OC::$server->getConfig()->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data'),
-		\OC::$server->getConfig()->getSystemValue('dbtableprefix', 'oc_'),
-		\OC::$server->getDatabaseConnection()
+		\OC::$server->getDatabaseConnection(),
+		\OC::$server->getUserManager()
 	));
 	$application->add(new OC\Core\Command\App\CheckCode());
 	$application->add(new OC\Core\Command\App\Disable());
