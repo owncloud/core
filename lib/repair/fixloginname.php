@@ -28,7 +28,7 @@ class FixLoginName extends BasicEmitter implements RepairStep {
 	public function run() {
 		$qb = $this->connection->createQueryBuilder();
 		$qb->update('`*PREFIX*users`')
-			->set('`loginname`', '`UID`')
+			->set('`loginname`', '`uid`')
 			->where($qb->expr()->isNull('`loginname`'));
 		$affectedRows = $qb->execute();
 
