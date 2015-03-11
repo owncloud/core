@@ -38,6 +38,7 @@ AddEncoding gzip svgz
 </IfModule>
 <IfModule mod_dir.c>
 DirectoryIndex index.php index.html
+FallbackResource index.php
 </IfModule>
 AddDefaultCharset utf-8
 Options -Indexes
