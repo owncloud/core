@@ -53,8 +53,8 @@ class Preview extends TestCase {
 		$maxX = 250;
 		$maxY = 250;
 
-		\OC_Config::setValue('preview_max_x', $maxX);
-		\OC_Config::setValue('preview_max_y', $maxY);
+		\OC::$server->getConfig()->setSystemValue('preview_max_x', $maxX);
+		\OC::$server->getConfig()->setSystemValue('preview_max_y', $maxY);
 
 		$sampleFile = '/'.$this->user.'/files/test.txt';
 

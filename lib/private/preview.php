@@ -82,9 +82,9 @@ class Preview {
 		$this->userView = new \OC\Files\View('/' . $user);
 
 		//set config
-		$this->configMaxX = \OC_Config::getValue('preview_max_x', 2048);
-		$this->configMaxY = \OC_Config::getValue('preview_max_y', 2048);
-		$this->maxScaleFactor = \OC_Config::getValue('preview_max_scale_factor', 2);
+		$this->configMaxX = \OC::$server->getConfig()->getSystemValue('preview_max_x', 2048);
+		$this->configMaxY = \OC::$server->getConfig()->getSystemValue('preview_max_y', 2048);
+		$this->maxScaleFactor = \OC::$server->getConfig()->getSystemValue('preview_max_scale_factor', 2);
 
 		//save parameters
 		$this->setFile($file);
@@ -100,7 +100,7 @@ class Preview {
 		}
 
 		if (empty(self::$providers) && \OC::$server->getConfig()->getSystemValue('enable_previews', true)) {
-			\OC_Log::write('core', 'No preview providers exist', \OC_Log::ERROR);
+			\OCP\Util::writeLog('core', 'No preview providers exist', \OCP\Util::ERROR);
 			throw new \Exception('No preview providers');
 		}
 	}
@@ -237,7 +237,7 @@ class Preview {
 		$configMaxX = $this->getConfigMaxX();
 		if (!is_null($configMaxX)) {
 			if ($maxX > $configMaxX) {
-				\OC_Log::write('core', 'maxX reduced from ' . $maxX . ' to ' . $configMaxX, \OC_Log::DEBUG);
+				\OCP\Util::writeLog('core', 'maxX reduced from ' . $maxX . ' to ' . $configMaxX, \OCP\Util::DEBUG);
 				$maxX = $configMaxX;
 			}
 		}
@@ -258,7 +258,7 @@ class Preview {
 		$configMaxY = $this->getConfigMaxY();
 		if (!is_null($configMaxY)) {
 			if ($maxY > $configMaxY) {
-				\OC_Log::write('core', 'maxX reduced from ' . $maxY . ' to ' . $configMaxY, \OC_Log::DEBUG);
+				\OCP\Util::writeLog('core', 'maxX reduced from ' . $maxY . ' to ' . $configMaxY, \OCP\Util::DEBUG);
 				$maxY = $configMaxY;
 			}
 		}
@@ -295,12 +295,12 @@ class Preview {
 	public function isFileValid() {
 		$file = $this->getFile();
 		if ($file === '') {
-			\OC_Log::write('core', 'No filename passed', \OC_Log::DEBUG);
+			\OCP\Util::writeLog('core', 'No filename passed', \OCP\Util::DEBUG);
 			return false;
 		}
 
 		if (!$this->fileView->file_exists($file)) {
-			\OC_Log::write('core', 'File:"' . $file . '" not found', \OC_Log::DEBUG);
+			\OCP\Util::writeLog('core', 'File:"' . $file . '" not found', \OCP\Util::DEBUG);
 			return false;
 		}
 
@@ -596,7 +596,7 @@ class Preview {
 		$maxScaleFactor = $this->getMaxScaleFactor();
 
 		if (!($image instanceof \OC_Image)) {
-			\OC_Log::write('core', '$this->preview is not an instance of OC_Image', \OC_Log::DEBUG);
+			\OCP\Util::writeLog('core', '$this->preview is not an instance of OC_Image', \OCP\Util::DEBUG);
 			return;
 		}
 
@@ -637,7 +637,7 @@ class Preview {
 
 		if (!is_null($maxScaleFactor)) {
 			if ($factor > $maxScaleFactor) {
-				\OC_Log::write('core', 'scale factor reduced from ' . $factor . ' to ' . $maxScaleFactor, \OC_Log::DEBUG);
+				\OCP\Util::writeLog('core', 'scale factor reduced from ' . $factor . ' to ' . $maxScaleFactor, \OCP\Util::DEBUG);
 				$factor = $maxScaleFactor;
 			}
 		}
@@ -753,9 +753,9 @@ class Preview {
 				continue;
 			}
 
-			\OC_Log::write(
+			\OCP\Util::writeLog(
 				'core', 'Generating preview for "' . $file . '" with "' . get_class($provider)
-						. '"', \OC_Log::DEBUG
+						. '"', \OCP\Util::DEBUG
 			);
 
 			// TODO Bitmap previews have to also be limited in order to maximise the benefits
@@ -1056,7 +1056,7 @@ class Preview {
 	 * @return bool
 	 */
 	public static function isAvailable(\OC\Files\FileInfo $file) {
-		if (!\OC_Config::getValue('enable_previews', true)) {
+		if (!\OC::$server->getConfig()->getSystemValue('enable_previews', true)) {
 			return false;
 		}
 
@@ -1086,7 +1086,7 @@ class Preview {
 	 * @return bool
 	 */
 	public static function isMimeSupported($mimeType) {
-		if (!\OC_Config::getValue('enable_previews', true)) {
+		if (!\OC::$server->getConfig()->getSystemValue('enable_previews', true)) {
 			return false;
 		}
 
