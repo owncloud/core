@@ -8,6 +8,7 @@
 
 namespace OC;
 
+use OCP\Command\IBus;
 use OCP\IConfig;
 use OCP\ICertificateManager;
 
@@ -20,12 +21,25 @@ class HTTPHelper {
 	/** @var \OC\Security\CertificateManager */
 	private $certificateManager;
 
+	/** @var IBus */
+	private $commandBus;
+
 	/**
 	 * @param \OCP\IConfig $config
+	 * @param ICertificateManager $certificateManager
+	 * @param IBus $commandBus
 	 */
-	public function __construct(IConfig $config, ICertificateManager $certificateManager) {
+	public function __construct(IConfig $config,
+								ICertificateManager $certificateManager,
+								IBus $commandBus = null) {
 		$this->config = $config;
 		$this->certificateManager = $certificateManager;
+		$this->commandBus = $commandBus;
+		if (is_null($this->commandBus)) {
+			$this->commandBus = \OC::$server->getCommandBus();
+
+		}
+
 	}
 
 	/**
@@ -225,7 +239,21 @@ class HTTPHelper {
 
 		curl_close($ch);
 
-		return array('success' => $success, 'result' => $result);
+		return ['success' => $success, 'result' => $result];
 	}
 
+	/**
+	 * send http post request in an async manner
+	 *
+	 * @param string $url
+	 * @param array $fields
+	 * @param callable $callback
+	 * @param $callbackData
+	 */
+	public function postAsync($url, array $fields, \Closure $callback, $callbackData) {
+		$this->commandBus->push(function() use ($url, $fields, $callback, $callbackData) {
+			$response = $this->post($url, $fields);
+			$callback($response, $callbackData);
+		});
+	}
 }

@@ -19,11 +19,13 @@ class InfoParser extends \PHPUnit_Framework_TestCase {
 	private $parser;
 
 	public function setUp() {
+		$bus = $this->getMockBuilder('OCP\Command\IBus')
+			->disableOriginalConstructor()->getMock();
 		$config = $this->getMockBuilder('\OCP\IConfig')
 			->disableOriginalConstructor()->getMock();
 		$certificateManager = $this->getMock('\OCP\ICertificateManager');
 		$httpHelper = $this->getMockBuilder('\OC\HTTPHelper')
-			->setConstructorArgs(array($config, $certificateManager))
+			->setConstructorArgs(array($config, $certificateManager, $bus))
 			->setMethods(array('getHeaders'))
 			->getMock();
 		$urlGenerator = $this->getMockBuilder('\OCP\IURLGenerator')
