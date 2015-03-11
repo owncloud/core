@@ -714,6 +714,7 @@ class Preview {
 		 *  - OC\Preview\Postscript
 		 *  - OC\Preview\Photoshop
 		 *  - OC\Preview\Font
+		 *  - OC\Preview\Raw
 		 */
 		if(empty(self::$enabledProviders)) {
 			self::$enabledProviders = \OC::$server->getConfig()->getSystemValue('enabledPreviewProviders', array(
@@ -775,6 +776,7 @@ class Preview {
 				'PSD'	=> 'OC\Preview\Photoshop',
 				'EPS'	=> 'OC\Preview\Postscript',
 				'TTF'	=> 'OC\Preview\Font',
+				'CR2'	=> 'OC\Preview\Raw',
 			);
 
 			foreach ($imagickProviders as $queryFormat => $provider) {
