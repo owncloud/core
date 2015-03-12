@@ -18,6 +18,10 @@ class Manager extends \Test\TestCase {
 		$dummyDatabaseBackend = $this->getMock('\OC_User_Database');
 		$manager->registerBackend($dummyDatabaseBackend);
 		$this->assertEquals([$userDummyBackend, $dummyDatabaseBackend], $manager->getBackends());
+
+		/* clean up */
+		$manager->removeBackend($userDummyBackend);
+		$manager->removeBackend($dummyDatabaseBackend);
 	}
 
 
@@ -35,6 +39,9 @@ class Manager extends \Test\TestCase {
 		$manager->registerBackend($backend);
 
 		$this->assertTrue($manager->userExists('foo'));
+
+		/* clean up */
+		$manager->removeBackend($backend);
 	}
 
 	public function testUserExistsSingleBackendNotExists() {
@@ -51,6 +58,9 @@ class Manager extends \Test\TestCase {
 		$manager->registerBackend($backend);
 
 		$this->assertFalse($manager->userExists('foo'));
+
+		/* clean up */
+		$manager->removeBackend($backend);
 	}
 
 	public function testUserExistsNoBackends() {
@@ -83,6 +93,10 @@ class Manager extends \Test\TestCase {
 		$manager->registerBackend($backend2);
 
 		$this->assertTrue($manager->userExists('foo'));
+
+		/* clean up */
+		$manager->removeBackend($backend1);
+		$manager->removeBackend($backend2);
 	}
 
 	public function testUserExistsTwoBackendsFirstExists() {
@@ -107,6 +121,10 @@ class Manager extends \Test\TestCase {
 		$manager->registerBackend($backend2);
 
 		$this->assertTrue($manager->userExists('foo'));
+
+		/* clean up */
+		$manager->removeBackend($backend1);
+		$manager->removeBackend($backend2);
 	}
 
 	public function testCheckPassword() {
@@ -134,6 +152,9 @@ class Manager extends \Test\TestCase {
 
 		$user = $manager->checkPassword('foo', 'bar');
 		$this->assertTrue($user instanceof \OC\User\User);
+
+		/* clean up */
+		$manager->removeBackend($backend);
 	}
 
 	public function testCheckPasswordNotSupported() {
@@ -152,6 +173,9 @@ class Manager extends \Test\TestCase {
 		$manager->registerBackend($backend);
 
 		$this->assertFalse($manager->checkPassword('foo', 'bar'));
+
+		/* clean up */
+		$manager->removeBackend($backend);
 	}
 
 	public function testGetOneBackendExists() {
@@ -168,6 +192,9 @@ class Manager extends \Test\TestCase {
 		$manager->registerBackend($backend);
 
 		$this->assertEquals('foo', $manager->get('foo')->getUID());
+
+		/* clean up */
+		$manager->removeBackend($backend);
 	}
 
 	public function testGetOneBackendNotExists() {
@@ -184,6 +211,9 @@ class Manager extends \Test\TestCase {
 		$manager->registerBackend($backend);
 
 		$this->assertEquals(null, $manager->get('foo'));
+
+		/* clean up */
+		$manager->removeBackend($backend);
 	}
 
 	public function testSearchOneBackend() {
@@ -203,6 +233,9 @@ class Manager extends \Test\TestCase {
 		$this->assertEquals(2, count($result));
 		$this->assertEquals('afoo', array_shift($result)->getUID());
 		$this->assertEquals('foo', array_shift($result)->getUID());
+
+		/* clean up */
+		$manager->removeBackend($backend);
 	}
 
 	public function testSearchTwoBackendLimitOffset() {
@@ -233,6 +266,10 @@ class Manager extends \Test\TestCase {
 		$this->assertEquals('foo1', array_shift($result)->getUID());
 		$this->assertEquals('foo2', array_shift($result)->getUID());
 		$this->assertEquals('foo3', array_shift($result)->getUID());
+
+		/* clean up */
+		$manager->removeBackend($backend1);
+		$manager->removeBackend($backend2);
 	}
 
 	public function testCreateUserSingleBackendNotExists() {
@@ -258,6 +295,9 @@ class Manager extends \Test\TestCase {
 
 		$user = $manager->createUser('foo', 'bar');
 		$this->assertEquals('foo', $user->getUID());
+
+		/* clean up */
+		$manager->removeBackend($backend);
 	}
 
 	/**
@@ -284,6 +324,9 @@ class Manager extends \Test\TestCase {
 		$manager->registerBackend($backend);
 
 		$manager->createUser('foo', 'bar');
+
+		/* clean up */
+		$manager->removeBackend($backend);
 	}
 
 	public function testCreateUserSingleBackendNotSupported() {
@@ -307,6 +350,9 @@ class Manager extends \Test\TestCase {
 		$manager->registerBackend($backend);
 
 		$this->assertFalse($manager->createUser('foo', 'bar'));
+
+		/* clean up */
+		$manager->removeBackend($backend);
 	}
 
 	public function testCreateUserNoBackends() {
@@ -356,6 +402,10 @@ class Manager extends \Test\TestCase {
 		$manager->registerBackend($backend2);
 
 		$manager->createUser('foo', 'bar');
+
+		/* clean up */
+		$manager->removeBackend($backend1);
+		$manager->removeBackend($backend2);
 	}
 
 	public function testCountUsersNoBackend() {
@@ -393,6 +443,9 @@ class Manager extends \Test\TestCase {
 
 		$users = array_shift($result);
 		$this->assertEquals(7, $users);
+
+		/* clean up */
+		$manager->removeBackend($backend);
 	}
 
 	public function testCountUsersTwoBackends() {
@@ -438,6 +491,10 @@ class Manager extends \Test\TestCase {
 		$users = array_shift($result);
 		//users from backends shall be summed up
 		$this->assertEquals(7 + 16, $users);
+
+		/* clean up */
+		$manager->removeBackend($backend1);
+		$manager->removeBackend($backend2);
 	}
 
 	public function testDeleteUser() {
@@ -449,5 +506,8 @@ class Manager extends \Test\TestCase {
 		$this->assertTrue($manager->userExists('foo'));
 		$manager->get('foo')->delete();
 		$this->assertFalse($manager->userExists('foo'));
+
+		/* clean up */
+		$manager->removeBackend($backend);
 	}
 }
