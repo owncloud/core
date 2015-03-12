@@ -121,8 +121,9 @@ class CheckConsistency extends Command {
 		 */
 		foreach ($this->userManager->getBackends() as $backend) {
 			$offset = 0;
+			$limit = 500;
 			while (true) {
-				$users = $backend->getUsers('', 500, $offset);
+				$users = $backend->getUsers('', $limit, $offset);
 				$usersCount = count($users);
 				$offset += $usersCount;
 
@@ -132,7 +133,7 @@ class CheckConsistency extends Command {
 					);
 				}
 
-				if ($usersCount === 0) {
+				if ($usersCount < $limit) {
 					break;
 				}
 			}
