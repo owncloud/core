@@ -1241,16 +1241,6 @@
 			<length>255</length>
 		</field>
 
-		<index>
-			<primary>true</primary>
-			<unique>true</unique>
-			<name>keyid_index</name>
-			<field>
-				<name>keyid</name>
-				<sorting>ascending</sorting>
-			</field>
-		</index>
-
 		</declaration>
 
 	</table>
