@@ -985,4 +985,11 @@ $CONFIG = array(
  */
 'copied_sample_config' => true,
 
+/**
+ * If this option is set to 'true' all URL will be generated without the
+ * index.php. Keep in mind to setup your webserver to still match the URLs
+ * correct.
+ */
+'front_controller_active' => 'false'
+
 );
