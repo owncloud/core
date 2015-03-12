@@ -85,6 +85,13 @@ class User implements IUser {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getLoginName() {
+		return $this->backend->getLoginName($this->uid);
+	}
+
+	/**
 	 * get the displayname for the user, if no specific displayname is set it will fallback to the user id
 	 *
 	 * @return string

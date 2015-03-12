@@ -936,6 +936,13 @@
 			</field>
 
 			<field>
+				<name>loginname</name>
+				<type>text</type>
+				<default></default>
+				<length>64</length>
+			</field>
+
+			<field>
 				<name>displayname</name>
 				<type>text</type>
 				<default></default>
@@ -955,6 +962,15 @@
 				<primary>true</primary>
 				<field>
 					<name>uid</name>
+					<sorting>ascending</sorting>
+				</field>
+			</index>
+
+			<index>
+				<name>users_loginname</name>
+				<unique>true</unique>
+				<field>
+					<name>loginname</name>
 					<sorting>ascending</sorting>
 				</field>
 			</index>

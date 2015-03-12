@@ -186,19 +186,19 @@ class Session implements IUserSession, Emitter {
 	/**
 	 * try to login with the provided credentials
 	 *
-	 * @param string $uid
+	 * @param string $loginname
 	 * @param string $password
 	 * @return boolean|null
 	 * @throws LoginException
 	 */
-	public function login($uid, $password) {
-		$this->manager->emit('\OC\User', 'preLogin', array($uid, $password));
-		$user = $this->manager->checkPassword($uid, $password);
+	public function login($loginname, $password) {
+		$this->manager->emit('\OC\User', 'preLogin', array($loginname, $password));
+		$user = $this->manager->checkPassword($loginname, $password);
 		if ($user !== false) {
 			if (!is_null($user)) {
 				if ($user->isEnabled()) {
 					$this->setUser($user);
-					$this->setLoginName($uid);
+					$this->setLoginName($loginname);
 					$this->manager->emit('\OC\User', 'postLogin', array($user, $password));
 					if ($this->isLoggedIn()) {
 						return true;

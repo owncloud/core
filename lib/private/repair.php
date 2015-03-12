@@ -15,6 +15,7 @@ use OC\Repair\CleanTags;
 use OC\Repair\Collation;
 use OC\Repair\DropOldTables;
 use OC\Repair\FillETags;
+use OC\Repair\FixLoginName;
 use OC\Repair\InnoDB;
 use OC\Repair\RepairConfig;
 use OC\Repair\RepairLegacyStorages;
@@ -86,6 +87,7 @@ class Repair extends BasicEmitter {
 			new FillETags(\OC_DB::getConnection()),
 			new CleanTags(\OC_DB::getConnection()),
 			new DropOldTables(\OC_DB::getConnection()),
+			new FixLoginName(\OC_DB::getConnection()),
 		);
 	}
 

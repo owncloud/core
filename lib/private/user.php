@@ -522,16 +522,16 @@ class OC_User {
 	/**
 	 * Check if the password is correct
 	 *
-	 * @param string $uid The username
+	 * @param string $loginname The login name of the user
 	 * @param string $password The password
 	 * @return string|false user id a string on success, false otherwise
 	 *
 	 * Check if the password is correct without logging in the user
 	 * returns the user id or false
 	 */
-	public static function checkPassword($uid, $password) {
+	public static function checkPassword($loginname, $password) {
 		$manager = self::getManager();
-		$username = $manager->checkPassword($uid, $password);
+		$username = $manager->checkPassword($loginname, $password);
 		if ($username !== false) {
 			return $username->getUID();
 		}

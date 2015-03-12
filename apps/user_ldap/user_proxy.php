@@ -188,6 +188,15 @@ class User_Proxy extends lib\Proxy implements \OCP\IUserBackend, \OCP\UserInterf
 	}
 
 	/**
+	 * Get login name of the user
+	 * @param string $uid user ID of the user
+	 * @return string The user's login name
+	 */
+	public function getLoginName($uid) {
+		return $this->handleRequest($uid, 'getLoginName', array($uid));
+	}
+
+	/**
 	 * get display name of the user
 	 * @param string $uid user ID of the user
 	 * @return string display name

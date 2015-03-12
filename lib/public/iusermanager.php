@@ -68,7 +68,7 @@ interface IUserManager {
 	/**
 	 * Check if the password is valid for the user
 	 *
-	 * @param string $loginname
+	 * @param string $loginname The user's login name (not necessarily its UID)
 	 * @param string $password
 	 * @return mixed the User object on success, false otherwise
 	 */
