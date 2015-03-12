@@ -434,45 +434,6 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 		return false;
 	}
 
-	public static function setup($options) {
-		$user = $options['user'];
-		$shares = \OCP\Share::getItemsSharedWithUser('file', $user);
-		$manager = Filesystem::getMountManager();
-		$loader = Filesystem::getLoader();
-		$view = Filesystem::getView();
-		$propagator = new Propagator($options['user'], new ChangePropagator($view), \OC::$server->getConfig());
-		if (
-			!isset(self::$isInitialized[$user]) && (
-				!\OCP\User::isLoggedIn()
-				|| \OCP\User::getUser() != $options['user']
-				|| $shares
-			)
-		) {
-			$propagator->propagateDirtyMountPoints($shares);
-			foreach ($shares as $share) {
-				// don't mount shares where we have no permissions
-				if ($share['permissions'] > 0) {
-					$ownerPropagator = new ChangePropagator(new View('/' . $share['uid_owner'] . '/files'));
-					$mount = new SharedMount(
-						'\OC\Files\Storage\Shared',
-						$options['user_dir'] . '/' . $share['file_target'],
-						array(
-							'propagator' => $ownerPropagator,
-							'share' => $share,
-							'user' => $options['user']
-						),
-						$loader
-					);
-					$propagator->attachToPropagator($ownerPropagator, $share['uid_owner']);
-					$manager->addMount($mount);
-				}
-			}
-		}
-		$propagator->attachToPropagator($view->getUpdater()->getPropagator(), $options['user']);
-		\OC_Hook::connect('OC_Filesystem', 'write', '\OCA\Files_Sharing\Propagator', 'writeHook');
-		self::$isInitialized[$user] = true;
-	}
-
 	/**
 	 * return mount point of share, relative to data/user/files
 	 *
