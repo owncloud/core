@@ -1080,10 +1080,17 @@ $(document).ready(function() {
 			}
 
 			$loading.removeClass('hidden');
-			OC.Share.share(itemType, itemSource, OC.Share.SHARE_TYPE_LINK, '', permissions, itemSourceName).then(function() {
-				$loading.addClass('hidden');
-				$('#linkPassText').attr('placeholder', t('core', 'Choose a password for the public link'));
-			});
+			$.post(OC.filePath('core', 'ajax', 'share.php'), 
+				{ 
+					action: 'setPassword', 
+					itemType: itemType, 
+					itemSource: itemSource,
+					shareWith: '' 
+				},
+				function() {
+					$loading.addClass('hidden');
+					$('#linkPassText').attr('placeholder', t('core', 'Choose a password for the public link'));
+				});
 		} else {
 			$('#linkPassText').focus();
 		}
@@ -1109,17 +1116,23 @@ $(document).ready(function() {
 			}
 
 			$loading.removeClass('hidden');
-			OC.Share.share(itemType, itemSource, OC.Share.SHARE_TYPE_LINK, $('#linkPassText').val(), permissions, itemSourceName, function(data) {
-				$loading.addClass('hidden');
-				linkPassText.val('');
-				linkPassText.attr('placeholder', t('core', 'Password protected'));
+			$.post(OC.filePath('core', 'ajax', 'share.php'), 
+				{ 
+					action: 'setPassword', 
+					itemType: itemType, 
+					itemSource: itemSource,
+					shareWith: $('#linkPassText').val() 
+				},
+				function(data) {
+					$loading.addClass('hidden');
+					linkPassText.val('');
+					linkPassText.attr('placeholder', t('core', 'Password protected'));
 
-				if (oc_appconfig.core.enforcePasswordForPublicLink) {
-					OC.Share.showLink(data.token, "password set", itemSource);
-					OC.Share.updateIcon(itemType, itemSource);
-				}
-			});
-
+					if (oc_appconfig.core.enforcePasswordForPublicLink) {
+						OC.Share.showLink(data.token, "password set", itemSource);
+						OC.Share.updateIcon(itemType, itemSource);
+					}
+				});
 		}
 	});
 

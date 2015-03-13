@@ -1148,7 +1148,7 @@ class Share extends \OC\Share\Constants {
 
 		$qb = \OC::$server->getDatabaseConnection()->createQueryBuilder();
 		$qb->update('*PREFIX*share')
-		      ->set('share_with', is_null($password) ? null : $qb->expr()->literal(\OC::$server->getHasher()->hash($password)))
+		      ->set('share_with', is_null($password) ? 'NULL' : $qb->expr()->literal(\OC::$server->getHasher()->hash($password)))
 			  ->where($qb->expr()->eq('item_type', $qb->expr()->literal($itemType)))
 			  ->andWhere($qb->expr()->eq('item_source', $qb->expr()->literal($itemSource)))
 			  ->andWhere($qb->expr()->eq('uid_owner', $qb->expr()->literal($user)))
