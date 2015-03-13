@@ -24,6 +24,7 @@ namespace OC\Share;
 
 use OCP\IUserSession;
 use OCP\IDBConnection;
+use OCP\IConfig;
 
 /**
  * This class provides the ability for apps to share their content between users.
@@ -1117,6 +1118,7 @@ class Share extends \OC\Share\Constants {
 	 *
 	 * @param IUserSession $userSession
 	 * @param IDBConnection $connection
+	 * @param IConfig $config
 	 * @param string $itemType
 	 * @param string $itemSource
 	 * @param string $password
@@ -1125,6 +1127,7 @@ class Share extends \OC\Share\Constants {
 	 */
 	public static function setPassword(IUserSession $userSession, 
 	                                   IDBConnection $connection, 
+									   IConfig $config,
 									   $itemType, $itemSource, $password) {
 		$user = $userSession->getUser();
 		if (is_null($user)) {
@@ -1137,7 +1140,7 @@ class Share extends \OC\Share\Constants {
 		}
 
 		//If passwords are enforced the password can't be null
-		if (self::enforcePassword() && is_null($password)) {
+		if (self::enforcePassword($config) && is_null($password)) {
 			throw new \Exception('Cannot remove password');
 		}
 
@@ -2399,8 +2402,12 @@ class Share extends \OC\Share\Constants {
 		return (int)\OCP\Config::getAppValue('core', 'shareapi_expire_after_n_days', '7');
 	}
 
-	public static function enforcePassword() {
-		$enforcePassword = \OCP\Config::getAppValue('core', 'shareapi_enforce_links_password', 'no');
+	/**
+     * @param IConfig $config
+	 * @return bool 
+	 */
+	public static function enforcePassword(IConfig $config) {
+		$enforcePassword = $config->getAppValue('core', 'shareapi_enforce_links_password', 'no');
 		return ($enforcePassword === "yes") ? true : false;
 	}
 }

@@ -318,7 +318,8 @@ class Share extends \OC\Share\Constants {
 	public static function setPassword($itemType, $itemSource, $password) {
 		$userSession = \OC::$server->getUserSession();
 		$connection = \OC::$server->getDatabaseConnection();
-		return \OC\Share\Share::setPassword($userSession, $connection, $itemType, $itemSource, $password);
+		$config = \OC::$server->getConfig();
+		return \OC\Share\Share::setPassword($userSession, $connection, $config, $itemType, $itemSource, $password);
 	}
 
 
