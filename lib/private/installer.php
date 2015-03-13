@@ -246,7 +246,7 @@ class OC_Installer{
 			}
 			$content = \OC_Util::getUrlContent($data['href']);
 			if($content===false) {
-			  throw new \Exception($l->t("Error while downloading app"));
+				throw new \Exception($l->t("Error while downloading app"));
 			}
 			file_put_contents($path, $content);
 		}else{
@@ -268,7 +268,7 @@ class OC_Installer{
 		mkdir($extractDir);
 		if($archive=OC_Archive::open($path)) {
 			if($archive->extract($extractDir)===false) {
-			  throw new \Exception($l->t("Failed to unpack archive when installing app"));
+				throw new \Exception($l->t("Failed to unpack archive when installing app"));
 			}
 		} else {
 			OC_Helper::rmdirr($extractDir);
