@@ -85,7 +85,8 @@ class HTTPHelper {
 				$data = curl_exec($curl);
 				$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 				if ($code != 200) {
-					\OC_LOG::write('core', 'Downloading '.$url.' failed with status code '.$status_code, 2);
+					\OC_LOG::write('core',
+						'Downloading '.$url.' failed with status code '.$code, 2);
 					$data = false;
 				}
 			} else {
@@ -126,7 +127,8 @@ class HTTPHelper {
 					$data = curl_exec($curl);
 					$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 					if ($code != 200) {
-						\OC_LOG::write('core', 'Downloading '.$url.' failed with status code '.$status_code, 2);
+						\OC_LOG::write('core',
+							'Downloading '.$url.' failed with status code '.$code, 2);
 						$data = false;
 					}
 				}
