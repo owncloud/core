@@ -1131,25 +1131,30 @@ class Share extends \OC\Share\Constants {
 	 * @return boolean
 	 */
 	public static function setPassword($itemType, $itemSource, $password) {
-		$user = \OC_User::getUser();
+		$user = \OC::$server->getUserSession()->getUser();
+		if (is_null($user)) {
+			throw new \Exception("User not logged in");
+		}
+		$user = $user->getUID();
 
-		if ($password == '') {
+		if ($password === '') {
 			$password = null;
 		}
 
 		//If passwords are enforced the password can't be null
-		if (self::enforcePassword() && $password == null) {
+		if (self::enforcePassword() && is_null($password)) {
 			throw new \Exception('Cannot remove password');
 		}
 
-		$query = \OC_DB::prepare('UPDATE `*PREFIX*share` SET `share_with` = ? WHERE `item_type` = ? AND `item_source` = ?  AND `uid_owner` = ? AND `share_type` = ?');
-		$query->bindValue(1, is_null($password) ? null : \OC::$server->getHasher()->hash($password));
-		$query->bindValue(2, $itemType);
-		$query->bindValue(3, $itemSource);
-		$query->bindValue(4, $user);
-		$query->bindValue(5, \OCP\Share::SHARE_TYPE_LINK);
-
-		$query->execute();
+		$qb = \OC::$server->getDatabaseConnection()->createQueryBuilder();
+		$qb->update('*PREFIX*share')
+		      ->set('share_with', is_null($password) ? null : $qb->expr()->literal(\OC::$server->getHasher()->hash($password)))
+			  ->where($qb->expr()->eq('item_type', $qb->expr()->literal($itemType)))
+			  ->andWhere($qb->expr()->eq('item_source', $qb->expr()->literal($itemSource)))
+			  ->andWhere($qb->expr()->eq('uid_owner', $qb->expr()->literal($user)))
+			  ->andWhere($qb->expr()->eq('share_type', $qb->expr()->literal(\OCP\Share::SHARE_TYPE_LINK)));
+	
+		$qb->execute();
 
 		return true;
 	}
