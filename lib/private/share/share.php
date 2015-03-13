@@ -1123,6 +1123,38 @@ class Share extends \OC\Share\Constants {
 	}
 
 	/**
+	 * Set expiration date for a share
+	 * @param string $itemType
+	 * @param string $itemSource
+	 * @param string $password
+	 * @throws \Exception
+	 * @return boolean
+	 */
+	public static function setPassword($itemType, $itemSource, $password) {
+		$user = \OC_User::getUser();
+
+		if ($password == '') {
+			$password = null;
+		}
+
+		//If passwords are enforced the password can't be null
+		if (self::enforcePassword() && $password == null) {
+			throw new \Exception('Cannot remove password');
+		}
+
+		$query = \OC_DB::prepare('UPDATE `*PREFIX*share` SET `share_with` = ? WHERE `item_type` = ? AND `item_source` = ?  AND `uid_owner` = ? AND `share_type` = ?');
+		$query->bindValue(1, is_null($password) ? null : \OC::$server->getHasher()->hash($password));
+		$query->bindValue(2, $itemType);
+		$query->bindValue(3, $itemSource);
+		$query->bindValue(4, $user);
+		$query->bindValue(5, \OCP\Share::SHARE_TYPE_LINK);
+
+		$query->execute();
+
+		return true;
+	}
+
+	/**
 	 * Checks whether a share has expired, calls unshareItem() if yes.
 	 * @param array $item Share data (usually database row)
 	 * @return boolean True if item was expired, false otherwise.
@@ -2368,4 +2400,8 @@ class Share extends \OC\Share\Constants {
 		return (int)\OCP\Config::getAppValue('core', 'shareapi_expire_after_n_days', '7');
 	}
 
+	public static function enforcePassword() {
+		$enforcePassword = \OCP\Config::getAppValue('core', 'shareapi_enforce_links_password', 'no');
+		return ($enforcePassword === "yes") ? true : false;
+	}
 }
