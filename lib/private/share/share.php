@@ -535,6 +535,7 @@ class Share extends \OC\Share\Constants {
 
 		$backend = self::getBackend($itemType);
 		$l = \OC::$server->getL10N('lib');
+		$logger = \OC::$server->getLogger();
 
 		if ($backend->isShareTypeAllowed($shareType) === false) {
 			$message = 'Sharing %s failed, because the backend does not allow shares from type %i';
@@ -660,31 +661,21 @@ class Share extends \OC\Share\Constants {
 			$shareWith['group'] = $group;
 			$shareWith['users'] = array_diff(\OC_Group::usersInGroup($group), array($uidOwner));
 		} else if ($shareType === self::SHARE_TYPE_LINK) {
-			$updateExistingShare = false;
 			if (\OC_Appconfig::getValue('core', 'shareapi_allow_links', 'yes') == 'yes') {
 
-				// when updating a link share
-				// FIXME Don't delete link if we update it
-				if ($checkExists = self::getItems($itemType, $itemSource, self::SHARE_TYPE_LINK, null,
+				// Only 1 public share allowed 
+				if (self::getItems($itemType, $itemSource, self::SHARE_TYPE_LINK, null,
 					$uidOwner, self::FORMAT_NONE, null, 1)) {
-					// remember old token
-					$oldToken = $checkExists['token'];
-					$oldPermissions = $checkExists['permissions'];
-					//delete the old share
-					Helper::delete($checkExists['id']);
-					$updateExistingShare = true;
+					$message = "Only 1 public share allowed";
+					$message_t = $l->t("Only 1 public share allowed");
+					$logger->error($message, ['app' => 'OCP\Share::shareItem']);
+					throw new \Exception($message_t);
 				}
 
 				// Generate hash of password - same method as user passwords
 				if (!empty($shareWith)) {
 					$shareWith = \OC::$server->getHasher()->hash($shareWith);
-				} else {
-					// reuse the already set password, but only if we change permissions
-					// otherwise the user disabled the password protection
-					if ($checkExists && (int)$permissions !== (int)$oldPermissions) {
-						$shareWith = $checkExists['share_with'];
-					}
-				}
+				} 
 
 				if (\OCP\Util::isPublicLinkPasswordRequired() && empty($shareWith)) {
 					$message = 'You need to provide a password to create a public link, only protected links are allowed';
@@ -693,21 +684,17 @@ class Share extends \OC\Share\Constants {
 					throw new \Exception($message_t);
 				}
 
-				if ($updateExistingShare === false &&
-					self::isDefaultExpireDateEnabled() &&
+				if (self::isDefaultExpireDateEnabled() &&
 					empty($expirationDate)) {
 					$expirationDate = Helper::calcExpireDate();
 				}
 
 				// Generate token
-				if (isset($oldToken)) {
-					$token = $oldToken;
-				} else {
-					$token = \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate(self::TOKEN_LENGTH,
+				$token = \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate(self::TOKEN_LENGTH,
 						\OCP\Security\ISecureRandom::CHAR_LOWER.\OCP\Security\ISecureRandom::CHAR_UPPER.
 						\OCP\Security\ISecureRandom::CHAR_DIGITS
-					);
-				}
+				);
+
 				$result = self::put($itemType, $itemSource, $shareType, $shareWith, $uidOwner, $permissions,
 					null, $token, $itemSourceName, $expirationDate);
 				if ($result) {
