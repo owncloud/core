@@ -420,8 +420,8 @@ $CONFIG = array(
  */
 
 /**
- * Checks an app before install whether it uses private APIs instead of the 
- * proper public APIs. If this is set to true it will just allow to install or 
+ * Checks an app before install whether it uses private APIs instead of the
+ * proper public APIs. If this is set to true it will just allow to install or
  * enable apps that pass this check.
  */
 'appcodechecker' => true,
@@ -682,6 +682,7 @@ $CONFIG = array(
  *  - OC\Preview\SVG
  *  - OC\Preview\TIFF
  *  - OC\Preview\Font
+ *  - OC\Preview\Raw
  *
  * .. note:: Troubleshooting steps for the MS Word previews are available
  *    at the :doc:`../configuration_files/collaborative_documents_configuration`

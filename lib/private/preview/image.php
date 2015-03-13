@@ -13,7 +13,7 @@ class Image extends Provider {
 	 * {@inheritDoc}
 	 */
 	public function getMimeType() {
-		return '/image\/(?!tiff$)(?!svg.*).*/';
+		return '/image\/(?!x-dcraw$)(?!tiff$)(?!svg.*).*/';
 	}
 
 	/**
