@@ -22,6 +22,9 @@
 
 namespace OC\Share;
 
+use OCP\IUserSession;
+use OCP\IDBConnection;
+
 /**
  * This class provides the ability for apps to share their content between users.
  * Apps must create a backend class that implements OCP\Share_Backend and register it with this class.
@@ -1111,14 +1114,19 @@ class Share extends \OC\Share\Constants {
 
 	/**
 	 * Set expiration date for a share
+	 *
+	 * @param IUserSession $userSession
+	 * @param IDBConnection $connection
 	 * @param string $itemType
 	 * @param string $itemSource
 	 * @param string $password
 	 * @throws \Exception
 	 * @return boolean
 	 */
-	public static function setPassword($itemType, $itemSource, $password) {
-		$user = \OC::$server->getUserSession()->getUser();
+	public static function setPassword(IUserSession $userSession, 
+	                                   IDBConnection $connection, 
+									   $itemType, $itemSource, $password) {
+		$user = $userSession->getUser();
 		if (is_null($user)) {
 			throw new \Exception("User not logged in");
 		}
@@ -1133,14 +1141,13 @@ class Share extends \OC\Share\Constants {
 			throw new \Exception('Cannot remove password');
 		}
 
-		$qb = \OC::$server->getDatabaseConnection()->createQueryBuilder();
+		$qb = $connection->createQueryBuilder();
 		$qb->update('*PREFIX*share')
 		      ->set('share_with', is_null($password) ? 'NULL' : $qb->expr()->literal(\OC::$server->getHasher()->hash($password)))
 			  ->where($qb->expr()->eq('item_type', $qb->expr()->literal($itemType)))
 			  ->andWhere($qb->expr()->eq('item_source', $qb->expr()->literal($itemSource)))
 			  ->andWhere($qb->expr()->eq('uid_owner', $qb->expr()->literal($user)))
 			  ->andWhere($qb->expr()->eq('share_type', $qb->expr()->literal(\OCP\Share::SHARE_TYPE_LINK)));
-	
 		$qb->execute();
 
 		return true;
