@@ -244,7 +244,11 @@ class OC_Installer{
 			if(!isset($data['href'])) {
 				throw new \Exception($l->t("No href specified when installing app from http"));
 			}
-			file_put_contents($path, \OC_Util::getUrlContent($data['href']));
+			$content = \OC_Util::getUrlContent($data['href']);
+			if($content===false) {
+			  throw new \Exception($l->t("Error while downloading app"));
+			}
+			file_put_contents($path, $content);
 		}else{
 			if(!isset($data['path'])) {
 				throw new \Exception($l->t("No path specified when installing app from local file"));
@@ -263,7 +267,9 @@ class OC_Installer{
 		OC_Helper::rmdirr($extractDir);
 		mkdir($extractDir);
 		if($archive=OC_Archive::open($path)) {
-			$archive->extract($extractDir);
+			if($archive->extract($extractDir)===false) {
+			  throw new \Exception($l->t("Failed to unpack archive when installing app"));
+			}
 		} else {
 			OC_Helper::rmdirr($extractDir);
 			if($data['source']=='http') {
