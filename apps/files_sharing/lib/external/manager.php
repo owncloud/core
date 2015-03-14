@@ -9,6 +9,11 @@
 namespace OCA\Files_Sharing\External;
 
 use OC\Files\Filesystem;
+use OC\Files\Storage\StorageFactory;
+use OC\HTTPHelper;
+use OC\Security\CertificateManager;
+use OCA\Files_Sharing\Helper;
+use OCP\IDBConnection;
 
 class Manager {
 	const STORAGE = '\OCA\Files_Sharing\External\Storage';
@@ -19,7 +24,7 @@ class Manager {
 	private $uid;
 
 	/**
-	 * @var \OCP\IDBConnection
+	 * @var IDBConnection
 	 */
 	private $connection;
 
@@ -29,24 +34,24 @@ class Manager {
 	private $mountManager;
 
 	/**
-	 * @var \OC\Files\Storage\StorageFactory
+	 * @var StorageFactory
 	 */
 	private $storageLoader;
 
 	/**
-	 * @var \OC\HTTPHelper
+	 * @var HTTPHelper
 	 */
 	private $httpHelper;
 
 	/**
-	 * @param \OCP\IDBConnection $connection
+	 * @param IDBConnection $connection
 	 * @param \OC\Files\Mount\Manager $mountManager
-	 * @param \OC\Files\Storage\StorageFactory $storageLoader
-	 * @param \OC\HTTPHelper $httpHelper
+	 * @param StorageFactory $storageLoader
+	 * @param HTTPHelper $httpHelper
 	 * @param string $uid
 	 */
-	public function __construct(\OCP\IDBConnection $connection, \OC\Files\Mount\Manager $mountManager,
-								\OC\Files\Storage\StorageFactory $storageLoader, \OC\HTTPHelper $httpHelper, $uid) {
+	public function __construct(IDBConnection $connection, \OC\Files\Mount\Manager $mountManager,
+								StorageFactory $storageLoader, HTTPHelper $httpHelper, $uid) {
 		$this->connection = $connection;
 		$this->mountManager = $mountManager;
 		$this->storageLoader = $storageLoader;
@@ -96,7 +101,7 @@ class Manager {
 
 	private function setupMounts() {
 		// don't setup server-to-server shares if the admin disabled it
-		if (\OCA\Files_Sharing\Helper::isIncomingServer2serverShareEnabled() === false) {
+		if (Helper::isIncomingServer2serverShareEnabled() === false) {
 			return false;
 		}
 
@@ -180,12 +185,15 @@ class Manager {
 	private function sendFeedbackToRemote($remote, $token, $id, $feedback) {
 
 		$url = $remote . \OCP\Share::BASE_PATH_TO_SHARE_API . '/' . $id . '/' . $feedback . '?format=' . \OCP\Share::RESPONSE_FORMAT;
+		$user = \OC::$server->getUserSession()->getUser();
 		$fields = array('token' => $token);
+		$uid = $user->getUID();
 
-		$result = $this->httpHelper->post($url, $fields);
-		$status = json_decode($result['result'], true);
-
-		return ($result['success'] && $status['ocs']['meta']['statuscode'] === 100);
+		$config = \OC::$server->getConfig();
+		$certificateManager = new CertificateManager($uid, new \OC\Files\View());
+		$httpHelper = new HTTPHelper($config, $certificateManager,
+			\OC::$server->getCommandBus());
+		$httpHelper->postAsync($url, $fields, $this->buildPostCallback($httpHelper, $url, $fields), 0);
 	}
 
 	/**
@@ -320,5 +328,28 @@ class Manager {
 
 		return $result ? $openShares->fetchAll() : array();
 
+	}
+
+	/**
+	 * @param $httpHelper
+	 * @param $url
+	 * @param $fields
+	 * @return callable
+	 */
+	private function buildPostCallback(HTTPHelper $httpHelper, $url, $fields) {
+		return function ($response, $tries) use ($httpHelper, $url, $fields) {
+			$status = json_decode($response['result'], true);
+
+			$success = ($response['success'] && $status['ocs']['meta']['statuscode'] === 100);
+			if ($success) {
+				return;
+			}
+
+			// queue it again
+			if ($tries < 5) {
+				$httpHelper->postAsync($url, $fields, $this->buildPostCallback($httpHelper, $url, $fields), $tries+1);
+			}
+
+		};
 	}
 }

@@ -6,12 +6,33 @@
  * See the COPYING-README file.
  */
 
+// clean class to prevent phpunit putting closure in $this
+class AsyncHttpTest {
+
+	public $data;
+
+	public $response;
+
+	public $called = false;
+
+	public function test($httpHelperMock) {
+		/** @var \OC\HTTPHelper $httpHelperMock*/
+		$httpHelperMock->postAsync('', [], function($response, $data) {
+			$this->response = $response;
+			$this->data = $data;
+			$this->called = true;
+		}, 123456789);
+	}
+}
+
 class TestHTTPHelper extends \Test\TestCase {
 
-	/** @var \OCP\IConfig*/
+	/** @var \OCP\IConfig */
 	private $config;
-	/** @var \OC\HTTPHelper */
+
+	/** @var \OC\HTTPHelper|PHPUnit_Framework_MockObject_MockObject */
 	private $httpHelperMock;
+
 	/** @var \OC\Security\CertificateManager */
 	private $certificateManager;
 
@@ -22,8 +43,9 @@ class TestHTTPHelper extends \Test\TestCase {
 			->disableOriginalConstructor()->getMock();
 		$this->certificateManager = $this->getMock('\OCP\ICertificateManager');
 		$this->httpHelperMock = $this->getMockBuilder('\OC\HTTPHelper')
-			->setConstructorArgs(array($this->config, $this->certificateManager))
-			->setMethods(array('getHeaders'))
+			->setConstructorArgs(array($this->config, $this->certificateManager,
+					\OC::$server->getCommandBus()))
+			->setMethods(array('getHeaders', 'post'))
 			->getMock();
 	}
 
@@ -94,7 +116,7 @@ class TestHTTPHelper extends \Test\TestCase {
 	/**
 	 * @dataProvider postParameters
 	 */
-	public function testassemblePostParameters($parameterList, $expectedResult) {
+	public function testAssemblePostParameters($parameterList, $expectedResult) {
 		$helper = \OC::$server->getHTTPHelper();
 		$result = \Test_Helper::invokePrivate($helper, 'assemblePostParameters', array($parameterList));
 		$this->assertSame($expectedResult, $result);
@@ -108,5 +130,24 @@ class TestHTTPHelper extends \Test\TestCase {
 		);
 	}
 
+	public function testAsyncPost() {
+		$this->httpHelperMock
+			->expects($this->any())
+			->method('post')
+			->willReturn(
+				['success' => true, 'result' => 200]
+			);
+
+		$t = new AsyncHttpTest();
+		$t->test($this->httpHelperMock);
+
+		$this->runCommands();
+
+		$this->assertTrue($t->called);
+		$this->assertTrue($t->response['success']);
+		$this->assertEquals(200, $t->response['result']);
+		$this->assertEquals(123456789, $t->data);
+
+	}
 
 }

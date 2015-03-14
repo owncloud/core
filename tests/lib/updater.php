@@ -88,14 +88,15 @@ class UpdaterTest extends \Test\TestCase {
 
 	protected function getUpdaterMock($content){
 		// Invalidate cache
+		$bus = $this->getMockBuilder('OCP\Command\IBus')
+			->disableOriginalConstructor()->getMock();
 		$mockedConfig = $this->getMockBuilder('\OCP\IConfig')
 				->disableOriginalConstructor()
-				->getMock()
-		;
+				->getMock();
 
 		$certificateManager = $this->getMock('\OCP\ICertificateManager');
 		$mockedHTTPHelper = $this->getMockBuilder('\OC\HTTPHelper')
-				->setConstructorArgs(array(\OC::$server->getConfig(), $certificateManager))
+				->setConstructorArgs(array(\OC::$server->getConfig(), $certificateManager, $bus))
 				->getMock()
 		;
 
