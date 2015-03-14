@@ -8,6 +8,10 @@ $application = new Application();
 $application->registerRoutes($this, [
 	'resources' => [
 		'ExternalShares' => ['url' => '/api/externalShares'],
+	],
+	'routes' => [
+		['name' => 'o_c_s_api#getShare', 'url' => 'ocs/v1/shares/{shareId}', 'verb' => 'GET'],
+		['name' => 'o_c_s_api#getAllShares', 'url' => 'ocs/v1/shares', 'verb' => 'GET'],
 	]
 ]);
 

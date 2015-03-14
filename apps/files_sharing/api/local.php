@@ -101,6 +101,7 @@ class Local {
 		if ($itemSource !== null) {
 			$shares = \OCP\Share::getItemShared($itemType, $itemSource);
 			$receivedFrom = \OCP\Share::getItemSharedWithBySource($itemType, $itemSource);
+
 			// if a specific share was specified only return this one
 			if ($getSpecificShare === true) {
 				foreach ($shares as $share) {
