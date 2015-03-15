@@ -60,9 +60,9 @@ class Application extends App {
 			return new OCSApiController(
 				$c->query('AppName'),
 				$c->query('Request'),
-				$server->getUserSession(),
-				$server->getLogger(),
-				$c->query('DatabaseConnection')
+				$c->query('Logger'),
+				$c->query('DatabaseConnection'),
+				$c->query('Config')
 			);
 		});
 
@@ -92,6 +92,13 @@ class Application extends App {
 		$container->registerService('DatabaseConnection', function(SimpleContainer $c) use ($server){
 			return $server->getDatabaseConnection();
 		});
+		$container->registerService('Logger', function(SimpleContainer $c) use ($server){
+			return $server->getLogger();
+		});
+		$container->registerService('Config', function(SimpleContainer $c) use ($server){
+			return $server->getConfig();
+		});
+
 
 		/**
 		 * Middleware

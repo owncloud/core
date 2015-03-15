@@ -26,20 +26,16 @@ use OC_Files;
 use OC_Util;
 use OCP;
 use OCP\Template;
-use OCP\JSON;
 use OCP\Share;
 use OCP\AppFramework\OCSController;
 use OCP\IRequest;
-use OCP\AppFramework\Http\TemplateResponse;
-use OCP\AppFramework\Http\RedirectResponse;
-use OC\URLGenerator;
-use OC\AppConfig;
 use OCP\ILogger;
 use OCA\Files_Sharing\Helper;
 use OCP\User;
 use OCP\Util;
 use OCA\Files_Sharing\Activity;
 use OCP\IDBConnection;
+use OCP\IConfig;
 
 /**
  * Class OCSApiController
@@ -48,44 +44,31 @@ use OCP\IDBConnection;
  */
 class OCSApiController extends OCSController {
 
-	/** @var \OC\User\Session */
-	protected $userSession;
-	/** @var \OC\AppConfig */
-	protected $appConfig;
-	/** @var \OCP\IConfig */
-	protected $config;
-	/** @var \OC\URLGenerator */
-	protected $urlGenerator;
-	/** @var \OC\User\Manager */
-	protected $userManager;
 	/** @var \OCP\ILogger */
 	protected $logger;
-	/** @var OCP\Activity\IManager */
-	protected $activityManager;
 	/** @var IDBConnection */
 	protected $dbconnection;
+	/** @var IConfig */
+	protected $config;
 
 	/**
 	 * @param string $appName
 	 * @param IRequest $request
-	 * @param OC\User\Session $userSession
-	 * @param AppConfig $appConfig
-	 * @param OCP\IConfig $config
-	 * @param URLGenerator $urlGenerator
-	 * @param OC\User\Manager $userManager
 	 * @param ILogger $logger
 	 * @param OCP\Activity\IManager $activityManager
 	 * @param IDBConnection $dbconnection
+	 * @param IConfig $config
 	 */
 	public function __construct($appName,
 								IRequest $request,
-								OC\User\Session $userSession,
 								ILogger $logger,
-								IDBConnection $dbconnection) {
+								IDBConnection $dbconnection,
+								IConfig $config) {
 		parent::__construct($appName, $request);
 
 		$this->logger = $logger;
 		$this->dbconnection = $dbconnection;
+		$this->config = $config;
 	}
 
 	/**
@@ -107,6 +90,9 @@ class OCSApiController extends OCSController {
 	 * @return array|null with: item_source, share_type, share_with, item_type, permissions
 	 */
 	private function getShareFromId($shareId) {
+
+		/*
+		 * TODO: Querby builder
 		$qb = $this->dbconnection->createQueryBuilder();
 
 		$qb->select('file_source')
@@ -119,8 +105,19 @@ class OCSApiController extends OCSController {
 		   ->where($qb->expr()->eq('id', $shareId));
 	
 		$result = $qb->execute();
+		*/
 
-		if ($share = $result->fetch()) {
+		$sql = 'SELECT `file_source`, `item_source`, `share_type`, `share_with`, `item_type`, `permissions`, `stime` FROM `*PREFIX*share` WHERE `id` = ?';
+		$args = [$shareId];
+		$query = \OCP\DB::prepare($sql);    
+		$result = $query->execute($args);
+
+		if (\OCP\DB::isError($result)) {
+			$this->logger->error(['app' => 'files_sharing'], \OC_DB::getErrorMessage($result));
+			return null;
+		}
+
+		if ($share = $result->fetchRow()) {
 			return $share;
 		}
 
@@ -136,7 +133,7 @@ class OCSApiController extends OCSController {
 	 * @param bool $getSpecificShare
 	 * @param string $path
 	 */
-	private function collectShares($shareId, $itemSource, $itemType, $getSpecificShare, $path) {
+	private function collectShares($shareId, $itemSource, $itemType, $getSpecificShare, $path, $reshares) {
 
 		if ($itemSource) {
 			$shares = \OCP\Share::getItemShared($itemType, $itemSource);
@@ -157,8 +154,8 @@ class OCSApiController extends OCSController {
 
 			// include also reshares in the lists. This means that the result
 			// will contain every user with access to the file.
-			if (isset($params['reshares']) && $params['reshares'] === true) {
-				$shares = self::addReshares($shares, $itemSource);
+			if ($reshares === true) {
+				$shares = $this->addReshares($shares, $itemSource);
 			}
 
 			if ($receivedFrom) {
@@ -198,9 +195,9 @@ class OCSApiController extends OCSController {
 			$itemType = self::getItemType($path);
 
 			if (isset($subfiles) && $subfiles) {
-				return self::getSharesFromFolder($params);
+				return $this->getSharesFromFolder($path);
 			}
-			return $this->collectShares(null, $itemSource, $itemType, false, $path);
+			return $this->collectShares(null, $itemSource, $itemType, false, $path, $reshares);
 		}
 
 		$shares = \OCP\Share::getItemShared('file', null);
@@ -216,7 +213,9 @@ class OCSApiController extends OCSController {
 					}
 				}
 			}
-			return new \OC_OCS_Result($shares);
+			return [
+				'data' => $shares
+			];
 		}
 
 	}
@@ -227,7 +226,7 @@ class OCSApiController extends OCSController {
 	 * @param int $itemSource item source ID
 	 * @return array new shares array which includes reshares
 	 */
-	private static function addReshares($shares, $itemSource) {
+	private function addReshares($shares, $itemSource) {
 
 		// if there are no shares than there are also no reshares
 		$firstShare = reset($shares);
@@ -254,15 +253,17 @@ class OCSApiController extends OCSController {
 
 	/**
 	 * get share from all files in a given folder (non-recursive)
-	 * @param array $params contains 'path' to the folder
+	 * @param string $path
 	 * @return \OC_OCS_Result
 	 */
-	private static function getSharesFromFolder($params) {
-		$path = $params['path'];
+	private function getSharesFromFolder($path) {
 		$view = new \OC\Files\View('/'.\OCP\User::getUser().'/files');
 
 		if(!$view->is_dir($path)) {
-			return new \OC_OCS_Result(null, 400, "not a directory");
+			return [
+				'statuscode' => 400, 
+				'message' => 'not a directory'
+			];
 		}
 
 		$content = $view->getDirectoryContent($path);
@@ -284,7 +285,9 @@ class OCSApiController extends OCSController {
 			}
 		}
 
-		return new \OC_OCS_Result($result);
+		return [
+			'data' => $result
+		];
 	}
 
 	/**
@@ -312,53 +315,78 @@ class OCSApiController extends OCSController {
 	}
 
 	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
 	 * create a new share
-	 * @param array $params
-	 * @return \OC_OCS_Result
+	 *
+	 * @param string $path
+	 * @param int $shareType
+	 * @param string $shareWith
+	 * @param bool $publicUpload
+	 * @param string $password
+	 * @param int $permissions
 	 */
-	public static function createShare($params) {
-
-		$path = isset($_POST['path']) ? $_POST['path'] : null;
-
+	public function createShare($path, $shareType, $shareWith,
+	                            $publicUpload, $password, $permissions) {
 		if($path === null) {
-			return new \OC_OCS_Result(null, 400, "please specify a file or folder path");
+			return [
+				'statuscode' => 400,
+				'message' => 'please specify a file or folder path'
+			];
 		}
 		$itemSource = self::getFileId($path);
 		$itemType = self::getItemType($path);
 
 		if($itemSource === null) {
-			return new \OC_OCS_Result(null, 404, "wrong path, file/folder doesn't exist.");
+			return [
+				'statuscode' => 404,
+				'message' => 'wrong path, file/folder doesn\'t exist.'
+			];
 		}
 
-		$shareWith = isset($_POST['shareWith']) ? $_POST['shareWith'] : null;
-		$shareType = isset($_POST['shareType']) ? (int)$_POST['shareType'] : null;
+		if (is_null($shareType)) {
+			return [
+				'statuscode' => 400, 
+				'message' => 'shareType has to be provided'
+			];
+		}
 
 		switch($shareType) {
 			case \OCP\Share::SHARE_TYPE_USER:
-				$permissions = isset($_POST['permissions']) ? (int)$_POST['permissions'] : 31;
+				$permissions = !is_null($permissions) ? $permissions : 31;
 				break;
 			case \OCP\Share::SHARE_TYPE_GROUP:
-				$permissions = isset($_POST['permissions']) ? (int)$_POST['permissions'] : 31;
+				$permissions = !is_null($permissions) ? $permissions : 31;
 				break;
 			case \OCP\Share::SHARE_TYPE_LINK:
 				//allow password protection
-				$shareWith = isset($_POST['password']) ? $_POST['password'] : null;
+				$shareWith = $password;
 				//check public link share
-				$publicUploadEnabled = \OC::$server->getAppConfig()->getValue('core', 'shareapi_allow_public_upload', 'yes');
-				if(isset($_POST['publicUpload']) && $publicUploadEnabled !== 'yes') {
-					return new \OC_OCS_Result(null, 403, "public upload disabled by the administrator");
+				$publicUploadEnabled = $this->config->getAppValue('core', 'shareapi_allow_public_upload', 'yes');
+				if ($publicUpload && $publicUploadEnabled !== 'yes') {
+					return [
+						'statuscode' => 403,
+						'message' => 'public upload disabled by the administrator'
+					];
 				}
-				$publicUpload = isset($_POST['publicUpload']) ? $_POST['publicUpload'] : 'false';
+				$publicUpload = is_null($publicUpload) ? false : $publicUpload;
 				// read, create, update (7) if public upload is enabled or
 				// read (1) if public upload is disabled
 				$permissions = $publicUpload === 'true' ? 7 : 1;
 				break;
 			default:
-				return new \OC_OCS_Result(null, 400, "unknown share type");
+				return [
+					'statuscode' => 400, 
+					'message' => 'unknown share type'
+				];
 		}
 
 		if (($permissions & \OCP\Constants::PERMISSION_READ) === 0) {
-			return new \OC_OCS_Result(null, 400, 'invalid permissions');
+			return [
+				'statuscode' => 400,
+				'message' => 'invalid permissions'
+			];
 		}
 
 		try	{
@@ -370,7 +398,10 @@ class OCSApiController extends OCSController {
 					$permissions
 					);
 		} catch (\Exception $e) {
-			return new \OC_OCS_Result(null, 403, $e->getMessage());
+			return [
+				'statuscode' => 403,
+				'message' => $e->getMessage()
+			];
 		}
 
 		if ($token) {
@@ -396,39 +427,55 @@ class OCSApiController extends OCSController {
 					}
 				}
 			}
-			return new \OC_OCS_Result($data);
+			return [
+				'data' => $data
+			];
 		} else {
-			return new \OC_OCS_Result(null, 404, "couldn't share file");
+			return [
+				'statuscode' => 404,
+				'message' => 'couldn\'t share file'
+			];
 		}
 	}
 
 	/**
-	 * update shares, e.g. password, permissions, etc
-	 * @param array $params shareId 'id' and the parameter we want to update
-	 *                      currently supported: permissions, password, publicUpload
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @param int $shareId
+	 * @param int $permissions
+	 * @param string $password
+	 * @param bool $publicUpload
+	 * @param string $expireDate
+	 *
 	 * @return \OC_OCS_Result
 	 */
-	public static function updateShare($params) {
+	public function updateShare($shareId, $permissions, $password, $publicUpload, $expireDate) {
 
-		$share = self::getShareFromId($params['id']);
+		$share = $this->getShareFromId($shareId);
 
 		if(!isset($share['file_source'])) {
-			return new \OC_OCS_Result(null, 404, "wrong share Id, share doesn't exist.");
+			return [
+				'statuscode' => 404, 
+				'message' => 'wrong share Id, share doesn\'t exist.'
+			];
 		}
 
 		try {
-			if(isset($params['_put']['permissions'])) {
-				return self::updatePermissions($share, $params);
-			} elseif (isset($params['_put']['password'])) {
-				return self::updatePassword($share, $params);
-			} elseif (isset($params['_put']['publicUpload'])) {
-				return self::updatePublicUpload($share, $params);
-			} elseif (isset($params['_put']['expireDate'])) {
-				return self::updateExpireDate($share, $params);
+			if(!is_null($permissions)) {
+				return $this->updatePermissions($share, $permissions);
+			} elseif (!is_null($password)) {
+				return $this->updatePassword($share, $password);
+			} elseif (!is_null($publicUpload)) {
+				return $this->updatePublicUpload($share, $publicUpload);
+			} elseif (!is_null($expireDate)) {
+				return $this->updateExpireDate($share, $expireDate);
 			}
 		} catch (\Exception $e) {
-
-			return new \OC_OCS_Result(null, 400, $e->getMessage());
+			return [
+				'statuscode' => 400, 
+				'message' => $e->getMessage()
+			];
 		}
 
 		return new \OC_OCS_Result(null, 400, "Wrong or no update parameter given");
@@ -437,18 +484,17 @@ class OCSApiController extends OCSController {
 	/**
 	 * update permissions for a share
 	 * @param array $share information about the share
-	 * @param array $params contains 'permissions'
+	 * @param int $permissions
 	 * @return \OC_OCS_Result
 	 */
-	private static function updatePermissions($share, $params) {
+	private function updatePermissions($share, $permissions) {
 
 		$itemSource = $share['item_source'];
 		$itemType = $share['item_type'];
 		$shareWith = $share['share_with'];
 		$shareType = $share['share_type'];
-		$permissions = isset($params['_put']['permissions']) ? (int)$params['_put']['permissions'] : null;
 
-		$publicUploadStatus = \OC::$server->getAppConfig()->getValue('core', 'shareapi_allow_public_upload', 'yes');
+		$publicUploadStatus = $this->config->getAppValue('core', 'shareapi_allow_public_upload', 'yes');
 		$publicUploadEnabled = ($publicUploadStatus === 'yes') ? true : false;
 
 
@@ -456,12 +502,18 @@ class OCSApiController extends OCSController {
 		// and we want to set permissions to 1 (read only) or 7 (allow upload)
 		if ( (int)$shareType === \OCP\Share::SHARE_TYPE_LINK ) {
 			if ($publicUploadEnabled === false || ($permissions !== 7 && $permissions !== 1)) {
-				return new \OC_OCS_Result(null, 400, "can't change permission for public link share");
+				return [
+					'statuscode' => 400, 
+					'message' => 'can\'t change permission for public link share'
+				];
 			}
 		}
 
 		if (($permissions & \OCP\Constants::PERMISSION_READ) === 0) {
-			return new \OC_OCS_Result(null, 400, 'invalid permissions');
+			return [
+				'statuscode' => 400, 
+				'message' => 'invalid permissions'
+			];
 		}
 
 		try {
@@ -473,59 +525,73 @@ class OCSApiController extends OCSController {
 					$permissions
 					);
 		} catch (\Exception $e) {
-			return new \OC_OCS_Result(null, 404, $e->getMessage());
+			return [
+				'statuscode' => 404, 
+				'message' => $e->getMessage()
+			];
 		}
 
 		if ($return) {
-			return new \OC_OCS_Result();
+			return [];
 		} else {
-			return new \OC_OCS_Result(null, 404, "couldn't set permissions");
+			return [
+				'statuscode' => 404, 
+				'message' => 'couldn\'t set permissions'
+			];
 		}
 	}
 
 	/**
 	 * enable/disable public upload
 	 * @param array $share information about the share
-	 * @param array $params contains 'publicUpload' which can be 'yes' or 'no'
+	 * @param boolean $publicUpload
 	 * @return \OC_OCS_Result
 	 */
-	private static function updatePublicUpload($share, $params) {
+	private function updatePublicUpload($share, $publicUpload) {
 
-		$publicUploadEnabled = \OC::$server->getAppConfig()->getValue('core', 'shareapi_allow_public_upload', 'yes');
+		$publicUploadEnabled = $this->config->getAppValue('core', 'shareapi_allow_public_upload', 'yes');
 		if($publicUploadEnabled !== 'yes') {
-			return new \OC_OCS_Result(null, 403, "public upload disabled by the administrator");
+			return [
+				'statuscode' => 403, 
+				'message' => 'public upload disabled by the administrator'
+			];
 		}
 
 		if ($share['item_type'] !== 'folder' ||
 				(int)$share['share_type'] !== \OCP\Share::SHARE_TYPE_LINK ) {
-			return new \OC_OCS_Result(null, 400, "public upload is only possible for public shared folders");
+			return [
+				'statuscode' => 400, 
+				'message' => 'public upload is only possible for public shared folders'
+			];
 		}
 
 		// read, create, update (7) if public upload is enabled or
 		// read (1) if public upload is disabled
-		$params['_put']['permissions'] = $params['_put']['publicUpload'] === 'true' ? 7 : 1;
+		$permissions = $publicUpload ? 7 : 1;
 
-		return self::updatePermissions($share, $params);
-
+		return $this->updatePermissions($share, $permissions);
 	}
 
 	/**
 	 * set expire date for public link share
 	 * @param array $share information about the share
-	 * @param array $params contains 'expireDate' which needs to be a well formated date string, e.g DD-MM-YYYY
+	 * @param string $expireDate which needs to be a well formated date string, e.g DD-MM-YYYY
 	 * @return \OC_OCS_Result
 	 */
-	private static function updateExpireDate($share, $params) {
+	private function updateExpireDate($share, $expireDate) {
 		// only public links can have a expire date
 		if ((int)$share['share_type'] !== \OCP\Share::SHARE_TYPE_LINK ) {
-			return new \OC_OCS_Result(null, 400, "expire date only exists for public link shares");
+			return [
+				'statuscode' => 400, 
+				'message' => 'expire date only exists for public link shares'
+			];
 		}
 
 		try {
-			$expireDateSet = \OCP\Share::setExpirationDate($share['item_type'], $share['item_source'], $params['_put']['expireDate'], (int)$share['stime']);
-			$result = ($expireDateSet) ? new \OC_OCS_Result() : new \OC_OCS_Result(null, 404, "couldn't set expire date");
+			$expireDateSet = \OCP\Share::setExpirationDate($share['item_type'], $share['item_source'], $expireDate, (int)$share['stime']);
+			$result = ($expireDateSet) ? [] : ['statuscode' => 404, 'message' => 'couldn\'t set expire date'];
 		} catch (\Exception $e) {
-			$result = new \OC_OCS_Result(null, 404, $e->getMessage());
+			$result = ['statuscode' => 404, 'message' => $e->getMessage()];
 		}
 
 		return $result;
@@ -535,19 +601,21 @@ class OCSApiController extends OCSController {
 	/**
 	 * update password for public link share
 	 * @param array $share information about the share
-	 * @param array $params 'password'
+	 * @param string $password
 	 * @return \OC_OCS_Result
 	 */
-	private static function updatePassword($share, $params) {
-
+	private function updatePassword($share, $password) {
 		$itemSource = $share['item_source'];
 		$itemType = $share['item_type'];
 
 		if( (int)$share['share_type'] !== \OCP\Share::SHARE_TYPE_LINK) {
-			return  new \OC_OCS_Result(null, 400, "password protection is only supported for public shares");
+			return [
+				'statuscode' => 400, 
+				'message' => 'password protection is only supported for public shares'
+			];
 		}
 
-		$shareWith = isset($params['_put']['password']) ? $params['_put']['password'] : null;
+		$shareWith = $password;
 
 		if($shareWith === '') {
 			$shareWith = null;
@@ -564,7 +632,10 @@ class OCSApiController extends OCSController {
 		}
 
 		if (!$checkExists) {
-			return  new \OC_OCS_Result(null, 404, "share doesn't exists, can't change password");
+			return [
+				'statuscode' => 404, 
+				'message' => 'share doesn\'t exists, can\'t change password'
+			];
 		}
 
 		try {
@@ -576,29 +647,41 @@ class OCSApiController extends OCSController {
 					$permissions
 					);
 		} catch (\Exception $e) {
-			return new \OC_OCS_Result(null, 403, $e->getMessage());
+			return [
+				'statuscode' => 403,
+				'message' => $e->getMessage()
+			];
 		}
 
 		if($result) {
-			return new \OC_OCS_Result();
+			return [];
 		}
 
-		return new \OC_OCS_Result(null, 404, "couldn't set password");
+		return [
+			'statuscode' => 404, 
+			'message' => 'couldn\'t set password'
+		];
 	}
 
 	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
 	 * unshare a file/folder
-	 * @param array $params contains the shareID 'id' which should be unshared
+	 *
+	 * @param int $shareId id of the share that is to be deleted
 	 * @return \OC_OCS_Result
 	 */
-	public static function deleteShare($params) {
-
-		$share = self::getShareFromId($params['id']);
+	public function deleteShare($shareId) {
+		$share = $this->getShareFromId($shareId);
 		$fileSource = isset($share['file_source']) ? $share['file_source'] : null;
 		$itemType = isset($share['item_type']) ? $share['item_type'] : null;;
 
 		if($fileSource === null) {
-			return new \OC_OCS_Result(null, 404, "wrong share ID, share doesn't exist.");
+			return [
+				'statuscode' => 404,
+				'message' => 'wrong share ID, share doesn\'t exist.'
+			];
 		}
 
 		$shareWith = isset($share['share_with']) ? $share['share_with'] : null;
@@ -615,14 +698,19 @@ class OCSApiController extends OCSController {
 					$shareType,
 					$shareWith);
 		} catch (\Exception $e) {
-			return new \OC_OCS_Result(null, 404, $e->getMessage());
+			return [
+				'statuscode' => 404,
+				'message' => $e->getMessage(),
+			];
 		}
 
 		if ($return) {
-			return new \OC_OCS_Result();
+			return [];
 		} else {
-			$msg = "Unshare Failed";
-			return new \OC_OCS_Result(null, 404, $msg);
+			return [
+				'statuscode' => 404,
+				'message' => 'Unshare Failed'
+			];
 		}
 	}
 
