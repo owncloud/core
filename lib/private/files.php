@@ -67,6 +67,7 @@ class OC_Files {
 			isset($_SERVER['MOD_X_ACCEL_REDIRECT_ENABLED'])) {
 			$xsendfile = true;
 		}
+		$httpRange = getenv('HTTP_RANGE');
 
 		if (is_array($files) && count($files) === 1) {
 			$files = $files[0];
@@ -101,8 +102,9 @@ class OC_Files {
 
 		if ($get_type === self::FILE) {
 			$zip = false;
-			if ($xsendfile && OC_App::isEnabled('files_encryption')) {
+			if (($xsendfile || $httpRange) && OC_App::isEnabled('files_encryption')) {
 				$xsendfile = false;
+				$httpRange = false;
 			}
 		} else {
 			$zip = new ZipStreamer(false);
@@ -152,6 +154,10 @@ class OC_Files {
 					\OC\Files\Filesystem::readfile($filename);
 				}
 			} else {
+				if ($httpRange) {
+					\OC\Files\Filesystem::setFileRange($filename, $httpRange);
+				}
+				
 				\OC\Files\Filesystem::readfile($filename);
 			}
 		}

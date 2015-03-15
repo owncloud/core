@@ -598,6 +598,10 @@ class Filesystem {
 	static public function readfile($path) {
 		return self::$defaultInstance->readfile($path);
 	}
+	
+	static public function setFileRange($path, $httpRange) {
+		return self::$defaultInstance->setFileRange($path, $httpRange);
+	}
 
 	static public function isCreatable($path) {
 		return self::$defaultInstance->isCreatable($path);

@@ -37,6 +37,9 @@ class View {
 
 	/** @var \OC\Files\Cache\Updater */
 	protected $updater;
+	
+	/** @var array **/
+	protected $_fileRange;
 
 	/**
 	 * @param string $root
@@ -313,19 +316,75 @@ class View {
 	 * @throws \OCP\Files\InvalidPathException
 	 */
 	public function readfile($path) {
+		$end = $start = false;
+		if ($this->_fileRange) {
+			list($start, $end) = $this->_fileRange;
+		}
+		
 		$this->assertPathLength($path);
 		@ob_end_clean();
 		$handle = $this->fopen($path, 'rb');
 		if ($handle) {
+			//offset if start is set
+			if ($start !== false) {
+				fseek($handle, $start);
+			}
+			
+			//read the file out in chucks
 			$chunkSize = 8192; // 8 kB chunks
 			while (!feof($handle)) {
+				$offset = ftell($handle);
+				if ($end && $offset >= $end) {
+					break;
+				}
+				if ($end && $offset + $chunkSize >= $end) {
+					$chunkSize = $end - $offset + 1;
+				}
+				
 				echo fread($handle, $chunkSize);
 				flush();
 			}
+			
+			//return read bytes
 			$size = $this->filesize($path);
-			return $size;
+			$startByte = ($start === false)?0:$start;
+			$endByte = ($end === false)?$size:$end;
+			return $endByte - $startByte;
 		}
 		return false;
+	}
+	
+	/**
+	 * Set a byterange for partial content
+	 * @param string $path
+	 * @param string $httpRange
+	 */
+	public function setFileRange($path, $httpRange) {
+		list(, $range) = explode('=', $httpRange);
+		list($start, $end) = explode('-', $range);
+
+		$fileSize = $this->filesize($path);
+		$lastByte = $fileSize - 1;
+
+		if ($start === '') {
+			$start = $fileSize - $end;
+			$end = $lastByte;
+		}
+		if ($end === '') {
+			$end = $lastByte;
+		}
+
+		if ($start > $end || $end > $lastByte || $start > $lastByte) {
+			header("HTTP/1.0 416 Requested Range Not Satisfiable");
+			header("Content-Range: bytes 0-{$lastByte}/{$fileSize}");
+			return;
+		}
+		
+		header('Content-Length: ' . ($end - $start + 1));
+		header("Content-Range: bytes {$start}-{$end}/{$fileSize}");
+		header("HTTP/1.0 206 Partial Content");
+
+		$this->_fileRange = array($start, $end);
 	}
 
 	/**
