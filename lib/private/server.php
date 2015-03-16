@@ -269,6 +269,7 @@ class Server extends SimpleContainer implements IServerContainer {
 				$c->getSession()
 			);
 		});
+		$this->registerParameter('ServerDateTimeZone', new \DateTimeZone('UTC'));
 		$this->registerService('DateTimeFormatter', function(Server $c) {
 			$language = $c->getConfig()->getUserValue($c->getSession()->get('user_id'), 'core', 'lang', null);
 
@@ -761,6 +762,13 @@ class Server extends SimpleContainer implements IServerContainer {
 	 */
 	public function getDateTimeZone() {
 		return $this->query('DateTimeZone');
+	}
+
+	/**
+	 * @return \DateTimeZone
+	 */
+	public function getServerDateTimeZone() {
+		return $this->query('ServerDateTimeZone');
 	}
 
 	/**

@@ -491,6 +491,11 @@ class OC {
 			ini_set('display_errors', 1);
 		}
 
+		try {
+			$serverDateTimeZone = new \DateTimeZone(date_default_timezone_get());
+			\OC::$server->registerParameter('ServerDateTimeZone', $serverDateTimeZone);
+		} catch (\Exception $e) {
+		}
 		date_default_timezone_set('UTC');
 		ini_set('arg_separator.output', '&amp;');
 
