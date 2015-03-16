@@ -61,11 +61,11 @@ class OC_Log_Owncloud {
 		if($level>=$minLevel) {
 			// default to ISO8601
 			$format = OC_Config::getValue('logdateformat', 'c');
-			$logtimezone=OC_Config::getValue( "logtimezone", 'UTC' );
+			$logtimezone = OC_Config::getValue("logtimezone");
 			try {
 				$timezone = new DateTimeZone($logtimezone);
 			} catch (Exception $e) {
-				$timezone = new DateTimeZone('UTC');
+				$timezone = \OC::$server->getDateTimeZone()->getServerTimeZone();
 			}
 			$time = new DateTime(null, $timezone);
 			$request = \OC::$server->getRequest();

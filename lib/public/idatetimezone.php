@@ -15,7 +15,16 @@ namespace OCP;
 
 interface IDateTimeZone {
 	/**
+	 * Get the timezone of the current user
+	 *
 	 * @return \DateTimeZone
 	 */
 	public function getTimeZone();
+
+	/**
+	 * Get the timezone of the server
+	 *
+	 * @return \DateTimeZone
+	 */
+	public function getServerTimeZone();
 }

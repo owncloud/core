@@ -46,14 +46,14 @@ class DateTimeZone implements IDateTimeZone {
 			if ($this->session->exists('timezone')) {
 				return $this->guessTimeZoneFromOffset($this->session->get('timezone'));
 			}
-			$timeZone = $this->getDefaultTimeZone();
+			return $this->getServerTimeZone();
 		}
 
 		try {
 			return new \DateTimeZone($timeZone);
 		} catch (\Exception $e) {
 			\OCP\Util::writeLog('datetimezone', 'Failed to created DateTimeZone "' . $timeZone . "'", \OCP\Util::DEBUG);
-			return new \DateTimeZone($this->getDefaultTimeZone());
+			return $this->getServerTimeZone();
 		}
 	}
 
@@ -91,7 +91,7 @@ class DateTimeZone implements IDateTimeZone {
 
 			// No timezone found, fallback to UTC
 			\OCP\Util::writeLog('datetimezone', 'Failed to find DateTimeZone for offset "' . $offset . "'", \OCP\Util::DEBUG);
-			return new \DateTimeZone($this->getDefaultTimeZone());
+			return $this->getServerTimeZone();
 		}
 	}
 
@@ -100,10 +100,14 @@ class DateTimeZone implements IDateTimeZone {
 	 *
 	 * Falls back to UTC if it is not yet set.
 	 * 
-	 * @return string
+	 * @return \DateTimeZone
 	 */
-	protected function getDefaultTimeZone() {
-		$serverTimeZone = date_default_timezone_get();
-		return $serverTimeZone ?: 'UTC';
+	public function getServerTimeZone() {
+		try {
+			$serverTimeZone = date_default_timezone_get();
+			return new \DateTimeZone($serverTimeZone);
+		} catch (\Exception $e) {
+			return new \DateTimeZone('UTC');
+		}
 	}
 }
