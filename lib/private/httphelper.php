@@ -83,6 +83,12 @@ class HTTPHelper {
 				curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
 				curl_setopt($curl, CURLOPT_MAXREDIRS, $max_redirects);
 				$data = curl_exec($curl);
+				$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+				if ($code != 200) {
+					\OC_LOG::write('core',
+						'Downloading '.$url.' failed with status code '.$code, 2);
+					$data = false;
+				}
 			} else {
 				curl_setopt($curl, CURLOPT_FOLLOWLOCATION, false);
 				$mr = $max_redirects;
@@ -119,6 +125,12 @@ class HTTPHelper {
 					$data = false;
 				} else {
 					$data = curl_exec($curl);
+					$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+					if ($code != 200) {
+						\OC_LOG::write('core',
+							'Downloading '.$url.' failed with status code '.$code, 2);
+						$data = false;
+					}
 				}
 			}
 			curl_close($curl);
