@@ -175,7 +175,7 @@ class Local {
 	/**
 	 * get share from all files in a given folder (non-recursive)
 	 * @param array $params contains 'path' to the folder
-	 * @return \OC_OCS_Result
+	 * @return array
 	 */
 	private static function getSharesFromFolder($params) {
 		$path = $params['path'];
@@ -209,7 +209,7 @@ class Local {
 
 	/**
 	 * get files shared with the user
-	 * @return \OC_OCS_Result
+	 * @return array
 	 */
 	private static function getFilesSharedWithMe() {
 		try	{
@@ -234,7 +234,7 @@ class Local {
 	/**
 	 * create a new share
 	 * @param array $params
-	 * @return \OC_OCS_Result
+	 * @return arra
 	 */
 	public static function createShare($params) {
 

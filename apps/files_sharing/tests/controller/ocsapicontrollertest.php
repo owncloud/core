@@ -10,14 +10,9 @@
 
 namespace OCA\Files_Sharing\Controllers;
 
-use OC\Files\Filesystem;
 use OCA\Files_Sharing\Application;
 use OCP\AppFramework\IAppContainer;
 use OCP\Files;
-use OCP\AppFramework\Http\RedirectResponse;
-use OCP\AppFramework\Http\TemplateResponse;
-use OCP\Security\ISecureRandom;
-use OC\Files\View;
 use OCP\Share;
 use OCA\Files_sharing\Tests\TestCase;
 
@@ -28,17 +23,8 @@ class OCSApiControllerTest extends TestCase {
 
 	/** @var IAppContainer */
 	private $container;
-	/** @var string */
-	private $user;
-	/** @var string */
-	private $token;
-	/** @var string */
-	private $oldUser;
 	/** @var OCSApiController */
 	private $OCSApiController;
-	/** @var URLGenerator */
-	private $urlGenerator;
-
 	/** @var \Doctrine\DBAL\Query\QueryBuilder */
 	private $qb;
 
@@ -167,7 +153,7 @@ class OCSApiControllerTest extends TestCase {
 	}
 
 
-	function testEnfoceLinkPassword() {
+	public function testEnfoceLinkPassword() {
 		$appConfig = \OC::$server->getAppConfig();
 		$appConfig->setValue('core', 'shareapi_enforce_links_password', 'yes');
 
@@ -205,7 +191,7 @@ class OCSApiControllerTest extends TestCase {
 	/**
 	 * @medium
 	*/
-	function testSharePermissions() {
+	public function testSharePermissions() {
 
 		// sharing file to a user should work if shareapi_exclude_groups is set
 		// to no
@@ -268,7 +254,7 @@ class OCSApiControllerTest extends TestCase {
 	 * @medium
 	 * @depends testCreateShare
 	 */
-	function testGetAllShares() {
+	public function testGetAllShares() {
 
 		$fileinfo = $this->view->getFileInfo($this->filename);
 
@@ -289,7 +275,7 @@ class OCSApiControllerTest extends TestCase {
 	 * @medium
 	 * @depends testCreateShare
 	 */
-	function testGetShareFromSource() {
+	public function testGetShareFromSource() {
 
 		$fileInfo = $this->view->getFileInfo($this->filename);
 
@@ -299,7 +285,7 @@ class OCSApiControllerTest extends TestCase {
 		\OCP\Share::shareItem('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_LINK,
 				null, 1);
 
-		$result = $this->OCSApiController->getAllShares($this->filename, null, null, null);
+		$result = $this->OCSApiController->getAllShares($this->filename, null, null);
 		$this->assertArrayHasKey('data', $result);
 
 		$this->assertTrue(count($result['data']) === 2);
@@ -315,7 +301,7 @@ class OCSApiControllerTest extends TestCase {
 	 * @medium
 	 * @depends testCreateShare
 	 */
-	function testGetShareFromSourceWithReshares() {
+	public function testGetShareFromSourceWithReshares() {
 
 		$fileInfo = $this->view->getFileInfo($this->filename);
 
@@ -332,7 +318,7 @@ class OCSApiControllerTest extends TestCase {
 		// login as user1 again
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
 
-		$result = $this->OCSApiController->getAllShares($this->filename, null, null, null);
+		$result = $this->OCSApiController->getAllShares($this->filename, null, null);
 		$this->assertArrayHasKey('data', $result);
 
 		// test should return one share
@@ -361,7 +347,7 @@ class OCSApiControllerTest extends TestCase {
 	 * @medium
 	 * @depends testCreateShare
 	 */
-	function testGetShareFromId() {
+	public function testGetShareFromId() {
 
 		$fileInfo = $this->view->getFileInfo($this->filename);
 
@@ -379,16 +365,12 @@ class OCSApiControllerTest extends TestCase {
 		// get first element
 		$share = reset($result);
 
-		/* TODO: Mock DB
-
 		// call getShare() with share ID
 		$result = $this->OCSApiController->getShare($share['id']);
 		$this->assertArrayHasKey('data', $result);
 
 		// test should return one share created from testCreateShare()
 		$this->assertEquals(1, count($result['data']));
-
-		*/
 
 		\OCP\Share::unshare('file', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_USER,
 			self::TEST_FILES_SHARING_API_USER2);
@@ -398,7 +380,7 @@ class OCSApiControllerTest extends TestCase {
 	/**
 	 * @medium
 	 */
-	function testGetShareFromFolder() {
+	public function testGetShareFromFolder() {
 
 		$fileInfo1 = $this->view->getFileInfo($this->filename);
 		$fileInfo2 = $this->view->getFileInfo($this->folder.'/'.$this->filename);
@@ -432,7 +414,7 @@ class OCSApiControllerTest extends TestCase {
 	 * share a folder, than reshare a file within the shared folder and check if we construct the correct path
 	 * @medium
 	 */
-	function testGetShareFromFolderReshares() {
+	public function testGetShareFromFolderReshares() {
 
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
 
@@ -489,7 +471,7 @@ class OCSApiControllerTest extends TestCase {
 	 * reshare a sub folder and check if we get the correct path
 	 * @medium
 	 */
-	function testGetShareFromSubFolderReShares() {
+	public function testGetShareFromSubFolderReShares() {
 
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
 
@@ -534,7 +516,7 @@ class OCSApiControllerTest extends TestCase {
 	 * test re-re-share of folder if the path gets constructed correctly
 	 * @medium
 	 */
-	function testGetShareFromFolderReReShares() {
+	public function testGetShareFromFolderReReShares() {
 
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
 
@@ -593,7 +575,7 @@ class OCSApiControllerTest extends TestCase {
 	 * test multiple shared folder if the path gets constructed correctly
 	 * @medium
 	 */
-	function testGetShareMultipleSharedFolder() {
+	public function testGetShareMultipleSharedFolder() {
 
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
 
@@ -669,7 +651,7 @@ class OCSApiControllerTest extends TestCase {
 	 * test re-re-share of folder if the path gets constructed correctly
 	 * @medium
 	 */
-	function testGetShareFromFileReReShares() {
+	public function testGetShareFromFileReReShares() {
 
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
 
@@ -726,23 +708,17 @@ class OCSApiControllerTest extends TestCase {
 	/**
 	 * @medium
 	 */
-	function testGetShareFromUnknownId() {
-
-		/* TODO: Finish mock db
+	public function testGetShareFromUnknownId() {
 		$result = $this->OCSApiController->getShare(0);
-		print_r($result);
-
-		$this->assertEquals(404, $result->getStatusCode());
-		$meta = $result->getMeta();
-		$this->assertEquals('share doesn\'t exist', $meta['message']);
-		*/
+		$this->assertArrayHasKey('statuscode', $result);
+		$this->assertEquals(404, $result['statuscode']);
 	}
 
 	/**
 	 * @medium
 	 * @depends testCreateShare
 	 */
-	function testUpdateShare() {
+	public function testUpdateShare() {
 
 		$fileInfo = $this->view->getFileInfo($this->filename);
 
@@ -875,7 +851,7 @@ class OCSApiControllerTest extends TestCase {
 	/**
 	 * @medium
 	 */
-	function testUpdateShareUpload() {
+	public function testUpdateShareUpload() {
 		//Allow public uploads
 		$this->container['Config']->method('getAppValue')->willReturn('yes');
 
@@ -929,7 +905,7 @@ class OCSApiControllerTest extends TestCase {
 	/**
 	 * @medium
 	 */
-	function testUpdateShareExpireDate() {
+	public function testUpdateShareExpireDate() {
 
 		$fileInfo = $this->view->getFileInfo($this->folder);
 		$config = \OC::$server->getConfig();
@@ -991,7 +967,7 @@ class OCSApiControllerTest extends TestCase {
 	 * @medium
 	 * @depends testCreateShare
 	 */
-	function testDeleteShare() {
+	public function testDeleteShare() {
 
 		$fileInfo = $this->view->getFileInfo($this->filename);
 
@@ -1019,7 +995,7 @@ class OCSApiControllerTest extends TestCase {
 	/**
 	 * test unshare of a reshared file
 	 */
-	function testDeleteReshare() {
+	public function testDeleteReshare() {
 
 		// user 1 shares a folder with user2
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
@@ -1108,6 +1084,8 @@ class OCSApiControllerTest extends TestCase {
 
 	/**
 	 * Post init mount points hook for mounting simulated ext storage
+	 *
+	 * @param array $data
 	 */
 	public static function initTestMountPointsHook($data) {
 		if ($data['user'] === self::TEST_FILES_SHARING_API_USER1) {
