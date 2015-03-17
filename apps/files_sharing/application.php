@@ -14,6 +14,7 @@ use OC\AppFramework\Utility\SimpleContainer;
 use OCA\Files_Sharing\Controllers\ExternalSharesController;
 use OCA\Files_Sharing\Controllers\ShareController;
 use OCA\Files_Sharing\Middleware\SharingCheckMiddleware;
+use OCA\Files_Sharing\Controllers\OCSApiController;
 use \OCP\AppFramework\App;
 
 /**
@@ -55,6 +56,15 @@ class Application extends App {
 				$c->query('ExternalManager')
 			);
 		});
+		$container->registerService('OCSApiController', function(SimpleContainer $c) use ($server) {
+			return new OCSApiController(
+				$c->query('AppName'),
+				$c->query('Request'),
+				$c->query('Logger'),
+				$c->query('DatabaseConnection'),
+				$c->query('Config')
+			);
+		});
 
 		/**
 		 * Core class wrappers
@@ -79,6 +89,16 @@ class Application extends App {
 					$uid
 			);
 		});
+		$container->registerService('DatabaseConnection', function(SimpleContainer $c) use ($server){
+			return $server->getDatabaseConnection();
+		});
+		$container->registerService('Logger', function(SimpleContainer $c) use ($server){
+			return $server->getLogger();
+		});
+		$container->registerService('Config', function(SimpleContainer $c) use ($server){
+			return $server->getConfig();
+		});
+
 
 		/**
 		 * Middleware
