@@ -375,6 +375,10 @@ table.grid td.date{
 	display: inline-block;
 }
 
+#maxUploadSizeUnit {
+	vertical-align: top;
+}
+
 /* correctly display help icons next to headings */
 .icon-info {
 	padding: 11px 20px;

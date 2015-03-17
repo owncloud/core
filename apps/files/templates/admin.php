@@ -2,12 +2,31 @@
 
 	<form name="filesForm" class="section" action="#" method="post">
 		<h2><?php p($l->t('File handling')); ?></h2>
-		<label for="maxUploadSize"><?php p($l->t( 'Maximum upload size' )); ?> </label>
-		<input type="text" name='maxUploadSize' id="maxUploadSize" value='<?php p($_['uploadMaxFilesize']) ?>' <?php if(!$_['uploadChangable']) { p('disabled'); } ?> />
+		<label for="maxUploadSizeValue"><?php p($l->t( 'Maximum upload size' )); ?> </label>
+		<input type="text" name='maxUploadSizeValue' id="maxUploadSizeValue"
+			<?php if (!$_['uploadChangable']): ?>
+				value="<?php p($_['uploadMaxFileSizeValue'] . ' ' . $_['uploadMaxFileSizeUnit']) ?>" disabled="disabled"
+			<?php else: ?>
+				value="<?php p($_['uploadMaxFileSizeValue']); ?>"
+			<?php endif;?> />
+
+		<?php if ($_['uploadChangable']): ?>
+		<select name="maxUploadSizeUnit" id="maxUploadSizeUnit" <?php if(!$_['uploadChangable']) { p('disabled'); } ?>>
+			<?php foreach ($_['maxFileSizeUnits'] as $unit):
+				$selected = '';
+				if ($unit == $_['uploadMaxFileSizeUnit']):
+					$selected = ' selected="selected"';
+				endif;
+			?>
+				<option value="<?php p($unit)?>" <?php p($selected) ?>><?php p($unit) ?></option>
+			<?php endforeach;?>
+		</select>
+		<?php endif;?>
+
 		<?php if($_['displayMaxPossibleUploadSize']):?>
 			(<?php p($l->t('max. possible: ')); p($_['maxPossibleUploadSize']) ?>)
 		<?php endif;?>
-		<br/>
+		<br />
 		<input type="hidden" value="<?php p($_['requesttoken']); ?>" name="requesttoken" />
 		<?php if($_['uploadChangable']): ?>
 			<input type="submit" name="submitFilesAdminSettings" id="submitFilesAdminSettings"
