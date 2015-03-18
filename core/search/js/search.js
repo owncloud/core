@@ -104,14 +104,6 @@
 					if (typeof size !== 'number') {
 						size = 30;
 					}
-					if (typeof inApps !== 'object') {
-						var currentApp = getCurrentApp();
-						if(currentApp) {
-							inApps = [currentApp];
-						} else {
-							inApps = [];
-						}
-					}
 					// prevent double pages
 					if ($searchResults && query === lastQuery && page === lastPage && size === lastSize) {
 						return;
@@ -128,14 +120,27 @@
 						$status.html(t('core', 'Searching other places')+'<img class="spinner" alt="search in progress" src="'+OC.webroot+'/core/img/loading.gif" />');
 
 						// do the actual search query
-						$.getJSON(OC.generateUrl('core/search'), {query:query, inApps:inApps, page:page, size:size }, function(results) {
-							lastResults = results;
-							if (page === 1) {
-								showResults(results);
-							} else {
-								addResults(results);
-							}
-						});
+						// only pass inApps when set
+						if (typeof inApps === 'object') {
+							$.getJSON(OC.generateUrl('core/search'), {query:query, inApps:inApps, page:page, size:size }, function(results) {
+								lastResults = results;
+								if (page === 1) {
+									showResults(results);
+								} else {
+									addResults(results);
+								}
+							});
+						}
+						else {
+							$.getJSON(OC.generateUrl('core/search'), {query:query, page:page, size:size }, function(results) {
+								lastResults = results;
+								if (page === 1) {
+									showResults(results);
+								} else {
+									addResults(results);
+								}
+							});	
+						}
 					}, 500);
 				}
 			};
