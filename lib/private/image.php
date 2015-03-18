@@ -545,7 +545,7 @@ class OC_Image {
 			default:
 
 				// this is mostly file created from encrypted file
-				$this->resource = imagecreatefromstring(\OC\Files\Filesystem::file_get_contents(\OC\Files\Filesystem::getLocalPath($imagePath)));
+				$this->resource = imagecreatefromstring(\OC\Files\Filesystem::file_get_contents($imagePath));
 				$iType = IMAGETYPE_PNG;
 				$this->logger->debug('OC_Image->loadFromFile, Default', array('app' => 'core'));
 				break;

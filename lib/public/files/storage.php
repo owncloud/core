@@ -298,6 +298,7 @@ interface Storage {
 	 * @return string|false
 	 */
 	public function getLocalFolder($path);
+
 	/**
 	 * check if a file or folder has been updated since $time
 	 *

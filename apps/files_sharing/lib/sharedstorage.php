@@ -86,7 +86,7 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 		$source = $this->getFile($target);
 		if ($source) {
 			if (!isset($source['fullPath'])) {
-				\OC\Files\Filesystem::initMountPoints($source['fileOwner']);
+				\OC::$server->setupFilesystem($source['fileOwner']);
 				$mount = \OC\Files\Filesystem::getMountByNumericId($source['storage']);
 				if (is_array($mount) && !empty($mount)) {
 					$this->files[$target]['fullPath'] = $mount[key($mount)]->getMountPoint() . $source['path'];

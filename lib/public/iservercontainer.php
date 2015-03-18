@@ -79,6 +79,13 @@ interface IServerContainer {
 	function getRootFolder();
 
 	/**
+	 * Setup the filesystem for a user
+	 *
+	 * @param string $userId
+	 */
+	function setupFilesystem($userId);
+
+	/**
 	 * Returns a view to ownCloud's files folder
 	 *
 	 * @param string $userId user ID

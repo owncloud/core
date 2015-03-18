@@ -12,9 +12,6 @@ use OC\Files\Filesystem;
 use OCP\Share;
 
 class EtagTest extends \Test\TestCase {
-	private $datadir;
-
-	private $tmpDir;
 
 	private $uid;
 
@@ -22,9 +19,6 @@ class EtagTest extends \Test\TestCase {
 	 * @var \OC_User_Dummy $userBackend
 	 */
 	private $userBackend;
-
-	/** @var \OC\Files\Storage\Storage */
-	private $originalStorage;
 
 	protected function setUp() {
 		parent::setUp();
@@ -34,47 +28,29 @@ class EtagTest extends \Test\TestCase {
 		\OCP\Share::registerBackend('file', 'OC_Share_Backend_File');
 		\OCP\Share::registerBackend('folder', 'OC_Share_Backend_Folder', 'file');
 
-		$this->datadir = \OC_Config::getValue('datadirectory');
-		$this->tmpDir = \OC_Helper::tmpFolder();
-		\OC_Config::setValue('datadirectory', $this->tmpDir);
-		$this->uid = \OC_User::getUser();
-		\OC_User::setUserId(null);
-
 		$this->userBackend = new \OC_User_Dummy();
 		\OC_User::useBackend($this->userBackend);
-		$this->originalStorage = \OC\Files\Filesystem::getStorage('/');
-		\OC_Util::tearDownFS();
-	}
-
-	protected function tearDown() {
-		\OC_Config::setValue('datadirectory', $this->datadir);
-		\OC_User::setUserId($this->uid);
-		\OC_Util::setupFS($this->uid);
-		\OC\Files\Filesystem::mount($this->originalStorage, array(), '/');
-
-		parent::tearDown();
 	}
 
 	public function testNewUser() {
 		$user1 = $this->getUniqueID('user_');
 		$this->userBackend->createUser($user1, '');
 
-		\OC_Util::tearDownFS();
-		\OC_User::setUserId($user1);
-		\OC_Util::setupFS($user1);
-		Filesystem::mkdir('/folder');
-		Filesystem::mkdir('/folder/subfolder');
-		Filesystem::file_put_contents('/foo.txt', 'asd');
-		Filesystem::file_put_contents('/folder/bar.txt', 'fgh');
-		Filesystem::file_put_contents('/folder/subfolder/qwerty.txt', 'jkl');
+		Filesystem::mount('\OC\Files\Storage\Temporary', array(), '/' . $user1);
+		$folder = \OC::$server->getUserFolder($user1);
+		$folder->newFolder('/folder');
+		$folder->newFolder('/folder/subfolder');
+		$folder->newFile('/foo.txt')->putContent('asd');
+		$folder->newFile('/folder/bar.txt')->putContent('fgh');
+		$folder->newFile('/folder/subfolder/qwerty.txt')->putContent('jkl');
 
 		$files = array('/foo.txt', '/folder/bar.txt', '/folder/subfolder', '/folder/subfolder/qwerty.txt');
-		$originalEtags = $this->getEtags($files);
+		$originalEtags = $this->getEtags($folder, $files);
 
-		$scanner = new \OC\Files\Utils\Scanner($user1, \OC::$server->getDatabaseConnection());
+		$scanner = new \OC\Files\Utils\Scanner($user1, \OC::$server->getDatabaseConnection(), \OC::$server->getUserFolder($user1));
 		$scanner->backgroundScan('/');
 
-		$newEtags = $this->getEtags($files);
+		$newEtags = $this->getEtags($folder, $files);
 		// loop over array and use assertSame over assertEquals to prevent false positives
 		foreach ($originalEtags as $file => $originalEtag) {
 			$this->assertSame($originalEtag, $newEtags[$file]);
@@ -82,13 +58,15 @@ class EtagTest extends \Test\TestCase {
 	}
 
 	/**
+	 * @param \OCP\Files\Folder $folder
 	 * @param string[] $files
+	 * @return string[]
 	 */
-	private function getEtags($files) {
+	private function getEtags($folder, $files) {
 		$etags = array();
 		foreach ($files as $file) {
-			$info = Filesystem::getFileInfo($file);
-			$etags[$file] = $info['etag'];
+			$node = $folder->get($file);
+			$etags[$file] = $node->getEtag();
 		}
 		return $etags;
 	}

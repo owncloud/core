@@ -12,9 +12,8 @@ use OC\Files\Cache\Cache;
 use OC\Files\FileInfo;
 use OC\Files\Mount\MountPoint;
 use OC\Files\Node\Node;
+use OC\Files\Storage\StorageFactory as Loader;
 use OCP\Files\NotFoundException;
-use OCP\Files\NotPermittedException;
-use OC\Files\View;
 
 class Folder extends \Test\TestCase {
 	private $user;
@@ -86,7 +85,7 @@ class Folder extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = new \OC\Files\Node\Root($manager, $view, $this->user);
+		$root = new \OC\Files\Node\Root($manager, new Loader(), $view);
 		$root->listen('\OC\Files', 'preDelete', $preListener);
 		$root->listen('\OC\Files', 'postDelete', $postListener);
 
@@ -395,9 +394,21 @@ class Folder extends \Test\TestCase {
 			->with('/bar/foo')
 			->will($this->returnValue(array()));
 
-		$view->expects($this->once())
-			->method('resolvePath')
-			->will($this->returnValue(array($storage, 'foo')));
+		$mount = $this->getMockBuilder('\OC\Files\Mount\MountPoint')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$mount->expects($this->once())
+			->method('getStorage')
+			->will($this->returnValue($storage));
+
+		$mount->expects($this->once())
+			->method('getInternalPath')
+			->will($this->returnValue('foo'));
+
+		$root->expects($this->once())
+			->method('getMount')
+			->will($this->returnValue($mount));
 
 		$node = new \OC\Files\Node\Folder($root, $view, '/bar/foo');
 		$result = $node->search('qw');
@@ -411,7 +422,7 @@ class Folder extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array('getUser', 'getMountsIn'), array($manager, $view, $this->user));
+		$root = $this->getMock('\OC\Files\Node\Root', array('getUser', 'getMountsIn', 'getMount'), array($manager, $view, $this->user));
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
@@ -435,9 +446,21 @@ class Folder extends \Test\TestCase {
 			->with('')
 			->will($this->returnValue(array()));
 
-		$view->expects($this->once())
-			->method('resolvePath')
-			->will($this->returnValue(array($storage, 'files')));
+		$mount = $this->getMockBuilder('\OC\Files\Mount\MountPoint')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$mount->expects($this->once())
+			->method('getStorage')
+			->will($this->returnValue($storage));
+
+		$mount->expects($this->once())
+			->method('getInternalPath')
+			->will($this->returnValue('files'));
+
+		$root->expects($this->once())
+			->method('getMount')
+			->will($this->returnValue($mount));
 
 		$result = $root->search('qw');
 		$this->assertEquals(1, count($result));
@@ -473,9 +496,21 @@ class Folder extends \Test\TestCase {
 			->with('/bar/foo')
 			->will($this->returnValue(array()));
 
-		$view->expects($this->once())
-			->method('resolvePath')
-			->will($this->returnValue(array($storage, 'foo')));
+		$mount = $this->getMockBuilder('\OC\Files\Mount\MountPoint')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$mount->expects($this->once())
+			->method('getStorage')
+			->will($this->returnValue($storage));
+
+		$mount->expects($this->once())
+			->method('getInternalPath')
+			->will($this->returnValue('foo'));
+
+		$root->expects($this->once())
+			->method('getMount')
+			->will($this->returnValue($mount));
 
 		$node = new \OC\Files\Node\Folder($root, $view, '/bar/foo');
 		$result = $node->searchByTag('tag1', 'user1');
@@ -534,9 +569,21 @@ class Folder extends \Test\TestCase {
 			->with('/bar/foo')
 			->will($this->returnValue(array($subMount)));
 
-		$view->expects($this->once())
-			->method('resolvePath')
-			->will($this->returnValue(array($storage, 'foo')));
+		$mount = $this->getMockBuilder('\OC\Files\Mount\MountPoint')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$mount->expects($this->once())
+			->method('getStorage')
+			->will($this->returnValue($storage));
+
+		$mount->expects($this->once())
+			->method('getInternalPath')
+			->will($this->returnValue('foo'));
+
+		$root->expects($this->once())
+			->method('getMount')
+			->will($this->returnValue($mount));
 
 
 		$node = new \OC\Files\Node\Folder($root, $view, '/bar/foo');
@@ -560,7 +607,7 @@ class Folder extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array('getUser', 'getMountsIn', 'getMount'), array($manager, $view, $this->user));
+		$root = $this->getMock('\OC\Files\Node\Root', array('getUser', 'getMountsIn', 'getMount'), array($manager, new Loader(), $view));
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
@@ -603,7 +650,7 @@ class Folder extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array('getUser', 'getMountsIn', 'getMount'), array($manager, $view, $this->user));
+		$root = $this->getMock('\OC\Files\Node\Root', array('getUser', 'getMountsIn', 'getMount'), array($manager, new Loader(), $view));
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));
@@ -641,7 +688,7 @@ class Folder extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = $this->getMock('\OC\Files\Node\Root', array('getUser', 'getMountsIn', 'getMount'), array($manager, $view, $this->user));
+		$root = $this->getMock('\OC\Files\Node\Root', array('getUser', 'getMountsIn', 'getMount'), array($manager, new Loader(), $view));
 		$root->expects($this->any())
 			->method('getUser')
 			->will($this->returnValue($this->user));

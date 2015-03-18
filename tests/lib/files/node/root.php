@@ -8,6 +8,7 @@
 
 namespace Test\Files\Node;
 
+use OC\Files\Storage\StorageFactory as Loader;
 use OC\Files\FileInfo;
 use OCP\Files\NotPermittedException;
 use OC\Files\Mount\Manager;
@@ -34,7 +35,7 @@ class Root extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = new \OC\Files\Node\Root($manager, $view, $this->user);
+		$root = new \OC\Files\Node\Root($manager, new Loader(), $view);
 
 		$view->expects($this->once())
 			->method('getFileInfo')
@@ -70,7 +71,7 @@ class Root extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = new \OC\Files\Node\Root($manager, $view, $this->user);
+		$root = new \OC\Files\Node\Root($manager, new Loader(), $view);
 
 		$view->expects($this->once())
 			->method('file_exists')
@@ -90,7 +91,7 @@ class Root extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = new \OC\Files\Node\Root($manager, $view, $this->user);
+		$root = new \OC\Files\Node\Root($manager, new Loader(), $view);
 
 		$root->get('/../foo');
 	}
@@ -104,7 +105,7 @@ class Root extends \Test\TestCase {
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
 		$view = $this->getMock('\OC\Files\View');
-		$root = new \OC\Files\Node\Root($manager, $view, $this->user);
+		$root = new \OC\Files\Node\Root($manager, new Loader(), $view);
 
 		$root->get('/bar/foo');
 	}

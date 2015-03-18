@@ -42,7 +42,7 @@ class Trashbin {
 
 	public static function getUidAndFilename($filename) {
 		$uid = \OC\Files\Filesystem::getOwner($filename);
-		\OC\Files\Filesystem::initMountPoints($uid);
+		\OC::$server->setupFilesystem($uid);
 		if ($uid != \OCP\User::getUser()) {
 			$info = \OC\Files\Filesystem::getFileInfo($filename);
 			$ownerView = new \OC\Files\View('/' . $uid . '/files');

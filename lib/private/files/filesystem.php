@@ -30,22 +30,18 @@
 
 namespace OC\Files;
 
-use OC\Files\Storage\StorageFactory;
-
 class Filesystem {
-
-	/**
-	 * @var Mount\Manager $mounts
-	 */
-	private static $mounts;
-
-	public static $loaded = false;
 	/**
 	 * @var \OC\Files\View $defaultInstance
 	 */
 	static private $defaultInstance;
 
-	static private $usersSetup = array();
+	/**
+	 * @var \OCP\IUser
+	 */
+	static public $activeUser;
+
+	static public $loaded;
 
 	static private $normalizedPathCache = array();
 
@@ -167,11 +163,7 @@ class Filesystem {
 	const signal_param_users = 'users';
 
 	/**
-	 * @var \OC\Files\Storage\StorageFactory $loader
-	 */
-	private static $loader;
-
-	/**
+	 * @param string $wrapperName
 	 * @param callable $wrapper
 	 */
 	public static function addStorageWrapper($wrapperName, $wrapper) {
@@ -188,10 +180,9 @@ class Filesystem {
 	 * @return \OCP\Files\Storage\IStorageFactory
 	 */
 	public static function getLoader() {
-		if (!self::$loader) {
-			self::$loader = new StorageFactory();
-		}
-		return self::$loader;
+		/** @var \OC\Files\Node\Root $root */
+		$root = \OC::$server->getRootFolder();
+		return $root->getStorageLoader();
 	}
 
 	/**
@@ -200,10 +191,9 @@ class Filesystem {
 	 * @return \OC\Files\Mount\Manager
 	 */
 	public static function getMountManager() {
-		if (!self::$mounts) {
-			\OC_Util::setupFS();
-		}
-		return self::$mounts;
+		/** @var \OC\Files\Node\Root $root */
+		$root = \OC::$server->getRootFolder();
+		return $root->getMountManager();
 	}
 
 	/**
@@ -216,10 +206,9 @@ class Filesystem {
 	 * @return string
 	 */
 	static public function getMountPoint($path) {
-		if (!self::$mounts) {
-			\OC_Util::setupFS();
-		}
-		$mount = self::$mounts->find($path);
+		/** @var \OC\Files\Node\Root $root */
+		$root = \OC::$server->getRootFolder();
+		$mount = $root->getMount($path);
 		if ($mount) {
 			return $mount->getMountPoint();
 		} else {
@@ -234,11 +223,10 @@ class Filesystem {
 	 * @return string[]
 	 */
 	static public function getMountPoints($path) {
-		if (!self::$mounts) {
-			\OC_Util::setupFS();
-		}
+		/** @var \OC\Files\Node\Root $root */
+		$root = \OC::$server->getRootFolder();
+		$mounts = $root->getMountsIn($path);
 		$result = array();
-		$mounts = self::$mounts->findIn($path);
 		foreach ($mounts as $mount) {
 			$result[] = $mount->getMountPoint();
 		}
@@ -252,10 +240,9 @@ class Filesystem {
 	 * @return \OC\Files\Storage\Storage
 	 */
 	public static function getStorage($mountPoint) {
-		if (!self::$mounts) {
-			\OC_Util::setupFS();
-		}
-		$mount = self::$mounts->find($mountPoint);
+		/** @var \OC\Files\Node\Root $root */
+		$root = \OC::$server->getRootFolder();
+		$mount = $root->getMount($mountPoint);
 		return $mount->getStorage();
 	}
 
@@ -264,10 +251,9 @@ class Filesystem {
 	 * @return Mount\MountPoint[]
 	 */
 	public static function getMountByStorageId($id) {
-		if (!self::$mounts) {
-			\OC_Util::setupFS();
-		}
-		return self::$mounts->findByStorageId($id);
+		/** @var \OC\Files\Node\Root $root */
+		$root = \OC::$server->getRootFolder();
+		return $root->getMountByStorageId($id);
 	}
 
 	/**
@@ -275,10 +261,9 @@ class Filesystem {
 	 * @return Mount\MountPoint[]
 	 */
 	public static function getMountByNumericId($id) {
-		if (!self::$mounts) {
-			\OC_Util::setupFS();
-		}
-		return self::$mounts->findByNumericId($id);
+		/** @var \OC\Files\Node\Root $root */
+		$root = \OC::$server->getRootFolder();
+		return $root->getMountByNumericStorageId($id);
 	}
 
 	/**
@@ -288,39 +273,13 @@ class Filesystem {
 	 * @return array an array consisting of the storage and the internal path
 	 */
 	static public function resolvePath($path) {
-		if (!self::$mounts) {
-			\OC_Util::setupFS();
-		}
-		$mount = self::$mounts->find($path);
+		/** @var \OC\Files\Node\Root $root */
+		$root = \OC::$server->getRootFolder();
+		$mount = $root->getMount($path);
 		if ($mount) {
 			return array($mount->getStorage(), rtrim($mount->getInternalPath($path), '/'));
 		} else {
 			return array(null, null);
-		}
-	}
-
-	static public function init($user, $root) {
-		if (self::$defaultInstance) {
-			return false;
-		}
-		self::getLoader();
-		self::$defaultInstance = new View($root);
-
-		if (!self::$mounts) {
-			self::$mounts = new Mount\Manager();
-		}
-
-		//load custom mount config
-		self::initMountPoints($user);
-
-		self::$loaded = true;
-
-		return true;
-	}
-
-	static public function initMounts() {
-		if (!self::$mounts) {
-			self::$mounts = new Mount\Manager();
 		}
 	}
 
@@ -330,79 +289,7 @@ class Filesystem {
 	 * @param string $user
 	 */
 	public static function initMountPoints($user = '') {
-		if ($user == '') {
-			$user = \OC_User::getUser();
-		}
-		if (isset(self::$usersSetup[$user])) {
-			return;
-		}
-		self::$usersSetup[$user] = true;
-
-		$root = \OC_User::getHome($user);
-
-		$userObject = \OC_User::getManager()->get($user);
-
-		if (!is_null($userObject)) {
-			$homeStorage = \OC_Config::getValue( 'objectstore' );
-			if (!empty($homeStorage)) {
-				// sanity checks
-				if (empty($homeStorage['class'])) {
-					\OCP\Util::writeLog('files', 'No class given for objectstore', \OCP\Util::ERROR);
-				}
-				if (!isset($homeStorage['arguments'])) {
-					$homeStorage['arguments'] = array();
-				}
-				// instantiate object store implementation
-				$homeStorage['arguments']['objectstore'] = new $homeStorage['class']($homeStorage['arguments']);
-				// mount with home object store implementation
-				$homeStorage['class'] = '\OC\Files\ObjectStore\HomeObjectStoreStorage';
-			} else {
-				$homeStorage = array(
-					//default home storage configuration:
-					'class' => '\OC\Files\Storage\Home',
-					'arguments' => array()
-				);
-			}
-			$homeStorage['arguments']['user'] = $userObject;
-
-			// check for legacy home id (<= 5.0.12)
-			if (\OC\Files\Cache\Storage::exists('local::' . $root . '/')) {
-				$homeStorage['arguments']['legacy'] = true;
-			}
-
-			self::mount($homeStorage['class'], $homeStorage['arguments'], $user);
-
-			$home = \OC\Files\Filesystem::getStorage($user);
-		}
-		else {
-			self::mount('\OC\Files\Storage\Local', array('datadir' => $root), $user);
-		}
-
-		self::mountCacheDir($user);
-
-		// Chance to mount for other storages
-		if($userObject) {
-			$mountConfigManager = \OC::$server->getMountProviderCollection();
-			$mounts = $mountConfigManager->getMountsForUser($userObject);
-			array_walk($mounts, array(self::$mounts, 'addMount'));
-		}
-		\OC_Hook::emit('OC_Filesystem', 'post_initMountPoints', array('user' => $user, 'user_dir' => $root));
-	}
-
-	/**
-	 * Mounts the cache directory
-	 * @param string $user user name
-	 */
-	private static function mountCacheDir($user) {
-		$cacheBaseDir = \OC_Config::getValue('cache_path', '');
-		if ($cacheBaseDir !== '') {
-			$cacheDir = rtrim($cacheBaseDir, '/') . '/' . $user;
-			if (!file_exists($cacheDir)) {
-				mkdir($cacheDir, 0770, true);
-			}
-			// mount external cache dir to "/$user/cache" mount point
-			self::mount('\OC\Files\Storage\Local', array('datadir' => $cacheDir), '/' . $user . '/cache');
-		}
+		\OC::$server->setupFilesystem($user);
 	}
 
 	/**
@@ -411,6 +298,14 @@ class Filesystem {
 	 * @return View
 	 */
 	static public function getView() {
+		if (!self::$defaultInstance) {
+			$user = self::$activeUser;
+			if ($user) {
+				self::$defaultInstance = new View('/' . $user->getUID() . '/files');
+			} else {
+				self::$defaultInstance = new View();
+			}
+		}
 		return self::$defaultInstance;
 	}
 
@@ -418,31 +313,26 @@ class Filesystem {
 	 * tear down the filesystem, removing all storage providers
 	 */
 	static public function tearDown() {
-		self::clearMounts();
+		\OC::$server->getFilesystemFactory()->clear(true);
 		self::$defaultInstance = null;
 	}
 
 	/**
 	 * get the relative path of the root data directory for the current user
+	 *
 	 * @return string
 	 *
 	 * Returns path like /admin/files
 	 */
 	static public function getRoot() {
-		if (!self::$defaultInstance) {
-			return null;
-		}
-		return self::$defaultInstance->getRoot();
+		return self::getView()->getRoot();
 	}
 
 	/**
 	 * clear all mounts and storage backends
 	 */
 	public static function clearMounts() {
-		if (self::$mounts) {
-			self::$usersSetup = array();
-			self::$mounts->clear();
-		}
+		\OC::$server->getFilesystemFactory()->clear();
 	}
 
 	/**
@@ -453,11 +343,8 @@ class Filesystem {
 	 * @param string $mountpoint
 	 */
 	static public function mount($class, $arguments, $mountpoint) {
-		if (!self::$mounts) {
-			\OC_Util::setupFS();
-		}
 		$mount = new Mount\MountPoint($class, $mountpoint, $arguments, self::getLoader());
-		self::$mounts->addMount($mount);
+		self::getMountManager()->addMount($mount);
 	}
 
 	/**
@@ -469,7 +356,7 @@ class Filesystem {
 	 * @return string
 	 */
 	static public function getLocalFile($path) {
-		return self::$defaultInstance->getLocalFile($path);
+		return self::getView()->getLocalFile($path);
 	}
 
 	/**
@@ -477,22 +364,7 @@ class Filesystem {
 	 * @return string
 	 */
 	static public function getLocalFolder($path) {
-		return self::$defaultInstance->getLocalFolder($path);
-	}
-
-	/**
-	 * return path to file which reflects one visible in browser
-	 *
-	 * @param string $path
-	 * @return string
-	 */
-	static public function getLocalPath($path) {
-		$datadir = \OC_User::getHome(\OC_User::getUser()) . '/files';
-		$newpath = $path;
-		if (strncmp($newpath, $datadir, strlen($datadir)) == 0) {
-			$newpath = substr($path, strlen($datadir));
-		}
-		return $newpath;
+		return self::getView()->getLocalFolder($path);
 	}
 
 	/**
@@ -546,6 +418,7 @@ class Filesystem {
 	/**
 	 * check if the directory should be ignored when scanning
 	 * NOTE: the special directories . and .. would cause never ending recursion
+	 *
 	 * @param String $dir
 	 * @return boolean
 	 */
@@ -560,136 +433,136 @@ class Filesystem {
 	 * following functions are equivalent to their php builtin equivalents for arguments/return values.
 	 */
 	static public function mkdir($path) {
-		return self::$defaultInstance->mkdir($path);
+		return self::getView()->mkdir($path);
 	}
 
 	static public function rmdir($path) {
-		return self::$defaultInstance->rmdir($path);
+		return self::getView()->rmdir($path);
 	}
 
 	static public function opendir($path) {
-		return self::$defaultInstance->opendir($path);
+		return self::getView()->opendir($path);
 	}
 
 	static public function readdir($path) {
-		return self::$defaultInstance->readdir($path);
+		return self::getView()->readdir($path);
 	}
 
 	static public function is_dir($path) {
-		return self::$defaultInstance->is_dir($path);
+		return self::getView()->is_dir($path);
 	}
 
 	static public function is_file($path) {
-		return self::$defaultInstance->is_file($path);
+		return self::getView()->is_file($path);
 	}
 
 	static public function stat($path) {
-		return self::$defaultInstance->stat($path);
+		return self::getView()->stat($path);
 	}
 
 	static public function filetype($path) {
-		return self::$defaultInstance->filetype($path);
+		return self::getView()->filetype($path);
 	}
 
 	static public function filesize($path) {
-		return self::$defaultInstance->filesize($path);
+		return self::getView()->filesize($path);
 	}
 
 	static public function readfile($path) {
-		return self::$defaultInstance->readfile($path);
+		return self::getView()->readfile($path);
 	}
 
 	static public function isCreatable($path) {
-		return self::$defaultInstance->isCreatable($path);
+		return self::getView()->isCreatable($path);
 	}
 
 	static public function isReadable($path) {
-		return self::$defaultInstance->isReadable($path);
+		return self::getView()->isReadable($path);
 	}
 
 	static public function isUpdatable($path) {
-		return self::$defaultInstance->isUpdatable($path);
+		return self::getView()->isUpdatable($path);
 	}
 
 	static public function isDeletable($path) {
-		return self::$defaultInstance->isDeletable($path);
+		return self::getView()->isDeletable($path);
 	}
 
 	static public function isSharable($path) {
-		return self::$defaultInstance->isSharable($path);
+		return self::getView()->isSharable($path);
 	}
 
 	static public function file_exists($path) {
-		return self::$defaultInstance->file_exists($path);
+		return self::getView()->file_exists($path);
 	}
 
 	static public function filemtime($path) {
-		return self::$defaultInstance->filemtime($path);
+		return self::getView()->filemtime($path);
 	}
 
 	static public function touch($path, $mtime = null) {
-		return self::$defaultInstance->touch($path, $mtime);
+		return self::getView()->touch($path, $mtime);
 	}
 
 	/**
 	 * @return string
 	 */
 	static public function file_get_contents($path) {
-		return self::$defaultInstance->file_get_contents($path);
+		return self::getView()->file_get_contents($path);
 	}
 
 	static public function file_put_contents($path, $data) {
-		return self::$defaultInstance->file_put_contents($path, $data);
+		return self::getView()->file_put_contents($path, $data);
 	}
 
 	static public function unlink($path) {
-		return self::$defaultInstance->unlink($path);
+		return self::getView()->unlink($path);
 	}
 
 	static public function rename($path1, $path2) {
-		return self::$defaultInstance->rename($path1, $path2);
+		return self::getView()->rename($path1, $path2);
 	}
 
 	static public function copy($path1, $path2) {
-		return self::$defaultInstance->copy($path1, $path2);
+		return self::getView()->copy($path1, $path2);
 	}
 
 	static public function fopen($path, $mode) {
-		return self::$defaultInstance->fopen($path, $mode);
+		return self::getView()->fopen($path, $mode);
 	}
 
 	/**
 	 * @return string
 	 */
 	static public function toTmpFile($path) {
-		return self::$defaultInstance->toTmpFile($path);
+		return self::getView()->toTmpFile($path);
 	}
 
 	static public function fromTmpFile($tmpFile, $path) {
-		return self::$defaultInstance->fromTmpFile($tmpFile, $path);
+		return self::getView()->fromTmpFile($tmpFile, $path);
 	}
 
 	static public function getMimeType($path) {
-		return self::$defaultInstance->getMimeType($path);
+		return self::getView()->getMimeType($path);
 	}
 
 	static public function hash($type, $path, $raw = false) {
-		return self::$defaultInstance->hash($type, $path, $raw);
+		return self::getView()->hash($type, $path, $raw);
 	}
 
 	static public function free_space($path = '/') {
-		return self::$defaultInstance->free_space($path);
+		return self::getView()->free_space($path);
 	}
 
 	static public function search($query) {
-		return self::$defaultInstance->search($query);
+		return self::getView()->search($query);
 	}
 
 	/**
 	 * @param string $query
 	 */
 	static public function searchByMime($query) {
-		return self::$defaultInstance->searchByMime($query);
+		return self::getView()->searchByMime($query);
 	}
 
 	/**
@@ -709,11 +582,12 @@ class Filesystem {
 	 * @return bool
 	 */
 	static public function hasUpdated($path, $time) {
-		return self::$defaultInstance->hasUpdated($path, $time);
+		return self::getView()->hasUpdated($path, $time);
 	}
 
 	/**
 	 * Fix common problems with a file path
+	 *
 	 * @param string $path
 	 * @param bool $stripTrailingSlash
 	 * @param bool $isAbsolutePath
@@ -792,7 +666,7 @@ class Filesystem {
 	 * @return \OC\Files\FileInfo
 	 */
 	public static function getFileInfo($path, $includeMountPoints = true) {
-		return self::$defaultInstance->getFileInfo($path, $includeMountPoints);
+		return self::getView()->getFileInfo($path, $includeMountPoints);
 	}
 
 	/**
@@ -805,7 +679,7 @@ class Filesystem {
 	 * returns the fileid of the updated file
 	 */
 	public static function putFileInfo($path, $data) {
-		return self::$defaultInstance->putFileInfo($path, $data);
+		return self::getView()->putFileInfo($path, $data);
 	}
 
 	/**
@@ -816,7 +690,7 @@ class Filesystem {
 	 * @return \OC\Files\FileInfo[]
 	 */
 	public static function getDirectoryContent($directory, $mimetype_filter = '') {
-		return self::$defaultInstance->getDirectoryContent($directory, $mimetype_filter);
+		return self::getView()->getDirectoryContent($directory, $mimetype_filter);
 	}
 
 	/**
@@ -828,7 +702,7 @@ class Filesystem {
 	 * @return string
 	 */
 	public static function getPath($id) {
-		return self::$defaultInstance->getPath($id);
+		return self::getView()->getPath($id);
 	}
 
 	/**
@@ -838,7 +712,7 @@ class Filesystem {
 	 * @return string
 	 */
 	public static function getOwner($path) {
-		return self::$defaultInstance->getOwner($path);
+		return self::getView()->getOwner($path);
 	}
 
 	/**
@@ -848,6 +722,6 @@ class Filesystem {
 	 * @return string
 	 */
 	static public function getETag($path) {
-		return self::$defaultInstance->getETag($path);
+		return self::getView()->getETag($path);
 	}
 }

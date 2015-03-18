@@ -141,7 +141,7 @@ class Helper {
 	public static function getSharesFromItem($target) {
 		$result = array();
 		$owner = \OC\Files\Filesystem::getOwner($target);
-		\OC\Files\Filesystem::initMountPoints($owner);
+		\OC::$server->setupFilesystem($owner);
 		$info = \OC\Files\Filesystem::getFileInfo($target);
 		$ownerView = new \OC\Files\View('/'.$owner.'/files');
 		if ( $owner != \OCP\User::getUser() ) {
@@ -179,7 +179,7 @@ class Helper {
 
 	public static function getUidAndFilename($filename) {
 		$uid = \OC\Files\Filesystem::getOwner($filename);
-		\OC\Files\Filesystem::initMountPoints($uid);
+		\OC::$server->setupFilesystem($uid);
 		if ( $uid != \OCP\User::getUser() ) {
 			$info = \OC\Files\Filesystem::getFileInfo($filename);
 			$ownerView = new \OC\Files\View('/'.$uid.'/files');

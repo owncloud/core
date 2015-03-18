@@ -54,6 +54,15 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
+	/**
+	 * Setup a clean filesystem
+	 */
+	protected function clearFileSystem() {
+		\OC\Files\Filesystem::clearMounts();
+		$storage = new \OC\Files\Storage\Temporary(array());
+		\OC\Files\Filesystem::mount($storage, array(), '/');
+	}
+
 	public static function tearDownAfterClass() {
 		$dataDir = \OC::$server->getConfig()->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data-autotest');
 

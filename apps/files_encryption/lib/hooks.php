@@ -37,6 +37,8 @@ class Hooks {
 	// file for which we want to delete the keys after the delete operation was successful
 	private static $unmountedFiles = array();
 
+	private static $proxyStatus;
+
 	/**
 	 * Startup encryption backend upon user login
 	 * @note This method should never be called for users using client side encryption
@@ -222,7 +224,7 @@ class Hooks {
 					$newUserPassword = $params['password'];
 
 					// make sure that the users home is mounted
-					\OC\Files\Filesystem::initMountPoints($user);
+					\OC::$server->setupFilesystem($user);
 
 					$keypair = Crypt::createKeypair();
 
@@ -625,4 +627,15 @@ class Hooks {
 		}
 	}
 
+	/**
+	 * disable encryption while copying the skeleton
+	 */
+	public static function preCopySkeleton(){
+		self::$proxyStatus = \OC_FileProxy::$enabled;
+		self::$proxyStatus = false;
+	}
+
+	public static function postCopySkeleton() {
+		\OC_FileProxy::$enabled = self::$proxyStatus;
+	}
 }

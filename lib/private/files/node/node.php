@@ -286,6 +286,15 @@ class Node implements \OCP\Files\Node {
 	}
 
 	/**
+	 * Get the root folder of the filesystem
+	 *
+	 * @return \OCP\Files\Folder
+	 */
+	public function getRoot() {
+		return $this->root;
+	}
+
+	/**
 	 * check if the requested path is valid
 	 *
 	 * @param string $path

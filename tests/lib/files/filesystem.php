@@ -245,7 +245,7 @@ class Filesystem extends \Test\TestCase {
 			$user = \OC_User::getUser();
 		} else {
 			$user = $this->getUniqueID();
-			\OC\Files\Filesystem::init($user, '/' . $user . '/files');
+			\OC_Util::setupFS($user);
 		}
 		\OC_Hook::clear('OC_Filesystem');
 		\OC_Hook::connect('OC_Filesystem', 'post_write', $this, 'dummyHook');
@@ -267,22 +267,6 @@ class Filesystem extends \Test\TestCase {
 	}
 
 	/**
-	 * Tests that a local storage mount is used when passed user
-	 * does not exist.
-	 */
-	public function testLocalMountWhenUserDoesNotExist() {
-		$datadir = \OC_Config::getValue("datadirectory", \OC::$SERVERROOT . "/data");
-		$userId = $this->getUniqueID('user_');
-
-		\OC\Files\Filesystem::initMountPoints($userId);
-
-		$homeMount = \OC\Files\Filesystem::getStorage('/' . $userId . '/');
-
-		$this->assertTrue($homeMount->instanceOfStorage('\OC\Files\Storage\Local'));
-		$this->assertEquals('local::' . $datadir . '/' . $userId . '/', $homeMount->getId());
-	}
-
-	/**
 	 * Tests that the home storage is used for the user's mount point
 	 */
 	public function testHomeMount() {
@@ -290,7 +274,7 @@ class Filesystem extends \Test\TestCase {
 
 		\OC_User::createUser($userId, $userId);
 
-		\OC\Files\Filesystem::initMountPoints($userId);
+		\OC::$server->setupFilesystem($userId);
 
 		$homeMount = \OC\Files\Filesystem::getStorage('/' . $userId . '/');
 
@@ -315,7 +299,7 @@ class Filesystem extends \Test\TestCase {
 		$cache = $localStorage->getCache();
 
 		\OC_User::createUser($userId, $userId);
-		\OC\Files\Filesystem::initMountPoints($userId);
+		\OC::$server->setupFilesystem($userId);
 
 		$homeMount = \OC\Files\Filesystem::getStorage('/' . $userId . '/');
 
@@ -342,7 +326,7 @@ class Filesystem extends \Test\TestCase {
 		\OC_Config::setValue('cache_path', '');
 
 		\OC_User::createUser($userId, $userId);
-		\OC\Files\Filesystem::initMountPoints($userId);
+		\OC::$server->setupFilesystem($userId);
 
 		$this->assertEquals(
 			'/' . $userId . '/',
@@ -369,7 +353,7 @@ class Filesystem extends \Test\TestCase {
 		\OC_Config::setValue('cache_path', $cachePath);
 
 		\OC_User::createUser($userId, $userId);
-		\OC\Files\Filesystem::initMountPoints($userId);
+		\OC::$server->setupFilesystem($userId);
 
 		$this->assertEquals(
 			'/' . $userId . '/cache/',

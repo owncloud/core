@@ -44,13 +44,7 @@ class UserCache extends \Test_Cache {
 		//}
 
 		//set up temporary storage
-		$this->storage = \OC\Files\Filesystem::getStorage('/');
-		\OC\Files\Filesystem::clearMounts();
-		$storage = new \OC\Files\Storage\Temporary(array());
-		\OC\Files\Filesystem::mount($storage,array(),'/');
-		$datadir = str_replace('local::', '', $storage->getId());
-		$this->datadir = \OC_Config::getValue('cachedirectory', \OC::$SERVERROOT.'/data/cache');
-		\OC_Config::setValue('cachedirectory', $datadir);
+		$this->clearFileSystem();
 
 		\OC_User::clearBackends();
 		\OC_User::useBackend(new \OC_User_Dummy());
@@ -70,12 +64,6 @@ class UserCache extends \Test_Cache {
 
 	protected function tearDown() {
 		\OC_User::setUserId($this->user);
-		\OC_Config::setValue('cachedirectory', $this->datadir);
-
-		// Restore the original mount point
-		\OC\Files\Filesystem::clearMounts();
-		\OC\Files\Filesystem::mount($this->storage, array(), '/');
-
 		parent::tearDown();
 	}
 }
