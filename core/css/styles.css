@@ -773,6 +773,9 @@ label.infield {
 }
 .undo-action {
 	font-weight: bold;
+	padding: 11px;
+	margin-right: -11px;
+	margin-left: -5px;
 }
 
 tr .action:not(.permanent),
