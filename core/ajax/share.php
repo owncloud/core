@@ -90,6 +90,16 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 				}
 			}
 			break;
+		case 'setPassword':
+			if (isset($_POST['shareWith'])) {
+				try {
+					$return = OCP\Share::setPassword((string)$_POST['itemType'], (string)$_POST['itemSource'], (string)$_POST['shareWith']);
+					($return) ? OC_JSON::success() : OC_JSON::error();
+				} catch (\Exception $e) {
+					OC_JSON::error(array('data' => array('message' => $e->getMessage())));
+				}
+			}
+			break;
 		case 'informRecipients':
 			$l = \OC::$server->getL10N('core');
 			$shareType = (int) $_POST['shareType'];

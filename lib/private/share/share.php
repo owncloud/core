@@ -22,6 +22,10 @@
 
 namespace OC\Share;
 
+use OCP\IUserSession;
+use OCP\IDBConnection;
+use OCP\IConfig;
+
 /**
  * This class provides the ability for apps to share their content between users.
  * Apps must create a backend class that implements OCP\Share_Backend and register it with this class.
@@ -535,6 +539,7 @@ class Share extends \OC\Share\Constants {
 
 		$backend = self::getBackend($itemType);
 		$l = \OC::$server->getL10N('lib');
+		$logger = \OC::$server->getLogger();
 
 		if ($backend->isShareTypeAllowed($shareType) === false) {
 			$message = 'Sharing %s failed, because the backend does not allow shares from type %i';
@@ -660,31 +665,21 @@ class Share extends \OC\Share\Constants {
 			$shareWith['group'] = $group;
 			$shareWith['users'] = array_diff(\OC_Group::usersInGroup($group), array($uidOwner));
 		} else if ($shareType === self::SHARE_TYPE_LINK) {
-			$updateExistingShare = false;
 			if (\OC_Appconfig::getValue('core', 'shareapi_allow_links', 'yes') == 'yes') {
 
-				// when updating a link share
-				// FIXME Don't delete link if we update it
-				if ($checkExists = self::getItems($itemType, $itemSource, self::SHARE_TYPE_LINK, null,
+				// Only 1 public share allowed 
+				if (self::getItems($itemType, $itemSource, self::SHARE_TYPE_LINK, null,
 					$uidOwner, self::FORMAT_NONE, null, 1)) {
-					// remember old token
-					$oldToken = $checkExists['token'];
-					$oldPermissions = $checkExists['permissions'];
-					//delete the old share
-					Helper::delete($checkExists['id']);
-					$updateExistingShare = true;
+					$message = "Only 1 public share allowed";
+					$message_t = $l->t("Only 1 public share allowed");
+					$logger->error($message, ['app' => 'OCP\Share::shareItem']);
+					throw new \Exception($message_t);
 				}
 
 				// Generate hash of password - same method as user passwords
 				if (!empty($shareWith)) {
 					$shareWith = \OC::$server->getHasher()->hash($shareWith);
-				} else {
-					// reuse the already set password, but only if we change permissions
-					// otherwise the user disabled the password protection
-					if ($checkExists && (int)$permissions !== (int)$oldPermissions) {
-						$shareWith = $checkExists['share_with'];
-					}
-				}
+				} 
 
 				if (\OCP\Util::isPublicLinkPasswordRequired() && empty($shareWith)) {
 					$message = 'You need to provide a password to create a public link, only protected links are allowed';
@@ -693,21 +688,17 @@ class Share extends \OC\Share\Constants {
 					throw new \Exception($message_t);
 				}
 
-				if ($updateExistingShare === false &&
-					self::isDefaultExpireDateEnabled() &&
+				if (self::isDefaultExpireDateEnabled() &&
 					empty($expirationDate)) {
 					$expirationDate = Helper::calcExpireDate();
 				}
 
 				// Generate token
-				if (isset($oldToken)) {
-					$token = $oldToken;
-				} else {
-					$token = \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate(self::TOKEN_LENGTH,
+				$token = \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate(self::TOKEN_LENGTH,
 						\OCP\Security\ISecureRandom::CHAR_LOWER.\OCP\Security\ISecureRandom::CHAR_UPPER.
 						\OCP\Security\ISecureRandom::CHAR_DIGITS
-					);
-				}
+				);
+
 				$result = self::put($itemType, $itemSource, $shareType, $shareWith, $uidOwner, $permissions,
 					null, $token, $itemSourceName, $expirationDate);
 				if ($result) {
@@ -1118,6 +1109,49 @@ class Share extends \OC\Share\Constants {
 			'date' => $date,
 			'uidOwner' => $user
 		));
+
+		return true;
+	}
+
+	/**
+	 * Set expiration date for a share
+	 *
+	 * @param IUserSession $userSession
+	 * @param IDBConnection $connection
+	 * @param IConfig $config
+	 * @param string $itemType
+	 * @param string $itemSource
+	 * @param string $password
+	 * @throws \Exception
+	 * @return boolean
+	 */
+	public static function setPassword(IUserSession $userSession, 
+	                                   IDBConnection $connection, 
+									   IConfig $config,
+									   $itemType, $itemSource, $password) {
+		$user = $userSession->getUser();
+		if (is_null($user)) {
+			throw new \Exception("User not logged in");
+		}
+		$user = $user->getUID();
+
+		if ($password === '') {
+			$password = null;
+		}
+
+		//If passwords are enforced the password can't be null
+		if (self::enforcePassword($config) && is_null($password)) {
+			throw new \Exception('Cannot remove password');
+		}
+
+		$qb = $connection->createQueryBuilder();
+		$qb->update('*PREFIX*share')
+		      ->set('share_with', is_null($password) ? 'NULL' : $qb->expr()->literal(\OC::$server->getHasher()->hash($password)))
+			  ->where($qb->expr()->eq('item_type', $qb->expr()->literal($itemType)))
+			  ->andWhere($qb->expr()->eq('item_source', $qb->expr()->literal($itemSource)))
+			  ->andWhere($qb->expr()->eq('uid_owner', $qb->expr()->literal($user)))
+			  ->andWhere($qb->expr()->eq('share_type', $qb->expr()->literal(\OCP\Share::SHARE_TYPE_LINK)));
+		$qb->execute();
 
 		return true;
 	}
@@ -2368,4 +2402,12 @@ class Share extends \OC\Share\Constants {
 		return (int)\OCP\Config::getAppValue('core', 'shareapi_expire_after_n_days', '7');
 	}
 
+	/**
+     * @param IConfig $config
+	 * @return bool 
+	 */
+	public static function enforcePassword(IConfig $config) {
+		$enforcePassword = $config->getAppValue('core', 'shareapi_enforce_links_password', 'no');
+		return ($enforcePassword === "yes") ? true : false;
+	}
 }

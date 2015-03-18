@@ -478,7 +478,6 @@ class Local {
 		foreach ($items as $item) {
 			if($item['share_type'] === \OCP\Share::SHARE_TYPE_LINK) {
 				$checkExists = true;
-				$permissions = $item['permissions'];
 			}
 		}
 
@@ -487,13 +486,7 @@ class Local {
 		}
 
 		try {
-			$result = \OCP\Share::shareItem(
-					$itemType,
-					$itemSource,
-					\OCP\Share::SHARE_TYPE_LINK,
-					$shareWith,
-					$permissions
-					);
+			$result = \OCP\Share::setPassword($itemType, $itemSource, $shareWith);
 		} catch (\Exception $e) {
 			return new \OC_OCS_Result(null, 403, $e->getMessage());
 		}

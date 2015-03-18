@@ -167,4 +167,11 @@ interface IDBConnection {
 	 * @return bool
 	 */
 	public function tableExists($table);
+
+	/**
+	 * Gets the QueryBuilder
+	 *
+	 * @return \Doctrine\DBAL\Query\QueryBuilder
+	 */
+	public function createQueryBuilder();
 }
