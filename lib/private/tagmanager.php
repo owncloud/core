@@ -60,7 +60,6 @@ class TagManager implements \OCP\ITagManager {
 	public function __construct(TagMapper $mapper, \OCP\IUserSession $userSession) {
 		$this->mapper = $mapper;
 		$this->userSession = $userSession;
-
 	}
 
 	/**
@@ -86,4 +85,18 @@ class TagManager implements \OCP\ITagManager {
 		return new Tags($this->mapper, $userId, $type, $defaultTags, $includeShared);
 	}
 
+	/**
+	 * Delete all tags and relations for the given user id.
+	 *
+	 * @param string $userId user id
+	 */
+	public function deleteTagsForUser($userId) {
+		$sql = 'DELETE r.* FROM `*PREFIX*vcategory_to_object` AS `r` ' .
+			'LEFT JOIN `*PREFIX*vcategory` as `t` ' .
+			'WHERE `r`.`categoryid` = `t`.`id` ' .
+			'AND `t`.`uid` = ?';
+		// FIXME: no execute function here...
+		$this->execute($sql, array($userId));
+		$this->mapper->deleteAll($userId);
+	}
 }

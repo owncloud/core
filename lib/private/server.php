@@ -104,9 +104,12 @@ class Server extends SimpleContainer implements IServerContainer {
 				/** @var $user \OC\User\User */
 				\OC_Hook::emit('OC_User', 'pre_deleteUser', array('run' => true, 'uid' => $user->getUID()));
 			});
-			$userSession->listen('\OC\User', 'postDelete', function ($user) {
+			$userSession->listen('\OC\User', 'postDelete', function ($user) use ($c){
 				/** @var $user \OC\User\User */
 				\OC_Hook::emit('OC_User', 'post_deleteUser', array('uid' => $user->getUID()));
+
+				// delete all tags for the user
+				$c->getTagManager()->deleteTagsForUser($user->getUID());
 			});
 			$userSession->listen('\OC\User', 'preSetPassword', function ($user, $password, $recoveryPassword) {
 				/** @var $user \OC\User\User */

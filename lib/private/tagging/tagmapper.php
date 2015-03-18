@@ -73,5 +73,16 @@ class TagMapper extends Mapper {
 		}
 		return true;
 	}
+
+	/**
+	 * Delete all tags for the given user
+	 *
+	 * @param string $userId
+	 */
+	public function deleteAll($userId) {
+		$sql = 'DELETE FROM `' . $this->getTableName() . '` WHERE `uid` = ?';
+		$this->execute($sql, array($userId));
+		return true;
+	}
 }
 
