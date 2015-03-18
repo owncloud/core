@@ -598,6 +598,7 @@ class OC {
 		self::registerCacheHooks();
 		self::registerFilesystemHooks();
 		self::registerPreviewHooks();
+		self::registerTagHooks();
 		self::registerShareHooks();
 		self::registerLogRotate();
 		self::registerLocalAddressBook();
@@ -702,6 +703,16 @@ class OC {
 		OC_Hook::connect('OC_Filesystem', 'post_delete', 'OC\Preview', 'post_delete_files');
 		OC_Hook::connect('\OCP\Versions', 'delete', 'OC\Preview', 'post_delete');
 		OC_Hook::connect('\OCP\Trashbin', 'delete', 'OC\Preview', 'post_delete');
+	}
+
+	/**
+	 * register hooks for tags
+	 */
+	public static function registerTagHooks() {
+		if (\OC::$server->getUserSession() !== null) {
+			OC_Hook::connect('OC_Filesystem', 'delete', 'OC\TagHooks', 'fileDeletedHook');
+			OC_Hook::connect('OC_Filesystem', 'delete_mount', 'OC\TagHooks', 'unmountHook');
+		}
 	}
 
 	/**
