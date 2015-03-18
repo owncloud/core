@@ -37,7 +37,6 @@
 		id: 'files',
 		appName: t('files', 'Files'),
 		isEmpty: true,
-		useUndo:true,
 
 		/**
 		 * Top-level container with controls and file list
@@ -1535,11 +1534,8 @@
 				for (var i=0; i<files.length; i++) {
 					var deleteAction = this.findFileEl(files[i]).children("td.date").children(".action.delete");
 					deleteAction.removeClass('icon-delete').addClass('icon-loading-small');
+//					this.findFileEl(files[i]).fadeOut(500);
 				}
-			}
-			// Finish any existing actions
-			if (this.lastAction) {
-				this.lastAction();
 			}
 
 			params = {
@@ -1555,21 +1551,64 @@
 				this.$fileList.find('tr>td.date .action.delete').removeClass('icon-delete').addClass('icon-loading-small');
 			}
 
-			$.post(OC.filePath('files', 'ajax', 'delete.php'),
+			this.actionCanceled = false;
+			var msg = t('files', 'All files deleted.');
+			if (files) {
+				msg = t('files', '{file} deleted.', {'file': files[0]});
+				if (files.length > 1) {
+					var summary = this._selectionSummary.summary;
+					msg = '';
+					if (summary.totalDirs > 0) {
+						msg += n('files', '%n folder', '%n folders', summary.totalDirs);
+						if (summary.totalFiles > 0) {
+							msg += ' & ';
+						}
+					}
+					if (summary.totalFiles > 0) {
+						msg += n('files', '%n file', '%n files', summary.totalFiles);
+					}
+					msg += ' ' + t('files', 'deleted.');
+				}
+			}
+			OC.Notification.showHtml(msg + " <a class='undo-action'>Undo</a>");
+			$('a.undo-action').click(function(){
+				self.actionCanceled = true;
+				OC.Notification.hide();
+				if (files) {
+					$.each(files, function (index, file) {
+						var deleteAction = self.findFileEl(file).find('.action.delete');
+						deleteAction.removeClass('icon-loading-small').addClass('icon-delete');
+//					this.findFileEl(file).fadeIn(500);
+					});
+				}
+				else {
+					self.$fileList.find('tr>td.date .action.delete').addClass('icon-delete').removeClass('icon-loading-small');
+				}
+			});
+			_.delay(function() {
+				if (self.actionCanceled) {
+					return;
+				}
+				OC.Notification.hide();
+				$.post(OC.filePath('files', 'ajax', 'delete.php'),
 					params,
-					function(result) {
+					function (result) {
 						if (result.status === 'success') {
+							OC.Notification.hide();
 							if (params.allfiles) {
 								self.setFiles([]);
 							}
 							else {
-								$.each(files,function(index,file) {
+								$.each(files, function (index, file) {
 									var fileEl = self.remove(file, {updateSummary: false});
 									// FIXME: not sure why we need this after the
 									// element isn't even in the DOM any more
 									fileEl.find('.selectCheckBox').prop('checked', false);
 									fileEl.removeClass('selected');
-									self.fileSummary.remove({type: fileEl.attr('data-type'), size: fileEl.attr('data-size')});
+									self.fileSummary.remove({
+										type: fileEl.attr('data-type'),
+										size: fileEl.attr('data-size')
+									});
 								});
 							}
 							// TODO: this info should be returned by the ajax call!
@@ -1585,7 +1624,7 @@
 								OC.Notification.show(t('files', 'Error deleting file.'));
 							}
 							// hide notification after 10 sec
-							setTimeout(function() {
+							setTimeout(function () {
 								OC.Notification.hide();
 							}, 10000);
 							if (params.allfiles) {
@@ -1594,13 +1633,14 @@
 								self.reload();
 							}
 							else {
-								$.each(files,function(index,file) {
+								$.each(files, function (index, file) {
 									var deleteAction = self.findFileEl(file).find('.action.delete');
 									deleteAction.removeClass('icon-loading-small').addClass('icon-delete');
 								});
 							}
 						}
 					});
+			}, 7000);
 		},
 		/**
 		 * Creates the file summary section
@@ -2203,13 +2243,6 @@
 })();
 
 $(document).ready(function() {
-	// FIXME: unused ?
-	OCA.Files.FileList.useUndo = (window.onbeforeunload)?true:false;
-	$(window).bind('beforeunload', function () {
-		if (OCA.Files.FileList.lastAction) {
-			OCA.Files.FileList.lastAction();
-		}
-	});
 	$(window).unload(function () {
 		$(window).trigger('beforeunload');
 	});

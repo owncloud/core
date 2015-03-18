@@ -771,6 +771,9 @@ label.infield {
 	cursor: pointer;
 	margin-left: 1em;
 }
+.undo-action {
+	font-weight: bold;
+}
 
 tr .action:not(.permanent),
 .selectedActions a {
