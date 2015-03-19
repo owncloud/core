@@ -20,7 +20,6 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-use OCA\Files\Appinfo\Application;
 
 // Check if we are a user
 OCP\User::checkLoggedIn();
@@ -42,8 +41,11 @@ OCP\Util::addscript('files', 'search');
 \OCP\Util::addScript('files', 'favoritesfilelist');
 \OCP\Util::addScript('files', 'tagsplugin');
 \OCP\Util::addScript('files', 'favoritesplugin');
-
 \OC_Util::addVendorScript('core', 'handlebars/handlebars');
+
+$resourceLoader = \OC::$server->getTemplateResourceLoader();
+$resourceLoader->loadResources('files', 'index');
+
 
 OCP\App::setActiveNavigationEntry('files_index');
 
@@ -134,6 +136,7 @@ OCP\Util::addscript('files', 'fileactions');
 OCP\Util::addscript('files', 'files');
 OCP\Util::addscript('files', 'navigation');
 OCP\Util::addscript('files', 'keyboardshortcuts');
+
 $tmpl = new OCP\Template('files', 'index', 'user');
 $tmpl->assign('usedSpacePercent', (int)$storageInfo['relative']);
 $tmpl->assign('isPublic', false);

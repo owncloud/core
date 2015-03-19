@@ -20,6 +20,7 @@ use OC\Security\Hasher;
 use OC\Security\SecureRandom;
 use OC\Diagnostics\NullEventLogger;
 use OC\Security\TrustedDomainHelper;
+use OC\Template\DelayedResourceLoader;
 use OCP\IServerContainer;
 use OCP\ISession;
 use OC\Tagging\TagMapper;
@@ -329,6 +330,16 @@ class Server extends SimpleContainer implements IServerContainer {
 				new \OC_Defaults()
 			);
 		});
+		$this->registerService('TemplateResourceLoader', function() {
+			return new DelayedResourceLoader();
+		});
+	}
+
+	/**
+	 * @return \OCP\Template\IDelayedResourceLoader
+	 */
+	public function getTemplateResourceLoader() {
+		return $this->query('TemplateResourceLoader');
 	}
 
 	/**
