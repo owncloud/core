@@ -388,26 +388,15 @@ $(document).ready(function() {
 		return defaultMountPoint+append;
 	}
 
-	$externalStorage.on('paste', 'td input', function() {
-		var $me = $(this);
-		var $tr = $me.closest('tr');
-		setTimeout(function() {
-			highlightInput($me);
-			OC.MountConfig.saveStorage($tr);
-		}, 20);
-	});
-
 	var timer;
 
-	$externalStorage.on('keyup', 'td input', function() {
+	$externalStorage.on('input', 'td input', function() {
 		clearTimeout(timer);
 		var $tr = $(this).closest('tr');
 		highlightInput($(this));
-		if ($(this).val) {
-			timer = setTimeout(function() {
-				OC.MountConfig.saveStorage($tr);
-			}, 2000);
-		}
+		timer = setTimeout(function() {
+			OC.MountConfig.saveStorage($tr);
+		}, 2000);
 	});
 
 	$externalStorage.on('change', 'td input:checkbox', function() {
