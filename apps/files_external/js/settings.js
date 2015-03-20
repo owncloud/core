@@ -18,6 +18,10 @@ var MOUNT_OPTIONS_DROPDOWN_TEMPLATE =
 	'		<label for="mountOptionsPreviews">{{t "files_external" "Enable previews"}}</label>' +
 	'		<input id="mountOptionsPreviews" name="previews" type="checkbox" value="true" checked="checked"/>' +
 	'	</div>' +
+	'	<div class="optionRow">' +
+	'		<label for="mountOptionsFilesystemCheck">{{t "files_external" "Enable detection of remote changes"}}</label>' +
+	'		<input id="mountOptionsFilesystemCheck" name="filesystem_check_changes" type="checkbox" value="true" checked="checked"/>' +
+	'	</div>' +
 	'</div>';
 
 /**
