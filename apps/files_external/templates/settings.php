@@ -79,11 +79,6 @@
 							<?php OCP\Util::addScript('files_external', $_['backends'][$mount['class']]['custom']); ?>
 						<?php endif; ?>
 					<?php endif; ?>
-					<?php if ($_['isAdminPage']): ?>
-					<?php if (isset($mount['priority'])): ?>
-					<input type="hidden" class="priority" value="<?php p($mount['priority']) ?>" />
-					<?php endif; ?>
-					<?php endif; ?>
 				</td>
 				<?php if ($_['isAdminPage']): ?>
 				<td class="applicable"
@@ -102,6 +97,11 @@
 						alt="<?php p($l->t('Advanced settings')); ?>"
 						src="<?php print_unescaped(image_path('core', 'actions/settings.svg')); ?>" />
 					<input type="hidden" class="mountOptions" value="<?php isset($mount['mountOptions']) ? p(json_encode($mount['mountOptions'])) : '' ?>" />
+					<?php if ($_['isAdminPage']): ?>
+					<?php if (isset($mount['priority'])): ?>
+					<input type="hidden" class="priority" value="<?php p($mount['priority']) ?>" />
+					<?php endif; ?>
+					<?php endif; ?>
 				</td>
 				<td <?php if (isset($mount['mountpoint'])): ?>class="remove"
 					<?php else: ?>class="hidden"
