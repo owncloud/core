@@ -19,8 +19,12 @@ var MOUNT_OPTIONS_DROPDOWN_TEMPLATE =
 	'		<input id="mountOptionsPreviews" name="previews" type="checkbox" value="true" checked="checked"/>' +
 	'	</div>' +
 	'	<div class="optionRow">' +
-	'		<label for="mountOptionsFilesystemCheck">{{t "files_external" "Enable detection of remote changes"}}</label>' +
-	'		<input id="mountOptionsFilesystemCheck" name="filesystem_check_changes" type="checkbox" value="true" checked="checked"/>' +
+	'		<label for="mountOptionsFilesystemCheck">{{t "files_external" "Check for changes"}}</label>' +
+	'		<select id="mountOptionsFilesystemCheck" name="filesystem_check_changes" data-type="int">' +
+	'			<option value="0">{{t "files_external" "Never"}}</option>' +
+	'			<option value="1" selected="selected">{{t "files_external" "Once every direct access"}}</option>' +
+	'			<option value="2">{{t "files_external" "Every time the filesystem is used"}}</option>' +
+	'		</select>' +
 	'	</div>' +
 	'</div>';
 
@@ -234,7 +238,8 @@ StorageConfig.prototype = {
 		$.ajax({
 			type: method,
 			url: url,
-			data: this.getData(),
+			contentType: 'application/json',
+			data: JSON.stringify(this.getData()),
 			success: function(result) {
 				self.id = result.id;
 				if (_.isFunction(options.success)) {
@@ -300,7 +305,6 @@ StorageConfig.prototype = {
 			}
 			return;
 		}
-		var self = this;
 		$.ajax({
 			type: 'DELETE',
 			url: OC.generateUrl(this._url + '/{id}', {id: this.id}),
@@ -420,7 +424,6 @@ MountOptionsDropdown.prototype = {
 	 * @param {Object} mountOptions mount options
 	 */
 	show: function($container, mountOptions) {
-		var self = this;
 		if (MountOptionsDropdown._last) {
 			MountOptionsDropdown._last.hide();
 		}
@@ -459,7 +462,6 @@ MountOptionsDropdown.prototype = {
 	 */
 	getOptions: function() {
 		var options = {};
-		var $el = this.$el;
 
 		this.$el.find('input, select').each(function() {
 			var $this = $(this);
@@ -469,6 +471,9 @@ MountOptionsDropdown.prototype = {
 				value = $this.prop('checked');
 			} else {
 				value = $this.val();
+			}
+			if ($this.attr('data-type') === 'int') {
+				value = parseInt(value, 10);
 			}
 			options[key] = value;
 		});
@@ -656,7 +661,7 @@ MountConfigListView.prototype = {
 			self.deleteStorageConfig($(this).closest('tr'));
 		});
 
-		this.$el.on('click', 'td.mountOptionsToggle>img', function(event) {
+		this.$el.on('click', 'td.mountOptionsToggle>img', function() {
 			self._showMountOptionsDropdown($(this).closest('tr'));
 		});
 
@@ -787,7 +792,7 @@ MountConfigListView.prototype = {
 			storage.applicableUsers = users;
 			storage.applicableGroups = groups;
 
-			storage.priority = $tr.find('input.priority').val();
+			storage.priority = parseInt($tr.find('input.priority').val() || '100', 10);
 		}
 
 		var mountOptions = $tr.find('input.mountOptions').val();

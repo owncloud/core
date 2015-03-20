@@ -138,13 +138,19 @@ describe('OCA.External.Settings tests', function() {
 				expect(fakeServer.requests.length).toEqual(1);
 				var request = fakeServer.requests[0];
 				expect(request.url).toEqual(OC.webroot + '/index.php/apps/files_external/globalstorages');
-				expect(OC.parseQueryString(request.requestBody)).toEqual({
+				expect(JSON.parse(request.requestBody)).toEqual({
 					backendClass: '\\OC\\TestBackend',
-					'backendOptions[field1]': 'test',
-					'backendOptions[field2]': '',
+					backendOptions: {
+						'field1': 'test',
+						'field2': ''
+					},
 					mountPoint: 'TestBackend',
-					priority: '11',
-					'mountOptions[previews]': 'true',
+					priority: 11,
+					applicableUsers: [],
+					applicableGroups: [],
+					mountOptions: {
+						'previews': true
+					}
 				});
 
 				// TODO: respond and check data-id
@@ -152,7 +158,7 @@ describe('OCA.External.Settings tests', function() {
 			it('saves storage after closing mount options dropdown', function() {
 				$tr.find('.mountOptionsToggle img').click();
 				$tr.find('[name=previews]').trigger(new $.Event('keyup', {keyCode: 97}));
-				var $field1 = $tr.find('input[data-parameter=field1]').val('test');
+				$tr.find('input[data-parameter=field1]').val('test');
 
 				// does not save inside the dropdown
 				expect(fakeServer.requests.length).toEqual(0);
@@ -216,10 +222,13 @@ describe('OCA.External.Settings tests', function() {
 				// defaults to true
 				var $field = $td.find('.dropdown [name=previews]');
 				expect($field.prop('checked')).toEqual(true);
-				$field.prop('checked', false);
+				$td.find('.dropdown [name=filesystem_check_changes]').val(2);
 				$('body').mouseup();
 
-				expect(JSON.parse($tr.find('input.mountOptions').val())).toEqual({previews: false});
+				expect(JSON.parse($tr.find('input.mountOptions').val())).toEqual({
+					previews: true,
+					filesystem_check_changes: 2
+				});
 			});
 		});
 	});
