@@ -11,6 +11,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Roeland Jago Douma <roeland@famdouma.nl>
  * @author Sander <brantje@gmail.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
@@ -57,6 +58,7 @@ use OC\Security\TrustedDomainHelper;
 use OCP\IServerContainer;
 use OCP\ISession;
 use OC\Tagging\TagMapper;
+use OC\CapabilitiesManager;
 
 /**
  * Class Server
@@ -388,6 +390,9 @@ class Server extends SimpleContainer implements IServerContainer {
 				$c->getLogger(),
 				new \OC_Defaults()
 			);
+		});
+		$this->registerService('CapabilitiesManager', function ($c) {
+			return new CapabilitiesManager();
 		});
 	}
 
@@ -878,5 +883,14 @@ class Server extends SimpleContainer implements IServerContainer {
 	 */
 	public function getTrustedDomainHelper() {
 		return $this->query('TrustedDomainHelper');
+	}
+
+	/**
+	 * Get the manager of all the capabilities
+	 *
+	 * @return \OCP\Capabilities\IManager
+	 */
+	public function getCapabilitiesManager() {
+		return $this->query('CapabilitiesManager');
 	}
 }
