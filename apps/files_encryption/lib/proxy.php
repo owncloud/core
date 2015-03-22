@@ -280,12 +280,15 @@ class Proxy extends \OC_FileProxy {
 			$mode = $meta['mode'];
 		}
 
-		// Close the original encrypted file
-		fclose($result);
+		$context = stream_context_create(array(
+			'crypt' => array(
+				'source' => $result
+			)
+		));
 
 		// Open the file using the crypto stream wrapper
 		// protocol and let it do the decryption work instead
-		$result = fopen('crypt://' . $path, $mode);
+		$result = fopen('crypt://' . $path, $mode, false, $context);
 
 		return $result;
 

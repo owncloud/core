@@ -172,7 +172,11 @@ class Stream {
 			$this->readHeader();
 		}
 
-		if ($this->isLocalTmpFile) {
+		// use source from context if set
+		$context = stream_context_get_options($this->context);
+		if (isset($context['crypt']) and isset($context['crypt']['source'])){
+			$this->handle = $context['crypt']['source'];
+		} else if ($this->isLocalTmpFile) {
 			$this->handle = fopen($this->localTmpFile, $mode);
 		} else {
 			$this->handle = $this->rootView->fopen($this->rawPath, $mode);
