@@ -266,10 +266,22 @@ OC.Upload = {
 					// in case folder drag and drop is not supported file will point to a directory
 					// http://stackoverflow.com/a/20448357
 					if ( ! file.type && file.size%4096 === 0 && file.size <= 102400) {
+						var isDirectory = false;
 						try {
-							var reader = new FileReader();
-							reader.readAsBinaryString(file);
+							// #9857 The test to check if a File is a folder needs to be performed
+							// synchronously. Only a small part of the file is read. In case of
+							// error, the file is assumed to be a directory. In the same time, 
+							// readAsBinaryString (deprecated) is replaced by readAsArrayBuffer 
+							var reader = new FileReaderSync();
+							var blob = file.slice(0,10);
+							reader.readAsArrayBuffer(blob);
+							if (reader.error instanceof DOMError && reader.error.name === "NotReadableError") {
+								isDirectory = true;
+							}
 						} catch (NS_ERROR_FILE_ACCESS_DENIED) {
+							isDirectory = true;
+						}
+						if (isDirectory) {
 							//file is a directory
 							data.textStatus = 'dirorzero';
 							data.errorThrown = t('files',
@@ -379,7 +391,11 @@ OC.Upload = {
 							OC.Notification.show(t('files', 'Upload cancelled.'));
 						} else {
 							// HTTP connection problem
-							OC.Notification.show(data.errorThrown);
+							if (data.errorThrown === '') {
+								OC.Notification.show(t('files', 'Connection problem, please try again.'));
+							} else {
+								OC.Notification.show(data.errorThrown);
+							}
 							if (data.result) {
 								var result = JSON.parse(data.result);
 								if (result && result[0] && result[0].data && result[0].data.code === 'targetnotfound') {
