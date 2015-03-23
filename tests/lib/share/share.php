@@ -1183,7 +1183,7 @@ class Test_Share extends \Test\TestCase {
 		$ret = $this->getMockBuilder('\Doctrine\DBAL\Driver\ResultStatement')
 		            ->disableOriginalConstructor()
 					->getMock();
-		$ret->method('fetchAll')->willReturn([['uid_owner' => 'user']]);
+		$ret->method('fetch')->willReturn(['uid_owner' => 'user']);
 		$qb->method('execute')->willReturn($ret);
 
 
@@ -1237,7 +1237,7 @@ class Test_Share extends \Test\TestCase {
 		$ret = $this->getMockBuilder('\Doctrine\DBAL\Driver\ResultStatement')
 		            ->disableOriginalConstructor()
 					->getMock();
-		$ret->method('fetchAll')->willReturn([['uid_owner' => 'user']]);
+		$ret->method('fetch')->willReturn(['uid_owner' => 'user']);
 		$qb->method('execute')->willReturn($ret);
 
 
@@ -1289,7 +1289,7 @@ class Test_Share extends \Test\TestCase {
 		$ret = $this->getMockBuilder('\Doctrine\DBAL\Driver\ResultStatement')
 		            ->disableOriginalConstructor()
 					->getMock();
-		$ret->method('fetchAll')->willReturn([]);
+		$ret->method('fetch')->willReturn([]);
 		$qb->method('execute')->willReturn($ret);
 
 
@@ -1341,7 +1341,7 @@ class Test_Share extends \Test\TestCase {
 		$ret = $this->getMockBuilder('\Doctrine\DBAL\Driver\ResultStatement')
 		            ->disableOriginalConstructor()
 					->getMock();
-		$ret->method('fetchAll')->willReturn([['uid_owner' => 'user2']]);
+		$ret->method('fetch')->willReturn(['uid_owner' => 'user2']);
 		$qb->method('execute')->willReturn($ret);
 
 
