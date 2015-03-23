@@ -1148,13 +1148,13 @@ class Share extends \OC\Share\Constants {
 			->from('*PREFIX*share')
 			->where($qb->expr()->eq('id', $shareId));
 		$result = $qb->execute();
-		$result = $result->fetchAll();
+		$result = $result->fetch();
 
-		if (count($result) === 0) {
+		if (empty($result)) {
 			throw new \Exception('Share not found');
 		}
 
-		return $result = $result[0]['uid_owner'];
+		return $result['uid_owner'];
 	}
 
 	/**
