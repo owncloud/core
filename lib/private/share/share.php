@@ -1135,6 +1135,29 @@ class Share extends \OC\Share\Constants {
 	}
 
 	/**
+	 * Retrieve the owner of a connection
+	 *
+	 * @param Connection $connection
+	 * @param int $shareId
+	 * @throws \Exception
+	 * @return string uid of share owner
+	 */
+	private static function getShareOwner(Connection $connection, $shareId) {
+		$qb = $connection->createQueryBuilder();
+		$qb->select('uid_owner')
+			->from('*PREFIX*share')
+			->where($qb->expr()->eq('id', $shareId));
+		$result = $qb->execute();
+		$result = $result->fetchAll();
+
+		if (count($result) === 0) {
+			throw new \Exception('Share not found');
+		}
+
+		return $result = $result[0]['uid_owner'];
+	}
+
+	/**
 	 * Set expiration date for a share
 	 *
 	 * @param IUserSession $userSession
@@ -1148,10 +1171,16 @@ class Share extends \OC\Share\Constants {
 	public static function setPassword(IUserSession $userSession, 
 	                                   Connection $connection,
 	                                   IConfig $config,
-									   $shareId, $password) {
+	                                   $shareId, $password) {
 		$user = $userSession->getUser();
 		if (is_null($user)) {
 			throw new \Exception("User not logged in");
+		}
+
+		$uid = self::getShareOwner($connection, $shareId);
+
+		if ($uid !== $user->getUID()) {
+			throw new \Exception('Cannot update share of a different user');
 		}
 
 		if ($password === '') {
@@ -1165,8 +1194,8 @@ class Share extends \OC\Share\Constants {
 
 		$qb = $connection->createQueryBuilder();
 		$qb->update('*PREFIX*share')
-		      ->set('share_with', is_null($password) ? 'NULL' : $qb->expr()->literal(\OC::$server->getHasher()->hash($password)))
-			  ->where($qb->expr()->eq('id', $shareId));
+			->set('share_with', is_null($password) ? 'NULL' : $qb->expr()->literal(\OC::$server->getHasher()->hash($password)))
+			->where($qb->expr()->eq('id', $shareId));
 		$qb->execute();
 
 		return true;
