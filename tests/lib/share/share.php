@@ -1176,7 +1176,15 @@ class Test_Share extends \Test\TestCase {
 		$qb->method('set')->will($this->returnSelf());
 		$qb->method('where')->will($this->returnSelf());
 		$qb->method('andWhere')->will($this->returnSelf());
+		$qb->method('select')->will($this->returnSelf());
+		$qb->method('from')->will($this->returnSelf());
 		$qb->method('expr')->willReturn($ex);
+
+		$ret = $this->getMockBuilder('\Doctrine\DBAL\Driver\ResultStatement')
+		            ->disableOriginalConstructor()
+					->getMock();
+		$ret->method('fetchAll')->willReturn([['uid_owner' => 'user']]);
+		$qb->method('execute')->willReturn($ret);
 
 
 		$connection  = $this->getMockBuilder('\OC\DB\Connection')
@@ -1219,10 +1227,18 @@ class Test_Share extends \Test\TestCase {
 		           ->disableOriginalConstructor()
 		           ->getMock();
 		$qb->method('update')->will($this->returnSelf());
+		$qb->method('select')->will($this->returnSelf());
+		$qb->method('from')->will($this->returnSelf());
 		$qb->method('set')->will($this->returnSelf());
 		$qb->method('where')->will($this->returnSelf());
 		$qb->method('andWhere')->will($this->returnSelf());
 		$qb->method('expr')->willReturn($ex);
+
+		$ret = $this->getMockBuilder('\Doctrine\DBAL\Driver\ResultStatement')
+		            ->disableOriginalConstructor()
+					->getMock();
+		$ret->method('fetchAll')->willReturn([['uid_owner' => 'user']]);
+		$qb->method('execute')->willReturn($ret);
 
 
 		$connection  = $this->getMockBuilder('\OC\DB\Connection')
@@ -1237,6 +1253,111 @@ class Test_Share extends \Test\TestCase {
 
 		\OC\Share\Share::setPassword($userSession, $connection, $config, 1, '');
 	}
+
+	/**
+	 * @expectedException Exception
+	 * @expectedExceptionMessage Share not found
+	 *
+	 * Test modification of invaid share
+	 */
+	public function testSetPasswordInvalidShare() {
+		$user = $this->getMockBuilder('\OCP\IUser')
+		             ->disableOriginalConstructor()
+		             ->getMock();
+		$user->method('getUID')->willReturn('user');
+
+		$userSession = $this->getMockBuilder('\OCP\IUserSession')
+		                    ->disableOriginalConstructor()
+		                    ->getMock();
+		$userSession->method('getUser')->willReturn($user);
+
+
+		$ex = $this->getMockBuilder('\Doctrine\DBAL\Query\Expression\ExpressionBuilder')
+		           ->disableOriginalConstructor()
+		           ->getMock();
+		$qb = $this->getMockBuilder('\Doctrine\DBAL\Query\QueryBuilder')
+		           ->disableOriginalConstructor()
+		           ->getMock();
+		$qb->method('update')->will($this->returnSelf());
+		$qb->method('set')->will($this->returnSelf());
+		$qb->method('where')->will($this->returnSelf());
+		$qb->method('andWhere')->will($this->returnSelf());
+		$qb->method('select')->will($this->returnSelf());
+		$qb->method('from')->will($this->returnSelf());
+		$qb->method('expr')->willReturn($ex);
+
+		$ret = $this->getMockBuilder('\Doctrine\DBAL\Driver\ResultStatement')
+		            ->disableOriginalConstructor()
+					->getMock();
+		$ret->method('fetchAll')->willReturn([]);
+		$qb->method('execute')->willReturn($ret);
+
+
+		$connection  = $this->getMockBuilder('\OC\DB\Connection')
+		                    ->disableOriginalConstructor()
+		                    ->getMock();
+		$connection->method('createQueryBuilder')->willReturn($qb);
+
+		$config = $this->getMockBuilder('\OCP\IConfig')
+		               ->disableOriginalConstructor()
+		               ->getMock();
+
+
+		$res = \OC\Share\Share::setPassword($userSession, $connection, $config, 1, 'pass');
+	}
+
+	/**
+	 * @expectedException Exception
+	 * @expectedExceptionMessage Cannot update share of a different user
+	 *
+	 * Test modification of share of another user
+	 */
+	public function testSetPasswordShareOtherUser() {
+		$user = $this->getMockBuilder('\OCP\IUser')
+		             ->disableOriginalConstructor()
+		             ->getMock();
+		$user->method('getUID')->willReturn('user');
+
+		$userSession = $this->getMockBuilder('\OCP\IUserSession')
+		                    ->disableOriginalConstructor()
+		                    ->getMock();
+		$userSession->method('getUser')->willReturn($user);
+
+
+		$ex = $this->getMockBuilder('\Doctrine\DBAL\Query\Expression\ExpressionBuilder')
+		           ->disableOriginalConstructor()
+		           ->getMock();
+		$qb = $this->getMockBuilder('\Doctrine\DBAL\Query\QueryBuilder')
+		           ->disableOriginalConstructor()
+		           ->getMock();
+		$qb->method('update')->will($this->returnSelf());
+		$qb->method('set')->will($this->returnSelf());
+		$qb->method('where')->will($this->returnSelf());
+		$qb->method('andWhere')->will($this->returnSelf());
+		$qb->method('select')->will($this->returnSelf());
+		$qb->method('from')->will($this->returnSelf());
+		$qb->method('expr')->willReturn($ex);
+
+		$ret = $this->getMockBuilder('\Doctrine\DBAL\Driver\ResultStatement')
+		            ->disableOriginalConstructor()
+					->getMock();
+		$ret->method('fetchAll')->willReturn([['uid_owner' => 'user2']]);
+		$qb->method('execute')->willReturn($ret);
+
+
+		$connection  = $this->getMockBuilder('\OC\DB\Connection')
+		                    ->disableOriginalConstructor()
+		                    ->getMock();
+		$connection->method('createQueryBuilder')->willReturn($qb);
+
+		$config = $this->getMockBuilder('\OCP\IConfig')
+		               ->disableOriginalConstructor()
+		               ->getMock();
+
+
+		$res = \OC\Share\Share::setPassword($userSession, $connection, $config, 1, 'pass');
+	}
+
 }
 
 class DummyShareClass extends \OC\Share\Share {
