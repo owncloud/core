@@ -88,7 +88,6 @@ class FilesPlugin extends \Sabre\DAV\ServerPlugin {
 		$this->server->on('propPatch', array($this, 'handleUpdateProperties'));
 		$this->server->on('afterBind', array($this, 'sendFileIdHeader'));
 		$this->server->on('afterWriteContent', array($this, 'sendFileIdHeader'));
-<<<<<<< HEAD
 		$this->server->on('afterMethod:GET', [$this,'httpGet']);
 	}
 
@@ -104,8 +103,6 @@ class FilesPlugin extends \Sabre\DAV\ServerPlugin {
 		if (!($node instanceof IFile)) return;
 
 		$response->addHeader('Content-Disposition', 'attachment');
-=======
->>>>>>> rework
 	}
 
 	/**
