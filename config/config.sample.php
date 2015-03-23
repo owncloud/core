@@ -86,6 +86,16 @@ $CONFIG = array(
 'datadirectory' => '/var/www/owncloud/data',
 
 /**
+ * Where ownCloud stores temporary files. Only needed in conjunction with 
+ * external storage types who do not support piping and high temporary data volume 
+ * is expected. May occur with many concurrent data uploads with big sizes.  
+ * Grant write permissions of the webserver user to the path given.
+ * If not used, ownCloud takes the system default.
+ * The path used can be seen in the ownCloud log if loglevel is set to debug.
+ */
+'tempdirectory' => '/mnt/owncloudtemp',
+
+/**
  * The current version number of your ownCloud installation. This is set up
  * during installation and update, so you shouldn't need to change it.
  */

@@ -978,10 +978,24 @@ class OC {
 
 if (!function_exists('get_temp_dir')) {
 	/**
-	 * Get the temporary dir to store uploaded data
+	 * Get the temporary directory to store transfer data
 	 * @return null|string Path to the temporary directory or null
 	 */
 	function get_temp_dir() {
+		// Get the temporary directory and log the path if loglevel is set to debug
+		// Info: based on the temp dir, further directories may be created unique to the instance
+		$temp = gather_temp_dir();
+		\OCP\Util::writeLog('Core', 'Temporary directory set to: ' . ($temp ? $temp : 'NULL'), \OCP\Util::DEBUG);
+		return $temp;
+	}
+
+	/**
+	 * Get a temporary directory from possible sources
+	 * If a temporary directory is set in config.php, use this one
+	 * @return null|string Path to the temporary directory or null
+	 */
+	function gather_temp_dir() {
+		if ($temp = get_config_temp_dir()) return $temp;
 		if ($temp = ini_get('upload_tmp_dir')) return $temp;
 		if ($temp = getenv('TMP')) return $temp;
 		if ($temp = getenv('TEMP')) return $temp;
@@ -992,8 +1006,27 @@ if (!function_exists('get_temp_dir')) {
 			return dirname($temp);
 		}
 		if ($temp = sys_get_temp_dir()) return $temp;
-
 		return null;
+	}
+
+	/**
+	 * Check if the temporary directory is defined in config.php and is present and writable
+	 * @return bool|string Path to the temporary directory or false
+	 */
+	function get_config_temp_dir() {
+		$temp = \OC::$server->getConfig()->getSystemValue('tempdirectory', false);
+		// supress any possible errors caused by is_writable
+		// checks missing or invalid path or characters, wrong permissions ect
+		try {
+			if (is_writeable($temp)) {
+				return $temp;
+			} else {
+				\OCP\Util::writeLog('Core', 'Manually set temporary directory in config.php is not present or writable: ' . $temp, \OCP\Util::WARN);
+				return false;
+			}
+		} catch (Exception $e) {
+			return false;
+		}
 	}
 }
 
