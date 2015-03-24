@@ -96,8 +96,6 @@
 	min-width: 688px; /* 768 (mobile break) - 80 (nav width) */
 }
 
-#filestable tbody tr { background-color:#fff; height:51px; }
-
 /* fit app list view heights */
 .app-files #app-content>.viewcontainer {
 	min-height: 100%;
@@ -109,7 +107,16 @@
 	bottom: 0;
 }
 
-#filestable tbody tr { background-color:#fff; height:40px; }
+#filestable tbody tr {
+	background-color: #fff;
+	height: 50px;
+}
+#filestable tbody tr.undo-animation-height {
+	height: 0;
+}
+#filestable tbody tr.undo-animation-border td {
+	border-bottom: 0;
+}
 #filestable tbody tr:hover,
 #filestable tbody tr:focus,
 #filestable tbody .name:focus,
@@ -257,6 +264,10 @@ table td.filename a.name {
 	line-height: 50px;
 	padding: 0;
 }
+/* fix layout for deletion animation */
+table td {
+	overflow: hidden;
+}
 table td.filename .thumbnail {
 	display: inline-block;
 	width: 32px;
@@ -392,7 +403,7 @@ table td.filename .uploadtext {
 }
 
 /* File checkboxes */
-#fileList tr td.filename>.selectCheckBox {
+#fileList tr td.filename .selectCheckBox {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
 	filter: alpha(opacity=0);
 	opacity: 0;
@@ -401,29 +412,29 @@ table td.filename .uploadtext {
 	margin: 32px 0 4px 32px; /* bigger clickable area doesn’t work in FF width:2.8em; height:2.4em;*/
 }
 /* Show checkbox when hovering, checked, or selected */
-#fileList tr:hover td.filename>.selectCheckBox,
-#fileList tr:focus td.filename>.selectCheckBox,
-#fileList tr td.filename>.selectCheckBox:checked,
-#fileList tr.selected td.filename>.selectCheckBox {
+#fileList tr:hover td.filename .selectCheckBox,
+#fileList tr:focus td.filename .selectCheckBox,
+#fileList tr td.filename .selectCheckBox:checked,
+#fileList tr.selected td.filename .selectCheckBox {
 	opacity: 1;
 }
-.lte9 #fileList tr:hover td.filename>.selectCheckBox,
-.lte9 #fileList tr:focus td.filename>.selectCheckBox,
-.lte9 #fileList tr td.filename>.selectCheckBox[checked=checked],
-.lte9 #fileList tr.selected td.filename>.selectCheckBox {
+.lte9 #fileList tr:hover td.filename .selectCheckBox,
+.lte9 #fileList tr:focus td.filename .selectCheckBox,
+.lte9 #fileList tr td.filename .selectCheckBox[checked=checked],
+.lte9 #fileList tr.selected td.filename .selectCheckBox {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 	filter: alpha(opacity=100);
 }
 
 /* Use label to have bigger clickable size for checkbox */
-#fileList tr td.filename>.selectCheckBox + label,
+#fileList tr td.filename .selectCheckBox + label,
 .select-all + label {
 	height: 50px;
 	position: absolute;
 	width: 50px;
 	z-index: 5;
 }
-#fileList tr td.filename>.selectCheckBox {
+#fileList tr td.filename .selectCheckBox {
 	/* sometimes checkbox height is bigger (KDE/Qt), so setting to absolute
 	 * to prevent it to increase the height */
 	position: absolute;

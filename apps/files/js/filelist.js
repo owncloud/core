@@ -215,8 +215,8 @@
 
 			this.updateSearch();
 
-			this.$fileList.on('click','td.filename>a.name', _.bind(this._onClickFile, this));
-			this.$fileList.on('change', 'td.filename>.selectCheckBox', _.bind(this._onClickFileCheckbox, this));
+			this.$fileList.on('click','td.filename a.name', _.bind(this._onClickFile, this));
+			this.$fileList.on('change', 'td.filename .selectCheckBox', _.bind(this._onClickFileCheckbox, this));
 			this.$el.on('urlChanged', _.bind(this._onUrlChanged, this));
 			this.$el.find('.select-all').click(_.bind(this._onClickSelectAll, this));
 			this.$el.find('.download').click(_.bind(this._onClickDownloadSelected, this));
@@ -296,7 +296,7 @@
 		 * @param state true to select, false to deselect
 		 */
 		_selectFileEl: function($tr, state) {
-			var $checkbox = $tr.find('td.filename>.selectCheckBox');
+			var $checkbox = $tr.find('td.filename .selectCheckBox');
 			var oldData = !!this._selectedFiles[$tr.data('id')];
 			var data;
 			$checkbox.prop('checked', state);
@@ -345,7 +345,7 @@
 				else {
 					this._lastChecked = $tr;
 				}
-				var $checkbox = $tr.find('td.filename>.selectCheckBox');
+				var $checkbox = $tr.find('td.filename .selectCheckBox');
 				this._selectFileEl($tr, !$checkbox.prop('checked'));
 				this.updateSelectionSummary();
 			} else {
@@ -389,7 +389,7 @@
 		 */
 		_onClickSelectAll: function(e) {
 			var checked = $(e.target).prop('checked');
-			this.$fileList.find('td.filename>.selectCheckBox').prop('checked', checked)
+			this.$fileList.find('td.filename .selectCheckBox').prop('checked', checked)
 				.closest('tr').toggleClass('selected', checked);
 			this._selectedFiles = {};
 			this._selectionSummary.clear();
@@ -1534,7 +1534,15 @@
 				for (var i=0; i<files.length; i++) {
 					var deleteAction = this.findFileEl(files[i]).children("td.date").children(".action.delete");
 					deleteAction.removeClass('icon-delete').addClass('icon-loading-small');
-//					this.findFileEl(files[i]).fadeOut(500);
+					var currentRow = this.findFileEl(files[i]).closest('tr');
+					currentRow.addClass('undo-animation-height');
+					currentRow
+						.children('td')
+						.wrapInner('<div />')
+						.children()
+						.slideUp(500, function() {
+							currentRow.addClass('undo-animation-border');
+					});
 				}
 			}
 
@@ -1571,14 +1579,22 @@
 				}
 			}
 			OC.Notification.showHtml(msg + " <a class='undo-action'>Undo</a>");
-			$('a.undo-action').click(function(){
+			$('.undo-action').click(function(){
 				self.actionCanceled = true;
 				OC.Notification.hide();
 				if (files) {
 					$.each(files, function (index, file) {
 						var deleteAction = self.findFileEl(file).find('.action.delete');
 						deleteAction.removeClass('icon-loading-small').addClass('icon-delete');
-//					this.findFileEl(file).fadeIn(500);
+						var currentRow = self.findFileEl(file);
+						currentRow.removeClass('undo-animation-border');
+						currentRow
+							.children('td')
+							.children()
+							.slideDown(500, function() {
+								currentRow.find('> td > div > *').unwrap();
+								currentRow.removeClass('undo-animation-height');
+						});
 					});
 				}
 				else {
