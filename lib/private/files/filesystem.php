@@ -539,6 +539,7 @@ class Filesystem {
 		$filename = self::normalizePath($filename);
 
 		$blacklist = \OC_Config::getValue('blacklisted_files', array('.htaccess'));
+		$blacklist = array_map('strtolower', $blacklist);
 		$filename = strtolower(basename($filename));
 		return in_array($filename, $blacklist);
 	}
