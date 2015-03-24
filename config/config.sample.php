@@ -760,7 +760,8 @@ $CONFIG = array(
 
 /**
  * Blacklist a specific file or files and disallow the upload of files
- * with this name. ``.htaccess`` is blocked by default.
+ * with this name. Matching is not case sensitive. Use lower case only.
+ * ``.htaccess`` is blocked by default.
  * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
  */
 'blacklisted_files' => array('.htaccess'),
