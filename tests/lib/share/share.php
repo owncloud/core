@@ -1303,7 +1303,7 @@ class Test_Share extends \Test\TestCase {
 		               ->getMock();
 
 
-		$res = \OC\Share\Share::setPassword($userSession, $connection, $config, 1, 'pass');
+		\OC\Share\Share::setPassword($userSession, $connection, $config, 1, 'pass');
 	}
 
 	/**
@@ -1355,7 +1355,7 @@ class Test_Share extends \Test\TestCase {
 		               ->getMock();
 
 
-		$res = \OC\Share\Share::setPassword($userSession, $connection, $config, 1, 'pass');
+		\OC\Share\Share::setPassword($userSession, $connection, $config, 1, 'pass');
 	}
 
 }
