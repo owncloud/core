@@ -6,14 +6,17 @@
  * See the COPYING-README file.
  */
 
+// to exclude an individual unit test, use the suffix .noauto.php
+// to exclude an entire directory, use the suffix .noauto
+
 function loadDirectory($path) {
 	if ($dh = opendir($path)) {
 		while ($name = readdir($dh)) {
 			if ($name[0] !== '.') {
 				$file = $path . '/' . $name;
-				if (is_dir($file)) {
+				if (is_dir($file) && substr($name, -7) !== '.noauto') {
 					loadDirectory($file);
-				} elseif (substr($name, -4, 4) === '.php') {
+				} elseif (substr($name, -4) === '.php' && substr($name, -11) !== '.noauto.php') {
 					require_once $file;
 				}
 			}

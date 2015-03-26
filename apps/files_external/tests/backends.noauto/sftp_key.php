@@ -75,7 +75,7 @@ class SFTP_Key extends Storage {
 	/**
          * @expectedException InvalidArgumentException
          */
-        public function testHighPortNumberShouldThrowException() { 
+        public function testHighPortNumberShouldThrowException() {
                 $this->instance->assertPortNumberValid('65536');
         }
 

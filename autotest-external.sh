@@ -172,7 +172,7 @@ EOF
 	    return;
 	fi
 
-    FILES_EXTERNAL_BACKEND_PATH=../apps/files_external/tests/backends
+    FILES_EXTERNAL_BACKEND_PATH=../apps/files_external/tests/backends.noauto
     FILES_EXTERNAL_BACKEND_ENV_PATH=../apps/files_external/tests/env
 
 	for startFile in `ls -1 $FILES_EXTERNAL_BACKEND_ENV_PATH | grep start`; do

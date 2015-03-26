@@ -16,6 +16,7 @@ function enableApp($app) {
 	}
 }
 
+enableApp('files_external');
 enableApp('files_sharing');
 enableApp('files_trashbin');
 enableApp('files_encryption');

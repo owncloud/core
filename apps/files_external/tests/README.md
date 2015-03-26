@@ -15,7 +15,7 @@ starting with `stop-` (and have the same ending as the start script) to cleanup
 the provider. For example: `start-webdav-ownCloud.sh` and
 `stop-webdav-ownCloud.sh`. As a second requirement after this prefix there has
 to be the name of the backend test suite. In the above example the test suite
-`tests/backends/webdav.php` is used. The last part is a name that can be chosen
+`tests/backends.noauto/webdav.php` is used. The last part is a name that can be chosen
 freely.
 
 ## Hands-on way of unit test execution
@@ -38,7 +38,7 @@ tests against an ownCloud instance you can run following:
     ./autotest-external.sh sqlite webdav-ownCloud
 
 This runs the script `start-webdav-ownCloud.sh` from the `tests/env` folder,
-then runs the unit test suite from `backends/webdav.php` (because the middle part of
+then runs the unit test suite from `backends.noauto/webdav.php` (because the middle part of
 the name of the script is `webdav`) and finally tries to call
 `stop-webdav-ownCloud.sh` for cleanup purposes.
 
@@ -59,5 +59,5 @@ To do this you just need to follow these steps (from within
   1. run the start step (`env/start-BACKEND-NAME.sh`) or start the environment by
      hand (i.e. setting up an instance manually in a virtual box)
   2. run the unit tests with following command (you can repeat that step multiple times):
-     `phpunit --configuration ../../../tests/phpunit-autotest-external.xml backends/BACKEND.php`
+     `phpunit --configuration ../../../tests/phpunit-autotest-external.xml backends.noauto/BACKEND.php`
   3. call the cleanup script (`env/stop-BACKEND-NAME.sh`) or cleanup by hand
