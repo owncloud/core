@@ -75,7 +75,7 @@ var OC={
 	appConfig: window.oc_appconfig || {},
 	theme: window.oc_defaults || {},
 	coreApps:['', 'admin','log','core/search','settings','core','3rdparty'],
-	menuSpeed: 100,
+	menuSpeed: 50,
 
 	/**
 	 * Get an absolute url to a file in an app
@@ -1138,6 +1138,13 @@ function initCore() {
 	$(document).click(function(){
 		$('#settings #expanddiv').slideUp(OC.menuSpeed);
 	});
+
+	// move triangle of apps dropdown to align with app name triangle
+	// 68 is the additional offset coming from the logo width
+	if($('#navigation').length) {
+		var caretPosition = $('.header-appname + .icon-caret').offset().left - 2;
+		$('head').append('<style>#navigation:after { left: '+ caretPosition +'px; }</style>');
+	}
 
 	// all the tipsy stuff needs to be here (in reverse order) to work
 	$('.displayName .action').tipsy({gravity:'se', fade:true, live:true});
