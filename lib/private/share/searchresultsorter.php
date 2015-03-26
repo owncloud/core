@@ -58,6 +58,10 @@ class SearchResultSorter {
 		}
 		$nameA = mb_strtolower($a[$this->key], $this->encoding);
 		$nameB = mb_strtolower($b[$this->key], $this->encoding);
+
+		if (empty($this->search)) {
+			return(strcmp($nameA, $nameB));
+		}
 		$i = mb_strpos($nameA, $this->search, 0, $this->encoding);
 		$j = mb_strpos($nameB, $this->search, 0, $this->encoding);
 

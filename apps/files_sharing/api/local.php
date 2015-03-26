@@ -607,4 +607,78 @@ class Local {
 
 	}
 
+	public static function shareWith() {
+		$limit = 25;
+		$offset = 0;
+		$search = '';
+		if (array_key_exists('limit', $_GET)) {
+			$limit = intval($_GET['limit']);
+			if ($limit <= 0) {
+				$limit = null;
+			}
+		}
+		if (array_key_exists('offset', $_GET)) {
+			$offset = intval($_GET['offset']);
+			if ($offset < 0) {
+				$offset = 0;
+			}
+		}
+		if (array_key_exists('search', $_GET)) {
+			$search = (string)$_GET['search'];
+		}
+
+
+		$shareWithinGroupOnly = \OC\Share\Share::shareWithGroupMembersOnly();
+		$shareWith = array();
+
+		if ($shareWithinGroupOnly) {
+			$_user = \OC::$server->getUserSession()->getUser();
+			if ($_user == null) {
+				return new \OC_OCS_Result(null, 404, 'could not obtain list of users');
+			}
+			$groups = \OC::$server->getGroupManager()->getuserGroupIds($_user);;
+			$users = array();
+			foreach ($groups as $group) {
+				$users += \OC::$server->getGroupManager()->displayNamesInGroup($group, $search);
+			}
+			// Now filter group list
+			if (!empty($search)) {
+				$groups = array_filter($groups, function($group) use ($search) {
+					return stristr($group, $search) !== FALSE;
+				});
+			}
+		} else {
+			$groups = \OC_Group::getGroups($search);
+			$users = array();
+			$_users = \OC::$server->getUserManager()->searchDisplayName($search);
+			foreach ($_users as $user) {
+				$users[$user->getUID()] = $user->getDisplayName();
+			}
+		}
+		//Remove calling user from user array
+		$users = array_diff($users, array(\OC_User::getUser()));
+
+		foreach ($users as $uid => $displayName) {
+			$shareWith[] = array(
+				'displayName' => $displayName,
+				'shareType' => \OCP\Share::SHARE_TYPE_USER,
+				'shareWith' => $uid
+			);
+		}
+
+		foreach ($groups as $group) {
+			$shareWith[] = array(
+				'displayName' => $group,
+				'shareType' => \OCP\Share::SHARE_TYPE_GROUP,
+				'shareWith' => $group
+			);
+		}
+
+		$sorter = new \OC\Share\SearchResultSorter($search, 'displayName', new \OC\Log());
+		usort($shareWith, array($sorter, 'sort'));
+
+		$shareWith = array_slice($shareWith, $offset, $limit);
+
+		return new \OC_OCS_Result($shareWith);
+	}
 }
