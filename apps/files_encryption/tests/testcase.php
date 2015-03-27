@@ -22,6 +22,7 @@
  */
 
 namespace OCA\Files_Encryption\Tests;
+use OCA\Files_Sharing\Appinfo\Application;
 
 /**
  * Class TestCase
@@ -77,7 +78,9 @@ abstract class TestCase extends \Test\TestCase {
 		\OCA\Files_Encryption\Helper::registerShareHooks();
 
 		\OC::registerShareHooks();
-		\OCP\Util::connectHook('OC_Filesystem', 'setup', '\OC\Files\Storage\Shared', 'setup');
+		$application = new Application();
+		$application->registerMountProviders();
+		$application->setupPropagation();
 
 		// clear and register hooks
 		\OC_FileProxy::clearProxies();
