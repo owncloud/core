@@ -47,7 +47,7 @@ class PropagationManager {
 	 */
 	public function getChangePropagator($user) {
 		$activeUser = $this->userSession->getUser();
-		if ($activeUser and $activeUser->getUID() === $user) {
+		if ($activeUser and $activeUser->getUID() === $user and Filesystem::getView() instanceof View) {
 			// it's important that we take the existing propagator here to make sure we can listen to external changes
 			$this->changePropagators[$user] = Filesystem::getView()->getUpdater()->getPropagator();
 		}
