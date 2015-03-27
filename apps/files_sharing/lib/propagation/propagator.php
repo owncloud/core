@@ -11,6 +11,9 @@ namespace OCA\Files_Sharing\Propagation;
 use OC\Files\Cache\ChangePropagator;
 use OC\Share\Share;
 
+/**
+ * Propagate etags for share recipients
+ */
 class Propagator {
 	/**
 	 * @var string
