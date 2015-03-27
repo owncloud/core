@@ -101,8 +101,13 @@ class OC_Hook{
 				call_user_func( array( $i["class"], $i["name"] ), $params );
 			} catch (Exception $e){
 				self::$thrownExceptions[] = $e;
+				if(is_object($i["class"])) {
+					$class = get_class($i["class"]);
+				} else {
+					$class = $i["class"];
+				}
 				OC_Log::write('hook',
-					'error while running hook (' . $i["class"] . '::' . $i["name"] . '): '.$e->getMessage(),
+					'error while running hook (' . $class . '::' . $i["name"] . '): '.$e->getMessage(),
 					OC_Log::ERROR);
 			}
 		}
