@@ -246,12 +246,12 @@ class Encryption extends Wrapper {
 			$blockPosition = ($this->position % $this->unencryptedBlockSize);
 			// if entire read inside current block then only position needs to be updated
 			if ($remainingLength < ($this->unencryptedBlockSize - $blockPosition)) {
-				$result .= substr($decrypted, $blockPosition, $remainingLength);
+				$result .= substr($this->cache, $blockPosition, $remainingLength);
 				$this->position += $remainingLength;
 				$count = 0;
 			// otherwise remainder of current block is fetched, the block is flushed and the position updated
 			} else {
-				$result .= substr($decrypted, $blockPosition);
+				$result .= substr($this->cache, $blockPosition);
 				$this->flush();
 				$this->position += ($this->unencryptedBlockSize - $blockPosition);
 				$count -= ($this->unencryptedBlockSize - $blockPosition);
@@ -293,15 +293,15 @@ class Encryption extends Wrapper {
 				// if so, overwrite existing data (if any)
 				// update position and liberate $data
 				if ($remainingLength < ($this->unencryptedBlockSize - $blockPosition)) {
-					$this->cache = substr($decrypted, 0, $blockPosition)
-						. $data . substr($decrypted, $blockPosition + $remainingLength);
+					$this->cache = substr($this->cache, 0, $blockPosition)
+						. $data . substr($this->cache, $blockPosition + $remainingLength);
 					$this->position += $remainingLength;
 					$length += $remainingLength;
 					$data = '';
 				// if $data doens't fit the current block, the fill the current block and reiterate
 				// after the block is filled, it is flushed and $data is updatedxxx
 				} else {
-					$this->cache = substr($decrypted, 0, $blockPosition) .
+					$this->cache = substr($this->cache, 0, $blockPosition) .
 						substr($data, 0, $this->unencryptedBlockSize - $blockPosition);
 					$this->flush();
 					$this->position += ($this->unencryptedBlockSize - $blockPosition);
