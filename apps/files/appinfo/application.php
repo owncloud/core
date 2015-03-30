@@ -21,13 +21,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
 namespace OCA\Files\Appinfo;
 
 use OCA\Files\Controller\ApiController;
 use OCP\AppFramework\App;
 use \OCA\Files\Service\TagService;
 use \OCP\IContainer;
+use OCA\Files\Controller\CapabilitiesController;
 
 class Application extends App {
 	public function __construct(array $urlParams=array()) {
@@ -44,6 +44,13 @@ class Application extends App {
 				$c->query('Request'),
 				$c->query('TagService'),
 				$server->getPreviewManager()
+			);
+		});
+
+		$container->registerService('CapabilitiesController', function (IContainer $c) {
+			return new CapabilitiesController(
+				$c->query('AppName'),
+				$c->query('Request')
 			);
 		});
 
@@ -67,6 +74,13 @@ class Application extends App {
 				$c->query('Tagger'),
 				$homeFolder
 			);
+		});
+
+		/**
+		 * Register capabilities
+		 */
+		$server->getCapabilitiesManager()->registerCapability(function() use ($container) {
+			return $container->query('CapabilitiesController');
 		});
 	}
 }
