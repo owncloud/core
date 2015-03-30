@@ -1164,9 +1164,10 @@ class Share extends \OC\Share\Constants {
 	 */
 	private static function getShareOwner(Connection $connection, $shareId) {
 		$qb = $connection->createQueryBuilder();
-		$qb->select('uid_owner')
-			->from('*PREFIX*share')
-			->where($qb->expr()->eq('id', $shareId));
+
+		$qb->select('`uid_owner`')
+			->from('`*PREFIX*share`')
+			->where($qb->expr()->eq('`id`', $shareId));
 		$result = $qb->execute();
 		$result = $result->fetch();
 
@@ -1213,9 +1214,9 @@ class Share extends \OC\Share\Constants {
 		}
 
 		$qb = $connection->createQueryBuilder();
-		$qb->update('*PREFIX*share')
-			->set('share_with', is_null($password) ? 'NULL' : $qb->expr()->literal(\OC::$server->getHasher()->hash($password)))
-			->where($qb->expr()->eq('id', $shareId));
+		$qb->update('`*PREFIX*share`')
+			->set('`share_with`', is_null($password) ? 'NULL' : $qb->expr()->literal(\OC::$server->getHasher()->hash($password)))
+			->where($qb->expr()->eq('`id`', $shareId));
 		$qb->execute();
 
 		return true;
