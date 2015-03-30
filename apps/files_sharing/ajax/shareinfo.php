@@ -40,7 +40,7 @@ if (isset($_GET['dir'])) {
 	$relativePath = $_GET['dir'];
 }
 
-$data = \OCA\Files_Sharing\Helper::setupFromToken($token, $relativePath, $password);
+$data = \OCA\Files_Sharing\Legacy\Helper::setupFromToken($token, $relativePath, $password);
 
 $linkItem = $data['linkItem'];
 // Load the files
@@ -65,7 +65,7 @@ function getChildInfo($dir, $view) {
 	$children = $view->getDirectoryContent($dir->getPath());
 	$result = array();
 	foreach ($children as $child) {
-		$formated = \OCA\Files\Helper::formatFileInfo($child);
+		$formated = \OCA\Files\Legacy\Helper::formatFileInfo($child);
 		if ($child->getType() === 'dir') {
 			$formated['children'] = getChildInfo($child, $view);
 		}
@@ -75,7 +75,7 @@ function getChildInfo($dir, $view) {
 	return $result;
 }
 
-$result = \OCA\Files\Helper::formatFileInfo($rootInfo);
+$result = \OCA\Files\Legacy\Helper::formatFileInfo($rootInfo);
 $result['mtime'] = $result['mtime'] / 1000;
 if ($rootInfo->getType() === 'dir') {
 	$result['children'] = getChildInfo($rootInfo, $rootView);

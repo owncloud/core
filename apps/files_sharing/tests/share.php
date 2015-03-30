@@ -234,7 +234,7 @@ class Test_Files_Sharing extends OCA\Files_sharing\Tests\TestCase {
 				self::TEST_FILES_SHARING_API_USER2, 31);
 		$this->assertTrue($fileShare);
 
-		\OCA\Files_Sharing\Helper::setShareFolder('/Shared/subfolder');
+		\OCA\Files_Sharing\Legacy\Helper::setShareFolder('/Shared/subfolder');
 
 		$folderShare = \OCP\Share::shareItem('folder', $folderinfo['fileid'], \OCP\Share::SHARE_TYPE_USER,
 				self::TEST_FILES_SHARING_API_USER2, 31);

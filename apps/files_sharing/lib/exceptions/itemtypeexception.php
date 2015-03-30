@@ -1,7 +1,6 @@
 <?php
 /**
- * @author Björn Schießle <schiessle@owncloud.com>
- * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Roeland Jago Douma <roeland@famdouma.nl>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -19,13 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+namespace OCA\Files_Sharing\Exceptions;
 
-\OC_Util::checkAdminUser();
-
-\OCP\Util::addScript('files_sharing', 'settings-admin');
-
-$tmpl = new OCP\Template('files_sharing', 'settings-admin');
-$tmpl->assign('outgoingServer2serverShareEnabled', OCA\Files_Sharing\Legacy\Helper::isOutgoingServer2serverShareEnabled());
-$tmpl->assign('incomingServer2serverShareEnabled', OCA\Files_Sharing\Legacy\Helper::isIncomingServer2serverShareEnabled());
-
-return $tmpl->fetchPage();
+class ItemTypeException extends \Exception {
+}

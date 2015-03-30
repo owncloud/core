@@ -146,7 +146,7 @@ class Manager {
 
 	private function setupMounts() {
 		// don't setup server-to-server shares if the admin disabled it
-		if (\OCA\Files_Sharing\Helper::isIncomingServer2serverShareEnabled() === false) {
+		if (\OCA\Files_Sharing\Legacy\Helper::isIncomingServer2serverShareEnabled() === false) {
 			return false;
 		}
 

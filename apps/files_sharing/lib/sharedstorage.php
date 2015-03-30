@@ -318,13 +318,13 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 		// for part files we need to ask for the owner and path from the parent directory because
 		// the file cache doesn't return any results for part files
 		if ($isPartFile) {
-			list($user1, $path1) = \OCA\Files_Sharing\Helper::getUidAndFilename($pathinfo['dirname']);
+			list($user1, $path1) = \OCA\Files_Sharing\Legacy\Helper::getUidAndFilename($pathinfo['dirname']);
 			$path1 = $path1 . '/' . $pathinfo['basename'];
 		} else {
-			list($user1, $path1) = \OCA\Files_Sharing\Helper::getUidAndFilename($relPath1);
+			list($user1, $path1) = \OCA\Files_Sharing\Legacy\Helper::getUidAndFilename($relPath1);
 		}
 		$targetFilename = basename($relPath2);
-		list($user2, $path2) = \OCA\Files_Sharing\Helper::getUidAndFilename(dirname($relPath2));
+		list($user2, $path2) = \OCA\Files_Sharing\Legacy\Helper::getUidAndFilename(dirname($relPath2));
 		$rootView = new \OC\Files\View('');
 		return $rootView->rename('/' . $user1 . '/files/' . $path1, '/' . $user2 . '/files/' . $path2 . '/' . $targetFilename);
 	}
