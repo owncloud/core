@@ -358,6 +358,7 @@ class Encryption extends Wrapper {
 
 	public function stream_close() {
 		$this->flush();
+		$this->encryptionStorage->updateUnencryptedSize($this->fullPath, $this->unencryptedSize);
 		return parent::stream_close();
 	}
 
@@ -374,7 +375,6 @@ class Encryption extends Wrapper {
 			$encrypted = $this->encryptionModule->encrypt($this->cache);
 			parent::stream_write($encrypted);
 			$this->writeFlag = false;
-			$this->encryptionStorage->updateUnencryptedSize($this->fullPath, $this->unencryptedSize);
 			$this->size = max($this->size,parent::stream_tell());
 		}
 		// always empty the cache (otherwise readCache() will not fill it with the new block)
