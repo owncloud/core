@@ -19,8 +19,13 @@ class User extends TestCase {
 		parent::setUp();
 
 		$this->backend = $this->getMock('\OC_User_Dummy');
-		$manager = \OC_User::getManager();
+		$manager = \OC::$server->getUserManager();
 		$manager->registerBackend($this->backend);
+	}
+
+	protected function tearDown() {
+		$manager = \OC::$server->getUserManager();
+		$manager->removeBackend($this->backend);
 	}
 	
 	public function testCheckPassword() {
