@@ -27,6 +27,7 @@ use OCP\Http\Client\IClientService;
 use OCP\IConfig;
 use OCP\IRequest;
 use OC_Util;
+use OCP\IURLGenerator;
 
 /**
  * @package OC\Settings\Controller
@@ -38,6 +39,8 @@ class CheckSetupController extends Controller {
 	private $clientService;
 	/** @var \OC_Util */
 	private $util;
+	/** @var IUrlGenerator */
+	private $urlGenerator;
 
 	/**
 	 * @param string $AppName
@@ -45,16 +48,19 @@ class CheckSetupController extends Controller {
 	 * @param IConfig $config
 	 * @param IClientService $clientService
 	 * @param \OC_Util $util
+	 * @param IURLGenerator $urlGenerator
 	 */
 	public function __construct($AppName,
 								IRequest $request,
 								IConfig $config,
 								IClientService $clientService,
-								\OC_Util $util) {
+								\OC_Util $util,
+								IURLGenerator $urlGenerator) {
 		parent::__construct($AppName, $request);
 		$this->config = $config;
 		$this->clientService = $clientService;
 		$this->util = $util;
+		$this->urlGenerator = $urlGenerator;
 	}
 
 	/**
@@ -91,7 +97,11 @@ class CheckSetupController extends Controller {
 		return new DataResponse(
 			[
 				'serverHasInternetConnection' => $this->isInternetConnectionWorking(),
-				'dataDirectoryProtected' => $this->util->isHtaccessWorking($this->config),
+				'dataDirectoryProtected' => $this->util->isHtaccessWorking(
+					$this->config,
+					$this->urlGenerator,
+					$this->clientService
+				),
 				'isMemcacheConfigured' => $this->isMemcacheConfigured(),
 			]
 		);

@@ -1154,13 +1154,16 @@ class OC_Util {
 	}
 
 	/**
-	 * Check if the .htaccess file is working
+	 * Check if the .htaccess file is working by verifying the status code of the
+	 * index.html file located within the dat adirectory
 	 * @param \OCP\IConfig $config
+	 * @param \OCP\IURLGenerator $urlGenerator
+	 * @param \OCP\Http\Client\IClientService $httpClientService
 	 * @return bool
-	 * @throws Exception
-	 * @throws \OC\HintException If the test file can't get written.
 	 */
-	public function isHtaccessWorking(\OCP\IConfig $config) {
+	public function isHtaccessWorking(\OCP\IConfig $config,
+									  \OCP\IURLGenerator $urlGenerator,
+									  \OCP\Http\Client\IClientService $httpClientService) {
 		if (\OC::$CLI || !$config->getSystemValue('check_for_working_htaccess', true)) {
 			return true;
 		}
@@ -1170,37 +1173,23 @@ class OC_Util {
 			return false;
 		}
 
-		// testdata
-		$fileName = '/htaccesstest.txt';
-		$testContent = 'testcontent';
+		// accessing the file via web
+		$client = $httpClientService->newClient();
 
-		// creating a test file
-		$testFile = $config->getSystemValue('datadirectory', OC::$SERVERROOT . '/data') . '/' . $fileName;
-
-		if (file_exists($testFile)) {// already running this test, possible recursive call
-			return false;
+		try {
+			$response = $client->get(
+				$urlGenerator->getAbsoluteURL(\OC::$WEBROOT . '/data/index.html'),
+				[
+					'timeout' => 5,
+					'allow_redirects' => false,
+				]
+			);
+		} catch(\Exception $e) {
+			return true;
 		}
 
-		$fp = @fopen($testFile, 'w');
-		if (!$fp) {
-			throw new OC\HintException('Can\'t create test file to check for working .htaccess file.',
-				'Make sure it is possible for the webserver to write to ' . $testFile);
-		}
-		fwrite($fp, $testContent);
-		fclose($fp);
 
-		// accessing the file via http
-		$url = OC_Helper::makeURLAbsolute(OC::$WEBROOT . '/data' . $fileName);
-		$content = self::getUrlContent($url);
-
-		// cleanup
-		@unlink($testFile);
-
-		/*
-		 * If the content is not equal to test content our .htaccess
-		 * is working as required
-		 */
-		return $content !== $testContent;
+		return $response->getStatusCode() !== \OCP\AppFramework\Http::STATUS_OK;
 	}
 
 	/**
