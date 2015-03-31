@@ -178,11 +178,15 @@ class Setup {
 		$htAccessWorking = true;
 		if (is_dir($dataDir) && is_writable($dataDir)) {
 			// Protect data directory here, so we can test if the protection is working
-			\OC\Setup::protectDataDirectory();
+			//\OC\Setup::protectDataDirectory();
 
 			try {
 				$util = new \OC_Util();
-				$htAccessWorking = $util->isHtaccessWorking(\OC::$server->getConfig());
+				$htAccessWorking = $util->isHtaccessWorking(
+					\OC::$server->getConfig(),
+					\OC::$server->getURLGenerator(),
+					\OC::$server->getHTTPClientService()
+				);
 			} catch (\OC\HintException $e) {
 				$errors[] = array(
 					'error' => $e->getMessage(),

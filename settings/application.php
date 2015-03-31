@@ -124,7 +124,8 @@ class Application extends App {
 				$c->query('Request'),
 				$c->query('Config'),
 				$c->query('ClientService'),
-				$c->query('Util')
+				$c->query('Util'),
+				$c->query('URLGenerator')
 			);
 		});
 

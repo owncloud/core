@@ -27,6 +27,7 @@ use OCP\IRequest;
 use OCP\IConfig;
 use OCP\Http\Client\IClientService;
 use OC_Util;
+use OCP\IURLGenerator;
 
 /**
  * Class CheckSetupControllerTest
@@ -44,6 +45,8 @@ class CheckSetupControllerTest extends TestCase {
 	private $clientService;
 	/** @var OC_Util */
 	private $util;
+	/** @var IURLGenerator */
+	private $urlGenerator;
 
 	public function setUp() {
 		parent::setUp();
@@ -58,13 +61,16 @@ class CheckSetupControllerTest extends TestCase {
 			->disableOriginalConstructor()->getMock();
 		$this->util = $this->getMockBuilder('\OC_Util')
 			->disableOriginalConstructor()->getMock();
+		$this->urlGenerator = $this->getMockBuilder('\OCP\IURLGenerator')
+			->disableOriginalConstructor()->getMock();
 
 		$this->checkSetupController = new CheckSetupController(
 			'settings',
 			$this->request,
 			$this->config,
 			$this->clientService,
-			$this->util
+			$this->util,
+			$this->urlGenerator
 		);
 	}
 

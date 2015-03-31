@@ -181,6 +181,7 @@ class OC_Helper {
 	 * Makes an $url absolute
 	 * @param string $url the url
 	 * @return string the absolute url
+	 * @deprecated Use \OCP\IURLGenerator::getAbsoluteURL
 	 *
 	 * Returns a absolute url to the given app and file.
 	 */
