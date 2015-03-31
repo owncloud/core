@@ -228,6 +228,11 @@ if (\OC_Util::runningOnWindows()) {
 				$this->unlink($path2);
 			}
 
+			if ($this->is_dir($path1)) {
+				$this->copy($path1, $path2);
+				return $this->rmdir($path1);
+			}
+
 			return rename($this->getSourcePath($path1), $this->getSourcePath($path2));
 		}
 
