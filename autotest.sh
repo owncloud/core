@@ -101,6 +101,21 @@ fi
 
 echo "Using database $DATABASENAME"
 
+# $1 - destination (i.e. IP address or hostname)
+# $2 - port
+# $3 - retry time in seconds
+# $4 - number of attempts
+function wait_for_socket {
+	attempt=1
+	while ! nc -z "$1" "$2" > /dev/null 2>&1; do
+		if (( $attempt >= $4 )); then
+			return 1
+		fi
+		attempt=$((attempt + 1))
+		sleep "$3"
+	done
+}
+
 function execute_tests {
 	echo "Setup environment for $1 testing ..."
 	# back to root folder
@@ -126,10 +141,13 @@ function execute_tests {
 		echo "Fire up the oracle docker"
 		DOCKER_CONTAINER_ID=`docker run -d deepdiver/docker-oracle-xe-11g`
 		DATABASEHOST=`docker inspect $DOCKER_CONTAINER_ID | grep IPAddress | cut -d '"' -f 4`
-
-		echo "Waiting 60 seconds for Oracle initialization ... "
-		sleep 60
-
+		DATABASEPORT='1521'
+		echo "Waiting for Oracle to come up on $DATABASEHOST:$DATABASEPORT ..."
+		if ! wait_for_socket "$DATABASEHOST" "$DATABASEPORT" 1 90; then
+			echo "... failed to come up within 90 seconds. Giving up." >&2
+			exit 5
+		fi
+		sleep 8
 		DATABASEUSER=autotest
 		DATABASENAME='XE'
 	fi
