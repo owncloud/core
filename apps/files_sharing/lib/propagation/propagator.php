@@ -31,6 +31,11 @@ class Propagator {
 	protected $config;
 
 	/**
+	 * @var array[] [$owner => array]
+	 */
+	private $sharesByOwner = [];
+
+	/**
 	 * @param string $userId current user, must match the propagator's
 	 * user
 	 * @param \OC\Files\Cache\ChangePropagator $changePropagator change propagator
@@ -93,14 +98,29 @@ class Propagator {
 	}
 
 	/**
+	 * Get all share entries by owner
+	 *
+	 * @param string $owner
+	 * @return array
+	 */
+	private function getSharesForOwner($owner) {
+		if (isset($this->sharesByOwner[$owner])) {
+			return $this->sharesByOwner[$owner];
+		}
+		$this->sharesByOwner[$owner] = Share::getAllSharesForOwner($owner);
+		return $this->sharesByOwner[$owner];
+	}
+
+	/**
 	 * Listen on the propagator for updates made to shares owned by a user
 	 *
 	 * @param \OC\Files\Cache\ChangePropagator $propagator
 	 * @param string $owner
 	 */
 	public function attachToPropagator(ChangePropagator $propagator, $owner) {
-		$shares = Share::getAllSharesForOwner($owner);
-		$propagator->listen('\OC\Files', 'propagate', function ($path, $entry) use ($shares) {
+		unset($this->sharesByOwner[$owner]); // filesystem setup, make sure we have the latest shares
+		$propagator->listen('\OC\Files', 'propagate', function ($path, $entry) use ($owner) {
+			$shares = $this->getSharesForOwner($owner);
 			foreach ($shares as $share) {
 				if ((int)$share['file_source'] === $entry['fileid']) {
 					$this->markDirty($share, time());
