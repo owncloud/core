@@ -11,6 +11,7 @@ namespace OC\App;
 
 use OCP\App\IAppManager;
 use OCP\IAppConfig;
+use OCP\ICacheFactory;
 use OCP\IGroupManager;
 use OCP\IUserSession;
 
@@ -30,6 +31,9 @@ class AppManager implements IAppManager {
 	 */
 	private $groupManager;
 
+	/** @var \OCP\ICacheFactory */
+	private $memCacheFactory;
+
 	/**
 	 * @var string[] $appId => $enabled
 	 */
@@ -40,10 +44,11 @@ class AppManager implements IAppManager {
 	 * @param \OCP\IAppConfig $appConfig
 	 * @param \OCP\IGroupManager $groupManager
 	 */
-	public function __construct(IUserSession $userSession, IAppConfig $appConfig, IGroupManager $groupManager) {
+	public function __construct(IUserSession $userSession, IAppConfig $appConfig, IGroupManager $groupManager, ICacheFactory $memCacheFactory) {
 		$this->userSession = $userSession;
 		$this->appConfig = $appConfig;
 		$this->groupManager = $groupManager;
+		$this->memCacheFactory = $memCacheFactory;
 	}
 
 	/**
@@ -111,6 +116,7 @@ class AppManager implements IAppManager {
 	 */
 	public function enableApp($appId) {
 		$this->appConfig->setValue($appId, 'enabled', 'yes');
+		$this->clearAppsCache();
 	}
 
 	/**
@@ -125,6 +131,7 @@ class AppManager implements IAppManager {
 			return $group->getGID();
 		}, $groups);
 		$this->appConfig->setValue($appId, 'enabled', json_encode($groupIds));
+		$this->clearAppsCache();
 	}
 
 	/**
@@ -138,5 +145,14 @@ class AppManager implements IAppManager {
 			throw new \Exception("files can't be disabled.");
 		}
 		$this->appConfig->setValue($appId, 'enabled', 'no');
+		$this->clearAppsCache();
+	}
+
+	/**
+	 * Clear the cached list of apps when enabling/disabling an app
+	 */
+	protected function clearAppsCache() {
+		$settingsMemCache = $this->memCacheFactory->create('settings');
+		$settingsMemCache->clear('listApps');
 	}
 }
