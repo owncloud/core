@@ -494,6 +494,9 @@ class Test_App extends \Test\TestCase {
 		\OC::$server->registerService('AppConfig', function ($c) use ($appConfig) {
 			return $appConfig;
 		});
+		\OC::$server->registerService('AppManager', function (\OC\Server $c) use ($appConfig) {
+			return new \OC\App\AppManager($c->getUserSession(), $appConfig, $c->getGroupManager(), $c->getMemCacheFactory());
+		});
 	}
 
 	/**
@@ -503,6 +506,9 @@ class Test_App extends \Test\TestCase {
 		$oldService = $this->oldAppConfigService;
 		\OC::$server->registerService('AppConfig', function ($c) use ($oldService){
 			return $oldService;
+		});
+		\OC::$server->registerService('AppManager', function (\OC\Server $c) {
+			return new \OC\App\AppManager($c->getUserSession(), $c->getAppConfig(), $c->getGroupManager(), $c->getMemCacheFactory());
 		});
 
 		// Remove the cache of the mocked apps list with a forceRefresh
