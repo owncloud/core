@@ -372,6 +372,10 @@ class Filesystem {
 		$root = \OC_User::getHome($user);
 
 		$userObject = \OC_User::getManager()->get($user);
+		if (empty($userObject) && !empty($user)) {
+			// no user object found for user
+			throw new \Exception('Cannot setup FS for user "' . $user . '" who was not found by the user manager');
+		}
 
 		if (!is_null($userObject)) {
 			$homeStorage = \OC_Config::getValue( 'objectstore' );
