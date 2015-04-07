@@ -39,6 +39,9 @@ class DeleteOrphanedSharesJobTest extends \Test\TestCase {
 		$stmt = $this->connection->executeQuery('SELECT * FROM `*PREFIX*share`');
 		print_r($stmt->fetchAll());
 
+		$dbType = \OC::$server->getConfig()->getSystemValue('dbtype', 'sqlite3');
+		echo "Database: $dbType \n";
+
 		$this->user1 = $this->getUniqueID('user1_');
 		$this->user2 = $this->getUniqueID('user2_');
 
