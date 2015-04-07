@@ -104,10 +104,15 @@ class DeleteOrphanedSharesJobTest extends \Test\TestCase {
 		$this->assertCount(1, $this->getShares(), 'Linked shares not deleted');
 
 		$view->unlink('files/test');
+		$stmt = $this->connection->executeQuery('SELECT * FROM `*PREFIX*share`');
+		print_r($stmt->fetchAll());
 
 		$this->job->run([]);
+		$stmt = $this->connection->executeQuery('SELECT * FROM `*PREFIX*share`');
+		print_r($stmt->fetchAll());
 
 		$this->assertCount(0, $this->getShares(), 'Orphaned shares deleted');
+		print_r($this->getShares());
 	}
 }
 
