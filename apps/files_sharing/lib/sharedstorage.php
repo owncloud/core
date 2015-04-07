@@ -520,7 +520,10 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 		if (!$storage) {
 			$storage = $this;
 		}
-		return new \OC\Files\Cache\Shared_Cache($storage);
+		if (!isset($this->cache)) {
+			$this->cache = new \OC\Files\Cache\Shared_Cache($storage);
+		}
+		return $this->cache;
 	}
 
 	public function getScanner($path = '', $storage = null) {
