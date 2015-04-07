@@ -36,7 +36,7 @@ class DeleteOrphanedSharesJob extends TimedJob {
 		$dbType = $config->getSystemValue('dbtype', 'sqlite3');
 
 		if ($dbType === 'sqlite3') {
-			// sqlite doesn't support left joints in update statements,
+			// sqlite doesn't support left joins in update statements,
 			// so do it slightly less efficiently...
 			$sql =
 				'DELETE FROM `*PREFIX*share` ' .
