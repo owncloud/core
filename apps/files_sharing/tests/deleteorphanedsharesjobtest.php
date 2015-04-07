@@ -36,11 +36,6 @@ class DeleteOrphanedSharesJobTest extends \Test\TestCase {
 		parent::setUp();
 
 		$this->connection = \OC::$server->getDatabaseConnection();
-		$stmt = $this->connection->executeQuery('SELECT * FROM `*PREFIX*share`');
-		print_r($stmt->fetchAll());
-
-		$dbType = \OC::$server->getConfig()->getSystemValue('dbtype', 'sqlite3');
-		echo "Database: $dbType \n";
 
 		$this->user1 = $this->getUniqueID('user1_');
 		$this->user2 = $this->getUniqueID('user2_');
@@ -107,15 +102,10 @@ class DeleteOrphanedSharesJobTest extends \Test\TestCase {
 		$this->assertCount(1, $this->getShares(), 'Linked shares not deleted');
 
 		$view->unlink('files/test');
-		$stmt = $this->connection->executeQuery('SELECT * FROM `*PREFIX*share`');
-		print_r($stmt->fetchAll());
 
 		$this->job->run([]);
-		$stmt = $this->connection->executeQuery('SELECT * FROM `*PREFIX*share`');
-		print_r($stmt->fetchAll());
 
 		$this->assertCount(0, $this->getShares(), 'Orphaned shares deleted');
-		print_r($this->getShares());
 	}
 }
 

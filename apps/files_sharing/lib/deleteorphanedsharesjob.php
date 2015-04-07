@@ -8,6 +8,7 @@
 
 namespace OCA\Files_sharing\Lib;
 
+use Doctrine\DBAL\Platforms\SqlitePlatform;
 use OCP\IDBConnection;
 use OC\BackgroundJob\TimedJob;
 
@@ -30,12 +31,9 @@ class DeleteOrphanedSharesJob extends TimedJob {
 	 */
 	public function run($argument) {
 		$connection = \OC::$server->getDatabaseConnection();
-		$config = \OC::$server->getConfig();
 		$logger = \OC::$server->getLogger();
 
-		$dbType = $config->getSystemValue('dbtype', 'sqlite3');
-
-		if ($dbType === 'sqlite3') {
+		if ($connection->getDatabasePlatform() instanceof SqlitePlatform) {
 			// sqlite doesn't support left joins in update statements,
 			// so do it slightly less efficiently...
 			$sql =
