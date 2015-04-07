@@ -188,7 +188,7 @@ class Manager extends \PHPUnit_Framework_TestCase {
 		$this->appConfig->setValue('test1', 'enabled', 'yes');
 		$this->appConfig->setValue('test2', 'enabled', 'no');
 		$this->appConfig->setValue('test3', 'enabled', '["foo"]');
-		$this->assertEquals(['test1', 'test3'], $this->manager->getInstalledApps());
+		$this->assertEquals(['test1', 'test3'], array_keys(\Test_Helper::invokePrivate($this->manager, 'getInstalledApps')));
 	}
 
 	public function testGetAppsForUser() {
@@ -202,6 +202,9 @@ class Manager extends \PHPUnit_Framework_TestCase {
 		$this->appConfig->setValue('test2', 'enabled', 'no');
 		$this->appConfig->setValue('test3', 'enabled', '["foo"]');
 		$this->appConfig->setValue('test4', 'enabled', '["asd"]');
-		$this->assertEquals(['test1', 'test3'], $this->manager->getEnabledAppsForUser($user));
+		$this->assertTrue($this->manager->isEnabledForUser('test1', $user));
+		$this->assertFalse($this->manager->isEnabledForUser('test2', $user));
+		$this->assertTrue($this->manager->isEnabledForUser('test3', $user));
+		$this->assertFalse($this->manager->isEnabledForUser('test4', $user));
 	}
 }
