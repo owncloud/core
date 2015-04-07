@@ -36,6 +36,8 @@ class DeleteOrphanedSharesJobTest extends \Test\TestCase {
 		parent::setUp();
 
 		$this->connection = \OC::$server->getDatabaseConnection();
+		$stmt = $this->connection->executeQuery('SELECT * FROM `*PREFIX*share`');
+		print_r($stmt->fetchAll());
 
 		$this->user1 = $this->getUniqueID('user1_');
 		$this->user2 = $this->getUniqueID('user2_');
