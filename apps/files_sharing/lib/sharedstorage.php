@@ -28,8 +28,12 @@
  */
 
 namespace OC\Files\Storage;
+
+use OC\Files\Cache\ChangePropagator;
 use OC\Files\Filesystem;
+use OC\Files\View;
 use OCA\Files_Sharing\ISharedStorage;
+use OCA\Files_Sharing\Propagator;
 use OCA\Files_Sharing\SharedMount;
 
 /**
@@ -46,6 +50,7 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 
 	/**
 	 * get id of the mount point
+	 *
 	 * @return string
 	 */
 	public function getId() {
@@ -54,14 +59,16 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 
 	/**
 	 * get file cache of the shared item source
+	 *
 	 * @return int
 	 */
 	public function getSourceId() {
-		return (int) $this->share['file_source'];
+		return (int)$this->share['file_source'];
 	}
 
 	/**
 	 * Get the source file path, permissions, and owner for a shared file
+	 *
 	 * @param string $target Shared target file path
 	 * @return Returns array with the keys path, permissions, and owner or false if not found
 	 */
@@ -85,6 +92,7 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 
 	/**
 	 * Get the source file path for a shared file
+	 *
 	 * @param string $target Shared target file path
 	 * @return string|false source file path or false if not found
 	 */
@@ -108,6 +116,7 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 
 	/**
 	 * Get the permissions granted for a shared file
+	 *
 	 * @param string $target Shared target file path
 	 * @return int CRUDS permissions granted
 	 */
@@ -137,13 +146,14 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 
 	/**
 	 * Delete the directory if DELETE permission is granted
+	 *
 	 * @param string $path
 	 * @return boolean
 	 */
 	public function rmdir($path) {
 
 		// never delete a share mount point
-		if(empty($path)) {
+		if (empty($path)) {
 			return false;
 		}
 
@@ -276,6 +286,7 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 
 	/**
 	 * Delete the file if DELETE permission is granted
+	 *
 	 * @param string $path
 	 * @return boolean
 	 */
@@ -422,31 +433,6 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 		return false;
 	}
 
-	public static function setup($options) {
-		$shares = \OCP\Share::getItemsSharedWithUser('file', $options['user']);
-		$manager = Filesystem::getMountManager();
-		$loader = Filesystem::getLoader();
-		if (!\OCP\User::isLoggedIn() || \OCP\User::getUser() != $options['user']
-			|| $shares
-		) {
-			foreach ($shares as $share) {
-				// don't mount shares where we have no permissions
-				if ($share['permissions'] > 0) {
-					$mount = new SharedMount(
-							'\OC\Files\Storage\Shared',
-							$options['user_dir'] . '/' . $share['file_target'],
-							array(
-								'share' => $share,
-								'user' => $options['user']
-							),
-							$loader
-							);
-					$manager->addMount($mount);
-				}
-			}
-		}
-	}
-
 	/**
 	 * return mount point of share, relative to data/user/files
 	 *
@@ -466,6 +452,7 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 
 	/**
 	 * does the group share already has a user specific unique name
+	 *
 	 * @return bool
 	 */
 	public function uniqueNameSet() {
@@ -483,6 +470,7 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 
 	/**
 	 * get share ID
+	 *
 	 * @return integer unique share ID
 	 */
 	public function getShareId() {
@@ -491,6 +479,7 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 
 	/**
 	 * get the user who shared the file
+	 *
 	 * @return string
 	 */
 	public function getSharedFrom() {
@@ -506,6 +495,7 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 
 	/**
 	 * return share type, can be "file" or "folder"
+	 *
 	 * @return string
 	 */
 	public function getItemType() {
