@@ -70,6 +70,19 @@ class Application extends App {
 			);
 		});
 
+		$container->registerService('SettingsController', function(SimpleContainer $c) use ($server) {
+			$aliasManager = new External\AliasManager($server->getUserManager(), $server->getDatabaseConnection());
+			return new Controllers\SettingsController(
+				$c->query('AppName'),
+				$c->query('Request'),
+				$server->getUserSession()->getUser(),
+				$server->getURLGenerator(),
+				$server->getL10N('files_sharing'),
+				$aliasManager,
+				$server->getUserManager()
+			);
+		});
+
 		/**
 		 * Core class wrappers
 		 */

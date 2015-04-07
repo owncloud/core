@@ -42,6 +42,7 @@ OC::$CLASSPATH['OCA\Files\Share\Proxy'] = 'files_sharing/lib/proxy.php';
 OC::$CLASSPATH['OCA\Files_Sharing\Exceptions\BrokenPath'] = 'files_sharing/lib/exceptions.php';
 
 \OCP\App::registerAdmin('files_sharing', 'settings-admin');
+\OCP\App::registerPersonal('files_sharing', 'settings-personal');
 
 \OCA\Files_Sharing\Helper::registerHooks();
 

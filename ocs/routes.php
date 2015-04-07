@@ -101,7 +101,10 @@ OC_API::register(
 );
 
 // Server-to-Server Sharing
-$s2s = new \OCA\Files_Sharing\API\Server2Server();
+$aliasManager = new OCA\Files_Sharing\External\AliasManager(
+	\OC::$server->getUserManager(),
+	\OC::$server->getDatabaseConnection());
+$s2s = new \OCA\Files_Sharing\API\Server2Server($aliasManager);
 OC_API::register('post',
 		'/cloud/shares',
 		array($s2s, 'createShare'),

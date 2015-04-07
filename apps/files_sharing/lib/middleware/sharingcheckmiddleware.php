@@ -28,6 +28,7 @@ use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Middleware;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IConfig;
+use OCA\Files_Sharing\Controllers;
 
 /**
  * Checks whether the "sharing check" is enabled
@@ -60,7 +61,9 @@ class SharingCheckMiddleware extends Middleware {
 	 * Check if sharing is enabled before the controllers is executed
 	 */
 	public function beforeController($controller, $methodName) {
-		if(!$this->isSharingEnabled()) {
+		if($controller instanceof Controllers\SettingsController) {
+			return;
+		} elseif(!$this->isSharingEnabled()) {
 			throw new \Exception('Sharing is disabled.');
 		}
 	}

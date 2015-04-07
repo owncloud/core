@@ -106,4 +106,22 @@
 			</index>
 		</declaration>
 	</table>
+	<table>
+		<name>*dbprefix*share_external_aliases</name>
+		<declaration>
+			<field>
+				<name>uid</name>
+				<primary>true</primary>
+				<type>text</type>
+				<notnull>true</notnull>
+				<length>64</length>
+			</field>
+			<field>
+				<name>alias</name>
+				<type>text</type>
+				<notnull>true</notnull>
+				<length>255</length>
+			</field>
+		</declaration>
+	</table>
 </database>

@@ -202,7 +202,10 @@ class Share extends TestCase {
 		$share = $query->fetch();
 
 		$_POST['token'] = $token;
-		$s2s = new \OCA\Files_Sharing\API\Server2Server();
+		$s2s = new \OCA\Files_Sharing\API\Server2Server(
+			new \OCA\Files_Sharing\External\AliasManager(\OC::$server->getUserManager(),
+			\OC::$server->getDatabaseConnection())
+		);
 		$s2s->declineShare(array('id' => $share['id']));
 
 		$this->assertFalse($this->view->file_exists(

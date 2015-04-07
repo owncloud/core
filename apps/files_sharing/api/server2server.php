@@ -22,7 +22,19 @@
 
 namespace OCA\Files_Sharing\API;
 
+use OCA\Files_Sharing\External\AliasManager;
+
 class Server2Server {
+
+	/** @var AliasManager */
+	protected $aliasManager;
+
+	/**
+	 * @param AliasManager $aliasManager
+	 */
+	public function __construct(AliasManager $aliasManager) {
+		$this->aliasManager = $aliasManager;
+	}
 
 	/**
 	 * create a new share
@@ -47,6 +59,10 @@ class Server2Server {
 
 			if(!\OCP\Util::isValidFileName($name)) {
 				return new \OC_OCS_Result(null, 400, 'The mountpoint name contains invalid characters.');
+			}
+
+			if ($this->aliasManager->aliasExists($shareWith)) {
+				$shareWith = $this->aliasManager->getUid($shareWith);
 			}
 
 			if (!\OCP\User::userExists($shareWith)) {
@@ -96,7 +112,7 @@ class Server2Server {
 
 		$id = $params['id'];
 		$token = isset($_POST['token']) ? $_POST['token'] : null;
-		$share = self::getShare($id, $token);
+		$share = $this->getShare($id, $token);
 
 		if ($share) {
 			list($file, $link) = self::getFile($share['uid_owner'], $share['file_source']);

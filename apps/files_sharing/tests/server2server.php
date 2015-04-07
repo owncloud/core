@@ -56,7 +56,7 @@ class Test_Files_Sharing_S2S_OCS_API extends TestCase {
 
 		$this->registerHttpHelper($httpHelperMock);
 
-		$this->s2s = new \OCA\Files_Sharing\API\Server2Server();
+		$this->s2s = new \OCA\Files_Sharing\API\Server2Server(new \OCA\Files_Sharing\External\AliasManager(\OC::$server->getUserManager(), \OC::$server->getDatabaseConnection()));
 
 		$this->connection = \OC::$server->getDatabaseConnection();
 	}
