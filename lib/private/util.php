@@ -1048,7 +1048,12 @@ class OC_Util {
 						break;
 					}
 				}
-				$location = $urlGenerator->getAbsoluteURL('/index.php/apps/' . $appId . '/');
+
+				if(\OC::$server->getConfig()->getSystemValue('front_controller_active', false)) {
+					$location = $urlGenerator->getAbsoluteURL('/apps/' . $appId . '/');
+				} else {
+					$location = $urlGenerator->getAbsoluteURL('/index.php/apps/' . $appId . '/');
+				}
 			}
 		}
 		return $location;

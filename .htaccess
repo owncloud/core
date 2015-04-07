@@ -45,6 +45,38 @@ RewriteRule ^apps/contacts/carddav\.php remote.php/carddav/ [QSA,L]
 RewriteRule ^remote/(.*) remote.php [QSA,L]
 RewriteRule ^(build|tests|config|lib|3rdparty|templates)/.* - [R=404,L]
 RewriteRule ^(\.|autotest|occ|issue|indie|db_|console).* - [R=404,L]
+
+###############################################################################
+# Rules for shorter URLs using the `front_controller_active` configuration
+# 
+# Attention: - When having ownCloud accessible under an alias it's required to
+#              configure the rewrite base using the `RewriteBase` directive. See
+#              https://httpd.apache.org/docs/current/mod/mod_rewrite.html#rewritebase
+#              for more information on how to configure this properly.
+#            - These rules require adjustments when used in an environment where
+#              the same ownCloud instance is accessible via multiple different paths.
+#              (for example some Shibboleth environments)
+#            - Commenting out the following rules needs to be repeated after every
+#              minor version update. Not doing this will result in fatal errors.
+#
+# Pro-Tip: You can also configure these rules in the Apache VHost configuration
+#          in this case they will survive an ownCloud update. However, ensure to
+#          check if there might be updates to these rules after every ownCloud
+#          upadte.
+# 
+# RewriteRule ^core/js/oc.js index.php [PT,E=PATH_INFO:$1]
+# RewriteRule ^core/preview.png index.php [PT,E=PATH_INFO:$1]
+# RewriteCond %{REQUEST_FILENAME} \.(css|js|svg|gif|png|html|ttf|woff)$ [OR]
+# RewriteCond %{REQUEST_FILENAME} /index.php [OR]
+# RewriteCond %{REQUEST_FILENAME} /remote.php [OR]
+# RewriteCond %{REQUEST_FILENAME} /public.php [OR]
+# RewriteCond %{REQUEST_FILENAME} /cron.php [OR]
+# RewriteCond %{REQUEST_FILENAME} /status.php [OR]
+# RewriteCond %{REQUEST_FILENAME} /ocs/v1.php
+# RewriteRule ^ - [L]
+# RewriteRule .* index.php [PT,E=PATH_INFO:$1]
+###############################################################################
+
 </IfModule>
 <IfModule mod_mime.c>
 AddType image/svg+xml svg svgz
