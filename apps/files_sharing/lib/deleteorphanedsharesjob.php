@@ -31,6 +31,7 @@ class DeleteOrphanedSharesJob extends TimedJob {
 	public function run($argument) {
 		$connection = \OC::$server->getDatabaseConnection();
 		$config = \OC::$server->getConfig();
+		$logger = \OC::$server->getLogger();
 
 		$dbType = $config->getSystemValue('dbtype', 'sqlite3');
 
@@ -47,7 +48,8 @@ class DeleteOrphanedSharesJob extends TimedJob {
 				'LEFT JOIN `*PREFIX*filecache` `f` ON `s`.`file_source`=`f`.`fileid` ' .
 				'WHERE `f`.`fileid` IS NULL';
 		}
-		$connection->executeUpdate($sql);
+		$deletedEntries = $connection->executeUpdate($sql);
+		$logger->info("$deletedEntries orphaned share(s) deleted", ['app' => 'DeleteOrphanedSharesJob']);
 	}
 
 }
