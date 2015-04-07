@@ -62,8 +62,8 @@ class Propagator {
 		foreach ($dirtyShares as $share) {
 			$this->changePropagator->addChange($share['file_target']);
 		}
-		$this->config->setUserValue($this->userId, 'files_sharing', 'last_propagate', $time);
 		if (count($dirtyShares)) {
+			$this->config->setUserValue($this->userId, 'files_sharing', 'last_propagate', $time);
 			$this->changePropagator->propagateChanges($time);
 		}
 	}
