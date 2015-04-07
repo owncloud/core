@@ -39,8 +39,10 @@ class DeleteOrphanedSharesJobTest extends \Test\TestCase {
 
 		$this->user1 = $this->getUniqueID('user1_');
 		$this->user2 = $this->getUniqueID('user2_');
-		\OC_User::createUser($this->user1, 'pass');
-		\OC_User::createUser($this->user2, 'pass');
+
+		$userManager = \OC::$server->getUserManager();
+		$userManager->createUser($this->user1, 'pass');
+		$userManager->createUser($this->user2, 'pass');
 
 		\OC::registerShareHooks();
 
@@ -50,8 +52,15 @@ class DeleteOrphanedSharesJobTest extends \Test\TestCase {
 	protected function tearDown() {
 		$this->connection->executeUpdate('DELETE FROM `*PREFIX*share` WHERE `item_type` in (\'file\', \'folder\')');
 
-		\OC_User::deleteUser($this->user1);
-		\OC_User::deleteUser($this->user2);
+		$userManager = \OC::$server->getUserManager();
+		$user1 = $userManager->get($this->user1);
+		if($user1) {
+			$user1->delete();
+		}
+		$user2 = $userManager->get($this->user2);
+		if($user2) {
+			$user2->delete();
+		}
 
 		$this->logout();
 
