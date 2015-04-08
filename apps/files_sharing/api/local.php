@@ -452,13 +452,9 @@ class Local {
 	 * @return \OC_OCS_Result
 	 */
 	private static function updateExpireDate($share, $params) {
-		// only public links can have a expire date
-		if ((int)$share['share_type'] !== \OCP\Share::SHARE_TYPE_LINK ) {
-			return new \OC_OCS_Result(null, 400, "expire date only exists for public link shares");
-		}
 
 		try {
-			$expireDateSet = \OCP\Share::setExpirationDate($share['item_type'], $share['item_source'], $params['_put']['expireDate'], (int)$share['stime']);
+			$expireDateSet = \OCP\Share::setExpirationDate($share['item_type'], $share['item_source'], $params['_put']['expireDate'], (int)$share['stime'], (int)$share['id']);
 			$result = ($expireDateSet) ? new \OC_OCS_Result() : new \OC_OCS_Result(null, 404, "couldn't set expire date");
 		} catch (\Exception $e) {
 			$result = new \OC_OCS_Result(null, 404, $e->getMessage());
@@ -578,7 +574,7 @@ class Local {
 	 * @return array with: item_source, share_type, share_with, item_type, permissions
 	 */
 	private static function getShareFromId($shareID) {
-		$sql = 'SELECT `file_source`, `item_source`, `share_type`, `share_with`, `item_type`, `permissions`, `stime` FROM `*PREFIX*share` WHERE `id` = ?';
+		$sql = 'SELECT `id`, `file_source`, `item_source`, `share_type`, `share_with`, `item_type`, `permissions`, `stime` FROM `*PREFIX*share` WHERE `id` = ?';
 		$args = array($shareID);
 		$query = \OCP\DB::prepare($sql);
 		$result = $query->execute($args);
