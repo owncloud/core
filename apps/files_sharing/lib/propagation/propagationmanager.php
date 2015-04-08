@@ -13,6 +13,10 @@ use OC\Files\View;
 use OCP\IConfig;
 use OCP\IUserSession;
 
+
+/**
+ * Keep track of all change and share propagators by owner
+ */
 class PropagationManager {
 	/**
 	 * @var \OCP\IUserSession
@@ -25,12 +29,16 @@ class PropagationManager {
 	private $config;
 
 	/**
+	 * Change propagators for share owner
+	 *
 	 * @var \OC\Files\Cache\ChangePropagator[]
 	 */
 	private $changePropagators = [];
 
 	/**
-	 * @var \OCA\Files_Sharing\Propagation\Propagator[]
+	 * Recipient propagators
+	 *
+	 * @var \OCA\Files_Sharing\Propagation\RecipientPropagator[]
 	 */
 	private $sharePropagators = [];
 
@@ -47,26 +55,29 @@ class PropagationManager {
 	 */
 	public function getChangePropagator($user) {
 		$activeUser = $this->userSession->getUser();
-		if ($activeUser and $activeUser->getUID() === $user and Filesystem::getView() instanceof View) {
+
+		// for the local user we want to propagator from the active view, not any cached one
+		if ($activeUser && $activeUser->getUID() === $user && Filesystem::getView() instanceof View) {
 			// it's important that we take the existing propagator here to make sure we can listen to external changes
 			$this->changePropagators[$user] = Filesystem::getView()->getUpdater()->getPropagator();
 		}
 		if (isset($this->changePropagators[$user])) {
 			return $this->changePropagators[$user];
 		}
-		$this->changePropagators[$user] = (new View('/' . $user . '/files'))->getUpdater()->getPropagator();
+		$view = new View('/' . $user . '/files');
+		$this->changePropagators[$user] = $view->getUpdater()->getPropagator();
 		return $this->changePropagators[$user];
 	}
 
 	/**
 	 * @param string $user
-	 * @return \OCA\Files_Sharing\Propagation\Propagator
+	 * @return \OCA\Files_Sharing\Propagation\RecipientPropagator
 	 */
 	public function getSharePropagator($user) {
 		if (isset($this->sharePropagators[$user])) {
 			return $this->sharePropagators[$user];
 		}
-		$this->sharePropagators[$user] = new Propagator($user, $this->getChangePropagator($user), $this->config);
+		$this->sharePropagators[$user] = new RecipientPropagator($user, $this->getChangePropagator($user), $this->config);
 		return $this->sharePropagators[$user];
 	}
 
@@ -82,6 +93,11 @@ class PropagationManager {
 		$sharePropagator->attachToPropagator($ownerPropagator, $shareOwner);
 	}
 
+	/**
+	 * To be called from setupFS trough a hook
+	 *
+	 * Sets up listening to changes made to shares owned by the current user
+	 */
 	public function globalSetup() {
 		$user = $this->userSession->getUser();
 		if (!$user) {

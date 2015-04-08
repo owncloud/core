@@ -17,6 +17,8 @@ use OCA\Files_Sharing\SharedMount;
  */
 class ChangeWatcher {
 	/**
+	 * The user view for the logged in user
+	 *
 	 * @var \OC\Files\View
 	 */
 	private $baseView;

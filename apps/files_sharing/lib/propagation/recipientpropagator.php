@@ -14,7 +14,7 @@ use OC\Share\Share;
 /**
  * Propagate etags for share recipients
  */
-class Propagator {
+class RecipientPropagator {
 	/**
 	 * @var string
 	 */
