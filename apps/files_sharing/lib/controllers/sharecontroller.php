@@ -192,6 +192,10 @@ class ShareController extends Controller {
 		$shareTmpl['nonHumanFileSize'] = $nonHumanFileSize;
 		$shareTmpl['fileSize'] = \OCP\Util::humanFileSize($nonHumanFileSize);
 
+		// Load all resources for a file list and file list actions
+		$resourceLoader = \OC::$server->getTemplateResourceLoader();
+		$resourceLoader->loadResources('files', 'index');
+
 		// Show file list
 		if (Filesystem::is_dir($originalSharePath)) {
 			$shareTmpl['dir'] = $getPath;

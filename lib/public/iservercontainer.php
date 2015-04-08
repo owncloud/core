@@ -333,6 +333,13 @@ interface IServerContainer {
 	function getTempManager();
 
 	/**
+	 * Get the manager for template resource loading
+	 *
+	 * @return \OCP\Template\IDelayedResourceLoader
+	 */
+	public function getTemplateResourceLoader();
+
+	/**
 	 * Get the app manager
 	 *
 	 * @return \OCP\App\IAppManager
