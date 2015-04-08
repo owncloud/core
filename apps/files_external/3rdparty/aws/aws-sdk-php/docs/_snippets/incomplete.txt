@@ -1,0 +1,10 @@
+------------------------------
+
+.. admonition:: This guide is incomplete
+
+    This guide is not quite finished. If you are looking for a good way to contribute to the SDK and to the rest of
+    the AWS PHP community, then helping to write documentation is a great place to start. Our guides are written
+    in `ReStructuredText <http://docutils.sourceforge.net/rst.html>`_ and generated using
+    `Sphinx <http://sphinx-doc.org/>`_. Feel free to add some content to our documentation and send a pull request
+    to https://github.com/aws/aws-sdk-php. You can view our documentation sources at
+    https://github.com/aws/aws-sdk-php/tree/master/docs.

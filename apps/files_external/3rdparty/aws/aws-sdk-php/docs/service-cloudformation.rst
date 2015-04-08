@@ -1,0 +1,3 @@
+.. service:: CloudFormation
+
+.. apiref:: CloudFormation

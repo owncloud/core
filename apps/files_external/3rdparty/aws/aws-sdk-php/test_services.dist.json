@@ -1,0 +1,17 @@
+{
+    "includes": ["_aws"],
+    "services": {
+        "default_settings": {
+            "params": {
+                "region": "us-east-1"
+            }
+        },
+        "cloudfront": {
+            "extends": "cloudfront",
+            "params": {
+                "private_key": "change_me",
+                "key_pair_id": "change_me"
+            }
+        }
+    }
+}

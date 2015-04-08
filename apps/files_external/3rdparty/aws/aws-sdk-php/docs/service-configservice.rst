@@ -1,0 +1,3 @@
+.. service:: ConfigService
+
+.. apiref:: ConfigService

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="./tests/bootstrap.php"
+         colors="true">
+    <php>
+        <!-- If you want to run the integration tests, you will need to provide
+             the path to a service configuration file. You WILL be charged
+             for your usage if you choose to run the integration tests. -->
+        <server name="CONFIG" value="test_services.dist.json" />
+
+        <!-- The PREFIX is added to any globally shared namespaced
+             resources that are created during integration tests -->
+        <server name="PREFIX" value="hostname" />
+
+        <!-- Set to one to enable wire logging in integration tests that are
+             configured to do wire logging -->
+        <server name="WIRE_LOGGING" value="0" />
+
+        <!-- An SES-verified email address for SES integration tests -->
+        <server name="VERIFIED_EMAIL" value="example@example.com" />
+    </php>
+
+    <testsuites>
+        <testsuite name="Aws">
+            <directory>./tests/Aws/Tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <!-- Only execute integration and performance tests -->
+    <groups>
+        <include>
+            <group>integration</group>
+            <group>performance</group>
+        </include>
+    </groups>
+
+</phpunit>

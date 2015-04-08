@@ -1,0 +1,3 @@
+.. service:: CloudWatchLogs
+
+.. apiref:: CloudWatchLogs

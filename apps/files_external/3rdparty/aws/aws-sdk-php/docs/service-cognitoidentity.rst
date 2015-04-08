@@ -1,0 +1,3 @@
+.. service:: CognitoIdentity
+
+.. apiref:: CognitoIdentity

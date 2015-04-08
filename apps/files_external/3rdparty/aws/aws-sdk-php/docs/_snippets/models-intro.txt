@@ -1,0 +1,32 @@
+The result of a performing an operation is what we refer to as a **modeled response**. Instead of returning the raw XML
+or JSON data, the SDK will coerce the data into an associative array and normalize some aspects of the data based on its
+knowledge of the specific service and the underlying response structure.
+
+The actual value returned is a `Model <http://docs.aws.amazon.com/aws-sdk-php/latest/class-Guzzle.Service.Resource.Model.html>`_
+(``Guzzle\Service\Resource\Model``) object. The Model class is a part of the SDK's underlying Guzzle library, but you do
+not need to know anything about Guzzle to use your operation results. The Model object contains the data from the
+response and can be used like an array (e.g., ``$result['Table']``). It also has convenience methods like ``get()``,
+``getPath()``, and ``toArray()``. The contents of the modeled response depend on the operation that was executed and are
+documented in the API docs for each operation (e.g., see the *Returns* section in the API docs for the `DynamoDB
+DescribeTable operation <http://docs.aws.amazon.com/aws-sdk-php/latest/class-Aws.DynamoDb.DynamoDbClient.html#_describeTable>`_).
+
+.. code-block:: php
+
+    $result = $dynamoDbClient->describeTable(array(
+        'TableName' => 'YourTableName',
+    ));
+
+    // Get a specific value from the result
+    $table = $result['Table'];
+    if ($table && isset($table['TableStatus'])) {
+        echo $table['TableStatus'];
+    }
+    //> ACTIVE
+
+    // Get nested values from the result easily
+    echo $result->getPath('Table/TableStatus');
+    //> ACTIVE
+
+    // Convert the Model to a plain array
+    var_export($result->toArray());
+    //> array ( 'Table' => array ( 'AttributeDefinitions' => array ( ... ) ... ) ... )

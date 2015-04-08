@@ -6,8 +6,8 @@
 		"vendor-dir": "."
 	},
 	"require": {
+		"aws/aws-sdk-php": "2.7.5",
 		"icewind/smb": "dev-master",
 		"icewind/streams": "0.2"
 	}
 }
-

@@ -1,0 +1,15 @@
+One of the higher-level abstractions provided by the SDK are **Waiters**. Waiters help make it easier to work with
+*eventually consistent* systems by providing an easy way to wait until a resource enters into a particular state by
+polling the resource. You can find a list of the waiters supported by a client by viewing the API Documentation of a
+service client. Any method with a name starting with "``waitUntil``" will create and invoke a Waiter.
+
+In the following example, the Amazon S3 Client is used to create a bucket. Then the Waiter is used to wait until the
+bucket exists.
+
+.. code-block:: php
+
+    // Create a bucket
+    $s3Client->createBucket(array('Bucket' => 'my-bucket'));
+
+    // Wait until the created bucket is available
+    $s3Client->waitUntil('BucketExists', array('Bucket' => 'my-bucket'));
