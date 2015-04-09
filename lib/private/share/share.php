@@ -2085,6 +2085,7 @@ class Share extends \OC\Share\Constants {
 			unset($queriesToExecute['groupShare']);
 		}
 
+
 		$id = self::insertBulkShare($queriesToExecute, $parent);
 
 		$postHookData = array(
@@ -2208,6 +2209,9 @@ class Share extends \OC\Share\Constants {
 	 * @return mixed false in case of a failure or the id of the new share
 	 */
 	private static function insertBulkShare(array $shareData, $parent) {
+		if (empty($shareData)) {
+			return $parent;
+		}
 		$connection = \OC::$server->getDatabaseConnection();
 		$connection->beginTransaction();
 		$query = $connection->prepare('INSERT INTO `*PREFIX*share` ('
@@ -2228,7 +2232,7 @@ class Share extends \OC\Share\Constants {
 			$query->bindValue(9, $data['fileSource']);
 			$query->bindValue(10, $data['fileTarget']);
 			$query->bindValue(11, $data['token']);
-			$query->bindValue(12, $data['parent']);
+			$query->bindValue(12, $parent);
 			$query->bindValue(13, $data['expiration'], 'datetime');
 
 			$result = $query->execute();
