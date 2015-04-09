@@ -2217,28 +2217,28 @@ class Share extends \OC\Share\Constants {
 
 		$result = false;
 		foreach ($shareData as $data) {
-			$result = $query->execute([
-				$data['itemType'],
-				$data['itemSource'],
-				$data['itemTarget'],
-				$data['shareType'],
-				$data['shareWith'],
-				$data['uidOwner'],
-				$data['permissions'],
-				$data['shareTime'],
-				$data['fileSource'],
-				$data['fileTarget'],
-				$data['token'],
-				$parent,
-				$data['expiration']
-			]);
+			$query->bindValue(1, $data['itemType']);
+			$query->bindValue(2, $data['itemSource']);
+			$query->bindValue(3, $data['itemTarget']);
+			$query->bindValue(4, $data['shareType']);
+			$query->bindValue(5, $data['shareWith']);
+			$query->bindValue(6, $data['uidOwner']);
+			$query->bindValue(7, $data['permissions']);
+			$query->bindValue(8, $data['shareTime']);
+			$query->bindValue(9, $data['fileSource']);
+			$query->bindValue(10, $data['fileTarget']);
+			$query->bindValue(11, $data['token']);
+			$query->bindValue(12, $data['parent']);
+			$query->bindValue(13, $data['expiration'], 'datetime');
+
+			$result = $query->execute();
 		}
 		$query->closeCursor();
 		$connection->commit();
 
 		$id = false;
 		if ($result) {
-			$id = $connection->lastInsertId('share');
+			$id = $connection->lastInsertId('*PREFIX*share');
 		}
 
 		return $id;
@@ -2272,7 +2272,7 @@ class Share extends \OC\Share\Constants {
 
 		$id = false;
 		if ($result) {
-			$id = \OC::$server->getDatabaseConnection()->lastInsertId();
+			$id = \OC::$server->getDatabaseConnection()->lastInsertId('*PREFIX*share');
 			// Fallback, if lastInterId() doesn't work we need to perform a select
 			// to get the ID (seems to happen sometimes on Oracle)
 			if (!$id) {

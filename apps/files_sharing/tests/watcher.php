@@ -52,7 +52,6 @@ class Test_Files_Sharing_Watcher extends OCA\Files_sharing\Tests\TestCase {
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
 
 		// prepare user1's dir structure
-		$textData = "dummy file data\n";
 		$this->view->mkdir('container');
 		$this->view->mkdir('container/shareddir');
 		$this->view->mkdir('container/shareddir/subdir');
@@ -62,8 +61,8 @@ class Test_Files_Sharing_Watcher extends OCA\Files_sharing\Tests\TestCase {
 		$this->ownerStorage->getScanner()->scan('');
 
 		// share "shareddir" with user2
-		$fileinfo = $this->view->getFileInfo('container/shareddir');
-		\OCP\Share::shareItem('folder', $fileinfo['fileid'], \OCP\Share::SHARE_TYPE_USER,
+		$fileInfo = $this->view->getFileInfo('container/shareddir');
+		\OCP\Share::shareItem('folder', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_USER,
 			self::TEST_FILES_SHARING_API_USER2, 31);
 
 		// login as user2
@@ -76,12 +75,14 @@ class Test_Files_Sharing_Watcher extends OCA\Files_sharing\Tests\TestCase {
 	}
 
 	protected function tearDown() {
-		$this->sharedCache->clear();
+		if (!is_null($this->sharedCache)) {
+			$this->sharedCache->clear();
+		}
 
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
 
-		$fileinfo = $this->view->getFileInfo('container/shareddir');
-		\OCP\Share::unshare('folder', $fileinfo['fileid'], \OCP\Share::SHARE_TYPE_USER,
+		$fileInfo = $this->view->getFileInfo('container/shareddir');
+		\OCP\Share::unshare('folder', $fileInfo['fileid'], \OCP\Share::SHARE_TYPE_USER,
 			self::TEST_FILES_SHARING_API_USER2);
 
 		$this->view->deleteAll('container');
@@ -157,7 +158,9 @@ class Test_Files_Sharing_Watcher extends OCA\Files_sharing\Tests\TestCase {
 	/**
 	 * Returns the sizes of the path and its parent dirs in a hash
 	 * where the key is the path and the value is the size.
+	 *
 	 * @param string $path
+	 * @return array
 	 */
 	function getOwnerDirSizes($path) {
 		$result = array();
