@@ -332,31 +332,28 @@ class DAV extends \OC\Files\Storage\Common {
 				if (!$this->file_exists($path)) {
 					return false;
 				}
-				//straight up curl instead of sabredav here, sabredav put's the entire get result in memory
-				$curl = curl_init();
-				$fp = fopen('php://temp', 'r+');
-				curl_setopt($curl, CURLOPT_USERPWD, $this->user . ':' . $this->password);
-				curl_setopt($curl, CURLOPT_URL, $this->createBaseUri() . $this->encodePath($path));
-				curl_setopt($curl, CURLOPT_FILE, $fp);
-				curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-				curl_setopt($curl, CURLOPT_PROTOCOLS,  CURLPROTO_HTTP | CURLPROTO_HTTPS);
-				curl_setopt($curl, CURLOPT_REDIR_PROTOCOLS,  CURLPROTO_HTTP | CURLPROTO_HTTPS);
+
+				$url = 'seekablehttp://';
+
+				$options = array();
+				
+				$options['userpwd'] = $this->user . ':' . $this->password;
+				$options['url'] = $this->createBaseUri() . $this->encodePath($path);
+
 				if ($this->secure === true) {
-					curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
-					curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
+						
+					$options['secure'] = true;
+
 					if ($this->certPath) {
-						curl_setopt($curl, CURLOPT_CAINFO, $this->certPath);
+						$options['capath'] = $this->certPath;
 					}
 				}
 
-				curl_exec($curl);
-				$statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-				if ($statusCode !== 200) {
-					\OCP\Util::writeLog("webdav client", 'curl GET ' . curl_getinfo($curl, CURLINFO_EFFECTIVE_URL) . ' returned status code ' . $statusCode, \OCP\Util::ERROR);
-				}
-				curl_close($curl);
-				rewind($fp);
-				return $fp;
+				$params = array( 'seekablehttp' => $options );
+
+				$context = stream_context_create( $params );
+
+				return fopen($url, 'r', false, $context);
 			case 'w':
 			case 'wb':
 			case 'a':
