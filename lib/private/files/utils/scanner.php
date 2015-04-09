@@ -131,9 +131,14 @@ class Scanner extends PublicEmitter {
 			$scanner = $storage->getScanner();
 			$scanner->setUseTransactions(false);
 			$this->attachListener($mount);
-			$this->db->beginTransaction();
+
+			// FIXME Instead of using a transaction we should lock the table.
+			// FIXME Transactions cause a problem, if two scanChildren() calls run.
+			// FIXME Then insertIfNotExists() of the second one fails to insert, but the
+			// FIXME select can not find the value, because it still has the old state.
+			// FIXME $this->db->beginTransaction();
 			$scanner->scan($relativePath, \OC\Files\Cache\Scanner::SCAN_RECURSIVE, \OC\Files\Cache\Scanner::REUSE_ETAG | \OC\Files\Cache\Scanner::REUSE_SIZE);
-			$this->db->commit();
+			// FIXME $this->db->commit();
 		}
 		$this->propagator->propagateChanges(time());
 	}
