@@ -52,7 +52,7 @@ class DeleteOrphanedSharesJobTest extends \Test\TestCase {
 	private $user2;
 
 	public static function setUpBeforeClass() {
-		self::$trashBinStatus = $appManager->isEnabledForUser('files_trashbin');
+		self::$trashBinStatus = \OC_App::isEnabled('files_trashbin');
 		\OC_App::disable('files_trashbin');
 
 		// just in case...
