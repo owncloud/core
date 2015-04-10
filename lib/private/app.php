@@ -352,7 +352,6 @@ class OC_App {
 		}
 		self::$enabledAppsCache = array(); // flush
 		// check if app is a shipped app or not. if not delete
-		\OC_Hook::emit('OC_App', 'pre_disable', array('app' => $app));
 		$appManager = \OC::$server->getAppManager();
 		$appManager->disableApp($app);
 	}
