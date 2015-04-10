@@ -195,6 +195,7 @@ class AppManager implements IAppManager {
 		if ($appId === 'files') {
 			throw new \Exception("files can't be disabled.");
 		}
+		\OC_Hook::emit('OC_App', 'pre_disable', array('app' => $appId));
 		unset($this->installedAppsCache[$appId]);
 		$this->appConfig->setValue($appId, 'enabled', 'no');
 		$this->clearAppsCache();
