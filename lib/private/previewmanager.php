@@ -211,6 +211,7 @@ class PreviewManager implements IPreview {
 	 *  - OC\Preview\StarOffice
 	 *  - OC\Preview\SVG
 	 *  - OC\Preview\TIFF
+	 *  - OC\Preview\Raw
 	 *
 	 * @return array
 	 */
@@ -284,6 +285,7 @@ class PreviewManager implements IPreview {
 				'PSD'	=> ['mimetype' => '/application\/x-photoshop/', 'class' => '\OC\Preview\Photoshop'],
 				'EPS'	=> ['mimetype' => '/application\/postscript/', 'class' => '\OC\Preview\Postscript'],
 				'TTF'	=> ['mimetype' => '/application\/(?:font-sfnt|x-font$)/', 'class' => '\OC\Preview\Font'],
+				'CR2'	=> ['mimetype' => '/image\/x-dcraw/', 'class' => '\OC\Preview\Raw'],
 			];
 
 			foreach ($imagickProviders as $queryFormat => $provider) {
