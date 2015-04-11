@@ -51,7 +51,9 @@ class Storage {
 
 		$sql = 'SELECT `numeric_id` FROM `*PREFIX*storages` WHERE `id` = ?';
 		$result = \OC_DB::executeAudited($sql, array($this->storageId));
-		if ($row = $result->fetchRow()) {
+		$row = $result->fetchRow();
+		$result->closeCursor();
+		if ($row) {
 			$this->numericId = $row['numeric_id'];
 		} else {
 			$connection = \OC_DB::getConnection();

@@ -326,6 +326,7 @@ class Manager {
 		$result = $getShare->execute(array($hash, $this->uid));
 
 		if ($result) {
+			$result->closeCursor();
 			$share = $getShare->fetch();
 			$this->sendFeedbackToRemote($share['remote'], $share['share_token'], $share['remote_id'], 'decline');
 		}
@@ -353,6 +354,7 @@ class Manager {
 
 		if ($result) {
 			$shares = $getShare->fetchAll();
+			$result->closeCursor();
 			foreach($shares as $share) {
 				$this->sendFeedbackToRemote($share['remote'], $share['share_token'], $share['remote_id'], 'decline');
 			}

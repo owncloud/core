@@ -236,6 +236,7 @@ class Tags implements \OCP\ITags {
 					\OCP\Util::writeLog('core', __METHOD__. 'DB error: ' . \OCP\DB::getErrorMessage($result), \OCP\Util::ERROR);
 					return false;
 				}
+				$result->closeCursor();
 			}
 		} catch(\Exception $e) {
 			\OCP\Util::writeLog('core', __METHOD__.', exception: '.$e->getMessage(),

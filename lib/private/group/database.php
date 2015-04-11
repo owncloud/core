@@ -62,8 +62,10 @@ class OC_Group_Database extends OC_Group_Backend {
 		// Check for existence
 		$stmt = OC_DB::prepare( "SELECT `gid` FROM `*PREFIX*groups` WHERE `gid` = ?" );
 		$result = $stmt->execute( array( $gid ));
+		$row = $result->fetchRow();
+		$result->closeCursor();
 
-		if( $result->fetchRow() ) {
+		if($row) {
 			// Can not add an existing group
 			return false;
 		}

@@ -448,6 +448,7 @@ class Cache {
 			$sql = 'SELECT `path`, `fileid` FROM `*PREFIX*filecache` WHERE `storage` = ? AND `path` LIKE ?';
 			$result = \OC_DB::executeAudited($sql, array($this->getNumericStorageId(), $source . '/%'));
 			$childEntries = $result->fetchAll();
+			$result->closeCursor();
 			$sourceLength = strlen($source);
 			\OC_DB::beginTransaction();
 			$query = \OC_DB::prepare('UPDATE `*PREFIX*filecache` SET `path` = ?, `path_hash` = ? WHERE `fileid` = ?');
@@ -727,7 +728,9 @@ class Cache {
 	static public function getById($id) {
 		$sql = 'SELECT `storage`, `path` FROM `*PREFIX*filecache` WHERE `fileid` = ?';
 		$result = \OC_DB::executeAudited($sql, array($id));
-		if ($row = $result->fetchRow()) {
+		$row = $result->fetchRow();
+		$result->closeCursor();
+		if ($row) {
 			$numericId = $row['storage'];
 			$path = $row['path'];
 		} else {
