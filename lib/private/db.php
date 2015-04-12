@@ -145,6 +145,13 @@ class OC_DB {
 		self::raiseExceptionOnError($stmt, 'Could not prepare statement');
 		if ($stmt instanceof OC_DB_StatementWrapper) {
 			$result = $stmt->execute($parameters);
+			if( is_int($result) ) {
+                                // If the result is an int, this was a data manipulation statement
+				// and the statement should be closed here. In the case of query 
+				// statements, the statement object is returned as the calling function 
+				// might still want to deal with the statement. So it can not be closed here.
+                                $stmt->closeCursor();
+                        }
 			self::raiseExceptionOnError($result, 'Could not execute statement');
 		} else {
 			if (is_object($stmt)) {
