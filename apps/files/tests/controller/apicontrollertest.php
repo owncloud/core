@@ -95,6 +95,7 @@ class ApiControllerTest extends TestCase {
 				'mimetype' => 'application/pdf',
 				'size' => 1234,
 				'etag' => 'MyEtag',
+				'encrypted' => true
 			],
 			$this->getMockBuilder('\OCP\Files\Mount\IMountPoint')
 				->disableOriginalConstructor()
@@ -123,8 +124,9 @@ class ApiControllerTest extends TestCase {
 					'tags' => [
 						[
 							'MyTagName'
-						]
+						],
 					],
+					'encrypted' => true
 				],
 			],
 		]);
@@ -144,6 +146,7 @@ class ApiControllerTest extends TestCase {
 				'mimetype' => 'application/pdf',
 				'size' => 1234,
 				'etag' => 'MyEtag',
+				'encrypted' => false
 			],
 			$this->getMockBuilder('\OCP\Files\Mount\IMountPoint')
 				->disableOriginalConstructor()
@@ -160,6 +163,7 @@ class ApiControllerTest extends TestCase {
 				'mimetype' => 'application/binary',
 				'size' => 9876,
 				'etag' => 'SubEtag',
+				'encrypted' => true
 			],
 			$this->getMockBuilder('\OCP\Files\Mount\IMountPoint')
 				->disableOriginalConstructor()
@@ -190,6 +194,7 @@ class ApiControllerTest extends TestCase {
 							'MyTagName'
 						]
 					],
+					'encrypted' => false
 				],
 				[
 					'id' => null,
@@ -207,8 +212,9 @@ class ApiControllerTest extends TestCase {
 					'tags' => [
 						[
 							'MyTagName'
-						]
+						],
 					],
+					'encrypted' => true
 				]
 			],
 		]);
