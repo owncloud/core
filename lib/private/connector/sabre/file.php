@@ -111,7 +111,15 @@ class File extends Node implements IFile {
 		}
 
 		try {
-			$putOkay = $this->fileView->file_put_contents($partFilePath, $data);
+			$metaData = [];
+			// allow sync clients to send the mtime along in a header
+			$request = \OC::$server->getRequest();
+			if (isset($request->server['HTTP_X_OC_MTIME'])) {
+				$metaData['mtime'] = $request->server['HTTP_X_OC_MTIME'];
+				header('X-OC-MTime: accepted');
+			}
+
+			$putOkay = $this->fileView->file_put_contents($partFilePath, $data, $metaData);
 			if ($putOkay === false) {
 				\OC_Log::write('webdav', '\OC\Files\Filesystem::file_put_contents() failed', \OC_Log::ERROR);
 				$this->fileView->unlink($partFilePath);
@@ -171,13 +179,6 @@ class File extends Node implements IFile {
 				}
 			}
 
-			// allow sync clients to send the mtime along in a header
-			$request = \OC::$server->getRequest();
-			if (isset($request->server['HTTP_X_OC_MTIME'])) {
-				if($this->fileView->touch($this->path, $request->server['HTTP_X_OC_MTIME'])) {
-					header('X-OC-MTime: accepted');
-				}
-			}
 			$this->refreshInfo();
 		} catch (StorageNotAvailableException $e) {
 			throw new ServiceUnavailable("Failed to check file size: ".$e->getMessage());
@@ -300,6 +301,14 @@ class File extends Node implements IFile {
 					$partFile = $path . '/' . $info['name'] . '.ocTransferId' . $info['transferid'] . '.part';
 					$chunk_handler->file_assemble($partFile);
 
+					// allow sync clients to send the mtime along in a header
+					$request = \OC::$server->getRequest();
+					if (isset($request->server['HTTP_X_OC_MTIME'])) {
+						if($this->fileView->touch($partFile, $request->server['HTTP_X_OC_MTIME'])) {
+							header('X-OC-MTime: accepted');
+						}
+					}
+
 					// here is the final atomic rename
 					$renameOkay = $this->fileView->rename($partFile, $targetPath);
 					$fileExists = $this->fileView->file_exists($targetPath);
@@ -314,14 +323,6 @@ class File extends Node implements IFile {
 				} else {
 					// assemble directly into the final file
 					$chunk_handler->file_assemble($targetPath);
-				}
-
-				// allow sync clients to send the mtime along in a header
-				$request = \OC::$server->getRequest();
-				if (isset($request->server['HTTP_X_OC_MTIME'])) {
-					if($this->fileView->touch($targetPath, $request->server['HTTP_X_OC_MTIME'])) {
-						header('X-OC-MTime: accepted');
-					}
 				}
 
 				$info = $this->fileView->getFileInfo($targetPath);

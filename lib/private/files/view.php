@@ -428,9 +428,10 @@ class View {
 	/**
 	 * @param string $path
 	 * @param int|string $mtime
+	 * @param bool $updateCache
 	 * @return bool
 	 */
-	public function touch($path, $mtime = null) {
+	public function touch($path, $mtime = null, $updateCache = true) {
 		if (!is_null($mtime) and !is_numeric($mtime)) {
 			$mtime = strtotime($mtime);
 		}
@@ -452,7 +453,9 @@ class View {
 				$mtime = time();
 			}
 			//if native touch fails, we emulate it by changing the mtime in the cache
-			$this->putFileInfo($path, array('mtime' => $mtime));
+			if ($updateCache) {
+				$this->putFileInfo($path, array('mtime' => $mtime));
+			}
 		}
 		return true;
 	}
@@ -510,9 +513,10 @@ class View {
 	/**
 	 * @param string $path
 	 * @param mixed $data
+	 * @param array $metaData
 	 * @return bool|mixed
 	 */
-	public function file_put_contents($path, $data) {
+	public function file_put_contents($path, $data, $metaData = []) {
 		if (is_resource($data)) { //not having to deal with streams in file_put_contents makes life easier
 			$absolutePath = Filesystem::normalizePath($this->getAbsolutePath($path));
 			if (Filesystem::isValidPath($path)
@@ -532,7 +536,12 @@ class View {
 					list ($count, $result) = \OC_Helper::streamCopy($data, $target);
 					fclose($target);
 					fclose($data);
-					$this->updater->update($path);
+					if (isset($metaData['mtime'])) {
+						$this->touch($path, $metaData['mtime'], false);
+						$this->updater->update($path, $metaData['mtime']);
+					} else {
+						$this->updater->update($path);
+					}
 					if ($this->shouldEmitHooks($path) && $result !== false) {
 						$this->emit_file_hooks_post($exists, $path);
 					}
