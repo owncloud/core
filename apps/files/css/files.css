@@ -295,6 +295,14 @@ table td.filename .thumbnail {
 	position: absolute;
 	z-index: 4;
 }
+table .filename .icon-encrypted {
+	position: absolute;
+	left: 75px;
+	top: 5px;
+	z-index: 49;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	opacity: .5;
+}
 table td.filename input.filename {
 	width: 70%;
 	margin-top: 9px;
