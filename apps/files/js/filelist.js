@@ -747,7 +747,7 @@
 
 			// show encryption icon
 			if (fileData.encrypted) {
-				td.append('<div class="icon-password icon-encrypted" title="' + t('files', 'Encrypted') + '"/>');
+				td.append('<div class="icon-encrypted svg" title="' + t('files', 'Encrypted') + '"/>');
 				$('.icon-encrypted').tipsy({gravity:'w'});
 			}
 

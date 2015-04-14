@@ -300,8 +300,6 @@ table .filename .icon-encrypted {
 	left: 75px;
 	top: 5px;
 	z-index: 49;
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-	opacity: .5;
 }
 table td.filename input.filename {
 	width: 70%;
