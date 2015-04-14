@@ -117,7 +117,9 @@
 .nav-icon-sharinglinks {
 	background-image: url('../img/public.svg');
 }
-.nav-icon-extstoragemounts {
+.nav-icon-extstoragemounts,
+.nav-icon-spmounts,
+.nav-icon-wndmounts {
 	background-image: url('../img/external.svg');
 }
 .nav-icon-trashbin {
