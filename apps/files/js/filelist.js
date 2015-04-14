@@ -680,7 +680,7 @@
 			options = options || {};
 
 			if (isNaN(mtime)) {
-				mtime = new Date().getTime()
+				mtime = new Date().getTime();
 			}
 
 			if (type === 'dir') {
@@ -744,6 +744,11 @@
 				"class": "name",
 				"href": linkUrl
 			});
+
+			// show encryption icon
+			if (fileData.encrypted) {
+				td.append('<div class="icon-password icon-encrypted"/>');
+			}
 
 			// from here work on the display name
 			name = fileData.displayName || name;

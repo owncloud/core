@@ -148,6 +148,7 @@ class Helper {
 		$entry['size'] = $i['size'];
 		$entry['type'] = $i['type'];
 		$entry['etag'] = $i['etag'];
+		$entry['encrypted'] = $i['encrypted'];
 		if (isset($i['tags'])) {
 			$entry['tags'] = $i['tags'];
 		}
