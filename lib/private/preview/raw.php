@@ -29,4 +29,15 @@ class Raw extends Bitmap {
 	public function getMimeType() {
 		return '/image\/x-dcraw/';
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getThumbnail($path, $maxX, $maxY, $scalingup, $fileview) {
+		$converter = \OC_Helper::findBinaryPath('ufraw-batch');
+		if (empty($converter)) {
+			return false;
+		}
+		return parent::getThumbnail($path, $maxX, $maxY, $scalingup, $fileview);
+	}
 }

@@ -701,6 +701,10 @@ $CONFIG = array(
  *    at the :doc:`../configuration_files/collaborative_documents_configuration`
  *    section of the Administrators Manual.
  *
+ * .. note:: You need to make sure that your ImageMagick installation supports
+ *    the Raw file format before enabling it in the configuration. This usually
+ *    involves installing the ufraw-batch application
+ *
  * The following providers are not available in Microsoft Windows:
  *
  *  - OC\Preview\Movie
