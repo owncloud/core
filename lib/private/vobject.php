@@ -31,6 +31,7 @@
 class OC_VObject{
 	/** @var Sabre\VObject\Component */
 	protected $vObject;
+	protected $vcomponent;
 
 	/**
 	 * @return Sabre\VObject\Component
@@ -46,7 +47,6 @@ class OC_VObject{
 	 */
 	public static function parse($data) {
 		try {
-			Sabre\VObject\Property::$classMap['LAST-MODIFIED'] = 'Sabre\VObject\Property\DateTime';
 			$vObject = Sabre\VObject\Reader::read($data);
 			if ($vObject instanceof Sabre\VObject\Component) {
 				$vObject = new OC_VObject($vObject);
@@ -101,7 +101,25 @@ class OC_VObject{
 		if (is_object($vobject_or_name)) {
 			$this->vObject = $vobject_or_name;
 		} else {
-			$this->vObject = new Sabre\VObject\Component($vobject_or_name);
+			switch($vobject_or_name){
+				case 'VCALENDAR':
+				case 'VTODO':
+				case 'VEVENT':
+				case 'VALARM':
+				case 'VFREEBUSY':	
+				case 'VJOURNAL':
+				case 'VTIMEZONE':					
+					$this->vcomponent = new Sabre\VObject\Component\VCalendar();
+					break;	
+				case 'VCARD':
+					$this->vcomponent = new Sabre\VObject\Component\VCard();
+					break;
+				default:
+				 	$this->vcomponent = new Sabre\VObject\Component\VCalendar();
+					break;			
+			}
+				
+			$this->vObject  = $this->vcomponent->createComponent($vobject_or_name);	
 		}
 	}
 
@@ -128,10 +146,14 @@ class OC_VObject{
 		if(is_array($value)) {
 			$value = OC_VObject::escapeSemicolons($value);
 		}
-		$property = new Sabre\VObject\Property( $name, $value );
+		
+		$vcalendar = new Sabre\VObject\Component\VCalendar();
+		$property = $vcalendar->createProperty( $name, $value );
+		
 		foreach($parameters as $name => $value) {
-			$property->parameters[] = new Sabre\VObject\Parameter($name, $value);
+			$property->parameters[] = $vcalendar->createProperty( $name, $value );
 		}
+
 
 		$this->vObject->add($property);
 		return $property;
@@ -163,20 +185,28 @@ class OC_VObject{
 	 *
 	 * @param string $name
 	 * @param DateTime $datetime
-	 * @param int $dateType
+	 * @param  $floating
 	 * @return void
 	 */
-	public function setDateTime($name, $datetime, $dateType=Sabre\VObject\Property\DateTime::LOCALTZ) {
+	public function setDateTime($name, $datetime, $floating=false) {
+			
 		if ($datetime == 'now') {
-			$datetime = new DateTime();
+			$datetime = new \DateTime();
 		}
-		if ($datetime instanceof DateTime) {
-			$datetime_element = new Sabre\VObject\Property\DateTime($name);
-			$datetime_element->setDateTime($datetime, $dateType);
-			$this->vObject->__set($name, $datetime_element);
+		if ($datetime instanceof \DateTime) {
+				$tThis=$this;
+			if(!($tThis instanceof Sabre\VObject\Component)){
+				$tThis=new Sabre\VObject\Component\VCalendar();
+			}	
+			$datetime_element = new Sabre\VObject\Property\ICalendar\DateTime($tThis,$name);
+			$datetime_element->setDateTime($datetime, $floating);
+			$this->vObject->__set($name,$datetime_element);
 		}else{
 			$this->vObject->__unset($name);
 		}
+		
+		
+		
 	}
 
 	/**
@@ -186,7 +216,7 @@ class OC_VObject{
 	 */
 	public function getAsString($name) {
 		return $this->vObject->__isset($name) ?
-			$this->vObject->__get($name)->value :
+			$this->vObject->__get($name)->getValue() :
 			'';
 	}
 
