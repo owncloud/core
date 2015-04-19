@@ -567,11 +567,16 @@ class Filesystem {
 	 * @return bool
 	 */
 	static public function isFileBlacklisted($filename) {
-		$filename = self::normalizePath($filename);
-
-		$blacklist = \OC_Config::getValue('blacklisted_files', array('.htaccess'));
-		$filename = strtolower(basename($filename));
-		return in_array($filename, $blacklist);
+		$filename = strtolower(basename(self::normalizePath($filename)));
+		$memcache = \OC::$server->getMemCacheFactory()->create('isFileBlacklisted');
+		if ($memcache->hasKey('blacklisted_file')) {
+			$blacklist = $memcache->get('blacklisted_file');
+		}
+		else {
+			$blacklist = array_map('trim', \OC::$server->getSystemConfig()->getValue('blacklisted_files', array('.htaccess')));
+			$memcache->set('blacklisted_file', $blacklist, 120);
+		}
+		return in_array($filename, $blacklist, true);
 	}
 
 	/**
