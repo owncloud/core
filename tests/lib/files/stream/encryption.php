@@ -69,8 +69,11 @@ class Encryption extends \Test\TestCase {
 		fclose($stream);
 	}
 
-	public function testWriteReadBigFile() {
-		$expectedData = file_get_contents(\OC::$SERVERROOT . '/tests/data/lorem-big.txt');
+	/**
+	 * @dataProvider providesBigFilesToTest
+	 */
+	public function testWriteReadBigFile($fileName) {
+		$expectedData = file_get_contents($fileName);
 		// write it
 		$fileName = tempnam("/tmp", "FOO");
 		$stream = $this->getStream($fileName, 'w+', 0);
@@ -83,6 +86,14 @@ class Encryption extends \Test\TestCase {
 		fclose($stream);
 
 		$this->assertEquals($expectedData, $data);
+	}
+
+	public function providesBigFilesToTest() {
+		return [
+			'Testing 4096 bytes' => [\OC::$SERVERROOT . '/tests/data/lorem-4096.txt'],
+			'Testing 6000 bytes' => [\OC::$SERVERROOT . '/tests/data/lorem-6000.txt'],
+			'Testing more then 8 kB' => [\OC::$SERVERROOT . '/tests/data/lorem-big.txt'],
+		];
 	}
 
 	/**
