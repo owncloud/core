@@ -575,8 +575,9 @@ class Filesystem {
 	}
 
 	/**
-	 * check if the directory should be ignored when scanning
+	 * Checks if the directory should be ignored when scanning
 	 * NOTE: the special directories . and .. would cause never ending recursion
+	 * A config.php parameter array can contain additional directory names to be excluded
 	 * @param String $dir
 	 * @return boolean
 	 */
@@ -584,7 +585,8 @@ class Filesystem {
 		if ($dir === '.' || $dir === '..') {
 			return true;
 		}
-		return false;
+		$excluded = \OC::$server->getSystemConfig()->getValue('excluded_directories', array());
+		return in_array($dir, $excluded, true);
 	}
 
 	/**

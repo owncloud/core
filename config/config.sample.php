@@ -783,6 +783,13 @@ $CONFIG = array(
 'blacklisted_files' => array('.htaccess'),
 
 /**
+ * Define a specific directory or directories which are excluded from 
+ * being displayed and scanned. Case sensitive.
+ * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
+ */
+'excluded_directories' => array('.snapshot', '~snapshot'),
+
+/**
  * Define a default folder for shared files and folders other than root.
  */
 'share_folder' => '/',
