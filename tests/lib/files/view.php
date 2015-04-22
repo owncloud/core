@@ -794,4 +794,22 @@ class View extends \PHPUnit_Framework_TestCase {
 			array('putFileInfo', array()),
 		);
 	}
+
+	public function testGetAbsolutePathOnNull() {
+		$view = new \OC\Files\View();
+		$this->assertNull($view->getAbsolutePath(null));
+	}
+
+	public function testGetRelativePathOnNull() {
+		$view = new \OC\Files\View();
+		$this->assertNull($view->getRelativePath(null));
+	}
+
+	/**
+	 * @expectedException \InvalidArgumentException
+	 */
+	public function testNullAsRoot() {
+		new \OC\Files\View(null);
+	}
+
 }
