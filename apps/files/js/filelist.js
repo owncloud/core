@@ -37,7 +37,6 @@
 		id: 'files',
 		appName: t('files', 'Files'),
 		isEmpty: true,
-		useUndo:true,
 
 		/**
 		 * Top-level container with controls and file list
@@ -216,8 +215,8 @@
 
 			this.updateSearch();
 
-			this.$fileList.on('click','td.filename>a.name', _.bind(this._onClickFile, this));
-			this.$fileList.on('change', 'td.filename>.selectCheckBox', _.bind(this._onClickFileCheckbox, this));
+			this.$fileList.on('click','td.filename a.name', _.bind(this._onClickFile, this));
+			this.$fileList.on('change', 'td.filename .selectCheckBox', _.bind(this._onClickFileCheckbox, this));
 			this.$el.on('urlChanged', _.bind(this._onUrlChanged, this));
 			this.$el.find('.select-all').click(_.bind(this._onClickSelectAll, this));
 			this.$el.find('.download').click(_.bind(this._onClickDownloadSelected, this));
@@ -297,7 +296,7 @@
 		 * @param state true to select, false to deselect
 		 */
 		_selectFileEl: function($tr, state) {
-			var $checkbox = $tr.find('td.filename>.selectCheckBox');
+			var $checkbox = $tr.find('td.filename .selectCheckBox');
 			var oldData = !!this._selectedFiles[$tr.data('id')];
 			var data;
 			$checkbox.prop('checked', state);
@@ -346,7 +345,7 @@
 				else {
 					this._lastChecked = $tr;
 				}
-				var $checkbox = $tr.find('td.filename>.selectCheckBox');
+				var $checkbox = $tr.find('td.filename .selectCheckBox');
 				this._selectFileEl($tr, !$checkbox.prop('checked'));
 				this.updateSelectionSummary();
 			} else {
@@ -390,7 +389,7 @@
 		 */
 		_onClickSelectAll: function(e) {
 			var checked = $(e.target).prop('checked');
-			this.$fileList.find('td.filename>.selectCheckBox').prop('checked', checked)
+			this.$fileList.find('td.filename .selectCheckBox').prop('checked', checked)
 				.closest('tr').toggleClass('selected', checked);
 			this._selectedFiles = {};
 			this._selectionSummary.clear();
@@ -1544,11 +1543,16 @@
 				for (var i=0; i<files.length; i++) {
 					var deleteAction = this.findFileEl(files[i]).children("td.date").children(".action.delete");
 					deleteAction.removeClass('icon-delete').addClass('icon-loading-small');
+					var currentRow = this.findFileEl(files[i]).closest('tr');
+					currentRow.addClass('undo-animation-height');
+					currentRow
+						.children('td')
+						.wrapInner('<div />')
+						.children()
+						.slideUp(500, function() {
+							currentRow.addClass('undo-animation-border');
+					});
 				}
-			}
-			// Finish any existing actions
-			if (this.lastAction) {
-				this.lastAction();
 			}
 
 			params = {
@@ -1564,21 +1568,72 @@
 				this.$fileList.find('tr>td.date .action.delete').removeClass('icon-delete').addClass('icon-loading-small');
 			}
 
-			$.post(OC.filePath('files', 'ajax', 'delete.php'),
+			this.actionCanceled = false;
+			var msg = t('files', 'All files deleted.');
+			if (files) {
+				msg = t('files', '{file} deleted.', {'file': files[0]});
+				if (files.length > 1) {
+					var summary = this._selectionSummary.summary;
+					msg = '';
+					if (summary.totalDirs > 0) {
+						msg += n('files', '%n folder', '%n folders', summary.totalDirs);
+						if (summary.totalFiles > 0) {
+							msg += ' & ';
+						}
+					}
+					if (summary.totalFiles > 0) {
+						msg += n('files', '%n file', '%n files', summary.totalFiles);
+					}
+					msg += ' ' + t('files', 'deleted.');
+				}
+			}
+			OC.Notification.showHtml(msg + " <a class='undo-action'>Undo</a>");
+			$('.undo-action').click(function(){
+				self.actionCanceled = true;
+				OC.Notification.hide();
+				if (files) {
+					$.each(files, function (index, file) {
+						var deleteAction = self.findFileEl(file).find('.action.delete');
+						deleteAction.removeClass('icon-loading-small').addClass('icon-delete');
+						var currentRow = self.findFileEl(file);
+						currentRow.removeClass('undo-animation-border');
+						currentRow
+							.children('td')
+							.children()
+							.slideDown(500, function() {
+								currentRow.find('> td > div > *').unwrap();
+								currentRow.removeClass('undo-animation-height');
+						});
+					});
+				}
+				else {
+					self.$fileList.find('tr>td.date .action.delete').addClass('icon-delete').removeClass('icon-loading-small');
+				}
+			});
+			_.delay(function() {
+				if (self.actionCanceled) {
+					return;
+				}
+				OC.Notification.hide();
+				$.post(OC.filePath('files', 'ajax', 'delete.php'),
 					params,
-					function(result) {
+					function (result) {
 						if (result.status === 'success') {
+							OC.Notification.hide();
 							if (params.allfiles) {
 								self.setFiles([]);
 							}
 							else {
-								$.each(files,function(index,file) {
+								$.each(files, function (index, file) {
 									var fileEl = self.remove(file, {updateSummary: false});
 									// FIXME: not sure why we need this after the
 									// element isn't even in the DOM any more
 									fileEl.find('.selectCheckBox').prop('checked', false);
 									fileEl.removeClass('selected');
-									self.fileSummary.remove({type: fileEl.attr('data-type'), size: fileEl.attr('data-size')});
+									self.fileSummary.remove({
+										type: fileEl.attr('data-type'),
+										size: fileEl.attr('data-size')
+									});
 								});
 							}
 							// TODO: this info should be returned by the ajax call!
@@ -1594,7 +1649,7 @@
 								OC.Notification.show(t('files', 'Error deleting file.'));
 							}
 							// hide notification after 10 sec
-							setTimeout(function() {
+							setTimeout(function () {
 								OC.Notification.hide();
 							}, 10000);
 							if (params.allfiles) {
@@ -1603,13 +1658,14 @@
 								self.reload();
 							}
 							else {
-								$.each(files,function(index,file) {
+								$.each(files, function (index, file) {
 									var deleteAction = self.findFileEl(file).find('.action.delete');
 									deleteAction.removeClass('icon-loading-small').addClass('icon-delete');
 								});
 							}
 						}
 					});
+			}, 7000);
 		},
 		/**
 		 * Creates the file summary section
@@ -2213,13 +2269,6 @@
 })();
 
 $(document).ready(function() {
-	// FIXME: unused ?
-	OCA.Files.FileList.useUndo = (window.onbeforeunload)?true:false;
-	$(window).bind('beforeunload', function () {
-		if (OCA.Files.FileList.lastAction) {
-			OCA.Files.FileList.lastAction();
-		}
-	});
 	$(window).unload(function () {
 		$(window).trigger('beforeunload');
 	});

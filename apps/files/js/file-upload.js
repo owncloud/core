@@ -646,16 +646,12 @@ OC.Upload = {
 				event.preventDefault();
 				try {
 					checkInput();
-					var newname = input.val();
-					if (FileList.lastAction) {
-						FileList.lastAction();
-					}
-					var name = FileList.getUniqueName(newname);
-					if (newname !== name) {
-						FileList.checkName(name, newname, true);
-						var hidden = true;
-					} else {
-						var hidden = false;
+					var newName = input.val();
+					var name = FileList.getUniqueName(newName);
+					var hidden = false;
+					if (newName !== name) {
+						FileList.checkName(name, newName, true);
+						hidden = true;
 					}
 					switch(type) {
 						case 'file':
