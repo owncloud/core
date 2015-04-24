@@ -281,12 +281,32 @@ class Share extends Constants {
 	 * @param mixed $parameters (optional)
 	 * @param int $limit Number of items to return (optional) Returns all by default
 	 * @param boolean $includeCollections (optional)
+	 * @param string $recipientUser id of the recipient user (optional), defaults
+	 * to the currently logged in user
 	 * @return mixed Return depends on format
 	 */
-	public static function getItemsSharedWith($itemType, $format = self::FORMAT_NONE,
-											  $parameters = null, $limit = -1, $includeCollections = false) {
-		return self::getItems($itemType, null, self::$shareTypeUserAndGroups, \OC_User::getUser(), null, $format,
-			$parameters, $limit, $includeCollections);
+	public static function getItemsSharedWith(
+		$itemType,
+		$format = self::FORMAT_NONE,
+		$parameters = null,
+		$limit = -1,
+		$includeCollections = false,
+		$recipientUser = null
+	) {
+		if ($recipientUser === null) {
+			$recipientUser = self::getLoggedInUser();
+		}
+		return self::getItems(
+			$itemType,
+			null,
+			self::$shareTypeUserAndGroups,
+			$recipientUser,
+			null,
+			$format,
+			$parameters,
+			$limit,
+			$includeCollections
+		);
 	}
 
 	/**
@@ -312,12 +332,32 @@ class Share extends Constants {
 	 * @param int $format (optional) Format type must be defined by the backend
 	 * @param mixed $parameters (optional)
 	 * @param boolean $includeCollections (optional)
+	 * @param string $recipientUser id of the recipient user (optional), defaults
+	 * to the currently logged in user
 	 * @return mixed Return depends on format
 	 */
-	public static function getItemSharedWith($itemType, $itemTarget, $format = self::FORMAT_NONE,
-											 $parameters = null, $includeCollections = false) {
-		return self::getItems($itemType, $itemTarget, self::$shareTypeUserAndGroups, \OC_User::getUser(), null, $format,
-			$parameters, 1, $includeCollections);
+	public static function getItemSharedWith(
+		$itemType,
+		$itemTarget,
+		$format = self::FORMAT_NONE,
+		$parameters = null,
+		$includeCollections = false,
+		$recipientUser = null
+	) {
+		if ($recipientUser === null) {
+			$recipientUser = self::getLoggedInUser();
+		}
+		return self::getItems(
+			$itemType,
+			$itemTarget,
+			self::$shareTypeUserAndGroups,
+			$recipientUser,
+			null,
+			$format,
+			$parameters,
+			1,
+			$includeCollections
+		);
 	}
 
 	/**
@@ -329,7 +369,13 @@ class Share extends Constants {
 	 * @param int $shareType only look for a specific share type
 	 * @return array Return list of items with file_target, permissions and expiration
 	 */
-	public static function getItemSharedWithUser($itemType, $itemSource, $user, $owner = null, $shareType = null) {
+	public static function getItemSharedWithUser(
+		$itemType,
+		$itemSource,
+		$user,
+		$owner = null,
+		$shareType = null
+	) {
 		$shares = array();
 		$fileDependent = false;
 
@@ -435,8 +481,14 @@ class Share extends Constants {
 	 * @param string $shareWith (optional) define against which user should be checked, default: current user
 	 * @return array
 	 */
-	public static function getItemSharedWithBySource($itemType, $itemSource, $format = self::FORMAT_NONE,
-													 $parameters = null, $includeCollections = false, $shareWith = null) {
+	public static function getItemSharedWithBySource(
+		$itemType,
+		$itemSource,
+		$format = self::FORMAT_NONE,
+		$parameters = null,
+		$includeCollections = false,
+		$shareWith = null
+	) {
 		$shareWith = ($shareWith === null) ? \OC_User::getUser() : $shareWith;
 		return self::getItems($itemType, $itemSource, self::$shareTypeUserAndGroups, $shareWith, null, $format,
 			$parameters, 1, $includeCollections, true);
@@ -2585,5 +2637,20 @@ class Share extends Constants {
 		$query = 'SELECT * FROM `*PREFIX*share` WHERE `file_source` = ?';
 		$result = \OC::$server->getDatabaseConnection()->executeQuery($query, [$id]);
 		return $result->fetchAll();
+	}
+
+	/**
+	 * Returns the currently logged in user id.
+	 *
+	 * @return string|bool currently logged in user id or false
+	 * if none
+	 */
+	private static function getLoggedInUser() {
+		$user = \OC::$server->getUserSession()->getUser();
+		if ($user) {
+			return $user->getUID();
+		} else {
+			return false;
+		}
 	}
 }

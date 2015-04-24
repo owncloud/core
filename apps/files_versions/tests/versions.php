@@ -441,6 +441,58 @@ class Test_Files_Versioning extends \Test\TestCase {
 		$this->assertTrue($this->rootView->file_exists($v2Renamed));
 	}
 
+	public function testMoveIntoSharedFolderAsRecipient() {
+
+		\OC\Files\Filesystem::mkdir('folder1');
+		$fileInfo = \OC\Files\Filesystem::getFileInfo('folder1');
+
+		\OCP\Share::shareItem(
+			'folder',
+			$fileInfo['fileid'],
+			\OCP\Share::SHARE_TYPE_USER,
+			self::TEST_VERSIONS_USER2,
+			\OCP\Constants::PERMISSION_ALL
+		);
+
+		self::loginHelper(self::TEST_VERSIONS_USER2);
+		$versionsFolder2 = '/' . self::TEST_VERSIONS_USER2 . '/files_versions';
+		\OC\Files\Filesystem::file_put_contents('test.txt', 'test file');
+
+		$t1 = time();
+		// second version is two weeks older, this way we make sure that no
+		// version will be expired
+		$t2 = $t1 - 60 * 60 * 24 * 14;
+
+		$this->rootView->mkdir($versionsFolder2);
+		// create some versions
+		$v1 = $versionsFolder2 . '/test.txt.v' . $t1;
+		$v2 = $versionsFolder2 . '/test.txt.v' . $t2;
+
+		$this->rootView->file_put_contents($v1, 'version1');
+		$this->rootView->file_put_contents($v2, 'version2');
+
+		// move file into the shared folder as recipient
+		\OC\Files\Filesystem::rename('/test.txt', '/folder1/test.txt');
+
+		$this->assertFalse($this->rootView->file_exists($v1));
+		$this->assertFalse($this->rootView->file_exists($v2));
+
+		self::loginHelper(self::TEST_VERSIONS_USER);
+
+		$versionsFolder1 = '/' . self::TEST_VERSIONS_USER . '/files_versions';
+
+		$v1Renamed = $versionsFolder1 . '/test.txt.v' . $t1;
+		$v2Renamed = $versionsFolder1 . '/test.txt.v' . $t2;
+
+		$this->assertTrue($this->rootView->file_exists($v1Renamed));
+		$this->assertTrue($this->rootView->file_exists($v2Renamed));
+
+		$this->runCommands();
+
+		$this->assertFalse($this->rootView->file_exists($v1Renamed));
+		$this->assertTrue($this->rootView->file_exists($v2Renamed));
+	}
+
 	public function testRenameSharedFile() {
 
 		\OC\Files\Filesystem::file_put_contents("test.txt", "test file");

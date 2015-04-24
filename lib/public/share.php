@@ -12,6 +12,7 @@
  * @author Roeland Jago Douma <roeland@famdouma.nl>
  * @author Sam Tuke <mail@samtuke.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -96,13 +97,27 @@ class Share extends \OC\Share\Constants {
 	 * @param mixed $parameters (optional)
 	 * @param int $limit Number of items to return (optional) Returns all by default
 	 * @param bool $includeCollections (optional)
+	 * @param string $recipientUser id of the recipient user (optional), defaults
+	 * to the currently logged in user
 	 * @return mixed Return depends on format
 	 * @since 5.0.0
 	 */
-	public static function getItemsSharedWith($itemType, $format = self::FORMAT_NONE,
-		$parameters = null, $limit = -1, $includeCollections = false) {
-
-		return \OC\Share\Share::getItemsSharedWith($itemType, $format, $parameters, $limit, $includeCollections);
+	public static function getItemsSharedWith(
+		$itemType,
+		$format = self::FORMAT_NONE,
+		$parameters = null,
+		$limit = -1,
+		$includeCollections = false,
+		$recipientUser = null
+	) {
+		return \OC\Share\Share::getItemsSharedWith(
+			$itemType,
+			$format,
+			$parameters,
+			$limit,
+			$includeCollections,
+			$recipientUser
+		);
 	}
 
 	/**
@@ -129,13 +144,27 @@ class Share extends \OC\Share\Constants {
 	 * @param int $format (optional) Format type must be defined by the backend
 	 * @param mixed $parameters (optional)
 	 * @param bool $includeCollections (optional)
+	 * @param string $recipientUser id of the recipient user (optional), defaults
+	 * to the currently logged in user
 	 * @return mixed Return depends on format
 	 * @since 5.0.0
 	 */
-	public static function getItemSharedWith($itemType, $itemTarget, $format = self::FORMAT_NONE,
-		$parameters = null, $includeCollections = false) {
-
-		return \OC\Share\Share::getItemSharedWith($itemType, $itemTarget, $format, $parameters, $includeCollections);
+	public static function getItemSharedWith(
+		$itemType,
+		$itemTarget,
+		$format = self::FORMAT_NONE,
+		$parameters = null,
+		$includeCollections = false,
+		$recipientUser = null
+	) {
+		return \OC\Share\Share::getItemSharedWith(
+			$itemType,
+			$itemTarget,
+			$format,
+			$parameters,
+			$includeCollections,
+			$recipientUser
+		);
 	}
 
 	/**
