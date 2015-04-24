@@ -429,7 +429,18 @@
 			if (!this.isAllSelected()) {
 				files = _.pluck(this.getSelectedFiles(), 'name');
 			}
-			this.do_delete(files);
+			var obj=this;
+			OC.dialogs.confirm(
+				t('files','Delete the selected files?'),
+				t('files','Confirm Delete'),
+				function(answer)
+				{ 
+					if(answer)
+					{
+						obj.do_delete(files);
+					}
+				}
+			);
 			event.preventDefault();
 			return false;
 		},
