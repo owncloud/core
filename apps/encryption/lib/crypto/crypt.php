@@ -133,7 +133,7 @@ class Crypt {
 	/**
 	 * @param string $plainContent
 	 * @param string $passPhrase
-	 * @return bool|string
+	 * @return false|string
 	 * @throws GenericEncryptionException
 	 */
 	public function symmetricEncryptFileContent($plainContent, $passPhrase) {
@@ -228,7 +228,7 @@ class Crypt {
 	}
 
 	/**
-	 * @param $data
+	 * @param string $data
 	 * @return string
 	 */
 	private function addPadding($data) {
@@ -238,7 +238,7 @@ class Crypt {
 	/**
 	 * @param string $privateKey
 	 * @param string $password
-	 * @return bool|string
+	 * @return false|string
 	 */
 	public function decryptPrivateKey($privateKey, $password = '') {
 
@@ -276,7 +276,7 @@ class Crypt {
 	}
 
 	/**
-	 * @param $keyFileContents
+	 * @param string $keyFileContents
 	 * @param string $passPhrase
 	 * @param string $cipher
 	 * @return string
@@ -298,7 +298,7 @@ class Crypt {
 	 * remove padding
 	 *
 	 * @param $padded
-	 * @return bool|string
+	 * @return string|false
 	 */
 	private function removePadding($padded) {
 		if (substr($padded, -2) === 'xx') {
@@ -310,8 +310,8 @@ class Crypt {
 	/**
 	 * split iv from encrypted content
 	 *
-	 * @param $catFile
-	 * @return array
+	 * @param string|false $catFile
+	 * @return string
 	 */
 	private function splitIv($catFile) {
 		// Fetch encryption metadata from end of file
@@ -331,8 +331,8 @@ class Crypt {
 	}
 
 	/**
-	 * @param $encryptedContent
-	 * @param $iv
+	 * @param string $encryptedContent
+	 * @param string $iv
 	 * @param string $passPhrase
 	 * @param string $cipher
 	 * @return string
@@ -353,7 +353,7 @@ class Crypt {
 	}
 
 	/**
-	 * @param $data
+	 * @param string $data
 	 * @return array
 	 */
 	private function parseHeader($data) {
@@ -425,7 +425,7 @@ class Crypt {
 	 * @param $encKeyFile
 	 * @param $shareKey
 	 * @param $privateKey
-	 * @return mixed
+	 * @return string
 	 * @throws MultiKeyDecryptException
 	 */
 	public function multiKeyDecrypt($encKeyFile, $shareKey, $privateKey) {

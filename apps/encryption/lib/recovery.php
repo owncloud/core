@@ -103,7 +103,7 @@ class Recovery {
 
 	/**
 	 * @param $recoveryKeyId
-	 * @param $password
+	 * @param string $password
 	 * @return bool
 	 */
 	public function enableAdminRecovery($password) {
@@ -144,7 +144,7 @@ class Recovery {
 	}
 
 	/**
-	 * @param $recoveryPassword
+	 * @param string $recoveryPassword
 	 * @return bool
 	 */
 	public function disableAdminRecovery($recoveryPassword) {
@@ -212,6 +212,7 @@ class Recovery {
 
 	/**
 	 * add recovery key to all encrypted files
+	 * @param string $path
 	 */
 	private function addRecoveryKeys($path) {
 		$dirContent = $this->view->getDirectoryContent($path);
@@ -239,6 +240,7 @@ class Recovery {
 
 	/**
 	 * remove recovery key to all encrypted files
+	 * @param string $path
 	 */
 	private function removeRecoveryKeys($path) {
 		$dirContent = $this->view->getDirectoryContent($path);
@@ -268,8 +270,8 @@ class Recovery {
 	}
 
 	/**
-	 * @param $path
-	 * @param $privateKey
+	 * @param string $path
+	 * @param false|string $privateKey
 	 */
 	private function recoverAllFiles($path, $privateKey) {
 		$dirContent = $this->view->getDirectoryContent($path);
