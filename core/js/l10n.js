@@ -21,10 +21,10 @@ OC.L10N = {
 	_bundles: {},
 
 	/**
-	 * Plural functions, key is app name and value is function.
-	 * @type {Object.<String,Function>}
+	 * Plural function
+	 * @type func
 	 */
-	_pluralFunctions: {},
+	_pluralFunction: '',
 
 	/**
 	 * Load an app's translation bundle if not loaded already.
@@ -63,64 +63,14 @@ OC.L10N = {
 	 *
 	 * @param {String} appName name of the app
 	 * @param {Object<String,String>} bundle
-	 * @param {Function|String} [pluralForm] optional plural function or plural string
+	 * @param {Function} [pluralForm] optional plural function or plural string
 	 */
 	register: function(appName, bundle, pluralForm) {
 		this._bundles[appName] = bundle || {};
 
 		if (_.isFunction(pluralForm)) {
-			this._pluralFunctions[appName] = pluralForm;
-		} else {
-			// generate plural function based on form
-			this._pluralFunctions[appName] = this._generatePluralFunction(pluralForm);
+			this._pluralFunction = pluralForm;
 		}
-	},
-
-	/**
-	 * Generates a plural function based on the given plural form.
-	 * If an invalid form has been given, returns a default function.
-	 *
-	 * @param {String} pluralForm plural form
-	 */
-	_generatePluralFunction: function(pluralForm) {
-		// default func
-		var func = function (n) {
-			var p = (n !== 1) ? 1 : 0;
-			return { 'nplural' : 2, 'plural' : p };
-		};
-
-		if (!pluralForm) {
-			console.warn('Missing plural form in language file');
-			return func;
-		}
-
-		/**
-		 * code below has been taken from jsgettext - which is LGPL licensed
-		 * https://developer.berlios.de/projects/jsgettext/
-		 * http://cvs.berlios.de/cgi-bin/viewcvs.cgi/jsgettext/jsgettext/lib/Gettext.js
-		 */
-		var pf_re = new RegExp('^(\\s*nplurals\\s*=\\s*[0-9]+\\s*;\\s*plural\\s*=\\s*(?:\\s|[-\\?\\|&=!<>+*/%:;a-zA-Z0-9_\\(\\)])+)', 'm');
-		if (pf_re.test(pluralForm)) {
-			//ex english: "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-			//pf = "nplurals=2; plural=(n != 1);";
-			//ex russian: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10< =4 && (n%100<10 or n%100>=20) ? 1 : 2)
-			//pf = "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)";
-			var pf = pluralForm;
-			if (! /;\s*$/.test(pf)) {
-				pf = pf.concat(';');
-			}
-			/* We used to use eval, but it seems IE has issues with it.
-			 * We now use "new Function", though it carries a slightly
-			 * bigger performance hit.
-			var code = 'function (n) { var plural; var nplurals; '+pf+' return { "nplural" : nplurals, "plural" : (plural === true ? 1 : plural ? plural : 0) }; };';
-			Gettext._locale_data[domain].head.plural_func = eval("("+code+")");
-			 */
-			var code = 'var plural; var nplurals; '+pf+' return { "nplural" : nplurals, "plural" : (plural === true ? 1 : plural ? plural : 0) };';
-			func = new Function("n", code);
-		} else {
-			console.warn('Invalid plural form in language file: "' + pluralForm + '"');
-		}
-		return func;
 	},
 
 	/**
@@ -191,7 +141,7 @@ OC.L10N = {
 		if( typeof(value) !== 'undefined' ){
 			var translation = value;
 			if ($.isArray(translation)) {
-				var plural = this._pluralFunctions[app](count);
+				var plural = this._pluralFunction(count);
 				return this.translate(app, translation[plural.plural], vars, count, options);
 			}
 		}

@@ -232,5 +232,10 @@ OC.L10N.register(
     "To avoid timeouts with larger installations, you can instead run the following command from your installation directory:" : "Abyste zabránili vypršení časového limitu u větších instalací, můžete namísto toho spustit následující příkaz v hlavním adresáři:",
     "This %s instance is currently in maintenance mode, which may take a while." : "Tato instalace %s je právě ve stavu údržby a to může chvíli trvat.",
     "This page will refresh itself when the %s instance is available again." : "Tato stránka se automaticky načte poté, co bude opět dostupná instance %s."
-},
-"nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;");
+}, function(n) {
+		var plural;
+		var nplurals;
+		nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;
+		return { "nplural" : nplurals, "plural" : (plural === true ? 1 : plural ? plural : 0) };
+	}
+);
