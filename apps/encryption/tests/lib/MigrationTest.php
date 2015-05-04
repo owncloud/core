@@ -57,6 +57,9 @@ class MigrationTest extends \Test\TestCase {
 		$this->moduleId = \OCA\Encryption\Crypto\Encryption::ID;
 	}
 
+	/**
+	 * @param string $uid
+	 */
 	protected function createDummyShareKeys($uid) {
 		$this->view->mkdir($uid . '/files_encryption/keys/folder1/folder2/folder3/file3');
 		$this->view->mkdir($uid . '/files_encryption/keys/folder1/folder2/file2');
@@ -82,6 +85,9 @@ class MigrationTest extends \Test\TestCase {
 		}
 	}
 
+	/**
+	 * @param string $uid
+	 */
 	protected function createDummyUserKeys($uid) {
 		$this->view->mkdir($uid . '/files_encryption/');
 		$this->view->mkdir('/files_encryption/public_keys');
@@ -89,6 +95,9 @@ class MigrationTest extends \Test\TestCase {
 		$this->view->file_put_contents('/files_encryption/public_keys/' . $uid . '.publicKey', 'publicKey');
 	}
 
+	/**
+	 * @param string $uid
+	 */
 	protected function createDummyFileKeys($uid) {
 		$this->view->mkdir($uid . '/files_encryption/keys/folder1/folder2/folder3/file3');
 		$this->view->mkdir($uid . '/files_encryption/keys/folder1/folder2/file2');
@@ -100,6 +109,9 @@ class MigrationTest extends \Test\TestCase {
 		$this->view->file_put_contents($uid . '/files_encryption/keys/folder2/file.2.1/fileKey'  , 'data');
 	}
 
+	/**
+	 * @param string $uid
+	 */
 	protected function createDummyFilesInTrash($uid) {
 		$this->view->mkdir($uid . '/files_trashbin/keys/file1.d5457864');
 		$this->view->mkdir($uid . '/files_trashbin/keys/folder1.d7437648723/file2');
@@ -179,6 +191,9 @@ class MigrationTest extends \Test\TestCase {
 
 	}
 
+	/**
+	 * @param string $uid
+	 */
 	protected function verifyFilesInTrash($uid) {
 		// share keys
 		$this->assertTrue(
@@ -204,6 +219,9 @@ class MigrationTest extends \Test\TestCase {
 		);
 	}
 
+	/**
+	 * @param string $uid
+	 */
 	protected function verifyNewKeyPath($uid) {
 		// private key
 		if ($uid !== '') {
@@ -271,6 +289,11 @@ class MigrationTest extends \Test\TestCase {
 
 	}
 
+	/**
+	 * @param string $table
+	 * @param string $appid
+	 * @param integer $expected
+	 */
 	public function verifyDB($table, $appid, $expected) {
 		/** @var \OC\DB\Connection $connection */
 		$connection = \OC::$server->getDatabaseConnection();
