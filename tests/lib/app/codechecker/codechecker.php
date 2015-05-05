@@ -6,10 +6,11 @@
  * See the COPYING-README file.
  */
 
-namespace Test\App;
+namespace Test\App\CodeChecker;
 
 use OC;
 use Test\TestCase;
+use OC\App\CodeChecker\Error;
 
 class CodeChecker extends TestCase {
 
@@ -20,12 +21,13 @@ class CodeChecker extends TestCase {
 	 * @param $fileToVerify
 	 */
 	public function testFindInvalidUsage($expectedErrorToken, $expectedErrorCode, $fileToVerify) {
-		$checker = new OC\App\CodeChecker();
+		$checker = new OC\App\CodeChecker\CodeChecker();
+		/** @var Error[] $errors */
 		$errors = $checker->analyseFile(OC::$SERVERROOT . "/tests/data/app/code-checker/$fileToVerify");
 
 		$this->assertEquals(1, count($errors));
-		$this->assertEquals($expectedErrorCode, $errors[0]['errorCode']);
-		$this->assertEquals($expectedErrorToken, $errors[0]['disallowedToken']);
+		$this->assertEquals($expectedErrorCode, $errors[0]->getCode());
+		$this->assertEquals($expectedErrorToken, $errors[0]->getDisallowedToken());
 	}
 
 	public function providesFilesToCheck() {
@@ -45,7 +47,7 @@ class CodeChecker extends TestCase {
 	 * @param $fileToVerify
 	 */
 	public function testPassValidUsage($fileToVerify) {
-		$checker = new OC\App\CodeChecker();
+		$checker = new OC\App\CodeChecker\CodeChecker();
 		$errors = $checker->analyseFile(OC::$SERVERROOT . "/tests/data/app/code-checker/$fileToVerify");
 
 		$this->assertEquals(0, count($errors));
