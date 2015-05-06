@@ -64,7 +64,6 @@
 			settings.minWidth=button.width();
 		}
 		button.css('min-width',settings.minWidth);
-		settings.minOuterWidth=button.outerWidth()-2;
 		button.data('settings',settings);
 
 		if(!settings.singleSelect && settings.checked.length>0) {
@@ -162,21 +161,9 @@
 						settings.checked.splice(index,1);
 						settings.labels.splice(index,1);
 					}
-					var oldWidth=button.width();
 					button.children('span').first().text(settings.labels.length > 0
 						? settings.labels.join(', ')
 						: settings.title);
-					var newOuterWidth = Math.max(
-						(button.outerWidth() - 2),
-						settings.minOuterWidth
-					) + 'px';
-					var newWidth=Math.max(button.width(),settings.minWidth);
-					var pos=button.position();
-					button.css('width',oldWidth);
-					button.animate({'width':newWidth},undefined,undefined,function(){
-						button.css('width','');
-					});
-					list.animate({'width':newOuterWidth,'left':pos.left});
 					self.change();
 				});
 				var li=$('<li></li>');
@@ -282,6 +269,7 @@
 			}
 			list.append(list.find('li.creator'));
 			var pos=button.position();
+			var listWidth=Math.max(list.width(),button.outerWidth());
 			if(($(document).height() > (button.offset().top + button.outerHeight() + list.children().length * button.height()) &&
 				$(document).height() - button.offset().top > (button.offset().top+button.outerHeight() + list.children().length * button.height())) ||
 				$(document).height() / 2 > button.offset().top
@@ -289,7 +277,7 @@
 				list.css({
 					top:pos.top+button.outerHeight()-5,
 					left:pos.left,
-					width:(button.outerWidth()-2)+'px',
+					width:(listWidth)+'px',
 					'max-height':($(document).height()-(button.offset().top+button.outerHeight()+10))+'px'
 				});
 				list.addClass('down');
@@ -300,7 +288,7 @@
 				list.css({
 					top:pos.top - list.height(),
 					left:pos.left,
-					width:(button.outerWidth()-2)+'px'
+					width:(listWidth)+'px'
 
 				});
 				list.detach().insertBefore($(this));
