@@ -37,6 +37,13 @@ class Error {
 	private $disallowedToken;
 
 	/**
+	 * @return $this
+	 */
+	public function __construct() {
+		return $this;
+	}
+
+	/**
 	 * @param int $line
 	 */
 	public function addLine($line) {
