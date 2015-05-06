@@ -92,13 +92,15 @@ class Encryption extends \Test\Files\Storage\Storage {
 			->setMethods(['getOption'])
 			->getMock();
 		$mount->expects($this->any())->method('getOption')->willReturn(true);
-		$this->instance = new \OC\Files\Storage\Wrapper\Encryption([
-			'storage' => $this->sourceStorage,
-			'root' => 'foo',
-			'mountPoint' => '/',
-			'mount' => $mount
-		],
+		$this->instance = new \OC\Files\Storage\Wrapper\Encryption(
+			[
+				'storage' => $this->sourceStorage,
+				'root' => 'foo',
+				'mountPoint' => '/',
+				'mount' => $mount
+			],
 			$this->encryptionManager, $this->util, $logger, $file, null, $this->keyStore, $this->update
+
 		);
 	}
 
