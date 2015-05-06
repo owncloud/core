@@ -21,10 +21,10 @@
 
 namespace OC\App\CodeChecker\Checks\Security;
 
-use OC\App\CodeChecker\Error;
 use SplObserver;
 use SplSubject;
 use OC\App\CodeChecker\Check;
+use OC\App\CodeChecker\Exception\SoftFail;
 
 /**
  * Checks for forbidden loose comparison parameters such as == or !=, instead
@@ -42,7 +42,7 @@ class ComparisonOperators implements SplObserver {
 
 		if(!empty($xpath)) {
 			foreach($xpath as $result) {
-				$error = new Error();
+				$error = new SoftFail();
 				$error->addLine((int)$result);
 				$error->addDisallowedToken('==');
 				$error->addCode(1005);
@@ -60,7 +60,7 @@ class ComparisonOperators implements SplObserver {
 
 		if(!empty($xpath)) {
 			foreach($xpath as $result) {
-				$error = new Error();
+				$error = new SoftFail();
 				$error->addLine((int)$result);
 				$error->addDisallowedToken('!=');
 				$error->addCode(1005);

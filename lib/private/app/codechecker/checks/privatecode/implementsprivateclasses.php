@@ -21,10 +21,10 @@
 
 namespace OC\App\CodeChecker\Checks\PrivateCode;
 
-use OC\App\CodeChecker\Error;
 use SplObserver;
 use SplSubject;
 use OC\App\CodeChecker\Check;
+use OC\App\CodeChecker\Exception\HardFail;
 
 /**
  * Checks for code that extends private classes such as: "class BadClass implements OC_Hook"
@@ -44,7 +44,7 @@ class ImplementsPrivateClasses implements SplObserver {
 				// For each element get the name
 				$name = (string)$result->xpath('./subNode:parts/scalar:array/scalar:string')[0];
 				if(in_array(strtoupper($name), $subject->blacklistedApiCalls, true)) {
-					$error = new Error();
+					$error = new HardFail();
 					$error->addLine((int)$result->xpath('./attribute:startLine/scalar:int')[0]);
 					$error->addDisallowedToken($name);
 					$error->addCode(1001);

@@ -22,11 +22,14 @@
 
 namespace OC\Core\Command\App;
 
+use OC\App\CodeChecker\Exception\HardFail;
+use OC\App\CodeChecker\Exception\SoftFail;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use OC\App\CodeChecker\Error;
+use OC\App\CodeChecker\Exception\Error;
 
 class CheckCode extends Command {
 	protected function configure() {
@@ -68,9 +71,16 @@ class CheckCode extends Command {
 			});*/
 
 
+			$style = new OutputFormatterStyle('yellow');
+			$output->getFormatter()->setStyle('warning', $style);
+
 			foreach($errors as $error) {
 				$line = sprintf("%' 4d", $error->getLine());
-				$output->writeln("    <error>line $line: {$error->getDisallowedToken()} - {$error->getMessage()}</error>");
+				if($error instanceof HardFail) {
+					$output->writeln("    <error>error: line $line: {$error->getDisallowedToken()} - {$error->getMessage()}</error>");
+				} elseif ($error instanceof SoftFail) {
+					$output->writeln("    <warning>warning: line $line: {$error->getDisallowedToken()} - {$error->getMessage()}</warning>");
+				}
 			}
 		});
 		$errors = $codeChecker->analyse($appId);

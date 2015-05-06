@@ -24,6 +24,7 @@ namespace OC\App\CodeChecker;
 use SimpleXMLElement;
 use SplSubject;
 use SplObserver;
+use OC\App\CodeChecker\Exception\Error;
 
 /**
  * Subject class that is observed by the different checks for invalid code

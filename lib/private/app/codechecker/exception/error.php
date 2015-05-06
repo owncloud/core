@@ -19,12 +19,12 @@
  *
  */
 
-namespace OC\App\CodeChecker;
+namespace OC\App\CodeChecker\Exception;
 
 /**
  * Represents an error found by the code checker
  *
- * @package OC\App\CodeChecker
+ * @package OC\App\CodeChecker\Exception
  */
 class Error {
 	/** @var int */
