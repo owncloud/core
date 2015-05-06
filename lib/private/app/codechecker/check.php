@@ -37,12 +37,17 @@ class Check implements SplSubject {
 	private $errors = [];
 	/** @var SimpleXMLElement */
 	public $xmlAst;
+	/** @var []string */
+	public $blacklistedApiCalls;
 
 	/**
 	 * @param SimpleXMLElement $xmlAst
+	 * @param []string $blacklistedApiCalls
 	 */
-	public function __construct(SimpleXMLElement &$xmlAst) {
+	public function __construct(SimpleXMLElement &$xmlAst,
+								array $blacklistedApiCalls) {
 		$this->xmlAst = $xmlAst;
+		$this->blacklistedApiCalls = $blacklistedApiCalls;
 	}
 
 	/**

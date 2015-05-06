@@ -43,7 +43,7 @@ class StaticCall implements SplObserver {
 			foreach($xpath as $result) {
 				// For each element get the name
 				$name = (string)$result->xpath('./subNode:class/node:Name/subNode:parts/scalar:array/scalar:string')[0];
-				if(substr(strtoupper($name), 0, 3) === "OC_") {
+				if(in_array(strtoupper($name), $subject->blacklistedApiCalls, true)) {
 					$error = new Error();
 					$error->addLine((int)$result->xpath('./subNode:class/node:Name/attribute:startLine/scalar:int')[0]);
 					$error->addDisallowedToken($name);

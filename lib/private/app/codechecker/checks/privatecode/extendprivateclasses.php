@@ -43,7 +43,7 @@ class ExtendPrivateClasses implements SplObserver {
 			foreach($xpath as $result) {
 				// For each element get the name
 				$name = (string)$result->xpath('.//subNode:parts/scalar:array/scalar:string')[0];
-				if(substr(strtoupper($name), 0, 3) === "OC_") {
+				if(in_array(strtoupper($name), $subject->blacklistedApiCalls, true)) {
 					$error = new Error();
 					$error->addLine((int)$result->xpath('./attribute:startLine/scalar:int')[0]);
 					$error->addDisallowedToken($name);

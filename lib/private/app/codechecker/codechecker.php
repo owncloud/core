@@ -56,13 +56,13 @@ class CodeChecker extends BasicEmitter {
 	/** @var XML */
 	private $serializer;
 
-	/** @var string[] */
+	/** @var string[] Array list of blacklisted API calls - should be removed by generic OC_ in the future */
 	private $blackListedClassNames;
 
 	public function __construct() {
 		$this->parser = new Parser(new Lexer);
 		$this->serializer = new XML();
-		$this->blackListedClassNames = [
+		$this->blackListedClassNames = array_map('strtoupper', [
 			// classes replaced by the public api
 			'OC_API',
 			'OC_App',
@@ -85,7 +85,7 @@ class CodeChecker extends BasicEmitter {
 			'OC_Template',
 			'OC_User',
 			'OC_Util',
-		];
+		]);
 	}
 
 	/**
@@ -149,7 +149,7 @@ class CodeChecker extends BasicEmitter {
 		$serializedAst = simplexml_load_string($serializedAst);
 		libxml_disable_entity_loader($loadEntities);
 
-		$check = new Check($serializedAst);
+		$check = new Check($serializedAst, $this->blackListedClassNames);
 		$check->attach(new ComparisonOperators);
 		$check->attach(new ExtendPrivateClasses());
 		$check->attach(new ImplementsPrivateClasses());
