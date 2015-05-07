@@ -1390,9 +1390,13 @@ class UsersControllerTest extends \Test\TestCase {
 
 	public function setEmailAddressData() {
 		return [
-			['', true, false, true],
-			['foobar@localhost', true, true, false],
-			['foo@bar@localhost', false, false, false],
+			['', true, false, true, true, true],
+			['foobar@localhost', true, true, false, true, true],
+			['foo@bar@localhost', false, false, false, true, true],
+			['', true, false, false, false, false],
+			['foobar@localhost', true, false, false, false, false],
+			['', true, false, true, true, false],
+			['foobar@localhost', true, true, false, true, false],
 		];
 	}
 
@@ -1403,9 +1407,11 @@ class UsersControllerTest extends \Test\TestCase {
 	 * @param bool $isValid
 	 * @param bool $expectsUpdate
 	 * @param bool $expectsDelete
+	 * @param bool $isAdmin
+	 * @param bool $canChangeDisplayName
 	 */
-	public function testSetEmailAddress($mailAddress, $isValid, $expectsUpdate, $expectsDelete) {
-		$this->container['IsAdmin'] = true;
+	public function testSetEmailAddress($mailAddress, $isValid, $expectsUpdate, $expectsDelete, $isAdmin, $canChangeDisplayName) {
+		$this->container['IsAdmin'] = $isAdmin;
 
 		$user = $this->getMockBuilder('\OC\User\User')
 			->disableOriginalConstructor()->getMock();
@@ -1426,7 +1432,7 @@ class UsersControllerTest extends \Test\TestCase {
 		if ($isValid) {
 			$user->expects($this->atLeastOnce())
 				->method('canChangeDisplayName')
-				->willReturn(true);
+				->willReturn($canChangeDisplayName);
 
 			$this->container['UserManager']
 				->expects($this->atLeastOnce())
