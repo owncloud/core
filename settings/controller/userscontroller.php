@@ -451,9 +451,8 @@ class UsersController extends Controller {
 	 */
 	public function setMailAddress($id, $mailAddress) {
 		$userId = $this->userSession->getUser()->getUID();
-		if($userId !== $id
-			&& !$this->isAdmin
-			&& !$this->subAdminFactory->isUserAccessible($userId, $id)) {
+		$isAdminOrSubAdmin = $this->isAdmin || $this->subAdminFactory->isUserAccessible($userId, $id);
+		if($userId !== $id && !$isAdminOrSubAdmin) {
 			return new DataResponse(
 				array(
 					'status' => 'error',
@@ -492,7 +491,7 @@ class UsersController extends Controller {
 
 		// this is the only permission a backend provides and is also used
 		// for the permission of setting a email address
-		if(!$user->canChangeDisplayName()){
+		if(!$user->canChangeDisplayName() && !$isAdminOrSubAdmin){
 			return new DataResponse(
 				array(
 					'status' => 'error',
