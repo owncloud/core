@@ -375,6 +375,8 @@ class Server extends SimpleContainer implements IServerContainer {
 
 			if ($this->getSession()->exists('requesttoken')) {
 				$requestToken = $this->getSession()->get('requesttoken');
+			} else if (isset($_REQUEST['requesttoken'])) {
+				$requestToken = $_REQUEST['requesttoken'];
 			} else {
 				$requestToken = false;
 			}
