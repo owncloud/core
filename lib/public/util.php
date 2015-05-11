@@ -71,6 +71,17 @@ class Util {
 	}
 
 	/**
+	 * get the current installed edition of ownCloud. There is the community
+	 * edition that just returns an empty string and the enterprise edition
+	 * that returns "Enterprise".
+	 * @return string
+	 * @since 8.1.0
+	 */
+	public static function getEditionString() {
+		return \OC_Util::getEditionString();
+	}
+
+	/**
 	 * send an email
 	 * @param string $toaddress
 	 * @param string $toname
