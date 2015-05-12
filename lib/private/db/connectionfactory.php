@@ -178,6 +178,11 @@ class ConnectionFactory {
 		if ($driverOptions) {
 			$connectionParams['driverOptions'] = $driverOptions;
 		}
+		// allow setting oracle session mode parameter, eg OCI_CRED_EXT when using oracle wallet
+		$sessionMode = $config->getValue('dbsessionmode', null);
+		if ($sessionMode) {
+			$connectionParams['sessionMode'] = $sessionMode;
+		}
 
 		return $connectionParams;
 	}
