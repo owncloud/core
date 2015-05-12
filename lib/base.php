@@ -547,6 +547,11 @@ class OC {
 		@ini_set('display_errors', 0);
 		@ini_set('log_errors', 1);
 
+		try {
+			$serverDateTimeZone = new \DateTimeZone(date_default_timezone_get());
+			\OC::$server->registerParameter('ServerDateTimeZone', $serverDateTimeZone);
+		} catch (\Exception $e) {
+		}
 		date_default_timezone_set('UTC');
 
 		//try to configure php to enable big file uploads.
