@@ -22,6 +22,7 @@
   </FilesMatch>
 </IfModule>
 <IfModule mod_php5.c>
+php_flag display_errors 0
 php_value upload_max_filesize 513M
 php_value post_max_size 513M
 php_value memory_limit 512M
