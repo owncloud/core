@@ -2,6 +2,7 @@
 /**
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Lukas Reschke <lukas@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -20,15 +21,20 @@
  *
  */
 
-namespace OC\App;
+namespace OC\App\CodeChecker;
 
+use OC\App\CodeChecker\Checks\PrivateCode\Consts;
+use OC\App\CodeChecker\Checks\PrivateCode\NewClass;
+use OC\App\CodeChecker\Checks\PrivateCode\StaticCall;
+use OC\App\CodeChecker\Checks\Security\ComparisonOperators;
+use OC\App\CodeChecker\Checks\PrivateCode\ExtendPrivateClasses;
+use OC\App\CodeChecker\Checks\PrivateCode\ImplementsPrivateClasses;
 use OC\Hooks\BasicEmitter;
 use PhpParser\Lexer;
 use PhpParser\Node;
 use PhpParser\Node\Name;
-use PhpParser\NodeTraverser;
-use PhpParser\NodeVisitorAbstract;
 use PhpParser\Parser;
+use PhpParser\Serializer\XML;
 use RecursiveCallbackFilterIterator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -47,12 +53,16 @@ class CodeChecker extends BasicEmitter {
 	/** @var Parser */
 	private $parser;
 
-	/** @var string[] */
+	/** @var XML */
+	private $serializer;
+
+	/** @var string[] Array list of blacklisted API calls - should be removed by generic OC_ in the future */
 	private $blackListedClassNames;
 
 	public function __construct() {
 		$this->parser = new Parser(new Lexer);
-		$this->blackListedClassNames = [
+		$this->serializer = new XML();
+		$this->blackListedClassNames = array_map('strtoupper', [
 			// classes replaced by the public api
 			'OC_API',
 			'OC_App',
@@ -75,7 +85,7 @@ class CodeChecker extends BasicEmitter {
 			'OC_Template',
 			'OC_User',
 			'OC_Util',
-		];
+		]);
 	}
 
 	/**
@@ -134,13 +144,20 @@ class CodeChecker extends BasicEmitter {
 	public function analyseFile($file) {
 		$code = file_get_contents($file);
 		$statements = $this->parser->parse($code);
+		$serializedAst = $this->serializer->serialize($statements);
+		$loadEntities = libxml_disable_entity_loader(true);
+		$serializedAst = simplexml_load_string($serializedAst);
+		libxml_disable_entity_loader($loadEntities);
 
-		$visitor = new CodeCheckVisitor($this->blackListedClassNames);
-		$traverser = new NodeTraverser;
-		$traverser->addVisitor($visitor);
+		$check = new Check($serializedAst, $this->blackListedClassNames);
+		$check->attach(new ComparisonOperators);
+		$check->attach(new ExtendPrivateClasses());
+		$check->attach(new ImplementsPrivateClasses());
+		$check->attach(new Consts());
+		$check->attach(new StaticCall());
+		$check->attach(new NewClass());
+		$check->scan();
 
-		$traverser->traverse($statements);
-
-		return $visitor->errors;
+		return $check->getErrors();
 	}
 }

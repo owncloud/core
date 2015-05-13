@@ -22,10 +22,14 @@
 
 namespace OC\Core\Command\App;
 
+use OC\App\CodeChecker\Exception\HardFail;
+use OC\App\CodeChecker\Exception\SoftFail;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use OC\App\CodeChecker\Exception\Error;
 
 class CheckCode extends Command {
 	protected function configure() {
@@ -41,13 +45,14 @@ class CheckCode extends Command {
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$appId = $input->getArgument('app-id');
-		$codeChecker = new \OC\App\CodeChecker();
+		$codeChecker = new \OC\App\CodeChecker\CodeChecker();
 		$codeChecker->listen('CodeChecker', 'analyseFileBegin', function($params) use ($output) {
 			if(OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
 				$output->writeln("<info>Analysing {$params}</info>");
 			}
 		});
 		$codeChecker->listen('CodeChecker', 'analyseFileFinished', function($filename, $errors) use ($output) {
+			/** @var Error[] $errors */
 			$count = count($errors);
 
 			// show filename if the verbosity is low, but there are errors in a file
@@ -59,13 +64,23 @@ class CheckCode extends Command {
 			if($count > 0 || OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
 				$output->writeln(" {$count} errors");
 			}
-			usort($errors, function($a, $b) {
-				return $a['line'] >$b['line'];
-			});
 
-			foreach($errors as $p) {
-				$line = sprintf("%' 4d", $p['line']);
-				$output->writeln("    <error>line $line: {$p['disallowedToken']} - {$p['reason']}</error>");
+			// FIXME: Make work with error class
+			/*	usort($params, function($a, $b) {
+				return $a['line'] >$b['line'];
+			});*/
+
+
+			$style = new OutputFormatterStyle('yellow');
+			$output->getFormatter()->setStyle('warning', $style);
+
+			foreach($errors as $error) {
+				$line = sprintf("%' 4d", $error->getLine());
+				if($error instanceof HardFail) {
+					$output->writeln("    <error>error: line $line: {$error->getDisallowedToken()} - {$error->getMessage()}</error>");
+				} elseif ($error instanceof SoftFail) {
+					$output->writeln("    <warning>warning: line $line: {$error->getDisallowedToken()} - {$error->getMessage()}</warning>");
+				}
 			}
 		});
 		$errors = $codeChecker->analyse($appId);

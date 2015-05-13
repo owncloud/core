@@ -562,9 +562,14 @@ class OC_Installer{
 			return true;
 		}
 
-		$codeChecker = new \OC\App\CodeChecker();
+		$codeChecker = new \OC\App\CodeChecker\CodeChecker();
 		$errors = $codeChecker->analyseFolder($folder);
+		foreach($errors as $error) {
+			if ($error instanceof \OC\App\CodeChecker\Exception\HardFail) {
+				return false;
+			}
+		}
 
-		return empty($errors);
+		return true;
 	}
 }
