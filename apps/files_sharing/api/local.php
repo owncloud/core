@@ -40,20 +40,29 @@ class Local {
 				return self::getFilesSharedWithMe();
 			}
 		// if a file is specified, get the share for this file
-		if (isset($_GET['path'])) {
-			$params['itemSource'] = self::getFileId($_GET['path']);
-			$params['path'] = $_GET['path'];
-			$params['itemType'] = self::getItemType($_GET['path']);
-
+		if (isset($_GET['path']) || isset($_GET['byfileid'])) {
+				
+			if(isset($_GET['path'])){	
+				$params['itemSource'] = self::getFileId($_GET['path']);
+				$params['path'] = $_GET['path'];
+			}
+			
+			if(isset($_GET['byfileid'])){	
+				$params['itemSource'] = (int) $_GET['byfileid'];
+				$params['path'] = self::getPath((int) $_GET['byfileid']);
+			}
+			
+			$params['itemType'] = self::getItemType($params['path']);
+			
 			if ( isset($_GET['reshares']) && $_GET['reshares'] !== 'false' ) {
 				$params['reshares'] = true;
 			} else {
 				$params['reshares'] = false;
 			}
-
 			if (isset($_GET['subfiles']) && $_GET['subfiles'] !== 'false') {
 				return self::getSharesFromFolder($params);
 			}
+			
 			return self::collectShares($params);
 		}
 
@@ -541,7 +550,26 @@ class Local {
 
 		return $fileId;
 	}
+	
+	/**
+	 * get Path from a given fileid
+	 * @param int $id
+	 * @return string $filePath or null
+	 */
+	private static function getPath($id) {
 
+		$view = new \OC\Files\View('/'.\OCP\User::getUser().'/files');
+		$filePath = null;
+		$path= $view -> getPath($id);
+		
+		if($path){
+		$path = substr($path,1);
+	    	$filePath = $path;
+		}
+
+		return $filePath;
+	}
+	
 	/**
 	 * get itemType
 	 * @param string $path
