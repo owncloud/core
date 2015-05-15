@@ -833,7 +833,8 @@ class Preview {
 	private function storeMaxPreview($previewPath) {
 		$maxPreview = false;
 		$preview = $this->preview;
-
+		$this->keepAspect = true;
+		
 		$allThumbnails = $this->userView->getDirectoryContent($previewPath);
 		// This is so that the cache doesn't need emptying when upgrading
 		// Can be replaced by an upgrade script...
