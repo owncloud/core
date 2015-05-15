@@ -560,11 +560,11 @@ class Local {
 
 		$view = new \OC\Files\View('/'.\OCP\User::getUser().'/files');
 		$filePath = null;
-		$path= $view -> getPath($id);
+		$path = $view->getPath($id);
 		
 		if($path){
-		$path = substr($path,1);
-	    	$filePath = $path;
+			$path = substr($path,1);
+	    		$filePath = $path;
 		}
 
 		return $filePath;
