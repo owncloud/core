@@ -609,9 +609,8 @@ OC.Share={
 			dropDownEl.appendTo(appendTo);
 		}
 		dropDownEl.attr('data-item-source-name', filename);
-		$('#dropdown').slideDown(OC.menuSpeed, function() {
-			OC.Share.droppedDown = true;
-		});
+		$('#dropdown').show('slide', { direction: 'left' }, 1000);
+		OC.Share.droppedDown = true;
 		if ($('html').hasClass('lte9')){
 			$('#dropdown input[placeholder]').placeholder();
 		}
@@ -619,16 +618,15 @@ OC.Share={
 	},
 	hideDropDown:function(callback) {
 		OC.Share.currentShares = null;
-		$('#dropdown').slideUp(OC.menuSpeed, function() {
-			OC.Share.droppedDown = false;
-			$('#dropdown').remove();
-			if (typeof FileActions !== 'undefined') {
-				$('tr').removeClass('mouseOver');
-			}
-			if (callback) {
-				callback.call();
-			}
-		});
+		$('#dropdown').hide();
+		OC.Share.droppedDown = false;
+		$('#dropdown').remove();
+		if (typeof FileActions !== 'undefined') {
+			$('tr').removeClass('mouseOver');
+		}
+		if (callback) {
+			callback.call();
+		}
 	},
 	addShareWith:function(shareType, shareWith, shareWithDisplayName, permissions, possiblePermissions, mailSend, collection) {
 		var shareItem = {

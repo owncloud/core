@@ -1066,3 +1066,15 @@ fieldset.warning legend + p, fieldset.update legend + p {
 	width: device-width;
 }
 
+
+#dropdown.drop {
+	position: fixed;
+	right: 0;
+	left: initial;
+	top: 45px;
+	height: 100%;
+	box-sizing: border-box;
+	width: 400px;
+	border-radius: 0;
+	box-shadow: 0 0 20px rgba(100, 100, 100, .3);
+}

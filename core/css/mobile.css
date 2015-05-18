@@ -69,8 +69,8 @@
 
 /* position share dropdown */
 #dropdown {
-	margin-right: 10% !important;
 	width: 80% !important;
+	max-width: 400px;
 }
 
 
