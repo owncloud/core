@@ -13,6 +13,13 @@ interface IShareManager {
 	public getShareById($id);
 
 	/**
+	 * Delete a share
+	 *
+	 * @param IShare $share
+	 */
+	public deleteShare(IShare $share);
+
+	/**
 	 * Create a new share
 	 *
 	 * @param string $itemType
@@ -24,7 +31,7 @@ interface IShareManager {
 	 *
 	 * @return IShare
 	 */
-	public function newShare($itemType, $itemSource, $shareType, $shareWith, $permissions, $expirationDate = null);
+	public function newShare($itemType, $itemSource, $shareType, $shareWith, $permissions, \DateTime $expirationDate = null);
 
 	/**
 	 * Create a new share
@@ -37,7 +44,7 @@ interface IShareManager {
 	 *
 	 * @return IShare
 	 */
-	public function reShare($share, $shareType, $shareWith, $permissions, $expirationDate = null);
+	public function reShare(IShare $share, $shareType, $shareWith, $permissions, \DateTime $expirationDate = null);
 
 	/**
 	 * Get shares of users

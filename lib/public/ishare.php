@@ -12,11 +12,6 @@ interface IShare {
 	public function getId();
 
 	/**
-	 * Delete Share
-	 */
-	public function delete();
-
-	/**
 	 * Get the itemsource
 	 *
 	 * @return string
@@ -85,7 +80,7 @@ interface IShare {
 	 *
 	 * @param \DateTime $date
 	 */
-	public function setExpirationDate($date);
+	public function setExpirationDate(\DateTime $date);
 
 	/**
 	 * Set Permissions
@@ -93,4 +88,18 @@ interface IShare {
 	 * @param int $permissions
 	 */
 	public function setPermissions($permissions);
+
+	/**
+	 * Check if a remote share is accepted
+	 *
+	 * @return bool
+	 */
+	public function isAccepted();
+
+	/**
+	 * Get Parent share
+	 *
+	 * @return IShare
+	 */
+	public function getParent();
 }
