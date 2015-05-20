@@ -52,9 +52,15 @@ if (isset($_GET['size'])) {
 } else {
 	$size = 30;
 }
+
 if($query) {
-	$result = \OC::$server->getSearch()->searchPaged($query, $inApps, $page, $size);
-	OC_JSON::encodedPrint($result);
+	try {
+		$result = \OC::$server->getSearch()->searchPaged($query, $inApps, $page, $size);
+		OC_JSON::encodedPrint($result);
+	} catch (\OCP\Search\NoProviderException $e) {
+		$l = \OC_L10N::get('core');
+		OC_JSON::error(['message' => $l->t('No search provider registered for the current location')]);
+	}
 }
 else {
 	echo 'false';

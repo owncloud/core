@@ -130,11 +130,15 @@
 
 						// do the actual search query
 						$.getJSON(OC.generateUrl('core/search'), {query:query, inApps:inApps, page:page, size:size }, function(results) {
-							lastResults = results;
-							if (page === 1) {
-								showResults(results);
+							if (results instanceof Array) {
+								lastResults = results;
+								if (page === 1) {
+									showResults(results);
+								} else {
+									addResults(results);
+								}
 							} else {
-								addResults(results);
+								OC.Notification.showTemporary(results.message);
 							}
 						});
 					}, 500);
