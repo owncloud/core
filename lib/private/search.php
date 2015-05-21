@@ -24,6 +24,7 @@
  */
 
 namespace OC;
+use OCP\Search\NoProviderException;
 use OCP\Search\PagedProvider;
 use OCP\Search\Provider;
 use OCP\ISearch;
@@ -41,6 +42,7 @@ class Search implements ISearch {
 	 * @param string $query
 	 * @param string[] $inApps optionally limit results to the given apps
 	 * @return array An array of OC\Search\Result's
+	 * @throws NoProviderException when there is no search provider for $inApps
 	 */
 	public function search($query, array $inApps = array()) {
 		// old apps might assume they get all results, so we set size 0
@@ -54,15 +56,20 @@ class Search implements ISearch {
 	 * @param int $page pages start at page 1
 	 * @param int $size, 0 = all
 	 * @return array An array of OC\Search\Result's
+	 * @throws NoProviderException when there is no search provider for $inApps
 	 */
 	public function searchPaged($query, array $inApps = array(), $page = 1, $size = 30) {
 		$this->initProviders();
 		$results = array();
+		$hasProviderForApps = false;
+
 		foreach($this->providers as $provider) {
 			/** @var $provider Provider */
 			if ( ! $provider->providesResultsFor($inApps) ) {
 				continue;
 			}
+			$hasProviderForApps = true;
+
 			if ($provider instanceof PagedProvider) {
 				$results = array_merge($results, $provider->searchPaged($query, $page, $size));
 			} else if ($provider instanceof Provider) {
@@ -76,6 +83,10 @@ class Search implements ISearch {
 			} else {
 				\OC::$server->getLogger()->warning('Ignoring Unknown search provider', array('provider' => $provider));
 			}
+		}
+
+		if (!$hasProviderForApps) {
+			throw new NoProviderException();
 		}
 		return $results;
 	}
