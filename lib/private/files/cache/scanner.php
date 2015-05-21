@@ -290,7 +290,9 @@ class Scanner extends BasicEmitter {
 			if (is_resource($dh)) {
 				while (($file = readdir($dh)) !== false) {
 					if (!Filesystem::isIgnoredDir($file)) {
-						$children[] = $file;
+						if (!Filesystem::isExcludedDir($file)) {
+							$children[] = $file;
+						}
 					}
 				}
 			}

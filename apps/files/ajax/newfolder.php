@@ -63,7 +63,7 @@ if (!\OC\Files\Filesystem::file_exists($dir . '/')) {
 	exit();
 }
 
-if (\OC\Files\Filesystem::isIgnoredDir($folderName)) {
+if (\OC\Files\Filesystem::isExcludedDir($folderName)) {
 	$result['data'] = array('message' => $l10n->t(
 			'The name %s has been excluded by the admin for directories. Please choose a different name.',
 			$folderName)
