@@ -596,6 +596,7 @@ class View {
 			Filesystem::isValidPath($path2)
 			and Filesystem::isValidPath($path1)
 			and !Filesystem::isFileBlacklisted($path2)
+			and !Filesystem::isExcludedDir($absolutePath2)
 		) {
 			$path1 = $this->getRelativePath($absolutePath1);
 			$path2 = $this->getRelativePath($absolutePath2);
@@ -699,6 +700,7 @@ class View {
 			Filesystem::isValidPath($path2)
 			and Filesystem::isValidPath($path1)
 			and !Filesystem::isFileBlacklisted($path2)
+			and !Filesystem::isExcludedDir($absolutePath2)
 		) {
 			$path1 = $this->getRelativePath($absolutePath1);
 			$path2 = $this->getRelativePath($absolutePath2);
@@ -923,6 +925,7 @@ class View {
 		$absolutePath = Filesystem::normalizePath($this->getAbsolutePath($path));
 		if (Filesystem::isValidPath($path)
 			and !Filesystem::isFileBlacklisted($path)
+			and !Filesystem::isExcludedDir($absolutePath)
 		) {
 			$path = $this->getRelativePath($absolutePath);
 			if ($path == null) {

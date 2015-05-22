@@ -63,6 +63,15 @@ if (!\OC\Files\Filesystem::file_exists($dir . '/')) {
 	exit();
 }
 
+if (\OC\Files\Filesystem::isExcludedDir($folderName)) {
+	$result['data'] = array('message' => $l10n->t(
+			'The name %s has been excluded by the admin for directories. Please choose a different name.',
+			$folderName)
+		);
+	OCP\JSON::error($result);
+	exit();
+}
+
 $target = $dir . '/' . $folderName;
 		
 if (\OC\Files\Filesystem::file_exists($target)) {
