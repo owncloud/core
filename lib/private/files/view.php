@@ -72,7 +72,7 @@ class View {
 	protected $updater;
 
 	/**
-	 * @param string $root
+	 * @param string $root the folder to use for this view. No ending slash!
 	 * @throws \Exception If $root contains an invalid path
 	 */
 	public function __construct($root = '') {
