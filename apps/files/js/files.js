@@ -203,6 +203,32 @@
 			// TODO: move file list related code (upload) to OCA.Files.FileList
 			$('#file_action_panel').attr('activeAction', false);
 
+			var ignoreNextLeave = false;
+
+			// Show a dashed border for file upload area
+			$(document).on('dragover', function(e) {
+				if (e.target !== this) {
+					ignoreNextLeave = true;
+				}
+
+				$('#drophere').css({'display' : 'block'});
+				e.preventDefault();
+
+			});
+
+			$('html').on('dragleave', function() {
+				$('#drophere').css({'display' : 'none'});
+			});
+
+			// drag&drop support using jquery.fileupload
+			// TODO use OC.dialogs
+			$('html, #app-navigation').on('drop', function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				$('#drophere').css({'display' : 'none'});
+				$(this).next().trigger(e); // needed for Opera
+			});
+
 			// Triggers invisible file input
 			$('#upload a').on('click', function() {
 				$(this).parent().children('#file_upload_start').trigger('click');
@@ -213,12 +239,6 @@
 			$('#uploadprogresswrapper .stop').on('click', function() {
 				OC.Upload.cancelUploads();
 			});
-
-			// drag&drop support using jquery.fileupload
-			// TODO use OC.dialogs
-			$(document).bind('drop dragover', function (e) {
-					e.preventDefault(); // prevent browser from doing anything, if file isn't dropped in dropZone
-				});
 
 			//do a background scan if needed
 			scanFiles();

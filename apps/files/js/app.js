@@ -65,7 +65,7 @@
 
 			// TODO: ideally these should be in a separate class / app (the embedded "all files" app)
 			this.fileList = new OCA.Files.FileList(
-				$('#app-content-files'), {
+				$('#app-content-files, #drophere'), {
 					scrollContainer: $('#app-content'),
 					dragOptions: dragOptions,
 					folderDropOptions: folderDropOptions,

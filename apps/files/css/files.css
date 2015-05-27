@@ -88,6 +88,28 @@
 	width: 100%;
 }
 
+#drophere {
+	position: fixed;
+	top: 90px;
+	width: 90%;
+	pointer-events: none; /* required for uploads into sub-directories */
+	height: 87%;
+	background-color: #fff;
+	display: none;
+	z-index: 1;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
+	filter: alpha(opacity=60);
+	opacity: .6;
+	box-shadow: inset 0px 0px 20px rgba(0, 0, 0, 0.1);
+	border: 4px dashed #1d2d44;
+}
+
+#drophere p {
+	text-align: center;
+	vertical-align: middle;
+	line-height: 50;
+}
+
 /* make sure there's enough room for the file actions */
 #body-user #filestable {
 	min-width: 688px; /* 768 (mobile break) - 80 (nav width) */
