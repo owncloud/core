@@ -57,6 +57,7 @@ use OC\Security\TrustedDomainHelper;
 use OCP\IServerContainer;
 use OCP\ISession;
 use OC\Tagging\TagMapper;
+use RandomLib\Factory;
 
 /**
  * Class Server
@@ -275,7 +276,7 @@ class Server extends SimpleContainer implements IServerContainer {
 			return new Search();
 		});
 		$this->registerService('SecureRandom', function ($c) {
-			return new SecureRandom();
+			return new SecureRandom(new Factory());
 		});
 		$this->registerService('Crypto', function (Server $c) {
 			return new Crypto($c->getConfig(), $c->getSecureRandom());

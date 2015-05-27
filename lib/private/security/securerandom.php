@@ -22,7 +22,6 @@
 
 namespace OC\Security;
 
-use OC\Security\RandomNumberGenerator\OpenSSL;
 use RandomLib;
 use Sabre\DAV\Exception;
 use OCP\Security\ISecureRandom;
@@ -43,8 +42,11 @@ class SecureRandom implements ISecureRandom {
 	/** @var \RandomLib\Generator */
 	var $generator;
 
-	function __construct() {
-		$this->factory = new RandomLib\Factory;
+	/**
+	 * @param RandomLib\Factory $factory
+	 */
+	function __construct(RandomLib\Factory $factory) {
+		$this->factory = $factory;
 	}
 
 	/**
