@@ -24,12 +24,15 @@ class SecureRandomTest extends \Test\TestCase {
 	private $secureRandom;
 	/** @var \RandomLib\Factory */
 	private $factory;
+	/** @var \OC\Security\SecureRandom */
+	protected $unmockedRng;
 
 	public function setUp() {
 		parent::setUp();
 		$this->factory = $this->getMockBuilder('\RandomLib\Factory')
 			->disableOriginalConstructor()->getMock();
 		$this->secureRandom = new \OC\Security\SecureRandom($this->factory);
+		$this->unmockedRng = new \OC\Security\SecureRandom(new \RandomLib\Factory);
 	}
 
 	public function testGetLowStrengthGenerator() {
@@ -82,6 +85,63 @@ class SecureRandomTest extends \Test\TestCase {
 
 		$this->assertSame($this->secureRandom, $this->secureRandom->getMediumStrengthGenerator());
 		$this->assertSame('MyGeneratedRandomString', $this->secureRandom->generate(12));
+	}
+
+	public function stringGenerationProvider() {
+		return array(
+			array(0, 0),
+			array(1, 1),
+			array(128, 128),
+			array(256, 256),
+			array(1024, 1024),
+			array(2048, 2048),
+			array(64000, 64000),
+		);
+	}
+
+	public static function charCombinations() {
+		return array(
+			array('CHAR_LOWER', '[a-z]'),
+			array('CHAR_UPPER', '[A-Z]'),
+			array('CHAR_DIGITS', '[0-9]'),
+		);
+	}
+
+	/**
+	 * @dataProvider stringGenerationProvider
+	 */
+	function testGetLowStrengthGeneratorLength($length, $expectedLength) {
+		$generator = $this->unmockedRng->getLowStrengthGenerator();
+
+		$this->assertEquals($expectedLength, strlen($generator->generate($length)));
+	}
+
+	/**
+	 * @dataProvider stringGenerationProvider
+	 */
+	function testMediumLowStrengthGeneratorLength($length, $expectedLength) {
+		$generator = $this->unmockedRng->getMediumStrengthGenerator();
+
+		$this->assertEquals($expectedLength, strlen($generator->generate($length)));
+	}
+
+	/**
+	 * @expectedException \Exception
+	 * @expectedExceptionMessage Generator is not initialized
+	 */
+	function testUninitializedGenerate() {
+		$this->unmockedRng->generate(30);
+	}
+
+	/**
+	 * @dataProvider charCombinations
+	 */
+	public function testScheme($charName, $chars) {
+		$generator = $this->unmockedRng->getMediumStrengthGenerator();
+		$scheme = constant('OCP\Security\ISecureRandom::' . $charName);
+		$randomString = $generator->generate(100, $scheme);
+		$matchesRegex = preg_match('/^'.$chars.'+$/', $randomString);
+		$this->assertSame(1, $matchesRegex);
 	}
 
 }
