@@ -338,7 +338,13 @@ class Scanner extends BasicEmitter {
 		$removedChildren = \array_diff(array_keys($existingChildren), $newChildren);
 		foreach ($removedChildren as $childName) {
 			$child = ($path) ? $path . '/' . $childName : $childName;
-			$this->removeFromCache($child);
+			try {
+				$this->removeFromCache($child);
+			} catch (\Doctrine\DBAL\DBALException $ex) {
+				// might happen if another process is currently updating (renaming)
+				// the entries in a separate transaction
+				\OC_Log::write('core', 'Cannot remove entry "' . $child . '" from cache: ' . $ex->getMessage(), \OC_Log::DEBUG);
+			}
 		}
 		if ($this->useTransactions) {
 			\OC_DB::commit();
