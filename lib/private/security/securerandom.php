@@ -22,6 +22,7 @@
 
 namespace OC\Security;
 
+use OC\Security\RandomNumberGenerator\OpenSSL;
 use RandomLib;
 use Sabre\DAV\Exception;
 use OCP\Security\ISecureRandom;
@@ -71,6 +72,7 @@ class SecureRandom implements ISecureRandom {
 	 */
 	public function getMediumStrengthGenerator() {
 		$this->generator = $this->factory->getMediumStrengthGenerator();
+		$this->generator->addSource(new \OC\Security\RandomNumberGenerator\OpenSSL);
 		return $this;
 	}
 
