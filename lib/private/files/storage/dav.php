@@ -69,6 +69,8 @@ class DAV extends Common {
 	/** @var string */
 	protected $root;
 	/** @var string */
+	protected $proxy = '';
+	/** @var string */
 	protected $certPath;
 	/** @var bool */
 	protected $ready;
@@ -131,6 +133,11 @@ class DAV extends Common {
 			'userName' => $this->user,
 			'password' => $this->password,
 		);
+
+		$this->proxy = \OC::$server->getConfig()->getSystemValue('proxy');
+		if($this->proxy) {
+			$settings['proxy'] = $this->proxy;
+		}
 
 		$this->client = new Client($settings);
 		$this->client->setThrowExceptions(true);
@@ -352,12 +359,17 @@ class DAV extends Common {
 				if(defined('CURLOPT_REDIR_PROTOCOLS')) {
 					curl_setopt($curl, CURLOPT_REDIR_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
 				}
+
 				if ($this->secure === true) {
 					curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
 					curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
 					if ($this->certPath) {
 						curl_setopt($curl, CURLOPT_CAINFO, $this->certPath);
 					}
+				}
+
+				if($this->proxy) {
+					curl_setopt($curl, CURLOPT_PROXY, $this->proxy);
 				}
 
 				curl_exec($curl);
@@ -498,6 +510,9 @@ class DAV extends Common {
 			if ($this->certPath) {
 				curl_setopt($curl, CURLOPT_CAINFO, $this->certPath);
 			}
+		}
+		if($this->proxy) {
+			curl_setopt($curl, CURLOPT_PROXY, $this->proxy);
 		}
 		curl_exec($curl);
 		$statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
