@@ -40,8 +40,8 @@ class TempManager implements ITempManager {
 	 * @param string $baseDir
 	 * @param \OCP\ILogger $logger
 	 */
-	public function __construct($baseDir, ILogger $logger) {
-		$this->tmpBaseDir = $baseDir;
+	public function __construct(ILogger $logger) {
+		$this->tmpBaseDir = $this->getTempDir();
 		$this->log = $logger;
 	}
 
@@ -189,4 +189,57 @@ class TempManager implements ITempManager {
 		}
 		return $files;
 	}
+
+	/**
+	 * Get the temporary directory to store transfer data
+	 * @return null|string Path to the temporary directory or null
+	 */
+	public function getTempDir() {
+		// Get the temporary directory and log the path if loglevel is set to debug
+		// Info: based on the temp dir, further sub-directories may be created unique to the instance
+		$temp = $this->gatherTempDir();
+		\OCP\Util::writeLog('Core', 'Temporary directory set to: ' . ($temp ? $temp : 'NULL'), \OCP\Util::DEBUG);
+		return $temp;
+	}
+
+	/**
+	 * Get a temporary directory from possible sources
+	 * If a temporary directory is set in config.php, try to use this one
+	 * @return null|string Path to the temporary directory or null
+	 */
+	private function gatherTempDir() {
+		if ($temp = $this->getConfigTempDir()) return $temp;
+		if ($temp = ini_get('upload_tmp_dir')) return $temp;
+		if ($temp = getenv('TMP')) return $temp;
+		if ($temp = getenv('TEMP')) return $temp;
+		if ($temp = getenv('TMPDIR')) return $temp;
+		$temp = tempnam(__FILE__, '');
+		if (file_exists($temp)) {
+			unlink($temp);
+			return dirname($temp);
+		}
+		if ($temp = sys_get_temp_dir()) return $temp;
+		return null;
+	}
+
+	/**
+	 * Check if the temporary directory is defined in config.php and is accessible and writable
+	 * @return null|string Path to the temporary directory or null
+	 */
+	private function getConfigTempDir() {
+		$temp = \OC::$server->getConfig()->getSystemValue('tempdirectory', false);
+		// check on presence if the config.php parameter is existant and writable
+		if ($temp) {
+			if (is_writeable($temp)) {
+				// the config.php parameter is present and writable
+				return $temp;
+			} else {
+				// the config.php parameter is present, but is either not accesible or writable
+				\OCP\Util::writeLog('Core', 'Manually set temporary directory in config.php is not present or  writable: ' . $temp, \OCP\Util::WARN);
+				return null;
+				}
+		}
+		return null;
+	}
+
 }
