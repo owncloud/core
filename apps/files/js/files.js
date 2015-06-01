@@ -15,7 +15,8 @@
 (function() {
 	var Files = {
 		// file space size sync
-		_updateStorageStatistics: function(currentDir) {
+		_updateStorageStatistics: function(currentDir, detectChanges) {
+			detectChanges = detectChanges || false;
 			var state = Files.updateStorageStatistics;
 			if (state.dir){
 				if (state.dir === currentDir) {
@@ -28,6 +29,17 @@
 			state.call = $.getJSON(OC.filePath('files','ajax','getstoragestats.php') + '?dir=' + encodeURIComponent(currentDir),function(response) {
 				state.dir = null;
 				state.call = null;
+				if (detectChanges) {
+					if (response.data !== undefined && response.data.etag !== undefined) {
+						var etag = response.data.etag;
+						if (state.etag !== undefined && state.etag !== etag) {
+							state.etag = etag;
+							//OC.Notification.showTemporary(t('files', 'Folder content changed - please reload'));
+							OCA.Files.App.fileList.reload();
+						}
+						state.etag = etag;
+					}
+				}
 				Files.updateMaxUploadFilesize(response);
 			});
 		},
@@ -41,16 +53,17 @@
 		 * @param dir directory
 		 * @param force whether to force retrieving
 		 */
-		updateStorageStatistics: function(dir, force) {
+		updateStorageStatistics: function(dir, force, detectChanges) {
+			detectChanges = detectChanges || false;
 			if (!OC.currentUser) {
 				return;
 			}
 
 			if (force) {
-				Files._updateStorageStatistics(dir);
+				Files._updateStorageStatistics(dir, detectChanges);
 			}
 			else {
-				Files._updateStorageStatisticsDebounced(dir);
+				Files._updateStorageStatisticsDebounced(dir, detectChanges);
 			}
 		},
 
@@ -230,8 +243,9 @@
 			// only possible at the moment if user is logged in or the files app is loaded
 			if (OC.currentUser && OCA.Files.App) {
 				// start on load - we ask the server every 5 minutes
-				var func = _.bind(OCA.Files.App.fileList.updateStorageStatistics, OCA.Files.App.fileList);
-				var updateStorageStatisticsInterval = 5*60*1000;
+				var func = _.bind(OCA.Files.App.fileList.updateStorageStatistics, OCA.Files.App.fileList, false, true);
+				//var updateStorageStatisticsInterval = 5*60*1000;
+				var updateStorageStatisticsInterval = 5*1000;
 				var updateStorageStatisticsIntervalId = setInterval(func, updateStorageStatisticsInterval);
 
 				// TODO: this should also stop when switching to another view
@@ -263,7 +277,7 @@
 			}
 			*/
 		}
-	}
+	};
 
 	Files._updateStorageStatisticsDebounced = _.debounce(Files._updateStorageStatistics, 250);
 	OCA.Files.Files = Files;

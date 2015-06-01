@@ -1008,7 +1008,12 @@ class OC_Helper {
 			$relative = 0;
 		}
 
-		return array('free' => $free, 'used' => $used, 'total' => $total, 'relative' => $relative);
+		return ['free' => $free,
+			'used' => $used,
+			'total' => $total,
+			'relative' => $relative,
+			'etag' => $rootInfo->getEtag()
+		];
 	}
 
 	/**
@@ -1038,7 +1043,13 @@ class OC_Helper {
 			$relative = 0;
 		}
 
-		return array('free' => $free, 'used' => $used, 'total' => $total, 'relative' => $relative);
+		return [
+			'free' => $free,
+			'used' => $used,
+			'total' => $total,
+			'relative' => $relative,
+			'etag' => $rootInfo->getEtag()
+		];
 
 	}
 
