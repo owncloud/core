@@ -50,6 +50,8 @@ $this->create('sharing_external_add', '/external')
 	->actionInclude('files_sharing/ajax/external.php');
 $this->create('sharing_external_test_remote', '/testremote')
 	->actionInclude('files_sharing/ajax/testremote.php');
+$this->create('gs-share-js', '/js/3rdparty/gs-share/gs-share.js')
+	->actionInclude('files_sharing/js/3rdparty/gs-share/gs-share.js');
 
 // OCS API
 
