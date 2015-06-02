@@ -35,31 +35,6 @@ class OCSControllerTest extends \Test\TestCase {
 
 	private $controller;
 
-	public function testCors() {
-		$request = new Request(
-			[
-				'server' => [
-					'HTTP_ORIGIN' => 'test',
-				],
-			],
-			$this->getMock('\OCP\Security\ISecureRandom'),
-			$this->getMock('\OCP\IConfig')
-		);
-		$controller = new ChildOCSController('app', $request, 'verbs',
-			'headers', 100);
-
-		$response = $controller->preflightedCors();
-
-		$headers = $response->getHeaders();
-
-		$this->assertEquals('test', $headers['Access-Control-Allow-Origin']);
-		$this->assertEquals('verbs', $headers['Access-Control-Allow-Methods']);
-		$this->assertEquals('headers', $headers['Access-Control-Allow-Headers']);
-		$this->assertEquals('false', $headers['Access-Control-Allow-Credentials']);
-		$this->assertEquals(100, $headers['Access-Control-Max-Age']);
-	}
-
-
 	public function testXML() {
 		$controller = new ChildOCSController('app', new Request(
 			[],

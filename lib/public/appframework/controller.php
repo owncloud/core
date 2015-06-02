@@ -31,7 +31,9 @@
 
 namespace OCP\AppFramework;
 
+use OC\AppFramework\Middleware\Security\SecurityException;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\AppFramework\Http\CrossOriginResourceSharing;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\Response;
@@ -59,6 +61,12 @@ abstract class Controller {
 	protected $request;
 
 	/**
+	 * @var CrossOriginResourceSharing
+	 * @since 8.2.0
+	 */
+	private $cors;
+
+	/**
 	 * @var array
 	 * @since 7.0.0
 	 */
@@ -68,12 +76,19 @@ abstract class Controller {
 	 * constructor of the controller
 	 * @param string $appName the name of the app
 	 * @param IRequest $request an instance of the request
-	 * @since 6.0.0 - parameter $appName was added in 7.0.0 - parameter $app was removed in 7.0.0
+	 * @since 6.0.0 - parameter $appName was added in 7.0.0 - parameter $app was removed in 7.0.0 - parameter $cors was added in 8.2.0
 	 */
 	public function __construct($appName,
-	                            IRequest $request){
+								IRequest $request,
+								CrossOriginResourceSharing $cors = null){
 		$this->appName = $appName;
 		$this->request = $request;
+
+		if ($cors === null) {
+			$cors = new CrossOriginResourceSharing;
+		}
+
+		$this->cors = $cors;
 
 		// default responders
 		$this->responders = array(
@@ -253,5 +268,35 @@ abstract class Controller {
 		return $response;
 	}
 
+	/**
+	 * This method implements a preflighted cors response for you that you can
+	 * link to for the options request
+	 * @NoAdminRequired
+	 * @PublicPage
+	 * @since 8.2.0
+	 */
+	public function options() {
+		if (!$this->request->isApiRequest()) {
+			$msg = 'Preflighted CORS is disabled for the web interface!';
+			throw new SecurityException($msg);
+		}
 
+		if(isset($this->request->server['HTTP_ORIGIN'])) {
+			$origin = $this->request->server['HTTP_ORIGIN'];
+		} else {
+			$origin = '*';
+		}
+
+		$methods = implode(',', $this->cors->getAccessControlAllowMethods());
+		$headers = implode(',', $this->cors->getAccessControlAllowHeaders());
+		$maxAge = $this->cors->getAccessControlMaxAge();
+
+		$response = new Response();
+		$response->addHeader('Access-Control-Allow-Origin', $origin);
+		$response->addHeader('Access-Control-Allow-Methods', $methods);
+		$response->addHeader('Access-Control-Max-Age', $maxAge);
+		$response->addHeader('Access-Control-Allow-Headers', $headers);
+		$response->addHeader('Access-Control-Allow-Credentials', 'false');
+		return $response;
+	}
 }

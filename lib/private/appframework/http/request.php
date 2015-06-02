@@ -698,4 +698,12 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 		return null;
 	}
 
+	/**
+	 * Returns true if the request hits an API route, e.g. index.php/api/myapp
+	 * @return bool
+	 */
+	public function isApiRequest() {
+		return strpos($this->getPathInfo(), '/api') === 0;
+	}
+
 }

@@ -26,15 +26,16 @@ namespace OCP\AppFramework;
 
 use OC\AppFramework\Http\Request;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\AppFramework\Http\CrossOriginResourceSharing;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\DataResponse;
 
 
 class ChildController extends Controller {
 
-	public function __construct($appName, $request) {
-		parent::__construct($appName, $request);
-		$this->registerResponder('tom', function ($respone) {
+	public function __construct($appName, $request, $cors = null) {
+		parent::__construct($appName, $request, $cors);
+		$this->registerResponder('tom', function ($response) {
 			return 'hi';
 		});
 	}
@@ -221,5 +222,76 @@ class ControllerTest extends \Test\TestCase {
 		$this->assertEquals('tom', $responder);
 	}
 
+	/**
+	 * @expectedException \OC\AppFramework\Middleware\Security\SecurityException
+	 */
+	public function testCorsWebsiteCall() {
+		$request = new Request(
+			['server' => [
+				'HTTP_ORIGIN' => 'test',
+				'REQUEST_URI' => '/index.php/app/news',
+				'SCRIPT_NAME' => '/index.php',
+			]],
+			$this->getMock('\OCP\Security\ISecureRandom'),
+			$this->getMock('\OCP\IConfig')
+		);
+		$this->controller = new ChildController('app', $request);
+
+		$response = $this->controller->options();
+	}
+
+	public function testCors() {
+		$request = new Request(
+			['server' => [
+				'HTTP_ORIGIN' => 'test',
+				'REQUEST_URI' => '/index.php/api/news',
+				'SCRIPT_NAME' => '/index.php',
+			]],
+			$this->getMock('\OCP\Security\ISecureRandom'),
+			$this->getMock('\OCP\IConfig')
+		);
+		$this->controller = new ChildController('app', $request);
+
+		$response = $this->controller->options();
+
+		$headers = $response->getHeaders();
+
+		$methods = 'GET,POST,PUT,DELETE,PATCH,HEAD';
+		$heads = 'Authorization,Content-Type,Accept';
+
+		$this->assertEquals('test', $headers['Access-Control-Allow-Origin']);
+		$this->assertEquals($methods, $headers['Access-Control-Allow-Methods']);
+		$this->assertEquals($heads, $headers['Access-Control-Allow-Headers']);
+		$this->assertEquals('false', $headers['Access-Control-Allow-Credentials']);
+		$this->assertEquals(3600, $headers['Access-Control-Max-Age']);
+	}
+
+	public function testCorsOverwrite() {
+		$request = new Request(
+			['server' => [
+				'HTTP_ORIGIN' => 'test',
+				'REQUEST_URI' => '/index.php/api/news',
+				'SCRIPT_NAME' => '/index.php',
+			]],
+			$this->getMock('\OCP\Security\ISecureRandom'),
+			$this->getMock('\OCP\IConfig')
+		);
+		$cors = new CrossOriginResourceSharing;
+		$cors->setAccessControlAllowMethods(['verbs', 'verbs2'])
+			->setAccessControlAllowHeaders(['headers', 'headers2'])
+			->setAccessControlMaxAge(100);
+
+		$this->controller = new ChildController('app', $request, $cors);
+
+		$response = $this->controller->options();
+
+		$headers = $response->getHeaders();
+
+		$this->assertEquals('test', $headers['Access-Control-Allow-Origin']);
+		$this->assertEquals('VERBS,VERBS2', $headers['Access-Control-Allow-Methods']);
+		$this->assertEquals('headers,headers2', $headers['Access-Control-Allow-Headers']);
+		$this->assertEquals('false', $headers['Access-Control-Allow-Credentials']);
+		$this->assertEquals(100, $headers['Access-Control-Max-Age']);
+	}
 
 }

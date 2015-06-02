@@ -40,16 +40,16 @@ class ApiControllerTest extends \Test\TestCase {
             $this->getMock('\OCP\Security\ISecureRandom'),
             $this->getMock('\OCP\IConfig')
         );
-        $this->controller = new ChildApiController('app', $request, 'verbs',
-            'headers', 100);
+        $this->controller = new ChildApiController('app', $request, 'verbs, verbs2',
+            'headers, headers2', 100);
 
         $response = $this->controller->preflightedCors();
 
         $headers = $response->getHeaders();
 
         $this->assertEquals('test', $headers['Access-Control-Allow-Origin']);
-        $this->assertEquals('verbs', $headers['Access-Control-Allow-Methods']);
-        $this->assertEquals('headers', $headers['Access-Control-Allow-Headers']);
+        $this->assertEquals('VERBS, VERBS2', $headers['Access-Control-Allow-Methods']);
+        $this->assertEquals('headers, headers2', $headers['Access-Control-Allow-Headers']);
         $this->assertEquals('false', $headers['Access-Control-Allow-Credentials']);
         $this->assertEquals(100, $headers['Access-Control-Max-Age']);
     }
