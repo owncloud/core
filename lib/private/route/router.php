@@ -228,14 +228,14 @@ class Router implements IRouter {
 	 * @return void
 	 */
 	public function match($url) {
-		if (substr($url, 0, 6) === '/apps/') {
-			// empty string / 'apps' / $app / rest of the route
-			list(, , $app,) = explode('/', $url, 4);
+		$urlParts = explode('/', trim($url, '/'), 3);
+		$target = $urlParts[0];
 
-			$app = \OC_App::cleanAppId($app);
+		if ($target === 'apps' || $target === 'api') {
+			$app = \OC_App::cleanAppId($urlParts[1]);
 			\OC::$REQUESTEDAPP = $app;
 			$this->loadRoutes($app);
-		} else if (substr($url, 0, 6) === '/core/' or substr($url, 0, 10) === '/settings/') {
+		} else if ($target === 'core' || $target === 'settings') {
 			\OC::$REQUESTEDAPP = $url;
 			if (!\OC_Config::getValue('maintenance', false) && !\OCP\Util::needUpgrade()) {
 				\OC_App::loadApps();
