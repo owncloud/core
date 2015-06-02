@@ -3,7 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 // @license magnet:?xt=urn:btih:3877d6d54b3accd4bc32f8a48bf32ebc0901502a&dn=mpl-2.0.txt MPL 2.0
-(function () {
+$(document).ready(function() {
     'use strict';
     /**
      * 'Share' widget for GNU social
@@ -202,5 +202,5 @@
 
     createForm();
     bindClicks();
-}());
+});
 // @license-end

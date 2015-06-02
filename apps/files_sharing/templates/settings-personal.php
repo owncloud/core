@@ -1,6 +1,7 @@
 <?php
 /** @var OC_L10N $l */
 /** @var array $_ */
+script('files_sharing', '3rdparty/gs-share/gs-share');
 style('files_sharing', '3rdparty/gs-share/style');
 ?>
 <div id="fileSharingSettings" class="section">
@@ -62,5 +63,3 @@ style('files_sharing', '3rdparty/gs-share/style');
 	</p>
 
 </div>
-
-<script src='<?php  p(\OC::$server->getURLGenerator()->linkToRoute('gs-share-js')); ?>'></script>
