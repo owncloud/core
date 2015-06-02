@@ -228,11 +228,11 @@ class Router implements IRouter {
 	 * @return void
 	 */
 	public function match($url) {
-		$urlParts = explode('/', trim($url, '/'), 3);
-		$target = $urlParts[0];
+		$urlParts = preg_match('%/(?P<target>[a-z_-]+)(?:/(?P<appid>[a-z_-]+))?%', $url);
+		$target = $urlParts['target'];
 
 		if ($target === 'apps' || $target === 'api') {
-			$app = \OC_App::cleanAppId($urlParts[1]);
+			$app = $urlParts['appid'];
 			\OC::$REQUESTEDAPP = $app;
 			$this->loadRoutes($app);
 		} else if ($target === 'core' || $target === 'settings') {
