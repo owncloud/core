@@ -1094,7 +1094,10 @@
 				}
 			});
 			var callBack = this.reloadCallback.bind(this);
-			return this._reloadCall.then(callBack, callBack);
+			var redirect = function() {
+				OC.redirect(OC.generateUrl('apps/files'));
+			};
+			return this._reloadCall.then(callBack, redirect);
 		},
 		reloadCallback: function(result) {
 			delete this._reloadCall;
