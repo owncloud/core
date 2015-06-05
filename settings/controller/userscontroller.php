@@ -282,7 +282,7 @@ class UsersController extends Controller {
 		if (is_numeric($maxUsers) and $sumUsers >= $maxUsers) {
 			return new DataResponse(
 				array(
-					'message' => (string)$this->l10n->t('The maximum number of users is reached. (%s/%s)', array($sumUsers, $maxUsers))
+					'message' => (string)$this->l10n->t('The maximum number of users is reached. (%d/%d)', array($sumUsers, $maxUsers))
 				),
 				Http::STATUS_CONFLICT
 			);
