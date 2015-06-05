@@ -277,6 +277,17 @@ class UsersController extends Controller {
 	 * @return DataResponse
 	 */
 	public function create($username, $password, array $groups=array(), $email='') {
+		$sumUsers = array_sum($this->userManager->countUsers());
+		$maxUsers = $this->config->getSystemValue('max_users');
+		if (is_numeric($maxUsers) and $sumUsers >= $maxUsers) {
+			return new DataResponse(
+				array(
+					'message' => (string)$this->l10n->t('The maximum number of users is reached. (%d/%d)', array($sumUsers, $maxUsers))
+				),
+				Http::STATUS_CONFLICT
+			);
+		}
+
 		if($email !== '' && !$this->mailer->validateMailAddress($email)) {
 			return new DataResponse(
 				array(

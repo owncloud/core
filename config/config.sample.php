@@ -1054,4 +1054,9 @@ $CONFIG = array(
  */
 'copied_sample_config' => true,
 
+/**
+ * Maximum number of users
+ */
+'max_users' => '',
+
 );
