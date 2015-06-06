@@ -463,6 +463,7 @@ OC.Share={
 			html += '<input type="checkbox" name="expirationCheckbox" id="expirationCheckbox" value="1" /><label for="expirationCheckbox">'+t('core', 'Set expiration date')+'</label>';
 			html += '<label for="expirationDate" class="hidden-visually">'+t('core', 'Expiration')+'</label>';
 			html += '<input id="expirationDate" type="text" placeholder="'+t('core', 'Expiration date')+'" style="display:none; width:90%;" />';
+			html += '<input id="expirationDateAlt" type="hidden" />';
 			html += '<em id="defaultExpireMessage">'+defaultExpireMessage+'</em>';
 			html += '</div>';
 			dropDownEl = $(html);
@@ -531,7 +532,7 @@ OC.Share={
 				var itemSourceName = $dropDown.data('item-source-name');
 				var expirationDate = '';
 				if ( $('#expirationCheckbox').is(':checked') === true ) {
-					expirationDate = $( "#expirationDate" ).val();
+					expirationDate = $( "#expirationDateAlt" ).val();
 				}
 				var shareType = selected.item.value.shareType;
 				var shareWith = selected.item.value.shareWith;
@@ -837,13 +838,25 @@ OC.Share={
 		if (!shareTime) {
 			shareTime = now;
 		}
+		var parsedDate = null;
+		if (date) {
+			try {
+				parsedDate = $.datepicker.parseDate('dd-mm-yy', date);
+			} catch (e) {
+				// parse just the date out of a datetime from
+				// the server
+				parsedDate = $.datepicker.parseDate('yy-mm-dd', date.substring(0, 10));
+			}
+		}
 		$('#expirationCheckbox').attr('checked', true);
-		$('#expirationDate').val(date);
 		$('#expirationDate').slideDown(OC.menuSpeed);
 		$('#expirationDate').css('display','block');
 		$('#expirationDate').datepicker({
-			dateFormat : 'dd-mm-yy'
+			dateFormat : datepickerFormatDate,
+			altField : '#expirationDateAlt',
+			altFormat : 'dd-mm-yy'
 		});
+		$('#expirationDate').datepicker("setDate", parsedDate);
 		if (oc_appconfig.core.defaultExpireDateEnforced) {
 			$('#expirationCheckbox').attr('disabled', true);
 			shareTime = OC.Util.stripTime(shareTime).getTime();
@@ -1091,7 +1104,7 @@ $(document).ready(function() {
 		var itemSourceName = $dropDown.data('item-source-name');
 		var expirationDate = '';
 		if ($('#expirationCheckbox').is(':checked') === true) {
-			expirationDate = $( "#expirationDate" ).val();
+			expirationDate = $( "#expirationDateAlt" ).val();
 		}
 		var permissions = 0;
 		var $button = $(this);
@@ -1211,7 +1224,7 @@ $(document).ready(function() {
 		$(this).tipsy('hide');
 		$(this).removeClass('error');
 
-		$.post(OC.filePath('core', 'ajax', 'share.php'), { action: 'setExpirationDate', itemType: itemType, itemSource: itemSource, date: $(this).val() }, function(result) {
+		$.post(OC.filePath('core', 'ajax', 'share.php'), { action: 'setExpirationDate', itemType: itemType, itemSource: itemSource, date: $('#expirationDateAlt').val() }, function(result) {
 			if (!result || result.status !== 'success') {
 				var expirationDateField = $('#dropdown #expirationDate');
 				if (!result.data.message) {
@@ -1240,7 +1253,7 @@ $(document).ready(function() {
 		var email = $('#email').val();
 		var expirationDate = '';
 		if ( $('#expirationCheckbox').is(':checked') === true ) {
-			expirationDate = $( "#expirationDate" ).val();
+			expirationDate = $( "#expirationDateAlt" ).val();
 		}
 		if (email != '') {
 			$('#email').prop('disabled', true);
