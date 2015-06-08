@@ -5,6 +5,7 @@
  * later.
  * See the COPYING-README file.
  */
+use OC\Mailer;
 
 /**
  * OC_Mail
@@ -46,7 +47,7 @@ class OC_Mail {
 		$SMTPSECURE   = OC_Config::getValue( 'mail_smtpsecure', '' );
 
 
-		$mailo = new PHPMailer(true);
+		$mailo = new Mailer(true);
 		if($SMTPMODE=='sendmail') {
 			$mailo->IsSendmail();
 		}elseif($SMTPMODE=='smtp') {
@@ -133,7 +134,7 @@ class OC_Mail {
 			return false;
 		}
 		$emailAddress = self::buildAsciiEmail($emailAddress);
-		return PHPMailer::ValidateAddress($emailAddress);
+		return Mailer::ValidateAddress($emailAddress);
 	}
 
 	/**

@@ -147,7 +147,7 @@ class Test_Util extends \Test\TestCase {
 
 	function testGetDefaultEmailAddress() {
 		$email = \OCP\Util::getDefaultEmailAddress("no-reply");
-		$this->assertEquals('no-reply@localhost', $email);
+		$this->assertEquals('no-reply@localhost.localdomain', $email);
 	}
 
 	function testGetDefaultEmailAddressFromConfig() {
