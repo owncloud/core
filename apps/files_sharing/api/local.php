@@ -250,6 +250,7 @@ class Local {
 		}
 		$itemSource = self::getFileId($path);
 		$itemType = self::getItemType($path);
+		$itemSourceName = self::getFileName($path);
 
 		if($itemSource === null) {
 			return new \OC_OCS_Result(null, 404, "wrong path, file/folder doesn't exist.");
@@ -278,6 +279,9 @@ class Local {
 				// read (1) if public upload is disabled
 				$permissions = $publicUpload === 'true' ? 7 : 1;
 				break;
+			case \OCP\Share::SHARE_TYPE_REMOTE:
+				$permissions = isset($_POST['permissions']) ? (int)$_POST['permissions'] : 31;
+				break;
 			default:
 				return new \OC_OCS_Result(null, 400, "unknown share type");
 		}
@@ -292,7 +296,8 @@ class Local {
 					$itemSource,
 					$shareType,
 					$shareWith,
-					$permissions
+					$permissions,
+					$itemSourceName
 					);
 		} catch (\Exception $e) {
 			return new \OC_OCS_Result(null, 403, $e->getMessage());
@@ -523,6 +528,22 @@ class Local {
 			$msg = "Unshare Failed";
 			return new \OC_OCS_Result(null, 404, $msg);
 		}
+	}
+
+	/**
+	 * get name for a given path
+	 * @param string $path
+	 * @return string
+	 */
+	private static function getFileName($path) {
+		$view = new \OC\Files\View('/'.\OCP\User::getUser().'/files');
+		$fileName = null;
+		$fileInfo = $view->getFileInfo($path);
+		if ($fileInfo) {
+			$fileName = $fileInfo->getName();
+		}
+
+		return $fileName;
 	}
 
 	/**
