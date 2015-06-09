@@ -42,8 +42,11 @@ class SecureRandom implements ISecureRandom {
 	/** @var \RandomLib\Generator */
 	var $generator;
 
-	function __construct() {
-		$this->factory = new RandomLib\Factory;
+	/**
+	 * @param RandomLib\Factory $factory
+	 */
+	function __construct(RandomLib\Factory $factory) {
+		$this->factory = $factory;
 	}
 
 	/**
@@ -71,6 +74,7 @@ class SecureRandom implements ISecureRandom {
 	 */
 	public function getMediumStrengthGenerator() {
 		$this->generator = $this->factory->getMediumStrengthGenerator();
+		$this->generator->addSource(new \OC\Security\RandomNumberGenerator\OpenSSL);
 		return $this;
 	}
 
