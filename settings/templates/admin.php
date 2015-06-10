@@ -415,7 +415,7 @@ if ($_['cronErrors']) {
 		<?php if (!$_['isConnectedViaHTTPS']) {
 			print_unescaped("<br/><em>");
 			p($l->t(
-				'Please connect to your %s via HTTPS to enable or disable the SSL enforcement.',
+				'Please connect to your %s via HTTPS to enable or disable the SSL enforcement (Please note: You need to configure SSL within your webserver configuration first).',
 				$theme->getName()
 			));
 			print_unescaped("</em>");
