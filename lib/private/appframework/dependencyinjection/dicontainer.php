@@ -220,6 +220,10 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 			return $this->getServer()->getUserSession();
 		});
 
+		$this->registerService('userFolder', function($c) {
+			return $this->getServer()->getUserFolder();
+		});
+
 		$this->registerService('ServerContainer', function ($c) {
 			return $this->getServer();
 		});
