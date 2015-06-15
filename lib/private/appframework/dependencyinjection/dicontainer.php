@@ -208,6 +208,10 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 			return $this->getServer()->getSecureRandom();
 		});
 
+		$this->registerService('OCP\\IServerContainer', function ($c) {
+			return $this->getServer();
+		});
+
 		$this->registerService('OCP\\IURLGenerator', function($c) {
 			return $this->getServer()->getURLGenerator();
 		});
