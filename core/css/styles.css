@@ -88,6 +88,7 @@ input[type="password"],
 input[type="search"],
 input[type="number"],
 input[type="email"],
+input[type="cloud"],
 input[type="url"],
 input[type="time"],
 input[type="date"],
@@ -117,6 +118,7 @@ input[type="password"],
 input[type="search"],
 input[type="number"],
 input[type="email"],
+input[type="cloud"],
 input[type="url"],
 input[type="time"],
 textarea {
@@ -130,6 +132,7 @@ input[type="password"],
 input[type="search"],
 input[type="number"],
 input[type="email"],
+input[type="cloud"],
 input[type="url"],
 input[type="time"] {
 	-webkit-appearance:textfield; -moz-appearance:textfield;
@@ -140,6 +143,7 @@ input[type="password"]:hover, input[type="password"]:focus, input[type="password
 input[type="number"]:hover, input[type="number"]:focus, input[type="number"]:active,
 .searchbox input[type="search"]:hover, .searchbox input[type="search"]:focus, .searchbox input[type="search"]:active,
 input[type="email"]:hover, input[type="email"]:focus, input[type="email"]:active,
+input[type="cloud"]:hover, input[type="cloud"]:focus, input[type="cloud"]:active,
 input[type="url"]:hover, input[type="url"]:focus, input[type="url"]:active,
 input[type="time"]:hover, input[type="time"]:focus, input[type="time"]:active,
 textarea:hover, textarea:focus, textarea:active {
@@ -522,6 +526,7 @@ input[name='password-clone'] {
 #body-login input[type="text"],
 #body-login input[type="password"],
 #body-login input[type="email"],
+#body-login input[type="cloud"],
 #body-login input[type="submit"] {
 	border: none;
 	border-radius: 5px;
