@@ -53,7 +53,21 @@ try {
 	$preview->setMaxY($maxY);
 	$preview->setScalingUp($scalingUp);
 
-	$preview->showPreview();
+	$image = $preview->getPreview();
+	if ($image->valid()) {
+		$image->show();
+	} else {
+		$image = new \OC_Image();
+		$mimeIconWebPath = \OC_Helper::mimetypeIcon($mimetype);
+		if (empty(\OC::$WEBROOT)) {
+			$mimeIconServerPath = \OC::$SERVERROOT . $mimeIconWebPath;
+		} else {
+			$mimeIconServerPath = str_replace(\OC::$WEBROOT, \OC::$SERVERROOT, $mimeIconWebPath);
+		}
+		$image->loadFromFile($mimeIconServerPath);
+		$image->show();
+	}
+
 }catch(\Exception $e) {
 	\OC_Response::setStatus(500);
 	\OC_Log::write('core', $e->getmessage(), \OC_Log::DEBUG);
