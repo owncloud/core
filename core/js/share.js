@@ -489,12 +489,12 @@ OC.Share={
 						}
 					} else {
 						if (share.collection) {
-							OC.Share.addShareWith(share.share_type, share.share_with, share.share_with_displayname, share.permissions, possiblePermissions, share.mail_send, share.collection);
+							OC.Share.addShareWith(share.share_type, share.share_with, share.share_with_displayname, share.permissions, possiblePermissions, share.mail_send, share.collection, share.id);
 						} else {
 							if (share.share_type === OC.Share.SHARE_TYPE_REMOTE) {
-								OC.Share.addShareWith(share.share_type, share.share_with, share.share_with_displayname, share.permissions, OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE, share.mail_send, false);
+								OC.Share.addShareWith(share.share_type, share.share_with, share.share_with_displayname, share.permissions, OC.PERMISSION_READ | OC.PERMISSION_UPDATE | OC.PERMISSION_CREATE, share.mail_send, false, share.id);
 							} else {
-								OC.Share.addShareWith(share.share_type, share.share_with, share.share_with_displayname, share.permissions, possiblePermissions, share.mail_send, false);
+								OC.Share.addShareWith(share.share_type, share.share_with, share.share_with_displayname, share.permissions, possiblePermissions, share.mail_send, false, share.id);
 							}
 						}
 					}
@@ -569,7 +569,7 @@ OC.Share={
 					if (shareType === OC.Share.SHARE_TYPE_REMOTE) {
 						posPermissions = permissions;
 					}
-					OC.Share.addShareWith(shareType, shareWith, selected.item.label, permissions, posPermissions);
+					OC.Share.addShareWith(shareType, shareWith, selected.item.label, permissions, posPermissions, undefined, undefined, -1);
 					$('#shareWith').val('');
 					$('#dropdown').trigger(new $.Event('sharesChanged', {shares: OC.Share.currentShares}));
 					OC.Share.updateIcon(itemType, itemSource);
@@ -645,7 +645,7 @@ OC.Share={
 			}
 		});
 	},
-	addShareWith:function(shareType, shareWith, shareWithDisplayName, permissions, possiblePermissions, mailSend, collection) {
+	addShareWith:function(shareType, shareWith, shareWithDisplayName, permissions, possiblePermissions, mailSend, collection, shareId) {
 		var shareItem = {
 			share_type: shareType,
 			share_with: shareWith,
@@ -692,7 +692,7 @@ OC.Share={
 			if (permissions & OC.PERMISSION_SHARE) {
 				shareChecked = 'checked="checked"';
 			}
-			var html = '<li style="clear: both;" data-share-type="'+escapeHTML(shareType)+'" data-share-with="'+escapeHTML(shareWith)+'" title="' + escapeHTML(shareWith) + '">';
+			var html = '<li style="clear: both;" data-share-type="'+escapeHTML(shareType)+'" data-share-with="'+escapeHTML(shareWith)+'" title="' + escapeHTML(shareWith) + '" data-share-id="' + escapeHTML(shareId) + '">';
 			var showCrudsButton;
 			html += '<a href="#" class="unshare"><img class="svg" alt="'+t('core', 'Unshare')+'" title="'+t('core', 'Unshare')+'" src="'+OC.imagePath('core', 'actions/delete')+'"/></a>';
 			if (oc_config.enable_avatars === true) {
@@ -934,8 +934,7 @@ $(document).ready(function() {
 		var $li = $(this).closest('li');
 		var itemType = $('#dropdown').data('item-type');
 		var itemSource = $('#dropdown').data('item-source');
-		var shareType = $li.data('share-type');
-		var shareWith = $li.attr('data-share-with');
+		var shareId = $li.attr('data-share-id');
 		var $button = $(this);
 
 		if (!$button.is('a')) {
@@ -948,7 +947,7 @@ $(document).ready(function() {
 		}
 		$button.empty().addClass('icon-loading-small');
 
-		OC.Share.unshare(itemType, itemSource, shareType, shareWith, function() {
+		OC.OCSShare.unshare(shareId, function() {
 			$li.remove();
 			var index = OC.Share.itemShares[shareType].indexOf(shareWith);
 			OC.Share.itemShares[shareType].splice(index, 1);

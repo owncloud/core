@@ -27,6 +27,7 @@
 		"multiselect.js",
 		"oc-requesttoken.js",
 		"setupchecks.js",
-		"../search/js/search.js"
+		"../search/js/search.js",
+		"ocs-share.js"
 	]
 }
