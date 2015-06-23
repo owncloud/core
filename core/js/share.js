@@ -562,14 +562,20 @@ OC.Share={
 				$input.val(t('core', 'Adding user...'));
 				$input.prop('disabled', true);
 
-				OC.Share.share(itemType, itemSource, shareType, shareWith, permissions, itemSourceName, expirationDate, function() {
+				if (FileList.getCurrentDirectory() === '/') {
+					var path = itemSourceName;
+				} else {
+					var path = FileList.getCurrentDirectory() + '/' + itemSourceName;
+				}
+
+				OC.OCSShare.share(path, shareType, shareWith, permissions, expirationDate, undefined, function(shareId) {
 					$input.prop('disabled', false);
 					$loading.addClass('hidden');
 					var posPermissions = possiblePermissions;
 					if (shareType === OC.Share.SHARE_TYPE_REMOTE) {
 						posPermissions = permissions;
 					}
-					OC.Share.addShareWith(shareType, shareWith, selected.item.label, permissions, posPermissions, undefined, undefined, -1);
+					OC.Share.addShareWith(shareType, shareWith, selected.item.label, permissions, posPermissions, undefined, undefined, shareId);
 					$('#shareWith').val('');
 					$('#dropdown').trigger(new $.Event('sharesChanged', {shares: OC.Share.currentShares}));
 					OC.Share.updateIcon(itemType, itemSource);
@@ -934,6 +940,8 @@ $(document).ready(function() {
 		var $li = $(this).closest('li');
 		var itemType = $('#dropdown').data('item-type');
 		var itemSource = $('#dropdown').data('item-source');
+		var shareType = $li.data('share-type');
+		var shareWith = $li.attr('data-share-with');
 		var shareId = $li.attr('data-share-id');
 		var $button = $(this);
 
