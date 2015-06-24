@@ -26,7 +26,7 @@ OC.OCSShare={
 			success: function(result) {
 				if (result.ocs.meta.statuscode === 100) {
 					if (callback) {
-						callback(result.ocs.data.id);
+						callback(result.ocs.data);
 					}
 				} else {
 					if (result.ocs.meta.message) {
