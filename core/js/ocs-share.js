@@ -54,6 +54,28 @@ OC.OCSShare={
 				}
 			}
 		});
+	},
+
+	publicUpload:function(id, publicUpload, callback) {
+		var args = {
+			publicUpload: publicUpload
+		};
+
+		$.ajax({
+			url: OC.linkToOCS('apps/files_sharing/api/v1') + 'shares/' + id + '?format=json',
+			type: 'put',
+			data: args,
+			success: function(result) {
+				if (result.ocs.meta.statuscode === 100) {
+					if (callback) {
+						callback(result.ocs.data);
+					}
+				} else {
+					OC.dialogs.alert(t('core', 'Error while unsharing'), t('core', 'Error'));
+				}
+			}
+		});
 	}
+
 };
 

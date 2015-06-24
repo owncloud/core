@@ -1091,34 +1091,20 @@ $(document).ready(function() {
 		// Gather data
 		var $dropDown = $('#dropdown');
 		var allowPublicUpload = $(this).is(':checked');
-		var itemType = $dropDown.data('item-type');
-		var itemSource = $dropDown.data('item-source');
-		var itemSourceName = $dropDown.data('item-source-name');
-		var expirationDate = '';
-		if ($('#expirationCheckbox').is(':checked') === true) {
-			expirationDate = $( "#expirationDate" ).val();
-		}
-		var permissions = 0;
 		var $button = $(this);
 		var $loading = $dropDown.find('#allowPublicUploadWrapper .icon-loading-small');
+		var shareId = $('#link').data('share-id');
 
 		if (!$loading.hasClass('hidden')) {
 			// already in progress
 			return false;
 		}
 
-		// Calculate permissions
-		if (allowPublicUpload) {
-			permissions = OC.PERMISSION_UPDATE + OC.PERMISSION_CREATE + OC.PERMISSION_READ;
-		} else {
-			permissions = OC.PERMISSION_READ;
-		}
-
 		// Update the share information
 		$button.addClass('hidden');
 		$button.prop('disabled', true);
 		$loading.removeClass('hidden');
-		OC.Share.share(itemType, itemSource, OC.Share.SHARE_TYPE_LINK, '', permissions, itemSourceName, expirationDate, function(data) {
+		OC.OCSShare.publicUpload(shareId, allowPublicUpload, function(data) {
 			$loading.addClass('hidden');
 			$button.removeClass('hidden');
 			$button.prop('disabled', false);
