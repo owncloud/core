@@ -25,6 +25,7 @@
 
 namespace OC\Core\Command;
 
+use OC\Console\TimestampFormatter;
 use OC\Updater;
 use OCP\IConfig;
 use Symfony\Component\Console\Command\Command;
@@ -109,6 +110,12 @@ class Upgrade extends Command {
 		}
 
 		if(\OC::checkUpgrade(false)) {
+			if (OutputInterface::VERBOSITY_NORMAL < $output->getVerbosity()) {
+				// Prepend each line with a little timestamp
+				$timestampFormatter = new TimestampFormatter($this->config, $output->getFormatter());
+				$output->setFormatter($timestampFormatter);
+			}
+
 			$self = $this;
 			$updater = new Updater(\OC::$server->getHTTPHelper(),
 				\OC::$server->getConfig());
