@@ -117,6 +117,30 @@ OC.OCSShare={
 				}
 			}
 		});
+	},
+
+	setExpireDate:function(id, expireDate, callbackSuccess, callbackFailure) {
+		var args = {
+			expireDate: expireDate
+		};
+
+		$.ajax({
+			url: OC.linkToOCS('apps/files_sharing/api/v1') + 'shares/' + id + '?format=json',
+			type: 'put',
+			data: args,
+			success: function(result) {
+				if (result.ocs.meta.statuscode === 100) {
+					if (callbackSuccess) {
+						callbackSuccess(result.ocs.data);
+					}
+				} else {
+					OC.dialogs.alert(t('core', 'Error while unsharing'), t('core', 'Error'));
+					if (callbackFailure) {
+						callbackFailure(meta);
+					}
+				}
+			}
+		});
 	}
 };
 

@@ -1117,12 +1117,8 @@ $(document).ready(function() {
 		if (this.checked) {
 			OC.Share.showExpirationDate('');
 		} else {
-			var itemType = $('#dropdown').data('item-type');
-			var itemSource = $('#dropdown').data('item-source');
-			$.post(OC.filePath('core', 'ajax', 'share.php'), { action: 'setExpirationDate', itemType: itemType, itemSource: itemSource, date: '' }, function(result) {
-				if (!result || result.status !== 'success') {
-					OC.dialogs.alert(t('core', 'Error unsetting expiration date'), t('core', 'Error'));
-				}
+			var shareId = $('#link').data('share-id');
+			OC.OCSShare.setExpireDate(shareId, '', function(data) {
 				$('#expirationDate').slideUp(OC.menuSpeed);
 				if (oc_appconfig.core.defaultExpireDateEnforced === false) {
 					$('#defaultExpireMessage').slideDown(OC.menuSpeed);
@@ -1134,27 +1130,28 @@ $(document).ready(function() {
 	$(document).on('change', '#dropdown #expirationDate', function() {
 		var itemType = $('#dropdown').data('item-type');
 		var itemSource = $('#dropdown').data('item-source');
+		var shareId = $('#link').data('share-id');
 
 		$(this).tipsy('hide');
 		$(this).removeClass('error');
 
-		$.post(OC.filePath('core', 'ajax', 'share.php'), { action: 'setExpirationDate', itemType: itemType, itemSource: itemSource, date: $(this).val() }, function(result) {
-			if (!result || result.status !== 'success') {
+		OC.OCSShare.setExpireDate(shareId, $(this).val(), function(data) {
+				if (oc_appconfig.core.defaultExpireDateEnforced === 'no') {
+					$('#defaultExpireMessage').slideUp(OC.menuSpeed);
+				}
+			},
+			function(meta) {
 				var expirationDateField = $('#dropdown #expirationDate');
-				if (!result.data.message) {
+				if (!meta.message) {
 					expirationDateField.attr('original-title', t('core', 'Error setting expiration date'));
 				} else {
-					expirationDateField.attr('original-title', result.data.message);
+					expirationDateField.attr('original-title', meta.message);
 				}
 				expirationDateField.tipsy({gravity: 'n'});
 				expirationDateField.tipsy('show');
 				expirationDateField.addClass('error');
-			} else {
-				if (oc_appconfig.core.defaultExpireDateEnforced === 'no') {
-					$('#defaultExpireMessage').slideUp(OC.menuSpeed);
-				}
 			}
-		});
+		);
 	});
 
 
