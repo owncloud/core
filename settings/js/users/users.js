@@ -352,8 +352,14 @@ var UserList = {
 	getUID: function(element) {
 		return ($(element).closest('tr').data('uid') || '').toString();
 	},
+	setDisplayName: function(element, displayName) {
+		$(element).closest('tr').data('displayname', displayName);
+	},
 	getDisplayName: function(element) {
 		return ($(element).closest('tr').data('displayname') || '').toString();
+	},
+	setMailAddress: function(element, email) {
+		$(element).closest('tr').data('mailAddress', email);
 	},
 	getMailAddress: function(element) {
 		return ($(element).closest('tr').data('mailAddress') || '').toString();
@@ -659,7 +665,7 @@ $(document).ready(function () {
 							{username: uid, password: $(this).val(), recoveryPassword: recoveryPasswordVal},
 							function (result) {
 								if (result.status != 'success') {
-									OC.Notification.show(t('admin', result.data.message));
+									OC.Notification.showTemporary(t('admin', result.data.message));
 								}
 							}
 						);
@@ -667,6 +673,8 @@ $(document).ready(function () {
 					} else {
 						$input.blur();
 					}
+				} else if(event.keyCode === 27) {
+					$input.blur();
 				}
 			})
 			.blur(function () {
@@ -694,6 +702,7 @@ $(document).ready(function () {
 			.keypress(function (event) {
 				if (event.keyCode === 13) {
 					if ($(this).val().length > 0) {
+						$input.prop('disabled', true);
 						var $div = $tr.find('div.avatardiv');
 						if ($div.length) {
 							$div.imageplaceholder(uid, displayName);
@@ -702,20 +711,30 @@ $(document).ready(function () {
 							OC.filePath('settings', 'ajax', 'changedisplayname.php'),
 							{username: uid, displayName: $(this).val()},
 							function (result) {
-								if (result && result.status==='success' && $div.length){
-									$div.avatar(result.data.username, 32);
+								if (result && result.status === 'success') {
+									UserList.setDisplayName($tr, $input.val());
+									if($div.length) {
+										$div.avatar(result.data.username, 32);
+									}
+								} else if (result && result.status === 'error'
+									&& result.data && result.data.message)
+								{
+									OC.Notification.showTemporary(result.data.message);
 								}
 							}
-						);
-						$input.blur();
+						).done(function() {
+								$input.blur();
+								$input.blur(); // One call is no call. Hack for FF 38.
+							});
 					} else {
 						$input.blur();
 					}
+				} else if(event.keyCode === 27) {
+					$input.blur();
 				}
 			})
 			.blur(function () {
-				var displayName = $input.val();
-				$tr.data('displayname', displayName);
+				var displayName = UserList.getDisplayName($td);
 				$input.replaceWith('<span>' + escapeHTML(displayName) + '</span>');
 				$td.find('img').show();
 			});
@@ -734,7 +753,7 @@ $(document).ready(function () {
 			.keypress(function (event) {
 				if (event.keyCode === 13) {
 					if ($(this).val().length > 0) {
-						$input.blur();
+						$input.prop('disabled', true);
 						$.ajax({
 							type: 'PUT',
 							url: OC.generateUrl('/settings/users/{id}/mailAddress', {id: uid}),
@@ -742,20 +761,24 @@ $(document).ready(function () {
 								mailAddress: $(this).val()
 							}
 						}).fail(function (result) {
-							OC.Notification.show(result.responseJSON.data.message);
-							// reset the values
-							$tr.data('mailAddress', mailAddress);
-							$tr.children('.mailAddress').children('span').text(mailAddress);
+							OC.Notification.showTemporary(result.responseJSON.data.message);
+						}).done(function (result) {
+							if(result && result.status === 'success') {
+								UserList.setMailAddress($td, $input.val());
+							}
+							$input.blur();
+							$input.blur(); // One call is no call. Hack for FF 38.
 						});
 					} else {
 						$input.blur();
 					}
+				} else if(event.keyCode === 27) {
+					$input.blur();
 				}
 			})
 			.blur(function () {
-				var mailAddress = $input.val();
+				var mailAddress = UserList.getMailAddress($td);
 				var $span = $('<span>').text(mailAddress);
-				$tr.data('mailAddress', mailAddress);
 				$input.replaceWith($span);
 			});
 	});
