@@ -315,4 +315,156 @@ abstract class LockingProvider extends TestCase {
 		$this->assertTrue($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_SHARED));
 		$this->instance1->changeLock('foo', ILockingProvider::LOCK_SHARED);
 	}
+
+	/**
+	 * Nested locks
+	 */
+
+	public function testExclusiveAcquireShared() {
+		// Adds memcache exclusive lock
+		$this->instance1->acquireLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
+		$this->assertTrue($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_EXCLUSIVE));
+
+		// Adds local shared lock
+		$this->instance1->acquireLock('foo', ILockingProvider::LOCK_SHARED);
+		$this->assertTrue($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_EXCLUSIVE));
+		$this->assertFalse($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_SHARED));
+
+		try {
+			$this->instance1->releaseLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
+			$this->fail('\OCP\Lock\LockedException expected');
+		} catch (\OCP\Lock\LockedException $e) {
+			$this->assertInstanceOf('\OCP\Lock\LockedException', $e);
+		}
+		$this->assertTrue($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_EXCLUSIVE));
+		$this->assertFalse($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_SHARED));
+
+		// Releases local shared lock
+		$this->instance1->releaseLock('foo', ILockingProvider::LOCK_SHARED);
+		$this->assertTrue($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_EXCLUSIVE));
+		$this->assertFalse($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_SHARED));
+
+		// Releases memcache exclusive lock
+		$this->instance1->releaseLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
+		$this->assertFalse($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_EXCLUSIVE));
+		$this->assertFalse($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_SHARED));
+	}
+
+	public function testExclusiveAcquireSharedChange() {
+		// Adds memcache exclusive lock
+		$this->instance1->acquireLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
+		$this->assertTrue($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_EXCLUSIVE));
+
+		// Adds local shared lock
+		$this->instance1->acquireLock('foo', ILockingProvider::LOCK_SHARED);
+		$this->assertTrue($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_EXCLUSIVE));
+		$this->assertFalse($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_SHARED));
+
+		// Change local shared to exclusive lock
+		$this->instance1->changeLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
+		$this->assertTrue($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_EXCLUSIVE));
+		$this->assertFalse($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_SHARED));
+
+		// Releases local exclusive lock
+		$this->instance1->releaseLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
+		$this->assertTrue($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_EXCLUSIVE));
+		$this->assertFalse($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_SHARED));
+
+		// Releases memcache exclusive lock
+		$this->instance1->releaseLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
+		$this->assertFalse($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_EXCLUSIVE));
+		$this->assertFalse($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_SHARED));
+	}
+
+	public function testExclusiveAcquireSharedChangeExclusive() {
+		// Adds memcache exclusive lock
+		$this->instance1->acquireLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
+		$this->assertTrue($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_EXCLUSIVE));
+
+		// Adds local shared lock
+		$this->instance1->acquireLock('foo', ILockingProvider::LOCK_SHARED);
+		$this->assertTrue($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_EXCLUSIVE));
+		$this->assertFalse($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_SHARED));
+
+		// Attempt to change memcache exclusive to shared lock
+		try {
+			$this->instance1->changeLock('foo', ILockingProvider::LOCK_SHARED);
+			$this->fail('\OCP\Lock\LockedException expected');
+		} catch (\OCP\Lock\LockedException $e) {
+			$this->assertInstanceOf('\OCP\Lock\LockedException', $e);
+		}
+		$this->assertTrue($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_EXCLUSIVE));
+		$this->assertFalse($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_SHARED));
+
+		// Releases local exclusive lock
+		$this->instance1->releaseLock('foo', ILockingProvider::LOCK_SHARED);
+		$this->assertTrue($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_EXCLUSIVE));
+		$this->assertFalse($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_SHARED));
+
+		// Change memcache exclusive to shared lock
+		$this->instance1->changeLock('foo', ILockingProvider::LOCK_SHARED);
+		$this->assertFalse($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_EXCLUSIVE));
+		$this->assertTrue($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_SHARED));
+
+		// Releases memcache exclusive lock
+		$this->instance1->releaseLock('foo', ILockingProvider::LOCK_SHARED);
+		$this->assertFalse($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_EXCLUSIVE));
+		$this->assertFalse($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_SHARED));
+	}
+
+	public function testExclusiveAcquireExclusive() {
+		// Adds memcache exclusive lock
+		$this->instance1->acquireLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
+		$this->assertTrue($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_EXCLUSIVE));
+
+		// Adds local exclusive lock
+		$this->instance1->acquireLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
+		$this->assertTrue($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_EXCLUSIVE));
+		$this->assertFalse($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_SHARED));
+
+		// Releases local exclusive lock
+		$this->instance1->releaseLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
+		$this->assertTrue($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_EXCLUSIVE));
+		$this->assertFalse($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_SHARED));
+
+		// Releases memcache exclusive lock
+		$this->instance1->releaseLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
+		$this->assertFalse($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_EXCLUSIVE));
+		$this->assertFalse($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_SHARED));
+	}
+
+	public function testExclusiveAcquireExclusiveChange() {
+		// Adds memcache exclusive lock
+		$this->instance1->acquireLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
+		$this->assertTrue($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_EXCLUSIVE));
+
+		// Adds local exclusive lock
+		$this->instance1->acquireLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
+		$this->assertTrue($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_EXCLUSIVE));
+		$this->assertFalse($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_SHARED));
+
+		// Change local exclusive to shared lock
+		$this->instance1->changeLock('foo', ILockingProvider::LOCK_SHARED);
+		$this->assertTrue($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_EXCLUSIVE));
+		$this->assertFalse($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_SHARED));
+
+		try {
+			$this->instance1->releaseLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
+			$this->fail('\OCP\Lock\LockedException expected');
+		} catch (\OCP\Lock\LockedException $e) {
+			$this->assertInstanceOf('\OCP\Lock\LockedException', $e);
+		}
+		$this->assertTrue($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_EXCLUSIVE));
+		$this->assertFalse($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_SHARED));
+
+		// Releases local shared lock
+		$this->instance1->releaseLock('foo', ILockingProvider::LOCK_SHARED);
+		$this->assertTrue($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_EXCLUSIVE));
+		$this->assertFalse($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_SHARED));
+
+		// Releases memcache exclusive lock
+		$this->instance1->releaseLock('foo', ILockingProvider::LOCK_EXCLUSIVE);
+		$this->assertFalse($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_EXCLUSIVE));
+		$this->assertFalse($this->instance1->isLockOwned('foo', ILockingProvider::LOCK_SHARED));
+	}
 }
