@@ -133,6 +133,9 @@ OCA.Sharing.PublicApp = {
 			img.appendTo('#imgframe');
 		}
 
+		$('#download, #downloadFile').click(function (e) {
+			OC.Notification.showTemporary(t('files_sharing', 'Download started. Please wait …'));
+		});
 		if (this.fileList) {
 			// TODO: move this to a separate PublicFileList class that extends OCA.Files.FileList (+ unit tests)
 			this.fileList.getDownloadUrl = function (filename, dir) {
