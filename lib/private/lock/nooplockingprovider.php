@@ -37,6 +37,13 @@ class NoopLockingProvider implements ILockingProvider {
 		return false;
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
+	public function isLockOwned($path, $type) {
+		return false;
+	}
+
     /**
      * {@inheritdoc}
      */

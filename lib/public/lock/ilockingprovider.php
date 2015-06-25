@@ -45,6 +45,15 @@ interface ILockingProvider {
 	 */
 	public function isLocked($path, $type);
 
+
+	/**
+	 * @param string $path
+	 * @param int $type self::LOCK_SHARED or self::LOCK_EXCLUSIVE
+	 * @return bool
+	 * @since 8.1.0
+	 */
+	public function isLockOwned($path, $type);
+
 	/**
 	 * @param string $path
 	 * @param int $type self::LOCK_SHARED or self::LOCK_EXCLUSIVE

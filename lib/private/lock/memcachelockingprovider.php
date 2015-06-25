@@ -67,12 +67,29 @@ class MemcacheLockingProvider implements ILockingProvider {
 	}
 
 	/**
+	 * Is the lock owned by this instance of the locking provider?
+	 *
+	 * @param string $path
+	 * @param int $type self::LOCK_SHARED or self::LOCK_EXCLUSIVE
+	 * @return bool
+	 */
+	public function isLockOwned($path, $type) {
+		if ($type === self::LOCK_SHARED) {
+			return isset($this->acquiredLocks['memcache']['shared'][$path]) && $this->acquiredLocks['memcache']['shared'][$path] > 0;
+		} else if ($type === self::LOCK_EXCLUSIVE) {
+			return isset($this->acquiredLocks['memcache']['exclusive'][$path]);
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * @param string $path
 	 * @param int $type self::LOCK_SHARED or self::LOCK_EXCLUSIVE
 	 * @throws \OCP\Lock\LockedException
 	 */
 	public function acquireLock($path, $type) {
-		if (isset($this->acquiredLocks['memcache']['exclusive'][$path])) {
+		if ($this->isLockOwned($path, self::LOCK_EXCLUSIVE)) {
 			$this->acquireLocalLock($path, $type);
 			return;
 		}
@@ -118,7 +135,7 @@ class MemcacheLockingProvider implements ILockingProvider {
 	 * @param bool $ignoreLocalLocks Release the memcache locks directly
 	 */
 	public function releaseLock($path, $type, $ignoreLocalLocks = false) {
-		if (isset($this->acquiredLocks['memcache']['exclusive'][$path]) && !$ignoreLocalLocks) {
+		if ($this->isLockOwned($path, self::LOCK_EXCLUSIVE) && !$ignoreLocalLocks) {
 			// If we acquired locks while we had an exclusive lock we have to unlock them
 			// Only if we didn't have a sub-lock, we release the real memcache lock
 			if ($this->releaseLocalLock($path, $type)) {
@@ -177,7 +194,7 @@ class MemcacheLockingProvider implements ILockingProvider {
 	 * @throws \OCP\Lock\LockedException
 	 */
 	public function changeLock($path, $targetType) {
-		if (isset($this->acquiredLocks['memcache']['exclusive'][$path])) {
+		if ($this->isLockOwned($path, self::LOCK_EXCLUSIVE)) {
 			// If we acquired locks while we had an exclusive lock we have to unlock them
 			// Only if we didn't have a sub-lock, we release the real memcache lock
 			if ($this->changeLocalLock($path, $targetType)) {
