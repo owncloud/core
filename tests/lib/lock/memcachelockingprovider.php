@@ -31,15 +31,27 @@ class MemcacheLockingProvider extends LockingProvider {
 	private $memcache;
 
 	/**
+	 * @return \OCP\IMemcache
+	 */
+	protected function getMemcache() {
+		if ($this->memcache instanceof \OCP\IMemcache) {
+			return $this->memcache;
+		}
+		$this->memcache = new ArrayCache();
+		return $this->memcache;
+	}
+
+	/**
 	 * @return \OCP\Lock\ILockingProvider
 	 */
 	protected function getInstance() {
-		$this->memcache = new ArrayCache();
-		return new \OC\Lock\MemcacheLockingProvider($this->memcache);
+		return new \OC\Lock\MemcacheLockingProvider($this->getMemcache());
 	}
 
 	public function tearDown() {
-		$this->memcache->clear();
+		if ($this->memcache instanceof \OCP\IMemcache) {
+			$this->memcache->clear();
+		}
 		parent::tearDown();
 	}
 }
