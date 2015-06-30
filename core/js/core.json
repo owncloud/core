@@ -15,10 +15,10 @@
 		"placeholder.js"
 	],
 	"modules": [
-        "bootstrap.js",
-        "compatibility.js",
-        "jquery.ocdialog.js",
-        "oc-dialogs.js",
+        	"bootstrap.js",
+        	"compatibility.js",
+        	"jquery.ocdialog.js",
+        	"oc-dialogs.js",
 		"util.js",
 		"history.js",
 		"breadcrumb.js",
