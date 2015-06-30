@@ -83,6 +83,12 @@ class Directory extends \OC\Connector\Sabre\Node
 	 */
 	public function createFile($name, $data = null) {
 
+		# the check here is necessary, because createFile uses put covered in sabre/file.php 
+		# and not touch covered in files/view.php
+		if (\OC\Files\Filesystem::isForbiddenFileOrDir($name)) {
+			throw new \Sabre\DAV\Exception\Forbidden();
+		}
+
 		try {
 			// for chunked upload also updating a existing file is a "createFile"
 			// because we create all the chunks before re-assemble them to the existing file.

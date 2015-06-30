@@ -103,6 +103,10 @@ class ObjectTree extends \Sabre\DAV\Tree {
 		if (!$this->fileView) {
 			throw new \Sabre\DAV\Exception\ServiceUnavailable('filesystem not setup');
 		}
+		// if the path has been entered manually and eg not via a file explorer
+		if (\OC\Files\Filesystem::isForbiddenFileOrDir($path)) {
+			throw new \Sabre\DAV\Exception\Forbidden();
+		}
 
 		$path = trim($path, '/');
 		if ($path) {

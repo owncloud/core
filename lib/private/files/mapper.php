@@ -282,7 +282,7 @@ class Mapper
 		// trim ending dots (for security reasons and win compatibility)
 		$text = preg_replace('~\.+$~', '', $text);
 
-		if (empty($text) || \OC\Files\Filesystem::isFileBlacklisted($text)) {
+		if (empty($text) || \OC\Files\Filesystem::isForbiddenFileOrDir($text)) {
 			/**
 			 * Item slug would be empty. Previously we used uniqid() here.
 			 * However this means that the behaviour is not reproducible, so

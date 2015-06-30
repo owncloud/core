@@ -137,7 +137,7 @@ class AvatarController extends Controller {
 			if (
 				$files['error'][0] === 0 &&
 				 is_uploaded_file($files['tmp_name'][0]) &&
-				!\OC\Files\Filesystem::isFileBlacklisted($files['tmp_name'][0])
+				!\OC\Files\Filesystem::isForbiddenFileOrDir($files['tmp_name'][0])
 			) {
 				$this->cache->set('avatar_upload', file_get_contents($files['tmp_name'][0]), 7200);
 				$view = new \OC\Files\View('/'.$userId.'/cache');
