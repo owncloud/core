@@ -168,7 +168,7 @@ class EtagPropagation extends TestCase {
 		$this->assertEtagsChanged($users, 'sub1/sub2');
 	}
 
-	private function assertAllUnchaged() {
+	private function assertAllUnchanged() {
 		$users = [self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3, self::TEST_FILES_SHARING_API_USER4];
 		$this->assertEtagsNotChanged($users);
@@ -181,7 +181,7 @@ class EtagPropagation extends TestCase {
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3]);
 
-		$this->assertAllUnchaged();
+		$this->assertAllUnchanged();
 	}
 
 	public function testOwnerWritesToSingleFileShare() {
@@ -199,7 +199,7 @@ class EtagPropagation extends TestCase {
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3, self::TEST_FILES_SHARING_API_USER4]);
 
-		$this->assertAllUnchaged();
+		$this->assertAllUnchanged();
 	}
 
 	public function testOwnerRenameInShare() {
@@ -209,7 +209,7 @@ class EtagPropagation extends TestCase {
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3]);
 
-		$this->assertAllUnchaged();
+		$this->assertAllUnchanged();
 	}
 
 	public function testOwnerRenameInReShare() {
@@ -218,7 +218,7 @@ class EtagPropagation extends TestCase {
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3, self::TEST_FILES_SHARING_API_USER4]);
 
-		$this->assertAllUnchaged();
+		$this->assertAllUnchanged();
 	}
 
 	public function testOwnerRenameIntoReShare() {
@@ -227,7 +227,7 @@ class EtagPropagation extends TestCase {
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3, self::TEST_FILES_SHARING_API_USER4]);
 
-		$this->assertAllUnchaged();
+		$this->assertAllUnchanged();
 	}
 
 	public function testOwnerRenameOutOfReShare() {
@@ -236,7 +236,7 @@ class EtagPropagation extends TestCase {
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3, self::TEST_FILES_SHARING_API_USER4]);
 
-		$this->assertAllUnchaged();
+		$this->assertAllUnchanged();
 	}
 
 	public function testOwnerDeleteInShare() {
@@ -246,7 +246,7 @@ class EtagPropagation extends TestCase {
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3]);
 
-		$this->assertAllUnchaged();
+		$this->assertAllUnchanged();
 	}
 
 	public function testOwnerDeleteInReShare() {
@@ -255,7 +255,7 @@ class EtagPropagation extends TestCase {
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3, self::TEST_FILES_SHARING_API_USER4]);
 
-		$this->assertAllUnchaged();
+		$this->assertAllUnchanged();
 	}
 
 	public function testOwnerUnshares() {
@@ -277,7 +277,7 @@ class EtagPropagation extends TestCase {
 		   	self::TEST_FILES_SHARING_API_USER4,
 		]);
 
-		$this->assertAllUnchaged();
+		$this->assertAllUnchanged();
 	}
 
 	public function testRecipientUnsharesFromSelf() {
@@ -292,7 +292,7 @@ class EtagPropagation extends TestCase {
 		   	self::TEST_FILES_SHARING_API_USER4,
 		]);
 
-		$this->assertAllUnchaged();
+		$this->assertAllUnchanged();
 	}
 
 	public function testRecipientWritesToShare() {
@@ -302,7 +302,7 @@ class EtagPropagation extends TestCase {
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3]);
 
-		$this->assertAllUnchaged();
+		$this->assertAllUnchanged();
 	}
 
 	public function testRecipientWritesToReshare() {
@@ -311,7 +311,7 @@ class EtagPropagation extends TestCase {
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3, self::TEST_FILES_SHARING_API_USER4]);
 
-		$this->assertAllUnchaged();
+		$this->assertAllUnchanged();
 	}
 
 	public function testRecipientWritesToOtherRecipientsReshare() {
@@ -320,7 +320,7 @@ class EtagPropagation extends TestCase {
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3, self::TEST_FILES_SHARING_API_USER4]);
 
-		$this->assertAllUnchaged();
+		$this->assertAllUnchanged();
 	}
 
 	public function testRecipientRenameInShare() {
@@ -330,7 +330,7 @@ class EtagPropagation extends TestCase {
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3]);
 
-		$this->assertAllUnchaged();
+		$this->assertAllUnchanged();
 	}
 
 	public function testRecipientRenameInReShare() {
@@ -339,7 +339,7 @@ class EtagPropagation extends TestCase {
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3, self::TEST_FILES_SHARING_API_USER4]);
 
-		$this->assertAllUnchaged();
+		$this->assertAllUnchanged();
 	}
 
 	public function testRecipientRenameResharedFolder() {
@@ -350,7 +350,7 @@ class EtagPropagation extends TestCase {
 
 		$this->assertEtagsChanged([self::TEST_FILES_SHARING_API_USER2], 'sub1');
 
-		$this->assertAllUnchaged();
+		$this->assertAllUnchanged();
 	}
 
 	public function testRecipientDeleteInShare() {
@@ -360,7 +360,7 @@ class EtagPropagation extends TestCase {
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3]);
 
-		$this->assertAllUnchaged();
+		$this->assertAllUnchanged();
 	}
 
 	public function testRecipientDeleteInReShare() {
@@ -369,7 +369,7 @@ class EtagPropagation extends TestCase {
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3, self::TEST_FILES_SHARING_API_USER4]);
 
-		$this->assertAllUnchaged();
+		$this->assertAllUnchanged();
 	}
 
 	public function testReshareRecipientWritesToReshare() {
@@ -378,7 +378,7 @@ class EtagPropagation extends TestCase {
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3, self::TEST_FILES_SHARING_API_USER4]);
 
-		$this->assertAllUnchaged();
+		$this->assertAllUnchanged();
 	}
 
 	public function testReshareRecipientRenameInReShare() {
@@ -387,7 +387,7 @@ class EtagPropagation extends TestCase {
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3, self::TEST_FILES_SHARING_API_USER4]);
 
-		$this->assertAllUnchaged();
+		$this->assertAllUnchanged();
 	}
 
 	public function testReshareRecipientDeleteInReShare() {
@@ -396,6 +396,6 @@ class EtagPropagation extends TestCase {
 		$this->assertEtagsForFoldersChanged([self::TEST_FILES_SHARING_API_USER1, self::TEST_FILES_SHARING_API_USER2,
 			self::TEST_FILES_SHARING_API_USER3, self::TEST_FILES_SHARING_API_USER4]);
 
-		$this->assertAllUnchaged();
+		$this->assertAllUnchanged();
 	}
 }
