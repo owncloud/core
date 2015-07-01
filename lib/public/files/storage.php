@@ -105,13 +105,13 @@ interface Storage {
 	public function is_file($path);
 
 	/**
-	 * see http://php.net/manual/en/function.is-link.php
+	 * see http://php.net/manual/en/function.stat.php
+	 * only the following keys are required in the result: size and mtime
 	 *
 	 * @param string $path
-	 * @return bool
-	 * @since 8.0.0
+	 * @return array|false
+	 * @since 6.0.0
 	 */
-
 	public function stat($path);
 
 	/**
