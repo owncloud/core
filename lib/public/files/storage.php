@@ -87,7 +87,7 @@ interface Storage {
 	public function opendir($path);
 
 	/**
-	 * see http://php.net/manual/en/function.is_dir.php
+	 * see http://php.net/manual/en/function.is-dir.php
 	 *
 	 * @param string $path
 	 * @return bool
@@ -96,7 +96,7 @@ interface Storage {
 	public function is_dir($path);
 
 	/**
-	 * see http://php.net/manual/en/function.is_file.php
+	 * see http://php.net/manual/en/function.is-file.php
 	 *
 	 * @param string $path
 	 * @return bool
@@ -105,13 +105,13 @@ interface Storage {
 	public function is_file($path);
 
 	/**
-	 * see http://php.net/manual/en/function.stat.php
-	 * only the following keys are required in the result: size and mtime
+	 * see http://php.net/manual/en/function.is-link.php
 	 *
 	 * @param string $path
-	 * @return array|false
-	 * @since 6.0.0
+	 * @return bool
+	 * @since 8.0.0
 	 */
+
 	public function stat($path);
 
 	/**
