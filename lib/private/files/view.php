@@ -1573,6 +1573,10 @@ class View {
 		throw new NotFoundException(sprintf('File with id "%s" has not been found.', $id));
 	}
 
+	/**
+	 * @param string $path
+	 * @throws InvalidPathException
+	 */
 	private function assertPathLength($path) {
 		$maxLen = min(PHP_MAXPATHLEN, 4000);
 		// Check for the string length - performed using isset() instead of strlen()
