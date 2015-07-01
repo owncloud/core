@@ -164,7 +164,7 @@ class Server2Server {
 			$remote = $this->cleanupRemote($share['remote']);
 
 			$owner = $share['owner'] . '@' . $remote;
-			$mountpoint = $share['mountpoint'];
+			$mountpoint = $this->getMountPointFromTemporaryName($share['mountpoint']);
 			$user = $share['user'];
 
 			$query = \OCP\DB::prepare('DELETE FROM `*PREFIX*share_external` WHERE `remote_id` = ? AND `share_token` = ?');
@@ -176,6 +176,24 @@ class Server2Server {
 		}
 
 		return new \OC_OCS_Result();
+	}
+
+	/**
+	 * Extract the mountpoint name from the temporary name
+	 *
+	 * Not accepted external shares have  `{{TemporaryMountPointName#/foobar}}`
+	 * as a name, to make sure they get a unique name when they are being accepted:
+	 *  =>
+	 *
+	 * @param string $mountpoint E.g. `{{TemporaryMountPointName#/foobar}}`
+	 * @return string Cleaned name as `/foobar`
+	 */
+	private function getMountPointFromTemporaryName($mountpoint) {
+		if (strpos($mountpoint, '{{TemporaryMountPointName#') === 0 && substr($mountpoint, -2) === '}}') {
+			return substr($mountpoint, strlen('{{TemporaryMountPointName#'), -2);
+		}
+
+		return $mountpoint;
 	}
 
 	private function cleanupRemote($remote) {
