@@ -39,6 +39,7 @@ namespace OCA\Files_Trashbin;
 use OC\Files\Filesystem;
 use OC\Files\View;
 use OCA\Files_Trashbin\Command\Expire;
+use OCP\Files\NotFoundException;
 
 class Trashbin {
 	// how long do we keep files in the trash bin if no other value is defined in the config file (unit: days)
@@ -65,15 +66,25 @@ class Trashbin {
 		self::getUidAndFilename($params['path']);
 	}
 
+        /**
+	 * @param string $filename
+	 * @return array
+	 * @throws \OCP\Files\NotFoundException
+	 * @throws \OC\User\NoUserException
+	 */
 	public static function getUidAndFilename($filename) {
 		$uid = \OC\Files\Filesystem::getOwner($filename);
 		\OC\Files\Filesystem::initMountPoints($uid);
 		if ($uid != \OCP\User::getUser()) {
 			$info = \OC\Files\Filesystem::getFileInfo($filename);
 			$ownerView = new \OC\Files\View('/' . $uid . '/files');
-			$filename = $ownerView->getPath($info['fileid']);
+			try {
+				$filename = $ownerView->getPath($info['fileid']);
+			} catch (NotFoundException $e) {
+				$filename = null;
+			}
 		}
-		return array($uid, $filename);
+		return [$uid, $filename];
 	}
 
 	/**
