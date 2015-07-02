@@ -899,6 +899,20 @@ describe('OCA.Files.FileList tests', function() {
 			expect(handler.calledOnce).toEqual(true);
 			expect(handler.getCall(0).args[0].$files.length).toEqual(fileList.pageSize());
 		});
+		it('continues processing even if "fileActionsReady" handler threw an exception', function() {
+			var clock = sinon.useFakeTimers();
+			var handler = function() {
+				throw "Failure";
+			};
+			fileList.setFiles(generateFiles(0, 64));
+			fileList.$fileList.on('fileActionsReady', handler);
+			fileList._nextPage(true);
+			expect(fileList.$fileList.find('.appear.transparent').length).toBeGreaterThan(0);
+			// finish animation
+			clock.tick(10);
+			expect(fileList.$fileList.find('.appear.transparent').length).toEqual(0);
+			clock.restore();
+		});
 		it('does not trigger "fileActionsReady" event after single add with silent argument', function() {
 			var handler = sinon.stub();
 			fileList.setFiles(testFiles);
