@@ -597,7 +597,7 @@
 
 			// trigger event for newly added rows
 			if (newTrs.length > 0) {
-				this.$fileList.trigger($.Event('fileActionsReady', {fileList: this, $files: newTrs}));
+				this._triggerFileActionsReady({fileList: this, $files: newTrs});
 			}
 
 			if (animate) {
@@ -625,8 +625,22 @@
 			$files.each(function() {
 				self.fileActions.display($(this).find('td.filename'), false, self);
 			});
-			this.$fileList.trigger($.Event('fileActionsReady', {fileList: this, $files: $files}));
+			this._triggerFileActionsReady({fileList: this, $files: $files});
 
+		},
+
+		/**
+		 * Triggers event "fileActionsReady" with graceful failing.
+		 * In case of exception, the exception is logged.
+		 *
+		 * @param {Object} options event options
+		 */
+		_triggerFileActionsReady: function(options) {
+			try {
+				this.$fileList.trigger($.Event('fileActionsReady', options || {}));
+			} catch (e) {
+				console.error('Exception occurred in "fileActionsReady" event handler', e);
+			}
 		},
 
 		/**
@@ -1502,7 +1516,7 @@
 								self.files.splice(tr.index(), 1);
 								tr.remove();
 								tr = self.add(fileInfo, {updateSummary: false, silent: true});
-								self.$fileList.trigger($.Event('fileActionsReady', {fileList: self, $files: $(tr)}));
+								self._triggerFileActionsReady({fileList: self, $files: $(tr)});
 							}
 						});
 					} else {
@@ -1510,7 +1524,7 @@
 						self.files.splice(tr.index(), 1);
 						tr.remove();
 						tr = self.add(oldFileInfo, {updateSummary: false, silent: true});
-						self.$fileList.trigger($.Event('fileActionsReady', {fileList: self, $files: $(tr)}));
+						self._triggerFileActionsReady({fileList: self, $files: $(tr)});
 					}
 				} catch (error) {
 					input.attr('title', error);
