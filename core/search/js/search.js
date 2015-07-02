@@ -107,10 +107,17 @@
 					if (typeof size !== 'number') {
 						size = 30;
 					}
+					
 					if (typeof inApps !== 'object') {
 						var currentApp = getCurrentApp();
+						//Libasys
 						if(currentApp) {
-							inApps = [currentApp];
+							if (typeof currentApp !== 'object') {
+								inApps = [currentApp];
+							}else{
+								inApps = currentApp;
+								
+							}
 						} else {
 							inApps = [];
 						}
@@ -130,7 +137,7 @@
 						$searchResults.removeClass('hidden');
 						$status.addClass('status');
 						$status.html(t('core', 'Searching other places')+'<img class="spinner" alt="search in progress" src="'+OC.webroot+'/core/img/loading.gif" />');
-
+						
 						// do the actual search query
 						$.getJSON(OC.generateUrl('core/search'), {query:query, inApps:inApps, page:page, size:size }, function(results) {
 							lastResults = results;
@@ -146,15 +153,23 @@
 
 			//TODO should be a core method, see https://github.com/owncloud/core/issues/12557
 			function getCurrentApp() {
-				var content = document.getElementById('content');
-				if (content) {
-					var classList = document.getElementById('content').className.split(/\s+/);
-					for (var i = 0; i < classList.length; i++) {
-						if (classList[i].indexOf('app-') === 0) {
-							return classList[i].substr(4);
+				//Libasys
+				var filter = $('#searchresults').data('appfilter');
+				if(filter){
+					var filterTmp = filter.split(',');
+					return filterTmp;
+				}else{
+					var content = document.getElementById('content');
+					if (content) {
+						var classList = document.getElementById('content').className.split(/\s+/);
+						for (var i = 0; i < classList.length; i++) {
+							if (classList[i].indexOf('app-') === 0) {
+								return classList[i].substr(4);
+							}
 						}
 					}
 				}
+				
 				return false;
 			}
 
@@ -183,32 +198,34 @@
 			function addResults(results) {
 				var $template = $searchResults.find('tr.template');
 				jQuery.each(results, function (i, result) {
-					var $row = $template.clone();
-					$row.removeClass('template');
-					$row.addClass('result');
-
-					$row.data('result', result);
-
-					// generic results only have four attributes
-					$row.find('td.info div.name').text(result.name);
-					$row.find('td.info a').attr('href', result.link);
-
-					/**
-					 * Give plugins the ability to customize the search results. see result.js for examples
-					 */
-					if (self.hasRenderer(result.type)) {
-						$row = self.getRenderer(result.type)($row, result);
-					} else {
-						// for backward compatibility add text div
-						$row.find('td.info div.name').addClass('result');
-						$row.find('td.result div.name').after('<div class="text"></div>');
-						$row.find('td.result div.text').text(result.name);
-						if (OC.search.customResults && OC.search.customResults[result.type]) {
-							OC.search.customResults[result.type]($row, result);
+					if(result.link !== undefined){
+						var $row = $template.clone();
+						$row.removeClass('template');
+						$row.addClass('result');
+	
+						$row.data('result', result);
+	
+						// generic results only have four attributes
+						$row.find('td.info div.name').text(result.name);
+						$row.find('td.info a').attr('href', result.link);
+	
+						/**
+						 * Give plugins the ability to customize the search results. see result.js for examples
+						 */
+						if (self.hasRenderer(result.type)) {
+							$row = self.getRenderer(result.type)($row, result);
+						} else {
+							// for backward compatibility add text div
+							$row.find('td.info div.name').addClass('result');
+							$row.find('td.result div.name').after('<div class="text"></div>');
+							$row.find('td.result div.text').text(result.name);
+							if (OC.search.customResults && OC.search.customResults[result.type]) {
+								OC.search.customResults[result.type]($row, result);
+							}
 						}
-					}
-					if ($row) {
-						$searchResults.find('tbody').append($row);
+						if ($row) {
+							$searchResults.find('tbody').append($row);
+						}
 					}
 				});
 				var count = $searchResults.find('tr.result').length;

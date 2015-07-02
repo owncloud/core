@@ -56,13 +56,12 @@ class Search implements ISearch {
 	 * @return array An array of OC\Search\Result's
 	 */
 	public function searchPaged($query, array $inApps = array(), $page = 1, $size = 30) {
-		$this->initProviders();
+		
+		$this->initProviders($inApps);
 		$results = array();
+		
 		foreach($this->providers as $provider) {
-			/** @var $provider Provider */
-			if ( ! $provider->providesResultsFor($inApps) ) {
-				continue;
-			}
+		
 			if ($provider instanceof PagedProvider) {
 				$results = array_merge($results, $provider->searchPaged($query, $page, $size));
 			} else if ($provider instanceof Provider) {
@@ -106,24 +105,53 @@ class Search implements ISearch {
 	/**
 	 * Register a new search provider to search with
 	 * @param string $class class name of a OC\Search\Provider
-	 * @param array $options optional
+	 * @param array $options  $options['app'] is needed for correct load of searchprovider
 	 */
 	public function registerProvider($class, array $options = array()) {
-		$this->registeredProviders[] = array('class' => $class, 'options' => $options);
+		if(!empty($options['app'])){	
+			$this->registeredProviders[$options['app']] = array('class' => $class, 'options' => $options);
+		}
 	}
 
 	/**
-	 * Create instances of all the registered search providers
+	 * Create instances of all the needed search providers
+	 * @param array $inApps
 	 */
-	private function initProviders() {
+	private function initProviders($inApps) {
 		if( ! empty($this->providers) ) {
 			return;
 		}
-		foreach($this->registeredProviders as $provider) {
-			$class = $provider['class'];
-			$options = $provider['options'];
+		
+		$iCountInApps = count($inApps);
+		//if we have only 1 searchprovider to load we look for additional param options['apps'] and register the other searchprovider
+		if($iCountInApps === 1 ){
+			$sApp=$inApps[0];
+			$searchProvider = $this->registeredProviders[$sApp];
+			$class = $searchProvider['class'];
+			$options = $searchProvider['options'];
 			$this->providers[] = new $class($options);
+			
+			if(!empty($searchProvider['options']['apps'])){
+				foreach($searchProvider['options']['apps'] as  $additionalSearchProvider) {
+					if(!empty($this->registeredProviders[$additionalSearchProvider])){	
+						$class = $this->registeredProviders[$additionalSearchProvider]['class'];
+						$options = $this->registeredProviders[$additionalSearchProvider]['options'];
+						$this->providers[] = new $class($options);
+					}
+				}
+			}
 		}
+		//if we have more than 1 searchprovider we load only the searchprovider located in $inApps without option['apps']
+		if($iCountInApps > 1 ){
+			foreach($inApps as  $provider) {
+				if(!empty($this->registeredProviders[$provider])){		
+					$class = $this->registeredProviders[$provider]['class'];
+					$options = $this->registeredProviders[$provider]['options'];
+					$this->providers[] = new $class($options);
+				}
+			}
+		}
+		
 	}
 
 }
