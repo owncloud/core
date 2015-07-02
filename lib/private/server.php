@@ -188,7 +188,7 @@ class Server extends ServerContainer implements IServerContainer {
 				\OC_Hook::emit('OC_Group', 'pre_deleteGroup', array('run' => true, 'gid' => $group->getGID()));
 			});
 			$groupManager->listen('\OC\Group', 'postDelete', function (\OC\Group\Group $group) {
-				\OC_Hook::emit('OC_User', 'post_deleteGroup', array('gid' => $group->getGID()));
+				\OC_Hook::emit('OC_Group', 'post_deleteGroup', array('gid' => $group->getGID()));
 			});
 			$groupManager->listen('\OC\Group', 'preAddUser', function (\OC\Group\Group $group, \OC\User\User $user) {
 				\OC_Hook::emit('OC_Group', 'pre_addToGroup', array('run' => true, 'uid' => $user->getUID(), 'gid' => $group->getGID()));

@@ -788,7 +788,7 @@ class OC {
 			OC_Hook::connect('OC_User', 'post_addToGroup', 'OC\Share\Hooks', 'post_addToGroup');
 			OC_Hook::connect('OC_Group', 'pre_addToGroup', 'OC\Share\Hooks', 'pre_addToGroup');
 			OC_Hook::connect('OC_User', 'post_removeFromGroup', 'OC\Share\Hooks', 'post_removeFromGroup');
-			OC_Hook::connect('OC_User', 'post_deleteGroup', 'OC\Share\Hooks', 'post_deleteGroup');
+			OC_Hook::connect('OC_Group', 'post_deleteGroup', 'OC\Share\Hooks', 'post_deleteGroup');
 		}
 	}
 
