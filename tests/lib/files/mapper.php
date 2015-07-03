@@ -85,5 +85,10 @@ class Mapper extends \Test\TestCase {
 	 */
 	public function testSlugifyPath($slug, $path, $index = null) {
 		$this->assertEquals($slug, $this->mapper->slugifyPath($path, $index));
+
+		// with a non-ascii characters
+		$this->assertNotEquals('D:/.txt', $this->mapper->slugifyPath('D:/波.txt'));
+		$this->assertNotEquals('D:/.txt', $this->mapper->slugifyPath('D:/破.txt'));
+		$this->assertNotEquals('D:/.txt', $this->mapper->slugifyPath('D:/莫.txt'));
 	}
 }
