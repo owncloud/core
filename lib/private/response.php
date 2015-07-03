@@ -186,8 +186,10 @@ class OC_Response {
 			])) {
 			header( 'Content-Disposition: ' . rawurlencode($type) . '; filename="' . rawurlencode( $filename ) . '"' );
 		} else {
+			if (!array_key_exists('raw', $_GET)) {
 			header( 'Content-Disposition: ' . rawurlencode($type) . '; filename*=UTF-8\'\'' . rawurlencode( $filename )
 												 . '; filename="' . rawurlencode( $filename ) . '"' );
+			}
 		}
 	}
 
