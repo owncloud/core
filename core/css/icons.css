@@ -70,6 +70,10 @@
 	background-image: url('../img/actions/download.svg');
 }
 
+.icon-encrypted {
+	background-image: url('../img/actions/encrypted.svg');
+}
+
 .icon-external {
 	background-image: url('../img/actions/external.svg');
 }
