@@ -148,6 +148,7 @@ class ShareController extends Controller {
 	 * @param string $token
 	 * @param string $path
 	 * @return TemplateResponse|RedirectResponse
+	 * @throws \Exception
 	 */
 	public function showShare($token, $path = '') {
 		\OC_User::setIncognitoMode(true);
@@ -317,13 +318,11 @@ class ShareController extends Controller {
 				OC_Util::tearDownFS();
 				OC_Util::setupFS($rootLinkItem['uid_owner']);
 				$path = Filesystem::getPath($linkItem['file_source']);
-
-				if(!empty($path) && Filesystem::isReadable($path)) {
+				if(Filesystem::isReadable($path)) {
 					return $path;
 				}
 			}
 		}
 
-		throw new \Exception('No file found belonging to file.');
 	}
 }
