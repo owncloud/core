@@ -240,4 +240,13 @@ class Db implements IDb {
 		return $this->connection->tableExists($table);
 	}
 
+	/**
+	 * Creates a new instance of a SQL query builder.
+	 *
+	 * @return \Doctrine\DBAL\Query\QueryBuilder
+	 */
+	public function createQueryBuilder() {
+		return $this->connection->createQueryBuilder();
+	}
+
 }

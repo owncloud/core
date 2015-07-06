@@ -190,4 +190,13 @@ interface IDBConnection {
 	 * @since 8.0.0
 	 */
 	public function tableExists($table);
+
+	/**
+	 * Creates a new instance of a SQL query builder.
+	 *
+	 * @return \Doctrine\DBAL\Query\QueryBuilder
+	 * @since 8.2.0
+	 */
+	public function createQueryBuilder();
+
 }
