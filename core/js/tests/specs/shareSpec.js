@@ -136,15 +136,18 @@ describe('OC.Share tests', function() {
 				$('#dropdown #linkPassText').val('foo');
 				$('#dropdown #linkPassText').focusout();
 
-				expect(fakeServer.requests[1].method).toEqual('POST');
+				expect(fakeServer.requests[1].method).toEqual('PUT');
 				var body = OC.parseQueryString(fakeServer.requests[1].requestBody);
-				expect(body['shareWith']).toEqual('foo');
+				expect(body['password']).toEqual('foo');
 
 				// Set password response
 				fakeServer.requests[1].respond(
 					200,
 					{ 'Content-Type': 'application/json' },
-					JSON.stringify({data: {token: 'xyz'}, status: 'success'})
+					JSON.stringify({ocs: {
+						meta: { statuscode: 100}, 
+						data: { }
+					}})
 				);
 
 				expect($('#dropdown #linkPassText').val()).toEqual('');
@@ -176,15 +179,18 @@ describe('OC.Share tests', function() {
 				$('#dropdown #linkPassText').val('foo');
 				$('#dropdown #linkPassText').trigger(new $.Event('keyup', {keyCode: 13}));
 
-				expect(fakeServer.requests[1].method).toEqual('POST');
+				expect(fakeServer.requests[1].method).toEqual('PUT');
 				var body = OC.parseQueryString(fakeServer.requests[1].requestBody);
-				expect(body['shareWith']).toEqual('foo');
+				expect(body['password']).toEqual('foo');
 
 				// Set password response
 				fakeServer.requests[1].respond(
 					200,
 					{ 'Content-Type': 'application/json' },
-					JSON.stringify({data: {token: 'xyz'}, status: 'success'})
+					JSON.stringify({ocs: {
+						meta: { statuscode: 100},
+						data: {}
+					}})
 				);
 
 				expect($('#dropdown #linkPassText').val()).toEqual('');
@@ -238,7 +244,10 @@ describe('OC.Share tests', function() {
 				fakeServer.requests[0].respond(
 					200,
 					{ 'Content-Type': 'application/json' },
-					JSON.stringify({data: {token: 'xyz'}, status: 'success'})
+					JSON.stringify({ocs: {
+						meta: { statuscode: 100 },
+						data: {}
+					}})
 				);
 
 				// Remove link
@@ -246,7 +255,10 @@ describe('OC.Share tests', function() {
 				fakeServer.requests[1].respond(
 					200,
 					{ 'Content-Type': 'application/json' },
-					JSON.stringify({status: 'success'})
+					JSON.stringify({ocs: {
+						meta: { statuscode: 100},
+						data: {}
+					}})
 				);
 
 				/*
@@ -290,7 +302,10 @@ describe('OC.Share tests', function() {
 				fakeServer.requests[0].respond(
 					200,
 					{ 'Content-Type': 'application/json' },
-					JSON.stringify({data: {token: 'xyz'}, status: 'success'})
+					JSON.stringify({ocs: {
+						meta: { statuscode: 100 },
+						data: {}
+					}})
 				);
 				expect($('#dropdown #linkPassText').attr('placeholder')).toEqual('**********');
 
@@ -299,7 +314,10 @@ describe('OC.Share tests', function() {
 				fakeServer.requests[1].respond(
 					200,
 					{ 'Content-Type': 'application/json' },
-					JSON.stringify({status: 'success'})
+					JSON.stringify({ocs: {
+						meta: { statuscode: 100 },
+						data: {}
+					}})
 				);
 
 				// Try to share again
@@ -322,7 +340,10 @@ describe('OC.Share tests', function() {
 				fakeServer.requests[0].respond(
 					200,
 					{ 'Content-Type': 'application/json' },
-					JSON.stringify({data: {token: 'xyz'}, status: 'success'})
+					JSON.stringify({ocs: {
+						meta: { statuscode: 100 },
+						data: { id: 1}
+					}})
 				);
 
 				//Password protection should be unchecked and password field not visible
@@ -333,10 +354,14 @@ describe('OC.Share tests', function() {
 				$('#dropdown [name=showPassword]').click();
 				$('#dropdown #linkPassText').val('foo');
 				$('#dropdown #linkPassText').trigger(new $.Event('keyup', {keyCode: 13}));
+
 				fakeServer.requests[1].respond(
 					200,
 					{ 'Content-Type': 'application/json' },
-					JSON.stringify({data: {token: 'xyz2'}, status: 'success'})
+					JSON.stringify({ocs: {
+						meta: { statuscode: 100},
+						data: {}
+					}})
 				);
 
 				// Unshare
@@ -344,7 +369,10 @@ describe('OC.Share tests', function() {
 				fakeServer.requests[2].respond(
 					200,
 					{ 'Content-Type': 'application/json' },
-					JSON.stringify({status: 'success'})
+					JSON.stringify({ocs: {
+						meta: { statuscode: 100 },
+						data: {}
+					}})
 				);
 
 				// Toggle share again
@@ -352,9 +380,11 @@ describe('OC.Share tests', function() {
 				fakeServer.requests[3].respond(
 					200,
 					{ 'Content-Type': 'application/json' },
-					JSON.stringify({data: {token: 'xyz3'}, status: 'success'})
+					JSON.stringify({ocs: {
+						meta: { statuscode: 100 },
+						data: { id: 2}
+					}})
 				);
-
 
 				// Password checkbox should be unchecked
 				expect($('#dropdown [name=showPassword]').prop('checked')).toEqual(false);
@@ -374,14 +404,17 @@ describe('OC.Share tests', function() {
 				fakeServer.requests[0].respond(
 					200,
 					{ 'Content-Type': 'application/json' },
-					JSON.stringify({data: {token: 'xyz'}, status: 'success'})
+					JSON.stringify({ocs: {
+						meta: { statuscode: 100 },
+						data: { id: 1}
+					}})
 				);
 
 				//Expiration should be unchecked and expiration field not visible
 				expect($('#dropdown [name=expirationCheckbox]').prop('checked')).toEqual(false);
 				expect($('#dropdown #expirationDate').is(":visible")).toEqual(false);
 
-				// Toggle and set password
+				// Toggle and set expire date
 				$('#dropdown [name=expirationCheckbox]').click();
 				d = new Date();
 				d.setDate(d.getDate() + 1);
@@ -391,7 +424,10 @@ describe('OC.Share tests', function() {
 				fakeServer.requests[1].respond(
 					200,
 					{ 'Content-Type': 'application/json' },
-					JSON.stringify({data: {token: 'xyz2'}, status: 'success'})
+					JSON.stringify({ocs: {
+						meta: { statuscode: 100},
+						data: {}
+					}})
 				);
 
 				// Unshare
@@ -399,7 +435,10 @@ describe('OC.Share tests', function() {
 				fakeServer.requests[2].respond(
 					200,
 					{ 'Content-Type': 'application/json' },
-					JSON.stringify({status: 'success'})
+					JSON.stringify({ocs: {
+						meta: { statuscode: 100 },
+						data: { }
+					}})
 				);
 
 				// Toggle share again
@@ -407,7 +446,10 @@ describe('OC.Share tests', function() {
 				fakeServer.requests[3].respond(
 					200,
 					{ 'Content-Type': 'application/json' },
-					JSON.stringify({data: {token: 'xyz3'}, status: 'success'})
+					JSON.stringify({ocs: {
+						meta: { statuscode: 100},
+						data: { id: 2 }
+					}})
 				);
 
 				// Recheck expire visibility
@@ -876,7 +918,10 @@ describe('OC.Share tests', function() {
 				fakeServer.requests[0].respond(
 					200,
 					{ 'Content-Type': 'application/json' },
-					JSON.stringify({status: 'success'})
+					JSON.stringify({ocs: {
+						meta: { statuscode: 100 },
+						data: { id: 1 }
+					}})
 				);
 				expect(handler.calledOnce).toEqual(true);
 				var shares = handler.getCall(0).args[0].shares;
@@ -890,7 +935,10 @@ describe('OC.Share tests', function() {
 				fakeServer.requests[0].respond(
 					200,
 					{ 'Content-Type': 'application/json' },
-					JSON.stringify({status: 'success'})
+					JSON.stringify({ocs: {
+						meta: { statuscode: 100 },
+						data: {}
+					}})
 				);
 				expect(handler.calledOnce).toEqual(true);
 				var shares = handler.getCall(0).args[0].shares;
@@ -904,7 +952,10 @@ describe('OC.Share tests', function() {
 				fakeServer.requests[0].respond(
 					200,
 					{ 'Content-Type': 'application/json' },
-					JSON.stringify({status: 'success', data: { token: 'abc' }})
+					JSON.stringify({ocs: {
+						meta: { statuscode: 100 },
+						data: { id: 1 }
+					}})
 				);
 				expect(handler.calledOnce).toEqual(true);
 				var shares = handler.getCall(0).args[0].shares;
@@ -919,7 +970,10 @@ describe('OC.Share tests', function() {
 				fakeServer.requests[1].respond(
 					200,
 					{ 'Content-Type': 'application/json' },
-					JSON.stringify({status: 'success'})
+					JSON.stringify({ocs: {
+						meta: { statuscode: 100 },
+						data: {}
+					}})
 				);
 
 				expect(handler.calledOnce).toEqual(true);
