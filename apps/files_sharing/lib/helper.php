@@ -120,8 +120,6 @@ class Helper {
 	public static function authenticate($linkItem, $password = null) {
 		if ($password !== null) {
 			if ($linkItem['share_type'] == \OCP\Share::SHARE_TYPE_LINK) {
-				// Check Password
-				$newHash = '';
 				if(\OC::$server->getHasher()->verify($password, $linkItem['share_with'], $newHash)) {
 					// Save item id in session for future requests
 					\OC::$server->getSession()->set('public_link_authenticated', $linkItem['id']);

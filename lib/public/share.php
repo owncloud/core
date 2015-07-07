@@ -190,6 +190,19 @@ class Share extends \OC\Share\Constants {
 	}
 
 	/**
+	 * Retrieve the share for a given id
+	 *
+	 * @param int $id The id of the share
+	 * @return array The share
+	 * @throws \OCP\Share\NotFoundException
+	 * @since 8.2.0
+	 */
+	public static function getShareById($shareId) {
+		$connection = \OC::$server->getDatabaseConnection();
+		return \OC\Share\Share::getShareById($connection, $shareId);
+	}
+
+	/**
 	 * resolves reshares down to the last real share
 	 * @param array $linkItem
 	 * @return array file owner

@@ -1247,6 +1247,33 @@ class Share extends Constants {
 	}
 
 	/**
+	 * Return share information for a given id
+	 *
+	 * @param Connection $connection
+	 * @param int $shareId The id of the share
+	 * @return array the share info
+	 * @throws \OCP\Share\NotFoundException
+	 *
+	 */
+	public static function getShareById(Connection $connection,
+	                                    $shareId) {
+		$qb = $connection->createQueryBuilder();
+		$qb->select('*')
+		   ->from('`*PREFIX*share`')
+		   ->where('`id` = :id')
+		   ->setParameter(':id', $shareId);
+
+		$result = $qb->execute();
+		$result = $result->fetchAll();
+
+		if (count($result) !== 1) {
+			throw new \OCP\Share\NotFoundException;
+		}
+
+		return current($result);
+	}
+
+	/**
 	 * Checks whether a share has expired, calls unshareItem() if yes.
 	 * @param array $item Share data (usually database row)
 	 * @return boolean True if item was expired, false otherwise.
