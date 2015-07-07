@@ -30,9 +30,10 @@ namespace OCA\Encryption\Crypto;
 
 use OC\Encryption\Exceptions\DecryptionFailedException;
 use OCA\Encryption\Exceptions\PublicKeyMissingException;
+use OCA\Encryption\KeyManager;
+use OCA\Encryption\Recovery;
 use OCA\Encryption\Util;
 use OCP\Encryption\IEncryptionModule;
-use OCA\Encryption\KeyManager;
 use OCP\IL10N;
 use OCP\ILogger;
 
@@ -41,9 +42,7 @@ class Encryption implements IEncryptionModule {
 	const ID = 'OC_DEFAULT_MODULE';
 	const DISPLAY_NAME = 'Default encryption module';
 
-	/**
-	 * @var Crypt
-	 */
+	/** @var Crypt */
 	private $crypt;
 
 	/** @var string */
@@ -79,16 +78,22 @@ class Encryption implements IEncryptionModule {
 	/** @var IL10N */
 	private $l;
 
+	/** @var Recovery */
+	private $recovery;
+
+
 	/**
 	 *
 	 * @param Crypt $crypt
 	 * @param KeyManager $keyManager
+	 * @param Recovery $recovery
 	 * @param Util $util
 	 * @param ILogger $logger
 	 * @param IL10N $il10n
 	 */
 	public function __construct(Crypt $crypt,
 								KeyManager $keyManager,
+								Recovery $recovery,
 								Util $util,
 								ILogger $logger,
 								IL10N $il10n) {
@@ -97,7 +102,9 @@ class Encryption implements IEncryptionModule {
 		$this->util = $util;
 		$this->logger = $logger;
 		$this->l = $il10n;
+		$this->recovery = $recovery;
 	}
+
 
 	/**
 	 * @return string defining the technical unique id
@@ -138,7 +145,8 @@ class Encryption implements IEncryptionModule {
 		$this->isWriteOperation = false;
 		$this->writeCache = '';
 
-		$this->fileKey = $this->keyManager->getFileKey($this->path, $this->user);
+		$this->fileKey = $this->keyManager->getFileKey($this->path,
+			$this->user);
 
 		if (
 			$mode === 'w'
@@ -181,7 +189,8 @@ class Encryption implements IEncryptionModule {
 		$result = '';
 		if ($this->isWriteOperation) {
 			if (!empty($this->writeCache)) {
-				$result = $this->crypt->symmetricEncryptFileContent($this->writeCache, $this->fileKey);
+				$result = $this->crypt->symmetricEncryptFileContent($this->writeCache,
+					$this->fileKey);
 				$this->writeCache = '';
 			}
 			$publicKeys = array();
@@ -200,9 +209,12 @@ class Encryption implements IEncryptionModule {
 				}
 			}
 
-			$publicKeys = $this->keyManager->addSystemKeys($this->accessList, $publicKeys, $this->user);
+			$publicKeys = $this->keyManager->addSystemKeys($this->accessList,
+				$publicKeys,
+				$this->user);
 
-			$encryptedKeyfiles = $this->crypt->multiKeyEncrypt($this->fileKey, $publicKeys);
+			$encryptedKeyfiles = $this->crypt->multiKeyEncrypt($this->fileKey,
+				$publicKeys);
 			$this->keyManager->setAllFileKeys($this->path, $encryptedKeyfiles);
 		}
 		return $result;
@@ -259,7 +271,8 @@ class Encryption implements IEncryptionModule {
 				// Read the chunk from the start of $data
 				$chunk = substr($data, 0, 6126);
 
-				$encrypted .= $this->crypt->symmetricEncryptFileContent($chunk, $this->fileKey);
+				$encrypted .= $this->crypt->symmetricEncryptFileContent($chunk,
+					$this->fileKey);
 
 				// Remove the chunk we just processed from
 				// $data, leaving only unprocessed data in $data
@@ -291,7 +304,9 @@ class Encryption implements IEncryptionModule {
 
 		$result = '';
 		if (!empty($data)) {
-			$result = $this->crypt->symmetricDecryptFileContent($data, $this->fileKey, $this->cipher);
+			$result = $this->crypt->symmetricDecryptFileContent($data,
+				$this->fileKey,
+				$this->cipher);
 		}
 		return $result;
 	}
@@ -314,9 +329,12 @@ class Encryption implements IEncryptionModule {
 				$publicKeys[$user] = $this->keyManager->getPublicKey($user);
 			}
 
-			$publicKeys = $this->keyManager->addSystemKeys($accessList, $publicKeys, $uid);
+			$publicKeys = $this->keyManager->addSystemKeys($accessList,
+				$publicKeys,
+				$uid);
 
-			$encryptedFileKey = $this->crypt->multiKeyEncrypt($fileKey, $publicKeys);
+			$encryptedFileKey = $this->crypt->multiKeyEncrypt($fileKey,
+				$publicKeys);
 
 			$this->keyManager->deleteAllFileKeys($path);
 
@@ -405,7 +423,8 @@ class Encryption implements IEncryptionModule {
 		$realPath = $path;
 		$parts = explode('/', $path);
 		if ($parts[2] === 'files_versions') {
-			$realPath = '/' . $parts[1] . '/files/' . implode('/', array_slice($parts, 3));
+			$realPath = '/' . $parts[1] . '/files/' . implode('/',
+					array_slice($parts, 3));
 			$length = strrpos($realPath, '.');
 			$realPath = substr($realPath, 0, $length);
 		}
@@ -413,4 +432,26 @@ class Encryption implements IEncryptionModule {
 		return $realPath;
 	}
 
+	/**
+	 * @param $recoveryPassword
+	 * @param $user
+	 * @return array
+	 */
+	public function checkRecoveryPassword($recoveryPassword, $user) {
+
+		// Set default states
+		$validRecoveryPassword = false;
+		$recoveryEnabledForUser = false;
+
+		// Check if admin recovery keys are enabled
+		if ($this->recovery->isRecoveryKeyEnabled()) {
+			$validRecoveryPassword = $this->keyManager->checkRecoveryPassword($recoveryPassword);
+			$recoveryEnabledForUser = $this->recovery->isRecoveryEnabledForUser($user);
+		}
+
+		return [
+			'validRecoveryPassword' => $validRecoveryPassword,
+			'recoveryEnabledForUser' => $recoveryEnabledForUser
+		];
+	}
 }
