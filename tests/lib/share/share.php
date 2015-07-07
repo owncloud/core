@@ -1582,7 +1582,197 @@ class Test_Share extends \Test\TestCase {
 		OCP\Share::getShareById(-1);
 	}
 
+	public function testVerify() {
+		OC_User::setUserId($this->user1);
+		OCP\Share::shareItem(
+			'test',
+			'test.txt',
+			OCP\Share::SHARE_TYPE_LINK,
+			'foo',
+			\OCP\Constants::PERMISSION_READ
+		);
 
+		$res = OCP\Share::getItemShared('test', 'test.txt');
+		$this->assertInternalType('array', $res);
+		$this->assertCount(1, $res);
+
+		$id = array_keys($res)[0];
+		$this->assertTrue(OCP\Share::verify($id, 'foo'));
+
+		OCP\Share::unshare(
+			'test',
+			'test.txt',
+			OCP\Share::SHARE_TYPE_LINK,
+			null
+		);
+	}
+
+	public function testVerifySHA1Hash() {
+		OC_User::setUserId($this->user1);
+		OCP\Share::shareItem(
+			'test',
+			'test.txt',
+			OCP\Share::SHARE_TYPE_LINK,
+			'foo',
+			\OCP\Constants::PERMISSION_READ
+		);
+
+		$res = OCP\Share::getItemShared('test', 'test.txt');
+		$this->assertInternalType('array', $res);
+		$this->assertCount(1, $res);
+
+		$id = array_keys($res)[0];
+
+		/* Reset to old sha1 password */
+		$password = sha1('foo');
+		$qb = \OC::$server->getDatabaseConnection()->createQueryBuilder();
+		$qb->update('`*PREFIX*share`')
+		   ->set('`share_with`', ':pass')
+		   ->where('`id` = :id')
+		   ->setParameter(':id', $id)
+		   ->setParameter(':pass', $password);
+		$qb->execute();
+
+		//First time hash is updated
+		$this->assertTrue(OCP\Share::verify($id, 'foo'));
+
+		$qb = \OC::$server->getDatabaseConnection()->createQueryBuilder();
+		$qb->select('`share_with`')
+		   ->from('`*PREFIX*share`')
+		   ->where('`id` = :id')
+		   ->setParameter(':id', $id);
+		$res = $qb->execute()->fetch();
+		$this->assertNotEquals($password, $res['share_with']);
+
+		//Second time new Hash
+		$this->assertTrue(OCP\Share::verify($id, 'foo'));
+
+		OCP\Share::unshare(
+			'test',
+			'test.txt',
+			OCP\Share::SHARE_TYPE_LINK,
+			null
+		);
+	}
+
+	public function testVerifyOldHash() {
+		OC_User::setUserId($this->user1);
+		OCP\Share::shareItem(
+			'test',
+			'test.txt',
+			OCP\Share::SHARE_TYPE_LINK,
+			'foo',
+			\OCP\Constants::PERMISSION_READ
+		);
+
+		$res = OCP\Share::getItemShared('test', 'test.txt');
+		$this->assertInternalType('array', $res);
+		$this->assertCount(1, $res);
+
+		$id = array_keys($res)[0];
+
+		/* Reset to old password */
+		$salt = \OC::$server->getConfig()->getSystemValue('passwordsalt', '');
+		$password = password_hash('foo'.$salt, PASSWORD_DEFAULT);
+
+		$qb = \OC::$server->getDatabaseConnection()->createQueryBuilder();
+		$qb->update('`*PREFIX*share`')
+		   ->set('`share_with`', ':pass')
+		   ->where('`id` = :id')
+		   ->setParameter(':id', $id)
+		   ->setParameter(':pass', $password);
+		$qb->execute();
+
+		//First time hash is updated
+		$this->assertTrue(OCP\Share::verify($id, 'foo'));
+
+		$qb = \OC::$server->getDatabaseConnection()->createQueryBuilder();
+		$qb->select('`share_with`')
+		   ->from('`*PREFIX*share`')
+		   ->where('`id` = :id')
+		   ->setParameter(':id', $id);
+		$res = $qb->execute()->fetch();
+		$this->assertNotEquals($password, $res['share_with']);
+
+		//Second time new Hash
+		$this->assertTrue(OCP\Share::verify($id, 'foo'));
+
+		OCP\Share::unshare(
+			'test',
+			'test.txt',
+			OCP\Share::SHARE_TYPE_LINK,
+			null
+		);
+	}
+
+	/**
+      * @expectedException \OCP\Share\NotFoundException
+      */
+	public function testVerifyShareNotFound() {
+		OCP\Share::verify(-1, 'foo');
+	}
+
+	public function testVerifyNoLinkShare() {
+		OC_User::setUserId($this->user1);
+		OCP\Share::shareItem(
+			'test',
+			'test.txt',
+			OCP\Share::SHARE_TYPE_USER,
+			$this->user2,
+			\OCP\Constants::PERMISSION_READ
+		);
+
+		$res = OCP\Share::getItemShared('test', 'test.txt');
+		$this->assertInternalType('array', $res);
+		$this->assertCount(1, $res);
+
+		$id = array_keys($res)[0];
+
+		try {
+			OCP\Share::verify($id, 'foo');
+			$this->fail('Cannot verify pasword for non link shares');
+		} catch (\OCP\Share\NoLinkShareException $exception) {
+
+		}
+
+		OCP\Share::unshare(
+			'test',
+			'test.txt',
+			OCP\Share::SHARE_TYPE_USER,
+			$this->user2
+		);
+	}
+
+	public function testVerifyNotPasswordProtected() {
+		OC_User::setUserId($this->user1);
+		OCP\Share::shareItem(
+			'test',
+			'test.txt',
+			OCP\Share::SHARE_TYPE_LINK,
+			null,
+			\OCP\Constants::PERMISSION_READ
+		);
+
+		$res = OCP\Share::getItemShared('test', 'test.txt');
+		$this->assertInternalType('array', $res);
+		$this->assertCount(1, $res);
+
+		$id = array_keys($res)[0];
+
+		try {
+			OCP\Share::verify($id, 'foo');
+			$this->fail('Cannot verify pasword if no password is set');
+		} catch (\OCP\Share\NotPasswordProtectedException $exception) {
+
+		}
+
+		OCP\Share::unshare(
+			'test',
+			'test.txt',
+			OCP\Share::SHARE_TYPE_LINK,
+			null
+		);
+	}
 }
 
 class DummyShareClass extends \OC\Share\Share {

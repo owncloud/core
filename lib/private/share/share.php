@@ -1274,6 +1274,49 @@ class Share extends Constants {
 	}
 
 	/**
+	 * Verify the password of a share
+	 * And upgrade the hash if required
+	 *
+	 * @param int $shareId The id of the share
+	 * @param string $password The password to verify
+	 * @return bool If the password is correct
+	 * @throws \OCP\Share\NotFoundException
+	 * @throws \OCP\Share\NotPasswordProtectedException
+	 * @throws \OCP\Share\NoLinkShareException
+	 */
+	public static function verify($shareId, $password) {
+		//Get share
+		$share = \OCP\Share::getShareById($shareId);
+
+		if ((int)$share['share_type'] !== \OCP\Share::SHARE_TYPE_LINK) {
+			throw new \OCP\Share\NoLinkShareException;
+		}
+
+		if (empty($share['share_with'])) {
+			throw new \OCP\Share\NotPAsswordProtectedException;
+		}
+
+		//Verify password
+		$newHash = '';
+		if (!\OC::$server->getHasher()->verify($password, $share['share_with'], $newHash)) {
+			return false;
+		}
+
+		//If we need a newhash update the password in the database
+		if (!empty($newHash)) {
+			$qb = \OC::$server->getDatabaseConnection()->createQueryBuilder();
+			$qb->update('`*PREFIX*share`')
+			   ->set('`share_with`', ':pass')
+			   ->where('`id` = :id')
+			   ->setParameter(':id', $shareId)
+			   ->setParameter(':pass', $newHash);
+			$qb->execute();
+		}
+
+		return true;
+	}
+
+	/**
 	 * Checks whether a share has expired, calls unshareItem() if yes.
 	 * @param array $item Share data (usually database row)
 	 * @return boolean True if item was expired, false otherwise.

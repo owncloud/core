@@ -370,6 +370,22 @@ class Share extends \OC\Share\Constants {
 		return \OC\Share\Share::setPassword($userSession, $connection, $config, $shareId, $password);
 	}
 
+	/**
+	 * Verify the password of a share
+	 * Update the password in the database if required
+	 *
+	 * @param int $shareId The id of the share
+	 * @param string $password The password to verify
+	 * @return bool If the password is correct
+	 * @throws \OCP\Share\NotFoundException
+	 * @throws \OCP\Share\NotPasswordProtectedException
+	 * @throws \OCP\Share\NoPublicShareException
+	 * @since 8.2.0
+	 */
+	public static function verify($shareId, $password) {
+		return \OC\Share\Share::verify($shareId, $password);
+	}
+
 
 	/**
 	 * Get the backend class for the specified item type
