@@ -105,6 +105,12 @@ class ConvertType extends Command {
 				InputOption::VALUE_NONE,
 				'whether to create schema for all apps instead of only installed apps'
 			)
+			->addOption(
+				'chunk-size',
+				null,
+				InputOption::VALUE_REQUIRED,
+				'the maximum number of database rows to handle in a single query, bigger tables will be handled in chunks of this size. The default chunk-size is 100000, lower this if the process runs out of memory during conversion.'
+			)
 		;
 	}
 
@@ -251,27 +257,36 @@ class ConvertType extends Command {
 	}
 
 	protected function copyTable(Connection $fromDB, Connection $toDB, $table, InputInterface $input, OutputInterface $output) {
-		/** @var $progress \Symfony\Component\Console\Helper\ProgressHelper */
-		$progress = $this->getHelperSet()->get('progress');
-		$query = 'SELECT COUNT(*) FROM '.$table;
-		$count = $fromDB->fetchColumn($query);
-		$query = 'SELECT * FROM '.$table;
-		$statement = $fromDB->executeQuery($query);
-		$progress->start($output, $count);
-		$progress->setRedrawFrequency($count > 100 ? 5 : 1);
-		while($row = $statement->fetch()) {
-			$progress->advance();
-			if ($input->getArgument('type') === 'oci') {
-				$data = $row;
-			} else {
-				$data = array();
-				foreach ($row as $columnName => $value) {
-					$data[$toDB->quoteIdentifier($columnName)] = $value;
-				}
-			}
-			$toDB->insert($table, $data);
-		}
-		$progress->finish();
+                /** @var $progress \Symfony\Component\Console\Helper\ProgressHelper */
+                $chunk_size = $input->getOption('chunk-size') ? $input->getOption('chunk-size') : 100000;
+                $progress = $this->getHelperSet()->get('progress');
+                $query = 'SELECT COUNT(*) FROM '.$table;
+                $count = $fromDB->fetchColumn($query);
+                $chunk_count = ceil($count/$chunk_size);
+                if ($chunk_count > 1) {
+                        $output->writeln('chunked query, ' . $chunk_count . ' chunks');
+                }
+                $progress->start($output, $count);
+                $redraw = $count > $chunk_size ? 100 : ($count > 100 ? 5 : 1);
+                $progress->setRedrawFrequency($redraw);
+                for ($chunk = 0; $chunk < $chunk_count; $chunk++) {
+                        $offset = $chunk * $chunk_size;
+                        $query = 'SELECT * FROM '.$table.' LIMIT '.$chunk_size.' OFFSET '.$offset;
+                        $statement = $fromDB->executeQuery($query);
+                        while($row = $statement->fetch()) {
+                                $progress->advance();
+                                if ($input->getArgument('type') === 'oci') {
+                                        $data = $row;
+                                } else {
+                                        $data = array();
+                                        foreach ($row as $columnName => $value) {
+                                                $data[$toDB->quoteIdentifier($columnName)] = $value;
+                                        }
+                                }
+                                $toDB->insert($table, $data);
+                        }
+                }
+                $progress->finish();
 	}
 
 	protected function convertDB(Connection $fromDB, Connection $toDB, array $tables, InputInterface $input, OutputInterface $output) {
