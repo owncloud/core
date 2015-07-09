@@ -642,6 +642,12 @@ class Encryption extends Wrapper {
 		$rawHeader = $this->getHeader($path);
 		$header = $this->util->readHeader($rawHeader);
 		$encryptionModuleId = $this->util->getEncryptionModuleId($header);
+		$info = $this->getCache()->get($path);
+		if (empty($encryptionModuleId)
+			&& isset($info['encrypted']) && $info['encrypted'] === true
+		) {
+			$encryptionModuleId = 'OC_DEFAULT_MODULE';
+		}
 		if (!empty($encryptionModuleId)) {
 			try {
 				$encryptionModule = $this->encryptionManager->getEncryptionModule($encryptionModuleId);
