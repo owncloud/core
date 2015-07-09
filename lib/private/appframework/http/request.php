@@ -523,20 +523,30 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	public function getRequestUri() {
 		$uri = isset($this->server['REQUEST_URI']) ? $this->server['REQUEST_URI'] : '';
 
-		$script_name = $_SERVER['SCRIPT_NAME'];
-		if (array_key_exists('PATH_INFO', $_SERVER) === true) {
-			$pos = strpos($_SERVER['SCRIPT_NAME'], rawurldecode($_SERVER['PATH_INFO']));
-			if ($pos === false) {
-			} else {
-				$script_name = substr($_SERVER['SCRIPT_NAME'], 0, $pos);
-			}
-		}
-
 		if($this->config->getSystemValue('overwritewebroot') !== '' && $this->isOverwriteCondition()) {
-			$uri = $this->getScriptName() . substr($uri, strlen($script_name));
+			$uri = $this->getScriptName() . substr($uri, strlen(getRawScriptName()));
 		}
 		return $uri;
 	}
+
+        /**
+         * Returns the actual scriptname. In some version of php there is a bug
+         * which causes PATH_INFO to also be part of SCRIPT_NAME.
+         * @return string
+         */
+        private function getRawScriptName() {
+            $script_name = $_SERVER['SCRIPT_NAME'];
+
+            if (array_key_exists('PATH_INFO', $_SERVER) == true) {
+                $pos = strpos($_SERVER['SCRIPT_NAME'], rawurldecode($_SERVER['PATH_INFO']));
+
+                if ($pos !== false) {
+                    $script_name = substr($_SERVER['SCRIPT_NAME'], 0, $pos);
+                }
+            }
+
+            return $script_name;
+        }
 
 	/**
 	 * Get raw PathInfo from request (not urldecoded)
@@ -557,16 +567,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 			$requestUri = substr($requestUri, 0, $pos);
 		}
 
-		$scriptName = $this->server['SCRIPT_NAME'];
-
-		if (array_key_exists('PATH_INFO', $_SERVER) === true) {
-			$pos = strpos($_SERVER['SCRIPT_NAME'], rawurldecode($_SERVER['PATH_INFO']));
-			if ($pos === false) {
-			} else {
-				$scriptName = substr($_SERVER['SCRIPT_NAME'], 0, $pos);
-			}
-		}
-
+		$scriptName = getRawScriptName();
 		$pathInfo = $requestUri;
 
 		// strip off the script name's dir and file name
@@ -622,14 +623,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 * @return string the script name
 	 */
 	public function getScriptName() {
-		$name = $this->server['SCRIPT_NAME'];
-		if (array_key_exists('PATH_INFO', $_SERVER) === true) {
-			$pos = strpos($_SERVER['SCRIPT_NAME'], rawurldecode($_SERVER['PATH_INFO']));
-			if ($pos === false) {
-			} else {
-				$name = substr($_SERVER['SCRIPT_NAME'], 0, $pos);
-			}
-		}
+		$name = getRawScriptName();
 
 		$overwriteWebRoot =  $this->config->getSystemValue('overwritewebroot');
 		if ($overwriteWebRoot !== '' && $this->isOverwriteCondition()) {
