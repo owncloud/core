@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<info>
+	<id>dav</id>
+	<name>WebDAV NG</name>
+	<description>Next generation WebDAV</description>
+	<licence>AGPL</licence>
+	<author>Thomas Müller, Klaas Freitag</author>
+	<requiremin>8.1</requiremin>
+	<shipped>true</shipped>
+	<standalone/>
+	<default_enable/>
+	<types>
+		<filesystem/>
+	</types>
+	<remote>
+		<dav>appinfo/remote.php</dav>
+	</remote>
+</info>
