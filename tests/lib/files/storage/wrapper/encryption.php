@@ -432,4 +432,53 @@ class Encryption extends \Test\Files\Storage\Storage {
 			array('/foo/bar.txt.ocTransferId7437493.part', true, '/foo/bar.txt'),
 		);
 	}
+
+	public function testGetEncryptionModule() {
+
+		$sourceStorage = $this->getMockBuilder('\OC\Files\Storage\Storage')
+			->disableOriginalConstructor()->getMock();
+
+		$util = $this->getMockBuilder('\OC\Encryption\Util')
+			->setConstructorArgs([new View(), new \OC\User\Manager(), $this->groupManager, $this->config])
+			->getMock();
+
+		$encryptionManager = $this->getMockBuilder('\OC\Encryption\Manager')
+			->disableOriginalConstructor()
+			->getMock();
+		$encryptionManager->expects($this->once())
+			->method('getEncryptionModule')->with('OC_DEFAULT_MODULE')
+			->willReturn('OC_DEFAULT_MODULE');
+
+		$cache = $this->getMockBuilder('\OC\Files\Cache\Cache')
+			->disableOriginalConstructor()->getMock();
+		$cache->expects($this->any())
+			->method('get')
+			->willReturnCallback(function($path) {return ['encrypted' => true, 'path' => $path];});
+
+		$instance = $this->getMockBuilder('\OC\Files\Storage\Wrapper\Encryption')
+			->setConstructorArgs(
+				[
+					[
+						'storage' => $sourceStorage,
+						'root' => 'foo',
+						'mountPoint' => '/',
+						'mount' => $this->mount
+					],
+					$encryptionManager, $util, $this->logger, $this->file, null, $this->keyStore, $this->update, $this->mountManager
+				]
+			)
+			->setMethods(['getHeader', 'getCache'])
+			->getMock();
+
+		$instance->expects($this->any())->method('getCache')->willReturn($cache);
+		$instance->expects($this->any())->method('getHeader')->willReturn('');
+
+		$util->expects($this->once())->method('getEncryptionModuleId')
+			->willReturn('');
+
+		$this->assertSame('OC_DEFAULT_MODULE',
+			$this->invokePrivate($instance, 'getEncryptionModule', ['foo.txt'])
+		);
+
+	}
 }
