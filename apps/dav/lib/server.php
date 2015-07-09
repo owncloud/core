@@ -6,6 +6,9 @@ use OC\Connector\Sabre\Auth;
 use OC\Connector\Sabre\BlockLegacyClientPlugin;
 use OCP\IRequest;
 use Sabre\DAV\Auth\Plugin;
+use Sabre\DAV\Tree;
+use Sabre\HTTP\URLUtil;
+use Sabre\HTTP\Util;
 
 class Server {
 

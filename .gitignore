@@ -9,8 +9,8 @@
 
 # ignore all apps except core ones
 /apps*/*
+!/apps/dav
 !/apps/files
-!/apps/files_encryption
 !/apps/encryption
 !/apps/encryption_dummy
 !/apps/files_external
@@ -20,13 +20,6 @@
 !/apps/user_ldap
 !/apps/user_webdavauth
 !apps/provisioning_api
-/apps/files_external/3rdparty/irodsphp/PHPUnitTest
-/apps/files_external/3rdparty/irodsphp/web
-/apps/files_external/3rdparty/irodsphp/prods/test
-/apps/files_external/3rdparty/irodsphp/prods/tutorials
-/apps/files_external/3rdparty/irodsphp/prods/test*
-/apps/files_external/tests/config.*.php
-
 
 
 # ignore themes except the example and the README
