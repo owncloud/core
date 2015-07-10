@@ -1,0 +1,15 @@
+{
+  "name": "js-webdav-client",
+  "homepage": "https://github.com/sara-nl/js-webdav-client",
+  "version": "1.0.1",
+  "_release": "1.0.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.0.1",
+    "commit": "2cf065df1c2e58256cc46cf48ed6b517dea9fa62"
+  },
+  "_source": "https://github.com/sara-nl/js-webdav-client.git",
+  "_target": "~1.0.1",
+  "_originalSource": "https://github.com/sara-nl/js-webdav-client.git",
+  "_direct": true
+}
