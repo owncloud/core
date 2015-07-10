@@ -107,8 +107,8 @@ class Setup {
 				'name' => 'SQLite'
 			),
 			'mysql' => array(
-				'type' => 'function',
-				'call' => 'mysql_connect',
+				'type' => 'class',
+				'call' => 'MySQLi',
 				'name' => 'MySQL/MariaDB'
 			),
 			'pgsql' => array(
