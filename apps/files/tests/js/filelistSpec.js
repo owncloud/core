@@ -20,8 +20,11 @@
 */
 
 describe('OCA.Files.FileList tests', function() {
-	var testFiles, alertStub, notificationStub, fileList, pageSizeStub;
+	var FileInfo = OC.Files.FileInfo;
+	var testFiles, testRoot, notificationStub, fileList, pageSizeStub;
 	var bcResizeStub;
+	var filesClient;
+	var redirectStub;
 
 	/**
 	 * Generate test file data
@@ -38,21 +41,29 @@ describe('OCA.Files.FileList tests', function() {
 				name += '0';
 			}
 			name += i + '.txt';
-			files.push({
+			files.push(new FileInfo({
 				id: i,
 				type: 'file',
 				name: name,
-				mimetype: 'text/plain',
+				mimeType: 'text/plain',
 				size: i * 2,
 				etag: 'abc'
-			});
+			}));
 		}
 		return files;
 	}
 
 	beforeEach(function() {
-		alertStub = sinon.stub(OC.dialogs, 'alert');
-		notificationStub = sinon.stub(OC.Notification, 'show');
+		filesClient = new OC.Files.Client({
+			host: 'localhost',
+			port: 80,
+			// FIXME: uncomment after fixing the test OC.webroot
+			//root: OC.webroot + '/remote.php/webdav',
+			root: '/remote.php/webdav',
+			useHTTPS: false
+		});
+		redirectStub = sinon.stub(OC, 'redirect');
+		notificationStub = sinon.stub(OC.Notification, 'showTemporary');
 		// prevent resize algo to mess up breadcrumb order while
 		// testing
 		bcResizeStub = sinon.stub(OCA.Files.BreadCrumb.prototype, '_resize');
@@ -93,50 +104,62 @@ describe('OCA.Files.FileList tests', function() {
 			'</div>'
 		);
 
-		testFiles = [{
+		testRoot = new FileInfo({
+			// root entry
+			id: 99,
+			type: 'dir',
+			name: '/subdir',
+			mimeType: 'httpd/unix-directory',
+			size: 1200000,
+			etag: 'a0b0c0d0',
+			permissions: OC.PERMISSION_ALL
+		});
+		testFiles = [new FileInfo({
 			id: 1,
 			type: 'file',
 			name: 'One.txt',
-			mimetype: 'text/plain',
+			mimeType: 'text/plain',
 			size: 12,
 			etag: 'abc',
 			permissions: OC.PERMISSION_ALL
-		}, {
+		}), new FileInfo({
 			id: 2,
 			type: 'file',
 			name: 'Two.jpg',
-			mimetype: 'image/jpeg',
+			mimeType: 'image/jpeg',
 			size: 12049,
 			etag: 'def',
 			permissions: OC.PERMISSION_ALL
-		}, {
+		}), new FileInfo({
 			id: 3,
 			type: 'file',
 			name: 'Three.pdf',
-			mimetype: 'application/pdf',
+			mimeType: 'application/pdf',
 			size: 58009,
 			etag: '123',
 			permissions: OC.PERMISSION_ALL
-		}, {
+		}), new FileInfo({
 			id: 4,
 			type: 'dir',
 			name: 'somedir',
-			mimetype: 'httpd/unix-directory',
+			mimeType: 'httpd/unix-directory',
 			size: 250,
 			etag: '456',
 			permissions: OC.PERMISSION_ALL
-		}];
+		})];
 		pageSizeStub = sinon.stub(OCA.Files.FileList.prototype, 'pageSize').returns(20);
-		fileList = new OCA.Files.FileList($('#app-content-files'));
+		fileList = new OCA.Files.FileList($('#app-content-files'), {
+			filesClient: filesClient
+		});
 	});
 	afterEach(function() {
 		testFiles = undefined;
 		fileList = undefined;
 
 		notificationStub.restore();
-		alertStub.restore();
 		bcResizeStub.restore();
 		pageSizeStub.restore();
+		redirectStub.restore();
 	});
 	describe('Getters', function() {
 		it('Returns the current directory', function() {
@@ -159,15 +182,14 @@ describe('OCA.Files.FileList tests', function() {
 			clock.restore();
 		});
 		it('generates file element with correct attributes when calling add() with file data', function() {
-			var fileData = {
+			var fileData = new FileInfo({
 				id: 18,
-				type: 'file',
 				name: 'testName.txt',
-				mimetype: 'text/plain',
-				size: '1234',
+				mimeType: 'text/plain',
+				size: 1234,
 				etag: 'a01234c',
-				mtime: '123456'
-			};
+				mtime: 123456
+			});
 			var $tr = fileList.add(fileData);
 
 			expect($tr).toBeDefined();
@@ -181,7 +203,7 @@ describe('OCA.Files.FileList tests', function() {
 			expect($tr.attr('data-mime')).toEqual('text/plain');
 			expect($tr.attr('data-mtime')).toEqual('123456');
 			expect($tr.find('a.name').attr('href'))
-				.toEqual(OC.webroot + '/index.php/apps/files/ajax/download.php?dir=%2Fsubdir&files=testName.txt');
+				.toEqual(OC.webroot + '/remote.php/webdav/subdir/testName.txt');
 			expect($tr.find('.nametext').text().trim()).toEqual('testName.txt');
 
 			expect($tr.find('.filesize').text()).toEqual('1 kB');
@@ -189,15 +211,14 @@ describe('OCA.Files.FileList tests', function() {
 			expect(fileList.findFileEl('testName.txt')[0]).toEqual($tr[0]);
 		});
 		it('generates dir element with correct attributes when calling add() with dir data', function() {
-			var fileData = {
+			var fileData = new FileInfo({
 				id: 19,
-				type: 'dir',
 				name: 'testFolder',
-				mimetype: 'httpd/unix-directory',
-				size: '1234',
+				mimeType: 'httpd/unix-directory',
+				size: 1234,
 				etag: 'a01234c',
-				mtime: '123456'
-			};
+				mtime: 123456
+			});
 			var $tr = fileList.add(fileData);
 
 			expect($tr).toBeDefined();
@@ -290,7 +311,6 @@ describe('OCA.Files.FileList tests', function() {
 			expect($tr.index()).toEqual(4);
 		});
 		it('inserts files in a sorted manner when insert option is enabled', function() {
-			var $tr;
 			for (var i = 0; i < testFiles.length; i++) {
 				fileList.add(testFiles[i]);
 			}
@@ -416,28 +436,31 @@ describe('OCA.Files.FileList tests', function() {
 		});
 	});
 	describe('Deleting files', function() {
+		var deferredDelete;
+		var deleteStub;
+
+		beforeEach(function() {
+			deferredDelete = $.Deferred();
+			deleteStub = sinon.stub(filesClient, 'remove').returns(deferredDelete.promise());
+		});
+		afterEach(function() {
+			deleteStub.restore();
+		});
+
 		function doDelete() {
-			var request, query;
 			// note: normally called from FileActions
 			fileList.do_delete(['One.txt', 'Two.jpg']);
 
-			expect(fakeServer.requests.length).toEqual(1);
-			request = fakeServer.requests[0];
-			expect(request.url).toEqual(OC.webroot + '/index.php/apps/files/ajax/delete.php');
-
-			query = fakeServer.requests[0].requestBody;
-			expect(OC.parseQueryString(query)).toEqual({'dir': '/subdir', files: '["One.txt","Two.jpg"]'});
+			expect(deleteStub.calledTwice).toEqual(true);
+			expect(deleteStub.getCall(0).args[0]).toEqual('/subdir/One.txt');
+			expect(deleteStub.getCall(1).args[0]).toEqual('/subdir/Two.jpg');
 		}
 		it('calls delete.php, removes the deleted entries and updates summary', function() {
 			var $summary;
 			fileList.setFiles(testFiles);
 			doDelete();
 
-			fakeServer.requests[0].respond(
-				200,
-				{ 'Content-Type': 'application/json' },
-				JSON.stringify({status: 'success'})
-			);
+			deferredDelete.resolve(200);
 
 			expect(fileList.findFileEl('One.txt').length).toEqual(0);
 			expect(fileList.findFileEl('Two.jpg').length).toEqual(0);
@@ -475,11 +498,7 @@ describe('OCA.Files.FileList tests', function() {
 			fileList.setFiles([testFiles[0], testFiles[1]]);
 			doDelete();
 
-			fakeServer.requests[0].respond(
-				200,
-				{ 'Content-Type': 'application/json' },
-				JSON.stringify({status: 'success'})
-			);
+			deferredDelete.resolve(200);
 
 			expect(fileList.$fileList.find('tr').length).toEqual(0);
 
@@ -494,21 +513,41 @@ describe('OCA.Files.FileList tests', function() {
 			fileList.setFiles(testFiles);
 			doDelete();
 
-			fakeServer.requests[0].respond(
-				200,
-				{ 'Content-Type': 'application/json' },
-				JSON.stringify({status: 'error', data: {message: 'WOOT'}})
-			);
+			deferredDelete.reject(403);
 
 			// files are still in the list
 			expect(fileList.findFileEl('One.txt').length).toEqual(1);
 			expect(fileList.findFileEl('Two.jpg').length).toEqual(1);
 			expect(fileList.$fileList.find('tr').length).toEqual(4);
 
-			expect(notificationStub.calledOnce).toEqual(true);
+			expect(notificationStub.calledTwice).toEqual(true);
+		});
+		it('remove file from list if delete call returned 404 not found', function() {
+			fileList.setFiles(testFiles);
+			doDelete();
+
+			deferredDelete.reject(404);
+
+			// files are still in the list
+			expect(fileList.findFileEl('One.txt').length).toEqual(0);
+			expect(fileList.findFileEl('Two.jpg').length).toEqual(0);
+			expect(fileList.$fileList.find('tr').length).toEqual(2);
+
+			expect(notificationStub.notCalled).toEqual(true);
 		});
 	});
 	describe('Renaming files', function() {
+		var deferredRename;
+		var renameStub;
+
+		beforeEach(function() {
+			deferredRename = $.Deferred();
+			renameStub = sinon.stub(filesClient, 'move').returns(deferredRename.promise());
+		});
+		afterEach(function() {
+			renameStub.restore();
+		});
+
 		function doCancelRename() {
 			var $input;
 			for (var i = 0; i < testFiles.length; i++) {
@@ -523,10 +562,10 @@ describe('OCA.Files.FileList tests', function() {
 			// trigger submit because triggering blur doesn't work in all browsers
 			$input.closest('form').trigger('submit');
 
-			expect(fakeServer.requests.length).toEqual(0);
+			expect(renameStub.notCalled).toEqual(true);
 		}
 		function doRename() {
-			var $input, request;
+			var $input;
 
 			for (var i = 0; i < testFiles.length; i++) {
 				var file = testFiles[i];
@@ -541,83 +580,61 @@ describe('OCA.Files.FileList tests', function() {
 			// trigger submit because triggering blur doesn't work in all browsers
 			$input.closest('form').trigger('submit');
 
-			expect(fakeServer.requests.length).toEqual(1);
-			request = fakeServer.requests[0];
-			expect(request.url.substr(0, request.url.indexOf('?'))).toEqual(OC.webroot + '/index.php/apps/files/ajax/rename.php');
-			expect(OC.parseQueryString(request.url)).toEqual({'dir': '/some/subdir', newname: 'Tu_after_three.txt', file: 'One.txt'});
+			expect(renameStub.calledOnce).toEqual(true);
+			expect(renameStub.getCall(0).args[0]).toEqual('/some/subdir/One.txt');
+			expect(renameStub.getCall(0).args[1]).toEqual('/some/subdir/Tu_after_three.txt');
 		}
 		it('Inserts renamed file entry at correct position if rename ajax call suceeded', function() {
 			doRename();
 
-			fakeServer.requests[0].respond(200, {'Content-Type': 'application/json'}, JSON.stringify({
-				status: 'success',
-				data: {
-					name: 'Tu_after_three.txt',
-					type: 'file'
-				}
-			}));
+			deferredRename.resolve(201);
 
 			// element stays renamed
 			expect(fileList.findFileEl('One.txt').length).toEqual(0);
 			expect(fileList.findFileEl('Tu_after_three.txt').length).toEqual(1);
-			expect(fileList.findFileEl('Tu_after_three.txt').index()).toEqual(2); // after Two.txt
+			expect(fileList.findFileEl('Tu_after_three.txt').index()).toEqual(2); // after Two.jpg
 
-			expect(alertStub.notCalled).toEqual(true);
+			expect(notificationStub.notCalled).toEqual(true);
 		});
 		it('Reverts file entry if rename ajax call failed', function() {
 			doRename();
 
-			fakeServer.requests[0].respond(200, {'Content-Type': 'application/json'}, JSON.stringify({
-				status: 'error',
-				data: {
-					message: 'Something went wrong'
-				}
-			}));
+			deferredRename.reject(403);
 
 			// element was reverted
 			expect(fileList.findFileEl('One.txt').length).toEqual(1);
 			expect(fileList.findFileEl('One.txt').index()).toEqual(1); // after somedir
 			expect(fileList.findFileEl('Tu_after_three.txt').length).toEqual(0);
 
-			expect(alertStub.calledOnce).toEqual(true);
+			expect(notificationStub.calledOnce).toEqual(true);
 		});
 		it('Correctly updates file link after rename', function() {
 			var $tr;
 			doRename();
 
-			fakeServer.requests[0].respond(200, {'Content-Type': 'application/json'}, JSON.stringify({
-				status: 'success',
-				data: {
-					name: 'Tu_after_three.txt'
-				}
-			}));
+			deferredRename.resolve(201);
 
 			$tr = fileList.findFileEl('Tu_after_three.txt');
-			expect($tr.find('a.name').attr('href')).toEqual(OC.webroot + '/index.php/apps/files/ajax/download.php?dir=%2Fsubdir&files=Tu_after_three.txt');
+			expect($tr.find('a.name').attr('href'))
+				.toEqual(OC.webroot + '/remote.php/webdav/some/subdir/Tu_after_three.txt');
 		});
 		it('Triggers "fileActionsReady" event after rename', function() {
 			var handler = sinon.stub();
 			fileList.$fileList.on('fileActionsReady', handler);
 			doRename();
 			expect(handler.notCalled).toEqual(true);
-			fakeServer.requests[0].respond(200, {'Content-Type': 'application/json'}, JSON.stringify({
-				status: 'success',
-				data: {
-					name: 'Tu_after_three.txt'
-				}
-			}));
+
+			deferredRename.resolve(201);
+
 			expect(handler.calledOnce).toEqual(true);
 			expect(fileList.$fileList.find('.test').length).toEqual(0);
 		});
 		it('Leaves the summary alone when reinserting renamed element', function() {
 			var $summary = $('#filestable .summary');
 			doRename();
-			fakeServer.requests[0].respond(200, {'Content-Type': 'application/json'}, JSON.stringify({
-				status: 'success',
-				data: {
-					name: 'Tu_after_three.txt'
-				}
-			}));
+
+			deferredRename.resolve(201);
+
 			expect($summary.find('.info').text()).toEqual('1 folder and 3 files');
 		});
 		it('Leaves the summary alone when cancel renaming', function() {
@@ -662,7 +679,7 @@ describe('OCA.Files.FileList tests', function() {
 
 			// trigger submit does not send server request
 			$input.closest('form').trigger('submit');
-			expect(fakeServer.requests.length).toEqual(0);
+			expect(renameStub.notCalled).toEqual(true);
 
 			// simulate escape key
 			$input.trigger(new $.Event('keyup', {keyCode: 27}));
@@ -688,12 +705,7 @@ describe('OCA.Files.FileList tests', function() {
 			expect(OC.TestUtil.getImageUrl(fileList.findFileEl('Tu_after_three.txt').find('.thumbnail')))
 				.toEqual(OC.imagePath('core', 'loading.gif'));
 
-			fakeServer.requests[0].respond(200, {'Content-Type': 'application/json'}, JSON.stringify({
-				status: 'error',
-				data: {
-					message: 'Something went wrong'
-				}
-			}));
+			deferredRename.reject(409);
 
 			expect(fileList.findFileEl('One.txt').length).toEqual(1);
 			expect(OC.TestUtil.getImageUrl(fileList.findFileEl('One.txt').find('.thumbnail')))
@@ -701,25 +713,27 @@ describe('OCA.Files.FileList tests', function() {
 		});
 	});
 	describe('Moving files', function() {
+		var deferredMove;
+		var moveStub;
+
 		beforeEach(function() {
+			deferredMove = $.Deferred();
+			moveStub = sinon.stub(filesClient, 'move').returns(deferredMove.promise());
+
 			fileList.setFiles(testFiles);
 		});
+		afterEach(function() {
+			moveStub.restore();
+		});
+
 		it('Moves single file to target folder', function() {
-			var request;
 			fileList.move('One.txt', '/somedir');
 
-			expect(fakeServer.requests.length).toEqual(1);
-			request = fakeServer.requests[0];
-			expect(request.url).toEqual(OC.webroot + '/index.php/apps/files/ajax/move.php');
-			expect(OC.parseQueryString(request.requestBody)).toEqual({dir: '/subdir', file: 'One.txt', target: '/somedir'});
+			expect(moveStub.calledOnce).toEqual(true);
+			expect(moveStub.getCall(0).args[0]).toEqual('/subdir/One.txt');
+			expect(moveStub.getCall(0).args[1]).toEqual('/somedir/One.txt');
 
-			fakeServer.requests[0].respond(200, {'Content-Type': 'application/json'}, JSON.stringify({
-				status: 'success',
-				data: {
-					name: 'One.txt',
-					type: 'file'
-				}
-			}));
+			deferredMove.resolve(201);
 
 			expect(fileList.findFileEl('One.txt').length).toEqual(0);
 
@@ -730,39 +744,28 @@ describe('OCA.Files.FileList tests', function() {
 			expect(notificationStub.notCalled).toEqual(true);
 		});
 		it('Moves list of files to target folder', function() {
-			var request;
+			var deferredMove1 = $.Deferred();
+			var deferredMove2 = $.Deferred();
+			moveStub.onCall(0).returns(deferredMove1.promise());
+			moveStub.onCall(1).returns(deferredMove2.promise());
+
 			fileList.move(['One.txt', 'Two.jpg'], '/somedir');
 
-			expect(fakeServer.requests.length).toEqual(2);
-			request = fakeServer.requests[0];
-			expect(request.url).toEqual(OC.webroot + '/index.php/apps/files/ajax/move.php');
-			expect(OC.parseQueryString(request.requestBody)).toEqual({dir: '/subdir', file: 'One.txt', target: '/somedir'});
+			expect(moveStub.calledTwice).toEqual(true);
+			expect(moveStub.getCall(0).args[0]).toEqual('/subdir/One.txt');
+			expect(moveStub.getCall(0).args[1]).toEqual('/somedir/One.txt');
+			expect(moveStub.getCall(1).args[0]).toEqual('/subdir/Two.jpg');
+			expect(moveStub.getCall(1).args[1]).toEqual('/somedir/Two.jpg');
 
-			request = fakeServer.requests[1];
-			expect(request.url).toEqual(OC.webroot + '/index.php/apps/files/ajax/move.php');
-			expect(OC.parseQueryString(request.requestBody)).toEqual({dir: '/subdir', file: 'Two.jpg', target: '/somedir'});
-
-			fakeServer.requests[0].respond(200, {'Content-Type': 'application/json'}, JSON.stringify({
-				status: 'success',
-				data: {
-					name: 'One.txt',
-					type: 'file'
-				}
-			}));
+			deferredMove1.resolve(201);
 
 			expect(fileList.findFileEl('One.txt').length).toEqual(0);
 
-			// folder size has increased
+			// folder size has increased during move
 			expect(fileList.findFileEl('somedir').data('size')).toEqual(262);
 			expect(fileList.findFileEl('somedir').find('.filesize').text()).toEqual('262 B');
 
-			fakeServer.requests[1].respond(200, {'Content-Type': 'application/json'}, JSON.stringify({
-				status: 'success',
-				data: {
-					name: 'Two.jpg',
-					type: 'file'
-				}
-			}));
+			deferredMove2.resolve(201);
 
 			expect(fileList.findFileEl('Two.jpg').length).toEqual(0);
 
@@ -773,47 +776,31 @@ describe('OCA.Files.FileList tests', function() {
 			expect(notificationStub.notCalled).toEqual(true);
 		});
 		it('Shows notification if a file could not be moved', function() {
-			var request;
 			fileList.move('One.txt', '/somedir');
 
-			expect(fakeServer.requests.length).toEqual(1);
-			request = fakeServer.requests[0];
-			expect(request.url).toEqual(OC.webroot + '/index.php/apps/files/ajax/move.php');
-			expect(OC.parseQueryString(request.requestBody)).toEqual({dir: '/subdir', file: 'One.txt', target: '/somedir'});
+			expect(moveStub.calledOnce).toEqual(true);
 
-			fakeServer.requests[0].respond(200, {'Content-Type': 'application/json'}, JSON.stringify({
-				status: 'error',
-				data: {
-					message: 'Error while moving file'
-				}
-			}));
+			deferredMove.reject(409);
 
 			expect(fileList.findFileEl('One.txt').length).toEqual(1);
 
 			expect(notificationStub.calledOnce).toEqual(true);
-			expect(notificationStub.getCall(0).args[0]).toEqual('Error while moving file');
+			expect(notificationStub.getCall(0).args[0]).toEqual('Could not move "One.txt"');
 		});
 		it('Restores thumbnail if a file could not be moved', function() {
-			var request;
 			fileList.move('One.txt', '/somedir');
 
 			expect(OC.TestUtil.getImageUrl(fileList.findFileEl('One.txt').find('.thumbnail')))
 				.toEqual(OC.imagePath('core', 'loading.gif'));
 
-			expect(fakeServer.requests.length).toEqual(1);
-			request = fakeServer.requests[0];
+			expect(moveStub.calledOnce).toEqual(true);
 
-			fakeServer.requests[0].respond(200, {'Content-Type': 'application/json'}, JSON.stringify({
-				status: 'error',
-				data: {
-					message: 'Error while moving file'
-				}
-			}));
+			deferredMove.reject(409);
 
 			expect(fileList.findFileEl('One.txt').length).toEqual(1);
 
 			expect(notificationStub.calledOnce).toEqual(true);
-			expect(notificationStub.getCall(0).args[0]).toEqual('Error while moving file');
+			expect(notificationStub.getCall(0).args[0]).toEqual('Could not move "One.txt"');
 
 			expect(OC.TestUtil.getImageUrl(fileList.findFileEl('One.txt').find('.thumbnail')))
 				.toEqual(OC.imagePath('core', 'filetypes/text.svg'));
@@ -872,7 +859,7 @@ describe('OCA.Files.FileList tests', function() {
 				name: 'testFile.txt',
 				directory: '/current dir'
 			};
-			var $tr = fileList.add(fileData);
+			fileList.add(fileData);
 			expect(fileList.findFileEl('testFile.txt').length).toEqual(1);
 		});
 		it('triggers "fileActionsReady" event after update', function() {
@@ -1137,62 +1124,90 @@ describe('OCA.Files.FileList tests', function() {
 		afterEach(function() {
 			previewLoadStub.restore();
 		});
-		it('renders default icon for file when none provided and no preview is available', function() {
+		it('renders default file icon when none provided and no mime type is set', function() {
 			var fileData = {
-				type: 'file',
 				name: 'testFile.txt'
 			};
 			var $tr = fileList.add(fileData);
 			var $imgDiv = $tr.find('td.filename .thumbnail');
 			expect(OC.TestUtil.getImageUrl($imgDiv)).toEqual(OC.webroot + '/core/img/filetypes/file.svg');
-			expect(previewLoadStub.notCalled).toEqual(true);
+			// tries to load preview
+			expect(previewLoadStub.calledOnce).toEqual(true);
 		});
-		it('renders default icon for dir when none provided and no preview is available', function() {
+		it('renders default icon for folder when none provided', function() {
 			var fileData = {
-				type: 'dir',
-				name: 'test dir'
+				name: 'test dir',
+				mimeType: 'httpd/unix-directory'
 			};
+
 			var $tr = fileList.add(fileData);
 			var $imgDiv = $tr.find('td.filename .thumbnail');
 			expect(OC.TestUtil.getImageUrl($imgDiv)).toEqual(OC.webroot + '/core/img/filetypes/folder.svg');
+			// no preview since it's a directory
 			expect(previewLoadStub.notCalled).toEqual(true);
 		});
-		it('renders provided icon for file when provided', function() {
-			var fileData = {
-				type: 'file',
-				name: 'test dir',
-				icon: OC.webroot + '/core/img/filetypes/application-pdf.svg',
-				mimetype: 'application/pdf'
-			};
+		it('renders mime type icon for file when mime type provided', function() {
+			var fileData = new FileInfo({
+				name: 'testFile.txt',
+				mimeType: 'application/pdf'
+			});
 			var $tr = fileList.add(fileData);
 			var $imgDiv = $tr.find('td.filename .thumbnail');
 			expect(OC.TestUtil.getImageUrl($imgDiv)).toEqual(OC.webroot + '/core/img/filetypes/application-pdf.svg');
+			// try loading preview
+			expect(previewLoadStub.calledOnce).toEqual(true);
+		});
+		it('renders provided icon for file when provided', function() {
+			var fileData = new FileInfo({
+				name: 'somefile.pdf',
+				icon: OC.webroot + '/core/img/filetypes/application-pdf.svg'
+			});
+
+			var $tr = fileList.add(fileData);
+			var $imgDiv = $tr.find('td.filename .thumbnail');
+			expect(OC.TestUtil.getImageUrl($imgDiv)).toEqual(OC.webroot + '/core/img/filetypes/application-pdf.svg');
+			// try loading preview
+			expect(previewLoadStub.calledOnce).toEqual(true);
+		});
+		it('renders provided icon for folder when provided', function() {
+			var fileData = new FileInfo({
+				name: 'some folder',
+				mimeType: 'httpd/unix-directory',
+				icon: OC.webroot + '/core/img/filetypes/folder-alt.svg'
+			});
+
+			var $tr = fileList.add(fileData);
+			var $imgDiv = $tr.find('td.filename .thumbnail');
+			expect(OC.TestUtil.getImageUrl($imgDiv)).toEqual(OC.webroot + '/core/img/filetypes/folder-alt.svg');
+			// do not load preview for folders
 			expect(previewLoadStub.notCalled).toEqual(true);
 		});
-		it('renders preview when no icon was provided and preview is available', function() {
-			var fileData = {
-				type: 'file',
-				name: 'test dir',
-				isPreviewAvailable: true
-			};
+		it('renders provided icon for file when provided even if mime type is set', function() {
+			var fileData = new FileInfo({
+				name: 'somefile.pdf',
+				mimeType: 'application/pdf',
+				icon: OC.webroot + '/core/img/filetypes/application-pdf-alt.svg'
+			});
+
+			var $tr = fileList.add(fileData);
+			var $imgDiv = $tr.find('td.filename .thumbnail');
+			expect(OC.TestUtil.getImageUrl($imgDiv))
+				.toEqual(OC.webroot + '/core/img/filetypes/application-pdf-alt.svg');
+			// try loading preview
+			expect(previewLoadStub.calledOnce).toEqual(true);
+		});
+		it('renders preview when preview is available', function() {
+			var fileData = new FileInfo({
+				name: 'somefile.txt'
+			});
 			var $tr = fileList.add(fileData);
 			var $td = $tr.find('td.filename');
-			expect(OC.TestUtil.getImageUrl($td.find('.thumbnail'))).toEqual(OC.webroot + '/core/img/filetypes/file.svg');
+			expect(OC.TestUtil.getImageUrl($td.find('.thumbnail')))
+				.toEqual(OC.webroot + '/core/img/filetypes/file.svg');
 			expect(previewLoadStub.calledOnce).toEqual(true);
 			// third argument is callback
 			previewLoadStub.getCall(0).args[0].callback(OC.webroot + '/somepath.png');
 			expect(OC.TestUtil.getImageUrl($td.find('.thumbnail'))).toEqual(OC.webroot + '/somepath.png');
-		});
-		it('renders default file type icon when no icon was provided and no preview is available', function() {
-			var fileData = {
-				type: 'file',
-				name: 'test dir',
-				isPreviewAvailable: false
-			};
-			var $tr = fileList.add(fileData);
-			var $imgDiv = $tr.find('td.filename .thumbnail');
-			expect(OC.TestUtil.getImageUrl($imgDiv)).toEqual(OC.webroot + '/core/img/filetypes/file.svg');
-			expect(previewLoadStub.notCalled).toEqual(true);
 		});
 	});
 	describe('viewer mode', function() {
@@ -1231,75 +1246,47 @@ describe('OCA.Files.FileList tests', function() {
 		});
 	});
 	describe('loading file list', function() {
+		var deferredList;
+		var getFolderContentsStub;
+
 		beforeEach(function() {
-			var data = {
-				status: 'success',
-				data: {
-					files: testFiles,
-					permissions: 31
-				}
-			};
-			fakeServer.respondWith(/\/index\.php\/apps\/files\/ajax\/list.php\?dir=%2F(subdir|anothersubdir)/, [
-					200, {
-						"Content-Type": "application/json"
-					},
-					JSON.stringify(data)
-				]);
+			deferredList = $.Deferred();
+			getFolderContentsStub = sinon.stub(filesClient, 'getFolderContents').returns(deferredList.promise());
+		});
+		afterEach(function() {
+			getFolderContentsStub.restore();
 		});
 		it('fetches file list from server and renders it when reload() is called', function() {
 			fileList.reload();
-			expect(fakeServer.requests.length).toEqual(1);
-			var url = fakeServer.requests[0].url;
-			var query = url.substr(url.indexOf('?') + 1);
-			expect(OC.parseQueryString(query)).toEqual({'dir': '/subdir', sort: 'name', sortdirection: 'asc'});
-			fakeServer.respond();
+			expect(getFolderContentsStub.calledOnce).toEqual(true);
+			expect(getFolderContentsStub.calledWith('/subdir')).toEqual(true);
+			deferredList.resolve(200, [testRoot].concat(testFiles));
 			expect($('#fileList tr').length).toEqual(4);
 			expect(fileList.findFileEl('One.txt').length).toEqual(1);
 		});
 		it('switches dir and fetches file list when calling changeDirectory()', function() {
 			fileList.changeDirectory('/anothersubdir');
 			expect(fileList.getCurrentDirectory()).toEqual('/anothersubdir');
-			expect(fakeServer.requests.length).toEqual(1);
-			var url = fakeServer.requests[0].url;
-			var query = url.substr(url.indexOf('?') + 1);
-			expect(OC.parseQueryString(query)).toEqual({'dir': '/anothersubdir', sort: 'name', sortdirection: 'asc'});
-			fakeServer.respond();
+			expect(getFolderContentsStub.calledOnce).toEqual(true);
+			expect(getFolderContentsStub.calledWith('/anothersubdir')).toEqual(true);
 		});
 		it('converts backslashes to slashes when calling changeDirectory()', function() {
 			fileList.changeDirectory('/another\\subdir');
 			expect(fileList.getCurrentDirectory()).toEqual('/another/subdir');
 		});
 		it('switches to root dir when current directory does not exist', function() {
-			fakeServer.respondWith(/\/index\.php\/apps\/files\/ajax\/list.php\?dir=%2funexist/, [
-					404, {
-						"Content-Type": "application/json"
-					},
-					''
-			]);
 			fileList.changeDirectory('/unexist');
-			fakeServer.respond();
+			deferredList.reject(404);
 			expect(fileList.getCurrentDirectory()).toEqual('/');
 		});
 		it('switches to root dir when current directory is forbidden', function() {
-			fakeServer.respondWith(/\/index\.php\/apps\/files\/ajax\/list.php\?dir=%2funexist/, [
-				403, {
-					"Content-Type": "application/json"
-				},
-				''
-			]);
 			fileList.changeDirectory('/unexist');
-			fakeServer.respond();
+			deferredList.reject(403);
 			expect(fileList.getCurrentDirectory()).toEqual('/');
 		});
 		it('switches to root dir when current directory is unavailable', function() {
-			fakeServer.respondWith(/\/index\.php\/apps\/files\/ajax\/list.php\?dir=%2funexist/, [
-				500, {
-					"Content-Type": "application/json"
-				},
-				''
-			]);
 			fileList.changeDirectory('/unexist');
-			fakeServer.respond();
+			deferredList.reject(500);
 			expect(fileList.getCurrentDirectory()).toEqual('/');
 		});
 		it('shows mask before loading file list then hides it at the end', function() {
@@ -1308,7 +1295,7 @@ describe('OCA.Files.FileList tests', function() {
 			fileList.changeDirectory('/anothersubdir');
 			expect(showMaskStub.calledOnce).toEqual(true);
 			expect(hideMaskStub.calledOnce).toEqual(false);
-			fakeServer.respond();
+			deferredList.resolve(200, [testRoot].concat(testFiles));
 			expect(showMaskStub.calledOnce).toEqual(true);
 			expect(hideMaskStub.calledOnce).toEqual(true);
 			showMaskStub.restore();
@@ -1318,6 +1305,7 @@ describe('OCA.Files.FileList tests', function() {
 			var handler = sinon.stub();
 			$('#app-content-files').on('changeDirectory', handler);
 			fileList.changeDirectory('/somedir');
+			deferredList.resolve(200, [testRoot].concat(testFiles));
 			expect(handler.calledOnce).toEqual(true);
 			expect(handler.getCall(0).args[0].dir).toEqual('/somedir');
 		});
@@ -1328,31 +1316,27 @@ describe('OCA.Files.FileList tests', function() {
 		it('refreshes breadcrumb after update', function() {
 			var setDirSpy = sinon.spy(fileList.breadcrumb, 'setDirectory');
 			fileList.changeDirectory('/anothersubdir');
-			fakeServer.respond();
+			deferredList.resolve(200, [testRoot].concat(testFiles));
 			expect(fileList.breadcrumb.setDirectory.calledOnce).toEqual(true);
 			expect(fileList.breadcrumb.setDirectory.calledWith('/anothersubdir')).toEqual(true);
 			setDirSpy.restore();
+			getFolderContentsStub.restore();
 		});
 	});
 	describe('breadcrumb events', function() {
+		var deferredList;
+		var getFolderContentsStub;
+
 		beforeEach(function() {
-			var data = {
-				status: 'success',
-				data: {
-					files: testFiles,
-					permissions: 31
-				}
-			};
-			fakeServer.respondWith(/\/index\.php\/apps\/files\/ajax\/list.php\?dir=%2Fsubdir/, [
-					200, {
-						"Content-Type": "application/json"
-					},
-					JSON.stringify(data)
-			]);
+			deferredList = $.Deferred();
+			getFolderContentsStub = sinon.stub(filesClient, 'getFolderContents').returns(deferredList.promise());
+		});
+		afterEach(function() {
+			getFolderContentsStub.restore();
 		});
 		it('clicking on root breadcrumb changes directory to root', function() {
 			fileList.changeDirectory('/subdir/two/three with space/four/five');
-			fakeServer.respond();
+			deferredList.resolve(200, [testRoot].concat(testFiles));
 			var changeDirStub = sinon.stub(fileList, 'changeDirectory');
 			fileList.breadcrumb.$el.find('.crumb:eq(0)').trigger({type: 'click', which: 1});
 
@@ -1362,7 +1346,7 @@ describe('OCA.Files.FileList tests', function() {
 		});
 		it('clicking on breadcrumb changes directory', function() {
 			fileList.changeDirectory('/subdir/two/three with space/four/five');
-			fakeServer.respond();
+			deferredList.resolve(200, [testRoot].concat(testFiles));
 			var changeDirStub = sinon.stub(fileList, 'changeDirectory');
 			fileList.breadcrumb.$el.find('.crumb:eq(3)').trigger({type: 'click', which: 1});
 
@@ -1371,9 +1355,10 @@ describe('OCA.Files.FileList tests', function() {
 			changeDirStub.restore();
 		});
 		it('dropping files on breadcrumb calls move operation', function() {
-			var request, query, testDir = '/subdir/two/three with space/four/five';
+			var testDir = '/subdir/two/three with space/four/five';
+			var moveStub = sinon.stub(filesClient, 'move').returns($.Deferred().promise());
 			fileList.changeDirectory(testDir);
-			fakeServer.respond();
+			deferredList.resolve(200, [testRoot].concat(testFiles));
 			var $crumb = fileList.breadcrumb.$el.find('.crumb:eq(3)');
 			// no idea what this is but is required by the handler
 			var ui = {
@@ -1389,33 +1374,18 @@ describe('OCA.Files.FileList tests', function() {
 			// simulate drop event
 			fileList._onDropOnBreadCrumb(new $.Event('drop', {target: $crumb}), ui);
 
-			// will trigger two calls to move.php (first one was previous list.php)
-			expect(fakeServer.requests.length).toEqual(3);
-
-			request = fakeServer.requests[1];
-			expect(request.method).toEqual('POST');
-			expect(request.url).toEqual(OC.webroot + '/index.php/apps/files/ajax/move.php');
-			query = OC.parseQueryString(request.requestBody);
-			expect(query).toEqual({
-				target: '/subdir/two/three with space',
-				dir: testDir,
-				file: 'One.txt'
-			});
-
-			request = fakeServer.requests[2];
-			expect(request.method).toEqual('POST');
-			expect(request.url).toEqual(OC.webroot + '/index.php/apps/files/ajax/move.php');
-			query = OC.parseQueryString(request.requestBody);
-			expect(query).toEqual({
-				target: '/subdir/two/three with space',
-				dir: testDir,
-				file: 'Two.jpg'
-			});
+			expect(moveStub.callCount).toEqual(2);
+			expect(moveStub.getCall(0).args[0]).toEqual(testDir + '/One.txt');
+			expect(moveStub.getCall(0).args[1]).toEqual('/subdir/two/three with space/One.txt');
+			expect(moveStub.getCall(1).args[0]).toEqual(testDir + '/Two.jpg');
+			expect(moveStub.getCall(1).args[1]).toEqual('/subdir/two/three with space/Two.jpg');
+			moveStub.restore();
 		});
 		it('dropping files on same dir breadcrumb does nothing', function() {
 			var testDir = '/subdir/two/three with space/four/five';
+			var moveStub = sinon.stub(filesClient, 'move').returns($.Deferred().promise());
 			fileList.changeDirectory(testDir);
-			fakeServer.respond();
+			deferredList.resolve(200, [testRoot].concat(testFiles));
 			var $crumb = fileList.breadcrumb.$el.find('.crumb:last');
 			// no idea what this is but is required by the handler
 			var ui = {
@@ -1432,21 +1402,26 @@ describe('OCA.Files.FileList tests', function() {
 			fileList._onDropOnBreadCrumb(new $.Event('drop', {target: $crumb}), ui);
 
 			// no extra server request
-			expect(fakeServer.requests.length).toEqual(1);
+			expect(moveStub.notCalled).toEqual(true);
 		});
 	});
 	describe('Download Url', function() {
 		it('returns correct download URL for single files', function() {
-			expect(fileList.getDownloadUrl('some file.txt')).toEqual(OC.webroot + '/index.php/apps/files/ajax/download.php?dir=%2Fsubdir&files=some%20file.txt');
-			expect(fileList.getDownloadUrl('some file.txt', '/anotherpath/abc')).toEqual(OC.webroot + '/index.php/apps/files/ajax/download.php?dir=%2Fanotherpath%2Fabc&files=some%20file.txt');
+			expect(fileList.getDownloadUrl('some file.txt'))
+				.toEqual(OC.webroot + '/remote.php/webdav/subdir/some%20file.txt');
+			expect(fileList.getDownloadUrl('some file.txt', '/anotherpath/abc'))
+				.toEqual(OC.webroot + '/remote.php/webdav/anotherpath/abc/some%20file.txt');
 			$('#dir').val('/');
-			expect(fileList.getDownloadUrl('some file.txt')).toEqual(OC.webroot + '/index.php/apps/files/ajax/download.php?dir=%2F&files=some%20file.txt');
+			expect(fileList.getDownloadUrl('some file.txt'))
+				.toEqual(OC.webroot + '/remote.php/webdav/some%20file.txt');
 		});
 		it('returns correct download URL for multiple files', function() {
-			expect(fileList.getDownloadUrl(['a b c.txt', 'd e f.txt'])).toEqual(OC.webroot + '/index.php/apps/files/ajax/download.php?dir=%2Fsubdir&files=%5B%22a%20b%20c.txt%22%2C%22d%20e%20f.txt%22%5D');
+			expect(fileList.getDownloadUrl(['a b c.txt', 'd e f.txt']))
+				.toEqual(OC.webroot + '/index.php/apps/files/ajax/download.php?dir=%2Fsubdir&files=%5B%22a%20b%20c.txt%22%2C%22d%20e%20f.txt%22%5D');
 		});
 		it('returns the correct ajax URL', function() {
-			expect(fileList.getAjaxUrl('test', {a:1, b:'x y'})).toEqual(OC.webroot + '/index.php/apps/files/ajax/test.php?a=1&b=x%20y');
+			expect(fileList.getAjaxUrl('test', {a:1, b:'x y'}))
+				.toEqual(OC.webroot + '/index.php/apps/files/ajax/test.php?a=1&b=x%20y');
 		});
 	});
 	describe('File selection', function() {
@@ -1625,24 +1600,17 @@ describe('OCA.Files.FileList tests', function() {
 		});
 		it('Selection is cleared when switching dirs', function() {
 			$('.select-all').click();
-			var data = {
-				status: 'success',
-				data: {
-					files: testFiles,
-					permissions: 31
-				}
-			};
-			fakeServer.respondWith(/\/index\.php\/apps\/files\/ajax\/list.php/, [
-					200, {
-						"Content-Type": "application/json"
-					},
-					JSON.stringify(data)
-				]
-			);
+			var deferredList = $.Deferred();
+			var getFolderContentsStub = sinon.stub(filesClient, 'getFolderContents').returns(deferredList.promise());
+
 			fileList.changeDirectory('/');
-			fakeServer.respond();
+
+			deferredList.resolve(200, [testRoot].concat(testFiles));
+
 			expect($('.select-all').prop('checked')).toEqual(false);
 			expect(_.pluck(fileList.getSelectedFiles(), 'name')).toEqual([]);
+
+			getFolderContentsStub.restore();
 		});
 		it('getSelectedFiles returns the selected files even when they are on the next page', function() {
 			var selectedFiles;
@@ -1719,116 +1687,82 @@ describe('OCA.Files.FileList tests', function() {
 			it('getSelectedFiles returns the selected file data', function() {
 				var files = fileList.getSelectedFiles();
 				expect(files.length).toEqual(3);
-				expect(files[0]).toEqual({
-					id: 1,
-					name: 'One.txt',
-					mimetype: 'text/plain',
-					type: 'file',
-					size: 12,
-					etag: 'abc',
-					permissions: OC.PERMISSION_ALL
-				});
-				expect(files[1]).toEqual({
-					id: 3,
-					type: 'file',
-					name: 'Three.pdf',
-					mimetype: 'application/pdf',
-					size: 58009,
-					etag: '123',
-					permissions: OC.PERMISSION_ALL
-				});
-				expect(files[2]).toEqual({
-					id: 4,
-					type: 'dir',
-					name: 'somedir',
-					mimetype: 'httpd/unix-directory',
-					size: 250,
-					etag: '456',
-					permissions: OC.PERMISSION_ALL
-				});
+				expect(files[0].id).toEqual(1);
+				expect(files[0].name).toEqual('One.txt');
+				expect(files[1].id).toEqual(3);
+				expect(files[1].name).toEqual('Three.pdf');
+				expect(files[2].id).toEqual(4);
+				expect(files[2].name).toEqual('somedir');
 			});
 			it('Removing a file removes it from the selection', function() {
 				fileList.remove('Three.pdf');
 				var files = fileList.getSelectedFiles();
 				expect(files.length).toEqual(2);
-				expect(files[0]).toEqual({
-					id: 1,
-					name: 'One.txt',
-					mimetype: 'text/plain',
-					type: 'file',
-					size: 12,
-					etag: 'abc',
-					permissions: OC.PERMISSION_ALL
-				});
-				expect(files[1]).toEqual({
-					id: 4,
-					type: 'dir',
-					name: 'somedir',
-					mimetype: 'httpd/unix-directory',
-					size: 250,
-					etag: '456',
-					permissions: OC.PERMISSION_ALL
-				});
+				expect(files[0].id).toEqual(1);
+				expect(files[0].name).toEqual('One.txt');
+				expect(files[1].id).toEqual(4);
+				expect(files[1].name).toEqual('somedir');
 			});
 			describe('Download', function() {
 				it('Opens download URL when clicking "Download"', function() {
-					var redirectStub = sinon.stub(OC, 'redirect');
 					$('.selectedActions .download').click();
 					expect(redirectStub.calledOnce).toEqual(true);
-					expect(redirectStub.getCall(0).args[0]).toEqual(OC.webroot + '/index.php/apps/files/ajax/download.php?dir=%2Fsubdir&files=%5B%22One.txt%22%2C%22Three.pdf%22%2C%22somedir%22%5D');
-					redirectStub.restore();
+					expect(redirectStub.getCall(0).args[0])
+						.toEqual(
+							OC.webroot + '/index.php/apps/files/ajax/download.php' +
+							'?dir=%2Fsubdir&files=%5B%22One.txt%22%2C%22Three.pdf%22%2C%22somedir%22%5D'
+						);
 				});
 				it('Downloads root folder when all selected in root folder', function() {
 					$('#dir').val('/');
 					$('.select-all').click();
-					var redirectStub = sinon.stub(OC, 'redirect');
 					$('.selectedActions .download').click();
 					expect(redirectStub.calledOnce).toEqual(true);
 					expect(redirectStub.getCall(0).args[0]).toEqual(OC.webroot + '/index.php/apps/files/ajax/download.php?dir=%2F&files=');
-					redirectStub.restore();
 				});
 				it('Downloads parent folder when all selected in subfolder', function() {
 					$('.select-all').click();
-					var redirectStub = sinon.stub(OC, 'redirect');
 					$('.selectedActions .download').click();
 					expect(redirectStub.calledOnce).toEqual(true);
 					expect(redirectStub.getCall(0).args[0]).toEqual(OC.webroot + '/index.php/apps/files/ajax/download.php?dir=%2F&files=subdir');
-					redirectStub.restore();
 				});
 			});
 			describe('Delete', function() {
+				var deleteStub, deferredDelete;
+				beforeEach(function() {
+					deferredDelete = $.Deferred();
+					deleteStub = sinon.stub(filesClient, 'remove').returns(deferredDelete.promise());
+				});
+				afterEach(function() {
+					deleteStub.restore();
+				});
 				it('Deletes selected files when "Delete" clicked', function() {
-					var request;
 					$('.selectedActions .delete-selected').click();
-					expect(fakeServer.requests.length).toEqual(1);
-					request = fakeServer.requests[0];
-					expect(request.url).toEqual(OC.webroot + '/index.php/apps/files/ajax/delete.php');
-					expect(OC.parseQueryString(request.requestBody))
-						.toEqual({'dir': '/subdir', files: '["One.txt","Three.pdf","somedir"]'});
-					fakeServer.requests[0].respond(
-						200,
-						{ 'Content-Type': 'application/json' },
-						JSON.stringify({status: 'success'})
-					);
+
+					expect(deleteStub.callCount).toEqual(3);
+					expect(deleteStub.getCall(0).args[0]).toEqual('/subdir/One.txt');
+					expect(deleteStub.getCall(1).args[0]).toEqual('/subdir/Three.pdf');
+					expect(deleteStub.getCall(2).args[0]).toEqual('/subdir/somedir');
+
+					deferredDelete.resolve(204);
+
 					expect(fileList.findFileEl('One.txt').length).toEqual(0);
 					expect(fileList.findFileEl('Three.pdf').length).toEqual(0);
 					expect(fileList.findFileEl('somedir').length).toEqual(0);
 					expect(fileList.findFileEl('Two.jpg').length).toEqual(1);
 				});
 				it('Deletes all files when all selected when "Delete" clicked', function() {
-					var request;
 					$('.select-all').click();
 					$('.selectedActions .delete-selected').click();
-					expect(fakeServer.requests.length).toEqual(1);
-					request = fakeServer.requests[0];
-					expect(request.url).toEqual(OC.webroot + '/index.php/apps/files/ajax/delete.php');
-					expect(OC.parseQueryString(request.requestBody))
-						.toEqual({'dir': '/subdir', allfiles: 'true'});
-					fakeServer.requests[0].respond(
-						200,
-						{ 'Content-Type': 'application/json' },
-						JSON.stringify({status: 'success'})
-					);
+
+					expect(deleteStub.callCount).toEqual(4);
+					expect(deleteStub.getCall(0).args[0]).toEqual('/subdir/One.txt');
+					expect(deleteStub.getCall(1).args[0]).toEqual('/subdir/Two.jpg');
+					expect(deleteStub.getCall(2).args[0]).toEqual('/subdir/Three.pdf');
+					expect(deleteStub.getCall(3).args[0]).toEqual('/subdir/somedir');
+
+					deferredDelete.resolve(204);
+					
 					expect(fileList.isEmpty).toEqual(true);
 				});
 			});
@@ -1938,30 +1872,6 @@ describe('OCA.Files.FileList tests', function() {
 		});
 	});
 	describe('Sorting files', function() {
-		it('Sorts by name by default', function() {
-			fileList.reload();
-			expect(fakeServer.requests.length).toEqual(1);
-			var url = fakeServer.requests[0].url;
-			var query = OC.parseQueryString(url.substr(url.indexOf('?') + 1));
-			expect(query.sort).toEqual('name');
-			expect(query.sortdirection).toEqual('asc');
-		});
-		it('Reloads file list with a different sort when clicking on column header of unsorted column', function() {
-			fileList.$el.find('.column-size .columntitle').click();
-			expect(fakeServer.requests.length).toEqual(1);
-			var url = fakeServer.requests[0].url;
-			var query = OC.parseQueryString(url.substr(url.indexOf('?') + 1));
-			expect(query.sort).toEqual('size');
-			expect(query.sortdirection).toEqual('desc');
-		});
-		it('Toggles sort direction when clicking on already sorted column', function() {
-			fileList.$el.find('.column-name .columntitle').click();
-			expect(fakeServer.requests.length).toEqual(1);
-			var url = fakeServer.requests[0].url;
-			var query = OC.parseQueryString(url.substr(url.indexOf('?') + 1));
-			expect(query.sort).toEqual('name');
-			expect(query.sortdirection).toEqual('desc');
-		});
 		it('Toggles the sort indicator when clicking on a column header', function() {
 			var ASC_CLASS = fileList.SORT_INDICATOR_ASC_CLASS;
 			var DESC_CLASS = fileList.SORT_INDICATOR_DESC_CLASS;
@@ -2011,28 +1921,15 @@ describe('OCA.Files.FileList tests', function() {
 		it('Uses correct sort comparator when inserting files', function() {
 			testFiles.sort(OCA.Files.FileList.Comparators.size);
 			testFiles.reverse();	//default is descending
-			// this will make it reload the testFiles with the correct sorting
+			fileList.setFiles(testFiles);
 			fileList.$el.find('.column-size .columntitle').click();
-			expect(fakeServer.requests.length).toEqual(1);
-			fakeServer.requests[0].respond(
-				200,
-				{ 'Content-Type': 'application/json' },
-				JSON.stringify({
-					status: 'success',
-					data: {
-						files: testFiles,
-						permissions: 31
-					}
-				})
-			);
-			var newFileData = {
+			var newFileData = new FileInfo({
 				id: 999,
-				type: 'file',
 				name: 'new file.txt',
-				mimetype: 'text/plain',
+				mimeType: 'text/plain',
 				size: 40001,
 				etag: '999'
-			};
+			});
 			fileList.add(newFileData);
 			expect(fileList.findFileEl('Three.pdf').index()).toEqual(0);
 			expect(fileList.findFileEl('new file.txt').index()).toEqual(1);
@@ -2044,41 +1941,18 @@ describe('OCA.Files.FileList tests', function() {
 		});
 		it('Uses correct reversed sort comparator when inserting files', function() {
 			testFiles.sort(OCA.Files.FileList.Comparators.size);
-			// this will make it reload the testFiles with the correct sorting
+			fileList.setFiles(testFiles);
 			fileList.$el.find('.column-size .columntitle').click();
-			expect(fakeServer.requests.length).toEqual(1);
-			fakeServer.requests[0].respond(
-				200,
-				{ 'Content-Type': 'application/json' },
-				JSON.stringify({
-					status: 'success',
-					data: {
-						files: testFiles,
-						permissions: 31
-					}
-				})
-			);
+
 			// reverse sort
 			fileList.$el.find('.column-size .columntitle').click();
-			fakeServer.requests[1].respond(
-				200,
-				{ 'Content-Type': 'application/json' },
-				JSON.stringify({
-					status: 'success',
-					data: {
-						files: testFiles,
-						permissions: 31
-					}
-				})
-			);
-			var newFileData = {
+			var newFileData = new FileInfo({
 				id: 999,
-				type: 'file',
 				name: 'new file.txt',
-				mimetype: 'text/plain',
+				mimeType: 'text/plain',
 				size: 40001,
 				etag: '999'
-			};
+			});
 			fileList.add(newFileData);
 			expect(fileList.findFileEl('One.txt').index()).toEqual(0);
 			expect(fileList.findFileEl('somedir').index()).toEqual(1);
@@ -2088,6 +1962,98 @@ describe('OCA.Files.FileList tests', function() {
 			expect(fileList.files.length).toEqual(5);
 			expect(fileList.$fileList.find('tr').length).toEqual(5);
 		});
+	});
+	describe('create file', function() {
+		var deferredCreate;
+		var deferredInfo;
+		var createStub;
+		var getFileInfoStub;
+
+		beforeEach(function() {
+			deferredCreate = $.Deferred();
+			deferredInfo = $.Deferred();
+			createStub = sinon.stub(filesClient, 'putFileContents')
+				.returns(deferredCreate.promise());
+			getFileInfoStub = sinon.stub(filesClient, 'getFileInfo')
+				.returns(deferredInfo.promise());
+		});
+		afterEach(function() {
+			createStub.restore();
+			getFileInfoStub.restore();
+		});
+
+		it('creates file with given name and adds it to the list', function() {
+			fileList.createFile('test.txt');
+
+			expect(createStub.calledOnce).toEqual(true);
+			expect(createStub.getCall(0).args[0]).toEqual('/subdir/test.txt');
+
+			deferredCreate.resolve(200);
+
+			expect(getFileInfoStub.calledOnce).toEqual(true);
+			expect(getFileInfoStub.getCall(0).args[0]).toEqual('/subdir/test.txt');
+
+			deferredInfo.resolve(
+				200,
+			   	new FileInfo({
+					path: '/subdir',
+					name: 'test.txt',
+					mimeType: 'text/plain'
+				})
+			);
+
+			var $tr = fileList.findFileEl('test.txt');
+			expect($tr.length).toEqual(1);
+			expect($tr.attr('data-mime')).toEqual('text/plain');
+		});
+		// TODO: error cases
+		// TODO: unique name cases
+	});
+	describe('create folder', function() {
+		var deferredCreate;
+		var deferredInfo;
+		var createStub;
+		var getFileInfoStub;
+
+		beforeEach(function() {
+			deferredCreate = $.Deferred();
+			deferredInfo = $.Deferred();
+			createStub = sinon.stub(filesClient, 'createDirectory')
+				.returns(deferredCreate.promise());
+			getFileInfoStub = sinon.stub(filesClient, 'getFileInfo')
+				.returns(deferredInfo.promise());
+		});
+		afterEach(function() {
+			createStub.restore();
+			getFileInfoStub.restore();
+		});
+
+		it('creates folder with given name and adds it to the list', function() {
+			fileList.createDirectory('sub dir');
+
+			expect(createStub.calledOnce).toEqual(true);
+			expect(createStub.getCall(0).args[0]).toEqual('/subdir/sub dir');
+
+			deferredCreate.resolve(200);
+
+			expect(getFileInfoStub.calledOnce).toEqual(true);
+			expect(getFileInfoStub.getCall(0).args[0]).toEqual('/subdir/sub dir');
+
+			deferredInfo.resolve(
+				200,
+			   	new FileInfo({
+					path: '/subdir',
+					name: 'sub dir',
+					mimeType: 'httpd/unix-directory'
+				})
+			);
+
+			var $tr = fileList.findFileEl('sub dir');
+			expect($tr.length).toEqual(1);
+			expect($tr.attr('data-mime')).toEqual('httpd/unix-directory');
+		});
+		// TODO: error cases
+		// TODO: unique name cases
 	});
 	/**
 	 * Test upload mostly by testing the code inside the event handlers
@@ -2195,14 +2161,14 @@ describe('OCA.Files.FileList tests', function() {
 				expect(ev.result).not.toEqual(false);
 			});
 			it('drop on a folder row inside the table triggers upload to target folder', function() {
-				var ev, formData;
+				var ev;
 				ev = dropOn(fileList.findFileEl('somedir').find('td:eq(2)'), uploadData);
 
 				expect(ev.result).not.toEqual(false);
 				expect(uploadData.targetDir).toEqual('/subdir/somedir');
 			});
 			it('drop on a breadcrumb inside the table triggers upload to target folder', function() {
-				var ev, formData;
+				var ev;
 				fileList.changeDirectory('a/b/c/d');
 				ev = dropOn(fileList.$el.find('.crumb:eq(2)'), uploadData);
 
@@ -2211,30 +2177,50 @@ describe('OCA.Files.FileList tests', function() {
 			});
 		});
 	});
-	describe('Handeling errors', function () {
-		beforeEach(function () {
-			redirectStub = sinon.stub(OC, 'redirect');
+	describe('Handling errors', function () {
+		var deferredList;
+		var getFolderContentsStub;
 
-			fileList = new OCA.Files.FileList($('#app-content-files'));
-		});
-		afterEach(function () {
-			fileList = undefined;
-
-			redirectStub.restore();
-		});
-		it('reloads the page on authentication errors', function () {
+		beforeEach(function() {
+			deferredList = $.Deferred();
+			getFolderContentsStub =
+				sinon.stub(filesClient, 'getFolderContents');
+			getFolderContentsStub.onCall(0).returns(deferredList.promise());
+			getFolderContentsStub.onCall(1).returns($.Deferred().promise());
 			fileList.reload();
-			fakeServer.requests[0].respond(
-				200,
-				{ 'Content-Type': 'application/json' },
-				JSON.stringify({
-					status: 'error',
-					data: {
-						'error': 'authentication_error'
-					}
-				})
-			);
-			expect(redirectStub.calledWith(OC.generateUrl('apps/files'))).toEqual(true);
+		});
+		afterEach(function() {
+			getFolderContentsStub.restore();
+			fileList = undefined;
+		});
+		it('redirects to files app in case of auth error', function () {
+			deferredList.reject(401, 'Authentication error');
+
+			expect(redirectStub.calledOnce).toEqual(true);
+			expect(redirectStub.getCall(0).args[0]).toEqual(OC.webroot + '/index.php/apps/files');
+			expect(getFolderContentsStub.calledOnce).toEqual(true);
+		});
+		it('redirects to root folder in case of forbidden access', function () {
+			deferredList.reject(403);
+
+			expect(fileList.getCurrentDirectory()).toEqual('/');
+			expect(getFolderContentsStub.calledTwice).toEqual(true);
+		});
+		it('redirects to root folder and shows notification in case of internal server error', function () {
+			expect(notificationStub.notCalled).toEqual(true);
+			deferredList.reject(500);
+
+			expect(fileList.getCurrentDirectory()).toEqual('/');
+			expect(getFolderContentsStub.calledTwice).toEqual(true);
+			expect(notificationStub.calledOnce).toEqual(true);
+		});
+		it('redirects to root folder and shows notification in case of storage not available', function () {
+			expect(notificationStub.notCalled).toEqual(true);
+			deferredList.reject(503, 'Storage not available');
+
+			expect(fileList.getCurrentDirectory()).toEqual('/');
+			expect(getFolderContentsStub.calledTwice).toEqual(true);
+			expect(notificationStub.calledOnce).toEqual(true);
 		});
 	});
 });

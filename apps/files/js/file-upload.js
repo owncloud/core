@@ -650,39 +650,12 @@ OC.Upload = {
 					if (FileList.lastAction) {
 						FileList.lastAction();
 					}
-					var name = FileList.getUniqueName(newname);
 					switch(type) {
 						case 'file':
-							$.post(
-								OC.filePath('files', 'ajax', 'newfile.php'),
-								{
-									dir: FileList.getCurrentDirectory(),
-									filename: name
-								},
-								function(result) {
-									if (result.status === 'success') {
-										FileList.add(result.data, {animate: true, scrollTo: true});
-									} else {
-										OC.dialogs.alert(result.data.message, t('core', 'Could not create file'));
-									}
-								}
-							);
+							FileList.createFile(newname);
 							break;
 						case 'folder':
-							$.post(
-								OC.filePath('files','ajax','newfolder.php'),
-								{
-									dir: FileList.getCurrentDirectory(),
-									foldername: name
-								},
-								function(result) {
-									if (result.status === 'success') {
-										FileList.add(result.data, {animate: true, scrollTo: true});
-									} else {
-										OC.dialogs.alert(result.data.message, t('core', 'Could not create folder'));
-									}
-								}
-							);
+							FileList.createDirectory(newname);
 							break;
 					}
 					var li = form.parent();

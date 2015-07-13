@@ -19,7 +19,8 @@
 *
 */
 
-/* global OC */
+/* global FileList */
+
 describe('OC.Upload tests', function() {
 	var $dummyUploader;
 	var testFile;
@@ -121,8 +122,10 @@ describe('OC.Upload tests', function() {
 	describe('New file', function() {
 		var $input;
 		var currentDirStub;
+		var createFileStub;
 
 		beforeEach(function() {
+			createFileStub = sinon.stub(FileList, 'createFile');
 			OC.Upload.init();
 			$('#new>a').click();
 			$('#new li[data-type=file]').click();
@@ -133,6 +136,7 @@ describe('OC.Upload tests', function() {
 		});
 		afterEach(function() {
 			currentDirStub.restore();
+			createFileStub.restore();
 		});
 		it('sets default text in field', function() {
 			expect($input.length).toEqual(1);
@@ -142,29 +146,27 @@ describe('OC.Upload tests', function() {
 			$input.val('somefile.txt');
 			$input.trigger(new $.Event('keyup', {keyCode: 13}));
 			$input.parent('form').submit();
-			expect(fakeServer.requests.length).toEqual(2);
 
-			var request = fakeServer.requests[1];
-			expect(request.method).toEqual('POST');
-			expect(request.url).toEqual(OC.webroot + '/index.php/apps/files/ajax/newfile.php');
-			var query = OC.parseQueryString(request.requestBody);
-			expect(query).toEqual({
-				dir: 'testdir',
-				filename: 'somefile.txt'
-			});
+			expect(createFileStub.calledOnce).toEqual(true);
+			expect(createFileStub.getCall(0).args[0]).toEqual('somefile.txt');
+
+			createFileStub.restore();
 		});
 		it('prevents entering invalid file names', function() {
 			$input.val('..');
 			$input.trigger(new $.Event('keyup', {keyCode: 13}));
 			$input.parent('form').submit();
-			expect(fakeServer.requests.length).toEqual(1);
+
+			expect(createFileStub.notCalled).toEqual(true);
 		});
 		it('prevents entering file names that already exist', function() {
 			var inListStub = sinon.stub(FileList, 'inList').returns(true);
 			$input.val('existing.txt');
 			$input.trigger(new $.Event('keyup', {keyCode: 13}));
 			$input.parent('form').submit();
-			expect(fakeServer.requests.length).toEqual(1);
+
+			expect(createFileStub.notCalled).toEqual(true);
+
 			inListStub.restore();
 		});
 	});
