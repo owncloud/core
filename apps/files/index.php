@@ -32,6 +32,9 @@
 // Check if we are a user
 OCP\User::checkLoggedIn();
 
+// create template before scripts to make sure the core scripts are added first...
+$nav = new OCP\Template('files', 'appnavigation', '');
+
 // Load the files we need
 OCP\Util::addStyle('files', 'files');
 OCP\Util::addStyle('files', 'upload');
@@ -90,8 +93,6 @@ $config = \OC::$server->getConfig();
 // mostly for the home storage's free space
 $dirInfo = \OC\Files\Filesystem::getFileInfo('/', false);
 $storageInfo=OC_Helper::getStorageInfo('/', $dirInfo);
-
-$nav = new OCP\Template('files', 'appnavigation', '');
 
 function sortNavigationItems($item1, $item2) {
 	return $item1['order'] - $item2['order'];

@@ -214,15 +214,15 @@
 
 			var contentType = response.getProperty(Client.NS_DAV, 'getcontenttype');
 			if (contentType && contentType.status === 200) {
-				data.mimeType = contentType.getParsedValue();
+				data.mimetype = contentType.getParsedValue();
 			}
 
 			var resType = response.getProperty(Client.NS_DAV, 'resourcetype');
 			var isFile = true;
-			if (!data.mimeType && resType && resType.status === 200 && resType.xmlvalue) {
+			if (!data.mimetype && resType && resType.status === 200 && resType.xmlvalue) {
 				var xmlvalue = resType.xmlvalue[0];
 				if (xmlvalue.namespaceURI === Client.NS_DAV && xmlvalue.nodeName.split(':')[1] === 'collection') {
-					data.mimeType = 'httpd/unix-directory';
+					data.mimetype = 'httpd/unix-directory';
 					isFile = false;
 				}
 			}

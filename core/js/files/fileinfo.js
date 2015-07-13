@@ -31,24 +31,24 @@
 		this.etag = data.etag;
 		this.permissions = data.permissions;
 		this.size = data.size;
-		this.mimeType = data.mimeType || 'application/octet-stream';
+		this.mimetype = data.mimetype || 'application/octet-stream';
 		this.mountType = data.mountType;
 		this.icon = data.icon;
 		this._props = data._props;
 
 		if (data.type) {
 			this.type = data.type;
-		} else if (this.mimeType === 'httpd/unix-directory') {
+		} else if (this.mimetype === 'httpd/unix-directory') {
 			this.type = 'dir';
 		} else {
 			this.type = 'file';
 		}
 
-		if (!this.mimeType) {
+		if (!this.mimetype) {
 			if (this.type === 'dir') {
-				this.mimeType = 'httpd/unix-directory';
+				this.mimetype = 'httpd/unix-directory';
 			} else {
-				this.mimeType = 'application/octet-stream';
+				this.mimetype = 'application/octet-stream';
 			}
 		}
 	};

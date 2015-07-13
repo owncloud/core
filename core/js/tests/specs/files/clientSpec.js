@@ -250,7 +250,7 @@ describe('OC.Files.Client tests', function() {
 			expect(info.permissions).toEqual(31);
 			expect(info.size).toEqual(250);
 			expect(info.mtime.getTime()).toEqual(1436535485000);
-			expect(info.mimeType).toEqual('text/plain');
+			expect(info.mimetype).toEqual('text/plain');
 			expect(info.etag).toEqual('559fcabd79a38');
 
 			// sub entry
@@ -262,7 +262,7 @@ describe('OC.Files.Client tests', function() {
 			expect(info.permissions).toEqual(31);
 			expect(info.size).toEqual(100);
 			expect(info.mtime.getTime()).toEqual(1436536800000);
-			expect(info.mimeType).toEqual('httpd/unix-directory');
+			expect(info.mimetype).toEqual('httpd/unix-directory');
 			expect(info.etag).toEqual('66cfcabd79abb');
 		});
 		it('returns parent node in result if specified', function() {
@@ -297,7 +297,7 @@ describe('OC.Files.Client tests', function() {
 			expect(info.permissions).toEqual(31);
 			expect(info.size).toEqual(120);
 			expect(info.mtime.getTime()).toEqual(1436522405000);
-			expect(info.mimeType).toEqual('httpd/unix-directory');
+			expect(info.mimetype).toEqual('httpd/unix-directory');
 			expect(info.etag).toEqual('56cfcabd79abb');
 
 			// the two other entries follow
@@ -381,7 +381,7 @@ describe('OC.Files.Client tests', function() {
 			expect(info.permissions).toEqual(31);
 			expect(info.size).toEqual(120);
 			expect(info.mtime.getTime()).toEqual(1436522405000);
-			expect(info.mimeType).toEqual('httpd/unix-directory');
+			expect(info.mimetype).toEqual('httpd/unix-directory');
 			expect(info.etag).toEqual('56cfcabd79abb');
 		});
 		it('properly parses entry inside root', function() {
@@ -433,7 +433,7 @@ describe('OC.Files.Client tests', function() {
 			expect(info.permissions).toEqual(31);
 			expect(info.size).toEqual(120);
 			expect(info.mtime.getTime()).toEqual(1436522405000);
-			expect(info.mimeType).toEqual('httpd/unix-directory');
+			expect(info.mimetype).toEqual('httpd/unix-directory');
 			expect(info.etag).toEqual('56cfcabd79abb');
 		});
 		it('rejects deferred when an error occurred', function() {
