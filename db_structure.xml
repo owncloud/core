@@ -471,14 +471,6 @@
 				</field>
 			</index>
 
-			<index>
-				<name>gu_uid_index</name>
-				<field>
-					<name>uid</name>
-					<sorting>ascending</sorting>
-				</field>
-			</index>
-
 		</declaration>
 
 	</table>
@@ -864,13 +856,6 @@
 				<name>token_index</name>
 				<field>
 					<name>token</name>
-					<sorting>ascending</sorting>
-				</field>
-			</index>
-			<index>
-				<name>share_file_target</name>
-				<field>
-					<name>file_target</name>
 					<sorting>ascending</sorting>
 				</field>
 			</index>
