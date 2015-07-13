@@ -1,20 +1,20 @@
 <div id="controls">
 		<div class="actions creatable hidden">
-			<?php if(!isset($_['dirToken'])):?>
 			<div id="new" class="button">
 				<a><?php p($l->t('New'));?></a>
 				<ul>
+					<?php if(!isset($_['dirToken'])):?>
 					<li class="icon-filetype-text svg"
 						data-type="file" data-newname="<?php p($l->t('New text file')) ?>.txt">
 						<p><?php p($l->t('Text file'));?></p>
 					</li>
+					<?php endif;?>
 					<li class="icon-filetype-folder svg"
 						data-type="folder" data-newname="<?php p($l->t('New folder')) ?>">
 						<p><?php p($l->t('Folder'));?></p>
 					</li>
 				</ul>
 			</div>
-			<?php endif;?>
 			<?php /* Note: the template attributes are here only for the public page. These are normally loaded
 					 through ajax instead (updateStorageStatistics).
 			*/ ?>
