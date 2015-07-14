@@ -578,6 +578,27 @@ describe('OC.Files.Client tests', function() {
 			expect(fakeServer.requests[0].method).toEqual('PUT');
 			expect(fakeServer.requests[0].url).toEqual(baseUrl + 'path/to%20space/%E6%96%87%E4%BB%B6%E5%A4%B9/One.txt');
 			expect(fakeServer.requests[0].requestBody).toEqual('some contents');
+			expect(fakeServer.requests[0].requestHeaders['If-None-Match']).toEqual('*');
+			expect(fakeServer.requests[0].requestHeaders['Content-Type']).toEqual('text/plain;charset=utf-8');
+
+			respondAndCheckStatus(deferred, 201);
+		});
+		it('sends PUT with file contents with headers matching options', function() {
+			var deferred = client.putFileContents(
+					'path/to space/文件夹/One.txt',
+					'some contents',
+					{
+						overwrite: false,
+						contentType: 'text/markdown'
+					}
+			);
+
+			expect(fakeServer.requests.length).toEqual(1);
+			expect(fakeServer.requests[0].method).toEqual('PUT');
+			expect(fakeServer.requests[0].url).toEqual(baseUrl + 'path/to%20space/%E6%96%87%E4%BB%B6%E5%A4%B9/One.txt');
+			expect(fakeServer.requests[0].requestBody).toEqual('some contents');
+			expect(fakeServer.requests[0].requestHeaders['If-None-Match']).not.toBeDefined();
+			expect(fakeServer.requests[0].requestHeaders['Content-Type']).toEqual('text/markdown;charset=utf-8');
 
 			respondAndCheckStatus(deferred, 201);
 		});

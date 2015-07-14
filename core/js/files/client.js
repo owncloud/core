@@ -418,16 +418,31 @@
 		 * Puts the given data into the given file.
 		 *
 		 * @param {String} path path to file
+		 * @param {String} body file body
+		 * @param {Object} [options]
+		 * @param {String} [options.contentType='text/plain'] content type
+		 * @param {bool} [options.overwrite=true] whether to overwrite an existing file
 		 *
 		 * @return {Promise}
 		 */
-		putFileContents: function(path, body) {
+		putFileContents: function(path, body, options) {
 			if (!path) {
 				throw 'Missing argument "path"';
 			}
 			var self = this;
 			var deferred = $.Deferred();
 			var promise = deferred.promise();
+			options = options || {};
+			var headers = {};
+			var contentType = 'text/plain';
+			if (options.contentType) {
+				contentType = options.contentType;
+			}
+
+			if (_.isUndefined(options.overwrite) || options.overwrite) {
+				// will trigger 412 precondition failed if a file already exists
+				headers['If-None-Match'] = '*';
+			}
 
 			this._client.put(
 				this._buildPath(this._root, path),
@@ -438,7 +453,9 @@
 						deferred.reject(status);
 					}
 				},
-				body || ''
+				body || '',
+				contentType,
+				headers
 			);
 			return promise;
 		},

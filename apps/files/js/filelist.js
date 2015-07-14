@@ -1631,7 +1631,14 @@
 			name = this.getUniqueName(name);
 			var targetPath = this.getCurrentDirectory() + '/' + name;
 
-			self.filesClient.putFileContents(targetPath, '')
+			self.filesClient.putFileContents(
+					targetPath,
+					'',
+					{
+						contentType: 'text/plain',
+						overwrite: true
+					}
+				)
 				.done(function() {
 					// TODO: error handling / conflicts
 					self.filesClient.getFileInfo(targetPath)
@@ -1645,7 +1652,13 @@
 						});
 				})
 				.fail(function(status) {
-					OC.Notification.showTemporary(t('files', 'Could not create file "{file}"', {file: name}));
+					if (status === 412) {
+						OC.Notification.showTemporary(
+							t('files', 'Could not create file "{file}" because it already exists', {file: name})
+						);
+					} else {
+						OC.Notification.showTemporary(t('files', 'Could not create file "{file}"', {file: name}));
+					}
 					deferred.reject(status);
 				});
 

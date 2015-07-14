@@ -1987,6 +1987,10 @@ describe('OCA.Files.FileList tests', function() {
 
 			expect(createStub.calledOnce).toEqual(true);
 			expect(createStub.getCall(0).args[0]).toEqual('/subdir/test.txt');
+			expect(createStub.getCall(0).args[2]).toEqual({
+				contentType: 'text/plain',
+				overwrite: true
+			});
 
 			deferredCreate.resolve(200);
 
