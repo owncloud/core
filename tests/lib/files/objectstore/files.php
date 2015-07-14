@@ -20,23 +20,16 @@
 
 namespace OCA\ObjectStore\Tests\Unit;
 
+use OC\Files\Cache\Watcher;
 use OC\Files\ObjectStore\ObjectStoreStorage;
-use OC\Files\ObjectStore\Swift as ObjectStoreToTest;
+use OC\Files\ObjectStore\Files as ObjectStoreToTest;
 
-//class Swift extends PHPUnit_Framework_TestCase {
-class Swift extends \Test\Files\Storage\Storage {
+class Files extends \Test\Files\Storage\Storage {
 
 	private $objectStorage;
 
 	protected function setUp() {
 		parent::setUp();
-
-		if (!getenv('RUN_OBJECTSTORE_TESTS')) {
-			$this->markTestSkipped('objectstore tests are unreliable in some environments');
-		}
-
-		\OC_App::disable('files_sharing');
-		\OC_App::disable('files_versions');
 
 		// reset backend
 		\OC_User::clearBackends();
@@ -50,24 +43,13 @@ class Swift extends \Test\Files\Storage\Storage {
 		}
 
 		// main test user
-		$userName = 'test';
 		\OC_Util::tearDownFS();
 		\OC_User::setUserId('');
 		\OC\Files\Filesystem::tearDown();
 		\OC_User::setUserId('test');
 
-		$testContainer = 'oc-test-container-'.substr( md5(rand()), 0, 7);
-
 		$params = array(
-			'username' => 'facebook100000330192569',
-			'password' => 'Dbdj1sXnRSHxIGc4',
-			'container' => $testContainer,
 			'autocreate' => true,
-			'region' => 'RegionOne', //required, trystack defaults to 'RegionOne'
-			'url' => 'http://8.21.28.222:5000/v2.0', // The Identity / Keystone endpoint
-			'tenantName' => 'facebook100000330192569', // required on trystack
-			'serviceName' => 'swift', //trystack uses swift by default, the lib defaults to 'cloudFiles' if omitted
-			'user' => \OC_User::getManager()->get($userName)
 		);
 		$this->objectStorage = new ObjectStoreToTest($params);
 		$params['objectstore'] = $this->objectStorage;
@@ -78,7 +60,6 @@ class Swift extends \Test\Files\Storage\Storage {
 		if (is_null($this->instance)) {
 			return;
 		}
-		$this->objectStorage->deleteContainer(true);
 		$this->instance->getCache()->clear();
 
 		parent::tearDown();
@@ -191,5 +172,19 @@ class Swift extends \Test\Files\Storage\Storage {
 		$this->assertEquals('foo', $this->instance->file_get_contents('target/test1.txt'));
 		$targetId = $this->instance->getCache()->getId('target');
 		$this->assertSame($sourceId, $targetId, 'fileid must be stable on move or shares will break');
+	}
+
+	/**
+	 * Objectstore always returns false because the filecache is updated on the fly
+	 */
+	public function testCheckUpdate() {
+		if ($this->instance instanceof \OC\Files\Storage\Wrapper\Wrapper) {
+			$this->markTestSkipped('Cannot test update check on wrappers');
+		}
+		$textFile = \OC::$SERVERROOT . '/tests/data/lorem.txt';
+		$watcher = $this->instance->getWatcher();
+		$watcher->setPolicy(Watcher::CHECK_ALWAYS);
+		$this->instance->file_put_contents('/lorem.txt', file_get_contents($textFile));
+		$this->assertFalse($watcher->checkUpdate('/lorem.txt'), 'No update');
 	}
 }
