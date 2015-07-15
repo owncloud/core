@@ -471,14 +471,6 @@
 				</field>
 			</index>
 
-			<index>
-				<name>gu_uid_index</name>
-				<field>
-					<name>uid</name>
-					<sorting>ascending</sorting>
-				</field>
-			</index>
-
 		</declaration>
 
 	</table>
