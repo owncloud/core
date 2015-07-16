@@ -1,0 +1,28 @@
+<!DOCTYPE html!>
+<head>
+<meta charset="UTF-8" />
+<script src="lib/client.js"></script>
+</head>
+
+<body>
+
+<script>
+
+var client = new dav.Client({
+    baseUrl : 'http://moz.fruux.net//',
+    userName : 'user1',
+    password : 'password'
+});
+
+client.propFind('/', ['{DAV:}current-user-principal']).then(
+    function(result) {
+        console.log(result);
+    },
+    function(err) {
+        console.log(err);
+    }
+);
+
+</script>
+
+</body>

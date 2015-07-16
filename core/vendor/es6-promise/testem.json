@@ -1,0 +1,14 @@
+{
+  "test_page": "test/index.html",
+  "parallel": 5,
+  "frameworks": "mocha",
+  "launchers": {
+    "Mocha": {
+      "command": "./node_modules/.bin/mocha dist/test/browserify.js"
+    }
+  },
+  "launch_in_ci":  [
+    "PhantomJS",
+    "Mocha"
+  ]
+}
