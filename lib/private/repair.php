@@ -43,6 +43,7 @@ use OC\Repair\RepairConfig;
 use OC\Repair\RepairLegacyStorages;
 use OC\Repair\RepairMimeTypes;
 use OC\Repair\SearchLuceneTables;
+use OC\Repair\UpdateOutdatedOcsIds;
 
 class Repair extends BasicEmitter {
 	/**
@@ -101,7 +102,7 @@ class Repair extends BasicEmitter {
 	 * @return array of RepairStep instances
 	 */
 	public static function getRepairSteps() {
-		return array(
+		return [
 			new RepairMimeTypes(),
 			new RepairLegacyStorages(\OC::$server->getConfig(), \OC_DB::getConnection()),
 			new RepairConfig(),
@@ -111,7 +112,8 @@ class Repair extends BasicEmitter {
 			new DropOldTables(\OC_DB::getConnection()),
 			new DropOldJobs(\OC::$server->getJobList()),
 			new RemoveGetETagEntries(\OC_DB::getConnection()),
-		);
+			new UpdateOutdatedOcsIds(\OC::$server->getConfig()),
+		];
 	}
 
 	/**
