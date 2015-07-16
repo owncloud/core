@@ -391,6 +391,7 @@ class OC {
 			throw new \Exception('Cannot read core/js/core.json');
 		}
 
+		OC_Util::addVendorScript('es6-promise/dist/es6-promise');
 		OC_Util::addScript("placeholders");
 		OC_Util::addScript("jquery-tipsy");
 		OC_Util::addScript("compatibility");
@@ -410,7 +411,7 @@ class OC {
 		OC_Util::addScript('mimetypelist');
 		OC_Util::addVendorScript('snapjs/dist/latest/snap');
 
-		OC_Util::addVendorScript('js-webdav-client/dist-unminified');
+		OC_Util::addVendorScript('davclient.js/lib/client');
 		OC_Util::addScript('files/fileinfo');
 		OC_Util::addScript('files/client');
 

@@ -8,7 +8,7 @@
  *
  */
 
-/* global nl */
+/* global dav */
 
 (function(OC, FileInfo) {
 	/**
@@ -25,18 +25,37 @@
 	 */
 	var Client = function(options) {
 		this._root = options.root;
-		if (this._root.charAt(this._root.length - 1) !== '/') {
-			this._root += '/';
+		if (this._root.charAt(this._root.length - 1) === '/') {
+			this._root = this._root.substr(0, this._root.length - 1);
 		}
 
 		if (!options.port) {
 			// workaround in case port is null or empty
 			options.port = undefined;
 		}
-		options.defaultHeaders = _.extend({
-			'X-Requested-With': 'XMLHttpRequest'
-		}, options.defaultHeaders || {});
-		this._client = new nl.sara.webdav.Client(options);
+		var url = '';
+		var port = '';
+		if (options.useHTTPS) {
+			url += 'https://';
+			if (options.port && options.port !== 443) {
+				port = ':' + options.port;
+			}
+		} else {
+			url += 'http://';
+			if (options.port && options.port !== 80) {
+				port = ':' + options.port;
+			}
+		}
+		url += options.host + port + this._root;
+		this._defaultHeaders = options.defaultHeaders || {'X-Requested-With': 'XMLHttpRequest'};
+		this._baseUrl = url;
+		this._client = new dav.Client({
+			baseUrl: url,
+			xmlNamespaces: {
+				'DAV:': 'd',
+				'http://owncloud.org/ns': 'oc'
+			}
+		});
 	};
 
 	Client.NS_OWNCLOUD = 'http://owncloud.org/ns';
@@ -192,35 +211,44 @@
 
 			path = '/' + decodeURIComponent(path);
 
-			// TODO: use codec for parsing values
+			if (response.propStat.length === 1 && response.propStat[0].status !== 200) {
+				return null;
+			}
+
+			var props = response.propStat[0].properties;
+
 			var data = {
-				id: this._parseFileId(response.getProperty(Client.NS_OWNCLOUD, 'id').getParsedValue()),
+				id: this._parseFileId(props['{' + Client.NS_OWNCLOUD + '}id']),
 				path: OC.dirname(path) || '/',
 				name: OC.basename(path),
-				mtime: response.getProperty(Client.NS_DAV, 'getlastmodified').getParsedValue(),
-				etag: this._parseEtag(response.getProperty(Client.NS_DAV, 'getetag').getParsedValue()),
-				_props: response
+				mtime: new Date(props['{' + Client.NS_DAV + '}getlastmodified']),
+				_props: props
 			};
 
-			var sizeProp = response.getProperty(Client.NS_DAV, 'getcontentlength');
-			if (sizeProp && sizeProp.status === 200) {
-				data.size = parseInt(sizeProp.getParsedValue(), 10);
+			var etagProp = props['{' + Client.NS_DAV + '}getetag'];
+			if (!_.isUndefined(etagProp)) {
+				data.etag = this._parseEtag(etagProp);
 			}
 
-			sizeProp = response.getProperty(Client.NS_OWNCLOUD, 'size');
-			if (sizeProp && sizeProp.status === 200) {
-				data.size = parseInt(sizeProp.getParsedValue(), 10);
+			var sizeProp = props['{' + Client.NS_DAV + '}getcontentlength'];
+			if (!_.isUndefined(sizeProp)) {
+				data.size = parseInt(sizeProp, 10);
 			}
 
-			var contentType = response.getProperty(Client.NS_DAV, 'getcontenttype');
-			if (contentType && contentType.status === 200) {
-				data.mimeType = contentType.getParsedValue();
+			sizeProp = props['{' + Client.NS_OWNCLOUD + '}size'];
+			if (!_.isUndefined(sizeProp)) {
+				data.size = parseInt(sizeProp, 10);
 			}
 
-			var resType = response.getProperty(Client.NS_DAV, 'resourcetype');
+			var contentType = props['{' + Client.NS_DAV + '}getcontenttype'];
+			if (!_.isUndefined(contentType)) {
+				data.mimeType = contentType;
+			}
+
+			var resType = props['{' + Client.NS_DAV + '}resourcetype'];
 			var isFile = true;
-			if (!data.mimeType && resType && resType.status === 200 && resType.xmlvalue) {
-				var xmlvalue = resType.xmlvalue[0];
+			if (!data.mimeType && resType) {
+				var xmlvalue = resType[0];
 				if (xmlvalue.namespaceURI === Client.NS_DAV && xmlvalue.nodeName.split(':')[1] === 'collection') {
 					data.mimeType = 'httpd/unix-directory';
 					isFile = false;
@@ -228,9 +256,9 @@
 			}
 
 			data.permissions = OC.PERMISSION_READ;
-			var permissionProp = response.getProperty(Client.NS_OWNCLOUD, 'permissions');
-			if (permissionProp && permissionProp.status === 200) {
-				var permString = permissionProp.getParsedValue() || '';
+			var permissionProp = props['{' + Client.NS_OWNCLOUD + '}permissions'];
+			if (!_.isUndefined(permissionProp)) {
+				var permString = permissionProp || '';
 				data.mountType = null;
 				for (var i = 0; i < permString.length; i++) {
 					var c = permString.charAt(i);
@@ -276,16 +304,13 @@
 		/**
 		 * Parse Webdav multistatus
 		 *
-		 * @param {Object} response XML object
+		 * @param {Array} responses
 		 */
-		_parseResult: function(response) {
+		_parseResult: function(responses) {
 			var self = this;
-			var result = [];
-			var names = response.getResponseNames();
-			_.each(names, function(name) {
-				result.push(self._parseFileInfo(response.getResponse(name)));
+			return _.map(responses, function(response) {
+				return self._parseFileInfo(response);
 			});
-			return result;
 		},
 
 		/**
@@ -307,10 +332,7 @@
 		_getPropfindProperties: function() {
 			if (!this._propfindProperties) {
 				this._propfindProperties = _.map(Client._PROPFIND_PROPERTIES, function(propDef) {
-					var prop = new nl.sara.webdav.Property();
-					prop.namespace = propDef[0];
-					prop.tagname = propDef[1];
-					return prop;
+					return '{' + propDef[0] + '}' + propDef[1];
 				});
 			}
 			return this._propfindProperties;
@@ -334,23 +356,22 @@
 			var deferred = $.Deferred();
 			var promise = deferred.promise();
 
-			this._client.propfind(
-				this._buildPath(this._root, path),
-				function(status, body) {
-					if (self._isSuccessStatus(status)) {
-						var results = self._parseResult(body);
-						if (!options || !options.includeParent) {
-							// remove root dir, the first entry
-							results.shift();
-						}
-						deferred.resolve(status, results);
-					} else {
-						deferred.reject(status);
+			this._client.propFind(
+				this._baseUrl + this._buildPath(path),
+				this._getPropfindProperties(),
+				1
+			).then(function(result) {
+				if (self._isSuccessStatus(result.status)) {
+					var results = self._parseResult(result.body);
+					if (!options || !options.includeParent) {
+						// remove root dir, the first entry
+						results.shift();
 					}
-				},
-				1,
-				this._getPropfindProperties()
-			);
+					deferred.resolve(result.status, results);
+				} else {
+					deferred.reject(result.status);
+				}
+			});
 			return promise;
 		},
 
@@ -372,16 +393,17 @@
 			var promise = deferred.promise();
 
 			this._client.propfind(
-				this._buildPath(this._root, path),
-				function(status, body) {
-					if (self._isSuccessStatus(status)) {
-						deferred.resolve(status, self._parseResult(body)[0]);
+				this._baseUel + this._buildPath(path),
+				this._getPropfindProperties(),
+				0
+			).then(
+				function(result) {
+					if (self._isSuccessStatus(result.status)) {
+						deferred.resolve(result.status, self._parseResult(result.body));
 					} else {
-						deferred.reject(status);
+						deferred.reject(result.status);
 					}
-				},
-				0,
-				this._getPropfindProperties()
+				}
 			);
 			return promise;
 		},
