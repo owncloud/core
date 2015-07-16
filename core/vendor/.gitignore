@@ -1,5 +1,4 @@
 test/
-tests/
 src/
 bower.json
 .gitignore
@@ -113,14 +112,3 @@ snapjs/dist/2.0.0-rc1
 snapjs/dist/latest/snap.css
 snapjs/dist/latest/snap.min.js
 snapjs/scripts
-
-
-# js-webdav-client
-!js-webdav-client/.bower.json
-js-webdav-client/.gitmodules
-js-webdav-client/scripts
-js-webdav-client/docs
-js-webdav-client/dist.js
-js-webdav-client/*.jar
-!js-webdav-client/dist-unminified.js
-
