@@ -1,5 +1,4 @@
 test/
-tests/
 src/
 bower.json
 .gitignore
@@ -123,13 +122,4 @@ bootstrap/js/*
 
 # backbone
 backbone/backbone-min*
-
-# js-webdav-client
-!js-webdav-client/.bower.json
-js-webdav-client/.gitmodules
-js-webdav-client/scripts
-js-webdav-client/docs
-js-webdav-client/dist.js
-js-webdav-client/*.jar
-!js-webdav-client/dist-unminified.js
 
