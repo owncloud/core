@@ -42,16 +42,22 @@ dav.Client.prototype = {
         };
 
         var body =
+            '<?xml version="1.0"?>\n' +
             '<d:propfind ';
-        var namespace;
-        for (namespace in this.xmlNamespaces) {
-            body += ' xmlns:' + this.xmlNamespaces[namespace] + '="' + namespace + '"';
-        }
-        body += '>\n' +
-            '  <d:prop>\n';
+
+		var namespace;
+		for (namespace in this.xmlNamespaces) {
+			body += ' xmlns:' + this.xmlNamespaces[namespace] + '="' + namespace + '"';
+		}
+		body += '>\n' +
+			'  <d:prop>\n';
 
         for(var ii in properties) {
-
+			var propText = properties[ii];
+			if (typeof propText !== 'string') {
+				// can happen on IE8
+				continue;
+			}
             var property = this.parseClarkNotation(properties[ii]);
             if (this.xmlNamespaces[property.namespace]) {
                 body+='    <' + this.xmlNamespaces[property.namespace] + ':' + property.name + ' />\n';
@@ -65,12 +71,17 @@ dav.Client.prototype = {
 
         return this.request('PROPFIND', url, headers, body).then(
             function(result) {
-
-                result = this.parseMultiStatus(result.body);
+                var elements = this.parseMultiStatus(result.xhr.responseXML);
                 if (depth===0) {
-                    return result[0];
+                    return {
+						status: result.status,
+						body: elements[0]
+					};
                 } else {
-                    return result;
+                    return {
+						status: result.status,
+						body: elements
+					};
                 }
 
             }.bind(this)
@@ -105,13 +116,14 @@ dav.Client.prototype = {
         return new Promise(function(fulfill, reject) {
 
             xhr.onreadystatechange = function() {
-
                 if (xhr.readyState !== 4) {
                     return;
                 }
 
                 fulfill({
-                    body: xhr.response
+					status: xhr.status,
+                    body: xhr.response,
+					xhr: xhr
                 });
 
             };
@@ -125,6 +137,16 @@ dav.Client.prototype = {
         });
 
     },
+
+	_getElementsByTagName: function(node, name, resolver) {
+		var parts = name.split(':');
+		var tagName = parts[1];
+		var namespace = resolver(parts[0]);
+		if (node.getElementsByTagNameNS) {
+			return node.getElementsByTagNameNS(namespace, tagName);
+		}
+		return node.getElementsByTagName(name);
+	},
 
     /**
      * Returns an XMLHttpRequest object.
@@ -146,11 +168,9 @@ dav.Client.prototype = {
      * @param {string} xmlBody
      * @param {Array}
      */
-    parseMultiStatus : function(xmlBody) {
+    parseMultiStatus : function(doc) {
 
-        var parser = new DOMParser();
-        var doc = parser.parseFromString(xmlBody, "application/xml");
-
+		var result = [];
         var resolver = function(foo) {
             var ii;
             for(ii in this.xmlNamespaces) {
@@ -160,48 +180,49 @@ dav.Client.prototype = {
             }
         }.bind(this);
 
-        var responseIterator = doc.evaluate('/d:multistatus/d:response', doc, resolver);
-
-        var result = [];
-        var responseNode = responseIterator.iterateNext();
-
-        while(responseNode) {
-
+		var responses = this._getElementsByTagName(doc, 'd:response', resolver);
+		var i;
+		for (i = 0; i < responses.length; i++) {
+			var responseNode = responses[i];
             var response = {
                 href : null,
                 propStat : []
             };
 
-            response.href = doc.evaluate('string(d:href)', responseNode, resolver).stringValue;
+			var hrefNode = this._getElementsByTagName(responseNode, 'd:href', resolver)[0];
 
-            var propStatIterator = doc.evaluate('d:propstat', responseNode, resolver);
-            var propStatNode = propStatIterator.iterateNext();
+            response.href = hrefNode.textContent || hrefNode.text;
 
-            while(propStatNode) {
+            var propStatNodes = this._getElementsByTagName(responseNode, 'd:propstat', resolver);
+			var j = 0;
+
+            for (j = 0; j < propStatNodes.length; j++) {
+				var propStatNode = propStatNodes[j];
+				var statusNode = this._getElementsByTagName(propStatNode, 'd:status', resolver)[0];
 
                 var propStat = {
-                    status : doc.evaluate('string(d:status)', propStatNode, resolver).stringValue,
-                    properties : [],
+					status : statusNode.textContent || statusNode.text,
+                    properties : []
                 };
 
-                var propIterator = doc.evaluate('d:prop/*', propStatNode, resolver);
-
-                var propNode = propIterator.iterateNext();
-                while(propNode) {
-
-                    propStat.properties['{' + propNode.namespaceURI + '}' + propNode.localName] = propNode.textContent;
-                    propNode = propIterator.iterateNext();
+                var propNode = this._getElementsByTagName(propStatNode, 'd:prop', resolver)[0];
+				var k = 0;
+				for (k = 0; k < propNode.childNodes.length; k++) {
+					var prop = propNode.childNodes[k];
+					var value = prop.textContent || prop.text;
+					/*
+					if (prop.childNodes && prop.childNodes.length > 0 && !(prop.childNodes[0] instanceof Text)) {
+						// use node list instead
+						value = prop.childNodes;
+					}
+					*/
+					propStat.properties['{' + prop.namespaceURI + '}' + (prop.localName || prop.baseName)] = value;
 
                 }
                 response.propStat.push(propStat);
-                propStatNode = propStatIterator.iterateNext();
-
-
             }
 
             result.push(response);
-            responseNode = responseIterator.iterateNext();
-
         }
 
         return result;
