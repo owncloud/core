@@ -141,9 +141,6 @@ class Helper {
 		$entry['mtime'] = $i['mtime'] * 1000;
 		// only pick out the needed attributes
 		$entry['icon'] = \OCA\Files\Helper::determineIcon($i);
-		if (\OC::$server->getPreviewManager()->isAvailable($i)) {
-			$entry['isPreviewAvailable'] = true;
-		}
 		$entry['name'] = $i->getName();
 		$entry['permissions'] = $i['permissions'];
 		$entry['mimetype'] = $i['mimetype'];

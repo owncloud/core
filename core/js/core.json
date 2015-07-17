@@ -6,7 +6,8 @@
 		"underscore/underscore.js",
 		"moment/min/moment-with-locales.js",
 		"handlebars/handlebars.js",
-		"blueimp-md5/js/md5.js"
+		"blueimp-md5/js/md5.js",
+		"js-webdav-client/dist-unminified.js"
 	],
 	"libraries": [
 		"jquery-showpassword.js",
@@ -29,6 +30,8 @@
 		"setupchecks.js",
 		"../search/js/search.js",
 		"mimetype.js",
-		"mimetypelist.js"
+		"mimetypelist.js",
+		"files/fileinfo.js",
+		"files/client.js"
 	]
 }
