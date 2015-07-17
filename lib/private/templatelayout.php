@@ -144,6 +144,7 @@ class OC_TemplateLayout extends OC_Template {
 		$useAssetPipeline = self::isAssetPipelineEnabled();
 		if ($useAssetPipeline) {
 			$this->append( 'jsfiles', OC_Helper::linkToRoute('js_config', array('v' => self::$versionHash)));
+			$this->append( 'jsfiles', OC_Helper::linkToRoute('js_previewproviders', array('v' => self::$versionHash)));
 			$this->generateAssets();
 		} else {
 			// Add the js files
@@ -157,6 +158,8 @@ class OC_TemplateLayout extends OC_Template {
 				$file = $info[2];
 				$this->append( 'jsfiles', $web.'/'.$file . '?v=' . self::$versionHash);
 			}
+
+			$this->append( 'jsfiles', OC_Helper::linkToRoute('js_previewproviders', array('v' => self::$versionHash)));
 
 			// Add the css files
 			$cssFiles = self::findStylesheetFiles(OC_Util::$styles);
