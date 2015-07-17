@@ -128,6 +128,8 @@ class OC {
 			self::$configDir = OC::$SERVERROOT . '/' . PHPUNIT_CONFIG_DIR . '/';
 		} elseif(defined('PHPUNIT_RUN') and PHPUNIT_RUN and is_dir(OC::$SERVERROOT . '/tests/config/')) {
 			self::$configDir = OC::$SERVERROOT . '/tests/config/';
+		} elseif(getenv('OWNCLOUD_CONFIG')) {
+			self::$configDir = getenv('OWNCLOUD_CONFIG');
 		} else {
 			self::$configDir = OC::$SERVERROOT . '/config/';
 		}
@@ -243,7 +245,7 @@ class OC {
 		$l = \OC::$server->getL10N('lib');
 
 		// Create config in case it does not already exists
-		$configFilePath = self::$configDir .'/config.php';
+		$configFilePath = self::$configDir .'config.php';
 		if(!file_exists($configFilePath)) {
 			@touch($configFilePath);
 		}
