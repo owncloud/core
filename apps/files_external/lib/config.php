@@ -148,8 +148,8 @@ class OC_Mount_Config {
 		$backends = self::getBackends();
 
 		//move config file to it's new position
-		if (is_file(\OC::$SERVERROOT . '/config/mount.json')) {
-			rename(\OC::$SERVERROOT . '/config/mount.json', $mount_file);
+		if (is_file(\OC::$OC::$configDir . 'mount.json')) {
+			rename(\OC::$OC::$configDir . 'mount.json', $mount_file);
 		}
 
 		// Load system mount points
@@ -628,7 +628,7 @@ class OC_Mount_Config {
 			$phpFile = OC_User::getHome($user) . '/mount.php';
 			$jsonFile = OC_User::getHome($user) . '/mount.json';
 		} else {
-			$phpFile = OC::$SERVERROOT . '/config/mount.php';
+			$phpFile = OC::$configDir . 'mount.php';
 			$datadir = \OC_Config::getValue('datadirectory', \OC::$SERVERROOT . '/data/');
 			$jsonFile = \OC_Config::getValue('mount_file', $datadir . '/mount.json');
 		}

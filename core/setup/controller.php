@@ -40,7 +40,7 @@ class Controller {
 						 IniGetWrapper $iniWrapper,
 						 IL10N $l10n,
 						 \OC_Defaults $defaults) {
-		$this->autoConfigFile = \OC::$SERVERROOT.'/config/autoconfig.php';
+		$this->autoConfigFile = \OC::$configDir.'autoconfig.php';
 		$this->config = $config;
 		$this->iniWrapper = $iniWrapper;
 		$this->l10n = $l10n;
