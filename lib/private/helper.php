@@ -394,7 +394,7 @@ class OC_Helper {
 	 *
 	 * @param string $path
 	 * @return string
-	 * @deprecated Use \OC::$server->getMimeTypeDetector()->detectPath($path)
+	 * @deprecated 8.2.0 Use \OC::$server->getMimeTypeDetector()->detectPath($path)
 	 */
 	static public function getFileNameMimeType($path) {
 		return \OC::$server->getMimeTypeDetector()->detectPath($path);
@@ -406,7 +406,7 @@ class OC_Helper {
 	 * @param string $path
 	 * @return string
 	 * does NOT work for ownClouds filesystem, use OC_FileSystem::getMimeType instead
-	 * @deprecated Use \OC::$server->getMimeTypeDetector()->detect($path)
+	 * @deprecated 8.2.0 Use \OC::$server->getMimeTypeDetector()->detect($path)
 	 */
 	static function getMimeType($path) {
 		return \OC::$server->getMimeTypeDetector()->detect($path);
@@ -417,7 +417,7 @@ class OC_Helper {
 	 *
 	 * @param string $mimeType
 	 * @return string
-	 * @deprecated Use \OC::$server->getMimeTypeDetector()->getSecureMimeType($mimeType)
+	 * @deprecated 8.2.0 Use \OC::$server->getMimeTypeDetector()->getSecureMimeType($mimeType)
 	 */
 	static function getSecureMimeType($mimeType) {
 		return \OC::$server->getMimeTypeDetector()->getSecureMimeType($mimeType);
