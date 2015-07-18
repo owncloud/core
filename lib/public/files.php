@@ -64,6 +64,16 @@ class Files {
 	}
 
 	/**
+	 * Get the mimetype form a file name
+	 * @param string $path
+	 * @return string
+	 * @since 8.2.0
+	 */
+	static function getMimeTypeByFileName($path) {
+		return \OC_Helper::getFileNameMimeType($path);
+	}
+
+	/**
 	 * Search for files by mimetype
 	 * @param string $mimetype
 	 * @return array
