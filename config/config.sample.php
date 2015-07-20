@@ -738,7 +738,6 @@ $CONFIG = array(
 	'OC\Preview\MP3',
 	'OC\Preview\TXT',
 	'OC\Preview\MarkDown'
-	'OC\Preview\RTF',
 ),
 
 /**
