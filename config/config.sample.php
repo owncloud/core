@@ -648,6 +648,7 @@ $CONFIG = array(
  *  - OC\Preview\PDF
  *  - OC\Preview\StarOffice
  *  - OC\Preview\SVG
+ *  - OC\Preview\RTF
  *
  * .. note:: Troubleshooting steps for the MS Word previews are available
  *    at the :doc:`collaborative_documents_configuration` section
