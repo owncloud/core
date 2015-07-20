@@ -111,3 +111,11 @@ API::Register('get',
 		[$groups, 'getGroups'],
 		'files_sharing',
 		API::USER_AUTH);
+
+$users = new \OCA\Files_Sharing\API\User(\OC::$server->getUserManager(),
+                                         \OC::$server->getURLGenerator());
+API::Register('get',
+		'/apps/files_sharing/api/v1/users',
+		[$users, 'getUsers'],
+		'files_sharing',
+		API::USER_AUTH);
