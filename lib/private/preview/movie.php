@@ -83,7 +83,7 @@ class Movie extends Provider {
 		$tmpPath = \OC_Helper::tmpFile();
 
 		if (self::$avconvBinary) {
-			$cmd = self::$avconvBinary . ' -an -y -ss ' . escapeshellarg($second) .
+			$cmd = self::$avconvBinary . ' -y -ss ' . escapeshellarg($second) .
 				' -i ' . escapeshellarg($absPath) .
 				' -f mjpeg -vframes 1 -vsync 1 ' . escapeshellarg($tmpPath) .
 				' > /dev/null 2>&1';
