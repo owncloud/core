@@ -872,6 +872,28 @@ OC.Share={
 			expireDateString = year + "-" + month + '-' + day + ' 00:00:00';
 		}
 		return expireDateString;
+	},
+	keyUpDelayedOrEnter: function(selector, callback, allowEmptyValue) {
+		var cb = callback;
+
+		$(document).on('keyup', selector, _.debounce(function (event) {
+			// enter is already handled in keypress
+			if (event.keyCode === 13) {
+				return;
+			}
+			var that = $(selector);
+			if (allowEmptyValue || that.val() !== '') {
+				cb(event);
+			}
+		}, 1000));
+
+		$(document).on('keypress', selector, function (event) {
+			var that = $(selector);
+			if (event.keyCode === 13 && (allowEmptyValue || that.val() !== '')) {
+				event.preventDefault();
+				cb(event);
+			}
+		});
 	}
 };
 
@@ -1147,9 +1169,10 @@ $(document).ready(function() {
 		}
 	});
 
-	$(document).on('focusout keyup', '#dropdown #linkPassText', function(event) {
+
+	OC.Share.keyUpDelayedOrEnter('#dropdown #linkPassText', function(event) {
 		var linkPassText = $('#linkPassText');
-		if ( linkPassText.val() != '' && (event.type == 'focusout' || event.keyCode == 13) ) {
+		if ( linkPassText.val() != '') {
 			var allowPublicUpload = $('#sharingDialogAllowPublicUpload').is(':checked');
 			var dropDown = $('#dropdown');
 			var itemType = dropDown.data('item-type');
