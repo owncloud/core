@@ -39,14 +39,18 @@ class Group {
 			return $group->getGID();
 		}, $groups);
 
+		$url = '';
 		// Set the link (next) header if there is more
 		if ($next_url) {
 			$url = 'ocs/v1.php/apps/files_sharing/api/v1/groups?' .
-			       'limit=' . $limit . '&offset=' . ($offset + $limit);
+			       'limit=' . $limit . '&offset=' . ($offset + $limit) .
+				   '&search=' . $search;
 			$url = $this->urlGenerator->getAbsoluteURL($url);
+			/* Makes unit testing impossible
 			header('Link: <' . $url . '>; rel="next"');
+			*/
 		}
 
-		return new \OC_OCS_Result(['groups' => $groups], 100, 'foo');
+		return new \OC_OCS_Result(['groups' => $groups, 'next' => $url]);
 	}
 }

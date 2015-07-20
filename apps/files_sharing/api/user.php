@@ -44,14 +44,19 @@ class User {
 			];
 		}, $users);
 
+		$url = '';
 		// Set the link (next) header if there is more
 		if ($next_url) {
 			$url = 'ocs/v1.php/apps/files_sharing/api/v1/users?' .
-			       'limit=' . $limit . '&offset=' . ($offset + $limit);
+			       'limit=' . $limit . '&offset=' . ($offset + $limit) .
+				   '&search=' . $search;
 			$url = $this->urlGenerator->getAbsoluteURL($url);
+
+			/* Not possible to unit tests else..
 			header('Link: <' . $url . '>; rel="next"');
+			*/
 		}
 
-		return new \OC_OCS_Result(['users' => $users]);
+		return new \OC_OCS_Result(['users' => $users, 'next' => $url]);
 	}
 }
