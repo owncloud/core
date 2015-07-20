@@ -212,6 +212,7 @@ class PreviewManager implements IPreview {
 	 *  - OC\Preview\StarOffice
 	 *  - OC\Preview\SVG
 	 *  - OC\Preview\TIFF
+	 *  - OC\Preview\RTF
 	 *
 	 * @return array
 	 */
@@ -319,6 +320,7 @@ class PreviewManager implements IPreview {
 						$this->registerCoreProvider('\OC\Preview\MSOffice2007', '/application\/vnd.openxmlformats-officedocument.*/');
 						$this->registerCoreProvider('\OC\Preview\OpenDocument', '/application\/vnd.oasis.opendocument.*/');
 						$this->registerCoreProvider('\OC\Preview\StarOffice', '/application\/vnd.sun.xml.*/');
+						$this->registerCoreProvider('\OC\Preview\RTF', '/application\/rtf.*/');
 					}
 				}
 			}

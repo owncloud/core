@@ -129,6 +129,7 @@
 	"py": ["text/x-python"],
 	"raf": ["image/x-dcraw"],
 	"rar": ["application/x-rar-compressed"],
+	"rtf": ["application/rtf"],
 	"reveal": ["text/reveal"],
 	"rw2": ["image/x-dcraw"],
 	"sgf": ["application/sgf"],
