@@ -56,6 +56,7 @@ use OC\Security\Crypto;
 use OC\Security\Hasher;
 use OC\Security\SecureRandom;
 use OC\Security\TrustedDomainHelper;
+use OC\Session\CryptoWrapper;
 use OC\Tagging\TagMapper;
 use OCP\IServerContainer;
 
@@ -156,7 +157,12 @@ class Server extends SimpleContainer implements IServerContainer {
 		});
 		$this->registerService('UserSession', function (Server $c) {
 			$manager = $c->getUserManager();
-			$userSession = new \OC\User\Session($manager, new \OC\Session\Memory(''));
+
+			$session = new \OC\Session\Memory('');
+			$cryptoWrapper = $c->getSessionCryptoWrapper();
+			$session = $cryptoWrapper->wrapSession($session);
+
+			$userSession = new \OC\User\Session($manager, $session);
 			$userSession->listen('\OC\User', 'preCreateUser', function ($uid, $password) {
 				\OC_Hook::emit('OC_User', 'pre_createUser', array('run' => true, 'uid' => $uid, 'password' => $password));
 			});
@@ -442,6 +448,13 @@ class Server extends SimpleContainer implements IServerContainer {
 		});
 		$this->registerService('MountManager', function () {
 			return new \OC\Files\Mount\Manager();
+		});
+		$this->registerService('CryptoWrapper', function (Server $c) {
+			return new CryptoWrapper(
+				$c->getConfig(),
+				$c->getCrypto(),
+				$c->getSecureRandom()
+			);
 		});
 	}
 
@@ -929,5 +942,12 @@ class Server extends SimpleContainer implements IServerContainer {
 	 **/
 	function getMountManager() {
 		return $this->query('MountManager');
+	}
+
+	/**
+	 * @return \OC\Session\CryptoWrapper
+	 */
+	public function getSessionCryptoWrapper() {
+		return $this->query('CryptoWrapper');
 	}
 }
