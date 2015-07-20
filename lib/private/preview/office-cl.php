@@ -135,4 +135,15 @@ if (!\OC_Util::runningOnWindows()) {
 	}
 
 	\OC\Preview::registerProvider('OC\Preview\StarOffice');
+
+	// RTF
+	class RTF extends Office {
+
+		public function getMimeType() {
+			return '/application\/rtf.*/';
+		}
+
+	}
+
+	\OC\Preview::registerProvider('OC\Preview\RTF');
 }

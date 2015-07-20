@@ -122,6 +122,7 @@ return array(
 	'py' => array('text/x-python', null),
 	'rar' => array('application/x-rar-compressed', null),
 	'reveal' => array('text/reveal', null),
+	'rtf' => array('application/rtf', null),
 	'sgf' => array('application/sgf', null),
 	'sh-lib' => array('text/x-shellscript', null),
 	'sh' => array('text/x-shellscript', null),
