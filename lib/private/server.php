@@ -59,7 +59,6 @@ use OC\Security\SecureRandom;
 use OC\Security\TrustedDomainHelper;
 use OC\Tagging\TagMapper;
 use OCP\IServerContainer;
-use OC\CapabilitiesManager;
 
 /**
  * Class Server
@@ -446,7 +445,11 @@ class Server extends SimpleContainer implements IServerContainer {
 			return new \OC\Files\Mount\Manager();
 		});
 		$this->registerService('CapabilitiesManager', function () {
-			return new CapabilitiesManager();
+			$manager = new \OC\CapabilitiesManager();
+			$manager->registerCapability(function() {
+				return new \OC\OCS\CoreCapabilities();
+			});
+			return $manager;
 		});
 	}
 
