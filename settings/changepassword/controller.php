@@ -35,16 +35,17 @@ class Controller {
 		\OC_JSON::callCheck();
 		\OC_JSON::checkLoggedIn();
 
-		$username = \OC_User::getUser();
+		$userSession = \OC::$server->getUserSession();
+		$user = $userSession->getUser();
 		$password = isset($_POST['personal-password']) ? $_POST['personal-password'] : null;
 		$oldPassword = isset($_POST['oldpassword']) ? $_POST['oldpassword'] : '';
 
-		if (!\OC_User::checkPassword($username, $oldPassword)) {
+		if (!\OC_User::checkPassword($userSession->getLoginName(), $oldPassword)) {
 			$l = new \OC_L10n('settings');
 			\OC_JSON::error(array("data" => array("message" => $l->t("Wrong password")) ));
 			exit();
 		}
-		if (!is_null($password) && \OC_User::setPassword($username, $password)) {
+		if (!is_null($password) && \OC_User::setPassword($user->getUID(), $password)) {
 			\OC_JSON::success();
 		} else {
 			\OC_JSON::error();
