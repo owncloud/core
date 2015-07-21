@@ -236,6 +236,47 @@ class Session implements IUserSession, Emitter {
 	}
 
 	/**
+	 * Perform login using the client certificate.
+	 *
+	 * @param string $certificate PEM encoded client certificate
+	 * @return bool
+	 */
+	public function loginWithCertificate($certificate) {
+		/* due to some bug in the openssl library, leading whitespaces are not allowed.
+		 * Otherwise the library can not parse the PEM certificate. And for some other reason
+		 * nginx inserts some leading whitespace... */
+		$certificate = preg_replace("#^\s+#m", "", $certificate);
+
+		$parseResult = openssl_x509_parse($certificate);
+
+		// Use the common name in the certificate. Use it as username/uid.
+		// It might be nice to create a new user using other fields in the
+		// certificate, e.g. surname, givenName, if the user doesn't exist yet.
+		$commonName = $parseResult["subject"]["CN"];
+
+		$user = $this->manager->get($commonName);
+
+		if(!is_null($user) && $user->isEnabled()) {
+			$this->manager->emit("OC_User", "preLogin",
+				array("uid" => $commonName));
+			\OCP\Util::writeLog('core', 'User ' . $commonName . ' logged in with a certificate',
+				\OCP\Util::DEBUG);
+
+			$this->setUser($user);
+			$this->setLoginName($commonName);
+			$this->manager->emit("OC_User", "postLogin",
+				array("uid" => $commonName, 'password' => ''));
+			return true;
+		} else {
+			\OCP\Util::writeLog('core', 'User ' . $commonName . ' tryed to login with a certificate, '
+				. ' but does not exist in the database '
+				. '(or is disabled. Use CRLs to disable certificates!), aborting.',
+				\OCP\Util::ERROR);
+			return false;
+		}
+	}
+
+	/**
 	 * perform login using the magic cookie (remember login)
 	 *
 	 * @param string $uid the username

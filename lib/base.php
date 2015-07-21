@@ -657,7 +657,7 @@ class OC {
 		self::registerFilesystemHooks();
 		if (\OC::$server->getSystemConfig()->getValue('enable_previews', true)) {
 			self::registerPreviewHooks();
-		}	
+		}
 		self::registerShareHooks();
 		self::registerLogRotate();
 		self::registerLocalAddressBook();
@@ -962,7 +962,9 @@ class OC {
 
 		try {
 			// auth possible via apache module?
-			if (OC::tryApacheAuth()) {
+			if (OC::tryCertificateLogin()) {
+				$error[] = 'certificatefailed';
+			} elseif (OC::tryApacheAuth()) {
 				$error[] = 'apacheauthfailed';
 			} // remember was checked after last login
 			elseif (OC::tryRememberLogin()) {
@@ -996,6 +998,31 @@ class OC {
 				$config->deleteUserValue($user, 'login_token', $token);
 			}
 		}
+	}
+
+	/**
+	 * Try to login a user via the client certificate.
+	 * @return bool
+	 */
+	protected static function tryCertificateLogin() {
+		if (OC::$server->getAppConfig()->getValue("core", "client_certificate_enabled", "no") !== "yes"
+			|| !isset($_SERVER["SSL_CLIENT_VERIFY"])
+			|| !isset($_SERVER["SSL_CLIENT_CERT"])
+			|| $_SERVER["SSL_CLIENT_VERIFY"] !== "SUCCESS") {
+			return false;
+		}
+
+		\OCP\Util::writeLog('core', 'Trying to login with certificate', \OCP\Util::DEBUG);
+
+		$result = OC_User::loginWithCertificate($_SERVER["SSL_CLIENT_CERT"]);
+
+		// if return is true, we are logged in -> redirect to the default page
+		if ($result === true) {
+			OC_Util::redirectToDefaultPage();
+			exit;
+		}
+
+		return $result;
 	}
 
 	/**
