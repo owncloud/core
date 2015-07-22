@@ -19,7 +19,7 @@
  *
  */
 
-namespace OCA\Files_Trashbin\Appinfo;
+namespace OCA\Files_Trashbin\AppInfo;
 
 use OCP\AppFramework\App;
 use OCA\Files_Trashbin\Capabilities;

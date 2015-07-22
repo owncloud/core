@@ -20,7 +20,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-namespace OCA\Files\Appinfo;
+namespace OCA\Files\AppInfo;
 
 use OCA\Files\Controller\ApiController;
 use OCP\AppFramework\App;

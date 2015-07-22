@@ -21,7 +21,7 @@
  *
  */
 
-namespace OCA\Files_Sharing\Appinfo;
+namespace OCA\Files_Sharing\AppInfo;
 
 use OCA\Files_Sharing\Helper;
 use OCA\Files_Sharing\MountProvider;
