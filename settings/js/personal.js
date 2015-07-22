@@ -238,7 +238,7 @@ $(document).ready(function () {
 		fail: function (e, data){
 			avatarResponseHandler({
 				data: {
-					message: t('settings', 'An error occured') + ': ' + data.jqXHR.status + ' ' + data.jqXHR.statusText
+					message: t('settings', 'An error occured:') + ' ' + data.jqXHR.status + ' ' + data.jqXHR.statusText
 				}
 			});
 		}
@@ -262,7 +262,7 @@ $(document).ready(function () {
 					.fail(function(jqxhr, status){
 						avatarResponseHandler({
 							data: {
-								message: t('settings', 'An error occured') + ': ' + jqxhr.status + ' ' + jqxhr.statusText
+								message: t('settings', 'An error occured:') + ' ' + jqxhr.status + ' ' + jqxhr.statusText
 							}
 						});
 					});
