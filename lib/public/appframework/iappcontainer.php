@@ -90,6 +90,7 @@ interface IAppContainer extends IContainer {
 	 * Register a capability
 	 *
 	 * @param string $class
+	 * @since 8.2.0
 	 */
 	 public function registerCapability($class);
 }
