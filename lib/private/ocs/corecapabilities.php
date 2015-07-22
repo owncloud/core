@@ -22,6 +22,7 @@
 namespace OC\OCS;
 
 use OCP\Capabilities\ICapability;
+use OCP\IConfig;
 
 /**
  * Class Capabilities
@@ -29,6 +30,16 @@ use OCP\Capabilities\ICapability;
  * @package OC\OCS
  */
 class CoreCapabilities implements ICapability {
+
+	/** @var IConfig */
+	private $config;
+
+	/**
+	 * @param IConfig $config
+	 */
+	public function __construct(IConfig $config) {
+		$this->config = $config;
+	}
 
 	/**
 	 * Return this classes capabilities
@@ -38,7 +49,7 @@ class CoreCapabilities implements ICapability {
 	public function getCapabilities() {
 		return [
 			'core' => [
-				'pollinterval' => \OC::$server->getConfig()->getSystemValue('pollinterval', 60)
+				'pollinterval' => $this->config->getSystemValue('pollinterval', 60)
 			]
 		];
 	}
