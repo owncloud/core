@@ -430,12 +430,4 @@ interface IServerContainer {
 	 * @since 8.2.0
 	 */
 	public function getMountManager();
-
-	/**
-	 * Get the manager of all the capabilities
-	 *
-	 * @return \OCP\Capabilities\IManager
-	 * @since 8.2.0
-	 */
-	public function getCapabilitiesManager();
 }
