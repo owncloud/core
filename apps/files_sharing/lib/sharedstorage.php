@@ -41,7 +41,22 @@ use OCP\Lock\ILockingProvider;
  */
 class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 
-	private $share;   // the shared resource
+	/**
+	 * The shared resource
+	 *
+	 * @var array
+	 */
+	private $share;
+
+	/**
+	 * The user for which this shared storage was created, which
+	 * is technically the recipient of the share for which the
+	 * shared storage was mounted.
+	 *
+	 * @var string
+	 */
+	private $user;
+
 	private $files = array();
 	private static $isInitialized = array();
 
@@ -53,6 +68,7 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 	public function __construct($arguments) {
 		$this->share = $arguments['share'];
 		$this->ownerView = $arguments['ownerView'];
+		$this->user = $arguments['user'];
 	}
 
 	/**
@@ -74,6 +90,16 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 	}
 
 	/**
+	 * Returns the user for which this shared storage belongs,
+	 * the user being the share recipient.
+	 *
+	 * @return string
+	 */
+	public function getUser() {
+		return $this->user;
+	}
+
+	/**
 	 * Get the source file path, permissions, and owner for a shared file
 	 *
 	 * @param string $target Shared target file path
@@ -83,14 +109,24 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 		if (!isset($this->files[$target])) {
 			// Check for partial files
 			if (pathinfo($target, PATHINFO_EXTENSION) === 'part') {
-				$source = \OC_Share_Backend_File::getSource(substr($target, 0, -5), $this->getMountPoint(), $this->getItemType());
+				$source = \OC_Share_Backend_File::getSource(
+					substr($target, 0, -5),
+					$this->getMountPoint(),
+					$this->getItemType(),
+					$this->user
+				);
 				if ($source) {
 					$source['path'] .= '.part';
 					// All partial files have delete permission
 					$source['permissions'] |= \OCP\Constants::PERMISSION_DELETE;
 				}
 			} else {
-				$source = \OC_Share_Backend_File::getSource($target, $this->getMountPoint(), $this->getItemType());
+				$source = \OC_Share_Backend_File::getSource(
+					$target,
+					$this->getMountPoint(),
+					$this->getItemType(),
+					$this->user
+				);
 			}
 			$this->files[$target] = $source;
 		}

@@ -205,21 +205,38 @@ class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 	}
 
 	/**
-	 * @param string $target
-	 * @param string $mountPoint
-	 * @param string $itemType
+	 * Returns the share entry matching the given mount point
+	 *
+	 * @param string $target target path inside the share
+	 * @param string $mountPoint mount point path
+	 * @param string $itemType share item type
+	 * @param string $user user receiving the share
 	 * @return array|false source item
 	 */
-	public static function getSource($target, $mountPoint, $itemType) {
+	public static function getSource($target, $mountPoint, $itemType, $user = null) {
 		if ($itemType === 'folder') {
-			$source = \OCP\Share::getItemSharedWith('folder', $mountPoint, \OC_Share_Backend_File::FORMAT_SHARED_STORAGE);
+			$source = \OCP\Share::getItemSharedWith(
+				'folder',
+				$mountPoint,
+				\OC_Share_Backend_File::FORMAT_SHARED_STORAGE,
+				null,
+				false,
+				$user
+			);
 			if ($source && $target !== '') {
 				// note: in case of ext storage mount points the path might be empty
 				// which would cause a leading slash to appear
 				$source['path'] = ltrim($source['path'] . '/' . $target, '/');
 			}
 		} else {
-			$source = \OCP\Share::getItemSharedWith('file', $mountPoint, \OC_Share_Backend_File::FORMAT_SHARED_STORAGE);
+			$source = \OCP\Share::getItemSharedWith(
+				'file',
+				$mountPoint,
+				\OC_Share_Backend_File::FORMAT_SHARED_STORAGE,
+				null,
+				false,
+				$user
+			);
 		}
 		if ($source) {
 			return self::resolveReshares($source);

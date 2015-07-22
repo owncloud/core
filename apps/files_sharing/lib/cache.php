@@ -40,7 +40,14 @@ use OCP\Share_Backend_Collection;
  */
 class Shared_Cache extends Cache {
 
+	/**
+	 * @var \OC\Files\Storage\Shared
+	 */
 	private $storage;
+
+	/**
+	 * @var array
+	 */
 	private $files = array();
 
 	/**
@@ -60,7 +67,12 @@ class Shared_Cache extends Cache {
 		if ($target === false || $target === $this->storage->getMountPoint()) {
 			$target = '';
 		}
-		$source = \OC_Share_Backend_File::getSource($target, $this->storage->getMountPoint(), $this->storage->getItemType());
+		$source = \OC_Share_Backend_File::getSource(
+			$target,
+			$this->storage->getMountPoint(),
+			$this->storage->getItemType(),
+			$this->storage->getUser()
+		);
 		if (isset($source['path']) && isset($source['fileOwner'])) {
 			\OC\Files\Filesystem::initMountPoints($source['fileOwner']);
 			$mounts = \OC\Files\Filesystem::getMountByNumericId($source['storage']);
@@ -242,7 +254,12 @@ class Shared_Cache extends Cache {
 	 */
 	protected function getMoveInfo($path) {
 		$cache = $this->getSourceCache($path);
-		$file = \OC_Share_Backend_File::getSource($path, $this->storage->getMountPoint(), $this->storage->getItemType());
+		$file = \OC_Share_Backend_File::getSource(
+			$path,
+			$this->storage->getMountPoint(),
+			$this->storage->getItemType(),
+			$this->storage->getUser()
+		);
 		return [$cache->getNumericStorageId(), $file['path']];
 	}
 

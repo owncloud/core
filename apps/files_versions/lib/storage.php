@@ -68,15 +68,35 @@ class Storage {
 		6 => array('intervalEndsAfter' => -1,      'step' => 604800),
 	);
 
-	public static function getUidAndFilename($filename) {
-		$uid = \OC\Files\Filesystem::getOwner($filename);
-		\OC\Files\Filesystem::initMountPoints($uid);
-		if ( $uid != \OCP\User::getUser() ) {
+	/**
+	 * Returns the owner user id and filename of the given filename.
+	 * The filename is from the perspective of the given current user (or by
+	 * default the currently logged in user)
+	 *
+	 * @param string $filename path to the file name to resolve, relative to
+	 * the current user's home
+	 * @param string $user current user, defaults to the currently logged
+	 * in user
+	 *
+	 * @return array with owner id as first value and filename relative to the
+	 * owner's home as second value
+	 */
+	public static function getUidAndFilename($filename, $user = null) {
+		if ($user === null) {
+			$userObject = \OC::$server->getUserSession()->getUser();
+			if (is_null($userObject)) {
+				throw new \Exception('No user session available');
+			}
+			$user = $userObject->getUID();
+		}
+		$ownerUser = \OC\Files\Filesystem::getOwner($filename);
+		\OC\Files\Filesystem::initMountPoints($ownerUser);
+		if ($ownerUser !== $user) {
 			$info = \OC\Files\Filesystem::getFileInfo($filename);
-			$ownerView = new \OC\Files\View('/'.$uid.'/files');
+			$ownerView = new \OC\Files\View('/' . $ownerUser . '/files');
 			$filename = $ownerView->getPath($info['fileid']);
 		}
-		return array($uid, $filename);
+		return array($ownerUser, $filename);
 	}
 
 	/**
@@ -548,15 +568,18 @@ class Storage {
 	/**
 	 * Expire versions which exceed the quota
 	 *
-	 * @param $filename
-	 * @param int|null $versionsSize
-	 * @param int $offset
-	 * @return bool|int|null
+	 * @param $user user
+	 * @param $filename path to the file to expire relative to the current
+	 * user's home folder
+	 * @param int|null $versionsSize current size of version history
+	 * @param int $offset size padding
+	 * @return bool|int new size of the version history or false if versions app
+	 * is disabled
 	 */
-	public static function expire($filename, $versionsSize = null, $offset = 0) {
+	public static function expire($user, $filename, $versionsSize = null, $offset = 0) {
 		$config = \OC::$server->getConfig();
 		if($config->getSystemValue('files_versions', Storage::DEFAULTENABLED)=='true') {
-			list($uid, $filename) = self::getUidAndFilename($filename);
+			list($uid, $filename) = self::getUidAndFilename($filename, $user);
 			if (empty($filename)) {
 				// file maybe renamed or deleted
 				return false;
