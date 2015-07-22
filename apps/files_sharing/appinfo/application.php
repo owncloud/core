@@ -128,9 +128,9 @@ class Application extends App {
 		/*
 		 * Register capabilities
 		 */
-		$server->getCapabilitiesManager()->registerCapability(function() use ($server) {
+		$container->query('OCP\Capabilities\IManager')->registerCapability(function() use ($container) {
 			return new Capabilities(
-				$server->getConfig()
+				$container->query('OCP\IConfig')
 			);
 		});
 	}

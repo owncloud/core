@@ -34,7 +34,7 @@ class Application extends App {
 		/*
 		 * Register capabilities
 		 */
-		$server->getCapabilitiesManager()->registerCapability(function() {
+		$container->query('OCP\Capabilities\IManager')->registerCapability(function() {
 			return new Capabilities();
 		});
 	}

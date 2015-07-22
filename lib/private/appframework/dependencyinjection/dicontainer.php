@@ -104,6 +104,10 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 			return $this->getServer()->getMemCacheFactory();
 		});
 
+		$this->registerService('OCP\\Capabilities\\IManager', function($c) {
+			return $this->getServer()->getCapabilitiesManager();
+		});
+
 		$this->registerService('OCP\\IConfig', function($c) {
 			return $this->getServer()->getConfig();
 		});
