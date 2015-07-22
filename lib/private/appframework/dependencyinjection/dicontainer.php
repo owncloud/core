@@ -104,6 +104,10 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 			return $this->getServer()->getMemCacheFactory();
 		});
 
+		$this->registerService('OCP\\Capabilities\\IManager', function($c) {
+			return $this->getServer()->getCapabilitiesManager();
+		});
+
 		$this->registerService('OCP\\IConfig', function($c) {
 			return $this->getServer()->getConfig();
 		});
@@ -414,5 +418,12 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 		\OCP\Util::writeLog($this->getAppName(), $message, $level);
 	}
 
-
+	/**
+	 * Register a capability
+	 *
+	 * @param string $class
+	 */
+	public function registerCapability($class) {
+		$this->query('OCP\Capabilities\IManager')->registerCapability($this->query($class));
+	}
 }

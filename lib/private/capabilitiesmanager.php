@@ -1,9 +1,6 @@
 <?php
 /**
- * @author Christopher Schäpers <kondou@ts.unde.re>
- * @author Morris Jobke <hey@morrisjobke.de>
  * @author Roeland Jago Douma <roeland@famdouma.nl>
- * @author Tom Needham <tom@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -21,23 +18,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
- 
-namespace OCA\Files_Versions; 
+namespace OC;
 
+
+use OCP\Capabilities\IManager;
 use OCP\Capabilities\ICapability;
+use OCP\Capabilities\NotACapabilityException;
 
-class Capabilities implements ICapability {
-	
+class CapabilitiesManager implements IManager {
+
 	/**
-	 * Return this classes capabilities
-	 *
+	 * @var \Closure[]
+	 */
+	private $classes = [];
+
+	/**
+	 * Get an array of al the capabilities that are registered at this manager
+     *
 	 * @return array
 	 */
 	public function getCapabilities() {
-		return [
-			'files' => [
-				'versioning' => true
-			]
-		];
+		$capabilities = [];
+		foreach($this->classes as $class) {
+			$capabilities = array_replace_recursive($capabilities, $class->getCapabilities());
+		}
+
+		return $capabilities;
+	}
+
+	/**
+	 * @param ICapability $class
+	 */
+	public function registerCapability(ICapability $class) {
+		array_push($this->classes, $class);
 	}
 }
