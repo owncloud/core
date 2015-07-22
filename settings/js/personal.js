@@ -234,6 +234,13 @@ $(document).ready(function () {
 	var uploadparms = {
 		done: function (e, data) {
 			avatarResponseHandler(data.result);
+		},
+		fail: function (e, data){
+			avatarResponseHandler({
+				data: {
+					message: t('settings', 'An error occured') + ': ' + data.jqXHR.status + ' ' + data.jqXHR.statusText
+				}
+			});
 		}
 	};
 
@@ -247,7 +254,18 @@ $(document).ready(function () {
 		OC.dialogs.filepicker(
 			t('settings', "Select a profile picture"),
 			function (path) {
-				$.post(OC.generateUrl('/avatar/'), {path: path}, avatarResponseHandler);
+				$.ajax({
+					type: "POST",
+					url: OC.generateUrl('/avatar/'),
+					data: { path: path }
+				}).done(avatarResponseHandler)
+					.fail(function(jqxhr, status){
+						avatarResponseHandler({
+							data: {
+								message: t('settings', 'An error occured') + ': ' + jqxhr.status + ' ' + jqxhr.statusText
+							}
+						});
+					});
 			},
 			false,
 			["image/png", "image/jpeg"]
