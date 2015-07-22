@@ -22,7 +22,6 @@
 namespace OCA\Files_Trashbin\AppInfo;
 
 use OCP\AppFramework\App;
-use OCA\Files_Trashbin\Capabilities;
 
 class Application extends App {
 	public function __construct(array $urlParams = array()) {
@@ -34,8 +33,6 @@ class Application extends App {
 		/*
 		 * Register capabilities
 		 */
-		$container->query('OCP\Capabilities\IManager')->registerCapability(function() {
-			return new Capabilities();
-		});
+		$container->registerCapability('OCA\Files_Trashbin\Capabilities');
 	}
 }

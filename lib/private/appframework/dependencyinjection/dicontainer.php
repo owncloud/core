@@ -418,5 +418,12 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 		\OCP\Util::writeLog($this->getAppName(), $message, $level);
 	}
 
-
+	/**
+	 * Register a capability
+	 *
+	 * @param string $class
+	 */
+	public function registerCapability($class) {
+		$this->query('OCP\Capabilities\IManager')->registerCapability($this->query($class));
+	}
 }

@@ -86,4 +86,10 @@ interface IAppContainer extends IContainer {
 	 */
 	function log($message, $level);
 
+	/**
+	 * Register a capability
+	 *
+	 * @param string $class
+	 */
+	 public function registerCapability($class);
 }

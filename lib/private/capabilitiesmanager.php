@@ -23,13 +23,14 @@ namespace OC;
 
 use OCP\Capabilities\IManager;
 use OCP\Capabilities\ICapability;
+use OCP\Capabilities\NotACapabilityException;
 
 class CapabilitiesManager implements IManager {
 
 	/**
 	 * @var \Closure[]
 	 */
-	private $capabilities = array();
+	private $classes = [];
 
 	/**
 	 * Get an array of al the capabilities that are registered at this manager
@@ -38,25 +39,17 @@ class CapabilitiesManager implements IManager {
 	 */
 	public function getCapabilities() {
 		$capabilities = [];
-		foreach($this->capabilities as $capability) {
-			$c = $capability();
-			if ($c instanceof ICapability) {
-				$capabilities = array_replace_recursive($capabilities, $c->getCapabilities());
-			}
+		foreach($this->classes as $class) {
+			$capabilities = array_replace_recursive($capabilities, $class->getCapabilities());
 		}
 
 		return $capabilities;
 	}
 
 	/**
-	 * In order to improve lazy loading a closure can be registered which will be called in case
-	 * activity consumers are actually requested
-	 *
-	 * $callable has to return an instance of OCP\Capabilities\ICapability
-	 *
-	 * @param \Closure $callable
+	 * @param ICapability $class
 	 */
-	public function registerCapability(\Closure $callable) {
-		array_push($this->capabilities, $callable);
+	public function registerCapability(ICapability $class) {
+		array_push($this->classes, $class);
 	}
 }
