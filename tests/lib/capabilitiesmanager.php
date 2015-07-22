@@ -39,29 +39,10 @@ class CapabilitiesManagerTest extends TestCase {
 	 */
 	public function testValidCapability() {
 		$manager = new \OC\CapabilitiesManager();
-		$simple = new SimpleCapability();
-
-		$manager->registerCapability(function() use ($simple) {
-			return $simple;
-		});
+		$manager->registerCapability(new SimpleCapability());
 
 		$res = $manager->getCapabilities();
 		$this->assertEquals(['foo' => 1], $res);
-	}
-
-	/**
-	 * Test that we need something that implents ICapability
-	 */
-	public function testNoICapability() {
-		$manager = new \OC\CapabilitiesManager();
-		$noCap = new NoCapability;
-
-		$manager->registerCapability(function() use ($noCap)  {
-			return $noCap;
-		});
-
-		$res = $manager->getCapabilities();
-		$this->assertEquals([], $res);
 	}
 
 	/**
@@ -70,19 +51,9 @@ class CapabilitiesManagerTest extends TestCase {
 	public function testMergedCapabilities() {
 		$manager = new \OC\CapabilitiesManager();
 
-		$simple1 = new SimpleCapability();
-		$simple2 = new SimpleCapability2();
-		$simple3 = new SimpleCapability3();
-
-		$manager->registerCapability(function() use ($simple1)  {
-			return $simple1;
-		});
-		$manager->registerCapability(function() use ($simple2)  {
-			return $simple2;
-		});
-		$manager->registerCapability(function() use ($simple3)  {
-			return $simple3;
-		});
+		$manager->registerCapability(new SimpleCapability());
+		$manager->registerCapability(new SimpleCapability2());
+		$manager->registerCapability(new SimpleCapability3());
 
 		$res = $manager->getCapabilities();
 		$expected = [
@@ -102,12 +73,8 @@ class CapabilitiesManagerTest extends TestCase {
 	public function testDeepIdenticalCapabilities() {
 		$manager = new \OC\CapabilitiesManager();
 
-		$manager->registerCapability(function() {
-			return new DeepCapability();
-		});
-		$manager->registerCapability(function() {
-			return new DeepCapability();
-		});
+		$manager->registerCapability(new DeepCapability());
+		$manager->registerCapability(new DeepCapability());
 
 		$res = $manager->getCapabilities();
 		$expected = [
@@ -158,10 +125,3 @@ class DeepCapability implements \OCP\Capabilities\ICapability {
 	}
 }
 
-class NoCapability {
-	public function getCapabilities() {
-		return [
-			'baz' => 'z'
-		];
-	}
-}
