@@ -32,13 +32,10 @@ interface IManager {
 	public function getCapabilities();
 
 	/**
-	 * In order to improve lazy loading a closure can be registered which will be called in case
-	 * activity consumers are actually requested
+	 * Register a capability
 	 *
-	 * $callable has to return an instance of OCP\Capabilities\ICapability
-	 *
-	 * @param \Closure $callable
+	 * @param ICapability $class
 	 * @since 8.2.0
 	 */
-	public function registerCapability(\Closure $callable);
+	public function registerCapability(ICapability $class);
 }
