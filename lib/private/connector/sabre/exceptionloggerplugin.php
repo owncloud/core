@@ -40,6 +40,8 @@ class ExceptionLoggerPlugin extends \Sabre\DAV\ServerPlugin {
 		// forbidden can be expected when trying to upload to
 		// read-only folders for example
 		'Sabre\DAV\Exception\Forbidden' => true,
+		// exceeded quota should not be a fatal error
+		'Sabre\DAV\Exception\InsufficientStorage' => true,
 	);
 
 	/** @var string */
