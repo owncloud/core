@@ -1218,7 +1218,7 @@ class Share extends Constants {
 	}
 
 	/**
-	 * Set expiration date for a share
+	 * Set password for a public link share
 	 *
 	 * @param IUserSession $userSession
 	 * @param Connection $connection
