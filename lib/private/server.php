@@ -12,6 +12,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Roeland Jago Douma <roeland@famdouma.nl>
  * @author Sander <brantje@gmail.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
@@ -443,6 +444,14 @@ class Server extends SimpleContainer implements IServerContainer {
 		$this->registerService('MountManager', function () {
 			return new \OC\Files\Mount\Manager();
 		});
+		$this->registerService('CapabilitiesManager', function (Server $c) {
+			$manager = new \OC\CapabilitiesManager();
+			$manager->registerCapability(function() use ($c) {
+				return new \OC\OCS\CoreCapabilities($c->getConfig());
+			});
+			return $manager;
+		});
+
 	}
 
 	/**
@@ -929,5 +938,14 @@ class Server extends SimpleContainer implements IServerContainer {
 	 **/
 	function getMountManager() {
 		return $this->query('MountManager');
+	}
+
+	/**
+	 * Get the manager of all the capabilities
+	 *
+	 * @return \OC\CapabilitiesManager
+	 */
+	public function getCapabilitiesManager() {
+		return $this->query('CapabilitiesManager');
 	}
 }
