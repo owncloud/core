@@ -325,7 +325,7 @@ class CryptoSessionHandler extends \SessionHandler {
 		for ($i = 1; $i <= 10; $i++) {
 			$sessionId = $this->secureRandom->getMediumStrengthGenerator()->generate(
 				64,
-				ISecureRandom::CHAR_LOWER.ISecureRandom::CHAR_DIGITS
+				ISecureRandom::CHAR_LOWER.ISecureRandom::CHAR_UPPER.ISecureRandom::CHAR_DIGITS
 			);
 
 			$hashedSessionId = $this->deriveHashedLocalSessionName($sessionId);
