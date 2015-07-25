@@ -28,6 +28,9 @@ namespace OC\AppFramework\Middleware\Security;
  */
 class ApiSecurityProfile {
 
+    /**
+     * @return bool
+     */
     public function passesLoginCheck() {
         // ensure that API routes are not used in conjunction with session
         // authentication since this enables CSRF attack vectors
@@ -40,6 +43,13 @@ class ApiSecurityProfile {
 
         $this->userSession->logout();
         return $this->session->login($user, $pass);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isChosen() {
+        return $this->request->isApiRequest() || $this->reflector->hasAnnotation('CORS');
     }
 
 }

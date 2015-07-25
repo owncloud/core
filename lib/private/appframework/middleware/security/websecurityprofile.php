@@ -86,4 +86,11 @@ class WebSecurityProfile {
         }
     }
 
+    /**
+     * @return bool
+     */
+    public function isChosen() {
+        return !($this->request->isApiRequest() || $this->reflector->hasAnnotation('CORS'));
+    }
+
 }

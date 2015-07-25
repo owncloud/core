@@ -27,7 +27,7 @@ use OCP\IUserSession;
 use OCP\ISession;
 use OCP\IRequest;
 
-class SecurityProfile {
+abstract class SecurityProfile {
 
     /**
      * @var IControllerMethodReflector
@@ -129,5 +129,11 @@ class SecurityProfile {
         }
 
     }
+
+    /**
+     * If a profile should handle the current request
+     * @return bool
+     */
+    public abstract function isChosen();
 
 }
