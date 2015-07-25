@@ -34,8 +34,19 @@ use OCP\Security\ISecureRandom;
  */
 class WebSecurityProfile {
 
+    /**
+     * @var ISecureRandom
+     */
     protected $random;
 
+    /**
+     * @param IControllerMethodReflector $reflector
+     * @param ISession $session
+     * @param IGroupManager $groupManager
+     * @param IUserSession $userSession
+     * @param IRequest $request
+     * @param ISecureRandom $random
+     */
     public function __construct(IControllerMethodReflector $reflector,
                                 ISession $session,
                                 IGroupManager $groupManager,

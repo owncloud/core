@@ -29,12 +29,38 @@ use OCP\IRequest;
 
 class SecurityProfile {
 
+    /**
+     * @var IControllerMethodReflector
+     */
     protected $reflector;
+
+    /**
+     * @var IGroupManager
+     */
     protected $groupManager;
+
+    /**
+     * @var IUserSession
+     */
     protected $userSession;
+
+    /**
+     * @var ISession
+     */
     protected $session;
+
+    /**
+     * @var IRequest
+     */
     protected $request;
 
+    /**
+     * @param IControllerMethodReflector $reflector
+     * @param ISession $session
+     * @param IGroupManager $groupManager
+     * @param IUserSession $userSession
+     * @param IRequest $request
+     */
     public function __construct(IControllerMethodReflector $reflector,
                                 ISession $session,
                                 IGroupManager $groupManager,
