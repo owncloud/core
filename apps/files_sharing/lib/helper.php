@@ -120,27 +120,9 @@ class Helper {
 	public static function authenticate($linkItem, $password = null) {
 		if ($password !== null) {
 			if ($linkItem['share_type'] == \OCP\Share::SHARE_TYPE_LINK) {
-				// Check Password
-				$newHash = '';
-				if(\OC::$server->getHasher()->verify($password, $linkItem['share_with'], $newHash)) {
+				if (\OCP\Share::verify($linkItem['id'], $password)) {
 					// Save item id in session for future requests
 					\OC::$server->getSession()->set('public_link_authenticated', $linkItem['id']);
-
-					/**
-					 * FIXME: Migrate old hashes to new hash format
-					 * Due to the fact that there is no reasonable functionality to update the password
-					 * of an existing share no migration is yet performed there.
-					 * The only possibility is to update the existing share which will result in a new
-					 * share ID and is a major hack.
-					 *
-					 * In the future the migration should be performed once there is a proper method
-					 * to update the share's password. (for example `$share->updatePassword($password)`
-					 *
-					 * @link https://github.com/owncloud/core/issues/10671
-					 */
-					if(!empty($newHash)) {
-
-					}
 				} else {
 					return false;
 				}

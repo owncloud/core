@@ -190,6 +190,19 @@ class Share extends \OC\Share\Constants {
 	}
 
 	/**
+	 * Retrieve the share for a given id
+	 *
+	 * @param int $id The id of the share
+	 * @return array The share
+	 * @throws \OCP\Share\NotFoundException
+	 * @since 8.2.0
+	 */
+	public static function getShareById($shareId) {
+		$connection = \OC::$server->getDatabaseConnection();
+		return \OC\Share\Share::getShareById($connection, $shareId);
+	}
+
+	/**
 	 * resolves reshares down to the last real share
 	 * @param array $linkItem
 	 * @return array file owner
@@ -355,6 +368,22 @@ class Share extends \OC\Share\Constants {
 		$connection = \OC::$server->getDatabaseConnection();
 		$config = \OC::$server->getConfig();
 		return \OC\Share\Share::setPassword($userSession, $connection, $config, $shareId, $password);
+	}
+
+	/**
+	 * Verify the password of a share
+	 * Update the password in the database if required
+	 *
+	 * @param int $shareId The id of the share
+	 * @param string $password The password to verify
+	 * @return bool If the password is correct
+	 * @throws \OCP\Share\NotFoundException
+	 * @throws \OCP\Share\NotPasswordProtectedException
+	 * @throws \OCP\Share\NoPublicShareException
+	 * @since 8.2.0
+	 */
+	public static function verify($shareId, $password) {
+		return \OC\Share\Share::verify($shareId, $password);
 	}
 
 

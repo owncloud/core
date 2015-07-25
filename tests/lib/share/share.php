@@ -1,23 +1,37 @@
 <?php
 /**
-* ownCloud
-*
-* @author Michael Gapczynski
-* @copyright 2012 Michael Gapczynski mtgap@owncloud.com
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU AFFERO GENERAL PUBLIC LICENSE for more details.
-*
-* You should have received a copy of the GNU Affero General Public
-* License along with this library.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * @author Andreas Fischer <bantu@owncloud.com>
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author ben-denham <bend@catalyst.net.nz>
+ * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Felix Moeller <mail@felixmoeller.de>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Michael Gapczynski <GapczynskiM@gmail.com>
+ * @author Michael Kuhn <suraia@ikkoku.de>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Thomas Tanghus <thomas@tanghus.net>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ */
 
 class Test_Share extends \Test\TestCase {
 
@@ -1531,6 +1545,234 @@ class Test_Share extends \Test\TestCase {
 		\OC\Share\Share::setPassword($userSession, $connection, $config, 1, 'pass');
 	}
 
+	public function testGetShareById() {
+		OC_User::setUserId($this->user1);
+		OCP\Share::shareItem(
+			'test',
+			'test.txt',
+			OCP\Share::SHARE_TYPE_USER,
+			$this->user2,
+			\OCP\Constants::PERMISSION_ALL
+		);
+
+		$res = OCP\Share::getItemShared('test', 'test.txt');
+		$this->assertInternalType('array', $res);
+		$this->assertCount(1, $res);
+
+		$id = array_keys($res)[0];
+		$res = $res[$id];
+		$this->assertInternalType('array', $res);
+		$this->assertArrayHasKey('id', $res);
+
+		$res2 = OCP\Share::getShareById($res['id']);
+		$this->assertInternalType('array', $res2);
+
+		OCP\Share::unshare(
+			'test',
+			'test.txt',
+			OCP\Share::SHARE_TYPE_USER,
+			$this->user2
+		);
+	}
+
+	/**
+      * @expectedException \OCP\Share\NotFoundException
+      */
+	public function testGetShareByIdException() {
+		OCP\Share::getShareById(-1);
+	}
+
+	public function testVerify() {
+		OC_User::setUserId($this->user1);
+		OCP\Share::shareItem(
+			'test',
+			'test.txt',
+			OCP\Share::SHARE_TYPE_LINK,
+			'foo',
+			\OCP\Constants::PERMISSION_READ
+		);
+
+		$res = OCP\Share::getItemShared('test', 'test.txt');
+		$this->assertInternalType('array', $res);
+		$this->assertCount(1, $res);
+
+		$id = array_keys($res)[0];
+		$this->assertTrue(OCP\Share::verify($id, 'foo'));
+
+		OCP\Share::unshare(
+			'test',
+			'test.txt',
+			OCP\Share::SHARE_TYPE_LINK,
+			null
+		);
+	}
+
+	public function testVerifySHA1Hash() {
+		OC_User::setUserId($this->user1);
+		OCP\Share::shareItem(
+			'test',
+			'test.txt',
+			OCP\Share::SHARE_TYPE_LINK,
+			'foo',
+			\OCP\Constants::PERMISSION_READ
+		);
+
+		$res = OCP\Share::getItemShared('test', 'test.txt');
+		$this->assertInternalType('array', $res);
+		$this->assertCount(1, $res);
+
+		$id = array_keys($res)[0];
+
+		/* Reset to old sha1 password */
+		$password = sha1('foo');
+		$qb = \OC::$server->getDatabaseConnection()->createQueryBuilder();
+		$qb->update('`*PREFIX*share`')
+		   ->set('`share_with`', ':pass')
+		   ->where('`id` = :id')
+		   ->setParameter(':id', $id)
+		   ->setParameter(':pass', $password);
+		$qb->execute();
+
+		//First time hash is updated
+		$this->assertTrue(OCP\Share::verify($id, 'foo'));
+
+		$qb = \OC::$server->getDatabaseConnection()->createQueryBuilder();
+		$qb->select('`share_with`')
+		   ->from('`*PREFIX*share`')
+		   ->where('`id` = :id')
+		   ->setParameter(':id', $id);
+		$res = $qb->execute()->fetch();
+		$this->assertNotEquals($password, $res['share_with']);
+
+		//Second time new Hash
+		$this->assertTrue(OCP\Share::verify($id, 'foo'));
+
+		OCP\Share::unshare(
+			'test',
+			'test.txt',
+			OCP\Share::SHARE_TYPE_LINK,
+			null
+		);
+	}
+
+	public function testVerifyOldHash() {
+		OC_User::setUserId($this->user1);
+		OCP\Share::shareItem(
+			'test',
+			'test.txt',
+			OCP\Share::SHARE_TYPE_LINK,
+			'foo',
+			\OCP\Constants::PERMISSION_READ
+		);
+
+		$res = OCP\Share::getItemShared('test', 'test.txt');
+		$this->assertInternalType('array', $res);
+		$this->assertCount(1, $res);
+
+		$id = array_keys($res)[0];
+
+		/* Reset to old password */
+		$salt = \OC::$server->getConfig()->getSystemValue('passwordsalt', '');
+		$password = password_hash('foo'.$salt, PASSWORD_DEFAULT);
+
+		$qb = \OC::$server->getDatabaseConnection()->createQueryBuilder();
+		$qb->update('`*PREFIX*share`')
+		   ->set('`share_with`', ':pass')
+		   ->where('`id` = :id')
+		   ->setParameter(':id', $id)
+		   ->setParameter(':pass', $password);
+		$qb->execute();
+
+		//First time hash is updated
+		$this->assertTrue(OCP\Share::verify($id, 'foo'));
+
+		$qb = \OC::$server->getDatabaseConnection()->createQueryBuilder();
+		$qb->select('`share_with`')
+		   ->from('`*PREFIX*share`')
+		   ->where('`id` = :id')
+		   ->setParameter(':id', $id);
+		$res = $qb->execute()->fetch();
+		$this->assertNotEquals($password, $res['share_with']);
+
+		//Second time new Hash
+		$this->assertTrue(OCP\Share::verify($id, 'foo'));
+
+		OCP\Share::unshare(
+			'test',
+			'test.txt',
+			OCP\Share::SHARE_TYPE_LINK,
+			null
+		);
+	}
+
+	/**
+      * @expectedException \OCP\Share\NotFoundException
+      */
+	public function testVerifyShareNotFound() {
+		OCP\Share::verify(-1, 'foo');
+	}
+
+	public function testVerifyNoLinkShare() {
+		OC_User::setUserId($this->user1);
+		OCP\Share::shareItem(
+			'test',
+			'test.txt',
+			OCP\Share::SHARE_TYPE_USER,
+			$this->user2,
+			\OCP\Constants::PERMISSION_READ
+		);
+
+		$res = OCP\Share::getItemShared('test', 'test.txt');
+		$this->assertInternalType('array', $res);
+		$this->assertCount(1, $res);
+
+		$id = array_keys($res)[0];
+
+		try {
+			OCP\Share::verify($id, 'foo');
+			$this->fail('Cannot verify pasword for non link shares');
+		} catch (\OCP\Share\NoLinkShareException $exception) {
+
+		}
+
+		OCP\Share::unshare(
+			'test',
+			'test.txt',
+			OCP\Share::SHARE_TYPE_USER,
+			$this->user2
+		);
+	}
+
+	public function testVerifyNotPasswordProtected() {
+		OC_User::setUserId($this->user1);
+		OCP\Share::shareItem(
+			'test',
+			'test.txt',
+			OCP\Share::SHARE_TYPE_LINK,
+			null,
+			\OCP\Constants::PERMISSION_READ
+		);
+
+		$res = OCP\Share::getItemShared('test', 'test.txt');
+		$this->assertInternalType('array', $res);
+		$this->assertCount(1, $res);
+
+		$id = array_keys($res)[0];
+
+		try {
+			OCP\Share::verify($id, 'foo');
+			$this->fail('Cannot verify pasword if no password is set');
+		} catch (\OCP\Share\NotPasswordProtectedException $exception) {
+
+		}
+
+		OCP\Share::unshare(
+			'test',
+			'test.txt',
+			OCP\Share::SHARE_TYPE_LINK,
+			null
+		);
+	}
 }
 
 class DummyShareClass extends \OC\Share\Share {
