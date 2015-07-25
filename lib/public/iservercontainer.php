@@ -438,4 +438,10 @@ interface IServerContainer {
 	 * @since 8.2.0
 	 */
 	public function getMimeTypeDetector();
+
+	/**
+	 * @return \OCP\AppFramework\Utility\ITimeFactory
+	 * @since 8.2.0
+	 */
+	public function getTimeFactory();
 }

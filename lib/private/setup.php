@@ -365,6 +365,28 @@ class Setup {
 			$config->setSystemValue('installed', true);
 		}
 
+		/**
+		 * Setup the encrypted session handler. This is required here as well as
+		 * in base.php as the session handler has dependencies on the database as
+		 * well as the configuration file.
+		 *
+		 * Without this change here the automatic first login after clicking install
+		 * would not work anymore. While this is a minor issue it is a change in
+		 * behaviour and it makes sense to not confuse the user.
+		 */
+		session_destroy();
+		$handler = new \OC\Session\CryptoSessionHandler(
+				\OC::$server->getCrypto(),
+				\OC::$server->getSecureRandom(),
+				\OC::$server->getDatabaseConnection(),
+				\OC::$server->getConfig(),
+				\OC::$server->getTimeFactory(),
+				\OC::$server->getLogger()
+		);
+		session_set_save_handler($handler, true);
+		session_start();
+		\OC_User::login($username, $password);
+
 		return $error;
 	}
 

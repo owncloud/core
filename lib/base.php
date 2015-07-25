@@ -431,6 +431,29 @@ class OC {
 	}
 
 	public static function initSession() {
+		// Try to set the session lifetime
+		$sessionLifeTime = self::getSessionLifeTime();
+		@ini_set('session.gc_maxlifetime', (int)$sessionLifeTime);
+
+		/**
+		 * Use a custom session handler to store the data encrypted within the
+		 * session this is only possible after the instance has been installed
+		 * and since this may also happen after an update case we need to verify
+		 * the version as well.
+		 */
+		if(self::$server->getConfig()->getSystemValue('installed', false)
+			&& version_compare(self::$server->getConfig()->getSystemValue('version', 0), '8.2.0.2', 'gt')) {
+			$handler = new \OC\Session\CryptoSessionHandler(
+				self::$server->getCrypto(),
+				self::$server->getSecureRandom(),
+				self::$server->getDatabaseConnection(),
+				self::$server->getConfig(),
+				self::$server->getTimeFactory(),
+				self::$server->getLogger()
+			);
+			session_set_save_handler($handler, true);
+		}
+
 		// prevents javascript from accessing php session cookies
 		ini_set('session.cookie_httponly', true);
 
@@ -634,9 +657,6 @@ class OC {
 				\OC::$server->getConfig()->deleteAppValue('core', 'cronErrors');
 			}
 		}
-		//try to set the session lifetime
-		$sessionLifeTime = self::getSessionLifeTime();
-		@ini_set('gc_maxlifetime', (string)$sessionLifeTime);
 
 		$systemConfig = \OC::$server->getSystemConfig();
 
