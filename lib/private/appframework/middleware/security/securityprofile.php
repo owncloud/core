@@ -21,6 +21,7 @@
 
 namespace OC\AppFramework\Middleware\Security;
 
+use OCP\AppFramework\Http\Response;
 use OCP\AppFramework\Utility\IControllerMethodReflector;
 use OCP\IGroupManager;
 use OCP\IUserSession;
@@ -115,19 +116,20 @@ abstract class SecurityProfile {
      * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS#Requests_with_credentials
      * @return bool
      */
-    public function passesNoCORSCredentialsResponse() {
+    public function passesNoCORSCredentialsResponse(Response $response) {
         // CORS has a feature that is called withCredentials that basically
         // allows a third-party resource to authenticate itself using the
         // cookies which are stored for the page. This opens up ownCloud to
         // CSRF attacks because any resource can make authenticated requests
         // to ownCloud without providing valid login credentials
-        foreach($this->response->getHeaders() as $header => $value) {
+        foreach($response->getHeaders() as $header => $value) {
             if(strtolower($header) === 'access-control-allow-credentials' &&
                strtolower(trim($value)) === 'true') {
                 return false;
             }
         }
 
+        return true;
     }
 
     /**
