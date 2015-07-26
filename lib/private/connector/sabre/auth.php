@@ -146,6 +146,25 @@ class Auth extends AbstractBasic {
 			return true;
 		}
 
+		if (\OC::$server->getAppConfig()->getValue("core", "client_certificate_enabled", "no") === "yes"
+			&& isset($_SERVER["SSL_CLIENT_VERIFY"])
+			&& isset($_SERVER["SSL_CLIENT_CERT"])
+			&& $_SERVER["SSL_CLIENT_VERIFY"] === "SUCCESS") {
+
+			\OCP\Util::writeLog('core', 'Trying to login with certificate', \OCP\Util::DEBUG);
+
+			$result = \OC_User::loginWithCertificate($_SERVER["SSL_CLIENT_CERT"]);
+
+			if($result === true) {
+				$user = \OC_User::getUser();
+				\OC_Util::setUpFS(\OC_User::getUser());
+				$this->currentUser = $user;
+				\OC::$server->getSession()->close();
+				return true;
+			}
+		}
+
+
 		return parent::authenticate($server, $realm);
 	}
 }
