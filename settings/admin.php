@@ -91,6 +91,7 @@ $backends = \OC::$server->getUserManager()->getBackends();
 $externalBackends = (count($backends) > 1) ? true : false;
 $template->assign('encryptionReady', \OC::$server->getEncryptionManager()->isReady());
 $template->assign('externalBackendsEnabled', $externalBackends);
+$template->assign('clientCertificateEnabled', $appConfig->getValue('core', 'client_certificate_enabled', 'no'));
 
 $encryptionModules = \OC::$server->getEncryptionManager()->getEncryptionModules();
 $defaultEncryptionModuleId = \OC::$server->getEncryptionManager()->getDefaultEncryptionModuleId();

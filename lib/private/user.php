@@ -262,6 +262,26 @@ class OC_User {
 	}
 
 	/**
+	 * Try to login with the given PEM encoded certificate. At this point
+	 * the certificate is valid (checked by Apache or Nginx).
+	 *
+	 * @param string $certificate PEM encoded client certificate
+	 * @return bool
+	 */
+	public static function loginWithCertificate($certificate) {
+		$result = self::getUserSession()->loginWithCertificate($certificate);
+
+		if($result) {
+			//we need to pass the user name, which may differ from login name
+			$user = self::getUserSession()->getUser()->getUID();
+			OC_Util::setupFS($user);
+			//trigger creation of user home and /files folder
+			\OC::$server->getUserFolder($user);
+		}
+		return $result;
+	}
+
+	/**
 	 * Try to login a user, assuming authentication
 	 * has already happened (e.g. via Single Sign On).
 	 *

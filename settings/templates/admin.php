@@ -311,6 +311,18 @@ if ($_['cronErrors']) {
 	</p>
 </div>
 
+<div class="section" id="clientCertificate">
+	<h2><?php p($l->t('Client Certificate Mapping')); ?></h2>
+
+	<p id="enable">
+		<input type="checkbox" name="client_certificate_enabled" id="clientCertificateEnabled"
+			value="1" <?php if ($_['clientCertificateEnabled'] === "yes") print_unescaped('checked="checked"'); ?> />
+		<label for="clientCertificateEnabled">
+			<?php p($l->t('Enable client certificate mapping (using the commonName attribute from the certificate)')); ?>
+		</label><br/>
+	</p>
+</div>
+
 <div class="section" id='encryptionAPI'>
 	<h2><?php p($l->t('Server-side encryption')); ?></h2>
 	<a target="_blank" class="icon-info svg"

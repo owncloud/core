@@ -97,6 +97,16 @@ $(document).ready(function(){
 		OC.AppConfig.setValue('core', $(this).attr('name'), value);
 	});
 
+	$('#clientCertificateEnabled').change(function() {
+		var value = $(this).val();
+		if (this.checked) {
+			value = 'yes';
+		} else {
+			value = 'no';
+		}
+		OC.AppConfig.setValue('core', $(this).attr('name'), value);
+	});
+
 	$('#shareapiDefaultExpireDate').change(function() {
 		$("#setDefaultExpireDate").toggleClass('hidden', !this.checked);
 	});
