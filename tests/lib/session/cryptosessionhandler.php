@@ -435,7 +435,7 @@ class CryptoSessionHandler extends \Test\TestCase {
 			->method('generate')
 			->with(
 				64,
-				'abcdefghijklmnopqrstuvwxyz0123456789'
+				'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 			)
 			->will($this->returnValue('MyRandomSessionId'));
 		$qb = $this->getMockBuilder('\\OCP\\DB\\QueryBuilder\\IQueryBuilder')
