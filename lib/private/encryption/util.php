@@ -336,6 +336,18 @@ class Util {
 		$root = explode('/', $normalizedPath, 4);
 		if (count($root) > 1) {
 
+			// detect alternative key storage root
+			$rootDir = $this->config->getAppValue('core', 'encryption_key_storage_root', '');
+			if ($rootDir !== '' &&
+				0 === strpos(
+					\OC\Files\Filesystem::normalizePath($path),
+					\OC\Files\Filesystem::normalizePath($rootDir)
+				)
+			) {
+				return true;
+			}
+
+
 			//detect system wide folders
 			if (in_array($root[1], $this->excludedPaths)) {
 				return true;
