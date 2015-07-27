@@ -248,12 +248,13 @@ class Preview {
 	 * Sets the path of the file you want a preview of
 	 *
 	 * @param string $file
+	 * @param \OCP\Files\FileInfo|null $info
 	 *
 	 * @return \OC\Preview
 	 */
-	public function setFile($file) {
+	public function setFile($file, $info = null) {
 		$this->file = $file;
-		$this->info = null;
+		$this->info = $info;
 
 		if ($file !== '') {
 			$this->getFileInfo();
@@ -357,7 +358,7 @@ class Preview {
 			return false;
 		}
 
-		if (!$this->fileView->file_exists($file)) {
+		if (!$this->getFileInfo() instanceof FileInfo) {
 			\OCP\Util::writeLog('core', 'File:"' . $file . '" not found', \OCP\Util::DEBUG);
 
 			return false;
@@ -461,7 +462,7 @@ class Preview {
 			$preview = $this->buildCachePath($fileId, $previewWidth, $previewHeight);
 
 			// This checks if we have a preview of those exact dimensions in the cache
-			if ($this->userView->file_exists($preview)) {
+			if ($this->thumbnailSizeExists($allThumbnails, basename($preview))) {
 				return $preview;
 			}
 
@@ -504,6 +505,24 @@ class Preview {
 		}
 
 		return [$maxPreviewX, $maxPreviewY];
+	}
+
+	/**
+	 * Check if a specific thumbnail size is cached
+	 *
+	 * @param FileInfo[] $allThumbnails the list of all our cached thumbnails
+	 * @param string $name
+	 * @return bool
+	 */
+	private function thumbnailSizeExists($allThumbnails, $name) {
+
+		foreach ($allThumbnails as $thumbnail) {
+			if ($name === $thumbnail->getName()) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
