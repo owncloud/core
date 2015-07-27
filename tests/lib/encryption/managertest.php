@@ -19,12 +19,16 @@ class ManagerTest extends TestCase {
 	/** @var \PHPUnit_Framework_MockObject_MockObject */
 	private $l10n;
 
+	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	private $view;
+
 	public function setUp() {
 		parent::setUp();
 		$this->config = $this->getMock('\OCP\IConfig');
 		$this->logger = $this->getMock('\OCP\ILogger');
 		$this->l10n = $this->getMock('\OCP\Il10n');
-		$this->manager = new Manager($this->config, $this->logger, $this->l10n);
+		$this->view = $this->getMock('\OC\Files\View');
+		$this->manager = new Manager($this->config, $this->logger, $this->l10n, $this->view);
 	}
 
 	public function testManagerIsDisabled() {
