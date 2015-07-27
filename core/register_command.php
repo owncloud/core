@@ -57,6 +57,7 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\Encryption\ListModules(\OC::$server->getEncryptionManager()));
 	$application->add(new OC\Core\Command\Encryption\SetDefaultModule(\OC::$server->getEncryptionManager()));
 	$application->add(new OC\Core\Command\Encryption\Status(\OC::$server->getEncryptionManager()));
+	$application->add(new OC\Core\Command\Encryption\ChangeKeyStorageRoot(new \OC\Files\View(), \OC::$server->getUserManager(), \OC::$server->getConfig()));
 
 	$application->add(new OC\Core\Command\Maintenance\MimeTypesJS());
 	$application->add(new OC\Core\Command\Maintenance\Mode(\OC::$server->getConfig()));
