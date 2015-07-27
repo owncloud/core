@@ -59,7 +59,7 @@ function fileDownloadPath(dir, file) {
 }
 
 /** @namespace */
-var OC={
+_.extend(OC, {
 	PERMISSION_CREATE:4,
 	PERMISSION_READ:1,
 	PERMISSION_UPDATE:2,
@@ -629,88 +629,7 @@ var OC={
 	getLocale: function() {
 		return $('html').prop('lang');
 	}
-};
-
-/**
- * @namespace OC.Plugins
- */
-OC.Plugins = {
-	/**
-	 * @type Array.<OC.Plugin>
-	 */
-	_plugins: {},
-
-	/**
-	 * Register plugin
-	 *
-	 * @param {String} targetName app name / class name to hook into
-	 * @param {OC.Plugin} plugin
-	 */
-	register: function(targetName, plugin) {
-		var plugins = this._plugins[targetName];
-		if (!plugins) {
-			plugins = this._plugins[targetName] = [];
-		}
-		plugins.push(plugin);
-	},
-
-	/**
-	 * Returns all plugin registered to the given target
-	 * name / app name / class name.
-	 *
-	 * @param {String} targetName app name / class name to hook into
-	 * @return {Array.<OC.Plugin>} array of plugins
-	 */
-	getPlugins: function(targetName) {
-		return this._plugins[targetName] || [];
-	},
-
-	/**
-	 * Call attach() on all plugins registered to the given target name.
-	 *
-	 * @param {String} targetName app name / class name
-	 * @param {Object} object to be extended
-	 * @param {Object} [options] options
-	 */
-	attach: function(targetName, targetObject, options) {
-		var plugins = this.getPlugins(targetName);
-		for (var i = 0; i < plugins.length; i++) {
-			if (plugins[i].attach) {
-				plugins[i].attach(targetObject, options);
-			}
-		}
-	},
-
-	/**
-	 * Call detach() on all plugins registered to the given target name.
-	 *
-	 * @param {String} targetName app name / class name
-	 * @param {Object} object to be extended
-	 * @param {Object} [options] options
-	 */
-	detach: function(targetName, targetObject, options) {
-		var plugins = this.getPlugins(targetName);
-		for (var i = 0; i < plugins.length; i++) {
-			if (plugins[i].detach) {
-				plugins[i].detach(targetObject, options);
-			}
-		}
-	},
-
-	/**
-	 * Plugin
-	 *
-	 * @todo make this a real class in the future
-	 * @typedef {Object} OC.Plugin
-	 *
-	 * @property {String} name plugin name
-	 * @property {Function} attach function that will be called when the
-	 * plugin is attached
-	 * @property {Function} [detach] function that will be called when the
-	 * plugin is detached
-	 */
-
-};
+});
 
 /**
  * @namespace OC.search
@@ -723,331 +642,6 @@ OC.search.resultTypes = {};
 
 OC.addStyle.loaded=[];
 OC.addScript.loaded=[];
-
-/**
- * A little class to manage a status field for a "saving" process.
- * It can be used to display a starting message (e.g. "Saving...") and then
- * replace it with a green success message or a red error message.
- *
- * @namespace OC.msg
- */
-OC.msg = {
-	/**
-	 * Displayes a "Saving..." message in the given message placeholder
-	 *
-	 * @param {Object} selector	Placeholder to display the message in
-	 */
-	startSaving: function(selector) {
-		this.startAction(selector, t('core', 'Saving...'));
-	},
-
-	/**
-	 * Displayes a custom message in the given message placeholder
-	 *
-	 * @param {Object} selector	Placeholder to display the message in
-	 * @param {string} message	Plain text message to display (no HTML allowed)
-	 */
-	startAction: function(selector, message) {
-		$(selector).text(message)
-			.removeClass('success')
-			.removeClass('error')
-			.stop(true, true)
-			.show();
-	},
-
-	/**
-	 * Displayes an success/error message in the given selector
-	 *
-	 * @param {Object} selector	Placeholder to display the message in
-	 * @param {Object} response	Response of the server
-	 * @param {Object} response.data	Data of the servers response
-	 * @param {string} response.data.message	Plain text message to display (no HTML allowed)
-	 * @param {string} response.status	is being used to decide whether the message
-	 * is displayed as an error/success
-	 */
-	finishedSaving: function(selector, response) {
-		this.finishedAction(selector, response);
-	},
-
-	/**
-	 * Displayes an success/error message in the given selector
-	 *
-	 * @param {Object} selector	Placeholder to display the message in
-	 * @param {Object} response	Response of the server
-	 * @param {Object} response.data Data of the servers response
-	 * @param {string} response.data.message Plain text message to display (no HTML allowed)
-	 * @param {string} response.status is being used to decide whether the message
-	 * is displayed as an error/success
-	 */
-	finishedAction: function(selector, response) {
-		if (response.status === "success") {
-			this.finishedSuccess(selector, response.data.message);
-		} else {
-			this.finishedError(selector, response.data.message);
-		}
-	},
-
-	/**
-	 * Displayes an success message in the given selector
-	 *
-	 * @param {Object} selector Placeholder to display the message in
-	 * @param {string} message Plain text success message to display (no HTML allowed)
-	 */
-	finishedSuccess: function(selector, message) {
-		$(selector).text(message)
-			.addClass('success')
-			.removeClass('error')
-			.stop(true, true)
-			.delay(3000)
-			.fadeOut(900)
-			.show();
-	},
-
-	/**
-	 * Displayes an error message in the given selector
-	 *
-	 * @param {Object} selector Placeholder to display the message in
-	 * @param {string} message Plain text error message to display (no HTML allowed)
-	 */
-	finishedError: function(selector, message) {
-		$(selector).text(message)
-			.addClass('error')
-			.removeClass('success')
-			.show();
-	}
-};
-
-/**
- * @todo Write documentation
- * @namespace
- */
-OC.Notification={
-	queuedNotifications: [],
-	getDefaultNotificationFunction: null,
-	notificationTimer: 0,
-
-	/**
-	 * @param callback
-	 * @todo Write documentation
-	 */
-	setDefault: function(callback) {
-		OC.Notification.getDefaultNotificationFunction = callback;
-	},
-
-	/**
-	 * Hides a notification
-	 * @param callback
-	 * @todo Write documentation
-	 */
-	hide: function(callback) {
-		$('#notification').fadeOut('400', function(){
-			if (OC.Notification.isHidden()) {
-				if (OC.Notification.getDefaultNotificationFunction) {
-					OC.Notification.getDefaultNotificationFunction.call();
-				}
-			}
-			if (callback) {
-				callback.call();
-			}
-			$('#notification').empty();
-			if(OC.Notification.queuedNotifications.length > 0){
-				OC.Notification.showHtml(OC.Notification.queuedNotifications[0]);
-				OC.Notification.queuedNotifications.shift();
-			}
-		});
-	},
-
-	/**
-	 * Shows a notification as HTML without being sanitized before.
-	 * If you pass unsanitized user input this may lead to a XSS vulnerability.
-	 * Consider using show() instead of showHTML()
-	 * @param {string} html Message to display
-	 */
-	showHtml: function(html) {
-		var notification = $('#notification');
-		if((notification.filter('span.undo').length == 1) || OC.Notification.isHidden()){
-			notification.html(html);
-			notification.fadeIn().css('display','inline-block');
-		}else{
-			OC.Notification.queuedNotifications.push(html);
-		}
-	},
-
-	/**
-	 * Shows a sanitized notification
-	 * @param {string} text Message to display
-	 */
-	show: function(text) {
-		var notification = $('#notification');
-		if((notification.filter('span.undo').length == 1) || OC.Notification.isHidden()){
-			notification.text(text);
-			notification.fadeIn().css('display','inline-block');
-		}else{
-			OC.Notification.queuedNotifications.push($('<div/>').text(text).html());
-		}
-	},
-
-
-	/**
-	 * Shows a notification that disappears after x seconds, default is
-	 * 7 seconds
-	 * @param {string} text Message to show
-	 * @param {array} [options] options array
-	 * @param {int} [options.timeout=7] timeout in seconds, if this is 0 it will show the message permanently
-	 * @param {boolean} [options.isHTML=false] an indicator for HTML notifications (true) or text (false)
-	 */
-	showTemporary: function(text, options) {
-		var defaults = {
-				isHTML: false,
-				timeout: 7
-			},
-			options = options || {};
-		// merge defaults with passed in options
-		_.defaults(options, defaults);
-
-		// clear previous notifications
-		OC.Notification.hide();
-		if(OC.Notification.notificationTimer) {
-			clearTimeout(OC.Notification.notificationTimer);
-		}
-
-		if(options.isHTML) {
-			OC.Notification.showHtml(text);
-		} else {
-			OC.Notification.show(text);
-		}
-
-		if(options.timeout > 0) {
-			// register timeout to vanish notification
-			OC.Notification.notificationTimer = setTimeout(OC.Notification.hide, (options.timeout * 1000));
-		}
-	},
-
-	/**
-	 * Returns whether a notification is hidden.
-	 * @return {boolean}
-	 */
-	isHidden: function() {
-		return ($("#notification").text() === '');
-	}
-};
-
-/**
- * Breadcrumb class
- *
- * @namespace
- *
- * @deprecated will be replaced by the breadcrumb implementation
- * of the files app in the future
- */
-OC.Breadcrumb={
-	container:null,
-	/**
-	 * @todo Write documentation
-	 * @param dir
-	 * @param leafName
-	 * @param leafLink
-	 */
-	show:function(dir, leafName, leafLink){
-		if(!this.container){//default
-			this.container=$('#controls');
-		}
-		this._show(this.container, dir, leafName, leafLink);
-	},
-	_show:function(container, dir, leafname, leaflink){
-		var self = this;
-
-		this._clear(container);
-
-		// show home + path in subdirectories
-		if (dir) {
-			//add home
-			var link = OC.linkTo('files','index.php');
-
-			var crumb=$('<div/>');
-			crumb.addClass('crumb');
-
-			var crumbLink=$('<a/>');
-			crumbLink.attr('href',link);
-
-			var crumbImg=$('<img/>');
-			crumbImg.attr('src',OC.imagePath('core','places/home'));
-			crumbLink.append(crumbImg);
-			crumb.append(crumbLink);
-			container.prepend(crumb);
-
-			//add path parts
-			var segments = dir.split('/');
-			var pathurl = '';
-			jQuery.each(segments, function(i,name) {
-				if (name !== '') {
-					pathurl = pathurl+'/'+name;
-					var link = OC.linkTo('files','index.php')+'?dir='+encodeURIComponent(pathurl);
-					self._push(container, name, link);
-				}
-			});
-		}
-
-		//add leafname
-		if (leafname && leaflink) {
-			this._push(container, leafname, leaflink);
-		}
-	},
-
-	/**
-	 * @todo Write documentation
-	 * @param {string} name
-	 * @param {string} link
-	 */
-	push:function(name, link){
-		if(!this.container){//default
-			this.container=$('#controls');
-		}
-		return this._push(OC.Breadcrumb.container, name, link);
-	},
-	_push:function(container, name, link){
-		var crumb=$('<div/>');
-		crumb.addClass('crumb').addClass('last');
-
-		var crumbLink=$('<a/>');
-		crumbLink.attr('href',link);
-		crumbLink.text(name);
-		crumb.append(crumbLink);
-
-		var existing=container.find('div.crumb');
-		if(existing.length){
-			existing.removeClass('last');
-			existing.last().after(crumb);
-		}else{
-			container.prepend(crumb);
-		}
-		return crumb;
-	},
-
-	/**
-	 * @todo Write documentation
-	 */
-	pop:function(){
-		if(!this.container){//default
-			this.container=$('#controls');
-		}
-		this.container.find('div.crumb').last().remove();
-		this.container.find('div.crumb').last().addClass('last');
-	},
-
-	/**
-	 * @todo Write documentation
-	 */
-	clear:function(){
-		if(!this.container){//default
-			this.container=$('#controls');
-		}
-		this._clear(this.container);
-	},
-	_clear:function(container) {
-		container.find('div.crumb').remove();
-	}
-};
 
 if(typeof localStorage !=='undefined' && localStorage !== null){
 	/**
@@ -1121,34 +715,8 @@ if(typeof localStorage !=='undefined' && localStorage !== null){
  * @return {boolean}
  */
 function SVGSupport() {
-	return SVGSupport.checkMimeType.correct && !!document.createElementNS && !!document.createElementNS('http://www.w3.org/2000/svg', "svg").createSVGRect;
+	return OC.Util.hasSVGSupport();
 }
-SVGSupport.checkMimeType=function(){
-	$.ajax({
-		url: OC.imagePath('core','breadcrumb.svg'),
-		success:function(data,text,xhr){
-			var headerParts=xhr.getAllResponseHeaders().split("\n");
-			var headers={};
-			$.each(headerParts,function(i,text){
-				if(text){
-					var parts=text.split(':',2);
-					if(parts.length===2){
-						var value=parts[1].trim();
-						if(value[0]==='"'){
-							value=value.substr(1,value.length-2);
-						}
-						headers[parts[0].toLowerCase()]=value;
-					}
-				}
-			});
-			if(headers["content-type"]!=='image/svg+xml'){
-				OC.Util.replaceSVG();
-				SVGSupport.checkMimeType.correct=false;
-			}
-		}
-	});
-};
-SVGSupport.checkMimeType.correct=true;
 
 /**
  * Replace all svg images with png for browser compatibility
@@ -1217,25 +785,26 @@ function initCore() {
 	if(!OC.Util.hasSVGSupport()){ //replace all svg images with png images for browser that dont support svg
 		OC.Util.replaceSVG();
 	}else{
-		SVGSupport.checkMimeType();
+		OC.Util.checkMimeType();
 	}
 
 	// user menu
-	$('#settings #expand').keydown(function(event) {
+	var $settings = $('#settings');
+	$settings.find('#expand').keydown(function (event) {
 		if (event.which === 13 || event.which === 32) {
 			$('#expand').click();
 		}
 	});
-	$('#settings #expand').click(function(event) {
-		$('#settings #expanddiv').slideToggle(OC.menuSpeed);
+	$settings.find('#expand').click(function (event) {
+		$settings.find('#expanddiv').slideToggle(OC.menuSpeed);
 		event.stopPropagation();
 	});
-	$('#settings #expanddiv').click(function(event){
+	$settings.find('#expanddiv').click(function (event) {
 		event.stopPropagation();
 	});
 	//hide the user menu when clicking outside it
-	$(document).click(function(){
-		$('#settings #expanddiv').slideUp(OC.menuSpeed);
+	$(document).click(function () {
+		$settings.find('#expanddiv').slideUp(OC.menuSpeed);
 	});
 
 	// all the tipsy stuff needs to be here (in reverse order) to work
@@ -1272,7 +841,7 @@ function initCore() {
 	 */
 	function setupMainMenu() {
 		// toggle the navigation
-		var $toggle = $('#header .menutoggle');
+		var $toggle = $('#header').find('.menutoggle');
 		var $navigation = $('#navigation');
 
 		// init the menu
@@ -1407,27 +976,7 @@ $.fn.filterAttr = function(attr_name, attr_value) {
  * @return {string}
  */
 function humanFileSize(size, skipSmallSizes) {
-	var humanList = ['B', 'kB', 'MB', 'GB', 'TB'];
-	// Calculate Log with base 1024: size = 1024 ** order
-	var order = size > 0 ? Math.floor(Math.log(size) / Math.log(1024)) : 0;
-	// Stay in range of the byte sizes that are defined
-	order = Math.min(humanList.length - 1, order);
-	var readableFormat = humanList[order];
-	var relativeSize = (size / Math.pow(1024, order)).toFixed(1);
-	if(skipSmallSizes === true && order === 0) {
-		if(relativeSize !== "0.0"){
-			return '< 1 kB';
-		} else {
-			return '0 kB';
-		}
-	}
-	if(order < 2){
-		relativeSize = parseFloat(relativeSize).toFixed(0);
-	}
-	else if(relativeSize.substr(relativeSize.length-2,2)==='.0'){
-		relativeSize=relativeSize.substr(0,relativeSize.length-2);
-	}
-	return relativeSize + ' ' + readableFormat;
+	return OC.Util.humanFileSize(size, skipSmallSizes);
 }
 
 /**
@@ -1463,261 +1012,6 @@ function relative_modified_date(timestamp) {
 	  */
 	return OC.Util.relativeModifiedDate(timestamp * 1000);
 }
-
-/**
- * Utility functions
- * @namespace
- */
-OC.Util = {
-	// TODO: remove original functions from global namespace
-	humanFileSize: humanFileSize,
-
-	/**
-	 * @param timestamp
-	 * @param format
-	 * @returns {string} timestamp formatted as requested
-	 */
-	formatDate: function (timestamp, format) {
-		format = format || "LLL";
-		return moment(timestamp).format(format);
-	},
-
-	/**
-	 * @param timestamp
-	 * @returns {string} human readable difference from now
-	 */
-	relativeModifiedDate: function (timestamp) {
-		return moment(timestamp).fromNow();
-	},
-	/**
-	 * Returns whether the browser supports SVG
-	 * @return {boolean} true if the browser supports SVG, false otherwise
-	 */
-	// TODO: replace with original function
-	hasSVGSupport: SVGSupport,
-	/**
-	 * If SVG is not supported, replaces the given icon's extension
-	 * from ".svg" to ".png".
-	 * If SVG is supported, return the image path as is.
-	 * @param {string} file image path with svg extension
-	 * @return {string} fixed image path with png extension if SVG is not supported
-	 */
-	replaceSVGIcon: function(file) {
-		if (file && !OC.Util.hasSVGSupport()) {
-			var i = file.lastIndexOf('.svg');
-			if (i >= 0) {
-				file = file.substr(0, i) + '.png' + file.substr(i+4);
-			}
-		}
-		return file;
-	},
-	/**
-	 * Replace SVG images in all elements that have the "svg" class set
-	 * with PNG images.
-	 *
-	 * @param $el root element from which to search, defaults to $('body')
-	 */
-	replaceSVG: function($el) {
-		if (!$el) {
-			$el = $('body');
-		}
-		$el.find('img.svg').each(function(index,element){
-			element=$(element);
-			var src=element.attr('src');
-			element.attr('src',src.substr(0, src.length-3) + 'png');
-		});
-		$el.find('.svg').each(function(index,element){
-			element = $(element);
-			var background = element.css('background-image');
-			if (background){
-				var i = background.lastIndexOf('.svg');
-				if (i >= 0){
-					background = background.substr(0,i) + '.png' + background.substr(i + 4);
-					element.css('background-image', background);
-				}
-			}
-			element.find('*').each(function(index, element) {
-				element = $(element);
-				var background = element.css('background-image');
-				if (background) {
-					var i = background.lastIndexOf('.svg');
-					if(i >= 0){
-						background = background.substr(0,i) + '.png' + background.substr(i + 4);
-						element.css('background-image', background);
-					}
-				}
-			});
-		});
-	},
-
-	/**
-	 * Remove the time component from a given date
-	 *
-	 * @param {Date} date date
-	 * @return {Date} date with stripped time
-	 */
-	stripTime: function(date) {
-		// FIXME: likely to break when crossing DST
-		// would be better to use a library like momentJS
-		return new Date(date.getFullYear(), date.getMonth(), date.getDate());
-	},
-
-	_chunkify: function(t) {
-		// Adapted from http://my.opera.com/GreyWyvern/blog/show.dml/1671288
-		var tz = [], x = 0, y = -1, n = 0, code, c;
-
-		while (x < t.length) {
-			c = t.charAt(x);
-			// only include the dot in strings
-			var m = ((!n && c === '.') || (c >= '0' && c <= '9'));
-			if (m !== n) {
-				// next chunk
-				y++;
-				tz[y] = '';
-				n = m;
-			}
-			tz[y] += c;
-			x++;
-		}
-		return tz;
-	},
-	/**
-	 * Compare two strings to provide a natural sort
-	 * @param a first string to compare
-	 * @param b second string to compare
-	 * @return -1 if b comes before a, 1 if a comes before b
-	 * or 0 if the strings are identical
-	 */
-	naturalSortCompare: function(a, b) {
-		var x;
-		var aa = OC.Util._chunkify(a);
-		var bb = OC.Util._chunkify(b);
-
-		for (x = 0; aa[x] && bb[x]; x++) {
-			if (aa[x] !== bb[x]) {
-				var aNum = Number(aa[x]), bNum = Number(bb[x]);
-				// note: == is correct here
-				if (aNum == aa[x] && bNum == bb[x]) {
-					return aNum - bNum;
-				} else {
-					// Forcing 'en' locale to match the server-side locale which is
-					// always 'en'.
-					//
-					// Note: This setting isn't supported by all browsers but for the ones
-					// that do there will be more consistency between client-server sorting
-					return aa[x].localeCompare(bb[x], 'en');
-				}
-			}
-		}
-		return aa.length - bb.length;
-	}
-}
-
-/**
- * Utility class for the history API,
- * includes fallback to using the URL hash when
- * the browser doesn't support the history API.
- *
- * @namespace
- */
-OC.Util.History = {
-	_handlers: [],
-
-	/**
-	 * Push the current URL parameters to the history stack
-	 * and change the visible URL.
-	 * Note: this includes a workaround for IE8/IE9 that uses
-	 * the hash part instead of the search part.
-	 *
-	 * @param params to append to the URL, can be either a string
-	 * or a map
-	 */
-	pushState: function(params) {
-		var strParams;
-		if (typeof(params) === 'string') {
-			strParams = params;
-		}
-		else {
-			strParams = OC.buildQueryString(params);
-		}
-		if (window.history.pushState) {
-			var url = location.pathname + '?' + strParams;
-			window.history.pushState(params, '', url);
-		}
-		// use URL hash for IE8
-		else {
-			window.location.hash = '?' + strParams;
-			// inhibit next onhashchange that just added itself
-			// to the event queue
-			this._cancelPop = true;
-		}
-	},
-
-	/**
-	 * Add a popstate handler
-	 *
-	 * @param handler function
-	 */
-	addOnPopStateHandler: function(handler) {
-		this._handlers.push(handler);
-	},
-
-	/**
-	 * Parse a query string from the hash part of the URL.
-	 * (workaround for IE8 / IE9)
-	 */
-	_parseHashQuery: function() {
-		var hash = window.location.hash,
-			pos = hash.indexOf('?');
-		if (pos >= 0) {
-			return hash.substr(pos + 1);
-		}
-		if (hash.length) {
-			// remove hash sign
-			return hash.substr(1);
-		}
-		return '';
-	},
-
-	_decodeQuery: function(query) {
-		return query.replace(/\+/g, ' ');
-	},
-
-	/**
-	 * Parse the query/search part of the URL.
-	 * Also try and parse it from the URL hash (for IE8)
-	 *
-	 * @return map of parameters
-	 */
-	parseUrlQuery: function() {
-		var query = this._parseHashQuery(),
-			params;
-		// try and parse from URL hash first
-		if (query) {
-			params = OC.parseQueryString(this._decodeQuery(query));
-		}
-		// else read from query attributes
-		if (!params) {
-			params = OC.parseQueryString(this._decodeQuery(location.search));
-		}
-		return params || {};
-	},
-
-	_onPopState: function(e) {
-		if (this._cancelPop) {
-			this._cancelPop = false;
-			return;
-		}
-		var params;
-		if (!this._handlers.length) {
-			return;
-		}
-		params = (e && e.state) || this.parseUrlQuery() || {};
-		for (var i = 0; i < this._handlers.length; i++) {
-			this._handlers[i](params);
-		}
-	}
-};
 
 // fallback to hashchange when no history support
 if (window.history.pushState) {

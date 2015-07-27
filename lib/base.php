@@ -391,11 +391,19 @@ class OC {
 			throw new \Exception('Cannot read core/js/core.json');
 		}
 
+
+		OC_Util::addScript("bootstrap");
 		OC_Util::addScript("placeholders");
 		OC_Util::addScript("compatibility");
 		OC_Util::addScript("jquery.ocdialog");
 		OC_Util::addScript("oc-dialogs");
+		OC_Util::addScript("util");
+		OC_Util::addScript("history");
+		OC_Util::addScript("breadcrumb");
 		OC_Util::addScript("js");
+		OC_Util::addScript("msg");
+		OC_Util::addScript("notifications");
+		OC_Util::addScript("plugins");
 		OC_Util::addScript("l10n");
 		OC_Util::addTranslations("core");
 		OC_Util::addScript("octemplate");
