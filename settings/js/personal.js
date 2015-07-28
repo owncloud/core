@@ -234,6 +234,20 @@ $(document).ready(function () {
 	var uploadparms = {
 		done: function (e, data) {
 			avatarResponseHandler(data.result);
+		},
+		fail: function (e, data){
+			var msg = data.jqXHR.statusText;
+			if (!_.isUndefined(data.jqXHR.responseJSON) &&
+				!_.isUndefined(data.jqXHR.responseJSON).data &&
+				!_.isUndefined(data.jqXHR.responseJSON).data.message
+			) {
+				msg = data.jqXHR.responseJSON.data.message;
+			}
+			avatarResponseHandler({
+			data: {
+					message: t('settings', 'An error occurred: {statusCode} {statusText}', { statusCode: data.jqXHR.status, statusText: msg })
+				}
+			});
 		}
 	};
 
@@ -247,7 +261,25 @@ $(document).ready(function () {
 		OC.dialogs.filepicker(
 			t('settings', "Select a profile picture"),
 			function (path) {
-				$.post(OC.generateUrl('/avatar/'), {path: path}, avatarResponseHandler);
+				$.ajax({
+					type: "POST",
+					url: OC.generateUrl('/avatar/'),
+					data: { path: path }
+				}).done(avatarResponseHandler)
+					.fail(function(jqXHR, status){
+						var msg = data.jqXHR.statusText;
+						if (!_.isUndefined(data.jqXHR.responseJSON) &&
+							!_.isUndefined(data.jqXHR.responseJSON).data &&
+							!_.isUndefined(data.jqXHR.responseJSON).data.message
+						) {
+							msg = data.jqXHR.responseJSON.data.message;
+						}
+						avatarResponseHandler({
+							data: {
+								message: t('settings', 'An error occurred: {statusCode} {statusText}', { statusCode: jqXHR.status, statusText: msg })
+							}
+						});
+					});
 			},
 			false,
 			["image/png", "image/jpeg"]
