@@ -22,22 +22,22 @@
 
 namespace OC\Core\Command\Encryption;
 
-use OCP\IConfig;
+use OC\Encryption\Util;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ShowKeyStorageRoot extends Command{
 
-	/** @var IConfig  */
-	protected $config;
+	/** @var Util  */
+	protected $util;
 
 	/**
-	 * @param IConfig $config
+	 * @param Util $util
 	 */
-	public function __construct(IConfig $config) {
+	public function __construct(Util $util) {
 		parent::__construct();
-		$this->config = $config;
+		$this->util = $util;
 	}
 
 	protected function configure() {
@@ -48,7 +48,7 @@ class ShowKeyStorageRoot extends Command{
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$currentRoot = $this->config->getAppValue('core', 'encryption_key_storage_root', '');
+		$currentRoot = $this->util->getKeyStorageRoot();
 
 		$rootDescription = $currentRoot !== '' ? $currentRoot : 'default storage location (data/)';
 
