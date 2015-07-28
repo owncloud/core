@@ -236,9 +236,16 @@ $(document).ready(function () {
 			avatarResponseHandler(data.result);
 		},
 		fail: function (e, data){
+			var msg = data.jqXHR.statusText;
+			if (!_.isUndefined(data.jqXHR.responseJSON) &&
+				!_.isUndefined(data.jqXHR.responseJSON.data) &&
+				!_.isUndefined(data.jqXHR.responseJSON.data.message)
+			) {
+				msg = data.jqXHR.responseJSON.data.message;
+			}
 			avatarResponseHandler({
-				data: {
-					message: t('settings', 'An error occured: {statusCode} {statusText}', { statusCode: data.jqXHR.status, statusText: data.jqXHR.statusText })
+			data: {
+					message: t('settings', 'An error occurred: {statusCode} {statusText}', { statusCode: data.jqXHR.status, statusText: msg })
 				}
 			});
 		}
@@ -260,9 +267,16 @@ $(document).ready(function () {
 					data: { path: path }
 				}).done(avatarResponseHandler)
 					.fail(function(jqXHR, status){
+						var msg = jqXHR.statusText;
+						if (!_.isUndefined(jqXHR.responseJSON) &&
+							!_.isUndefined(jqXHR.responseJSON.data) &&
+							!_.isUndefined(jqXHR.responseJSON.data.message)
+						) {
+							msg = jqXHR.responseJSON.data.message;
+						}
 						avatarResponseHandler({
 							data: {
-								message: t('settings', 'An error occured: {statusCode} {statusText}', { statusCode: jqXHR.status, statusText: jqXHR.statusText })
+								message: t('settings', 'An error occurred: {statusCode} {statusText}', { statusCode: jqXHR.status, statusText: msg })
 							}
 						});
 					});
