@@ -52,18 +52,23 @@ class Manager implements IManager {
 	/** @var View  */
 	protected $view;
 
+	/** @var Util  */
+	protected $util;
+
 	/**
 	 * @param IConfig $config
 	 * @param ILogger $logger
 	 * @param IL10N $l10n
 	 * @param View $view
+	 * @param Util $util
 	 */
-	public function __construct(IConfig $config, ILogger $logger, IL10N $l10n, View $view) {
+	public function __construct(IConfig $config, ILogger $logger, IL10N $l10n, View $view, Util $util) {
 		$this->encryptionModules = array();
 		$this->config = $config;
 		$this->logger = $logger;
 		$this->l = $l10n;
 		$this->view = $view;
+		$this->util = $util;
 	}
 
 	/**
@@ -241,7 +246,7 @@ class Manager implements IManager {
 	 */
 	protected function isKeyStorageReady() {
 
-		$rootDir = $this->config->getAppValue('core', 'encryption_key_storage_root', '');
+		$rootDir = $this->util->getKeyStorageRoot();
 
 		// the default root is always valid
 		if ($rootDir === '') {

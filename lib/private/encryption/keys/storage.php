@@ -64,7 +64,7 @@ class Storage implements IStorage {
 
 		$this->encryption_base_dir = '/files_encryption';
 		$this->keys_base_dir = $this->encryption_base_dir .'/keys';
-		$this->root_dir = $config->getAppValue('core', 'encryption_key_storage_root', '');
+		$this->root_dir = $this->util->getKeyStorageRoot();
 	}
 
 	/**

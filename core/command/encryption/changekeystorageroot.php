@@ -23,6 +23,7 @@
 namespace OC\Core\Command\Encryption;
 
 use OC\Encryption\Keys\Storage;
+use OC\Encryption\Util;
 use OC\Files\Filesystem;
 use OC\Files\View;
 use OCP\IConfig;
@@ -46,16 +47,21 @@ class ChangeKeyStorageRoot extends Command{
 	/** @var IConfig  */
 	protected $config;
 
+	/** @var Util  */
+	protected $util;
+
 	/**
 	 * @param View $view
 	 * @param IUserManager $userManager
 	 * @param IConfig $config
+	 * @param Util $util
 	 */
-	public function __construct(View $view, IUserManager $userManager, IConfig $config) {
+	public function __construct(View $view, IUserManager $userManager, IConfig $config, Util $util) {
 		parent::__construct();
 		$this->rootView = $view;
 		$this->userManager = $userManager;
 		$this->config = $config;
+		$this->util = $util;
 	}
 
 	protected function configure() {
@@ -71,7 +77,7 @@ class ChangeKeyStorageRoot extends Command{
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$oldRoot = $this->config->getAppValue('core', 'encryption_key_storage_root', '');
+		$oldRoot = $this->util->getKeyStorageRoot();
 		$newRoot = $input->getArgument('newRoot');
 
 		if ($newRoot === null) {
@@ -88,7 +94,7 @@ class ChangeKeyStorageRoot extends Command{
 		$output->writeln("Change key storage root from <info>$oldRootDescription</info> to <info>$newRootDescription</info>");
 		$success = $this->moveKeys($oldRoot, $newRoot, $output);
 		if ($success) {
-			$this->updateRoot($newRoot);
+			$this->util->setKeyStorageRoot($newRoot);
 		}
 
 		$output->writeln('');
@@ -147,15 +153,6 @@ class ChangeKeyStorageRoot extends Command{
 		$progress->finish();
 
 		return true;
-	}
-
-	/**
-	 * set new key storage root in database
-	 *
-	 * @param $newRoot
-	 */
-	protected function updateRoot($newRoot) {
-		$this->config->setAppValue('core', 'encryption_key_storage_root', $newRoot);
 	}
 
 	/**
