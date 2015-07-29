@@ -530,14 +530,15 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	}
 
         /**
-         * Returns the actual scriptname. In some version of php there is a bug
-         * which causes PATH_INFO to also be part of SCRIPT_NAME.
+         * Returns the actual scriptname. This is a workaround for https://bugs.php.net/bug.php?id=65641
+         * which was fixed in php 5.5.18. RHEL 7 and Ubuntu 14.04 have not backported this fix yet.
+         * The problem is that PATH_INFO is also part of SCRIPT_NAME.
          * @return string
          */
         private function getRawScriptName() {
             $ScriptName = $this->server['SCRIPT_NAME'];
 
-            if (array_key_exists('PATH_INFO', $_SERVER) === true) {
+            if (array_key_exists('PATH_INFO', $this->server) === true) {
                 $pos = strpos($this->server['SCRIPT_NAME'], rawurldecode($this->server['PATH_INFO']));
 
                 if ($pos !== false) {
