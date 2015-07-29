@@ -524,7 +524,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 		$uri = isset($this->server['REQUEST_URI']) ? $this->server['REQUEST_URI'] : '';
 
 		if($this->config->getSystemValue('overwritewebroot') !== '' && $this->isOverwriteCondition()) {
-			$uri = $this->getScriptName() . substr($uri, strlen(getRawScriptName()));
+			$uri = $this->getScriptName() . substr($uri, strlen($this->getRawScriptName()));
 		}
 		return $uri;
 	}
@@ -535,17 +535,17 @@ class Request implements \ArrayAccess, \Countable, IRequest {
          * @return string
          */
         private function getRawScriptName() {
-            $script_name = $_SERVER['SCRIPT_NAME'];
+            $ScriptName = $this->server['SCRIPT_NAME'];
 
-            if (array_key_exists('PATH_INFO', $_SERVER) == true) {
-                $pos = strpos($_SERVER['SCRIPT_NAME'], rawurldecode($_SERVER['PATH_INFO']));
+            if (array_key_exists('PATH_INFO', $_SERVER) === true) {
+                $pos = strpos($this->server['SCRIPT_NAME'], rawurldecode($this->server['PATH_INFO']));
 
                 if ($pos !== false) {
-                    $script_name = substr($_SERVER['SCRIPT_NAME'], 0, $pos);
+                    $ScriptName = substr($this->server['SCRIPT_NAME'], 0, $pos);
                 }
             }
 
-            return $script_name;
+            return $ScriptName;
         }
 
 	/**
@@ -567,7 +567,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 			$requestUri = substr($requestUri, 0, $pos);
 		}
 
-		$scriptName = getRawScriptName();
+		$scriptName = $this->getRawScriptName();
 		$pathInfo = $requestUri;
 
 		// strip off the script name's dir and file name
@@ -623,7 +623,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 * @return string the script name
 	 */
 	public function getScriptName() {
-		$name = getRawScriptName();
+		$name = $this->getRawScriptName();
 
 		$overwriteWebRoot =  $this->config->getSystemValue('overwritewebroot');
 		if ($overwriteWebRoot !== '' && $this->isOverwriteCondition()) {
