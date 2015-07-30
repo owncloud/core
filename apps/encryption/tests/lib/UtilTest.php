@@ -82,7 +82,8 @@ class UtilTest extends TestCase {
 				'login',
 				'logout',
 				'setUser',
-				'getUser'
+				'getUser',
+				'whenUserAvailable',
 			])
 			->getMock();
 
