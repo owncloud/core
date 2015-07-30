@@ -79,4 +79,12 @@ interface IUserSession {
 	 * @since 8.0.0
 	 */
 	public function isLoggedIn();
+
+	/**
+	 * Set a callback for when a user is available
+	 *
+	 * @param callable $callback function(\OCP\IUser $user)
+	 * @since 8.2.0
+	 */
+	public function whenUserAvailable(callable $callback);
 }

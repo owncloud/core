@@ -68,6 +68,11 @@ class Session implements IUserSession, Emitter {
 	protected $activeUser;
 
 	/**
+	 * @var callable[]
+	 */
+	private $whenUserAvailableCallbacks = [];
+
+	/**
 	 * @param \OCP\IUserManager $manager
 	 * @param \OCP\ISession $session
 	 */
@@ -123,6 +128,7 @@ class Session implements IUserSession, Emitter {
 		}
 		$this->session = $session;
 		$this->activeUser = null;
+		$this->runWhenUserAvailableCallbacks();
 	}
 
 	/**
@@ -137,6 +143,7 @@ class Session implements IUserSession, Emitter {
 			$this->session->set('user_id', $user->getUID());
 		}
 		$this->activeUser = $user;
+		$this->runWhenUserAvailableCallbacks();
 	}
 
 	/**
@@ -170,6 +177,33 @@ class Session implements IUserSession, Emitter {
 	 */
 	public function isLoggedIn() {
 		return $this->getUser() !== null;
+	}
+
+	/**
+	 * Set a callback for when a user is available
+	 *
+	 * @param callable $callback function(\OCP\IUser $user)
+	 */
+	public function whenUserAvailable(callable $callback) {
+		$user = $this->getUser();
+		if ($user !== null) {
+			call_user_func($callback, $user);
+		} else {
+			$this->whenUserAvailableCallbacks[] = $callback;
+		}
+	}
+
+	/**
+	 * Run callbacks when user is available
+	 */
+	protected function runWhenUserAvailableCallbacks() {
+		$user = $this->getUser();
+		if ($user !== null) {
+			foreach ($this->whenUserAvailableCallbacks as $callback) {
+				call_user_func($callback, $user);
+			}
+			$this->whenUserAvailableCallbacks = [];
+		}
 	}
 
 	/**
