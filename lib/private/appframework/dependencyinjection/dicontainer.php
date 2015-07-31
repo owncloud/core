@@ -212,6 +212,14 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 			return $this->getServer()->getUserSession();
 		});
 
+		$this->registerService('OCP\\IUser', function($c) {
+			$userSession = $c->query('OCP\\IUserSession');
+			if (!$userSession->isLoggedIn()) {
+				throw new \RuntimeException('No user logged in');
+			}
+			return $userSession->getUser();
+		});
+
 		$this->registerService('ServerContainer', function ($c) {
 			return $this->getServer();
 		});

@@ -88,6 +88,7 @@ class SettingsControllerTest extends TestCase {
 				'setUser',
 				'getUser',
 				'canChangePassword',
+				'whenUserAvailable',
 			])
 			->getMock();
 

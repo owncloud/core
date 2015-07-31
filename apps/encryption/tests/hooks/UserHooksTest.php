@@ -229,7 +229,8 @@ class UserHooksTest extends TestCase {
 				'logout',
 				'setUser',
 				'getUser',
-				'canChangePassword'
+				'canChangePassword',
+				'whenUserAvailable',
 			])
 			->getMock();
 

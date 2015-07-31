@@ -397,4 +397,75 @@ class Session extends \Test\TestCase {
 		$userSession->setSession($session2);
 		$this->assertEquals($users['bar'], $userSession->getUser());
 	}
+
+	public function testWhenAvailableUserSetUser() {
+		$session = $this->getMockBuilder('\OC\Session\Memory')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$manager = $this->getMockBuilder('\OC\User\Manager')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$userSession = new \OC\User\Session($manager, $session);
+		$this->assertEquals(null, $userSession->getUser());
+
+		$user = $this->getMock('\OCP\IUser');
+
+		$callback1 = $this->getMock('stdClass', ['callback']);
+		$callback1->expects($this->once())
+			->method('callback')
+			->with($user);
+		$callback2 = $this->getMock('stdClass', ['callback']);
+		$callback2->expects($this->once())
+			->method('callback')
+			->with($user);
+
+		$userSession->whenUserAvailable([$callback1, 'callback']);
+
+		$userSession->setUser($user);
+
+		$userSession->whenUserAvailable([$callback2, 'callback']);
+	}
+
+	public function testWhenAvailableUserSetSession() {
+		$session = $this->getMockBuilder('\OC\Session\Memory')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$session2 = $this->getMockBuilder('\OC\Session\Memory')
+			->disableOriginalConstructor()
+			->getMock();
+		$session2->method('get')
+			->with('user_id')
+			->willReturn('foo');
+
+		$user = $this->getMock('\OCP\IUser');
+
+		$manager = $this->getMockBuilder('\OC\User\Manager')
+			->disableOriginalConstructor()
+			->getMock();
+		$manager->method('get')
+			->with('foo')
+			->willReturn($user);
+
+		$userSession = new \OC\User\Session($manager, $session);
+		$this->assertEquals(null, $userSession->getUser());
+
+		$callback1 = $this->getMock('stdClass', ['callback']);
+		$callback1->expects($this->once())
+			->method('callback')
+			->with($user);
+		$callback2 = $this->getMock('stdClass', ['callback']);
+		$callback2->expects($this->once())
+			->method('callback')
+			->with($user);
+
+		$userSession->whenUserAvailable([$callback1, 'callback']);
+
+		$userSession->setSession($session2);
+
+		$userSession->whenUserAvailable([$callback2, 'callback']);
+	}
+
 }
