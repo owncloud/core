@@ -41,7 +41,7 @@ class Test_Share_Search extends \Test\TestCase {
 	/**
      * @expectedException PHPUnit_Framework_Error
      */
-	public function testSortWrongLog() {
+	public function xtestSortWrongLog() {
 		$sorter = new \OC\Share\SearchResultSorter('foo', 'bar', 'UTF-8', 'foobar');
 	}
 }
