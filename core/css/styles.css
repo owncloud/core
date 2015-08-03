@@ -196,6 +196,7 @@ button, .button,
 #quota, select, .pager li a {
 	width: auto;
 	min-width: 25px;
+	max-width: 300px;
 	padding: 5px;
 	background-color: rgba(240,240,240,.9);
 	font-weight: bold;
@@ -353,7 +354,8 @@ input[type="submit"].enabled {
 	box-sizing:border-box;
 }
 /* allow horizontal scrollbar for personal and admin settings */
-#body-settings:not(.snapjs-left) .app-settings {
+#body-settings:not(.snapjs-left) .app-settings,
+#body-user:not(.snapjs-left) .app-settings {
 	overflow-x: auto;
 }
 
