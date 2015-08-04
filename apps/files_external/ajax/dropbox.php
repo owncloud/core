@@ -23,8 +23,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-require_once __DIR__ . '/../3rdparty/Dropbox/autoload.php';
-
 OCP\JSON::checkAppEnabled('files_external');
 OCP\JSON::checkLoggedIn();
 OCP\JSON::callCheck();
