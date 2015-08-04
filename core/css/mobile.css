@@ -36,27 +36,27 @@
 }
 
 table.grid td.date {
- word-break: break-all !Important;
- padding: 0 !Important;
- white-space: normal;
- width: 100px;
- text-align: right;
+  word-break: break-all !Important;
+  padding: 0 !Important;
+  white-space: normal;
+  width: 100px;
+  text-align: right;
 }
 
 #security-warning li,
 #admin-tips li {
- margin: 10px 10px;
+  margin: 10px 10px;
 }
 
 table.grid td {
- border-bottom: 1px solid #DDD;
- padding: 0px 0.5em 0px 0.4em;
- text-align: left;
- font-weight: normal;
+  border-bottom: 1px solid #DDD;
+  padding: 0px 0.5em 0px 0.4em;
+  text-align: left;
+  font-weight: normal;
 }
 
 .section {
- padding: 15px !important;
+  padding: 15px !important;
 }
 
 /* on mobile public share, show only the icon of the logo, hide the text */
