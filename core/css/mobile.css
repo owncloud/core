@@ -141,8 +141,7 @@ table.grid td {
 	z-index: 1000;
 }
 
-/* allow horizontal scrollbar in settings
-	otherwise user management is not usable on mobile */
+/* allow horizontal scrollbar in settings otherwise user management is not usable on mobile */
 #body-settings #app-content {
 	overflow-x: auto !important;
 }
