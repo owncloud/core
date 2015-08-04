@@ -1,38 +1,38 @@
 @media only screen and (max-width: 768px) {
 
 #body-login #header {
-	padding-top: 10px;
+  padding-top: 10px;
 }
 
 #header .avatardiv {
-	float: left;
-	display: inline-block;
-	margin-right: -15px;
-	cursor: pointer;
-	height: 32px;
-	width: 32px;
+  float: left;
+  display: inline-block;
+  margin-right: -15px;
+  cursor: pointer;
+  height: 32px;
+  width: 32px;
 }
 
 #body-login .wrapper {
-	display: -webkit-box;
-	-webkit-box-orient: horizontal;
-	-webkit-box-pack: center;
-	-webkit-box-align: center;
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-pack: center;
+  -webkit-box-align: center;
 
-	display: -moz-box;
-	-moz-box-orient: horizontal;
-	-moz-box-pack: center;
-	-moz-box-align: center;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-pack: center;
+  -moz-box-align: center;
 
-	display: box;
-	box-orient: horizontal;
-	box-pack: center;
-	box-align: center;
+  display: box;
+  box-orient: horizontal;
+  box-pack: center;
+  box-align: center;
 }
 
 #log .log-message {
-	word-break: break-all !Important;
-	min-width: 100px !Important;
+  word-break: break-all !Important;
+  min-width: 100px !Important;
 }
 
 table.grid td.date {
@@ -61,60 +61,60 @@ table.grid td {
 
 /* on mobile public share, show only the icon of the logo, hide the text */
 #body-public #header .header-appname-container {
-	display: none;
+  display: none;
 }
 
 /* compress search box on mobile, expand when focused */
 .searchbox input[type="search"] {
-	width: 0;
-	cursor: pointer;
-	background-color: transparent;
-	background-image: url('../img/actions/search-white.svg');
-	-webkit-transition: all 100ms;
-	-moz-transition: all 100ms;
-	-o-transition: all 100ms;
-	transition: all 100ms;
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
-	opacity: .7;
+  width: 0;
+  cursor: pointer;
+  background-color: transparent;
+  background-image: url('../img/actions/search-white.svg');
+  -webkit-transition: all 100ms;
+  -moz-transition: all 100ms;
+  -o-transition: all 100ms;
+  transition: all 100ms;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+  opacity: .7;
 }
 .searchbox input[type="search"]:focus,
 .searchbox input[type="search"]:active {
-	width: 155px;
-	max-width: 50%;
-	cursor: text;
-	background-color: #fff;
-	background-image: url('../img/actions/search.svg');
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-	opacity: 1;
+  width: 155px;
+  max-width: 50%;
+  cursor: text;
+  background-color: #fff;
+  background-image: url('../img/actions/search.svg');
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  opacity: 1;
 }
 
 /* do not show display name on mobile when profile picture is present */
 #header .avatardiv.avatardiv-shown + #expandDisplayName {
-	display: none;
+  display: none;
 }
 #header #expand {
-	display: block;
-	padding: 7px 30px 6px 7px;
+  display: block;
+  padding: 7px 30px 6px 7px;
 }
 
 /* do not show update notification on mobile */
 #update-notification {
-	display: none !important;
+  display: none !important;
 }
 
 /* position share dropdown */
 #dropdown {
-	margin-right: 10% !important;
-	width: 80% !important;
+  margin-right: 10% !important;
+  width: 80% !important;
 }
 
 
 /* fix error display on smaller screens */
 .error-wide {
-	width: 100%;
-	margin-left: 0 !important;
+  width: 100%;
+  margin-left: 0 !important;
 	-moz-box-sizing: border-box;
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 
@@ -122,99 +122,99 @@ table.grid td {
 
 #app-navigation,
 #app-content {
-	position: absolute !important;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 #app-navigation {
-	width: 250px !important;
+  width: 250px !important;
 }
 
 #app-content {
-	width: 100% !important;
-	left: 0 !important;
-	background-color: #fff;
-	overflow-x: hidden !important;
-	z-index: 1000;
+  width: 100% !important;
+  left: 0 !important;
+  background-color: #fff;
+  overflow-x: hidden !important;
+  z-index: 1000;
 }
 
 /* allow horizontal scrollbar in settings
 	otherwise user management is not usable on mobile */
 #body-settings #app-content {
-	overflow-x: auto !important;
+  overflow-x: auto !important;
 }
 
 #app-navigation-toggle {
-	position: fixed;
-	display: inline-block !important;
-	top: 45px;
-	left: 0;
-	width: 44px;
-	height: 44px;
-	z-index: 149;
-	background-color: rgba(255, 255, 255, .7);
-	cursor: pointer;
-	opacity: .6;
+  position: fixed;
+  display: inline-block !important;
+  top: 45px;
+  left: 0;
+  width: 44px;
+  height: 44px;
+  z-index: 149;
+  background-color: rgba(255, 255, 255, .7);
+  cursor: pointer;
+  opacity: .6;
 }
 #app-navigation-toggle:hover,
 #app-navigation-toggle:focus {
-	opacity: 1;
+  opacity: 1;
 }
 
 
 /* controls bar for mobile */
 #controls {
-	min-width: initial !important;
-	left: 0 !important;
-	padding-left: 0;
+  min-width: initial !important;
+  left: 0 !important;
+  padding-left: 0;
 }
 /* position controls for apps with app-navigation */
 #app-navigation+#app-content #controls {
-	padding-left: 44px;
+  padding-left: 44px;
 }
 
 /* .viewer-mode is when text editor, PDF viewer, etc is open */
 #body-user .app-files.viewer-mode #controls {
-	padding-left: 0 !important;
+  padding-left: 0 !important;
 }
 .app-files.viewer-mode #app-navigation-toggle {
-	display: none !important;
+  display: none !important;
 }
 
 table.multiselect thead {
-	left: 0 !important;
+  left: 0 !important;
 }
 
 
 /* prevent overflow in user management controls bar */
 #usersearchform {
-	display: none;
+  display: none;
 }
 #body-settings #controls
 #body-user #controls {
-	min-width: 768px !important;
+  min-width: 768px !important;
 }
 
 
 /* do not show dates in filepicker */
 #oc-dialog-filepicker-content .filelist .date {
-	display: none;
+  display: none;
 }
 #oc-dialog-filepicker-content .filelist .filename {
-	max-width: 80%;
+  max-width: 80%;
 }
 
 
 /* fix controls bar jumping when navigation is slid out */
 .snapjs-left #app-navigation-toggle,
 .snapjs-left #controls {
-	top: 0;
+  top: 0;
 }
 .snapjs-left table.multiselect thead {
-	top: 44px;
+  top: 44px;
 }
 
 
