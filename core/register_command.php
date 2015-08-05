@@ -68,7 +68,8 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 			$view,
 			\OC::$server->getUserManager(),
 			\OC::$server->getConfig(),
-			$util
+			$util,
+			new \Symfony\Component\Console\Helper\QuestionHelper()
 		)
 	);
 	$application->add(new OC\Core\Command\Encryption\ShowKeyStorageRoot($util));

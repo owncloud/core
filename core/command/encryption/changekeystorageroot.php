@@ -36,7 +36,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
-class ChangeKeyStorageRoot extends Command{
+class ChangeKeyStorageRoot extends Command {
 
 	/** @var View  */
 	protected $rootView;
@@ -50,18 +50,23 @@ class ChangeKeyStorageRoot extends Command{
 	/** @var Util  */
 	protected $util;
 
+	/** @var QuestionHelper */
+	protected $questionHelper;
+
 	/**
 	 * @param View $view
 	 * @param IUserManager $userManager
 	 * @param IConfig $config
 	 * @param Util $util
+	 * @param QuestionHelper $questionHelper
 	 */
-	public function __construct(View $view, IUserManager $userManager, IConfig $config, Util $util) {
+	public function __construct(View $view, IUserManager $userManager, IConfig $config, Util $util, QuestionHelper $questionHelper) {
 		parent::__construct();
 		$this->rootView = $view;
 		$this->userManager = $userManager;
 		$this->config = $config;
 		$this->util = $util;
+		$this->questionHelper = $questionHelper;
 	}
 
 	protected function configure() {
@@ -81,9 +86,8 @@ class ChangeKeyStorageRoot extends Command{
 		$newRoot = $input->getArgument('newRoot');
 
 		if ($newRoot === null) {
-			$dialog = new QuestionHelper();
 			$question = new ConfirmationQuestion('No storage root give, do you want to reset the key storage root to the default location? (y/n) ', false);
-			if (!$dialog->ask($input, $output, $question)) {
+			if (!$this->questionHelper->ask($input, $output, $question)) {
 				return;
 			}
 			$newRoot = '';
