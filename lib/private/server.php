@@ -86,12 +86,25 @@ class Server extends SimpleContainer implements IServerContainer {
 		});
 
 		$this->registerService('EncryptionManager', function (Server $c) {
-			return new Encryption\Manager($c->getConfig(), $c->getLogger(), $c->getL10N('core'));
+			$view = new View();
+			$util = new Encryption\Util(
+				$view,
+				$c->getUserManager(),
+				$c->getGroupManager(),
+				$c->getConfig()
+			);
+			return new Encryption\Manager(
+				$c->getConfig(),
+				$c->getLogger(),
+				$c->getL10N('core'),
+				new View(),
+				$util
+			);
 		});
 
 		$this->registerService('EncryptionFileHelper', function (Server $c) {
-			$util = new \OC\Encryption\Util(
-				new \OC\Files\View(),
+			$util = new Encryption\Util(
+				new View(),
 				$c->getUserManager(),
 				$c->getGroupManager(),
 				$c->getConfig()
@@ -100,8 +113,8 @@ class Server extends SimpleContainer implements IServerContainer {
 		});
 
 		$this->registerService('EncryptionKeyStorage', function (Server $c) {
-			$view = new \OC\Files\View();
-			$util = new \OC\Encryption\Util(
+			$view = new View();
+			$util = new Encryption\Util(
 				$view,
 				$c->getUserManager(),
 				$c->getGroupManager(),
@@ -316,7 +329,7 @@ class Server extends SimpleContainer implements IServerContainer {
 			$uid = $user ? $user : null;
 			return new ClientService(
 				$c->getConfig(),
-				new \OC\Security\CertificateManager($uid, new \OC\Files\View())
+				new \OC\Security\CertificateManager($uid, new View())
 			);
 		});
 		$this->registerService('EventLogger', function (Server $c) {
@@ -788,7 +801,7 @@ class Server extends SimpleContainer implements IServerContainer {
 			}
 			$userId = $user->getUID();
 		}
-		return new CertificateManager($userId, new \OC\Files\View());
+		return new CertificateManager($userId, new View());
 	}
 
 	/**
