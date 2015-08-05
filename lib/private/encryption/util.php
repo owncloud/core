@@ -78,13 +78,13 @@ class Util {
 
 	/**
 	 *
-	 * @param \OC\Files\View $view
+	 * @param View $view
 	 * @param \OC\User\Manager $userManager
 	 * @param \OC\Group\Manager $groupManager
 	 * @param IConfig $config
 	 */
 	public function __construct(
-		\OC\Files\View $view,
+		View $view,
 		\OC\User\Manager $userManager,
 		\OC\Group\Manager $groupManager,
 		IConfig $config) {
@@ -332,9 +332,21 @@ class Util {
 	 * @return boolean
 	 */
 	public function isExcluded($path) {
-		$normalizedPath = \OC\Files\Filesystem::normalizePath($path);
+		$normalizedPath = Filesystem::normalizePath($path);
 		$root = explode('/', $normalizedPath, 4);
 		if (count($root) > 1) {
+
+			// detect alternative key storage root
+			$rootDir = $this->getKeyStorageRoot();
+			if ($rootDir !== '' &&
+				0 === strpos(
+					Filesystem::normalizePath($path),
+					Filesystem::normalizePath($rootDir)
+				)
+			) {
+				return true;
+			}
+
 
 			//detect system wide folders
 			if (in_array($root[1], $this->excludedPaths)) {
@@ -361,6 +373,24 @@ class Util {
 		$enabled = $this->config->getUserValue($uid, 'encryption', 'recovery_enabled', '0');
 
 		return ($enabled === '1') ? true : false;
+	}
+
+	/**
+	 * set new key storage root
+	 *
+	 * @param string $root new key store root relative to the data folder
+	 */
+	public function setKeyStorageRoot($root) {
+		$this->config->setAppValue('core', 'encryption_key_storage_root', $root);
+	}
+
+	/**
+	 * get key storage root
+	 *
+	 * @return string key storage root
+	 */
+	public function getKeyStorageRoot() {
+		return $this->config->getAppValue('core', 'encryption_key_storage_root', '');
 	}
 
 	/**

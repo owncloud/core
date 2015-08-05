@@ -57,6 +57,22 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\Encryption\ListModules(\OC::$server->getEncryptionManager()));
 	$application->add(new OC\Core\Command\Encryption\SetDefaultModule(\OC::$server->getEncryptionManager()));
 	$application->add(new OC\Core\Command\Encryption\Status(\OC::$server->getEncryptionManager()));
+	$view = new \OC\Files\View();
+	$util = new \OC\Encryption\Util(
+		$view,
+		\OC::$server->getUserManager(),
+		\OC::$server->getGroupManager(),
+		\OC::$server->getConfig()
+	);
+	$application->add(new OC\Core\Command\Encryption\ChangeKeyStorageRoot(
+			$view,
+			\OC::$server->getUserManager(),
+			\OC::$server->getConfig(),
+			$util,
+			new \Symfony\Component\Console\Helper\QuestionHelper()
+		)
+	);
+	$application->add(new OC\Core\Command\Encryption\ShowKeyStorageRoot($util));
 
 	$application->add(new OC\Core\Command\Maintenance\MimeTypesJS());
 	$application->add(new OC\Core\Command\Maintenance\Mode(\OC::$server->getConfig()));
