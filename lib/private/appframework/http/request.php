@@ -400,29 +400,33 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 * @see OC_Util::callRegister()
 	 */
 	public function passesCSRFCheck() {
+		// abort early if internal token does not exist
 		if($this->items['requesttoken'] === false) {
 			return false;
 		}
 
-		if (isset($this->items['get']['requesttoken'])) {
-			$token = $this->items['get']['requesttoken'];
-		} elseif (isset($this->items['post']['requesttoken'])) {
-			$token = $this->items['post']['requesttoken'];
-		} elseif (isset($this->items['server']['HTTP_REQUESTTOKEN'])) {
-			$token = $this->items['server']['HTTP_REQUESTTOKEN'];
-		} else {
-			//no token found.
-			return false;
+		return $this->getRequestCSRFToken() === $this->items['requesttoken']);
+	}
+
+	/**
+	 * @return string the token which was passed in the request or an empty
+	 * string
+	 */
+	public function getRequestCSRFToken() {
+		$possibleTokenLocations = [
+			'get' => 'requesttoken',
+			'post' => 'requesttoken',
+			'server' => 'HTTP_REQUESTTOKEN'
+		];
+
+		$token = '';
+		foreach($possibleTokenLocations as $method => $key) {
+			if (isset($this->items[$method][$key])) {
+				$token = $this->items[$method][$key];
+			}
 		}
 
-		// Check if the token is valid
-		if($token !== $this->items['requesttoken']) {
-			// Not valid
-			return false;
-		} else {
-			// Valid token
-			return true;
-		}
+		return $token;
 	}
 
 	/**
@@ -696,6 +700,14 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 			return $this->config->getSystemValue('overwritehost');
 		}
 		return null;
+	}
+
+	/**
+	 * Returns true if the request hits an API route, e.g. index.php/api/myapp
+	 * @return bool
+	 */
+	public function isApiRequest() {
+		return strpos($this->getPathInfo(), '/api') === 0;
 	}
 
 }

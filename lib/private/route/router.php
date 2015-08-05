@@ -41,27 +41,37 @@ class Router implements IRouter {
 	/**
 	 * @var \Symfony\Component\Routing\RouteCollection[]
 	 */
-	protected $collections = array();
+	protected $collections = [];
+
+	/**
+	 * @var \Symfony\Component\Routing\RouteCollection[]
+	 */
+	protected $apiCollections = [];
 
 	/**
 	 * @var \Symfony\Component\Routing\RouteCollection
 	 */
-	protected $collection = null;
+	protected $collection;
+
+	/**
+	 * @var \Symfony\Component\Routing\RouteCollection
+	 */
+	protected $apiCollection;
 
 	/**
 	 * @var string
 	 */
-	protected $collectionName = null;
+	protected $collectionName;
 
 	/**
 	 * @var \Symfony\Component\Routing\RouteCollection
 	 */
-	protected $root = null;
+	protected $root;
 
 	/**
 	 * @var \Symfony\Component\Routing\Generator\UrlGenerator
 	 */
-	protected $generator = null;
+	protected $generator;
 
 	/**
 	 * @var string[]
@@ -153,8 +163,15 @@ class Router implements IRouter {
 				$this->loadedApps[$app] = true;
 				$this->useCollection($app);
 				$this->requireRouteFile($file, $app);
+
+				// load normal routes
 				$collection = $this->getCollection($app);
 				$collection->addPrefix('/apps/' . $app);
+				$this->root->addCollection($collection);
+
+				// load api routes
+				$collection = $this->getApiCollection($app);
+				$collection->addPrefix('/api/' . $app);
 				$this->root->addCollection($collection);
 			}
 		}
@@ -185,6 +202,17 @@ class Router implements IRouter {
 	}
 
 	/**
+	 * @param string $name
+	 * @return \Symfony\Component\Routing\RouteCollection
+	 */
+	protected function getApiCollection($name) {
+		if (!isset($this->apiCollections[$name])) {
+			$this->apiCollections[$name] = new RouteCollection();
+		}
+		return $this->apiCollections[$name];
+	}
+
+	/**
 	 * Sets the collection to use for adding routes
 	 *
 	 * @param string $name Name of the collection to use.
@@ -192,6 +220,7 @@ class Router implements IRouter {
 	 */
 	public function useCollection($name) {
 		$this->collection = $this->getCollection($name);
+		$this->apiCollection = $this->getApiCollection($name);
 		$this->collectionName = $name;
 	}
 
@@ -204,7 +233,6 @@ class Router implements IRouter {
 		return $this->collectionName;
 	}
 
-
 	/**
 	 * Create a \OC\Route\Route.
 	 *
@@ -216,7 +244,11 @@ class Router implements IRouter {
 	 */
 	public function create($name, $pattern, array $defaults = array(), array $requirements = array()) {
 		$route = new Route($pattern, $defaults, $requirements);
-		$this->collection->add($name, $route);
+		if (strpos($name, 'api') === 0 && substr_count($name, '.') === 3) {
+			$this->apiCollection->add($name, $route);
+		} else {
+			$this->collection->add($name, $route);
+		}
 		return $route;
 	}
 
@@ -228,14 +260,14 @@ class Router implements IRouter {
 	 * @return void
 	 */
 	public function match($url) {
-		if (substr($url, 0, 6) === '/apps/') {
-			// empty string / 'apps' / $app / rest of the route
-			list(, , $app,) = explode('/', $url, 4);
+		$urlParts = preg_match('%/(?P<target>[a-z_-]+)(?:/(?P<appid>[a-z_-]+))?%', $url);
+		$target = $urlParts['target'];
 
-			$app = \OC_App::cleanAppId($app);
+		if ($target === 'apps' || $target === 'api') {
+			$app = $urlParts['appid'];
 			\OC::$REQUESTEDAPP = $app;
 			$this->loadRoutes($app);
-		} else if (substr($url, 0, 6) === '/core/' or substr($url, 0, 10) === '/settings/') {
+		} else if ($target === 'core' || $target === 'settings') {
 			\OC::$REQUESTEDAPP = $url;
 			if (!\OC_Config::getValue('maintenance', false) && !\OCP\Util::needUpgrade()) {
 				\OC_App::loadApps();

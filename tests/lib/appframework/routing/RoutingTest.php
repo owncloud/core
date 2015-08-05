@@ -15,7 +15,31 @@ class RoutingTest extends \Test\TestCase
 			array('name' => 'folders#open', 'url' => '/folders/{folderId}/open', 'verb' => 'GET')
 		));
 
-		$this->assertSimpleRoute($routes, 'folders.open', 'GET', '/folders/{folderId}/open', 'FoldersController', 'open');
+		$this->assertSimpleRoute([
+			'routes' => $routes,
+			'name' => 'folders.open',
+			'verb' => 'GET',
+			'url' => '/folders/{folderId}/open',
+			'controller' => 'FoldersController',
+			'method' => 'open'
+		]);
+	}
+
+	public function testSimpleApiRoute()
+	{
+		$routes = array('api_routes' => array(
+			array('name' => 'folders#open', 'url' => '/folders/{folderId}/open', 'verb' => 'GET')
+		));
+
+		$this->assertSimpleRoute([
+			'routes' => $routes,
+			'name' => 'folders.open',
+			'verb' => 'GET',
+			'url' => '/folders/{folderId}/open',
+			'controller' => 'FoldersController',
+			'method' => 'open',
+			'prefix' => 'api.'
+		]);
 	}
 
 	public function testSimpleRouteWithMissingVerb()
@@ -24,7 +48,14 @@ class RoutingTest extends \Test\TestCase
 			array('name' => 'folders#open', 'url' => '/folders/{folderId}/open')
 		));
 
-		$this->assertSimpleRoute($routes, 'folders.open', 'GET', '/folders/{folderId}/open', 'FoldersController', 'open');
+		$this->assertSimpleRoute([
+			'routes' => $routes,
+			'name' => 'folders.open',
+			'verb' => 'GET',
+			'url' => '/folders/{folderId}/open',
+			'controller' => 'FoldersController',
+			'method' => 'open'
+		]);
 	}
 
 	public function testSimpleRouteWithLowercaseVerb()
@@ -33,7 +64,14 @@ class RoutingTest extends \Test\TestCase
 			array('name' => 'folders#open', 'url' => '/folders/{folderId}/open', 'verb' => 'delete')
 		));
 
-		$this->assertSimpleRoute($routes, 'folders.open', 'DELETE', '/folders/{folderId}/open', 'FoldersController', 'open');
+		$this->assertSimpleRoute([
+			'routes' => $routes,
+			'name' => 'folders.open',
+			'verb' => 'DELETE',
+			'url' => '/folders/{folderId}/open',
+			'controller' => 'FoldersController',
+			'method' => 'open'
+		]);
 	}
 
 	public function testSimpleRouteWithRequirements()
@@ -42,7 +80,15 @@ class RoutingTest extends \Test\TestCase
 			array('name' => 'folders#open', 'url' => '/folders/{folderId}/open', 'verb' => 'delete', 'requirements' => array('something'))
 		));
 
-		$this->assertSimpleRoute($routes, 'folders.open', 'DELETE', '/folders/{folderId}/open', 'FoldersController', 'open', array('something'));
+		$this->assertSimpleRoute([
+			'routes' => $routes,
+			'name' => 'folders.open',
+			'verb' => 'DELETE',
+			'url' => '/folders/{folderId}/open',
+			'controller' => 'FoldersController',
+			'method' => 'open',
+			'requirements' => ['something']
+		]);
 	}
 
 	public function testSimpleRouteWithDefaults()
@@ -51,7 +97,15 @@ class RoutingTest extends \Test\TestCase
 			array('name' => 'folders#open', 'url' => '/folders/{folderId}/open', 'verb' => 'delete', array(), 'defaults' => array('param' => 'foobar'))
 		));
 
-		$this->assertSimpleRoute($routes, 'folders.open', 'DELETE', '/folders/{folderId}/open', 'FoldersController', 'open', array(), array('param' => 'foobar'));
+		$this->assertSimpleRoute([
+			'routes' => $routes,
+			'name' => 'folders.open',
+			'verb' => 'DELETE',
+			'url' => '/folders/{folderId}/open',
+			'controller' => 'FoldersController',
+			'method' => 'open',
+			'defaults' => ['param' => 'foobar']
+		]);
 	}
 
 	public function testSimpleRouteWithPostfix()
@@ -60,9 +114,33 @@ class RoutingTest extends \Test\TestCase
 			array('name' => 'folders#open', 'url' => '/folders/{folderId}/open', 'verb' => 'delete', 'postfix' => '_something')
 		));
 
-		$this->assertSimpleRoute($routes, 'folders.open', 'DELETE', '/folders/{folderId}/open', 'FoldersController', 'open', array(), array(), '_something');
+		$this->assertSimpleRoute([
+			'routes' => $routes,
+			'name' => 'folders.open',
+			'verb' => 'DELETE',
+			'url' => '/folders/{folderId}/open',
+			'controller' => 'FoldersController',
+			'method' => 'open',
+			'postfix' => '_something'
+		]);
 	}
 
+
+	public function testSimpleRouteWithUnderScoreNames()
+	{
+		$routes = array('routes' => array(
+			array('name' => 'admin_folders#open_current', 'url' => '/folders/{folderId}/open', 'verb' => 'delete')
+		));
+
+		$this->assertSimpleRoute([
+			'routes' => $routes,
+			'name' => 'admin_folders.open_current',
+			'verb' => 'DELETE',
+			'url' => '/folders/{folderId}/open',
+			'controller' => 'AdminFoldersController',
+			'method' => 'openCurrent'
+		]);
+	}
 
 	/**
 	 * @expectedException \UnexpectedValueException
@@ -83,20 +161,18 @@ class RoutingTest extends \Test\TestCase
 		$config->register();
 	}
 
-	public function testSimpleRouteWithUnderScoreNames()
-	{
-		$routes = array('routes' => array(
-			array('name' => 'admin_folders#open_current', 'url' => '/folders/{folderId}/open', 'verb' => 'delete')
-		));
-
-		$this->assertSimpleRoute($routes, 'admin_folders.open_current', 'DELETE', '/folders/{folderId}/open', 'AdminFoldersController', 'openCurrent');
-	}
-
 	public function testResource()
 	{
 		$routes = array('resources' => array('account' => array('url' => '/accounts')));
 
 		$this->assertResource($routes, 'account', '/accounts', 'AccountController', 'id');
+	}
+
+	public function testApiResource()
+	{
+		$routes = array('api_resources' => array('account' => array('url' => '/accounts')));
+
+		$this->assertResource($routes, 'account', '/accounts', 'AccountController', 'id', 'api.');
 	}
 
 	public function testResourceWithUnderScoreName()
@@ -107,34 +183,39 @@ class RoutingTest extends \Test\TestCase
 	}
 
 	/**
-	 * @param string $name
-	 * @param string $verb
-	 * @param string $url
-	 * @param string $controllerName
-	 * @param string $actionName
+	 * @param array paramters
 	 */
-	private function assertSimpleRoute($routes, $name, $verb, $url, $controllerName, $actionName, array $requirements=array(), array $defaults=array(), $postfix='')
+	private function assertSimpleRoute($parameters)
 	{
-		if ($postfix) {
-			$name .= $postfix;
-		}
+		$p = array_merge([
+			'routes' => '',
+			'name' => '',
+			'verb' => '',
+			'url' => '',
+			'controller' => '',
+			'method' => '',
+			'requirements'  => [],
+			'defaults'  => [],
+			'postfix'  => '',
+			'prefix'  => '',
+		], $parameters);
 
 		// route mocks
-		$route = $this->mockRoute($verb, $controllerName, $actionName, $requirements, $defaults);
+		$route = $this->mockRoute($p['verb'], $p['controller'], $p['method'], $p['requirements'], $p['defaults']);
 
 		// router mock
-		$router = $this->getMock("\OC\Route\Router", array('create'));
+		$router = $this->getMock("\OC\Route\Router", ['create']);
 
 		// we expect create to be called once:
 		$router
 			->expects($this->once())
 			->method('create')
-			->with($this->equalTo('app1.' . $name), $this->equalTo($url))
+			->with($this->equalTo($p['prefix'] . 'app1.' . $p['name'] . $p['postfix']), $this->equalTo($p['url']))
 			->will($this->returnValue($route));
 
 		// load route configuration
 		$container = new DIContainer('app1');
-		$config = new RouteConfig($container, $router, $routes);
+		$config = new RouteConfig($container, $router, $p['routes']);
 
 		$config->register();
 	}
@@ -145,7 +226,7 @@ class RoutingTest extends \Test\TestCase
 	 * @param string $controllerName
 	 * @param string $paramName
 	 */
-	private function assertResource($yaml, $resourceName, $url, $controllerName, $paramName)
+	private function assertResource($routes, $resourceName, $url, $controllerName, $paramName, $prefix='')
 	{
 		// router mock
 		$router = $this->getMock("\OC\Route\Router", array('create'));
@@ -163,36 +244,36 @@ class RoutingTest extends \Test\TestCase
 		$router
 			->expects($this->at(0))
 			->method('create')
-			->with($this->equalTo('app1.' . $resourceName . '.index'), $this->equalTo($url))
+			->with($this->equalTo($prefix . 'app1.' . $resourceName . '.index'), $this->equalTo($url))
 			->will($this->returnValue($indexRoute));
 
 		$router
 			->expects($this->at(1))
 			->method('create')
-			->with($this->equalTo('app1.' . $resourceName . '.show'), $this->equalTo($urlWithParam))
+			->with($this->equalTo($prefix . 'app1.' . $resourceName . '.show'), $this->equalTo($urlWithParam))
 			->will($this->returnValue($showRoute));
 
 		$router
 			->expects($this->at(2))
 			->method('create')
-			->with($this->equalTo('app1.' . $resourceName . '.create'), $this->equalTo($url))
+			->with($this->equalTo($prefix . 'app1.' . $resourceName . '.create'), $this->equalTo($url))
 			->will($this->returnValue($createRoute));
 
 		$router
 			->expects($this->at(3))
 			->method('create')
-			->with($this->equalTo('app1.' . $resourceName . '.update'), $this->equalTo($urlWithParam))
+			->with($this->equalTo($prefix . 'app1.' . $resourceName . '.update'), $this->equalTo($urlWithParam))
 			->will($this->returnValue($updateRoute));
 
 		$router
 			->expects($this->at(4))
 			->method('create')
-			->with($this->equalTo('app1.' . $resourceName . '.destroy'), $this->equalTo($urlWithParam))
+			->with($this->equalTo($prefix . 'app1.' . $resourceName . '.destroy'), $this->equalTo($urlWithParam))
 			->will($this->returnValue($destroyRoute));
 
 		// load route configuration
 		$container = new DIContainer('app1');
-		$config = new RouteConfig($container, $router, $yaml);
+		$config = new RouteConfig($container, $router, $routes);
 
 		$config->register();
 	}

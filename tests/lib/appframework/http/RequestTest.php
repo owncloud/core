@@ -1156,4 +1156,34 @@ class RequestTest extends \Test\TestCase {
 		$this->assertSame($expectedUri, $request->getRequestUri());
 	}
 
+	public function testIsApiRequest() {
+		$request = new Request(
+			[
+				'server' => [
+					'REQUEST_URI' => '/index.php/api/news',
+					'SCRIPT_NAME' => '/index.php',
+				]
+			],
+			$this->secureRandom,
+			$this->config,
+			$this->stream
+		);
+
+		$this->assertTrue($request->isApiRequest());
+
+		$request = new Request(
+			[
+				'server' => [
+					'REQUEST_URI' => '/index.php/app/news',
+					'SCRIPT_NAME' => '/index.php',
+				]
+			],
+			$this->secureRandom,
+			$this->config,
+			$this->stream
+		);
+
+		$this->assertFalse($request->isApiRequest());
+	}
+
 }

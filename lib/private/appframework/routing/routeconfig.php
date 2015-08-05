@@ -57,20 +57,29 @@ class RouteConfig {
 	public function register() {
 
 		// parse simple
-		$this->processSimpleRoutes($this->routes);
+		$this->processSimpleRoutes($this->routes, false);
+		$this->processSimpleRoutes($this->routes, true);
 
 		// parse resources
-		$this->processResources($this->routes);
+		$this->processResources($this->routes, false);
+		$this->processResources($this->routes, true);
 	}
 
 	/**
 	 * Creates one route base on the give configuration
 	 * @param array $routes
+	 * @param bool $isApi
 	 * @throws \UnexpectedValueException
 	 */
-	private function processSimpleRoutes($routes)
+	private function processSimpleRoutes($routes, $isApi)
 	{
-		$simpleRoutes = isset($routes['routes']) ? $routes['routes'] : array();
+		if ($isApi) {
+			$namePrefix = 'api.';
+			$simpleRoutes = isset($routes['api_routes']) ? $routes['api_routes'] : [];
+		} else {
+			$namePrefix = '';
+			$simpleRoutes = isset($routes['routes']) ? $routes['routes'] : [];
+		}
 		foreach ($simpleRoutes as $simpleRoute) {
 			$name = $simpleRoute['name'];
 			$postfix = '';
@@ -93,8 +102,10 @@ class RouteConfig {
 			$actionName = $this->buildActionName($action);
 
 			// register the route
+			$routeName = $namePrefix . $this->appName.'.'.$controller.'.'.$action . $postfix;
+
 			$handler = new RouteActionHandler($this->container, $controllerName, $actionName);
-			$router = $this->router->create($this->appName.'.'.$controller.'.'.$action . $postfix, $url)
+			$router = $this->router->create($routeName, $url)
 							->method($verb)
 							->action($handler);
 
@@ -122,8 +133,9 @@ class RouteConfig {
 	 *  - destroy
 	 *
 	 * @param array $routes
+	 * @param bool $isApi
 	 */
-	private function processResources($routes)
+	private function processResources($routes, $isApi)
 	{
 		// declaration of all restful actions
 		$actions = array(
@@ -134,7 +146,14 @@ class RouteConfig {
 			array('name' => 'destroy', 'verb' => 'DELETE'),
 		);
 
-		$resources = isset($routes['resources']) ? $routes['resources'] : array();
+		if ($isApi) {
+			$namePrefix = 'api.';
+			$resources = isset($routes['api_resources']) ? $routes['api_resources'] : [];
+		} else {
+			$namePrefix = '';
+			$resources = isset($routes['resources']) ? $routes['resources'] : [];
+		}
+
 		foreach ($resources as $resource => $config) {
 
 			// the url parameter used as id to the resource
@@ -155,7 +174,7 @@ class RouteConfig {
 				$controllerName = $this->buildControllerName($controller);
 				$actionName = $this->buildActionName($method);
 
-				$routeName = $this->appName . '.' . strtolower($resource) . '.' . strtolower($method);
+				$routeName = $namePrefix . $this->appName . '.' . strtolower($resource) . '.' . strtolower($method);
 
 				$this->router->create($routeName, $url)->method($verb)->action(
 					new RouteActionHandler($this->container, $controllerName, $actionName)

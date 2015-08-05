@@ -28,11 +28,13 @@
 namespace OCP\AppFramework;
 
 use OCP\AppFramework\Http\Response;
+use OCP\AppFramework\Http\CrossOriginResourceSharing;
 use OCP\IRequest;
-
 
 /**
  * Base class to inherit your controllers from that are used for RESTful APIs
+ * @deprecated Use a normal controller instead, this class will be removed in
+ * ownCloud 9.2
  * @since 7.0.0
  */
 abstract class ApiController extends Controller {
@@ -61,7 +63,7 @@ abstract class ApiController extends Controller {
                                 $corsAllowedHeaders='Authorization, Content-Type, Accept',
                                 $corsMaxAge=1728000){
         parent::__construct($appName, $request);
-        $this->corsMethods = $corsMethods;
+        $this->corsMethods = strtoupper($corsMethods);
         $this->corsAllowedHeaders = $corsAllowedHeaders;
         $this->corsMaxAge = $corsMaxAge;
     }
@@ -70,7 +72,7 @@ abstract class ApiController extends Controller {
     /**
      * This method implements a preflighted cors response for you that you can
      * link to for the options request
-     *
+     * @deprecated use Controller::options()
      * @NoAdminRequired
      * @NoCSRFRequired
      * @PublicPage
@@ -82,7 +84,6 @@ abstract class ApiController extends Controller {
         } else {
             $origin = '*';
         }
-
         $response = new Response();
         $response->addHeader('Access-Control-Allow-Origin', $origin);
         $response->addHeader('Access-Control-Allow-Methods', $this->corsMethods);
