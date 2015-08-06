@@ -714,6 +714,7 @@ $CONFIG = array(
  *  - OC\Preview\SVG
  *  - OC\Preview\TIFF
  *  - OC\Preview\Font
+ *  - OC\Preview\RTF
  *
  * .. note:: Troubleshooting steps for the MS Word previews are available
  *    at the :doc:`../configuration_files/collaborative_documents_configuration`
