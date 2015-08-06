@@ -38,6 +38,16 @@ if (version_compare(PHP_VERSION, '5.4.0') === -1) {
 }
 
 try {
+	// allow overwriting the config dir
+	// needs to be done outside the symphony console application since we load the config before we can use that
+	$options = getopt('', [
+		'config:'
+	]);
+
+	if (isset($options['config'])) {
+		define('CONFIG_DIR', $options['config']);
+	}
+
 	require_once 'lib/base.php';
 
 	// set to run indefinitely if needed

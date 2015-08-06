@@ -124,7 +124,9 @@ class OC {
 			get_include_path()
 		);
 
-		if(defined('PHPUNIT_CONFIG_DIR')) {
+		if (defined('CONFIG_DIR')) {
+			self::$configDir = CONFIG_DIR . '/';
+		} elseif(defined('PHPUNIT_CONFIG_DIR')) {
 			self::$configDir = OC::$SERVERROOT . '/' . PHPUNIT_CONFIG_DIR . '/';
 		} elseif(defined('PHPUNIT_RUN') and PHPUNIT_RUN and is_dir(OC::$SERVERROOT . '/tests/config/')) {
 			self::$configDir = OC::$SERVERROOT . '/tests/config/';

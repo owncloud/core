@@ -27,6 +27,7 @@ use OCP\IConfig;
 use Symfony\Component\Console\Application as SymfonyApplication;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Application {
@@ -42,6 +43,7 @@ class Application {
 		$defaults = new OC_Defaults;
 		$this->config = $config;
 		$this->application = new SymfonyApplication($defaults->getName(), \OC_Util::getVersionString());
+		$this->application->getDefinition()->addOption(new InputOption('config', null, InputOption::VALUE_REQUIRED, 'the config directory to use'));
 	}
 
 	/**
