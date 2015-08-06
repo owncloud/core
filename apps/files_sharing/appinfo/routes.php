@@ -102,3 +102,20 @@ API::register('get',
 		'/cloud/capabilities',
 		array('OCA\Files_Sharing\Capabilities', 'getCapabilities'),
 		'files_sharing', API::USER_AUTH);
+
+
+$groups = new \OCA\Files_Sharing\API\Group(\OC::$server->getGroupManager(),
+                                           \OC::$server->getURLGenerator());
+API::Register('get',
+		'/apps/files_sharing/api/v1/groups',
+		[$groups, 'getGroups'],
+		'files_sharing',
+		API::USER_AUTH);
+
+$users = new \OCA\Files_Sharing\API\User(\OC::$server->getUserManager(),
+                                         \OC::$server->getURLGenerator());
+API::Register('get',
+		'/apps/files_sharing/api/v1/users',
+		[$users, 'getUsers'],
+		'files_sharing',
+		API::USER_AUTH);
