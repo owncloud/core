@@ -135,7 +135,7 @@ dav.Client.prototype = {
      */
     xhrProvider : function() {
 
-        var xhr = new XMLHttpRequest();
+        return new XMLHttpRequest();
 
     },
 
