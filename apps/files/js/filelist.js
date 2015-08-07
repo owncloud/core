@@ -223,6 +223,8 @@
 			this.$el.find('.download').click(_.bind(this._onClickDownloadSelected, this));
 			this.$el.find('.delete-selected').click(_.bind(this._onClickDeleteSelected, this));
 
+			this.$el.find('.selectedActions a').tooltip({placement:'top'});
+
 			this.setupUploadEvents();
 
 			this.$container.on('scroll', _.bind(this._onScroll, this));
@@ -1464,7 +1466,7 @@
 			};
 
 			function restore() {
-				input.tipsy('hide');
+				input.tooltip('hide');
 				tr.data('renaming',false);
 				form.remove();
 				td.children('a.name').show();
@@ -1480,7 +1482,7 @@
 				try {
 					var newName = input.val();
 					var $thumbEl = tr.find('.thumbnail');
-					input.tipsy('hide');
+					input.tooltip('hide');
 					form.remove();
 
 					if (newName !== oldname) {
@@ -1532,8 +1534,8 @@
 					}
 				} catch (error) {
 					input.attr('title', error);
-					input.tipsy({gravity: 'w', trigger: 'manual'});
-					input.tipsy('show');
+					input.tooltip({placement: 'left', trigger: 'manual'});
+					input.tooltip('show');
 					input.addClass('error');
 				}
 				return false;
@@ -1542,12 +1544,12 @@
 				// verify filename on typing
 				try {
 					checkInput();
-					input.tipsy('hide');
+					input.tooltip('hide');
 					input.removeClass('error');
 				} catch (error) {
 					input.attr('title', error);
-					input.tipsy({gravity: 'w', trigger: 'manual'});
-					input.tipsy('show');
+					input.tooltip({placement: 'left', trigger: 'manual'});
+					input.tooltip('show');
 					input.addClass('error');
 				}
 				if (event.keyCode === 27) {
