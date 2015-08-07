@@ -1239,7 +1239,6 @@ function initCore() {
 	});
 
 	// all the tipsy stuff needs to be here (in reverse order) to work
-	$('#upload').tipsy({gravity:'w'});
 	$('.selectedActions a').tipsy({gravity:'s', live:true});
 	$('a.action.delete').tipsy({gravity:'e', live:true});
 	$('a.action').tipsy({gravity:'s', live:true});
