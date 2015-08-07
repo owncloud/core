@@ -1,14 +1,14 @@
 var dav = {
 
-}
+};
 
 dav.Client = function(options) {
-
+    var i;
     for(i in options) {
         this[i] = options[i];
     }
 
-}
+};
 
 dav.Client.prototype = {
 
@@ -17,6 +17,7 @@ dav.Client.prototype = {
     userName : null,
 
     password : null,
+
 
     xmlNamespaces : {
         'DAV:' : 'd'
@@ -41,10 +42,13 @@ dav.Client.prototype = {
         };
 
         var body =
-            '<?xml version="1.0"?>\n' +
-            '<d:propfind xmlns:d="DAV:">\n' +
+            '<d:propfind ';
+        var namespace;
+        for (namespace in this.xmlNamespaces) {
+            body += ' xmlns:' + this.xmlNamespaces[namespace] + '="' + namespace + '"';
+        }
+        body += '>\n' +
             '  <d:prop>\n';
-
 
         for(var ii in properties) {
 
@@ -62,7 +66,7 @@ dav.Client.prototype = {
         return this.request('PROPFIND', url, headers, body).then(
             function(result) {
 
-                var result = this.parseMultiStatus(result.body);
+                result = this.parseMultiStatus(result.body);
                 if (depth===0) {
                     return result[0];
                 } else {
@@ -85,13 +89,14 @@ dav.Client.prototype = {
      */
     request : function(method, url, headers, body) {
 
-        var xhr = new XMLHttpRequest();
+        var xhr = this.xhrProvider();
 
         if (this.userName) {
             headers['Authorization'] = 'Basic ' + btoa(this.userName + ':' + this.password);
             // xhr.open(method, this.resolveUrl(url), true, this.userName, this.password);
         }
         xhr.open(method, this.resolveUrl(url), true);
+        var ii;
         for(ii in headers) {
             xhr.setRequestHeader(ii, headers[ii]);
         }
@@ -109,17 +114,31 @@ dav.Client.prototype = {
                     body: xhr.response
                 });
 
-            },
+            };
 
             xhr.ontimeout = function() {
 
                 reject(new Error('Timeout exceeded'));
 
-            }
+            };
 
         });
 
     },
+
+    /**
+     * Returns an XMLHttpRequest object.
+     *
+     * This is in its own method, so it can be easily overridden.
+     *
+     * @return {XMLHttpRequest}
+     */
+    xhrProvider : function() {
+
+        var xhr = new XMLHttpRequest();
+
+    },
+
 
     /**
      * Parses a multi-status response body.
@@ -133,8 +152,9 @@ dav.Client.prototype = {
         var doc = parser.parseFromString(xmlBody, "application/xml");
 
         var resolver = function(foo) {
+            var ii;
             for(ii in this.xmlNamespaces) {
-                if (this.xmlNamespaces[ii] == foo) {
+                if (this.xmlNamespaces[ii] === foo) {
                     return ii;
                 }
             }
@@ -155,7 +175,7 @@ dav.Client.prototype = {
             response.href = doc.evaluate('string(d:href)', responseNode, resolver).stringValue;
 
             var propStatIterator = doc.evaluate('d:propstat', responseNode, resolver);
-            propStatNode = propStatIterator.iterateNext();
+            var propStatNode = propStatIterator.iterateNext();
 
             while(propStatNode) {
 
@@ -201,8 +221,6 @@ dav.Client.prototype = {
             // absolute
             return url;
         }
-
-        this.parseUrl('https://host:70/foo/bar?a=b#f=C');
 
         var baseParts = this.parseUrl(this.baseUrl);
         if (url.charAt('/')) {
@@ -257,8 +275,9 @@ dav.Client.prototype = {
         return {
             name : result[2],
             namespace : result[1]
-        }
+        };
 
     }
 
-}
+};
+
