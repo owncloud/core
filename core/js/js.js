@@ -1239,8 +1239,6 @@ function initCore() {
 	});
 
 	// all the tipsy stuff needs to be here (in reverse order) to work
-	$('.displayName .action').tipsy({gravity:'se', live:true});
-	$('.password .action').tipsy({gravity:'se', live:true});
 	$('#upload').tipsy({gravity:'w'});
 	$('.selectedActions a').tipsy({gravity:'s', live:true});
 	$('a.action.delete').tipsy({gravity:'e', live:true});
