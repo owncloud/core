@@ -28,6 +28,7 @@
 		if (this._root.charAt(this._root.length - 1) === '/') {
 			this._root = this._root.substr(0, this._root.length - 1);
 		}
+		this._root += '/';
 
 		if (!options.port) {
 			// workaround in case port is null or empty
@@ -50,7 +51,7 @@
 		this._defaultHeaders = options.defaultHeaders || {'X-Requested-With': 'XMLHttpRequest'};
 		this._baseUrl = url;
 		this._client = new dav.Client({
-			baseUrl: url,
+			baseUrl: this._baseUrl,
 			xmlNamespaces: {
 				'DAV:': 'd',
 				'http://owncloud.org/ns': 'oc'
@@ -114,6 +115,22 @@
 		 * @type nl.sara.webdav.Client
 		 */
 		_client: null,
+
+		/**
+		 * Prepends the base url to the given path sections
+		 *
+		 * @param {...String} path sections
+		 *
+		 * @return {String} base url + joined path, any leading or trailing slash
+		 * will be kept
+		 */
+		_buildUrl: function() {
+			var path = this._buildPath.apply(this, arguments);
+			if (path.charAt([path.length - 1]) === '/') {
+				path = path.substr(0, path.length - 1);
+			}
+			return this._baseUrl + path;
+		},
 
 		/**
 		 * Append the path to the root and also encode path
@@ -356,11 +373,13 @@
 			var deferred = $.Deferred();
 			var promise = deferred.promise();
 
+			// TODO: headers
 			this._client.propFind(
-				this._baseUrl + this._buildPath(path),
+				this._buildUrl(path),
 				this._getPropfindProperties(),
 				1
 			).then(function(result) {
+				console.log('CLIENT RESULT: ', result);
 				if (self._isSuccessStatus(result.status)) {
 					var results = self._parseResult(result.body);
 					if (!options || !options.includeParent) {
@@ -392,14 +411,15 @@
 			var deferred = $.Deferred();
 			var promise = deferred.promise();
 
-			this._client.propfind(
-				this._baseUel + this._buildPath(path),
+			// TODO: headers
+			this._client.propFind(
+				this._buildUrl(path),
 				this._getPropfindProperties(),
 				0
 			).then(
 				function(result) {
 					if (self._isSuccessStatus(result.status)) {
-						deferred.resolve(result.status, self._parseResult(result.body));
+						deferred.resolve(result.status, self._parseResult([result.body])[0]);
 					} else {
 						deferred.reject(result.status);
 					}
@@ -423,13 +443,16 @@
 			var deferred = $.Deferred();
 			var promise = deferred.promise();
 
-			this._client.get(
-				this._buildPath(this._root, path),
-				function(status, body) {
-					if (self._isSuccessStatus(status)) {
-						deferred.resolve(status, body);
+			this._client.request(
+				'GET',
+				this._buildUrl(path),
+				this._defaultHeaders
+			).then(
+				function(result) {
+					if (self._isSuccessStatus(result.status)) {
+						deferred.resolve(result.status, result.body);
 					} else {
-						deferred.reject(status);
+						deferred.reject(result.status);
 					}
 				}
 			);
@@ -455,29 +478,32 @@
 			var deferred = $.Deferred();
 			var promise = deferred.promise();
 			options = options || {};
-			var headers = {};
+			var headers = _.extend({}, this._defaultHeaders);
 			var contentType = 'text/plain';
 			if (options.contentType) {
 				contentType = options.contentType;
 			}
+
+			headers['Content-Type'] = contentType;
 
 			if (_.isUndefined(options.overwrite) || options.overwrite) {
 				// will trigger 412 precondition failed if a file already exists
 				headers['If-None-Match'] = '*';
 			}
 
-			this._client.put(
-				this._buildPath(this._root, path),
-				function(status) {
-					if (self._isSuccessStatus(status)) {
-						deferred.resolve(status);
+			this._client.request(
+				'PUT',
+				this._buildUrl(path),
+				headers,
+				body || ''
+			).then(
+				function(result) {
+					if (self._isSuccessStatus(result.status)) {
+						deferred.resolve(result.status);
 					} else {
-						deferred.reject(status);
+						deferred.reject(result.status);
 					}
-				},
-				body || '',
-				contentType,
-				headers
+				}
 			);
 			return promise;
 		},
@@ -491,20 +517,16 @@
 			var deferred = $.Deferred();
 			var promise = deferred.promise();
 
-			this._client[method](
-				this._buildPath(this._root, path),
-				function(status, body, responseHeadersString) {
-					if (self._isSuccessStatus(status)) {
-						// TODO: handle error cases like 404
-						var headers = self._parseHeaders(responseHeadersString);
-						var data = {};
-						if (headers['OC-FileId']) {
-							data.id = self._parseFileId(headers['OC-FileId'][0]);
-						}
-
-						deferred.resolve(status, data);
+			this._client.request(
+				method,
+				this._buildUrl(path),
+				this._defaultHeaders
+			).then(
+				function(result) {
+					if (self._isSuccessStatus(result.status)) {
+						deferred.resolve(result.status);
 					} else {
-						deferred.reject(status);
+						deferred.reject(result.status);
 					}
 				}
 			);
@@ -519,7 +541,7 @@
 		 * @return {Promise}
 		 */
 		createDirectory: function(path) {
-			return this._simpleCall('mkcol', path);
+			return this._simpleCall('MKCOL', path);
 		},
 
 		/**
@@ -530,7 +552,7 @@
 		 * @return {Promise}
 		 */
 		remove: function(path) {
-			return this._simpleCall('remove', path);
+			return this._simpleCall('DELETE', path);
 		},
 
 		/**
@@ -554,18 +576,27 @@
 			var self = this;
 			var deferred = $.Deferred();
 			var promise = deferred.promise();
+			var headers = 
+				_.extend({
+					'Destination' : this._buildUrl(destinationPath)
+				}, this._defaultHeaders);
 
-			this._client.move(
-				this._buildPath(this._root, path),
-				function(status) {
-					if (self._isSuccessStatus(status)) {
-						deferred.resolve(status);
+			if (!allowOverwrite) {
+				headers['Overwrite'] = 'F';
+			}
+
+			this._client.request(
+				'MOVE',
+				this._buildUrl(path),
+				headers
+			).then(
+				function(response) {
+					if (self._isSuccessStatus(response.status)) {
+						deferred.resolve(response.status);
 					} else {
-						deferred.reject(status);
+						deferred.reject(response.status);
 					}
-				},
-				this._buildPath(this._root, destinationPath),
-				allowOverwrite ? nl.sara.webdav.Client.SILENT_OVERWRITE : nl.sara.webdav.Client.FAIL_ON_OVERWRITE
+				}
 			);
 			return promise;
 		}

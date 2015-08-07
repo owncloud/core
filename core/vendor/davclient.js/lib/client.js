@@ -71,18 +71,22 @@ dav.Client.prototype = {
 
         return this.request('PROPFIND', url, headers, body).then(
             function(result) {
+                console.log('PROPFIND result', result);
                 var elements = this.parseMultiStatus(result.xhr.responseXML);
+                var response;
                 if (depth===0) {
-                    return {
+                    response = {
 						status: result.status,
 						body: elements[0]
 					};
                 } else {
-                    return {
+                    response = {
 						status: result.status,
 						body: elements
 					};
                 }
+                console.log('PROPFIND parsed result', response);
+                return response;
 
             }.bind(this)
         );
@@ -119,6 +123,8 @@ dav.Client.prototype = {
                 if (xhr.readyState !== 4) {
                     return;
                 }
+
+                console.log('XHR result', xhr.status);
 
                 fulfill({
 					status: xhr.status,
@@ -206,16 +212,17 @@ dav.Client.prototype = {
                 };
 
                 var propNode = this._getElementsByTagName(propStatNode, 'd:prop', resolver)[0];
+                if (!propNode) {
+                    continue;
+                }
 				var k = 0;
 				for (k = 0; k < propNode.childNodes.length; k++) {
 					var prop = propNode.childNodes[k];
 					var value = prop.textContent || prop.text;
-					/*
 					if (prop.childNodes && prop.childNodes.length > 0 && !(prop.childNodes[0] instanceof Text)) {
 						// use node list instead
 						value = prop.childNodes;
 					}
-					*/
 					propStat.properties['{' + prop.namespaceURI + '}' + (prop.localName || prop.baseName)] = value;
 
                 }
