@@ -1239,7 +1239,6 @@ function initCore() {
 	});
 
 	// all the tipsy stuff needs to be here (in reverse order) to work
-	$('input').tipsy({gravity:'w'});
 	$('.extra-data').tipsy({gravity:'w', live:true});
 
 	// toggle for menus
