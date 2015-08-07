@@ -4,6 +4,15 @@
 	padding-top: 10px;
 }
 
+#header .avatardiv {
+	float: left;
+	display: inline-block;
+	margin-right: -15px;
+	cursor: pointer;
+	height: 32px;
+	width: 32px;
+}
+
 #body-login .wrapper {
 	display: -webkit-box;
 	-webkit-box-orient: horizontal;
@@ -19,6 +28,35 @@
 	box-orient: horizontal;
 	box-pack: center;
 	box-align: center;
+}
+
+#log .log-message {
+	word-break: break-all !Important;
+	min-width: 100px !Important;
+}
+
+table.grid td.date {
+	word-break: break-all !Important;
+	padding: 0 !Important;
+	white-space: normal;
+	width: 100px;
+	text-align: right;
+}
+
+#security-warning li,
+#admin-tips li {
+	margin: 10px 10px;
+}
+
+table.grid td {
+	border-bottom: 1px solid #DDD;
+	padding: 0px 0.5em 0px 0.4em;
+	text-align: left;
+	font-weight: normal;
+}
+
+.section {
+	padding: 15px !important;
 }
 
 /* on mobile public share, show only the icon of the logo, hide the text */
@@ -103,8 +141,7 @@
 	z-index: 1000;
 }
 
-/* allow horizontal scrollbar in settings
-	otherwise user management is not usable on mobile */
+/* allow horizontal scrollbar in settings otherwise user management is not usable on mobile */
 #body-settings #app-content {
 	overflow-x: auto !important;
 }
@@ -155,7 +192,8 @@ table.multiselect thead {
 #usersearchform {
 	display: none;
 }
-#body-settings #controls {
+#body-settings #controls
+#body-user #controls {
 	min-width: 768px !important;
 }
 
