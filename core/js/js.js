@@ -1238,9 +1238,6 @@ function initCore() {
 		$('#settings #expanddiv').slideUp(OC.menuSpeed);
 	});
 
-	// all the tipsy stuff needs to be here (in reverse order) to work
-	$('.extra-data').tipsy({gravity:'w', live:true});
-
 	// toggle for menus
 	$(document).on('mouseup.closemenus', function(event) {
 		var $el = $(event.target);
