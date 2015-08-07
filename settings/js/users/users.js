@@ -78,6 +78,7 @@ var UserList = {
 		$tr.find('td.displayName > span').text(user.displayname);
 		$tr.find('td.mailAddress > span').text(user.email);
 		$tr.find('td.displayName > .action').tooltip({placement: 'top'});
+		$tr.find('td.mailAddress > .action').tooltip({placement: 'top'});
 		$tr.find('td.password > .action').tooltip({placement: 'top'});
 
 		/**
