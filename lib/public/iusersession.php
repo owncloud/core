@@ -79,4 +79,21 @@ interface IUserSession {
 	 * @since 8.0.0
 	 */
 	public function isLoggedIn();
+
+	/**
+	 * Get the current active session
+	 *
+	 * @return \OCP\ISession
+	 * @since 8.2.0
+	 */
+	public function getSession();
+
+	/**
+	 * Set the current active session
+	 *
+	 * @param \OCP\ISession $session
+	 * @since 8.2.0
+	 */
+	public function setSession(\OCP\ISession $session);
+
 }
