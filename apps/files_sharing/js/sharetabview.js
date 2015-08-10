@@ -10,7 +10,7 @@
 
 (function() {
 	var TEMPLATE =
-		'<div>Owner: {{owner}}';
+		'<div><span>Owner: {{owner}}</span>';
 
 	/**
 	 * @class OCA.Sharing.ShareTabView
@@ -27,7 +27,6 @@
 	 */
 	ShareTabView.prototype = _.extend({}, OCA.Files.DetailTabView.prototype,
 		/** @lends OCA.Sharing.ShareTabView.prototype */ {
-		_template: null,
 
 		/**
 		 * Initialize the details view
@@ -46,19 +45,6 @@
 		 */
 		render: function() {
 			this.$el.empty();
-
-			if (!this._template) {
-				this._template = Handlebars.compile(TEMPLATE);
-			}
-
-			if (this._fileInfo) {
-				this.$el.append(this._template({
-					owner: this._fileInfo.shareOwner || OC.currentUser
-				}));
-
-			} else {
-				// TODO: render placeholder text?
-			}
 		}
 	});
 

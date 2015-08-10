@@ -55,8 +55,9 @@ $application->setupPropagation();
 \OCP\Share::registerBackend('folder', 'OC_Share_Backend_Folder', 'file');
 
 \OCP\Util::addScript('files_sharing', 'share');
+\OCP\Util::addScript('files_sharing', 'sharetabview');
 \OCP\Util::addScript('files_sharing', 'external');
-\OCP\Util::addStyle('files_sharing', 'sharetabview');
+// \OCP\Util::addStyle('files_sharing', 'sharetabview');
 
 // FIXME: registering a job here will cause additional useless SQL queries
 // when the route is not cron.php, needs a better way
