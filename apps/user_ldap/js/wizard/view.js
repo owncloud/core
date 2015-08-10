@@ -352,6 +352,8 @@ OCA = OCA || {};
 			$('.ldap_submit').button();
 			$('.ldap_action_test_connection').button();
 			$('#ldapSettings').tabs({ beforeActivate: this.onTabChange });
+			// enable tooltip for LDAP config input elements
+			$('#ldapSettings input, #ldapSettings textarea').tooltip({placement: 'right'});
 
 			this.initControls();
 			this.disableTabs();

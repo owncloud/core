@@ -294,12 +294,13 @@
 				cssClasses += ' no-permission';
 				deleteTitle = t('files', 'No permission to delete');
 			}
-			var $actionLink = $('<a href="#" original-title="' +
+			var $actionLink = $('<a href="#" title="' +
 				escapeHTML(deleteTitle) +
 				'" class="' +cssClasses + '">' +
 				'<span class="hidden-visually">' + escapeHTML(deleteTitle) + '</span>' +
 				'</a>'
 			);
+			$actionLink.tooltip({placement:'left'});
 			var $container = context.$file.find('td:last');
 			$container.find('.delete').remove();
 			$container.append($actionLink);
@@ -344,6 +345,7 @@
 					);
 				}
 			);
+			$actionEl.tooltip({placement:'top'});
 			return $actionEl;
 		},
 		/**
