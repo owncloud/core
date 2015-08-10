@@ -40,6 +40,7 @@ use bantu\IniGetWrapper\IniGetWrapper;
 use OC\AppFramework\Http\Request;
 use OC\AppFramework\Db\Db;
 use OC\AppFramework\Utility\SimpleContainer;
+use OC\AppFramework\Utility\TimeFactory;
 use OC\Command\AsyncBus;
 use OC\Diagnostics\EventLogger;
 use OC\Diagnostics\NullEventLogger;
@@ -157,7 +158,10 @@ class Server extends SimpleContainer implements IServerContainer {
 		});
 		$this->registerService('UserSession', function (Server $c) {
 			$manager = $c->getUserManager();
-			$userSession = new \OC\User\Session($manager, new \OC\Session\Memory(''));
+
+			$session = new \OC\Session\Memory('');
+
+			$userSession = new \OC\User\Session($manager, $session);
 			$userSession->listen('\OC\User', 'preCreateUser', function ($uid, $password) {
 				\OC_Hook::emit('OC_User', 'pre_createUser', array('run' => true, 'uid' => $uid, 'password' => $password));
 			});
@@ -357,6 +361,9 @@ class Server extends SimpleContainer implements IServerContainer {
 				$c->getDateTimeZone()->getTimeZone(),
 				$c->getL10N('lib', $language)
 			);
+		});
+		$this->registerService('TimeFactory', function() {
+			return new TimeFactory();
 		});
 		$this->registerService('MountConfigManager', function () {
 			$loader = \OC\Files\Filesystem::getLoader();
@@ -609,6 +616,13 @@ class Server extends SimpleContainer implements IServerContainer {
 	 */
 	public function getConfig() {
 		return $this->query('AllConfig');
+	}
+
+	/**
+	 * @return \OCP\AppFramework\Utility\ITimeFactory
+	 */
+	public function getTimeFactory() {
+		return $this->query('TimeFactory');
 	}
 
 	/**

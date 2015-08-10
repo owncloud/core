@@ -1125,6 +1125,36 @@
 	</table>
 
 	<table>
+		<!--
+		Stores the used sessions to reduce the risks of session collisions
+		-->
+		<name>*dbprefix*sessions</name>
+		<declaration>
+			<field>
+				<name>hashed_id</name>
+				<type>string</type>
+				<length>128</length>
+			</field>
+			<field>
+				<name>last_used</name>
+				<type>integer</type>
+				<default></default>
+				<notnull>false</notnull>
+			</field>
+
+			<index>
+				<primary>true</primary>
+				<unique>true</unique>
+				<name>hashed_id_index</name>
+				<field>
+					<name>hashed_id</name>
+					<sorting>ascending</sorting>
+				</field>
+			</index>
+		</declaration>
+	</table>
+
+	<table>
 
 		<!--
 		Namespaced Key-Value Store for arbitrary data.
