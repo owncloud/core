@@ -106,10 +106,10 @@ class OC_Installer{
 			throw new \Exception($l->t("Can't create app folder. Please fix permissions. %s", array($basedir)));
 		}
 
-		$extractDir .= '/' . $info['id'];
+		$extractDir=@glob($extractDir.'/'.$info['id'].'*', GLOB_ONLYDIR)[0];
 		if(!file_exists($extractDir)) {
 			OC_Helper::rmdirr($basedir);
-			throw new \Exception($l->t("Archive does not contain a directory named %s", $info['id']));
+			throw new \Exception($l->t("Archive does not contain a directory starting with %s", $info['id']));
 		}
 		OC_Helper::copyr($extractDir, $basedir);
 
