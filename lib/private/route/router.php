@@ -165,7 +165,12 @@ class Router implements IRouter {
 			}
 		}
 		if (!isset($this->loadedApps['core'])) {
-			$this->loadedApps['core'] = true;
+			if ($this->loaded) {
+				// Only mark core loaded, when no app was ignored,
+				// Otherwise the OCS routes will not be loaded correctly later on.
+				$this->loadedApps['core'] = true;
+			}
+
 			$this->useCollection('root');
 			require_once 'settings/routes.php';
 			require_once 'core/routes.php';
