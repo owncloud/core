@@ -516,8 +516,8 @@ OC.Share={
 						fetch: 'getShareWith',
 						search: search.term.trim(),
 						limit: 200,
-						itemShares: OC.Share.itemShares,
-						item_type: itemType
+						existingShares: OC.Share.itemShares,
+						itemType: itemType
 					},
 					function(result) {
 						console.log(result);
