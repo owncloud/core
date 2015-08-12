@@ -21,37 +21,10 @@
 
 namespace OCA\Files_External\Lib;
 
-use \OCP\Files\Storage;
-use \OCA\Files_External\Lib\StorageConfig;
-use \OCA\Files_External\Lib\InsufficientDataForMeaningfulAnswerException;
 use \OCP\Files\StorageNotAvailableException;
 
 /**
- * Trait for objects that can modify StorageConfigs and wrap Storages
+ * Authentication mechanism or backend has insufficient data
  */
-trait StorageModifierTrait {
-
-	/**
-	 * Modify a StorageConfig parameters
-	 *
-	 * @param StorageConfig $storage
-	 * @throws InsufficientDataForMeaningfulAnswerException
-	 * @throws StorageNotAvailableException
-	 */
-	public function manipulateStorageConfig(StorageConfig &$storage) {
-	}
-
-	/**
-	 * Wrap a Storage if necessary
-	 *
-	 * @param Storage $storage
-	 * @return Storage
-	 * @throws InsufficientDataForMeaningfulAnswerException
-	 * @throws StorageNotAvailableException
-	 */
-	public function wrapStorage(Storage $storage) {
-		return $storage;
-	}
-
+class InsufficientDataForMeaningfulAnswerException extends StorageNotAvailableException {
 }
-
