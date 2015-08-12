@@ -56,7 +56,7 @@ class OC_Mount_Config {
 	public static $skipTest = false;
 
 	/** @var IAppContainer */
-	private static $appContainer;
+	public static $appContainer;
 
 	/**
 	 * Teach OC_Mount_Config about the AppFramework
