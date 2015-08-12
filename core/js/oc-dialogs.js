@@ -140,8 +140,9 @@ var OCdialogs = {
 	 * @param multiselect whether it should be possible to select multiple files
 	 * @param mimetypeFilter mimetype to filter by - directories will always be included
 	 * @param modal make the dialog modal
+	 * @param withDetails return additional details for selected file(s)
 	*/
-	filepicker:function(title, callback, multiselect, mimetypeFilter, modal) {
+	filepicker:function(title, callback, multiselect, mimetypeFilter, modal, withDetails) {
 		var self = this;
 		// avoid opening the picker twice
 		if (this.filepicker.loading) {
@@ -168,6 +169,9 @@ var OCdialogs = {
 			if (mimetypeFilter === undefined) {
 				mimetypeFilter = '';
 			}
+			if (withDetails === undefined) {
+				withDetails = false;
+			}
 
 			$('body').append(self.$filePicker);
 
@@ -185,17 +189,28 @@ var OCdialogs = {
 			// build buttons
 			var functionToCall = function() {
 				if (callback !== undefined) {
-					var datapath;
-					if (multiselect === true) {
-						datapath = [];
+					var selected;
+					if (withDetails === true) {
+						selected = [];
 						self.$filelist.find('.filepicker_element_selected .filename').each(function(index, element) {
-							datapath.push(self.$filePicker.data('path') + '/' + $(element).text());
+							var $element = $(element);
+							var fileWithDetails = _.extend({
+								selectedPath: self.$filePicker.data('path') + '/' + $element.text(),
+							}, $element.parent().data('details'));
+							selected.push(fileWithDetails);
 						});
 					} else {
-						datapath = self.$filePicker.data('path');
-						datapath += '/' + self.$filelist.find('.filepicker_element_selected .filename').text();
+						if (multiselect === true) {
+							selected = [];
+							self.$filelist.find('.filepicker_element_selected .filename').each(function(index, element) {
+								selected.push(self.$filePicker.data('path') + '/' + $(element).text());
+							});
+						} else {
+							selected = self.$filePicker.data('path');
+							selected += '/' + self.$filelist.find('.filepicker_element_selected .filename').text();
+						}
 					}
-					callback(datapath);
+					callback(selected);
 					self.$filePicker.ocdialog('close');
 				}
 			};
@@ -669,6 +684,7 @@ var OCdialogs = {
 				else {
 					$li.find('img').attr('src', OC.Util.replaceSVGIcon(entry.icon));
 				}
+				$li.data('details', entry);
 				self.$filelist.append($li);
 			});
 
