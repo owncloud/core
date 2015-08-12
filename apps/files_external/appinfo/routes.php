@@ -39,7 +39,7 @@ $application->registerRoutes(
 		'routes' => array(
 			array(
 				'name' => 'Ajax#getSshKeys',
-				'url' => '/ajax/sftp_key.php',
+				'url' => '/ajax/public_key.php',
 				'verb' => 'POST',
 				'requirements' => array()
 			)
