@@ -176,12 +176,12 @@
 					var minimumSeconds = 15768000;
 					if(isNaN(transportSecurityValidity) || transportSecurityValidity <= (minimumSeconds - 1)) {
 						messages.push(
-							t('core', 'The "Strict-Transport-Security" HTTP header is not configured to least "{seconds}" seconds. For enhanced security we recommend enabling HSTS as described in our <a href="{docUrl}">security tips</a>.', {'seconds': minimumSeconds, docUrl: '#admin-tips'})
+							t('core', 'The "Strict-Transport-Security" HTTP header is not configured to least "{seconds}" seconds. For enhanced security we recommend enabling HSTS as described <a href="{docUrl}">here</a>.', {'seconds': minimumSeconds, docUrl: 'https://doc.owncloud.org/server/8.1/admin_manual/configuration_server/harden_server.html#enable-http-strict-transport-security'})
 						);
 					}
 				} else {
 					messages.push(
-						t('core', 'You are accessing this site via HTTP. We strongly suggest you configure your server to require using HTTPS instead as described in our <a href="{docUrl}">security tips</a>.', {docUrl: '#admin-tips'})
+						t('core', 'You are accessing this site via HTTP. We strongly suggest you configure your server to require using HTTPS instead as described <a href="{docUrl}">here</a>.', {docUrl: 'https://doc.owncloud.org/server/8.1/admin_manual/configuration_server/harden_server.html#use-https'})
 					);
 				}
 			} else {
