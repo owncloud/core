@@ -56,6 +56,16 @@ abstract class StoragesService {
 	}
 
 	/**
+	 * Write legacy config data
+	 *
+	 * @param array $mountPoints
+	 */
+	protected function writeLegacyConfig(array $mountPoints) {
+		// write global config
+		\OC_Mount_Config::writeData(null, $mountPoints);
+	}
+
+	/**
 	 * Copy legacy storage options into the given storage config object.
 	 *
 	 * @param StorageConfig $storageConfig storage config to populate
