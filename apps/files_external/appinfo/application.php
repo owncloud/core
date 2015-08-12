@@ -63,6 +63,7 @@ class Application extends App {
 			$container->query('OCA\Files_External\Lib\Backend\Local'),
 			$container->query('OCA\Files_External\Lib\Backend\AmazonS3'),
 			$container->query('OCA\Files_External\Lib\Backend\Dropbox'),
+			$container->query('OCA\Files_External\Lib\Backend\FTP'),
 		]);
 	}
 
