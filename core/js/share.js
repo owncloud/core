@@ -507,11 +507,23 @@ OC.Share={
 			$('#shareWith').autocomplete({minLength: 2, delay: 750, source: function(search, response) {
 				var $loading = $('#dropdown .shareWithLoading');
 				$loading.removeClass('hidden');
-				$.get(OC.filePath('core', 'ajax', 'share.php'), { fetch: 'getShareWith', search: search.term.trim(), limit: 200, itemShares: OC.Share.itemShares, itemType: itemType }, function(result) {
+				$.get(
+					OC.linkToOCS('apps/files_sharing/api/v1') + 'sharees',
+					{
+						format: 'json',
+						fetch: 'getShareWith',
+						search: search.term.trim(),
+						limit: 200,
+						existingShares: OC.Share.itemShares,
+						itemType: itemType
+					},
+					function(result) {
+						console.log(result);
+						console.log(result.ocs.data);
 					$loading.addClass('hidden');
-					if (result.status == 'success' && result.data.length > 0) {
+					if (result.ocs.meta.statuscode == 100 && result.ocs.data.length > 0) {
 						$( "#shareWith" ).autocomplete( "option", "autoFocus", true );
-						response(result.data);
+						response(result.ocs.data);
 					} else {
 						response();
 					}
