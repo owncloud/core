@@ -62,6 +62,7 @@ class Application extends App {
 		$service->registerBackends([
 			$container->query('OCA\Files_External\Lib\Backend\Local'),
 			$container->query('OCA\Files_External\Lib\Backend\AmazonS3'),
+			$container->query('OCA\Files_External\Lib\Backend\Dropbox'),
 		]);
 	}
 
@@ -82,6 +83,9 @@ class Application extends App {
 			// AuthMechanism::SCHEME_PASSWORD mechanisms
 			$container->query('OCA\Files_External\Lib\Auth\Password\Password'),
 			$container->query('OCA\Files_External\Lib\Auth\Password\SessionCredentials'),
+
+			// AuthMechanism::SCHEME_OAUTH1 mechanisms
+			$container->query('OCA\Files_External\Lib\Auth\OAuth1\OAuth1'),
 
 			// Specialized mechanisms
 			$container->query('OCA\Files_External\Lib\Auth\AmazonS3\AccessKey'),
