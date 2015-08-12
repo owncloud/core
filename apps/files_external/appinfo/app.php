@@ -71,19 +71,6 @@ if (OCP\Config::getAppValue('files_external', 'allow_user_mounting', 'yes') == '
 OCP\Util::connectHook('OC_Filesystem', 'post_initMountPoints', '\OC_Mount_Config', 'initMountPointsHook');
 OCP\Util::connectHook('OC_User', 'post_login', 'OC\Files\Storage\SMB_OC', 'login');
 
-OC_Mount_Config::registerBackend('\OC\Files\Storage\OwnCloud', [
-	'backend' => 'ownCloud',
-	'priority' => 100,
-	'configuration' => [
-		'host' => (string)$l->t('URL'),
-		'user' => (string)$l->t('Username'),
-		'password' => '*'.$l->t('Password'),
-		'root' => '&'.$l->t('Remote subfolder'),
-		'secure' => '!'.$l->t('Secure https://'),
-	],
-]);
-
-
 OC_Mount_Config::registerBackend('\OC\Files\Storage\SFTP', [
 	'backend' => 'SFTP',
 	'priority' => 100,

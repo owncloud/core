@@ -67,6 +67,7 @@ class Application extends App {
 			$container->query('OCA\Files_External\Lib\Backend\Google'),
 			$container->query('OCA\Files_External\Lib\Backend\Swift'),
 			$container->query('OCA\Files_External\Lib\Backend\DAV'),
+			$container->query('OCA\Files_External\Lib\Backend\OwnCloud'),
 		]);
 
 		if (!\OC_Util::runningOnWindows()) {
