@@ -22,6 +22,7 @@
 namespace OCA\Files_Trashbin\BackgroundJob;
 
 use OCP\IDBConnection;
+use OCA\Files_Trashbin\AppInfo\Application;
 use OCA\Files_Trashbin\Trashbin;
 use OCA\Files_Trashbin\Expiration;
 
@@ -39,11 +40,22 @@ class ExpireTrash extends \OC\BackgroundJob\TimedJob {
 	 */
 	private $dbConnection;
 
-	public function __construct(IDBConnection $dbConnection, Expiration $expiration) {
+	public function __construct(IDBConnection $dbConnection = null, Expiration $expiration = null) {
 		// Run once per 30 minutes
 		$this->setInterval(60 * 30);
-		$this->dbConnection = $dbConnection;
-		$this->expiration = $expiration;
+
+		if (is_null($expiration) || is_null($dbConnection)) {
+			$this->fixDIForJobs();
+		} else {
+			$this->dbConnection = $dbConnection;
+			$this->expiration = $expiration;
+		}
+	}
+
+	protected function fixDIForJobs() {
+		$application = new Application();
+		$this->dbConnection = \OC::$server->getDatabaseConnection();
+		$this->expiration = $application->getContainer()->query('Expiration');
 	}
 
 	protected function run($argument) {
