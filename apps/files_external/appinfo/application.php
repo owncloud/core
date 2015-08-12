@@ -64,6 +64,7 @@ class Application extends App {
 			$container->query('OCA\Files_External\Lib\Backend\AmazonS3'),
 			$container->query('OCA\Files_External\Lib\Backend\Dropbox'),
 			$container->query('OCA\Files_External\Lib\Backend\FTP'),
+			$container->query('OCA\Files_External\Lib\Backend\Google'),
 		]);
 	}
 
@@ -87,6 +88,9 @@ class Application extends App {
 
 			// AuthMechanism::SCHEME_OAUTH1 mechanisms
 			$container->query('OCA\Files_External\Lib\Auth\OAuth1\OAuth1'),
+
+			// AuthMechanism::SCHEME_OAUTH2 mechanisms
+			$container->query('OCA\Files_External\Lib\Auth\OAuth2\OAuth2'),
 
 			// Specialized mechanisms
 			$container->query('OCA\Files_External\Lib\Auth\AmazonS3\AccessKey'),
