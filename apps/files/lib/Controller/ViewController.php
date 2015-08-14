@@ -154,6 +154,7 @@ class ViewController extends Controller {
 		$nav = new \OCP\Template('files', 'appnavigation', '');
 
 		// Load the files we need
+
 		\OCP\Util::addStyle('files', 'files');
 		\OCP\Util::addStyle('files', 'upload');
 		\OCP\Util::addStyle('files', 'mobile');
@@ -185,6 +186,9 @@ class ViewController extends Controller {
 		\OCP\Util::addScript('files', 'files');
 		\OCP\Util::addScript('files', 'keyboardshortcuts');
 		\OCP\Util::addScript('files', 'navigation');
+
+		// generated templates
+		\OCP\Util::addScript('files', 'templates/detailsview.handlebars');
 
 		// if IE8 and "?dir=path&view=someview" was specified, reformat the URL to use a hash like "#?dir=path&view=someview"
 		$isIE8 = $this->request->isUserAgent([Request::USER_AGENT_IE_8]);

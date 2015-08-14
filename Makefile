@@ -59,19 +59,32 @@ core_vendor=core/vendor
 
 core_doc_files=AUTHORS COPYING README.md
 core_src_files=$(wildcard *.php) index.html db_structure.xml .htaccess .user.ini
-core_src_dirs=apps core l10n lib occ ocs ocs-provider resources settings
+core_src_dirs=core l10n lib occ ocs ocs-provider resources settings
 core_test_dirs=tests
 core_all_src=$(core_src_files) $(core_src_dirs) $(core_doc_files)
 dist_dir=build/dist
+core_apps=\
+	comments \
+	dav \
+	federatedfilesharing \
+	federation \
+	files \
+	files_external \
+	files_sharing \
+	files_trashbin \
+	files_versions \
+	provisioning_api \
+	systemtags \
+	updatenotification
 
 #
 # Catch-all rules
 #
 .PHONY: all
-all: help-hint $(composer_dev_deps) $(core_vendor) $(nodejs_deps)
+all: help-hint $(composer_dev_deps) $(core_vendor) $(nodejs_deps) build-apps
 
 .PHONY: clean
-clean: clean-composer-deps clean-nodejs-deps clean-js-deps clean-test clean-dist
+clean: clean-composer-deps clean-nodejs-deps clean-js-deps clean-test clean-dist clean-apps
 
 .PHONY: help-hint
 help-hint:
@@ -175,15 +188,15 @@ clean-js-deps:
 # Tests
 #
 .PHONY: test-php
-test-php: $(composer_dev_deps)
+test-php: $(composer_dev_deps) build-apps
 	PHPUNIT=$(PHPUNIT) build/autotest.sh $(TEST_DATABASE) $(TEST_PHP_SUITE)
 
 .PHONY: test-external
-test-external: $(composer_dev_deps)
+test-external: $(composer_dev_deps) build-apps
 	PHPUNIT=$(PHPUNIT) build/autotest-external.sh $(TEST_DATABASE) $(TEST_EXTERNAL_ENV) $(TEST_PHP_SUITE)
 
 .PHONY: test-js
-test-js: $(nodejs_deps) $(js_deps) $(core_vendor)
+test-js: $(nodejs_deps) $(js_deps) $(core_vendor) build-apps
 	NODE_PATH='$(NODE_PREFIX)/node_modules' $(KARMA) start tests/karma.config.js --single-run
 
 .PHONY: test-js-debug
@@ -191,7 +204,7 @@ test-js-debug: $(nodejs_deps) $(js_deps) $(core_vendor)
 	NODE_PATH='$(NODE_PREFIX)/node_modules' $(KARMA) start tests/karma.config.js
 
 .PHONY: test-integration
-test-integration: $(composer_dev_deps)
+test-integration: $(composer_dev_deps) build-apps
 	$(MAKE) -C tests/integration \
 		OC_TEST_ALT_HOME=$(OC_TEST_ALT_HOME) \
 		OC_TEST_ENCRYPTION_ENABLED=$(OC_TEST_ENCRYPTION_ENABLED) \
@@ -217,6 +230,36 @@ clean-test-results:
 clean-test: clean-test-integration clean-test-results
 
 #
+# Apps
+#
+.PHONY: build-apps
+build-apps: $(composer_dev_deps) $(nodejs_deps)
+	@for APP in $(core_apps); do \
+		if test -r apps/$$APP/Makefile; then \
+			echo Building app $$APP; \
+			$(MAKE) -C apps/$$APP/; \
+		fi; \
+	done
+
+.PHONY: dist-apps
+dist-apps: $(composer_dev_deps) $(nodejs_deps)
+	@for APP in $(core_apps); do \
+		if test -r apps/$$APP/Makefile; then \
+			echo Building app $$APP; \
+			$(MAKE) -C apps/$$APP/ dist; \
+		fi; \
+	done
+
+.PHONY: clean-apps
+clean-apps:
+	@for APP in $(core_apps); do \
+		if test -r apps/$$APP/Makefile; then \
+			echo Cleaning up app $$APP; \
+			$(MAKE) -C apps/$$APP/ clean; \
+		fi; \
+	done
+
+#
 # Documentation
 #
 .PHONY: docs-js
@@ -233,10 +276,20 @@ clean-docs:
 #
 # Build distribution
 #
-$(dist_dir)/owncloud: $(composer_deps) $(core_vendor) $(core_all_src)
+$(dist_dir)/owncloud: $(composer_deps) $(core_vendor) $(core_all_src) dist-apps
 	rm -Rf $@; mkdir -p $@/config
 	cp -R $(core_all_src) $@
 	cp -R config/config.sample.php $@/config
+	# Copy apps
+	mkdir -p $@/apps/
+	@for APP in $(core_apps); do \
+		if test -d apps/$$APP/dist/$$APP; then \
+			cp -R apps/$$APP/dist/$$APP $@/apps/$$APP/; \
+		else \
+			cp -R apps/$$APP $@/apps/$$APP/; \
+		fi; \
+	done
+	# Clean up
 	rm -Rf $(dist_dir)/owncloud/apps/testing
 	find $@ -name .gitkeep -delete
 	find $@ -name .gitignore -delete
@@ -284,11 +337,21 @@ clean-dist:
 #
 # Build qa distribution
 #
-$(dist_dir)/qa/owncloud: $(composer_dev_deps) $(core_vendor) $(core_all_src) $(core_test_dirs)
+$(dist_dir)/qa/owncloud: $(composer_dev_deps) $(core_vendor) $(core_all_src) $(core_test_dirs) dist-apps
 	rm -Rf $@; mkdir -p $@/config
 	cp -R $(core_all_src) $@
 	cp -R $(core_test_dirs) $@
 	cp -R config/config.sample.php $@/config
+	# Copy apps
+	mkdir -p $@/apps/
+	@for APP in $(core_apps); do \
+		if test -d apps/$$APP/dist/$$APP; then \
+			cp -R apps/$$APP/dist/$$APP $@/apps/$$APP/; \
+		else \
+			cp -R apps/$$APP $@/apps/$$APP/; \
+		fi; \
+	done
+	# Clean up
 	find $@ -name .gitkeep -delete
 	find $@ -name .gitignore -delete
 	find $@ -name no-php -delete

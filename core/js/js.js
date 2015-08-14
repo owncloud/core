@@ -831,7 +831,12 @@ var OC = {
 			xhr.addEventListener('error', errorCallback);
 		}
 
-	}
+	},
+
+	/**
+	 * Compiled Handlebars template with app name as key
+	 */
+	templates: {}
 };
 
 /**
