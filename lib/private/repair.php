@@ -98,11 +98,11 @@ class Repair extends BasicEmitter {
 	 * Returns the default repair steps to be run on the
 	 * command line or after an upgrade.
 	 *
+	 * @param bool $enableMimeTypes true to enable mime type repair
 	 * @return array of RepairStep instances
 	 */
-	public static function getRepairSteps() {
-		return array(
-			new RepairMimeTypes(),
+	public static function getRepairSteps($enableMimeTypes) {
+		$steps = array(
 			new RepairLegacyStorages(\OC::$server->getConfig(), \OC_DB::getConnection()),
 			new RepairConfig(),
 			new AssetCache(),
@@ -112,6 +112,12 @@ class Repair extends BasicEmitter {
 			new DropOldJobs(\OC::$server->getJobList()),
 			new RemoveGetETagEntries(\OC_DB::getConnection()),
 		);
+
+		if ($enableMimeTypes) {
+			array_unshift($steps, new RepairMimeTypes());
+		}
+
+		return $steps;
 	}
 
 	/**

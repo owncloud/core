@@ -96,6 +96,17 @@ class Updater extends BasicEmitter {
 	}
 
 	/**
+	 * Sets whether the mime type repair tasks must
+	 * be enabled.
+	 * This can be set to false to skip these tasks.
+	 *
+	 * @param bool $flag true to enable repair tasks, false otherwise
+	 */
+	public function setMimeRepairEnabled($flag) {
+		$this->mimeRepairEnabled = $flag;
+	}
+
+	/**
 	 * Sets whether the update must be performed.
 	 * This can be set to false to skip the actual update.
 	 *
@@ -302,7 +313,7 @@ class Updater extends BasicEmitter {
 
 
 			// post-upgrade repairs
-			$repair = new Repair(Repair::getRepairSteps());
+			$repair = new Repair(Repair::getRepairSteps($this->mimeRepairEnabled));
 			$this->emitRepairMessages($repair);
 			$repair->run();
 

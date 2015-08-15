@@ -67,6 +67,12 @@ class Upgrade extends Command {
 				'skips the database schema migration simulation and update directly'
 			)
 			->addOption(
+				'--skip-mime-repair',
+				null,
+				InputOption::VALUE_NONE,
+				'skips the cache mime type repair task'
+			)
+			->addOption(
 				'--dry-run',
 				null,
 				InputOption::VALUE_NONE,
@@ -89,11 +95,15 @@ class Upgrade extends Command {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 
 		$simulateStepEnabled = true;
+		$mimeRepairEnabled = true;
 		$updateStepEnabled = true;
 		$skip3rdPartyAppsDisable = false;
 
 		if ($input->getOption('skip-migration-test')) {
 			$simulateStepEnabled = false;
+		}
+		if ($input->getOption('skip-mime-repair')) {
+			$mimeRepairEnabled = false;
 		}
 	   	if ($input->getOption('dry-run')) {
 			$updateStepEnabled = false;
@@ -122,6 +132,7 @@ class Upgrade extends Command {
 				\OC::$server->getConfig());
 
 			$updater->setSimulateStepEnabled($simulateStepEnabled);
+			$updater->setMimeRepairEnabled($mimeRepairEnabled);
 			$updater->setUpdateStepEnabled($updateStepEnabled);
 			$updater->setSkip3rdPartyAppsDisable($skip3rdPartyAppsDisable);
 
