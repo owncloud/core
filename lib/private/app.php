@@ -624,14 +624,9 @@ class OC_App {
 	 * @return string
 	 */
 	public static function getAppVersionByPath($path) {
-		$versionFile = $path . '/appinfo/version';
 		$infoFile = $path . '/appinfo/info.xml';
-		if (is_file($versionFile)) {
-			return trim(file_get_contents($versionFile));
-		} else {
-			$appData = self::getAppInfo($infoFile, true);
-			return isset($appData['version']) ? $appData['version'] : '';
-		}
+		$appData = self::getAppInfo($infoFile, true);
+		return isset($appData['version']) ? $appData['version'] : '';
 	}
 
 
