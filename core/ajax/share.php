@@ -379,6 +379,15 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 					}
 				}
 
+				$sharingAutocompletion = \OC::$server->getConfig()
+					->getAppValue('core', 'shareapi_allow_share_dialog_user_enumeration', 'yes');
+
+				if ($sharingAutocompletion !== 'yes') {
+					$searchTerm = $_GET['search'];
+					$shareWith = array_filter($shareWith, function($user) use ($searchTerm) {
+						return $user['label'] === $searchTerm;
+					});
+				}
 
 				$sorter = new \OC\Share\SearchResultSorter((string)$_GET['search'],
 														   'label',
