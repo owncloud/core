@@ -239,7 +239,6 @@ $CONFIG = array(
 	)
 ),
 
-
 /**
  * Mail Parameters
  *
