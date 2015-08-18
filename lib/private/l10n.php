@@ -463,9 +463,9 @@ class OC_L10N implements \OCP\IL10N {
 			}
 		}
 
-		$default_language = \OC::$server->getConfig()->getSystemValue('default_language', false);
+		$default_language = \OC::$server->getConfig()->getSystemValue('default_language');
 
-		if($default_language !== false) {
+		if (isset($default_language)) {
 			return $default_language;
 		}
 
