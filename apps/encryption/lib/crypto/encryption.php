@@ -30,11 +30,15 @@ namespace OCA\Encryption\Crypto;
 
 use OC\Encryption\Exceptions\DecryptionFailedException;
 use OCA\Encryption\Exceptions\PublicKeyMissingException;
+use OCA\Encryption\Users\Setup;
 use OCA\Encryption\Util;
 use OCP\Encryption\IEncryptionModule;
 use OCA\Encryption\KeyManager;
 use OCP\IL10N;
 use OCP\ILogger;
+use OCP\IUserManager;
+use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class Encryption implements IEncryptionModule {
 
@@ -79,22 +83,28 @@ class Encryption implements IEncryptionModule {
 	/** @var IL10N */
 	private $l;
 
+	/** @var EncryptAll */
+	private $encryptAll;
+
 	/**
 	 *
 	 * @param Crypt $crypt
 	 * @param KeyManager $keyManager
 	 * @param Util $util
+	 * @param EncryptAll $encryptAll
 	 * @param ILogger $logger
 	 * @param IL10N $il10n
 	 */
 	public function __construct(Crypt $crypt,
 								KeyManager $keyManager,
 								Util $util,
+								EncryptAll $encryptAll,
 								ILogger $logger,
 								IL10N $il10n) {
 		$this->crypt = $crypt;
 		$this->keyManager = $keyManager;
 		$this->util = $util;
+		$this->encryptAll = $encryptAll;
 		$this->logger = $logger;
 		$this->l = $il10n;
 	}
@@ -395,6 +405,16 @@ class Encryption implements IEncryptionModule {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Initial encryption of all files
+	 *
+	 * @param OutputInterface $output write some status information to the terminal during encryption
+	 * @return bool
+	 */
+	public function encryptAll(OutputInterface $output) {
+		return $this->encryptAll->encryptAll($output);
 	}
 
 	/**
