@@ -60,8 +60,23 @@ class Test_Config extends \Test\TestCase {
 		$this->assertSame(false, $this->config->getValue('zeroint', true));
 		$this->assertSame(true, $this->config->getValue('someint', false));
 
-		$this->assertSame('someNonBoolean', $this->config->getValue('alcohol_free', 'someNonBoolean'));
 		$this->assertSame(array('Appenzeller', 'Guinness', 'Kölsch'), $this->config->getValue('beers', array('otherValue')));
+	}
+
+	public function getValueValidateInvalidProvider() {
+		return [
+			['alcohol_free', 'someNonBoolean'],
+			['beers', 'someNonArray'],
+			['foo', false],
+		];
+	}
+
+	/**
+	 * @dataProvider getValueValidateInvalidProvider
+	 * @expectedException \Exception
+	 */
+	public function testGetValueValidateInvalid($key, $default) {
+		$this->config->getValue($key, $default);
 	}
 
 	public function testSetValue() {

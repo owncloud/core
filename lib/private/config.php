@@ -95,7 +95,7 @@ class Config {
 					return [];
 				}
 				if ($requiredType !== 'array' && $type === 'array') {
-					return $default; // config is seriously broken
+					throw new \Exception('Value for config key "'.$key.'" must be a '.$requiredType);
 				}
 				if ($requiredType === 'boolean' && $type === 'string') {
 					switch ($value) {
@@ -104,11 +104,11 @@ class Config {
 					case 'false':
 						return false;
 					default:
-						return $default;
+						throw new \Exception('Value for config key "'.$key.'" must be a boolean');
 					}
 				}
 				if ($requiredType === 'string' && $type === 'boolean') {
-					return $default; // no casting
+					throw new \Exception('Value for config key "'.$key.'" must be a string');
 				}
 
 				settype($value, $requiredType);
