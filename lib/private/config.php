@@ -84,7 +84,36 @@ class Config {
 	 */
 	public function getValue($key, $default = null) {
 		if (isset($this->cache[$key])) {
-			return $this->cache[$key];
+			$value = $this->cache[$key];
+			if (isset($default)) {
+				// ensure type is valid
+				$requiredType = gettype($default);
+				$type = gettype($value);
+
+				// special cases first
+				if ($requiredType === 'array' && $value === '') {
+					return [];
+				}
+				if ($requiredType !== 'array' && $type === 'array') {
+					return $default; // config is seriously broken
+				}
+				if ($requiredType === 'boolean' && $type === 'string') {
+					switch ($value) {
+					case 'true':
+						return true;
+					case 'false':
+						return false;
+					default:
+						return $default;
+					}
+				}
+				if ($requiredType === 'string' && $type === 'boolean') {
+					return $default; // no casting
+				}
+
+				settype($value, $requiredType);
+			}
+			return $value;
 		}
 
 		return $default;
