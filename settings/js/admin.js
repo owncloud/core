@@ -208,4 +208,13 @@ $(document).ready(function(){
 			$el.find('.hint').removeClass('hidden');
 		}
 	});
+
+
+	$('#clearCache').click(function(event){
+		event.preventDefault();
+		OC.msg.startAction('#clearCacheMessage', t('settings', 'Clearing...'));
+		$.post(OC.generateUrl('/settings/admin/cache/clear'), '', function(data){
+			OC.msg.finishedAction('#clearCacheMessage', data);
+		});
+	});
 });

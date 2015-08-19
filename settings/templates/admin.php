@@ -529,6 +529,17 @@ if ($_['cronErrors']) {
 	</ul>
 </div>
 
+<?php if ($_['apcuEnabled']): ?>
+	<div class="section" id="Caching">
+		<h2><?php p($l->t('Caching'));?></h2>
+		<p>
+			<?php p($l->t( 'This instance uses APCu as local cache. Due to technical restrictions CLI and webserver are using different caches. If you changed something via CLI it is possible that outdated data is presented in the web UI for a short time. Click the button below to clear the caches and fetch the latest state.')); ?>
+		</p>
+		<input id="clearCache" value="<?php p($l->t('Clear cache')) ?>" type="submit">
+		<span id="clearCacheMessage" class="msg"></span>
+	</div>
+<?php endif; ?>
+
 <div class="section" id="admin-tips">
 	<h2><?php p($l->t('Tips & tricks'));?></h2>
 	<ul>
