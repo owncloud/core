@@ -28,7 +28,9 @@ use \OCA\Files_external\NotFoundException;
 class GlobalStoragesControllerTest extends StoragesControllerTest {
 	public function setUp() {
 		parent::setUp();
-		$this->service = $this->getMock('\OCA\Files_external\Service\GlobalStoragesService');
+		$this->service = $this->getMockBuilder('\OCA\Files_external\Service\GlobalStoragesService')
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->controller = new GlobalStoragesController(
 			'files_external',
