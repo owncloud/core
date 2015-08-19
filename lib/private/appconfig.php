@@ -43,6 +43,7 @@
 
 namespace OC;
 
+use Doctrine\DBAL\Platforms\OraclePlatform;
 use OC\DB\Connection;
 use OCP\IAppConfig;
 
@@ -200,14 +201,18 @@ class AppConfig implements IAppConfig {
 			if($oldValue === strval($value)) {
 				return;
 			}
-			$data = array(
-				'configvalue' => $value,
-			);
-			$where = array(
-				'appid' => $app,
-				'configkey' => $key,
-			);
-			$this->conn->update('*PREFIX*appconfig', $data, $where);
+
+			if ($this->conn->getDatabasePlatform() instanceof OraclePlatform) {
+				$query = 'UPDATE `*PREFIX*appconfig` SET `configvalue` = to_char(:value) WHERE `configkey` = :key AND `appid` = :app';
+			} else {
+				$query = 'UPDATE `*PREFIX*appconfig` SET `configvalue` = :value WHERE `configkey` = :key AND `appid` = :app';
+			}
+			$statement = $this->conn->prepare($query);
+			$statement->execute([
+				'app' => $app,
+				'key' => $key,
+				'value' => $value,
+			]);
 		}
 		if (!isset($this->cache[$app])) {
 			$this->cache[$app] = array();
