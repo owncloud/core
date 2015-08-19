@@ -84,7 +84,36 @@ class Config {
 	 */
 	public function getValue($key, $default = null) {
 		if (isset($this->cache[$key])) {
-			return $this->cache[$key];
+			$value = $this->cache[$key];
+			if (isset($default)) {
+				// ensure type is valid
+				$requiredType = gettype($default);
+				$type = gettype($value);
+
+				// special cases first
+				if ($requiredType === 'array' && $value === '') {
+					return [];
+				}
+				if ($requiredType !== 'array' && $type === 'array') {
+					throw new \Exception('Value for config key "'.$key.'" must be a '.$requiredType);
+				}
+				if ($requiredType === 'boolean' && $type === 'string') {
+					switch ($value) {
+					case 'true':
+						return true;
+					case 'false':
+						return false;
+					default:
+						throw new \Exception('Value for config key "'.$key.'" must be a boolean');
+					}
+				}
+				if ($requiredType === 'string' && $type === 'boolean') {
+					throw new \Exception('Value for config key "'.$key.'" must be a string');
+				}
+
+				settype($value, $requiredType);
+			}
+			return $value;
 		}
 
 		return $default;

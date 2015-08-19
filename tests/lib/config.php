@@ -41,9 +41,42 @@ class Test_Config extends \Test\TestCase {
 		$this->assertSame('bar', $this->config->getValue('foo'));
 		$this->assertSame(null, $this->config->getValue('bar'));
 		$this->assertSame('moo', $this->config->getValue('bar', 'moo'));
-		$this->assertSame(false, $this->config->getValue('alcohol_free', 'someBogusValue'));
-		$this->assertSame(array('Appenzeller', 'Guinness', 'Kölsch'), $this->config->getValue('beers', 'someBogusValue'));
 		$this->assertSame(array('Appenzeller', 'Guinness', 'Kölsch'), $this->config->getValue('beers'));
+	}
+
+	public function testGetValueValidate() {
+		// for these tests: gettype($default) !== gettype($value)
+		$this->config->setValues([
+			'emptystring' => '',
+			'boolstring' => 'false',
+			'zeroint' => 0,
+			'someint' => 42,
+		]);
+
+		$this->assertSame(array('bar'), $this->config->getValue('foo', array('abc')));
+		$this->assertSame(array(), $this->config->getValue('emptystring', array('abc')));
+
+		$this->assertSame(false, $this->config->getValue('boolstring', true));
+		$this->assertSame(false, $this->config->getValue('zeroint', true));
+		$this->assertSame(true, $this->config->getValue('someint', false));
+
+		$this->assertSame(array('Appenzeller', 'Guinness', 'Kölsch'), $this->config->getValue('beers', array('otherValue')));
+	}
+
+	public function getValueValidateInvalidProvider() {
+		return [
+			['alcohol_free', 'someNonBoolean'],
+			['beers', 'someNonArray'],
+			['foo', false],
+		];
+	}
+
+	/**
+	 * @dataProvider getValueValidateInvalidProvider
+	 * @expectedException \Exception
+	 */
+	public function testGetValueValidateInvalid($key, $default) {
+		$this->config->getValue($key, $default);
 	}
 
 	public function testSetValue() {

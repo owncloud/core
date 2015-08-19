@@ -63,7 +63,7 @@ class SystemConfig {
 	 * @param mixed $default the default value to be returned if the value isn't set
 	 * @return mixed the value or $default
 	 */
-	public function getValue($key, $default = '') {
+	public function getValue($key, $default = null) {
 		return \OC_Config::getValue($key, $default);
 	}
 
