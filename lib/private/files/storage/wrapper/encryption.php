@@ -67,7 +67,6 @@ class Encryption extends Wrapper {
 	/** @var IMountPoint */
 	private $mount;
 
-
 	/** @var IStorage */
 	private $keyStorage;
 
