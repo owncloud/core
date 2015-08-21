@@ -54,6 +54,8 @@ class UsersControllerTest extends \Test\TestCase {
 			->disableOriginalConstructor()->getMock();
 		$this->container['OCP\\App\\IAppManager'] = $this->getMockBuilder('OCP\\App\\IAppManager')
 			->disableOriginalConstructor()->getMock();
+		$this->container['OCP\\Security\\ISecureRandom'] = $this->getMockBuilder('\OCP\Security\ISecureRandom')
+			->disableOriginalConstructor()->getMock();
 	}
 
 	public function testIndexAdmin() {

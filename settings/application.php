@@ -137,7 +137,8 @@ class Application extends App {
 				$c->query('DefaultMailAddress'),
 				$c->query('URLGenerator'),
 				$c->query('OCP\\App\\IAppManager'),
-				$c->query('SubAdminFactory')
+				$c->query('SubAdminFactory'),
+				$c->query('OCP\\Security\\ISecureRandom')
 			);
 		});
 		$container->registerService('LogSettingsController', function(IContainer $c) {

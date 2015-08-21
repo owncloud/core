@@ -42,6 +42,7 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IUserSession;
 use OCP\Mail\IMailer;
+use OCP\Security\ISecureRandom;
 
 /**
  * @package OC\Settings\Controller
@@ -75,6 +76,8 @@ class UsersController extends Controller {
 	private $isRestoreEnabled = false;
 	/** @var SubAdminFactory */
 	private $subAdminFactory;
+	/** @var ISecureRandom */
+	private $secureRandom;
 
 	/**
 	 * @param string $appName
@@ -107,7 +110,8 @@ class UsersController extends Controller {
 								$fromMailAddress,
 								IURLGenerator $urlGenerator,
 								IAppManager $appManager,
-								SubAdminFactory $subAdminFactory) {
+								SubAdminFactory $subAdminFactory,
+								ISecureRandom $secureRandom) {
 		parent::__construct($appName, $request);
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
@@ -121,6 +125,7 @@ class UsersController extends Controller {
 		$this->fromMailAddress = $fromMailAddress;
 		$this->urlGenerator = $urlGenerator;
 		$this->subAdminFactory = $subAdminFactory;
+		$this->secureRandom = $secureRandom;
 
 		// check for encryption state - TODO see formatUserForIndex
 		$this->isEncryptionAppEnabled = $appManager->isEnabledForUser('encryption');
@@ -338,10 +343,18 @@ class UsersController extends Controller {
 			if($email !== '') {
 				$this->config->setUserValue($username, 'settings', 'email', $email);
 
+				$token = $this->secureRandom->getMediumStrengthGenerator()->generate(21,
+					ISecureRandom::CHAR_DIGITS.
+					ISecureRandom::CHAR_LOWER.
+					ISecureRandom::CHAR_UPPER);
+				$this->config->setUserValue($username, 'owncloud', 'lostpassword', $token);
+
+				$link = $this->urlGenerator->linkToRouteAbsolute('core.lost.resetform', array('userId' => $username, 'token' => $token));
+
 				// data for the mail template
 				$mailData = array(
 					'username' => $username,
-					'url' => $this->urlGenerator->getAbsoluteURL('/')
+					'url' => $link,
 				);
 
 				$mail = new TemplateResponse('settings', 'email.new_user', $mailData, 'blank');
