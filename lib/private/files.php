@@ -185,7 +185,13 @@ class OC_Files {
 						\OC\Files\Filesystem::readfile($filename);
 					}
 				} else {
-					\OC\Files\Filesystem::readfile($filename);
+					/** @var $storage \OC\Files\Storage\Storage */
+					list($storage) = $view->resolvePath($filename);
+					if ($storage->isLocal()) {
+						self::sendLocalFileContent($filename);
+					} else {
+						\OC\Files\Filesystem::readfile($filename);
+					}
 				}
 			}
 			if ($get_type === self::FILE) {
@@ -201,7 +207,49 @@ class OC_Files {
 			\OC_Template::printErrorPage($l->t('Can\'t read file'), $hint);
 		}
 	}
+	
+        /**
+         * @param false|string $filename
+         */
+        private static function sendLocalFileContent($filename) {
+                $path = \OC\Files\Filesystem::getLocalFile($filename);
 
+                if (isset($_SERVER['HTTP_RANGE']) &&
+                        preg_match("/^bytes=([0-9]+)-([0-9]*)$/", $_SERVER['HTTP_RANGE'], $range)) {
+
+                        $filelength = filesize($path);
+                        if ($range[2] === "") {
+                                $range[2] = $filelength - 1;
+                        }
+                        $contentlength = $range[2] - $range[1] + 1;
+                        header("HTTP/1.1 206 Partial content");
+                        header("Content-Range: bytes $range[1]-$range[2]/" . $filelength);
+                        header("Content-Length: $contentlength");
+
+                        $view = \OC\Files\Filesystem::getView();
+                        @ob_end_clean();
+                        $handle = $view->fopen($filename, 'rb');
+                        if ($handle) {
+                                $chunkSize = 8192;
+                                $remainingBytes = $contentlength;
+
+                                if (fseek($handle,$range[1]) === -1) {
+                                        rewind($handle);
+                                        if ($range[1] > 0) fread($handle, $range[1]);
+                                }
+
+                                while (!feof($handle) && ($remainingBytes > 0)) {
+                                        echo fread($handle, ($chunkSize > $remainingBytes) ? $remainingBytes : $chunkSize);
+                                        $remainingBytes -= $chunkSize;
+                                        flush();
+                                }
+                                fclose($handle);
+                        }
+                } else {
+                        \OC\Files\Filesystem::readfile($filename);
+                }
+        }
+        
 	/**
 	 * @param false|string $filename
 	 */
