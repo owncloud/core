@@ -71,7 +71,10 @@ class Helper {
 			\OCP\JSON::checkUserExists($rootLinkItem['uid_owner']);
 			\OC_Util::tearDownFS();
 			\OC_Util::setupFS($rootLinkItem['uid_owner']);
-			$path = \OC\Files\Filesystem::getPath($linkItem['file_source']);
+			$ownerView = \OC\Files\Filesystem::getView();
+			// workaround for getRelativePath issues with missing trailing slash
+			$ownerView->chroot(rtrim($ownerView->getRoot(), '/') . '/');
+			$path = $ownerView->getPath($linkItem['file_source']);
 		}
 
 		if ($path === null) {
