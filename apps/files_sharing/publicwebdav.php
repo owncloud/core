@@ -64,7 +64,13 @@ $server = $serverFactory->createServer($baseuri, $requestUri, $authBackend, func
 
 	OC_Util::setupFS($owner);
 	$ownerView = \OC\Files\Filesystem::getView();
+	// workaround for getRelativePath issues with missing trailing slash
+	$ownerView->chroot(rtrim($ownerView->getRoot(), '/') . '/');
 	$path = $ownerView->getPath($fileId);
+	if ($path === null) {
+		// share is in trash or not accessible
+		throw new \Sabre\DAV\Exception\NotAuthenticated();
+	}
 
 	return new \OC\Files\View($ownerView->getAbsolutePath($path));
 });
