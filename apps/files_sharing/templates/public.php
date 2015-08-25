@@ -17,6 +17,10 @@ OCP\Util::addStyle('files', 'upload');
 OCP\Util::addScript('files', 'filesummary');
 OCP\Util::addScript('files', 'breadcrumb');
 OCP\Util::addScript('files', 'fileinfomodel');
+OCP\Util::addScript('files', 'detailfileinfoview');
+OCP\Util::addScript('files', 'mainfileinfodetailview');
+OCP\Util::addScript('files', 'detailsview');
+OCP\Util::addStyle('files', 'detailsView');
 OCP\Util::addScript('files', 'files');
 OCP\Util::addScript('files', 'filelist');
 OCP\Util::addscript('files', 'keyboardshortcuts');
@@ -87,33 +91,34 @@ $thumbSize = 1024;
 		</div>
 	</div></header>
 <div id="content">
-	<div id="preview">
-		<?php if (isset($_['folder'])): ?>
-			<?php print_unescaped($_['folder']); ?>
-		<?php else: ?>
-			<?php if ($_['previewEnabled'] && substr($_['mimetype'], 0, strpos($_['mimetype'], '/')) == 'video'): ?>
-				<div id="imgframe">
-					<video tabindex="0" controls="" preload="none">
-						<source src="<?php p($_['downloadURL']); ?>" type="<?php p($_['mimetype']); ?>" />
-					</video>
-				</div>
+	<div id="app-content">
+		<div id="preview">
+			<?php if (isset($_['folder'])): ?>
+				<?php print_unescaped($_['folder']); ?>
 			<?php else: ?>
-				<!-- Preview frame is filled via JS to support SVG images for modern browsers -->
-				<div id="imgframe"></div>
+				<?php if ($_['previewEnabled'] && substr($_['mimetype'], 0, strpos($_['mimetype'], '/')) == 'video'): ?>
+					<div id="imgframe">
+						<video tabindex="0" controls="" preload="none">
+							<source src="<?php p($_['downloadURL']); ?>" type="<?php p($_['mimetype']); ?>" />
+						</video>
+					</div>
+				<?php else: ?>
+					<!-- Preview frame is filled via JS to support SVG images for modern browsers -->
+					<div id="imgframe"></div>
+				<?php endif; ?>
+				<div class="directDownload">
+					<a href="<?php p($_['downloadURL']); ?>" id="downloadFile" class="button">
+						<img class="svg" alt="" src="<?php print_unescaped(OCP\image_path("core", "actions/download.svg")); ?>"/>
+						<?php p($l->t('Download %s', array($_['filename'])))?> (<?php p($_['fileSize']) ?>)
+					</a>
+				</div>
+				<div class="directLink">
+					<label for="directLink"><?php p($l->t('Direct link')) ?></label>
+					<input id="directLink" type="text" readonly value="<?php p($_['downloadURL']); ?>">
+				</div>
 			<?php endif; ?>
-			<div class="directDownload">
-				<a href="<?php p($_['downloadURL']); ?>" id="downloadFile" class="button">
-					<img class="svg" alt="" src="<?php print_unescaped(OCP\image_path("core", "actions/download.svg")); ?>"/>
-					<?php p($l->t('Download %s', array($_['filename'])))?> (<?php p($_['fileSize']) ?>)
-				</a>
-			</div>
-			<div class="directLink">
-				<label for="directLink"><?php p($l->t('Direct link')) ?></label>
-				<input id="directLink" type="text" readonly value="<?php p($_['downloadURL']); ?>">
-			</div>
-		<?php endif; ?>
+		</div>
 	</div>
-
 </div>
 <footer>
 	<p class="info">

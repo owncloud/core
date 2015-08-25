@@ -54,11 +54,10 @@ OCA.Sharing.PublicApp = {
 				$el,
 				{
 					id: 'files.public',
-					scrollContainer: $(window),
+					scrollContainer: $('#app-content'),
 					dragOptions: dragOptions,
 					folderDropOptions: folderDropOptions,
-					fileActions: fileActions,
-					detailsViewEnabled: false
+					fileActions: fileActions
 				}
 			);
 			this.files = OCA.Files.Files;
