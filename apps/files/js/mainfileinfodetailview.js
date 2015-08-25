@@ -121,7 +121,7 @@
 				var $iconDiv = this.$el.find('.thumbnail');
 				if (!this.model.isDirectory()) {
 					// TODO: inject utility class?
-					FileList.lazyLoadPreview({
+					this._fileList.lazyLoadPreview({
 						path: this.model.getFullPath(),
 						mime: this.model.get('mimetype'),
 						etag: this.model.get('etag'),
