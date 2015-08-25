@@ -134,4 +134,14 @@ interface IEncryptionModule {
 	 */
 	public function isReadable($path, $uid);
 
+	/**
+	 * Check if the recovery password presented is correct for the user
+	 *
+	 * @param $recoveryPassword
+	 * @param $user
+	 * @return array
+	 */
+	public function checkRecoveryPassword($recoveryPassword, $user);
+
+
 }

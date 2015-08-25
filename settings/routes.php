@@ -9,7 +9,9 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Raghu Nayyar <me@iraghu.com>
+ * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -53,6 +55,11 @@ $application->registerRoutes($this, [
 		['name' => 'CheckSetup#check', 'url' => '/settings/ajax/checksetup', 'verb' => 'GET'],
 		['name' => 'Certificate#addPersonalRootCertificate', 'url' => '/settings/personal/certificate', 'verb' => 'POST'],
 		['name' => 'Certificate#removePersonalRootCertificate', 'url' => '/settings/personal/certificate/{certificateIdentifier}', 'verb' => 'DELETE'],
+		[
+			'name' => 'ChangePassword#changeUserPassword',
+			'url' => '/settings/users/changepassword',
+			'verb' => 'POST'
+		],
 	]
 ]);
 
@@ -77,9 +84,8 @@ $this->create('settings_ajax_togglegroups', '/settings/ajax/togglegroups.php')
 	->actionInclude('settings/ajax/togglegroups.php');
 $this->create('settings_ajax_togglesubadmins', '/settings/ajax/togglesubadmins.php')
 	->actionInclude('settings/ajax/togglesubadmins.php');
-$this->create('settings_users_changepassword', '/settings/users/changepassword')
-	->post()
-	->action('OC\Settings\ChangePassword\Controller', 'changeUserPassword');
+
+
 $this->create('settings_ajax_changedisplayname', '/settings/ajax/changedisplayname.php')
 	->actionInclude('settings/ajax/changedisplayname.php');
 $this->create('settings_ajax_changegorupname', '/settings/ajax/changegroupname.php')

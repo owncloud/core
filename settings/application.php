@@ -1,11 +1,8 @@
 <?php
 /**
- * @author Björn Schießle <schiessle@owncloud.com>
  * @author Georg Ehrke <georg@owncloud.com>
- * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -29,6 +26,7 @@ namespace OC\Settings;
 use OC\Files\View;
 use OC\Settings\Controller\AppSettingsController;
 use OC\Settings\Controller\CertificateController;
+use OC\Settings\Controller\ChangePasswordController;
 use OC\Settings\Controller\CheckSetupController;
 use OC\Settings\Controller\EncryptionController;
 use OC\Settings\Controller\GroupsController;
@@ -157,6 +155,17 @@ class Application extends App {
 				$c->query('URLGenerator'),
 				$c->query('Util'),
 				$c->query('L10N')
+			);
+		});
+		$container->registerService('ChangePasswordController', function(IContainer $c) {
+			return new ChangePasswordController(
+				$c->query('AppName'),
+				$c->query('Request'),
+				$c->query('L10N'),
+				$c->query('OCP\\App\IAppManager'),
+				$c->query('UserManager'),
+				$c->query('UserSession'),
+				$c->query('GroupManager')
 			);
 		});
 
