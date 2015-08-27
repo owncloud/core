@@ -1679,6 +1679,102 @@
 				form.trigger('submit');
 			});
 		},
+
+		/**
+		 * Create an empty file inside the current directory.
+		 *
+		 * @param {string} name name of the file
+		 *
+		 * @return {Promise} promise that will be resolved after the
+		 * file was created
+		 */
+		createFile: function(name) {
+			var self = this;
+			var deferred = $.Deferred();
+			var promise = deferred.promise();
+
+			OCA.Files.Files.isFileNameValid(name);
+			name = this.getUniqueName(name);
+
+			if (this.lastAction) {
+				this.lastAction();
+			}
+
+			$.post(
+				OC.filePath('files', 'ajax', 'newfile.php'),
+				{
+					dir: this.getCurrentDirectory(),
+					filename: name
+				},
+				function(result) {
+					if (result.status === 'success') {
+						self.add(result.data, {animate: true, scrollTo: true});
+						deferred.resolve(result.status, result.data);
+					} else {
+						if (result.data && result.data.message) {
+							OC.Notification.showTemporary(result.data.message);
+						} else {
+							OC.Notification.showTemporary(t('core', 'Could not create file'));
+						}
+						deferred.reject(result.status, result.data);
+					}
+				}
+			);
+
+			return promise;
+		},
+
+		/**
+		 * Create a directory inside the current directory.
+		 *
+		 * @param {string} name name of the directory
+		 *
+		 * @return {Promise} promise that will be resolved after the
+		 * directory was created
+		 */
+		createDirectory: function(name) {
+			var self = this;
+			var deferred = $.Deferred();
+			var promise = deferred.promise();
+
+			OCA.Files.Files.isFileNameValid(name);
+			name = this.getUniqueName(name);
+
+			if (this.lastAction) {
+				this.lastAction();
+			}
+
+			$.post(
+				OC.filePath('files','ajax','newfolder.php'),
+				{
+					dir: this.getCurrentDirectory(),
+					foldername: name
+				},
+				function(result) {
+					if (result.status === 'success') {
+						self.add(result.data, {animate: true, scrollTo: true});
+						deferred.resolve(result.status, result.data);
+					} else {
+						if (result.data && result.data.message) {
+							OC.Notification.showTemporary(result.data.message);
+						} else {
+							OC.Notification.showTemporary(t('core', 'Could not create folder'));
+						}
+						deferred.reject(result.status);
+					}
+				}
+			);
+
+			return promise;
+		},
+
+		/**
+		 * Returns whether the given file name exists in the list
+		 *
+		 * @param {string} file file name
+		 *
+		 * @return {bool} true if the file exists in the list, false otherwise
+		 */
 		inList:function(file) {
 			return this.findFileEl(file).length;
 		},

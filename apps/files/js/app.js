@@ -22,6 +22,8 @@
 		OCA.Files = {};
 	}
 
+	var TEMPLATE_ADDBUTTON = '<a href="#" class="button new" data-enabledtitle="{{addText}}" data-disabledtitle="{{disabledText}}"><img src="{{iconUrl}}"></img></a>';
+
 	/**
 	 * @namespace OCA.Files.App
 	 */
@@ -75,6 +77,7 @@
 				}
 			);
 			this.files.initialize();
+			this.fileList.$fileList.on('updated', _.bind(this._updateNewButton, this));
 
 			// for backward compatibility, the global FileList will
 			// refer to the one of the "files" view
@@ -82,9 +85,75 @@
 
 			OC.Plugins.attach('OCA.Files.App', this);
 
+			this._renderNewButton();
+
 			this._setupEvents();
 			// trigger URL change event handlers
 			this._onPopState(urlParams);
+		},
+
+		_renderNewButton: function() {
+			// TODO: use icon instead
+			if (!this._addButtonTemplate) {
+				this._addButtonTemplate = Handlebars.compile(TEMPLATE_ADDBUTTON);
+			}
+			var $newButton = $(this._addButtonTemplate({
+				addText: t('files', 'New'),
+				disabledText: t('files', 'You don’t have permission to upload or create files here'),
+				iconUrl: OC.imagePath('core', 'actions/add')
+			}));
+			this.navigation.$el.find('li.nav-files a').after($newButton);
+
+			$newButton.click(_.bind(this._onClickNewButton, this));
+			$newButton.addClass('hidden');
+			this._newButton = $newButton;
+		},
+
+		_onClickNewButton: function(event) {
+			var self = this;
+			var $target = $(event.target);
+			if (!$target.hasClass('.button')) {
+				$target = $target.closest('.button');
+			}
+			event.preventDefault();
+			if ($target.hasClass('disabled')) {
+				return false;
+			}
+			if (!this._newFileMenu) {
+				this._newFileMenu = new OCA.Files.NewFileMenu({
+					fileList: this.fileList
+				});
+				$('body').append(this._newFileMenu.$el);
+				this._newFileMenu.on('actionPerformed', function(action) {
+					// automatically switch to "All files"
+					if (self.getActiveView() !== 'files') {
+						self.setActiveView('files');
+					}
+				});
+			}
+			this._newFileMenu.showAt($target);
+
+			return false;
+		},
+
+		_updateNewButton: function() {
+			var $newButton = this._newButton;
+			if (!this._newButton) {
+				return;
+			}
+
+			var perms = this.fileList.getDirectoryPermissions();
+			var viewerMode = $('.app-files').hasClass('viewer-mode');
+			var mainFileListSelected = this.getActiveView() === 'files';
+			var isDisabled = (perms & OC.PERMISSION_CREATE) === 0;
+			$newButton.toggleClass('hidden', viewerMode || !perms || !mainFileListSelected);
+			$newButton.toggleClass('disabled', isDisabled);
+			if (isDisabled) {
+				$newButton.attr('title', $newButton.attr('data-disabledtitle'));
+			} else {
+				$newButton.attr('title', $newButton.attr('data-enabledtitle'));
+			}
+			$newButton.tooltip({placement: 'bottom', trigger: 'manual'});
 		},
 
 		/**
@@ -95,6 +164,9 @@
 			this.fileList.destroy();
 			this.fileList = null;
 			this.files = null;
+			if (this._newFileMenu) {
+				this._newFileMenu.remove();
+			}
 			OCA.Files.fileActions.off('setDefault.app-files', this._onActionsUpdated);
 			OCA.Files.fileActions.off('registerAction.app-files', this._onActionsUpdated);
 			window.FileActions.off('setDefault.app-files', this._onActionsUpdated);
@@ -165,6 +237,7 @@
 				OC.Apps.hideAppSidebar($('.detailsView'));
 				this.navigation.getActiveContainer().trigger(new $.Event('urlChanged', params));
 			}
+			this._updateNewButton();
 		},
 
 		/**
@@ -187,6 +260,7 @@
 			}
 			$('#app-navigation').toggleClass('hidden', state);
 			$('.app-files').toggleClass('viewer-mode no-sidebar', state);
+			this._updateNewButton();
 		},
 
 		/**
