@@ -601,6 +601,7 @@ a.action > img {
 }
 #fileList .fileActionsMenu {
 	margin-right: 21px;
+	border: 1px solid #ccc;
 }
 
 .ie8 #fileList a.action img,
