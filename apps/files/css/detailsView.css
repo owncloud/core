@@ -29,10 +29,10 @@
 	font-size: 16px;
 	padding-top: 13px;
 	padding-bottom: 3px;
+	display: inline-block;
 }
 
 #app-sidebar .file-details {
-	margin-top: 3px;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
 	opacity: .5;
 }
