@@ -218,20 +218,33 @@ class Updater extends BasicEmitter {
 	 * @return bool
 	 */
 	public function isUpgradePossible($oldVersion, $newVersion) {
+		// downgrade is never allowed
+		if (version_compare($oldVersion, $newVersion, '>')) {
+			return false;
+		}
+
 		$oldVersion = explode('.', $oldVersion);
 		$newVersion = explode('.', $newVersion);
 
-		// don't skip major versions, downgrades also not allowed
-		if($newVersion[0] > ($oldVersion[0] + 1) || $oldVersion[0] > $newVersion[0]) {
+		$oldVersion = array_map(function($val) { return (int)$val; }, $oldVersion);
+		$newVersion = array_map(function($val) { return (int)$val; }, $newVersion);
+
+		if ($oldVersion[0] === $newVersion[0] && $oldVersion[1] + 1 === $newVersion[1]) {
+			return true;
+		}
+
+		// minor updates allowed
+		if ($oldVersion[0] === $newVersion[0] && $oldVersion[1] === $newVersion[1]) {
+			return true;
+		}
+
+		if ($oldVersion[0] + 1 === $newVersion[0] && $newVersion[1] === 0) {
+			// TODO: decide whether 8.2.0 => 9.0.0 is allowed and if yes adjust accordingly
 			return false;
 		}
 
 		// since OC 8.0 the second number is also used for major versions
-		if($newVersion[0] === $oldVersion[0] &&
-			($newVersion[1] > ($oldVersion[1] + 1) || $oldVersion[1] > $newVersion[1])) {
-			return false;
-		}
-		return true;
+		return false;
 	}
 
 	/**

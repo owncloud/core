@@ -67,10 +67,6 @@ class UpdaterTest extends \Test\TestCase {
 	 */
 	public function versionCompatibilityTestData() {
 		return [
-			['1.0.0.0', '2.2.0', true],
-			['1.1.1.1', '2.0.0', true],
-			['5.0.3', '4.0.3', false],
-			['12.0.3', '13.4.5', true],
 			['6.0.5', '6.0.6', true],
 			['5.0.6', '7.0.4', false],
 			['8.0.0', '8.1.0', true],
@@ -80,6 +76,14 @@ class UpdaterTest extends \Test\TestCase {
 			['8.2.0', '8.1.0', false],
 			['8.2.0', '8.0.0', false],
 			['8.2.0', '7.0.0', false],
+			['7.0.0', '8.2.0', false],
+			['8.1.0', '8.2.0', true],
+			['8.1.0', '9.0.0', false],
+			['8.2.0', '9.1.0', false],
+			['8.2.0.0', '8.2.0.1', true],
+			['8.2.0.1', '8.2.0.0', false],
+			// TODO: decide whether 8.2.0 => 9.0.0 is allowed and if yes adjust accordingly
+			['8.2.0', '9.0.0', false],
 		];
 	}
 
