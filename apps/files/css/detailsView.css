@@ -30,6 +30,9 @@
 	padding-top: 13px;
 	padding-bottom: 3px;
 	display: inline-block;
+	text-overflow: ellipsis;
+  overflow: hidden;
+  width: 60%;
 }
 
 #app-sidebar .file-details {
