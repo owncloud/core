@@ -1519,7 +1519,11 @@ OC.Util = {
 	 * @returns {string} human readable difference from now
 	 */
 	relativeModifiedDate: function (timestamp) {
-		return moment(timestamp).fromNow();
+		var relativedate = moment(timestamp).fromNow();
+		if (relativedate === t('core', 'a few seconds ago')) {
+			relativedate = t('core', 'seconds ago');
+		}
+		return relativedate;
 	},
 	/**
 	 * Returns whether the browser supports SVG
