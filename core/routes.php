@@ -42,6 +42,9 @@ $application->registerRoutes($this, [
 		['name' => 'avatar#postCroppedAvatar', 'url' => '/avatar/cropped', 'verb' => 'POST'],
 		['name' => 'avatar#getTmpAvatar', 'url' => '/avatar/tmp', 'verb' => 'GET'],
 		['name' => 'avatar#postAvatar', 'url' => '/avatar/', 'verb' => 'POST'],
+		['name' => 'preview#get_preview', 'url' => '/core/preview' , 'verb' => 'GET'],
+		['name' => 'preview#get_preview', 'url' => '/core/preview.png' , 'verb' => 'GET'],
+
 	]
 ]);
 
@@ -99,10 +102,6 @@ $this->create('core_tags_delete', '/tags/{type}/delete')
 $this->create('js_config', '/core/js/oc.js')
 	->actionInclude('core/js/config.php');
 // Routing
-$this->create('core_ajax_preview', '/core/preview')
-	->actionInclude('core/ajax/preview.php');
-$this->create('core_ajax_preview', '/core/preview.png')
-	->actionInclude('core/ajax/preview.php');
 $this->create('core_ajax_update', '/core/ajax/update.php')
 	->actionInclude('core/ajax/update.php');
 

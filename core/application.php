@@ -32,6 +32,7 @@ use \OCP\AppFramework\App;
 use OC\Core\LostPassword\Controller\LostController;
 use OC\Core\User\UserController;
 use OC\Core\Avatar\AvatarController;
+use OC\Core\Preview\PreviewController;
 use \OCP\Util;
 
 /**
@@ -88,6 +89,14 @@ class Application extends App {
 				$c->query('UserFolder')
 			);
 		});
+		$container->registerService('PreviewController', function(SimpleContainer $c) {
+			return new PreviewController(
+				$c->query('AppName'),
+				$c->query('Request'),
+				$c->query('PreviewManager'),
+				$c->query('UserFolder')
+			);
+		});
 
 		/**
 		 * Core class wrappers
@@ -134,6 +143,10 @@ class Application extends App {
 		$container->registerService('DefaultEmailAddress', function() {
 			return Util::getDefaultEmailAddress('lostpassword-noreply');
 		});
+		$container->registerService('PreviewManager', function(SimpleContainer $c) {
+			return $c->query('ServerContainer')->getPreviewManager();
+		});
+
 	}
 
 }
