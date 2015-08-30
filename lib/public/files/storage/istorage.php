@@ -66,21 +66,10 @@ interface IStorage {
 
 	/**
 	 * @param string $path
-	 * @return string
+	 * @param string[] $includeMeta a combination of IDirectoryEntry::META_ constants that define which meta data is included in the result
+	 * @return IDirectoryEntry
 	 */
-	public function getMimeType($path);
-
-	/**
-	 * @param string $path
-	 * @return int
-	 */
-	public function getSize($path);
-
-	/**
-	 * @param string $path
-	 * @return int modified date as unix timestamp
-	 */
-	public function getMTime($path);
+	public function getMeta($path, $includeMeta = []);
 
 	/**
 	 * @param string $path
