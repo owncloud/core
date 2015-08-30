@@ -1155,7 +1155,13 @@ class Access extends LDAPUtility implements user\IUserTools {
 				);
 			}
 		}
-		$search = empty($search) ? '*' : $search.'*';
+		$config = \oc::$server->getConfig();
+
+		$allowEnum = $config->getAppValue('core', 'shareapi_allow_share_dialog_user_enumeration', false);
+
+		$search = empty($search) ? '*' :
+			$allowEnum ? $search . '*' : $search;
+
 		if(!is_array($searchAttributes) || count($searchAttributes) === 0) {
 			if(empty($fallbackAttribute)) {
 				return '';
