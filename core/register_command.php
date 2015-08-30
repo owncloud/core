@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Christian Kampka <christian@kampka.net>
@@ -24,7 +25,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
 /** @var $application Symfony\Component\Console\Application */
 $application->add(new OC\Core\Command\Status);
 $application->add(new OC\Core\Command\Check(\OC::$server->getConfig()));
@@ -73,16 +73,8 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\User\LastSeen(\OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\Report(\OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\ResetPassword(
-	OC::$server->getUserManager(),
-        OC::$server->getConfig(),
-        OC::$server->getRequest(),
-        OC::$server->getURLGenerator(),
-        OC::$server->getl10n('settings'),
-        OC::$server->getSecureRandom(),
-        OC::$server->getMailer(),
-        new \OC_Defaults()
+			OC::$server->getUserManager(), OC::$server->getConfig(), OC::$server->getURLGenerator(), OC::$server->getl10n('settings'), OC::$server->getSecureRandom(), OC::$server->getMailer(), new \OC_Defaults()
 	));
-
 } else {
 	$application->add(new OC\Core\Command\Maintenance\Install(\OC::$server->getConfig()));
 }
