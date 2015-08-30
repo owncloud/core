@@ -339,4 +339,8 @@ class PreviewManager implements IPreview {
 			}
 		}
 	}
+
+	public function myNewFunction() {
+		return ['abasd'];
+	}
 }
