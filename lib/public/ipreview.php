@@ -92,4 +92,10 @@ interface IPreview {
 	 * @since 8.0.0
 	 */
 	public function isAvailable(\OCP\Files\FileInfo $file);
+
+	/**
+	 * @return mixed
+	 * @since 8.2.0
+	 */
+	public function myNewFunction();
 }
