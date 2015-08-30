@@ -24,18 +24,6 @@ namespace OCP\Files\Storage;
 interface IStorage {
 	/**
 	 * @param string $path
-	 * @param string $content
-	 */
-	public function write($path, $content);
-
-	/**
-	 * @param string $path
-	 * @return string
-	 */
-	public function read($path);
-
-	/**
-	 * @param string $path
 	 * @param resource $stream
 	 */
 	public function writeStream($path, $stream);
