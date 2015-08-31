@@ -62,7 +62,8 @@ class DependencyAnalyzer {
 			$this->analyzeCommands($dependencies),
 			$this->analyzeLibraries($dependencies),
 			$this->analyzeOS($dependencies),
-			$this->analyzeOC($dependencies, $app)
+			$this->analyzeOC($dependencies, $app),
+			$this->analyzeApps($dependencies)
 		);
 	}
 
@@ -301,6 +302,42 @@ class DependencyAnalyzer {
 		if (!is_null($maxVersion)) {
 			if ($this->compareBigger($this->platform->getOcVersion(), $maxVersion)) {
 				$missing[] = (string)$this->l->t('ownCloud %s or lower is required.', $maxVersion);
+			}
+		}
+		return $missing;
+	}
+
+	/**
+	 * @param array $dependencies
+	 * @param array $appInfo
+	 * @return array
+	 */
+	private function analyzeApps(array $dependencies) {
+		if (!isset($dependencies['apps']) || !is_array($dependencies['apps'])) {
+			return [];
+		}
+		$apps = $dependencies['apps'];
+
+		$missing = [];
+		foreach ($apps as $appName => $app) {
+			if (\OC::$server->getAppManager()->isInstalled($appName)) {
+				$missing[] = (string)$this->l->t('App %s is required.', $appName);
+				continue;
+			}
+
+			$installedVersion = \OC::$server->getConfig()->getAppValue($appName, 'installed_version');
+			\OC::$server->getAppManager()->getInstalledApps();
+
+			if (isset($app['@attributes']['min-version'])) {
+				if ($this->compareSmaller($installedVersion, $app['@attributes']['min-version'])) {
+					$missing[] = (string)$this->l->t('App %s version %s or higher is required.', [$appName, $app['@attributes']['min-version']]);
+				}
+			}
+
+			if (isset($app['@attributes']['max-version'])) {
+				if ($this->compareBigger($installedVersion, $app['@attributes']['max-version'])) {
+					$missing[] = (string)$this->l->t('App %s version %s or lower is required.', [$appName, $app['@attributes']['max-version']]);
+				}
 			}
 		}
 		return $missing;
