@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @author Andreas Fischer <bantu@owncloud.com>
  * @author Christopher Schäpers <kondou@ts.unde.re>
@@ -69,7 +68,13 @@ class ResetPassword extends Command {
 	protected $from;
 
 	public function __construct(
-	IUserManager $userManager, IConfig $config, IURLGenerator $urlGenerator, IL10N $l10n, ISecureRandom $secureRandom, IMailer $mailer, OC_Defaults $defaults
+	IUserManager $userManager, 
+	IConfig $config, 
+	IURLGenerator $urlGenerator,
+	IL10N $l10n, 
+	ISecureRandom $secureRandom,
+	IMailer $mailer, 
+	OC_Defaults $defaults
 	) {
 		$this->userManager = $userManager;
 		$this->urlGenerator = $urlGenerator;
