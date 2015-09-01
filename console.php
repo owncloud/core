@@ -45,22 +45,12 @@ try {
 
 	if (!OC::$CLI) {
 		echo "This script can be run from the command line only" . PHP_EOL;
-		exit(0);
+		exit(1);
 	}
 
-	if (!OC_Util::runningOnWindows())  {
-		if (!function_exists('posix_getuid')) {
-			echo "The posix extensions are required - see http://php.net/manual/en/book.posix.php" . PHP_EOL;
-			exit(0);
-		}
-		$user = posix_getpwuid(posix_getuid());
-		$configUser = posix_getpwuid(fileowner(OC::$configDir . 'config.php'));
-		if ($user['name'] !== $configUser['name']) {
-			echo "Console has to be executed with the user that owns the file config/config.php" . PHP_EOL;
-			echo "Current user: " . $user['name'] . PHP_EOL;
-			echo "Owner of config.php: " . $configUser['name'] . PHP_EOL;
-			exit(0);
-		}
+	if (!is_writable(\OC::$configDir . 'config.php')) {
+		echo "Console has to be executed with a user that can write to config.php" . PHP_EOL;
+		exit(1);
 	}
 
 	$application = new Application(\OC::$server->getConfig());
