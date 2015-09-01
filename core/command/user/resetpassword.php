@@ -84,7 +84,6 @@ class ResetPassword extends Command {
 		$this->mailer = $mailer;
 		$this->config = $config;
 		$this->defaults = $defaults;
-		$this->from = $this->config->getSystemValue('mail_from_address') . '@' . $this->config->getSystemValue('mail_domain');
 		parent::__construct();
 	}
 
@@ -100,6 +99,15 @@ class ResetPassword extends Command {
 		$tmpl->assign('link', $link);
 		$msg = $tmpl->fetchPage();
 		try {
+			// Let up check if admin configured settings for email.
+			$mfa=$this->config->getSystemValue('mail_from_address');
+			$md=$this->config->getSystemValue('mail_domain');
+			if($mfa===NULL || $md===NULL){
+				throw new Exception('Please configure your mail_from_address and mail_domain in config.php .');
+			}
+			else{
+				$this->from =  $mfa. '@' . $md;
+			}
 			$message = $this->mailer->createMessage();
 			$message->setTo([$email => $user]);
 			$message->setSubject($this->l10n->t('%s password reset', [$this->defaults->getName()]));
@@ -107,9 +115,9 @@ class ResetPassword extends Command {
 			$message->setFrom([$this->from => $this->defaults->getName()]);
 			$this->mailer->send($message);
 		} catch (\Exception $e) {
-			var_dump($e->getMessage());
 			throw new \Exception($this->l10n->t(
-					'Couldn\'t send reset email. Please contact your administrator.'
+					'Couldn\'t send email.'.
+					'Full error message:'.$e->getMessage()
 			));
 		}
 	}
