@@ -126,18 +126,17 @@ class ResetPassword extends Command {
 
 	protected function configure() {
 		$this
-				->setName('user:resetpassword')
-				->setDescription('Resets the password of the named user')
-				->addArgument(
-						'user', InputArgument::REQUIRED, 'Username to reset password'
-				)
-				->addOption(
-						'password-from-env', null, InputOption::VALUE_NONE, 'read password from environment variable OC_PASS'
-				)
-				->addOption(
-						'send-link-to-user', null, InputOption::VALUE_NONE, 'reset password and send notification email with hashed URL to the user'
-				)
-		;
+			->setName('user:resetpassword')
+			->setDescription('Resets the password of the named user')
+			->addArgument(
+					'user', InputArgument::REQUIRED, 'Username to reset password'
+			)
+			->addOption(
+					'password-from-env', null, InputOption::VALUE_NONE, 'read password from environment variable OC_PASS'
+			)
+			->addOption(
+					'send-link-to-user', null, InputOption::VALUE_NONE, 'reset password and send notification email with hashed URL to the user'
+			);
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
@@ -151,8 +150,6 @@ class ResetPassword extends Command {
 		}
 
 		if ($input->getOption('send-link-to-user')) {
-			// We should generate hash, email then sendemail.
-			// TODO
 			$this->resetAndEMail($username);
 			$output->writeln("Message Sent.");
 			return 0;
@@ -169,7 +166,7 @@ class ResetPassword extends Command {
 
 			if (\OCP\App::isEnabled('encryption')) {
 				$output->writeln(
-						'<error>Warning: Resetting the password when using encryption will result in data loss!</error>'
+					'<error>Warning: Resetting the password when using encryption will result in data loss!</error>'
 				);
 				if (!$dialog->askConfirmation($output, '<question>Do you want to continue?</question>', true)) {
 					return 1;
@@ -177,10 +174,12 @@ class ResetPassword extends Command {
 			}
 
 			$password = $dialog->askHiddenResponse(
-					$output, '<question>Enter a new password: </question>', false
+					$output, '<question>Enter a new password: </question>', 
+					false
 			);
 			$confirm = $dialog->askHiddenResponse(
-					$output, '<question>Confirm the new password: </question>', false
+					$output, '<question>Confirm the new password: </question>', 
+					false
 			);
 
 			if ($password !== $confirm) {
@@ -191,7 +190,6 @@ class ResetPassword extends Command {
 			$output->writeln("<error>Interactive input or --password-from-env is needed for entering a new password!</error>");
 			return 1;
 		}
-
 		$success = $user->setPassword($password);
 		if ($success) {
 			$output->writeln("<info>Successfully reset password for " . $username . "</info>");
