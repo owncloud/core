@@ -30,6 +30,7 @@ class OC_Response {
 	const STATUS_FOUND = 304;
 	const STATUS_NOT_MODIFIED = 304;
 	const STATUS_TEMPORARY_REDIRECT = 307;
+	const STATUS_MOVED_TEMPORARILY = 302;
 	const STATUS_BAD_REQUEST = 400;
 	const STATUS_NOT_FOUND = 404;
 	const STATUS_INTERNAL_SERVER_ERROR = 500;
@@ -83,6 +84,9 @@ class OC_Response {
 				if ($protocol == 'HTTP/1.1') {
 					$status = $status . ' Temporary Redirect';
 					break;
+				} else if ($protocol == 'HTTP/1.0') {
+                                        $status = self::STATUS_MOVED_TEMPORARILY . ' Moved Temporarily';
+                                        break;
 				} else {
 					$status = self::STATUS_FOUND;
 					// fallthrough
