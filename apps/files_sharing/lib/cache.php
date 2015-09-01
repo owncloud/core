@@ -42,6 +42,10 @@ class Shared_Cache extends Cache {
 
 	private $storage;
 	private $files = array();
+	/**
+	 * @var \OC\Files\Cache\Cache
+	 */
+	private $sourceCache;
 
 	/**
 	 * @param \OC\Files\Storage\Shared $storage
@@ -57,6 +61,9 @@ class Shared_Cache extends Cache {
 	 * @return \OC\Files\Cache\Cache|false
 	 */
 	private function getSourceCache($target) {
+		if ($this->sourceCache) {
+			return $this->sourceCache;
+		}
 		if ($target === false || $target === $this->storage->getMountPoint()) {
 			$target = '';
 		}
@@ -72,6 +79,7 @@ class Shared_Cache extends Cache {
 					$cache = $storage->getCache();
 					$this->storageId = $storage->getId();
 					$this->numericId = $cache->getNumericStorageId();
+					$this->sourceCache = $cache;
 					return $cache;
 				}
 			}
