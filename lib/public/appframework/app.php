@@ -64,6 +64,19 @@ class App {
 	 */
 	public function __construct($appName, $urlParams = array()) {
 		$this->container = new \OC\AppFramework\DependencyInjection\DIContainer($appName, $urlParams);
+		$this->loadAppPhp($appName);
+	}
+
+	/**
+	 * Load app.php if exists for backwards compatibility
+	 *
+	 * @param string $appId
+	 */
+	private function loadAppPhp($appId) {
+		$appDir = \OC_App::getAppPath($appId);
+		if (file_exists($appDir . '/appinfo/app.php')) {
+			require_once $appDir . '/appinfo/app.php';
+		}
 	}
 
 	private $container;

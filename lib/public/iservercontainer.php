@@ -384,6 +384,14 @@ interface IServerContainer {
 	public function getAppManager();
 
 	/**
+	 * Get the app loader
+	 *
+	 * @return \OCP\App\IAppLoader
+	 * @since 8.2.0
+	 */
+	public function getAppLoader();
+
+	/**
 	 * Get the webroot
 	 *
 	 * @return string
