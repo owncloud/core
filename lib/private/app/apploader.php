@@ -44,6 +44,19 @@ class AppLoader {
 	}
 
 	/**
+	 * Retrieve an app Application instance
+	 *
+	 * @param string $appId
+	 * @return \OCP\AppFramework\App|null
+	 */
+	public function getApp($appId) {
+		if (isset($this->loadedApps[$appId])) {
+			return $this->loadedApps[$appId];
+		}
+		return null;
+	}
+
+	/**
 	 * Load the app and return the Application instance
 	 *
 	 * @param string $appId

@@ -9,6 +9,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -96,18 +97,17 @@ class Router implements IRouter {
 	 * Get the files to load the routes from
 	 *
 	 * @return string[]
+	 * @deprecated 8.2.0
 	 */
 	public function getRoutingFiles() {
-		if (!isset($this->routingFiles)) {
-			$this->routingFiles = array();
-			foreach (\OC_APP::getEnabledApps() as $app) {
-				$file = \OC_App::getAppPath($app) . '/appinfo/routes.php';
-				if (file_exists($file)) {
-					$this->routingFiles[$app] = $file;
-				}
+		$routingFiles = [];
+		foreach (\OC_App::getEnabledApps() as $app) {
+			$file = \OC_App::getAppPath($app) . '/appinfo/routes.php';
+			if (file_exists($file)) {
+				$routingFiles[$app] = $file;
 			}
 		}
-		return $this->routingFiles;
+		return $routingFiles;
 	}
 
 	/**
@@ -115,7 +115,7 @@ class Router implements IRouter {
 	 */
 	public function getCacheKey() {
 		if (!isset($this->cacheKey)) {
-			$files = $this->getRoutingFiles();
+			$files = \OC_App::getEnabledApps(); // not technically files...
 			$files[] = 'settings/routes.php';
 			$files[] = 'core/routes.php';
 			$files[] = 'ocs/routes.php';
@@ -135,22 +135,15 @@ class Router implements IRouter {
 		}
 		if (is_null($app)) {
 			$this->loaded = true;
-			$routingFiles = $this->getRoutingFiles();
+			$apps = \OC_App::getEnabledApps();
 		} else {
-			if (isset($this->loadedApps[$app])) {
-				return;
-			}
-			$file = \OC_App::getAppPath($app) . '/appinfo/routes.php';
-			if (file_exists($file)) {
-				$routingFiles = array($app => $file);
-			} else {
-				$routingFiles = array();
-			}
+			$apps = [$app];
 		}
 		\OC::$server->getEventLogger()->start('loadroutes' . $requestedApp, 'Loading Routes');
-		foreach ($routingFiles as $app => $file) {
+		foreach ($apps as $app) {
 			if (!isset($this->loadedApps[$app])) {
-				if (!\OC_App::isAppLoaded($app)) {
+				$application = \OC::$server->getAppLoader()->getApp($app);
+				if (!$application) {
 					// app MUST be loaded before app routes
 					// try again next time loadRoutes() is called
 					$this->loaded = false;
@@ -158,7 +151,7 @@ class Router implements IRouter {
 				}
 				$this->loadedApps[$app] = true;
 				$this->useCollection($app);
-				$this->requireRouteFile($file, $app);
+				$application->loadRoutes($this);
 				$collection = $this->getCollection($app);
 				$collection->addPrefix('/apps/' . $app);
 				$this->root->addCollection($collection);
@@ -314,40 +307,26 @@ class Router implements IRouter {
 	}
 
 	/**
-	 * To isolate the variable scope used inside the $file it is required in it's own method
-	 * @param string $file the route file location to include
-	 * @param string $appName
+	 * Load routes from routes.php
+	 *
+	 * @param string $file
+	 * @param App $application
 	 */
-	private function requireRouteFile($file, $appName) {
-		$this->setupRoutes(include_once $file, $appName);
-	}
-
-
-	/**
-	 * If a routes.php file returns an array, try to set up the application and
-	 * register the routes for the app. The application class will be chosen by
-	 * camelcasing the appname, e.g.: my_app will be turned into
-	 * \OCA\MyApp\AppInfo\Application. If that class does not exist, a default
-	 * App will be intialized. This makes it optional to ship an
-	 * appinfo/application.php by using the built in query resolver
-	 * @param array $routes the application routes
-	 * @param string $appName the name of the app.
-	 */
-	private function setupRoutes($routes, $appName) {
+	public function loadLegacyAppRoutes($file, App $application) {
+		$routes = $this->loadRoutesPhp($file);
 		if (is_array($routes)) {
-			$appNameSpace = App::buildAppNamespace($appName);
-
-			$applicationClassName = $appNameSpace . '\\AppInfo\\Application';
-
-			if (class_exists($applicationClassName)) {
-				$application = new $applicationClassName();
-			} else {
-				$application = new App($appName);
-			}
-
 			$application->registerRoutes($this, $routes);
 		}
 	}
 
+	/**
+	 * Load routes.php if it exists for backwards compatibility
+	 *
+	 * @param string $path
+	 * @return null|array
+	 */
+	private function loadRoutesPhp($path) {
+		return (require_once $path);
+	}
 
 }
