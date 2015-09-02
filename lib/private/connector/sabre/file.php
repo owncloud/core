@@ -207,9 +207,18 @@ class File extends Node implements IFile {
 				throw new FileLocked($e->getMessage(), $e->getCode(), $e);
 			}
 
-			// since we skipped the view we need to scan and emit the hooks ourselves
-			$this->fileView->getUpdater()->update($this->path);
-
+			// allow sync clients to send the mtime along in a header
+			$request = \OC::$server->getRequest();
+			if (isset($request->server['HTTP_X_OC_MTIME'])) {
+				if ($this->fileView->touch($this->path, $request->server['HTTP_X_OC_MTIME'])) {
+					header('X-OC-MTime: accepted');
+				}
+			} else {
+				// since we skipped the view we need to scan and emit the hooks ourselves
+				// but no need to run the update if we have just done the touch and within that done an update
+				$this->fileView->getUpdater()->update($this->path);
+			}			
+			
 			if ($view) {
 				if (!$exists) {
 					\OC_Hook::emit(\OC\Files\Filesystem::CLASSNAME, \OC\Files\Filesystem::signal_post_create, array(
@@ -225,13 +234,6 @@ class File extends Node implements IFile {
 				));
 			}
 
-			// allow sync clients to send the mtime along in a header
-			$request = \OC::$server->getRequest();
-			if (isset($request->server['HTTP_X_OC_MTIME'])) {
-				if ($this->fileView->touch($this->path, $request->server['HTTP_X_OC_MTIME'])) {
-					header('X-OC-MTime: accepted');
-				}
-			}
 			$this->refreshInfo();
 			$this->fileView->unlockFile($this->path, ILockingProvider::LOCK_SHARED);
 		} catch (StorageNotAvailableException $e) {
