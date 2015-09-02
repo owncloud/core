@@ -152,7 +152,7 @@ class OC_API {
 			OC_User::logout();
 		}
 
-		self::respond($response, $format);
+		self::respond($response, $format, $request);
 	}
 
 	/**
@@ -342,16 +342,13 @@ class OC_API {
 	 * respond to a call
 	 * @param OC_OCS_Result $result
 	 * @param string $format the format xml|json
+	 * @param \OCP\IRequest $request
 	 */
-	public static function respond($result, $format='xml') {
+	public static function respond($result, $format='xml', $request=null) {
 		// Send 401 headers if unauthorised
 		if($result->getStatusCode() === API::RESPOND_UNAUTHORISED) {
 			header('WWW-Authenticate: Basic realm="Authorisation Required"');
 			header('HTTP/1.0 401 Unauthorized');
-		}
-
-		foreach($result->getHeaders() as $name => $value) {
-			header($name . ': ' . $value);
 		}
 
 		$meta = $result->getMeta();
@@ -366,6 +363,23 @@ class OC_API {
 
 		self::setContentType($format);
 		$body = self::renderResult($format, $meta, $data);
+
+		// Generate ETag and check if content is modified
+		$etag = md5($body);
+		if ($request !== null) {
+			if (trim(trim($request->getHeader('IF_NONE_MATCH'), '"')) === $etag) {
+				header('HTTP/1.1 304 Not Modified');
+				return;
+			}
+		}
+
+		// Send ETag
+		header('ETag: "' . $etag . '"');
+
+		foreach($result->getHeaders() as $name => $value) {
+			header($name . ': ' . $value);
+		}
+
 		echo $body;
 	}
 
