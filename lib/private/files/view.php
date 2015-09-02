@@ -1021,7 +1021,7 @@ class View {
 					$this->updater->update($path);
 				}
 				if (in_array('touch', $hooks)) {
-					$this->updater->update($path, $extraParam);
+					$this->updater->update($path, $extraParam,array('ParentStorageMtime'));
 				}
 
 				if ((in_array('write', $hooks) || in_array('delete', $hooks)) && ($operation !== 'fopen' || $result === false)) {
