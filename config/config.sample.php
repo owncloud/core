@@ -791,6 +791,13 @@ $CONFIG = array(
  */
 'singleuser' => false,
 
+/**
+ * Force use of occ for upgrades. Highly recommended for larger installations,
+ * as the web upgrader suffers from PHP timeouts. Disabling is useful for
+ * shared hosters where occ upgrades are not possible.
+ */
+'upgrade.forceocc' => true,
+
 
 /**
  * SSL

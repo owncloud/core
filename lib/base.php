@@ -349,30 +349,34 @@ class OC {
 		$oldTheme = $systemConfig->getValue('theme');
 		$systemConfig->setValue('theme', '');
 		\OCP\Util::addScript('config'); // needed for web root
-		\OCP\Util::addScript('update');
 
-		// check whether this is a core update or apps update
-		$installedVersion = $systemConfig->getValue('version', '0.0.0');
-		$currentVersion = implode('.', OC_Util::getVersion());
-
-		$appManager = \OC::$server->getAppManager();
-
-		$tmpl = new OC_Template('', 'update.admin', 'guest');
-		$tmpl->assign('version', OC_Util::getVersionString());
-
-		// if not a core upgrade, then it's apps upgrade
-		if (version_compare($currentVersion, $installedVersion, '=')) {
-			$tmpl->assign('isAppsOnlyUpgrade', true);
+		if ($systemConfig->getValue('upgrade.forceocc', true)) {
+			$tmpl = new OC_Template('', 'update.occ', 'guest');
 		} else {
-			$tmpl->assign('isAppsOnlyUpgrade', false);
+			\OCP\Util::addScript('update');
+			$tmpl = new OC_Template('', 'update.admin', 'guest');
+			$appManager = \OC::$server->getAppManager();
+
+			// check whether this is a core update or apps update
+			$installedVersion = $systemConfig->getValue('version', '0.0.0');
+			$currentVersion = implode('.', OC_Util::getVersion());
+
+			// if not a core upgrade, then it's apps upgrade
+			if (version_compare($currentVersion, $installedVersion, '=')) {
+				$tmpl->assign('isAppsOnlyUpgrade', true);
+			} else {
+				$tmpl->assign('isAppsOnlyUpgrade', false);
+			}
+
+			// get third party apps
+			$ocVersion = OC_Util::getVersion();
+			$tmpl->assign('appsToUpgrade', $appManager->getAppsNeedingUpgrade($ocVersion));
+			$tmpl->assign('incompatibleAppsList', $appManager->getIncompatibleApps($ocVersion));
+			$tmpl->assign('oldTheme', $oldTheme);
 		}
 
-		// get third party apps
-		$ocVersion = OC_Util::getVersion();
-		$tmpl->assign('appsToUpgrade', $appManager->getAppsNeedingUpgrade($ocVersion));
-		$tmpl->assign('incompatibleAppsList', $appManager->getIncompatibleApps($ocVersion));
 		$tmpl->assign('productName', 'ownCloud'); // for now
-		$tmpl->assign('oldTheme', $oldTheme);
+		$tmpl->assign('version', OC_Util::getVersionString());
 		$tmpl->printPage();
 	}
 

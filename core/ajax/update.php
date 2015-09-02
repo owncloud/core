@@ -37,6 +37,13 @@ $eventSource = \OC::$server->createEventSource();
 $eventSource->send('success', (string)$l->t('Preparing update'));
 
 if (OC::checkUpgrade(false)) {
+	$config = \OC::$server->getSystemConfig();
+	if ($config->getValue('upgrade.forceocc', true)) {
+		$eventSource->send('failure', (string)$l->t('Upgrading must be done with the command line tool'));
+		$eventSource->close();
+		exit();
+	}
+
 	// if a user is currently logged in, their session must be ignored to
 	// avoid side effects
 	\OC_User::setIncognitoMode(true);
