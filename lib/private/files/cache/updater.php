@@ -98,7 +98,7 @@ class Updater {
 	 * @param string $path
 	 * @param int $time
 	 */
-	public function update($path, $time = null) {
+	public function update($path, $time = null, $updateType=array('ParentStorageMtime','FolderSize')) {
 		if (!$this->enabled or Scanner::isPartialFile($path)) {
 			return;
 		}
@@ -109,11 +109,15 @@ class Updater {
 		list($storage, $internalPath) = $this->view->resolvePath($path);
 		if ($storage) {
 			$this->propagator->addChange($path);
-			$cache = $storage->getCache($internalPath);
-			$scanner = $storage->getScanner($internalPath);
-			$data = $scanner->scan($internalPath, Scanner::SCAN_SHALLOW, -1, false);
-			$this->correctParentStorageMtime($storage, $internalPath);
-			$cache->correctFolderSize($internalPath, $data);
+			if (in_array('ParentStorageMtime', $updateType)) {
+				$this->correctParentStorageMtime($storage, $internalPath);
+			}
+			if (in_array('FolderSize', $updateType)) {
+				$scanner = $storage->getScanner($internalPath);
+				$data = $scanner->scan($internalPath, Scanner::SCAN_SHALLOW, -1, false);				
+				$cache = $storage->getCache($internalPath);
+				$cache->correctFolderSize($internalPath, $data);
+			}			
 			$this->propagator->propagateChanges($time);
 		}
 	}
