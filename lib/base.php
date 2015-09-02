@@ -115,6 +115,9 @@ class OC {
 	 * the app path list is empty or contains an invalid path
 	 */
 	public static function initPaths() {
+		// calculate the root directories
+		OC::$SERVERROOT = str_replace("\\", '/', substr(__DIR__, 0, -4));
+
 		// ensure we can find OC_Config
 		set_include_path(
 			OC::$SERVERROOT . '/lib' . PATH_SEPARATOR .
@@ -516,20 +519,10 @@ class OC {
 	}
 
 	public static function init() {
-		// calculate the root directories
-		OC::$SERVERROOT = str_replace("\\", '/', substr(__DIR__, 0, -4));
-
 		// register autoloader
 		$loaderStart = microtime(true);
 		require_once __DIR__ . '/autoloader.php';
-		self::$loader = new \OC\Autoloader([
-			OC::$SERVERROOT . '/lib',
-			OC::$SERVERROOT . '/core',
-			OC::$SERVERROOT . '/settings',
-			OC::$SERVERROOT . '/ocs',
-			OC::$SERVERROOT . '/ocs-provider',
-			OC::$SERVERROOT . '/3rdparty'
-		]);
+		self::$loader = new \OC\Autoloader();
 		spl_autoload_register(array(self::$loader, 'load'));
 		$loaderEnd = microtime(true);
 
@@ -550,10 +543,6 @@ class OC {
 			// DI container which isn't available yet
 			print($e->getMessage());
 			exit();
-		}
-
-		foreach(OC::$APPSROOTS as $appRoot) {
-			self::$loader->addValidRoot($appRoot['path']);
 		}
 
 		// setup the basic server

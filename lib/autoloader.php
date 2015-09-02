@@ -34,32 +34,11 @@ class Autoloader {
 
 	private $classPaths = array();
 
-	private $validRoots = [];
-
 	/**
 	 * Optional low-latency memory cache for class to path mapping.
-	 *
 	 * @var \OC\Memcache\Cache
 	 */
 	protected $memoryCache;
-
-	/**
-	 * Autoloader constructor.
-	 *
-	 * @param string[] $validRoots
-	 */
-	public function __construct(array $validRoots) {
-		$this->validRoots = $validRoots;
-	}
-
-	/**
-	 * Add a path to the list of valid php roots for auto loading
-	 *
-	 * @param string $root
-	 */
-	public function addValidRoot($root) {
-		$this->validRoots[] = $root;
-	}
 
 	/**
 	 * disable the usage of the global classpath \OC::$CLASSPATH
@@ -123,15 +102,6 @@ class Autoloader {
 		return $paths;
 	}
 
-	protected function isValidPath($fullPath) {
-		foreach ($this->validRoots as $root) {
-			if (substr($fullPath, 0, strlen($root) + 1) === $root . '/') {
-				return true;
-			}
-		}
-		throw new \Exception('Path not allowed: '. $fullPath);
-	}
-
 	/**
 	 * Load the specified class
 	 *
@@ -149,7 +119,7 @@ class Autoloader {
 			$pathsToRequire = array();
 			foreach ($this->findClass($class) as $path) {
 				$fullPath = stream_resolve_include_path($path);
-				if ($fullPath && $this->isValidPath($fullPath)) {
+				if ($fullPath) {
 					$pathsToRequire[] = $fullPath;
 				}
 			}
@@ -168,7 +138,6 @@ class Autoloader {
 
 	/**
 	 * Sets the optional low-latency cache for class to path mapping.
-	 *
 	 * @param \OC\Memcache\Cache $memoryCache Instance of memory cache.
 	 */
 	public function setMemoryCache(\OC\Memcache\Cache $memoryCache = null) {
