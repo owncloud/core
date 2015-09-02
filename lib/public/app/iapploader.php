@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -21,12 +22,28 @@
 
 namespace OCP\App;
 
+/**
+ * Application loader
+ *
+ * @since 8.2.0
+ */
 interface IAppLoader {
+
+	/**
+	 * Retrieve an app Application instance
+	 *
+	 * @param string $appId
+	 * @return \OCP\AppFramework\App|null
+	 * @since 8.2.0
+	 */
+	public function getApp($appId);
+
 	/**
 	 * Load the app and return the Application instance
 	 *
 	 * @param string $appId
 	 * @return \OCP\AppFramework\App
+	 * @since 8.2.0
 	 */
 	public function loadApp($appId);
 }
