@@ -187,9 +187,6 @@ class File extends Node implements IFile {
 				throw new FileLocked($e->getMessage(), $e->getCode(), $e);
 			}
 
-			// since we skipped the view we need to scan and emit the hooks ourselves
-			$this->fileView->getUpdater()->update($this->path);
-
 			if ($view) {
 				$this->emitPostHooks($exists);
 			}
@@ -197,11 +194,17 @@ class File extends Node implements IFile {
 			// allow sync clients to send the mtime along in a header
 			$request = \OC::$server->getRequest();
 			if (isset($request->server['HTTP_X_OC_MTIME'])) {
-				if ($this->fileView->touch($this->path, $request->server['HTTP_X_OC_MTIME'])) {
+				if ($this->fileView->touch($this->path, $request->server['HTTP_X_OC_MTIME'],true)) {
 					header('X-OC-MTime: accepted');
 				}
+				// touch() has done already a updateMtime(), now we only need to run a updateFolderSize()
+				$this->fileView->getUpdater ()->updateFolderSize ( $this->path );
+			} else { // no touch was done so we need to do a full update
+			         // since we skipped the view we need to scan and emit the hooks ourselves
+				$this->fileView->getUpdater ()->update ( $this->path );
 			}
 			$this->refreshInfo();
+			$this->fileView->unlockFile($this->path, ILockingProvider::LOCK_SHARED);
 		} catch (StorageNotAvailableException $e) {
 			throw new ServiceUnavailable("Failed to check file size: " . $e->getMessage());
 		}
@@ -414,18 +417,19 @@ class File extends Node implements IFile {
 				// allow sync clients to send the mtime along in a header
 				$request = \OC::$server->getRequest();
 				if (isset($request->server['HTTP_X_OC_MTIME'])) {
-					if ($targetStorage->touch($targetInternalPath, $request->server['HTTP_X_OC_MTIME'])) {
+					if ($targetStorage->touch($targetInternalPath, $request->server['HTTP_X_OC_MTIME'],true)) {
 						header('X-OC-MTime: accepted');
 					}
+					$this->changeLock(ILockingProvider::LOCK_SHARED);
+					//touch() has done already a updateMtime(), now we only need to run a updateFolderSize()
+					$this->fileView->getUpdater()->updateFolderSize($this->path);
+				} else { //no touch was done so we need to do a full update
+					// since we skipped the view we need to scan and emit the hooks ourselves
+					$this->changeLock(ILockingProvider::LOCK_SHARED);
+					$this->fileView->getUpdater()->update($this->path);
 				}
-
-				$this->changeLock(ILockingProvider::LOCK_SHARED);
-
-				// since we skipped the view we need to scan and emit the hooks ourselves
-				$this->fileView->getUpdater()->update($targetPath);
-
 				$this->emitPostHooks($exists, $targetPath);
-
+				
 				$info = $this->fileView->getFileInfo($targetPath);
 				return $info->getEtag();
 			} catch (\Exception $e) {
