@@ -221,12 +221,12 @@ class File extends Node implements IFile {
 					\OC\Files\Filesystem::signal_param_path => $hookPath
 				));
 			}
-				
+
 			// allow sync clients to send the mtime along in a header
-			$request = \OC::$server->getRequest ();
-			if (isset ( $request->server ['HTTP_X_OC_MTIME'] )) {
+			$request = \OC::$server->getRequest();
+			if (isset($request->server['HTTP_X_OC_MTIME'])) {
 				if ($this->fileView->touch($this->path, $request->server['HTTP_X_OC_MTIME'],true)) {
-					header ( 'X-OC-MTime: accepted' );
+					header('X-OC-MTime: accepted');
 				}
 				// touch() has done already a updateMtime(), now we only need to run a updateFolderSize()
 				$this->fileView->getUpdater ()->updateFolderSize ( $this->path );
@@ -381,15 +381,15 @@ class File extends Node implements IFile {
 					// assemble directly into the final file
 					$chunk_handler->file_assemble($targetPath);
 				}
-				
+
 				// allow sync clients to send the mtime along in a header
 				$request = \OC::$server->getRequest();
 				if (isset($request->server['HTTP_X_OC_MTIME'])) {
 					if ($this->fileView->touch($targetPath, $request->server['HTTP_X_OC_MTIME'])) {
 						header('X-OC-MTime: accepted');
 					}
-				}				
-		
+				}
+
 				$info = $this->fileView->getFileInfo($targetPath);
 				return $info->getEtag();
 			} catch (\Exception $e) {
