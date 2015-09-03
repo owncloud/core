@@ -448,7 +448,7 @@ class View {
 	 * @param int|string $mtime
 	 * @return bool
 	 */
-	public function touch($path, $mtime = null) {
+	public function touch($path, $mtime = null, $skipPropagatingChanges=false) {
 		if (!is_null($mtime) and !is_numeric($mtime)) {
 			$mtime = strtotime($mtime);
 		}
@@ -459,7 +459,7 @@ class View {
 			$hooks[] = 'create';
 			$hooks[] = 'write';
 		}
-		$result = $this->basicOperation('touch', $path, $hooks, $mtime);
+		$result = $this->basicOperation('touch', $path, $hooks, $mtime, $skipPropagatingChanges);
 		if (!$result) {
 			// If create file fails because of permissions on external storage like SMB folders,
 			// check file exists and return false if not.
@@ -977,7 +977,7 @@ class View {
 	 * files), processes hooks and proxies, sanitises paths, and finally passes them on to
 	 * \OC\Files\Storage\Storage for delegation to a storage backend for execution
 	 */
-	private function basicOperation($operation, $path, $hooks = array(), $extraParam = null) {
+	private function basicOperation($operation, $path, $hooks = array(), $extraParam = null, $skipPropagatingChanges=false) {
 		$postFix = (substr($path, -1, 1) === '/') ? '/' : '';
 		$absolutePath = Filesystem::normalizePath($this->getAbsolutePath($path));
 		if (Filesystem::isValidPath($path)
@@ -1021,7 +1021,7 @@ class View {
 					$this->updater->update($path);
 				}
 				if (in_array('touch', $hooks)) {
-					$this->updater->update($path, $extraParam,array('ParentStorageMtime'));
+					$this->updater->updateMtime($path, $extraParam, $skipPropagatingChanges);
 				}
 
 				if ((in_array('write', $hooks) || in_array('delete', $hooks)) && ($operation !== 'fopen' || $result === false)) {
