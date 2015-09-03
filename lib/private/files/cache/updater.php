@@ -98,7 +98,24 @@ class Updater {
 	 * @param string $path
 	 * @param int $time
 	 */
-	public function update($path, $time = null, $updateType=array('ParentStorageMtime','FolderSize')) {
+	public function update($path, $time = null) {
+		if (!$this->enabled or Scanner::isPartialFile($path)) {
+			return;
+		}
+
+		$this->updateMtime($path,$time, true);
+		$this->updateFolderSize($path,$time);
+		
+	}
+	
+	/**
+	 * Update the cache for $path update the mtime of the parent folders
+	 *
+	 * @param string $path
+	 * @param int $time
+	 * @param boolean $skipPropagatingChanges
+	 */	
+	public function updateMtime($path, $time = null, $skipPropagatingChanges=false) {
 		if (!$this->enabled or Scanner::isPartialFile($path)) {
 			return;
 		}
@@ -108,19 +125,43 @@ class Updater {
 		 */
 		list($storage, $internalPath) = $this->view->resolvePath($path);
 		if ($storage) {
-			$this->propagator->addChange($path);
-			if (in_array('ParentStorageMtime', $updateType)) {
-				$this->correctParentStorageMtime($storage, $internalPath);
-			}
-			if (in_array('FolderSize', $updateType)) {
-				$scanner = $storage->getScanner($internalPath);
-				$data = $scanner->scan($internalPath, Scanner::SCAN_SHALLOW, -1, false);				
-				$cache = $storage->getCache($internalPath);
-				$cache->correctFolderSize($internalPath, $data);
+			$this->correctParentStorageMtime($storage, $internalPath);
+			if (!$skipPropagatingChanges) {
+				$this->propagator->addChange($path);
+				$this->propagator->propagateChanges($time);
 			}			
-			$this->propagator->propagateChanges($time);
 		}
-	}
+	}	
+	
+	
+	/**
+	 * Update the cache for $path update the size and etag of the parent folders
+	 *
+	 * @param string $path
+	 * @param int $time
+	 * @param boolean $skipPropagatingChanges
+	 */	
+	public function updateFolderSize($path, $time = null, $skipPropagatingChanges=false) {
+		if (!$this->enabled or Scanner::isPartialFile($path)) {
+			return;
+		}
+		/**
+		 * @var \OC\Files\Storage\Storage $storage
+		 * @var string $internalPath
+		 */
+		list($storage, $internalPath) = $this->view->resolvePath($path);
+		if ($storage) {
+			$scanner = $storage->getScanner ( $internalPath );
+			$data = $scanner->scan ( $internalPath, Scanner::SCAN_SHALLOW, - 1, false );
+			$cache = $storage->getCache ( $internalPath );
+			$cache->correctFolderSize ( $internalPath, $data );
+
+			if (!$skipPropagatingChanges) {
+				$this->propagator->addChange($path);
+				$this->propagator->propagateChanges($time);
+			}			
+		}
+	}	
 
 	/**
 	 * Remove $path from the cache and update the size, etag and mtime of the parent folders
