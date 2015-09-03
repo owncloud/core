@@ -221,14 +221,19 @@ class File extends Node implements IFile {
 					\OC\Files\Filesystem::signal_param_path => $hookPath
 				));
 			}
-
+				
 			// allow sync clients to send the mtime along in a header
-			$request = \OC::$server->getRequest();
-			if (isset($request->server['HTTP_X_OC_MTIME'])) {
-				if ($this->fileView->touch($this->path, $request->server['HTTP_X_OC_MTIME'])) {
-					header('X-OC-MTime: accepted');
+			$request = \OC::$server->getRequest ();
+			if (isset ( $request->server ['HTTP_X_OC_MTIME'] )) {
+				if ($this->fileView->touch($this->path, $request->server['HTTP_X_OC_MTIME'],true)) {
+					header ( 'X-OC-MTime: accepted' );
 				}
-			}
+				// touch() has done already a updateMtime(), now we only need to run a updateFolderSize()
+				$this->fileView->getUpdater ()->updateFolderSize ( $this->path );
+			} else { // no touch was done so we need to do a full update
+			         // since we skipped the view we need to scan and emit the hooks ourselves
+				$this->fileView->getUpdater ()->update ( $this->path );
+			}	
 			$this->refreshInfo();
 			$this->fileView->unlockFile($this->path, ILockingProvider::LOCK_SHARED);
 		} catch (StorageNotAvailableException $e) {
@@ -380,14 +385,9 @@ class File extends Node implements IFile {
 				// allow sync clients to send the mtime along in a header
 				$request = \OC::$server->getRequest();
 				if (isset($request->server['HTTP_X_OC_MTIME'])) {
-					if ($this->fileView->touch($this->path, $request->server['HTTP_X_OC_MTIME'], true)) {
+					if ($this->fileView->touch($targetPath, $request->server['HTTP_X_OC_MTIME'])) {
 						header('X-OC-MTime: accepted');
 					}
-					//touch() has done already a updateMtime(), now we only need to run a updateFolderSize()
-					$this->fileView->getUpdater()->updateFolderSize($this->path);
-				} else { //no touch was done so we need to do a full update
-					// since we skipped the view we need to scan and emit the hooks ourselves
-					$this->fileView->getUpdater()->update($this->path);
 				}				
 		
 				$info = $this->fileView->getFileInfo($targetPath);
