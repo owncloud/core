@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @author Bernhard Reiter <ockham@raz.or.at>
@@ -11,6 +12,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Roeland Jago Douma <roeland@famdouma.nl>
  * @author Sander <brantje@gmail.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
@@ -38,6 +40,7 @@ use bantu\IniGetWrapper\IniGetWrapper;
 use OC\AppFramework\Http\Request;
 use OC\AppFramework\Db\Db;
 use OC\AppFramework\Utility\SimpleContainer;
+use OC\AppFramework\Utility\TimeFactory;
 use OC\Command\AsyncBus;
 use OC\Diagnostics\EventLogger;
 use OC\Diagnostics\NullEventLogger;
@@ -46,18 +49,20 @@ use OC\Diagnostics\QueryLogger;
 use OC\Files\Node\Root;
 use OC\Files\View;
 use OC\Http\Client\ClientService;
+use OC\Lock\DBLockingProvider;
 use OC\Lock\MemcacheLockingProvider;
 use OC\Lock\NoopLockingProvider;
 use OC\Mail\Mailer;
-use OC\Memcache\ArrayCache;
-use OC\Memcache\NullCache;
 use OC\Security\CertificateManager;
 use OC\Security\Crypto;
 use OC\Security\Hasher;
 use OC\Security\SecureRandom;
 use OC\Security\TrustedDomainHelper;
+use OC\Session\CryptoWrapper;
 use OC\Tagging\TagMapper;
 use OCP\IServerContainer;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class Server
@@ -74,6 +79,7 @@ class Server extends SimpleContainer implements IServerContainer {
 	 * @param string $webRoot
 	 */
 	public function __construct($webRoot) {
+		parent::__construct();
 		$this->webRoot = $webRoot;
 
 		$this->registerService('ContactsManager', function ($c) {
@@ -85,12 +91,25 @@ class Server extends SimpleContainer implements IServerContainer {
 		});
 
 		$this->registerService('EncryptionManager', function (Server $c) {
-			return new Encryption\Manager($c->getConfig(), $c->getLogger(), $c->getL10N('core'));
+			$view = new View();
+			$util = new Encryption\Util(
+				$view,
+				$c->getUserManager(),
+				$c->getGroupManager(),
+				$c->getConfig()
+			);
+			return new Encryption\Manager(
+				$c->getConfig(),
+				$c->getLogger(),
+				$c->getL10N('core'),
+				new View(),
+				$util
+			);
 		});
 
 		$this->registerService('EncryptionFileHelper', function (Server $c) {
-			$util = new \OC\Encryption\Util(
-				new \OC\Files\View(),
+			$util = new Encryption\Util(
+				new View(),
 				$c->getUserManager(),
 				$c->getGroupManager(),
 				$c->getConfig()
@@ -99,8 +118,8 @@ class Server extends SimpleContainer implements IServerContainer {
 		});
 
 		$this->registerService('EncryptionKeyStorage', function (Server $c) {
-			$view = new \OC\Files\View();
-			$util = new \OC\Encryption\Util(
+			$view = new View();
+			$util = new Encryption\Util(
 				$view,
 				$c->getUserManager(),
 				$c->getGroupManager(),
@@ -149,12 +168,19 @@ class Server extends SimpleContainer implements IServerContainer {
 			});
 			$groupManager->listen('\OC\Group', 'postAddUser', function (\OC\Group\Group $group, \OC\User\User $user) {
 				\OC_Hook::emit('OC_Group', 'post_addToGroup', array('uid' => $user->getUID(), 'gid' => $group->getGID()));
+				//Minimal fix to keep it backward compatible TODO: clean up all the GroupManager hooks
+				\OC_Hook::emit('OC_User', 'post_addToGroup', array('uid' => $user->getUID(), 'gid' => $group->getGID()));
 			});
 			return $groupManager;
 		});
 		$this->registerService('UserSession', function (Server $c) {
 			$manager = $c->getUserManager();
-			$userSession = new \OC\User\Session($manager, new \OC\Session\Memory(''));
+
+			$session = new \OC\Session\Memory('');
+			$cryptoWrapper = $c->getSessionCryptoWrapper();
+			$session = $cryptoWrapper->wrapSession($session);
+
+			$userSession = new \OC\User\Session($manager, $session);
 			$userSession->listen('\OC\User', 'preCreateUser', function ($uid, $password) {
 				\OC_Hook::emit('OC_User', 'pre_createUser', array('run' => true, 'uid' => $uid, 'password' => $password));
 			});
@@ -231,17 +257,17 @@ class Server extends SimpleContainer implements IServerContainer {
 				$instanceId = \OC_Util::getInstanceId();
 				$path = \OC::$SERVERROOT;
 				$prefix = md5($instanceId.'-'.$version.'-'.$path);
-				return new \OC\Memcache\Factory($prefix,
+				return new \OC\Memcache\Factory($prefix, $c->getLogger(),
 					$config->getSystemValue('memcache.local', null),
 					$config->getSystemValue('memcache.distributed', null),
 					$config->getSystemValue('memcache.locking', null)
 				);
 			}
 
-			return new \OC\Memcache\Factory('',
-				new ArrayCache(),
-				new ArrayCache(),
-				new ArrayCache()
+			return new \OC\Memcache\Factory('', $c->getLogger(),
+				'\\OC\\Memcache\\ArrayCache',
+				'\\OC\\Memcache\\ArrayCache',
+				'\\OC\\Memcache\\ArrayCache'
 			);
 		});
 		$this->registerService('ActivityManager', function (Server $c) {
@@ -313,18 +339,18 @@ class Server extends SimpleContainer implements IServerContainer {
 			$uid = $user ? $user : null;
 			return new ClientService(
 				$c->getConfig(),
-				new \OC\Security\CertificateManager($uid, new \OC\Files\View())
+				new \OC\Security\CertificateManager($uid, new View(), $c->getConfig())
 			);
 		});
 		$this->registerService('EventLogger', function (Server $c) {
-			if (defined('DEBUG') and DEBUG) {
+			if ($c->getSystemConfig()->getValue('debug', false)) {
 				return new EventLogger();
 			} else {
 				return new NullEventLogger();
 			}
 		});
-		$this->registerService('QueryLogger', function ($c) {
-			if (defined('DEBUG') and DEBUG) {
+		$this->registerService('QueryLogger', function (Server $c) {
+			if ($c->getSystemConfig()->getValue('debug', false)) {
 				return new QueryLogger();
 			} else {
 				return new NullQueryLogger();
@@ -405,6 +431,7 @@ class Server extends SimpleContainer implements IServerContainer {
 					'requesttoken' => $requestToken,
 				],
 				$this->getSecureRandom(),
+				$this->getCrypto(),
 				$this->getConfig(),
 				$stream
 			);
@@ -424,15 +451,60 @@ class Server extends SimpleContainer implements IServerContainer {
 			);
 		});
 		$this->registerService('LockingProvider', function (Server $c) {
-			if ($c->getConfig()->getSystemValue('filelocking.enabled', false) or (defined('PHPUNIT_RUN') && PHPUNIT_RUN)) {
+			if ($c->getConfig()->getSystemValue('filelocking.enabled', true) or (defined('PHPUNIT_RUN') && PHPUNIT_RUN)) {
 				/** @var \OC\Memcache\Factory $memcacheFactory */
 				$memcacheFactory = $c->getMemCacheFactory();
 				$memcache = $memcacheFactory->createLocking('lock');
 				if (!($memcache instanceof \OC\Memcache\NullCache)) {
 					return new MemcacheLockingProvider($memcache);
 				}
+				return new DBLockingProvider($c->getDatabaseConnection(), $c->getLogger());
 			}
 			return new NoopLockingProvider();
+		});
+		$this->registerService('MountManager', function () {
+			return new \OC\Files\Mount\Manager();
+		});
+		$this->registerService('MimeTypeDetector', function(Server $c) {
+			return new \OC\Files\Type\Detection(
+				$c->getURLGenerator(),
+				\OC::$configDir);
+		});
+		$this->registerService('CapabilitiesManager', function (Server $c) {
+			$manager = new \OC\CapabilitiesManager();
+			$manager->registerCapability(function() use ($c) {
+				return new \OC\OCS\CoreCapabilities($c->getConfig());
+			});
+			return $manager;
+		});
+		$this->registerService('EventDispatcher', function() {
+			return new EventDispatcher();
+		});
+		$this->registerService('CryptoWrapper', function (Server $c) {
+			// FIXME: Instantiiated here due to cyclic dependency
+			$request = new Request(
+				[
+					'get' => $_GET,
+					'post' => $_POST,
+					'files' => $_FILES,
+					'server' => $_SERVER,
+					'env' => $_ENV,
+					'cookies' => $_COOKIE,
+					'method' => (isset($_SERVER) && isset($_SERVER['REQUEST_METHOD']))
+						? $_SERVER['REQUEST_METHOD']
+						: null,
+				],
+				new SecureRandom(),
+				$c->getCrypto(),
+				$c->getConfig()
+			);
+
+			return new CryptoWrapper(
+				$c->getConfig(),
+				$c->getCrypto(),
+				$c->getSecureRandom(),
+				$request
+			);
 		});
 	}
 
@@ -525,29 +597,9 @@ class Server extends SimpleContainer implements IServerContainer {
 				return null;
 			}
 			$userId = $user->getUID();
-		} else {
-			$user = $this->getUserManager()->get($userId);
 		}
-		\OC\Files\Filesystem::initMountPoints($userId);
-		$dir = '/' . $userId;
 		$root = $this->getRootFolder();
-		$folder = null;
-
-		if (!$root->nodeExists($dir)) {
-			$folder = $root->newFolder($dir);
-		} else {
-			$folder = $root->get($dir);
-		}
-
-		$dir = '/files';
-		if (!$folder->nodeExists($dir)) {
-			$folder = $folder->newFolder($dir);
-			\OC_Util::copySkeleton($user, $folder);
-		} else {
-			$folder = $folder->get($dir);
-		}
-
-		return $folder;
+		return $root->getUserFolder($userId);
 	}
 
 	/**
@@ -635,6 +687,13 @@ class Server extends SimpleContainer implements IServerContainer {
 	}
 
 	/**
+	 * @return \OCP\L10N\IFactory
+	 */
+	public function getL10NFactory() {
+		return $this->query('L10NFactory');
+	}
+
+	/**
 	 * get an L10N instance
 	 *
 	 * @param string $app appid
@@ -642,7 +701,7 @@ class Server extends SimpleContainer implements IServerContainer {
 	 * @return \OC_L10N
 	 */
 	public function getL10N($app, $lang = null) {
-		return $this->query('L10NFactory')->get($app, $lang);
+		return $this->getL10NFactory()->get($app, $lang);
 	}
 
 	/**
@@ -781,19 +840,19 @@ class Server extends SimpleContainer implements IServerContainer {
 	/**
 	 * Get the certificate manager for the user
 	 *
-	 * @param string $uid (optional) if not specified the current loggedin user is used
-	 * @return \OCP\ICertificateManager
+	 * @param string $userId (optional) if not specified the current loggedin user is used
+	 * @return \OCP\ICertificateManager | null if $uid is null and no user is logged in
 	 */
-	public function getCertificateManager($uid = null) {
-		if (is_null($uid)) {
+	public function getCertificateManager($userId = null) {
+		if (is_null($userId)) {
 			$userSession = $this->getUserSession();
 			$user = $userSession->getUser();
 			if (is_null($user)) {
 				return null;
 			}
-			$uid = $user->getUID();
+			$userId = $user->getUID();
 		}
-		return new CertificateManager($uid, new \OC\Files\View());
+		return new CertificateManager($userId, new View(), $this->getConfig());
 	}
 
 	/**
@@ -933,5 +992,47 @@ class Server extends SimpleContainer implements IServerContainer {
 	 */
 	public function getLockingProvider() {
 		return $this->query('LockingProvider');
+	}
+
+	/**
+	 * @return \OCP\Files\Mount\IMountManager
+	 **/
+	function getMountManager() {
+		return $this->query('MountManager');
+	}
+
+	/*
+	 * Get the MimeTypeDetector
+	 *
+	 * @return \OCP\Files\IMimeTypeDetector
+	 */
+	public function getMimeTypeDetector() {
+		return $this->query('MimeTypeDetector');
+	}
+
+	/**
+	 * Get the manager of all the capabilities
+	 *
+	 * @return \OC\CapabilitiesManager
+	 */
+	public function getCapabilitiesManager() {
+		return $this->query('CapabilitiesManager');
+	}
+
+	/**
+	 * Get the EventDispatcher
+	 *
+	 * @return EventDispatcherInterface
+	 * @since 8.2.0
+	 */
+	public function getEventDispatcher() {
+		return $this->query('EventDispatcher');
+	}
+
+	/**
+	 * @return \OC\Session\CryptoWrapper
+	 */
+	public function getSessionCryptoWrapper() {
+		return $this->query('CryptoWrapper');
 	}
 }

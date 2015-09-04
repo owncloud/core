@@ -23,8 +23,8 @@ OC.L10N.register(
     "Add remote share" : "Adicionar partilha remota",
     "No ownCloud installation (7 or higher) found at {remote}" : "Nenhuma instalação do OwnCloud (7 ou superior) encontrada em {remote}",
     "Invalid ownCloud url" : "Url ownCloud inválido",
-    "Share" : "Compartilhar",
     "Shared by" : "Partilhado por",
+    "Sharing" : "Partilha",
     "A file or folder has been <strong>shared</strong>" : "Foi <strong>partilhado</strong> um ficheiro ou uma pasta",
     "A file or folder was shared from <strong>another server</strong>" : "Um ficheiro ou pasta foi partilhado a partir de <strong>outro servidor</strong>",
     "A public shared file or folder was <strong>downloaded</strong>" : "Um ficheiro ou pasta partilhada publicamente foi  <strong>descarregado</strong>",
@@ -58,6 +58,8 @@ OC.L10N.register(
     "Federated Cloud Sharing" : "Partilha de Cloud Federada",
     "Open documentation" : "Abrir documentação",
     "Allow users on this server to send shares to other servers" : "Permitir utilizadores neste servidor para enviar as partilhas para outros servidores",
-    "Allow users on this server to receive shares from other servers" : "Permitir utilizadores neste servidor para receber as partilhas de outros servidores"
+    "Allow users on this server to receive shares from other servers" : "Permitir utilizadores neste servidor para receber as partilhas de outros servidores",
+    "Share with me via ownCloud" : "Partilhe comigo via ownCloud",
+    "HTML Code:" : "Código HTML:"
 },
 "nplurals=2; plural=(n != 1);");

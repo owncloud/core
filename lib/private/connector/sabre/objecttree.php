@@ -41,7 +41,7 @@ class ObjectTree extends \Sabre\DAV\Tree {
 	protected $fileView;
 
 	/**
-	 * @var \OC\Files\Mount\Manager
+	 * @var  \OCP\Files\Mount\IMountManager
 	 */
 	protected $mountManager;
 
@@ -54,9 +54,9 @@ class ObjectTree extends \Sabre\DAV\Tree {
 	/**
 	 * @param \Sabre\DAV\INode $rootNode
 	 * @param \OC\Files\View $view
-	 * @param \OC\Files\Mount\Manager $mountManager
+	 * @param  \OCP\Files\Mount\IMountManager $mountManager
 	 */
-	public function init(\Sabre\DAV\INode $rootNode, \OC\Files\View $view, \OC\Files\Mount\Manager $mountManager) {
+	public function init(\Sabre\DAV\INode $rootNode, \OC\Files\View $view, \OCP\Files\Mount\IMountManager $mountManager) {
 		$this->rootNode = $rootNode;
 		$this->fileView = $view;
 		$this->mountManager = $mountManager;
@@ -106,7 +106,11 @@ class ObjectTree extends \Sabre\DAV\Tree {
 
 		$path = trim($path, '/');
 		if ($path) {
-			$this->fileView->verifyPath($path, basename($path));
+			try {
+				$this->fileView->verifyPath($path, basename($path));
+			} catch (\OCP\Files\InvalidPathException $ex) {
+				throw new InvalidPath($ex->getMessage());
+			}
 		}
 
 		if (isset($this->cache[$path])) {
@@ -146,6 +150,8 @@ class ObjectTree extends \Sabre\DAV\Tree {
 				throw new \Sabre\DAV\Exception\ServiceUnavailable('Storage not available');
 			} catch (StorageInvalidException $e) {
 				throw new \Sabre\DAV\Exception\NotFound('Storage ' . $path . ' is invalid');
+			} catch (LockedException $e) {
+				throw new \Sabre\DAV\Exception\Locked();
 			}
 		}
 

@@ -2,6 +2,7 @@
 /**
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
@@ -24,15 +25,32 @@
 
 namespace OC\Connector\Sabre;
 
-class MaintenancePlugin extends \Sabre\DAV\ServerPlugin
-{
+use OCP\IConfig;
+use Sabre\DAV\Exception\ServiceUnavailable;
+use Sabre\DAV\ServerPlugin;
+
+class MaintenancePlugin extends ServerPlugin {
+
+	/** @var IConfig */
+	private $config;
 
 	/**
 	 * Reference to main server object
 	 *
-	 * @var \Sabre\DAV\Server
+	 * @var Server
 	 */
 	private $server;
+
+	/**
+	 * @param IConfig $config
+	 */
+	public function __construct(IConfig $config = null) {
+		$this->config = $config;
+		if (is_null($config)) {
+			$this->config = \OC::$server->getConfig();
+		}
+	}
+
 
 	/**
 	 * This initializes the plugin.
@@ -46,7 +64,6 @@ class MaintenancePlugin extends \Sabre\DAV\ServerPlugin
 	 * @return void
 	 */
 	public function initialize(\Sabre\DAV\Server $server) {
-
 		$this->server = $server;
 		$this->server->on('beforeMethod', array($this, 'checkMaintenanceMode'), 10);
 	}
@@ -55,19 +72,18 @@ class MaintenancePlugin extends \Sabre\DAV\ServerPlugin
 	 * This method is called before any HTTP method and returns http status code 503
 	 * in case the system is in maintenance mode.
 	 *
-	 * @throws \Sabre\DAV\Exception\ServiceUnavailable
-	 * @internal param string $method
+	 * @throws ServiceUnavailable
 	 * @return bool
 	 */
 	public function checkMaintenanceMode() {
-		if (\OC::$server->getSystemConfig()->getValue('singleuser', false)) {
-			throw new \Sabre\DAV\Exception\ServiceUnavailable();
+		if ($this->config->getSystemValue('singleuser', false)) {
+			throw new ServiceUnavailable('System in single user mode.');
 		}
-		if (\OC_Config::getValue('maintenance', false)) {
-			throw new \Sabre\DAV\Exception\ServiceUnavailable();
+		if ($this->config->getSystemValue('maintenance', false)) {
+			throw new ServiceUnavailable('System in maintenance mode.');
 		}
 		if (\OC::checkUpgrade(false)) {
-			throw new \Sabre\DAV\Exception\ServiceUnavailable('Upgrade needed');
+			throw new ServiceUnavailable('Upgrade needed');
 		}
 
 		return true;

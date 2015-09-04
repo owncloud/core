@@ -77,10 +77,10 @@ class Shared_Updater {
 			$shareType = $params['shareType'];
 
 			if ($shareType === \OCP\Share::SHARE_TYPE_USER) {
-				self::correctUsersFolder($shareWith, '/');
+				self::correctUsersFolder($shareWith, $params['fileTarget']);
 			} elseif ($shareType === \OCP\Share::SHARE_TYPE_GROUP) {
 				foreach (\OC_Group::usersInGroup($shareWith) as $user) {
-					self::correctUsersFolder($user, '/');
+					self::correctUsersFolder($user, $params['fileTarget']);
 				}
 			}
 		}
@@ -138,7 +138,7 @@ class Shared_Updater {
 	 */
 	static public function fixBrokenSharesOnAppUpdate() {
 		// delete all shares where the original file no longer exists
-		$findAndRemoveShares = \OC_DB::prepare('DELETE FROM `*PREFIX*share` ' .
+		$findAndRemoveShares = \OCP\DB::prepare('DELETE FROM `*PREFIX*share` ' .
 			'WHERE `item_type` IN (\'file\', \'folder\') ' .
 			'AND `file_source` NOT IN (SELECT `fileid` FROM `*PREFIX*filecache`)'
 		);

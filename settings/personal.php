@@ -8,6 +8,7 @@
  * @author Georg Ehrke <georg@owncloud.com>
  * @author Jakob Sack <mail@jakobsack.de>
  * @author Jan-Christoph Borchardt <hey@jancborchardt.net>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Marvin Thomas Rabe <mrabe@marvinrabe.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
@@ -70,6 +71,7 @@ $languages=array();
 $commonlanguages = array();
 foreach($languageCodes as $lang) {
 	$l = \OC::$server->getL10N('settings', $lang);
+	// TRANSLATORS this is the language name for the language switcher in the personal settings and should be the localized version
 	if(substr($l->t('__language_name__'), 0, 1) !== '_') {//first check if the language name is in the translation file
 		$ln=array('code'=>$lang, 'name'=> (string)$l->t('__language_name__'));
 	}elseif(isset($languageNames[$lang])) {
@@ -93,6 +95,15 @@ ksort($commonlanguages);
 
 // sort now by displayed language not the iso-code
 usort( $languages, function ($a, $b) {
+	if ($a['code'] === $a['name'] && $b['code'] !== $b['name']) {
+		// If a doesn't have a name, but b does, list b before a
+		return 1;
+	}
+	if ($a['code'] !== $a['name'] && $b['code'] === $b['name']) {
+		// If a does have a name, but b doesn't, list a before b
+		return -1;
+	}
+	// Otherwise compare the names
 	return strcmp($a['name'], $b['name']);
 });
 
@@ -102,6 +113,14 @@ $clients = array(
 	'android' => $config->getSystemValue('customclient_android', $defaults->getAndroidClientUrl()),
 	'ios'     => $config->getSystemValue('customclient_ios', $defaults->getiOSClientUrl())
 );
+
+// only show root certificate import if external storages are enabled
+$enableCertImport = false;
+$externalStorageEnabled = \OC::$server->getAppManager()->isEnabledForUser('files_external');
+if ($externalStorageEnabled) {
+	$enableCertImport = true;
+}
+
 
 // Return template
 $tmpl = new OC_Template( 'settings', 'personal', 'user');
@@ -119,6 +138,7 @@ $tmpl->assign('displayName', OC_User::getDisplayName());
 $tmpl->assign('enableAvatars', $config->getSystemValue('enable_avatars', true));
 $tmpl->assign('avatarChangeSupported', OC_User::canUserChangeAvatar(OC_User::getUser()));
 $tmpl->assign('certs', $certificateManager->listCertificates());
+$tmpl->assign('showCertificates', $enableCertImport);
 $tmpl->assign('urlGenerator', $urlGenerator);
 
 // Get array of group ids for this user
@@ -136,8 +156,8 @@ $formsAndMore[]= ['anchor' => 'passwordform', 'section-name' => $l->t('Personal 
 $forms=OC_App::getForms('personal');
 
 $formsMap = array_map(function($form){
-	if (preg_match('%(<h2[^>]*>.*?</h2>)%i', $form, $regs)) {
-		$sectionName = str_replace('<h2>', '', $regs[0]);
+	if (preg_match('%(<h2(?P<class>[^>]*)>.*?</h2>)%i', $form, $regs)) {
+		$sectionName = str_replace('<h2'.$regs['class'].'>', '', $regs[0]);
 		$sectionName = str_replace('</h2>', '', $sectionName);
 		$anchor = strtolower($sectionName);
 		$anchor = str_replace(' ', '-', $anchor);
@@ -156,7 +176,11 @@ $formsMap = array_map(function($form){
 $formsAndMore = array_merge($formsAndMore, $formsMap);
 
 // add bottom hardcoded forms from the template
-$formsAndMore[]= array( 'anchor' => 'ssl-root-certificates', 'section-name' => $l->t('SSL root certificates') );
+if($enableCertImport) {
+	$formsAndMore[]= array( 'anchor' => 'ssl-root-certificates', 'section-name' => $l->t('SSL root certificates') );
+}
+
+
 
 $tmpl->assign('forms', $formsAndMore);
 $tmpl->printPage();

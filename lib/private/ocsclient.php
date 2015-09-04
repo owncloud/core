@@ -7,11 +7,11 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Kamil Domanski <kdomanski@kdemail.net>
  * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Martin Mattel <martin.mattel@diemattels.at>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
  * @author Sam Tuke <mail@samtuke.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
- * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -106,11 +106,12 @@ class OCSClient {
 	/**
 	 * Get all the categories from the OCS server
 	 *
+	 * @param array $targetVersion The target ownCloud version
 	 * @return array|null an array of category ids or null
 	 * @note returns NULL if config value appstoreenabled is set to false
 	 * This function returns a list of all the application categories on the OCS server
 	 */
-	public function getCategories() {
+	public function getCategories(array $targetVersion) {
 		if (!$this->isAppStoreEnabled()) {
 			return null;
 		}
@@ -121,6 +122,9 @@ class OCSClient {
 				$this->getAppStoreUrl() . '/content/categories',
 				[
 					'timeout' => 5,
+					'query' => [
+						'version' => implode('x', $targetVersion),
+					],
 				]
 			);
 		} catch(\Exception $e) {
@@ -155,9 +159,10 @@ class OCSClient {
 	 * @param array $categories
 	 * @param int $page
 	 * @param string $filter
+	 * @param array $targetVersion The target ownCloud version
 	 * @return array An array of application data
 	 */
-	public function getApplications(array $categories, $page, $filter) {
+	public function getApplications(array $categories, $page, $filter, array $targetVersion) {
 		if (!$this->isAppStoreEnabled()) {
 			return [];
 		}
@@ -169,7 +174,7 @@ class OCSClient {
 				[
 					'timeout' => 5,
 					'query' => [
-						'version' => implode('x', \OC_Util::getVersion()),
+						'version' => implode('x', $targetVersion),
 						'filter' => $filter,
 						'categories' => implode('x', $categories),
 						'sortmode' => 'new',
@@ -229,11 +234,12 @@ class OCSClient {
 	 * Get an the applications from the OCS server
 	 *
 	 * @param string $id
+	 * @param array $targetVersion The target ownCloud version
 	 * @return array|null an array of application data or null
 	 *
 	 * This function returns an applications from the OCS server
 	 */
-	public function getApplication($id) {
+	public function getApplication($id, array $targetVersion) {
 		if (!$this->isAppStoreEnabled()) {
 			return null;
 		}
@@ -244,6 +250,9 @@ class OCSClient {
 				$this->getAppStoreUrl() . '/content/data/' . urlencode($id),
 				[
 					'timeout' => 5,
+					'query' => [
+						'version' => implode('x', $targetVersion),
+					],
 				]
 			);
 		} catch(\Exception $e) {
@@ -263,7 +272,7 @@ class OCSClient {
 
 		$tmp = $data->data->content;
 		if (is_null($tmp)) {
-			\OC_Log::write('core', 'No update found at the ownCloud appstore for app ' . $id, \OC_Log::INFO);
+			\OCP\Util::writeLog('core', 'No update found at the ownCloud appstore for app ' . $id, \OCP\Util::DEBUG);
 			return null;
 		}
 
@@ -284,16 +293,18 @@ class OCSClient {
 		$app['description'] = (string)$tmp->description;
 		$app['detailpage'] = (string)$tmp->detailpage;
 		$app['score'] = (int)$tmp->score;
+		$app['level'] = (int)$tmp->approved;
 
 		return $app;
 	}
 
 	/**
 	 * Get the download url for an application from the OCS server
-	 * @param $id
+	 * @param string $id
+	 * @param array $targetVersion The target ownCloud version
 	 * @return array|null an array of application data or null
 	 */
-	public function getApplicationDownload($id) {
+	public function getApplicationDownload($id, array $targetVersion) {
 		if (!$this->isAppStoreEnabled()) {
 			return null;
 		}
@@ -304,6 +315,9 @@ class OCSClient {
 				$url,
 				[
 					'timeout' => 5,
+					'query' => [
+						'version' => implode('x', $targetVersion),
+					],
 				]
 			);
 		} catch(\Exception $e) {

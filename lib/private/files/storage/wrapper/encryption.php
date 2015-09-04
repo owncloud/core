@@ -1,6 +1,9 @@
 <?php
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -28,6 +31,7 @@ use OC\Encryption\Util;
 use OC\Files\Filesystem;
 use OC\Files\Mount\Manager;
 use OC\Files\Storage\LocalTempFileTrait;
+use OCP\Encryption\Exceptions\GenericEncryptionException;
 use OCP\Encryption\IFile;
 use OCP\Encryption\IManager;
 use OCP\Encryption\Keys\IStorage;
@@ -62,7 +66,6 @@ class Encryption extends Wrapper {
 
 	/** @var IMountPoint */
 	private $mount;
-
 
 	/** @var IStorage */
 	private $keyStorage;
@@ -123,12 +126,11 @@ class Encryption extends Wrapper {
 		$info = $this->getCache()->get($path);
 		if (isset($this->unencryptedSize[$fullPath])) {
 			$size = $this->unencryptedSize[$fullPath];
+			// update file cache
+			$info['encrypted'] = true;
+			$info['size'] = $size;
+			$this->getCache()->put($path, $info);
 
-			if (isset($info['fileid'])) {
-				$info['encrypted'] = true;
-				$info['size'] = $size;
-				$this->getCache()->put($path, $info);
-			}
 			return $size;
 		}
 
@@ -171,9 +173,8 @@ class Encryption extends Wrapper {
 	public function file_get_contents($path) {
 
 		$encryptionModule = $this->getEncryptionModule($path);
-		$info = $this->getCache()->get($path);
 
-		if ($encryptionModule || $info['encrypted'] === true) {
+		if ($encryptionModule) {
 			$handle = $this->fopen($path, "r");
 			if (!$handle) {
 				return false;
@@ -298,33 +299,15 @@ class Encryption extends Wrapper {
 	public function copy($path1, $path2) {
 
 		$source = $this->getFullPath($path1);
-		$target = $this->getFullPath($path2);
 
 		if ($this->util->isExcluded($source)) {
 			return $this->storage->copy($path1, $path2);
 		}
 
-		$result = $this->storage->copy($path1, $path2);
-
-		if ($result && $this->encryptionManager->isEnabled()) {
-			$keysCopied = $this->copyKeys($source, $target);
-
-			if ($keysCopied &&
-				dirname($source) !== dirname($target) &&
-				$this->util->isFile($target)
-			) {
-				$this->update->update($target);
-			}
-
-			$data = $this->getMetaData($path1);
-
-			if (isset($data['encrypted'])) {
-				$this->getCache()->put($path2, ['encrypted' => $data['encrypted']]);
-			}
-			if (isset($data['size'])) {
-				$this->updateUnencryptedSize($target, $data['size']);
-			}
-		}
+		// need to stream copy file by file in case we copy between a encrypted
+		// and a unencrypted storage
+		$this->unlink($path2);
+		$result = $this->copyFromStorage($this, $path1, $path2);
 
 		return $result;
 	}
@@ -335,21 +318,23 @@ class Encryption extends Wrapper {
 	 * @param string $path
 	 * @param string $mode
 	 * @return resource
+	 * @throws GenericEncryptionException
+	 * @throws ModuleDoesNotExistsException
 	 */
 	public function fopen($path, $mode) {
 
 		$encryptionEnabled = $this->encryptionManager->isEnabled();
 		$shouldEncrypt = false;
 		$encryptionModule = null;
-		$rawHeader = $this->getHeader($path);
-		$header = $this->util->readHeader($rawHeader);
+		$header = $this->getHeader($path);
 		$fullPath = $this->getFullPath($path);
 		$encryptionModuleId = $this->util->getEncryptionModuleId($header);
 
 		if ($this->util->isExcluded($fullPath) === false) {
 
 			$size = $unencryptedSize = 0;
-			$targetExists = $this->file_exists($path);
+			$realFile = $this->util->stripPartialFileExtension($path);
+			$targetExists = $this->file_exists($realFile) || $this->file_exists($path);
 			$targetIsEncrypted = false;
 			if ($targetExists) {
 				// in case the file exists we require the explicit module as
@@ -360,8 +345,12 @@ class Encryption extends Wrapper {
 					$encryptionModule = $this->encryptionManager->getEncryptionModule($encryptionModuleId);
 				}
 
-				$size = $this->storage->filesize($path);
-				$unencryptedSize = $this->filesize($path);
+				if ($this->file_exists($path)) {
+					$size = $this->storage->filesize($path);
+					$unencryptedSize = $this->filesize($path);
+				} else {
+					$size = $unencryptedSize = 0;
+				}
 			}
 
 			try {
@@ -372,6 +361,10 @@ class Encryption extends Wrapper {
 					|| $mode === 'wb'
 					|| $mode === 'wb+'
 				) {
+					// don't overwrite encrypted files if encyption is not enabled
+					if ($targetIsEncrypted && $encryptionEnabled === false) {
+						throw new GenericEncryptionException('Tried to access encrypted file but encryption is not enabled');
+					}
 					if ($encryptionEnabled) {
 						// if $encryptionModuleId is empty, the default module will be used
 						$encryptionModule = $this->encryptionManager->getEncryptionModule($encryptionModuleId);
@@ -390,6 +383,7 @@ class Encryption extends Wrapper {
 						// OC_DEFAULT_MODULE to read the file
 						$encryptionModule = $this->encryptionManager->getEncryptionModule('OC_DEFAULT_MODULE');
 						$shouldEncrypt = true;
+						$targetIsEncrypted = true;
 					}
 				}
 			} catch (ModuleDoesNotExistsException $e) {
@@ -405,10 +399,11 @@ class Encryption extends Wrapper {
 			}
 
 			if ($shouldEncrypt === true && $encryptionModule !== null) {
+				$headerSize = $this->getHeaderSize($path);
 				$source = $this->storage->fopen($path, $mode);
 				$handle = \OC\Files\Stream\Encryption::wrap($source, $path, $fullPath, $header,
 					$this->uid, $encryptionModule, $this->storage, $this, $this->util, $this->fileHelper, $mode,
-					$size, $unencryptedSize, strlen($rawHeader));
+					$size, $unencryptedSize, $headerSize);
 				return $handle;
 			}
 
@@ -497,17 +492,22 @@ class Encryption extends Wrapper {
 				}
 			}
 		} else {
-			$source = $sourceStorage->fopen($sourceInternalPath, 'r');
-			$target = $this->fopen($targetInternalPath, 'w');
-			list(, $result) = \OC_Helper::streamCopy($source, $target);
-			fclose($source);
-			fclose($target);
-
+			try {
+				$source = $sourceStorage->fopen($sourceInternalPath, 'r');
+				$target = $this->fopen($targetInternalPath, 'w');
+				list(, $result) = \OC_Helper::streamCopy($source, $target);
+				fclose($source);
+				fclose($target);
+			} catch (\Exception $e) {
+				fclose($source);
+				fclose($target);
+				throw $e;
+			}
 			if($result) {
 				if ($preserveMtime) {
 					$this->touch($targetInternalPath, $sourceStorage->filemtime($sourceInternalPath));
 				}
-				$isEncrypted = $this->mount->getOption('encrypt', true) ? 1 : 0;
+				$isEncrypted = $this->encryptionManager->isEnabled() && $this->mount->getOption('encrypt', true) ? 1 : 0;
 
 				// in case of a rename we need to manipulate the source cache because
 				// this information will be kept for the new target
@@ -598,22 +598,101 @@ class Encryption extends Wrapper {
 	}
 
 	/**
+	 * read first block of encrypted file, typically this will contain the
+	 * encryption header
+	 *
+	 * @param string $path
+	 * @return string
+	 */
+	protected function readFirstBlock($path) {
+		$firstBlock = '';
+		if ($this->storage->file_exists($path)) {
+			$handle = $this->storage->fopen($path, 'r');
+			$firstBlock = fread($handle, $this->util->getHeaderSize());
+			fclose($handle);
+		}
+		return $firstBlock;
+	}
+
+	/**
+	 * return header size of given file
+	 *
+	 * @param string $path
+	 * @return int
+	 */
+	protected function getHeaderSize($path) {
+		$headerSize = 0;
+		$realFile = $this->util->stripPartialFileExtension($path);
+		if ($this->storage->file_exists($realFile)) {
+			$path = $realFile;
+		}
+		$firstBlock = $this->readFirstBlock($path);
+
+		if (substr($firstBlock, 0, strlen(Util::HEADER_START)) === Util::HEADER_START) {
+			$headerSize = strlen($firstBlock);
+		}
+
+		return $headerSize;
+	}
+
+	/**
+	 * parse raw header to array
+	 *
+	 * @param string $rawHeader
+	 * @return array
+	 */
+	protected function parseRawHeader($rawHeader) {
+		$result = array();
+		if (substr($rawHeader, 0, strlen(Util::HEADER_START)) === Util::HEADER_START) {
+			$header = $rawHeader;
+			$endAt = strpos($header, Util::HEADER_END);
+			if ($endAt !== false) {
+				$header = substr($header, 0, $endAt + strlen(Util::HEADER_END));
+
+				// +1 to not start with an ':' which would result in empty element at the beginning
+				$exploded = explode(':', substr($header, strlen(Util::HEADER_START)+1));
+
+				$element = array_shift($exploded);
+				while ($element !== Util::HEADER_END) {
+					$result[$element] = array_shift($exploded);
+					$element = array_shift($exploded);
+				}
+			}
+		}
+
+		return $result;
+	}
+
+	/**
 	 * read header from file
 	 *
 	 * @param string $path
 	 * @return array
 	 */
 	protected function getHeader($path) {
-		$header = '';
-		if ($this->storage->file_exists($path)) {
-			$handle = $this->storage->fopen($path, 'r');
-			$firstBlock = fread($handle, $this->util->getHeaderSize());
-			fclose($handle);
-			if (substr($firstBlock, 0, strlen(Util::HEADER_START)) === Util::HEADER_START) {
-				$header = $firstBlock;
+		$realFile = $this->util->stripPartialFileExtension($path);
+		if ($this->storage->file_exists($realFile)) {
+			$path = $realFile;
+		}
+
+		$firstBlock = $this->readFirstBlock($path);
+		$result = $this->parseRawHeader($firstBlock);
+
+		// if the header doesn't contain a encryption module we check if it is a
+		// legacy file. If true, we add the default encryption module
+		if (!isset($result[Util::HEADER_ENCRYPTION_MODULE_KEY])) {
+			if (!empty($result)) {
+				$result[Util::HEADER_ENCRYPTION_MODULE_KEY] = 'OC_DEFAULT_MODULE';
+			} else {
+				// if the header was empty we have to check first if it is a encrypted file at all
+				$info = $this->getCache()->get($path);
+				if (isset($info['encrypted']) && $info['encrypted'] === true) {
+					$result[Util::HEADER_ENCRYPTION_MODULE_KEY] = 'OC_DEFAULT_MODULE';
+				}
 			}
 		}
-		return $header;
+
+		return $result;
 	}
 
 	/**
@@ -626,8 +705,7 @@ class Encryption extends Wrapper {
 	 */
 	protected function getEncryptionModule($path) {
 		$encryptionModule = null;
-		$rawHeader = $this->getHeader($path);
-		$header = $this->util->readHeader($rawHeader);
+		$header = $this->getHeader($path);
 		$encryptionModuleId = $this->util->getEncryptionModuleId($header);
 		if (!empty($encryptionModuleId)) {
 			try {
@@ -662,4 +740,5 @@ class Encryption extends Wrapper {
 
 		return false;
 	}
+
 }

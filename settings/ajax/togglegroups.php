@@ -5,7 +5,6 @@
  * @author Georg Ehrke <georg@owncloud.com>
  * @author Jakob Sack <mail@jakobsack.de>
  * @author Lukas Reschke <lukas@owncloud.com>
- * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
@@ -61,9 +60,6 @@ if( OC_Group::inGroup( $username, $group )) {
 	$error = $l->t("Unable to remove user from group %s", $group);
 	$success = OC_Group::removeFromGroup( $username, $group );
 	$usersInGroup=OC_Group::usersInGroup($group);
-	if(count($usersInGroup) === 0) {
-		OC_Group::deleteGroup($group);
-	}
 }
 else{
 	$success = OC_Group::addToGroup( $username, $group );

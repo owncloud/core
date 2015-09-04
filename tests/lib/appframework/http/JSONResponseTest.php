@@ -66,14 +66,39 @@ class JSONResponseTest extends \Test\TestCase {
 		$this->assertEquals($expected, $this->json->render());
 	}
 
+	/**
+	 * @return array
+	 */
+	public function testRenderProvider() {
+		return [
+			[
+				['test' => 'hi'], '{"test":"hi"}',
+			],
+			[
+				['<h1>test' => '<h1>hi'], '{"\u003Ch1\u003Etest":"\u003Ch1\u003Ehi"}',
+			],
+		];
+	}
 
-	public function testRender() {
-		$params = array('test' => 'hi');
-		$this->json->setData($params);
-
-		$expected = '{"test":"hi"}';
-
+	/**
+	 * @dataProvider testRenderProvider
+	 * @param array $input
+	 * @param string $expected
+	 */
+	public function testRender(array $input, $expected) {
+		$this->json->setData($input);
 		$this->assertEquals($expected, $this->json->render());
+	}
+
+	/**
+	 * @expectedException \Exception
+	 * @expectedExceptionMessage Could not json_encode due to invalid non UTF-8 characters in the array: array (
+	 * @requires PHP 5.5
+	 */
+	public function testRenderWithNonUtf8Encoding() {
+		$params = ['test' => hex2bin('e9')];
+		$this->json->setData($params);
+		$this->json->render();
 	}
 
 	public function testConstructorAllowsToSetData() {

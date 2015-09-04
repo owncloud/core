@@ -16,7 +16,7 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Olivier Paroz <owncloud@interfasys.ch>
+ * @author Olivier Paroz <github@oparoz.com>
  * @author Owen Winkler <a_github@midnightcircus.com>
  * @author Pellaeon Lin <nfsmwlin@gmail.com>
  * @author Robin Appelman <icewind@owncloud.com>
@@ -50,81 +50,7 @@ use Symfony\Component\Process\ExecutableFinder;
  * Collection of useful functions
  */
 class OC_Helper {
-	private static $mimetypeIcons = array();
-	private static $mimetypeDetector;
 	private static $templateManager;
-	/** @var string[] */
-	private static $mimeTypeAlias = array(
-		'application/octet-stream' => 'file', // use file icon as fallback
-
-		'application/illustrator' => 'image/vector',
-		'application/postscript' => 'image/vector',
-		'image/svg+xml' => 'image/vector',
-
-		'application/coreldraw' => 'image',
-		'application/x-gimp' => 'image',
-		'application/x-photoshop' => 'image',
-		'application/x-dcraw' => 'image',
-
-		'application/font-sfnt' => 'font',
-		'application/x-font' => 'font',
-		'application/font-woff' => 'font',
-		'application/vnd.ms-fontobject' => 'font',
-
-		'application/json' => 'text/code',
-		'application/x-perl' => 'text/code',
-		'application/x-php' => 'text/code',
-		'text/x-shellscript' => 'text/code',
-		'application/yaml' => 'text/code',
-		'application/xml' => 'text/html',
-		'text/css' => 'text/code',
-		'application/x-tex' => 'text',
-
-		'application/x-compressed' => 'package/x-generic',
-		'application/x-7z-compressed' => 'package/x-generic',
-		'application/x-deb' => 'package/x-generic',
-		'application/x-gzip' => 'package/x-generic',
-		'application/x-rar-compressed' => 'package/x-generic',
-		'application/x-tar' => 'package/x-generic',
-		'application/vnd.android.package-archive' => 'package/x-generic',
-		'application/zip' => 'package/x-generic',
-
-		'application/msword' => 'x-office/document',
-		'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'x-office/document',
-		'application/vnd.openxmlformats-officedocument.wordprocessingml.template' => 'x-office/document',
-		'application/vnd.ms-word.document.macroEnabled.12' => 'x-office/document',
-		'application/vnd.ms-word.template.macroEnabled.12' => 'x-office/document',
-		'application/vnd.oasis.opendocument.text' => 'x-office/document',
-		'application/vnd.oasis.opendocument.text-template' => 'x-office/document',
-		'application/vnd.oasis.opendocument.text-web' => 'x-office/document',
-		'application/vnd.oasis.opendocument.text-master' => 'x-office/document',
-
-		'application/mspowerpoint' => 'x-office/presentation',
-		'application/vnd.ms-powerpoint' => 'x-office/presentation',
-		'application/vnd.openxmlformats-officedocument.presentationml.presentation' => 'x-office/presentation',
-		'application/vnd.openxmlformats-officedocument.presentationml.template' => 'x-office/presentation',
-		'application/vnd.openxmlformats-officedocument.presentationml.slideshow' => 'x-office/presentation',
-		'application/vnd.ms-powerpoint.addin.macroEnabled.12' => 'x-office/presentation',
-		'application/vnd.ms-powerpoint.presentation.macroEnabled.12' => 'x-office/presentation',
-		'application/vnd.ms-powerpoint.template.macroEnabled.12' => 'x-office/presentation',
-		'application/vnd.ms-powerpoint.slideshow.macroEnabled.12' => 'x-office/presentation',
-		'application/vnd.oasis.opendocument.presentation' => 'x-office/presentation',
-		'application/vnd.oasis.opendocument.presentation-template' => 'x-office/presentation',
-
-		'application/msexcel' => 'x-office/spreadsheet',
-		'application/vnd.ms-excel' => 'x-office/spreadsheet',
-		'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => 'x-office/spreadsheet',
-		'application/vnd.openxmlformats-officedocument.spreadsheetml.template' => 'x-office/spreadsheet',
-		'application/vnd.ms-excel.sheet.macroEnabled.12' => 'x-office/spreadsheet',
-		'application/vnd.ms-excel.template.macroEnabled.12' => 'x-office/spreadsheet',
-		'application/vnd.ms-excel.addin.macroEnabled.12' => 'x-office/spreadsheet',
-		'application/vnd.ms-excel.sheet.binary.macroEnabled.12' => 'x-office/spreadsheet',
-		'application/vnd.oasis.opendocument.spreadsheet' => 'x-office/spreadsheet',
-		'application/vnd.oasis.opendocument.spreadsheet-template' => 'x-office/spreadsheet',
-		'text/csv' => 'x-office/spreadsheet',
-
-		'application/msaccess' => 'database',
-	);
 
 	/**
 	 * Creates an url using a defined route
@@ -253,48 +179,10 @@ class OC_Helper {
 	 * @return string the url
 	 *
 	 * Returns the path to the image of this file type.
+	 * @deprecated 8.2.0 Use \OC::$server->getMimeTypeDetector()->mimeTypeIcon($mimetype)
 	 */
 	public static function mimetypeIcon($mimetype) {
-
-		if (isset(self::$mimeTypeAlias[$mimetype])) {
-			$mimetype = self::$mimeTypeAlias[$mimetype];
-		}
-		if (isset(self::$mimetypeIcons[$mimetype])) {
-			return self::$mimetypeIcons[$mimetype];
-		}
-		// Replace slash and backslash with a minus
-		$icon = str_replace('/', '-', $mimetype);
-		$icon = str_replace('\\', '-', $icon);
-
-		// Is it a dir?
-		if ($mimetype === 'dir') {
-			self::$mimetypeIcons[$mimetype] = OC::$WEBROOT . '/core/img/filetypes/folder.png';
-			return OC::$WEBROOT . '/core/img/filetypes/folder.png';
-		}
-		if ($mimetype === 'dir-shared') {
-			self::$mimetypeIcons[$mimetype] = OC::$WEBROOT . '/core/img/filetypes/folder-shared.png';
-			return OC::$WEBROOT . '/core/img/filetypes/folder-shared.png';
-		}
-		if ($mimetype === 'dir-external') {
-			self::$mimetypeIcons[$mimetype] = OC::$WEBROOT . '/core/img/filetypes/folder-external.png';
-			return OC::$WEBROOT . '/core/img/filetypes/folder-external.png';
-		}
-
-		// Icon exists?
-		if (file_exists(OC::$SERVERROOT . '/core/img/filetypes/' . $icon . '.png')) {
-			self::$mimetypeIcons[$mimetype] = OC::$WEBROOT . '/core/img/filetypes/' . $icon . '.png';
-			return OC::$WEBROOT . '/core/img/filetypes/' . $icon . '.png';
-		}
-
-		// Try only the first part of the filetype
-		$mimePart = substr($icon, 0, strpos($icon, '-'));
-		if (file_exists(OC::$SERVERROOT . '/core/img/filetypes/' . $mimePart . '.png')) {
-			self::$mimetypeIcons[$mimetype] = OC::$WEBROOT . '/core/img/filetypes/' . $mimePart . '.png';
-			return OC::$WEBROOT . '/core/img/filetypes/' . $mimePart . '.png';
-		} else {
-			self::$mimetypeIcons[$mimetype] = OC::$WEBROOT . '/core/img/filetypes/file.png';
-			return OC::$WEBROOT . '/core/img/filetypes/file.png';
-		}
+		return \OC::$server->getMimeTypeDetector()->mimeTypeIcon($mimetype);
 	}
 
 	/**
@@ -485,13 +373,10 @@ class OC_Helper {
 
 	/**
 	 * @return \OC\Files\Type\Detection
+	 * @deprecated 8.2.0 use \OC::$server->getMimeTypeDetector()
 	 */
 	static public function getMimetypeDetector() {
-		if (!self::$mimetypeDetector) {
-			self::$mimetypeDetector = new \OC\Files\Type\Detection();
-			self::$mimetypeDetector->registerTypeArray(include 'mimetypes.list.php');
-		}
-		return self::$mimetypeDetector;
+		return \OC::$server->getMimeTypeDetector();
 	}
 
 	/**
@@ -509,9 +394,10 @@ class OC_Helper {
 	 *
 	 * @param string $path
 	 * @return string
+	 * @deprecated 8.2.0 Use \OC::$server->getMimeTypeDetector()->detectPath($path)
 	 */
 	static public function getFileNameMimeType($path) {
-		return self::getMimetypeDetector()->detectPath($path);
+		return \OC::$server->getMimeTypeDetector()->detectPath($path);
 	}
 
 	/**
@@ -520,9 +406,10 @@ class OC_Helper {
 	 * @param string $path
 	 * @return string
 	 * does NOT work for ownClouds filesystem, use OC_FileSystem::getMimeType instead
+	 * @deprecated 8.2.0 Use \OC::$server->getMimeTypeDetector()->detect($path)
 	 */
 	static function getMimeType($path) {
-		return self::getMimetypeDetector()->detect($path);
+		return \OC::$server->getMimeTypeDetector()->detect($path);
 	}
 
 	/**
@@ -530,9 +417,10 @@ class OC_Helper {
 	 *
 	 * @param string $mimeType
 	 * @return string
+	 * @deprecated 8.2.0 Use \OC::$server->getMimeTypeDetector()->getSecureMimeType($mimeType)
 	 */
 	static function getSecureMimeType($mimeType) {
-		return self::getMimetypeDetector()->getSecureMimeType($mimeType);
+		return \OC::$server->getMimeTypeDetector()->getSecureMimeType($mimeType);
 	}
 
 	/**
@@ -540,18 +428,11 @@ class OC_Helper {
 	 *
 	 * @param string $data
 	 * @return string
+	 * @deprecated 8.2.0 Use \OC::$server->getMimeTypeDetector()->detectString($data)
 	 */
 	static function getStringMimeType($data) {
-		return self::getMimetypeDetector()->detectString($data);
+		return \OC::$server->getMimeTypeDetector()->detectString($data);
 	}
-
-	/**
-	 * Checks $_REQUEST contains a var for the $s key. If so, returns the html-escaped value of this var; otherwise returns the default value provided by $d.
-	 * @param string $s name of the var to escape, if set.
-	 * @param string $d default value.
-	 * @return string the print-safe value.
-	 *
-	 */
 
 	/**
 	 * detect if a given program is found in the search PATH
@@ -770,17 +651,11 @@ class OC_Helper {
 	 * @param int $start If start is positive, the replacing will begin at the start'th offset into string. If start is negative, the replacing will begin at the start'th character from the end of string.
 	 * @param int $length Length of the part to be replaced
 	 * @param string $encoding The encoding parameter is the character encoding. Defaults to UTF-8
-	 * @internal param string $input The input string. .Opposite to the PHP build-in function does not accept an array.
 	 * @return string
+	 * @deprecated 8.2.0 Use substr_replace() instead.
 	 */
-	public static function mb_substr_replace($string, $replacement, $start, $length = null, $encoding = 'UTF-8') {
-		$start = intval($start);
-		$length = intval($length);
-		$string = mb_substr($string, 0, $start, $encoding) .
-			$replacement .
-			mb_substr($string, $start + $length, mb_strlen($string, 'UTF-8') - $start, $encoding);
-
-		return $string;
+	public static function mb_substr_replace($string, $replacement, $start, $length = 0, $encoding = 'UTF-8') {
+		return substr_replace($string, $replacement, $start, $length);
 	}
 
 	/**
@@ -792,17 +667,11 @@ class OC_Helper {
 	 * @param string $encoding The encoding parameter is the character encoding. Defaults to UTF-8
 	 * @param int $count If passed, this will be set to the number of replacements performed.
 	 * @return string
+	 * @deprecated 8.2.0 Use str_replace() instead.
 	 *
 	 */
 	public static function mb_str_replace($search, $replace, $subject, $encoding = 'UTF-8', &$count = null) {
-		$offset = -1;
-		$length = mb_strlen($search, $encoding);
-		while (($i = mb_strrpos($subject, $search, $offset, $encoding)) !== false) {
-			$subject = OC_Helper::mb_substr_replace($subject, $replace, $i, $length);
-			$offset = $i - mb_strlen($subject, $encoding);
-			$count++;
-		}
-		return $subject;
+		return str_replace($search, $replace, $subject, $count);
 	}
 
 	/**

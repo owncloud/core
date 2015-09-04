@@ -24,11 +24,12 @@ OC.L10N.register(
     "You can upload into this folder" : "Du kan laste opp til denne mappen",
     "No ownCloud installation (7 or higher) found at {remote}" : "Ingen ownCloud-installasjon (7 eller høyere) funnet på {remote}",
     "Invalid ownCloud url" : "Ugyldig ownCloud-url",
-    "Share" : "Del",
     "Shared by" : "Delt av",
+    "Sharing" : "Deling",
     "A file or folder has been <strong>shared</strong>" : "En fil eller mappe ble <strong>delt</strong>",
     "A file or folder was shared from <strong>another server</strong>" : "En fil eller mappe ble delt fra <strong>en annen server</strong>",
     "A public shared file or folder was <strong>downloaded</strong>" : "En offentlig delt fil eller mappe ble <strong>lastet ned</strong>",
+    "You received a new remote share %2$s from %1$s" : "Du mottok en ny ekstern deling %2$s fra %1$s",
     "You received a new remote share from %s" : "Du mottok en ny ekstern deling fra %s",
     "%1$s accepted remote share %2$s" : "%1$s aksepterte ekstern deling %2$s",
     "%1$s declined remote share %2$s" : "%1$s avviste ekstern deling %2$s",
@@ -40,6 +41,8 @@ OC.L10N.register(
     "%2$s shared %1$s with you" : "%2$s delte %1$s med deg",
     "You shared %1$s via link" : "Du delte %1$s via lenke",
     "Shares" : "Delinger",
+    "Share with me through my #ownCloud Federated Cloud ID, see %s" : "Del med meg gjennom min #ownCloud ID for sammenknyttet sky, se %s",
+    "Share with me through my #ownCloud Federated Cloud ID" : "Del med meg gjennom min #ownCloud ID for sammenknyttet sky",
     "This share is password-protected" : "Denne delingen er passordbeskyttet",
     "The password is wrong. Try again." : "Passordet er feil. Prøv på nytt.",
     "Password" : "Passord",
@@ -61,6 +64,9 @@ OC.L10N.register(
     "Allow users on this server to send shares to other servers" : "Tillat at brukere på denne serveren sender delinger til andre servere",
     "Allow users on this server to receive shares from other servers" : "Tillat at brukere på denne serveren mottar delinger fra andre servere",
     "Federated Cloud" : "Sammenknyttet sky",
-    "Your Federated Cloud ID: %s" : "Din ID for sammenknyttet sky: %s"
+    "Your Federated Cloud ID:" : "Din ID for sammenknyttet sky:",
+    "Share it:" : "Del den:",
+    "Share with me via ownCloud" : "Del med meg via ownCloud",
+    "HTML Code:" : "HTML-kode:"
 },
 "nplurals=2; plural=(n != 1);");

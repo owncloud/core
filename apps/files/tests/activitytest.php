@@ -1,11 +1,24 @@
 <?php
 /**
- * Copyright (c) 2015 Joas Schilling <nickvergessen@owncloud.com>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
  *
-*/
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ */
 
 namespace OCA\Files\Tests;
 
@@ -28,6 +41,9 @@ class ActivityTest extends TestCase {
 
 	/** @var \PHPUnit_Framework_MockObject_MockObject */
 	protected $activityHelper;
+
+	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	protected $l10nFactory;
 
 	/** @var \OCA\Files\Activity */
 	protected $activityExtension;
@@ -54,8 +70,28 @@ class ActivityTest extends TestCase {
 			$this->config
 		);
 
+		$this->l10nFactory = $this->getMockBuilder('OC\L10N\Factory')
+			->disableOriginalConstructor()
+			->getMock();
+		$deL10n = $this->getMockBuilder('OC_L10N')
+			->disableOriginalConstructor()
+			->getMock();
+		$deL10n->expects($this->any())
+			->method('t')
+			->willReturnCallback(function ($argument) {
+				return 'translate(' . $argument . ')';
+			});
+
+		$this->l10nFactory->expects($this->any())
+			->method('get')
+			->willReturnMap([
+				['files', null, new \OC_L10N('files', 'en')],
+				['files', 'en', new \OC_L10N('files', 'en')],
+				['files', 'de', $deL10n],
+			]);
+
 		$this->activityExtension = $activityExtension = new Activity(
-			new \OC\L10N\Factory(),
+			$this->l10nFactory,
 			$this->getMockBuilder('OCP\IURLGenerator')->disableOriginalConstructor()->getMock(),
 			$this->activityManager,
 			$this->activityHelper,
@@ -97,6 +133,26 @@ class ActivityTest extends TestCase {
 		$this->assertFalse(
 			$this->activityExtension->translate('files_sharing', '', [], false, false, 'en'),
 			'Asserting that no translations are set for files_sharing'
+		);
+
+		// Test english
+		$this->assertNotFalse(
+			$this->activityExtension->translate('files', 'deleted_self', ['file'], false, false, 'en'),
+			'Asserting that translations are set for files.deleted_self'
+		);
+		$this->assertStringStartsWith(
+			'You deleted ',
+			$this->activityExtension->translate('files', 'deleted_self', ['file'], false, false, 'en')
+		);
+
+		// Test translation
+		$this->assertNotFalse(
+			$this->activityExtension->translate('files', 'deleted_self', ['file'], false, false, 'de'),
+			'Asserting that translations are set for files.deleted_self'
+		);
+		$this->assertStringStartsWith(
+			'translate(You deleted ',
+			$this->activityExtension->translate('files', 'deleted_self', ['file'], false, false, 'de')
 		);
 	}
 

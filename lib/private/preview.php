@@ -7,9 +7,8 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Olivier Paroz <owncloud@interfasys.ch>
+ * @author Olivier Paroz <github@oparoz.com>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Tobias Kaminsky <tobias@kaminsky.me>
  *
@@ -39,6 +38,9 @@ class Preview {
 	//the thumbnail folder
 	const THUMBNAILS_FOLDER = 'thumbnails';
 
+	const MODE_FILL = 'fill';
+	const MODE_COVER = 'cover';
+
 	//config
 	private $maxScaleFactor;
 	/** @var int maximum width allowed for a preview */
@@ -57,6 +59,7 @@ class Preview {
 	private $scalingUp;
 	private $mimeType;
 	private $keepAspect = false;
+	private $mode = self::MODE_FILL;
 
 	//used to calculate the size of the preview to generate
 	/** @var int $maxPreviewWidth max width a preview can have */
@@ -136,7 +139,7 @@ class Preview {
 			&& \OC::$server->getConfig()
 						   ->getSystemValue('enable_previews', true)
 		) {
-			\OC_Log::write('core', 'No preview providers exist', \OC_Log::ERROR);
+			\OCP\Util::writeLog('core', 'No preview providers exist', \OCP\Util::ERROR);
 			throw new \Exception('No preview providers');
 		}
 	}
@@ -328,6 +331,19 @@ class Preview {
 			$scalingUp = false;
 		}
 		$this->scalingUp = $scalingUp;
+
+		return $this;
+	}
+
+	/**
+	 * Set whether to cover or fill the specified dimensions
+	 *
+	 * @param string $mode
+	 *
+	 * @return \OC\Preview
+	 */
+	public function setMode($mode) {
+		$this->mode = $mode;
 
 		return $this;
 	}
@@ -532,17 +548,51 @@ class Preview {
 	 * @param int $askedWidth
 	 * @param int $askedHeight
 	 *
+	 * @param int $originalWidth
+	 * @param int $originalHeight
 	 * @return \int[]
 	 */
-	private function applyAspectRatio($askedWidth, $askedHeight) {
-		$originalRatio = $this->maxPreviewWidth / $this->maxPreviewHeight;
+	private function applyAspectRatio($askedWidth, $askedHeight, $originalWidth = 0, $originalHeight = 0) {
+		if(!$originalWidth){
+			$originalWidth= $this->maxPreviewWidth;
+		}
+		if (!$originalHeight) {
+			$originalHeight = $this->maxPreviewHeight;
+		}
+		$originalRatio = $originalWidth / $originalHeight;
 		// Defines the box in which the preview has to fit
 		$scaleFactor = $this->scalingUp ? $this->maxScaleFactor : 1;
-		$askedWidth = min($askedWidth, $this->maxPreviewWidth * $scaleFactor);
-		$askedHeight = min($askedHeight, $this->maxPreviewHeight * $scaleFactor);
+		$askedWidth = min($askedWidth, $originalWidth * $scaleFactor);
+		$askedHeight = min($askedHeight, $originalHeight * $scaleFactor);
 
 		if ($askedWidth / $originalRatio < $askedHeight) {
 			// width restricted
+			$askedHeight = round($askedWidth / $originalRatio);
+		} else {
+			$askedWidth = round($askedHeight * $originalRatio);
+		}
+
+		return [(int)$askedWidth, (int)$askedHeight];
+	}
+
+	/**
+	 * Resizes the boundaries to cover the area
+	 *
+	 * @param int $askedWidth
+	 * @param int $askedHeight
+	 * @param int $previewWidth
+	 * @param int $previewHeight
+	 * @return \int[]
+	 */
+	private function applyCover($askedWidth, $askedHeight, $previewWidth, $previewHeight) {
+		$originalRatio = $previewWidth / $previewHeight;
+		// Defines the box in which the preview has to fit
+		$scaleFactor = $this->scalingUp ? $this->maxScaleFactor : 1;
+		$askedWidth = min($askedWidth, $previewWidth * $scaleFactor);
+		$askedHeight = min($askedHeight, $previewHeight * $scaleFactor);
+
+		if ($askedWidth / $originalRatio > $askedHeight) {
+			// height restricted
 			$askedHeight = round($askedWidth / $originalRatio);
 		} else {
 			$askedWidth = round($askedHeight * $originalRatio);
@@ -701,7 +751,7 @@ class Preview {
 			$this->generatePreview($fileId);
 		}
 
-		// We still don't have a preview, so we generate an empty object which can't be displayed
+		// We still don't have a preview, so we send back an empty object
 		if (is_null($this->preview)) {
 			$this->preview = new \OC_Image();
 		}
@@ -712,22 +762,26 @@ class Preview {
 	/**
 	 * Sends the preview, including the headers to client which requested it
 	 *
-	 * @param null|string $mimeType
+	 * @param null|string $mimeTypeForHeaders the media type to use when sending back the reply
 	 *
 	 * @throws NotFoundException
 	 */
-	public function showPreview($mimeType = null) {
+	public function showPreview($mimeTypeForHeaders = null) {
 		// Check if file is valid
 		if ($this->isFileValid() === false) {
 			throw new NotFoundException('File not found.');
 		}
 
-		\OCP\Response::enableCaching(3600 * 24); // 24 hours
 		if (is_null($this->preview)) {
 			$this->getPreview();
 		}
 		if ($this->preview instanceof \OCP\IImage) {
-			$this->preview->show($mimeType);
+			if ($this->preview->valid()) {
+				\OCP\Response::enableCaching(3600 * 24); // 24 hours
+			} else {
+				$this->getMimeIcon();
+			}
+			$this->preview->show($mimeTypeForHeaders);
 		}
 	}
 
@@ -788,7 +842,15 @@ class Preview {
 		 */
 		if ($this->keepAspect) {
 			list($askedWidth, $askedHeight) =
-				$this->applyAspectRatio($askedWidth, $askedHeight);
+				$this->applyAspectRatio($askedWidth, $askedHeight, $previewWidth, $previewHeight);
+		}
+
+		if ($this->mode === self::MODE_COVER) {
+			list($scaleWidth, $scaleHeight) =
+				$this->applyCover($askedWidth, $askedHeight, $previewWidth, $previewHeight);
+		} else {
+			$scaleWidth = $askedWidth;
+			$scaleHeight = $askedHeight;
 		}
 
 		/**
@@ -796,7 +858,7 @@ class Preview {
 		 * Takes the scaling ratio into consideration
 		 */
 		list($newPreviewWidth, $newPreviewHeight) = $this->scale(
-			$image, $askedWidth, $askedHeight, $previewWidth, $previewHeight
+			$image, $scaleWidth, $scaleHeight, $previewWidth, $previewHeight
 		);
 
 		// The preview has been resized and should now have the asked dimensions
@@ -812,9 +874,8 @@ class Preview {
 		 */
 		// It turns out the scaled preview is now too big, so we crop the image
 		if ($newPreviewWidth >= $askedWidth && $newPreviewHeight >= $askedHeight) {
-			list($newPreviewWidth, $newPreviewHeight) =
-				$this->crop($image, $askedWidth, $askedHeight, $newPreviewWidth, $newPreviewHeight);
-			$this->storePreview($fileId, $newPreviewWidth, $newPreviewHeight);
+			$this->crop($image, $askedWidth, $askedHeight, $newPreviewWidth, $newPreviewHeight);
+			$this->storePreview($fileId, $askedWidth, $askedHeight);
 
 			return;
 		}
@@ -822,11 +883,10 @@ class Preview {
 		// At least one dimension of the scaled preview is too small,
 		// so we fill the space with a transparent background
 		if (($newPreviewWidth < $askedWidth || $newPreviewHeight < $askedHeight)) {
-			list($newPreviewWidth, $newPreviewHeight) =
-				$this->cropAndFill(
-					$image, $askedWidth, $askedHeight, $newPreviewWidth, $newPreviewHeight
-				);
-			$this->storePreview($fileId, $newPreviewWidth, $newPreviewHeight);
+			$this->cropAndFill(
+				$image, $askedWidth, $askedHeight, $newPreviewWidth, $newPreviewHeight
+			);
+			$this->storePreview($fileId, $askedWidth, $askedHeight);
 
 			return;
 		}
@@ -894,8 +954,6 @@ class Preview {
 	 * @param int $askedHeight
 	 * @param int $previewWidth
 	 * @param null $previewHeight
-	 *
-	 * @return \int[]
 	 */
 	private function crop($image, $askedWidth, $askedHeight, $previewWidth, $previewHeight = null) {
 		$cropX = floor(abs($askedWidth - $previewWidth) * 0.5);
@@ -904,8 +962,6 @@ class Preview {
 		$cropY = 0;
 		$image->crop($cropX, $cropY, $askedWidth, $askedHeight);
 		$this->preview = $image;
-
-		return [$askedWidth, $askedHeight];
 	}
 
 	/**
@@ -917,8 +973,6 @@ class Preview {
 	 * @param int $askedHeight
 	 * @param int $previewWidth
 	 * @param null $previewHeight
-	 *
-	 * @return \int[]
 	 */
 	private function cropAndFill($image, $askedWidth, $askedHeight, $previewWidth, $previewHeight) {
 		if ($previewWidth > $askedWidth) {
@@ -954,8 +1008,6 @@ class Preview {
 		$image = new \OC_Image($backgroundLayer);
 
 		$this->preview = $image;
-
-		return [$askedWidth, $askedHeight];
 	}
 
 	/**
@@ -1006,6 +1058,9 @@ class Preview {
 		}
 		if ($this->keepAspect && !$isMaxPreview) {
 			$previewPath .= '-with-aspect';
+		}
+		if ($this->mode === self::MODE_COVER) {
+			$previewPath .= '-cover';
 		}
 		$previewPath .= '.png';
 
@@ -1089,6 +1144,22 @@ class Preview {
 		if ($preview) {
 			$this->resizeAndStore($fileId);
 		}
+	}
+
+	/**
+	 * Defines the media icon, for the media type of the original file, as the preview
+	 */
+	private function getMimeIcon() {
+		$image = new \OC_Image();
+		$mimeIconWebPath = \OC_Helper::mimetypeIcon($this->mimeType);
+		if (empty(\OC::$WEBROOT)) {
+			$mimeIconServerPath = \OC::$SERVERROOT . $mimeIconWebPath;
+		} else {
+			$mimeIconServerPath = str_replace(\OC::$WEBROOT, \OC::$SERVERROOT, $mimeIconWebPath);
+		}
+		$image->loadFromFile($mimeIconServerPath);
+
+		$this->preview = $image;
 	}
 
 	/**

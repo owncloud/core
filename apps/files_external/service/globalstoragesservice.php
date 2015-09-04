@@ -1,5 +1,7 @@
 <?php
 /**
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -90,7 +92,7 @@ class GlobalStoragesService extends StoragesService {
 			$storageConfig->setBackendOptions($oldBackendOptions);
 		}
 
-		\OC_Mount_Config::writeData(null, $mountPoints);
+		$this->writeLegacyConfig($mountPoints);
 	}
 
 	/**

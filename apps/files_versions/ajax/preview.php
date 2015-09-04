@@ -1,7 +1,6 @@
 <?php
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
- * @author Morris Jobke <hey@morrisjobke.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -34,13 +33,13 @@ $scalingUp = array_key_exists('scalingup', $_GET) ? (bool) $_GET['scalingup'] : 
 
 if($file === '' && $version === '') {
 	\OC_Response::setStatus(400); //400 Bad Request
-	\OC_Log::write('versions-preview', 'No file parameter was passed', \OC_Log::DEBUG);
+	\OCP\Util::writeLog('versions-preview', 'No file parameter was passed', \OCP\Util::DEBUG);
 	exit;
 }
 
 if($maxX === 0 || $maxY === 0) {
 	\OC_Response::setStatus(400); //400 Bad Request
-	\OC_Log::write('versions-preview', 'x and/or y set to 0', \OC_Log::DEBUG);
+	\OCP\Util::writeLog('versions-preview', 'x and/or y set to 0', \OCP\Util::DEBUG);
 	exit;
 }
 
@@ -56,5 +55,5 @@ try {
 	$preview->showPreview();
 }catch(\Exception $e) {
 	\OC_Response::setStatus(500);
-	\OC_Log::write('core', $e->getmessage(), \OC_Log::DEBUG);
+	\OCP\Util::writeLog('core', $e->getmessage(), \OCP\Util::DEBUG);
 }

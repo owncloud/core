@@ -2,18 +2,11 @@
 /**
  * @author Andreas Fischer <bantu@owncloud.com>
  * @author Bart Visscher <bartv@thisnet.nl>
- * @author Bernhard Posselt <dev@bernhard-posselt.com>
- * @author Björn Schießle <schiessle@owncloud.com>
- * @author Felix Moeller <mail@felixmoeller.de>
- * @author Frank Karlitschek <frank@owncloud.org>
  * @author Georg Ehrke <georg@owncloud.com>
- * @author Lukas Reschke <lukas@owncloud.com>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Owen Winkler <a_github@midnightcircus.com>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
- * @author Tom Needham <tom@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -85,8 +78,8 @@ class OC_Log_Owncloud {
 		$remoteAddr = $request->getRemoteAddress();
 		// remove username/passwords from URLs before writing the to the log file
 		$time = $time->format($format);
-		$minLevel=min($config->getValue( "loglevel", OC_Log::WARN ), OC_Log::ERROR);
-		if($minLevel == OC_Log::DEBUG) {
+		$minLevel=min($config->getValue( "loglevel", \OCP\Util::WARN ), \OCP\Util::ERROR);
+		if($minLevel == \OCP\Util::DEBUG) {
 			$url = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '--';
 			$method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : '--';
 			$entry = compact('reqId', 'remoteAddr', 'app', 'message', 'level', 'time', 'method', 'url');
@@ -114,7 +107,7 @@ class OC_Log_Owncloud {
 	 */
 	public static function getEntries($limit=50, $offset=0) {
 		self::init();
-		$minLevel=OC_Config::getValue( "loglevel", OC_Log::WARN );
+		$minLevel=OC_Config::getValue( "loglevel", \OCP\Util::WARN );
 		$entries = array();
 		$handle = @fopen(self::$logFile, 'rb');
 		if ($handle) {

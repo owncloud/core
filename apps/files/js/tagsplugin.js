@@ -77,10 +77,11 @@
 			var self = this;
 			// register "star" action
 			fileActions.registerAction({
-				name: 'favorite',
+				name: 'Favorite',
 				displayName: 'Favorite',
 				mime: 'all',
 				permissions: OC.PERMISSION_READ,
+				type: OCA.Files.FileActions.TYPE_INLINE,
 				render: function(actionSpec, isDefault, context) {
 					var $file = context.$file;
 					var isFavorite = $file.data('favorite') === true;
@@ -106,6 +107,8 @@
 						tags.push(OC.TAG_FAVORITE);
 					}
 					toggleStar($actionEl, !isFavorite);
+
+					context.fileInfoModel.set('tags', tags);
 
 					self.applyFileTags(
 						dir + '/' + fileName,
@@ -143,6 +146,18 @@
 				}
 				$tr.find('td:first').prepend('<div class="favorite"></div>');
 				return $tr;
+			};
+			var oldElementToFile = fileList.elementToFile;
+			fileList.elementToFile = function($el) {
+				var fileInfo = oldElementToFile.apply(this, arguments);
+				var tags = $el.attr('data-tags');
+				if (_.isUndefined(tags)) {
+					tags = '';
+				}
+				tags = tags.split('|');
+				tags = _.without(tags, '');
+				fileInfo.tags = tags;
+				return fileInfo;
 			};
 		},
 

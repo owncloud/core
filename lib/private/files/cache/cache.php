@@ -4,6 +4,7 @@
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Florin Peter <github@florin-peter.de>
+ * @author Jens-Christian Fischer <jens-christian.fischer@switch.ch>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
@@ -119,7 +120,7 @@ class Cache {
 				]);
 				$this->loadMimetypes();
 			} catch (\Doctrine\DBAL\DBALException $e) {
-				\OC_Log::write('core', 'Exception during mimetype insertion: ' . $e->getmessage(), \OC_Log::DEBUG);
+				\OCP\Util::writeLog('core', 'Exception during mimetype insertion: ' . $e->getmessage(), \OCP\Util::DEBUG);
 				return -1;
 			}
 		}

@@ -83,7 +83,7 @@ if($_['passwordChangeSupported']) {
 		placeholder="<?php echo $l->t('New password');?>"
 		data-typetoggle="#personal-show"
 		autocomplete="off" autocapitalize="off" autocorrect="off" />
-	<input type="checkbox" id="personal-show" name="show" /><label for="personal-show"></label>
+	<input type="checkbox" id="personal-show" name="show" /><label for="personal-show" class="svg"></label>
 	<input id="passwordbutton" type="submit" value="<?php echo $l->t('Change password');?>" />
 	<br/>
 	<div class="strengthify-wrapper"></div>
@@ -159,7 +159,7 @@ if($_['passwordChangeSupported']) {
 		<input type="file" class="hidden" name="files[]" id="uploadavatar">
 		<div class="inlineblock button" id="selectavatar"><?php p($l->t('Select new from Files')); ?></div>
 		<div class="inlineblock button" id="removeavatar"><?php p($l->t('Remove image')); ?></div><br>
-		<?php p($l->t('Either png or jpg. Ideally square but you will be able to crop it.')); ?>
+		<?php p($l->t('Either png or jpg. Ideally square but you will be able to crop it. The file is not allowed to exceed the maximum size of 20 MB.')); ?>
 		<?php else: ?>
 		<?php p($l->t('Your avatar is provided by your original account.')); ?>
 		<?php endif; ?>
@@ -205,6 +205,7 @@ if($_['passwordChangeSupported']) {
 	<?php }
 };?>
 
+<?php if($_['showCertificates']) : ?>
 <div id="ssl-root-certificates" class="section">
 	<h2><?php p($l->t('SSL root certificates')); ?></h2>
 	<table id="sslCertificate" class="grid">
@@ -242,6 +243,7 @@ if($_['passwordChangeSupported']) {
 		<input type="button" id="rootcert_import_button" value="<?php p($l->t('Import root certificate')); ?>"/>
 	</form>
 </div>
+<?php endif; ?>
 
 <div class="section">
 	<h2><?php p($l->t('Version'));?></h2>

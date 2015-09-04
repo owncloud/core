@@ -27,6 +27,12 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Base extends Command {
+	const OUTPUT_FORMAT_PLAIN = 'plain';
+	const OUTPUT_FORMAT_JSON = 'json';
+	const OUTPUT_FORMAT_JSON_PRETTY = 'json_pretty';
+
+	protected $defaultOutputFormat = self::OUTPUT_FORMAT_PLAIN;
+
 	protected function configure() {
 		$this
 			->addOption(
@@ -34,7 +40,7 @@ class Base extends Command {
 				null,
 				InputOption::VALUE_OPTIONAL,
 				'Output format (plain, json or json_pretty, default is plain)',
-				'plain'
+				$this->defaultOutputFormat
 			)
 		;
 	}
@@ -43,39 +49,69 @@ class Base extends Command {
 	 * @param InputInterface $input
 	 * @param OutputInterface $output
 	 * @param array $items
+	 * @param string $prefix
 	 */
-	protected function writeArrayInOutputFormat(InputInterface $input, OutputInterface $output, $items) {
+	protected function writeArrayInOutputFormat(InputInterface $input, OutputInterface $output, $items, $prefix = '  - ') {
 		switch ($input->getOption('output')) {
-			case 'json':
+			case self::OUTPUT_FORMAT_JSON:
 				$output->writeln(json_encode($items));
 				break;
-			case 'json_pretty':
+			case self::OUTPUT_FORMAT_JSON_PRETTY:
 				$output->writeln(json_encode($items, JSON_PRETTY_PRINT));
 				break;
 			default:
 				foreach ($items as $key => $item) {
+					if (is_array($item)) {
+						$output->writeln($prefix . $key . ':');
+						$this->writeArrayInOutputFormat($input, $output, $item, '  ' . $prefix);
+						continue;
+					}
 					if (!is_int($key)) {
 						$value = $this->valueToString($item);
 						if (!is_null($value)) {
-							$output->writeln(' - ' . $key . ': ' . $value);
+							$output->writeln($prefix . $key . ': ' . $value);
 						} else {
-							$output->writeln(' - ' . $key);
+							$output->writeln($prefix . $key);
 						}
 					} else {
-						$output->writeln(' - ' . $this->valueToString($item));
+						$output->writeln($prefix . $this->valueToString($item));
 					}
 				}
 				break;
 		}
 	}
 
-	protected function valueToString($value) {
+	/**
+	 * @param InputInterface $input
+	 * @param OutputInterface $output
+	 * @param mixed $item
+	 */
+	protected function writeMixedInOutputFormat(InputInterface $input, OutputInterface $output, $item) {
+		if (is_array($item)) {
+			$this->writeArrayInOutputFormat($input, $output, $item, '');
+			return;
+		}
+
+		switch ($input->getOption('output')) {
+			case self::OUTPUT_FORMAT_JSON:
+				$output->writeln(json_encode($item));
+				break;
+			case self::OUTPUT_FORMAT_JSON_PRETTY:
+				$output->writeln(json_encode($item, JSON_PRETTY_PRINT));
+				break;
+			default:
+				$output->writeln($this->valueToString($item, false));
+				break;
+		}
+	}
+
+	protected function valueToString($value, $returnNull = true) {
 		if ($value === false) {
 			return 'false';
 		} else if ($value === true) {
 			return 'true';
 		} else if ($value === null) {
-			null;
+			return ($returnNull) ? null : 'null';
 		} else {
 			return $value;
 		}

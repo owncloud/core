@@ -3,8 +3,8 @@
  * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Craig Morrissey <craig@owncloud.com>
  * @author dampfklon <me@dampfklon.de>
- * @author Jan-Christoph Borchardt <hey@jancborchardt.net>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
@@ -12,6 +12,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Ramiro Aparicio <rapariciog@gmail.com>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Roeland Jago Douma <roeland@famdouma.nl>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
  * @author Vincent Petry <pvince81@owncloud.com>
@@ -66,6 +67,8 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 					} else {
 						OC_JSON::success();
 					}
+				} catch (\OC\HintException $exception) {
+					OC_JSON::error(array('data' => array('message' => $exception->getHint())));
 				} catch (Exception $exception) {
 					OC_JSON::error(array('data' => array('message' => $exception->getMessage())));
 				}
@@ -273,8 +276,15 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 				$sharedUsers = [];
 				$sharedGroups = [];
 				if (isset($_GET['itemShares'])) {
-					$sharedUsers = isset($_GET['itemShares'][OCP\Share::SHARE_TYPE_USER]) ? $_GET['itemShares'][OCP\Share::SHARE_TYPE_USER] : [];
-					$sharedGroups = isset($_GET['itemShares'][OCP\Share::SHARE_TYPE_GROUP]) ? $_GET['itemShares'][OCP\Share::SHARE_TYPE_GROUP] : [];
+					if (isset($_GET['itemShares'][OCP\Share::SHARE_TYPE_USER]) &&
+					    is_array($_GET['itemShares'][OCP\Share::SHARE_TYPE_USER])) {
+						$sharedUsers = $_GET['itemShares'][OCP\Share::SHARE_TYPE_USER];
+					}
+
+					if (isset($_GET['itemShares'][OCP\Share::SHARE_TYPE_GROUP]) &&
+					    is_array($_GET['itemShares'][OCP\Share::SHARE_TYPE_GROUP])) {
+						$sharedGroups = isset($_GET['itemShares'][OCP\Share::SHARE_TYPE_GROUP]);
+					}
 				}
 
 				$count = 0;
@@ -343,7 +353,7 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 				// allow user to add unknown remote addresses for server-to-server share
 				$backend = \OCP\Share::getBackend((string)$_GET['itemType']);
 				if ($backend->isShareTypeAllowed(\OCP\Share::SHARE_TYPE_REMOTE)) {
-					if (substr_count((string)$_GET['search'], '@') === 1) {
+					if (substr_count((string)$_GET['search'], '@') >= 1) {
 						$shareWith[] = array(
 							'label' => (string)$_GET['search'],
 							'value' => array(
@@ -352,7 +362,23 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 							)
 						);
 					}
+					$contactManager = \OC::$server->getContactsManager();
+					$addressBookContacts = $contactManager->search($_GET['search'], ['CLOUD', 'FN']);
+					foreach ($addressBookContacts as $contact) {
+						if (isset($contact['CLOUD'])) {
+							foreach ($contact['CLOUD'] as $cloudId) {
+								$shareWith[] = array(
+									'label' => $contact['FN'] . ' (' . $cloudId . ')',
+									'value' => array(
+										'shareType' => \OCP\Share::SHARE_TYPE_REMOTE,
+										'shareWith' => $cloudId
+									)
+								);
+							}
+						}
+					}
 				}
+
 
 				$sorter = new \OC\Share\SearchResultSorter((string)$_GET['search'],
 														   'label',

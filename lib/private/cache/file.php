@@ -1,16 +1,8 @@
 <?php
 /**
- * @author Arthur Schiwon <blizzz@owncloud.com>
- * @author Bart Visscher <bartv@thisnet.nl>
- * @author Björn Schießle <schiessle@owncloud.com>
- * @author Jörn Friedrich Dreyer <jfd@butonic.de>
- * @author Michael Gapczynski <GapczynskiM@gmail.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
- * @author Thomas Tanghus <thomas@tanghus.net>
- * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -33,15 +25,20 @@ namespace OC\Cache;
 
 use OC\Files\Filesystem;
 use OC\Files\View;
+use OCP\ICache;
 use OCP\Security\ISecureRandom;
 
-class File {
+class File implements ICache {
+
+	/** @var View */
 	protected $storage;
 
 	/**
 	 * Returns the cache storage for the logged in user
 	 *
 	 * @return \OC\Files\View cache storage
+	 * @throws \OC\ForbiddenException
+	 * @throws \OC\User\NoUserException
 	 */
 	protected function getStorage() {
 		if (isset($this->storage)) {
@@ -57,13 +54,15 @@ class File {
 			$this->storage = new View('/' . $user->getUID() . '/cache');
 			return $this->storage;
 		} else {
-			\OC_Log::write('core', 'Can\'t get cache storage, user not logged in', \OC_Log::ERROR);
+			\OCP\Util::writeLog('core', 'Can\'t get cache storage, user not logged in', \OCP\Util::ERROR);
 			throw new \OC\ForbiddenException('Can\t get cache storage, user not logged in');
 		}
 	}
 
 	/**
 	 * @param string $key
+	 * @return mixed|null
+	 * @throws \OC\ForbiddenException
 	 */
 	public function get($key) {
 		$result = null;
@@ -91,6 +90,10 @@ class File {
 
 	/**
 	 * @param string $key
+	 * @param mixed $value
+	 * @param int $ttl
+	 * @return bool|mixed
+	 * @throws \OC\ForbiddenException
 	 */
 	public function set($key, $value, $ttl = 0) {
 		$storage = $this->getStorage();
@@ -114,6 +117,11 @@ class File {
 		return $result;
 	}
 
+	/**
+	 * @param string $key
+	 * @return bool
+	 * @throws \OC\ForbiddenException
+	 */
 	public function hasKey($key) {
 		$storage = $this->getStorage();
 		if ($storage && $storage->is_file($key) && $storage->isReadable($key)) {
@@ -124,6 +132,8 @@ class File {
 
 	/**
 	 * @param string $key
+	 * @return bool|mixed
+	 * @throws \OC\ForbiddenException
 	 */
 	public function remove($key) {
 		$storage = $this->getStorage();
@@ -133,6 +143,11 @@ class File {
 		return $storage->unlink($key);
 	}
 
+	/**
+	 * @param string $prefix
+	 * @return bool
+	 * @throws \OC\ForbiddenException
+	 */
 	public function clear($prefix = '') {
 		$storage = $this->getStorage();
 		if ($storage and $storage->is_dir('/')) {
@@ -148,6 +163,10 @@ class File {
 		return true;
 	}
 
+	/**
+	 * Runs GC
+	 * @throws \OC\ForbiddenException
+	 */
 	public function gc() {
 		$storage = $this->getStorage();
 		if ($storage and $storage->is_dir('/')) {
@@ -158,9 +177,16 @@ class File {
 			}
 			while (($file = readdir($dh)) !== false) {
 				if ($file != '.' and $file != '..') {
-					$mtime = $storage->filemtime('/' . $file);
-					if ($mtime < $now) {
-						$storage->unlink('/' . $file);
+					try {
+						$mtime = $storage->filemtime('/' . $file);
+						if ($mtime < $now) {
+							$storage->unlink('/' . $file);
+						}
+					} catch (\OCP\Lock\LockedException $e) {
+						// ignore locked chunks
+						\OC::$server->getLogger()->debug('Could not cleanup locked chunk "' . $file . '"', array('app' => 'core'));
+					} catch (\OCP\Files\LockNotAcquiredException $e) {
+						\OC::$server->getLogger()->debug('Could not cleanup locked chunk "' . $file . '"', array('app' => 'core'));
 					}
 				}
 			}

@@ -3,7 +3,6 @@
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Frank Karlitschek <frank@owncloud.org>
  * @author Georg Ehrke <georg@owncloud.com>
- * @author Georg Ehrke <georg@ownCloud.com>
  * @author Jan-Christoph Borchardt <hey@jancborchardt.net>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
@@ -138,6 +137,8 @@ function html_select_options($options, $selected, $params=array()) {
 /**
  * This class provides the template system for owncloud. You can use it to load
  * specific templates, add data and generate the html code
+ *
+ * @since 8.0.0
  */
 class Template extends \OC_Template {
 	/**

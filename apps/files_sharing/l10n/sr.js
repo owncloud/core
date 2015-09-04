@@ -24,8 +24,8 @@ OC.L10N.register(
     "You can upload into this folder" : "Можете да отпремате у ову фасциклу",
     "No ownCloud installation (7 or higher) found at {remote}" : "Нема оунКлауд инсталације верзије 7 или више на {remote}",
     "Invalid ownCloud url" : "Неисправан оунКлауд УРЛ",
-    "Share" : "Дељење",
     "Shared by" : "Дели",
+    "Sharing" : "Дељење",
     "A file or folder has been <strong>shared</strong>" : "Фајл или фасцикла је <strong>дељен</strong>",
     "A file or folder was shared from <strong>another server</strong>" : "Фајл или фасцикла су дељени са <strong>другог сервера</strong>",
     "A public shared file or folder was <strong>downloaded</strong>" : "Јавно дељени фајл или фасцикла су <strong>преузети</strong>",
@@ -60,7 +60,6 @@ OC.L10N.register(
     "Open documentation" : "Отвори документацију",
     "Allow users on this server to send shares to other servers" : "Дозвољава корисницима овог сервера да шаљу дељења на друге сервере",
     "Allow users on this server to receive shares from other servers" : "Дозвољава корисницима овог сервера да примају дељења са других сервера",
-    "Federated Cloud" : "Здружени облак",
-    "Your Federated Cloud ID: %s" : "ИД вашег здруженог облака: %s"
+    "Federated Cloud" : "Здружени облак"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

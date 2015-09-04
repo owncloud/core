@@ -10,7 +10,6 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Martin Mattel <martin.mattel@diemattels.at>
- * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Sean Comeau <sean@ftlnetworks.ca>
  * @author Serge Martin <edb@sigluy.net>
@@ -40,6 +39,8 @@ use bantu\IniGetWrapper\IniGetWrapper;
 use Exception;
 use OCP\IConfig;
 use OCP\IL10N;
+use OCP\ILogger;
+use OCP\Security\ISecureRandom;
 
 class Setup {
 	/** @var \OCP\IConfig */
@@ -50,6 +51,10 @@ class Setup {
 	protected $l10n;
 	/** @var \OC_Defaults */
 	protected $defaults;
+	/** @var ILogger */
+	protected $logger;
+	/** @var ISecureRandom */
+	protected $random;
 
 	/**
 	 * @param IConfig $config
@@ -59,18 +64,22 @@ class Setup {
 	function __construct(IConfig $config,
 						 IniGetWrapper $iniWrapper,
 						 IL10N $l10n,
-						 \OC_Defaults $defaults) {
+						 \OC_Defaults $defaults,
+						 ILogger $logger,
+						 ISecureRandom $random
+		) {
 		$this->config = $config;
 		$this->iniWrapper = $iniWrapper;
 		$this->l10n = $l10n;
 		$this->defaults = $defaults;
+		$this->logger = $logger;
+		$this->random = $random;
 	}
 
 	static $dbSetupClasses = array(
 		'mysql' => '\OC\Setup\MySQL',
 		'pgsql' => '\OC\Setup\PostgreSQL',
 		'oci'   => '\OC\Setup\OCI',
-		'mssql' => '\OC\Setup\MSSQL',
 		'sqlite' => '\OC\Setup\Sqlite',
 		'sqlite3' => '\OC\Setup\Sqlite',
 	);
@@ -80,7 +89,7 @@ class Setup {
 	 * @param string $name
 	 * @return bool
 	 */
-	public function class_exists($name) {
+	protected function class_exists($name) {
 		return class_exists($name);
 	}
 
@@ -89,8 +98,17 @@ class Setup {
 	 * @param string $name
 	 * @return bool
 	 */
-	public function is_callable($name) {
+	protected function is_callable($name) {
 		return is_callable($name);
+	}
+
+	/**
+	 * Wrapper around \PDO::getAvailableDrivers
+	 *
+	 * @return array
+	 */
+	protected function getAvailableDbDriversForPdo() {
+		return \PDO::getAvailableDrivers();
 	}
 
 	/**
@@ -108,8 +126,8 @@ class Setup {
 				'name' => 'SQLite'
 			),
 			'mysql' => array(
-				'type' => 'function',
-				'call' => 'mysql_connect',
+				'type' => 'pdo',
+				'call' => 'mysql',
 				'name' => 'MySQL/MariaDB'
 			),
 			'pgsql' => array(
@@ -121,11 +139,6 @@ class Setup {
 				'type' => 'function',
 				'call' => 'oci_connect',
 				'name' => 'Oracle'
-			),
-			'mssql' => array(
-				'type' => 'function',
-				'call' => 'sqlsrv_connect',
-				'name' => 'MS SQL'
 			)
 		);
 		if ($allowAllDatabases) {
@@ -143,10 +156,15 @@ class Setup {
 		foreach($configuredDatabases as $database) {
 			if(array_key_exists($database, $availableDatabases)) {
 				$working = false;
-				if($availableDatabases[$database]['type'] === 'class') {
-					$working = $this->class_exists($availableDatabases[$database]['call']);
-				} elseif ($availableDatabases[$database]['type'] === 'function') {
-					$working = $this->is_callable($availableDatabases[$database]['call']);
+				$type = $availableDatabases[$database]['type'];
+				$call = $availableDatabases[$database]['call'];
+
+				if($type === 'class') {
+					$working = $this->class_exists($call);
+				} elseif ($type === 'function') {
+					$working = $this->is_callable($call);
+				} elseif($type === 'pdo') {
+					$working = in_array($call, $this->getAvailableDbDriversForPdo(), TRUE);
 				}
 				if($working) {
 					$supportedDatabases[$database] = $availableDatabases[$database]['name'];
@@ -219,7 +237,6 @@ class Setup {
 			'hasMySQL' => isset($databases['mysql']),
 			'hasPostgreSQL' => isset($databases['pgsql']),
 			'hasOracle' => isset($databases['oci']),
-			'hasMSSQL' => isset($databases['mssql']),
 			'databases' => $databases,
 			'directory' => $dataDir,
 			'htaccessWorking' => $htAccessWorking,
@@ -257,7 +274,8 @@ class Setup {
 
 		$class = self::$dbSetupClasses[$dbType];
 		/** @var \OC\Setup\AbstractDatabase $dbSetup */
-		$dbSetup = new $class($l, 'db_structure.xml');
+		$dbSetup = new $class($l, 'db_structure.xml', $this->config,
+			$this->logger, $this->random);
 		$error = array_merge($error, $dbSetup->validate($options));
 
 		// validate the data directory
@@ -292,9 +310,9 @@ class Setup {
 		}
 
 		//generate a random salt that is used to salt the local user passwords
-		$salt = \OC::$server->getSecureRandom()->getLowStrengthGenerator()->generate(30);
+		$salt = $this->random->getLowStrengthGenerator()->generate(30);
 		// generate a secret
-		$secret = \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate(48);
+		$secret = $this->random->getMediumStrengthGenerator()->generate(48);
 
 		//write the config file
 		$this->config->setSystemValues([
@@ -359,7 +377,7 @@ class Setup {
 
 			//try to write logtimezone
 			if (date_default_timezone_get()) {
-				\OC_Config::setValue('logtimezone', date_default_timezone_get());
+				$config->setSystemValue('logtimezone', date_default_timezone_get());
 			}
 
 			//and we are done
@@ -397,15 +415,27 @@ class Setup {
 	 * @throws \OC\HintException If .htaccess does not include the current version
 	 */
 	public static function updateHtaccess() {
-		$setupHelper = new \OC\Setup(\OC::$server->getConfig(), \OC::$server->getIniWrapper(), \OC::$server->getL10N('lib'), new \OC_Defaults());
+		$setupHelper = new \OC\Setup(\OC::$server->getConfig(), \OC::$server->getIniWrapper(),
+			\OC::$server->getL10N('lib'), new \OC_Defaults(), \OC::$server->getLogger(),
+			\OC::$server->getSecureRandom());
 		if(!$setupHelper->isCurrentHtaccess()) {
 			throw new \OC\HintException('.htaccess file has the wrong version. Please upload the correct version. Maybe you forgot to replace it after updating?');
 		}
 
-		$content = "\n";
-		$content.= "ErrorDocument 403 ".\OC::$WEBROOT."/core/templates/403.php\n";//custom 403 error page
-		$content.= "ErrorDocument 404 ".\OC::$WEBROOT."/core/templates/404.php";//custom 404 error page
-		@file_put_contents($setupHelper->pathToHtaccess(), $content, FILE_APPEND); //suppress errors in case we don't have permissions for it
+		$htaccessContent = file_get_contents($setupHelper->pathToHtaccess());
+		$content = '';
+		if (strpos($htaccessContent, 'ErrorDocument 403') === false) {
+			//custom 403 error page
+			$content.= "\nErrorDocument 403 ".\OC::$WEBROOT."/core/templates/403.php";
+		}
+		if (strpos($htaccessContent, 'ErrorDocument 404') === false) {
+			//custom 404 error page
+			$content.= "\nErrorDocument 404 ".\OC::$WEBROOT."/core/templates/404.php";
+		}
+		if ($content !== '') {
+			//suppress errors in case we don't have permissions for it
+			@file_put_contents($setupHelper->pathToHtaccess(), $content . "\n", FILE_APPEND);
+		}
 	}
 
 	public static function protectDataDirectory() {

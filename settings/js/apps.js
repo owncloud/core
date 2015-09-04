@@ -81,16 +81,17 @@ OC.Settings.Apps = OC.Settings.Apps || {
 		$('#app-category-' + categoryId).addClass('active');
 		OC.Settings.Apps.State.currentCategory = categoryId;
 
-		this._loadCategoryCall = $.ajax(OC.generateUrl('settings/apps/list?category={categoryId}', {
+		this._loadCategoryCall = $.ajax(OC.generateUrl('settings/apps/list?category={categoryId}&includeUpdateInfo=0', {
 			categoryId: categoryId
 		}), {
 			type:'GET',
 			success: function (apps) {
-				var appList = _.map(_.indexBy(apps.apps, 'id'), function(app) {
+				var appListWithIndex = _.indexBy(apps.apps, 'id');
+				OC.Settings.Apps.State.apps = appListWithIndex;
+				var appList = _.map(appListWithIndex, function(app) {
 					// default values for missing fields
 					return _.extend({level: 0}, app);
 				});
-				OC.Settings.Apps.State.apps = appList;
 				var source   = $("#app-template").html();
 				var template = Handlebars.compile(source);
 
@@ -119,10 +120,24 @@ OC.Settings.Apps = OC.Settings.Apps || {
 
 				$('.app-level .official').tipsy({fallback: t('settings', 'Official apps are developed by and within the ownCloud community. They offer functionality central to ownCloud and are ready for production use.')});
 				$('.app-level .approved').tipsy({fallback: t('settings', 'Approved apps are developed by trusted developers and have passed a cursory security check. They are actively maintained in an open code repository and their maintainers deem them to be stable for casual to normal use.')});
-				$('.app-level .experimental').tipsy({fallback: t('settings', 'This app is not checked for security issues and is new or known to be unstable. Install on your own risk.')});
+				$('.app-level .experimental').tipsy({fallback: t('settings', 'This app is not checked for security issues and is new or known to be unstable. Install at your own risk.')});
 			},
 			complete: function() {
 				$('#apps-list').removeClass('icon-loading');
+				$.ajax(OC.generateUrl('settings/apps/list?category={categoryId}&includeUpdateInfo=1', {
+					categoryId: categoryId
+				}), {
+					type: 'GET',
+					success: function (apps) {
+						_.each(apps.apps, function(app) {
+							if (app.update) {
+								var $update = $('#app-' + app.id + ' .update');
+								$update.removeClass('hidden');
+								$update.val(t('settings', 'Update to %s').replace(/%s/g, app.update));
+							}
+						})
+					}
+				});
 			}
 		});
 	},

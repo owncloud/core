@@ -8,13 +8,13 @@
 
 var $userList;
 var $userListBody;
-var filter;
 
 var UserList = {
 	availableGroups: [],
 	offset: 0,
 	usersToLoad: 10, //So many users will be loaded when user scrolls down
 	currentGid: '',
+	filter: '',
 
 	/**
 	 * Initializes the user list
@@ -77,6 +77,9 @@ var UserList = {
 		$tr.find('.name').text(user.name);
 		$tr.find('td.displayName > span').text(user.displayname);
 		$tr.find('td.mailAddress > span').text(user.email);
+		$tr.find('td.displayName > .action').tooltip({placement: 'top'});
+		$tr.find('td.mailAddress > .action').tooltip({placement: 'top'});
+		$tr.find('td.password > .action').tooltip({placement: 'top'});
 
 		/**
 		 * groups and subadmins
@@ -158,12 +161,9 @@ var UserList = {
 		}
 		var $tdLastLogin = $tr.find('td.lastLogin');
 		$tdLastLogin.text(lastLoginRel);
-		//tooltip makes it complicated … to not insert new HTML, we adjust the
-		//original title. We use a temporary div to get back the html that we
-		//can pass later. It is also required to initialise tipsy.
-		var tooltip = $('<div>').html($($tdLastLogin.attr('original-title')).text(lastLoginAbs)).html();
-		$tdLastLogin.tipsy({gravity:'s', html:true});
-		$tdLastLogin.attr('title', tooltip);
+		$tdLastLogin.attr('title', lastLoginAbs);
+		// setup tooltip with #app-content as container to prevent the td to resize on hover
+		$tdLastLogin.tooltip({placement: 'top', container: '#app-content'});
 
 		/**
 		 * append generated row to user list
@@ -229,7 +229,7 @@ var UserList = {
 		return aa.length - bb.length;
 	},
 	preSortSearchString: function(a, b) {
-		var pattern = filter.getPattern();
+		var pattern = this.filter;
 		if(typeof pattern === 'undefined') {
 			return undefined;
 		}
@@ -398,7 +398,7 @@ var UserList = {
 			gid = '';
 		}
 		UserList.currentGid = gid;
-		var pattern = filter.getPattern();
+		var pattern = this.filter;
 		$.get(
 			OC.generateUrl('/settings/users/users'),
 			{ offset: UserList.offset, limit: limit, gid: gid, pattern: pattern },
@@ -469,17 +469,6 @@ var UserList = {
 							) {
 								UserList.availableGroups.push(groupName);
 							}
-
-							// in case this was the last user in that group the group has to be removed
-							var groupElement = GroupList.getGroupLI(groupName);
-							var userCount = GroupList.getUserCount(groupElement);
-							if (response.data.action === 'remove' && userCount === 1) {
-								_.without(UserList.availableGroups, groupName);
-								GroupList.remove(groupName);
-								$('.groupsselect option').filterAttr('value', groupName).remove();
-								$('.subadminsselect option').filterAttr('value', groupName).remove();
-							}
-
 
 						}
 						if (response.data.message) {
@@ -612,7 +601,7 @@ $(document).ready(function () {
 	UserList.initDeleteHandling();
 
 	// Implements User Search
-	filter = new UserManagementFilter($('#usersearchform input'), UserList, GroupList);
+	OCA.Search.users= new UserManagementFilter(UserList, GroupList);
 
 	UserList.doSort();
 	UserList.availableGroups = $userList.data('groups');
@@ -879,5 +868,9 @@ $(document).ready(function () {
 
 	// trigger loading of users on startup
 	UserList.update(UserList.currentGid, initialUserCountLimit);
+
+	_.defer(function() {
+		$('#app-content').trigger($.Event('apprendered'));
+	});
 
 });

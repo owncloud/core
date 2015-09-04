@@ -25,6 +25,10 @@
 		 * @param {OCA.Files.FileList} fileList file list to be extended
 		 */
 		attach: function(fileList) {
+			// core sharing is disabled/not loaded
+			if (!OC.Share) {
+				return;
+			}
 			if (fileList.id === 'trashbin' || fileList.id === 'files.public') {
 				return;
 			}
@@ -56,6 +60,14 @@
 				return tr;
 			};
 
+			var oldElementToFile = fileList.elementToFile;
+			fileList.elementToFile = function($el) {
+				var fileInfo = oldElementToFile.apply(this, arguments);
+				fileInfo.sharePermissions = $el.attr('data-share-permissions') || undefined;
+				fileInfo.shareOwner = $el.attr('data-share-owner') || undefined;
+				return fileInfo;
+			};
+
 			// use delegate to catch the case with multiple file lists
 			fileList.$el.on('fileActionsReady', function(ev){
 				var fileList = ev.fileList;
@@ -85,57 +97,63 @@
 				}
 			});
 
-			fileActions.register(
-					'all',
-					'Share',
-					OC.PERMISSION_SHARE,
-					OC.imagePath('core', 'actions/share'),
-					function(filename, context) {
+			fileActions.registerAction({
+				name: 'Share',
+				displayName: '',
+				mime: 'all',
+				permissions: OC.PERMISSION_SHARE,
+				icon: OC.imagePath('core', 'actions/share'),
+				type: OCA.Files.FileActions.TYPE_INLINE,
+				actionHandler: function(filename, context) {
+					var $tr = context.$file;
+					var itemType = 'file';
+					if ($tr.data('type') === 'dir') {
+						itemType = 'folder';
+					}
+					var possiblePermissions = $tr.data('share-permissions');
+					if (_.isUndefined(possiblePermissions)) {
+						possiblePermissions = $tr.data('permissions');
+					}
 
-				var $tr = context.$file;
-				var itemType = 'file';
-				if ($tr.data('type') === 'dir') {
-					itemType = 'folder';
-				}
-				var possiblePermissions = $tr.data('share-permissions');
-				if (_.isUndefined(possiblePermissions)) {
-					possiblePermissions = $tr.data('permissions');
-				}
-
-				var appendTo = $tr.find('td.filename');
-				// Check if drop down is already visible for a different file
-				if (OC.Share.droppedDown) {
-					if ($tr.attr('data-id') !== $('#dropdown').attr('data-item-source')) {
-						OC.Share.hideDropDown(function () {
-							$tr.addClass('mouseOver');
-							OC.Share.showDropDown(itemType, $tr.data('id'), appendTo, true, possiblePermissions, filename);
-						});
+					var appendTo = $tr.find('td.filename');
+					// Check if drop down is already visible for a different file
+					if (OC.Share.droppedDown) {
+						if ($tr.attr('data-id') !== $('#dropdown').attr('data-item-source')) {
+							OC.Share.hideDropDown(function () {
+								$tr.addClass('mouseOver');
+								OC.Share.showDropDown(itemType, $tr.data('id'), appendTo, true, possiblePermissions, filename);
+							});
+						} else {
+							OC.Share.hideDropDown();
+						}
 					} else {
-						OC.Share.hideDropDown();
+						$tr.addClass('mouseOver');
+						OC.Share.showDropDown(itemType, $tr.data('id'), appendTo, true, possiblePermissions, filename);
 					}
-				} else {
-					$tr.addClass('mouseOver');
-					OC.Share.showDropDown(itemType, $tr.data('id'), appendTo, true, possiblePermissions, filename);
+					$('#dropdown').on('sharesChanged', function(ev) {
+						// files app current cannot show recipients on load, so we don't update the
+						// icon when changed for consistency
+						if (context.fileList.$el.closest('#app-content-files').length) {
+							return;
+						}
+						var recipients = _.pluck(ev.shares[OC.Share.SHARE_TYPE_USER], 'share_with_displayname');
+						var groupRecipients = _.pluck(ev.shares[OC.Share.SHARE_TYPE_GROUP], 'share_with_displayname');
+						recipients = recipients.concat(groupRecipients);
+						// note: we only update the data attribute because updateIcon()
+						// is called automatically after this event
+						if (recipients.length) {
+							$tr.attr('data-share-recipients', OCA.Sharing.Util.formatRecipients(recipients));
+						}
+						else {
+							$tr.removeAttr('data-share-recipients');
+						}
+					});
 				}
-				$('#dropdown').on('sharesChanged', function(ev) {
-					// files app current cannot show recipients on load, so we don't update the
-					// icon when changed for consistency
-					if (context.fileList.$el.closest('#app-content-files').length) {
-						return;
-					}
-					var recipients = _.pluck(ev.shares[OC.Share.SHARE_TYPE_USER], 'share_with_displayname');
-					var groupRecipients = _.pluck(ev.shares[OC.Share.SHARE_TYPE_GROUP], 'share_with_displayname');
-					recipients = recipients.concat(groupRecipients);
-					// note: we only update the data attribute because updateIcon()
-					// is called automatically after this event
-					if (recipients.length) {
-						$tr.attr('data-share-recipients', OCA.Sharing.Util.formatRecipients(recipients));
-					}
-					else {
-						$tr.removeAttr('data-share-recipients');
-					}
-				});
-			}, t('files_sharing', 'Share'));
+			});
+
+			OC.addScript('files_sharing', 'sharetabview').done(function() {
+				fileList.registerTabView(new OCA.Sharing.ShareTabView('shareTabView'));
+			});
 		},
 
 		/**
@@ -151,7 +169,7 @@
 				var permissions = $tr.data('permissions');
 				var hasLink = !!(shareStatus && shareStatus.link);
 				OC.Share.markFileAsShared($tr, true, hasLink);
-				if ((permissions & OC.PERMISSION_SHARE) === 0) {
+				if ((permissions & OC.PERMISSION_SHARE) === 0 && $tr.attr('data-share-owner')) {
 					// if no share action exists because the admin disabled sharing for this user
 					// we create a share notification action to inform the user about files
 					// shared with him otherwise we just update the existing share action.

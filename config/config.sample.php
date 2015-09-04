@@ -20,12 +20,6 @@
  *  * use RST syntax
  */
 
-/**
- * Only enable this for local development and not in production environments
- * This will disable the minifier and outputs some additional debug informations
- */
-define('DEBUG', true);
-
 $CONFIG = array(
 
 
@@ -81,7 +75,7 @@ $CONFIG = array(
 /**
  * Where user files are stored; this defaults to ``data/`` in the ownCloud
  * directory. The SQLite database is also stored here, when you use SQLite.
- * (SQLite is available only in ownCloud Community Edition)
+ * (SQLite is not available in ownCloud Enterprise Edition)
  */
 'datadirectory' => '/var/www/owncloud/data',
 
@@ -96,11 +90,10 @@ $CONFIG = array(
  * ``supportedDatabases``
  *
  * Available:
- * 	- sqlite (SQLite3 - Community Edition Only)
+ * 	- sqlite (SQLite3 - Not in Enterprise Edition)
  * 	- mysql (MySQL/MariaDB)
  * 	- pgsql (PostgreSQL)
  * 	- oci (Oracle - Enterprise Edition Only)
- * 	- mssql (Microsoft SQL Server - Enterprise Edition Only)
  */
 'dbtype' => 'sqlite',
 
@@ -226,7 +219,7 @@ $CONFIG = array(
  * copied to the data directory of new users. Leave empty to not copy any
  * skeleton files.
  */
-'skeletondirectory' => '',
+'skeletondirectory' => '/path/to/owncloud/core/skeleton',
 
 /**
  * The ``user_backends`` app (which needs to be enabled first) allows you to
@@ -285,7 +278,7 @@ $CONFIG = array(
 'mail_smtpmode' => 'sendmail',
 
 /**
- * This depends on ``mail_smtpmode``. Specified the IP address of your mail
+ * This depends on ``mail_smtpmode``. Specify the IP address of your mail
  * server host. This may contain multiple hosts separated by a semi-colon. If
  * you need to specify the port number append it to the IP address separated by
  * a colon, like this: ``127.0.0.1:24``.
@@ -298,7 +291,7 @@ $CONFIG = array(
 'mail_smtpport' => 25,
 
 /**
- * This depends on ``mail_smtpmode``. This set an SMTP server timeout, in
+ * This depends on ``mail_smtpmode``. This sets the SMTP server timeout, in
  * seconds. You may need to increase this if you are running an anti-malware or
  * spam scanner.
  */
@@ -374,7 +367,7 @@ $CONFIG = array(
 'overwritecondaddr' => '',
 
 /**
- * Use this configuration parameter to specify the base url for any urls which
+ * Use this configuration parameter to specify the base URL for any URLs which
  * are generated within ownCloud using any kind of command line tools (cron or
  * occ). The value should contain the full base URL:
  * ``https://www.example.com/owncloud``
@@ -400,16 +393,35 @@ $CONFIG = array(
  */
 
 /**
- * When the trash bin app is enabled (default), this is the number of days a
- * file will be kept in the trash bin. Default is 30 days.
+ * If the trash bin app is enabled (default), this setting defines the policy
+ * for when files and folders in the trash bin will be permanently deleted.
+ * The app allows for two settings, a minimum time for trash bin retention,
+ * and a maximum time for trash bin retention.
+ * Minimum time is the number of days a file will be kept, after which it
+ * may be deleted. Maximum time is the number of days at which it is guaranteed
+ * to be deleted.
+ * Both minimum and maximum times can be set together to explicitly define
+ * file and folder deletion. For migration purposes, this setting is installed
+ * initially set to "auto", which is equivalent to the default setting in
+ * ownCloud 8.1 and before.
+ *
+ * Available values:
+ *
+ * * ``auto``      default setting. keeps files and folders in the trash bin
+ *                 for 30 days and automatically deletes anytime after that
+ *                 if space is needed (note: files may not be deleted if space
+ *                 is not needed).
+ * * ``D, auto``   keeps files and folders in the trash bin for D+ days,
+ *                 delete anytime if space needed (note: files may not be deleted
+ *                 if space is not needed)
+ * * ``auto, D``   delete all files in the trash bin that are older than D days
+ *                 automatically, delete other files anytime if space needed
+ * * ``D1, D2``    keep files and folders the in trash bin for at least D1 days
+ *                 and delete when exceeds D2 days
+ * * ``disabled``  trash bin auto clean disabled, files and folders will be
+ *                 kept forever
  */
-'trashbin_retention_obligation' => 30,
-
-/**
- * Disable or enable auto-expiration for the trash bin. By default
- * auto-expiration is enabled.
- */
-'trashbin_auto_expire' => true,
+'trashbin_retention_obligation' => 'auto',
 
 
 /**
@@ -476,9 +488,10 @@ $CONFIG = array(
 'log_type' => 'owncloud',
 
 /**
- * Change the ownCloud logfile name from ``owncloud.log`` to something else.
+ * Log file path for the ownCloud logging type.
+ * Defaults to ``[datadirectory]/owncloud.log``
  */
-'logfile' => 'owncloud.log',
+'logfile' => '/var/log/owncloud.log',
 
 /**
  * Loglevel to start logging at. Valid values are: 0 = Debug, 1 = Info, 2 =
@@ -533,8 +546,8 @@ $CONFIG = array(
  * Location of the lock file for cron executions can be specified here.
  * Default is within the tmp directory. The file is named in the following way:
  * owncloud-server-$INSTANCEID-cron.lock
- * where $INSTANCEID is the string specified in the instanceid field.
- * Because the cron lock file is accessed in regular intervals, it may prevent
+ * where $INSTANCEID is the string specified in the ``instanceid`` field.
+ * Because the cron lock file is accessed at regular intervals, it may prevent
  * enabled disk drives from spinning down. A different location for this file
  * can solve such issues.
  */
@@ -544,8 +557,8 @@ $CONFIG = array(
  * Enables log rotation and limits the total size of logfiles. The default is 0,
  * or no rotation. Specify a size in bytes, for example 104857600 (100 megabytes
  * = 100 * 1024 * 1024 bytes). A new logfile is created with a new name when the
- * old logfile reaches your limit. The total size of all logfiles is double the
- * ``log_rotate_sizerotation`` value.
+ * old logfile reaches your limit. If a rotated log file is already present, it
+ * will be overwritten.
  */
 'log_rotate_size' => false,
 
@@ -588,7 +601,6 @@ $CONFIG = array(
 
 /**
  * When enabled, admins may install apps from the ownCloud app store.
- * The app store is disabled by default for ownCloud Enterprise Edition
  */
 'appstoreenabled' => true,
 
@@ -638,7 +650,7 @@ $CONFIG = array(
 /**
  * By default, ownCloud can generate previews for the following filetypes:
  *
- * - Images files
+ * - Image files
  * - Covers of MP3 files
  * - Text documents
  *
@@ -749,7 +761,7 @@ $CONFIG = array(
 
 /**
  * defines the interval in minutes for the background job that checks user
- * existance and marks them as ready to be cleaned up. The number is always
+ * existence and marks them as ready to be cleaned up. The number is always
  * minutes. Setting it to 0 disables the feature.
  * See command line (occ) methods ldap:show-remnants and user:delete
  */
@@ -766,10 +778,10 @@ $CONFIG = array(
 /**
  * Enable maintenance mode to disable ownCloud
  *
- * If you want to prevent users to login to ownCloud before you start doing some
- * maintenance work, you need to set the value of the maintenance parameter to
- * true. Please keep in mind that users who are already logged-in are kicked out
- * of ownCloud instantly.
+ * If you want to prevent users from logging in to ownCloud before you start 
+ * doing some maintenance work, you need to set the value of the maintenance 
+ * parameter to true. Please keep in mind that users who are already logged-in 
+ * are kicked out of ownCloud instantly.
  */
 'maintenance' => false,
 
@@ -791,69 +803,38 @@ $CONFIG = array(
 	'config' => '/absolute/location/of/openssl.cnf',
 ),
 
-
-/**
- * Miscellaneous
- */
-
-/**
- * Blacklist a specific file or files and disallow the upload of files
- * with this name. ``.htaccess`` is blocked by default.
- * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
- */
-'blacklisted_files' => array('.htaccess'),
-
-/**
- * Define a default folder for shared files and folders other than root.
- */
-'share_folder' => '/',
-
-/**
- * If you are applying a theme to ownCloud, enter the name of the theme here.
- * The default location for themes is ``owncloud/themes/``.
- */
-'theme' => '',
-
-/**
- * The default cipher for encrypting files. Currently AES-128-CFB and
- * AES-256-CFB are supported.
- */
-'cipher' => 'AES-256-CFB',
-
-/**
- * The minimum ownCloud desktop client version that will be allowed to sync with
- * this server instance. All connections made from earlier clients will be denied
- * by the server. Defaults to the minimum officially supported ownCloud version at
- * the time of release of this server version.
- *
- * When changing this, note that older unsupported versions of the ownCloud desktop
- * client may not function as expected, and could lead to permanent data loss for
- * clients or other unexpected results.
- */
-'minimum.supported.desktop.version' => '1.7.0',
-
 /**
  * Memory caching backend configuration
  *
  * Available cache backends:
- * - \OC\Memcache\APC        Alternative PHP Cache backend
- * - \OC\Memcache\APCu       APC user backend
- * - \OC\Memcache\ArrayCache In-memory array-based backend (not recommended)
- * - \OC\Memcache\Memcached  Memcached backend
- * - \OC\Memcache\Redis      Redis backend
- * - \OC\Memcache\XCache     XCache backend
+ *
+ * * ``\OC\Memcache\APC``        Alternative PHP Cache backend
+ * * ``\OC\Memcache\APCu``       APC user backend
+ * * ``\OC\Memcache\ArrayCache`` In-memory array-based backend (not recommended)
+ * * ``\OC\Memcache\Memcached``  Memcached backend
+ * * ``\OC\Memcache\Redis``      Redis backend
+ * * ``\OC\Memcache\XCache``     XCache backend
+ *
+ * Advice on choosing between the various backends:
+ *
+ * * APCu should be easiest to install. Almost all distributions have packages.
+ *   Use this for single user environment for all caches.
+ * * Use Redis or Memcached for distributed environments.
+ *   For the local cache (you can configure two) take APCu.
  */
 
 /**
  * Memory caching backend for locally stored data
- * Used for host-specific data, e.g. file paths
+ *
+ * * Used for host-specific data, e.g. file paths
  */
 'memcache.local' => '\OC\Memcache\APCu',
 
 /**
  * Memory caching backend for distributed data
- * Used for installation-specific data, e.g. database caching
- * If unset, defaults to the value of memcache.local
+ *
+ * * Used for installation-specific data, e.g. database caching
+ * * If unset, defaults to the value of memcache.local
  */
 'memcache.distributed' => '\OC\Memcache\Memcached',
 
@@ -888,56 +869,11 @@ $CONFIG = array(
 'cache_path' => '',
 
 /**
- * EXPERIMENTAL: option whether to include external storage in quota
- * calculation, defaults to false.
+ * Using Object Store with ownCloud
  */
-'quota_include_external_storage' => false,
 
 /**
- * Specifies how often the filesystem is checked for changes made outside
- * ownCloud.
- *
- * 0 -> Never check the filesystem for outside changes, provides a performance
- * increase when it's certain that no changes are made directly to the
- * filesystem
- *
- * 1 -> Check each file or folder at most once per request, recommended for
- * general use if outside changes might happen.
- *
- * 2 -> Check every time the filesystem is used, causes a performance hit when
- * using external storages, not recommended for regular use.
- */
-'filesystem_check_changes' => 1,
-
-/**
- * All css and js files will be served by the web server statically in one js
- * file and one css file if this is set to ``true``.
- */
-'asset-pipeline.enabled' => false,
-
-/**
- * The parent of the directory where css and js assets will be stored if
- * piplelining is enabled; this defaults to the ownCloud directory. The assets
- * will be stored in a subdirectory of this directory named 'assets'. The
- * server *must* be configured to serve that directory as $WEBROOT/assets.
- * You will only likely need to change this if the main ownCloud directory
- * is not writeable by the web server in your configuration.
- */
-'assetdirectory' => '/var/www/owncloud',
-
-/**
- * Where ``mount.json`` file should be stored, defaults to ``data/mount.json``
- */
-'mount_file' => 'data/mount.json',
-
-/**
- * When ``true``, prevent ownCloud from changing the cache due to changes in the
- * filesystem for all storage.
- */
-'filesystem_cache_readonly' => false,
-
-/**
- * The example below shows how to configure ownCloud to store all files in a
+ * This example shows how to configure ownCloud to store all files in a
  * swift object storage.
  *
  * It is important to note that ownCloud in object store mode will expect
@@ -981,23 +917,106 @@ $CONFIG = array(
  * Database types that are supported for installation.
  *
  * Available:
- * 	- sqlite (SQLite3 - Community Edition Only)
+ * 	- sqlite (SQLite3 - Not in Enterprise Edition)
  * 	- mysql (MySQL)
  * 	- pgsql (PostgreSQL)
  * 	- oci (Oracle - Enterprise Edition Only)
- * 	- mssql (Microsoft SQL Server - Enterprise Edition Only)
  */
 'supportedDatabases' => array(
 	'sqlite',
 	'mysql',
 	'pgsql',
 	'oci',
-	'mssql'
 ),
 
 /**
  * All other config options
  */
+
+/**
+ * Blacklist a specific file or files and disallow the upload of files
+ * with this name. ``.htaccess`` is blocked by default.
+ * WARNING: USE THIS ONLY IF YOU KNOW WHAT YOU ARE DOING.
+ */
+'blacklisted_files' => array('.htaccess'),
+
+/**
+ * Define a default folder for shared files and folders other than root.
+ */
+'share_folder' => '/',
+
+/**
+ * If you are applying a theme to ownCloud, enter the name of the theme here.
+ * The default location for themes is ``owncloud/themes/``.
+ */
+'theme' => '',
+
+/**
+ * The default cipher for encrypting files. Currently AES-128-CFB and
+ * AES-256-CFB are supported.
+ */
+'cipher' => 'AES-256-CFB',
+
+/**
+ * The minimum ownCloud desktop client version that will be allowed to sync with
+ * this server instance. All connections made from earlier clients will be denied
+ * by the server. Defaults to the minimum officially supported ownCloud version at
+ * the time of release of this server version.
+ *
+ * When changing this, note that older unsupported versions of the ownCloud desktop
+ * client may not function as expected, and could lead to permanent data loss for
+ * clients or other unexpected results.
+ */
+'minimum.supported.desktop.version' => '1.7.0',
+
+/**
+ * EXPERIMENTAL: option whether to include external storage in quota
+ * calculation, defaults to false.
+ */
+'quota_include_external_storage' => false,
+
+/**
+ * Specifies how often the filesystem is checked for changes made outside
+ * ownCloud.
+ *
+ * 0 -> Never check the filesystem for outside changes, provides a performance
+ * increase when it's certain that no changes are made directly to the
+ * filesystem
+ *
+ * 1 -> Check each file or folder at most once per request, recommended for
+ * general use if outside changes might happen.
+ *
+ * 2 -> Check every time the filesystem is used, causes a performance hit when
+ * using external storages, not recommended for regular use.
+ */
+'filesystem_check_changes' => 0,
+
+/**
+ * All css and js files will be served by the web server statically in one js
+ * file and one css file if this is set to ``true``. This improves performance.
+ */
+'asset-pipeline.enabled' => false,
+
+/**
+ * The parent of the directory where css and js assets will be stored if
+ * pipelining is enabled; this defaults to the ownCloud directory. The assets
+ * will be stored in a subdirectory of this directory named 'assets'. The
+ * server *must* be configured to serve that directory as $WEBROOT/assets.
+ * You will only likely need to change this if the main ownCloud directory
+ * is not writeable by the web server in your configuration.
+ */
+'assetdirectory' => '/var/www/owncloud',
+
+/**
+ * Where ``mount.json`` file should be stored, defaults to ``data/mount.json``
+ */
+'mount_file' => 'data/mount.json',
+
+/**
+ * When ``true``, prevent ownCloud from changing the cache due to changes in the
+ * filesystem for all storage.
+ */
+'filesystem_cache_readonly' => false,
 
 /**
  * Secret used by ownCloud for various purposes, e.g. to encrypt data. If you
@@ -1012,7 +1031,13 @@ $CONFIG = array(
 
 /**
  * Headers that should be trusted as client IP address in combination with
- * `trusted_proxies`
+ * `trusted_proxies`. If the HTTP header looks like 'X-Forwarded-For', then use
+ * 'HTTP_X_FORWARDED_FOR' here.
+ *
+ * If set incorrectly, a client can spoof their IP address as visible to
+ * ownCloud, bypassing access controls and making logs useless!
+ *
+ * Defaults to 'HTTP_X_FORWARED_FOR' if unset
  */
 'forwarded_for_headers' => array('HTTP_X_FORWARDED', 'HTTP_FORWARDED_FOR'),
 
@@ -1020,30 +1045,39 @@ $CONFIG = array(
  * max file size for animating gifs on public-sharing-site.
  * If the gif is bigger, it'll show a static preview
  *
- * Value represents the maximum filesize in megabytes
- * Default is 10
- * Set to -1 for no limit
+ * Value represents the maximum filesize in megabytes. Default is ``10``. Set to
+ * ``-1`` for no limit.
  */
 'max_filesize_animated_gifs_public_sharing' => 10,
 
 
 /**
- * Enables the EXPERIMENTAL file locking.
- * This is disabled by default as it is experimental.
+ * Enables transactional file locking.
+ * This is enabled by default.
  *
- * Prevents concurrent processes to access the same files
+ * Prevents concurrent processes from accessing the same files
  * at the same time. Can help prevent side effects that would
- * be caused by concurrent operations.
- *
- * WARNING: EXPERIMENTAL
+ * be caused by concurrent operations. Mainly relevant for
+ * very large installations with many users working with
+ * shared files.
  */
-'filelocking.enabled' => false,
+'filelocking.enabled' => true,
 
 /**
  * Memory caching backend for file locking
- * Because most memcache backends can clean values without warning using redis is recommended
+ *
+ * Because most memcache backends can clean values without warning using redis
+ * is highly recommended to *avoid data loss*.
  */
 'memcache.locking' => '\\OC\\Memcache\\Redis',
+
+/**
+ * Set this ownCloud instance to debugging mode
+ *
+ * Only enable this for local development and not in production environments
+ * This will disable the minifier and outputs some additional debug information
+ */
+'debug' => false,
 
 /**
  * This entry is just here to show a warning in case somebody copied the sample

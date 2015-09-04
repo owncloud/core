@@ -81,14 +81,14 @@ script(
 		<p class="documentation">
 			<?php p($l->t("Documentation:"));?>
 			{{#if documentation.user}}
-			<span class="userDocumentation appslink">
-			<a id='userDocumentation' href='{{documentation.user}}' target="_blank"><?php p($l->t("User Documentation"));?></a>
+			<span class="userDocumentation">
+			<a id="userDocumentation" class="appslink" href="{{documentation.user}}" target="_blank"><?php p($l->t('User documentation'));?> ↗</a>
 			</span>
 			{{/if}}
 
 			{{#if documentation.admin}}
-			<span class="adminDocumentation appslink">
-			<a id='adminDocumentation' href='{{documentation.admin}}' target="_blank"><?php p($l->t("Admin Documentation"));?></a>
+			<span class="adminDocumentation">
+			<a id="adminDocumentation" class="appslink" href="{{documentation.admin}}" target="_blank"><?php p($l->t('Admin documentation'));?> ↗</a>
 			</span>
 			{{/if}}
 		</p>
@@ -108,9 +108,7 @@ script(
 	</div>
 	{{/unless}}
 
-	{{#if update}}
-	<input class="update" type="submit" value="<?php p($l->t('Update to %s', array('{{update}}'))); ?>" data-appid="{{id}}" />
-	{{/if}}
+	<input class="update hidden" type="submit" value="<?php p($l->t('Update to %s', array('{{update}}'))); ?>" data-appid="{{id}}" />
 	{{#if active}}
 	<input class="enable" type="submit" data-appid="{{id}}" data-active="true" value="<?php p($l->t("Disable"));?>"/>
 	<input type="checkbox" class="groups-enable" id="groups_enable-{{id}}"/>

@@ -1,6 +1,8 @@
 <?php
 /**
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  *
@@ -40,6 +42,15 @@ namespace OCP;
  * @since 8.0.0
  */
 interface IGroupManager {
+	/**
+	 * Checks whether a given backend is used
+	 *
+	 * @param string $backendClass Full classname including complete namespace
+	 * @return bool
+	 * @since 8.1.0
+	 */
+	public function isBackendUsed($backendClass);
+
 	/**
 	 * @param \OCP\UserInterface $backend
 	 * @since 8.0.0
@@ -118,7 +129,7 @@ interface IGroupManager {
 	/**
 	 * Checks if a userId is in a group
 	 * @param string $userId
-	 * @param group $group
+	 * @param string $group
 	 * @return bool if in group
 	 * @since 8.0.0
 	 */

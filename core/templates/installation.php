@@ -8,7 +8,6 @@ script('core', [
 <input type='hidden' id='hasSQLite' value='<?php p($_['hasSQLite']) ?>'>
 <input type='hidden' id='hasPostgreSQL' value='<?php p($_['hasPostgreSQL']) ?>'>
 <input type='hidden' id='hasOracle' value='<?php p($_['hasOracle']) ?>'>
-<input type='hidden' id='hasMSSQL' value='<?php p($_['hasMSSQL']) ?>'>
 <form action="index.php" method="post">
 <input type="hidden" name="install" value="true">
 	<?php if(count($_['errors']) > 0): ?>
@@ -54,7 +53,7 @@ script('core', [
 			<label for="adminpass" class="infield"><?php p($l->t( 'Password' )); ?></label>
 			<img class="svg" id="adminpass-icon" src="<?php print_unescaped(image_path('', 'actions/password.svg')); ?>" alt="">
 			<input type="checkbox" id="show" name="show">
-			<label for="show"></label>
+			<label for="show" class="svg"></label>
 			<div class="strengthify-wrapper"></div>
 		</p>
 	</fieldset>
@@ -79,7 +78,7 @@ script('core', [
 
 	<?php if(!$_['dbIsSet'] OR count($_['errors']) > 0): ?>
 	<fieldset id='databaseBackend'>
-		<?php if($_['hasMySQL'] or $_['hasPostgreSQL'] or $_['hasOracle'] or $_['hasMSSQL'])
+		<?php if($_['hasMySQL'] or $_['hasPostgreSQL'] or $_['hasOracle'])
 			$hasOtherDB = true; else $hasOtherDB =false; //other than SQLite ?>
 		<legend><?php p($l->t( 'Configure the database' )); ?></legend>
 		<div id="selectDbType">
@@ -150,7 +149,7 @@ script('core', [
 		</fieldset>
 		<?php endif; ?>
 	<?php endif; ?>
-	
+
 	<div class="icon-loading-dark float-spinner">&nbsp;</div>
 
 	<?php if(!$_['dbIsSet'] OR count($_['errors']) > 0): ?>

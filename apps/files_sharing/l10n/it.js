@@ -24,11 +24,12 @@ OC.L10N.register(
     "You can upload into this folder" : "Puoi caricare in questa cartella",
     "No ownCloud installation (7 or higher) found at {remote}" : "Nessuna installazione di ownCloud (7 o superiore) trovata su {remote}",
     "Invalid ownCloud url" : "URL di ownCloud non valido",
-    "Share" : "Condividi",
     "Shared by" : "Condiviso da",
+    "Sharing" : "Condivisione",
     "A file or folder has been <strong>shared</strong>" : "Un file o una cartella è stato <strong>condiviso</strong>",
     "A file or folder was shared from <strong>another server</strong>" : "Un file o una cartella è stato condiviso da <strong>un altro server</strong>",
     "A public shared file or folder was <strong>downloaded</strong>" : "Un file condiviso pubblicamente o una cartella è stato <strong>scaricato</strong>",
+    "You received a new remote share %2$s from %1$s" : "Hai ricevuto una nuova condivisione remota %2$s da %1$s",
     "You received a new remote share from %s" : "Hai ricevuto una nuova condivisione remota da %s",
     "%1$s accepted remote share %2$s" : "%1$s ha accettato la condivisione remota %2$s",
     "%1$s declined remote share %2$s" : "%1$s ha rifiutato la condivisione remota %2$s",
@@ -40,6 +41,8 @@ OC.L10N.register(
     "%2$s shared %1$s with you" : "%2$s ha condiviso %1$s con te",
     "You shared %1$s via link" : "Hai condiviso %1$s tramite collegamento",
     "Shares" : "Condivisioni",
+    "Share with me through my #ownCloud Federated Cloud ID, see %s" : "Condividi con me attraverso il mio ID di cloud federata #ownCloud, vedi %s",
+    "Share with me through my #ownCloud Federated Cloud ID" : "Condividi con me attraverso il mio ID di cloud federata #ownCloud",
     "This share is password-protected" : "Questa condivione è protetta da password",
     "The password is wrong. Try again." : "La password è errata. Prova ancora.",
     "Password" : "Password",
@@ -61,6 +64,9 @@ OC.L10N.register(
     "Allow users on this server to send shares to other servers" : "Consenti agli utenti su questo server di inviare condivisioni ad altri server",
     "Allow users on this server to receive shares from other servers" : "Consenti agli utenti su questo server di ricevere condivisioni da altri server",
     "Federated Cloud" : "Cloud federata",
-    "Your Federated Cloud ID: %s" : "Il tuo ID di cloud federata: %s"
+    "Your Federated Cloud ID:" : "Il tuo ID di cloud federata:",
+    "Share it:" : "Condividilo:",
+    "Share with me via ownCloud" : "Condividi con me tramite ownCloud",
+    "HTML Code:" : "Codice HTML:"
 },
 "nplurals=2; plural=(n != 1);");

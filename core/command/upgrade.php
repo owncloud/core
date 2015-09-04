@@ -3,6 +3,7 @@
  * @author Andreas Fischer <bantu@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Owen Winkler <a_github@midnightcircus.com>
+ * @author Steffen Lindner <mail@steffen-lindner.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
@@ -25,6 +26,7 @@
 
 namespace OC\Core\Command;
 
+use OC\Console\TimestampFormatter;
 use OC\Updater;
 use OCP\IConfig;
 use Symfony\Component\Console\Command\Command;
@@ -39,8 +41,7 @@ class Upgrade extends Command {
 	const ERROR_MAINTENANCE_MODE = 2;
 	const ERROR_UP_TO_DATE = 3;
 	const ERROR_INVALID_ARGUMENTS = 4;
-
-	public $upgradeFailed = false;
+	const ERROR_FAILURE = 5;
 
 	/**
 	 * @var IConfig
@@ -110,6 +111,12 @@ class Upgrade extends Command {
 		}
 
 		if(\OC::checkUpgrade(false)) {
+			if (OutputInterface::VERBOSITY_NORMAL < $output->getVerbosity()) {
+				// Prepend each line with a little timestamp
+				$timestampFormatter = new TimestampFormatter($this->config, $output->getFormatter());
+				$output->setFormatter($timestampFormatter);
+			}
+
 			$self = $this;
 			$updater = new Updater(\OC::$server->getHTTPHelper(),
 				\OC::$server->getConfig());
@@ -128,10 +135,13 @@ class Upgrade extends Command {
 				$output->writeln('<info>Maintenance mode is kept active</info>');
 			});
 			$updater->listen('\OC\Updater', 'updateEnd',
-				function () use($output, $updateStepEnabled, $self) {
+				function ($success) use($output, $updateStepEnabled, $self) {
 					$mode = $updateStepEnabled ? 'Update' : 'Update simulation';
-					$status = $self->upgradeFailed ? 'failed' : 'successful';
-					$message = "<info>$mode $status</info>";
+					if ($success) {
+						$message = "<info>$mode successful</info>";
+					} else {
+						$message = "<error>$mode failed</error>";
+					}
 					$output->writeln($message);
 				});
 			$updater->listen('\OC\Updater', 'dbUpgrade', function () use($output) {
@@ -158,17 +168,32 @@ class Upgrade extends Command {
 			$updater->listen('\OC\Updater', 'appUpgradeCheck', function () use ($output) {
 				$output->writeln('<info>Checked database schema update for apps</info>');
 			});
+			$updater->listen('\OC\Updater', 'appUpgradeStarted', function ($app, $version) use ($output) {
+				$output->writeln("<info>Updating <$app> ...</info>");
+			});
 			$updater->listen('\OC\Updater', 'appUpgrade', function ($app, $version) use ($output) {
 				$output->writeln("<info>Updated <$app> to $version</info>");
 			});
 			$updater->listen('\OC\Updater', 'failure', function ($message) use($output, $self) {
 				$output->writeln("<error>$message</error>");
-				$self->upgradeFailed = true;
 			});
 
-			$updater->upgrade();
+			if(OutputInterface::VERBOSITY_NORMAL < $output->getVerbosity()) {
+				$updater->listen('\OC\Updater', 'repairInfo', function ($message) use($output) {
+					$output->writeln('<info>Repair info: ' . $message . '</info>');
+				});
+				$updater->listen('\OC\Updater', 'repairStep', function ($message) use($output) {
+					$output->writeln('<info>Repair step: ' . $message . '</info>');
+				});
+			}
+
+			$success = $updater->upgrade();
 
 			$this->postUpgradeCheck($input, $output);
+
+			if(!$success) {
+				return self::ERROR_FAILURE;
+			}
 
 			return self::ERROR_SUCCESS;
 		} else if($this->config->getSystemValue('maintenance', false)) {

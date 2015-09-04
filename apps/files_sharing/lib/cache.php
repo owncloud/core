@@ -60,7 +60,7 @@ class Shared_Cache extends Cache {
 		if ($target === false || $target === $this->storage->getMountPoint()) {
 			$target = '';
 		}
-		$source = \OC_Share_Backend_File::getSource($target, $this->storage->getMountPoint(), $this->storage->getItemType());
+		$source = \OC_Share_Backend_File::getSource($target, $this->storage->getShare());
 		if (isset($source['path']) && isset($source['fileOwner'])) {
 			\OC\Files\Filesystem::initMountPoints($source['fileOwner']);
 			$mounts = \OC\Files\Filesystem::getMountByNumericId($source['storage']);
@@ -120,7 +120,7 @@ class Shared_Cache extends Cache {
 			if (!is_int($sourceId) || $sourceId === 0) {
 				$sourceId = $this->storage->getSourceId();
 			}
-			$query = \OC_DB::prepare(
+			$query = \OCP\DB::prepare(
 				'SELECT `fileid`, `storage`, `path`, `parent`, `name`, `mimetype`, `mimepart`,'
 				. ' `size`, `mtime`, `encrypted`, `storage_mtime`, `etag`, `permissions`'
 				. ' FROM `*PREFIX*filecache` WHERE `fileid` = ?');
@@ -242,7 +242,7 @@ class Shared_Cache extends Cache {
 	 */
 	protected function getMoveInfo($path) {
 		$cache = $this->getSourceCache($path);
-		$file = \OC_Share_Backend_File::getSource($path, $this->storage->getMountPoint(), $this->storage->getItemType());
+		$file = \OC_Share_Backend_File::getSource($path, $this->storage->getShare());
 		return [$cache->getNumericStorageId(), $file['path']];
 	}
 
@@ -499,7 +499,7 @@ class Shared_Cache extends Cache {
 	 */
 	private function getParentInfo($id) {
 		$sql = 'SELECT `parent`, `name` FROM `*PREFIX*filecache` WHERE `fileid` = ?';
-		$query = \OC_DB::prepare($sql);
+		$query = \OCP\DB::prepare($sql);
 		$result = $query->execute(array($id));
 		if ($row = $result->fetchRow()) {
 			return array((int)$row['parent'], $row['name']);

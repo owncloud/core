@@ -40,6 +40,7 @@ require 'aws-autoloader.php';
 
 use Aws\S3\S3Client;
 use Aws\S3\Exception\S3Exception;
+use Icewind\Streams\IteratorDirectory;
 
 class AmazonS3 extends \OC\Files\Storage\Common {
 
@@ -121,7 +122,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 		$params['region'] = empty($params['region']) ? 'eu-west-1' : $params['region'];
 		$params['hostname'] = empty($params['hostname']) ? 's3.amazonaws.com' : $params['hostname'];
 		if (!isset($params['port']) || $params['port'] === '') {
-			$params['port'] = ($params['use_ssl'] === 'false') ? 80 : 443;
+			$params['port'] = ($params['use_ssl'] === false) ? 80 : 443;
 		}
 		$this->params = $params;
 	}
@@ -284,9 +285,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 				$files[] = $file;
 			}
 
-			\OC\Files\Stream\Dir::register('amazons3' . $path, $files);
-
-			return opendir('fakedir://amazons3' . $path);
+			return IteratorDirectory::wrap($files);
 		} catch (S3Exception $e) {
 			\OCP\Util::logException('files_external', $e);
 			return false;
@@ -373,7 +372,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 		switch ($mode) {
 			case 'r':
 			case 'rb':
-				$tmpFile = \OC_Helper::tmpFile();
+				$tmpFile = \OCP\Files::tmpFile();
 				self::$tmpFiles[$tmpFile] = $path;
 
 				try {
@@ -405,7 +404,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 				} else {
 					$ext = '';
 				}
-				$tmpFile = \OC_Helper::tmpFile($ext);
+				$tmpFile = \OCP\Files::tmpFile($ext);
 				\OC\Files\Stream\Close::registerCallback($tmpFile, array($this, 'writeBack'));
 				if ($this->file_exists($path)) {
 					$source = $this->fopen($path, 'r');
@@ -443,9 +442,12 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 		$path = $this->normalizePath($path);
 
 		$metadata = array();
-		if (!is_null($mtime)) {
-			$metadata = array('lastmodified' => $mtime);
+		if (is_null($mtime)) {
+			$mtime = time();
 		}
+		$metadata = [
+			'lastmodified' => gmdate(\Aws\Common\Enum\DateFormat::RFC1123, $mtime)
+		];
 
 		$fileType = $this->filetype($path);
 		try {
@@ -453,22 +455,24 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 				if ($fileType === 'dir' && ! $this->isRoot($path)) {
 					$path .= '/';
 				}
-				$this->getConnection()->copyObject(array(
+				$this->getConnection()->copyObject([
 					'Bucket' => $this->bucket,
 					'Key' => $this->cleanKey($path),
 					'Metadata' => $metadata,
-					'CopySource' => $this->bucket . '/' . $path
-				));
+					'CopySource' => $this->bucket . '/' . $path,
+					'MetadataDirective' => 'REPLACE',
+				]);
 				$this->testTimeout();
 			} else {
-				$mimeType = \OC_Helper::getMimetypeDetector()->detectPath($path);
-				$this->getConnection()->putObject(array(
+				$mimeType = \OC::$server->getMimeTypeDetector()->detectPath($path);
+				$this->getConnection()->putObject([
 					'Bucket' => $this->bucket,
 					'Key' => $this->cleanKey($path),
 					'Metadata' => $metadata,
 					'Body' => '',
-					'ContentType' => $mimeType
-				));
+					'ContentType' => $mimeType,
+					'MetadataDirective' => 'REPLACE',
+				]);
 				$this->testTimeout();
 			}
 		} catch (S3Exception $e) {
@@ -581,7 +585,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 			return $this->connection;
 		}
 
-		$scheme = ($this->params['use_ssl'] === 'false') ? 'http' : 'https';
+		$scheme = ($this->params['use_ssl'] === false) ? 'http' : 'https';
 		$base_url = $scheme . '://' . $this->params['hostname'] . ':' . $this->params['port'] . '/';
 
 		$this->connection = S3Client::factory(array(
@@ -625,7 +629,7 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 				'Bucket' => $this->bucket,
 				'Key' => $this->cleanKey(self::$tmpFiles[$tmpFile]),
 				'SourceFile' => $tmpFile,
-				'ContentType' => \OC_Helper::getMimeType($tmpFile),
+				'ContentType' => \OC::$server->getMimeTypeDetector()->detect($tmpFile),
 				'ContentLength' => filesize($tmpFile)
 			));
 			$this->testTimeout();

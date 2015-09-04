@@ -8,6 +8,7 @@
  * @author fabian <fabian@web2.0-apps.de>
  * @author Georg Ehrke <georg@owncloud.com>
  * @author Jakob Sack <mail@jakobsack.de>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
@@ -142,10 +143,12 @@ class OC_User_Database extends OC_User_Backend implements \OCP\IUserBackend {
 	}
 
 	/**
-	 * Get a list of all display names
-	 * @return array an array of  all displayNames (value) and the correspondig uids (key)
-	 *
 	 * Get a list of all display names and user ids.
+	 *
+	 * @param string $search
+	 * @param string|null $limit
+	 * @param string|null $offset
+	 * @return array an array of all displayNames (value) and the corresponding uids (key)
 	 */
 	public function getDisplayNames($search = '', $limit = null, $offset = null) {
 		$parameters = [];
@@ -208,7 +211,7 @@ class OC_User_Database extends OC_User_Backend implements \OCP\IUserBackend {
 			$result = $query->execute(array($uid));
 
 			if (OC_DB::isError($result)) {
-				OC_Log::write('core', OC_DB::getErrorMessage(), OC_Log::ERROR);
+				\OCP\Util::writeLog('core', OC_DB::getErrorMessage(), \OCP\Util::ERROR);
 				return false;
 			}
 
@@ -223,9 +226,11 @@ class OC_User_Database extends OC_User_Backend implements \OCP\IUserBackend {
 
 	/**
 	 * Get a list of all users
-	 * @return array an array of all uids
 	 *
-	 * Get a list of all users.
+	 * @param string $search
+	 * @param null|int $limit
+	 * @param null|int $offset
+	 * @return string[] an array of all uids
 	 */
 	public function getUsers($search = '', $limit = null, $offset = null) {
 		$parameters = [];
@@ -283,7 +288,7 @@ class OC_User_Database extends OC_User_Backend implements \OCP\IUserBackend {
 		$query = OC_DB::prepare('SELECT COUNT(*) FROM `*PREFIX*users`');
 		$result = $query->execute();
 		if (OC_DB::isError($result)) {
-			OC_Log::write('core', OC_DB::getErrorMessage(), OC_Log::ERROR);
+			\OCP\Util::writeLog('core', OC_DB::getErrorMessage(), \OCP\Util::ERROR);
 			return false;
 		}
 		return $result->fetchOne();

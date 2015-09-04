@@ -2,9 +2,10 @@
 /**
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Christian Kampka <christian@kampka.net>
+ * @author Jost Baron <Jost.Baron@gmx.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
- * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -53,7 +54,7 @@ try {
 			exit(0);
 		}
 		$user = posix_getpwuid(posix_getuid());
-		$configUser = posix_getpwuid(fileowner(\OC::$configDir . 'config.php'));
+		$configUser = posix_getpwuid(fileowner(OC::$configDir . 'config.php'));
 		if ($user['name'] !== $configUser['name']) {
 			echo "Console has to be executed with the user that owns the file config/config.php" . PHP_EOL;
 			echo "Current user: " . $user['name'] . PHP_EOL;

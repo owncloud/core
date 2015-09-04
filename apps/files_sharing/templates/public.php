@@ -7,6 +7,7 @@ OCP\Util::addStyle('files_sharing', 'public');
 OCP\Util::addStyle('files_sharing', 'mobile');
 OCP\Util::addScript('files_sharing', 'public');
 OCP\Util::addScript('files', 'fileactions');
+OCP\Util::addScript('files', 'fileactionsmenu');
 OCP\Util::addScript('files', 'jquery.iframe-transport');
 OCP\Util::addScript('files', 'jquery.fileupload');
 
@@ -15,6 +16,7 @@ OCP\Util::addStyle('files', 'files');
 OCP\Util::addStyle('files', 'upload');
 OCP\Util::addScript('files', 'filesummary');
 OCP\Util::addScript('files', 'breadcrumb');
+OCP\Util::addScript('files', 'fileinfomodel');
 OCP\Util::addScript('files', 'files');
 OCP\Util::addScript('files', 'filelist');
 OCP\Util::addscript('files', 'keyboardshortcuts');
@@ -100,7 +102,7 @@ $thumbSize = 1024;
 				<div id="imgframe"></div>
 			<?php endif; ?>
 			<div class="directDownload">
-				<a href="<?php p($_['downloadURL']); ?>" id="download" class="button">
+				<a href="<?php p($_['downloadURL']); ?>" id="downloadFile" class="button">
 					<img class="svg" alt="" src="<?php print_unescaped(OCP\image_path("core", "actions/download.svg")); ?>"/>
 					<?php p($l->t('Download %s', array($_['filename'])))?> (<?php p($_['fileSize']) ?>)
 				</a>

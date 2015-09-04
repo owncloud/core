@@ -24,11 +24,12 @@ OC.L10N.register(
     "You can upload into this folder" : "Du kan overføre til denne mappe",
     "No ownCloud installation (7 or higher) found at {remote}" : "Der er ingen ownCloud-installation (7 eller højere) på {remote}",
     "Invalid ownCloud url" : "Ugyldig ownCloud-URL",
-    "Share" : "Del",
     "Shared by" : "Delt af",
+    "Sharing" : "Deling",
     "A file or folder has been <strong>shared</strong>" : "En fil eller mappe er blevet <strong>delt</strong>",
     "A file or folder was shared from <strong>another server</strong>" : "En fil eller mappe blev delt fra <strong>en anden server</strong>",
     "A public shared file or folder was <strong>downloaded</strong>" : "En offentligt delt fil eller mappe blev <strong>hentet</strong>",
+    "You received a new remote share %2$s from %1$s" : "Du modtog en ny ekstern deling %2$s fra %1$s",
     "You received a new remote share from %s" : "Du modtog en ny ekstern deling fra %s",
     "%1$s accepted remote share %2$s" : "%1$s accepterede den ekstern deling %2$s",
     "%1$s declined remote share %2$s" : "%1$s afviste den eksterne deling %2$s",
@@ -40,6 +41,8 @@ OC.L10N.register(
     "%2$s shared %1$s with you" : "%2$s delt %1$s med dig",
     "You shared %1$s via link" : "Du delte %1$s via link",
     "Shares" : "Delt",
+    "Share with me through my #ownCloud Federated Cloud ID, see %s" : "Del med mig gennem min #ownCloud Federated Cloud ID, se %s",
+    "Share with me through my #ownCloud Federated Cloud ID" : "Del med mig gennem min #ownCloud Federated Cloud ID",
     "This share is password-protected" : "Delingen er beskyttet af kodeord",
     "The password is wrong. Try again." : "Kodeordet er forkert. Prøv igen.",
     "Password" : "Kodeord",
@@ -61,6 +64,9 @@ OC.L10N.register(
     "Allow users on this server to send shares to other servers" : "Tillad brugere på denne server, at sende delinger til andre servere",
     "Allow users on this server to receive shares from other servers" : "Tillad brugere på denne server, at modtage delinger fra andre servere",
     "Federated Cloud" : "Federated Cloud",
-    "Your Federated Cloud ID: %s" : "Dit ID til Federated Cloud: %s"
+    "Your Federated Cloud ID:" : "Din Federated Cloud ID:",
+    "Share it:" : "Del:",
+    "Share with me via ownCloud" : "Del med mig gennem ownCloud",
+    "HTML Code:" : "HTMLkode:"
 },
 "nplurals=2; plural=(n != 1);");

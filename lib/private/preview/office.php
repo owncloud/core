@@ -2,6 +2,7 @@
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Olivier Paroz <github@oparoz.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -55,7 +56,7 @@ abstract class Office extends Provider {
 		} catch (\Exception $e) {
 			unlink($absPath);
 			unlink($pdfPreview);
-			\OC_Log::write('core', $e->getmessage(), \OC_Log::ERROR);
+			\OCP\Util::writeLog('core', $e->getmessage(), \OCP\Util::ERROR);
 			return false;
 		}
 

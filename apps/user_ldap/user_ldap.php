@@ -71,6 +71,43 @@ class USER_LDAP extends BackendUtility implements \OCP\IUserBackend, \OCP\UserIn
 	}
 
 	/**
+	 * returns the username for the given login name, if available
+	 *
+	 * @param string $loginName
+	 * @return string|false
+	 */
+	public function loginName2UserName($loginName) {
+		try {
+			$ldapRecord = $this->getLDAPUserByLoginName($loginName);
+			$user = $this->access->userManager->get($ldapRecord['dn']);
+			if($user instanceof OfflineUser) {
+				return false;
+			}
+			return $user->getUsername();
+		} catch (\Exception $e) {
+			return false;
+		}
+	}
+
+	/**
+	 * returns an LDAP record based on a given login name
+	 *
+	 * @param string $loginName
+	 * @return array
+	 * @throws \Exception
+	 */
+	public function getLDAPUserByLoginName($loginName) {
+		//find out dn of the user name
+		$attrs = array($this->access->connection->ldapUserDisplayName, 'dn',
+			'uid', 'samaccountname');
+		$users = $this->access->fetchUsersByLoginName($loginName, $attrs);
+		if(count($users) < 1) {
+			throw new \Exception('No user available for the given login name.');
+		}
+		return $users[0];
+	}
+
+	/**
 	 * Check if the password is correct
 	 * @param string $uid The username
 	 * @param string $password The password
@@ -79,15 +116,14 @@ class USER_LDAP extends BackendUtility implements \OCP\IUserBackend, \OCP\UserIn
 	 * Check if the password is correct without logging in the user
 	 */
 	public function checkPassword($uid, $password) {
-		//find out dn of the user name
-		$attrs = array($this->access->connection->ldapUserDisplayName, 'dn',
-			'uid', 'samaccountname');
-		$users = $this->access->fetchUsersByLoginName($uid, $attrs);
-		if(count($users) < 1) {
+		try {
+			$ldapRecord = $this->getLDAPUserByLoginName($uid);
+		} catch(\Exception $e) {
 			return false;
 		}
-		$dn = $users[0]['dn'];
+		$dn = $ldapRecord['dn'];
 		$user = $this->access->userManager->get($dn);
+
 		if(!$user instanceof User) {
 			\OCP\Util::writeLog('user_ldap',
 				'LDAP Login: Could not get user object for DN ' . $dn .
@@ -102,14 +138,14 @@ class USER_LDAP extends BackendUtility implements \OCP\IUserBackend, \OCP\UserIn
 			}
 
 			$user->markLogin();
-			if(isset($users[0][$this->access->connection->ldapUserDisplayName])) {
-				$dpn = $users[0][$this->access->connection->ldapUserDisplayName];
+			if(isset($ldapRecord[$this->access->connection->ldapUserDisplayName])) {
+				$dpn = $ldapRecord[$this->access->connection->ldapUserDisplayName];
 				$user->storeDisplayName($dpn);
 			}
-			if(isset($users[0]['uid'])) {
-				$user->storeLDAPUserName($users[0]['uid']);
-			} else if(isset($users[0]['samaccountname'])) {
-				$user->storeLDAPUserName($users[0]['samaccountname']);
+			if(isset($ldapRecord['uid'])) {
+				$user->storeLDAPUserName($ldapRecord['uid']);
+			} else if(isset($ldapRecord['samaccountname'])) {
+				$user->storeLDAPUserName($ldapRecord['samaccountname']);
 			}
 
 			return $user->getUsername();
@@ -120,9 +156,11 @@ class USER_LDAP extends BackendUtility implements \OCP\IUserBackend, \OCP\UserIn
 
 	/**
 	 * Get a list of all users
-	 * @return string[] with all uids
 	 *
-	 * Get a list of all users.
+	 * @param string $search
+	 * @param null|int $limit
+	 * @param null|int $offset
+	 * @return string[] an array of all uids
 	 */
 	public function getUsers($search = '', $limit = 10, $offset = 0) {
 		$search = $this->access->escapeFilterPart($search, true);
@@ -198,6 +236,7 @@ class USER_LDAP extends BackendUtility implements \OCP\IUserBackend, \OCP\UserIn
 		}
 		//getting dn, if false the user does not exist. If dn, he may be mapped only, requires more checking.
 		$user = $this->access->userManager->get($uid);
+
 		if(is_null($user)) {
 			\OCP\Util::writeLog('user_ldap', 'No DN found for '.$uid.' on '.
 				$this->access->connection->ldapHost, \OCP\Util::DEBUG);
@@ -249,21 +288,22 @@ class USER_LDAP extends BackendUtility implements \OCP\IUserBackend, \OCP\UserIn
 	* @return string|bool
 	*/
 	public function getHome($uid) {
-		// user Exists check required as it is not done in user proxy!
-		if(!$this->userExists($uid)) {
-			return false;
-		}
-
 		if(isset($this->homesToKill[$uid]) && !empty($this->homesToKill[$uid])) {
 			//a deleted user who needs some clean up
 			return $this->homesToKill[$uid];
+		}
+
+		// user Exists check required as it is not done in user proxy!
+		if(!$this->userExists($uid)) {
+			return false;
 		}
 
 		$cacheKey = 'getHome'.$uid;
 		if($this->access->connection->isCached($cacheKey)) {
 			return $this->access->connection->getFromCache($cacheKey);
 		}
-		if(strpos($this->access->connection->homeFolderNamingRule, 'attr:') === 0) {
+		if(strpos($this->access->connection->homeFolderNamingRule, 'attr:') === 0 &&
+			$this->access->connection->homeFolderNamingRule !== 'attr:') {
 			$attr = substr($this->access->connection->homeFolderNamingRule, strlen('attr:'));
 			$homedir = $this->access->readAttribute(
 						$this->access->username2dn($uid), $attr);
@@ -289,6 +329,10 @@ class USER_LDAP extends BackendUtility implements \OCP\IUserBackend, \OCP\UserIn
 				);
 				//TODO: if home directory changes, the old one needs to be removed.
 				return $homedir;
+			}
+			if($this->ocConfig->getAppValue('user_ldap', 'enforce_home_folder_naming_rule', true)) {
+				// a naming rule attribute is defined, but it doesn't exist for that LDAP user
+				throw new \Exception('Home dir attribute can\'t be read from LDAP for uid: ' . $uid);
 			}
 		}
 
@@ -327,9 +371,11 @@ class USER_LDAP extends BackendUtility implements \OCP\IUserBackend, \OCP\UserIn
 
 	/**
 	 * Get a list of all display names
-	 * @return array with all displayNames (value) and the correspondig uids (key)
 	 *
-	 * Get a list of all display names and user ids.
+	 * @param string $search
+	 * @param string|null $limit
+	 * @param string|null $offset
+	 * @return array an array of all displayNames (value) and the corresponding uids (key)
 	 */
 	public function getDisplayNames($search = '', $limit = null, $offset = null) {
 		$cacheKey = 'getDisplayNames-'.$search.'-'.$limit.'-'.$offset;

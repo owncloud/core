@@ -52,9 +52,12 @@ try {
 	\OC::$server->getSession()->close();
 
 	// initialize a dummy memory session
-	\OC::$server->setSession(new \OC\Session\Memory(''));
+	$session = new \OC\Session\Memory('');
+	$cryptoWrapper = \OC::$server->getSessionCryptoWrapper();
+	$session = $cryptoWrapper->wrapSession($session);
+	\OC::$server->setSession($session);
 
-	$logger = \OC_Log::$object;
+	$logger = \OC::$server->getLogger();
 
 	// Don't do anything if ownCloud has not been installed
 	if (!OC_Config::getValue('installed', false)) {

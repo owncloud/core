@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Georg Ehrke <georg@owncloud.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
@@ -33,6 +34,7 @@ use OC\Repair\AssetCache;
 use OC\Repair\CleanTags;
 use OC\Repair\Collation;
 use OC\Repair\DropOldJobs;
+use OC\Repair\RemoveGetETagEntries;
 use OC\Repair\SqliteAutoincrement;
 use OC\Repair\DropOldTables;
 use OC\Repair\FillETags;
@@ -101,13 +103,14 @@ class Repair extends BasicEmitter {
 	public static function getRepairSteps() {
 		return array(
 			new RepairMimeTypes(),
-			new RepairLegacyStorages(\OC::$server->getConfig(), \OC_DB::getConnection()),
+			new RepairLegacyStorages(\OC::$server->getConfig(), \OC::$server->getDatabaseConnection()),
 			new RepairConfig(),
 			new AssetCache(),
-			new FillETags(\OC_DB::getConnection()),
-			new CleanTags(\OC_DB::getConnection()),
-			new DropOldTables(\OC_DB::getConnection()),
+			new FillETags(\OC::$server->getDatabaseConnection()),
+			new CleanTags(\OC::$server->getDatabaseConnection()),
+			new DropOldTables(\OC::$server->getDatabaseConnection()),
 			new DropOldJobs(\OC::$server->getJobList()),
+			new RemoveGetETagEntries(\OC::$server->getDatabaseConnection()),
 		);
 	}
 

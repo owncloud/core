@@ -1,9 +1,23 @@
 <?php
 /**
- * Copyright (c) 2015 Robin Appelman <icewind@owncloud.com>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
 
 namespace OCA\Files_Sharing\Propagation;
@@ -75,7 +89,7 @@ class PropagationManager {
 		if (isset($this->sharePropagators[$user])) {
 			return $this->sharePropagators[$user];
 		}
-		$this->sharePropagators[$user] = new RecipientPropagator($user, $this->getChangePropagator($user), $this->config);
+		$this->sharePropagators[$user] = new RecipientPropagator($user, $this->getChangePropagator($user), $this->config, $this);
 		return $this->sharePropagators[$user];
 	}
 
@@ -101,7 +115,8 @@ class PropagationManager {
 		if (!$user) {
 			return;
 		}
-		$watcher = new ChangeWatcher(Filesystem::getView());
+		$recipientPropagator = $this->getSharePropagator($user->getUID());
+		$watcher = new ChangeWatcher(Filesystem::getView(), $recipientPropagator);
 
 		// for marking shares owned by the active user as dirty when a file inside them changes
 		$this->listenToOwnerChanges($user->getUID(), $user->getUID());

@@ -2,7 +2,6 @@
 /**
  * @author Frank Karlitschek <frank@owncloud.org>
  * @author Lukas Reschke <lukas@owncloud.com>
- * @author Morris Jobke <hey@morrisjobke.de>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -23,10 +22,10 @@
 // We only can count up. The 4. digit is only for the internal patchlevel to trigger DB upgrades
 // between betas, final and RCs. This is _not_ the public version number. Reset minor/patchlevel
 // when updating major/minor version number.
-$OC_Version=array(8, 1, 0, 6);
+$OC_Version=array(8, 2, 0, 4);
 
 // The human readable string
-$OC_VersionString='8.1 beta 2';
+$OC_VersionString='8.2 pre alpha';
 
 // The ownCloud channel
 $OC_Channel='git';

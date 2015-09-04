@@ -1,6 +1,9 @@
 <?php
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -34,6 +37,9 @@ class EncryptionTest extends TestCase {
 	private $keyManagerMock;
 
 	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	private $encryptAllMock;
+
+	/** @var \PHPUnit_Framework_MockObject_MockObject */
 	private $cryptMock;
 
 	/** @var \PHPUnit_Framework_MockObject_MockObject */
@@ -57,6 +63,9 @@ class EncryptionTest extends TestCase {
 		$this->keyManagerMock = $this->getMockBuilder('OCA\Encryption\KeyManager')
 			->disableOriginalConstructor()
 			->getMock();
+		$this->encryptAllMock = $this->getMockBuilder('OCA\Encryption\Crypto\EncryptAll')
+			->disableOriginalConstructor()
+			->getMock();
 		$this->loggerMock = $this->getMockBuilder('OCP\ILogger')
 			->disableOriginalConstructor()
 			->getMock();
@@ -72,6 +81,7 @@ class EncryptionTest extends TestCase {
 			$this->cryptMock,
 			$this->keyManagerMock,
 			$this->utilMock,
+			$this->encryptAllMock,
 			$this->loggerMock,
 			$this->l10nMock
 		);

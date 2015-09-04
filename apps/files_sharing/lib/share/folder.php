@@ -39,7 +39,7 @@ class OC_Share_Backend_Folder extends OC_Share_Backend_File implements OCP\Share
 			$shares = \OCP\Share::getItemSharedWithUser('folder', $parent, $shareWith, $owner);
 			if ($shares) {
 				foreach ($shares as $share) {
-					$name = substr($share['path'], strrpos($share['path'], '/') + 1);
+					$name = basename($share['path']);
 					$share['collection']['path'] = $name;
 					$share['collection']['item_type'] = 'folder';
 					$share['file_path'] = $name;
@@ -64,7 +64,7 @@ class OC_Share_Backend_Folder extends OC_Share_Backend_File implements OCP\Share
 	 * @return mixed parent ID or null
 	 */
 	private function getParentId($child) {
-		$query = \OC_DB::prepare('SELECT `parent` FROM `*PREFIX*filecache` WHERE `fileid` = ?');
+		$query = \OCP\DB::prepare('SELECT `parent` FROM `*PREFIX*filecache` WHERE `fileid` = ?');
 		$result = $query->execute(array($child));
 		$row = $result->fetchRow();
 		$parent = ($row) ? $row['parent'] : null;
@@ -75,7 +75,7 @@ class OC_Share_Backend_Folder extends OC_Share_Backend_File implements OCP\Share
 	public function getChildren($itemSource) {
 		$children = array();
 		$parents = array($itemSource);
-		$query = \OC_DB::prepare('SELECT `id` FROM `*PREFIX*mimetypes` WHERE `mimetype` = ?');
+		$query = \OCP\DB::prepare('SELECT `id` FROM `*PREFIX*mimetypes` WHERE `mimetype` = ?');
 		$result = $query->execute(array('httpd/unix-directory'));
 		if ($row = $result->fetchRow()) {
 			$mimetype = $row['id'];
@@ -84,7 +84,7 @@ class OC_Share_Backend_Folder extends OC_Share_Backend_File implements OCP\Share
 		}
 		while (!empty($parents)) {
 			$parents = "'".implode("','", $parents)."'";
-			$query = OC_DB::prepare('SELECT `fileid`, `name`, `mimetype` FROM `*PREFIX*filecache`'
+			$query = \OCP\DB::prepare('SELECT `fileid`, `name`, `mimetype` FROM `*PREFIX*filecache`'
 				.' WHERE `parent` IN ('.$parents.')');
 			$result = $query->execute();
 			$parents = array();

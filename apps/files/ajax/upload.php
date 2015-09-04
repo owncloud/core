@@ -9,7 +9,6 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Luke Policinski <lpolicinski@gmail.com>
- * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Roman Geber <rgeber@owncloudapps.com>
  * @author TheSFReader <TheSFReader@gmail.com>
@@ -83,6 +82,10 @@ if (empty($_POST['dirToken'])) {
 
 		// The token defines the target directory (security reasons)
 		$path = \OC\Files\Filesystem::getPath($linkItem['file_source']);
+		if($path === null) {
+			OCP\JSON::error(array('data' => array_merge(array('message' => $l->t('Unable to set upload directory.')))));
+			die();
+		}
 		$dir = sprintf(
 			"/%s/%s",
 			$path,

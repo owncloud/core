@@ -1,8 +1,12 @@
 <?php
+use OCP\API;
+use OCP\AppFramework\Http;
+
 /**
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
@@ -81,7 +85,7 @@ class OC_API {
 	 * @param array $requirements
 	 */
 	public static function register($method, $url, $action, $app,
-				$authLevel = \OCP\API::USER_AUTH,
+				$authLevel = API::USER_AUTH,
 				$defaults = array(),
 				$requirements = array()) {
 		$name = strtolower($method).$url;
@@ -122,7 +126,7 @@ class OC_API {
 			if(!self::isAuthorised($action)) {
 				$responses[] = array(
 					'app' => $action['app'],
-					'response' => new OC_OCS_Result(null, \OCP\API::RESPOND_UNAUTHORISED, 'Unauthorised'),
+					'response' => new OC_OCS_Result(null, API::RESPOND_UNAUTHORISED, 'Unauthorised'),
 					'shipped' => OC_App::isShipped($action['app']),
 					);
 				continue;
@@ -130,7 +134,7 @@ class OC_API {
 			if(!is_callable($action['action'])) {
 				$responses[] = array(
 					'app' => $action['app'],
-					'response' => new OC_OCS_Result(null, \OCP\API::RESPOND_NOT_FOUND, 'Api method not found'),
+					'response' => new OC_OCS_Result(null, API::RESPOND_NOT_FOUND, 'Api method not found'),
 					'shipped' => OC_App::isShipped($action['app']),
 					);
 				continue;
@@ -251,15 +255,15 @@ class OC_API {
 	private static function isAuthorised($action) {
 		$level = $action['authlevel'];
 		switch($level) {
-			case \OCP\API::GUEST_AUTH:
+			case API::GUEST_AUTH:
 				// Anyone can access
 				return true;
 				break;
-			case \OCP\API::USER_AUTH:
+			case API::USER_AUTH:
 				// User required
 				return self::loginUser();
 				break;
-			case \OCP\API::SUBADMIN_AUTH:
+			case API::SUBADMIN_AUTH:
 				// Check for subadmin
 				$user = self::loginUser();
 				if(!$user) {
@@ -274,7 +278,7 @@ class OC_API {
 					}
 				}
 				break;
-			case \OCP\API::ADMIN_AUTH:
+			case API::ADMIN_AUTH:
 				// Check for admin
 				$user = self::loginUser();
 				if(!$user) {
@@ -341,28 +345,28 @@ class OC_API {
 	 */
 	public static function respond($result, $format='xml') {
 		// Send 401 headers if unauthorised
-		if($result->getStatusCode() === \OCP\API::RESPOND_UNAUTHORISED) {
+		if($result->getStatusCode() === API::RESPOND_UNAUTHORISED) {
 			header('WWW-Authenticate: Basic realm="Authorisation Required"');
 			header('HTTP/1.0 401 Unauthorized');
 		}
-		$response = array(
-			'ocs' => array(
-				'meta' => $result->getMeta(),
-				'data' => $result->getData(),
-				),
-			);
-		if ($format == 'json') {
-			OC_JSON::encodedPrint($response);
-		} else if ($format == 'xml') {
-			header('Content-type: text/xml; charset=UTF-8');
-			$writer = new XMLWriter();
-			$writer->openMemory();
-			$writer->setIndent( true );
-			$writer->startDocument();
-			self::toXML($response, $writer);
-			$writer->endDocument();
-			echo $writer->outputMemory(true);
+
+		foreach($result->getHeaders() as $name => $value) {
+			header($name . ': ' . $value);
 		}
+
+		$meta = $result->getMeta();
+		$data = $result->getData();
+		if (self::isV2()) {
+			$statusCode = self::mapStatusCodes($result->getStatusCode());
+			if (!is_null($statusCode)) {
+				$meta['statuscode'] = $statusCode;
+				OC_Response::setStatus($statusCode);
+			}
+		}
+
+		self::setContentType($format);
+		$body = self::renderResult($format, $meta, $data);
+		echo $body;
 	}
 
 	/**
@@ -399,8 +403,8 @@ class OC_API {
 	/**
 	 * Based on the requested format the response content type is set
 	 */
-	public static function setContentType() {
-		$format = self::requestedFormat();
+	public static function setContentType($format = null) {
+		$format = is_null($format) ? self::requestedFormat() : $format;
 		if ($format === 'xml') {
 			header('Content-type: text/xml; charset=UTF-8');
 			return;
@@ -414,5 +418,63 @@ class OC_API {
 		header('Content-Type: application/octet-stream; charset=utf-8');
 	}
 
+	/**
+	 * @return boolean
+	 */
+	private static function isV2() {
+		$request = \OC::$server->getRequest();
+		$script = $request->getScriptName();
 
+		return $script === '/ocs/v2.php';
+	}
+
+	/**
+	 * @param integer $sc
+	 * @return int
+	 */
+	public static function mapStatusCodes($sc) {
+		switch ($sc) {
+			case API::RESPOND_NOT_FOUND:
+				return Http::STATUS_NOT_FOUND;
+			case API::RESPOND_SERVER_ERROR:
+				return Http::STATUS_INTERNAL_SERVER_ERROR;
+			case API::RESPOND_UNKNOWN_ERROR:
+				return Http::STATUS_INTERNAL_SERVER_ERROR;
+			case API::RESPOND_UNAUTHORISED:
+				// already handled for v1
+				return null;
+			case 100:
+				return Http::STATUS_OK;
+		}
+		// any 2xx, 4xx and 5xx will be used as is
+		if ($sc >= 200 && $sc < 600) {
+			return $sc;
+		}
+
+		return Http::STATUS_BAD_REQUEST;
+	}
+
+	/**
+	 * @param string $format
+	 * @return string
+	 */
+	public static function renderResult($format, $meta, $data) {
+		$response = array(
+			'ocs' => array(
+				'meta' => $meta,
+				'data' => $data,
+			),
+		);
+		if ($format == 'json') {
+			return OC_JSON::encode($response);
+		}
+
+		$writer = new XMLWriter();
+		$writer->openMemory();
+		$writer->setIndent(true);
+		$writer->startDocument();
+		self::toXML($response, $writer);
+		$writer->endDocument();
+		return $writer->outputMemory(true);
+	}
 }

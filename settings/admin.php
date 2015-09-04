@@ -2,11 +2,13 @@
 /**
  * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Björn Schießle <schiessle@owncloud.com>
  * @author Frank Karlitschek <frank@owncloud.org>
  * @author Georg Ehrke <georg@owncloud.com>
  * @author Jan-Christoph Borchardt <hey@jancborchardt.net>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Martin Mattel <martin.mattel@diemattels.at>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
@@ -44,7 +46,10 @@ $entriesRemaining = count($entries) > $numEntriesToLoad;
 $entries = array_slice($entries, 0, $numEntriesToLoad);
 $logFilePath = OC_Log_Owncloud::getLogFilePath();
 $doesLogFileExist = file_exists($logFilePath);
-$logFileSize = filesize($logFilePath);
+$logFileSize = 0;
+if($doesLogFileExist) {
+	$logFileSize = filesize($logFilePath);
+}
 $config = \OC::$server->getConfig();
 $appConfig = \OC::$server->getAppConfig();
 $request = \OC::$server->getRequest();
@@ -195,8 +200,8 @@ if (\OC::$server->getLockingProvider() instanceof NoopLockingProvider) {
 }
 
 $formsMap = array_map(function ($form) {
-	if (preg_match('%(<h2[^>]*>.*?</h2>)%i', $form, $regs)) {
-		$sectionName = str_replace('<h2>', '', $regs[0]);
+	if (preg_match('%(<h2(?P<class>[^>]*)>.*?</h2>)%i', $form, $regs)) {
+		$sectionName = str_replace('<h2'.$regs['class'].'>', '', $regs[0]);
 		$sectionName = str_replace('</h2>', '', $sectionName);
 		$anchor = strtolower($sectionName);
 		$anchor = str_replace(' ', '-', $anchor);
@@ -218,7 +223,7 @@ $formsAndMore = array_merge($formsAndMore, $formsMap);
 $formsAndMore[] = ['anchor' => 'backgroundjobs', 'section-name' => $l->t('Cron')];
 $formsAndMore[] = ['anchor' => 'mail_general_settings', 'section-name' => $l->t('Email server')];
 $formsAndMore[] = ['anchor' => 'log-section', 'section-name' => $l->t('Log')];
-$formsAndMore[] = ['anchor' => 'server-status', 'section-name' => $l->t('Server Status')];
+$formsAndMore[] = ['anchor' => 'server-status', 'section-name' => $l->t('Server status')];
 $formsAndMore[] = ['anchor' => 'admin-tips', 'section-name' => $l->t('Tips & tricks')];
 if ($updaterAppPanel) {
 	$formsAndMore[] = ['anchor' => 'updater', 'section-name' => $l->t('Updates')];

@@ -24,11 +24,12 @@ OC.L10N.register(
     "You can upload into this folder" : "คุณสามารถอัพโหลดลงในโฟลเดอร์นี้",
     "No ownCloud installation (7 or higher) found at {remote}" : "ไม่มีการติดตั้ง ownCloud (7 หรือสูงกว่า) พบได้ที่ {remote}",
     "Invalid ownCloud url" : "URL ownCloud ไม่ถูกต้อง",
-    "Share" : "แชร์",
     "Shared by" : "ถูกแชร์โดย",
+    "Sharing" : "การแชร์ข้อมูล",
     "A file or folder has been <strong>shared</strong>" : "ไฟล์หรือโฟลเดอร์ได้ถูก <strong>แชร์</strong>",
     "A file or folder was shared from <strong>another server</strong>" : "ไฟล์หรือโฟลเดอร์จะถูกแชร์จาก <strong>เซิร์ฟเวอร์อื่นๆ</ strong>",
     "A public shared file or folder was <strong>downloaded</strong>" : "แชร์ไฟล์หรือโฟลเดอร์สาธารณะถูก <strong>ดาวน์โหลด</strong>",
+    "You received a new remote share %2$s from %1$s" : "คุณได้รับการแชร์ระยะไกลใหม่ %2$s จาก %1$s",
     "You received a new remote share from %s" : "คุณได้รับการแชร์ระยะไกลใหม่จาก %s",
     "%1$s accepted remote share %2$s" : "%1$s ยอมรับการแชร์ %2$s จากระยะไกล",
     "%1$s declined remote share %2$s" : "%1$s ปฏิเสธการแชร์ %2$s จากระยะไกล",
@@ -40,6 +41,8 @@ OC.L10N.register(
     "%2$s shared %1$s with you" : "%2$s ถูกแชร์ %1$s กับคุณ",
     "You shared %1$s via link" : "คุณแชร์ %1$s ผ่านลิงค์",
     "Shares" : "แชร์",
+    "Share with me through my #ownCloud Federated Cloud ID, see %s" : "แชร์ร่วมกับฉันผ่าน #ownCloud ด้วยไอดีคลาวด์ในเครือ สามารถดูได้ที่ %s",
+    "Share with me through my #ownCloud Federated Cloud ID" : "แชร์ร่วมกับฉันผ่าน #ownCloud ด้วยไอดีคลาวด์ในเครือ",
     "This share is password-protected" : "นี้แชร์การป้องกันด้วยรหัสผ่าน",
     "The password is wrong. Try again." : "รหัสผ่านที่ไม่ถูกต้อง กรุณาลองอีกครั้ง",
     "Password" : "รหัสผ่าน",
@@ -61,6 +64,9 @@ OC.L10N.register(
     "Allow users on this server to send shares to other servers" : "อนุญาตให้ผู้ใช้บนเซิร์ฟเวอร์นี้ส่งแชร์ไปยังเซิร์ฟเวอร์อื่นๆ",
     "Allow users on this server to receive shares from other servers" : "อนุญาตให้ผู้ใช้บนเซิร์ฟเวอร์นี้ได้รับการแชร์จากเซิร์ฟเวอร์อื่นๆ",
     "Federated Cloud" : "สหพันธ์คลาวด์",
-    "Your Federated Cloud ID: %s" : "ไอดีสหพันธ์คลาวด์ของคุณ: %s"
+    "Your Federated Cloud ID:" : "ไอดีคลาวด์ของคุณ:",
+    "Share it:" : "แชร์มัน:",
+    "Share with me via ownCloud" : "แชร์ร่วมกับฉันผ่าน ownCloud",
+    "HTML Code:" : "โค้ด HTML:"
 },
 "nplurals=1; plural=0;");

@@ -2,7 +2,6 @@
 /**
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
- * @author Morris Jobke <hey@morrisjobke.de>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -38,8 +37,15 @@ if (isset($_GET['offset'])) {
 	$offset = (int)$_GET['offset'];
 }
 
-$groups = \OC_Group::getGroups($pattern, $limit, $offset);
-$users = \OCP\User::getDisplayNames($pattern, $limit, $offset);
+$groups = [];
+foreach (\OC::$server->getGroupManager()->search($pattern, $limit, $offset) as $group) {
+	$groups[$group->getGID()] = $group->getGID();
+}
+
+$users = [];
+foreach (\OC::$server->getUserManager()->searchDisplayName($pattern, $limit, $offset) as $user) {
+	$users[$user->getUID()] = $user->getDisplayName();
+}
 
 $results = array('groups' => $groups, 'users' => $users);
 

@@ -1,6 +1,8 @@
 <?php
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Roeland Jago Douma <roeland@famdouma.nl>
  *
@@ -32,6 +34,7 @@ use OCP\IL10N;
 use OCP\IRequest;
 use OCP\IUserManager;
 use OCP\IUserSession;
+use OCP\Files\Folder;
 
 /**
  * Class AvatarController
@@ -43,7 +46,7 @@ class AvatarController extends Controller {
 	/** @var IAvatarManager */
 	protected $avatarManager;
 
-	/** @var ICache */
+	/** @var \OC\Cache\File */
 	protected $cache;
 
 	/** @var IL10N */
@@ -55,22 +58,27 @@ class AvatarController extends Controller {
 	/** @var IUserSession */
 	protected $userSession;
 
+	/** @var Folder */
+	protected $userFolder;
+
 	/**
 	 * @param string $appName
 	 * @param IRequest $request
 	 * @param IAvatarManager $avatarManager
-	 * @param ICache $cache
+	 * @param \OC\Cache\File $cache
 	 * @param IL10N $l10n
 	 * @param IUserManager $userManager
 	 * @param IUserSession $userSession
+	 * @param Folder $userFolder
 	 */
 	public function __construct($appName,
 								IRequest $request,
 								IAvatarManager $avatarManager,
-								ICache $cache,
+								\OC\Cache\File $cache,
 								IL10N $l10n,
 								IUserManager $userManager,
-								IUserSession $userSession) {
+								IUserSession $userSession,
+								Folder $userFolder) {
 		parent::__construct($appName, $request);
 
 		$this->avatarManager = $avatarManager;
@@ -78,16 +86,22 @@ class AvatarController extends Controller {
 		$this->l = $l10n;
 		$this->userManager = $userManager;
 		$this->userSession = $userSession;
+		$this->userFolder = $userFolder;
 	}
 
 	/**
-	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @PublicPage
 	 *
 	 * @param string $userId
 	 * @param int $size
 	 * @return DataResponse|DataDisplayResponse
 	 */
 	public function getAvatar($userId, $size) {
+		if (!$this->userManager->userExists($userId)) {
+			return new DataResponse([], Http::STATUS_NOT_FOUND);
+		}
+
 		if ($size > 2048) {
 			$size = 2048;
 		} elseif ($size <= 0) {
@@ -131,17 +145,24 @@ class AvatarController extends Controller {
 
 		if (isset($path)) {
 			$path = stripslashes($path);
-			$view = new \OC\Files\View('/'.$userId.'/files');
-			$fileName = $view->getLocalFile($path);
+			$node = $this->userFolder->get($path);
+			if ($node->getSize() > 20*1024*1024) {
+				return new DataResponse(['data' => ['message' => $this->l->t('File is too big')]],
+					Http::STATUS_BAD_REQUEST);
+			}
+			$content = $node->getContent();
 		} elseif (!is_null($files)) {
 			if (
 				$files['error'][0] === 0 &&
 				 is_uploaded_file($files['tmp_name'][0]) &&
 				!\OC\Files\Filesystem::isFileBlacklisted($files['tmp_name'][0])
 			) {
+				if ($files['size'][0] > 20*1024*1024) {
+					return new DataResponse(['data' => ['message' => $this->l->t('File is too big')]],
+						Http::STATUS_BAD_REQUEST);
+				}
 				$this->cache->set('avatar_upload', file_get_contents($files['tmp_name'][0]), 7200);
-				$view = new \OC\Files\View('/'.$userId.'/cache');
-				$fileName = $view->getLocalFile('avatar_upload');
+				$content = $this->cache->get('avatar_upload');
 				unlink($files['tmp_name'][0]);
 			} else {
 				return new DataResponse(['data' => ['message' => $this->l->t('Invalid file provided')]],
@@ -155,7 +176,7 @@ class AvatarController extends Controller {
 
 		try {
 			$image = new \OC_Image();
-			$image->loadFromFile($fileName);
+			$image->loadFromData($content);
 			$image->fixOrientation();
 
 			if ($image->valid()) {

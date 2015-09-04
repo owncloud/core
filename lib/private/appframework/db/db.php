@@ -46,6 +46,15 @@ class Db implements IDb {
 	}
 
 	/**
+	 * Gets the ExpressionBuilder for the connection.
+	 *
+	 * @return \OCP\DB\QueryBuilder\IQueryBuilder
+	 */
+	public function getQueryBuilder() {
+		return $this->connection->getQueryBuilder();
+	}
+
+	/**
 	 * Used to abstract the ownCloud database access away
 	 *
 	 * @param string $sql the sql query with ? placeholder for params
@@ -142,6 +151,15 @@ class Db implements IDb {
 	 */
 	public function beginTransaction() {
 		$this->connection->beginTransaction();
+	}
+
+	/**
+	 * Check if a transaction is active
+	 *
+	 * @return bool
+	 */
+	public function inTransaction() {
+		return $this->connection->inTransaction();
 	}
 
 	/**

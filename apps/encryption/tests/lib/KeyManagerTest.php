@@ -2,6 +2,8 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Clark Tomlinson <fallen013@gmail.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -180,17 +182,61 @@ class KeyManagerTest extends TestCase {
 		);
 	}
 
-	public function testUserHasKeys() {
+	/**
+	 * @dataProvider dataTestUserHasKeys
+	 */
+	public function testUserHasKeys($key, $expected) {
 		$this->keyStorageMock->expects($this->exactly(2))
 			->method('getUserKey')
 			->with($this->equalTo($this->userId), $this->anything())
-			->willReturn('key');
+			->willReturn($key);
 
 
-		$this->assertTrue(
+		$this->assertSame($expected,
 			$this->instance->userHasKeys($this->userId)
 		);
 	}
+
+	public function dataTestUserHasKeys() {
+		return [
+			['key', true],
+			['', false]
+		];
+	}
+
+	/**
+	 * @expectedException \OCA\Encryption\Exceptions\PrivateKeyMissingException
+	 */
+	public function testUserHasKeysMissingPrivateKey() {
+		$this->keyStorageMock->expects($this->exactly(2))
+			->method('getUserKey')
+			->willReturnCallback(function ($uid, $keyID, $encryptionModuleId) {
+				if ($keyID=== 'privateKey') {
+					return '';
+				}
+				return 'key';
+			});
+
+		$this->instance->userHasKeys($this->userId);
+	}
+
+	/**
+	 * @expectedException \OCA\Encryption\Exceptions\PublicKeyMissingException
+	 */
+	public function testUserHasKeysMissingPublicKey() {
+		$this->keyStorageMock->expects($this->exactly(2))
+			->method('getUserKey')
+			->willReturnCallback(function ($uid, $keyID, $encryptionModuleId){
+				if ($keyID === 'publicKey') {
+					return '';
+				}
+				return 'key';
+			});
+
+		$this->instance->userHasKeys($this->userId);
+
+	}
+
 
 	public function testInit() {
 		$this->keyStorageMock->expects($this->any())
@@ -214,7 +260,7 @@ class KeyManagerTest extends TestCase {
 			->method('setSystemUserKey')
 			->willReturn(true);
 		$this->cryptMock->expects($this->any())
-			->method('symmetricEncryptFileContent')
+			->method('encryptPrivateKey')
 			->with($this->equalTo('privateKey'), $this->equalTo('pass'))
 			->willReturn('decryptedPrivateKey');
 

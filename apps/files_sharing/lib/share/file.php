@@ -183,7 +183,7 @@ class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 		if (isset($source['parent'])) {
 			$parent = $source['parent'];
 			while (isset($parent)) {
-				$query = \OC_DB::prepare('SELECT `parent`, `uid_owner` FROM `*PREFIX*share` WHERE `id` = ?', 1);
+				$query = \OCP\DB::prepare('SELECT `parent`, `uid_owner` FROM `*PREFIX*share` WHERE `id` = ?', 1);
 				$item = $query->execute(array($parent))->fetchRow();
 				if (isset($item['parent'])) {
 					$parent = $item['parent'];
@@ -206,27 +206,15 @@ class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 
 	/**
 	 * @param string $target
-	 * @param string $mountPoint
-	 * @param string $itemType
+	 * @param array $share
 	 * @return array|false source item
 	 */
-	public static function getSource($target, $mountPoint, $itemType) {
-		if ($itemType === 'folder') {
-			$source = \OCP\Share::getItemSharedWith('folder', $mountPoint, \OC_Share_Backend_File::FORMAT_SHARED_STORAGE);
-			if ($source && $target !== '') {
-				// note: in case of ext storage mount points the path might be empty
-				// which would cause a leading slash to appear
-				$source['path'] = ltrim($source['path'] . '/' . $target, '/');
-			}
-		} else {
-			$source = \OCP\Share::getItemSharedWith('file', $mountPoint, \OC_Share_Backend_File::FORMAT_SHARED_STORAGE);
+	public static function getSource($target, $share) {
+		if ($share['item_type'] === 'folder' && $target !== '') {
+			// note: in case of ext storage mount points the path might be empty
+			// which would cause a leading slash to appear
+			$share['path'] = ltrim($share['path'] . '/' . $target, '/');
 		}
-		if ($source) {
-			return self::resolveReshares($source);
-		}
-
-		\OCP\Util::writeLog('files_sharing', 'File source not found for: '.$target, \OCP\Util::DEBUG);
-		return false;
+		return self::resolveReshares($share);
 	}
-
 }

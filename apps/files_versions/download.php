@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Andreas Fischer <bantu@owncloud.com>
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
@@ -34,7 +35,7 @@ $versionName = '/'.$uid.'/files_versions/'.$filename.'.v'.$revision;
 
 $view = new OC\Files\View('/');
 
-$ftype = $view->getMimeType('/'.$uid.'/files/'.$filename);
+$ftype = \OC_Helper::getSecureMimeType($view->getMimeType('/'.$uid.'/files/'.$filename));
 
 header('Content-Type:'.$ftype);
 OCP\Response::setContentDispositionHeader(basename($filename), 'attachment');

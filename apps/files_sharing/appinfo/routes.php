@@ -2,9 +2,11 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Georg Ehrke <georg@owncloud.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Roeland Jago Douma <roeland@famdouma.nl>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -31,7 +33,14 @@ $application = new Application();
 $application->registerRoutes($this, [
 	'resources' => [
 		'ExternalShares' => ['url' => '/api/externalShares'],
-	]
+	],
+	'routes' => [
+		[
+			'name' => 'externalShares#testRemote',
+			'url' => '/testremote',
+			'verb' => 'GET'
+		],
+	],
 ]);
 
 /** @var $this \OCP\Route\IRouter */
@@ -48,8 +57,6 @@ $this->create('sharing_external_shareinfo', '/shareinfo')
 	->actionInclude('files_sharing/ajax/shareinfo.php');
 $this->create('sharing_external_add', '/external')
 	->actionInclude('files_sharing/ajax/external.php');
-$this->create('sharing_external_test_remote', '/testremote')
-	->actionInclude('files_sharing/ajax/testremote.php');
 
 // OCS API
 
@@ -80,8 +87,31 @@ API::register('delete',
 		array('\OCA\Files_Sharing\API\Local', 'deleteShare'),
 		'files_sharing');
 
-// Register with the capabilities API
 API::register('get',
-		'/cloud/capabilities',
-		array('OCA\Files_Sharing\Capabilities', 'getCapabilities'),
+		'/apps/files_sharing/api/v1/remote_shares',
+		array('\OCA\Files_Sharing\API\Remote', 'getOpenShares'),
+		'files_sharing');
+
+API::register('post',
+		'/apps/files_sharing/api/v1/remote_shares/{id}',
+		array('\OCA\Files_Sharing\API\Remote', 'acceptShare'),
+		'files_sharing');
+
+API::register('delete',
+		'/apps/files_sharing/api/v1/remote_shares/{id}',
+		array('\OCA\Files_Sharing\API\Remote', 'declineShare'),
+		'files_sharing');
+
+$sharees = new \OCA\Files_Sharing\API\Sharees(\OC::$server->getGroupManager(),
+                                              \OC::$server->getUserManager(),
+                                              \OC::$server->getContactsManager(),
+                                              \OC::$server->getConfig(),
+                                              \OC::$server->getUserSession(),
+                                              \OC::$server->getURLGenerator(),
+                                              \OC::$server->getRequest(),
+                                              \OC::$server->getLogger());
+
+API::register('get',
+		'/apps/files_sharing/api/v1/sharees',
+		[$sharees, 'search'],
 		'files_sharing', API::USER_AUTH);

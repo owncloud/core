@@ -2,10 +2,9 @@
 /**
  * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Bart Visscher <bartv@thisnet.nl>
- * @author Björn Schießle <schiessle@owncloud.com>
  * @author Christopher Schäpers <kondou@ts.unde.re>
  * @author Florin Peter <github@florin-peter.de>
- * @author Georg Ehrke <georg@ownCloud.com>
+ * @author Georg Ehrke <georg@owncloud.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
@@ -344,7 +343,7 @@ class Filesystem {
 		self::$defaultInstance = new View($root);
 
 		if (!self::$mounts) {
-			self::$mounts = new Mount\Manager();
+			self::$mounts = \OC::$server->getMountManager();
 		}
 
 		//load custom mount config
@@ -357,7 +356,7 @@ class Filesystem {
 
 	static public function initMountManager() {
 		if (!self::$mounts) {
-			self::$mounts = new Mount\Manager();
+			self::$mounts = \OC::$server->getMountManager();
 		}
 	}
 
@@ -365,6 +364,7 @@ class Filesystem {
 	 * Initialize system and personal mount points for a user
 	 *
 	 * @param string $user
+	 * @throws \OC\User\NoUserException if the user is not available
 	 */
 	public static function initMountPoints($user = '') {
 		if ($user == '') {
@@ -382,7 +382,7 @@ class Filesystem {
 
 		if (is_null($userObject)) {
 			\OCP\Util::writeLog('files', ' Backends provided no user object for ' . $user, \OCP\Util::ERROR);
-			throw new \OC\User\NoUserException();
+			throw new \OC\User\NoUserException('Backends provided no user object for ' . $user);
 		}
 
 		$homeStorage = \OC_Config::getValue('objectstore');

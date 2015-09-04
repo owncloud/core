@@ -30,6 +30,7 @@ moment/locale
 moment/min/**
 moment/moment.js
 moment/scripts
+moment/templates
 !moment/min/moment-with-locales.js
 
 # jquery
@@ -112,3 +113,12 @@ snapjs/dist/2.0.0-rc1
 snapjs/dist/latest/snap.css
 snapjs/dist/latest/snap.min.js
 snapjs/scripts
+
+# bootstrap - only include the tooltip plugin
+bootstrap/**
+!bootstrap/js
+bootstrap/js/*
+!bootstrap/js/tooltip.js
+
+# backbone
+backbone/backbone-min*

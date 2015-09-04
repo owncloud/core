@@ -24,11 +24,12 @@ OC.L10N.register(
     "You can upload into this folder" : "Voit lähettää tiedostoja tähän kansioon",
     "No ownCloud installation (7 or higher) found at {remote}" : "ownCloud-asennusta (versiota 7 tai uudempaa) ei löytynyt osoitteesta {remote}",
     "Invalid ownCloud url" : "Virheellinen ownCloud-osoite",
-    "Share" : "Jaa",
     "Shared by" : "Jakanut",
+    "Sharing" : "Jakaminen",
     "A file or folder has been <strong>shared</strong>" : "Tiedosto tai kansio on <strong>jaettu</strong>",
     "A file or folder was shared from <strong>another server</strong>" : "Tiedosto tai kansio jaettiin <strong>toiselta palvelimelta</strong>",
     "A public shared file or folder was <strong>downloaded</strong>" : "Julkisesti jaettu tiedosto tai kansio <strong>ladattiin</strong>",
+    "You received a new remote share %2$s from %1$s" : "Vastaanotit uuden etäjaon %2$s käyttäjältä %1$s",
     "You received a new remote share from %s" : "Vastaanotit uuden etäjaon käyttäjältä %s",
     "%1$s accepted remote share %2$s" : "%1$s hyväksyi etäjaon %2$s",
     "%1$s declined remote share %2$s" : "%1$s kieltäytyi etäjaosta %2$s",
@@ -40,6 +41,8 @@ OC.L10N.register(
     "%2$s shared %1$s with you" : "%2$s jakoi kohteen %1$s kanssasi",
     "You shared %1$s via link" : "Jaoit kohteen %1$s linkin kautta",
     "Shares" : "Jaot",
+    "Share with me through my #ownCloud Federated Cloud ID, see %s" : "Jaa kanssani käyttäen #ownCloud ja federoitua pilvitunnistetta, katso %s",
+    "Share with me through my #ownCloud Federated Cloud ID" : "Jaa kanssani käyttäen #ownCloud ja federoitua pilvitunnistetta",
     "This share is password-protected" : "Tämä jako on suojattu salasanalla",
     "The password is wrong. Try again." : "Väärä salasana. Yritä uudelleen.",
     "Password" : "Salasana",
@@ -61,6 +64,9 @@ OC.L10N.register(
     "Allow users on this server to send shares to other servers" : "Salli tämän palvelimen käyttäjien lähettää jakoja muille palvelimille",
     "Allow users on this server to receive shares from other servers" : "Salli tämän palvelimen käyttäjien vastaanottaa jakoja muilta palvelimilta",
     "Federated Cloud" : "Federoitu pilvi",
-    "Your Federated Cloud ID: %s" : "Tunnisteesi federoituun pilveen: %s"
+    "Your Federated Cloud ID:" : "Federoidun pilvesi tunniste:",
+    "Share it:" : "Jaa se:",
+    "Share with me via ownCloud" : "Jaa kanssani ownCloudin kautta",
+    "HTML Code:" : "HTML-koodi:"
 },
 "nplurals=2; plural=(n != 1);");

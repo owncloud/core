@@ -3,7 +3,7 @@
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Olivier Paroz <github@oparoz.com>
- * @author Philipp Knechtges <philipp-dev@knechtges.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
@@ -59,7 +59,7 @@ class ControllerMethodReflector implements IControllerMethodReflector{
 		$this->annotations = $matches[1];
 
 		// extract type parameter information
-		preg_match_all('/@param (?P<type>\w+) \$(?P<var>\w+)/', $docs, $matches);
+		preg_match_all('/@param\h+(?P<type>\w+)\h+\$(?P<var>\w+)/', $docs, $matches);
 		// this is just a fix for PHP 5.3 (array_combine raises warning if called with
 		// two empty arrays
 		if($matches['var'] === array() && $matches['type'] === array()) {

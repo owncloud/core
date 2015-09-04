@@ -24,9 +24,21 @@ Tell us what happens instead
 
 **List of activated apps:**
 
+```
+If you have access to your command line run e.g.:
+sudo -u www-data php occ app:list
+from within your ownCloud installation folder
+```
+
 **The content of config/config.php:**
 
 ```
+If you have access to your command line run e.g.:
+sudo -u www-data php occ config:list system --public
+from within your ownCloud installation folder
+
+or 
+
 Insert your config.php content here
 (Without the database password, passwordsalt and secret)
 ```
@@ -40,8 +52,16 @@ Insert your config.php content here
 #### LDAP configuration (delete this part if not used)
 
 ```
-run: sqlite3 data/owncloud.db
+On ownCloud 7+ with access to your command line run e.g.:
+sudo -u www-data php occ ldap:show-config
+from within your ownCloud installation folder
+
+On ownCloud 6 with access to your command line run e.g.:
+sqlite3 data/owncloud.db or mysql -u root -p owncloud
 then execute:  select * from oc_appconfig where appid='user_ldap';
+
+Without access to your command line download the data/owncloud.db to your local
+computer or access your SQL server remotely and run the select query above.
 
 Eventually replace sensitive data as the name/IP-address of your LDAP server or groups.
 ```

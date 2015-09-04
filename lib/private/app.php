@@ -74,6 +74,16 @@ class OC_App {
 	}
 
 	/**
+	 * Check if an app is loaded
+	 *
+	 * @param string $app
+	 * @return bool
+	 */
+	public static function isAppLoaded($app) {
+		return in_array($app, self::$loadedApps, true);
+	}
+
+	/**
 	 * loads all apps
 	 *
 	 * @param array $types
@@ -168,7 +178,7 @@ class OC_App {
 	private static function getAppTypes($app) {
 		//load the cache
 		if (count(self::$appTypes) == 0) {
-			self::$appTypes = OC_Appconfig::getValues(false, 'types');
+			self::$appTypes = \OC::$server->getAppConfig()->getValues(false, 'types');
 		}
 
 		if (isset(self::$appTypes[$app])) {
@@ -190,7 +200,7 @@ class OC_App {
 			$appTypes = '';
 		}
 
-		OC_Appconfig::setValue($app, 'types', $appTypes);
+		\OC::$server->getAppConfig()->setValue($app, 'types', $appTypes);
 	}
 
 	/**
@@ -312,8 +322,8 @@ class OC_App {
 			\OC::$server->getConfig(),
 			\OC::$server->getLogger()
 		);
-		$appData = $ocsClient->getApplication($app);
-		$download= $ocsClient->getApplicationDownload($app);
+		$appData = $ocsClient->getApplication($app, \OC_Util::getVersion());
+		$download= $ocsClient->getApplicationDownload($app, \OC_Util::getVersion());
 		if(isset($download['downloadlink']) and $download['downloadlink']!='') {
 			// Replace spaces in download link without encoding entire URL
 			$download['downloadlink'] = str_replace(' ', '%20', $download['downloadlink']);
@@ -511,7 +521,7 @@ class OC_App {
 			}
 		}
 
-		OC_Log::write('core', 'No application directories are marked as writable.', OC_Log::ERROR);
+		\OCP\Util::writeLog('core', 'No application directories are marked as writable.', \OCP\Util::ERROR);
 		return null;
 	}
 
@@ -771,7 +781,7 @@ class OC_App {
 
 		foreach (OC::$APPSROOTS as $apps_dir) {
 			if (!is_readable($apps_dir['path'])) {
-				OC_Log::write('core', 'unable to read app folder : ' . $apps_dir['path'], OC_Log::WARN);
+				\OCP\Util::writeLog('core', 'unable to read app folder : ' . $apps_dir['path'], \OCP\Util::WARN);
 				continue;
 			}
 			$dh = opendir($apps_dir['path']);
@@ -779,7 +789,7 @@ class OC_App {
 			if (is_resource($dh)) {
 				while (($file = readdir($dh)) !== false) {
 
-					if ($file[0] != '.' and is_file($apps_dir['path'] . '/' . $file . '/appinfo/info.xml')) {
+					if ($file[0] != '.' and is_dir($apps_dir['path'] . '/' . $file) and is_file($apps_dir['path'] . '/' . $file . '/appinfo/info.xml')) {
 
 						$apps[] = $file;
 
@@ -797,9 +807,11 @@ class OC_App {
 	 * List all apps, this is used in apps.php
 	 *
 	 * @param bool $onlyLocal
+	 * @param bool $includeUpdateInfo Should we check whether there is an update
+	 *                                in the app store?
 	 * @return array
 	 */
-	public static function listAllApps($onlyLocal = false) {
+	public static function listAllApps($onlyLocal = false, $includeUpdateInfo = true) {
 		$installedApps = OC_App::getAllApps();
 
 		//TODO which apps do we want to blacklist and how do we integrate
@@ -815,11 +827,11 @@ class OC_App {
 				$info = OC_App::getAppInfo($app);
 
 				if (!isset($info['name'])) {
-					OC_Log::write('core', 'App id "' . $app . '" has no name in appinfo', OC_Log::ERROR);
+					\OCP\Util::writeLog('core', 'App id "' . $app . '" has no name in appinfo', \OCP\Util::ERROR);
 					continue;
 				}
 
-				$enabled = OC_Appconfig::getValue($app, 'enabled', 'no');
+				$enabled = \OC::$server->getAppConfig()->getValue($app, 'enabled', 'no');
 				$info['groups'] = null;
 				if ($enabled === 'yes') {
 					$active = true;
@@ -841,7 +853,7 @@ class OC_App {
 					$info['removable'] = true;
 				}
 
-				$info['update'] = OC_Installer::isUpdateAvailable($app);
+				$info['update'] = ($includeUpdateInfo) ? OC_Installer::isUpdateAvailable($app) : null;
 
 				$appIcon = self::getAppPath($app) . '/img/' . $app . '.svg';
 				if (file_exists($appIcon)) {
@@ -916,7 +928,7 @@ class OC_App {
 
 
 		if (is_null($category)) {
-			$categoryNames = $ocsClient->getCategories();
+			$categoryNames = $ocsClient->getCategories(\OC_Util::getVersion());
 			if (is_array($categoryNames)) {
 				// Check that categories of apps were retrieved correctly
 				if (!$categories = array_keys($categoryNames)) {
@@ -928,7 +940,7 @@ class OC_App {
 		}
 
 		$page = 0;
-		$remoteApps = $ocsClient->getApplications($categories, $page, $filter);
+		$remoteApps = $ocsClient->getApplications($categories, $page, $filter, \OC_Util::getVersion());
 		$apps = [];
 		$i = 0;
 		$l = \OC::$server->getL10N('core');
@@ -1086,7 +1098,7 @@ class OC_App {
 			$config,
 			\OC::$server->getLogger()
 		);
-		$appData = $ocsClient->getApplication($app);
+		$appData = $ocsClient->getApplication($app, \OC_Util::getVersion());
 
 		// check if app is a shipped app or not. OCS apps have an integer as id, shipped apps use a string
 		if (!is_numeric($app)) {
@@ -1127,7 +1139,7 @@ class OC_App {
 
 			// check for required dependencies
 			$dependencyAnalyzer = new DependencyAnalyzer(new Platform($config), $l);
-			$missing = $dependencyAnalyzer->analyze($app);
+			$missing = $dependencyAnalyzer->analyze($info);
 			if (!empty($missing)) {
 				$missingMsg = join(PHP_EOL, $missing);
 				throw new \Exception(
@@ -1160,9 +1172,7 @@ class OC_App {
 			OC_DB::updateDbFromStructure(self::getAppPath($appId) . '/appinfo/database.xml');
 		}
 		unset(self::$appVersion[$appId]);
-		if (!self::isEnabled($appId)) {
-			return false;
-		}
+		// run upgrade code
 		if (file_exists(self::getAppPath($appId) . '/appinfo/update.php')) {
 			self::loadApp($appId, false);
 			include self::getAppPath($appId) . '/appinfo/update.php';
@@ -1171,19 +1181,21 @@ class OC_App {
 		//set remote/public handlers
 		$appData = self::getAppInfo($appId);
 		if (array_key_exists('ocsid', $appData)) {
-			OC_Appconfig::setValue($appId, 'ocsid', $appData['ocsid']);
+			\OC::$server->getConfig()->setAppValue($appId, 'ocsid', $appData['ocsid']);
+		} elseif(\OC::$server->getConfig()->getAppValue($appId, 'ocsid', null) !== null) {
+			\OC::$server->getConfig()->deleteAppValue($appId, 'ocsid');
 		}
 		foreach ($appData['remote'] as $name => $path) {
-			OCP\CONFIG::setAppValue('core', 'remote_' . $name, $appId . '/' . $path);
+			\OC::$server->getConfig()->setAppValue('core', 'remote_' . $name, $appId . '/' . $path);
 		}
 		foreach ($appData['public'] as $name => $path) {
-			OCP\CONFIG::setAppValue('core', 'public_' . $name, $appId . '/' . $path);
+			\OC::$server->getConfig()->setAppValue('core', 'public_' . $name, $appId . '/' . $path);
 		}
 
 		self::setAppTypes($appId);
 
 		$version = \OC_App::getAppVersion($appId);
-		\OC_Appconfig::setValue($appId, 'installed_version', $version);
+		\OC::$server->getAppConfig()->setValue($appId, 'installed_version', $version);
 
 		return true;
 	}
@@ -1201,11 +1213,11 @@ class OC_App {
 				}
 				return new \OC\Files\View('/' . OC_User::getUser() . '/' . $appId);
 			} else {
-				OC_Log::write('core', 'Can\'t get app storage, app ' . $appId . ', user not logged in', OC_Log::ERROR);
+				\OCP\Util::writeLog('core', 'Can\'t get app storage, app ' . $appId . ', user not logged in', \OCP\Util::ERROR);
 				return false;
 			}
 		} else {
-			OC_Log::write('core', 'Can\'t get app storage, app ' . $appId . ' not enabled', OC_Log::ERROR);
+			\OCP\Util::writeLog('core', 'Can\'t get app storage, app ' . $appId . ' not enabled', \OCP\Util::ERROR);
 			return false;
 		}
 	}
@@ -1221,22 +1233,27 @@ class OC_App {
 		// just modify the description if it is available
 		// otherwise this will create a $data element with an empty 'description'
 		if (isset($data['description'])) {
-			// sometimes the description contains line breaks and they are then also
-			// shown in this way in the app management which isn't wanted as HTML
-			// manages line breaks itself
+			if (is_string($data['description'])) {
+				// sometimes the description contains line breaks and they are then also
+				// shown in this way in the app management which isn't wanted as HTML
+				// manages line breaks itself
 
-			// first of all we split on empty lines
-			$paragraphs = preg_split("!\n[[:space:]]*\n!m", $data['description']);
+				// first of all we split on empty lines
+				$paragraphs = preg_split("!\n[[:space:]]*\n!mu", $data['description']);
 
-			$result = [];
-			foreach ($paragraphs as $value) {
-				// replace multiple whitespace (tabs, space, newlines) inside a paragraph
-				// with a single space - also trims whitespace
-				$result[] = trim(preg_replace('![[:space:]]+!m', ' ', $value));
+				$result = [];
+				foreach ($paragraphs as $value) {
+					// replace multiple whitespace (tabs, space, newlines) inside a paragraph
+					// with a single space - also trims whitespace
+					$result[] = trim(preg_replace('![[:space:]]+!mu', ' ', $value));
+				}
+
+				// join the single paragraphs with a empty line in between
+				$data['description'] = implode("\n\n", $result);
+
+			} else {
+				$data['description'] = '';
 			}
-
-			// join the single paragraphs with a empty line in between
-			$data['description'] = implode("\n\n", $result);
 		}
 
 		return $data;

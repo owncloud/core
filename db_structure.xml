@@ -102,6 +102,18 @@
 				<length>4</length>
 			</field>
 
+			<field>
+				<name>available</name>
+				<type>boolean</type>
+				<default>true</default>
+				<notnull>true</notnull>
+			</field>
+
+			<field>
+				<name>last_checked</name>
+				<type>integer</type>
+			</field>
+
 			<index>
 				<name>storages_id_index</name>
 				<unique>true</unique>
@@ -465,6 +477,14 @@
 					<name>gid</name>
 					<sorting>ascending</sorting>
 				</field>
+				<field>
+					<name>uid</name>
+					<sorting>ascending</sorting>
+				</field>
+			</index>
+
+			<index>
+				<name>gu_uid_index</name>
 				<field>
 					<name>uid</name>
 					<sorting>ascending</sorting>
@@ -1167,6 +1187,79 @@
 				<sorting>ascending</sorting>
 			</field>
 		</index>
+
+		</declaration>
+
+	</table>
+
+	<table>
+
+		<!--
+		Table for storing transactional file locking
+		-->
+		<name>*dbprefix*file_locks</name>
+
+		<declaration>
+
+			<field>
+				<name>id</name>
+				<type>integer</type>
+				<default>0</default>
+				<notnull>true</notnull>
+				<unsigned>true</unsigned>
+				<length>4</length>
+				<autoincrement>1</autoincrement>
+			</field>
+
+			<field>
+				<name>lock</name>
+				<type>integer</type>
+				<default>0</default>
+				<notnull>true</notnull>
+				<length>4</length>
+			</field>
+
+			<field>
+				<name>key</name>
+				<type>text</type>
+				<notnull>true</notnull>
+				<length>64</length>
+			</field>
+
+			<field>
+				<name>ttl</name>
+				<type>integer</type>
+				<default>-1</default>
+				<notnull>true</notnull>
+				<length>4</length>
+			</field>
+
+			<index>
+				<primary>true</primary>
+				<unique>true</unique>
+				<name>lock_id_index</name>
+				<field>
+					<name>id</name>
+					<sorting>ascending</sorting>
+				</field>
+			</index>
+
+			<index>
+				<unique>true</unique>
+				<name>lock_key_index</name>
+				<field>
+					<name>key</name>
+					<sorting>ascending</sorting>
+				</field>
+			</index>
+
+			<index>
+				<name>lock_ttl_index</name>
+				<field>
+					<name>ttl</name>
+					<sorting>ascending</sorting>
+				</field>
+			</index>
 
 		</declaration>
 

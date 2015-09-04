@@ -3,6 +3,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Ross Nicoll <jrn@jrn.me.uk>
  * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -21,11 +22,12 @@
  *
  */
 
-namespace OCA\Files_External\Appinfo;
+namespace OCA\Files_External\AppInfo;
 
 use \OCA\Files_External\Controller\AjaxController;
 use \OCP\AppFramework\App;
 use \OCP\IContainer;
+use \OCA\Files_External\Service\BackendService;
 
 /**
  * @package OCA\Files_External\Appinfo
@@ -45,5 +47,63 @@ class Application extends App {
 				$c->query('Request')
 			);
 		});
+
+		$this->loadBackends();
+		$this->loadAuthMechanisms();
 	}
+
+	/**
+	 * Load storage backends provided by this app
+	 */
+	protected function loadBackends() {
+		$container = $this->getContainer();
+		$service = $container->query('OCA\\Files_External\\Service\\BackendService');
+
+		$service->registerBackends([
+			$container->query('OCA\Files_External\Lib\Backend\Local'),
+			$container->query('OCA\Files_External\Lib\Backend\FTP'),
+			$container->query('OCA\Files_External\Lib\Backend\DAV'),
+			$container->query('OCA\Files_External\Lib\Backend\OwnCloud'),
+			$container->query('OCA\Files_External\Lib\Backend\SFTP'),
+			$container->query('OCA\Files_External\Lib\Backend\AmazonS3'),
+			$container->query('OCA\Files_External\Lib\Backend\Dropbox'),
+			$container->query('OCA\Files_External\Lib\Backend\Google'),
+		]);
+
+		if (!\OC_Util::runningOnWindows()) {
+			$service->registerBackends([
+				$container->query('OCA\Files_External\Lib\Backend\SMB'),
+			]);
+		}
+	}
+
+	/**
+	 * Load authentication mechanisms provided by this app
+	 */
+	protected function loadAuthMechanisms() {
+		$container = $this->getContainer();
+		$service = $container->query('OCA\\Files_External\\Service\\BackendService');
+
+		$service->registerAuthMechanisms([
+			// AuthMechanism::SCHEME_NULL mechanism
+			$container->query('OCA\Files_External\Lib\Auth\NullMechanism'),
+
+			// AuthMechanism::SCHEME_BUILTIN mechanism
+			$container->query('OCA\Files_External\Lib\Auth\Builtin'),
+
+			// AuthMechanism::SCHEME_PASSWORD mechanisms
+			$container->query('OCA\Files_External\Lib\Auth\Password\Password'),
+			$container->query('OCA\Files_External\Lib\Auth\Password\SessionCredentials'),
+
+			// AuthMechanism::SCHEME_OAUTH1 mechanisms
+			$container->query('OCA\Files_External\Lib\Auth\OAuth1\OAuth1'),
+
+			// AuthMechanism::SCHEME_OAUTH2 mechanisms
+			$container->query('OCA\Files_External\Lib\Auth\OAuth2\OAuth2'),
+
+			// Specialized mechanisms
+			$container->query('OCA\Files_External\Lib\Auth\AmazonS3\AccessKey'),
+		]);
+	}
+
 }

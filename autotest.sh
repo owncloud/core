@@ -21,7 +21,7 @@ DATABASEHOST=localhost
 ADMINLOGIN=admin$EXECUTOR_NUMBER
 BASEDIR=$PWD
 
-DBCONFIGS="sqlite mysql pgsql oci"
+DBCONFIGS="sqlite mysql mariadb pgsql oci"
 
 # $PHP_EXE is run through 'which' and as such e.g. 'php' or 'hhvm' is usually
 # sufficient. Due to the behaviour of 'which', $PHP_EXE may also be a path
@@ -31,6 +31,9 @@ if [ -z "$PHP_EXE" ]; then
 fi
 PHP=$(which "$PHP_EXE")
 PHPUNIT=$(which phpunit)
+
+_XDEBUG_CONFIG=$XDEBUG_CONFIG
+unset XDEBUG_CONFIG
 
 function print_syntax {
 	echo -e "Syntax: ./autotest.sh [dbconfigname] [testfile]\n" >&2
@@ -89,6 +92,9 @@ if [ "$1" ]; then
 	fi
 fi
 
+# check for the presence of @since in all OCP methods
+$PHP build/OCPSinceChecker.php
+
 # Back up existing (dev) config if one exists and backup not already there
 if [ -f config/config.php ] && [ ! -f config/config-autotest-backup.php ]; then
 	mv config/config.php config/config-autotest-backup.php
@@ -124,7 +130,8 @@ fi
 echo "Using database $DATABASENAME"
 
 function execute_tests {
-	echo "Setup environment for $1 testing ..."
+	DB=$1
+	echo "Setup environment for $DB testing ..."
 	# back to root folder
 	cd "$BASEDIR"
 
@@ -137,20 +144,67 @@ function execute_tests {
 
 	cp tests/preseed-config.php config/config.php
 
+	_DB=$DB
+
 	# drop database
-	if [ "$1" == "mysql" ] ; then
+	if [ "$DB" == "mysql" ] ; then
 		mysql -u "$DATABASEUSER" -powncloud -e "DROP DATABASE IF EXISTS $DATABASENAME" -h $DATABASEHOST || true
 	fi
-	if [ "$1" == "pgsql" ] ; then
-		dropdb -U "$DATABASEUSER" "$DATABASENAME" || true
+	if [ "$DB" == "mariadb" ] ; then
+		if [ ! -z "$USEDOCKER" ] ; then
+			echo "Fire up the mariadb docker"
+			DOCKER_CONTAINER_ID=$(docker run \
+				-e MYSQL_ROOT_PASSWORD=owncloud \
+				-e MYSQL_USER="$DATABASEUSER" \
+				-e MYSQL_PASSWORD=owncloud \
+				-e MYSQL_DATABASE="$DATABASENAME" \
+				-d rullzer/mariadb-owncloud)
+			DATABASEHOST=$(docker inspect "$DOCKER_CONTAINER_ID" | grep IPAddress | cut -d '"' -f 4)
+
+			echo "Waiting for MariaDB initialisation ..."
+
+			# grep exits on the first match and then the script continues
+			timeout 30 docker logs -f $DOCKER_CONTAINER_ID 2>&1 | grep -q "mysqld: ready for connections."
+
+			echo "MariaDB is up."
+
+		else
+			if [ "MariaDB" != "$(mysql --version | grep -o MariaDB)" ] ; then
+				echo "Your mysql binary is not provided by MariaDB"
+				echo "To use the docker container set the USEDOCKER enviroment variable"
+				exit -1
+			fi
+			mysql -u "$DATABASEUSER" -powncloud -e "DROP DATABASE IF EXISTS $DATABASENAME" -h $DATABASEHOST || true
+		fi
+
+		#Reset _DB to mysql since that is what we use internally
+		_DB="mysql"
 	fi
-	if [ "$1" == "oci" ] ; then
+	if [ "$DB" == "pgsql" ] ; then
+		if [ ! -z "$USEDOCKER" ] ; then
+			echo "Fire up the postgres docker"
+			DOCKER_CONTAINER_ID=$(docker run -e POSTGRES_USER="$DATABASEUSER" -e POSTGRES_PASSWORD=owncloud -d postgres)
+			DATABASEHOST=$(docker inspect "$DOCKER_CONTAINER_ID" | grep IPAddress | cut -d '"' -f 4)
+
+			echo "Waiting for Postgres initialisation ..."
+
+			# grep exits on the first match and then the script continues
+			docker logs -f "$DOCKER_CONTAINER_ID" 2>&1 | grep -q "database system is ready to accept connections"
+
+			echo "Postgres is up."
+		else
+			dropdb -U "$DATABASEUSER" "$DATABASENAME" || true
+		fi
+	fi
+	if [ "$DB" == "oci" ] ; then
 		echo "Fire up the oracle docker"
 		DOCKER_CONTAINER_ID=$(docker run -d deepdiver/docker-oracle-xe-11g)
 		DATABASEHOST=$(docker inspect "$DOCKER_CONTAINER_ID" | grep IPAddress | cut -d '"' -f 4)
 
-		echo "Waiting 60 seconds for Oracle initialization ... "
-		sleep 60
+		echo "Waiting for Oracle initialization ... "
+
+		# grep exits on the first match and then the script continues - times out after 2 minutes
+		timeout 120 docker logs -f "$DOCKER_CONTAINER_ID" 2>&1 | grep -q "Grant succeeded."
 
 		DATABASEUSER=autotest
 		DATABASENAME='XE'
@@ -158,21 +212,30 @@ function execute_tests {
 
 	# trigger installation
 	echo "Installing ...."
-	"$PHP" ./occ maintenance:install --database="$1" --database-name="$DATABASENAME" --database-host="$DATABASEHOST" --database-user="$DATABASEUSER" --database-pass=owncloud --database-table-prefix=oc_ --admin-user="$ADMINLOGIN" --admin-pass=admin --data-dir="$DATADIR"
+	"$PHP" ./occ maintenance:install --database="$_DB" --database-name="$DATABASENAME" --database-host="$DATABASEHOST" --database-user="$DATABASEUSER" --database-pass=owncloud --database-table-prefix=oc_ --admin-user="$ADMINLOGIN" --admin-pass=admin --data-dir="$DATADIR"
 
 	#test execution
-	echo "Testing with $1 ..."
+	echo "Testing with $DB ..."
 	cd tests
-	rm -rf "coverage-html-$1"
-	mkdir "coverage-html-$1"
+	rm -rf "coverage-html-$DB"
+	mkdir "coverage-html-$DB"
 	"$PHP" -f enable_all.php | grep -i -C9999 error && echo "Error during setup" && exit 101
+	if [[ "$_XDEBUG_CONFIG" ]]; then
+		export XDEBUG_CONFIG=$_XDEBUG_CONFIG
+	fi
 	if [ -z "$NOCOVERAGE" ]; then
-		"${PHPUNIT[@]}" --configuration phpunit-autotest.xml --log-junit "autotest-results-$1.xml" --coverage-clover "autotest-clover-$1.xml" --coverage-html "coverage-html-$1" "$2" "$3"
+		"${PHPUNIT[@]}" --configuration phpunit-autotest.xml --log-junit "autotest-results-$DB.xml" --coverage-clover "autotest-clover-$DB.xml" --coverage-html "coverage-html-$DB" "$2" "$3"
 		RESULT=$?
 	else
 		echo "No coverage"
-		"${PHPUNIT[@]}" --configuration phpunit-autotest.xml --log-junit "autotest-results-$1.xml" "$2" "$3"
+		"${PHPUNIT[@]}" --configuration phpunit-autotest.xml --log-junit "autotest-results-$DB.xml" "$2" "$3"
 		RESULT=$?
+	fi
+
+	if [ ! -z "$DOCKER_CONTAINER_ID" ] ; then
+		echo "Kill the docker $DOCKER_CONTAINER_ID"
+		docker rm -f $DOCKER_CONTAINER_ID
+		unset DOCKER_CONTAINER_ID
 	fi
 }
 

@@ -4,10 +4,12 @@
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Christopher Schäpers <kondou@ts.unde.re>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Roeland Jago Douma <roeland@famdouma.nl>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
  *
@@ -37,6 +39,7 @@
 // use OCP namespace for all classes that are considered public.
 // This means that they should be used by apps instead of the internal ownCloud classes
 namespace OCP;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 
 /**
@@ -98,6 +101,7 @@ interface IServerContainer {
 	 * @param string $userId user ID
 	 * @return \OCP\Files\Folder
 	 * @since 6.0.0 - parameter $userId was added in 8.0.0
+	 * @see getUserFolder in \OCP\Files\IRootFolder
 	 */
 	public function getUserFolder($userId = null);
 
@@ -315,11 +319,11 @@ interface IServerContainer {
 	/**
 	 * Get the certificate manager for the user
 	 *
-	 * @param \OCP\IUser $user (optional) if not specified the current loggedin user is used
-	 * @return \OCP\ICertificateManager
+	 * @param string $userId (optional) if not specified the current loggedin user is used
+	 * @return \OCP\ICertificateManager | null if $userId is null and no user is logged in
 	 * @since 8.0.0
 	 */
-	public function getCertificateManager($user = null);
+	public function getCertificateManager($userId = null);
 
 	/**
 	 * Create a new event source
@@ -421,4 +425,27 @@ interface IServerContainer {
 	 * @since 8.1.0
 	 */
 	public function getLockingProvider();
+
+	/**
+	 * @return \OCP\Files\Mount\IMountManager
+	 * @since 8.2.0
+	 */
+	public function getMountManager();
+
+	/**
+	 * Get the MimeTypeDetector
+	 *
+	 * @return \OCP\Files\IMimeTypeDetector
+	 * @since 8.2.0
+	 */
+	public function getMimeTypeDetector();
+
+
+	/**
+	 * Get the EventDispatcher
+	 *
+	 * @return EventDispatcherInterface
+	 * @since 8.2.0
+	 */
+	public function getEventDispatcher();
 }

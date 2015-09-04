@@ -18,7 +18,7 @@ class CleanTags extends \Test\TestCase {
 	/** @var \OC\RepairStep */
 	protected $repair;
 
-	/** @var \Doctrine\DBAL\Connection */
+	/** @var \OCP\IDBConnection */
 	protected $connection;
 
 	/** @var int */
@@ -39,14 +39,14 @@ class CleanTags extends \Test\TestCase {
 	}
 
 	protected function cleanUpTables() {
-		$qb = $this->connection->createQueryBuilder();
-		$qb->delete('`*PREFIX*vcategory`')
+		$qb = $this->connection->getQueryBuilder();
+		$qb->delete('vcategory')
 			->execute();
 
-		$qb->delete('`*PREFIX*vcategory_to_object`')
+		$qb->delete('vcategory_to_object')
 			->execute();
 
-		$qb->delete('`*PREFIX*filecache`')
+		$qb->delete('filecache')
 			->execute();
 	}
 
@@ -61,20 +61,20 @@ class CleanTags extends \Test\TestCase {
 		$this->addTagEntry(9999999, $cat3, 'contacts'); // Retained
 		$this->addTagEntry($this->getFileID(), $cat3 + 1, 'files'); // Deleted: Category is NULL
 
-		$this->assertEntryCount('*PREFIX*vcategory_to_object', 4, 'Assert tag entries count before repair step');
-		$this->assertEntryCount('*PREFIX*vcategory', 4, 'Assert tag categories count before repair step');
+		$this->assertEntryCount('vcategory_to_object', 4, 'Assert tag entries count before repair step');
+		$this->assertEntryCount('vcategory', 4, 'Assert tag categories count before repair step');
 
 		self::invokePrivate($this->repair, 'deleteOrphanFileEntries');
-		$this->assertEntryCount('*PREFIX*vcategory_to_object', 3, 'Assert tag entries count after cleaning file entries');
-		$this->assertEntryCount('*PREFIX*vcategory', 4, 'Assert tag categories count after cleaning file entries');
+		$this->assertEntryCount('vcategory_to_object', 3, 'Assert tag entries count after cleaning file entries');
+		$this->assertEntryCount('vcategory', 4, 'Assert tag categories count after cleaning file entries');
 
 		self::invokePrivate($this->repair, 'deleteOrphanTagEntries');
-		$this->assertEntryCount('*PREFIX*vcategory_to_object', 2, 'Assert tag entries count after cleaning tag entries');
-		$this->assertEntryCount('*PREFIX*vcategory', 4, 'Assert tag categories count after cleaning tag entries');
+		$this->assertEntryCount('vcategory_to_object', 2, 'Assert tag entries count after cleaning tag entries');
+		$this->assertEntryCount('vcategory', 4, 'Assert tag categories count after cleaning tag entries');
 
 		self::invokePrivate($this->repair, 'deleteOrphanCategoryEntries');
-		$this->assertEntryCount('*PREFIX*vcategory_to_object', 2, 'Assert tag entries count after cleaning category entries');
-		$this->assertEntryCount('*PREFIX*vcategory', 2, 'Assert tag categories count after cleaning category entries');
+		$this->assertEntryCount('vcategory_to_object', 2, 'Assert tag entries count after cleaning category entries');
+		$this->assertEntryCount('vcategory', 2, 'Assert tag categories count after cleaning category entries');
 	}
 
 	/**
@@ -83,9 +83,9 @@ class CleanTags extends \Test\TestCase {
 	 * @param string $message
 	 */
 	protected function assertEntryCount($tableName, $expected, $message = '') {
-		$qb = $this->connection->createQueryBuilder();
-		$result = $qb->select('COUNT(*)')
-			->from('`' . $tableName . '`')
+		$qb = $this->connection->getQueryBuilder();
+		$result = $qb->select($qb->createFunction('COUNT(*)'))
+			->from($tableName)
 			->execute();
 
 		$this->assertEquals($expected, $result->fetchColumn(), $message);
@@ -99,16 +99,16 @@ class CleanTags extends \Test\TestCase {
 	 * @return int
 	 */
 	protected function addTagCategory($category, $type) {
-		$qb = $this->connection->createQueryBuilder();
-		$qb->insert('`*PREFIX*vcategory`')
+		$qb = $this->connection->getQueryBuilder();
+		$qb->insert('vcategory')
 			->values([
-				'`uid`'			=> $qb->createNamedParameter('TestRepairCleanTags'),
-				'`category`'	=> $qb->createNamedParameter($category),
-				'`type`'		=> $qb->createNamedParameter($type),
+				'uid'		=> $qb->createNamedParameter('TestRepairCleanTags'),
+				'category'	=> $qb->createNamedParameter($category),
+				'type'		=> $qb->createNamedParameter($type),
 			])
 			->execute();
 
-		return (int) $this->getLastInsertID('`*PREFIX*vcategory`', '`id`');
+		return (int) $this->getLastInsertID('vcategory', 'id');
 	}
 
 	/**
@@ -118,12 +118,12 @@ class CleanTags extends \Test\TestCase {
 	 * @param string $type
 	 */
 	protected function addTagEntry($objectId, $category, $type) {
-		$qb = $this->connection->createQueryBuilder();
-		$qb->insert('`*PREFIX*vcategory_to_object`')
+		$qb = $this->connection->getQueryBuilder();
+		$qb->insert('vcategory_to_object')
 			->values([
-				'`objid`'		=> $qb->createNamedParameter($objectId, \PDO::PARAM_INT),
-				'`categoryid`'	=> $qb->createNamedParameter($category, \PDO::PARAM_INT),
-				'`type`'		=> $qb->createNamedParameter($type),
+				'objid'			=> $qb->createNamedParameter($objectId, \PDO::PARAM_INT),
+				'categoryid'	=> $qb->createNamedParameter($category, \PDO::PARAM_INT),
+				'type'			=> $qb->createNamedParameter($type),
 			])
 			->execute();
 	}
@@ -137,25 +137,25 @@ class CleanTags extends \Test\TestCase {
 			return $this->createdFile;
 		}
 
-		$qb = $this->connection->createQueryBuilder();
+		$qb = $this->connection->getQueryBuilder();
 
 		// We create a new file entry and delete it after the test again
 		$fileName = $this->getUniqueID('TestRepairCleanTags', 12);
-		$qb->insert('`*PREFIX*filecache`')
+		$qb->insert('filecache')
 			->values([
-				'`path`'			=> $qb->createNamedParameter($fileName),
-				'`path_hash`'		=> $qb->createNamedParameter(md5($fileName)),
+				'path'			=> $qb->createNamedParameter($fileName),
+				'path_hash'		=> $qb->createNamedParameter(md5($fileName)),
 			])
 			->execute();
 		$fileName = $this->getUniqueID('TestRepairCleanTags', 12);
-		$qb->insert('`*PREFIX*filecache`')
+		$qb->insert('filecache')
 			->values([
-				'`path`'			=> $qb->createNamedParameter($fileName),
-				'`path_hash`'		=> $qb->createNamedParameter(md5($fileName)),
+				'path'			=> $qb->createNamedParameter($fileName),
+				'path_hash'		=> $qb->createNamedParameter(md5($fileName)),
 			])
 			->execute();
 
-		$this->createdFile = (int) $this->getLastInsertID('`*PREFIX*filecache`', '`fileid`');
+		$this->createdFile = (int) $this->getLastInsertID('filecache', 'fileid');
 		return $this->createdFile;
 	}
 
@@ -174,8 +174,8 @@ class CleanTags extends \Test\TestCase {
 		// FIXME INSTEAD HELP FIXING DOCTRINE
 		// FIXME https://github.com/owncloud/core/issues/13303
 		// FIXME ALSO FIX https://github.com/owncloud/core/commit/2dd85ec984c12d3be401518f22c90d2327bec07a
-		$qb = $this->connection->createQueryBuilder();
-		$result = $qb->select("MAX($idName)")
+		$qb = $this->connection->getQueryBuilder();
+		$result = $qb->select($qb->createFunction('MAX(`' . $idName . '`)'))
 			->from($tableName)
 			->execute();
 

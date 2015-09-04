@@ -127,7 +127,7 @@ OC.Share={
 									if (img.attr('src') !== OC.imagePath('core', 'actions/public')) {
 										img.attr('src', image);
 										$(actions[i]).addClass('permanent');
-										$(actions[i]).html(' <span>'+t('core', 'Shared')+'</span>').prepend(img);
+										$(actions[i]).html('<span> '+t('core', 'Shared')+'</span>').prepend(img);
 									}
 								}
 								for(i = 0; i < files.length; i++) {
@@ -219,7 +219,7 @@ OC.Share={
 		return html;
 	},
 	/**
-	 * Loop over all recipients in the list and format them using 
+	 * Loop over all recipients in the list and format them using
 	 * all kind of fancy magic.
 	 *
 	 * @param {String[]} recipients array of all the recipients
@@ -249,6 +249,7 @@ OC.Share={
 		var owner = $tr.attr('data-share-owner');
 		var shareFolderIcon;
 		var image = OC.imagePath('core', 'actions/share');
+		action.removeClass('shared-style');
 		// update folder icon
 		if (type === 'dir' && (hasShares || hasLink || owner)) {
 			if (hasLink) {
@@ -265,8 +266,8 @@ OC.Share={
 		// update share action text / icon
 		if (hasShares || owner) {
 			recipients = $tr.attr('data-share-recipients');
+			action.addClass('shared-style');
 
-			action.addClass('permanent');
 			message = t('core', 'Shared');
 			// even if reshared, only show "Shared by"
 			if (owner) {
@@ -275,14 +276,13 @@ OC.Share={
 			else if (recipients) {
 				message = t('core', 'Shared with {recipients}', {recipients: this._formatShareList(recipients.split(", ")).join(", ")}, 0, {escape: false});
 			}
-			action.html(' <span>' + message + '</span>').prepend(img);
+			action.html('<span> ' + message + '</span>').prepend(img);
 			if (owner || recipients) {
 				action.find('.remoteAddress').tipsy({gravity: 's'});
 			}
 		}
 		else {
-			action.removeClass('permanent');
-			action.html(' <span>'+ escapeHTML(t('core', 'Share'))+'</span>').prepend(img);
+			action.html('<span></span>').prepend(img);
 		}
 		if (hasLink) {
 			image = OC.imagePath('core', 'actions/public');
@@ -308,7 +308,7 @@ OC.Share={
 
 		return data;
 	},
-	share:function(itemType, itemSource, shareType, shareWith, permissions, itemSourceName, expirationDate, callback) {
+	share:function(itemType, itemSource, shareType, shareWith, permissions, itemSourceName, expirationDate, callback, errorCallback) {
 		// Add a fallback for old share() calls without expirationDate.
 		// We should remove this in a later version,
 		// after the Apps have been updated.
@@ -339,12 +339,15 @@ OC.Share={
 						callback(result.data);
 					}
 				} else {
-					if (result.data && result.data.message) {
-						var msg = result.data.message;
-					} else {
+					if (_.isUndefined(errorCallback)) {
 						var msg = t('core', 'Error');
+						if (result.data && result.data.message) {
+							msg = result.data.message;
+						}
+						OC.dialogs.alert(msg, t('core', 'Error while sharing'));
+					} else {
+						errorCallback(result);
 					}
-					OC.dialogs.alert(msg, t('core', 'Error while sharing'));
 				}
 			}
 		);
@@ -817,6 +820,25 @@ OC.Share={
 		return path.replace(/\\/g,'/').replace(/\/[^\/]*$/, '');
 	},
 	/**
+	 * Parses a string to an valid integer (unix timestamp)
+	 * @param time
+	 * @returns {*}
+	 * @internal Only used to work around a bug in the backend
+	 */
+	_parseTime: function(time) {
+		if (_.isString(time)) {
+			// skip empty strings and hex values
+			if (time === '' || (time.length > 1 && time[0] === '0' && time[1] === 'x')) {
+				return null;
+			}
+			time = parseInt(time, 10);
+			if(isNaN(time)) {
+				time = null;
+			}
+		}
+		return time;
+	},
+	/**
 	 * Displays the expiration date field
 	 *
 	 * @param {Date} date current expiration date
@@ -831,6 +853,8 @@ OC.Share={
 			minDate: minDate,
 			maxDate: null
 		};
+		// TODO: hack: backend returns string instead of integer
+		shareTime = OC.Share._parseTime(shareTime);
 		if (_.isNumber(shareTime)) {
 			shareTime = new Date(shareTime * 1000);
 		}
@@ -883,10 +907,10 @@ $(document).ready(function() {
 		minDate.setDate(minDate.getDate()+1);
 		$.datepicker.setDefaults({
 			monthNames: monthNames,
-			monthNamesShort: $.map(monthNames, function(v) { return v.slice(0,3)+'.'; }),
+			monthNamesShort: monthNamesShort,
 			dayNames: dayNames,
-			dayNamesMin: $.map(dayNames, function(v) { return v.slice(0,2); }),
-			dayNamesShort: $.map(dayNames, function(v) { return v.slice(0,3)+'.'; }),
+			dayNamesMin: dayNamesMin,
+			dayNamesShort: dayNamesShort,
 			firstDay: firstDay,
 			minDate : minDate
 		});
@@ -1178,6 +1202,10 @@ $(document).ready(function() {
 					OC.Share.updateIcon(itemType, itemSource);
 				}
 				$('#dropdown').trigger(new $.Event('sharesChanged', {shares: OC.Share.currentShares}));
+			}, function(result) {
+				$loading.addClass('hidden');
+				linkPassText.val('');
+				linkPassText.attr('placeholder', result.data.message);
 			});
 
 			if (expireDateString !== '') {

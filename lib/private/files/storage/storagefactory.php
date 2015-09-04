@@ -1,6 +1,5 @@
 <?php
 /**
- * @author Björn Schießle <schiessle@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
@@ -100,6 +99,9 @@ class StorageFactory implements IStorageFactory {
 		}, $wrappers);
 		foreach ($wrappers as $wrapper) {
 			$storage = $wrapper($mountPoint->getMountPoint(), $storage, $mountPoint);
+			if (!($storage instanceof \OCP\Files\Storage)) {
+				throw new \Exception('Invalid result from storage wrapper');
+			}
 		}
 		return $storage;
 	}

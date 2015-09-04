@@ -4,10 +4,13 @@
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author macjohnny <estebanmarin@gmx.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author voxsim <Simon Vocella>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -95,6 +98,24 @@ class Manager extends PublicEmitter implements IGroupManager {
 			 */
 			$cachedUserGroups = array();
 		});
+	}
+
+	/**
+	 * Checks whether a given backend is used
+	 *
+	 * @param string $backendClass Full classname including complete namespace
+	 * @return bool
+	 */
+	public function isBackendUsed($backendClass) {
+		$backendClass = strtolower(ltrim($backendClass, '\\'));
+
+		foreach ($this->backends as $backend) {
+			if (strtolower(get_class($backend)) === $backendClass) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -227,7 +248,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 	/**
 	 * Checks if a userId is in a group
 	 * @param string $userId
-	 * @param group $group
+	 * @param string $group
 	 * @return bool if in group
 	 */
 	public function isInGroup($userId, $group) {

@@ -107,6 +107,10 @@ class OC_Installer{
 		}
 
 		$extractDir .= '/' . $info['id'];
+		if(!file_exists($extractDir)) {
+			OC_Helper::rmdirr($basedir);
+			throw new \Exception($l->t("Archive does not contain a directory named %s", $info['id']));
+		}
 		OC_Helper::copyr($extractDir, $basedir);
 
 		//remove temporary files
@@ -114,7 +118,7 @@ class OC_Installer{
 
 		//install the database
 		if(is_file($basedir.'/appinfo/database.xml')) {
-			if (OC_Appconfig::getValue($info['id'], 'installed_version') === null) {
+			if (\OC::$server->getAppConfig()->getValue($info['id'], 'installed_version') === null) {
 				OC_DB::createDbFromStructure($basedir.'/appinfo/database.xml');
 			} else {
 				OC_DB::updateDbFromStructure($basedir.'/appinfo/database.xml');
@@ -127,8 +131,8 @@ class OC_Installer{
 		}
 
 		//set the installed version
-		OC_Appconfig::setValue($info['id'], 'installed_version', OC_App::getAppVersion($info['id']));
-		OC_Appconfig::setValue($info['id'], 'enabled', 'no');
+		\OC::$server->getAppConfig()->setValue($info['id'], 'installed_version', OC_App::getAppVersion($info['id']));
+		\OC::$server->getAppConfig()->setValue($info['id'], 'enabled', 'no');
 
 		//set remote/public handelers
 		foreach($info['remote'] as $name=>$path) {
@@ -151,7 +155,7 @@ class OC_Installer{
 	 * Checks whether or not an app is installed, i.e. registered in apps table.
 	 */
 	public static function isInstalled( $app ) {
-		return (OC_Appconfig::getValue($app, "installed_version") !== null);
+		return (\OC::$server->getAppConfig()->getValue($app, "installed_version") !== null);
 	}
 
 	/**
@@ -184,7 +188,7 @@ class OC_Installer{
 	 *   -# setting the installed version
 	 *
 	 * upgrade.php can determine the current installed version of the app using
-	 * "OC_Appconfig::getValue($appid, 'installed_version')"
+	 * "\OC::$server->getAppConfig()->getValue($appid, 'installed_version')"
 	 */
 	public static function updateApp( $info=array(), $isShipped=false) {
 		list($extractDir, $path) = self::downloadApp($info);
@@ -227,8 +231,8 @@ class OC_Installer{
 			\OC::$server->getConfig(),
 			\OC::$server->getLogger()
 		);
-		$appData = $ocsClient->getApplication($ocsId);
-		$download = $ocsClient->getApplicationDownload($ocsId);
+		$appData = $ocsClient->getApplication($ocsId, \OC_Util::getVersion());
+		$download = $ocsClient->getApplicationDownload($ocsId, \OC_Util::getVersion());
 
 		if (isset($download['downloadlink']) && trim($download['downloadlink']) !== '') {
 			$download['downloadlink'] = str_replace(' ', '%20', $download['downloadlink']);
@@ -387,7 +391,7 @@ class OC_Installer{
 			return false;
 		}
 
-		$ocsid=OC_Appconfig::getValue( $app, 'ocsid', '');
+		$ocsid=\OC::$server->getAppConfig()->getValue( $app, 'ocsid', '');
 
 		if($ocsid<>'') {
 			$ocsClient = new OCSClient(
@@ -395,7 +399,7 @@ class OC_Installer{
 				\OC::$server->getConfig(),
 				\OC::$server->getLogger()
 			);
-			$ocsdata = $ocsClient->getApplication($ocsid);
+			$ocsdata = $ocsClient->getApplication($ocsid, \OC_Util::getVersion());
 			$ocsversion= (string) $ocsdata['version'];
 			$currentversion=OC_App::getAppVersion($app);
 			if (version_compare($ocsversion, $currentversion, '>')) {
@@ -480,7 +484,7 @@ class OC_Installer{
 
 			return true;
 		}else{
-			OC_Log::write('core', 'can\'t remove app '.$name.'. It is not installed.', OC_Log::ERROR);
+			\OCP\Util::writeLog('core', 'can\'t remove app '.$name.'. It is not installed.', \OCP\Util::ERROR);
 
 			return false;
 		}
@@ -503,7 +507,7 @@ class OC_Installer{
 								$enabled = isset($info['default_enable']);
 								if( $enabled ) {
 									OC_Installer::installShippedApp($filename);
-									OC_Appconfig::setValue($filename, 'enabled', 'yes');
+									\OC::$server->getAppConfig()->setValue($filename, 'enabled', 'yes');
 								}
 							}
 						}
@@ -533,9 +537,9 @@ class OC_Installer{
 		if (is_null($info)) {
 			return false;
 		}
-		OC_Appconfig::setValue($app, 'installed_version', OC_App::getAppVersion($app));
+		\OC::$server->getAppConfig()->setValue($app, 'installed_version', OC_App::getAppVersion($app));
 		if (array_key_exists('ocsid', $info)) {
-			OC_Appconfig::setValue($app, 'ocsid', $info['ocsid']);
+			\OC::$server->getAppConfig()->setValue($app, 'ocsid', $info['ocsid']);
 		}
 
 		//set remote/public handlers

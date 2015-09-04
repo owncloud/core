@@ -222,9 +222,9 @@ class OC_Template extends \OC\Template\Base {
 
 	/**
 	 * print error page using Exception details
-	 * @param Exception $exception
+	 * @param Exception|Error $exception
 	 */
-	public static function printExceptionErrorPage(Exception $exception) {
+	public static function printExceptionErrorPage($exception) {
 		$request = \OC::$server->getRequest();
 		$content = new \OC_Template('', 'exception', 'error', false);
 		$content->assign('errorClass', get_class($exception));
@@ -233,7 +233,7 @@ class OC_Template extends \OC\Template\Base {
 		$content->assign('file', $exception->getFile());
 		$content->assign('line', $exception->getLine());
 		$content->assign('trace', $exception->getTraceAsString());
-		$content->assign('debugMode', defined('DEBUG') && DEBUG === true);
+		$content->assign('debugMode', \OC::$server->getSystemConfig()->getValue('debug', false));
 		$content->assign('remoteAddr', $request->getRemoteAddress());
 		$content->assign('requestID', $request->getId());
 		$content->printPage();

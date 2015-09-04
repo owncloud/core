@@ -22,11 +22,12 @@
     "You can upload into this folder" : "U kunt uploaden naar deze map",
     "No ownCloud installation (7 or higher) found at {remote}" : "Geen recente ownCloud installatie (7 of hoger) gevonden op {remote}",
     "Invalid ownCloud url" : "Ongeldige ownCloud url",
-    "Share" : "Deel",
     "Shared by" : "Gedeeld door",
+    "Sharing" : "Delen",
     "A file or folder has been <strong>shared</strong>" : "Een bestand of map is <strong>gedeeld</strong>",
     "A file or folder was shared from <strong>another server</strong>" : "Een bestand of map werd gedeeld vanaf <strong>een andere server</strong>",
     "A public shared file or folder was <strong>downloaded</strong>" : "Een openbaar gedeeld bestand of map werd <strong>gedownloaded</strong>",
+    "You received a new remote share %2$s from %1$s" : "U ontving een nieuwe externe share %2$s van %1$s",
     "You received a new remote share from %s" : "U ontving een nieuwe externe share van %s",
     "%1$s accepted remote share %2$s" : "%1$s accepteerde externe share %2$s",
     "%1$s declined remote share %2$s" : "%1$s weigerde externe share %2$s",
@@ -38,6 +39,8 @@
     "%2$s shared %1$s with you" : "%2$s deelde %1$s met u",
     "You shared %1$s via link" : "U deelde %1$s via link",
     "Shares" : "Gedeeld",
+    "Share with me through my #ownCloud Federated Cloud ID, see %s" : "Deel met mij via mijn #ownCloud federated Cloud ID, zie %s",
+    "Share with me through my #ownCloud Federated Cloud ID" : "Deel met mij via mijn #ownCloud federated Cloud ID",
     "This share is password-protected" : "Deze share is met een wachtwoord beveiligd",
     "The password is wrong. Try again." : "Wachtwoord ongeldig. Probeer het nogmaals.",
     "Password" : "Wachtwoord",
@@ -59,6 +62,9 @@
     "Allow users on this server to send shares to other servers" : "Toestaan dat gebruikers op deze server shares sturen naar andere servers",
     "Allow users on this server to receive shares from other servers" : "Toestaan dat gebruikers op deze server shares ontvangen van andere servers",
     "Federated Cloud" : "Gefedereerde Cloud",
-    "Your Federated Cloud ID: %s" : "Uw gefedereerde Cloud ID: %s"
+    "Your Federated Cloud ID:" : "Uw Federated Cloud ID:",
+    "Share it:" : "Deel het:",
+    "Share with me via ownCloud" : "Deel met mij via ownCloud",
+    "HTML Code:" : "HTML Code:"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

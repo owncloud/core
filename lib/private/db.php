@@ -121,7 +121,7 @@ class OC_DB {
 		if (is_string($stmt)) {
 			// convert to an array with 'sql'
 			if (stripos($stmt, 'LIMIT') !== false) { //OFFSET requires LIMIT, so we only need to check for LIMIT
-				// TODO try to convert LIMIT OFFSET notation to parameters, see fixLimitClauseForMSSQL
+				// TODO try to convert LIMIT OFFSET notation to parameters
 				$message = 'LIMIT and OFFSET are forbidden for portability reasons,'
 						 . ' pass an array with \'limit\' and \'offset\' instead';
 				throw new \OC\DatabaseException($message);
@@ -230,7 +230,7 @@ class OC_DB {
 		try {
 			$result = $schemaManager->updateDbFromStructure($file);
 		} catch (Exception $e) {
-			OC_Log::write('core', 'Failed to update database structure ('.$e.')', OC_Log::FATAL);
+			\OCP\Util::writeLog('core', 'Failed to update database structure ('.$e.')', \OCP\Util::FATAL);
 			throw $e;
 		}
 		return $result;
@@ -247,7 +247,7 @@ class OC_DB {
 		try {
 			$result = $schemaManager->simulateUpdateDbFromStructure($file);
 		} catch (Exception $e) {
-			OC_Log::write('core', 'Simulated database structure update failed ('.$e.')', OC_Log::FATAL);
+			\OCP\Util::writeLog('core', 'Simulated database structure update failed ('.$e.')', \OCP\Util::FATAL);
 			throw $e;
 		}
 		return $result;

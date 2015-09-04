@@ -22,11 +22,12 @@
     "You can upload into this folder" : "Вы можете загружать в эту папку",
     "No ownCloud installation (7 or higher) found at {remote}" : "На удаленном ресурсе {remote} не установлен ownCloud версии 7 или выше",
     "Invalid ownCloud url" : "Неверный адрес ownCloud",
-    "Share" : "Поделиться",
     "Shared by" : "Поделился",
+    "Sharing" : "Общий доступ",
     "A file or folder has been <strong>shared</strong>" : "<strong>Опубликован</strong> файл или каталог",
     "A file or folder was shared from <strong>another server</strong>" : "Файлом или каталогом поделились с <strong>удаленного сервера</strong>",
     "A public shared file or folder was <strong>downloaded</strong>" : "Общий файл или каталог был <strong>скачан</strong>",
+    "You received a new remote share %2$s from %1$s" : "Вы получили новый удаленный общий ресурс %2$s от %1$s",
     "You received a new remote share from %s" : "%s поделился с вами удаленным общим ресурсом",
     "%1$s accepted remote share %2$s" : "%1$s принял удаленный общий ресурс %2$s",
     "%1$s declined remote share %2$s" : "%1$s отклонил удаленный общий ресурс %2$s",
@@ -38,6 +39,8 @@
     "%2$s shared %1$s with you" : "%2$s поделился с вами %1$s",
     "You shared %1$s via link" : "Вы поделились %1$s с помощью ссылки",
     "Shares" : "События обмена файлами",
+    "Share with me through my #ownCloud Federated Cloud ID, see %s" : "Поделитесь со мной через мой #ownCloud ID в объединении облачных хранилищ, смотрите %s",
+    "Share with me through my #ownCloud Federated Cloud ID" : "Поделитесь со мной через мой #ownCloud ID в объединении облачных хранилищ",
     "This share is password-protected" : "Общий ресурс защищен паролем",
     "The password is wrong. Try again." : "Неверный пароль. Попробуйте еще раз.",
     "Password" : "Пароль",
@@ -57,6 +60,11 @@
     "Federated Cloud Sharing" : "Объединение облачных хранилищ",
     "Open documentation" : "Открыть документацию",
     "Allow users on this server to send shares to other servers" : "Разрешить пользователям делиться с пользователями других серверов",
-    "Allow users on this server to receive shares from other servers" : "Разрешить пользователям использовать общие ресурсы с других серверов"
+    "Allow users on this server to receive shares from other servers" : "Разрешить пользователям использовать общие ресурсы с других серверов",
+    "Federated Cloud" : "Объединение облачных хранилищ",
+    "Your Federated Cloud ID:" : "Ваш ID в объединении облачных хранилищ:",
+    "Share it:" : "Поделись этим:",
+    "Share with me via ownCloud" : "Поделитесь мной через ownCloud",
+    "HTML Code:" : "HTML код:"
 },"pluralForm" :"nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);"
 }

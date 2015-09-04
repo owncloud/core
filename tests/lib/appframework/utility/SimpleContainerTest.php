@@ -136,8 +136,7 @@ class SimpleContainerTest extends \Test\TestCase {
     }
 
 
-    public function tesOverrideService() {
-        $this->container->registerParameter('test', 'abc');
+    public function testOverrideService() {
         $this->container->registerService(
         'Test\AppFramework\Utility\IInterfaceConstructor', function ($c) {
             return $c->query('Test\AppFramework\Utility\ClassSimpleConstructor');
@@ -147,12 +146,48 @@ class SimpleContainerTest extends \Test\TestCase {
             return $c->query('Test\AppFramework\Utility\ClassEmptyConstructor');
         });
         $object = $this->container->query(
-            'Test\AppFramework\Utility\ClassInterfaceConstructor'
+            'Test\AppFramework\Utility\IInterfaceConstructor'
         );
         $this->assertTrue($object instanceof ClassEmptyConstructor);
-        $this->assertEquals('abc', $object->test);
     }
 
+    public function testRegisterAliasParamter() {
+        $this->container->registerParameter('test', 'abc');
+        $this->container->registerAlias('test1', 'test');
+        $this->assertEquals('abc', $this->container->query('test1'));
+    }
+
+    public function testRegisterAliasService() {
+        $this->container->registerService('test', function() {
+            return new \StdClass;
+        }, true);
+        $this->container->registerAlias('test1', 'test');
+        $this->assertSame(
+            $this->container->query('test'), $this->container->query('test'));
+        $this->assertSame(
+            $this->container->query('test1'), $this->container->query('test1'));
+        $this->assertSame(
+            $this->container->query('test'), $this->container->query('test1'));
+    }
+
+    public function sanitizeNameProvider() {
+        return [
+            ['ABC\\Foo', 'ABC\\Foo'],
+            ['\\ABC\\Foo', '\\ABC\\Foo'],
+            ['\\ABC\\Foo', 'ABC\\Foo'],
+            ['ABC\\Foo', '\\ABC\\Foo'],
+        ];
+    }
+
+    /**
+     * @dataProvider sanitizeNameProvider
+     */
+    public function testSanitizeName($register, $query) {
+        $this->container->registerService($register, function() {
+            return 'abc';
+        });
+        $this->assertEquals('abc', $this->container->query($query));
+    }
 
     /**
      * @expectedException \OCP\AppFramework\QueryException
@@ -163,5 +198,25 @@ class SimpleContainerTest extends \Test\TestCase {
         );
     }
 
+    public function testRegisterFactory() {
+        $this->container->registerService('test', function() {
+            return new \StdClass();
+        }, false);
+        $this->assertNotSame(
+            $this->container->query('test'), $this->container->query('test'));
+    }
+
+    public function testRegisterAliasFactory() {
+        $this->container->registerService('test', function() {
+            return new \StdClass();
+        }, false);
+        $this->container->registerAlias('test1', 'test');
+        $this->assertNotSame(
+            $this->container->query('test'), $this->container->query('test'));
+        $this->assertNotSame(
+            $this->container->query('test1'), $this->container->query('test1'));
+        $this->assertNotSame(
+            $this->container->query('test'), $this->container->query('test1'));
+    }
 
 }

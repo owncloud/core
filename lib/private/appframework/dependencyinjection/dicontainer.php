@@ -39,8 +39,6 @@ use OC\AppFramework\Middleware\Security\SecurityMiddleware;
 use OC\AppFramework\Middleware\Security\CORSMiddleware;
 use OC\AppFramework\Middleware\SessionMiddleware;
 use OC\AppFramework\Utility\SimpleContainer;
-use OC\AppFramework\Utility\TimeFactory;
-use OC\AppFramework\Utility\ControllerMethodReflector;
 use OCP\AppFramework\IApi;
 use OCP\AppFramework\IAppContainer;
 use OCP\AppFramework\Middleware;
@@ -59,19 +57,14 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 	 * @param string $appName the name of the app
 	 */
 	public function __construct($appName, $urlParams = array()){
+		parent::__construct();
 		$this['AppName'] = $appName;
 		$this['urlParams'] = $urlParams;
 
 		// aliases
-		$this->registerService('appName', function($c) {
-			return $c->query('AppName');
-		});
-		$this->registerService('webRoot', function($c) {
-			return $c->query('WebRoot');
-		});
-		$this->registerService('userId', function($c) {
-			return $c->query('UserId');
-		});
+		$this->registerAlias('appName', 'AppName');
+		$this->registerAlias('webRoot', 'WebRoot');
+		$this->registerAlias('userId', 'UserId');
 
 		/**
 		 * Core services
@@ -102,6 +95,10 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 
 		$this->registerService('OCP\\ICacheFactory', function($c) {
 			return $this->getServer()->getMemCacheFactory();
+		});
+
+		$this->registerService('OC\\CapabilitiesManager', function($c) {
+			return $this->getServer()->getCapabilitiesManager();
 		});
 
 		$this->registerService('OCP\\IConfig', function($c) {
@@ -156,9 +153,8 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 			return $this->getServer()->getJobList();
 		});
 
-		$this->registerService('OCP\\AppFramework\\Utility\\IControllerMethodReflector', function($c) {
-			return $c->query('ControllerMethodReflector');
-		});
+		$this->registerAlias('OCP\\AppFramework\\Utility\\IControllerMethodReflector', 'OC\AppFramework\Utility\ControllerMethodReflector');
+		$this->registerAlias('ControllerMethodReflector', 'OCP\\AppFramework\\Utility\\IControllerMethodReflector');
 
 		$this->registerService('OCP\\INavigationManager', function($c) {
 			return $this->getServer()->getNavigationManager();
@@ -168,9 +164,10 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 			return $this->getServer()->getPreviewManager();
 		});
 
-		$this->registerService('OCP\\IRequest', function($c) {
-			return $c->query('Request');
+		$this->registerService('OCP\\IRequest', function () {
+			return $this->getServer()->getRequest();
 		});
+		$this->registerAlias('Request', 'OCP\\IRequest');
 
 		$this->registerService('OCP\\ITagManager', function($c) {
 			return $this->getServer()->getTagManager();
@@ -180,9 +177,9 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 			return $this->getServer()->getTempManager();
 		});
 
-		$this->registerService('OCP\\AppFramework\\Utility\\ITimeFactory', function($c) {
-			return $c->query('TimeFactory');
-		});
+		$this->registerAlias('OCP\\AppFramework\\Utility\\ITimeFactory', 'OC\AppFramework\Utility\TimeFactory');
+		$this->registerAlias('TimeFactory', 'OCP\\AppFramework\\Utility\\ITimeFactory');
+
 
 		$this->registerService('OCP\\Route\\IRouter', function($c) {
 			return $this->getServer()->getRouter();
@@ -220,6 +217,10 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 			return $this->getServer()->getUserSession();
 		});
 
+		$this->registerService('OCP\\ISession', function($c) {
+			return $this->getServer()->getSession();
+		});
+
 		$this->registerService('ServerContainer', function ($c) {
 			return $this->getServer();
 		});
@@ -243,14 +244,6 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 				'services instead!'
 			);
 			return new API($c['AppName']);
-		});
-
-		$this->registerService('Request', function($c) {
-			/** @var $c SimpleContainer */
-			/** @var $server SimpleContainer */
-			$server = $c->query('ServerContainer');
-			/** @var $server IServerContainer */
-			return $server->getRequest();
 		});
 
 		$this->registerService('Protocol', function($c){
@@ -316,18 +309,6 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 
 			$dispatcher->registerMiddleware($c['SessionMiddleware']);
 			return $dispatcher;
-		});
-
-
-		/**
-		 * Utilities
-		 */
-		$this->registerService('TimeFactory', function($c){
-			return new TimeFactory();
-		});
-
-		$this->registerService('ControllerMethodReflector', function($c) {
-			return new ControllerMethodReflector();
 		});
 
 	}
@@ -414,5 +395,15 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 		\OCP\Util::writeLog($this->getAppName(), $message, $level);
 	}
 
+	/**
+	 * Register a capability
+	 *
+	 * @param string $serviceName e.g. 'OCA\Files\Capabilities'
+	 */
+	public function registerCapability($serviceName) {
+		$this->query('OC\CapabilitiesManager')->registerCapability(function() use ($serviceName) {
+			return $this->query($serviceName);
+		});
 
+	}
 }

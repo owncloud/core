@@ -1,29 +1,30 @@
 <?php
- /**
- * ownCloud
+/**
+ * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
  *
- * @copyright (C) 2015 ownCloud, Inc.
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * @author Bjoern Schiessle <schiessle@owncloud.com>
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
- *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
 
 namespace OCA\Encryption\Tests;
 
 use OCA\Encryption\Migration;
+use OCP\ILogger;
 
 class MigrationTest extends \Test\TestCase {
 
@@ -36,6 +37,9 @@ class MigrationTest extends \Test\TestCase {
 	private $public_share_key_id = 'share_key_id';
 	private $recovery_key_id = 'recovery_key_id';
 	private $moduleId;
+
+	/** @var  PHPUnit_Framework_MockObject_MockObject | ILogger */
+	private $logger;
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
@@ -53,6 +57,7 @@ class MigrationTest extends \Test\TestCase {
 
 
 	public function setUp() {
+		$this->logger = $this->getMockBuilder('\OCP\ILogger')->disableOriginalConstructor()->getMock();
 		$this->view = new \OC\Files\View();
 		$this->moduleId = \OCA\Encryption\Crypto\Encryption::ID;
 	}
@@ -100,6 +105,17 @@ class MigrationTest extends \Test\TestCase {
 		$this->view->file_put_contents($uid . '/files_encryption/keys/folder2/file.2.1/fileKey'  , 'data');
 	}
 
+	protected function createDummyFiles($uid) {
+		$this->view->mkdir($uid . '/files/folder1/folder2/folder3/file3');
+		$this->view->mkdir($uid . '/files/folder1/folder2/file2');
+		$this->view->mkdir($uid . '/files/folder1/file.1');
+		$this->view->mkdir($uid . '/files/folder2/file.2.1');
+		$this->view->file_put_contents($uid . '/files/folder1/folder2/folder3/file3/fileKey'  , 'data');
+		$this->view->file_put_contents($uid . '/files/folder1/folder2/file2/fileKey'  , 'data');
+		$this->view->file_put_contents($uid . '/files/folder1/file.1/fileKey'  , 'data');
+		$this->view->file_put_contents($uid . '/files/folder2/file.2.1/fileKey'  , 'data');
+	}
+
 	protected function createDummyFilesInTrash($uid) {
 		$this->view->mkdir($uid . '/files_trashbin/keys/file1.d5457864');
 		$this->view->mkdir($uid . '/files_trashbin/keys/folder1.d7437648723/file2');
@@ -109,6 +125,11 @@ class MigrationTest extends \Test\TestCase {
 
 		$this->view->file_put_contents($uid . '/files_trashbin/keys/file1.d5457864/fileKey' , 'data');
 		$this->view->file_put_contents($uid . '/files_trashbin/keys/folder1.d7437648723/file2/fileKey' , 'data');
+
+		// create the files itself
+		$this->view->mkdir($uid . '/files_trashbin/folder1.d7437648723');
+		$this->view->file_put_contents($uid . '/files_trashbin/file1.d5457864' , 'data');
+		$this->view->file_put_contents($uid . '/files_trashbin/folder1.d7437648723/file2' , 'data');
 	}
 
 	protected function createDummySystemWideKeys() {
@@ -118,7 +139,6 @@ class MigrationTest extends \Test\TestCase {
 		$this->view->file_put_contents('files_encryption/systemwide_2.privateKey', 'data');
 		$this->view->file_put_contents('files_encryption/public_keys/systemwide_1.publicKey', 'data');
 		$this->view->file_put_contents('files_encryption/public_keys/systemwide_2.publicKey', 'data');
-
 	}
 
 	public function testMigrateToNewFolderStructure() {
@@ -134,6 +154,10 @@ class MigrationTest extends \Test\TestCase {
 		$this->createDummyFileKeys(self::TEST_ENCRYPTION_MIGRATION_USER2);
 		$this->createDummyFileKeys(self::TEST_ENCRYPTION_MIGRATION_USER3);
 
+		$this->createDummyFiles(self::TEST_ENCRYPTION_MIGRATION_USER1);
+		$this->createDummyFiles(self::TEST_ENCRYPTION_MIGRATION_USER2);
+		$this->createDummyFiles(self::TEST_ENCRYPTION_MIGRATION_USER3);
+
 		$this->createDummyFilesInTrash(self::TEST_ENCRYPTION_MIGRATION_USER2);
 
 		// no user for system wide mount points
@@ -142,7 +166,21 @@ class MigrationTest extends \Test\TestCase {
 
 		$this->createDummySystemWideKeys();
 
-		$m = new Migration(\OC::$server->getConfig(), new \OC\Files\View(), \OC::$server->getDatabaseConnection());
+		$m = $this->getMockBuilder('OCA\Encryption\Migration')
+			->setConstructorArgs(
+				[
+					\OC::$server->getConfig(),
+					new \OC\Files\View(),
+					\OC::$server->getDatabaseConnection(),
+					$this->logger
+				]
+			)->setMethods(['getSystemMountPoints'])->getMock();
+
+		$m->expects($this->any())->method('getSystemMountPoints')
+			->willReturn([['mountpoint' => 'folder1'], ['mountpoint' => 'folder2']]);
+
+		$m->reorganizeFolderStructure();
+		// even if it runs twice folder should always move only once
 		$m->reorganizeFolderStructure();
 
 		$this->assertTrue(
@@ -242,18 +280,24 @@ class MigrationTest extends \Test\TestCase {
 		$config->setAppValue('files_encryption', 'recoveryAdminEnabled', '1');
 		$config->setUserValue(self::TEST_ENCRYPTION_MIGRATION_USER1, 'files_encryption', 'recoverKeyEnabled', '1');
 
+		//$this->invokePrivate($config, 'cache', [[]]);
+		$cache = $this->invokePrivate(\OC::$server->getAppConfig(), 'cache');
+		unset($cache['encryption']);
+		unset($cache['files_encryption']);
+		$this->invokePrivate(\OC::$server->getAppConfig(), 'cache', [$cache]);
+
 		// delete default values set by the encryption app during initialization
 
-		/** @var \OC\DB\Connection $connection */
+		/** @var \OCP\IDBConnection $connection */
 		$connection = \OC::$server->getDatabaseConnection();
-		$query = $connection->createQueryBuilder();
-		$query->delete('`*PREFIX*appconfig`')
-			->where($query->expr()->eq('`appid`', ':appid'))
+		$query = $connection->getQueryBuilder();
+		$query->delete('appconfig')
+			->where($query->expr()->eq('appid', $query->createParameter('appid')))
 			->setParameter('appid', 'encryption');
 		$query->execute();
-		$query = $connection->createQueryBuilder();
-		$query->delete('`*PREFIX*preferences`')
-			->where($query->expr()->eq('`appid`', ':appid'))
+		$query = $connection->getQueryBuilder();
+		$query->delete('preferences')
+			->where($query->expr()->eq('appid', $query->createParameter('appid')))
 			->setParameter('appid', 'encryption');
 		$query->execute();
 	}
@@ -261,23 +305,77 @@ class MigrationTest extends \Test\TestCase {
 	public function testUpdateDB() {
 		$this->prepareDB();
 
-		$m = new Migration(\OC::$server->getConfig(), new \OC\Files\View(), \OC::$server->getDatabaseConnection());
+		$m = new Migration(\OC::$server->getConfig(), new \OC\Files\View(), \OC::$server->getDatabaseConnection(), $this->logger);
+		$this->invokePrivate($m, 'installedVersion', ['0.7']);
 		$m->updateDB();
 
-		$this->verifyDB('`*PREFIX*appconfig`', 'files_encryption', 0);
-		$this->verifyDB('`*PREFIX*preferences`', 'files_encryption', 0);
-		$this->verifyDB('`*PREFIX*appconfig`', 'encryption', 3);
-		$this->verifyDB('`*PREFIX*preferences`', 'encryption', 1);
+		$this->verifyDB('appconfig', 'files_encryption', 0);
+		$this->verifyDB('preferences', 'files_encryption', 0);
+		$this->verifyDB('appconfig', 'encryption', 3);
+		$this->verifyDB('preferences', 'encryption', 1);
+
+	}
+
+	/**
+	 * test update db if the db already contain some existing new values
+	 */
+	public function testUpdateDBExistingNewConfig() {
+		$this->prepareDB();
+		$config = \OC::$server->getConfig();
+		$config->setAppValue('encryption', 'publicShareKeyId', 'wrong_share_id');
+		$config->setUserValue(self::TEST_ENCRYPTION_MIGRATION_USER1, 'encryption', 'recoverKeyEnabled', '9');
+
+		$m = new Migration(\OC::$server->getConfig(), new \OC\Files\View(), \OC::$server->getDatabaseConnection(), $this->logger);
+		$this->invokePrivate($m, 'installedVersion', ['0.7']);
+		$m->updateDB();
+
+		$this->verifyDB('appconfig', 'files_encryption', 0);
+		$this->verifyDB('preferences', 'files_encryption', 0);
+		$this->verifyDB('appconfig', 'encryption', 3);
+		$this->verifyDB('preferences', 'encryption', 1);
+
+		// check if the existing values where overwritten correctly
+		/** @var \OC\DB\Connection $connection */
+		$connection = \OC::$server->getDatabaseConnection();
+		$query = $connection->getQueryBuilder();
+		$query->select('configvalue')
+			->from('appconfig')
+			->where($query->expr()->andX(
+				$query->expr()->eq('appid', $query->createParameter('appid')),
+				$query->expr()->eq('configkey', $query->createParameter('configkey'))
+			))
+			->setParameter('appid', 'encryption')
+			->setParameter('configkey', 'publicShareKeyId');
+		$result = $query->execute();
+		$value = $result->fetch();
+		$this->assertTrue(isset($value['configvalue']));
+		$this->assertSame('share_id', $value['configvalue']);
+
+		$query = $connection->getQueryBuilder();
+		$query->select('configvalue')
+			->from('preferences')
+			->where($query->expr()->andX(
+				$query->expr()->eq('appid', $query->createParameter('appid')),
+				$query->expr()->eq('configkey', $query->createParameter('configkey')),
+				$query->expr()->eq('userid', $query->createParameter('userid'))
+			))
+			->setParameter('appid', 'encryption')
+			->setParameter('configkey', 'recoverKeyEnabled')
+			->setParameter('userid', self::TEST_ENCRYPTION_MIGRATION_USER1);
+		$result = $query->execute();
+		$value = $result->fetch();
+		$this->assertTrue(isset($value['configvalue']));
+		$this->assertSame('1', $value['configvalue']);
 
 	}
 
 	public function verifyDB($table, $appid, $expected) {
-		/** @var \OC\DB\Connection $connection */
+		/** @var \OCP\IDBConnection $connection */
 		$connection = \OC::$server->getDatabaseConnection();
-		$query = $connection->createQueryBuilder();
-		$query->select('`appid`')
+		$query = $connection->getQueryBuilder();
+		$query->select('appid')
 			->from($table)
-			->where($query->expr()->eq('`appid`', ':appid'))
+			->where($query->expr()->eq('appid', $query->createParameter('appid')))
 			->setParameter('appid', $appid);
 		$result = $query->execute();
 		$values = $result->fetchAll();
@@ -291,16 +389,17 @@ class MigrationTest extends \Test\TestCase {
 	 */
 	public function testUpdateFileCache() {
 		$this->prepareFileCache();
-		$m = new Migration(\OC::$server->getConfig(), new \OC\Files\View(), \OC::$server->getDatabaseConnection());
+		$m = new Migration(\OC::$server->getConfig(), new \OC\Files\View(), \OC::$server->getDatabaseConnection(), $this->logger);
+		$this->invokePrivate($m, 'installedVersion', ['0.7']);
 		self::invokePrivate($m, 'updateFileCache');
 
 		// check results
 
-		/** @var \OC\DB\Connection $connection */
+		/** @var \OCP\IDBConnection $connection */
 		$connection = \OC::$server->getDatabaseConnection();
-		$query = $connection->createQueryBuilder();
+		$query = $connection->getQueryBuilder();
 		$query->select('*')
-			->from('`*PREFIX*filecache`');
+			->from('filecache');
 		$result = $query->execute();
 		$entries = $result->fetchAll();
 		foreach($entries as $entry) {
@@ -315,25 +414,25 @@ class MigrationTest extends \Test\TestCase {
 	}
 
 	public function prepareFileCache() {
-		/** @var \OC\DB\Connection $connection */
+		/** @var \OCP\IDBConnection $connection */
 		$connection = \OC::$server->getDatabaseConnection();
-		$query = $connection->createQueryBuilder();
-		$query->delete('`*PREFIX*filecache`');
+		$query = $connection->getQueryBuilder();
+		$query->delete('filecache');
 		$query->execute();
-		$query = $connection->createQueryBuilder();
-		$result = $query->select('`fileid`')
-			->from('`*PREFIX*filecache`')
+		$query = $connection->getQueryBuilder();
+		$result = $query->select('fileid')
+			->from('filecache')
 			->setMaxResults(1)->execute()->fetchAll();
 		$this->assertEmpty($result);
-		$query = $connection->createQueryBuilder();
-		$query->insert('`*PREFIX*filecache`')
+		$query = $connection->getQueryBuilder();
+		$query->insert('filecache')
 			->values(
 				array(
-					'`storage`' => ':storage',
-					'`path_hash`' => ':path_hash',
-					'`encrypted`' => ':encrypted',
-					'`size`' => ':size',
-					'`unencrypted_size`' => ':unencrypted_size'
+					'storage' => $query->createParameter('storage'),
+					'path_hash' => $query->createParameter('path_hash'),
+					'encrypted' => $query->createParameter('encrypted'),
+					'size' => $query->createParameter('size'),
+					'unencrypted_size' => $query->createParameter('unencrypted_size'),
 				)
 			);
 		for ($i = 1; $i < 20; $i++) {
@@ -346,11 +445,87 @@ class MigrationTest extends \Test\TestCase {
 				$query->execute()
 			);
 		}
-		$query = $connection->createQueryBuilder();
-		$result = $query->select('`fileid`')
-			->from('`*PREFIX*filecache`')
+		$query = $connection->getQueryBuilder();
+		$result = $query->select('fileid')
+			->from('filecache')
 			->execute()->fetchAll();
 		$this->assertSame(19, count($result));
+	}
+
+	/**
+	 * @dataProvider dataTestGetTargetDir
+	 */
+	public function testGetTargetDir($user, $keyPath, $filename, $trash, $systemMounts, $expected) {
+
+		$updater = $this->getMockBuilder('\OC\Files\Cache\Updater')
+			->disableOriginalConstructor()->getMock();
+		$view = $this->getMockBuilder('\OC\Files\View')
+			->disableOriginalConstructor()->getMock();
+		$view->expects($this->any())->method('file_exists')->willReturn(true);
+		$view->expects($this->any())->method('getUpdater')->willReturn($updater);
+
+
+		$m = $this->getMockBuilder('OCA\Encryption\Migration')
+			->setConstructorArgs(
+				[
+					\OC::$server->getConfig(),
+					$view,
+					\OC::$server->getDatabaseConnection(),
+					$this->logger
+				]
+			)->setMethods(['getSystemMountPoints'])->getMock();
+
+		$m->expects($this->any())->method('getSystemMountPoints')
+			->willReturn($systemMounts);
+
+		$this->assertSame($expected,
+			$this->invokePrivate($m, 'getTargetDir', [$user, $keyPath, $filename, $trash])
+		);
+	}
+
+	public function dataTestGetTargetDir() {
+		return [
+			[
+				'user1',
+				'/files_encryption/keys/foo/bar.txt',
+				'user1.shareKey',
+				false,
+				[],
+				'user1/files_encryption/keys/files/foo/bar.txt/OC_DEFAULT_MODULE/user1.shareKey'
+			],
+			[
+				'user1',
+				'/files_trashbin/keys/foo/bar.txt',
+				'user1.shareKey',
+				true,
+				[],
+				'user1/files_encryption/keys/files_trashbin/foo/bar.txt/OC_DEFAULT_MODULE/user1.shareKey'
+			],
+			[
+				'',
+				'/files_encryption/keys/foo/bar.txt',
+				'user1.shareKey',
+				false,
+				[['mountpoint' => 'foo']],
+				'/files_encryption/keys/files/foo/bar.txt/OC_DEFAULT_MODULE/user1.shareKey'
+			],
+			[
+				'',
+				'/files_encryption/keys/foo/bar.txt',
+				'user1.shareKey',
+				false,
+				[['mountpoint' => 'foobar']],
+				false
+			],
+			[
+				'',
+				'/files_encryption/keys/foobar/bar.txt',
+				'user1.shareKey',
+				false,
+				[['mountpoint' => 'foo']],
+				false
+			]
+		];
 	}
 
 }

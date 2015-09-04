@@ -1,6 +1,10 @@
 <?php
 /**
+ * @author Björn Schießle <schiessle@owncloud.com>
  * @author Clark Tomlinson <fallen013@gmail.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -92,7 +96,7 @@ class RecoveryTest extends TestCase {
 			->method('decryptPrivateKey');
 
 		$this->cryptMock->expects($this->once())
-			->method('symmetricEncryptFileContent')
+			->method('encryptPrivateKey')
 			->willReturn(true);
 
 		$this->assertTrue($this->instance->changeRecoveryKeyPassword('password',

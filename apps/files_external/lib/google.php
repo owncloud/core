@@ -5,6 +5,7 @@
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Christopher Schäpers <kondou@ts.unde.re>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Philipp Kapfer <philipp.kapfer@gmx.at>
@@ -30,6 +31,8 @@
  */
 
 namespace OC\Files\Storage;
+
+use Icewind\Streams\IteratorDirectory;
 
 set_include_path(get_include_path().PATH_SEPARATOR.
 	\OC_App::getAppPath('files_external').'/3rdparty/google-api-php-client/src');
@@ -245,8 +248,6 @@ class Google extends \OC\Files\Storage\Common {
 	}
 
 	public function opendir($path) {
-		// Remove leading and trailing slashes
-		$path = trim($path, '/');
 		$folder = $this->getDriveFile($path);
 		if ($folder) {
 			$files = array();
@@ -290,8 +291,7 @@ class Google extends \OC\Files\Storage\Common {
 				}
 				$pageToken = $children->getNextPageToken();
 			}
-			\OC\Files\Stream\Dir::register('google'.$path, $files);
-			return opendir('fakedir://google'.$path);
+			return IteratorDirectory::wrap($files);
 		} else {
 			return false;
 		}
@@ -427,7 +427,7 @@ class Google extends \OC\Files\Storage\Common {
 						$request = new \Google_Http_Request($downloadUrl, 'GET', null, null);
 						$httpRequest = $this->client->getAuth()->authenticatedRequest($request);
 						if ($httpRequest->getResponseHttpCode() == 200) {
-							$tmpFile = \OC_Helper::tmpFile($ext);
+							$tmpFile = \OCP\Files::tmpFile($ext);
 							$data = $httpRequest->getResponseBody();
 							file_put_contents($tmpFile, $data);
 							return fopen($tmpFile, $mode);
@@ -447,7 +447,7 @@ class Google extends \OC\Files\Storage\Common {
 			case 'x+':
 			case 'c':
 			case 'c+':
-				$tmpFile = \OC_Helper::tmpFile($ext);
+				$tmpFile = \OCP\Files::tmpFile($ext);
 				\OC\Files\Stream\Close::registerCallback($tmpFile, array($this, 'writeBack'));
 				if ($this->file_exists($path)) {
 					$source = $this->fopen($path, 'rb');
@@ -464,7 +464,7 @@ class Google extends \OC\Files\Storage\Common {
 			$parentFolder = $this->getDriveFile(dirname($path));
 			if ($parentFolder) {
 				// TODO Research resumable upload
-				$mimetype = \OC_Helper::getMimeType($tmpFile);
+				$mimetype = \OC::$server->getMimeTypeDetector()->detect($tmpFile);
 				$data = file_get_contents($tmpFile);
 				$params = array(
 					'data' => $data,

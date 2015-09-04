@@ -6,11 +6,12 @@
 		"underscore/underscore.js",
 		"moment/min/moment-with-locales.js",
 		"handlebars/handlebars.js",
-		"blueimp-md5/js/md5.js"
+		"blueimp-md5/js/md5.js",
+		"bootstrap/js/tooltip.js",
+		"backbone/backbone.js"
 	],
 	"libraries": [
 		"jquery-showpassword.js",
-		"jquery-tipsy.js",
 		"jquery.avatar.js",
 		"placeholder.js"
 	],
@@ -19,7 +20,9 @@
 		"jquery.ocdialog.js",
 		"oc-dialogs.js",
 		"js.js",
+		"oc-backbone.js",
 		"l10n.js",
+		"apps.js",
 		"share.js",
 		"octemplate.js",
 		"eventsource.js",
@@ -27,6 +30,8 @@
 		"multiselect.js",
 		"oc-requesttoken.js",
 		"setupchecks.js",
-		"../search/js/search.js"
+		"../search/js/search.js",
+		"mimetype.js",
+		"mimetypelist.js"
 	]
 }

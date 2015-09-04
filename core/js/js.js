@@ -68,7 +68,17 @@ var OC={
 	PERMISSION_ALL:31,
 	TAG_FAVORITE: '_$!<Favorite>!$_',
 	/* jshint camelcase: false */
+	/**
+	 * Relative path to ownCloud root.
+	 * For example: "/owncloud"
+	 *
+	 * @type string
+	 *
+	 * @deprecated since 8.2, use OC.getRootPath() instead
+	 * @see OC#getRootPath
+	 */
 	webroot:oc_webroot,
+
 	appswebroots:(typeof oc_appswebroots !== 'undefined') ? oc_appswebroots:false,
 	currentUser:(typeof oc_current_user!=='undefined')?oc_current_user:false,
 	config: window.oc_config,
@@ -219,6 +229,41 @@ var OC={
 	},
 
 	/**
+	 * Returns the host name used to access this ownCloud instance
+	 *
+	 * @return {string} host name
+	 *
+	 * @since 8.2
+	 */
+	getHost: function() {
+		return window.location.host;
+	},
+
+	/**
+	 * Returns the port number used to access this ownCloud instance
+	 *
+	 * @return {int} port number
+	 *
+	 * @since 8.2
+	 */
+	getPort: function() {
+		return window.location.port;
+	},
+
+	/**
+	 * Returns the web root path where this ownCloud instance
+	 * is accessible, with a leading slash.
+	 * For example "/owncloud".
+	 *
+	 * @return {string} web root path
+	 *
+	 * @since 8.2
+	 */
+	getRootPath: function() {
+		return OC.webroot;
+	},
+
+	/**
 	 * get the absolute path to an image file
 	 * if no extension is given for the image, it will automatically decide
 	 * between .png and .svg based on what the browser supports
@@ -323,6 +368,58 @@ var OC={
 	 */
 	dirname: function(path) {
 		return path.replace(/\\/g,'/').replace(/\/[^\/]*$/, '');
+	},
+
+	/**
+	 * Join path sections
+	 *
+	 * @param {...String} path sections
+	 *
+	 * @return {String} joined path, any leading or trailing slash
+	 * will be kept
+	 *
+	 * @since 8.2
+	 */
+	joinPaths: function() {
+		if (arguments.length < 1) {
+			return '';
+		}
+		var path = '';
+		// convert to array
+		var args = Array.prototype.slice.call(arguments);
+		// discard empty arguments
+		args = _.filter(args, function(arg) {
+			return arg.length > 0;
+		});
+		if (args.length < 1) {
+			return '';
+		}
+
+		var lastArg = args[args.length - 1];
+		var leadingSlash = args[0].charAt(0) === '/';
+		var trailingSlash = lastArg.charAt(lastArg.length - 1) === '/';
+		var sections = [];
+		var i;
+		for (i = 0; i < args.length; i++) {
+			sections = sections.concat(args[i].split('/'));
+		}
+		var first = !leadingSlash;
+		for (i = 0; i < sections.length; i++) {
+			if (sections[i] !== '') {
+				if (first) {
+					first = false;
+				} else {
+					path += '/';
+				}
+				path += sections[i];
+			}
+		}
+
+		if (trailingSlash) {
+			// add it back
+			path += '/';
+		}
+		return path;
 	},
 
 	/**
@@ -474,21 +571,20 @@ var OC={
 	 * @todo Write documentation
 	 */
 	registerMenu: function($toggle, $menuEl) {
+		var self = this;
 		$menuEl.addClass('menu');
 		$toggle.on('click.menu', function(event) {
 			// prevent the link event (append anchor to URL)
 			event.preventDefault();
 
 			if ($menuEl.is(OC._currentMenu)) {
-				$menuEl.slideUp(OC.menuSpeed);
-				OC._currentMenu = null;
-				OC._currentMenuToggle = null;
+				self.hideMenus();
 				return;
 			}
 			// another menu was open?
 			else if (OC._currentMenu) {
 				// close it
-				OC._currentMenu.hide();
+				self.hideMenus();
 			}
 			$menuEl.slideToggle(OC.menuSpeed);
 			OC._currentMenu = $menuEl;
@@ -502,12 +598,53 @@ var OC={
 	unregisterMenu: function($toggle, $menuEl) {
 		// close menu if opened
 		if ($menuEl.is(OC._currentMenu)) {
-			$menuEl.slideUp(OC.menuSpeed);
-			OC._currentMenu = null;
-			OC._currentMenuToggle = null;
+			this.hideMenus();
 		}
 		$toggle.off('click.menu').removeClass('menutoggle');
 		$menuEl.removeClass('menu');
+	},
+
+	/**
+	 * Hides any open menus
+	 *
+	 * @param {Function} complete callback when the hiding animation is done
+	 */
+	hideMenus: function(complete) {
+		if (OC._currentMenu) {
+			var lastMenu = OC._currentMenu;
+			OC._currentMenu.trigger(new $.Event('beforeHide'));
+			OC._currentMenu.slideUp(OC.menuSpeed, function() {
+				lastMenu.trigger(new $.Event('afterHide'));
+				if (complete) {
+					complete.apply(this, arguments);
+				}
+			});
+		}
+		OC._currentMenu = null;
+		OC._currentMenuToggle = null;
+	},
+
+	/**
+	 * Shows a given element as menu
+	 *
+	 * @param {Object} [$toggle=null] menu toggle
+	 * @param {Object} $menuEl menu element
+	 * @param {Function} complete callback when the showing animation is done
+	 */
+	showMenu: function($toggle, $menuEl, complete) {
+		if ($menuEl.is(OC._currentMenu)) {
+			return;
+		}
+		this.hideMenus();
+		OC._currentMenu = $menuEl;
+		OC._currentMenuToggle = $toggle;
+		$menuEl.trigger(new $.Event('beforeShow'));
+		$menuEl.show();
+		$menuEl.trigger(new $.Event('afterShow'));
+		// no animation
+		if (_.isFunction(complete)) {
+			complete();
+		}
 	},
 
 	/**
@@ -1141,18 +1278,6 @@ function initCore() {
 		$('#settings #expanddiv').slideUp(OC.menuSpeed);
 	});
 
-	// all the tipsy stuff needs to be here (in reverse order) to work
-	$('.displayName .action').tipsy({gravity:'se', live:true});
-	$('.password .action').tipsy({gravity:'se', live:true});
-	$('#upload').tipsy({gravity:'w'});
-	$('.selectedActions a').tipsy({gravity:'s', live:true});
-	$('a.action.delete').tipsy({gravity:'e', live:true});
-	$('a.action').tipsy({gravity:'s', live:true});
-	$('td .modified').tipsy({gravity:'s', live:true});
-	$('td.lastLogin').tipsy({gravity:'s', html:true});
-	$('input').tipsy({gravity:'w'});
-	$('.extra-data').tipsy({gravity:'w', live:true});
-
 	// toggle for menus
 	$(document).on('mouseup.closemenus', function(event) {
 		var $el = $(event.target);
@@ -1160,11 +1285,8 @@ function initCore() {
 			// don't close when clicking on the menu directly or a menu toggle
 			return false;
 		}
-		if (OC._currentMenu) {
-			OC._currentMenu.slideUp(OC.menuSpeed);
-		}
-		OC._currentMenu = null;
-		OC._currentMenuToggle = null;
+
+		OC.hideMenus();
 	});
 
 
@@ -1219,7 +1341,8 @@ function initCore() {
 		var snapper = new Snap({
 			element: document.getElementById('app-content'),
 			disable: 'right',
-			maxPosition: 250
+			maxPosition: 250,
+			minDragDistance: 100
 		});
 		$('#app-content').prepend('<div id="app-navigation-toggle" class="icon-menu" style="display:none;"></div>');
 		$('#app-navigation-toggle').click(function(){
@@ -1231,7 +1354,7 @@ function initCore() {
 		});
 		// close sidebar when switching navigation entry
 		var $appNavigation = $('#app-navigation');
-		$appNavigation.delegate('a', 'click', function(event) {
+		$appNavigation.delegate('a, :button', 'click', function(event) {
 			var $target = $(event.target);
 			// don't hide navigation when changing settings or adding things
 			if($target.is('.app-navigation-noclose') ||
@@ -1271,12 +1394,18 @@ function initCore() {
 				if($('#app-content').get(0).scrollHeight > $('#app-content').height()) {
 					if($(window).width() > 768) {
 						controlsWidth = $('#content').width() - $('#app-navigation').width() - getScrollBarWidth();
+						if (!$('#app-sidebar').hasClass('hidden') && !$('#app-sidebar').hasClass('disappear')) {
+							controlsWidth -= $('#app-sidebar').width();
+						}
 					} else {
 						controlsWidth = $('#content').width() - getScrollBarWidth();
 					}
 				} else { // if there is none
 					if($(window).width() > 768) {
 						controlsWidth = $('#content').width() - $('#app-navigation').width();
+						if (!$('#app-sidebar').hasClass('hidden') && !$('#app-sidebar').hasClass('disappear')) {
+							controlsWidth -= $('#app-sidebar').width();
+						}
 					} else {
 						controlsWidth = $('#content').width();
 					}
@@ -1288,7 +1417,7 @@ function initCore() {
 
 		$(window).resize(_.debounce(adjustControlsWidth, 250));
 
-		$('body').delegate('#app-content', 'apprendered', adjustControlsWidth);
+		$('body').delegate('#app-content', 'apprendered appresized', adjustControlsWidth);
 
 	}
 
@@ -1513,8 +1642,38 @@ OC.Util = {
 			}
 		}
 		return aa.length - bb.length;
+	},
+	/**
+	 * Calls the callback in a given interval until it returns true
+	 * @param {function} callback
+	 * @param {integer} interval in milliseconds
+	 */
+	waitFor: function(callback, interval) {
+		var internalCallback = function() {
+			if(callback() !== true) {
+				setTimeout(internalCallback, interval);
+			}
+		};
+
+		internalCallback();
+	},
+	/**
+	 * Checks if a cookie with the given name is present and is set to the provided value.
+	 * @param {string} name name of the cookie
+	 * @param {string} value value of the cookie
+	 * @return {boolean} true if the cookie with the given name has the given value
+	 */
+	isCookieSetToValue: function(name, value) {
+		var cookies = document.cookie.split(';');
+		for (var i=0; i < cookies.length; i++) {
+			var cookie = cookies[i].split('=');
+			if (cookie[0].trim() === name && cookie[1].trim() === value) {
+				return true;
+			}
+		}
+		return false;
 	}
-}
+};
 
 /**
  * Utility class for the history API,
@@ -1741,4 +1900,62 @@ function getScrollBarWidth() {
 	document.body.removeChild (outer);
 
 	return (w1 - w2);
+}
+
+/**
+ * jQuery tipsy shim for the bootstrap tooltip
+ */
+jQuery.fn.tipsy = function(argument) {
+	console.warn('Deprecation warning: tipsy is deprecated. Use tooltip instead.');
+	if(typeof argument === 'object' && argument !== null) {
+
+		// tipsy defaults
+		var options = {
+			placement: 'bottom',
+			delay: { 'show': 0, 'hide': 0},
+			trigger: 'hover',
+			html: false
+		};
+		if(argument.gravity) {
+			switch(argument.gravity) {
+				case 'n':
+				case 'nw':
+				case 'ne':
+					options.placement='bottom';
+					break;
+				case 's':
+				case 'sw':
+				case 'se':
+					options.placement='top';
+					break;
+				case 'w':
+					options.placement='right';
+					break;
+				case 'e':
+					options.placement='left';
+					break;
+			}
+		}
+		if(argument.trigger) {
+			options.trigger = argument.trigger;
+		}
+		if(argument.delayIn) {
+			options.delay["show"] = argument.delayIn;
+		}
+		if(argument.delayOut) {
+			options.delay["hide"] = argument.delayOut;
+		}
+		if(argument.html) {
+			options.html = true;
+		}
+		if(argument.fallback) {
+			options.title = argument.fallback;
+		}
+		// destroy old tooltip in case the title has changed
+		jQuery.fn.tooltip.call(this, 'destroy');
+		jQuery.fn.tooltip.call(this, options);
+	} else {
+		this.tooltip(argument);
+		jQuery.fn.tooltip.call(this, argument);
+	}
 }

@@ -78,7 +78,7 @@ class Util {
 	public static function setChannel($channel) {
 		//Flush timestamp to reload version.php
 		\OC::$server->getSession()->set('OC_Version_Timestamp', 0);
-		return \OC::$server->getAppConfig()->setValue('core', 'OC_Channel', $channel);
+		\OC::$server->getAppConfig()->setValue('core', 'OC_Channel', $channel);
 	}
 	
 	/**
@@ -148,8 +148,8 @@ class Util {
 	 * @since 4.0.0
 	 */
 	public static function writeLog( $app, $message, $level ) {
-		// call the internal log class
-		\OC_LOG::write( $app, $message, $level );
+		$context = ['app' => $app];
+		\OC::$server->getLogger()->log($level, $message, $context);
 	}
 
 	/**
@@ -542,6 +542,7 @@ class Util {
 	 * @param string $encoding The encoding parameter is the character encoding. Defaults to UTF-8
 	 * @return string
 	 * @since 4.5.0
+	 * @deprecated 8.2.0 Use substr_replace() instead.
 	 */
 	public static function mb_substr_replace($string, $replacement, $start, $length = null, $encoding = 'UTF-8') {
 		return(\OC_Helper::mb_substr_replace($string, $replacement, $start, $length, $encoding));
@@ -557,6 +558,7 @@ class Util {
 	 * @param int $count If passed, this will be set to the number of replacements performed.
 	 * @return string
 	 * @since 4.5.0
+	 * @deprecated 8.2.0 Use str_replace() instead.
 	 */
 	public static function mb_str_replace($search, $replace, $subject, $encoding = 'UTF-8', &$count = null) {
 		return(\OC_Helper::mb_str_replace($search, $replace, $subject, $encoding, $count));

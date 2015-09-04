@@ -29,9 +29,12 @@
  *
  */
 namespace OC\Files\Storage;
+use Icewind\Streams\IteratorDirectory;
+
+use phpseclib\Net\SFTP\Stream;
 
 /**
-* Uses phpseclib's Net_SFTP class and the Net_SFTP_Stream stream wrapper to
+* Uses phpseclib's Net\SFTP class and the Net\SFTP\Stream stream wrapper to
 * provide access to SFTP servers.
 */
 class SFTP extends \OC\Files\Storage\Common {
@@ -42,7 +45,7 @@ class SFTP extends \OC\Files\Storage\Common {
 	private $port = 22;
 
 	/**
-	* @var \Net_SFTP
+	* @var SFTP
 	*/
 	protected $client;
 
@@ -51,10 +54,10 @@ class SFTP extends \OC\Files\Storage\Common {
 	 */
 	public function __construct($params) {
 		// Register sftp://
-		\Net_SFTP_Stream::register();
+		Stream::register();
 
 		$this->host = $params['host'];
-		
+
 		//deals with sftp://server example
 		$proto = strpos($this->host, '://');
 		if ($proto != false) {
@@ -87,7 +90,7 @@ class SFTP extends \OC\Files\Storage\Common {
 	/**
 	 * Returns the connection.
 	 *
-	 * @return \Net_SFTP connected client instance
+	 * @return \phpseclib\Net\SFTP connected client instance
 	 * @throws \Exception when the connection failed
 	 */
 	public function getConnection() {
@@ -96,7 +99,7 @@ class SFTP extends \OC\Files\Storage\Common {
 		}
 
 		$hostKeys = $this->readHostKeys();
-		$this->client = new \Net_SFTP($this->host, $this->port);
+		$this->client = new \phpseclib\Net\SFTP($this->host, $this->port);
 
 		// The SSH Host Key MUST be verified before login().
 		$currentHostKey = $this->client->getServerPublicHostKey();
@@ -251,7 +254,11 @@ class SFTP extends \OC\Files\Storage\Common {
 	 */
 	public function rmdir($path) {
 		try {
-			return $this->getConnection()->delete($this->absPath($path), true);
+			$result = $this->getConnection()->delete($this->absPath($path), true);
+			// workaround: stray stat cache entry when deleting empty folders
+			// see https://github.com/phpseclib/phpseclib/issues/706
+			$this->getConnection()->clearStatCache();
+			return $result;
 		} catch (\Exception $e) {
 			return false;
 		}
@@ -274,8 +281,7 @@ class SFTP extends \OC\Files\Storage\Common {
 					$dirStream[] = $file;
 				}
 			}
-			\OC\Files\Stream\Dir::register($id, $dirStream);
-			return opendir('fakedir://' . $id);
+			return IteratorDirectory::wrap($dirStream);
 		} catch(\Exception $e) {
 			return false;
 		}

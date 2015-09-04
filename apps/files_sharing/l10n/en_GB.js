@@ -24,8 +24,8 @@ OC.L10N.register(
     "You can upload into this folder" : "You can upload into this folder",
     "No ownCloud installation (7 or higher) found at {remote}" : "No ownCloud installation (7 or higher) found at {remote}",
     "Invalid ownCloud url" : "Invalid ownCloud URL",
-    "Share" : "Share",
     "Shared by" : "Shared by",
+    "Sharing" : "Sharing",
     "A file or folder has been <strong>shared</strong>" : "A file or folder has been <strong>shared</strong>",
     "A file or folder was shared from <strong>another server</strong>" : "A file or folder was shared from <strong>another server</strong>",
     "A public shared file or folder was <strong>downloaded</strong>" : "A public shared file or folder was <strong>downloaded</strong>",
@@ -60,7 +60,6 @@ OC.L10N.register(
     "Open documentation" : "Open documentation",
     "Allow users on this server to send shares to other servers" : "Allow users on this server to send shares to other servers",
     "Allow users on this server to receive shares from other servers" : "Allow users on this server to receive shares from other servers",
-    "Federated Cloud" : "Federated Cloud",
-    "Your Federated Cloud ID: %s" : "Your Federated Cloud ID: %s"
+    "Federated Cloud" : "Federated Cloud"
 },
 "nplurals=2; plural=(n != 1);");

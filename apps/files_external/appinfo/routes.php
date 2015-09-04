@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Ross Nicoll <jrn@jrn.me.uk>
@@ -22,13 +23,12 @@
  *
  */
 
-namespace OCA\Files_External\Appinfo;
+namespace OCA\Files_External\AppInfo;
 
 /**
- * @var $this \OC\Route\Router
+ * @var $this \OCP\Route\IRouter
  **/
-$application = new Application();
-$application->registerRoutes(
+\OC_Mount_Config::$app->registerRoutes(
 	$this,
 	array(
 		'resources' => array(
@@ -46,10 +46,10 @@ $application->registerRoutes(
 	)
 );
 
-$this->create('files_external_dropbox', 'ajax/dropbox.php')
-	->actionInclude('files_external/ajax/dropbox.php');
-$this->create('files_external_google', 'ajax/google.php')
-	->actionInclude('files_external/ajax/google.php');
+$this->create('files_external_oauth1', 'ajax/oauth1.php')
+	->actionInclude('files_external/ajax/oauth1.php');
+$this->create('files_external_oauth2', 'ajax/oauth2.php')
+	->actionInclude('files_external/ajax/oauth2.php');
 
 
 $this->create('files_external_list_applicable', '/applicable')

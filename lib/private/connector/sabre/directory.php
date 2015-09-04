@@ -4,6 +4,7 @@
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Jakob Sack <mail@jakobsack.de>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
@@ -30,6 +31,7 @@ namespace OC\Connector\Sabre;
 use OC\Connector\Sabre\Exception\InvalidPath;
 use OC\Connector\Sabre\Exception\FileLocked;
 use OCP\Lock\LockedException;
+use Sabre\DAV\Exception\Locked;
 
 class Directory extends \OC\Connector\Sabre\Node
 	implements \Sabre\DAV\ICollection, \Sabre\DAV\IQuota {
@@ -191,7 +193,11 @@ class Directory extends \OC\Connector\Sabre\Node
 		if (!is_null($this->dirContent)) {
 			return $this->dirContent;
 		}
-		$folderContent = $this->fileView->getDirectoryContent($this->path);
+		try {
+			$folderContent = $this->fileView->getDirectoryContent($this->path);
+		} catch (LockedException $e) {
+			throw new Locked();
+		}
 
 		$nodes = array();
 		foreach ($folderContent as $info) {

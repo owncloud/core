@@ -2,6 +2,7 @@
 /**
  * @author Christopher Schäpers <kondou@ts.unde.re>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Roeland Jago Douma <roeland@famdouma.nl>
  * @author Tom Needham <tom@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -23,16 +24,20 @@
  
 namespace OCA\Files_Versions; 
 
-class Capabilities {
+use OCP\Capabilities\ICapability;
+
+class Capabilities implements ICapability {
 	
-	public static function getCapabilities() {
-		return new \OC_OCS_Result(array(
-			'capabilities' => array(
-				'files' => array(
-					'versioning' => true,
-					),
-				),
-			));
+	/**
+	 * Return this classes capabilities
+	 *
+	 * @return array
+	 */
+	public function getCapabilities() {
+		return [
+			'files' => [
+				'versioning' => true
+			]
+		];
 	}
-	
 }

@@ -1,6 +1,9 @@
 <?php
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -48,10 +51,12 @@ class Server extends \Test\TestCase {
 			['AvatarManager', '\OC\AvatarManager'],
 			['AvatarManager', '\OCP\IAvatarManager'],
 
+			['CapabilitiesManager', '\OC\CapabilitiesManager'],
 			['ContactsManager', '\OC\ContactsManager'],
 			['ContactsManager', '\OCP\Contacts\IManager'],
 			['Crypto', '\OC\Security\Crypto'],
 			['Crypto', '\OCP\Security\ICrypto'],
+			['CryptoWrapper', '\OC\Session\CryptoWrapper'],
 
 			['DatabaseConnection', '\OC\DB\Connection'],
 			['DatabaseConnection', '\OCP\IDBConnection'],
@@ -85,6 +90,7 @@ class Server extends \Test\TestCase {
 			['JobList', '\OCP\BackgroundJob\IJobList'],
 
 			['L10NFactory', '\OC\L10N\Factory'],
+			['L10NFactory', '\OCP\L10N\IFactory'],
 			['LockingProvider', '\OCP\Lock\ILockingProvider'],
 			['Logger', '\OC\Log'],
 			['Logger', '\OCP\ILogger'],
@@ -99,6 +105,7 @@ class Server extends \Test\TestCase {
 			['NavigationManager', '\OC\NavigationManager'],
 			['NavigationManager', '\OCP\INavigationManager'],
 			['UserCache', '\OC\Cache\File'],
+			['UserCache', '\OCP\ICache'],
 
 			['OcsClient', '\OC\OCSClient'],
 

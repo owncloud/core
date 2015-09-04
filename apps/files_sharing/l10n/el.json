@@ -22,11 +22,12 @@
     "You can upload into this folder" : "Μπορείτε να μεταφορτώσετε σε αυτόν τον φάκελο",
     "No ownCloud installation (7 or higher) found at {remote}" : "Δεν βρέθηκε εγκατάστση ownCloud (7 ή νεώτερη) στο {remote}",
     "Invalid ownCloud url" : "Άκυρη url ownCloud ",
-    "Share" : "Διαμοιράστε",
     "Shared by" : "Διαμοιράστηκε από",
+    "Sharing" : "Διαμοιρασμός",
     "A file or folder has been <strong>shared</strong>" : "Ένα αρχείο ή φάκελος <strong>διαμοιράστηκε</strong>",
     "A file or folder was shared from <strong>another server</strong>" : "Ένα αρχείο ή φάκελος διαμοιράστηκε από <strong>έναν άλλο διακομιστή</strong>",
     "A public shared file or folder was <strong>downloaded</strong>" : "Ένα δημόσια διαμοιρασμένο αρχείο ή φάκελος <strong>ελήφθη</strong>",
+    "You received a new remote share %2$s from %1$s" : "Λάβατε ένα νέο απομακρυσμένο διαμοιρασμό %2$s από %1$s",
     "You received a new remote share from %s" : "Λάβατε ένα νέο απομακρυσμένο κοινόχρηστο φάκελο από %s",
     "%1$s accepted remote share %2$s" : "Ο %1$s αποδέχθηκε τον απομακρυσμένο φάκελο %2$s",
     "%1$s declined remote share %2$s" : "Ο %1$s αρνήθηκε τον απομακρυσμένο διαμοιρασμένο φάκελο %2$s",
@@ -38,6 +39,8 @@
     "%2$s shared %1$s with you" : "Ο %2$s διαμοιράστηκε το %1$s με εσάς",
     "You shared %1$s via link" : "Μοιραστήκατε το %1$s μέσω συνδέσμου",
     "Shares" : "Κοινόχρηστοι φάκελοι",
+    "Share with me through my #ownCloud Federated Cloud ID, see %s" : "Διαμοιρασμός με εμένα μέσω του #ownCloud Federated Cloud ID μου, δείτε %s",
+    "Share with me through my #ownCloud Federated Cloud ID" : "Διαμοιρασμός με εμένα μέσω του #ownCloud Federated Cloud ID μου",
     "This share is password-protected" : "Αυτός ο κοινόχρηστος φάκελος προστατεύεται με κωδικό",
     "The password is wrong. Try again." : "Εσφαλμένος κωδικός πρόσβασης. Προσπαθήστε ξανά.",
     "Password" : "Κωδικός πρόσβασης",
@@ -59,6 +62,9 @@
     "Allow users on this server to send shares to other servers" : "Να επιτρέπεται σε χρήστες αυτού του διακομιστή να στέλνουν διαμοιρασμένους φακέλους σε άλλους διακομιστές",
     "Allow users on this server to receive shares from other servers" : "Να επιτρέπεται στους χρίστες του διακομιστή να λαμβάνουν διαμοιρασμένα αρχεία από άλλους διακομιστές",
     "Federated Cloud" : "Federated σύννεφο",
-    "Your Federated Cloud ID: %s" : "Το ID σας στο Federated σύννεφο: %s"
+    "Your Federated Cloud ID:" : "Το ID σας στο Federated Cloud:",
+    "Share it:" : "Μοιραστείτε το:",
+    "Share with me via ownCloud" : "Διαμοιρασμός με εμένα μέσω του ",
+    "HTML Code:" : "Κώδικας HTML:"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -1,12 +1,27 @@
 <?php
 /**
- * Copyright (c) 2015 Robin Appelman <icewind@owncloud.com>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Roeland Jago Douma <roeland@famdouma.nl>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
 
-namespace OCA\Files_Sharing\Appinfo;
+namespace OCA\Files_Sharing\AppInfo;
 
 use OCA\Files_Sharing\Helper;
 use OCA\Files_Sharing\MountProvider;
@@ -17,6 +32,7 @@ use OCA\Files_Sharing\Controllers\ExternalSharesController;
 use OCA\Files_Sharing\Controllers\ShareController;
 use OCA\Files_Sharing\Middleware\SharingCheckMiddleware;
 use \OCP\IContainer;
+use OCA\Files_Sharing\Capabilities;
 
 class Application extends App {
 	public function __construct(array $urlParams = array()) {
@@ -46,7 +62,8 @@ class Application extends App {
 				$c->query('AppName'),
 				$c->query('Request'),
 				$c->query('IsIncomingShareEnabled'),
-				$c->query('ExternalManager')
+				$c->query('ExternalManager'),
+				$c->query('HttpClientService')
 			);
 		});
 
@@ -61,6 +78,9 @@ class Application extends App {
 		});
 		$container->registerService('UserManager', function (SimpleContainer $c) use ($server) {
 			return $server->getUserManager();
+		});
+		$container->registerService('HttpClientService', function (SimpleContainer $c) use ($server) {
+			return $server->getHTTPClientService();
 		});
 		$container->registerService('IsIncomingShareEnabled', function (SimpleContainer $c) {
 			return Helper::isIncomingServer2serverShareEnabled();
@@ -108,6 +128,11 @@ class Application extends App {
 				$server->getConfig()
 			);
 		});
+
+		/*
+		 * Register capabilities
+		 */
+		$container->registerCapability('OCA\Files_Sharing\Capabilities');
 	}
 
 	public function registerMountProviders() {

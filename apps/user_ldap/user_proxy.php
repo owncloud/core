@@ -132,9 +132,11 @@ class User_Proxy extends lib\Proxy implements \OCP\IUserBackend, \OCP\UserInterf
 
 	/**
 	 * Get a list of all users
-	 * @return string[] with all uids
 	 *
-	 * Get a list of all users.
+	 * @param string $search
+	 * @param null|int $limit
+	 * @param null|int $offset
+	 * @return string[] an array of all uids
 	 */
 	public function getUsers($search = '', $limit = 10, $offset = 0) {
 		//we do it just as the /OC_User implementation: do not play around with limit and offset but ask all backends
@@ -159,7 +161,7 @@ class User_Proxy extends lib\Proxy implements \OCP\IUserBackend, \OCP\UserInterf
 
 	/**
 	 * check if a user exists on LDAP
-	 * @param string|OCA\User_LDAP\lib\User\User $user either the ownCloud user
+	 * @param string|\OCA\User_LDAP\lib\User\User $user either the ownCloud user
 	 * name or an instance of that user
 	 * @return boolean
 	 */
@@ -178,6 +180,17 @@ class User_Proxy extends lib\Proxy implements \OCP\IUserBackend, \OCP\UserInterf
 	 */
 	public function checkPassword($uid, $password) {
 		return $this->handleRequest($uid, 'checkPassword', array($uid, $password));
+	}
+
+	/**
+	 * returns the username for the given login name, if available
+	 *
+	 * @param string $loginName
+	 * @return string|false
+	 */
+	public function loginName2UserName($loginName) {
+		$id = 'LOGINNAME,' . $loginName;
+		return $this->handleRequest($id, 'loginName2UserName', array($loginName));
 	}
 
 	/**
@@ -208,10 +221,11 @@ class User_Proxy extends lib\Proxy implements \OCP\IUserBackend, \OCP\UserInterf
 	}
 
 	/**
-	 * Get a list of all display names
-	 * @return array with all displayNames (value) and the corresponding uids (key)
-	 *
 	 * Get a list of all display names and user ids.
+	 * @param string $search
+	 * @param string|null $limit
+	 * @param string|null $offset
+	 * @return array an array of all displayNames (value) and the corresponding uids (key)
 	 */
 	public function getDisplayNames($search = '', $limit = null, $offset = null) {
 		//we do it just as the /OC_User implementation: do not play around with limit and offset but ask all backends

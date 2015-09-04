@@ -76,11 +76,10 @@ class Scanner extends PublicEmitter {
 		//TODO: move to the node based fileapi once that's done
 		\OC_Util::tearDownFS();
 		\OC_Util::setupFS($this->user);
-		$absolutePath = Filesystem::getView()->getAbsolutePath($dir);
 
 		$mountManager = Filesystem::getMountManager();
-		$mounts = $mountManager->findIn($absolutePath);
-		$mounts[] = $mountManager->find($absolutePath);
+		$mounts = $mountManager->findIn($dir);
+		$mounts[] = $mountManager->find($dir);
 		$mounts = array_reverse($mounts); //start with the mount of $dir
 
 		return $mounts;
@@ -132,6 +131,9 @@ class Scanner extends PublicEmitter {
 	 * @throws \OC\ForbiddenException
 	 */
 	public function scan($dir = '') {
+		if (!Filesystem::isValidPath($dir)) {
+			throw new \InvalidArgumentException('Invalid path to scan');
+		}
 		$mounts = $this->getMounts($dir);
 		foreach ($mounts as $mount) {
 			if (is_null($mount->getStorage())) {

@@ -2,10 +2,8 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Gadzy <dev@gadzy.fr>
- * @author j-ed <juergen@eisfair.org>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
- * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
@@ -58,10 +56,7 @@ $application->setupPropagation();
 
 \OCP\Util::addScript('files_sharing', 'share');
 \OCP\Util::addScript('files_sharing', 'external');
-
-// FIXME: registering a job here will cause additional useless SQL queries
-// when the route is not cron.php, needs a better way
-\OC::$server->getJobList()->add('OCA\Files_sharing\Lib\DeleteOrphanedSharesJob');
+\OCP\Util::addStyle('files_sharing', 'sharetabview');
 
 \OC::$server->getActivityManager()->registerExtension(function() {
 		return new \OCA\Files_Sharing\Activity(

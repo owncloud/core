@@ -171,9 +171,14 @@ if ($_['cronErrors']) {
 <div id="postsetupchecks">
 	<div class="loading"></div>
 	<ul class="errors hidden"></ul>
+	<ul class="warnings hidden"></ul>
+	<ul class="info hidden"></ul>
 	<p class="hint hidden">
 		<?php print_unescaped($l->t('Please double check the <a target="_blank" href="%s">installation guides ↗</a>, and check for any errors or warnings in the <a href="#log-section">log</a>.', link_to_docs('admin-install'))); ?>
 	</p>
+</div>
+<div id="security-warning-state">
+	<span class="hidden icon-checkmark"><?php p($l->t('All checks passed.'));?></span>
 </div>
 </div>
 
@@ -326,10 +331,17 @@ if ($_['cronErrors']) {
 	</p>
 
 	<div id="EncryptionWarning" class="warning hidden">
-		<?php p($l->t('Encryption is a one way process. Once encryption is enabled, all files from that point forward will be encrypted on the server and it will not be possible to disable encryption at a later date. This is the final warning: Do you really want to enable encryption?')) ?>
-		<input type="button"
+		<p><?php p($l->t('Please read carefully before activating server-side encryption: ')); ?></p>
+		<ul>
+			<li><?php p($l->t('Server-side encryption is a one way process. Once encryption is enabled, all files from that point forward will be encrypted on the server and it will not be possible to disable encryption at a later date')); ?></li>
+			<li><?php p($l->t('Anyone who has privileged access to your ownCloud server can decrypt your files either by intercepting requests or reading out user passwords which are stored in plain text session files. Server-side encryption does therefore not protect against malicious administrators but is useful for protecting your data on externally hosted storage.')); ?></li>
+			<li><?php p($l->t('Depending on the actual encryption module the general file size is increased (by 35%% or more when using the default module)')); ?></li>
+			<li><?php p($l->t('You should regularly backup all encryption keys to prevent permanent data loss (data/<user>/files_encryption and data/files_encryption)')); ?></li>
+		</ul>
+
+		<p><?php p($l->t('This is the final warning: Do you really want to enable encryption?')) ?> <input type="button"
 			   id="reallyEnableEncryption"
-			   value="<?php p($l->t("Enable encryption")); ?>" />
+			   value="<?php p($l->t("Enable encryption")); ?>" /></p>
 	</div>
 
 	<div id="EncryptionSettingsArea" class="<?php if (!$_['encryptionEnabled']) p('hidden'); ?>">
@@ -507,6 +519,19 @@ if ($_['cronErrors']) {
 	<?php endif; ?>
 </div>
 
+<div class="section" id="server-status">
+	<h2><?php p($l->t('Server status'));?></h2>
+	<ul>
+		<li>
+			<?php if ($_['fileLockingEnabled']) {
+				p($l->t('Transactional File Locking is enabled.'));
+			} else {
+				p($l->t('Transactional File Locking is disabled.'));
+			} ?>
+		</li>
+	</ul>
+</div>
+
 <div class="section" id="admin-tips">
 	<h2><?php p($l->t('Tips & tricks'));?></h2>
 	<ul>
@@ -528,28 +553,16 @@ if ($_['cronErrors']) {
 		<li><a target="_blank" href="<?php p(link_to_docs('admin-security')); ?>"><?php p($l->t('Hardening and security guidance'));?> ↗</a></li>
 	</ul>
 </div>
-<div class="section" id="server-status">
-	<h2><?php p($l->t('Server Status'));?></h2>
-	<ul>
-		<li>
-			<?php if ($_['fileLockingEnabled']) {
-				p($l->t('Experimental File Lock is enabled.'));
-			} else {
-				p($l->t('Experimental File Lock is disabled.'));
-			} ?>
-		</li>
-	</ul>
-</div>
+
+<?php if (!empty($_['updaterAppPanel'])): ?>
+	<div id="updater"><?php print_unescaped($_['updaterAppPanel']); ?></div>
+<?php endif; ?>
 
 <div class="section">
 	<h2><?php p($l->t('Version'));?></h2>
 	<strong><?php p($theme->getTitle()); ?></strong> <?php p(OC_Util::getHumanVersion()) ?>
 	<?php include('settings.development.notice.php'); ?>
 </div>
-
-<?php if (!empty($_['updaterAppPanel'])): ?>
-	<div id="updater"><?php print_unescaped($_['updaterAppPanel']); ?></div>
-<?php endif; ?>
 
 <div class="section credits-footer">
 	<p><?php print_unescaped($theme->getShortFooter()); ?></p>

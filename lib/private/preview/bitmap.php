@@ -2,7 +2,7 @@
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Olivier Paroz <owncloud@interfasys.ch>
+ * @author Olivier Paroz <github@oparoz.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -46,7 +46,7 @@ abstract class Bitmap extends Provider {
 		try {
 			$bp = $this->getResizedPreview($tmpPath, $maxX, $maxY);
 		} catch (\Exception $e) {
-			\OC_Log::write('core', 'ImageMagick says: ' . $e->getmessage(), \OC_Log::ERROR);
+			\OCP\Util::writeLog('core', 'ImageMagick says: ' . $e->getmessage(), \OCP\Util::ERROR);
 			return false;
 		}
 

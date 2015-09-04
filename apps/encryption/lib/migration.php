@@ -1,71 +1,83 @@
 <?php
 /**
- * ownCloud
+ * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
  *
- * @copyright (C) 2015 ownCloud, Inc.
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
  *
- * @author Bjoern Schiessle <schiessle@owncloud.com>
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or any later version.
- *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU AFFERO GENERAL PUBLIC LICENSE for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
 
 namespace OCA\Encryption;
 
 
-use OC\DB\Connection;
 use OC\Files\View;
 use OCP\IConfig;
+use OCP\IDBConnection;
+use OCP\ILogger;
 
 class Migration {
 
 	private $moduleId;
 	/** @var \OC\Files\View */
 	private $view;
-	/** @var \OC\DB\Connection */
+	/** @var \OCP\IDBConnection */
 	private $connection;
 	/** @var IConfig */
 	private $config;
+	/** @var  ILogger */
+	private $logger;
+	/** @var string*/
+	protected $installedVersion;
 
 	/**
 	 * @param IConfig $config
 	 * @param View $view
-	 * @param Connection $connection
+	 * @param IDBConnection $connection
+	 * @param ILogger $logger
 	 */
-	public function __construct(IConfig $config, View $view, Connection $connection) {
+	public function __construct(IConfig $config, View $view, IDBConnection $connection, ILogger $logger) {
 		$this->view = $view;
 		$this->view->getUpdater()->disable();
 		$this->connection = $connection;
 		$this->moduleId = \OCA\Encryption\Crypto\Encryption::ID;
 		$this->config = $config;
+		$this->logger = $logger;
+		$this->installedVersion = $this->config->getAppValue('files_encryption', 'installed_version', '-1');
 	}
 
-	public function __destruct() {
+	public function finalCleanUp() {
 		$this->view->deleteAll('files_encryption/public_keys');
 		$this->updateFileCache();
+		$this->config->deleteAppValue('files_encryption', 'installed_version');
 	}
 
 	/**
 	 * update file cache, copy unencrypted_size to the 'size' column
 	 */
 	private function updateFileCache() {
-		$query = $this->connection->createQueryBuilder();
-		$query->update('`*PREFIX*filecache`')
-			->set('`size`', '`unencrypted_size`')
-			->where($query->expr()->eq('`encrypted`', ':encrypted'))
-			->setParameter('encrypted', 1);
-		$query->execute();
+		// make sure that we don't update the file cache multiple times
+		// only update during the first run
+		if ($this->installedVersion !== '-1') {
+			$query = $this->connection->getQueryBuilder();
+			$query->update('filecache')
+				->set('size', 'unencrypted_size')
+				->where($query->expr()->eq('encrypted', $query->createParameter('encrypted')))
+				->setParameter('encrypted', 1);
+			$query->execute();
+		}
 	}
 
 	/**
@@ -138,28 +150,43 @@ class Migration {
 	 */
 	public function updateDB() {
 
+		// make sure that we don't update the file cache multiple times
+		// only update during the first run
+		if ($this->installedVersion === '-1') {
+			return;
+		}
+
 		// delete left-over from old encryption which is no longer needed
-		$this->config->deleteAppValue('files_encryption', 'installed_version');
 		$this->config->deleteAppValue('files_encryption', 'ocsid');
 		$this->config->deleteAppValue('files_encryption', 'types');
 		$this->config->deleteAppValue('files_encryption', 'enabled');
 
+		$oldAppValues = $this->connection->getQueryBuilder();
+		$oldAppValues->select('*')
+			->from('appconfig')
+			->where($oldAppValues->expr()->eq('appid', $oldAppValues->createParameter('appid')))
+			->setParameter('appid', 'files_encryption');
+		$appSettings = $oldAppValues->execute();
 
-		$query = $this->connection->createQueryBuilder();
-		$query->update('`*PREFIX*appconfig`')
-			->set('`appid`', ':newappid')
-			->where($query->expr()->eq('`appid`', ':oldappid'))
-			->setParameter('oldappid', 'files_encryption')
-			->setParameter('newappid', 'encryption');
-		$query->execute();
+		while ($row = $appSettings->fetch()) {
+			// 'installed_version' gets deleted at the end of the migration process
+			if ($row['configkey'] !== 'installed_version' ) {
+				$this->config->setAppValue('encryption', $row['configkey'], $row['configvalue']);
+				$this->config->deleteAppValue('files_encryption', $row['configkey']);
+			}
+		}
 
-		$query = $this->connection->createQueryBuilder();
-		$query->update('`*PREFIX*preferences`')
-			->set('`appid`', ':newappid')
-			->where($query->expr()->eq('`appid`', ':oldappid'))
-			->setParameter('oldappid', 'files_encryption')
-			->setParameter('newappid', 'encryption');
-		$query->execute();
+		$oldPreferences = $this->connection->getQueryBuilder();
+		$oldPreferences->select('*')
+			->from('preferences')
+			->where($oldPreferences->expr()->eq('appid', $oldPreferences->createParameter('appid')))
+			->setParameter('appid', 'files_encryption');
+		$preferenceSettings = $oldPreferences->execute();
+
+		while ($row = $preferenceSettings->fetch()) {
+			$this->config->setUserValue($row['userid'], 'encryption', $row['configkey'], $row['configvalue']);
+			$this->config->deleteUserValue($row['userid'], 'files_encryption', $row['configkey']);
+		}
 	}
 
 	/**
@@ -225,9 +252,10 @@ class Migration {
 	private function renameUsersPrivateKey($user) {
 		$oldPrivateKey = $user . '/files_encryption/' . $user . '.privateKey';
 		$newPrivateKey = $user . '/files_encryption/' . $this->moduleId . '/' . $user . '.privateKey';
-		$this->createPathForKeys(dirname($newPrivateKey));
-
-		$this->view->rename($oldPrivateKey, $newPrivateKey);
+		if ($this->view->file_exists($oldPrivateKey)) {
+			$this->createPathForKeys(dirname($newPrivateKey));
+			$this->view->rename($oldPrivateKey, $newPrivateKey);
+		}
 	}
 
 	/**
@@ -238,9 +266,10 @@ class Migration {
 	private function renameUsersPublicKey($user) {
 		$oldPublicKey = '/files_encryption/public_keys/' . $user . '.publicKey';
 		$newPublicKey = $user . '/files_encryption/' . $this->moduleId . '/' . $user . '.publicKey';
-		$this->createPathForKeys(dirname($newPublicKey));
-
-		$this->view->rename($oldPublicKey, $newPublicKey);
+		if ($this->view->file_exists($oldPublicKey)) {
+			$this->createPathForKeys(dirname($newPublicKey));
+			$this->view->rename($oldPublicKey, $newPublicKey);
+		}
 	}
 
 	/**
@@ -252,6 +281,11 @@ class Migration {
 	 */
 	private function renameFileKeys($user, $path, $trash = false) {
 
+		if ($this->view->is_dir($user . '/' . $path) === false) {
+			$this->logger->info('Skip dir /' . $user . '/' . $path . ': does not exist');
+			return;
+		}
+
 		$dh = $this->view->opendir($user . '/' . $path);
 
 		if (is_resource($dh)) {
@@ -261,8 +295,15 @@ class Migration {
 						$this->renameFileKeys($user, $path . '/' . $file, $trash);
 					} else {
 						$target = $this->getTargetDir($user, $path, $file, $trash);
-						$this->createPathForKeys(dirname($target));
-						$this->view->rename($user . '/' . $path . '/' . $file, $target);
+						if ($target !== false) {
+							$this->createPathForKeys(dirname($target));
+							$this->view->rename($user . '/' . $path . '/' . $file, $target);
+						} else {
+							$this->logger->warning(
+								'did not move key "' . $file
+								. '" could not find the corresponding file in /data/' . $user . '/files.'
+							. 'Most likely the key was already moved in a previous migration run and is already on the right place.');
+						}
 					}
 				}
 			}
@@ -271,22 +312,50 @@ class Migration {
 	}
 
 	/**
+	 * get system mount points
+	 * wrap static method so that it can be mocked for testing
+	 *
+	 * @internal
+	 * @return array
+	 */
+	protected function getSystemMountPoints() {
+		return \OC_Mount_Config::getSystemMountPoints();
+	}
+
+	/**
 	 * generate target directory
 	 *
 	 * @param string $user
-	 * @param string $filePath
+	 * @param string $keyPath
 	 * @param string $filename
 	 * @param bool $trash
 	 * @return string
 	 */
-	private function getTargetDir($user, $filePath, $filename, $trash) {
+	private function getTargetDir($user, $keyPath, $filename, $trash) {
 		if ($trash) {
-			$targetDir = $user . '/files_encryption/keys/files_trashbin/' . substr($filePath, strlen('/files_trashbin/keys/')) . '/' . $this->moduleId . '/' . $filename;
+			$filePath = substr($keyPath, strlen('/files_trashbin/keys/'));
+			$targetDir = $user . '/files_encryption/keys/files_trashbin/' . $filePath . '/' . $this->moduleId . '/' . $filename;
 		} else {
-			$targetDir = $user . '/files_encryption/keys/files/' . substr($filePath, strlen('/files_encryption/keys/')) . '/' . $this->moduleId . '/' . $filename;
+			$filePath = substr($keyPath, strlen('/files_encryption/keys/'));
+			$targetDir = $user . '/files_encryption/keys/files/' . $filePath . '/' . $this->moduleId . '/' . $filename;
 		}
 
-		return $targetDir;
+		if ($user === '') {
+			// for system wide mounts we need to check if the mount point really exists
+			$normalized = \OC\Files\Filesystem::normalizePath($filePath);
+			$systemMountPoints = $this->getSystemMountPoints();
+			foreach ($systemMountPoints as $mountPoint) {
+				$normalizedMountPoint = \OC\Files\Filesystem::normalizePath($mountPoint['mountpoint']) . '/';
+				if (strpos($normalized, $normalizedMountPoint) === 0)
+					return $targetDir;
+			}
+		} else if ($trash === false && $this->view->file_exists('/' . $user. '/files/' . $filePath)) {
+			return $targetDir;
+		} else if ($trash === true && $this->view->file_exists('/' . $user. '/files_trashbin/' . $filePath)) {
+				return $targetDir;
+			}
+
+		return false;
 	}
 
 	/**

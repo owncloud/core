@@ -22,11 +22,12 @@
     "You can upload into this folder" : "Você não pode enviar arquivos para esta pasta",
     "No ownCloud installation (7 or higher) found at {remote}" : "Nenhuma instalação ownCloud (7 ou superior) foi encontrada em {remote}",
     "Invalid ownCloud url" : "Url invalida para ownCloud",
-    "Share" : "Compartilhar",
     "Shared by" : "Compartilhado por",
+    "Sharing" : "Compartilhamento",
     "A file or folder has been <strong>shared</strong>" : "Um arquivo ou pasta foi <strong>compartilhado</strong> ",
     "A file or folder was shared from <strong>another server</strong>" : "Um arquivo ou pasta foi compartilhada a partir de <strong>outro servidor</strong>",
     "A public shared file or folder was <strong>downloaded</strong>" : "Um arquivo ou pasta compartilhada publicamente foi <strong>baixado</strong>",
+    "You received a new remote share %2$s from %1$s" : "Você recebeu um novo conpartilhamento remoto %2$s de %1$s",
     "You received a new remote share from %s" : "Você recebeu um novo compartilhamento remoto de %s",
     "%1$s accepted remote share %2$s" : "%1$s aceitou o compartilhamento remoto %2$s",
     "%1$s declined remote share %2$s" : "%1$s declinou o compartilhamento remoto %2$s",
@@ -38,6 +39,8 @@
     "%2$s shared %1$s with you" : "%2$s compartilhou %1$s com você",
     "You shared %1$s via link" : "Você compartilhou %1$s via link",
     "Shares" : "Compartilhamentos",
+    "Share with me through my #ownCloud Federated Cloud ID, see %s" : "Compartilhe comigo através do meu #ownCloud Nuvem Federados ID, veja %s",
+    "Share with me through my #ownCloud Federated Cloud ID" : "Compartilhe comigo através do meu #ownCloud Nuvem Federados ID",
     "This share is password-protected" : "Este compartilhamento esta protegido por senha",
     "The password is wrong. Try again." : "Senha incorreta. Tente novamente.",
     "Password" : "Senha",
@@ -59,6 +62,9 @@
     "Allow users on this server to send shares to other servers" : "Permitir que os usuários deste servidor enviem compartilhamentos para outros servidores",
     "Allow users on this server to receive shares from other servers" : "Permitir que os usuários nesse servidor recebam compartilhamentos de outros servidores",
     "Federated Cloud" : "Nuvem Conglomerada",
-    "Your Federated Cloud ID: %s" : "ID de sua Nuvem Conglomerada: %s"
+    "Your Federated Cloud ID:" : "Seu Federados Nuvem ID:",
+    "Share it:" : "Compartilhe:",
+    "Share with me via ownCloud" : "Compartilhe comigo via ownCloud",
+    "HTML Code:" : "Código HTML:"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

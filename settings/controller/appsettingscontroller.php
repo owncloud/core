@@ -127,7 +127,7 @@ class AppSettingsController extends Controller {
 
 		if($this->ocsClient->isAppStoreEnabled()) {
 			// apps from external repo via OCS
-			$ocs = $this->ocsClient->getCategories();
+			$ocs = $this->ocsClient->getCategories(\OC_Util::getVersion());
 			if ($ocs) {
 				foreach($ocs as $k => $v) {
 					$categories[] = [
@@ -147,16 +147,20 @@ class AppSettingsController extends Controller {
 	 * Get all available apps in a category
 	 *
 	 * @param int $category
+	 * @param bool $includeUpdateInfo Should we check whether there is an update
+	 *                                in the app store?
 	 * @return array
 	 */
-	public function listApps($category = 0) {
-		if(!is_null($this->cache->get('listApps-'.$category))) {
-			$apps = $this->cache->get('listApps-'.$category);
+	public function listApps($category = 0, $includeUpdateInfo = true) {
+		$cacheName = 'listApps-' . $category . '-' . (int) $includeUpdateInfo;
+
+		if(!is_null($this->cache->get($cacheName))) {
+			$apps = $this->cache->get($cacheName);
 		} else {
 			switch ($category) {
 				// installed apps
 				case 0:
-					$apps = $this->getInstalledApps();
+					$apps = $this->getInstalledApps($includeUpdateInfo);
 					usort($apps, function ($a, $b) {
 						$a = (string)$a['name'];
 						$b = (string)$b['name'];
@@ -165,13 +169,31 @@ class AppSettingsController extends Controller {
 						}
 						return ($a < $b) ? -1 : 1;
 					});
+					foreach($apps as $key => $app) {
+						if(!array_key_exists('level', $app) && array_key_exists('ocsid', $app)) {
+							$remoteAppEntry = $this->ocsClient->getApplication($app['ocsid'], \OC_Util::getVersion());
+
+							if(is_array($remoteAppEntry) && array_key_exists('level', $remoteAppEntry)) {
+								$apps[$key]['level'] = $remoteAppEntry['level'];
+							}
+						}
+					}
 					break;
 				// not-installed apps
 				case 1:
-					$apps = \OC_App::listAllApps(true);
+					$apps = \OC_App::listAllApps(true, $includeUpdateInfo);
 					$apps = array_filter($apps, function ($app) {
 						return !$app['active'];
 					});
+					foreach($apps as $key => $app) {
+						if(!array_key_exists('level', $app) && array_key_exists('ocsid', $app)) {
+							$remoteAppEntry = $this->ocsClient->getApplication($app['ocsid'], \OC_Util::getVersion());
+
+							if(is_array($remoteAppEntry) && array_key_exists('level', $remoteAppEntry)) {
+								$apps[$key]['level'] = $remoteAppEntry['level'];
+							}
+						}
+					}
 					usort($apps, function ($a, $b) {
 						$a = (string)$a['name'];
 						$b = (string)$b['name'];
@@ -189,7 +211,7 @@ class AppSettingsController extends Controller {
 						$apps = array();
 					} else {
 						// don't list installed apps
-						$installedApps = $this->getInstalledApps();
+						$installedApps = $this->getInstalledApps(false);
 						$installedApps = array_map(function ($app) {
 							if (isset($app['ocsid'])) {
 								return $app['ocsid'];
@@ -239,16 +261,18 @@ class AppSettingsController extends Controller {
 			return $app;
 		}, $apps);
 
-		$this->cache->set('listApps-'.$category, $apps, 300);
+		$this->cache->set($cacheName, $apps, 300);
 
 		return ['apps' => $apps, 'status' => 'success'];
 	}
 
 	/**
+	 * @param bool $includeUpdateInfo Should we check whether there is an update
+	 *                                in the app store?
 	 * @return array
 	 */
-	private function getInstalledApps() {
-		$apps = \OC_App::listAllApps(true);
+	private function getInstalledApps($includeUpdateInfo = true) {
+		$apps = \OC_App::listAllApps(true, $includeUpdateInfo);
 		$apps = array_filter($apps, function ($app) {
 			return $app['active'];
 		});

@@ -1,9 +1,23 @@
 <?php
 /**
- * Copyright (c) 2015 Robin Appelman <icewind@owncloud.com>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
 
 namespace OCA\Files_Sharing\Propagation;
@@ -32,16 +46,23 @@ class RecipientPropagator {
 	protected $config;
 
 	/**
+	 * @var PropagationManager
+	 */
+	private $manager;
+
+	/**
 	 * @param string $userId current user, must match the propagator's
 	 * user
 	 * @param \OC\Files\Cache\ChangePropagator $changePropagator change propagator
 	 * initialized with a view for $user
 	 * @param \OCP\IConfig $config
+	 * @param PropagationManager $manager
 	 */
-	public function __construct($userId, $changePropagator, $config) {
+	public function __construct($userId, $changePropagator, $config, PropagationManager $manager) {
 		$this->userId = $userId;
 		$this->changePropagator = $changePropagator;
 		$this->config = $config;
+		$this->manager = $manager;
 	}
 
 	/**
@@ -101,18 +122,24 @@ class RecipientPropagator {
 	 */
 	public function attachToPropagator(ChangePropagator $propagator, $owner) {
 		$propagator->listen('\OC\Files', 'propagate', function ($path, $entry) use ($owner) {
-			$shares = Share::getAllSharesForFileId($entry['fileid']);
-			foreach ($shares as $share) {
-				// propagate down the share tree
-				$this->markDirty($share, microtime(true));
+			$this->propagateById($entry['fileid']);
+		});
+	}
 
-				// propagate up the share tree
+	public function propagateById($id) {
+		$shares = Share::getAllSharesForFileId($id);
+		foreach ($shares as $share) {
+			// propagate down the share tree
+			$this->markDirty($share, microtime(true));
+
+			// propagate up the share tree
+			if ($share['share_with'] === $this->userId) {
 				$user = $share['uid_owner'];
 				$view = new View('/' . $user . '/files');
 				$path = $view->getPath($share['file_source']);
-				$watcher = new ChangeWatcher($view);
+				$watcher = new ChangeWatcher($view, $this->manager->getSharePropagator($user));
 				$watcher->writeHook(['path' => $path]);
 			}
-		});
+		}
 	}
 }

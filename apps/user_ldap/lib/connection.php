@@ -9,7 +9,6 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
  * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
- * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -340,14 +339,6 @@ class Connection extends LDAPUtility {
 									\OCP\Util::INFO);
 				$this->configuration->$keyBase = $this->configuration->ldapBase;
 			}
-		}
-
-		$groupFilter = $this->configuration->ldapGroupFilter;
-		if(empty($groupFilter)) {
-			\OCP\Util::writeLog('user_ldap',
-								'No group filter is specified, LDAP group '.
-								'feature will not be used.',
-								\OCP\Util::INFO);
 		}
 
 		foreach(array('ldapExpertUUIDUserAttr'  => 'ldapUuidUserAttribute',

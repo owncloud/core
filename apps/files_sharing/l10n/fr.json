@@ -1,6 +1,6 @@
 { "translations": {
     "Server to server sharing is not enabled on this server" : "Le partage de serveur à serveur n'est pas activé sur ce serveur",
-    "The mountpoint name contains invalid characters." : "Le nom du point de montage contient des caractères invalides.",
+    "The mountpoint name contains invalid characters." : "Le nom du point de montage contient des caractères non valides.",
     "Invalid or untrusted SSL certificate" : "Certificat SSL non valable ou non fiable",
     "Could not authenticate to remote share, password might be wrong" : "Impossible de s'authentifier au partage distant : le mot de passe en probablement incorrect",
     "Storage not valid" : "Support de stockage non valide",
@@ -11,9 +11,9 @@
     "Nothing shared with you yet" : "Aucun fichier n'est partagé avec vous pour l'instant",
     "Files and folders others share with you will show up here" : "Les fichiers et dossiers partagés avec vous apparaîtront ici",
     "Nothing shared yet" : "Rien n'est partagé pour l'instant",
-    "Files and folders you share will show up here" : "Les fichiers et dossiers que vous partagerez apparaîtront ici",
+    "Files and folders you share will show up here" : "Les fichiers et dossiers que vous partagez apparaîtront ici",
     "No shared links" : "Aucun partage par lien",
-    "Files and folders you share by link will show up here" : "Les fichiers et dossiers que vous partagerez par lien apparaîtront ici",
+    "Files and folders you share by link will show up here" : "Les fichiers et dossiers que vous partagez par lien apparaîtront ici",
     "Do you want to add the remote share {name} from {owner}@{remote}?" : "Voulez-vous ajouter le partage distant {name} de {owner}@{remote} ?",
     "Remote share" : "Partage distant",
     "Remote share password" : "Mot de passe du partage distant",
@@ -22,11 +22,12 @@
     "You can upload into this folder" : "Vous pouvez téléverser dans ce dossier",
     "No ownCloud installation (7 or higher) found at {remote}" : "Aucune installation ownCloud (7 ou supérieur) trouvée sur {remote}",
     "Invalid ownCloud url" : "URL ownCloud non valide",
-    "Share" : "Partager",
     "Shared by" : "Partagé par",
+    "Sharing" : "Partage",
     "A file or folder has been <strong>shared</strong>" : "Un fichier ou un répertoire a été <strong>partagé</strong>",
     "A file or folder was shared from <strong>another server</strong>" : "Un fichier ou un répertoire a été partagé depuis <strong>un autre serveur</strong>",
     "A public shared file or folder was <strong>downloaded</strong>" : "Un fichier ou un répertoire partagé publiquement a été <strong>téléchargé</strong>",
+    "You received a new remote share %2$s from %1$s" : "L'utilisateur %1$s a partagé la ressource distante %2$s avec vous",
     "You received a new remote share from %s" : "Vous avez reçu un partage distant de %s",
     "%1$s accepted remote share %2$s" : "%1$s a accepté le partage distant %2$s",
     "%1$s declined remote share %2$s" : "%1$s a refusé le partage distant %2$s",
@@ -38,6 +39,8 @@
     "%2$s shared %1$s with you" : "%2$s a partagé %1$s avec vous",
     "You shared %1$s via link" : "Vous avez partagé %1$s par lien public",
     "Shares" : "Partages",
+    "Share with me through my #ownCloud Federated Cloud ID, see %s" : "Partagez avec moi grâce à mon identifiant Federated Cloud #owncloud %s",
+    "Share with me through my #ownCloud Federated Cloud ID" : "Partagez avec moi grâce à mon identifiant Federated Cloud #owncloud",
     "This share is password-protected" : "Ce partage est protégé par un mot de passe",
     "The password is wrong. Try again." : "Le mot de passe est incorrect. Veuillez réessayer.",
     "Password" : "Mot de passe",
@@ -59,6 +62,9 @@
     "Allow users on this server to send shares to other servers" : "Autoriser les utilisateurs de ce serveur à envoyer des partages vers d'autres serveurs",
     "Allow users on this server to receive shares from other servers" : "Autoriser les utilisateurs de ce serveur à recevoir des partages d'autres serveurs",
     "Federated Cloud" : "Federated Cloud",
-    "Your Federated Cloud ID: %s" : "Votre ID Federated Cloud : %s"
+    "Your Federated Cloud ID:" : "Votre identifiant Federated Cloud :",
+    "Share it:" : "Partager :",
+    "Share with me via ownCloud" : "Partagez avec moi via ownCloud",
+    "HTML Code:" : "Code HTML :"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

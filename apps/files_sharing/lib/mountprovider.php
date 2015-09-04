@@ -1,14 +1,29 @@
 <?php
 /**
- * Copyright (c) 2015 Robin Appelman <icewind@owncloud.com>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
  */
 
 namespace OCA\Files_Sharing;
 
 use OC\Files\Filesystem;
+use OC\User\NoUserException;
 use OCA\Files_Sharing\Propagation\PropagationManager;
 use OCP\Files\Config\IMountProvider;
 use OCP\Files\Storage\IStorageFactory;
@@ -50,8 +65,7 @@ class MountProvider implements IMountProvider {
 		$shares = array_filter($shares, function ($share) {
 			return $share['permissions'] > 0;
 		});
-		return array_map(function ($share) use ($user, $storageFactory) {
-			Filesystem::initMountPoints($share['uid_owner']);
+		$shares = array_map(function ($share) use ($user, $storageFactory) {
 			// for updating etags for the share owner when we make changes to this share.
 			$ownerPropagator = $this->propagationManager->getChangePropagator($share['uid_owner']);
 
@@ -68,5 +82,7 @@ class MountProvider implements IMountProvider {
 				$storageFactory
 			);
 		}, $shares);
+		// array_filter removes the null values from the array
+		return array_filter($shares);
 	}
 }

@@ -21,8 +21,8 @@
     "Add remote share" : "Dodaj oddaljeno mesto za souporabo",
     "No ownCloud installation (7 or higher) found at {remote}" : "Na mestu {remote} ni nameščenega okolja ownCloud (različice 7 ali višje)",
     "Invalid ownCloud url" : "Naveden je neveljaven naslov URL strežnika ownCloud",
-    "Share" : "Souporaba",
     "Shared by" : "V souporabi z",
+    "Sharing" : "Souporaba",
     "A file or folder has been <strong>shared</strong>" : "Za datoteko ali mapo je odobrena <strong>souporaba</strong>.",
     "A file or folder was shared from <strong>another server</strong>" : "Souporaba datoteke ali mape <strong>z drugega strežnika</strong> je odobrena.",
     "A public shared file or folder was <strong>downloaded</strong>" : "Mapa ali datoteka v souporabi je bila <strong>prejeta</strong>.",
@@ -54,8 +54,9 @@
     "Download %s" : "Prejmi %s",
     "Direct link" : "Neposredna povezava",
     "Federated Cloud Sharing" : "Upravljana souporaba oblaka",
-    "Open documentation" : "Odprta dokumentacija",
+    "Open documentation" : "Odpri dokumentacijo",
     "Allow users on this server to send shares to other servers" : "Dovoli uporabnikom tega strežnika pošiljanje map za souporabo na druge strežnike.",
-    "Allow users on this server to receive shares from other servers" : "Dovoli uporabnikom tega strežnika sprejemanje map za souporabo z drugih strežnikov."
+    "Allow users on this server to receive shares from other servers" : "Dovoli uporabnikom tega strežnika sprejemanje map za souporabo z drugih strežnikov.",
+    "HTML Code:" : "Koda HTML:"
 },"pluralForm" :"nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);"
 }

@@ -24,11 +24,12 @@ OC.L10N.register(
     "You can upload into this folder" : "Bu dizine yükleme yapabilirsiniz",
     "No ownCloud installation (7 or higher) found at {remote}" : "{remote} üzerinde ownCloud (7 veya daha üstü) kurulumu bulunamadı",
     "Invalid ownCloud url" : "Geçersiz ownCloud adresi",
-    "Share" : "Paylaş",
     "Shared by" : "Paylaşan",
+    "Sharing" : "Paylaşım",
     "A file or folder has been <strong>shared</strong>" : "Bir dosya veya klasör <strong>paylaşıldı</strong>",
     "A file or folder was shared from <strong>another server</strong>" : "<strong>Başka sunucudan</strong> bir dosya veya klasör paylaşıldı",
     "A public shared file or folder was <strong>downloaded</strong>" : "Herkese açık paylaşılan bir dosya veya klasör <strong>indirildi</strong>",
+    "You received a new remote share %2$s from %1$s" : "%1$s kişisinden, %2$s uzak paylaşımını aldınız",
     "You received a new remote share from %s" : "%s kişisinden yeni bir uzak paylaşım aldınız",
     "%1$s accepted remote share %2$s" : "%1$s, %2$s uzak paylaşımını kabul etti",
     "%1$s declined remote share %2$s" : "%1$s, %2$s uzak paylaşımını reddetti",
@@ -40,6 +41,8 @@ OC.L10N.register(
     "%2$s shared %1$s with you" : "%2$s sizinle %1$s dosyasını paylaştı",
     "You shared %1$s via link" : "Bağlantı ile %1$s paylaşımını yaptınız",
     "Shares" : "Paylaşımlar",
+    "Share with me through my #ownCloud Federated Cloud ID, see %s" : "#ownCloud Birleşik Bulut kimliğim ile paylaşıldı, bkz %s",
+    "Share with me through my #ownCloud Federated Cloud ID" : "#ownCloud Birleşmiş Bulut kimliğim ile paylaşıldı",
     "This share is password-protected" : "Bu paylaşım parola korumalı",
     "The password is wrong. Try again." : "Parola hatalı. Yeniden deneyin.",
     "Password" : "Parola",
@@ -61,6 +64,9 @@ OC.L10N.register(
     "Allow users on this server to send shares to other servers" : "Bu sunucudaki kullanıcıların diğer sunuculara paylaşım göndermelerine izin ver",
     "Allow users on this server to receive shares from other servers" : "Bu sunucudaki kullanıcıların diğer sunuculardan paylaşım almalarına izin ver",
     "Federated Cloud" : "Birleşmiş Bulut",
-    "Your Federated Cloud ID: %s" : "Birleşmiş Bulut Kimliğiniz: %s"
+    "Your Federated Cloud ID:" : "Birleşmiş Bulut Kimliğiniz:",
+    "Share it:" : "Paylaşın:",
+    "Share with me via ownCloud" : "Benimle ownCloud aracılığıyla paylaşıldı",
+    "HTML Code:" : "HTML Kodu:"
 },
 "nplurals=2; plural=(n > 1);");

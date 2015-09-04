@@ -150,6 +150,12 @@ class Router implements IRouter {
 		\OC::$server->getEventLogger()->start('loadroutes' . $requestedApp, 'Loading Routes');
 		foreach ($routingFiles as $app => $file) {
 			if (!isset($this->loadedApps[$app])) {
+				if (!\OC_App::isAppLoaded($app)) {
+					// app MUST be loaded before app routes
+					// try again next time loadRoutes() is called
+					$this->loaded = false;
+					continue;
+				}
 				$this->loadedApps[$app] = true;
 				$this->useCollection($app);
 				$this->requireRouteFile($file, $app);
@@ -163,8 +169,9 @@ class Router implements IRouter {
 			$this->useCollection('root');
 			require_once 'settings/routes.php';
 			require_once 'core/routes.php';
-
-			// include ocs routes
+		}
+		if ($this->loaded) {
+			// include ocs routes, must be loaded last for /ocs prefix
 			require_once 'ocs/routes.php';
 			$collection = $this->getCollection('ocs');
 			$collection->addPrefix('/ocs');

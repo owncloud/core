@@ -11,10 +11,10 @@
  * @author Christian Reiner <github@christian-reiner.info>
  * @author Christopher Schäpers <kondou@ts.unde.re>
  * @author Clark Tomlinson <fallen013@gmail.com>
+ * @author cmeh <cmeh@users.noreply.github.com>
  * @author Florin Peter <github@florin-peter.de>
  * @author Frank Karlitschek <frank@owncloud.org>
  * @author Georg Ehrke <georg@owncloud.com>
- * @author Georg Ehrke <georg@ownCloud.com>
  * @author helix84 <helix84@centrum.sk>
  * @author Jakob Sack <mail@jakobsack.de>
  * @author Joas Schilling <nickvergessen@owncloud.com>
@@ -143,6 +143,14 @@ class OC_Util {
 			return $storage;
 		});
 
+		// install storage availability wrapper, before most other wrappers
+		\OC\Files\Filesystem::addStorageWrapper('oc_availability', function ($mountPoint, $storage) {
+			if (!$storage->isLocal()) {
+				return new \OC\Files\Storage\Wrapper\Availability(['storage' => $storage]);
+			}
+			return $storage;
+		});
+
 		\OC\Files\Filesystem::addStorageWrapper('oc_quota', function ($mountPoint, $storage) {
 			// set up quota for home storages, even for other users
 			// which can happen when using sharing
@@ -212,9 +220,9 @@ class OC_Util {
 	 * @return boolean
 	 */
 	public static function isSharingDisabledForUser() {
-		if (\OC_Appconfig::getValue('core', 'shareapi_exclude_groups', 'no') === 'yes') {
+		if (\OC::$server->getAppConfig()->getValue('core', 'shareapi_exclude_groups', 'no') === 'yes') {
 			$user = \OCP\User::getUser();
-			$groupsList = \OC_Appconfig::getValue('core', 'shareapi_exclude_groups_list', '');
+			$groupsList = \OC::$server->getAppConfig()->getValue('core', 'shareapi_exclude_groups_list', '');
 			$excludedGroups = explode(',', $groupsList);
 			$usersGroups = \OC_Group::getUserGroups($user);
 			if (!empty($usersGroups)) {
@@ -267,17 +275,17 @@ class OC_Util {
 	/**
 	 * copies the skeleton to the users /files
 	 *
-	 * @param \OC\User\User $user
+	 * @param String $userId
 	 * @param \OCP\Files\Folder $userDirectory
 	 */
-	public static function copySkeleton(\OC\User\User $user, \OCP\Files\Folder $userDirectory) {
+	public static function copySkeleton($userId, \OCP\Files\Folder $userDirectory) {
 
 		$skeletonDirectory = \OCP\Config::getSystemValue('skeletondirectory', \OC::$SERVERROOT . '/core/skeleton');
 
 		if (!empty($skeletonDirectory)) {
 			\OCP\Util::writeLog(
 				'files_skeleton',
-				'copying skeleton for '.$user->getUID().' from '.$skeletonDirectory.' to '.$userDirectory->getFullPath('/'),
+				'copying skeleton for '.$userId.' from '.$skeletonDirectory.' to '.$userDirectory->getFullPath('/'),
 				\OCP\Util::DEBUG
 			);
 			self::copyr($skeletonDirectory, $userDirectory);
@@ -567,7 +575,8 @@ class OC_Util {
 		}
 
 		$webServerRestart = false;
-		$setup = new \OC\Setup($config, \OC::$server->getIniWrapper(), \OC::$server->getL10N('lib'), new \OC_Defaults());
+		$setup = new \OC\Setup($config, \OC::$server->getIniWrapper(), \OC::$server->getL10N('lib'),
+			new \OC_Defaults(), \OC::$server->getLogger(), \OC::$server->getSecureRandom());
 		$availableDatabases = $setup->getSupportedDatabases();
 		if (empty($availableDatabases)) {
 			$errors[] = array(
@@ -999,7 +1008,7 @@ class OC_Util {
 		if (isset($_REQUEST['redirect_url']) && strpos($_REQUEST['redirect_url'], '@') === false) {
 			$location = $urlGenerator->getAbsoluteURL(urldecode($_REQUEST['redirect_url']));
 		} else {
-			$defaultPage = OC_Appconfig::getValue('core', 'defaultpage');
+			$defaultPage = \OC::$server->getAppConfig()->getValue('core', 'defaultpage');
 			if ($defaultPage) {
 				$location = $urlGenerator->getAbsoluteURL($defaultPage);
 			} else {
@@ -1048,7 +1057,8 @@ class OC_Util {
 	/**
 	 * Register an get/post call. Important to prevent CSRF attacks.
 	 *
-	 * @return string Generated token.
+	 * @return string The encrypted CSRF token, the shared secret is appended after the `:`.
+	 *
 	 * @description
 	 * Creates a 'request token' (random) and stores it inside the session.
 	 * Ever subsequent (ajax) request must use such a valid token to succeed,
@@ -1065,7 +1075,10 @@ class OC_Util {
 			// Valid token already exists, send it
 			$requestToken = \OC::$server->getSession()->get('requesttoken');
 		}
-		return ($requestToken);
+
+		// Encrypt the token to mitigate breach-like attacks
+		$sharedSecret = \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate(10);
+		return \OC::$server->getCrypto()->encrypt($requestToken, $sharedSecret) . ':' . $sharedSecret;
 	}
 
 	/**
@@ -1132,6 +1145,7 @@ class OC_Util {
 	 * @throws \OC\HintException If the test file can't get written.
 	 */
 	public function isHtaccessWorking(\OCP\IConfig $config) {
+
 		if (\OC::$CLI || !$config->getSystemValue('check_for_working_htaccess', true)) {
 			return true;
 		}
@@ -1245,6 +1259,7 @@ class OC_Util {
 	 * @return string of the response or false on error
 	 * This function get the content of a page via curl, if curl is enabled.
 	 * If not, file_get_contents is used.
+	 * @deprecated Use \OCP\Http\Client\IClientService
 	 */
 	public static function getUrlContent($url) {
 		try {
@@ -1344,7 +1359,7 @@ class OC_Util {
 		// XCache
 		if (function_exists('xcache_clear_cache')) {
 			if (ini_get('xcache.admin.enable_auth')) {
-				OC_Log::write('core', 'XCache opcode cache will not be cleared because "xcache.admin.enable_auth" is enabled.', \OC_Log::WARN);
+				\OCP\Util::writeLog('core', 'XCache opcode cache will not be cleared because "xcache.admin.enable_auth" is enabled.', \OCP\Util::WARN);
 			} else {
 				@xcache_clear_cache(XC_TYPE_PHP, 0);
 			}

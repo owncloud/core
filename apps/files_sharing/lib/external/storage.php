@@ -88,6 +88,8 @@ class Storage extends DAV implements ISharedStorage {
 			'user' => $options['token'],
 			'password' => (string)$options['password']
 		));
+
+		$this->getWatcher()->setPolicy(\OC\Files\Cache\Watcher::CHECK_ONCE);
 	}
 
 	public function getRemoteUser() {
@@ -191,7 +193,7 @@ class Storage extends DAV implements ISharedStorage {
 				throw new StorageInvalidException();
 			} else {
 				// ownCloud instance is gone, likely to be a temporary server configuration error
-				throw $e;
+				throw new StorageNotAvailableException();
 			}
 		} catch (ForbiddenException $e) {
 			// auth error, remove share for now (provide a dialog in the future)
@@ -201,10 +203,7 @@ class Storage extends DAV implements ISharedStorage {
 		} catch (\GuzzleHttp\Exception\ConnectException $e) {
 			throw new StorageNotAvailableException();
 		} catch (\GuzzleHttp\Exception\RequestException $e) {
-			if ($e->getCode() === 503) {
-				throw new StorageNotAvailableException();
-			}
-			throw $e;
+			throw new StorageNotAvailableException();
 		} catch (\Exception $e) {
 			throw $e;
 		}
@@ -250,16 +249,13 @@ class Storage extends DAV implements ISharedStorage {
 		try {
 			$response = $client->post($url, ['body' => ['password' => $password]]);
 		} catch (\GuzzleHttp\Exception\RequestException $e) {
-			switch ($e->getCode()) {
-				case 401:
-				case 403:
+			if ($e->getCode() === 401 || $e->getCode() === 403) {
 					throw new ForbiddenException();
-				case 404:
-					throw new NotFoundException();
-				case 500:
-					throw new \Exception();
 			}
-			throw $e;
+			// throw this to be on the safe side: the share will still be visible
+			// in the UI in case the failure is intermittent, and the user will
+			// be able to decide whether to remove it if it's really gone
+			throw new StorageNotAvailableException();
 		}
 
 		return json_decode($response->getBody(), true);

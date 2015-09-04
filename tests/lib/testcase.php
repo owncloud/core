@@ -32,20 +32,51 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 	 */
 	private $commandBus;
 
+	protected function getTestTraits() {
+		$traits = [];
+		$class = $this;
+		do {
+			$traits = array_merge(class_uses($class), $traits);
+		} while ($class = get_parent_class($class));
+		foreach ($traits as $trait => $same) {
+			$traits = array_merge(class_uses($trait), $traits);
+		}
+		$traits = array_unique($traits);
+		return array_filter($traits, function ($trait) {
+			return substr($trait, 0, 5) === 'Test\\';
+		});
+	}
+
 	protected function setUp() {
 		// overwrite the command bus with one we can run ourselves
 		$this->commandBus = new QueueBus();
 		\OC::$server->registerService('AsyncCommandBus', function () {
 			return $this->commandBus;
 		});
+
+		$traits = $this->getTestTraits();
+		foreach ($traits as $trait) {
+			$methodName = 'setUp' . basename(str_replace('\\', '/', $trait));
+			if (method_exists($this, $methodName)) {
+				call_user_func([$this, $methodName]);
+			}
+		}
 	}
 
 	protected function tearDown() {
 		$hookExceptions = \OC_Hook::$thrownExceptions;
 		\OC_Hook::$thrownExceptions = [];
 		\OC::$server->getLockingProvider()->releaseAll();
-		if(!empty($hookExceptions)) {
+		if (!empty($hookExceptions)) {
 			throw $hookExceptions[0];
+		}
+
+		$traits = $this->getTestTraits();
+		foreach ($traits as $trait) {
+			$methodName = 'tearDown' . basename(str_replace('\\', '/', $trait));
+			if (method_exists($this, $methodName)) {
+				call_user_func([$this, $methodName]);
+			}
 		}
 	}
 
@@ -99,25 +130,13 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 	public static function tearDownAfterClass() {
 		$dataDir = \OC::$server->getConfig()->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data-autotest');
 
-		self::tearDownAfterClassCleanFileMapper($dataDir);
 		self::tearDownAfterClassCleanStorages();
 		self::tearDownAfterClassCleanFileCache();
 		self::tearDownAfterClassCleanStrayDataFiles($dataDir);
 		self::tearDownAfterClassCleanStrayHooks();
+		self::tearDownAfterClassCleanStrayLocks();
 
 		parent::tearDownAfterClass();
-	}
-
-	/**
-	 * Remove all entries from the files map table
-	 *
-	 * @param string $dataDir
-	 */
-	static protected function tearDownAfterClassCleanFileMapper($dataDir) {
-		if (\OC_Util::runningOnWindows()) {
-			$mapper = new \OC\Files\Mapper($dataDir);
-			$mapper->removePath($dataDir, true, true);
-		}
 	}
 
 	/**
@@ -197,6 +216,13 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * Clean up the list of locks
+	 */
+	static protected function tearDownAfterClassCleanStrayLocks() {
+		\OC::$server->getLockingProvider()->releaseAll();
+	}
+
+	/**
 	 * Login and setup FS as a given user,
 	 * sets the given user as the current user.
 	 *
@@ -249,11 +275,13 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 	 * @param \OC\Files\View $view view
 	 * @param string $path path to check
 	 * @param int $type lock type
+	 * @param bool $onMountPoint true to check the mount point instead of the
+	 * mounted storage
 	 *
 	 * @return boolean true if the file is locked with the
 	 * given type, false otherwise
 	 */
-	protected function isFileLocked($view, $path, $type) {
+	protected function isFileLocked($view, $path, $type, $onMountPoint = false) {
 		// Note: this seems convoluted but is necessary because
 		// the format of the lock key depends on the storage implementation
 		// (in our case mostly md5)
@@ -266,10 +294,10 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 			$checkType = \OCP\Lock\ILockingProvider::LOCK_SHARED;
 		}
 		try {
-			$view->lockFile($path, $checkType);
+			$view->lockFile($path, $checkType, $onMountPoint);
 			// no exception, which means the lock of $type is not set
 			// clean up
-			$view->unlockFile($path, $checkType);
+			$view->unlockFile($path, $checkType, $onMountPoint);
 			return false;
 		} catch (\OCP\Lock\LockedException $e) {
 			// we could not acquire the counter-lock, which means
