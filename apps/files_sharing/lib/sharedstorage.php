@@ -29,11 +29,11 @@
 
 namespace OC\Files\Storage;
 
-use OC\Files\Cache\ChangePropagator;
 use OC\Files\Filesystem;
 use OCA\Files_Sharing\ISharedStorage;
 use OCA\Files_Sharing\Propagator;
 use OCA\Files_Sharing\SharedMount;
+use OCP\Lock\ILockingProvider;
 
 /**
  * Convert target path to source path and pass the function call to the correct storage provider
@@ -70,7 +70,7 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 	 * Get the source file path, permissions, and owner for a shared file
 	 *
 	 * @param string $target Shared target file path
-	 * @return Returns array with the keys path, permissions, and owner or false if not found
+	 * @return array Returns array with the keys path, permissions, and owner or false if not found
 	 */
 	public function getFile($target) {
 		if (!isset($this->files[$target])) {
@@ -610,5 +610,39 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 		/** @var \OCP\Files\Storage $targetStorage */
 		list($targetStorage, $targetInternalPath) = $this->resolvePath($targetInternalPath);
 		return $targetStorage->moveFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
+	}
+
+	/**
+	 * @param string $path
+	 * @param int $type \OCP\Lock\ILockingProvider::LOCK_SHARED or \OCP\Lock\ILockingProvider::LOCK_EXCLUSIVE
+	 * @param \OCP\Lock\ILockingProvider $provider
+	 * @throws \OCP\Lock\LockedException
+	 */
+	public function acquireLock($path, $type, ILockingProvider $provider) {
+		/** @var \OCP\Files\Storage $targetStorage */
+		list($targetStorage, $targetInternalPath) = $this->resolvePath($path);
+		$targetStorage->acquireLock($targetInternalPath, $type, $provider);
+	}
+
+	/**
+	 * @param string $path
+	 * @param int $type \OCP\Lock\ILockingProvider::LOCK_SHARED or \OCP\Lock\ILockingProvider::LOCK_EXCLUSIVE
+	 * @param \OCP\Lock\ILockingProvider $provider
+	 */
+	public function releaseLock($path, $type, ILockingProvider $provider) {
+		/** @var \OCP\Files\Storage $targetStorage */
+		list($targetStorage, $targetInternalPath) = $this->resolvePath($path);
+		$targetStorage->releaseLock($targetInternalPath, $type, $provider);
+	}
+
+	/**
+	 * @param string $path
+	 * @param int $type \OCP\Lock\ILockingProvider::LOCK_SHARED or \OCP\Lock\ILockingProvider::LOCK_EXCLUSIVE
+	 * @param \OCP\Lock\ILockingProvider $provider
+	 */
+	public function changeLock($path, $type, ILockingProvider $provider) {
+		/** @var \OCP\Files\Storage $targetStorage */
+		list($targetStorage, $targetInternalPath) = $this->resolvePath($path);
+		$targetStorage->changeLock($targetInternalPath, $type, $provider);
 	}
 }

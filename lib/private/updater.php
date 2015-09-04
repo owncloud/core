@@ -65,6 +65,9 @@ class Updater extends BasicEmitter {
 	/** @var bool */
 	private $updateStepEnabled;
 
+	/** @var bool */
+	private $skip3rdPartyAppsDisable;
+
 	/**
 	 * @param HTTPHelper $httpHelper
 	 * @param IConfig $config
@@ -97,6 +100,16 @@ class Updater extends BasicEmitter {
 	 */
 	public function setUpdateStepEnabled($flag) {
 		$this->updateStepEnabled = $flag;
+	}
+
+	/**
+	 * Sets whether the update disables 3rd party apps.
+	 * This can be set to true to skip the disable.
+	 *
+	 * @param bool $flag false to not disable, true otherwise
+	 */
+	public function setSkip3rdPartyAppsDisable($flag) {
+		$this->skip3rdPartyAppsDisable = $flag;
 	}
 
 	/**
@@ -163,14 +176,18 @@ class Updater extends BasicEmitter {
 	 * @return bool true if the operation succeeded, false otherwise
 	 */
 	public function upgrade() {
-		$this->config->setSystemValue('maintenance', true);
+		$wasMaintenanceModeEnabled = $this->config->getSystemValue('maintenance', false);
+
+		if(!$wasMaintenanceModeEnabled) {
+			$this->config->setSystemValue('maintenance', true);
+			$this->emit('\OC\Updater', 'maintenanceEnabled');
+		}
 
 		$installedVersion = $this->config->getSystemValue('version', '0.0.0');
 		$currentVersion = implode('.', \OC_Util::getVersion());
 		if ($this->log) {
 			$this->log->debug('starting upgrade from ' . $installedVersion . ' to ' . $currentVersion, array('app' => 'core'));
 		}
-		$this->emit('\OC\Updater', 'maintenanceStart');
 
 		try {
 			$this->doUpgrade($currentVersion, $installedVersion);
@@ -178,8 +195,14 @@ class Updater extends BasicEmitter {
 			$this->emit('\OC\Updater', 'failure', array($exception->getMessage()));
 		}
 
-		$this->config->setSystemValue('maintenance', false);
-		$this->emit('\OC\Updater', 'maintenanceEnd');
+		$this->emit('\OC\Updater', 'updateEnd');
+
+		if(!$wasMaintenanceModeEnabled) {
+			$this->config->setSystemValue('maintenance', false);
+			$this->emit('\OC\Updater', 'maintenanceDisabled');
+		} else {
+			$this->emit('\OC\Updater', 'maintenanceActive');
+		}
 	}
 
 	/**
@@ -407,10 +430,12 @@ class Updater extends BasicEmitter {
 				continue;
 			}
 
-			// disable any other 3rd party apps
-			\OC_App::disable($app);
-			$disabledApps[]= $app;
-			$this->emit('\OC\Updater', 'thirdPartyAppDisabled', array($app));
+			// disable any other 3rd party apps if not overriden
+			if(!$this->skip3rdPartyAppsDisable) {
+				\OC_App::disable($app);
+				$disabledApps[]= $app;
+				$this->emit('\OC\Updater', 'thirdPartyAppDisabled', array($app));
+			};
 		}
 		return $disabledApps;
 	}

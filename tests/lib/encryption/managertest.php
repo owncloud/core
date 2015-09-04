@@ -16,11 +16,15 @@ class ManagerTest extends TestCase {
 	/** @var \PHPUnit_Framework_MockObject_MockObject */
 	private $logger;
 
+	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	private $l10n;
+
 	public function setUp() {
 		parent::setUp();
 		$this->config = $this->getMock('\OCP\IConfig');
 		$this->logger = $this->getMock('\OCP\ILogger');
-		$this->manager = new Manager($this->config, $this->logger);
+		$this->l10n = $this->getMock('\OCP\Il10n');
+		$this->manager = new Manager($this->config, $this->logger, $this->l10n);
 	}
 
 	public function testManagerIsDisabled() {
@@ -77,7 +81,7 @@ class ManagerTest extends TestCase {
 
 	/**
 	 * @expectedException \OC\Encryption\Exceptions\ModuleDoesNotExistsException
-	 * @expectedExceptionMessage Module with id: unknown does not exists.
+	 * @expectedExceptionMessage Module with id: unknown does not exist.
 	 */
 	public function testGetEncryptionModuleUnknown() {
 		$this->config->expects($this->any())->method('getAppValue')->willReturn(true);
@@ -123,7 +127,7 @@ class ManagerTest extends TestCase {
 		$en0 = $this->manager->getEncryptionModule('ID0');
 		$this->assertEquals('ID0', $en0->getId());
 
-		$en0 = \Test_Helper::invokePrivate($this->manager, 'getDefaultEncryptionModule');
+		$en0 = self::invokePrivate($this->manager, 'getDefaultEncryptionModule');
 		$this->assertEquals('ID0', $en0->getId());
 
 		$this->assertEquals('ID0', $this->manager->getDefaultEncryptionModuleId());
@@ -191,7 +195,7 @@ class ManagerTest extends TestCase {
 //
 //	/**
 //	 * @expectedException \OC\Encryption\Exceptions\ModuleDoesNotExistsException
-//	 * @expectedExceptionMessage Module with id: unknown does not exists.
+//	 * @expectedExceptionMessage Module with id: unknown does not exist.
 //	 */
 //	public function testGetEncryptionModuleUnknown() {
 //		$config = $this->getMock('\OCP\IConfig');

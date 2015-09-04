@@ -25,6 +25,7 @@
 namespace OC\Files\Storage\Wrapper;
 
 use OCP\Files\InvalidPathException;
+use OCP\Lock\ILockingProvider;
 
 class Wrapper implements \OC\Files\Storage\Storage {
 	/**
@@ -513,6 +514,10 @@ class Wrapper implements \OC\Files\Storage\Storage {
 	 * @return bool
 	 */
 	public function copyFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
+		if ($sourceStorage === $this) {
+			return $this->copy($sourceInternalPath, $targetInternalPath);
+		}
+
 		return $this->storage->copyFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
 	}
 
@@ -523,6 +528,10 @@ class Wrapper implements \OC\Files\Storage\Storage {
 	 * @return bool
 	 */
 	public function moveFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
+		if ($sourceStorage === $this) {
+			return $this->rename($sourceInternalPath, $targetInternalPath);
+		}
+
 		return $this->storage->moveFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
 	}
 
@@ -532,5 +541,33 @@ class Wrapper implements \OC\Files\Storage\Storage {
 	 */
 	public function getMetaData($path) {
 		return $this->storage->getMetaData($path);
+	}
+
+	/**
+	 * @param string $path
+	 * @param int $type \OCP\Lock\ILockingProvider::LOCK_SHARED or \OCP\Lock\ILockingProvider::LOCK_EXCLUSIVE
+	 * @param \OCP\Lock\ILockingProvider $provider
+	 * @throws \OCP\Lock\LockedException
+	 */
+	public function acquireLock($path, $type, ILockingProvider $provider) {
+		$this->storage->acquireLock($path, $type, $provider);
+	}
+
+	/**
+	 * @param string $path
+	 * @param int $type \OCP\Lock\ILockingProvider::LOCK_SHARED or \OCP\Lock\ILockingProvider::LOCK_EXCLUSIVE
+	 * @param \OCP\Lock\ILockingProvider $provider
+	 */
+	public function releaseLock($path, $type, ILockingProvider $provider) {
+		$this->storage->releaseLock($path, $type, $provider);
+	}
+
+	/**
+	 * @param string $path
+	 * @param int $type \OCP\Lock\ILockingProvider::LOCK_SHARED or \OCP\Lock\ILockingProvider::LOCK_EXCLUSIVE
+	 * @param \OCP\Lock\ILockingProvider $provider
+	 */
+	public function changeLock($path, $type, ILockingProvider $provider) {
+		$this->storage->changeLock($path, $type, $provider);
 	}
 }

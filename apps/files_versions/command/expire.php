@@ -11,7 +11,6 @@ namespace OCA\Files_Versions\Command;
 use OC\Command\FileAccess;
 use OCA\Files_Versions\Storage;
 use OCP\Command\ICommand;
-use OCP\IUser;
 
 class Expire implements ICommand {
 	use FileAccess;
@@ -51,6 +50,12 @@ class Expire implements ICommand {
 
 
 	public function handle() {
+		$userManager = \OC::$server->getUserManager();
+		if (!$userManager->userExists($this->user)) {
+			// User has been deleted already
+			return;
+		}
+
 		\OC_Util::setupFS($this->user);
 		Storage::expire($this->fileName, $this->versionsSize, $this->neededSpace);
 		\OC_Util::tearDownFS();

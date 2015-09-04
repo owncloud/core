@@ -29,7 +29,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-use OCA\Files\Appinfo\Application;
 
 // Check if we are a user
 OCP\User::checkLoggedIn();
@@ -139,6 +138,8 @@ OCP\Util::addscript('files', 'navigation');
 OCP\Util::addscript('files', 'keyboardshortcuts');
 $tmpl = new OCP\Template('files', 'index', 'user');
 $tmpl->assign('usedSpacePercent', (int)$storageInfo['relative']);
+$tmpl->assign('owner', $storageInfo['owner']);
+$tmpl->assign('ownerDisplayName', $storageInfo['ownerDisplayName']);
 $tmpl->assign('isPublic', false);
 $tmpl->assign("mailNotificationEnabled", $config->getAppValue('core', 'shareapi_allow_mail_notification', 'no'));
 $tmpl->assign("mailPublicNotificationEnabled", $config->getAppValue('core', 'shareapi_allow_public_notification', 'no'));

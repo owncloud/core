@@ -251,7 +251,14 @@ class GROUP_LDAP extends BackendUtility implements \OCP\GroupInterface {
 	 * @return string|bool
 	 */
 	public function getUserPrimaryGroupIDs($dn) {
-		return $this->getEntryGroupID($dn, 'primaryGroupID');
+		$primaryGroupID = false;
+		if($this->access->connection->hasPrimaryGroups) {
+			$primaryGroupID = $this->getEntryGroupID($dn, 'primaryGroupID');
+			if($primaryGroupID === false) {
+				$this->access->connection->hasPrimaryGroups = false;
+			}
+		}
+		return $primaryGroupID;
 	}
 
 	/**
@@ -292,12 +299,13 @@ class GROUP_LDAP extends BackendUtility implements \OCP\GroupInterface {
 	public function getUsersInPrimaryGroup($groupDN, $search = '', $limit = -1, $offset = 0) {
 		try {
 			$filter = $this->prepareFilterForUsersInPrimaryGroup($groupDN, $search);
-			return $this->access->fetchListOfUsers(
+			$users = $this->access->fetchListOfUsers(
 				$filter,
 				array($this->access->connection->ldapUserDisplayName, 'dn'),
 				$limit,
 				$offset
 			);
+			return $this->access->ownCloudUserNames($users);
 		} catch (\Exception $e) {
 			return array();
 		}
@@ -361,6 +369,27 @@ class GROUP_LDAP extends BackendUtility implements \OCP\GroupInterface {
 			return array();
 		}
 
+		$groups = [];
+		$primaryGroup = $this->getUserPrimaryGroup($userDN);
+
+		// if possible, read out membership via memberOf. It's far faster than
+		// performing a search, which still is a fallback later.
+		if(intval($this->access->connection->hasMemberOfFilterSupport) === 1
+			&& intval($this->access->connection->useMemberOfToDetectMembership) === 1
+		) {
+			$groupDNs = $this->access->readAttribute($userDN, 'memberOf');
+			if (is_array($groupDNs)) {
+				foreach ($groupDNs as $dn) {
+					$groups[] = $this->access->dn2groupname($dn);;
+				}
+			}
+			if($primaryGroup !== false) {
+				$groups[] = $primaryGroup;
+			}
+			$this->access->connection->writeToCache($cacheKey, $groups);
+			return $groups;
+		}
+
 		//uniqueMember takes DN, memberuid the uid, so we need to distinguish
 		if((strtolower($this->access->connection->ldapGroupMemberAssocAttr) === 'uniquemember')
 			|| (strtolower($this->access->connection->ldapGroupMemberAssocAttr) === 'member')
@@ -386,7 +415,6 @@ class GROUP_LDAP extends BackendUtility implements \OCP\GroupInterface {
 			$this->cachedGroupsByMember[$uid] = $groups;
 		}
 
-		$primaryGroup = $this->getUserPrimaryGroup($userDN);
 		if($primaryGroup !== false) {
 			$groups[] = $primaryGroup;
 		}
@@ -476,8 +504,9 @@ class GROUP_LDAP extends BackendUtility implements \OCP\GroupInterface {
 			return array();
 		}
 
+		$primaryUsers = $this->getUsersInPrimaryGroup($groupDN, $search, $limit, $offset);
 		$members = array_keys($this->_groupMembers($groupDN));
-		if(!$members) {
+		if(!$members && empty($primaryUsers)) {
 			//in case users could not be retrieved, return empty result set
 			$this->access->connection->writeToCache($cacheKey, array());
 			return array();
@@ -514,13 +543,11 @@ class GROUP_LDAP extends BackendUtility implements \OCP\GroupInterface {
 			}
 		}
 
+		$groupUsers = array_unique(array_merge($groupUsers, $primaryUsers));
 		natsort($groupUsers);
 		$this->access->connection->writeToCache('usersInGroup-'.$gid.'-'.$search, $groupUsers);
 		$groupUsers = array_slice($groupUsers, $offset, $limit);
 
-		//and get users that have the group as primary
-		$primaryUsers = $this->getUsersInPrimaryGroup($groupDN, $search, $limit, $offset);
-		$groupUsers = array_unique(array_merge($groupUsers, $primaryUsers));
 
 		$this->access->connection->writeToCache($cacheKey, $groupUsers);
 
@@ -551,16 +578,15 @@ class GROUP_LDAP extends BackendUtility implements \OCP\GroupInterface {
 		}
 
 		$members = array_keys($this->_groupMembers($groupDN));
-		if(!$members) {
+		$primaryUserCount = $this->countUsersInPrimaryGroup($groupDN, '');
+		if(!$members && $primaryUserCount === 0) {
 			//in case users could not be retrieved, return empty result set
 			$this->access->connection->writeToCache($cacheKey, false);
 			return false;
 		}
 
 		if(empty($search)) {
-			$primaryUsers = $this->countUsersInPrimaryGroup($groupDN, '');
-			$groupUsers = count($members) + $primaryUsers;
-
+			$groupUsers = count($members) + $primaryUserCount;
 			$this->access->connection->writeToCache($cacheKey, $groupUsers);
 			return $groupUsers;
 		}

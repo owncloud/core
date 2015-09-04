@@ -4,7 +4,9 @@ OC.L10N.register(
     "Cancel" : "Annula",
     "Share" : "Parteja",
     "Password" : "Senhal",
+    "No entries found in this folder" : "Cap d'entrada pas trobada dins aqueste dorsièr",
     "Name" : "Nom",
-    "Download" : "Avalcarga"
+    "Download" : "Avalcarga",
+    "Open documentation" : "Veire la documentacion"
 },
 "nplurals=2; plural=(n > 1);");

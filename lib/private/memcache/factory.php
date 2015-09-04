@@ -29,7 +29,7 @@ namespace OC\Memcache;
 use \OCP\ICacheFactory;
 
 class Factory implements ICacheFactory {
-	const NULL_CACHE = '\\OC\\Memcache\\Null';
+	const NULL_CACHE = '\\OC\\Memcache\\NullCache';
 
 	/**
 	 * @var string $globalPrefix
@@ -47,12 +47,18 @@ class Factory implements ICacheFactory {
 	private $distributedCacheClass;
 
 	/**
+	 * @var string $lockingCacheClass
+	 */
+	private $lockingCacheClass;
+
+	/**
 	 * @param string $globalPrefix
 	 * @param string|null $localCacheClass
 	 * @param string|null $distributedCacheClass
+	 * @param string|null $lockingCacheClass
 	 */
 	public function __construct($globalPrefix,
-		$localCacheClass = null, $distributedCacheClass = null)
+		$localCacheClass = null, $distributedCacheClass = null, $lockingCacheClass = null)
 	{
 		$this->globalPrefix = $globalPrefix;
 
@@ -62,8 +68,23 @@ class Factory implements ICacheFactory {
 		if (!($distributedCacheClass && $distributedCacheClass::isAvailable())) {
 			$distributedCacheClass = $localCacheClass;
 		}
+		if (!($lockingCacheClass && $lockingCacheClass::isAvailable())) {
+			// dont fallback since the fallback might not be suitable for storing lock
+			$lockingCacheClass = '\OC\Memcache\NullCache';
+		}
 		$this->localCacheClass = $localCacheClass;
 		$this->distributedCacheClass = $distributedCacheClass;
+		$this->lockingCacheClass = $lockingCacheClass;
+	}
+
+	/**
+	 * create a cache instance for storing locks
+	 *
+	 * @param string $prefix
+	 * @return \OCP\IMemcache
+	 */
+	public function createLocking($prefix = '') {
+		return new $this->lockingCacheClass($this->globalPrefix . '/' . $prefix);
 	}
 
 	/**

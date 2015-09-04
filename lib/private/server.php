@@ -38,25 +38,26 @@ use bantu\IniGetWrapper\IniGetWrapper;
 use OC\AppFramework\Http\Request;
 use OC\AppFramework\Db\Db;
 use OC\AppFramework\Utility\SimpleContainer;
-use OC\Cache\UserCache;
 use OC\Command\AsyncBus;
-use OC\Diagnostics\NullQueryLogger;
 use OC\Diagnostics\EventLogger;
+use OC\Diagnostics\NullEventLogger;
+use OC\Diagnostics\NullQueryLogger;
 use OC\Diagnostics\QueryLogger;
-use OC\Mail\Mailer;
-use OC\Memcache\ArrayCache;
-use OC\Http\Client\ClientService;
-use OC\Security\CertificateManager;
 use OC\Files\Node\Root;
 use OC\Files\View;
+use OC\Http\Client\ClientService;
+use OC\Lock\MemcacheLockingProvider;
+use OC\Lock\NoopLockingProvider;
+use OC\Mail\Mailer;
+use OC\Memcache\ArrayCache;
+use OC\Memcache\NullCache;
+use OC\Security\CertificateManager;
 use OC\Security\Crypto;
 use OC\Security\Hasher;
 use OC\Security\SecureRandom;
-use OC\Diagnostics\NullEventLogger;
 use OC\Security\TrustedDomainHelper;
-use OCP\IServerContainer;
-use OCP\ISession;
 use OC\Tagging\TagMapper;
+use OCP\IServerContainer;
 
 /**
  * Class Server
@@ -84,7 +85,7 @@ class Server extends SimpleContainer implements IServerContainer {
 		});
 
 		$this->registerService('EncryptionManager', function (Server $c) {
-			return new Encryption\Manager($c->getConfig(), $c->getLogger());
+			return new Encryption\Manager($c->getConfig(), $c->getLogger(), $c->getL10N('core'));
 		});
 
 		$this->registerService('EncryptionFileHelper', function (Server $c) {
@@ -218,12 +219,12 @@ class Server extends SimpleContainer implements IServerContainer {
 			return new \OC\AppHelper();
 		});
 		$this->registerService('UserCache', function ($c) {
-			return new UserCache();
+			return new Cache\File();
 		});
 		$this->registerService('MemCacheFactory', function (Server $c) {
 			$config = $c->getConfig();
 
-			if($config->getSystemValue('installed', false)) {
+			if($config->getSystemValue('installed', false) && !(defined('PHPUNIT_RUN') && PHPUNIT_RUN)) {
 				$v = \OC_App::getAppVersions();
 				$v['core'] = implode('.', \OC_Util::getVersion());
 				$version = implode(',', $v);
@@ -232,11 +233,13 @@ class Server extends SimpleContainer implements IServerContainer {
 				$prefix = md5($instanceId.'-'.$version.'-'.$path);
 				return new \OC\Memcache\Factory($prefix,
 					$config->getSystemValue('memcache.local', null),
-					$config->getSystemValue('memcache.distributed', null)
+					$config->getSystemValue('memcache.distributed', null),
+					$config->getSystemValue('memcache.locking', null)
 				);
 			}
 
 			return new \OC\Memcache\Factory('',
+				new ArrayCache(),
 				new ArrayCache(),
 				new ArrayCache()
 			);
@@ -419,6 +422,17 @@ class Server extends SimpleContainer implements IServerContainer {
 				$this->getConfig(),
 				$this->getLogger()
 			);
+		});
+		$this->registerService('LockingProvider', function (Server $c) {
+			if ($c->getConfig()->getSystemValue('filelocking.enabled', false) or (defined('PHPUNIT_RUN') && PHPUNIT_RUN)) {
+				/** @var \OC\Memcache\Factory $memcacheFactory */
+				$memcacheFactory = $c->getMemCacheFactory();
+				$memcache = $memcacheFactory->createLocking('lock');
+				if (!($memcache instanceof \OC\Memcache\NullCache)) {
+					return new MemcacheLockingProvider($memcache);
+				}
+			}
+			return new NoopLockingProvider();
 		});
 	}
 
@@ -646,9 +660,11 @@ class Server extends SimpleContainer implements IServerContainer {
 	}
 
 	/**
-	 * Returns an ICache instance
+	 * Returns an ICache instance. Since 8.1.0 it returns a fake cache. Use
+	 * getMemCacheFactory() instead.
 	 *
 	 * @return \OCP\ICache
+	 * @deprecated 8.1.0 use getMemCacheFactory to obtain a proper cache
 	 */
 	public function getCache() {
 		return $this->query('UserCache');
@@ -907,5 +923,15 @@ class Server extends SimpleContainer implements IServerContainer {
 	 */
 	public function getTrustedDomainHelper() {
 		return $this->query('TrustedDomainHelper');
+	}
+
+	/**
+	 * Get the locking provider
+	 *
+	 * @return \OCP\Lock\ILockingProvider
+	 * @since 8.1.0
+	 */
+	public function getLockingProvider() {
+		return $this->query('LockingProvider');
 	}
 }

@@ -487,6 +487,27 @@ $CONFIG = array(
 'loglevel' => 2,
 
 /**
+ * Log condition for log level increase based on conditions. Once one of these
+ * conditions is met, the required log level is set to debug. This allows to
+ * debug specific requests, users or apps
+ *
+ * Supported conditions:
+ *  - ``shared_secret``: if a request parameter with the name `log_secret` is set to
+ *                this value the condition is met
+ *  - ``users``:  if the current request is done by one of the specified users,
+ *                this condition is met
+ *  - ``apps``:   if the log message is invoked by one of the specified apps,
+ *                this condition is met
+ *
+ * Defaults to an empty array.
+ */
+'log.condition' => [
+	'shared_secret' => '57b58edb6637fe3059b3595cf9c41b9',
+	'users' => ['sample-user'],
+	'apps' => ['files'],
+],
+
+/**
  * This uses PHP.date formatting; see http://php.net/manual/en/function.date.php
  */
 'logdateformat' => 'F d, Y H:i:s',
@@ -510,8 +531,8 @@ $CONFIG = array(
 
 /**
  * Location of the lock file for cron executions can be specified here.
- * Default is within the tmp directory. The file is named in the following way
- *   owncloud-server-$INSTANCEID-cron.lock
+ * Default is within the tmp directory. The file is named in the following way:
+ * owncloud-server-$INSTANCEID-cron.lock
  * where $INSTANCEID is the string specified in the instanceid field.
  * Because the cron lock file is accessed in regular intervals, it may prevent
  * enabled disk drives from spinning down. A different location for this file
@@ -1004,6 +1025,25 @@ $CONFIG = array(
  * Set to -1 for no limit
  */
 'max_filesize_animated_gifs_public_sharing' => 10,
+
+
+/**
+ * Enables the EXPERIMENTAL file locking.
+ * This is disabled by default as it is experimental.
+ *
+ * Prevents concurrent processes to access the same files
+ * at the same time. Can help prevent side effects that would
+ * be caused by concurrent operations.
+ *
+ * WARNING: EXPERIMENTAL
+ */
+'filelocking.enabled' => false,
+
+/**
+ * Memory caching backend for file locking
+ * Because most memcache backends can clean values without warning using redis is recommended
+ */
+'memcache.locking' => '\\OC\\Memcache\\Redis',
 
 /**
  * This entry is just here to show a warning in case somebody copied the sample

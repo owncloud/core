@@ -29,10 +29,13 @@
  *
  */
 
+use OC\Lock\NoopLockingProvider;
+
 OC_Util::checkAdminUser();
 OC_App::setActiveNavigationEntry("admin");
 
 $template = new OC_Template('settings', 'admin', 'user');
+$l = OC_L10N::get('settings');
 
 $showLog = (\OC::$server->getConfig()->getSystemValue('log_type', 'owncloud') === 'owncloud');
 $numEntriesToLoad = 3;
@@ -126,13 +129,23 @@ $template->assign('getenvServerNotWorking', empty($path));
 // warn if Windows is used
 $template->assign('WindowsWarning', OC_Util::runningOnWindows());
 
-// warn if outdated version of APCu is used
-$template->assign('ApcuOutdatedWarning',
-	extension_loaded('apcu') && version_compare(phpversion('apc'), '4.0.6') === -1);
+// warn if outdated version of a memcache module is used
+$caches = [
+	'apcu'	=> ['name' => $l->t('APCu'), 'version' => '4.0.6'],
+	'redis'	=> ['name' => $l->t('Redis'), 'version' => '2.2.5'],
+];
+
+$outdatedCaches = [];
+foreach ($caches as $php_module => $data) {
+	$isOutdated = extension_loaded($php_module) && version_compare(phpversion($php_module), $data['version'], '<');
+	if ($isOutdated) {
+		$outdatedCaches[$php_module] = $data;
+	}
+}
+$template->assign('OutdatedCacheWarning', $outdatedCaches);
 
 // add hardcoded forms from the template
 $forms = OC_App::getForms('admin');
-$l = OC_L10N::get('settings');
 $formsAndMore = array();
 if ($request->getServerProtocol()  !== 'https' || !OC_Util::isAnnotationsWorking() ||
 	$suggestedOverwriteCliUrl || !OC_Util::isSetLocaleWorking()  ||
@@ -175,6 +188,11 @@ $template->assign('fileSharingSettings', $fileSharingSettings);
 $template->assign('filesExternal', $filesExternal);
 $template->assign('updaterAppPanel', $updaterAppPanel);
 $template->assign('ocDefaultEncryptionModulePanel', $ocDefaultEncryptionModulePanel);
+if (\OC::$server->getLockingProvider() instanceof NoopLockingProvider) {
+	$template->assign('fileLockingEnabled', false);
+} else {
+	$template->assign('fileLockingEnabled', true);
+}
 
 $formsMap = array_map(function ($form) {
 	if (preg_match('%(<h2[^>]*>.*?</h2>)%i', $form, $regs)) {
@@ -200,6 +218,7 @@ $formsAndMore = array_merge($formsAndMore, $formsMap);
 $formsAndMore[] = ['anchor' => 'backgroundjobs', 'section-name' => $l->t('Cron')];
 $formsAndMore[] = ['anchor' => 'mail_general_settings', 'section-name' => $l->t('Email server')];
 $formsAndMore[] = ['anchor' => 'log-section', 'section-name' => $l->t('Log')];
+$formsAndMore[] = ['anchor' => 'server-status', 'section-name' => $l->t('Server Status')];
 $formsAndMore[] = ['anchor' => 'admin-tips', 'section-name' => $l->t('Tips & tricks')];
 if ($updaterAppPanel) {
 	$formsAndMore[] = ['anchor' => 'updater', 'section-name' => $l->t('Updates')];

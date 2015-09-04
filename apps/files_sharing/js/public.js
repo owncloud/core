@@ -89,8 +89,8 @@ OCA.Sharing.PublicApp = {
 		// dynamically load image previews
 		var token = $('#sharingToken').val();
 		var bottomMargin = 350;
-		var previewWidth = $(window).width() * window.devicePixelRatio;
-		var previewHeight = $(window).height() - bottomMargin * window.devicePixelRatio;
+		var previewWidth = Math.floor($(window).width() * window.devicePixelRatio);
+		var previewHeight = Math.floor(($(window).height() - bottomMargin) * window.devicePixelRatio);
 		previewHeight = Math.max(200, previewHeight);
 		var params = {
 			x: previewWidth,
@@ -110,7 +110,7 @@ OCA.Sharing.PublicApp = {
 			(maxGifSize === -1 || fileSize <= (maxGifSize * 1024 * 1024))) {
 			img.attr('src', $('#downloadURL').val());
 			img.appendTo('#imgframe');
-		} else if (mimetype.substr(0, mimetype.indexOf('/')) === 'text') {
+		} else if (mimetype.substr(0, mimetype.indexOf('/')) === 'text' && window.btoa) {
 			// Undocumented Url to public WebDAV endpoint
 			var url = parent.location.protocol + '//' + location.host + OC.linkTo('', 'public.php/webdav');
 			$.ajax({
@@ -144,7 +144,7 @@ OCA.Sharing.PublicApp = {
 					path: path,
 					files: filename
 				};
-				return OC.generateUrl('/s/' + token + '/download', params);
+				return OC.generateUrl('/s/' + token + '/download') + '?' + OC.buildQueryString(params);
 			};
 
 			this.fileList.getAjaxUrl = function (action, params) {
@@ -159,6 +159,8 @@ OCA.Sharing.PublicApp = {
 
 			this.fileList.generatePreviewUrl = function (urlSpec) {
 				urlSpec.t = $('#dirToken').val();
+				urlSpec.y = Math.floor(36 * window.devicePixelRatio);
+				urlSpec.x = Math.floor(36 * window.devicePixelRatio);
 				return OC.generateUrl('/apps/files_sharing/ajax/publicpreview.php?') + $.param(urlSpec);
 			};
 
@@ -277,6 +279,11 @@ OCA.Sharing.PublicApp = {
 };
 
 $(document).ready(function () {
+	// FIXME: replace with OC.Plugins.register()
+	if (window.TESTING) {
+		return;
+	}
+
 	var App = OCA.Sharing.PublicApp;
 	// defer app init, to give a chance to plugins to register file actions
 	_.defer(function () {

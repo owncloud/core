@@ -241,7 +241,10 @@ class OC_User {
 		$result = self::getUserSession()->login($loginname, $password);
 		if ($result) {
 			//we need to pass the user name, which may differ from login name
-			OC_Util::setupFS(self::getUserSession()->getUser()->getUID());
+			$user = self::getUserSession()->getUser()->getUID();
+			OC_Util::setupFS($user);
+			//trigger creation of user home and /files folder
+			\OC::$server->getUserFolder($user);
 		}
 		return $result;
 	}
@@ -421,7 +424,7 @@ class OC_User {
 	/**
 	 * get the user id of the user currently logged in.
 	 *
-	 * @return string uid or false
+	 * @return string|bool uid or false
 	 */
 	public static function getUser() {
 		$uid = \OC::$server->getSession() ? \OC::$server->getSession()->get('user_id') : null;

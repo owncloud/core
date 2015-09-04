@@ -32,6 +32,7 @@ use OC\Hooks\Emitter;
 use OC\Repair\AssetCache;
 use OC\Repair\CleanTags;
 use OC\Repair\Collation;
+use OC\Repair\DropOldJobs;
 use OC\Repair\SqliteAutoincrement;
 use OC\Repair\DropOldTables;
 use OC\Repair\FillETags;
@@ -106,6 +107,7 @@ class Repair extends BasicEmitter {
 			new FillETags(\OC_DB::getConnection()),
 			new CleanTags(\OC_DB::getConnection()),
 			new DropOldTables(\OC_DB::getConnection()),
+			new DropOldJobs(\OC::$server->getJobList()),
 		);
 	}
 
@@ -140,7 +142,7 @@ class Repair extends BasicEmitter {
 	 *
 	 * Re-declared as public to allow invocation from within the closure above in php 5.3
 	 */
-	public function emit($scope, $method, $arguments = array()) {
+	public function emit($scope, $method, array $arguments = array()) {
 		parent::emit($scope, $method, $arguments);
 	}
 }

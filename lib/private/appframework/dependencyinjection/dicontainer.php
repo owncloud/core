@@ -42,7 +42,6 @@ use OC\AppFramework\Utility\SimpleContainer;
 use OC\AppFramework\Utility\TimeFactory;
 use OC\AppFramework\Utility\ControllerMethodReflector;
 use OCP\AppFramework\IApi;
-use OCP\AppFramework\QueryException;
 use OCP\AppFramework\IAppContainer;
 use OCP\AppFramework\Middleware;
 use OCP\IServerContainer;
@@ -292,7 +291,8 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 		$this->registerService('CORSMiddleware', function($c) {
 			return new CORSMiddleware(
 				$c['Request'],
-				$c['ControllerMethodReflector']
+				$c['ControllerMethodReflector'],
+				$c['OCP\IUserSession']
 			);
 		});
 
@@ -307,8 +307,8 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 		$middleWares = &$this->middleWares;
 		$this->registerService('MiddlewareDispatcher', function($c) use (&$middleWares) {
 			$dispatcher = new MiddlewareDispatcher();
-			$dispatcher->registerMiddleware($c['SecurityMiddleware']);
 			$dispatcher->registerMiddleware($c['CORSMiddleware']);
+			$dispatcher->registerMiddleware($c['SecurityMiddleware']);
 
 			foreach($middleWares as $middleWare) {
 				$dispatcher->registerMiddleware($c[$middleWare]);

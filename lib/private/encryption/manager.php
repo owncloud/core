@@ -26,10 +26,12 @@ use OC\Files\Filesystem;
 use OC\Files\Storage\Shared;
 use OC\Files\Storage\Wrapper\Encryption;
 use OC\Files\View;
+use OC\Search\Provider\File;
 use OCP\Encryption\IEncryptionModule;
 use OCP\Encryption\IManager;
 use OCP\Files\Mount\IMountPoint;
 use OCP\IConfig;
+use OCP\IL10N;
 use OCP\ILogger;
 
 class Manager implements IManager {
@@ -43,14 +45,19 @@ class Manager implements IManager {
 	/** @var ILogger */
 	protected $logger;
 
+	/** @var Il10n */
+	protected $l;
+
 	/**
 	 * @param IConfig $config
 	 * @param ILogger $logger
+	 * @param IL10N $l10n
 	 */
-	public function __construct(IConfig $config, ILogger $logger) {
+	public function __construct(IConfig $config, ILogger $logger, IL10N $l10n) {
 		$this->encryptionModules = array();
 		$this->config = $config;
 		$this->logger = $logger;
+		$this->l = $l10n;
 	}
 
 	/**
@@ -79,7 +86,7 @@ class Manager implements IManager {
 		$oldEncryption = $this->config->getAppValue('files_encryption', 'installed_version');
 		if (!empty($oldEncryption)) {
 			$warning = 'Installation is in transit between the old Encryption (ownCloud <= 8.0)
-			and the new encryption. Please enable the "ownCloud Default Encryption Module"
+			and the new encryption. Please enable the "Default encryption module"
 			and run \'occ encryption:migrate\'';
 			$this->logger->warning($warning);
 			return false;
@@ -144,8 +151,9 @@ class Manager implements IManager {
 			if (isset($this->encryptionModules[$moduleId])) {
 				return call_user_func($this->encryptionModules[$moduleId]['callback']);
 			} else {
-				$message = "Module with id: $moduleId does not exists.";
-				throw new Exceptions\ModuleDoesNotExistsException($message);
+				$message = "Module with id: $moduleId does not exist.";
+				$hint = $this->l->t('Module with id: %s does not exist. Please enable it in your apps settings or contact your administrator.', [$moduleId]);
+				throw new Exceptions\ModuleDoesNotExistsException($message, $hint);
 			}
 		} else {
 			return $this->getDefaultEncryptionModule();
@@ -200,47 +208,16 @@ class Manager implements IManager {
 		return $this->config->getAppValue('core', 'default_encryption_module');
 	}
 
+	/**
+	 * Add storage wrapper
+	 */
 	public static function setupStorage() {
-		\OC\Files\Filesystem::addStorageWrapper('oc_encryption', function ($mountPoint, $storage, IMountPoint $mount) {
-			$parameters = [
-				'storage' => $storage,
-				'mountPoint' => $mountPoint,
-				'mount' => $mount];
-
-			if (!($storage instanceof Shared)) {
-				$manager = \OC::$server->getEncryptionManager();
-				$util = new Util(
-					new View(),
-					\OC::$server->getUserManager(),
-					\OC::$server->getGroupManager(),
-					\OC::$server->getConfig()
-				);
-				$user = \OC::$server->getUserSession()->getUser();
-				$logger = \OC::$server->getLogger();
-				$uid = $user ? $user->getUID() : null;
-				$fileHelper = \OC::$server->getEncryptionFilesHelper();
-				$keyStorage = \OC::$server->getEncryptionKeyStorage();
-				$update = new Update(
-					new View(),
-					$util,
-					Filesystem::getMountManager(),
-					$manager,
-					$fileHelper,
-					$uid
-				);
-				return new Encryption(
-					$parameters,
-					$manager,
-					$util,
-					$logger,
-					$fileHelper,
-					$uid,
-					$keyStorage,
-					$update
-				);
-			} else {
-				return $storage;
-			}
-		}, 2);
+		$util = new Util(
+			new View(),
+			\OC::$server->getUserManager(),
+			\OC::$server->getGroupManager(),
+			\OC::$server->getConfig()
+		);
+		\OC\Files\Filesystem::addStorageWrapper('oc_encryption', array($util, 'wrapStorage'), 2);
 	}
 }

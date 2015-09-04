@@ -110,6 +110,86 @@ describe('OC.Share tests', function() {
 		describe('Share with link', function() {
 			// TODO: test ajax calls
 			// TODO: test password field visibility (whenever enforced or not)
+			it('update password on focus out', function() {
+				$('#allowShareWithLink').val('yes');
+
+				OC.Share.showDropDown(
+					'file',
+					123,
+					$container,
+					true,
+					31,
+					'shared_file_name.txt'
+				);
+
+				// Toggle linkshare
+				$('#dropdown [name=linkCheckbox]').click();
+				fakeServer.requests[0].respond(
+					200,
+					{ 'Content-Type': 'application/json' },
+					JSON.stringify({data: {token: 'xyz'}, status: 'success'})
+				);
+
+				// Enable password, enter password and focusout
+				$('#dropdown [name=showPassword]').click();
+				$('#dropdown #linkPassText').focus();
+				$('#dropdown #linkPassText').val('foo');
+				$('#dropdown #linkPassText').focusout();
+
+				expect(fakeServer.requests[1].method).toEqual('POST');
+				var body = OC.parseQueryString(fakeServer.requests[1].requestBody);
+				expect(body['shareWith']).toEqual('foo');
+
+				// Set password response
+				fakeServer.requests[1].respond(
+					200,
+					{ 'Content-Type': 'application/json' },
+					JSON.stringify({data: {token: 'xyz'}, status: 'success'})
+				);
+
+				expect($('#dropdown #linkPassText').val()).toEqual('');
+				expect($('#dropdown #linkPassText').attr('placeholder')).toEqual('Password protected');
+			});
+			it('update password on enter', function() {
+				$('#allowShareWithLink').val('yes');
+
+				OC.Share.showDropDown(
+					'file',
+					123,
+					$container,
+					true,
+					31,
+					'shared_file_name.txt'
+				);
+
+				// Toggle linkshare
+				$('#dropdown [name=linkCheckbox]').click();
+				fakeServer.requests[0].respond(
+					200,
+					{ 'Content-Type': 'application/json' },
+					JSON.stringify({data: {token: 'xyz'}, status: 'success'})
+				);
+
+				// Enable password and enter password
+				$('#dropdown [name=showPassword]').click();
+				$('#dropdown #linkPassText').focus();
+				$('#dropdown #linkPassText').val('foo');
+				$('#dropdown #linkPassText').trigger(new $.Event('keyup', {keyCode: 13}));
+
+				expect(fakeServer.requests[1].method).toEqual('POST');
+				var body = OC.parseQueryString(fakeServer.requests[1].requestBody);
+				expect(body['shareWith']).toEqual('foo');
+
+				// Set password response
+				fakeServer.requests[1].respond(
+					200,
+					{ 'Content-Type': 'application/json' },
+					JSON.stringify({data: {token: 'xyz'}, status: 'success'})
+				);
+
+				expect($('#dropdown #linkPassText').val()).toEqual('');
+				expect($('#dropdown #linkPassText').attr('placeholder')).toEqual('Password protected');
+			});
 			it('shows share with link checkbox when allowed', function() {
 				$('#allowShareWithLink').val('yes');
 				OC.Share.showDropDown(
@@ -1054,9 +1134,9 @@ describe('OC.Share tests', function() {
 				$action = $file.find('.action-share>span');
 				expect($action.text()).toEqual(output);
 				if (_.isString(title)) {
-					expect($action.find('.remoteOwner').attr('title')).toEqual(title);
+					expect($action.find('.remoteAddress').attr('title')).toEqual(title);
 				} else {
-					expect($action.find('.remoteOwner').attr('title')).not.toBeDefined();
+					expect($action.find('.remoteAddress').attr('title')).not.toBeDefined();
 				}
 				expect(tipsyStub.calledOnce).toEqual(true);
 				tipsyStub.reset();
@@ -1147,7 +1227,94 @@ describe('OC.Share tests', function() {
 				checkIcon('filetypes/folder-public');
 			});
 		});
-		// TODO: add unit tests for share recipients
+
+		describe('displaying the recipoients', function() {
+			function checkRecipients(input, output, title) {
+				var $action;
+
+				$file.attr('data-share-recipients', input);
+				OC.Share.markFileAsShared($file, true);
+
+				$action = $file.find('.action-share>span');
+				expect($action.text()).toEqual(output);
+				if (_.isString(title)) {
+					expect($action.find('.remoteAddress').attr('title')).toEqual(title);
+				} else if (_.isArray(title)) {
+					var tooltips = $action.find('.remoteAddress');
+					expect(tooltips.length).toEqual(title.length);
+
+					tooltips.each(function(i) {
+						expect($(this).attr('title')).toEqual(title[i]);
+					});
+				} else {
+						expect($action.find('.remoteAddress').attr('title')).not.toBeDefined();
+				}
+				expect(tipsyStub.calledOnce).toEqual(true);
+				tipsyStub.reset();
+			}
+
+			it('displays the local share owner as is', function() {
+				checkRecipients('User One', 'Shared with User One', null);
+			});
+			it('displays the user name part of a remote recipient', function() {
+				checkRecipients(
+					'User One@someserver.com',
+					'Shared with User One@…',
+					'User One@someserver.com'
+				);
+				checkRecipients(
+					'User One@someserver.com/',
+					'Shared with User One@…',
+					'User One@someserver.com'
+				);
+				checkRecipients(
+					'User One@someserver.com/root/of/owncloud',
+					'Shared with User One@…',
+					'User One@someserver.com'
+				);
+			});
+			it('displays the user name part with domain of a remote share owner', function() {
+				checkRecipients(
+					'User One@example.com@someserver.com',
+					'Shared with User One@example.com',
+					'User One@example.com@someserver.com'
+				);
+				checkRecipients(
+					'User One@example.com@someserver.com/',
+					'Shared with User One@example.com',
+					'User One@example.com@someserver.com'
+				);
+				checkRecipients(
+					'User One@example.com@someserver.com/root/of/owncloud',
+					'Shared with User One@example.com',
+					'User One@example.com@someserver.com'
+				);
+			});
+			it('display multiple remote recipients', function() {
+				checkRecipients(
+					'One@someserver.com, two@otherserver.com',
+					'Shared with One@…, two@…',
+					['One@someserver.com', 'two@otherserver.com']
+				);
+				checkRecipients(
+					'One@someserver.com/, two@otherserver.com',
+					'Shared with One@…, two@…',
+					['One@someserver.com', 'two@otherserver.com']
+				);
+				checkRecipients(
+					'One@someserver.com/root/of/owncloud, two@otherserver.com',
+					'Shared with One@…, two@…',
+					['One@someserver.com', 'two@otherserver.com']
+				);
+			});
+			it('display mixed recipients', function() {
+				checkRecipients(
+					'One, two@otherserver.com',
+					'Shared with One, two@…',
+					['two@otherserver.com']
+				);
+			});
+		});
 	});
 });
 

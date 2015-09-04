@@ -29,7 +29,6 @@ use OC\Files\Filesystem;
 use OCA\Files_Sharing\AppInfo\Application;
 use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\IAppContainer;
-use OCP\Files;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\Security\ISecureRandom;
@@ -78,10 +77,7 @@ class ShareControllerTest extends \Test\TestCase {
 
 		\OC_User::createUser($this->user, $this->user);
 		\OC_Util::tearDownFS();
-		\OC_User::setUserId('');
-		Filesystem::tearDown();
-		\OC_User::setUserId($this->user);
-		\OC_Util::setupFS($this->user);
+		$this->loginAsUser($this->user);
 
 		// Create a dummy shared file
 		$view = new View('/'. $this->user . '/files');
@@ -182,6 +178,7 @@ class ShareControllerTest extends \Test\TestCase {
 			'nonHumanFileSize' => 33,
 			'maxSizeAnimateGif' => 10,
 			'previewSupported' => true,
+			'previewEnabled' => true,
 		);
 
 		$csp = new \OCP\AppFramework\Http\ContentSecurityPolicy();

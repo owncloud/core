@@ -17,6 +17,8 @@ OCA = OCA || {};
 		/** @property {number} */
 		_configChooserNextServerNumber: 1,
 
+		baseDNTestTriggered: false,
+
 		/**
 		 * initializes the instance. Always call it after initialization.
 		 *
@@ -165,6 +167,12 @@ OCA = OCA || {};
 		 * @inheritdoc
 		 */
 		overrideErrorMessage: function(message, key) {
+			var original = message;
+			message = this._super(message, key);
+			if(original !== message) {
+				// we pass the parents change
+				return message;
+			}
 			switch(key) {
 				case 'ldap_port':
 					if (message === 'Invalid credentials') {
@@ -192,8 +200,8 @@ OCA = OCA || {};
 		 * @param {Object} configuration
 		 */
 		onConfigSwitch: function(view, configuration) {
+			this.baseDNTestTriggered = false;
 			view.disableElement(view.managedItems.ldap_port.$relatedElements);
-
 			view.onConfigLoaded(view, configuration);
 		},
 
@@ -255,7 +263,8 @@ OCA = OCA || {};
 		 * @param {FeaturePayload} payload
 		 */
 		onTestResultReceived: function(view, payload) {
-			if(payload.feature === 'TestBaseDN') {
+			if(view.baseDNTestTriggered && payload.feature === 'TestBaseDN') {
+				view.enableElement(view.managedItems.ldap_base.$testButton);
 				var message;
 				if(payload.data.status === 'success') {
 					var objectsFound = parseInt(payload.data.changes.ldap_test_base, 10);
@@ -267,7 +276,8 @@ OCA = OCA || {};
 						message = t('user_ldap', objectsFound + ' entries available within the provided Base DN');
 					}
 				} else {
-					message = t('user_ldap', 'An error occurred. Please check the Base DN, as well as connection settings and credentials.');
+					message = view.overrideErrorMessage(payload.data.message);
+					message = message || t('user_ldap', 'An error occurred. Please check the Base DN, as well as connection settings and credentials.');
 					if(payload.data.message) {
 						console.warn(payload.data.message);
 					}
@@ -303,7 +313,9 @@ OCA = OCA || {};
 		 */
 		onBaseDNTestButtonClick: function(event) {
 			event.preventDefault();
+			this.baseDNTestTriggered = true;
 			this.configModel.requestWizard('ldap_test_base');
+			this.disableElement(this.managedItems.ldap_base.$testButton);
 		},
 
 		/**

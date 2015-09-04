@@ -22,6 +22,8 @@
 
 namespace Test\Files\Storage;
 
+use OC\Files\Cache\Watcher;
+
 abstract class Storage extends \Test\TestCase {
 	/**
 	 * @var \OC\Files\Storage\Storage instance
@@ -153,13 +155,13 @@ abstract class Storage extends \Test\TestCase {
 		$this->instance->file_put_contents('/lorem.txt', file_get_contents($textFile, 'r'));
 		$this->assertEquals('text/plain', $this->instance->getMimeType('/lorem.txt'));
 
-		$pngFile = \OC::$SERVERROOT . '/tests/data/logo-wide.png';
-		$this->instance->file_put_contents('/logo-wide.png', file_get_contents($pngFile, 'r'));
-		$this->assertEquals('image/png', $this->instance->getMimeType('/logo-wide.png'));
+		$pngFile = \OC::$SERVERROOT . '/tests/data/desktopapp.png';
+		$this->instance->file_put_contents('/desktopapp.png', file_get_contents($pngFile, 'r'));
+		$this->assertEquals('image/png', $this->instance->getMimeType('/desktopapp.png'));
 
-		$svgFile = \OC::$SERVERROOT . '/tests/data/logo-wide.svg';
-		$this->instance->file_put_contents('/logo-wide.svg', file_get_contents($svgFile, 'r'));
-		$this->assertEquals('image/svg+xml', $this->instance->getMimeType('/logo-wide.svg'));
+		$svgFile = \OC::$SERVERROOT . '/tests/data/desktopapp.svg';
+		$this->instance->file_put_contents('/desktopapp.svg', file_get_contents($svgFile, 'r'));
+		$this->assertEquals('image/svg+xml', $this->instance->getMimeType('/desktopapp.svg'));
 	}
 
 
@@ -176,7 +178,7 @@ abstract class Storage extends \Test\TestCase {
 		];
 	}
 
-	public function initSourceAndTarget ($source, $target = null) {
+	public function initSourceAndTarget($source, $target = null) {
 		$textFile = \OC::$SERVERROOT . '/tests/data/lorem.txt';
 		$this->instance->file_put_contents($source, file_get_contents($textFile));
 		if ($target) {
@@ -185,12 +187,12 @@ abstract class Storage extends \Test\TestCase {
 		}
 	}
 
-	public function assertSameAsLorem ($file) {
+	public function assertSameAsLorem($file) {
 		$textFile = \OC::$SERVERROOT . '/tests/data/lorem.txt';
 		$this->assertEquals(
 			file_get_contents($textFile),
 			$this->instance->file_get_contents($file),
-			'Expected '.$file.' to be a copy of '.$textFile
+			'Expected ' . $file . ' to be a copy of ' . $textFile
 		);
 	}
 
@@ -202,9 +204,9 @@ abstract class Storage extends \Test\TestCase {
 
 		$this->instance->copy($source, $target);
 
-		$this->assertTrue($this->instance->file_exists($target), $target.' was not created');
+		$this->assertTrue($this->instance->file_exists($target), $target . ' was not created');
 		$this->assertSameAsLorem($target);
-		$this->assertTrue($this->instance->file_exists($source), $source.' was deleted');
+		$this->assertTrue($this->instance->file_exists($source), $source . ' was deleted');
 	}
 
 	/**
@@ -216,8 +218,8 @@ abstract class Storage extends \Test\TestCase {
 		$this->instance->rename($source, $target);
 
 		$this->wait();
-		$this->assertTrue($this->instance->file_exists($target), $target.' was not created');
-		$this->assertFalse($this->instance->file_exists($source), $source.' still exists');
+		$this->assertTrue($this->instance->file_exists($target), $target . ' was not created');
+		$this->assertFalse($this->instance->file_exists($source), $source . ' still exists');
 		$this->assertSameAsLorem($target);
 	}
 
@@ -225,12 +227,12 @@ abstract class Storage extends \Test\TestCase {
 	 * @dataProvider copyAndMoveProvider
 	 */
 	public function testCopyOverwrite($source, $target) {
-		$this->initSourceAndTarget($source,$target);
+		$this->initSourceAndTarget($source, $target);
 
 		$this->instance->copy($source, $target);
 
-		$this->assertTrue($this->instance->file_exists($target), $target.' was not created');
-		$this->assertTrue($this->instance->file_exists($source), $source.' was deleted');
+		$this->assertTrue($this->instance->file_exists($target), $target . ' was not created');
+		$this->assertTrue($this->instance->file_exists($source), $source . ' was deleted');
 		$this->assertSameAsLorem($target);
 		$this->assertSameAsLorem($source);
 	}
@@ -243,8 +245,8 @@ abstract class Storage extends \Test\TestCase {
 
 		$this->instance->rename($source, $target);
 
-		$this->assertTrue($this->instance->file_exists($target), $target.' was not created');
-		$this->assertFalse($this->instance->file_exists($source), $source.' still exists');
+		$this->assertTrue($this->instance->file_exists($target), $target . ' was not created');
+		$this->assertFalse($this->instance->file_exists($source), $source . ' still exists');
 		$this->assertSameAsLorem($target);
 	}
 
@@ -307,6 +309,22 @@ abstract class Storage extends \Test\TestCase {
 
 		$this->instance->unlink('/lorem.txt');
 		$this->assertTrue($this->instance->hasUpdated('/', $mtimeStart - 5));
+	}
+
+	/**
+	 * Test whether checkUpdate properly returns false when there was
+	 * no change.
+	 */
+	public function testCheckUpdate() {
+		if ($this->instance instanceof \OC\Files\Storage\Wrapper\Wrapper) {
+			$this->markTestSkipped('Cannot test update check on wrappers');
+		}
+		$textFile = \OC::$SERVERROOT . '/tests/data/lorem.txt';
+		$watcher = $this->instance->getWatcher();
+		$watcher->setPolicy(Watcher::CHECK_ALWAYS);
+		$this->instance->file_put_contents('/lorem.txt', file_get_contents($textFile));
+		$this->assertTrue($watcher->checkUpdate('/lorem.txt'), 'Update detected');
+		$this->assertFalse($watcher->checkUpdate('/lorem.txt'), 'No update');
 	}
 
 	public function testUnlink() {
@@ -534,5 +552,18 @@ abstract class Storage extends \Test\TestCase {
 		$this->assertTrue($this->instance->instanceOfStorage('\OCP\Files\Storage'));
 		$this->assertTrue($this->instance->instanceOfStorage(get_class($this->instance)));
 		$this->assertFalse($this->instance->instanceOfStorage('\OC'));
+	}
+
+	/**
+	 * @dataProvider copyAndMoveProvider
+	 */
+	public function testCopyFromSameStorage($source, $target) {
+		$this->initSourceAndTarget($source);
+
+		$this->instance->copyFromStorage($this->instance, $source, $target);
+
+		$this->assertTrue($this->instance->file_exists($target), $target . ' was not created');
+		$this->assertSameAsLorem($target);
+		$this->assertTrue($this->instance->file_exists($source), $source . ' was deleted');
 	}
 }

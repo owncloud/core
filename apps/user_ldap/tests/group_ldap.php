@@ -313,4 +313,133 @@ class Test_Group_Ldap extends \Test\TestCase {
 		$this->assertSame(2, count($groups));
 	}
 
+	/**
+	 * tests that a user listing is complete, if all it's members have the group
+	 * as their primary.
+	 */
+	public function  testUsersInGroupPrimaryMembersOnly() {
+		$access = $this->getAccessMock();
+		$this->enableGroups($access);
+
+		$access->connection->expects($this->any())
+			->method('getFromCache')
+			->will($this->returnValue(null));
+
+		$access->expects($this->any())
+			->method('readAttribute')
+			->will($this->returnCallback(function($dn, $attr) {
+				if($attr === 'primaryGroupToken') {
+					return array(1337);
+				}
+				return array();
+			}));
+
+		$access->expects($this->any())
+			->method('groupname2dn')
+			->will($this->returnValue('cn=foobar,dc=foo,dc=bar'));
+
+		$access->expects($this->once())
+			->method('ownCloudUserNames')
+			->will($this->returnValue(array('lisa', 'bart', 'kira', 'brad')));
+
+		$groupBackend = new GroupLDAP($access);
+		$users = $groupBackend->usersInGroup('foobar');
+
+		$this->assertSame(4, count($users));
+	}
+
+	/**
+	 * tests that a user counting is complete, if all it's members have the group
+	 * as their primary.
+	 */
+	public function  testCountUsersInGroupPrimaryMembersOnly() {
+		$access = $this->getAccessMock();
+		$this->enableGroups($access);
+
+		$access->connection->expects($this->any())
+			->method('getFromCache')
+			->will($this->returnValue(null));
+
+		$access->expects($this->any())
+			->method('readAttribute')
+			->will($this->returnCallback(function($dn, $attr) {
+				if($attr === 'primaryGroupToken') {
+					return array(1337);
+				}
+				return array();
+			}));
+
+		$access->expects($this->any())
+			->method('groupname2dn')
+			->will($this->returnValue('cn=foobar,dc=foo,dc=bar'));
+
+		$access->expects($this->once())
+			->method('countUsers')
+			->will($this->returnValue(4));
+
+		$groupBackend = new GroupLDAP($access);
+		$users = $groupBackend->countUsersInGroup('foobar');
+
+		$this->assertSame(4, $users);
+	}
+
+	public function testGetUserGroupsMemberOf() {
+		$access = $this->getAccessMock();
+		$this->enableGroups($access);
+
+		$dn = 'cn=userX,dc=foobar';
+
+		$access->connection->hasPrimaryGroups = false;
+
+		$access->expects($this->once())
+			->method('username2dn')
+			->will($this->returnValue($dn));
+
+		$access->expects($this->once())
+			->method('readAttribute')
+			->with($dn, 'memberOf')
+			->will($this->returnValue(['cn=groupA,dc=foobar', 'cn=groupB,dc=foobar']));
+
+		$access->expects($this->exactly(2))
+			->method('dn2groupname')
+			->will($this->returnArgument(0));
+
+		$groupBackend = new GroupLDAP($access);
+		$groups = $groupBackend->getUserGroups('userX');
+
+		$this->assertSame(2, count($groups));
+	}
+
+	public function testGetUserGroupsMemberOfDisabled() {
+		$access = $this->getAccessMock();
+
+		$access->connection->expects($this->any())
+			->method('__get')
+			->will($this->returnCallback(function($name) {
+				if($name === 'useMemberOfToDetectMembership') {
+					return 0;
+				}
+				return 1;
+			}));
+
+		$dn = 'cn=userX,dc=foobar';
+
+		$access->connection->hasPrimaryGroups = false;
+
+		$access->expects($this->once())
+			->method('username2dn')
+			->will($this->returnValue($dn));
+
+		$access->expects($this->never())
+			->method('readAttribute')
+			->with($dn, 'memberOf');
+
+		$access->expects($this->once())
+			->method('ownCloudGroupNames')
+			->will($this->returnValue([]));
+
+		$groupBackend = new GroupLDAP($access);
+		$groupBackend->getUserGroups('userX');
+	}
+
 }

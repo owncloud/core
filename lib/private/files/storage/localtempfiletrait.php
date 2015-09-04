@@ -21,15 +21,6 @@
 
 namespace OC\Files\Storage;
 
-use OC\Files\Cache\Cache;
-use OC\Files\Cache\Scanner;
-use OC\Files\Filesystem;
-use OC\Files\Cache\Watcher;
-use OCP\Files\FileNameTooLongException;
-use OCP\Files\InvalidCharacterInPathException;
-use OCP\Files\InvalidPathException;
-use OCP\Files\ReservedWordException;
-
 /**
  * Storage backend class for providing common filesystem operation methods
  * which are not storage-backend specific.
@@ -43,13 +34,12 @@ use OCP\Files\ReservedWordException;
  */
 trait LocalTempFileTrait {
 
-	/**
-	 * @var string[]
-	 */
-	protected $cachedFiles = array();
+	/** @var string[] */
+	protected $cachedFiles = [];
 
 	/**
 	 * @param string $path
+	 * @return string
 	 */
 	protected function getCachedFile($path) {
 		if (!isset($this->cachedFiles[$path])) {
@@ -58,6 +48,9 @@ trait LocalTempFileTrait {
 		return $this->cachedFiles[$path];
 	}
 
+	/**
+	 * @param string $path
+	 */
 	protected function removeCachedFile($path) {
 		unset($this->cachedFiles[$path]);
 	}

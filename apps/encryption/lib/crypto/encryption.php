@@ -36,7 +36,7 @@ use OCP\ILogger;
 class Encryption implements IEncryptionModule {
 
 	const ID = 'OC_DEFAULT_MODULE';
-	const DISPLAY_NAME = 'ownCloud Default Encryption';
+	const DISPLAY_NAME = 'Default encryption module';
 
 	/**
 	 * @var Crypt
@@ -279,12 +279,11 @@ class Encryption implements IEncryptionModule {
 	 */
 	public function decrypt($data) {
 		if (empty($this->fileKey)) {
-			$msg = $this->l->t('Can not decrypt this file, probably this is a shared file. Please ask the file owner to reshare the file with you.');
-			$this->logger->error('Can not decrypt this file,
-			probably this is a shared file.
-			Please ask the file owner to reshare the file with you.');
+			$msg = 'Can not decrypt this file, probably this is a shared file. Please ask the file owner to reshare the file with you.';
+			$hint = $this->l->t('Can not decrypt this file, probably this is a shared file. Please ask the file owner to reshare the file with you.');
+			$this->logger->error($msg);
 
-			throw new DecryptionFailedException($msg);
+			throw new DecryptionFailedException($msg, $hint);
 		}
 
 		$result = '';
@@ -304,7 +303,7 @@ class Encryption implements IEncryptionModule {
 	 */
 	public function update($path, $uid, array $accessList) {
 		$fileKey = $this->keyManager->getFileKey($path, $uid);
-		
+
 		if (!empty($fileKey)) {
 
 			$publicKeys = array();
@@ -387,7 +386,7 @@ class Encryption implements IEncryptionModule {
 					'" is not able to read ' . $path;
 				$hint = $this->l->t('Can not read this file, probably this is a shared file. Please ask the file owner to reshare the file with you.');
 				$this->logger->warning($msg);
-				throw new DecryptionFailedException($msg, 0, null, $hint);
+				throw new DecryptionFailedException($msg, $hint);
 			}
 			return false;
 		}

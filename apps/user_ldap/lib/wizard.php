@@ -31,6 +31,8 @@
 
 namespace OCA\user_ldap\lib;
 
+use OC\ServerNotAvailableException;
+
 class Wizard extends LDAPUtility {
 	static protected $l;
 	protected $access;
@@ -389,10 +391,10 @@ class Wizard extends LDAPUtility {
 			throw new \Exception('Could not connect to LDAP');
 		}
 
-		$groups = $this->fetchGroups($dbKey, $confKey);
+		$this->fetchGroups($dbKey, $confKey);
 
 		if($testMemberOf) {
-			$this->configuration->hasMemberOfFilterSupport = $this->testMemberOf($groups);
+			$this->configuration->hasMemberOfFilterSupport = $this->testMemberOf();
 			$this->result->markChange();
 			if(!$this->configuration->hasMemberOfFilterSupport) {
 				throw new \Exception('memberOf is not supported by the server');
@@ -403,10 +405,12 @@ class Wizard extends LDAPUtility {
 	}
 
 	/**
-	 * fetches all groups from LDAP
+	 * fetches all groups from LDAP and adds them to the result object
+	 *
 	 * @param string $dbKey
 	 * @param string $confKey
 	 * @return array $groupEntries
+	 * @throws \Exception
 	 */
 	public function fetchGroups($dbKey, $confKey) {
 		$obclasses = array('posixGroup', 'group', 'zimbraDistributionList', 'groupOfNames');
@@ -485,7 +489,7 @@ class Wizard extends LDAPUtility {
 			throw new \Exception('Could not connect to LDAP');
 		}
 
-		$obclasses = array('group', 'posixGroup', '*');
+		$obclasses = array('groupOfNames', 'group', 'posixGroup', '*');
 		$this->determineFeature($obclasses,
 								'objectclass',
 								'ldap_groupfilter_objectclass',
@@ -657,12 +661,26 @@ class Wizard extends LDAPUtility {
 			\OCP\Util::writeLog('user_ldap', 'Wiz: trying port '. $p . ', TLS '. $t, \OCP\Util::DEBUG);
 			//connectAndBind may throw Exception, it needs to be catched by the
 			//callee of this method
-			if($this->connectAndBind($p, $t) === true) {
-				$config = array('ldapPort' => $p,
-								'ldapTLS'  => intval($t)
-							);
+
+			// unallowed anonymous bind throws 48. But if it throws 48, we
+			// detected port and TLS, i.e. it is successful.
+			try {
+				$settingsFound = $this->connectAndBind($p, $t);
+			} catch (\Exception $e) {
+				if($e->getCode() === 48) {
+					$settingsFound = true;
+				} else {
+					throw $e;
+				}
+			}
+
+			if ($settingsFound === true) {
+				$config = array(
+					'ldapPort' => $p,
+					'ldapTLS' => intval($t)
+				);
 				$this->configuration->setConfiguration($config);
-				\OCP\Util::writeLog('user_ldap', 'Wiz: detected Port '. $p, \OCP\Util::DEBUG);
+				\OCP\Util::writeLog('user_ldap', 'Wiz: detected Port ' . $p, \OCP\Util::DEBUG);
 				$this->result->addChange('ldap_port', $p);
 				return $this->result;
 			}
@@ -817,43 +835,22 @@ class Wizard extends LDAPUtility {
 
 	/**
 	 * Checks whether the server supports memberOf in LDAP Filter.
-	 * Requires that groups are determined, thus internally called from within
-	 * determineGroups()
-	 * @param array $groups
+	 * Note: at least in OpenLDAP, availability of memberOf is dependent on
+	 * a configured objectClass. I.e. not necessarily for all available groups
+	 * memberOf does work.
+	 *
 	 * @return bool true if it does, false otherwise
 	 * @throws \Exception
 	 */
-	private function testMemberOf($groups) {
+	private function testMemberOf() {
 		$cr = $this->getConnection();
 		if(!$cr) {
 			throw new \Exception('Could not connect to LDAP');
 		}
-		if(!is_array($this->configuration->ldapBase)
-		   || !isset($this->configuration->ldapBase[0])) {
-			return false;
+		$result = $this->access->countUsers('memberOf=*', array('memberOf'), 1);
+		if(is_int($result) &&  $result > 0) {
+			return true;
 		}
-		$base = $this->configuration->ldapBase[0];
-		$filterPrefix = '(&(objectclass=*)(memberOf=';
-		$filterSuffix = '))';
-
-		foreach($groups as $groupProperties) {
-			if(!isset($groupProperties['cn'])) {
-				//assuming only groups have their cn cached :)
-				continue;
-			}
-			$filter = strtolower($filterPrefix . $groupProperties['dn'] . $filterSuffix);
-			$rr = $this->ldap->search($cr, $base, $filter, array('dn'));
-			if(!$this->ldap->isResource($rr)) {
-				continue;
-			}
-			$entries = $this->ldap->countEntries($cr, $rr);
-			//we do not know which groups are empty, so test any and return
-			//success on the first match that returns at least one user
-			if(($entries !== false) && ($entries > 0)) {
-				return true;
-			}
-		}
-
 		return false;
 	}
 
@@ -1051,18 +1048,27 @@ class Wizard extends LDAPUtility {
 		$this->ldap->setOption($cr, LDAP_OPT_PROTOCOL_VERSION, 3);
 		$this->ldap->setOption($cr, LDAP_OPT_REFERRALS, 0);
 		$this->ldap->setOption($cr, LDAP_OPT_NETWORK_TIMEOUT, self::LDAP_NW_TIMEOUT);
-		if($tls) {
-			$isTlsWorking = @$this->ldap->startTls($cr);
-			if(!$isTlsWorking) {
-				return false;
-			}
-		}
 
-		\OCP\Util::writeLog('user_ldap', 'Wiz: Attemping to Bind ', \OCP\Util::DEBUG);
-		//interesting part: do the bind!
-		$login = $this->ldap->bind($cr,
-									$this->configuration->ldapAgentName,
-									$this->configuration->ldapAgentPassword);
+		try {
+			if($tls) {
+				$isTlsWorking = @$this->ldap->startTls($cr);
+				if(!$isTlsWorking) {
+					return false;
+				}
+			}
+
+			\OCP\Util::writeLog('user_ldap', 'Wiz: Attemping to Bind ', \OCP\Util::DEBUG);
+			//interesting part: do the bind!
+			$login = $this->ldap->bind($cr,
+				$this->configuration->ldapAgentName,
+				$this->configuration->ldapAgentPassword
+			);
+			$errNo = $this->ldap->errno($cr);
+			$error = ldap_error($cr);
+			$this->ldap->unbind($cr);
+		} catch(ServerNotAvailableException $e) {
+			return false;
+		}
 
 		if($login === true) {
 			$this->ldap->unbind($cr);
@@ -1073,9 +1079,6 @@ class Wizard extends LDAPUtility {
 			return true;
 		}
 
-		$errNo = $this->ldap->errno($cr);
-		$error = ldap_error($cr);
-		$this->ldap->unbind($cr);
 		if($errNo === -1 || ($errNo === 2 && $ncc)) {
 			//host, port or TLS wrong
 			return false;

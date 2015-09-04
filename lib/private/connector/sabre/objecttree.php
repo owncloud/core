@@ -26,12 +26,12 @@
 namespace OC\Connector\Sabre;
 
 use OC\Connector\Sabre\Exception\InvalidPath;
+use OC\Connector\Sabre\Exception\FileLocked;
 use OC\Files\FileInfo;
-use OC\Files\Filesystem;
 use OC\Files\Mount\MoveableMount;
-use OC_Connector_Sabre_Exception_InvalidPath;
 use OCP\Files\StorageInvalidException;
 use OCP\Files\StorageNotAvailableException;
+use OCP\Lock\LockedException;
 
 class ObjectTree extends \Sabre\DAV\Tree {
 
@@ -105,6 +105,10 @@ class ObjectTree extends \Sabre\DAV\Tree {
 		}
 
 		$path = trim($path, '/');
+		if ($path) {
+			$this->fileView->verifyPath($path, basename($path));
+		}
+
 		if (isset($this->cache[$path])) {
 			return $this->cache[$path];
 		}
@@ -223,8 +227,10 @@ class ObjectTree extends \Sabre\DAV\Tree {
 			if (!$renameOkay) {
 				throw new \Sabre\DAV\Exception\Forbidden('');
 			}
-		} catch (\OCP\Files\StorageNotAvailableException $e) {
+		} catch (StorageNotAvailableException $e) {
 			throw new \Sabre\DAV\Exception\ServiceUnavailable($e->getMessage());
+		} catch (LockedException $e) {
+			throw new FileLocked($e->getMessage(), $e->getCode(), $e);
 		}
 
 		$this->markDirty($sourceDir);
@@ -251,10 +257,19 @@ class ObjectTree extends \Sabre\DAV\Tree {
 		// this will trigger existence check
 		$this->getNodeForPath($source);
 
+		list($destinationDir, $destinationName) = \Sabre\HTTP\URLUtil::splitPath($destination);
+		try {
+			$this->fileView->verifyPath($destinationDir, $destinationName);
+		} catch (\OCP\Files\InvalidPathException $ex) {
+			throw new InvalidPath($ex->getMessage());
+		}
+
 		try {
 			$this->fileView->copy($source, $destination);
-		} catch (\OCP\Files\StorageNotAvailableException $e) {
+		} catch (StorageNotAvailableException $e) {
 			throw new \Sabre\DAV\Exception\ServiceUnavailable($e->getMessage());
+		} catch (LockedException $e) {
+			throw new FileLocked($e->getMessage(), $e->getCode(), $e);
 		}
 
 		list($destinationDir,) = \Sabre\HTTP\URLUtil::splitPath($destination);

@@ -668,6 +668,8 @@ class OC {
 		//make sure temporary files are cleaned up
 		$tmpManager = \OC::$server->getTempManager();
 		register_shutdown_function(array($tmpManager, 'clean'));
+		$lockProvider = \OC::$server->getLockingProvider();
+		register_shutdown_function(array($lockProvider, 'releaseAll'));
 
 		if ($systemConfig->getValue('installed', false) && !self::checkUpgrade(false)) {
 			if (\OC::$server->getConfig()->getAppValue('core', 'backgroundjobs_mode', 'ajax') == 'ajax') {
@@ -720,6 +722,22 @@ class OC {
 		});
 	}
 
+	/**
+	 * register hooks for the cache
+	 */
+	public static function registerCacheHooks() {
+		//don't try to do this before we are properly setup
+		if (\OC::$server->getSystemConfig()->getValue('installed', false) && !\OCP\Util::needUpgrade()) {
+
+			// NOTE: This will be replaced to use OCP
+			$userSession = self::$server->getUserSession();
+			$userSession->listen('\OC\User', 'postLogin', function () {
+				$cache = new \OC\Cache\File();
+				$cache->gc();
+			});
+		}
+	}
+
 	private static function registerEncryptionWrapper() {
 		\OCP\Util::connectHook('OC_Filesystem', 'preSetup', 'OC\Encryption\Manager', 'setupStorage');
 	}
@@ -731,19 +749,6 @@ class OC {
 			\OCP\Util::connectHook('OCP\Share', 'post_unshare', 'OC\Encryption\HookManager', 'postUnshared');
 			\OCP\Util::connectHook('OC_Filesystem', 'post_rename', 'OC\Encryption\HookManager', 'postRename');
 			\OCP\Util::connectHook('\OCA\Files_Trashbin\Trashbin', 'post_restore', 'OC\Encryption\HookManager', 'postRestore');
-		}
-	}
-
-	/**
-	 * register hooks for the cache
-	 */
-	public static function registerCacheHooks() {
-		if (\OC::$server->getSystemConfig()->getValue('installed', false) && !\OCP\Util::needUpgrade()) { //don't try to do this before we are properly setup
-			\OCP\BackgroundJob::registerJob('OC\Cache\FileGlobalGC');
-
-			// NOTE: This will be replaced to use OCP
-			$userSession = \OC_User::getUserSession();
-			$userSession->listen('postLogin', '\OC\Cache\File', 'loginListener');
 		}
 	}
 

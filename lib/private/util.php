@@ -189,9 +189,6 @@ class OC_Util {
 			//jail the user into his "home" directory
 			\OC\Files\Filesystem::init($user, $userDir);
 
-			//trigger creation of user home and /files folder
-			\OC::$server->getUserFolder($user);
-
 			OC_Hook::emit('OC_Filesystem', 'setup', array('user' => $user, 'user_dir' => $userDir));
 		}
 		\OC::$server->getEventLogger()->end('setup_fs');
@@ -388,10 +385,24 @@ class OC_Util {
 			$session->set('OC_Version', $OC_Version);
 			/** @var $OC_VersionString string */
 			$session->set('OC_VersionString', $OC_VersionString);
-			/** @var $OC_Channel string */
-			$session->set('OC_Channel', $OC_Channel);
 			/** @var $OC_Build string */
 			$session->set('OC_Build', $OC_Build);
+			
+			// Allow overriding update channel
+			
+			if (\OC::$server->getSystemConfig()->getValue('installed', false)) {
+				$channel = \OC::$server->getAppConfig()->getValue('core', 'OC_Channel');
+			} else {
+				/** @var $OC_Channel string */
+				$channel = $OC_Channel;
+			}
+			
+			if (!is_null($channel)) {
+				$session->set('OC_Channel', $channel);
+			} else {
+				/** @var $OC_Channel string */
+				$session->set('OC_Channel', $OC_Channel);
+			}
 		}
 	}
 
@@ -749,14 +760,14 @@ class OC_Util {
 		if($iniWrapper->getBool('mbstring.func_overload') !== null &&
 			$iniWrapper->getBool('mbstring.func_overload') === true) {
 			$errors[] = array(
-				'error' => $l->t('mbstring.func_overload is set to "%s" instead to the expected value "0"', [$iniWrapper->getString('mbstring.func_overload')]),
+				'error' => $l->t('mbstring.func_overload is set to "%s" instead of the expected value "0"', [$iniWrapper->getString('mbstring.func_overload')]),
 				'hint' => $l->t('To fix this issue set <code>mbstring.func_overload</code> to <code>0</code> in your php.ini')
 			);
 		}
 
 		if (!self::isAnnotationsWorking()) {
 			$errors[] = array(
-				'error' => $l->t('PHP is apparently setup to strip inline doc blocks. This will make several core apps inaccessible.'),
+				'error' => $l->t('PHP is apparently set up to strip inline doc blocks. This will make several core apps inaccessible.'),
 				'hint' => $l->t('This is probably caused by a cache/accelerator such as Zend OPcache or eAccelerator.')
 			);
 		}
@@ -1335,7 +1346,7 @@ class OC_Util {
 			if (ini_get('xcache.admin.enable_auth')) {
 				OC_Log::write('core', 'XCache opcode cache will not be cleared because "xcache.admin.enable_auth" is enabled.', \OC_Log::WARN);
 			} else {
-				xcache_clear_cache(XC_TYPE_PHP, 0);
+				@xcache_clear_cache(XC_TYPE_PHP, 0);
 			}
 		}
 		// Opcache (PHP >= 5.5)

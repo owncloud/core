@@ -43,9 +43,42 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 	protected function tearDown() {
 		$hookExceptions = \OC_Hook::$thrownExceptions;
 		\OC_Hook::$thrownExceptions = [];
+		\OC::$server->getLockingProvider()->releaseAll();
 		if(!empty($hookExceptions)) {
 			throw $hookExceptions[0];
 		}
+	}
+
+	/**
+	 * Allows us to test private methods/properties
+	 *
+	 * @param $object
+	 * @param $methodName
+	 * @param array $parameters
+	 * @return mixed
+	 */
+	protected static function invokePrivate($object, $methodName, array $parameters = array()) {
+		$reflection = new \ReflectionClass(get_class($object));
+
+		if ($reflection->hasMethod($methodName)) {
+			$method = $reflection->getMethod($methodName);
+
+			$method->setAccessible(true);
+
+			return $method->invokeArgs($object, $parameters);
+		} elseif ($reflection->hasProperty($methodName)) {
+			$property = $reflection->getProperty($methodName);
+
+			$property->setAccessible(true);
+
+			if (!empty($parameters)) {
+				$property->setValue($object, array_pop($parameters));
+			}
+
+			return $property->getValue($object);
+		}
+
+		return false;
 	}
 
 	/**
@@ -174,6 +207,9 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 		\OC\Files\Filesystem::tearDown();
 		\OC_User::setUserId($user);
 		\OC_Util::setupFS($user);
+		if (\OC_User::userExists($user)) {
+			\OC::$server->getUserFolder($user);
+		}
 	}
 
 	/**
@@ -204,6 +240,41 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 
 		if ($user) {
 			\OC_Util::setupFS($user);
+		}
+	}
+
+	/**
+	 * Check if the given path is locked with a given type
+	 *
+	 * @param \OC\Files\View $view view
+	 * @param string $path path to check
+	 * @param int $type lock type
+	 *
+	 * @return boolean true if the file is locked with the
+	 * given type, false otherwise
+	 */
+	protected function isFileLocked($view, $path, $type) {
+		// Note: this seems convoluted but is necessary because
+		// the format of the lock key depends on the storage implementation
+		// (in our case mostly md5)
+
+		if ($type === \OCP\Lock\ILockingProvider::LOCK_SHARED) {
+			// to check if the file has a shared lock, try acquiring an exclusive lock
+			$checkType = \OCP\Lock\ILockingProvider::LOCK_EXCLUSIVE;
+		} else {
+			// a shared lock cannot be set if exclusive lock is in place
+			$checkType = \OCP\Lock\ILockingProvider::LOCK_SHARED;
+		}
+		try {
+			$view->lockFile($path, $checkType);
+			// no exception, which means the lock of $type is not set
+			// clean up
+			$view->unlockFile($path, $checkType);
+			return false;
+		} catch (\OCP\Lock\LockedException $e) {
+			// we could not acquire the counter-lock, which means
+			// the lock of $type was in place
+			return true;
 		}
 	}
 }

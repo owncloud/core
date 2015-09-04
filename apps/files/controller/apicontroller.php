@@ -31,7 +31,6 @@ use OCP\AppFramework\Controller;
 use OCP\IRequest;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\DataDisplayResponse;
-use OCP\AppFramework\Http\DownloadResponse;
 use OCA\Files\Service\TagService;
 use OCP\IPreview;
 
@@ -93,7 +92,6 @@ class ApiController extends Controller {
 	 * replace the actual tag selection.
 	 *
 	 * @NoAdminRequired
-	 * @CORS
 	 *
 	 * @param string $path path
 	 * @param array|string $tags array of tags
@@ -127,7 +125,6 @@ class ApiController extends Controller {
 	 * Returns a list of all files tagged with the given tag.
 	 *
 	 * @NoAdminRequired
-	 * @CORS
 	 *
 	 * @param array|string $tagName tag name to filter by
 	 * @return DataResponse

@@ -43,6 +43,7 @@ use OCP\Files\FileNameTooLongException;
 use OCP\Files\InvalidCharacterInPathException;
 use OCP\Files\InvalidPathException;
 use OCP\Files\ReservedWordException;
+use OCP\Lock\ILockingProvider;
 
 /**
  * Storage backend class for providing common filesystem operation methods
@@ -274,6 +275,8 @@ abstract class Common implements Storage {
 
 	/**
 	 * @param string $query
+	 * @param string $dir
+	 * @return array
 	 */
 	protected function searchInDir($query, $dir = '') {
 		$files = array();
@@ -498,18 +501,18 @@ abstract class Common implements Storage {
 	 * @throws InvalidPathException
 	 */
 	private function scanForInvalidCharacters($fileName, $invalidChars) {
-		foreach(str_split($invalidChars) as $char) {
+		foreach (str_split($invalidChars) as $char) {
 			if (strpos($fileName, $char) !== false) {
 				throw new InvalidCharacterInPathException();
 			}
 		}
 
 		$sanitizedFileName = filter_var($fileName, FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW);
-		if($sanitizedFileName !== $fileName) {
+		if ($sanitizedFileName !== $fileName) {
 			throw new InvalidCharacterInPathException();
 		}
 	}
-	
+
 	/**
 	 * @param array $options
 	 */
@@ -525,6 +528,7 @@ abstract class Common implements Storage {
 	public function getMountOption($name, $default = null) {
 		return isset($this->mountOptions[$name]) ? $this->mountOptions[$name] : $default;
 	}
+
 	/**
 	 * @param \OCP\Files\Storage $sourceStorage
 	 * @param string $sourceInternalPath
@@ -533,6 +537,10 @@ abstract class Common implements Storage {
 	 * @return bool
 	 */
 	public function copyFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = false) {
+		if ($sourceStorage === $this) {
+			return $this->copy($sourceInternalPath, $targetInternalPath);
+		}
+
 		if ($sourceStorage->is_dir($sourceInternalPath)) {
 			$dh = $sourceStorage->opendir($sourceInternalPath);
 			$result = $this->mkdir($targetInternalPath);
@@ -575,6 +583,10 @@ abstract class Common implements Storage {
 	 * @return bool
 	 */
 	public function moveFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
+		if ($sourceStorage === $this) {
+			return $this->rename($sourceInternalPath, $targetInternalPath);
+		}
+
 		$result = $this->copyFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath, true);
 		if ($result) {
 			if ($sourceStorage->is_dir($sourceInternalPath)) {
@@ -609,5 +621,33 @@ abstract class Common implements Storage {
 		$data['permissions'] = $this->getPermissions($path);
 
 		return $data;
+	}
+
+	/**
+	 * @param string $path
+	 * @param int $type \OCP\Lock\ILockingProvider::LOCK_SHARED or \OCP\Lock\ILockingProvider::LOCK_EXCLUSIVE
+	 * @param \OCP\Lock\ILockingProvider $provider
+	 * @throws \OCP\Lock\LockedException
+	 */
+	public function acquireLock($path, $type, ILockingProvider $provider) {
+		$provider->acquireLock('files/' . md5($this->getId() . '::' . trim($path, '/')), $type);
+	}
+
+	/**
+	 * @param string $path
+	 * @param int $type \OCP\Lock\ILockingProvider::LOCK_SHARED or \OCP\Lock\ILockingProvider::LOCK_EXCLUSIVE
+	 * @param \OCP\Lock\ILockingProvider $provider
+	 */
+	public function releaseLock($path, $type, ILockingProvider $provider) {
+		$provider->releaseLock('files/' . md5($this->getId() . '::' . trim($path, '/')), $type);
+	}
+
+	/**
+	 * @param string $path
+	 * @param int $type \OCP\Lock\ILockingProvider::LOCK_SHARED or \OCP\Lock\ILockingProvider::LOCK_EXCLUSIVE
+	 * @param \OCP\Lock\ILockingProvider $provider
+	 */
+	public function changeLock($path, $type, ILockingProvider $provider) {
+		$provider->changeLock('files/' . md5($this->getId() . '::' . trim($path, '/')), $type);
 	}
 }

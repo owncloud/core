@@ -67,7 +67,7 @@ class Test_Trashbin extends \Test\TestCase {
 		$application->setupPropagation();
 
 		//disable encryption
-		\OC_App::disable('files_encryption');
+		\OC_App::disable('encryption');
 
 		//configure trashbin
 		self::$rememberRetentionObligation = \OC_Config::getValue('trashbin_retention_obligation', Files_Trashbin\Trashbin::DEFAULT_RETENTION_OBLIGATION);
@@ -646,6 +646,7 @@ class Test_Trashbin extends \Test\TestCase {
 		\OC\Files\Filesystem::tearDown();
 		\OC_User::setUserId($user);
 		\OC_Util::setupFS($user);
+		\OC::$server->getUserFolder($user);
 	}
 }
 

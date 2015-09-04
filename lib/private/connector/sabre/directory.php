@@ -27,6 +27,10 @@
  */
 namespace OC\Connector\Sabre;
 
+use OC\Connector\Sabre\Exception\InvalidPath;
+use OC\Connector\Sabre\Exception\FileLocked;
+use OCP\Lock\LockedException;
+
 class Directory extends \OC\Connector\Sabre\Node
 	implements \Sabre\DAV\ICollection, \Sabre\DAV\IQuota {
 
@@ -66,8 +70,15 @@ class Directory extends \OC\Connector\Sabre\Node
 	 *
 	 * @param string $name Name of the file
 	 * @param resource|string $data Initial payload
-	 * @throws \Sabre\DAV\Exception\Forbidden
 	 * @return null|string
+	 * @throws Exception\EntityTooLarge
+	 * @throws Exception\UnsupportedMediaType
+	 * @throws FileLocked
+	 * @throws InvalidPath
+	 * @throws \Sabre\DAV\Exception
+	 * @throws \Sabre\DAV\Exception\BadRequest
+	 * @throws \Sabre\DAV\Exception\Forbidden
+	 * @throws \Sabre\DAV\Exception\ServiceUnavailable
 	 */
 	public function createFile($name, $data = null) {
 
@@ -91,6 +102,8 @@ class Directory extends \OC\Connector\Sabre\Node
 				}
 			}
 
+			$this->fileView->verifyPath($this->path, $name);
+
 			$path = $this->fileView->getAbsolutePath($this->path) . '/' . $name;
 			// using a dummy FileInfo is acceptable here since it will be refreshed after the put is complete
 			$info = new \OC\Files\FileInfo($path, null, null, array(), null);
@@ -98,6 +111,10 @@ class Directory extends \OC\Connector\Sabre\Node
 			return $node->put($data);
 		} catch (\OCP\Files\StorageNotAvailableException $e) {
 			throw new \Sabre\DAV\Exception\ServiceUnavailable($e->getMessage());
+		} catch (\OCP\Files\InvalidPathException $ex) {
+			throw new InvalidPath($ex->getMessage());
+		} catch (LockedException $e) {
+			throw new FileLocked($e->getMessage(), $e->getCode(), $e);
 		}
 	}
 
@@ -105,8 +122,10 @@ class Directory extends \OC\Connector\Sabre\Node
 	 * Creates a new subdirectory
 	 *
 	 * @param string $name
+	 * @throws FileLocked
+	 * @throws InvalidPath
 	 * @throws \Sabre\DAV\Exception\Forbidden
-	 * @return void
+	 * @throws \Sabre\DAV\Exception\ServiceUnavailable
 	 */
 	public function createDirectory($name) {
 		try {
@@ -114,12 +133,17 @@ class Directory extends \OC\Connector\Sabre\Node
 				throw new \Sabre\DAV\Exception\Forbidden();
 			}
 
+			$this->fileView->verifyPath($this->path, $name);
 			$newPath = $this->path . '/' . $name;
 			if (!$this->fileView->mkdir($newPath)) {
 				throw new \Sabre\DAV\Exception\Forbidden('Could not create directory ' . $newPath);
 			}
 		} catch (\OCP\Files\StorageNotAvailableException $e) {
 			throw new \Sabre\DAV\Exception\ServiceUnavailable($e->getMessage());
+		} catch (\OCP\Files\InvalidPathException $ex) {
+			throw new InvalidPath($ex->getMessage());
+		} catch (LockedException $e) {
+			throw new FileLocked($e->getMessage(), $e->getCode(), $e);
 		}
 	}
 
@@ -128,16 +152,21 @@ class Directory extends \OC\Connector\Sabre\Node
 	 *
 	 * @param string $name
 	 * @param \OCP\Files\FileInfo $info
-	 * @throws \Sabre\DAV\Exception\FileNotFound
 	 * @return \Sabre\DAV\INode
+	 * @throws InvalidPath
+	 * @throws \Sabre\DAV\Exception\NotFound
+	 * @throws \Sabre\DAV\Exception\ServiceUnavailable
 	 */
 	public function getChild($name, $info = null) {
 		$path = $this->path . '/' . $name;
 		if (is_null($info)) {
 			try {
+				$this->fileView->verifyPath($this->path, $name);
 				$info = $this->fileView->getFileInfo($path);
 			} catch (\OCP\Files\StorageNotAvailableException $e) {
 				throw new \Sabre\DAV\Exception\ServiceUnavailable($e->getMessage());
+			} catch (\OCP\Files\InvalidPathException $ex) {
+				throw new InvalidPath($ex->getMessage());
 			}
 		}
 
@@ -196,19 +225,23 @@ class Directory extends \OC\Connector\Sabre\Node
 	 * Deletes all files in this directory, and then itself
 	 *
 	 * @return void
+	 * @throws FileLocked
 	 * @throws \Sabre\DAV\Exception\Forbidden
 	 */
 	public function delete() {
 
-		if (!$this->info->isDeletable()) {
+		if ($this->path === '' || $this->path === '/' || !$this->info->isDeletable()) {
 			throw new \Sabre\DAV\Exception\Forbidden();
 		}
 
-		if (!$this->fileView->rmdir($this->path)) {
-			// assume it wasn't possible to remove due to permission issue
-			throw new \Sabre\DAV\Exception\Forbidden();
+		try {
+			if (!$this->fileView->rmdir($this->path)) {
+				// assume it wasn't possible to remove due to permission issue
+				throw new \Sabre\DAV\Exception\Forbidden();
+			}
+		} catch (LockedException $e) {
+			throw new FileLocked($e->getMessage(), $e->getCode(), $e);
 		}
-
 	}
 
 	/**
