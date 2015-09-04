@@ -60,6 +60,14 @@ class MountProvider implements IMountProvider {
 	 */
 	public function getMountsForUser(IUser $user, IStorageFactory $storageFactory) {
 		$shares = \OCP\Share::getItemsSharedWithUser('file', $user->getUID());
+		$uniqueShares = [];
+		foreach ($shares as $share) {
+			$key = $share['item_source'] . '-' . $share['uid_owner'];
+			if (!isset($uniqueShares[$key])) {
+				$uniqueShares[$key] = $share;
+			}
+		}
+		$shares = array_values($uniqueShares);
 		$propagator = $this->propagationManager->getSharePropagator($user->getUID());
 		$propagator->propagateDirtyMountPoints($shares);
 		$shares = array_filter($shares, function ($share) {
