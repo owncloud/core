@@ -122,31 +122,8 @@ class OC_App {
 	 * @throws \OC\NeedsUpdateException
 	 */
 	public static function loadApp($app, $checkUpgrade = true) {
-		if (is_file(self::getAppPath($app) . '/appinfo/app.php')) {
-			\OC::$server->getEventLogger()->start('load_app_' . $app, 'Load app: ' . $app);
-			if ($checkUpgrade and self::shouldUpgrade($app)) {
-				throw new \OC\NeedsUpdateException();
-			}
-			self::requireAppFile($app);
-			if (self::isType($app, array('authentication'))) {
-				// since authentication apps affect the "is app enabled for group" check,
-				// the enabled apps cache needs to be cleared to make sure that the
-				// next time getEnableApps() is called it will also include apps that were
-				// enabled for groups
-				self::$enabledAppsCache = array();
-			}
-			\OC::$server->getEventLogger()->end('load_app_' . $app);
-		}
-	}
-
-	/**
-	 * Load app.php from the given app
-	 *
-	 * @param string $app app name
-	 */
-	private static function requireAppFile($app) {
-		// encapsulated here to avoid variable scope conflicts
-		require_once $app . '/appinfo/app.php';
+		$appLoader = \OC::$server->getAppLoader();
+		$appLoader->loadApp($app);
 	}
 
 	/**

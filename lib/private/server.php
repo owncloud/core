@@ -367,6 +367,11 @@ class Server extends SimpleContainer implements IServerContainer {
 				$c->getMemCacheFactory()
 			);
 		});
+		$this->registerService('AppLoader', function (Server $c) {
+			return new \OC\App\AppLoader(
+				$c->getEventLogger()
+			);
+		});
 		$this->registerService('DateTimeZone', function(Server $c) {
 			return new DateTimeZone(
 				$c->getConfig(),
@@ -911,6 +916,15 @@ class Server extends SimpleContainer implements IServerContainer {
 	 */
 	public function getAppManager() {
 		return $this->query('AppManager');
+	}
+
+	/**
+	 * Get the app loader
+	 *
+	 * @return \OCP\App\IAppLoader
+	 */
+	public function getAppLoader() {
+		return $this->query('AppLoader');
 	}
 
 	/**

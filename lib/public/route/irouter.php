@@ -37,6 +37,7 @@ interface IRouter {
 	 *
 	 * @return string[]
 	 * @since 7.0.0
+	 * @deprecated 8.2.0 routes are loaded in Application
 	 */
 	public function getRoutingFiles();
 

@@ -29,6 +29,8 @@
  */
 
 namespace OCP\AppFramework;
+
+use OCP\Route\IRouter;
 use OC\AppFramework\routing\RouteConfig;
 
 
@@ -36,12 +38,52 @@ use OC\AppFramework\routing\RouteConfig;
  * Class App
  * @package OCP\AppFramework
  *
- * Any application must inherit this call - all controller instances to be used are
+ * All applications must inherit this class - all controller instances to be used are
  * to be registered using IContainer::registerService
  * @since 6.0.0
  */
 class App {
 
+	/** @var string */
+	protected $appName;
+
+	/**
+	 * Initialize application
+	 * Override me to do custom initialization
+	 *
+	 * @param string $appName
+	 * @param array $urlParams an array with variables extracted from the routes
+	 * @since 6.0.0
+	 */
+	public function __construct($appName, $urlParams = array()) {
+		$this->appName = $appName;
+		$this->container = new \OC\AppFramework\DependencyInjection\DIContainer($appName, $urlParams);
+		$this->loadAppPhp();
+	}
+
+	/**
+	 * Load application routes
+	 * Override me to add your routes
+	 *
+	 * @param IRouter $router
+	 * @since 8.2.0
+	 */
+	public function loadRoutes(IRouter $router) {
+		$path = \OC_App::getAppPath($this->appName) . '/appinfo/routes.php';
+		if (file_exists($path)) {
+			$router->loadLegacyAppRoutes($path, $this);
+		}
+	}
+
+	/**
+	 * Load app.php if exists for backwards compatibility
+	 */
+	private function loadAppPhp() {
+		$path = \OC_App::getAppPath($this->appName) . '/appinfo/app.php';
+		if (file_exists($path)) {
+			require_once $path;
+		}
+	}
 
 	/**
 	 * Turns an app id into a namespace by convetion. The id is split at the
@@ -55,15 +97,6 @@ class App {
 	 */
 	public static function buildAppNamespace($appId, $topNamespace='OCA\\') {
 		return \OC\AppFramework\App::buildAppNamespace($appId, $topNamespace);
-	}
-
-
-	/**
-	 * @param array $urlParams an array with variables extracted from the routes
-	 * @since 6.0.0
-	 */
-	public function __construct($appName, $urlParams = array()) {
-		$this->container = new \OC\AppFramework\DependencyInjection\DIContainer($appName, $urlParams);
 	}
 
 	private $container;
@@ -90,11 +123,11 @@ class App {
 	 * $a = new TasksApp();
 	 * $a->registerRoutes($this, $routes);
 	 *
-	 * @param \OCP\Route\IRouter $router
+	 * @param IRouter $router
 	 * @param array $routes
 	 * @since 6.0.0
 	 */
-	public function registerRoutes($router, $routes) {
+	public function registerRoutes(IRouter $router, $routes) {
 		$routeConfig = new RouteConfig($this->container, $router, $routes);
 		$routeConfig->register();
 	}
