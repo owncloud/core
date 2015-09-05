@@ -1149,6 +1149,8 @@ class OC_App {
 				);
 			}
 
+			\OC::$server->getAppManager()->checkChecksums($info['name']);
+
 			$config->setAppValue($app, 'enabled', 'yes');
 			if (isset($appData['id'])) {
 				$config->setAppValue($app, 'ocsid', $appData['id']);
@@ -1168,6 +1170,13 @@ class OC_App {
 	 * @return bool
 	 */
 	public static function updateApp($appId) {
+		try {
+			\OC::$server->getAppManager()->checkChecksums($appId);
+		} Catch (\Exception $e){
+			self::disable($appId);
+			throw $e;
+		}
+
 		if (file_exists(self::getAppPath($appId) . '/appinfo/database.xml')) {
 			OC_DB::updateDbFromStructure(self::getAppPath($appId) . '/appinfo/database.xml');
 		}
@@ -1258,4 +1267,5 @@ class OC_App {
 
 		return $data;
 	}
+
 }

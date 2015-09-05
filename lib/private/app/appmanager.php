@@ -30,6 +30,8 @@ use OCP\ICacheFactory;
 use OCP\IGroupManager;
 use OCP\IUser;
 use OCP\IUserSession;
+use \OC_App;
+
 
 class AppManager implements IAppManager {
 	/**
@@ -166,6 +168,7 @@ class AppManager implements IAppManager {
 	 * @param string $appId
 	 */
 	public function enableApp($appId) {
+		$this->checkChecksums($appId);
 		$this->installedAppsCache[$appId] = 'yes';
 		$this->appConfig->setValue($appId, 'enabled', 'yes');
 		$this->clearAppsCache();
@@ -266,7 +269,8 @@ class AppManager implements IAppManager {
 	 *
 	 * @internal
 	 */
-	public function getIncompatibleApps($version) {
+	public function getIncompatibleApps($version)
+	{
 		$apps = $this->getInstalledApps();
 		$incompatibleApps = array();
 		foreach ($apps as $appId) {
@@ -276,6 +280,38 @@ class AppManager implements IAppManager {
 			}
 		}
 		return $incompatibleApps;
-	}
 
+		/**
+		 * @param $appName the name of the app
+		 * @throws \Exception when one of the checksums isnt' correct
+		 */
+		public
+		function checkChecksums($appName)
+		{
+			$appPath = OC_App::getAppPath($appName);
+			$l = \OC::$server->getL10N('core');
+			if (is_file($appPath . '/appinfo/checksum.json')) {
+				$checksums = file_get_contents($appPath . '/appinfo/checksum.json');
+				$checksums = json_decode($checksums, true);
+				foreach ($checksums['checksums'] as $file => $checksum) {
+					$filePath = $appPath . '/' . $file;
+					if (file_exists($filePath)) {
+						if (md5_file($filePath) !== $checksum) {
+							throw new \Exception(
+								$l->t('App "%s" cannot be installed because the checksum of following file is no correct: %s',
+									array($appName, $file)
+								)
+							);
+						}
+					} else {
+						throw new \Exception(
+							$l->t('App "%s" cannot be installed because the following file is not found on the filesystem: %s',
+								array($appName, $file)
+							)
+						);
+					}
+				}
+			}
+		}
+	}
 }
