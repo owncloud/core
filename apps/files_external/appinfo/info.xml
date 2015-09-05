@@ -22,4 +22,5 @@
 	<dependencies>
 		<owncloud min-version="8" />
 	</dependencies>
+	<rememberlogin>true</rememberlogin>
 </info>
