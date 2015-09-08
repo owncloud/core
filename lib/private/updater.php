@@ -251,9 +251,12 @@ class Updater extends BasicEmitter {
 		}
 	}
 
+	/**
+	 * @param Repair $repair
+	 */
 	protected function emitRepairMessages(Repair $repair) {
-		$repair->listen('\OC\Repair', 'info', function($description){
-			$this->emit('\OC\Repair', 'info', array($description));
+		$repair->listen('\OC\Repair', 'info', function($description) use ($repair){
+			$repair->emit('\OC\Repair', 'info', array($description));
 		});
 	}
 
