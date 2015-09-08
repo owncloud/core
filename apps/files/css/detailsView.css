@@ -19,12 +19,6 @@
 	float: left;
 }
 
-#app-sidebar .thumbnailContainer.image {
-	margin-left: -15px;
-	margin-right: -35px; /* 15 + 20 for the close button */
-	margin-top: -15px;
-}
-
 #app-sidebar .image .thumbnail {
 	width:100%;
 	display:block;
