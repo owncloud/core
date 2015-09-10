@@ -323,22 +323,26 @@ class OC {
 		return \OCP\Util::needUpgrade();
 	}
 
+	protected static $needUpgrade = null;
+
 	/**
 	 * Checks if the version requires an update and shows
 	 * @param bool $showTemplate Whether an update screen should get shown
 	 * @return bool|void
 	 */
 	public static function checkUpgrade($showTemplate = true) {
-		if (\OCP\Util::needUpgrade()) {
+		if (!isset(self::$needUpgrade)) {
+			self::$needUpgrade=\OCP\Util::needUpgrade();
+		}
+		if (self::$needUpgrade) {
 			$systemConfig = \OC::$server->getSystemConfig();
 			if ($showTemplate && !$systemConfig->getValue('maintenance', false)) {
 				self::printUpgradePage();
 				exit();
-			} else {
-				return true;
 			}
 		}
-		return false;
+
+		return self::$needUpgrade;
 	}
 
 	/**
