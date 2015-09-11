@@ -15,19 +15,20 @@
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class Test_Log_Owncloud extends \PHPUnit_Framework_TestCase
+class Test_Log_Owncloud extends Test\TestCase
 {
 	private $restore_logfile;
 	private $restore_logdateformat;
 
-	public function setUp() {
+	protected function setUp() {
+		parent::setUp();
 		$restore_logfile = OC_Config::getValue("logfile");
 		$restore_logdateformat = OC_Config::getValue('logdateformat');
 		
 		OC_Config::setValue("logfile", OC_Config::getValue('datadirectory') . "/logtest");
 		OC_Log_Owncloud::init();
 	}
-	public function tearDown() {
+	protected function tearDown() {
 		if (isset($this->restore_logfile)) {
 			OC_Config::setValue("logfile", $this->restore_logfile);
 		} else {
@@ -39,6 +40,7 @@ class Test_Log_Owncloud extends \PHPUnit_Framework_TestCase
 			OC_Config::deleteKey("restore_logdateformat");
 		}		
 		OC_Log_Owncloud::init();
+		parent::tearDown();
 	}
 	
 	public function testMicrosecondsLogTimestamp() {
