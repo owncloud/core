@@ -223,12 +223,7 @@ class AllConfig implements \OCP\IConfig {
 					'WHERE `userid` = ? AND `appid` = ? AND `configkey` = ? ';
 
 			if($preCondition !== null) {
-				if($this->getSystemValue('dbtype', 'sqlite') === 'oci') {
-					//oracle hack: need to explicitly cast CLOB to CHAR for comparison
-					$sql .= 'AND to_char(`configvalue`) = ?';
-				} else {
-					$sql .= 'AND `configvalue` = ?';
-				}
+				$sql .= 'AND '.$this->connection->castColumn('`configvalue`', 'clob', 'string').' = ?';
 				$data[] = $preCondition;
 			}
 			$affectedRows = $this->connection->executeUpdate($sql, $data);
