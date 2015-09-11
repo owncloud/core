@@ -23,6 +23,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+
+namespace OCA\Files_Trashbin\AppInfo;
+
+$app = new Application();
+$container = $app->getContainer();
+
 $l = \OC::$server->getL10N('files_trashbin');
 
 // register hooks
@@ -37,3 +43,6 @@ array(
 	"name" => $l->t('Deleted files')
 )
 );
+
+// Cron job for deleting expired trash items
+$container->getServer()->getJobList()->add('OCA\Files_Trashbin\BackgroundJob\ExpireTrash');
