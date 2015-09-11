@@ -53,6 +53,7 @@ $application->registerRoutes($this, [
 		['name' => 'CheckSetup#check', 'url' => '/settings/ajax/checksetup', 'verb' => 'GET'],
 		['name' => 'Certificate#addPersonalRootCertificate', 'url' => '/settings/personal/certificate', 'verb' => 'POST'],
 		['name' => 'Certificate#removePersonalRootCertificate', 'url' => '/settings/personal/certificate/{certificateIdentifier}', 'verb' => 'DELETE'],
+		['name' => 'CacheSettings#clearCache', 'url' => '/settings/admin/cache/clear', 'verb' => 'POST'],
 	]
 ]);
 

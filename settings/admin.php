@@ -230,5 +230,7 @@ if ($updaterAppPanel) {
 }
 
 $template->assign('forms', $formsAndMore);
+$settingsCache = \OC::$server->getMemCacheFactory()->create('settings');
+$template->assign('apcuEnabled', $settingsCache instanceof \OC\Memcache\APCu);
 
 $template->printPage();

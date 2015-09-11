@@ -28,6 +28,7 @@ namespace OC\Settings;
 
 use OC\Files\View;
 use OC\Settings\Controller\AppSettingsController;
+use OC\Settings\Controller\CacheSettingsController;
 use OC\Settings\Controller\CertificateController;
 use OC\Settings\Controller\CheckSetupController;
 use OC\Settings\Controller\EncryptionController;
@@ -157,6 +158,13 @@ class Application extends App {
 				$c->query('URLGenerator'),
 				$c->query('Util'),
 				$c->query('L10N')
+			);
+		});
+		$container->registerService('CacheSettingsController', function(IContainer $c) {
+			return new CacheSettingsController(
+				$c->query('AppName'),
+				$c->query('Request'),
+				$c->query('ICacheFactory')
 			);
 		});
 
