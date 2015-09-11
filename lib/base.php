@@ -320,10 +320,8 @@ class OC {
 	 * @deprecated use \OCP\Util::needUpgrade() instead
 	 */
 	public static function needUpgrade() {
-		return self::checkUpgrade(false);
+		return \OCP\Util::needUpgrade();
 	}
-
-	protected static $needUpgrade = null;
 
 	/**
 	 * Checks if the version requires an update and shows
@@ -331,17 +329,16 @@ class OC {
 	 * @return bool|void
 	 */
 	public static function checkUpgrade($showTemplate = true) {
-		if (!isset(self::$needUpgrade)) {
-			self::$needUpgrade=\OCP\Util::needUpgrade();
-		}
-		if (self::$needUpgrade) {
+		if (\OCP\Util::needUpgrade()) {
 			$systemConfig = \OC::$server->getSystemConfig();
 			if ($showTemplate && !$systemConfig->getValue('maintenance', false)) {
 				self::printUpgradePage();
 				exit();
+			} else {
+				return true;
 			}
 		}
-		return self::$needUpgrade;
+		return false;
 	}
 
 	/**

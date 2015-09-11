@@ -661,6 +661,7 @@ class Util {
 		return \OC_Util::isDefaultExpireDateEnforced();
 	}
 
+	protected static $needUpgrade = null;
 
 	/**
 	 * Checks whether the current version needs upgrade.
@@ -669,6 +670,9 @@ class Util {
 	 * @since 7.0.0
 	 */
 	public static function needUpgrade() {
-		return \OC_Util::needUpgrade(\OC::$server->getConfig());
+		if (!isset(self::$needUpgrade)) {
+			self::$needUpgrade=\OC_Util::needUpgrade(\OC::$server->getConfig());
+		}		
+		return self::$needUpgrade;
 	}
 }
