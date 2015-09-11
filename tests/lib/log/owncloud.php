@@ -17,15 +17,30 @@
 
 class Test_Log_Owncloud extends \PHPUnit_Framework_TestCase
 {
+	private $restore_logfile;
+	private $restore_logdateformat;
 
 	public function setUp() {
+		$restore_logfile = OC_Config::getValue("logfile");
+		$restore_logdateformat = OC_Config::getValue('logdateformat');
+		
 		OC_Config::setValue("logfile", OC_Config::getValue('datadirectory') . "/logtest");
 		OC_Log_Owncloud::init();
 	}
 	public function tearDown() {
-		OC_Config::setValue("logfile", null);
+		if (isset($this->restore_logfile)) {
+			OC_Config::setValue("logfile", $this->restore_logfile);
+		} else {
+			OC_Config::deleteKey("logfile");
+		}		
+		if (isset($this->restore_logdateformat)) {
+			OC_Config::setValue("logdateformat", $this->restore_logdateformat);
+		} else {
+			OC_Config::deleteKey("restore_logdateformat");
+		}		
 		OC_Log_Owncloud::init();
 	}
+	
 	public function testMicrosecondsLogTimestamp() {
 		# delete old logfile
 		unlink(OC_Config::getValue('logfile'));
