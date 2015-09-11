@@ -175,7 +175,7 @@ class AppConfig implements IAppConfig {
 			->set('configvalue', $sql->createParameter('configvalue'))
 			->where($sql->expr()->eq('appid', $sql->createParameter('app')))
 			->andWhere($sql->expr()->eq('configkey', $sql->createParameter('configkey')))
-			->andWhere($sql->expr()->neq('configvalue', $sql->createParameter('configvalue')))
+			->andWhere($sql->expr()->neq($sql->expr()->castColumn('configvalue', 'clob', 'string'), $sql->createParameter('configvalue')))
 			->setParameter('configvalue', $value)
 			->setParameter('app', $app)
 			->setParameter('configkey', $key)

@@ -92,4 +92,17 @@ class Adapter {
 
 		return $this->conn->executeUpdate($query, $inserts);
 	}
+
+	/**
+	 * Cast a column type if the DB requires it for comparisons
+	 *
+	 * @param string $column
+	 * @param string $columnType
+	 * @param string $castTo
+	 * @return string wrapped column name
+	 */
+	public function castColumn($column, $columnType, $castTo) {
+		// default impl does no casting
+		return $column;
+	}
 }
