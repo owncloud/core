@@ -1115,16 +1115,17 @@ class OC {
 		}
 		return true;
 	}
+}
 
+if (!function_exists('get_temp_dir')) {
 	/**
 	 * Get the temporary dir to store uploaded data
 	 * @return null|string Path to the temporary directory or null
+	 * @deprecated 8.2.0 use \OC::$server->getTempManager()->getTempBaseDir();
 	 */
 	function get_temp_dir() {
-		return \OC::$server->getTempManager()->t_get_temp_dir();
+		return \OC::$server->getTempManager()->getTempBaseDir();
 	}
-
 }
-
 
 OC::init();
