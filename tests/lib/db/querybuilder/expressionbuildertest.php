@@ -326,13 +326,22 @@ class ExpressionBuilderTest extends \Test\TestCase {
 	 * @param string|null $type
 	 */
 	public function testLiteral($input, $type) {
-		/** @var \OC\DB\QueryBuilder\Literal $actual */
+		/** @var \OCP\DB\QueryBuilder\ILiteral $actual */
 		$actual = $this->expressionBuilder->literal($input, $type);
 
+		$this->assertInstanceOf('\OCP\DB\QueryBuilder\ILiteral', $actual);
 		$this->assertInstanceOf('\OC\DB\QueryBuilder\Literal', $actual);
 		$this->assertEquals(
 			$this->doctrineExpressionBuilder->literal($input, $type),
 			$actual->__toString()
 		);
+	}
+
+	public function testCastColumnValueToString() {
+		$column = $this->expressionBuilder->castColumnValueToString('test');
+
+		$this->assertInstanceOf('\OCP\DB\QueryBuilder\ILiteral', $column);
+		$this->assertInstanceOf('\OC\DB\QueryBuilder\Literal', $column);
+		$this->assertContains('`test`', $column->__toString());
 	}
 }
