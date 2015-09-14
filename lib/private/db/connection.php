@@ -246,12 +246,10 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * Cast a column type if the DB requires it for comparisons
 	 *
 	 * @param string $column
-	 * @param string $columnType
-	 * @param string $castTo
 	 * @return string wrapped column name
 	 */
-	public function castColumn($column, $columnType, $castTo) {
-		return $this->adapter->castColumn($column, $columnType, $castTo);
+	public function castColumnValueToString($column) {
+		return $this->adapter->castColumnValueToString($column);
 	}
 
 	/**

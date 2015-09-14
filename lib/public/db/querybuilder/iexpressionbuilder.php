@@ -249,4 +249,13 @@ interface IExpressionBuilder {
 	 * @since 8.2.0
 	 */
 	public function literal($input, $type = null);
+
+	/**
+	 * Cast a column type if the DB requires it for comparisons
+	 *
+	 * @param string $column
+	 * @return string wrapped column name
+	 * @since 8.2.0
+	 */
+	public function castColumnValueToString($column);
 }

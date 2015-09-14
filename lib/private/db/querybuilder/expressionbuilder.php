@@ -318,13 +318,11 @@ class ExpressionBuilder implements IExpressionBuilder {
 	 * Cast a column type if the DB requires it for comparisons
 	 *
 	 * @param string $column
-	 * @param string $columnType
-	 * @param string $castTo
 	 * @return Literal
 	 */
-	public function castColumn($column, $columnType, $castTo) {
-		return new Literal($this->connection->castColumn(
-			$this->helper->quoteColumnName($column), $columnType, $castTo
+	public function castColumnValueToString($column) {
+		return new Literal($this->connection->castColumnValueToString(
+			$this->helper->quoteColumnName($column)
 		));
 	}
 }

@@ -43,11 +43,14 @@ class AdapterOCI8 extends Adapter {
 		return $statement;
 	}
 
-	public function castColumn($column, $columnType, $castTo) {
-		if ($columnType === 'clob' && $castTo === 'string') {
-			// clobs need conversion in comparisons
-			return 'to_char('.$column.')';
-		}
-		return parent::castColumn($column, $columnType, $castTo);
+	/**
+	 * Cast a column type if the DB requires it for comparisons
+	 *
+	 * @param string $column
+	 * @return string wrapped column name
+	 */
+	public function castColumnValueToString($column) {
+		// clobs need conversion in comparisons
+		return 'to_char('.$column.')';
 	}
 }

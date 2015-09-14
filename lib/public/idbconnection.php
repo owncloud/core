@@ -109,6 +109,15 @@ interface IDBConnection {
 	public function insertIfNotExist($table, $input, array $compare = null);
 
 	/**
+	 * Cast a column type if the DB requires it for comparisons
+	 *
+	 * @param string $column
+	 * @return string wrapped column name
+	 * @since 8.2.0
+	 */
+	public function castColumnValueToString($column);
+
+	/**
 	 * Start a transaction
 	 * @since 6.0.0
 	 */

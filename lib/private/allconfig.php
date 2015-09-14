@@ -223,7 +223,7 @@ class AllConfig implements \OCP\IConfig {
 					'WHERE `userid` = ? AND `appid` = ? AND `configkey` = ? ';
 
 			if($preCondition !== null) {
-				$sql .= 'AND '.$this->connection->castColumn('`configvalue`', 'clob', 'string').' = ?';
+				$sql .= 'AND ' . $this->connection->castColumnValueToString('`configvalue`') . ' = ?';
 				$data[] = $preCondition;
 			}
 			$affectedRows = $this->connection->executeUpdate($sql, $data);
