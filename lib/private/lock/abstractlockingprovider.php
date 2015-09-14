@@ -34,6 +34,18 @@ abstract class AbstractLockingProvider implements ILockingProvider {
 	];
 
 	/**
+	 * Forget about all marked locks
+	 *
+	 * Caution: prevent automatic lock cleanup
+	 */
+	public function clearMarkedLocks() {
+		$this->acquiredLocks = [
+			'shared' => [],
+			'exclusive' => []
+		];
+	}
+
+	/**
 	 * Mark a locally acquired lock
 	 *
 	 * @param string $path

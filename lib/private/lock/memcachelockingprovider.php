@@ -80,10 +80,8 @@ class MemcacheLockingProvider extends AbstractLockingProvider {
 	 */
 	public function releaseLock($path, $type) {
 		if ($type === self::LOCK_SHARED) {
-			if (isset($this->acquiredLocks['shared'][$path]) and $this->acquiredLocks['shared'][$path] > 0) {
-				$this->memcache->dec($path);
-				$this->memcache->cad($path, 0);
-			}
+			$this->memcache->dec($path);
+			$this->memcache->cad($path, 0);
 		} else if ($type === self::LOCK_EXCLUSIVE) {
 			$this->memcache->cad($path, 'exclusive');
 		}
