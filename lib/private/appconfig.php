@@ -125,6 +125,10 @@ class AppConfig implements IAppConfig {
 			return $this->cache[$app][$key];
 		}
 
+		if ($default !== null) {
+			$this->setValue($app, $key, $default);
+		}
+
 		return $default;
 	}
 

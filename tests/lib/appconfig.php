@@ -324,6 +324,36 @@ class AppConfig extends TestCase {
 		$this->assertConfigKey('testapp', 'foo', 'v2');
 	}
 
+	public function testGettingDefaultSetsValue() {
+		$appConfig = new \OC\AppConfig(\OC::$server->getDatabaseConnection());
+
+		$this->assertFalse($appConfig->hasKey('testapp', 'foo'));
+		$this->assertEquals('bar', $appConfig->getValue('testapp', 'foo', 'bar'));
+		$this->assertConfigKey('testapp', 'foo', 'bar');
+
+	}
+
+	public function testGettingValueNoDefaultDoesNotSet() {
+		$appConfig = new \OC\AppConfig(\OC::$server->getDatabaseConnection());
+
+		$this->assertFalse($appConfig->hasKey('testapp', 'foo'));
+		$this->assertEquals(null, $appConfig->getValue('testapp', 'foo', null));
+
+		// Make sure there is no entry in the database
+		$sql = \OC::$server->getDatabaseConnection()->getQueryBuilder();
+		$sql->select('configvalue')
+			->from('appconfig')
+			->where($sql->expr()->eq('appid', $sql->createParameter('appid')))
+			->andWhere($sql->expr()->eq('configkey', $sql->createParameter('configkey')))
+			->setParameter('appid', 'testapp')
+			->setParameter('configkey', 'foo');
+		$query = $sql->execute();
+		$actual = $query->fetch();
+		$query->closeCursor();
+
+		$this->assertEquals(null, $actual);
+	}
+
 	/**
 	 * @param string $app
 	 * @param string $key
