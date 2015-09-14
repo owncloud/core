@@ -42,4 +42,15 @@ class AdapterOCI8 extends Adapter {
 		$statement = str_ireplace('UNIX_TIMESTAMP()', self::UNIX_TIMESTAMP_REPLACEMENT, $statement);
 		return $statement;
 	}
+
+	/**
+	 * Cast a column type if the DB requires it for comparisons
+	 *
+	 * @param string $column
+	 * @return string wrapped column name
+	 */
+	public function castColumnValueToString($column) {
+		// clobs need conversion in comparisons
+		return 'to_char('.$column.')';
+	}
 }

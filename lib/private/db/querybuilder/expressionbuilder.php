@@ -32,12 +32,16 @@ class ExpressionBuilder implements IExpressionBuilder {
 	/** @var QuoteHelper */
 	private $helper;
 
+	/** @var IDBConnection */
+	private $connection;
+
 	/**
 	 * Initializes a new <tt>ExpressionBuilder</tt>.
 	 *
 	 * @param \OCP\IDBConnection $connection
 	 */
 	public function __construct(IDBConnection $connection) {
+		$this->connection = $connection;
 		$this->helper = new QuoteHelper();
 		$this->expressionBuilder = new DoctrineExpressionBuilder($connection);
 	}
@@ -308,5 +312,17 @@ class ExpressionBuilder implements IExpressionBuilder {
 	 */
 	public function literal($input, $type = null) {
 		return new Literal($this->expressionBuilder->literal($input, $type));
+	}
+
+	/**
+	 * Cast a column type if the DB requires it for comparisons
+	 *
+	 * @param string $column
+	 * @return Literal
+	 */
+	public function castColumnValueToString($column) {
+		return new Literal($this->connection->castColumnValueToString(
+			$this->helper->quoteColumnName($column)
+		));
 	}
 }

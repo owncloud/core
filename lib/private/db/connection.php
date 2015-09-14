@@ -243,6 +243,16 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	}
 
 	/**
+	 * Cast a column type if the DB requires it for comparisons
+	 *
+	 * @param string $column
+	 * @return string wrapped column name
+	 */
+	public function castColumnValueToString($column) {
+		return $this->adapter->castColumnValueToString($column);
+	}
+
+	/**
 	 * returns the error code and message as a string for logging
 	 * works with DoctrineException
 	 * @return string
