@@ -9,6 +9,7 @@ if ($configDir) {
 require_once __DIR__ . '/../lib/base.php';
 
 \OC::$loader->addValidRoot(OC::$SERVERROOT . '/tests');
+\OC::$loader->addValidRoot(OC::$SERVERROOT . '/apps');
 
 // load all enabled apps
 \OC_App::loadApps();
