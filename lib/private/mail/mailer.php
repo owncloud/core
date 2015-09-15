@@ -205,7 +205,7 @@ class Mailer implements IMailer {
 				break;
 		}
 
-		return \Swift_SendmailTransport::newInstance($binaryPath . ' -bs');
+		return \Swift_SendmailTransport::newInstance($binaryPath . ' -t');
 	}
 
 	/**
