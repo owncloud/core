@@ -1338,7 +1338,7 @@ function initCore() {
 	if($('#app-navigation').length && !$('html').hasClass('lte9')) {
 
 		// App sidebar on mobile
-		var snapper = new Snap({
+		var snapper = OC.Snap = new Snap({
 			element: document.getElementById('app-content'),
 			disable: 'right',
 			maxPosition: 250,
