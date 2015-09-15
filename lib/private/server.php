@@ -356,7 +356,10 @@ class Server extends SimpleContainer implements IServerContainer {
 			}
 		});
 		$this->registerService('TempManager', function (Server $c) {
-			return new TempManager(get_temp_dir(), $c->getLogger());
+			return new TempManager(
+				$c->getLogger(),
+				$c->getConfig()
+			);
 		});
 		$this->registerService('AppManager', function(Server $c) {
 			return new \OC\App\AppManager(
@@ -1060,5 +1063,37 @@ class Server extends SimpleContainer implements IServerContainer {
 	 */
 	public function getSessionCryptoWrapper() {
 		return $this->query('CryptoWrapper');
+	}
+
+	/**
+	 * Not a public API as of 8.2, wait for 9.0
+	 * @return \OCA\Files_External\Service\BackendService
+	 */
+	public function getStoragesBackendService() {
+		return \OC_Mount_Config::$app->getContainer()->query('OCA\\Files_External\\Service\\BackendService');
+	}
+
+	/**
+	 * Not a public API as of 8.2, wait for 9.0
+	 * @return \OCA\Files_External\Service\GlobalStoragesService
+	 */
+	public function getGlobalStoragesService() {
+		return \OC_Mount_Config::$app->getContainer()->query('OCA\\Files_External\\Service\\GlobalStoragesService');
+	}
+
+	/**
+	 * Not a public API as of 8.2, wait for 9.0
+	 * @return \OCA\Files_External\Service\UserGlobalStoragesService
+	 */
+	public function getUserGlobalStoragesService() {
+		return \OC_Mount_Config::$app->getContainer()->query('OCA\\Files_External\\Service\\UserGlobalStoragesService');
+	}
+
+	/**
+	 * Not a public API as of 8.2, wait for 9.0
+	 * @return \OCA\Files_External\Service\UserStoragesService
+	 */
+	public function getUserStoragesService() {
+		return \OC_Mount_Config::$app->getContainer()->query('OCA\\Files_External\\Service\\UserStoragesService');
 	}
 }
