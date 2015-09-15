@@ -286,6 +286,18 @@ class User implements IUser {
 	}
 
 	/**
+	 * check if the backend supports changing e-mail addresses
+	 *
+	 * @return bool
+	 */
+	public function canChangeEMailAddress() {
+		if ($this->backend->implementsActions(\OC_User_Backend::PROVIDE_EMAIL_ADDRESS)) {
+			return $this->backend->canChangeEMailAddress($this->uid);
+		}
+		return true;
+	}
+
+	/**
 	 * check if the user is enabled
 	 *
 	 * @return bool

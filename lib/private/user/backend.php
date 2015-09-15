@@ -80,6 +80,7 @@ abstract class OC_User_Backend implements OC_User_Interface {
 	const SET_DISPLAYNAME	= 1048576;		// 1 << 20
 	const PROVIDE_AVATAR	= 16777216;		// 1 << 24
 	const COUNT_USERS		= 268435456;	// 1 << 28
+	const PROVIDE_EMAIL_ADDRESS	= 4294967296;	// 1 << 32
 
 	protected $possibleActions = array(
 		self::CREATE_USER => 'createUser',
@@ -90,6 +91,7 @@ abstract class OC_User_Backend implements OC_User_Interface {
 		self::SET_DISPLAYNAME => 'setDisplayName',
 		self::PROVIDE_AVATAR => 'canChangeAvatar',
 		self::COUNT_USERS => 'countUsers',
+		self::PROVIDE_EMAIL_ADDRESS => 'canChangeEMailAddress',
 	);
 
 	/**

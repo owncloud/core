@@ -317,6 +317,75 @@ class User extends \Test\TestCase {
 		$this->assertFalse($user->canChangeDisplayName());
 	}
 
+	public function testChangeEMailSupportedYes() {
+		/**
+		 * @var \OC_User_Backend | \PHPUnit_Framework_MockObject_MockObject $backend
+		 */
+		require_once 'emailuserdummy.php';
+		$backend = $this->getMock('EMail_User_Dummy');
+		$backend->expects($this->once())
+			->method('canChangeEMailAddress')
+			->with($this->equalTo('foo'))
+			->will($this->returnValue(true));
+
+		$backend->expects($this->any())
+			->method('implementsActions')
+			->will($this->returnCallback(function ($actions) {
+				if ($actions === \OC_USER_BACKEND::PROVIDE_EMAIL_ADDRESS) {
+					return true;
+				} else {
+					return false;
+				}
+			}));
+
+		$user = new \OC\User\User('foo', $backend);
+		$this->assertTrue($user->canChangeEMailAddress());
+	}
+
+	public function testChangeEMailSupportedNo() {
+		/**
+		 * @var \OC_User_Backend | \PHPUnit_Framework_MockObject_MockObject $backend
+		 */
+		require_once 'emailuserdummy.php';
+		$backend = $this->getMock('EMail_User_Dummy');
+		$backend->expects($this->once())
+			->method('canChangeEMailAddress')
+			->with($this->equalTo('foo'))
+			->will($this->returnValue(false));
+
+		$backend->expects($this->any())
+			->method('implementsActions')
+			->will($this->returnCallback(function ($actions) {
+				if ($actions === \OC_USER_BACKEND::PROVIDE_EMAIL_ADDRESS) {
+					return true;
+				} else {
+					return false;
+				}
+			}));
+
+		$user = new \OC\User\User('foo', $backend);
+		$this->assertFalse($user->canChangeEMailAddress());
+	}
+
+	public function testChangeEMailNotSupported() {
+		/**
+		 * @var \OC_User_Backend | \PHPUnit_Framework_MockObject_MockObject $backend
+		 */
+		require_once 'emailuserdummy.php';
+		$backend = $this->getMock('EMail_User_Dummy');
+		$backend->expects($this->never())
+			->method('canChangeEMailAddress');
+
+		$backend->expects($this->any())
+			->method('implementsActions')
+			->will($this->returnCallback(function ($actions) {
+				return false;
+			}));
+
+		$user = new \OC\User\User('foo', $backend);
+		$this->assertTrue($user->canChangeEMailAddress());
+	}
+
 	public function testSetDisplayNameSupported() {
 		/**
 		 * @var \OC_User_Backend | \PHPUnit_Framework_MockObject_MockObject $backend
