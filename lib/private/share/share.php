@@ -1547,10 +1547,10 @@ class Share extends Constants {
 				$root = '';
 			}
 			$where = 'INNER JOIN `*PREFIX*filecache` ON `file_source` = `*PREFIX*filecache`.`fileid` ';
-			if (!isset($item)) {
-				$where .= ' AND `file_target` IS NOT NULL ';
-			}
 			$where .= 'INNER JOIN `*PREFIX*storages` ON `numeric_id` = `*PREFIX*filecache`.`storage` ';
+			if (!isset($item)) {
+				$where .= ' WHERE `file_target` IS NOT NULL ';
+			}
 			$fileDependent = true;
 			$queryArgs = array();
 		} else {
