@@ -38,6 +38,7 @@ use GuzzleHttp\Message\ResponseInterface;
 use OC\Files\Filesystem;
 use OC\Files\Stream\Close;
 use Icewind\Streams\IteratorDirectory;
+use OC\ForbiddenException;
 use OC\MemCache\ArrayCache;
 use OCP\AppFramework\Http;
 use OCP\Constants;
@@ -837,7 +838,8 @@ class DAV extends Common {
 			} else if ($e->getHttpStatus() === Http::STATUS_METHOD_NOT_ALLOWED) {
 				// ignore exception for MethodNotAllowed, false will be returned
 				return;
-			}
+			} else if ($e->getHttpStatus() === Http::STATUS_FORBIDDEN) {
+				throw new ForbiddenException($e->getMessage(), $e->getCode(), $e);
 			throw new StorageNotAvailableException(get_class($e) . ': ' . $e->getMessage());
 		} else if ($e instanceof ClientException) {
 			// connection timeout or refused, server could be temporarily down
