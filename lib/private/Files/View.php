@@ -1408,6 +1408,9 @@ class View {
 			/**
 			 * @var \OC\Files\FileInfo[] $files
 			 */
+			$files = array_filter(function(ICacheEntry $content) {
+				return (!\OC\Files\Filesystem::isForbiddenFileOrDir($content['path']));
+			});
 			$files = array_map(function (ICacheEntry $content) use ($path, $storage, $mount, $sharingDisabled) {
 				if ($sharingDisabled) {
 					$content['permissions'] = $content['permissions'] & ~\OCP\Constants::PERMISSION_SHARE;
