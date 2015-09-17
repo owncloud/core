@@ -76,6 +76,9 @@ class Server extends SimpleContainer implements IServerContainer {
 	/** @var string */
 	private $webRoot;
 
+	/** @var string */
+	protected static $service = null;
+	
 	/**
 	 * @param string $webRoot
 	 */
@@ -1066,6 +1069,23 @@ class Server extends SimpleContainer implements IServerContainer {
 	}
 
 	/**
+	 * @return requested service
+	 */
+	public function getService() {
+		if (! isset ( self::$service )) {
+			$pathInfo = self::getRequest ()->getPathInfo ();
+			if ($pathInfo === false || $pathInfo === '') {
+				return;
+			}
+			if (! $pos = strpos ( $pathInfo, '/', 1 )) {
+				$pos = strlen ( $pathInfo );
+			}
+		self::$service=substr ( $pathInfo, 1, $pos - 1 );
+		}
+		return self::$service;
+	}	
+	
+	/**
 	 * Not a public API as of 8.2, wait for 9.0
 	 * @return \OCA\Files_External\Service\BackendService
 	 */
@@ -1096,4 +1116,5 @@ class Server extends SimpleContainer implements IServerContainer {
 	public function getUserStoragesService() {
 		return \OC_Mount_Config::$app->getContainer()->query('OCA\\Files_External\\Service\\UserStoragesService');
 	}
+	
 }

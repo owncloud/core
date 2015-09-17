@@ -610,7 +610,6 @@ class OC {
 			self::initSession();
 		}
 		\OC::$server->getEventLogger()->end('init_session');
-		self::initTemplateEngine();
 		self::checkConfig();
 		self::checkInstalled();
 
@@ -668,14 +667,18 @@ class OC {
 			OC_User::setupBackends();
 		}
 
+		if (\OC::$server->getService() !== 'webdav') {
+			self::initTemplateEngine();
+			self::registerLocalAddressBook();
+			if ($systemConfig->getValue('enable_previews', true)) {
+				self::registerPreviewHooks();
+			}
+		}
+		
 		self::registerCacheHooks();
 		self::registerFilesystemHooks();
-		if ($systemConfig->getValue('enable_previews', true)) {
-			self::registerPreviewHooks();
-		}	
 		self::registerShareHooks();
 		self::registerLogRotate();
-		self::registerLocalAddressBook();
 		self::registerEncryptionWrapper();
 		self::registerEncryptionHooks();
 
