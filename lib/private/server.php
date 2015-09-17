@@ -77,7 +77,7 @@ class Server extends SimpleContainer implements IServerContainer {
 	private $webRoot;
 
 	/** @var string */
-	protected static $service = null;
+	protected $service = null;
 	
 	/**
 	 * @param string $webRoot
@@ -1072,7 +1072,7 @@ class Server extends SimpleContainer implements IServerContainer {
 	 * @return requested service
 	 */
 	public function getService() {
-		if (! isset ( self::$service )) {
+		if (! isset ($this->service )) {
 			$pathInfo = self::getRequest ()->getPathInfo ();
 			if ($pathInfo === false || $pathInfo === '') {
 				return;
@@ -1080,9 +1080,9 @@ class Server extends SimpleContainer implements IServerContainer {
 			if (! $pos = strpos ( $pathInfo, '/', 1 )) {
 				$pos = strlen ( $pathInfo );
 			}
-		self::$service=substr ( $pathInfo, 1, $pos - 1 );
+		$this->service=substr ( $pathInfo, 1, $pos - 1 );
 		}
-		return self::$service;
+		return $this->service;
 	}	
 	
 	/**
