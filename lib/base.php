@@ -610,16 +610,14 @@ class OC {
 			OC_User::setupBackends();
 		}
 
-		if (\OC::$server->getService() !== 'webdav') {
-			self::registerLocalAddressBook();
+		self::registerCacheHooks();
+		self::registerFilesystemHooks();
 			if ($systemConfig->getValue('enable_previews', true)) {
 				self::registerPreviewHooks();
 			}
-		}
-		self::registerCacheHooks();
-		self::registerFilesystemHooks();
 		self::registerShareHooks();
 		self::registerLogRotate();
+		self::registerLocalAddressBook();
 		self::registerEncryptionWrapper();
 		self::registerEncryptionHooks();
 
