@@ -1,4 +1,4 @@
-# ownCloud
+# ownClou
 
 [ownCloud](http://ownCloud.org) gives you freedom and control over your own data.
 A personal cloud which runs on your own server.
