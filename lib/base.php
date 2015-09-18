@@ -612,9 +612,9 @@ class OC {
 
 		self::registerCacheHooks();
 		self::registerFilesystemHooks();
-			if ($systemConfig->getValue('enable_previews', true)) {
-				self::registerPreviewHooks();
-			}
+		if ($systemConfig->getValue('enable_previews', true)) {
+			self::registerPreviewHooks();
+		}
 		self::registerShareHooks();
 		self::registerLogRotate();
 		self::registerLocalAddressBook();
@@ -802,7 +802,7 @@ class OC {
 
 		// Always load authentication apps
 		OC_App::loadApps(['authentication']);
-		
+
 		// Load minimum set of apps
 		if (!self::checkUpgrade(false)
 			&& !$systemConfig->getValue('maintenance', false)
