@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * @author Andreas Fischer <bantu@owncloud.com>
  * @author Christopher Schäpers <kondou@ts.unde.re>
  * @author Frank Karlitschek <frank@owncloud.org>
