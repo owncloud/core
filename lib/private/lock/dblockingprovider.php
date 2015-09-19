@@ -68,7 +68,7 @@ class DBLockingProvider extends AbstractLockingProvider {
 	
 	protected function initLockField($path, $lock = 0) {
 		$expire = $this->getExpireTime();
-		$this->connection->insertIfNotExist('*PREFIX*file_locks', ['key' => $path, 'lock' => $lock, 'ttl' => $expire], ['key']);
+		return $this->connection->insertIfNotExist('*PREFIX*file_locks', ['key' => $path, 'lock' => $lock, 'ttl' => $expire], ['key']);
 	}
 
 	/**
