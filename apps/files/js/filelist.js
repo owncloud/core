@@ -10,7 +10,7 @@
 
 (function() {
 
-	var TEMPLATE_ADDBUTTON = '<a href="#" class="button new" title="{{addText}}"><img src="{{iconUrl}}"></img></a>';
+	var TEMPLATE_ADDBUTTON = '<a href="#" class="button new"><img src="{{iconUrl}}" alt="{{addText}}"></img></a>';
 
 	/**
 	 * @class OCA.Files.FileList
@@ -301,6 +301,7 @@
 				this.fileActions.registerAction({
 					name: 'Details',
 					mime: 'all',
+					icon: OC.imagePath('core', 'actions/details'),
 					permissions: OC.PERMISSION_READ,
 					actionHandler: function(fileName, context) {
 						self._updateDetailsView(fileName);
@@ -365,6 +366,21 @@
 			});
 
 			return model;
+		},
+
+		/**
+		 * Displays the details view for the given file and
+		 * selects the given tab
+		 *
+		 * @param {string} fileName file name for which to show details
+		 * @param {string} [tabId] optional tab id to select
+		 */
+		showDetailsView: function(fileName, tabId) {
+			this._updateDetailsView(fileName);
+			if (tabId) {
+				this._detailsView.selectTab(tabId);
+			}
+			OC.Apps.showAppSidebar();
 		},
 
 		/**

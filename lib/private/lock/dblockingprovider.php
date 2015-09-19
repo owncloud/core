@@ -21,6 +21,7 @@
 
 namespace OC\Lock;
 
+use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IDBConnection;
 use OCP\ILogger;
 use OCP\Lock\LockedException;
@@ -40,12 +41,21 @@ class DBLockingProvider extends AbstractLockingProvider {
 	private $logger;
 
 	/**
+	 * @var \OCP\AppFramework\Utility\ITimeFactory
+	 */
+	private $timeFactory;
+
+	const TTL = 3600; // how long until we clear stray locks in seconds
+
+	/**
 	 * @param \OCP\IDBConnection $connection
 	 * @param \OCP\ILogger $logger
+	 * @param \OCP\AppFramework\Utility\ITimeFactory $timeFactory
 	 */
-	public function __construct(IDBConnection $connection, ILogger $logger) {
+	public function __construct(IDBConnection $connection, ILogger $logger, ITimeFactory $timeFactory) {
 		$this->connection = $connection;
 		$this->logger = $logger;
+		$this->timeFactory = $timeFactory;
 	}
 
 	/**
@@ -56,8 +66,16 @@ class DBLockingProvider extends AbstractLockingProvider {
 	 * @return int number of inserted rows
 	 */
 	
-	protected function initLockField($path,$lock = 0 ) {
-		return $this->connection->insertIfNotExist('*PREFIX*file_locks', ['key' => $path, 'lock' => $lock, 'ttl' => 0], ['key']);
+	protected function initLockField($path, $lock = 0) {
+		$expire = $this->getExpireTime();
+		$this->connection->insertIfNotExist('*PREFIX*file_locks', ['key' => $path, 'lock' => $lock, 'ttl' => $expire], ['key']);
+	}
+
+	/**
+	 * @return int
+	 */
+	protected function getExpireTime() {
+		return $this->timeFactory->getTime() + self::TTL;
 	}
 
 	/**
@@ -84,29 +102,27 @@ class DBLockingProvider extends AbstractLockingProvider {
 	 * @throws \OCP\Lock\LockedException
 	 */
 	public function acquireLock($path, $type) {
-		if ($this->connection->inTransaction()){
+		if ($this->connection->inTransaction()) {
 			$this->logger->warning("Trying to acquire a lock for '$path' while inside a transition");
 		}
-
-		$this->connection->beginTransaction();
 		
 		if ($type === self::LOCK_SHARED) {
 			$result = $this->initLockField($path,1);
 			if ($result <= 0) {
 				$result = $this->connection->executeUpdate ( 
-					'UPDATE `*PREFIX*file_locks` SET `lock` = `lock` + 1 WHERE `key` = ? AND `lock` >= 0',
-					[$path] );
+					'UPDATE `*PREFIX*file_locks` SET `lock` = `lock` + 1, `ttl` = ? WHERE `key` = ? AND `lock` >= 0',
+					[$expire, $path]
+					);
 			}
 		} else {
 			$result = $this->initLockField($path,-1);
 			if ($result <= 0) {
 				$result = $this->connection->executeUpdate(
-					'UPDATE `*PREFIX*file_locks` SET `lock` = -1 WHERE `key` = ? AND `lock` = 0',
-					[$path]
+					'UPDATE `*PREFIX*file_locks` SET `lock` = -1, `ttl` = ? WHERE `key` = ? AND `lock` = 0',
+					[$expire, $path]
 				);
 			}
 		}
-		$this->connection->commit();
 		if ($result !== 1) {
 			throw new LockedException($path);
 		}
@@ -147,20 +163,21 @@ class DBLockingProvider extends AbstractLockingProvider {
 	 * @throws \OCP\Lock\LockedException
 	 */
 	public function changeLock($path, $targetType) {
+		$expire = $this->getExpireTime();
 		if ($targetType === self::LOCK_SHARED) {
 			$result = $this->initLockField($path,1);
 			if ($result <= 0) {
 				$result = $this->connection->executeUpdate(
-					'UPDATE `*PREFIX*file_locks` SET `lock` = 1 WHERE `key` = ? AND `lock` = -1',
-					[$path]
+					'UPDATE `*PREFIX*file_locks` SET `lock` = 1, `ttl` = ? WHERE `key` = ? AND `lock` = -1',
+					[$expire, $path]
 				);
 			}
 		} else {
 			$result = $this->initLockField($path,-1);
 			if ($result <= 0) {
 				$result = $this->connection->executeUpdate(
-					'UPDATE `*PREFIX*file_locks` SET `lock` = -1 WHERE `key` = ? AND `lock` = 1',
-					[$path]
+					'UPDATE `*PREFIX*file_locks` SET `lock` = -1, `ttl` = ? WHERE `key` = ? AND `lock` = 1',
+					[$expire, $path]
 				);
 			}
 		}
@@ -174,8 +191,10 @@ class DBLockingProvider extends AbstractLockingProvider {
 	 * cleanup empty locks
 	 */
 	public function cleanEmptyLocks() {
+		$expire = $this->timeFactory->getTime();
 		$this->connection->executeUpdate(
-			'DELETE FROM `*PREFIX*file_locks` WHERE `lock` = 0'
+			'DELETE FROM `*PREFIX*file_locks` WHERE `lock` = 0 AND `ttl` < ?',
+			[$expire]
 		);
 	}
 
