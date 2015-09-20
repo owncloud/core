@@ -98,6 +98,9 @@ $this->create('core_tags_delete', '/tags/{type}/delete')
 // oC JS config
 $this->create('js_config', '/core/js/oc.js')
 	->actionInclude('core/js/config.php');
+// oC JS previewproviders
+$this->create('js_previewproviders', '/core/js/previewproviders.js')
+	->actionInclude('core/js/previewproviders.php');
 // Routing
 $this->create('core_ajax_preview', '/core/preview')
 	->actionInclude('core/ajax/preview.php');

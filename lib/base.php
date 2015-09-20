@@ -407,6 +407,7 @@ class OC {
 		OC_Util::addScript("apps");
 		OC_Util::addScript('mimetype');
 		OC_Util::addScript('mimetypelist');
+		OC_Util::addScript('preview');
 		OC_Util::addVendorScript('snapjs/dist/latest/snap');
 		OC_Util::addVendorScript('core', 'backbone/backbone');
 		OC_Util::addScript('oc-backbone');

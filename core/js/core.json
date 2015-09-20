@@ -39,6 +39,7 @@
 		"setupchecks.js",
 		"../search/js/search.js",
 		"mimetype.js",
-		"mimetypelist.js"
+		"mimetypelist.js",
+		"preview.js"
 	]
 }
