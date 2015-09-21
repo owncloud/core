@@ -72,7 +72,7 @@
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	color: #000;
-	opacity: .5;
+	opacity: .57;
 }
 #app-navigation .active,
 #app-navigation .active a,
@@ -417,6 +417,7 @@
 	position: relative;
 	height: 100%;
 	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
 }
 
 #app-content-wrapper {

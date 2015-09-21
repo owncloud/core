@@ -67,14 +67,23 @@ class EncryptAll extends Command {
 		$this->encryptionManager = $encryptionManager;
 		$this->config = $config;
 		$this->questionHelper = $questionHelper;
+	}
+
+	/**
+	 * Set single user mode and disable the trashbin app
+	 */
+	protected function forceSingleUserAndTrashbin() {
 		$this->wasTrashbinEnabled = $this->appManager->isEnabledForUser('files_trashbin');
-		$this->wasSingleUserModeEnabled = $this->config->getSystemValue('singleUser', false);
-		$this->config->setSystemValue('singleUser', true);
+		$this->wasSingleUserModeEnabled = $this->config->getSystemValue('singleuser', false);
+		$this->config->setSystemValue('singleuser', true);
 		$this->appManager->disableApp('files_trashbin');
 	}
 
-	public function __destruct() {
-		$this->config->setSystemValue('singleUser', $this->wasSingleUserModeEnabled);
+	/**
+	 * Reset the single user mode and re-enable the trashbin app
+	 */
+	protected function resetSingleUserAndTrashbin() {
+		$this->config->setSystemValue('singleuser', $this->wasSingleUserModeEnabled);
 		if ($this->wasTrashbinEnabled) {
 			$this->appManager->enableApp('files_trashbin');
 		}
@@ -83,7 +92,7 @@ class EncryptAll extends Command {
 	protected function configure() {
 		parent::configure();
 
-		$this->setName('encryption:encrypt_all');
+		$this->setName('encryption:encrypt-all');
 		$this->setDescription(
 			'This will encrypt all files for all users. '
 			. 'Please make sure that no user access his files during this process!'
@@ -104,8 +113,17 @@ class EncryptAll extends Command {
 		$output->writeln('');
 		$question = new ConfirmationQuestion('Do you really want to continue? (y/n) ', false);
 		if ($this->questionHelper->ask($input, $output, $question)) {
-			$defaultModule = $this->encryptionManager->getEncryptionModule();
-			$defaultModule->encryptAll($input, $output);
+			$this->forceSingleUserAndTrashbin();
+
+			try {
+				$defaultModule = $this->encryptionManager->getEncryptionModule();
+				$defaultModule->encryptAll($input, $output);
+			} catch (\Exception $ex) {
+				$this->resetSingleUserAndTrashbin();
+				throw $ex;
+			}
+
+			$this->resetSingleUserAndTrashbin();
 		} else {
 			$output->writeln('aborted');
 		}

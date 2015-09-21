@@ -23,6 +23,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+
 $l = \OC::$server->getL10N('files_trashbin');
 
 // register hooks

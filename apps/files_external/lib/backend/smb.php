@@ -26,6 +26,7 @@ use \OCA\Files_External\Lib\Backend\Backend;
 use \OCA\Files_External\Lib\DefinitionParameter;
 use \OCA\Files_External\Lib\Auth\AuthMechanism;
 use \OCA\Files_External\Service\BackendService;
+use \OCA\Files_External\Lib\StorageConfig;
 use \OCA\Files_External\Lib\LegacyDependencyCheckPolyfill;
 
 use \OCA\Files_External\Lib\Auth\Password\Password;
@@ -45,10 +46,22 @@ class SMB extends Backend {
 				(new DefinitionParameter('share', $l->t('Share'))),
 				(new DefinitionParameter('root', $l->t('Remote subfolder')))
 					->setFlag(DefinitionParameter::FLAG_OPTIONAL),
+				(new DefinitionParameter('domain', $l->t('Domain')))
+					->setFlag(DefinitionParameter::FLAG_OPTIONAL),
 			])
 			->addAuthScheme(AuthMechanism::SCHEME_PASSWORD)
 			->setLegacyAuthMechanism($legacyAuth)
 		;
+	}
+
+	/**
+	 * @param StorageConfig $storage
+	 */
+	public function manipulateStorageConfig(StorageConfig &$storage) {
+		$user = $storage->getBackendOption('user');
+		if ($domain = $storage->getBackendOption('domain')) {
+			$storage->setBackendOption('user', $domain.'\\'.$user);
+		}
 	}
 
 }

@@ -10,7 +10,7 @@
 
 (function() {
 
-	var TEMPLATE_ADDBUTTON = '<a href="#" class="button new" title="{{addText}}"><img src="{{iconUrl}}"></img></a>';
+	var TEMPLATE_ADDBUTTON = '<a href="#" class="button new"><img src="{{iconUrl}}" alt="{{addText}}"></img></a>';
 
 	/**
 	 * @class OCA.Files.FileList
@@ -193,7 +193,19 @@
 			this.$container = options.scrollContainer || $(window);
 			this.$table = $el.find('table:first');
 			this.$fileList = $el.find('#fileList');
+
+			if (_.isUndefined(options.detailsViewEnabled) || options.detailsViewEnabled) {
+				this._detailsView = new OCA.Files.DetailsView();
+				this._detailsView.$el.insertBefore(this.$el);
+				this._detailsView.$el.addClass('disappear');
+			}
+
 			this._initFileActions(options.fileActions);
+
+			if (this._detailsView) {
+				this._detailsView.addDetailView(new OCA.Files.MainFileInfoDetailView({fileList: this, fileActions: this.fileActions}));
+			}
+
 			this.files = [];
 			this._selectedFiles = {};
 			this._selectionSummary = new OCA.Files.FileSummary();
@@ -213,13 +225,6 @@
 				breadcrumbOptions.onDrop = _.bind(this._onDropOnBreadCrumb, this);
 			}
 			this.breadcrumb = new OCA.Files.BreadCrumb(breadcrumbOptions);
-
-			if (_.isUndefined(options.detailsViewEnabled) || options.detailsViewEnabled) {
-				this._detailsView = new OCA.Files.DetailsView();
-				this._detailsView.addDetailView(new OCA.Files.MainFileInfoDetailView({fileList: this, fileActions: this.fileActions}));
-				this._detailsView.$el.insertBefore(this.$el);
-				this._detailsView.$el.addClass('disappear');
-			}
 
 			this.$el.find('#controls').prepend(this.breadcrumb.$el);
 
@@ -285,11 +290,26 @@
 		 * @param {OCA.Files.FileActions} fileActions file actions
 		 */
 		_initFileActions: function(fileActions) {
+			var self = this;
 			this.fileActions = fileActions;
 			if (!this.fileActions) {
 				this.fileActions = new OCA.Files.FileActions();
 				this.fileActions.registerDefaultActions();
 			}
+
+			if (this._detailsView) {
+				this.fileActions.registerAction({
+					name: 'Details',
+					mime: 'all',
+					icon: OC.imagePath('core', 'actions/details'),
+					permissions: OC.PERMISSION_READ,
+					actionHandler: function(fileName, context) {
+						self._updateDetailsView(fileName);
+						OC.Apps.showAppSidebar();
+					}
+				});
+			}
+
 			this._onFileActionsUpdated = _.debounce(_.bind(this._onFileActionsUpdated, this), 100);
 			this.fileActions.on('registerAction', this._onFileActionsUpdated);
 			this.fileActions.on('setDefault', this._onFileActionsUpdated);
@@ -327,7 +347,7 @@
 			// and contain existing models that can be used.
 			// This method would in the future simply retrieve the matching model from the collection.
 			var model = new OCA.Files.FileInfoModel(this.elementToFile($tr));
-			if (!model.has('path')) {
+			if (!model.get('path')) {
 				model.set('path', this.getCurrentDirectory(), {silent: true});
 			}
 
@@ -349,6 +369,21 @@
 		},
 
 		/**
+		 * Displays the details view for the given file and
+		 * selects the given tab
+		 *
+		 * @param {string} fileName file name for which to show details
+		 * @param {string} [tabId] optional tab id to select
+		 */
+		showDetailsView: function(fileName, tabId) {
+			this._updateDetailsView(fileName);
+			if (tabId) {
+				this._detailsView.selectTab(tabId);
+			}
+			OC.Apps.showAppSidebar();
+		},
+
+		/**
 		 * Update the details view to display the given file
 		 *
 		 * @param {string} fileName file name from the current list
@@ -366,7 +401,6 @@
 			}
 
 			if (!fileName) {
-				OC.Apps.hideAppSidebar(this._detailsView.$el);
 				this._detailsView.setFileInfo(null);
 				if (this._currentFileModel) {
 					this._currentFileModel.off();
@@ -384,7 +418,6 @@
 
 			this._detailsView.setFileInfo(model);
 			this._detailsView.$el.scrollTop(0);
-			_.defer(OC.Apps.showAppSidebar, this._detailsView.$el);
 		},
 
 		/**

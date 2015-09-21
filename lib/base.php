@@ -471,7 +471,8 @@ class OC {
 			OC::$SERVERROOT . '/settings',
 			OC::$SERVERROOT . '/ocs',
 			OC::$SERVERROOT . '/ocs-provider',
-			OC::$SERVERROOT . '/3rdparty'
+			OC::$SERVERROOT . '/3rdparty',
+			OC::$SERVERROOT . '/tests',
 		]);
 		spl_autoload_register(array(self::$loader, 'load'));
 		$loaderEnd = microtime(true);
@@ -1050,14 +1051,6 @@ class OC {
 			exit();
 		}
 		return true;
-	}
-
-	/**
-	 * Get the temporary dir to store uploaded data
-	 * @return null|string Path to the temporary directory or null
-	 */
-	function get_temp_dir() {
-		return \OC::$server->getTempManager()->t_get_temp_dir();
 	}
 
 }

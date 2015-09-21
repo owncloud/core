@@ -21,10 +21,9 @@
 
 namespace OCA\Files_Sharing\Tests\API;
 
-use Doctrine\DBAL\Connection;
-use OC\Share\Constants;
 use OCA\Files_Sharing\API\Sharees;
 use OCA\Files_sharing\Tests\TestCase;
+use OCP\AppFramework\Http;
 use OCP\Share;
 
 class ShareesTest extends TestCase {
@@ -653,36 +652,18 @@ class ShareesTest extends TestCase {
 
 			// Test pagination
 			[[
-				'page' => 0,
-			], '', true, '', null, $allTypes, 1, 200, false],
-			[[
-				'page' => '0',
-			], '', true, '', null, $allTypes, 1, 200, false],
-			[[
-				'page' => -1,
-			], '', true, '', null, $allTypes, 1, 200, false],
-			[[
 				'page' => 1,
 			], '', true, '', null, $allTypes, 1, 200, false],
 			[[
 				'page' => 10,
 			], '', true, '', null, $allTypes, 10, 200, false],
 
-			// Test limit
+			// Test perPage
 			[[
-				'limit' => 0,
-			], '', true, '', null, $allTypes, 1, 200, false],
-			[[
-				'limit' => '0',
-			], '', true, '', null, $allTypes, 1, 200, false],
-			[[
-				'limit' => -1,
+				'perPage' => 1,
 			], '', true, '', null, $allTypes, 1, 1, false],
 			[[
-				'limit' => 1,
-			], '', true, '', null, $allTypes, 1, 1, false],
-			[[
-				'limit' => 10,
+				'perPage' => 10,
 			], '', true, '', null, $allTypes, 1, 10, false],
 
 			// Test $shareWithGroupOnly setting
@@ -754,6 +735,75 @@ class ShareesTest extends TestCase {
 		$this->assertInstanceOf('\OC_OCS_Result', $sharees->search());
 
 		$this->assertSame($shareWithGroupOnly, $this->invokePrivate($sharees, 'shareWithGroupOnly'));
+
+		$_GET = $oldGet;
+	}
+
+	public function dataSearchInvalid() {
+		return [
+			// Test invalid pagination
+			[[
+				'page' => 0,
+			], 'Invalid page'],
+			[[
+				'page' => '0',
+			], 'Invalid page'],
+			[[
+				'page' => -1,
+			], 'Invalid page'],
+
+			// Test invalid perPage
+			[[
+				'perPage' => 0,
+			], 'Invalid perPage argument'],
+			[[
+				'perPage' => '0',
+			], 'Invalid perPage argument'],
+			[[
+				'perPage' => -1,
+			], 'Invalid perPage argument'],
+		];
+	}
+
+	/**
+	 * @dataProvider dataSearchInvalid
+	 *
+	 * @param array $getData
+	 * @param string $message
+	 */
+	public function testSearchInvalid($getData, $message) {
+		$oldGet = $_GET;
+		$_GET = $getData;
+
+		$config = $this->getMockBuilder('OCP\IConfig')
+			->disableOriginalConstructor()
+			->getMock();
+		$config->expects($this->never())
+			->method('getAppValue');
+
+		$sharees = $this->getMockBuilder('\OCA\Files_Sharing\API\Sharees')
+			->setConstructorArgs([
+				$this->groupManager,
+				$this->userManager,
+				$this->contactsManager,
+				$config,
+				$this->session,
+				$this->getMockBuilder('OCP\IURLGenerator')->disableOriginalConstructor()->getMock(),
+				$this->getMockBuilder('OCP\IRequest')->disableOriginalConstructor()->getMock(),
+				$this->getMockBuilder('OCP\ILogger')->disableOriginalConstructor()->getMock()
+			])
+			->setMethods(array('searchSharees', 'isRemoteSharingAllowed'))
+			->getMock();
+		$sharees->expects($this->never())
+			->method('searchSharees');
+		$sharees->expects($this->never())
+			->method('isRemoteSharingAllowed');
+
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\OCA\Files_Sharing\API\Sharees $sharees */
+		$ocs = $sharees->search();
+		$this->assertInstanceOf('\OC_OCS_Result', $ocs);
+
+		$this->assertOCSError($ocs, $message);
 
 		$_GET = $oldGet;
 	}
@@ -940,19 +990,13 @@ class ShareesTest extends TestCase {
 		$ocs = $this->invokePrivate($this->sharees, 'searchSharees', ['', null, [], [], 0, 0, false]);
 		$this->assertInstanceOf('\OC_OCS_Result', $ocs);
 
-		$this->assertSame(400, $ocs->getStatusCode(), 'Expected status code 400');
-		$this->assertSame([], $ocs->getData(), 'Expected that no data is send');
-
-		$meta = $ocs->getMeta();
-		$this->assertNotEmpty($meta);
-		$this->assertArrayHasKey('message', $meta);
-		$this->assertSame('missing itemType', $meta['message']);
+		$this->assertOCSError($ocs, 'Missing itemType');
 	}
 
 	public function dataGetPaginationLink() {
 		return [
-			[1, '/ocs/v1.php', ['limit' => 2], '<?limit=2&page=2>; rel="next"'],
-			[10, '/ocs/v2.php', ['limit' => 2], '<?limit=2&page=11>; rel="next"'],
+			[1, '/ocs/v1.php', ['perPage' => 2], '<?perPage=2&page=2>; rel="next"'],
+			[10, '/ocs/v2.php', ['perPage' => 2], '<?perPage=2&page=11>; rel="next"'],
 		];
 	}
 
@@ -991,5 +1035,19 @@ class ShareesTest extends TestCase {
 			->willReturn($scriptName);
 
 		$this->assertEquals($expected, $this->invokePrivate($this->sharees, 'isV2'));
+	}
+
+	/**
+	 * @param \OC_OCS_Result $ocs
+	 * @param string $message
+	 */
+	protected function assertOCSError(\OC_OCS_Result $ocs, $message) {
+		$this->assertSame(Http::STATUS_BAD_REQUEST, $ocs->getStatusCode(), 'Expected status code 400');
+		$this->assertSame([], $ocs->getData(), 'Expected that no data is send');
+
+		$meta = $ocs->getMeta();
+		$this->assertNotEmpty($meta);
+		$this->assertArrayHasKey('message', $meta);
+		$this->assertSame($message, $meta['message']);
 	}
 }
