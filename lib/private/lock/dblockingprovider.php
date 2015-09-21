@@ -137,23 +137,19 @@ class DBLockingProvider extends AbstractLockingProvider {
 	 */
 	public function releaseLock($path, $type) {
 		if ($type === self::LOCK_SHARED) {
-			$result = $this->initLockField($path,-1);
-			if ($result <= 0) {
-				$this->connection->executeUpdate(
-					'UPDATE `*PREFIX*file_locks` SET `lock` = `lock` - 1 WHERE `key` = ? AND `lock` > 0',
-					[$path]
-				);
-			}
+			$result = $this->connection->executeUpdate(
+				'UPDATE `*PREFIX*file_locks` SET `lock` = `lock` - 1 WHERE `key` = ? AND `lock` > 0',
+				[$path]
+			);
 		} else {
-			$result = $this->initLockField($path,0);
-			if ($result <= 0) {
-				$this->connection->executeUpdate(
-					'UPDATE `*PREFIX*file_locks` SET `lock` = 0 WHERE `key` = ? AND `lock` = -1',
-					[$path]
-				);
-			}
+			$result = $this->connection->executeUpdate(
+				'UPDATE `*PREFIX*file_locks` SET `lock` = 0 WHERE `key` = ? AND `lock` = -1',
+				[$path]
+			);
 		}
-
+		if ($result !== 1) {
+			throw new LockedException($path);
+		}
 		$this->markRelease($path, $type);
 	}
 
@@ -167,21 +163,15 @@ class DBLockingProvider extends AbstractLockingProvider {
 	public function changeLock($path, $targetType) {
 		$expire = $this->getExpireTime();
 		if ($targetType === self::LOCK_SHARED) {
-			$result = $this->initLockField($path,1);
-			if ($result <= 0) {
-				$result = $this->connection->executeUpdate(
-					'UPDATE `*PREFIX*file_locks` SET `lock` = 1, `ttl` = ? WHERE `key` = ? AND `lock` = -1',
-					[$expire, $path]
-				);
-			}
+			$result = $this->connection->executeUpdate(
+				'UPDATE `*PREFIX*file_locks` SET `lock` = 1, `ttl` = ? WHERE `key` = ? AND `lock` = -1',
+				[$expire, $path]
+			);
 		} else {
-			$result = $this->initLockField($path,-1);
-			if ($result <= 0) {
-				$result = $this->connection->executeUpdate(
-					'UPDATE `*PREFIX*file_locks` SET `lock` = -1, `ttl` = ? WHERE `key` = ? AND `lock` = 1',
-					[$expire, $path]
-				);
-			}
+			$result = $this->connection->executeUpdate(
+				'UPDATE `*PREFIX*file_locks` SET `lock` = -1, `ttl` = ? WHERE `key` = ? AND `lock` = 1',
+				[$expire, $path]
+			);
 		}
 		if ($result !== 1) {
 			throw new LockedException($path);
