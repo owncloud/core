@@ -15,8 +15,7 @@
  * limitations under the License.
  */
 
-require_once "Google/Auth/Abstract.php";
-require_once "Google/Http/Request.php";
+require_once realpath(dirname(__FILE__) . '/../../../autoload.php');
 
 /**
  * Simple API access implementation. Can either be used to make requests
@@ -55,6 +54,9 @@ class Google_Auth_Simple extends Google_Auth_Abstract
   {
     $key = $this->client->getClassConfig($this, 'developer_key');
     if ($key) {
+      $this->client->getLogger()->debug(
+          'Simple API Access developer key authentication'
+      );
       $request->setQueryParam('key', $key);
     }
     return $request;

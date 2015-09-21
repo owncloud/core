@@ -15,11 +15,7 @@
  * limitations under the License.
  */
 
-require_once 'Google/Client.php';
-require_once 'Google/Exception.php';
-require_once 'Google/Http/Request.php';
-require_once 'Google/Http/REST.php';
-require_once 'Google/Utils.php';
+require_once realpath(dirname(__FILE__) . '/../../../autoload.php');
 
 /**
  * @author Chirag Shah <chirags@google.com>
@@ -182,7 +178,7 @@ class Google_Http_MediaFileUpload
       // No problems, but upload not complete.
       return false;
     } else {
-      return Google_Http_REST::decodeHttpResponse($response);
+      return Google_Http_REST::decodeHttpResponse($response, $this->client);
     }
   }
 
@@ -296,6 +292,9 @@ class Google_Http_MediaFileUpload
       }
       $message = rtrim($message, ';');
     }
-    throw new Google_Exception("Failed to start the resumable upload (HTTP {$message})");
+
+    $error = "Failed to start the resumable upload (HTTP {$message})";
+    $this->client->getLogger()->error($error);
+    throw new Google_Exception($error);
   }
 }

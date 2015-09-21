@@ -21,7 +21,7 @@
  * @author Stuart Langley <slangley@google.com>
  */
 
-require_once 'Google/IO/Abstract.php';
+require_once realpath(dirname(__FILE__) . '/../../../autoload.php');
 
 class Google_IO_Curl extends Google_IO_Abstract
 {
@@ -29,6 +29,18 @@ class Google_IO_Curl extends Google_IO_Abstract
   const NO_QUIRK_VERSION = 0x071E00;
 
   private $options = array();
+
+  public function __construct(Google_Client $client)
+  {
+    if (!extension_loaded('curl')) {
+      $error = 'The cURL IO handler requires the cURL extension to be enabled';
+      $client->getLogger()->critical($error);
+      throw new Google_IO_Exception($error);
+    }
+
+    parent::__construct($client);
+  }
+
   /**
    * Execute an HTTP Request
    *
@@ -53,14 +65,15 @@ class Google_IO_Curl extends Google_IO_Abstract
       }
       curl_setopt($curl, CURLOPT_HTTPHEADER, $curlHeaders);
     }
-
     curl_setopt($curl, CURLOPT_URL, $request->getUrl());
-    
+
     curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $request->getRequestMethod());
     curl_setopt($curl, CURLOPT_USERAGENT, $request->getUserAgent());
 
     curl_setopt($curl, CURLOPT_FOLLOWLOCATION, false);
     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
+    // 1 is CURL_SSLVERSION_TLSv1, which is not always defined in PHP.
+    curl_setopt($curl, CURLOPT_SSLVERSION, 1);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($curl, CURLOPT_HEADER, true);
 
@@ -76,15 +89,38 @@ class Google_IO_Curl extends Google_IO_Abstract
       curl_setopt($curl, CURLOPT_CAINFO, dirname(__FILE__) . '/cacerts.pem');
     }
 
+    $this->client->getLogger()->debug(
+        'cURL request',
+        array(
+            'url' => $request->getUrl(),
+            'method' => $request->getRequestMethod(),
+            'headers' => $requestHeaders,
+            'body' => $request->getPostBody()
+        )
+    );
+
     $response = curl_exec($curl);
     if ($response === false) {
-      throw new Google_IO_Exception(curl_error($curl));
+      $error = curl_error($curl);
+      $code = curl_errno($curl);
+      $map = $this->client->getClassConfig('Google_IO_Exception', 'retry_map');
+
+      $this->client->getLogger()->error('cURL ' . $error);
+      throw new Google_IO_Exception($error, $code, null, $map);
     }
     $headerSize = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
 
     list($responseHeaders, $responseBody) = $this->parseHttpResponse($response, $headerSize);
-
     $responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+    $this->client->getLogger()->debug(
+        'cURL response',
+        array(
+            'code' => $responseCode,
+            'headers' => $responseHeaders,
+            'body' => $responseBody,
+        )
+    );
 
     return array($responseBody, $responseHeaders, $responseCode);
   }
