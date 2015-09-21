@@ -137,19 +137,17 @@ class DBLockingProvider extends AbstractLockingProvider {
 	 */
 	public function releaseLock($path, $type) {
 		if ($type === self::LOCK_SHARED) {
-			$result = $this->connection->executeUpdate(
+			$this->connection->executeUpdate(
 				'UPDATE `*PREFIX*file_locks` SET `lock` = `lock` - 1 WHERE `key` = ? AND `lock` > 0',
 				[$path]
 			);
 		} else {
-			$result = $this->connection->executeUpdate(
+			$this->connection->executeUpdate(
 				'UPDATE `*PREFIX*file_locks` SET `lock` = 0 WHERE `key` = ? AND `lock` = -1',
 				[$path]
 			);
 		}
-		if ($result !== 1) {
-			throw new LockedException($path);
-		}
+
 		$this->markRelease($path, $type);
 	}
 
