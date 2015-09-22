@@ -114,6 +114,14 @@
 				<type>integer</type>
 			</field>
 
+			<field>
+				<name>config_id</name>
+				<type>text</type>
+				<default></default>
+				<notnull>false</notnull>
+				<length>64</length>
+			</field>
+
 			<index>
 				<name>storages_id_index</name>
 				<unique>true</unique>
@@ -123,9 +131,55 @@
 				</field>
 			</index>
 
+			<index>
+				<name>storages_config_id_index</name>
+				<unique>false</unique>
+				<field>
+					<name>config_id</name>
+					<sorting>ascending</sorting>
+				</field>
+			</index>
+
 		</declaration>
 
 	</table>
+
+	<table>
+
+		<!--
+		List of dirty paths that need rescanning
+		-->
+		<name>*dbprefix*storages_recheck</name>
+
+		<declaration>
+
+			<field>
+				<name>storage</name>
+				<type>text</type>
+				<notnull>true</notnull>
+				<length>64</length>
+			</field>
+
+			<field>
+				<name>path</name>
+				<type>text</type>
+				<notnull>true</notnull>
+				<length>4000</length>
+			</field>
+
+			<index>
+				<name>storages_recheck_storage_index</name>
+				<unique>false</unique>
+				<field>
+					<name>storage</name>
+					<sorting>ascending</sorting>
+				</field>
+			</index>
+		</declaration>
+
+	</table>
+
+
 
 	<table>
 

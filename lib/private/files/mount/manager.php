@@ -39,6 +39,10 @@ class Manager implements IMountManager {
 	 */
 	public function addMount(IMountPoint $mount) {
 		$this->mounts[$mount->getMountPoint()] = $mount;
+
+		// rescan unclean paths
+		// done here to avoid unless absolutely necessary
+		$mount->getStorage()->getScanner()->rescanUncleanPaths();
 	}
 
 	/**

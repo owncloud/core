@@ -62,6 +62,7 @@ class ChangePropagator extends BasicEmitter {
 	 */
 	public function propagateChanges($time = null) {
 		$parents = $this->getAllParents();
+		$changes = $this->getChanges();
 		$this->changedFiles = array();
 		if (!$time) {
 			$time = time();
@@ -78,6 +79,13 @@ class ChangePropagator extends BasicEmitter {
 				$entry = $cache->get($internalPath);
 				$cache->update($entry['fileid'], array('mtime' => max($time, $entry['mtime']), 'etag' => $storage->getETag($internalPath)));
 				$this->emit('\OC\Files', 'propagate', [$parent, $entry]);
+			}
+		}
+
+		foreach ($changes as $change) {
+			list($storage, $internalPath) = $this->view->resolvePath($change);
+			if ($storage) {
+				$storage->getScanner()->markRelatedStorageUnclean($internalPath);
 			}
 		}
 	}
