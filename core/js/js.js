@@ -1973,3 +1973,23 @@ jQuery.fn.tipsy = function(argument) {
 		jQuery.fn.tooltip.call(this, argument);
 	}
 }
+
+/**
+ * fallback for checkboxes
+ * checkboxes require a label as direct sibling since 8.2
+ */
+$( document ).ready(function() {
+	$('input:checkbox').each(function () {
+		var $checkbox = $(this);
+		if ($checkbox.next().is('label')) {
+			return; // label already exists
+		}
+		var checkboxId = $checkbox.attr('id');
+		if (checkboxId === undefined) {
+			checkboxId = _.uniqueId('checkbox-');
+			$checkbox.attr('id', checkboxId);
+		}
+		$checkbox.after($('<label></label>').attr('for', checkboxId));
+		console.warn('checkboxes require a label as direct sibling since 8.2');
+	});
+});
