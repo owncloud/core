@@ -1925,7 +1925,7 @@ class View extends \Test\TestCase {
 		$this->loginAsUser('test');
 
 		$subStorage = $this->getMockBuilder('\OC\Files\Storage\Temporary')
-			->setMethods([])
+			->setMethods(null)
 			->getMock();
 
 		$mount = $this->getMock(
