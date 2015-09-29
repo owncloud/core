@@ -27,6 +27,8 @@
 
 namespace OC;
 
+use \OCP\AutoloadNotAllowedException;
+
 class Autoloader {
 	private $useGlobalClassPath = true;
 
@@ -49,7 +51,9 @@ class Autoloader {
 	 * @param string[] $validRoots
 	 */
 	public function __construct(array $validRoots) {
-		$this->validRoots = $validRoots;
+		foreach ($validRoots as $root) {
+			$this->validRoots[$root] = true;
+		}
 	}
 
 	/**
@@ -58,7 +62,8 @@ class Autoloader {
 	 * @param string $root
 	 */
 	public function addValidRoot($root) {
-		$this->validRoots[] = $root;
+		$root = stream_resolve_include_path($root);
+		$this->validRoots[$root] = true;
 	}
 
 	/**
@@ -124,12 +129,12 @@ class Autoloader {
 	}
 
 	protected function isValidPath($fullPath) {
-		foreach ($this->validRoots as $root) {
+		foreach ($this->validRoots as $root => $true) {
 			if (substr($fullPath, 0, strlen($root) + 1) === $root . '/') {
 				return true;
 			}
 		}
-		throw new \Exception('Path not allowed: '. $fullPath);
+		throw new AutoloadNotAllowedException($fullPath);
 	}
 
 	/**

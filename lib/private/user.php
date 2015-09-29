@@ -146,6 +146,10 @@ class OC_User {
 					self::$_usedBackends[$backend] = new OC_User_Database();
 					self::getManager()->registerBackend(self::$_usedBackends[$backend]);
 					break;
+				case 'dummy':
+					self::$_usedBackends[$backend] = new \Test\Util\User\Dummy();
+					self::getManager()->registerBackend(self::$_usedBackends[$backend]);
+					break;
 				default:
 					\OCP\Util::writeLog('core', 'Adding default user backend ' . $backend . '.', \OCP\Util::DEBUG);
 					$className = 'OC_USER_' . strToUpper($backend);
@@ -277,11 +281,13 @@ class OC_User {
 		OC_Hook::emit("OC_User", "pre_login", array("run" => &$run, "uid" => $uid));
 
 		if ($uid) {
-			self::setUserId($uid);
-			self::setDisplayName($uid);
-			self::getUserSession()->setLoginName($uid);
+			if (self::getUser() !== $uid) {
+				self::setUserId($uid);
+				self::setDisplayName($uid);
+				self::getUserSession()->setLoginName($uid);
 
-			OC_Hook::emit("OC_User", "post_login", array("uid" => $uid, 'password' => ''));
+				OC_Hook::emit("OC_User", "post_login", array("uid" => $uid, 'password' => ''));
+			}
 			return true;
 		}
 		return false;

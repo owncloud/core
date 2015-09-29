@@ -22,9 +22,21 @@ class RepairMimeTypes extends \Test\TestCase {
 
 	protected function setUp() {
 		parent::setUp();
+
+		$this->savedMimetypeLoader = \OC::$server->getMimeTypeLoader();
+		$this->mimetypeLoader = \OC::$server->getMimeTypeLoader();
+
+		$config = $this->getMockBuilder('OCP\IConfig')
+			->disableOriginalConstructor()
+			->getMock();
+		$config->expects($this->any())
+			->method('getSystemValue')
+			->with('version')
+			->will($this->returnValue('8.0.0.0'));
+
 		$this->storage = new \OC\Files\Storage\Temporary([]);
 
-		$this->repair = new \OC\Repair\RepairMimeTypes();
+		$this->repair = new \OC\Repair\RepairMimeTypes($config);
 	}
 
 	protected function tearDown() {
@@ -33,14 +45,13 @@ class RepairMimeTypes extends \Test\TestCase {
 		\OC_DB::executeAudited($sql, [$this->storage->getId()]);
 		$this->clearMimeTypes();
 
-		DummyFileCache::clearCachedMimeTypes();
-
 		parent::tearDown();
 	}
 
 	private function clearMimeTypes() {
 		$sql = 'DELETE FROM `*PREFIX*mimetypes`';
 		\OC_DB::executeAudited($sql);
+		$this->mimetypeLoader->reset();
 	}
 
 	private function addEntries($entries) {
@@ -86,8 +97,7 @@ class RepairMimeTypes extends \Test\TestCase {
 		$this->repair->run();
 
 		// force mimetype reload
-		DummyFileCache::clearCachedMimeTypes();
-		$this->storage->getCache()->loadMimeTypes();
+		$this->mimetypeLoader->reset();
 
 		$this->checkEntries($fixedMimeTypes);
 	}
@@ -431,17 +441,6 @@ class RepairMimeTypes extends \Test\TestCase {
 		];
 
 		$this->renameMimeTypes($currentMimeTypes, $fixedMimeTypes);
-	}
-}
-
-/**
- * Dummy class to access protected members
- */
-class DummyFileCache extends \OC\Files\Cache\Cache {
-
-	public static function clearCachedMimeTypes() {
-		self::$mimetypeIds = [];
-		self::$mimetypes = [];
 	}
 }
 

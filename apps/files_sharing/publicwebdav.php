@@ -39,13 +39,15 @@ $serverFactory = new \OC\Connector\Sabre\ServerFactory(
 	\OC::$server->getDatabaseConnection(),
 	\OC::$server->getUserSession(),
 	\OC::$server->getMountManager(),
-	\OC::$server->getTagManager()
+	\OC::$server->getTagManager(),
+	\OC::$server->getEventDispatcher()
 );
 
 $requestUri = \OC::$server->getRequest()->getRequestUri();
 
 $server = $serverFactory->createServer($baseuri, $requestUri, $authBackend, function () use ($authBackend) {
-	if (OCA\Files_Sharing\Helper::isOutgoingServer2serverShareEnabled() === false) {
+	$isAjax = (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest');
+	if (OCA\Files_Sharing\Helper::isOutgoingServer2serverShareEnabled() === false && !$isAjax) {
 		// this is what is thrown when trying to access a non-existing share
 		throw new \Sabre\DAV\Exception\NotAuthenticated();
 	}

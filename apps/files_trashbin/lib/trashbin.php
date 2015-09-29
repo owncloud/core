@@ -689,7 +689,7 @@ class Trashbin {
 	 * @param string $user
 	 * @return array size of deleted files and number of deleted files
 	 */
-	protected static function deleteExpiredFiles($files, $user) {
+	public static function deleteExpiredFiles($files, $user) {
 		$application = new Application();
 		$expiration = $application->getContainer()->query('Expiration');
 		$size = 0;
@@ -700,6 +700,10 @@ class Trashbin {
 			if ($expiration->isExpired($timestamp)) {
 				$count++;
 				$size += self::delete($filename, $user, $timestamp);
+				\OC::$server->getLogger()->info(
+					'Remove "' . $filename . '" from trashbin because it exceeds max retention obligation term.',
+					['app' => 'files_trashbin']
+				);
 			} else {
 				break;
 			}
@@ -891,7 +895,7 @@ class Trashbin {
 		$view = new \OC\Files\View('/' . $user . '/files_trashbin');
 		if ($view->is_dir('/files') && $dh = $view->opendir('/files')) {
 			while ($file = readdir($dh)) {
-				if ($file !== '.' and $file !== '..') {
+				if (!\OC\Files\Filesystem::isIgnoredDir($file)) {
 					return false;
 				}
 			}

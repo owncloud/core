@@ -9,6 +9,9 @@
  */
 
 (function() {
+
+	var TEMPLATE_ADDBUTTON = '<a href="#" class="button new"><img src="{{iconUrl}}" alt="{{addText}}"></img></a>';
+
 	/**
 	 * @class OCA.Files.FileList
 	 * @classdesc
@@ -190,7 +193,19 @@
 			this.$container = options.scrollContainer || $(window);
 			this.$table = $el.find('table:first');
 			this.$fileList = $el.find('#fileList');
+
+			if (_.isUndefined(options.detailsViewEnabled) || options.detailsViewEnabled) {
+				this._detailsView = new OCA.Files.DetailsView();
+				this._detailsView.$el.insertBefore(this.$el);
+				this._detailsView.$el.addClass('disappear');
+			}
+
 			this._initFileActions(options.fileActions);
+
+			if (this._detailsView) {
+				this._detailsView.addDetailView(new OCA.Files.MainFileInfoDetailView({fileList: this, fileActions: this.fileActions}));
+			}
+
 			this.files = [];
 			this._selectedFiles = {};
 			this._selectionSummary = new OCA.Files.FileSummary();
@@ -211,14 +226,9 @@
 			}
 			this.breadcrumb = new OCA.Files.BreadCrumb(breadcrumbOptions);
 
-			if (_.isUndefined(options.detailsViewEnabled) || options.detailsViewEnabled) {
-				this._detailsView = new OCA.Files.DetailsView();
-				this._detailsView.addDetailView(new OCA.Files.MainFileInfoDetailView({fileList: this, fileActions: this.fileActions}));
-				this._detailsView.$el.insertBefore(this.$el);
-				this._detailsView.$el.addClass('disappear');
-			}
-
 			this.$el.find('#controls').prepend(this.breadcrumb.$el);
+
+			this._renderNewButton();
 
 			this.$el.find('thead th .columntitle').click(_.bind(this._onClickHeader, this));
 
@@ -262,6 +272,12 @@
 		 * Destroy / uninitialize this instance.
 		 */
 		destroy: function() {
+			if (this._newFileMenu) {
+				this._newFileMenu.remove();
+			}
+			if (this._newButton) {
+				this._newButton.remove();
+			}
 			// TODO: also unregister other event handlers
 			this.fileActions.off('registerAction', this._onFileActionsUpdated);
 			this.fileActions.off('setDefault', this._onFileActionsUpdated);
@@ -274,11 +290,28 @@
 		 * @param {OCA.Files.FileActions} fileActions file actions
 		 */
 		_initFileActions: function(fileActions) {
+			var self = this;
 			this.fileActions = fileActions;
 			if (!this.fileActions) {
 				this.fileActions = new OCA.Files.FileActions();
 				this.fileActions.registerDefaultActions();
 			}
+
+			if (this._detailsView) {
+				this.fileActions.registerAction({
+					name: 'Details',
+					displayName: t('files', 'Details'),
+					mime: 'all',
+					order: -50,
+					icon: OC.imagePath('core', 'actions/details'),
+					permissions: OC.PERMISSION_READ,
+					actionHandler: function(fileName, context) {
+						self._updateDetailsView(fileName);
+						OC.Apps.showAppSidebar(self._detailsView.$el);
+					}
+				});
+			}
+
 			this._onFileActionsUpdated = _.debounce(_.bind(this._onFileActionsUpdated, this), 100);
 			this.fileActions.on('registerAction', this._onFileActionsUpdated);
 			this.fileActions.on('setDefault', this._onFileActionsUpdated);
@@ -291,6 +324,7 @@
 		 * @return {OCA.Files.FileInfoModel} file info model
 		 */
 		getModelForFile: function(fileName) {
+			var self = this;
 			var $tr;
 			// jQuery object ?
 			if (fileName.is) {
@@ -315,10 +349,40 @@
 			// and contain existing models that can be used.
 			// This method would in the future simply retrieve the matching model from the collection.
 			var model = new OCA.Files.FileInfoModel(this.elementToFile($tr));
-			if (!model.has('path')) {
+			if (!model.get('path')) {
 				model.set('path', this.getCurrentDirectory(), {silent: true});
 			}
+
+			model.on('change', function(model) {
+				// re-render row
+				var highlightState = $tr.hasClass('highlighted');
+				$tr = self.updateRow(
+					$tr,
+					_.extend({isPreviewAvailable: true}, model.toJSON()),
+					{updateSummary: true, silent: false, animate: true}
+				);
+				$tr.toggleClass('highlighted', highlightState);
+			});
+			model.on('busy', function(model, state) {
+				self.showFileBusyState($tr, state);
+			});
+
 			return model;
+		},
+
+		/**
+		 * Displays the details view for the given file and
+		 * selects the given tab
+		 *
+		 * @param {string} fileName file name for which to show details
+		 * @param {string} [tabId] optional tab id to select
+		 */
+		showDetailsView: function(fileName, tabId) {
+			this._updateDetailsView(fileName);
+			if (tabId) {
+				this._detailsView.selectTab(tabId);
+			}
+			OC.Apps.showAppSidebar(this._detailsView.$el);
 		},
 
 		/**
@@ -339,8 +403,10 @@
 			}
 
 			if (!fileName) {
-				OC.Apps.hideAppSidebar(this._detailsView.$el);
 				this._detailsView.setFileInfo(null);
+				if (this._currentFileModel) {
+					this._currentFileModel.off();
+				}
 				this._currentFileModel = null;
 				return;
 			}
@@ -354,7 +420,6 @@
 
 			this._detailsView.setFileInfo(model);
 			this._detailsView.$el.scrollTop(0);
-			_.defer(OC.Apps.showAppSidebar, this._detailsView.$el);
 		},
 
 		/**
@@ -654,8 +719,23 @@
 			return true;
 		},
 		/**
-		 * Returns the tr element for a given file name
-		 * @param fileName file name
+		 * Returns the file info for the given file name from the internal collection.
+		 *
+		 * @param {string} fileName file name
+		 * @return {OCA.Files.FileInfo} file info or null if it was not found
+		 *
+		 * @since 8.2
+		 */
+		findFile: function(fileName) {
+			return _.find(this.files, function(aFile) {
+				return (aFile.name === fileName);
+			}) || null;
+		},
+		/**
+		 * Returns the tr element for a given file name, but only if it was already rendered.
+		 *
+		 * @param {string} fileName file name
+		 * @return {Object} jQuery object of the matching row
 		 */
 		findFileEl: function(fileName){
 			// use filterAttr to avoid escaping issues
@@ -861,7 +941,7 @@
 			if (this._allowSelection) {
 				td.append(
 					'<input id="select-' + this.id + '-' + fileData.id +
-					'" type="checkbox" class="selectCheckBox"/><label for="select-' + this.id + '-' + fileData.id + '">' +
+					'" type="checkbox" class="selectCheckBox checkbox"/><label for="select-' + this.id + '-' + fileData.id + '">' +
 					'<div class="thumbnail" style="background-image:url(' + icon + '); background-size: 32px;"></div>' +
 					'<span class="hidden-visually">' + t('files', 'Select') + '</span>' +
 					'</label>'
@@ -1223,6 +1303,10 @@
 		reload: function() {
 			this._selectedFiles = {};
 			this._selectionSummary.clear();
+			if (this._currentFileModel) {
+				this._currentFileModel.off();
+			}
+			this._currentFileModel = null;
 			this.$el.find('.select-all').prop('checked', false);
 			this.showMask();
 			if (this._reloadCall) {
@@ -1325,8 +1409,8 @@
 			}
 			urlSpec.x *= window.devicePixelRatio;
 			urlSpec.y *= window.devicePixelRatio;
-			urlSpec.x = Math.floor(urlSpec.x);
-			urlSpec.y = Math.floor(urlSpec.y);
+			urlSpec.x = Math.ceil(urlSpec.x);
+			urlSpec.y = Math.ceil(urlSpec.y);
 			urlSpec.forceIcon = 0;
 			return OC.generateUrl('/core/preview.png?') + $.param(urlSpec);
 		},
@@ -1359,6 +1443,12 @@
 			if (options.y) {
 				urlSpec.y = options.y;
 			}
+			if (options.a) {
+				urlSpec.a = options.a;
+			}
+			if (options.mode) {
+				urlSpec.mode = options.mode;
+			}
 
 			if (etag){
 				// use etag as cache buster
@@ -1377,9 +1467,14 @@
 			img.onload = function(){
 				// if loading the preview image failed (no preview for the mimetype) then img.width will < 5
 				if (img.width > 5) {
-					ready(previewURL);
+					ready(previewURL, img);
+				} else if (options.error) {
+					options.error();
 				}
 			};
+			if (options.error) {
+				img.onerror = options.error;
+			}
 			img.src = previewURL;
 		},
 
@@ -1544,6 +1639,23 @@
 		},
 
 		/**
+		 * Updates the given row with the given file info
+		 *
+		 * @param {Object} $tr row element
+		 * @param {OCA.Files.FileInfo} fileInfo file info
+		 * @param {Object} options options
+		 *
+		 * @return {Object} new row element
+		 */
+		updateRow: function($tr, fileInfo, options) {
+			this.files.splice($tr.index(), 1);
+			$tr.remove();
+			$tr = this.add(fileInfo, _.extend({updateSummary: false, silent: true}, options));
+			this.$fileList.trigger($.Event('fileActionsReady', {fileList: this, $files: $tr}));
+			return $tr;
+		},
+
+		/**
 		 * Triggers file rename input field for the given file name.
 		 * If the user enters a new name, the file will be renamed.
 		 *
@@ -1679,8 +1791,108 @@
 				form.trigger('submit');
 			});
 		},
+
+		/**
+		 * Create an empty file inside the current directory.
+		 *
+		 * @param {string} name name of the file
+		 *
+		 * @return {Promise} promise that will be resolved after the
+		 * file was created
+		 *
+		 * @since 8.2
+		 */
+		createFile: function(name) {
+			var self = this;
+			var deferred = $.Deferred();
+			var promise = deferred.promise();
+
+			OCA.Files.Files.isFileNameValid(name);
+			name = this.getUniqueName(name);
+
+			if (this.lastAction) {
+				this.lastAction();
+			}
+
+			$.post(
+				OC.generateUrl('/apps/files/ajax/newfile.php'),
+				{
+					dir: this.getCurrentDirectory(),
+					filename: name
+				},
+				function(result) {
+					if (result.status === 'success') {
+						self.add(result.data, {animate: true, scrollTo: true});
+						deferred.resolve(result.status, result.data);
+					} else {
+						if (result.data && result.data.message) {
+							OC.Notification.showTemporary(result.data.message);
+						} else {
+							OC.Notification.showTemporary(t('core', 'Could not create file'));
+						}
+						deferred.reject(result.status, result.data);
+					}
+				}
+			);
+
+			return promise;
+		},
+
+		/**
+		 * Create a directory inside the current directory.
+		 *
+		 * @param {string} name name of the directory
+		 *
+		 * @return {Promise} promise that will be resolved after the
+		 * directory was created
+		 *
+		 * @since 8.2
+		 */
+		createDirectory: function(name) {
+			var self = this;
+			var deferred = $.Deferred();
+			var promise = deferred.promise();
+
+			OCA.Files.Files.isFileNameValid(name);
+			name = this.getUniqueName(name);
+
+			if (this.lastAction) {
+				this.lastAction();
+			}
+
+			$.post(
+				OC.generateUrl('/apps/files/ajax/newfolder.php'),
+				{
+					dir: this.getCurrentDirectory(),
+					foldername: name
+				},
+				function(result) {
+					if (result.status === 'success') {
+						self.add(result.data, {animate: true, scrollTo: true});
+						deferred.resolve(result.status, result.data);
+					} else {
+						if (result.data && result.data.message) {
+							OC.Notification.showTemporary(result.data.message);
+						} else {
+							OC.Notification.showTemporary(t('core', 'Could not create folder'));
+						}
+						deferred.reject(result.status);
+					}
+				}
+			);
+
+			return promise;
+		},
+
+		/**
+		 * Returns whether the given file name exists in the list
+		 *
+		 * @param {string} file file name
+		 *
+		 * @return {bool} true if the file exists in the list, false otherwise
+		 */
 		inList:function(file) {
-			return this.findFileEl(file).length;
+			return this.findFile(file);
 		},
 
 		/**
@@ -2338,6 +2550,48 @@
 
 				}
 			});
+		},
+
+		_renderNewButton: function() {
+			// if an upload button (legacy) already exists or no actions container exist, skip
+			var $actionsContainer = this.$el.find('#controls .actions');
+			if (!$actionsContainer.length || this.$el.find('.button.upload').length) {
+				return;
+			}
+			if (!this._addButtonTemplate) {
+				this._addButtonTemplate = Handlebars.compile(TEMPLATE_ADDBUTTON);
+			}
+			var $newButton = $(this._addButtonTemplate({
+				addText: t('files', 'New'),
+				iconUrl: OC.imagePath('core', 'actions/add')
+			}));
+
+			$actionsContainer.prepend($newButton);
+			$newButton.tooltip({'placement': 'bottom'});
+
+			$newButton.click(_.bind(this._onClickNewButton, this));
+			this._newButton = $newButton;
+		},
+
+		_onClickNewButton: function(event) {
+			var $target = $(event.target);
+			if (!$target.hasClass('.button')) {
+				$target = $target.closest('.button');
+			}
+			this._newButton.tooltip('hide');
+			event.preventDefault();
+			if ($target.hasClass('disabled')) {
+				return false;
+			}
+			if (!this._newFileMenu) {
+				this._newFileMenu = new OCA.Files.NewFileMenu({
+					fileList: this
+				});
+				$('body').append(this._newFileMenu.$el);
+			}
+			this._newFileMenu.showAt($target);
+
+			return false;
 		},
 
 		/**

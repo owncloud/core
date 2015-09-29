@@ -37,6 +37,7 @@
 
 namespace OC\Share;
 
+use OC\Files\Filesystem;
 use OCP\IUserSession;
 use OCP\IDBConnection;
 use OCP\IConfig;
@@ -82,6 +83,13 @@ class Share extends Constants {
 					'supportedFileExtensions' => $supportedFileExtensions
 				);
 				if(count(self::$backendTypes) === 1) {
+					\OC_Util::addScript('core', 'shareconfigmodel');
+					\OC_Util::addScript('core', 'shareitemmodel');
+					\OC_Util::addScript('core', 'sharedialogresharerinfoview');
+					\OC_Util::addScript('core', 'sharedialoglinkshareview');
+					\OC_Util::addScript('core', 'sharedialogexpirationview');
+					\OC_Util::addScript('core', 'sharedialogshareelistview');
+					\OC_Util::addScript('core', 'sharedialogview');
 					\OC_Util::addScript('core', 'share');
 					\OC_Util::addStyle('core', 'share');
 				}
@@ -120,6 +128,7 @@ class Share extends Constants {
 	 */
 	public static function getUsersSharingFile($path, $ownerUser, $includeOwner = false, $returnUserPaths = false) {
 
+		Filesystem::initMountPoints($ownerUser);
 		$shares = $sharePaths = $fileTargets = array();
 		$publicShare = false;
 		$remoteShare = false;
@@ -701,6 +710,18 @@ class Share extends Constants {
 					throw new \Exception($message_t);
 				}
 			}
+			if ($checkExists = self::getItems($itemType, $itemSource, self::SHARE_TYPE_USER,
+				$shareWith, null, self::FORMAT_NONE, null, 1, true, true)) {
+				// Only allow the same share to occur again if it is the same
+				// owner and is not a user share, this use case is for increasing
+				// permissions for a specific user
+				if ($checkExists['uid_owner'] != $uidOwner || $checkExists['share_type'] == $shareType) {
+					$message = 'Sharing %s failed, because this item is already shared with user %s';
+					$message_t = $l->t('Sharing %s failed, because this item is already shared with user %s', array($itemSourceName, $shareWith));
+					\OC_Log::write('OCP\Share', sprintf($message, $itemSourceName, $shareWith), \OC_Log::ERROR);
+					throw new \Exception($message_t);
+				}
+			}
 		} else if ($shareType === self::SHARE_TYPE_GROUP) {
 			if (!\OC_Group::groupExists($shareWith)) {
 				$message = 'Sharing %s failed, because the group %s does not exist';
@@ -751,7 +772,7 @@ class Share extends Constants {
 				}
 
 				// Generate hash of password - same method as user passwords
-				if (!empty($shareWith)) {
+				if (is_string($shareWith) && $shareWith !== '') {
 					self::verifyPassword($shareWith);
 					$shareWith = \OC::$server->getHasher()->hash($shareWith);
 				} else {
@@ -1977,7 +1998,6 @@ class Share extends Constants {
 			$suggestedItemTarget = $result['suggestedItemTarget'];
 			$suggestedFileTarget = $result['suggestedFileTarget'];
 			$filePath = $result['filePath'];
-			$expirationDate = $result['expirationDate'];
 		}
 
 		$isGroupShare = false;
@@ -2419,6 +2439,11 @@ class Share extends Constants {
 		}
 		if (isset($row['stime'])) {
 			$row['stime'] = (int) $row['stime'];
+		}
+		if (isset($row['expiration']) && $row['share_type'] !== self::SHARE_TYPE_LINK) {
+			// discard expiration date for non-link shares, which might have been
+			// set by ancient bugs
+			$row['expiration'] = null;
 		}
 	}
 

@@ -35,7 +35,7 @@
 	var DetailsView = OC.Backbone.View.extend({
 		id: 'app-sidebar',
 		tabName: 'div',
-		className: 'detailsView',
+		className: 'detailsView scroll-container',
 
 		_template: null,
 
@@ -84,7 +84,7 @@
 		},
 
 		_onClose: function(event) {
-			OC.Apps.hideAppSidebar();
+			OC.Apps.hideAppSidebar(this.$el);
 			event.preventDefault();
 		},
 
@@ -132,16 +132,22 @@
 				closeLabel: t('files', 'Close')
 			};
 
-			if (this._tabViews.length > 1) {
-				// only render headers if there is more than one available
-				templateVars.tabHeaders = _.map(this._tabViews, function(tabView, i) {
-					return {
-						tabId: tabView.id,
-						tabIndex: i,
-						label: tabView.getLabel()
-					};
-				});
-			}
+			this._tabViews = this._tabViews.sort(function(tabA, tabB) {
+				var orderA = tabA.order || 0;
+				var orderB = tabB.order || 0;
+				if (orderA === orderB) {
+					return OC.Util.naturalSortCompare(tabA.getLabel(), tabB.getLabel());
+				}
+				return orderA - orderB;
+			});
+
+			templateVars.tabHeaders = _.map(this._tabViews, function(tabView, i) {
+				return {
+					tabId: tabView.id,
+					tabIndex: i,
+					label: tabView.getLabel()
+				};
+			});
 
 			this.$el.html(this.template(templateVars));
 
@@ -157,6 +163,8 @@
 			}
 
 			this.selectTab(this._currentTabId);
+
+			this._updateTabVisibilities();
 
 			this._dirty = false;
 		},
@@ -216,6 +224,8 @@
 
 			if (this._dirty) {
 				this.render();
+			} else {
+				this._updateTabVisibilities();
 			}
 
 			if (this._currentTabId) {
@@ -230,6 +240,37 @@
 			_.each(this._detailFileInfoViews, function(detailView) {
 				detailView.setFileInfo(fileInfo);
 			});
+		},
+
+		/**
+		 * Update tab headers based on the current model
+		 */
+		_updateTabVisibilities: function() {
+			// update tab header visibilities
+			var self = this;
+			var deselect = false;
+			var countVisible = 0;
+			var $tabHeaders = this.$el.find('.tabHeaders li');
+			_.each(this._tabViews, function(tabView) {
+				var isVisible = tabView.canDisplay(self.model);
+				if (isVisible) {
+					countVisible += 1;
+				}
+				if (!isVisible && self._currentTabId === tabView.id) {
+					deselect = true;
+				}
+				$tabHeaders.filterAttr('data-tabid', tabView.id).toggleClass('hidden', !isVisible);
+			});
+
+			// hide the whole container if there is only one tab
+			this.$el.find('.tabHeaders').toggleClass('hidden', countVisible <= 1);
+
+			if (deselect) {
+				// select the first visible tab instead
+				var visibleTabId = this.$el.find('.tabHeader:not(.hidden):first').attr('data-tabid');
+				this.selectTab(visibleTabId);
+			}
+
 		},
 
 		/**

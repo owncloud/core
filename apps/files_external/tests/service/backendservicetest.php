@@ -126,27 +126,5 @@ class BackendServiceTest extends \Test\TestCase {
 		$this->assertArrayNotHasKey('identifier:\Backend\NotAvailable', $availableBackends);
 	}
 
-	public function testGetUserBackends() {
-		$service = new BackendService($this->config, $this->l10n);
-
-		$backendAllowed = $this->getBackendMock('\User\Mount\Allowed');
-		$backendAllowed->expects($this->once())
-			->method('isVisibleFor')
-			->with(BackendService::VISIBILITY_PERSONAL)
-			->will($this->returnValue(true));
-		$backendNotAllowed = $this->getBackendMock('\User\Mount\NotAllowed');
-		$backendNotAllowed->expects($this->once())
-			->method('isVisibleFor')
-			->with(BackendService::VISIBILITY_PERSONAL)
-			->will($this->returnValue(false));
-
-		$service->registerBackend($backendAllowed);
-		$service->registerBackend($backendNotAllowed);
-
-		$userBackends = $service->getBackendsVisibleFor(BackendService::VISIBILITY_PERSONAL);
-		$this->assertArrayHasKey('identifier:\User\Mount\Allowed', $userBackends);
-		$this->assertArrayNotHasKey('identifier:\User\Mount\NotAllowed', $userBackends);
-	}
-
 }
 

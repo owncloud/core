@@ -6,6 +6,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Roeland Jago Douma <roeland@famdouma.nl>
  * @author Thomas Tanghus <thomas@tanghus.net>
+ * @author Robin McCorkell <rmccorkell@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -48,15 +49,22 @@ class Detection implements IMimeTypeDetector {
 	private $urlGenerator;
 
 	/** @var string */
-	private $configDir;
+	private $customConfigDir;
+
+	/** @var string */
+	private $defaultConfigDir;
 
 	/**
 	 * @param IURLGenerator $urlGenerator
-	 * @param string $configDir
+	 * @param string $customConfigDir
+	 * @param string $defaultConfigDir
 	 */
-	public function __construct(IURLGenerator $urlGenerator, $configDir) {
+	public function __construct(IURLGenerator $urlGenerator,
+								$customConfigDir,
+								$defaultConfigDir) {
 		$this->urlGenerator = $urlGenerator;
-		$this->configDir = $configDir;
+		$this->customConfigDir = $customConfigDir;
+		$this->defaultConfigDir = $defaultConfigDir;
 	}
 
 	/**
@@ -70,7 +78,9 @@ class Detection implements IMimeTypeDetector {
 	 * @param string $mimetype
 	 * @param string|null $secureMimeType
 	 */
-	public function registerType($extension, $mimetype, $secureMimeType = null) {
+	public function registerType($extension,
+								 $mimetype,
+								 $secureMimeType = null) {
 		$this->mimetypes[$extension] = array($mimetype, $secureMimeType);
 		$this->secureMimeTypes[$mimetype] = $secureMimeType ?: $mimetype;
 	}
@@ -101,13 +111,20 @@ class Detection implements IMimeTypeDetector {
 			return;
 		}
 
-		$file = file_get_contents($this->configDir . '/mimetypealiases.dist.json');
-		$this->mimeTypeAlias = get_object_vars(json_decode($file));
+		$this->mimeTypeAlias = json_decode(file_get_contents($this->defaultConfigDir . '/mimetypealiases.dist.json'), true);
 
-		if (file_exists($this->configDir . '/mimetypealiases.json')) {
-			$custom = get_object_vars(json_decode(file_get_contents($this->configDir . '/mimetypealiases.json')));
+		if (file_exists($this->customConfigDir . '/mimetypealiases.json')) {
+			$custom = json_decode(file_get_contents($this->customConfigDir . '/mimetypealiases.json'), true);
 			$this->mimeTypeAlias = array_merge($this->mimeTypeAlias, $custom);
 		}
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getAllAliases() {
+		$this->loadAliases();
+		return $this->mimeTypeAlias;
 	}
 
 	/**
@@ -118,17 +135,23 @@ class Detection implements IMimeTypeDetector {
 			return;
 		}
 
-		$dist = file_get_contents($this->configDir . '/mimetypemapping.dist.json');
-		$mimetypemapping = get_object_vars(json_decode($dist));
+		$mimetypeMapping = json_decode(file_get_contents($this->defaultConfigDir . '/mimetypemapping.dist.json'), true);
 
 		//Check if need to load custom mappings
-		if (file_exists($this->configDir . '/mimetypemapping.json')) {
-			$custom = file_get_contents($this->configDir . '/mimetypemapping.json');
-			$custom_mapping = get_object_vars(json_decode($custom));
-			$mimetypemapping = array_merge($mimetypemapping, $custom_mapping);
+		if (file_exists($this->customConfigDir . '/mimetypemapping.json')) {
+			$custom = json_decode(file_get_contents($this->customConfigDir . '/mimetypemapping.json'), true);
+			$mimetypeMapping = array_merge($mimetypeMapping, $custom);
 		}
 
-		$this->registerTypeArray($mimetypemapping);
+		$this->registerTypeArray($mimetypeMapping);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getAllMappings() {
+		$this->loadMappings();
+		return $this->mimetypes;
 	}
 
 	/**

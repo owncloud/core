@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # ownCloud
 #
@@ -171,7 +171,7 @@ function execute_tests {
 		else
 			if [ "MariaDB" != "$(mysql --version | grep -o MariaDB)" ] ; then
 				echo "Your mysql binary is not provided by MariaDB"
-				echo "To use the docker container set the USEDOCKER enviroment variable"
+				echo "To use the docker container set the USEDOCKER environment variable"
 				exit -1
 			fi
 			mysql -u "$DATABASEUSER" -powncloud -e "DROP DATABASE IF EXISTS $DATABASENAME" -h $DATABASEHOST || true
@@ -203,8 +203,14 @@ function execute_tests {
 
 		echo "Waiting for Oracle initialization ... "
 
-		# grep exits on the first match and then the script continues - times out after 2 minutes
-		timeout 120 docker logs -f "$DOCKER_CONTAINER_ID" 2>&1 | grep -q "Grant succeeded."
+		# Try to connect to the OCI host via sqlplus to ensure that the connection is already running
+      		for i in {1..48}
+                do
+                        if sqlplus "system/oracle@(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(Host=$DATABASEHOST)(Port=1521))(CONNECT_DATA=(SID=XE)))" < /dev/null | grep 'Connected to'; then
+                                break;
+                        fi
+                        sleep 5
+                done
 
 		DATABASEUSER=autotest
 		DATABASENAME='XE'

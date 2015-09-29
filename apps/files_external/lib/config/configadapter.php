@@ -114,7 +114,7 @@ class ConfigAdapter implements IMountProvider {
 		$this->userStoragesService->setUser($user);
 		$this->userGlobalStoragesService->setUser($user);
 
-		foreach ($this->userGlobalStoragesService->getAllStorages() as $storage) {
+		foreach ($this->userGlobalStoragesService->getUniqueStorages() as $storage) {
 			try {
 				$this->prepareStorageConfig($storage, $user);
 				$impl = $this->constructStorage($storage);
@@ -133,7 +133,7 @@ class ConfigAdapter implements IMountProvider {
 			$mounts[$storage->getMountPoint()] = $mount;
 		}
 
-		foreach ($this->userStoragesService->getAllStorages() as $storage) {
+		foreach ($this->userStoragesService->getStorages() as $storage) {
 			try {
 				$this->prepareStorageConfig($storage, $user);
 				$impl = $this->constructStorage($storage);

@@ -80,6 +80,16 @@ $CONFIG = array(
 'datadirectory' => '/var/www/owncloud/data',
 
 /**
+ * Override where ownCloud stores temporary files. Useful in situations where
+ * the system temporary directory is on a limited space ramdisk or is otherwise
+ * restricted, or if external storages which do not support streaming are in
+ * use.
+ *
+ * The web server user must have write access to this directory.
+ */
+'tempdirectory' => '/tmp/owncloudtemp',
+
+/**
  * The current version number of your ownCloud installation. This is set up
  * during installation and update, so you shouldn't need to change it.
  */
@@ -425,6 +435,33 @@ $CONFIG = array(
 
 
 /**
+ * If the versions app is enabled (default), this setting defines the policy
+ * for when versions will be permanently deleted.
+ * The app allows for two settings, a minimum time for version retention,
+ * and a maximum time for version retention.
+ * Minimum time is the number of days a version will be kept, after which it
+ * may be deleted. Maximum time is the number of days at which it is guaranteed
+ * to be deleted.
+ * Both minimum and maximum times can be set together to explicitly define
+ * version deletion. For migration purposes, this setting is installed
+ * initially set to "auto", which is equivalent to the default setting in
+ * ownCloud 8.1 and before.
+ *
+ * Available values:
+ *   ``auto``      default setting. Automatically expire versions according to
+ *                 expire rules. Please refer to Files_versions online documentation 
+ *                 for more info.
+ *   ``D, auto``   keep versions at least for D days, apply expire rules to all
+ *                 versions that are older than D days
+ * * ``auto, D``   delete all versions that are older than D days automatically,
+ *                 delete other versions according to expire rules
+ * * ``D1, D2``    keep versions for at least D1 days and delete when exceeds D2 days
+ *   ``disabled``  versions auto clean disabled, versions will be kept forever
+ */
+'versions_retention_obligation' => 'auto',
+
+
+/**
  * ownCloud Verifications
  *
  * ownCloud performs several verification checks. There are two options,
@@ -495,7 +532,7 @@ $CONFIG = array(
 
 /**
  * Loglevel to start logging at. Valid values are: 0 = Debug, 1 = Info, 2 =
- * Warning, 3 = Error. The default value is Warning.
+ * Warning, 3 = Error, and 4 = Fatal. The default value is Warning.
  */
 'loglevel' => 2,
 
@@ -572,7 +609,9 @@ $CONFIG = array(
 /**
  * ownCloud uses some 3rd party PHP components to provide certain functionality.
  * These components are shipped as part of the software package and reside in
- * ``owncloud/3rdparty``. Use this option to configure a different location.
+ * ``owncloud/3rdparty``. Use this option to configure a different location. 
+ * For example, if your location is /var/www/owncloud/foo/3rdparty, then the 
+ * correct configuration is '3rdpartyroot' => '/var/www/owncloud/foo/',
  */
 '3rdpartyroot' => '',
 
@@ -767,6 +806,21 @@ $CONFIG = array(
  */
 'ldapUserCleanupInterval' => 51,
 
+/**
+ * Enforce the existence of the home folder naming rule for all users
+ *
+ * Following scenario:
+ *  * a home folder naming rule is set in LDAP advanced settings
+ *  * a user doesn't have the home folder naming rule attribute set
+ *
+ * If this is set to **true** (default) it will NOT fallback to the core's
+ * default naming rule of using the internal user ID as home folder name.
+ *
+ * If this is set to **false** it will fallback for the users without the
+ * attribute set to naming the home folder like the internal user ID.
+ *
+ */
+'enforce_home_folder_naming_rule' => true,
 
 /**
  * Maintenance
@@ -1053,17 +1107,15 @@ $CONFIG = array(
 
 /**
  * Enables transactional file locking.
- * This is disabled by default as it is still beta.
+ * This is enabled by default.
  *
  * Prevents concurrent processes from accessing the same files
  * at the same time. Can help prevent side effects that would
  * be caused by concurrent operations. Mainly relevant for
  * very large installations with many users working with
  * shared files.
- *
- * WARNING: BETA quality
  */
-'filelocking.enabled' => false,
+'filelocking.enabled' => true,
 
 /**
  * Memory caching backend for file locking

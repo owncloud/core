@@ -31,6 +31,7 @@
 namespace OCP;
 
 use Closure;
+use OCP\AppFramework\QueryException;
 
 
 /**
@@ -42,6 +43,16 @@ use Closure;
  * @since 6.0.0
  */
 interface IContainer {
+
+	/**
+	 * If a parameter is not registered in the container try to instantiate it
+	 * by using reflection to find out how to build the class
+	 * @param string $name the class name to resolve
+	 * @return \stdClass
+	 * @since 8.2.0
+	 * @throws QueryException if the class could not be found or instantiated
+	 */
+	public function resolve($name);
 
 	/**
 	 * Look up a service for a given name in the container.

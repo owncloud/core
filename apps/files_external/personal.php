@@ -34,8 +34,12 @@ $userStoragesService = $appContainer->query('OCA\Files_external\Service\UserStor
 OCP\Util::addScript('files_external', 'settings');
 OCP\Util::addStyle('files_external', 'settings');
 
-$backends = $backendService->getBackendsVisibleFor(BackendService::VISIBILITY_PERSONAL);
-$authMechanisms = $backendService->getAuthMechanismsVisibleFor(BackendService::VISIBILITY_PERSONAL);
+$backends = array_filter($backendService->getAvailableBackends(), function($backend) {
+	return $backend->isVisibleFor(BackendService::VISIBILITY_PERSONAL);
+});
+$authMechanisms = array_filter($backendService->getAuthMechanisms(), function($authMechanism) {
+	return $authMechanism->isVisibleFor(BackendService::VISIBILITY_PERSONAL);
+});
 foreach ($backends as $backend) {
 	if ($backend->getCustomJs()) {
 		\OCP\Util::addScript('files_external', $backend->getCustomJs());
@@ -50,7 +54,7 @@ foreach ($authMechanisms as $authMechanism) {
 $tmpl = new OCP\Template('files_external', 'settings');
 $tmpl->assign('encryptionEnabled', \OC::$server->getEncryptionManager()->isEnabled());
 $tmpl->assign('isAdminPage', false);
-$tmpl->assign('storages', $userStoragesService->getAllStorages());
+$tmpl->assign('storages', $userStoragesService->getStorages());
 $tmpl->assign('dependencies', OC_Mount_Config::dependencyMessage($backendService->getBackends()));
 $tmpl->assign('backends', $backends);
 $tmpl->assign('authMechanisms', $authMechanisms);

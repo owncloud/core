@@ -30,6 +30,7 @@ namespace OCA\Encryption\Crypto;
 
 use OC\Encryption\Exceptions\DecryptionFailedException;
 use OCA\Encryption\Exceptions\PublicKeyMissingException;
+use OCA\Encryption\Session;
 use OCA\Encryption\Util;
 use OCP\Encryption\IEncryptionModule;
 use OCA\Encryption\KeyManager;
@@ -75,6 +76,9 @@ class Encryption implements IEncryptionModule {
 	/** @var Util */
 	private $util;
 
+	/** @var  Session */
+	private $session;
+
 	/** @var  ILogger */
 	private $logger;
 
@@ -84,27 +88,40 @@ class Encryption implements IEncryptionModule {
 	/** @var EncryptAll */
 	private $encryptAll;
 
+	/** @var  bool */
+	private $useMasterPassword;
+
+	/** @var DecryptAll  */
+	private $decryptAll;
+
 	/**
 	 *
 	 * @param Crypt $crypt
 	 * @param KeyManager $keyManager
 	 * @param Util $util
+	 * @param Session $session
 	 * @param EncryptAll $encryptAll
+	 * @param DecryptAll $decryptAll
 	 * @param ILogger $logger
 	 * @param IL10N $il10n
 	 */
 	public function __construct(Crypt $crypt,
 								KeyManager $keyManager,
 								Util $util,
+								Session $session,
 								EncryptAll $encryptAll,
+								DecryptAll $decryptAll,
 								ILogger $logger,
 								IL10N $il10n) {
 		$this->crypt = $crypt;
 		$this->keyManager = $keyManager;
 		$this->util = $util;
+		$this->session = $session;
 		$this->encryptAll = $encryptAll;
+		$this->decryptAll = $decryptAll;
 		$this->logger = $logger;
 		$this->l = $il10n;
+		$this->useMasterPassword = $util->isMasterKeyEnabled();
 	}
 
 	/**
@@ -146,7 +163,15 @@ class Encryption implements IEncryptionModule {
 		$this->isWriteOperation = false;
 		$this->writeCache = '';
 
-		$this->fileKey = $this->keyManager->getFileKey($this->path, $this->user);
+		if ($this->session->decryptAllModeActivated()) {
+			$encryptedFileKey = $this->keyManager->getEncryptedFileKey($this->path);
+			$shareKey = $this->keyManager->getShareKey($this->path, $this->session->getDecryptAllUid());
+			$this->fileKey = $this->crypt->multiKeyDecrypt($encryptedFileKey,
+				$shareKey,
+				$this->session->getDecryptAllKey());
+		} else {
+			$this->fileKey = $this->keyManager->getFileKey($this->path, $this->user);
+		}
 
 		if (
 			$mode === 'w'
@@ -193,23 +218,26 @@ class Encryption implements IEncryptionModule {
 				$this->writeCache = '';
 			}
 			$publicKeys = array();
-			foreach ($this->accessList['users'] as $uid) {
-				try {
-					$publicKeys[$uid] = $this->keyManager->getPublicKey($uid);
-				} catch (PublicKeyMissingException $e) {
-					$this->logger->warning(
-						'no public key found for user "{uid}", user will not be able to read the file',
-						['app' => 'encryption', 'uid' => $uid]
-					);
-					// if the public key of the owner is missing we should fail
-					if ($uid === $this->user) {
-						throw $e;
+			if ($this->useMasterPassword === true) {
+				$publicKeys[$this->keyManager->getMasterKeyId()] = $this->keyManager->getPublicMasterKey();
+			} else {
+				foreach ($this->accessList['users'] as $uid) {
+					try {
+						$publicKeys[$uid] = $this->keyManager->getPublicKey($uid);
+					} catch (PublicKeyMissingException $e) {
+						$this->logger->warning(
+							'no public key found for user "{uid}", user will not be able to read the file',
+							['app' => 'encryption', 'uid' => $uid]
+						);
+						// if the public key of the owner is missing we should fail
+						if ($uid === $this->user) {
+							throw $e;
+						}
 					}
 				}
 			}
 
 			$publicKeys = $this->keyManager->addSystemKeys($this->accessList, $publicKeys, $this->user);
-
 			$encryptedKeyfiles = $this->crypt->multiKeyEncrypt($this->fileKey, $publicKeys);
 			$this->keyManager->setAllFileKeys($this->path, $encryptedKeyfiles);
 		}
@@ -318,8 +346,12 @@ class Encryption implements IEncryptionModule {
 		if (!empty($fileKey)) {
 
 			$publicKeys = array();
-			foreach ($accessList['users'] as $user) {
-				$publicKeys[$user] = $this->keyManager->getPublicKey($user);
+			if ($this->useMasterPassword === true) {
+				$publicKeys[$this->keyManager->getMasterKeyId()] = $this->keyManager->getPublicMasterKey();
+			} else {
+				foreach ($accessList['users'] as $user) {
+					$publicKeys[$user] = $this->keyManager->getPublicKey($user);
+				}
 			}
 
 			$publicKeys = $this->keyManager->addSystemKeys($accessList, $publicKeys, $uid);
@@ -410,11 +442,23 @@ class Encryption implements IEncryptionModule {
 	 *
 	 * @param InputInterface $input
 	 * @param OutputInterface $output write some status information to the terminal during encryption
-	 * @return bool
 	 */
 	public function encryptAll(InputInterface $input, OutputInterface $output) {
-		return $this->encryptAll->encryptAll($input, $output);
+		$this->encryptAll->encryptAll($input, $output);
 	}
+
+	/**
+	 * prepare module to perform decrypt all operation
+	 *
+	 * @param InputInterface $input
+	 * @param OutputInterface $output
+	 * @param string $user
+	 * @return bool
+	 */
+	public function prepareDecryptAll(InputInterface $input, OutputInterface $output, $user = '') {
+		return $this->decryptAll->prepare($input, $output, $user);
+	}
+
 
 	/**
 	 * @param string $path

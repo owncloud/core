@@ -212,19 +212,26 @@ class Updater extends BasicEmitter {
 	}
 
 	/**
+	 * Return version from which this version is allowed to upgrade from
+	 *
+	 * @return string allowed previous version
+	 */
+	private function getAllowedPreviousVersion() {
+		// this should really be a JSON file
+		require \OC::$SERVERROOT . '/version.php';
+		return implode('.', $OC_VersionCanBeUpgradedFrom);
+	}
+
+	/**
 	 * Whether an upgrade to a specified version is possible
 	 * @param string $oldVersion
 	 * @param string $newVersion
+	 * @param string $allowedPreviousVersion
 	 * @return bool
 	 */
-	public function isUpgradePossible($oldVersion, $newVersion) {
-		$oldVersion = explode('.', $oldVersion);
-		$newVersion = explode('.', $newVersion);
-
-		if($newVersion[0] > ($oldVersion[0] + 1) || $oldVersion[0] > $newVersion[0]) {
-			return false;
-		}
-		return true;
+	public function isUpgradePossible($oldVersion, $newVersion, $allowedPreviousVersion) {
+		return (version_compare($allowedPreviousVersion, $oldVersion, '<=')
+			&& version_compare($oldVersion, $newVersion, '<='));
 	}
 
 	/**
@@ -259,8 +266,9 @@ class Updater extends BasicEmitter {
 	 */
 	private function doUpgrade($currentVersion, $installedVersion) {
 		// Stop update if the update is over several major versions
-		if (!self::isUpgradePossible($installedVersion, $currentVersion)) {
-			throw new \Exception('Updates between multiple major versions are unsupported.');
+		$allowedPreviousVersion = $this->getAllowedPreviousVersion();
+		if (!self::isUpgradePossible($installedVersion, $currentVersion, $allowedPreviousVersion)) {
+			throw new \Exception('Updates between multiple major versions and downgrades are unsupported.');
 		}
 
 		// Update .htaccess files
@@ -269,13 +277,6 @@ class Updater extends BasicEmitter {
 			Setup::protectDataDirectory();
 		} catch (\Exception $e) {
 			throw new \Exception($e->getMessage());
-		}
-
-		// FIXME: Some users do not upload the new ca-bundle.crt, let's catch this
-		// in the update. For a newer release we shall use an integrity check after
-		// the update.
-		if(!file_exists(\OC::$configDir .'/ca-bundle.crt')) {
-			throw new \Exception('Please upload the ca-bundle.crt file into the \'config\' directory.');
 		}
 
 		// create empty file in data dir, so we can later find

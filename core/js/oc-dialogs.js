@@ -388,9 +388,9 @@ var OCdialogs = {
 				c:		original.etag,
 				forceIcon:	0
 			};
-			var previewpath = OC.generateUrl('/core/preview.png?') + $.param(urlSpec);
+			var previewpath = Files.generatePreviewUrl(urlSpec);
 			// Escaping single quotes
-			previewpath = previewpath.replace(/'/g, "%27")
+			previewpath = previewpath.replace(/'/g, "%27");
 			$originalDiv.find('.icon').css({"background-image":   "url('" + previewpath + "')"});
 			getCroppedPreview(replacement).then(
 				function(path){
@@ -400,6 +400,11 @@ var OCdialogs = {
 					$replacementDiv.find('.icon').css('background-image','url(' + path + ')');
 				}
 			);
+			// connect checkboxes with labels
+			var checkboxId = $conflicts.find('.conflict').length;
+			$originalDiv.find('input:checkbox').attr('id', 'checkbox_original_'+checkboxId);
+			$replacementDiv.find('input:checkbox').attr('id', 'checkbox_replacement_'+checkboxId);
+
 			$conflicts.append($conflict);
 
 			//set more recent mtime bold
