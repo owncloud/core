@@ -61,67 +61,49 @@
 	}
 
 	function down() {
-		var select = -1;
-		$("#fileList tr").each(function(index) {
-			if ($(this).hasClass("mouseOver")) {
-				select = index + 1;
-				$(this).removeClass("mouseOver");
-			}
-		});
-		if (select === -1) {
-			$("#fileList tr:first").addClass("mouseOver");
+		var $next;
+		var $selected = $('#fileList tr.highlighted');
+		if ($selected.length) {
+			$next = $selected.next('tr');
 		} else {
-			$("#fileList tr").each(function(index) {
-				if (index === select) {
-					$(this).addClass("mouseOver");
-				}
-			});
+			$next = $('#fileList tr:first');
+		}
+		if ($next.length) {
+			FileList.setCurrentHighlight($next);
 		}
 	}
 
 	function up() {
-		var select = -1;
-		$("#fileList tr").each(function(index) {
-			if ($(this).hasClass("mouseOver")) {
-				select = index - 1;
-				$(this).removeClass("mouseOver");
-			}
-		});
-		if (select === -1) {
-			$("#fileList tr:last").addClass("mouseOver");
+		var $next;
+		var $selected = $('#fileList tr.highlighted');
+		if ($selected.length) {
+			$next = $selected.prev('tr');
 		} else {
-			$("#fileList tr").each(function(index) {
-				if (index === select) {
-					$(this).addClass("mouseOver");
-				}
-			});
+			$next = $('#fileList tr:first');
+		}
+		if ($next.length) {
+			FileList.setCurrentHighlight($next);
 		}
 	}
 
 	function enter() {
-		$("#fileList tr").each(function(index) {
-			if ($(this).hasClass("mouseOver")) {
-				$(this).removeClass("mouseOver");
-				$(this).find("span.nametext").trigger('click');
-			}
+		$("#fileList tr.highlighted").each(function(index) {
+			$(this).removeClass('highlighted');
+			$(this).find("span.nametext").trigger('click');
 		});
 	}
 
 	function del() {
-		$("#fileList tr").each(function(index) {
-			if ($(this).hasClass("mouseOver")) {
-				$(this).removeClass("mouseOver");
-				$(this).find("a.action.delete").trigger('click');
-			}
+		$("#fileList tr.highlighted").each(function(index) {
+			$(this).removeClass('highlighted');
+			$(this).find("a.action.delete").trigger('click');
 		});
 	}
 
 	function rename() {
-		$("#fileList tr").each(function(index) {
-			if ($(this).hasClass("mouseOver")) {
-				$(this).removeClass("mouseOver");
-				$(this).find("a[data-action='Rename']").trigger('click');
-			}
+		$("#fileList tr.highlighted").each(function(index) {
+			$(this).removeClass('highlighted');
+			$(this).find("a[data-action='Rename']").trigger('click');
 		});
 	}
 	Files.bindKeyboardShortcuts = function(document, $) {

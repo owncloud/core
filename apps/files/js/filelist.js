@@ -302,7 +302,7 @@
 					icon: OC.imagePath('core', 'actions/details'),
 					permissions: OC.PERMISSION_READ,
 					actionHandler: function(fileName, context) {
-						self._updateDetailsView(fileName);
+						self.setCurrentHighlight(fileName);
 					}
 				});
 			}
@@ -373,12 +373,13 @@
 		 * @param {string} [tabId] optional tab id to select
 		 */
 		showDetailsView: function(fileName, tabId) {
-			this._updateDetailsView(fileName);
+			this.setCurrentHighlight(fileName);
 			if (tabId) {
 				this._detailsView.selectTab(tabId);
 			}
 			OC.Apps.showAppSidebar(this._detailsView.$el);
 		},
+
 
 		/**
 		 * Update the details view to display the given file
@@ -392,8 +393,6 @@
 
 			var oldFileInfo = this._detailsView.getFileInfo();
 			if (oldFileInfo) {
-				// TODO: use more efficient way, maybe track the highlight
-				this.$fileList.children().filterAttr('data-id', '' + oldFileInfo.get('id')).removeClass('highlighted');
 				oldFileInfo.off('change', this._onSelectedModelChanged, this);
 			}
 
@@ -415,8 +414,6 @@
 			var model = this.getModelForFile($tr);
 
 			this._currentFileModel = model;
-
-			$tr.addClass('highlighted');
 
 			this._detailsView.setFileInfo(model);
 			this._detailsView.$el.scrollTop(0);
@@ -476,7 +473,7 @@
 				this._selectionSummary.remove(data);
 			}
 			if (this._detailsView && this._selectionSummary.getTotal() === 1 && !this._detailsView.$el.hasClass('disappear')) {
-				this._updateDetailsView(_.values(this._selectedFiles)[0].name);
+				this.setCurrentHighlight(_.values(this._selectedFiles)[0].name);
 			}
 			this.$el.find('.select-all').prop('checked', this._selectionSummary.getTotal() === this.files.length);
 		},
@@ -541,7 +538,7 @@
 						$(event.target).closest('a').blur();
 					}
 				} else {
-					this._updateDetailsView($tr.attr('data-file'));
+					this.setCurrentHighlight($tr.attr('data-file'));
 					event.preventDefault();
 				}
 			}
@@ -557,7 +554,7 @@
 			this._lastChecked = $tr;
 			this.updateSelectionSummary();
 			if (state) {
-				this._updateDetailsView($tr.attr('data-file'));
+				this.setCurrentHighlight($tr.attr('data-file'));
 			}
 		},
 
@@ -1326,7 +1323,7 @@
 			});
 			if (this._detailsView) {
 				// close sidebar
-				this._updateDetailsView(null);
+				this.setCurrentHighlight(null);
 			}
 			var callBack = this.reloadCallback.bind(this);
 			return this._reloadCall.then(callBack, callBack);
@@ -1555,7 +1552,7 @@
 				// Here we only trigger the event to notify listeners that
 				// the file was removed.
 				this._currentFileModel.trigger('destroy');
-				this._updateDetailsView(null);
+				this.setCurrentHighlight(null);
 			}
 			fileEl.remove();
 			// TODO: improve performance on batch update
@@ -1764,7 +1761,7 @@
 								tr.remove();
 								tr = self.add(fileInfo, {updateSummary: false, silent: true});
 								self.$fileList.trigger($.Event('fileActionsReady', {fileList: self, $files: $(tr)}));
-								self._updateDetailsView(fileInfo.name);
+								self.setCurrentHighlight(fileInfo.name);
 							}
 						});
 					} else {
@@ -2503,6 +2500,28 @@
 				self.updateStorageStatistics();
 			});
 
+		},
+
+		/**
+		 * Sets the currently highlighted file
+		 *
+		 * @param {string} fileName file name to highlight
+		 */
+		setCurrentHighlight: function(fileName) {
+			var $tr;
+			if (_.isString(fileName)) {
+				$tr = this.findFileEl(fileName);
+			} else {
+				$tr = fileName;
+			}
+			this.$table.find('tr.highlighted').removeClass('highlighted');
+			if ($tr !== null) {
+				$tr.addClass('highlighted');
+
+				this._updateDetailsView($tr.attr('data-file'));
+			} else {
+				this._updateDetailsView(null);
+			}
 		},
 
 		/**
