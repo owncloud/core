@@ -60,6 +60,12 @@ class Upgrade extends Command {
 		$simulateStepEnabled = true;
 		$updateStepEnabled = true;
 
+		if (\OC::$server->getConfig()->getSystemValue('update.skip-migration-test', false)) {
+			$output->writeln(
+				'<info>"skip-migration-test" is activated via config.php</info>'
+			);
+			$simulateStepEnabled = false;
+		}
 		if ($input->getOption('skip-migration-test')) {
 			$simulateStepEnabled = false;
 		}

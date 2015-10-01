@@ -897,4 +897,13 @@ $CONFIG = array(
  */
 'secret' => 'ICertainlyShouldHaveChangedTheDefaultSecret',
 
+/**
+ * Skips the migration test during upgrades
+ *
+ * If this is set to true the migration test are deactivated during upgrade.
+ * This is only recommended in installations where upgrade tests are run in
+ * advance with the same data on a test system.
+ */
+'update.skip-migration-test' => false,
+
 );
