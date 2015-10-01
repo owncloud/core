@@ -281,10 +281,10 @@ class OC_Helper {
 	 * Inspired by: http://www.php.net/manual/en/function.filesize.php#92418
 	 */
 	public static function computerFileSize($str) {
-		$str = strtolower($str);
-		if (is_numeric($str)) {
+		if (is_int($str)) {
 			return $str;
 		}
+		$str = strtolower($str);
 
 		$bytes_array = array(
 			'b' => 1,
@@ -308,9 +308,8 @@ class OC_Helper {
 			return false;
 		}
 
-		$bytes = round($bytes);
-
-		return $bytes;
+		//round towards zero
+		return (int)$bytes;
 	}
 
 	/**
