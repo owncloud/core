@@ -191,7 +191,7 @@
 				// convert share data to file data
 				.map(function(share) {
 					var file = {
-						shareOwner: share.owner,
+						shareOwner: share.owner + '@' + share.remote,
 						name: share.name
 					};
 
