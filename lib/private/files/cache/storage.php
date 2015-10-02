@@ -40,6 +40,9 @@ namespace OC\Files\Cache;
 class Storage {
 	private $storageId;
 	private $numericId;
+	private $configId;
+
+	private $relatedStorages;
 
 	/**
 	 * @param \OC\Files\Storage\Storage|string $storage
@@ -56,6 +59,7 @@ class Storage {
 
 		if ($row = self::getStorageById($this->storageId)) {
 			$this->numericId = $row['numeric_id'];
+			$this->configId = $row['config_id'];
 		} else {
 			$connection = \OC_DB::getConnection();
 			$available = $isAvailable ? 1 : 0;
@@ -64,6 +68,7 @@ class Storage {
 			} else {
 				if ($row = self::getStorageById($this->storageId)) {
 					$this->numericId = $row['numeric_id'];
+					$this->configId = $row['config_id'];
 				} else {
 					throw new \RuntimeException('Storage could neither be inserted nor be selected from the database');
 				}
@@ -185,4 +190,45 @@ class Storage {
 			\OC_DB::executeAudited($sql, array($numericId));
 		}
 	}
+
+	/**
+	 * Add a configuration ID to the storage
+	 *
+	 * @param string $configId
+	 */
+	public function addConfigId($configId) {
+		$configId = md5($configId);
+		if ($configId === $this->configId) {
+			return; // already set
+		}
+
+		$sql = 'UPDATE `*PREFIX*storages` SET `config_id` = ? WHERE `id` = ?';
+		\OC_DB::executeAudited($sql, [$configId, $this->storageId]);
+		$this->configId = $configId;
+	}
+
+	/**
+	 * Get other storage IDs with the same matching config ID
+	 *
+	 * @return array
+	 */
+	public function getRelatedConfigStorages() {
+		if (!$this->configId) {
+			return [];
+		}
+
+		if (!isset($this->relatedStorages)) {
+			$sql = 'SELECT `id` FROM `*PREFIX*storages` WHERE `config_id` = ?';
+			$result = \OC_DB::executeAudited($sql, [$this->configId]);
+			$this->relatedStorages = [];
+			foreach ($result->fetchAll() as $row) {
+				if ($row['id'] !== $this->storageId) {
+					$this->relatedStorages[] = $row['id'];
+				}
+			}
+		}
+
+		return $this->relatedStorages;
+	}
+
 }

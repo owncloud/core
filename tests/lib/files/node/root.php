@@ -25,7 +25,7 @@ class Root extends \Test\TestCase {
 	}
 
 	public function testGet() {
-		$manager = new Manager();
+		$manager = $this->getMock('\OC\Files\Mount\Manager');
 		/**
 		 * @var \OC\Files\Storage\Storage $storage
 		 */
@@ -61,7 +61,7 @@ class Root extends \Test\TestCase {
 	 * @expectedException \OCP\Files\NotFoundException
 	 */
 	public function testGetNotFound() {
-		$manager = new Manager();
+		$manager = $this->getMock('\OC\Files\Mount\Manager');
 		/**
 		 * @var \OC\Files\Storage\Storage $storage
 		 */
@@ -85,7 +85,7 @@ class Root extends \Test\TestCase {
 	 * @expectedException \OCP\Files\NotPermittedException
 	 */
 	public function testGetInvalidPath() {
-		$manager = new Manager();
+		$manager = $this->getMock('\OC\Files\Mount\Manager');
 		/**
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */
@@ -99,7 +99,7 @@ class Root extends \Test\TestCase {
 	 * @expectedException \OCP\Files\NotFoundException
 	 */
 	public function testGetNoStorages() {
-		$manager = new Manager();
+		$manager = $this->getMock('\OC\Files\Mount\Manager');
 		/**
 		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
 		 */

@@ -118,6 +118,7 @@ class ConfigAdapter implements IMountProvider {
 			try {
 				$this->prepareStorageConfig($storage, $user);
 				$impl = $this->constructStorage($storage);
+				$impl->getStorageCache()->addConfigId('ext:global:'.$storage->getId());
 			} catch (\Exception $e) {
 				// propagate exception into filesystem
 				$impl = new FailedStorage(['exception' => $e]);
@@ -137,6 +138,7 @@ class ConfigAdapter implements IMountProvider {
 			try {
 				$this->prepareStorageConfig($storage, $user);
 				$impl = $this->constructStorage($storage);
+				$impl->getStorageCache()->addConfigId('ext:personal:'.$user->getUID().':'.$storage->getId());
 			} catch (\Exception $e) {
 				// propagate exception into filesystem
 				$impl = new FailedStorage(['exception' => $e]);

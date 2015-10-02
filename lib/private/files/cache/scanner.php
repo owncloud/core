@@ -443,4 +443,34 @@ class Scanner extends BasicEmitter {
 	public function setCacheActive($active) {
 		$this->cacheActive = $active;
 	}
+
+	/**
+	 * Marks a path on a possibly related storage as unclean and requires rescanning
+	 *
+	 * @param string $path
+	 */
+	public function markRelatedStorageUnclean($path) {
+		$relatedStorages = $this->storage->getStorageCache()->getRelatedConfigStorages();
+		$connection = \OC_DB::getConnection();
+		foreach ($relatedStorages as $storageId) {
+			$connection->insertIfNotExist('*PREFIX*storages_recheck', [
+				'storage' => $storageId,
+				'path' => $path,
+			]);
+		}
+	}
+
+	/**
+	 * Rescan any unclean paths for this storage
+	 */
+	public function rescanUncleanPaths() {
+		$sql = 'SELECT `path` FROM `*PREFIX*storages_recheck` WHERE `storage` = ?';
+		$result = \OC_DB::executeAudited($sql, [$this->storageId]);
+
+		$deleteSql = 'DELETE FROM `*PREFIX*storages_recheck` WHERE `storage` = ? AND `path` = ?';
+		foreach ($result->fetchAll() as $row) {
+			\OC_DB::executeAudited($deleteSql, [$this->storageId, $row['path']]);
+			$this->scanFile($row['path']);
+		}
+	}
 }
