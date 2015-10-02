@@ -127,9 +127,15 @@ class Updater {
 		if ($storage) {
 			$this->correctParentStorageMtime($storage, $internalPath);
 			if (!$skipPropagatingChanges) {
+				$data=[];
+				$scanner = $storage->getScanner ( $internalPath );
+				$data = $scanner->scan ( $internalPath, Scanner::SCAN_SHALLOW, - 1, false );
+				$cache = $storage->getCache ( $internalPath );
+				$entry = $cache->get($internalPath);
+				$cache->update($entry['fileid'],$data);
 				$this->propagator->addChange($path);
 				$this->propagator->propagateChanges($time);
-			}			
+			}
 		}
 	}	
 	
