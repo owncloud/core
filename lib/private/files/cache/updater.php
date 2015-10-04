@@ -107,7 +107,7 @@ class Updater {
 		$this->updateFolderSize($path,$time);
 		
 	}
-	
+
 	/**
 	 * Update the cache for $path update the mtime of the parent folders
 	 *
@@ -137,9 +137,8 @@ class Updater {
 				$this->propagator->propagateChanges($time);
 			}
 		}
-	}	
-	
-	
+	}
+
 	/**
 	 * Update the cache for $path update the size and etag of the parent folders
 	 *
@@ -165,9 +164,9 @@ class Updater {
 			if (!$skipPropagatingChanges) {
 				$this->propagator->addChange($path);
 				$this->propagator->propagateChanges($time);
-			}			
+			}
 		}
-	}	
+	}
 
 	/**
 	 * Remove $path from the cache and update the size, etag and mtime of the parent folders
