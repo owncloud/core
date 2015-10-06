@@ -97,6 +97,7 @@ class AppsTest extends TestCase {
 	}
 
 	public function testResolveLDAPNameNotFound() {
+		\OC_App::loadApp('user_ldap');
 		$loginName = 'alice';
 
 		$ldapBackend = $this->getMockBuilder('\OCA\user_ldap\User_Proxy')
@@ -114,6 +115,7 @@ class AppsTest extends TestCase {
 	}
 
 	public function testResolveLDAPNameSuccessful() {
+		\OC_App::loadApp('user_ldap');
 		$loginName = 'alice';
 		$userName = 'dc35a74a-5de6-1932-93af-e3cc75610c15';
 
