@@ -78,6 +78,17 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * Remove all entries from the storages table
+	 *
+	 * @throws \OC\DatabaseException
+	 */
+	static protected function tearDownAfterClassCleanShares() {
+		$sql = 'DELETE FROM `*PREFIX*share`';
+		$query = \OC_DB::prepare($sql);
+		$query->execute();
+	}
+
+	/**
+	 * Remove all entries from the storages table
 	 * @throws \OC\DatabaseException
 	 */
 	static protected function tearDownAfterClassCleanStorages() {
