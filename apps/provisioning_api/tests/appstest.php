@@ -95,4 +95,53 @@ class AppsTest extends TestCase {
 		$this->assertFalse($result->succeeded());
 		$this->assertEquals(101, $result->getStatusCode());
 	}
+
+	public function testResolveLDAPNameNotFound() {
+		$loginName = 'alice';
+
+		$ldapBackend = $this->getMockBuilder('\OCA\user_ldap\User_Proxy')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$ldapBackend->expects($this->once())
+			->method('loginName2UserName')
+			->with($loginName)
+			->will($this->returnValue(false));
+
+		$result = $this->api->resolveLDAPLoginNameViaBackend($loginName, $ldapBackend);
+		$this->assertFalse($result->succeeded());
+		$this->assertSame(\OCP\API::RESPOND_NOT_FOUND, $result->getStatusCode());
+	}
+
+	public function testResolveLDAPNameSuccessful() {
+		$loginName = 'alice';
+		$userName = 'dc35a74a-5de6-1932-93af-e3cc75610c15';
+
+		$ldapBackend = $this->getMockBuilder('\OCA\user_ldap\User_Proxy')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$ldapBackend->expects($this->once())
+			->method('loginName2UserName')
+			->with($loginName)
+			->will($this->returnValue($userName));
+
+		$result = $this->api->resolveLDAPLoginNameViaBackend($loginName, $ldapBackend);
+		$this->assertTrue($result->succeeded());
+		$this->assertSame($userName, $result->getData()[0]);
+	}
+
+	public function testResolveLDAPNameNotEnabled() {
+		$appManager = $this->getMock('\OCP\App\IAppManager');
+
+		$appManager->expects($this->once())
+			->method('isEnabledForUser')
+			->with('user_ldap')
+			->will($this->returnValue(false));
+
+		$api = new \OCA\Provisioning_API\Apps($appManager);
+		$result = $api->resolveLDAPLoginName(['loginname' => 'alice']);
+		$this->assertFalse($result->succeeded());
+		$this->assertSame(\OCP\API::RESPOND_SERVER_ERROR, $result->getStatusCode());
+	}
 }

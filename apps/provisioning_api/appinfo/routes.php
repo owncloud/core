@@ -64,3 +64,4 @@ API::register('get', '/cloud/apps', [$apps, 'getApps'], 'provisioning_api', API:
 API::register('get', '/cloud/apps/{appid}', [$apps, 'getAppInfo'], 'provisioning_api', API::ADMIN_AUTH);
 API::register('post', '/cloud/apps/{appid}', [$apps, 'enable'], 'provisioning_api', API::ADMIN_AUTH);
 API::register('delete', '/cloud/apps/{appid}', [$apps, 'disable'], 'provisioning_api', API::ADMIN_AUTH);
+API::register('get', '/cloud/apps/user_ldap/resolveloginname/{loginname}', [$apps, 'resolveLDAPLoginName'], 'provisioning_api', API::ADMIN_AUTH);
