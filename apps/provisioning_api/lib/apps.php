@@ -33,11 +33,17 @@ class Apps {
 	/** @var \OCP\App\IAppManager */
 	private $appManager;
 
+	/** @var  \OCA\user_ldap\User_Proxy|null */
+	private $ldapBackend;
+
 	/**
 	 * @param \OCP\App\IAppManager $appManager
+	 * @param \OCA\user_ldap\User_Proxy|null $ldapBackend
 	 */
-	public function __construct(\OCP\App\IAppManager $appManager) {
-		$this->appManager = $appManager;
+	public function __construct(\OCP\App\IAppManager $appManager,
+								\OCA\user_ldap\User_Proxy $ldapBackend = null) {
+		$this->appManager  = $appManager;
+		$this->ldapBackend = $ldapBackend;
 	}
 
 	/**
@@ -113,36 +119,20 @@ class Apps {
 	 * @return OC_OCS_Result
 	 */
 	public function resolveLDAPLoginName($parameters) {
-		$loginName = $parameters['loginname'];
-
-		if(!$this->appManager->isEnabledForUser('user_ldap')) {
+		if(is_null($this->ldapBackend)) {
 			return new OC_OCS_Result(null, \OCP\API::RESPOND_SERVER_ERROR, 'LDAP backend is not enabled');
 		}
+		$loginName = $parameters['loginname'];
 
 		try {
-			$helper = new \OCA\user_ldap\lib\Helper();
-			$ldapBackend = $helper->instantiateUserProxy();
-			return $this->resolveLDAPLoginNameViaBackend($loginName, $ldapBackend);
+			$userName = $this->ldapBackend->loginName2UserName($loginName);
+			if($userName === false) {
+				return new OC_OCS_Result(null, \OCP\API::RESPOND_NOT_FOUND, 'Could not resolve login name to user name');
+			}
+			return new OC_OCS_Result([$userName]);
 		} catch(\Exception $e) {
 			return new OC_OCS_Result(null, \OCP\API::RESPOND_SERVER_ERROR, $e->getMessage());
 		}
-	}
-
-	/**
-	 * resolves a provided LDAP login name to an ownCloud username that can be
-	 * used with user-related API calls. This method accepts the user backend
-	 * so responses can be tested at least.
-	 *
-	 * @param string $loginName
-	 * @param \OCA\user_ldap\User_Proxy $ldapBackend
-	 * @return OC_OCS_Result
-	 */
-	public function resolveLDAPLoginNameViaBackend($loginName, $ldapBackend) {
-		$userName = $ldapBackend->loginName2UserName($loginName);
-		if($userName === false) {
-			return new OC_OCS_Result(null, \OCP\API::RESPOND_NOT_FOUND, 'Could not resolve login name to user name');
-		}
-		return new OC_OCS_Result([$userName]);
 	}
 
 }

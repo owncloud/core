@@ -57,8 +57,14 @@ API::register('delete', '/cloud/groups/{groupid}', [$groups, 'deleteGroup'], 'pr
 API::register('get', '/cloud/groups/{groupid}/subadmins', [$groups, 'getSubAdminsOfGroup'], 'provisioning_api', API::ADMIN_AUTH);
 
 // Apps
+try {
+	$ldapBackend = \OC::$server->query('LDAPUserBackend');
+} catch (\Exception $e) {
+	$ldapBackend = null;
+}
 $apps = new \OCA\Provisioning_API\Apps(
-	\OC::$server->getAppManager()
+	\OC::$server->getAppManager(),
+	$ldapBackend
 );
 API::register('get', '/cloud/apps', [$apps, 'getApps'], 'provisioning_api', API::ADMIN_AUTH);
 API::register('get', '/cloud/apps/{appid}', [$apps, 'getAppInfo'], 'provisioning_api', API::ADMIN_AUTH);

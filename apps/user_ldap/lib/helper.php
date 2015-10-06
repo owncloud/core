@@ -191,7 +191,7 @@ class Helper {
 	 */
 	public function instantiateUserProxy() {
 		$configPrefixes = $this->getServerConfigurationPrefixes(true);
-		if($configPrefixes === 0) {
+		if(count($configPrefixes) === 0) {
 			throw new \Exception('No active LDAP configuration');
 		}
 		$ldapWrapper = new LDAP();

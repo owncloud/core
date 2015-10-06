@@ -31,7 +31,10 @@ class AppsTest extends TestCase {
 		$this->appManager = \OC::$server->getAppManager();
 		$this->groupManager = \OC::$server->getGroupManager();
 		$this->userSession = \OC::$server->getUserSession();
-		$this->api = new \OCA\Provisioning_API\Apps($this->appManager);
+		$this->ldapBackend = $this->getMockBuilder('\OCA\user_ldap\User_Proxy')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->api = new \OCA\Provisioning_API\Apps($this->appManager, $this->ldapBackend);
 	}
 
 	public function testGetAppInfo() {
@@ -97,19 +100,14 @@ class AppsTest extends TestCase {
 	}
 
 	public function testResolveLDAPNameNotFound() {
-		\OC_App::loadApp('user_ldap');
 		$loginName = 'alice';
 
-		$ldapBackend = $this->getMockBuilder('\OCA\user_ldap\User_Proxy')
-			->disableOriginalConstructor()
-			->getMock();
-
-		$ldapBackend->expects($this->once())
+		$this->ldapBackend->expects($this->once())
 			->method('loginName2UserName')
 			->with($loginName)
 			->will($this->returnValue(false));
 
-		$result = $this->api->resolveLDAPLoginNameViaBackend($loginName, $ldapBackend);
+		$result = $this->api->resolveLDAPLoginName(['loginname' => $loginName]);
 		$this->assertFalse($result->succeeded());
 		$this->assertSame(\OCP\API::RESPOND_NOT_FOUND, $result->getStatusCode());
 	}
@@ -123,25 +121,18 @@ class AppsTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$ldapBackend->expects($this->once())
+		$this->ldapBackend->expects($this->once())
 			->method('loginName2UserName')
 			->with($loginName)
 			->will($this->returnValue($userName));
 
-		$result = $this->api->resolveLDAPLoginNameViaBackend($loginName, $ldapBackend);
+		$result = $this->api->resolveLDAPLoginName(['loginname' => $loginName]);
 		$this->assertTrue($result->succeeded());
 		$this->assertSame($userName, $result->getData()[0]);
 	}
 
 	public function testResolveLDAPNameNotEnabled() {
-		$appManager = $this->getMock('\OCP\App\IAppManager');
-
-		$appManager->expects($this->once())
-			->method('isEnabledForUser')
-			->with('user_ldap')
-			->will($this->returnValue(false));
-
-		$api = new \OCA\Provisioning_API\Apps($appManager);
+		$api = new \OCA\Provisioning_API\Apps($this->appManager, null);
 		$result = $api->resolveLDAPLoginName(['loginname' => 'alice']);
 		$this->assertFalse($result->succeeded());
 		$this->assertSame(\OCP\API::RESPOND_SERVER_ERROR, $result->getStatusCode());
