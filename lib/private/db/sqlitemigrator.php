@@ -75,6 +75,7 @@ class SQLiteMigrator extends Migrator {
 		$platform->registerDoctrineTypeMapping('tinyint unsigned', 'integer');
 		$platform->registerDoctrineTypeMapping('smallint unsigned', 'integer');
 		$platform->registerDoctrineTypeMapping('varchar ', 'string');
+		$platform->registerDoctrineTypeMapping('bool', 'boolean');
 
 		return parent::getDiff($targetSchema, $connection);
 	}
