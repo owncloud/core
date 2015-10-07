@@ -83,6 +83,7 @@ class Users {
 	 * @return OC_OCS_Result
 	 */
 	public function addUser() {
+		return new OC_OCS_Result(null, 999, 'Forced error! :boom:');
 		$userId = isset($_POST['userid']) ? $_POST['userid'] : null;
 		$password = isset($_POST['password']) ? $_POST['password'] : null;
 		if($this->userManager->userExists($userId)) {
