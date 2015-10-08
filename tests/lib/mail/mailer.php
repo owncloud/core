@@ -45,7 +45,7 @@ class MailerTest extends TestCase {
 			->with('mail_smtpmode', 'sendmail')
 			->will($this->returnValue('sendmail'));
 
-		$this->assertEquals(\Swift_SendmailTransport::newInstance('/usr/sbin/sendmail -bs'), self::invokePrivate($this->mailer, 'getSendMailInstance'));
+		$this->assertEquals(\Swift_SendmailTransport::newInstance('/usr/sbin/sendmail -t'), self::invokePrivate($this->mailer, 'getSendMailInstance'));
 	}
 
 	public function testGetSendMailInstanceSendMailQmail() {
@@ -55,7 +55,7 @@ class MailerTest extends TestCase {
 			->with('mail_smtpmode', 'sendmail')
 			->will($this->returnValue('qmail'));
 
-		$this->assertEquals(\Swift_SendmailTransport::newInstance('/var/qmail/bin/sendmail -bs'), self::invokePrivate($this->mailer, 'getSendMailInstance'));
+		$this->assertEquals(\Swift_SendmailTransport::newInstance('/var/qmail/bin/sendmail -t'), self::invokePrivate($this->mailer, 'getSendMailInstance'));
 	}
 
 	public function testGetInstanceDefault() {
