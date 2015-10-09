@@ -88,6 +88,31 @@ class ApiController extends Controller {
 	}
 
 	/**
+	 * Gets a thumbnail of the specified file with keeping aspect
+	 *
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 *
+	 * @param int $x
+	 * @param int $y
+	 * @param string $file URL-encoded filename
+	 * @return DataResponse|DataDisplayResponse
+	 */
+	public function getThumbnailWithApect($x, $y, $file) {
+		if($x < 1 || $y < 1) {
+			return new DataResponse(['message' => 'Requested size must be numeric and a positive value.'], Http::STATUS_BAD_REQUEST);
+		}
+
+		$preview = $this->previewManager->createPreview('files/'.urldecode($file), $x, $y, false, true);
+		if ($preview->valid()) {
+			return new DataDisplayResponse($preview->data(), Http::STATUS_OK, ['Content-Type' => 'image/png']);
+		} else {
+			return new DataResponse(['message' => 'File not found.'], Http::STATUS_NOT_FOUND);
+		}
+	}
+
+	/**
 	 * Updates the info of the specified file path
 	 * The passed tags are absolute, which means they will
 	 * replace the actual tag selection.

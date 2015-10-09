@@ -31,6 +31,12 @@ $application->registerRoutes(
 	array(
 		'routes' => array(
 			array(
+				'name' => 'API#getThumbnailWithApect',
+				'url' => '/api/v1/thumbnail/keepaspect/{x}/{y}/{file}',
+				'verb' => 'GET',
+				'requirements' => array('file' => '.+')
+			),
+			array(
 				'name' => 'API#getThumbnail',
 				'url' => '/api/v1/thumbnail/{x}/{y}/{file}',
 				'verb' => 'GET',
