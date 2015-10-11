@@ -166,13 +166,20 @@ class GROUP_LDAP extends BackendUtility implements \OCP\GroupInterface {
 			return $this->access->connection->getFromCache($cacheKey);
 		}
 		$seen[$dnGroup] = 1;
-		$members = $this->access->readAttribute($dnGroup, $this->access->connection->ldapGroupMemberAssocAttr,
+
+		$isBranch = (strtolower($this->access->connection->ldapGroupMemberAssocAttr) === 'branch');
+		if ($isBranch) {
+			$members = $this->access->fetchListOfUsersBranchMembers('', $dnGroup, 'dn');
+		} else {
+			$members = $this->access->readAttribute($dnGroup, $this->access->connection->ldapGroupMemberAssocAttr,
 												$this->access->connection->ldapGroupFilter);
+		}
+
 		if (is_array($members)) {
 			foreach ($members as $memberDN) {
 				$allMembers[$memberDN] = 1;
 				$nestedGroups = $this->access->connection->ldapNestedGroups;
-				if (!empty($nestedGroups)) {
+				if (!$isBranch && !empty($nestedGroups)) {
 					$subMembers = $this->_groupMembers($memberDN, $seen);
 					if ($subMembers) {
 						$allMembers = array_merge($allMembers, $subMembers);
@@ -470,34 +477,61 @@ class GROUP_LDAP extends BackendUtility implements \OCP\GroupInterface {
 
 	/**
 	 * @param string $dn
+	 * @return array of group DN
+	 */
+	private function getGroupsByMemberByBranch($dn) {
+		$filter = $this->access->combineFilterWithAnd(array(
+			$this->access->connection->ldapGroupFilter, 
+			$this->access->getFilterPartForGroupSearch('')
+		));
+		$ldap_groups = $this->access->fetchListOfGroups($filter, array($this->access->connection->ldapGroupDisplayName, 'dn'));
+
+		$result = array();
+		if (is_array($ldap_groups)) {
+                	foreach ($ldap_groups as $groupobj) {
+				$groupDN = $groupobj['dn'];
+				if ($groupDN === substr($dn, -strlen($groupDN))) {
+					$result[$groupDN] = $groupobj;
+				}
+			}
+		}
+		return $result;
+	}
+	/**
+	 * @param string $dn
 	 * @param array|null &$seen
 	 * @return array
 	 */
 	private function getGroupsByMember($dn, &$seen = null) {
-		if ($seen === null) {
-			$seen = array();
-		}
-		$allGroups = array();
-		if (array_key_exists($dn, $seen)) {
-			// avoid loops
-			return array();
-		}
-		$seen[$dn] = true;
-		$filter = $this->access->combineFilterWithAnd(array(
-			$this->access->connection->ldapGroupFilter,
-			$this->access->connection->ldapGroupMemberAssocAttr.'='.$dn
-		));
-		$groups = $this->access->fetchListOfGroups($filter,
-			array($this->access->connection->ldapGroupDisplayName, 'dn'));
-		if (is_array($groups)) {
-			foreach ($groups as $groupobj) {
-				$groupDN = $groupobj['dn'];
-				$allGroups[$groupDN] = $groupobj;
-				$nestedGroups = $this->access->connection->ldapNestedGroups;
-				if (!empty($nestedGroups)) {
-					$supergroups = $this->getGroupsByMember($groupDN, $seen);
-					if (is_array($supergroups) && (count($supergroups)>0)) {
-						$allGroups = array_merge($allGroups, $supergroups);
+		$isBranch = (strtolower($this->access->connection->ldapGroupMemberAssocAttr) === 'branch');
+		if ($isBranch) {
+			$allGroups = $this->getGroupsByMemberByBranch($dn);
+		} else {
+			if ($seen === null) {
+				$seen = array();
+			}
+			$allGroups = array();
+			if (array_key_exists($dn, $seen)) {
+				// avoid loops
+				return array();
+			}
+			$seen[$dn] = true;
+			$filter = $this->access->combineFilterWithAnd(array(
+				$this->access->connection->ldapGroupFilter,
+				$this->access->connection->ldapGroupMemberAssocAttr.'='.$dn
+			));
+			$groups = $this->access->fetchListOfGroups($filter,
+				array($this->access->connection->ldapGroupDisplayName, 'dn'));
+			if (is_array($groups)) {
+				foreach ($groups as $groupobj) {
+					$groupDN = $groupobj['dn'];
+					$allGroups[$groupDN] = $groupobj;
+					$nestedGroups = $this->access->connection->ldapNestedGroups;
+					if (!empty($nestedGroups)) {
+						$supergroups = $this->getGroupsByMember($groupDN, $seen);
+						if (is_array($supergroups) && (count($supergroups)>0)) {
+							$allGroups = array_merge($allGroups, $supergroups);
+						}
 					}
 				}
 			}
