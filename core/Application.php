@@ -29,6 +29,8 @@ namespace OC\Core;
 use OC\AppFramework\Utility\SimpleContainer;
 use OC\AppFramework\Utility\TimeFactory;
 use OC\Core\Controller\LoginController;
+use OC\Core\Auth\Controller\TwoFactorChallengeController;
+use OC\Core\Auth\Middleware\TwoFactorMiddleware;
 use \OCP\AppFramework\App;
 use OC\Core\Controller\LostController;
 use OC\Core\Controller\UserController;
@@ -101,6 +103,31 @@ class Application extends App {
 				$c->query('URLGenerator')
 			);
 		});
+		$container->registerService('TwoFactorChallengeController', function(SimpleContainer $c) {
+			return new TwoFactorChallengeController(
+				$c->query('AppName'),
+				$c->query('Request'),
+				$c->query('Session'),
+				$c->query('UserSession'),
+				$c->query('TwoFactorAuthenticationFactory'),
+				$c->query('URLGenerator'),
+				$c->query('UserManager')
+			);
+		});
+
+		/**
+		 * Middleware
+		 */
+		$container->registerService('TwoFactorMiddleware', function(SimpleContainer $c){
+			return new TwoFactorMiddleware(
+				$c->query('Session'),
+				$c->query('URLGenerator'),
+				$c->query('UserSession')
+			);
+		});
+
+		// Register middleware
+		$container->registerMiddleware('TwoFactorMiddleware');
 
 		/**
 		 * Core class wrappers
@@ -131,6 +158,12 @@ class Application extends App {
 		});
 		$container->registerService('UserSession', function(SimpleContainer $c) {
 			return $c->query('ServerContainer')->getUserSession();
+		});
+		$container->registerService('Session', function(SimpleContainer $c) {
+			return $c->query('ServerContainer')->getSession();
+		});
+		$container->registerService('TwoFactorAuthenticationFactory', function(SimpleContainer $c) {
+			return $c->query('ServerContainer')->getTwoFactorAuthenticationFactory();
 		});
 		$container->registerService('Cache', function(SimpleContainer $c) {
 			return $c->query('ServerContainer')->getCache();

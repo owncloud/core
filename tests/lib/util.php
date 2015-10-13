@@ -278,64 +278,6 @@ class Test_Util extends \Test\TestCase {
 	}
 
 	/**
-	 * Test default apps
-	 *
-	 * @dataProvider defaultAppsProvider
-	 */
-	function testDefaultApps($defaultAppConfig, $expectedPath, $enabledApps) {
-		$oldDefaultApps = \OCP\Config::getSystemValue('core', 'defaultapp', '');
-		// CLI is doing messy stuff with the webroot, so need to work it around
-		$oldWebRoot = \OC::$WEBROOT;
-		\OC::$WEBROOT = '';
-
-		$appManager = $this->getMock('\OCP\App\IAppManager');
-		$appManager->expects($this->any())
-			->method('isEnabledForUser')
-			->will($this->returnCallback(function($appId) use ($enabledApps){
-				return in_array($appId, $enabledApps);
-		}));
-		Dummy_OC_Util::$appManager = $appManager;
-
-		// need to set a user id to make sure enabled apps are read from cache
-		\OC_User::setUserId($this->getUniqueID());
-		\OCP\Config::setSystemValue('defaultapp', $defaultAppConfig);
-		$this->assertEquals('http://localhost/' . $expectedPath, Dummy_OC_Util::getDefaultPageUrl());
-
-		// restore old state
-		\OC::$WEBROOT = $oldWebRoot;
-		\OCP\Config::setSystemValue('defaultapp', $oldDefaultApps);
-		\OC_User::setUserId(null);
-	}
-
-	function defaultAppsProvider() {
-		return array(
-			// none specified, default to files
-			array(
-				'',
-				'index.php/apps/files/',
-				array('files'),
-			),
-			// unexisting or inaccessible app specified, default to files
-			array(
-				'unexist',
-				'index.php/apps/files/',
-				array('files'),
-			),
-			// non-standard app
-			array(
-				'calendar',
-				'index.php/apps/calendar/',
-				array('files', 'calendar'),
-			),
-			// non-standard app with fallback
-			array(
-				'contacts,calendar',
-				'index.php/apps/calendar/',
-				array('files', 'calendar'),
-			),
-		);
-	}
-
 	public function testGetDefaultPageUrlWithRedirectUrlWithoutFrontController() {
 		putenv('front_controller_active=false');
 
@@ -356,7 +298,6 @@ class Test_Util extends \Test\TestCase {
 		$this->assertSame('http://localhost'.\OC::$WEBROOT.'/apps/files/', OC_Util::getDefaultPageUrl());
 	}
 
-	/**
 	 * Test needUpgrade() when the core version is increased
 	 */
 	public function testNeedUpgradeCore() {

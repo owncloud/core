@@ -418,4 +418,30 @@ class User implements IUser {
 		}
 	}
 
+	/**
+	 * Whether Two-Factor authentication is enforced for the user
+	 *
+	 * @return bool
+	 * @since 9.0.0
+	 */
+	public function isTwoFactorEnforced() {
+		// FIXME
+		return true;
+	}
+
+	/**
+	 * Get a list of authentication tokens that can be used for authentication
+	 * instead of username-passwords. An authentication token will bypass
+	 * two-factor authentication and may be revoked.
+	 *
+	 * @return array
+	 */
+	public function getAuthenticationTokens() {
+		// FIXME
+		// TODO: Read from database, store last usage and name, etc. - see also issue 19529
+		return [
+			'ValidToken',
+		];
+	}
+
 }

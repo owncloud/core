@@ -1,0 +1,16 @@
+<?xml version="1.0"?> 
+<info>
+	<id>providerexample</id>
+	<name>Example provider for two factor auth</name>
+	<description>Example provider for two factor auth</description>
+	<licence>AGPL</licence>
+	<author>Lukas Reschke</author>
+	<requiremin>8.2</requiremin>
+	<shipped>true</shipped>
+	<default_enable/>
+	<types>
+		<!-- this is used to disable the feature of enabling an app for specific groups only because this would break this app -->
+		<filesystem/>
+		<authentication/>
+	</types>
+</info>

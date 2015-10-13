@@ -42,9 +42,14 @@ $application->registerRoutes($this, [
 		['name' => 'avatar#postCroppedAvatar', 'url' => '/avatar/cropped', 'verb' => 'POST'],
 		['name' => 'avatar#getTmpAvatar', 'url' => '/avatar/tmp', 'verb' => 'GET'],
 		['name' => 'avatar#postAvatar', 'url' => '/avatar/', 'verb' => 'POST'],
+		['name' => 'login#tryLogin', 'url' => '/login', 'verb' => 'POST'],
 		['name' => 'login#showLoginForm', 'url' => '/login', 'verb' => 'GET'],
 		['name' => 'login#logout', 'url' => '/logout', 'verb' => 'GET'],
-	]
+		['name' => 'TwoFactorChallenge#selectChallenge', 'url' => '/login/selectchallenge', 'verb' => 'GET'],
+		['name' => 'TwoFactorChallenge#showChallenge', 'url' => '/login/challenge/{challengeProviderId}', 'verb' => 'GET'],
+		['name' => 'TwoFactorChallenge#getChallengeJavascript', 'url' => '/login/challenge/{challengeProviderId}/script', 'verb' => 'GET'],
+		['name' => 'TwoFactorChallenge#solveChallenge', 'url' => '/login/challenge/{challengeProviderId}', 'verb' => 'POST'],
+	],
 ]);
 
 // Post installation check

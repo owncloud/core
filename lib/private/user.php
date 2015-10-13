@@ -157,6 +157,8 @@ class OC_User {
 	 * @return boolean|null
 	 *
 	 * Log in a user and regenerate a new session - if the password is ok
+	 *
+	 * @deprecated Use \OCP\IUserSession::login
 	 */
 	public static function login($loginname, $password) {
 		$result = self::getUserSession()->login($loginname, $password);
