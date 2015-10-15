@@ -215,6 +215,7 @@ class ShareController extends Controller {
 		}
 
 		$shareTmpl['downloadURL'] = $this->urlGenerator->linkToRouteAbsolute('files_sharing.sharecontroller.downloadShare', array('token' => $token));
+		$shareTmpl['viewURL'] = $this->urlGenerator->linkToRouteAbsolute('files_sharing.sharecontroller.viewShare', array('token' => $token));
 		$shareTmpl['maxSizeAnimateGif'] = $this->config->getSystemValue('max_filesize_animated_gifs_public_sharing', 10);
 		$shareTmpl['previewEnabled'] = $this->config->getSystemValue('enable_previews', true);
 
@@ -236,7 +237,22 @@ class ShareController extends Controller {
 	 * @param string $downloadStartSecret
 	 * @return void|RedirectResponse
 	 */
-	public function downloadShare($token, $files = null, $path = '', $downloadStartSecret = '') {
+	public function viewShare($token, $files = null, $path = '', $downloadStartSecret = '') {
+		self::downloadShare($token, $files, $path, $downloadStartSecret, false);
+	}
+
+	/**
+	 * @PublicPage
+	 * @NoCSRFRequired
+	 *
+	 * @param string $token
+	 * @param string $files
+	 * @param string $path
+	 * @param string $downloadStartSecret
+	 * @param boolean $isAttachment ; enforce download of file
+	 * @return void|RedirectResponse
+	 */
+	public function downloadShare($token, $files = null, $path = '', $downloadStartSecret = '', $isAttachment = true) {
 		\OC_User::setIncognitoMode(true);
 
 		$linkItem = OCP\Share::getShareByToken($token, false);
@@ -306,12 +322,12 @@ class ShareController extends Controller {
 		if (!is_null($files)) {
 			// FIXME: The exit is required here because otherwise the AppFramework is trying to add headers as well
 			// after dispatching the request which results in a "Cannot modify header information" notice.
-			OC_Files::get($originalSharePath, $files_list, $_SERVER['REQUEST_METHOD'] == 'HEAD');
+			OC_Files::get($originalSharePath, $files_list, $_SERVER['REQUEST_METHOD'] == 'HEAD', $isAttachment);
 			exit();
 		} else {
 			// FIXME: The exit is required here because otherwise the AppFramework is trying to add headers as well
 			// after dispatching the request which results in a "Cannot modify header information" notice.
-			OC_Files::get(dirname($originalSharePath), basename($originalSharePath), $_SERVER['REQUEST_METHOD'] == 'HEAD');
+			OC_Files::get(dirname($originalSharePath), basename($originalSharePath), $_SERVER['REQUEST_METHOD'] == 'HEAD', $isAttachment);
 			exit();
 		}
 	}
