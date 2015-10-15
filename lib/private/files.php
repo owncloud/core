@@ -53,9 +53,11 @@ class OC_Files {
 	/**
 	 * @param string $filename
 	 * @param string $name
+	 * @param boolean $isAttachment ; enforce download of file
 	 */
-	private static function sendHeaders($filename, $name) {
-		OC_Response::setContentDispositionHeader($name, 'attachment');
+	private static function sendHeaders($filename, $name, $isAttachment = true) {
+		if ($isAttachment)
+			OC_Response::setContentDispositionHeader($name, 'attachment');
 		header('Content-Transfer-Encoding: binary');
 		OC_Response::disableCaching();
 		$fileSize = \OC\Files\Filesystem::filesize($filename);
@@ -72,8 +74,9 @@ class OC_Files {
 	 * @param string $dir
 	 * @param string $files ; separated list of files to download
 	 * @param boolean $onlyHeader ; boolean to only send header of the request
+	 * @param boolean $isAttachment ; set content-disposition header to enforce download
 	 */
-	public static function get($dir, $files, $onlyHeader = false) {
+	public static function get($dir, $files, $onlyHeader = false, $isAttachment = true) {
 
 		$view = \OC\Files\Filesystem::getView();
 		$getType = self::FILE;
@@ -87,7 +90,7 @@ class OC_Files {
 			if (!is_array($files)) {
 				$filename = $dir . '/' . $files;
 				if (!$view->is_dir($files)) {
-					self::getSingleFile($view, $dir, $files, $onlyHeader);
+					self::getSingleFile($view, $dir, $files, $onlyHeader, $isAttachment);
 					return;
 				}
 			}
@@ -115,7 +118,7 @@ class OC_Files {
 
 			self::lockFiles($view, $dir, $files);
 
-			$streamer->sendHeaders($name);
+			$streamer->sendHeaders($name, $isAttachment);
 			$executionTime = intval(ini_get('max_execution_time'));
 			set_time_limit(0);
 			if ($getType === self::ZIP_FILES) {
@@ -154,15 +157,18 @@ class OC_Files {
 
 	/**
 	 * @param View $view
+	 * @param string $dir
 	 * @param string $name
+	 * @param boolean $onlyHeader
+	 * @param boolean $isAttachment ; set content-disposition header to enforce download
 	 */
-	private static function getSingleFile($view, $dir, $name, $onlyHeader) {
+	private static function getSingleFile($view, $dir, $name, $onlyHeader, $isAttachment) {
 		$filename = $dir . '/' . $name;
 		OC_Util::obEnd();
 		$view->lockFile($filename, ILockingProvider::LOCK_SHARED);
 
 		if (\OC\Files\Filesystem::isReadable($filename)) {
-			self::sendHeaders($filename, $name);
+			self::sendHeaders($filename, $name, $isAttachment);
 		} elseif (!\OC\Files\Filesystem::file_exists($filename)) {
 			header("HTTP/1.0 404 Not Found");
 			$tmpl = new OC_Template('', '404', 'guest');

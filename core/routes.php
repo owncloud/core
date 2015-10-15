@@ -123,6 +123,10 @@ $this->create('files_sharing.sharecontroller.downloadShare', '/s/{token}/downloa
 	$app = new \OCA\Files_Sharing\AppInfo\Application($urlParams);
 	$app->dispatch('ShareController', 'downloadShare');
 });
+$this->create('files_sharing.sharecontroller.viewShare', '/s/{token}/view')->get()->action(function($urlParams) {
+	$app = new \OCA\Files_Sharing\AppInfo\Application($urlParams);
+	$app->dispatch('ShareController', 'viewShare');
+});
 
 // used for heartbeat
 $this->create('heartbeat', '/heartbeat')->action(function(){
