@@ -102,19 +102,69 @@ class Updater {
 		if (!$this->enabled or Scanner::isPartialFile($path)) {
 			return;
 		}
+
+		$this->updateMtime($path,$time, true);
+		$this->updateFolderSize($path,$time);
+		
+	}
+
+	/**
+	 * Update the cache for $path update the mtime of the parent folders
+	 *
+	 * @param string $path
+	 * @param int $time
+	 * @param boolean $skipPropagatingChanges
+	 */	
+	public function updateMtime($path, $time = null, $skipPropagatingChanges=false) {
+		if (!$this->enabled or Scanner::isPartialFile($path)) {
+			return;
+		}
 		/**
 		 * @var \OC\Files\Storage\Storage $storage
 		 * @var string $internalPath
 		 */
 		list($storage, $internalPath) = $this->view->resolvePath($path);
 		if ($storage) {
-			$this->propagator->addChange($path);
-			$cache = $storage->getCache($internalPath);
-			$scanner = $storage->getScanner($internalPath);
-			$data = $scanner->scan($internalPath, Scanner::SCAN_SHALLOW, -1, false);
 			$this->correctParentStorageMtime($storage, $internalPath);
-			$cache->correctFolderSize($internalPath, $data);
-			$this->propagator->propagateChanges($time);
+			if (!$skipPropagatingChanges) {
+				$data=[];
+				$scanner = $storage->getScanner ( $internalPath );
+				$data = $scanner->scan ( $internalPath, Scanner::SCAN_SHALLOW, - 1, false );
+				$cache = $storage->getCache ( $internalPath );
+				$entry = $cache->get($internalPath);
+				$cache->update($entry['fileid'],$data);
+				$this->propagator->addChange($path);
+				$this->propagator->propagateChanges($time);
+			}
+		}
+	}
+
+	/**
+	 * Update the cache for $path update the size and etag of the parent folders
+	 *
+	 * @param string $path
+	 * @param int $time
+	 * @param boolean $skipPropagatingChanges
+	 */	
+	public function updateFolderSize($path, $time = null, $skipPropagatingChanges=false) {
+		if (!$this->enabled or Scanner::isPartialFile($path)) {
+			return;
+		}
+		/**
+		 * @var \OC\Files\Storage\Storage $storage
+		 * @var string $internalPath
+		 */
+		list($storage, $internalPath) = $this->view->resolvePath($path);
+		if ($storage) {
+			$scanner = $storage->getScanner ( $internalPath );
+			$data = $scanner->scan ( $internalPath, Scanner::SCAN_SHALLOW, - 1, false );
+			$cache = $storage->getCache ( $internalPath );
+			$cache->correctFolderSize ( $internalPath, $data );
+
+			if (!$skipPropagatingChanges) {
+				$this->propagator->addChange($path);
+				$this->propagator->propagateChanges($time);
+			}
 		}
 	}
 
