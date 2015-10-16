@@ -12,7 +12,7 @@ A personal cloud which runs on your own server.**
 ![](http://fs5.directupload.net/images/151016/u6zpkz7l.png)
 
 ## Why is this so awesome?
-* :cloud: **Benefits of the Cloud...** ...installed on your own server. 
+* :cloud: **Benefits of the Cloud!** ...installed on your own server. 
 * ...
 
 ## Installation instructions
