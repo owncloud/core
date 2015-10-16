@@ -71,9 +71,6 @@ class NormalizeDirWrapper implements Directory {
 	 */
 	public function dir_readdir() {
 		$file = readdir($this->source);
-		if ($file === '.' || $file === '..') {
-			return $this->dir_readdir();
-		}
 		if ($file !== false) {
 			$file = normalizer_normalize($file);
 		}

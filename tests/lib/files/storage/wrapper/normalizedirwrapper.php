@@ -70,28 +70,4 @@ class NormalizeDirWrapper extends TestCase {
 		}
 		$this->assertEquals($files, $result);
 	}
-
-	public function folderFilterProvider() {
-		return [
-			[['.', '..', 'foo', 'bar', 'asd'], ['foo', 'bar', 'asd']],
-			[[], []],
-			[['asd'], ['asd']]
-		];
-	}
-
-	/**
-	 * @param string[] $files
-	 * @param string[] $expected
-	 * @dataProvider folderFilterProvider
-	 */
-	public function testFilterParentAndSelf($files, $expected) {
-		$source = IteratorDirectory::wrap($files);
-		$wrapped = \OC\Files\Storage\Wrapper\NormalizeDirWrapper::wrap($source);
-
-		$result = [];
-		while (($file = readdir($wrapped)) !== false) {
-			$result[] = $file;
-		}
-		$this->assertEquals($expected, $result);
-	}
 }
