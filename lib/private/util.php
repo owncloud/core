@@ -146,6 +146,14 @@ class OC_Util {
 			return $storage;
 		});
 
+		\OC\Files\Filesystem::addStorageWrapper('normalizer', function ($mountPoint, \OCP\Files\Storage $storage, \OCP\Files\Mount\IMountPoint $mount) {
+			if(!$storage->instanceOfStorage('\OC\Files\Storage\Wrapper\NormalizeWrapper')) {
+				return new \OC\Files\Storage\Wrapper\NormalizeWrapper(['storage' => $storage]);
+			} else {
+				return $storage;
+			}
+		});
+
 		// install storage availability wrapper, before most other wrappers
 		\OC\Files\Filesystem::addStorageWrapper('oc_availability', function ($mountPoint, $storage) {
 			if (!$storage->isLocal()) {
