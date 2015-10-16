@@ -11,6 +11,10 @@ A personal cloud which runs on your own server.**
 
 ![](http://fs5.directupload.net/images/151016/u6zpkz7l.png)
 
+## Why is this so awesome?
+* :cloud: **Benefits of the Cloud...** ...installed on your own server. 
+* ...
+
 ## Installation instructions
 https://doc.owncloud.org/server/8.2/developer_manual/app/index.html
 
@@ -18,10 +22,10 @@ https://doc.owncloud.org/server/8.2/developer_manual/app/index.html
 https://owncloud.org/contribute/
 
 ## Get in touch
-* [Forum](https://forum.owncloud.org)
-* [Mailing list](https://mailman.owncloud.org/mailman/listinfo)
-* [IRC channel](https://webchat.freenode.net/?channels=owncloud)
-* [Twitter](https://twitter.com/ownClouders)
+* :clipboard: [Forum](https://forum.owncloud.org)
+* :envelope: [Mailing list](https://mailman.owncloud.org/mailman/listinfo)
+* :busts_in_silhouette: [IRC channel](https://webchat.freenode.net/?channels=owncloud)
+* :hatching_chick: [Twitter](https://twitter.com/ownClouders)
 
 ## Important notice on translations
 Please submit translations via Transifex:
