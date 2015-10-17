@@ -12,7 +12,12 @@ A personal cloud which runs on your own server.**
 ![](http://fs5.directupload.net/images/151016/u6zpkz7l.png)
 
 ## Why is this so awesome?
-* :cloud: **Benefits of the Cloud!** ...installed on your own server. 
+* :file_folder: **Acess your Data** You can store your files, contacts, calendars and more on a server of your choosing.
+* :package: **Sync your Data** You keep your files, contacts, calendars and more synchronized amongst your devices.
+* :arrows_counterclockwise: **Share your Data** You share your data with others, and give them access to your latest photo galleries, your calendar or anything else you want them to see.
+* :rocket: **Expandable with dozens of Apps** ...like Calendar, Contacts, Mail or News.
+* :cloud: **All Benefits of the Cloud** ...on your own Server.
+* :lock: **Encryption** You can encrypt data in transit with secure https connections. You can enable the encryption app to encrypt data on storage for improved security and privacy.
 * ...
 
 ## Installation instructions
