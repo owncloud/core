@@ -332,6 +332,14 @@ table td.filename .nametext .innernametext {
 	vertical-align: top;
 }
 
+table td.filename .fileactions span {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	display: inline-block;
+	vertical-align: top;
+	margin-left: 5px;
+}
+
 @media only screen and (min-width: 1500px) {
 	table td.filename .nametext .innernametext {
 		max-width: 790px;
@@ -354,6 +362,9 @@ table td.filename .nametext .innernametext {
 	}
 	.with-app-sidebar table td.filename .nametext .innernametext {
 		max-width: 230px;
+	}
+	table td.filename .fileactions a span {
+		max-width: 120px;
 	}
 }
 @media only screen and (min-width: 1100px) and (max-width: 1200px) {
