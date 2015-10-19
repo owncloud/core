@@ -358,7 +358,7 @@ table td.filename .fileactions span {
 }
 @media only screen and (min-width: 1200px) and (max-width: 1366px) {
 	table td.filename .nametext .innernametext {
-		max-width: 500px;
+		max-width: 400px;
 	}
 	.with-app-sidebar table td.filename .nametext .innernametext {
 		max-width: 230px;
