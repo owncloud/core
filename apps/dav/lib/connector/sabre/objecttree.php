@@ -113,8 +113,8 @@ class ObjectTree extends \Sabre\DAV\Tree {
 			}
 		}
 
-		if (isset($this->cache[$path])) {
-			return $this->cache[$path];
+		if (isset($this->cache['/' . $path])) {
+			return $this->cache['/' . $path];
 		}
 
 		// Is it the root node?
@@ -165,7 +165,7 @@ class ObjectTree extends \Sabre\DAV\Tree {
 			$node = new \OCA\DAV\Connector\Sabre\File($this->fileView, $info);
 		}
 
-		$this->cache[$path] = $node;
+		$this->cache['/' . $path] = $node;
 		return $node;
 
 	}
