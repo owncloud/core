@@ -102,5 +102,5 @@ $mappings = array_merge($mappings, parseDir('apps/files_trashbin/lib'));
 $mappings = array_merge($mappings, parseDir('apps/files_versions/lib'));
 
 
-
-echo json_encode($mappings, JSON_PRETTY_PRINT);
+echo "<?php\n";
+echo "return ".var_export($mappings, true).";";
