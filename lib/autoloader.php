@@ -39,6 +39,8 @@ class Autoloader {
 
 	private $validRoots = [];
 
+	private $ocRoutes = [];
+
 	/**
 	 * Optional low-latency memory cache for class to path mapping.
 	 *
@@ -54,6 +56,10 @@ class Autoloader {
 	public function __construct(array $validRoots) {
 		foreach ($validRoots as $root) {
 			$this->validRoots[$root] = true;
+		}
+
+		if (file_exists('resources/routes/private.php')) {
+			$this->ocRoutes = require_once('resources/routes/private.php');
 		}
 	}
 
@@ -91,6 +97,14 @@ class Autoloader {
 		$class = trim($class, '\\');
 
 		$paths = array();
+
+		/**
+		 * Use fancy compiled routes
+		 */
+		if (array_key_exists($class, $this->ocRoutes)) {
+			return [$this->ocRoutes[$class]];
+		}
+
 		if (array_key_exists($class, $this->classPaths)) {
 			$paths[] = $this->classPaths[$class];
 		} else if ($this->useGlobalClassPath and array_key_exists($class, \OC::$CLASSPATH)) {
