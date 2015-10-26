@@ -185,7 +185,10 @@ class SubAdmin extends PublicEmitter {
 	 * @param IUser $user 
 	 * @return bool
 	 */
-	public function isSubAdmin(IUser $user) {
+	public function isSubAdmin($user) {
+		if (is_null($user)) {
+			return false;
+		}
 		// Check if the user is already an admin
 		if ($this->groupManager->isAdmin($user->getUID())) {
 			return true;

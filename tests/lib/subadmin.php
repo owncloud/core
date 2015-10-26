@@ -173,6 +173,12 @@ class SubAdmin extends \Test\TestCase {
 		$this->assertTrue($subAdmin->deleteSubAdmin($this->users[0], $this->groups[0]));
 	}
 
+	public function testSubAdminNull() {
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
+		$user = $this->userManager->get('totally-unknown');
+		$this->assertFalse($subAdmin->isSubAdmin($user));
+	}
+
 	public function testIsSubAdminAsAdmin() {
 		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
 		$this->groupManager->get('admin')->addUser($this->users[0]);
