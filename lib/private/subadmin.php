@@ -65,7 +65,7 @@ class SubAdmin extends PublicEmitter {
 	 * @param IGroup $group group $user becomes subadmin of
 	 * @return bool
 	 */
-	public function createSubAdmin(IUser $user = null, IGroup $group = null) {
+	public function createSubAdmin($user, $group) {
 		if ($user === null || $group === null) {
 			return false;
 		}
@@ -90,7 +90,7 @@ class SubAdmin extends PublicEmitter {
 	 * @param IGroup $group the group
 	 * @return bool
 	 */
-	public function deleteSubAdmin(IUser $user = null, IGroup $group = null) {
+	public function deleteSubAdmin($user, $group) {
 		if ($user === null || $group === null) {
 			return false;
 		}
@@ -112,7 +112,7 @@ class SubAdmin extends PublicEmitter {
 	 * @param IUser $user the SubAdmin
 	 * @return IGroup[]
 	 */
-	public function getSubAdminsGroups(IUser $user = null) {
+	public function getSubAdminsGroups($user) {
 		if ($user === null) {
 			return [];
 		}
@@ -137,7 +137,7 @@ class SubAdmin extends PublicEmitter {
 	 * @param IGroup $group the group
 	 * @return IUser[]
 	 */
-	public function getGroupsSubAdmins(IGroup $group = null) {
+	public function getGroupsSubAdmins($group) {
 		if ($group === null) {
 			return [];
 		}
@@ -184,7 +184,7 @@ class SubAdmin extends PublicEmitter {
 	 * @param IGroup $group
 	 * @return bool
 	 */
-	public function isSubAdminofGroup(IUser $user = null, IGroup $group = null) {
+	public function isSubAdminofGroup($user, $group) {
 		if ($user === null || $group === null) {
 			return false;
 		}
@@ -205,7 +205,7 @@ class SubAdmin extends PublicEmitter {
 	 * @param IUser $user 
 	 * @return bool
 	 */
-	public function isSubAdmin(\OCP\IUser $user = null) {
+	public function isSubAdmin($user) {
 		if (is_null($user)) {
 			return false;
 		}
@@ -233,7 +233,7 @@ class SubAdmin extends PublicEmitter {
 	 * @param IUser $user
 	 * @return bool
 	 */
-	public function isUserAccessible($subadmin = null, $user = null) {
+	public function isUserAccessible($subadmin, $user) {
 		if ($subadmin === null || $user === null) {
 			return false;
 		}
