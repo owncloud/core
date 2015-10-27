@@ -67,6 +67,24 @@ class SubAdmin extends \Test\TestCase {
 		}
 	}
 
+	private function mockAll() {
+		$this->groupManager = $this->getMockBuilder('\OC\Group\Manager')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->groupManager->expects($this->once())
+			->method('listen');
+		$this->userManager = $this->getMockBuilder('\OC\User\Manager')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->userManager->expects($this->once())
+			->method('listen');
+		$this->dbConn = $this->getMockBuilder('\OCP\IDBConnection')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->dbConn->expects($this->never())
+			->method($this->anything());
+	}
+
 	public function testCreateSubAdmin() {
 		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[0]));
@@ -92,6 +110,18 @@ class SubAdmin extends \Test\TestCase {
 			->execute();
 	}
 
+	public function testCreateSubAdminNullUser() {
+		$this->mockAll();
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
+		$this->assertFalse($subAdmin->createSubAdmin(null, $this->groups[0]));
+	}
+
+	public function testCreateSubAdminNullGroup() {
+		$this->mockAll();
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
+		$this->assertFalse($subAdmin->createSubAdmin($this->users[0], null));
+	}
+
 	public function testDeleteSubAdmin() {
 		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[0]));
@@ -106,6 +136,18 @@ class SubAdmin extends \Test\TestCase {
 			->execute()
 			->fetch();
 		$this->assertEmpty($result);
+	}
+
+	public function testDeleteSubAdminNullUser() {
+		$this->mockAll();
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
+		$this->assertFalse($subAdmin->deleteSubAdmin(null, $this->groups[0]));
+	}
+
+	public function testDeleteSubAdminNullGroup() {
+		$this->mockAll();
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
+		$this->assertFalse($subAdmin->deleteSubAdmin($this->users[0], null));
 	}
 
 	public function testGetSubAdminsGroups() {
@@ -123,6 +165,12 @@ class SubAdmin extends \Test\TestCase {
 		$this->assertTrue($subAdmin->deleteSubAdmin($this->users[0], $this->groups[1]));
 	}
 
+	public function testGetSubAdminsGroupsNullUser() {
+		$this->mockAll();
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
+		$this->assertEquals([], $subAdmin->getSubAdminsGroups(null));
+	}
+
 	public function testGetGroupsSubAdmins() {
 		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[0]));
@@ -136,6 +184,12 @@ class SubAdmin extends \Test\TestCase {
 
 		$this->assertTrue($subAdmin->deleteSubAdmin($this->users[0], $this->groups[0]));
 		$this->assertTrue($subAdmin->deleteSubAdmin($this->users[1], $this->groups[0]));
+	}
+
+	public function testGetGroupsSubAdminsNullGroup() {
+		$this->mockAll();
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
+		$result = $subAdmin->getGroupsSubAdmins(null);
 	}
 
 	public function testGetAllSubAdmin() {
@@ -163,6 +217,18 @@ class SubAdmin extends \Test\TestCase {
 		$this->assertTrue($subAdmin->deleteSubAdmin($this->users[0], $this->groups[0]));
 	}
 
+	public function testIsSubAdminofGroupNullUser() {
+		$this->mockAll();
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
+		$this->assertFalse($subAdmin->isSubAdminOfGroup(null, $this->groups[0]));
+	}
+
+	public function testIsSubAdminofGroupNullGroup() {
+		$this->mockAll();
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
+		$this->assertFalse($subAdmin->isSubAdminOfGroup($this->users[0], null));
+	}
+
 	public function testIsSubAdmin() {
 		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
 		$this->assertTrue($subAdmin->createSubAdmin($this->users[0], $this->groups[0]));
@@ -174,9 +240,9 @@ class SubAdmin extends \Test\TestCase {
 	}
 
 	public function testSubAdminNull() {
+		$this->mockAll();
 		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
-		$user = $this->userManager->get('totally-unknown');
-		$this->assertFalse($subAdmin->isSubAdmin($user));
+		$this->assertFalse($subAdmin->isSubAdmin(null));
 	}
 
 	public function testIsSubAdminAsAdmin() {
@@ -213,7 +279,18 @@ class SubAdmin extends \Test\TestCase {
 		$this->groupManager->get('admin')->addUser($this->users[1]);
 
 		$this->assertFalse($subAdmin->isUserAccessible($this->users[0], $this->users[1]));
+	}
 
+	public function testIsUserAccessibleNullSubAdmin() {
+		$this->mockAll();
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
+		$this->assertFalse($subAdmin->isUserAccessible(null, $this->users[0]));
+	}
+
+	public function testIsUserAccessibleNullUser() {
+		$this->mockAll();
+		$subAdmin = new \OC\SubAdmin($this->userManager, $this->groupManager, $this->dbConn);
+		$this->assertFalse($subAdmin->isUserAccessible($this->users[0], null));
 	}
 
 	public function testPostDeleteUser() {
