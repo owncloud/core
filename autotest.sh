@@ -261,11 +261,11 @@ function execute_tests {
 		export XDEBUG_CONFIG=$_XDEBUG_CONFIG
 	fi
 	if [ -z "$NOCOVERAGE" ]; then
-		"${PHPUNIT[@]}" --configuration phpunit-autotest.xml --log-junit "autotest-results-$DB.xml" --coverage-clover "autotest-clover-$DB.xml" --coverage-html "coverage-html-$DB" "$2" "$3"
+		"$PHP" "${PHPUNIT[@]}" --configuration phpunit-autotest.xml --log-junit "autotest-results-$DB.xml" --coverage-clover "autotest-clover-$DB.xml" --coverage-html "coverage-html-$DB" "$2" "$3"
 		RESULT=$?
 	else
 		echo "No coverage"
-		"${PHPUNIT[@]}" --configuration phpunit-autotest.xml --log-junit "autotest-results-$DB.xml" "$2" "$3"
+		"$PHP" "${PHPUNIT[@]}" --configuration phpunit-autotest.xml --log-junit "autotest-results-$DB.xml" "$2" "$3"
 		RESULT=$?
 	fi
 
