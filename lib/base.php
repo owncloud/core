@@ -479,6 +479,7 @@ class OC {
 
 		// register autoloader
 		$loaderStart = microtime(true);
+		require_once __DIR__ . '/../resources/composer/autoload.php';
 		require_once __DIR__ . '/autoloader.php';
 		self::$loader = new \OC\Autoloader([
 			OC::$SERVERROOT . '/lib',

@@ -1,0 +1,10 @@
+{
+	"config" : {
+		"vendor-dir": "resources/composer/",
+		"optimize-autoloader": true,
+		"classmap-authoritative": true
+	},
+	"autoload": {
+		"classmap": ["lib/"]
+	}
+}
