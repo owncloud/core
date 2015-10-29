@@ -70,7 +70,11 @@ class SubAdmin extends PublicEmitter {
 	 * @param IGroup $group group $user becomes subadmin of
 	 * @return bool
 	 */
-	public function createSubAdmin(IUser $user, IGroup $group) {
+	public function createSubAdmin($user, $group) {
+		if ($user === null || $group === null) {
+			return false;
+		}
+
 		$qb = $this->dbConn->getQueryBuilder();
 
 		$qb->insert('group_admin')
@@ -91,7 +95,11 @@ class SubAdmin extends PublicEmitter {
 	 * @param IGroup $group the group
 	 * @return bool
 	 */
-	public function deleteSubAdmin(IUser $user, IGroup $group) {
+	public function deleteSubAdmin($user, $group) {
+		if ($user === null || $group === null) {
+			return false;
+		}
+
 		$qb = $this->dbConn->getQueryBuilder();
 
 		$qb->delete('group_admin')
@@ -109,7 +117,11 @@ class SubAdmin extends PublicEmitter {
 	 * @param IUser $user the SubAdmin
 	 * @return IGroup[]
 	 */
-	public function getSubAdminsGroups(IUser $user) {
+	public function getSubAdminsGroups($user) {
+		if ($user === null) {
+			return [];
+		}
+
 		$qb = $this->dbConn->getQueryBuilder();
 
 		$result = $qb->select('gid')
@@ -131,7 +143,11 @@ class SubAdmin extends PublicEmitter {
 	 * @param IGroup $group the group
 	 * @return IUser[]
 	 */
-	public function getGroupsSubAdmins(IGroup $group) {
+	public function getGroupsSubAdmins($group) {
+		if ($group === null) {
+			return [];
+		}
+
 		$qb = $this->dbConn->getQueryBuilder();
 
 		$result = $qb->select('uid')
@@ -177,7 +193,11 @@ class SubAdmin extends PublicEmitter {
 	 * @param IGroup $group
 	 * @return bool
 	 */
-	public function isSubAdminofGroup(IUser $user, IGroup $group) {
+	public function isSubAdminofGroup($user, $group) {
+		if ($user === null || $group === null) {
+			return false;
+		}
+
 		$qb = $this->dbConn->getQueryBuilder();
 
 		/*
@@ -201,7 +221,11 @@ class SubAdmin extends PublicEmitter {
 	 * @param IUser $user 
 	 * @return bool
 	 */
-	public function isSubAdmin(IUser $user) {
+	public function isSubAdmin($user) {
+		if (is_null($user)) {
+			return false;
+		}
+
 		// Check if the user is already an admin
 		if ($this->groupManager->isAdmin($user->getUID())) {
 			return true;
@@ -230,6 +254,10 @@ class SubAdmin extends PublicEmitter {
 	 * @return bool
 	 */
 	public function isUserAccessible($subadmin, $user) {
+		if ($subadmin === null || $user === null) {
+			return false;
+		}
+
 		if(!$this->isSubAdmin($subadmin)) {
 			return false;
 		}
