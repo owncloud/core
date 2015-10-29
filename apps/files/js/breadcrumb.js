@@ -127,7 +127,8 @@
 			if (this.onDrop) {
 				this.$el.find('.crumb:not(.last)').droppable({
 					drop: this.onDrop,
-					tolerance: 'pointer'
+					tolerance: 'pointer',
+					hoverClass: 'canDrop'
 				});
 			}
 
