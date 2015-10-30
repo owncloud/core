@@ -4,7 +4,7 @@
     "Evert Pot <me@evertpot.com>"
   ],
   "description": "A WebDAV, CalDAV and CardDAV client for browsers.",
-  "main": "src/client.js",
+  "main": "lib/client.js",
   "keywords": [
     "webdav",
     "caldav",
@@ -19,13 +19,14 @@
     "test",
     "tests"
   ],
-  "_release": "5a57cc5ebe",
+  "_release": "bbc0640b0e",
   "_resolution": {
     "type": "branch",
-    "branch": "master",
-    "commit": "5a57cc5ebe60d14eb1ff4737081a8d65739c61d1"
+    "branch": "all-fixes",
+    "commit": "bbc0640b0e5f9e531040db1a95a9f950b7e24436"
   },
-  "_source": "https://github.com/evert/davclient.js.git",
-  "_target": "*",
-  "_originalSource": "https://github.com/evert/davclient.js.git"
+  "_source": "https://github.com/PVince81/davclient.js.git",
+  "_target": "all-fixes",
+  "_originalSource": "https://github.com/PVince81/davclient.js.git",
+  "_direct": true
 }

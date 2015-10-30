@@ -27,8 +27,8 @@
     "strengthify": "0.4.1",
     "underscore": "~1.8.0",
     "bootstrap": "~3.3.5",
-    "backbone": "~1.2.1"
-    "davclient.js": "https://github.com/evert/davclient.js.git",
+    "backbone": "~1.2.1",
+    "davclient.js": "https://github.com/PVince81/davclient.js.git#all-fixes",
     "es6-promise": "https://github.com/jakearchibald/es6-promise.git#~2.3.0"
   }
 }
