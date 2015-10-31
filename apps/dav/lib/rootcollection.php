@@ -2,7 +2,9 @@
 
 namespace OCA\DAV;
 
+use OCA\DAV\CalDAV\CalDavBackend;
 use OCA\DAV\Connector\Sabre\Principal;
+use Sabre\CalDAV\CalendarRoot;
 use Sabre\CalDAV\Principal\Collection;
 use Sabre\DAV\SimpleCollection;
 
@@ -22,10 +24,14 @@ class RootCollection extends SimpleCollection {
 		$principalCollection->disableListing = $disableListing;
 		$filesCollection = new Files\RootCollection($principalBackend);
 		$filesCollection->disableListing = $disableListing;
+		$caldavBackend = new CalDavBackend();
+		$calendarRoot = new CalendarRoot($principalBackend, $caldavBackend);
+		$calendarRoot->disableListing = true; // Disable listening
 
 		$children = [
 			$principalCollection,
 			$filesCollection,
+			$calendarRoot,
 		];
 
 		parent::__construct('root', $children);

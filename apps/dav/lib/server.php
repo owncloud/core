@@ -33,6 +33,15 @@ class Server {
 		$this->server->addPlugin(new BlockLegacyClientPlugin(\OC::$server->getConfig()));
 		$this->server->addPlugin(new Plugin($authBackend, 'ownCloud'));
 
+		// calendar plugins
+		$this->server->addPlugin(new \Sabre\CalDAV\Plugin());
+		$this->server->addPlugin(new \Sabre\DAVACL\Plugin());
+		$this->server->addPlugin(new \Sabre\CalDAV\ICSExportPlugin());
+		$senderEmail = \OCP\Util::getDefaultEmailAddress('no-reply');
+		$this->server->addPlugin(new \Sabre\CalDAV\Schedule\Plugin());
+		$this->server->addPlugin(new \Sabre\CalDAV\Schedule\IMipPlugin($senderEmail));
+		$this->server->addPlugin(new \Sabre\CalDAV\SharingPlugin());
+
 		// wait with registering these until auth is handled and the filesystem is setup
 		$this->server->on('beforeMethod', function () {
 			// custom properties plugin must be the last one
