@@ -216,6 +216,10 @@
 			if (view !== 'files') {
 				params.view = view;
 			}
+			if ( window.history.replaceState ) {
+				var oldHistoryEntryStateParams = _.extend(window.history.state, { scrollDistance: $('#app-content').scrollTop() });
+				window.history.replaceState(oldHistoryEntryStateParams, '');
+			}
 			OC.Util.History.pushState(params);
 		}
 	};

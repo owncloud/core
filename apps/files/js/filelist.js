@@ -456,7 +456,7 @@
 		 */
 		_onUrlChanged: function(e) {
 			if (e && e.dir) {
-				this.changeDirectory(e.dir, false, true);
+				this.changeDirectory(e.dir, false, true, e.scrollDistance);
 			}
 		},
 
@@ -1240,8 +1240,9 @@
 		 * @param targetDir target directory (non URL encoded)
 		 * @param changeUrl false if the URL must not be changed (defaults to true)
 		 * @param {boolean} force set to true to force changing directory
+		 * @param distance distance in pixel to scroll in filelist
 		 */
-		changeDirectory: function(targetDir, changeUrl, force) {
+		changeDirectory: function(targetDir, changeUrl, force, distance) {
 			var self = this;
 			var currentDir = this.getCurrentDirectory();
 			targetDir = targetDir || '/';
@@ -1251,7 +1252,9 @@
 			this._setCurrentDir(targetDir, changeUrl);
 			this.reload().then(function(success){
 				if (!success) {
-					self.changeDirectory(currentDir, true);
+					self.changeDirectory(currentDir, true, force, distance);
+				} else if (typeof distance === 'number') {
+					self.loadAndScrollTo(distance);
 				}
 			});
 		},
@@ -2524,6 +2527,20 @@
 				self.updateStorageStatistics();
 			});
 
+		},
+
+		/**
+		 * Load enough rows and scroll to that distance
+		 * @param distance distance in pixel to scroll to
+		 */
+		loadAndScrollTo: function(distance) {
+			if ( this.$container[0].scrollHeight - this.$container.innerHeight() > distance ) {
+				this.$container.scrollTop(distance);
+			} else {
+				while(this.$container[0].scrollHeight - this.$container.innerHeight() < distance && this._nextPage(false) !== false) {
+				}
+				this.$container.scrollTop(distance);
+			}
 		},
 
 		/**
