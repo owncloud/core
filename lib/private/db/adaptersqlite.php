@@ -32,6 +32,7 @@ class AdapterSqlite extends Adapter {
 		$statement = str_replace( '`', '"', $statement );
 		$statement = str_ireplace( 'NOW()', 'datetime(\'now\')', $statement );
 		$statement = str_ireplace( 'UNIX_TIMESTAMP()', 'strftime(\'%s\',\'now\')', $statement );
+		$statement = str_ireplace('GREATEST(', 'MAX(', $statement);
 		return $statement;
 	}
 
