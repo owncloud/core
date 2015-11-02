@@ -1317,7 +1317,7 @@
 			if (!force && currentDir === targetDir) {
 				return;
 			}
-			sessionStorage.setItem(currentDir, $('#app-content').scrollTop().toString());
+			sessionStorage.setItem(currentDir, this.$container.scrollTop().toString());
 			this._setCurrentDir(targetDir, changeUrl);
 			this.reload().then(function(success){
 				if (!success) {
