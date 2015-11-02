@@ -27,7 +27,7 @@ select:hover {
 
 body {
 	background-color: #ffffff;
-	font-weight: 300;
+	font-weight: normal;
 	font-size: .8em;
 	line-height: 1.6em;
 	font-family: 'Open Sans', Frutiger, Calibri, 'Myriad Pro', Myriad, sans-serif;
@@ -253,7 +253,7 @@ button, .button,
 	min-width: 25px;
 	padding: 5px;
 	background-color: rgba(240,240,240,.9);
-	font-weight: 600;
+	font-weight: bold;
 	color: #555;
 	border: 1px solid rgba(240,240,240,.9);
 	cursor: pointer;
@@ -431,7 +431,6 @@ input[type="submit"].enabled {
 }
 #emptycontent h2,
 .emptycontent h2 {
-	font-weight: 600;
 	font-size: 22px;
 	margin-bottom: 10px;
 }
@@ -506,7 +505,7 @@ input[type="submit"].enabled {
 	padding-top: 20px;
 }
 #body-login p.info a {
-	font-weight: 600;
+	font-weight: bold;
 	padding: 13px;
 	margin: -13px;
 }
@@ -772,7 +771,7 @@ html.ie8 #body-login form input[type="checkbox"] {
 .warning a,
 .error a {
 	color: #fff !important;
-	font-weight: 600 !important;
+	font-weight: bold !important;
 }
 .error pre {
 	white-space: pre-wrap;
@@ -872,7 +871,7 @@ html.ie8 #body-login form input[type="checkbox"] {
 	overflow: hidden;
 }
 
-.bold { font-weight:600; }
+.bold { font-weight:bold; }
 .center { text-align:center; }
 .inlineblock { display: inline-block; }
 
@@ -1106,7 +1105,7 @@ div.crumb:first-child a {
 	top: 13px;
 }
 div.crumb.last {
-	font-weight: 600;
+	font-weight: bold;
 	margin-right: 10px;
 }
 div.crumb a.ellipsislink {
@@ -1152,7 +1151,7 @@ div.crumb:active {
 
 #body-public footer .info a {
 	color: #777;
-	font-weight: 600;
+	font-weight: bold;
 	padding: 13px;
 	margin: -13px;
 }
