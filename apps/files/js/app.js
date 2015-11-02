@@ -161,7 +161,7 @@
 					view: e.itemId,
 					dir: '/'
 				};
-				this._changeUrl(params.view, params.dir);
+				this._changeUrl(params.view, params.dir, params.dir);
 				OC.Apps.hideAppSidebar($('.detailsView'));
 				this.navigation.getActiveContainer().trigger(new $.Event('urlChanged', params));
 			}
@@ -172,7 +172,7 @@
 		 */
 		_onDirectoryChanged: function(e) {
 			if (e.dir) {
-				this._changeUrl(this.navigation.getActiveItem(), e.dir);
+				this._changeUrl(this.navigation.getActiveItem(), e.dir, e.previousDir);
 			}
 		},
 
@@ -211,10 +211,24 @@
 		/**
 		 * Change the URL to point to the given dir and view
 		 */
-		_changeUrl: function(view, dir) {
+		_changeUrl: function(view, dir, previousDir) {
 			var params = {dir: dir};
 			if (view !== 'files') {
 				params.view = view;
+			}
+			if ( window.history.replaceState ) {
+				var oldHistoryEntryStateParams = {};
+				if ( window.history.state ) {
+					oldHistoryEntryStateParams = _.extend(window.history.state, { scrollDistance: $('#app-content').scrollTop() });
+					window.history.replaceState(oldHistoryEntryStateParams, '');
+				} else {
+					// if this is the first page user visits, there won't be window.history.state, we need to construct it manually
+					oldHistoryEntryStateParams = {
+						dir: previousDir,
+						scrollDistance: $('#app-content').scrollTop()
+					};
+					window.history.replaceState(oldHistoryEntryStateParams, '', location.pathname);
+				}
 			}
 			OC.Util.History.pushState(params);
 		}
