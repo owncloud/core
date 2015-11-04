@@ -127,6 +127,14 @@
 			if (this.onDrop) {
 				this.$el.find('.crumb:not(.last)').droppable({
 					drop: this.onDrop,
+					over: function() {
+						// disable td.filename droppables in case of breadcrumb and td.filename overlap
+						$('td.filename.ui-droppable').droppable('disable');
+					},
+					out: function() {
+						// re-enable td.filename droppable when draggable moves out of breadcrumb
+						$('td.filename.ui-droppable').droppable('enable');
+					},
 					tolerance: 'pointer'
 				});
 			}
