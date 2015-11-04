@@ -24,6 +24,13 @@ use OCA\DAV\CalDAV\CalDavBackend;
 use Sabre\DAV\PropPatch;
 use Test\TestCase;
 
+/**
+ * Class CalDavBackendTest
+ *
+ * @group DB
+ *
+ * @package Tests\Connector\Sabre
+ */
 class CalDavBackendTest extends TestCase {
 
 	/** @var CalDavBackend */
@@ -77,6 +84,130 @@ class CalDavBackendTest extends TestCase {
 		$this->backend->deleteCalendar($books[0]['id']);
 		$books = $this->backend->getCalendarsForUser(self::UNIT_TEST_USER);
 		$this->assertEquals(0, count($books));
+	}
+
+	public function testCardOperations() {
+		// create a new address book
+		$this->backend->createCalendar(self::UNIT_TEST_USER, 'Example', []);
+		$calendars = $this->backend->getCalendarsForUser(self::UNIT_TEST_USER);
+		$this->assertEquals(1, count($calendars));
+		$calId = $calendars[0]['id'];
+
+		// create a card
+		$uri = $this->getUniqueID('calobj');
+		$calData = <<<'EOD'
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:ownCloud Calendar
+BEGIN:VEVENT
+CREATED;VALUE=DATE-TIME:20130910T125139Z
+UID:47d15e3ec8
+LAST-MODIFIED;VALUE=DATE-TIME:20130910T125139Z
+DTSTAMP;VALUE=DATE-TIME:20130910T125139Z
+SUMMARY:Test Event
+DTSTART;VALUE=DATE-TIME:20130912T130000Z
+DTEND;VALUE=DATE-TIME:20130912T140000Z
+CLASS:PUBLIC
+END:VEVENT
+END:VCALENDAR
+EOD;
+
+		$this->backend->createCalendarObject($calId, $uri, $calData);
+
+		// get all the cards
+		$calendarObjects = $this->backend->getCalendarObjects($calId);
+		$this->assertEquals(1, count($calendarObjects));
+		$this->assertEquals($calId, $calendarObjects[0]['calendarid']);
+
+		// get the cards
+		$calendarObject = $this->backend->getCalendarObject($calId, $uri);
+		$this->assertNotNull($calendarObject);
+		$this->assertArrayHasKey('id', $calendarObject);
+		$this->assertArrayHasKey('uri', $calendarObject);
+		$this->assertArrayHasKey('lastmodified', $calendarObject);
+		$this->assertArrayHasKey('etag', $calendarObject);
+		$this->assertArrayHasKey('size', $calendarObject);
+		$this->assertEquals($calData, $calendarObject['calendardata']);
+
+		// update the card
+		$calData = <<<'EOD'
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:ownCloud Calendar
+BEGIN:VEVENT
+CREATED;VALUE=DATE-TIME:20130910T125139Z
+UID:47d15e3ec8
+LAST-MODIFIED;VALUE=DATE-TIME:20130910T125139Z
+DTSTAMP;VALUE=DATE-TIME:20130910T125139Z
+SUMMARY:Test Event
+DTSTART;VALUE=DATE-TIME:20130912T130000Z
+DTEND;VALUE=DATE-TIME:20130912T140000Z
+END:VEVENT
+END:VCALENDAR
+EOD;
+		$this->backend->updateCalendarObject($calId, $uri, $calData);
+		$calendarObject = $this->backend->getCalendarObject($calId, $uri);
+		$this->assertEquals($calData, $calendarObject['calendardata']);
+
+		// delete the card
+		$this->backend->deleteCalendarObject($calId, $uri);
+		$calendarObjects = $this->backend->getCalendarObjects($calId);
+		$this->assertEquals(0, count($calendarObjects));
+	}
+
+	public function testMultiCalendarObjects() {
+		// create a new address book
+		$this->backend->createCalendar(self::UNIT_TEST_USER, 'Example', []);
+		$calendars = $this->backend->getCalendarsForUser(self::UNIT_TEST_USER);
+		$this->assertEquals(1, count($calendars));
+		$calendarId = $calendars[0]['id'];
+
+		// create a card
+		$calData = <<<'EOD'
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:ownCloud Calendar
+BEGIN:VEVENT
+CREATED;VALUE=DATE-TIME:20130910T125139Z
+UID:47d15e3ec8
+LAST-MODIFIED;VALUE=DATE-TIME:20130910T125139Z
+DTSTAMP;VALUE=DATE-TIME:20130910T125139Z
+SUMMARY:Test Event
+DTSTART;VALUE=DATE-TIME:20130912T130000Z
+DTEND;VALUE=DATE-TIME:20130912T140000Z
+CLASS:PUBLIC
+END:VEVENT
+END:VCALENDAR
+EOD;
+		$uri0 = $this->getUniqueID('card');
+		$this->backend->createCalendarObject($calendarId, $uri0, $calData);
+		$uri1 = $this->getUniqueID('card');
+		$this->backend->createCalendarObject($calendarId, $uri1, $calData);
+		$uri2 = $this->getUniqueID('card');
+		$this->backend->createCalendarObject($calendarId, $uri2, $calData);
+
+		// get all the cards
+		$calendarObjects = $this->backend->getCalendarObjects($calendarId);
+		$this->assertEquals(3, count($calendarObjects));
+
+		// get the cards
+		$calendarObjects = $this->backend->getMultipleCalendarObjects($calendarId, [$uri1, $uri2]);
+		$this->assertEquals(2, count($calendarObjects));
+		foreach($calendarObjects as $card) {
+			$this->assertArrayHasKey('id', $card);
+			$this->assertArrayHasKey('uri', $card);
+			$this->assertArrayHasKey('lastmodified', $card);
+			$this->assertArrayHasKey('etag', $card);
+			$this->assertArrayHasKey('size', $card);
+			$this->assertEquals($calData, $card['calendardata']);
+		}
+
+		// delete the card
+		$this->backend->deleteCalendarObject($calendarId, $uri0);
+		$this->backend->deleteCalendarObject($calendarId, $uri1);
+		$this->backend->deleteCalendarObject($calendarId, $uri2);
+		$calendarObjects = $this->backend->getCalendarObjects($calendarId);
+		$this->assertEquals(0, count($calendarObjects));
 	}
 
 }

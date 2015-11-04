@@ -29,6 +29,9 @@ use Sabre\CalDAV\Plugin;
 use Sabre\CalDAV\Property\ScheduleCalendarTransp;
 use Sabre\CalDAV\Property\SupportedCalendarComponentSet;
 use Sabre\DAV;
+use Sabre\VObject\DateTimeParser;
+use Sabre\VObject\Reader;
+use Sabre\VObject\RecurrenceIterator;
 
 /**
  * Class CalDavBackend
@@ -38,6 +41,16 @@ use Sabre\DAV;
  * @package OCA\DAV\CalDAV
  */
 class CalDavBackend extends AbstractBackend implements SyncSupport, SubscriptionSupport, SchedulingSupport {
+
+	/**
+	 * We need to specify a max date, because we need to stop *somewhere*
+	 *
+	 * On 32 bit system the maximum for a signed integer is 2147483647, so
+	 * MAX_DATE cannot be higher than date('Y-m-d', 2147483647) which results
+	 * in 2038-01-19 to avoid problems when the date is converted
+	 * to a unix timestamp.
+	 */
+	const MAX_DATE = '2038-01-01';
 
 	/**
 	 * List of CalDAV properties, and how they map to database fieldnames
@@ -286,7 +299,26 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 * @return array
 	 */
 	function getCalendarObjects($calendarId) {
-		// TODO: Implement getCalendarObjects() method.
+		$query = $this->db->getQueryBuilder();
+		$query->select(['id', 'uri', 'lastmodified', 'etag', 'calendarid', 'size', 'componenttype'])
+			->from('calendarobjects')
+			->where($query->expr()->eq('calendarid', $query->createNamedParameter($calendarId)));
+		$stmt = $query->execute();
+
+		$result = [];
+		foreach($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
+			$result[] = [
+					'id'           => $row['id'],
+					'uri'          => $row['uri'],
+					'lastmodified' => $row['lastmodified'],
+					'etag'         => '"' . $row['etag'] . '"',
+					'calendarid'   => $row['calendarid'],
+					'size'         => (int)$row['size'],
+					'component'    => strtolower($row['componenttype']),
+			];
+		}
+
+		return $result;
 	}
 
 	/**
@@ -306,7 +338,27 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 * @return array|null
 	 */
 	function getCalendarObject($calendarId, $objectUri) {
-		// TODO: Implement getCalendarObject() method.
+
+		$query = $this->db->getQueryBuilder();
+		$query->select(['id', 'uri', 'lastmodified', 'etag', 'calendarid', 'size', 'calendardata', 'componenttype'])
+				->from('calendarobjects')
+				->where($query->expr()->eq('calendarid', $query->createNamedParameter($calendarId)))
+				->andWhere($query->expr()->eq('uri', $query->createNamedParameter($objectUri)));
+		$stmt = $query->execute();
+		$row = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+		if(!$row) return null;
+
+		return [
+				'id'            => $row['id'],
+				'uri'           => $row['uri'],
+				'lastmodified'  => $row['lastmodified'],
+				'etag'          => '"' . $row['etag'] . '"',
+				'calendarid'    => $row['calendarid'],
+				'size'          => (int)$row['size'],
+				'calendardata'  => $row['calendardata'],
+				'component'     => strtolower($row['componenttype']),
+		];
 	}
 
 	/**
@@ -322,7 +374,31 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 * @return array
 	 */
 	function getMultipleCalendarObjects($calendarId, array $uris) {
-		// TODO: Implement getMultipleCalendarObjects() method.
+		$query = $this->db->getQueryBuilder();
+		$query->select(['id', 'uri', 'lastmodified', 'etag', 'calendarid', 'size', 'calendardata', 'componenttype'])
+				->from('calendarobjects')
+				->where($query->expr()->eq('calendarid', $query->createNamedParameter($calendarId)))
+				->andWhere($query->expr()->in('uri', $query->createParameter('uri')))
+				->setParameter('uri', $uris, \Doctrine\DBAL\Connection::PARAM_STR_ARRAY);
+
+		$stmt = $query->execute();
+
+		$result = [];
+		while($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+
+			$result[] = [
+					'id'           => $row['id'],
+					'uri'          => $row['uri'],
+					'lastmodified' => $row['lastmodified'],
+					'etag'         => '"' . $row['etag'] . '"',
+					'calendarid'   => $row['calendarid'],
+					'size'         => (int)$row['size'],
+					'calendardata' => $row['calendardata'],
+					'component'    => strtolower($row['componenttype']),
+			];
+
+		}
+		return $result;
 	}
 
 	/**
@@ -344,7 +420,27 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 * @return string|null
 	 */
 	function createCalendarObject($calendarId, $objectUri, $calendarData) {
-		// TODO: Implement createCalendarObject() method.
+		$extraData = $this->getDenormalizedData($calendarData);
+
+		$query = $this->db->getQueryBuilder();
+		$query->insert('calendarobjects')
+			->values([
+				'calendarid' => $query->createNamedParameter($calendarId),
+				'uri' => $query->createNamedParameter($objectUri),
+				'calendardata' => $query->createNamedParameter($calendarData),
+				'lastmodified' => $query->createNamedParameter(time()),
+					'etag' => $query->createNamedParameter($extraData['etag']),
+					'size' => $query->createNamedParameter($extraData['size']),
+					'componentType' => $query->createNamedParameter($extraData['componentType']),
+					'firstOccurence' => $query->createNamedParameter($extraData['firstOccurence']),
+					'lastOccurence' => $query->createNamedParameter($extraData['lastOccurence']),
+					'uid' => $query->createNamedParameter($extraData['uid']),
+			])
+			->execute();
+
+		$this->addChange($calendarId, $objectUri, 1);
+
+		return '"' . $extraData['etag'] . '"';
 	}
 
 	/**
@@ -366,7 +462,25 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 * @return string|null
 	 */
 	function updateCalendarObject($calendarId, $objectUri, $calendarData) {
-		// TODO: Implement updateCalendarObject() method.
+		$extraData = $this->getDenormalizedData($calendarData);
+
+		$query = $this->db->getQueryBuilder();
+		$query->update('calendarobjects')
+				->set('calendardata', $query->createNamedParameter($calendarData))
+				->set('lastmodified', $query->createNamedParameter(time()))
+				->set('etag', $query->createNamedParameter($extraData['etag']))
+				->set('size', $query->createNamedParameter($extraData['size']))
+				->set('componenttype', $query->createNamedParameter($extraData['componentType']))
+				->set('firstoccurence', $query->createNamedParameter($extraData['firstOccurence']))
+				->set('lastoccurence', $query->createNamedParameter($extraData['lastOccurence']))
+				->set('uid', $query->createNamedParameter($extraData['uid']))
+			->where($query->expr()->eq('calendarid', $query->createNamedParameter($calendarId)))
+			->andWhere($query->expr()->eq('uri', $query->createNamedParameter($objectUri)))
+			->execute();
+
+		$this->addChange($calendarId, $objectUri, 2);
+
+		return '"' . $extraData['etag'] . '"';
 	}
 
 	/**
@@ -379,7 +493,10 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 * @return void
 	 */
 	function deleteCalendarObject($calendarId, $objectUri) {
-		// TODO: Implement deleteCalendarObject() method.
+		$stmt = $this->db->prepare('DELETE FROM `*PREFIX*calendarobjects` WHERE `calendarid` = ? AND `uri` = ?');
+		$stmt->execute([$calendarId, $objectUri]);
+
+		$this->addChange($calendarId, $objectUri, 3);
 	}
 
 	/**
@@ -681,4 +798,82 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 
 	}
 
+	/**
+	 * Parses some information from calendar objects, used for optimized
+	 * calendar-queries.
+	 *
+	 * Returns an array with the following keys:
+	 *   * etag - An md5 checksum of the object without the quotes.
+	 *   * size - Size of the object in bytes
+	 *   * componentType - VEVENT, VTODO or VJOURNAL
+	 *   * firstOccurence
+	 *   * lastOccurence
+	 *   * uid - value of the UID property
+	 *
+	 * @param string $calendarData
+	 * @return array
+	 */
+	protected function getDenormalizedData($calendarData) {
+
+		$vObject = Reader::read($calendarData);
+		$componentType = null;
+		$component = null;
+		$firstOccurence = null;
+		$lastOccurence = null;
+		$uid = null;
+		foreach($vObject->getComponents() as $component) {
+			if ($component->name!=='VTIMEZONE') {
+				$componentType = $component->name;
+				$uid = (string)$component->UID;
+				break;
+			}
+		}
+		if (!$componentType) {
+			throw new \Sabre\DAV\Exception\BadRequest('Calendar objects must have a VJOURNAL, VEVENT or VTODO component');
+		}
+		if ($componentType === 'VEVENT') {
+			$firstOccurence = $component->DTSTART->getDateTime()->getTimeStamp();
+			// Finding the last occurence is a bit harder
+			if (!isset($component->RRULE)) {
+				if (isset($component->DTEND)) {
+					$lastOccurence = $component->DTEND->getDateTime()->getTimeStamp();
+				} elseif (isset($component->DURATION)) {
+					$endDate = clone $component->DTSTART->getDateTime();
+					$endDate->add(DateTimeParser::parse($component->DURATION->getValue()));
+					$lastOccurence = $endDate->getTimeStamp();
+				} elseif (!$component->DTSTART->hasTime()) {
+					$endDate = clone $component->DTSTART->getDateTime();
+					$endDate->modify('+1 day');
+					$lastOccurence = $endDate->getTimeStamp();
+				} else {
+					$lastOccurence = $firstOccurence;
+				}
+			} else {
+				$it = new RecurrenceIterator($vObject, (string)$component->UID);
+				$maxDate = new \DateTime(self::MAX_DATE);
+				if ($it->isInfinite()) {
+					$lastOccurence = $maxDate->getTimeStamp();
+				} else {
+					$end = $it->getDtEnd();
+					while($it->valid() && $end < $maxDate) {
+						$end = $it->getDtEnd();
+						$it->next();
+
+					}
+					$lastOccurence = $end->getTimeStamp();
+				}
+
+			}
+		}
+
+		return [
+				'etag' => md5($calendarData),
+				'size' => strlen($calendarData),
+				'componentType' => $componentType,
+				'firstOccurence' => $firstOccurence,
+				'lastOccurence'  => $lastOccurence,
+				'uid' => $uid,
+		];
+
+	}
 }
