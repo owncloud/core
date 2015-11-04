@@ -25,9 +25,39 @@ use Sabre\CalDAV\Backend\AbstractBackend;
 use Sabre\CalDAV\Backend\SchedulingSupport;
 use Sabre\CalDAV\Backend\SubscriptionSupport;
 use Sabre\CalDAV\Backend\SyncSupport;
+use Sabre\CalDAV\Plugin;
+use Sabre\CalDAV\Property\ScheduleCalendarTransp;
+use Sabre\CalDAV\Property\SupportedCalendarComponentSet;
 use Sabre\DAV;
 
+/**
+ * Class CalDavBackend
+ *
+ * Code is heavily inspired by https://github.com/fruux/sabre-dav/blob/master/lib/CalDAV/Backend/PDO.php
+ *
+ * @package OCA\DAV\CalDAV
+ */
 class CalDavBackend extends AbstractBackend implements SyncSupport, SubscriptionSupport, SchedulingSupport {
+
+	/**
+	 * List of CalDAV properties, and how they map to database fieldnames
+	 * Add your own properties by simply adding on to this array.
+	 *
+	 * Note that only string-based properties are supported here.
+	 *
+	 * @var array
+	 */
+	public $propertyMap = [
+		'{DAV:}displayname'                          => 'displayname',
+		'{urn:ietf:params:xml:ns:caldav}calendar-description' => 'description',
+		'{urn:ietf:params:xml:ns:caldav}calendar-timezone'    => 'timezone',
+		'{http://apple.com/ns/ical/}calendar-order'  => 'calendarorder',
+		'{http://apple.com/ns/ical/}calendar-color'  => 'calendarcolor',
+	];
+
+	public function __construct(\OCP\IDBConnection $db) {
+		$this->db = $db;
+	}
 
 	/**
 	 * Returns a list of calendars for a principal.
@@ -55,7 +85,47 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 * @return array
 	 */
 	function getCalendarsForUser($principalUri) {
-		// TODO: Implement getCalendarsForUser() method.
+		$fields = array_values($this->propertyMap);
+		$fields[] = 'id';
+		$fields[] = 'uri';
+		$fields[] = 'synctoken';
+		$fields[] = 'components';
+		$fields[] = 'principaluri';
+		$fields[] = 'transparent';
+
+		// Making fields a comma-delimited list
+		$query = $this->db->getQueryBuilder();
+		$query->select($fields)->from('calendars')
+				->where($query->expr()->eq('principaluri', $query->createNamedParameter($principalUri)))
+				->orderBy('calendarorder', 'ASC');
+		$stmt = $query->execute();
+
+		$calendars = [];
+		while($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+
+			$components = [];
+			if ($row['components']) {
+				$components = explode(',',$row['components']);
+			}
+
+			$calendar = [
+				'id' => $row['id'],
+				'uri' => $row['uri'],
+				'principaluri' => $row['principaluri'],
+				'{' . Plugin::NS_CALENDARSERVER . '}getctag' => 'http://sabre.io/ns/sync/' . ($row['synctoken']?$row['synctoken']:'0'),
+				'{http://sabredav.org/ns}sync-token' => $row['synctoken']?$row['synctoken']:'0',
+				'{' . Plugin::NS_CALDAV . '}supported-calendar-component-set' => new SupportedCalendarComponentSet($components),
+				'{' . Plugin::NS_CALDAV . '}schedule-calendar-transp' => new ScheduleCalendarTransp($row['transparent']?'transparent':'opaque'),
+			];
+
+			foreach($this->propertyMap as $xmlName=>$dbName) {
+				$calendar[$xmlName] = $row[$dbName];
+			}
+
+			$calendars[] = $calendar;
+		}
+
+		return $calendars;
 	}
 
 	/**
@@ -70,7 +140,51 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 * @return void
 	 */
 	function createCalendar($principalUri, $calendarUri, array $properties) {
-		// TODO: Implement createCalendar() method.
+		$fieldNames = [
+			'principaluri',
+			'uri',
+			'synctoken',
+			'transparent',
+			'components'
+		];
+		$values = [
+			'principaluri' => $principalUri,
+			'uri'          => $calendarUri,
+			'synctoken'    => 1,
+			'transparent'  => 0,
+			'components'   => 'VEVENT,VTODO'
+		];
+
+		// Default value
+		$sccs = '{urn:ietf:params:xml:ns:caldav}supported-calendar-component-set';
+		if (isset($properties[$sccs])) {
+			if (!($properties[$sccs] instanceof SupportedCalendarComponentSet)) {
+				throw new DAV\Exception('The ' . $sccs . ' property must be of type: \Sabre\CalDAV\Property\SupportedCalendarComponentSet');
+			}
+			$values['components'] = implode(',',$properties[$sccs]->getValue());
+		}
+		$transp = '{' . Plugin::NS_CALDAV . '}schedule-calendar-transp';
+		if (isset($properties[$transp])) {
+			$values['transparent'] = $properties[$transp]->getValue()==='transparent';
+		}
+
+		foreach($this->propertyMap as $xmlName=>$dbName) {
+			if (isset($properties[$xmlName])) {
+
+				$values[$dbName] = $properties[$xmlName];
+				$fieldNames[] = $dbName;
+			}
+		}
+
+		$query = $this->db->getQueryBuilder();
+		$query->insert('calendars')
+				->values([
+						'principaluri' => $query->createNamedParameter($values['principaluri']),
+						'uri' => $query->createNamedParameter($values['principaluri']),
+						'synctoken' => $query->createNamedParameter($values['principaluri']),
+						'transparent' => $query->createNamedParameter($values['principaluri']),
+				])
+				->execute();
 	}
 
 	/**
@@ -83,14 +197,44 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 * Calling the handle method is like telling the PropPatch object "I
 	 * promise I can handle updating this property".
 	 *
-	 * Read the PropPatch documenation for more info and examples.
+	 * Read the PropPatch documentation for more info and examples.
 	 *
 	 * @param string $path
 	 * @param \Sabre\DAV\PropPatch $propPatch
 	 * @return void
 	 */
 	function updateCalendar($calendarId, \Sabre\DAV\PropPatch $propPatch) {
-		// TODO: Implement updateCalendar() method.
+		$supportedProperties = array_keys($this->propertyMap);
+		$supportedProperties[] = '{' . Plugin::NS_CALDAV . '}schedule-calendar-transp';
+
+		$propPatch->handle($supportedProperties, function($mutations) use ($calendarId) {
+			$newValues = [];
+			foreach ($mutations as $propertyName => $propertyValue) {
+
+				switch ($propertyName) {
+					case '{' . Plugin::NS_CALDAV . '}schedule-calendar-transp' :
+						$fieldName = 'transparent';
+						$newValues[$fieldName] = $propertyValue->getValue() === 'transparent';
+						break;
+					default :
+						$fieldName = $this->propertyMap[$propertyName];
+						$newValues[$fieldName] = $propertyValue;
+						break;
+				}
+
+			}
+			$query = $this->db->getQueryBuilder();
+			$query->update('calendars');
+			foreach ($newValues as $fieldName => $value) {
+				$query->set($fieldName, $query->createNamedParameter($value));
+			}
+			$query->where($query->expr()->eq('id', $query->createNamedParameter($calendarId)));
+			$query->execute();
+
+			$this->addChange($calendarId, "", 2);
+
+			return true;
+		});
 	}
 
 	/**
@@ -100,7 +244,14 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 * @return void
 	 */
 	function deleteCalendar($calendarId) {
-		// TODO: Implement deleteCalendar() method.
+		$stmt = $this->db->prepare('DELETE FROM `*PREFIX*calendarobjects` WHERE `calendarid` = ?');
+		$stmt->execute([$calendarId]);
+
+		$stmt = $this->db->prepare('DELETE FROM `*PREFIX*calendars` WHERE `id` = ?');
+		$stmt->execute([$calendarId]);
+
+		$stmt = $this->db->prepare('DELETE FROM `*PREFIX*calendarchanges` WHERE `calendarid` = ?');
+		$stmt->execute([$calendarId]);
 	}
 
 	/**
@@ -505,4 +656,29 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	function createSchedulingObject($principalUri, $objectUri, $objectData) {
 		// TODO: Implement createSchedulingObject() method.
 	}
+
+	/**
+	 * Adds a change record to the calendarchanges table.
+	 *
+	 * @param mixed $calendarId
+	 * @param string $objectUri
+	 * @param int $operation 1 = add, 2 = modify, 3 = delete.
+	 * @return void
+	 */
+	protected function addChange($calendarId, $objectUri, $operation) {
+
+		$stmt = $this->db->prepare('INSERT INTO `*PREFIX*calendarchanges` (`uri`, `synctoken`, `calendarid`, `operation`) SELECT ?, `synctoken`, ?, ? FROM `*PREFIX*calendars` WHERE `id` = ?');
+		$stmt->execute([
+			$objectUri,
+			$calendarId,
+			$operation,
+			$calendarId
+		]);
+		$stmt = $this->db->prepare('UPDATE `*PREFIX*calendars` SET `synctoken` = `synctoken` + 1 WHERE `id` = ?');
+		$stmt->execute([
+			$calendarId
+		]);
+
+	}
+
 }
