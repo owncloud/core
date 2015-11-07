@@ -139,7 +139,12 @@ $maxHumanFileSize = OCP\Util::humanFileSize($maxUploadFileSize);
 
 $totalSize = 0;
 foreach ($files['size'] as $size) {
-	$totalSize += $size;
+	if ($size == 0) {
+		OCP\JSON::error(array('data' => array('message' => $l->t('Can not upload a 0 byte file'))));
+		exit();
+	} else {
+		$totalSize += $size;
+	}
 }
 if ($maxUploadFileSize >= 0 and $totalSize > $maxUploadFileSize) {
 	OCP\JSON::error(array('data' => array('message' => $l->t('Not enough storage available'),
