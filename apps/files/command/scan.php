@@ -92,6 +92,7 @@ class Scan extends Command {
 	protected function scanFiles($user, $path, $verbose, OutputInterface $output) {
 		$scanner = new \OC\Files\Utils\Scanner($user, \OC::$server->getDatabaseConnection());
 		if ($verbose) {
+			// count and print
 			$scanner->listen('\OC\Files\Utils\Scanner', 'scanFile',
 				function ($path) use ($output) {
 					$output->writeln("Scanning file   <info>$path</info>");
@@ -105,6 +106,7 @@ class Scan extends Command {
 					$this->checkForInterruption($output);
 				});
 		} else {
+			// count only
 			$scanner->listen('\OC\Files\Utils\Scanner', 'scanFile', 
 				function ($path) use ($output) { 
 					$this->filesCounter += 1;
@@ -147,9 +149,9 @@ class Scan extends Command {
 		# $quiet   means no print at all
 		# $verbose means full printout including statistics
 		# -q	-v	full	stat
-		#  0	 0	no		yes
-		#  0	 1	yes		yes
-		#  1	--	no		no  (quiet overrules verbose)
+		#  0	 0	no	yes
+		#  0	 1	yes	yes
+		#  1	--	no	no  (quiet overrules verbose)
 		$verbose = $input->getOption('verbose');
 		$quiet = $input->getOption('quiet');
 		# restrict the verbosity level to VERBOSITY_VERBOSE
