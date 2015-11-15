@@ -26,6 +26,8 @@ class SetupTest extends \Test\TestCase {
 	protected $logger;
 	/** @var \OCP\Security\ISecureRandom | \PHPUnit_Framework_MockObject_MockObject */
 	protected $random;
+	/** @var \OCP\IURLGenerator | \PHPUnit_Framework_MockObject_MockObject */
+	protected $urlGenerator;
 
 	protected function setUp() {
 		parent::setUp();
@@ -36,9 +38,10 @@ class SetupTest extends \Test\TestCase {
 		$this->defaults = $this->createMock('\OC_Defaults');
 		$this->logger = $this->createMock('\OCP\ILogger');
 		$this->random = $this->createMock('\OCP\Security\ISecureRandom');
+		$this->urlGenerator = $this->createMock('\OCP\IURLGenerator');
 		$this->setupClass = $this->getMockBuilder('\OC\Setup')
 			->setMethods(['IsClassExisting', 'is_callable', 'getAvailableDbDriversForPdo'])
-			->setConstructorArgs([$this->config, $this->iniWrapper, $this->l10n, $this->defaults, $this->logger, $this->random])
+			->setConstructorArgs([$this->config, $this->iniWrapper, $this->l10n, $this->defaults, $this->logger, $this->random, $this->urlGenerator])
 			->getMock();
 	}
 
