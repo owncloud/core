@@ -38,6 +38,8 @@ script('core', [
 			<!-- the following div ensures that the spinner is always inside the #message div -->
 			<div style="clear: both;"></div>
 		</div>
+ 		<?php $login_embed = (strpos(\OC::$server->getSystemConfig()->getValue('loginstyle','simplistic'), 'simplistic') !== false) ?>
+		<?php $login_button = (strpos(\OC::$server->getSystemConfig()->getValue('loginstyle','simplistic'), 'legacybutton') !== false) ?>
 		<p class="grouptop">
 			<input type="text" name="user" id="user"
 				placeholder="<?php p($l->t('Username')); ?>"
@@ -50,10 +52,15 @@ script('core', [
 		<p class="groupbottom">
 			<input type="password" name="password" id="password" value=""
 				placeholder="<?php p($l->t('Password')); ?>"
+				<?php if ($login_embed) : ?>
+					class="buttonatright"
+				<?php endif; ?>
 				<?php p($_['user_autofocus'] ? '' : 'autofocus'); ?>
 				autocomplete="on" autocapitalize="off" autocorrect="off" required>
 			<label for="password" class="infield"><?php p($l->t('Password')); ?></label>
-			<input type="submit" id="submit" class="login primary icon-confirm svg" title="<?php p($l->t('Log in')); ?>" value="" disabled="disabled"/>
+			<?php if ($login_embed) : ?>
+				<input type="submit" id="submit" class="login primary icon-confirm svg" title="<?php p($l->t('Log in')); ?>" value="" disabled="disabled"/>
+			<?php endif; ?>
 		</p>
 
 		<?php if (isset($_['invalidpassword']) && ($_['invalidpassword'])): ?>
@@ -61,12 +68,15 @@ script('core', [
 			<?php p($l->t('Wrong password. Reset it?')); ?>
 		</a>
 		<?php endif; ?>
-		<?php if ($_['rememberLoginAllowed'] === true) : ?>
 		<div class="remember-login-container">
-			<input type="checkbox" name="remember_login" value="1" id="remember_login" class="checkbox checkbox--white">
-			<label for="remember_login"><?php p($l->t('Stay logged in')); ?></label>
+			<?php if ($_['rememberLoginAllowed'] === true) : ?>
+				<input type="checkbox" name="remember_login" value="1" id="remember_login" class="checkbox checkbox--white">
+				<label for="remember_login"><?php p($l->t('remember')); ?></label>
+ 		 	<?php endif; ?>
+			<?php if ($login_button) : ?>
+				<input original-title="" id="submit" class="primary" value="<?php p($l->t('Log in')); ?>" type="submit">
+ 		 	<?php endif; ?>
 		</div>
-		<?php endif; ?>
 		<input type="hidden" name="timezone-offset" id="timezone-offset"/>
 		<input type="hidden" name="timezone" id="timezone"/>
 		<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']) ?>">

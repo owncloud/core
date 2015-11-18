@@ -272,7 +272,7 @@ body {
 	margin: -13px;
 }
 
-/* position log in button as confirm icon in right of password field */
+/* position 'Log in' button as confirm icon in right of password field */
 #body-login #submit.login {
 	position: absolute;
 	right: 0;
@@ -287,7 +287,7 @@ body {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
 	opacity: .7;
 }
-#body-login input[type="password"] {
+#body-login .buttonatright {
 	padding-right: 40px;
 	box-sizing: border-box;
 	min-width: 269px;
@@ -600,6 +600,7 @@ html.ie8 #body-login form input[type="checkbox"] {
 }
 #body-login input[type="submit"] {
 	padding: 10px 20px; /* larger log in and installation buttons */
+	vertical-align: middle;
 }
 #remember_login {
 	margin: 18px 5px 0 16px !important;
@@ -609,6 +610,7 @@ html.ie8 #body-login form input[type="checkbox"] {
 #body-login .remember-login-container {
 	margin-top: 10px;
 	text-align: center;
+	vertical-align: middle;
 }
 
 /* Sticky footer */

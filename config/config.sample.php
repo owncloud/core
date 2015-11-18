@@ -387,20 +387,20 @@ $CONFIG = array(
  *
  * Available values:
  *
- * * ``auto``      
- *     default setting. keeps files and folders in the trash bin for 30 days 
- *     and automatically deletes anytime after that if space is needed (note: 
+ * * ``auto``
+ *     default setting. keeps files and folders in the trash bin for 30 days
+ *     and automatically deletes anytime after that if space is needed (note:
  *     files may not be deleted if space is not needed).
- * * ``D, auto``   
- *     keeps files and folders in the trash bin for D+ days, delete anytime if 
+ * * ``D, auto``
+ *     keeps files and folders in the trash bin for D+ days, delete anytime if
  *     space needed (note: files may not be deleted if space is not needed)
- * * ``auto, D``   
- *     delete all files in the trash bin that are older than D days   
+ * * ``auto, D``
+ *     delete all files in the trash bin that are older than D days
  *     automatically, delete other files anytime if space needed
- * * ``D1, D2``    
- *     keep files and folders the in trash bin for at least D1 days and 
+ * * ``D1, D2``
+ *     keep files and folders the in trash bin for at least D1 days and
  *     delete when exceeds D2 days
- * * ``disabled``  
+ * * ``disabled``
  *     trash bin auto clean disabled, files and folders will be kept forever
  */
 'trashbin_retention_obligation' => 'auto',
@@ -421,19 +421,19 @@ $CONFIG = array(
  *
  * Available values:
  *
- * * ``auto``      
- *     default setting. Automatically expire versions according to expire 
- *     rules. Please refer to Files_versions online documentation for more 
+ * * ``auto``
+ *     default setting. Automatically expire versions according to expire
+ *     rules. Please refer to Files_versions online documentation for more
  *     info.
- * * ``D, auto``   
- *     keep versions at least for D days, apply expire rules to all versions 
+ * * ``D, auto``
+ *     keep versions at least for D days, apply expire rules to all versions
  *     that are older than D days
- * * ``auto, D``   
- *     delete all versions that are older than D days automatically, delete 
+ * * ``auto, D``
+ *     delete all versions that are older than D days automatically, delete
  *     other versions according to expire rules
- * * ``D1, D2``    
+ * * ``D1, D2``
  *     keep versions for at least D1 days and delete when exceeds D2 days
- * * ``disabled``  
+ * * ``disabled``
  *     versions auto clean disabled, versions will be kept forever
  */
 'versions_retention_obligation' => 'auto',
@@ -594,8 +594,8 @@ $CONFIG = array(
 /**
  * ownCloud uses some 3rd party PHP components to provide certain functionality.
  * These components are shipped as part of the software package and reside in
- * ``owncloud/3rdparty``. Use this option to configure a different location. 
- * For example, if your location is /var/www/owncloud/foo/3rdparty, then the 
+ * ``owncloud/3rdparty``. Use this option to configure a different location.
+ * For example, if your location is /var/www/owncloud/foo/3rdparty, then the
  * correct configuration is '3rdpartyroot' => '/var/www/owncloud/foo/',
  */
 '3rdpartyroot' => '',
@@ -817,9 +817,9 @@ $CONFIG = array(
 /**
  * Enable maintenance mode to disable ownCloud
  *
- * If you want to prevent users from logging in to ownCloud before you start 
- * doing some maintenance work, you need to set the value of the maintenance 
- * parameter to true. Please keep in mind that users who are already logged-in 
+ * If you want to prevent users from logging in to ownCloud before you start
+ * doing some maintenance work, you need to set the value of the maintenance
+ * parameter to true. Please keep in mind that users who are already logged-in
  * are kicked out of ownCloud instantly.
  */
 'maintenance' => false,
@@ -970,6 +970,14 @@ $CONFIG = array(
 ),
 
 /**
+ * Individual configuration of Log in dialog style. Possible values are:
+ * 'simplistic'   : new simplistic style with embedded login button in the password form
+ * 'legacybutton' : legacy style with separate button below password form
+ */
+'loginstyle' => 'simplistic',
+),
+
+/**
  * sqlite3 journal mode can be specified using this config parameter - can be
  * 'WAL' or 'DELETE' see for more details https://www.sqlite.org/wal.html
  */
@@ -1101,7 +1109,7 @@ $CONFIG = array(
 
 /**
  * List of trusted proxy servers
- * 
+ *
  * If you configure these also consider setting `forwarded_for_headers` which
  * otherwise defaults to `HTTP_X_FORWARDED_FOR` (the `X-Forwarded-For` header).
  */
