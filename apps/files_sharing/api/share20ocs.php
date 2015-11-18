@@ -164,4 +164,106 @@ class Share20OCS {
 
 		return new \OC_OCS_Result();
 	}
+
+	/**
+	 * Create a share
+	 *
+	 * @return \OC_OCS_Result
+	 */
+	public function createShare() {
+		$path = $this->request->getParam('path', null);
+		$shareType = $this->request->getParam('shareType', null);
+
+		if ($shareType === null) {
+			return new \OC_OCS_Result(null, 400, "unknown share type");
+		}
+		$shareType = (int)$shareType;
+
+		/*
+		 * Verify proper path
+		 */
+		if($path === null) {
+			return new \OC_OCS_Result(null, 400, "please specify a file or folder path");
+		}
+
+		try {
+			$path = $this->userFolder->get($path);
+		} catch (\OCP\Files\NotFoundException $e) {
+			return new \OC_OCS_Result(null, 404, "wrong path, file/folder doesn't exist.");
+		}
+
+		if ($shareType !== \OCP\Share::SHARE_TYPE_LINK) {
+			\OCA\Files_Sharing\API\Local::createShare([]);
+		}
+
+		/*
+		 * Get a new share object
+		 */
+		$share = $this->shareManager->newShare();
+		$share->setPath($path);
+
+		if ($shareType === \OCP\Share::SHARE_TYPE_LINK) {
+			$share->setShareType(\OCP\Share::SHARE_TYPE_LINK);
+	
+			// Parse permissions
+			$publicUpload = $this->request->getParam('publicUpload', null);
+			$permissions = \OCP\Constants::PERMISSION_READ;
+			if ($publicUpload === 'true') {
+				$permissions |= \OCP\Constants::PERMISSION_CREATE | \OCP\Constants::PERMISSION_UPDATE;
+			}
+
+			// Parse expire date
+			$expireDate = $this->request->getParam('expireDate', null);
+			if ($expireDate !== null) {
+				try {
+					$expireDate = $this->parseDate($expireDate);
+				} catch (\Exception $e) {
+					return new \OC_OCS_Result(null, 404, 'Invalid Date. Format must be YYYY-MM-DD.');
+				}
+				$share->setExpirationDate($expireDate);
+			}
+
+			// Get password
+			$password = $this->request->getParam('password', null);
+			if ($password !== null) {
+				$share->setPassword($password);
+			}
+		}
+
+		$share->setPermissions($permissions);
+
+		$share = $this->shareManager->createShare($share);
+
+		return new \OC_OCS_Result($this->formatShare($share));
+	}
+
+	/**
+	 * Make sure that the passed date is valid ISO 8601
+	 * So YYYY-MM-DD
+	 * If not throw an exception
+	 *
+	 * @param string $expireDate
+	 *
+	 * @throws \Exception
+	 * @return \DateTime
+	 */
+	private function parseDate($expireDate) {
+		if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $expireDate) === 0) {
+			throw new \Exception('Invalid date. Format must be YYYY-MM-DD');
+		}
+		
+		try {
+			$date = new \DateTime($expireDate);
+		} catch (\Exception $e) {
+			throw new \Exception('Invalid date. Format must be YYYY-MM-DD');
+		}
+
+		if ($date === false) {
+			throw new \Exception('Invalid date. Format must be YYYY-MM-DD');
+		}
+
+		$date->setTime(0,0,0);
+
+		return $date;
+	}
 }

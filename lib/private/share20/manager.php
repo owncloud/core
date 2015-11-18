@@ -82,7 +82,7 @@ class Manager {
 	 * @param Share $share
 	 * @return Share The share object
 	 */
-	public function createShare(Share $share) {
+	public function createShare(IShare $share) {
 		throw new \Exception();
 	}
 
@@ -278,5 +278,14 @@ class Manager {
 	 */
 	public function getAccessList(\OCP\Files\Node $path) {
 		throw new \Exception();
+	}
+
+	/**
+	 * Creates a new share
+	 *
+	 * @return IShare
+	 */
+	public function newShare() {
+		return new Share();
 	}
 }

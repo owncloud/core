@@ -342,5 +342,144 @@ class Share20OCSTest extends \Test\TestCase {
 			->willReturn('url');
 
 		$expected = new \OC_OCS_Result($result);
-		$this->assertEquals($expected->getData(), $this->ocs->getShare($share->getId())->getData());	}
+		$this->assertEquals($expected->getData(), $this->ocs->getShare($share->getId())->getData());
+	}
+
+	public function testCreateShareNoType() {
+		$expected = new \OC_OCS_Result(null, 400, "unknown share type");
+		$result = $this->ocs->createShare();
+
+		$this->assertEquals($expected->getMeta(), $result->getMeta());
+		$this->assertEquals($expected->getData(), $result->getData());
+	}
+
+	public function testCreateShareNoPath() {
+		$this->request
+			->method('getParam')
+			->will($this->returnValueMap([
+				['shareType', null, -1]
+			]));
+		$expected = new \OC_OCS_Result(null, 400, "please specify a file or folder path");
+		$result = $this->ocs->createShare();
+
+		$this->assertEquals($expected->getMeta(), $result->getMeta());
+		$this->assertEquals($expected->getData(), $result->getData());
+	}
+
+	public function testCreateShareNoValidPath() {
+		$this->request
+			->method('getParam')
+			->will($this->returnValueMap([
+				['shareType', null, -1],
+				['path', null, 'invalid-path'],
+			]));
+
+		$this->userFolder
+			->expects($this->once())
+			->method('get')
+			->with('invalid-path')
+			->will($this->throwException(new \OCP\Files\NotFoundException()));
+
+		$expected = new \OC_OCS_Result(null, 404, "wrong path, file/folder doesn't exist.");
+		$result = $this->ocs->createShare();
+
+		$this->assertEquals($expected->getMeta(), $result->getMeta());
+		$this->assertEquals($expected->getData(), $result->getData());
+	}
+
+	public function testCreateShareLink() {
+		$this->request
+			->method('getParam')
+			->will($this->returnValueMap([
+				['shareType', null, \OCP\Share::SHARE_TYPE_LINK],
+				['path', null, 'valid-path'],
+				['publicUpload', null, 'true'],
+				['password', null, 'password'],
+				['expireDate', null, '2000-01-01'],
+			]));
+
+		$parentFolder = $this->getMock('OCP\Files\Folder');
+		$parentFolder->method('getId')->willReturn(3);
+
+		$storage = $this->getMock('OCP\Files\Storage');
+		$storage->method('getId')->willReturn('STORAGE');
+
+		$path = $this->getMock('\OCP\Files\Folder');
+		$path->method('getStorage')->willReturn($storage);
+		$path->method('getParent')->willReturn($parentFolder);
+
+		$this->userFolder
+			->expects($this->once())
+			->method('get')
+			->with('valid-path')
+			->willReturn($path);
+
+		$share = $this->getMock('\OC\Share20\IShare');
+		$this->shareManager
+			->expects($this->once())
+			->method('newShare')
+			->willReturn($share);
+
+		$sharedBy = $this->getMock('\OCP\IUser');
+		$resShare = $this->createShare(
+			1, 
+			\OCP\Share::SHARE_TYPE_LINK, 
+			null,
+			$sharedBy,
+			$path,
+			7,
+			2, 
+			\DateTime::createFromFormat('Y-m-d h:i:s', '2000-01-01 00:00:00'),
+			null,
+		    null,
+			false, 
+			'mytoken',
+			'hashed_password');
+
+		$share->expects($this->once())->method('setShareType')->with(\OCP\Share::SHARE_TYPE_LINK);
+		$share->expects($this->once())->method('setPath')->with($path);
+		$share->expects($this->once())->method('setPermissions')->with(
+			\OCP\Constants::PERMISSION_READ |
+			\OCP\Constants::PERMISSION_CREATE | 
+			\OCP\Constants::PERMISSION_UPDATE);
+		$share->expects($this->once())->method('setPassword')->with('password');
+		$share->expects($this->once())->method('setExpirationDate')->with($this->callback((
+			function ($date) {
+				return $date->format('Y-m-d\T00:00:00') === '2000-01-01T00:00:00';
+			}		
+		)));
+
+		$this->shareManager
+			->expects($this->once())
+			->method('createShare')
+			->with($share)
+			->willReturn($resShare);
+
+
+		$expected = new \OC_OCS_Result([]);
+		$result = $this->ocs->createShare();
+
+		$this->assertEquals($expected->getMeta(), $result->getMeta());
+	}
+
+	public function dataParseDateInvalid() {
+		return [
+			['abc'],
+			['01-01-2001'],
+			['2012-01-01 00:00:00'],
+			['2012-01-01T00:00:00'],
+			['2012-13-01'],
+			['2012-01-32'],
+		];
+	}
+
+	/**
+	 * @dataProvider dataParseDateInvalid
+	 * @expectedException        Exception
+	 * @expectedExceptionMessage Invalid date. Format must be YYYY-MM-DD
+	 */
+	public function testParseDateInvalid($date) {
+		$this->invokePrivate($this->ocs, 'parseDate', [$date]);
+	}
+
 }
