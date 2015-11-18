@@ -223,6 +223,12 @@
 			// if dropping on folders is allowed, then also allow on breadcrumbs
 			if (this._folderDropOptions) {
 				breadcrumbOptions.onDrop = _.bind(this._onDropOnBreadCrumb, this);
+				breadcrumbOptions.onOver = function() {
+					self.$el.find('td.filename.ui-droppable').droppable('disable');
+				}
+				breadcrumbOptions.onOut = function() {
+					self.$el.find('td.filename.ui-droppable').droppable('enable');
+				}
 			}
 			this.breadcrumb = new OCA.Files.BreadCrumb(breadcrumbOptions);
 

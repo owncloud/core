@@ -39,6 +39,8 @@
 		}
 		if (options.onDrop) {
 			this.onDrop = options.onDrop;
+			this.onOver = options.onOver;
+			this.onOut = options.onOut;
 		}
 		if (options.getCrumbUrl) {
 			this.getCrumbUrl = options.getCrumbUrl;
@@ -60,6 +62,8 @@
 		breadcrumbs: [],
 		onClick: null,
 		onDrop: null,
+		onOver: null,
+		onOut: null,
 
 		/**
 		 * Sets the directory to be displayed as breadcrumb.
@@ -127,14 +131,8 @@
 			if (this.onDrop) {
 				this.$el.find('.crumb:not(.last)').droppable({
 					drop: this.onDrop,
-					over: function() {
-						// disable td.filename droppables in case of breadcrumb and td.filename overlap
-						$('td.filename.ui-droppable').droppable('disable');
-					},
-					out: function() {
-						// re-enable td.filename droppable when draggable moves out of breadcrumb
-						$('td.filename.ui-droppable').droppable('enable');
-					},
+					over: this.onOver,
+					out: this.onOut,
 					tolerance: 'pointer'
 				});
 			}
