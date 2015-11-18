@@ -28,9 +28,11 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IGroupManager;
 use OCP\ILogger;
-use OCP\IAppConfig;
+use OCP\IConfig;
 use OCP\Files\Folder;
 use OCP\Share20\IShareProvider;
+use OCP\Security\IHasher;
+use OCP\Security\ISecureRandom;
 
 class ManagerTest extends \Test\TestCase {
 
@@ -50,13 +52,19 @@ class ManagerTest extends \Test\TestCase {
 	protected $logger;
 
 	/** @var IAppConfig */
-	protected $appConfig;
+	protected $config;
 
 	/** @var Folder */
 	protected $userFolder;
 
+	/** @var IHasher */
+	protected $hasher;
+
 	/** @var IShareProvider */
 	protected $defaultProvider;
+
+	/** @var ISecureRandom */
+	protected $secureRandom;
 
 	public function setUp() {
 		
@@ -64,18 +72,24 @@ class ManagerTest extends \Test\TestCase {
 		$this->userManager = $this->getMock('\OCP\IUserManager');
 		$this->groupManager = $this->getMock('\OCP\IGroupManager');
 		$this->logger = $this->getMock('\OCP\ILogger');
-		$this->appConfig = $this->getMock('\OCP\IAppConfig');
+		$this->config = $this->getMock('\OCP\IConfig');
 		$this->userFolder = $this->getMock('\OCP\Files\Folder');
+		$this->hasher = $this->getMock('\OCP\Security\IHasher');
 		$this->defaultProvider = $this->getMock('\OC\Share20\IShareProvider');
+
+		$this->secureRandom = $this->getMock('\OCP\Security\ISecureRandom');
+		$this->secureRandom->method('getMediumStrengthGenerator')->will($this->returnSelf());
 
 		$this->manager = new Manager(
 			$this->user,
 			$this->userManager,
 			$this->groupManager,
 			$this->logger,
-			$this->appConfig,
+			$this->config,
 			$this->userFolder,
-			$this->defaultProvider
+			$this->defaultProvider,
+			$this->hasher,
+			$this->secureRandom
 		);
 	}
 
@@ -119,9 +133,11 @@ class ManagerTest extends \Test\TestCase {
 				$this->userManager,
 				$this->groupManager,
 				$this->logger,
-				$this->appConfig,
+				$this->config,
 				$this->userFolder,
-				$this->defaultProvider
+				$this->defaultProvider,
+				$this->hasher,
+				$this->secureRandom
 			])
 			->setMethods(['getShareById', 'deleteChildren'])
 			->getMock();
@@ -209,9 +225,11 @@ class ManagerTest extends \Test\TestCase {
 				$this->userManager,
 				$this->groupManager,
 				$this->logger,
-				$this->appConfig,
+				$this->config,
 				$this->userFolder,
-				$this->defaultProvider
+				$this->defaultProvider,
+				$this->hasher,
+				$this->secureRandom
 			])
 			->setMethods(['getShareById'])
 			->getMock();
@@ -353,9 +371,11 @@ class ManagerTest extends \Test\TestCase {
 				$this->userManager,
 				$this->groupManager,
 				$this->logger,
-				$this->appConfig,
+				$this->config,
 				$this->userFolder,
-				$this->defaultProvider
+				$this->defaultProvider,
+				$this->hasher,
+				$this->secureRandom
 			])
 			->setMethods(['deleteShare'])
 			->getMock();
@@ -476,4 +496,233 @@ class ManagerTest extends \Test\TestCase {
 
 		$this->assertEquals($share, $this->manager->getShareById(42));
 	}
+
+	/**
+	 * @expectedException \Exception
+	 * @expectedExceptionMessage Public link sharing disabled
+	 */
+	public function testCreateLinkShareNotEnabled() {
+		$this->config
+			->method('getAppValue')
+			->will($this->returnValueMap([
+				['core', 'shareapi_allow_links', 'yes', 'no'],
+			]));
+
+		$share = $this->getMock('\OC\Share20\IShare');
+
+		$this->invokePrivate($this->manager, 'createLinkShare', [$share]);
+	}
+
+	/**
+	 * @expectedException \Exception
+	 * @expectedExceptionMessage Date in past
+	 */
+	public function testCreateLinkShareExpireDateInPast() {
+		$this->config
+			->method('getAppValue')
+			->will($this->returnValueMap([
+				['core', 'shareapi_allow_links', 'yes', 'yes'],
+			]));
+
+		$share = $this->getMock('\OC\Share20\IShare');
+
+		$date = new \DateTime();
+		$date->setTime(0,0,0);
+		$date->sub(new \DateInterval('P1D'));
+
+		$share->method('getExpirationDate')->willReturn($date);
+
+		$this->invokePrivate($this->manager, 'createLinkShare', [$share]);
+	}
+
+	public function testCreateLinkShareValidDate() {
+		$this->config
+			->method('getAppValue')
+			->will($this->returnValueMap([
+				['core', 'shareapi_allow_links', 'yes', 'yes'],
+			]));
+
+		$share = $this->getMock('\OC\Share20\IShare');
+
+		$date = new \DateTime();
+		$date->add(new \DateInterval('P1D'));
+
+		$share->method('getExpirationDate')->willReturn($date);
+		$share->expects($this->never())->method('setExpirationDate');
+
+		$this->defaultProvider
+			->expects($this->once())
+			->method('getShareByToken')
+			->will($this->throwException(new \OC\Share20\Exception\ShareNotFound()));
+
+		$this->invokePrivate($this->manager, 'createLinkShare', [$share]);
+	}
+
+	public function testCreateLinkShareDateToFarInFuture() {
+		$this->config
+			->method('getAppValue')
+			->will($this->returnValueMap([
+				['core', 'shareapi_allow_links', 'yes', 'yes'],
+				['core', 'shareapi_enforce_expire_date', 'no', 'yes'],
+				['core', 'shareapi_expire_after_n_days', '7', '2'],
+			]));
+
+		$share = $this->getMock('\OC\Share20\IShare');
+
+		$date = new \DateTime();
+		$date->add(new \DateInterval('P1W'));
+
+		$share->method('getExpirationDate')->willReturn($date);
+		$share->expects($this->once())
+			->method('setExpirationDate')
+			->with($this->callback(function($date) {
+				$curDate = new\DateTime();
+				$curDate->setTime(0,0,0);
+				$curDate->add(new \DateInterval('P2D'));
+
+				return $date == $curDate;
+			}));
+
+		$this->defaultProvider
+			->expects($this->once())
+			->method('getShareByToken')
+			->will($this->throwException(new \OC\Share20\Exception\ShareNotFound()));
+
+		$this->invokePrivate($this->manager, 'createLinkShare', [$share]);
+	}
+
+	public function testCreateLinkShareNoDateButDefaultEnabled() {
+		$this->config
+			->method('getAppValue')
+			->will($this->returnValueMap([
+				['core', 'shareapi_allow_links', 'yes', 'yes'],
+				['core', 'shareapi_default_expire_date', 'no', 'yes'],
+				['core', 'shareapi_expire_after_n_days', '7', '2'],
+			]));
+
+		$share = $this->getMock('\OC\Share20\IShare');
+
+		$share->expects($this->once())
+			->method('setExpirationDate')
+			->with($this->callback(function($date) {
+				$curDate = new\DateTime();
+				$curDate->setTime(0,0,0);
+				$curDate->add(new \DateInterval('P2D'));
+
+				return $date == $curDate;
+			}));
+
+		$this->defaultProvider
+			->expects($this->once())
+			->method('getShareByToken')
+			->will($this->throwException(new \OC\Share20\Exception\ShareNotFound()));
+
+		$this->invokePrivate($this->manager, 'createLinkShare', [$share]);
+	}
+
+	/**
+	 * @expectedException \Exception
+	 * @expectedExceptionMessage Password is enforced for public links
+	 */
+	public function testCreateLinkShareNoPasswordPasswordEnforced() {
+		$this->config
+			->method('getAppValue')
+			->will($this->returnValueMap([
+				['core', 'shareapi_allow_links', 'yes', 'yes'],
+				['core', 'shareapi_enforce_links_password', 'no', 'yes'],
+			]));
+
+		$share = $this->getMock('\OC\Share20\IShare');
+
+		$this->invokePrivate($this->manager, 'createLinkShare', [$share]);
+	}
+
+	/**
+	 * @expectedException \Exception
+	 * @expectedExceptionMessage Share must be read only
+	 */
+	public function testCreateLinkShareNoPublicUpload() {
+		$this->config
+			->method('getAppValue')
+			->will($this->returnValueMap([
+				['core', 'shareapi_allow_links', 'yes', 'yes'],
+				['core', 'shareapi_allow_public_upload', 'yes', 'no'],
+			]));
+
+		$share = $this->getMock('\OC\Share20\IShare');
+		$share->method('getPermissions')->willReturn(\OCP\Constants::PERMISSION_CREATE);
+
+		$this->invokePrivate($this->manager, 'createLinkShare', [$share]);
+	}
+
+	/**
+	 * @expectedException \Exception
+	 * @expectedExceptionMessage Invalid permissions for link share
+	 */
+	public function testCreateLinkSharePublicUploadToMuchPermissions() {
+		$this->config
+			->method('getAppValue')
+			->will($this->returnValueMap([
+				['core', 'shareapi_allow_links', 'yes', 'yes'],
+				['core', 'shareapi_allow_public_upload', 'yes', 'yes'],
+			]));
+
+		$share = $this->getMock('\OC\Share20\IShare');
+		$share->method('getPermissions')->willReturn(\OCP\Constants::PERMISSION_SHARE);
+
+		$this->invokePrivate($this->manager, 'createLinkShare', [$share]);
+	}
+
+
+	public function testCreateLinkShareWithPassword() {
+		$this->config
+			->method('getAppValue')
+			->will($this->returnValueMap([
+				['core', 'shareapi_allow_links', 'yes', 'yes'],
+			]));
+
+		$share = $this->getMock('\OC\Share20\IShare');
+		$share->method('getPassword')->willReturn('password');
+		$share->expects($this->once())->method('setPassword')->with('hashedPassword');
+		$this->hasher->expects($this->once())->method('hash')->with('password')->willReturn('hashedPassword');
+
+		$this->defaultProvider
+			->expects($this->once())
+			->method('getShareByToken')
+			->will($this->throwException(new \OC\Share20\Exception\ShareNotFound()));
+
+		$this->invokePrivate($this->manager, 'createLinkShare', [$share]);
+	}
+
+	public function testCreateLinkShareTokenInUse() {
+		$this->config
+			->method('getAppValue')
+			->will($this->returnValueMap([
+				['core', 'shareapi_allow_links', 'yes', 'yes'],
+			]));
+
+		$share = $this->getMock('\OC\Share20\IShare');
+
+		$this->secureRandom
+			->method('generate')
+			->will($this->onConsecutiveCalls('token1', 'token2'));
+
+		$this->defaultProvider
+			->method('getShareByToken')
+			->will($this->returnCallback(
+				function($token) {
+					if ($token === 'token1') {
+						return $this->getMock('\OC\Share20\IShare');
+					} else if ($token === 'token2') {
+						throw new \OC\Share20\Exception\ShareNotFound();
+					}
+				}
+		));
+
+		$share->expects($this->once())->method('setToken')->with('token2');
+
+		$this->invokePrivate($this->manager, 'createLinkShare', [$share]);
+	}
+
+
 }

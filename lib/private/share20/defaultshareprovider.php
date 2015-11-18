@@ -54,7 +54,7 @@ class DefaultShareProvider implements IShareProvider {
 	 * @param Share $share
 	 * @return Share The share object
 	 */
-	public function create(Share $share) {
+	public function create(IShare $share) {
 		throw new \Exception();
 	}
 

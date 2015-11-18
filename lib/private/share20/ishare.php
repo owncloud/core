@@ -141,6 +141,14 @@ interface IShare {
 	public function getPassword();
 
 	/**
+	 * Set the token
+	 *
+	 * @param string $token
+	 * @return Share The modified object
+	 */
+	public function setToken($token);
+
+	/**
 	 * Get the token
 	 *
 	 * @return string
