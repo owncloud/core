@@ -198,7 +198,7 @@ class Share20OCS {
 		}
 
 		if ($shareType !== \OCP\Share::SHARE_TYPE_LINK) {
-			\OCA\Files_Sharing\API\Local::createShare([]);
+			return \OCA\Files_Sharing\API\Local::createShare([]);
 		}
 
 		/*
