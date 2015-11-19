@@ -23,39 +23,170 @@ namespace OC\Share20;
 use OC\Share20\Exception\ShareNotFound;
 use OC\Share20\Exception\BackendError;
 use OCP\IUser;
+use OCP\Files\Folder;
+use OCP\Files\IRootFolder;
+use OCP\IUserManager;
+use OCP\IGroupManager;
+use OCP\IDBConnection;
 
 class DefaultShareProvider implements IShareProvider {
 
-	/** @var \OCP\IDBConnection */
+	/** @var IDBConnection */
 	private $dbConn;
 
-	/** @var \OCP\IUserManager */
+	/** @var IUserManager */
 	private $userManager;
 
-	/** @var \OCP\IGroupManager */
+	/** @var IGroupManager */
 	private $groupManager;
 
-	/** @var \OCP\Files\Folder */
+	/** @var Folder */
 	private $userFolder;
 
-	public function __construct(\OCP\IDBConnection $connection,
-								\OCP\IUserManager $userManager,
-								\OCP\IGroupManager $groupManager,
-								\OCP\Files\Folder $userFolder) {
+	/** @var IRootFolder */
+	private $rootFolder;
+
+	public function __construct(IDBConnection $connection,
+								IUserManager $userManager,
+								IGroupManager $groupManager,
+								Folder $userFolder,
+								IRootFolder $rootFolder) {
 		$this->dbConn = $connection;
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
 		$this->userFolder = $userFolder;
+		$this->rootFolder = $rootFolder;
 	}
 
 	/**
 	 * Share a path
 	 * 
-	 * @param Share $share
+	 * @param IShare $share
 	 * @return Share The share object
 	 */
 	public function create(IShare $share) {
-		throw new \Exception();
+		$qb = $this->dbConn->getQueryBuilder();
+
+		$qb->insert('share');
+
+		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
+			throw new \Exception('creating user shares is not supported yet');
+		} else if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
+			throw new \Exception('creating group shares is not supported yet');
+		} else if ($share->getShareType() === \OCP\Share::SHARE_TYPE_LINK) {
+			// Set the token
+			$qb->setValue('token', $qb->createParameter('token'))
+					->setParameter(':token', $share->getToken());
+
+			// Set expiration date if set
+			if ($share->getExpirationDate() !== null) {
+				$qb->setValue('expiration', $qb->createParameter('expiration'))
+					->setParameter('expiration', $share->getExpirationDate(), \Doctrine\DBAL\Types\Type::DATETIME);
+			}
+
+			//Set the password if set
+			if ($share->getPassword() !== null) {
+				$qb->setValue('share_with', $qb->createParameter('share_with'))
+					->setParameter(':share_with', $share->getPassword());
+			}
+		} else {
+			throw new \Exception('unkown share type');
+		}
+
+		// Share Type
+		$qb->setValue('share_type', $qb->createParameter('share_type'))
+			->setParameter(':share_type', $share->getShareType());
+
+		// Shared by
+		$qb->setValue('uid_owner', $qb->createParameter('uid_owner'))
+			->setParameter(':uid_owner', $share->getSharedBy()->getUID());
+
+		// Set item_type
+		$qb->setValue('item_type', $qb->createParameter('item_type'));
+		if ($share->getPath() instanceof \OCP\Files\File) {
+			$qb->setParameter(':item_type', 'file');
+		} else if ($share->getPath() instanceof \OCP\Files\Folder) {
+			$qb->setParameter(':item_type', 'folder');
+		} else {
+			throw new \Exception('invalid path');
+		}
+
+		// Set fileid
+		$qb->setValue('item_source', $qb->createParameter('item_source'))
+			->setValue('file_source', $qb->createParameter('file_source'))
+			->setParameter(':item_source', $share->getPath()->getId())
+			->setParameter(':file_source', $share->getPath()->getId());
+
+		// Set permissions
+		$qb->setValue('permissions', $qb->createParameter('permissions'))
+			->setParameter(':permissions', $share->getPermissions());
+
+		// Set parent if not empty
+		if ($share->getParent() !== null) {
+			$qb->setValue('parent', $qb->createParameter('parent'))
+				->setParameter(':parent', $share->getParent());
+		}
+
+		// Set the share time
+		$qb->setValue('stime', $qb->createParameter('share_time'))
+			->setParameter(':share_time', time());
+
+		// Get target
+		$userFolder = $this->rootFolder->getUserFolder($share->getSharedBy()->getUID());
+		$path = $userFolder->getRelativePath($share->getPath()->getPath());
+
+		$qb->setValue('file_target', $qb->createParameter('file_target'))
+			->setParameter(':file_target', $path);
+
+		$qb->execute();
+
+
+		// Now create select statement to get the data back
+		$qb = $this->dbConn->getQueryBuilder();
+
+		$qb->select('*')
+			->from('share');
+
+		// share_type
+		$qb->where($qb->expr()->eq('share_type', $qb->createParameter('share_type')))
+			->setParameter(':share_type', $share->getShareType());
+
+		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_LINK) {
+			$qb->andWhere($qb->expr()->eq('token', $qb->createParameter('token')))
+				->setParameter(':token', $share->getToken());
+		}
+
+		// uid_owner
+		$qb->andWhere($qb->expr()->eq('uid_owner', $qb->createParameter('uid_owner')))
+			->setParameter(':uid_owner', $share->getSharedBy()->getUID());
+
+		// item_type
+		$qb->andWhere($qb->expr()->eq('item_type', $qb->createParameter('item_type')));
+		if ($share->getPath() instanceof \OCP\Files\File) {
+			$qb->setParameter(':item_type', 'file');
+		} else if ($share->getPath() instanceof \OCP\Files\Folder) {
+			$qb->setParameter(':item_type', 'folder');
+		} else {
+			throw new \Exception('invalid path');
+		}
+
+		// fileid
+		$qb->andWhere($qb->expr()->eq('item_source', $qb->createParameter('item_source')));
+		$qb->andWhere($qb->expr()->eq('file_source', $qb->createParameter('file_source')));
+		$qb->setParameter(':item_source', $share->getPath()->getId());
+		$qb->setParameter(':file_source', $share->getPath()->getId());
+
+		$cursor = $qb->execute();
+		$data = $cursor->fetch();
+		$cursor->closeCursor();
+
+		if ($data === false) {
+			throw new ShareNotFound();
+		}
+
+		$share = $this->createShare($data);
+
+		return $share;
 	}
 
 	/**
@@ -182,11 +313,29 @@ class DefaultShareProvider implements IShareProvider {
 	 * Get a share by token and if present verify the password
 	 *
 	 * @param string $token
-	 * @param string $password
 	 * @param Share
 	 */
-	public function getShareByToken($token, $password = null) {
-		throw new \Exception();
+	public function getShareByToken($token) {
+		$qb = $this->dbConn->getQueryBuilder();
+
+		$qb->select('*')
+			->from('share')
+			->where(
+				$qb->expr()->eq('token', $qb->createParameter('token'))
+			)
+			->setParameter(':token', $token);
+
+		$cursor = $qb->execute();
+		$data = $cursor->fetch();
+		$cursor->closeCursor();
+
+		if ($data === false) {
+			throw new ShareNotFound();
+		}
+
+		$share = $this->createShare($data);
+
+		return $share;
 	}
 	
 	/**
@@ -230,6 +379,10 @@ class DefaultShareProvider implements IShareProvider {
 		if ($data['expiration'] !== null) {
 			$expiration = \DateTime::createFromFormat('Y-m-d H:i:s', $data['expiration']);
 			$share->setExpirationDate($expiration);
+		}
+
+		if ($data['parent'] !== null) {
+			$share->setParent((int)$data['parent']);
 		}
 
 		return $share;

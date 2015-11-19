@@ -111,6 +111,14 @@ interface IShare {
 	public function getExpirationDate();
 
 	/**
+	 * Set the share sharer
+	 *
+	 * @param IUser
+	 * @return Share The modified share object
+	 */
+	public function setSharedBy(IUser $sharedBy);
+
+	/**
 	 * Get share sharer
 	 *
 	 * @return IUser|string

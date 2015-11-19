@@ -21,17 +21,12 @@
 namespace OCA\Files_Sharing\API;
 
 use OC\Share20\IShare;
+use OCP\IUser;
 
 class Share20OCS {
 
 	/** @var \OC\Share20\Manager */
 	private $shareManager;
-
-	/** @var \OCP\IGroupManager */
-	private $groupManager;
-
-	/** @var \OCP\IUserManager */
-	private $userManager;
 
 	/** @var \OCP\IRequest */
 	private $request;
@@ -39,18 +34,28 @@ class Share20OCS {
 	/** @var \OCP\Files\Folder */
 	private $userFolder;
 
+	/** @var IUser */
+	private $currentUser;
+
+	/**
+	 * Share20OCS constructor.
+	 *
+	 * @param \OC\Share20\Manager $shareManager
+	 * @param \OCP\IRequest $request
+	 * @param \OCP\Files\Folder $userFolder
+	 * @param \OCP\IURLGenerator $urlGenerator
+	 * @param IUser $currentUser
+	 */
 	public function __construct(\OC\Share20\Manager $shareManager,
-	                            \OCP\IGroupManager $groupManager,
-	                            \OCP\IUserManager $userManager,
-	                            \OCP\IRequest $request,
-	                            \OCP\Files\Folder $userFolder,
-	                            \OCP\IURLGenerator $urlGenerator) {
+								\OCP\IRequest $request,
+								\OCP\Files\Folder $userFolder,
+								\OCP\IURLGenerator $urlGenerator,
+								IUser $currentUser) {
 		$this->shareManager = $shareManager;
-		$this->userManager = $userManager;
-		$this->groupManager = $groupManager;
 		$this->request = $request;
 		$this->userFolder = $userFolder;
 		$this->urlGenerator = $urlGenerator;
+		$this->currentUser = $currentUser;
 	}
 
 	/**
@@ -201,6 +206,8 @@ class Share20OCS {
 		 */
 		$share = $this->shareManager->newShare();
 		$share->setPath($path);
+
+		$share->setSharedBy($this->currentUser);
 
 		if ($shareType === \OCP\Share::SHARE_TYPE_LINK) {
 			$share->setShareType(\OCP\Share::SHARE_TYPE_LINK);

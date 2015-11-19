@@ -414,8 +414,7 @@ class Manager {
 
 		$share->setToken($token);
 
-		// Generate token
-		$this->defaultProvider->create($share);
+		return $this->defaultProvider->create($share);
 	}
 
 	/**

@@ -100,8 +100,7 @@ interface IShareProvider {
 	 * Get a share by token and if present verify the password
 	 *
 	 * @param string $token
-	 * @param string $password
 	 * @param Share
 	 */
-	public function getShareByToken($token, $password = null);
+	public function getShareByToken($token);
 }

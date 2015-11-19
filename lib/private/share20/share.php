@@ -185,7 +185,7 @@ class Share implements IShare {
 	 * @param IUser|string $sharedBy
 	 * @return Share The modified object
 	 */
-	public function setSharedBy($sharedBy) {
+	public function setSharedBy(IUser $sharedBy) {
 		//TODO checks
 		$this->sharedBy = $sharedBy;
 
