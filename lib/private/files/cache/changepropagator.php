@@ -63,23 +63,37 @@ class ChangePropagator extends BasicEmitter {
 	public function propagateChanges($time = null) {
 		$parents = $this->getAllParents();
 		$this->changedFiles = array();
+		if (count($parents) === 0) {
+			return;
+		}
 		if (!$time) {
 			$time = time();
 		}
-		foreach ($parents as $parent) {
+
+		$ids = array_map(function ($path) {
 			/**
 			 * @var \OC\Files\Storage\Storage $storage
 			 * @var string $internalPath
 			 */
 
-			list($storage, $internalPath) = $this->view->resolvePath($parent);
+			list($storage, $internalPath) = $this->view->resolvePath($path);
 			if ($storage) {
 				$cache = $storage->getCache();
-				$entry = $cache->get($internalPath);
-				$cache->update($entry['fileid'], array('mtime' => max($time, $entry['mtime']), 'etag' => $storage->getETag($internalPath)));
-				$this->emit('\OC\Files', 'propagate', [$parent, $entry]);
+				return (int)$cache->getId($internalPath);
+			} else {
+				return -1;
 			}
-		}
+		}, $parents);
+		$ids = array_filter($ids, function ($id) {
+			return $id > 0;
+		});
+		$connection = \OC::$server->getDatabaseConnection();
+		$placeHolders = array_fill(0, count($ids), '?');
+		$sql = 'UPDATE `*PREFIX*filecache` SET `mtime` = GREATEST(`mtime`, ?), `etag` = ? WHERE `fileid` IN (' . join(', ', $placeHolders) . ')';
+		$etag = uniqid();
+		$params = array_merge([$time, $etag], $ids);
+		$query = $connection->prepare($sql);
+		$query->execute($params);
 	}
 
 	/**
