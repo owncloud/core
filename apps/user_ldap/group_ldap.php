@@ -169,13 +169,20 @@ class GROUP_LDAP extends BackendUtility implements \OCP\GroupInterface {
 		$members = $this->access->readAttribute($dnGroup, $this->access->connection->ldapGroupMemberAssocAttr,
 												$this->access->connection->ldapGroupFilter);
 		if (is_array($members)) {
+			$userFilter = 'objectclass=*';
+			if ($this->access->connection->ldapUserFilter !== '') {
+				$userFilter = $this->access->connection->ldapUserFilter;
+			}
 			foreach ($members as $memberDN) {
-				$allMembers[$memberDN] = 1;
-				$nestedGroups = $this->access->connection->ldapNestedGroups;
-				if (!empty($nestedGroups)) {
-					$subMembers = $this->_groupMembers($memberDN, $seen);
-					if ($subMembers) {
-						$allMembers = array_merge($allMembers, $subMembers);
+				$memberAvailable = $this->access->readAttribute($memberDN, 'cn', $userFilter);
+				if (is_array($memberAvailable)) {
+					$allMembers[$memberDN] = 1;
+					$nestedGroups = $this->access->connection->ldapNestedGroups;
+					if (!empty($nestedGroups)) {
+						$subMembers = $this->_groupMembers($memberDN, $seen);
+						if ($subMembers) {
+							$allMembers = array_merge($allMembers, $subMembers);
+						}
 					}
 				}
 			}
