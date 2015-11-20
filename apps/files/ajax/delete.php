@@ -61,6 +61,7 @@ foreach ($files as $file) {
 			$success = false;
 		}
 	} catch (\Exception $e) {
+		\OC::$server->getLogger()->error($e->getMessage(), ['app'=>'files']);
 		$filesWithError .= $file . "\n";
 		$success = false;
 	}
