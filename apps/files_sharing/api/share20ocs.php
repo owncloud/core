@@ -21,17 +21,12 @@
 namespace OCA\Files_Sharing\API;
 
 use OC\Share20\IShare;
+use OCP\IUser;
 
 class Share20OCS {
 
 	/** @var \OC\Share20\Manager */
 	private $shareManager;
-
-	/** @var \OCP\IGroupManager */
-	private $groupManager;
-
-	/** @var \OCP\IUserManager */
-	private $userManager;
 
 	/** @var \OCP\IRequest */
 	private $request;
@@ -39,18 +34,20 @@ class Share20OCS {
 	/** @var \OCP\Files\Folder */
 	private $userFolder;
 
-	public function __construct(\OC\Share20\Manager $shareManager,
-	                            \OCP\IGroupManager $groupManager,
-	                            \OCP\IUserManager $userManager,
-	                            \OCP\IRequest $request,
-	                            \OCP\Files\Folder $userFolder,
-	                            \OCP\IURLGenerator $urlGenerator) {
+	/** @var \OCP\IUser */
+	private $currentUser;
+
+	public function __construct(
+			\OC\Share20\Manager $shareManager,
+			\OCP\IRequest $request,
+			\OCP\Files\Folder $userFolder,
+			\OCP\IURLGenerator $urlGenerator,
+			IUser $currentUser) {
 		$this->shareManager = $shareManager;
-		$this->userManager = $userManager;
-		$this->groupManager = $groupManager;
 		$this->request = $request;
 		$this->userFolder = $userFolder;
 		$this->urlGenerator = $urlGenerator;
+		$this->currentUser = $currentUser;
 	}
 
 	/**
@@ -59,7 +56,7 @@ class Share20OCS {
 	 * @param IShare $share
 	 * @return array
 	 */
-	protected function formatShare($share) {
+	protected function formatShare(IShare $share) {
 		$result = [
 			'id' => $share->getId(),
 			'share_type' => $share->getShareType(),
@@ -133,6 +130,29 @@ class Share20OCS {
 
 		$share = $this->formatShare($share);
 		return new \OC_OCS_Result($share);
+	}
+
+	/**
+	 * Get all shares for a specific user
+	 *
+	 * @return \OC_OCS_Result
+	 */
+	public function getShares() {
+		$path = $this->request->getParam('path', null);
+
+		if ($path !== null) {
+			try {
+				$path = $this->userFolder->get($path);
+			} catch (\OCP\Files\NotFoundException $e) {
+				return new \OC_OCS_Result(null, 404, 'could not get shares');
+			}
+		}
+
+		$shares = $this->shareManager->getShares($this->currentUser, $path);
+
+		$shares = array_map([$this, 'formatShare'], $shares);
+
+		return new \OC_OCS_Result($shares);
 	}
 
 	/**

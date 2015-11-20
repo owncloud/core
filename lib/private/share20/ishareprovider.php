@@ -54,12 +54,10 @@ interface IShareProvider {
 	 * Get all shares by the given user
 	 *
 	 * @param IUser $user
-	 * @param int $shareType
-	 * @param int $offset
-	 * @param int $limit
+	 * @param File|Folder $path
 	 * @return Share[]
 	 */
-	public function getShares(IUser $user, $shareType, $offset, $limit);
+	public function getShares($user = null, $path = null);
 
 	/**
 	 * Get share by id

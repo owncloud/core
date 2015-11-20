@@ -27,6 +27,7 @@ use OCP\IGroupManager;
 use OCP\IUser;
 use OCP\ILogger;
 use OCP\Files\Folder;
+use OCP\Files\File;
 
 use OC\Share20\Exception\ShareNotFound;
 
@@ -178,14 +179,18 @@ class Manager {
 	}
 
 	/**
-	 * Retrieve all shares by the current user
+	 * Retrieve all shares.
 	 *
-	 * @param int $page
-	 * @param int $perPage
+	 * @param IUser $sharedBy
+	 * @param File|Folder $path
 	 * @return Share[]
 	 */
-	public function getShares($page=0, $perPage=50) {
-		throw new \Exception();
+	public function getShares(IUser $user = null, $path = null) {
+		//TODO DO PROPER PAGINATION, but how with multiple providers?
+
+		$shares = $this->defaultProvider->getShares($user, $path);
+
+		return $shares;
 	}
 
 	/**

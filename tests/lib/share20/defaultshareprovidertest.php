@@ -569,4 +569,78 @@ class DefaultShareProviderTest extends \Test\TestCase {
 		$this->assertEquals(null, $children[1]->getExpirationDate());
 		$this->assertEquals('myTarget2', $children[1]->getTarget());
 	}
+
+	public function testGetSharesNoShares() {
+		$result = $this->provider->getShares();
+
+		$this->assertEmpty($result);
+	}
+
+	public function testGetShares() {
+		$qb = $this->dbConn->getQueryBuilder();
+		$qb->insert('share')
+				->values([
+						'share_type'  => $qb->expr()->literal(\OCP\Share::SHARE_TYPE_LINK),
+						'uid_owner'   => $qb->expr()->literal('user0'),
+						'item_type'   => $qb->expr()->literal('file'),
+						'file_source' => $qb->expr()->literal(1),
+						'file_target' => $qb->expr()->literal('myTarget1'),
+						'permissions' => $qb->expr()->literal(2),
+				]);
+		$qb->execute();
+
+		$qb = $this->dbConn->getQueryBuilder();
+		$qb->insert('share')
+				->values([
+						'share_type'  => $qb->expr()->literal(\OCP\Share::SHARE_TYPE_LINK),
+						'uid_owner'   => $qb->expr()->literal('user0'),
+						'item_type'   => $qb->expr()->literal('file'),
+						'file_source' => $qb->expr()->literal(2),
+						'file_target' => $qb->expr()->literal('myTarget1'),
+						'permissions' => $qb->expr()->literal(2),
+				]);
+		$qb->execute();
+
+		$qb = $this->dbConn->getQueryBuilder();
+		$qb->insert('share')
+				->values([
+						'share_type'  => $qb->expr()->literal(\OCP\Share::SHARE_TYPE_LINK),
+						'uid_owner'   => $qb->expr()->literal('user1'),
+						'item_type'   => $qb->expr()->literal('file'),
+						'file_source' => $qb->expr()->literal(2),
+						'file_target' => $qb->expr()->literal('myTarget1'),
+						'permissions' => $qb->expr()->literal(2),
+				]);
+		$qb->execute();
+
+		$storage = $this->getMock('OC\Files\Storage\Storage');
+		$storage
+				->method('getOwner')
+				->willReturn('shareOwner');
+
+		$path = $this->getMock('OCP\Files\File');
+		$path->method('getStorage')->willReturn($storage);
+		$path->method('getId')->willReturn(2);
+
+		$this->userFolder->method('getById')
+			->will($this->returnValueMap([
+				[1, [$path]],
+				[2, [$path]],
+			]));
+
+		$user = $this->getMock('\OCP\IUser');
+		$user->method('getUID')->willReturn('user0');
+
+		$result = $this->provider->getShares();
+		$this->assertCount(3, $result);
+
+		$result = $this->provider->getShares($user);
+		$this->assertCount(2, $result);
+
+		$result = $this->provider->getShares(null, $path);;
+		$this->assertCount(2, $result);
+
+		$result = $this->provider->getShares($user, $path);;
+		$this->assertCount(1, $result);
+	}
 }

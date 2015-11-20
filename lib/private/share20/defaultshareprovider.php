@@ -23,6 +23,8 @@ namespace OC\Share20;
 use OC\Share20\Exception\ShareNotFound;
 use OC\Share20\Exception\BackendError;
 use OCP\IUser;
+use OCP\Files\File;
+use OCP\Files\Folder;
 
 class DefaultShareProvider implements IShareProvider {
 
@@ -119,13 +121,36 @@ class DefaultShareProvider implements IShareProvider {
 	 * Get all shares by the given user
 	 *
 	 * @param IUser $user
-	 * @param int $shareType
-	 * @param int $offset
-	 * @param int $limit
+	 * @param File|Folder $path
 	 * @return Share[]
 	 */
-	public function getShares(IUser $user, $shareType, $offset, $limit) {
-		throw new \Exception();
+	public function getShares($user = null, $path = null) {
+		$qb = $this->dbConn->getQueryBuilder();
+
+		$qb->select('*')
+			->from('share');
+
+		// Filter on shares of user
+		if ($user !== null) {
+			$qb->andWhere($qb->expr()->eq('uid_owner', $qb->createParameter('sharedBy')))
+				->setParameter(':sharedBy', $user->getUID());
+		}
+
+		// Filter by path
+		if ($path !== null) {
+			$qb->andWhere($qb->expr()->eq('file_source', $qb->createParameter('fileId')))
+				->setParameter(':fileId', $path->getId());
+		}
+
+		$cursor = $qb->execute();
+
+		$shares = [];
+		while($data = $cursor->fetch()) {
+			$shares[] = $this->createShare($data);
+		}
+		$cursor->closeCursor();
+
+		return $shares;
 	}
 
 	/**
