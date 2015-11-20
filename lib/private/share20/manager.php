@@ -183,12 +183,37 @@ class Manager {
 	 *
 	 * @param IUser $sharedBy
 	 * @param File|Folder $path
+	 * @param bool $reshares
 	 * @return Share[]
 	 */
-	public function getShares(IUser $user = null, $path = null) {
+	public function getShares(IUser $user = null, $path = null, $reshares = false) {
 		//TODO DO PROPER PAGINATION, but how with multiple providers?
 
 		$shares = $this->defaultProvider->getShares($user, $path);
+
+		if ($reshares) {
+			$shares2 = [];
+			foreach($shares as $share) {
+				$shares2 = array_merge($shares2, $this->getReshares($share));
+			}
+
+			$shares = array_merge($shares, $shares2);
+		}
+
+		return $shares;
+	}
+
+	private function getReshares(IShare $share) {
+		$children = $this->defaultProvider->getChildren($share);
+
+		$shares = [];
+
+		foreach ($children as $child) {
+			if ($child->getPath()->getId() === $share->getPath()->getId()) {
+				$shares[] = $child;
+				$shaers[] = array_merge($shares, $this->getReshares($child));
+			}
+		}
 
 		return $shares;
 	}
@@ -209,8 +234,8 @@ class Manager {
 		$share = $this->defaultProvider->getShareById($id);
 
 		if ($share->getSharedWith() !== $this->currentUser &&
-		    $share->getSharedBy()   !== $this->currentUser &&
-			$share->getShareOwner() !== $this->currentUser) {
+				$share->getSharedBy()   !== $this->currentUser &&
+				$share->getShareOwner() !== $this->currentUser) {
 			throw new ShareNotFound();
 		}
 

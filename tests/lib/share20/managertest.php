@@ -405,7 +405,7 @@ class ManagerTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException OC\Share20\Exception\ShareNotFound
+	 * @expectedException \OC\Share20\Exception\ShareNotFound
 	 */
 	public function testGetShareByIdNotAuthorized() {
 		$otherUser1 = $this->getMock('\OCP\IUser');

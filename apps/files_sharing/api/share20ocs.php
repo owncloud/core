@@ -139,6 +139,7 @@ class Share20OCS {
 	 */
 	public function getShares() {
 		$path = $this->request->getParam('path', null);
+		$reshares = $this->request->getParam('reshares', null);
 
 		if ($path !== null) {
 			try {
@@ -146,9 +147,13 @@ class Share20OCS {
 			} catch (\OCP\Files\NotFoundException $e) {
 				return new \OC_OCS_Result(null, 404, 'could not get shares');
 			}
+ 		} else {
+			if ($reshares === 'true') {
+				//TODO FAIL
+			}
 		}
 
-		$shares = $this->shareManager->getShares($this->currentUser, $path);
+		$shares = $this->shareManager->getShares($this->currentUser, $path, $reshares === 'true');
 
 		$shares = array_map([$this, 'formatShare'], $shares);
 
