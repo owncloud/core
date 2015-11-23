@@ -24,43 +24,39 @@ use OCA\Files_Sharing\API\Share20OCS;
 
 class Share20OCSTest extends \Test\TestCase {
 
-	/** @var OC\Share20\Manager */
+	/** @var \OC\Share20\Manager */
 	private $shareManager;
 
-	/** @var OCP\IGroupManager */
-	private $groupManager;
-
-	/** @var OCP\IUserManager */
-	private $userManager;
-
-	/** @var OCP\IRequest */
+	/** @var \OCP\IRequest */
 	private $request;
 
-	/** @var OCP\Files\Folder */
+	/** @var \OCP\Files\Folder */
 	private $userFolder;
 
-	/** @var OCP\IURLGenerator */
+	/** @var \OCP\IURLGenerator */
 	private $urlGenerator;
 
-	/** @var OCS */
+	/** @var Share20OCS */
 	private $ocs;
+
+	/** @var \OCP\IUser */
+	private $currentUser;
 
 	protected function setUp() {
 		$this->shareManager = $this->getMockBuilder('OC\Share20\Manager')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->groupManager = $this->getMock('OCP\IGroupManager');
-		$this->userManager = $this->getMock('OCP\IUserManager');
 		$this->request = $this->getMock('OCP\IRequest');
 		$this->userFolder = $this->getMock('OCP\Files\Folder');
 		$this->urlGenerator = $this->getMock('OCP\IURLGenerator');
+		$this->currentUser = $this->getMock('OCP\IUser');
 
-		$this->ocs = new Share20OCS($this->shareManager,
-									$this->groupManager,
-									$this->userManager,
-									$this->request,
-									$this->userFolder,
-									$this->urlGenerator);
+		$this->ocs = new Share20OCS(
+				$this->shareManager,
+				$this->request,
+				$this->userFolder,
+				$this->urlGenerator,
+				$this->currentUser);
 	}
 
 	public function testDeleteShareShareNotFound() {
@@ -325,6 +321,8 @@ class Share20OCSTest extends \Test\TestCase {
 
 	/**
 	 * @dataProvider dataGetShare
+	 * @param \OC\Share20\IShare $share
+	 * @param array $result
 	 */
 	public function testGetShare(\OC\Share20\IShare $share, array $result) {
 		$this->shareManager
@@ -342,5 +340,61 @@ class Share20OCSTest extends \Test\TestCase {
 			->willReturn('url');
 
 		$expected = new \OC_OCS_Result($result);
-		$this->assertEquals($expected->getData(), $this->ocs->getShare($share->getId())->getData());	}
+		$this->assertEquals($expected->getData(), $this->ocs->getShare($share->getId())->getData());
+	}
+
+	public function testGetSharesNoPath() {
+		$this->shareManager->expects($this->once())
+			->method('getShares')
+			->with($this->equalTo($this->currentUser), $this->equalTo(null))
+			->willReturn([]);
+
+		$expected = new \OC_OCS_Result([]);
+		$result = $this->ocs->getShares();
+		$this->assertEquals($expected->getMeta(), $result->getMeta());
+		$this->assertEquals($expected->getData(), $result->getData());
+	}
+
+	public function testGetSharesInvalidPath() {
+		$this->request->method('getParam')
+				->will($this->returnValueMap([
+						['path', null, 'invalid-path']
+				]));
+
+		$this->userFolder->expects($this->once())
+			->method('get')
+			->with('invalid-path')
+			->will($this->throwException(new \OCP\Files\NotFoundException));
+
+		$this->shareManager->expects($this->never())->method('getShares');
+
+		$expected = new \OC_OCS_Result(null, 404, 'could not get shares');
+		$result = $this->ocs->getShares();
+		$this->assertEquals($expected->getMeta(), $result->getMeta());
+		$this->assertEquals($expected->getData(), $result->getData());
+	}
+
+	public function testGetSharesValidPath() {
+		$this->request->method('getParam')
+			->will($this->returnValueMap([
+				['path', null, 'valid-path']
+			]));
+
+		$path = $this->getMock('\OCP\Files\File');
+		$this->userFolder->expects($this->once())
+			->method('get')
+			->with('valid-path')
+			->willReturn($path);
+
+		$this->shareManager->expects($this->once())
+			->method('getShares')
+			->with($this->equalTo($this->currentUser), $this->equalTo($path))
+			->willReturn([]);
+
+		$expected = new \OC_OCS_Result([]);
+		$result = $this->ocs->getShares();
+		$this->assertEquals($expected->getMeta(), $result->getMeta());
+		$this->assertEquals($expected->getData(), $result->getData());
+
+	}
 }

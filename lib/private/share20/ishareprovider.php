@@ -45,7 +45,7 @@ interface IShareProvider {
 	/**
 	 * Delete a share
 	 *
-	 * @param Share $share
+	 * @param IShare $share
 	 * @throws BackendError
 	 */
 	public function delete(IShare $share);
@@ -54,12 +54,10 @@ interface IShareProvider {
 	 * Get all shares by the given user
 	 *
 	 * @param IUser $user
-	 * @param int $shareType
-	 * @param int $offset
-	 * @param int $limit
+	 * @param File|Folder $path
 	 * @return Share[]
 	 */
-	public function getShares(IUser $user, $shareType, $offset, $limit);
+	public function getShares($user = null, $path = null);
 
 	/**
 	 * Get share by id
@@ -71,10 +69,19 @@ interface IShareProvider {
 	public function getShareById($id);
 
 	/**
+	 * Get children
+	 *
+	 * @param IShare $parent
+	 * @return IShare[]
+	 */
+	public function getChildren(IShare $parent);
+
+	/**
 	 * Get shares for a given path
 	 *
+	 * @param \OCP\IUser $user
 	 * @param \OCP\Files\Node $path
-	 * @param Share[]
+	 * @return IShare[]
 	 */
 	public function getSharesByPath(\OCP\IUser $user, \OCP\Files\Node $path);
 
