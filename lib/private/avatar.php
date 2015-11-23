@@ -49,7 +49,16 @@ class Avatar implements \OCP\IAvatar {
 		if(!Filesystem::isValidPath($user)) {
 			throw new \Exception('Username may not contain slashes');
 		}
-		$this->view = new \OC\Files\View('/'.$user);
+		$data_dir = \OC::$server->getConfig()->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data');
+		$user_manager = \OC::$server->getUserManager();	
+		
+		if ($user_manager->userExists($user)) {
+			$fake_root = str_replace($data_dir, '', $user_manager->get($user)->getHome());
+		} else {
+			$fake_root = '/' . $user;
+		}
+	
+		$this->view = new \OC\Files\View($fake_root);
 	}
 
 	/**
