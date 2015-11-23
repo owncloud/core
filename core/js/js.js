@@ -670,7 +670,11 @@ var OC={
 	 * @return {String} locale string
 	 */
 	getLocale: function() {
-		return $('html').prop('lang');
+		if (!this._locale) {
+			this._locale = $('html').prop('lang');
+		}
+
+		return this._locale;
 	}
 };
 
@@ -1452,7 +1456,7 @@ function humanFileSize(size, skipSmallSizes) {
 	// Stay in range of the byte sizes that are defined
 	order = Math.min(humanList.length - 1, order);
 	var readableFormat = humanList[order];
-	var relativeSize = (size / Math.pow(1024, order)).toFixed(1);
+	var relativeSize = (size / Math.pow(1024, order)).toLocaleString(OC.getLocale(), {maximumFractionDigits: 1});
 	if(skipSmallSizes === true && order === 0) {
 		if(relativeSize !== "0.0"){
 			return '< 1 kB';
@@ -1519,6 +1523,10 @@ OC.Util = {
 	formatDate: function (timestamp, format) {
 		format = format || "LLL";
 		return moment(timestamp).format(format);
+	},
+
+	localizeNumber: function(num) {
+		return num.toLocaleString(OC.getLocale());
 	},
 
 	/**
