@@ -33,7 +33,11 @@
  * @param string $string the string which will be escaped and printed
  */
 function p($string) {
-	print(OC_Util::sanitizeHTML($string));
+	$sanitized = OC_Util::sanitizeHTML($string);
+	if (is_array($sanitized)) {
+		$sanitized = implode($sanitized);
+	}
+	print($sanitized);
 }
 
 /**
