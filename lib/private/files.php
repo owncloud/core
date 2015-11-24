@@ -179,7 +179,13 @@ class OC_Files {
 		if ($onlyHeader) {
 			return;
 		}
-		$view->readfile($filename);
+		$type = \OC::$server->getMimeTypeDetector()->getSecureMimeType(\OC\Files\Filesystem::getMimeType($filename));
+		$pos=strpos(strtolower($type),"video");
+		if($pos!= -1){
+			$view->streamVideoFile($filename);
+		}else{
+			$view->readfile($filename);
+		}
 	}
 
 	/**
