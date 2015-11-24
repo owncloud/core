@@ -2004,4 +2004,70 @@ class View {
 		}
 		return '';
 	}
+		/**
+	 * Author: Hassan Hawilo (HHawilo)
+	 * Email : hassanhawilo@hotmail.com     hhawilo@uwo.ca
+	 * Position : PhD Student at University of Western Ontario, Canada
+	 *
+	 * @param string $path Absolute path to the file that wants to be streamed
+	 *
+	 */
+	public function streamVideoFile($path){
+		header("Accept-Ranges: bytes");
+		$this->assertPathLength($path);
+		@ob_end_clean();
+				$videoFile = $this->fopen($path, 'rb');
+		if ($videoFile) {
+			$fileSize   = $this->filesize($path);
+			$length = $fileSize;
+			$start  = 0;
+			$end    = $fileSize - 1;
+			if (isset($_SERVER['HTTP_RANGE'])) {
+
+				$currentBeginning = $start;
+				$currentEnd   = $end;
+
+				list(, $range) = explode('=', $_SERVER['HTTP_RANGE'], 2);
+				if (strpos($range, ',') !== false) {
+					header('HTTP/1.1 416 Requested Range Not Satisfiable');
+					header("Content-Range: bytes $start-$end/$fileSize");
+					exit;
+				}
+				if ($range == '-') {
+					$currentBeginning = $fileSize - substr($range, 1);
+				}else{
+					$range  = explode('-', $range);
+					$currentBeginning = $range[0];
+					$currentEnd   = (isset($range[1]) && is_numeric($range[1])) ? $range[1] : $fileSize;
+				}
+				$currentEnd = ($currentEnd > $end) ? $end : $currentEnd;
+				if ($currentBeginning > $currentEnd || $currentBeginning > $fileSize - 1 || $currentEnd >= $fileSize) {
+					header('HTTP/1.1 416 Requested Range Not Satisfiable');
+					header("Content-Range: bytes $start-$end/$fileSize");
+					exit;
+				}
+				$start  = $currentBeginning;
+				$end    = $currentEnd;
+				$length = $end - $start + 1;
+				fseek($videoFile, $start);
+				header('HTTP/1.1 206 Partial Content');
+			}
+			header("Content-Range: bytes $start-$end/$fileSize");
+			header("Content-Length: ".$length);
+
+			$buffer = 1024 * 8;
+			while(!feof($videoFile) && ($p = ftell($videoFile)) <= $end) {
+
+				if ($p + $buffer > $end) {
+					$buffer = $end - $p + 1;
+				}
+				set_time_limit(0);
+				echo fread($videoFile, $buffer);
+				flush();
+			}
+			$this->unlockFile($path, ILockingProvider::LOCK_SHARED);
+		}
+
+	}
+
 }
