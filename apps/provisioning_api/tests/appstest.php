@@ -31,7 +31,10 @@ class AppsTest extends TestCase {
 		$this->appManager = \OC::$server->getAppManager();
 		$this->groupManager = \OC::$server->getGroupManager();
 		$this->userSession = \OC::$server->getUserSession();
-		$this->api = new \OCA\Provisioning_API\Apps($this->appManager);
+		$this->ldapBackend = $this->getMockBuilder('\OCA\user_ldap\User_Proxy')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->api = new \OCA\Provisioning_API\Apps($this->appManager, $this->ldapBackend);
 	}
 
 	public function testGetAppInfo() {
@@ -94,5 +97,44 @@ class AppsTest extends TestCase {
 		$result = $this->api->getApps([]);
 		$this->assertFalse($result->succeeded());
 		$this->assertEquals(101, $result->getStatusCode());
+	}
+
+	public function testResolveLDAPNameNotFound() {
+		$loginName = 'alice';
+
+		$this->ldapBackend->expects($this->once())
+			->method('loginName2UserName')
+			->with($loginName)
+			->will($this->returnValue(false));
+
+		$result = $this->api->resolveLDAPLoginName(['loginname' => $loginName]);
+		$this->assertFalse($result->succeeded());
+		$this->assertSame(\OCP\API::RESPOND_NOT_FOUND, $result->getStatusCode());
+	}
+
+	public function testResolveLDAPNameSuccessful() {
+		\OC_App::loadApp('user_ldap');
+		$loginName = 'alice';
+		$userName = 'dc35a74a-5de6-1932-93af-e3cc75610c15';
+
+		$ldapBackend = $this->getMockBuilder('\OCA\user_ldap\User_Proxy')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->ldapBackend->expects($this->once())
+			->method('loginName2UserName')
+			->with($loginName)
+			->will($this->returnValue($userName));
+
+		$result = $this->api->resolveLDAPLoginName(['loginname' => $loginName]);
+		$this->assertTrue($result->succeeded());
+		$this->assertSame($userName, $result->getData()[0]);
+	}
+
+	public function testResolveLDAPNameNotEnabled() {
+		$api = new \OCA\Provisioning_API\Apps($this->appManager, null);
+		$result = $api->resolveLDAPLoginName(['loginname' => 'alice']);
+		$this->assertFalse($result->succeeded());
+		$this->assertSame(\OCP\API::RESPOND_SERVER_ERROR, $result->getStatusCode());
 	}
 }

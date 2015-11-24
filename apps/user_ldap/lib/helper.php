@@ -185,6 +185,25 @@ class Helper {
 	}
 
 	/**
+	 * @return User_Proxy
+	 * @throws \Exception
+	 */
+	public function instantiateUserProxy() {
+		$configPrefixes = $this->getServerConfigurationPrefixes(true);
+		if(count($configPrefixes) === 0) {
+			throw new \Exception('No active LDAP configuration');
+		}
+		$ldapWrapper = new LDAP();
+		$ocConfig = \OC::$server->getConfig();
+
+		$userBackend  = new User_Proxy(
+			$configPrefixes, $ldapWrapper, $ocConfig
+		);
+
+		return $userBackend;
+	}
+
+	/**
 	 * listens to a hook thrown by server2server sharing and replaces the given
 	 * login name by a username, if it matches an LDAP user.
 	 *

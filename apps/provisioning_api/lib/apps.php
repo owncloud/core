@@ -33,11 +33,17 @@ class Apps {
 	/** @var \OCP\App\IAppManager */
 	private $appManager;
 
+	/** @var  \OCA\user_ldap\User_Proxy|null */
+	private $ldapBackend;
+
 	/**
 	 * @param \OCP\App\IAppManager $appManager
+	 * @param \OCA\user_ldap\User_Proxy|null $ldapBackend
 	 */
-	public function __construct(\OCP\App\IAppManager $appManager) {
-		$this->appManager = $appManager;
+	public function __construct(\OCP\App\IAppManager $appManager,
+								\OCA\user_ldap\User_Proxy $ldapBackend = null) {
+		$this->appManager  = $appManager;
+		$this->ldapBackend = $ldapBackend;
 	}
 
 	/**
@@ -103,6 +109,30 @@ class Apps {
 		$app = $parameters['appid'];
 		$this->appManager->disableApp($app);
 		return new OC_OCS_Result(null, 100);
+	}
+
+	/**
+	 * resolves a provided LDAP login name to an ownCloud username that can be
+	 * used with user-related API calls.
+	 *
+	 * @param array $parameters
+	 * @return OC_OCS_Result
+	 */
+	public function resolveLDAPLoginName($parameters) {
+		if(is_null($this->ldapBackend)) {
+			return new OC_OCS_Result(null, \OCP\API::RESPOND_SERVER_ERROR, 'LDAP backend is not enabled');
+		}
+		$loginName = $parameters['loginname'];
+
+		try {
+			$userName = $this->ldapBackend->loginName2UserName($loginName);
+			if($userName === false) {
+				return new OC_OCS_Result(null, \OCP\API::RESPOND_NOT_FOUND, 'Could not resolve login name to user name');
+			}
+			return new OC_OCS_Result([$userName]);
+		} catch(\Exception $e) {
+			return new OC_OCS_Result(null, \OCP\API::RESPOND_SERVER_ERROR, $e->getMessage());
+		}
 	}
 
 }
