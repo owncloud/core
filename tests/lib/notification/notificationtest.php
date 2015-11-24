@@ -62,14 +62,6 @@ class NotificationTest extends TestCase {
 		return $dataSets;
 	}
 
-	protected function dataValidInt() {
-		return [
-			[0],
-			[1],
-			[time()],
-		];
-	}
-
 	protected function dataInvalidInt() {
 		return [
 			[true],
@@ -139,52 +131,68 @@ class NotificationTest extends TestCase {
 		$this->notification->setUser($user);
 	}
 
-	public function dataSetTimestamp() {
-		return $this->dataValidInt();
+	public function dataSetDateTime() {
+		$past = new \DateTime();
+		$past->sub(new \DateInterval('P1Y'));
+		$current = new \DateTime();
+		$future = new \DateTime();
+		$future->add(new \DateInterval('P1Y'));
+
+		return [
+			[$past],
+			[$current],
+			[$future],
+		];
 	}
 
 	/**
-	 * @dataProvider dataSetTimestamp
-	 * @param int $timestamp
+	 * @dataProvider dataSetDateTime
+	 * @param \DateTime $dateTime
 	 */
-	public function testSetTimestamp($timestamp) {
-		$this->assertSame(0, $this->notification->getTimestamp());
-		$this->assertSame($this->notification, $this->notification->setTimestamp($timestamp));
-		$this->assertSame($timestamp, $this->notification->getTimestamp());
+	public function testSetDateTime(\DateTime $dateTime) {
+		$this->assertSame(0, $this->notification->getDateTime()->getTimestamp());
+		$this->assertSame($this->notification, $this->notification->setDateTime($dateTime));
+		$this->assertSame($dateTime, $this->notification->getDateTime());
 	}
 
-	public function dataSetTimestampInvalid() {
-		return $this->dataInvalidInt();
+	public function dataSetDateTimeZero() {
+		$nineTeenSeventy = new \DateTime();
+		$nineTeenSeventy->setTimestamp(0);
+		return [
+			[$nineTeenSeventy],
+		];
 	}
 
 	/**
-	 * @dataProvider dataSetTimestampInvalid
-	 * @param mixed $timestamp
+	 * @dataProvider dataSetDateTimeZero
+	 * @param \DateTime $dateTime
 	 *
 	 * @expectedException \InvalidArgumentException
+	 * @expectedMessage 'The given date time is invalid'
 	 */
-	public function testSetTimestampInvalid($timestamp) {
-		$this->notification->setTimestamp($timestamp);
+	public function testSetDateTimeZero($dateTime) {
+		$this->notification->setDateTime($dateTime);
 	}
 
 	public function dataSetObject() {
 		return [
-			['a', 1],
-			[str_repeat('a', 64), time()],
+			['a', '21', '21'],
+			[str_repeat('a', 64), 42, '42'],
 		];
 	}
 
 	/**
 	 * @dataProvider dataSetObject
 	 * @param string $type
-	 * @param int $id
+	 * @param int|string $id
+	 * @param string $exptectedId
 	 */
-	public function testSetObject($type, $id) {
+	public function testSetObject($type, $id, $exptectedId) {
 		$this->assertSame('', $this->notification->getObjectType());
-		$this->assertSame(0, $this->notification->getObjectId());
+		$this->assertSame('', $this->notification->getObjectId());
 		$this->assertSame($this->notification, $this->notification->setObject($type, $id));
 		$this->assertSame($type, $this->notification->getObjectType());
-		$this->assertSame($id, $this->notification->getObjectId());
+		$this->assertSame($exptectedId, $this->notification->getObjectId());
 	}
 
 	public function dataSetObjectTypeInvalid() {
@@ -203,7 +211,14 @@ class NotificationTest extends TestCase {
 	}
 
 	public function dataSetObjectIdInvalid() {
-		return $this->dataInvalidInt();
+		return [
+			[true],
+			[false],
+			[''],
+			[str_repeat('a', 64 + 1)],
+			[[]],
+			[[str_repeat('a', 64 + 1)]],
+		];
 	}
 
 	/**
@@ -553,12 +568,12 @@ class NotificationTest extends TestCase {
 
 	public function dataIsValidCommon() {
 		return [
-			['', '', 0, '', 0, false],
-			['app', '', 0, '', 0, false],
-			['app', 'user', 0, '', 0, false],
-			['app', 'user', time(), '', 0, false],
-			['app', 'user', time(), 'type', 0, false],
-			['app', 'user', time(), 'type', 42, true],
+			['', '', 0, '', '', false],
+			['app', '', 0, '', '', false],
+			['app', 'user', 0, '', '', false],
+			['app', 'user', time(), '', '', false],
+			['app', 'user', time(), 'type', '', false],
+			['app', 'user', time(), 'type', '42', true],
 		];
 	}
 
@@ -569,7 +584,7 @@ class NotificationTest extends TestCase {
 	 * @param string $user
 	 * @param int $timestamp
 	 * @param string $objectType
-	 * @param int $objectId
+	 * @param string $objectId
 	 * @param bool $expected
 	 */
 	public function testIsValidCommon($app, $user, $timestamp, $objectType, $objectId, $expected) {
@@ -578,7 +593,7 @@ class NotificationTest extends TestCase {
 			->setMethods([
 				'getApp',
 				'getUser',
-				'getTimestamp',
+				'getDateTime',
 				'getObjectType',
 				'getObjectId',
 			])
@@ -592,9 +607,12 @@ class NotificationTest extends TestCase {
 			->method('getUser')
 			->willReturn($user);
 
+		$dateTime = new \DateTime();
+		$dateTime->setTimestamp($timestamp);
+
 		$notification->expects($this->any())
-			->method('getTimestamp')
-			->willReturn($timestamp);
+			->method('getDateTime')
+			->willReturn($dateTime);
 
 		$notification->expects($this->any())
 			->method('getObjectType')

@@ -1811,7 +1811,7 @@ class Share extends Constants {
 				}
 			}
 			// Check if resharing is allowed, if not remove share permission
-			if (isset($row['permissions']) && (!self::isResharingAllowed() | \OC_Util::isSharingDisabledForUser())) {
+			if (isset($row['permissions']) && (!self::isResharingAllowed() | \OCP\Util::isSharingDisabledForUser())) {
 				$row['permissions'] &= ~\OCP\Constants::PERMISSION_SHARE;
 			}
 			// Add display names to result
@@ -2332,22 +2332,7 @@ class Share extends Constants {
 
 		$id = false;
 		if ($result) {
-			$id =  \OC::$server->getDatabaseConnection()->lastInsertId();
-			// Fallback, if lastInterId() doesn't work we need to perform a select
-			// to get the ID (seems to happen sometimes on Oracle)
-			if (!$id) {
-				$getId = \OC_DB::prepare('
-					SELECT `id`
-					FROM`*PREFIX*share`
-					WHERE `uid_owner` = ? AND `item_target` = ? AND `item_source` = ? AND `stime` = ?
-					');
-				$r = $getId->execute(array($shareData['uidOwner'], $shareData['itemTarget'], $shareData['itemSource'], $shareData['shareTime']));
-				if ($r) {
-					$row = $r->fetchRow();
-					$id = $row['id'];
-				}
-			}
-
+			$id =  \OC::$server->getDatabaseConnection()->lastInsertId('*PREFIX*share');
 		}
 
 		return $id;
@@ -2581,7 +2566,10 @@ class Share extends Constants {
 			$result = self::tryHttpPost($url, $fields);
 			$status = json_decode($result['result'], true);
 
-			return ($result['success'] && $status['ocs']['meta']['statuscode'] === 100);
+			if ($result['success'] && $status['ocs']['meta']['statuscode'] === 100) {
+				\OC_Hook::emit('OCP\Share', 'federated_share_added', ['server' => $remote]);
+				return true;
+			}
 
 		}
 
