@@ -1456,7 +1456,16 @@ function humanFileSize(size, skipSmallSizes) {
 	// Stay in range of the byte sizes that are defined
 	order = Math.min(humanList.length - 1, order);
 	var readableFormat = humanList[order];
-	var relativeSize = (size / Math.pow(1024, order)).toLocaleString(OC.getLocale(), {maximumFractionDigits: 1});
+	var relativeSize = (size / Math.pow(1024, order));
+	try{
+		// Get local version of number formatting
+		relativeSize = relativeSize.toLocaleString(
+			OC.getLocale().replace('_', '-'),
+			{maximumFractionDigits: 1}
+		);
+	} catch(e) {
+		// Locale conversion not supported, just use as-is
+	}
 	if(skipSmallSizes === true && order === 0) {
 		if(relativeSize !== "0.0"){
 			return '< 1 kB';
