@@ -381,6 +381,14 @@ class Manager {
 	}
 
 	/**
+	 * Create a new share
+	 * @return IShare;
+	 */
+	public function newShare() {
+		return new \OC\Share20\Share();
+	}
+
+	/**
 	 * Is the share API enabled
 	 *
 	 * @return bool
