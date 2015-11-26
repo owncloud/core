@@ -26,6 +26,9 @@ use OCP\Files\Storage\IStorageFactory;
 use OCP\IConfig;
 use OCP\IUser;
 
+/**
+ * Mount provider for custom cache mount
+ */
 class CacheMountProvider implements IMountProvider {
 	/**
 	 * @var IConfig
@@ -42,7 +45,7 @@ class CacheMountProvider implements IMountProvider {
 	}
 
 	/**
-	 * Get the home mount for a user
+	 * Get the cache mount for a user
 	 *
 	 * @param IUser $user
 	 * @param IStorageFactory $loader
