@@ -54,8 +54,12 @@ class HomeMountProvider implements IMountProvider {
 		if (is_array($objectStore)) {
 			return []; // ObjectStoreHomeMountProvider will provide the object store home storage
 		} else {
+			$legacy = \OC\Files\Cache\Storage::exists('local::' . $user->getHome() . '/');
 			return [
-				new MountPoint('\OC\Files\Storage\Home', '/' . $user->getUID(), ['user' => $user], $loader)
+				new MountPoint('\OC\Files\Storage\Home', '/' . $user->getUID(), [
+					'user' => $user,
+					'legacy' => $legacy
+				], $loader)
 			];
 		}
 	}
