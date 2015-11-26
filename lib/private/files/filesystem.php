@@ -376,8 +376,6 @@ class Filesystem {
 		}
 		self::$usersSetup[$user] = true;
 
-		$root = \OC_User::getHome($user);
-
 		$userManager = \OC::$server->getUserManager();
 		$userObject = $userManager->get($user);
 
@@ -386,40 +384,6 @@ class Filesystem {
 			throw new \OC\User\NoUserException('Backends provided no user object for ' . $user);
 		}
 
-		$homeStorage = \OC_Config::getValue('objectstore');
-		if (!empty($homeStorage)) {
-			// sanity checks
-			if (empty($homeStorage['class'])) {
-				\OCP\Util::writeLog('files', 'No class given for objectstore', \OCP\Util::ERROR);
-			}
-			if (!isset($homeStorage['arguments'])) {
-				$homeStorage['arguments'] = array();
-			}
-			// instantiate object store implementation
-			$homeStorage['arguments']['objectstore'] = new $homeStorage['class']($homeStorage['arguments']);
-			// mount with home object store implementation
-			$homeStorage['class'] = '\OC\Files\ObjectStore\HomeObjectStoreStorage';
-		} else {
-			$homeStorage = array(
-				//default home storage configuration:
-				'class' => '\OC\Files\Storage\Home',
-				'arguments' => array()
-			);
-		}
-		$homeStorage['arguments']['user'] = $userObject;
-
-		// check for legacy home id (<= 5.0.12)
-		if (\OC\Files\Cache\Storage::exists('local::' . $root . '/')) {
-			$homeStorage['arguments']['legacy'] = true;
-		}
-
-		self::mount($homeStorage['class'], $homeStorage['arguments'], $user);
-
-		$home = \OC\Files\Filesystem::getStorage($user);
-
-		self::mountCacheDir($user);
-
-		// Chance to mount for other storages
 		/** @var \OC\Files\Config\MountProviderCollection $mountConfigManager */
 		$mountConfigManager = \OC::$server->getMountProviderCollection();
 		if ($userObject) {
@@ -428,7 +392,7 @@ class Filesystem {
 		}
 
 		self::listenForNewMountProviders($mountConfigManager, $userManager);
-		\OC_Hook::emit('OC_Filesystem', 'post_initMountPoints', array('user' => $user, 'user_dir' => $root));
+		\OC_Hook::emit('OC_Filesystem', 'post_initMountPoints', array('user' => $user, 'user_dir' => $userObject->getHome()));
 	}
 
 	/**
@@ -449,23 +413,6 @@ class Filesystem {
 					}
 				}
 			});
-		}
-	}
-
-	/**
-	 * Mounts the cache directory
-	 *
-	 * @param string $user user name
-	 */
-	private static function mountCacheDir($user) {
-		$cacheBaseDir = \OC_Config::getValue('cache_path', '');
-		if ($cacheBaseDir !== '') {
-			$cacheDir = rtrim($cacheBaseDir, '/') . '/' . $user;
-			if (!file_exists($cacheDir)) {
-				mkdir($cacheDir, 0770, true);
-			}
-			// mount external cache dir to "/$user/cache" mount point
-			self::mount('\OC\Files\Storage\Local', array('datadir' => $cacheDir), '/' . $user . '/cache');
 		}
 	}
 
