@@ -29,13 +29,13 @@ class Notification implements INotification {
 	/** @var string */
 	protected $user;
 
-	/** @var int */
-	protected $timestamp;
+	/** @var \DateTime */
+	protected $dateTime;
 
 	/** @var string */
 	protected $objectType;
 
-	/** @var int */
+	/** @var string */
 	protected $objectId;
 
 	/** @var string */
@@ -80,9 +80,10 @@ class Notification implements INotification {
 	public function __construct() {
 		$this->app = '';
 		$this->user = '';
-		$this->timestamp = 0;
+		$this->dateTime = new \DateTime();
+		$this->dateTime->setTimestamp(0);
 		$this->objectType = '';
-		$this->objectId = 0;
+		$this->objectId = '';
 		$this->subject = '';
 		$this->subjectParameters = [];
 		$this->subjectParsed = '';
@@ -140,33 +141,34 @@ class Notification implements INotification {
 	}
 
 	/**
-	 * @param int $timestamp
+	 * @param \DateTime $dateTime
 	 * @return $this
-	 * @throws \InvalidArgumentException if the timestamp is invalid
-	 * @since 8.2.0
+	 * @throws \InvalidArgumentException if the $dateTime is invalid
+	 * @since 9.0.0
 	 */
-	public function setTimestamp($timestamp) {
-		if (!is_int($timestamp)) {
-			throw new \InvalidArgumentException('The given timestamp is invalid');
+	public function setDateTime(\DateTime $dateTime) {
+		if ($dateTime->getTimestamp() === 0) {
+			throw new \InvalidArgumentException('The given date time is invalid');
 		}
-		$this->timestamp = $timestamp;
+		$this->dateTime = $dateTime;
 		return $this;
 	}
 
 	/**
-	 * @return int
-	 * @since 8.2.0
+	 * @return \DateTime
+	 * @since 9.0.0
 	 */
-	public function getTimestamp() {
-		return $this->timestamp;
+	public function getDateTime() {
+		return $this->dateTime;
 	}
 
 	/**
 	 * @param string $type
-	 * @param int $id
+	 * @param string $id
 	 * @return $this
 	 * @throws \InvalidArgumentException if the object type or id is invalid
 	 * @since 8.2.0
+	 * @changed 9.0.0 Type of $id changed to string
 	 */
 	public function setObject($type, $id) {
 		if (!is_string($type) || $type === '' || isset($type[64])) {
@@ -174,10 +176,10 @@ class Notification implements INotification {
 		}
 		$this->objectType = $type;
 
-		if (!is_int($id)) {
+		if (!is_int($id) && (!is_string($id) || $id === '' || isset($id[64]))) {
 			throw new \InvalidArgumentException('The given object id is invalid');
 		}
-		$this->objectId = $id;
+		$this->objectId = (string) $id;
 		return $this;
 	}
 
@@ -190,8 +192,9 @@ class Notification implements INotification {
 	}
 
 	/**
-	 * @return int
+	 * @return string
 	 * @since 8.2.0
+	 * @changed 9.0.0 Return type changed to string
 	 */
 	public function getObjectId() {
 		return $this->objectId;
@@ -438,11 +441,11 @@ class Notification implements INotification {
 			&&
 			$this->getUser() !== ''
 			&&
-			$this->getTimestamp() !== 0
+			$this->getDateTime()->getTimestamp() !== 0
 			&&
 			$this->getObjectType() !== ''
 			&&
-			$this->getObjectId() !== 0
+			$this->getObjectId() !== ''
 		;
 	}
 }

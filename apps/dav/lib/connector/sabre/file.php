@@ -192,7 +192,7 @@ class File extends Node implements IFile {
 			}
 
 			// since we skipped the view we need to scan and emit the hooks ourselves
-			$this->fileView->getUpdater()->update($this->path);
+			$storage->getUpdater()->update($internalPath);
 
 			if ($view) {
 				$this->emitPostHooks($exists);
@@ -213,6 +213,9 @@ class File extends Node implements IFile {
 		return '"' . $this->info->getEtag() . '"';
 	}
 
+	/**
+	 * @param string $path
+	 */
 	private function emitPreHooks($exists, $path = null) {
 		if (is_null($path)) {
 			$path = $this->path;
@@ -238,6 +241,9 @@ class File extends Node implements IFile {
 		return $run;
 	}
 
+	/**
+	 * @param string $path
+	 */
 	private function emitPostHooks($exists, $path = null) {
 		if (is_null($path)) {
 			$path = $this->path;
@@ -260,7 +266,7 @@ class File extends Node implements IFile {
 	/**
 	 * Returns the data
 	 *
-	 * @return string|resource
+	 * @return resource
 	 * @throws Forbidden
 	 * @throws ServiceUnavailable
 	 */
@@ -314,7 +320,7 @@ class File extends Node implements IFile {
 	 *
 	 * If null is returned, we'll assume application/octet-stream
 	 *
-	 * @return mixed
+	 * @return string
 	 */
 	public function getContentType() {
 		$mimeType = $this->info->getMimetype();
@@ -432,7 +438,7 @@ class File extends Node implements IFile {
 				$this->fileView->changeLock($targetPath, ILockingProvider::LOCK_SHARED);
 
 				// since we skipped the view we need to scan and emit the hooks ourselves
-				$this->fileView->getUpdater()->update($targetPath);
+				$targetStorage->getUpdater()->update($targetInternalPath);
 
 				$this->emitPostHooks($exists, $targetPath);
 

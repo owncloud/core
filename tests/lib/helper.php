@@ -71,29 +71,6 @@ class Test_Helper extends \Test\TestCase {
 		];
 	}
 
-	function testGetMimeType() {
-		$dir=OC::$SERVERROOT.'/tests/data';
-		$result = OC_Helper::getMimeType($dir."/");
-		$expected = 'httpd/unix-directory';
-		$this->assertEquals($result, $expected);
-
-		$result = OC_Helper::getMimeType($dir."/data.tar.gz");
-		$expected = 'application/x-gzip';
-		$this->assertEquals($result, $expected);
-
-		$result = OC_Helper::getMimeType($dir."/data.zip");
-		$expected = 'application/zip';
-		$this->assertEquals($result, $expected);
-
-		$result = OC_Helper::getMimeType($dir."/desktopapp.svg");
-		$expected = 'image/svg+xml';
-		$this->assertEquals($result, $expected);
-
-		$result = OC_Helper::getMimeType($dir."/desktopapp.png");
-		$expected = 'image/png';
-		$this->assertEquals($result, $expected);
-	}
-
 	function testGetSecureMimeType() {
 		$dir=OC::$SERVERROOT.'/tests/data';
 
@@ -161,18 +138,6 @@ class Test_Helper extends \Test\TestCase {
 			);
 		$result = OC_Helper::mb_array_change_key_case($arrayStart, MB_CASE_UPPER);
 		$expected = $arrayResult;
-		$this->assertEquals($result, $expected);
-	}
-
-	function testMb_substr_replace() {
-		$result = OC_Helper::mb_substr_replace("This  is a teststring", "string", 5);
-		$expected = "This string is a teststring";
-		$this->assertEquals($result, $expected);
-	}
-
-	function testMb_str_replace() {
-		$result = OC_Helper::mb_str_replace("teststring", "string", "This is a teststring");
-		$expected = "This is a string";
 		$this->assertEquals($result, $expected);
 	}
 

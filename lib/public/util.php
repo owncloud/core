@@ -173,7 +173,11 @@ class Util {
 	 * @since 7.0.0
 	 */
 	public static function isSharingDisabledForUser() {
-		return \OC_Util::isSharingDisabledForUser();
+		return \OC_Util::isSharingDisabledForUser(
+				\OC::$server->getConfig(),
+				\OC::$server->getGroupManager(),
+				\OC::$server->getUserSession()->getUser()
+		);
 	}
 
 	/**
@@ -540,7 +544,7 @@ class Util {
 	 * @deprecated 8.2.0 Use substr_replace() instead.
 	 */
 	public static function mb_substr_replace($string, $replacement, $start, $length = null, $encoding = 'UTF-8') {
-		return(\OC_Helper::mb_substr_replace($string, $replacement, $start, $length, $encoding));
+		return substr_replace($string, $replacement, $start, $length);
 	}
 
 	/**
@@ -556,7 +560,7 @@ class Util {
 	 * @deprecated 8.2.0 Use str_replace() instead.
 	 */
 	public static function mb_str_replace($search, $replace, $subject, $encoding = 'UTF-8', &$count = null) {
-		return(\OC_Helper::mb_str_replace($search, $replace, $subject, $encoding, $count));
+		return str_replace($search, $replace, $subject, $count);
 	}
 
 	/**
