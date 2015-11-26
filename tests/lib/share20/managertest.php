@@ -24,8 +24,10 @@ use OC\Share20\Manager;
 use OC\Share20\Exception;
 
 use OCP\ILogger;
-use OCP\IAppConfig;
+use OCP\IConfig;
 use OC\Share20\IShareProvider;
+use OCP\Security\ISecureRandom;
+use OCP\Security\IHasher;
 
 class ManagerTest extends \Test\TestCase {
 
@@ -35,8 +37,14 @@ class ManagerTest extends \Test\TestCase {
 	/** @var ILogger */
 	protected $logger;
 
-	/** @var IAppConfig */
-	protected $appConfig;
+	/** @var IConfig */
+	protected $config;
+
+	/** @var ISecureRandom */
+	protected $secureRandom;
+
+	/** @var IHasher */
+	protected $hasher;
 
 	/** @var IShareProvider */
 	protected $defaultProvider;
@@ -44,13 +52,17 @@ class ManagerTest extends \Test\TestCase {
 	public function setUp() {
 		
 		$this->logger = $this->getMock('\OCP\ILogger');
-		$this->appConfig = $this->getMock('\OCP\IAppConfig');
+		$this->config = $this->getMock('\OCP\IConfig');
 		$this->defaultProvider = $this->getMock('\OC\Share20\IShareProvider');
+		$this->secureRandom = $this->getMock('\OCP\Security\ISecureRandom');
+		$this->hasher = $this->getMock('\OCP\Security\IHasher');
 
 		$this->manager = new Manager(
 			$this->logger,
-			$this->appConfig,
-			$this->defaultProvider
+			$this->config,
+			$this->defaultProvider,
+			$this->secureRandom,
+			$this->hasher
 		);
 	}
 
@@ -91,8 +103,10 @@ class ManagerTest extends \Test\TestCase {
 		$manager = $this->getMockBuilder('\OC\Share20\Manager')
 			->setConstructorArgs([
 				$this->logger,
-				$this->appConfig,
-				$this->defaultProvider
+				$this->config,
+				$this->defaultProvider,
+				$this->secureRandom,
+				$this->hasher
 			])
 			->setMethods(['getShareById', 'deleteChildren'])
 			->getMock();
@@ -177,8 +191,10 @@ class ManagerTest extends \Test\TestCase {
 		$manager = $this->getMockBuilder('\OC\Share20\Manager')
 			->setConstructorArgs([
 				$this->logger,
-				$this->appConfig,
-				$this->defaultProvider
+				$this->config,
+				$this->defaultProvider,
+				$this->secureRandom,
+				$this->hasher
 			])
 			->setMethods(['getShareById'])
 			->getMock();
@@ -317,8 +333,10 @@ class ManagerTest extends \Test\TestCase {
 		$manager = $this->getMockBuilder('\OC\Share20\Manager')
 			->setConstructorArgs([
 				$this->logger,
-				$this->appConfig,
-				$this->defaultProvider
+				$this->config,
+				$this->defaultProvider,
+				$this->secureRandom,
+				$this->hasher
 			])
 			->setMethods(['deleteShare'])
 			->getMock();
@@ -364,5 +382,342 @@ class ManagerTest extends \Test\TestCase {
 			->willReturn($share);
 
 		$this->assertEquals($share, $this->manager->getShareById(42));
+	}
+
+	public function testCreateShareUser() {
+		$share = new \OC\Share20\Share();
+
+		try {
+			$this->manager->createShare($share);
+			$this->fail();
+		} catch (\InvalidArgumentException $e) {
+			$this->assertEquals('unkown share type', $e->getMessage());
+		}
+
+		$share->setShareType(\OCP\Share::SHARE_TYPE_USER);
+		try {
+			$this->manager->createShare($share);
+			$this->fail();
+		} catch (\InvalidArgumentException $e) {
+			$this->assertEquals('SharedWith should be an IUser', $e->getMessage());
+		}
+
+		$sharedWith = $this->getMock('\OCP\IUser');
+		$share->setSharedWith($sharedWith);
+		try {
+			$this->manager->createShare($share);
+			$this->fail();
+		} catch (\InvalidArgumentException $e) {
+			$this->assertEquals('SharedBy should be set', $e->getMessage());
+		}
+
+		$sharedBy = $this->getMock('\OCP\IUser');
+		$share->setSharedBy($sharedBy);
+		try {
+			$this->manager->createShare($share);
+			$this->fail();
+		} catch (\InvalidArgumentException $e) {
+			$this->assertEquals('Path should be set', $e->getMessage());
+		}
+
+		$shareOwner = $this->getMock('\OCP\IUser');
+		$path = $this->getMock('\OCP\Files\File');
+		$path->method('getOwner')->willReturn($shareOwner);
+		$share->setPath($path);
+		try {
+			$this->manager->createShare($share);
+			$this->fail();
+		} catch (\Exception $e) {
+			$this->assertEquals('Path is not shareable', $e->getMessage());
+		}
+
+		$path->method('isShareable')->willReturn(true);
+		try {
+			$this->manager->createShare($share);
+			$this->fail();
+		} catch (\InvalidArgumentException $e) {
+			$this->assertEquals('A share requires permissions', $e->getMessage());
+		}
+
+		$share->setPermissions(3);
+		$path->method('getPermissions')->willReturn(1);
+		try {
+			$this->manager->createShare($share);
+			$this->fail();
+		} catch (\Exception $e) {
+			$this->assertEquals('Cannot increase permissions', $e->getMessage());
+		}
+
+		$share->setPermissions(1);
+		$this->manager->createShare($share);
+
+		$this->assertSame($shareOwner, $share->getShareOwner());
+	}
+
+	public function testCreateShareGroup() {
+		$share = new \OC\Share20\Share();
+
+		try {
+			$this->manager->createShare($share);
+			$this->fail();
+		} catch (\InvalidArgumentException $e) {
+			$this->assertEquals('unkown share type', $e->getMessage());
+		}
+
+		$share->setShareType(\OCP\Share::SHARE_TYPE_GROUP);
+		try {
+			$this->manager->createShare($share);
+			$this->fail();
+		} catch (\InvalidArgumentException $e) {
+			$this->assertEquals('SharedWith should be an IGroup', $e->getMessage());
+		}
+
+		$sharedWith = $this->getMock('\OCP\IGroup');
+		$share->setSharedWith($sharedWith);
+		try {
+			$this->manager->createShare($share);
+			$this->fail();
+		} catch (\InvalidArgumentException $e) {
+			$this->assertEquals('SharedBy should be set', $e->getMessage());
+		}
+
+		$sharedBy = $this->getMock('\OCP\IUser');
+		$share->setSharedBy($sharedBy);
+		try {
+			$this->manager->createShare($share);
+			$this->fail();
+		} catch (\InvalidArgumentException $e) {
+			$this->assertEquals('Path should be set', $e->getMessage());
+		}
+
+		$shareOwner = $this->getMock('\OCP\IUser');
+		$path = $this->getMock('\OCP\Files\Folder');
+		$path->method('getOwner')->willReturn($shareOwner);
+		$share->setPath($path);
+		try {
+			$this->manager->createShare($share);
+			$this->fail();
+		} catch (\Exception $e) {
+			$this->assertEquals('Path is not shareable', $e->getMessage());
+		}
+
+		$path->method('isShareable')->willReturn(true);
+		try {
+			$this->manager->createShare($share);
+			$this->fail();
+		} catch (\InvalidArgumentException $e) {
+			$this->assertEquals('A share requires permissions', $e->getMessage());
+		}
+
+		$share->setPermissions(3);
+		$path->method('getPermissions')->willReturn(1);
+		try {
+			$this->manager->createShare($share);
+			$this->fail();
+		} catch (\Exception $e) {
+			$this->assertEquals('Cannot increase permissions', $e->getMessage());
+		}
+
+		$share->setPermissions(1);
+		$this->manager->createShare($share);
+
+		$this->assertSame($shareOwner, $share->getShareOwner());
+	}
+
+	public function testCreateShareLink() {
+		$this->secureRandom->method('getMediumStrengthGenerator')
+				->will($this->returnSelf());
+		$this->secureRandom->method('generate')->willReturn('token');
+
+		$share = new \OC\Share20\Share();
+
+		$this->config->method('getAppValue')->will($this->returnValueMap([
+			['core', 'shareapi_allow_links', 'yes', 'yes'],
+		]));
+
+		try {
+			$this->manager->createShare($share);
+			$this->fail();
+		} catch (\InvalidArgumentException $e) {
+			$this->assertEquals('unkown share type', $e->getMessage());
+		}
+
+		$share->setShareType(\OCP\Share::SHARE_TYPE_LINK);
+
+		$sharedBy = $this->getMock('\OCP\IUser');
+		$share->setSharedBy($sharedBy);
+		try {
+			$this->manager->createShare($share);
+			$this->fail();
+		} catch (\InvalidArgumentException $e) {
+			$this->assertEquals('Path should be set', $e->getMessage());
+		}
+
+		$shareOwner = $this->getMock('\OCP\IUser');
+		$path = $this->getMock('\OCP\Files\Folder');
+		$path->method('getOwner')->willReturn($shareOwner);
+		$share->setPath($path);
+		try {
+			$this->manager->createShare($share);
+			$this->fail();
+		} catch (\Exception $e) {
+			$this->assertEquals('Path is not shareable', $e->getMessage());
+		}
+
+		$path->method('isShareable')->willReturn(true);
+		try {
+			$this->manager->createShare($share);
+			$this->fail();
+		} catch (\InvalidArgumentException $e) {
+			$this->assertEquals('A share requires permissions', $e->getMessage());
+		}
+
+		$share->setPermissions(3);
+		$path->method('getPermissions')->willReturn(1);
+		try {
+			$this->manager->createShare($share);
+			$this->fail();
+		} catch (\Exception $e) {
+			$this->assertEquals('Cannot increase permissions', $e->getMessage());
+		}
+
+		$share->setPermissions(1);
+		$this->manager->createShare($share);
+
+		$this->assertSame($shareOwner, $share->getShareOwner());
+		$this->assertSame('token', $share->getToken());
+	}
+
+	public function testCreateShareLinkExpirationPast() {
+		$this->secureRandom->method('getMediumStrengthGenerator')
+			->will($this->returnSelf());
+		$this->secureRandom->method('generate')->willReturn('token');
+
+		$share = new \OC\Share20\Share();
+
+		$this->config->method('getAppValue')->will($this->returnValueMap([
+			['core', 'shareapi_allow_links', 'yes', 'yes'],
+		]));
+
+		$share->setShareType(\OCP\Share::SHARE_TYPE_LINK);
+
+		$past = new \DateTime();
+		$past->sub(new \DateInterval('P1D'));
+
+		$share->setExpirationDate($past);
+		try {
+			$this->manager->createShare($share);
+			$this->fail();
+		} catch (\InvalidArgumentException $e) {
+			$this->assertEquals('Expiration date is in the past', $e->getMessage());
+		}
+
+		$this->assertEquals('00:00:00', $past->format('H:i:s'));
+	}
+
+	public function testCreateShareLinkExpirationToFarInFuture() {
+		$this->secureRandom->method('getMediumStrengthGenerator')
+				->will($this->returnSelf());
+		$this->secureRandom->method('generate')->willReturn('token');
+
+		$share = new \OC\Share20\Share();
+
+		$share->setShareType(\OCP\Share::SHARE_TYPE_LINK);
+
+		$future = new \DateTime();
+		$future->add(new \DateInterval('P4D'));
+
+		$this->config->method('getAppValue')->will($this->returnValueMap([
+			['core', 'shareapi_allow_links', 'yes', 'yes'],
+			['core', 'shareapi_enforce_expire_date', 'no', 'yes'],
+			['core', 'shareapi_expire_after_n_days', '7', '3'],
+		]));
+
+		$share->setExpirationDate($future);
+		try {
+			$this->manager->createShare($share);
+			$this->fail();
+		} catch (\InvalidArgumentException $e) {
+			$this->assertEquals('Cannot set expiration date more than 3 in the future', $e->getMessage());
+		}
+
+		$this->assertEquals('00:00:00', $future->format('H:i:s'));
+	}
+
+	public function testCreateShareLinkDefaultExpiration() {
+		$this->secureRandom->method('getMediumStrengthGenerator')
+				->will($this->returnSelf());
+		$this->secureRandom->method('generate')->willReturn('token');
+
+		$share = new \OC\Share20\Share();
+
+		$share->setShareType(\OCP\Share::SHARE_TYPE_LINK);
+
+		$this->config->method('getAppValue')->will($this->returnValueMap([
+			['core', 'shareapi_allow_links', 'yes', 'yes'],
+			['core', 'shareapi_default_expire_date', 'no', 'yes'],
+			['core', 'shareapi_expire_after_n_days', '7', '3'],
+		]));
+
+		try {
+			$this->manager->createShare($share);
+			$this->fail();
+		} catch (\InvalidArgumentException $e) {
+
+		}
+
+		$future = new \DateTime();
+		$future->add(new \DateInterval('P3D'));
+		$future->setTime(0,0,0);
+
+		$this->assertEquals($future, $share->getExpirationDate());
+	}
+
+	public function testCreateShareLinkPasswordEnforced() {
+		$this->secureRandom->method('getMediumStrengthGenerator')
+				->will($this->returnSelf());
+		$this->secureRandom->method('generate')->willReturn('token');
+
+		$share = new \OC\Share20\Share();
+
+		$share->setShareType(\OCP\Share::SHARE_TYPE_LINK);
+
+		$this->config->method('getAppValue')->will($this->returnValueMap([
+			['core', 'shareapi_allow_links', 'yes', 'yes'],
+			['core', 'shareapi_enforce_links_password', 'no', 'yes'],
+		]));
+
+		try {
+			$this->manager->createShare($share);
+			$this->fail();
+		} catch (\InvalidArgumentException $e) {
+			$this->assertEquals('Passwords are enforced for link shares', $e->getMessage());
+		}
+
+		$share->setPassword('password');
+		$this->hasher->expects($this->once())
+			->method('hash')
+			->with('password')
+			->willReturn('hashedPassword');
+
+		try {
+			$this->manager->createShare($share);
+			$this->fail();
+		} catch (\InvalidArgumentException $e) {}
+
+		$this->assertEquals('hashedPassword', $share->getPassword());
+	}
+
+	public function testCreateShareLinkNotAllowed() {
+		$share = new \OC\Share20\Share();
+
+		$share->setShareType(\OCP\Share::SHARE_TYPE_LINK);
+
+		try {
+			$this->manager->createShare($share);
+			$this->fail();
+		} catch (\Exception $e) {
+			$this->assertEquals('Link sharing not allowed', $e->getMessage());
+		}
 	}
 }

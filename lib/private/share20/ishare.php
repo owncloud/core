@@ -101,7 +101,7 @@ interface IShare {
 	 * @param \DateTime $expireDate
 	 * @return Share The modified object
 	 */
-	public function setExpirationDate(\DateTime $expireDate);
+	public function setExpirationDate($expireDate);
 
 	/**
 	 * Get the share expiration date
@@ -116,6 +116,15 @@ interface IShare {
 	 * @return IUser|string
 	 */
 	public function getSharedBy();
+
+	/**
+	 * Set the original share owner (who owns the path)
+	 *
+	 * @param IUser|string
+	 *
+	 * @return Share The modified object
+	 */
+	public function setShareOwner($shareOwner);
 
 	/**
 	 * Get the original share owner (who owns the path)
@@ -139,6 +148,14 @@ interface IShare {
 	 * @return string
 	 */
 	public function getPassword();
+
+	/**
+	 * Set the token
+	 *
+	 * @param string $token
+	 * @return Share The modified object
+	 */
+	public function setToken($token);
 
 	/**
 	 * Get the token

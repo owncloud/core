@@ -21,8 +21,10 @@
 namespace OC\Share20;
 
 
-use OCP\IAppConfig;
+use OCP\IConfig;
 use OCP\ILogger;
+use OCP\Security\ISecureRandom;
+use OCP\Security\IHasher;
 
 use OC\Share20\Exception\ShareNotFound;
 
@@ -39,23 +41,35 @@ class Manager {
 	/** @var ILogger */
 	private $logger;
 
-	/** @var IAppConfig */
-	private $appConfig;
+	/** @var IConfig */
+	private $config;
+
+	/** @var ISecureRandom */
+	private $secureRandom;
+
+	/** @var IHasher */
+	private $hasher;
 
 	/**
 	 * Manager constructor.
 	 *
 	 * @param ILogger $logger
-	 * @param IAppConfig $appConfig
+	 * @param IConfig $config
 	 * @param IShareProvider $defaultProvider
+	 * @param ISecureRandom $secureRandom
+	 * @param IHasher $hasher
 	 */
 	public function __construct(
 			ILogger $logger,
-			IAppConfig $appConfig,
-			IShareProvider $defaultProvider
+			IConfig $config,
+			IShareProvider $defaultProvider,
+			ISecureRandom $secureRandom,
+			IHasher $hasher
 	) {
 		$this->logger = $logger;
-		$this->appConfig = $appConfig;
+		$this->config = $config;
+		$this->secureRandom = $secureRandom;
+		$this->hasher = $hasher;
 
 		// TEMP SOLUTION JUST TO GET STARTED
 		$this->defaultProvider = $defaultProvider;
@@ -64,10 +78,124 @@ class Manager {
 	/**
 	 * Share a path
 	 *
-	 * @param Share $share
+	 * @param IShare $share
 	 * @return Share The share object
+	 * @throws \Exception
 	 */
-	public function createShare(Share $share) {
+	public function createShare(IShare $share) {
+		//Verify share type
+		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
+			// We expect a valid user as sharedWith for user shares
+			if (!($share->getSharedWith() instanceof \OCP\IUser)) {
+				throw new \InvalidArgumentException('SharedWith should be an IUser');
+			}
+		} else if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
+			// We expect a valid group as sharedWith for group shares
+			if (!($share->getSharedWith() instanceof \OCP\IGroup)) {
+				throw new \InvalidArgumentException('SharedWith should be an IGroup');
+			}
+		} else if ($share->getShareType() === \OCP\Share::SHARE_TYPE_LINK) {
+
+			// Are link shares allowed?
+			if (!$this->shareApiAllowLinks()) {
+				throw new \Exception('Link sharing not allowed');
+			}
+
+			$share->setSharedWith(null);
+
+			/*
+			 * For now ignore a set token.
+			 */
+			$share->setToken(
+				$this->secureRandom->getMediumStrengthGenerator()->generate(
+					\OC\Share\Constants::TOKEN_LENGTH,
+					\OCP\Security\ISecureRandom::CHAR_LOWER.
+					\OCP\Security\ISecureRandom::CHAR_UPPER.
+					\OCP\Security\ISecureRandom::CHAR_DIGITS
+				)
+			);
+
+			// Verify expiredate if set
+			if ($share->getExpirationDate() !== null) {
+				//Make sure the expiration date is a date
+				$date = $share->getExpirationDate();
+				$date->setTime(0,0,0);
+				$share->setExpirationDate($date);
+
+				$date = new \DateTime();
+				$date->setTime(0,0,0);
+				if ($date >= $share->getExpirationDate()) {
+					throw new \InvalidArgumentException('Expiration date is in the past');
+				}
+
+				// If we enforce the expiration date check that is does not exceed
+				if ($this->shareApiLinkDefaultExpireDateEnforced()) {
+					$date->add(new \DateInterval('P' . $this->shareApiLinkDefaultExpireDays() . 'D'));
+					if ($date < $share->getExpirationDate()) {
+						throw new \InvalidArgumentException('Cannot set expiration date more than ' . $this->shareApiLinkDefaultExpireDays() . ' in the future');
+					}
+				}
+			}
+
+			// If expiredate is empty set a default one if there is a default
+			if ($share->getExpirationDate() === null && $this->shareApiLinkDefaultExpireDate()) {
+				$date = new \DateTime();
+				$date->setTime(0,0,0);
+				$date->add(new \DateInterval('P'.$this->shareApiLinkDefaultExpireDays().'D'));
+				$share->setExpirationDate($date);
+			}
+
+			// Check if we use passwords if required
+			if ($share->getPassword() === null && $this->shareApiLinkEnforcePassword()) {
+				throw new \InvalidArgumentException('Passwords are enforced for link shares');
+			}
+
+			// If a password is set. Hash it!
+			if ($share->getPassword() !== null) {
+				$share->setPassword($this->hasher->hash($share->getPassword()));
+			}
+		} else {
+			// We do not handle other types yet
+			throw new \InvalidArgumentException('unkown share type');
+		}
+
+		// Verify the initiator of the share is et
+		if ($share->getSharedBy() === null) {
+			throw new \InvalidArgumentException('SharedBy should be set');
+		}
+
+		// The path should be set
+		if ($share->getPath() === null) {
+			throw new \InvalidArgumentException('Path should be set');
+		}
+		// And it should be a file or a folder
+		if (!($share->getPath() instanceof \OCP\Files\File) &&
+		    !($share->getPath() instanceof \OCP\Files\Folder)) {
+			throw new \InvalidArgumentException('Path should be either a file or a folder');
+		}
+
+		// On creation of a share the owner is always the owner of the path
+		$share->setShareOwner($share->getPath()->getOwner());
+
+		// Check if we actually have share permissions
+		if (!$share->getPath()->isShareable()) {
+			throw new \Exception('Path is not shareable');
+		}
+
+		// Permissions should be set
+		if ($share->getPermissions() === null) {
+			throw new \InvalidArgumentException('A share requires permissions');
+		}
+
+		// Check that we do not share with more permissions than we have
+		if ($share->getPermissions() & ~$share->getPath()->getPermissions()) {
+			throw new \Exception('Cannot increase permissions');
+		}
+
+		//TODO handle link share permissions or check them
+
+		$share = $this->defaultProvider->create($share);
+		return $share;
 	}
 
 	/**
@@ -250,5 +378,68 @@ class Manager {
 	 * @param \OCP\Files\Node $path
 	 */
 	public function getAccessList(\OCP\Files\Node $path) {
+	}
+
+	/**
+	 * Is the share API enabled
+	 *
+	 * @return bool
+	 */
+	public function shareApiEnabled() {
+		return $this->config->getAppValue('core', 'shareapi_enabled', 'yes') !== 'yes';
+	}
+
+	/**
+	 * Is public link sharing enabled
+	 *
+	 * @return bool
+	 */
+	public function shareApiAllowLinks() {
+		return $this->config->getAppValue('core', 'shareapi_allow_links', 'yes') === 'yes';
+	}
+
+	/**
+	 * Is password on public link requires
+	 *
+	 * @return bool
+	 */
+	public function shareApiLinkEnforcePassword() {
+		return $this->config->getAppValue('core', 'shareapi_enforce_links_password', 'no') === 'yes';
+	}
+
+	/**
+	 * Is default expire date enabled
+	 *
+	 * @return bool
+	 */
+	public function shareApiLinkDefaultExpireDate() {
+		return $this->config->getAppValue('core', 'shareapi_default_expire_date', 'no') === 'yes';
+	}
+
+	/**
+	 * Is default expire date enforced
+	 *`
+	 * @return bool
+	 */
+	public function shareApiLinkDefaultExpireDateEnforced() {
+		return $this->config->getAppValue('core', 'shareapi_enforce_expire_date', 'no') === 'yes';
+	}
+
+	/**
+	 * Number of default expire days
+	 *
+	 * @return int
+	 */
+	public function shareApiLinkDefaultExpireDays() {
+		return (int)$this->config->getAppValue('core', 'shareapi_expire_after_n_days', '7');
+	}
+
+	/**
+	 * Allow public upload on link shares
+	 *
+	 * @return bool
+	 */
+	public function shareApiLinkAllowPublicUpload() {
+		return $this->config->getAppValue('core', 'shareapi_allow_public_upload', 'yes') === 'yes';
 	}
 }
