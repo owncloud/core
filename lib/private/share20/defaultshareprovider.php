@@ -64,11 +64,104 @@ class DefaultShareProvider implements IShareProvider {
 
 	/**
 	 * Share a path
-	 * 
+	 *
 	 * @param IShare $share
 	 * @return IShare The share object
+	 * @throws ShareNotFound
+	 * @throws \Exception
 	 */
 	public function create(IShare $share) {
+		$qb = $this->dbConn->getQueryBuilder();
+
+		$qb->insert('share');
+		$qb->setValue('share_type', $qb->createParameter('shareType'))
+			->setParameter('shareType', $share->getShareType());
+
+		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
+			//Set the UID of the user we share with
+			$qb->setValue('share_with', $qb->createParameter('shareWith'))
+				->setParameter('shareWith', $share->getSharedWith()->getUID());
+		} else if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
+			//Set the GID of the group we share with
+			$qb->setValue('share_with', $qb->createParameter('shareWith'))
+				->setParameter('shareWith', $share->getSharedWith()->getGID());
+		} else if ($share->getShareType() === \OCP\Share::SHARE_TYPE_LINK) {
+			//Set the token of the share
+			$qb->setValue('token', $qb->createParameter('token'))
+				->setParameter('token', $share->getToken());
+
+			//If a password is set store it
+			if ($share->getPassword() !== null) {
+				$qb->setValue('share_with', $qb->createParameter('password'))
+					->setParameter('password', $share->getPassword());
+			}
+
+			//If an expiration date is set store it
+			if ($share->getExpirationDate() !== null) {
+				$qb->setValue('expiration', $qb->createParameter('expiration'))
+					->setParameter('expiration', $share->getExpirationDate(), 'datetime');
+			}
+		} else {
+			throw new \Exception('invalid share type!');
+		}
+
+		// Set what is shares
+		$qb->setValue('item_type', $qb->createParameter('itemType'));
+		if ($share->getPath() instanceof \OCP\Files\File) {
+			$qb->setParameter('itemType', 'file');
+		} else {
+			$qb->setParameter('itemType', 'folder');
+		}
+
+		// Set the file id
+		$qb->setValue('item_source', $qb->createParameter('itemSource'));
+		$qb->setValue('file_source', $qb->createParameter('fileSource'));
+		$qb->setParameter('itemSource', $share->getPath()->getId());
+		$qb->setParameter('fileSource', $share->getPath()->getId());
+
+		// set the permissions
+		$qb->setValue('permissions', $qb->createParameter('permissions'))
+			->setParameter('permissions', $share->getPermissions());
+
+		// Set who created this share
+		$qb->setValue('uid_owner', $qb->createParameter('sharedBy'))
+			->setParameter('sharedBy', $share->getSharedBy()->getUID());
+
+		// Set who is the owner of this file/folder (and this the owner of the share)
+		$qb->setValue('uid_fileowner', $qb->createParameter('shareOwner'))
+			->setParameter('shareOwner', $share->getShareOwner()->getUID());
+
+		// Set the file target
+		$qb->setValue('file_target', $qb->createParameter('target'))
+			->setParameter('target', '/' . $share->getPath()->getName());
+
+		// Set the time this share was created
+		$qb->setValue('stime', $qb->createParameter('shareTime'))
+			->setParameter('shareTime', time());
+
+		// insert the data and fetch the id of the share
+		$this->dbConn->beginTransaction();
+		$qb->execute();
+		$id = $this->dbConn->lastInsertId('*PREFIX*share');
+		$this->dbConn->commit();
+
+		// Now fetch the inserted share and create a complete share object
+		$qb = $this->dbConn->getQueryBuilder();
+		$qb->select('*')
+			->from('*PREFIX*share')
+			->where($qb->expr()->eq('id', $qb->createParameter('id')))
+			->setParameter('id', $id);
+
+		$cursor = $qb->execute();
+		$data = $cursor->fetch();
+		$cursor->closeCursor();
+
+		if ($data === false) {
+			throw new ShareNotFound();
+		}
+
+		$share = $this->createShare($data);
+		return $share;
 	}
 
 	/**
