@@ -1,0 +1,1427 @@
+<?xml version="1.0" standalone="no"?>
+
+<!DOCTYPE caldavtest SYSTEM "caldavtest.dtd">
+<!--
+ Copyright (c) 2006-2015 Apple Inc. All rights reserved.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ -->
+
+<caldavtest>
+
+	<require-feature>
+		<feature>carddav</feature>
+	</require-feature>
+
+	<start>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookpath1:/1.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/vreports/put/1.vcf</filepath>
+			</data>
+		</request>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookpath1:/2.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/vreports/put/2.vcf</filepath>
+			</data>
+		</request>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookpath1:/3.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/vreports/put/3.vcf</filepath>
+			</data>
+		</request>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookpath1:/4.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/vreports/put/4.vcf</filepath>
+			</data>
+		</request>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookpath1:/5.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/vreports/put/5.vcf</filepath>
+			</data>
+		</request>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookpath1:/6.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/vreports/put/6.vcf</filepath>
+			</data>
+		</request>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookpath1:/7.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/vreports/put/7.vcf</filepath>
+			</data>
+		</request>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookpath1:/8.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/vreports/put/8.vcf</filepath>
+			</data>
+		</request>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookpath1:/9.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/vreports/put/9.vcf</filepath>
+			</data>
+		</request>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookpath1:/10.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/vreports/put/10.vcf</filepath>
+			</data>
+		</request>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookpath1:/11.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/vreports/put/11.vcf</filepath>
+			</data>
+		</request>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookpath1:/12.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/vreports/put/12.vcf</filepath>
+			</data>
+		</request>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookpath1:/13.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/vreports/put/13.vcf</filepath>
+			</data>
+		</request>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookpath1:/14.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/vreports/put/14.vcf</filepath>
+			</data>
+		</request>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookpath1:/15.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/vreports/put/15.vcf</filepath>
+			</data>
+		</request>
+	</start>
+	
+	<test-suite name="basic query reports">
+		<!-- test name="1">
+			<description>query for resources with no filter defined</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/1.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>1.vcf</value>
+						<value>2.vcf</value>
+						<value>3.vcf</value>
+						<value>4.vcf</value>
+						<value>5.vcf</value>
+						<value>6.vcf</value>
+						<value>7.vcf</value>
+						<value>8.vcf</value>
+						<value>9.vcf</value>
+						<value>10.vcf</value>
+						<value>11.vcf</value>
+						<value>12.vcf</value>
+						<value>13.vcf</value>
+						<value>14.vcf</value>
+						<value>15.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test -->
+		<!-- test name="2">
+			<description>query for resources with "is not defined"></description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/2.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>1.vcf</value>
+						<value>2.vcf</value>
+						<value>3.vcf</value>
+						<value>4.vcf</value>
+						<value>5.vcf</value>
+						<value>8.vcf</value>
+						<value>9.vcf</value>
+						<value>10.vcf</value>
+						<value>13.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test -->
+		<test name="3">
+			<description>query for resources where the FN contains the character 'Pict'</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/3.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>6.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<!--
+		<test name="4">
+			<description>query for resources where EMAIL does not contain the character 'apple@'</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/4.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>1.vcf</value>
+						<value>2.vcf</value>
+						<value>4.vcf</value>
+						<value>5.vcf</value>
+						<value>6.vcf</value>
+						<value>7.vcf</value>
+						<value>8.vcf</value>
+						<value>9.vcf</value>
+						<value>10.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="5">
+			<description>query for resources where EMAIL equals testinc_sf@testinc.com</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/5.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>7.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="6">
+			<description>query for resources where PHOTO property exists</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/6.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>6.vcf</value>
+						<value>7.vcf</value>
+						<value>11.vcf</value>
+						<value>12.vcf</value>
+						<value>14.vcf</value>
+						<value>15.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="7">
+			<description>query for resources where PHOTO property does not exist</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/7.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>1.vcf</value>
+						<value>2.vcf</value>
+						<value>3.vcf</value>
+						<value>4.vcf</value>
+						<value>5.vcf</value>
+						<value>8.vcf</value>
+						<value>9.vcf</value>
+						<value>10.vcf</value>
+						<value>13.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="8">
+			<description>query for resources where FN contains 'Pict'</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/8.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>6.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="9">
+			<description>query for resources containing high ascii in FN</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/9.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>15.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="10">
+			<description>query for resources containing double bytes in FN</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/10.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>9.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="11">
+			<description>query for resources that contain 'Nd' in FN or 'john' in EMAIL</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/11.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>13.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="12">
+			<description>query for resources where NOTE property exists</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/12.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>2.vcf</value>
+						<value>4.vcf</value>
+						<value>9.vcf</value>
+						<value>7.vcf</value>
+						<value>10.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="13">
+			<description>query for resources where NOTE property contains 'contact'</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/13.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>2.vcf</value>
+						<value>4.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="14">
+			<description>query for resources where FN property starts with 'Jo'</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/14.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>13.vcf</value>
+						<value>14.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="15">
+			<description>query for resources where NICKNAME property end with 'ry'</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/15.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>2.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="16">
+			<description>query for resources where NOTE property contains uppercase 'CONTACT'</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/16.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>2.vcf</value>
+						<value>4.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="17">
+			<description>query on vCard for resources where EMAIL does not contain the character '@apple.com'</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/1.vcf</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/17.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value></value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="18">
+			<description>query on vCard for resources where EMAIL does not contain the character '@example.com'</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/3.vcf</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/18.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="19">
+			<description>query for resources with no filter defined. limited to 8 results</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/19.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>1.vcf</value>
+						<value>2.vcf</value>
+						<value>10.vcf</value>
+						<value>11.vcf</value>
+						<value>12.vcf</value>
+						<value>13.vcf</value>
+						<value>14.vcf</value>
+						<value>15.vcf</value>
+					</arg>
+ 					<arg>
+						<name>badhrefs</name>
+						<value/> 
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="20">
+			<description>query for resources with "is not defined", limited to 5 results></description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/20.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>1.vcf</value>
+						<value>10.vcf</value>
+						<value>13.vcf</value>
+						<value>2.vcf</value>
+						<value>3.vcf</value>
+					</arg>
+ 					<arg>
+						<name>badhrefs</name>
+						<value/> 
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="21">
+			<description>query for resources with EMAIL contains '.com' and 'apple" with parameter TYPE = "WORK") limited to 4 responses</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/21.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+ 					<arg>
+						<name>badhrefs</name>
+						<value/> 
+					</arg>
+					<arg>
+						<name>okhrefs</name>
+						<value>11.vcf</value>
+						<value>12.vcf</value>
+						<value>13.vcf</value>
+						<value>14.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="22">
+			<description>query for resources with (FN contains 'John' and 'And") or (EMAIL  contains 'apple' and 'ank')" </description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/22.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>13.vcf</value>
+						<value>14.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="23">
+			<description>query for resources with EMAIL with TYPE parameter = "work" and "pref" limited to 4 results</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/23.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+ 					<arg>
+						<name>badhrefs</name>
+						<value/> 
+					</arg>
+					<arg>
+						<name>okhrefs</name>
+						<value>1.vcf</value>
+						<value>10.vcf</value>
+						<value>11.vcf</value>
+						<value>12.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="24">
+			<description>query for resources with (FN contains 'John' and 'And") AND (EMAIL  contains 'apple' and 'john') limited to 4 results"" </description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/24.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>13.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="25">
+			<description>query for resources with (FN contains 'John') AND (FN contains 'Anderson") AND (EMAIL  contains 'apple') AND (EMAIL  contains 'ank') limited to 4 results"" </description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/25.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="26">
+			<description>query for resources where (FN contains 'John') OR (FN contains 'Anderson") OR (EMAIL  contains 'apple') OR (EMAIL  contains 'ank') limited to 4 results" </description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/26.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+ 					<arg>
+						<name>badhrefs</name>
+						<value/> 
+					</arg>
+					<arg>
+						<name>okhrefs</name>
+						<value>11.vcf</value>
+						<value>12.vcf</value>
+						<value>13.vcf</value>
+						<value>14.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="27">
+			<description>query for resources with (FN contains 'John' AND 'Anderson") OR (EMAIL  contains 'ank' with TYPE parameter = "work") limited to 4 results" </description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/27.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>13.vcf</value>
+						<value>14.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="28">
+			<description>query for resources with (URL contains "jp") OR (ADR  contains 'Japan') [group properties]" </description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/28.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>9.vcf</value>
+						<value>10.vcf</value>
+						<value>12.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="29">
+			<description>query for resources with (X-JABBER  contains 'apple') OR (ADR contains "Laguna" [group properties]" </description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/29.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>1.vcf</value>
+						<value>11.vcf</value>
+						<value>12.vcf</value>
+						<value>13.vcf</value>
+						<value>14.vcf</value>
+						<value>15.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="30">
+			<description>query for resources with UID starts with" </description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/30.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>5.vcf</value>
+						<value>14.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="31">
+			<description>query for resources with UID ends with" </description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/31.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>6.vcf</value>
+						<value>14.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="32">
+			<description>query for resources with UID equals" </description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/32.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>11.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="33">
+			<description>query for resources with UID contains" </description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/basicquery/33.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>6.vcf</value>
+						<value>12.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		-->
+	</test-suite>
+	<!--
+	<test-suite name='multiget reports'>
+		<test name='1'>
+			<description>basic multiget of 6 resources returning etag and entire vcf data</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/multiget/1.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>1.vcf</value>
+						<value>2.vcf</value>
+						<value>3.vcf</value>
+						<value>4.vcf</value>
+						<value>11.vcf</value>
+						<value>12.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='2'>
+			<description>basic multiget of 4 resources returning etag</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/multiget/2.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>1.vcf</value>
+						<value>2.vcf</value>
+						<value>3.vcf</value>
+						<value>4.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='3'>
+			<description>Does allprop</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/multiget/3.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>10.vcf</value>
+						<value>11.vcf</value>
+						<value>12.vcf</value>
+						<value>13.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='4'>
+			<description>Does propname</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/multiget/4.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>12.vcf</value>
+						<value>13.vcf</value>
+						<value>14.vcf</value>
+						<value>15.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='5'>
+			<description>Single non-existent query</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/multiget/5.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>badhrefs</name>
+						<value>bogus-resource.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='6'>
+			<description>basic multiget of 3 resources returning and named properties and no etag</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/multiget/6.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>1.vcf</value>
+						<value>3.vcf</value>
+						<value>4.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+	</test-suite>
+	
+	<test-suite name='directory gateway query reports'>
+		<require-feature>
+			<feature>directory-gateway</feature>
+		</require-feature>
+
+		<test name='1'>
+			<description>query for FN starts with "pub"</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$directory:</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/searchquery/1.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+					    <value>$publicuserguid1:.vcf</value>
+					    <value>$publicuserguid2:.vcf</value>
+					    <value>$publicuserguid3:.vcf</value>
+					    <value>$publicuserguid4:.vcf</value>
+					    <value>$publicuserguid5:.vcf</value>
+					    <value>$publicuserguid6:.vcf</value>
+					    <value>$publicuserguid7:.vcf</value>
+					    <value>$publicuserguid8:.vcf</value>
+					    <value>$publicuserguid9:.vcf</value>
+					    <value>$publicuserguid10:.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='2'>
+			<description>query for FN starts with "sim" in a unmatching vCard</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$directory:$publicuserguid1:.vcf</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/searchquery/2.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='3'>
+			<description>query for EMAIL does not contain "b"</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$directory:</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/searchquery/3.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>$userguid1:.vcf</value>
+						<value>$userguid2:.vcf</value>
+						<value>$userguid3:.vcf</value>
+						<value>$userguid4:.vcf</value>
+						<value>$userguid5:.vcf</value>
+						<value>$userguid6:.vcf</value>
+						<value>$userguid7:.vcf</value>
+						<value>$userguid8:.vcf</value>
+						<value>$userguid9:.vcf</value>
+						<value>$userguid10:.vcf</value>
+					</arg>
+					<arg>
+						<name>nohrefs</name>
+					    <value>$publicuserguid1:.vcf</value>
+					    <value>$publicuserguid2:.vcf</value>
+					    <value>$publicuserguid3:.vcf</value>
+					    <value>$publicuserguid4:.vcf</value>
+					    <value>$publicuserguid5:.vcf</value>
+					    <value>$publicuserguid6:.vcf</value>
+					    <value>$publicuserguid7:.vcf</value>
+					    <value>$publicuserguid8:.vcf</value>
+					    <value>$publicuserguid9:.vcf</value>
+					    <value>$publicuserguid10:.vcf</value>
+					</arg>
+					<arg>
+						<name>ignoremissing</name>
+						<value/>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='4'>
+			<description>query for ADR is-not-defined</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$directory:</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/searchquery/4.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>$userguid1:.vcf</value>
+						<value>$userguid2:.vcf</value>
+						<value>$userguid3:.vcf</value>
+						<value>$userguid4:.vcf</value>
+						<value>$userguid5:.vcf</value>
+						<value>$userguid6:.vcf</value>
+						<value>$userguid7:.vcf</value>
+						<value>$userguid8:.vcf</value>
+						<value>$userguid9:.vcf</value>
+						<value>$userguid10:.vcf</value>
+					</arg>
+					<arg>
+						<name>ignoremissing</name>
+						<value/>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='5'>
+			<description>query for VERSION is end-with ".0" limited to 10 results</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$directory:</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/searchquery/5.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>totalcount</name>
+						<value>10</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='6'>
+			<description>query EMAIL contains "@example" with parameter "HOME"</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$directory:</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/searchquery/6.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>totalcount</name>
+						<value>0</value> 
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='7'>
+			<description>query FN contains "ic 01" and EMAIL contains "@example"</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$directory:</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/searchquery/7.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+					    <value>$publicuserguid1:.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="8">
+			<description>query for resources with EMAIL contains '.com' and '01' with parameter TYPE = "WORK") limited to 4 responses</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$directory:</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/searchquery/8.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+ 					<arg>
+						<name>badhrefs</name>
+						<value/> 
+					</arg>
+					<arg>
+						<name>totalcount</name>
+						<value>4</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="9">
+			<description>query for resources with (FN contains 'Public' and '03") or (EMAIL  contains 'User' and '02')" </description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$directory:</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/searchquery/9.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+					    <value>$publicuserguid3:.vcf</value>
+					    <value>$userguid2:.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="10">
+			<description>query for resources with EMAIL with TYPE parameter = "work" and "pref" limited to 4 results</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$directory:</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/searchquery/10.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+ 					<arg>
+						<name>badhrefs</name>
+						<value/> 
+					</arg>
+					<arg>
+						<name>totalcount</name>
+						<value>4</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="11">
+			<description>query for resources with (FN contains 'Public' and '03") AND (EMAIL  contains 'example' and 'public') limited to 4 results"" </description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$directory:</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/searchquery/11.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+					    <value>$publicuserguid3:.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="12">
+			<description>query for resources with (FN contains 'Public' and '03") AND (EMAIL  contains 'example' and 'user') limited to 4 results"" </description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$directory:</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/searchquery/12.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="13">
+			<description>query for resources where (FN contains '02') OR (FN contains '03") OR (EMAIL  contains '04') OR (EMAIL  contains 'user')" </description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$directory:</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/searchquery/13.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>$i18nguid:.vcf</value>
+					    <value>$publicuserguid2:.vcf</value>
+					    <value>$publicuserguid3:.vcf</value>
+					    <value>$publicuserguid4:.vcf</value>
+						<value>$userguid1:.vcf</value>
+					    <value>$userguid2:.vcf</value>
+					    <value>$userguid3:.vcf</value>
+						<value>$userguid4:.vcf</value>
+						<value>$userguid5:.vcf</value>
+						<value>$userguid6:.vcf</value>
+						<value>$userguid7:.vcf</value>
+						<value>$userguid8:.vcf</value>
+						<value>$userguid9:.vcf</value>
+						<value>$userguid10:.vcf</value>
+						<value>$userguid11:.vcf</value>
+						<value>$userguid12:.vcf</value>
+					</arg>
+					<arg>
+						<name>totalcount</name>
+						<value>16</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="14">
+			<description>query for resources with (FN contains 'Public' or '03") AND (EMAIL  contains 'bogus' with TYPE parameter = "work") limited to 4 results" </description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$directory:</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/searchquery/14.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>totalcount</name>
+					    <value>0</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="15">
+			<description>query for resources with (KIND equal "group") and (FN contains "0"), no eTag " </description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$directory:</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/searchquery/15.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>$groupguid0:.vcf</value>
+						<value>$groupguid1:.vcf</value>
+						<value>$groupguid2:.vcf</value>
+						<value>$groupguid3:.vcf</value>
+						<value>$groupguid4:.vcf</value>
+						<value>$groupguid5:.vcf</value>
+						<value>$groupguid6:.vcf</value>
+						<value>$groupguid7:.vcf</value>
+						<value>$groupguid8:.vcf</value>
+						<value>$groupguid9:.vcf</value>
+						<value>$groupguid10:.vcf</value>
+						<value>$groupguid20:.vcf</value>
+						<value>$groupguid30:.vcf</value>
+						<value>$groupguid40:.vcf</value>
+						<value>$groupguid50:.vcf</value>
+						<value>$groupguid60:.vcf</value>
+						<value>$groupguid70:.vcf</value>
+						<value>$groupguid80:.vcf</value>
+						<value>$groupguid90:.vcf</value>
+					</arg>
+					<arg>
+						<name>totalcount</name>
+						<value>19</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="16">
+			<description>query for resources with (KIND equal "group") and (X-ADDRESSBOOKSERVER-MEMBER contains $groupguid3:), no eTag, no props " </description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$directory:</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/searchquery/16.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>$groupguid4:.vcf</value>
+					</arg>
+					<arg>
+						<name>totalcount</name>
+						<value>1</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name="17">
+			<description>query for resources with ((KIND equal "individual") or (KIND is-not-defined)) and (FN contains "03")" </description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$directory:</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/searchquery/17.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>$userguid3:.vcf</value>
+						<value>$publicuserguid3:.vcf</value>
+					</arg>
+					<arg>
+						<name>totalcount</name>
+						<value>2</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+	</test-suite>
+
+	<test-suite name='directory gateway multiget reports'>
+		<require-feature>
+			<feature>directory-gateway</feature>
+		</require-feature>
+
+		<test name='1'>
+			<description>basic multiget of 8 resources in search node returning etag and entire vcf data</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$directory:</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/vreports/searchmultiget/1.xml</filepath>
+				</data>
+				<verify>
+					<callback>multistatusItems</callback>
+					<arg>
+						<name>okhrefs</name>
+						<value>$userguid1:.vcf</value>
+						<value>$userguid2:.vcf</value>
+						<value>$userguid3:.vcf</value>
+						<value>$userguid4:.vcf</value>
+						<value>$publicuserguid1:.vcf</value>
+						<value>$publicuserguid2:.vcf</value>
+						<value>$publicuserguid3:.vcf</value>
+						<value>$publicuserguid4:.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+	</test-suite>
+-->
+	<end/>
+	
+</caldavtest>
