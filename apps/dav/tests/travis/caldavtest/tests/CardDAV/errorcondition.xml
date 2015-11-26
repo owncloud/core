@@ -1,0 +1,1160 @@
+<?xml version="1.0" standalone="no"?>
+
+<!DOCTYPE caldavtest SYSTEM "caldavtest.dtd">
+
+<!--
+ Copyright (c) 2006-2015 Apple Inc. All rights reserved.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ -->
+
+<caldavtest>
+	<description>Tests of various pre-/post-conditions</description>
+
+	<require-feature>
+		<feature>carddav</feature>
+	</require-feature>
+
+	<start>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookpath1:/1.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/verrors/6.vcf</filepath>
+			</data>
+		</request>
+		<!--
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookhome1:/1.xml</ruri>
+			<data>
+				<content-type>text/xml; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/verrors/1.vcf</filepath>
+			</data>
+		</request>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookhome1:/2.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/verrors/2.vcf</filepath>
+			</data>
+		</request>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookhome1:/3.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/verrors/3.vcf</filepath>
+			</data>
+		</request>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookhome1:/4.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/verrors/4.vcf</filepath>
+			</data>
+		</request>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookhome1:/5.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/verrors/5.vcf</filepath>
+			</data>
+		</request>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookhome1:/6.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/verrors/6.vcf</filepath>
+			</data>
+		</request>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookhome1:/7.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/verrors/7.vcf</filepath>
+			</data>
+		</request>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookhome1:/8.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/verrors/8.vcf</filepath>
+			</data>
+		</request>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookhome1:/9.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/verrors/9.vcf</filepath>
+			</data>
+		</request>
+		-->
+	</start>
+	
+	<test-suite name='PUT'>
+		<test name='1'>
+			<description>PUT non-addressbook data</description>
+			<request>
+				<method>PUT</method>
+				<ruri>$addressbookpath1:/2.vcf</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/verrors/1.vcf</filepath>
+				</data>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}supported-address-data</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='2'>
+			<description>PUT invalid addressbook data</description>
+			<request>
+				<method>PUT</method>
+				<ruri>$addressbookpath1:/2.vcf</ruri>
+				<data>
+					<content-type>text/vcard; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/verrors/2.vcf</filepath>
+				</data>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}valid-addressbook-object-resource</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='3'>
+			<description>PUT with multiple component types</description>
+			<request>
+				<method>PUT</method>
+				<ruri>$addressbookpath1:/2.vcf</ruri>
+				<data>
+					<content-type>text/vcard; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/verrors/3.vcf</filepath>
+				</data>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}valid-address-data</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='4'>
+			<description>PUT with METHOD property</description>
+			<request>
+				<method>PUT</method>
+				<ruri>$addressbookpath1:/2.vcf</ruri>
+				<data>
+					<content-type>text/calendar; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/verrors/4.vcf</filepath>
+				</data>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}supported-address-data</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='5'>
+			<description>PUT with different uids in same resource</description>
+			<request>
+				<method>PUT</method>
+				<ruri>$addressbookpath1:/2.vcf</ruri>
+				<data>
+					<content-type>text/vcard; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/verrors/5.vcf</filepath>
+				</data>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}valid-address-data</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='6'>
+			<description>PUT with duplicate uids</description>
+			<request>
+				<method>PUT</method>
+				<ruri>$addressbookpath1:/2.vcf</ruri>
+				<data>
+					<content-type>text/vcard; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/verrors/6.vcf</filepath>
+				</data>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}no-uid-conflict</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='7'>
+			<description>PUT with different uid onto existing resource</description>
+			<request>
+				<method>PUT</method>
+				<ruri>$addressbookpath1:/1.vcf</ruri>
+				<data>
+					<content-type>text/calendar; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/verrors/7.vcf</filepath>
+				</data>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}supported-address-data</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='8'>
+			<description>PUT with bad PHOTO property</description>
+			<request  end-delete='yes'>
+				<method>PUT</method>
+				<ruri>$addressbookpath1:/17.vcf</ruri>
+				<data>
+					<content-type>text/vcard; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/verrors/17.vcf</filepath>
+				</data>
+				<verify>
+					<callback>statusCode</callback>
+				</verify>
+			</request>
+			<request>
+				<method>GET</method>
+				<ruri>$addressbookpath1:/17.vcf</ruri>
+				<verify>
+					<callback>dataMatch</callback>
+					<arg>
+						<name>filepath</name>
+						<value>Resource/CardDAV/verrors/18.vcf</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+	</test-suite>
+	<!--
+	<test-suite name='COPY'>
+		<test name='1'>
+			<description>COPY non-addressboook data</description>
+			<request>
+				<method>COPY</method>
+				<ruri>$addressbookhome1:/1.xml</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$addressbookpath1/copy1.vcf</value>
+				</header>
+				<verify>
+					<callback>statusCode</callback>
+					<arg>
+						<name>status</name>
+						<value>2xx</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='2'>
+			<description>COPY invalid addressbook data</description>
+			<request>
+				<method>COPY</method>
+				<ruri>$addressbookhome1:/2.vcf</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$addressbookpath1:/copy1.vcf</value>
+				</header>
+				<verify>
+					<callback>statusCode</callback>
+					<arg>
+						<name>status</name>
+						<value>2xx</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='3'>
+			<description>COPY with multiple component types</description>
+			<request>
+				<method>COPY</method>
+				<ruri>$addressbookhome1:/3.vcf</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$addressbookpath1:/copy1.vcf</value>
+				</header>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}valid-addressbook-object-resource</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='4'>
+			<description>COPY with METHOD property</description>
+			<request>
+				<method>COPY</method>
+				<ruri>$addressbookhome1:/4.vcf</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$addressbookpath1:/copy1.vcf</value>
+				</header>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}valid-addressbook-object-resource</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='5'>
+			<description>COPY with different uids in same resource</description>
+			<request>
+				<method>COPY</method>
+				<ruri>$addressbookhome1:/5.vcf</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$addressbookpath1:/copy1.vcf</value>
+				</header>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}valid-addressbook-object-resource</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='6'>
+			<description>COPY with duplicate uids</description>
+			<request>
+				<method>COPY</method>
+				<ruri>$addressbookhome1:/6.vcf</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$addressbookpath1:/copy1.vcf</value>
+				</header>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}valid-addressbook-object-resource</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='7'>
+			<description>COPY from addressbook with duplicate uids</description>
+			<request>
+				<method>COPY</method>
+				<ruri>$addressbookpath1:/6.vcf</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$addressbookpath1/copy1.vcf</value>
+				</header>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}no-uid-conflict</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='8'>
+			<description>COPY with different uid onto existing resource</description>
+			<request>
+				<method>COPY</method>
+				<ruri>$addressbookhome1:/7.vcf</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$addressbookpath1:/1.vcf</value>
+				</header>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}no-uid-conflict</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='9'>
+			<description>COPY from addressbook with different uid onto existing resource</description>
+			<request>
+				<method>COPY</method>
+				<ruri>$addressbookhome1:/addressbook2/7.vcf</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$addressbookpath1:/1.vcf</value>
+				</header>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}no-uid-conflict</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='10'>
+			<description>COPY with too many recurrence instances to new resource</description>
+			<request>
+				<method>COPY</method>
+				<ruri>$calendarhome1:/8.vcf</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$calendarhome1:/calendar/2.vcf</value>
+				</header>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}number-of-recurrences-within-limits</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='11'>
+			<description>COPY with too many recurrence instances to existing resource</description>
+			<request>
+				<method>COPY</method>
+				<ruri>$calendarhome1:/9.vcf</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$calendarhome1:/calendar/1.vcf</value>
+				</header>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}number-of-recurrences-within-limits</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='12'>
+			<description>COPY calendar into calendar</description>
+			<request>
+				<method>COPY</method>
+				<ruri>$calendarhome1:/calendar2/</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$calendarhome1:/calendar/calendar2/</value>
+				</header>
+				<verify>
+					<callback>statusCode</callback>
+					<arg>
+						<name>status</name>
+						<value>403</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='13'>
+			<description>COPY collection into calendar</description>
+			<request>
+				<method>COPY</method>
+				<ruri>$calendarhome1:/collection/</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$calendarhome1:/calendar/collection/</value>
+				</header>
+				<verify>
+					<callback>statusCode</callback>
+					<arg>
+						<name>status</name>
+						<value>403</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+	</test-suite>
+	
+	<test-suite name='MOVE'>
+		<test name='1'>
+			<description>MOVE non-addressbook data</description>
+			<request>
+				<method>MOVE</method>
+				<ruri>$addressbookhome1:/1.xml</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$addressbookpath1:/move1.vcf</value>
+				</header>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}supported-calendar-data</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='2'>
+			<description>MOVE invalid calendar data</description>
+			<request>
+				<method>MOVE</method>
+				<ruri>$addressbookhome1:/2.vcf</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$addressbookpath1:/move1.vcf</value>
+				</header>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}valid-calendar-data</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='3'>
+			<description>MOVE with multiple component types</description>
+			<request>
+				<method>MOVE</method>
+				<ruri>$addressbookhome1:/3.vcf</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$addressbookpath1:/move1.vcf</value>
+				</header>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}valid-calendar-object-resource</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='4'>
+			<description>MOVE with METHOD property</description>
+			<request>
+				<method>MOVE</method>
+				<ruri>$addressbookhome1:/4.vcf</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$addressbookpath1:/move1.vcf</value>
+				</header>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}valid-calendar-object-resource</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='5'>
+			<description>MOVE with different uids in same resource</description>
+			<request>
+				<method>MOVE</method>
+				<ruri>$addressbookhome1:/5.vcf</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$addressbookpath1:/move1.vcf</value>
+				</header>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}valid-calendar-object-resource</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='6'>
+			<description>MOVE with duplicate uids</description>
+			<request>
+				<method>MOVE</method>
+				<ruri>$addressbookhome1:/6.vcf</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$addressbookpath1:/move1.vcf</value>
+				</header>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}no-uid-conflict</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='7'>
+			<description>MOVE from calendar with duplicate uids</description>
+			<request>
+				<method>MOVE</method>
+				<ruri>$addressbookpath1:/6.vcf</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$addressbookpath1:/move1.vcf</value>
+				</header>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}no-uid-conflict</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='8'>
+			<description>MOVE with different uid onto existing resource</description>
+			<request>
+				<method>MOVE</method>
+				<ruri>$addressbookhome1:/7.vcf</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$addressbookpath1:/1.vcf</value>
+				</header>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}no-uid-conflict</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='9'>
+			<description>MOVE from calendar with different uid onto existing resource</description>
+			<request>
+				<method>MOVE</method>
+				<ruri>$addressbookpath1:/7.vcf</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$addressbookhome1:/calendar/1.vcf</value>
+				</header>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}no-uid-conflict</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='10'>
+			<description>MOVE with too many recurrence instances to new resource</description>
+			<request>
+				<method>MOVE</method>
+				<ruri>$addressbookhome1:/8.vcf</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$addressbookpath1:/2.vcf</value>
+				</header>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}number-of-recurrences-within-limits</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='11'>
+			<description>MOVE with too many recurrence instances to existing resource</description>
+			<request>
+				<method>MOVE</method>
+				<ruri>$addressbookhome1:/9.vcf</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$addressbookpath1:/1.vcf</value>
+				</header>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}number-of-recurrences-within-limits</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='12'>
+			<description>MOVE calendar into calendar</description>
+			<request>
+				<method>MOVE</method>
+				<ruri>$addressbookhome1:/calendar2/</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$addressbookpath1:/addressbook2/</value>
+				</header>
+				<verify>
+					<callback>statusCode</callback>
+					<arg>
+						<name>status</name>
+						<value>403</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='13'>
+			<description>MOVE collection into calendar</description>
+			<request>
+				<method>MOVE</method>
+				<ruri>$addressbookhome1:/collection/</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$addressbookpath1:/collection/</value>
+				</header>
+				<verify>
+					<callback>statusCode</callback>
+					<arg>
+						<name>status</name>
+						<value>403</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+	</test-suite>
+	-->
+	
+	<test-suite name='REPORT/addressbook-data'>
+		<test name='1'>
+			<description>query with invalid address-data content-type</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/verrors/10.xml</filepath>
+				</data>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}supported-address-data</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='2'>
+			<description>query with invalid address-data version</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/verrors/11.xml</filepath>
+				</data>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}supported-address-data</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='3'>
+			<description>multiget with invalid address-data content-type</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/verrors/12.xml</filepath>
+				</data>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}supported-address-data</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='4'>
+			<description>multiget with invalid address-data version</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/verrors/13.xml</filepath>
+				</data>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}supported-address-data</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+	</test-suite>
+<!--
+	<test-suite name='REPORT/filter'>
+		<test name='1'>
+			<description>query with invalid filter</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/verrors/14.xml</filepath>
+				</data>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}supported-address-data</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='2'>
+			<description>query with invalid filter</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/errors/15.xml</filepath>
+				</data>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}valid-filter</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='3'>
+			<description>query with invalid filter</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/errors/16.xml</filepath>
+				</data>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}valid-filter</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='4'>
+			<description>query with invalid filter</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/errors/17.xml</filepath>
+				</data>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}valid-filter</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='5'>
+			<description>query with invalid filter</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/errors/18.xml</filepath>
+				</data>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}valid-filter</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='6'>
+			<description>query with invalid filter</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/errors/19.xml</filepath>
+				</data>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}valid-filter</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='7'>
+			<description>query with invalid filter</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/errors/20.xml</filepath>
+				</data>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}valid-filter</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='8'>
+			<description>query with invalid filter</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/errors/21.xml</filepath>
+				</data>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}valid-filter</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='9'>
+			<description>query with invalid filter</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/errors/22.xml</filepath>
+				</data>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}valid-filter</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='10'>
+			<description>query with invalid time-range (dates)</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/errors/29.xml</filepath>
+				</data>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}valid-filter</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='11'>
+			<description>query with invalid time-range (floating)</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/errors/30.xml</filepath>
+				</data>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{urn:ietf:params:xml:ns:carddav}valid-filter</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='12'>
+			<description>free-busy with invalid time-range (dates)</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/errors/31.xml</filepath>
+				</data>
+				<verify>
+					<callback>statusCode</callback>
+					<arg>
+						<name>status</name>
+						<value>400</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='13'>
+			<description>free-busy with invalid time-range (floating)</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/errors/32.xml</filepath>
+				</data>
+				<verify>
+					<callback>statusCode</callback>
+					<arg>
+						<name>status</name>
+						<value>400</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+	</test-suite>
+	<test-suite name='REPORT/too big'>
+		<test name='1'>
+			<description>add one event to make it a 1001 event calendar</description>
+			<request end-delete="yes">
+				<method>PUT</method>
+				<ruri>$addressbookhome1:/abc.vcf</ruri>
+				<data>
+					<content-type>text/vcard; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/verrors/6.vcf</filepath>
+				</data>
+				<verify>
+					<callback>statusCode</callback>
+				</verify>
+			</request>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookpath1:/</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/verrors/23.xml</filepath>
+				</data>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{DAV:}number-of-matches-within-limits</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='2'>
+			<description>multiget with too many results</description>
+			<request>
+				<method>REPORT</method>
+				<ruri>$addressbookhome1:</ruri>
+				<data>
+					<content-type>text/xml; charset=utf-8</content-type>
+					<filepath>Resource/CardDAV/verrors/24.xml</filepath>
+				</data>
+				<verify>
+					<callback>prepostcondition</callback>
+					<arg>
+						<name>error</name>
+						<value>{DAV:}number-of-matches-within-limits</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+	</test-suite>
+	-->
+	<test-suite name='Root resource'>
+		<require-feature>
+			<feature>own-root</feature>
+		</require-feature>
+		<test name='1'>
+			<description>DELETE /</description>
+			<request>
+				<method>DELETE</method>
+				<ruri>$root:</ruri>
+				<verify>
+					<callback>statusCode</callback>
+					<arg>
+						<name>status</name>
+						<value>403</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='2'>
+			<description>COPY /</description>
+			<request>
+				<method>COPY</method>
+				<ruri>$root:</ruri>
+				<header>
+					<name>Destination</name>
+					<value>/copy/</value>
+				</header>
+				<verify>
+					<callback>statusCode</callback>
+					<arg>
+						<name>status</name>
+						<value>403</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='3'>
+			<description>MOVE /</description>
+			<request>
+				<method>MOVE</method>
+				<ruri>$root:</ruri>
+				<header>
+					<name>Destination</name>
+					<value>/move/</value>
+				</header>
+				<verify>
+					<callback>statusCode</callback>
+					<arg>
+						<name>status</name>
+						<value>403</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+	</test-suite>
+	<end/>
+	
+</caldavtest>
