@@ -263,7 +263,7 @@ Feature: sharing
       | file_source | A_NUMBER |
       | file_target | /textfile0.txt |
       | path | /textfile0.txt |
-      | permissions | 23 |
+      | permissions | 19 |
       | stime | A_NUMBER |
       | storage | A_NUMBER |
       | mail_send | 0 |
@@ -326,7 +326,7 @@ Feature: sharing
       | permissions | 8 |
     And As an "user1"
     When creating a share with
-      | path | /textfile0. (2).txt |
+      | path | /textfile0 (2).txt |
       | shareType | 0 |
       | shareWith | user2 |
       | permissions | 31 |
@@ -346,7 +346,7 @@ Feature: sharing
       | permissions | 16 |
     And As an "user1"
     When creating a share with
-      | path | /textfile0. (2).txt |
+      | path | /textfile0 (2).txt |
       | shareType | 0 |
       | shareWith | user2 |
       | permissions | 31 |
