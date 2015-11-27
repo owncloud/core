@@ -26,14 +26,6 @@
 	display: none;
 }
 
-/* do not show display name on mobile when profile picture is present */
-#header .avatardiv.avatardiv-shown + #expandDisplayName {
-	display: none;
-}
-#header #expand {
-	display: block;
-}
-
 /* do not show update notification on mobile */
 #update-notification {
 	display: none !important;
@@ -45,6 +37,10 @@
 	width: 80% !important;
 }
 
+/* fix name autocomplete not showing on mobile */
+.ui-autocomplete {
+	z-index: 1000 !important;
+}
 
 /* fix error display on smaller screens */
 .error-wide {
@@ -79,7 +75,7 @@
 }
 
 #app-sidebar{
-	width: 100%;
+	width: 100% !important;
 }
 
 /* allow horizontal scrollbar in settings

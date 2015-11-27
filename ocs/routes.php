@@ -4,6 +4,7 @@
  * @author Christopher Schäpers <kondou@ts.unde.re>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Tom Needham <tom@owncloud.com>
  *
@@ -88,13 +89,6 @@ API::register(
 	'core',
 	API::USER_AUTH
 	);
-API::register(
-	'get',
-	'/cloud/users/{userid}',
-	array('OC_OCS_Cloud', 'getUser'),
-	'core',
-	API::USER_AUTH
-);
 API::register(
 	'get',
 	'/cloud/user',

@@ -1,16 +1,5 @@
 <div id="controls">
 		<div class="actions creatable hidden">
-		<?php /*
-			Only show upload button for public page
-		*/ ?>
-		<?php if(isset($_['dirToken'])):?>
-			<div id="upload" class="button upload"
-				 title="<?php isset($_['uploadMaxHumanFilesize']) ? p($l->t('Upload (max. %s)', array($_['uploadMaxHumanFilesize']))) : '' ?>">
-					<label for="file_upload_start" class="svg icon-upload">
-						<span class="hidden-visually"><?php p($l->t('Upload'))?></span>
-					</label>
-			</div>
-		<?php endif; ?>
 			<div id="uploadprogresswrapper">
 				<div id="uploadprogressbar"></div>
 				<button class="stop icon-close" style="display:none">
@@ -51,12 +40,12 @@
 	<p></p>
 </div>
 
-<table id="filestable" data-allow-public-upload="<?php p($_['publicUploadEnabled'])?>" data-preview-x="36" data-preview-y="36">
+<table id="filestable" data-allow-public-upload="<?php p($_['publicUploadEnabled'])?>" data-preview-x="32" data-preview-y="32">
 	<thead>
 		<tr>
 			<th id='headerName' class="hidden column-name">
 				<div id="headerName-container">
-					<input type="checkbox" id="select_all_files" class="select-all"/>
+					<input type="checkbox" id="select_all_files" class="select-all checkbox"/>
 					<label for="select_all_files">
 						<span class="hidden-visually"><?php p($l->t('Select all'))?></span>
 					</label>

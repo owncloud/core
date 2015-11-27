@@ -16,11 +16,13 @@
  * @author Frank Karlitschek <frank@owncloud.org>
  * @author Georg Ehrke <georg@owncloud.com>
  * @author helix84 <helix84@centrum.sk>
+ * @author Individual IT Services <info@individual-it.net>
  * @author Jakob Sack <mail@jakobsack.de>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Markus Goetz <markus@woboq.com>
+ * @author Martin Mattel <martin.mattel@diemattels.at>
  * @author Marvin Thomas Rabe <mrabe@marvinrabe.de>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Michael Göhler <somebody.here@gmx.de>
@@ -52,6 +54,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+
+use OCP\IConfig;
+use OCP\IGroupManager;
+use OCP\IUser;
+
 class OC_Util {
 	public static $scripts = array();
 	public static $styles = array();
@@ -216,15 +223,21 @@ class OC_Util {
 
 	/**
 	 * check if sharing is disabled for the current user
-	 *
-	 * @return boolean
+	 * @param IConfig $config
+	 * @param IGroupManager $groupManager
+	 * @param IUser|null $user
+	 * @return bool
 	 */
-	public static function isSharingDisabledForUser() {
-		if (\OC::$server->getAppConfig()->getValue('core', 'shareapi_exclude_groups', 'no') === 'yes') {
-			$user = \OCP\User::getUser();
-			$groupsList = \OC::$server->getAppConfig()->getValue('core', 'shareapi_exclude_groups_list', '');
-			$excludedGroups = explode(',', $groupsList);
-			$usersGroups = \OC_Group::getUserGroups($user);
+	public static function isSharingDisabledForUser(IConfig $config, IGroupManager $groupManager, $user) {
+		if ($config->getAppValue('core', 'shareapi_exclude_groups', 'no') === 'yes') {
+			$groupsList = $config->getAppValue('core', 'shareapi_exclude_groups_list', '');
+			$excludedGroups = json_decode($groupsList);
+			if (is_null($excludedGroups)) {
+				$excludedGroups = explode(',', $groupsList);
+				$newValue = json_encode($excludedGroups);
+				$config->setAppValue('core', 'shareapi_exclude_groups_list', $newValue);
+			}
+			$usersGroups = $groupManager->getUserGroupIds($user);
 			if (!empty($usersGroups)) {
 				$remainingGroups = array_diff($usersGroups, $excludedGroups);
 				// if the user is only in groups which are disabled for sharing then
@@ -439,16 +452,23 @@ class OC_Util {
 	 *
 	 * @param string $application application id
 	 * @param string|null $file filename
+	 * @param bool $prepend prepend the Script to the beginning of the list
 	 * @return void
 	 */
-	public static function addScript($application, $file = null) {
+	public static function addScript($application, $file = null, $prepend = false) {
 		$path = OC_Util::generatePath($application, 'js', $file);
+		//TODO eliminate double code		
 		if (!in_array($path, self::$scripts)) {
 			// core js files need separate handling
 			if ($application !== 'core' && $file !== null) {
 				self::addTranslations($application);
 			}
-			self::$scripts[] = $path;
+			if ($prepend===true) {
+				array_unshift(self::$scripts, $path);
+			}
+			else {
+				self::$scripts[] = $path;
+			}
 		}
 	}
 
@@ -457,12 +477,18 @@ class OC_Util {
 	 *
 	 * @param string $application application id
 	 * @param string|null $file filename
+	 * @param bool $prepend prepend the Script to the beginning of the list
 	 * @return void
 	 */
-	public static function addVendorScript($application, $file = null) {
+	public static function addVendorScript($application, $file = null, $prepend = false) {
 		$path = OC_Util::generatePath($application, 'vendor', $file);
-		if (!in_array($path, self::$scripts)) {
-			self::$scripts[] = $path;
+		//TODO eliminate double code		
+		if (! in_array ( $path, self::$scripts )) {
+			if ($prepend === true) {
+				array_unshift ( self::$scripts, $path );
+			} else {
+				self::$scripts [] = $path;
+			}
 		}
 	}
 
@@ -471,8 +497,9 @@ class OC_Util {
 	 *
 	 * @param string $application application id
 	 * @param string $languageCode language code, defaults to the current language
+	 * @param bool $prepend prepend the Script to the beginning of the list 
 	 */
-	public static function addTranslations($application, $languageCode = null) {
+	public static function addTranslations($application, $languageCode = null, $prepend = false) {
 		if (is_null($languageCode)) {
 			$languageCode = \OC_L10N::findLanguage($application);
 		}
@@ -481,8 +508,13 @@ class OC_Util {
 		} else {
 			$path = "l10n/$languageCode";
 		}
+		//TODO eliminate double code		
 		if (!in_array($path, self::$scripts)) {
-			self::$scripts[] = $path;
+			if ($prepend === true) {
+				array_unshift ( self::$scripts, $path );
+			} else {
+				self::$scripts [] = $path;
+			}
 		}
 	}
 
@@ -491,12 +523,18 @@ class OC_Util {
 	 *
 	 * @param string $application application id
 	 * @param string|null $file filename
+	 * @param bool $prepend prepend the Style to the beginning of the list
 	 * @return void
 	 */
-	public static function addStyle($application, $file = null) {
+	public static function addStyle($application, $file = null, $prepend = false) {
 		$path = OC_Util::generatePath($application, 'css', $file);
+		//TODO eliminate double code		
 		if (!in_array($path, self::$styles)) {
-			self::$styles[] = $path;
+			if ($prepend === true) {
+				array_unshift ( self::$styles, $path );
+			} else {
+				self::$styles[] = $path;
+			}	
 		}
 	}
 
@@ -505,12 +543,18 @@ class OC_Util {
 	 *
 	 * @param string $application application id
 	 * @param string|null $file filename
+	 * @param bool $prepend prepend the Style to the beginning of the list
 	 * @return void
 	 */
-	public static function addVendorStyle($application, $file = null) {
+	public static function addVendorStyle($application, $file = null, $prepend = false) {
 		$path = OC_Util::generatePath($application, 'vendor', $file);
+		//TODO eliminate double code
 		if (!in_array($path, self::$styles)) {
-			self::$styles[] = $path;
+			if ($prepend === true) {
+				array_unshift ( self::$styles, $path );
+			} else {
+				self::$styles[] = $path;
+			}	
 		}
 	}
 
@@ -577,6 +621,9 @@ class OC_Util {
 		$webServerRestart = false;
 		$setup = new \OC\Setup($config, \OC::$server->getIniWrapper(), \OC::$server->getL10N('lib'),
 			new \OC_Defaults(), \OC::$server->getLogger(), \OC::$server->getSecureRandom());
+
+		$urlGenerator = \OC::$server->getURLGenerator();
+
 		$availableDatabases = $setup->getSupportedDatabases();
 		if (empty($availableDatabases)) {
 			$errors[] = array(
@@ -605,7 +652,7 @@ class OC_Util {
 				'error' => $l->t('Cannot write into "config" directory'),
 				'hint' => $l->t('This can usually be fixed by '
 					. '%sgiving the webserver write access to the config directory%s.',
-					array('<a href="' . \OC_Helper::linkToDocs('admin-dir_permissions') . '" target="_blank">', '</a>'))
+					array('<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank">', '</a>'))
 			);
 		}
 
@@ -620,7 +667,7 @@ class OC_Util {
 					'hint' => $l->t('This can usually be fixed by '
 						. '%sgiving the webserver write access to the apps directory%s'
 						. ' or disabling the appstore in the config file.',
-						array('<a href="' . \OC_Helper::linkToDocs('admin-dir_permissions') . '" target="_blank">', '</a>'))
+						array('<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank">', '</a>'))
 				);
 			}
 		}
@@ -635,14 +682,14 @@ class OC_Util {
 						'error' => $l->t('Cannot create "data" directory (%s)', array($CONFIG_DATADIRECTORY)),
 						'hint' => $l->t('This can usually be fixed by '
 							. '<a href="%s" target="_blank">giving the webserver write access to the root directory</a>.',
-							array(OC_Helper::linkToDocs('admin-dir_permissions')))
+							array($urlGenerator->linkToDocs('admin-dir_permissions')))
 					);
 				}
 			} else if (!is_writable($CONFIG_DATADIRECTORY) or !is_readable($CONFIG_DATADIRECTORY)) {
 				//common hint for all file permissions error messages
 				$permissionsHint = $l->t('Permissions can usually be fixed by '
 					. '%sgiving the webserver write access to the root directory%s.',
-					array('<a href="' . \OC_Helper::linkToDocs('admin-dir_permissions') . '" target="_blank">', '</a>'));
+					array('<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank">', '</a>'));
 				$errors[] = array(
 					'error' => 'Data directory (' . $CONFIG_DATADIRECTORY . ') not writable by ownCloud',
 					'hint' => $permissionsHint
@@ -820,12 +867,9 @@ class OC_Util {
 					}
 				}
 			} catch (\Doctrine\DBAL\DBALException $e) {
-				\OCP\Util::logException('core', $e);
-				$errors[] = array(
-					'error' => $l->t('Error occurred while checking PostgreSQL version'),
-					'hint' => $l->t('Please make sure you have PostgreSQL >= 9 or'
-						. ' check the logs for more information about the error')
-				);
+				$logger = \OC::$server->getLogger();
+				$logger->warning('Error occurred while checking PostgreSQL version, assuming >= 9');
+				$logger->logException($e);
 			}
 		}
 		return $errors;
@@ -910,6 +954,7 @@ class OC_Util {
 
 		$parameters['alt_login'] = OC_App::getAlternativeLogIns();
 		$parameters['rememberLoginAllowed'] = self::rememberLoginAllowed();
+		\OC_Hook::emit('OC_Util', 'pre_displayLoginPage', array('parameters' => $parameters));
 		OC_Template::printGuestPage("", "login", $parameters);
 	}
 
@@ -987,7 +1032,13 @@ class OC_Util {
 	 */
 	public static function checkSubAdminUser() {
 		OC_Util::checkLoggedIn();
-		if (!OC_SubAdmin::isSubAdmin(OC_User::getUser())) {
+		$userObject = \OC::$server->getUserSession()->getUser();
+		$isSubAdmin = false;
+		if($userObject !== null) {
+			$isSubAdmin = \OC::$server->getGroupManager()->getSubAdmin()->isSubAdmin($userObject);
+		}
+
+		if (!$isSubAdmin) {
 			header('Location: ' . OC_Helper::linkToAbsolute('', 'index.php'));
 			exit();
 		}
@@ -1054,7 +1105,7 @@ class OC_Util {
 		return $id;
 	}
 
-	protected static $encryptedToken;
+	protected static $obfuscatedToken;
 	/**
 	 * Register an get/post call. Important to prevent CSRF attacks.
 	 *
@@ -1068,24 +1119,27 @@ class OC_Util {
 	 */
 	public static function callRegister() {
 		// Use existing token if function has already been called
-		if(isset(self::$encryptedToken)) {
-			return self::$encryptedToken;
+		if(isset(self::$obfuscatedToken)) {
+			return self::$obfuscatedToken;
 		}
+
+		$tokenLength = 30;
 
 		// Check if a token exists
 		if (!\OC::$server->getSession()->exists('requesttoken')) {
 			// No valid token found, generate a new one.
-			$requestToken = \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate(30);
+			$requestToken = \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate($tokenLength);
 			\OC::$server->getSession()->set('requesttoken', $requestToken);
 		} else {
 			// Valid token already exists, send it
 			$requestToken = \OC::$server->getSession()->get('requesttoken');
 		}
 
-		// Encrypt the token to mitigate breach-like attacks
-		$sharedSecret = \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate(10);
-		self::$encryptedToken = \OC::$server->getCrypto()->encrypt($requestToken, $sharedSecret) . ':' . $sharedSecret;
-		return self::$encryptedToken;
+		// XOR the token to mitigate breach-like attacks
+		$sharedSecret = \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate($tokenLength);
+		self::$obfuscatedToken =  base64_encode($requestToken ^ $sharedSecret) .':'.$sharedSecret;
+
+		return self::$obfuscatedToken;
 	}
 
 	/**
@@ -1261,12 +1315,11 @@ class OC_Util {
 	/**
 	 * Get URL content
 	 * @param string $url Url to get content
-	 * @deprecated Use \OC::$server->getHTTPHelper()->getUrlContent($url);
 	 * @throws Exception If the URL does not start with http:// or https://
 	 * @return string of the response or false on error
 	 * This function get the content of a page via curl, if curl is enabled.
 	 * If not, file_get_contents is used.
-	 * @deprecated Use \OCP\Http\Client\IClientService
+	 * @deprecated Use \OC::$server->getHTTPClientService()->newClient()->get($url);
 	 */
 	public static function getUrlContent($url) {
 		try {
@@ -1433,7 +1486,7 @@ class OC_Util {
 		if ($trimmed === '') {
 			return false;
 		}
-		if ($trimmed === '.' || $trimmed === '..') {
+		if (\OC\Files\Filesystem::isIgnoredDir($trimmed)) {
 			return false;
 		}
 		foreach (str_split($trimmed) as $char) {

@@ -214,8 +214,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @param string $seqName Name of the sequence object from which the ID should be returned.
 	 * @return string A string representation of the last inserted ID.
 	 */
-	public function lastInsertId($seqName = null)
-	{
+	public function lastInsertId($seqName = null) {
 		if ($seqName) {
 			$seqName = $this->replaceTablePrefix($seqName);
 		}
@@ -300,5 +299,15 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 */
 	public function inTransaction() {
 		return $this->getTransactionNestingLevel() > 0;
+	}
+
+	/**
+	 * Espace a parameter to be used in a LIKE query
+	 *
+	 * @param string $param
+	 * @return string
+	 */
+	public function escapeLikeParameter($param) {
+		return addcslashes($param, '\\_%');
 	}
 }

@@ -5,7 +5,7 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -152,37 +152,15 @@ class Manager {
 		return $this->mountShare($options);
 	}
 
-	private function setupMounts() {
-		// don't setup server-to-server shares if the admin disabled it
-		if (\OCA\Files_Sharing\Helper::isIncomingServer2serverShareEnabled() === false) {
-			return false;
-		}
-
-		if (!is_null($this->uid)) {
-			$query = $this->connection->prepare('
-				SELECT `remote`, `share_token`, `password`, `mountpoint`, `owner`
-				FROM `*PREFIX*share_external`
-				WHERE `user` = ? AND `accepted` = ?
-			');
-			$query->execute(array($this->uid, 1));
-
-			while ($row = $query->fetch()) {
-				$row['manager'] = $this;
-				$row['token'] = $row['share_token'];
-				$this->mountShare($row);
-			}
-		}
-	}
-
 	/**
 	 * get share
 	 *
 	 * @param int $id share id
 	 * @return mixed share of false
 	 */
-	private function getShare($id) {
+	public function getShare($id) {
 		$getShare = $this->connection->prepare('
-			SELECT `remote`, `remote_id`, `share_token`, `name`
+			SELECT `id`, `remote`, `remote_id`, `share_token`, `name`, `owner`, `user`, `mountpoint`, `accepted`
 			FROM  `*PREFIX*share_external`
 			WHERE `id` = ? AND `user` = ?');
 		$result = $getShare->execute(array($id, $this->uid));
@@ -214,7 +192,9 @@ class Manager {
 			$acceptShare->execute(array(1, $mountPoint, $hash, $id, $this->uid));
 			$this->sendFeedbackToRemote($share['remote'], $share['share_token'], $share['remote_id'], 'accept');
 
-			$this->scrapNotification($share['remote_id']);
+			\OC_Hook::emit('OCP\Share', 'federated_share_added', ['server' => $share['remote']]);
+
+			//FIXME $this->scrapNotification($share['remote_id']);
 			return true;
 		}
 
@@ -237,7 +217,7 @@ class Manager {
 			$removeShare->execute(array($id, $this->uid));
 			$this->sendFeedbackToRemote($share['remote'], $share['share_token'], $share['remote_id'], 'decline');
 
-			$this->scrapNotification($share['remote_id']);
+			//FIXME $this->scrapNotification($share['remote_id']);
 			return true;
 		}
 
@@ -276,24 +256,6 @@ class Manager {
 	}
 
 	/**
-	 * setup the server-to-server mounts
-	 *
-	 * @param array $params
-	 */
-	public static function setup(array $params) {
-		$externalManager = new \OCA\Files_Sharing\External\Manager(
-				\OC::$server->getDatabaseConnection(),
-				\OC\Files\Filesystem::getMountManager(),
-				\OC\Files\Filesystem::getLoader(),
-				\OC::$server->getHTTPHelper(),
-				\OC::$server->getNotificationManager(),
-				$params['user']
-		);
-
-		$externalManager->setupMounts();
-	}
-
-	/**
 	 * remove '/user/files' from the path and trailing slashes
 	 *
 	 * @param string $path
@@ -304,16 +266,20 @@ class Manager {
 		return rtrim(substr($path, strlen($prefix)), '/');
 	}
 
+	public function getMount($data) {
+		$data['manager'] = $this;
+		$mountPoint = '/' . $this->uid . '/files' . $data['mountpoint'];
+		$data['mountpoint'] = $mountPoint;
+		$data['certificateManager'] = \OC::$server->getCertificateManager($this->uid);
+		return new Mount(self::STORAGE, $mountPoint, $data, $this, $this->storageLoader);
+	}
+
 	/**
 	 * @param array $data
 	 * @return Mount
 	 */
 	protected function mountShare($data) {
-		$data['manager'] = $this;
-		$mountPoint = '/' . $this->uid . '/files' . $data['mountpoint'];
-		$data['mountpoint'] = $mountPoint;
-		$data['certificateManager'] = \OC::$server->getCertificateManager($this->uid);
-		$mount = new Mount(self::STORAGE, $mountPoint, $data, $this, $this->storageLoader);
+		$mount = $this->getMount($data);
 		$this->mountManager->addMount($mount);
 		return $mount;
 	}
@@ -407,6 +373,15 @@ class Manager {
 	}
 
 	/**
+	 * return a list of shares wich are accepted by the user
+	 *
+	 * @return array list of accepted server-to-server shares
+	 */
+	public function getAcceptedShares() {
+		return $this->getShares(true);
+	}
+
+	/**
 	 * return a list of shares for the user
 	 *
 	 * @param bool|null $accepted True for accepted only,
@@ -415,7 +390,9 @@ class Manager {
 	 * @return array list of open server-to-server shares
 	 */
 	private function getShares($accepted) {
-		$query = 'SELECT * FROM `*PREFIX*share_external` WHERE `user` = ?';
+		$query = 'SELECT `id`, `remote`, `remote_id`, `share_token`, `name`, `owner`, `user`, `mountpoint`, `accepted`
+		          FROM `*PREFIX*share_external` 
+				  WHERE `user` = ?';
 		$parameters = [$this->uid];
 		if (!is_null($accepted)) {
 			$query .= ' AND `accepted` = ?';

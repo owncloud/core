@@ -2,6 +2,7 @@
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -45,7 +46,7 @@ abstract class TestCase extends \Test\TestCase {
 	/**
 	 * Generates a temp user
 	 * @param int $num number of users to generate
-	 * @return array
+	 * @return IUser[]|Iuser
 	 */
 	protected function generateUsers($num = 1) {
 		$users = array();

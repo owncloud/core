@@ -1,9 +1,8 @@
 <?php
 /**
- * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -110,9 +109,7 @@ class ApiControllerTest extends TestCase {
 				[
 					'id' => null,
 					'parentId' => null,
-					'date' => \OCP\Util::formatDate(55),
 					'mtime' => 55000,
-					'icon' => \OCA\Files\Helper::determineIcon($fileInfo),
 					'name' => 'root.txt',
 					'permissions' => null,
 					'mimetype' => 'application/pdf',
@@ -175,9 +172,7 @@ class ApiControllerTest extends TestCase {
 				[
 					'id' => null,
 					'parentId' => null,
-					'date' => \OCP\Util::formatDate(55),
 					'mtime' => 55000,
-					'icon' => \OCA\Files\Helper::determineIcon($fileInfo1),
 					'name' => 'root.txt',
 					'permissions' => null,
 					'mimetype' => 'application/pdf',
@@ -194,9 +189,7 @@ class ApiControllerTest extends TestCase {
 				[
 					'id' => null,
 					'parentId' => null,
-					'date' => \OCP\Util::formatDate(999),
 					'mtime' => 999000,
-					'icon' => \OCA\Files\Helper::determineIcon($fileInfo2),
 					'name' => 'root.txt',
 					'permissions' => null,
 					'mimetype' => 'application/binary',

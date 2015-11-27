@@ -55,7 +55,8 @@ module.exports = function(config) {
 					'apps/files_sharing/js/sharedfilelist.js',
 					'apps/files_sharing/js/share.js',
 					'apps/files_sharing/js/external.js',
-					'apps/files_sharing/js/public.js'
+					'apps/files_sharing/js/public.js',
+					'apps/files_sharing/js/sharetabview.js'
 				],
 				testFiles: ['apps/files_sharing/tests/js/*.js']
 			},
@@ -163,15 +164,15 @@ module.exports = function(config) {
 	// need to test the core app as well ?
 	if (testCore) {
 		// core tests
-		files.push(corePath + 'tests/specs/*.js');
+		files.push(corePath + 'tests/specs/**/*.js');
 	}
 
 	function addApp(app) {
 		// if only a string was specified, expand to structure
 		if (typeof(app) === 'string') {
 			app = {
-				srcFiles: 'apps/' + app + '/js/*.js',
-				testFiles: 'apps/' + app + '/tests/js/*.js'
+				srcFiles: 'apps/' + app + '/js/**/*.js',
+				testFiles: 'apps/' + app + '/tests/js/**/*.js'
 			};
 		}
 

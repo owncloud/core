@@ -5,8 +5,6 @@
  * See the COPYING-README file.
  */
 
-/* global OC, t */
-
 /**
  * The callback will be fired as soon as enter is pressed by the
  * user or 1 second after the last data entry
@@ -72,7 +70,7 @@ function changeDisplayName () {
 		// Serialize the data
 		var post = $("#displaynameform").serialize();
 		// Ajax foo
-		$.post('ajax/changedisplayname.php', post, function (data) {
+		$.post(OC.generateUrl('/settings/users/{id}/displayName', {id: OC.currentUser}), post, function (data) {
 			if (data.status === "success") {
 				$('#oldDisplayName').val($('#displayName').val());
 				// update displayName on the top right expand button
@@ -156,6 +154,9 @@ function cleanCropper () {
 }
 
 function avatarResponseHandler (data) {
+	if (typeof data === 'string') {
+		data = $.parseJSON(data);
+	}
 	var $warning = $('#avatar .warning');
 	$warning.hide();
 	if (data.status === "success") {
@@ -188,7 +189,7 @@ $(document).ready(function () {
 			$.post(OC.generateUrl('/settings/personal/changepassword'), post, function (data) {
 				if (data.status === "success") {
 					$('#pass1').val('');
-					$('#pass2').val('');
+					$('#pass2').val('').change();
 					// Hide a possible errormsg and show successmsg
 					$('#password-changed').removeClass('hidden').addClass('inlineblock');
 					$('#password-error').removeClass('inlineblock').addClass('hidden');
@@ -233,7 +234,21 @@ $(document).ready(function () {
 
 	var uploadparms = {
 		done: function (e, data) {
-			avatarResponseHandler(data.result);
+			var response = data;
+			if (typeof data.result === 'string') {
+				response = $.parseJSON(data.result);
+			} else if (data.result && data.result.length) {
+				// fetch response from iframe
+				response = $.parseJSON(data.result[0].body.innerText);
+			} else {
+				response = data.result;
+			}
+			avatarResponseHandler(response);
+		},
+		submit: function(e, data) {
+			data.formData = _.extend(data.formData || {}, {
+				requesttoken: OC.requestToken
+			});
 		},
 		fail: function (e, data){
 			var msg = data.jqXHR.statusText + ' (' + data.jqXHR.status + ')';
@@ -250,10 +265,6 @@ $(document).ready(function () {
 			});
 		}
 	};
-
-	$('#uploadavatarbutton').click(function () {
-		$('#uploadavatar').click();
-	});
 
 	$('#uploadavatar').fileupload(uploadparms);
 
@@ -344,7 +355,24 @@ $(document).ready(function () {
 	$('#sslCertificate tr > td').tipsy({gravity: 'n', live: true});
 
 	$('#rootcert_import').fileupload({
+		submit: function(e, data) {
+			data.formData = _.extend(data.formData || {}, {
+				requesttoken: OC.requestToken
+			});
+		},
 		success: function (data) {
+			if (typeof data === 'string') {
+				data = $.parseJSON(data);
+			} else if (data && data.length) {
+				// fetch response from iframe
+				data = $.parseJSON(data[0].body.innerText);
+			}
+			if (!data || typeof(data) === 'string') {
+				// IE8 iframe workaround comes here instead of fail()
+				OC.Notification.showTemporary(
+					t('settings', 'An error occurred. Please upload an ASCII-encoded PEM certificate.'));
+				return;
+			}
 			var issueDate = new Date(data.validFrom * 1000);
 			var expireDate = new Date(data.validTill * 1000);
 			var now = new Date();
@@ -372,10 +400,6 @@ $(document).ready(function () {
 			OC.Notification.showTemporary(
 				t('settings', 'An error occurred. Please upload an ASCII-encoded PEM certificate.'));
 		}
-	});
-
-	$('#rootcert_import_button').click(function () {
-		$('#rootcert_import').click();
 	});
 
 	if ($('#sslCertificate > tbody > tr').length === 0) {

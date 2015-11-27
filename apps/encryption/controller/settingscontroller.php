@@ -2,7 +2,6 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
- * @author Morris Jobke <hey@morrisjobke.de>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -26,6 +25,7 @@ namespace OCA\Encryption\Controller;
 use OCA\Encryption\Crypto\Crypt;
 use OCA\Encryption\KeyManager;
 use OCA\Encryption\Session;
+use OCA\Encryption\Util;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
@@ -58,6 +58,9 @@ class SettingsController extends Controller {
 	/** @var ISession  */
 	private $ocSession;
 
+	/** @var  Util */
+	private $util;
+
 	/**
 	 * @param string $AppName
 	 * @param IRequest $request
@@ -68,6 +71,7 @@ class SettingsController extends Controller {
 	 * @param Crypt $crypt
 	 * @param Session $session
 	 * @param ISession $ocSession
+	 * @param Util $util
 	 */
 	public function __construct($AppName,
 								IRequest $request,
@@ -77,7 +81,9 @@ class SettingsController extends Controller {
 								KeyManager $keyManager,
 								Crypt $crypt,
 								Session $session,
-								ISession $ocSession) {
+								ISession $ocSession,
+								Util $util
+) {
 		parent::__construct($AppName, $request);
 		$this->l = $l10n;
 		$this->userSession = $userSession;
@@ -86,6 +92,7 @@ class SettingsController extends Controller {
 		$this->crypt = $crypt;
 		$this->session = $session;
 		$this->ocSession = $ocSession;
+		$this->util = $util;
 	}
 
 
@@ -143,5 +150,16 @@ class SettingsController extends Controller {
 			);
 		}
 
+	}
+
+	/**
+	 * @UseSession
+	 *
+	 * @param bool $encryptHomeStorage
+	 * @return DataResponse
+	 */
+	public function setEncryptHomeStorage($encryptHomeStorage) {
+		$this->util->setEncryptHomeStorage($encryptHomeStorage);
+		return new DataResponse();
 	}
 }

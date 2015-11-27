@@ -5,6 +5,7 @@
  * @author Christian Berendt <berendt@b1-systems.de>
  * @author Felix Moeller <mail@felixmoeller.de>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Martin Mattel <martin.mattel@diemattels.at>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Philipp Kapfer <philipp.kapfer@gmx.at>
  * @author Robin Appelman <icewind@owncloud.com>
@@ -105,7 +106,10 @@ class Swift extends \OC\Files\Storage\Common {
 			$this->getContainer()->getPartialObject($path);
 			return true;
 		} catch (ClientErrorResponseException $e) {
-			\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
+			// Expected response is "404 Not Found", so only log if it isn't
+			if ($e->getResponse()->getStatusCode() !== 404) {
+				\OCP\Util::writeLog('files_external', $e->getMessage(), \OCP\Util::ERROR);
+			}
 			return false;
 		}
 	}
@@ -175,7 +179,7 @@ class Swift extends \OC\Files\Storage\Common {
 
 		$dh = $this->opendir($path);
 		while ($file = readdir($dh)) {
-			if ($file === '.' || $file === '..') {
+			if (\OC\Files\Filesystem::isIgnoredDir($file)) {
 				continue;
 			}
 
@@ -360,18 +364,6 @@ class Swift extends \OC\Files\Storage\Common {
 		}
 	}
 
-	public function getMimeType($path) {
-		$path = $this->normalizePath($path);
-
-		if ($this->is_dir($path)) {
-			return 'httpd/unix-directory';
-		} else if ($this->file_exists($path)) {
-			$object = $this->getContainer()->getPartialObject($path);
-			return $object->getContentType();
-		}
-		return false;
-	}
-
 	public function touch($path, $mtime = null) {
 		$path = $this->normalizePath($path);
 		if (is_null($mtime)) {
@@ -429,7 +421,7 @@ class Swift extends \OC\Files\Storage\Common {
 
 			$dh = $this->opendir($path1);
 			while ($file = readdir($dh)) {
-				if ($file === '.' || $file === '..') {
+				if (\OC\Files\Filesystem::isIgnoredDir($file)) {
 					continue;
 				}
 

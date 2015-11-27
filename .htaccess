@@ -1,4 +1,4 @@
-# Version: 8.2.0
+# Version: 9.0.0
 <IfModule mod_headers.c>
   <IfModule mod_fcgid.c>
     <IfModule mod_setenvif.c>
@@ -28,7 +28,7 @@
   php_value mbstring.func_overload 0
   php_value always_populate_raw_post_data -1
   php_value default_charset 'UTF-8'
-  php_value output_buffering off
+  php_value output_buffering 0
   <IfModule mod_env.c>
     SetEnv htaccessWorking true
   </IfModule>
@@ -38,10 +38,8 @@
   RewriteRule .* - [env=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
   RewriteRule ^\.well-known/host-meta /public.php?service=host-meta [QSA,L]
   RewriteRule ^\.well-known/host-meta\.json /public.php?service=host-meta-json [QSA,L]
-  RewriteRule ^\.well-known/carddav /remote.php/carddav/ [R=301,L]
-  RewriteRule ^\.well-known/caldav /remote.php/caldav/ [R=301,L]
-  RewriteRule ^apps/calendar/caldav\.php remote.php/caldav/ [QSA,L]
-  RewriteRule ^apps/contacts/carddav\.php remote.php/carddav/ [QSA,L]
+  RewriteRule ^\.well-known/carddav /remote.php/dav/ [R=301,L]
+  RewriteRule ^\.well-known/caldav /remote.php/dav/ [R=301,L]
   RewriteRule ^remote/(.*) remote.php [QSA,L]
   RewriteRule ^(build|tests|config|lib|3rdparty|templates)/.* - [R=404,L]
   RewriteRule ^(\.|autotest|occ|issue|indie|db_|console).* - [R=404,L]

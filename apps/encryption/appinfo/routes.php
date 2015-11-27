@@ -2,8 +2,6 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Clark Tomlinson <fallen013@gmail.com>
- * @author Morris Jobke <hey@morrisjobke.de>
- * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -35,6 +33,11 @@ namespace OCA\Encryption\AppInfo;
 	[
 		'name' => 'Settings#updatePrivateKeyPassword',
 		'url' => '/ajax/updatePrivateKeyPassword',
+		'verb' => 'POST'
+	],
+	[
+		'name' => 'Settings#setEncryptHomeStorage',
+		'url' => '/ajax/setEncryptHomeStorage',
 		'verb' => 'POST'
 	],
 	[

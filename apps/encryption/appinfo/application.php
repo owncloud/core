@@ -2,8 +2,6 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Clark Tomlinson <fallen013@gmail.com>
- * @author Lukas Reschke <lukas@owncloud.com>
- * @author Morris Jobke <hey@morrisjobke.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -30,6 +28,7 @@ use OCA\Encryption\Controller\RecoveryController;
 use OCA\Encryption\Controller\SettingsController;
 use OCA\Encryption\Controller\StatusController;
 use OCA\Encryption\Crypto\Crypt;
+use OCA\Encryption\Crypto\DecryptAll;
 use OCA\Encryption\Crypto\EncryptAll;
 use OCA\Encryption\Crypto\Encryption;
 use OCA\Encryption\HookManager;
@@ -83,6 +82,7 @@ class Application extends \OCP\AppFramework\App {
 
 			$hookManager->registerHook([
 				new UserHooks($container->query('KeyManager'),
+					$server->getUserManager(),
 					$server->getLogger(),
 					$container->query('UserSetup'),
 					$server->getUserSession(),
@@ -113,7 +113,9 @@ class Application extends \OCP\AppFramework\App {
 				$container->query('Crypt'),
 				$container->query('KeyManager'),
 				$container->query('Util'),
+				$container->query('Session'),
 				$container->query('EncryptAll'),
+				$container->query('DecryptAll'),
 				$container->getServer()->getLogger(),
 				$container->getServer()->getL10N($container->getAppName())
 			);
@@ -199,7 +201,8 @@ class Application extends \OCP\AppFramework\App {
 				$c->query('KeyManager'),
 				$c->query('Crypt'),
 				$c->query('Session'),
-				$server->getSession()
+				$server->getSession(),
+				$c->query('Util')
 			);
 		});
 
@@ -238,6 +241,18 @@ class Application extends \OCP\AppFramework\App {
 					$server->getL10N('encryption'),
 					new QuestionHelper(),
 					$server->getSecureRandom()
+				);
+			}
+		);
+
+		$container->registerService('DecryptAll',
+			function (IAppContainer $c) {
+				return new DecryptAll(
+					$c->query('Util'),
+					$c->query('KeyManager'),
+					$c->query('Crypt'),
+					$c->query('Session'),
+					new QuestionHelper()
 				);
 			}
 		);

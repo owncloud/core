@@ -1,6 +1,8 @@
 <?php
 /**
+ * @author Martin Mattel <martin.mattel@diemattels.at>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -55,13 +57,16 @@ class Application {
 			if (!\OCP\Util::needUpgrade()) {
 				OC_App::loadApps();
 				foreach (\OC::$server->getAppManager()->getInstalledApps() as $app) {
-					$file = OC_App::getAppPath($app) . '/appinfo/register_command.php';
+					$appPath = \OC_App::getAppPath($app);
+					\OC::$loader->addValidRoot($appPath);
+					$file = $appPath . '/appinfo/register_command.php';
 					if (file_exists($file)) {
 						require $file;
 					}
 				}
 			} else {
 				$output->writeln("ownCloud or one of the apps require upgrade - only a limited number of commands are available");
+				$output->writeln("You may use your browser or the occ upgrade command to do the upgrade");
 			}
 		} else {
 			$output->writeln("ownCloud is not installed - only a limited number of commands are available");

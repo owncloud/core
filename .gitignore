@@ -9,8 +9,10 @@
 
 # ignore all apps except core ones
 /apps*/*
+!/apps/dav
 !/apps/files
 !/apps/files_encryption
+!/apps/federation
 !/apps/encryption
 !/apps/encryption_dummy
 !/apps/files_external
@@ -114,3 +116,4 @@ Vagrantfile
 /tests/data/testimage-copy.png
 /config/config-autotest-backup.php
 /config/autoconfig.php
+clover.xml

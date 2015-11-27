@@ -85,6 +85,7 @@ var OC={
 	appConfig: window.oc_appconfig || {},
 	theme: window.oc_defaults || {},
 	coreApps:['', 'admin','log','core/search','settings','core','3rdparty'],
+	requestToken: oc_requesttoken,
 	menuSpeed: 50,
 
 	/**
@@ -118,10 +119,12 @@ var OC={
 	/**
 	 * Gets the base path for the given OCS API service.
 	 * @param {string} service name
+	 * @param {int} version OCS API version
 	 * @return {string} OCS API base path
 	 */
-	linkToOCS: function(service) {
-		return window.location.protocol + '//' + window.location.host + OC.webroot + '/ocs/v1.php/' + service + '/';
+	linkToOCS: function(service, version) {
+		version = (version !== 2) ? 1 : 2;
+		return window.location.protocol + '//' + window.location.host + OC.webroot + '/ocs/v' + version + '.php/' + service + '/';
 	},
 
 	/**
@@ -1215,12 +1218,34 @@ function object(o) {
  * Initializes core
  */
 function initCore() {
+	/**
+	 * Disable automatic evaluation of responses for $.ajax() functions (and its
+	 * higher-level alternatives like $.get() and $.post()).
+	 *
+	 * If a response to a $.ajax() request returns a content type of "application/javascript"
+	 * JQuery would previously execute the response body. This is a pretty unexpected
+	 * behaviour and can result in a bypass of our Content-Security-Policy as well as
+	 * multiple unexpected XSS vectors.
+	 */
+	$.ajaxSetup({
+		contents: {
+			script: false
+		}
+	});
 
 	/**
 	 * Set users locale to moment.js as soon as possible
 	 */
 	moment.locale(OC.getLocale());
 
+	if ($.browser.msie || !!navigator.userAgent.match(/Trident\/7\./)) {
+		// for IE10+ that don't have conditional comments
+		// and IE11 doesn't identify as MSIE any more...
+		$('html').addClass('ie');
+	} else if (!!navigator.userAgent.match(/Edge\/12/)) {
+		// for edge
+		$('html').addClass('edge');
+	}
 
 	/**
 	 * Calls the server periodically to ensure that session doesn't
@@ -1260,23 +1285,7 @@ function initCore() {
 		SVGSupport.checkMimeType();
 	}
 
-	// user menu
-	$('#settings #expand').keydown(function(event) {
-		if (event.which === 13 || event.which === 32) {
-			$('#expand').click();
-		}
-	});
-	$('#settings #expand').click(function(event) {
-		$('#settings #expanddiv').slideToggle(OC.menuSpeed);
-		event.stopPropagation();
-	});
-	$('#settings #expanddiv').click(function(event){
-		event.stopPropagation();
-	});
-	//hide the user menu when clicking outside it
-	$(document).click(function(){
-		$('#settings #expanddiv').slideUp(OC.menuSpeed);
-	});
+	OC.registerMenu($('#expand'), $('#expanddiv'));
 
 	// toggle for menus
 	$(document).on('mouseup.closemenus', function(event) {
@@ -1289,7 +1298,6 @@ function initCore() {
 		OC.hideMenus();
 	});
 
-
 	/**
 	 * Set up the main menu toggle to react to media query changes.
 	 * If the screen is small enough, the main menu becomes a toggle.
@@ -1297,7 +1305,7 @@ function initCore() {
 	 */
 	function setupMainMenu() {
 		// toggle the navigation
-		var $toggle = $('#header .menutoggle');
+		var $toggle = $('#header .header-appname-container');
 		var $navigation = $('#navigation');
 
 		// init the menu
@@ -1420,7 +1428,6 @@ function initCore() {
 		$('body').delegate('#app-content', 'apprendered appresized', adjustControlsWidth);
 
 	}
-
 }
 
 $(document).ready(initCore);
@@ -1519,6 +1526,10 @@ OC.Util = {
 	 * @returns {string} human readable difference from now
 	 */
 	relativeModifiedDate: function (timestamp) {
+		var diff = moment().diff(moment(timestamp));
+		if (diff >= 0 && diff < 45000 ) {
+			return t('core', 'seconds ago');
+		}
 		return moment(timestamp).fromNow();
 	},
 	/**
@@ -1580,6 +1591,94 @@ OC.Util = {
 				}
 			});
 		});
+	},
+
+	/**
+	 * Fix image scaling for IE8, since background-size is not supported.
+	 *
+	 * This scales the image to the element's actual size, the URL is
+	 * taken from the "background-image" CSS attribute.
+	 *
+	 * @param {Object} $el image element
+	 */
+	scaleFixForIE8: function($el) {
+		if (!this.isIE8()) {
+			return;
+		}
+		var self = this;
+		$($el).each(function() {
+			var url = $(this).css('background-image');
+			var r = url.match(/url\(['"]?([^'")]*)['"]?\)/);
+			if (!r) {
+				return;
+			}
+			url = r[1];
+			url = self.replaceSVGIcon(url);
+			// TODO: escape
+			url = url.replace(/'/g, '%27');
+			$(this).css({
+				'filter': 'progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\'' + url + '\', sizingMethod=\'scale\')',
+				'background-image': ''
+			});
+		});
+		return $el;
+	},
+
+	/**
+	 * Returns whether this is IE
+	 *
+	 * @return {bool} true if this is IE, false otherwise
+	 */
+	isIE: function() {
+		return $('html').hasClass('ie');
+	},
+
+	/**
+	 * Returns whether this is IE8
+	 *
+	 * @return {bool} true if this is IE8, false otherwise
+	 */
+	isIE8: function() {
+		return $('html').hasClass('ie8');
+	},
+
+	/**
+	 * Returns the width of a generic browser scrollbar
+	 *
+	 * @return {int} width of scrollbar
+	 */
+	getScrollBarWidth: function() {
+		if (this._scrollBarWidth) {
+			return this._scrollBarWidth;
+		}
+
+		var inner = document.createElement('p');
+		inner.style.width = "100%";
+		inner.style.height = "200px";
+
+		var outer = document.createElement('div');
+		outer.style.position = "absolute";
+		outer.style.top = "0px";
+		outer.style.left = "0px";
+		outer.style.visibility = "hidden";
+		outer.style.width = "200px";
+		outer.style.height = "150px";
+		outer.style.overflow = "hidden";
+		outer.appendChild (inner);
+
+		document.body.appendChild (outer);
+		var w1 = inner.offsetWidth;
+		outer.style.overflow = 'scroll';
+		var w2 = inner.offsetWidth;
+		if(w1 === w2) {
+			w2 = outer.clientWidth;
+		}
+
+		document.body.removeChild (outer);
+
+		this._scrollBarWidth = (w1 - w2);
+
+		return this._scrollBarWidth;
 	},
 
 	/**
@@ -1759,9 +1858,7 @@ OC.Util.History = {
 			params = OC.parseQueryString(this._decodeQuery(query));
 		}
 		// else read from query attributes
-		if (!params) {
-			params = OC.parseQueryString(this._decodeQuery(location.search));
-		}
+		params = _.extend(params || {}, OC.parseQueryString(this._decodeQuery(location.search)));
 		return params || {};
 	},
 
@@ -1874,32 +1971,11 @@ jQuery.fn.exists = function(){
 	return this.length > 0;
 };
 
+/**
+ * @deprecated use OC.Util.getScrollBarWidth() instead
+ */
 function getScrollBarWidth() {
-	var inner = document.createElement('p');
-	inner.style.width = "100%";
-	inner.style.height = "200px";
-
-	var outer = document.createElement('div');
-	outer.style.position = "absolute";
-	outer.style.top = "0px";
-	outer.style.left = "0px";
-	outer.style.visibility = "hidden";
-	outer.style.width = "200px";
-	outer.style.height = "150px";
-	outer.style.overflow = "hidden";
-	outer.appendChild (inner);
-
-	document.body.appendChild (outer);
-	var w1 = inner.offsetWidth;
-	outer.style.overflow = 'scroll';
-	var w2 = inner.offsetWidth;
-	if(w1 === w2) {
-		w2 = outer.clientWidth;
-	}
-
-	document.body.removeChild (outer);
-
-	return (w1 - w2);
+	return OC.Util.getScrollBarWidth();
 }
 
 /**
@@ -1914,7 +1990,8 @@ jQuery.fn.tipsy = function(argument) {
 			placement: 'bottom',
 			delay: { 'show': 0, 'hide': 0},
 			trigger: 'hover',
-			html: false
+			html: false,
+			container: 'body'
 		};
 		if(argument.gravity) {
 			switch(argument.gravity) {
@@ -1958,4 +2035,5 @@ jQuery.fn.tipsy = function(argument) {
 		this.tooltip(argument);
 		jQuery.fn.tooltip.call(this, argument);
 	}
+	return this;
 }

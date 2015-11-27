@@ -35,7 +35,6 @@
 	height: 100%;
 	width: inherit;
 	overflow: auto;
-	padding-bottom: 44px;
 	-moz-box-sizing: border-box; box-sizing: border-box;
 }
 #app-navigation li {
@@ -72,7 +71,7 @@
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	color: #000;
-	opacity: .5;
+	opacity: .57;
 }
 #app-navigation .active,
 #app-navigation .active a,
@@ -307,6 +306,23 @@
 	-ms-filter: drop-shadow(0 0 5px rgba(150, 150, 150, 0.75));
 	-o-filter: drop-shadow(0 0 5px rgba(150, 150, 150, 0.75));
 	filter: drop-shadow(0 0 5px rgba(150, 150, 150, 0.75));
+}
+
+.ie .bubble,
+.ie #app-navigation .app-navigation-entry-menu,
+.ie .bubble:after,
+.ie #app-navigation .app-navigation-entry-menu:after,
+.edge .bubble,
+.edge #app-navigation .app-navigation-entry-menu,
+.edge .bubble:after,
+.edge #app-navigation .app-navigation-entry-menu:after {
+	border: 1px solid #eee;
+}
+.ie8 .bubble {
+	margin-top: 18px;
+}
+.ie8 .bubble:after {
+	display: none;
 }
 /* miraculous border arrow stuff */
 .bubble:after,
@@ -547,16 +563,19 @@ button.loading {
 #app-content > .section:first-child {
 	border-top: none;
 }
-.section h2 {
+
+/* heading styles */
+h2 {
 	font-size: 20px;
+	font-weight: 300;
 	margin-bottom: 12px;
-	font-weight: normal;
 }
-.section h3 {
+h3 {
 	font-size: 15px;
-	font-weight: normal;
+	font-weight: 300;
 	margin: 12px 0;
 }
+
 /* slight position correction of checkboxes and radio buttons */
 .section input[type="checkbox"],
 .section input[type="radio"] {
@@ -684,6 +703,7 @@ em {
 .popovermenu .menuitem .no-icon {
 	display: inline-block;
 	width: 16px;
+	height: 16px;
 	margin-right: 10px;
 }
 

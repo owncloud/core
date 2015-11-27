@@ -6,6 +6,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
  * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
+ * @author tbartenstein <tbartenstein@users.noreply.github.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -26,6 +27,8 @@
  */
 
 namespace OC\Files;
+
+use OCP\IUser;
 
 class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	/**
@@ -54,18 +57,30 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	private $mount;
 
 	/**
+	 * @var IUser
+	 */
+	private $owner;
+
+	/**
+	 * @var string[]
+	 */
+	private $childEtags = [];
+
+	/**
 	 * @param string|boolean $path
 	 * @param Storage\Storage $storage
 	 * @param string $internalPath
 	 * @param array $data
 	 * @param \OCP\Files\Mount\IMountPoint $mount
+	 * @param \OCP\IUser|null $owner
 	 */
-	public function __construct($path, $storage, $internalPath, $data, $mount) {
+	public function __construct($path, $storage, $internalPath, $data, $mount, $owner= null) {
 		$this->path = $path;
 		$this->storage = $storage;
 		$this->internalPath = $internalPath;
 		$this->data = $data;
 		$this->mount = $mount;
+		$this->owner = $owner;
 	}
 
 	public function offsetSet($offset, $value) {
@@ -83,6 +98,8 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	public function offsetGet($offset) {
 		if ($offset === 'type') {
 			return $this->getType();
+		} else if ($offset === 'etag') {
+			return $this->getEtag();
 		} elseif (isset($this->data[$offset])) {
 			return $this->data[$offset];
 		} else {
@@ -143,7 +160,12 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	 * @return string
 	 */
 	public function getEtag() {
-		return $this->data['etag'];
+		if (count($this->childEtags) > 0) {
+			$combinedEtag = $this->data['etag'] . '::' . implode('::', $this->childEtags);
+			return md5($combinedEtag);
+		} else {
+			return $this->data['etag'];
+		}
 	}
 
 	/**
@@ -265,5 +287,36 @@ class FileInfo implements \OCP\Files\FileInfo, \ArrayAccess {
 	 */
 	public function getMountPoint() {
 		return $this->mount;
+	}
+
+	/**
+	 * Get the owner of the file
+	 *
+	 * @return \OCP\IUser
+	 */
+	public function getOwner() {
+		return $this->owner;
+	}
+
+	/**
+	 * Add a cache entry which is the child of this folder
+	 *
+	 * Sets the size, etag and size to for cross-storage childs
+	 *
+	 * @param array $data cache entry for the child
+	 * @param string $entryPath full path of the child entry
+	 */
+	public function addSubEntry($data, $entryPath) {
+		$this->data['size'] += isset($data['size']) ? $data['size'] : 0;
+		if (isset($data['mtime'])) {
+			$this->data['mtime'] = max($this->data['mtime'], $data['mtime']);
+		}
+		if (isset($data['etag'])) {
+			// prefix the etag with the relative path of the subentry to propagate etag on mount moves
+			$relativeEntryPath = substr($entryPath, strlen($this->getPath()));
+			// attach the permissions to propagate etag on permision changes of submounts
+			$permissions = isset($data['permissions']) ? $data['permissions'] : 0;
+			$this->childEtags[] = $relativeEntryPath . '/' . $data['etag'] . $permissions;
+		}
 	}
 }

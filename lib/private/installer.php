@@ -12,6 +12,7 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Kamil Domanski <kdomanski@kdemail.net>
  * @author Lukas Reschke <lukas@owncloud.com>
+ * @author michag86 <micha_g@arcor.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
@@ -277,8 +278,8 @@ class OC_Installer{
 		}
 
 		//detect the archive type
-		$mime=OC_Helper::getMimeType($path);
-		if ($mime !=='application/zip' && $mime !== 'application/x-gzip') {
+		$mime = \OC::$server->getMimeTypeDetector()->detect($path);
+		if ($mime !=='application/zip' && $mime !== 'application/x-gzip' && $mime !== 'application/x-bzip2') {
 			throw new \Exception($l->t("Archives of type %s are not supported", array($mime)));
 		}
 
@@ -501,7 +502,7 @@ class OC_Installer{
 			if($dir = opendir( $app_dir['path'] )) {
 				while( false !== ( $filename = readdir( $dir ))) {
 					if( substr( $filename, 0, 1 ) != '.' and is_dir($app_dir['path']."/$filename") ) {
-						if( file_exists( $app_dir['path']."/$filename/appinfo/app.php" )) {
+						if( file_exists( $app_dir['path']."/$filename/appinfo/info.xml" )) {
 							if(!OC_Installer::isInstalled($filename)) {
 								$info=OC_App::getAppInfo($filename);
 								$enabled = isset($info['default_enable']);

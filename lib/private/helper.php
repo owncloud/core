@@ -6,8 +6,8 @@
  * @author Christopher Schäpers <kondou@ts.unde.re>
  * @author Fabian Henze <flyser42@gmx.de>
  * @author Felix Moeller <mail@felixmoeller.de>
- * @author François Kubler <francois@kubler.org>
  * @author Frank Karlitschek <frank@owncloud.org>
+ * @author François Kubler <francois@kubler.org>
  * @author Georg Ehrke <georg@owncloud.com>
  * @author Jakob Sack <mail@jakobsack.de>
  * @author Jan-Christoph Borchardt <hey@jancborchardt.net>
@@ -16,12 +16,13 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Nicolas Grekas <nicolas.grekas@gmail.com>
  * @author Olivier Paroz <github@oparoz.com>
  * @author Owen Winkler <a_github@midnightcircus.com>
  * @author Pellaeon Lin <nfsmwlin@gmail.com>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Simon Könnecke <simonkoennecke@gmail.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
@@ -78,15 +79,6 @@ class OC_Helper {
 	 */
 	public static function linkTo( $app, $file, $args = array() ) {
 		return OC::$server->getURLGenerator()->linkTo($app, $file, $args);
-	}
-
-	/**
-	 * @param string $key
-	 * @return string url to the online documentation
-	 * @deprecated Use \OC::$server->getURLGenerator()->linkToDocs($key)
-	 */
-	public static function linkToDocs($key) {
-		return OC::$server->getURLGenerator()->linkToDocs($key);
 	}
 
 	/**
@@ -193,11 +185,11 @@ class OC_Helper {
 	 * Returns the path to the preview of the file.
 	 */
 	public static function previewIcon($path) {
-		return self::linkToRoute( 'core_ajax_preview', array('x' => 36, 'y' => 36, 'file' => $path ));
+		return self::linkToRoute( 'core_ajax_preview', array('x' => 32, 'y' => 32, 'file' => $path ));
 	}
 
 	public static function publicPreviewIcon( $path, $token ) {
-		return self::linkToRoute( 'core_ajax_public_preview', array('x' => 36, 'y' => 36, 'file' => $path, 't' => $token));
+		return self::linkToRoute( 'core_ajax_public_preview', array('x' => 32, 'y' => 32, 'file' => $path, 't' => $token));
 	}
 
 	/**
@@ -274,7 +266,7 @@ class OC_Helper {
 	/**
 	 * Make a computer file size
 	 * @param string $str file size in human readable format
-	 * @return int a file size in bytes
+	 * @return float a file size in bytes
 	 *
 	 * Makes 2kB to 2048.
 	 *
@@ -283,7 +275,7 @@ class OC_Helper {
 	public static function computerFileSize($str) {
 		$str = strtolower($str);
 		if (is_numeric($str)) {
-			return $str;
+			return floatval($str);
 		}
 
 		$bytes_array = array(
@@ -398,18 +390,6 @@ class OC_Helper {
 	 */
 	static public function getFileNameMimeType($path) {
 		return \OC::$server->getMimeTypeDetector()->detectPath($path);
-	}
-
-	/**
-	 * get the mimetype form a local file
-	 *
-	 * @param string $path
-	 * @return string
-	 * does NOT work for ownClouds filesystem, use OC_FileSystem::getMimeType instead
-	 * @deprecated 8.2.0 Use \OC::$server->getMimeTypeDetector()->detect($path)
-	 */
-	static function getMimeType($path) {
-		return \OC::$server->getMimeTypeDetector()->detect($path);
 	}
 
 	/**
@@ -644,37 +624,6 @@ class OC_Helper {
 	}
 
 	/**
-	 * replaces a copy of string delimited by the start and (optionally) length parameters with the string given in replacement.
-	 *
-	 * @param string $string
-	 * @param string $replacement The replacement string.
-	 * @param int $start If start is positive, the replacing will begin at the start'th offset into string. If start is negative, the replacing will begin at the start'th character from the end of string.
-	 * @param int $length Length of the part to be replaced
-	 * @param string $encoding The encoding parameter is the character encoding. Defaults to UTF-8
-	 * @return string
-	 * @deprecated 8.2.0 Use substr_replace() instead.
-	 */
-	public static function mb_substr_replace($string, $replacement, $start, $length = 0, $encoding = 'UTF-8') {
-		return substr_replace($string, $replacement, $start, $length);
-	}
-
-	/**
-	 * Replace all occurrences of the search string with the replacement string
-	 *
-	 * @param string $search The value being searched for, otherwise known as the needle.
-	 * @param string $replace The replacement
-	 * @param string $subject The string or array being searched and replaced on, otherwise known as the haystack.
-	 * @param string $encoding The encoding parameter is the character encoding. Defaults to UTF-8
-	 * @param int $count If passed, this will be set to the number of replacements performed.
-	 * @return string
-	 * @deprecated 8.2.0 Use str_replace() instead.
-	 *
-	 */
-	public static function mb_str_replace($search, $replace, $subject, $encoding = 'UTF-8', &$count = null) {
-		return str_replace($search, $replace, $subject, $count);
-	}
-
-	/**
 	 * performs a search in a nested array
 	 * @param array $haystack the array to be searched
 	 * @param string $needle the search string
@@ -742,7 +691,7 @@ class OC_Helper {
 			$freeSpace = max($freeSpace, 0);
 			return $freeSpace;
 		} else {
-			return INF;
+			return (INF > 0)? INF: PHP_INT_MAX; // work around https://bugs.php.net/bug.php?id=69188
 		}
 	}
 

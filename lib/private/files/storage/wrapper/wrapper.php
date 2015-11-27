@@ -2,6 +2,7 @@
 /**
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
@@ -427,6 +428,20 @@ class Wrapper implements \OC\Files\Storage\Storage {
 			$storage = $this;
 		}
 		return $this->storage->getWatcher($path, $storage);
+	}
+
+	public function getPropagator($storage = null) {
+		if (!$storage) {
+			$storage = $this;
+		}
+		return $this->storage->getPropagator($storage);
+	}
+
+	public function getUpdater($storage = null) {
+		if (!$storage) {
+			$storage = $this;
+		}
+		return $this->storage->getUpdater($storage);
 	}
 
 	/**

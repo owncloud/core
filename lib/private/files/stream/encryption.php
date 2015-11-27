@@ -2,7 +2,6 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author jknockaert <jasper@knockaert.nl>
- * @author Morris Jobke <hey@morrisjobke.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
@@ -168,7 +167,7 @@ class Encryption extends Wrapper {
 			)
 		));
 
-		return self::wrapSource($source, $mode, $context, 'ocencryption', $wrapper);
+		return self::wrapSource($source, $context, 'ocencryption', $wrapper, $mode);
 	}
 
 	/**
@@ -182,7 +181,7 @@ class Encryption extends Wrapper {
 	 * @return resource
 	 * @throws \BadMethodCallException
 	 */
-	protected static function wrapSource($source, $mode, $context, $protocol, $class) {
+	protected static function wrapSource($source, $context, $protocol, $class, $mode = 'r+') {
 		try {
 			stream_wrapper_register($protocol, $class);
 			if (@rewinddir($source) === false) {
@@ -470,6 +469,15 @@ class Encryption extends Wrapper {
 	 */
 	protected function parentStreamSeek($position) {
 		return parent::stream_seek($position);
+	}
+
+	/**
+	 * @param string $path
+	 * @param array $options
+	 * @return bool
+	 */
+	public function dir_opendir($path, $options) {
+		return false;
 	}
 
 }

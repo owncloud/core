@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -70,6 +71,13 @@ class StorageConfig implements \JsonSerializable {
 	 * @var int
 	 */
 	private $status;
+
+	/**
+	 * Status message
+	 *
+	 * @var string
+	 */
+	private $statusMessage;
 
 	/**
 	 * Priority
@@ -294,7 +302,7 @@ class StorageConfig implements \JsonSerializable {
 	}
 
 	/**
-	 * Sets the storage status, whether the config worked last time
+	 * Gets the storage status, whether the config worked last time
 	 *
 	 * @return int $status status
 	 */
@@ -303,12 +311,23 @@ class StorageConfig implements \JsonSerializable {
 	}
 
 	/**
+	 * Gets the message describing the storage status
+	 *
+	 * @return string|null
+	 */
+	public function getStatusMessage() {
+		return $this->statusMessage;
+	}
+
+	/**
 	 * Sets the storage status, whether the config worked last time
 	 *
 	 * @param int $status status
+	 * @param string|null $message optional message
 	 */
-	public function setStatus($status) {
+	public function setStatus($status, $message = null) {
 		$this->status = $status;
+		$this->statusMessage = $message;
 	}
 
 	/**
@@ -339,6 +358,9 @@ class StorageConfig implements \JsonSerializable {
 		}
 		if (!is_null($this->status)) {
 			$result['status'] = $this->status;
+		}
+		if (!is_null($this->statusMessage)) {
+			$result['statusMessage'] = $this->statusMessage;
 		}
 		return $result;
 	}

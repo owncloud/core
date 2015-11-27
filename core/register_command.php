@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Björn Schießle <schiessle@owncloud.com>
  * @author Christian Kampka <christian@kampka.net>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
@@ -28,7 +29,8 @@
 /** @var $application Symfony\Component\Console\Application */
 $application->add(new OC\Core\Command\Status);
 $application->add(new OC\Core\Command\Check(\OC::$server->getConfig()));
-$application->add(new OC\Core\Command\App\CheckCode());
+$infoParser = new \OC\App\InfoParser(\OC::$server->getHTTPHelper(), \OC::$server->getURLGenerator());
+$application->add(new OC\Core\Command\App\CheckCode($infoParser));
 $application->add(new OC\Core\Command\L10n\CreateJs());
 
 if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
@@ -58,6 +60,13 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\Encryption\SetDefaultModule(\OC::$server->getEncryptionManager()));
 	$application->add(new OC\Core\Command\Encryption\Status(\OC::$server->getEncryptionManager()));
 	$application->add(new OC\Core\Command\Encryption\EncryptAll(\OC::$server->getEncryptionManager(), \OC::$server->getAppManager(), \OC::$server->getConfig(), new \Symfony\Component\Console\Helper\QuestionHelper()));
+	$application->add(new OC\Core\Command\Encryption\DecryptAll(
+		\OC::$server->getEncryptionManager(),
+		\OC::$server->getAppManager(),
+		\OC::$server->getConfig(),
+		new \OC\Encryption\DecryptAll(\OC::$server->getEncryptionManager(), \OC::$server->getUserManager(), new \OC\Files\View()),
+		new \Symfony\Component\Console\Helper\QuestionHelper())
+	);
 
 	$application->add(new OC\Core\Command\Log\Manage(\OC::$server->getConfig()));
 	$application->add(new OC\Core\Command\Log\OwnCloud(\OC::$server->getConfig()));
@@ -85,7 +94,7 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\Maintenance\Repair(new \OC\Repair(\OC\Repair::getRepairSteps()), \OC::$server->getConfig()));
 	$application->add(new OC\Core\Command\Maintenance\SingleUser(\OC::$server->getConfig()));
 
-	$application->add(new OC\Core\Command\Upgrade(\OC::$server->getConfig()));
+	$application->add(new OC\Core\Command\Upgrade(\OC::$server->getConfig(), \OC::$server->getLogger()));
 
 	$application->add(new OC\Core\Command\User\Add(\OC::$server->getUserManager(), \OC::$server->getGroupManager()));
 	$application->add(new OC\Core\Command\User\Delete(\OC::$server->getUserManager()));

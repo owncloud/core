@@ -91,7 +91,7 @@ class Test_Util extends \Test\TestCase {
 
 	function testCallRegister() {
 		$result = strlen(OC_Util::callRegister());
-		$this->assertEquals(221, $result);
+		$this->assertEquals(71, $result);
 	}
 
 	function testSanitizeHTML() {
@@ -289,38 +289,30 @@ class Test_Util extends \Test\TestCase {
 	 * @param bool $expected expected result
 	 */
 	function testIsSharingDisabledForUser($groups, $membership, $excludedGroups, $expected) {
-		$uid = "user1";
-		\OC_User::setUserId($uid);
+		$config = $this->getMockBuilder('OCP\IConfig')->disableOriginalConstructor()->getMock();
+		$groupManager = $this->getMockBuilder('OCP\IGroupManager')->disableOriginalConstructor()->getMock();
+		$user = $this->getMockBuilder('OCP\IUser')->disableOriginalConstructor()->getMock();
 
-		\OC_User::createUser($uid, "passwd");
+		$config
+				->expects($this->at(0))
+				->method('getAppValue')
+				->with('core', 'shareapi_exclude_groups', 'no')
+				->will($this->returnValue('yes'));
+		$config
+				->expects($this->at(1))
+				->method('getAppValue')
+				->with('core', 'shareapi_exclude_groups_list')
+				->will($this->returnValue(json_encode($excludedGroups)));
 
-		foreach ($groups as $group) {
-			\OC_Group::createGroup($group);
-		}
+		$groupManager
+				->expects($this->at(0))
+				->method('getUserGroupIds')
+				->with($user)
+				->will($this->returnValue($membership));
 
-		foreach ($membership as $group) {
-			\OC_Group::addToGroup($uid, $group);
-		}
-
-		$appConfig = \OC::$server->getAppConfig();
-		$appConfig->setValue('core', 'shareapi_exclude_groups_list', implode(',', $excludedGroups));
-		$appConfig->setValue('core', 'shareapi_exclude_groups', 'yes');
-
-		$result = \OCP\Util::isSharingDisabledForUser();
+		$result = \OC_Util::isSharingDisabledForUser($config, $groupManager, $user);
 
 		$this->assertSame($expected, $result);
-
-		// cleanup
-		\OC_User::deleteUser($uid);
-		\OC_User::setUserId('');
-
-		foreach ($groups as $group) {
-			\OC_Group::deleteGroup($group);
-		}
-
-		$appConfig->setValue('core', 'shareapi_exclude_groups_list', '');
-		$appConfig->setValue('core', 'shareapi_exclude_groups', 'no');
-
 	}
 
 	public function dataProviderForTestIsSharingDisabledForUser() {
@@ -406,11 +398,13 @@ class Test_Util extends \Test\TestCase {
 
 		OC_Config::setValue('version', '7.0.0.0');
 		\OC::$server->getSession()->set('OC_Version', array(7, 0, 0, 1));
+		self::invokePrivate(new \OCP\Util, 'needUpgradeCache', array(null));
 
 		$this->assertTrue(\OCP\Util::needUpgrade());
 
 		OC_Config::setValue('version', $oldConfigVersion);
 		$oldSessionVersion = \OC::$server->getSession()->set('OC_Version', $oldSessionVersion);
+		self::invokePrivate(new \OCP\Util, 'needUpgradeCache', array(null));
 
 		$this->assertFalse(\OCP\Util::needUpgrade());
 	}

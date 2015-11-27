@@ -48,17 +48,30 @@ OCA.Sharing.PublicApp = {
 		this._initialized = true;
 		this.initialDir = $('#dir').val();
 
+		var token = $('#sharingToken').val();
+
 		// file list mode ?
 		if ($el.find('#filestable').length) {
+			var filesClient = new OC.Files.Client({
+				host: OC.getHost(),
+				port: OC.getPort(),
+				userName: token,
+				// note: password not be required, the endpoint
+				// will recognize previous validation from the session
+				root: OC.getRootPath() + '/public.php/webdav',
+				useHTTPS: OC.getProtocol() === 'https'
+			});
+
 			this.fileList = new OCA.Files.FileList(
 				$el,
 				{
 					id: 'files.public',
-					scrollContainer: $(window),
+					scrollContainer: $('#content-wrapper'),
 					dragOptions: dragOptions,
 					folderDropOptions: folderDropOptions,
 					fileActions: fileActions,
-					detailsViewEnabled: false
+					detailsViewEnabled: false,
+					filesClient: filesClient
 				}
 			);
 			this.files = OCA.Files.Files;
@@ -88,10 +101,9 @@ OCA.Sharing.PublicApp = {
 
 
 		// dynamically load image previews
-		var token = $('#sharingToken').val();
 		var bottomMargin = 350;
-		var previewWidth = Math.floor($(window).width() * window.devicePixelRatio);
-		var previewHeight = Math.floor(($(window).height() - bottomMargin) * window.devicePixelRatio);
+		var previewWidth = Math.ceil($(window).width() * window.devicePixelRatio);
+		var previewHeight = Math.ceil(($(window).height() - bottomMargin) * window.devicePixelRatio);
 		previewHeight = Math.max(200, previewHeight);
 		var params = {
 			x: previewWidth,
@@ -159,9 +171,18 @@ OCA.Sharing.PublicApp = {
 			};
 
 			this.fileList.generatePreviewUrl = function (urlSpec) {
+				urlSpec = urlSpec || {};
+				if (!urlSpec.x) {
+					urlSpec.x = 32;
+				}
+				if (!urlSpec.y) {
+					urlSpec.y = 32;
+				}
+				urlSpec.x *= window.devicePixelRatio;
+				urlSpec.y *= window.devicePixelRatio;
+				urlSpec.x = Math.ceil(urlSpec.x);
+				urlSpec.y = Math.ceil(urlSpec.y);
 				urlSpec.t = $('#dirToken').val();
-				urlSpec.y = Math.floor(36 * window.devicePixelRatio);
-				urlSpec.x = Math.floor(36 * window.devicePixelRatio);
 				return OC.generateUrl('/apps/files_sharing/ajax/publicpreview.php?') + $.param(urlSpec);
 			};
 
@@ -219,6 +240,14 @@ OCA.Sharing.PublicApp = {
 			OCA.Sharing.PublicApp._saveToOwnCloud(remote, token, owner, name, isProtected);
 		});
 
+		$('#remote_address').on("keyup paste", function() {
+			if ($(this).val() === '') {
+				$('#save-button-confirm').prop('disabled', true);
+			} else {
+				$('#save-button-confirm').prop('disabled', false);
+			}
+		});
+
 		$('#save #save-button').click(function () {
 			$(this).hide();
 			$('.save-form').css('display', 'inline');
@@ -257,8 +286,12 @@ OCA.Sharing.PublicApp = {
 
 	_saveToOwnCloud: function (remote, token, owner, name, isProtected) {
 		var location = window.location.protocol + '//' + window.location.host + OC.webroot;
+		
+		if(remote.substr(-1) !== '/') {
+			remote += '/'
+		};
 
-		var url = remote + '/index.php/apps/files#' + 'remote=' + encodeURIComponent(location) // our location is the remote for the other server
+		var url = remote + 'index.php/apps/files#' + 'remote=' + encodeURIComponent(location) // our location is the remote for the other server
 			+ "&token=" + encodeURIComponent(token) + "&owner=" + encodeURIComponent(owner) + "&name=" + encodeURIComponent(name) + "&protected=" + isProtected;
 
 
@@ -293,15 +326,8 @@ $(document).ready(function () {
 
 	if (window.Files) {
 		// HACK: for oc-dialogs previews that depends on Files:
-		Files.lazyLoadPreview = function (path, mime, ready, width, height, etag) {
-			return App.fileList.lazyLoadPreview({
-				path: path,
-				mime: mime,
-				callback: ready,
-				width: width,
-				height: height,
-				etag: etag
-			});
+		Files.generatePreviewUrl = function (urlSpec) {
+			return App.fileList.generatePreviewUrl(urlSpec);
 		};
 	}
 });

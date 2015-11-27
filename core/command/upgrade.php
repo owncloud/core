@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Andreas Fischer <bantu@owncloud.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Owen Winkler <a_github@midnightcircus.com>
  * @author Steffen Lindner <mail@steffen-lindner.de>
@@ -29,6 +30,7 @@ namespace OC\Core\Command;
 use OC\Console\TimestampFormatter;
 use OC\Updater;
 use OCP\IConfig;
+use OCP\ILogger;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -43,17 +45,19 @@ class Upgrade extends Command {
 	const ERROR_INVALID_ARGUMENTS = 4;
 	const ERROR_FAILURE = 5;
 
-	/**
-	 * @var IConfig
-	 */
+	/** @var IConfig */
 	private $config;
+
+	/** @var ILogger */
+	private $logger;
 
 	/**
 	 * @param IConfig $config
 	 */
-	public function __construct(IConfig $config) {
+	public function __construct(IConfig $config, ILogger $logger) {
 		parent::__construct();
 		$this->config = $config;
+		$this->logger = $logger;
 	}
 
 	protected function configure() {
@@ -119,7 +123,8 @@ class Upgrade extends Command {
 
 			$self = $this;
 			$updater = new Updater(\OC::$server->getHTTPHelper(),
-				\OC::$server->getConfig());
+				$this->config,
+				$this->logger);
 
 			$updater->setSimulateStepEnabled($simulateStepEnabled);
 			$updater->setUpdateStepEnabled($updateStepEnabled);
@@ -144,8 +149,14 @@ class Upgrade extends Command {
 					}
 					$output->writeln($message);
 				});
+			$updater->listen('\OC\Updater', 'dbUpgradeBefore', function () use($output) {
+				$output->writeln('<info>Updating database schema</info>');
+			});
 			$updater->listen('\OC\Updater', 'dbUpgrade', function () use($output) {
 				$output->writeln('<info>Updated database</info>');
+			});
+			$updater->listen('\OC\Updater', 'dbSimulateUpgradeBefore', function () use($output) {
+				$output->writeln('<info>Checking whether the database schema can be updated (this can take a long time depending on the database size)</info>');
 			});
 			$updater->listen('\OC\Updater', 'dbSimulateUpgrade', function () use($output) {
 				$output->writeln('<info>Checked database schema update</info>');
@@ -165,6 +176,12 @@ class Upgrade extends Command {
 			$updater->listen('\OC\Updater', 'repairError', function ($app) use($output) {
 				$output->writeln('<error>Repair error: ' . $app . '</error>');
 			});
+			$updater->listen('\OC\Updater', 'appUpgradeCheckBefore', function () use ($output) {
+				$output->writeln('<info>Checking updates of apps</info>');
+			});
+			$updater->listen('\OC\Updater', 'appSimulateUpdate', function ($app) use ($output) {
+				$output->writeln("<info>Checking whether the database schema for <$app> can be updated (this can take a long time depending on the database size)</info>");
+			});
 			$updater->listen('\OC\Updater', 'appUpgradeCheck', function () use ($output) {
 				$output->writeln('<info>Checked database schema update for apps</info>');
 			});
@@ -176,6 +193,12 @@ class Upgrade extends Command {
 			});
 			$updater->listen('\OC\Updater', 'failure', function ($message) use($output, $self) {
 				$output->writeln("<error>$message</error>");
+			});
+			$updater->listen('\OC\Updater', 'setDebugLogLevel', function ($logLevel, $logLevelName) use($output) {
+				$output->writeln("<info>Set log level to debug - current level: '$logLevelName'</info>");
+			});
+			$updater->listen('\OC\Updater', 'resetLogLevel', function ($logLevel, $logLevelName) use($output) {
+				$output->writeln("<info>Reset log level to '$logLevelName'</info>");
 			});
 
 			if(OutputInterface::VERBOSITY_NORMAL < $output->getVerbosity()) {

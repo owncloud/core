@@ -17,7 +17,7 @@ class EtagTest extends \Test\TestCase {
 	private $tmpDir;
 
 	/**
-	 * @var \OC_User_Dummy $userBackend
+	 * @var \Test\Util\User\Dummy $userBackend
 	 */
 	private $userBackend;
 
@@ -27,7 +27,6 @@ class EtagTest extends \Test\TestCase {
 		\OC_Hook::clear('OC_Filesystem', 'setup');
 		$application = new \OCA\Files_Sharing\AppInfo\Application();
 		$application->registerMountProviders();
-		$application->setupPropagation();
 		\OCP\Share::registerBackend('file', 'OC_Share_Backend_File');
 		\OCP\Share::registerBackend('folder', 'OC_Share_Backend_Folder', 'file');
 
@@ -35,7 +34,7 @@ class EtagTest extends \Test\TestCase {
 		$this->tmpDir = \OC_Helper::tmpFolder();
 		\OC_Config::setValue('datadirectory', $this->tmpDir);
 
-		$this->userBackend = new \OC_User_Dummy();
+		$this->userBackend = new \Test\Util\User\Dummy();
 		\OC_User::useBackend($this->userBackend);
 	}
 

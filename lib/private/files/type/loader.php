@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Robin McCorkell <rmccorkell@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -94,6 +94,14 @@ class Loader implements IMimeTypeLoader {
 			$this->loadMimetypes();
 		}
 		return isset($this->mimetypeIds[$mimetype]);
+	}
+
+	/**
+	 * Clear all loaded mimetypes, allow for re-loading
+	 */
+	public function reset() {
+		$this->mimetypes = [];
+		$this->mimetypeIds = [];
 	}
 
 	/**

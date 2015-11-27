@@ -5,6 +5,7 @@
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Florian Pritz <bluewind@xinu.at>
  * @author Frank Karlitschek <frank@owncloud.org>
+ * @author Individual IT Services <info@individual-it.net>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
@@ -40,7 +41,6 @@ OCP\JSON::setContentTypeHeader('text/plain');
 // If not, check the login.
 // If no token is sent along, rely on login only
 
-$allowedPermissions = \OCP\Constants::PERMISSION_ALL;
 $errorCode = null;
 
 $l = \OC::$server->getL10N('files');
@@ -59,8 +59,6 @@ if (empty($_POST['dirToken'])) {
 
 	\OC_User::setIncognitoMode(true);
 
-	// return only read permissions for public upload
-	$allowedPermissions = \OCP\Constants::PERMISSION_READ;
 	$publicDirectory = !empty($_POST['subdir']) ? (string)$_POST['subdir'] : '/';
 
 	$linkItem = OCP\Share::getShareByToken((string)$_POST['dirToken']);
@@ -148,7 +146,7 @@ if ($maxUploadFileSize >= 0 and $totalSize > $maxUploadFileSize) {
 }
 
 $result = array();
-if (strpos($dir, '..') === false) {
+if (\OC\Files\Filesystem::isValidPath($dir) === true) {
 	$fileCount = count($files['name']);
 	for ($i = 0; $i < $fileCount; $i++) {
 
@@ -206,7 +204,7 @@ if (strpos($dir, '..') === false) {
 						$data['originalname'] = $files['name'][$i];
 						$data['uploadMaxFilesize'] = $maxUploadFileSize;
 						$data['maxHumanFilesize'] = $maxHumanFileSize;
-						$data['permissions'] = $meta['permissions'] & $allowedPermissions;
+						$data['permissions'] = $meta['permissions'];
 						$data['directory'] = $returnedDir;
 						$result[] = $data;
 					}
@@ -233,7 +231,7 @@ if (strpos($dir, '..') === false) {
 				$data['originalname'] = $files['name'][$i];
 				$data['uploadMaxFilesize'] = $maxUploadFileSize;
 				$data['maxHumanFilesize'] = $maxHumanFileSize;
-				$data['permissions'] = $meta['permissions'] & $allowedPermissions;
+				$data['permissions'] = $meta['permissions'];
 				$data['directory'] = $returnedDir;
 				$result[] = $data;
 			}

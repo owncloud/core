@@ -3,7 +3,7 @@
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  *
@@ -85,7 +85,8 @@ class Application extends App {
 				$c->query('L10N'),
 				$c->query('UserManager'),
 				$c->query('UserSession'),
-				$c->query('UserFolder')
+				$c->query('UserFolder'),
+				$c->query('Logger')
 			);
 		});
 
@@ -127,6 +128,9 @@ class Application extends App {
 		});
 		$container->registerService('Mailer', function(SimpleContainer $c) {
 			return $c->query('ServerContainer')->getMailer();
+		});
+		$container->registerService('Logger', function(SimpleContainer $c) {
+			return $c->query('ServerContainer')->getLogger();
 		});
 		$container->registerService('TimeFactory', function(SimpleContainer $c) {
 			return new TimeFactory();

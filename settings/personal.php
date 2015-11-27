@@ -4,16 +4,17 @@
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Christopher Schäpers <kondou@ts.unde.re>
- * @author Frank Karlitschek <frank@owncloud.org>
  * @author Georg Ehrke <georg@owncloud.com>
  * @author Jakob Sack <mail@jakobsack.de>
  * @author Jan-Christoph Borchardt <hey@jancborchardt.net>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Marvin Thomas Rabe <mrabe@marvinrabe.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
  * @author Volkan Gezer <volkangezer@gmail.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -45,6 +46,7 @@ OC_Util::addScript( 'settings', 'personal' );
 OC_Util::addStyle( 'settings', 'settings' );
 \OC_Util::addVendorScript('strengthify/jquery.strengthify');
 \OC_Util::addVendorStyle('strengthify/strengthify');
+\OC_Util::addScript('files', 'jquery.iframe-transport');
 \OC_Util::addScript('files', 'jquery.fileupload');
 if ($config->getSystemValue('enable_avatars', true) === true) {
 	\OC_Util::addVendorScript('jcrop/js/jquery.Jcrop');
@@ -91,6 +93,14 @@ foreach($languageCodes as $lang) {
 	}
 }
 
+// if user language is not available but set somehow: show the actual code as name
+if (!is_array($userLang)) {
+	$userLang = [
+		'code' => $userLang,
+		'name' => $userLang,
+	];
+}
+
 ksort($commonlanguages);
 
 // sort now by displayed language not the iso-code
@@ -118,7 +128,9 @@ $clients = array(
 $enableCertImport = false;
 $externalStorageEnabled = \OC::$server->getAppManager()->isEnabledForUser('files_external');
 if ($externalStorageEnabled) {
-	$enableCertImport = true;
+	/** @var \OCA\Files_External\Service\BackendService $backendService */
+	$backendService = \OC_Mount_Config::$app->getContainer()->query('\OCA\Files_External\Service\BackendService');
+	$enableCertImport = $backendService->isUserMountingAllowed();
 }
 
 
@@ -148,7 +160,7 @@ sort($groups2);
 $tmpl->assign('groups', $groups2);
 
 // add hardcoded forms from the template
-$l = OC_L10N::get('settings');
+$l = \OC::$server->getL10N('settings');
 $formsAndMore = [];
 $formsAndMore[]= ['anchor' => 'clientsbox', 'section-name' => $l->t('Sync clients')];
 $formsAndMore[]= ['anchor' => 'passwordform', 'section-name' => $l->t('Personal info')];

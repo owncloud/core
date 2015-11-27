@@ -4,6 +4,7 @@
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Frank Karlitschek <frank@owncloud.org>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
@@ -68,6 +69,14 @@ class Updater extends BasicEmitter {
 
 	/** @var bool */
 	private $skip3rdPartyAppsDisable;
+
+	private $logLevelNames = [
+		0 => 'Debug',
+		1 => 'Info',
+		2 => 'Warning',
+		3 => 'Error',
+		4 => 'Fatal',
+	];
 
 	/**
 	 * @param HTTPHelper $httpHelper
@@ -177,6 +186,10 @@ class Updater extends BasicEmitter {
 	 * @return bool true if the operation succeeded, false otherwise
 	 */
 	public function upgrade() {
+		$logLevel = $this->config->getSystemValue('loglevel', \OCP\Util::WARN);
+		$this->emit('\OC\Updater', 'setDebugLogLevel', [ $logLevel, $this->logLevelNames[$logLevel] ]);
+		$this->config->setSystemValue('loglevel', \OCP\Util::DEBUG);
+
 		$wasMaintenanceModeEnabled = $this->config->getSystemValue('maintenance', false);
 
 		if(!$wasMaintenanceModeEnabled) {
@@ -186,15 +199,13 @@ class Updater extends BasicEmitter {
 
 		$installedVersion = $this->config->getSystemValue('version', '0.0.0');
 		$currentVersion = implode('.', \OC_Util::getVersion());
-		if ($this->log) {
-			$this->log->debug('starting upgrade from ' . $installedVersion . ' to ' . $currentVersion, array('app' => 'core'));
-		}
+		$this->log->debug('starting upgrade from ' . $installedVersion . ' to ' . $currentVersion, array('app' => 'core'));
 
 		$success = true;
 		try {
 			$this->doUpgrade($currentVersion, $installedVersion);
 		} catch (\Exception $exception) {
-			\OCP\Util::logException('update', $exception);
+			$this->log->logException($exception, ['app' => 'core']);
 			$this->emit('\OC\Updater', 'failure', array(get_class($exception) . ': ' .$exception->getMessage()));
 			$success = false;
 		}
@@ -208,6 +219,9 @@ class Updater extends BasicEmitter {
 			$this->emit('\OC\Updater', 'maintenanceActive');
 		}
 
+		$this->emit('\OC\Updater', 'resetLogLevel', [ $logLevel, $this->logLevelNames[$logLevel] ]);
+		$this->config->setSystemValue('loglevel', $logLevel);
+
 		return $success;
 	}
 
@@ -219,6 +233,7 @@ class Updater extends BasicEmitter {
 	private function getAllowedPreviousVersion() {
 		// this should really be a JSON file
 		require \OC::$SERVERROOT . '/version.php';
+		/** @var array $OC_VersionCanBeUpgradedFrom */
 		return implode('.', $OC_VersionCanBeUpgradedFrom);
 	}
 
@@ -279,13 +294,6 @@ class Updater extends BasicEmitter {
 			throw new \Exception($e->getMessage());
 		}
 
-		// FIXME: Some users do not upload the new ca-bundle.crt, let's catch this
-		// in the update. For a newer release we shall use an integrity check after
-		// the update.
-		if(!file_exists(\OC::$configDir .'/ca-bundle.crt')) {
-			throw new \Exception('Please upload the ca-bundle.crt file into the \'config\' directory.');
-		}
-
 		// create empty file in data dir, so we can later find
 		// out that this is indeed an ownCloud data directory
 		// (in case it didn't exist before)
@@ -307,6 +315,9 @@ class Updater extends BasicEmitter {
 
 		if ($this->updateStepEnabled) {
 			$this->doCoreUpgrade();
+
+			// install new shipped apps on upgrade
+			OC_Installer::installShippedApps();
 
 			// update all shipped apps
 			$disabledApps = $this->checkAppsRequirements();
@@ -330,6 +341,8 @@ class Updater extends BasicEmitter {
 	}
 
 	protected function checkCoreUpgrade() {
+		$this->emit('\OC\Updater', 'dbSimulateUpgradeBefore');
+
 		// simulate core DB upgrade
 		\OC_DB::simulateUpdateDbFromStructure(\OC::$SERVERROOT . '/db_structure.xml');
 
@@ -337,6 +350,8 @@ class Updater extends BasicEmitter {
 	}
 
 	protected function doCoreUpgrade() {
+		$this->emit('\OC\Updater', 'dbUpgradeBefore');
+
 		// do the real upgrade
 		\OC_DB::updateDbFromStructure(\OC::$SERVERROOT . '/db_structure.xml');
 
@@ -348,6 +363,7 @@ class Updater extends BasicEmitter {
 	 */
 	protected function checkAppUpgrade($version) {
 		$apps = \OC_App::getEnabledApps();
+		$this->emit('\OC\Updater', 'appUpgradeCheckBefore');
 
 		foreach ($apps as $appId) {
 			$info = \OC_App::getAppInfo($appId);
@@ -365,6 +381,7 @@ class Updater extends BasicEmitter {
 					$this->includePreUpdate($appId);
 				}
 				if (file_exists(\OC_App::getAppPath($appId) . '/appinfo/database.xml')) {
+					$this->emit('\OC\Updater', 'appSimulateUpdate', array($appId));
 					\OC_DB::simulateUpdateDbFromStructure(\OC_App::getAppPath($appId) . '/appinfo/database.xml');
 				}
 			}
@@ -488,11 +505,15 @@ class Updater extends BasicEmitter {
 	 */
 	private function upgradeAppStoreApps(array $disabledApps) {
 		foreach($disabledApps as $app) {
-			if (OC_Installer::isUpdateAvailable($app)) {
-				$ocsId = \OC::$server->getConfig()->getAppValue($app, 'ocsid', '');
+			try {
+				if (OC_Installer::isUpdateAvailable($app)) {
+					$ocsId = \OC::$server->getConfig()->getAppValue($app, 'ocsid', '');
 
-				$this->emit('\OC\Updater', 'upgradeAppStoreApp', array($app));
-				OC_Installer::updateAppByOCSId($ocsId);
+					$this->emit('\OC\Updater', 'upgradeAppStoreApp', array($app));
+					OC_Installer::updateAppByOCSId($ocsId);
+				}
+			} catch (\Exception $ex) {
+				$this->log->logException($ex, ['app' => 'core']);
 			}
 		}
 	}

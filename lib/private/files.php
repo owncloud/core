@@ -1,27 +1,21 @@
 <?php
 /**
- * @author Andreas Fischer <bantu@owncloud.com>
  * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Björn Schießle <schiessle@owncloud.com>
- * @author dratini0 <dratini0@gmail.com>
  * @author Frank Karlitschek <frank@owncloud.org>
  * @author Jakob Sack <mail@jakobsack.de>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
- * @author Lukas Reschke <lukas@owncloud.com>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
- * @author Morris Jobke <hey@morrisjobke.de>
- * @author mvn23 <schopdiedwaas@gmail.com>
  * @author Nicolai Ehemann <en@enlightened.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
  * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
  * @author Thibaut GRIDEL <tgridel@free.fr>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
- * @author Valerio Ponte <valerio.ponte@gmail.com>
+ * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -40,10 +34,8 @@
  *
  */
 
-// TODO: get rid of this using proper composer packages
-require_once 'mcnetic/phpzipstreamer/ZipStreamer.php';
-
-use OC\Lock\NoopLockingProvider;
+use OC\Files\View;
+use OC\Streamer;
 use OCP\Lock\ILockingProvider;
 
 /**
@@ -60,20 +52,16 @@ class OC_Files {
 	/**
 	 * @param string $filename
 	 * @param string $name
-	 * @param bool $zip
 	 */
-	private static function sendHeaders($filename, $name, $zip = false) {
+	private static function sendHeaders($filename, $name) {
 		OC_Response::setContentDispositionHeader($name, 'attachment');
 		header('Content-Transfer-Encoding: binary');
 		OC_Response::disableCaching();
-		if ($zip) {
-			header('Content-Type: application/zip');
-		} else {
-			$filesize = \OC\Files\Filesystem::filesize($filename);
-			header('Content-Type: '.\OC_Helper::getSecureMimeType(\OC\Files\Filesystem::getMimeType($filename)));
-			if ($filesize > -1) {
-				OC_Response::setContentLengthHeader($filesize);
-			}
+		$fileSize = \OC\Files\Filesystem::filesize($filename);
+		$type = \OC::$server->getMimeTypeDetector()->getSecureMimeType(\OC\Files\Filesystem::getMimeType($filename));
+		header('Content-Type: '.$type);
+		if ($fileSize > -1) {
+			OC_Response::setContentLengthHeader($fileSize);
 		}
 	}
 
@@ -82,98 +70,86 @@ class OC_Files {
 	 *
 	 * @param string $dir
 	 * @param string $files ; separated list of files to download
-	 * @param boolean $only_header ; boolean to only send header of the request
+	 * @param boolean $onlyHeader ; boolean to only send header of the request
 	 */
-	public static function get($dir, $files, $only_header = false) {
+	public static function get($dir, $files, $onlyHeader = false) {
+
 		$view = \OC\Files\Filesystem::getView();
-
-		if (is_array($files) && count($files) === 1) {
-			$files = $files[0];
-		}
-
-		if (is_array($files)) {
-			$get_type = self::ZIP_FILES;
-			$basename = basename($dir);
-			if ($basename) {
-				$name = $basename . '.zip';
-			} else {
-				$name = 'download.zip';
-			}
-
-			$filename = $dir . '/' . $name;
-		} else {
-			$filename = $dir . '/' . $files;
-			if (\OC\Files\Filesystem::is_dir($dir . '/' . $files)) {
-				$get_type = self::ZIP_DIR;
-				// downloading root ?
-				if ($files === '') {
-					$name = 'download.zip';
-				} else {
-					$name = $files . '.zip';
-				}
-
-			} else {
-				$get_type = self::FILE;
-				$name = $files;
-			}
-		}
-
-		if ($get_type === self::FILE) {
-			$zip = false;
-		} else {
-			$zip = new ZipStreamer(false);
-		}
-		OC_Util::obEnd();
-
+		$getType = self::FILE;
+		$filename = $dir;
 		try {
-			if ($get_type === self::FILE) {
-				$view->lockFile($filename, ILockingProvider::LOCK_SHARED);
+
+			if (is_array($files) && count($files) === 1) {
+				$files = $files[0];
 			}
-			if ($zip or \OC\Files\Filesystem::isReadable($filename)) {
-				self::sendHeaders($filename, $name, $zip);
-			} elseif (!\OC\Files\Filesystem::file_exists($filename)) {
-				header("HTTP/1.0 404 Not Found");
-				$tmpl = new OC_Template('', '404', 'guest');
-				$tmpl->printPage();
-				exit();
-			} else {
-				header("HTTP/1.0 403 Forbidden");
-				die('403 Forbidden');
-			}
-			if ($only_header) {
-				return;
-			}
-			if ($zip) {
-				$executionTime = intval(ini_get('max_execution_time'));
-				set_time_limit(0);
-				if ($get_type === self::ZIP_FILES) {
-					foreach ($files as $file) {
-						$file = $dir . '/' . $file;
-						if (\OC\Files\Filesystem::is_file($file)) {
-							$fh = \OC\Files\Filesystem::fopen($file, 'r');
-							$zip->addFileFromStream($fh, basename($file));
-							fclose($fh);
-						} elseif (\OC\Files\Filesystem::is_dir($file)) {
-							self::zipAddDir($file, $zip);
-						}
-					}
-				} elseif ($get_type === self::ZIP_DIR) {
-					$file = $dir . '/' . $files;
-					self::zipAddDir($file, $zip);
+
+			if (!is_array($files)) {
+				$filename = $dir . '/' . $files;
+				if (!$view->is_dir($filename)) {
+					self::getSingleFile($view, $dir, $files, $onlyHeader);
+					return;
 				}
-				$zip->finalize();
-				set_time_limit($executionTime);
+			}
+
+			$name = 'download';
+			if (is_array($files)) {
+				$getType = self::ZIP_FILES;
+				$basename = basename($dir);
+				if ($basename) {
+					$name = $basename;
+				}
+
+				$filename = $dir . '/' . $name;
 			} else {
-				\OC\Files\Filesystem::readfile($filename);
+				$filename = $dir . '/' . $files;
+				$getType = self::ZIP_DIR;
+				// downloading root ?
+				if ($files !== '') {
+					$name = $files;
+				}
 			}
-			if ($get_type === self::FILE) {
-				$view->unlockFile($filename, ILockingProvider::LOCK_SHARED);
+
+			$streamer = new Streamer();
+			OC_Util::obEnd();
+
+			self::lockFiles($view, $dir, $files);
+
+			$streamer->sendHeaders($name);
+			$executionTime = intval(ini_get('max_execution_time'));
+			set_time_limit(0);
+			if ($getType === self::ZIP_FILES) {
+				foreach ($files as $file) {
+					$file = $dir . '/' . $file;
+					if (\OC\Files\Filesystem::is_file($file)) {
+						$fileSize = \OC\Files\Filesystem::filesize($file);
+						$fh = \OC\Files\Filesystem::fopen($file, 'r');
+						$streamer->addFileFromStream($fh, basename($file), $fileSize);
+						fclose($fh);
+					} elseif (\OC\Files\Filesystem::is_dir($file)) {
+						$streamer->addDirRecursive($file);
+					}
+				}
+			} elseif ($getType === self::ZIP_DIR) {
+				$file = $dir . '/' . $files;
+				$streamer->addDirRecursive($file);
 			}
+			$streamer->finalize();
+			set_time_limit($executionTime);
+			self::unlockAllTheFiles($dir, $files, $getType, $view, $filename);
 		} catch (\OCP\Lock\LockedException $ex) {
+			self::unlockAllTheFiles($dir, $files, $getType, $view, $filename);
+			OC::$server->getLogger()->logException($ex);
 			$l = \OC::$server->getL10N('core');
 			$hint = method_exists($ex, 'getHint') ? $ex->getHint() : '';
 			\OC_Template::printErrorPage($l->t('File is currently busy, please try again later'), $hint);
+		} catch (\OCP\Files\ForbiddenException $ex) {
+			self::unlockAllTheFiles($dir, $files, $getType, $view, $filename);
+			OC::$server->getLogger()->logException($ex);
+			$l = \OC::$server->getL10N('core');
+			\OC_Template::printErrorPage($l->t('Can\'t read file'), $ex->getMessage());
 		} catch (\Exception $ex) {
+			self::unlockAllTheFiles($dir, $files, $getType, $view, $filename);
+			OC::$server->getLogger()->logException($ex);
 			$l = \OC::$server->getL10N('core');
 			$hint = method_exists($ex, 'getHint') ? $ex->getHint() : '';
 			\OC_Template::printErrorPage($l->t('Can\'t read file'), $hint);
@@ -181,30 +157,51 @@ class OC_Files {
 	}
 
 	/**
-	 * @param string $dir
-	 * @param ZipStreamer $zip
-	 * @param string $internalDir
+	 * @param View $view
+	 * @param string $name
 	 */
-	public static function zipAddDir($dir, ZipStreamer $zip, $internalDir='') {
-		$dirname=basename($dir);
-		$rootDir = $internalDir.$dirname;
-		if (!empty($rootDir)) {
-			$zip->addEmptyDir($rootDir);
-		}
-		$internalDir.=$dirname.='/';
-		// prevent absolute dirs
-		$internalDir = ltrim($internalDir, '/');
+	private static function getSingleFile($view, $dir, $name, $onlyHeader) {
+		$filename = $dir . '/' . $name;
+		OC_Util::obEnd();
+		$view->lockFile($filename, ILockingProvider::LOCK_SHARED);
 
-		$files=\OC\Files\Filesystem::getDirectoryContent($dir);
-		foreach($files as $file) {
-			$filename=$file['name'];
-			$file=$dir.'/'.$filename;
-			if(\OC\Files\Filesystem::is_file($file)) {
-				$fh = \OC\Files\Filesystem::fopen($file, 'r');
-				$zip->addFileFromStream($fh, $internalDir.$filename);
-				fclose($fh);
-			}elseif(\OC\Files\Filesystem::is_dir($file)) {
-				self::zipAddDir($file, $zip, $internalDir);
+		if (\OC\Files\Filesystem::isReadable($filename)) {
+			self::sendHeaders($filename, $name);
+		} elseif (!\OC\Files\Filesystem::file_exists($filename)) {
+			header("HTTP/1.0 404 Not Found");
+			$tmpl = new OC_Template('', '404', 'guest');
+			$tmpl->printPage();
+			exit();
+		} else {
+			header("HTTP/1.0 403 Forbidden");
+			die('403 Forbidden');
+		}
+		if ($onlyHeader) {
+			return;
+		}
+		$view->readfile($filename);
+	}
+
+	/**
+	 * @param View $view
+	 * @param $dir
+	 * @param string[]|string $files
+	 */
+	public static function lockFiles($view, $dir, $files) {
+		if (!is_array($files)) {
+			$file = $dir . '/' . $files;
+			$files = [$file];
+		}
+		foreach ($files as $file) {
+			$file = $dir . '/' . $file;
+			$view->lockFile($file, ILockingProvider::LOCK_SHARED);
+			if ($view->is_dir($file)) {
+				$contents = $view->getDirectoryContent($file);
+				$contents = array_map(function($fileInfo) use ($file) {
+					/** @var \OCP\Files\FileInfo $fileInfo */
+					return $file . '/' . $fileInfo->getName();
+				}, $contents);
+				self::lockFiles($view, $dir, $contents);
 			}
 		}
 	}
@@ -290,4 +287,28 @@ class OC_Files {
 		}
 		return false;
 	}
+
+	/**
+	 * @param $dir
+	 * @param $files
+	 * @param $getType
+	 * @param View $view
+	 * @param $filename
+	 */
+	private static function unlockAllTheFiles($dir, $files, $getType, $view, $filename) {
+		if ($getType === self::FILE) {
+			$view->unlockFile($filename, ILockingProvider::LOCK_SHARED);
+		}
+		if ($getType === self::ZIP_FILES) {
+			foreach ($files as $file) {
+				$file = $dir . '/' . $file;
+				$view->unlockFile($file, ILockingProvider::LOCK_SHARED);
+			}
+		}
+		if ($getType === self::ZIP_DIR) {
+			$file = $dir . '/' . $files;
+			$view->unlockFile($file, ILockingProvider::LOCK_SHARED);
+		}
+	}
+
 }

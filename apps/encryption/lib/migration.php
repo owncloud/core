@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
- * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -50,7 +50,7 @@ class Migration {
 	 */
 	public function __construct(IConfig $config, View $view, IDBConnection $connection, ILogger $logger) {
 		$this->view = $view;
-		$this->view->getUpdater()->disable();
+		$this->view->disableCacheUpdate();
 		$this->connection = $connection;
 		$this->moduleId = \OCA\Encryption\Crypto\Encryption::ID;
 		$this->config = $config;

@@ -10,14 +10,13 @@
 
 (function() {
 	var TEMPLATE =
-		'<div class="thumbnailContainer"><a href="#" class="thumbnail action-default"></a></div>' +
+		'<div class="thumbnailContainer"><a href="#" class="thumbnail action-default"><div class="stretcher"/></a></div>' +
 		'<div class="file-details-container">' +
 		'<div class="fileName"><h3 title="{{name}}" class="ellipsis">{{name}}</h3></div>' +
 		'	<div class="file-details ellipsis">' +
 		'		<a href="#" ' +
-		'		alt="{{starAltText}}"' +
 		'		class="action action-favorite favorite">' +
-		'			<img class="svg" src="{{starIcon}}" />' +
+		'			<img class="svg" alt="{{starAltText}}" src="{{starIcon}}" />' +
 		'		</a>' +
 		'		{{#if hasSize}}<span class="size" title="{{altSize}}">{{size}}</span>, {{/if}}<span class="date" title="{{altDate}}">{{date}}</span>' +
 		'	</div>' +
@@ -66,10 +65,10 @@
 			this._fileList = options.fileList;
 			this._fileActions = options.fileActions;
 			if (!this._fileList) {
-				throw 'Missing requird parameter "fileList"';
+				throw 'Missing required parameter "fileList"';
 			}
 			if (!this._fileActions) {
-				throw 'Missing requird parameter "fileActions"';
+				throw 'Missing required parameter "fileActions"';
 			}
 		},
 
@@ -124,61 +123,100 @@
 
 				// TODO: we really need OC.Previews
 				var $iconDiv = this.$el.find('.thumbnail');
-				$iconDiv.addClass('icon-loading');
-				$container = this.$el.find('.thumbnailContainer');
+				var $container = this.$el.find('.thumbnailContainer');
 				if (!this.model.isDirectory()) {
-					this._fileList.lazyLoadPreview({
-						path: this.model.getFullPath(),
-						mime: this.model.get('mimetype'),
-						etag: this.model.get('etag'),
-						y: this.model.isImage() ? 250: 75,
-						x: this.model.isImage() ? 99999 /* only limit on y */ : 75,
-						a: this.model.isImage() ? 1 : null,
-						callback: function(previewUrl, img) {
-							$iconDiv.previewImg = previewUrl;
-							if (img) {
-								$iconDiv.removeClass('icon-loading');
-								if(img.height > img.width) {
-									$container.addClass('portrait');
-								}
-							}
-							if (this.model.isImage() && img) {
-								$iconDiv.parent().addClass('image');
-								var targetHeight = img.height / window.devicePixelRatio;
-								if (targetHeight <= 75) {
-									$container.removeClass('image'); // small enough to fit in normaly
-									targetHeight = 75;
-								}
-							} else {
-								targetHeight = 75;
-							}
-
-							// only set background when we have an actual preview
-							// when we dont have a preview we show the mime icon in the error handler
-							if (img) {
-								$iconDiv.css({
-									'background-image': 'url("' + previewUrl + '")',
-									'height': targetHeight
-								});
-							}
-						}.bind(this),
-						error: function() {
-							$iconDiv.removeClass('icon-loading');
-							this.$el.find('.thumbnailContainer').removeClass('image'); //fall back to regular view
-							$iconDiv.css({
-								'background-image': 'url("' + $iconDiv.previewImg + '")'
-							});
-						}.bind(this)
-					});
+					$iconDiv.addClass('icon-loading icon-32');
+					this.loadPreview(this.model.getFullPath(), this.model.get('mimetype'), this.model.get('etag'), $iconDiv, $container, this.model.isImage());
 				} else {
-					// TODO: special icons / shared / external
-					$iconDiv.css('background-image', 'url("' + OC.MimeType.getIconUrl('dir') + '")');
+					var iconUrl = this.model.get('icon') || OC.MimeType.getIconUrl('dir');
+					$iconDiv.css('background-image', 'url("' + iconUrl + '")');
+					OC.Util.scaleFixForIE8($iconDiv);
 				}
 				this.$el.find('[title]').tooltip({placement: 'bottom'});
 			} else {
 				this.$el.empty();
 			}
 			this.delegateEvents();
+		},
+
+		loadPreview: function(path, mime, etag, $iconDiv, $container, isImage) {
+			var maxImageWidth  = $container.parent().width() + 50;  // 50px for negative margins
+			var maxImageHeight = maxImageWidth / (16/9);
+			var smallPreviewSize = 75;
+
+			var isLandscape = function(img) {
+				return img.width > (img.height * 1.2);
+			};
+
+			var isSmall = function(img) {
+				return (img.width * 1.1) < (maxImageWidth * window.devicePixelRatio);
+			};
+
+			var getTargetHeight = function(img) {
+				if(isImage) {
+					var targetHeight = img.height / window.devicePixelRatio;
+					if (targetHeight <= smallPreviewSize) {
+						targetHeight = smallPreviewSize;
+					}
+					return targetHeight;
+				}else{
+					return smallPreviewSize;
+				}
+			};
+
+			var getTargetRatio = function(img){
+				var ratio = img.width / img.height;
+				if (ratio > 16/9) {
+					return ratio;
+				} else {
+					return 16/9;
+				}
+			};
+
+			this._fileList.lazyLoadPreview({
+				path: path,
+				mime: mime,
+				etag: etag,
+				y: isImage ? maxImageHeight : smallPreviewSize,
+				x: isImage ? maxImageWidth : smallPreviewSize,
+				a: isImage ? 1 : null,
+				mode: isImage ? 'cover' : null,
+				callback: function (previewUrl, img) {
+					$iconDiv.previewImg = previewUrl;
+
+					// as long as we only have the mimetype icon, we only save it in case there is no preview
+					if (!img) {
+						return;
+					}
+					$iconDiv.removeClass('icon-loading icon-32');
+					var targetHeight = getTargetHeight(img);
+					if (this.model.isImage() && targetHeight > smallPreviewSize) {
+						$container.addClass((isLandscape(img) && !isSmall(img))? 'landscape': 'portrait');
+						$container.addClass('image');
+					}
+
+					// only set background when we have an actual preview
+					// when we dont have a preview we show the mime icon in the error handler
+					$iconDiv.css({
+						'background-image': 'url("' + previewUrl + '")',
+						height: (targetHeight > smallPreviewSize)? 'auto': targetHeight,
+						'max-height': isSmall(img)? targetHeight: null
+					});
+
+					var targetRatio = getTargetRatio(img);
+					$iconDiv.find('.stretcher').css({
+						'padding-bottom': (100 / targetRatio) + '%'
+					});
+				}.bind(this),
+				error: function () {
+					$iconDiv.removeClass('icon-loading icon-32');
+					this.$el.find('.thumbnailContainer').removeClass('image'); //fall back to regular view
+					$iconDiv.css({
+						'background-image': 'url("' + $iconDiv.previewImg + '")'
+					});
+					OC.Util.scaleFixForIE8($iconDiv);
+				}.bind(this)
+			});
 		}
 	});
 

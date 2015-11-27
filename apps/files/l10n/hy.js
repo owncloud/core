@@ -1,9 +1,26 @@
 OC.L10N.register(
     "files",
     {
+    "Files" : "Ֆայլեր",
+    "All files" : "Բոլոր ֆայլերը",
     "Close" : "Փակել",
     "Download" : "Բեռնել",
+    "Rename" : "Վերանվանել",
+    "Delete" : "Ջնջել",
+    "Select" : "Նշել",
+    "Name" : "Անուն",
+    "Size" : "Չափս",
+    "Modified" : "Փոփոխված",
+    "_%n folder_::_%n folders_" : ["%n պանակ","%n պանակ"],
+    "_%n file_::_%n files_" : ["%n ֆայլ","%n ֆայլ"],
+    "{dirs} and {files}" : "{dirs} և {files}",
+    "New" : "Նոր",
+    "_%n byte_::_%n bytes_" : ["%n բայտ","%n բայտ"],
+    "Folder" : "Պանակ",
+    "New folder" : "Նոր պանակ",
     "Save" : "Պահպանել",
-    "Delete" : "Ջնջել"
+    "Select all" : "Նշել բոլորը",
+    "Text file" : "Տեքստ ֆայլ",
+    "New text file.txt" : "Նոր տեքստ ֆայլ.txt"
 },
 "nplurals=2; plural=(n != 1);");

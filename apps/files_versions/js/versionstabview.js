@@ -15,7 +15,7 @@
 		'<a href="{{downloadUrl}}" class="downloadVersion"><img src="{{downloadIconUrl}}" />' +
 		'<span class="versiondate has-tooltip" title="{{formattedTimestamp}}">{{relativeTimestamp}}</span>' +
 		'</a>' +
-		'<a href="#" class="revertVersion"><img src="{{revertIconUrl}}" />{{revertLabel}}</a>' +
+		'<a href="#" class="revertVersion" title="{{revertLabel}}"><img src="{{revertIconUrl}}" /></a>' +
 		'</li>';
 
 	var TEMPLATE =
@@ -44,6 +44,7 @@
 		},
 
 		initialize: function() {
+			OCA.Files.DetailTabView.prototype.initialize.apply(this, arguments);
 			this.collection = new OCA.Versions.VersionCollection();
 			this.collection.on('request', this._onRequest, this);
 			this.collection.on('sync', this._onEndRequest, this);
@@ -84,12 +85,18 @@
 			ev.preventDefault();
 			revision = $target.attr('data-revision');
 
+			this.$el.find('.versions, .showMoreVersions').addClass('hidden');
+
 			var versionModel = this.collection.get(revision);
 			versionModel.revert({
 				success: function() {
 					// reset and re-fetch the updated collection
+					self.$versionsContainer.empty();
 					self.collection.setFileInfo(fileInfoModel);
-					self.collection.fetch();
+					self.collection.reset([], {silent: true});
+					self.collection.fetchNext();
+
+					self.$el.find('.versions').removeClass('hidden');
 
 					// update original model
 					fileInfoModel.trigger('busy', fileInfoModel, false);
@@ -156,7 +163,7 @@
 			if (fileInfo) {
 				this.render();
 				this.collection.setFileInfo(fileInfo);
-				this.collection.reset({silent: true});
+				this.collection.reset([], {silent: true});
 				this.nextPage();
 			} else {
 				this.render();
@@ -188,6 +195,18 @@
 			this.$el.find('.has-tooltip').tooltip();
 			this.$versionsContainer = this.$el.find('ul.versions');
 			this.delegateEvents();
+		},
+
+		/**
+		 * Returns true for files, false for folders.
+		 *
+		 * @return {bool} true for files, false for folders
+		 */
+		canDisplay: function(fileInfo) {
+			if (!fileInfo) {
+				return false;
+			}
+			return !fileInfo.isDirectory();
 		}
 	});
 
@@ -195,4 +214,3 @@
 
 	OCA.Versions.VersionsTabView = VersionsTabView;
 })();
-

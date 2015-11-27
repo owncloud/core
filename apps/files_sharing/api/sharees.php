@@ -1,6 +1,7 @@
 <?php
 /**
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -20,6 +21,7 @@
  */
 namespace OCA\Files_Sharing\API;
 
+use OCP\AppFramework\Http;
 use OCP\Contacts\IManager;
 use OCP\IGroup;
 use OCP\IGroupManager;
@@ -60,6 +62,9 @@ class Sharees {
 
 	/** @var bool */
 	protected $shareWithGroupOnly = false;
+
+	/** @var bool */
+	protected $shareeEnumeration = true;
 
 	/** @var int */
 	protected $offset = 0;
@@ -133,7 +138,7 @@ class Sharees {
 			}
 		}
 
-		if (sizeof($users) < $this->limit) {
+		if (!$this->shareeEnumeration || sizeof($users) < $this->limit) {
 			$this->reachedEndFor[] = 'users';
 		}
 
@@ -175,6 +180,10 @@ class Sharees {
 				]);
 			}
 		}
+
+		if (!$this->shareeEnumeration) {
+			$this->result['users'] = [];
+		}
 	}
 
 	/**
@@ -186,7 +195,7 @@ class Sharees {
 		$groups = $this->groupManager->search($search, $this->limit, $this->offset);
 		$groups = array_map(function (IGroup $group) { return $group->getGID(); }, $groups);
 
-		if (sizeof($groups) < $this->limit) {
+		if (!$this->shareeEnumeration || sizeof($groups) < $this->limit) {
 			$this->reachedEndFor[] = 'groups';
 		}
 
@@ -232,6 +241,10 @@ class Sharees {
 				]);
 			}
 		}
+
+		if (!$this->shareeEnumeration) {
+			$this->result['groups'] = [];
+		}
 	}
 
 	/**
@@ -272,6 +285,10 @@ class Sharees {
 			}
 		}
 
+		if (!$this->shareeEnumeration) {
+			$this->result['remotes'] = [];
+		}
+
 		if (!$foundRemoteById && substr_count($search, '@') >= 1 && substr_count($search, ' ') === 0 && $this->offset === 0) {
 			$this->result['exact']['remotes'][] = [
 				'label' => $search,
@@ -291,8 +308,15 @@ class Sharees {
 	public function search() {
 		$search = isset($_GET['search']) ? (string) $_GET['search'] : '';
 		$itemType = isset($_GET['itemType']) ? (string) $_GET['itemType'] : null;
-		$page = !empty($_GET['page']) ? max(1, (int) $_GET['page']) : 1;
-		$perPage = !empty($_GET['limit']) ? max(1, (int) $_GET['limit']) : 200;
+		$page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+		$perPage = isset($_GET['perPage']) ? (int) $_GET['perPage'] : 200;
+
+		if ($perPage <= 0) {
+			return new \OC_OCS_Result(null, Http::STATUS_BAD_REQUEST, 'Invalid perPage argument');
+		}
+		if ($page <= 0) {
+			return new \OC_OCS_Result(null, Http::STATUS_BAD_REQUEST, 'Invalid page');
+		}
 
 		$shareTypes = [
 			Share::SHARE_TYPE_USER,
@@ -314,6 +338,7 @@ class Sharees {
 		}
 
 		$this->shareWithGroupOnly = $this->config->getAppValue('core', 'shareapi_only_share_with_group_members', 'no') === 'yes';
+		$this->shareeEnumeration = $this->config->getAppValue('core', 'shareapi_allow_share_dialog_user_enumeration', 'yes') === 'yes';
 		$this->limit = (int) $perPage;
 		$this->offset = $perPage * ($page - 1);
 
@@ -348,7 +373,7 @@ class Sharees {
 	protected function searchSharees($search, $itemType, array $shareTypes, $page, $perPage) {
 		// Verify arguments
 		if ($itemType === null) {
-			return new \OC_OCS_Result(null, 400, 'missing itemType');
+			return new \OC_OCS_Result(null, Http::STATUS_BAD_REQUEST, 'Missing itemType');
 		}
 
 		// Get users
@@ -374,7 +399,7 @@ class Sharees {
 				'search' => $search,
 				'itemType' => $itemType,
 				'shareType' => $shareTypes,
-				'limit' => $perPage,
+				'perPage' => $perPage,
 			]));
 		}
 

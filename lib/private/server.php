@@ -6,13 +6,14 @@
  * @author Bernhard Reiter <ockham@raz.or.at>
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Christopher Schäpers <kondou@ts.unde.re>
+ * @author Individual IT Services <info@individual-it.net>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Sander <brantje@gmail.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
@@ -46,6 +47,7 @@ use OC\Diagnostics\EventLogger;
 use OC\Diagnostics\NullEventLogger;
 use OC\Diagnostics\NullQueryLogger;
 use OC\Diagnostics\QueryLogger;
+use OC\Files\Node\HookConnector;
 use OC\Files\Node\Root;
 use OC\Files\View;
 use OC\Http\Client\ClientService;
@@ -144,7 +146,10 @@ class Server extends SimpleContainer implements IServerContainer {
 			$user = $userManager->get($user);
 			$manager = \OC\Files\Filesystem::getMountManager();
 			$view = new View();
-			return new Root($manager, $view, $user);
+			$root = new Root($manager, $view, $user);
+			$connector = new HookConnector($root, $view);
+			$connector->viewToNode();
+			return $root;
 		});
 		$this->registerService('UserManager', function (Server $c) {
 			$config = $c->getConfig();
@@ -356,7 +361,10 @@ class Server extends SimpleContainer implements IServerContainer {
 			}
 		});
 		$this->registerService('TempManager', function (Server $c) {
-			return new TempManager(get_temp_dir(), $c->getLogger());
+			return new TempManager(
+				$c->getLogger(),
+				$c->getConfig()
+			);
 		});
 		$this->registerService('AppManager', function(Server $c) {
 			return new \OC\App\AppManager(
@@ -430,7 +438,6 @@ class Server extends SimpleContainer implements IServerContainer {
 					'requesttoken' => $requestToken,
 				],
 				$this->getSecureRandom(),
-				$this->getCrypto(),
 				$this->getConfig(),
 				$stream
 			);
@@ -457,7 +464,7 @@ class Server extends SimpleContainer implements IServerContainer {
 				if (!($memcache instanceof \OC\Memcache\NullCache)) {
 					return new MemcacheLockingProvider($memcache);
 				}
-				return new DBLockingProvider($c->getDatabaseConnection(), $c->getLogger());
+				return new DBLockingProvider($c->getDatabaseConnection(), $c->getLogger(), new TimeFactory());
 			}
 			return new NoopLockingProvider();
 		});
@@ -467,7 +474,9 @@ class Server extends SimpleContainer implements IServerContainer {
 		$this->registerService('MimeTypeDetector', function(Server $c) {
 			return new \OC\Files\Type\Detection(
 				$c->getURLGenerator(),
-				\OC::$configDir);
+				\OC::$SERVERROOT . '/config/',
+				\OC::$SERVERROOT . '/resources/config/'
+				);
 		});
 		$this->registerService('MimeTypeLoader', function(Server $c) {
 			return new \OC\Files\Type\Loader(
@@ -502,7 +511,6 @@ class Server extends SimpleContainer implements IServerContainer {
 						: null,
 				],
 				new SecureRandom(),
-				$c->getCrypto(),
 				$c->getConfig()
 			);
 
@@ -1061,4 +1069,37 @@ class Server extends SimpleContainer implements IServerContainer {
 	public function getSessionCryptoWrapper() {
 		return $this->query('CryptoWrapper');
 	}
+
+	/**
+	 * Not a public API as of 8.2, wait for 9.0
+	 * @return \OCA\Files_External\Service\BackendService
+	 */
+	public function getStoragesBackendService() {
+		return \OC_Mount_Config::$app->getContainer()->query('OCA\\Files_External\\Service\\BackendService');
+	}
+
+	/**
+	 * Not a public API as of 8.2, wait for 9.0
+	 * @return \OCA\Files_External\Service\GlobalStoragesService
+	 */
+	public function getGlobalStoragesService() {
+		return \OC_Mount_Config::$app->getContainer()->query('OCA\\Files_External\\Service\\GlobalStoragesService');
+	}
+
+	/**
+	 * Not a public API as of 8.2, wait for 9.0
+	 * @return \OCA\Files_External\Service\UserGlobalStoragesService
+	 */
+	public function getUserGlobalStoragesService() {
+		return \OC_Mount_Config::$app->getContainer()->query('OCA\\Files_External\\Service\\UserGlobalStoragesService');
+	}
+
+	/**
+	 * Not a public API as of 8.2, wait for 9.0
+	 * @return \OCA\Files_External\Service\UserStoragesService
+	 */
+	public function getUserStoragesService() {
+		return \OC_Mount_Config::$app->getContainer()->query('OCA\\Files_External\\Service\\UserStoragesService');
+	}
+	
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Robin McCorkell <rmccorkell@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -56,4 +56,11 @@ interface IMimeTypeLoader {
 	 * @since 8.2.0
 	 */
 	public function exists($mimetype);
+
+	/**
+	 * Clear all loaded mimetypes, allow for re-loading
+	 *
+	 * @since 8.2.0
+	 */
+	public function reset();
 }

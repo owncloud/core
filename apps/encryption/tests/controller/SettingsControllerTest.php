@@ -2,7 +2,6 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
- * @author Morris Jobke <hey@morrisjobke.de>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -57,6 +56,9 @@ class SettingsControllerTest extends TestCase {
 	/** @var  \PHPUnit_Framework_MockObject_MockObject */
 	private $ocSessionMock;
 
+	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	private $utilMock;
+
 	protected function setUp() {
 
 		parent::setUp();
@@ -107,6 +109,10 @@ class SettingsControllerTest extends TestCase {
 		$this->sessionMock = $this->getMockBuilder('OCA\Encryption\Session')
 			->disableOriginalConstructor()->getMock();
 
+		$this->utilMock = $this->getMockBuilder('OCA\Encryption\Util')
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->controller = new SettingsController(
 			'encryption',
 			$this->requestMock,
@@ -116,7 +122,8 @@ class SettingsControllerTest extends TestCase {
 			$this->keyManagerMock,
 			$this->cryptMock,
 			$this->sessionMock,
-			$this->ocSessionMock
+			$this->ocSessionMock,
+			$this->utilMock
 		);
 	}
 
@@ -233,6 +240,12 @@ class SettingsControllerTest extends TestCase {
 		$this->assertSame(Http::STATUS_OK, $result->getStatus());
 		$this->assertSame('Private key password successfully updated.',
 			$data['message']);
+	}
+
+	function testSetEncryptHomeStorage() {
+		$value = true;
+		$this->utilMock->expects($this->once())->method('setEncryptHomeStorage')->with($value);
+		$this->controller->setEncryptHomeStorage($value);
 	}
 
 }

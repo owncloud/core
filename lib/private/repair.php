@@ -34,6 +34,7 @@ use OC\Repair\AssetCache;
 use OC\Repair\CleanTags;
 use OC\Repair\Collation;
 use OC\Repair\DropOldJobs;
+use OC\Repair\OldGroupMembershipShares;
 use OC\Repair\RemoveGetETagEntries;
 use OC\Repair\SqliteAutoincrement;
 use OC\Repair\DropOldTables;
@@ -43,6 +44,8 @@ use OC\Repair\RepairConfig;
 use OC\Repair\RepairLegacyStorages;
 use OC\Repair\RepairMimeTypes;
 use OC\Repair\SearchLuceneTables;
+use OC\Repair\UpdateOutdatedOcsIds;
+use OC\Repair\RepairInvalidShares;
 
 class Repair extends BasicEmitter {
 	/**
@@ -101,8 +104,8 @@ class Repair extends BasicEmitter {
 	 * @return array of RepairStep instances
 	 */
 	public static function getRepairSteps() {
-		return array(
-			new RepairMimeTypes(),
+		return [
+			new RepairMimeTypes(\OC::$server->getConfig()),
 			new RepairLegacyStorages(\OC::$server->getConfig(), \OC::$server->getDatabaseConnection()),
 			new RepairConfig(),
 			new AssetCache(),
@@ -111,7 +114,21 @@ class Repair extends BasicEmitter {
 			new DropOldTables(\OC::$server->getDatabaseConnection()),
 			new DropOldJobs(\OC::$server->getJobList()),
 			new RemoveGetETagEntries(\OC::$server->getDatabaseConnection()),
-		);
+			new UpdateOutdatedOcsIds(\OC::$server->getConfig()),
+			new RepairInvalidShares(\OC::$server->getConfig(), \OC::$server->getDatabaseConnection()),
+		];
+	}
+
+	/**
+	 * Returns expensive repair steps to be run on the
+	 * command line with a special option.
+	 *
+	 * @return array of RepairStep instances
+	 */
+	public static function getExpensiveRepairSteps() {
+		return [
+			new OldGroupMembershipShares(\OC::$server->getDatabaseConnection(), \OC::$server->getGroupManager()),
+		];
 	}
 
 	/**

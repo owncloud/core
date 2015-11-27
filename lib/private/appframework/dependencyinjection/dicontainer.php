@@ -5,6 +5,7 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
  *
@@ -78,7 +79,7 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 		});
 
 		$this->registerService('OCP\\AppFramework\\Http\\IOutput', function($c){
-			return new Output();
+			return new Output($this->getServer()->getWebRoot());
 		});
 
 		$this->registerService('OCP\\IAvatarManager', function($c) {
@@ -225,6 +226,14 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 			return $this->getServer();
 		});
 
+		$this->registerService('Symfony\Component\EventDispatcher\EventDispatcherInterface', function ($c) {
+			return $this->getServer()->getEventDispatcher();
+		});
+
+		$this->registerService('OCP\\AppFramework\\IAppContainer', function ($c) {
+			return $c;
+		});
+
 		// commonly used attributes
 		$this->registerService('UserId', function ($c) {
 			return $c->query('OCP\\IUserSession')->getSession()->get('user_id');
@@ -247,11 +256,10 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 		});
 
 		$this->registerService('Protocol', function($c){
-			if(isset($_SERVER['SERVER_PROTOCOL'])) {
-				return new Http($_SERVER, $_SERVER['SERVER_PROTOCOL']);
-			} else {
-				return new Http($_SERVER);
-			}
+			/** @var \OC\Server $server */
+			$server = $c->query('ServerContainer');
+			$protocol = $server->getRequest()->getHttpProtocol();
+			return new Http($_SERVER, $protocol);
 		});
 
 		$this->registerService('Dispatcher', function($c) {

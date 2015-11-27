@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -22,6 +23,7 @@
 namespace OCA\Files\Tests\Command;
 
 use OCA\Files\Command\DeleteOrphanedFiles;
+use OCP\Files\StorageNotAvailableException;
 
 class DeleteOrphanedFilesTest extends \Test\TestCase {
 
@@ -110,7 +112,11 @@ class DeleteOrphanedFilesTest extends \Test\TestCase {
 
 		$this->assertCount(0, $this->getFile($fileInfo->getId()), 'Asserts that file gets cleaned up');
 
-		$view->unlink('files/test');
+		// since we deleted the storage it might throw a (valid) StorageNotAvailableException
+		try {
+			$view->unlink('files/test');
+		} catch (StorageNotAvailableException $e) {
+		}
 	}
 }
 

@@ -7,6 +7,7 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Nicolas Grekas <nicolas.grekas@gmail.com>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
  * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
@@ -434,11 +435,15 @@ class Wizard extends LDAPUtility {
 			// detection will fail later
 			$result = $this->access->searchGroups($filter, array('cn', 'dn'), $limit, $offset);
 			foreach($result as $item) {
-				$groupNames[] = $item['cn'];
+				if(!isset($item['cn']) && !is_array($item['cn']) && !isset($item['cn'][0])) {
+					// just in case - no issue known
+					continue;
+				}
+				$groupNames[] = $item['cn'][0];
 				$groupEntries[] = $item;
 			}
 			$offset += $limit;
-		} while (count($groupNames) > 0 && count($groupNames) % $limit === 0);
+		} while ($this->access->hasMoreResults());
 
 		if(count($groupNames) > 0) {
 			natsort($groupNames);
@@ -626,12 +631,12 @@ class Wizard extends LDAPUtility {
 			throw new \Exception('missing placeholder');
 		}
 
-		$users = $this->access->fetchUsersByLoginName($loginName);
+		$users = $this->access->countUsersByLoginName($loginName);
 		if($this->ldap->errno($cr) !== 0) {
 			throw new \Exception($this->ldap->error($cr));
 		}
 		$filter = str_replace('%uid', $loginName, $this->access->connection->ldapLoginFilter);
-		$this->result->addChange('ldap_test_loginname', count($users));
+		$this->result->addChange('ldap_test_loginname', $users);
 		$this->result->addChange('ldap_test_effective_filter', $filter);
 		return $this->result;
 	}
@@ -661,12 +666,13 @@ class Wizard extends LDAPUtility {
 			//connectAndBind may throw Exception, it needs to be catched by the
 			//callee of this method
 
-			// unallowed anonymous bind throws 48. But if it throws 48, we
-			// detected port and TLS, i.e. it is successful.
 			try {
 				$settingsFound = $this->connectAndBind($p, $t);
 			} catch (\Exception $e) {
-				if($e->getCode() === 48) {
+				// any reply other than -1 (= cannot connect) is already okay,
+				// because then we found the server
+				// unavailable startTLS returns -11
+				if($e->getCode() > 0) {
 					$settingsFound = true;
 				} else {
 					throw $e;
@@ -1084,7 +1090,7 @@ class Wizard extends LDAPUtility {
 		} else if ($errNo === 2) {
 			return $this->connectAndBind($port, $tls, true);
 		}
-		throw new \Exception($error);
+		throw new \Exception($error, $errNo);
 	}
 
 	/**
@@ -1284,9 +1290,13 @@ class Wizard extends LDAPUtility {
 		if(!is_null($this->cr)) {
 			return $this->cr;
 		}
-		$cr = $this->ldap->connect(
-			$this->configuration->ldapHost.':'.$this->configuration->ldapPort,
-			$this->configuration->ldapPort);
+
+		$host = $this->configuration->ldapHost;
+		if(strpos($host, '://') !== false) {
+			//ldap_connect ignores port parameter when URLs are passed
+			$host .= ':' . $this->configuration->ldapPort;
+		}
+		$cr = $this->ldap->connect($host, $this->configuration->ldapPort);
 
 		$this->ldap->setOption($cr, LDAP_OPT_PROTOCOL_VERSION, 3);
 		$this->ldap->setOption($cr, LDAP_OPT_REFERRALS, 0);

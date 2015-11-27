@@ -46,7 +46,9 @@ $application->registerRoutes($this, [
 		['name' => 'AppSettings#listApps', 'url' => '/settings/apps/list', 'verb' => 'GET'],
 		['name' => 'AppSettings#changeExperimentalConfigState', 'url' => '/settings/apps/experimental', 'verb' => 'POST'],
 		['name' => 'SecuritySettings#trustedDomains', 'url' => '/settings/admin/security/trustedDomains', 'verb' => 'POST'],
+		['name' => 'Users#setDisplayName', 'url' => '/settings/users/{username}/displayName', 'verb' => 'POST'],
 		['name' => 'Users#setMailAddress', 'url' => '/settings/users/{id}/mailAddress', 'verb' => 'PUT'],
+		['name' => 'Users#stats', 'url' => '/settings/users/stats', 'verb' => 'GET'],
 		['name' => 'LogSettings#setLogLevel', 'url' => '/settings/admin/log/level', 'verb' => 'POST'],
 		['name' => 'LogSettings#getEntries', 'url' => '/settings/admin/log/entries', 'verb' => 'GET'],
 		['name' => 'LogSettings#download', 'url' => '/settings/admin/log/download', 'verb' => 'GET'],
@@ -69,8 +71,6 @@ $this->create('settings_admin', '/settings/admin')
 	->actionInclude('settings/admin.php');
 // Settings ajax actions
 // users
-$this->create('settings_ajax_everyonecount', '/settings/ajax/geteveryonecount')
-	->actionInclude('settings/ajax/geteveryonecount.php');
 $this->create('settings_ajax_setquota', '/settings/ajax/setquota.php')
 	->actionInclude('settings/ajax/setquota.php');
 $this->create('settings_ajax_togglegroups', '/settings/ajax/togglegroups.php')
@@ -80,8 +80,6 @@ $this->create('settings_ajax_togglesubadmins', '/settings/ajax/togglesubadmins.p
 $this->create('settings_users_changepassword', '/settings/users/changepassword')
 	->post()
 	->action('OC\Settings\ChangePassword\Controller', 'changeUserPassword');
-$this->create('settings_ajax_changedisplayname', '/settings/ajax/changedisplayname.php')
-	->actionInclude('settings/ajax/changedisplayname.php');
 $this->create('settings_ajax_changegorupname', '/settings/ajax/changegroupname.php')
 	->actionInclude('settings/ajax/changegroupname.php');	
 // personal
