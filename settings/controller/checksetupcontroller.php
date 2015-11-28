@@ -248,6 +248,8 @@ class CheckSetupController extends Controller {
 	}
 
 	/**
+	 * @NoCSRFRequired
+	 *
 	 * @return DataResponse
 	 */
 	public function check() {
