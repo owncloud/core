@@ -9,7 +9,7 @@
 **[ownCloud](http://ownCloud.org) gives you freedom and control over your own data.
 A personal cloud which runs on your own server.**
 
-![](http://fs5.directupload.net/images/151016/u6zpkz7l.png)
+![](https://github.com/owncloud/screenshots/blob/master/files/sidebar_1.png)
 
 ## Why is this so awesome?
 * :file_folder: **Acess your Data** You can store your files, contacts, calendars and more on a server of your choosing.
