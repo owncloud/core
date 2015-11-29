@@ -1,4 +1,4 @@
-# ownCloud
+# ownCloud Core
 
 [![Build Status](https://ci.owncloud.org/job/server-master-linux/badge/icon)](https://ci.owncloud.org/job/server-master-linux/)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/owncloud/core/badges/quality-score.png?s=ce2f5ded03d4ac628e9ee5c767243fa7412e644f)](https://scrutinizer-ci.com/g/owncloud/core/)
