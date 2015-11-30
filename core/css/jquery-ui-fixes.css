@@ -23,6 +23,12 @@
 .ui-widget-header a {
 	color: #ffffff;
 }
+.ui-datepicker select.ui-datepicker-year option, .ui-datepicker select.ui-datepicker-month option {
+  	color: #000;
+}
+.ui-datepicker select.ui-date-picker-year:checked, .ui-datepicker select.ui-datepicker-month:checked {
+  	color: #fff;
+}
 
 /* Interaction states
 ----------------------------------*/
