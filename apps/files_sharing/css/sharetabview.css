@@ -25,9 +25,18 @@
 
 .shareTabView input[type="text"],
 .shareTabView input[type="password"] {
-	width: 94%;
 	margin-left: 0;
 }
+
+.shareTabView .shareWithField {
+	width: 65%;
+}
+
+.shareTabView .linkText,
+.shareTabView input[type="password"]  {
+	width: 94%;
+}
+
 .shareTabView #shareWith {
 	width: 80%;
 }
@@ -86,4 +95,3 @@
 .shareTabView .linkPass .icon-loading-small {
 	margin-top: 9px;
 }
-
