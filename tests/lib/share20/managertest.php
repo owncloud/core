@@ -449,6 +449,13 @@ class ManagerTest extends \Test\TestCase {
 		}
 
 		$share->setPermissions(1);
+
+		$this->defaultProvider
+			->expects($this->once())
+			->method('create')
+			->with($share)
+			->will($this->returnArgument(0));
+
 		$this->manager->createShare($share);
 
 		$this->assertSame($shareOwner, $share->getShareOwner());
@@ -519,6 +526,13 @@ class ManagerTest extends \Test\TestCase {
 		}
 
 		$share->setPermissions(1);
+
+		$this->defaultProvider
+				->expects($this->once())
+				->method('create')
+				->with($share)
+				->will($this->returnArgument(0));
+
 		$this->manager->createShare($share);
 
 		$this->assertSame($shareOwner, $share->getShareOwner());
@@ -582,6 +596,13 @@ class ManagerTest extends \Test\TestCase {
 		}
 
 		$share->setPermissions(1);
+		
+		$this->defaultProvider
+				->expects($this->once())
+				->method('create')
+				->with($share)
+				->will($this->returnArgument(0));
+
 		$this->manager->createShare($share);
 
 		$this->assertSame($shareOwner, $share->getShareOwner());

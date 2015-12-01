@@ -204,7 +204,43 @@ class Manager {
 
 		//TODO handle link share permissions or check them
 
+		// Pre share hook
+		$run = true;
+		$error = '';
+		$preHookData = [
+			'itemType' => $share->getPath() instanceof \OCP\Files\File ? 'file' : 'folder',
+			'itemSource' => $share->getPath()->getId(),
+			'shareType' => $share->getShareType(),
+			'uidOwner' => $share->getSharedBy()->getUID(),
+			'permissions' => $share->getPermissions(),
+			'fileSource' => $share->getPath()->getId(),
+			'expiration' => $share->getExpirationDate(),
+			'token' => $share->getToken(),
+			'run' => &$run,
+			'error' => &$error
+		];
+		\OC_Hook::emit('OCP\Share', 'pre_shared', $preHookData);
+
+		if ($run === false) {
+			throw new \Exception($error);
+		}
+
 		$share = $this->defaultProvider->create($share);
+
+		// Post share hook
+		$postHookData = [
+			'itemType' => $share->getPath() instanceof \OCP\Files\File ? 'file' : 'folder',
+			'itemSource' => $share->getPath()->getId(),
+			'shareType' => $share->getShareType(),
+			'uidOwner' => $share->getSharedBy()->getUID(),
+			'permissions' => $share->getPermissions(),
+			'fileSource' => $share->getPath()->getId(),
+			'expiration' => $share->getExpirationDate(),
+			'token' => $share->getToken(),
+			'id' => $share->getId(),
+		];
+		\OC_Hook::emit('OCP\Share', 'post_shared', $postHookData);
+
 		return $share;
 	}
 
