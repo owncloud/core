@@ -133,7 +133,7 @@ class DefaultShareProvider implements IShareProvider {
 
 		// Set the file target
 		$qb->setValue('file_target', $qb->createParameter('target'))
-			->setParameter('target', '/' . $share->getPath()->getName());
+			->setParameter('target', $share->getTarget());
 
 		// Set the time this share was created
 		$qb->setValue('stime', $qb->createParameter('shareTime'))

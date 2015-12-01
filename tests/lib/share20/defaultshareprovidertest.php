@@ -560,7 +560,6 @@ class DefaultShareProviderTest extends \Test\TestCase {
 
 		$path = $this->getMock('\OCP\Files\File');
 		$path->method('getId')->willReturn(100);
-		$path->method('getName')->willReturn('target');
 		$path->method('getOwner')->willReturn($shareOwner);
 
 		$ownerFolder = $this->getMock('OCP\Files\Folder');
@@ -585,6 +584,7 @@ class DefaultShareProviderTest extends \Test\TestCase {
 		$share->setShareOwner($shareOwner);
 		$share->setPath($path);
 		$share->setPermissions(1);
+		$share->setTarget('/target');
 
 		$share2 = $this->provider->create($share);
 
@@ -622,7 +622,6 @@ class DefaultShareProviderTest extends \Test\TestCase {
 
 		$path = $this->getMock('\OCP\Files\Folder');
 		$path->method('getId')->willReturn(100);
-		$path->method('getName')->willReturn('target');
 		$path->method('getOwner')->willReturn($shareOwner);
 
 		$ownerFolder = $this->getMock('OCP\Files\Folder');
@@ -647,6 +646,7 @@ class DefaultShareProviderTest extends \Test\TestCase {
 		$share->setShareOwner($shareOwner);
 		$share->setPath($path);
 		$share->setPermissions(1);
+		$share->setTarget('/target');
 
 		$share2 = $this->provider->create($share);
 
@@ -678,7 +678,6 @@ class DefaultShareProviderTest extends \Test\TestCase {
 
 		$path = $this->getMock('\OCP\Files\Folder');
 		$path->method('getId')->willReturn(100);
-		$path->method('getName')->willReturn('target');
 		$path->method('getOwner')->willReturn($shareOwner);
 
 		$ownerFolder = $this->getMock('OCP\Files\Folder');
@@ -706,6 +705,7 @@ class DefaultShareProviderTest extends \Test\TestCase {
 		$share->setToken('token');
 		$expireDate = new \DateTime();
 		$share->setExpirationDate($expireDate);
+		$share->setTarget('/target');
 
 		$share2 = $this->provider->create($share);
 

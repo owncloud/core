@@ -180,6 +180,14 @@ interface IShare {
 	public function getParent();
 
 	/**
+	 * Set the target of this share
+	 *
+	 * @param string $target
+	 * @return Share The modified object
+	 */
+	public function setTarget($target);
+
+	/**
 	 * Get the target of this share
 	 *
 	 * @return string

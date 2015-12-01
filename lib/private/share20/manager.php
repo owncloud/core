@@ -192,6 +192,16 @@ class Manager {
 			throw new \Exception('Cannot increase permissions');
 		}
 
+		// Check that read permissions are always set
+		if (($share->getPermissions() & \OCP\Constants::PERMISSION_READ) === 0) {
+			throw new \Exception('Shares need at least read permissions');
+		}
+
+		// Generate the target
+		$target = $this->config->getSystemValue('share_folder', '/') .'/'. $share->getPath()->getName();
+		$target = \OC\Files\Filesystem::normalizePath($target);
+		$share->setTarget($target);
+
 		//TODO handle link share permissions or check them
 
 		$share = $this->defaultProvider->create($share);
