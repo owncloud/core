@@ -74,32 +74,26 @@ class DefaultShareProvider implements IShareProvider {
 		$qb = $this->dbConn->getQueryBuilder();
 
 		$qb->insert('share');
-		$qb->setValue('share_type', $qb->createParameter('shareType'))
-			->setParameter('shareType', $share->getShareType());
+		$qb->setValue('share_type', $qb->createNamedParameter($share->getShareType()));
 
 		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
 			//Set the UID of the user we share with
-			$qb->setValue('share_with', $qb->createParameter('shareWith'))
-				->setParameter('shareWith', $share->getSharedWith()->getUID());
+			$qb->setValue('share_with', $qb->createNamedParameter($share->getSharedWith()->getUID()));
 		} else if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
 			//Set the GID of the group we share with
-			$qb->setValue('share_with', $qb->createParameter('shareWith'))
-				->setParameter('shareWith', $share->getSharedWith()->getGID());
+			$qb->setValue('share_with', $qb->createNamedParameter($share->getSharedWith()->getGID()));
 		} else if ($share->getShareType() === \OCP\Share::SHARE_TYPE_LINK) {
 			//Set the token of the share
-			$qb->setValue('token', $qb->createParameter('token'))
-				->setParameter('token', $share->getToken());
+			$qb->setValue('token', $qb->createNamedParameter($share->getToken()));
 
 			//If a password is set store it
 			if ($share->getPassword() !== null) {
-				$qb->setValue('share_with', $qb->createParameter('password'))
-					->setParameter('password', $share->getPassword());
+				$qb->setValue('share_with', $qb->createNamedParameter($share->getPassword()));
 			}
 
 			//If an expiration date is set store it
 			if ($share->getExpirationDate() !== null) {
-				$qb->setValue('expiration', $qb->createParameter('expiration'))
-					->setParameter('expiration', $share->getExpirationDate(), 'datetime');
+				$qb->setValue('expiration', $qb->createNamedParameter($share->getExpirationDate(), 'datetime'));
 			}
 		} else {
 			throw new \Exception('invalid share type!');
@@ -114,30 +108,23 @@ class DefaultShareProvider implements IShareProvider {
 		}
 
 		// Set the file id
-		$qb->setValue('item_source', $qb->createParameter('itemSource'));
-		$qb->setValue('file_source', $qb->createParameter('fileSource'));
-		$qb->setParameter('itemSource', $share->getPath()->getId());
-		$qb->setParameter('fileSource', $share->getPath()->getId());
+		$qb->setValue('item_source', $qb->createNamedParameter($share->getPath()->getId()));
+		$qb->setValue('file_source', $qb->createNamedParameter($share->getPath()->getId()));
 
 		// set the permissions
-		$qb->setValue('permissions', $qb->createParameter('permissions'))
-			->setParameter('permissions', $share->getPermissions());
+		$qb->setValue('permissions', $qb->createNamedParameter($share->getPermissions()));
 
 		// Set who created this share
-		$qb->setValue('uid_owner', $qb->createParameter('sharedBy'))
-			->setParameter('sharedBy', $share->getSharedBy()->getUID());
+		$qb->setValue('uid_owner', $qb->createNamedParameter($share->getSharedBy()->getUID()));
 
 		// Set who is the owner of this file/folder (and this the owner of the share)
-		$qb->setValue('uid_fileowner', $qb->createParameter('shareOwner'))
-			->setParameter('shareOwner', $share->getShareOwner()->getUID());
+		$qb->setValue('uid_fileowner', $qb->createNamedParameter($share->getShareOwner()->getUID()));
 
 		// Set the file target
-		$qb->setValue('file_target', $qb->createParameter('target'))
-			->setParameter('target', $share->getTarget());
+		$qb->setValue('file_target', $qb->createNamedParameter($share->getTarget()));
 
 		// Set the time this share was created
-		$qb->setValue('stime', $qb->createParameter('shareTime'))
-			->setParameter('shareTime', time());
+		$qb->setValue('stime', $qb->createNamedParameter(time()));
 
 		// insert the data and fetch the id of the share
 		$this->dbConn->beginTransaction();
@@ -149,8 +136,7 @@ class DefaultShareProvider implements IShareProvider {
 		$qb = $this->dbConn->getQueryBuilder();
 		$qb->select('*')
 			->from('*PREFIX*share')
-			->where($qb->expr()->eq('id', $qb->createParameter('id')))
-			->setParameter('id', $id);
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
 
 		$cursor = $qb->execute();
 		$data = $cursor->fetch();
