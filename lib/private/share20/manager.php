@@ -76,6 +76,24 @@ class Manager {
 	}
 
 	/**
+	 * @param string $password
+	 * @throws \Exception
+	 */
+	private function verifyPassword($password) {
+		$accepted = true;
+		$message = '';
+		\OCP\Util::emitHook('\OC\Share', 'verifyPassword', [
+				'password' => $password,
+				'accepted' => &$accepted,
+				'message' => &$message
+		]);
+
+		if (!$accepted) {
+			throw new \Exception($message);
+		}
+	}
+
+	/**
 	 * Share a path
 	 *
 	 * @param IShare $share
@@ -152,6 +170,7 @@ class Manager {
 
 			// If a password is set. Hash it!
 			if ($share->getPassword() !== null) {
+				$this->verifyPassword($share->getPassword());
 				$share->setPassword($this->hasher->hash($share->getPassword()));
 			}
 		} else {
