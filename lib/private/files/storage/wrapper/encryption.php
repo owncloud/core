@@ -542,12 +542,14 @@ class Encryption extends Wrapper {
 				}
 				$isEncrypted = $this->encryptionManager->isEnabled() && $this->mount->getOption('encrypt', true) ? 1 : 0;
 
-				// in case of a rename we need to manipulate the source cache because
-				// this information will be kept for the new target
-				if ($isRename) {
-					$sourceStorage->getCache()->put($sourceInternalPath, ['encrypted' => $isEncrypted]);
-				} else {
-					$this->getCache()->put($targetInternalPath, ['encrypted' => $isEncrypted]);
+				if ($isEncrypted) {
+					// in case of a rename we need to manipulate the source cache because
+					// this information will be kept for the new target
+					if ($isRename) {
+						$sourceStorage->getCache()->put($sourceInternalPath, ['encrypted' => $isEncrypted]);
+					} else {
+						$this->getCache()->put($targetInternalPath, ['encrypted' => $isEncrypted]);
+					}
 				}
 			} else {
 				// delete partially written target file
