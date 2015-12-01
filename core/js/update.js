@@ -34,11 +34,11 @@
 
 			this.addMessage(t(
 				'core',
-				'Updating {productName} to version {version}, this may take a while.', {
+				'Updating {productName} to version {version} (might take a while)', {
 					productName: options.productName || 'ownCloud',
 					version: options.version
 				}),
-				'bold'
+				''
 			).append('<br />'); // FIXME: these should be ul/li with CSS paddings!
 
 			var updateEventSource = new OC.EventSource(OC.webroot+'/core/ajax/update.php');
