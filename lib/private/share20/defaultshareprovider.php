@@ -275,7 +275,23 @@ class DefaultShareProvider implements IShareProvider {
 	 */
 	public function getShareByToken($token, $password = null) {
 	}
-	
+
+	/**
+	 * Helper function to set the owner of a share to convert old shares
+	 *
+	 * @param string $id
+	 * @param IUser $uid
+	 */
+	private function setShareOwner($id, IUser $owner) {
+		$qb = $this->dbConn->getQueryBuilder();
+
+		$qb->update('share')
+			->set('uid_fileowner', $qb->createNamedParameter($owner->getUID()))
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
+
+		$qb->execute();
+	}
+
 	/**
 	 * Create a share object from an database row
 	 *
@@ -304,14 +320,26 @@ class DefaultShareProvider implements IShareProvider {
 
 		$share->setSharedBy($this->userManager->get($data['uid_owner']));
 
-		// TODO: getById can return an array. How to handle this properly??
-		$folder = $this->rootFolder->getUserFolder($share->getSharedBy()->getUID());
-		$path = $folder->getById((int)$data['file_source'])[0];
+		if ($data['uid_fileowner'] !== null) {
+			$owner = $this->userManager->get($data['uid_fileowner']);
+			$share->setShareOwner($owner);
+		} else {
+			/*
+			 * If this is an "old" share the uid_file owner is not set. So find it via the
+			 * initiator of the share
+			 */
+			$folder = $this->rootFolder->getUserFolder($share->getSharedBy()->getUID());
 
-		$owner = $path->getOwner();
-		$share->setShareOwner($owner);
+			// We are intersted in owner information which is the same for each file
+			$path = $folder->getById((int)$data['file_source'])[0];
 
-		$path = $this->rootFolder->getUserFolder($owner->getUID())->getById((int)$data['file_source'])[0];
+			$owner = $path->getOwner();
+			$share->setShareOwner($owner);
+
+			$this->setShareOwner($share->getId(), $owner);
+		}
+
+		$path = $this->rootFolder->getUserFolder($share->getShareOwner()->getUID())->getById((int)$data['file_source'])[0];
 		$share->setPath($path);
 
 		if ($data['expiration'] !== null) {

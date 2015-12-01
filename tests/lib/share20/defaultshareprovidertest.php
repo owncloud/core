@@ -77,6 +77,83 @@ class DefaultShareProviderTest extends \Test\TestCase {
 		$this->provider->getShareById(1);
 	}
 
+	public function testGetShareConvertToNewShare() {
+		$qb = $this->dbConn->getQueryBuilder();
+
+		$qb->insert('share')
+				->values([
+						'share_type'  => $qb->expr()->literal(\OCP\Share::SHARE_TYPE_USER),
+						'share_with'  => $qb->expr()->literal('sharedWith'),
+						'uid_owner'   => $qb->expr()->literal('sharedBy'),
+						'item_type'   => $qb->expr()->literal('file'),
+						'file_source' => $qb->expr()->literal(42),
+						'file_target' => $qb->expr()->literal('myTarget'),
+						'permissions' => $qb->expr()->literal(13),
+				]);
+		$qb->execute();
+
+		$id = $this->dbConn->lastInsertId('*PREFIX*share');
+
+		$sharedWith = $this->getMock('OCP\IUser');
+		$sharedBy = $this->getMock('OCP\IUser');
+		$sharedBy->method('getUID')->willReturn('sharedBy');
+		$shareOwner = $this->getMock('OCP\IUser');
+		$shareOwner->method('getUID')->willReturn('shareOwner');
+
+		$sharedByPath = $this->getMock('\OCP\Files\File');
+		$ownerPath = $this->getMock('\OCP\Files\File');
+
+		$sharedByPath->method('getOwner')->willReturn($shareOwner);
+
+		$sharedByFolder = $this->getMock('\OCP\Files\Folder');
+		$sharedByFolder->method('getById')->with(42)->willReturn([$sharedByPath]);
+
+		$shareOwnerFolder = $this->getMock('\OCP\Files\Folder');
+		$shareOwnerFolder->method('getById')->with(42)->willReturn([$ownerPath]);
+
+		$this->rootFolder
+				->method('getUserFolder')
+				->will($this->returnValueMap([
+						['sharedBy', $sharedByFolder],
+						['shareOwner', $shareOwnerFolder],
+				]));
+
+		$this->userManager
+				->method('get')
+				->will($this->returnValueMap([
+						['sharedWith', $sharedWith],
+						['sharedBy', $sharedBy],
+						['shareOwner', $shareOwner],
+				]));
+
+		$this->provider->getShareById($id);
+
+		//Check if database is updated
+		$qb = $this->dbConn->getQueryBuilder();
+		$cursor = $qb->select('*')
+			->from('share')
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($id)))
+			->execute();
+
+		$data = $cursor->fetch();
+		$cursor->closeCursor();
+
+		$this->assertEquals('shareOwner', $data['uid_fileowner']);
+
+		$share = $this->provider->getShareById($id);
+
+		$this->assertEquals($id, $share->getId());
+		$this->assertEquals(\OCP\Share::SHARE_TYPE_USER, $share->getShareType());
+		$this->assertEquals($sharedWith, $share->getSharedWith());
+		$this->assertEquals($sharedBy, $share->getSharedBy());
+		$this->assertEquals($shareOwner, $share->getShareOwner());
+		$this->assertEquals($ownerPath, $share->getPath());
+		$this->assertEquals(13, $share->getPermissions());
+		$this->assertEquals(null, $share->getToken());
+		$this->assertEquals(null, $share->getExpirationDate());
+		$this->assertEquals('myTarget', $share->getTarget());
+	}
+
 	public function testGetShareByIdUserShare() {
 		$qb = $this->dbConn->getQueryBuilder();
 
