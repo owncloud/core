@@ -64,11 +64,90 @@ class DefaultShareProvider implements IShareProvider {
 
 	/**
 	 * Share a path
-	 * 
+	 *
 	 * @param IShare $share
 	 * @return IShare The share object
+	 * @throws ShareNotFound
+	 * @throws \Exception
 	 */
 	public function create(IShare $share) {
+		$qb = $this->dbConn->getQueryBuilder();
+
+		$qb->insert('share');
+		$qb->setValue('share_type', $qb->createNamedParameter($share->getShareType()));
+
+		if ($share->getShareType() === \OCP\Share::SHARE_TYPE_USER) {
+			//Set the UID of the user we share with
+			$qb->setValue('share_with', $qb->createNamedParameter($share->getSharedWith()->getUID()));
+		} else if ($share->getShareType() === \OCP\Share::SHARE_TYPE_GROUP) {
+			//Set the GID of the group we share with
+			$qb->setValue('share_with', $qb->createNamedParameter($share->getSharedWith()->getGID()));
+		} else if ($share->getShareType() === \OCP\Share::SHARE_TYPE_LINK) {
+			//Set the token of the share
+			$qb->setValue('token', $qb->createNamedParameter($share->getToken()));
+
+			//If a password is set store it
+			if ($share->getPassword() !== null) {
+				$qb->setValue('share_with', $qb->createNamedParameter($share->getPassword()));
+			}
+
+			//If an expiration date is set store it
+			if ($share->getExpirationDate() !== null) {
+				$qb->setValue('expiration', $qb->createNamedParameter($share->getExpirationDate(), 'datetime'));
+			}
+		} else {
+			throw new \Exception('invalid share type!');
+		}
+
+		// Set what is shares
+		$qb->setValue('item_type', $qb->createParameter('itemType'));
+		if ($share->getPath() instanceof \OCP\Files\File) {
+			$qb->setParameter('itemType', 'file');
+		} else {
+			$qb->setParameter('itemType', 'folder');
+		}
+
+		// Set the file id
+		$qb->setValue('item_source', $qb->createNamedParameter($share->getPath()->getId()));
+		$qb->setValue('file_source', $qb->createNamedParameter($share->getPath()->getId()));
+
+		// set the permissions
+		$qb->setValue('permissions', $qb->createNamedParameter($share->getPermissions()));
+
+		// Set who created this share
+		$qb->setValue('uid_owner', $qb->createNamedParameter($share->getSharedBy()->getUID()));
+
+		// Set who is the owner of this file/folder (and this the owner of the share)
+		$qb->setValue('uid_fileowner', $qb->createNamedParameter($share->getShareOwner()->getUID()));
+
+		// Set the file target
+		$qb->setValue('file_target', $qb->createNamedParameter($share->getTarget()));
+
+		// Set the time this share was created
+		$qb->setValue('stime', $qb->createNamedParameter(time()));
+
+		// insert the data and fetch the id of the share
+		$this->dbConn->beginTransaction();
+		$qb->execute();
+		$id = $this->dbConn->lastInsertId('*PREFIX*share');
+		$this->dbConn->commit();
+
+		// Now fetch the inserted share and create a complete share object
+		$qb = $this->dbConn->getQueryBuilder();
+		$qb->select('*')
+			->from('*PREFIX*share')
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
+
+		$cursor = $qb->execute();
+		$data = $cursor->fetch();
+		$cursor->closeCursor();
+
+		if ($data === false) {
+			throw new ShareNotFound();
+		}
+
+		$share = $this->createShare($data);
+		return $share;
 	}
 
 	/**
@@ -196,7 +275,23 @@ class DefaultShareProvider implements IShareProvider {
 	 */
 	public function getShareByToken($token, $password = null) {
 	}
-	
+
+	/**
+	 * Helper function to set the owner of a share to convert old shares
+	 *
+	 * @param string $id
+	 * @param IUser $uid
+	 */
+	private function setShareOwner($id, IUser $owner) {
+		$qb = $this->dbConn->getQueryBuilder();
+
+		$qb->update('share')
+			->set('uid_fileowner', $qb->createNamedParameter($owner->getUID()))
+			->where($qb->expr()->eq('id', $qb->createNamedParameter($id)));
+
+		$qb->execute();
+	}
+
 	/**
 	 * Create a share object from an database row
 	 *
@@ -225,14 +320,26 @@ class DefaultShareProvider implements IShareProvider {
 
 		$share->setSharedBy($this->userManager->get($data['uid_owner']));
 
-		// TODO: getById can return an array. How to handle this properly??
-		$folder = $this->rootFolder->getUserFolder($share->getSharedBy()->getUID());
-		$path = $folder->getById((int)$data['file_source'])[0];
+		if ($data['uid_fileowner'] !== null) {
+			$owner = $this->userManager->get($data['uid_fileowner']);
+			$share->setShareOwner($owner);
+		} else {
+			/*
+			 * If this is an "old" share the uid_file owner is not set. So find it via the
+			 * initiator of the share
+			 */
+			$folder = $this->rootFolder->getUserFolder($share->getSharedBy()->getUID());
 
-		$owner = $path->getOwner();
-		$share->setShareOwner($owner);
+			// We are intersted in owner information which is the same for each file
+			$path = $folder->getById((int)$data['file_source'])[0];
 
-		$path = $this->rootFolder->getUserFolder($owner->getUID())->getById((int)$data['file_source'])[0];
+			$owner = $path->getOwner();
+			$share->setShareOwner($owner);
+
+			$this->setShareOwner($share->getId(), $owner);
+		}
+
+		$path = $this->rootFolder->getUserFolder($share->getShareOwner()->getUID())->getById((int)$data['file_source'])[0];
 		$share->setPath($path);
 
 		if ($data['expiration'] !== null) {
