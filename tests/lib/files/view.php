@@ -8,6 +8,9 @@
 namespace Test\Files;
 
 use OC\Files\Cache\Watcher;
+use OC\Files\Mount\CacheMountProvider;
+use OC\Files\Mount\HomeMountProvider;
+use OC\Files\Mount\ObjectStoreHomeMountProvider;
 use OC\Files\Storage\Common;
 use OC\Files\Mount\MountPoint;
 use OC\Files\Storage\Temporary;
@@ -114,6 +117,10 @@ class View extends \Test\TestCase {
 
 		$mountProviderCollection = \OC::$server->getMountProviderCollection();
 		\Test\TestCase::invokePrivate($mountProviderCollection, 'providers', [[]]);
+		$config = \OC::$server->getConfig();
+		$mountProviderCollection->registerProvider(new HomeMountProvider($config));
+		$mountProviderCollection->registerProvider(new ObjectStoreHomeMountProvider($config));
+		$mountProviderCollection->registerProvider(new CacheMountProvider($config));
 
 		parent::tearDown();
 	}

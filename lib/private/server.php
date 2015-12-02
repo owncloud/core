@@ -47,6 +47,9 @@ use OC\Diagnostics\EventLogger;
 use OC\Diagnostics\NullEventLogger;
 use OC\Diagnostics\NullQueryLogger;
 use OC\Diagnostics\QueryLogger;
+use OC\Files\Mount\CacheMountProvider;
+use OC\Files\Mount\HomeMountProvider;
+use OC\Files\Mount\ObjectStoreHomeMountProvider;
 use OC\Files\Node\HookConnector;
 use OC\Files\Node\Root;
 use OC\Files\View;
@@ -403,9 +406,18 @@ class Server extends SimpleContainer implements IServerContainer {
 				$c->getL10N('lib', $language)
 			);
 		});
-		$this->registerService('MountConfigManager', function () {
+		$this->registerService('MountConfigManager', function (Server $c) {
 			$loader = \OC\Files\Filesystem::getLoader();
-			return new \OC\Files\Config\MountProviderCollection($loader);
+			$manager =  new \OC\Files\Config\MountProviderCollection($loader);
+
+			// register builtin providers
+
+			$config = $c->getConfig();
+			$manager->registerProvider(new HomeMountProvider($config));
+			$manager->registerProvider(new ObjectStoreHomeMountProvider($config));
+			$manager->registerProvider(new CacheMountProvider($config));
+
+			return $manager;
 		});
 		$this->registerService('IniWrapper', function ($c) {
 			return new IniGetWrapper();
