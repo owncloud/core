@@ -51,37 +51,10 @@ class SharedMount extends MountPoint implements MoveableMount {
 	public function __construct($storage, $mountpoint, $arguments = null, $loader = null) {
 		$this->user = $arguments['user'];
 		$this->recipientView = new View('/' . $this->user . '/files');
-		$newMountPoint = $this->verifyMountPoint($arguments['share']);
-		$absMountPoint = '/' . $this->user . '/files' . $newMountPoint;
+		$share = $arguments['share'];
+		$absMountPoint = '/' . $this->user . '/files' . \OC\Files\Filesystem::normalizePath($share['file_target']);
 		$arguments['ownerView'] = new View('/' . $arguments['share']['uid_owner'] . '/files');
 		parent::__construct($storage, $absMountPoint, $arguments, $loader);
-	}
-
-	/**
-	 * check if the parent folder exists otherwise move the mount point up
-	 */
-	private function verifyMountPoint(&$share) {
-
-		$mountPoint = basename($share['file_target']);
-		$parent = dirname($share['file_target']);
-
-		if (!$this->recipientView->is_dir($parent)) {
-			$parent = Helper::getShareFolder();
-		}
-
-		$newMountPoint = \OCA\Files_Sharing\Helper::generateUniqueTarget(
-			\OC\Files\Filesystem::normalizePath($parent . '/' . $mountPoint),
-			[],
-			$this->recipientView
-		);
-
-		if ($newMountPoint !== $share['file_target']) {
-			$this->updateFileTarget($newMountPoint, $share);
-			$share['file_target'] = $newMountPoint;
-			$share['unique_name'] = true;
-		}
-
-		return $newMountPoint;
 	}
 
 	/**
