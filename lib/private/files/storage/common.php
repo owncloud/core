@@ -137,7 +137,9 @@ abstract class Common implements Storage {
 			return false;
 		}
 		$parent = dirname($path);
-		return $this->isUpdatable($parent) && $this->isUpdatable($path);
+		// according to POSIX, we can delete file if directory allowes that
+		// See: http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap04.html#tag_04_02
+		return $this->isUpdatable($parent) || $this->isUpdatable($path);
 	}
 
 	public function isSharable($path) {
