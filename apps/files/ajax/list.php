@@ -46,6 +46,13 @@ try {
 	$sortDirection = isset($_GET['sortdirection']) ? ($_GET['sortdirection'] === 'desc') : false;
 	$mimetypeFilters = isset($_GET['mimetypes']) ? json_decode($_GET['mimetypes']) : '';
 
+        // Hack for sorting (by date) my automatically uploaded files in the directory "Photos"
+        if(strpos($_GET['dir'], 'Photos'))
+        {
+                $sortDirection = 'asc';
+                $sortAttribute = 'mtime';
+        }       
+
 	$files = [];
 	// Clean up duplicates from array
 	if (is_array($mimetypeFilters) && count($mimetypeFilters)) {
