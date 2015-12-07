@@ -144,7 +144,9 @@ if($_['passwordChangeSupported']) {
 	<h2><?php p($l->t('Groups')); ?></h2>
 	<p><?php p($l->t('You are member of the following groups:')); ?></p>
 	<p>
-	<?php p(implode(', ', $_['groups'])); ?>
+	<?php foreach($_['groups'] as $groupName => $groupUsers) {
+        p("<strong>$groupName</strong>");
+        p(implode(', ', $groupUsers)); ?>
 	</p>
 </div>
 

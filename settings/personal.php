@@ -155,9 +155,13 @@ $tmpl->assign('showCertificates', $enableCertImport);
 $tmpl->assign('urlGenerator', $urlGenerator);
 
 // Get array of group ids for this user
-$groups = \OC::$server->getGroupManager()->getUserIdGroups(OC_User::getUser());
-$groups2 = array_map(function($group) { return $group->getGID(); }, $groups);
-sort($groups2);
+$groupManager = \OC::$server->getGroupManager();
+$groups = $groupManager->getUserIdGroups(OC_User::getUser());
+$groups2 = array();
+foreach ($groups as $group) {
+    $groups2[$group->getGID()] =  $groupManager->displayNamesInGroups([$group]);
+}
+ksort($groups2);
 $tmpl->assign('groups', $groups2);
 
 // add hardcoded forms from the template
@@ -165,6 +169,7 @@ $l = \OC::$server->getL10N('settings');
 $formsAndMore = [];
 $formsAndMore[]= ['anchor' => 'clientsbox', 'section-name' => $l->t('Sync clients')];
 $formsAndMore[]= ['anchor' => 'passwordform', 'section-name' => $l->t('Personal info')];
+$formsAndMore[]= ['anchor' => 'groups', 'section-name' => $l->t('My Groups')];
 
 $forms=OC_App::getForms('personal');
 
