@@ -61,7 +61,7 @@ class Files implements IObjectStore {
 			return;
 		} elseif ($this->autocreate) {
 			if (!mkdir($this->path)) {
-				throw new StorageInvalidException('Could not create object directory '.$this->$path);
+				throw new StorageInvalidException('Could not create object directory '.$this->path);
 			}
 		} else {
 			throw new StorageNotAvailableException();
