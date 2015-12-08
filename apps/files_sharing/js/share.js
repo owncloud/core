@@ -43,8 +43,8 @@
 					sharePermissions = sharePermissions | (OC.PERMISSION_ALL & ~OC.PERMISSION_SHARE);
 				}
 				if (fileData.type === 'file') {
-					// files can't be shared with delete permissions
-					sharePermissions = sharePermissions & ~OC.PERMISSION_DELETE;
+					// files can't be shared with delete or create permissions
+					sharePermissions = sharePermissions & ~OC.PERMISSION_DELETE & ~OC.PERMISSION_CREATE;
 				}
 				tr.attr('data-share-permissions', sharePermissions);
 				if (fileData.shareOwner) {
