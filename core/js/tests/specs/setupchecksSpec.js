@@ -73,7 +73,9 @@ describe('OC.SetupChecks tests', function() {
 					isUrandomAvailable: true,
 					serverHasInternetConnection: false,
 					memcacheDocs: 'https://doc.owncloud.org/server/go.php?to=admin-performance',
-					forwardedForHeadersWorking: true
+					forwardedForHeadersWorking: true,
+					isCorrectMemcachedPHPModuleInstalled: true,
+					hasPassedCodeIntegrityCheck: true,
 				})
 			);
 
@@ -106,7 +108,9 @@ describe('OC.SetupChecks tests', function() {
 					serverHasInternetConnection: false,
 					dataDirectoryProtected: false,
 					memcacheDocs: 'https://doc.owncloud.org/server/go.php?to=admin-performance',
-					forwardedForHeadersWorking: true
+					forwardedForHeadersWorking: true,
+					isCorrectMemcachedPHPModuleInstalled: true,
+					hasPassedCodeIntegrityCheck: true,
 				})
 			);
 
@@ -141,7 +145,9 @@ describe('OC.SetupChecks tests', function() {
 					serverHasInternetConnection: false,
 					dataDirectoryProtected: false,
 					isMemcacheConfigured: true,
-					forwardedForHeadersWorking: true
+					forwardedForHeadersWorking: true,
+					isCorrectMemcachedPHPModuleInstalled: true,
+					hasPassedCodeIntegrityCheck: true,
 				})
 			);
 
@@ -173,13 +179,44 @@ describe('OC.SetupChecks tests', function() {
 					serverHasInternetConnection: true,
 					dataDirectoryProtected: true,
 					isMemcacheConfigured: true,
-					forwardedForHeadersWorking: true
+					forwardedForHeadersWorking: true,
+					isCorrectMemcachedPHPModuleInstalled: true,
+					hasPassedCodeIntegrityCheck: true,
 				})
 			);
 
 			async.done(function( data, s, x ){
 				expect(data).toEqual([{
 					msg: '/dev/urandom is not readable by PHP which is highly discouraged for security reasons. Further information can be found in our <a href="https://docs.owncloud.org/myDocs.html">documentation</a>.',
+					type: OC.SetupChecks.MESSAGE_TYPE_WARNING
+				}]);
+				done();
+			});
+		});
+
+		it('should return an error if the wrong memcache PHP module is installed', function(done) {
+			var async = OC.SetupChecks.checkSetup();
+
+			suite.server.requests[0].respond(
+				200,
+				{
+					'Content-Type': 'application/json',
+				},
+				JSON.stringify({
+					isUrandomAvailable: true,
+					securityDocs: 'https://docs.owncloud.org/myDocs.html',
+					serverHasInternetConnection: true,
+					dataDirectoryProtected: true,
+					isMemcacheConfigured: true,
+					forwardedForHeadersWorking: true,
+					isCorrectMemcachedPHPModuleInstalled: false,
+					hasPassedCodeIntegrityCheck: true,
+				})
+			);
+
+			async.done(function( data, s, x ){
+				expect(data).toEqual([{
+					msg: 'Memcached is configured as distributed cache, but the wrong PHP module "memcache" is installed. \\OC\\Memcache\\Memcached only supports "memcached" and not "memcache". See the <a href="https://code.google.com/p/memcached/wiki/PHPClientComparison">memcached wiki about both modules</a>.',
 					type: OC.SetupChecks.MESSAGE_TYPE_WARNING
 				}]);
 				done();
@@ -200,7 +237,9 @@ describe('OC.SetupChecks tests', function() {
 					dataDirectoryProtected: true,
 					isMemcacheConfigured: true,
 					forwardedForHeadersWorking: false,
-					reverseProxyDocs: 'https://docs.owncloud.org/foo/bar.html'
+					reverseProxyDocs: 'https://docs.owncloud.org/foo/bar.html',
+					isCorrectMemcachedPHPModuleInstalled: true,
+					hasPassedCodeIntegrityCheck: true,
 				})
 			);
 
@@ -248,7 +287,9 @@ describe('OC.SetupChecks tests', function() {
 					dataDirectoryProtected: true,
 					isMemcacheConfigured: true,
 					forwardedForHeadersWorking: true,
-					phpSupported: {eol: true, version: '5.4.0'}
+					phpSupported: {eol: true, version: '5.4.0'},
+					isCorrectMemcachedPHPModuleInstalled: true,
+					hasPassedCodeIntegrityCheck: true,
 				})
 			);
 

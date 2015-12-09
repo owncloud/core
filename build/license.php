@@ -21,6 +21,7 @@
 class Licenses
 {
 	protected $paths = array();
+	public $authors = [];
 
 	public function __construct() {
 		$this->licenseText = <<<EOD
@@ -82,7 +83,24 @@ EOD;
 			/** @var SplFileInfo $file */
 			$this->handleFile($file);
 		}
+	}
 
+	function writeAuthorsFile() {
+		ksort($this->authors);
+		$template = "ownCloud is written by:
+@AUTHORS@
+
+With help from many libraries and frameworks including:
+	Open Collaboration Services
+	SabreDAV
+	jQuery
+	…
+";
+		$authors = implode(PHP_EOL, array_map(function($author){
+			return " - ".$author;
+		}, $this->authors));
+		$template = str_replace('@AUTHORS@', $authors, $template);
+		file_put_contents(__DIR__.'/../AUTHORS', $template);
 	}
 
 	function handleFile($path) {
@@ -144,7 +162,9 @@ EOD;
 	}
 
 	private function getAuthors($file) {
-		$out = shell_exec("git blame --line-porcelain $file | sed -n 's/^author //p;s/^author-mail //p' | sed 'N;s/\\n/ /' | sort -f | uniq");
+		// only add authors that changed code and not the license header
+		$licenseHeaderEndsAtLine = trim(shell_exec("grep -n '*/' $file | head -n 1 | cut -d ':' -f 1"));
+		$out = shell_exec("git blame --line-porcelain -L $licenseHeaderEndsAtLine, $file | sed -n 's/^author //p;s/^author-mail //p' | sed 'N;s/\\n/ /' | sort -f | uniq");
 		$authors = explode(PHP_EOL, $out);
 
 		$authors = array_filter($authors, function($author) {
@@ -154,6 +174,7 @@ EOD;
 				'Jenkins for ownCloud <owncloud-bot@tmit.eu>']);
 		});
 		$authors = array_map(function($author){
+			$this->authors[$author] = $author;
 			return " * @author $author";
 		}, $authors);
 		return implode(PHP_EOL, $authors);
@@ -173,7 +194,6 @@ if (isset($argv[1])) {
 		'../apps/files_versions',
 		'../apps/provisioning_api',
 		'../apps/user_ldap',
-		'../apps/user_webdavauth',
 		'../core',
 		'../lib',
 		'../ocs',
@@ -186,5 +206,5 @@ if (isset($argv[1])) {
 		'../status.php',
 		'../version.php',
 	]);
+	$licenses->writeAuthorsFile();
 }
-

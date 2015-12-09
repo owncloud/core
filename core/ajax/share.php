@@ -5,6 +5,7 @@
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Craig Morrissey <craig@owncloud.com>
  * @author dampfklon <me@dampfklon.de>
+ * @author Felix Böhm <felixboehm@gmx.de>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
@@ -12,7 +13,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Ramiro Aparicio <rapariciog@gmail.com>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
  * @author Vincent Petry <pvince81@owncloud.com>
@@ -34,6 +35,8 @@
  *
  */
 
+use OCP\IUser;
+
 OC_JSON::checkLoggedIn();
 OCP\JSON::callCheck();
 
@@ -47,9 +50,28 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 					$shareType = (int)$_POST['shareType'];
 					$shareWith = $_POST['shareWith'];
 					$itemSourceName = isset($_POST['itemSourceName']) ? (string)$_POST['itemSourceName'] : null;
-					if ($shareType === OCP\Share::SHARE_TYPE_LINK && $shareWith == '') {
-						$shareWith = null;
+
+					/*
+					 * Nasty nasty fix for https://github.com/owncloud/core/issues/19950
+					 */
+					$passwordChanged = null;
+					if (is_array($shareWith)) {
+						$passwordChanged = ($shareWith['passwordChanged'] === 'true');
+						if ($shareType === OCP\Share::SHARE_TYPE_LINK && $shareWith['password'] === '') {
+							$shareWith = null;
+						} else {
+							$shareWith = $shareWith['password'];
+						}
+					} else {
+						/*
+						 * We need this branch since the calendar and contacts also use this
+						 * endpoint
+						 */
+						if ($shareType === OCP\Share::SHARE_TYPE_LINK && $shareWith === '') {
+							$shareWith = null;
+						}
 					}
+
  					$itemSourceName=(isset($_POST['itemSourceName'])) ? (string)$_POST['itemSourceName']:'';
 
 					$token = OCP\Share::shareItem(
@@ -59,7 +81,8 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 						$shareWith,
 						$_POST['permissions'],
 						$itemSourceName,
-						(!empty($_POST['expirationDate']) ? new \DateTime((string)$_POST['expirationDate']) : null)
+						(!empty($_POST['expirationDate']) ? new \DateTime((string)$_POST['expirationDate']) : null),
+						$passwordChanged
 					);
 
 					if (is_string($token)) {
@@ -114,17 +137,23 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 			$itemSource = (string)$_POST['itemSource'];
 			$recipient = (string)$_POST['recipient'];
 
+			$userManager = \OC::$server->getUserManager();
+			$recipientList = [];
 			if($shareType === \OCP\Share::SHARE_TYPE_USER) {
-				$recipientList[] = $recipient;
+				$recipientList[] = $userManager->get($recipient);
 			} elseif ($shareType === \OCP\Share::SHARE_TYPE_GROUP) {
 				$recipientList = \OC_Group::usersInGroup($recipient);
+				$group = \OC::$server->getGroupManager()->get($recipient);
+				$recipientList = $group->searchUsers('');
 			}
 			// don't send a mail to the user who shared the file
-			$recipientList = array_diff($recipientList, array(\OCP\User::getUser()));
+			$recipientList = array_filter($recipientList, function($user) {
+				/** @var IUser $user */
+				return $user->getUID() !== \OCP\User::getUser();
+			});
 
 			$mailNotification = new \OC\Share\MailNotifications(
-				\OC::$server->getUserSession()->getUser()->getUID(),
-				\OC::$server->getConfig(),
+				\OC::$server->getUserSession()->getUser(),
 				\OC::$server->getL10N('lib'),
 				\OC::$server->getMailer(),
 				\OC::$server->getLogger(),
@@ -162,8 +191,7 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 			$to_address = (string)$_POST['toaddress'];
 
 			$mailNotification = new \OC\Share\MailNotifications(
-				\OC::$server->getUserSession()->getUser()->getUID(),
-				\OC::$server->getConfig(),
+				\OC::$server->getUserSession()->getUser(),
 				\OC::$server->getL10N('lib'),
 				\OC::$server->getMailer(),
 				\OC::$server->getLogger(),
@@ -178,11 +206,41 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 				} catch (Exception $e) {
 					\OCP\Util::writeLog('sharing', "Couldn't read date: " . $e->getMessage(), \OCP\Util::ERROR);
 				}
-
 			}
 
 			$result = $mailNotification->sendLinkShareMail($to_address, $file, $link, $expiration);
 			if(empty($result)) {
+				// Get the token from the link
+				$linkParts = explode('/', $link);
+				$token = array_pop($linkParts);
+
+				// Get the share for the token
+				$share = \OCP\Share::getShareByToken($token, false);
+				if ($share !== false) {
+					$currentUser = \OC::$server->getUserSession()->getUser()->getUID();
+					$file = '/' . ltrim($file, '/');
+
+					// Check whether share belongs to the user and whether the file is the same
+					if ($share['file_target'] === $file && $share['uid_owner'] === $currentUser) {
+
+						// Get the path for the user
+						$view = new \OC\Files\View('/' . $currentUser . '/files');
+						$fileId = (int) $share['item_source'];
+						$path = $view->getPath((int) $share['item_source']);
+
+						if ($path !== null) {
+							$event = \OC::$server->getActivityManager()->generateEvent();
+							$event->setApp(\OCA\Files_Sharing\Activity::FILES_SHARING_APP)
+								->setType(\OCA\Files_Sharing\Activity::TYPE_SHARED)
+								->setAuthor($currentUser)
+								->setAffectedUser($currentUser)
+								->setObject('files', $fileId, $path)
+								->setSubject(\OCA\Files_Sharing\Activity::SUBJECT_SHARED_EMAIL, [$path, $to_address]);
+							\OC::$server->getActivityManager()->publish($event);
+						}
+					}
+				}
+
 				\OCP\JSON::success();
 			} else {
 				$l = \OC::$server->getL10N('core');
@@ -308,8 +366,8 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 						}
 
 						if ((!isset($_GET['itemShares'])
-							|| !is_array((string)$_GET['itemShares'][OCP\Share::SHARE_TYPE_USER])
-							|| !in_array($uid, (string)$_GET['itemShares'][OCP\Share::SHARE_TYPE_USER]))
+							|| !is_array($_GET['itemShares'][OCP\Share::SHARE_TYPE_USER])
+							|| !in_array($uid, $_GET['itemShares'][OCP\Share::SHARE_TYPE_USER]))
 							&& $uid != OC_User::getUser()) {
 							$shareWith[] = array(
 								'label' => $displayName,
@@ -334,8 +392,8 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 					if ($count < $request_limit) {
 						if (!isset($_GET['itemShares'])
 							|| !isset($_GET['itemShares'][OCP\Share::SHARE_TYPE_GROUP])
-							|| !is_array((string)$_GET['itemShares'][OCP\Share::SHARE_TYPE_GROUP])
-							|| !in_array($group, (string)$_GET['itemShares'][OCP\Share::SHARE_TYPE_GROUP])) {
+							|| !is_array($_GET['itemShares'][OCP\Share::SHARE_TYPE_GROUP])
+							|| !in_array($group, $_GET['itemShares'][OCP\Share::SHARE_TYPE_GROUP])) {
 							$shareWith[] = array(
 								'label' => $group,
 								'value' => array(
@@ -379,6 +437,16 @@ if (isset($_POST['action']) && isset($_POST['itemType']) && isset($_POST['itemSo
 					}
 				}
 
+				$sharingAutocompletion = \OC::$server->getConfig()
+					->getAppValue('core', 'shareapi_allow_share_dialog_user_enumeration', 'yes');
+
+				if ($sharingAutocompletion !== 'yes') {
+					$searchTerm = strtolower($_GET['search']);
+					$shareWith = array_filter($shareWith, function($user) use ($searchTerm) {
+						return strtolower($user['label']) === $searchTerm
+							|| strtolower($user['value']['shareWith']) === $searchTerm;
+					});
+				}
 
 				$sorter = new \OC\Share\SearchResultSorter((string)$_GET['search'],
 														   'label',

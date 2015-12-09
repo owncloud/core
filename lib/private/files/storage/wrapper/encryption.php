@@ -3,7 +3,7 @@
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
- * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -196,9 +196,13 @@ class Encryption extends Wrapper {
 	public function file_put_contents($path, $data) {
 		// file put content will always be translated to a stream write
 		$handle = $this->fopen($path, 'w');
-		$written = fwrite($handle, $data);
-		fclose($handle);
-		return $written;
+		if (is_resource($handle)) {
+			$written = fwrite($handle, $data);
+			fclose($handle);
+			return $written;
+		}
+
+		return false;
 	}
 
 	/**
@@ -232,7 +236,11 @@ class Encryption extends Wrapper {
 
 		$result = $this->storage->rename($path1, $path2);
 
-		if ($result && $this->encryptionManager->isEnabled()) {
+		if ($result &&
+			// versions always use the keys from the original file, so we can skip
+			// this step for versions
+			$this->isVersion($path2) === false &&
+			$this->encryptionManager->isEnabled()) {
 			$source = $this->getFullPath($path1);
 			if (!$this->util->isExcluded($source)) {
 				$target = $this->getFullPath($path2);
@@ -317,7 +325,7 @@ class Encryption extends Wrapper {
 	 *
 	 * @param string $path
 	 * @param string $mode
-	 * @return resource
+	 * @return resource|bool
 	 * @throws GenericEncryptionException
 	 * @throws ModuleDoesNotExistsException
 	 */
@@ -401,6 +409,9 @@ class Encryption extends Wrapper {
 			if ($shouldEncrypt === true && $encryptionModule !== null) {
 				$headerSize = $this->getHeaderSize($path);
 				$source = $this->storage->fopen($path, $mode);
+				if (!is_resource($source)) {
+					return false;
+				}
 				$handle = \OC\Files\Stream\Encryption::wrap($source, $path, $fullPath, $header,
 					$this->uid, $encryptionModule, $this->storage, $this, $this->util, $this->fileHelper, $mode,
 					$size, $unencryptedSize, $headerSize);
@@ -420,6 +431,9 @@ class Encryption extends Wrapper {
 	 * @return bool
 	 */
 	public function moveFromStorage(Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = true) {
+		if ($sourceStorage === $this) {
+			return $this->rename($sourceInternalPath, $targetInternalPath);
+		}
 
 		// TODO clean this up once the underlying moveFromStorage in OC\Files\Storage\Wrapper\Common is fixed:
 		// - call $this->storage->moveFromStorage() instead of $this->copyBetweenStorage
@@ -449,7 +463,7 @@ class Encryption extends Wrapper {
 	public function copyFromStorage(Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime = false) {
 
 		// TODO clean this up once the underlying moveFromStorage in OC\Files\Storage\Wrapper\Common is fixed:
-		// - call $this->storage->moveFromStorage() instead of $this->copyBetweenStorage
+		// - call $this->storage->copyFromStorage() instead of $this->copyBetweenStorage
 		// - copy the file cache update from  $this->copyBetweenStorage to this method
 		// - copy the copyKeys() call from  $this->copyBetweenStorage to this method
 		// - remove $this->copyBetweenStorage
@@ -466,8 +480,27 @@ class Encryption extends Wrapper {
 	 * @param bool $preserveMtime
 	 * @param bool $isRename
 	 * @return bool
+	 * @throws \Exception
 	 */
 	private function copyBetweenStorage(Storage $sourceStorage, $sourceInternalPath, $targetInternalPath, $preserveMtime, $isRename) {
+
+		// for versions we have nothing to do, because versions should always use the
+		// key from the original file. Just create a 1:1 copy and done
+		if ($this->isVersion($targetInternalPath) ||
+			$this->isVersion($sourceInternalPath)) {
+			$result = $this->storage->copyFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath);
+			if ($result) {
+				$info = $this->getCache('', $sourceStorage)->get($sourceInternalPath);
+				// make sure that we update the unencrypted size for the version
+				if (isset($info['encrypted']) && $info['encrypted'] === true) {
+					$this->updateUnencryptedSize(
+						$this->getFullPath($targetInternalPath),
+						$info['size']
+					);
+				}
+			}
+			return $result;
+		}
 
 		// first copy the keys that we reuse the existing file key on the target location
 		// and don't create a new one which would break versions for example.
@@ -739,6 +772,17 @@ class Encryption extends Wrapper {
 		}
 
 		return false;
+	}
+
+	/**
+	 * check if path points to a files version
+	 *
+	 * @param $path
+	 * @return bool
+	 */
+	protected function isVersion($path) {
+		$normalized = Filesystem::normalizePath($path);
+		return substr($normalized, 0, strlen('/files_versions/')) === '/files_versions/';
 	}
 
 }

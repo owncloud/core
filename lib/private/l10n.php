@@ -4,7 +4,6 @@
  * @author Andreas Fischer <bantu@owncloud.com>
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
- * @author Christopher Schäpers <kondou@ts.unde.re>
  * @author Felix Moeller <mail@felixmoeller.de>
  * @author Jakob Sack <mail@jakobsack.de>
  * @author Jan-Christoph Borchardt <hey@jancborchardt.net>
@@ -102,16 +101,11 @@ class OC_L10N implements \OCP\IL10N {
 	}
 
 	/**
-	 * @param $app
 	 * @return string
 	 */
-	public static function setLanguageFromRequest($app = null) {
+	public static function setLanguageFromRequest() {
 		if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-			if (is_array($app)) {
-				$available = $app;
-			} else {
-				$available = self::findAvailableLanguages($app);
-			}
+			$available = self::findAvailableLanguages();
 
 			// E.g. make sure that 'de' is before 'de_DE'.
 			sort($available);
@@ -122,7 +116,7 @@ class OC_L10N implements \OCP\IL10N {
 				$preferred_language = str_replace('-', '_', $preferred_language);
 				foreach ($available as $available_language) {
 					if ($preferred_language === strtolower($available_language)) {
-						if (!is_array($app)) {
+						if (!self::$language) {
 							self::$language = $available_language;
 						}
 						return $available_language;
@@ -130,7 +124,7 @@ class OC_L10N implements \OCP\IL10N {
 				}
 				foreach ($available as $available_language) {
 					if (substr($preferred_language, 0, 2) === $available_language) {
-						if (!is_array($app)) {
+						if (!self::$language) {
 							self::$language = $available_language;
 						}
 						return $available_language;
@@ -154,6 +148,8 @@ class OC_L10N implements \OCP\IL10N {
 
 		$json = json_decode(file_get_contents($transFile), true);
 		if (!is_array($json)) {
+			$jsonError = json_last_error();
+			\OC::$server->getLogger()->warning("Failed to load $transFile - json error code: $jsonError", ['app' => 'l10n']);
 			return false;
 		}
 
@@ -399,29 +395,6 @@ class OC_L10N implements \OCP\IL10N {
 	}
 
 	/**
-	 * Choose a language
-	 * @param array $text Associative Array with possible strings
-	 * @return String
-	 *
-	 * $text is an array 'de' => 'hallo welt', 'en' => 'hello world', ...
-	 *
-	 * This function is useful to avoid loading thousands of files if only one
-	 * simple string is needed, for example in appinfo.php
-	 */
-	public static function selectLanguage($text) {
-		$lang = self::findLanguage(array_keys($text));
-		return $text[$lang];
-	}
-
-	/**
-	 * The given language is forced to be used while executing the current request
-	 * @param string $lang
-	 */
-	public static function forceLanguage($lang) {
-		self::$language = $lang;
-	}
-
-	/**
 	 * The code (en, de, ...) of the language that is used for this OC_L10N object
 	 *
 	 * @return string language
@@ -432,17 +405,13 @@ class OC_L10N implements \OCP\IL10N {
 
 	/**
 	 * find the best language
-	 * @param array|string $app details below
+	 * @param string $app
 	 * @return string language
-	 *
-	 * If $app is an array, ownCloud assumes that these are the available
-	 * languages. Otherwise ownCloud tries to find the files in the l10n
-	 * folder.
 	 *
 	 * If nothing works it returns 'en'
 	 */
 	public static function findLanguage($app = null) {
-		if(!is_array($app) && self::$language != '') {
+		if (self::$language != '' && self::languageExists($app, self::$language)) {
 			return self::$language;
 		}
 
@@ -452,13 +421,7 @@ class OC_L10N implements \OCP\IL10N {
 		if($userId && $config->getUserValue($userId, 'core', 'lang')) {
 			$lang = $config->getUserValue($userId, 'core', 'lang');
 			self::$language = $lang;
-			if(is_array($app)) {
-				$available = $app;
-				$lang_exists = array_search($lang, $available) !== false;
-			} else {
-				$lang_exists = self::languageExists($app, $lang);
-			}
-			if($lang_exists) {
+			if(self::languageExists($app, $lang)) {
 				return $lang;
 			}
 		}
@@ -469,7 +432,7 @@ class OC_L10N implements \OCP\IL10N {
 			return $default_language;
 		}
 
-		$lang = self::setLanguageFromRequest($app);
+		$lang = self::setLanguageFromRequest();
 		if($userId && !$config->getUserValue($userId, 'core', 'lang')) {
 			$config->setUserValue($userId, 'core', 'lang', $lang);
 		}
@@ -503,8 +466,9 @@ class OC_L10N implements \OCP\IL10N {
 	 * @return array an array of available languages
 	 */
 	public static function findAvailableLanguages($app=null) {
-		if(!empty(self::$availableLanguages)) {
-			return self::$availableLanguages;
+		// also works with null as key
+		if(isset(self::$availableLanguages[$app]) && !empty(self::$availableLanguages[$app])) {
+			return self::$availableLanguages[$app];
 		}
 		$available=array('en');//english is always available
 		$dir = self::findI18nDir($app);
@@ -518,7 +482,7 @@ class OC_L10N implements \OCP\IL10N {
 			}
 		}
 
-		self::$availableLanguages = $available;
+		self::$availableLanguages[$app] = $available;
 		return $available;
 	}
 

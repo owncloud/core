@@ -4,7 +4,7 @@
 <!--[if (gt IE 9)|!(IE)]><!--><html class="ng-csp" data-placeholder-focus="false" lang="<?php p($_['language']); ?>" ><!--<![endif]-->
 	<head data-user="<?php p($_['user_uid']); ?>" data-requesttoken="<?php p($_['requesttoken']); ?>"
 		<?php if ($_['updateAvailable']): ?>
-			data-update-version="<?php print($_['updateVersion']); ?>" data-update-link="<?php print_unescaped($_['updateLink']); ?>"
+			data-update-version="<?php p($_['updateVersion']); ?>" data-update-link="<?php p($_['updateLink']); ?>"
 		<?php endif; ?>
 		>
 		<meta charset="utf-8">
@@ -15,6 +15,7 @@
 			?>
 		</title>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="referrer" content="never">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
 		<meta name="apple-itunes-app" content="app-id=<?php p($theme->getiTunesAppId()); ?>">
 		<meta name="apple-mobile-web-app-capable" content="yes">
@@ -22,8 +23,9 @@
 		<meta name="apple-mobile-web-app-title" content="<?php p((!empty($_['application']) && $_['appid']!='files')? $_['application']:'ownCloud'); ?>">
 		<meta name="mobile-web-app-capable" content="yes">
 		<meta name="theme-color" content="<?php p($theme->getMailHeaderColor()); ?>">
-		<link rel="shortcut icon" type="image/png" href="<?php print_unescaped(image_path($_['appid'], 'favicon.png')); ?>">
+		<link rel="shortcut icon" href="<?php print_unescaped(image_path($_['appid'], 'favicon.ico')); /* IE11+ supports png */ ?>">
 		<link rel="apple-touch-icon-precomposed" href="<?php print_unescaped(image_path($_['appid'], 'favicon-touch.png')); ?>">
+		<link rel="mask-icon" sizes="any" href="<?php print_unescaped(image_path($_['appid'], 'favicon-mask.svg')); ?>" color="#1d2d44">
 		<?php foreach($_['cssfiles'] as $cssfile): ?>
 			<link rel="stylesheet" href="<?php print_unescaped($cssfile); ?>" media="screen">
 		<?php endforeach; ?>
@@ -62,12 +64,14 @@
 
 			<div id="logo-claim" style="display:none;"><?php p($theme->getLogoClaim()); ?></div>
 			<div id="settings" class="svg">
-				<div id="expand" tabindex="6" role="link">
+				<div id="expand" tabindex="6" role="link" class="menutoggle">
 					<?php if ($_['enableAvatars']): ?>
 					<div class="avatardiv<?php if ($_['userAvatarSet']) { print_unescaped(' avatardiv-shown'); } else { print_unescaped('" style="display: none'); } ?>">
 						<?php if ($_['userAvatarSet']): ?>
-							<img src="<?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.getAvatar', ['userId' => $_['user_uid'], 'size' => 32]));?>?requesttoken=<?php p(urlencode($_['requesttoken'])); ?>"
-								alt="">
+							<img alt="" width="32" height="32"
+							src="<?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.getAvatar', ['userId' => $_['user_uid'], 'size' => 32]));?>"
+							srcset="<?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.getAvatar', ['userId' => $_['user_uid'], 'size' => 64]));?> 2x, <?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.getAvatar', ['userId' => $_['user_uid'], 'size' => 128]));?> 4x"
+							>
 						<?php endif; ?>
 					</div>
 					<?php endif; ?>
@@ -95,12 +99,12 @@
 				</div>
 			</div>
 
-			<form class="searchbox" action="#" method="post" role="search">
+			<form class="searchbox" action="#" method="post" role="search" novalidate>
 				<label for="searchbox" class="hidden-visually">
 					<?php p($l->t('Search'));?>
 				</label>
 				<input id="searchbox" class="svg" type="search" name="query"
-					value=""
+					value="" required
 					autocomplete="off" tabindex="5">
 			</form>
 		</div></header>

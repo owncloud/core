@@ -2,9 +2,11 @@
 /**
  * @author Andreas Fischer <bantu@owncloud.com>
  * @author Georg Ehrke <georg@owncloud.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Markus Goetz <markus@woboq.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  *
@@ -27,18 +29,41 @@
 
 namespace OC;
 
+use \OCP\AutoloadNotAllowedException;
+
 class Autoloader {
+	/** @var bool */
 	private $useGlobalClassPath = true;
-
-	private $prefixPaths = array();
-
-	private $classPaths = array();
+	/** @var array */
+	private $validRoots = [];
 
 	/**
 	 * Optional low-latency memory cache for class to path mapping.
+	 *
 	 * @var \OC\Memcache\Cache
 	 */
 	protected $memoryCache;
+
+	/**
+	 * Autoloader constructor.
+	 *
+	 * @param string[] $validRoots
+	 */
+	public function __construct(array $validRoots) {
+		foreach ($validRoots as $root) {
+			$this->validRoots[$root] = true;
+		}
+	}
+
+	/**
+	 * Add a path to the list of valid php roots for auto loading
+	 *
+	 * @param string $root
+	 */
+	public function addValidRoot($root) {
+		$root = stream_resolve_include_path($root);
+		$this->validRoots[$root] = true;
+	}
 
 	/**
 	 * disable the usage of the global classpath \OC::$CLASSPATH
@@ -64,9 +89,7 @@ class Autoloader {
 		$class = trim($class, '\\');
 
 		$paths = array();
-		if (array_key_exists($class, $this->classPaths)) {
-			$paths[] = $this->classPaths[$class];
-		} else if ($this->useGlobalClassPath and array_key_exists($class, \OC::$CLASSPATH)) {
+		if ($this->useGlobalClassPath && array_key_exists($class, \OC::$CLASSPATH)) {
 			$paths[] = \OC::$CLASSPATH[$class];
 			/**
 			 * @TODO: Remove this when necessary
@@ -77,14 +100,30 @@ class Autoloader {
 				$paths[] = str_replace('apps/', '', \OC::$CLASSPATH[$class]);
 			}
 		} elseif (strpos($class, 'OC_') === 0) {
-			// first check for legacy classes if underscores are used
-			$paths[] = 'private/legacy/' . strtolower(str_replace('_', '/', substr($class, 3)) . '.php');
-			$paths[] = 'private/' . strtolower(str_replace('_', '/', substr($class, 3)) . '.php');
+			$paths[] = \OC::$SERVERROOT . '/lib/private/legacy/' . strtolower(str_replace('_', '/', substr($class, 3)) . '.php');
+			$paths[] = \OC::$SERVERROOT . '/lib/private/' . strtolower(str_replace('_', '/', substr($class, 3)) . '.php');
 		} elseif (strpos($class, 'OC\\') === 0) {
-			$paths[] = 'private/' . strtolower(str_replace('\\', '/', substr($class, 3)) . '.php');
-			$paths[] = strtolower(str_replace('\\', '/', substr($class, 3)) . '.php');
+			$split = explode('\\', $class, 3);
+
+			if (count($split) === 3) {
+				$split[1] = strtolower($split[1]);
+
+				if ($split[1] === 'core') {
+					$paths[] = \OC::$SERVERROOT . '/core/' . strtolower(str_replace('\\', '/', $split[2])) . '.php';
+				} else if ($split[1] === 'settings') {
+					$paths[] = \OC::$SERVERROOT . '/settings/' . strtolower(str_replace('\\', '/', $split[2])) . '.php';
+				} else if ($split[1] === 'repair') {
+					$paths[] = \OC::$SERVERROOT . '/lib/repair/' . strtolower(str_replace('\\', '/', $split[2])) . '.php';
+
+				} else {
+					$paths[] = \OC::$SERVERROOT . '/lib/private/' . $split[1] . '/' . strtolower(str_replace('\\', '/', $split[2])) . '.php';
+				}
+
+			} else {
+				$paths[] = \OC::$SERVERROOT . '/lib/private/' . strtolower(str_replace('\\', '/', $split[1])) . '.php';
+			}
 		} elseif (strpos($class, 'OCP\\') === 0) {
-			$paths[] = 'public/' . strtolower(str_replace('\\', '/', substr($class, 4)) . '.php');
+			$paths[] = \OC::$SERVERROOT . '/lib/public/' . strtolower(str_replace('\\', '/', substr($class, 4)) . '.php');
 		} elseif (strpos($class, 'OCA\\') === 0) {
 			list(, $app, $rest) = explode('\\', $class, 3);
 			$app = strtolower($app);
@@ -95,11 +134,24 @@ class Autoloader {
 				$paths[] = $appPath . '/lib/' . strtolower(str_replace('\\', '/', $rest) . '.php');
 			}
 		} elseif (strpos($class, 'Test_') === 0) {
-			$paths[] = 'tests/lib/' . strtolower(str_replace('_', '/', substr($class, 5)) . '.php');
+			$paths[] = \OC::$SERVERROOT . '/tests/lib/' . strtolower(str_replace('_', '/', substr($class, 5)) . '.php');
 		} elseif (strpos($class, 'Test\\') === 0) {
-			$paths[] = 'tests/lib/' . strtolower(str_replace('\\', '/', substr($class, 5)) . '.php');
+			$paths[] = \OC::$SERVERROOT . '/tests/lib/' . strtolower(str_replace('\\', '/', substr($class, 5)) . '.php');
 		}
 		return $paths;
+	}
+
+	/**
+	 * @param string $fullPath
+	 * @return bool
+	 */
+	protected function isValidPath($fullPath) {
+		foreach ($this->validRoots as $root => $true) {
+			if (substr($fullPath, 0, strlen($root) + 1) === $root . '/') {
+				return true;
+			}
+		}
+		throw new AutoloadNotAllowedException($fullPath);
 	}
 
 	/**
@@ -119,7 +171,7 @@ class Autoloader {
 			$pathsToRequire = array();
 			foreach ($this->findClass($class) as $path) {
 				$fullPath = stream_resolve_include_path($path);
-				if ($fullPath) {
+				if ($fullPath && $this->isValidPath($fullPath)) {
 					$pathsToRequire[] = $fullPath;
 				}
 			}
@@ -138,6 +190,7 @@ class Autoloader {
 
 	/**
 	 * Sets the optional low-latency cache for class to path mapping.
+	 *
 	 * @param \OC\Memcache\Cache $memoryCache Instance of memory cache.
 	 */
 	public function setMemoryCache(\OC\Memcache\Cache $memoryCache = null) {

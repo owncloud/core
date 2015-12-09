@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Gadzy <dev@gadzy.fr>
  * @author Joas Schilling <nickvergessen@owncloud.com>
@@ -39,12 +40,8 @@ $l = \OC::$server->getL10N('files_sharing');
 \OC::$CLASSPATH['OCA\Files\Share\Maintainer'] = 'files_sharing/lib/maintainer.php';
 \OC::$CLASSPATH['OCA\Files\Share\Proxy'] = 'files_sharing/lib/proxy.php';
 
-// Exceptions
-\OC::$CLASSPATH['OCA\Files_Sharing\Exceptions\BrokenPath'] = 'files_sharing/lib/exceptions.php';
-
 $application = new Application();
 $application->registerMountProviders();
-$application->setupPropagation();
 
 \OCP\App::registerAdmin('files_sharing', 'settings-admin');
 \OCP\App::registerPersonal('files_sharing', 'settings-personal');
@@ -54,18 +51,26 @@ $application->setupPropagation();
 \OCP\Share::registerBackend('file', 'OC_Share_Backend_File');
 \OCP\Share::registerBackend('folder', 'OC_Share_Backend_Folder', 'file');
 
-\OCP\Util::addScript('files_sharing', 'share');
-\OCP\Util::addScript('files_sharing', 'external');
-\OCP\Util::addStyle('files_sharing', 'sharetabview');
+$eventDispatcher = \OC::$server->getEventDispatcher();
+$eventDispatcher->addListener(
+	'OCA\Files::loadAdditionalScripts',
+	function() {
+		\OCP\Util::addScript('files_sharing', 'share');
+		\OCP\Util::addScript('files_sharing', 'sharetabview');
+		if (\OC::$server->getConfig()->getAppValue('files_sharing', 'incoming_server2server_share_enabled', 'yes') === 'yes') {
+			\OCP\Util::addScript('files_sharing', 'external');
+		}
+		\OCP\Util::addStyle('files_sharing', 'sharetabview');
+	}
+);
 
-// FIXME: registering a job here will cause additional useless SQL queries
-// when the route is not cron.php, needs a better way
-\OC::$server->getJobList()->add('OCA\Files_sharing\Lib\DeleteOrphanedSharesJob');
+// \OCP\Util::addStyle('files_sharing', 'sharetabview');
 
 \OC::$server->getActivityManager()->registerExtension(function() {
 		return new \OCA\Files_Sharing\Activity(
 			\OC::$server->query('L10NFactory'),
-			\OC::$server->getURLGenerator()
+			\OC::$server->getURLGenerator(),
+			\OC::$server->getActivityManager()
 		);
 });
 
@@ -107,3 +112,13 @@ if ($config->getAppValue('core', 'shareapi_enabled', 'yes') === 'yes') {
 		}
 	}
 }
+
+/**
+ * FIXME
+$manager = \OC::$server->getNotificationManager();
+$manager->registerNotifier(function() {
+	return new \OCA\Files_Sharing\Notifier(
+		\OC::$server->getL10NFactory()
+	);
+});
+ */

@@ -114,7 +114,13 @@ class OC_JSON{
 	 * @deprecated Use annotation based ACLs from the AppFramework instead
 	 */
 	public static function checkSubAdminUser() {
-		if(!OC_SubAdmin::isSubAdmin(OC_User::getUser())) {
+		$userObject = \OC::$server->getUserSession()->getUser();
+		$isSubAdmin = false;
+		if($userObject !== null) {
+			$isSubAdmin = \OC::$server->getGroupManager()->getSubAdmin()->isSubAdmin($userObject);
+		}
+
+		if(!$isSubAdmin) {
 			$l = \OC::$server->getL10N('lib');
 			self::error(array( 'data' => array( 'message' => $l->t('Authentication error'), 'error' => 'authentication_error' )));
 			exit();
@@ -167,6 +173,6 @@ class OC_JSON{
 		if (is_array($data)) {
 			array_walk_recursive($data, array('OC_JSON', 'to_string'));
 		}
-		return json_encode($data);
+		return json_encode($data, JSON_HEX_TAG);
 	}
 }

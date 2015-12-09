@@ -51,6 +51,13 @@ class DummyMountProvider implements IMountProvider {
 	}
 }
 
+/**
+ * Class Filesystem
+ *
+ * @group DB
+ *
+ * @package Test\Files
+ */
 class Filesystem extends \Test\TestCase {
 
 	const TEST_FILESYSTEM_USER1 = "test-filesystem-user1";
@@ -72,7 +79,7 @@ class Filesystem extends \Test\TestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$userBackend = new \OC_User_Dummy();
+		$userBackend = new \Test\Util\User\Dummy();
 		$userBackend->createUser(self::TEST_FILESYSTEM_USER1, self::TEST_FILESYSTEM_USER1);
 		$userBackend->createUser(self::TEST_FILESYSTEM_USER2, self::TEST_FILESYSTEM_USER2);
 		\OC::$server->getUserManager()->registerBackend($userBackend);
@@ -274,7 +281,7 @@ class Filesystem extends \Test\TestCase {
 			$user = \OC_User::getUser();
 		} else {
 			$user = self::TEST_FILESYSTEM_USER1;
-			$backend = new \OC_User_Dummy();
+			$backend = new \Test\Util\User\Dummy();
 			\OC_User::useBackend($backend);
 			$backend->createUser($user, $user);
 			$userObj = \OC::$server->getUserManager()->get($user);
@@ -307,7 +314,6 @@ class Filesystem extends \Test\TestCase {
 	 * @expectedException \OC\User\NoUserException
 	 */
 	public function testLocalMountWhenUserDoesNotExist() {
-		$datadir = \OC_Config::getValue("datadirectory", \OC::$SERVERROOT . "/data");
 		$userId = $this->getUniqueID('user_');
 
 		\OC\Files\Filesystem::initMountPoints($userId);
@@ -325,8 +331,14 @@ class Filesystem extends \Test\TestCase {
 
 		$homeMount = \OC\Files\Filesystem::getStorage('/' . $userId . '/');
 
-		$this->assertTrue($homeMount->instanceOfStorage('\OC\Files\Storage\Home'));
-		$this->assertEquals('home::' . $userId, $homeMount->getId());
+		$this->assertTrue($homeMount->instanceOfStorage('\OCP\Files\IHomeStorage'));
+		if (getenv('RUN_OBJECTSTORE_TESTS')) {
+			$this->assertTrue($homeMount->instanceOfStorage('\OC\Files\ObjectStore\HomeObjectStoreStorage'));
+			$this->assertEquals('object::user:' . $userId, $homeMount->getId());
+		} else {
+			$this->assertTrue($homeMount->instanceOfStorage('\OC\Files\Storage\Home'));
+			$this->assertEquals('home::' . $userId, $homeMount->getId());
+		}
 
 		\OC_User::deleteUser($userId);
 	}
@@ -336,7 +348,10 @@ class Filesystem extends \Test\TestCase {
 	 * for the user's mount point
 	 */
 	public function testLegacyHomeMount() {
-		$datadir = \OC_Config::getValue("datadirectory", \OC::$SERVERROOT . "/data");
+		if (getenv('RUN_OBJECTSTORE_TESTS')) {
+			$this->markTestSkipped('legacy storage unrelated to objectstore environments');
+		}
+		$datadir = \OC::$server->getConfig()->getSystemValue("datadirectory", \OC::$SERVERROOT . "/data");
 		$userId = $this->getUniqueID('user_');
 
 		// insert storage into DB by constructing it
@@ -368,9 +383,10 @@ class Filesystem extends \Test\TestCase {
 	 */
 	public function testMountDefaultCacheDir() {
 		$userId = $this->getUniqueID('user_');
-		$oldCachePath = \OC_Config::getValue('cache_path', '');
+		$config = \OC::$server->getConfig();
+		$oldCachePath = $config->getSystemValue('cache_path', '');
 		// no cache path configured
-		\OC_Config::setValue('cache_path', '');
+		$config->setSystemValue('cache_path', '');
 
 		\OC_User::createUser($userId, $userId);
 		\OC\Files\Filesystem::initMountPoints($userId);
@@ -380,11 +396,11 @@ class Filesystem extends \Test\TestCase {
 			\OC\Files\Filesystem::getMountPoint('/' . $userId . '/cache')
 		);
 		list($storage, $internalPath) = \OC\Files\Filesystem::resolvePath('/' . $userId . '/cache');
-		$this->assertTrue($storage->instanceOfStorage('\OC\Files\Storage\Home'));
+		$this->assertTrue($storage->instanceOfStorage('\OCP\Files\IHomeStorage'));
 		$this->assertEquals('cache', $internalPath);
 		\OC_User::deleteUser($userId);
 
-		\OC_Config::setValue('cache_path', $oldCachePath);
+		$config->setSystemValue('cache_path', $oldCachePath);
 	}
 
 	/**
@@ -394,10 +410,11 @@ class Filesystem extends \Test\TestCase {
 	public function testMountExternalCacheDir() {
 		$userId = $this->getUniqueID('user_');
 
-		$oldCachePath = \OC_Config::getValue('cache_path', '');
+		$config = \OC::$server->getConfig();
+		$oldCachePath = $config->getSystemValue('cache_path', '');
 		// set cache path to temp dir
 		$cachePath = \OC_Helper::tmpFolder() . '/extcache';
-		\OC_Config::setValue('cache_path', $cachePath);
+		$config->setSystemValue('cache_path', $cachePath);
 
 		\OC_User::createUser($userId, $userId);
 		\OC\Files\Filesystem::initMountPoints($userId);
@@ -411,7 +428,7 @@ class Filesystem extends \Test\TestCase {
 		$this->assertEquals('', $internalPath);
 		\OC_User::deleteUser($userId);
 
-		\OC_Config::setValue('cache_path', $oldCachePath);
+		$config->setSystemValue('cache_path', $oldCachePath);
 	}
 
 	public function testRegisterMountProviderAfterSetup() {

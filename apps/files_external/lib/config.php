@@ -1,10 +1,10 @@
 <?php
 /**
+ * @author Andreas Fischer <bantu@owncloud.com>
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Frank Karlitschek <frank@owncloud.org>
  * @author Joas Schilling <nickvergessen@owncloud.com>
- * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
@@ -33,10 +33,10 @@
 
 use phpseclib\Crypt\AES;
 use \OCA\Files_External\Appinfo\Application;
-use \OCA\Files_External\Lib\BackendConfig;
-use \OCA\Files_External\Service\BackendService;
 use \OCA\Files_External\Lib\Backend\LegacyBackend;
 use \OCA\Files_External\Lib\StorageConfig;
+use \OCA\Files_External\Lib\Backend\Backend;
+use \OCP\Files\StorageNotAvailableException;
 
 /**
  * Class to configure mount.json globally and for users
@@ -48,11 +48,6 @@ class OC_Mount_Config {
 	const MOUNT_TYPE_GROUP = 'group';
 	const MOUNT_TYPE_USER = 'user';
 	const MOUNT_TYPE_PERSONAL = 'personal';
-
-	// getBackendStatus return types
-	const STATUS_SUCCESS = 0;
-	const STATUS_ERROR = 1;
-	const STATUS_INDETERMINATE = 2;
 
 	// whether to skip backend test (for unit tests, as this static class is not mockable)
 	public static $skipTest = false;
@@ -75,38 +70,6 @@ class OC_Mount_Config {
 		return true;
 	}
 
-	/*
-	 * Hook that mounts the given user's visible mount points
-	 *
-	 * @param array $data
-	 */
-	public static function initMountPointsHook($data) {
-		self::addStorageIdToConfig(null);
-		if ($data['user']) {
-			self::addStorageIdToConfig($data['user']);
-			$user = \OC::$server->getUserManager()->get($data['user']);
-			if (!$user) {
-				\OC::$server->getLogger()->warning(
-					'Cannot init external mount points for non-existant user "' . $data['user'] . '".',
-					['app' => 'files_external']
-				);
-				return;
-			}
-			$userView = new \OC\Files\View('/' . $user->getUID() . '/files');
-			$changePropagator = new \OC\Files\Cache\ChangePropagator($userView);
-			$etagPropagator = new \OCA\Files_External\EtagPropagator($user, $changePropagator, \OC::$server->getConfig());
-			$etagPropagator->propagateDirtyMountPoints();
-			\OCP\Util::connectHook(
-				\OC\Files\Filesystem::CLASSNAME,
-				\OC\Files\Filesystem::signal_create_mount,
-				$etagPropagator, 'updateHook');
-			\OCP\Util::connectHook(
-				\OC\Files\Filesystem::CLASSNAME,
-				\OC\Files\Filesystem::signal_delete_mount,
-				$etagPropagator, 'updateHook');
-		}
-	}
-
 	/**
 	 * Returns the mount points for the given user.
 	 * The mount point is relative to the data directory.
@@ -114,7 +77,7 @@ class OC_Mount_Config {
 	 * @param string $uid user
 	 * @return array of mount point string as key, mountpoint config as value
 	 *
-	 * @deprecated 8.2.0 use UserGlobalStoragesService::getAllStorages() and UserStoragesService::getAllStorages()
+	 * @deprecated 8.2.0 use UserGlobalStoragesService::getStorages() and UserStoragesService::getStorages()
 	 */
 	public static function getAbsoluteMountPoints($uid) {
 		$mountPoints = array();
@@ -126,7 +89,7 @@ class OC_Mount_Config {
 		$userGlobalStoragesService->setUser($user);
 		$userStoragesService->setUser($user);
 
-		foreach ($userGlobalStoragesService->getAllStorages() as $storage) {
+		foreach ($userGlobalStoragesService->getStorages() as $storage) {
 			$mountPoint = '/'.$uid.'/files'.$storage->getMountPoint();
 			$mountEntry = self::prepareMountPointEntry($storage, false);
 			foreach ($mountEntry['options'] as &$option) {
@@ -135,7 +98,7 @@ class OC_Mount_Config {
 			$mountPoints[$mountPoint] = $mountEntry;
 		}
 
-		foreach ($userStoragesService->getAllStorages() as $storage) {
+		foreach ($userStoragesService->getStorages() as $storage) {
 			$mountPoint = '/'.$uid.'/files'.$storage->getMountPoint();
 			$mountEntry = self::prepareMountPointEntry($storage, true);
 			foreach ($mountEntry['options'] as &$option) {
@@ -155,13 +118,13 @@ class OC_Mount_Config {
 	 *
 	 * @return array
 	 *
-	 * @deprecated 8.2.0 use GlobalStoragesService::getAllStorages()
+	 * @deprecated 8.2.0 use GlobalStoragesService::getStorages()
 	 */
 	public static function getSystemMountPoints() {
 		$mountPoints = [];
 		$service = self::$app->getContainer()->query('OCA\Files_External\Service\GlobalStoragesService');
 
-		foreach ($service->getAllStorages() as $storage) {
+		foreach ($service->getStorages() as $storage) {
 			$mountPoints[] = self::prepareMountPointEntry($storage, false);
 		}
 
@@ -173,13 +136,13 @@ class OC_Mount_Config {
 	 *
 	 * @return array
 	 *
-	 * @deprecated 8.2.0 use UserStoragesService::getAllStorages()
+	 * @deprecated 8.2.0 use UserStoragesService::getStorages()
 	 */
 	public static function getPersonalMountPoints() {
 		$mountPoints = [];
 		$service = self::$app->getContainer()->query('OCA\Files_External\Service\UserStoragesService');
 
-		foreach ($service->getAllStorages() as $storage) {
+		foreach ($service->getStorages() as $storage) {
 			$mountPoints[] = self::prepareMountPointEntry($storage, true);
 		}
 
@@ -209,8 +172,12 @@ class OC_Mount_Config {
 			'groups' => $storage->getApplicableGroups(),
 			'users' => $storage->getApplicableUsers(),
 		];
+		// if mountpoint is applicable to all users the old API expects ['all']
+		if (empty($mountEntry['applicable']['groups']) && empty($mountEntry['applicable']['users'])) {
+			$mountEntry['applicable']['users'] = ['all'];
+		}
+
 		$mountEntry['id'] = $storage->getId();
-		// $mountEntry['storage_id'] = null; // we don't store this!
 
 		return $mountEntry;
 	}
@@ -242,24 +209,27 @@ class OC_Mount_Config {
 	 *
 	 * @param string $class backend class name
 	 * @param array $options backend configuration options
+	 * @param boolean $isPersonal
 	 * @return int see self::STATUS_*
+	 * @throws Exception
 	 */
 	public static function getBackendStatus($class, $options, $isPersonal) {
 		if (self::$skipTest) {
-			return self::STATUS_SUCCESS;
+			return StorageNotAvailableException::STATUS_SUCCESS;
 		}
 		foreach ($options as &$option) {
 			$option = self::setUserVars(OCP\User::getUser(), $option);
 		}
 		if (class_exists($class)) {
 			try {
+				/** @var \OC\Files\Storage\Common $storage */
 				$storage = new $class($options);
 
 				try {
 					$result = $storage->test($isPersonal);
 					$storage->setAvailability($result);
 					if ($result) {
-						return self::STATUS_SUCCESS;
+						return StorageNotAvailableException::STATUS_SUCCESS;
 					}
 				} catch (\Exception $e) {
 					$storage->setAvailability(false);
@@ -267,9 +237,10 @@ class OC_Mount_Config {
 				}
 			} catch (Exception $exception) {
 				\OCP\Util::logException('files_external', $exception);
+				throw $exception;
 			}
 		}
-		return self::STATUS_ERROR;
+		return StorageNotAvailableException::STATUS_ERROR;
 	}
 
 	/**
@@ -310,14 +281,6 @@ class OC_Mount_Config {
 			$file = $config->getSystemValue('mount_file', $datadir . '/mount.json');
 		}
 
-		foreach ($data as &$applicables) {
-			foreach ($applicables as &$mountPoints) {
-				foreach ($mountPoints as &$options) {
-					self::addStorageId($options);
-				}
-			}
-		}
-
 		$content = json_encode($data, JSON_PRETTY_PRINT);
 		@file_put_contents($file, $content);
 		@chmod($file, 0640);
@@ -327,7 +290,7 @@ class OC_Mount_Config {
 	 * Get backend dependency message
 	 * TODO: move into AppFramework along with templates
 	 *
-	 * @param BackendConfig[] $backends
+	 * @param Backend[] $backends
 	 * @return string
 	 */
 	public static function dependencyMessage($backends) {
@@ -366,11 +329,11 @@ class OC_Mount_Config {
 	private static function getSingleDependencyMessage(\OCP\IL10N $l, $module, $backend) {
 		switch (strtolower($module)) {
 			case 'curl':
-				return $l->t('<b>Note:</b> The cURL support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it.', $backend);
+				return (string)$l->t('<b>Note:</b> The cURL support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it.', $backend);
 			case 'ftp':
-				return $l->t('<b>Note:</b> The FTP support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it.', $backend);
+				return (string)$l->t('<b>Note:</b> The FTP support in PHP is not enabled or installed. Mounting of %s is not possible. Please ask your system administrator to install it.', $backend);
 			default:
-				return $l->t('<b>Note:</b> "%s" is not installed. Mounting of %s is not possible. Please ask your system administrator to install it.', array($module, $backend));
+				return (string)$l->t('<b>Note:</b> "%s" is not installed. Mounting of %s is not possible. Please ask your system administrator to install it.', array($module, $backend));
 		}
 	}
 
@@ -491,61 +454,5 @@ class OC_Mount_Config {
 			)
 		);
 		return hash('md5', $data);
-	}
-
-	/**
-	 * Add storage id to the storage configurations that did not have any.
-	 *
-	 * @param string $user user for which to process storage configs
-	 */
-	private static function addStorageIdToConfig($user) {
-		$config = self::readData($user);
-
-		$needUpdate = false;
-		foreach ($config as &$applicables) {
-			foreach ($applicables as &$mountPoints) {
-				foreach ($mountPoints as &$options) {
-					$needUpdate |= !isset($options['storage_id']);
-				}
-			}
-		}
-
-		if ($needUpdate) {
-			self::writeData($user, $config);
-		}
-	}
-
-	/**
-	 * Get storage id from the numeric storage id and set
-	 * it into the given options argument. Only do this
-	 * if there was no storage id set yet.
-	 *
-	 * This might also fail if a storage wasn't fully configured yet
-	 * and couldn't be mounted, in which case this will simply return false.
-	 *
-	 * @param array $options storage options
-	 *
-	 * @return bool true if the storage id was added, false otherwise
-	 */
-	private static function addStorageId(&$options) {
-		if (isset($options['storage_id'])) {
-			return false;
-		}
-
-		$service = self::$app->getContainer()->query('OCA\Files_External\Service\BackendService');
-		$class = $service->getBackend($options['backend'])->getStorageClass();
-		try {
-			/** @var \OC\Files\Storage\Storage $storage */
-			$storage = new $class($options['options']);
-			// TODO: introduce StorageConfigException
-		} catch (\Exception $e) {
-			// storage might not be fully configured yet (ex: Dropbox)
-			// note that storage instances aren't supposed to open any connections
-			// in the constructor, so this exception is likely to be a config exception
-			return false;
-		}
-
-		$options['storage_id'] = $storage->getCache()->getNumericStorageId();
-		return true;
 	}
 }

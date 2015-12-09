@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -68,9 +69,9 @@ interface IOutput {
 	 * @param string $path
 	 * @param string $domain
 	 * @param bool $secure
-	 * @param bool $httponly
+	 * @param bool $httpOnly
 	 * @since 8.1.0
 	 */
-	public function setCookie($name, $value, $expire, $path, $domain, $secure, $httponly);
+	public function setCookie($name, $value, $expire, $path, $domain, $secure, $httpOnly);
 
 }

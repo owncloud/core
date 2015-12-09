@@ -8,6 +8,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
@@ -31,6 +32,7 @@
 
 namespace OC\Files\Cache;
 
+use OC\User\NoUserException;
 use OCP\Share_Backend_Collection;
 
 /**
@@ -47,6 +49,7 @@ class Shared_Cache extends Cache {
 	 * @param \OC\Files\Storage\Shared $storage
 	 */
 	public function __construct($storage) {
+		parent::__construct($storage);
 		$this->storage = $storage;
 	}
 
@@ -62,7 +65,12 @@ class Shared_Cache extends Cache {
 		}
 		$source = \OC_Share_Backend_File::getSource($target, $this->storage->getShare());
 		if (isset($source['path']) && isset($source['fileOwner'])) {
-			\OC\Files\Filesystem::initMountPoints($source['fileOwner']);
+			try {
+				\OC\Files\Filesystem::initMountPoints($source['fileOwner']);
+			} catch(NoUserException $e) {
+				\OC::$server->getLogger()->logException($e, ['app' => 'files_sharing']);
+				return false;
+			}
 			$mounts = \OC\Files\Filesystem::getMountByNumericId($source['storage']);
 			if (is_array($mounts) and !empty($mounts)) {
 				$fullPath = $mounts[0]->getMountPoint() . $source['path'];
@@ -90,10 +98,11 @@ class Shared_Cache extends Cache {
 	/**
 	 * get the stored metadata of a file or folder
 	 *
-	 * @param string|int $file
+	 * @param string $file
 	 * @return array|false
 	 */
 	public function get($file) {
+		$mimetypeLoader = \OC::$server->getMimeTypeLoader();
 		if (is_string($file)) {
 			$cache = $this->getSourceCache($file);
 			if ($cache) {
@@ -130,8 +139,8 @@ class Shared_Cache extends Cache {
 			$data['mtime'] = (int)$data['mtime'];
 			$data['storage_mtime'] = (int)$data['storage_mtime'];
 			$data['encrypted'] = (bool)$data['encrypted'];
-			$data['mimetype'] = $this->getMimetype($data['mimetype']);
-			$data['mimepart'] = $this->getMimetype($data['mimepart']);
+			$data['mimetype'] = $mimetypeLoader->getMimetypeById($data['mimetype']);
+			$data['mimepart'] = $mimetypeLoader->getMimetypeById($data['mimepart']);
 			if ($data['storage_mtime'] === 0) {
 				$data['storage_mtime'] = $data['mtime'];
 			}

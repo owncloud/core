@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -49,7 +49,8 @@ class CoreCapabilities implements ICapability {
 	public function getCapabilities() {
 		return [
 			'core' => [
-				'pollinterval' => $this->config->getSystemValue('pollinterval', 60)
+				'pollinterval' => $this->config->getSystemValue('pollinterval', 60),
+				'webdav-root' => $this->config->getSystemValue('webdav-root', 'remote.php/webdav'),
 			]
 		];
 	}

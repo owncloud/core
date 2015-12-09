@@ -5,6 +5,7 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -28,6 +29,8 @@ use OCA\Files_Trashbin;
 
 /**
  * Class Test_Encryption
+ *
+ * @group DB
  */
 class Test_Trashbin extends \Test\TestCase {
 
@@ -64,14 +67,14 @@ class Test_Trashbin extends \Test\TestCase {
 		\OC::registerShareHooks();
 		$application = new \OCA\Files_Sharing\AppInfo\Application();
 		$application->registerMountProviders();
-		$application->setupPropagation();
 
 		//disable encryption
 		\OC_App::disable('encryption');
 
+		$config = \OC::$server->getConfig();
 		//configure trashbin
-		self::$rememberRetentionObligation = \OC_Config::getValue('trashbin_retention_obligation', Files_Trashbin\Expiration::DEFAULT_RETENTION_OBLIGATION);
-		\OC_Config::setValue('trashbin_retention_obligation', 'auto, 2');
+		self::$rememberRetentionObligation = $config->getSystemValue('trashbin_retention_obligation', Files_Trashbin\Expiration::DEFAULT_RETENTION_OBLIGATION);
+		$config->setSystemValue('trashbin_retention_obligation', 'auto, 2');
 
 		// register hooks
 		Files_Trashbin\Trashbin::registerHooks();
@@ -87,7 +90,7 @@ class Test_Trashbin extends \Test\TestCase {
 		// cleanup test user
 		\OC_User::deleteUser(self::TEST_TRASHBIN_USER1);
 
-		\OC_Config::setValue('trashbin_retention_obligation', self::$rememberRetentionObligation);
+		\OC::$server->getConfig()->setSystemValue('trashbin_retention_obligation', self::$rememberRetentionObligation);
 
 		\OC_Hook::clear();
 
@@ -235,6 +238,8 @@ class Test_Trashbin extends \Test\TestCase {
 		// user2-1.txt should have been expired
 		$this->verifyArray($filesInTrashUser2AfterDelete, array('user2-2.txt', 'user1-4.txt'));
 
+		self::loginHelper(self::TEST_TRASHBIN_USER1);
+
 		// user1-1.txt and user1-3.txt should have been expired
 		$filesInTrashUser1AfterDelete = OCA\Files_Trashbin\Helper::getTrashFiles('/', self::TEST_TRASHBIN_USER1);
 
@@ -243,8 +248,8 @@ class Test_Trashbin extends \Test\TestCase {
 
 	/**
 	 * verify that the array contains the expected results
-	 * @param array $result
-	 * @param array $expected
+	 * @param OCP\Files\FileInfo[] $result
+	 * @param string[] $expected
 	 */
 	private function verifyArray($result, $expected) {
 		$this->assertSame(count($expected), count($result));
@@ -263,6 +268,11 @@ class Test_Trashbin extends \Test\TestCase {
 		}
 	}
 
+	/**
+	 * @param OCP\Files\FileInfo[] $files
+	 * @param string $trashRoot
+	 * @param integer $expireDate
+	 */
 	private function manipulateDeleteTime($files, $trashRoot, $expireDate) {
 		$counter = 0;
 		foreach ($files as &$file) {
@@ -599,28 +609,29 @@ class Test_Trashbin extends \Test\TestCase {
 
 		// delete source folder
 		list($storage, $internalPath) = $this->rootView->resolvePath('/' . self::TEST_TRASHBIN_USER1 . '/files/folder');
-		$folderAbsPath = $storage->getSourcePath($internalPath);
-		// make folder read-only
-		chmod($folderAbsPath, 0555);
+		if ($storage instanceof \OC\Files\Storage\Local) {
+			$folderAbsPath = $storage->getSourcePath($internalPath);
+			// make folder read-only
+			chmod($folderAbsPath, 0555);
 
-		$this->assertTrue(
-			OCA\Files_Trashbin\Trashbin::restore(
-				'file1.txt.d' . $trashedFile->getMtime(),
-				$trashedFile->getName(),
-				$trashedFile->getMtime()
-			)
-		);
+			$this->assertTrue(
+				OCA\Files_Trashbin\Trashbin::restore(
+					'file1.txt.d' . $trashedFile->getMtime(),
+					$trashedFile->getName(),
+					$trashedFile->getMtime()
+				)
+			);
 
-		$file = $userFolder->get('file1.txt');
-		$this->assertEquals('foo', $file->getContent());
+			$file = $userFolder->get('file1.txt');
+			$this->assertEquals('foo', $file->getContent());
 
-		chmod($folderAbsPath, 0755);
+			chmod($folderAbsPath, 0755);
+		}
 	}
 
 	/**
 	 * @param string $user
 	 * @param bool $create
-	 * @param bool $password
 	 */
 	public static function loginHelper($user, $create = false) {
 		if ($create) {
@@ -643,11 +654,20 @@ class Test_Trashbin extends \Test\TestCase {
 
 // just a dummy class to make protected methods available for testing
 class TrashbinForTesting extends Files_Trashbin\Trashbin {
+
+	/**
+	 * @param OCP\Files\FileInfo[] $files
+	 * @param integer $limit
+	 */
 	public function dummyDeleteExpiredFiles($files, $limit) {
 		// dummy value for $retention_obligation because it is not needed here
 		return parent::deleteExpiredFiles($files, \Test_Trashbin::TEST_TRASHBIN_USER1, $limit, 0);
 	}
 
+	/**
+	 * @param OCP\Files\FileInfo[] $files
+	 * @param integer $availableSpace
+	 */
 	public function dummyDeleteFiles($files, $availableSpace) {
 		return parent::deleteFiles($files, \Test_Trashbin::TEST_TRASHBIN_USER1, $availableSpace);
 	}

@@ -7,6 +7,7 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Martin Mattel <martin.mattel@diemattels.at>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
@@ -36,7 +37,9 @@
 namespace OC\Files\Storage;
 
 use OC\Files\Cache\Cache;
+use OC\Files\Cache\Propagator;
 use OC\Files\Cache\Scanner;
+use OC\Files\Cache\Updater;
 use OC\Files\Filesystem;
 use OC\Files\Cache\Watcher;
 use OCP\Files\FileNameTooLongException;
@@ -63,7 +66,9 @@ abstract class Common implements Storage {
 	protected $cache;
 	protected $scanner;
 	protected $watcher;
+	protected $propagator;
 	protected $storageCache;
+	protected $updater;
 
 	protected $mountOptions = [];
 
@@ -136,10 +141,6 @@ abstract class Common implements Storage {
 	}
 
 	public function isSharable($path) {
-		if (\OC_Util::isSharingDisabledForUser()) {
-			return false;
-		}
-
 		return $this->isReadable($path);
 	}
 
@@ -260,7 +261,7 @@ abstract class Common implements Storage {
 		$dh = $this->opendir($path);
 		if (is_resource($dh)) {
 			while (($file = readdir($dh)) !== false) {
-				if ($file !== '.' and $file !== '..') {
+				if (!\OC\Files\Filesystem::isIgnoredDir($file)) {
 					if ($this->is_dir($path . '/' . $file)) {
 						mkdir($target . '/' . $file);
 						$this->addLocalFolder($path . '/' . $file, $target . '/' . $file);
@@ -283,7 +284,7 @@ abstract class Common implements Storage {
 		$dh = $this->opendir($dir);
 		if (is_resource($dh)) {
 			while (($item = readdir($dh)) !== false) {
-				if ($item == '.' || $item == '..') continue;
+				if (\OC\Files\Filesystem::isIgnoredDir($item)) continue;
 				if (strstr(strtolower($item), strtolower($query)) !== false) {
 					$files[] = $dir . '/' . $item;
 				}
@@ -344,6 +345,32 @@ abstract class Common implements Storage {
 		return $this->watcher;
 	}
 
+	/**
+	 * get a propagator instance for the cache
+	 *
+	 * @param \OC\Files\Storage\Storage (optional) the storage to pass to the watcher
+	 * @return \OC\Files\Cache\Propagator
+	 */
+	public function getPropagator($storage = null) {
+		if (!$storage) {
+			$storage = $this;
+		}
+		if (!isset($this->propagator)) {
+			$this->propagator = new Propagator($storage);
+		}
+		return $this->propagator;
+	}
+
+	public function getUpdater($storage = null) {
+		if (!$storage) {
+			$storage = $this;
+		}
+		if (!isset($this->updater)) {
+			$this->updater = new Updater($storage);
+		}
+		return $this->updater;
+	}
+
 	public function getStorageCache($storage = null) {
 		if (!$storage) {
 			$storage = $this;
@@ -371,13 +398,7 @@ abstract class Common implements Storage {
 	 * @return string|false
 	 */
 	public function getETag($path) {
-		$ETagFunction = \OC\Connector\Sabre\Node::$ETagFunction;
-		if ($ETagFunction) {
-			$hash = call_user_func($ETagFunction, $path);
-			return $hash;
-		} else {
-			return uniqid();
-		}
+		return uniqid();
 	}
 
 	/**

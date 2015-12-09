@@ -1,4 +1,34 @@
 <?php
+/**
+ * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Bernhard Posselt <dev@bernhard-posselt.com>
+ * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Michael Gapczynski <GapczynskiM@gmail.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Tom Needham <tom@owncloud.com>
+ * @author Vincent Petry <pvince81@owncloud.com>
+ *
+ * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @license AGPL-3.0
+ *
+ * This code is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License, version 3,
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ *
+ */
 use OCP\API;
 use OCP\AppFramework\Http;
 
@@ -201,7 +231,8 @@ class OC_API {
 			$picked = reset($shipped['failed']);
 			$code = $picked['response']->getStatusCode();
 			$meta = $picked['response']->getMeta();
-			$response = new OC_OCS_Result($data, $code, $meta['message']);
+			$headers = $picked['response']->getHeaders();
+			$response = new OC_OCS_Result($data, $code, $meta['message'], $headers);
 			return $response;
 		} elseif(!empty($shipped['succeeded'])) {
 			$responses = array_merge($shipped['succeeded'], $thirdparty['succeeded']);
@@ -214,13 +245,16 @@ class OC_API {
 			$picked = reset($thirdparty['failed']);
 			$code = $picked['response']->getStatusCode();
 			$meta = $picked['response']->getMeta();
-			$response = new OC_OCS_Result($data, $code, $meta['message']);
+			$headers = $picked['response']->getHeaders();
+			$response = new OC_OCS_Result($data, $code, $meta['message'], $headers);
 			return $response;
 		} else {
 			$responses = $thirdparty['succeeded'];
 		}
 		// Merge the successful responses
-		$data = array();
+		$data = [];
+		$codes = [];
+		$header = [];
 
 		foreach($responses as $response) {
 			if($response['shipped']) {
@@ -228,8 +262,9 @@ class OC_API {
 			} else {
 				$data = array_merge_recursive($data, $response['response']->getData());
 			}
-			$codes[] = array('code' => $response['response']->getStatusCode(),
-				'meta' => $response['response']->getMeta());
+			$header = array_merge_recursive($header, $response['response']->getHeaders());
+			$codes[] = ['code' => $response['response']->getStatusCode(),
+				'meta' => $response['response']->getMeta()];
 		}
 
 		// Use any non 100 status codes
@@ -243,8 +278,7 @@ class OC_API {
 			}
 		}
 
-		$result = new OC_OCS_Result($data, $statusCode, $statusMessage);
-		return $result;
+		return new OC_OCS_Result($data, $statusCode, $statusMessage, $header);
 	}
 
 	/**
@@ -269,9 +303,13 @@ class OC_API {
 				if(!$user) {
 					return false;
 				} else {
-					$subAdmin = OC_SubAdmin::isSubAdmin($user);
+					$userObject = \OC::$server->getUserSession()->getUser();
+					if($userObject === null) {
+						return false;
+					}
+					$isSubAdmin = \OC::$server->getGroupManager()->getSubAdmin()->isSubAdmin($userObject);
 					$admin = OC_User::isAdminUser($user);
-					if($subAdmin || $admin) {
+					if($isSubAdmin || $admin) {
 						return true;
 					} else {
 						return false;
@@ -356,7 +394,7 @@ class OC_API {
 
 		$meta = $result->getMeta();
 		$data = $result->getData();
-		if (self::isV2()) {
+		if (self::isV2(\OC::$server->getRequest())) {
 			$statusCode = self::mapStatusCodes($result->getStatusCode());
 			if (!is_null($statusCode)) {
 				$meta['statuscode'] = $statusCode;
@@ -419,13 +457,13 @@ class OC_API {
 	}
 
 	/**
-	 * @return boolean
+	 * @param \OCP\IRequest $request
+	 * @return bool
 	 */
-	private static function isV2() {
-		$request = \OC::$server->getRequest();
+	protected static function isV2(\OCP\IRequest $request) {
 		$script = $request->getScriptName();
 
-		return $script === '/ocs/v2.php';
+		return substr($script, -11) === '/ocs/v2.php';
 	}
 
 	/**

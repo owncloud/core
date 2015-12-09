@@ -50,7 +50,7 @@
 				if (fileData.shareOwner) {
 					tr.attr('data-share-owner', fileData.shareOwner);
 					// user should always be able to rename a mount point
-					if (fileData.isShareMountPoint) {
+					if (fileData.mountType === 'shared-root') {
 						tr.attr('data-permissions', fileData.permissions | OC.PERMISSION_UPDATE);
 					}
 				}
@@ -68,6 +68,26 @@
 				return fileInfo;
 			};
 
+			var NS_OC = 'http://owncloud.org/ns';
+
+			var oldGetWebdavProperties = fileList._getWebdavProperties;
+			fileList._getWebdavProperties = function() {
+				var props = oldGetWebdavProperties.apply(this, arguments);
+				props.push('{' + NS_OC + '}owner-display-name');
+				return props;
+			};
+
+			fileList.filesClient.addFileInfoParser(function(response) {
+				var data = {};
+				var props = response.propStat[0].properties;
+				var permissionsProp = props['{' + NS_OC + '}permissions'];
+
+				if (permissionsProp && permissionsProp.indexOf('S') >= 0) {
+					data.shareOwner = props['{' + NS_OC + '}owner-display-name'];
+				}
+				return data;
+			});
+
 			// use delegate to catch the case with multiple file lists
 			fileList.$el.on('fileActionsReady', function(ev){
 				var fileList = ev.fileList;
@@ -79,7 +99,9 @@
 						$files = fileList.$fileList.find('tr');
 					}
 					_.each($files, function(file) {
-						OCA.Sharing.Util.updateFileActionIcon($(file));
+						var $tr = $(file);
+						var shareStatus = OC.Share.statuses[$tr.data('id')];
+						OCA.Sharing.Util._updateFileActionIcon($tr, !!shareStatus, shareStatus && shareStatus.link);
 					});
 				}
 
@@ -101,93 +123,80 @@
 				name: 'Share',
 				displayName: '',
 				mime: 'all',
-				permissions: OC.PERMISSION_SHARE,
+				permissions: OC.PERMISSION_ALL,
 				icon: OC.imagePath('core', 'actions/share'),
 				type: OCA.Files.FileActions.TYPE_INLINE,
-				actionHandler: function(filename, context) {
-					var $tr = context.$file;
-					var itemType = 'file';
-					if ($tr.data('type') === 'dir') {
-						itemType = 'folder';
+				actionHandler: function(fileName) {
+					fileList.showDetailsView(fileName, 'shareTabView');
+				},
+				render: function(actionSpec, isDefault, context) {
+					var permissions = parseInt(context.$file.attr('data-permissions'), 10);
+					// if no share permissions but share owner exists, still show the link
+					if ((permissions & OC.PERMISSION_SHARE) !== 0 || context.$file.attr('data-share-owner')) {
+						return fileActions._defaultRenderAction.call(fileActions, actionSpec, isDefault, context);
 					}
-					var possiblePermissions = $tr.data('share-permissions');
-					if (_.isUndefined(possiblePermissions)) {
-						possiblePermissions = $tr.data('permissions');
-					}
-
-					var appendTo = $tr.find('td.filename');
-					// Check if drop down is already visible for a different file
-					if (OC.Share.droppedDown) {
-						if ($tr.attr('data-id') !== $('#dropdown').attr('data-item-source')) {
-							OC.Share.hideDropDown(function () {
-								$tr.addClass('mouseOver');
-								OC.Share.showDropDown(itemType, $tr.data('id'), appendTo, true, possiblePermissions, filename);
-							});
-						} else {
-							OC.Share.hideDropDown();
-						}
-					} else {
-						$tr.addClass('mouseOver');
-						OC.Share.showDropDown(itemType, $tr.data('id'), appendTo, true, possiblePermissions, filename);
-					}
-					$('#dropdown').on('sharesChanged', function(ev) {
-						// files app current cannot show recipients on load, so we don't update the
-						// icon when changed for consistency
-						if (context.fileList.$el.closest('#app-content-files').length) {
-							return;
-						}
-						var recipients = _.pluck(ev.shares[OC.Share.SHARE_TYPE_USER], 'share_with_displayname');
-						var groupRecipients = _.pluck(ev.shares[OC.Share.SHARE_TYPE_GROUP], 'share_with_displayname');
-						recipients = recipients.concat(groupRecipients);
-						// note: we only update the data attribute because updateIcon()
-						// is called automatically after this event
-						if (recipients.length) {
-							$tr.attr('data-share-recipients', OCA.Sharing.Util.formatRecipients(recipients));
-						}
-						else {
-							$tr.removeAttr('data-share-recipients');
-						}
-					});
+					// don't render anything
+					return null;
 				}
 			});
 
-			OC.addScript('files_sharing', 'sharetabview').done(function() {
-				fileList.registerTabView(new OCA.Sharing.ShareTabView('shareTabView'));
+			var shareTab = new OCA.Sharing.ShareTabView('shareTabView', {order: -20});
+			// detect changes and change the matching list entry
+			shareTab.on('sharesChanged', function(shareModel) {
+				var fileInfoModel = shareModel.fileInfoModel;
+				var $tr = fileList.findFileEl(fileInfoModel.get('name'));
+				OCA.Sharing.Util._updateFileListDataAttributes(fileList, $tr, shareModel);
+				if (!OCA.Sharing.Util._updateFileActionIcon($tr, shareModel.hasUserShares(), shareModel.hasLinkShare())) {
+					// remove icon, if applicable
+					OC.Share.markFileAsShared($tr, false, false);
+				}
+				var newIcon = $tr.attr('data-icon');
+				// in case markFileAsShared decided to change the icon,
+				// we need to modify the model
+				// (FIXME: yes, this is hacky)
+				if (fileInfoModel.get('icon') !== newIcon) {
+					fileInfoModel.set('icon', newIcon);
+				}
 			});
+			fileList.registerTabView(shareTab);
+		},
+
+		/**
+		 * Update file list data attributes
+		 */
+		_updateFileListDataAttributes: function(fileList, $tr, shareModel) {
+			// files app current cannot show recipients on load, so we don't update the
+			// icon when changed for consistency
+			if (fileList.id === 'files') {
+				return;
+			}
+			var recipients = _.pluck(shareModel.get('shares'), 'share_with_displayname');
+			// note: we only update the data attribute because updateIcon()
+			if (recipients.length) {
+				$tr.attr('data-share-recipients', OCA.Sharing.Util.formatRecipients(recipients));
+			}
+			else {
+				$tr.removeAttr('data-share-recipients');
+			}
 		},
 
 		/**
 		 * Update the file action share icon for the given file
 		 *
 		 * @param $tr file element of the file to update
+		 * @param {bool} hasUserShares true if a user share exists
+		 * @param {bool} hasLinkShare true if a link share exists
+		 *
+		 * @return {bool} true if the icon was set, false otherwise
 		 */
-		updateFileActionIcon: function($tr) {
+		_updateFileActionIcon: function($tr, hasUserShares, hasLinkShare) {
 			// if the statuses are loaded already, use them for the icon
 			// (needed when scrolling to the next page)
-			var shareStatus = OC.Share.statuses[$tr.data('id')];
-			if (shareStatus || $tr.attr('data-share-recipients') || $tr.attr('data-share-owner')) {
-				var permissions = $tr.data('permissions');
-				var hasLink = !!(shareStatus && shareStatus.link);
-				OC.Share.markFileAsShared($tr, true, hasLink);
-				if ((permissions & OC.PERMISSION_SHARE) === 0 && $tr.attr('data-share-owner')) {
-					// if no share action exists because the admin disabled sharing for this user
-					// we create a share notification action to inform the user about files
-					// shared with him otherwise we just update the existing share action.
-					// TODO: make this work like/with OC.Share.markFileAsShared()
-					$tr.find('.fileactions .action-share-notification').remove();
-					var shareNotification = '<a class="action action-share-notification permanent"' +
-							' data-action="Share-Notification" href="#" original-title="">' +
-							' <img class="svg" src="' + OC.imagePath('core', 'actions/share') + '"></img>';
-					$tr.find('.fileactions').append(function() {
-						var shareBy = escapeHTML($tr.attr('data-share-owner'));
-						var $result = $(shareNotification + '<span> ' + shareBy + '</span></span>');
-						$result.on('click', function() {
-							return false;
-						});
-						return $result;
-					});
-				}
+			if (hasUserShares || hasLinkShare || $tr.attr('data-share-recipients') || $tr.attr('data-share-owner')) {
+				OC.Share.markFileAsShared($tr, true, hasLinkShare);
+				return true;
 			}
+			return false;
 		},
 
 		/**

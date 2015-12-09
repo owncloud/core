@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
@@ -166,9 +167,9 @@ class NodeVisitor extends NodeVisitorAbstract {
 					 *       $c = "OC_API";
 					 *       $n = $i::ADMIN_AUTH;
 					 */
+				} else {
+					$this->checkBlackListConstant($node->class->toString(), $node->name, $node);
 				}
-
-				$this->checkBlackListConstant($node->class->toString(), $node->name, $node);
 			}
 		}
 		if ($node instanceof Node\Expr\New_) {

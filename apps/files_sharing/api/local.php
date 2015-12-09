@@ -1,9 +1,10 @@
 <?php
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
@@ -232,6 +233,7 @@ class Local {
 					if (\OC::$server->getPreviewManager()->isMimeSupported($share['mimetype'])) {
 						$share['isPreviewAvailable'] = true;
 					}
+					unset($share['path']);
 				}
 			}
 			$result = new \OC_OCS_Result($shares);
@@ -346,6 +348,10 @@ class Local {
 					}
 				}
 			}
+
+			$data['permissions'] = $share['permissions'];
+			$data['expiration'] = $share['expiration'];
+
 			return new \OC_OCS_Result($data);
 		} else {
 			return new \OC_OCS_Result(null, 404, "couldn't share file");

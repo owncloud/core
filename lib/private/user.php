@@ -3,8 +3,8 @@
  * @author Aldo "xoen" Giambelluca <xoen@xoen.org>
  * @author Andreas Fischer <bantu@owncloud.com>
  * @author Arthur Schiwon <blizzz@owncloud.com>
- * @author Bartek Przybylski <bart.p.pl@gmail.com>
  * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Bartek Przybylski <bart.p.pl@gmail.com>
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Dominik Schmidt <dev@dominik-schmidt.de>
  * @author Florian Preinstorfer <nblock@archlinux.us>
@@ -43,6 +43,8 @@
  * This class provides wrapper methods for user management. Multiple backends are
  * supported. User management operations are delegated to the configured backend for
  * execution.
+ *
+ * Note that &run is deprecated and won't work anymore.
  *
  * Hooks provided:
  *   pre_createUser(&run, uid, password)
@@ -144,6 +146,10 @@ class OC_User {
 				case 'sqlite':
 					\OCP\Util::writeLog('core', 'Adding user backend ' . $backend . '.', \OCP\Util::DEBUG);
 					self::$_usedBackends[$backend] = new OC_User_Database();
+					self::getManager()->registerBackend(self::$_usedBackends[$backend]);
+					break;
+				case 'dummy':
+					self::$_usedBackends[$backend] = new \Test\Util\User\Dummy();
 					self::getManager()->registerBackend(self::$_usedBackends[$backend]);
 					break;
 				default:
@@ -277,11 +283,13 @@ class OC_User {
 		OC_Hook::emit("OC_User", "pre_login", array("run" => &$run, "uid" => $uid));
 
 		if ($uid) {
-			self::setUserId($uid);
-			self::setDisplayName($uid);
-			self::getUserSession()->setLoginName($uid);
+			if (self::getUser() !== $uid) {
+				self::setUserId($uid);
+				self::setDisplayName($uid);
+				self::getUserSession()->setLoginName($uid);
 
-			OC_Hook::emit("OC_User", "post_login", array("uid" => $uid, 'password' => ''));
+				OC_Hook::emit("OC_User", "post_login", array("uid" => $uid, 'password' => ''));
+			}
 			return true;
 		}
 		return false;

@@ -9,6 +9,13 @@
 
 namespace Test;
 
+/**
+ * Class User
+ *
+ * @group DB
+ *
+ * @package Test
+ */
 class User extends TestCase {
 	/**
 	 * @var \OC_User_Backend | \PHPUnit_Framework_MockObject_MockObject $backend
@@ -18,7 +25,7 @@ class User extends TestCase {
 	protected function setUp(){
 		parent::setUp();
 
-		$this->backend = $this->getMock('\OC_User_Dummy');
+		$this->backend = $this->getMock('\Test\Util\User\Dummy');
 		$manager = \OC_User::getManager();
 		$manager->registerBackend($this->backend);
 	}

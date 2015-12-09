@@ -98,6 +98,26 @@
 							type: OC.SetupChecks.MESSAGE_TYPE_WARNING
 						});
 					}
+					if(!data.isCorrectMemcachedPHPModuleInstalled) {
+						messages.push({
+							msg: t('core', 'Memcached is configured as distributed cache, but the wrong PHP module "memcache" is installed. \\OC\\Memcache\\Memcached only supports "memcached" and not "memcache". See the <a href="{wikiLink}">memcached wiki about both modules</a>.', {wikiLink: 'https://code.google.com/p/memcached/wiki/PHPClientComparison'}),
+							type: OC.SetupChecks.MESSAGE_TYPE_WARNING
+						});
+					}
+					if(!data.hasPassedCodeIntegrityCheck) {
+						messages.push({
+							msg: t(
+									'core',
+									'Some files have not passed the integrity check. Further information on how to resolve this issue can be found in our <a href="{docLink}">documentation</a>. (<a href="{codeIntegrityDownloadEndpoint}">List of invalid files…</a> / <a href="{rescanEndpoint}">Rescan…</a>)',
+									{
+										docLink: data.codeIntegrityCheckerDocumentation,
+										codeIntegrityDownloadEndpoint: OC.generateUrl('/settings/integrity/failed'),
+										rescanEndpoint: OC.generateUrl('/settings/integrity/rescan?requesttoken={requesttoken}', {'requesttoken': OC.requestToken})
+									}
+							),
+							type: OC.SetupChecks.MESSAGE_TYPE_ERROR
+						});
+					}
 				} else {
 					messages.push({
 						msg: t('core', 'Error occurred while checking server setup'),

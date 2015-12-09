@@ -13,6 +13,13 @@ use OC\Files\Storage\Temporary;
 use OC\Files\View;
 use OC\User\User;
 
+/**
+ * Class IntegrationTests
+ *
+ * @group DB
+ *
+ * @package Test\Files\Node
+ */
 class IntegrationTests extends \Test\TestCase {
 	/**
 	 * @var \OC\Files\Node\Root $root
@@ -36,7 +43,7 @@ class IntegrationTests extends \Test\TestCase {
 
 		\OC_Hook::clear('OC_Filesystem');
 
-		$user = new User($this->getUniqueID('user'), new \OC_User_Dummy);
+		$user = new User($this->getUniqueID('user'), new \Test\Util\User\Dummy);
 		$this->loginAsUser($user->getUID());
 
 		$this->view = new View();

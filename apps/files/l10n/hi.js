@@ -3,10 +3,10 @@ OC.L10N.register(
     {
     "Files" : "फाइलें ",
     "Close" : "बंद करें ",
-    "Error" : "त्रुटि",
-    "Save" : "सहेजें",
-    "Settings" : "सेटिंग्स",
+    "Details" : "विवरण ",
     "New folder" : "नया फ़ोल्डर",
-    "Upload" : "अपलोड "
+    "Upload" : "अपलोड ",
+    "Save" : "सहेजें",
+    "Settings" : "सेटिंग्स"
 },
 "nplurals=2; plural=(n != 1);");

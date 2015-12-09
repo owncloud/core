@@ -1,6 +1,6 @@
 <?php
 /**
- * @author Robin McCorkell <rmccorkell@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -35,6 +35,11 @@ class BackendServiceTest extends \Test\TestCase {
 		$this->l10n = $this->getMock('\OCP\IL10N');
 	}
 
+	/**
+	 * @param string $class
+	 *
+	 * @return \OCA\Files_External\Lib\Backend\Backend
+	 */
 	protected function getBackendMock($class) {
 		$backend = $this->getMockBuilder('\OCA\Files_External\Lib\Backend\Backend')
 			->disableOriginalConstructor()
@@ -124,28 +129,6 @@ class BackendServiceTest extends \Test\TestCase {
 		$availableBackends = $service->getAvailableBackends();
 		$this->assertArrayHasKey('identifier:\Backend\Available', $availableBackends);
 		$this->assertArrayNotHasKey('identifier:\Backend\NotAvailable', $availableBackends);
-	}
-
-	public function testGetUserBackends() {
-		$service = new BackendService($this->config, $this->l10n);
-
-		$backendAllowed = $this->getBackendMock('\User\Mount\Allowed');
-		$backendAllowed->expects($this->once())
-			->method('isVisibleFor')
-			->with(BackendService::VISIBILITY_PERSONAL)
-			->will($this->returnValue(true));
-		$backendNotAllowed = $this->getBackendMock('\User\Mount\NotAllowed');
-		$backendNotAllowed->expects($this->once())
-			->method('isVisibleFor')
-			->with(BackendService::VISIBILITY_PERSONAL)
-			->will($this->returnValue(false));
-
-		$service->registerBackend($backendAllowed);
-		$service->registerBackend($backendNotAllowed);
-
-		$userBackends = $service->getBackendsVisibleFor(BackendService::VISIBILITY_PERSONAL);
-		$this->assertArrayHasKey('identifier:\User\Mount\Allowed', $userBackends);
-		$this->assertArrayNotHasKey('identifier:\User\Mount\NotAllowed', $userBackends);
 	}
 
 }

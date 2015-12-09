@@ -7,7 +7,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author scambra <sergio@entrecables.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
@@ -32,8 +32,6 @@ namespace OC\Files\Storage;
 
 use OC\Files\Filesystem;
 use OCA\Files_Sharing\ISharedStorage;
-use OCA\Files_Sharing\Propagator;
-use OCA\Files_Sharing\SharedMount;
 use OCP\Lock\ILockingProvider;
 
 /**
@@ -50,9 +48,25 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 	 */
 	private $ownerView;
 
+	/**
+	 * @var string
+	 */
+	private $user;
+
+	private $initialized = false;
+
 	public function __construct($arguments) {
 		$this->share = $arguments['share'];
 		$this->ownerView = $arguments['ownerView'];
+		$this->user = $arguments['user'];
+	}
+
+	private function init() {
+		if ($this->initialized) {
+			return;
+		}
+		$this->initialized = true;
+		Filesystem::initMountPoints($this->share['uid_owner']);
 	}
 
 	/**
@@ -80,6 +94,7 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 	 * @return array Returns array with the keys path, permissions, and owner or false if not found
 	 */
 	public function getFile($target) {
+		$this->init();
 		if (!isset($this->files[$target])) {
 			// Check for partial files
 			if (pathinfo($target, PATHINFO_EXTENSION) === 'part') {
@@ -242,7 +257,7 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 	}
 
 	public function isSharable($path) {
-		if (\OCP\Util::isSharingDisabledForUser()) {
+		if (\OCP\Util::isSharingDisabledForUser() || !\OC\Share\Share::isResharingAllowed()) {
 			return false;
 		}
 		return ($this->getPermissions($path) & \OCP\Constants::PERMISSION_SHARE);
@@ -319,7 +334,7 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 	}
 
 	public function rename($path1, $path2) {
-
+		$this->init();
 		// we need the paths relative to data/user/files
 		$relPath1 = $this->getMountPoint() . '/' . $path1;
 		$relPath2 = $this->getMountPoint() . '/' . $path2;
@@ -545,6 +560,13 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 		return new \OC\Files\Cache\Shared_Watcher($storage);
 	}
 
+	public function getPropagator($storage = null) {
+		if (!$storage) {
+			$storage = $this;
+		}
+		return new \OCA\Files_Sharing\SharedPropagator($storage);
+	}
+
 	public function getOwner($path) {
 		if ($path == '') {
 			$path = $this->getMountPoint();
@@ -557,9 +579,6 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 	}
 
 	public function getETag($path) {
-		if ($path == '') {
-			$path = $this->getMountPoint();
-		}
 		if ($source = $this->getSourcePath($path)) {
 			list($storage, $internalPath) = \OC\Files\Filesystem::resolvePath($source);
 			return $storage->getETag($internalPath);

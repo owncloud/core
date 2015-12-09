@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -36,6 +37,7 @@ use \OCA\Files_External\Lib\Backend\Backend;
 use \OCA\Files_External\Lib\Auth\AuthMechanism;
 use \OCP\Files\StorageNotAvailableException;
 use \OCA\Files_External\Lib\InsufficientDataForMeaningfulAnswerException;
+use \OCA\Files_External\Service\BackendService;
 
 /**
  * Base class for storages controllers
@@ -152,17 +154,41 @@ abstract class StoragesController extends Controller {
 		$backend = $storage->getBackend();
 		/** @var AuthMechanism */
 		$authMechanism = $storage->getAuthMechanism();
-		if (!$backend || $backend->checkDependencies()) {
+		if ($backend->checkDependencies()) {
 			// invalid backend
 			return new DataResponse(
 				array(
 					'message' => (string)$this->l10n->t('Invalid storage backend "%s"', [
-						$storage->getBackend()->getIdentifier()
+						$backend->getIdentifier()
 					])
 				),
 				Http::STATUS_UNPROCESSABLE_ENTITY
 			);
 		}
+
+		if (!$backend->isVisibleFor($this->service->getVisibilityType())) {
+			// not permitted to use backend
+			return new DataResponse(
+				array(
+					'message' => (string)$this->l10n->t('Not permitted to use backend "%s"', [
+						$backend->getIdentifier()
+					])
+				),
+				Http::STATUS_UNPROCESSABLE_ENTITY
+			);
+		}
+		if (!$authMechanism->isVisibleFor($this->service->getVisibilityType())) {
+			// not permitted to use auth mechanism
+			return new DataResponse(
+				array(
+					'message' => (string)$this->l10n->t('Not permitted to use authentication mechanism "%s"', [
+						$authMechanism->getIdentifier()
+					])
+				),
+				Http::STATUS_UNPROCESSABLE_ENTITY
+			);
+		}
+
 		if (!$backend->validateStorage($storage)) {
 			// unsatisfied parameters
 			return new DataResponse(
@@ -211,10 +237,36 @@ abstract class StoragesController extends Controller {
 				)
 			);
 		} catch (InsufficientDataForMeaningfulAnswerException $e) {
-			$storage->setStatus(\OC_Mount_Config::STATUS_INDETERMINATE);
+			$storage->setStatus(
+				StorageNotAvailableException::STATUS_INDETERMINATE,
+				$this->l10n->t('Insufficient data: %s', [$e->getMessage()])
+			);
 		} catch (StorageNotAvailableException $e) {
-			$storage->setStatus(\OC_Mount_Config::STATUS_ERROR);
+			$storage->setStatus(
+				$e->getCode(),
+				$this->l10n->t('%s', [$e->getMessage()])
+			);
+		} catch (\Exception $e) {
+			// FIXME: convert storage exceptions to StorageNotAvailableException
+			$storage->setStatus(
+				StorageNotAvailableException::STATUS_ERROR,
+				get_class($e).': '.$e->getMessage()
+			);
 		}
+	}
+
+	/**
+	 * Get all storage entries
+	 *
+	 * @return DataResponse
+	 */
+	public function index() {
+		$storages = $this->service->getAllStorages();
+
+		return new DataResponse(
+			$storages,
+			Http::STATUS_OK
+		);
 	}
 
 	/**

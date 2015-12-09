@@ -24,11 +24,11 @@ OC.L10N.register(
     "Saving..." : "सहेज रहे हैं...",
     "Cancel" : "रद्द करें ",
     "Error" : "त्रुटि",
-    "Share" : "साझा करें",
-    "Password" : "पासवर्ड",
-    "Send" : "भेजें",
     "Sending ..." : "भेजा जा रहा है",
     "Email sent" : "ईमेल भेज दिया गया है ",
+    "Password" : "पासवर्ड",
+    "Send" : "भेजें",
+    "Share" : "साझा करें",
     "Warning" : "चेतावनी ",
     "Add" : "डाले",
     "Use the following link to reset your password: {link}" : "आगे दिये गये लिंक का उपयोग पासवर्ड बदलने के लिये किजीये: {link}",
@@ -45,7 +45,6 @@ OC.L10N.register(
     "Database password" : "डेटाबेस पासवर्ड",
     "Database name" : "डेटाबेस का नाम",
     "Finish setup" : "सेटअप समाप्त करे",
-    "Log out" : "लोग  आउट",
-    "remember" : "याद रखें"
+    "Log out" : "लोग  आउट"
 },
 "nplurals=2; plural=(n != 1);");

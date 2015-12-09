@@ -2,6 +2,7 @@
 /**
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -34,7 +35,7 @@ class PersonalMount extends MountPoint implements MoveableMount {
 	protected $storagesService;
 
 	/** @var int */
-	protected $storageId;
+	protected $numericStorageId;
 
 	/**
 	 * @param UserStoragesService $storagesService
@@ -56,7 +57,7 @@ class PersonalMount extends MountPoint implements MoveableMount {
 	) {
 		parent::__construct($storage, $mountpoint, $arguments, $loader, $mountOptions);
 		$this->storagesService = $storagesService;
-		$this->storageId = $storageId;
+		$this->numericStorageId = $storageId;
 	}
 
 	/**
@@ -66,7 +67,7 @@ class PersonalMount extends MountPoint implements MoveableMount {
 	 * @return bool
 	 */
 	public function moveMount($target) {
-		$storage = $this->storagesService->getStorage($this->storageId);
+		$storage = $this->storagesService->getStorage($this->numericStorageId);
 		// remove "/$user/files" prefix
 		$targetParts = explode('/', trim($target, '/'), 3);
 		$storage->setMountPoint($targetParts[2]);
@@ -81,7 +82,7 @@ class PersonalMount extends MountPoint implements MoveableMount {
 	 * @return bool
 	 */
 	public function removeMount() {
-		$this->storagesService->removeStorage($this->storageId);
+		$this->storagesService->removeStorage($this->numericStorageId);
 		return true;
 	}
 }

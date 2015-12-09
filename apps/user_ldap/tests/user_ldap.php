@@ -31,9 +31,17 @@ use \OCA\user_ldap\lib\Access;
 use \OCA\user_ldap\lib\Connection;
 use \OCA\user_ldap\lib\ILDAPWrapper;
 
+/**
+ * Class Test_User_Ldap_Direct
+ *
+ * @group DB
+ *
+ * @package OCA\user_ldap\tests
+ */
 class Test_User_Ldap_Direct extends \Test\TestCase {
 	protected $backend;
 	protected $access;
+	protected $configMock;
 
 	protected function setUp() {
 		parent::setUp();
@@ -61,8 +69,9 @@ class Test_User_Ldap_Direct extends \Test\TestCase {
 									$conMethods,
 									array($lw, null, null));
 
+		$this->configMock = $this->getMock('\OCP\IConfig');
 		$um = new \OCA\user_ldap\lib\user\Manager(
-				$this->getMock('\OCP\IConfig'),
+				$this->configMock,
 				$this->getMock('\OCA\user_ldap\lib\FilesystemHelper'),
 				$this->getMock('\OCA\user_ldap\lib\LogWrapper'),
 				$this->getMock('\OCP\IAvatarManager'),
@@ -122,7 +131,7 @@ class Test_User_Ldap_Direct extends \Test\TestCase {
 			   ->method('fetchListOfUsers')
 			   ->will($this->returnCallback(function($filter) {
 					if($filter === 'roland') {
-						return array(array('dn' => 'dnOfRoland,dc=test'));
+						return array(array('dn' => ['dnOfRoland,dc=test']));
 					}
 					return array();
 			   }));
@@ -131,7 +140,7 @@ class Test_User_Ldap_Direct extends \Test\TestCase {
 			->method('fetchUsersByLoginName')
 			->will($this->returnCallback(function($uid) {
 				if($uid === 'roland') {
-					return array(array('dn' => 'dnOfRoland,dc=test'));
+					return array(array('dn' => ['dnOfRoland,dc=test']));
 				}
 				return array();
 			}));
@@ -586,6 +595,13 @@ class Test_User_Ldap_Direct extends \Test\TestCase {
 		$backend = new UserLDAP($access, $config);
 		$this->prepareMockForUserExists($access);
 
+		$dataDir = \OC::$server->getConfig()->getSystemValue(
+			'datadirectory', \OC::$SERVERROOT.'/data');
+
+		$this->configMock->expects($this->once())
+			->method('getSystemValue')
+			->will($this->returnValue($dataDir));
+
 		$access->connection->expects($this->any())
 			->method('__get')
 			->will($this->returnCallback(function($name) {
@@ -609,14 +625,9 @@ class Test_User_Ldap_Direct extends \Test\TestCase {
 						return false;
 				}
 			}));
-		//datadir-relativ path
-		$datadir = '/my/data/dir';
-		$config->expects($this->once())
-			->method('getSystemValue')
-			->will($this->returnValue($datadir));
 
 		$result = $backend->getHome('ladyofshadows');
-		$this->assertEquals($datadir.'/susannah/', $result);
+		$this->assertEquals($dataDir.'/susannah/', $result);
 	}
 
 	/**

@@ -1,8 +1,8 @@
 <?php
 /**
  * @author Lukas Reschke <lukas@owncloud.com>
- * @author Morris Jobke <hey@morrisjobke.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -185,6 +185,8 @@ class File implements ICache {
 					} catch (\OCP\Lock\LockedException $e) {
 						// ignore locked chunks
 						\OC::$server->getLogger()->debug('Could not cleanup locked chunk "' . $file . '"', array('app' => 'core'));
+					} catch (\OCP\Files\ForbiddenException $e) {
+						\OC::$server->getLogger()->debug('Could not cleanup forbidden chunk "' . $file . '"', array('app' => 'core'));
 					} catch (\OCP\Files\LockNotAcquiredException $e) {
 						\OC::$server->getLogger()->debug('Could not cleanup locked chunk "' . $file . '"', array('app' => 'core'));
 					}

@@ -3,7 +3,6 @@
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -141,9 +140,19 @@ interface IEncryptionModule {
 	 *
 	 * @param InputInterface $input
 	 * @param OutputInterface $output write some status information to the terminal during encryption
-	 * @return bool
 	 * @since 8.2.0
 	 */
 	public function encryptAll(InputInterface $input, OutputInterface $output);
+
+	/**
+	 * prepare encryption module to decrypt all files
+	 *
+	 * @param InputInterface $input
+	 * @param OutputInterface $output write some status information to the terminal during encryption
+	 * @param $user (optional) for which the files should be decrypted, default = all users
+	 * @return bool return false on failure or if it isn't supported by the module
+	 * @since 8.2.0
+	 */
+	public function prepareDecryptAll(InputInterface $input, OutputInterface $output, $user = '');
 
 }
