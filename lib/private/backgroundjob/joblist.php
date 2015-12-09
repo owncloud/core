@@ -68,7 +68,7 @@ class JobList implements IJobList {
 	}
 
 	/**
-	 * @param Job|string $job
+	 * @param Job $job
 	 * @param mixed $argument
 	 */
 	public function remove($job, $argument = null) {

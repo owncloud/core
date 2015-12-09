@@ -111,7 +111,7 @@ class SimpleContainer extends Container implements IContainer {
 
 	/**
 	 * @param string $name
-	 * @param mixed $value
+	 * @param string $value
 	 */
 	public function registerParameter($name, $value) {
 		$this[$name] = $value;

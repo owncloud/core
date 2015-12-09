@@ -68,7 +68,7 @@ class Jobs extends \OC\BackgroundJob\TimedJob {
 	}
 
 	/**
-	 * @return int
+	 * @return string
 	 */
 	static private function getRefreshInterval() {
 		//defaults to every hour
