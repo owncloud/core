@@ -61,7 +61,7 @@ class QuoteHelper {
 		}
 
 		if (substr_count($string, '.')) {
-			list($alias, $columnName) = explode('.', $string, 2);
+			list($alias, $columnName) = explode('.', $string);
 
 			if ($columnName === '*') {
 				return $string;
