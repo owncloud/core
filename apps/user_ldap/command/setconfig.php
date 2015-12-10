@@ -72,7 +72,10 @@ class SetConfig extends Command {
 
 	/**
 	 * save the configuration value as provided
+	 *
 	 * @param string $configID
+	 * @param string $key
+	 * @param string $value
 	 */
 	protected function setValue($configID, $key, $value) {
 		$configHolder = new Configuration($configID);
