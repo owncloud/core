@@ -167,6 +167,14 @@ class OC {
 				// a web URL, so we use overwritewebroot as a fallback.
 				OC::$WEBROOT = OC_Config::getValue('overwritewebroot', '');
 			}
+
+			// Resolve /owncloud to /owncloud/ to ensure to always have a trailing
+			// slash which is required by URL generation.
+			if($_SERVER['REQUEST_URI'] === \OC::$WEBROOT &&
+					substr($_SERVER['REQUEST_URI'], -1) !== '/') {
+				header('Location: '.\OC::$WEBROOT.'/');
+				exit();
+			}
 		}
 
 		// search the 3rdparty folder
@@ -246,18 +254,21 @@ class OC {
 		$configFileWritable = is_writable($configFilePath);
 		if (!$configFileWritable && !OC_Helper::isReadOnlyConfigEnabled()
 			|| !$configFileWritable && self::checkUpgrade(false)) {
+
+			$urlGenerator = \OC::$server->getURLGenerator();
+
 			if (self::$CLI) {
 				echo $l->t('Cannot write into "config" directory!')."\n";
 				echo $l->t('This can usually be fixed by giving the webserver write access to the config directory')."\n";
 				echo "\n";
-				echo $l->t('See %s', array(\OC_Helper::linkToDocs('admin-dir_permissions')))."\n";
+				echo $l->t('See %s', [ $urlGenerator->linkToDocs('admin-dir_permissions') ])."\n";
 				exit;
 			} else {
 				OC_Template::printErrorPage(
 					$l->t('Cannot write into "config" directory!'),
 					$l->t('This can usually be fixed by '
 					. '%sgiving the webserver write access to the config directory%s.',
-					 array('<a href="'.\OC_Helper::linkToDocs('admin-dir_permissions').'" target="_blank">', '</a>'))
+					 array('<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank">', '</a>'))
 				);
 			}
 		}
@@ -673,6 +684,15 @@ class OC {
 			header('HTTP/1.1 400 Bad Request');
 			header('Status: 400 Bad Request');
 
+			\OC::$server->getLogger()->warning(
+					'Trusted domain error. "{remoteAddress}" tried to access using "{host}" as host.',
+					[
+						'app' => 'core',
+						'remoteAddress' => $request->getRemoteAddress(),
+						'host' => $host,
+					]
+			);
+
 			$tmpl = new OCP\Template('core', 'untrustedDomain', 'guest');
 			$tmpl->assign('domain', $request->server['SERVER_NAME']);
 			$tmpl->printPage();
@@ -878,7 +898,7 @@ class OC {
 		// this is needed to prevent "Token expired" messages while login if a session is expired
 		// @see https://github.com/owncloud/core/pull/8443#issuecomment-42425583
 		if(isset($_GET['logout']) && !OC_User::isLoggedIn()) {
-			header("Location: " . OC::$WEBROOT.(empty(OC::$WEBROOT) ? '/' : ''));
+			header("Location: " . \OC::$server->getURLGenerator()->getAbsoluteURL('/'));
 			return;
 		}
 
@@ -894,7 +914,7 @@ class OC {
 				}
 				OC_User::logout();
 				// redirect to webroot and add slash if webroot is empty
-				header("Location: " . OC::$WEBROOT.(empty(OC::$WEBROOT) ? '/' : ''));
+				header("Location: " . \OC::$server->getURLGenerator()->getAbsoluteURL('/'));
 			} else {
 				// Redirect to default application
 				OC_Util::redirectToDefaultPage();

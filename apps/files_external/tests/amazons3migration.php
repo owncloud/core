@@ -25,6 +25,13 @@
 
 namespace Test\Files\Storage;
 
+/**
+ * Class AmazonS3Migration
+ *
+ * @group DB
+ *
+ * @package Test\Files\Storage
+ */
 class AmazonS3Migration extends \Test\TestCase {
 
 	/**
@@ -123,6 +130,9 @@ class AmazonS3Migration extends \Test\TestCase {
 		return $storages;
 	}
 
+	/**
+	 * @param string $id
+	 */
 	public function deleteStorage($id) {
 		$stmt = \OC::$server->getDatabaseConnection()->prepare(
 			'DELETE FROM `*PREFIX*storages` WHERE `id` = ?'

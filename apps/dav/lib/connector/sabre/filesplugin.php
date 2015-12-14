@@ -31,17 +31,21 @@ use \Sabre\DAV\PropFind;
 use \Sabre\DAV\PropPatch;
 use \Sabre\HTTP\RequestInterface;
 use \Sabre\HTTP\ResponseInterface;
+use OCP\Files\StorageNotAvailableException;
 
 class FilesPlugin extends \Sabre\DAV\ServerPlugin {
 
 	// namespace
 	const NS_OWNCLOUD = 'http://owncloud.org/ns';
 	const FILEID_PROPERTYNAME = '{http://owncloud.org/ns}id';
+	const INTERNAL_FILEID_PROPERTYNAME = '{http://owncloud.org/ns}fileid';
 	const PERMISSIONS_PROPERTYNAME = '{http://owncloud.org/ns}permissions';
 	const DOWNLOADURL_PROPERTYNAME = '{http://owncloud.org/ns}downloadURL';
 	const SIZE_PROPERTYNAME = '{http://owncloud.org/ns}size';
 	const GETETAG_PROPERTYNAME = '{DAV:}getetag';
 	const LASTMODIFIED_PROPERTYNAME = '{DAV:}lastmodified';
+	const OWNER_ID_PROPERTYNAME = '{http://owncloud.org/ns}owner-id';
+	const OWNER_DISPLAY_NAME_PROPERTYNAME = '{http://owncloud.org/ns}owner-display-name';
 
 	/**
 	 * Reference to main server object
@@ -94,11 +98,14 @@ class FilesPlugin extends \Sabre\DAV\ServerPlugin {
 	 */
 	public function initialize(\Sabre\DAV\Server $server) {
 
-		$server->xmlNamespaces[self::NS_OWNCLOUD] = 'oc';
+		$server->xml->namespaceMap[self::NS_OWNCLOUD] = 'oc';
 		$server->protectedProperties[] = self::FILEID_PROPERTYNAME;
+		$server->protectedProperties[] = self::INTERNAL_FILEID_PROPERTYNAME;
 		$server->protectedProperties[] = self::PERMISSIONS_PROPERTYNAME;
 		$server->protectedProperties[] = self::SIZE_PROPERTYNAME;
 		$server->protectedProperties[] = self::DOWNLOADURL_PROPERTYNAME;
+		$server->protectedProperties[] = self::OWNER_ID_PROPERTYNAME;
+		$server->protectedProperties[] = self::OWNER_DISPLAY_NAME_PROPERTYNAME;
 
 		// normally these cannot be changed (RFC4918), but we want them modifiable through PROPPATCH
 		$allowedProperties = ['{DAV:}getetag'];
@@ -110,6 +117,7 @@ class FilesPlugin extends \Sabre\DAV\ServerPlugin {
 		$this->server->on('afterBind', array($this, 'sendFileIdHeader'));
 		$this->server->on('afterWriteContent', array($this, 'sendFileIdHeader'));
 		$this->server->on('afterMethod:GET', [$this,'httpGet']);
+		$this->server->on('afterMethod:GET', array($this, 'handleDownloadToken'));
 		$this->server->on('afterResponse', function($request, ResponseInterface $response) {
 			$body = $response->getBody();
 			if (is_resource($body)) {
@@ -143,6 +151,32 @@ class FilesPlugin extends \Sabre\DAV\ServerPlugin {
 	}
 
 	/**
+	 * This sets a cookie to be able to recognize the start of the download
+	 * the content must not be longer than 32 characters and must only contain
+	 * alphanumeric characters
+	 *
+	 * @param RequestInterface $request
+	 * @param ResponseInterface $response
+	 */
+	function handleDownloadToken(RequestInterface $request, ResponseInterface $response) {
+		$queryParams = $request->getQueryParameters();
+
+		/**
+		 * this sets a cookie to be able to recognize the start of the download
+		 * the content must not be longer than 32 characters and must only contain
+		 * alphanumeric characters
+		 */
+		if (isset($queryParams['downloadStartSecret'])) {
+			$token = $queryParams['downloadStartSecret'];
+			if (!isset($token[32])
+				&& preg_match('!^[a-zA-Z0-9]+$!', $token) === 1) {
+				// FIXME: use $response->setHeader() instead
+				setcookie('ocDownloadStarted', $token, time() + 20, '/');
+			}
+		}
+	}
+
+	/**
 	 * Plugin that adds a 'Content-Disposition: attachment' header to all files
 	 * delivered by SabreDAV.
 	 * @param RequestInterface $request
@@ -171,6 +205,10 @@ class FilesPlugin extends \Sabre\DAV\ServerPlugin {
 				return $node->getFileId();
 			});
 
+			$propFind->handle(self::INTERNAL_FILEID_PROPERTYNAME, function() use ($node) {
+				return $node->getInternalFileId();
+			});
+
 			$propFind->handle(self::PERMISSIONS_PROPERTYNAME, function() use ($node) {
 				$perms = $node->getDavPermissions();
 				if ($this->isPublic) {
@@ -188,9 +226,13 @@ class FilesPlugin extends \Sabre\DAV\ServerPlugin {
 		if ($node instanceof \OCA\DAV\Connector\Sabre\File) {
 			$propFind->handle(self::DOWNLOADURL_PROPERTYNAME, function() use ($node) {
 				/** @var $node \OCA\DAV\Connector\Sabre\File */
-				$directDownloadUrl = $node->getDirectDownload();
-				if (isset($directDownloadUrl['url'])) {
-					return $directDownloadUrl['url'];
+				try {
+					$directDownloadUrl = $node->getDirectDownload();
+					if (isset($directDownloadUrl['url'])) {
+						return $directDownloadUrl['url'];
+					}
+				} catch (StorageNotAvailableException $e) {
+					return false;
 				}
 				return false;
 			});
@@ -201,6 +243,16 @@ class FilesPlugin extends \Sabre\DAV\ServerPlugin {
 				return $node->getSize();
 			});
 		}
+
+		$propFind->handle(self::OWNER_ID_PROPERTYNAME, function() use ($node) {
+			$owner = $node->getOwner();
+			return $owner->getUID();
+		});
+		$propFind->handle(self::OWNER_DISPLAY_NAME_PROPERTYNAME, function() use ($node) {
+			$owner = $node->getOwner();
+			$displayName = $owner->getDisplayName();
+			return $displayName;
+		});
 	}
 
 	/**

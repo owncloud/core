@@ -77,6 +77,12 @@ class AppManager implements IAppManager {
 	private function getInstalledAppsValues() {
 		if (!$this->installedAppsCache) {
 			$values = $this->appConfig->getValues(false, 'enabled');
+
+			$alwaysEnabledApps = $this->getAlwaysEnabledApps();
+			foreach($alwaysEnabledApps as $appId) {
+				$values[$appId] = 'yes';
+			}
+
 			$this->installedAppsCache = array_filter($values, function ($value) {
 				return $value !== 'no';
 			});
@@ -142,6 +148,13 @@ class AppManager implements IAppManager {
 			return false;
 		} else {
 			$groupIds = json_decode($enabled);
+
+			if (!is_array($groupIds)) {
+				$jsonError = json_last_error();
+				\OC::$server->getLogger()->warning('AppManger::checkAppForUser - can\'t decode group IDs: ' . print_r($enabled, true) . ' - json error code: ' . $jsonError, ['app' => 'lib']);
+				return false;
+			}
+
 			$userGroups = $this->groupManager->getUserGroupIds($user);
 			foreach ($userGroups as $groupId) {
 				if (array_search($groupId, $groupIds) !== false) {

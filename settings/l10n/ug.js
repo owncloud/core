@@ -3,9 +3,9 @@ OC.L10N.register(
     {
     "Sharing" : "ھەمبەھىر",
     "Log" : "خاتىرە",
-    "Authentication error" : "سالاھىيەت دەلىللەش خاتالىقى",
     "Language changed" : "تىل ئۆزگەردى",
     "Invalid request" : "ئىناۋەتسىز ئىلتىماس",
+    "Authentication error" : "سالاھىيەت دەلىللەش خاتالىقى",
     "Admins can't remove themself from the admin group" : "باشقۇرغۇچى ئۆزىنى باشقۇرۇش گۇرۇپپىسىدىن چىقىرىۋېتەلمەيدۇ",
     "Unable to add user to group %s" : "ئىشلەتكۈچىنى %s گۇرۇپپىغا قوشالمايدۇ",
     "Unable to remove user from group %s" : "ئىشلەتكۈچىنى %s گۇرۇپپىدىن چىقىرىۋېتەلمەيدۇ",
@@ -32,7 +32,6 @@ OC.L10N.register(
     "Encryption" : "شىفىرلاش",
     "Server address" : "مۇلازىمېتىر ئادرىسى",
     "Port" : "ئېغىز",
-    "Log level" : "خاتىرە دەرىجىسى",
     "More" : "تېخىمۇ كۆپ",
     "Less" : "ئاز",
     "Version" : "نەشرى",

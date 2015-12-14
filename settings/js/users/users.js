@@ -64,9 +64,12 @@ var UserList = {
 		/**
 		 * Avatar or placeholder
 		 */
-		if ($tr.find('div.avatardiv').length){
-			$tr.find('.avatardiv').imageplaceholder(user.name, user.displayname);
-			$('div.avatardiv', $tr).avatar(user.name, 32);
+		if ($tr.find('div.avatardiv').length) {
+			if (user.isAvatarAvailable === true) {
+				$('div.avatardiv', $tr).avatar(user.name, 32, undefined, undefined, undefined, user.displayname);
+			} else {
+				$('div.avatardiv', $tr).imageplaceholder(user.displayname);
+			}
 		}
 
 		/**
@@ -315,11 +318,7 @@ var UserList = {
 			var gid = groups[i];
 			var $li = GroupList.getGroupLI(gid);
 			var userCount = GroupList.getUserCount($li);
-			if(userCount === 1) {
-				GroupList.setUserCount($li, '');
-			} else {
-				GroupList.setUserCount($li, userCount - 1);
-			}
+			GroupList.setUserCount($li, userCount - 1);
 		}
 		GroupList.decEveryoneCount();
 		UserList.hide(uid);
@@ -334,11 +333,7 @@ var UserList = {
 			var gid = groups[i];
 			var $li = GroupList.getGroupLI(gid);
 			var userCount = GroupList.getUserCount($li);
-			if(userCount === 1) {
-				GroupList.setUserCount($li, '');
-			} else {
-				GroupList.setUserCount($li, userCount + 1);
-			}
+			GroupList.setUserCount($li, userCount + 1);
 		}
 		GroupList.incEveryoneCount();
 		UserList.getRow(uid).show();
@@ -695,7 +690,7 @@ $(document).ready(function () {
 							$div.imageplaceholder(uid, displayName);
 						}
 						$.post(
-							OC.filePath('settings', 'ajax', 'changedisplayname.php'),
+							OC.generateUrl('/settings/users/{id}/displayName', {id: uid}),
 							{username: uid, displayName: $(this).val()},
 							function (result) {
 								if (result && result.status==='success' && $div.length){
@@ -703,6 +698,8 @@ $(document).ready(function () {
 								}
 							}
 						);
+						var displayName = $input.val();
+						$tr.data('displayname', displayName);
 						$input.blur();
 					} else {
 						$input.blur();
@@ -710,8 +707,7 @@ $(document).ready(function () {
 				}
 			})
 			.blur(function () {
-				var displayName = $input.val();
-				$tr.data('displayname', displayName);
+				var displayName = $tr.data('displayname');
 				$input.replaceWith('<span>' + escapeHTML(displayName) + '</span>');
 				$td.find('img').show();
 			});
@@ -730,6 +726,7 @@ $(document).ready(function () {
 			.keypress(function (event) {
 				if (event.keyCode === 13) {
 					if ($(this).val().length > 0) {
+						$tr.data('mailAddress', $input.val());
 						$input.blur();
 						$.ajax({
 							type: 'PUT',
@@ -749,7 +746,7 @@ $(document).ready(function () {
 				}
 			})
 			.blur(function () {
-				var mailAddress = $input.val();
+				var mailAddress = $tr.data('mailAddress');
 				var $span = $('<span>').text(mailAddress);
 				$tr.data('mailAddress', mailAddress);
 				$input.replaceWith($span);

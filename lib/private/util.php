@@ -54,6 +54,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+
+use OCP\IConfig;
+use OCP\IGroupManager;
+use OCP\IUser;
+
 class OC_Util {
 	public static $scripts = array();
 	public static $styles = array();
@@ -218,20 +223,21 @@ class OC_Util {
 
 	/**
 	 * check if sharing is disabled for the current user
-	 *
-	 * @return boolean
+	 * @param IConfig $config
+	 * @param IGroupManager $groupManager
+	 * @param IUser|null $user
+	 * @return bool
 	 */
-	public static function isSharingDisabledForUser() {
-		if (\OC::$server->getAppConfig()->getValue('core', 'shareapi_exclude_groups', 'no') === 'yes') {
-			$user = \OCP\User::getUser();
-			$groupsList = \OC::$server->getAppConfig()->getValue('core', 'shareapi_exclude_groups_list', '');
+	public static function isSharingDisabledForUser(IConfig $config, IGroupManager $groupManager, $user) {
+		if ($config->getAppValue('core', 'shareapi_exclude_groups', 'no') === 'yes') {
+			$groupsList = $config->getAppValue('core', 'shareapi_exclude_groups_list', '');
 			$excludedGroups = json_decode($groupsList);
 			if (is_null($excludedGroups)) {
 				$excludedGroups = explode(',', $groupsList);
 				$newValue = json_encode($excludedGroups);
-				\OC::$server->getAppConfig()->setValue('core', 'shareapi_exclude_groups_list', $newValue);
+				$config->setAppValue('core', 'shareapi_exclude_groups_list', $newValue);
 			}
-			$usersGroups = \OC_Group::getUserGroups($user);
+			$usersGroups = $groupManager->getUserGroupIds($user);
 			if (!empty($usersGroups)) {
 				$remainingGroups = array_diff($usersGroups, $excludedGroups);
 				// if the user is only in groups which are disabled for sharing then
@@ -451,19 +457,12 @@ class OC_Util {
 	 */
 	public static function addScript($application, $file = null, $prepend = false) {
 		$path = OC_Util::generatePath($application, 'js', $file);
-		//TODO eliminate double code		
-		if (!in_array($path, self::$scripts)) {
-			// core js files need separate handling
-			if ($application !== 'core' && $file !== null) {
-				self::addTranslations($application);
-			}
-			if ($prepend===true) {
-				array_unshift(self::$scripts, $path);
-			}
-			else {
-				self::$scripts[] = $path;
-			}
+
+		// core js files need separate handling
+		if ($application !== 'core' && $file !== null) {
+			self::addTranslations ( $application );
 		}
+		self::addExternalResource($application, $prepend, $path, "script");
 	}
 
 	/**
@@ -476,14 +475,7 @@ class OC_Util {
 	 */
 	public static function addVendorScript($application, $file = null, $prepend = false) {
 		$path = OC_Util::generatePath($application, 'vendor', $file);
-		//TODO eliminate double code		
-		if (! in_array ( $path, self::$scripts )) {
-			if ($prepend === true) {
-				array_unshift ( self::$scripts, $path );
-			} else {
-				self::$scripts [] = $path;
-			}
-		}
+		self::addExternalResource($application, $prepend, $path, "script");
 	}
 
 	/**
@@ -502,14 +494,7 @@ class OC_Util {
 		} else {
 			$path = "l10n/$languageCode";
 		}
-		//TODO eliminate double code		
-		if (!in_array($path, self::$scripts)) {
-			if ($prepend === true) {
-				array_unshift ( self::$scripts, $path );
-			} else {
-				self::$scripts [] = $path;
-			}
-		}
+		self::addExternalResource($application, $prepend, $path, "script");
 	}
 
 	/**
@@ -522,14 +507,7 @@ class OC_Util {
 	 */
 	public static function addStyle($application, $file = null, $prepend = false) {
 		$path = OC_Util::generatePath($application, 'css', $file);
-		//TODO eliminate double code		
-		if (!in_array($path, self::$styles)) {
-			if ($prepend === true) {
-				array_unshift ( self::$styles, $path );
-			} else {
-				self::$styles[] = $path;
-			}	
-		}
+		self::addExternalResource($application, $prepend, $path, "style");
 	}
 
 	/**
@@ -542,13 +520,36 @@ class OC_Util {
 	 */
 	public static function addVendorStyle($application, $file = null, $prepend = false) {
 		$path = OC_Util::generatePath($application, 'vendor', $file);
-		//TODO eliminate double code
-		if (!in_array($path, self::$styles)) {
-			if ($prepend === true) {
-				array_unshift ( self::$styles, $path );
-			} else {
-				self::$styles[] = $path;
-			}	
+		self::addExternalResource($application, $prepend, $path, "style");
+	}
+
+	/**
+	 * add an external resource css/js file
+	 *
+	 * @param string $application application id
+	 * @param bool $prepend prepend the file to the beginning of the list
+	 * @param string $path 
+	 * @param string $type (script or style)
+	 * @return void
+	 */
+	private static function addExternalResource($application, $prepend, $path, $type = "script") {
+
+		if ($type === "style") {
+			if (!in_array($path, self::$styles)) {
+				if ($prepend === true) {
+					array_unshift ( self::$styles, $path );
+				} else {
+					self::$styles[] = $path;
+				}
+			}
+		} elseif ($type === "script") {
+			if (!in_array($path, self::$scripts)) {
+				if ($prepend === true) {
+					array_unshift ( self::$scripts, $path );
+				} else {
+					self::$scripts [] = $path;
+				}
+			}
 		}
 	}
 
@@ -615,6 +616,9 @@ class OC_Util {
 		$webServerRestart = false;
 		$setup = new \OC\Setup($config, \OC::$server->getIniWrapper(), \OC::$server->getL10N('lib'),
 			new \OC_Defaults(), \OC::$server->getLogger(), \OC::$server->getSecureRandom());
+
+		$urlGenerator = \OC::$server->getURLGenerator();
+
 		$availableDatabases = $setup->getSupportedDatabases();
 		if (empty($availableDatabases)) {
 			$errors[] = array(
@@ -638,13 +642,15 @@ class OC_Util {
 		}
 
 		// Check if config folder is writable.
-		if (!is_writable(OC::$configDir) or !is_readable(OC::$configDir)) {
-			$errors[] = array(
-				'error' => $l->t('Cannot write into "config" directory'),
-				'hint' => $l->t('This can usually be fixed by '
-					. '%sgiving the webserver write access to the config directory%s.',
-					array('<a href="' . \OC_Helper::linkToDocs('admin-dir_permissions') . '" target="_blank">', '</a>'))
-			);
+		if(!OC_Helper::isReadOnlyConfigEnabled()) {
+			if (!is_writable(OC::$configDir) or !is_readable(OC::$configDir)) {
+				$errors[] = array(
+					'error' => $l->t('Cannot write into "config" directory'),
+					'hint' => $l->t('This can usually be fixed by '
+						. '%sgiving the webserver write access to the config directory%s.',
+						array('<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank">', '</a>'))
+				);
+			}
 		}
 
 		// Check if there is a writable install folder.
@@ -658,7 +664,7 @@ class OC_Util {
 					'hint' => $l->t('This can usually be fixed by '
 						. '%sgiving the webserver write access to the apps directory%s'
 						. ' or disabling the appstore in the config file.',
-						array('<a href="' . \OC_Helper::linkToDocs('admin-dir_permissions') . '" target="_blank">', '</a>'))
+						array('<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank">', '</a>'))
 				);
 			}
 		}
@@ -673,14 +679,14 @@ class OC_Util {
 						'error' => $l->t('Cannot create "data" directory (%s)', array($CONFIG_DATADIRECTORY)),
 						'hint' => $l->t('This can usually be fixed by '
 							. '<a href="%s" target="_blank">giving the webserver write access to the root directory</a>.',
-							array(OC_Helper::linkToDocs('admin-dir_permissions')))
+							array($urlGenerator->linkToDocs('admin-dir_permissions')))
 					);
 				}
 			} else if (!is_writable($CONFIG_DATADIRECTORY) or !is_readable($CONFIG_DATADIRECTORY)) {
 				//common hint for all file permissions error messages
 				$permissionsHint = $l->t('Permissions can usually be fixed by '
 					. '%sgiving the webserver write access to the root directory%s.',
-					array('<a href="' . \OC_Helper::linkToDocs('admin-dir_permissions') . '" target="_blank">', '</a>'));
+					array('<a href="' . $urlGenerator->linkToDocs('admin-dir_permissions') . '" target="_blank">', '</a>'));
 				$errors[] = array(
 					'error' => 'Data directory (' . $CONFIG_DATADIRECTORY . ') not writable by ownCloud',
 					'hint' => $permissionsHint
@@ -858,12 +864,9 @@ class OC_Util {
 					}
 				}
 			} catch (\Doctrine\DBAL\DBALException $e) {
-				\OCP\Util::logException('core', $e);
-				$errors[] = array(
-					'error' => $l->t('Error occurred while checking PostgreSQL version'),
-					'hint' => $l->t('Please make sure you have PostgreSQL >= 9 or'
-						. ' check the logs for more information about the error')
-				);
+				$logger = \OC::$server->getLogger();
+				$logger->warning('Error occurred while checking PostgreSQL version, assuming >= 9');
+				$logger->logException($e);
 			}
 		}
 		return $errors;
@@ -946,8 +949,19 @@ class OC_Util {
 			$parameters['redirect_url'] = $_REQUEST['redirect_url'];
 		}
 
+		$parameters['canResetPassword'] = true;
+		if (!\OC::$server->getSystemConfig()->getValue('lost_password_link')) {
+			if (isset($_REQUEST['user'])) {
+				$user = \OC::$server->getUserManager()->get($_REQUEST['user']);
+				if ($user instanceof IUser) {
+					$parameters['canResetPassword'] = $user->canChangePassword();
+				}
+			}
+		}
+
 		$parameters['alt_login'] = OC_App::getAlternativeLogIns();
 		$parameters['rememberLoginAllowed'] = self::rememberLoginAllowed();
+		\OC_Hook::emit('OC_Util', 'pre_displayLoginPage', array('parameters' => $parameters));
 		OC_Template::printGuestPage("", "login", $parameters);
 	}
 
@@ -1066,7 +1080,12 @@ class OC_Util {
 						break;
 					}
 				}
-				$location = $urlGenerator->getAbsoluteURL('/index.php/apps/' . $appId . '/');
+
+				if(getenv('front_controller_active') === 'true') {
+					$location = $urlGenerator->getAbsoluteURL('/apps/' . $appId . '/');
+				} else {
+					$location = $urlGenerator->getAbsoluteURL('/index.php/apps/' . $appId . '/');
+				}
 			}
 		}
 		return $location;
@@ -1162,14 +1181,16 @@ class OC_Util {
 	 * This function is used to sanitize HTML and should be applied on any
 	 * string or array of strings before displaying it on a web page.
 	 *
-	 * @param string|array &$value
+	 * @param string|array $value
 	 * @return string|array an array of sanitized strings or a single sanitized string, depends on the input parameter.
 	 */
-	public static function sanitizeHTML(&$value) {
+	public static function sanitizeHTML($value) {
 		if (is_array($value)) {
-			array_walk_recursive($value, 'OC_Util::sanitizeHTML');
+			$value = array_map(function($value) {
+				return self::sanitizeHTML($value);
+			}, $value);
 		} else {
-			//Specify encoding for PHP<5.4
+			// Specify encoding for PHP<5.4
 			$value = htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
 		}
 		return $value;
@@ -1230,7 +1251,11 @@ class OC_Util {
 
 		// accessing the file via http
 		$url = OC_Helper::makeURLAbsolute(OC::$WEBROOT . '/data' . $fileName);
-		$content = self::getUrlContent($url);
+		try {
+			$content = \OC::$server->getHTTPClientService()->newClient()->get($url)->getBody();
+		} catch (\Exception $e) {
+			$content = false;
+		}
 
 		// cleanup
 		@unlink($testFile);
@@ -1303,23 +1328,6 @@ class OC_Util {
 	 */
 	public static function generateRandomBytes($length = 30) {
 		return \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate($length, \OCP\Security\ISecureRandom::CHAR_LOWER.\OCP\Security\ISecureRandom::CHAR_DIGITS);
-	}
-
-	/**
-	 * Get URL content
-	 * @param string $url Url to get content
-	 * @throws Exception If the URL does not start with http:// or https://
-	 * @return string of the response or false on error
-	 * This function get the content of a page via curl, if curl is enabled.
-	 * If not, file_get_contents is used.
-	 * @deprecated Use \OC::$server->getHTTPClientService()->newClient()->get($url);
-	 */
-	public static function getUrlContent($url) {
-		try {
-			return \OC::$server->getHTTPHelper()->getUrlContent($url);
-		} catch (\Exception $e) {
-			throw $e;
-		}
 	}
 
 	/**
@@ -1411,7 +1419,7 @@ class OC_Util {
 		}
 		// XCache
 		if (function_exists('xcache_clear_cache')) {
-			if (ini_get('xcache.admin.enable_auth')) {
+			if (\OC::$server->getIniWrapper()->getBool('xcache.admin.enable_auth')) {
 				\OCP\Util::writeLog('core', 'XCache opcode cache will not be cleared because "xcache.admin.enable_auth" is enabled.', \OCP\Util::WARN);
 			} else {
 				@xcache_clear_cache(XC_TYPE_PHP, 0);

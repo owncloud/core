@@ -29,7 +29,7 @@ script(
 	</li>
 {{/each}}
 
-<?php if(OC_Config::getValue('appstoreenabled', true) === true): ?>
+<?php if($_['appstoreEnabled']): ?>
 	<li>
 		<a class="app-external" target="_blank" href="https://owncloud.org/dev"><?php p($l->t('Developer documentation'));?> ↗</a>
 	</li>
@@ -139,7 +139,7 @@ script(
 		</div>
 
 		<div id="app-settings-content" class="apps-experimental">
-			<input type="checkbox" id="enable-experimental-apps" <?php if($_['experimentalEnabled']) { print_unescaped('checked="checked"'); }?>>
+			<input type="checkbox" id="enable-experimental-apps" <?php if($_['experimentalEnabled']) { print_unescaped('checked="checked"'); }?> class="checkbox">
 			<label for="enable-experimental-apps"><?php p($l->t('Enable experimental apps')) ?></label>
 			<p>
 				<small>

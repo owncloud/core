@@ -82,15 +82,6 @@ class OC_Helper {
 	}
 
 	/**
-	 * @param string $key
-	 * @return string url to the online documentation
-	 * @deprecated Use \OC::$server->getURLGenerator()->linkToDocs($key)
-	 */
-	public static function linkToDocs($key) {
-		return OC::$server->getURLGenerator()->linkToDocs($key);
-	}
-
-	/**
 	 * Creates an absolute url
 	 * @param string $app app
 	 * @param string $file file
@@ -205,10 +196,10 @@ class OC_Helper {
 	 * shows whether the user has an avatar
 	 * @param string $user username
 	 * @return bool avatar set or not
+	 * @deprecated 9.0.0 Use \OC::$server->getAvatarManager()->getAvatar($user)->exists();
 	**/
 	public static function userAvatarSet($user) {
-		$avatar = new \OC\Avatar($user);
-		return $avatar->exists();
+		return \OC::$server->getAvatarManager()->getAvatar($user)->exists();
 	}
 
 	/**
@@ -402,18 +393,6 @@ class OC_Helper {
 	}
 
 	/**
-	 * get the mimetype form a local file
-	 *
-	 * @param string $path
-	 * @return string
-	 * does NOT work for ownClouds filesystem, use OC_FileSystem::getMimeType instead
-	 * @deprecated 8.2.0 Use \OC::$server->getMimeTypeDetector()->detect($path)
-	 */
-	static function getMimeType($path) {
-		return \OC::$server->getMimeTypeDetector()->detect($path);
-	}
-
-	/**
 	 * Get a secure mimetype that won't expose potential XSS.
 	 *
 	 * @param string $mimeType
@@ -462,7 +441,7 @@ class OC_Helper {
 		// Default check will be done with $path directories :
 		$dirs = explode(PATH_SEPARATOR, $path);
 		// WARNING : We have to check if open_basedir is enabled :
-		$obd = ini_get('open_basedir');
+		$obd = OC::$server->getIniWrapper()->getString('open_basedir');
 		if ($obd != "none") {
 			$obd_values = explode(PATH_SEPARATOR, $obd);
 			if (count($obd_values) > 0 and $obd_values[0]) {
@@ -645,37 +624,6 @@ class OC_Helper {
 	}
 
 	/**
-	 * replaces a copy of string delimited by the start and (optionally) length parameters with the string given in replacement.
-	 *
-	 * @param string $string
-	 * @param string $replacement The replacement string.
-	 * @param int $start If start is positive, the replacing will begin at the start'th offset into string. If start is negative, the replacing will begin at the start'th character from the end of string.
-	 * @param int $length Length of the part to be replaced
-	 * @param string $encoding The encoding parameter is the character encoding. Defaults to UTF-8
-	 * @return string
-	 * @deprecated 8.2.0 Use substr_replace() instead.
-	 */
-	public static function mb_substr_replace($string, $replacement, $start, $length = 0, $encoding = 'UTF-8') {
-		return substr_replace($string, $replacement, $start, $length);
-	}
-
-	/**
-	 * Replace all occurrences of the search string with the replacement string
-	 *
-	 * @param string $search The value being searched for, otherwise known as the needle.
-	 * @param string $replace The replacement
-	 * @param string $subject The string or array being searched and replaced on, otherwise known as the haystack.
-	 * @param string $encoding The encoding parameter is the character encoding. Defaults to UTF-8
-	 * @param int $count If passed, this will be set to the number of replacements performed.
-	 * @return string
-	 * @deprecated 8.2.0 Use str_replace() instead.
-	 *
-	 */
-	public static function mb_str_replace($search, $replace, $subject, $encoding = 'UTF-8', &$count = null) {
-		return str_replace($search, $replace, $subject, $count);
-	}
-
-	/**
 	 * performs a search in a nested array
 	 * @param array $haystack the array to be searched
 	 * @param string $needle the search string
@@ -753,8 +701,9 @@ class OC_Helper {
 	 * @return int PHP upload file size limit
 	 */
 	public static function uploadLimit() {
-		$upload_max_filesize = OCP\Util::computerFileSize(ini_get('upload_max_filesize'));
-		$post_max_size = OCP\Util::computerFileSize(ini_get('post_max_size'));
+		$ini = \OC::$server->getIniWrapper();
+		$upload_max_filesize = OCP\Util::computerFileSize($ini->get('upload_max_filesize'));
+		$post_max_size = OCP\Util::computerFileSize($ini->get('post_max_size'));
 		if ((int)$upload_max_filesize === 0 and (int)$post_max_size === 0) {
 			return INF;
 		} elseif ((int)$upload_max_filesize === 0 or (int)$post_max_size === 0) {
@@ -774,12 +723,13 @@ class OC_Helper {
 		if (!function_exists($function_name)) {
 			return false;
 		}
-		$disabled = explode(',', ini_get('disable_functions'));
+		$ini = \OC::$server->getIniWrapper();
+		$disabled = explode(',', $ini->get('disable_functions'));
 		$disabled = array_map('trim', $disabled);
 		if (in_array($function_name, $disabled)) {
 			return false;
 		}
-		$disabled = explode(',', ini_get('suhosin.executor.func.blacklist'));
+		$disabled = explode(',', $ini->get('suhosin.executor.func.blacklist'));
 		$disabled = array_map('trim', $disabled);
 		if (in_array($function_name, $disabled)) {
 			return false;

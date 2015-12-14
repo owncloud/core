@@ -163,7 +163,7 @@ class StorageConfig implements \JsonSerializable {
 	}
 
 	/**
-	 * @param Backend
+	 * @param Backend $backend
 	 */
 	public function setBackend(Backend $backend) {
 		$this->backend= $backend;
@@ -177,7 +177,7 @@ class StorageConfig implements \JsonSerializable {
 	}
 
 	/**
-	 * @param AuthMechanism
+	 * @param AuthMechanism $authMechanism
 	 */
 	public function setAuthMechanism(AuthMechanism $authMechanism) {
 		$this->authMechanism = $authMechanism;
@@ -299,6 +299,25 @@ class StorageConfig implements \JsonSerializable {
 			$mountOptions = [];
 		}
 		$this->mountOptions = $mountOptions;
+	}
+
+	/**
+	 * @param string $key
+	 * @return mixed
+	 */
+	public function getMountOption($key) {
+		if (isset($this->mountOptions[$key])) {
+			return $this->mountOptions[$key];
+		}
+		return null;
+	}
+
+	/**
+	 * @param string $key
+	 * @param mixed $value
+	 */
+	public function setMountOption($key, $value) {
+		$this->mountOptions[$key] = $value;
 	}
 
 	/**

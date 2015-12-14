@@ -138,14 +138,17 @@
     "Please ask your server administrator to restart the web server." : "Por favor, peça ao seu administrador do servidor para reiniciar o servidor web.",
     "PostgreSQL >= 9 required" : "PostgreSQL >= 9 requirido",
     "Please upgrade your database version" : "Por favor, atualize sua versão do banco de dados",
-    "Error occurred while checking PostgreSQL version" : "Erro ao verificar a versão do PostgreSQL",
-    "Please make sure you have PostgreSQL >= 9 or check the logs for more information about the error" : "Por favor, verifique se você tem PostgreSQL> = 9 ou verificar os logs para obter mais informações sobre o erro",
     "Please change the permissions to 0770 so that the directory cannot be listed by other users." : "Por favor, altere as permissões para 0770 para que o diretório não possa ser listado por outros usuários.",
     "Data directory (%s) is readable by other users" : "Diretório de dados (%s) pode ser lido por outros usuários",
     "Data directory (%s) must be an absolute path" : "Diretório de dados (%s) deve ser um caminho absoluto",
     "Check the value of \"datadirectory\" in your configuration" : "Verifique o valor do \"diretóriodedados\" na sua configuração",
     "Data directory (%s) is invalid" : "Diretório de dados (%s) é inválido",
     "Please check that the data directory contains a file \".ocdata\" in its root." : "Por favor, verifique se o diretório de dados contém um arquivo \".ocdata\" em sua raiz.",
-    "Could not obtain lock type %d on \"%s\"." : "Não foi possível obter tipo de bloqueio %d em \"%s\"."
+    "Could not obtain lock type %d on \"%s\"." : "Não foi possível obter tipo de bloqueio %d em \"%s\".",
+    "Storage unauthorized. %s" : "Armazenamento não autorizado. %s",
+    "Storage incomplete configuration. %s" : "Incompleta configuração de armazenamento. %s",
+    "Storage connection error. %s" : "Erro na conexão de armazenamento. %s",
+    "Storage not available" : "Armazanamento não disponível",
+    "Storage connection timeout. %s" : "Tempo limite de conexão de armazenamento. %s"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

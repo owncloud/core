@@ -32,10 +32,19 @@ $application->add(new OC\Core\Command\Check(\OC::$server->getConfig()));
 $infoParser = new \OC\App\InfoParser(\OC::$server->getHTTPHelper(), \OC::$server->getURLGenerator());
 $application->add(new OC\Core\Command\App\CheckCode($infoParser));
 $application->add(new OC\Core\Command\L10n\CreateJs());
+$application->add(new \OC\Core\Command\Integrity\SignApp(
+		\OC::$server->getIntegrityCodeChecker(),
+		new \OC\IntegrityCheck\Helpers\FileAccessHelper()
+));
+$application->add(new \OC\Core\Command\Integrity\SignCore(
+		\OC::$server->getIntegrityCodeChecker(),
+		new \OC\IntegrityCheck\Helpers\FileAccessHelper()
+));
 
 if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\App\Disable());
 	$application->add(new OC\Core\Command\App\Enable());
+	$application->add(new OC\Core\Command\App\GetPath());
 	$application->add(new OC\Core\Command\App\ListApps());
 
 	$application->add(new OC\Core\Command\Background\Cron(\OC::$server->getConfig()));
