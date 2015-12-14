@@ -18,7 +18,7 @@
 			<input type="password" name="password" id="password"
 				placeholder="<?php p($l->t('Password')); ?>" value=""
 				autocomplete="off" autocapitalize="off" autocorrect="off"
-				autofocus />
+				autofocus disabled />
 			<input type="submit" id="submit" value=""
 				class="svg icon-confirm input-button-inline" />
 		</p>
