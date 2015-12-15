@@ -10,6 +10,13 @@ require_once __DIR__ . '/../lib/base.php';
 
 \OC::$loader->addValidRoot(OC::$SERVERROOT . '/tests');
 
+$appDirs = array_map(function($appRoot) {
+	return $appRoot['path'];
+}, OC::$APPSROOTS);
+foreach($appDirs as $appDir) {
+	\OC::$loader->addValidRoot($appDir);
+}
+
 // load all enabled apps
 \OC_App::loadApps();
 
