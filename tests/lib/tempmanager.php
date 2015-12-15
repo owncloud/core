@@ -145,6 +145,9 @@ class TempManager extends \Test\TestCase {
 		$logger = $this->getMock('\Test\NullLogger');
 		$manager = $this->getManager($logger);
 		chmod($this->baseDir, 0500);
+		if (is_writable($this->baseDir)) {
+			$this->markTestSkipped('Failed to remove write permissions from temp folder.');
+		}
 		$logger->expects($this->once())
 			->method('warning')
 			->with($this->stringContains('Can not create a temporary file in directory'));
@@ -159,6 +162,9 @@ class TempManager extends \Test\TestCase {
 		$logger = $this->getMock('\Test\NullLogger');
 		$manager = $this->getManager($logger);
 		chmod($this->baseDir, 0500);
+		if (is_writable($this->baseDir)) {
+			$this->markTestSkipped('Failed to remove write permissions from temp folder.');
+		}
 		$logger->expects($this->once())
 			->method('warning')
 			->with($this->stringContains('Can not create a temporary folder in directory'));

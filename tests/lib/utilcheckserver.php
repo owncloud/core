@@ -148,6 +148,11 @@ class Test_Util_CheckServer extends \Test\TestCase {
 		}
 
 		chmod($this->datadir, 0300);
+
+		if (is_writable($this->datadir)) {
+			$this->markTestSkipped('Failed to remove write permissions from datadir.');
+		}
+
 		$result = \OC_Util::checkServer($this->getConfig(array(
 			'installed' => true,
 			'version' => implode('.', OC_Util::getVersion())

@@ -106,6 +106,13 @@ class Files extends \Test\TestCase {
 		chmod($files['.htaccess'], ($htaccessWritable ? 0644 : 0444));
 		chmod($files['.user.ini'], ($userIniWritable ? 0644 : 0444));
 
+		if (!$userIniWritable && is_writable($files['.user.ini'])) {
+			$this->markTestSkipped('Failed to remove write permissions from user ini.');
+		}
+		if (!$htaccessWritable && is_writable($files['.htaccess'])) {
+			$this->markTestSkipped('Failed to remove write permissions from htaccess.');
+		}
+
 		$htaccessSize = filesize($files['.htaccess']);
 		$userIniSize = filesize($files['.user.ini']);
 		$htaccessSizeMod = 2*(strlen($htaccessStr) - strlen(self::UPLOAD_LIMIT_DEFAULT_STR));
