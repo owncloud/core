@@ -55,6 +55,30 @@
 		<p>
 			<div class="ldapWizardInfo invisible">&nbsp;</div>
 		</p>
+		<p>
+			Dynamic membership settings:
+		</p>
+		<p>
+			<label>
+                        	Enable: 
+                        </label>
+
+                        <input type="checkbox" id="ldap_userfilter_dm_enable"
+                                   title="Allows dynamic membership of groups to be enabled"
+                                   name="ldap_userfilter_dm_enable" value="1" />	
+		</p>
+		<p>
+			<label>
+                        	Member URL Attribute: 
+                        </label>
+			<input type="text" id="ldap_userfilter_dm_member_url" name="ldap_userfilter_dm_member_url"
+                                placeholder="memberURL" autocomplete="off" style="width: 20%;"
+                                title="The LDAP attribute that contains the membership URL used to determine what users are in each dynamic group"
+                                />
+		</p>
+		<p>
+			<div class="ldapWizardInfo invisible">&nbsp;</div>
+		</p>
 		<p class="ldap_count">
 			<button class="ldapGetEntryCount ldapGetUserCount" name="ldapGetEntryCount" type="button">
 				<?php p($l->t('Verify settings and count users'));?>
