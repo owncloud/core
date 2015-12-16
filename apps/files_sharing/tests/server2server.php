@@ -39,6 +39,11 @@ class Test_Files_Sharing_S2S_OCS_API extends TestCase {
 	private $connection;
 
 	/**
+	 * @var \OCA\Files_Sharing\External\ExternalUpdater|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $externalUpdater;
+
+	/**
 	 * @var \OCA\Files_Sharing\API\Server2Server
 	 */
 	private $s2s;
@@ -50,16 +55,19 @@ class Test_Files_Sharing_S2S_OCS_API extends TestCase {
 		\OCP\Share::registerBackend('test', 'Test_Share_Backend');
 
 		$config = $this->getMockBuilder('\OCP\IConfig')
-				->disableOriginalConstructor()->getMock();
+			->disableOriginalConstructor()->getMock();
 		$clientService = $this->getMock('\OCP\Http\Client\IClientService');
 		$httpHelperMock = $this->getMockBuilder('\OC\HTTPHelper')
-				->setConstructorArgs([$config, $clientService])
-				->getMock();
+			->setConstructorArgs([$config, $clientService])
+			->getMock();
 		$httpHelperMock->expects($this->any())->method('post')->with($this->anything())->will($this->returnValue(true));
 
 		$this->registerHttpHelper($httpHelperMock);
 
-		$this->s2s = new \OCA\Files_Sharing\API\Server2Server();
+		$this->externalUpdater = $this->getMockBuilder('\OCA\Files_Sharing\External\ExternalUpdater')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->s2s = new \OCA\Files_Sharing\API\Server2Server($this->externalUpdater);
 
 		$this->connection = \OC::$server->getDatabaseConnection();
 	}
@@ -75,6 +83,7 @@ class Test_Files_Sharing_S2S_OCS_API extends TestCase {
 
 	/**
 	 * Register an http helper mock for testing purposes.
+	 *
 	 * @param $httpHelper http helper mock
 	 */
 	private function registerHttpHelper($httpHelper) {
@@ -159,7 +168,7 @@ class Test_Files_Sharing_S2S_OCS_API extends TestCase {
 			\OC::$server->getHTTPHelper(),
 			\OC::$server->getNotificationManager(),
 			$toDelete
-			);
+		);
 
 		$manager->removeUserShares($toDelete);
 
@@ -202,7 +211,7 @@ class Test_Files_Sharing_S2S_OCS_API extends TestCase {
 		$users = array('user1', 'user2', 'user3');
 
 		for ($i = 0; $i < 10; $i++) {
-			$user = $users[$i%3];
+			$user = $users[$i % 3];
 			$query->execute(array('remote', 'token', 'password', 'name', 'owner', $user, 'mount point', $i, $i, 0));
 		}
 
@@ -211,6 +220,42 @@ class Test_Files_Sharing_S2S_OCS_API extends TestCase {
 		$dummyEntries = $query->fetchAll();
 
 		$this->assertSame(10, count($dummyEntries));
+	}
+
+	function testUpdateShare() {
+		$query = $this->connection->prepare('
+			INSERT INTO `*PREFIX*share_external`
+			(`remote`, `share_token`, `password`, `name`, `owner`, `user`, `mountpoint`, `mountpoint_hash`, `remote_id`, `accepted`)
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+			');
+		$query->execute(array('remote', 'token', 'password', 'name', 'owner', 'user', 'mount point', 'hash', 1234567, 0));
+
+		$verify = \OCP\DB::prepare('SELECT * FROM `*PREFIX*share_external` WHERE `remote_id` = 1234567');
+		$result = $verify->execute();
+		$data = $result->fetchAll();
+		$id = $data[0]['id'];
+		$this->assertSame(1, count($data));
+
+		$this->externalUpdater->expects($this->once())
+			->method('handleUpdate')
+			->will($this->returnCallback(function ($user, $share, $path, $etag) use ($id) {
+				$this->assertEquals('user', $user);
+				$this->assertEquals('/foo', $path);
+				$this->assertEquals('newetag', $etag);
+				$this->assertEquals($id, $share['id']);
+				$this->assertEquals('mount point', $share['mountpoint']);
+				$this->assertEquals(1234567, $share['remote_id']);
+			}));
+
+		$_POST['token'] = 'token';
+		$this->s2s->updateShare([
+			'id' => 1234567,
+			'path' => '/foo',
+			'etag' => 'newetag'
+		]);
+
+		$cleanup = \OCP\DB::prepare('DELETE FROM `*PREFIX*share` WHERE `id` =? ');
+		$cleanup->execute([$id]);
 	}
 
 }

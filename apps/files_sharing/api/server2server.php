@@ -26,9 +26,23 @@
 namespace OCA\Files_Sharing\API;
 
 use OCA\Files_Sharing\Activity;
+use OCA\Files_Sharing\External\ExternalUpdater;
 use OCP\Files\NotFoundException;
 
 class Server2Server {
+	/**
+	 * @var ExternalUpdater
+	 */
+	private $externalUpdater;
+
+	/**
+	 * Server2Server constructor.
+	 *
+	 * @param ExternalUpdater $externalUpdater
+	 */
+	public function __construct(ExternalUpdater $externalUpdater) {
+		$this->externalUpdater = $externalUpdater;
+	}
 
 	/**
 	 * create a new share
@@ -230,6 +244,34 @@ class Server2Server {
 			\OC::$server->getActivityManager()->publishActivity(
 				Activity::FILES_SHARING_APP, Activity::SUBJECT_REMOTE_SHARE_UNSHARED, array($owner, $path), '', array(),
 				'', '', $user, Activity::TYPE_REMOTE_SHARE, Activity::PRIORITY_MEDIUM);
+		}
+
+		return new \OC_OCS_Result();
+	}
+
+	/**
+	 * share content have been updated by owner
+	 *
+	 * @param array $params
+	 * @return \OC_OCS_Result
+	 */
+	public function updateShare($params) {
+
+		if (!$this->isS2SEnabled()) {
+			return new \OC_OCS_Result(null, 503, 'Server does not support federated cloud sharing');
+		}
+
+		$id = $params['id'];
+		$token = isset($_POST['token']) ? $_POST['token'] : null;
+		$etag = $params['etag'];
+		$path = isset($params['path']) ? $params['path'] : '';
+
+		$query = \OCP\DB::prepare('SELECT * FROM `*PREFIX*share_external` WHERE `remote_id` = ? AND `share_token` = ?');
+		$query->execute(array($id, $token));
+		$share = $query->fetchRow();
+
+		if ($token && $id && !empty($share)) {
+			$this->externalUpdater->handleUpdate($share['user'], $share, $path, $etag);
 		}
 
 		return new \OC_OCS_Result();

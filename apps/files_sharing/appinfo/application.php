@@ -25,6 +25,7 @@
 
 namespace OCA\Files_Sharing\AppInfo;
 
+use OC\Files\Filesystem;
 use OCA\Files_Sharing\MountProvider;
 use OCP\AppFramework\App;
 use OC\AppFramework\Utility\SimpleContainer;
@@ -122,9 +123,19 @@ class Application extends App {
 			$server = $c->query('ServerContainer');
 			return new \OCA\Files_Sharing\External\MountProvider(
 				$server->getDatabaseConnection(),
-				function() use ($c) {
+				function () use ($c) {
 					return $c->query('ExternalManager');
 				}
+			);
+		});
+
+		$container->registerService('ExternalUpdater', function (IContainer $c) {
+			/** @var \OCP\IServerContainer $server */
+			$server = $c->query('ServerContainer');
+			return new \OCA\Files_Sharing\External\ExternalUpdater(
+				$c->query('ExternalMountProvider'),
+				Filesystem::getLoader(),
+				$server->getUserManager()
 			);
 		});
 
