@@ -55,7 +55,15 @@ OCA = OCA || {};
 					$relatedElements: $('.ldapGetUserCount'),
 					setMethod: 'setCount',
 					keyName: 'ldap_user_count'
-				}
+				},
+				ldap_userfilter_dm_enable: {
+                                        $element: $('#ldap_userfilter_dm_enable'),
+                                        setMethod: 'setUserAttributeDMEnable'
+                                },
+				ldap_userfilter_dm_member_url: {
+                                        $element: $('#ldap_userfilter_dm_member_url'),
+                                        setMethod: 'setUserAttributeDMMemberUrl'
+                                },
 			};
 			this.setManagedItems(items);
 			this.manyGroupsSupport = true;
@@ -109,6 +117,28 @@ OCA = OCA || {};
 		getCountItem: function () {
 			return this.managedItems.ldap_user_count;
 		},
+
+		/**
+                 * updates the DM enable attribute check box
+                 *
+                 * @param {string} useEnable contains an int
+                 */
+                setUserAttributeDMEnable: function(useEnable) {
+                        this.setElementValue(
+                                this.managedItems.ldap_userfilter_dm_enable.$element, useEnable
+                        );
+                },
+
+		/**
+                 * updates the DM member url attribute  text input
+                 *
+                 * @param {string} useEnable contains an int
+                 */
+                setUserAttributeDMMemberUrl: function(useMemberUrl) {
+                        this.setElementValue(
+                                this.managedItems.ldap_userfilter_dm_member_url.$element, useMemberUrl
+                        );
+                },
 
 		/**
 		 * @inheritdoc
