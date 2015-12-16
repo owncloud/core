@@ -3,10 +3,10 @@
  * @author Alexander Bergolth <leo@strike.wu.ac.at>
  * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
- * @author Lennart Rosam <hello@takuto.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Richard Bentley <rbentley@e2advance.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -83,6 +83,8 @@ class Configuration {
 		'lastJpegPhotoLookup' => null,
 		'ldapNestedGroups' => false,
 		'ldapPagingSize' => null,
+		'ldapUserFilterDMEnable' => false,
+		'ldapUserFilterDMMemberUrl' => '',
 	);
 
 	/**
@@ -440,6 +442,8 @@ class Configuration {
 			'ldap_nested_groups'                => 0,
 			'ldap_paging_size'                  => 500,
 			'ldap_experienced_admin'            => 0,
+			'ldap_userfilter_dm_enable'         => 0,
+			'ldap_userfilter_dm_member_url'     => '',
 		);
 	}
 
@@ -493,7 +497,9 @@ class Configuration {
 			'last_jpegPhoto_lookup'             => 'lastJpegPhotoLookup',
 			'ldap_nested_groups'                => 'ldapNestedGroups',
 			'ldap_paging_size'                  => 'ldapPagingSize',
-			'ldap_experienced_admin'            => 'ldapExperiencedAdmin'
+			'ldap_experienced_admin'            => 'ldapExperiencedAdmin',
+			'ldap_userfilter_dm_enable'         => 'ldapUserFilterDMEnable',
+			'ldap_userfilter_dm_member_url'     => 'ldapUserFilterDMMemberUrl',
 		);
 		return $array;
 	}
