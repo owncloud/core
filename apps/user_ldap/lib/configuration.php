@@ -3,7 +3,6 @@
  * @author Alexander Bergolth <leo@strike.wu.ac.at>
  * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
- * @author Lennart Rosam <hello@takuto.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
@@ -84,8 +83,7 @@ class Configuration {
 		'lastJpegPhotoLookup' => null,
 		'ldapNestedGroups' => false,
 		'ldapPagingSize' => null,
-		'ldapUserFilterDMEnable' => false,
-		'ldapUserFilterDMMemberUrl' => '',
+		'ldapDynamicGroupMemberURL' => null,
 	);
 
 	/**
@@ -352,8 +350,8 @@ class Configuration {
 			$defaults = $this->getDefaults();
 		}
 		return \OCP\Config::getAppValue('user_ldap',
-										$this->configPrefix.$varName,
-										$defaults[$varName]);
+						$this->configPrefix.$varName,
+						$defaults[$varName]);
 	}
 
 	/**
@@ -386,8 +384,8 @@ class Configuration {
 	 */
 	protected function saveValue($varName, $value) {
 		return \OCP\Config::setAppValue('user_ldap',
-										$this->configPrefix.$varName,
-										$value);
+						$this->configPrefix.$varName,
+						$value);
 	}
 
 	/**
@@ -443,8 +441,7 @@ class Configuration {
 			'ldap_nested_groups'                => 0,
 			'ldap_paging_size'                  => 500,
 			'ldap_experienced_admin'            => 0,
-			'ldap_userfilter_dm_enable'         => 0,
-			'ldap_userfilter_dm_member_url'     => '',
+			'ldap_dynamic_group_member_url'     => '',
 		);
 	}
 
@@ -499,8 +496,7 @@ class Configuration {
 			'ldap_nested_groups'                => 'ldapNestedGroups',
 			'ldap_paging_size'                  => 'ldapPagingSize',
 			'ldap_experienced_admin'            => 'ldapExperiencedAdmin',
-			'ldap_userfilter_dm_enable'         => 'ldapUserFilterDMEnable',
-			'ldap_userfilter_dm_member_url'     => 'ldapUserFilterDMMemberUrl',
+			'ldap_dynamic_group_member_url'     => 'ldapDynamicGroupMemberURL',
 		);
 		return $array;
 	}
