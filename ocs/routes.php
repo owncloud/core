@@ -129,4 +129,11 @@ if (\OC::$server->getAppManager()->isEnabledForUser('files_sharing')) {
 		'files_sharing',
 		API::GUEST_AUTH
 	);
+
+	API::register('post',
+		'/cloud/shares/{id}/update',
+		array($s2s, 'updateShare'),
+		'files_sharing',
+		API::GUEST_AUTH
+	);
 }
