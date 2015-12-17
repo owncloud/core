@@ -255,6 +255,21 @@ class Manager {
 		return ($result['success'] && $status['ocs']['meta']['statuscode'] === 100);
 	}
 
+	public function notifyUpdate($remote, $token, $remoteId, $path, $newEtag) {
+		$url = rtrim($remote, '/') . \OCP\Share::BASE_PATH_TO_SHARE_API . '/' . $remoteId . '/update?format=' . \OCP\Share::RESPONSE_FORMAT;
+
+		$fields = [
+			'token' => $token,
+			'path' => $path,
+			'etag' => $newEtag
+		];
+
+		$result = $this->httpHelper->post($url, $fields);
+		$status = json_decode($result['result'], true);
+
+		return ($result['success'] && $status['ocs']['meta']['statuscode'] === 100);
+	}
+
 	/**
 	 * remove '/user/files' from the path and trailing slashes
 	 *
@@ -404,5 +419,19 @@ class Manager {
 		$result = $shares->execute($parameters);
 
 		return $result ? $shares->fetchAll() : [];
+	}
+
+	/**
+	 * @param int $fileId file id of the root of the outgoing share
+	 * @return mixed share of false
+	 */
+	public function getOutgoingShare($fileId) {
+		$getShare = $this->connection->prepare('
+			SELECT `id`, `share_with`, `token`
+			FROM  `*PREFIX*share`
+			WHERE `file_source` = ? AND `uid_owner` = ? AND `share_type` = 6');
+		$result = $getShare->execute([$fileId, $this->uid]);
+
+		return $result ? $getShare->fetch() : false;
 	}
 }
