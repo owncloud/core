@@ -271,6 +271,7 @@ class Server2Server {
 		$share = $query->fetchRow();
 
 		if ($token && $id && !empty($share)) {
+			$share['token'] = $token;
 			$this->externalUpdater->handleUpdate($share['user'], $share, $path, $etag);
 		}
 
