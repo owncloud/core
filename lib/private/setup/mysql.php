@@ -3,7 +3,7 @@
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Michael Göhler <somebody.here@gmx.de>
- * @author Robin Appelman <icewind@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -89,15 +89,28 @@ class MySQL extends AbstractDatabase {
 	 * @throws \OC\DatabaseSetupException
 	 */
 	private function connect() {
-		$type = 'mysql';
+
 		$connectionParams = array(
-			'host' => $this->dbHost,
-			'user' => $this->dbUser,
-			'password' => $this->dbPassword,
-			'tablePrefix' => $this->tablePrefix,
+				'host' => $this->dbHost,
+				'user' => $this->dbUser,
+				'password' => $this->dbPassword,
+				'tablePrefix' => $this->tablePrefix,
 		);
+
+		// adding port support
+		if (strpos($this->dbHost, ':')) {
+			// Host variable may carry a port or socket.
+			list($host, $portOrSocket) = explode(':', $this->dbHost, 2);
+			if (ctype_digit($portOrSocket)) {
+				$connectionParams['port'] = $portOrSocket;
+			} else {
+				$connectionParams['unix_socket'] = $portOrSocket;
+			}
+			$connectionParams['host'] = $host;
+		}
+
 		$cf = new ConnectionFactory();
-		return $cf->getConnection($type, $connectionParams);
+		return $cf->getConnection('mysql', $connectionParams);
 	}
 
 	/**

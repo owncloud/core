@@ -141,9 +141,11 @@
 				name: name,
 				displayName: action.displayName,
 				mime: mime,
+				order: action.order || 0,
 				icon: action.icon,
 				permissions: action.permissions,
-				type: action.type || FileActions.TYPE_DROPDOWN
+				type: action.type || FileActions.TYPE_DROPDOWN,
+				altText: action.altText || ''
 			};
 			if (_.isUndefined(action.displayName)) {
 				actionSpec.displayName = t('files', name);
@@ -565,6 +567,7 @@
 			this.registerAction({
 				name: 'Download',
 				displayName: t('files', 'Download'),
+				order: -20,
 				mime: 'all',
 				permissions: OC.PERMISSION_READ,
 				icon: function () {
@@ -572,7 +575,8 @@
 				},
 				actionHandler: function (filename, context) {
 					var dir = context.dir || context.fileList.getCurrentDirectory();
-					var url = context.fileList.getDownloadUrl(filename, dir);
+					var isDir = context.$file.attr('data-type') === 'dir';
+					var url = context.fileList.getDownloadUrl(filename, dir, isDir);
 
 					var downloadFileaction = $(context.$file).find('.fileactions .action-download');
 
@@ -586,7 +590,7 @@
 							context.fileList.showFileBusyState(filename, false);
 						};
 
-						context.fileList.showFileBusyState(downloadFileaction, true);
+						context.fileList.showFileBusyState(filename, true);
 						OCA.Files.Files.handleDownload(url, disableLoadingState);
 					}
 				}
@@ -594,7 +598,9 @@
 
 			this.registerAction({
 				name: 'Rename',
+				displayName: t('files', 'Rename'),
 				mime: 'all',
+				order: -30,
 				permissions: OC.PERMISSION_UPDATE,
 				icon: function() {
 					return OC.imagePath('core', 'actions/rename');
@@ -606,15 +612,23 @@
 
 			this.register('dir', 'Open', OC.PERMISSION_READ, '', function (filename, context) {
 				var dir = context.$file.attr('data-path') || context.fileList.getCurrentDirectory();
-				if (dir !== '/') {
-					dir = dir + '/';
-				}
-				context.fileList.changeDirectory(dir + filename);
+				context.fileList.changeDirectory(OC.joinPaths(dir, filename));
 			});
 
 			this.registerAction({
 				name: 'Delete',
+				displayName: function(context) {
+					var mountType = context.$file.attr('data-mounttype');
+					var deleteTitle = t('files', 'Delete');
+					if (mountType === 'external-root') {
+						deleteTitle = t('files', 'Disconnect storage');
+					} else if (mountType === 'shared-root') {
+						deleteTitle = t('files', 'Unshare');
+					}
+					return deleteTitle;
+				},
 				mime: 'all',
+				order: 1000,
 				// permission is READ because we show a hint instead if there is no permission
 				permissions: OC.PERMISSION_DELETE,
 				icon: function() {
@@ -663,8 +677,9 @@
 	 * @typedef {Object} OCA.Files.FileAction
 	 *
 	 * @property {String} name identifier of the action
-	 * @property {String} displayName display name of the action, defaults
-	 * to the name given in name property
+	 * @property {(String|OCA.Files.FileActions~displayNameFunction)} displayName
+	 * display name string for the action, or function that returns the display name.
+	 * Defaults to the name given in name property
 	 * @property {String} mime mime type
 	 * @property {int} permissions permissions
 	 * @property {(Function|String)} icon icon path to the icon or function
@@ -695,6 +710,16 @@
 	 * @param {boolean} isDefault true if the action is the default one,
 	 * false otherwise
 	 * @return {Object} jQuery link object
+	 */
+
+	/**
+	 * Display name function for actions.
+	 * The function returns the display name of the action using
+	 * the given context information..
+	 *
+	 * @callback OCA.Files.FileActions~displayNameFunction
+	 * @param {OCA.Files.FileActionContext} context action context
+	 * @return {String} display name
 	 */
 
 	/**

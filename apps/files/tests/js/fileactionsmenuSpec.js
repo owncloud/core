@@ -20,7 +20,7 @@
 */
 
 describe('OCA.Files.FileActionsMenu tests', function() {
-	var fileList, fileActions, menu, actionStub, $tr;
+	var fileList, fileActions, menu, actionStub, menuContext, $tr;
 
 	beforeEach(function() {
 		// init horrible parameters
@@ -80,7 +80,7 @@ describe('OCA.Files.FileActionsMenu tests', function() {
 		};
 		$tr = fileList.add(fileData);
 
-		var menuContext = {
+		menuContext = {
 			$file: $tr,
 			fileList: fileList,
 			fileActions: fileActions,
@@ -152,6 +152,59 @@ describe('OCA.Files.FileActionsMenu tests', function() {
 			expect(menu.$el.find('a[data-action=Match]').length).toEqual(1);
 			expect(menu.$el.find('a[data-action=NoMatch]').length).toEqual(0);
 		});
+		it('sorts by order attribute, then name', function() {
+			fileActions.registerAction({
+				name: 'Baction',
+				displayName: 'Baction',
+				order: 2,
+				mime: 'text/plain',
+				permissions: OC.PERMISSION_ALL
+			});
+			fileActions.registerAction({
+				name: 'Zaction',
+				displayName: 'Zaction',
+				order: 1,
+				mime: 'text/plain',
+				permissions: OC.PERMISSION_ALL
+			});
+			fileActions.registerAction({
+				name: 'Yaction',
+				displayName: 'Yaction',
+				mime: 'text/plain',
+				permissions: OC.PERMISSION_ALL
+			});
+			fileActions.registerAction({
+				name: 'Waction',
+				displayName: 'Waction',
+				mime: 'text/plain',
+				permissions: OC.PERMISSION_ALL
+			});
+
+			menu.render();
+			var zactionIndex = menu.$el.find('a[data-action=Zaction]').closest('li').index();
+			var bactionIndex = menu.$el.find('a[data-action=Baction]').closest('li').index();
+			expect(zactionIndex).toBeLessThan(bactionIndex);
+
+			var wactionIndex = menu.$el.find('a[data-action=Waction]').closest('li').index();
+			var yactionIndex = menu.$el.find('a[data-action=Yaction]').closest('li').index();
+			expect(wactionIndex).toBeLessThan(yactionIndex);
+		});
+		it('calls displayName function', function() {
+			var displayNameStub = sinon.stub().returns('Test');
+
+			fileActions.registerAction({
+				name: 'Something',
+				displayName: displayNameStub,
+				mime: 'text/plain',
+				permissions: OC.PERMISSION_ALL
+			});
+
+			menu.render();
+
+			expect(displayNameStub.calledOnce).toEqual(true);
+			expect(displayNameStub.calledWith(menuContext)).toEqual(true);
+			expect(menu.$el.find('a[data-action=Something]').text()).toEqual('Test');
+		});
 	});
 
 	describe('action handler', function() {
@@ -200,8 +253,8 @@ describe('OCA.Files.FileActionsMenu tests', function() {
 			expect(redirectStub.calledOnce).toEqual(true);
 			expect(redirectStub.getCall(0).args[0]).toContain(
 				OC.webroot +
-				'/index.php/apps/files/ajax/download.php' +
-				'?dir=%2Fsubdir&files=testName.txt');
+				'/remote.php/webdav/subdir/testName.txt'
+			);
 			redirectStub.restore();
 		});
 		it('takes the file\'s path into account when clicking download', function() {
@@ -232,8 +285,7 @@ describe('OCA.Files.FileActionsMenu tests', function() {
 
 			expect(redirectStub.calledOnce).toEqual(true);
 			expect(redirectStub.getCall(0).args[0]).toContain(
-				OC.webroot + '/index.php/apps/files/ajax/download.php' +
-				'?dir=%2Fanotherpath%2Fthere&files=testName.txt'
+				OC.webroot + '/remote.php/webdav/anotherpath/there/testName.txt'
 			);
 			redirectStub.restore();
 		});

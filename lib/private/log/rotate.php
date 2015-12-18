@@ -2,6 +2,7 @@
 /**
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -31,7 +32,7 @@ namespace OC\Log;
 class Rotate extends \OC\BackgroundJob\Job {
 	private $max_log_size;
 	public function run($logFile) {
-		$this->max_log_size = \OC_Config::getValue('log_rotate_size', false);
+		$this->max_log_size = \OC::$server->getConfig()->getSystemValue('log_rotate_size', false);
 		if ($this->max_log_size) {
 			$filesize = @filesize($logFile);
 			if ($filesize >= $this->max_log_size) {

@@ -1,5 +1,8 @@
 <?php
 /**
+ * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Individual IT Services <info@individual-it.net>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Robin Appelman <icewind@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -21,8 +24,10 @@
 
 namespace OC\Lock;
 
+use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IDBConnection;
 use OCP\ILogger;
+use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
 
 /**
@@ -40,16 +45,79 @@ class DBLockingProvider extends AbstractLockingProvider {
 	private $logger;
 
 	/**
-	 * @param \OCP\IDBConnection $connection
-	 * @param \OCP\ILogger $logger
+	 * @var \OCP\AppFramework\Utility\ITimeFactory
 	 */
-	public function __construct(IDBConnection $connection, ILogger $logger) {
-		$this->connection = $connection;
-		$this->logger = $logger;
+	private $timeFactory;
+
+	private $sharedLocks = [];
+
+	/**
+	 * Check if we have an open shared lock for a path
+	 *
+	 * @param string $path
+	 * @return bool
+	 */
+	protected function isLocallyLocked($path) {
+		return isset($this->sharedLocks[$path]) && $this->sharedLocks[$path];
 	}
 
-	protected function initLockField($path) {
-		$this->connection->insertIfNotExist('*PREFIX*file_locks', ['key' => $path, 'lock' => 0, 'ttl' => 0], ['key']);
+	/**
+	 * Mark a locally acquired lock
+	 *
+	 * @param string $path
+	 * @param int $type self::LOCK_SHARED or self::LOCK_EXCLUSIVE
+	 */
+	protected function markAcquire($path, $type) {
+		parent::markAcquire($path, $type);
+		if ($type === self::LOCK_SHARED) {
+			$this->sharedLocks[$path] = true;
+		}
+	}
+
+	/**
+	 * Change the type of an existing tracked lock
+	 *
+	 * @param string $path
+	 * @param int $targetType self::LOCK_SHARED or self::LOCK_EXCLUSIVE
+	 */
+	protected function markChange($path, $targetType) {
+		parent::markChange($path, $targetType);
+		if ($targetType === self::LOCK_SHARED) {
+			$this->sharedLocks[$path] = true;
+		} else if ($targetType === self::LOCK_EXCLUSIVE) {
+			$this->sharedLocks[$path] = false;
+		}
+	}
+
+	/**
+	 * @param \OCP\IDBConnection $connection
+	 * @param \OCP\ILogger $logger
+	 * @param \OCP\AppFramework\Utility\ITimeFactory $timeFactory
+	 */
+	public function __construct(IDBConnection $connection, ILogger $logger, ITimeFactory $timeFactory) {
+		$this->connection = $connection;
+		$this->logger = $logger;
+		$this->timeFactory = $timeFactory;
+	}
+
+	/**
+	 * Insert a file locking row if it does not exists.
+	 *
+	 * @param string $path
+	 * @param int $lock
+	 * @return int number of inserted rows
+	 */
+
+	protected function initLockField($path, $lock = 0) {
+		$expire = $this->getExpireTime();
+		return $this->connection->insertIfNotExist('*PREFIX*file_locks', ['key' => $path, 'lock' => $lock, 'ttl' => $expire], ['key']);
+	}
+
+	/**
+	 * @return int
+	 */
+	protected function getExpireTime() {
+		return $this->timeFactory->getTime() + self::TTL;
 	}
 
 	/**
@@ -58,11 +126,19 @@ class DBLockingProvider extends AbstractLockingProvider {
 	 * @return bool
 	 */
 	public function isLocked($path, $type) {
+		if ($this->hasAcquiredLock($path, $type)) {
+			return true;
+		}
 		$query = $this->connection->prepare('SELECT `lock` from `*PREFIX*file_locks` WHERE `key` = ?');
 		$query->execute([$path]);
 		$lockValue = (int)$query->fetchColumn();
 		if ($type === self::LOCK_SHARED) {
-			return $lockValue > 0;
+			if ($this->isLocallyLocked($path)) {
+				// if we have a shared lock we kept open locally but it's released we always have at least 1 shared lock in the db
+				return $lockValue > 1;
+			} else {
+				return $lockValue > 0;
+			}
 		} else if ($type === self::LOCK_EXCLUSIVE) {
 			return $lockValue === -1;
 		} else {
@@ -76,24 +152,32 @@ class DBLockingProvider extends AbstractLockingProvider {
 	 * @throws \OCP\Lock\LockedException
 	 */
 	public function acquireLock($path, $type) {
-		if ($this->connection->inTransaction()){
-			$this->logger->warning("Trying to acquire a lock for '$path' while inside a transition");
-		}
-
-		$this->connection->beginTransaction();
-		$this->initLockField($path);
+		$expire = $this->getExpireTime();
 		if ($type === self::LOCK_SHARED) {
-			$result = $this->connection->executeUpdate(
-				'UPDATE `*PREFIX*file_locks` SET `lock` = `lock` + 1 WHERE `key` = ? AND `lock` >= 0',
-				[$path]
-			);
+			if (!$this->isLocallyLocked($path)) {
+				$result = $this->initLockField($path, 1);
+				if ($result <= 0) {
+					$result = $this->connection->executeUpdate(
+						'UPDATE `*PREFIX*file_locks` SET `lock` = `lock` + 1, `ttl` = ? WHERE `key` = ? AND `lock` >= 0',
+						[$expire, $path]
+					);
+				}
+			} else {
+				$result = 1;
+			}
 		} else {
-			$result = $this->connection->executeUpdate(
-				'UPDATE `*PREFIX*file_locks` SET `lock` = -1 WHERE `key` = ? AND `lock` = 0',
-				[$path]
-			);
+			$existing = 0;
+			if ($this->hasAcquiredLock($path, ILockingProvider::LOCK_SHARED) === false && $this->isLocallyLocked($path)) {
+				$existing = 1;
+			}
+			$result = $this->initLockField($path, -1);
+			if ($result <= 0) {
+				$result = $this->connection->executeUpdate(
+					'UPDATE `*PREFIX*file_locks` SET `lock` = -1, `ttl` = ? WHERE `key` = ? AND `lock` = ?',
+					[$expire, $path, $existing]
+				);
+			}
 		}
-		$this->connection->commit();
 		if ($result !== 1) {
 			throw new LockedException($path);
 		}
@@ -105,20 +189,15 @@ class DBLockingProvider extends AbstractLockingProvider {
 	 * @param int $type self::LOCK_SHARED or self::LOCK_EXCLUSIVE
 	 */
 	public function releaseLock($path, $type) {
-		$this->initLockField($path);
-		if ($type === self::LOCK_SHARED) {
-			$this->connection->executeUpdate(
-				'UPDATE `*PREFIX*file_locks` SET `lock` = `lock` - 1 WHERE `key` = ? AND `lock` > 0',
-				[$path]
-			);
-		} else {
+		$this->markRelease($path, $type);
+
+		// we keep shared locks till the end of the request so we can re-use them
+		if ($type === self::LOCK_EXCLUSIVE) {
 			$this->connection->executeUpdate(
 				'UPDATE `*PREFIX*file_locks` SET `lock` = 0 WHERE `key` = ? AND `lock` = -1',
 				[$path]
 			);
 		}
-
-		$this->markRelease($path, $type);
 	}
 
 	/**
@@ -129,16 +208,20 @@ class DBLockingProvider extends AbstractLockingProvider {
 	 * @throws \OCP\Lock\LockedException
 	 */
 	public function changeLock($path, $targetType) {
-		$this->initLockField($path);
+		$expire = $this->getExpireTime();
 		if ($targetType === self::LOCK_SHARED) {
 			$result = $this->connection->executeUpdate(
-				'UPDATE `*PREFIX*file_locks` SET `lock` = 1 WHERE `key` = ? AND `lock` = -1',
-				[$path]
+				'UPDATE `*PREFIX*file_locks` SET `lock` = 1, `ttl` = ? WHERE `key` = ? AND `lock` = -1',
+				[$expire, $path]
 			);
 		} else {
+			// since we only keep one shared lock in the db we need to check if we have more then one shared lock locally manually
+			if (isset($this->acquiredLocks['shared'][$path]) && $this->acquiredLocks['shared'][$path] > 1) {
+				throw new LockedException($path);
+			}
 			$result = $this->connection->executeUpdate(
-				'UPDATE `*PREFIX*file_locks` SET `lock` = -1 WHERE `key` = ? AND `lock` = 1',
-				[$path]
+				'UPDATE `*PREFIX*file_locks` SET `lock` = -1, `ttl` = ? WHERE `key` = ? AND `lock` = 1',
+				[$expire, $path]
 			);
 		}
 		if ($result !== 1) {
@@ -150,13 +233,39 @@ class DBLockingProvider extends AbstractLockingProvider {
 	/**
 	 * cleanup empty locks
 	 */
-	public function cleanEmptyLocks() {
+	public function cleanExpiredLocks() {
+		$expire = $this->timeFactory->getTime();
 		$this->connection->executeUpdate(
-			'DELETE FROM `*PREFIX*file_locks` WHERE `lock` = 0'
+			'DELETE FROM `*PREFIX*file_locks` WHERE `ttl` < ?',
+			[$expire]
 		);
 	}
 
+	/**
+	 * release all lock acquired by this instance which were marked using the mark* methods
+	 */
+	public function releaseAll() {
+		parent::releaseAll();
+
+		// since we keep shared locks we need to manually clean those
+		foreach ($this->sharedLocks as $path => $lock) {
+			if ($lock) {
+				$this->connection->executeUpdate(
+					'UPDATE `*PREFIX*file_locks` SET `lock` = `lock` - 1 WHERE `key` = ? AND `lock` > 0',
+					[$path]
+				);
+			}
+		}
+	}
+
 	public function __destruct() {
-		$this->cleanEmptyLocks();
+		try {
+			$this->cleanExpiredLocks();
+		} catch (\Exception $e) {
+			// If the table is missing, the clean up was successful
+			if ($this->connection->tableExists('file_locks')) {
+				throw $e;
+			}
+		}
 	}
 }

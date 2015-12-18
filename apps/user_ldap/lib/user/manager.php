@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  *
@@ -75,7 +76,7 @@ class Manager {
 	 * @param \OCP\IAvatarManager $avatarManager
 	 * @param \OCP\Image $image an empty image instance
 	 * @param \OCP\IDBConnection $db
-	 * @throws Exception when the methods mentioned above do not exist
+	 * @throws \Exception when the methods mentioned above do not exist
 	 */
 	public function __construct(\OCP\IConfig $ocConfig,
 		FilesystemHelper $ocFilesystem, LogWrapper $ocLog,
@@ -101,9 +102,9 @@ class Manager {
 	/**
 	 * @brief creates an instance of User and caches (just runtime) it in the
 	 * property array
-	 * @param string the DN of the user
-	 * @param string the internal (owncloud) username
-	 * @return \OCA\user_ldap\lib\User
+	 * @param string $dn the DN of the user
+	 * @param string $uid the internal (owncloud) username
+	 * @return \OCA\user_ldap\lib\User\User
 	 */
 	private function createAndCache($dn, $uid) {
 		$this->checkAccess();
@@ -117,13 +118,50 @@ class Manager {
 
 	/**
 	 * @brief checks whether the Access instance has been set
-	 * @throws Exception if Access has not been set
+	 * @throws \Exception if Access has not been set
 	 * @return null
 	 */
 	private function checkAccess() {
 		if(is_null($this->access)) {
 			throw new \Exception('LDAP Access instance must be set first');
 		}
+	}
+
+	/**
+	 * returns a list of attributes that will be processed further, e.g. quota,
+	 * email, displayname, or others.
+	 * @param bool $minimal - optional, set to true to skip attributes with big
+	 * payload
+	 * @return string[]
+	 */
+	public function getAttributes($minimal = false) {
+		$attributes = array('dn', 'uid', 'samaccountname', 'memberof');
+		$possible = array(
+			$this->access->getConnection()->ldapQuotaAttribute,
+			$this->access->getConnection()->ldapEmailAttribute,
+			$this->access->getConnection()->ldapUserDisplayName,
+		);
+		foreach($possible as $attr) {
+			if(!is_null($attr)) {
+				$attributes[] = $attr;
+			}
+		}
+
+		$homeRule = $this->access->getConnection()->homeFolderNamingRule;
+		if(strpos($homeRule, 'attr:') === 0) {
+			$attributes[] = substr($homeRule, strlen('attr:'));
+		}
+
+		if(!$minimal) {
+			// attributes that are not really important but may come with big
+			// payload.
+			$attributes = array_merge($attributes, array(
+				'jpegphoto',
+				'thumbnailphoto'
+			));
+		}
+
+		return $attributes;
 	}
 
 	/**
@@ -152,7 +190,7 @@ class Manager {
 
 	/**
 	 * @brief returns a User object by it's ownCloud username
-	 * @param string the DN or username of the user
+	 * @param string $id the DN or username of the user
 	 * @return \OCA\user_ldap\lib\user\User|\OCA\user_ldap\lib\user\OfflineUser|null
 	 */
 	protected function createInstancyByUserName($id) {
@@ -169,7 +207,7 @@ class Manager {
 
 	/**
 	 * @brief returns a User object by it's DN or ownCloud username
-	 * @param string the DN or username of the user
+	 * @param string $id the DN or username of the user
 	 * @return \OCA\user_ldap\lib\user\User|\OCA\user_ldap\lib\user\OfflineUser|null
 	 * @throws \Exception when connection could not be established
 	 */

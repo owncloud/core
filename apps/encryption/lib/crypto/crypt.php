@@ -2,8 +2,8 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Clark Tomlinson <fallen013@gmail.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
- * @author Morris Jobke <hey@morrisjobke.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -30,11 +30,9 @@ use OC\Encryption\Exceptions\DecryptionFailedException;
 use OC\Encryption\Exceptions\EncryptionFailedException;
 use OCA\Encryption\Exceptions\MultiKeyDecryptException;
 use OCA\Encryption\Exceptions\MultiKeyEncryptException;
-use OCA\Encryption\Vendor\PBKDF2Fallback;
 use OCP\Encryption\Exceptions\GenericEncryptionException;
 use OCP\IConfig;
 use OCP\ILogger;
-use OCP\IUser;
 use OCP\IUserSession;
 
 class Crypt {
@@ -54,7 +52,7 @@ class Crypt {
 	 */
 	private $logger;
 	/**
-	 * @var IUser
+	 * @var string
 	 */
 	private $user;
 	/**
@@ -74,7 +72,7 @@ class Crypt {
 	 */
 	public function __construct(ILogger $logger, IUserSession $userSession, IConfig $config) {
 		$this->logger = $logger;
-		$this->user = $userSession && $userSession->isLoggedIn() ? $userSession->getUser() : false;
+		$this->user = $userSession && $userSession->isLoggedIn() ? $userSession->getUser()->getUID() : '"no user given"';
 		$this->config = $config;
 		$this->supportedKeyFormats = ['hash', 'password'];
 	}
@@ -90,7 +88,7 @@ class Crypt {
 		$res = $this->getOpenSSLPKey();
 
 		if (!$res) {
-			$log->error("Encryption Library couldn't generate users key-pair for {$this->user->getUID()}",
+			$log->error("Encryption Library couldn't generate users key-pair for {$this->user}",
 				['app' => 'encryption']);
 
 			if (openssl_error_string()) {
@@ -109,7 +107,7 @@ class Crypt {
 				'privateKey' => $privateKey
 			];
 		}
-		$log->error('Encryption library couldn\'t export users private key, please check your servers OpenSSL configuration.' . $this->user->getUID(),
+		$log->error('Encryption library couldn\'t export users private key, please check your servers OpenSSL configuration.' . $this->user,
 			['app' => 'encryption']);
 		if (openssl_error_string()) {
 			$log->error('Encryption Library:' . openssl_error_string(),
@@ -146,7 +144,7 @@ class Crypt {
 	/**
 	 * @param string $plainContent
 	 * @param string $passPhrase
-	 * @return bool|string
+	 * @return false|string
 	 * @throws GenericEncryptionException
 	 */
 	public function symmetricEncryptFileContent($plainContent, $passPhrase) {
@@ -273,7 +271,7 @@ class Crypt {
 	}
 
 	/**
-	 * @param $data
+	 * @param string $data
 	 * @return string
 	 */
 	private function addPadding($data) {
@@ -294,28 +292,14 @@ class Crypt {
 		$salt = hash('sha256', $uid . $instanceId . $instanceSecret, true);
 		$keySize = $this->getKeySize($cipher);
 
-		if (function_exists('hash_pbkdf2')) {
-			$hash = hash_pbkdf2(
-				'sha256',
-				$password,
-				$salt,
-				100000,
-				$keySize,
-				true
-			);
-		} else {
-			// fallback to 3rdparty lib for PHP <= 5.4.
-			// FIXME: Can be removed as soon as support for PHP 5.4 was dropped
-			$fallback = new PBKDF2Fallback();
-			$hash = $fallback->pbkdf2(
-				'sha256',
-				$password,
-				$salt,
-				100000,
-				$keySize,
-				true
-			);
-		}
+		$hash = hash_pbkdf2(
+			'sha256',
+			$password,
+			$salt,
+			100000,
+			$keySize,
+			true
+		);
 
 		return $hash;
 	}
@@ -326,7 +310,7 @@ class Crypt {
 	 * @param string $privateKey
 	 * @param string $password
 	 * @param string $uid for regular users, empty for system keys
-	 * @return bool|string
+	 * @return false|string
 	 */
 	public function encryptPrivateKey($privateKey, $password, $uid = '') {
 		$cipher = $this->getCipher();
@@ -343,7 +327,7 @@ class Crypt {
 	 * @param string $privateKey
 	 * @param string $password
 	 * @param string $uid for regular users, empty for system keys
-	 * @return bool|string
+	 * @return false|string
 	 */
 	public function decryptPrivateKey($privateKey, $password = '', $uid = '') {
 
@@ -386,7 +370,7 @@ class Crypt {
 	/**
 	 * check if it is a valid private key
 	 *
-	 * @param $plainKey
+	 * @param string $plainKey
 	 * @return bool
 	 */
 	protected function isValidPrivateKey($plainKey) {
@@ -398,11 +382,11 @@ class Crypt {
 			}
 		}
 
-		return true;
+		return false;
 	}
 
 	/**
-	 * @param $keyFileContents
+	 * @param string $keyFileContents
 	 * @param string $passPhrase
 	 * @param string $cipher
 	 * @return string
@@ -424,7 +408,7 @@ class Crypt {
 	 * remove padding
 	 *
 	 * @param $padded
-	 * @return bool|string
+	 * @return string|false
 	 */
 	private function removePadding($padded) {
 		if (substr($padded, -2) === 'xx') {
@@ -436,8 +420,8 @@ class Crypt {
 	/**
 	 * split iv from encrypted content
 	 *
-	 * @param $catFile
-	 * @return array
+	 * @param string|false $catFile
+	 * @return string
 	 */
 	private function splitIv($catFile) {
 		// Fetch encryption metadata from end of file
@@ -457,8 +441,8 @@ class Crypt {
 	}
 
 	/**
-	 * @param $encryptedContent
-	 * @param $iv
+	 * @param string $encryptedContent
+	 * @param string $iv
 	 * @param string $passPhrase
 	 * @param string $cipher
 	 * @return string
@@ -479,7 +463,7 @@ class Crypt {
 	}
 
 	/**
-	 * @param $data
+	 * @param string $data
 	 * @return array
 	 */
 	protected function parseHeader($data) {
@@ -551,7 +535,7 @@ class Crypt {
 	 * @param $encKeyFile
 	 * @param $shareKey
 	 * @param $privateKey
-	 * @return mixed
+	 * @return string
 	 * @throws MultiKeyDecryptException
 	 */
 	public function multiKeyDecrypt($encKeyFile, $shareKey, $privateKey) {

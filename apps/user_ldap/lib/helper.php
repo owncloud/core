@@ -27,7 +27,6 @@
 
 namespace OCA\user_ldap\lib;
 
-use OCA\user_ldap\lib\LDAP;
 use OCA\user_ldap\User_Proxy;
 
 class Helper {
@@ -63,7 +62,7 @@ class Helper {
 		';
 
 		if($activeConfigurations) {
-			if (\OC_Config::getValue( 'dbtype', 'sqlite' ) === 'oci') {
+			if (\OC::$server->getConfig()->getSystemValue( 'dbtype', 'sqlite' ) === 'oci') {
 				//FIXME oracle hack: need to explicitly cast CLOB to CHAR for comparison
 				$sql .= ' AND to_char(`configvalue`)=\'1\'';
 			} else {

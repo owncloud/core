@@ -1,7 +1,6 @@
 <?php
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
- * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -36,16 +35,6 @@ class Expire implements ICommand {
 	private $fileName;
 
 	/**
-	 * @var int|null
-	 */
-	private $versionsSize;
-
-	/**
-	 * @var int
-	 */
-	private $neededSpace = 0;
-
-	/**
 	 * @var string
 	 */
 	private $user;
@@ -53,14 +42,10 @@ class Expire implements ICommand {
 	/**
 	 * @param string $user
 	 * @param string $fileName
-	 * @param int|null $versionsSize
-	 * @param int $neededSpace
 	 */
-	function __construct($user, $fileName, $versionsSize = null, $neededSpace = 0) {
+	function __construct($user, $fileName) {
 		$this->user = $user;
 		$this->fileName = $fileName;
-		$this->versionsSize = $versionsSize;
-		$this->neededSpace = $neededSpace;
 	}
 
 
@@ -72,7 +57,7 @@ class Expire implements ICommand {
 		}
 
 		\OC_Util::setupFS($this->user);
-		Storage::expire($this->fileName, $this->versionsSize, $this->neededSpace);
+		Storage::expire($this->fileName);
 		\OC_Util::tearDownFS();
 	}
 }

@@ -13,6 +13,7 @@
  * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
  * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -40,7 +41,10 @@
 
 namespace OCA\Files_Versions;
 
+use OCA\Files_Versions\AppInfo\Application;
 use OCA\Files_Versions\Command\Expire;
+use OCP\Lock\ILockingProvider;
+use OCP\Files\NotFoundException;
 
 class Storage {
 
@@ -67,16 +71,28 @@ class Storage {
 		//until the end one version per week
 		6 => array('intervalEndsAfter' => -1,      'step' => 604800),
 	);
+	
+	/** @var \OCA\Files_Versions\AppInfo\Application */
+	private static $application;
 
+	/**
+	 * @param string $filename
+	 * @return array
+	 * @throws \OC\User\NoUserException
+	 */
 	public static function getUidAndFilename($filename) {
 		$uid = \OC\Files\Filesystem::getOwner($filename);
 		\OC\Files\Filesystem::initMountPoints($uid);
 		if ( $uid != \OCP\User::getUser() ) {
 			$info = \OC\Files\Filesystem::getFileInfo($filename);
 			$ownerView = new \OC\Files\View('/'.$uid.'/files');
-			$filename = $ownerView->getPath($info['fileid']);
+			try {
+				$filename = $ownerView->getPath($info['fileid']);
+			} catch (NotFoundException $e) {
+				$filename = null;
+			}
 		}
-		return array($uid, $filename);
+		return [$uid, $filename];
 	}
 
 	/**
@@ -152,14 +168,7 @@ class Storage {
 			// create all parent folders
 			self::createMissingDirectories($filename, $users_view);
 
-			$versionsSize = self::getVersionsSize($uid);
-
-			// assumption: we need filesize($filename) for the new version +
-			// some more free space for the modified file which might be
-			// 1.5 times as large as the current version -> 2.5
-			$neededSpace = $files_view->filesize($filename) * 2.5;
-
-			self::scheduleExpire($uid, $filename, $versionsSize, $neededSpace);
+			self::scheduleExpire($uid, $filename);
 
 			// store a new version of a file
 			$mtime = $users_view->filemtime('files/' . $filename);
@@ -311,6 +320,9 @@ class Storage {
 			if (self::copyFileContents($users_view, 'files_versions' . $filename . '.v' . $revision, 'files' . $filename)) {
 				$files_view->touch($file, $revision);
 				Storage::scheduleExpire($uid, $file);
+				\OC_Hook::emit('\OCP\Versions', 'rollback', array(
+					'path' => $filename,
+				));
 				return true;
 			} else if ($versionCreated) {
 				self::deleteVersion($users_view, $version);
@@ -330,10 +342,31 @@ class Storage {
 	 * @return bool true for success, false otherwise
 	 */
 	private static function copyFileContents($view, $path1, $path2) {
+		/** @var \OC\Files\Storage\Storage $storage1 */
 		list($storage1, $internalPath1) = $view->resolvePath($path1);
+		/** @var \OC\Files\Storage\Storage $storage2 */
 		list($storage2, $internalPath2) = $view->resolvePath($path2);
 
-		$result = $storage2->moveFromStorage($storage1, $internalPath1, $internalPath2);
+		$view->lockFile($path1, ILockingProvider::LOCK_EXCLUSIVE);
+		$view->lockFile($path2, ILockingProvider::LOCK_EXCLUSIVE);
+
+		// TODO add a proper way of overwriting a file while maintaining file ids
+		if ($storage1->instanceOfStorage('\OC\Files\ObjectStore\ObjectStoreStorage') || $storage2->instanceOfStorage('\OC\Files\ObjectStore\ObjectStoreStorage')) {
+			$source = $storage1->fopen($internalPath1, 'r');
+			$target = $storage2->fopen($internalPath2, 'w');
+			list(, $result) = \OC_Helper::streamCopy($source, $target);
+			fclose($source);
+			fclose($target);
+
+			if ($result !== false) {
+				$storage1->unlink($internalPath1);
+			}
+		} else {
+			$result = $storage2->moveFromStorage($storage1, $internalPath1, $internalPath2);
+		}
+
+		$view->unlockFile($path1, ILockingProvider::LOCK_EXCLUSIVE);
+		$view->unlockFile($path2, ILockingProvider::LOCK_EXCLUSIVE);
 
 		return ($result !== false);
 	}
@@ -397,6 +430,38 @@ class Storage {
 		krsort($versions);
 
 		return $versions;
+	}
+
+	/**
+	 * Expire versions that older than max version retention time
+	 * @param string $uid
+	 */
+	public static function expireOlderThanMaxForUser($uid){
+		$expiration = self::getExpiration();
+		$threshold = $expiration->getMaxAgeAsTimestamp();
+		$versions = self::getAllVersions($uid);
+		if (!$threshold || !array_key_exists('all', $versions)) {
+			return;
+		}
+
+		$toDelete = [];
+		foreach (array_reverse($versions['all']) as $key => $version) {
+			if (intval($version['version'])<$threshold) {
+				$toDelete[$key] = $version;
+			} else {
+				//Versions are sorted by time - nothing mo to iterate.
+				break;
+			}
+		}
+
+		$view = new \OC\Files\View('/' . $uid . '/files_versions');
+		if (!empty($toDelete)) {
+			foreach ($toDelete as $version) {
+				\OC_Hook::emit('\OCP\Versions', 'preDelete', array('path' => $version['path'].'.v'.$version['version']));
+				self::deleteVersion($view, $version['path'] . '.v' . $version['version']);
+				\OC_Hook::emit('\OCP\Versions', 'delete', array('path' => $version['path'].'.v'.$version['version']));
+			}
+		}
 	}
 
 	/**
@@ -479,10 +544,36 @@ class Storage {
 	 * get list of files we want to expire
 	 * @param array $versions list of versions
 	 * @param integer $time
+	 * @param bool $quotaExceeded is versions storage limit reached
 	 * @return array containing the list of to deleted versions and the size of them
 	 */
-	protected static function getExpireList($time, $versions) {
+	protected static function getExpireList($time, $versions, $quotaExceeded = false) {
+		$expiration = self::getExpiration();
 
+		if ($expiration->shouldAutoExpire()) {
+			list($toDelete, $size) = self::getAutoExpireList($time, $versions);
+		} else {
+			$size = 0;
+			$toDelete = [];  // versions we want to delete
+		}
+
+		foreach ($versions as $key => $version) {
+			if ($expiration->isExpired($version['version'], $quotaExceeded) && !isset($toDelete[$key])) {
+				$size += $version['size'];
+				$toDelete[$key] = $version['path'] . '.v' . $version['version'];
+			}
+		}
+
+		return [$toDelete, $size];
+	}
+
+	/**
+	 * get list of files we want to expire
+	 * @param array $versions list of versions
+	 * @param integer $time
+	 * @return array containing the list of to deleted versions and the size of them
+	 */
+	protected static function getAutoExpireList($time, $versions) {
 		$size = 0;
 		$toDelete = array();  // versions we want to delete
 
@@ -529,7 +620,6 @@ class Storage {
 		}
 
 		return array($toDelete, $size);
-
 	}
 
 	/**
@@ -537,25 +627,27 @@ class Storage {
 	 *
 	 * @param string $uid owner of the file
 	 * @param string $fileName file/folder for which to schedule expiration
-	 * @param int|null $versionsSize current versions size
-	 * @param int $neededSpace requested versions size
 	 */
-	private static function scheduleExpire($uid, $fileName, $versionsSize = null, $neededSpace = 0) {
-		$command = new Expire($uid, $fileName, $versionsSize, $neededSpace);
-		\OC::$server->getCommandBus()->push($command);
+	private static function scheduleExpire($uid, $fileName) {
+		// let the admin disable auto expire
+		$expiration = self::getExpiration();
+		if ($expiration->isEnabled()) {
+			$command = new Expire($uid, $fileName);
+			\OC::$server->getCommandBus()->push($command);
+		}
 	}
 
 	/**
 	 * Expire versions which exceed the quota
 	 *
-	 * @param $filename
-	 * @param int|null $versionsSize
-	 * @param int $offset
+	 * @param string $filename
 	 * @return bool|int|null
 	 */
-	public static function expire($filename, $versionsSize = null, $offset = 0) {
+	public static function expire($filename) {
 		$config = \OC::$server->getConfig();
-		if($config->getSystemValue('files_versions', Storage::DEFAULTENABLED)=='true') {
+		$expiration = self::getExpiration();
+		
+		if($config->getSystemValue('files_versions', Storage::DEFAULTENABLED)=='true' && $expiration->isEnabled()) {
 			list($uid, $filename) = self::getUidAndFilename($filename);
 			if (empty($filename)) {
 				// file maybe renamed or deleted
@@ -577,29 +669,31 @@ class Storage {
 			}
 
 			// make sure that we have the current size of the version history
-			if ( $versionsSize === null ) {
-				$versionsSize = self::getVersionsSize($uid);
-			}
+			$versionsSize = self::getVersionsSize($uid);
 
 			// calculate available space for version history
 			// subtract size of files and current versions size from quota
-			if ($softQuota) {
-				$files_view = new \OC\Files\View('/'.$uid.'/files');
-				$rootInfo = $files_view->getFileInfo('/', false);
-				$free = $quota-$rootInfo['size']; // remaining free space for user
-				if ( $free > 0 ) {
-					$availableSpace = ($free * self::DEFAULTMAXSIZE / 100) - ($versionsSize + $offset); // how much space can be used for versions
+			if ($quota >= 0) {
+				if ($softQuota) {
+					$files_view = new \OC\Files\View('/' . $uid . '/files');
+					$rootInfo = $files_view->getFileInfo('/', false);
+					$free = $quota - $rootInfo['size']; // remaining free space for user
+					if ($free > 0) {
+						$availableSpace = ($free * self::DEFAULTMAXSIZE / 100) - $versionsSize; // how much space can be used for versions
+					} else {
+						$availableSpace = $free - $versionsSize;
+					}
 				} else {
-					$availableSpace = $free - $versionsSize - $offset;
+					$availableSpace = $quota;
 				}
 			} else {
-				$availableSpace = $quota - $offset;
+				$availableSpace = PHP_INT_MAX;
 			}
 
 			$allVersions = Storage::getVersions($uid, $filename);
 
 			$time = time();
-			list($toDelete, $sizeOfDeletedVersions) = self::getExpireList($time, $allVersions);
+			list($toDelete, $sizeOfDeletedVersions) = self::getExpireList($time, $allVersions, $availableSpace <= 0);
 
 			$availableSpace = $availableSpace + $sizeOfDeletedVersions;
 			$versionsSize = $versionsSize - $sizeOfDeletedVersions;
@@ -610,7 +704,7 @@ class Storage {
 				$allVersions = $result['all'];
 
 				foreach ($result['by_file'] as $versions) {
-					list($toDeleteNew, $size) = self::getExpireList($time, $versions);
+					list($toDeleteNew, $size) = self::getExpireList($time, $versions, $availableSpace <= 0);
 					$toDelete = array_merge($toDelete, $toDeleteNew);
 					$sizeOfDeletedVersions += $size;
 				}
@@ -670,6 +764,17 @@ class Storage {
 				$view->mkdir($dir);
 			}
 		}
+	}
+
+	/**
+	 * Static workaround
+	 * @return Expiration
+	 */
+	protected static function getExpiration(){
+		if (is_null(self::$application)) {
+			self::$application = new Application();
+		}
+		return self::$application->getContainer()->query('Expiration');
 	}
 
 }

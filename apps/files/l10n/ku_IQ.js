@@ -6,11 +6,10 @@ OC.L10N.register(
     "Close" : "دابخه",
     "Download" : "داگرتن",
     "Select" : "دیاریکردنی",
-    "Error" : "هه‌ڵه",
     "Name" : "ناو",
-    "Save" : "پاشکه‌وتکردن",
-    "Settings" : "ڕێکخستنه‌کان",
     "Folder" : "بوخچه",
-    "Upload" : "بارکردن"
+    "Upload" : "بارکردن",
+    "Save" : "پاشکه‌وتکردن",
+    "Settings" : "ڕێکخستنه‌کان"
 },
 "nplurals=2; plural=(n != 1);");

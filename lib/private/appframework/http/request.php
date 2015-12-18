@@ -6,6 +6,7 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
  * @author Vincent Petry <pvince81@owncloud.com>
@@ -41,7 +42,8 @@ use OCP\Security\ISecureRandom;
  */
 class Request implements \ArrayAccess, \Countable, IRequest {
 
-	const USER_AGENT_IE = '/MSIE/';
+	const USER_AGENT_IE = '/(MSIE)|(Trident)/';
+	const USER_AGENT_IE_8 = '/MSIE 8.0/';
 	// Android Chrome user agent: https://developers.google.com/chrome/mobile/docs/user-agent
 	const USER_AGENT_ANDROID_MOBILE_CHROME = '#Android.*Chrome/[.0-9]*#';
 	const USER_AGENT_FREEBOX = '#^Mozilla/5\.0$#';
@@ -71,6 +73,9 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	/** @var ICrypto */
 	protected $crypto;
 
+	/** @var bool */
+	protected $contentDecoded = false;
+
 	/**
 	 * @param array $vars An associative array with the following optional values:
 	 *        - array 'urlParams' the parameters which were matched from the URL
@@ -83,20 +88,17 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 *        - string 'method' the request method (GET, POST etc)
 	 *        - string|false 'requesttoken' the requesttoken or false when not available
 	 * @param ISecureRandom $secureRandom
-	 * @param ICrypto $crypto
 	 * @param IConfig $config
 	 * @param string $stream
 	 * @see http://www.php.net/manual/en/reserved.variables.php
 	 */
 	public function __construct(array $vars=array(),
 								ISecureRandom $secureRandom = null,
-								ICrypto $crypto,
 								IConfig $config,
 								$stream='php://input') {
 		$this->inputStream = $stream;
 		$this->items['params'] = array();
 		$this->secureRandom = $secureRandom;
-		$this->crypto = $crypto;
 		$this->config = $config;
 
 		if(!array_key_exists('method', $vars)) {
@@ -107,27 +109,6 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 			$this->items[$name] = isset($vars[$name])
 				? $vars[$name]
 				: array();
-		}
-
-		// 'application/json' must be decoded manually.
-		if (strpos($this->getHeader('Content-Type'), 'application/json') !== false) {
-			$params = json_decode(file_get_contents($this->inputStream), true);
-			if(count($params) > 0) {
-				$this->items['params'] = $params;
-				if($vars['method'] === 'POST') {
-					$this->items['post'] = $params;
-				}
-			}
-		// Handle application/x-www-form-urlencoded for methods other than GET
-		// or post correctly
-		} elseif($vars['method'] !== 'GET'
-				&& $vars['method'] !== 'POST'
-				&& strpos($this->getHeader('Content-Type'), 'application/x-www-form-urlencoded') !== false) {
-
-			parse_str(file_get_contents($this->inputStream), $params);
-			if(is_array($params)) {
-				$this->items['params'] = $params;
-			}
 		}
 
 		$this->items['parameters'] = array_merge(
@@ -237,24 +218,19 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 				if($this->method !== strtoupper($name)) {
 					throw new \LogicException(sprintf('%s cannot be accessed in a %s request.', $name, $this->method));
 				}
+				return $this->getContent();
 			case 'files':
 			case 'server':
 			case 'env':
 			case 'cookies':
+			case 'urlParams':
+			case 'method':
+				return isset($this->items[$name])
+					? $this->items[$name]
+					: null;
 			case 'parameters':
 			case 'params':
-			case 'urlParams':
-				if(in_array($name, array('put', 'patch'))) {
-					return $this->getContent();
-				} else {
-					return isset($this->items[$name])
-						? $this->items[$name]
-						: null;
-				}
-				break;
-			case 'method':
-				return $this->items['method'];
-				break;
+				return $this->getContent();
 			default;
 				return isset($this[$name])
 					? $this[$name]
@@ -396,9 +372,48 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 			$this->content = false;
 			return fopen($this->inputStream, 'rb');
 		} else {
-			return $this->parameters;
+			$this->decodeContent();
+			return $this->items['parameters'];
 		}
 	}
+
+	/**
+	 * Attempt to decode the content and populate parameters
+	 */
+	protected function decodeContent() {
+		if ($this->contentDecoded) {
+			return;
+		}
+		$params = [];
+
+		// 'application/json' must be decoded manually.
+		if (strpos($this->getHeader('Content-Type'), 'application/json') !== false) {
+			$params = json_decode(file_get_contents($this->inputStream), true);
+			if(count($params) > 0) {
+				$this->items['params'] = $params;
+				if($this->method === 'POST') {
+					$this->items['post'] = $params;
+				}
+			}
+
+		// Handle application/x-www-form-urlencoded for methods other than GET
+		// or post correctly
+		} elseif($this->method !== 'GET'
+				&& $this->method !== 'POST'
+				&& strpos($this->getHeader('Content-Type'), 'application/x-www-form-urlencoded') !== false) {
+
+			parse_str(file_get_contents($this->inputStream), $params);
+			if(is_array($params)) {
+				$this->items['params'] = $params;
+			}
+		}
+
+		if (is_array($params)) {
+			$this->items['parameters'] = array_merge($this->items['parameters'], $params);
+		}
+		$this->contentDecoded = true;
+	}
+
 
 	/**
 	 * Checks if the CSRF check was correct
@@ -421,22 +436,18 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 			return false;
 		}
 
-		// Decrypt token to prevent BREACH like attacks
+		// Deobfuscate token to prevent BREACH like attacks
 		$token = explode(':', $token);
 		if (count($token) !== 2) {
 			return false;
 		}
 
-		$encryptedToken = $token[0];
+		$obfuscatedToken = $token[0];
 		$secret = $token[1];
-		try {
-			$decryptedToken = $this->crypto->decrypt($encryptedToken, $secret);
-		} catch (\Exception $e) {
-			return false;
-		}
+		$deobfuscatedToken = base64_decode($obfuscatedToken) ^ $secret;
 
 		// Check if the token is valid
-		if(\OCP\Security\StringUtils::equals($decryptedToken, $this->items['requesttoken'])) {
+		if(hash_equals($deobfuscatedToken, $this->items['requesttoken'])) {
 			return true;
 		} else {
 			return false;
@@ -530,11 +541,33 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 
 		if (isset($this->server['HTTPS'])
 			&& $this->server['HTTPS'] !== null
-			&& $this->server['HTTPS'] !== 'off') {
+			&& $this->server['HTTPS'] !== 'off'
+			&& $this->server['HTTPS'] !== '') {
 			return 'https';
 		}
 
 		return 'http';
+	}
+
+	/**
+	 * Returns the used HTTP protocol.
+	 *
+	 * @return string HTTP protocol. HTTP/2, HTTP/1.1 or HTTP/1.0.
+	 */
+	public function getHttpProtocol() {
+		$claimedProtocol = strtoupper($this->server['SERVER_PROTOCOL']);
+
+		$validProtocols = [
+			'HTTP/1.0',
+			'HTTP/1.1',
+			'HTTP/2',
+		];
+
+		if(in_array($claimedProtocol, $validProtocols, true)) {
+			return $claimedProtocol;
+		}
+
+		return 'HTTP/1.1';
 	}
 
 	/**
@@ -588,7 +621,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 		if (strpos($pathInfo, $name) === 0) {
 			$pathInfo = substr($pathInfo, strlen($name));
 		}
-		if($pathInfo === '/'){
+		if($pathInfo === false || $pathInfo === '/'){
 			return '';
 		} else {
 			return $pathInfo;
@@ -642,6 +675,9 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 * @return bool true if at least one of the given agent matches, false otherwise
 	 */
 	public function isUserAgent(array $agent) {
+		if (!isset($this->server['HTTP_USER_AGENT'])) {
+			return false;
+		}
 		foreach ($agent as $regex) {
 			if (preg_match($regex, $this->server['HTTP_USER_AGENT'])) {
 				return true;

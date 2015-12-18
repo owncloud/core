@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
@@ -42,9 +43,11 @@ if (OC::checkUpgrade(false)) {
 	\OC_User::setIncognitoMode(true);
 
 	$logger = \OC::$server->getLogger();
+	$config = \OC::$server->getConfig();
 	$updater = new \OC\Updater(
 			\OC::$server->getHTTPHelper(),
-			\OC::$server->getConfig(),
+			$config,
+			\OC::$server->getIntegrityCodeChecker(),
 			$logger
 	);
 	$incompatibleApps = [];
@@ -59,11 +62,23 @@ if (OC::checkUpgrade(false)) {
 	$updater->listen('\OC\Updater', 'maintenanceActive', function () use ($eventSource, $l) {
 		$eventSource->send('success', (string)$l->t('Maintenance mode is kept active'));
 	});
+	$updater->listen('\OC\Updater', 'dbUpgradeBefore', function () use($eventSource, $l) {
+		$eventSource->send('success', (string)$l->t('Updating database schema'));
+	});
 	$updater->listen('\OC\Updater', 'dbUpgrade', function () use ($eventSource, $l) {
 		$eventSource->send('success', (string)$l->t('Updated database'));
 	});
+	$updater->listen('\OC\Updater', 'dbSimulateUpgradeBefore', function () use($eventSource, $l) {
+		$eventSource->send('success', (string)$l->t('Checking whether the database schema can be updated (this can take a long time depending on the database size)'));
+	});
 	$updater->listen('\OC\Updater', 'dbSimulateUpgrade', function () use ($eventSource, $l) {
 		$eventSource->send('success', (string)$l->t('Checked database schema update'));
+	});
+	$updater->listen('\OC\Updater', 'appUpgradeCheckBefore', function () use ($eventSource, $l) {
+		$eventSource->send('success', (string)$l->t('Checking updates of apps'));
+	});
+	$updater->listen('\OC\Updater', 'appSimulateUpdate', function ($app) use ($eventSource, $l) {
+		$eventSource->send('success', (string)$l->t('Checking whether the database schema for %s can be updated (this can take a long time depending on the database size)', [$app]));
 	});
 	$updater->listen('\OC\Updater', 'appUpgradeCheck', function () use ($eventSource, $l) {
 		$eventSource->send('success', (string)$l->t('Checked database schema update for apps'));
@@ -83,10 +98,22 @@ if (OC::checkUpgrade(false)) {
 	$updater->listen('\OC\Updater', 'thirdPartyAppDisabled', function ($app) use (&$disabledThirdPartyApps) {
 		$disabledThirdPartyApps[]= $app;
 	});
-	$updater->listen('\OC\Updater', 'failure', function ($message) use ($eventSource) {
+	$updater->listen('\OC\Updater', 'failure', function ($message) use ($eventSource, $config) {
 		$eventSource->send('failure', $message);
 		$eventSource->close();
-		OC_Config::setValue('maintenance', false);
+		$config->setSystemValue('maintenance', false);
+	});
+	$updater->listen('\OC\Updater', 'setDebugLogLevel', function ($logLevel, $logLevelName) use($eventSource, $l) {
+		$eventSource->send('success', (string)$l->t('Set log level to debug - current level: "%s"', [ $logLevelName ]));
+	});
+	$updater->listen('\OC\Updater', 'resetLogLevel', function ($logLevel, $logLevelName) use($eventSource, $l) {
+		$eventSource->send('success', (string)$l->t('Reset log level to  "%s"', [ $logLevelName ]));
+	});
+	$updater->listen('\OC\Updater', 'startCheckCodeIntegrity', function () use($eventSource, $l) {
+		$eventSource->send('success', (string)$l->t('Starting code integrity check'));
+	});
+	$updater->listen('\OC\Updater', 'finishedCheckCodeIntegrity', function () use($eventSource, $l) {
+		$eventSource->send('success', (string)$l->t('Finished code integrity check'));
 	});
 
 	try {
@@ -97,15 +124,18 @@ if (OC::checkUpgrade(false)) {
 		exit();
 	}
 
-	if (!empty($incompatibleApps)) {
-		$eventSource->send('notice',
-			(string)$l->t('Following incompatible apps have been disabled: %s', implode(', ', $incompatibleApps)));
+	$disabledApps = [];
+	foreach ($disabledThirdPartyApps as $app) {
+		$disabledApps[$app] = (string) $l->t('%s (3rdparty)', [$app]);
 	}
-	if (!empty($disabledThirdPartyApps)) {
-		$eventSource->send('notice',
-			(string)$l->t('Following apps have been disabled: %s', implode(', ', $disabledThirdPartyApps)));
+	foreach ($incompatibleApps as $app) {
+		$disabledApps[$app] = (string) $l->t('%s (incompatible)', [$app]);
 	}
 
+	if (!empty($disabledApps)) {
+		$eventSource->send('notice',
+			(string)$l->t('Following apps have been disabled: %s', implode(', ', $disabledApps)));
+	}
 } else {
 	$eventSource->send('notice', (string)$l->t('Already up to date'));
 }

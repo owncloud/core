@@ -1,14 +1,14 @@
 <div class="update" data-productname="<?php p($_['productName']) ?>" data-version="<?php p($_['version']) ?>">
 	<div class="updateOverview">
 		<?php if ($_['isAppsOnlyUpgrade']) { ?>
-		<h2 class="title bold"><?php p($l->t('App update required')); ?></h2>
+		<h2 class="title"><?php p($l->t('App update required')); ?></h2>
 		<?php } else { ?>
-		<h2 class="title bold"><?php p($l->t('%s will be updated to version %s',
+		<h2 class="title"><?php p($l->t('%s will be updated to version %s',
 			array($_['productName'], $_['version']))); ?></h2>
 		<?php } ?>
 		<?php if (!empty($_['appsToUpgrade'])) { ?>
 		<div class="infogroup">
-			<span class="bold"><?php p($l->t('These apps will be updated:')); ?></span>
+			<span><?php p($l->t('These apps will be updated:')); ?></span>
 			<ul class="content appList">
 				<?php foreach ($_['appsToUpgrade'] as $appInfo) { ?>
 				<li><?php p($appInfo['name']) ?> (<?php p($appInfo['id']) ?>)</li>
@@ -18,7 +18,7 @@
 		<?php } ?>
 		<?php if (!empty($_['incompatibleAppsList'])) { ?>
 		<div class="infogroup">
-			<span class="bold"><?php p($l->t('These incompatible apps will be disabled:')) ?></span>
+			<span><?php p($l->t('These incompatible apps will be disabled:')) ?></span>
 			<ul class="content appList">
 				<?php foreach ($_['incompatibleAppsList'] as $appInfo) { ?>
 				<li><?php p($appInfo['name']) ?> (<?php p($appInfo['id']) ?>)</li>
@@ -27,7 +27,7 @@
 		</div>
 		<?php } ?>
 		<?php if (!empty($_['oldTheme'])) { ?>
-		<div class="infogroup bold">
+		<div class="infogroup">
 			<?php p($l->t('The theme %s has been disabled.', array($_['oldTheme']))) ?>
 		</div>
 		<?php } ?>

@@ -62,41 +62,44 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 	public function mkdir($path) {
 		$path = $this->normalizePath($path);
 
-		if ($this->is_dir($path)) {
+		if ($this->file_exists($path)) {
 			return false;
 		}
 
-		$dirName = $this->normalizePath(dirname($path));
-		$parentExists = $this->is_dir($dirName);
-
 		$mTime = time();
-
-		$data = array(
+		$data = [
 			'mimetype' => 'httpd/unix-directory',
 			'size' => 0,
 			'mtime' => $mTime,
 			'storage_mtime' => $mTime,
 			'permissions' => \OCP\Constants::PERMISSION_ALL,
-		);
-
-		if ($dirName === '' && !$parentExists) {
+		];
+		if ($path === '') {
 			//create root on the fly
 			$data['etag'] = $this->getETag('');
 			$this->getCache()->put('', $data);
-			$parentExists = true;
-
-			// we are done when the root folder was meant to be created
-			if ($dirName === $path) {
-				return true;
+			return true;
+		} else {
+			// if parent does not exist, create it
+			$parent = $this->normalizePath(dirname($path));
+			$parentType = $this->filetype($parent);
+			if ($parentType === false) {
+				if (!$this->mkdir($parent)) {
+					// something went wrong
+					return false;
+				}
+			} else if ($parentType === 'file') {
+				// parent is a file
+				return false;
 			}
-		}
-
-		if ($parentExists) {
+			// finally create the new dir
+			$mTime = time(); // update mtime
+			$data['mtime'] = $mTime;
+			$data['storage_mtime'] = $mTime;
 			$data['etag'] = $this->getETag($path);
 			$this->getCache()->put($path, $data);
 			return true;
 		}
-		return false;
 	}
 
 	/**
@@ -271,7 +274,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 				} else {
 					$ext = '';
 				}
-				$tmpFile = \OC_Helper::tmpFile($ext);
+				$tmpFile = \OC::$server->getTempManager()->getTemporaryFile($ext);
 				\OC\Files\Stream\Close::registerCallback($tmpFile, array($this, 'writeBack'));
 				if ($this->file_exists($path)) {
 					$source = $this->fopen($path, 'r');
@@ -326,7 +329,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 			$stat['mtime'] = $mtime;
 			$this->getCache()->update($stat['fileid'], $stat);
 		} else {
-			$mimeType = \OC_Helper::getFileNameMimeType($path);
+			$mimeType = \OC::$server->getMimeTypeDetector()->detectPath($path);
 			// create new file
 			$stat = array(
 				'etag' => $this->getETag($path),
@@ -334,7 +337,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 				'size' => 0,
 				'mtime' => $mtime,
 				'storage_mtime' => $mtime,
-				'permissions' => \OCP\Constants::PERMISSION_ALL,
+				'permissions' => \OCP\Constants::PERMISSION_ALL - \OCP\Constants::PERMISSION_CREATE,
 			);
 			$fileId = $this->getCache()->put($path, $stat);
 			try {
@@ -359,7 +362,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		if (empty($stat)) {
 			// create new file
 			$stat = array(
-				'permissions' => \OCP\Constants::PERMISSION_ALL,
+				'permissions' => \OCP\Constants::PERMISSION_ALL - \OCP\Constants::PERMISSION_CREATE,
 			);
 		}
 		// update stat with new data
@@ -367,7 +370,7 @@ class ObjectStoreStorage extends \OC\Files\Storage\Common {
 		$stat['size'] = filesize($tmpFile);
 		$stat['mtime'] = $mTime;
 		$stat['storage_mtime'] = $mTime;
-		$stat['mimetype'] = \OC_Helper::getMimeType($tmpFile);
+		$stat['mimetype'] = \OC::$server->getMimeTypeDetector()->detect($tmpFile);
 		$stat['etag'] = $this->getETag($path);
 
 		$fileId = $this->getCache()->put($path, $stat);

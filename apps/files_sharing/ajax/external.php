@@ -1,9 +1,11 @@
 <?php
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -38,6 +40,7 @@ if (OCA\Files_Sharing\Helper::isIncomingServer2serverShareEnabled() === false) {
 $token = $_POST['token'];
 $remote = $_POST['remote'];
 $owner = $_POST['owner'];
+$ownerDisplayName = $_POST['ownerDisplayName'];
 $name = $_POST['name'];
 $password = $_POST['password'];
 
@@ -47,11 +50,20 @@ if(!\OCP\Util::isValidFileName($name)) {
 	exit();
 }
 
+$currentUser = \OC::$server->getUserSession()->getUser()->getUID();
+$currentServer = \OC::$server->getURLGenerator()->getAbsoluteURL('/');
+if (\OC\Share\Helper::isSameUserOnSameServer($owner, $remote, $currentUser, $currentServer )) {
+	\OCP\JSON::error(array('data' => array('message' => $l->t('Not allowed to create a federated share with the same user server'))));
+	exit();
+}
+
+
 $externalManager = new \OCA\Files_Sharing\External\Manager(
 		\OC::$server->getDatabaseConnection(),
 		\OC\Files\Filesystem::getMountManager(),
 		\OC\Files\Filesystem::getLoader(),
 		\OC::$server->getHTTPHelper(),
+		\OC::$server->getNotificationManager(),
 		\OC::$server->getUserSession()->getUser()->getUID()
 );
 
@@ -65,7 +77,7 @@ if (substr($remote, 0, 5) === 'https') {
 	}
 }
 
-$mount = $externalManager->addShare($remote, $token, $password, $name, $owner, true);
+$mount = $externalManager->addShare($remote, $token, $password, $name, $ownerDisplayName, true);
 
 /**
  * @var \OCA\Files_Sharing\External\Storage $storage

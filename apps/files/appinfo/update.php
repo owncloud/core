@@ -2,6 +2,7 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -94,6 +95,11 @@ if ($installedVersion === '1.1.9' && (
 		}
 	}
 }
+
+// Add cron job for scanning user storages
+$jobList = \OC::$server->getJobList();
+$job = 'OCA\Files\BackgroundJob\ScanFiles';
+\OC::$server->getJobList()->add($job);
 
 /**
  * migrate old constant DEBUG to new config value 'debug'

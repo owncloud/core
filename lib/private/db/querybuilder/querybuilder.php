@@ -40,6 +40,9 @@ class QueryBuilder implements IQueryBuilder {
 	/** @var bool */
 	private $automaticTablePrefix = true;
 
+	/** @var string */
+	protected $lastInsertedTable;
+
 	/**
 	 * Initializes a new QueryBuilder.
 	 *
@@ -301,6 +304,52 @@ class QueryBuilder implements IQueryBuilder {
 	}
 
 	/**
+	 * Specifies an item that is to be returned with a different name in the query result.
+	 *
+	 * <code>
+	 *     $qb = $conn->getQueryBuilder()
+	 *         ->selectAlias('u.id', 'user_id')
+	 *         ->from('users', 'u')
+	 *         ->leftJoin('u', 'phonenumbers', 'p', 'u.id = p.user_id');
+	 * </code>
+	 *
+	 * @param mixed $select The selection expressions.
+	 * @param string $alias The column alias used in the constructed query.
+	 *
+	 * @return \OCP\DB\QueryBuilder\IQueryBuilder This QueryBuilder instance.
+	 */
+	public function selectAlias($select, $alias) {
+
+		$this->queryBuilder->addSelect(
+			$this->helper->quoteColumnName($select) . ' AS ' . $this->helper->quoteColumnName($alias)
+		);
+
+		return $this;
+	}
+
+	/**
+	 * Specifies an item that is to be returned uniquely in the query result.
+	 *
+	 * <code>
+	 *     $qb = $conn->getQueryBuilder()
+	 *         ->selectDistinct('type')
+	 *         ->from('users');
+	 * </code>
+	 *
+	 * @param mixed $select The selection expressions.
+	 *
+	 * @return \OCP\DB\QueryBuilder\IQueryBuilder This QueryBuilder instance.
+	 */
+	public function selectDistinct($select) {
+
+		$this->queryBuilder->addSelect(
+			'DISTINCT ' . $this->helper->quoteColumnName($select)
+		);
+
+		return $this;
+	}
+
+	/**
 	 * Adds an item that is to be returned in the query result.
 	 *
 	 * <code>
@@ -398,6 +447,8 @@ class QueryBuilder implements IQueryBuilder {
 		$this->queryBuilder->insert(
 			$this->getTableName($insert)
 		);
+
+		$this->lastInsertedTable = $insert;
 
 		return $this;
 	}
@@ -1000,14 +1051,57 @@ class QueryBuilder implements IQueryBuilder {
 	}
 
 	/**
+	 * Used to get the id of the last inserted element
+	 * @return int
+	 * @throws \BadMethodCallException When being called before an insert query has been run.
+	 */
+	public function getLastInsertId() {
+		if ($this->getType() === \Doctrine\DBAL\Query\QueryBuilder::INSERT && $this->lastInsertedTable) {
+			// lastInsertId() needs the prefix but no quotes
+			$table = $this->prefixTableName($this->lastInsertedTable);
+			return (int) $this->connection->lastInsertId($table);
+		}
+
+		throw new \BadMethodCallException('Invalid call to getLastInsertId without using insert() before.');
+	}
+
+	/**
+	 * Returns the table name quoted and with database prefix as needed by the implementation
+	 *
 	 * @param string $table
 	 * @return string
 	 */
-	private function getTableName($table) {
+	public function getTableName($table) {
+		$table = $this->prefixTableName($table);
+		return $this->helper->quoteColumnName($table);
+	}
+
+	/**
+	 * Returns the table name with database prefix as needed by the implementation
+	 *
+	 * @param string $table
+	 * @return string
+	 */
+	protected function prefixTableName($table) {
 		if ($this->automaticTablePrefix === false || strpos($table, '*PREFIX*') === 0) {
-			return $this->helper->quoteColumnName($table);
+			return $table;
 		}
 
-		return $this->helper->quoteColumnName('*PREFIX*' . $table);
+		return '*PREFIX*' . $table;
+	}
+
+	/**
+	 * Returns the column name quoted and with table alias prefix as needed by the implementation
+	 *
+	 * @param string $column
+	 * @param string $tableAlias
+	 * @return string
+	 */
+	public function getColumnName($column, $tableAlias = '') {
+		if ($tableAlias !== '') {
+			$tableAlias .= '.';
+		}
+
+		return $this->helper->quoteColumnName($tableAlias . $column);
 	}
 }

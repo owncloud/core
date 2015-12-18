@@ -194,7 +194,7 @@ class Encryption extends \Test\Files\Storage\Storage {
 	protected function buildMockModule() {
 		$this->encryptionModule = $this->getMockBuilder('\OCP\Encryption\IEncryptionModule')
 			->disableOriginalConstructor()
-			->setMethods(['getId', 'getDisplayName', 'begin', 'end', 'encrypt', 'decrypt', 'update', 'shouldEncrypt', 'getUnencryptedBlockSize', 'isReadable'])
+			->setMethods(['getId', 'getDisplayName', 'begin', 'end', 'encrypt', 'decrypt', 'update', 'shouldEncrypt', 'getUnencryptedBlockSize', 'isReadable', 'encryptAll', 'prepareDecryptAll'])
 			->getMock();
 
 		$this->encryptionModule->expects($this->any())->method('getId')->willReturn('UNIT_TEST_MODULE');
@@ -241,59 +241,14 @@ class Encryption extends \Test\Files\Storage\Storage {
 		$this->instance->rename($source, $target);
 	}
 
-	/**
-	 * @dataProvider dataTestCopyAndRename
-	 *
-	 * @param string $source
-	 * @param string $target
-	 * @param $encryptionEnabled
-	 * @param boolean $copyKeysReturn
-	 * @param boolean $shouldUpdate
-	 */
-	public function testCopyEncryption($source,
-							 $target,
-							 $encryptionEnabled,
-							 $copyKeysReturn,
-							 $shouldUpdate) {
-
-		if ($encryptionEnabled) {
-			$this->keyStore
-				->expects($this->once())
-				->method('copyKeys')
-				->willReturn($copyKeysReturn);
-			$this->cache->expects($this->atLeastOnce())
-				->method('put')
-				->willReturnCallback(function($path, $data) {
-					$this->assertArrayHasKey('encrypted', $data);
-					$this->assertTrue($data['encrypted']);
-				});
-		} else {
-			$this->cache->expects($this->never())->method('put');
-			$this->keyStore->expects($this->never())->method('copyKeys');
-		}
-		$this->util->expects($this->any())
-			->method('isFile')->willReturn(true);
-		$this->util->expects($this->any())
-			->method('isExcluded')->willReturn(false);
-		$this->encryptionManager->expects($this->once())
-			->method('isEnabled')->willReturn($encryptionEnabled);
-		if ($shouldUpdate) {
-			$this->update->expects($this->once())
-				->method('update');
-		} else {
-			$this->update->expects($this->never())
-				->method('update');
-		}
-
-		$this->instance->mkdir($source);
-		$this->instance->mkdir(dirname($target));
-		$this->instance->copy($source, $target);
-
-		if ($encryptionEnabled) {
-			$this->assertSame($this->dummySize,
-				$this->instance->filesize($target)
-			);
-		}
+	public function testCopyEncryption() {
+		$this->instance->file_put_contents('source.txt', 'bar');
+		$this->instance->copy('source.txt', 'target.txt');
+		$this->assertSame('bar', $this->instance->file_get_contents('target.txt'));
+		$targetMeta = $this->instance->getMetaData('target.txt');
+		$sourceMeta = $this->instance->getMetaData('source.txt');
+		$this->assertSame($sourceMeta['encrypted'], $targetMeta['encrypted']);
+		$this->assertSame($sourceMeta['size'], $targetMeta['size']);
 	}
 
 	/**
@@ -603,4 +558,123 @@ class Encryption extends \Test\Files\Storage\Storage {
 
 		$this->assertFalse(false);
 	}
+
+	/**
+	 * @dataProvider dataTestCopyBetweenStorageVersions
+	 *
+	 * @param string $sourceInternalPath
+	 * @param string $targetInternalPath
+	 * @param bool $copyResult
+	 * @param bool $encrypted
+	 */
+	public function  testCopyBetweenStorageVersions($sourceInternalPath, $targetInternalPath, $copyResult, $encrypted) {
+
+		$sourceStorage = $this->getMockBuilder('OCP\Files\Storage')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$targetStorage = $this->getMockBuilder('OCP\Files\Storage')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$cache = $this->getMockBuilder('\OC\Files\Cache\Cache')
+			->disableOriginalConstructor()->getMock();
+
+		$mountPoint = '/mountPoint';
+
+		/** @var \OC\Files\Storage\Wrapper\Encryption |\PHPUnit_Framework_MockObject_MockObject  $instance */
+		$instance = $this->getMockBuilder('\OC\Files\Storage\Wrapper\Encryption')
+			->setConstructorArgs(
+				[
+					[
+						'storage' => $targetStorage,
+						'root' => 'foo',
+						'mountPoint' => $mountPoint,
+						'mount' => $this->mount
+					],
+					$this->encryptionManager,
+					$this->util,
+					$this->logger,
+					$this->file,
+					null,
+					$this->keyStore,
+					$this->update,
+					$this->mountManager
+				]
+			)
+			->setMethods(['updateUnencryptedSize', 'getCache'])
+			->getMock();
+
+		$targetStorage->expects($this->once())->method('copyFromStorage')
+			->with($sourceStorage, $sourceInternalPath, $targetInternalPath)
+			->willReturn($copyResult);
+
+		if ($copyResult) {
+			$instance->expects($this->once())->method('getCache')
+				->with('', $sourceStorage)
+				->willReturn($cache);
+			$cache->expects($this->once())->method('get')
+				->with($sourceInternalPath)
+				->willReturn(['encrypted' => $encrypted, 'size' => 42]);
+			if ($encrypted) {
+				$instance->expects($this->once())->method('updateUnencryptedSize')
+					->with($mountPoint . $targetInternalPath, 42);
+			} else {
+				$instance->expects($this->never())->method('updateUnencryptedSize');
+			}
+		} else {
+			$instance->expects($this->never())->method('updateUnencryptedSize');
+		}
+
+		$result = $this->invokePrivate(
+			$instance,
+			'copyBetweenStorage',
+			[
+				$sourceStorage,
+				$sourceInternalPath,
+				$targetInternalPath,
+				false,
+				false
+			]
+		);
+
+		$this->assertSame($copyResult, $result);
+	}
+
+	public function dataTestCopyBetweenStorageVersions() {
+		return [
+			['/files/foo.txt', '/files_versions/foo.txt.768743', true, true],
+			['/files/foo.txt', '/files_versions/foo.txt.768743', true, false],
+			['/files/foo.txt', '/files_versions/foo.txt.768743', false, true],
+			['/files/foo.txt', '/files_versions/foo.txt.768743', false, false],
+			['/files_versions/foo.txt.6487634', '/files/foo.txt', true, true],
+			['/files_versions/foo.txt.6487634', '/files/foo.txt', true, false],
+			['/files_versions/foo.txt.6487634', '/files/foo.txt', false, true],
+			['/files_versions/foo.txt.6487634', '/files/foo.txt', false, false],
+
+		];
+	}
+
+	/**
+	 * @dataProvider dataTestIsVersion
+	 * @param string $path
+	 * @param bool $expected
+	 */
+	public function testIsVersion($path, $expected) {
+		$this->assertSame($expected,
+			$this->invokePrivate($this->instance, 'isVersion', [$path])
+		);
+	}
+
+	public function dataTestIsVersion() {
+		return [
+			['files_versions/foo', true],
+			['/files_versions/foo', true],
+			['//files_versions/foo', true],
+			['files/versions/foo', false],
+			['files/files_versions/foo', false],
+			['files_versions_test/foo', false],
+		];
+	}
+
 }

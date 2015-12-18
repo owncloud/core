@@ -1,7 +1,7 @@
 <?php
 /**
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
  * @author Vincent Petry <pvince81@owncloud.com>
- * @author Robin McCorkell <rmccorkell@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -48,6 +48,9 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 		\OC_Mount_Config::$skipTest = false;
 	}
 
+	/**
+	 * @return \OCA\Files_External\Lib\Backend\Backend
+	 */
 	protected function getBackendMock($class = '\OCA\Files_External\Lib\Backend\SMB', $storageClass = '\OC\Files\Storage\SMB') {
 		$backend = $this->getMockBuilder('\OCA\Files_External\Lib\Backend\Backend')
 			->disableOriginalConstructor()
@@ -59,6 +62,9 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 		return $backend;
 	}
 
+	/**
+	 * @return \OCA\Files_External\Lib\Auth\AuthMechanism
+	 */
 	protected function getAuthMechMock($scheme = 'null', $class = '\OCA\Files_External\Lib\Auth\NullMechanism') {
 		$authMech = $this->getMockBuilder('\OCA\Files_External\Lib\Auth\AuthMechanism')
 			->disableOriginalConstructor()
@@ -74,6 +80,8 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 	public function testAddStorage() {
 		$authMech = $this->getAuthMechMock();
 		$authMech->method('validateStorage')
+			->willReturn(true);
+		$authMech->method('isVisibleFor')
 			->willReturn(true);
 		$backend = $this->getBackendMock();
 		$backend->method('validateStorage')
@@ -113,6 +121,8 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 	public function testUpdateStorage() {
 		$authMech = $this->getAuthMechMock();
 		$authMech->method('validateStorage')
+			->willReturn(true);
+		$authMech->method('isVisibleFor')
 			->willReturn(true);
 		$backend = $this->getBackendMock();
 		$backend->method('validateStorage')
@@ -245,6 +255,8 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 		$authMech = $this->getAuthMechMock();
 		$authMech->method('validateStorage')
 			->willReturn(true);
+		$authMech->method('isVisibleFor')
+			->willReturn(true);
 		$backend = $this->getBackendMock();
 		$backend->method('validateStorage')
 			->willReturn(true);
@@ -338,6 +350,8 @@ abstract class StoragesControllerTest extends \Test\TestCase {
 		$authMech = $this->getAuthMechMock();
 		$authMech->method('validateStorage')
 			->will($this->returnValue($authMechValidate));
+		$authMech->method('isVisibleFor')
+			->willReturn(true);
 
 		$storageConfig = new StorageConfig();
 		$storageConfig->setMountPoint('mount');

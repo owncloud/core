@@ -11,13 +11,10 @@ input[type='submit'] {
 
 #body-login input[type='submit'] {
 	position: absolute;
-	top: 0px;
+	top: 0;
+	border: none;
 }
 
 fieldset > p {
 	position: relative;
-}
-
-#password-icon {
-	top: 20px;
 }

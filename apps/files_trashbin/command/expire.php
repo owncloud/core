@@ -1,7 +1,6 @@
 <?php
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
- * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
@@ -38,17 +37,10 @@ class Expire implements ICommand {
 	private $user;
 
 	/**
-	 * @var int
-	 */
-	private $trashBinSize;
-
-	/**
 	 * @param string $user
-	 * @param int $trashBinSize
 	 */
-	function __construct($user, $trashBinSize) {
+	function __construct($user) {
 		$this->user = $user;
-		$this->trashBinSize = $trashBinSize;
 	}
 
 	public function handle() {
@@ -60,7 +52,7 @@ class Expire implements ICommand {
 
 		\OC_Util::tearDownFS();
 		\OC_Util::setupFS($this->user);
-		Trashbin::expire($this->trashBinSize, $this->user);
+		Trashbin::expire($this->user);
 		\OC_Util::tearDownFS();
 	}
 }

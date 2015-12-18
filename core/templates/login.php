@@ -12,7 +12,7 @@ script('core', [
 <form method="post" name="login">
 	<fieldset>
 	<?php if (!empty($_['redirect_url'])) {
-		print_unescaped('<input type="hidden" name="redirect_url" value="' . OC_Util::sanitizeHTML($_['redirect_url']) . '">');
+		print_unescaped('<input type="hidden" name="redirect_url" value="' . \OCP\Util::sanitizeHTML($_['redirect_url']) . '">');
 	} ?>
 		<?php if (isset($_['apacheauthfailed']) && ($_['apacheauthfailed'])): ?>
 			<div class="warning">
@@ -45,7 +45,6 @@ script('core', [
 				<?php p($_['user_autofocus'] ? 'autofocus' : ''); ?>
 				autocomplete="on" autocapitalize="off" autocorrect="off" required>
 			<label for="user" class="infield"><?php p($l->t('Username')); ?></label>
-			<img class="svg" src="<?php print_unescaped(image_path('', 'actions/user.svg')); ?>" alt=""/>
 		</p>
 
 		<p class="groupbottom">
@@ -54,20 +53,22 @@ script('core', [
 				<?php p($_['user_autofocus'] ? '' : 'autofocus'); ?>
 				autocomplete="on" autocapitalize="off" autocorrect="off" required>
 			<label for="password" class="infield"><?php p($l->t('Password')); ?></label>
-			<img class="svg" id="password-icon" src="<?php print_unescaped(image_path('', 'actions/password.svg')); ?>" alt=""/>
+			<input type="submit" id="submit" class="login primary icon-confirm svg" title="<?php p($l->t('Log in')); ?>" value="" disabled="disabled"/>
 		</p>
 
-		<input type="submit" id="submit" class="login primary icon-confirm" value="" disabled="disabled"/>
-
-		<?php if (isset($_['invalidpassword']) && ($_['invalidpassword'])): ?>
+		<?php if (!empty($_['invalidpassword']) && !empty($_['canResetPassword'])) { ?>
 		<a id="lost-password" class="warning" href="">
 			<?php p($l->t('Wrong password. Reset it?')); ?>
 		</a>
-		<?php endif; ?>
+		<?php } else if (!empty($_['invalidpassword'])) { ?>
+			<p class="warning">
+				<?php p($l->t('Wrong password.')); ?>
+			</p>
+		<?php } ?>
 		<?php if ($_['rememberLoginAllowed'] === true) : ?>
 		<div class="remember-login-container">
-			<input type="checkbox" name="remember_login" value="1" id="remember_login">
-			<label for="remember_login"><?php p($l->t('remember')); ?></label>
+			<input type="checkbox" name="remember_login" value="1" id="remember_login" class="checkbox checkbox--white">
+			<label for="remember_login"><?php p($l->t('Stay logged in')); ?></label>
 		</div>
 		<?php endif; ?>
 		<input type="hidden" name="timezone-offset" id="timezone-offset"/>

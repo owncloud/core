@@ -30,8 +30,8 @@ class Test_Group extends \Test\TestCase {
 	}
 
 	public function testSingleBackend() {
-		$userBackend = new \OC_User_Dummy();
-		\OC_User::getManager()->registerBackend($userBackend);
+		$userBackend = new \Test\Util\User\Dummy();
+		\OC::$server->getUserManager()->registerBackend($userBackend);
 		OC_Group::useBackend(new OC_Group_Dummy());
 
 		$group1 = $this->getUniqueID();
@@ -112,8 +112,8 @@ class Test_Group extends \Test\TestCase {
 
 	public function testUsersInGroup() {
 		OC_Group::useBackend(new OC_Group_Dummy());
-		$userBackend = new \OC_User_Dummy();
-		\OC_User::getManager()->registerBackend($userBackend);
+		$userBackend = new \Test\Util\User\Dummy();
+		\OC::$server->getUserManager()->registerBackend($userBackend);
 
 		$group1 = $this->getUniqueID();
 		$group2 = $this->getUniqueID();
@@ -141,8 +141,8 @@ class Test_Group extends \Test\TestCase {
 	}
 
 	public function testMultiBackend() {
-		$userBackend = new \OC_User_Dummy();
-		\OC_User::getManager()->registerBackend($userBackend);
+		$userBackend = new \Test\Util\User\Dummy();
+		\OC::$server->getUserManager()->registerBackend($userBackend);
 		$backend1 = new OC_Group_Dummy();
 		$backend2 = new OC_Group_Dummy();
 		OC_Group::useBackend($backend1);

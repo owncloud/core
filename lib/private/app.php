@@ -18,6 +18,7 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Markus Goetz <markus@woboq.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author RealRancor <Fisch.666@gmx.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
  * @author Sam Tuke <mail@samtuke.com>
@@ -60,7 +61,6 @@ class OC_App {
 	static private $appTypes = array();
 	static private $loadedApps = array();
 	static private $altLogin = array();
-	private static $shippedApps = null;
 	const officialApp = 200;
 
 	/**
@@ -101,11 +101,19 @@ class OC_App {
 		}
 		// Load the enabled apps here
 		$apps = self::getEnabledApps();
+
+		// Add each apps' folder as allowed class path
+		foreach($apps as $app) {
+			$path = self::getAppPath($app);
+			if($path !== false) {
+				\OC::$loader->addValidRoot($path);
+			}
+		}
+
 		// prevent app.php from printing output
 		ob_start();
 		foreach ($apps as $app) {
 			if ((is_null($types) or self::isType($app, $types)) && !in_array($app, self::$loadedApps)) {
-				self::$loadedApps[] = $app;
 				self::loadApp($app);
 			}
 		}
@@ -122,6 +130,8 @@ class OC_App {
 	 * @throws \OC\NeedsUpdateException
 	 */
 	public static function loadApp($app, $checkUpgrade = true) {
+		self::$loadedApps[] = $app;
+		\OC::$loader->addValidRoot(self::getAppPath($app)); // in case someone calls loadApp() directly
 		if (is_file(self::getAppPath($app) . '/appinfo/app.php')) {
 			\OC::$server->getEventLogger()->start('load_app_' . $app, 'Load app: ' . $app);
 			if ($checkUpgrade and self::shouldUpgrade($app)) {
@@ -212,18 +222,7 @@ class OC_App {
 	 * Check if an app that is installed is a shipped app or installed from the appstore.
 	 */
 	public static function isShipped($appId) {
-		if (is_null(self::$shippedApps)) {
-			$shippedJson = \OC::$SERVERROOT . '/core/shipped.json';
-			if (file_exists($shippedJson)) {
-				self::$shippedApps = json_decode(file_get_contents($shippedJson), true);
-				self::$shippedApps = self::$shippedApps['shippedApps'];
-			} else {
-				self::$shippedApps = ['files', 'encryption', 'files_external',
-					'files_sharing', 'files_trashbin', 'files_versions', 'provisioning_api',
-					'user_ldap', 'user_webdavauth'];
-			}
-		}
-		return in_array($appId, self::$shippedApps);
+		return \OC::$server->getAppManager()->isShipped($appId);
 	}
 
 	/**
@@ -274,9 +273,6 @@ class OC_App {
 	 * This function checks whether or not an app is enabled.
 	 */
 	public static function isEnabled($app) {
-		if ('files' == $app) {
-			return true;
-		}
 		return \OC::$server->getAppManager()->isEnabledForUser($app);
 	}
 
@@ -357,9 +353,6 @@ class OC_App {
 			$app = self::getInternalAppIdByOcs($app);
 		}
 
-		if($app === 'files') {
-			throw new \Exception("files can't be disabled.");
-		}
 		self::$enabledAppsCache = array(); // flush
 		// check if app is a shipped app or not. if not delete
 		\OC_Hook::emit('OC_App', 'pre_disable', array('app' => $app));
@@ -368,63 +361,9 @@ class OC_App {
 	}
 
 	/**
-	 * marks a navigation entry as active
-	 *
-	 * @param string $id id of the entry
-	 * @return bool
-	 *
-	 * This function sets a navigation entry as active and removes the 'active'
-	 * property from all other entries. The templates can use this for
-	 * highlighting the current position of the user.
-	 *
-	 * @deprecated Use \OC::$server->getNavigationManager()->setActiveEntry() instead
-	 */
-	public static function setActiveNavigationEntry($id) {
-		OC::$server->getNavigationManager()->setActiveEntry($id);
-		return true;
-	}
-
-	/**
-	 * Get the navigation entries for the $app
-	 *
-	 * @param string $app app
-	 * @return array an array of the $data added with addNavigationEntry
-	 *
-	 * Warning: destroys the existing entries
-	 */
-	public static function getAppNavigationEntries($app) {
-		if (is_file(self::getAppPath($app) . '/appinfo/app.php')) {
-			OC::$server->getNavigationManager()->clear();
-			try {
-				require $app . '/appinfo/app.php';
-			} catch (\OC\Encryption\Exceptions\ModuleAlreadyExistsException $e) {
-				// FIXME we should avoid getting this exception in first place,
-				// For now we just catch it, since we don't care about encryption modules
-				// when trying to find out, whether the app has a navigation entry.
-			}
-			return OC::$server->getNavigationManager()->getAll();
-		}
-		return array();
-	}
-
-	/**
-	 * gets the active Menu entry
-	 *
-	 * @return string id or empty string
-	 *
-	 * This function returns the id of the active navigation entry (set by
-	 * setActiveNavigationEntry
-	 *
-	 * @deprecated Use \OC::$server->getNavigationManager()->getActiveEntry() instead
-	 */
-	public static function getActiveNavigationEntry() {
-		return OC::$server->getNavigationManager()->getActiveEntry();
-	}
-
-	/**
 	 * Returns the Settings Navigation
 	 *
-	 * @return string
+	 * @return string[]
 	 *
 	 * This function returns an array containing all settings pages added. The
 	 * entries are sorted by the key 'order' ascending.
@@ -441,7 +380,7 @@ class OC_App {
 				array(
 					"id" => "help",
 					"order" => 1000,
-					"href" => OC_Helper::linkToRoute("settings_help"),
+					"href" => \OC::$server->getURLGenerator()->linkToRoute('settings_help'),
 					"name" => $l->t("Help"),
 					"icon" => OC_Helper::imagePath("settings", "help.svg")
 				)
@@ -454,18 +393,23 @@ class OC_App {
 			$settings[] = array(
 				"id" => "personal",
 				"order" => 1,
-				"href" => OC_Helper::linkToRoute("settings_personal"),
+				"href" => \OC::$server->getURLGenerator()->linkToRoute('settings_personal'),
 				"name" => $l->t("Personal"),
 				"icon" => OC_Helper::imagePath("settings", "personal.svg")
 			);
 
 			//SubAdmins are also allowed to access user management
-			if (OC_SubAdmin::isSubAdmin(OC_User::getUser())) {
+			$userObject = \OC::$server->getUserSession()->getUser();
+			$isSubAdmin = false;
+			if($userObject !== null) {
+				$isSubAdmin = \OC::$server->getGroupManager()->getSubAdmin()->isSubAdmin($userObject);
+			}
+			if ($isSubAdmin) {
 				// admin users menu
 				$settings[] = array(
 					"id" => "core_users",
 					"order" => 2,
-					"href" => OC_Helper::linkToRoute("settings_users"),
+					"href" => \OC::$server->getURLGenerator()->linkToRoute('settings_users'),
 					"name" => $l->t("Users"),
 					"icon" => OC_Helper::imagePath("settings", "users.svg")
 				);
@@ -477,7 +421,7 @@ class OC_App {
 				$settings[] = array(
 					"id" => "admin",
 					"order" => 1000,
-					"href" => OC_Helper::linkToRoute("settings_admin"),
+					"href" => \OC::$server->getURLGenerator()->linkToRoute('settings_admin'),
 					"name" => $l->t("Admin"),
 					"icon" => OC_Helper::imagePath("settings", "admin.svg")
 				);
@@ -530,9 +474,13 @@ class OC_App {
 	 * search for an app in all app-directories
 	 *
 	 * @param string $appId
-	 * @return mixed (bool|string)
+	 * @return false|string
 	 */
 	protected static function findAppInDirectories($appId) {
+		$sanitizedAppId = self::cleanAppId($appId);
+		if($sanitizedAppId !== $appId) {
+			return false;
+		}
 		static $app_dir = array();
 
 		if (isset($app_dir[$appId])) {
@@ -669,6 +617,12 @@ class OC_App {
 		if (is_array($data)) {
 			$data = OC_App::parseAppInfo($data);
 		}
+		if(isset($data['ocsid'])) {
+			$storedId = \OC::$server->getConfig()->getAppValue($appId, 'ocsid');
+			if($storedId !== '' && $storedId !== $data['ocsid']) {
+				$data['ocsid'] = $storedId;
+			}
+		}
 
 		self::$appInfo[$appId] = $data;
 
@@ -792,12 +746,9 @@ class OC_App {
 					if ($file[0] != '.' and is_dir($apps_dir['path'] . '/' . $file) and is_file($apps_dir['path'] . '/' . $file . '/appinfo/info.xml')) {
 
 						$apps[] = $file;
-
 					}
-
 				}
 			}
-
 		}
 
 		return $apps;
@@ -817,7 +768,8 @@ class OC_App {
 		//TODO which apps do we want to blacklist and how do we integrate
 		// blacklisting with the multi apps folder feature?
 
-		$blacklist = array('files'); //we don't want to show configuration for these
+		//we don't want to show configuration for these
+		$blacklist = \OC::$server->getAppManager()->getAlwaysEnabledApps();
 		$appList = array();
 		$l = \OC::$server->getL10N('core');
 
@@ -844,7 +796,7 @@ class OC_App {
 
 				$info['active'] = $active;
 
-				if (isset($info['shipped']) and ($info['shipped'] == 'true')) {
+				if (self::isShipped($app)) {
 					$info['internal'] = true;
 					$info['level'] = self::officialApp;
 					$info['removable'] = false;

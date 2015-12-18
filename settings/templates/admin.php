@@ -56,7 +56,7 @@ if ($_['mail_smtpmode'] == 'qmail') {
 			if (isset($form['anchor'])) {
 				$anchor = '#' . $form['anchor'];
 				$sectionName = $form['section-name'];
-				print_unescaped(sprintf("<li><a href='%s'>%s</a></li>", OC_Util::sanitizeHTML($anchor), OC_Util::sanitizeHTML($sectionName)));
+				print_unescaped(sprintf("<li><a href='%s'>%s</a></li>", \OCP\Util::sanitizeHTML($anchor), \OCP\Util::sanitizeHTML($sectionName)));
 			}
 		}?>
 	</ul>
@@ -73,7 +73,7 @@ if ($_['getenvServerNotWorking']) {
 ?>
 	<li>
 		<?php p($l->t('php does not seem to be setup properly to query system environment variables. The test with getenv("PATH") only returns an empty response.')); ?><br>
-		<?php p($l->t('Please check the installation documentation for php configuration notes and the php configuration of your server, especially when using php-fpm.')); ?>
+		<?php print_unescaped($l->t('Please check the <a target="_blank" href="%s">installation documentation ↗</a> for php configuration notes and the php configuration of your server, especially when using php-fpm.', link_to_docs('admin-php-fpm'))); ?>
 	</li>
 <?php
 }
@@ -122,6 +122,15 @@ if (!$_['has_fileinfo']) {
 		<?php p($l->t('The PHP module \'fileinfo\' is missing. We strongly recommend to enable this module to get best results with mime-type detection.')); ?>
 	</li>
 <?php
+}
+
+// locking configured optimally?
+if ($_['fileLockingType'] === 'none') {
+	?>
+	<li>
+		<?php print_unescaped($l->t('Transactional file locking is disabled, this might lead to issues with race conditions. Enable \'filelocking.enabled\' in config.php to avoid these problems. See the <a target="_blank" href="%s">documentation ↗</a> for more information.', link_to_docs('admin-transactional-locking'))); ?>
+	</li>
+	<?php
 }
 
 // is locale working ?
@@ -188,30 +197,30 @@ if ($_['cronErrors']) {
 			title="<?php p($l->t('Open documentation'));?>"
 			href="<?php p(link_to_docs('admin-sharing')); ?>"></a>
 		<p id="enable">
-			<input type="checkbox" name="shareapi_enabled" id="shareAPIEnabled"
+			<input type="checkbox" name="shareapi_enabled" id="shareAPIEnabled" class="checkbox"
 				   value="1" <?php if ($_['shareAPIEnabled'] === 'yes') print_unescaped('checked="checked"'); ?> />
 			<label for="shareAPIEnabled"><?php p($l->t('Allow apps to use the Share API'));?></label><br/>
 		</p>
 		<p class="<?php if ($_['shareAPIEnabled'] === 'no') p('hidden');?>">
-			<input type="checkbox" name="shareapi_allow_links" id="allowLinks"
+			<input type="checkbox" name="shareapi_allow_links" id="allowLinks" class="checkbox"
 				   value="1" <?php if ($_['allowLinks'] === 'yes') print_unescaped('checked="checked"'); ?> />
 			<label for="allowLinks"><?php p($l->t('Allow users to share via link'));?></label><br/>
 		</p>
 
 		<p id="publicLinkSettings" class="indent <?php if ($_['allowLinks'] !== 'yes' || $_['shareAPIEnabled'] === 'no') p('hidden'); ?>">
-			<input type="checkbox" name="shareapi_enforce_links_password" id="enforceLinkPassword"
+			<input type="checkbox" name="shareapi_enforce_links_password" id="enforceLinkPassword" class="checkbox"
 				   value="1" <?php if ($_['enforceLinkPassword']) print_unescaped('checked="checked"'); ?> />
 			<label for="enforceLinkPassword"><?php p($l->t('Enforce password protection'));?></label><br/>
 
-			<input type="checkbox" name="shareapi_allow_public_upload" id="allowPublicUpload"
+			<input type="checkbox" name="shareapi_allow_public_upload" id="allowPublicUpload" class="checkbox"
 				   value="1" <?php if ($_['allowPublicUpload'] == 'yes') print_unescaped('checked="checked"'); ?> />
 			<label for="allowPublicUpload"><?php p($l->t('Allow public uploads'));?></label><br/>
 
-			<input type="checkbox" name="shareapi_allow_public_notification" id="allowPublicMailNotification"
+			<input type="checkbox" name="shareapi_allow_public_notification" id="allowPublicMailNotification" class="checkbox"
 				   value="1" <?php if ($_['allowPublicMailNotification'] == 'yes') print_unescaped('checked="checked"'); ?> />
 			<label for="allowPublicMailNotification"><?php p($l->t('Allow users to send mail notification for shared files'));?></label><br/>
 
-			<input type="checkbox" name="shareapi_default_expire_date" id="shareapiDefaultExpireDate"
+			<input type="checkbox" name="shareapi_default_expire_date" id="shareapiDefaultExpireDate" class="checkbox"
 				   value="1" <?php if ($_['shareDefaultExpireDateSet'] === 'yes') print_unescaped('checked="checked"'); ?> />
 			<label for="shareapiDefaultExpireDate"><?php p($l->t('Set default expiration date'));?></label><br/>
 
@@ -221,27 +230,27 @@ if ($_['cronErrors']) {
 			<input type="text" name='shareapi_expire_after_n_days' id="shareapiExpireAfterNDays" placeholder="<?php p('7')?>"
 				   value='<?php p($_['shareExpireAfterNDays']) ?>' />
 			<?php p($l->t( 'days' )); ?>
-			<input type="checkbox" name="shareapi_enforce_expire_date" id="shareapiEnforceExpireDate"
+			<input type="checkbox" name="shareapi_enforce_expire_date" id="shareapiEnforceExpireDate" class="checkbox"
 				   value="1" <?php if ($_['shareEnforceExpireDate'] === 'yes') print_unescaped('checked="checked"'); ?> />
 			<label for="shareapiEnforceExpireDate"><?php p($l->t('Enforce expiration date'));?></label><br/>
 		</p>
 		<p class="<?php if ($_['shareAPIEnabled'] === 'no') p('hidden');?>">
-			<input type="checkbox" name="shareapi_allow_resharing" id="allowResharing"
+			<input type="checkbox" name="shareapi_allow_resharing" id="allowResharing" class="checkbox"
 				   value="1" <?php if ($_['allowResharing'] === 'yes') print_unescaped('checked="checked"'); ?> />
 			<label for="allowResharing"><?php p($l->t('Allow resharing'));?></label><br/>
 		</p>
 		<p class="<?php if ($_['shareAPIEnabled'] === 'no') p('hidden');?>">
-			<input type="checkbox" name="shareapi_only_share_with_group_members" id="onlyShareWithGroupMembers"
+			<input type="checkbox" name="shareapi_only_share_with_group_members" id="onlyShareWithGroupMembers" class="checkbox"
 				   value="1" <?php if ($_['onlyShareWithGroupMembers']) print_unescaped('checked="checked"'); ?> />
 			<label for="onlyShareWithGroupMembers"><?php p($l->t('Restrict users to only share with users in their groups'));?></label><br/>
 		</p>
 		<p class="<?php if ($_['shareAPIEnabled'] === 'no') p('hidden');?>">
-			<input type="checkbox" name="shareapi_allow_mail_notification" id="allowMailNotification"
+			<input type="checkbox" name="shareapi_allow_mail_notification" id="allowMailNotification" class="checkbox"
 				   value="1" <?php if ($_['allowMailNotification'] === 'yes') print_unescaped('checked="checked"'); ?> />
 			<label for="allowMailNotification"><?php p($l->t('Allow users to send mail notification for shared files to other users'));?></label><br/>
 		</p>
 		<p class="<?php if ($_['shareAPIEnabled'] === 'no') p('hidden');?>">
-			<input type="checkbox" name="shareapi_exclude_groups" id="shareapiExcludeGroups"
+			<input type="checkbox" name="shareapi_exclude_groups" id="shareapiExcludeGroups" class="checkbox"
 				   value="1" <?php if ($_['shareExcludeGroups']) print_unescaped('checked="checked"'); ?> />
 			<label for="shareapiExcludeGroups"><?php p($l->t('Exclude groups from sharing'));?></label><br/>
 		</p>
@@ -249,6 +258,11 @@ if ($_['cronErrors']) {
 			<input name="shareapi_exclude_groups_list" type="hidden" id="excludedGroups" value="<?php p($_['shareExcludedGroupsList']) ?>" style="width: 400px"/>
 			<br />
 			<em><?php p($l->t('These groups will still be able to receive shares, but not to initiate them.')); ?></em>
+		</p>
+		<p class="<?php if ($_['shareAPIEnabled'] === 'no') p('hidden');?>">
+			<input type="checkbox" name="shareapi_allow_share_dialog_user_enumeration" value="1" id="shareapi_allow_share_dialog_user_enumeration" class="checkbox"
+				<?php if ($_['allowShareDialogUserEnumeration'] === 'yes') print_unescaped('checked="checked"'); ?> />
+			<label for="shareapi_allow_share_dialog_user_enumeration"><?php p($l->t('Allow username autocompletion in share dialog. If this is disabled the full username needs to be entered.'));?></label><br />
 		</p>
 
 		<?php print_unescaped($_['fileSharingSettings']); ?>
@@ -270,18 +284,18 @@ if ($_['cronErrors']) {
 			$relative_time = relative_modified_date($_['lastcron']);
 			$absolute_time = OC_Util::formatDate($_['lastcron']);
 			if (time() - $_['lastcron'] <= 3600): ?>
-				<span class="cronstatus success"></span>
+				<span class="status success"></span>
 				<span class="crondate" original-title="<?php p($absolute_time);?>">
 					<?php p($l->t("Last cron job execution: %s.", [$relative_time]));?>
 				</span>
 			<?php else: ?>
-				<span class="cronstatus error"></span>
+				<span class="status error"></span>
 				<span class="crondate" original-title="<?php p($absolute_time);?>">
 					<?php p($l->t("Last cron job execution: %s. Something seems wrong.", [$relative_time]));?>
 				</span>
 			<?php endif;
 		else: ?>
-			<span class="cronstatus error"></span>
+			<span class="status error"></span>
 			<?php p($l->t("Cron was not executed yet!"));
 		endif; ?>
 	</p>
@@ -324,7 +338,7 @@ if ($_['cronErrors']) {
 
 	<p id="enable">
 		<input type="checkbox"
-			   id="enableEncryption"
+			   id="enableEncryption" class="checkbox"
 			   value="1" <?php if ($_['encryptionEnabled']) print_unescaped('checked="checked" disabled="disabled"'); ?> />
 		<label
 			for="enableEncryption"><?php p($l->t('Enable server-side encryption')); ?> <span id="startmigration_msg" class="msg"></span> </label><br/>
@@ -333,10 +347,10 @@ if ($_['cronErrors']) {
 	<div id="EncryptionWarning" class="warning hidden">
 		<p><?php p($l->t('Please read carefully before activating server-side encryption: ')); ?></p>
 		<ul>
-			<li><?php p($l->t('Server-side encryption is a one way process. Once encryption is enabled, all files from that point forward will be encrypted on the server and it will not be possible to disable encryption at a later date')); ?></li>
-			<li><?php p($l->t('Anyone who has privileged access to your ownCloud server can decrypt your files either by intercepting requests or reading out user passwords which are stored in plain text session files. Server-side encryption does therefore not protect against malicious administrators but is useful for protecting your data on externally hosted storage.')); ?></li>
-			<li><?php p($l->t('Depending on the actual encryption module the general file size is increased (by 35%% or more when using the default module)')); ?></li>
-			<li><?php p($l->t('You should regularly backup all encryption keys to prevent permanent data loss (data/<user>/files_encryption and data/files_encryption)')); ?></li>
+			<li><?php p($l->t('Once encryption is enabled, all files uploaded to the server from that point forward will be encrypted at rest on the server. It will only be possible to disable encryption at a later date if the active encryption module supports that function, and all pre-conditions (e.g. setting a recover key) are met.')); ?></li>
+			<li><?php p($l->t('Encryption alone does not guarantee security of the system. Please see ownCloud documentation for more information about how the encryption app works, and the supported use cases.')); ?></li>
+			<li><?php p($l->t('Be aware that encryption always increases the file size.')); ?></li>
+			<li><?php p($l->t('It is always good to create regular backups of your data, in case of encryption make sure to backup the encryption keys along with your data.')); ?></li>
 		</ul>
 
 		<p><?php p($l->t('This is the final warning: Do you really want to enable encryption?')) ?> <input type="button"
@@ -438,7 +452,7 @@ if ($_['cronErrors']) {
 				<?php endforeach;?>
 			</select>
 
-			<input type="checkbox" name="mail_smtpauth" id="mail_smtpauth" value="1"
+			<input type="checkbox" name="mail_smtpauth" id="mail_smtpauth" class="checkbox" value="1"
 				   <?php if ($_['mail_smtpauth']) print_unescaped('checked="checked"'); ?> />
 			<label for="mail_smtpauth"><?php p($l->t( 'Authentication required' )); ?></label>
 		</p>
@@ -471,15 +485,6 @@ if ($_['cronErrors']) {
 
 <div class="section" id="log-section">
 	<h2><?php p($l->t('Log'));?></h2>
-	<?php p($l->t('Log level'));?> <select name='loglevel' id='loglevel'>
-<?php for ($i = 0; $i < 5; $i++):
-	$selected = '';
-	if ($i == $_['loglevel']):
-		$selected = 'selected="selected"';
-	endif; ?>
-		<option value='<?php p($i)?>' <?php p($selected) ?>><?php p($levelLabels[$i])?></option>
-<?php endfor;?>
-</select>
 <?php if ($_['showLog'] && $_['doesLogFileExist']): ?>
 	<table id="log" class="grid">
 		<?php foreach ($_['entries'] as $entry): ?>
@@ -517,19 +522,16 @@ if ($_['cronErrors']) {
 	</em>
 	<?php endif; ?>
 	<?php endif; ?>
-</div>
 
-<div class="section" id="server-status">
-	<h2><?php p($l->t('Server status'));?></h2>
-	<ul>
-		<li>
-			<?php if ($_['fileLockingEnabled']) {
-				p($l->t('Transactional File Locking is enabled.'));
-			} else {
-				p($l->t('Transactional File Locking is disabled.'));
-			} ?>
-		</li>
-	</ul>
+	<p><?php p($l->t('What to log'));?> <select name='loglevel' id='loglevel'>
+	<?php for ($i = 0; $i < 5; $i++):
+		$selected = '';
+		if ($i == $_['loglevel']):
+			$selected = 'selected="selected"';
+		endif; ?>
+			<option value='<?php p($i)?>' <?php p($selected) ?>><?php p($levelLabels[$i])?></option>
+	<?php endfor;?>
+	</select></p>
 </div>
 
 <div class="section" id="admin-tips">
@@ -554,15 +556,15 @@ if ($_['cronErrors']) {
 	</ul>
 </div>
 
+<?php if (!empty($_['updaterAppPanel'])): ?>
+	<div id="updater"><?php print_unescaped($_['updaterAppPanel']); ?></div>
+<?php endif; ?>
+
 <div class="section">
 	<h2><?php p($l->t('Version'));?></h2>
 	<strong><?php p($theme->getTitle()); ?></strong> <?php p(OC_Util::getHumanVersion()) ?>
 	<?php include('settings.development.notice.php'); ?>
 </div>
-
-<?php if (!empty($_['updaterAppPanel'])): ?>
-	<div id="updater"><?php print_unescaped($_['updaterAppPanel']); ?></div>
-<?php endif; ?>
 
 <div class="section credits-footer">
 	<p><?php print_unescaped($theme->getShortFooter()); ?></p>

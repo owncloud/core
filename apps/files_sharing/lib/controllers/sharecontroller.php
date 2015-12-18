@@ -7,6 +7,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -46,6 +47,7 @@ use OCA\Files_Sharing\Helper;
 use OCP\User;
 use OCP\Util;
 use OCA\Files_Sharing\Activity;
+use \OCP\Files\NotFoundException;
 
 /**
  * Class ShareController
@@ -122,7 +124,7 @@ class ShareController extends Controller {
 	 * @UseSession
 	 *
 	 * Authenticates against password-protected shares
-	 * @param $token
+	 * @param string $token
 	 * @param string $password
 	 * @return RedirectResponse|TemplateResponse
 	 */
@@ -148,6 +150,7 @@ class ShareController extends Controller {
 	 * @param string $token
 	 * @param string $path
 	 * @return TemplateResponse|RedirectResponse
+	 * @throws NotFoundException
 	 */
 	public function showShare($token, $path = '') {
 		\OC_User::setIncognitoMode(true);
@@ -171,13 +174,14 @@ class ShareController extends Controller {
 			$getPath = Filesystem::normalizePath($path);
 			$originalSharePath .= $path;
 		} else {
-			throw new OCP\Files\NotFoundException();
+			throw new NotFoundException();
 		}
 
 		$file = basename($originalSharePath);
 
 		$shareTmpl = [];
 		$shareTmpl['displayName'] = User::getDisplayName($shareOwner);
+		$shareTmpl['owner'] = $shareOwner;
 		$shareTmpl['filename'] = $file;
 		$shareTmpl['directory_path'] = $linkItem['file_target'];
 		$shareTmpl['mimetype'] = Filesystem::getMimeType($originalSharePath);
@@ -231,9 +235,10 @@ class ShareController extends Controller {
 	 * @param string $token
 	 * @param string $files
 	 * @param string $path
+	 * @param string $downloadStartSecret
 	 * @return void|RedirectResponse
 	 */
-	public function downloadShare($token, $files = null, $path = '') {
+	public function downloadShare($token, $files = null, $path = '', $downloadStartSecret = '') {
 		\OC_User::setIncognitoMode(true);
 
 		$linkItem = OCP\Share::getShareByToken($token, false);
@@ -286,6 +291,19 @@ class ShareController extends Controller {
 			}
 		}
 
+		/**
+		 * this sets a cookie to be able to recognize the start of the download
+		 * the content must not be longer than 32 characters and must only contain
+		 * alphanumeric characters
+		 */
+		if (!empty($downloadStartSecret)
+			&& !isset($downloadStartSecret[32])
+			&& preg_match('!^[a-zA-Z0-9]+$!', $downloadStartSecret) === 1) {
+
+			// FIXME: set on the response once we use an actual app framework response
+			setcookie('ocDownloadStarted', $downloadStartSecret, time() + 20, '/');
+		}
+
 		// download selected files
 		if (!is_null($files)) {
 			// FIXME: The exit is required here because otherwise the AppFramework is trying to add headers as well
@@ -303,7 +321,7 @@ class ShareController extends Controller {
 	/**
 	 * @param string $token
 	 * @return string Resolved file path of the token
-	 * @throws \Exception In case share could not get properly resolved
+	 * @throws NotFoundException In case share could not get properly resolved
 	 */
 	private function getPath($token) {
 		$linkItem = Share::getShareByToken($token, false);
@@ -312,18 +330,17 @@ class ShareController extends Controller {
 			$rootLinkItem = Share::resolveReShare($linkItem);
 			if (isset($rootLinkItem['uid_owner'])) {
 				if(!$this->userManager->userExists($rootLinkItem['uid_owner'])) {
-					throw new \Exception('Owner of the share does not exist anymore');
+					throw new NotFoundException('Owner of the share does not exist anymore');
 				}
 				OC_Util::tearDownFS();
 				OC_Util::setupFS($rootLinkItem['uid_owner']);
 				$path = Filesystem::getPath($linkItem['file_source']);
-
-				if(!empty($path) && Filesystem::isReadable($path)) {
+				if(Filesystem::isReadable($path)) {
 					return $path;
 				}
 			}
 		}
 
-		throw new \Exception('No file found belonging to file.');
+		throw new NotFoundException('No file found belonging to file.');
 	}
 }

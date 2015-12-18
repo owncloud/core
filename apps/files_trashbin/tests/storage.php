@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Björn Schießle <schiessle@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
@@ -26,6 +27,13 @@ namespace OCA\Files_trashbin\Tests\Storage;
 use OC\Files\Storage\Temporary;
 use OC\Files\Filesystem;
 
+/**
+ * Class Storage
+ *
+ * @group DB
+ *
+ * @package OCA\Files_trashbin\Tests\Storage
+ */
 class Storage extends \Test\TestCase {
 	/**
 	 * @var string
@@ -67,7 +75,8 @@ class Storage extends \Test\TestCase {
 	protected function tearDown() {
 		\OC\Files\Filesystem::getLoader()->removeStorageWrapper('oc_trashbin');
 		$this->logout();
-		\OC_User::deleteUser($this->user);
+		$user = \OC::$server->getUserManager()->get($this->user);
+		if ($user !== null) { $user->delete(); }
 		\OC_Hook::clear();
 		parent::tearDown();
 	}
@@ -522,5 +531,18 @@ class Storage extends \Test\TestCase {
 			['/schiesbn/', '/test.txt', true, false],
 			['/schiesbn/', '/test.txt', false, false],
 		];
+	}
+
+	/**
+	 * Test that deleting a file doesn't error when nobody is logged in
+	 */
+	public function testSingleStorageDeleteFileLoggedOut() {
+		$this->logout();
+
+		if (!$this->userView->file_exists('test.txt')) {
+			$this->markTestSkipped('Skipping since the current home storage backend requires the user to logged in');
+		} else {
+			$this->userView->unlink('test.txt');
+		}
 	}
 }

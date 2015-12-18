@@ -4,10 +4,11 @@ OC.L10N.register(
     "Unknown error" : "ਅਣਜਾਣ ਗਲਤੀ",
     "Files" : "ਫਾਇਲਾਂ",
     "Download" : "ਡਾਊਨਲੋਡ",
-    "Error" : "ਗਲਤੀ",
-    "Settings" : "ਸੈਟਿੰਗ",
+    "Rename" : "ਨਾਂ ਬਦਲੋ",
+    "Delete" : "ਹਟਾਓ",
+    "Details" : "ਵੇਰਵ",
     "Upload" : "ਅੱਪਲੋਡ",
-    "Cancel upload" : "ਅੱਪਲੋਡ ਰੱਦ ਕਰੋ",
-    "Delete" : "ਹਟਾਓ"
+    "Settings" : "ਸੈਟਿੰਗ",
+    "Cancel upload" : "ਅੱਪਲੋਡ ਰੱਦ ਕਰੋ"
 },
 "nplurals=2; plural=(n != 1);");

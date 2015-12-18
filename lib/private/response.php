@@ -74,7 +74,7 @@ class OC_Response {
 	* @param int $status a HTTP status code, see also the STATUS constants
 	*/
 	static public function setStatus($status) {
-		$protocol = $_SERVER['SERVER_PROTOCOL'];
+		$protocol = \OC::$server->getRequest()->getHttpProtocol();
 		switch($status) {
 			case self::STATUS_NOT_MODIFIED:
 				$status = $status . ' Not Modified';
@@ -247,7 +247,7 @@ class OC_Response {
 			. 'script-src \'self\' \'unsafe-eval\'; '
 			. 'style-src \'self\' \'unsafe-inline\'; '
 			. 'frame-src *; '
-			. 'img-src *; '
+			. 'img-src * data: blob:; '
 			. 'font-src \'self\' data:; '
 			. 'media-src *; ' 
 			. 'connect-src *';

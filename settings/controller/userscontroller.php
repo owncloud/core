@@ -4,6 +4,7 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -26,7 +27,6 @@
 namespace OC\Settings\Controller;
 
 use OC\AppFramework\Http;
-use OC\Settings\Factory\SubAdminFactory;
 use OC\User\User;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
@@ -42,6 +42,7 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IUserSession;
 use OCP\Mail\IMailer;
+use OCP\IAvatarManager;
 
 /**
  * @package OC\Settings\Controller
@@ -73,8 +74,8 @@ class UsersController extends Controller {
 	private $isEncryptionAppEnabled;
 	/** @var bool contains the state of the admin recovery setting */
 	private $isRestoreEnabled = false;
-	/** @var SubAdminFactory */
-	private $subAdminFactory;
+	/** @var IAvatarManager */
+	private $avatarManager;
 
 	/**
 	 * @param string $appName
@@ -91,7 +92,6 @@ class UsersController extends Controller {
 	 * @param string $fromMailAddress
 	 * @param IURLGenerator $urlGenerator
 	 * @param IAppManager $appManager
-	 * @param SubAdminFactory $subAdminFactory
 	 */
 	public function __construct($appName,
 								IRequest $request,
@@ -107,7 +107,7 @@ class UsersController extends Controller {
 								$fromMailAddress,
 								IURLGenerator $urlGenerator,
 								IAppManager $appManager,
-								SubAdminFactory $subAdminFactory) {
+								IAvatarManager $avatarManager) {
 		parent::__construct($appName, $request);
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
@@ -120,7 +120,7 @@ class UsersController extends Controller {
 		$this->mailer = $mailer;
 		$this->fromMailAddress = $fromMailAddress;
 		$this->urlGenerator = $urlGenerator;
-		$this->subAdminFactory = $subAdminFactory;
+		$this->avatarManager = $avatarManager;
 
 		// check for encryption state - TODO see formatUserForIndex
 		$this->isEncryptionAppEnabled = $appManager->isEnabledForUser('encryption');
@@ -163,17 +163,33 @@ class UsersController extends Controller {
 			$restorePossible = true;
 		}
 
+		$subAdminGroups = $this->groupManager->getSubAdmin()->getSubAdminsGroups($user);
+		foreach($subAdminGroups as $key => $subAdminGroup) {
+			$subAdminGroups[$key] = $subAdminGroup->getGID();
+		}
+
+		$displayName = $user->getEMailAddress();
+		if (is_null($displayName)) {
+			$displayName = '';
+		}
+
+		$avatarAvailable = false;
+		if ($this->config->getSystemValue('enable_avatars', true) === true) {
+			$avatarAvailable = $this->avatarManager->getAvatar($user->getUID())->exists();
+		}
+
 		return [
 			'name' => $user->getUID(),
 			'displayname' => $user->getDisplayName(),
 			'groups' => (empty($userGroups)) ? $this->groupManager->getUserGroupIds($user) : $userGroups,
-			'subadmin' => \OC_SubAdmin::getSubAdminsGroups($user->getUID()),
+			'subadmin' => $subAdminGroups,
 			'quota' => $this->config->getUserValue($user->getUID(), 'files', 'quota', 'default'),
 			'storageLocation' => $user->getHome(),
 			'lastLogin' => $user->getLastLogin() * 1000,
 			'backend' => $user->getBackendClassName(),
-			'email' => $this->config->getUserValue($user->getUID(), 'settings', 'email', ''),
+			'email' => $displayName,
 			'isRestoreDisabled' => !$restorePossible,
+			'isAvatarAvailable' => $avatarAvailable,
 		];
 	}
 
@@ -233,9 +249,14 @@ class UsersController extends Controller {
 			}
 
 		} else {
-			$subAdminOfGroups = $this->subAdminFactory->getSubAdminsOfGroups(
-				$this->userSession->getUser()->getUID()
-			);
+			$subAdminOfGroups = $this->groupManager->getSubAdmin()->getSubAdminsGroups($this->userSession->getUser());
+			// New class returns IGroup[] so convert back
+			$gids = [];
+			foreach ($subAdminOfGroups as $group) {
+				$gids[] = $group->getGID();
+			}
+			$subAdminOfGroups = $gids;
+
 			// Set the $gid parameter to an empty value if the subadmin has no rights to access a specific group
 			if($gid !== '' && !in_array($gid, $subAdminOfGroups)) {
 				$gid = '';
@@ -246,6 +267,7 @@ class UsersController extends Controller {
 			if($gid === '') {
 				foreach($subAdminOfGroups as $group) {
 					$groupUsers = $this->groupManager->displayNamesInGroup($group, $pattern, $limit, $offset);
+
 					foreach($groupUsers as $uid => $displayName) {
 						$batch[$uid] = $displayName;
 					}
@@ -287,17 +309,31 @@ class UsersController extends Controller {
 			);
 		}
 
+		$currentUser = $this->userSession->getUser();
+
 		if (!$this->isAdmin) {
-			$userId = $this->userSession->getUser()->getUID();
 			if (!empty($groups)) {
 				foreach ($groups as $key => $group) {
-					if (!$this->subAdminFactory->isGroupAccessible($userId, $group)) {
+					$groupObject = $this->groupManager->get($group);
+					if($groupObject === null) {
+						unset($groups[$key]);
+						continue;
+					}
+
+					if (!$this->groupManager->getSubAdmin()->isSubAdminofGroup($currentUser, $groupObject)) {
 						unset($groups[$key]);
 					}
 				}
 			}
+
 			if (empty($groups)) {
-				$groups = $this->subAdminFactory->getSubAdminsOfGroups($userId);
+				$groups = $this->groupManager->getSubAdmin()->getSubAdminsGroups($currentUser);
+				// New class returns IGroup[] so convert back
+				$gids = [];
+				foreach ($groups as $group) {
+					$gids[] = $group->getGID();
+				}
+				$groups = $gids;
 			}
 		}
 
@@ -390,6 +426,8 @@ class UsersController extends Controller {
 	 */
 	public function destroy($id) {
 		$userId = $this->userSession->getUser()->getUID();
+		$user = $this->userManager->get($id);
+
 		if($userId === $id) {
 			return new DataResponse(
 				array(
@@ -402,7 +440,7 @@ class UsersController extends Controller {
 			);
 		}
 
-		if(!$this->isAdmin && !$this->subAdminFactory->isUserAccessible($userId, $id)) {
+		if(!$this->isAdmin && !$this->groupManager->getSubAdmin()->isUserAccessible($this->userSession->getUser(), $user)) {
 			return new DataResponse(
 				array(
 					'status' => 'error',
@@ -414,7 +452,6 @@ class UsersController extends Controller {
 			);
 		}
 
-		$user = $this->userManager->get($id);
 		if($user) {
 			if($user->delete()) {
 				return new DataResponse(
@@ -452,9 +489,11 @@ class UsersController extends Controller {
 	 */
 	public function setMailAddress($id, $mailAddress) {
 		$userId = $this->userSession->getUser()->getUID();
+		$user = $this->userManager->get($id);
+
 		if($userId !== $id
 			&& !$this->isAdmin
-			&& !$this->subAdminFactory->isUserAccessible($userId, $id)) {
+			&& !$this->groupManager->getSubAdmin()->isUserAccessible($this->userSession->getUser(), $user)) {
 			return new DataResponse(
 				array(
 					'status' => 'error',
@@ -478,7 +517,6 @@ class UsersController extends Controller {
 			);
 		}
 
-		$user = $this->userManager->get($id);
 		if(!$user){
 			return new DataResponse(
 				array(
@@ -525,4 +563,95 @@ class UsersController extends Controller {
 		);
 	}
 
+	/**
+	 * Count all unique users visible for the current admin/subadmin.
+	 *
+	 * @NoAdminRequired
+	 *
+	 * @return DataResponse
+	 */
+	public function stats() {
+		$userCount = 0;
+		if ($this->isAdmin) {
+			$countByBackend = $this->userManager->countUsers();
+
+			if (!empty($countByBackend)) {
+				foreach ($countByBackend as $count) {
+					$userCount += $count;
+				}
+			}
+		} else {
+			$groups = $this->groupManager->getSubAdmin()->getSubAdminsGroups($this->userSession->getUser());
+
+			$uniqueUsers = [];
+			foreach ($groups as $group) {
+				foreach($group->getUsers() as $uid => $displayName) {
+					$uniqueUsers[$uid] = true;
+				}
+			}
+
+			$userCount = count($uniqueUsers);
+		}
+
+		return new DataResponse(
+			[
+				'totalUsers' => $userCount
+			]
+		);
+	}
+
+
+	/**
+	 * Set the displayName of a user
+	 *
+	 * @NoAdminRequired
+	 * @NoSubadminRequired
+	 *
+	 * @param string $username
+	 * @param string $displayName
+	 * @return DataResponse
+	 */
+	public function setDisplayName($username, $displayName) {
+		$currentUser = $this->userSession->getUser();
+
+		if ($username === null) {
+			$username = $currentUser->getUID();
+		}
+
+		$user = $this->userManager->get($username);
+
+		if ($user === null ||
+			!$user->canChangeDisplayName() ||
+			(
+				!$this->groupManager->isAdmin($currentUser->getUID()) &&
+				!$this->groupManager->getSubAdmin()->isUserAccessible($currentUser, $user) &&
+				$currentUser !== $user)
+			) {
+			return new DataResponse([
+				'status' => 'error',
+				'data' => [
+					'message' => $this->l10n->t('Authentication error'),
+				],
+			]);
+		}
+
+		if ($user->setDisplayName($displayName)) {
+			return new DataResponse([
+				'status' => 'success',
+				'data' => [
+					'message' => $this->l10n->t('Your full name has been changed.'),
+					'username' => $username,
+					'displayName' => $displayName,
+				],
+			]);
+		} else {
+			return new DataResponse([
+				'status' => 'error',
+				'data' => [
+					'message' => $this->l10n->t('Unable to change full name'),
+					'displayName' => $user->getDisplayName(),
+				],
+			]);
+		}
+	}
 }

@@ -8,6 +8,11 @@
 
 use \OC\Security\CertificateManager;
 
+/**
+ * Class CertificateManagerTest
+ *
+ * @group DB
+ */
 class CertificateManagerTest extends \Test\TestCase {
 
 	/** @var CertificateManager */
@@ -19,18 +24,23 @@ class CertificateManagerTest extends \Test\TestCase {
 		parent::setUp();
 
 		$this->username = $this->getUniqueID('', 20);
-		OC_User::createUser($this->username, $this->getUniqueID('', 20));
+		\OC::$server->getUserManager()->createUser($this->username, $this->getUniqueID('', 20));
 
 		\OC_Util::tearDownFS();
 		\OC_User::setUserId('');
 		\OC\Files\Filesystem::tearDown();
 		\OC_Util::setupFS($this->username);
 
-		$this->certificateManager = new CertificateManager($this->username, new \OC\Files\View());
+		$config = $this->getMock('OCP\IConfig');
+		$config->expects($this->any())->method('getSystemValue')
+			->with('installed', false)->willReturn(true);
+
+		$this->certificateManager = new CertificateManager($this->username, new \OC\Files\View(), $config);
 	}
 
 	protected function tearDown() {
-		\OC_User::deleteUser($this->username);
+		$user = \OC::$server->getUserManager()->get($this->username);
+		if ($user !== null) { $user->delete(); }
 		parent::tearDown();
 	}
 

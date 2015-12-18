@@ -18,11 +18,19 @@ class File extends \Test\TestCase {
 
 	protected function setUp() {
 		parent::setUp();
-		$this->user = new \OC\User\User('', new \OC_User_Dummy);
+		$this->user = new \OC\User\User('', new \Test\Util\User\Dummy);
+	}
+
+	protected function getMockStorage() {
+		$storage = $this->getMock('\OCP\Files\Storage');
+		$storage->expects($this->any())
+			->method('getId')
+			->will($this->returnValue('home::someuser'));
+		return $storage;
 	}
 
 	protected function getFileInfo($data) {
-		return new FileInfo('', null, '', $data, null);
+		return new FileInfo('', $this->getMockStorage(), '', $data, null);
 	}
 
 	public function testDelete() {
@@ -76,6 +84,8 @@ class File extends \Test\TestCase {
 			$test->assertInstanceOf('\OC\Files\Node\NonExistingFile', $node);
 			$test->assertEquals('foo', $node->getInternalPath());
 			$test->assertEquals('/bar/foo', $node->getPath());
+			$test->assertEquals(1, $node->getId());
+			$test->assertEquals('text/plain', $node->getMimeType());
 			$hooksRun++;
 		};
 
@@ -94,7 +104,7 @@ class File extends \Test\TestCase {
 		$view->expects($this->any())
 			->method('getFileInfo')
 			->with('/bar/foo')
-			->will($this->returnValue($this->getFileInfo(array('permissions' => \OCP\Constants::PERMISSION_ALL, 'fileid' => 1))));
+			->will($this->returnValue($this->getFileInfo(array('permissions' => \OCP\Constants::PERMISSION_ALL, 'fileid' => 1, 'mimetype' => 'text/plain'))));
 
 		$view->expects($this->once())
 			->method('unlink')

@@ -1,8 +1,6 @@
 <?php
 /**
- * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -23,6 +21,7 @@
 
 namespace OC\Lock;
 
+use OCP\IMemcacheTTL;
 use OCP\Lock\LockedException;
 use OCP\IMemcache;
 
@@ -37,6 +36,12 @@ class MemcacheLockingProvider extends AbstractLockingProvider {
 	 */
 	public function __construct(IMemcache $memcache) {
 		$this->memcache = $memcache;
+	}
+
+	private function setTTL($path) {
+		if ($this->memcache instanceof IMemcacheTTL) {
+			$this->memcache->setTTL($path, self::TTL);
+		}
 	}
 
 	/**
@@ -71,6 +76,7 @@ class MemcacheLockingProvider extends AbstractLockingProvider {
 				throw new LockedException($path);
 			}
 		}
+		$this->setTTL($path);
 		$this->markAcquire($path, $type);
 	}
 
@@ -108,6 +114,7 @@ class MemcacheLockingProvider extends AbstractLockingProvider {
 				throw new LockedException($path);
 			}
 		}
+		$this->setTTL($path);
 		$this->markChange($path, $targetType);
 	}
 }

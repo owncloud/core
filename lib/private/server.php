@@ -6,13 +6,14 @@
  * @author Bernhard Reiter <ockham@raz.or.at>
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Christopher Schäpers <kondou@ts.unde.re>
+ * @author Individual IT Services <info@individual-it.net>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Sander <brantje@gmail.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
@@ -46,13 +47,19 @@ use OC\Diagnostics\EventLogger;
 use OC\Diagnostics\NullEventLogger;
 use OC\Diagnostics\NullQueryLogger;
 use OC\Diagnostics\QueryLogger;
+use OC\Files\Node\HookConnector;
 use OC\Files\Node\Root;
 use OC\Files\View;
 use OC\Http\Client\ClientService;
+use OC\IntegrityCheck\Checker;
+use OC\IntegrityCheck\Helpers\AppLocator;
+use OC\IntegrityCheck\Helpers\EnvironmentHelper;
+use OC\IntegrityCheck\Helpers\FileAccessHelper;
 use OC\Lock\DBLockingProvider;
 use OC\Lock\MemcacheLockingProvider;
 use OC\Lock\NoopLockingProvider;
 use OC\Mail\Mailer;
+use OC\Notification\Manager;
 use OC\Security\CertificateManager;
 use OC\Security\Crypto;
 use OC\Security\Hasher;
@@ -91,12 +98,25 @@ class Server extends SimpleContainer implements IServerContainer {
 		});
 
 		$this->registerService('EncryptionManager', function (Server $c) {
-			return new Encryption\Manager($c->getConfig(), $c->getLogger(), $c->getL10N('core'));
+			$view = new View();
+			$util = new Encryption\Util(
+				$view,
+				$c->getUserManager(),
+				$c->getGroupManager(),
+				$c->getConfig()
+			);
+			return new Encryption\Manager(
+				$c->getConfig(),
+				$c->getLogger(),
+				$c->getL10N('core'),
+				new View(),
+				$util
+			);
 		});
 
 		$this->registerService('EncryptionFileHelper', function (Server $c) {
-			$util = new \OC\Encryption\Util(
-				new \OC\Files\View(),
+			$util = new Encryption\Util(
+				new View(),
 				$c->getUserManager(),
 				$c->getGroupManager(),
 				$c->getConfig()
@@ -105,8 +125,8 @@ class Server extends SimpleContainer implements IServerContainer {
 		});
 
 		$this->registerService('EncryptionKeyStorage', function (Server $c) {
-			$view = new \OC\Files\View();
-			$util = new \OC\Encryption\Util(
+			$view = new View();
+			$util = new Encryption\Util(
 				$view,
 				$c->getUserManager(),
 				$c->getGroupManager(),
@@ -122,6 +142,12 @@ class Server extends SimpleContainer implements IServerContainer {
 			$tagMapper = $c->query('TagMapper');
 			return new TagManager($tagMapper, $c->getUserSession());
 		});
+		$this->registerService('SystemTagManager', function (Server $c) {
+			return new SystemTag\SystemTagManager($c->getDatabaseConnection());
+		});
+		$this->registerService('SystemTagObjectMapper', function (Server $c) {
+			return new SystemTag\SystemTagObjectMapper($c->getDatabaseConnection(), $c->getSystemTagManager());
+		});
 		$this->registerService('RootFolder', function (Server $c) {
 			// TODO: get user and user manager from container as well
 			$user = \OC_User::getUser();
@@ -130,7 +156,10 @@ class Server extends SimpleContainer implements IServerContainer {
 			$user = $userManager->get($user);
 			$manager = \OC\Files\Filesystem::getMountManager();
 			$view = new View();
-			return new Root($manager, $view, $user);
+			$root = new Root($manager, $view, $user);
+			$connector = new HookConnector($root, $view);
+			$connector->viewToNode();
+			return $root;
 		});
 		$this->registerService('UserManager', function (Server $c) {
 			$config = $c->getConfig();
@@ -164,8 +193,6 @@ class Server extends SimpleContainer implements IServerContainer {
 			$manager = $c->getUserManager();
 
 			$session = new \OC\Session\Memory('');
-			$cryptoWrapper = $c->getSessionCryptoWrapper();
-			$session = $cryptoWrapper->wrapSession($session);
 
 			$userSession = new \OC\User\Session($manager, $session);
 			$userSession->listen('\OC\User', 'preCreateUser', function ($uid, $password) {
@@ -239,7 +266,7 @@ class Server extends SimpleContainer implements IServerContainer {
 
 			if($config->getSystemValue('installed', false) && !(defined('PHPUNIT_RUN') && PHPUNIT_RUN)) {
 				$v = \OC_App::getAppVersions();
-				$v['core'] = implode('.', \OC_Util::getVersion());
+				$v['core'] = md5(file_get_contents(\OC::$SERVERROOT . '/version.php'));
 				$version = implode(',', $v);
 				$instanceId = \OC_Util::getInstanceId();
 				$path = \OC::$SERVERROOT;
@@ -264,8 +291,12 @@ class Server extends SimpleContainer implements IServerContainer {
 				$c->getConfig()
 			);
 		});
-		$this->registerService('AvatarManager', function ($c) {
-			return new AvatarManager();
+		$this->registerService('AvatarManager', function (Server $c) {
+			return new AvatarManager(
+				$c->getUserManager(),
+				$c->getRootFolder(),
+				$c->getL10N('lib')
+			);
 		});
 		$this->registerService('Logger', function (Server $c) {
 			$logClass = $c->query('AllConfig')->getSystemValue('log_type', 'owncloud');
@@ -280,10 +311,11 @@ class Server extends SimpleContainer implements IServerContainer {
 		});
 		$this->registerService('Router', function (Server $c) {
 			$cacheFactory = $c->getMemCacheFactory();
+			$logger = $c->getLogger();
 			if ($cacheFactory->isAvailable()) {
-				$router = new \OC\Route\CachingRouter($cacheFactory->create('route'));
+				$router = new \OC\Route\CachingRouter($cacheFactory->create('route'), $logger);
 			} else {
-				$router = new \OC\Route\Router();
+				$router = new \OC\Route\Router($logger);
 			}
 			return $router;
 		});
@@ -326,7 +358,7 @@ class Server extends SimpleContainer implements IServerContainer {
 			$uid = $user ? $user : null;
 			return new ClientService(
 				$c->getConfig(),
-				new \OC\Security\CertificateManager($uid, new \OC\Files\View())
+				new \OC\Security\CertificateManager($uid, new View(), $c->getConfig())
 			);
 		});
 		$this->registerService('EventLogger', function (Server $c) {
@@ -344,7 +376,10 @@ class Server extends SimpleContainer implements IServerContainer {
 			}
 		});
 		$this->registerService('TempManager', function (Server $c) {
-			return new TempManager(get_temp_dir(), $c->getLogger());
+			return new TempManager(
+				$c->getLogger(),
+				$c->getConfig()
+			);
 		});
 		$this->registerService('AppManager', function(Server $c) {
 			return new \OC\App\AppManager(
@@ -382,6 +417,26 @@ class Server extends SimpleContainer implements IServerContainer {
 		$this->registerService('TrustedDomainHelper', function ($c) {
 			return new TrustedDomainHelper($this->getConfig());
 		});
+		$this->registerService('IntegrityCodeChecker', function (Server $c) {
+			// IConfig and IAppManager requires a working database. This code
+			// might however be called when ownCloud is not yet setup.
+			if(\OC::$server->getSystemConfig()->getValue('installed', false)) {
+				$config = $c->getConfig();
+				$appManager = $c->getAppManager();
+			} else {
+				$config = null;
+				$appManager = null;
+			}
+
+			return new Checker(
+					new EnvironmentHelper(),
+					new FileAccessHelper(),
+					new AppLocator(),
+					$config,
+					$c->getMemCacheFactory(),
+					$appManager
+			);
+		});
 		$this->registerService('Request', function ($c) {
 			if (isset($this['urlParams'])) {
 				$urlParams = $this['urlParams'];
@@ -418,7 +473,6 @@ class Server extends SimpleContainer implements IServerContainer {
 					'requesttoken' => $requestToken,
 				],
 				$this->getSecureRandom(),
-				$this->getCrypto(),
 				$this->getConfig(),
 				$stream
 			);
@@ -438,14 +492,14 @@ class Server extends SimpleContainer implements IServerContainer {
 			);
 		});
 		$this->registerService('LockingProvider', function (Server $c) {
-			if ($c->getConfig()->getSystemValue('filelocking.enabled', false) or (defined('PHPUNIT_RUN') && PHPUNIT_RUN)) {
+			if ($c->getConfig()->getSystemValue('filelocking.enabled', true) or (defined('PHPUNIT_RUN') && PHPUNIT_RUN)) {
 				/** @var \OC\Memcache\Factory $memcacheFactory */
 				$memcacheFactory = $c->getMemCacheFactory();
 				$memcache = $memcacheFactory->createLocking('lock');
-//				if (!($memcache instanceof \OC\Memcache\NullCache)) {
-//					return new MemcacheLockingProvider($memcache);
-//				}
-				return new DBLockingProvider($c->getDatabaseConnection(), $c->getLogger());
+				if (!($memcache instanceof \OC\Memcache\NullCache)) {
+					return new MemcacheLockingProvider($memcache);
+				}
+				return new DBLockingProvider($c->getDatabaseConnection(), $c->getLogger(), new TimeFactory());
 			}
 			return new NoopLockingProvider();
 		});
@@ -455,7 +509,17 @@ class Server extends SimpleContainer implements IServerContainer {
 		$this->registerService('MimeTypeDetector', function(Server $c) {
 			return new \OC\Files\Type\Detection(
 				$c->getURLGenerator(),
-				\OC::$configDir);
+				\OC::$SERVERROOT . '/config/',
+				\OC::$SERVERROOT . '/resources/config/'
+				);
+		});
+		$this->registerService('MimeTypeLoader', function(Server $c) {
+			return new \OC\Files\Type\Loader(
+				$c->getDatabaseConnection()
+			);
+		});
+		$this->registerService('NotificationManager', function() {
+			return new Manager();
 		});
 		$this->registerService('CapabilitiesManager', function (Server $c) {
 			$manager = new \OC\CapabilitiesManager();
@@ -463,6 +527,13 @@ class Server extends SimpleContainer implements IServerContainer {
 				return new \OC\OCS\CoreCapabilities($c->getConfig());
 			});
 			return $manager;
+		});
+		$this->registerService('CommentsManager', function(Server $c) {
+			$config = $c->getConfig();
+			$factoryClass = $config->getSystemValue('comments.managerFactory', '\OC\Comments\ManagerFactory');
+			/** @var \OCP\Comments\ICommentsManagerFactory $factory */
+			$factory = new $factoryClass();
+			return $factory->getManager();
 		});
 		$this->registerService('EventDispatcher', function() {
 			return new EventDispatcher();
@@ -482,7 +553,6 @@ class Server extends SimpleContainer implements IServerContainer {
 						: null,
 				],
 				new SecureRandom(),
-				$c->getCrypto(),
 				$c->getConfig()
 			);
 
@@ -552,6 +622,29 @@ class Server extends SimpleContainer implements IServerContainer {
 	public function getTagManager() {
 		return $this->query('TagManager');
 	}
+
+	/**
+	 * Returns the system-tag manager
+	 *
+	 * @return \OCP\SystemTag\ISystemTagManager
+	 *
+	 * @since 9.0.0
+	 */
+	public function getSystemTagManager() {
+		return $this->query('SystemTagManager');
+	}
+
+	/**
+	 * Returns the system-tag object mapper
+	 *
+	 * @return \OCP\SystemTag\ISystemTagObjectMapper
+	 *
+	 * @since 9.0.0
+	 */
+	public function getSystemTagObjectMapper() {
+		return $this->query('SystemTagObjectMapper');
+	}
+
 
 	/**
 	 * Returns the avatar manager, used for avatar functionality
@@ -674,6 +767,13 @@ class Server extends SimpleContainer implements IServerContainer {
 	}
 
 	/**
+	 * @return \OCP\L10N\IFactory
+	 */
+	public function getL10NFactory() {
+		return $this->query('L10NFactory');
+	}
+
+	/**
 	 * get an L10N instance
 	 *
 	 * @param string $app appid
@@ -681,7 +781,7 @@ class Server extends SimpleContainer implements IServerContainer {
 	 * @return \OC_L10N
 	 */
 	public function getL10N($app, $lang = null) {
-		return $this->query('L10NFactory')->get($app, $lang);
+		return $this->getL10NFactory()->get($app, $lang);
 	}
 
 	/**
@@ -832,7 +932,7 @@ class Server extends SimpleContainer implements IServerContainer {
 			}
 			$userId = $user->getUID();
 		}
-		return new CertificateManager($userId, new \OC\Files\View());
+		return new CertificateManager($userId, new View(), $this->getConfig());
 	}
 
 	/**
@@ -991,6 +1091,15 @@ class Server extends SimpleContainer implements IServerContainer {
 	}
 
 	/**
+	 * Get the MimeTypeLoader
+	 *
+	 * @return \OCP\Files\IMimeTypeLoader
+	 */
+	public function getMimeTypeLoader() {
+		return $this->query('MimeTypeLoader');
+	}
+
+	/**
 	 * Get the manager of all the capabilities
 	 *
 	 * @return \OC\CapabilitiesManager
@@ -1010,9 +1119,66 @@ class Server extends SimpleContainer implements IServerContainer {
 	}
 
 	/**
+	 * Get the Notification Manager
+	 *
+	 * @return \OC\Notification\IManager
+	 * @since 8.2.0
+	 */
+	public function getNotificationManager() {
+		return $this->query('NotificationManager');
+	}
+
+	/**
+	 * @return \OCP\Comments\ICommentsManager
+	 */
+	public function getCommentsManager() {
+		return $this->query('CommentsManager');
+	}
+
+	/**
+	 * @return \OC\IntegrityCheck\Checker
+	 */
+	public function getIntegrityCodeChecker() {
+		return $this->query('IntegrityCodeChecker');
+	}
+
+	/**
 	 * @return \OC\Session\CryptoWrapper
 	 */
 	public function getSessionCryptoWrapper() {
 		return $this->query('CryptoWrapper');
 	}
+
+	/**
+	 * Not a public API as of 8.2, wait for 9.0
+	 * @return \OCA\Files_External\Service\BackendService
+	 */
+	public function getStoragesBackendService() {
+		return \OC_Mount_Config::$app->getContainer()->query('OCA\\Files_External\\Service\\BackendService');
+	}
+
+	/**
+	 * Not a public API as of 8.2, wait for 9.0
+	 * @return \OCA\Files_External\Service\GlobalStoragesService
+	 */
+	public function getGlobalStoragesService() {
+		return \OC_Mount_Config::$app->getContainer()->query('OCA\\Files_External\\Service\\GlobalStoragesService');
+	}
+
+	/**
+	 * Not a public API as of 8.2, wait for 9.0
+	 * @return \OCA\Files_External\Service\UserGlobalStoragesService
+	 */
+	public function getUserGlobalStoragesService() {
+		return \OC_Mount_Config::$app->getContainer()->query('OCA\\Files_External\\Service\\UserGlobalStoragesService');
+	}
+
+	/**
+	 * Not a public API as of 8.2, wait for 9.0
+	 * @return \OCA\Files_External\Service\UserStoragesService
+	 */
+	public function getUserStoragesService() {
+		return \OC_Mount_Config::$app->getContainer()->query('OCA\\Files_External\\Service\\UserStoragesService');
+	}
+	
 }

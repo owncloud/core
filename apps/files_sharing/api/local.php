@@ -1,9 +1,10 @@
 <?php
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
@@ -63,9 +64,10 @@ class Local {
 		if ($shares === false) {
 			return new \OC_OCS_Result(null, 404, 'could not get shares');
 		} else {
+			$mimetypeDetector = \OC::$server->getMimeTypeDetector();
 			foreach ($shares as &$share) {
 				if ($share['item_type'] === 'file' && isset($share['path'])) {
-					$share['mimetype'] = \OC_Helper::getFileNameMimeType($share['path']);
+					$share['mimetype'] = $mimetypeDetector->detectPath($share['path']);
 					if (\OC::$server->getPreviewManager()->isMimeSupported($share['mimetype'])) {
 						$share['isPreviewAvailable'] = true;
 					}
@@ -226,12 +228,14 @@ class Local {
 	private static function getFilesSharedWithMe() {
 		try	{
 			$shares = \OCP\Share::getItemsSharedWith('file');
+			$mimetypeDetector = \OC::$server->getMimeTypeDetector();
 			foreach ($shares as &$share) {
 				if ($share['item_type'] === 'file') {
-					$share['mimetype'] = \OC_Helper::getFileNameMimeType($share['file_target']);
+					$share['mimetype'] = $mimetypeDetector->detectPath($share['file_target']);
 					if (\OC::$server->getPreviewManager()->isMimeSupported($share['mimetype'])) {
 						$share['isPreviewAvailable'] = true;
 					}
+					unset($share['path']);
 				}
 			}
 			$result = new \OC_OCS_Result($shares);
@@ -258,6 +262,7 @@ class Local {
 		$itemSource = self::getFileId($path);
 		$itemSourceName = $itemSource;
 		$itemType = self::getItemType($path);
+		$expirationDate = null;
 
 		if($itemSource === null) {
 			return new \OC_OCS_Result(null, 404, "wrong path, file/folder doesn't exist.");
@@ -286,6 +291,14 @@ class Local {
 				// read, create, update (7) if public upload is enabled or
 				// read (1) if public upload is disabled
 				$permissions = $publicUpload === 'true' ? 7 : 1;
+
+				// Get the expiration date
+				try {
+					$expirationDate = isset($_POST['expireDate']) ? self::parseDate($_POST['expireDate']) : null;
+				} catch (\Exception $e) {
+					return new \OC_OCS_Result(null, 404, 'Invalid Date. Format must be YYYY-MM-DD.');
+				}
+
 				break;
 			default:
 				return new \OC_OCS_Result(null, 400, "unknown share type");
@@ -302,10 +315,15 @@ class Local {
 					$shareType,
 					$shareWith,
 					$permissions,
-					$itemSourceName
-					);
+					$itemSourceName,
+					$expirationDate
+			);
 		} catch (HintException $e) {
-			return new \OC_OCS_Result(null, 400, $e->getHint());
+			if ($e->getCode() === 0) {
+				return new \OC_OCS_Result(null, 400, $e->getHint());
+			} else {
+				return new \OC_OCS_Result(null, $e->getCode(), $e->getHint());
+			}
 		} catch (\Exception $e) {
 			return new \OC_OCS_Result(null, 403, $e->getMessage());
 		}
@@ -332,6 +350,10 @@ class Local {
 					}
 				}
 			}
+
+			$data['permissions'] = $share['permissions'];
+			$data['expiration'] = $share['expiration'];
+
 			return new \OC_OCS_Result($data);
 		} else {
 			return new \OC_OCS_Result(null, 404, "couldn't share file");
@@ -535,6 +557,30 @@ class Local {
 			$msg = "Unshare Failed";
 			return new \OC_OCS_Result(null, 404, $msg);
 		}
+	}
+
+	/**
+	 * Make sure that the passed date is valid ISO 8601
+	 * So YYYY-MM-DD
+	 * If not throw an exception
+	 *
+	 * @param string $expireDate
+	 *
+	 * @throws \Exception
+	 * @return \DateTime
+	 */
+	private static function parseDate($expireDate) {
+		if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $expireDate) === 0) {
+			throw new \Exception('Invalid date. Format must be YYYY-MM-DD');
+		}
+
+		$date = new \DateTime($expireDate);
+
+		if ($date === false) {
+			throw new \Exception('Invalid date. Format must be YYYY-MM-DD');
+		}
+
+		return $date;
 	}
 
 	/**

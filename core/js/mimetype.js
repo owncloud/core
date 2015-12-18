@@ -46,6 +46,8 @@ OC.MimeType = {
 			return 'folder';
 		} else if (mimeType === 'dir-shared' && $.inArray('folder-shared', files) !== -1) {
 			return 'folder-shared';
+		} else if (mimeType === 'dir-public' && $.inArray('folder-public', files) !== -1) {
+			return 'folder-public';
 		} else if (mimeType === 'dir-external' && $.inArray('folder-external', files) !== -1) {
 			return 'folder-external';
 		} else if ($.inArray(icon, files) !== -1) {
@@ -70,7 +72,7 @@ OC.MimeType = {
 			return undefined;
 		}
 
-		if (mimeType in OC.MimeTypeList.aliases) {
+		while (mimeType in OC.MimeTypeList.aliases) {
 			mimeType = OC.MimeTypeList.aliases[mimeType];
 		}
 		if (mimeType in OC.MimeType._mimeTypeIcons) {

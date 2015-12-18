@@ -4,16 +4,17 @@
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Christopher Schäpers <kondou@ts.unde.re>
- * @author Frank Karlitschek <frank@owncloud.org>
  * @author Georg Ehrke <georg@owncloud.com>
  * @author Jakob Sack <mail@jakobsack.de>
  * @author Jan-Christoph Borchardt <hey@jancborchardt.net>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Marvin Thomas Rabe <mrabe@marvinrabe.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
  * @author Volkan Gezer <volkangezer@gmail.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -45,6 +46,7 @@ OC_Util::addScript( 'settings', 'personal' );
 OC_Util::addStyle( 'settings', 'settings' );
 \OC_Util::addVendorScript('strengthify/jquery.strengthify');
 \OC_Util::addVendorStyle('strengthify/strengthify');
+\OC_Util::addScript('files', 'jquery.iframe-transport');
 \OC_Util::addScript('files', 'jquery.fileupload');
 if ($config->getSystemValue('enable_avatars', true) === true) {
 	\OC_Util::addVendorScript('jcrop/js/jquery.Jcrop');
@@ -52,25 +54,27 @@ if ($config->getSystemValue('enable_avatars', true) === true) {
 }
 
 // Highlight navigation entry
-OC_App::setActiveNavigationEntry( 'personal' );
+OC::$server->getNavigationManager()->setActiveEntry('personal');
 
 $storageInfo=OC_Helper::getStorageInfo('/');
 
-$email=$config->getUserValue(OC_User::getUser(), 'settings', 'email', '');
+$user = OC::$server->getUserManager()->get(OC_User::getUser());
+$email = $user->getEMailAddress();
 
 $userLang=$config->getUserValue( OC_User::getUser(), 'core', 'lang', OC_L10N::findLanguage() );
 $languageCodes=OC_L10N::findAvailableLanguages();
 
 // array of common languages
-$commonlangcodes = array(
+$commonLangCodes = array(
 	'en', 'es', 'fr', 'de', 'de_DE', 'ja', 'ar', 'ru', 'nl', 'it', 'pt_BR', 'pt_PT', 'da', 'fi_FI', 'nb_NO', 'sv', 'tr', 'zh_CN', 'ko'
 );
 
 $languageNames=include 'languageCodes.php';
 $languages=array();
-$commonlanguages = array();
+$commonLanguages = array();
 foreach($languageCodes as $lang) {
 	$l = \OC::$server->getL10N('settings', $lang);
+	// TRANSLATORS this is the language name for the language switcher in the personal settings and should be the localized version
 	if(substr($l->t('__language_name__'), 0, 1) !== '_') {//first check if the language name is in the translation file
 		$ln=array('code'=>$lang, 'name'=> (string)$l->t('__language_name__'));
 	}elseif(isset($languageNames[$lang])) {
@@ -79,21 +83,38 @@ foreach($languageCodes as $lang) {
 		$ln=array('code'=>$lang, 'name'=>$lang);
 	}
 
-	// put apropriate languages into apropriate arrays, to print them sorted
+	// put appropriate languages into appropriate arrays, to print them sorted
 	// used language -> common languages -> divider -> other languages
 	if ($lang === $userLang) {
 		$userLang = $ln;
-	} elseif (in_array($lang, $commonlangcodes)) {
-		$commonlanguages[array_search($lang, $commonlangcodes)]=$ln;
+	} elseif (in_array($lang, $commonLangCodes)) {
+		$commonLanguages[array_search($lang, $commonLangCodes)]=$ln;
 	} else {
 		$languages[]=$ln;
 	}
 }
 
-ksort($commonlanguages);
+// if user language is not available but set somehow: show the actual code as name
+if (!is_array($userLang)) {
+	$userLang = [
+		'code' => $userLang,
+		'name' => $userLang,
+	];
+}
+
+ksort($commonLanguages);
 
 // sort now by displayed language not the iso-code
 usort( $languages, function ($a, $b) {
+	if ($a['code'] === $a['name'] && $b['code'] !== $b['name']) {
+		// If a doesn't have a name, but b does, list b before a
+		return 1;
+	}
+	if ($a['code'] !== $a['name'] && $b['code'] === $b['name']) {
+		// If a does have a name, but b doesn't, list a before b
+		return -1;
+	}
+	// Otherwise compare the names
 	return strcmp($a['name'], $b['name']);
 });
 
@@ -108,7 +129,9 @@ $clients = array(
 $enableCertImport = false;
 $externalStorageEnabled = \OC::$server->getAppManager()->isEnabledForUser('files_external');
 if ($externalStorageEnabled) {
-	$enableCertImport = true;
+	/** @var \OCA\Files_External\Service\BackendService $backendService */
+	$backendService = \OC_Mount_Config::$app->getContainer()->query('\OCA\Files_External\Service\BackendService');
+	$enableCertImport = $backendService->isUserMountingAllowed();
 }
 
 
@@ -120,7 +143,7 @@ $tmpl->assign('usage_relative', $storageInfo['relative']);
 $tmpl->assign('clients', $clients);
 $tmpl->assign('email', $email);
 $tmpl->assign('languages', $languages);
-$tmpl->assign('commonlanguages', $commonlanguages);
+$tmpl->assign('commonlanguages', $commonLanguages);
 $tmpl->assign('activelanguage', $userLang);
 $tmpl->assign('passwordChangeSupported', OC_User::canUserChangePassword(OC_User::getUser()));
 $tmpl->assign('displayNameChangeSupported', OC_User::canUserChangeDisplayName(OC_User::getUser()));
@@ -138,10 +161,11 @@ sort($groups2);
 $tmpl->assign('groups', $groups2);
 
 // add hardcoded forms from the template
-$l = OC_L10N::get('settings');
+$l = \OC::$server->getL10N('settings');
 $formsAndMore = [];
 $formsAndMore[]= ['anchor' => 'clientsbox', 'section-name' => $l->t('Sync clients')];
 $formsAndMore[]= ['anchor' => 'passwordform', 'section-name' => $l->t('Personal info')];
+$formsAndMore[]= ['anchor' => 'groups', 'section-name' => $l->t('Groups')];
 
 $forms=OC_App::getForms('personal');
 

@@ -74,7 +74,7 @@ interface IL10N {
 	/**
 	 * Localization
 	 * @param string $type Type of localization
-	 * @param array $data parameters for this localization
+	 * @param int|string $data parameters for this localization
 	 * @param array $options currently supports following options:
 	 * 			- 'width': handed into \Punic\Calendar::formatDate as second parameter
 	 * @return string|false
@@ -100,7 +100,7 @@ interface IL10N {
 
 
 	/**
-	 * The code (en, de, ...) of the language that is used for this OC_L10N object
+	 * The code (en, de, ...) of the language that is used for this IL10N object
 	 *
 	 * @return string language
 	 * @since 7.0.0

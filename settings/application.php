@@ -36,11 +36,11 @@ use OC\Settings\Controller\LogSettingsController;
 use OC\Settings\Controller\MailSettingsController;
 use OC\Settings\Controller\SecuritySettingsController;
 use OC\Settings\Controller\UsersController;
-use OC\Settings\Factory\SubAdminFactory;
 use OC\Settings\Middleware\SubadminMiddleware;
 use \OCP\AppFramework\App;
 use OCP\IContainer;
 use \OCP\Util;
+use OC\Server;
 
 /**
  * @package OC\Settings
@@ -137,7 +137,7 @@ class Application extends App {
 				$c->query('DefaultMailAddress'),
 				$c->query('URLGenerator'),
 				$c->query('OCP\\App\\IAppManager'),
-				$c->query('SubAdminFactory')
+				$c->query('OCP\\IAvatarManager')
 			);
 		});
 		$container->registerService('LogSettingsController', function(IContainer $c) {
@@ -156,7 +156,8 @@ class Application extends App {
 				$c->query('ClientService'),
 				$c->query('URLGenerator'),
 				$c->query('Util'),
-				$c->query('L10N')
+				$c->query('L10N'),
+				$c->query('Checker')
 			);
 		});
 
@@ -199,11 +200,12 @@ class Application extends App {
 		});
 		/** FIXME: Remove once OC_SubAdmin is non-static and mockable */
 		$container->registerService('IsSubAdmin', function(IContainer $c) {
-			return \OC_Subadmin::isSubAdmin(\OC_User::getUser());
-		});
-		/** FIXME: Remove once OC_SubAdmin is non-static and mockable */
-		$container->registerService('SubAdminFactory', function(IContainer $c) {
-			return new SubAdminFactory();
+			$userObject = \OC::$server->getUserSession()->getUser();
+			$isSubAdmin = false;
+			if($userObject !== null) {
+				$isSubAdmin = \OC::$server->getGroupManager()->getSubAdmin()->isSubAdmin($userObject);
+			}
+			return $isSubAdmin;
 		});
 		$container->registerService('Mailer', function(IContainer $c) {
 			return $c->query('ServerContainer')->getMailer();
@@ -240,6 +242,11 @@ class Application extends App {
 		});
 		$container->registerService('CertificateManager', function(IContainer $c){
 			return $c->query('ServerContainer')->getCertificateManager();
+		});
+		$container->registerService('Checker', function(IContainer $c) {
+			/** @var Server $server */
+			$server = $c->query('ServerContainer');
+			return $server->getIntegrityCodeChecker();
 		});
 	}
 }

@@ -3,6 +3,8 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Ross Nicoll <jrn@jrn.me.uk>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
@@ -34,11 +36,12 @@ namespace OCA\Files_External\AppInfo;
 		'resources' => array(
 			'global_storages' => array('url' => '/globalstorages'),
 			'user_storages' => array('url' => '/userstorages'),
+			'user_global_storages' => array('url' => '/userglobalstorages'),
 		),
 		'routes' => array(
 			array(
 				'name' => 'Ajax#getSshKeys',
-				'url' => '/ajax/sftp_key.php',
+				'url' => '/ajax/public_key.php',
 				'verb' => 'POST',
 				'requirements' => array()
 			)

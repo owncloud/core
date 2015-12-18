@@ -3,6 +3,7 @@
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Jan-Christoph Borchardt <hey@jancborchardt.net>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -31,9 +32,7 @@ if (count($matches) > 0 && $matches[1] <= 9) {
 	$isIE8 = true;
 }
 
-$uid = \OC::$server->getUserSession()->getUser()->getUID();
-$server = \OC::$server->getURLGenerator()->getAbsoluteURL('/');
-$cloudID = $uid . '@' . rtrim(\OCA\Files_Sharing\Helper::removeProtocolFromUrl($server), '/');
+$cloudID = \OC::$server->getUserSession()->getUser()->getCloudId();
 $url = 'https://owncloud.org/federation#' . $cloudID;
 $ownCloudLogoPath = \OC::$server->getURLGenerator()->imagePath('core', 'logo-icon.svg');
 

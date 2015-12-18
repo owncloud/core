@@ -22,10 +22,15 @@
  */
 
 namespace OCA\Files_sharing\Tests;
-use OCA\Files_sharing\Tests\TestCase;
 
-
-class Activity extends \OCA\Files_Sharing\Tests\TestCase{
+/**
+ * Class Activity
+ *
+ * @group DB
+ *
+ * @package OCA\Files_sharing\Tests
+ */
+class Activity extends \OCA\Files_Sharing\Tests\TestCase {
 
 	/**
 	 * @var \OCA\Files_Sharing\Activity
@@ -36,7 +41,10 @@ class Activity extends \OCA\Files_Sharing\Tests\TestCase{
 		parent::setUp();
 		$this->activity = new \OCA\Files_Sharing\Activity(
 			$this->getMock('\OC\L10N\Factory'),
-			$this->getMockBuilder('\OC\URLGenerator')
+			$this->getMockBuilder('\OCP\IURLGenerator')
+				->disableOriginalConstructor()
+				->getMock(),
+			$this->getMockBuilder('\OCP\Activity\IManager')
 				->disableOriginalConstructor()
 				->getMock()
 		);

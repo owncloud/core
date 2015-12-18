@@ -1,7 +1,6 @@
 <?php
 /**
  * @author Lukas Reschke <lukas@owncloud.com>
- * @author Morris Jobke <hey@morrisjobke.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -71,7 +70,7 @@ trait LocalTempFileTrait {
 		} else {
 			$extension = '';
 		}
-		$tmpFile = \OC_Helper::tmpFile($extension);
+		$tmpFile = \OC::$server->getTempManager()->getTemporaryFile($extension);
 		$target = fopen($tmpFile, 'w');
 		\OC_Helper::streamCopy($source, $target);
 		fclose($target);
