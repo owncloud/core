@@ -43,6 +43,8 @@ class Helper {
 		\OCP\Util::connectHook('OCP\Share', 'post_unshareFromSelf', '\OC\Files\Cache\Shared_Updater', 'postUnshareFromSelfHook');
 
 		\OCP\Util::connectHook('OC_User', 'post_deleteUser', '\OCA\Files_Sharing\Hooks', 'deleteUser');
+
+		\OCP\Util::connectHook('\OC\Files\Cache\Propagator', 'propagate', '\OCA\Files_Sharing\Hooks', 'postWriteHook');
 	}
 
 	/**

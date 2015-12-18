@@ -25,6 +25,7 @@
 namespace OCA\Files_Sharing;
 
 use OC\Files\Filesystem;
+use OCA\Files_Sharing\Command\NotifyExternalShare;
 
 class Hooks {
 
@@ -51,6 +52,19 @@ class Hooks {
 			if ($mount->getStorage()->instanceOfStorage('OCA\Files_Sharing\ISharedStorage')) {
 				$mountPoint = $mount->getMountPoint();
 				$view->unlink($mountPoint);
+			}
+		}
+	}
+
+	public static function postWriteHook(array $params) {
+		$entry = $params['entry'];
+		$shares = \OCP\Share::getItemShared('folder', $entry['fileid']);
+		if ($shares) {
+			$share = current($shares);
+			if ($share['share_type'] === \OCP\Share::SHARE_TYPE_REMOTE) {
+				$user = \OC::$server->getUserSession()->getUser();
+				$bus = \OC::$server->getCommandBus();
+				$bus->push(new NotifyExternalShare($user->getUID(), $entry['fileid']));
 			}
 		}
 	}
