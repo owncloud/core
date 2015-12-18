@@ -220,6 +220,9 @@ class Availability extends Wrapper {
 
 	/** {@inheritdoc} */
 	public function file_exists($path) {
+		if ($path === '') {
+			return true;
+		}
 		$this->checkAvailability();
 		try {
 			return parent::file_exists($path);
@@ -396,7 +399,6 @@ class Availability extends Wrapper {
 
 	/** {@inheritdoc} */
 	public function getOwner($path) {
-		$this->checkAvailability();
 		try {
 			return parent::getOwner($path);
 		} catch (\OCP\Files\StorageNotAvailableException $e) {

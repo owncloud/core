@@ -1,9 +1,9 @@
 <?php
 /**
- * @author C Montero-Luque <cml@owncloud.com>
  * @author Frank Karlitschek <frank@owncloud.org>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Morris Jobke <hey@morrisjobke.de>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -25,7 +25,7 @@
 // We only can count up. The 4. digit is only for the internal patchlevel to trigger DB upgrades
 // between betas, final and RCs. This is _not_ the public version number. Reset minor/patchlevel
 // when updating major/minor version number.
-$OC_Version = array(9, 0, 0, 0);
+$OC_Version = array(9, 0, 0, 5);
 
 // The human readable string
 $OC_VersionString = '9.0 pre alpha';

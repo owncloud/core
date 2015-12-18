@@ -5,8 +5,7 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
- * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -192,6 +191,8 @@ class Manager {
 				WHERE `id` = ? AND `user` = ?');
 			$acceptShare->execute(array(1, $mountPoint, $hash, $id, $this->uid));
 			$this->sendFeedbackToRemote($share['remote'], $share['share_token'], $share['remote_id'], 'accept');
+
+			\OC_Hook::emit('OCP\Share', 'federated_share_added', ['server' => $share['remote']]);
 
 			//FIXME $this->scrapNotification($share['remote_id']);
 			return true;

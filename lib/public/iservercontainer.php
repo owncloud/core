@@ -10,7 +10,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
  *
@@ -470,4 +470,28 @@ interface IServerContainer {
 	 * @since 8.2.0
 	 */
 	public function getNotificationManager();
+
+	/**
+	 * @return \OCP\Comments\ICommentsManager
+	 * @since 9.0.0
+	 */
+	public function getCommentsManager();
+
+	/**
+	 * Returns the system-tag manager
+	 *
+	 * @return \OCP\SystemTag\ISystemTagManager
+	 *
+	 * @since 9.0.0
+	 */
+	public function getSystemTagManager();
+
+	/**
+	 * Returns the system-tag object mapper
+	 *
+	 * @return \OCP\SystemTag\ISystemTagObjectMapper
+	 *
+	 * @since 9.0.0
+	 */
+	public function getSystemTagObjectMapper();
 }

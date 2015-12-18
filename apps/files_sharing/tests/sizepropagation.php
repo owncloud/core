@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Robin Appelman <icewind@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -23,6 +24,13 @@ namespace OCA\Files_sharing\Tests;
 
 use OC\Files\View;
 
+/**
+ * Class SizePropagation
+ *
+ * @group DB
+ *
+ * @package OCA\Files_sharing\Tests
+ */
 class SizePropagation extends TestCase {
 
 	public function testSizePropagationWhenOwnerChangesFile() {

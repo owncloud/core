@@ -71,60 +71,6 @@ class Test_Helper extends \Test\TestCase {
 		];
 	}
 
-	function testGetMimeType() {
-		$dir=OC::$SERVERROOT.'/tests/data';
-		$result = OC_Helper::getMimeType($dir."/");
-		$expected = 'httpd/unix-directory';
-		$this->assertEquals($result, $expected);
-
-		$result = OC_Helper::getMimeType($dir."/data.tar.gz");
-		$expected = 'application/x-gzip';
-		$this->assertEquals($result, $expected);
-
-		$result = OC_Helper::getMimeType($dir."/data.zip");
-		$expected = 'application/zip';
-		$this->assertEquals($result, $expected);
-
-		$result = OC_Helper::getMimeType($dir."/desktopapp.svg");
-		$expected = 'image/svg+xml';
-		$this->assertEquals($result, $expected);
-
-		$result = OC_Helper::getMimeType($dir."/desktopapp.png");
-		$expected = 'image/png';
-		$this->assertEquals($result, $expected);
-	}
-
-	function testGetSecureMimeType() {
-		$dir=OC::$SERVERROOT.'/tests/data';
-
-		$result = OC_Helper::getSecureMimeType('image/svg+xml');
-		$expected = 'text/plain';
-		$this->assertEquals($result, $expected);
-
-		$result = OC_Helper::getSecureMimeType('image/png');
-		$expected = 'image/png';
-		$this->assertEquals($result, $expected);
-	}
-
-	function testGetFileNameMimeType() {
-		$this->assertEquals('text/plain', OC_Helper::getFileNameMimeType('foo.txt'));
-		$this->assertEquals('image/png', OC_Helper::getFileNameMimeType('foo.png'));
-		$this->assertEquals('image/png', OC_Helper::getFileNameMimeType('foo.bar.png'));
-		$this->assertEquals('application/octet-stream', OC_Helper::getFileNameMimeType('.png'));
-		$this->assertEquals('application/octet-stream', OC_Helper::getFileNameMimeType('foo'));
-		$this->assertEquals('application/octet-stream', OC_Helper::getFileNameMimeType(''));
-	}
-
-	function testGetStringMimeType() {
-		if (\OC_Util::runningOnWindows()) {
-			$this->markTestSkipped('[Windows] Strings have mimetype application/octet-stream on Windows');
-		}
-
-		$result = OC_Helper::getStringMimeType("/data/data.tar.gz");
-		$expected = 'text/plain; charset=us-ascii';
-		$this->assertEquals($result, $expected);
-	}
-
 	function testIsSubDirectory() {
 		$result = OC_Helper::isSubDirectory("./data/", "/anotherDirectory/");
 		$this->assertFalse($result);
@@ -161,18 +107,6 @@ class Test_Helper extends \Test\TestCase {
 			);
 		$result = OC_Helper::mb_array_change_key_case($arrayStart, MB_CASE_UPPER);
 		$expected = $arrayResult;
-		$this->assertEquals($result, $expected);
-	}
-
-	function testMb_substr_replace() {
-		$result = OC_Helper::mb_substr_replace("This  is a teststring", "string", 5);
-		$expected = "This string is a teststring";
-		$this->assertEquals($result, $expected);
-	}
-
-	function testMb_str_replace() {
-		$result = OC_Helper::mb_str_replace("teststring", "string", "This is a teststring");
-		$expected = "This is a string";
 		$this->assertEquals($result, $expected);
 	}
 
@@ -289,160 +223,6 @@ class Test_Helper extends \Test\TestCase {
 
 	/**
 	 * @small
-	 * test absolute URL construction
-	 * @dataProvider provideDocRootURLs
-	 */
-	function testMakeAbsoluteURLDocRoot($url, $expectedResult) {
-		\OC::$WEBROOT = '';
-		$result = \OC_Helper::makeURLAbsolute($url);
-
-		$this->assertEquals($expectedResult, $result);
-	}
-
-	/**
-	 * @small
-	 * test absolute URL construction
-	 * @dataProvider provideSubDirURLs
-	 */
-	function testMakeAbsoluteURLSubDir($url, $expectedResult) {
-		\OC::$WEBROOT = '/owncloud';
-		$result = \OC_Helper::makeURLAbsolute($url);
-
-		$this->assertEquals($expectedResult, $result);
-	}
-
-	public function provideDocRootURLs() {
-		return array(
-			array('index.php', 'http://localhost/index.php'),
-			array('/index.php', 'http://localhost/index.php'),
-			array('/apps/index.php', 'http://localhost/apps/index.php'),
-			array('apps/index.php', 'http://localhost/apps/index.php'),
-		);
-	}
-
-	public function provideSubDirURLs() {
-		return array(
-			array('index.php', 'http://localhost/owncloud/index.php'),
-			array('/index.php', 'http://localhost/owncloud/index.php'),
-			array('/apps/index.php', 'http://localhost/owncloud/apps/index.php'),
-			array('apps/index.php', 'http://localhost/owncloud/apps/index.php'),
-		);
-	}
-
-	/**
-	 * @small
-	 * test linkTo URL construction
-	 * @dataProvider provideDocRootAppUrlParts
-	 */
-	public function testLinkToDocRoot($app, $file, $args, $expectedResult) {
-		\OC::$WEBROOT = '';
-		$result = \OC_Helper::linkTo($app, $file, $args);
-
-		$this->assertEquals($expectedResult, $result);
-	}
-
-	/**
-	 * @small
-	 * test linkTo URL construction in sub directory
-	 * @dataProvider provideSubDirAppUrlParts
-	 */
-	public function testLinkToSubDir($app, $file, $args, $expectedResult) {
-		\OC::$WEBROOT = '/owncloud';
-		$result = \OC_Helper::linkTo($app, $file, $args);
-
-		$this->assertEquals($expectedResult, $result);
-	}
-
-	public function provideDocRootAppUrlParts() {
-		return array(
-			array('files', 'index.php', array(), '/index.php/apps/files'),
-			array('files', 'index.php', array('trut' => 'trat', 'dut' => 'dat'), '/index.php/apps/files?trut=trat&dut=dat'),
-			array('', 'index.php', array('trut' => 'trat', 'dut' => 'dat'), '/index.php?trut=trat&dut=dat'),
-		);
-	}
-
-	public function provideSubDirAppUrlParts() {
-		return array(
-			array('files', 'index.php', array(), '/owncloud/index.php/apps/files'),
-			array('files', 'index.php', array('trut' => 'trat', 'dut' => 'dat'), '/owncloud/index.php/apps/files?trut=trat&dut=dat'),
-			array('', 'index.php', array('trut' => 'trat', 'dut' => 'dat'), '/owncloud/index.php?trut=trat&dut=dat'),
-		);
-	}
-
-	/**
-	 * @small
-	 * test linkToAbsolute URL construction
-	 * @dataProvider provideDocRootAppAbsoluteUrlParts
-	 */
-	public function testLinkToAbsoluteDocRoot($app, $file, $args, $expectedResult) {
-		\OC::$WEBROOT = '';
-		$result = \OC_Helper::linkToAbsolute($app, $file, $args);
-
-		$this->assertEquals($expectedResult, $result);
-	}
-
-	/**
-	 * @small
-	 * test linkToAbsolute URL construction in sub directory
-	 * @dataProvider provideSubDirAppAbsoluteUrlParts
-	 */
-	public function testLinkToAbsoluteSubDir($app, $file, $args, $expectedResult) {
-		\OC::$WEBROOT = '/owncloud';
-		$result = \OC_Helper::linkToAbsolute($app, $file, $args);
-
-		$this->assertEquals($expectedResult, $result);
-	}
-
-	public function provideDocRootAppAbsoluteUrlParts() {
-		return array(
-			array('files', 'index.php', array(), 'http://localhost/index.php/apps/files'),
-			array('files', 'index.php', array('trut' => 'trat', 'dut' => 'dat'), 'http://localhost/index.php/apps/files?trut=trat&dut=dat'),
-			array('', 'index.php', array('trut' => 'trat', 'dut' => 'dat'), 'http://localhost/index.php?trut=trat&dut=dat'),
-		);
-	}
-
-	public function provideSubDirAppAbsoluteUrlParts() {
-		return array(
-			array('files', 'index.php', array(), 'http://localhost/owncloud/index.php/apps/files'),
-			array('files', 'index.php', array('trut' => 'trat', 'dut' => 'dat'), 'http://localhost/owncloud/index.php/apps/files?trut=trat&dut=dat'),
-			array('', 'index.php', array('trut' => 'trat', 'dut' => 'dat'), 'http://localhost/owncloud/index.php?trut=trat&dut=dat'),
-		);
-	}
-
-	/**
-	 * @small
-	 * test linkToRemoteBase URL construction
-	 */
-	public function testLinkToRemoteBase() {
-		\OC::$WEBROOT = '';
-		$result = \OC_Helper::linkToRemoteBase('webdav');
-		$this->assertEquals('/remote.php/webdav', $result);
-
-		\OC::$WEBROOT = '/owncloud';
-		$result = \OC_Helper::linkToRemoteBase('webdav');
-		$this->assertEquals('/owncloud/remote.php/webdav', $result);
-	}
-
-	/**
-	 * @small
-	 * test linkToRemote URL construction
-	 */
-	public function testLinkToRemote() {
-		\OC::$WEBROOT = '';
-		$result = \OC_Helper::linkToRemote('webdav');
-		$this->assertEquals('http://localhost/remote.php/webdav/', $result);
-		$result = \OC_Helper::linkToRemote('webdav', false);
-		$this->assertEquals('http://localhost/remote.php/webdav', $result);
-
-		\OC::$WEBROOT = '/owncloud';
-		$result = \OC_Helper::linkToRemote('webdav');
-		$this->assertEquals('http://localhost/owncloud/remote.php/webdav/', $result);
-		$result = \OC_Helper::linkToRemote('webdav', false);
-		$this->assertEquals('http://localhost/owncloud/remote.php/webdav', $result);
-	}
-
-	/**
-	 * @small
 	 * test linkToPublic URL construction
 	 */
 	public function testLinkToPublic() {
@@ -481,7 +261,7 @@ class Test_Helper extends \Test\TestCase {
 	 * Tests recursive folder deletion with rmdirr()
 	 */
 	public function testRecursiveFolderDeletion() {
-		$baseDir = \OC_Helper::tmpFolder() . '/';
+		$baseDir = \OC::$server->getTempManager()->getTemporaryFolder() . '/';
 		mkdir($baseDir . 'a/b/c/d/e', 0777, true);
 		mkdir($baseDir . 'a/b/c1/d/e', 0777, true);
 		mkdir($baseDir . 'a/b/c2/d/e', 0777, true);

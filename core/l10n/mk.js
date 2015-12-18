@@ -10,7 +10,6 @@ OC.L10N.register(
     "Updated \"%s\" to %s" : "Ажурирано е \"%s\" во %s",
     "Repair warning: " : "Предупредувања при поправка:",
     "Repair error: " : "Грешка при поправка:",
-    "Following incompatible apps have been disabled: %s" : "Следниве некомпатибилни апликации се оневозможени: %s",
     "Invalid file provided" : "Дадена е невалидна датотека",
     "No image or file provided" : "Не е доставена фотографија или датотека",
     "Unknown filetype" : "Непознат тип на датотека",
@@ -168,7 +167,6 @@ OC.L10N.register(
     "Server side authentication failed!" : "Автентификацијата на серверската страна е неуспешна!",
     "Please contact your administrator." : "Ве молиме контактирајте го вашиот администратор.",
     "Log in" : "Најава",
-    "remember" : "запамти",
     "Alternative Logins" : "Алтернативни најавувања",
     "Contact your system administrator if this message persists or appeared unexpectedly." : "Контактирајте го вашиот систем администратор до колку оваа порака продолжи да се појавува или пак се појавува ненадејно.",
     "Thank you for your patience." : "Благодариме на вашето трпение."

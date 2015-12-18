@@ -48,7 +48,7 @@ class OC_Archive_TAR extends OC_Archive {
 	 * @param string $source
 	 */
 	function __construct($source) {
-		$types = array(null, 'gz', 'bz');
+		$types = array(null, 'gz', 'bz2');
 		$this->path = $source;
 		$this->tar = new Archive_Tar($source, $types[self::getTarType($source)]);
 	}
@@ -86,7 +86,7 @@ class OC_Archive_TAR extends OC_Archive {
 	 * @return bool
 	 */
 	function addFolder($path) {
-		$tmpBase = OC_Helper::tmpFolder();
+		$tmpBase = \OC::$server->getTempManager()->getTemporaryFolder();
 		if (substr($path, -1, 1) != '/') {
 			$path .= '/';
 		}

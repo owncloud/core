@@ -27,7 +27,6 @@ use OCP\Lock\ILockingProvider;
 use OCP\Lock\LockedException;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\ServerPlugin;
-use Sabre\DAV\Tree;
 use Sabre\HTTP\RequestInterface;
 
 class LockPlugin extends ServerPlugin {
@@ -37,18 +36,6 @@ class LockPlugin extends ServerPlugin {
 	 * @var \Sabre\DAV\Server
 	 */
 	private $server;
-
-	/**
-	 * @var \Sabre\DAV\Tree
-	 */
-	private $tree;
-
-	/**
-	 * @param \Sabre\DAV\Tree $tree tree
-	 */
-	public function __construct(Tree $tree) {
-		$this->tree = $tree;
-	}
 
 	/**
 	 * {@inheritdoc}
@@ -62,11 +49,11 @@ class LockPlugin extends ServerPlugin {
 	public function getLock(RequestInterface $request) {
 		// we cant listen on 'beforeMethod:PUT' due to order of operations with setting up the tree
 		// so instead we limit ourselves to the PUT method manually
-		if ($request->getMethod() !== 'PUT') {
+		if ($request->getMethod() !== 'PUT' || isset($_SERVER['HTTP_OC_CHUNKED'])) {
 			return;
 		}
 		try {
-			$node = $this->tree->getNodeForPath($request->getPath());
+			$node = $this->server->tree->getNodeForPath($request->getPath());
 		} catch (NotFound $e) {
 			return;
 		}
@@ -80,11 +67,11 @@ class LockPlugin extends ServerPlugin {
 	}
 
 	public function releaseLock(RequestInterface $request) {
-		if ($request->getMethod() !== 'PUT') {
+		if ($request->getMethod() !== 'PUT' || isset($_SERVER['HTTP_OC_CHUNKED'])) {
 			return;
 		}
 		try {
-			$node = $this->tree->getNodeForPath($request->getPath());
+			$node = $this->server->tree->getNodeForPath($request->getPath());
 		} catch (NotFound $e) {
 			return;
 		}

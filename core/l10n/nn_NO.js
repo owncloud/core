@@ -77,13 +77,13 @@ OC.L10N.register(
     "Error setting expiration date" : "Klarte ikkje setja utløpsdato",
     "Set expiration date" : "Set utløpsdato",
     "Expiration date" : "Utløpsdato",
+    "Choose a password for the public link" : "Vel eit passord for den offentlege lenkja",
     "Sending ..." : "Sender …",
     "Email sent" : "E-post sendt",
     "Resharing is not allowed" : "Vidaredeling er ikkje tillate",
     "Share link" : "Del lenkje",
     "Password protect" : "Passordvern",
     "Password" : "Passord",
-    "Choose a password for the public link" : "Vel eit passord for den offentlege lenkja",
     "Email link to person" : "Send lenkja over e-post",
     "Send" : "Send",
     "Shared with you and the group {group} by {owner}" : "Delt med deg og gruppa {group} av {owner}",
@@ -127,7 +127,6 @@ OC.L10N.register(
     "Log out" : "Logg ut",
     "Search" : "Søk",
     "Log in" : "Logg inn",
-    "remember" : "hugs",
     "Alternative Logins" : "Alternative innloggingar"
 },
 "nplurals=2; plural=(n != 1);");

@@ -3,10 +3,11 @@
  * @author Andreas Fischer <bantu@owncloud.com>
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
@@ -40,15 +41,16 @@ class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 	private $path;
 
 	public function isValidSource($itemSource, $uidOwner) {
-		$path = \OC\Files\Filesystem::getPath($itemSource);
-		if ($path) {
+		try {
+			$path = \OC\Files\Filesystem::getPath($itemSource);
 			// FIXME: attributes should not be set here,
 			// keeping this pattern for now to avoid unexpected
 			// regressions
 			$this->path = \OC\Files\Filesystem::normalizePath(basename($path));
 			return true;
+		} catch (\OCP\Files\NotFoundException $e) {
+			return false;
 		}
-		return false;
 	}
 
 	public function getFilePath($itemSource, $uidOwner) {
@@ -57,12 +59,13 @@ class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 			$this->path = null;
 			return $path;
 		} else {
-			$path = \OC\Files\Filesystem::getPath($itemSource);
-			if ($path) {
+			try {
+				$path = \OC\Files\Filesystem::getPath($itemSource);
 				return $path;
+			} catch (\OCP\Files\NotFoundException $e) {
+				return false;
 			}
 		}
-		return false;
 	}
 
 	/**

@@ -25,9 +25,9 @@
 
 namespace OC\Memcache;
 
-use OCP\IMemcache;
+use OCP\IMemcacheTTL;
 
-class Redis extends Cache implements IMemcache {
+class Redis extends Cache implements IMemcacheTTL {
 	/**
 	 * @var \Redis $cache
 	 */
@@ -56,6 +56,9 @@ class Redis extends Cache implements IMemcache {
 			}
 
 			self::$cache->connect($host, $port, $timeout);
+			if(isset($config['password']) && $config['password'] !== '') {
+				self::$cache->auth($config['password']);
+			}
 
 			if (isset($config['dbindex'])) {
 				self::$cache->select($config['dbindex']);
@@ -190,6 +193,10 @@ class Redis extends Cache implements IMemcache {
 		}
 		self::$cache->unwatch();
 		return false;
+	}
+
+	public function setTTL($key, $ttl) {
+		self::$cache->expire($this->getNamespace() . $key, $ttl);
 	}
 
 	static public function isAvailable() {

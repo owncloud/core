@@ -35,9 +35,11 @@ namespace OCA\DAV\Connector\Sabre;
 use OC\Files\Filesystem;
 use OCA\DAV\Connector\Sabre\Exception\EntityTooLarge;
 use OCA\DAV\Connector\Sabre\Exception\FileLocked;
+use OCA\DAV\Connector\Sabre\Exception\Forbidden as DAVForbiddenException;
 use OCA\DAV\Connector\Sabre\Exception\UnsupportedMediaType;
 use OCP\Encryption\Exceptions\GenericEncryptionException;
 use OCP\Files\EntityTooLargeException;
+use OCP\Files\ForbiddenException;
 use OCP\Files\InvalidContentException;
 use OCP\Files\InvalidPathException;
 use OCP\Files\LockNotAcquiredException;
@@ -175,6 +177,8 @@ class File extends Node implements IFile {
 						\OCP\Util::writeLog('webdav', 'renaming part file to final file failed', \OCP\Util::ERROR);
 						throw new Exception('Could not rename part file to final file');
 					}
+				} catch (ForbiddenException $ex) {
+					throw new DAVForbiddenException($ex->getMessage(), $ex->getRetry());
 				} catch (\Exception $e) {
 					$partStorage->unlink($internalPartPath);
 					$this->convertToSabreException($e);
@@ -188,7 +192,7 @@ class File extends Node implements IFile {
 			}
 
 			// since we skipped the view we need to scan and emit the hooks ourselves
-			$this->fileView->getUpdater()->update($this->path);
+			$storage->getUpdater()->update($internalPath);
 
 			if ($view) {
 				$this->emitPostHooks($exists);
@@ -209,6 +213,9 @@ class File extends Node implements IFile {
 		return '"' . $this->info->getEtag() . '"';
 	}
 
+	/**
+	 * @param string $path
+	 */
 	private function emitPreHooks($exists, $path = null) {
 		if (is_null($path)) {
 			$path = $this->path;
@@ -234,6 +241,9 @@ class File extends Node implements IFile {
 		return $run;
 	}
 
+	/**
+	 * @param string $path
+	 */
 	private function emitPostHooks($exists, $path = null) {
 		if (is_null($path)) {
 			$path = $this->path;
@@ -256,7 +266,7 @@ class File extends Node implements IFile {
 	/**
 	 * Returns the data
 	 *
-	 * @return string|resource
+	 * @return resource
 	 * @throws Forbidden
 	 * @throws ServiceUnavailable
 	 */
@@ -273,6 +283,8 @@ class File extends Node implements IFile {
 			throw new ServiceUnavailable("Encryption not ready: " . $e->getMessage());
 		} catch (StorageNotAvailableException $e) {
 			throw new ServiceUnavailable("Failed to open file: " . $e->getMessage());
+		} catch (ForbiddenException $ex) {
+			throw new DAVForbiddenException($ex->getMessage(), $ex->getRetry());
 		} catch (LockedException $e) {
 			throw new FileLocked($e->getMessage(), $e->getCode(), $e);
 		}
@@ -296,6 +308,8 @@ class File extends Node implements IFile {
 			}
 		} catch (StorageNotAvailableException $e) {
 			throw new ServiceUnavailable("Failed to unlink: " . $e->getMessage());
+		} catch (ForbiddenException $ex) {
+			throw new DAVForbiddenException($ex->getMessage(), $ex->getRetry());
 		} catch (LockedException $e) {
 			throw new FileLocked($e->getMessage(), $e->getCode(), $e);
 		}
@@ -306,7 +320,7 @@ class File extends Node implements IFile {
 	 *
 	 * If null is returned, we'll assume application/octet-stream
 	 *
-	 * @return mixed
+	 * @return string
 	 */
 	public function getContentType() {
 		$mimeType = $this->info->getMimetype();
@@ -315,7 +329,7 @@ class File extends Node implements IFile {
 		if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'PROPFIND') {
 			return $mimeType;
 		}
-		return \OC_Helper::getSecureMimeType($mimeType);
+		return \OC::$server->getMimeTypeDetector()->getSecureMimeType($mimeType);
 	}
 
 	/**
@@ -349,6 +363,7 @@ class File extends Node implements IFile {
 		if (empty($info)) {
 			throw new NotImplemented('Invalid chunk name');
 		}
+
 		$chunk_handler = new \OC_FileChunking($info);
 		$bytesWritten = $chunk_handler->store($info['index'], $data);
 
@@ -376,15 +391,17 @@ class File extends Node implements IFile {
 			$exists = $this->fileView->file_exists($targetPath);
 
 			try {
-				$this->emitPreHooks($exists, $targetPath);
+				$this->fileView->lockFile($targetPath, ILockingProvider::LOCK_SHARED);
 
-				$this->changeLock(ILockingProvider::LOCK_EXCLUSIVE);
+				$this->emitPreHooks($exists, $targetPath);
+				$this->fileView->changeLock($targetPath, ILockingProvider::LOCK_EXCLUSIVE);
+				/** @var \OC\Files\Storage\Storage $targetStorage */
+				list($targetStorage, $targetInternalPath) = $this->fileView->resolvePath($targetPath);
 
 				if ($needsPartFile) {
 					// we first assembly the target file as a part file
 					$partFile = $path . '/' . $info['name'] . '.ocTransferId' . $info['transferid'] . '.part';
-
-
+					/** @var \OC\Files\Storage\Storage $targetStorage */
 					list($partStorage, $partInternalPath) = $this->fileView->resolvePath($partFile);
 
 
@@ -392,8 +409,7 @@ class File extends Node implements IFile {
 
 					// here is the final atomic rename
 					$renameOkay = $targetStorage->moveFromStorage($partStorage, $partInternalPath, $targetInternalPath);
-
-					$fileExists = $this->fileView->file_exists($targetPath);
+					$fileExists = $targetStorage->file_exists($targetInternalPath);
 					if ($renameOkay === false || $fileExists === false) {
 						\OCP\Util::writeLog('webdav', '\OC\Files\Filesystem::rename() failed', \OCP\Util::ERROR);
 						// only delete if an error occurred and the target file was already created
@@ -403,7 +419,7 @@ class File extends Node implements IFile {
 							$partFile = null;
 							$targetStorage->unlink($targetInternalPath);
 						}
-						$this->changeLock(ILockingProvider::LOCK_SHARED);
+						$this->fileView->changeLock($targetPath, ILockingProvider::LOCK_SHARED);
 						throw new Exception('Could not rename part file assembled from chunks');
 					}
 				} else {
@@ -419,14 +435,17 @@ class File extends Node implements IFile {
 					}
 				}
 
-				$this->changeLock(ILockingProvider::LOCK_SHARED);
+				$this->fileView->changeLock($targetPath, ILockingProvider::LOCK_SHARED);
 
 				// since we skipped the view we need to scan and emit the hooks ourselves
-				$this->fileView->getUpdater()->update($targetPath);
+				$targetStorage->getUpdater()->update($targetInternalPath);
 
 				$this->emitPostHooks($exists, $targetPath);
 
 				$info = $this->fileView->getFileInfo($targetPath);
+
+				$this->fileView->unlockFile($targetPath, ILockingProvider::LOCK_SHARED);
+
 				return $info->getEtag();
 			} catch (\Exception $e) {
 				if ($partFile !== null) {
@@ -468,6 +487,10 @@ class File extends Node implements IFile {
 		if ($e instanceof NotPermittedException) {
 			// a more general case - due to whatever reason the content could not be written
 			throw new Forbidden($e->getMessage(), 0, $e);
+		}
+		if ($e instanceof ForbiddenException) {
+			// the path for the file was forbidden
+			throw new DAVForbiddenException($e->getMessage(), $e->getRetry(), $e);
 		}
 		if ($e instanceof EntityTooLargeException) {
 			// the file is too big to be stored

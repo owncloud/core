@@ -146,7 +146,8 @@ describe('OC.Share.ShareDialogView', function() {
 
 			expect(fakeServer.requests[1].method).toEqual('POST');
 			var body = OC.parseQueryString(fakeServer.requests[1].requestBody);
-			expect(body.shareWith).toEqual('foo');
+			expect(body['shareWith[password]']).toEqual('foo');
+			expect(body['shareWith[passwordChanged]']).toEqual('true');
 
 			fetchStub.reset();
 
@@ -185,7 +186,8 @@ describe('OC.Share.ShareDialogView', function() {
 
 			expect(fakeServer.requests[1].method).toEqual('POST');
 			var body = OC.parseQueryString(fakeServer.requests[1].requestBody);
-			expect(body.shareWith).toEqual('foo');
+			expect(body['shareWith[password]']).toEqual('foo');
+			expect(body['shareWith[passwordChanged]']).toEqual('true');
 
 			fetchStub.reset();
 
@@ -216,6 +218,7 @@ describe('OC.Share.ShareDialogView', function() {
 			dialog.render();
 
 			expect(dialog.$el.find('.linkCheckbox').length).toEqual(0);
+			expect(dialog.$el.find('.shareWithField').length).toEqual(1);
 		});
 		it('shows populated link share when a link share exists', function() {
 			// this is how the OC.Share class does it...
@@ -234,6 +237,29 @@ describe('OC.Share.ShareDialogView', function() {
 
 			expect(dialog.$el.find('.linkCheckbox').prop('checked')).toEqual(true);
 			expect(dialog.$el.find('.linkText').val()).toEqual(link);
+		});
+		it('autofocus link text when clicked', function() {
+			$('#allowShareWithLink').val('yes');
+
+			dialog.render();
+
+			// Toggle linkshare
+			dialog.$el.find('.linkCheckbox').click();
+			fakeServer.requests[0].respond(
+				200,
+				{ 'Content-Type': 'application/json' },
+				JSON.stringify({data: {token: 'xyz'}, status: 'success'})
+			);
+
+			var focusStub = sinon.stub($.fn, 'focus');
+			var selectStub = sinon.stub($.fn, 'select');
+			dialog.$el.find('.linkText').click();
+
+			expect(focusStub.calledOnce).toEqual(true);
+			expect(selectStub.calledOnce).toEqual(true);
+
+			focusStub.restore();
+			selectStub.restore();
 		});
 		describe('password', function() {
 			var slideToggleStub;
@@ -440,7 +466,7 @@ describe('OC.Share.ShareDialogView', function() {
 				clock.restore();
 			});
 
-			it('displayes form when sending emails is enabled', function() {
+			it('displays form when sending emails is enabled', function() {
 				$('input[name=mailPublicNotificationEnabled]').val('yes');
 				dialog.render();
 				expect(dialog.$('.emailPrivateLinkForm').length).toEqual(1);
@@ -676,5 +702,82 @@ describe('OC.Share.ShareDialogView', function() {
 			});
 		});
 	});
-});
+	describe('remote sharing', function() {
+		it('shows remote share info when allowed', function() {
+			configModel.set({
+				isRemoteShareAllowed: true
+			});
+			dialog.render();
+			expect(dialog.$el.find('.shareWithRemoteInfo').length).toEqual(1);
+		});
+		it('does not show remote share info when not allowed', function() {
+			configModel.set({
+				isRemoteShareAllowed: false
+			});
+			dialog.render();
+			expect(dialog.$el.find('.shareWithRemoteInfo').length).toEqual(0);
+		});
+	});
+	describe('autocompletion of users', function() {
+		it('triggers autocomplete display and focus with data when ajax search succeeds', function () {
+			dialog.render();
+			var response = sinon.stub();
+			dialog.autocompleteHandler({term: 'bob'}, response);
+			var jsonData = JSON.stringify({
+				"data": [{"label": "bob", "value": {"shareType": 0, "shareWith": "test"}}],
+				"status": "success"
+			});
+			fakeServer.requests[0].respond(
+					200,
+					{'Content-Type': 'application/json'},
+					jsonData
+			);
+			expect(response.calledWithExactly(JSON.parse(jsonData).data)).toEqual(true);
+			expect(autocompleteStub.calledWith("option", "autoFocus", true)).toEqual(true);
+		});
 
+		it('gracefully handles successful ajax call with failure content', function () {
+			dialog.render();
+			var response = sinon.stub();
+			dialog.autocompleteHandler({term: 'bob'}, response);
+			var jsonData = JSON.stringify({"status": "failure"});
+			fakeServer.requests[0].respond(
+					200,
+					{'Content-Type': 'application/json'},
+					jsonData
+			);
+			expect(response.calledWithExactly()).toEqual(true);
+		});
+
+		it('throws a notification when the ajax search lookup fails', function () {
+			notificationStub = sinon.stub(OC.Notification, 'show');
+			dialog.render();
+			dialog.autocompleteHandler({term: 'bob'}, sinon.stub());
+			fakeServer.requests[0].respond(500);
+			expect(notificationStub.calledOnce).toEqual(true);
+			notificationStub.restore();
+		});
+
+		describe('renders the autocomplete elements', function() {
+			it('renders a group element', function() {
+				dialog.render();
+				var el = dialog.autocompleteRenderItem(
+						$("<ul></ul>"),
+						{label: "1", value: { shareType: OC.Share.SHARE_TYPE_GROUP }}
+				);
+				expect(el.is('li')).toEqual(true);
+				expect(el.hasClass('group')).toEqual(true);
+			});
+
+			it('renders a remote element', function() {
+				dialog.render();
+				var el = dialog.autocompleteRenderItem(
+						$("<ul></ul>"),
+						{label: "1", value: { shareType: OC.Share.SHARE_TYPE_REMOTE }}
+				);
+				expect(el.is('li')).toEqual(true);
+				expect(el.hasClass('user')).toEqual(true);
+			});
+		});
+	});
+});

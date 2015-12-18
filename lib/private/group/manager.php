@@ -9,7 +9,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author voxsim <Simon Vocella>
  *
@@ -71,11 +71,13 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 */
 	private $cachedUserGroups = array();
 
+	/** @var \OC\SubAdmin */
+	private $subAdmin = null;
 
 	/**
 	 * @param \OC\User\Manager $userManager
 	 */
-	public function __construct($userManager) {
+	public function __construct(\OC\User\Manager $userManager) {
 		$this->userManager = $userManager;
 		$cachedGroups = & $this->cachedGroups;
 		$cachedUserGroups = & $this->cachedUserGroups;
@@ -208,10 +210,13 @@ class Manager extends PublicEmitter implements IGroupManager {
 	}
 
 	/**
-	 * @param \OC\User\User $user
+	 * @param \OC\User\User|null $user
 	 * @return \OC\Group\Group[]
 	 */
 	public function getUserGroups($user) {
+		if (is_null($user)) {
+			return false;
+		}
 		return $this->getUserIdGroups($user->getUID());
 	}
 
@@ -261,7 +266,9 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 * @return array with group ids
 	 */
 	public function getUserGroupIds($user) {
-		return array_keys($this->getUserGroups($user));
+		return array_map(function($value) {
+			return (string) $value;
+		}, array_keys($this->getUserGroups($user)));
 	}
 
 	/**
@@ -313,5 +320,20 @@ class Manager extends PublicEmitter implements IGroupManager {
 			$matchingUsers[$groupUser->getUID()] = $groupUser->getDisplayName();
 		}
 		return $matchingUsers;
+	}
+
+	/**
+	 * @return \OC\SubAdmin
+	 */
+	public function getSubAdmin() {
+		if (!$this->subAdmin) {
+			$this->subAdmin = new \OC\SubAdmin(
+				$this->userManager,
+				$this,
+				\OC::$server->getDatabaseConnection()
+			);
+		}
+
+		return $this->subAdmin;
 	}
 }

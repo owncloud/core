@@ -44,6 +44,7 @@
     "Can't read file" : "Não é possível ler o ficheiro",
     "App directory already exists" : "A directoria da aplicação já existe",
     "Can't create app folder. Please fix permissions. %s" : "Não foi possível criar a pasta da aplicação. Por favor verifique as permissões. %s",
+    "Archive does not contain a directory named %s" : "O arquivo não contém uma diretoria com o nome %s",
     "No source specified when installing app" : "Não foi especificada uma fonte de instalação desta aplicação",
     "No href specified when installing app from http" : "Não foi especificada uma href http para instalar esta aplicação",
     "No path specified when installing app from local file" : "Não foi especificado o caminho de instalação desta aplicação",
@@ -98,6 +99,7 @@
     "Sharing backend %s must implement the interface OCP\\Share_Backend" : "Ao partilhar a interface %s deve implementar a interface OCP\\Share_Backend",
     "Sharing backend %s not found" : "Não foi encontrada a partilha da interface %s",
     "Sharing backend for %s not found" : "Não foi encontrada a partilha da interface para %s",
+    "Sharing failed, because the user %s is the original sharer" : "A partilha falhou, porque o utilizador %s é o distribuidor original",
     "Sharing %s failed, because the permissions exceed permissions granted to %s" : "Definir permissões para %s falhou, porque as permissões excedem as permissões concedidas a %s",
     "Sharing %s failed, because resharing is not allowed" : "A partilha %s falhou, porque repartilhar não é permitido",
     "Sharing %s failed, because the sharing backend for %s could not find its source" : "A partilha %s falhou porque a partilha da interface para %s não conseguiu encontrar a sua fonte",
@@ -127,14 +129,13 @@
     "Please ask your server administrator to restart the web server." : "Pro favor pergunte ao seu administrador do servidor para reiniciar o servidor da internet.",
     "PostgreSQL >= 9 required" : "Necessita PostgreSQL >= 9",
     "Please upgrade your database version" : "Por favor actualize a sua versão da base de dados",
-    "Error occurred while checking PostgreSQL version" : "Ocorreu um erro enquanto pesquisava a versão do PostgreSQL",
-    "Please make sure you have PostgreSQL >= 9 or check the logs for more information about the error" : "Por favor confirme que tem o PostgreSQL >= 9 ou verifique os registos para mais informação sobre o erro",
     "Please change the permissions to 0770 so that the directory cannot be listed by other users." : "Por favor altere as permissões para 0770 para que esse directório não possa ser listado por outros utilizadores.",
     "Data directory (%s) is readable by other users" : "O directório de dados (%s) é legível para outros utilizadores",
     "Data directory (%s) must be an absolute path" : "Diretório de dados (%s) deve ser um caminho absoluto",
     "Check the value of \"datadirectory\" in your configuration" : "Verifique o valor de \"datadirectory\" na sua configuração",
     "Data directory (%s) is invalid" : "Directoria data (%s) é invalida",
     "Please check that the data directory contains a file \".ocdata\" in its root." : "Por favor verifique que a directoria data contem um ficheiro \".ocdata\" na sua raiz.",
-    "Could not obtain lock type %d on \"%s\"." : "Não foi possível obter o tipo de bloqueio %d em \"%s\"."
+    "Could not obtain lock type %d on \"%s\"." : "Não foi possível obter o tipo de bloqueio %d em \"%s\".",
+    "Storage not available" : "Armazenamento indisposinvel"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

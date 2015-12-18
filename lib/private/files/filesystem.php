@@ -58,10 +58,10 @@
 
 namespace OC\Files;
 
-use OC\Cache\File;
 use OC\Files\Config\MountProviderCollection;
 use OC\Files\Storage\StorageFactory;
 use OCP\Files\Config\IMountProvider;
+use OCP\Files\NotFoundException;
 use OCP\IUserManager;
 
 class Filesystem {
@@ -385,7 +385,7 @@ class Filesystem {
 			throw new \OC\User\NoUserException('Backends provided no user object for ' . $user);
 		}
 
-		$homeStorage = \OC_Config::getValue('objectstore');
+		$homeStorage = \OC::$server->getConfig()->getSystemValue('objectstore');
 		if (!empty($homeStorage)) {
 			// sanity checks
 			if (empty($homeStorage['class'])) {
@@ -457,7 +457,7 @@ class Filesystem {
 	 * @param string $user user name
 	 */
 	private static function mountCacheDir($user) {
-		$cacheBaseDir = \OC_Config::getValue('cache_path', '');
+		$cacheBaseDir = \OC::$server->getConfig()->getSystemValue('cache_path', '');
 		if ($cacheBaseDir !== '') {
 			$cacheDir = rtrim($cacheBaseDir, '/') . '/' . $user;
 			if (!file_exists($cacheDir)) {
@@ -602,7 +602,7 @@ class Filesystem {
 	static public function isFileBlacklisted($filename) {
 		$filename = self::normalizePath($filename);
 
-		$blacklist = \OC_Config::getValue('blacklisted_files', array('.htaccess'));
+		$blacklist = \OC::$server->getConfig()->getSystemValue('blacklisted_files', array('.htaccess'));
 		$filename = strtolower(basename($filename));
 		return in_array($filename, $blacklist);
 	}
@@ -855,7 +855,7 @@ class Filesystem {
 	 * @param string $path
 	 * @param boolean $includeMountPoints whether to add mountpoint sizes,
 	 * defaults to true
-	 * @return \OC\Files\FileInfo
+	 * @return \OC\Files\FileInfo|bool False if file does not exist
 	 */
 	public static function getFileInfo($path, $includeMountPoints = true) {
 		return self::$defaultInstance->getFileInfo($path, $includeMountPoints);
@@ -891,6 +891,7 @@ class Filesystem {
 	 * Note that the resulting path is not guaranteed to be unique for the id, multiple paths can point to the same file
 	 *
 	 * @param int $id
+	 * @throws NotFoundException
 	 * @return string
 	 */
 	public static function getPath($id) {

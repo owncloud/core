@@ -34,6 +34,8 @@ use OC\Files\Storage\Temporary;
 /**
  * Class Test_Files_versions
  * this class provide basic files versions test
+ *
+ * @group DB
  */
 class Test_Files_Versioning extends \Test\TestCase {
 
@@ -51,7 +53,6 @@ class Test_Files_Versioning extends \Test\TestCase {
 
 		$application = new \OCA\Files_Sharing\AppInfo\Application();
 		$application->registerMountProviders();
-		$application->setupPropagation();
 
 		// create test user
 		self::loginHelper(self::TEST_VERSIONS_USER2, true);
@@ -60,8 +61,10 @@ class Test_Files_Versioning extends \Test\TestCase {
 
 	public static function tearDownAfterClass() {
 		// cleanup test user
-		\OC_User::deleteUser(self::TEST_VERSIONS_USER);
-		\OC_User::deleteUser(self::TEST_VERSIONS_USER2);
+		$user = \OC::$server->getUserManager()->get(self::TEST_VERSIONS_USER);
+		if ($user !== null) { $user->delete(); }
+		$user = \OC::$server->getUserManager()->get(self::TEST_VERSIONS_USER2);
+		if ($user !== null) { $user->delete(); }
 
 		parent::tearDownAfterClass();
 	}
@@ -759,7 +762,11 @@ class Test_Files_Versioning extends \Test\TestCase {
 		);
 	}
 
-	private function createAndCheckVersions($view, $path) {
+	/**
+	 * @param \OC\Files\View $view
+	 * @param string $path
+	 */
+	private function createAndCheckVersions(\OC\Files\View $view, $path) {
 		$view->file_put_contents($path, 'test file');
 		$view->file_put_contents($path, 'version 1');
 		$view->file_put_contents($path, 'version 2');
@@ -782,7 +789,6 @@ class Test_Files_Versioning extends \Test\TestCase {
 	/**
 	 * @param string $user
 	 * @param bool $create
-	 * @param bool $password
 	 */
 	public static function loginHelper($user, $create = false) {
 

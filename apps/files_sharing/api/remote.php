@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -98,7 +98,7 @@ class Remote {
 	 */
 	private static function extendShareInfo($share) {
 		$view = new \OC\Files\View('/' . \OC_User::getUser() . '/files/');
-		$info = $view->getFileInfo($shares['mountpoint']);
+		$info = $view->getFileInfo($share['mountpoint']);
 
 		$share['mimetype'] = $info->getMimetype();
 		$share['mtime'] = $info->getMtime();

@@ -213,6 +213,13 @@ $CONFIG = array(
 	)
 ),
 
+/**
+ * If your user backend does not allow to reset the password (e.g. when it's a
+ * read-only user backend like LDAP), you can specify a custom link, where the
+ * user is redirected to, when clicking the "reset password" link after a failed
+ * login-attempt.
+ */
+'lost_password_link' => 'https://example.org/link/to/password/reset',
 
 /**
  * Mail Parameters
@@ -514,6 +521,14 @@ $CONFIG = array(
 'loglevel' => 2,
 
 /**
+ * If you maintain different instances and aggregate the logs, you may want
+ * to distinguish between them. ``syslog_tag`` can be set per instance
+ * with a unique id. Only available if ``log_type`` is set to ``syslog``.
+ * The default value is ``ownCloud``.
+ */
+'syslog_tag' => 'ownCloud',
+
+/**
  * Log condition for log level increase based on conditions. Once one of these
  * conditions is met, the required log level is set to debug. This allows to
  * debug specific requests, users or apps
@@ -784,20 +799,17 @@ $CONFIG = array(
 'ldapUserCleanupInterval' => 51,
 
 /**
- * Enforce the existence of the home folder naming rule for all users
+ * Comments
  *
- * Following scenario:
- *  * a home folder naming rule is set in LDAP advanced settings
- *  * a user doesn't have the home folder naming rule attribute set
- *
- * If this is set to **true** (default) it will NOT fallback to the core's
- * default naming rule of using the internal user ID as home folder name.
- *
- * If this is set to **false** it will fallback for the users without the
- * attribute set to naming the home folder like the internal user ID.
- *
+ * Global settings for the Comments infrastructure
  */
-'enforce_home_folder_naming_rule' => true,
+
+/**
+ * Replaces the default Comments Manager Factory. This can be utilized if an
+ * own or 3rdParty CommentsManager should be used that – for instance – uses the
+ * filesystem instead of the database to keep the comments.
+ */
+'comments.managerFactory' => '\OC\Comments\ManagerFactory',
 
 /**
  * Maintenance
@@ -871,11 +883,16 @@ $CONFIG = array(
 
 /**
  * Connection details for redis to use for memory caching.
+ *
+ * For enhanced security it is recommended to configure Redis
+ * to require a password. See http://redis.io/topics/security
+ * for more information.
  */
 'redis' => array(
 	'host' => 'localhost', // can also be a unix domain socket: '/tmp/redis.sock'
 	'port' => 6379,
 	'timeout' => 0.0,
+	'password' => '', // Optional, if not defined no password will be used.
 	'dbindex' => 0, // Optional, if undefined SELECT will not run and will use Redis Server's default DB Index.
 ),
 
@@ -1143,15 +1160,6 @@ $CONFIG = array(
  * This will disable the minifier and outputs some additional debug information
  */
 'debug' => false,
-
-/**
- * Skips the migration test during upgrades
- *
- * If this is set to true the migration test are deactivated during upgrade.
- * This is only recommended in installations where upgrade tests are run in
- * advance with the same data on a test system.
- */
-'update.skip-migration-test' => false,
 
 /**
  * This entry is just here to show a warning in case somebody copied the sample

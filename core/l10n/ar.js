@@ -73,6 +73,7 @@ OC.L10N.register(
     "Set expiration date" : "تعيين تاريخ إنتهاء الصلاحية",
     "Expiration" : "إنتهاء",
     "Expiration date" : "تاريخ إنتهاء الصلاحية",
+    "Choose a password for the public link" : "اختر كلمة مرور للرابط العام",
     "Sending ..." : "جاري الارسال ...",
     "Email sent" : "تم ارسال البريد الالكتروني",
     "Resharing is not allowed" : "لا يسمح بعملية إعادة المشاركة",
@@ -80,7 +81,6 @@ OC.L10N.register(
     "Link" : "الرابط",
     "Password protect" : "حماية كلمة السر",
     "Password" : "كلمة المرور",
-    "Choose a password for the public link" : "اختر كلمة مرور للرابط العام",
     "Allow editing" : "السماح بالتعديلات",
     "Email link to person" : "ارسل الرابط بالبريد الى صديق",
     "Send" : "أرسل",
@@ -129,7 +129,6 @@ OC.L10N.register(
     "Log out" : "الخروج",
     "Search" : "البحث",
     "Log in" : "أدخل",
-    "remember" : "تذكر",
     "Alternative Logins" : "اسماء دخول بديلة"
 },
 "nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;");

@@ -7,7 +7,6 @@
  * @author Jakob Sack <mail@jakobsack.de>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
- * @author Lukas Reschke <lukas@owncloud.com>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Nicolai Ehemann <en@enlightened.de>
  * @author Robin Appelman <icewind@owncloud.com>
@@ -116,7 +115,7 @@ class OC_Files {
 			self::lockFiles($view, $dir, $files);
 
 			$streamer->sendHeaders($name);
-			$executionTime = intval(ini_get('max_execution_time'));
+			$executionTime = intval(OC::$server->getIniWrapper()->getNumeric('max_execution_time'));
 			set_time_limit(0);
 			if ($getType === self::ZIP_FILES) {
 				foreach ($files as $file) {
@@ -143,6 +142,11 @@ class OC_Files {
 			$l = \OC::$server->getL10N('core');
 			$hint = method_exists($ex, 'getHint') ? $ex->getHint() : '';
 			\OC_Template::printErrorPage($l->t('File is currently busy, please try again later'), $hint);
+		} catch (\OCP\Files\ForbiddenException $ex) {
+			self::unlockAllTheFiles($dir, $files, $getType, $view, $filename);
+			OC::$server->getLogger()->logException($ex);
+			$l = \OC::$server->getL10N('core');
+			\OC_Template::printErrorPage($l->t('Can\'t read file'), $ex->getMessage());
 		} catch (\Exception $ex) {
 			self::unlockAllTheFiles($dir, $files, $getType, $view, $filename);
 			OC::$server->getLogger()->logException($ex);

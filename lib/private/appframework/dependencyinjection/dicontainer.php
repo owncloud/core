@@ -5,7 +5,7 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
  *
@@ -61,6 +61,10 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 		parent::__construct();
 		$this['AppName'] = $appName;
 		$this['urlParams'] = $urlParams;
+
+		/** @var \OC\ServerContainer $server */
+		$server = $this->getServer();
+		$server->registerAppContainer($appName, $this);
 
 		// aliases
 		$this->registerAlias('appName', 'AppName');
@@ -128,6 +132,10 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 
 		$this->registerService('OCP\\Diagnostics\\IQueryLogger', function($c) {
 			return $this->getServer()->getQueryLogger();
+		});
+
+		$this->registerService('OCP\\Files\\IMimeTypeDetector', function($c) {
+			return $this->getServer()->getMimeTypeDetector();
 		});
 
 		$this->registerService('OCP\\Files\\Config\\IMountProviderCollection', function($c) {
@@ -206,6 +214,14 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 			return $this->getServer()->getSecureRandom();
 		});
 
+		$this->registerService('OCP\\SystemTag\\ISystemTagManager', function() {
+			return $this->getServer()->getSystemTagManager();
+		});
+
+		$this->registerService('OCP\\SystemTag\\ISystemTagObjectMapper', function() {
+			return $this->getServer()->getSystemTagObjectMapper();
+		});
+
 		$this->registerService('OCP\\IURLGenerator', function($c) {
 			return $this->getServer()->getURLGenerator();
 		});
@@ -224,6 +240,15 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 
 		$this->registerService('ServerContainer', function ($c) {
 			return $this->getServer();
+		});
+		$this->registerAlias('OCP\\IServerContainer', 'ServerContainer');
+
+		$this->registerService('Symfony\Component\EventDispatcher\EventDispatcherInterface', function ($c) {
+			return $this->getServer()->getEventDispatcher();
+		});
+
+		$this->registerService('OCP\\AppFramework\\IAppContainer', function ($c) {
+			return $c;
 		});
 
 		// commonly used attributes
@@ -248,11 +273,10 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 		});
 
 		$this->registerService('Protocol', function($c){
-			if(isset($_SERVER['SERVER_PROTOCOL'])) {
-				return new Http($_SERVER, $_SERVER['SERVER_PROTOCOL']);
-			} else {
-				return new Http($_SERVER);
-			}
+			/** @var \OC\Server $server */
+			$server = $c->query('ServerContainer');
+			$protocol = $server->getRequest()->getHttpProtocol();
+			return new Http($_SERVER, $protocol);
 		});
 
 		$this->registerService('Dispatcher', function($c) {

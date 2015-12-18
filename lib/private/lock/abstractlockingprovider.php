@@ -28,10 +28,27 @@ use OCP\Lock\ILockingProvider;
  * to release any left over locks at the end of the request
  */
 abstract class AbstractLockingProvider implements ILockingProvider {
+	const TTL = 3600; // how long until we clear stray locks in seconds
+
 	protected $acquiredLocks = [
 		'shared' => [],
 		'exclusive' => []
 	];
+
+	/**
+	 * Check if we've locally acquired a lock
+	 *
+	 * @param string $path
+	 * @param int $type
+	 * @return bool
+	 */
+	protected function hasAcquiredLock($path, $type) {
+		if ($type === self::LOCK_SHARED) {
+			return isset($this->acquiredLocks['shared'][$path]) && $this->acquiredLocks['shared'][$path] > 0;
+		} else {
+			return isset($this->acquiredLocks['exclusive'][$path]) && $this->acquiredLocks['exclusive'][$path] === true;
+		}
+	}
 
 	/**
 	 * Mark a locally acquired lock

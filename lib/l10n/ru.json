@@ -85,6 +85,7 @@
     "Sharing %s failed, because the backend does not allow shares from type %i" : "Не удалось поделиться %s, общий доступ не допускает публикации из элементов типа %i",
     "Sharing %s failed, because the file does not exist" : "Не удалось поделиться %s, файл не существует",
     "You are not allowed to share %s" : "Вам запрещено делиться %s",
+    "Sharing %s failed, because you can not share with yourself" : "Не удалось поделиться %s. Вы не можете поделиться с самим собой.",
     "Sharing %s failed, because the user %s does not exist" : "Не удалось поделиться %s, пользователь %s не существует.",
     "Sharing %s failed, because the user %s is not a member of any groups that %s is a member of" : "Не удалось поделиться %s, пользователь %s не состоит в какой-либо группе в которой состоит %s",
     "Sharing %s failed, because this item is already shared with %s" : "Не удалось поделиться %s, пользователь %s уже имеет доступ к этому элементу",
@@ -103,6 +104,7 @@
     "Sharing backend %s must implement the interface OCP\\Share_Backend" : "Бэкенд общего доступа %s должен реализовывать интерфейс OCP\\Share_Backend",
     "Sharing backend %s not found" : "Бэкенд общего доступа %s не найден",
     "Sharing backend for %s not found" : "Бэкенд общего доступа для %s не найден",
+    "Sharing failed, because the user %s is the original sharer" : "Не удалось поделиться, потому что пользователь %s владелец этого элемента",
     "Sharing %s failed, because the permissions exceed permissions granted to %s" : "Не удалось поделиться %s, права превышают предоставленные права доступа %s",
     "Sharing %s failed, because resharing is not allowed" : "Не удалось поделиться %s, повторное открытие доступа запрещено",
     "Sharing %s failed, because the sharing backend for %s could not find its source" : "Не удалось поделиться %s, бэкенд общего доступа не нашел путь до %s",
@@ -136,14 +138,13 @@
     "Please ask your server administrator to restart the web server." : "Пожалуйста, попросите вашего администратора перезапустить веб-сервер.",
     "PostgreSQL >= 9 required" : "Требуется PostgreSQL >= 9",
     "Please upgrade your database version" : "Обновите базу данных",
-    "Error occurred while checking PostgreSQL version" : "Произошла ошибка при проверке версии PostgreSQL",
-    "Please make sure you have PostgreSQL >= 9 or check the logs for more information about the error" : "Убедитесь что версия PostgreSQL >= 9 или проверьте журналы для получения дополнительной информацией об ошибке",
     "Please change the permissions to 0770 so that the directory cannot be listed by other users." : "Измените права доступа на 0770, чтобы другие пользователи не могли получить список файлов этого каталога.",
     "Data directory (%s) is readable by other users" : "Каталог данных (%s) доступен для чтения другим пользователям",
     "Data directory (%s) must be an absolute path" : "Директория данных (%s) должна иметь абсолютный путь",
     "Check the value of \"datadirectory\" in your configuration" : "Проверьте значение \"datadirectory\" в настройках.",
     "Data directory (%s) is invalid" : "Каталог данных (%s) не верен",
     "Please check that the data directory contains a file \".ocdata\" in its root." : "Убедитесь, что файл \".ocdata\" присутствует в корне каталога данных.",
-    "Could not obtain lock type %d on \"%s\"." : "Не удалось получить блокировку типа %d для \"%s\""
+    "Could not obtain lock type %d on \"%s\"." : "Не удалось получить блокировку типа %d для \"%s\"",
+    "Storage not available" : "Хранилище недоступно"
 },"pluralForm" :"nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);"
 }

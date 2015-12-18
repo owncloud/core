@@ -2,7 +2,7 @@
 /**
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -27,7 +27,6 @@ namespace OCA\Files_Sharing\Middleware;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Middleware;
-use OCP\AppFramework\Http\TemplateResponse;
 use OCP\Files\NotFoundException;
 use OCP\IConfig;
 use OCP\AppFramework\Utility\IControllerMethodReflector;

@@ -27,6 +27,8 @@ use OCA\Files\Share;
 
 /**
  * Class Test_Files_Sharing
+ *
+ * @group DB
  */
 class Test_Files_Sharing extends OCA\Files_sharing\Tests\TestCase {
 
@@ -218,6 +220,10 @@ class Test_Files_Sharing extends OCA\Files_sharing\Tests\TestCase {
 
 	}
 
+	/**
+	 * @param OC\Files\FileInfo[] $content
+	 * @param string[] $expected
+	 */
 	public function verifyDirContent($content, $expected) {
 		foreach ($content as $c) {
 			if (!in_array($c['name'], $expected)) {
@@ -320,6 +326,22 @@ class Test_Files_Sharing extends OCA\Files_sharing\Tests\TestCase {
 			array($permission5, $permission3),
 			array($permission6, $permission4),
 		);
+	}
+
+	public function testFileOwner() {
+
+		$fileinfo = $this->view->getFileInfo($this->filename);
+
+		$result = \OCP\Share::shareItem('file', $fileinfo['fileid'], \OCP\Share::SHARE_TYPE_USER,
+				\Test_Files_Sharing::TEST_FILES_SHARING_API_USER2, \OCP\Constants::PERMISSION_ALL);
+
+		$this->assertTrue($result);
+
+		$this->loginHelper(\Test_Files_Sharing::TEST_FILES_SHARING_API_USER2);
+
+		$info = \OC\Files\Filesystem::getFileInfo($this->filename);
+
+		$this->assertSame(\Test_Files_Sharing::TEST_FILES_SHARING_API_USER1, $info->getOwner()->getUID());
 	}
 
 	/**

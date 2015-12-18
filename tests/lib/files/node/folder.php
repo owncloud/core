@@ -16,6 +16,13 @@ use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
 use OC\Files\View;
 
+/**
+ * Class Folder
+ *
+ * @group DB
+ *
+ * @package Test\Files\Node
+ */
 class Folder extends \Test\TestCase {
 	private $user;
 
@@ -24,8 +31,16 @@ class Folder extends \Test\TestCase {
 		$this->user = new \OC\User\User('', new \Test\Util\User\Dummy);
 	}
 
+	protected function getMockStorage() {
+		$storage = $this->getMock('\OCP\Files\Storage');
+		$storage->expects($this->any())
+			->method('getId')
+			->will($this->returnValue('home::someuser'));
+		return $storage;
+	}
+
 	protected function getFileInfo($data) {
-		return new FileInfo('', null, '', $data, null);
+		return new FileInfo('', $this->getMockStorage(), '', $data, null);
 	}
 
 	public function testDelete() {
@@ -75,6 +90,7 @@ class Folder extends \Test\TestCase {
 			$test->assertInstanceOf('\OC\Files\Node\NonExistingFolder', $node);
 			$test->assertEquals('foo', $node->getInternalPath());
 			$test->assertEquals('/bar/foo', $node->getPath());
+			$test->assertEquals(1, $node->getId());
 			$hooksRun++;
 		};
 

@@ -4,7 +4,7 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
@@ -27,6 +27,8 @@
 
 /**
  * Class Test_Files_Sharing_Api
+ *
+ * @group DB
  */
 class Test_Files_Sharing_Mount extends OCA\Files_sharing\Tests\TestCase {
 

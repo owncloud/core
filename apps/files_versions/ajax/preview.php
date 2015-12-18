@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
@@ -48,7 +48,7 @@ if($maxX === 0 || $maxY === 0) {
 try {
 	list($user, $file) = \OCA\Files_Versions\Storage::getUidAndFilename($file);
 	$preview = new \OC\Preview($user, 'files_versions', $file.'.v'.$version);
-	$mimetype = \OC_Helper::getFileNameMimeType($file);
+	$mimetype = \OC::$server->getMimeTypeDetector()->detectPath($file);
 	$preview->setMimetype($mimetype);
 	$preview->setMaxX($maxX);
 	$preview->setMaxY($maxY);

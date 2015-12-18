@@ -3,7 +3,7 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Tom Needham <tom@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -26,7 +26,6 @@
 namespace OCA\Provisioning_API;
 
 use \OC_OCS_Result;
-use \OC_SubAdmin;
 use OCP\IGroup;
 use OCP\IUser;
 
@@ -38,14 +37,20 @@ class Groups{
 	/** @var \OCP\IUserSession */
 	private $userSession;
 
+	/** @var \OCP\IRequest */
+	private $request;
+
 	/**
 	 * @param \OCP\IGroupManager $groupManager
 	 * @param \OCP\IUserSession $userSession
+	 * @param \OCP\IRequest $request
 	 */
 	public function __construct(\OCP\IGroupManager $groupManager,
-								\OCP\IUserSession $userSession) {
+								\OCP\IUserSession $userSession,
+								\OCP\IRequest $request) {
 		$this->groupManager = $groupManager;
 		$this->userSession = $userSession;
+		$this->request = $request;
 	}
 
 	/**
@@ -55,9 +60,16 @@ class Groups{
 	 * @return OC_OCS_Result
 	 */
 	public function getGroups($parameters) {
-		$search = !empty($_GET['search']) ? $_GET['search'] : '';
-		$limit = !empty($_GET['limit']) ? $_GET['limit'] : null;
-		$offset = !empty($_GET['offset']) ? $_GET['offset'] : null;
+		$search = $this->request->getParam('search', '');
+		$limit = $this->request->getParam('limit');
+		$offset = $this->request->getParam('offset');
+
+		if ($limit !== null) {
+			$limit = (int)$limit;
+		}
+		if ($offset !== null) {
+			$offset = (int)$offset;
+		}
 
 		$groups = $this->groupManager->search($search, $limit, $offset);
 		$groups = array_map(function($group) {
@@ -81,14 +93,23 @@ class Groups{
 			return new OC_OCS_Result(null, \OCP\API::RESPOND_UNAUTHORISED);
 		}
 
+		$groupId = $parameters['groupid'];
+
 		// Check the group exists
-		if(!$this->groupManager->groupExists($parameters['groupid'])) {
+		if(!$this->groupManager->groupExists($groupId)) {
 			return new OC_OCS_Result(null, \OCP\API::RESPOND_NOT_FOUND, 'The requested group could not be found');
 		}
+
+		$isSubadminOfGroup = false;
+		$group = $this->groupManager->get($groupId);
+		if ($group !== null) {
+			$isSubadminOfGroup =$this->groupManager->getSubAdmin()->isSubAdminofGroup($user, $group);
+		}
+
 		// Check subadmin has access to this group
 		if($this->groupManager->isAdmin($user->getUID())
-		   || in_array($parameters['groupid'], \OC_SubAdmin::getSubAdminsGroups($user->getUID()))){
-			$users = $this->groupManager->get($parameters['groupid'])->getUsers();
+		   || $isSubadminOfGroup) {
+			$users = $this->groupManager->get($groupId)->getUsers();
 			$users =  array_map(function($user) {
 				/** @var IUser $user */
 				return $user->getUID();
@@ -108,7 +129,7 @@ class Groups{
 	 */
 	public function addGroup($parameters) {
 		// Validate name
-		$groupId = isset($_POST['groupid']) ? $_POST['groupid'] : '';
+		$groupId = $this->request->getParam('groupid', '');
 		if( preg_match( '/[^a-zA-Z0-9 _\.@\-]/', $groupId ) || empty($groupId)){
 			\OCP\Util::writeLog('provisioning_api', 'Attempt made to create group using invalid characters.', \OCP\Util::ERROR);
 			return new OC_OCS_Result(null, 101, 'Invalid group name');
@@ -144,15 +165,19 @@ class Groups{
 	public function getSubAdminsOfGroup($parameters) {
 		$group = $parameters['groupid'];
 		// Check group exists
-		if(!$this->groupManager->groupExists($group)) {
+		$targetGroup = $this->groupManager->get($group);
+		if($targetGroup === null) {
 			return new OC_OCS_Result(null, 101, 'Group does not exist');
 		}
-		// Go
-		if(!$subadmins = OC_Subadmin::getGroupsSubAdmins($group)) {
-			return new OC_OCS_Result(null, 102, 'Unknown error occured');
-		} else {
-			return new OC_OCS_Result($subadmins);
+
+		$subadmins = $this->groupManager->getSubAdmin()->getGroupsSubAdmins($targetGroup);
+		// New class returns IUser[] so convert back
+		$uids = [];
+		foreach ($subadmins as $user) {
+			$uids[] = $user->getUID();
 		}
+
+		return new OC_OCS_Result($uids);
 	}
 
 }

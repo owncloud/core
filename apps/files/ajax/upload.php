@@ -41,7 +41,6 @@ OCP\JSON::setContentTypeHeader('text/plain');
 // If not, check the login.
 // If no token is sent along, rely on login only
 
-$allowedPermissions = \OCP\Constants::PERMISSION_ALL;
 $errorCode = null;
 
 $l = \OC::$server->getL10N('files');
@@ -60,8 +59,6 @@ if (empty($_POST['dirToken'])) {
 
 	\OC_User::setIncognitoMode(true);
 
-	// return only read permissions for public upload
-	$allowedPermissions = \OCP\Constants::PERMISSION_READ;
 	$publicDirectory = !empty($_POST['subdir']) ? (string)$_POST['subdir'] : '/';
 
 	$linkItem = OCP\Share::getShareByToken((string)$_POST['dirToken']);
@@ -117,7 +114,7 @@ foreach ($_FILES['files']['error'] as $error) {
 		$errors = array(
 			UPLOAD_ERR_OK => $l->t('There is no error, the file uploaded with success'),
 			UPLOAD_ERR_INI_SIZE => $l->t('The uploaded file exceeds the upload_max_filesize directive in php.ini: ')
-			. ini_get('upload_max_filesize'),
+			. OC::$server->getIniWrapper()->getNumeric('upload_max_filesize'),
 			UPLOAD_ERR_FORM_SIZE => $l->t('The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form'),
 			UPLOAD_ERR_PARTIAL => $l->t('The uploaded file was only partially uploaded'),
 			UPLOAD_ERR_NO_FILE => $l->t('No file was uploaded'),
@@ -207,7 +204,7 @@ if (\OC\Files\Filesystem::isValidPath($dir) === true) {
 						$data['originalname'] = $files['name'][$i];
 						$data['uploadMaxFilesize'] = $maxUploadFileSize;
 						$data['maxHumanFilesize'] = $maxHumanFileSize;
-						$data['permissions'] = $meta['permissions'] & $allowedPermissions;
+						$data['permissions'] = $meta['permissions'];
 						$data['directory'] = $returnedDir;
 						$result[] = $data;
 					}
@@ -234,7 +231,7 @@ if (\OC\Files\Filesystem::isValidPath($dir) === true) {
 				$data['originalname'] = $files['name'][$i];
 				$data['uploadMaxFilesize'] = $maxUploadFileSize;
 				$data['maxHumanFilesize'] = $maxHumanFileSize;
-				$data['permissions'] = $meta['permissions'] & $allowedPermissions;
+				$data['permissions'] = $meta['permissions'];
 				$data['directory'] = $returnedDir;
 				$result[] = $data;
 			}

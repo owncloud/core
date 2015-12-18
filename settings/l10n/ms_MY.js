@@ -2,9 +2,9 @@ OC.L10N.register(
     "settings",
     {
     "Log" : "Log",
-    "Authentication error" : "Ralat pengesahan",
     "Language changed" : "Bahasa diubah",
     "Invalid request" : "Permintaan tidak sah",
+    "Authentication error" : "Ralat pengesahan",
     "Email saved" : "Emel disimpan",
     "Disable" : "Nyahaktif",
     "Enable" : "Aktif",
@@ -14,7 +14,6 @@ OC.L10N.register(
     "__language_name__" : "_nama_bahasa_",
     "Login" : "Log masuk",
     "Server address" : "Alamat pelayan",
-    "Log level" : "Tahap Log",
     "More" : "Lanjutan",
     "by" : "oleh",
     "Password" : "Kata laluan",

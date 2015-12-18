@@ -105,11 +105,7 @@
 		},
 
 		getDirectoryPermissions: function() {
-			var perms = OC.PERMISSION_READ;
-			if (this._sharedWithUser) {
-				perms |= OC.PERMISSION_DELETE;
-			}
-			return perms;
+			return OC.PERMISSION_READ | OC.PERMISSION_DELETE;
 		},
 
 		updateStorageStatistics: function() {
@@ -122,6 +118,9 @@
 			if (this._reloadCall) {
 				this._reloadCall.abort();
 			}
+
+			// there is only root
+			this._setCurrentDir('/', false);
 
 			var promises = [];
 			var shares = $.ajax({
@@ -173,17 +172,14 @@
 
 			if (shares[0].ocs && shares[0].ocs.data) {
 				files = files.concat(this._makeFilesFromShares(shares[0].ocs.data));
-			} else {
-				// TODO: error handling
 			}
 
 			if (remoteShares && remoteShares[0].ocs && remoteShares[0].ocs.data) {
 				files = files.concat(this._makeFilesFromRemoteShares(remoteShares[0].ocs.data));
-			} else {
-				// TODO: error handling
 			}
 
 			this.setFiles(files);
+			return true;
 		},
 
 		_makeFilesFromRemoteShares: function(data) {
@@ -235,6 +231,7 @@
 			files = _.chain(files)
 				// convert share data to file data
 				.map(function(share) {
+					// TODO: use OC.Files.FileInfo
 					var file = {
 						id: share.file_source,
 						icon: OC.MimeType.getIconUrl(share.mimetype),
@@ -246,9 +243,6 @@
 					}
 					else {
 						file.type = 'file';
-						if (share.isPreviewAvailable) {
-							file.isPreviewAvailable = true;
-						}
 					}
 					file.share = {
 						id: share.id,
@@ -271,11 +265,7 @@
 						}
 						file.name = OC.basename(share.path);
 						file.path = OC.dirname(share.path);
-						if (this._sharedWithUser) {
-							file.permissions = OC.PERMISSION_ALL;
-						} else {
-							file.permissions = OC.PERMISSION_ALL - OC.PERMISSION_DELETE;
-						}
+						file.permissions = OC.PERMISSION_ALL;
 						if (file.path) {
 							file.extraData = share.path;
 						}

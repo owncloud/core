@@ -85,7 +85,7 @@ describe('OCA.Sharing.FileList tests', function() {
 						file_source: 49,
 						file_target: '/local path/local name.txt',
 						path: 'files/something shared.txt',
-						permissions: OC.PERMISSION_ALL,
+						permissions: 31,
 						stime: 11111,
 						share_type: OC.Share.SHARE_TYPE_USER,
 						share_with: 'user1',
@@ -159,16 +159,14 @@ describe('OCA.Sharing.FileList tests', function() {
 			expect($tr.attr('data-file')).toEqual('local name.txt');
 			expect($tr.attr('data-path')).toEqual('/local path');
 			expect($tr.attr('data-size')).not.toBeDefined();
-			expect(parseInt($tr.attr('data-permissions'), 10))
-				.toEqual(OC.PERMISSION_ALL); // read and delete
+			expect($tr.attr('data-permissions')).toEqual('31'); // read and delete
 			expect($tr.attr('data-mime')).toEqual('text/plain');
 			expect($tr.attr('data-mtime')).toEqual('11111000');
 			expect($tr.attr('data-share-owner')).toEqual('User Two');
 			expect($tr.attr('data-share-id')).toEqual('7');
 			expect($tr.find('a.name').attr('href')).toEqual(
 				OC.webroot +
-				'/index.php/apps/files/ajax/download.php' +
-				'?dir=%2Flocal%20path&files=local%20name.txt'
+				'/remote.php/webdav/local%20path/local%20name.txt'
 			);
 			expect($tr.find('.nametext').text().trim()).toEqual('local name.txt');
 
@@ -186,8 +184,7 @@ describe('OCA.Sharing.FileList tests', function() {
 			expect($tr.attr('data-share-id')).toEqual('8');
 			expect($tr.find('a.name').attr('href')).toEqual(
 				OC.webroot +
-				'/index.php/apps/files/ajax/download.php' +
-				'?dir=%2F&files=b.txt'
+				'/remote.php/webdav/b.txt'
 			);
 			expect($tr.find('.nametext').text().trim()).toEqual('b.txt');
 		});
@@ -236,8 +233,7 @@ describe('OCA.Sharing.FileList tests', function() {
 			expect($tr.attr('data-file')).toEqual('local name');
 			expect($tr.attr('data-path')).toEqual('/local path');
 			expect($tr.attr('data-size')).not.toBeDefined();
-			expect(parseInt($tr.attr('data-permissions'), 10))
-				.toEqual(OC.PERMISSION_ALL); // read and delete
+			expect($tr.attr('data-permissions')).toEqual('31'); // read and delete
 			expect($tr.attr('data-mime')).toEqual('httpd/unix-directory');
 			expect($tr.attr('data-mtime')).toEqual('11111000');
 			expect($tr.attr('data-share-owner')).toEqual('User Two');
@@ -333,16 +329,14 @@ describe('OCA.Sharing.FileList tests', function() {
 			expect($tr.attr('data-file')).toEqual('local name.txt');
 			expect($tr.attr('data-path')).toEqual('/local path');
 			expect($tr.attr('data-size')).not.toBeDefined();
-			expect(parseInt($tr.attr('data-permissions'), 10))
-				.toEqual(OC.PERMISSION_ALL - OC.PERMISSION_DELETE); // read
+			expect($tr.attr('data-permissions')).toEqual('31'); // read and delete
 			expect($tr.attr('data-mime')).toEqual('text/plain');
 			expect($tr.attr('data-mtime')).toEqual('11111000');
 			expect($tr.attr('data-share-owner')).not.toBeDefined();
 			expect($tr.attr('data-share-id')).toEqual('7');
 			expect($tr.find('a.name').attr('href')).toEqual(
 				OC.webroot +
-				'/index.php/apps/files/ajax/download.php' +
-				'?dir=%2Flocal%20path&files=local%20name.txt'
+				'/remote.php/webdav/local%20path/local%20name.txt'
 			);
 			expect($tr.find('.nametext').text().trim()).toEqual('local name.txt');
 		});
@@ -375,8 +369,7 @@ describe('OCA.Sharing.FileList tests', function() {
 			expect($tr.attr('data-file')).toEqual('local name');
 			expect($tr.attr('data-path')).toEqual('/local path');
 			expect($tr.attr('data-size')).not.toBeDefined();
-			expect(parseInt($tr.attr('data-permissions'), 10))
-				.toEqual(OC.PERMISSION_ALL - OC.PERMISSION_DELETE); // read
+			expect($tr.attr('data-permissions')).toEqual('31'); // read and delete
 			expect($tr.attr('data-mime')).toEqual('httpd/unix-directory');
 			expect($tr.attr('data-mtime')).toEqual('11111000');
 			expect($tr.attr('data-share-owner')).not.toBeDefined();
@@ -427,16 +420,14 @@ describe('OCA.Sharing.FileList tests', function() {
 			expect($tr.attr('data-file')).toEqual('local name.txt');
 			expect($tr.attr('data-path')).toEqual('/local path');
 			expect($tr.attr('data-size')).not.toBeDefined();
-			expect(parseInt($tr.attr('data-permissions'), 10))
-				.toEqual(OC.PERMISSION_ALL - OC.PERMISSION_DELETE); // read
+			expect($tr.attr('data-permissions')).toEqual('31'); // read and delete
 			expect($tr.attr('data-mime')).toEqual('text/plain');
 			expect($tr.attr('data-mtime')).toEqual('11111000');
 			expect($tr.attr('data-share-owner')).not.toBeDefined();
 			expect($tr.attr('data-share-id')).toEqual('7');
 			expect($tr.find('a.name').attr('href')).toEqual(
-					OC.webroot +
-					'/index.php/apps/files/ajax/download.php' +
-					'?dir=%2Flocal%20path&files=local%20name.txt');
+				OC.webroot + '/remote.php/webdav/local%20path/local%20name.txt'
+			);
 
 			expect($tr.find('.nametext').text().trim()).toEqual('local name.txt');
 		});
@@ -496,17 +487,14 @@ describe('OCA.Sharing.FileList tests', function() {
 			expect($tr.attr('data-file')).toEqual('local name.txt');
 			expect($tr.attr('data-path')).toEqual('/local path');
 			expect($tr.attr('data-size')).not.toBeDefined();
-			expect(parseInt($tr.attr('data-permissions'), 10))
-				.toEqual(OC.PERMISSION_ALL - OC.PERMISSION_DELETE); // read
+			expect($tr.attr('data-permissions')).toEqual('31'); // read and delete
 			expect($tr.attr('data-mime')).toEqual('text/plain');
 			// always use the most recent stime
 			expect($tr.attr('data-mtime')).toEqual('22222000');
 			expect($tr.attr('data-share-owner')).not.toBeDefined();
 			expect($tr.attr('data-share-id')).toEqual('7,8,9');
 			expect($tr.find('a.name').attr('href')).toEqual(
-				OC.webroot +
-				'/index.php/apps/files/ajax/download.php' +
-				'?dir=%2Flocal%20path&files=local%20name.txt'
+				OC.webroot + '/remote.php/webdav/local%20path/local%20name.txt'
 			);
 			expect($tr.find('.nametext').text().trim()).toEqual('local name.txt');
 		});
@@ -591,17 +579,15 @@ describe('OCA.Sharing.FileList tests', function() {
 			expect($tr.attr('data-file')).toEqual('local name.txt');
 			expect($tr.attr('data-path')).toEqual('/local path');
 			expect($tr.attr('data-size')).not.toBeDefined();
-			expect(parseInt($tr.attr('data-permissions'), 10))
-				.toEqual(OC.PERMISSION_ALL - OC.PERMISSION_DELETE); // read
+			expect($tr.attr('data-permissions')).toEqual('31'); // read and delete
 			expect($tr.attr('data-mime')).toEqual('text/plain');
 			expect($tr.attr('data-mtime')).toEqual('11111000');
 			expect($tr.attr('data-share-recipients')).not.toBeDefined();
 			expect($tr.attr('data-share-owner')).not.toBeDefined();
 			expect($tr.attr('data-share-id')).toEqual('7');
 			expect($tr.find('a.name').attr('href')).toEqual(
-					OC.webroot +
-					'/index.php/apps/files/ajax/download.php' +
-					'?dir=%2Flocal%20path&files=local%20name.txt');
+				OC.webroot + '/remote.php/webdav/local%20path/local%20name.txt'
+			);
 
 			expect($tr.find('.nametext').text().trim()).toEqual('local name.txt');
 		});
@@ -633,8 +619,7 @@ describe('OCA.Sharing.FileList tests', function() {
 			expect($tr.attr('data-file')).toEqual('local name.txt');
 			expect($tr.attr('data-path')).toEqual('/local path');
 			expect($tr.attr('data-size')).not.toBeDefined();
-			expect(parseInt($tr.attr('data-permissions'), 10))
-				.toEqual(OC.PERMISSION_ALL - OC.PERMISSION_DELETE); // read
+			expect($tr.attr('data-permissions')).toEqual('31'); // read and delete
 			expect($tr.attr('data-mime')).toEqual('text/plain');
 			expect($tr.attr('data-mtime')).toEqual('11111000');
 			expect($tr.attr('data-share-recipients')).not.toBeDefined();
@@ -642,8 +627,7 @@ describe('OCA.Sharing.FileList tests', function() {
 			expect($tr.attr('data-share-id')).toEqual('7');
 			expect($tr.find('a.name').attr('href')).toEqual(
 					OC.webroot +
-					'/index.php/apps/files/ajax/download.php' +
-					'?dir=%2Flocal%20path&files=local%20name.txt');
+					'/remote.php/webdav/local%20path/local%20name.txt');
 
 			expect($tr.find('.nametext').text().trim()).toEqual('local name.txt');
 		});
@@ -728,7 +712,7 @@ describe('OCA.Sharing.FileList tests', function() {
 			$tr = fileList.$el.find('tr:first');
 
 			expect(parseInt($tr.attr('data-share-permissions'), 10))
-				.toEqual(OC.PERMISSION_ALL - OC.PERMISSION_SHARE - OC.PERMISSION_DELETE);
+				.toEqual(OC.PERMISSION_ALL - OC.PERMISSION_SHARE - OC.PERMISSION_DELETE - OC.PERMISSION_CREATE);
 		});
 	});
 });

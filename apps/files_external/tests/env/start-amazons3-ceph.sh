@@ -41,7 +41,7 @@ container=`docker run -d \
     -e RGW_CIVETWEB_PORT=$port \
     ${docker_image}`
 
-host=`docker inspect $container | grep IPAddress | cut -d '"' -f 4`
+host=`docker inspect --format="{{.NetworkSettings.IPAddress}}" $container`
 
 
 echo "${docker_image} container: $container"
@@ -49,9 +49,12 @@ echo "${docker_image} container: $container"
 # put container IDs into a file to drop them after the test run (keep in mind that multiple tests run in parallel on the same host)
 echo $container >> $thisFolder/dockerContainerCeph.$EXECUTOR_NUMBER.amazons3
 
-# TODO find a way to determine the successful initialization inside the docker container
-echo "Waiting 20 seconds for ceph initialization ... "
-sleep 20
+echo -n "Waiting for ceph initialization"
+if ! "$thisFolder"/env/wait-for-connection ${host} ${port} 60; then
+    echo "[ERROR] Waited 60 seconds, no response" >&2
+    exit 1
+fi
+sleep 1
 
 echo "Create ceph user"
 docker exec $container radosgw-admin user create \

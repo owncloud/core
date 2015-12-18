@@ -13,7 +13,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Sander <brantje@gmail.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
@@ -51,6 +51,10 @@ use OC\Files\Node\HookConnector;
 use OC\Files\Node\Root;
 use OC\Files\View;
 use OC\Http\Client\ClientService;
+use OC\IntegrityCheck\Checker;
+use OC\IntegrityCheck\Helpers\AppLocator;
+use OC\IntegrityCheck\Helpers\EnvironmentHelper;
+use OC\IntegrityCheck\Helpers\FileAccessHelper;
 use OC\Lock\DBLockingProvider;
 use OC\Lock\MemcacheLockingProvider;
 use OC\Lock\NoopLockingProvider;
@@ -74,14 +78,15 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * TODO: hookup all manager classes
  */
-class Server extends SimpleContainer implements IServerContainer {
+class Server extends ServerContainer implements IServerContainer {
 	/** @var string */
 	private $webRoot;
 
 	/**
 	 * @param string $webRoot
+	 * @param \OC\Config $config
 	 */
-	public function __construct($webRoot) {
+	public function __construct($webRoot, \OC\Config $config) {
 		parent::__construct();
 		$this->webRoot = $webRoot;
 
@@ -137,6 +142,12 @@ class Server extends SimpleContainer implements IServerContainer {
 		$this->registerService('TagManager', function (Server $c) {
 			$tagMapper = $c->query('TagMapper');
 			return new TagManager($tagMapper, $c->getUserSession());
+		});
+		$this->registerService('SystemTagManager', function (Server $c) {
+			return new SystemTag\SystemTagManager($c->getDatabaseConnection());
+		});
+		$this->registerService('SystemTagObjectMapper', function (Server $c) {
+			return new SystemTag\SystemTagObjectMapper($c->getDatabaseConnection(), $c->getSystemTagManager());
 		});
 		$this->registerService('RootFolder', function (Server $c) {
 			// TODO: get user and user manager from container as well
@@ -228,8 +239,8 @@ class Server extends SimpleContainer implements IServerContainer {
 				$c->getSystemConfig()
 			);
 		});
-		$this->registerService('SystemConfig', function ($c) {
-			return new \OC\SystemConfig();
+		$this->registerService('SystemConfig', function ($c) use ($config) {
+			return new \OC\SystemConfig($config);
 		});
 		$this->registerService('AppConfig', function ($c) {
 			return new \OC\AppConfig(\OC_DB::getConnection());
@@ -281,8 +292,12 @@ class Server extends SimpleContainer implements IServerContainer {
 				$c->getConfig()
 			);
 		});
-		$this->registerService('AvatarManager', function ($c) {
-			return new AvatarManager();
+		$this->registerService('AvatarManager', function (Server $c) {
+			return new AvatarManager(
+				$c->getUserManager(),
+				$c->getRootFolder(),
+				$c->getL10N('lib')
+			);
 		});
 		$this->registerService('Logger', function (Server $c) {
 			$logClass = $c->query('AllConfig')->getSystemValue('log_type', 'owncloud');
@@ -297,10 +312,11 @@ class Server extends SimpleContainer implements IServerContainer {
 		});
 		$this->registerService('Router', function (Server $c) {
 			$cacheFactory = $c->getMemCacheFactory();
+			$logger = $c->getLogger();
 			if ($cacheFactory->isAvailable()) {
-				$router = new \OC\Route\CachingRouter($cacheFactory->create('route'));
+				$router = new \OC\Route\CachingRouter($cacheFactory->create('route'), $logger);
 			} else {
-				$router = new \OC\Route\Router();
+				$router = new \OC\Route\Router($logger);
 			}
 			return $router;
 		});
@@ -402,6 +418,26 @@ class Server extends SimpleContainer implements IServerContainer {
 		$this->registerService('TrustedDomainHelper', function ($c) {
 			return new TrustedDomainHelper($this->getConfig());
 		});
+		$this->registerService('IntegrityCodeChecker', function (Server $c) {
+			// IConfig and IAppManager requires a working database. This code
+			// might however be called when ownCloud is not yet setup.
+			if(\OC::$server->getSystemConfig()->getValue('installed', false)) {
+				$config = $c->getConfig();
+				$appManager = $c->getAppManager();
+			} else {
+				$config = null;
+				$appManager = null;
+			}
+
+			return new Checker(
+					new EnvironmentHelper(),
+					new FileAccessHelper(),
+					new AppLocator(),
+					$config,
+					$c->getMemCacheFactory(),
+					$appManager
+			);
+		});
 		$this->registerService('Request', function ($c) {
 			if (isset($this['urlParams'])) {
 				$urlParams = $this['urlParams'];
@@ -438,7 +474,6 @@ class Server extends SimpleContainer implements IServerContainer {
 					'requesttoken' => $requestToken,
 				],
 				$this->getSecureRandom(),
-				$this->getCrypto(),
 				$this->getConfig(),
 				$stream
 			);
@@ -494,6 +529,13 @@ class Server extends SimpleContainer implements IServerContainer {
 			});
 			return $manager;
 		});
+		$this->registerService('CommentsManager', function(Server $c) {
+			$config = $c->getConfig();
+			$factoryClass = $config->getSystemValue('comments.managerFactory', '\OC\Comments\ManagerFactory');
+			/** @var \OCP\Comments\ICommentsManagerFactory $factory */
+			$factory = new $factoryClass();
+			return $factory->getManager();
+		});
 		$this->registerService('EventDispatcher', function() {
 			return new EventDispatcher();
 		});
@@ -512,7 +554,6 @@ class Server extends SimpleContainer implements IServerContainer {
 						: null,
 				],
 				new SecureRandom(),
-				$c->getCrypto(),
 				$c->getConfig()
 			);
 
@@ -582,6 +623,29 @@ class Server extends SimpleContainer implements IServerContainer {
 	public function getTagManager() {
 		return $this->query('TagManager');
 	}
+
+	/**
+	 * Returns the system-tag manager
+	 *
+	 * @return \OCP\SystemTag\ISystemTagManager
+	 *
+	 * @since 9.0.0
+	 */
+	public function getSystemTagManager() {
+		return $this->query('SystemTagManager');
+	}
+
+	/**
+	 * Returns the system-tag object mapper
+	 *
+	 * @return \OCP\SystemTag\ISystemTagObjectMapper
+	 *
+	 * @since 9.0.0
+	 */
+	public function getSystemTagObjectMapper() {
+		return $this->query('SystemTagObjectMapper');
+	}
+
 
 	/**
 	 * Returns the avatar manager, used for avatar functionality
@@ -1063,6 +1127,20 @@ class Server extends SimpleContainer implements IServerContainer {
 	 */
 	public function getNotificationManager() {
 		return $this->query('NotificationManager');
+	}
+
+	/**
+	 * @return \OCP\Comments\ICommentsManager
+	 */
+	public function getCommentsManager() {
+		return $this->query('CommentsManager');
+	}
+
+	/**
+	 * @return \OC\IntegrityCheck\Checker
+	 */
+	public function getIntegrityCodeChecker() {
+		return $this->query('IntegrityCodeChecker');
 	}
 
 	/**

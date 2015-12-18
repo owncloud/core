@@ -1,12 +1,20 @@
 <?php
 
-namespace Tests\Connector\Sabre;
+namespace OCA\DAV\Tests\Unit\Connector\Sabre;
 
 /**
  * Copyright (c) 2015 Vincent Petry <pvince81@owncloud.com>
  * This file is licensed under the Affero General Public License version 3 or
  * later.
  * See the COPYING-README file.
+ */
+
+/**
+ * Class CustomPropertiesBackend
+ *
+ * @group DB
+ *
+ * @package Tests\Connector\Sabre
  */
 class CustomPropertiesBackend extends \Test\TestCase {
 
@@ -16,7 +24,7 @@ class CustomPropertiesBackend extends \Test\TestCase {
 	private $server;
 
 	/**
-	 * @var \Sabre\DAV\ObjectTree
+	 * @var \Sabre\DAV\Tree
 	 */
 	private $tree;
 

@@ -38,6 +38,8 @@ use OCP\Share;
 use OC\URLGenerator;
 
 /**
+ * @group DB
+ *
  * @package OCA\Files_Sharing\Controllers
  */
 class ShareControllerTest extends \Test\TestCase {
@@ -76,7 +78,7 @@ class ShareControllerTest extends \Test\TestCase {
 		// Create a dummy user
 		$this->user = \OC::$server->getSecureRandom()->getLowStrengthGenerator()->generate(12, ISecureRandom::CHAR_LOWER);
 
-		\OC_User::createUser($this->user, $this->user);
+		\OC::$server->getUserManager()->createUser($this->user, $this->user);
 		\OC_Util::tearDownFS();
 		$this->loginAsUser($this->user);
 
@@ -96,7 +98,8 @@ class ShareControllerTest extends \Test\TestCase {
 		\OC_Util::tearDownFS();
 		\OC_User::setUserId('');
 		Filesystem::tearDown();
-		\OC_User::deleteUser($this->user);
+		$user = \OC::$server->getUserManager()->get($this->user);
+		if ($user !== null) { $user->delete(); }
 		\OC_User::setIncognitoMode(false);
 
 		\OC::$server->getSession()->set('public_link_authenticated', '');
@@ -166,6 +169,7 @@ class ShareControllerTest extends \Test\TestCase {
 		$response = $this->shareController->showShare($this->token);
 		$sharedTmplParams = array(
 			'displayName' => $this->user,
+			'owner' => $this->user,
 			'filename' => 'file1.txt',
 			'directory_path' => '/file1.txt',
 			'mimetype' => 'text/plain',
@@ -199,8 +203,7 @@ class ShareControllerTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage No file found belonging to file.
+	 * @expectedException \OCP\Files\NotFoundException
 	 */
 	public function testShowShareWithDeletedFile() {
 		$this->container['UserManager']->expects($this->once())
@@ -216,8 +219,7 @@ class ShareControllerTest extends \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Exception
-	 * @expectedExceptionMessage No file found belonging to file.
+	 * @expectedException \OCP\Files\NotFoundException
 	 */
 	public function testDownloadShareWithDeletedFile() {
 		$this->container['UserManager']->expects($this->once())

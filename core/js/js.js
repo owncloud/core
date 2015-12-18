@@ -119,10 +119,12 @@ var OC={
 	/**
 	 * Gets the base path for the given OCS API service.
 	 * @param {string} service name
+	 * @param {int} version OCS API version
 	 * @return {string} OCS API base path
 	 */
-	linkToOCS: function(service) {
-		return window.location.protocol + '//' + window.location.host + OC.webroot + '/ocs/v1.php/' + service + '/';
+	linkToOCS: function(service, version) {
+		version = (version !== 2) ? 1 : 2;
+		return window.location.protocol + '//' + window.location.host + OC.webroot + '/ocs/v' + version + '.php/' + service + '/';
 	},
 
 	/**
@@ -158,7 +160,11 @@ var OC={
 			url = '/' + url;
 
 		}
-		// TODO save somewhere whether the webserver is able to skip the index.php to have shorter links (e.g. for sharing)
+
+		if(oc_config.modRewriteWorking == true) {
+			return OC.webroot + _build(url, params);
+		}
+
 		return OC.webroot + '/index.php' + _build(url, params);
 	},
 
@@ -168,7 +174,6 @@ var OC={
 	 * @param {string} type the type of the file to link to (e.g. css,img,ajax.template)
 	 * @param {string} file the filename
 	 * @return {string} Absolute URL for a file in an app
-	 * @deprecated use OC.generateUrl() instead
 	 */
 	filePath:function(app,type,file){
 		var isCore=OC.coreApps.indexOf(app)!==-1,
@@ -1236,6 +1241,14 @@ function initCore() {
 	 */
 	moment.locale(OC.getLocale());
 
+	if ($.browser.msie || !!navigator.userAgent.match(/Trident\/7\./)) {
+		// for IE10+ that don't have conditional comments
+		// and IE11 doesn't identify as MSIE any more...
+		$('html').addClass('ie');
+	} else if (!!navigator.userAgent.match(/Edge\/12/)) {
+		// for edge
+		$('html').addClass('edge');
+	}
 
 	/**
 	 * Calls the server periodically to ensure that session doesn't
@@ -1275,23 +1288,7 @@ function initCore() {
 		SVGSupport.checkMimeType();
 	}
 
-	// user menu
-	$('#settings #expand').keydown(function(event) {
-		if (event.which === 13 || event.which === 32) {
-			$('#expand').click();
-		}
-	});
-	$('#settings #expand').click(function(event) {
-		$('#settings #expanddiv').slideToggle(OC.menuSpeed);
-		event.stopPropagation();
-	});
-	$('#settings #expanddiv').click(function(event){
-		event.stopPropagation();
-	});
-	//hide the user menu when clicking outside it
-	$(document).click(function(){
-		$('#settings #expanddiv').slideUp(OC.menuSpeed);
-	});
+	OC.registerMenu($('#expand'), $('#expanddiv'));
 
 	// toggle for menus
 	$(document).on('mouseup.closemenus', function(event) {
@@ -1304,7 +1301,6 @@ function initCore() {
 		OC.hideMenus();
 	});
 
-
 	/**
 	 * Set up the main menu toggle to react to media query changes.
 	 * If the screen is small enough, the main menu becomes a toggle.
@@ -1312,7 +1308,7 @@ function initCore() {
 	 */
 	function setupMainMenu() {
 		// toggle the navigation
-		var $toggle = $('#header .menutoggle');
+		var $toggle = $('#header .header-appname-container');
 		var $navigation = $('#navigation');
 
 		// init the menu
@@ -1435,7 +1431,6 @@ function initCore() {
 		$('body').delegate('#app-content', 'apprendered appresized', adjustControlsWidth);
 
 	}
-
 }
 
 $(document).ready(initCore);
@@ -1630,6 +1625,15 @@ OC.Util = {
 			});
 		});
 		return $el;
+	},
+
+	/**
+	 * Returns whether this is IE
+	 *
+	 * @return {bool} true if this is IE, false otherwise
+	 */
+	isIE: function() {
+		return $('html').hasClass('ie');
 	},
 
 	/**
@@ -1989,7 +1993,8 @@ jQuery.fn.tipsy = function(argument) {
 			placement: 'bottom',
 			delay: { 'show': 0, 'hide': 0},
 			trigger: 'hover',
-			html: false
+			html: false,
+			container: 'body'
 		};
 		if(argument.gravity) {
 			switch(argument.gravity) {

@@ -77,10 +77,9 @@ OC.L10N.register(
     "Authentication" : "Autentimine",
     "Configuration" : "Seadistamine",
     "Available for" : "Saadaval",
+    "Add storage" : "Lisa andmehoidla",
     "Advanced settings" : "Lisavalikud",
     "Delete" : "Kustuta",
-    "Add storage" : "Lisa andmehoidla",
-    "Enable User External Storage" : "Luba kasutajatele väline salvestamine",
     "Allow users to mount the following external storage" : "Võimalda kasutajatel ühendada järgmist välist andmehoidlat"
 },
 "nplurals=2; plural=(n != 1);");

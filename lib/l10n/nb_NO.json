@@ -85,6 +85,7 @@
     "Sharing %s failed, because the backend does not allow shares from type %i" : "Deling av %s feilet, fordi serveren ikke tillater delinger fra type %i",
     "Sharing %s failed, because the file does not exist" : "Deling av %s feilet, fordi filen ikke eksisterer",
     "You are not allowed to share %s" : "Du har ikke lov til å dele %s",
+    "Sharing %s failed, because you can not share with yourself" : "Deling av %s feilet fordi du ikke kan dele med deg selv",
     "Sharing %s failed, because the user %s does not exist" : "Deling av %s feilet, fordi brukeren %s ikke finnes",
     "Sharing %s failed, because the user %s is not a member of any groups that %s is a member of" : "Deling av %s feilet, fordi brukeren %s ikke er medlem av noen grupper som %s er medlem av",
     "Sharing %s failed, because this item is already shared with %s" : "Deling av %s feilet, fordi dette elementet allerede er delt med %s",
@@ -103,6 +104,7 @@
     "Sharing backend %s must implement the interface OCP\\Share_Backend" : "Delings-server %s må implementere grensesnittet OCP\\Share_Backend",
     "Sharing backend %s not found" : "Delings-server %s ikke funnet",
     "Sharing backend for %s not found" : "Delings-server for %s ikke funnet",
+    "Sharing failed, because the user %s is the original sharer" : "Deling feilet fordi brukeren %s er den som delte opprinnelig",
     "Sharing %s failed, because the permissions exceed permissions granted to %s" : "Deling av %s feilet, fordi tillatelsene går utover tillatelsene som er gitt til %s",
     "Sharing %s failed, because resharing is not allowed" : "Deling av %s feilet, fordi videre-deling ikke er tillatt",
     "Sharing %s failed, because the sharing backend for %s could not find its source" : "Deling av %s feilet, fordi delings-serveren for %s ikke kunne finne kilden",
@@ -136,14 +138,13 @@
     "Please ask your server administrator to restart the web server." : "Be server-administratoren om å starte web-serveren på nytt.",
     "PostgreSQL >= 9 required" : "PostgreSQL >= 9 kreves",
     "Please upgrade your database version" : "Vennligst oppgrader versjonen av databasen din",
-    "Error occurred while checking PostgreSQL version" : "Det oppstod en feil ved sjekking av PostgreSQL-versjon",
-    "Please make sure you have PostgreSQL >= 9 or check the logs for more information about the error" : "Sjekk at du har PostgreSQL >= 9 eller sjekk loggene for mer informasjon om feilen",
     "Please change the permissions to 0770 so that the directory cannot be listed by other users." : "Endre tillatelsene til 0770 slik at mappen ikke kan listes av andre brukere.",
     "Data directory (%s) is readable by other users" : "Data-mappen (%s) kan leses av andre brukere",
     "Data directory (%s) must be an absolute path" : "Datamappen (%s) må være en absolutt sti",
     "Check the value of \"datadirectory\" in your configuration" : "Sjekk verdien for \"datadirectory\" i konfigurasjonen din",
     "Data directory (%s) is invalid" : "Data-mappe (%s) er ugyldig",
     "Please check that the data directory contains a file \".ocdata\" in its root." : "Sjekk at det ligger en fil \".ocdata\" i roten av data-mappen.",
-    "Could not obtain lock type %d on \"%s\"." : "Klarte ikke å låse med type %d på \"%s\"."
+    "Could not obtain lock type %d on \"%s\"." : "Klarte ikke å låse med type %d på \"%s\".",
+    "Storage not available" : "Lagringsplass ikke tilgjengelig"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

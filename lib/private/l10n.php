@@ -116,13 +116,17 @@ class OC_L10N implements \OCP\IL10N {
 				$preferred_language = str_replace('-', '_', $preferred_language);
 				foreach ($available as $available_language) {
 					if ($preferred_language === strtolower($available_language)) {
-						self::$language = $available_language;
+						if (!self::$language) {
+							self::$language = $available_language;
+						}
 						return $available_language;
 					}
 				}
 				foreach ($available as $available_language) {
 					if (substr($preferred_language, 0, 2) === $available_language) {
-						self::$language = $available_language;
+						if (!self::$language) {
+							self::$language = $available_language;
+						}
 						return $available_language;
 					}
 				}
@@ -144,6 +148,8 @@ class OC_L10N implements \OCP\IL10N {
 
 		$json = json_decode(file_get_contents($transFile), true);
 		if (!is_array($json)) {
+			$jsonError = json_last_error();
+			\OC::$server->getLogger()->warning("Failed to load $transFile - json error code: $jsonError", ['app' => 'l10n']);
 			return false;
 		}
 
@@ -405,7 +411,7 @@ class OC_L10N implements \OCP\IL10N {
 	 * If nothing works it returns 'en'
 	 */
 	public static function findLanguage($app = null) {
-		if(self::$language != '') {
+		if (self::$language != '' && self::languageExists($app, self::$language)) {
 			return self::$language;
 		}
 

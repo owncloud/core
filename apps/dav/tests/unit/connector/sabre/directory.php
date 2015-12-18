@@ -6,11 +6,16 @@
  * later.
  * See the COPYING-README file.
  */
-class Test_OC_Connector_Sabre_Directory extends \Test\TestCase {
 
-	/** @var OC\Files\View | PHPUnit_Framework_MockObject_MockObject */
+namespace OCA\DAV\Tests\Unit\Connector\Sabre;
+
+use OCP\Files\ForbiddenException;
+
+class Directory extends \Test\TestCase {
+
+	/** @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject */
 	private $view;
-	/** @var OC\Files\FileInfo | PHPUnit_Framework_MockObject_MockObject */
+	/** @var \OC\Files\FileInfo | \PHPUnit_Framework_MockObject_MockObject */
 	private $info;
 
 	protected function setUp() {
@@ -42,6 +47,25 @@ class Test_OC_Connector_Sabre_Directory extends \Test\TestCase {
 		$this->view->expects($this->never())
 			->method('rmdir');
 		$dir = $this->getDir();
+		$dir->delete();
+	}
+
+	/**
+	 * @expectedException \OCA\DAV\Connector\Sabre\Exception\Forbidden
+	 */
+	public function testDeleteForbidden() {
+		// deletion allowed
+		$this->info->expects($this->once())
+			->method('isDeletable')
+			->will($this->returnValue(true));
+
+		// but fails
+		$this->view->expects($this->once())
+			->method('rmdir')
+			->with('sub')
+			->willThrowException(new ForbiddenException('', true));
+
+		$dir = $this->getDir('sub');
 		$dir->delete();
 	}
 

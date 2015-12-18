@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Robin Appelman <icewind@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -27,6 +28,13 @@ use OCA\Files_Sharing\External\MountProvider;
 use OCA\Files_Sharing\Tests\TestCase;
 use Test\Traits\UserTrait;
 
+/**
+ * Class ManagerTest
+ *
+ * @group DB
+ *
+ * @package OCA\Files_Sharing\Tests\External
+ */
 class ManagerTest extends TestCase {
 	use UserTrait;
 

@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -82,6 +83,13 @@ class OfflineUser {
 		$this->db = $db;
 		$this->mapping = $mapping;
 		$this->fetchDetails();
+	}
+
+	/**
+	 * remove the Delete-flag from the user.
+	 */
+	public function unmark() {
+		$this->config->setUserValue($this->ocName, 'user_ldap', 'isDeleted', '0');
 	}
 
 	/**

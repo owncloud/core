@@ -1,6 +1,7 @@
 <?php
 /**
  * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -416,9 +417,9 @@ class User {
 		}
 		//can be null
 		$quotaDefault = $this->connection->ldapQuotaDefault;
-		$quota = !is_null($valueFromLDAP)
-			? $valueFromLDAP
-			: $quotaDefault !== '' ? $quotaDefault : null;
+		$quota = $quotaDefault !== '' ? $quotaDefault : null;
+		$quota = !is_null($valueFromLDAP) ? $valueFromLDAP : $quota;
+
 		if(is_null($valueFromLDAP)) {
 			$quotaAttribute = $this->connection->ldapQuotaAttribute;
 			if(!empty($quotaAttribute)) {

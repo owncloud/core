@@ -13,6 +13,9 @@
 		OC.Share = {};
 	}
 
+	var PASSWORD_PLACEHOLDER = '**********';
+	var PASSWORD_PLACEHOLDER_MESSAGE = t('core', 'Choose a password for the public link');
+
 	var TEMPLATE =
 			'{{#if shareAllowed}}' +
 			'<span class="icon-loading-small hidden"></span>' +
@@ -45,7 +48,7 @@
 			'    {{/if}}' +
 			'{{else}}' +
 			// FIXME: this doesn't belong in this view
-			'<input id="shareWith-{{cid}}" class="shareWithField" type="text" placeholder="{{noSharingPlaceholder}}" disabled="disabled"/>' +
+			'{{#if noSharingPlaceholder}}<input id="shareWith-{{cid}}" class="shareWithField" type="text" placeholder="{{noSharingPlaceholder}}" disabled="disabled"/>{{/if}}' +
 			'{{/if}}'
 		;
 
@@ -133,11 +136,6 @@
 					this.model.saveLinkShare();
 				} else {
 					this.$el.find('.linkPass').slideToggle(OC.menuSpeed);
-					// TODO drop with IE8 drop
-					if($('html').hasClass('ie8')) {
-						this.$el.find('.linkPassText').attr('placeholder', null);
-						this.$el.find('.linkPassText').val('');
-					}
 					this.$el.find('.linkPassText').focus();
 				}
 			} else {
@@ -151,8 +149,9 @@
 		},
 
 		onLinkTextClick: function() {
-			this.focus();
-			this.select();
+			var $el = this.$el.find('.linkText');
+			$el.focus();
+			$el.select();
 		},
 
 		onShowPasswordClick: function() {
@@ -181,7 +180,8 @@
 			var $input = this.$el.find('.linkPassText');
 			$input.removeClass('error');
 			var password = $input.val();
-			if(password === '') {
+			// in IE9 the password might be the placeholder due to bugs in the placeholders polyfill
+			if(password === '' || password === PASSWORD_PLACEHOLDER || password === PASSWORD_PLACEHOLDER_MESSAGE) {
 				return;
 			}
 
@@ -238,15 +238,18 @@
 
 		render: function() {
 			var linkShareTemplate = this.template();
+			var resharingAllowed = this.model.sharePermissionPossible();
 
-			if(    !this.model.sharePermissionPossible()
+			if(!resharingAllowed
 				|| !this.showLink
 				|| !this.configModel.isShareWithLinkAllowed())
 			{
-				this.$el.html(linkShareTemplate({
-					shareAllowed: false,
-					noSharingPlaceholder: t('core', 'Resharing is not allowed')
-				}));
+				var templateData = {shareAllowed: false};
+				if (!resharingAllowed) {
+					// add message
+					templateData.noSharingPlaceholder = t('core', 'Resharing is not allowed');
+				}
+				this.$el.html(linkShareTemplate(templateData));
 				return this;
 			}
 
@@ -275,7 +278,7 @@
 				urlLabel: t('core', 'Link'),
 				enablePasswordLabel: t('core', 'Password protect'),
 				passwordLabel: t('core', 'Password'),
-				passwordPlaceholder: isPasswordSet ? '**********' : t('core', 'Choose a password for the public link'),
+				passwordPlaceholder: isPasswordSet ? PASSWORD_PLACEHOLDER : PASSWORD_PLACEHOLDER_MESSAGE,
 				isPasswordSet: isPasswordSet,
 				showPasswordCheckBox: showPasswordCheckBox,
 				publicUpload: publicUpload && isLinkShare,
@@ -311,6 +314,12 @@
 						.append('<a>' + escapeHTML(item.displayname) + "<br>" + escapeHTML(item.email) + '</a>' )
 						.appendTo( ul );
 				};
+			}
+
+			// TODO drop with IE8 drop
+			if($('html').hasClass('ie8')) {
+				this.$el.find('#linkPassText').removeAttr('placeholder');
+				this.$el.find('#linkPassText').val('');
 			}
 
 			this.delegateEvents();

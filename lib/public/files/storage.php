@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Michael Roth <michael.roth@rz.uni-augsburg.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
@@ -461,4 +462,10 @@ interface Storage {
 	 * @param bool $isAvailable
 	 */
 	public function setAvailability($isAvailable);
+
+	/**
+	 * @param $path path for which to retrieve the owner
+	 * @since 9.0.0
+	 */
+	public function getOwner($path);
 }

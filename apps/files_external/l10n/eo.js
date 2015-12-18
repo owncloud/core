@@ -38,9 +38,8 @@ OC.L10N.register(
     "Folder name" : "Dosierujnomo",
     "Configuration" : "Agordo",
     "Available for" : "Disponebla por",
-    "Delete" : "Forigi",
     "Add storage" : "Aldoni memorilon",
-    "Enable User External Storage" : "Kapabligi malenan memorilon de uzanto",
+    "Delete" : "Forigi",
     "Allow users to mount the following external storage" : "Permesi uzantojn munti la jenajn malenajn memorilojn"
 },
 "nplurals=2; plural=(n != 1);");

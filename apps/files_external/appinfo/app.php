@@ -1,8 +1,8 @@
 <?php
 /**
  * @author Christian Berendt <berendt@b1-systems.de>
- * @author Jan-Christoph Borchardt <hey@jancborchardt.net>
  * @author j-ed <juergen@eisfair.org>
+ * @author Jan-Christoph Borchardt <hey@jancborchardt.net>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
@@ -59,9 +59,6 @@ if (OCP\Config::getAppValue('files_external', 'allow_user_mounting', 'yes') == '
 	"order" => 30,
 	"name" => $l->t('External storage')
 ]);
-
-// connecting hooks
-OCP\Util::connectHook('OC_Filesystem', 'post_initMountPoints', '\OC_Mount_Config', 'initMountPointsHook');
 
 $mountProvider = $appContainer->query('OCA\Files_External\Config\ConfigAdapter');
 \OC::$server->getMountProviderCollection()->registerProvider($mountProvider);

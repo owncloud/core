@@ -16,6 +16,7 @@ OC.L10N.register(
     "Not permitted to use authentication mechanism \"%s\"" : "Μη επιτρεπόμενος μηχανισμός πιστοποίησης \"%s\"",
     "Unsatisfied backend parameters" : "Ελλιπείς παράμετροι συστήματος",
     "Unsatisfied authentication mechanism parameters" : "Ελλιπείς παράμετροι μηχανισμού πιστοποίησης",
+    "Insufficient data: %s" : "Μη επαρκή δεδομένα: %s",
     "Personal" : "Προσωπικά",
     "System" : "Σύστημα",
     "Grant access" : "Παροχή πρόσβασης",
@@ -98,10 +99,10 @@ OC.L10N.register(
     "Authentication" : "Πιστοποίηση",
     "Configuration" : "Ρυθμίσεις",
     "Available for" : "Διαθέσιμο για",
+    "Add storage" : "Προσθηκη αποθηκευσης",
     "Advanced settings" : "Ρυθμίσεις για προχωρημένους",
     "Delete" : "Διαγραφή",
-    "Add storage" : "Προσθηκη αποθηκευσης",
-    "Enable User External Storage" : "Ενεργοποίηση Εξωτερικού Αποθηκευτικού Χώρου Χρήστη",
+    "Allow users to mount external storage" : "Να επιτρέπεται στους χρήστες η σύνδεση εξωτερικού χώρου",
     "Allow users to mount the following external storage" : "Χορήγηση άδειας στους χρήστες να συνδέσουν τα παρακάτω εξωτερικά μέσα αποθήκευσης"
 },
 "nplurals=2; plural=(n != 1);");

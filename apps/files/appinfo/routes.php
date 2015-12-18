@@ -2,7 +2,7 @@
 /**
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Lukas Reschke <lukas@owncloud.com>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Tobias Kaminsky <tobias@kaminsky.me>
  * @author Tom Needham <tom@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
@@ -48,14 +48,17 @@ $application->registerRoutes(
 				'verb' => 'GET',
 				'requirements' => array('tagName' => '.+'),
 			),
+			[
+				'name' => 'view#index',
+				'url' => '/',
+				'verb' => 'GET',
+			],
 		)
 	)
 );
 
 /** @var $this \OC\Route\Router */
 
-$this->create('files_index', '/')
-	->actionInclude('files/index.php');
 $this->create('files_ajax_delete', 'ajax/delete.php')
 	->actionInclude('files/ajax/delete.php');
 $this->create('files_ajax_download', 'ajax/download.php')
@@ -72,8 +75,6 @@ $this->create('files_ajax_newfolder', 'ajax/newfolder.php')
 	->actionInclude('files/ajax/newfolder.php');
 $this->create('files_ajax_rename', 'ajax/rename.php')
 	->actionInclude('files/ajax/rename.php');
-$this->create('files_ajax_scan', 'ajax/scan.php')
-	->actionInclude('files/ajax/scan.php');
 $this->create('files_ajax_upload', 'ajax/upload.php')
 	->actionInclude('files/ajax/upload.php');
 

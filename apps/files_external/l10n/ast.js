@@ -53,9 +53,8 @@ OC.L10N.register(
     "Folder name" : "Nome de la carpeta",
     "Configuration" : "Configuración",
     "Available for" : "Disponible pa",
-    "Delete" : "Desaniciar",
     "Add storage" : "Amestar almacenamientu",
-    "Enable User External Storage" : "Habilitar almacenamientu esterno d'usuariu",
+    "Delete" : "Desaniciar",
     "Allow users to mount the following external storage" : "Permitir a los usuarios montar el siguiente almacenamientu esternu"
 },
 "nplurals=2; plural=(n != 1);");

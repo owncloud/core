@@ -57,9 +57,8 @@ OC.L10N.register(
     "Authentication" : "احراز هویت",
     "Configuration" : "پیکربندی",
     "Available for" : "در دسترس برای",
-    "Advanced settings" : "تنظیمات پیشرفته",
-    "Delete" : "حذف",
     "Add storage" : "اضافه کردن حافظه",
-    "Enable User External Storage" : "فعال سازی حافظه خارجی کاربر"
+    "Advanced settings" : "تنظیمات پیشرفته",
+    "Delete" : "حذف"
 },
 "nplurals=1; plural=0;");

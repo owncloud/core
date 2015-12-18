@@ -4,8 +4,9 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
  * @license AGPL-3.0
@@ -29,6 +30,7 @@ use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\DataDisplayResponse;
+use OCP\Files\NotFoundException;
 use OCP\IAvatarManager;
 use OCP\ILogger;
 use OCP\IL10N;
@@ -111,20 +113,23 @@ class AvatarController extends Controller {
 			$size = 64;
 		}
 
-		$avatar = $this->avatarManager->getAvatar($userId);
-		$image = $avatar->get($size);
-
-		if ($image instanceof \OCP\IImage) {
-			$resp = new DataDisplayResponse($image->data(),
+		try {
+			$avatar = $this->avatarManager->getAvatar($userId)->getFile($size);
+			$resp = new DataDisplayResponse($avatar->getContent(),
 				Http::STATUS_OK,
-				['Content-Type' => $image->mimeType()]);
-			$resp->setETag(crc32($image->data()));
-		} else {
+				['Content-Type' => $avatar->getMimeType()]);
+			$resp->setETag($avatar->getEtag());
+		} catch (NotFoundException $e) {
 			$user = $this->userManager->get($userId);
-			$userName = $user ? $user->getDisplayName() : '';
 			$resp = new DataResponse([
 				'data' => [
-					'displayname' => $userName,
+					'displayname' => $user->getDisplayName(),
+				],
+			]);
+		} catch (\Exception $e) {
+			$resp = new DataResponse([
+				'data' => [
+					'displayname' => '',
 				],
 			]);
 		}

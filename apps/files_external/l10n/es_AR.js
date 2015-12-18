@@ -22,8 +22,7 @@ OC.L10N.register(
     "External Storage" : "Almacenamiento externo",
     "Folder name" : "Nombre de la carpeta",
     "Configuration" : "Configuración",
-    "Delete" : "Borrar",
     "Add storage" : "Añadir almacenamiento",
-    "Enable User External Storage" : "Habilitar almacenamiento de usuario externo"
+    "Delete" : "Borrar"
 },
 "nplurals=2; plural=(n != 1);");

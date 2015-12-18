@@ -247,7 +247,7 @@ class Encryption implements IEncryptionModule {
 	 * encrypt data
 	 *
 	 * @param string $data you want to encrypt
-	 * @return mixed encrypted data
+	 * @return string encrypted data
 	 */
 	public function encrypt($data) {
 
@@ -312,7 +312,7 @@ class Encryption implements IEncryptionModule {
 	 * decrypt data
 	 *
 	 * @param string $data you want to decrypt
-	 * @return mixed decrypted data
+	 * @return string decrypted data
 	 * @throws DecryptionFailedException
 	 */
 	public function decrypt($data) {
@@ -378,6 +378,12 @@ class Encryption implements IEncryptionModule {
 	 * @return boolean
 	 */
 	public function shouldEncrypt($path) {
+		if ($this->util->shouldEncryptHomeStorage() === false) {
+			$storage = $this->util->getStorage($path);
+			if ($storage->instanceOfStorage('\OCP\Files\IHomeStorage')) {
+				return false;
+			}
+		}
 		$parts = explode('/', $path);
 		if (count($parts) < 4) {
 			return false;

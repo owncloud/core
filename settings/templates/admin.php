@@ -56,7 +56,7 @@ if ($_['mail_smtpmode'] == 'qmail') {
 			if (isset($form['anchor'])) {
 				$anchor = '#' . $form['anchor'];
 				$sectionName = $form['section-name'];
-				print_unescaped(sprintf("<li><a href='%s'>%s</a></li>", OC_Util::sanitizeHTML($anchor), OC_Util::sanitizeHTML($sectionName)));
+				print_unescaped(sprintf("<li><a href='%s'>%s</a></li>", \OCP\Util::sanitizeHTML($anchor), \OCP\Util::sanitizeHTML($sectionName)));
 			}
 		}?>
 	</ul>
@@ -181,13 +181,7 @@ if ($_['cronErrors']) {
 	<div class="loading"></div>
 	<ul class="errors hidden"></ul>
 	<ul class="warnings hidden"></ul>
-	<ul class="info hidden">
-		<?php if ($_['fileLockingType'] === 'db'):?>
-		<li>
-			<?php print_unescaped($l->t('Transactional file locking is using the database as locking backend, for best performance it\'s advised to configure a memcache for locking. See the <a target="_blank" href="%s">documentation ↗</a> for more information.', link_to_docs('admin-transactional-locking'))); ?>
-		</li>
-		<?php endif; ?>
-	</ul>
+	<ul class="info hidden"></ul>
 	<p class="hint hidden">
 		<?php print_unescaped($l->t('Please double check the <a target="_blank" href="%s">installation guides ↗</a>, and check for any errors or warnings in the <a href="#log-section">log</a>.', link_to_docs('admin-install'))); ?>
 	</p>
@@ -290,18 +284,18 @@ if ($_['cronErrors']) {
 			$relative_time = relative_modified_date($_['lastcron']);
 			$absolute_time = OC_Util::formatDate($_['lastcron']);
 			if (time() - $_['lastcron'] <= 3600): ?>
-				<span class="cronstatus success"></span>
+				<span class="status success"></span>
 				<span class="crondate" original-title="<?php p($absolute_time);?>">
 					<?php p($l->t("Last cron job execution: %s.", [$relative_time]));?>
 				</span>
 			<?php else: ?>
-				<span class="cronstatus error"></span>
+				<span class="status error"></span>
 				<span class="crondate" original-title="<?php p($absolute_time);?>">
 					<?php p($l->t("Last cron job execution: %s. Something seems wrong.", [$relative_time]));?>
 				</span>
 			<?php endif;
 		else: ?>
-			<span class="cronstatus error"></span>
+			<span class="status error"></span>
 			<?php p($l->t("Cron was not executed yet!"));
 		endif; ?>
 	</p>
@@ -491,15 +485,6 @@ if ($_['cronErrors']) {
 
 <div class="section" id="log-section">
 	<h2><?php p($l->t('Log'));?></h2>
-	<?php p($l->t('Log level'));?> <select name='loglevel' id='loglevel'>
-<?php for ($i = 0; $i < 5; $i++):
-	$selected = '';
-	if ($i == $_['loglevel']):
-		$selected = 'selected="selected"';
-	endif; ?>
-		<option value='<?php p($i)?>' <?php p($selected) ?>><?php p($levelLabels[$i])?></option>
-<?php endfor;?>
-</select>
 <?php if ($_['showLog'] && $_['doesLogFileExist']): ?>
 	<table id="log" class="grid">
 		<?php foreach ($_['entries'] as $entry): ?>
@@ -537,6 +522,16 @@ if ($_['cronErrors']) {
 	</em>
 	<?php endif; ?>
 	<?php endif; ?>
+
+	<p><?php p($l->t('What to log'));?> <select name='loglevel' id='loglevel'>
+	<?php for ($i = 0; $i < 5; $i++):
+		$selected = '';
+		if ($i == $_['loglevel']):
+			$selected = 'selected="selected"';
+		endif; ?>
+			<option value='<?php p($i)?>' <?php p($selected) ?>><?php p($levelLabels[$i])?></option>
+	<?php endfor;?>
+	</select></p>
 </div>
 
 <div class="section" id="admin-tips">

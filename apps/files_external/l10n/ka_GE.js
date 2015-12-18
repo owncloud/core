@@ -21,8 +21,7 @@ OC.L10N.register(
     "External Storage" : "ექსტერნალ საცავი",
     "Folder name" : "ფოლდერის სახელი",
     "Configuration" : "კონფიგურაცია",
-    "Delete" : "წაშლა",
     "Add storage" : "საცავის დამატება",
-    "Enable User External Storage" : "მომხმარებლის ექსტერნალ საცავის აქტივირება"
+    "Delete" : "წაშლა"
 },
 "nplurals=1; plural=0;");

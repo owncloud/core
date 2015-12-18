@@ -38,8 +38,8 @@ class Status extends Base {
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$values = array(
-			'installed' => (bool) \OC_Config::getValue('installed'),
-			'version' => implode('.', \OC_Util::getVersion()),
+			'installed' => (bool) \OC::$server->getConfig()->getSystemValue('installed', false),
+			'version' => implode('.', \OCP\Util::getVersion()),
 			'versionstring' => \OC_Util::getVersionString(),
 			'edition' => \OC_Util::getEditionString(),
 		);

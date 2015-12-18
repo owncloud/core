@@ -40,11 +40,15 @@ $serverFactory = new \OCA\DAV\Connector\Sabre\ServerFactory(
 	\OC::$server->getUserSession(),
 	\OC::$server->getMountManager(),
 	\OC::$server->getTagManager(),
-	\OC::$server->getEventDispatcher()
+	\OC::$server->getEventDispatcher(),
+	\OC::$server->getRequest()
 );
 
 // Backends
-$authBackend = new \OCA\DAV\Connector\Sabre\Auth();
+$authBackend = new \OCA\DAV\Connector\Sabre\Auth(
+	\OC::$server->getSession(),
+	\OC::$server->getUserSession()
+);
 $requestUri = \OC::$server->getRequest()->getRequestUri();
 
 $server = $serverFactory->createServer($baseuri, $requestUri, $authBackend, function() {

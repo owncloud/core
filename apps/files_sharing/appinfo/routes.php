@@ -5,7 +5,7 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
  * @copyright Copyright (c) 2015, ownCloud, Inc.
@@ -61,29 +61,31 @@ $this->create('sharing_external_add', '/external')
 
 //TODO: SET: mail notification, waiting for PR #4689 to be accepted
 
+$OCSShare = new \OCA\Files_Sharing\API\OCSShareWrapper();
+
 API::register('get',
 		'/apps/files_sharing/api/v1/shares',
-		array('\OCA\Files_Sharing\API\Local', 'getAllShares'),
+		[$OCSShare, 'getAllShares'],
 		'files_sharing');
 
 API::register('post',
 		'/apps/files_sharing/api/v1/shares',
-		array('\OCA\Files_Sharing\API\Local', 'createShare'),
+		[$OCSShare, 'createShare'],
 		'files_sharing');
 
 API::register('get',
 		'/apps/files_sharing/api/v1/shares/{id}',
-		array('\OCA\Files_Sharing\API\Local', 'getShare'),
+		[$OCSShare, 'getShare'],
 		'files_sharing');
 
 API::register('put',
 		'/apps/files_sharing/api/v1/shares/{id}',
-		array('\OCA\Files_Sharing\API\Local', 'updateShare'),
+		[$OCSShare, 'updateShare'],
 		'files_sharing');
 
 API::register('delete',
 		'/apps/files_sharing/api/v1/shares/{id}',
-		array('\OCA\Files_Sharing\API\Local', 'deleteShare'),
+		[$OCSShare, 'deleteShare'],
 		'files_sharing');
 
 API::register('get',
@@ -130,3 +132,4 @@ API::register('get',
 		'/apps/files_sharing/api/v1/sharees',
 		[$sharees, 'search'],
 		'files_sharing', API::USER_AUTH);
+

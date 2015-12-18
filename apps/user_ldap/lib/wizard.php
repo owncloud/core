@@ -631,12 +631,12 @@ class Wizard extends LDAPUtility {
 			throw new \Exception('missing placeholder');
 		}
 
-		$users = $this->access->fetchUsersByLoginName($loginName);
+		$users = $this->access->countUsersByLoginName($loginName);
 		if($this->ldap->errno($cr) !== 0) {
 			throw new \Exception($this->ldap->error($cr));
 		}
 		$filter = str_replace('%uid', $loginName, $this->access->connection->ldapLoginFilter);
-		$this->result->addChange('ldap_test_loginname', count($users));
+		$this->result->addChange('ldap_test_loginname', $users);
 		$this->result->addChange('ldap_test_effective_filter', $filter);
 		return $this->result;
 	}
@@ -1290,9 +1290,13 @@ class Wizard extends LDAPUtility {
 		if(!is_null($this->cr)) {
 			return $this->cr;
 		}
-		$cr = $this->ldap->connect(
-			$this->configuration->ldapHost.':'.$this->configuration->ldapPort,
-			$this->configuration->ldapPort);
+
+		$host = $this->configuration->ldapHost;
+		if(strpos($host, '://') !== false) {
+			//ldap_connect ignores port parameter when URLs are passed
+			$host .= ':' . $this->configuration->ldapPort;
+		}
+		$cr = $this->ldap->connect($host, $this->configuration->ldapPort);
 
 		$this->ldap->setOption($cr, LDAP_OPT_PROTOCOL_VERSION, 3);
 		$this->ldap->setOption($cr, LDAP_OPT_REFERRALS, 0);
