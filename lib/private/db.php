@@ -160,7 +160,7 @@ class OC_DB {
 	/**
 	 * gets last value of autoincrement
 	 * @param string $table The optional table name (will replace *PREFIX*) and add sequence suffix
-	 * @return string id
+	 * @return integer id
 	 * @throws \OC\DatabaseException
 	 *
 	 * \Doctrine\DBAL\Connection lastInsertId
@@ -196,7 +196,6 @@ class OC_DB {
 	/**
 	 * saves database schema to xml file
 	 * @param string $file name of file
-	 * @param int $mode
 	 * @return bool
 	 *
 	 * TODO: write more documentation
@@ -240,7 +239,7 @@ class OC_DB {
 	 * simulate the database schema update
 	 * @param string $file file to read structure from
 	 * @throws Exception
-	 * @return string|boolean
+	 * @return boolean
 	 */
 	public static function simulateUpdateDbFromStructure($file) {
 		$schemaManager = self::getMDB2SchemaManager();

@@ -864,7 +864,7 @@ class Wizard extends LDAPUtility {
 	 * @param integer $filterType int, for which use case the filter shall be created
 	 * can be any of self::LFILTER_USER_LIST, self::LFILTER_LOGIN or
 	 * self::LFILTER_GROUP_LIST
-	 * @return string|false string with the filter on success, false otherwise
+	 * @return string string with the filter on success, false otherwise
 	 * @throws \Exception
 	 */
 	private function composeLdapFilter($filterType) {
@@ -1107,7 +1107,7 @@ class Wizard extends LDAPUtility {
 	}
 
 	/**
-	 * @param array $reqs
+	 * @param string[] $reqs
 	 * @return bool
 	 */
 	private function checkRequirements($reqs) {

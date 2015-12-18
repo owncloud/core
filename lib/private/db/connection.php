@@ -167,7 +167,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * If an SQLLogger is configured, the execution is logged.
 	 *
 	 * @param string                                      $query  The SQL query to execute.
-	 * @param array                                       $params The parameters to bind to the query, if any.
+	 * @param string[]                                       $params The parameters to bind to the query, if any.
 	 * @param array                                       $types  The types the previous parameters are in.
 	 * @param \Doctrine\DBAL\Cache\QueryCacheProfile|null $qcp    The query cache profile, optional.
 	 *
@@ -212,7 +212,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * columns or sequences.
 	 *
 	 * @param string $seqName Name of the sequence object from which the ID should be returned.
-	 * @return string A string representation of the last inserted ID.
+	 * @return integer A string representation of the last inserted ID.
 	 */
 	public function lastInsertId($seqName = null) {
 		if ($seqName) {
