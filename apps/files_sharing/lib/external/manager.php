@@ -423,14 +423,15 @@ class Manager {
 
 	/**
 	 * @param int $fileId file id of the root of the outgoing share
+	 * @param string $userId
 	 * @return mixed share of false
 	 */
-	public function getOutgoingShare($fileId) {
+	public function getOutgoingShare($fileId, $userId) {
 		$getShare = $this->connection->prepare('
 			SELECT `id`, `share_with`, `token`
 			FROM  `*PREFIX*share`
 			WHERE `file_source` = ? AND `uid_owner` = ? AND `share_type` = 6');
-		$result = $getShare->execute([$fileId, $this->uid]);
+		$result = $getShare->execute([$fileId, $userId]);
 
 		return $result ? $getShare->fetch() : false;
 	}

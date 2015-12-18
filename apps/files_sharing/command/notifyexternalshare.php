@@ -27,7 +27,7 @@ use OCA\Files_Sharing\External\Manager;
 use OCP\Command\ICommand;
 use OCP\Files\Node;
 
-class Expire implements ICommand {
+class NotifyExternalShare implements ICommand {
 	use FileAccess;
 
 	/**
@@ -36,17 +36,17 @@ class Expire implements ICommand {
 	private $user;
 
 	/**
-	 * @var string
+	 * @var int
 	 */
-	private $path;
+	private $fileId;
 
 	/**
 	 * @param string $user
-	 * @param string $path root path of the external share
+	 * @param int $fileId file id of the root of the external share
 	 */
-	function __construct($user, $path) {
+	function __construct($user, $fileId) {
 		$this->user = $user;
-		$this->path = $path;
+		$this->fileId = $fileId;
 	}
 
 	public function handle() {
@@ -58,10 +58,14 @@ class Expire implements ICommand {
 		$user = $userManager->get($this->user);
 
 		$userFolder = $this->getUserFolder($user);
-		$node = $userFolder->get($this->path);
+		$nodes = $userFolder->getById($this->fileId);
+		if (count($nodes) === 0) {
+			return;
+		}
+		$node = $nodes[0];
 		/** @var Manager $externalManager */
 		$externalManager = $application->getContainer()->query('ExternalManager');
-		$info = $externalManager->getOutgoingShare($node->getId());
+		$info = $externalManager->getOutgoingShare($this->fileId, $this->user);
 		if (!$info) {
 			return;
 		}
