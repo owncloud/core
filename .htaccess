@@ -74,15 +74,3 @@ Options -Indexes
 <IfModule pagespeed_module>
   ModPagespeed Off
 </IfModule>
-
-ErrorDocument 403 /core/templates/403.php
-ErrorDocument 404 /core/templates/404.php
-<IfModule mod_rewrite.c>
-  RewriteBase /
-  <IfModule mod_env.c>
-    SetEnv front_controller_active true
-    <IfModule mod_dir.c>
-      DirectorySlash off
-    </IfModule>
-  </IfModule>
-</IfModule>
