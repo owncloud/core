@@ -10,7 +10,15 @@ namespace Test\Files\Cache;
 
 use \OC\Files\Filesystem as Filesystem;
 use OC\Files\Storage\Temporary;
+use OC\Files\View;
 
+/**
+ * Class UpdaterLegacy
+ *
+ * @group DB
+ *
+ * @package Test\Files\Cache
+ */
 class UpdaterLegacy extends \Test\TestCase {
 	/**
 	 * @var \OC\Files\Storage\Storage $storage
@@ -49,7 +57,7 @@ class UpdaterLegacy extends \Test\TestCase {
 			self::$user = $this->getUniqueID();
 		}
 
-		\OC_User::createUser(self::$user, 'password');
+		\OC::$server->getUserManager()->createUser(self::$user, 'password');
 		$this->loginAsUser(self::$user);
 
 		Filesystem::init(self::$user, '/' . self::$user . '/files');
@@ -64,7 +72,10 @@ class UpdaterLegacy extends \Test\TestCase {
 		if ($this->cache) {
 			$this->cache->clear();
 		}
-		$result = \OC_User::deleteUser(self::$user);
+
+		$result = false;
+		$user = \OC::$server->getUserManager()->get(self::$user);
+		if ($user !== null) { $result = $user->delete(); }
 		$this->assertTrue($result);
 
 		$this->logout();
@@ -111,7 +122,8 @@ class UpdaterLegacy extends \Test\TestCase {
 		$storage2->getScanner()->scan(''); //initialize etags
 		$cache2 = $storage2->getCache();
 		Filesystem::mount($storage2, array(), '/' . self::$user . '/files/folder/substorage');
-		$folderCachedData = $this->cache->get('folder');
+		$view = new View('/' . self::$user . '/files');
+		$folderCachedData = $view->getFileInfo('folder');
 		$substorageCachedData = $cache2->get('');
 		Filesystem::file_put_contents('folder/substorage/foo.txt', 'asd');
 		$this->assertTrue($cache2->inCache('foo.txt'));
@@ -124,7 +136,7 @@ class UpdaterLegacy extends \Test\TestCase {
 		$this->assertInternalType('string', $cachedData['etag']);
 		$this->assertNotSame($substorageCachedData['etag'], $cachedData['etag']);
 
-		$cachedData = $this->cache->get('folder');
+		$cachedData = $view->getFileInfo('folder');
 		$this->assertInternalType('string', $folderCachedData['etag']);
 		$this->assertInternalType('string', $cachedData['etag']);
 		$this->assertNotSame($folderCachedData['etag'], $cachedData['etag']);
@@ -168,8 +180,9 @@ class UpdaterLegacy extends \Test\TestCase {
 		$cache2 = $storage2->getCache();
 		Filesystem::mount($storage2, array(), '/' . self::$user . '/files/folder/substorage');
 		Filesystem::file_put_contents('folder/substorage/foo.txt', 'asd');
+		$view = new View('/' . self::$user . '/files');
 		$this->assertTrue($cache2->inCache('foo.txt'));
-		$folderCachedData = $this->cache->get('folder');
+		$folderCachedData = $view->getFileInfo('folder');
 		$substorageCachedData = $cache2->get('');
 		Filesystem::unlink('folder/substorage/foo.txt');
 		$this->assertFalse($cache2->inCache('foo.txt'));
@@ -180,7 +193,7 @@ class UpdaterLegacy extends \Test\TestCase {
 		$this->assertNotSame($substorageCachedData['etag'], $cachedData['etag']);
 		$this->assertGreaterThanOrEqual($substorageCachedData['mtime'], $cachedData['mtime']);
 
-		$cachedData = $this->cache->get('folder');
+		$cachedData = $view->getFileInfo('folder');
 		$this->assertInternalType('string', $folderCachedData['etag']);
 		$this->assertInternalType('string', $cachedData['etag']);
 		$this->assertNotSame($folderCachedData['etag'], $cachedData['etag']);
@@ -222,8 +235,9 @@ class UpdaterLegacy extends \Test\TestCase {
 		$cache2 = $storage2->getCache();
 		Filesystem::mount($storage2, array(), '/' . self::$user . '/files/folder/substorage');
 		Filesystem::file_put_contents('folder/substorage/foo.txt', 'asd');
+		$view = new View('/' . self::$user . '/files');
 		$this->assertTrue($cache2->inCache('foo.txt'));
-		$folderCachedData = $this->cache->get('folder');
+		$folderCachedData = $view->getFileInfo('folder');
 		$substorageCachedData = $cache2->get('');
 		$fooCachedData = $cache2->get('foo.txt');
 		Filesystem::rename('folder/substorage/foo.txt', 'folder/substorage/bar.txt');
@@ -240,7 +254,7 @@ class UpdaterLegacy extends \Test\TestCase {
 		// rename can cause mtime change - invalid assert
 //		$this->assertEquals($mtime, $cachedData['mtime']);
 
-		$cachedData = $this->cache->get('folder');
+		$cachedData = $view->getFileInfo('folder');
 		$this->assertInternalType('string', $folderCachedData['etag']);
 		$this->assertInternalType('string', $cachedData['etag']);
 		$this->assertNotSame($folderCachedData['etag'], $cachedData['etag']);
@@ -284,37 +298,6 @@ class UpdaterLegacy extends \Test\TestCase {
 		$this->assertInternalType('string', $rootCachedData['etag']);
 		$this->assertInternalType('string', $cachedData['etag']);
 		$this->assertNotSame($rootCachedData['etag'], $cachedData['etag']);
-		$this->assertEquals($time, $cachedData['mtime']);
-	}
-
-	public function testTouchWithMountPoints() {
-		$storage2 = new \OC\Files\Storage\Temporary(array());
-		$cache2 = $storage2->getCache();
-		Filesystem::mount($storage2, array(), '/' . self::$user . '/files/folder/substorage');
-		Filesystem::file_put_contents('folder/substorage/foo.txt', 'asd');
-		$this->assertTrue($cache2->inCache('foo.txt'));
-		$folderCachedData = $this->cache->get('folder');
-		$substorageCachedData = $cache2->get('');
-		$fooCachedData = $cache2->get('foo.txt');
-		$cachedData = $cache2->get('foo.txt');
-		$time = 1371006070;
-		$this->cache->put('folder', ['mtime' => $time - 100]);
-		Filesystem::touch('folder/substorage/foo.txt', $time);
-		$cachedData = $cache2->get('foo.txt');
-		$this->assertInternalType('string', $fooCachedData['etag']);
-		$this->assertInternalType('string', $cachedData['etag']);
-		$this->assertNotSame($fooCachedData['etag'], $cachedData['etag']);
-		$this->assertEquals($time, $cachedData['mtime']);
-
-		$cachedData = $cache2->get('');
-		$this->assertInternalType('string', $substorageCachedData['etag']);
-		$this->assertInternalType('string', $cachedData['etag']);
-		$this->assertNotSame($substorageCachedData['etag'], $cachedData['etag']);
-
-		$cachedData = $this->cache->get('folder');
-		$this->assertInternalType('string', $folderCachedData['etag']);
-		$this->assertInternalType('string', $cachedData['etag']);
-		$this->assertNotSame($folderCachedData['etag'], $cachedData['etag']);
 		$this->assertEquals($time, $cachedData['mtime']);
 	}
 

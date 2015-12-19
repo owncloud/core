@@ -8,7 +8,7 @@
  */
 class Test_Util extends \Test\TestCase {
 	public function testGetVersion() {
-		$version = \OC_Util::getVersion();
+		$version = \OCP\Util::getVersion();
 		$this->assertTrue(is_array($version));
 		foreach ($version as $num) {
 			$this->assertTrue(is_int($num));
@@ -95,16 +95,22 @@ class Test_Util extends \Test\TestCase {
 	}
 
 	function testSanitizeHTML() {
-		$badArray = array(
+		$badArray = [
 			'While it is unusual to pass an array',
 			'this function actually <blink>supports</blink> it.',
-			'And therefore there needs to be a <script>alert("Unit"+\'test\')</script> for it!'
-		);
-		$goodArray = array(
+			'And therefore there needs to be a <script>alert("Unit"+\'test\')</script> for it!',
+			[
+				'And It Even May <strong>Nest</strong>',
+			],
+		];
+		$goodArray = [
 			'While it is unusual to pass an array',
 			'this function actually &lt;blink&gt;supports&lt;/blink&gt; it.',
-			'And therefore there needs to be a &lt;script&gt;alert(&quot;Unit&quot;+&#039;test&#039;)&lt;/script&gt; for it!'
-		);
+			'And therefore there needs to be a &lt;script&gt;alert(&quot;Unit&quot;+&#039;test&#039;)&lt;/script&gt; for it!',
+			[
+				'And It Even May &lt;strong&gt;Nest&lt;/strong&gt;'
+			],
+		];
 		$result = OC_Util::sanitizeHTML($badArray);
 		$this->assertEquals($goodArray, $result);
 
@@ -143,76 +149,29 @@ class Test_Util extends \Test\TestCase {
 	}
 
 	function testGetDefaultEmailAddressFromConfig() {
-		OC_Config::setValue('mail_domain', 'example.com');
+		$config = \OC::$server->getConfig();
+		$config->setSystemValue('mail_domain', 'example.com');
 		$email = \OCP\Util::getDefaultEmailAddress("no-reply");
 		$this->assertEquals('no-reply@example.com', $email);
-		OC_Config::deleteKey('mail_domain');
+		$config->deleteSystemValue('mail_domain');
 	}
 
 	function testGetConfiguredEmailAddressFromConfig() {
-		OC_Config::setValue('mail_domain', 'example.com');
-		OC_Config::setValue('mail_from_address', 'owncloud');
+		$config = \OC::$server->getConfig();
+		$config->setSystemValue('mail_domain', 'example.com');
+		$config->setSystemValue('mail_from_address', 'owncloud');
 		$email = \OCP\Util::getDefaultEmailAddress("no-reply");
 		$this->assertEquals('owncloud@example.com', $email);
-		OC_Config::deleteKey('mail_domain');
-		OC_Config::deleteKey('mail_from_address');
+		$config->deleteSystemValue('mail_domain');
+		$config->deleteSystemValue('mail_from_address');
 	}
 
 	function testGetInstanceIdGeneratesValidId() {
-		OC_Config::deleteKey('instanceid');
+		\OC::$server->getConfig()->deleteSystemValue('instanceid');
 		$instanceId = OC_Util::getInstanceId();
 		$this->assertStringStartsWith('oc', $instanceId);
 		$matchesRegex = preg_match('/^[a-z0-9]+$/', $instanceId);
 		$this->assertSame(1, $matchesRegex);
-	}
-
-	/**
-	 * Tests that the home storage is not wrapped when no quota exists.
-	 */
-	function testHomeStorageWrapperWithoutQuota() {
-		$user1 = $this->getUniqueID();
-		\OC_User::createUser($user1, 'test');
-		\OC::$server->getConfig()->setUserValue($user1, 'files', 'quota', 'none');
-		\OC_User::setUserId($user1);
-
-		\OC_Util::setupFS($user1);
-
-		$userMount = \OC\Files\Filesystem::getMountManager()->find('/' . $user1 . '/');
-		$this->assertNotNull($userMount);
-		$this->assertNotInstanceOf('\OC\Files\Storage\Wrapper\Quota', $userMount->getStorage());
-
-		// clean up
-		\OC_User::setUserId('');
-		\OC_User::deleteUser($user1);
-		\OC::$server->getConfig()->deleteAllUserValues($user1);
-		\OC_Util::tearDownFS();
-	}
-
-	/**
-	 * Tests that the home storage is not wrapped when no quota exists.
-	 */
-	function testHomeStorageWrapperWithQuota() {
-		$user1 = $this->getUniqueID();
-		\OC_User::createUser($user1, 'test');
-		\OC::$server->getConfig()->setUserValue($user1, 'files', 'quota', '1024');
-		\OC_User::setUserId($user1);
-
-		\OC_Util::setupFS($user1);
-
-		$userMount = \OC\Files\Filesystem::getMountManager()->find('/' . $user1 . '/');
-		$this->assertNotNull($userMount);
-		$this->assertTrue($userMount->getStorage()->instanceOfStorage('\OC\Files\Storage\Wrapper\Quota'));
-
-		// ensure that root wasn't wrapped
-		$rootMount = \OC\Files\Filesystem::getMountManager()->find('/');
-		$this->assertNotNull($rootMount);
-		$this->assertNotInstanceOf('\OC\Files\Storage\Wrapper\Quota', $rootMount->getStorage());
-
-		// clean up
-		\OC_User::setUserId('');
-		\OC_User::deleteUser($user1);
-		\OC::$server->getConfig()->deleteAllUserValues($user1);
-		\OC_Util::tearDownFS();
 	}
 
 	/**
@@ -289,38 +248,30 @@ class Test_Util extends \Test\TestCase {
 	 * @param bool $expected expected result
 	 */
 	function testIsSharingDisabledForUser($groups, $membership, $excludedGroups, $expected) {
-		$uid = "user1";
-		\OC_User::setUserId($uid);
+		$config = $this->getMockBuilder('OCP\IConfig')->disableOriginalConstructor()->getMock();
+		$groupManager = $this->getMockBuilder('OCP\IGroupManager')->disableOriginalConstructor()->getMock();
+		$user = $this->getMockBuilder('OCP\IUser')->disableOriginalConstructor()->getMock();
 
-		\OC_User::createUser($uid, "passwd");
+		$config
+				->expects($this->at(0))
+				->method('getAppValue')
+				->with('core', 'shareapi_exclude_groups', 'no')
+				->will($this->returnValue('yes'));
+		$config
+				->expects($this->at(1))
+				->method('getAppValue')
+				->with('core', 'shareapi_exclude_groups_list')
+				->will($this->returnValue(json_encode($excludedGroups)));
 
-		foreach ($groups as $group) {
-			\OC_Group::createGroup($group);
-		}
+		$groupManager
+				->expects($this->at(0))
+				->method('getUserGroupIds')
+				->with($user)
+				->will($this->returnValue($membership));
 
-		foreach ($membership as $group) {
-			\OC_Group::addToGroup($uid, $group);
-		}
-
-		$appConfig = \OC::$server->getAppConfig();
-		$appConfig->setValue('core', 'shareapi_exclude_groups_list', json_encode($excludedGroups));
-		$appConfig->setValue('core', 'shareapi_exclude_groups', 'yes');
-
-		$result = \OCP\Util::isSharingDisabledForUser();
+		$result = \OC_Util::isSharingDisabledForUser($config, $groupManager, $user);
 
 		$this->assertSame($expected, $result);
-
-		// cleanup
-		\OC_User::deleteUser($uid);
-		\OC_User::setUserId('');
-
-		foreach ($groups as $group) {
-			\OC_Group::deleteGroup($group);
-		}
-
-		$appConfig->setValue('core', 'shareapi_exclude_groups_list', '');
-		$appConfig->setValue('core', 'shareapi_exclude_groups', 'no');
-
 	}
 
 	public function dataProviderForTestIsSharingDisabledForUser() {
@@ -395,23 +346,44 @@ class Test_Util extends \Test\TestCase {
 		);
 	}
 
+	public function testGetDefaultPageUrlWithRedirectUrlWithoutFrontController() {
+		putenv('front_controller_active=false');
+
+		$_REQUEST['redirect_url'] = 'myRedirectUrl.com';
+		$this->assertSame('http://localhost'.\OC::$WEBROOT.'/myRedirectUrl.com', OC_Util::getDefaultPageUrl());
+	}
+
+	public function testGetDefaultPageUrlWithRedirectUrlRedirectBypassWithoutFrontController() {
+		putenv('front_controller_active=false');
+
+		$_REQUEST['redirect_url'] = 'myRedirectUrl.com@foo.com:a';
+		$this->assertSame('http://localhost'.\OC::$WEBROOT.'/index.php/apps/files/', OC_Util::getDefaultPageUrl());
+	}
+
+	public function testGetDefaultPageUrlWithRedirectUrlRedirectBypassWithFrontController() {
+		putenv('front_controller_active=true');
+		$_REQUEST['redirect_url'] = 'myRedirectUrl.com@foo.com:a';
+		$this->assertSame('http://localhost'.\OC::$WEBROOT.'/apps/files/', OC_Util::getDefaultPageUrl());
+	}
+
 	/**
 	 * Test needUpgrade() when the core version is increased
 	 */
 	public function testNeedUpgradeCore() {
-		$oldConfigVersion = OC_Config::getValue('version', '0.0.0');
+		$config = \OC::$server->getConfig();
+		$oldConfigVersion = $config->getSystemValue('version', '0.0.0');
 		$oldSessionVersion = \OC::$server->getSession()->get('OC_Version');
 
 		$this->assertFalse(\OCP\Util::needUpgrade());
 
-		OC_Config::setValue('version', '7.0.0.0');
+		$config->setSystemValue('version', '7.0.0.0');
 		\OC::$server->getSession()->set('OC_Version', array(7, 0, 0, 1));
 		self::invokePrivate(new \OCP\Util, 'needUpgradeCache', array(null));
 
 		$this->assertTrue(\OCP\Util::needUpgrade());
 
-		OC_Config::setValue('version', $oldConfigVersion);
-		$oldSessionVersion = \OC::$server->getSession()->set('OC_Version', $oldSessionVersion);
+		$config->setSystemValue('version', $oldConfigVersion);
+		\OC::$server->getSession()->set('OC_Version', $oldSessionVersion);
 		self::invokePrivate(new \OCP\Util, 'needUpgradeCache', array(null));
 
 		$this->assertFalse(\OCP\Util::needUpgrade());
@@ -434,6 +406,97 @@ class Test_Util extends \Test\TestCase {
 			$errors = \OC_Util::checkDataDirectoryValidity('relative/path');
 			$this->assertNotEmpty($errors);
 		}
+	}
+
+	protected function setUp() {
+		parent::setUp();
+
+		\OC_Util::$scripts = [];
+		\OC_Util::$styles = [];
+	}
+	protected function tearDown() {
+		parent::tearDown();
+
+		\OC_Util::$scripts = [];
+		\OC_Util::$styles = [];
+	}
+
+	public function testAddScript() {
+		\OC_Util::addScript('core', 'myFancyJSFile1');
+		\OC_Util::addScript('myApp', 'myFancyJSFile2');
+		\OC_Util::addScript('core', 'myFancyJSFile0', true);
+		\OC_Util::addScript('core', 'myFancyJSFile10', true);
+		// add duplicate
+		\OC_Util::addScript('core', 'myFancyJSFile1');
+
+		$this->assertEquals([
+			'core/js/myFancyJSFile10',
+			'core/js/myFancyJSFile0',
+			'core/js/myFancyJSFile1',
+			'myApp/l10n/en',
+			'myApp/js/myFancyJSFile2',
+		], \OC_Util::$scripts);
+		$this->assertEquals([], \OC_Util::$styles);
+	}
+
+	public function testAddVendorScript() {
+		\OC_Util::addVendorScript('core', 'myFancyJSFile1');
+		\OC_Util::addVendorScript('myApp', 'myFancyJSFile2');
+		\OC_Util::addVendorScript('core', 'myFancyJSFile0', true);
+		\OC_Util::addVendorScript('core', 'myFancyJSFile10', true);
+		// add duplicate
+		\OC_Util::addVendorScript('core', 'myFancyJSFile1');
+
+		$this->assertEquals([
+			'core/vendor/myFancyJSFile10',
+			'core/vendor/myFancyJSFile0',
+			'core/vendor/myFancyJSFile1',
+			'myApp/vendor/myFancyJSFile2',
+		], \OC_Util::$scripts);
+		$this->assertEquals([], \OC_Util::$styles);
+	}
+
+	public function testAddTranslations() {
+		\OC_Util::addTranslations('appId', 'de');
+
+		$this->assertEquals([
+			'appId/l10n/de'
+		], \OC_Util::$scripts);
+		$this->assertEquals([], \OC_Util::$styles);
+	}
+
+	public function testAddStyle() {
+		\OC_Util::addStyle('core', 'myFancyCSSFile1');
+		\OC_Util::addStyle('myApp', 'myFancyCSSFile2');
+		\OC_Util::addStyle('core', 'myFancyCSSFile0', true);
+		\OC_Util::addStyle('core', 'myFancyCSSFile10', true);
+		// add duplicate
+		\OC_Util::addStyle('core', 'myFancyCSSFile1');
+
+		$this->assertEquals([], \OC_Util::$scripts);
+		$this->assertEquals([
+			'core/css/myFancyCSSFile10',
+			'core/css/myFancyCSSFile0',
+			'core/css/myFancyCSSFile1',
+			'myApp/css/myFancyCSSFile2',
+		], \OC_Util::$styles);
+	}
+
+	public function testAddVendorStyle() {
+		\OC_Util::addVendorStyle('core', 'myFancyCSSFile1');
+		\OC_Util::addVendorStyle('myApp', 'myFancyCSSFile2');
+		\OC_Util::addVendorStyle('core', 'myFancyCSSFile0', true);
+		\OC_Util::addVendorStyle('core', 'myFancyCSSFile10', true);
+		// add duplicate
+		\OC_Util::addVendorStyle('core', 'myFancyCSSFile1');
+
+		$this->assertEquals([], \OC_Util::$scripts);
+		$this->assertEquals([
+			'core/vendor/myFancyCSSFile10',
+			'core/vendor/myFancyCSSFile0',
+			'core/vendor/myFancyCSSFile1',
+			'myApp/vendor/myFancyCSSFile2',
+		], \OC_Util::$styles);
 	}
 }
 

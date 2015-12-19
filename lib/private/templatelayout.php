@@ -78,14 +78,20 @@ class OC_TemplateLayout extends OC_Template {
 			// Update notification
 			if($this->config->getSystemValue('updatechecker', true) === true &&
 				OC_User::isAdminUser(OC_User::getUser())) {
-				$updater = new \OC\Updater(\OC::$server->getHTTPHelper(),
-					\OC::$server->getConfig(), \OC::$server->getLogger());
+				$updater = new \OC\Updater(
+						\OC::$server->getHTTPHelper(),
+						\OC::$server->getConfig(),
+						\OC::$server->getIntegrityCodeChecker(),
+						\OC::$server->getLogger()
+				);
 				$data = $updater->check();
 
 				if(isset($data['version']) && $data['version'] != '' and $data['version'] !== Array()) {
 					$this->assign('updateAvailable', true);
 					$this->assign('updateVersion', $data['versionstring']);
-					$this->assign('updateLink', $data['web']);
+					if(substr($data['web'], 0, 8) === 'https://') {
+						$this->assign('updateLink', $data['web']);
+					}
 					\OCP\Util::addScript('core', 'update-notification');
 				} else {
 					$this->assign('updateAvailable', false); // No update available or not an admin user
@@ -94,8 +100,13 @@ class OC_TemplateLayout extends OC_Template {
 				$this->assign('updateAvailable', false); // Update check is disabled
 			}
 
-			// Add navigation entry
+			// Code integrity notification
+			$integrityChecker = \OC::$server->getIntegrityCodeChecker();
+			if(!$integrityChecker->hasPassedCheck()) {
+				\OCP\Util::addScript('core', 'integritycheck-failed-notification');
+			}
 
+			// Add navigation entry
 			$this->assign( 'application', '');
 			$this->assign( 'appid', $appId );
 			$navigation = OC_App::getNavigation();
@@ -125,7 +136,13 @@ class OC_TemplateLayout extends OC_Template {
 			$this->assign('user_uid', OC_User::getUser());
 			$this->assign('appsmanagement_active', $appsMgmtActive);
 			$this->assign('enableAvatars', $this->config->getSystemValue('enable_avatars', true));
-			$this->assign('userAvatarSet', \OC_Helper::userAvatarSet(OC_User::getUser()));
+
+			if (OC_User::getUser() === false) {
+				$this->assign('userAvatarSet', false);
+			} else {
+				$this->assign('userAvatarSet', \OC::$server->getAvatarManager()->getAvatar(OC_User::getUser())->exists());
+			}
+
 		} else if ($renderAs == 'error') {
 			parent::__construct('core', 'layout.guest', '', false);
 			$this->assign('bodyid', 'body-login');
@@ -142,20 +159,20 @@ class OC_TemplateLayout extends OC_Template {
 
 		if(empty(self::$versionHash)) {
 			$v = OC_App::getAppVersions();
-			$v['core'] = implode('.', \OC_Util::getVersion());
+			$v['core'] = implode('.', \OCP\Util::getVersion());
 			self::$versionHash = md5(implode(',', $v));
 		}
 
 		$useAssetPipeline = self::isAssetPipelineEnabled();
 		if ($useAssetPipeline) {
-			$this->append( 'jsfiles', OC_Helper::linkToRoute('js_config', array('v' => self::$versionHash)));
+			$this->append( 'jsfiles', \OC::$server->getURLGenerator()->linkToRoute('js_config', ['v' => self::$versionHash]));
 			$this->generateAssets();
 		} else {
 			// Add the js files
 			$jsFiles = self::findJavascriptFiles(OC_Util::$scripts);
 			$this->assign('jsfiles', array());
 			if ($this->config->getSystemValue('installed', false) && $renderAs != 'error') {
-				$this->append( 'jsfiles', OC_Helper::linkToRoute('js_config', array('v' => self::$versionHash)));
+				$this->append( 'jsfiles', \OC::$server->getURLGenerator()->linkToRoute('js_config', ['v' => self::$versionHash]));
 			}
 			foreach($jsFiles as $info) {
 				$web = $info[1];
@@ -264,8 +281,8 @@ class OC_TemplateLayout extends OC_Template {
 			$writer->writeAsset($cssCollection);
 		}
 
-		$this->append('jsfiles', OC_Helper::linkTo('assets', "$jsHash.js"));
-		$this->append('cssfiles', OC_Helper::linkTo('assets', "$cssHash.css"));
+		$this->append('jsfiles', \OC::$server->getURLGenerator()->linkTo('assets', "$jsHash.js"));
+		$this->append('cssfiles', \OC::$server->getURLGenerator()->linkTo('assets', "$cssHash.css"));
 	}
 
 	/**

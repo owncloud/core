@@ -59,9 +59,10 @@ class InfoParser {
 		$xml = simplexml_load_file($file);
 		libxml_disable_entity_loader($loadEntities);
 		if ($xml == false) {
+			libxml_clear_errors();
 			return null;
 		}
-		$array = $this->xmlToArray($xml, false);
+		$array = $this->xmlToArray($xml);
 		if (is_null($array)) {
 			return null;
 		}

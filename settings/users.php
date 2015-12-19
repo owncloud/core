@@ -35,9 +35,9 @@
 
 OC_Util::checkSubAdminUser();
 
-OC_App::setActiveNavigationEntry( 'core_users' );
+\OC::$server->getNavigationManager()->setActiveEntry('core_users');
 
-$userManager = \OC_User::getManager();
+$userManager = \OC::$server->getUserManager();
 $groupManager = \OC_Group::getManager();
 
 // Set the sort option: SORT_USERCOUNT or SORT_GROUPNAME

@@ -66,15 +66,15 @@ class Helper {
 	 */
 	public static function determineIcon($file) {
 		if($file['type'] === 'dir') {
-			$icon = \OC_Helper::mimetypeIcon('dir');
+			$icon = \OC::$server->getMimeTypeDetector()->mimeTypeIcon('dir');
 			// TODO: move this part to the client side, using mountType
 			if ($file->isShared()) {
-				$icon = \OC_Helper::mimetypeIcon('dir-shared');
+				$icon = \OC::$server->getMimeTypeDetector()->mimeTypeIcon('dir-shared');
 			} elseif ($file->isMounted()) {
-				$icon = \OC_Helper::mimetypeIcon('dir-external');
+				$icon = \OC::$server->getMimeTypeDetector()->mimeTypeIcon('dir-external');
 			}
 		}else{
-			$icon = \OC_Helper::mimetypeIcon($file->getMimetype());
+			$icon = \OC::$server->getMimeTypeDetector()->mimeTypeIcon($file->getMimetype());
 		}
 
 		return substr($icon, 0, -3) . 'svg';
@@ -139,9 +139,6 @@ class Helper {
 		$entry['parentId'] = $i['parent'];
 		$entry['mtime'] = $i['mtime'] * 1000;
 		// only pick out the needed attributes
-		if (\OC::$server->getPreviewManager()->isAvailable($i)) {
-			$entry['isPreviewAvailable'] = true;
-		}
 		$entry['name'] = $i->getName();
 		$entry['permissions'] = $i['permissions'];
 		$entry['mimetype'] = $i['mimetype'];

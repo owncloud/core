@@ -30,10 +30,10 @@
 
 /**
  * Prints a sanitized string
- * @param string|array $string the string which will be escaped and printed
+ * @param string $string the string which will be escaped and printed
  */
 function p($string) {
-	print(OC_Util::sanitizeHTML($string));
+	print(\OCP\Util::sanitizeHTML($string));
 }
 
 /**
@@ -146,7 +146,7 @@ function component($app, $file) {
  * For further information have a look at OC_Helper::linkTo
  */
 function link_to( $app, $file, $args = array() ) {
-	return OC_Helper::linkTo( $app, $file, $args );
+	return \OC::$server->getURLGenerator()->linkTo($app, $file, $args);
 }
 
 /**
@@ -154,7 +154,7 @@ function link_to( $app, $file, $args = array() ) {
  * @return string url to the online documentation
  */
 function link_to_docs($key) {
-	return OC_Helper::linkToDocs($key);
+	return \OC::$server->getURLGenerator()->linkToDocs($key);
 }
 
 /**
@@ -173,11 +173,9 @@ function image_path( $app, $image ) {
  * make OC_Helper::mimetypeIcon available as a simple function
  * @param string $mimetype mimetype
  * @return string link to the image
- *
- * For further information have a look at OC_Helper::mimetypeIcon
  */
 function mimetype_icon( $mimetype ) {
-	return OC_Helper::mimetypeIcon( $mimetype );
+	return \OC::$server->getMimeTypeDetector()->mimeTypeIcon( $mimetype );
 }
 
 /**
@@ -262,7 +260,7 @@ function html_select_options($options, $selected, $params=array()) {
 			$label = $label[$label_name];
 		}
 		$select = in_array($value, $selected) ? ' selected="selected"' : '';
-		$html .= '<option value="' . OC_Util::sanitizeHTML($value) . '"' . $select . '>' . OC_Util::sanitizeHTML($label) . '</option>'."\n";
+		$html .= '<option value="' . \OCP\Util::sanitizeHTML($value) . '"' . $select . '>' . \OCP\Util::sanitizeHTML($label) . '</option>'."\n";
 	}
 	return $html;
 }

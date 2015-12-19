@@ -11,6 +11,13 @@ namespace Test\Files\Storage\Wrapper;
 //ensure the constants are loaded
 \OC::$loader->load('\OC\Files\Filesystem');
 
+/**
+ * Class Quota
+ *
+ * @group DB
+ *
+ * @package Test\Files\Storage\Wrapper
+ */
 class Quota extends \Test\Files\Storage\Storage {
 	/**
 	 * @var string tmpDir
@@ -20,7 +27,7 @@ class Quota extends \Test\Files\Storage\Storage {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->tmpDir = \OC_Helper::tmpFolder();
+		$this->tmpDir = \OC::$server->getTempManager()->getTemporaryFolder();
 		$storage = new \OC\Files\Storage\Local(array('datadir' => $this->tmpDir));
 		$this->instance = new \OC\Files\Storage\Wrapper\Quota(array('storage' => $storage, 'quota' => 10000000));
 	}

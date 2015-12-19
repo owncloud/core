@@ -322,7 +322,7 @@ class Setup {
 			'datadirectory'		=> $dataDir,
 			'overwrite.cli.url'	=> $request->getServerProtocol() . '://' . $request->getInsecureServerHost() . \OC::$WEBROOT,
 			'dbtype'			=> $dbType,
-			'version'			=> implode('.', \OC_Util::getVersion()),
+			'version'			=> implode('.', \OCP\Util::getVersion()),
 		]);
 
 		try {
@@ -369,11 +369,9 @@ class Setup {
 			// out that this is indeed an ownCloud data directory
 			file_put_contents($config->getSystemValue('datadirectory', \OC::$SERVERROOT.'/data').'/.ocdata', '');
 
-			// Update htaccess files for apache hosts
-			if (isset($_SERVER['SERVER_SOFTWARE']) && strstr($_SERVER['SERVER_SOFTWARE'], 'Apache')) {
-				self::updateHtaccess();
-				self::protectDataDirectory();
-			}
+			// Update .htaccess files
+			Setup::updateHtaccess();
+			Setup::protectDataDirectory();
 
 			//try to write logtimezone
 			if (date_default_timezone_get()) {
@@ -395,32 +393,17 @@ class Setup {
 	}
 
 	/**
-	 * Checks if the .htaccess contains the current version parameter
-	 *
-	 * @return bool
-	 */
-	private function isCurrentHtaccess() {
-		$version = \OC_Util::getVersion();
-		unset($version[3]);
-
-		return !strpos(
-			file_get_contents($this->pathToHtaccess()),
-			'Version: '.implode('.', $version)
-		) === false;
-	}
-
-	/**
 	 * Append the correct ErrorDocument path for Apache hosts
-	 *
-	 * @throws \OC\HintException If .htaccess does not include the current version
 	 */
 	public static function updateHtaccess() {
+		// From CLI we don't know the defined web root. Thus we can't write any
+		// directives into the .htaccess file.
+		if(\OC::$CLI) {
+			return;
+		}
 		$setupHelper = new \OC\Setup(\OC::$server->getConfig(), \OC::$server->getIniWrapper(),
 			\OC::$server->getL10N('lib'), new \OC_Defaults(), \OC::$server->getLogger(),
 			\OC::$server->getSecureRandom());
-		if(!$setupHelper->isCurrentHtaccess()) {
-			throw new \OC\HintException('.htaccess file has the wrong version. Please upload the correct version. Maybe you forgot to replace it after updating?');
-		}
 
 		$htaccessContent = file_get_contents($setupHelper->pathToHtaccess());
 		$content = '';
@@ -432,6 +415,19 @@ class Setup {
 			//custom 404 error page
 			$content.= "\nErrorDocument 404 ".\OC::$WEBROOT."/core/templates/404.php";
 		}
+
+		// Add rewrite base
+		$webRoot = !empty(\OC::$WEBROOT) ? \OC::$WEBROOT : '/';
+		$content.="\n<IfModule mod_rewrite.c>";
+		$content.="\n  RewriteBase ".$webRoot;
+		$content .= "\n  <IfModule mod_env.c>";
+		$content .= "\n    SetEnv front_controller_active true";
+		$content .= "\n    <IfModule mod_dir.c>";
+		$content .= "\n      DirectorySlash off";
+		$content .= "\n    </IfModule>";
+		$content.="\n  </IfModule>";
+		$content.="\n</IfModule>";
+
 		if ($content !== '') {
 			//suppress errors in case we don't have permissions for it
 			@file_put_contents($setupHelper->pathToHtaccess(), $content . "\n", FILE_APPEND);
@@ -453,7 +449,9 @@ class Setup {
 		$content.= "</ifModule>\n\n";
 		$content.= "# section for Apache 2.2 and 2.4\n";
 		$content.= "IndexIgnore *\n";
-		file_put_contents(\OC_Config::getValue('datadirectory', \OC::$SERVERROOT.'/data').'/.htaccess', $content);
-		file_put_contents(\OC_Config::getValue('datadirectory', \OC::$SERVERROOT.'/data').'/index.html', '');
+
+		$baseDir = \OC::$server->getConfig()->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data');
+		file_put_contents($baseDir . '/.htaccess', $content);
+		file_put_contents($baseDir . '/index.html', '');
 	}
 }

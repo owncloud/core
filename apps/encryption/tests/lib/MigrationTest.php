@@ -43,15 +43,18 @@ class MigrationTest extends \Test\TestCase {
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
-		\OC_User::createUser(self::TEST_ENCRYPTION_MIGRATION_USER1, 'foo');
-		\OC_User::createUser(self::TEST_ENCRYPTION_MIGRATION_USER2, 'foo');
-		\OC_User::createUser(self::TEST_ENCRYPTION_MIGRATION_USER3, 'foo');
+		\OC::$server->getUserManager()->createUser(self::TEST_ENCRYPTION_MIGRATION_USER1, 'foo');
+		\OC::$server->getUserManager()->createUser(self::TEST_ENCRYPTION_MIGRATION_USER2, 'foo');
+		\OC::$server->getUserManager()->createUser(self::TEST_ENCRYPTION_MIGRATION_USER3, 'foo');
 	}
 
 	public static function tearDownAfterClass() {
-		\OC_User::deleteUser(self::TEST_ENCRYPTION_MIGRATION_USER1);
-		\OC_User::deleteUser(self::TEST_ENCRYPTION_MIGRATION_USER2);
-		\OC_User::deleteUser(self::TEST_ENCRYPTION_MIGRATION_USER3);
+		$user = \OC::$server->getUserManager()->get(self::TEST_ENCRYPTION_MIGRATION_USER1);
+		if ($user !== null) { $user->delete(); }
+		$user = \OC::$server->getUserManager()->get(self::TEST_ENCRYPTION_MIGRATION_USER2);
+		if ($user !== null) { $user->delete(); }
+		$user = \OC::$server->getUserManager()->get(self::TEST_ENCRYPTION_MIGRATION_USER3);
+		if ($user !== null) { $user->delete(); }
 		parent::tearDownAfterClass();
 	}
 
@@ -62,6 +65,9 @@ class MigrationTest extends \Test\TestCase {
 		$this->moduleId = \OCA\Encryption\Crypto\Encryption::ID;
 	}
 
+	/**
+	 * @param string $uid
+	 */
 	protected function createDummyShareKeys($uid) {
 		$this->loginAsUser($uid);
 
@@ -89,6 +95,9 @@ class MigrationTest extends \Test\TestCase {
 		}
 	}
 
+	/**
+	 * @param string $uid
+	 */
 	protected function createDummyUserKeys($uid) {
 		$this->loginAsUser($uid);
 
@@ -98,6 +107,9 @@ class MigrationTest extends \Test\TestCase {
 		$this->view->file_put_contents('/files_encryption/public_keys/' . $uid . '.publicKey', 'publicKey');
 	}
 
+	/**
+	 * @param string $uid
+	 */
 	protected function createDummyFileKeys($uid) {
 		$this->loginAsUser($uid);
 
@@ -111,6 +123,9 @@ class MigrationTest extends \Test\TestCase {
 		$this->view->file_put_contents($uid . '/files_encryption/keys/folder2/file.2.1/fileKey'  , 'data');
 	}
 
+	/**
+	 * @param string $uid
+	 */
 	protected function createDummyFiles($uid) {
 		$this->loginAsUser($uid);
 
@@ -124,6 +139,9 @@ class MigrationTest extends \Test\TestCase {
 		$this->view->file_put_contents($uid . '/files/folder2/file.2.1/fileKey'  , 'data');
 	}
 
+	/**
+	 * @param string $uid
+	 */
 	protected function createDummyFilesInTrash($uid) {
 		$this->loginAsUser($uid);
 
@@ -239,6 +257,9 @@ class MigrationTest extends \Test\TestCase {
 
 	}
 
+	/**
+	 * @param string $uid
+	 */
 	protected function verifyFilesInTrash($uid) {
 		$this->loginAsUser($uid);
 
@@ -266,6 +287,9 @@ class MigrationTest extends \Test\TestCase {
 		);
 	}
 
+	/**
+	 * @param string $uid
+	 */
 	protected function verifyNewKeyPath($uid) {
 		// private key
 		if ($uid !== '') {
@@ -394,6 +418,11 @@ class MigrationTest extends \Test\TestCase {
 
 	}
 
+	/**
+	 * @param string $table
+	 * @param string $appid
+	 * @param integer $expected
+	 */
 	public function verifyDB($table, $appid, $expected) {
 		/** @var \OCP\IDBConnection $connection */
 		$connection = \OC::$server->getDatabaseConnection();

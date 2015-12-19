@@ -23,6 +23,13 @@ namespace OCA\ObjectStore\Tests\Unit;
 use OC\Files\ObjectStore\ObjectStoreStorage;
 use OC\Files\ObjectStore\Swift as ObjectStoreToTest;
 
+/**
+ * Class Swift
+ *
+ * @group DB
+ *
+ * @package OCA\ObjectStore\Tests\Unit
+ */
 class Swift extends \Test\Files\Storage\Storage {
 
 	/**
@@ -44,8 +51,9 @@ class Swift extends \Test\Files\Storage\Storage {
 		// create users
 		$users = array('test');
 		foreach($users as $userName) {
-			\OC_User::deleteUser($userName);
-			\OC_User::createUser($userName, $userName);
+			$user = \OC::$server->getUserManager()->get($userName);
+			if ($user !== null) { $user->delete(); }
+			\OC::$server->getUserManager()->createUser($userName, $userName);
 		}
 
 		// main test user
@@ -69,7 +77,8 @@ class Swift extends \Test\Files\Storage\Storage {
 
 		$users = array('test');
 		foreach($users as $userName) {
-			\OC_User::deleteUser($userName);
+			$user = \OC::$server->getUserManager()->get($userName);
+			if ($user !== null) { $user->delete(); }
 		}
 		parent::tearDown();
 	}

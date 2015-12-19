@@ -67,7 +67,8 @@ module.exports = function(config) {
 					// up with the global namespace/classes/state
 					'apps/files_external/js/app.js',
 					'apps/files_external/js/mountsfilelist.js',
-					'apps/files_external/js/settings.js'
+					'apps/files_external/js/settings.js',
+					'apps/files_external/js/statusmanager.js'
 				],
 				testFiles: ['apps/files_external/tests/js/*.js']
 			},
@@ -164,15 +165,15 @@ module.exports = function(config) {
 	// need to test the core app as well ?
 	if (testCore) {
 		// core tests
-		files.push(corePath + 'tests/specs/*.js');
+		files.push(corePath + 'tests/specs/**/*.js');
 	}
 
 	function addApp(app) {
 		// if only a string was specified, expand to structure
 		if (typeof(app) === 'string') {
 			app = {
-				srcFiles: 'apps/' + app + '/js/*.js',
-				testFiles: 'apps/' + app + '/tests/js/*.js'
+				srcFiles: 'apps/' + app + '/js/**/*.js',
+				testFiles: 'apps/' + app + '/tests/js/**/*.js'
 			};
 		}
 

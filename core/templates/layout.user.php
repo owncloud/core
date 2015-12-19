@@ -4,7 +4,7 @@
 <!--[if (gt IE 9)|!(IE)]><!--><html class="ng-csp" data-placeholder-focus="false" lang="<?php p($_['language']); ?>" ><!--<![endif]-->
 	<head data-user="<?php p($_['user_uid']); ?>" data-requesttoken="<?php p($_['requesttoken']); ?>"
 		<?php if ($_['updateAvailable']): ?>
-			data-update-version="<?php print($_['updateVersion']); ?>" data-update-link="<?php print_unescaped($_['updateLink']); ?>"
+			data-update-version="<?php p($_['updateVersion']); ?>" data-update-link="<?php p($_['updateLink']); ?>"
 		<?php endif; ?>
 		>
 		<meta charset="utf-8">
@@ -25,6 +25,7 @@
 		<meta name="theme-color" content="<?php p($theme->getMailHeaderColor()); ?>">
 		<link rel="shortcut icon" href="<?php print_unescaped(image_path($_['appid'], 'favicon.ico')); /* IE11+ supports png */ ?>">
 		<link rel="apple-touch-icon-precomposed" href="<?php print_unescaped(image_path($_['appid'], 'favicon-touch.png')); ?>">
+		<link rel="mask-icon" sizes="any" href="<?php print_unescaped(image_path($_['appid'], 'favicon-mask.svg')); ?>" color="#1d2d44">
 		<?php foreach($_['cssfiles'] as $cssfile): ?>
 			<link rel="stylesheet" href="<?php print_unescaped($cssfile); ?>" media="screen">
 		<?php endforeach; ?>

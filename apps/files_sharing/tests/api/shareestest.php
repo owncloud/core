@@ -27,6 +27,13 @@ use OCA\Files_sharing\Tests\TestCase;
 use OCP\AppFramework\Http;
 use OCP\Share;
 
+/**
+ * Class ShareesTest
+ *
+ * @group DB
+ *
+ * @package OCA\Files_Sharing\Tests\API
+ */
 class ShareesTest extends TestCase {
 	/** @var Sharees */
 	protected $sharees;
@@ -81,6 +88,11 @@ class ShareesTest extends TestCase {
 		);
 	}
 
+	/**
+	 * @param string $uid
+	 * @param string $displayName
+	 * @return \OCP\IUser|\PHPUnit_Framework_MockObject_MockObject
+	 */
 	protected function getUserMock($uid, $displayName) {
 		$user = $this->getMockBuilder('OCP\IUser')
 			->disableOriginalConstructor()
@@ -97,6 +109,10 @@ class ShareesTest extends TestCase {
 		return $user;
 	}
 
+	/**
+	 * @param string $gid
+	 * @return \OCP\IGroup|\PHPUnit_Framework_MockObject_MockObject
+	 */
 	protected function getGroupMock($gid) {
 		$group = $this->getMockBuilder('OCP\IGroup')
 			->disableOriginalConstructor()
@@ -129,12 +145,20 @@ class ShareesTest extends TestCase {
 			],
 			[
 				'test', true, true, [], [],
+				[], [], true, $this->getUserMock('test', 'Test')
+			],
+			[
+				'test', true, false, [], [],
+				[], [], true, $this->getUserMock('test', 'Test')
+			],
+			[
+				'test', true, true, ['test-group'], [['test-group', 'test', 2, 0, []]],
 				[
 					['label' => 'Test', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test']],
 				], [], true, $this->getUserMock('test', 'Test')
 			],
 			[
-				'test', true, false, [], [],
+				'test', true, false, ['test-group'], [['test-group', 'test', 2, 0, []]],
 				[
 					['label' => 'Test', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test']],
 				], [], true, $this->getUserMock('test', 'Test')
@@ -383,10 +407,20 @@ class ShareesTest extends TestCase {
 				->with($searchTerm, $this->invokePrivate($this->sharees, 'limit'), $this->invokePrivate($this->sharees, 'offset'))
 				->willReturn($userResponse);
 		} else {
-			$this->groupManager->expects($this->once())
-				->method('getUserGroupIds')
-				->with($user)
-				->willReturn($groupResponse);
+			if ($singleUser !== false) {
+				$this->groupManager->expects($this->exactly(2))
+					->method('getUserGroupIds')
+					->withConsecutive(
+						$user,
+						$singleUser
+					)
+					->willReturn($groupResponse);
+			} else {
+				$this->groupManager->expects($this->once())
+					->method('getUserGroupIds')
+					->with($user)
+					->willReturn($groupResponse);
+			}
 
 			$this->groupManager->expects($this->exactly(sizeof($groupResponse)))
 				->method('displayNamesInGroup')

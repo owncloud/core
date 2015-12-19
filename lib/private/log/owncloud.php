@@ -38,8 +38,9 @@ class OC_Log_Owncloud {
 	 * Init class data
 	 */
 	public static function init() {
-		$defaultLogFile = OC_Config::getValue("datadirectory", OC::$SERVERROOT.'/data').'/owncloud.log';
-		self::$logFile = OC_Config::getValue("logfile", $defaultLogFile);
+		$systemConfig = \OC::$server->getSystemConfig();
+		$defaultLogFile = $systemConfig->getValue("datadirectory", OC::$SERVERROOT.'/data').'/owncloud.log';
+		self::$logFile = $systemConfig->getValue("logfile", $defaultLogFile);
 
 		/*
 		* Fall back to default log file if specified logfile does not exist
@@ -66,13 +67,16 @@ class OC_Log_Owncloud {
 
 		// default to ISO8601
 		$format = $config->getValue('logdateformat', 'c');
-		$logtimezone = $config->getValue( "logtimezone", 'UTC' );
+		$logTimeZone = $config->getValue( "logtimezone", 'UTC' );
 		try {
-			$timezone = new DateTimeZone($logtimezone);
+			$timezone = new DateTimeZone($logTimeZone);
 		} catch (Exception $e) {
 			$timezone = new DateTimeZone('UTC');
 		}
-		$time = new DateTime(null, $timezone);
+		$time = DateTime::createFromFormat("U.u", microtime(true), $timezone);
+		if ($time === false) {
+			$time = new DateTime(null, $timezone);
+		}
 		$request = \OC::$server->getRequest();
 		$reqId = $request->getId();
 		$remoteAddr = $request->getRemoteAddress();
@@ -97,6 +101,9 @@ class OC_Log_Owncloud {
 			// Fall back to error_log
 			error_log($entry);
 		}
+		if (php_sapi_name() === 'cli-server') {
+			error_log($message, 4);
+		}
 	}
 
 	/**
@@ -107,7 +114,7 @@ class OC_Log_Owncloud {
 	 */
 	public static function getEntries($limit=50, $offset=0) {
 		self::init();
-		$minLevel=OC_Config::getValue( "loglevel", \OCP\Util::WARN );
+		$minLevel = \OC::$server->getSystemConfig()->getValue("loglevel", \OCP\Util::WARN);
 		$entries = array();
 		$handle = @fopen(self::$logFile, 'rb');
 		if ($handle) {

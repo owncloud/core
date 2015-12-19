@@ -14,7 +14,7 @@
 		if (isset($form['anchor'])) {
 			$anchor = '#' . $form['anchor'];
 			$sectionName = $form['section-name'];
-			print_unescaped(sprintf("<li><a href='%s'>%s</a></li>", OC_Util::sanitizeHTML($anchor), OC_Util::sanitizeHTML($sectionName)));
+			print_unescaped(sprintf("<li><a href='%s'>%s</a></li>", \OCP\Util::sanitizeHTML($anchor), \OCP\Util::sanitizeHTML($sectionName)));
 		}
 	}?>
 	</ul>
@@ -149,7 +149,7 @@ if($_['passwordChangeSupported']) {
 </div>
 
 <?php if ($_['enableAvatars']): ?>
-<form id="avatar" class="section" method="post" action="<?php p(\OC_Helper::linkToRoute('core.avatar.postAvatar')); ?>">
+<form id="avatar" class="section" method="post" action="<?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.postAvatar')); ?>">
 	<h2><?php p($l->t('Profile picture')); ?></h2>
 	<div id="displayavatar">
 		<div class="avatardiv"></div><br>

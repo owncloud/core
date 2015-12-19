@@ -27,7 +27,6 @@
 namespace OC\Settings\Controller;
 
 use OC\AppFramework\Http;
-use OC\Settings\Factory\SubAdminFactory;
 use OC\User\User;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
@@ -43,6 +42,7 @@ use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IUserSession;
 use OCP\Mail\IMailer;
+use OCP\IAvatarManager;
 
 /**
  * @package OC\Settings\Controller
@@ -74,6 +74,8 @@ class UsersController extends Controller {
 	private $isEncryptionAppEnabled;
 	/** @var bool contains the state of the admin recovery setting */
 	private $isRestoreEnabled = false;
+	/** @var IAvatarManager */
+	private $avatarManager;
 
 	/**
 	 * @param string $appName
@@ -104,7 +106,8 @@ class UsersController extends Controller {
 								IMailer $mailer,
 								$fromMailAddress,
 								IURLGenerator $urlGenerator,
-								IAppManager $appManager) {
+								IAppManager $appManager,
+								IAvatarManager $avatarManager) {
 		parent::__construct($appName, $request);
 		$this->userManager = $userManager;
 		$this->groupManager = $groupManager;
@@ -117,6 +120,7 @@ class UsersController extends Controller {
 		$this->mailer = $mailer;
 		$this->fromMailAddress = $fromMailAddress;
 		$this->urlGenerator = $urlGenerator;
+		$this->avatarManager = $avatarManager;
 
 		// check for encryption state - TODO see formatUserForIndex
 		$this->isEncryptionAppEnabled = $appManager->isEnabledForUser('encryption');
@@ -164,6 +168,16 @@ class UsersController extends Controller {
 			$subAdminGroups[$key] = $subAdminGroup->getGID();
 		}
 
+		$displayName = $user->getEMailAddress();
+		if (is_null($displayName)) {
+			$displayName = '';
+		}
+
+		$avatarAvailable = false;
+		if ($this->config->getSystemValue('enable_avatars', true) === true) {
+			$avatarAvailable = $this->avatarManager->getAvatar($user->getUID())->exists();
+		}
+
 		return [
 			'name' => $user->getUID(),
 			'displayname' => $user->getDisplayName(),
@@ -173,8 +187,9 @@ class UsersController extends Controller {
 			'storageLocation' => $user->getHome(),
 			'lastLogin' => $user->getLastLogin() * 1000,
 			'backend' => $user->getBackendClassName(),
-			'email' => $this->config->getUserValue($user->getUID(), 'settings', 'email', ''),
+			'email' => $displayName,
 			'isRestoreDisabled' => !$restorePossible,
+			'isAvatarAvailable' => $avatarAvailable,
 		];
 	}
 
@@ -585,4 +600,58 @@ class UsersController extends Controller {
 		);
 	}
 
+
+	/**
+	 * Set the displayName of a user
+	 *
+	 * @NoAdminRequired
+	 * @NoSubadminRequired
+	 *
+	 * @param string $username
+	 * @param string $displayName
+	 * @return DataResponse
+	 */
+	public function setDisplayName($username, $displayName) {
+		$currentUser = $this->userSession->getUser();
+
+		if ($username === null) {
+			$username = $currentUser->getUID();
+		}
+
+		$user = $this->userManager->get($username);
+
+		if ($user === null ||
+			!$user->canChangeDisplayName() ||
+			(
+				!$this->groupManager->isAdmin($currentUser->getUID()) &&
+				!$this->groupManager->getSubAdmin()->isUserAccessible($currentUser, $user) &&
+				$currentUser !== $user)
+			) {
+			return new DataResponse([
+				'status' => 'error',
+				'data' => [
+					'message' => $this->l10n->t('Authentication error'),
+				],
+			]);
+		}
+
+		if ($user->setDisplayName($displayName)) {
+			return new DataResponse([
+				'status' => 'success',
+				'data' => [
+					'message' => $this->l10n->t('Your full name has been changed.'),
+					'username' => $username,
+					'displayName' => $displayName,
+				],
+			]);
+		} else {
+			return new DataResponse([
+				'status' => 'error',
+				'data' => [
+					'message' => $this->l10n->t('Unable to change full name'),
+					'displayName' => $user->getDisplayName(),
+				],
+			]);
+		}
+	}
 }
