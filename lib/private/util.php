@@ -66,10 +66,6 @@ class OC_Util {
 	private static $rootMounted = false;
 	private static $fsSetup = false;
 
-	protected static function getAppManager() {
-		return \OC::$server->getAppManager();
-	}
-
 	private static function initLocalStorageRootFS() {
 		// mount local file backend as root
 		$configDataDirectory = \OC::$server->getSystemConfig()->getValue("datadirectory", OC::$SERVERROOT . "/data");
@@ -1075,7 +1071,7 @@ class OC_Util {
 				// find the first app that is enabled for the current user
 				foreach ($defaultApps as $defaultApp) {
 					$defaultApp = OC_App::cleanAppId(strip_tags($defaultApp));
-					if (static::getAppManager()->isEnabledForUser($defaultApp)) {
+					if (\oc::$server->getAppManager()->isEnabledForUser($defaultApp)) {
 						$appId = $defaultApp;
 						break;
 					}
@@ -1316,18 +1312,6 @@ class OC_Util {
 		while (ob_get_level()) {
 			ob_end_clean();
 		}
-	}
-
-
-	/**
-	 * Generates a cryptographic secure pseudo-random string
-	 *
-	 * @param int $length of the random string
-	 * @return string
-	 * @deprecated Use \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate($length); instead
-	 */
-	public static function generateRandomBytes($length = 30) {
-		return \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate($length, \OCP\Security\ISecureRandom::CHAR_LOWER.\OCP\Security\ISecureRandom::CHAR_DIGITS);
 	}
 
 	/**
