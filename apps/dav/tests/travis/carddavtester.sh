@@ -26,8 +26,7 @@ cd "$SCRIPTPATH/../../../../"
 # run the tests
 cd "$SCRIPTPATH/CalDAVTester"
 PYTHONPATH="$SCRIPTPATH/pycalendar/src" python testcaldav.py --print-details-onfail -s "$SCRIPTPATH/caldavtest/config/serverinfo.xml" -o cdt.txt \
-	"$SCRIPTPATH/caldavtest/tests/CardDAV/current-user-principal.xml" \
-	"$SCRIPTPATH/caldavtest/tests/CardDAV/sync-report.xml"
+	"$SCRIPTPATH/caldavtest/tests/CardDAV/copymove.xml"
 RESULT=$?
 
 tail "$SCRIPTPATH/../../../../data-autotest/owncloud.log"

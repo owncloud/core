@@ -1,0 +1,239 @@
+<?xml version="1.0" standalone="no"?>
+
+<!DOCTYPE caldavtest SYSTEM "caldavtest.dtd">
+
+<!--
+ Copyright (c) 2006-2015 Apple Inc. All rights reserved.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ -->
+
+<caldavtest>
+	<description>Test COPY/MOVE methods in CardDAV to ensure proper behaviour
+	of addressbook resources wrt UIDs, server indexing etc</description>
+
+	<require-feature>
+		<feature>carddav</feature>
+	</require-feature>
+
+	<start>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookpath1:/1.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/vcopymove/1.vcf</filepath>
+			</data>
+		</request>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookpath1:/2.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/vcopymove/2.vcf</filepath>
+			</data>
+		</request>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookpath1:/3.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/vcopymove/3.vcf</filepath>
+			</data>
+		</request>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookpath1:/4.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/vcopymove/4.vcf</filepath>
+			</data>
+		</request>
+		<request end-delete="no">
+			<method>PUT</method>
+			<ruri>$addressbookpath1:/5.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/vcopymove/5.vcf</filepath>
+			</data>
+		</request>
+		<request end-delete="yes">
+			<method>PUT</method>
+			<ruri>$addressbookpath1:/6.vcf</ruri>
+			<data>
+				<content-type>text/vcard; charset=utf-8</content-type>
+				<filepath>Resource/CardDAV/vcopymove/6.vcf</filepath>
+			</data>
+		</request>
+	</start>
+	
+	<test-suite name='COPY' ignore="yes">
+		<test name='1'>
+			<description>COPY within same addressbook with different name</description>
+			<request end-delete="no">
+				<method>COPY</method>
+				<ruri>$addressbookpath1:/1.vcf</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$addressbookpath1:/copy1.vcf</value>
+				</header>
+				<verify>
+					<callback>statusCode</callback>
+					<arg>
+						<name>status</name>
+						<value>403</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='2'>
+			<description>COPY within same addressbook to existing resource with overwrite</description>
+			<request>
+				<method>COPY</method>
+				<ruri>$addressbookpath1:/1.vcf</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$addressbookpath1:/copy1.vcf</value>
+				</header>
+				<header>
+					<name>Overwrite</name>
+					<value>T</value>
+				</header>
+				<verify>
+					<callback>statusCode</callback>
+					<arg>
+						<name>status</name>
+						<value>403</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='3'>
+			<description>COPY within same addressbook to existing resource without overwrite</description>
+			<request>
+				<method>COPY</method>
+				<ruri>$addressbookpath1:/1.vcf</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$addressbookpath1:/2.vcf</value>
+				</header>
+				<header>
+					<name>Overwrite</name>
+					<value>F</value>
+				</header>
+				<verify>
+					<callback>statusCode</callback>
+					<arg>
+						<name>status</name>
+						<value>412</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+	</test-suite>
+	
+	<test-suite name="MOVE">
+		<test name='1'>
+			<description>MOVE within same addressbook to new resource</description>
+			<request>
+				<method>MOVE</method>
+				<ruri>$addressbookpath1:/5.vcf</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$addressbookpath1:/move1.vcf</value>
+				</header>
+				<verify>
+					<callback>statusCode</callback>
+					<arg>
+						<name>status</name>
+						<value>2xx</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='2'>
+			<description>MOVE within same addressbook to existing resource with overwrite</description>
+			<request>
+				<method>MOVE</method>
+				<ruri>$addressbookpath1:/6.vcf</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$addressbookpath1:/move1.vcf</value>
+				</header>
+				<header>
+					<name>Overwrite</name>
+					<value>T</value>
+				</header>
+				<verify>
+					<callback>statusCode</callback>
+					<arg>
+						<name>status</name>
+						<value>403</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+		<test name='3'>
+			<description>MOVE within same addressbook to existing resource without overwrite</description>
+			<request>
+				<method>MOVE</method>
+				<ruri>$addressbookpath1:/3.vcf</ruri>
+				<header>
+					<name>Destination</name>
+					<value>$host:$addressbookpath1:/move1.vcf</value>
+				</header>
+				<header>
+					<name>Overwrite</name>
+					<value>F</value>
+				</header>
+				<verify>
+					<callback>statusCode</callback>
+					<arg>
+						<name>status</name>
+						<value>412</value>
+					</arg>
+				</verify>
+			</request>
+		</test>
+	</test-suite>	
+	<end>
+<!--
+		<request>
+			<method>DELETE</method>
+			<ruri>$addressbookpath1:/copy1.vcf</ruri>
+		</request>
+-->
+		<request>
+			<method>DELETE</method>
+			<ruri>$addressbookpath1:/move1.vcf</ruri>
+		</request>
+<!--
+		<request>
+			<method>DELETE</method>
+			<ruri>$addressbookhome1:/caltest1/</ruri>
+		</request>
+		<request>
+			<method>DELETE</method>
+			<ruri>$addressbookhome1:/caltest2/</ruri>
+		</request>
+		<request>
+			<method>DELETE</method>
+			<ruri>$addressbookhome1:/caltest3/</ruri>
+		</request>
+		<request>
+			<method>DELETE</method>
+			<ruri>$addressbookhome1:/caltest4/</ruri>
+		</request>
+-->
+	</end>
+</caldavtest>
