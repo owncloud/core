@@ -60,11 +60,13 @@ class Hooks {
 		$entry = $params['entry'];
 		$shares = \OCP\Share::getItemShared('folder', $entry['fileid']);
 		if ($shares) {
-			$share = current($shares);
-			if ($share['share_type'] === \OCP\Share::SHARE_TYPE_REMOTE) {
-				$user = \OC::$server->getUserSession()->getUser();
-				$bus = \OC::$server->getCommandBus();
-				$bus->push(new NotifyExternalShare($user->getUID(), $entry['fileid']));
+			foreach ($shares as $share) {
+				if ($share['share_type'] === \OCP\Share::SHARE_TYPE_REMOTE) {
+					$user = \OC::$server->getUserSession()->getUser();
+					$bus = \OC::$server->getCommandBus();
+					$bus->push(new NotifyExternalShare($user->getUID(), $entry['fileid']));
+					return;
+				}
 			}
 		}
 	}

@@ -65,13 +65,15 @@ class NotifyExternalShare implements ICommand {
 		$node = $nodes[0];
 		/** @var Manager $externalManager */
 		$externalManager = $application->getContainer()->query('ExternalManager');
-		$info = $externalManager->getOutgoingShare($this->fileId, $this->user);
-		if (!$info) {
+		$sharesInfo = $externalManager->getOutgoingShares($this->fileId, $this->user);
+		if (count($sharesInfo) === 0) {
 			return;
 		}
 
-		$remote = $this->getRemote($info['share_with']);
-		$externalManager->notifyUpdate($remote, $info['token'], $info['id'], '', $node->getEtag());
+		foreach ($sharesInfo as $info) {
+			$remote = $this->getRemote($info['share_with']);
+			$externalManager->notifyUpdate($remote, $info['token'], $info['id'], '', $node->getEtag());
+		}
 	}
 
 	private function getRemote($shareWith) {
