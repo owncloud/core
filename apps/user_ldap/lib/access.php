@@ -1245,7 +1245,9 @@ class Access extends LDAPUtility implements user\IUserTools {
 	}
 
 	/**
-	 * returns the search term dependent
+	 * returns the search term dependend on wether we are allowed 
+	 * list users found by ldap with the current input appended by
+         * a *
 	 * @return string
 	 */
 	private function prepareSearchTerm($term) {
