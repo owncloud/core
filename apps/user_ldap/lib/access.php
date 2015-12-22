@@ -1251,9 +1251,9 @@ class Access extends LDAPUtility implements user\IUserTools {
 	 * @return string
 	 */
 	private function prepareSearchTerm($term) {
-		$config = \oc::$server->getConfig();
+		$config = \OC::$server->getConfig();
 
-		$allowEnum = $config->getAppValue('core', 'shareapi_allow_share_dialog_user_enumeration', false);
+		$allowEnum = $config->getAppValue('core', 'shareapi_allow_share_dialog_user_enumeration', 'yes');
 
 		$result = empty($term) ? '*' :
 			$allowEnum !=='no'? $term . '*' : $term;
