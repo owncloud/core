@@ -4,6 +4,7 @@ namespace OCA\DAV\Avatars;
 
 use OCP\Files\NotFoundException;
 use Sabre\DAV\Exception\Forbidden;
+use Sabre\DAV\Exception\MethodNotAllowed;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\ICollection;
 use OCP\IAvatarManager;
@@ -54,17 +55,35 @@ class AvatarCollection implements ICollection {
 	 * @param string $name
 	 * @return Avatar
 	 * @throws NotFound
+	 * @throws MethodNotAllowed
 	 */
 	public function getChild($name) {
 		$user = $this->getName();
+		$info = pathinfo($name);
 
-		if (!$this->childExists($name)) {
+		$ext = isset($info['extension']) ? $info['extension'] : '';
+		$size = ctype_digit($info['filename']) ? intval($info['filename']) : 0;
+
+		// We only support jpg and png avatars
+		if (!in_array($ext, ['jpg', 'png'], true)) {
+			throw new MethodNotAllowed('File format not allowed');
+		}
+
+		// Check for valid avatar size
+		if ($size < 1 || $size > 2048) {
+			throw new MethodNotAllowed('Invalid image size');
+		}
+
+		// See if there is an avatar
+		try {
+			$avatar = $this->manager->getAvatar($user)->getFile($size);
+		} catch (NotFoundException $e) {
 			throw new NotFound();
 		}
 
-		try {
-			$avatar = $this->manager->getAvatar($user)->getFile((int)$name);
-		} catch (NotFoundException $e) {
+		// Check that the avatar matches the requested file type
+		if (($avatar->getMimeType() === 'image/png' && $ext !== 'png') ||
+			($avatar->getMimeType() === 'image/jpeg' && $ext !== 'jpg')) {
 			throw new NotFound();
 		}
 
@@ -87,15 +106,8 @@ class AvatarCollection implements ICollection {
 	 * @return bool
 	 */
 	public function childExists($name) {
-		if (ctype_digit($name)) {
-			if ((int)$name === 0) {
-				return false;
-			}
-
-			return true;
-		}
-
-		return false;
+		$avatar = $this->getChild($name);
+		return !is_null($avatar);
 	}
 
 	/**

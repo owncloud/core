@@ -36,10 +36,10 @@ class AvatarCollectionTest extends  \Test\TestCase {
 	}
 
 	/**
-	 * @expectedException \Sabre\DAV\Exception\NotFound
+	 * @expectedException \Sabre\DAV\Exception\MethodNotAllowed
 	 */
 	public function testGetChildInvalid() {
-		$this->collection->getChild('foo');
+		$this->collection->getChild('foo.svg');
 	}
 
 	/**
@@ -57,10 +57,10 @@ class AvatarCollectionTest extends  \Test\TestCase {
 			->with(123)
 			->will($this->throwException(new NotFoundException()));
 
-		$this->collection->getChild('123');
+		$this->collection->getChild('123.png');
 	}
 
-	public function testGetChildAvatar() {
+	public function testGetChildAvatarFormatNotAllowed() {
 		$avatar = $this->getMock('\OCP\IAvatar');
 		$file = $this->getMock('\OCP\Files\File');
 
@@ -73,15 +73,25 @@ class AvatarCollectionTest extends  \Test\TestCase {
 			->with(123)
 			->willReturn($file);
 
-		$this->collection->getChild('123');
+		$this->collection->getChild('123.png');
 	}
 
-	public function dataGetChild() {
-		return [
-			['foo', true],
-			['123', true],
-			['456', false],
-		];
+	public function testGetChildAvatar() {
+		$avatar = $this->getMock('\OCP\IAvatar');
+		$file = $this->getMock('\OCP\Files\File');
+		$file->method('getMimeType')
+			->willReturn('image/jpeg');
+
+		$this->manager
+			->method('getAvatar')
+			->with('user')
+			->willReturn($avatar);
+
+		$avatar->method('getFile')
+			->with(123)
+			->willReturn($file);
+
+		$this->collection->getChild('123.jpg');
 	}
 
 	/**
@@ -89,26 +99,6 @@ class AvatarCollectionTest extends  \Test\TestCase {
 	 */
 	public function testGetChildren() {
 		$this->collection->getChildren();
-	}
-
-	/**
-	 * @dataProvider dataChildExists
-	 * @param string $size
-	 * @param bool $expected
-	 */
-	public function testChildExists($size, $expected) {
-		$this->assertEquals($expected, $this->collection->childExists($size));
-	}
-
-	public function dataChildExists() {
-		return [
-			['foo', false],
-			['123', true],
-			['0x123', false],
-			['0', false],
-			['-1', false],
-			['one', false],
-		];
 	}
 
 	/**
