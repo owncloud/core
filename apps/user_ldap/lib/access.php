@@ -1255,9 +1255,9 @@ class Access extends LDAPUtility implements user\IUserTools {
 
 		$allowEnum = $config->getAppValue('core', 'shareapi_allow_share_dialog_user_enumeration', false);
 
-		$term = empty($term) ? '*' :
-			$allowEnum ? $term . '*' : $term;
-		return $term;
+		$result = empty($term) ? '*' :
+			$allowEnum !=='no'? $term . '*' : $term;
+		return $result;
 	}
 
 	/**
