@@ -2,6 +2,7 @@
 
 namespace OCA\DAV;
 
+use OCA\DAV\Connector\Sabre\AnonymousAuth;
 use OCA\DAV\Connector\Sabre\Auth;
 use OCA\DAV\Connector\Sabre\BlockLegacyClientPlugin;
 use OCA\DAV\Files\CustomPropertiesBackend;
@@ -24,17 +25,25 @@ class Server {
 		$this->server = new \OCA\DAV\Connector\Sabre\Server($root);
 
 		// Backends
-		$authBackend = new Auth(
-			\OC::$server->getSession(),
-			\OC::$server->getUserSession()
-		);
+		$authBackends = [
+			new Auth(
+				\OC::$server->getSession(),
+				\OC::$server->getUserSession()
+			),
+			new AnonymousAuth(['avatars'])
+		];
+
+		$authPlugin = new Plugin();
+		foreach ($authBackends as $authBackend) {
+			$authPlugin->addBackend($authBackend);
+		}
 
 		// Set URL explicitly due to reverse-proxy situations
 		$this->server->httpRequest->setUrl($this->request->getRequestUri());
 		$this->server->setBaseUri($this->baseUri);
 
 		$this->server->addPlugin(new BlockLegacyClientPlugin(\OC::$server->getConfig()));
-		$this->server->addPlugin(new Plugin($authBackend, 'ownCloud'));
+		$this->server->addPlugin($authPlugin);
 		$this->server->addPlugin(new \OCA\DAV\Connector\Sabre\DummyGetResponsePlugin());
 		$this->server->addPlugin(new \OCA\DAV\Connector\Sabre\ExceptionLoggerPlugin('webdav', $logger));
 		$this->server->addPlugin(new \OCA\DAV\Connector\Sabre\LockPlugin());
