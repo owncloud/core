@@ -1726,8 +1726,10 @@ class View {
 	 * @throws InvalidPathException
 	 */
 	public function verifyPath($path, $fileName) {
-
-		$l10n = \OC::$server->getL10N('lib');
+		static $l10n;
+		if (!$l10n) {
+			$l10n = \OC::$server->getL10N('lib');
+		}
 
 		// verify empty and dot files
 		$trimmed = trim($fileName);
