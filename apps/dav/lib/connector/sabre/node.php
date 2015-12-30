@@ -65,10 +65,11 @@ abstract class Node implements \Sabre\DAV\INode {
 	 *
 	 * @param \OC\Files\View $view
 	 * @param \OCP\Files\FileInfo $info
+	 * @param string|null $relativePath path relative to the user home
 	 */
-	public function __construct($view, $info) {
+	public function __construct($view, $info, $relativePath = null) {
 		$this->fileView = $view;
-		$this->path = $this->fileView->getRelativePath($info->getPath());
+		$this->path = (!is_null($relativePath)) ? $relativePath : $this->fileView->getRelativePath($info->getPath());
 		$this->info = $info;
 	}
 
