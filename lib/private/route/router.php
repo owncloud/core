@@ -328,6 +328,11 @@ class Router implements IRouter {
 	public function generate($name, $parameters = array(), $absolute = false) {
 		$this->loadRoutes();
 		try {
+			if($absolute) {
+				$absolute = \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL;
+			} else {
+				$absolute = \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_PATH;
+			}
 			return $this->getGenerator()->generate($name, $parameters, $absolute);
 		} catch (RouteNotFoundException $e) {
 			$this->logger->logException($e);
