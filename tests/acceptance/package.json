@@ -8,12 +8,11 @@
   },
   "author": "Felix Böhm",
   "dependencies": {
+    "jasmine-spec-reporter": "^0.6.0",
+    "phantomjs": "^1.9.7-15",
     "protractor": "^1.1.1",
     "request": "^2.40.0",
-    "xml2js": "^0.4.4",
-    "jasmine-spec-reporter": "^0.6.0",
-    "phantomjs": "^1.9.7-15"
+    "xml2js": "^0.4.4"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

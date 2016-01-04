@@ -1,3 +1,13 @@
+/*
+ * Copyright (c) 2014
+ *
+ * This file is licensed under the Affero General Public License version 3
+ * or later.
+ *
+ * See the COPYING-README file.
+ *
+ */
+
 var LoginPage = require('../pages/login.page.js');
 var UserPage = require('../pages/user.page.js');
 var PersonalPage = require('../pages/personal.page.js');
@@ -5,7 +15,7 @@ var PersonalPage = require('../pages/personal.page.js');
 describe('Change Password  - Valid Usernames', function() {
   var params = browser.params;
   var loginPage;
-  var long_pass = 'newNEW123!"§$%&()=?öüß';
+  var long_pass = 'newNEW""123!"§$%&"()=?öüß';
   var special_pass = 'special%&@/1234!-+=';
   
   beforeEach(function() {
@@ -16,10 +26,8 @@ describe('Change Password  - Valid Usernames', function() {
   });
   
   it('should login as admin and create a test users ', function() {
-    loginPage.fillUserCredentilas(params.login.user, params.login.password);
-    loginPage.loginButton.click();
     userPage = new UserPage(params.baseUrl);
-    userPage.get();
+    userPage.getAsUser(params.login.user, params.login.password);
     userPage.createNewUser('demo', 'password');
     userPage.get();
     expect(userPage.listUser()).toContain('demo');
@@ -77,17 +85,15 @@ describe('Change Password  - Valid Usernames', function() {
     expect(browser.getCurrentUrl()).toContain('index.php/apps/files/');      
   });
   
-  it('should login as admin and change password for test users ', function() {
+  it('should login with password changed by admin', function() {
     loginPage.login(params.login.user, params.login.password);
     userPage = new UserPage(params.baseUrl);
     userPage.get();
     element(by.css('#userlist tr[data-displayname="demo"] td.password')).click().then(function() {
       element(by.css('#userlist tr[data-displayname="demo"] td.password input')).sendKeys("password");
       element(by.css('#userlist tr[data-displayname="demo"] td.password input')).sendKeys(protractor.Key.ENTER);
-    });
-  });
-  
-  it('should login with password changed by admin', function() {    
+    });  
+    loginPage.logout();
     loginPage.login('demo', 'password');
     expect(browser.getCurrentUrl()).toContain('index.php/apps/files/');      
   });

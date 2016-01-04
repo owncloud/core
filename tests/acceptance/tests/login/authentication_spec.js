@@ -1,9 +1,21 @@
+/*
+ * Copyright (c) 2014
+ *
+ * This file is licensed under the Affero General Public License version 3
+ * or later.
+ *
+ * See the COPYING-README file.
+ *
+ */
+
+// Assumes FirstRunWizard to be disabled
+
 var LoginPage = require('../pages/login.page.js');
 var UserPage = require('../pages/user.page.js');
 var FirstRunWizardPage = require('../pages/firstRunWizard.page.js');
 var Screenshot = require('../helper/screenshot.js');
 
-ddescribe('Authentication', function() {
+describe('Authentication', function() {
   var params = browser.params;
   var loginPage;
   
@@ -46,7 +58,6 @@ ddescribe('Authentication', function() {
   });
   
   it('should login admin user', function() {  
-    // Assumes FirstRunWizard to be disabled
     loginPage.login(params.login.user, params.login.password);
     expect(browser.getCurrentUrl()).toContain('index.php/apps/files/');      
   });

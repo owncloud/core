@@ -1,9 +1,20 @@
+/*
+ * Copyright (c) 2014
+ *
+ * This file is licensed under the Affero General Public License version 3
+ * or later.
+ *
+ * See the COPYING-README file.
+ *
+ */
+ 
+var Page = require('../helper/page.js')
 var LoginPage = require('../pages/login.page.js');
 var FilesPage = require('../pages/files.page.js');
 
 
-// ============================ FOLDERS ============================================================== //
-// =================================================================================================== //
+//================ FOLDERS =============================================================//
+//======================================================================================//
 
 describe('Folders', function() {
   var params = browser.params;
@@ -16,29 +27,39 @@ describe('Folders', function() {
   });
 
   it('should create a new folder', function() {
-    filesPage.createNewFolder('testFolder');
+    filesPage.createFolder('testFolder');
     expect(filesPage.listFiles()).toContain('testFolder');
   });
 
   it('should not create new folder if foldername already exists', function() {
-    filesPage.createNewFolder('testFolder');
+    filesPage.createFolder('testFolder');
     var warning = by.css('.tipsy-inner');
     expect(filesPage.alertWarning.isDisplayed()).toBeTruthy();
   });
 
+  it('should have access to folder', function() {
+    var protrac = protractor.getInstance();
+    filesPage.goInToFolder('testFolder');
+
+    var expectedUrl = filesPage.folderUrl('testFolder');
+    protrac.getCurrentUrl().then(function(url) {
+      expect(expectedUrl).toEqual(url);
+      filesPage.get();
+    });
+  });
+
   it('should delete a folder', function() {
-    filesPage.get(); // TODO: reload cause warning alerts don't disappear
     browser.wait(function() {
       return(filesPage.listFiles());
     }, 3000);
-    filesPage.deleteFile('testFolder');
+    filesPage.deleteFolder('testFolder');
     browser.sleep(800);
     expect(filesPage.listFiles()).not.toContain('testFolder');
   });
 });
 
-// ============================== SUB FOLDERS ======================================================== //
-// =================================================================================================== //
+//================ SUB FOLDERS =======================================================================//
+//====================================================================================================//
 
 describe('Subfolders', function() {
   var params = browser.params;
@@ -52,16 +73,16 @@ describe('Subfolders', function() {
 
 
   it('should go into folder and create subfolder', function() {
-    var folder = 'hasSubFolder';
-    filesPage.createNewFolder(folder);
-    filesPage.goInToFolder(folder);
-    filesPage.createNewFolder('SubFolder');
-    filesPage.createNewFolder('SubFolder2');
+    filesPage.createFolder('hasSubFolder');
+    filesPage.getFolder('hasSubFolder');
+    filesPage.createFolder('SubFolder');
+    filesPage.createFolder('SubFolder2');
     expect(filesPage.listFiles()).toContain('SubFolder', 'SubFolder2');
   });  
 
   it('should rename a subfolder', function() {
-    filesPage.renameFile('SubFolder2', 'NewSubFolder');
+    filesPage.getFolder('hasSubFolder');
+    filesPage.renameFolder('SubFolder2', 'NewSubFolder');
     browser.wait(function() {
       return(filesPage.listFiles());
     }, 3000);
@@ -69,18 +90,15 @@ describe('Subfolders', function() {
   });
 
   it('should delete a subfolder', function() {
-    filesPage.deleteFile('SubFolder');
-    browser.sleep(800);
-    expect(filesPage.listFiles()).not.toContain('SubFolder');
+    filesPage.getFolder('hasSubFolder');
+    filesPage.deleteFolder('SubFolder').then(function() {
+      expect(filesPage.listFiles()).not.toContain('SubFolder');
+    });
   });
 
   it('should delete a folder containing a subfolder', function() {
-    filesPage.get();
-    browser.wait(function() {
-      return(filesPage.listFiles());
-    }, 3000);
-    filesPage.deleteFile('hasSubFolder');
-    browser.sleep(800);
-    expect(filesPage.listFiles()).not.toContain('hasSubFolder');
+    filesPage.deleteFolder('hasSubFolder').then(function() {
+      expect(filesPage.listFiles()).not.toContain('hasSubFolder');
+    });
   });
 });
