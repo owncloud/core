@@ -136,7 +136,7 @@ class Test_Image extends \Test\TestCase {
 		$img = new \OC_Image(OC::$SERVERROOT.'/tests/data/testimage.jpg');
 		$raw = imagecreatefromstring(file_get_contents(OC::$SERVERROOT.'/tests/data/testimage.jpg'));
 		ob_start();
-		imagejpeg($raw);
+		imagejpeg($raw, NULL, 90);
 		$expected = ob_get_clean();
 		$this->assertEquals($expected, $img->data());
 

@@ -266,7 +266,7 @@ class OC_Image implements \OCP\IImage {
 				$retVal = imagegif($this->resource, $filePath);
 				break;
 			case IMAGETYPE_JPEG:
-				$retVal = imagejpeg($this->resource, $filePath);
+				$retVal = imagejpeg($this->resource, $filePath, 90);
 				break;
 			case IMAGETYPE_PNG:
 				$retVal = imagepng($this->resource, $filePath);
@@ -318,7 +318,7 @@ class OC_Image implements \OCP\IImage {
 				$res = imagepng($this->resource);
 				break;
 			case "image/jpeg":
-				$res = imagejpeg($this->resource);
+				$res = imagejpeg($this->resource, NULL, 90);
 				break;
 			case "image/gif":
 				$res = imagegif($this->resource);
