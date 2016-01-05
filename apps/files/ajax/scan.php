@@ -48,7 +48,9 @@ $listener = new ScanListener($eventSource);
 foreach ($users as $user) {
 	$eventSource->send('user', $user);
 	$scanner = new \OC\Files\Utils\Scanner($user, \OC::$server->getDatabaseConnection(), \OC::$server->getLogger());
-	$scanner->listen('\OC\Files\Utils\Scanner', 'scanFile', array($listener, 'file'));
+	$scanner->listen('\OC\Files\Utils\Scanner', 'scanFile', function () use ($listener) {
+		$listener->file();
+	});
 	try {
 		if ($force) {
 			$scanner->scan($dir);
