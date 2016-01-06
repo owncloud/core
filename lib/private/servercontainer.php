@@ -32,6 +32,8 @@ use OCP\AppFramework\QueryException;
  * @package OC
  */
 class ServerContainer extends SimpleContainer {
+	private $cache = [];
+
 	/** @var DIContainer[] */
 	protected $appContainers;
 
@@ -41,6 +43,11 @@ class ServerContainer extends SimpleContainer {
 	public function __construct() {
 		parent::__construct();
 		$this->appContainers = [];
+	}
+
+	public function registerService($name, \Closure $closure, $shared = true) {
+		unset($this->cache[$this->sanitizeName($name)]);
+		parent::registerService($name, $closure, $shared);
 	}
 
 	/**
@@ -70,20 +77,23 @@ class ServerContainer extends SimpleContainer {
 	 */
 	public function query($name) {
 		$name = $this->sanitizeName($name);
+		if (!isset($this->cache[$name])) {
 
-		// In case the service starts with OCA\ we try to find the service in
-		// the apps container first.
-		if (strpos($name, 'OCA\\') === 0 && substr_count($name, '\\') >= 2) {
-			$segments = explode('\\', $name);
-			$appContainer = $this->getAppContainer(strtolower($segments[0]));
-			try {
-				return $appContainer->query($name);
-			} catch (QueryException $e) {
-				// Didn't find the service in the respective app container,
-				// ignore it and fall back to the core container.
+			// In case the service starts with OCA\ we try to find the service in
+			// the apps container first.
+			if (strpos($name, 'OCA\\') === 0 && substr_count($name, '\\') >= 2) {
+				$segments = explode('\\', $name);
+				$appContainer = $this->getAppContainer(strtolower($segments[0]));
+				try {
+					return $appContainer->query($name);
+				} catch (QueryException $e) {
+					// Didn't find the service in the respective app container,
+					// ignore it and fall back to the core container.
+				}
 			}
-		}
 
-		return parent::query($name);
+			$this->cache[$name] = parent::query($name);
+		}
+		return $this->cache[$name];
 	}
 }
