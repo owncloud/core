@@ -226,6 +226,8 @@
 			// Default permissions are Edit (CRUD) and Share
 			// Check if these permissions are possible
 			var permissions = OC.PERMISSION_READ;
+			/* Default should be readonly shares
+			   TODO add config option for this
 			if (shareType === OC.Share.SHARE_TYPE_REMOTE) {
 				permissions = OC.PERMISSION_CREATE | OC.PERMISSION_UPDATE | OC.PERMISSION_READ;
 			} else {
@@ -242,6 +244,7 @@
 					permissions = permissions | OC.PERMISSION_SHARE;
 				}
 			}
+			*/
 
 			var model = this;
 			var itemType = this.get('itemType');
