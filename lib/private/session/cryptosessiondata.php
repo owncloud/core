@@ -83,8 +83,27 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	 * @param mixed $value
 	 */
 	public function set($key, $value) {
+		if($key === 'LAST_ACTIVITY' && $this->exists('user_id')) {
+			$lastDBUpdate = $this->get('LAST_DB_UPDATE');
+			if (time() - $lastDBUpdate > 5) {
+				$this->set('LAST_DB_UPDATE', time());
+				\OCP\Util::writeLog('session_logging', 'update last activity - sessionID: ' . session_id() . ' last activity: ' . $value, \OCP\Util::ERROR);
+			}
+		}
+
 		$this->sessionValues[$key] = $value;
 		$this->isModified = true;
+
+		if($key === 'user_id' && $value !== '') {
+			$this->set('LAST_DB_UPDATE', time());
+
+			$request = \OC::$server->getRequest();
+			$userAgent = $request->server['HTTP_USER_AGENT'];
+			$remoteAddr = $request->getRemoteAddress();
+
+			$createdAt = time();
+			\OCP\Util::writeLog('session_logging', 'add new session -  user ID: ' . $value . ' sessionID: ' . session_id() . ' created: ' . $createdAt . ' last activity: ' . $this->get('LAST_ACTIVITY') . ' user agent: ' . $userAgent . ' IP: ' . $remoteAddr, \OCP\Util::ERROR);
+		}
 	}
 
 	/**
@@ -126,6 +145,10 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	 * Reset and recreate the session
 	 */
 	public function clear() {
+		if($this->exists('LAST_DB_UPDATE')) {
+			\OCP\Util::writeLog('session_logging', 'clear session (clear) - sessionID: ' . session_id(), \OCP\Util::ERROR);
+		}
+
 		$this->sessionValues = [];
 		$this->isModified = true;
 		$this->session->clear();
@@ -138,7 +161,24 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	 * @return void
 	 */
 	public function regenerateId($deleteOldSession = true) {
+		$userId = $this->get('user_id');
+		$isValidUserId = !is_null($userId) && $userId !== '';
+		if($deleteOldSession && $isValidUserId) {
+			\OCP\Util::writeLog('session_logging', 'clear session (regenerateID) - sessionID: ' . session_id(), \OCP\Util::ERROR);
+		}
+
 		$this->session->regenerateId($deleteOldSession);
+
+		if($isValidUserId) {
+			$this->set('LAST_DB_UPDATE', time());
+
+			$request = \OC::$server->getRequest();
+			$userAgent = $request->server['HTTP_USER_AGENT'];
+			$remoteAddr = $request->getRemoteAddress();
+
+			$createdAt = time();
+			\OCP\Util::writeLog('session_logging', 'add new session (regenerate) -  user ID: ' . $userId . ' sessionID: ' . session_id() . ' created: ' . $createdAt . ' last activity: ' . $this->get('LAST_ACTIVITY') . ' user agent: ' . $userAgent . ' IP: ' . $remoteAddr, \OCP\Util::ERROR);
+		}
 	}
 
 	/**
