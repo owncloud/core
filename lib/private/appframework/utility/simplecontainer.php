@@ -40,6 +40,11 @@ use OCP\IContainer;
  */
 class SimpleContainer extends Container implements IContainer {
 
+	/** @var array Cache of actual services */
+	private $cache = [];
+
+	/** @var bool[] Is the service cacheable */
+	private $cacheable = [];
 
 	/**
 	 * @param ReflectionClass $class the class to instantiate
@@ -98,15 +103,27 @@ class SimpleContainer extends Container implements IContainer {
 	 */
 	public function query($name) {
 		$name = $this->sanitizeName($name);
+
+		// Serve from the cache if possible
+		if (isset($this->cache[$name])) {
+			return $this->cache[$name];
+		}
+
 		if ($this->offsetExists($name)) {
-			return $this->offsetGet($name);
+			$object = $this->offsetGet($name);
 		} else {
 			$object = $this->resolve($name);
 			$this->registerService($name, function () use ($object) {
 				return $object;
 			});
-			return $object;
 		}
+
+		// Only cache the object if the service allows it
+		if (isset($this->cacheable[$name]) && $this->cacheable[$name] === true) {
+			$this->cache[$name] = $object;
+		}
+
+		return $object;
 	}
 
 	/**
@@ -130,12 +147,15 @@ class SimpleContainer extends Container implements IContainer {
 		$name = $this->sanitizeName($name);
 		if (isset($this[$name]))  {
 			unset($this[$name]);
+			unset($this->cache[$name]);
+			unset($this->cacheable[$name]);
 		}
 		if ($shared) {
 			$this[$name] = $closure;
 		} else {
 			$this[$name] = parent::factory($closure);
 		}
+		$this->cacheable[$name] = $shared;
 	}
 
 	/**
