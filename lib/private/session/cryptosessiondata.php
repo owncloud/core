@@ -22,6 +22,7 @@
 
 namespace OC\Session;
 
+use OCP\IDBConnection;
 use OCP\ISession;
 use OCP\Security\ICrypto;
 
@@ -41,7 +42,15 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	protected $sessionValues;
 	/** @var bool */
 	protected $isModified = false;
+	/** @var IDBConnection */
+	private $dbConnection;
 	CONST encryptedSessionName = 'encrypted_session_data';
+	/**
+	 * time (in seconds) after which the DB timestamp is updated at most
+	 *
+	 * @see set()
+	 **/
+	CONST updateDBTimeout = 5;
 
 	/**
 	 * @param ISession $session
@@ -85,9 +94,14 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	public function set($key, $value) {
 		if($key === 'LAST_ACTIVITY' && $this->exists('user_id')) {
 			$lastDBUpdate = $this->get('LAST_DB_UPDATE');
-			if (time() - $lastDBUpdate > 5) {
+			if (time() - $lastDBUpdate > self::updateDBTimeout) {
 				$this->set('LAST_DB_UPDATE', time());
-				\OCP\Util::writeLog('session_logging', 'update last activity - sessionID: ' . session_id() . ' last activity: ' . $value, \OCP\Util::ERROR);
+
+				$qb = $this->getQueryBuilder();
+				$qb->update('sessions')
+					->set('last_activity_at', $qb->createNamedParameter($value))
+					->where($qb->expr()->eq('session_id', session_id()))
+					->execute();
 			}
 		}
 
@@ -102,7 +116,15 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 			$remoteAddr = $request->getRemoteAddress();
 
 			$createdAt = time();
-			\OCP\Util::writeLog('session_logging', 'add new session -  user ID: ' . $value . ' sessionID: ' . session_id() . ' created: ' . $createdAt . ' last activity: ' . $this->get('LAST_ACTIVITY') . ' user agent: ' . $userAgent . ' IP: ' . $remoteAddr, \OCP\Util::ERROR);
+
+			$qb = $this->getQueryBuilder();
+			$qb->insert('sessions')
+				->setValue('user_id', $qb->createNamedParameter($value))
+				->setValue('session_id', $qb->createNamedParameter(session_id()))
+				->setValue('created_at', $qb->createNamedParameter($createdAt))
+				->setValue('last_activity_at', $qb->createNamedParameter($createdAt))
+				->setValue('info', $qb->createNamedParameter(json_encode(['ip' => $remoteAddr, 'user_agent' => $userAgent])))
+				->execute();
 		}
 	}
 
@@ -146,7 +168,10 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	 */
 	public function clear() {
 		if($this->exists('LAST_DB_UPDATE')) {
-			\OCP\Util::writeLog('session_logging', 'clear session (clear) - sessionID: ' . session_id(), \OCP\Util::ERROR);
+			$qb = $this->getQueryBuilder();
+			$qb->delete('sessions')
+				->where($qb->expr()->eq('session_id', session_id()))
+				->execute();
 		}
 
 		$this->sessionValues = [];
@@ -164,7 +189,10 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 		$userId = $this->get('user_id');
 		$isValidUserId = !is_null($userId) && $userId !== '';
 		if($deleteOldSession && $isValidUserId) {
-			\OCP\Util::writeLog('session_logging', 'clear session (regenerateID) - sessionID: ' . session_id(), \OCP\Util::ERROR);
+			$qb = $this->getQueryBuilder();
+			$qb->delete('sessions')
+				->where($qb->expr()->eq('session_id', session_id()))
+				->execute();
 		}
 
 		$this->session->regenerateId($deleteOldSession);
@@ -175,9 +203,16 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 			$request = \OC::$server->getRequest();
 			$userAgent = $request->server['HTTP_USER_AGENT'];
 			$remoteAddr = $request->getRemoteAddress();
-
 			$createdAt = time();
-			\OCP\Util::writeLog('session_logging', 'add new session (regenerate) -  user ID: ' . $userId . ' sessionID: ' . session_id() . ' created: ' . $createdAt . ' last activity: ' . $this->get('LAST_ACTIVITY') . ' user agent: ' . $userAgent . ' IP: ' . $remoteAddr, \OCP\Util::ERROR);
+
+			$qb = $this->getQueryBuilder();
+			$qb->insert('sessions')
+				->setValue('user_id', $qb->createNamedParameter($userId))
+				->setValue('session_id', $qb->createNamedParameter(session_id()))
+				->setValue('created_at', $qb->createNamedParameter($createdAt))
+				->setValue('last_activity_at', $qb->createNamedParameter($createdAt))
+				->setValue('info', $qb->createNamedParameter(json_encode(['ip' => $remoteAddr, 'user_agent' => $userAgent])))
+				->execute();
 		}
 	}
 
@@ -222,5 +257,16 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	 */
 	public function offsetUnset($offset) {
 		$this->remove($offset);
+	}
+
+	/**
+	 * @return \OCP\DB\QueryBuilder\IQueryBuilder
+	 */
+	private function getQueryBuilder() {
+		if(is_null($this->dbConnection)) {
+			$this->dbConnection = \OC::$server->getDatabaseConnection();
+		}
+
+		return $this->dbConnection->getQueryBuilder();
 	}
 }
