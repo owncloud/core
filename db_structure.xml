@@ -1723,4 +1723,73 @@
 
 	</table>
 
+
+	<table>
+
+		<!--
+		List of all user sessions
+		-->
+		<name>*dbprefix*sessions</name>
+
+		<declaration>
+
+			<field>
+				<name>user_id</name>
+				<type>text</type>
+				<default></default>
+				<notnull>true</notnull>
+				<length>64</length>
+			</field>
+
+			<field>
+				<name>session_id</name>
+				<type>text</type>
+				<default></default>
+				<length>128</length>
+			</field>
+
+			<field>
+				<name>created_at</name>
+				<type>integer</type>
+				<default></default>
+				<notnull>true</notnull>
+				<length>4</length>
+			</field>
+
+			<field>
+				<name>last_activity_at</name>
+				<type>integer</type>
+				<default></default>
+				<notnull>true</notnull>
+				<length>4</length>
+			</field>
+
+			<field>
+				<name>info</name>
+				<type>clob</type>
+				<notnull>false</notnull>
+			</field>
+
+			<index>
+				<name>sessions_session_id</name>
+				<primary>true</primary>
+				<field>
+					<name>session_id</name>
+					<sorting>ascending</sorting>
+				</field>
+			</index>
+
+			<index>
+				<name>sessions_user_id</name>
+				<field>
+					<name>user_id</name>
+					<sorting>ascending</sorting>
+				</field>
+			</index>
+
+		</declaration>
+
+	</table>
+
+
 </database>
