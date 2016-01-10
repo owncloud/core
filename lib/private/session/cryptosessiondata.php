@@ -46,6 +46,12 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 	private $dbConnection;
 	CONST encryptedSessionName = 'encrypted_session_data';
 	/**
+	 * time (in seconds) after which the DB is check if the current session was killed
+	 *
+	 * @see checkKilledSession()
+	 **/
+	CONST killedSessionCheckTimeout = 5;
+	/**
 	 * time (in seconds) after which the DB timestamp is updated at most
 	 *
 	 * @see set()
@@ -64,6 +70,7 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 		$this->session = $session;
 		$this->passphrase = $passphrase;
 		$this->initializeSession();
+		$this->checkKilledSession();
 	}
 
 	/**
@@ -82,6 +89,34 @@ class CryptoSessionData implements \ArrayAccess, ISession {
 			);
 		} catch (\Exception $e) {
 			$this->sessionValues = [];
+		}
+	}
+
+	/**
+	 * Checks if the session was killed remotely and logs out the user if this is the case
+	 */
+	protected function checkKilledSession() {
+		$userId = $this->get('user_id');
+		$lastSessionCheck = $this->get('LAST_SESSION_CHECK');
+		$checkNeeded = is_null($lastSessionCheck) || time() - $lastSessionCheck > self::killedSessionCheckTimeout;
+
+		if(!is_null($userId) && $userId !== '' && $checkNeeded) {
+			$this->set('LAST_SESSION_CHECK', time());
+			$qb = $this->getQueryBuilder();
+			$stmt = $qb->select('session_id')
+				->from('sessions')
+				->where($qb->expr()->eq('session_id', session_id()))
+				->execute();
+			$result = $stmt->fetch();
+			$stmt->closeCursor();
+
+			// session was killed remotely
+			if($result === false) {
+				// this avoids the delete query in the clear() logic
+				$this->remove('LAST_DB_UPDATE');
+
+				$this->clear();
+			}
 		}
 	}
 
