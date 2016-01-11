@@ -110,6 +110,8 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\User\LastSeen(\OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\Report(\OC::$server->getUserManager()));
 	$application->add(new OC\Core\Command\User\ResetPassword(\OC::$server->getUserManager()));
+  
+	$application->add(new OC\Core\Command\Group\Add(\OC::$server->getGroupManager()));
 } else {
 	$application->add(new OC\Core\Command\Maintenance\Install(\OC::$server->getConfig()));
 }
