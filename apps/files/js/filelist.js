@@ -646,9 +646,8 @@
 				OCA.Files.Files.handleDownload(this.getDownloadUrl(files, dir, true), disableLoadingState);
 			}
 			else {
-				first = this.getSelectedFiles()[0]
-				OC.redirect(this.getDownloadUrl(first.name, dir, false));
-				disableLoadingState();
+				first = this.getSelectedFiles()[0];
+				OCA.Files.Files.handleDownload(this.getDownloadUrl(first.name, dir, true), disableLoadingState);
 			}
 			return false;
 		},
