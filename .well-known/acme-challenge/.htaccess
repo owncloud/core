@@ -1,0 +1,8 @@
+# Purpose: Resolves issue 'urn:acme:error:unauthorized' with owncloud forced https activated
+# Method 1: Enables Lets Encrypt webroot validation to be performed on host successfully even with forced https
+# Method 2: Pre-created folder ensures that permissions unchanged the during validation.
+# Credits: https://github.com/plesk/letsencrypt-plesk/issues/13
+<IfModule mod_rewrite.c>
+  RewriteEngine off
+</IfModule>
+Satisfy any
