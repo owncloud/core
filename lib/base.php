@@ -431,30 +431,17 @@ class OC {
 			//show the user a detailed error page
 			OC_Response::setStatus(OC_Response::STATUS_INTERNAL_SERVER_ERROR);
 			OC_Template::printExceptionErrorPage($e);
+			die();
 		}
 
 		$sessionLifeTime = self::getSessionLifeTime();
-		// regenerate session id periodically to avoid session fixation
-		/**
-		 * @var \OCP\ISession $session
-		 */
-		$session = self::$server->getSession();
-		if (!$session->exists('SID_CREATED')) {
-			$session->set('SID_CREATED', time());
-		} else if (time() - $session->get('SID_CREATED') > $sessionLifeTime / 2) {
-			session_regenerate_id(true);
-			$session->set('SID_CREATED', time());
-		}
 
 		// session timeout
 		if ($session->exists('LAST_ACTIVITY') && (time() - $session->get('LAST_ACTIVITY') > $sessionLifeTime)) {
 			if (isset($_COOKIE[session_name()])) {
 				setcookie(session_name(), null, -1, self::$WEBROOT ? : '/');
-				unset($_COOKIE[session_name()]);
 			}
-			session_unset();
-			session_destroy();
-			session_start();
+			$session->clear();
 		}
 
 		$session->set('LAST_ACTIVITY', time());
@@ -469,7 +456,12 @@ class OC {
 
 	public static function loadAppClassPaths() {
 		foreach (OC_APP::getEnabledApps() as $app) {
-			$file = OC_App::getAppPath($app) . '/appinfo/classpath.php';
+			$appPath = OC_App::getAppPath($app);
+			if ($appPath === false) {
+				continue;
+			}
+
+			$file = $appPath . '/appinfo/classpath.php';
 			if (file_exists($file)) {
 				require_once $file;
 			}
@@ -496,9 +488,10 @@ class OC {
 			OC::$SERVERROOT . '/settings',
 			OC::$SERVERROOT . '/ocs',
 			OC::$SERVERROOT . '/ocs-provider',
-			OC::$SERVERROOT . '/3rdparty',
-			OC::$SERVERROOT . '/tests',
 		]);
+		if (defined('PHPUNIT_RUN')) {
+			self::$loader->addValidRoot(OC::$SERVERROOT . '/tests');
+		}
 		spl_autoload_register(array(self::$loader, 'load'));
 		$loaderEnd = microtime(true);
 

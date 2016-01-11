@@ -965,20 +965,6 @@ class OC_Util {
 		OC_Template::printGuestPage("", "login", $parameters);
 	}
 
-
-	/**
-	 * Check if the app is enabled, redirects to home if not
-	 *
-	 * @param string $app
-	 * @return void
-	 */
-	public static function checkAppEnabled($app) {
-		if (!OC_App::isEnabled($app)) {
-			header('Location: ' . \OCP\Util::linkToAbsolute('', 'index.php'));
-			exit();
-		}
-	}
-
 	/**
 	 * Check if the user is logged in, redirects to home if not. With
 	 * redirect URL parameter to the request URI.
@@ -1296,18 +1282,6 @@ class OC_Util {
 		}
 	}
 
-
-	/**
-	 * Generates a cryptographic secure pseudo-random string
-	 *
-	 * @param int $length of the random string
-	 * @return string
-	 * @deprecated Use \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate($length); instead
-	 */
-	public static function generateRandomBytes($length = 30) {
-		return \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate($length, \OCP\Security\ISecureRandom::CHAR_LOWER.\OCP\Security\ISecureRandom::CHAR_DIGITS);
-	}
-
 	/**
 	 * Checks whether the server is running on Windows
 	 *
@@ -1483,6 +1457,7 @@ class OC_Util {
 	 *
 	 * @param \OCP\IConfig $config
 	 * @return bool whether the core or any app needs an upgrade
+	 * @throws \OC\HintException When the upgrade from the given version is not allowed
 	 */
 	public static function needUpgrade(\OCP\IConfig $config) {
 		if ($config->getSystemValue('installed', false)) {
@@ -1491,6 +1466,19 @@ class OC_Util {
 			$versionDiff = version_compare($currentVersion, $installedVersion);
 			if ($versionDiff > 0) {
 				return true;
+			} else if ($config->getSystemValue('debug', false) && $versionDiff < 0) {
+				// downgrade with debug
+				$installedMajor = explode('.', $installedVersion);
+				$installedMajor = $installedMajor[0] . '.' . $installedMajor[1];
+				$currentMajor = explode('.', $currentVersion);
+				$currentMajor = $currentMajor[0] . '.' . $currentMajor[1];
+				if ($installedMajor === $currentMajor) {
+					// Same major, allow downgrade for developers
+					return true;
+				} else {
+					// downgrade attempt, throw exception
+					throw new \OC\HintException('Downgrading is not supported and is likely to cause unpredictable issues (from ' . $installedVersion . ' to ' . $currentVersion . ')');
+				}
 			} else if ($versionDiff < 0) {
 				// downgrade attempt, throw exception
 				throw new \OC\HintException('Downgrading is not supported and is likely to cause unpredictable issues (from ' . $installedVersion . ' to ' . $currentVersion . ')');

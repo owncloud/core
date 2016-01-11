@@ -77,7 +77,7 @@ OCA.External.StatusManager = {
 		} else {
 			defObj = $.ajax({
 				type : 'GET',
-				url: OC.webroot + '/index.php/apps/files_external/' + ((mountData.type === 'personal') ? 'userstorages' : 'globalstorages') + '/' + mountData.id,
+				url: OC.webroot + '/index.php/apps/files_external/' + ((mountData.type === 'personal') ? 'userstorages' : 'userglobalstorages') + '/' + mountData.id,
 				success : function(response) {
 					if (response && response.status === 0) {
 						self.mountStatus[mountData.mount_point] = response;
@@ -177,7 +177,7 @@ OCA.External.StatusManager = {
 				} else {
 					OC.dialogs.confirm(t('files_external', 'There was an error with message: ') + mountData.error + '. Do you want to review mount point config in personal settings page?', t('files_external', 'External mount error'), function(e){
 						if(e === true) {
-							window.location.href = OC.generateUrl('/settings/personal#' + t('files_external', 'goto-external-storage'));
+							window.location.href = OC.generateUrl('/settings/personal#external-storage');
 						}
 					});
 				}

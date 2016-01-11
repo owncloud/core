@@ -11,7 +11,10 @@ OC.L10N.register(
     "You shared %1$s via link" : "שיתפת %1$s על בסיס קישור",
     "Shares" : "שיתופים",
     "Password" : "סיסמא",
+    "No entries found in this folder" : "לא נמצאו כניסות לתיקייה זו",
     "Name" : "שם",
-    "Download" : "הורדה"
+    "Download" : "הורדה",
+    "Federated Cloud Sharing" : "ענן שיתוף מאוגד",
+    "Open documentation" : "תיעוד פתוח"
 },
 "nplurals=2; plural=(n != 1);");

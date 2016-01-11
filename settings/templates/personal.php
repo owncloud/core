@@ -4,8 +4,8 @@
  * See the COPYING-README file.
  */
 
-/** @var $_ array */
-/** @var $_['urlGenerator'] */
+/** @var $_ mixed[]|\OCP\IURLGenerator[] */
+/** @var \OC_Defaults $theme */
 ?>
 
 <div id="app-navigation">
@@ -22,38 +22,6 @@
 
 <div id="app-content">
 
-<div id="clientsbox" class="clientsbox center">
-	<h2><?php p($l->t('Get the apps to sync your files'));?></h2>
-	<a href="<?php p($_['clients']['desktop']); ?>" target="_blank">
-		<img src="<?php print_unescaped(OCP\Util::imagePath('core', 'desktopapp.png')); ?>"
-			alt="<?php p($l->t('Desktop client'));?>" />
-	</a>
-	<a href="<?php p($_['clients']['android']); ?>" target="_blank">
-		<img src="<?php print_unescaped(OCP\Util::imagePath('core', 'googleplay.png')); ?>"
-			alt="<?php p($l->t('Android app'));?>" />
-	</a>
-	<a href="<?php p($_['clients']['ios']); ?>" target="_blank">
-		<img src="<?php print_unescaped(OCP\Util::imagePath('core', 'appstore.png')); ?>"
-			alt="<?php p($l->t('iOS app'));?>" />
-	</a>
-
-	<?php if (OC_Util::getEditionString() === ''): ?>
-	<p class="center">
-		<?php print_unescaped($l->t('If you want to support the project
-		<a href="https://owncloud.org/contribute"
-			target="_blank" rel="noreferrer">join development</a>
-		or
-		<a href="https://owncloud.org/promote"
-			target="_blank" rel="noreferrer">spread the word</a>!'));?>
-	</p>
-	<?php endif; ?>
-
-	<?php if(OC_APP::isEnabled('firstrunwizard')) {?>
-	<p class="center"><a class="button" href="#" id="showWizard"><?php p($l->t('Show First Run Wizard again'));?></a></p>
-	<?php }?>
-</div>
-
-
 <div id="quota" class="section">
 	<div style="width:<?php p($_['usage_relative']);?>%"
 		<?php if($_['usage_relative'] > 80): ?> class="quota-warning" <?php endif; ?>>
@@ -64,33 +32,29 @@
 	</div>
 </div>
 
+<?php if ($_['enableAvatars']): ?>
+<form id="avatar" class="section" method="post" action="<?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.postAvatar')); ?>">
+	<h2><?php p($l->t('Profile picture')); ?></h2>
+	<div id="displayavatar">
+		<div class="avatardiv"></div>
+		<div class="warning hidden"></div>
+		<?php if ($_['avatarChangeSupported']): ?>
+		<label for="uploadavatar" class="inlineblock button icon-upload svg" id="uploadavatarbutton" title="<?php p($l->t('Upload new')); ?>"></label>
+		<div class="inlineblock button icon-folder svg" id="selectavatar" title="<?php p($l->t('Select from Files')); ?>"></div>
+		<div class="inlineblock button icon-delete svg" id="removeavatar" title="<?php p($l->t('Remove image')); ?>"></div>
+		<input type="file" name="files[]" id="uploadavatar" class="hiddenuploadfield">
+		<p><em><?php p($l->t('png or jpg, max. 20 MB')); ?></em></p>
+		<?php else: ?>
+		<?php p($l->t('Picture provided by original account')); ?>
+		<?php endif; ?>
+	</div>
 
-<?php
-if($_['passwordChangeSupported']) {
-	script('jquery-showpassword');
-?>
-<form id="passwordform" class="section">
-	<h2 class="inlineblock"><?php p($l->t('Password'));?></h2>
-	<div class="hidden icon-checkmark" id="password-changed"></div>
-	<div class="hidden" id="password-error"><?php p($l->t('Unable to change your password'));?></div>
-	<br>
-	<label for="pass1" class="onlyInIE8"><?php echo $l->t('Current password');?>: </label>
-	<input type="password" id="pass1" name="oldpassword"
-		placeholder="<?php echo $l->t('Current password');?>"
-		autocomplete="off" autocapitalize="off" autocorrect="off" />
-	<label for="pass2" class="onlyInIE8"><?php echo $l->t('New password');?>: </label>
-	<input type="password" id="pass2" name="personal-password"
-		placeholder="<?php echo $l->t('New password');?>"
-		data-typetoggle="#personal-show"
-		autocomplete="off" autocapitalize="off" autocorrect="off" />
-	<input type="checkbox" id="personal-show" name="show" /><label for="personal-show" class="svg"></label>
-	<input id="passwordbutton" type="submit" value="<?php echo $l->t('Change password');?>" />
-	<br/>
-	<div class="strengthify-wrapper"></div>
+	<div id="cropper" class="hidden">
+		<div class="inlineblock button" id="abortcropperbutton"><?php p($l->t('Cancel')); ?></div>
+		<div class="inlineblock button primary" id="sendcropperbutton"><?php p($l->t('Choose as profile picture')); ?></div>
+	</div>
 </form>
-<?php
-}
-?>
+<?php endif; ?>
 
 <?php
 if($_['displayNameChangeSupported']) {
@@ -127,7 +91,7 @@ if($_['passwordChangeSupported']) {
 		placeholder="<?php p($l->t('Your email address'));?>"
 		autocomplete="on" autocapitalize="off" autocorrect="off" />
 	<span class="msg"></span><br />
-	<em><?php p($l->t('Fill in an email address to enable password recovery and receive notifications'));?></em>
+	<em><?php p($l->t('For password recovery and notifications'));?></em>
 </form>
 <?php
 } else {
@@ -148,29 +112,32 @@ if($_['passwordChangeSupported']) {
 	</p>
 </div>
 
-<?php if ($_['enableAvatars']): ?>
-<form id="avatar" class="section" method="post" action="<?php p(\OC::$server->getURLGenerator()->linkToRoute('core.avatar.postAvatar')); ?>">
-	<h2><?php p($l->t('Profile picture')); ?></h2>
-	<div id="displayavatar">
-		<div class="avatardiv"></div><br>
-		<div class="warning hidden"></div>
-		<?php if ($_['avatarChangeSupported']): ?>
-		<label for="uploadavatar" class="inlineblock button" id="uploadavatarbutton"><?php p($l->t('Upload new')); ?></label>
-		<div class="inlineblock button" id="selectavatar"><?php p($l->t('Select new from Files')); ?></div>
-		<div class="inlineblock button" id="removeavatar"><?php p($l->t('Remove image')); ?></div>
-		<input type="file" name="files[]" id="uploadavatar" class="hiddenuploadfield">
-		<br>
-		<?php p($l->t('Either png or jpg. Ideally square but you will be able to crop it. The file is not allowed to exceed the maximum size of 20 MB.')); ?>
-		<?php else: ?>
-		<?php p($l->t('Your avatar is provided by your original account.')); ?>
-		<?php endif; ?>
-	</div>
-	<div id="cropper" class="hidden">
-		<div class="inlineblock button" id="abortcropperbutton"><?php p($l->t('Cancel')); ?></div>
-		<div class="inlineblock button primary" id="sendcropperbutton"><?php p($l->t('Choose as profile image')); ?></div>
-	</div>
+<?php
+if($_['passwordChangeSupported']) {
+	script('jquery-showpassword');
+?>
+<form id="passwordform" class="section">
+	<h2 class="inlineblock"><?php p($l->t('Password'));?></h2>
+	<div class="hidden icon-checkmark" id="password-changed"></div>
+	<div class="hidden" id="password-error"><?php p($l->t('Unable to change your password'));?></div>
+	<br>
+	<label for="pass1" class="onlyInIE8"><?php echo $l->t('Current password');?>: </label>
+	<input type="password" id="pass1" name="oldpassword"
+		placeholder="<?php echo $l->t('Current password');?>"
+		autocomplete="off" autocapitalize="off" autocorrect="off" />
+	<label for="pass2" class="onlyInIE8"><?php echo $l->t('New password');?>: </label>
+	<input type="password" id="pass2" name="personal-password"
+		placeholder="<?php echo $l->t('New password');?>"
+		data-typetoggle="#personal-show"
+		autocomplete="off" autocapitalize="off" autocorrect="off" />
+	<input type="checkbox" id="personal-show" name="show" /><label for="personal-show" class="svg"></label>
+	<input id="passwordbutton" type="submit" value="<?php echo $l->t('Change password');?>" />
+	<br/>
+	<div class="strengthify-wrapper"></div>
 </form>
-<?php endif; ?>
+<?php
+}
+?>
 
 <form class="section">
 	<h2>
@@ -200,6 +167,37 @@ if($_['passwordChangeSupported']) {
 	<?php endif; ?>
 </form>
 
+<div id="clientsbox" class="section clientsbox">
+	<h2><?php p($l->t('Get the apps to sync your files'));?></h2>
+	<a href="<?php p($_['clients']['desktop']); ?>" target="_blank">
+		<img src="<?php print_unescaped(OCP\Util::imagePath('core', 'desktopapp.png')); ?>"
+			alt="<?php p($l->t('Desktop client'));?>" />
+	</a>
+	<a href="<?php p($_['clients']['android']); ?>" target="_blank">
+		<img src="<?php print_unescaped(OCP\Util::imagePath('core', 'googleplay.png')); ?>"
+			alt="<?php p($l->t('Android app'));?>" />
+	</a>
+	<a href="<?php p($_['clients']['ios']); ?>" target="_blank">
+		<img src="<?php print_unescaped(OCP\Util::imagePath('core', 'appstore.png')); ?>"
+			alt="<?php p($l->t('iOS app'));?>" />
+	</a>
+
+	<?php if (OC_Util::getEditionString() === ''): ?>
+	<p>
+		<?php print_unescaped($l->t('If you want to support the project
+		<a href="https://owncloud.org/contribute"
+			target="_blank" rel="noreferrer">join development</a>
+		or
+		<a href="https://owncloud.org/promote"
+			target="_blank" rel="noreferrer">spread the word</a>!'));?>
+	</p>
+	<?php endif; ?>
+
+	<?php if(OC_APP::isEnabled('firstrunwizard')) {?>
+	<a class="button" href="#" id="showWizard"><?php p($l->t('Show First Run Wizard again'));?></a>
+	<?php }?>
+</div>
+
 <?php foreach($_['forms'] as $form) {
 	if (isset($form['form'])) {?>
 	<div id="<?php isset($form['anchor']) ? p($form['anchor']) : p('');?>"><?php print_unescaped($form['form']);?></div>
@@ -211,10 +209,12 @@ if($_['passwordChangeSupported']) {
 	<h2><?php p($l->t('SSL root certificates')); ?></h2>
 	<table id="sslCertificate" class="grid">
 		<thead>
+			<tr>
 			<th><?php p($l->t('Common Name')); ?></th>
 			<th><?php p($l->t('Valid until')); ?></th>
 			<th><?php p($l->t('Issued By')); ?></th>
-			<th/>
+			<th></th>
+			</tr>
 		</thead>
 		<tbody>
 			<?php foreach ($_['certs'] as $rootCert): /**@var \OCP\ICertificate $rootCert*/ ?>
@@ -248,14 +248,8 @@ if($_['passwordChangeSupported']) {
 
 <div class="section">
 	<h2><?php p($l->t('Version'));?></h2>
-	<strong><?php p($theme->getTitle()); ?></strong> <?php p(OC_Util::getHumanVersion()) ?><br />
-	<?php include('settings.development.notice.php'); ?>
+	<p><a href="<?php print_unescaped($theme->getBaseUrl()); ?>" target="_blank"><?php p($theme->getTitle()); ?></a> <?php p(OC_Util::getHumanVersion()) ?></p>
+	<p><?php include('settings.development.notice.php'); ?></p>
 </div>
-
-<div class="section credits-footer">
-	<p><?php print_unescaped($theme->getShortFooter()); ?></p>
-</div>
-
-
 
 </div>

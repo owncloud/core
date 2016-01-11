@@ -405,7 +405,7 @@ $CONFIG = array(
  *     delete all files in the trash bin that are older than D days   
  *     automatically, delete other files anytime if space needed
  * * ``D1, D2``    
- *     keep files and folders the in trash bin for at least D1 days and 
+ *     keep files and folders in the trash bin for at least D1 days and 
  *     delete when exceeds D2 days
  * * ``disabled``  
  *     trash bin auto clean disabled, files and folders will be kept forever
@@ -958,6 +958,8 @@ $CONFIG = array(
 		// dev-/trystack uses swift by default, the lib defaults to 'cloudFiles'
 		// if omitted
 		'serviceName' => 'swift',
+		// The Interface / url Type, optional
+		'urlType' => 'internal'
 	),
 ),
 
@@ -1063,9 +1065,6 @@ $CONFIG = array(
  *
  * 1 -> Check each file or folder at most once per request, recommended for
  * general use if outside changes might happen.
- *
- * 2 -> Check every time the filesystem is used, causes a performance hit when
- * using external storages, not recommended for regular use.
  */
 'filesystem_check_changes' => 0,
 

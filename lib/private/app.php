@@ -760,9 +760,12 @@ class OC_App {
 	 * @param bool $onlyLocal
 	 * @param bool $includeUpdateInfo Should we check whether there is an update
 	 *                                in the app store?
+	 * @param OCSClient $ocsClient
 	 * @return array
 	 */
-	public static function listAllApps($onlyLocal = false, $includeUpdateInfo = true) {
+	public static function listAllApps($onlyLocal = false,
+									   $includeUpdateInfo = true,
+									   OCSClient $ocsClient) {
 		$installedApps = OC_App::getAllApps();
 
 		//TODO which apps do we want to blacklist and how do we integrate
@@ -825,7 +828,7 @@ class OC_App {
 		if ($onlyLocal) {
 			$remoteApps = [];
 		} else {
-			$remoteApps = OC_App::getAppstoreApps();
+			$remoteApps = OC_App::getAppstoreApps('approved', null, $ocsClient);
 		}
 		if ($remoteApps) {
 			// Remove duplicates
@@ -865,19 +868,15 @@ class OC_App {
 	/**
 	 * Get a list of all apps on the appstore
 	 * @param string $filter
-	 * @param string $category
+	 * @param string|null $category
+	 * @param OCSClient $ocsClient
 	 * @return array|bool  multi-dimensional array of apps.
 	 *                     Keys: id, name, type, typename, personid, license, detailpage, preview, changed, description
 	 */
-	public static function getAppstoreApps($filter = 'approved', $category = null) {
+	public static function getAppstoreApps($filter = 'approved',
+										   $category = null,
+										   OCSClient $ocsClient) {
 		$categories = [$category];
-
-		$ocsClient = new OCSClient(
-			\OC::$server->getHTTPClientService(),
-			\OC::$server->getConfig(),
-			\OC::$server->getLogger()
-		);
-
 
 		if (is_null($category)) {
 			$categoryNames = $ocsClient->getCategories(\OCP\Util::getVersion());
@@ -912,6 +911,11 @@ class OC_App {
 				$apps[$i]['internallabel'] = (string)$l->t('Recommended');
 				$apps[$i]['internalclass'] = 'recommendedapp';
 			}
+
+			// Apps from the appstore are always assumed to be compatible with the
+			// the current release as the initial filtering is done on the appstore
+			$apps[$i]['dependencies']['owncloud']['@attributes']['min-version'] = implode('.', \OCP\Util::getVersion());
+			$apps[$i]['dependencies']['owncloud']['@attributes']['max-version'] = implode('.', \OCP\Util::getVersion());
 
 			$i++;
 		}
