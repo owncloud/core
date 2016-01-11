@@ -820,7 +820,7 @@ $(document).ready(function () {
 					$('#newusername').focus();
 					GroupList.incEveryoneCount();
 				}).fail(function(result, textStatus, errorThrown) {
-					OC.dialogs.alert(result.responseJSON.message, t('settings', 'Error creating user'));
+					OC.Notification.showTemporary(result.responseJSON.message, t('settings', 'Error creating user'));
 				}).success(function(){
 					$('#newuser').get(0).reset();
 				});
