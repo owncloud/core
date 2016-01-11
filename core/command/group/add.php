@@ -40,15 +40,30 @@ class Add extends Command {
 	 */
 	public function __construct(IGroupManager $groupManager) {
 		parent::__construct();
+		$this->groupManager = $groupManager;
 	}
 
 	protected function configure() {
 		$this
 			->setName('group:add')
-			->setDescription('adds a group');
+			->setDescription('adds a group')
+			->addArgument(
+				'group',
+				InputArgument::REQUIRED,
+				'The name of the group to create'
+			);
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		 
+		$groupName = $input->getArgument('group');
+		$group = $this->groupManager->get($groupName);
+		if (!$group) {
+			$this->groupManager->createGroup($groupName);
+			$group = $this->groupManager->get($groupName);
+			$output->writeln('Created group "' . $group->getGID() . '"');
+		} else {
+			$output->writeln('<error>The group already exists</error>');
+			return 1;
+		}
   }
 }
