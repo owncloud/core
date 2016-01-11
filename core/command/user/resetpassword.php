@@ -27,6 +27,13 @@
 namespace OC\Core\Command\User;
 
 use OCP\IUserManager;
+use OCP\IConfig;
+use OCP\IURLGenerator;
+use OCP\IRequest;
+use OCP\IL10N;
+use OCP\Mail\IMailer;
+use OCP\Security\ISecureRandom;
+use OC_Defaults;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -38,27 +45,98 @@ class ResetPassword extends Command {
 	/** @var IUserManager */
 	protected $userManager;
 
-	public function __construct(IUserManager $userManager) {
+	/** @var IURLGenerator */
+	protected $urlGenerator;
+
+	/** @var IConfig */
+	protected $config;
+
+	/** @var IL10N */
+	protected $l10n;
+
+	/** @var ISecureRandom */
+	protected $secureRandom;
+
+	/** @var IMailer */
+	protected $mailer;
+
+	/** @var ITimeFactory */
+	protected $timeFactory;
+	// FIXME: Inject a non-static factory of OC_Defaults for better unit-testing
+	/** @var OC_Defaults */
+	protected $defaults;
+	protected $from;
+
+	public function __construct(
+	IUserManager $userManager, 
+	IConfig $config, 
+	IURLGenerator $urlGenerator,
+	IL10N $l10n, 
+	ISecureRandom $secureRandom,
+	IMailer $mailer, 
+	OC_Defaults $defaults
+	) {
 		$this->userManager = $userManager;
+		$this->urlGenerator = $urlGenerator;
+		$this->secureRandom = $secureRandom;
+		$this->l10n = $l10n;
+		$this->config = $config;
+		$this->mailer = $mailer;
+		$this->config = $config;
+		$this->defaults = $defaults;
 		parent::__construct();
 	}
+
+	protected function resetAndEmail($user) {
+
+		$email = $this->config->getUserValue($user, 'settings', 'email');
+		$token = $this->secureRandom->getMediumStrengthGenerator()->generate(21, ISecureRandom::CHAR_DIGITS .
+				ISecureRandom::CHAR_LOWER .
+				ISecureRandom::CHAR_UPPER);
+		$this->config->setUserValue($user, 'owncloud', 'lostpassword', time() . ':' . $token);
+		$link = $this->urlGenerator->linkToRouteAbsolute('core.lost.resetform', array('userId' => $user, 'token' => $token));
+		$tmpl = new \OC_Template('core/lostpassword', 'email');
+		$tmpl->assign('link', $link);
+		$msg = $tmpl->fetchPage();
+		try {
+			// Let up check if admin configured settings for email.
+			$mfa=$this->config->getSystemValue('mail_from_address');
+			$md=$this->config->getSystemValue('mail_domain');
+			if($mfa===NULL || $md===NULL){
+				throw new Exception('Please configure your mail_from_address and mail_domain in config.php .');
+			}
+			else{
+				$this->from =  $mfa. '@' . $md;
+			}
+			$message = $this->mailer->createMessage();
+			$message->setTo([$email => $user]);
+			$message->setSubject($this->l10n->t('%s password reset', [$this->defaults->getName()]));
+			$message->setPlainBody($msg);
+			$message->setFrom([$this->from => $this->defaults->getName()]);
+			$this->mailer->send($message);
+		} catch (\Exception $e) {
+			throw new \Exception($this->l10n->t(
+					'Couldn\'t send email.'.
+					'Full error message:'.$e->getMessage()
+			));
+		}
+	}
+
+//End of function resetAndEmail
 
 	protected function configure() {
 		$this
 			->setName('user:resetpassword')
 			->setDescription('Resets the password of the named user')
 			->addArgument(
-				'user',
-				InputArgument::REQUIRED,
-				'Username to reset password'
+					'user', InputArgument::REQUIRED, 'Username to reset password'
 			)
 			->addOption(
-				'password-from-env',
-				null,
-				InputOption::VALUE_NONE,
-				'read password from environment variable OC_PASS'
+					'password-from-env', null, InputOption::VALUE_NONE, 'read password from environment variable OC_PASS'
 			)
-		;
+			->addOption(
+					'send-link-to-user', null, InputOption::VALUE_NONE, 'reset password and send notification email with hashed URL to the user'
+			);
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
@@ -71,6 +149,11 @@ class ResetPassword extends Command {
 			return 1;
 		}
 
+		if ($input->getOption('send-link-to-user')) {
+			$this->resetAndEMail($username);
+			$output->writeln("Message Sent.");
+			return 0;
+		}
 		if ($input->getOption('password-from-env')) {
 			$password = getenv('OC_PASS');
 			if (!$password) {
@@ -91,14 +174,12 @@ class ResetPassword extends Command {
 			}
 
 			$password = $dialog->askHiddenResponse(
-				$output,
-				'<question>Enter a new password: </question>',
-				false
+					$output, '<question>Enter a new password: </question>', 
+					false
 			);
 			$confirm = $dialog->askHiddenResponse(
-				$output,
-				'<question>Confirm the new password: </question>',
-				false
+					$output, '<question>Confirm the new password: </question>', 
+					false
 			);
 
 			if ($password !== $confirm) {
@@ -109,7 +190,6 @@ class ResetPassword extends Command {
 			$output->writeln("<error>Interactive input or --password-from-env is needed for entering a new password!</error>");
 			return 1;
 		}
-
 		$success = $user->setPassword($password);
 		if ($success) {
 			$output->writeln("<info>Successfully reset password for " . $username . "</info>");
@@ -118,4 +198,5 @@ class ResetPassword extends Command {
 			return 1;
 		}
 	}
+
 }
