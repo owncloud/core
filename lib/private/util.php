@@ -1201,6 +1201,10 @@ class OC_Util {
 		// creating a test file
 		$testFile = $config->getSystemValue('datadirectory', OC::$SERVERROOT . '/data') . '/' . $fileName;
 
+		if (file_exists($testFile)) {// already running this test, possible recursive call
+			return false;
+		}
+
 		$fp = @fopen($testFile, 'w');
 		if (!$fp) {
 			throw new OC\HintException('Can\'t create test file to check for working .htaccess file.',
@@ -1276,18 +1280,6 @@ class OC_Util {
 		while (ob_get_level()) {
 			ob_end_clean();
 		}
-	}
-
-
-	/**
-	 * Generates a cryptographic secure pseudo-random string
-	 *
-	 * @param int $length of the random string
-	 * @return string
-	 * @deprecated Use \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate($length); instead
-	 */
-	public static function generateRandomBytes($length = 30) {
-		return \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate($length, \OCP\Security\ISecureRandom::CHAR_LOWER.\OCP\Security\ISecureRandom::CHAR_DIGITS);
 	}
 
 	/**
