@@ -48,7 +48,7 @@ class Controller {
 	 */
 	public function run($post) {
 		// Check for autosetup:
-		$post = $this->loadAutoConfig($post);
+		$post = $this->setupHelper->loadAutoConfig($post);
 		$opts = $this->setupHelper->getSystemInfo();
 
 		// convert 'abcpassword' to 'abcpass'
@@ -100,26 +100,5 @@ class Controller {
 			unlink($this->autoConfigFile);
 		}
 		\OC_Util::redirectToDefaultPage();
-	}
-
-	public function loadAutoConfig($post) {
-		if( file_exists($this->autoConfigFile)) {
-			\OCP\Util::writeLog('core', 'Autoconfig file found, setting up ownCloud…', \OCP\Util::INFO);
-			$AUTOCONFIG = array();
-			include $this->autoConfigFile;
-			$post = array_merge ($post, $AUTOCONFIG);
-		}
-
-		$dbIsSet = isset($post['dbtype']);
-		$directoryIsSet = isset($post['directory']);
-		$adminAccountIsSet = isset($post['adminlogin']);
-
-		if ($dbIsSet AND $directoryIsSet AND $adminAccountIsSet) {
-			$post['install'] = 'true';
-		}
-		$post['dbIsSet'] = $dbIsSet;
-		$post['directoryIsSet'] = $directoryIsSet;
-
-		return $post;
 	}
 }

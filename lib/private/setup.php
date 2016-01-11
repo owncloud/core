@@ -454,4 +454,26 @@ class Setup {
 		file_put_contents($baseDir . '/.htaccess', $content);
 		file_put_contents($baseDir . '/index.html', '');
 	}
+
+	public function loadAutoConfig(array $options) {
+		$autoConfigFile = \OC::$SERVERROOT . '/config/autoconfig.php';
+		if (file_exists($autoConfigFile)) {
+			$this->logger->info('Autoconfig file found, setting up ownCloud…');
+			$AUTOCONFIG = [];
+			include $autoConfigFile;
+			$options = array_merge($options, $AUTOCONFIG);
+		}
+
+		$dbIsSet = isset($options['dbtype']);
+		$directoryIsSet = isset($options['directory']);
+		$adminAccountIsSet = isset($options['adminlogin']);
+
+		if ($dbIsSet AND $directoryIsSet AND $adminAccountIsSet) {
+			$post['install'] = 'true';
+		}
+		$options['dbIsSet'] = $dbIsSet;
+		$options['directoryIsSet'] = $directoryIsSet;
+
+		return $options;
+	}
 }

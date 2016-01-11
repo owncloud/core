@@ -78,6 +78,7 @@ class Install extends Command {
 
 		// validate user input
 		$options = $this->validateInput($input, $output, array_keys($sysInfo['databases']));
+		$options = $setupHelper->loadAutoConfig($options);
 
 		// perform installation
 		$errors = $setupHelper->install($options);
