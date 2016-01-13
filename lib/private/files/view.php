@@ -76,16 +76,18 @@ class View {
 	/** @var string */
 	private $fakeRoot = '';
 
-	/**
-	 * @var \OCP\Lock\ILockingProvider
-	 */
+	/** @var \OCP\Lock\ILockingProvider */
 	private $lockingProvider;
 
 	private $lockingEnabled;
 
 	private $updaterEnabled = true;
 
+	/** @var \OC\User\Manager */
 	private $userManager;
+
+	/** @var \OCP\IL10N */
+	protected $l;
 
 	/**
 	 * @param string $root
@@ -1726,16 +1728,17 @@ class View {
 	 * @throws InvalidPathException
 	 */
 	public function verifyPath($path, $fileName) {
-
-		$l10n = \OC::$server->getL10N('lib');
+		if (!$this->l) {
+			$this->l = \OC::$server->getL10N('lib');
+		}
 
 		// verify empty and dot files
 		$trimmed = trim($fileName);
 		if ($trimmed === '') {
-			throw new InvalidPathException($l10n->t('Empty filename is not allowed'));
+			throw new InvalidPathException($this->l->t('Empty filename is not allowed'));
 		}
 		if (\OC\Files\Filesystem::isIgnoredDir($trimmed)) {
-			throw new InvalidPathException($l10n->t('Dot files are not allowed'));
+			throw new InvalidPathException($this->l->t('Dot files are not allowed'));
 		}
 
 		// verify database - e.g. mysql only 3-byte chars
@@ -1744,7 +1747,7 @@ class View {
     | [\xF1-\xF3][\x80-\xBF]{3}          # planes 4-15
     | \xF4[\x80-\x8F][\x80-\xBF]{2}      # plane 16
 )%xs', $fileName)) {
-			throw new InvalidPathException($l10n->t('4-byte characters are not supported in file names'));
+			throw new InvalidPathException($this->l->t('4-byte characters are not supported in file names'));
 		}
 
 		try {
@@ -1752,11 +1755,11 @@ class View {
 			list($storage, $internalPath) = $this->resolvePath($path);
 			$storage->verifyPath($internalPath, $fileName);
 		} catch (ReservedWordException $ex) {
-			throw new InvalidPathException($l10n->t('File name is a reserved word'));
+			throw new InvalidPathException($this->l->t('File name is a reserved word'));
 		} catch (InvalidCharacterInPathException $ex) {
-			throw new InvalidPathException($l10n->t('File name contains at least one invalid character'));
+			throw new InvalidPathException($this->l->t('File name contains at least one invalid character'));
 		} catch (FileNameTooLongException $ex) {
-			throw new InvalidPathException($l10n->t('File name is too long'));
+			throw new InvalidPathException($this->l->t('File name is too long'));
 		}
 	}
 
