@@ -6,9 +6,10 @@
  * @author Lennart Rosam <hello@takuto.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Richard Bentley <rbentley@e2advance.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -83,6 +84,7 @@ class Configuration {
 		'lastJpegPhotoLookup' => null,
 		'ldapNestedGroups' => false,
 		'ldapPagingSize' => null,
+		'ldapDynamicGroupMemberURL' => null,
 	);
 
 	/**
@@ -440,6 +442,7 @@ class Configuration {
 			'ldap_nested_groups'                => 0,
 			'ldap_paging_size'                  => 500,
 			'ldap_experienced_admin'            => 0,
+			'ldap_dynamic_group_member_url'     => '',
 		);
 	}
 
@@ -493,7 +496,8 @@ class Configuration {
 			'last_jpegPhoto_lookup'             => 'lastJpegPhotoLookup',
 			'ldap_nested_groups'                => 'ldapNestedGroups',
 			'ldap_paging_size'                  => 'ldapPagingSize',
-			'ldap_experienced_admin'            => 'ldapExperiencedAdmin'
+			'ldap_experienced_admin'            => 'ldapExperiencedAdmin',
+			'ldap_dynamic_group_member_url'     => 'ldapDynamicGroupMemberURL',
 		);
 		return $array;
 	}
