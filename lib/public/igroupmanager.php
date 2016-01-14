@@ -135,4 +135,10 @@ interface IGroupManager {
 	 * @since 8.0.0
 	 */
 	public function isInGroup($userId, $group);
+
+	/**
+	 * FIXME: this leaks private core API, but it us used all over the place
+	 * @return \OC\SubAdmin
+	 */
+	public function getSubAdmin();
 }

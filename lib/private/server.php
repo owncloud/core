@@ -727,7 +727,7 @@ class Server extends ServerContainer implements IServerContainer {
 	}
 
 	/**
-	 * @return \OC\Group\Manager
+	 * @return \OCP\IGroupManager
 	 */
 	public function getGroupManager() {
 		return $this->query('GroupManager');
