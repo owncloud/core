@@ -839,4 +839,19 @@ interface IQueryBuilder {
 	 * @since 9.0.0
 	 */
 	public function getColumnName($column, $tableAlias = '');
+
+	/**
+	 * Insert a row if the matching row does not exists.
+	 *
+	 * Uses {@see Connection::executeUpdate}
+	 *
+	 * @param string $table
+	 * @param array $insert data that should be inserted into the table  (column name => value)
+	 * @param array|null $compare List of values that should be checked for "if not exists"
+	 *				If this is null or an empty array, all keys of $insert will be compared
+	 *				Please note: text fields (clob) must not be used in the compare array
+	 * @return int number of inserted rows
+	 * @since 9.0.0
+	 */
+	public function insertIfNotExists($table, array $insert, array $compare = null);
 }

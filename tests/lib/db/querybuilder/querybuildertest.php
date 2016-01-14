@@ -1200,4 +1200,76 @@ class QueryBuilderTest extends \Test\TestCase {
 			$this->queryBuilder->getColumnName($column, $prefix)
 		);
 	}
+
+	public function testInsertIfNotExists() {
+		$qB = $this->connection->getQueryBuilder();
+
+		try {
+			$qB->getLastInsertId();
+			$this->fail('getLastInsertId() should throw an exception, when being called before insert()');
+		} catch (\BadMethodCallException $e) {
+			$this->assertTrue(true);
+		}
+
+		$this->assertSame(1, $qB->insertIfNotExists('properties', [
+			'userid' => $qB->expr()->literal('testFirstResult'),
+			'propertypath' => $qB->expr()->literal('testing'),
+			'propertyname' => $qB->expr()->literal('testing'),
+			'propertyvalue' => $qB->expr()->literal('testing'),
+		], [
+			'userid',
+			'propertypath',
+			'propertyname',
+			'propertyvalue',
+		]));
+
+		$actual1 = $qB->getLastInsertId();
+
+		$this->assertNotNull($actual1);
+		$this->assertInternalType('int', $actual1);
+		$this->assertEquals($this->connection->lastInsertId('*PREFIX*properties'), $actual1);
+
+		$this->assertSame(0, $qB->insertIfNotExists('properties', [
+			'userid' => $qB->expr()->literal('testFirstResult'),
+			'propertypath' => $qB->expr()->literal('testing'),
+			'propertyname' => $qB->expr()->literal('testing'),
+			'propertyvalue' => $qB->expr()->literal('testing'),
+		], [
+			'userid',
+			'propertypath',
+			'propertyname',
+			'propertyvalue',
+		]));
+
+		$actual2 = $qB->getLastInsertId();
+
+		$this->assertSame($actual1, $actual2);
+
+		$this->assertSame(1, $qB->insertIfNotExists('properties', [
+			'userid' => $qB->expr()->literal('testFirstResult'),
+			'propertypath' => $qB->expr()->literal('testing2'),
+			'propertyname' => $qB->expr()->literal('testing2'),
+			'propertyvalue' => $qB->expr()->literal('testing2'),
+		], [
+			'userid',
+			'propertypath',
+			'propertyname',
+			'propertyvalue',
+		]));
+
+		$actual3 = $qB->getLastInsertId();
+
+		$this->assertNotSame($actual1, $actual3);
+
+		$qB->delete('properties')
+			->where($qB->expr()->eq('userid', $qB->expr()->literal('testFirstResult')))
+			->execute();
+
+		try {
+			$qB->getLastInsertId();
+			$this->fail('getLastInsertId() should throw an exception, when being called after delete()');
+		} catch (\BadMethodCallException $e) {
+			$this->assertTrue(true);
+		}
+	}
 }
