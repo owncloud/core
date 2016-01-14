@@ -34,6 +34,7 @@ use OCP\Encryption\IEncryptionModule;
 use OCP\Files\Mount\IMountPoint;
 use OCP\Files\Storage;
 use OCP\IConfig;
+use OCP\IGroupManager;
 
 class Util {
 
@@ -72,20 +73,20 @@ class Util {
 	/** @var array paths excluded from encryption */
 	protected $excludedPaths;
 
-	/** @var \OC\Group\Manager $manager */
+	/** @var IGroupManager $manager */
 	protected $groupManager;
 
 	/**
 	 *
 	 * @param View $rootView
 	 * @param \OC\User\Manager $userManager
-	 * @param \OC\Group\Manager $groupManager
+	 * @param IGroupManager $groupManager
 	 * @param IConfig $config
 	 */
 	public function __construct(
 		View $rootView,
 		\OC\User\Manager $userManager,
-		\OC\Group\Manager $groupManager,
+		IGroupManager $groupManager,
 		IConfig $config) {
 
 		$this->ocHeaderKeys = [

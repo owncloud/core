@@ -156,10 +156,9 @@ $tmpl->assign('showCertificates', $enableCertImport);
 $tmpl->assign('urlGenerator', $urlGenerator);
 
 // Get array of group ids for this user
-$groups = \OC::$server->getGroupManager()->getUserIdGroups(OC_User::getUser());
-$groups2 = array_map(function($group) { return $group->getGID(); }, $groups);
-sort($groups2);
-$tmpl->assign('groups', $groups2);
+$groups = \OC::$server->getGroupManager()->getUserGroupIds($user);
+sort($groups);
+$tmpl->assign('groups', $groups);
 
 // add hardcoded forms from the template
 $l = \OC::$server->getL10N('settings');
