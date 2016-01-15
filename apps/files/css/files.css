@@ -790,3 +790,6 @@ html.ie8 #controls .button.new {
 	padding: 0;
 }
 
+.canDrop {
+  background-color: rgba(255, 255, 140, 1);
+}
