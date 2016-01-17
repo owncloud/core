@@ -154,59 +154,68 @@ class USER_GITLAB extends OC_User_Backend implements IUserBackend, UserInterface
     }
 
     public function userExists($uid) {
-        try {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $this->gitLabUrl . '/api/v3/users/' . trim($uid) . '?private_token=' . $this->gitLabPrivateToken);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            $response = curl_exec($ch);
-            if (false === $response) {
-                throw new Exception('Curl error');
-            }
-            $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_close($ch);
-            if ($status == 200) {
-                Util::writeLog('USER_GITLAB', "GitLab user exists success: found", Util::DEBUG);
-                return true;
-            } elseif ($status == 404) {
-                Util::writeLog('USER_GITLAB', "GitLab user exists success: not found", Util::DEBUG);
+        if (!isset($_SESSION['user_exists_' . $uid]) || !isset($_SESSION['user_exists_' . $uid . '_time']) || $_SESSION['user_exists_' . $uid . '_time'] < (time() - 300)) {
+            try {
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $this->gitLabUrl . '/api/v3/users/' . trim($uid) . '?private_token=' . $this->gitLabPrivateToken);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                $response = curl_exec($ch);
+                if (false === $response) {
+                    throw new Exception('Curl error');
+                }
+                $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                curl_close($ch);
+                if ($status == 200) {
+                    Util::writeLog('USER_GITLAB', "GitLab user exists success: found", Util::DEBUG);
+                    $_SESSION['user_exists_' . $uid] = true;
+                    $_SESSION['user_exists_' . $uid . '_time'] = time();
+                } elseif ($status == 404) {
+                    Util::writeLog('USER_GITLAB', "GitLab user exists success: not found", Util::DEBUG);
+                    $_SESSION['user_exists_' . $uid] = false;
+                    $_SESSION['user_exists_' . $uid . '_time'] = time();
+                } else {
+                    throw new Exception('Wrong response code: ' . $status);
+                }
+            } catch (Exception $ex) {
+                Util::writeLog('USER_GITLAB', "GitLab user exists test failed: " . $ex->getResult(), Util::ERROR);
                 return false;
-            } else {
-                throw new Exception('Wrong response code: ' . $status);
             }
-        } catch (Exception $ex) {
-            Util::writeLog('USER_GITLAB', "GitLab user exists test failed: " . $ex->getResult(), Util::ERROR);
-            return false;
         }
+        return $_SESSION['user_exists_' . $uid];
     }
 
     public function getDisplayName($uid) {
-        try {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $this->gitLabUrl . '/api/v3/users/' . trim($uid) . '?private_token=' . $this->gitLabPrivateToken);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            $response = curl_exec($ch);
-            if (false === $response) {
-                throw new Exception('Curl error');
-            }
-            $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_close($ch);
-            if ($status == 200) {
-                $json = json_decode($response, true);
-                if ($json === false) {
-                    throw new Exception('Wrong json received');
+        if (!isset($_SESSION['user_name_' . $uid]) || !isset($_SESSION['user_name_' . $uid . '_time']) || $_SESSION['user_name_' . $uid . '_time'] < (time() - 300) || $_SESSION['user_name_' . $uid] == false) {
+            try {
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $this->gitLabUrl . '/api/v3/users/' . trim($uid) . '?private_token=' . $this->gitLabPrivateToken);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                $response = curl_exec($ch);
+                if (false === $response) {
+                    throw new Exception('Curl error');
                 }
-                Util::writeLog('USER_GITLAB', "GitLab user name success: found", Util::DEBUG);
-                return $json['name'];
-            } elseif ($status == 404) {
-                Util::writeLog('USER_GITLAB', "GitLab user name success: not found", Util::DEBUG);
+                $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                curl_close($ch);
+                if ($status == 200) {
+                    $json = json_decode($response, true);
+                    if ($json === false) {
+                        throw new Exception('Wrong json received');
+                    }
+                    Util::writeLog('USER_GITLAB', "GitLab user name success: found", Util::DEBUG);
+                    $_SESSION['user_name_' . $uid] = $json['name'];
+                    $_SESSION['user_name_' . $uid . '_time'] = time();
+                } elseif ($status == 404) {
+                    Util::writeLog('USER_GITLAB', "GitLab user name success: not found", Util::DEBUG);
+                    return false;
+                } else {
+                    throw new Exception('Wrong response code: ' . $status);
+                }
+            } catch (Exception $ex) {
+                Util::writeLog('USER_GITLAB', "GitLab user name failed: " . $ex->getResult(), Util::ERROR);
                 return false;
-            } else {
-                throw new Exception('Wrong response code: ' . $status);
             }
-        } catch (Exception $ex) {
-            Util::writeLog('USER_GITLAB', "GitLab user name failed: " . $ex->getResult(), Util::ERROR);
-            return false;
         }
+        return $_SESSION['user_name_' . $uid];
     }
 
     public function getDisplayNames($search = '', $limit = 9999, $offset = 0) {
