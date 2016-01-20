@@ -532,7 +532,7 @@ class UsersController extends Controller {
 
 		// this is the only permission a backend provides and is also used
 		// for the permission of setting a email address
-		if(!$user->canChangeDisplayName()){
+		if(!$user->canChangeEMailAddress()){
 			return new DataResponse(
 				array(
 					'status' => 'error',

@@ -1695,7 +1695,7 @@ class UsersControllerTest extends \Test\TestCase {
 	 * @param bool $expectsUpdate
 	 * @param bool $expectsDelete
 	 */
-	public function testSetEmailAddress($mailAddress, $isValid, $expectsUpdate, $expectsDelete, $canChangeDisplayName, $responseCode) {
+	public function testSetEmailAddress($mailAddress, $isValid, $expectsUpdate, $expectsDelete, $canChangeEMailAddress, $responseCode) {
 		$this->container['IsAdmin'] = true;
 
 		$user = $this->getMockBuilder('\OC\User\User')
@@ -1706,8 +1706,8 @@ class UsersControllerTest extends \Test\TestCase {
 			->will($this->returnValue('foo'));
 		$user
 			->expects($this->any())
-			->method('canChangeDisplayName')
-			->will($this->returnValue($canChangeDisplayName));
+			->method('canChangeEMailAddress')
+			->will($this->returnValue($canChangeEMailAddress));
 		$this->container['UserSession']
 			->expects($this->atLeastOnce())
 			->method('getUser')
@@ -1720,7 +1720,7 @@ class UsersControllerTest extends \Test\TestCase {
 
 		if ($isValid) {
 			$user->expects($this->atLeastOnce())
-				->method('canChangeDisplayName')
+				->method('canChangeEMailAddress')
 				->willReturn(true);
 
 			$this->container['UserManager']

@@ -91,6 +91,9 @@ class SimpleUserForTesting implements IUser {
 	public function canChangeDisplayName() {
 	}
 
+	public function canChangeEMailAddress() {
+	}
+
 	public function isEnabled() {
 	}
 
