@@ -125,6 +125,14 @@ class User implements IUser {
 				$this->displayName = $this->uid;
 			}
 		}
+
+		if($this->config->getAppValue('core', 'showEmailInDisplayname', false)) {
+			$email = $this->getEMailAddress();
+			if(!is_null($email) && $email !== '' && strpos($this->displayName, $email) === false) {
+				$this->displayName .= ' (' . $email . ')';
+			}
+		}
+
 		return $this->displayName;
 	}
 
