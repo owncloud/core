@@ -122,11 +122,7 @@ class USER_GITLAB extends OC_User_Backend implements IUserBackend, UserInterface
     public function getUsers($search = '', $limit = 9999, $offset = 0) {
         try {
             $ch = curl_init();
-            if ($search != '') {
-                curl_setopt($ch, CURLOPT_URL, $this->gitLabUrl . '/api/v3/users?private_token=' . $this->gitLabPrivateToken . '?search=' . $search);
-            } else {
-                curl_setopt($ch, CURLOPT_URL, $this->gitLabUrl . '/api/v3/users?private_token=' . $this->gitLabPrivateToken);
-            }
+            curl_setopt($ch, CURLOPT_URL, $this->gitLabUrl . '/api/v3/users?private_token=' . $this->gitLabPrivateToken . '&search=' . $search);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             $response = curl_exec($ch);
             if (false === $response) {
@@ -225,7 +221,7 @@ class USER_GITLAB extends OC_User_Backend implements IUserBackend, UserInterface
     public function getDisplayNames($search = '', $limit = 9999, $offset = 0) {
         try {
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $this->gitLabUrl . '/api/v3/users?private_token=' . $this->gitLabPrivateToken . '?search=' . $search);
+            curl_setopt($ch, CURLOPT_URL, $this->gitLabUrl . '/api/v3/users?private_token=' . $this->gitLabPrivateToken . '&search=' . $search);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             $response = curl_exec($ch);
             if (false === $response) {
