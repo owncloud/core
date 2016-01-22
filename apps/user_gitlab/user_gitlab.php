@@ -26,7 +26,7 @@
 
 namespace OCA\user_gitlab;
 
-use OC\OCS\Exception;
+use \Exception;
 use OC_User_Backend;
 use OCP\IUserBackend;
 use OCP\UserInterface;
@@ -141,7 +141,7 @@ class USER_GITLAB extends OC_User_Backend implements IUserBackend, UserInterface
                 }
                 $output = array();
                 for ($i = $offset; $i < min([$limit + $offset, count($json)]); $i++) {
-                    $output[] = $json[$i]['username'];
+                    $output[] = $json[$i]['id'];
                 }
                 return $output;
             } else {
@@ -240,7 +240,7 @@ class USER_GITLAB extends OC_User_Backend implements IUserBackend, UserInterface
                 }
                 $output = array();
                 for ($i = $offset; $i < min([$limit + $offset, count($json)]); $i++) {
-                    $output[$json[$i]['username']] = $json[$i]['name'];
+                    $output[$json[$i]['id']] = $json[$i]['name'];
                 }
                 return $output;
             } else {
