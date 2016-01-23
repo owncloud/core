@@ -2,7 +2,7 @@
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -30,15 +30,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ListConfigs extends Base {
-	/** @var array */
-	protected $sensitiveValues = [
-		'dbpassword',
-		'dbuser',
-		'mail_smtpname',
-		'mail_smtppassword',
-		'passwordsalt',
-		'secret',
-	];
+	protected $defaultOutputFormat = self::OUTPUT_FORMAT_JSON_PRETTY;
 
 	/** * @var SystemConfig */
 	protected $systemConfig;
@@ -81,11 +73,6 @@ class ListConfigs extends Base {
 		$app = $input->getArgument('app');
 		$noSensitiveValues = !$input->getOption('private');
 
-		if ($noSensitiveValues && !$input->hasParameterOption('--output')) {
-			// If you post this publicly we prefer the json format
-			$input->setOption('output', 'json_pretty');
-		}
-
 		switch ($app) {
 			case 'system':
 				$configs = [
@@ -126,11 +113,12 @@ class ListConfigs extends Base {
 
 		$configs = [];
 		foreach ($keys as $key) {
-			if ($noSensitiveValues && in_array($key, $this->sensitiveValues)) {
-				continue;
+			if ($noSensitiveValues) {
+				$value = $this->systemConfig->getFilteredValue($key, serialize(null));
+			} else {
+				$value = $this->systemConfig->getValue($key, serialize(null));
 			}
 
-			$value = $this->systemConfig->getValue($key, serialize(null));
 			if ($value !== 'N;') {
 				$configs[$key] = $value;
 			}

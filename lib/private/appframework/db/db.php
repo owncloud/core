@@ -6,7 +6,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -43,6 +43,15 @@ class Db implements IDb {
 	 */
 	public function __construct(IDBConnection $connection) {
 		$this->connection = $connection;
+	}
+
+	/**
+	 * Gets the ExpressionBuilder for the connection.
+	 *
+	 * @return \OCP\DB\QueryBuilder\IQueryBuilder
+	 */
+	public function getQueryBuilder() {
+		return $this->connection->getQueryBuilder();
 	}
 
 	/**
@@ -138,10 +147,34 @@ class Db implements IDb {
 	}
 
 	/**
+	 * Insert or update a row value
+	 *
+	 * @param string $table
+	 * @param array $keys (column name => value)
+	 * @param array $values (column name => value)
+	 * @param array $updatePreconditionValues ensure values match preconditions (column name => value)
+	 * @return int number of new rows
+	 * @throws \Doctrine\DBAL\DBALException
+	 * @throws PreconditionNotMetException
+	 */
+	public function setValues($table, array $keys, array $values, array $updatePreconditionValues = []) {
+		return $this->connection->setValues($table, $keys, $values, $updatePreconditionValues);
+	}
+
+	/**
 	 * Start a transaction
 	 */
 	public function beginTransaction() {
 		$this->connection->beginTransaction();
+	}
+
+	/**
+	 * Check if a transaction is active
+	 *
+	 * @return bool
+	 */
+	public function inTransaction() {
+		return $this->connection->inTransaction();
 	}
 
 	/**
@@ -240,4 +273,13 @@ class Db implements IDb {
 		return $this->connection->tableExists($table);
 	}
 
+	/**
+	 * Espace a parameter to be used in a LIKE query
+	 *
+	 * @param string $param
+	 * @return string
+	 */
+	public function escapeLikeParameter($param) {
+		return $this->connection->escapeLikeParameter($param);
+	}
 }

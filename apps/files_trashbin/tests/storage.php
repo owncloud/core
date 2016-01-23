@@ -1,10 +1,13 @@
 <?php
 /**
+ * @author Björn Schießle <schiessle@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -26,6 +29,13 @@ namespace OCA\Files_trashbin\Tests\Storage;
 use OC\Files\Storage\Temporary;
 use OC\Files\Filesystem;
 
+/**
+ * Class Storage
+ *
+ * @group DB
+ *
+ * @package OCA\Files_trashbin\Tests\Storage
+ */
 class Storage extends \Test\TestCase {
 	/**
 	 * @var string
@@ -67,7 +77,8 @@ class Storage extends \Test\TestCase {
 	protected function tearDown() {
 		\OC\Files\Filesystem::getLoader()->removeStorageWrapper('oc_trashbin');
 		$this->logout();
-		\OC_User::deleteUser($this->user);
+		$user = \OC::$server->getUserManager()->get($this->user);
+		if ($user !== null) { $user->delete(); }
 		\OC_Hook::clear();
 		parent::tearDown();
 	}
@@ -492,5 +503,48 @@ class Storage extends \Test\TestCase {
 		// file should not be in the trashbin
 		$results = $this->rootView->getDirectoryContent($this->user . '/files_trashbin/files/');
 		$this->assertEquals(0, count($results));
+	}
+
+	/**
+	 * @dataProvider dataTestShouldMoveToTrash
+	 */
+	public function testShouldMoveToTrash($mountPoint, $path, $userExists, $expected) {
+		$tmpStorage = $this->getMockBuilder('\OC\Files\Storage\Temporary')
+			->disableOriginalConstructor()->getMock();
+		$userManager = $this->getMockBuilder('OCP\IUserManager')
+			->disableOriginalConstructor()->getMock();
+		$userManager->expects($this->any())
+			->method('userExists')->willReturn($userExists);
+		$storage = new \OCA\Files_Trashbin\Storage(
+			['mountPoint' => $mountPoint, 'storage' => $tmpStorage],
+			$userManager
+		);
+
+		$this->assertSame($expected,
+			$this->invokePrivate($storage, 'shouldMoveToTrash', [$path])
+		);
+
+	}
+
+	public function dataTestShouldMoveToTrash() {
+		return [
+			['/schiesbn/', '/files/test.txt', true, true],
+			['/schiesbn/', '/files/test.txt', false, false],
+			['/schiesbn/', '/test.txt', true, false],
+			['/schiesbn/', '/test.txt', false, false],
+		];
+	}
+
+	/**
+	 * Test that deleting a file doesn't error when nobody is logged in
+	 */
+	public function testSingleStorageDeleteFileLoggedOut() {
+		$this->logout();
+
+		if (!$this->userView->file_exists('test.txt')) {
+			$this->markTestSkipped('Skipping since the current home storage backend requires the user to logged in');
+		} else {
+			$this->userView->unlink('test.txt');
+		}
 	}
 }

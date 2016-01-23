@@ -1,0 +1,46 @@
+sudo: false
+language: php
+php:
+  - 5.4
+
+env:
+  global:
+    - TEST_DAV=$(tests/travis/changed_app.sh dav)
+    - TC=litmus-v2
+  matrix:
+    - DB=sqlite
+
+branches:
+  only:
+    - master
+#    - /^stable\d+(\.\d+)?$/
+
+addons:
+  apt:
+    packages:
+    - realpath
+
+before_install:
+  - sh -c "if [ '$TEST_DAV' = '1' ]; then bash tests/travis/before_install.sh $DB; fi"
+
+install:
+  - sh -c "if [ '$TEST_DAV' = '1' ]; then bash tests/travis/install.sh $DB; fi"
+  - sh -c "if [ '$TEST_DAV' = '1' ]; then bash apps/dav/tests/travis/$TC/install.sh; fi"
+
+
+script:
+  - sh -c "if [ '$TEST_DAV' != '1' ]; then echo \"Not testing DAV\"; fi"
+  - sh -c "if [ '$TEST_DAV' = '1' ]; then echo \"Testing DAV\"; fi"
+
+  - sh -c "if [ '$TEST_DAV' = '1' ]; then bash apps/dav/tests/travis/$TC/script.sh; fi"
+
+matrix:
+  include:
+    - php: 5.4
+      env: DB=pgsql;TC=litmus-v1
+    - php: 5.4
+      env: DB=sqlite;TC=carddav
+    - php: 5.4
+      env: DB=sqlite;TC=caldav
+
+  fast_finish: true

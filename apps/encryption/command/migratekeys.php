@@ -1,9 +1,8 @@
 <?php
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
- * @author Morris Jobke <hey@morrisjobke.de>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -27,6 +26,7 @@ use OC\Files\View;
 use OC\User\Manager;
 use OCA\Encryption\Migration;
 use OCP\IConfig;
+use OCP\ILogger;
 use OCP\IUserBackend;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -44,22 +44,27 @@ class MigrateKeys extends Command {
 	private $connection;
 	/** @var IConfig */
 	private $config;
+	/** @var  ILogger */
+	private $logger;
 
 	/**
 	 * @param Manager $userManager
 	 * @param View $view
 	 * @param Connection $connection
 	 * @param IConfig $config
+	 * @param ILogger $logger
 	 */
 	public function __construct(Manager $userManager,
 								View $view,
 								Connection $connection,
-								IConfig $config) {
+								IConfig $config,
+								ILogger $logger) {
 
 		$this->userManager = $userManager;
 		$this->view = $view;
 		$this->connection = $connection;
 		$this->config = $config;
+		$this->logger = $logger;
 		parent::__construct();
 	}
 
@@ -77,7 +82,7 @@ class MigrateKeys extends Command {
 	protected function execute(InputInterface $input, OutputInterface $output) {
 
 		// perform system reorganization
-		$migration = new Migration($this->config, $this->view, $this->connection);
+		$migration = new Migration($this->config, $this->view, $this->connection, $this->logger);
 
 		$users = $input->getArgument('user_id');
 		if (!empty($users)) {
@@ -114,6 +119,8 @@ class MigrateKeys extends Command {
 				} while(count($users) >= $limit);
 			}
 		}
+
+		$migration->finalCleanUp();
 
 	}
 }

@@ -9,7 +9,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -34,15 +34,17 @@ use OC\Repair\AssetCache;
 use OC\Repair\CleanTags;
 use OC\Repair\Collation;
 use OC\Repair\DropOldJobs;
+use OC\Repair\OldGroupMembershipShares;
 use OC\Repair\RemoveGetETagEntries;
 use OC\Repair\SqliteAutoincrement;
 use OC\Repair\DropOldTables;
 use OC\Repair\FillETags;
 use OC\Repair\InnoDB;
-use OC\Repair\RepairConfig;
 use OC\Repair\RepairLegacyStorages;
 use OC\Repair\RepairMimeTypes;
 use OC\Repair\SearchLuceneTables;
+use OC\Repair\UpdateOutdatedOcsIds;
+use OC\Repair\RepairInvalidShares;
 
 class Repair extends BasicEmitter {
 	/**
@@ -101,23 +103,31 @@ class Repair extends BasicEmitter {
 	 * @param bool $enableMimeTypes true to enable mime type repair
 	 * @return array of RepairStep instances
 	 */
-	public static function getRepairSteps($enableMimeTypes) {
-		$steps = array(
-			new RepairLegacyStorages(\OC::$server->getConfig(), \OC_DB::getConnection()),
-			new RepairConfig(),
+	public static function getRepairSteps() {
+		return [
+			new RepairMimeTypes(\OC::$server->getConfig()),
+			new RepairLegacyStorages(\OC::$server->getConfig(), \OC::$server->getDatabaseConnection()),
 			new AssetCache(),
-			new FillETags(\OC_DB::getConnection()),
-			new CleanTags(\OC_DB::getConnection()),
-			new DropOldTables(\OC_DB::getConnection()),
+			new FillETags(\OC::$server->getDatabaseConnection()),
+			new CleanTags(\OC::$server->getDatabaseConnection()),
+			new DropOldTables(\OC::$server->getDatabaseConnection()),
 			new DropOldJobs(\OC::$server->getJobList()),
-			new RemoveGetETagEntries(\OC_DB::getConnection()),
-		);
+			new RemoveGetETagEntries(\OC::$server->getDatabaseConnection()),
+			new UpdateOutdatedOcsIds(\OC::$server->getConfig()),
+			new RepairInvalidShares(\OC::$server->getConfig(), \OC::$server->getDatabaseConnection()),
+		];
+	}
 
-		if ($enableMimeTypes) {
-			array_unshift($steps, new RepairMimeTypes());
-		}
-
-		return $steps;
+	/**
+	 * Returns expensive repair steps to be run on the
+	 * command line with a special option.
+	 *
+	 * @return array of RepairStep instances
+	 */
+	public static function getExpensiveRepairSteps() {
+		return [
+			new OldGroupMembershipShares(\OC::$server->getDatabaseConnection(), \OC::$server->getGroupManager()),
+		];
 	}
 
 	/**
@@ -127,13 +137,13 @@ class Repair extends BasicEmitter {
 	 * @return array of RepairStep instances
 	 */
 	public static function getBeforeUpgradeRepairSteps() {
-		$steps = array(
+		$connection = \OC::$server->getDatabaseConnection();
+		$steps = [
 			new InnoDB(),
-			new Collation(\OC::$server->getConfig(), \OC_DB::getConnection()),
-			new SqliteAutoincrement(\OC_DB::getConnection()),
+			new Collation(\OC::$server->getConfig(), $connection),
+			new SqliteAutoincrement($connection),
 			new SearchLuceneTables(),
-			new RepairConfig()
-		);
+		];
 
 		//There is no need to delete all previews on every single update
 		//only 7.0.0 through 7.0.2 generated broken previews

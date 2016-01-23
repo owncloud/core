@@ -11,8 +11,15 @@ namespace Test\App;
 
 use OC\Group\Group;
 use OC\User\User;
+use Test\TestCase;
 
-class Manager extends \PHPUnit_Framework_TestCase {
+/**
+ * Class Manager
+ *
+ * @package Test\App
+ * @group DB
+ */
+class Manager extends TestCase {
 	/**
 	 * @return \OCP\IAppConfig | \PHPUnit_Framework_MockObject_MockObject
 	 */
@@ -115,6 +122,93 @@ class Manager extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('["group1","group2"]', $this->appConfig->getValue('test', 'enabled', 'no'));
 	}
 
+	public function dataEnableAppForGroupsAllowedTypes() {
+		return [
+			[[]],
+			[[
+				'types' => [],
+			]],
+			[[
+				'types' => ['nickvergessen'],
+			]],
+		];
+	}
+
+	/**
+	 * @dataProvider dataEnableAppForGroupsAllowedTypes
+	 *
+	 * @param array $appInfo
+	 */
+	public function testEnableAppForGroupsAllowedTypes(array $appInfo) {
+		$groups = array(
+			new Group('group1', array(), null),
+			new Group('group2', array(), null)
+		);
+		$this->expectClearCache();
+
+		/** @var \OC\App\AppManager|\PHPUnit_Framework_MockObject_MockObject $manager */
+		$manager = $this->getMockBuilder('OC\App\AppManager')
+			->setConstructorArgs([
+				$this->userSession, $this->appConfig, $this->groupManager, $this->cacheFactory
+			])
+			->setMethods([
+				'getAppInfo'
+			])
+			->getMock();
+
+		$manager->expects($this->once())
+			->method('getAppInfo')
+			->with('test')
+			->willReturn($appInfo);
+
+		$manager->enableAppForGroups('test', $groups);
+		$this->assertEquals('["group1","group2"]', $this->appConfig->getValue('test', 'enabled', 'no'));
+	}
+
+	public function dataEnableAppForGroupsForbiddenTypes() {
+		return [
+			['filesystem'],
+			['prelogin'],
+			['authentication'],
+			['logging'],
+			['prevent_group_restriction'],
+		];
+	}
+
+	/**
+	 * @dataProvider dataEnableAppForGroupsForbiddenTypes
+	 *
+	 * @param string $type
+	 *
+	 * @expectedException \Exception
+	 * @expectedExceptionMessage test can't be enabled for groups.
+	 */
+	public function testEnableAppForGroupsForbiddenTypes($type) {
+		$groups = array(
+			new Group('group1', array(), null),
+			new Group('group2', array(), null)
+		);
+
+		/** @var \OC\App\AppManager|\PHPUnit_Framework_MockObject_MockObject $manager */
+		$manager = $this->getMockBuilder('OC\App\AppManager')
+			->setConstructorArgs([
+				$this->userSession, $this->appConfig, $this->groupManager, $this->cacheFactory
+			])
+			->setMethods([
+				'getAppInfo'
+			])
+			->getMock();
+
+		$manager->expects($this->once())
+			->method('getAppInfo')
+			->with('test')
+			->willReturn([
+				'types' => [$type],
+			]);
+
+		$manager->enableAppForGroups('test', $groups);
+	}
+
 	public function testIsInstalledEnabled() {
 		$this->appConfig->setValue('test', 'enabled', 'yes');
 		$this->assertTrue($this->manager->isInstalled('test'));
@@ -188,7 +282,7 @@ class Manager extends \PHPUnit_Framework_TestCase {
 		$this->appConfig->setValue('test1', 'enabled', 'yes');
 		$this->appConfig->setValue('test2', 'enabled', 'no');
 		$this->appConfig->setValue('test3', 'enabled', '["foo"]');
-		$this->assertEquals(['test1', 'test3'], $this->manager->getInstalledApps());
+		$this->assertEquals(['dav', 'files', 'test1', 'test3'], $this->manager->getInstalledApps());
 	}
 
 	public function testGetAppsForUser() {
@@ -202,6 +296,80 @@ class Manager extends \PHPUnit_Framework_TestCase {
 		$this->appConfig->setValue('test2', 'enabled', 'no');
 		$this->appConfig->setValue('test3', 'enabled', '["foo"]');
 		$this->appConfig->setValue('test4', 'enabled', '["asd"]');
-		$this->assertEquals(['test1', 'test3'], $this->manager->getEnabledAppsForUser($user));
+		$this->assertEquals(['dav', 'files', 'test1', 'test3'], $this->manager->getEnabledAppsForUser($user));
+	}
+
+	public function testGetAppsNeedingUpgrade() {
+		$this->manager = $this->getMockBuilder('\OC\App\AppManager')
+			->setConstructorArgs([$this->userSession, $this->appConfig, $this->groupManager, $this->cacheFactory])
+			->setMethods(['getAppInfo'])
+			->getMock();
+
+		$appInfos = [
+			'dav' => ['id' => 'dav'],
+			'files' => ['id' => 'files'],
+			'test1' => ['id' => 'test1', 'version' => '1.0.1', 'requiremax' => '9.0.0'],
+			'test2' => ['id' => 'test2', 'version' => '1.0.0', 'requiremin' => '8.2.0'],
+			'test3' => ['id' => 'test3', 'version' => '1.2.4', 'requiremin' => '9.0.0'],
+			'test4' => ['id' => 'test4', 'version' => '3.0.0', 'requiremin' => '8.1.0'],
+			'testnoversion' => ['id' => 'testnoversion', 'requiremin' => '8.2.0'],
+		];
+
+		$this->manager->expects($this->any())
+			->method('getAppInfo')
+			->will($this->returnCallback(
+				function($appId) use ($appInfos) {
+					return $appInfos[$appId];
+				}
+		));
+
+		$this->appConfig->setValue('test1', 'enabled', 'yes');
+		$this->appConfig->setValue('test1', 'installed_version', '1.0.0');
+		$this->appConfig->setValue('test2', 'enabled', 'yes');
+		$this->appConfig->setValue('test2', 'installed_version', '1.0.0');
+		$this->appConfig->setValue('test3', 'enabled', 'yes');
+		$this->appConfig->setValue('test3', 'installed_version', '1.0.0');
+		$this->appConfig->setValue('test4', 'enabled', 'yes');
+		$this->appConfig->setValue('test4', 'installed_version', '2.4.0');
+
+		$apps = $this->manager->getAppsNeedingUpgrade('8.2.0');
+
+		$this->assertCount(2, $apps);
+		$this->assertEquals('test1', $apps[0]['id']);
+		$this->assertEquals('test4', $apps[1]['id']);
+	}
+
+	public function testGetIncompatibleApps() {
+		$this->manager = $this->getMockBuilder('\OC\App\AppManager')
+			->setConstructorArgs([$this->userSession, $this->appConfig, $this->groupManager, $this->cacheFactory])
+			->setMethods(['getAppInfo'])
+			->getMock();
+
+		$appInfos = [
+			'dav' => ['id' => 'dav'],
+			'files' => ['id' => 'files'],
+			'test1' => ['id' => 'test1', 'version' => '1.0.1', 'requiremax' => '8.0.0'],
+			'test2' => ['id' => 'test2', 'version' => '1.0.0', 'requiremin' => '8.2.0'],
+			'test3' => ['id' => 'test3', 'version' => '1.2.4', 'requiremin' => '9.0.0'],
+			'testnoversion' => ['id' => 'testnoversion', 'requiremin' => '8.2.0'],
+		];
+
+		$this->manager->expects($this->any())
+			->method('getAppInfo')
+			->will($this->returnCallback(
+				function($appId) use ($appInfos) {
+					return $appInfos[$appId];
+				}
+		));
+
+		$this->appConfig->setValue('test1', 'enabled', 'yes');
+		$this->appConfig->setValue('test2', 'enabled', 'yes');
+		$this->appConfig->setValue('test3', 'enabled', 'yes');
+
+		$apps = $this->manager->getIncompatibleApps('8.2.0');
+
+		$this->assertCount(2, $apps);
+		$this->assertEquals('test1', $apps[0]['id']);
+		$this->assertEquals('test3', $apps[1]['id']);
 	}
 }

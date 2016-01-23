@@ -10,10 +10,11 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Philipp Kapfer <philipp.kapfer@gmx.at>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -31,6 +32,8 @@
  */
 
 namespace OC\Files\Storage;
+
+use Icewind\Streams\IteratorDirectory;
 
 set_include_path(get_include_path().PATH_SEPARATOR.
 	\OC_App::getAppPath('files_external').'/3rdparty/google-api-php-client/src');
@@ -246,8 +249,6 @@ class Google extends \OC\Files\Storage\Common {
 	}
 
 	public function opendir($path) {
-		// Remove leading and trailing slashes
-		$path = trim($path, '/');
 		$folder = $this->getDriveFile($path);
 		if ($folder) {
 			$files = array();
@@ -291,8 +292,7 @@ class Google extends \OC\Files\Storage\Common {
 				}
 				$pageToken = $children->getNextPageToken();
 			}
-			\OC\Files\Stream\Dir::register('google'.$path, $files);
-			return opendir('fakedir://google'.$path);
+			return IteratorDirectory::wrap($files);
 		} else {
 			return false;
 		}
@@ -426,13 +426,23 @@ class Google extends \OC\Files\Storage\Common {
 					}
 					if (isset($downloadUrl)) {
 						$request = new \Google_Http_Request($downloadUrl, 'GET', null, null);
-						$httpRequest = $this->client->getAuth()->authenticatedRequest($request);
-						if ($httpRequest->getResponseHttpCode() == 200) {
-							$tmpFile = \OC_Helper::tmpFile($ext);
-							$data = $httpRequest->getResponseBody();
-							file_put_contents($tmpFile, $data);
-							return fopen($tmpFile, $mode);
+						$httpRequest = $this->client->getAuth()->sign($request);
+						// the library's service doesn't support streaming, so we use Guzzle instead
+						$client = \OC::$server->getHTTPClientService()->newClient();
+						try {
+							$response = $client->get($downloadUrl, [
+								'headers' => $httpRequest->getRequestHeaders(),
+								'stream' => true
+							]);
+						} catch (RequestException $e) {
+							if ($e->getResponse()->getStatusCode() === 404) {
+								return false;
+							} else {
+								throw $e;
+							}
 						}
+
+						return $response->getBody();
 					}
 				}
 				return false;
@@ -448,7 +458,7 @@ class Google extends \OC\Files\Storage\Common {
 			case 'x+':
 			case 'c':
 			case 'c+':
-				$tmpFile = \OC_Helper::tmpFile($ext);
+				$tmpFile = \OCP\Files::tmpFile($ext);
 				\OC\Files\Stream\Close::registerCallback($tmpFile, array($this, 'writeBack'));
 				if ($this->file_exists($path)) {
 					$source = $this->fopen($path, 'rb');
@@ -465,7 +475,7 @@ class Google extends \OC\Files\Storage\Common {
 			$parentFolder = $this->getDriveFile(dirname($path));
 			if ($parentFolder) {
 				// TODO Research resumable upload
-				$mimetype = \OC_Helper::getMimeType($tmpFile);
+				$mimetype = \OC::$server->getMimeTypeDetector()->detect($tmpFile);
 				$data = file_get_contents($tmpFile);
 				$params = array(
 					'data' => $data,

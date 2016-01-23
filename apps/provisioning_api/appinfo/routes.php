@@ -1,10 +1,13 @@
 <?php
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author michag86 <micha_g@arcor.de>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Tom Needham <tom@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -21,30 +24,48 @@
  *
  */
 
-// Users
+namespace OCA\Provisioning_API\AppInfo;
+
 use OCP\API;
 
-API::register('get', '/cloud/users', array('OCA\Provisioning_API\Users', 'getUsers'), 'provisioning_api', API::ADMIN_AUTH);
-API::register('post', '/cloud/users', array('OCA\Provisioning_API\Users', 'addUser'), 'provisioning_api', API::ADMIN_AUTH);
-API::register('get', '/cloud/users/{userid}', array('OCA\Provisioning_API\Users', 'getUser'), 'provisioning_api', API::USER_AUTH);
-API::register('put', '/cloud/users/{userid}', array('OCA\Provisioning_API\Users', 'editUser'), 'provisioning_api', API::USER_AUTH);
-API::register('delete', '/cloud/users/{userid}', array('OCA\Provisioning_API\Users', 'deleteUser'), 'provisioning_api', API::SUBADMIN_AUTH);
-API::register('get', '/cloud/users/{userid}/groups', array('OCA\Provisioning_API\Users', 'getUsersGroups'), 'provisioning_api', API::USER_AUTH);
-API::register('post', '/cloud/users/{userid}/groups', array('OCA\Provisioning_API\Users', 'addToGroup'), 'provisioning_api', API::SUBADMIN_AUTH);
-API::register('delete', '/cloud/users/{userid}/groups', array('OCA\Provisioning_API\Users', 'removeFromGroup'), 'provisioning_api', API::SUBADMIN_AUTH);
-API::register('post', '/cloud/users/{userid}/subadmins', array('OCA\Provisioning_API\Users', 'addSubAdmin'), 'provisioning_api', API::ADMIN_AUTH);
-API::register('delete', '/cloud/users/{userid}/subadmins', array('OCA\Provisioning_API\Users', 'removeSubAdmin'), 'provisioning_api', API::ADMIN_AUTH);
-API::register('get', '/cloud/users/{userid}/subadmins', array('OCA\Provisioning_API\Users', 'getUserSubAdminGroups'), 'provisioning_api', API::ADMIN_AUTH);
+// Users
+$users = new \OCA\Provisioning_API\Users(
+	\OC::$server->getUserManager(),
+	\OC::$server->getConfig(),
+	\OC::$server->getGroupManager(),
+	\OC::$server->getUserSession(),
+	\OC::$server->getLogger()
+);
+API::register('get', '/cloud/users', [$users, 'getUsers'], 'provisioning_api', API::SUBADMIN_AUTH);
+API::register('post', '/cloud/users', [$users, 'addUser'], 'provisioning_api', API::SUBADMIN_AUTH);
+API::register('get', '/cloud/users/{userid}', [$users, 'getUser'], 'provisioning_api', API::USER_AUTH);
+API::register('put', '/cloud/users/{userid}', [$users, 'editUser'], 'provisioning_api', API::USER_AUTH);
+API::register('delete', '/cloud/users/{userid}', [$users, 'deleteUser'], 'provisioning_api', API::SUBADMIN_AUTH);
+API::register('get', '/cloud/users/{userid}/groups', [$users, 'getUsersGroups'], 'provisioning_api', API::USER_AUTH);
+API::register('post', '/cloud/users/{userid}/groups', [$users, 'addToGroup'], 'provisioning_api', API::SUBADMIN_AUTH);
+API::register('delete', '/cloud/users/{userid}/groups', [$users, 'removeFromGroup'], 'provisioning_api', API::SUBADMIN_AUTH);
+API::register('post', '/cloud/users/{userid}/subadmins', [$users, 'addSubAdmin'], 'provisioning_api', API::ADMIN_AUTH);
+API::register('delete', '/cloud/users/{userid}/subadmins', [$users, 'removeSubAdmin'], 'provisioning_api', API::ADMIN_AUTH);
+API::register('get', '/cloud/users/{userid}/subadmins', [$users, 'getUserSubAdminGroups'], 'provisioning_api', API::ADMIN_AUTH);
 
 // Groups
-API::register('get', '/cloud/groups', array('OCA\Provisioning_API\Groups', 'getGroups'), 'provisioning_api', API::SUBADMIN_AUTH);
-API::register('post', '/cloud/groups', array('OCA\Provisioning_API\Groups', 'addGroup'), 'provisioning_api', API::SUBADMIN_AUTH);
-API::register('get', '/cloud/groups/{groupid}', array('OCA\Provisioning_API\Groups', 'getGroup'), 'provisioning_api', API::SUBADMIN_AUTH);
-API::register('delete', '/cloud/groups/{groupid}', array('OCA\Provisioning_API\Groups', 'deleteGroup'), 'provisioning_api', API::ADMIN_AUTH);
-API::register('get', '/cloud/groups/{groupid}/subadmins', array('OCA\Provisioning_API\Groups', 'getSubAdminsOfGroup'), 'provisioning_api', API::ADMIN_AUTH);
+$groups = new \OCA\Provisioning_API\Groups(
+	\OC::$server->getGroupManager(),
+	\OC::$server->getUserSession(),
+	\OC::$server->getRequest()
+);
+API::register('get', '/cloud/groups', [$groups, 'getGroups'], 'provisioning_api', API::SUBADMIN_AUTH);
+API::register('post', '/cloud/groups', [$groups, 'addGroup'], 'provisioning_api', API::SUBADMIN_AUTH);
+API::register('get', '/cloud/groups/{groupid}', [$groups, 'getGroup'], 'provisioning_api', API::SUBADMIN_AUTH);
+API::register('delete', '/cloud/groups/{groupid}', [$groups, 'deleteGroup'], 'provisioning_api', API::ADMIN_AUTH);
+API::register('get', '/cloud/groups/{groupid}/subadmins', [$groups, 'getSubAdminsOfGroup'], 'provisioning_api', API::ADMIN_AUTH);
 
 // Apps
-API::register('get', '/cloud/apps', array('OCA\Provisioning_API\Apps', 'getApps'), 'provisioning_api', API::ADMIN_AUTH);
-API::register('get', '/cloud/apps/{appid}', array('OCA\Provisioning_API\Apps', 'getAppInfo'), 'provisioning_api', API::ADMIN_AUTH);
-API::register('post', '/cloud/apps/{appid}', array('OCA\Provisioning_API\Apps', 'enable'), 'provisioning_api', API::ADMIN_AUTH);
-API::register('delete', '/cloud/apps/{appid}', array('OCA\Provisioning_API\Apps', 'disable'), 'provisioning_api', API::ADMIN_AUTH);
+$apps = new \OCA\Provisioning_API\Apps(
+	\OC::$server->getAppManager(),
+	\OC::$server->getOcsClient()
+);
+API::register('get', '/cloud/apps', [$apps, 'getApps'], 'provisioning_api', API::ADMIN_AUTH);
+API::register('get', '/cloud/apps/{appid}', [$apps, 'getAppInfo'], 'provisioning_api', API::ADMIN_AUTH);
+API::register('post', '/cloud/apps/{appid}', [$apps, 'enable'], 'provisioning_api', API::ADMIN_AUTH);
+API::register('delete', '/cloud/apps/{appid}', [$apps, 'disable'], 'provisioning_api', API::ADMIN_AUTH);

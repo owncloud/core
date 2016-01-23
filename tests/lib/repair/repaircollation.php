@@ -19,6 +19,8 @@ class TestCollationRepair extends \OC\Repair\Collation {
 /**
  * Tests for the converting of MySQL tables to InnoDB engine
  *
+ * @group DB
+ *
  * @see \OC\Repair\RepairMimeTypes
  */
 class TestRepairCollation extends \Test\TestCase {
@@ -46,7 +48,7 @@ class TestRepairCollation extends \Test\TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->connection = \OC_DB::getConnection();
+		$this->connection = \OC::$server->getDatabaseConnection();
 		$this->config = \OC::$server->getConfig();
 		if (!$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MySqlPlatform) {
 			$this->markTestSkipped("Test only relevant on MySql");

@@ -1,13 +1,13 @@
 OC.L10N.register(
     "files",
     {
+    "Close" : "మూసివేయి",
     "Delete" : "తొలగించు",
-    "Error" : "పొరపాటు",
     "Name" : "పేరు",
     "Size" : "పరిమాణం",
-    "Save" : "భద్రపరచు",
-    "Settings" : "అమరికలు",
+    "Folder" : "సంచయం",
     "New folder" : "కొత్త సంచయం",
-    "Folder" : "సంచయం"
+    "Save" : "భద్రపరచు",
+    "Settings" : "అమరికలు"
 },
 "nplurals=2; plural=(n != 1);");

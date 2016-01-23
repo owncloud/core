@@ -1,5 +1,6 @@
 <?php
 use OC\Contacts\LocalAddressBook;
+use OCP\IUser;
 
 /**
  * ownCloud
@@ -44,7 +45,10 @@ class Test_LocalAddressBook extends \Test\TestCase
 }
 
 
-class SimpleUserForTesting implements \OCP\IUser {
+class SimpleUserForTesting implements IUser {
+
+	private $uid;
+	private $displayName;
 
 	public function __construct($uid, $displayName) {
 
@@ -94,5 +98,17 @@ class SimpleUserForTesting implements \OCP\IUser {
 	}
 
 	public function setEnabled($enabled) {
+	}
+
+	public function getEMailAddress() {
+	}
+
+	public function getAvatarImage($size) {
+	}
+
+	public function getCloudId() {
+	}
+
+	public function setEMailAddress($mailAddress) {
 	}
 }

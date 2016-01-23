@@ -2,7 +2,7 @@
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -65,7 +65,7 @@ class ListModules extends Base {
 	 * @param array $items
 	 */
 	protected function writeModuleList(InputInterface $input, OutputInterface $output, $items) {
-		if ($input->getOption('output') === 'plain') {
+		if ($input->getOption('output') === self::OUTPUT_FORMAT_PLAIN) {
 			array_walk($items, function(&$item) {
 				if (!$item['default']) {
 					$item = $item['displayName'];

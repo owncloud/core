@@ -1,6 +1,5 @@
 <?php
 /**
- * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Frank Karlitschek <frank@owncloud.org>
@@ -12,9 +11,8 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
- * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -34,10 +32,14 @@
 use OC\Lock\NoopLockingProvider;
 
 OC_Util::checkAdminUser();
-OC_App::setActiveNavigationEntry("admin");
+\OC::$server->getNavigationManager()->setActiveEntry("admin");
 
 $template = new OC_Template('settings', 'admin', 'user');
-$l = OC_L10N::get('settings');
+$l = \OC::$server->getL10N('settings');
+
+OC_Util::addScript('settings', 'certificates');
+OC_Util::addScript('files', 'jquery.iframe-transport');
+OC_Util::addScript('files', 'jquery.fileupload');
 
 $showLog = (\OC::$server->getConfig()->getSystemValue('log_type', 'owncloud') === 'owncloud');
 $numEntriesToLoad = 3;
@@ -46,10 +48,15 @@ $entriesRemaining = count($entries) > $numEntriesToLoad;
 $entries = array_slice($entries, 0, $numEntriesToLoad);
 $logFilePath = OC_Log_Owncloud::getLogFilePath();
 $doesLogFileExist = file_exists($logFilePath);
-$logFileSize = filesize($logFilePath);
+$logFileSize = 0;
+if($doesLogFileExist) {
+	$logFileSize = filesize($logFilePath);
+}
 $config = \OC::$server->getConfig();
 $appConfig = \OC::$server->getAppConfig();
 $request = \OC::$server->getRequest();
+$certificateManager = \OC::$server->getCertificateManager(null);
+$urlGenerator = \OC::$server->getURLGenerator();
 
 // Should we display sendmail as an option?
 $template->assign('sendmail_is_available', (bool) \OC_Helper::findBinaryPath('sendmail'));
@@ -73,6 +80,7 @@ $template->assign('showLog', $showLog);
 $template->assign('readOnlyConfigEnabled', OC_Helper::isReadOnlyConfigEnabled());
 $template->assign('isLocaleWorking', OC_Util::isSetLocaleWorking());
 $template->assign('isAnnotationsWorking', OC_Util::isAnnotationsWorking());
+$template->assign('checkForWorkingWellKnownSetup', $config->getSystemValue('check_for_working_wellknown_setup', true));
 $template->assign('has_fileinfo', OC_Util::fileInfoLoaded());
 $template->assign('backgroundjobs_mode', $appConfig->getValue('core', 'backgroundjobs_mode', 'ajax'));
 $template->assign('cron_log', $config->getSystemValue('cron_log', true));
@@ -84,8 +92,8 @@ $template->assign('shareEnforceExpireDate', $appConfig->getValue('core', 'sharea
 $excludeGroups = $appConfig->getValue('core', 'shareapi_exclude_groups', 'no') === 'yes' ? true : false;
 $template->assign('shareExcludeGroups', $excludeGroups);
 $excludedGroupsList = $appConfig->getValue('core', 'shareapi_exclude_groups_list', '');
-$excludedGroupsList = explode(',', $excludedGroupsList); // FIXME: this should be JSON!
-$template->assign('shareExcludedGroupsList', implode('|', $excludedGroupsList));
+$excludedGroupsList = json_decode($excludedGroupsList);
+$template->assign('shareExcludedGroupsList', !is_null($excludedGroupsList) ? implode('|', $excludedGroupsList) : '');
 $template->assign('encryptionEnabled', \OC::$server->getEncryptionManager()->isEnabled());
 $backends = \OC::$server->getUserManager()->getBackends();
 $externalBackends = (count($backends) > 1) ? true : false;
@@ -119,6 +127,7 @@ $template->assign('allowPublicUpload', $appConfig->getValue('core', 'shareapi_al
 $template->assign('allowResharing', $appConfig->getValue('core', 'shareapi_allow_resharing', 'yes'));
 $template->assign('allowPublicMailNotification', $appConfig->getValue('core', 'shareapi_allow_public_notification', 'no'));
 $template->assign('allowMailNotification', $appConfig->getValue('core', 'shareapi_allow_mail_notification', 'no'));
+$template->assign('allowShareDialogUserEnumeration', $appConfig->getValue('core', 'shareapi_allow_share_dialog_user_enumeration', 'yes'));
 $template->assign('onlyShareWithGroupMembers', \OC\Share\Share::shareWithGroupMembersOnly());
 $databaseOverload = (strpos(\OCP\Config::getSystemValue('dbtype'), 'sqlite') !== false);
 $template->assign('databaseOverload', $databaseOverload);
@@ -148,6 +157,16 @@ $template->assign('OutdatedCacheWarning', $outdatedCaches);
 
 // add hardcoded forms from the template
 $forms = OC_App::getForms('admin');
+
+if ($config->getSystemValue('enable_certificate_management', false)) {
+	$certificatesTemplate = new OC_Template('settings', 'certificates');
+	$certificatesTemplate->assign('type', 'admin');
+	$certificatesTemplate->assign('uploadRoute', 'settings.Certificate.addSystemRootCertificate');
+	$certificatesTemplate->assign('certs', $certificateManager->listCertificates());
+	$certificatesTemplate->assign('urlGenerator', $urlGenerator);
+	$forms[] = $certificatesTemplate->fetchPage();
+}
+
 $formsAndMore = array();
 if ($request->getServerProtocol()  !== 'https' || !OC_Util::isAnnotationsWorking() ||
 	$suggestedOverwriteCliUrl || !OC_Util::isSetLocaleWorking()  ||
@@ -190,21 +209,24 @@ $template->assign('fileSharingSettings', $fileSharingSettings);
 $template->assign('filesExternal', $filesExternal);
 $template->assign('updaterAppPanel', $updaterAppPanel);
 $template->assign('ocDefaultEncryptionModulePanel', $ocDefaultEncryptionModulePanel);
-if (\OC::$server->getLockingProvider() instanceof NoopLockingProvider) {
-	$template->assign('fileLockingEnabled', false);
+$lockingProvider = \OC::$server->getLockingProvider();
+if ($lockingProvider instanceof NoopLockingProvider) {
+	$template->assign('fileLockingType', 'none');
+} else if ($lockingProvider instanceof \OC\Lock\DBLockingProvider) {
+	$template->assign('fileLockingType', 'db');
 } else {
-	$template->assign('fileLockingEnabled', true);
+	$template->assign('fileLockingType', 'cache');
 }
 
 $formsMap = array_map(function ($form) {
-	if (preg_match('%(<h2[^>]*>.*?</h2>)%i', $form, $regs)) {
-		$sectionName = str_replace('<h2>', '', $regs[0]);
+	if (preg_match('%(<h2(?P<class>[^>]*)>.*?</h2>)%i', $form, $regs)) {
+		$sectionName = str_replace('<h2'.$regs['class'].'>', '', $regs[0]);
 		$sectionName = str_replace('</h2>', '', $sectionName);
 		$anchor = strtolower($sectionName);
 		$anchor = str_replace(' ', '-', $anchor);
 
 		return array(
-			'anchor' => 'goto-' . $anchor,
+			'anchor' => $anchor,
 			'section-name' => $sectionName,
 			'form' => $form
 		);
@@ -220,7 +242,6 @@ $formsAndMore = array_merge($formsAndMore, $formsMap);
 $formsAndMore[] = ['anchor' => 'backgroundjobs', 'section-name' => $l->t('Cron')];
 $formsAndMore[] = ['anchor' => 'mail_general_settings', 'section-name' => $l->t('Email server')];
 $formsAndMore[] = ['anchor' => 'log-section', 'section-name' => $l->t('Log')];
-$formsAndMore[] = ['anchor' => 'server-status', 'section-name' => $l->t('Server Status')];
 $formsAndMore[] = ['anchor' => 'admin-tips', 'section-name' => $l->t('Tips & tricks')];
 if ($updaterAppPanel) {
 	$formsAndMore[] = ['anchor' => 'updater', 'section-name' => $l->t('Updates')];

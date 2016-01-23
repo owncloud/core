@@ -2,9 +2,9 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Jan-Christoph Borchardt <hey@jancborchardt.net>
- * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -25,9 +25,13 @@
 
 $l = \OC::$server->getL10N('files_sharing');
 
-$uid = \OC::$server->getUserSession()->getUser()->getUID();
-$server = \OC::$server->getURLGenerator()->getAbsoluteURL('/');
-$cloudID = $uid . '@' . rtrim(\OCA\Files_Sharing\Helper::removeProtocolFromUrl($server), '/');
+$isIE8 = false;
+preg_match('/MSIE (.*?);/', $_SERVER['HTTP_USER_AGENT'], $matches);
+if (count($matches) > 0 && $matches[1] <= 9) {
+	$isIE8 = true;
+}
+
+$cloudID = \OC::$server->getUserSession()->getUser()->getCloudId();
 $url = 'https://owncloud.org/federation#' . $cloudID;
 $ownCloudLogoPath = \OC::$server->getURLGenerator()->imagePath('core', 'logo-icon.svg');
 
@@ -38,5 +42,6 @@ $tmpl->assign('message_without_URL', $l->t('Share with me through my #ownCloud F
 $tmpl->assign('owncloud_logo_path', $ownCloudLogoPath);
 $tmpl->assign('reference', $url);
 $tmpl->assign('cloudId', $cloudID);
+$tmpl->assign('showShareIT', !$isIE8);
 
 return $tmpl->fetchPage();

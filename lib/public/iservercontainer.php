@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @author Björn Schießle <schiessle@owncloud.com>
@@ -9,10 +10,13 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -38,6 +42,7 @@
 // use OCP namespace for all classes that are considered public.
 // This means that they should be used by apps instead of the internal ownCloud classes
 namespace OCP;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 
 /**
@@ -99,6 +104,7 @@ interface IServerContainer {
 	 * @param string $userId user ID
 	 * @return \OCP\Files\Folder
 	 * @since 6.0.0 - parameter $userId was added in 8.0.0
+	 * @see getUserFolder in \OCP\Files\IRootFolder
 	 */
 	public function getUserFolder($userId = null);
 
@@ -175,6 +181,14 @@ interface IServerContainer {
 	public function getSecureRandom();
 
 	/**
+	 * Returns a CredentialsManager instance
+	 *
+	 * @return \OCP\Security\ICredentialsManager
+	 * @since 9.0.0
+	 */
+	public function getCredentialsManager();
+
+	/**
 	 * Returns an instance of the db facade
 	 * @deprecated 8.1.0 use getDatabaseConnection, will be removed in ownCloud 10
 	 * @return \OCP\IDb
@@ -189,6 +203,12 @@ interface IServerContainer {
 	 * @since 7.0.0
 	 */
 	public function getAppConfig();
+
+	/**
+	 * @return \OCP\L10N\IFactory
+	 * @since 8.2.0
+	 */
+	public function getL10NFactory();
 
 	/**
 	 * get an L10N instance
@@ -316,7 +336,7 @@ interface IServerContainer {
 	/**
 	 * Get the certificate manager for the user
 	 *
-	 * @param string $userId (optional) if not specified the current loggedin user is used
+	 * @param string $userId (optional) if not specified the current loggedin user is used, use null to get the system certificate manager
 	 * @return \OCP\ICertificateManager | null if $userId is null and no user is logged in
 	 * @since 8.0.0
 	 */
@@ -428,4 +448,60 @@ interface IServerContainer {
 	 * @since 8.2.0
 	 */
 	public function getMountManager();
+
+	/**
+	 * Get the MimeTypeDetector
+	 *
+	 * @return \OCP\Files\IMimeTypeDetector
+	 * @since 8.2.0
+	 */
+	public function getMimeTypeDetector();
+
+	/**
+	 * Get the MimeTypeLoader
+	 *
+	 * @return \OCP\Files\IMimeTypeLoader
+	 * @since 8.2.0
+	 */
+	public function getMimeTypeLoader();
+
+	/**
+	 * Get the EventDispatcher
+	 *
+	 * @return EventDispatcherInterface
+	 * @since 8.2.0
+	 */
+	public function getEventDispatcher();
+
+	/**
+	 * Get the Notification Manager
+	 *
+	 * @return \OCP\Notification\IManager
+	 * @since 9.0.0
+	 */
+	public function getNotificationManager();
+
+	/**
+	 * @return \OCP\Comments\ICommentsManager
+	 * @since 9.0.0
+	 */
+	public function getCommentsManager();
+
+	/**
+	 * Returns the system-tag manager
+	 *
+	 * @return \OCP\SystemTag\ISystemTagManager
+	 *
+	 * @since 9.0.0
+	 */
+	public function getSystemTagManager();
+
+	/**
+	 * Returns the system-tag object mapper
+	 *
+	 * @return \OCP\SystemTag\ISystemTagObjectMapper
+	 *
+	 * @since 9.0.0
+	 */
+	public function getSystemTagObjectMapper();
 }

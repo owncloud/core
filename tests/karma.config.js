@@ -55,7 +55,8 @@ module.exports = function(config) {
 					'apps/files_sharing/js/sharedfilelist.js',
 					'apps/files_sharing/js/share.js',
 					'apps/files_sharing/js/external.js',
-					'apps/files_sharing/js/public.js'
+					'apps/files_sharing/js/public.js',
+					'apps/files_sharing/js/sharetabview.js'
 				],
 				testFiles: ['apps/files_sharing/tests/js/*.js']
 			},
@@ -66,9 +67,30 @@ module.exports = function(config) {
 					// up with the global namespace/classes/state
 					'apps/files_external/js/app.js',
 					'apps/files_external/js/mountsfilelist.js',
-					'apps/files_external/js/settings.js'
+					'apps/files_external/js/settings.js',
+					'apps/files_external/js/statusmanager.js'
 				],
 				testFiles: ['apps/files_external/tests/js/*.js']
+			},
+			{
+				name: 'files_versions',
+				srcFiles: [
+					// need to enforce loading order...
+					'apps/files_versions/js/versionmodel.js',
+					'apps/files_versions/js/versioncollection.js',
+					'apps/files_versions/js/versionstabview.js'
+				],
+				testFiles: ['apps/files_versions/tests/js/**/*.js']
+			},
+			{
+				name: 'systemtags',
+				srcFiles: [
+					// need to enforce loading order...
+					'apps/systemtags/js/app.js',
+					'apps/systemtags/js/systemtagsinfoview.js',
+					'apps/systemtags/js/filesplugin.js'
+				],
+				testFiles: ['apps/systemtags/tests/js/**/*.js']
 			},
 			{
 				name: 'settings',
@@ -121,7 +143,7 @@ module.exports = function(config) {
 	}
 
 	// extra test libs
-	files.push(corePath + 'tests/lib/sinon-1.7.3.js');
+	files.push(corePath + 'tests/lib/sinon-1.15.4.js');
 
 	// core mocks
 	files.push(corePath + 'tests/specHelper.js');
@@ -153,15 +175,15 @@ module.exports = function(config) {
 	// need to test the core app as well ?
 	if (testCore) {
 		// core tests
-		files.push(corePath + 'tests/specs/*.js');
+		files.push(corePath + 'tests/specs/**/*.js');
 	}
 
 	function addApp(app) {
 		// if only a string was specified, expand to structure
 		if (typeof(app) === 'string') {
 			app = {
-				srcFiles: 'apps/' + app + '/js/*.js',
-				testFiles: 'apps/' + app + '/tests/js/*.js'
+				srcFiles: 'apps/' + app + '/js/**/*.js',
+				testFiles: 'apps/' + app + '/tests/js/**/*.js'
 			};
 		}
 

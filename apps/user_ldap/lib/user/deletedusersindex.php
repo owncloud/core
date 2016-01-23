@@ -1,9 +1,10 @@
 <?php
 /**
  * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -22,7 +23,6 @@
 
 namespace OCA\user_ldap\lib\user;
 
-use OCA\user_ldap\lib\user\OfflineUser;
 use OCA\User_LDAP\Mapping\UserMapping;
 
 /**
@@ -51,9 +51,9 @@ class DeletedUsersIndex {
 	protected $deletedUsers;
 
 	/**
-	 * @param OCP\IConfig $config
-	 * @param OCP\IDBConnection $db
-	 * @param OCA\User_LDAP\Mapping\UserMapping $mapping
+	 * @param \OCP\IConfig $config
+	 * @param \OCP\IDBConnection $db
+	 * @param \OCA\User_LDAP\Mapping\UserMapping $mapping
 	 */
 	public function __construct(\OCP\IConfig $config, \OCP\IDBConnection $db, UserMapping $mapping) {
 		$this->config = $config;
@@ -63,7 +63,7 @@ class DeletedUsersIndex {
 
 	/**
 	 * reads LDAP users marked as deleted from the database
-	 * @return OCA\user_ldap\lib\user\OfflineUser[]
+	 * @return \OCA\user_ldap\lib\user\OfflineUser[]
 	 */
 	private function fetchDeletedUsers() {
 		$deletedUsers = $this->config->getUsersForUserValue(
@@ -80,7 +80,7 @@ class DeletedUsersIndex {
 
 	/**
 	 * returns all LDAP users that are marked as deleted
-	 * @return OCA\user_ldap\lib\user\OfflineUser[]
+	 * @return \OCA\user_ldap\lib\user\OfflineUser[]
 	 */
 	public function getUsers() {
 		if(is_array($this->deletedUsers)) {
@@ -105,7 +105,7 @@ class DeletedUsersIndex {
 
 	/**
 	 * marks a user as deleted
-	 * @param string ocName
+	 * @param string $ocName
 	 */
 	public function markUser($ocName) {
 		$this->config->setUserValue($ocName, 'user_ldap', 'isDeleted', '1');

@@ -6,10 +6,10 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -82,7 +82,8 @@ class App {
 	 * @since 4.0.0
 	 */
 	public static function setActiveNavigationEntry( $id ) {
-		return \OC_App::setActiveNavigationEntry( $id );
+		\OC::$server->getNavigationManager()->setActiveEntry($id);
+		return true;
 	}
 
 	/**
@@ -135,9 +136,9 @@ class App {
 	 * @param string $app
 	 * @return void
 	 * @since 4.0.0
+	 * @deprecated 9.0.0 ownCloud core will handle disabled apps and redirects to valid URLs
 	*/
 	public static function checkAppEnabled( $app ) {
-		\OC_Util::checkAppEnabled( $app );
 	}
 
 	/**

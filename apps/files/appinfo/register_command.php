@@ -2,8 +2,9 @@
 /**
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -20,5 +21,5 @@
  *
  */
 
-$application->add(new OCA\Files\Command\Scan(OC_User::getManager()));
+$application->add(new OCA\Files\Command\Scan(\OC::$server->getUserManager()));
 $application->add(new OCA\Files\Command\DeleteOrphanedFiles(\OC::$server->getDatabaseConnection()));

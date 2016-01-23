@@ -3,9 +3,10 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -24,6 +25,13 @@
 
 namespace Test\Files\Storage;
 
+/**
+ * Class SMB
+ *
+ * @group DB
+ *
+ * @package Test\Files\Storage
+ */
 class SMB extends Storage {
 
 	protected function setUp() {
@@ -60,5 +68,17 @@ class SMB extends Storage {
 		$result = $this->instance->rename('with spaces', 'foo bar');
 		$this->assertTrue($result);
 		$this->assertTrue($this->instance->is_dir('foo bar'));
+	}
+
+	public function testStorageId() {
+		$this->instance = new \OC\Files\Storage\SMB([
+			'host' => 'testhost',
+			'user' => 'testuser',
+			'password' => 'somepass',
+			'share' => 'someshare',
+			'root' => 'someroot',
+		]);
+		$this->assertEquals('smb::testuser@testhost//someshare//someroot/', $this->instance->getId());
+		$this->instance = null;
 	}
 }

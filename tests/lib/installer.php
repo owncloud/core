@@ -14,14 +14,15 @@ class Test_Installer extends \Test\TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->appstore = OC_Config::getValue('appstoreenabled', true);
-		OC_Config::setValue('appstoreenabled', true);
+		$config = \OC::$server->getConfig();
+		$this->appstore = $config->setSystemValue('appstoreenabled', true);
+		$config->setSystemValue('appstoreenabled', true);
 		OC_Installer::removeApp(self::$appid);
 	}
 
 	protected function tearDown() {
 		OC_Installer::removeApp(self::$appid);
-		OC_Config::setValue('appstoreenabled', $this->appstore);
+		\OC::$server->getConfig()->setSystemValue('appstoreenabled', $this->appstore);
 
 		parent::tearDown();
 	}
@@ -31,12 +32,16 @@ class Test_Installer extends \Test\TestCase {
 		$pathOfTestApp .= '/../data/';
 		$pathOfTestApp .= 'testapp.zip';
 
-		$tmp = OC_Helper::tmpFile('.zip');
+		$tmp = \OC::$server->getTempManager()->getTemporaryFile('.zip');
 		OC_Helper::copyr($pathOfTestApp, $tmp);
 
 		$data = array(
 			'path' => $tmp,
 			'source' => 'path',
+			'appdata' => [
+				'id' => 'Bar',
+				'level' => 100,
+			]
 		);
 
 		OC_Installer::installApp($data);
@@ -50,24 +55,32 @@ class Test_Installer extends \Test\TestCase {
 		$pathOfOldTestApp .= '/../data/';
 		$pathOfOldTestApp .= 'testapp.zip';
 
-		$oldTmp = OC_Helper::tmpFile('.zip');
+		$oldTmp = \OC::$server->getTempManager()->getTemporaryFile('.zip');
 		OC_Helper::copyr($pathOfOldTestApp, $oldTmp);
 
 		$oldData = array(
 			'path' => $oldTmp,
 			'source' => 'path',
+			'appdata' => [
+				'id' => 'Bar',
+				'level' => 100,
+			]
 		);
 
 		$pathOfNewTestApp  = __DIR__;
 		$pathOfNewTestApp .= '/../data/';
 		$pathOfNewTestApp .= 'testapp2.zip';
 
-		$newTmp = OC_Helper::tmpFile('.zip');
+		$newTmp = \OC::$server->getTempManager()->getTemporaryFile('.zip');
 		OC_Helper::copyr($pathOfNewTestApp, $newTmp);
 
 		$newData = array(
 			'path' => $newTmp,
 			'source' => 'path',
+			'appdata' => [
+				'id' => 'Bar',
+				'level' => 100,
+			]
 		);
 
 		OC_Installer::installApp($oldData);

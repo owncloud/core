@@ -8,7 +8,14 @@
 
 use \OC\Security\CertificateManager;
 
+/**
+ * Class CertificateManagerTest
+ *
+ * @group DB
+ */
 class CertificateManagerTest extends \Test\TestCase {
+	use \Test\Traits\UserTrait;
+	use \Test\Traits\MountProviderTrait;
 
 	/** @var CertificateManager */
 	private $certificateManager;
@@ -19,18 +26,28 @@ class CertificateManagerTest extends \Test\TestCase {
 		parent::setUp();
 
 		$this->username = $this->getUniqueID('', 20);
-		OC_User::createUser($this->username, $this->getUniqueID('', 20));
+		$this->createUser($this->username, '');
+
+		$storage = new \OC\Files\Storage\Temporary();
+		$this->registerMount($this->username, $storage, '/' . $this->username . '/');
 
 		\OC_Util::tearDownFS();
 		\OC_User::setUserId('');
 		\OC\Files\Filesystem::tearDown();
 		\OC_Util::setupFS($this->username);
 
-		$this->certificateManager = new CertificateManager($this->username, new \OC\Files\View());
+		$config = $this->getMock('OCP\IConfig');
+		$config->expects($this->any())->method('getSystemValue')
+			->with('installed', false)->willReturn(true);
+
+		$this->certificateManager = new CertificateManager($this->username, new \OC\Files\View(), $config);
 	}
 
 	protected function tearDown() {
-		\OC_User::deleteUser($this->username);
+		$user = \OC::$server->getUserManager()->get($this->username);
+		if ($user !== null) {
+			$user->delete();
+		}
 		parent::tearDown();
 	}
 
@@ -46,14 +63,14 @@ class CertificateManagerTest extends \Test\TestCase {
 		$this->assertSame(array(), $this->certificateManager->listCertificates());
 
 		// Add some certificates
-		$this->certificateManager->addCertificate(file_get_contents(__DIR__.'/../../data/certificates/goodCertificate.crt'), 'GoodCertificate');
+		$this->certificateManager->addCertificate(file_get_contents(__DIR__ . '/../../data/certificates/goodCertificate.crt'), 'GoodCertificate');
 		$certificateStore = array();
-		$certificateStore[] =  new \OC\Security\Certificate(file_get_contents(__DIR__.'/../../data/certificates/goodCertificate.crt'), 'GoodCertificate');
+		$certificateStore[] = new \OC\Security\Certificate(file_get_contents(__DIR__ . '/../../data/certificates/goodCertificate.crt'), 'GoodCertificate');
 		$this->assertEqualsArrays($certificateStore, $this->certificateManager->listCertificates());
 
 		// Add another certificates
-		$this->certificateManager->addCertificate(file_get_contents(__DIR__.'/../../data/certificates/expiredCertificate.crt'), 'ExpiredCertificate');
-		$certificateStore[] =  new \OC\Security\Certificate(file_get_contents(__DIR__.'/../../data/certificates/expiredCertificate.crt'), 'ExpiredCertificate');
+		$this->certificateManager->addCertificate(file_get_contents(__DIR__ . '/../../data/certificates/expiredCertificate.crt'), 'ExpiredCertificate');
+		$certificateStore[] = new \OC\Security\Certificate(file_get_contents(__DIR__ . '/../../data/certificates/expiredCertificate.crt'), 'ExpiredCertificate');
 		$this->assertEqualsArrays($certificateStore, $this->certificateManager->listCertificates());
 	}
 
@@ -83,7 +100,7 @@ class CertificateManagerTest extends \Test\TestCase {
 	 * @param string $filename
 	 */
 	function testAddDangerousFile($filename) {
-		$this->certificateManager->addCertificate(file_get_contents(__DIR__.'/../../data/certificates/expiredCertificate.crt'), $filename);
+		$this->certificateManager->addCertificate(file_get_contents(__DIR__ . '/../../data/certificates/expiredCertificate.crt'), $filename);
 	}
 
 	function testRemoveDangerousFile() {
@@ -91,7 +108,7 @@ class CertificateManagerTest extends \Test\TestCase {
 	}
 
 	function testRemoveExistingFile() {
-		$this->certificateManager->addCertificate(file_get_contents(__DIR__.'/../../data/certificates/goodCertificate.crt'), 'GoodCertificate');
+		$this->certificateManager->addCertificate(file_get_contents(__DIR__ . '/../../data/certificates/goodCertificate.crt'), 'GoodCertificate');
 		$this->assertTrue($this->certificateManager->removeCertificate('GoodCertificate'));
 	}
 

@@ -2,9 +2,8 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
- * @author Morris Jobke <hey@morrisjobke.de>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -26,11 +25,13 @@ namespace OCA\Encryption\Controller;
 use OCA\Encryption\Crypto\Crypt;
 use OCA\Encryption\KeyManager;
 use OCA\Encryption\Session;
+use OCA\Encryption\Util;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\IL10N;
 use OCP\IRequest;
+use OCP\ISession;
 use OCP\IUserManager;
 use OCP\IUserSession;
 
@@ -54,6 +55,12 @@ class SettingsController extends Controller {
 	/** @var Session */
 	private $session;
 
+	/** @var ISession  */
+	private $ocSession;
+
+	/** @var  Util */
+	private $util;
+
 	/**
 	 * @param string $AppName
 	 * @param IRequest $request
@@ -63,6 +70,8 @@ class SettingsController extends Controller {
 	 * @param KeyManager $keyManager
 	 * @param Crypt $crypt
 	 * @param Session $session
+	 * @param ISession $ocSession
+	 * @param Util $util
 	 */
 	public function __construct($AppName,
 								IRequest $request,
@@ -71,7 +80,10 @@ class SettingsController extends Controller {
 								IUserSession $userSession,
 								KeyManager $keyManager,
 								Crypt $crypt,
-								Session $session) {
+								Session $session,
+								ISession $ocSession,
+								Util $util
+) {
 		parent::__construct($AppName, $request);
 		$this->l = $l10n;
 		$this->userSession = $userSession;
@@ -79,6 +91,8 @@ class SettingsController extends Controller {
 		$this->keyManager = $keyManager;
 		$this->crypt = $crypt;
 		$this->session = $session;
+		$this->ocSession = $ocSession;
+		$this->util = $util;
 	}
 
 
@@ -97,13 +111,20 @@ class SettingsController extends Controller {
 
 		//check if password is correct
 		$passwordCorrect = $this->userManager->checkPassword($uid, $newPassword);
+		if ($passwordCorrect === false) {
+			// if check with uid fails we need to check the password with the login name
+			// e.g. in the ldap case. For local user we need to check the password with
+			// the uid because in this case the login name is case insensitive
+			$loginName = $this->ocSession->get('loginname');
+			$passwordCorrect = $this->userManager->checkPassword($loginName, $newPassword);
+		}
 
 		if ($passwordCorrect !== false) {
 			$encryptedKey = $this->keyManager->getPrivateKey($uid);
-			$decryptedKey = $this->crypt->decryptPrivateKey($encryptedKey, $oldPassword);
+			$decryptedKey = $this->crypt->decryptPrivateKey($encryptedKey, $oldPassword, $uid);
 
 			if ($decryptedKey) {
-				$encryptedKey = $this->crypt->symmetricEncryptFileContent($decryptedKey, $newPassword);
+				$encryptedKey = $this->crypt->encryptPrivateKey($decryptedKey, $newPassword, $uid);
 				$header = $this->crypt->generateHeader();
 				if ($encryptedKey) {
 					$this->keyManager->setPrivateKey($uid, $header . $encryptedKey);
@@ -129,5 +150,16 @@ class SettingsController extends Controller {
 			);
 		}
 
+	}
+
+	/**
+	 * @UseSession
+	 *
+	 * @param bool $encryptHomeStorage
+	 * @return DataResponse
+	 */
+	public function setEncryptHomeStorage($encryptHomeStorage) {
+		$this->util->setEncryptHomeStorage($encryptHomeStorage);
+		return new DataResponse();
 	}
 }

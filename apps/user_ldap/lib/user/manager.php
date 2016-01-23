@@ -1,10 +1,11 @@
 <?php
 /**
  * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -28,6 +29,11 @@ use OCA\user_ldap\lib\user\User;
 use OCA\user_ldap\lib\LogWrapper;
 use OCA\user_ldap\lib\FilesystemHelper;
 use OCA\user_ldap\lib\user\OfflineUser;
+use OCP\IAvatarManager;
+use OCP\IConfig;
+use OCP\IDBConnection;
+use OCP\Image;
+use OCP\IUserManager;
 
 /**
  * Manager
@@ -39,10 +45,10 @@ class Manager {
 	/** @var IUserTools */
 	protected $access;
 
-	/** @var \OCP\IConfig */
+	/** @var IConfig */
 	protected $ocConfig;
 
-	/** @var \OCP\IDBConnection */
+	/** @var IDBConnection */
 	protected $db;
 
 	/** @var FilesystemHelper */
@@ -51,7 +57,7 @@ class Manager {
 	/** @var LogWrapper */
 	protected $ocLog;
 
-	/** @var \OCP\Image */
+	/** @var Image */
 	protected $image;
 
 	/** @param \OCP\IAvatarManager */
@@ -68,18 +74,19 @@ class Manager {
 	);
 
 	/**
-	 * @param \OCP\IConfig $ocConfig
+	 * @param IConfig $ocConfig
 	 * @param \OCA\user_ldap\lib\FilesystemHelper $ocFilesystem object that
 	 * gives access to necessary functions from the OC filesystem
 	 * @param  \OCA\user_ldap\lib\LogWrapper $ocLog
-	 * @param \OCP\IAvatarManager $avatarManager
-	 * @param \OCP\Image $image an empty image instance
-	 * @param \OCP\IDBConnection $db
-	 * @throws Exception when the methods mentioned above do not exist
+	 * @param IAvatarManager $avatarManager
+	 * @param Image $image an empty image instance
+	 * @param IDBConnection $db
+	 * @throws \Exception when the methods mentioned above do not exist
 	 */
-	public function __construct(\OCP\IConfig $ocConfig,
-		FilesystemHelper $ocFilesystem, LogWrapper $ocLog,
-		\OCP\IAvatarManager $avatarManager, \OCP\Image $image, \OCP\IDBConnection $db) {
+	public function __construct(IConfig $ocConfig,
+								FilesystemHelper $ocFilesystem, LogWrapper $ocLog,
+								IAvatarManager $avatarManager, Image $image,
+								IDBConnection $db, IUserManager $userManager) {
 
 		$this->ocConfig      = $ocConfig;
 		$this->ocFilesystem  = $ocFilesystem;
@@ -87,6 +94,7 @@ class Manager {
 		$this->avatarManager = $avatarManager;
 		$this->image         = $image;
 		$this->db            = $db;
+		$this->userManager   = $userManager;
 	}
 
 	/**
@@ -101,29 +109,66 @@ class Manager {
 	/**
 	 * @brief creates an instance of User and caches (just runtime) it in the
 	 * property array
-	 * @param string the DN of the user
-	 * @param string the internal (owncloud) username
-	 * @return \OCA\user_ldap\lib\User
+	 * @param string $dn the DN of the user
+	 * @param string $uid the internal (owncloud) username
+	 * @return \OCA\user_ldap\lib\User\User
 	 */
 	private function createAndCache($dn, $uid) {
 		$this->checkAccess();
 		$user = new User($uid, $dn, $this->access, $this->ocConfig,
 			$this->ocFilesystem, clone $this->image, $this->ocLog,
-			$this->avatarManager);
-		$users['byDN'][$dn]   = $user;
-		$users['byUid'][$uid] = $user;
+			$this->avatarManager, $this->userManager);
+		$this->users['byDN'][$dn]   = $user;
+		$this->users['byUid'][$uid] = $user;
 		return $user;
 	}
 
 	/**
 	 * @brief checks whether the Access instance has been set
-	 * @throws Exception if Access has not been set
+	 * @throws \Exception if Access has not been set
 	 * @return null
 	 */
 	private function checkAccess() {
 		if(is_null($this->access)) {
 			throw new \Exception('LDAP Access instance must be set first');
 		}
+	}
+
+	/**
+	 * returns a list of attributes that will be processed further, e.g. quota,
+	 * email, displayname, or others.
+	 * @param bool $minimal - optional, set to true to skip attributes with big
+	 * payload
+	 * @return string[]
+	 */
+	public function getAttributes($minimal = false) {
+		$attributes = array('dn', 'uid', 'samaccountname', 'memberof');
+		$possible = array(
+			$this->access->getConnection()->ldapQuotaAttribute,
+			$this->access->getConnection()->ldapEmailAttribute,
+			$this->access->getConnection()->ldapUserDisplayName,
+		);
+		foreach($possible as $attr) {
+			if(!is_null($attr)) {
+				$attributes[] = $attr;
+			}
+		}
+
+		$homeRule = $this->access->getConnection()->homeFolderNamingRule;
+		if(strpos($homeRule, 'attr:') === 0) {
+			$attributes[] = substr($homeRule, strlen('attr:'));
+		}
+
+		if(!$minimal) {
+			// attributes that are not really important but may come with big
+			// payload.
+			$attributes = array_merge($attributes, array(
+				'jpegphoto',
+				'thumbnailphoto'
+			));
+		}
+
+		return $attributes;
 	}
 
 	/**
@@ -152,7 +197,7 @@ class Manager {
 
 	/**
 	 * @brief returns a User object by it's ownCloud username
-	 * @param string the DN or username of the user
+	 * @param string $id the DN or username of the user
 	 * @return \OCA\user_ldap\lib\user\User|\OCA\user_ldap\lib\user\OfflineUser|null
 	 */
 	protected function createInstancyByUserName($id) {
@@ -169,7 +214,7 @@ class Manager {
 
 	/**
 	 * @brief returns a User object by it's DN or ownCloud username
-	 * @param string the DN or username of the user
+	 * @param string $id the DN or username of the user
 	 * @return \OCA\user_ldap\lib\user\User|\OCA\user_ldap\lib\user\OfflineUser|null
 	 * @throws \Exception when connection could not be established
 	 */

@@ -2,17 +2,15 @@
 /**
  * @author Andreas Fischer <bantu@owncloud.com>
  * @author Bart Visscher <bartv@thisnet.nl>
- * @author Dan Bartram <daneybartram@gmail.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
- * @author Tom Needham <tom@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -34,13 +32,6 @@
  * Doctrine with some adaptions.
  */
 class OC_DB {
-
-	/**
-	 * @return \OCP\IDBConnection
-	 */
-	static public function getConnection() {
-		return \OC::$server->getDatabaseConnection();
-	}
 
 	/**
 	 * get MDB2 schema manager
@@ -121,7 +112,7 @@ class OC_DB {
 		if (is_string($stmt)) {
 			// convert to an array with 'sql'
 			if (stripos($stmt, 'LIMIT') !== false) { //OFFSET requires LIMIT, so we only need to check for LIMIT
-				// TODO try to convert LIMIT OFFSET notation to parameters, see fixLimitClauseForMSSQL
+				// TODO try to convert LIMIT OFFSET notation to parameters
 				$message = 'LIMIT and OFFSET are forbidden for portability reasons,'
 						 . ' pass an array with \'limit\' and \'offset\' instead';
 				throw new \OC\DatabaseException($message);
@@ -155,42 +146,6 @@ class OC_DB {
 			throw new \OC\DatabaseException($message);
 		}
 		return $result;
-	}
-
-	/**
-	 * gets last value of autoincrement
-	 * @param string $table The optional table name (will replace *PREFIX*) and add sequence suffix
-	 * @return string id
-	 * @throws \OC\DatabaseException
-	 *
-	 * \Doctrine\DBAL\Connection lastInsertId
-	 *
-	 * Call this method right after the insert command or other functions may
-	 * cause trouble!
-	 */
-	public static function insertid($table=null) {
-		return \OC::$server->getDatabaseConnection()->lastInsertId($table);
-	}
-
-	/**
-	 * Start a transaction
-	 */
-	public static function beginTransaction() {
-		return \OC::$server->getDatabaseConnection()->beginTransaction();
-	}
-
-	/**
-	 * Commit the database changes done during a transaction that is in progress
-	 */
-	public static function commit() {
-		return \OC::$server->getDatabaseConnection()->commit();
-	}
-
-	/**
-	 * Rollback the database changes done during a transaction that is in progress
-	 */
-	public static function rollback() {
-		return \OC::$server->getDatabaseConnection()->rollback();
 	}
 
 	/**
@@ -254,15 +209,6 @@ class OC_DB {
 	}
 
 	/**
-	 * drop a table - the database prefix will be prepended
-	 * @param string $tableName the table to drop
-	 */
-	public static function dropTable($tableName) {
-		$connection = \OC::$server->getDatabaseConnection();
-		$connection->dropTable($tableName);
-	}
-
-	/**
 	 * remove all tables defined in a database structure xml file
 	 * @param string $file the xml file describing the tables
 	 */
@@ -272,15 +218,6 @@ class OC_DB {
 	}
 
 	/**
-	 * check if a result is an error, works with Doctrine
-	 * @param mixed $result
-	 * @return bool
-	 */
-	public static function isError($result) {
-		//Doctrine returns false on error (and throws an exception)
-		return $result === false;
-	}
-	/**
 	 * check if a result is an error and throws an exception, works with \Doctrine\DBAL\DBALException
 	 * @param mixed $result
 	 * @param string $message
@@ -288,20 +225,16 @@ class OC_DB {
 	 * @throws \OC\DatabaseException
 	 */
 	public static function raiseExceptionOnError($result, $message = null) {
-		if(self::isError($result)) {
+		if($result === false) {
 			if ($message === null) {
 				$message = self::getErrorMessage();
 			} else {
 				$message .= ', Root cause:' . self::getErrorMessage();
 			}
-			throw new \OC\DatabaseException($message, self::getErrorCode());
+			throw new \OC\DatabaseException($message, \OC::$server->getDatabaseConnection()->errorCode());
 		}
 	}
 
-	public static function getErrorCode() {
-		$connection = \OC::$server->getDatabaseConnection();
-		return $connection->errorCode();
-	}
 	/**
 	 * returns the error code and message as a string for logging
 	 * works with DoctrineException

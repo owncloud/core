@@ -6,7 +6,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -88,6 +88,8 @@ class Storage extends DAV implements ISharedStorage {
 			'user' => $options['token'],
 			'password' => (string)$options['password']
 		));
+
+		$this->getWatcher()->setPolicy(\OC\Files\Cache\Watcher::CHECK_ONCE);
 	}
 
 	public function getRemoteUser() {
@@ -248,14 +250,27 @@ class Storage extends DAV implements ISharedStorage {
 			$response = $client->post($url, ['body' => ['password' => $password]]);
 		} catch (\GuzzleHttp\Exception\RequestException $e) {
 			if ($e->getCode() === 401 || $e->getCode() === 403) {
-					throw new ForbiddenException();
+				throw new ForbiddenException();
 			}
 			// throw this to be on the safe side: the share will still be visible
 			// in the UI in case the failure is intermittent, and the user will
 			// be able to decide whether to remove it if it's really gone
-			throw new NotFoundException();
+			throw new StorageNotAvailableException();
 		}
 
 		return json_decode($response->getBody(), true);
 	}
+
+	public function getOwner($path) {
+		list(, $remote) = explode('://', $this->remote, 2);
+		return $this->remoteUser . '@' . $remote;
+	}
+
+	public function isSharable($path) {
+		if (\OCP\Util::isSharingDisabledForUser() || !\OC\Share\Share::isResharingAllowed()) {
+			return false;
+		}
+		return ($this->getPermissions($path) & \OCP\Constants::PERMISSION_SHARE);
+	}
+
 }

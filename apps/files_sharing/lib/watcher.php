@@ -6,7 +6,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -24,46 +24,47 @@
  */
 
 namespace OC\Files\Cache;
+use OCP\Files\Cache\ICacheEntry;
 
 /**
  * check the storage backends for updates and change the cache accordingly
  */
 class Shared_Watcher extends Watcher {
+	/**
+	 * @var \OC\Files\Storage\Shared $storage
+	 */
+	protected $storage;
 
 	/**
-	 * check $path for updates
+	 * Update the cache for changes to $path
 	 *
 	 * @param string $path
-	 * @param array $cachedEntry
-	 * @return boolean true if path was updated
+	 * @param ICacheEntry $cachedData
 	 */
-	public function checkUpdate($path, $cachedEntry = null) {
-		if (parent::checkUpdate($path, $cachedEntry) === true) {
-			// since checkUpdate() has already updated the size of the subdirs,
-			// only apply the update to the owner's parent dirs
+	public function update($path, $cachedData) {
+		parent::update($path, $cachedData);
+		// since parent::update() has already updated the size of the subdirs,
+		// only apply the update to the owner's parent dirs
 
-			// find last parent before reaching the shared storage root,
-			// which is the actual shared dir from the owner
-			$sepPos = strpos($path, '/');
-			if ($sepPos > 0) {
-				$baseDir = substr($path, 0, $sepPos);
-			} else {
-				$baseDir = $path;
-			}
-
-			// find the path relative to the data dir
-			$file = $this->storage->getFile($baseDir);
-			$view = new \OC\Files\View('/' . $file['fileOwner']);
-
-			// find the owner's storage and path
-			list($storage, $internalPath) = $view->resolvePath($file['path']);
-
-			// update the parent dirs' sizes in the owner's cache
-			$storage->getCache()->correctFolderSize(dirname($internalPath));
-
-			return true;
+		// find last parent before reaching the shared storage root,
+		// which is the actual shared dir from the owner
+		$sepPos = strpos($path, '/');
+		if ($sepPos > 0) {
+			$baseDir = substr($path, 0, $sepPos);
+		} else {
+			$baseDir = $path;
 		}
-		return false;
+
+		// find the path relative to the data dir
+		$file = $this->storage->getFile($baseDir);
+		$view = new \OC\Files\View('/' . $file['fileOwner']);
+
+		// find the owner's storage and path
+		/** @var \OC\Files\Storage\Storage $storage */
+		list($storage, $internalPath) = $view->resolvePath($file['path']);
+
+		// update the parent dirs' sizes in the owner's cache
+		$storage->getCache()->correctFolderSize(dirname($internalPath));
 	}
 
 	/**

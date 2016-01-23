@@ -2,9 +2,8 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
- * @author Morris Jobke <hey@morrisjobke.de>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -54,6 +53,12 @@ class SettingsControllerTest extends TestCase {
 	/** @var \PHPUnit_Framework_MockObject_MockObject */
 	private $sessionMock;
 
+	/** @var  \PHPUnit_Framework_MockObject_MockObject */
+	private $ocSessionMock;
+
+	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	private $utilMock;
+
 	protected function setUp() {
 
 		parent::setUp();
@@ -91,9 +96,11 @@ class SettingsControllerTest extends TestCase {
 			])
 			->getMock();
 
+		$this->ocSessionMock = $this->getMockBuilder('\OCP\ISession')->disableOriginalConstructor()->getMock();
+
 		$this->userSessionMock->expects($this->any())
 			->method('getUID')
-			->willReturn('testUser');
+			->willReturn('testUserUid');
 
 		$this->userSessionMock->expects($this->any())
 			->method($this->anything())
@@ -101,6 +108,10 @@ class SettingsControllerTest extends TestCase {
 
 		$this->sessionMock = $this->getMockBuilder('OCA\Encryption\Session')
 			->disableOriginalConstructor()->getMock();
+
+		$this->utilMock = $this->getMockBuilder('OCA\Encryption\Util')
+			->disableOriginalConstructor()
+			->getMock();
 
 		$this->controller = new SettingsController(
 			'encryption',
@@ -110,7 +121,9 @@ class SettingsControllerTest extends TestCase {
 			$this->userSessionMock,
 			$this->keyManagerMock,
 			$this->cryptMock,
-			$this->sessionMock
+			$this->sessionMock,
+			$this->ocSessionMock,
+			$this->utilMock
 		);
 	}
 
@@ -122,8 +135,10 @@ class SettingsControllerTest extends TestCase {
 		$oldPassword = 'old';
 		$newPassword = 'new';
 
+		$this->userSessionMock->expects($this->once())->method('getUID')->willReturn('uid');
+
 		$this->userManagerMock
-			->expects($this->once())
+			->expects($this->exactly(2))
 			->method('checkPassword')
 			->willReturn(false);
 
@@ -171,15 +186,21 @@ class SettingsControllerTest extends TestCase {
 		$oldPassword = 'old';
 		$newPassword = 'new';
 
-		$this->userSessionMock
-			->expects($this->once())
-			->method('getUID')
-			->willReturn('testUser');
+		$this->ocSessionMock->expects($this->once())
+			->method('get')->with('loginname')->willReturn('testUser');
 
 		$this->userManagerMock
-			->expects($this->once())
+			->expects($this->at(0))
 			->method('checkPassword')
+			->with('testUserUid', 'new')
+			->willReturn(false);
+		$this->userManagerMock
+			->expects($this->at(1))
+			->method('checkPassword')
+			->with('testUser', 'new')
 			->willReturn(true);
+
+
 
 		$this->cryptMock
 			->expects($this->once())
@@ -188,7 +209,7 @@ class SettingsControllerTest extends TestCase {
 
 		$this->cryptMock
 			->expects($this->once())
-			->method('symmetricEncryptFileContent')
+			->method('encryptPrivateKey')
 			->willReturn('encryptedKey');
 
 		$this->cryptMock
@@ -200,7 +221,7 @@ class SettingsControllerTest extends TestCase {
 		$this->keyManagerMock
 			->expects($this->once())
 			->method('setPrivateKey')
-			->with($this->equalTo('testUser'), $this->equalTo('header.encryptedKey'));
+			->with($this->equalTo('testUserUid'), $this->equalTo('header.encryptedKey'));
 
 		$this->sessionMock
 			->expects($this->once())
@@ -219,6 +240,12 @@ class SettingsControllerTest extends TestCase {
 		$this->assertSame(Http::STATUS_OK, $result->getStatus());
 		$this->assertSame('Private key password successfully updated.',
 			$data['message']);
+	}
+
+	function testSetEncryptHomeStorage() {
+		$value = true;
+		$this->utilMock->expects($this->once())->method('setEncryptHomeStorage')->with($value);
+		$this->controller->setEncryptHomeStorage($value);
 	}
 
 }

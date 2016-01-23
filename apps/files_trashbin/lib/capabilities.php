@@ -2,8 +2,9 @@
 /**
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -22,25 +23,26 @@
  
 namespace OCA\Files_Trashbin;
 
+use OCP\Capabilities\ICapability;
 
 /**
  * Class Capabilities
  *
  * @package OCA\Files_Trashbin
  */
-class Capabilities {
+class Capabilities implements ICapability {
 
 	/**
-	 * @return \OC_OCS_Result
+	 * Return this classes capabilities
+	 *
+	 * @return array
 	 */
-	public static function getCapabilities() {
-		return new \OC_OCS_Result(array(
-			'capabilities' => array(
-				'files' => array(
-					'undelete' => true,
-					),
-				),
-			));
+	public function getCapabilities() {
+		return [
+			'files' => [
+				'undelete' => true
+			]
+		];
 	}
 	
 }

@@ -3,12 +3,15 @@
  * @author Andreas Fischer <bantu@owncloud.com>
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -38,15 +41,16 @@ class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 	private $path;
 
 	public function isValidSource($itemSource, $uidOwner) {
-		$path = \OC\Files\Filesystem::getPath($itemSource);
-		if ($path) {
+		try {
+			$path = \OC\Files\Filesystem::getPath($itemSource);
 			// FIXME: attributes should not be set here,
 			// keeping this pattern for now to avoid unexpected
 			// regressions
 			$this->path = \OC\Files\Filesystem::normalizePath(basename($path));
 			return true;
+		} catch (\OCP\Files\NotFoundException $e) {
+			return false;
 		}
-		return false;
 	}
 
 	public function getFilePath($itemSource, $uidOwner) {
@@ -55,12 +59,13 @@ class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 			$this->path = null;
 			return $path;
 		} else {
-			$path = \OC\Files\Filesystem::getPath($itemSource);
-			if ($path) {
+			try {
+				$path = \OC\Files\Filesystem::getPath($itemSource);
 				return $path;
+			} catch (\OCP\Files\NotFoundException $e) {
+				return false;
 			}
 		}
-		return false;
 	}
 
 	/**
@@ -206,27 +211,15 @@ class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 
 	/**
 	 * @param string $target
-	 * @param string $mountPoint
-	 * @param string $itemType
+	 * @param array $share
 	 * @return array|false source item
 	 */
-	public static function getSource($target, $mountPoint, $itemType) {
-		if ($itemType === 'folder') {
-			$source = \OCP\Share::getItemSharedWith('folder', $mountPoint, \OC_Share_Backend_File::FORMAT_SHARED_STORAGE);
-			if ($source && $target !== '') {
-				// note: in case of ext storage mount points the path might be empty
-				// which would cause a leading slash to appear
-				$source['path'] = ltrim($source['path'] . '/' . $target, '/');
-			}
-		} else {
-			$source = \OCP\Share::getItemSharedWith('file', $mountPoint, \OC_Share_Backend_File::FORMAT_SHARED_STORAGE);
+	public static function getSource($target, $share) {
+		if ($share['item_type'] === 'folder' && $target !== '') {
+			// note: in case of ext storage mount points the path might be empty
+			// which would cause a leading slash to appear
+			$share['path'] = ltrim($share['path'] . '/' . $target, '/');
 		}
-		if ($source) {
-			return self::resolveReshares($source);
-		}
-
-		\OCP\Util::writeLog('files_sharing', 'File source not found for: '.$target, \OCP\Util::DEBUG);
-		return false;
+		return self::resolveReshares($share);
 	}
-
 }

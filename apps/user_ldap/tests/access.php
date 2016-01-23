@@ -4,8 +4,9 @@
  * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -28,8 +29,15 @@ use \OCA\user_ldap\lib\Access;
 use \OCA\user_ldap\lib\Connection;
 use \OCA\user_ldap\lib\ILDAPWrapper;
 
+/**
+ * Class Test_Access
+ *
+ * @group DB
+ *
+ * @package OCA\user_ldap\tests
+ */
 class Test_Access extends \Test\TestCase {
-	private function getConnecterAndLdapMock() {
+	private function getConnectorAndLdapMock() {
 		static $conMethods;
 		static $accMethods;
 		static $umMethods;
@@ -50,13 +58,14 @@ class Test_Access extends \Test\TestCase {
 				$this->getMock('\OCA\user_ldap\lib\LogWrapper'),
 				$this->getMock('\OCP\IAvatarManager'),
 				$this->getMock('\OCP\Image'),
-				$this->getMock('\OCP\IDBConnection')));
+				$this->getMock('\OCP\IDBConnection'),
+				$this->getMock('\OCP\IUserManager')));
 
 		return array($lw, $connector, $um);
 	}
 
 	public function testEscapeFilterPartValidChars() {
-		list($lw, $con, $um) = $this->getConnecterAndLdapMock();
+		list($lw, $con, $um) = $this->getConnectorAndLdapMock();
 		$access = new Access($con, $lw, $um);
 
 		$input = 'okay';
@@ -64,7 +73,7 @@ class Test_Access extends \Test\TestCase {
 	}
 
 	public function testEscapeFilterPartEscapeWildcard() {
-		list($lw, $con, $um) = $this->getConnecterAndLdapMock();
+		list($lw, $con, $um) = $this->getConnectorAndLdapMock();
 		$access = new Access($con, $lw, $um);
 
 		$input = '*';
@@ -73,7 +82,7 @@ class Test_Access extends \Test\TestCase {
 	}
 
 	public function testEscapeFilterPartEscapeWildcard2() {
-		list($lw, $con, $um) = $this->getConnecterAndLdapMock();
+		list($lw, $con, $um) = $this->getConnectorAndLdapMock();
 		$access = new Access($con, $lw, $um);
 
 		$input = 'foo*bar';
@@ -83,7 +92,7 @@ class Test_Access extends \Test\TestCase {
 
 	/** @dataProvider convertSID2StrSuccessData */
 	public function testConvertSID2StrSuccess(array $sidArray, $sidExpected) {
-		list($lw, $con, $um) = $this->getConnecterAndLdapMock();
+		list($lw, $con, $um) = $this->getConnectorAndLdapMock();
 		$access = new Access($con, $lw, $um);
 
 		$sidBinary = implode('', $sidArray);
@@ -118,7 +127,7 @@ class Test_Access extends \Test\TestCase {
 	}
 
 	public function testConvertSID2StrInputError() {
-		list($lw, $con, $um) = $this->getConnecterAndLdapMock();
+		list($lw, $con, $um) = $this->getConnectorAndLdapMock();
 		$access = new Access($con, $lw, $um);
 
 		$sidIllegal = 'foobar';
@@ -128,7 +137,7 @@ class Test_Access extends \Test\TestCase {
 	}
 
 	public function testGetDomainDNFromDNSuccess() {
-		list($lw, $con, $um) = $this->getConnecterAndLdapMock();
+		list($lw, $con, $um) = $this->getConnectorAndLdapMock();
 		$access = new Access($con, $lw, $um);
 
 		$inputDN = 'uid=zaphod,cn=foobar,dc=my,dc=server,dc=com';
@@ -143,7 +152,7 @@ class Test_Access extends \Test\TestCase {
 	}
 
 	public function testGetDomainDNFromDNError() {
-		list($lw, $con, $um) = $this->getConnecterAndLdapMock();
+		list($lw, $con, $um) = $this->getConnectorAndLdapMock();
 		$access = new Access($con, $lw, $um);
 
 		$inputDN = 'foobar';
@@ -178,7 +187,7 @@ class Test_Access extends \Test\TestCase {
 	}
 
 	public function testStringResemblesDN() {
-		list($lw, $con, $um) = $this->getConnecterAndLdapMock();
+		list($lw, $con, $um) = $this->getConnectorAndLdapMock();
 		$access = new Access($con, $lw, $um);
 
 		$cases = $this->getResemblesDNInputData();
@@ -199,7 +208,7 @@ class Test_Access extends \Test\TestCase {
 	}
 
 	public function testStringResemblesDNLDAPmod() {
-		list($lw, $con, $um) = $this->getConnecterAndLdapMock();
+		list($lw, $con, $um) = $this->getConnectorAndLdapMock();
 		$lw = new \OCA\user_ldap\lib\LDAP();
 		$access = new Access($con, $lw, $um);
 
@@ -212,5 +221,96 @@ class Test_Access extends \Test\TestCase {
 		foreach($cases as $case) {
 			$this->assertSame($case['expectedResult'], $access->stringResemblesDN($case['input']));
 		}
+	}
+
+	public function testCacheUserHome() {
+		list($lw, $con, $um) = $this->getConnectorAndLdapMock();
+		$access = new Access($con, $lw, $um);
+
+		$con->expects($this->once())
+			->method('writeToCache');
+
+		$access->cacheUserHome('foobar', '/foobars/path');
+	}
+
+	public function testBatchApplyUserAttributes() {
+		list($lw, $con, $um) = $this->getConnectorAndLdapMock();
+		$access = new Access($con, $lw, $um);
+		$mapperMock = $this->getMockBuilder('\OCA\User_LDAP\Mapping\UserMapping')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$mapperMock->expects($this->any())
+			->method('getNameByDN')
+			->will($this->returnValue('a_username'));
+
+		$userMock = $this->getMockBuilder('\OCA\user_ldap\lib\user\User')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$access->connection->expects($this->any())
+			->method('__get')
+			->will($this->returnValue('displayName'));
+
+		$access->setUserMapper($mapperMock);
+
+		$displayNameAttribute = strtolower($access->connection->ldapUserDisplayName);
+		$data = array(
+			array(
+				'dn' => 'foobar',
+				$displayNameAttribute => 'barfoo'
+			),
+			array(
+				'dn' => 'foo',
+				$displayNameAttribute => 'bar'
+			),
+			array(
+				'dn' => 'raboof',
+				$displayNameAttribute => 'oofrab'
+			)
+		);
+
+		$userMock->expects($this->exactly(count($data)))
+			->method('processAttributes');
+
+		$um->expects($this->exactly(count($data)))
+			->method('get')
+			->will($this->returnValue($userMock));
+
+		$access->batchApplyUserAttributes($data);
+	}
+
+	public function dNAttributeProvider() {
+		// corresponds to Access::resemblesDN()
+		return array(
+			'dn' => array('dn'),
+			'uniqueMember' => array('uniquemember'),
+			'member' => array('member'),
+			'memberOf' => array('memberof')
+		);
+	}
+
+	/**
+	 * @dataProvider dNAttributeProvider
+	 */
+	public function testSanitizeDN($attribute) {
+		list($lw, $con, $um) = $this->getConnectorAndLdapMock();
+
+
+		$dnFromServer = 'cn=Mixed Cases,ou=Are Sufficient To,ou=Test,dc=example,dc=org';
+
+		$lw->expects($this->any())
+			->method('isResource')
+			->will($this->returnValue(true));
+
+		$lw->expects($this->any())
+			->method('getAttributes')
+			->will($this->returnValue(array(
+				$attribute => array('count' => 1, $dnFromServer)
+			)));
+
+		$access = new Access($con, $lw, $um);
+		$values = $access->readAttribute('uid=whoever,dc=example,dc=org', $attribute);
+		$this->assertSame($values[0], strtolower($dnFromServer));
 	}
 }

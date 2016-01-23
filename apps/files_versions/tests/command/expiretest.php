@@ -1,8 +1,10 @@
 <?php
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -24,9 +26,16 @@ namespace OCA\Files_Versions\Tests\Command;
 use OCA\Files_Versions\Command\Expire;
 use Test\TestCase;
 
+/**
+ * Class ExpireTest
+ *
+ * @group DB
+ *
+ * @package OCA\Files_Versions\Tests\Command
+ */
 class ExpireTest extends TestCase {
 	public function testExpireNonExistingUser() {
-		$command = new Expire('test', '');
+		$command = new Expire($this->getUniqueID('test'), '');
 		$command->handle();
 
 		$this->assertTrue(true);

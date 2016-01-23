@@ -1,10 +1,10 @@
 <?php
 /**
- * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -25,12 +25,18 @@ namespace OCA\Files_sharing\Tests;
 
 use OC\Files\Filesystem;
 use OC\Files\View;
-use OC\Lock\MemcacheLockingProvider;
 use OCP\Lock\ILockingProvider;
 
+/**
+ * Class Locking
+ *
+ * @group DB
+ *
+ * @package OCA\Files_sharing\Tests
+ */
 class Locking extends TestCase {
 	/**
-	 * @var \OC_User_Dummy
+	 * @var \Test\Util\User\Dummy
 	 */
 	private $userBackend;
 
@@ -40,7 +46,7 @@ class Locking extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->userBackend = new \OC_User_Dummy();
+		$this->userBackend = new \Test\Util\User\Dummy();
 		\OC::$server->getUserManager()->registerBackend($this->userBackend);
 
 		$this->ownerUid = $this->getUniqueID('owner_');

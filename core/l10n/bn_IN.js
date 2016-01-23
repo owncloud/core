@@ -4,10 +4,11 @@ OC.L10N.register(
     "Settings" : "সেটিংস",
     "Saving..." : "সংরক্ষণ করা হচ্ছে ...",
     "Cancel" : "বাতিল করা",
-    "Share" : "শেয়ার",
     "Error" : "ভুল",
+    "Share" : "শেয়ার",
     "Warning" : "সতর্কীকরণ",
     "Delete" : "মুছে ফেলা",
+    "Rename" : "পুনঃনামকরণ",
     "Add" : "যোগ করা",
     "Username" : "ইউজারনেম",
     "Search" : "অনুসন্ধান"

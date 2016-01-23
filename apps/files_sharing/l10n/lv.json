@@ -21,8 +21,8 @@
     "Add remote share" : "Pievienot attālināto koplietotni",
     "No ownCloud installation (7 or higher) found at {remote}" : "Nav atrasta neviena ownCloud (7. vai augstāka) instalācija {remote}",
     "Invalid ownCloud url" : "Nederīga ownCloud saite",
-    "Share" : "Dalīties",
     "Shared by" : "Dalījās",
+    "Sharing" : "Dalīšanās",
     "A file or folder has been <strong>shared</strong>" : "<strong>Koplietota</strong> fails vai mape",
     "A file or folder was shared from <strong>another server</strong>" : "Fails vai mape tika koplietota no <strong>cita servera</strong>",
     "A public shared file or folder was <strong>downloaded</strong>" : "Publiski koplietots fails vai mape tika <strong>lejupielādēts</strong>",
@@ -54,6 +54,7 @@
     "Download %s" : "Lejupielādēt %s",
     "Direct link" : "Tiešā saite",
     "Federated Cloud Sharing" : "Federatīva mākoņkoplietošana",
+    "Open documentation" : "Atvērt dokumentāciju",
     "Allow users on this server to send shares to other servers" : "Atļaut šī servera lietotājiem sūtīt koplietotnes uz citiem serveriem",
     "Allow users on this server to receive shares from other servers" : "Atļaut šī servera lietotājiem saņem koplietotnes no citiem serveriem"
 },"pluralForm" :"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);"

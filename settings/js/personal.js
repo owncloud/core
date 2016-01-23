@@ -5,8 +5,6 @@
  * See the COPYING-README file.
  */
 
-/* global OC, t */
-
 /**
  * The callback will be fired as soon as enter is pressed by the
  * user or 1 second after the last data entry
@@ -72,7 +70,7 @@ function changeDisplayName () {
 		// Serialize the data
 		var post = $("#displaynameform").serialize();
 		// Ajax foo
-		$.post('ajax/changedisplayname.php', post, function (data) {
+		$.post(OC.generateUrl('/settings/users/{id}/displayName', {id: OC.currentUser}), post, function (data) {
 			if (data.status === "success") {
 				$('#oldDisplayName').val($('#displayName').val());
 				// update displayName on the top right expand button
@@ -100,7 +98,7 @@ function updateAvatar (hidedefault) {
 		$('#header .avatardiv').addClass('avatardiv-shown');
 	}
 	$displaydiv.css({'background-color': ''});
-	$displaydiv.avatar(OC.currentUser, 128, true);
+	$displaydiv.avatar(OC.currentUser, 145, true);
 
 	$('#removeavatar').show();
 }
@@ -156,6 +154,9 @@ function cleanCropper () {
 }
 
 function avatarResponseHandler (data) {
+	if (typeof data === 'string') {
+		data = $.parseJSON(data);
+	}
 	var $warning = $('#avatar .warning');
 	$warning.hide();
 	if (data.status === "success") {
@@ -188,15 +189,15 @@ $(document).ready(function () {
 			$.post(OC.generateUrl('/settings/personal/changepassword'), post, function (data) {
 				if (data.status === "success") {
 					$('#pass1').val('');
-					$('#pass2').val('');
+					$('#pass2').val('').change();
 					// Hide a possible errormsg and show successmsg
 					$('#password-changed').removeClass('hidden').addClass('inlineblock');
 					$('#password-error').removeClass('inlineblock').addClass('hidden');
 				} else {
 					if (typeof(data.data) !== "undefined") {
-						$('#passworderror').html(data.data.message);
+						$('#password-error').text(data.data.message);
 					} else {
-						$('#passworderror').html(t('Unable to change password'));
+						$('#password-error').text(t('Unable to change password'));
 					}
 					// Hide a possible successmsg and show errormsg
 					$('#password-changed').removeClass('inlineblock').addClass('hidden');
@@ -225,7 +226,7 @@ $(document).ready(function () {
 				location.reload();
 			}
 			else {
-				$('#passworderror').html(data.data.message);
+				$('#passworderror').text(data.data.message);
 			}
 		});
 		return false;
@@ -233,13 +234,37 @@ $(document).ready(function () {
 
 	var uploadparms = {
 		done: function (e, data) {
-			avatarResponseHandler(data.result);
+			var response = data;
+			if (typeof data.result === 'string') {
+				response = $.parseJSON(data.result);
+			} else if (data.result && data.result.length) {
+				// fetch response from iframe
+				response = $.parseJSON(data.result[0].body.innerText);
+			} else {
+				response = data.result;
+			}
+			avatarResponseHandler(response);
+		},
+		submit: function(e, data) {
+			data.formData = _.extend(data.formData || {}, {
+				requesttoken: OC.requestToken
+			});
+		},
+		fail: function (e, data){
+			var msg = data.jqXHR.statusText + ' (' + data.jqXHR.status + ')';
+			if (!_.isUndefined(data.jqXHR.responseJSON) &&
+				!_.isUndefined(data.jqXHR.responseJSON.data) &&
+				!_.isUndefined(data.jqXHR.responseJSON.data.message)
+			) {
+				msg = data.jqXHR.responseJSON.data.message;
+			}
+			avatarResponseHandler({
+			data: {
+					message: t('settings', 'An error occurred: {message}', { message: msg })
+				}
+			});
 		}
 	};
-
-	$('#uploadavatarbutton').click(function () {
-		$('#uploadavatar').click();
-	});
 
 	$('#uploadavatar').fileupload(uploadparms);
 
@@ -247,7 +272,25 @@ $(document).ready(function () {
 		OC.dialogs.filepicker(
 			t('settings', "Select a profile picture"),
 			function (path) {
-				$.post(OC.generateUrl('/avatar/'), {path: path}, avatarResponseHandler);
+				$.ajax({
+					type: "POST",
+					url: OC.generateUrl('/avatar/'),
+					data: { path: path }
+				}).done(avatarResponseHandler)
+					.fail(function(jqXHR, status){
+						var msg = jqXHR.statusText + ' (' + jqXHR.status + ')';
+						if (!_.isUndefined(jqXHR.responseJSON) &&
+							!_.isUndefined(jqXHR.responseJSON.data) &&
+							!_.isUndefined(jqXHR.responseJSON.data.message)
+						) {
+							msg = jqXHR.responseJSON.data.message;
+						}
+						avatarResponseHandler({
+							data: {
+								message: t('settings', 'An error occurred: {message}', { message: msg })
+							}
+						});
+					});
 			},
 			false,
 			["image/png", "image/jpeg"]
@@ -289,65 +332,16 @@ $(document).ready(function () {
 	var url = OC.generateUrl(
 		'/avatar/{user}/{size}',
 		{user: OC.currentUser, size: 1}
-	) + '?requesttoken=' + encodeURIComponent(oc_requesttoken);
+	);
 	$.get(url, function (result) {
 		if (typeof(result) === 'object') {
 			$('#removeavatar').hide();
 		}
 	});
 
-	$('#sslCertificate').on('click', 'td.remove > img', function () {
-		var row = $(this).parent().parent();
-		$.ajax(OC.generateUrl('settings/personal/certificate/{certificate}', {certificate: row.data('name')}), {
-			type: 'DELETE'
-		});
-		row.remove();
-
-		if ($('#sslCertificate > tbody > tr').length === 0) {
-			$('#sslCertificate').hide();
-		}
-		return true;
-	});
-
-	$('#sslCertificate tr > td').tipsy({gravity: 'n', live: true});
-
-	$('#rootcert_import').fileupload({
-		success: function (data) {
-			var issueDate = new Date(data.validFrom * 1000);
-			var expireDate = new Date(data.validTill * 1000);
-			var now = new Date();
-			var isExpired = !(issueDate <= now && now <= expireDate);
-
-			var row = $('<tr/>');
-			row.data('name', data.name);
-			row.addClass(isExpired? 'expired': 'valid');
-			row.append($('<td/>').attr('title', data.organization).text(data.commonName));
-			row.append($('<td/>').attr('title', t('core,', 'Valid until {date}', {date: data.validTillString}))
-				.text(data.validTillString));
-			row.append($('<td/>').attr('title', data.issuerOrganization).text(data.issuer));
-			row.append($('<td/>').addClass('remove').append(
-				$('<img/>').attr({
-					alt: t('core', 'Delete'),
-					title: t('core', 'Delete'),
-					src: OC.imagePath('core', 'actions/delete.svg')
-				}).addClass('action')
-			));
-
-			$('#sslCertificate tbody').append(row);
-			$('#sslCertificate').show();
-		},
-		fail: function () {
-			OC.Notification.showTemporary(
-				t('settings', 'An error occurred. Please upload an ASCII-encoded PEM certificate.'));
-		}
-	});
-
-	$('#rootcert_import_button').click(function () {
-		$('#rootcert_import').click();
-	});
-
-	if ($('#sslCertificate > tbody > tr').length === 0) {
-		$('#sslCertificate').hide();
+	// Load the big avatar
+	if (oc_config.enable_avatars) {
+		$('#avatar .avatardiv').avatar(OC.currentUser, 145);
 	}
 });
 

@@ -2,9 +2,10 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Clark Tomlinson <fallen013@gmail.com>
+ * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -24,6 +25,7 @@
 namespace OCA\Encryption\Hooks;
 
 
+use OCP\IUserManager;
 use OCP\Util as OCUtil;
 use OCA\Encryption\Hooks\Contracts\IHook;
 use OCA\Encryption\KeyManager;
@@ -41,6 +43,10 @@ class UserHooks implements IHook {
 	 * @var KeyManager
 	 */
 	private $keyManager;
+	/**
+	 * @var IUserManager
+	 */
+	private $userManager;
 	/**
 	 * @var ILogger
 	 */
@@ -74,6 +80,7 @@ class UserHooks implements IHook {
 	 * UserHooks constructor.
 	 *
 	 * @param KeyManager $keyManager
+	 * @param IUserManager $userManager
 	 * @param ILogger $logger
 	 * @param Setup $userSetup
 	 * @param IUserSession $user
@@ -83,6 +90,7 @@ class UserHooks implements IHook {
 	 * @param Recovery $recovery
 	 */
 	public function __construct(KeyManager $keyManager,
+								IUserManager $userManager,
 								ILogger $logger,
 								Setup $userSetup,
 								IUserSession $user,
@@ -92,6 +100,7 @@ class UserHooks implements IHook {
 								Recovery $recovery) {
 
 		$this->keyManager = $keyManager;
+		$this->userManager = $userManager;
 		$this->logger = $logger;
 		$this->userSetup = $userSetup;
 		$this->user = $user;
@@ -133,7 +142,7 @@ class UserHooks implements IHook {
 	 *
 	 * @note This method should never be called for users using client side encryption
 	 * @param array $params
-	 * @return bool
+	 * @return boolean|null
 	 */
 	public function login($params) {
 
@@ -191,12 +200,12 @@ class UserHooks implements IHook {
 	 * If the password can't be changed within ownCloud, than update the key password in advance.
 	 *
 	 * @param array $params : uid, password
-	 * @return bool
+	 * @return boolean|null
 	 */
 	public function preSetPassphrase($params) {
 		if (App::isEnabled('encryption')) {
 
-			$user = $this->user->getUser();
+			$user = $this->userManager->get($params['uid']);
 
 			if ($user && !$user->canChangePassword()) {
 				$this->setPassphrase($params);
@@ -208,7 +217,7 @@ class UserHooks implements IHook {
 	 * Change a user's encryption passphrase
 	 *
 	 * @param array $params keys: uid, password
-	 * @return bool
+	 * @return boolean|null
 	 */
 	public function setPassphrase($params) {
 
@@ -220,8 +229,7 @@ class UserHooks implements IHook {
 		if ($user && $params['uid'] === $user->getUID() && $privateKey) {
 
 			// Encrypt private key with new user pwd as passphrase
-			$encryptedPrivateKey = $this->crypt->symmetricEncryptFileContent($privateKey,
-				$params['password']);
+			$encryptedPrivateKey = $this->crypt->encryptPrivateKey($privateKey, $params['password'], $params['uid']);
 
 			// Save private key
 			if ($encryptedPrivateKey) {
@@ -259,8 +267,7 @@ class UserHooks implements IHook {
 				$this->keyManager->setPublicKey($user, $keyPair['publicKey']);
 
 				// Encrypt private key with new password
-				$encryptedKey = $this->crypt->symmetricEncryptFileContent($keyPair['privateKey'],
-					$newUserPassword);
+				$encryptedKey = $this->crypt->encryptPrivateKey($keyPair['privateKey'], $newUserPassword, $user);
 
 				if ($encryptedKey) {
 					$this->keyManager->setPrivateKey($user, $this->crypt->generateHeader() . $encryptedKey);

@@ -68,13 +68,24 @@ var OC={
 	PERMISSION_ALL:31,
 	TAG_FAVORITE: '_$!<Favorite>!$_',
 	/* jshint camelcase: false */
+	/**
+	 * Relative path to ownCloud root.
+	 * For example: "/owncloud"
+	 *
+	 * @type string
+	 *
+	 * @deprecated since 8.2, use OC.getRootPath() instead
+	 * @see OC#getRootPath
+	 */
 	webroot:oc_webroot,
+
 	appswebroots:(typeof oc_appswebroots !== 'undefined') ? oc_appswebroots:false,
 	currentUser:(typeof oc_current_user!=='undefined')?oc_current_user:false,
 	config: window.oc_config,
 	appConfig: window.oc_appconfig || {},
 	theme: window.oc_defaults || {},
 	coreApps:['', 'admin','log','core/search','settings','core','3rdparty'],
+	requestToken: oc_requesttoken,
 	menuSpeed: 50,
 
 	/**
@@ -108,10 +119,12 @@ var OC={
 	/**
 	 * Gets the base path for the given OCS API service.
 	 * @param {string} service name
+	 * @param {int} version OCS API version
 	 * @return {string} OCS API base path
 	 */
-	linkToOCS: function(service) {
-		return window.location.protocol + '//' + window.location.host + OC.webroot + '/ocs/v1.php/' + service + '/';
+	linkToOCS: function(service, version) {
+		version = (version !== 2) ? 1 : 2;
+		return window.location.protocol + '//' + window.location.host + OC.webroot + '/ocs/v' + version + '.php/' + service + '/';
 	},
 
 	/**
@@ -147,7 +160,11 @@ var OC={
 			url = '/' + url;
 
 		}
-		// TODO save somewhere whether the webserver is able to skip the index.php to have shorter links (e.g. for sharing)
+
+		if(oc_config.modRewriteWorking == true) {
+			return OC.webroot + _build(url, params);
+		}
+
 		return OC.webroot + '/index.php' + _build(url, params);
 	},
 
@@ -157,7 +174,6 @@ var OC={
 	 * @param {string} type the type of the file to link to (e.g. css,img,ajax.template)
 	 * @param {string} file the filename
 	 * @return {string} Absolute URL for a file in an app
-	 * @deprecated use OC.generateUrl() instead
 	 */
 	filePath:function(app,type,file){
 		var isCore=OC.coreApps.indexOf(app)!==-1,
@@ -216,6 +232,41 @@ var OC={
 	 */
 	getProtocol: function() {
 		return window.location.protocol.split(':')[0];
+	},
+
+	/**
+	 * Returns the host name used to access this ownCloud instance
+	 *
+	 * @return {string} host name
+	 *
+	 * @since 8.2
+	 */
+	getHost: function() {
+		return window.location.host;
+	},
+
+	/**
+	 * Returns the port number used to access this ownCloud instance
+	 *
+	 * @return {int} port number
+	 *
+	 * @since 8.2
+	 */
+	getPort: function() {
+		return window.location.port;
+	},
+
+	/**
+	 * Returns the web root path where this ownCloud instance
+	 * is accessible, with a leading slash.
+	 * For example "/owncloud".
+	 *
+	 * @return {string} web root path
+	 *
+	 * @since 8.2
+	 */
+	getRootPath: function() {
+		return OC.webroot;
 	},
 
 	/**
@@ -323,6 +374,58 @@ var OC={
 	 */
 	dirname: function(path) {
 		return path.replace(/\\/g,'/').replace(/\/[^\/]*$/, '');
+	},
+
+	/**
+	 * Join path sections
+	 *
+	 * @param {...String} path sections
+	 *
+	 * @return {String} joined path, any leading or trailing slash
+	 * will be kept
+	 *
+	 * @since 8.2
+	 */
+	joinPaths: function() {
+		if (arguments.length < 1) {
+			return '';
+		}
+		var path = '';
+		// convert to array
+		var args = Array.prototype.slice.call(arguments);
+		// discard empty arguments
+		args = _.filter(args, function(arg) {
+			return arg.length > 0;
+		});
+		if (args.length < 1) {
+			return '';
+		}
+
+		var lastArg = args[args.length - 1];
+		var leadingSlash = args[0].charAt(0) === '/';
+		var trailingSlash = lastArg.charAt(lastArg.length - 1) === '/';
+		var sections = [];
+		var i;
+		for (i = 0; i < args.length; i++) {
+			sections = sections.concat(args[i].split('/'));
+		}
+		var first = !leadingSlash;
+		for (i = 0; i < sections.length; i++) {
+			if (sections[i] !== '') {
+				if (first) {
+					first = false;
+				} else {
+					path += '/';
+				}
+				path += sections[i];
+			}
+		}
+
+		if (trailingSlash) {
+			// add it back
+			path += '/';
+		}
+		return path;
 	},
 
 	/**
@@ -474,21 +577,20 @@ var OC={
 	 * @todo Write documentation
 	 */
 	registerMenu: function($toggle, $menuEl) {
+		var self = this;
 		$menuEl.addClass('menu');
 		$toggle.on('click.menu', function(event) {
 			// prevent the link event (append anchor to URL)
 			event.preventDefault();
 
 			if ($menuEl.is(OC._currentMenu)) {
-				$menuEl.slideUp(OC.menuSpeed);
-				OC._currentMenu = null;
-				OC._currentMenuToggle = null;
+				self.hideMenus();
 				return;
 			}
 			// another menu was open?
 			else if (OC._currentMenu) {
 				// close it
-				OC._currentMenu.hide();
+				self.hideMenus();
 			}
 			$menuEl.slideToggle(OC.menuSpeed);
 			OC._currentMenu = $menuEl;
@@ -502,12 +604,53 @@ var OC={
 	unregisterMenu: function($toggle, $menuEl) {
 		// close menu if opened
 		if ($menuEl.is(OC._currentMenu)) {
-			$menuEl.slideUp(OC.menuSpeed);
-			OC._currentMenu = null;
-			OC._currentMenuToggle = null;
+			this.hideMenus();
 		}
 		$toggle.off('click.menu').removeClass('menutoggle');
 		$menuEl.removeClass('menu');
+	},
+
+	/**
+	 * Hides any open menus
+	 *
+	 * @param {Function} complete callback when the hiding animation is done
+	 */
+	hideMenus: function(complete) {
+		if (OC._currentMenu) {
+			var lastMenu = OC._currentMenu;
+			OC._currentMenu.trigger(new $.Event('beforeHide'));
+			OC._currentMenu.slideUp(OC.menuSpeed, function() {
+				lastMenu.trigger(new $.Event('afterHide'));
+				if (complete) {
+					complete.apply(this, arguments);
+				}
+			});
+		}
+		OC._currentMenu = null;
+		OC._currentMenuToggle = null;
+	},
+
+	/**
+	 * Shows a given element as menu
+	 *
+	 * @param {Object} [$toggle=null] menu toggle
+	 * @param {Object} $menuEl menu element
+	 * @param {Function} complete callback when the showing animation is done
+	 */
+	showMenu: function($toggle, $menuEl, complete) {
+		if ($menuEl.is(OC._currentMenu)) {
+			return;
+		}
+		this.hideMenus();
+		OC._currentMenu = $menuEl;
+		OC._currentMenuToggle = $toggle;
+		$menuEl.trigger(new $.Event('beforeShow'));
+		$menuEl.show();
+		$menuEl.trigger(new $.Event('afterShow'));
+		// no animation
+		if (_.isFunction(complete)) {
+			complete();
+		}
 	},
 
 	/**
@@ -1078,12 +1221,34 @@ function object(o) {
  * Initializes core
  */
 function initCore() {
+	/**
+	 * Disable automatic evaluation of responses for $.ajax() functions (and its
+	 * higher-level alternatives like $.get() and $.post()).
+	 *
+	 * If a response to a $.ajax() request returns a content type of "application/javascript"
+	 * JQuery would previously execute the response body. This is a pretty unexpected
+	 * behaviour and can result in a bypass of our Content-Security-Policy as well as
+	 * multiple unexpected XSS vectors.
+	 */
+	$.ajaxSetup({
+		contents: {
+			script: false
+		}
+	});
 
 	/**
 	 * Set users locale to moment.js as soon as possible
 	 */
 	moment.locale(OC.getLocale());
 
+	if ($.browser.msie || !!navigator.userAgent.match(/Trident\/7\./)) {
+		// for IE10+ that don't have conditional comments
+		// and IE11 doesn't identify as MSIE any more...
+		$('html').addClass('ie');
+	} else if (!!navigator.userAgent.match(/Edge\/12/)) {
+		// for edge
+		$('html').addClass('edge');
+	}
 
 	/**
 	 * Calls the server periodically to ensure that session doesn't
@@ -1123,35 +1288,7 @@ function initCore() {
 		SVGSupport.checkMimeType();
 	}
 
-	// user menu
-	$('#settings #expand').keydown(function(event) {
-		if (event.which === 13 || event.which === 32) {
-			$('#expand').click();
-		}
-	});
-	$('#settings #expand').click(function(event) {
-		$('#settings #expanddiv').slideToggle(OC.menuSpeed);
-		event.stopPropagation();
-	});
-	$('#settings #expanddiv').click(function(event){
-		event.stopPropagation();
-	});
-	//hide the user menu when clicking outside it
-	$(document).click(function(){
-		$('#settings #expanddiv').slideUp(OC.menuSpeed);
-	});
-
-	// all the tipsy stuff needs to be here (in reverse order) to work
-	$('.displayName .action').tipsy({gravity:'se', live:true});
-	$('.password .action').tipsy({gravity:'se', live:true});
-	$('#upload').tipsy({gravity:'w'});
-	$('.selectedActions a').tipsy({gravity:'s', live:true});
-	$('a.action.delete').tipsy({gravity:'e', live:true});
-	$('a.action').tipsy({gravity:'s', live:true});
-	$('td .modified').tipsy({gravity:'s', live:true});
-	$('td.lastLogin').tipsy({gravity:'s', html:true});
-	$('input').tipsy({gravity:'w'});
-	$('.extra-data').tipsy({gravity:'w', live:true});
+	OC.registerMenu($('#expand'), $('#expanddiv'));
 
 	// toggle for menus
 	$(document).on('mouseup.closemenus', function(event) {
@@ -1160,13 +1297,9 @@ function initCore() {
 			// don't close when clicking on the menu directly or a menu toggle
 			return false;
 		}
-		if (OC._currentMenu) {
-			OC._currentMenu.slideUp(OC.menuSpeed);
-		}
-		OC._currentMenu = null;
-		OC._currentMenuToggle = null;
-	});
 
+		OC.hideMenus();
+	});
 
 	/**
 	 * Set up the main menu toggle to react to media query changes.
@@ -1175,7 +1308,7 @@ function initCore() {
 	 */
 	function setupMainMenu() {
 		// toggle the navigation
-		var $toggle = $('#header .menutoggle');
+		var $toggle = $('#header .header-appname-container');
 		var $navigation = $('#navigation');
 
 		// init the menu
@@ -1219,7 +1352,8 @@ function initCore() {
 		var snapper = new Snap({
 			element: document.getElementById('app-content'),
 			disable: 'right',
-			maxPosition: 250
+			maxPosition: 250,
+			minDragDistance: 100
 		});
 		$('#app-content').prepend('<div id="app-navigation-toggle" class="icon-menu" style="display:none;"></div>');
 		$('#app-navigation-toggle').click(function(){
@@ -1271,12 +1405,18 @@ function initCore() {
 				if($('#app-content').get(0).scrollHeight > $('#app-content').height()) {
 					if($(window).width() > 768) {
 						controlsWidth = $('#content').width() - $('#app-navigation').width() - getScrollBarWidth();
+						if (!$('#app-sidebar').hasClass('hidden') && !$('#app-sidebar').hasClass('disappear')) {
+							controlsWidth -= $('#app-sidebar').width();
+						}
 					} else {
 						controlsWidth = $('#content').width() - getScrollBarWidth();
 					}
 				} else { // if there is none
 					if($(window).width() > 768) {
 						controlsWidth = $('#content').width() - $('#app-navigation').width();
+						if (!$('#app-sidebar').hasClass('hidden') && !$('#app-sidebar').hasClass('disappear')) {
+							controlsWidth -= $('#app-sidebar').width();
+						}
 					} else {
 						controlsWidth = $('#content').width();
 					}
@@ -1288,10 +1428,9 @@ function initCore() {
 
 		$(window).resize(_.debounce(adjustControlsWidth, 250));
 
-		$('body').delegate('#app-content', 'apprendered', adjustControlsWidth);
+		$('body').delegate('#app-content', 'apprendered appresized', adjustControlsWidth);
 
 	}
-
 }
 
 $(document).ready(initCore);
@@ -1310,7 +1449,7 @@ $.fn.filterAttr = function(attr_name, attr_value) {
  * @return {string}
  */
 function humanFileSize(size, skipSmallSizes) {
-	var humanList = ['B', 'kB', 'MB', 'GB', 'TB'];
+	var humanList = ['B', 'KB', 'MB', 'GB', 'TB'];
 	// Calculate Log with base 1024: size = 1024 ** order
 	var order = size > 0 ? Math.floor(Math.log(size) / Math.log(1024)) : 0;
 	// Stay in range of the byte sizes that are defined
@@ -1319,9 +1458,9 @@ function humanFileSize(size, skipSmallSizes) {
 	var relativeSize = (size / Math.pow(1024, order)).toFixed(1);
 	if(skipSmallSizes === true && order === 0) {
 		if(relativeSize !== "0.0"){
-			return '< 1 kB';
+			return '< 1 KB';
 		} else {
-			return '0 kB';
+			return '0 KB';
 		}
 	}
 	if(order < 2){
@@ -1390,6 +1529,10 @@ OC.Util = {
 	 * @returns {string} human readable difference from now
 	 */
 	relativeModifiedDate: function (timestamp) {
+		var diff = moment().diff(moment(timestamp));
+		if (diff >= 0 && diff < 45000 ) {
+			return t('core', 'seconds ago');
+		}
 		return moment(timestamp).fromNow();
 	},
 	/**
@@ -1454,6 +1597,94 @@ OC.Util = {
 	},
 
 	/**
+	 * Fix image scaling for IE8, since background-size is not supported.
+	 *
+	 * This scales the image to the element's actual size, the URL is
+	 * taken from the "background-image" CSS attribute.
+	 *
+	 * @param {Object} $el image element
+	 */
+	scaleFixForIE8: function($el) {
+		if (!this.isIE8()) {
+			return;
+		}
+		var self = this;
+		$($el).each(function() {
+			var url = $(this).css('background-image');
+			var r = url.match(/url\(['"]?([^'")]*)['"]?\)/);
+			if (!r) {
+				return;
+			}
+			url = r[1];
+			url = self.replaceSVGIcon(url);
+			// TODO: escape
+			url = url.replace(/'/g, '%27');
+			$(this).css({
+				'filter': 'progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\'' + url + '\', sizingMethod=\'scale\')',
+				'background-image': ''
+			});
+		});
+		return $el;
+	},
+
+	/**
+	 * Returns whether this is IE
+	 *
+	 * @return {bool} true if this is IE, false otherwise
+	 */
+	isIE: function() {
+		return $('html').hasClass('ie');
+	},
+
+	/**
+	 * Returns whether this is IE8
+	 *
+	 * @return {bool} true if this is IE8, false otherwise
+	 */
+	isIE8: function() {
+		return $('html').hasClass('ie8');
+	},
+
+	/**
+	 * Returns the width of a generic browser scrollbar
+	 *
+	 * @return {int} width of scrollbar
+	 */
+	getScrollBarWidth: function() {
+		if (this._scrollBarWidth) {
+			return this._scrollBarWidth;
+		}
+
+		var inner = document.createElement('p');
+		inner.style.width = "100%";
+		inner.style.height = "200px";
+
+		var outer = document.createElement('div');
+		outer.style.position = "absolute";
+		outer.style.top = "0px";
+		outer.style.left = "0px";
+		outer.style.visibility = "hidden";
+		outer.style.width = "200px";
+		outer.style.height = "150px";
+		outer.style.overflow = "hidden";
+		outer.appendChild (inner);
+
+		document.body.appendChild (outer);
+		var w1 = inner.offsetWidth;
+		outer.style.overflow = 'scroll';
+		var w2 = inner.offsetWidth;
+		if(w1 === w2) {
+			w2 = outer.clientWidth;
+		}
+
+		document.body.removeChild (outer);
+
+		this._scrollBarWidth = (w1 - w2);
+
+		return this._scrollBarWidth;
+	},
+
+	/**
 	 * Remove the time component from a given date
 	 *
 	 * @param {Date} date date
@@ -1513,8 +1744,38 @@ OC.Util = {
 			}
 		}
 		return aa.length - bb.length;
+	},
+	/**
+	 * Calls the callback in a given interval until it returns true
+	 * @param {function} callback
+	 * @param {integer} interval in milliseconds
+	 */
+	waitFor: function(callback, interval) {
+		var internalCallback = function() {
+			if(callback() !== true) {
+				setTimeout(internalCallback, interval);
+			}
+		};
+
+		internalCallback();
+	},
+	/**
+	 * Checks if a cookie with the given name is present and is set to the provided value.
+	 * @param {string} name name of the cookie
+	 * @param {string} value value of the cookie
+	 * @return {boolean} true if the cookie with the given name has the given value
+	 */
+	isCookieSetToValue: function(name, value) {
+		var cookies = document.cookie.split(';');
+		for (var i=0; i < cookies.length; i++) {
+			var cookie = cookies[i].split('=');
+			if (cookie[0].trim() === name && cookie[1].trim() === value) {
+				return true;
+			}
+		}
+		return false;
 	}
-}
+};
 
 /**
  * Utility class for the history API,
@@ -1600,9 +1861,7 @@ OC.Util.History = {
 			params = OC.parseQueryString(this._decodeQuery(query));
 		}
 		// else read from query attributes
-		if (!params) {
-			params = OC.parseQueryString(this._decodeQuery(location.search));
-		}
+		params = _.extend(params || {}, OC.parseQueryString(this._decodeQuery(location.search)));
 		return params || {};
 	},
 
@@ -1715,30 +1974,69 @@ jQuery.fn.exists = function(){
 	return this.length > 0;
 };
 
+/**
+ * @deprecated use OC.Util.getScrollBarWidth() instead
+ */
 function getScrollBarWidth() {
-	var inner = document.createElement('p');
-	inner.style.width = "100%";
-	inner.style.height = "200px";
+	return OC.Util.getScrollBarWidth();
+}
 
-	var outer = document.createElement('div');
-	outer.style.position = "absolute";
-	outer.style.top = "0px";
-	outer.style.left = "0px";
-	outer.style.visibility = "hidden";
-	outer.style.width = "200px";
-	outer.style.height = "150px";
-	outer.style.overflow = "hidden";
-	outer.appendChild (inner);
+/**
+ * jQuery tipsy shim for the bootstrap tooltip
+ */
+jQuery.fn.tipsy = function(argument) {
+	console.warn('Deprecation warning: tipsy is deprecated. Use tooltip instead.');
+	if(typeof argument === 'object' && argument !== null) {
 
-	document.body.appendChild (outer);
-	var w1 = inner.offsetWidth;
-	outer.style.overflow = 'scroll';
-	var w2 = inner.offsetWidth;
-	if(w1 === w2) {
-		w2 = outer.clientWidth;
+		// tipsy defaults
+		var options = {
+			placement: 'bottom',
+			delay: { 'show': 0, 'hide': 0},
+			trigger: 'hover',
+			html: false,
+			container: 'body'
+		};
+		if(argument.gravity) {
+			switch(argument.gravity) {
+				case 'n':
+				case 'nw':
+				case 'ne':
+					options.placement='bottom';
+					break;
+				case 's':
+				case 'sw':
+				case 'se':
+					options.placement='top';
+					break;
+				case 'w':
+					options.placement='right';
+					break;
+				case 'e':
+					options.placement='left';
+					break;
+			}
+		}
+		if(argument.trigger) {
+			options.trigger = argument.trigger;
+		}
+		if(argument.delayIn) {
+			options.delay["show"] = argument.delayIn;
+		}
+		if(argument.delayOut) {
+			options.delay["hide"] = argument.delayOut;
+		}
+		if(argument.html) {
+			options.html = true;
+		}
+		if(argument.fallback) {
+			options.title = argument.fallback;
+		}
+		// destroy old tooltip in case the title has changed
+		jQuery.fn.tooltip.call(this, 'destroy');
+		jQuery.fn.tooltip.call(this, options);
+	} else {
+		this.tooltip(argument);
+		jQuery.fn.tooltip.call(this, argument);
 	}
-
-	document.body.removeChild (outer);
-
-	return (w1 - w2);
+	return this;
 }

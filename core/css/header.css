@@ -39,7 +39,6 @@
 	height: 45px;
 	line-height: 2.5em;
 	background-color: #1d2d44;
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
@@ -54,7 +53,6 @@
 	padding: 5px;
 	padding-bottom: 0;
 	height: 45px; /* header height */
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 	opacity: 1;
@@ -70,8 +68,10 @@
 }
 
 #header .logo {
-	background-image: url(../img/logo.svg);
+	background-image: url(../img/logo-icon.svg);
 	background-repeat: no-repeat;
+	background-size: 175px;
+	background-position: center 30px;
 	width: 252px;
 	height: 120px;
 	margin: 0 auto;
@@ -117,6 +117,7 @@
 	position: relative;
 	color: #fff;
 	font-size: 16px;
+	font-weight: 300;
 	margin: 0;
 	margin-top: -24px;
 	padding: 7px 0 7px 5px;
@@ -182,7 +183,6 @@
 }
 
 #navigation, #navigation * {
-	-moz-box-sizing:border-box;
 	box-sizing:border-box;
 }
 #navigation li {
@@ -269,7 +269,6 @@
 	height: 100%;
 	max-width: 80%;
 	white-space: nowrap;
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
@@ -294,7 +293,7 @@
 }
 #expand {
 	display: block;
-	padding: 7px 30px 6px 22px;
+	padding: 7px 30px 6px 10px;
 	cursor: pointer;
 }
 #expand * {
@@ -327,7 +326,7 @@
 	border-radius: 3px;
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;
-	-moz-box-sizing: border-box; box-sizing: border-box;
+	box-sizing: border-box;
 }
 	#expanddiv a {
 		display: block;
@@ -336,7 +335,6 @@
 		padding: 4px 12px 0;
 		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
 		opacity: .7;
-		-moz-box-sizing: border-box;
 		box-sizing: border-box;
 	}
 	#expanddiv a img {
@@ -350,3 +348,11 @@
 		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 		opacity: 1;
 	}
+
+/* do not show display name when profile picture is present */
+#header .avatardiv.avatardiv-shown + #expandDisplayName {
+	display: none;
+}
+#header #expand {
+	display: block;
+}

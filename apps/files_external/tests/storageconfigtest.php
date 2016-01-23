@@ -1,8 +1,9 @@
 <?php
 /**
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -26,9 +27,22 @@ use \OCA\Files_external\Lib\StorageConfig;
 class StorageConfigTest extends \Test\TestCase {
 
 	public function testJsonSerialization() {
+		$backend = $this->getMockBuilder('\OCA\Files_External\Lib\Backend\Backend')
+			->disableOriginalConstructor()
+			->getMock();
+		$backend->method('getIdentifier')
+			->willReturn('storage::identifier');
+
+		$authMech = $this->getMockBuilder('\OCA\Files_External\Lib\Auth\AuthMechanism')
+			->disableOriginalConstructor()
+			->getMock();
+		$authMech->method('getIdentifier')
+			->willReturn('auth::identifier');
+
 		$storageConfig = new StorageConfig(1);
 		$storageConfig->setMountPoint('test');
-		$storageConfig->setBackendClass('\OC\Files\Storage\SMB');
+		$storageConfig->setBackend($backend);
+		$storageConfig->setAuthMechanism($authMech);
 		$storageConfig->setBackendOptions(['user' => 'test', 'password' => 'password123']);
 		$storageConfig->setPriority(128);
 		$storageConfig->setApplicableUsers(['user1', 'user2']);
@@ -39,7 +53,8 @@ class StorageConfigTest extends \Test\TestCase {
 
 		$this->assertEquals(1, $json['id']);
 		$this->assertEquals('/test', $json['mountPoint']);
-		$this->assertEquals('\OC\Files\Storage\SMB', $json['backendClass']);
+		$this->assertEquals('storage::identifier', $json['backend']);
+		$this->assertEquals('auth::identifier', $json['authMechanism']);
 		$this->assertEquals('test', $json['backendOptions']['user']);
 		$this->assertEquals('password123', $json['backendOptions']['password']);
 		$this->assertEquals(128, $json['priority']);

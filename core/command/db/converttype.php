@@ -8,7 +8,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author unclejamal3000 <andreas.pramhaas@posteo.de>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -121,11 +121,6 @@ class ConvertType extends Command {
 				'Converting to SQLite (sqlite3) is currently not supported.'
 			);
 		}
-		if ($type === 'mssql') {
-			throw new \InvalidArgumentException(
-				'Converting to Microsoft SQL Server (mssql) is currently not supported.'
-			);
-		}
 		if ($type === $this->config->getSystemValue('dbtype', '')) {
 			throw new \InvalidArgumentException(sprintf(
 				'Can not convert from %1$s to %1$s.',
@@ -177,7 +172,7 @@ class ConvertType extends Command {
 		$this->validateInput($input, $output);
 		$this->readPassword($input, $output);
 
-		$fromDB = \OC_DB::getConnection();
+		$fromDB = \OC::$server->getDatabaseConnection();
 		$toDB = $this->getToDBConnection($input, $output);
 
 		if ($input->getOption('clear-schema')) {

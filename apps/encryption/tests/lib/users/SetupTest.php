@@ -1,10 +1,9 @@
 <?php
 /**
+ * @author Björn Schießle <schiessle@owncloud.com>
  * @author Clark Tomlinson <fallen013@gmail.com>
- * @author Morris Jobke <hey@morrisjobke.de>
- * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -43,6 +42,8 @@ class SetupTest extends TestCase {
 	private $instance;
 
 	public function testSetupServerSide() {
+		$this->keyManagerMock->expects($this->exactly(2))->method('validateShareKey');
+		$this->keyManagerMock->expects($this->exactly(2))->method('validateMasterKey');
 		$this->keyManagerMock->expects($this->exactly(2))
 			->method('userHasKeys')
 			->with('admin')

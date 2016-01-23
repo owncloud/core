@@ -71,7 +71,8 @@ OCA = OCA || {};
 				],
 				'ldap_login_filter_mode'
 			);
-			_.bindAll(this, 'onVerifyClick');
+			_.bindAll(this, 'onVerifyClick', 'onTestLoginnameChange');
+			this.managedItems.ldap_test_loginname.$element.keyup(this.onTestLoginnameChange);
 			this.managedItems.ldap_test_loginname.$relatedElements.click(this.onVerifyClick);
 		},
 
@@ -230,6 +231,20 @@ OCA = OCA || {};
 				OC.Notification.showTemporary(t('user_ldap', 'Please provide a login name to test against'), 3);
 			} else {
 				this.configModel.requestWizard('ldap_test_loginname', {ldap_test_loginname: testLogin});
+			}
+		},
+
+		/**
+		 * enables/disables the "Verify Settings" button, depending whether
+		 * the corresponding text input has a value or not
+		 */
+		onTestLoginnameChange: function() {
+			var loginName = this.managedItems.ldap_test_loginname.$element.val();
+			var beDisabled = !_.isString(loginName) || !loginName.trim();
+			if(beDisabled) {
+				this.disableElement(this.managedItems.ldap_test_loginname.$relatedElements);
+			} else {
+				this.enableElement(this.managedItems.ldap_test_loginname.$relatedElements);
 			}
 		}
 

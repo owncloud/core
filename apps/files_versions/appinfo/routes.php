@@ -1,14 +1,14 @@
 <?php
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
- * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Tom Needham <tom@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -25,6 +25,10 @@
  *
  */
 
+namespace OCA\Files_Versions\AppInfo;
+
+$application = new Application();
+
 /** @var $this \OCP\Route\IRouter */
 $this->create('core_ajax_versions_preview', '/preview')->action(
 function() {
@@ -38,5 +42,3 @@ $this->create('files_versions_ajax_getVersions', 'ajax/getVersions.php')
 $this->create('files_versions_ajax_rollbackVersion', 'ajax/rollbackVersion.php')
 	->actionInclude('files_versions/ajax/rollbackVersion.php');
 
-// Register with the capabilities API
-\OCP\API::register('get', '/cloud/capabilities', array('OCA\Files_Versions\Capabilities', 'getCapabilities'), 'files_versions', \OCP\API::USER_AUTH);

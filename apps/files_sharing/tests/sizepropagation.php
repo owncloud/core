@@ -1,9 +1,10 @@
 <?php
 /**
- * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -24,6 +25,13 @@ namespace OCA\Files_sharing\Tests;
 
 use OC\Files\View;
 
+/**
+ * Class SizePropagation
+ *
+ * @group DB
+ *
+ * @package OCA\Files_sharing\Tests
+ */
 class SizePropagation extends TestCase {
 
 	public function testSizePropagationWhenOwnerChangesFile() {
@@ -36,6 +44,7 @@ class SizePropagation extends TestCase {
 		$ownerView->file_put_contents('/sharedfolder/subfolder/foo.txt', 'bar');
 
 		$sharedFolderInfo = $ownerView->getFileInfo('/sharedfolder', false);
+		$this->assertInstanceOf('\OC\Files\FileInfo', $sharedFolderInfo);
 		\OCP\Share::shareItem('folder', $sharedFolderInfo->getId(), \OCP\Share::SHARE_TYPE_USER, self::TEST_FILES_SHARING_API_USER1, 31);
 		$ownerRootInfo = $ownerView->getFileInfo('', false);
 
@@ -68,6 +77,7 @@ class SizePropagation extends TestCase {
 		$ownerView->file_put_contents('/sharedfolder/subfolder/foo.txt', 'bar');
 
 		$sharedFolderInfo = $ownerView->getFileInfo('/sharedfolder', false);
+		$this->assertInstanceOf('\OC\Files\FileInfo', $sharedFolderInfo);
 		\OCP\Share::shareItem('folder', $sharedFolderInfo->getId(), \OCP\Share::SHARE_TYPE_USER, self::TEST_FILES_SHARING_API_USER1, 31);
 		$ownerRootInfo = $ownerView->getFileInfo('', false);
 

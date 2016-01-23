@@ -6,10 +6,10 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -61,6 +61,7 @@ abstract class Proxy {
 		static $userMap;
 		static $groupMap;
 		static $db;
+		static $userManager;
 		if(is_null($fs)) {
 			$ocConfig = \OC::$server->getConfig();
 			$fs       = new FilesystemHelper();
@@ -69,9 +70,10 @@ abstract class Proxy {
 			$db       = \OC::$server->getDatabaseConnection();
 			$userMap  = new UserMapping($db);
 			$groupMap = new GroupMapping($db);
+			$userManager = \OC::$server->getUserManager();
 		}
 		$userManager =
-			new user\Manager($ocConfig, $fs, $log, $avatarM, new \OCP\Image(), $db);
+			new user\Manager($ocConfig, $fs, $log, $avatarM, new \OCP\Image(), $db, $userManager);
 		$connector = new Connection($this->ldap, $configPrefix);
 		$access = new Access($connector, $this->ldap, $userManager);
 		$access->setUserMapper($userMap);
@@ -161,7 +163,7 @@ abstract class Proxy {
 		}
 		$key = $this->getCacheKey($key);
 
-		return unserialize(base64_decode($this->cache->get($key)));
+		return json_decode(base64_decode($this->cache->get($key)));
 	}
 
 	/**
@@ -185,7 +187,7 @@ abstract class Proxy {
 			return;
 		}
 		$key   = $this->getCacheKey($key);
-		$value = base64_encode(serialize($value));
+		$value = base64_encode(json_encode($value));
 		$this->cache->set($key, $value, '2592000');
 	}
 

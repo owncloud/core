@@ -1,8 +1,9 @@
 <?php
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -38,7 +39,7 @@ class CleanUp extends Command {
 	/** @var IRootFolder */
 	protected $rootFolder;
 
-	/** @var \OC\DB\Connection */
+	/** @var \OCP\IDBConnection */
 	protected $dbConnection;
 
 	/**
@@ -107,9 +108,9 @@ class CleanUp extends Command {
 		\OC_Util::setupFS($uid);
 		if ($this->rootFolder->nodeExists('/' . $uid . '/files_trashbin')) {
 			$this->rootFolder->get('/' . $uid . '/files_trashbin')->delete();
-			$query = $this->dbConnection->createQueryBuilder();
-			$query->delete('`*PREFIX*files_trash`')
-				->where($query->expr()->eq('`user`', ':uid'))
+			$query = $this->dbConnection->getQueryBuilder();
+			$query->delete('files_trash')
+				->where($query->expr()->eq('user', $query->createParameter('uid')))
 				->setParameter('uid', $uid);
 			$query->execute();
 		}

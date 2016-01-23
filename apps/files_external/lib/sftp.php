@@ -7,12 +7,14 @@
  * @author Lennart Rosam <lennart.rosam@medien-systempartner.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Ross Nicoll <jrn@jrn.me.uk>
  * @author SA <stephen@mthosting.net>
+ * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -29,49 +31,70 @@
  *
  */
 namespace OC\Files\Storage;
+use Icewind\Streams\IteratorDirectory;
+
+use phpseclib\Net\SFTP\Stream;
 
 /**
-* Uses phpseclib's Net_SFTP class and the Net_SFTP_Stream stream wrapper to
+* Uses phpseclib's Net\SFTP class and the Net\SFTP\Stream stream wrapper to
 * provide access to SFTP servers.
 */
 class SFTP extends \OC\Files\Storage\Common {
 	private $host;
 	private $user;
-	private $password;
 	private $root;
 	private $port = 22;
 
+	private $auth;
+
 	/**
-	* @var \Net_SFTP
+	* @var SFTP
 	*/
 	protected $client;
+
+	/**
+	 * @param string $host protocol://server:port
+	 * @return array [$server, $port]
+	 */
+	private function splitHost($host) {
+		$input = $host;
+		if (strpos($host, '://') === false) {
+			// add a protocol to fix parse_url behavior with ipv6
+			$host = 'http://' . $host;
+		}
+
+		$parsed = parse_url($host);
+		if(is_array($parsed) && isset($parsed['port'])) {
+			return [$parsed['host'], $parsed['port']];
+		} else if (is_array($parsed)) {
+			return [$parsed['host'], 22];
+		} else {
+			return [$input, 22];
+		}
+	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function __construct($params) {
 		// Register sftp://
-		\Net_SFTP_Stream::register();
+		Stream::register();
 
-		$this->host = $params['host'];
-		
-		//deals with sftp://server example
-		$proto = strpos($this->host, '://');
-		if ($proto != false) {
-			$this->host = substr($this->host, $proto+3);
-		}
+		$parsedHost =  $this->splitHost($params['host']);
 
-		//deals with server:port
-		$hasPort = strpos($this->host,':');
-		if($hasPort != false) {
-			$pieces = explode(":", $this->host);
-			$this->host = $pieces[0];
-			$this->port = $pieces[1];
-		}
+		$this->host = $parsedHost[0];
+		$this->port = $parsedHost[1];
 
 		$this->user = $params['user'];
-		$this->password
-			= isset($params['password']) ? $params['password'] : '';
+
+		if (isset($params['public_key_auth'])) {
+			$this->auth = $params['public_key_auth'];
+		} elseif (isset($params['password'])) {
+			$this->auth = $params['password'];
+		} else {
+			throw new \UnexpectedValueException('no authentication parameters specified');
+		}
+
 		$this->root
 			= isset($params['root']) ? $this->cleanPath($params['root']) : '/';
 
@@ -87,7 +110,7 @@ class SFTP extends \OC\Files\Storage\Common {
 	/**
 	 * Returns the connection.
 	 *
-	 * @return \Net_SFTP connected client instance
+	 * @return \phpseclib\Net\SFTP connected client instance
 	 * @throws \Exception when the connection failed
 	 */
 	public function getConnection() {
@@ -96,7 +119,7 @@ class SFTP extends \OC\Files\Storage\Common {
 		}
 
 		$hostKeys = $this->readHostKeys();
-		$this->client = new \Net_SFTP($this->host, $this->port);
+		$this->client = new \phpseclib\Net\SFTP($this->host, $this->port);
 
 		// The SSH Host Key MUST be verified before login().
 		$currentHostKey = $this->client->getServerPublicHostKey();
@@ -109,7 +132,7 @@ class SFTP extends \OC\Files\Storage\Common {
 			$this->writeHostKeys($hostKeys);
 		}
 
-		if (!$this->client->login($this->user, $this->password)) {
+		if (!$this->client->login($this->user, $this->auth)) {
 			throw new \Exception('Login failed');
 		}
 		return $this->client;
@@ -122,7 +145,6 @@ class SFTP extends \OC\Files\Storage\Common {
 		if (
 			!isset($this->host)
 			|| !isset($this->user)
-			|| !isset($this->password)
 		) {
 			return false;
 		}
@@ -174,7 +196,7 @@ class SFTP extends \OC\Files\Storage\Common {
 	}
 
 	/**
-	 * @return bool|string
+	 * @return string|false
 	 */
 	private function hostKeysPath() {
 		try {
@@ -278,8 +300,7 @@ class SFTP extends \OC\Files\Storage\Common {
 					$dirStream[] = $file;
 				}
 			}
-			\OC\Files\Stream\Dir::register($id, $dirStream);
-			return opendir('fakedir://' . $id);
+			return IteratorDirectory::wrap($dirStream);
 		} catch(\Exception $e) {
 			return false;
 		}

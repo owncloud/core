@@ -14,7 +14,7 @@ source_file = templates/files.pot
 source_lang = en
 type = PO
 
-[owncloud.settings]
+[owncloud.settings-1]
 file_filter = <lang>/settings.po
 source_file = templates/settings.pot
 source_lang = en
@@ -59,12 +59,6 @@ type = PO
 [owncloud.user_ldap]
 file_filter = <lang>/user_ldap.po
 source_file = templates/user_ldap.pot
-source_lang = en
-type = PO
-
-[owncloud.user_webdavauth]
-file_filter = <lang>/user_webdavauth.po
-source_file = templates/user_webdavauth.pot
 source_lang = en
 type = PO
 

@@ -6,11 +6,11 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Philipp Kapfer <philipp.kapfer@gmx.at>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -35,6 +35,7 @@ use Icewind\SMB\NativeServer;
 use Icewind\SMB\Server;
 use Icewind\Streams\CallbackWrapper;
 use Icewind\Streams\IteratorDirectory;
+use OC\Cache\CappedMemoryCache;
 use OC\Files\Filesystem;
 
 class SMB extends Common {
@@ -49,9 +50,14 @@ class SMB extends Common {
 	protected $share;
 
 	/**
+	 * @var string
+	 */
+	protected $root;
+
+	/**
 	 * @var \Icewind\SMB\FileInfo[]
 	 */
-	protected $statCache = array();
+	protected $statCache;
 
 	public function __construct($params) {
 		if (isset($params['host']) && isset($params['user']) && isset($params['password']) && isset($params['share'])) {
@@ -72,13 +78,17 @@ class SMB extends Common {
 		} else {
 			throw new \Exception('Invalid configuration');
 		}
+		$this->statCache = new CappedMemoryCache();
 	}
 
 	/**
 	 * @return string
 	 */
 	public function getId() {
-		return 'smb::' . $this->server->getUser() . '@' . $this->server->getHost() . '/' . $this->share->getName() . '/' . $this->root;
+		// FIXME: double slash to keep compatible with the old storage ids,
+		// failure to do so will lead to creation of a new storage id and
+		// loss of shares from the storage
+		return 'smb::' . $this->server->getUser() . '@' . $this->server->getHost() . '//' . $this->share->getName() . '/' . $this->root;
 	}
 
 	/**
@@ -187,7 +197,10 @@ class SMB extends Common {
 					return $this->share->read($fullPath);
 				case 'w':
 				case 'wb':
-					return $this->share->write($fullPath);
+					$source = $this->share->write($fullPath);
+					return CallBackWrapper::wrap($source, null, null, function () use ($fullPath) {
+						unset($this->statCache[$fullPath]);
+					});
 				case 'a':
 				case 'ab':
 				case 'r+':
@@ -217,7 +230,8 @@ class SMB extends Common {
 					}
 					$source = fopen($tmpFile, $mode);
 					$share = $this->share;
-					return CallBackWrapper::wrap($source, null, null, function () use ($tmpFile, $fullPath, $share) {
+					return CallbackWrapper::wrap($source, null, null, function () use ($tmpFile, $fullPath, $share) {
+						unset($this->statCache[$fullPath]);
 						$share->put($tmpFile, $fullPath);
 						unlink($tmpFile);
 					});
@@ -295,7 +309,9 @@ class SMB extends Common {
 	 * check if smbclient is installed
 	 */
 	public static function checkDependencies() {
-		$smbClientExists = (bool)\OC_Helper::findBinaryPath('smbclient');
-		return $smbClientExists ? true : array('smbclient');
+		return (
+			(bool)\OC_Helper::findBinaryPath('smbclient')
+			|| Server::NativeAvailable()
+		) ? true : ['smbclient'];
 	}
 }

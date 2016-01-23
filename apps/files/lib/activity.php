@@ -2,8 +2,9 @@
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -22,7 +23,8 @@
 
 namespace OCA\Files;
 
-use OC\L10N\Factory;
+use OCP\IDBConnection;
+use OCP\L10N\IFactory;
 use OCP\Activity\IExtension;
 use OCP\Activity\IManager;
 use OCP\IConfig;
@@ -30,6 +32,7 @@ use OCP\IL10N;
 use OCP\IURLGenerator;
 
 class Activity implements IExtension {
+	const APP_FILES = 'files';
 	const FILTER_FILES = 'files';
 	const FILTER_FAVORITES = 'files_favorites';
 
@@ -42,7 +45,7 @@ class Activity implements IExtension {
 	/** @var IL10N */
 	protected $l;
 
-	/** @var Factory */
+	/** @var IFactory */
 	protected $languageFactory;
 
 	/** @var IURLGenerator */
@@ -51,6 +54,9 @@ class Activity implements IExtension {
 	/** @var \OCP\Activity\IManager */
 	protected $activityManager;
 
+	/** @var \OCP\IDBConnection */
+	protected $connection;
+
 	/** @var \OCP\IConfig */
 	protected $config;
 
@@ -58,18 +64,20 @@ class Activity implements IExtension {
 	protected $helper;
 
 	/**
-	 * @param Factory $languageFactory
+	 * @param IFactory $languageFactory
 	 * @param IURLGenerator $URLGenerator
 	 * @param IManager $activityManager
 	 * @param ActivityHelper $helper
+	 * @param IDBConnection $connection
 	 * @param IConfig $config
 	 */
-	public function __construct(Factory $languageFactory, IURLGenerator $URLGenerator, IManager $activityManager, ActivityHelper $helper, IConfig $config) {
+	public function __construct(IFactory $languageFactory, IURLGenerator $URLGenerator, IManager $activityManager, ActivityHelper $helper, IDBConnection $connection, IConfig $config) {
 		$this->languageFactory = $languageFactory;
 		$this->URLGenerator = $URLGenerator;
 		$this->l = $this->getL10N();
 		$this->activityManager = $activityManager;
 		$this->helper = $helper;
+		$this->connection = $connection;
 		$this->config = $config;
 	}
 
@@ -78,7 +86,7 @@ class Activity implements IExtension {
 	 * @return IL10N
 	 */
 	protected function getL10N($languageCode = null) {
-		return $this->languageFactory->get('files', $languageCode);
+		return $this->languageFactory->get(self::APP_FILES, $languageCode);
 	}
 
 	/**
@@ -86,14 +94,21 @@ class Activity implements IExtension {
 	 * If no additional types are to be added false is to be returned
 	 *
 	 * @param string $languageCode
-	 * @return array|false
+	 * @return array|false Array "stringID of the type" => "translated string description for the setting"
+	 * 				or Array "stringID of the type" => [
+	 * 					'desc' => "translated string description for the setting"
+	 * 					'methods' => [self::METHOD_*],
+	 * 				]
 	 */
 	public function getNotificationTypes($languageCode) {
 		$l = $this->getL10N($languageCode);
 		return [
 			self::TYPE_SHARE_CREATED => (string) $l->t('A new file or folder has been <strong>created</strong>'),
 			self::TYPE_SHARE_CHANGED => (string) $l->t('A file or folder has been <strong>changed</strong>'),
-			self::TYPE_FAVORITES => (string) $l->t('Limit notifications about creation and changes to your <strong>favorite files</strong> <em>(Stream only)</em>'),
+			self::TYPE_FAVORITES => [
+				'desc' => (string) $l->t('Limit notifications about creation and changes to your <strong>favorite files</strong> <em>(Stream only)</em>'),
+				'methods' => [self::METHOD_STREAM],
+			],
 			self::TYPE_SHARE_DELETED => (string) $l->t('A file or folder has been <strong>deleted</strong>'),
 			self::TYPE_SHARE_RESTORED => (string) $l->t('A file or folder has been <strong>restored</strong>'),
 		];
@@ -107,7 +122,7 @@ class Activity implements IExtension {
 	 * @return array|false
 	 */
 	public function getDefaultTypes($method) {
-		if ($method === 'stream') {
+		if ($method === self::METHOD_STREAM) {
 			$settings = array();
 			$settings[] = self::TYPE_SHARE_CREATED;
 			$settings[] = self::TYPE_SHARE_CHANGED;
@@ -132,29 +147,68 @@ class Activity implements IExtension {
 	 * @return string|false
 	 */
 	public function translate($app, $text, $params, $stripPath, $highlightParams, $languageCode) {
-		if ($app !== 'files') {
+		if ($app !== self::APP_FILES) {
 			return false;
 		}
 
+		$l = $this->getL10N($languageCode);
+
+		if ($this->activityManager->isFormattingFilteredObject()) {
+			$translation = $this->translateShort($text, $l, $params);
+			if ($translation !== false) {
+				return $translation;
+			}
+		}
+
+		return $this->translateLong($text, $l, $params);
+	}
+
+	/**
+	 * @param string $text
+	 * @param IL10N $l
+	 * @param array $params
+	 * @return string|false
+	 */
+	protected function translateLong($text, IL10N $l, array $params) {
 		switch ($text) {
 			case 'created_self':
-				return (string) $this->l->t('You created %1$s', $params);
+				return (string) $l->t('You created %1$s', $params);
 			case 'created_by':
-				return (string) $this->l->t('%2$s created %1$s', $params);
+				return (string) $l->t('%2$s created %1$s', $params);
 			case 'created_public':
-				return (string) $this->l->t('%1$s was created in a public folder', $params);
+				return (string) $l->t('%1$s was created in a public folder', $params);
 			case 'changed_self':
-				return (string) $this->l->t('You changed %1$s', $params);
+				return (string) $l->t('You changed %1$s', $params);
 			case 'changed_by':
-				return (string) $this->l->t('%2$s changed %1$s', $params);
+				return (string) $l->t('%2$s changed %1$s', $params);
 			case 'deleted_self':
-				return (string) $this->l->t('You deleted %1$s', $params);
+				return (string) $l->t('You deleted %1$s', $params);
 			case 'deleted_by':
-				return (string) $this->l->t('%2$s deleted %1$s', $params);
+				return (string) $l->t('%2$s deleted %1$s', $params);
 			case 'restored_self':
-				return (string) $this->l->t('You restored %1$s', $params);
+				return (string) $l->t('You restored %1$s', $params);
 			case 'restored_by':
-				return (string) $this->l->t('%2$s restored %1$s', $params);
+				return (string) $l->t('%2$s restored %1$s', $params);
+
+			default:
+				return false;
+		}
+	}
+
+	/**
+	 * @param string $text
+	 * @param IL10N $l
+	 * @param array $params
+	 * @return string|false
+	 */
+	protected function translateShort($text, IL10N $l, array $params) {
+		switch ($text) {
+			case 'changed_by':
+				return (string) $l->t('Changed by %2$s', $params);
+			case 'deleted_by':
+				return (string) $l->t('Deleted by %2$s', $params);
+			case 'restored_by':
+				return (string) $l->t('Restored by %2$s', $params);
 
 			default:
 				return false;
@@ -173,7 +227,7 @@ class Activity implements IExtension {
 	 * @return array|false
 	 */
 	function getSpecialParameterList($app, $text) {
-		if ($app === 'files') {
+		if ($app === self::APP_FILES) {
 			switch ($text) {
 				case 'created_self':
 				case 'created_by':
@@ -223,7 +277,7 @@ class Activity implements IExtension {
 	 * @return integer|false
 	 */
 	public function getGroupParameter($activity) {
-		if ($activity['app'] === 'files') {
+		if ($activity['app'] === self::APP_FILES) {
 			switch ($activity['subject']) {
 				case 'created_self':
 				case 'created_by':
@@ -309,7 +363,7 @@ class Activity implements IExtension {
 		$user = $this->activityManager->getCurrentUserId();
 		// Display actions from all files
 		if ($filter === self::FILTER_FILES) {
-			return ['`app` = ?', ['files']];
+			return ['`app` = ?', [self::APP_FILES]];
 		}
 
 		if (!$user) {
@@ -323,7 +377,7 @@ class Activity implements IExtension {
 				$favorites = $this->helper->getFavoriteFilePaths($user);
 			} catch (\RuntimeException $e) {
 				// Too many favorites, can not put them into one query anymore...
-				return ['`app` = ?', ['files']];
+				return ['`app` = ?', [self::APP_FILES]];
 			}
 
 			/*
@@ -331,7 +385,8 @@ class Activity implements IExtension {
 			 * or `file` is a favorite or in a favorite folder
 			 */
 			$parameters = $fileQueryList = [];
-			$parameters[] = 'files';
+			$parameters[] = self::APP_FILES;
+			$parameters[] = self::APP_FILES;
 
 			$fileQueryList[] = '(`type` <> ? AND `type` <> ?)';
 			$parameters[] = self::TYPE_SHARE_CREATED;
@@ -343,13 +398,15 @@ class Activity implements IExtension {
 			}
 			foreach ($favorites['folders'] as $favorite) {
 				$fileQueryList[] = '`file` LIKE ?';
-				$parameters[] = $favorite . '/%';
+				$parameters[] = $this->connection->escapeLikeParameter($favorite) . '/%';
 			}
 
-			$parameters[] = 'files';
-
 			return [
-				' CASE WHEN `app` = ? THEN (' . implode(' OR ', $fileQueryList) . ') ELSE `app` <> ? END ',
+				' CASE '
+					. 'WHEN `app` <> ? THEN 1 '
+					. 'WHEN `app` = ? AND (' . implode(' OR ', $fileQueryList) . ') THEN 1 '
+					. 'ELSE 0 '
+				. 'END = 1 ',
 				$parameters,
 			];
 		}
@@ -363,6 +420,6 @@ class Activity implements IExtension {
 	 * @return bool
 	 */
 	protected function userSettingFavoritesOnly($user) {
-		return (bool) $this->config->getUserValue($user, 'activity', 'notify_stream_' . self::TYPE_FAVORITES, false);
+		return (bool) $this->config->getUserValue($user, 'activity', 'notify_' . self::METHOD_STREAM . '_' . self::TYPE_FAVORITES, false);
 	}
 }

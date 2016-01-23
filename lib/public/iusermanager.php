@@ -3,8 +3,9 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -134,4 +135,11 @@ interface IUserManager {
 	 * @since 8.0.0
 	 */
 	public function countUsers();
+
+	/**
+	 * @param \Closure $callback
+	 * @return void
+	 * @since 9.0.0
+	 */
+	public function callForAllUsers (\Closure $callback, $search = '');
 }

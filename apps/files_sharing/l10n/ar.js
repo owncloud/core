@@ -2,8 +2,8 @@ OC.L10N.register(
     "files_sharing",
     {
     "Cancel" : "إلغاء",
-    "Share" : "شارك",
     "Shared by" : "تم مشاركتها بواسطة",
+    "Sharing" : "مشاركة",
     "A file or folder has been <strong>shared</strong>" : "ملف أو مجلد تم </strong>مشاركته<strong> ",
     "You shared %1$s with %2$s" : "شاركت %1$s مع %2$s",
     "You shared %1$s with group %2$s" : "أنت شاركت %1$s مع مجموعة %2$s",
@@ -13,6 +13,7 @@ OC.L10N.register(
     "This share is password-protected" : "هذه المشاركة محمية بكلمة مرور",
     "The password is wrong. Try again." : "كلمة المرور خاطئة. حاول مرة أخرى",
     "Password" : "كلمة المرور",
+    "No entries found in this folder" : "لا يوجد مدخلات في هذا المجلد ",
     "Name" : "اسم",
     "Sorry, this link doesn’t seem to work anymore." : "عذرا، يبدو أن هذا الرابط لم يعد يعمل.",
     "Reasons might be:" : "الأسباب الممكنة :",

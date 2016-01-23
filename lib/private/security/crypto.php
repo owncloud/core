@@ -1,9 +1,11 @@
 <?php
 /**
+ * @author Andreas Fischer <bantu@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -23,11 +25,10 @@
 
 namespace OC\Security;
 
-use Crypt_AES;
-use Crypt_Hash;
+use phpseclib\Crypt\AES;
+use phpseclib\Crypt\Hash;
 use OCP\Security\ICrypto;
 use OCP\Security\ISecureRandom;
-use OCP\Security\StringUtils;
 use OCP\IConfig;
 
 /**
@@ -41,7 +42,7 @@ use OCP\IConfig;
  * @package OC\Security
  */
 class Crypto implements ICrypto {
-	/** @var Crypt_AES $cipher */
+	/** @var AES $cipher */
 	private $cipher;
 	/** @var int */
 	private $ivLength = 16;
@@ -50,8 +51,12 @@ class Crypto implements ICrypto {
 	/** @var ISecureRandom */
 	private $random;
 
+	/**
+	 * @param IConfig $config
+	 * @param ISecureRandom $random
+	 */
 	function __construct(IConfig $config, ISecureRandom $random) {
-		$this->cipher = new Crypt_AES();
+		$this->cipher = new AES();
 		$this->config = $config;
 		$this->random = $random;
 	}
@@ -69,7 +74,7 @@ class Crypto implements ICrypto {
 		// Append an "a" behind the password and hash it to prevent reusing the same password as for encryption
 		$password = hash('sha512', $password . 'a');
 
-		$hash = new Crypt_Hash('sha512');
+		$hash = new Hash('sha512');
 		$hash->setKey($password);
 		return $hash->hash($message);
 	}
@@ -86,7 +91,7 @@ class Crypto implements ICrypto {
 		}
 		$this->cipher->setPassword($password);
 
-		$iv = $this->random->getLowStrengthGenerator()->generate($this->ivLength);
+		$iv = $this->random->generate($this->ivLength);
 		$this->cipher->setIV($iv);
 
 		$ciphertext = bin2hex($this->cipher->encrypt($plaintext));
@@ -119,7 +124,7 @@ class Crypto implements ICrypto {
 
 		$this->cipher->setIV($iv);
 
-		if(!StringUtils::equals($this->calculateHMAC($parts[0].$parts[1], $password), $hmac)) {
+		if(!hash_equals($this->calculateHMAC($parts[0].$parts[1], $password), $hmac)) {
 			throw new \Exception('HMAC does not match.');
 		}
 

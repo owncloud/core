@@ -23,20 +23,15 @@
     "seconds ago" : "secunde în urmă",
     "web services under your control" : "servicii web controlate de tine",
     "Empty filename is not allowed" : "Nu este permis fișier fără nume",
+    "File name contains at least one invalid character" : "Numele fișierului conține măcar un caracter invalid",
     "File name is too long" : "Numele fișierului este prea lung",
     "Application is not enabled" : "Aplicația nu este activată",
     "Authentication error" : "Eroare la autentificare",
     "Token expired. Please reload page." : "Token expirat. Te rugăm să reîncarci pagina.",
     "Unknown user" : "Utilizator necunoscut",
     "%s enter the database name." : "%s introduceți numele bazei de date",
-    "MS SQL username and/or password not valid: %s" : "Nume utilizator și/sau parolă MS SQL greșită: %s",
-    "MySQL/MariaDB username and/or password not valid" : "Nume utilizator și/sau parolă MySQL/MariaDB greșită",
-    "DB Error: \"%s\"" : "Eroare Bază de Date: \"%s\"",
-    "MySQL/MariaDB user '%s'@'localhost' exists already." : "Utilizatorul MySQL/MariaDB '%s'@'localhost' deja există.",
-    "Drop this user from MySQL/MariaDB" : "Șterge acest utilizator din MySQL/MariaDB",
-    "MySQL/MariaDB user '%s'@'%%' already exists" : "Utilizatorul MySQL/MariaDB '%s'@'%%' deja există.",
-    "Drop this user from MySQL/MariaDB." : "Șterge acest utilizator din MySQL/MariaDB.",
     "Oracle connection could not be established" : "Conexiunea Oracle nu a putut fi stabilită",
+    "DB Error: \"%s\"" : "Eroare Bază de Date: \"%s\"",
     "PostgreSQL username and/or password not valid" : "Nume utilizator și/sau parolă PostgreSQL greșită",
     "Set an admin username." : "Setează un nume de administrator.",
     "Set an admin password." : "Setează o parolă de administrator.",
@@ -44,6 +39,7 @@
     "You are not allowed to share %s" : "Nu există permisiunea de partajare %s",
     "Share type %s is not valid for %s" : "Tipul partajării %s nu este valid pentru %s",
     "Could not find category \"%s\"" : "Cloud nu a gasit categoria \"%s\"",
+    "Apps" : "Aplicații",
     "A valid username must be provided" : "Trebuie să furnizaţi un nume de utilizator valid",
     "A valid password must be provided" : "Trebuie să furnizaţi o parolă validă",
     "The username is already being used" : "Numele de utilizator este deja folosit",
@@ -53,6 +49,6 @@
     "PHP modules have been installed, but they are still listed as missing?" : "Modulele PHP au fost instalate, dar apar ca lipsind?",
     "PostgreSQL >= 9 required" : "Este necesară versiunea 9 sau mai mare a PostgreSQL",
     "Please upgrade your database version" : "Actualizați baza de date la o versiune mai nouă",
-    "Error occurred while checking PostgreSQL version" : "A apărut o eroare la verificarea versiunii PostgreSQL"
+    "Storage not available" : "Spațiu de stocare indisponibil"
 },"pluralForm" :"nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));"
 }

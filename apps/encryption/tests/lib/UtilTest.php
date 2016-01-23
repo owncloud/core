@@ -2,10 +2,8 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Clark Tomlinson <fallen013@gmail.com>
- * @author Morris Jobke <hey@morrisjobke.de>
- * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -41,6 +39,9 @@ class UtilTest extends TestCase {
 	/** @var \PHPUnit_Framework_MockObject_MockObject */
 	private $userManagerMock;
 
+	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	private $mountMock;
+
 	/** @var Util */
 	private $instance;
 
@@ -67,6 +68,7 @@ class UtilTest extends TestCase {
 
 	protected function setUp() {
 		parent::setUp();
+		$this->mountMock = $this->getMock('\OCP\Files\Mount\IMountPoint');
 		$this->filesMock = $this->getMock('OC\Files\View');
 		$this->userManagerMock = $this->getMock('\OCP\IUserManager');
 
@@ -130,6 +132,75 @@ class UtilTest extends TestCase {
 			return self::$tempStorage[$key];
 		}
 		return $default ?: null;
+	}
+
+	/**
+	 * @dataProvider dataTestIsMasterKeyEnabled
+	 *
+	 * @param string $value
+	 * @param bool $expect
+	 */
+	public function testIsMasterKeyEnabled($value, $expect) {
+		$this->configMock->expects($this->once())->method('getAppValue')
+			->with('encryption', 'useMasterKey', '0')->willReturn($value);
+		$this->assertSame($expect,
+			$this->instance->isMasterKeyEnabled()
+		);
+	}
+
+	public function dataTestIsMasterKeyEnabled() {
+		return [
+			['0', false],
+			['1', true]
+		];
+	}
+
+	/**
+	 * @dataProvider dataTestShouldEncryptHomeStorage
+	 * @param $returnValue return value from getAppValue()
+	 * @param $expected
+	 */
+	public function testShouldEncryptHomeStorage($returnValue, $expected) {
+		$this->configMock->expects($this->once())->method('getAppValue')
+			->with('encryption', 'encryptHomeStorage', '1')
+			->willReturn($returnValue);
+
+		$this->assertSame($expected,
+			$this->instance->shouldEncryptHomeStorage());
+	}
+
+	public function dataTestShouldEncryptHomeStorage() {
+		return [
+			['1', true],
+			['0', false]
+		];
+	}
+
+	/**
+	 * @dataProvider dataTestSetEncryptHomeStorage
+	 * @param $value
+	 * @param $expected
+	 */
+	public function testSetEncryptHomeStorage($value, $expected) {
+		$this->configMock->expects($this->once())->method('setAppValue')
+			->with('encryption', 'encryptHomeStorage', $expected);
+		$this->instance->setEncryptHomeStorage($value);
+	}
+
+	public function dataTestSetEncryptHomeStorage() {
+		return [
+			[true, '1'],
+			[false, '0']
+		];
+	}
+
+	public function testGetStorage() {
+		$path = '/foo/bar.txt';
+		$this->filesMock->expects($this->once())->method('getMount')->with($path)
+			->willReturn($this->mountMock);
+		$this->mountMock->expects($this->once())->method('getStorage')->willReturn(true);
+
+		$this->assertTrue($this->instance->getStorage($path));
 	}
 
 }

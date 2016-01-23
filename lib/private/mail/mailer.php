@@ -2,7 +2,7 @@
 /**
  * @author Lukas Reschke <lukas@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -157,7 +157,10 @@ class Mailer implements IMailer {
 				$this->instance = $this->getSMTPInstance();
 				break;
 			case 'sendmail':
-				$this->instance = $this->getSendMailInstance();
+				// FIXME: Move into the return statement but requires proper testing
+				//       for SMTP and mail as well. Thus not really doable for a
+				//       minor release.
+				$this->instance = \Swift_Mailer::newInstance($this->getSendMailInstance());
 				break;
 			default:
 				$this->instance = $this->getMailInstance();

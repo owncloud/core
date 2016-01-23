@@ -1,9 +1,11 @@
 <?php
 /**
+ * @author Bernhard Posselt <dev@bernhard-posselt.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -30,6 +32,10 @@
 // This means that they should be used by apps instead of the internal ownCloud classes
 namespace OCP;
 
+use Closure;
+use OCP\AppFramework\QueryException;
+
+
 /**
  * Class IContainer
  *
@@ -39,6 +45,16 @@ namespace OCP;
  * @since 6.0.0
  */
 interface IContainer {
+
+	/**
+	 * If a parameter is not registered in the container try to instantiate it
+	 * by using reflection to find out how to build the class
+	 * @param string $name the class name to resolve
+	 * @return \stdClass
+	 * @since 8.2.0
+	 * @throws QueryException if the class could not be found or instantiated
+	 */
+	public function resolve($name);
 
 	/**
 	 * Look up a service for a given name in the container.
@@ -72,5 +88,15 @@ interface IContainer {
 	 * @return void
 	 * @since 6.0.0
 	 */
-	public function registerService($name, \Closure $closure, $shared = true);
+	public function registerService($name, Closure $closure, $shared = true);
+
+	/**
+	 * Shortcut for returning a service from a service under a different key,
+	 * e.g. to tell the container to return a class when queried for an
+	 * interface
+	 * @param string $alias the alias that should be registered
+	 * @param string $target the target that should be resolved instead
+	 * @since 8.2.0
+	 */
+	public function registerAlias($alias, $target);
 }

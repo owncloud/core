@@ -49,7 +49,7 @@ abstract class Provider extends \Test\TestCase {
 
 		$userManager = \OC::$server->getUserManager();
 		$userManager->clearBackends();
-		$backend = new \OC_User_Dummy();
+		$backend = new \Test\Util\User\Dummy();
 		$userManager->registerBackend($backend);
 
 		$userId = $this->getUniqueID();
@@ -85,6 +85,7 @@ abstract class Provider extends \Test\TestCase {
 	 * Launches all the tests we have
 	 *
 	 * @dataProvider dimensionsDataProvider
+	 * @requires extension imagick
 	 *
 	 * @param int $widthAdjustment
 	 * @param int $heightAdjustment

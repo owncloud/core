@@ -2,8 +2,10 @@
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -22,24 +24,38 @@
 
 namespace OCA\Provisioning_API\Tests;
 
+use OCP\IUser;
+use OCP\IUserManager;
+use OCP\IGroupManager;
+
 abstract class TestCase extends \Test\TestCase {
+
+	/** @var IUser[] */
 	protected $users = array();
+
+	/** @var IUserManager */
+	protected $userManager;
+
+	/** @var IGroupManager */
+	protected $groupManager;
 
 	protected function setUp() {
 		parent::setUp();
-		\OC_Group::createGroup('admin');
+
+		$this->userManager = \OC::$server->getUserManager();
+		$this->groupManager = \OC::$server->getGroupManager();
+		$this->groupManager->createGroup('admin');
 	}
 
 	/**
 	 * Generates a temp user
 	 * @param int $num number of users to generate
-	 * @return array
+	 * @return IUser[]|IUser
 	 */
 	protected function generateUsers($num = 1) {
 		$users = array();
 		for ($i = 0; $i < $num; $i++) {
-			$user = $this->getUniqueID();
-			\OC_User::createUser($user, 'password');
+			$user = $this->userManager->createUser($this->getUniqueID(), 'password');
 			$this->users[] = $user;
 			$users[] = $user;
 		}
@@ -48,11 +64,10 @@ abstract class TestCase extends \Test\TestCase {
 
 	protected function tearDown() {
 		foreach($this->users as $user) {
-			\OC_User::deleteUser($user);
+			$user->delete();
 		}
 
-		\OC_Group::deleteGroup('admin');
-
+		$this->groupManager->get('admin')->delete();
 		parent::tearDown();
 	}
 }

@@ -6,7 +6,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -28,6 +28,7 @@ namespace OC\DB;
 
 class AdapterSqlite extends Adapter {
 	public function fixupStatement($statement) {
+		$statement = preg_replace('( I?LIKE \?)', '$0 ESCAPE \'\\\'', $statement);
 		$statement = preg_replace('/`(\w+)` ILIKE \?/', 'LOWER($1) LIKE LOWER(?)', $statement);
 		$statement = str_replace( '`', '"', $statement );
 		$statement = str_ireplace( 'NOW()', 'datetime(\'now\')', $statement );

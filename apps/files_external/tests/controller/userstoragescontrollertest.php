@@ -1,8 +1,9 @@
 <?php
 /**
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -24,6 +25,8 @@ use \OCA\Files_external\Controller\UserStoragesController;
 use \OCA\Files_external\Service\UserStoragesService;
 use \OCP\AppFramework\Http;
 use \OCA\Files_external\NotFoundException;
+use \OCA\Files_External\Lib\StorageConfig;
+use \OCA\Files_External\Service\BackendService;
 
 class UserStoragesControllerTest extends StoragesControllerTest {
 
@@ -38,47 +41,34 @@ class UserStoragesControllerTest extends StoragesControllerTest {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->service->method('getVisibilityType')
+			->willReturn(BackendService::VISIBILITY_PERSONAL);
+
 		$this->controller = new UserStoragesController(
 			'files_external',
 			$this->getMock('\OCP\IRequest'),
 			$this->getMock('\OCP\IL10N'),
-			$this->service
-		);
-
-		$config = \OC::$server->getConfig();
-
-		$this->oldAllowedBackends = $config->getAppValue(
-			'files_external',
-			'user_mounting_backends',
-			''
-		);
-		$config->setAppValue(
-			'files_external',
-			'user_mounting_backends',
-			'\OC\Files\Storage\SMB'
+			$this->service,
+			$this->getMock('\OCP\IUserSession')
 		);
 	}
 
-	public function tearDown() {
-		$config = \OC::$server->getConfig();
-		$config->setAppValue(
-			'files_external',
-			'user_mounting_backends',
-			$this->oldAllowedBackends
-		);
-		parent::tearDown();
-	}
+	public function testAddOrUpdateStorageDisallowedBackend() {
+		$backend = $this->getBackendMock();
+		$backend->method('isVisibleFor')
+			->with(BackendService::VISIBILITY_PERSONAL)
+			->willReturn(false);
+		$authMech = $this->getAuthMechMock();
 
-	function disallowedBackendClassProvider() {
-		return array(
-			array('\OC\Files\Storage\Local'),
-			array('\OC\Files\Storage\FTP'),
-		);
-	}
-	/**
-	 * @dataProvider disallowedBackendClassProvider
-	 */
-	public function testAddOrUpdateStorageDisallowedBackend($backendClass) {
+		$storageConfig = new StorageConfig(1);
+		$storageConfig->setMountPoint('mount');
+		$storageConfig->setBackend($backend);
+		$storageConfig->setAuthMechanism($authMech);
+		$storageConfig->setBackendOptions([]);
+
+		$this->service->expects($this->exactly(2))
+			->method('createStorage')
+			->will($this->returnValue($storageConfig));
 		$this->service->expects($this->never())
 			->method('addStorage');
 		$this->service->expects($this->never())
@@ -86,7 +76,8 @@ class UserStoragesControllerTest extends StoragesControllerTest {
 
 		$response = $this->controller->create(
 			'mount',
-			$backendClass,
+			'\OC\Files\Storage\SMB',
+			'\Auth\Mechanism',
 			array(),
 			[],
 			[],
@@ -99,7 +90,8 @@ class UserStoragesControllerTest extends StoragesControllerTest {
 		$response = $this->controller->update(
 			1,
 			'mount',
-			$backendClass,
+			'\OC\Files\Storage\SMB',
+			'\Auth\Mechanism',
 			array(),
 			[],
 			[],

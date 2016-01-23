@@ -134,6 +134,51 @@ describe('Core base tests', function() {
 			expect(escapeHTML('This is a good string without HTML.')).toEqual('This is a good string without HTML.');
 		});
 	});
+	describe('joinPaths', function() {
+		it('returns empty string with no or empty arguments', function() {
+			expect(OC.joinPaths()).toEqual('');
+			expect(OC.joinPaths('')).toEqual('');
+			expect(OC.joinPaths('', '')).toEqual('');
+		});
+		it('returns joined path sections', function() {
+			expect(OC.joinPaths('abc')).toEqual('abc');
+			expect(OC.joinPaths('abc', 'def')).toEqual('abc/def');
+			expect(OC.joinPaths('abc', 'def', 'ghi')).toEqual('abc/def/ghi');
+		});
+		it('keeps leading slashes', function() {
+			expect(OC.joinPaths('/abc')).toEqual('/abc');
+			expect(OC.joinPaths('/abc', '')).toEqual('/abc');
+			expect(OC.joinPaths('', '/abc')).toEqual('/abc');
+			expect(OC.joinPaths('/abc', 'def')).toEqual('/abc/def');
+			expect(OC.joinPaths('/abc', 'def', 'ghi')).toEqual('/abc/def/ghi');
+		});
+		it('keeps trailing slashes', function() {
+			expect(OC.joinPaths('', 'abc/')).toEqual('abc/');
+			expect(OC.joinPaths('abc/')).toEqual('abc/');
+			expect(OC.joinPaths('abc/', '')).toEqual('abc/');
+			expect(OC.joinPaths('abc', 'def/')).toEqual('abc/def/');
+			expect(OC.joinPaths('abc', 'def', 'ghi/')).toEqual('abc/def/ghi/');
+		});
+		it('splits paths in specified strings and discards extra slashes', function() {
+			expect(OC.joinPaths('//abc//')).toEqual('/abc/');
+			expect(OC.joinPaths('//abc//def//')).toEqual('/abc/def/');
+			expect(OC.joinPaths('//abc//', '//def//')).toEqual('/abc/def/');
+			expect(OC.joinPaths('//abc//', '//def//', '//ghi//')).toEqual('/abc/def/ghi/');
+			expect(OC.joinPaths('//abc//def//', '//ghi//jkl/mno/', '//pqr//'))
+				.toEqual('/abc/def/ghi/jkl/mno/pqr/');
+			expect(OC.joinPaths('/abc', '/def')).toEqual('/abc/def');
+			expect(OC.joinPaths('/abc/', '/def')).toEqual('/abc/def');
+			expect(OC.joinPaths('/abc/', 'def')).toEqual('/abc/def');
+		});
+		it('discards empty sections', function() {
+			expect(OC.joinPaths('abc', '', 'def')).toEqual('abc/def');
+		});
+		it('returns root if only slashes', function() {
+			expect(OC.joinPaths('//')).toEqual('/');
+			expect(OC.joinPaths('/', '/')).toEqual('/');
+			expect(OC.joinPaths('/', '//', '/')).toEqual('/');
+		});
+	});
 	describe('filePath', function() {
 		beforeEach(function() {
 			OC.webroot = 'http://localhost';
@@ -413,12 +458,11 @@ describe('Core base tests', function() {
 		var clock;
 		var $toggle;
 		var $navigation;
-		var clock;
 
 		beforeEach(function() {
 			clock = sinon.useFakeTimers();
 			$('#testArea').append('<div id="header">' +
-				'<a class="menutoggle" href="#">' +
+				'<a class="menutoggle header-appname-container" href="#">' +
 				'<h1 class="header-appname"></h1>' +
 				'<div class="icon-caret"></div>' +
 				'</a>' +
@@ -480,7 +524,7 @@ describe('Core base tests', function() {
 					["0", '0 B'],
 					["A", 'NaN B'],
 					[125, '125 B'],
-					[128000, '125 kB'],
+					[128000, '125 KB'],
 					[128000000, '122.1 MB'],
 					[128000000000, '119.2 GB'],
 					[128000000000000, '116.4 TB']
@@ -491,9 +535,9 @@ describe('Core base tests', function() {
 			});
 			it('renders file sizes with the correct unit for small sizes', function() {
 				var data = [
-					[0, '0 kB'],
-					[125, '< 1 kB'],
-					[128000, '125 kB'],
+					[0, '0 KB'],
+					[125, '< 1 KB'],
+					[128000, '125 KB'],
 					[128000000, '122.1 MB'],
 					[128000000000, '119.2 GB'],
 					[128000000000000, '116.4 TB']

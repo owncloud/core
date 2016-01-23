@@ -2,8 +2,9 @@
 /**
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -22,12 +23,25 @@
 
 namespace OC\Core\Command\App;
 
+use OCP\App\IAppManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Disable extends Command {
+
+	/** @var IAppManager */
+	protected $manager;
+
+	/**
+	 * @param IAppManager $manager
+	 */
+	public function __construct(IAppManager $manager) {
+		parent::__construct();
+		$this->manager = $manager;
+	}
+
 	protected function configure() {
 		$this
 			->setName('app:disable')
@@ -41,12 +55,13 @@ class Disable extends Command {
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$appId = $input->getArgument('app-id');
-		if (\OC_App::isEnabled($appId)) {
+		if ($this->manager->isInstalled($appId)) {
 			try {
-				\OC_App::disable($appId);
+				$this->manager->disableApp($appId);
 				$output->writeln($appId . ' disabled');
 			} catch(\Exception $e) {
 				$output->writeln($e->getMessage());
+				return 2;
 			}
 		} else {
 			$output->writeln('No such app enabled: ' . $appId);

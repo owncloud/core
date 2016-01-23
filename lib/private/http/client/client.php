@@ -1,8 +1,9 @@
 <?php
 /**
  * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Robin Appelman <icewind@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -57,12 +58,18 @@ class Client implements IClient {
 	 * Sets the default options to the client
 	 */
 	private function setDefaultOptions() {
-		// Either use default bundle or the user bundle if nothing is specified
-		if($this->certificateManager->listCertificates() !== []) {
-			$dataDir = $this->config->getSystemValue('datadirectory');
-			$this->client->setDefaultOption('verify', $dataDir.'/'.$this->certificateManager->getCertificateBundle());
+		// Either use user bundle or the system bundle if nothing is specified
+		if ($this->certificateManager->listCertificates() !== []) {
+			$this->client->setDefaultOption('verify', $this->certificateManager->getAbsoluteBundlePath());
 		} else {
-			$this->client->setDefaultOption('verify', \OC::$SERVERROOT . '/config/ca-bundle.crt');
+			// If the instance is not yet setup we need to use the static path as
+			// $this->certificateManager->getAbsoluteBundlePath() tries to instantiiate
+			// a view
+			if($this->config->getSystemValue('installed', false)) {
+				$this->client->setDefaultOption('verify', $this->certificateManager->getAbsoluteBundlePath(null));
+			} else {
+				$this->client->setDefaultOption('verify', \OC::$SERVERROOT . '/resources/config/ca-bundle.crt');
+			}
 		}
 
 		$this->client->setDefaultOption('headers/User-Agent', 'ownCloud Server Crawler');
@@ -120,7 +127,8 @@ class Client implements IClient {
 	 */
 	public function get($uri, array $options = []) {
 		$response = $this->client->get($uri, $options);
-		return new Response($response);
+		$isStream = isset($options['stream']) && $options['stream'];
+		return new Response($response, $isStream);
 	}
 
 	/**
@@ -144,6 +152,7 @@ class Client implements IClient {
 	 *              'debug' => true,
 	 *              'timeout' => 5,
 	 * @return Response
+	 * @throws \Exception If the request could not get completed
 	 */
 	public function head($uri, $options = []) {
 		$response = $this->client->head($uri, $options);
@@ -176,6 +185,7 @@ class Client implements IClient {
 	 *              'debug' => true,
 	 *              'timeout' => 5,
 	 * @return Response
+	 * @throws \Exception If the request could not get completed
 	 */
 	public function post($uri, array $options = []) {
 		$response = $this->client->post($uri, $options);
@@ -208,6 +218,7 @@ class Client implements IClient {
 	 *              'debug' => true,
 	 *              'timeout' => 5,
 	 * @return Response
+	 * @throws \Exception If the request could not get completed
 	 */
 	public function put($uri, array $options = []) {
 		$response = $this->client->put($uri, $options);
@@ -240,6 +251,7 @@ class Client implements IClient {
 	 *              'debug' => true,
 	 *              'timeout' => 5,
 	 * @return Response
+	 * @throws \Exception If the request could not get completed
 	 */
 	public function delete($uri, array $options = []) {
 		$response = $this->client->delete($uri, $options);
@@ -273,6 +285,7 @@ class Client implements IClient {
 	 *              'debug' => true,
 	 *              'timeout' => 5,
 	 * @return Response
+	 * @throws \Exception If the request could not get completed
 	 */
 	public function options($uri, array $options = []) {
 		$response = $this->client->options($uri, $options);

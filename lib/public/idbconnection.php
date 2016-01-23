@@ -6,7 +6,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -40,6 +40,14 @@ namespace OCP;
  * @since 6.0.0
  */
 interface IDBConnection {
+	/**
+	 * Gets the QueryBuilder for the connection.
+	 *
+	 * @return \OCP\DB\QueryBuilder\IQueryBuilder
+	 * @since 8.2.0
+	 */
+	public function getQueryBuilder();
+
 	/**
 	 * Used to abstract the ownCloud database access away
 	 * @param string $sql the sql query with ? placeholder for params
@@ -101,10 +109,32 @@ interface IDBConnection {
 	public function insertIfNotExist($table, $input, array $compare = null);
 
 	/**
+	 * Insert or update a row value
+	 *
+	 * @param string $table
+	 * @param array $keys (column name => value)
+	 * @param array $values (column name => value)
+	 * @param array $updatePreconditionValues ensure values match preconditions (column name => value)
+	 * @return int number of new rows
+	 * @throws \Doctrine\DBAL\DBALException
+	 * @throws PreconditionNotMetException
+	 * @since 9.0.0
+	 */
+	public function setValues($table, array $keys, array $values, array $updatePreconditionValues = []);
+
+	/**
 	 * Start a transaction
 	 * @since 6.0.0
 	 */
 	public function beginTransaction();
+
+	/**
+	 * Check if a transaction is active
+	 *
+	 * @return bool
+	 * @since 8.2.0
+	 */
+	public function inTransaction();
 
 	/**
 	 * Commit the database changes done during a transaction that is in progress
@@ -190,4 +220,13 @@ interface IDBConnection {
 	 * @since 8.0.0
 	 */
 	public function tableExists($table);
+
+	/**
+	 * Escape a parameter to be used in a LIKE query
+	 *
+	 * @param string $param
+	 * @return string
+	 * @since 9.0.0
+	 */
+	public function escapeLikeParameter($param);
 }

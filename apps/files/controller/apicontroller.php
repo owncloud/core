@@ -3,11 +3,12 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Tobias Kaminsky <tobias@kaminsky.me>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -78,7 +79,7 @@ class ApiController extends Controller {
 			return new DataResponse(['message' => 'Requested size must be numeric and a positive value.'], Http::STATUS_BAD_REQUEST);
 		}
 
-		$preview = $this->previewManager->createPreview('files/'.urldecode($file), $x, $y, true);
+		$preview = $this->previewManager->createPreview('files/'.$file, $x, $y, true);
 		if ($preview->valid()) {
 			return new DataDisplayResponse($preview->data(), Http::STATUS_OK, ['Content-Type' => 'image/png']);
 		} else {
@@ -126,7 +127,7 @@ class ApiController extends Controller {
 	 *
 	 * @NoAdminRequired
 	 *
-	 * @param array|string $tagName tag name to filter by
+	 * @param string $tagName tag name to filter by
 	 * @return DataResponse
 	 */
 	public function getFilesByTag($tagName) {

@@ -2,12 +2,11 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
- * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -27,7 +26,11 @@ use OC\Files\Cache\Cache;
 use OC\Files\Storage\Storage;
 use OC\Files\View;
 
-
+/**
+ * Class Test_Files_Sharing_Permissions
+ *
+ * @group DB
+ */
 class Test_Files_Sharing_Permissions extends OCA\Files_sharing\Tests\TestCase {
 
 	/**

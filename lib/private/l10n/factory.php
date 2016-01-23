@@ -1,12 +1,12 @@
 <?php
 /**
  * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
- * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -25,29 +25,35 @@
 
 namespace OC\L10N;
 
+use OCP\L10N\IFactory;
+
 /**
- * TODO: Description
+ * A factory that generates language instances
  */
-class Factory {
+class Factory implements IFactory {
 	/**
 	 * cached instances
 	 */
 	protected $instances = array();
 
 	/**
-	 * get an L10N instance
+	 * Get a language instance
 	 *
 	 * @param string $app
 	 * @param string|null $lang
-	 * @return \OC_L10N
+	 * @return \OCP\IL10N
 	 */
 	public function get($app, $lang = null) {
-		if (!is_null($lang)) {
-			return new \OC_L10N($app, $lang);
-		} else if (!isset($this->instances[$app])) {
-			$this->instances[$app] = new \OC_L10N($app);
+		$key = $lang;
+		if ($key === null) {
+			$key = 'null';
 		}
-		return $this->instances[$app];
+
+		if (!isset($this->instances[$key][$app])) {
+			$this->instances[$key][$app] = new \OC_L10N($app, $lang);
+		}
+
+		return $this->instances[$key][$app];
 	}
 
 }

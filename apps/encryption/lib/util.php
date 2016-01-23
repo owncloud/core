@@ -2,10 +2,9 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Clark Tomlinson <fallen013@gmail.com>
- * @author Morris Jobke <hey@morrisjobke.de>
- * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Phil Davis <phil.davis@inf.org>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -96,9 +95,48 @@ class Util {
 		$recoveryMode = $this->config->getUserValue($uid,
 			'encryption',
 			'recoveryEnabled',
-			0);
+			'0');
 
 		return ($recoveryMode === '1');
+	}
+
+	/**
+	 * check if the home storage should be encrypted
+	 *
+	 * @return bool
+	 */
+	public function shouldEncryptHomeStorage() {
+		$encryptHomeStorage = $this->config->getAppValue(
+			'encryption',
+			'encryptHomeStorage',
+			'1'
+		);
+
+		return ($encryptHomeStorage === '1');
+	}
+
+	/**
+	 * set the home storage encryption on/off
+	 *
+	 * @param bool $encryptHomeStorage
+	 */
+	public function setEncryptHomeStorage($encryptHomeStorage) {
+		$value = $encryptHomeStorage ? '1' : '0';
+		$this->config->setAppValue(
+			'encryption',
+			'encryptHomeStorage',
+			$value
+		);
+	}
+
+	/**
+	 * check if master key is enabled
+	 *
+	 * @return bool
+	 */
+	public function isMasterKeyEnabled() {
+		$userMasterKey = $this->config->getAppValue('encryption', 'useMasterKey', '0');
+		return ($userMasterKey === '1');
 	}
 
 	/**
@@ -147,6 +185,17 @@ class Util {
 		}
 
 		return $owner;
+	}
+
+	/**
+	 * get storage of path
+	 *
+	 * @param string $path
+	 * @return \OC\Files\Storage\Storage
+	 */
+	public function getStorage($path) {
+		$storage = $this->files->getMount($path)->getStorage();
+		return $storage;
 	}
 
 }

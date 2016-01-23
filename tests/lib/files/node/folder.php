@@ -16,16 +16,31 @@ use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
 use OC\Files\View;
 
+/**
+ * Class Folder
+ *
+ * @group DB
+ *
+ * @package Test\Files\Node
+ */
 class Folder extends \Test\TestCase {
 	private $user;
 
 	protected function setUp() {
 		parent::setUp();
-		$this->user = new \OC\User\User('', new \OC_User_Dummy);
+		$this->user = new \OC\User\User('', new \Test\Util\User\Dummy);
+	}
+
+	protected function getMockStorage() {
+		$storage = $this->getMock('\OCP\Files\Storage');
+		$storage->expects($this->any())
+			->method('getId')
+			->will($this->returnValue('home::someuser'));
+		return $storage;
 	}
 
 	protected function getFileInfo($data) {
-		return new FileInfo('', null, '', $data, null);
+		return new FileInfo('', $this->getMockStorage(), '', $data, null);
 	}
 
 	public function testDelete() {
@@ -75,6 +90,7 @@ class Folder extends \Test\TestCase {
 			$test->assertInstanceOf('\OC\Files\Node\NonExistingFolder', $node);
 			$test->assertEquals('foo', $node->getInternalPath());
 			$test->assertEquals('/bar/foo', $node->getPath());
+			$test->assertEquals(1, $node->getId());
 			$hooksRun++;
 		};
 
@@ -143,38 +159,13 @@ class Folder extends \Test\TestCase {
 			->method('getUser')
 			->will($this->returnValue($this->user));
 
-		/**
-		 * @var \OC\Files\Storage\Storage | \PHPUnit_Framework_MockObject_MockObject $storage
-		 */
-		$storage = $this->getMock('\OC\Files\Storage\Storage');
-
-		$cache = $this->getMock('\OC\Files\Cache\Cache', array(), array(''));
-		$cache->expects($this->any())
-			->method('getStatus')
-			->with('foo')
-			->will($this->returnValue(Cache::COMPLETE));
-
-		$cache->expects($this->once())
-			->method('getFolderContents')
-			->with('foo')
-			->will($this->returnValue(array(
-				array('fileid' => 2, 'path' => '/bar/foo/asd', 'name' => 'asd', 'size' => 100, 'mtime' => 50, 'mimetype' => 'text/plain'),
-				array('fileid' => 3, 'path' => '/bar/foo/qwerty', 'name' => 'qwerty', 'size' => 200, 'mtime' => 55, 'mimetype' => 'httpd/unix-directory')
-			)));
-
-		$root->expects($this->once())
-			->method('getMountsIn')
-			->with('/bar/foo')
-			->will($this->returnValue(array()));
-
-		$storage->expects($this->any())
-			->method('getCache')
-			->will($this->returnValue($cache));
-
 		$view->expects($this->any())
-			->method('resolvePath')
+			->method('getDirectoryContent')
 			->with('/bar/foo')
-			->will($this->returnValue(array($storage, 'foo')));
+			->will($this->returnValue(array(
+				new FileInfo('/bar/foo/asd', null, 'foo/asd', ['fileid' => 2, 'path' => '/bar/foo/asd', 'name' => 'asd', 'size' => 100, 'mtime' => 50, 'mimetype' => 'text/plain'], null),
+				new FileInfo('/bar/foo/qwerty', null, 'foo/qwerty', ['fileid' => 3, 'path' => '/bar/foo/qwerty', 'name' => 'qwerty', 'size' => 200, 'mtime' => 55, 'mimetype' => 'httpd/unix-directory'], null)
+			)));
 
 		$node = new \OC\Files\Node\Folder($root, $view, '/bar/foo');
 		$children = $node->getDirectoryListing();
@@ -183,6 +174,8 @@ class Folder extends \Test\TestCase {
 		$this->assertInstanceOf('\OC\Files\Node\Folder', $children[1]);
 		$this->assertEquals('asd', $children[0]->getName());
 		$this->assertEquals('qwerty', $children[1]->getName());
+		$this->assertEquals(2, $children[0]->getId());
+		$this->assertEquals(3, $children[1]->getId());
 	}
 
 	public function testGet() {
@@ -442,6 +435,45 @@ class Folder extends \Test\TestCase {
 		$result = $root->search('qw');
 		$this->assertEquals(1, count($result));
 		$this->assertEquals('/foo', $result[0]->getPath());
+	}
+
+	public function testSearchInStorageRoot() {
+		$manager = $this->getMock('\OC\Files\Mount\Manager');
+		/**
+		 * @var \OC\Files\View | \PHPUnit_Framework_MockObject_MockObject $view
+		 */
+		$view = $this->getMock('\OC\Files\View');
+		$root = $this->getMock('\OC\Files\Node\Root', array(), array($manager, $view, $this->user));
+		$root->expects($this->any())
+			->method('getUser')
+			->will($this->returnValue($this->user));
+		$storage = $this->getMock('\OC\Files\Storage\Storage');
+		$cache = $this->getMock('\OC\Files\Cache\Cache', array(), array(''));
+
+		$storage->expects($this->once())
+			->method('getCache')
+			->will($this->returnValue($cache));
+
+		$cache->expects($this->once())
+			->method('search')
+			->with('%qw%')
+			->will($this->returnValue(array(
+				array('fileid' => 3, 'path' => 'foo/qwerty', 'name' => 'qwerty', 'size' => 200, 'mtime' => 55, 'mimetype' => 'text/plain')
+			)));
+
+		$root->expects($this->once())
+			->method('getMountsIn')
+			->with('/bar')
+			->will($this->returnValue(array()));
+
+		$view->expects($this->once())
+			->method('resolvePath')
+			->will($this->returnValue(array($storage, '')));
+
+		$node = new \OC\Files\Node\Folder($root, $view, '/bar');
+		$result = $node->search('qw');
+		$this->assertEquals(1, count($result));
+		$this->assertEquals('/bar/foo/qwerty', $result[0]->getPath());
 	}
 
 	public function testSearchByTag() {

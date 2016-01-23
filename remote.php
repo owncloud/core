@@ -2,14 +2,14 @@
 /**
  * @author Brice Maron <brice@bmaron.net>
  * @author Christopher Schäpers <kondou@ts.unde.re>
- * @author Georg Ehrke <georg@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -26,13 +26,14 @@
  *
  */
 
-use OC\Connector\Sabre\ExceptionLoggerPlugin;
+use OCA\DAV\Connector\Sabre\ExceptionLoggerPlugin;
 use Sabre\DAV\Exception\ServiceUnavailable;
 use Sabre\DAV\Server;
 
 /**
  * Class RemoteException
  * Dummy exception class to be use locally to identify certain conditions
+ * Will not be logged to avoid DoS
  */
 class RemoteException extends Exception {
 }
@@ -47,7 +48,10 @@ function handleException(Exception $e) {
 	if ($isXmlContentType === 0) {
 		// fire up a simple server to properly process the exception
 		$server = new Server();
-		$server->addPlugin(new ExceptionLoggerPlugin('webdav', \OC::$server->getLogger()));
+		if (!($e instanceof RemoteException)) {
+			// we shall not log on RemoteException
+			$server->addPlugin(new ExceptionLoggerPlugin('webdav', \OC::$server->getLogger()));
+		}
 		$server->on('beforeMethod', function () use ($e) {
 			if ($e instanceof RemoteException) {
 				switch ($e->getCode()) {
@@ -67,11 +71,12 @@ function handleException(Exception $e) {
 		if ($e instanceof \OC\ServiceUnavailableException ) {
 			$statusCode = OC_Response::STATUS_SERVICE_UNAVAILABLE;
 		}
-		\OCP\Util::writeLog('remote', $e->getMessage(), \OCP\Util::FATAL);
 		if ($e instanceof RemoteException) {
+			// we shall not log on RemoteException
 			OC_Response::setStatus($e->getCode());
 			OC_Template::printErrorPage($e->getMessage());
 		} else {
+			\OCP\Util::writeLog('remote', $e->getMessage(), \OCP\Util::FATAL);
 			OC_Response::setStatus($statusCode);
 			OC_Template::printExceptionErrorPage($e);
 		}
@@ -122,7 +127,7 @@ try {
 			break;
 		default:
 			if (!\OC::$server->getAppManager()->isInstalled($app)) {
-				throw new Exception('App not installed: ' . $app);
+				throw new RemoteException('App not installed: ' . $app);
 			}
 			OC_App::loadApp($app);
 			$file = OC_App::getAppPath($app) .'/'. $parts[1];

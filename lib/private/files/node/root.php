@@ -6,7 +6,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -322,5 +322,34 @@ class Root extends Folder implements IRootFolder {
 	 */
 	public function getName() {
 		return '';
+	}
+
+	/**
+	 * Returns a view to user's files folder
+	 *
+	 * @param String $userId user ID
+	 * @return \OCP\Files\Folder
+	 */
+	public function getUserFolder($userId) {
+		\OC\Files\Filesystem::initMountPoints($userId);
+		$dir = '/' . $userId;
+		$folder = null;
+
+		if (!$this->nodeExists($dir)) {
+			$folder = $this->newFolder($dir);
+		} else {
+			$folder = $this->get($dir);
+		}
+
+		$dir = '/files';
+		if (!$folder->nodeExists($dir)) {
+			$folder = $folder->newFolder($dir);
+			\OC_Util::copySkeleton($userId, $folder);
+		} else {
+			$folder = $folder->get($dir);
+		}
+
+		return $folder;
+
 	}
 }

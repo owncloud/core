@@ -4,7 +4,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -66,6 +66,22 @@ interface Storage extends \OCP\Files\Storage {
 	 * @return \OC\Files\Cache\Watcher
 	 */
 	public function getWatcher($path = '', $storage = null);
+
+	/**
+	 * get a propagator instance for the cache
+	 *
+	 * @param \OC\Files\Storage\Storage (optional) the storage to pass to the watcher
+	 * @return \OC\Files\Cache\Propagator
+	 */
+	public function getPropagator($storage = null);
+
+	/**
+	 * get a updater instance for the cache
+	 *
+	 * @param \OC\Files\Storage\Storage (optional) the storage to pass to the watcher
+	 * @return \OC\Files\Cache\Updater
+	 */
+	public function getUpdater($storage = null);
 
 	/**
 	 * @return \OC\Files\Cache\Storage

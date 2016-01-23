@@ -2,10 +2,11 @@
 /**
  * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Christopher Schäpers <kondou@ts.unde.re>
+ * @author Lennart Rosam <hello@takuto.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -33,7 +34,7 @@ $prefix = (string)$_POST['ldap_serverconfig_chooser'];
 // only legacy checkboxes (Advanced and Expert tab) need to be handled here,
 // the Wizard-like tabs handle it on their own
 $chkboxes = array('ldap_configuration_active', 'ldap_override_main_server',
-				  'ldap_nocase', 'ldap_turn_off_cert_check');
+				  'ldap_turn_off_cert_check');
 foreach($chkboxes as $boxid) {
 	if(!isset($_POST[$boxid])) {
 		$_POST[$boxid] = 0;

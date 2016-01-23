@@ -8,11 +8,10 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Remco Brenninkmeijer <requist1@starmail.nl>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -31,20 +30,20 @@
 
 abstract class OC_Archive{
 	/**
-	 * open any of the supported archive types
+	 * Open any of the supported archive types
+	 *
 	 * @param string $path
 	 * @return OC_Archive|void
 	 */
 	public static function open($path) {
-		$ext=substr($path, strrpos($path, '.'));
-		switch($ext) {
-			case '.zip':
+		$mime = \OC::$server->getMimeTypeDetector()->detect($path);
+
+		switch($mime) {
+			case 'application/zip':
 				return new OC_Archive_ZIP($path);
-			case '.gz':
-			case '.bz':
-			case '.bz2':
-			case '.tgz':
-			case '.tar':
+			case 'application/x-gzip':
+				return new OC_Archive_TAR($path);
+			case 'application/x-bzip2':
 				return new OC_Archive_TAR($path);
 		}
 	}

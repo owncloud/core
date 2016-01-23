@@ -3,11 +3,12 @@
  * @author Jakob Sack <mail@jakobsack.de>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -25,12 +26,14 @@
  */
 \OCP\App::registerAdmin('files', 'admin');
 
+
 \OC::$server->getNavigationManager()->add(function () {
+	$urlGenerator = \OC::$server->getURLGenerator();
 	$l = \OC::$server->getL10N('files');
 	return [
 		'id' => 'files_index',
 		'order' => 0,
-		'href' => \OCP\Util::linkTo('files', 'index.php'),
+		'href' => $urlGenerator->linkToRoute('files.view.index'),
 		'icon' => \OCP\Util::imagePath('core', 'places/files.svg'),
 		'name' => $l->t('Files'),
 	];
@@ -63,6 +66,7 @@ $templateManager->registerTemplate('application/vnd.oasis.opendocument.spreadshe
 		new \OCA\Files\ActivityHelper(
 			\OC::$server->getTagManager()
 		),
+		\OC::$server->getDatabaseConnection(),
 		\OC::$server->getConfig()
 	);
 });

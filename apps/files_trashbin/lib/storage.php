@@ -5,7 +5,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -26,6 +26,8 @@ namespace OCA\Files_Trashbin;
 
 use OC\Files\Filesystem;
 use OC\Files\Storage\Wrapper\Wrapper;
+use OC\Files\View;
+use OCP\IUserManager;
 
 class Storage extends Wrapper {
 
@@ -41,8 +43,12 @@ class Storage extends Wrapper {
 	 */
 	private static $disableTrash = false;
 
-	function __construct($parameters) {
+	/** @var  IUserManager */
+	private $userManager;
+
+	function __construct($parameters, IUserManager $userManager = null) {
 		$this->mountPoint = $parameters['mountPoint'];
+		$this->userManager = $userManager;
 		parent::__construct($parameters);
 	}
 
@@ -101,6 +107,27 @@ class Storage extends Wrapper {
 	}
 
 	/**
+	 * check if it is a file located in data/user/files only files in the
+	 * 'files' directory should be moved to the trash
+	 *
+	 * @param $path
+	 * @return bool
+	 */
+	protected function shouldMoveToTrash($path){
+		$normalized = Filesystem::normalizePath($this->mountPoint . '/' . $path);
+		$parts = explode('/', $normalized);
+		if (count($parts) < 4) {
+			return false;
+		}
+
+		if ($this->userManager->userExists($parts[1]) && $parts[2] == 'files') {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Run the delete operation with the given method
 	 *
 	 * @param string $path path of file or folder to delete
@@ -112,13 +139,21 @@ class Storage extends Wrapper {
 		if (self::$disableTrash
 			|| !\OC_App::isEnabled('files_trashbin')
 			|| (pathinfo($path, PATHINFO_EXTENSION) === 'part')
+			|| $this->shouldMoveToTrash($path) === false
 		) {
 			return call_user_func_array([$this->storage, $method], [$path]);
 		}
+
+		// check permissions before we continue, this is especially important for
+		// shared files
+		if (!$this->isDeletable($path)) {
+			return false;
+		}
+
 		$normalized = Filesystem::normalizePath($this->mountPoint . '/' . $path);
 		$result = true;
-		if (!isset($this->deletedFiles[$normalized])) {
-			$view = Filesystem::getView();
+		$view = Filesystem::getView();
+		if (!isset($this->deletedFiles[$normalized]) && $view instanceof View) {
 			$this->deletedFiles[$normalized] = $normalized;
 			if ($filesPath = $view->getRelativePath($normalized)) {
 				$filesPath = trim($filesPath, '/');
@@ -144,7 +179,10 @@ class Storage extends Wrapper {
 	 */
 	public static function setupStorage() {
 		\OC\Files\Filesystem::addStorageWrapper('oc_trashbin', function ($mountPoint, $storage) {
-			return new \OCA\Files_Trashbin\Storage(array('storage' => $storage, 'mountPoint' => $mountPoint));
+			return new \OCA\Files_Trashbin\Storage(
+				array('storage' => $storage, 'mountPoint' => $mountPoint),
+				\OC::$server->getUserManager()
+			);
 		}, 1);
 	}
 

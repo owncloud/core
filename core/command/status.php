@@ -4,7 +4,7 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -38,8 +38,8 @@ class Status extends Base {
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		$values = array(
-			'installed' => (bool) \OC_Config::getValue('installed'),
-			'version' => implode('.', \OC_Util::getVersion()),
+			'installed' => (bool) \OC::$server->getConfig()->getSystemValue('installed', false),
+			'version' => implode('.', \OCP\Util::getVersion()),
 			'versionstring' => \OC_Util::getVersionString(),
 			'edition' => \OC_Util::getEditionString(),
 		);

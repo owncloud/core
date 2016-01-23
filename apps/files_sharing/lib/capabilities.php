@@ -1,8 +1,8 @@
 <?php
 /**
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -20,6 +20,7 @@
  */
 namespace OCA\Files_Sharing;
 
+use OCP\Capabilities\ICapability;
 use \OCP\IConfig;
 
 /**
@@ -27,61 +28,62 @@ use \OCP\IConfig;
  *
  * @package OCA\Files_Sharing
  */
-class Capabilities {
+class Capabilities implements ICapability {
 
 	/** @var IConfig */
 	private $config;
 
-	/**
-	 * @param IConfig $config
-	 */
 	public function __construct(IConfig $config) {
 		$this->config = $config;
 	}
 
 	/**
-	 * @return \OC_OCS_Result
+	 * Return this classes capabilities
+	 *
+	 * @return array
 	 */
-	public static function getCapabilities() {
-		$config = \OC::$server->getConfig();
-		$cap = new Capabilities($config);
-		return $cap->getCaps();
-	}
-
-
-	/**
-	 * @return \OC_OCS_Result
-	 */
-	public function getCaps() {
+	public function getCapabilities() {
 		$res = [];
 
-		$public = [];
-		$public['enabled'] = $this->config->getAppValue('core', 'shareapi_allow_links', 'yes') === 'yes';
-		if ($public['enabled']) {
-			$public['password'] = [];
-			$public['password']['enforced'] = ($this->config->getAppValue('core', 'shareapi_enforce_links_password', 'yes') === 'yes');
+		if ($this->config->getAppValue('core', 'shareapi_enabled', 'yes') !== 'yes') {
+			$res['api_enabled'] = false;
+			$res['public'] = ['enabled' => false];
+			$res['user'] = ['send_mail' => false];
+			$res['resharing'] = false;
+		} else {
+			$res['api_enabled'] = true;
 
-			$public['expire_date'] = [];
-			$public['expire_date']['enabled'] = $this->config->getAppValue('core', 'shareapi_default_expire_date', 'yes') === 'yes';
-			if ($public['expire_date']['enabled']) {
-				$public['expire_date']['days'] = $this->config->getAppValue('core', 'shareapi_expire_after_n_days', '7');
-				$public['expire_date']['enforced'] = $this->config->getAppValue('core', 'shareapi_enforce_expire_date', 'yes') === 'yes';
+			$public = [];
+			$public['enabled'] = $this->config->getAppValue('core', 'shareapi_allow_links', 'yes') === 'yes';
+			if ($public['enabled']) {
+				$public['password'] = [];
+				$public['password']['enforced'] = ($this->config->getAppValue('core', 'shareapi_enforce_links_password', 'no') === 'yes');
+
+				$public['expire_date'] = [];
+				$public['expire_date']['enabled'] = $this->config->getAppValue('core', 'shareapi_default_expire_date', 'no') === 'yes';
+				if ($public['expire_date']['enabled']) {
+					$public['expire_date']['days'] = $this->config->getAppValue('core', 'shareapi_expire_after_n_days', '7');
+					$public['expire_date']['enforced'] = $this->config->getAppValue('core', 'shareapi_enforce_expire_date', 'no') === 'yes';
+				}
+
+				$public['send_mail'] = $this->config->getAppValue('core', 'shareapi_allow_public_notification', 'no') === 'yes';
+				$public['upload'] = $this->config->getAppValue('core', 'shareapi_allow_public_upload', 'yes') === 'yes';
 			}
+			$res["public"] = $public;
 
-			$public['send_mail'] = $this->config->getAppValue('core', 'shareapi_allow_public_notification', 'yes') === 'yes';
+			$res['user']['send_mail'] = $this->config->getAppValue('core', 'shareapi_allow_mail_notification', 'no') === 'yes';
+
+			$res['resharing'] = $this->config->getAppValue('core', 'shareapi_allow_resharing', 'yes') === 'yes';
 		}
-		$res["public"] = $public;
 
-		$res['user']['send_mail'] = $this->config->getAppValue('core', 'shareapi_allow_mail_notification', 'yes') === 'yes';
+		//Federated sharing
+		$res['federation'] = [
+			'outgoing'  => $this->config->getAppValue('files_sharing', 'outgoing_server2server_share_enabled', 'yes') === 'yes',
+			'incoming' => $this->config->getAppValue('files_sharing', 'incoming_server2server_share_enabled', 'yes') === 'yes'
+		];
 
-		$res['resharing'] = $this->config->getAppValue('core', 'shareapi_allow_resharing', 'yes') === 'yes';
-
-
-		return new \OC_OCS_Result([
-			'capabilities' => [
-				'files_sharing' => $res
-				],
-			]);
+		return [
+			'files_sharing' => $res,
+		];
 	}
-	
 }

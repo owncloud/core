@@ -2,10 +2,10 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Clark Tomlinson <fallen013@gmail.com>
- * @author Morris Jobke <hey@morrisjobke.de>
- * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -70,10 +70,6 @@ class Recovery {
 	 * @var IFile
 	 */
 	private $file;
-	/**
-	 * @var string
-	 */
-	private $recoveryKeyId;
 
 	/**
 	 * @param IUserSession $user
@@ -104,8 +100,7 @@ class Recovery {
 	}
 
 	/**
-	 * @param $recoveryKeyId
-	 * @param $password
+	 * @param string $password
 	 * @return bool
 	 */
 	public function enableAdminRecovery($password) {
@@ -114,6 +109,9 @@ class Recovery {
 
 		if (!$keyManager->recoveryKeyExists()) {
 			$keyPair = $this->crypt->createKeyPair();
+			if(!is_array($keyPair)) {
+				return false;
+			}
 
 			$this->keyManager->setRecoveryKey($password, $keyPair);
 		}
@@ -136,7 +134,10 @@ class Recovery {
 	public function changeRecoveryKeyPassword($newPassword, $oldPassword) {
 		$recoveryKey = $this->keyManager->getSystemPrivateKey($this->keyManager->getRecoveryKeyId());
 		$decryptedRecoveryKey = $this->crypt->decryptPrivateKey($recoveryKey, $oldPassword);
-		$encryptedRecoveryKey = $this->crypt->symmetricEncryptFileContent($decryptedRecoveryKey, $newPassword);
+		if($decryptedRecoveryKey === false) {
+			return false;
+		}
+		$encryptedRecoveryKey = $this->crypt->encryptPrivateKey($decryptedRecoveryKey, $newPassword);
 		$header = $this->crypt->generateHeader();
 		if ($encryptedRecoveryKey) {
 			$this->keyManager->setSystemPrivateKey($this->keyManager->getRecoveryKeyId(), $header . $encryptedRecoveryKey);
@@ -146,7 +147,7 @@ class Recovery {
 	}
 
 	/**
-	 * @param $recoveryPassword
+	 * @param string $recoveryPassword
 	 * @return bool
 	 */
 	public function disableAdminRecovery($recoveryPassword) {
@@ -214,6 +215,7 @@ class Recovery {
 
 	/**
 	 * add recovery key to all encrypted files
+	 * @param string $path
 	 */
 	private function addRecoveryKeys($path) {
 		$dirContent = $this->view->getDirectoryContent($path);
@@ -241,6 +243,7 @@ class Recovery {
 
 	/**
 	 * remove recovery key to all encrypted files
+	 * @param string $path
 	 */
 	private function removeRecoveryKeys($path) {
 		$dirContent = $this->view->getDirectoryContent($path);
@@ -263,10 +266,10 @@ class Recovery {
 	public function recoverUsersFiles($recoveryPassword, $user) {
 		$encryptedKey = $this->keyManager->getSystemPrivateKey($this->keyManager->getRecoveryKeyId());
 
-		$privateKey = $this->crypt->decryptPrivateKey($encryptedKey,
-			$recoveryPassword);
-
-		$this->recoverAllFiles('/' . $user . '/files/', $privateKey, $user);
+		$privateKey = $this->crypt->decryptPrivateKey($encryptedKey, $recoveryPassword);
+		if($privateKey !== false) {
+			$this->recoverAllFiles('/' . $user . '/files/', $privateKey, $user);
+		}
 	}
 
 	/**

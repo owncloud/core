@@ -1,9 +1,10 @@
 <?php
 /**
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -22,7 +23,11 @@
 
 namespace OC\AppFramework\Middleware\Security;
 
+use OC\AppFramework\Middleware\Security\Exceptions\SecurityException;
 use OC\AppFramework\Utility\ControllerMethodReflector;
+use OCP\AppFramework\Controller;
+use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\JSONResponse;
 use OCP\IRequest;
 use OCP\IUserSession;
 use OCP\AppFramework\Http\Response;
@@ -57,8 +62,8 @@ class CORSMiddleware extends Middleware {
 	 * @param IUserSession $session
 	 */
 	public function __construct(IRequest $request,
-	                            ControllerMethodReflector $reflector,
-	                            IUserSession $session) {
+								ControllerMethodReflector $reflector,
+								IUserSession $session) {
 		$this->request = $request;
 		$this->reflector = $reflector;
 		$this->session = $session;
@@ -71,6 +76,7 @@ class CORSMiddleware extends Middleware {
 	 * @param Controller $controller the controller that is being called
 	 * @param string $methodName the name of the method that will be called on
 	 *                           the controller
+	 * @throws SecurityException
 	 * @since 6.0.0
 	 */
 	public function beforeController($controller, $methodName){
@@ -83,7 +89,7 @@ class CORSMiddleware extends Middleware {
 
 			$this->session->logout();
 			if(!$this->session->login($user, $pass)) {
-				throw new SecurityException('CORS requires basic auth');
+				throw new SecurityException('CORS requires basic auth', Http::STATUS_UNAUTHORIZED);
 			}
 		}
 	}
@@ -97,6 +103,7 @@ class CORSMiddleware extends Middleware {
 	 *                           the controller
 	 * @param Response $response the generated response from the controller
 	 * @return Response a Response object
+	 * @throws SecurityException
 	 */
 	public function afterController($controller, $methodName, Response $response){
 		// only react if its a CORS request and if the request sends origin and
@@ -106,7 +113,7 @@ class CORSMiddleware extends Middleware {
 
 			// allow credentials headers must not be true or CSRF is possible
 			// otherwise
-			foreach($response->getHeaders() as $header => $value ) {
+			foreach($response->getHeaders() as $header => $value) {
 				if(strtolower($header) === 'access-control-allow-credentials' &&
 				   strtolower(trim($value)) === 'true') {
 					$msg = 'Access-Control-Allow-Credentials must not be '.
@@ -121,5 +128,28 @@ class CORSMiddleware extends Middleware {
 		return $response;
 	}
 
+	/**
+	 * If an SecurityException is being caught return a JSON error response
+	 *
+	 * @param Controller $controller the controller that is being called
+	 * @param string $methodName the name of the method that will be called on
+	 *                           the controller
+	 * @param \Exception $exception the thrown exception
+	 * @throws \Exception the passed in exception if it cant handle it
+	 * @return Response a Response object or null in case that the exception could not be handled
+	 */
+	public function afterException($controller, $methodName, \Exception $exception){
+		if($exception instanceof SecurityException){
+			$response =  new JSONResponse(['message' => $exception->getMessage()]);
+			if($exception->getCode() !== 0) {
+				$response->setStatus($exception->getCode());
+			} else {
+				$response->setStatus(Http::STATUS_INTERNAL_SERVER_ERROR);
+			}
+			return $response;
+		}
+
+		throw $exception;
+	}
 
 }

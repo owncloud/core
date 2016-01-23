@@ -8,7 +8,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -26,6 +26,8 @@
  */
 
 namespace OCA\user_ldap\lib;
+
+use OCA\user_ldap\User_Proxy;
 
 class Helper {
 
@@ -60,7 +62,7 @@ class Helper {
 		';
 
 		if($activeConfigurations) {
-			if (\OC_Config::getValue( 'dbtype', 'sqlite' ) === 'oci') {
+			if (\OC::$server->getConfig()->getSystemValue( 'dbtype', 'sqlite' ) === 'oci') {
 				//FIXME oracle hack: need to explicitly cast CLOB to CHAR for comparison
 				$sql .= ' AND to_char(`configvalue`)=\'1\'';
 			} else {
@@ -180,5 +182,33 @@ class Helper {
 		}
 
 		return $domain;
+	}
+
+	/**
+	 * listens to a hook thrown by server2server sharing and replaces the given
+	 * login name by a username, if it matches an LDAP user.
+	 *
+	 * @param array $param
+	 * @throws \Exception
+	 */
+	public static function loginName2UserName($param) {
+		if(!isset($param['uid'])) {
+			throw new \Exception('key uid is expected to be set in $param');
+		}
+
+		//ain't it ironic?
+		$helper = new Helper();
+
+		$configPrefixes = $helper->getServerConfigurationPrefixes(true);
+		$ldapWrapper = new LDAP();
+		$ocConfig = \OC::$server->getConfig();
+
+		$userBackend  = new User_Proxy(
+			$configPrefixes, $ldapWrapper, $ocConfig
+		);
+		$uid = $userBackend->loginName2UserName($param['uid'] );
+		if($uid !== false) {
+			$param['uid'] = $uid;
+		}
 	}
 }

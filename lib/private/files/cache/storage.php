@@ -4,10 +4,11 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -43,9 +44,10 @@ class Storage {
 
 	/**
 	 * @param \OC\Files\Storage\Storage|string $storage
+	 * @param bool $isAvailable
 	 * @throws \RuntimeException
 	 */
-	public function __construct($storage) {
+	public function __construct($storage, $isAvailable = true) {
 		if ($storage instanceof \OC\Files\Storage\Storage) {
 			$this->storageId = $storage->getId();
 		} else {
@@ -53,23 +55,31 @@ class Storage {
 		}
 		$this->storageId = self::adjustStorageId($this->storageId);
 
-		$sql = 'SELECT `numeric_id` FROM `*PREFIX*storages` WHERE `id` = ?';
-		$result = \OC_DB::executeAudited($sql, array($this->storageId));
-		if ($row = $result->fetchRow()) {
+		if ($row = self::getStorageById($this->storageId)) {
 			$this->numericId = $row['numeric_id'];
 		} else {
-			$connection = \OC_DB::getConnection();
-			if ($connection->insertIfNotExist('*PREFIX*storages', ['id' => $this->storageId])) {
-				$this->numericId = \OC_DB::insertid('*PREFIX*storages');
+			$connection = \OC::$server->getDatabaseConnection();
+			$available = $isAvailable ? 1 : 0;
+			if ($connection->insertIfNotExist('*PREFIX*storages', ['id' => $this->storageId, 'available' => $available])) {
+				$this->numericId = $connection->lastInsertId('*PREFIX*storages');
 			} else {
-				$result = \OC_DB::executeAudited($sql, array($this->storageId));
-				if ($row = $result->fetchRow()) {
+				if ($row = self::getStorageById($this->storageId)) {
 					$this->numericId = $row['numeric_id'];
 				} else {
 					throw new \RuntimeException('Storage could neither be inserted nor be selected from the database');
 				}
 			}
 		}
+	}
+
+	/**
+	 * @param string $storageId
+	 * @return array|null
+	 */
+	public static function getStorageById($storageId) {
+		$sql = 'SELECT * FROM `*PREFIX*storages` WHERE `id` = ?';
+		$result = \OC_DB::executeAudited($sql, array($storageId));
+		return $result->fetchRow();
 	}
 
 	/**
@@ -120,13 +130,34 @@ class Storage {
 	public static function getNumericStorageId($storageId) {
 		$storageId = self::adjustStorageId($storageId);
 
-		$sql = 'SELECT `numeric_id` FROM `*PREFIX*storages` WHERE `id` = ?';
-		$result = \OC_DB::executeAudited($sql, array($storageId));
-		if ($row = $result->fetchRow()) {
+		if ($row = self::getStorageById($storageId)) {
 			return $row['numeric_id'];
 		} else {
 			return null;
 		}
+	}
+
+	/**
+	 * @return array|null [ available, last_checked ]
+	 */
+	public function getAvailability() {
+		if ($row = self::getStorageById($this->storageId)) {
+			return [
+				'available' => ((int)$row['available'] === 1),
+				'last_checked' => $row['last_checked']
+			];
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * @param bool $isAvailable
+	 */
+	public function setAvailability($isAvailable) {
+		$sql = 'UPDATE `*PREFIX*storages` SET `available` = ?, `last_checked` = ? WHERE `id` = ?';
+		$available = $isAvailable ? 1 : 0;
+		\OC_DB::executeAudited($sql, array($available, time(), $this->storageId));
 	}
 
 	/**

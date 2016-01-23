@@ -8,7 +8,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -25,6 +25,11 @@
  *
  */
 
+/**
+ * Class Test_Files_Sharing_Watcher
+ *
+ * @group DB
+ */
 class Test_Files_Sharing_Watcher extends OCA\Files_sharing\Tests\TestCase {
 
 	/**
@@ -83,13 +88,15 @@ class Test_Files_Sharing_Watcher extends OCA\Files_sharing\Tests\TestCase {
 
 		self::loginHelper(self::TEST_FILES_SHARING_API_USER1);
 
-		$fileinfo = $this->view->getFileInfo('container/shareddir');
-		\OCP\Share::unshare('folder', $fileinfo['fileid'], \OCP\Share::SHARE_TYPE_USER,
-			self::TEST_FILES_SHARING_API_USER2);
+		if ($this->view) {
+			$fileinfo = $this->view->getFileInfo('container/shareddir');
+			\OCP\Share::unshare('folder', $fileinfo['fileid'], \OCP\Share::SHARE_TYPE_USER,
+					self::TEST_FILES_SHARING_API_USER2);
 
-		$this->view->deleteAll('container');
+			$this->view->deleteAll('container');
 
-		$this->ownerCache->clear();
+			$this->ownerCache->clear();
+		}
 
 		parent::tearDown();
 	}
@@ -108,9 +115,8 @@ class Test_Files_Sharing_Watcher extends OCA\Files_sharing\Tests\TestCase {
 		$this->sharedCache->put('', array('mtime' => 10, 'storage_mtime' => 10, 'size' => '-1', 'mimetype' => 'httpd/unix-directory'));
 
 		// run the propagation code
-		$result = $this->sharedStorage->getWatcher()->checkUpdate('');
-
-		$this->assertTrue($result);
+		$this->sharedStorage->getWatcher()->checkUpdate('');
+		$this->sharedStorage->getCache()->correctFolderSize('');
 
 		// the owner's parent dirs must have increase size
 		$newSizes = self::getOwnerDirSizes('files/container/shareddir');
@@ -139,9 +145,8 @@ class Test_Files_Sharing_Watcher extends OCA\Files_sharing\Tests\TestCase {
 		$this->sharedCache->put('subdir', array('mtime' => 10, 'storage_mtime' => 10, 'size' => $dataLen, 'mimetype' => 'text/plain'));
 
 		// run the propagation code
-		$result = $this->sharedStorage->getWatcher()->checkUpdate('subdir');
-
-		$this->assertTrue($result);
+		$this->sharedStorage->getWatcher()->checkUpdate('subdir');
+		$this->sharedStorage->getCache()->correctFolderSize('subdir');
 
 		// the owner's parent dirs must have increase size
 		$newSizes = self::getOwnerDirSizes('files/container/shareddir/subdir');

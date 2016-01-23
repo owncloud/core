@@ -5,11 +5,6 @@
 	min-width: initial !important;
 }
 
-/* do not show Deleted Files on mobile, not optimized yet and button too long */
-#controls #trash {
-	display: none;
-}
-
 /* hide size and date columns */
 table th#headerSize,
 table td.filesize,
@@ -37,31 +32,24 @@ table td.filename .nametext {
 	width: 100%;
 }
 
-/* always show actions on mobile, not only on hover */
-#fileList a.action {
-	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)" !important;
-	filter: alpha(opacity=20) !important;
-	opacity: .2 !important;
-	display: inline !important;
+#fileList a.action.action-menu img {
+	padding-left: 0;
 }
-/* show share action of shared items darker to distinguish from non-shared */
-#fileList a.action.permanent {
+
+#fileList .fileActionsMenu {
+	margin-right: 6px;
+}
+/* hide text of the share action on mobile */
+#fileList a.action-share span {
+	display: none;
+}
+#fileList a.action.action-favorite {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)" !important;
-	filter: alpha(opacity=70) !important;
 	opacity: .7 !important;
 }
-/* do not show Rename or Versions on mobile */
-#fileList .action.action-rename,
-#fileList .action.action-versions {
-	display: none !important;
-}
-/* some padding for better clickability */
-#fileList a.action img {
-	padding: 0 6px 0 12px;
-}
-/* hide text of the actions on mobile */
-#fileList a.action span {
-	display: none;
+#fileList a.action.action-favorite {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)" !important;
+	opacity: .3 !important;
 }
 
 /* ellipsis on file names */

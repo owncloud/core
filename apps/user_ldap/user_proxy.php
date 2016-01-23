@@ -2,11 +2,12 @@
 /**
  * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Christopher Schäpers <kondou@ts.unde.re>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -161,7 +162,7 @@ class User_Proxy extends lib\Proxy implements \OCP\IUserBackend, \OCP\UserInterf
 
 	/**
 	 * check if a user exists on LDAP
-	 * @param string|OCA\User_LDAP\lib\User\User $user either the ownCloud user
+	 * @param string|\OCA\User_LDAP\lib\User\User $user either the ownCloud user
 	 * name or an instance of that user
 	 * @return boolean
 	 */
@@ -180,6 +181,17 @@ class User_Proxy extends lib\Proxy implements \OCP\IUserBackend, \OCP\UserInterf
 	 */
 	public function checkPassword($uid, $password) {
 		return $this->handleRequest($uid, 'checkPassword', array($uid, $password));
+	}
+
+	/**
+	 * returns the username for the given login name, if available
+	 *
+	 * @param string $loginName
+	 * @return string|false
+	 */
+	public function loginName2UserName($loginName) {
+		$id = 'LOGINNAME,' . $loginName;
+		return $this->handleRequest($id, 'loginName2UserName', array($loginName));
 	}
 
 	/**

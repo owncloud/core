@@ -1,8 +1,9 @@
 <?php
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -25,6 +26,7 @@ use OC\Files\View;
 use OCA\Encryption\Migration;
 use OCP\IL10N;
 use OCP\AppFramework\Controller;
+use OCP\ILogger;
 use OCP\IRequest;
 use OCP\IConfig;
 use OC\DB\Connection;
@@ -50,6 +52,9 @@ class EncryptionController extends Controller {
 	/** @var View */
 	private $view;
 
+	/** @var  ILogger */
+	private $logger;
+
 	/**
 	 * @param string $appName
 	 * @param IRequest $request
@@ -58,6 +63,7 @@ class EncryptionController extends Controller {
 	 * @param \OC\DB\Connection $connection
 	 * @param IUserManager $userManager
 	 * @param View $view
+	 * @param ILogger $logger
 	 */
 	public function __construct($appName,
 								IRequest $request,
@@ -65,13 +71,29 @@ class EncryptionController extends Controller {
 								IConfig $config,
 								Connection $connection,
 								IUserManager $userManager,
-								View $view) {
+								View $view,
+								ILogger  $logger) {
 		parent::__construct($appName, $request);
 		$this->l10n = $l10n;
 		$this->config = $config;
 		$this->connection = $connection;
 		$this->view = $view;
 		$this->userManager = $userManager;
+		$this->logger = $logger;
+	}
+
+	/**
+	 * @param IConfig $config
+	 * @param View $view
+	 * @param Connection $connection
+	 * @param ILogger $logger
+	 * @return Migration
+	 */
+	protected function getMigration(IConfig $config,
+								 View $view,
+								 Connection $connection,
+								 ILogger $logger) {
+		return new Migration($config, $view, $connection, $logger);
 	}
 
 	/**
@@ -85,12 +107,11 @@ class EncryptionController extends Controller {
 
 		try {
 
-			$migration = new Migration($this->config, $this->view, $this->connection);
+			$migration = $this->getMigration($this->config, $this->view, $this->connection, $this->logger);
 			$migration->reorganizeSystemFolderStructure();
 			$migration->updateDB();
 
 			foreach ($this->userManager->getBackends() as $backend) {
-
 				$limit = 500;
 				$offset = 0;
 				do {
@@ -102,22 +123,23 @@ class EncryptionController extends Controller {
 				} while (count($users) >= $limit);
 			}
 
+			$migration->finalCleanUp();
+
 		} catch (\Exception $e) {
-			return array(
-				'data' => array(
+			return [
+				'data' => [
 					'message' => (string)$this->l10n->t('A problem occurred, please check your log files (Error: %s)', [$e->getMessage()]),
-				),
+				],
 				'status' => 'error',
-			);
+			];
 		}
 
-		return array('data' =>
-			array('message' =>
-				(string) $this->l10n->t('Migration Completed')
-			),
-			'status' => 'success'
-		);
-
+		return [
+			'data' => [
+				'message' => (string) $this->l10n->t('Migration Completed'),
+				],
+			'status' => 'success',
+		];
 	}
 
 }

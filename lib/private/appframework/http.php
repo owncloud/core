@@ -1,12 +1,14 @@
 <?php
 /**
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -111,6 +113,7 @@ class Http extends BaseHttp {
 	 * @param Http::CONSTANT $status the constant from the Http class
 	 * @param \DateTime $lastModified formatted last modified date
 	 * @param string $ETag the etag
+	 * @return string
 	 */
 	public function getStatusHeader($status, \DateTime $lastModified=null, 
 	                                $ETag=null) {
@@ -121,7 +124,7 @@ class Http extends BaseHttp {
 
 		// if etag or lastmodified have not changed, return a not modified
 		if ((isset($this->server['HTTP_IF_NONE_MATCH'])
-			&& trim($this->server['HTTP_IF_NONE_MATCH']) === $ETag) 
+			&& trim(trim($this->server['HTTP_IF_NONE_MATCH']), '"') === (string)$ETag)
 
 			||
 

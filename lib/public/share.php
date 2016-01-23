@@ -8,12 +8,12 @@
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Michael Kuhn <suraia@ikkoku.de>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Sam Tuke <mail@samtuke.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -80,13 +80,14 @@ class Share extends \OC\Share\Constants {
 	 * @param string $ownerUser owner of the file
 	 * @param bool $includeOwner include owner to the list of users with access to the file
 	 * @param bool $returnUserPaths Return an array with the user => path map
+	 * @param bool $recursive take parent folders into account
 	 * @return array
 	 * @note $path needs to be relative to user data dir, e.g. 'file.txt'
-	 *       not '/admin/data/file.txt'
-	 * @since 5.0.0
+	 *       not '/admin/files/file.txt'
+	 * @since 5.0.0 - $recursive was added in 9.0.0
 	 */
-	public static function getUsersSharingFile($path, $ownerUser, $includeOwner = false, $returnUserPaths = false) {
-		return \OC\Share\Share::getUsersSharingFile($path, $ownerUser, $includeOwner, $returnUserPaths);
+	public static function getUsersSharingFile($path, $ownerUser, $includeOwner = false, $returnUserPaths = false, $recursive = true) {
+		return \OC\Share\Share::getUsersSharingFile($path, $ownerUser, $includeOwner, $returnUserPaths, $recursive);
 	}
 
 	/**
@@ -255,13 +256,14 @@ class Share extends \OC\Share\Constants {
 	 * @param int $permissions CRUDS
 	 * @param string $itemSourceName
 	 * @param \DateTime $expirationDate
+	 * @param bool $passwordChanged
 	 * @return bool|string Returns true on success or false on failure, Returns token on success for links
 	 * @throws \OC\HintException when the share type is remote and the shareWith is invalid
 	 * @throws \Exception
-	 * @since 5.0.0 - parameter $itemSourceName was added in 6.0.0, parameter $expirationDate was added in 7.0.0
+	 * @since 5.0.0 - parameter $itemSourceName was added in 6.0.0, parameter $expirationDate was added in 7.0.0, paramter $passwordChanged added in 9.0.0
 	 */
-	public static function shareItem($itemType, $itemSource, $shareType, $shareWith, $permissions, $itemSourceName = null, \DateTime $expirationDate = null) {
-		return \OC\Share\Share::shareItem($itemType, $itemSource, $shareType, $shareWith, $permissions, $itemSourceName, $expirationDate);
+	public static function shareItem($itemType, $itemSource, $shareType, $shareWith, $permissions, $itemSourceName = null, \DateTime $expirationDate = null, $passwordChanged = null) {
+		return \OC\Share\Share::shareItem($itemType, $itemSource, $shareType, $shareWith, $permissions, $itemSourceName, $expirationDate, $passwordChanged);
 	}
 
 	/**
@@ -344,7 +346,7 @@ class Share extends \OC\Share\Constants {
 	}
 
 	/**
-	 * Set expiration date for a share
+	 * Set password for a public link share
 	 * @param int $shareId
 	 * @param string $password
 	 * @return boolean

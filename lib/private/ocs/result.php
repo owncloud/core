@@ -5,10 +5,11 @@
  * @author Christopher Schäpers <kondou@ts.unde.re>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Tom Needham <tom@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -27,15 +28,32 @@
 
 class OC_OCS_Result{
 
-	protected $data, $message, $statusCode, $items, $perPage;
+	/** @var array  */
+	protected $data;
+
+	/** @var null|string */
+	protected $message;
+
+	/** @var int */
+	protected $statusCode;
+
+	/** @var integer */
+	protected $items;
+
+	/** @var integer */
+	protected $perPage;
+
+	/** @var array */
+	private $headers = [];
 
 	/**
 	 * create the OCS_Result object
 	 * @param mixed $data the data to return
 	 * @param int $code
 	 * @param null|string $message
+	 * @param array $headers
 	 */
-	public function __construct($data=null, $code=100, $message=null) {
+	public function __construct($data = null, $code = 100, $message = null, $headers = []) {
 		if ($data === null) {
 			$this->data = array();
 		} elseif (!is_array($data)) {
@@ -45,6 +63,7 @@ class OC_OCS_Result{
 		}
 		$this->statusCode = $code;
 		$this->message = $message;
+		$this->headers = $headers;
 	}
 
 	/**
@@ -77,7 +96,7 @@ class OC_OCS_Result{
 	 */
 	public function getMeta() {
 		$meta = array();
-		$meta['status'] = ($this->statusCode === 100) ? 'ok' : 'failure';
+		$meta['status'] = $this->succeeded() ? 'ok' : 'failure';
 		$meta['statuscode'] = $this->statusCode;
 		$meta['message'] = $this->message;
 		if(isset($this->items)) {
@@ -106,5 +125,32 @@ class OC_OCS_Result{
 		return ($this->statusCode == 100);
 	}
 
+	/**
+	 * Adds a new header to the response
+	 * @param string $name The name of the HTTP header
+	 * @param string $value The value, null will delete it
+	 * @return $this
+	 */
+	public function addHeader($name, $value) {
+		$name = trim($name);  // always remove leading and trailing whitespace
+		// to be able to reliably check for security
+		// headers
+
+		if(is_null($value)) {
+			unset($this->headers[$name]);
+		} else {
+			$this->headers[$name] = $value;
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Returns the set headers
+	 * @return array the headers
+	 */
+	public function getHeaders() {
+		return $this->headers;
+	}
 
 }

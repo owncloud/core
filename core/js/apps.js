@@ -21,6 +21,30 @@
 	};
 
 	/**
+	 * Shows the #app-sidebar and add .with-app-sidebar to subsequent siblings
+	 *
+	 * @param {Object} [$el] sidebar element to show, defaults to $('#app-sidebar')
+	 */
+	exports.Apps.showAppSidebar = function($el) {
+		var $appSidebar = $el || $('#app-sidebar');
+		$appSidebar.removeClass('disappear');
+		$('#app-content').addClass('with-app-sidebar').trigger(new $.Event('appresized'));
+
+	};
+
+	/**
+	 * Shows the #app-sidebar and removes .with-app-sidebar from subsequent
+	 * siblings
+	 *
+	 * @param {Object} [$el] sidebar element to hide, defaults to $('#app-sidebar')
+	 */
+	exports.Apps.hideAppSidebar = function($el) {
+		var $appSidebar = $el || $('#app-sidebar');
+		$appSidebar.addClass('disappear');
+		$('#app-content').removeClass('with-app-sidebar').trigger(new $.Event('appresized'));
+	};
+
+	/**
 	 * Provides a way to slide down a target area through a button and slide it
 	 * up if the user clicks somewhere else. Used for the news app settings and
 	 * add new field.
@@ -58,7 +82,7 @@
 				if (!area.is(':animated')) {
 
 					// button toggles the area
-					if (button === event.target.closest('[data-apps-slide-toggle]')) {
+					if ($(button).is($(event.target).closest('[data-apps-slide-toggle]'))) {
 						if (area.is(':visible')) {
 							hideArea();
 						} else {

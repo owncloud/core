@@ -4,8 +4,10 @@
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -39,7 +41,7 @@ class OC_Share_Backend_Folder extends OC_Share_Backend_File implements OCP\Share
 			$shares = \OCP\Share::getItemSharedWithUser('folder', $parent, $shareWith, $owner);
 			if ($shares) {
 				foreach ($shares as $share) {
-					$name = substr($share['path'], strrpos($share['path'], '/') + 1);
+					$name = basename($share['path']);
 					$share['collection']['path'] = $name;
 					$share['collection']['item_type'] = 'folder';
 					$share['file_path'] = $name;

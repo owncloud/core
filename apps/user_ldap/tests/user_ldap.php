@@ -5,9 +5,10 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -31,9 +32,17 @@ use \OCA\user_ldap\lib\Access;
 use \OCA\user_ldap\lib\Connection;
 use \OCA\user_ldap\lib\ILDAPWrapper;
 
+/**
+ * Class Test_User_Ldap_Direct
+ *
+ * @group DB
+ *
+ * @package OCA\user_ldap\tests
+ */
 class Test_User_Ldap_Direct extends \Test\TestCase {
 	protected $backend;
 	protected $access;
+	protected $configMock;
 
 	protected function setUp() {
 		parent::setUp();
@@ -61,14 +70,28 @@ class Test_User_Ldap_Direct extends \Test\TestCase {
 									$conMethods,
 									array($lw, null, null));
 
-		$um = new \OCA\user_ldap\lib\user\Manager(
-				$this->getMock('\OCP\IConfig'),
+		$this->configMock = $this->getMock('\OCP\IConfig');
+
+		$offlineUser = $this->getMockBuilder('\OCA\user_ldap\lib\user\OfflineUser')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$um = $this->getMockBuilder('\OCA\user_ldap\lib\user\Manager')
+			->setMethods(['getDeletedUser'])
+			->setConstructorArgs([
+				$this->configMock,
 				$this->getMock('\OCA\user_ldap\lib\FilesystemHelper'),
 				$this->getMock('\OCA\user_ldap\lib\LogWrapper'),
 				$this->getMock('\OCP\IAvatarManager'),
 				$this->getMock('\OCP\Image'),
-				$this->getMock('\OCP\IDBConnection')
-			);
+				$this->getMock('\OCP\IDBConnection'),
+				$this->getMock('\OCP\IUserManager')
+			  ])
+			->getMock();
+
+		$um->expects($this->any())
+			->method('getDeletedUser')
+			->will($this->returnValue($offlineUser));
 
 		$access = $this->getMock('\OCA\user_ldap\lib\Access',
 								 $accMethods,
@@ -122,7 +145,7 @@ class Test_User_Ldap_Direct extends \Test\TestCase {
 			   ->method('fetchListOfUsers')
 			   ->will($this->returnCallback(function($filter) {
 					if($filter === 'roland') {
-						return array(array('dn' => 'dnOfRoland,dc=test'));
+						return array(array('dn' => ['dnOfRoland,dc=test']));
 					}
 					return array();
 			   }));
@@ -131,7 +154,7 @@ class Test_User_Ldap_Direct extends \Test\TestCase {
 			->method('fetchUsersByLoginName')
 			->will($this->returnCallback(function($uid) {
 				if($uid === 'roland') {
-					return array(array('dn' => 'dnOfRoland,dc=test'));
+					return array(array('dn' => ['dnOfRoland,dc=test']));
 				}
 				return array();
 			}));
@@ -292,7 +315,7 @@ class Test_User_Ldap_Direct extends \Test\TestCase {
 		$access->expects($this->any())
 			   ->method('combineFilterWithAnd')
 			   ->will($this->returnCallback(function($param) {
-					return $param[1];
+					return $param[2];
 			   }));
 
 		$access->expects($this->any())
@@ -586,6 +609,13 @@ class Test_User_Ldap_Direct extends \Test\TestCase {
 		$backend = new UserLDAP($access, $config);
 		$this->prepareMockForUserExists($access);
 
+		$dataDir = \OC::$server->getConfig()->getSystemValue(
+			'datadirectory', \OC::$SERVERROOT.'/data');
+
+		$this->configMock->expects($this->once())
+			->method('getSystemValue')
+			->will($this->returnValue($dataDir));
+
 		$access->connection->expects($this->any())
 			->method('__get')
 			->will($this->returnCallback(function($name) {
@@ -609,14 +639,9 @@ class Test_User_Ldap_Direct extends \Test\TestCase {
 						return false;
 				}
 			}));
-		//datadir-relativ path
-		$datadir = '/my/data/dir';
-		$config->expects($this->once())
-			->method('getSystemValue')
-			->will($this->returnValue($datadir));
 
 		$result = $backend->getHome('ladyofshadows');
-		$this->assertEquals($datadir.'/susannah/', $result);
+		$this->assertEquals($dataDir.'/susannah/', $result);
 	}
 
 	/**
@@ -650,6 +675,44 @@ class Test_User_Ldap_Direct extends \Test\TestCase {
 		$this->assertFalse($result);
 	}
 
+	/**
+	 * @expectedException \OC\User\NoUserException
+	 */
+	public function testGetHomeDeletedUser() {
+		$access = $this->getAccessMock();
+		$backend = new UserLDAP($access, $this->getMock('\OCP\IConfig'));
+		$this->prepareMockForUserExists($access);
+
+		$access->connection->expects($this->any())
+				->method('__get')
+				->will($this->returnCallback(function($name) {
+					if($name === 'homeFolderNamingRule') {
+						return 'attr:testAttribute';
+					}
+					return null;
+				}));
+
+		$access->expects($this->any())
+				->method('readAttribute')
+				->will($this->returnValue([]));
+
+		$userMapper = $this->getMockBuilder('\OCA\User_LDAP\Mapping\UserMapping')
+				->disableOriginalConstructor()
+				->getMock();
+
+		$access->expects($this->any())
+				->method('getUserMapper')
+				->will($this->returnValue($userMapper));
+
+		$this->configMock->expects($this->any())
+			->method('getUserValue')
+			->will($this->returnValue(true));
+
+		//no path at all – triggers OC default behaviour
+		$result = $backend->getHome('newyorker');
+		$this->assertFalse($result);
+	}
+
 	private function prepareAccessForGetDisplayName(&$access) {
 		$access->connection->expects($this->any())
 			   ->method('__get')
@@ -675,6 +738,14 @@ class Test_User_Ldap_Direct extends \Test\TestCase {
 							return false;
 				   }
 			   }));
+
+		$userMapper = $this->getMockBuilder('\OCA\User_LDAP\Mapping\UserMapping')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$access->expects($this->any())
+			->method('getUserMapper')
+			->will($this->returnValue($userMapper));
 	}
 
 	public function testGetDisplayName() {

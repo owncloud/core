@@ -1,10 +1,9 @@
 <?php
 /**
- * @author Bart Visscher <bartv@thisnet.nl>
- * @author Lukas Reschke <lukas@owncloud.com>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -23,14 +22,6 @@
 OC_Util::checkAdminUser();
 OCP\JSON::callCheck();
 
-$app = (string)$_GET['app'];
-$app = OC_App::cleanAppId($app);
+$navigation = \OC_App::getNavigation();
 
-$navigation = OC_App::getAppNavigationEntries($app);
-
-$navIds = array();
-foreach ($navigation as $nav) {
-	$navIds[] = $nav['id'];
-}
-
-OCP\JSON::success(array('nav_ids' => array_values($navIds), 'nav_entries' => $navigation));
+OCP\JSON::success(['nav_entries' => $navigation]);

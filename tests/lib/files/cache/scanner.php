@@ -7,7 +7,15 @@
  */
 
 namespace Test\Files\Cache;
+use OC\Files\Cache\CacheEntry;
 
+/**
+ * Class Scanner
+ *
+ * @group DB
+ *
+ * @package Test\Files\Cache
+ */
 class Scanner extends \Test\TestCase {
 	/**
 	 * @var \OC\Files\Storage\Storage $storage
@@ -219,6 +227,7 @@ class Scanner extends \Test\TestCase {
 
 		// manipulate etag to simulate an empty etag
 		$this->scanner->scan('', \OC\Files\Cache\Scanner::SCAN_SHALLOW, \OC\Files\Cache\Scanner::REUSE_ETAG);
+		/** @var CacheEntry $data0 */
 		$data0 = $this->cache->get('folder/bar.txt');
 		$this->assertInternalType('string', $data0['etag']);
 		$data1 = $this->cache->get('folder');
@@ -226,7 +235,7 @@ class Scanner extends \Test\TestCase {
 		$data2 = $this->cache->get('');
 		$this->assertInternalType('string', $data2['etag']);
 		$data0['etag'] = '';
-		$this->cache->put('folder/bar.txt', $data0);
+		$this->cache->put('folder/bar.txt', $data0->getData());
 
 		// rescan
 		$this->scanner->scan('folder/bar.txt', \OC\Files\Cache\Scanner::SCAN_SHALLOW, \OC\Files\Cache\Scanner::REUSE_ETAG);
@@ -284,4 +293,27 @@ class Scanner extends \Test\TestCase {
 		$cachedData = $this->cache->get('folder/bar.txt');
 		$this->assertEquals($newFolderId, $cachedData['parent']);
 	}
+
+	/**
+	 * @dataProvider dataTestIsPartialFile
+	 *
+	 * @param string $path
+	 * @param bool $expected
+	 */
+	public function testIsPartialFile($path, $expected) {
+		$this->assertSame($expected,
+			$this->scanner->isPartialFile($path)
+		);
+	}
+
+	public function dataTestIsPartialFile() {
+		return [
+			['foo.txt.part', true],
+			['/sub/folder/foo.txt.part', true],
+			['/sub/folder.part/foo.txt', true],
+			['foo.txt', false],
+			['/sub/folder/foo.txt', false],
+		];
+	}
+
 }

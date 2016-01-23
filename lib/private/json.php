@@ -11,7 +11,7 @@
  * @author Thomas Tanghus <thomas@tanghus.net>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -76,7 +76,7 @@ class OC_JSON{
 	 * @deprecated Use annotation based CSRF checks from the AppFramework instead
 	 */
 	public static function callCheck() {
-		if( !OC_Util::isCallRegistered()) {
+		if( !(\OC::$server->getRequest()->passesCSRFCheck())) {
 			$l = \OC::$server->getL10N('lib');
 			self::error(array( 'data' => array( 'message' => $l->t('Token expired. Please reload page.'), 'error' => 'token_expired' )));
 			exit();
@@ -114,7 +114,13 @@ class OC_JSON{
 	 * @deprecated Use annotation based ACLs from the AppFramework instead
 	 */
 	public static function checkSubAdminUser() {
-		if(!OC_SubAdmin::isSubAdmin(OC_User::getUser())) {
+		$userObject = \OC::$server->getUserSession()->getUser();
+		$isSubAdmin = false;
+		if($userObject !== null) {
+			$isSubAdmin = \OC::$server->getGroupManager()->getSubAdmin()->isSubAdmin($userObject);
+		}
+
+		if(!$isSubAdmin) {
 			$l = \OC::$server->getL10N('lib');
 			self::error(array( 'data' => array( 'message' => $l->t('Authentication error'), 'error' => 'authentication_error' )));
 			exit();
@@ -167,6 +173,6 @@ class OC_JSON{
 		if (is_array($data)) {
 			array_walk_recursive($data, array('OC_JSON', 'to_string'));
 		}
-		return json_encode($data);
+		return json_encode($data, JSON_HEX_TAG);
 	}
 }

@@ -10,13 +10,15 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Martin Mattel <martin.mattel@diemattels.at>
+ * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Sean Comeau <sean@ftlnetworks.ca>
  * @author Serge Martin <edb@sigluy.net>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -39,6 +41,8 @@ use bantu\IniGetWrapper\IniGetWrapper;
 use Exception;
 use OCP\IConfig;
 use OCP\IL10N;
+use OCP\ILogger;
+use OCP\Security\ISecureRandom;
 
 class Setup {
 	/** @var \OCP\IConfig */
@@ -49,6 +53,10 @@ class Setup {
 	protected $l10n;
 	/** @var \OC_Defaults */
 	protected $defaults;
+	/** @var ILogger */
+	protected $logger;
+	/** @var ISecureRandom */
+	protected $random;
 
 	/**
 	 * @param IConfig $config
@@ -58,18 +66,22 @@ class Setup {
 	function __construct(IConfig $config,
 						 IniGetWrapper $iniWrapper,
 						 IL10N $l10n,
-						 \OC_Defaults $defaults) {
+						 \OC_Defaults $defaults,
+						 ILogger $logger,
+						 ISecureRandom $random
+		) {
 		$this->config = $config;
 		$this->iniWrapper = $iniWrapper;
 		$this->l10n = $l10n;
 		$this->defaults = $defaults;
+		$this->logger = $logger;
+		$this->random = $random;
 	}
 
 	static $dbSetupClasses = array(
 		'mysql' => '\OC\Setup\MySQL',
 		'pgsql' => '\OC\Setup\PostgreSQL',
 		'oci'   => '\OC\Setup\OCI',
-		'mssql' => '\OC\Setup\MSSQL',
 		'sqlite' => '\OC\Setup\Sqlite',
 		'sqlite3' => '\OC\Setup\Sqlite',
 	);
@@ -79,7 +91,7 @@ class Setup {
 	 * @param string $name
 	 * @return bool
 	 */
-	public function class_exists($name) {
+	protected function class_exists($name) {
 		return class_exists($name);
 	}
 
@@ -88,8 +100,17 @@ class Setup {
 	 * @param string $name
 	 * @return bool
 	 */
-	public function is_callable($name) {
+	protected function is_callable($name) {
 		return is_callable($name);
+	}
+
+	/**
+	 * Wrapper around \PDO::getAvailableDrivers
+	 *
+	 * @return array
+	 */
+	protected function getAvailableDbDriversForPdo() {
+		return \PDO::getAvailableDrivers();
 	}
 
 	/**
@@ -107,8 +128,8 @@ class Setup {
 				'name' => 'SQLite'
 			),
 			'mysql' => array(
-				'type' => 'function',
-				'call' => 'mysql_connect',
+				'type' => 'pdo',
+				'call' => 'mysql',
 				'name' => 'MySQL/MariaDB'
 			),
 			'pgsql' => array(
@@ -120,11 +141,6 @@ class Setup {
 				'type' => 'function',
 				'call' => 'oci_connect',
 				'name' => 'Oracle'
-			),
-			'mssql' => array(
-				'type' => 'function',
-				'call' => 'sqlsrv_connect',
-				'name' => 'MS SQL'
 			)
 		);
 		if ($allowAllDatabases) {
@@ -142,10 +158,15 @@ class Setup {
 		foreach($configuredDatabases as $database) {
 			if(array_key_exists($database, $availableDatabases)) {
 				$working = false;
-				if($availableDatabases[$database]['type'] === 'class') {
-					$working = $this->class_exists($availableDatabases[$database]['call']);
-				} elseif ($availableDatabases[$database]['type'] === 'function') {
-					$working = $this->is_callable($availableDatabases[$database]['call']);
+				$type = $availableDatabases[$database]['type'];
+				$call = $availableDatabases[$database]['call'];
+
+				if($type === 'class') {
+					$working = $this->class_exists($call);
+				} elseif ($type === 'function') {
+					$working = $this->is_callable($call);
+				} elseif($type === 'pdo') {
+					$working = in_array($call, $this->getAvailableDbDriversForPdo(), TRUE);
 				}
 				if($working) {
 					$supportedDatabases[$database] = $availableDatabases[$database]['name'];
@@ -218,7 +239,6 @@ class Setup {
 			'hasMySQL' => isset($databases['mysql']),
 			'hasPostgreSQL' => isset($databases['pgsql']),
 			'hasOracle' => isset($databases['oci']),
-			'hasMSSQL' => isset($databases['mssql']),
 			'databases' => $databases,
 			'directory' => $dataDir,
 			'htaccessWorking' => $htAccessWorking,
@@ -256,7 +276,8 @@ class Setup {
 
 		$class = self::$dbSetupClasses[$dbType];
 		/** @var \OC\Setup\AbstractDatabase $dbSetup */
-		$dbSetup = new $class($l, 'db_structure.xml');
+		$dbSetup = new $class($l, 'db_structure.xml', $this->config,
+			$this->logger, $this->random);
 		$error = array_merge($error, $dbSetup->validate($options));
 
 		// validate the data directory
@@ -291,9 +312,9 @@ class Setup {
 		}
 
 		//generate a random salt that is used to salt the local user passwords
-		$salt = \OC::$server->getSecureRandom()->getLowStrengthGenerator()->generate(30);
+		$salt = $this->random->generate(30);
 		// generate a secret
-		$secret = \OC::$server->getSecureRandom()->getMediumStrengthGenerator()->generate(48);
+		$secret = $this->random->generate(48);
 
 		//write the config file
 		$this->config->setSystemValues([
@@ -303,7 +324,7 @@ class Setup {
 			'datadirectory'		=> $dataDir,
 			'overwrite.cli.url'	=> $request->getServerProtocol() . '://' . $request->getInsecureServerHost() . \OC::$WEBROOT,
 			'dbtype'			=> $dbType,
-			'version'			=> implode('.', \OC_Util::getVersion()),
+			'version'			=> implode('.', \OCP\Util::getVersion()),
 		]);
 
 		try {
@@ -350,15 +371,13 @@ class Setup {
 			// out that this is indeed an ownCloud data directory
 			file_put_contents($config->getSystemValue('datadirectory', \OC::$SERVERROOT.'/data').'/.ocdata', '');
 
-			// Update htaccess files for apache hosts
-			if (isset($_SERVER['SERVER_SOFTWARE']) && strstr($_SERVER['SERVER_SOFTWARE'], 'Apache')) {
-				self::updateHtaccess();
-				self::protectDataDirectory();
-			}
+			// Update .htaccess files
+			Setup::updateHtaccess();
+			Setup::protectDataDirectory();
 
 			//try to write logtimezone
 			if (date_default_timezone_get()) {
-				\OC_Config::setValue('logtimezone', date_default_timezone_get());
+				$config->setSystemValue('logtimezone', date_default_timezone_get());
 			}
 
 			//and we are done
@@ -376,33 +395,20 @@ class Setup {
 	}
 
 	/**
-	 * Checks if the .htaccess contains the current version parameter
-	 *
-	 * @return bool
-	 */
-	private function isCurrentHtaccess() {
-		$version = \OC_Util::getVersion();
-		unset($version[3]);
-
-		return !strpos(
-			file_get_contents($this->pathToHtaccess()),
-			'Version: '.implode('.', $version)
-		) === false;
-	}
-
-	/**
 	 * Append the correct ErrorDocument path for Apache hosts
-	 *
-	 * @throws \OC\HintException If .htaccess does not include the current version
 	 */
 	public static function updateHtaccess() {
-		$setupHelper = new \OC\Setup(\OC::$server->getConfig(), \OC::$server->getIniWrapper(), \OC::$server->getL10N('lib'), new \OC_Defaults());
-		if(!$setupHelper->isCurrentHtaccess()) {
-			throw new \OC\HintException('.htaccess file has the wrong version. Please upload the correct version. Maybe you forgot to replace it after updating?');
+		// From CLI we don't know the defined web root. Thus we can't write any
+		// directives into the .htaccess file.
+		if(\OC::$CLI) {
+			return;
 		}
+		$setupHelper = new \OC\Setup(\OC::$server->getConfig(), \OC::$server->getIniWrapper(),
+			\OC::$server->getL10N('lib'), new \OC_Defaults(), \OC::$server->getLogger(),
+			\OC::$server->getSecureRandom());
 
 		$htaccessContent = file_get_contents($setupHelper->pathToHtaccess());
-		$content = '';
+		$content = "#### DO NOT CHANGE ANYTHING ABOVE THIS LINE ####\n";
 		if (strpos($htaccessContent, 'ErrorDocument 403') === false) {
 			//custom 403 error page
 			$content.= "\nErrorDocument 403 ".\OC::$WEBROOT."/core/templates/403.php";
@@ -411,6 +417,19 @@ class Setup {
 			//custom 404 error page
 			$content.= "\nErrorDocument 404 ".\OC::$WEBROOT."/core/templates/404.php";
 		}
+
+		// Add rewrite base
+		$webRoot = !empty(\OC::$WEBROOT) ? \OC::$WEBROOT : '/';
+		$content.="\n<IfModule mod_rewrite.c>";
+		$content.="\n  RewriteBase ".$webRoot;
+		$content .= "\n  <IfModule mod_env.c>";
+		$content .= "\n    SetEnv front_controller_active true";
+		$content .= "\n    <IfModule mod_dir.c>";
+		$content .= "\n      DirectorySlash off";
+		$content .= "\n    </IfModule>";
+		$content.="\n  </IfModule>";
+		$content.="\n</IfModule>";
+
 		if ($content !== '') {
 			//suppress errors in case we don't have permissions for it
 			@file_put_contents($setupHelper->pathToHtaccess(), $content . "\n", FILE_APPEND);
@@ -432,7 +451,9 @@ class Setup {
 		$content.= "</ifModule>\n\n";
 		$content.= "# section for Apache 2.2 and 2.4\n";
 		$content.= "IndexIgnore *\n";
-		file_put_contents(\OC_Config::getValue('datadirectory', \OC::$SERVERROOT.'/data').'/.htaccess', $content);
-		file_put_contents(\OC_Config::getValue('datadirectory', \OC::$SERVERROOT.'/data').'/index.html', '');
+
+		$baseDir = \OC::$server->getConfig()->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data');
+		file_put_contents($baseDir . '/.htaccess', $content);
+		file_put_contents($baseDir . '/index.html', '');
 	}
 }

@@ -3,9 +3,10 @@
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -86,4 +87,11 @@ interface IAppContainer extends IContainer {
 	 */
 	function log($message, $level);
 
+	/**
+	 * Register a capability
+	 *
+	 * @param string $serviceName e.g. 'OCA\Files\Capabilities'
+	 * @since 8.2.0
+	 */
+	 public function registerCapability($serviceName);
 }

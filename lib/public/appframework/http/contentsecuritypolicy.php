@@ -2,8 +2,9 @@
 /**
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author sualko <klaus@jsxc.org>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -63,6 +64,8 @@ class ContentSecurityPolicy {
 	/** @var array Domains from which images can get loaded */
 	private $allowedImageDomains = [
 		'\'self\'',
+		'data:',
+		'blob:',
 	];
 	/** @var array Domains to which connections can be done */
 	private $allowedConnectDomains = [

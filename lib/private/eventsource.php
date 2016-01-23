@@ -2,12 +2,13 @@
 /**
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Felix Moeller <mail@felixmoeller.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -59,12 +60,23 @@ class OC_EventSource implements \OCP\IEventSource {
 		$this->fallback = isset($_GET['fallback']) and $_GET['fallback'] == 'true';
 		if ($this->fallback) {
 			$this->fallBackId = (int)$_GET['fallback_id'];
+			/**
+			 * FIXME: The default content-security-policy of ownCloud forbids inline
+			 * JavaScript for security reasons. IE starting on Windows 10 will
+			 * however also obey the CSP which will break the event source fallback.
+			 *
+			 * As a workaround thus we set a custom policy which allows the execution
+			 * of inline JavaScript.
+			 *
+			 * @link https://github.com/owncloud/core/issues/14286
+			 */
+			header("Content-Security-Policy: default-src 'none'; script-src 'unsafe-inline'");
 			header("Content-Type: text/html");
 			echo str_repeat('<span></span>' . PHP_EOL, 10); //dummy data to keep IE happy
 		} else {
 			header("Content-Type: text/event-stream");
 		}
-		if (!OC_Util::isCallRegistered()) {
+		if (!(\OC::$server->getRequest()->passesCSRFCheck())) {
 			$this->send('error', 'Possible CSRF attack. Connection will be closed.');
 			$this->close();
 			exit();

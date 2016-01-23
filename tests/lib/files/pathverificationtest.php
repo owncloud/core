@@ -10,6 +10,13 @@ namespace Test\Files;
 use OC\Files\Storage\Local;
 use OC\Files\View;
 
+/**
+ * Class PathVerification
+ *
+ * @group DB
+ *
+ * @package Test\Files
+ */
 class PathVerification extends \Test\TestCase {
 
 	/**
@@ -83,6 +90,10 @@ class PathVerification extends \Test\TestCase {
 		return [
 			// this is the monkey emoji - http://en.wikipedia.org/w/index.php?title=%F0%9F%90%B5&redirect=no
 			['🐵'],
+			['🐵.txt'],
+			['txt.💩'],
+			['💩🐵.txt'],
+			['💩🐵'],
 		];
 	}
 

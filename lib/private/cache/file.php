@@ -1,10 +1,12 @@
 <?php
 /**
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
- * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -99,7 +101,7 @@ class File implements ICache {
 		$storage = $this->getStorage();
 		$result = false;
 		// unique id to avoid chunk collision, just in case
-		$uniqueId = \OC::$server->getSecureRandom()->getLowStrengthGenerator()->generate(
+		$uniqueId = \OC::$server->getSecureRandom()->generate(
 			16,
 			ISecureRandom::CHAR_DIGITS . ISecureRandom::CHAR_LOWER . ISecureRandom::CHAR_UPPER
 		);
@@ -185,6 +187,8 @@ class File implements ICache {
 					} catch (\OCP\Lock\LockedException $e) {
 						// ignore locked chunks
 						\OC::$server->getLogger()->debug('Could not cleanup locked chunk "' . $file . '"', array('app' => 'core'));
+					} catch (\OCP\Files\ForbiddenException $e) {
+						\OC::$server->getLogger()->debug('Could not cleanup forbidden chunk "' . $file . '"', array('app' => 'core'));
 					} catch (\OCP\Files\LockNotAcquiredException $e) {
 						\OC::$server->getLogger()->debug('Could not cleanup locked chunk "' . $file . '"', array('app' => 'core'));
 					}

@@ -5,11 +5,11 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author tbelau666 <thomas.belau@gmx.de>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -32,7 +32,6 @@ use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\DBAL\Platforms\OraclePlatform;
 use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
-use Doctrine\DBAL\Platforms\SQLServerPlatform;
 
 class MDB2SchemaManager {
 	/**
@@ -56,7 +55,7 @@ class MDB2SchemaManager {
 	 * TODO: write more documentation
 	 */
 	public function getDbStructure($file) {
-		return \OC_DB_MDB2SchemaWriter::saveSchemaToFile($file, $this->conn);
+		return \OC\DB\MDB2SchemaWriter::saveSchemaToFile($file, $this->conn);
 	}
 
 	/**
@@ -76,7 +75,7 @@ class MDB2SchemaManager {
 	 * @return \OC\DB\Migrator
 	 */
 	public function getMigrator() {
-		$random = \OC::$server->getSecureRandom()->getMediumStrengthGenerator();
+		$random = \OC::$server->getSecureRandom();
 		$platform = $this->conn->getDatabasePlatform();
 		$config = \OC::$server->getConfig();
 		if ($platform instanceof SqlitePlatform) {
@@ -85,8 +84,6 @@ class MDB2SchemaManager {
 			return new OracleMigrator($this->conn, $random, $config);
 		} else if ($platform instanceof MySqlPlatform) {
 			return new MySQLMigrator($this->conn, $random, $config);
-		} else if ($platform instanceof SQLServerPlatform) {
-			return new MsSqlMigrator($this->conn, $random, $config);
 		} else if ($platform instanceof PostgreSqlPlatform) {
 			return new Migrator($this->conn, $random, $config);
 		} else {

@@ -1,8 +1,10 @@
 <?php
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -23,9 +25,19 @@ namespace OCA\Files_Sharing\Tests\External;
 
 use OC\Files\Storage\StorageFactory;
 use OCA\Files_Sharing\External\Manager;
+use OCA\Files_Sharing\External\MountProvider;
 use OCA\Files_Sharing\Tests\TestCase;
+use Test\Traits\UserTrait;
 
+/**
+ * Class ManagerTest
+ *
+ * @group DB
+ *
+ * @package OCA\Files_Sharing\Tests\External
+ */
 class ManagerTest extends TestCase {
+	use UserTrait;
 
 	/** @var Manager **/
 	private $manager;
@@ -38,10 +50,18 @@ class ManagerTest extends TestCase {
 
 	private $uid;
 
+	/**
+	 * @var \OCP\IUser
+	 */
+	private $user;
+	private $mountProvider;
+
 	protected function setUp() {
 		parent::setUp();
 
 		$this->uid = $this->getUniqueID('user');
+		$this->createUser($this->uid, '');
+		$this->user = \OC::$server->getUserManager()->get($this->uid);
 		$this->mountManager = new \OC\Files\Mount\Manager();
 		$this->httpHelper = $httpHelper = $this->getMockBuilder('\OC\HTTPHelper')->disableOriginalConstructor()->getMock();
 		/** @var \OC\HTTPHelper $httpHelper */
@@ -50,8 +70,19 @@ class ManagerTest extends TestCase {
 			$this->mountManager,
 			new StorageFactory(),
 			$httpHelper,
+			\OC::$server->getNotificationManager(),
 			$this->uid
 		);
+		$this->mountProvider = new MountProvider(\OC::$server->getDatabaseConnection(), function() {
+			return $this->manager;
+		});
+	}
+
+	private function setupMounts() {
+		$mounts = $this->mountProvider->getMountsForUser($this->user, new StorageFactory());
+		foreach ($mounts as $mount) {
+			$this->mountManager->addMount($mount);
+		}
 	}
 
 	public function testAddShare() {
@@ -76,7 +107,7 @@ class ManagerTest extends TestCase {
 		$this->assertCount(1, $openShares);
 		$this->assertExternalShareEntry($shareData1, $openShares[0], 1, '{{TemporaryMountPointName#' . $shareData1['name'] . '}}');
 
-		self::invokePrivate($this->manager, 'setupMounts');
+		$this->setupMounts();
 		$this->assertNotMount('SharedFolder');
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}');
 
@@ -88,7 +119,7 @@ class ManagerTest extends TestCase {
 		// New share falls back to "-1" appendix, because the name is already taken
 		$this->assertExternalShareEntry($shareData2, $openShares[1], 2, '{{TemporaryMountPointName#' . $shareData2['name'] . '}}-1');
 
-		self::invokePrivate($this->manager, 'setupMounts');
+		$this->setupMounts();
 		$this->assertNotMount('SharedFolder');
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}');
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}-1');
@@ -110,7 +141,7 @@ class ManagerTest extends TestCase {
 		$this->assertCount(1, $openShares);
 		$this->assertExternalShareEntry($shareData2, $openShares[0], 2, '{{TemporaryMountPointName#' . $shareData2['name'] . '}}-1');
 
-		self::invokePrivate($this->manager, 'setupMounts');
+		$this->setupMounts();
 		$this->assertMount($shareData1['name']);
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}');
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}-1');
@@ -123,7 +154,7 @@ class ManagerTest extends TestCase {
 		// New share falls back to the original name (no "-\d", because the name is not taken)
 		$this->assertExternalShareEntry($shareData3, $openShares[1], 3, '{{TemporaryMountPointName#' . $shareData3['name'] . '}}');
 
-		self::invokePrivate($this->manager, 'setupMounts');
+		$this->setupMounts();
 		$this->assertMount($shareData1['name']);
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}');
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}-1');
@@ -135,7 +166,7 @@ class ManagerTest extends TestCase {
 		// Decline the third share
 		$this->manager->declineShare($openShares[1]['id']);
 
-		self::invokePrivate($this->manager, 'setupMounts');
+		$this->setupMounts();
 		$this->assertMount($shareData1['name']);
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}');
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}-1');
@@ -150,7 +181,7 @@ class ManagerTest extends TestCase {
 		$this->assertCount(1, $openShares);
 		$this->assertExternalShareEntry($shareData2, $openShares[0], 2, '{{TemporaryMountPointName#' . $shareData2['name'] . '}}-1');
 
-		self::invokePrivate($this->manager, 'setupMounts');
+		$this->setupMounts();
 		$this->assertMount($shareData1['name']);
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}');
 		$this->assertNotMount('{{TemporaryMountPointName#' . $shareData1['name'] . '}}-1');

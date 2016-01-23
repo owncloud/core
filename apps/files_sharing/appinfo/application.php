@@ -1,9 +1,11 @@
 <?php
 /**
- * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -20,17 +22,16 @@
  *
  */
 
-namespace OCA\Files_Sharing\Appinfo;
+namespace OCA\Files_Sharing\AppInfo;
 
-use OCA\Files_Sharing\Helper;
 use OCA\Files_Sharing\MountProvider;
-use OCA\Files_Sharing\Propagation\PropagationManager;
 use OCP\AppFramework\App;
 use OC\AppFramework\Utility\SimpleContainer;
 use OCA\Files_Sharing\Controllers\ExternalSharesController;
 use OCA\Files_Sharing\Controllers\ShareController;
 use OCA\Files_Sharing\Middleware\SharingCheckMiddleware;
 use \OCP\IContainer;
+use OCA\Files_Sharing\Capabilities;
 
 class Application extends App {
 	public function __construct(array $urlParams = array()) {
@@ -46,38 +47,31 @@ class Application extends App {
 			return new ShareController(
 				$c->query('AppName'),
 				$c->query('Request'),
-				$c->query('UserSession'),
-				$server->getAppConfig(),
 				$server->getConfig(),
-				$c->query('URLGenerator'),
-				$c->query('UserManager'),
+				$server->getURLGenerator(),
+				$server->getUserManager(),
 				$server->getLogger(),
-				$server->getActivityManager()
+				$server->getActivityManager(),
+				$server->getShareManager(),
+				$server->getSession(),
+				$server->getPreviewManager(),
+				$server->getRootFolder()
 			);
 		});
 		$container->registerService('ExternalSharesController', function (SimpleContainer $c) {
 			return new ExternalSharesController(
 				$c->query('AppName'),
 				$c->query('Request'),
-				$c->query('IsIncomingShareEnabled'),
-				$c->query('ExternalManager')
+				$c->query('ExternalManager'),
+				$c->query('HttpClientService')
 			);
 		});
 
 		/**
 		 * Core class wrappers
 		 */
-		$container->registerService('UserSession', function (SimpleContainer $c) use ($server) {
-			return $server->getUserSession();
-		});
-		$container->registerService('URLGenerator', function (SimpleContainer $c) use ($server) {
-			return $server->getUrlGenerator();
-		});
-		$container->registerService('UserManager', function (SimpleContainer $c) use ($server) {
-			return $server->getUserManager();
-		});
-		$container->registerService('IsIncomingShareEnabled', function (SimpleContainer $c) {
-			return Helper::isIncomingServer2serverShareEnabled();
+		$container->registerService('HttpClientService', function (SimpleContainer $c) use ($server) {
+			return $server->getHTTPClientService();
 		});
 		$container->registerService('ExternalManager', function (SimpleContainer $c) use ($server) {
 			$user = $server->getUserSession()->getUser();
@@ -87,6 +81,7 @@ class Application extends App {
 				\OC\Files\Filesystem::getMountManager(),
 				\OC\Files\Filesystem::getLoader(),
 				$server->getHTTPHelper(),
+				$server->getNotificationManager(),
 				$uid
 			);
 		});
@@ -98,7 +93,8 @@ class Application extends App {
 			return new SharingCheckMiddleware(
 				$c->query('AppName'),
 				$server->getConfig(),
-				$server->getAppManager()
+				$server->getAppManager(),
+				$c['ControllerMethodReflector']
 			);
 		});
 
@@ -109,19 +105,25 @@ class Application extends App {
 			/** @var \OCP\IServerContainer $server */
 			$server = $c->query('ServerContainer');
 			return new MountProvider(
-				$server->getConfig(),
-				$c->query('PropagationManager')
-			);
-		});
-
-		$container->registerService('PropagationManager', function (IContainer $c) {
-			/** @var \OCP\IServerContainer $server */
-			$server = $c->query('ServerContainer');
-			return new PropagationManager(
-				$server->getUserSession(),
 				$server->getConfig()
 			);
 		});
+
+		$container->registerService('ExternalMountProvider', function (IContainer $c) {
+			/** @var \OCP\IServerContainer $server */
+			$server = $c->query('ServerContainer');
+			return new \OCA\Files_Sharing\External\MountProvider(
+				$server->getDatabaseConnection(),
+				function() use ($c) {
+					return $c->query('ExternalManager');
+				}
+			);
+		});
+
+		/*
+		 * Register capabilities
+		 */
+		$container->registerCapability('OCA\Files_Sharing\Capabilities');
 	}
 
 	public function registerMountProviders() {
@@ -129,10 +131,6 @@ class Application extends App {
 		$server = $this->getContainer()->query('ServerContainer');
 		$mountProviderCollection = $server->getMountProviderCollection();
 		$mountProviderCollection->registerProvider($this->getContainer()->query('MountProvider'));
-	}
-
-	public function setupPropagation() {
-		$propagationManager = $this->getContainer()->query('PropagationManager');
-		\OCP\Util::connectHook('OC_Filesystem', 'setup', $propagationManager, 'globalSetup');
+		$mountProviderCollection->registerProvider($this->getContainer()->query('ExternalMountProvider'));
 	}
 }

@@ -1,8 +1,9 @@
 <?php
 /**
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -32,6 +33,7 @@ use \OCP\AppFramework\Http;
 use \OCA\Files_external\Service\GlobalStoragesService;
 use \OCA\Files_external\NotFoundException;
 use \OCA\Files_external\Lib\StorageConfig;
+use \OCA\Files_External\Service\BackendService;
 
 /**
  * Global storages controller
@@ -63,7 +65,8 @@ class GlobalStoragesController extends StoragesController {
 	 * Create an external storage entry.
 	 *
 	 * @param string $mountPoint storage mount point
-	 * @param string $backendClass backend class name
+	 * @param string $backend backend identifier
+	 * @param string $authMechanism authentication mechanism identifier
 	 * @param array $backendOptions backend-specific options
 	 * @param array $mountOptions mount-specific options
 	 * @param array $applicableUsers users for which to mount the storage
@@ -74,21 +77,27 @@ class GlobalStoragesController extends StoragesController {
 	 */
 	public function create(
 		$mountPoint,
-		$backendClass,
+		$backend,
+		$authMechanism,
 		$backendOptions,
 		$mountOptions,
 		$applicableUsers,
 		$applicableGroups,
 		$priority
 	) {
-		$newStorage = new StorageConfig();
-		$newStorage->setMountPoint($mountPoint);
-		$newStorage->setBackendClass($backendClass);
-		$newStorage->setBackendOptions($backendOptions);
-		$newStorage->setMountOptions($mountOptions);
-		$newStorage->setApplicableUsers($applicableUsers);
-		$newStorage->setApplicableGroups($applicableGroups);
-		$newStorage->setPriority($priority);
+		$newStorage = $this->createStorage(
+			$mountPoint,
+			$backend,
+			$authMechanism,
+			$backendOptions,
+			$mountOptions,
+			$applicableUsers,
+			$applicableGroups,
+			$priority
+		);
+		if ($newStorage instanceof DataResponse) {
+			return $newStorage;
+		}
 
 		$response = $this->validate($newStorage);
 		if (!empty($response)) {
@@ -110,7 +119,8 @@ class GlobalStoragesController extends StoragesController {
 	 *
 	 * @param int $id storage id
 	 * @param string $mountPoint storage mount point
-	 * @param string $backendClass backend class name
+	 * @param string $backend backend identifier
+	 * @param string $authMechanism authentication mechansim identifier
 	 * @param array $backendOptions backend-specific options
 	 * @param array $mountOptions mount-specific options
 	 * @param array $applicableUsers users for which to mount the storage
@@ -122,21 +132,28 @@ class GlobalStoragesController extends StoragesController {
 	public function update(
 		$id,
 		$mountPoint,
-		$backendClass,
+		$backend,
+		$authMechanism,
 		$backendOptions,
 		$mountOptions,
 		$applicableUsers,
 		$applicableGroups,
 		$priority
 	) {
-		$storage = new StorageConfig($id);
-		$storage->setMountPoint($mountPoint);
-		$storage->setBackendClass($backendClass);
-		$storage->setBackendOptions($backendOptions);
-		$storage->setMountOptions($mountOptions);
-		$storage->setApplicableUsers($applicableUsers);
-		$storage->setApplicableGroups($applicableGroups);
-		$storage->setPriority($priority);
+		$storage = $this->createStorage(
+			$mountPoint,
+			$backend,
+			$authMechanism,
+			$backendOptions,
+			$mountOptions,
+			$applicableUsers,
+			$applicableGroups,
+			$priority
+		);
+		if ($storage instanceof DataResponse) {
+			return $storage;
+		}
+		$storage->setId($id);
 
 		$response = $this->validate($storage);
 		if (!empty($response)) {
@@ -162,5 +179,6 @@ class GlobalStoragesController extends StoragesController {
 		);
 
 	}
+
 
 }

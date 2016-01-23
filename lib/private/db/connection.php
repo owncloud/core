@@ -6,7 +6,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -29,7 +29,10 @@ use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Cache\QueryCacheProfile;
 use Doctrine\Common\EventManager;
+use OC\DB\QueryBuilder\ExpressionBuilder;
+use OC\DB\QueryBuilder\QueryBuilder;
 use OCP\IDBConnection;
+use OCP\PreconditionNotMetException;
 
 class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	/**
@@ -49,6 +52,56 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 			// throw a new exception to prevent leaking info from the stacktrace
 			throw new DBALException('Failed to connect to the database: ' . $e->getMessage(), $e->getCode());
 		}
+	}
+
+	/**
+	 * Returns a QueryBuilder for the connection.
+	 *
+	 * @return \OCP\DB\QueryBuilder\IQueryBuilder
+	 */
+	public function getQueryBuilder() {
+		return new QueryBuilder($this);
+	}
+
+	/**
+	 * Gets the QueryBuilder for the connection.
+	 *
+	 * @return \Doctrine\DBAL\Query\QueryBuilder
+	 * @deprecated please use $this->getQueryBuilder() instead
+	 */
+	public function createQueryBuilder() {
+		$backtrace = $this->getCallerBacktrace();
+		\OC::$server->getLogger()->debug('Doctrine QueryBuilder retrieved in {backtrace}', ['app' => 'core', 'backtrace' => $backtrace]);
+		return parent::createQueryBuilder();
+	}
+
+	/**
+	 * Gets the ExpressionBuilder for the connection.
+	 *
+	 * @return \Doctrine\DBAL\Query\Expression\ExpressionBuilder
+	 * @deprecated please use $this->getQueryBuilder()->expr() instead
+	 */
+	public function getExpressionBuilder() {
+		$backtrace = $this->getCallerBacktrace();
+		\OC::$server->getLogger()->debug('Doctrine ExpressionBuilder retrieved in {backtrace}', ['app' => 'core', 'backtrace' => $backtrace]);
+		return parent::getExpressionBuilder();
+	}
+
+	/**
+	 * Get the file and line that called the method where `getCallerBacktrace()` was used
+	 *
+	 * @return string
+	 */
+	protected function getCallerBacktrace() {
+		$traces = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+
+		// 0 is the method where we use `getCallerBacktrace`
+		// 1 is the target method which uses the method we want to log
+		if (isset($traces[1])) {
+			return $traces[1]['file'] . ':' . $traces[1]['line'];
+		}
+
+		return '';
 	}
 
 	/**
@@ -102,7 +155,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 		$statement = $this->replaceTablePrefix($statement);
 		$statement = $this->adapter->fixupStatement($statement);
 
-		if(\OC_Config::getValue( 'log_query', false)) {
+		if(\OC::$server->getSystemConfig()->getValue( 'log_query', false)) {
 			\OCP\Util::writeLog('core', 'DB prepare : '.$statement, \OCP\Util::DEBUG);
 		}
 		return parent::prepare($statement);
@@ -162,8 +215,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @param string $seqName Name of the sequence object from which the ID should be returned.
 	 * @return string A string representation of the last inserted ID.
 	 */
-	public function lastInsertId($seqName = null)
-	{
+	public function lastInsertId($seqName = null) {
 		if ($seqName) {
 			$seqName = $this->replaceTablePrefix($seqName);
 		}
@@ -188,6 +240,64 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 */
 	public function insertIfNotExist($table, $input, array $compare = null) {
 		return $this->adapter->insertIfNotExist($table, $input, $compare);
+	}
+
+	private function getType($value) {
+		if (is_bool($value)) {
+			return \PDO::PARAM_BOOL;
+		} else if (is_int($value)) {
+			return \PDO::PARAM_INT;
+		} else {
+			return \PDO::PARAM_STR;
+		}
+	}
+
+	/**
+	 * Insert or update a row value
+	 *
+	 * @param string $table
+	 * @param array $keys (column name => value)
+	 * @param array $values (column name => value)
+	 * @param array $updatePreconditionValues ensure values match preconditions (column name => value)
+	 * @return int number of new rows
+	 * @throws \Doctrine\DBAL\DBALException
+	 * @throws PreconditionNotMetException
+	 */
+	public function setValues($table, array $keys, array $values, array $updatePreconditionValues = []) {
+		try {
+			$insertQb = $this->getQueryBuilder();
+			$insertQb->insert($table)
+				->values(
+					array_map(function($value) use ($insertQb) {
+						return $insertQb->createNamedParameter($value, $this->getType($value));
+					}, array_merge($keys, $values))
+				);
+			return $insertQb->execute();
+		} catch (\Doctrine\DBAL\Exception\ConstraintViolationException $e) {
+			// value already exists, try update
+			$updateQb = $this->getQueryBuilder();
+			$updateQb->update($table);
+			foreach ($values as $name => $value) {
+				$updateQb->set($name, $updateQb->createNamedParameter($value), $this->getType($value));
+			}
+			$where = $updateQb->expr()->andx();
+			$whereValues = array_merge($keys, $updatePreconditionValues);
+			foreach ($whereValues as $name => $value) {
+				$where->add($updateQb->expr()->eq(
+					$name,
+					$updateQb->createNamedParameter($value, $this->getType($value)),
+					$this->getType($value)
+				));
+			}
+			$updateQb->where($where);
+			$affected = $updateQb->execute();
+
+			if ($affected === 0) {
+				throw new PreconditionNotMetException();
+			}
+
+			return 0;
+		}
 	}
 
 	/**
@@ -238,5 +348,25 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 */
 	protected function replaceTablePrefix($statement) {
 		return str_replace( '*PREFIX*', $this->tablePrefix, $statement );
+	}
+
+	/**
+	 * Check if a transaction is active
+	 *
+	 * @return bool
+	 * @since 8.2.0
+	 */
+	public function inTransaction() {
+		return $this->getTransactionNestingLevel() > 0;
+	}
+
+	/**
+	 * Espace a parameter to be used in a LIKE query
+	 *
+	 * @param string $param
+	 * @return string
+	 */
+	public function escapeLikeParameter($param) {
+		return addcslashes($param, '\\_%');
 	}
 }

@@ -7,7 +7,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -37,7 +37,8 @@ if(count($configPrefixes) === 1) {
 		new OCA\user_ldap\lib\LogWrapper(),
 		\OC::$server->getAvatarManager(),
 		new \OCP\Image(),
-		$dbc
+		$dbc,
+		\OC::$server->getUserManager()
 	);
 	$connector = new OCA\user_ldap\lib\Connection($ldapWrapper, $configPrefixes[0]);
 	$ldapAccess = new OCA\user_ldap\lib\Access($connector, $ldapWrapper, $userManager);
@@ -59,8 +60,12 @@ if(count($configPrefixes) > 0) {
 	OC_Group::useBackend($groupBackend);
 }
 
-OCP\Backgroundjob::registerJob('OCA\user_ldap\lib\Jobs');
-OCP\Backgroundjob::registerJob('\OCA\User_LDAP\Jobs\CleanUp');
+\OCP\Util::connectHook(
+	'\OCA\Files_Sharing\API\Server2Server',
+	'preLoginNameUsedAsUserName',
+	'\OCA\user_ldap\lib\Helper',
+	'loginName2UserName'
+);
 
 if(OCP\App::isEnabled('user_webdavauth')) {
 	OCP\Util::writeLog('user_ldap',

@@ -12,6 +12,8 @@ var GroupList;
 GroupList = {
 	activeGID: '',
 	everyoneGID: '_everyone',
+	filter: '',
+	filterGroups: false,
 
 	addGroup: function (gid, usercount) {
 		var $li = $userGroupList.find('.isgroup:last-child').clone();
@@ -47,18 +49,26 @@ GroupList = {
 		return parseInt($groupLiElement.data('usercount'), 10);
 	},
 
-	modEveryoneCount: function(diff) {
-		var $li = GroupList.getGroupLI(GroupList.everyoneGID);
+	modGroupCount: function(gid, diff) {
+		var $li = GroupList.getGroupLI(gid);
 		var count = GroupList.getUserCount($li) + diff;
 		GroupList.setUserCount($li, count);
 	},
 
 	incEveryoneCount: function() {
-		GroupList.modEveryoneCount(1);
+		GroupList.modGroupCount(GroupList.everyoneGID, 1);
 	},
 
 	decEveryoneCount: function() {
-		GroupList.modEveryoneCount(-1);
+		GroupList.modGroupCount(GroupList.everyoneGID, -1);
+	},
+
+	incGroupCount: function(gid) {
+		GroupList.modGroupCount(gid, 1);
+	},
+
+	decGroupCount: function(gid) {
+		GroupList.modGroupCount(gid, -1);
 	},
 
 	getCurrentGID: function () {
@@ -145,8 +155,8 @@ GroupList = {
 		$.get(
 			OC.generateUrl('/settings/users/groups'),
 			{
-				pattern: filter.getPattern(),
-				filterGroups: filter.filterGroups ? 1 : 0,
+				pattern: this.filter,
+				filterGroups: this.filterGroups ? 1 : 0,
 				sortGroups: $sortGroupBy
 			},
 			function (result) {
@@ -294,10 +304,10 @@ GroupList = {
 		$.ajax({
 			type: "GET",
 			dataType: "json",
-			url: OC.generateUrl('/settings/ajax/geteveryonecount')
+			url: OC.generateUrl('/settings/users/stats')
 		}).success(function (data) {
-			$('#everyonegroup').data('usercount', data.count);
-			$('#everyonecount').text(data.count);
+			$('#everyonegroup').data('usercount', data.totalUsers);
+			$('#everyonecount').text(data.totalUsers);
 		});
 	}
 };

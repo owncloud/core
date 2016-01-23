@@ -11,6 +11,7 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Johannes Willnecker <johannes@willnecker.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Olivier Paroz <github@oparoz.com>
  * @author Robin Appelman <icewind@owncloud.com>
@@ -18,7 +19,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -39,17 +40,19 @@
  * Class for basic image manipulation
  */
 class OC_Image implements \OCP\IImage {
+	/** @var false|resource */
 	protected $resource = false; // tmp resource.
+	/** @var int */
 	protected $imageType = IMAGETYPE_PNG; // Default to png if file type isn't evident.
-	protected $mimeType = "image/png"; // Default to png
+	/** @var string */
+	protected $mimeType = 'image/png'; // Default to png
+	/** @var int */
 	protected $bitDepth = 24;
+	/** @var null|string */
 	protected $filePath = null;
-
+	/** @var finfo */
 	private $fileInfo;
-
-	/**
-	 * @var \OCP\ILogger
-	 */
+	/** @var \OCP\ILogger */
 	private $logger;
 
 	/**

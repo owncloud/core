@@ -6,7 +6,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -56,11 +56,13 @@ class Node implements \OCP\Files\Node {
 	 * @param \OC\Files\View $view
 	 * @param \OC\Files\Node\Root $root
 	 * @param string $path
+	 * @param FileInfo $fileInfo
 	 */
-	public function __construct($root, $view, $path) {
+	public function __construct($root, $view, $path, $fileInfo = null) {
 		$this->view = $view;
 		$this->root = $root;
 		$this->path = $path;
+		$this->fileInfo = $fileInfo;
 	}
 
 	/**
@@ -344,5 +346,9 @@ class Node implements \OCP\Files\Node {
 
 	public function getMountPoint() {
 		return $this->getFileInfo()->getMountPoint();
+	}
+
+	public function getOwner() {
+		return $this->getFileInfo()->getOwner();
 	}
 }

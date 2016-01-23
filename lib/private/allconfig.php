@@ -8,7 +8,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -119,6 +119,17 @@ class AllConfig implements \OCP\IConfig {
 	}
 
 	/**
+	 * Looks up a system wide defined value and filters out sensitive data
+	 *
+	 * @param string $key the key of the value, under which it was saved
+	 * @param mixed $default the default value to be returned if the value isn't set
+	 * @return mixed the value or $default
+	 */
+	public function getFilteredSystemValue($key, $default = '') {
+		return $this->systemConfig->getFilteredValue($key, $default);
+	}
+
+	/**
 	 * Delete a system wide defined value
 	 *
 	 * @param string $key the key of the value, under which it was saved
@@ -194,56 +205,27 @@ class AllConfig implements \OCP\IConfig {
 		// TODO - FIXME
 		$this->fixDIInit();
 
-		// Check if the key does exist
-		$sql  = 'SELECT `configvalue` FROM `*PREFIX*preferences` '.
-				'WHERE `userid` = ? AND `appid` = ? AND `configkey` = ?';
-		$result = $this->connection->executeQuery($sql, array($userId, $appName, $key));
-		$oldValue = $result->fetchColumn();
-		$result->closeCursor();
-		$exists = $oldValue !== false;
-
-		if($oldValue === strval($value)) {
-			// no changes
-			return;
+		$preconditionArray = [];
+		if (isset($preCondition)) {
+			$preconditionArray = [
+				'configvalue' => $preCondition,
+			];
 		}
 
-		$affectedRows = 0;
-		if (!$exists && $preCondition === null) {
-			$this->connection->insertIfNotExist('*PREFIX*preferences', [
-				'configvalue'	=> $value,
-				'userid'		=> $userId,
-				'appid'			=> $appName,
-				'configkey'		=> $key,
-			], ['configkey', 'userid', 'appid']);
-			$affectedRows = 1;
-		} elseif ($exists) {
-			$data = array($value, $userId, $appName, $key);
-
-			$sql  = 'UPDATE `*PREFIX*preferences` SET `configvalue` = ? '.
-					'WHERE `userid` = ? AND `appid` = ? AND `configkey` = ? ';
-
-			if($preCondition !== null) {
-				if($this->getSystemValue('dbtype', 'sqlite') === 'oci') {
-					//oracle hack: need to explicitly cast CLOB to CHAR for comparison
-					$sql .= 'AND to_char(`configvalue`) = ?';
-				} else {
-					$sql .= 'AND `configvalue` = ?';
-				}
-				$data[] = $preCondition;
-			}
-			$affectedRows = $this->connection->executeUpdate($sql, $data);
-		}
+		$this->connection->setValues('preferences', [
+			'userid' => $userId,
+			'appid' => $appName,
+			'configkey' => $key,
+		], [
+			'configvalue' => $value,
+		], $preconditionArray);
 
 		// only add to the cache if we already loaded data for the user
-		if ($affectedRows > 0 && isset($this->userCache[$userId])) {
+		if (isset($this->userCache[$userId])) {
 			if (!isset($this->userCache[$userId][$appName])) {
 				$this->userCache[$userId][$appName] = array();
 			}
 			$this->userCache[$userId][$appName][$key] = $value;
-		}
-
-		if ($preCondition !== null && $affectedRows === 0) {
-			throw new PreConditionNotMetException;
 		}
 	}
 

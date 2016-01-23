@@ -7,16 +7,17 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Martin Mattel <martin.mattel@diemattels.at>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Sam Tuke <mail@samtuke.com>
  * @author scambra <sergio@entrecables.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -36,13 +37,16 @@
 namespace OC\Files\Storage;
 
 use OC\Files\Cache\Cache;
+use OC\Files\Cache\Propagator;
 use OC\Files\Cache\Scanner;
+use OC\Files\Cache\Updater;
 use OC\Files\Filesystem;
 use OC\Files\Cache\Watcher;
 use OCP\Files\FileNameTooLongException;
 use OCP\Files\InvalidCharacterInPathException;
 use OCP\Files\InvalidPathException;
 use OCP\Files\ReservedWordException;
+use OCP\Files\Storage\ILockingStorage;
 use OCP\Lock\ILockingProvider;
 
 /**
@@ -56,14 +60,16 @@ use OCP\Lock\ILockingProvider;
  * Some \OC\Files\Storage\Common methods call functions which are first defined
  * in classes which extend it, e.g. $this->stat() .
  */
-abstract class Common implements Storage {
+abstract class Common implements Storage, ILockingStorage {
 
 	use LocalTempFileTrait;
 
 	protected $cache;
 	protected $scanner;
 	protected $watcher;
+	protected $propagator;
 	protected $storageCache;
+	protected $updater;
 
 	protected $mountOptions = [];
 
@@ -136,10 +142,6 @@ abstract class Common implements Storage {
 	}
 
 	public function isSharable($path) {
-		if (\OC_Util::isSharingDisabledForUser()) {
-			return false;
-		}
-
 		return $this->isReadable($path);
 	}
 
@@ -224,7 +226,7 @@ abstract class Common implements Storage {
 		if ($this->is_dir($path)) {
 			return 'httpd/unix-directory';
 		} elseif ($this->file_exists($path)) {
-			return \OC_Helper::getFileNameMimeType($path);
+			return \OC::$server->getMimeTypeDetector()->detectPath($path);
 		} else {
 			return false;
 		}
@@ -247,7 +249,7 @@ abstract class Common implements Storage {
 	}
 
 	public function getLocalFolder($path) {
-		$baseDir = \OC_Helper::tmpFolder();
+		$baseDir = \OC::$server->getTempManager()->getTemporaryFolder();
 		$this->addLocalFolder($path, $baseDir);
 		return $baseDir;
 	}
@@ -260,7 +262,7 @@ abstract class Common implements Storage {
 		$dh = $this->opendir($path);
 		if (is_resource($dh)) {
 			while (($file = readdir($dh)) !== false) {
-				if ($file !== '.' and $file !== '..') {
+				if (!\OC\Files\Filesystem::isIgnoredDir($file)) {
 					if ($this->is_dir($path . '/' . $file)) {
 						mkdir($target . '/' . $file);
 						$this->addLocalFolder($path . '/' . $file, $target . '/' . $file);
@@ -283,7 +285,7 @@ abstract class Common implements Storage {
 		$dh = $this->opendir($dir);
 		if (is_resource($dh)) {
 			while (($item = readdir($dh)) !== false) {
-				if ($item == '.' || $item == '..') continue;
+				if (\OC\Files\Filesystem::isIgnoredDir($item)) continue;
 				if (strstr(strtolower($item), strtolower($query)) !== false) {
 					$files[] = $dir . '/' . $item;
 				}
@@ -338,10 +340,36 @@ abstract class Common implements Storage {
 		}
 		if (!isset($this->watcher)) {
 			$this->watcher = new Watcher($storage);
-			$globalPolicy = \OC::$server->getConfig()->getSystemValue('filesystem_check_changes', Watcher::CHECK_ONCE);
+			$globalPolicy = \OC::$server->getConfig()->getSystemValue('filesystem_check_changes', Watcher::CHECK_NEVER);
 			$this->watcher->setPolicy((int)$this->getMountOption('filesystem_check_changes', $globalPolicy));
 		}
 		return $this->watcher;
+	}
+
+	/**
+	 * get a propagator instance for the cache
+	 *
+	 * @param \OC\Files\Storage\Storage (optional) the storage to pass to the watcher
+	 * @return \OC\Files\Cache\Propagator
+	 */
+	public function getPropagator($storage = null) {
+		if (!$storage) {
+			$storage = $this;
+		}
+		if (!isset($this->propagator)) {
+			$this->propagator = new Propagator($storage);
+		}
+		return $this->propagator;
+	}
+
+	public function getUpdater($storage = null) {
+		if (!$storage) {
+			$storage = $this;
+		}
+		if (!isset($this->updater)) {
+			$this->updater = new Updater($storage);
+		}
+		return $this->updater;
 	}
 
 	public function getStorageCache($storage = null) {
@@ -371,13 +399,7 @@ abstract class Common implements Storage {
 	 * @return string|false
 	 */
 	public function getETag($path) {
-		$ETagFunction = \OC\Connector\Sabre\Node::$ETagFunction;
-		if ($ETagFunction) {
-			$hash = call_user_func($ETagFunction, $path);
-			return $hash;
-		} else {
-			return uniqid();
-		}
+		return uniqid();
 	}
 
 	/**
@@ -404,6 +426,11 @@ abstract class Common implements Storage {
 		return implode('/', $output);
 	}
 
+	/**
+	 * Test a storage for availability
+	 *
+	 * @return bool
+	 */
 	public function test() {
 		if ($this->stat('')) {
 			return true;
@@ -649,5 +676,19 @@ abstract class Common implements Storage {
 	 */
 	public function changeLock($path, $type, ILockingProvider $provider) {
 		$provider->changeLock('files/' . md5($this->getId() . '::' . trim($path, '/')), $type);
+	}
+
+	/**
+	 * @return array [ available, last_checked ]
+	 */
+	public function getAvailability() {
+		return $this->getStorageCache()->getAvailability();
+	}
+
+	/**
+	 * @param bool $isAvailable
+	 */
+	public function setAvailability($isAvailable) {
+		$this->getStorageCache()->setAvailability($isAvailable);
 	}
 }

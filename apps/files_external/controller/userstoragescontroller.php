@@ -1,8 +1,9 @@
 <?php
 /**
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -22,6 +23,7 @@
 namespace OCA\Files_External\Controller;
 
 
+use OCA\Files_External\Lib\Auth\AuthMechanism;
 use \OCP\IConfig;
 use \OCP\IUserSession;
 use \OCP\IRequest;
@@ -30,13 +32,20 @@ use \OCP\AppFramework\Http\DataResponse;
 use \OCP\AppFramework\Controller;
 use \OCP\AppFramework\Http;
 use \OCA\Files_external\Service\UserStoragesService;
+use \OCA\Files_External\Service\BackendService;
 use \OCA\Files_external\NotFoundException;
 use \OCA\Files_external\Lib\StorageConfig;
+use \OCA\Files_External\Lib\Backend\Backend;
 
 /**
  * User storages controller
  */
 class UserStoragesController extends StoragesController {
+	/**
+	 * @var IUserSession
+	 */
+	private $userSession;
+
 	/**
 	 * Creates a new user storages controller.
 	 *
@@ -44,12 +53,14 @@ class UserStoragesController extends StoragesController {
 	 * @param IRequest $request request object
 	 * @param IL10N $l10n l10n service
 	 * @param UserStoragesService $userStoragesService storage service
+	 * @param IUserSession $userSession
 	 */
 	public function __construct(
 		$AppName,
 		IRequest $request,
 		IL10N $l10n,
-		UserStoragesService $userStoragesService
+		UserStoragesService $userStoragesService,
+		IUserSession $userSession
 	) {
 		parent::__construct(
 			$AppName,
@@ -57,35 +68,27 @@ class UserStoragesController extends StoragesController {
 			$l10n,
 			$userStoragesService
 		);
+		$this->userSession = $userSession;
+	}
+
+	protected function manipulateStorageConfig(StorageConfig $storage) {
+		/** @var AuthMechanism */
+		$authMechanism = $storage->getAuthMechanism();
+		$authMechanism->manipulateStorageConfig($storage, $this->userSession->getUser());
+		/** @var Backend */
+		$backend = $storage->getBackend();
+		$backend->manipulateStorageConfig($storage, $this->userSession->getUser());
 	}
 
 	/**
-	 * Validate storage config
+	 * Get all storage entries
 	 *
-	 * @param StorageConfig $storage storage config
+	 * @NoAdminRequired
 	 *
-	 * @return DataResponse|null returns response in case of validation error
+	 * @return DataResponse
 	 */
-	protected function validate(StorageConfig $storage) {
-		$result = parent::validate($storage);
-
-		if ($result != null) {
-			return $result;
-		}
-
-		// Verify that the mount point applies for the current user
-		// Prevent non-admin users from mounting local storage and other disabled backends
-		$allowedBackends = \OC_Mount_Config::getPersonalBackends();
-		if (!isset($allowedBackends[$storage->getBackendClass()])) {
-			return new DataResponse(
-				array(
-					'message' => (string)$this->l10n->t('Invalid storage backend "%s"', array($storage->getBackendClass()))
-				),
-				Http::STATUS_UNPROCESSABLE_ENTITY
-			);
-		}
-
-		return null;
+	public function index() {
+		return parent::index();
 	}
 
 	/**
@@ -103,7 +106,8 @@ class UserStoragesController extends StoragesController {
 	 * Create an external storage entry.
 	 *
 	 * @param string $mountPoint storage mount point
-	 * @param string $backendClass backend class name
+	 * @param string $backend backend identifier
+	 * @param string $authMechanism authentication mechanism identifier
 	 * @param array $backendOptions backend-specific options
 	 * @param array $mountOptions backend-specific mount options
 	 *
@@ -113,15 +117,21 @@ class UserStoragesController extends StoragesController {
 	 */
 	public function create(
 		$mountPoint,
-		$backendClass,
+		$backend,
+		$authMechanism,
 		$backendOptions,
 		$mountOptions
 	) {
-		$newStorage = new StorageConfig();
-		$newStorage->setMountPoint($mountPoint);
-		$newStorage->setBackendClass($backendClass);
-		$newStorage->setBackendOptions($backendOptions);
-		$newStorage->setMountOptions($mountOptions);
+		$newStorage = $this->createStorage(
+			$mountPoint,
+			$backend,
+			$authMechanism,
+			$backendOptions,
+			$mountOptions
+		);
+		if ($newStorage instanceOf DataResponse) {
+			return $newStorage;
+		}
 
 		$response = $this->validate($newStorage);
 		if (!empty($response)) {
@@ -142,7 +152,8 @@ class UserStoragesController extends StoragesController {
 	 *
 	 * @param int $id storage id
 	 * @param string $mountPoint storage mount point
-	 * @param string $backendClass backend class name
+	 * @param string $backend backend identifier
+	 * @param string $authMechanism authentication mechanism identifier
 	 * @param array $backendOptions backend-specific options
 	 * @param array $mountOptions backend-specific mount options
 	 *
@@ -153,15 +164,22 @@ class UserStoragesController extends StoragesController {
 	public function update(
 		$id,
 		$mountPoint,
-		$backendClass,
+		$backend,
+		$authMechanism,
 		$backendOptions,
 		$mountOptions
 	) {
-		$storage = new StorageConfig($id);
-		$storage->setMountPoint($mountPoint);
-		$storage->setBackendClass($backendClass);
-		$storage->setBackendOptions($backendOptions);
-		$storage->setMountOptions($mountOptions);
+		$storage = $this->createStorage(
+			$mountPoint,
+			$backend,
+			$authMechanism,
+			$backendOptions,
+			$mountOptions
+		);
+		if ($storage instanceOf DataResponse) {
+			return $storage;
+		}
+		$storage->setId($id);
 
 		$response = $this->validate($storage);
 		if (!empty($response)) {
@@ -198,4 +216,5 @@ class UserStoragesController extends StoragesController {
 	public function destroy($id) {
 		return parent::destroy($id);
 	}
+
 }

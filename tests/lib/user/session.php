@@ -12,6 +12,10 @@ namespace Test\User;
 use OC\Session\Memory;
 use OC\User\User;
 
+/**
+ * @group DB
+ * @package Test\User
+ */
 class Session extends \Test\TestCase {
 	public function testGetUser() {
 		$session = $this->getMock('\OC\Session\Memory', array(), array(''));
@@ -20,7 +24,7 @@ class Session extends \Test\TestCase {
 			->with('user_id')
 			->will($this->returnValue('foo'));
 
-		$backend = $this->getMock('OC_User_Dummy');
+		$backend = $this->getMock('\Test\Util\User\Dummy');
 		$backend->expects($this->once())
 			->method('userExists')
 			->with('foo')
@@ -41,7 +45,7 @@ class Session extends \Test\TestCase {
 			->with('user_id')
 			->will($this->returnValue('foo'));
 
-		$backend = $this->getMock('OC_User_Dummy');
+		$backend = $this->getMock('\Test\Util\User\Dummy');
 		$backend->expects($this->once())
 			->method('userExists')
 			->with('foo')
@@ -62,7 +66,7 @@ class Session extends \Test\TestCase {
 			->with('user_id')
 			->will($this->returnValue(null));
 
-		$backend = $this->getMock('OC_User_Dummy');
+		$backend = $this->getMock('\Test\Util\User\Dummy');
 		$backend->expects($this->never())
 			->method('userExists');
 
@@ -82,7 +86,7 @@ class Session extends \Test\TestCase {
 
 		$manager = $this->getMock('\OC\User\Manager');
 
-		$backend = $this->getMock('OC_User_Dummy');
+		$backend = $this->getMock('\Test\Util\User\Dummy');
 
 		$user = $this->getMock('\OC\User\User', array(), array('foo', $backend));
 		$user->expects($this->once())
@@ -95,6 +99,8 @@ class Session extends \Test\TestCase {
 
 	public function testLoginValidPasswordEnabled() {
 		$session = $this->getMock('\OC\Session\Memory', array(), array(''));
+		$session->expects($this->once())
+			->method('regenerateId');
 		$session->expects($this->exactly(2))
 			->method('set')
 			->with($this->callback(function ($key) {
@@ -122,7 +128,7 @@ class Session extends \Test\TestCase {
 		}
 		$manager = $this->getMock('\OC\User\Manager', $managerMethods, array());
 
-		$backend = $this->getMock('OC_User_Dummy');
+		$backend = $this->getMock('\Test\Util\User\Dummy');
 
 		$user = $this->getMock('\OC\User\User', array(), array('foo', $backend));
 		$user->expects($this->once())
@@ -148,6 +154,8 @@ class Session extends \Test\TestCase {
 		$session = $this->getMock('\OC\Session\Memory', array(), array(''));
 		$session->expects($this->never())
 			->method('set');
+		$session->expects($this->once())
+				->method('regenerateId');
 
 		$managerMethods = get_class_methods('\OC\User\Manager');
 		//keep following methods intact in order to ensure hooks are
@@ -161,7 +169,7 @@ class Session extends \Test\TestCase {
 		}
 		$manager = $this->getMock('\OC\User\Manager', $managerMethods, array());
 
-		$backend = $this->getMock('OC_User_Dummy');
+		$backend = $this->getMock('\Test\Util\User\Dummy');
 
 		$user = $this->getMock('\OC\User\User', array(), array('foo', $backend));
 		$user->expects($this->once())
@@ -179,10 +187,12 @@ class Session extends \Test\TestCase {
 		$userSession->login('foo', 'bar');
 	}
 
-	public function testLoginInValidPassword() {
+	public function testLoginInvalidPassword() {
 		$session = $this->getMock('\OC\Session\Memory', array(), array(''));
 		$session->expects($this->never())
 			->method('set');
+		$session->expects($this->once())
+				->method('regenerateId');
 
 		$managerMethods = get_class_methods('\OC\User\Manager');
 		//keep following methods intact in order to ensure hooks are
@@ -196,7 +206,7 @@ class Session extends \Test\TestCase {
 		}
 		$manager = $this->getMock('\OC\User\Manager', $managerMethods, array());
 
-		$backend = $this->getMock('OC_User_Dummy');
+		$backend = $this->getMock('\Test\Util\User\Dummy');
 
 		$user = $this->getMock('\OC\User\User', array(), array('foo', $backend));
 		$user->expects($this->never())
@@ -217,10 +227,12 @@ class Session extends \Test\TestCase {
 		$session = $this->getMock('\OC\Session\Memory', array(), array(''));
 		$session->expects($this->never())
 			->method('set');
+		$session->expects($this->once())
+				->method('regenerateId');
 
 		$manager = $this->getMock('\OC\User\Manager');
 
-		$backend = $this->getMock('OC_User_Dummy');
+		$backend = $this->getMock('\Test\Util\User\Dummy');
 
 		$manager->expects($this->once())
 			->method('checkPassword')
@@ -244,6 +256,8 @@ class Session extends \Test\TestCase {
 					}
 				},
 				'foo'));
+		$session->expects($this->once())
+				->method('regenerateId');
 
 		$managerMethods = get_class_methods('\OC\User\Manager');
 		//keep following methods intact in order to ensure hooks are
@@ -257,7 +271,7 @@ class Session extends \Test\TestCase {
 		}
 		$manager = $this->getMock('\OC\User\Manager', $managerMethods, array());
 
-		$backend = $this->getMock('OC_User_Dummy');
+		$backend = $this->getMock('\Test\Util\User\Dummy');
 
 		$user = $this->getMock('\OC\User\User', array(), array('foo', $backend));
 
@@ -292,6 +306,8 @@ class Session extends \Test\TestCase {
 		$session = $this->getMock('\OC\Session\Memory', array(), array(''));
 		$session->expects($this->never())
 			->method('set');
+		$session->expects($this->once())
+				->method('regenerateId');
 
 		$managerMethods = get_class_methods('\OC\User\Manager');
 		//keep following methods intact in order to ensure hooks are
@@ -305,7 +321,7 @@ class Session extends \Test\TestCase {
 		}
 		$manager = $this->getMock('\OC\User\Manager', $managerMethods, array());
 
-		$backend = $this->getMock('OC_User_Dummy');
+		$backend = $this->getMock('\Test\Util\User\Dummy');
 
 		$user = $this->getMock('\OC\User\User', array(), array('foo', $backend));
 
@@ -334,6 +350,8 @@ class Session extends \Test\TestCase {
 		$session = $this->getMock('\OC\Session\Memory', array(), array(''));
 		$session->expects($this->never())
 			->method('set');
+		$session->expects($this->once())
+				->method('regenerateId');
 
 		$managerMethods = get_class_methods('\OC\User\Manager');
 		//keep following methods intact in order to ensure hooks are
@@ -347,7 +365,7 @@ class Session extends \Test\TestCase {
 		}
 		$manager = $this->getMock('\OC\User\Manager', $managerMethods, array());
 
-		$backend = $this->getMock('OC_User_Dummy');
+		$backend = $this->getMock('\Test\Util\User\Dummy');
 
 		$user = $this->getMock('\OC\User\User', array(), array('foo', $backend));
 

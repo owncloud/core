@@ -12,10 +12,9 @@
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
- * @author Volkan Gezer <volkangezer@gmail.com>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -47,8 +46,6 @@ class Config {
 	protected $configFilePath;
 	/** @var string */
 	protected $configFileName;
-	/** @var bool */
-	protected $debugMode;
 
 	/**
 	 * @param string $configDir Path to the config dir, needs to end with '/'
@@ -59,7 +56,6 @@ class Config {
 		$this->configFilePath = $this->configDir.$fileName;
 		$this->configFileName = $fileName;
 		$this->readData();
-		$this->debugMode = (defined('DEBUG') && DEBUG);
 	}
 
 	/**
@@ -225,9 +221,6 @@ class Config {
 	private function writeData() {
 		// Create a php file ...
 		$content = "<?php\n";
-		if ($this->debugMode) {
-			$content .= "define('DEBUG',true);\n";
-		}
 		$content .= '$CONFIG = ';
 		$content .= var_export($this->cache, true);
 		$content .= ";\n";
@@ -240,7 +233,9 @@ class Config {
 
 		// File does not exist, this can happen when doing a fresh install
 		if(!is_resource ($filePointer)) {
-			$url = \OC_Helper::linkToDocs('admin-dir_permissions');
+			// TODO fix this via DI once it is very clear that this doesn't cause side effects due to initialization order
+			// currently this breaks app routes but also could have other side effects especially during setup and exception handling
+			$url = \OC::$server->getURLGenerator()->linkToDocs('admin-dir_permissions');
 			throw new HintException(
 				"Can't write into config directory!",
 				'This can usually be fixed by '

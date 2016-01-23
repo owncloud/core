@@ -1,9 +1,10 @@
 <?php
 /**
  * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -72,9 +73,9 @@ class OfflineUser {
 
 	/**
 	 * @param string $ocName
-	 * @param OCP\IConfig $config
-	 * @param OCP\IDBConnection $db
-	 * @param OCA\User_LDAP\Mapping\UserMapping $mapping
+	 * @param \OCP\IConfig $config
+	 * @param \OCP\IDBConnection $db
+	 * @param \OCA\User_LDAP\Mapping\UserMapping $mapping
 	 */
 	public function __construct($ocName, \OCP\IConfig $config, \OCP\IDBConnection $db, UserMapping $mapping) {
 		$this->ocName = $ocName;
@@ -82,6 +83,13 @@ class OfflineUser {
 		$this->db = $db;
 		$this->mapping = $mapping;
 		$this->fetchDetails();
+	}
+
+	/**
+	 * remove the Delete-flag from the user.
+	 */
+	public function unmark() {
+		$this->config->setUserValue($this->ocName, 'user_ldap', 'isDeleted', '0');
 	}
 
 	/**

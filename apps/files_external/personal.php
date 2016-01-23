@@ -1,13 +1,13 @@
 <?php
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
- * @author Lukas Reschke <lukas@owncloud.com>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -24,34 +24,18 @@
  *
  */
 
-OCP\Util::addScript('files_external', 'settings');
-OCP\Util::addStyle('files_external', 'settings');
-$backends = OC_Mount_Config::getPersonalBackends();
+use \OCA\Files_External\Service\BackendService;
 
-$mounts = OC_Mount_Config::getPersonalMountPoints();
-$hasId = true;
-foreach ($mounts as $mount) {
-	if (!isset($mount['id'])) {
-		// some mount points are missing ids
-		$hasId = false;
-		break;
-	}
-}
-
-if (!$hasId) {
-	$service = new \OCA\Files_external\Service\UserStoragesService(\OC::$server->getUserSession());
-	// this will trigger the new storage code which will automatically
-	// generate storage config ids
-	$service->getAllStorages();
-	// re-read updated config
-	$mounts = OC_Mount_Config::getPersonalMountPoints();
-	// TODO: use the new storage config format in the template
-}
+// we must use the same container
+$appContainer = \OC_Mount_Config::$app->getContainer();
+$backendService = $appContainer->query('OCA\Files_External\Service\BackendService');
+$userStoragesService = $appContainer->query('OCA\Files_external\Service\UserStoragesService');
 
 $tmpl = new OCP\Template('files_external', 'settings');
 $tmpl->assign('encryptionEnabled', \OC::$server->getEncryptionManager()->isEnabled());
-$tmpl->assign('isAdminPage', false);
-$tmpl->assign('mounts', $mounts);
-$tmpl->assign('dependencies', OC_Mount_Config::checkDependencies());
-$tmpl->assign('backends', $backends);
+$tmpl->assign('visibilityType', BackendService::VISIBILITY_PERSONAL);
+$tmpl->assign('storages', $userStoragesService->getStorages());
+$tmpl->assign('dependencies', OC_Mount_Config::dependencyMessage($backendService->getBackends()));
+$tmpl->assign('backends', $backendService->getAvailableBackends());
+$tmpl->assign('authMechanisms', $backendService->getAuthMechanisms());
 return $tmpl->fetchPage();

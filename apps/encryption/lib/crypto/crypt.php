@@ -2,11 +2,12 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Clark Tomlinson <fallen013@gmail.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
- * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -33,7 +34,6 @@ use OCA\Encryption\Exceptions\MultiKeyEncryptException;
 use OCP\Encryption\Exceptions\GenericEncryptionException;
 use OCP\IConfig;
 use OCP\ILogger;
-use OCP\IUser;
 use OCP\IUserSession;
 
 class Crypt {
@@ -42,6 +42,10 @@ class Crypt {
 	// default cipher from old ownCloud versions
 	const LEGACY_CIPHER = 'AES-128-CFB';
 
+	// default key format, old ownCloud version encrypted the private key directly
+	// with the user password
+	const LEGACY_KEY_FORMAT = 'password';
+
 	const HEADER_START = 'HBEGIN';
 	const HEADER_END = 'HEND';
 	/**
@@ -49,7 +53,7 @@ class Crypt {
 	 */
 	private $logger;
 	/**
-	 * @var IUser
+	 * @var string
 	 */
 	private $user;
 	/**
@@ -58,14 +62,20 @@ class Crypt {
 	private $config;
 
 	/**
+	 * @var array
+	 */
+	private $supportedKeyFormats;
+
+	/**
 	 * @param ILogger $logger
 	 * @param IUserSession $userSession
 	 * @param IConfig $config
 	 */
 	public function __construct(ILogger $logger, IUserSession $userSession, IConfig $config) {
 		$this->logger = $logger;
-		$this->user = $userSession && $userSession->isLoggedIn() ? $userSession->getUser() : false;
+		$this->user = $userSession && $userSession->isLoggedIn() ? $userSession->getUser()->getUID() : '"no user given"';
 		$this->config = $config;
+		$this->supportedKeyFormats = ['hash', 'password'];
 	}
 
 	/**
@@ -79,7 +89,7 @@ class Crypt {
 		$res = $this->getOpenSSLPKey();
 
 		if (!$res) {
-			$log->error("Encryption Library couldn't generate users key-pair for {$this->user->getUID()}",
+			$log->error("Encryption Library couldn't generate users key-pair for {$this->user}",
 				['app' => 'encryption']);
 
 			if (openssl_error_string()) {
@@ -98,7 +108,7 @@ class Crypt {
 				'privateKey' => $privateKey
 			];
 		}
-		$log->error('Encryption library couldn\'t export users private key, please check your servers OpenSSL configuration.' . $this->user->getUID(),
+		$log->error('Encryption library couldn\'t export users private key, please check your servers OpenSSL configuration.' . $this->user,
 			['app' => 'encryption']);
 		if (openssl_error_string()) {
 			$log->error('Encryption Library:' . openssl_error_string(),
@@ -135,7 +145,7 @@ class Crypt {
 	/**
 	 * @param string $plainContent
 	 * @param string $passPhrase
-	 * @return bool|string
+	 * @return false|string
 	 * @throws GenericEncryptionException
 	 */
 	public function symmetricEncryptFileContent($plainContent, $passPhrase) {
@@ -161,10 +171,23 @@ class Crypt {
 
 	/**
 	 * generate header for encrypted file
+	 *
+	 * @param string $keyFormat (can be 'hash' or 'password')
+	 * @return string
+	 * @throws \InvalidArgumentException
 	 */
-	public function generateHeader() {
+	public function generateHeader($keyFormat = 'hash') {
+
+		if (in_array($keyFormat, $this->supportedKeyFormats, true) === false) {
+			throw new \InvalidArgumentException('key format "' . $keyFormat . '" is not supported');
+		}
+
 		$cipher = $this->getCipher();
-		$header = self::HEADER_START . ':cipher:' . $cipher . ':' . self::HEADER_END;
+
+		$header = self::HEADER_START
+			. ':cipher:' . $cipher
+			. ':keyFormat:' . $keyFormat
+			. ':' . self::HEADER_END;
 
 		return $header;
 	}
@@ -212,6 +235,25 @@ class Crypt {
 	}
 
 	/**
+	 * get key size depending on the cipher
+	 *
+	 * @param string $cipher supported ('AES-256-CFB' and 'AES-128-CFB')
+	 * @return int
+	 * @throws \InvalidArgumentException
+	 */
+	protected function getKeySize($cipher) {
+		if ($cipher === 'AES-256-CFB') {
+			return 32;
+		} else if ($cipher === 'AES-128-CFB') {
+			return 16;
+		}
+
+		throw new \InvalidArgumentException(
+			'Wrong cipher defined only AES-128-CFB and AES-256-CFB are supported.'
+		);
+	}
+
+	/**
 	 * get legacy cipher
 	 *
 	 * @return string
@@ -230,7 +272,7 @@ class Crypt {
 	}
 
 	/**
-	 * @param $data
+	 * @param string $data
 	 * @return string
 	 */
 	private function addPadding($data) {
@@ -238,11 +280,57 @@ class Crypt {
 	}
 
 	/**
+	 * generate password hash used to encrypt the users private key
+	 *
+	 * @param string $password
+	 * @param string $cipher
+	 * @param string $uid only used for user keys
+	 * @return string
+	 */
+	protected function generatePasswordHash($password, $cipher, $uid = '') {
+		$instanceId = $this->config->getSystemValue('instanceid');
+		$instanceSecret = $this->config->getSystemValue('secret');
+		$salt = hash('sha256', $uid . $instanceId . $instanceSecret, true);
+		$keySize = $this->getKeySize($cipher);
+
+		$hash = hash_pbkdf2(
+			'sha256',
+			$password,
+			$salt,
+			100000,
+			$keySize,
+			true
+		);
+
+		return $hash;
+	}
+
+	/**
+	 * encrypt private key
+	 *
 	 * @param string $privateKey
 	 * @param string $password
-	 * @return bool|string
+	 * @param string $uid for regular users, empty for system keys
+	 * @return false|string
 	 */
-	public function decryptPrivateKey($privateKey, $password = '') {
+	public function encryptPrivateKey($privateKey, $password, $uid = '') {
+		$cipher = $this->getCipher();
+		$hash = $this->generatePasswordHash($password, $cipher, $uid);
+		$encryptedKey = $this->symmetricEncryptFileContent(
+			$privateKey,
+			$hash
+		);
+
+		return $encryptedKey;
+	}
+
+	/**
+	 * @param string $privateKey
+	 * @param string $password
+	 * @param string $uid for regular users, empty for system keys
+	 * @return false|string
+	 */
+	public function decryptPrivateKey($privateKey, $password = '', $uid = '') {
 
 		$header = $this->parseHeader($privateKey);
 
@@ -250,6 +338,16 @@ class Crypt {
 			$cipher = $header['cipher'];
 		} else {
 			$cipher = self::LEGACY_CIPHER;
+		}
+
+		if (isset($header['keyFormat'])) {
+			$keyFormat = $header['keyFormat'];
+		} else {
+			$keyFormat = self::LEGACY_KEY_FORMAT;
+		}
+
+		if ($keyFormat === 'hash') {
+			$password = $this->generatePasswordHash($password, $cipher, $uid);
 		}
 
 		// If we found a header we need to remove it from the key we want to decrypt
@@ -263,14 +361,7 @@ class Crypt {
 			$password,
 			$cipher);
 
-		// Check if this is a valid private key
-		$res = openssl_get_privatekey($plainKey);
-		if (is_resource($res)) {
-			$sslInfo = openssl_pkey_get_details($res);
-			if (!isset($sslInfo['key'])) {
-				return false;
-			}
-		} else {
+		if ($this->isValidPrivateKey($plainKey) === false) {
 			return false;
 		}
 
@@ -278,7 +369,25 @@ class Crypt {
 	}
 
 	/**
-	 * @param $keyFileContents
+	 * check if it is a valid private key
+	 *
+	 * @param string $plainKey
+	 * @return bool
+	 */
+	protected function isValidPrivateKey($plainKey) {
+		$res = openssl_get_privatekey($plainKey);
+		if (is_resource($res)) {
+			$sslInfo = openssl_pkey_get_details($res);
+			if (isset($sslInfo['key'])) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * @param string $keyFileContents
 	 * @param string $passPhrase
 	 * @param string $cipher
 	 * @return string
@@ -300,7 +409,7 @@ class Crypt {
 	 * remove padding
 	 *
 	 * @param $padded
-	 * @return bool|string
+	 * @return string|false
 	 */
 	private function removePadding($padded) {
 		if (substr($padded, -2) === 'xx') {
@@ -312,8 +421,8 @@ class Crypt {
 	/**
 	 * split iv from encrypted content
 	 *
-	 * @param $catFile
-	 * @return array
+	 * @param string|false $catFile
+	 * @return string
 	 */
 	private function splitIv($catFile) {
 		// Fetch encryption metadata from end of file
@@ -333,8 +442,8 @@ class Crypt {
 	}
 
 	/**
-	 * @param $encryptedContent
-	 * @param $iv
+	 * @param string $encryptedContent
+	 * @param string $iv
 	 * @param string $passPhrase
 	 * @param string $cipher
 	 * @return string
@@ -355,10 +464,10 @@ class Crypt {
 	}
 
 	/**
-	 * @param $data
+	 * @param string $data
 	 * @return array
 	 */
-	private function parseHeader($data) {
+	protected function parseHeader($data) {
 		$result = [];
 
 		if (substr($data, 0, strlen(self::HEADER_START)) === self::HEADER_START) {
@@ -427,7 +536,7 @@ class Crypt {
 	 * @param $encKeyFile
 	 * @param $shareKey
 	 * @param $privateKey
-	 * @return mixed
+	 * @return string
 	 * @throws MultiKeyDecryptException
 	 */
 	public function multiKeyDecrypt($encKeyFile, $shareKey, $privateKey) {

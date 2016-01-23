@@ -5,11 +5,13 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author RealRancor <Fisch.666@gmx.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Volkan Gezer <volkangezer@gmail.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -42,6 +44,7 @@ use OCP\IConfig;
  * - postDelete(\OC\User\User $user)
  * - preCreateUser(string $uid, string $password)
  * - postCreateUser(\OC\User\User $user, string $password)
+ * - change(\OC\User\User $user)
  *
  * @package OC\User
  */
@@ -182,7 +185,7 @@ class Manager extends PublicEmitter implements IUserManager {
 			}
 		}
 
-		\OC::$server->getLogger()->warning('Login failed: \''. $loginname .'\' (Remote IP: \''. \OC::$server->getRequest()->getRemoteAddress(). ')', ['app' => 'core']);
+		\OC::$server->getLogger()->warning('Login failed: \''. $loginname .'\' (Remote IP: \''. \OC::$server->getRequest()->getRemoteAddress(). '\')', ['app' => 'core']);
 		return false;
 	}
 
@@ -293,21 +296,47 @@ class Manager extends PublicEmitter implements IUserManager {
 		$userCountStatistics = array();
 		foreach ($this->backends as $backend) {
 			if ($backend->implementsActions(\OC_User_Backend::COUNT_USERS)) {
-				$backendusers = $backend->countUsers();
-				if($backendusers !== false) {
+				$backendUsers = $backend->countUsers();
+				if($backendUsers !== false) {
 					if($backend instanceof \OCP\IUserBackend) {
 						$name = $backend->getBackendName();
 					} else {
 						$name = get_class($backend);
 					}
 					if(isset($userCountStatistics[$name])) {
-						$userCountStatistics[$name] += $backendusers;
+						$userCountStatistics[$name] += $backendUsers;
 					} else {
-						$userCountStatistics[$name] = $backendusers;
+						$userCountStatistics[$name] = $backendUsers;
 					}
 				}
 			}
 		}
 		return $userCountStatistics;
+	}
+
+	/**
+	 * The callback is executed for each user on each backend.
+	 * If the callback returns false no further users will be retrieved.
+	 *
+	 * @param \Closure $callback
+	 * @return void
+	 * @since 9.0.0
+	 */
+	public function callForAllUsers(\Closure $callback, $search = '') {
+		foreach($this->getBackends() as $backend) {
+			$limit = 500;
+			$offset = 0;
+			do {
+				$users = $backend->getUsers($search, $limit, $offset);
+				foreach ($users as $user) {
+					$user = $this->get($user);
+					$return = $callback($user);
+					if ($return === false) {
+						break;
+					}
+				}
+				$offset += $limit;
+			} while (count($users) >= $limit);
+		}
 	}
 }

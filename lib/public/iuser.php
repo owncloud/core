@@ -5,7 +5,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -144,4 +144,38 @@ interface IUser {
 	 * @since 8.0.0
 	 */
 	public function setEnabled($enabled);
+
+	/**
+	 * get the users email address
+	 *
+	 * @return string|null
+	 * @since 9.0.0
+	 */
+	public function getEMailAddress();
+
+	/**
+	 * get the avatar image if it exists
+	 *
+	 * @param int $size
+	 * @return IImage|null
+	 * @since 9.0.0
+	 */
+	public function getAvatarImage($size);
+
+	/**
+	 * get the federation cloud id
+	 *
+	 * @return string
+	 * @since 9.0.0
+	 */
+	public function getCloudId();
+
+	/**
+	 * set the email address of the user
+	 *
+	 * @param string|null $mailAddress
+	 * @return void
+	 * @since 9.0.0
+	 */
+	public function setEMailAddress($mailAddress);
 }

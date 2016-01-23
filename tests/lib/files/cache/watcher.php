@@ -8,6 +8,13 @@
 
 namespace Test\Files\Cache;
 
+/**
+ * Class Watcher
+ *
+ * @group DB
+ *
+ * @package Test\Files\Cache
+ */
 class Watcher extends \Test\TestCase {
 
 	/**
@@ -39,6 +46,7 @@ class Watcher extends \Test\TestCase {
 		$storage = $this->getTestStorage();
 		$cache = $storage->getCache();
 		$updater = $storage->getWatcher();
+		$updater->setPolicy(\OC\Files\Cache\Watcher::CHECK_ONCE);
 
 		//set the mtime to the past so it can detect an mtime change
 		$cache->put('', array('storage_mtime' => 10));
@@ -79,6 +87,7 @@ class Watcher extends \Test\TestCase {
 		$storage = $this->getTestStorage();
 		$cache = $storage->getCache();
 		$updater = $storage->getWatcher();
+		$updater->setPolicy(\OC\Files\Cache\Watcher::CHECK_ONCE);
 
 		//set the mtime to the past so it can detect an mtime change
 		$cache->put('', array('storage_mtime' => 10));
@@ -95,6 +104,7 @@ class Watcher extends \Test\TestCase {
 		$storage = $this->getTestStorage();
 		$cache = $storage->getCache();
 		$updater = $storage->getWatcher();
+		$updater->setPolicy(\OC\Files\Cache\Watcher::CHECK_ONCE);
 
 		//set the mtime to the past so it can detect an mtime change
 		$cache->put('foo.txt', array('storage_mtime' => 10));

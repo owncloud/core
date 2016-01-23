@@ -2,8 +2,9 @@
 /**
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -58,4 +59,12 @@ interface ITempManager {
 	 * @since 8.0.0
 	 */
 	public function cleanOld();
+
+	/**
+	 * Get the temporary base directory
+	 *
+	 * @return string
+	 * @since 8.2.0
+	 */
+	public function getTempBaseDir();
 }

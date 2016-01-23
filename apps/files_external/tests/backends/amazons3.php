@@ -1,12 +1,13 @@
 <?php
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
- * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -25,6 +26,13 @@
 
 namespace Test\Files\Storage;
 
+/**
+ * Class AmazonS3
+ *
+ * @group DB
+ *
+ * @package Test\Files\Storage
+ */
 class AmazonS3 extends Storage {
 
 	private $config;
@@ -32,11 +40,11 @@ class AmazonS3 extends Storage {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->config = include('files_external/tests/config.php');
-		if ( ! is_array($this->config) or ! isset($this->config['amazons3']) or ! $this->config['amazons3']['run']) {
+		$this->config = include('files_external/tests/config.amazons3.php');
+		if ( ! is_array($this->config) or ! $this->config['run']) {
 			$this->markTestSkipped('AmazonS3 backend not configured');
 		}
-		$this->instance = new \OC\Files\Storage\AmazonS3($this->config['amazons3']);
+		$this->instance = new \OC\Files\Storage\AmazonS3($this->config);
 	}
 
 	protected function tearDown() {

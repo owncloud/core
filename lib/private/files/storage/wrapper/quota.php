@@ -3,10 +3,10 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -24,6 +24,8 @@
  */
 
 namespace OC\Files\Storage\Wrapper;
+
+use OCP\Files\Cache\ICacheEntry;
 
 class Quota extends Wrapper {
 
@@ -64,7 +66,7 @@ class Quota extends Wrapper {
 			$cache = $storage->getCache();
 		}
 		$data = $cache->get($path);
-		if (is_array($data) and isset($data['size'])) {
+		if ($data instanceof ICacheEntry and isset($data['size'])) {
 			return $data['size'];
 		} else {
 			return \OCP\Files\FileInfo::SPACE_NOT_COMPUTED;

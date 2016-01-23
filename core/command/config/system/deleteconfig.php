@@ -2,7 +2,7 @@
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -64,7 +64,7 @@ class DeleteConfig extends Base {
 		$configName = $input->getArgument('name');
 
 		if ($input->hasParameterOption('--error-if-not-exists') && !in_array($configName, $this->systemConfig->getKeys())) {
-			$output->writeln('<error>Config ' . $configName . ' could not be deleted because it did not exist</error>');
+			$output->writeln('<error>System config ' . $configName . ' could not be deleted because it did not exist</error>');
 			return 1;
 		}
 
