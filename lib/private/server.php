@@ -471,6 +471,10 @@ class Server extends ServerContainer implements IServerContainer {
 
 			if ($this->getSession()->exists('requesttoken')) {
 				$requestToken = $this->getSession()->get('requesttoken');
+			} else if (isset($_REQUEST['requesttoken'])) {
+				$requestToken = $_REQUEST['requesttoken'];
+			} else if (isset($_SERVER['HTTP_REQUESTTOKEN'])) {
+				$requestToken = $_SERVER['HTTP_REQUESTTOKEN'];
 			} else {
 				$requestToken = false;
 			}
