@@ -26,6 +26,8 @@ namespace OCA\DAV\CardDAV;
 
 use OCA\DAV\Connector\Sabre\Principal;
 use OCP\DB\QueryBuilder\IQueryBuilder;
+use OCA\DAV\DAV\Sharing\Backend;
+use OCA\DAV\DAV\Sharing\IShareable;
 use OCP\IDBConnection;
 use Sabre\CardDAV\Backend\BackendInterface;
 use Sabre\CardDAV\Backend\SyncSupport;
@@ -48,14 +50,13 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 	/** @var IDBConnection */
 	private $db;
 
+	/** @var Backend */
+	private $sharingBackend;
+
 	/** @var array properties to index */
 	public static $indexProperties = array(
 			'BDAY', 'UID', 'N', 'FN', 'TITLE', 'ROLE', 'NOTE', 'NICKNAME',
 			'ORG', 'CATEGORIES', 'EMAIL', 'TEL', 'IMPP', 'ADR', 'URL', 'GEO', 'CLOUD');
-
-	const ACCESS_OWNER = 1;
-	const ACCESS_READ_WRITE = 2;
-	const ACCESS_READ = 3;
 
 	/**
 	 * CardDavBackend constructor.
@@ -66,6 +67,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 	public function __construct(IDBConnection $db, Principal $principalBackend) {
 		$this->db = $db;
 		$this->principalBackend = $principalBackend;
+		$this->sharingBackend = new Backend($this->db, 'addressbook');
 	}
 
 	/**
@@ -132,7 +134,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 				'{http://calendarserver.org/ns/}getctag' => $row['synctoken'],
 				'{http://sabredav.org/ns}sync-token' => $row['synctoken']?$row['synctoken']:'0',
 				'{' . \OCA\DAV\DAV\Sharing\Plugin::NS_OWNCLOUD . '}owner-principal' => $row['principaluri'],
-				'{' . \OCA\DAV\DAV\Sharing\Plugin::NS_OWNCLOUD . '}read-only' => $row['access'] === self::ACCESS_READ,
+				'{' . \OCA\DAV\DAV\Sharing\Plugin::NS_OWNCLOUD . '}read-only' => $row['access'] === Backend::ACCESS_READ,
 			];
 		}
 		$result->closeCursor();
@@ -710,17 +712,12 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 	}
 
 	/**
-	 * @param AddressBook $book
+	 * @param IShareable $shareable
 	 * @param string[] $add
 	 * @param string[] $remove
 	 */
-	public function updateShares($book, $add, $remove) {
-		foreach($add as $element) {
-			$this->shareWith($book, $element);
-		}
-		foreach($remove as $element) {
-			$this->unshare($book->getBookId(), $element);
-		}
+	public function updateShares(IShareable $shareable, $add, $remove) {
+		$this->sharingBackend->updateShares($shareable, $add, $remove);
 	}
 
 	/**
@@ -803,65 +800,6 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 		return $result;
 	}
 
-
-	/**
-	 * @param AddressBook $addressBook
-	 * @param string $element
-	 */
-	private function shareWith($addressBook, $element) {
-		$user = $element['href'];
-		$parts = explode(':', $user, 2);
-		if ($parts[0] !== 'principal') {
-			return;
-		}
-		$p = $this->principalBackend->getPrincipalByPath($parts[1]);
-		if (is_null($p)) {
-			return;
-		}
-
-		// remove the share if it already exists
-		$this->unshare($addressBook->getBookId(), $element['href']);
-		$access = self::ACCESS_READ;
-		if (isset($element['readOnly'])) {
-			$access = $element['readOnly'] ? self::ACCESS_READ : self::ACCESS_READ_WRITE;
-		}
-
-		$newUri = sha1($addressBook->getName() . $addressBook->getOwner());
-		$query = $this->db->getQueryBuilder();
-		$query->insert('dav_shares')
-			->values([
-				'principaluri' => $query->createNamedParameter($parts[1]),
-				'uri' => $query->createNamedParameter($newUri),
-				'type' => $query->createNamedParameter('addressbook'),
-				'access' => $query->createNamedParameter($access),
-				'resourceid' => $query->createNamedParameter($addressBook->getBookId())
-			]);
-		$query->execute();
-	}
-
-	/**
-	 * @param int $addressBookId
-	 * @param string $element
-	 */
-	private function unshare($addressBookId, $element) {
-		$parts = explode(':', $element, 2);
-		if ($parts[0] !== 'principal') {
-			return;
-		}
-		$p = $this->principalBackend->getPrincipalByPath($parts[1]);
-		if (is_null($p)) {
-			return;
-		}
-
-		$query = $this->db->getQueryBuilder();
-		$query->delete('dav_shares')
-			->where($query->expr()->eq('resourceid', $query->createNamedParameter($addressBookId)))
-			->andWhere($query->expr()->eq('type', $query->createNamedParameter('addressbook')))
-			->andWhere($query->expr()->eq('principaluri', $query->createNamedParameter($parts[1])))
-		;
-		$query->execute();
-	}
-
 	/**
 	 * Returns the list of people whom this address book is shared with.
 	 *
@@ -875,26 +813,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 	 * @return array
 	 */
 	public function getShares($addressBookId) {
-		$query = $this->db->getQueryBuilder();
-		$result = $query->select(['principaluri', 'access'])
-			->from('dav_shares')
-			->where($query->expr()->eq('resourceid', $query->createNamedParameter($addressBookId)))
-			->andWhere($query->expr()->eq('type', $query->createNamedParameter('addressbook')))
-			->execute();
-
-		$shares = [];
-		while($row = $result->fetch()) {
-			$p = $this->principalBackend->getPrincipalByPath($row['principaluri']);
-			$shares[]= [
-				'href' => "principal:${p['uri']}",
-				'commonName' => isset($p['{DAV:}displayname']) ? $p['{DAV:}displayname'] : '',
-				'status' => 1,
-				'readOnly' => ($row['access'] === self::ACCESS_READ),
-				'{'.\OCA\DAV\DAV\Sharing\Plugin::NS_OWNCLOUD.'}principal' => $p['uri']
-			];
-		}
-
-		return $shares;
+		return $this->sharingBackend->getShares($addressBookId);
 	}
 
 	/**
