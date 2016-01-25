@@ -254,8 +254,9 @@ class Local {
 	 * @return \OC_OCS_Result
 	 */
 	public static function createShare($params) {
+		$request = \OC::$server->getRequest();
 
-		$path = isset($_POST['path']) ? $_POST['path'] : null;
+		$path = $request->getParam('path', null);
 
 		if($path === null) {
 			return new \OC_OCS_Result(null, 400, "please specify a file or folder path");
@@ -269,8 +270,8 @@ class Local {
 			return new \OC_OCS_Result(null, 404, "wrong path, file/folder doesn't exist.");
 		}
 
-		$shareWith = isset($_POST['shareWith']) ? $_POST['shareWith'] : null;
-		$shareType = isset($_POST['shareType']) ? (int)$_POST['shareType'] : null;
+		$shareWith = $request->getParam('shareWith', null);
+		$shareType = $request->getParam('shareType', null) === null ? null : (int)$request->getParam('shareType');
 
 		switch($shareType) {
 			case \OCP\Share::SHARE_TYPE_REMOTE:
@@ -278,24 +279,25 @@ class Local {
 				$itemSourceName = basename($path);
 			case \OCP\Share::SHARE_TYPE_USER:
 			case \OCP\Share::SHARE_TYPE_GROUP:
-				$permissions = isset($_POST['permissions']) ? (int)$_POST['permissions'] : 31;
+				$permissions = (int)$request->getParam('permissions', 31);
 				break;
 			case \OCP\Share::SHARE_TYPE_LINK:
 				//allow password protection
-				$shareWith = isset($_POST['password']) ? $_POST['password'] : null;
+				$shareWith = $request->getParam('password', null);
 				//check public link share
 				$publicUploadEnabled = \OC::$server->getAppConfig()->getValue('core', 'shareapi_allow_public_upload', 'yes');
-				if(isset($_POST['publicUpload']) && $publicUploadEnabled !== 'yes') {
+				$publicUpload = $request->getParam('publicUpload', 'false');
+				if($publicUpload === 'true' && $publicUploadEnabled !== 'yes') {
 					return new \OC_OCS_Result(null, 403, "public upload disabled by the administrator");
 				}
-				$publicUpload = isset($_POST['publicUpload']) ? $_POST['publicUpload'] : 'false';
+
 				// read, create, update (7) if public upload is enabled or
 				// read (1) if public upload is disabled
 				$permissions = $publicUpload === 'true' ? 7 : 1;
 
 				// Get the expiration date
 				try {
-					$expirationDate = isset($_POST['expireDate']) ? self::parseDate($_POST['expireDate']) : null;
+					$expirationDate = $request->getParam('expireDate', null) !== null ? self::parseDate($request->getParam('expireDate')) : null;
 				} catch (\Exception $e) {
 					return new \OC_OCS_Result(null, 404, 'Invalid Date. Format must be YYYY-MM-DD.');
 				}
