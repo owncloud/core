@@ -89,9 +89,8 @@
 						if (result.data && result.data.displayname) {
 							$div.imageplaceholder(user, result.data.displayname);
 						} else {
-							// User does not exist
-							$div.imageplaceholder(user, 'X');
-							$div.css('background-color', '#b9b9b9');
+							// User does not exist - use the provided username
+							$div.imageplaceholder(user);
 						}
 					} else {
 						$div.hide();
