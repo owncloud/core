@@ -24,6 +24,7 @@ use OC\Share20\Exception\InvalidShare;
 use OC\Share20\Exception\ProviderException;
 use OC\Share20\Exception\ShareNotFound;
 use OC\Share20\Exception\BackendError;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Files\NotFoundException;
 use OCP\IGroup;
 use OCP\IUser;
@@ -32,8 +33,6 @@ use OCP\IUserManager;
 use OCP\Files\IRootFolder;
 use OCP\IDBConnection;
 use OCP\Files\Node;
-
-use Doctrine\DBAL\Connection;
 
 /**
  * Class DefaultShareProvider
@@ -496,6 +495,9 @@ class DefaultShareProvider implements IShareProvider {
 		} else if ($shareType === \OCP\Share::SHARE_TYPE_GROUP) {
 			$allGroups = $this->groupManager->getUserGroups($user);
 
+			/** @var Share[] $shares2 */
+			$shares2 = [];
+
 			$start = 0;
 			while(true) {
 				$groups = array_slice($allGroups, $start, 100);
@@ -520,7 +522,7 @@ class DefaultShareProvider implements IShareProvider {
 				$qb->where($qb->expr()->eq('share_type', $qb->createNamedParameter(\OCP\Share::SHARE_TYPE_GROUP)));
 				$qb->andWhere($qb->expr()->in('share_with', $qb->createNamedParameter(
 					$groups,
-					Connection::PARAM_STR_ARRAY
+					IQueryBuilder::PARAM_STR_ARRAY
 				)));
 
 				$cursor = $qb->execute();
@@ -529,7 +531,7 @@ class DefaultShareProvider implements IShareProvider {
 						$offset--;
 						continue;
 					}
-					$shares[] = $this->createShare($data);
+					$shares2[] = $this->createShare($data);
 				}
 				$cursor->closeCursor();
 			}
@@ -538,7 +540,9 @@ class DefaultShareProvider implements IShareProvider {
  			 * Resolve all group shares to user specific shares
  			 * TODO: Optmize this!
  			 */
-			$shares = array_map([$this, 'resolveGroupShare'], $shares);
+			foreach($shares2 as $share) {
+				$shares[] = $this->resolveGroupShare($share, $user);
+			}
 		} else {
 			throw new BackendError('Invalid backend');
 		}
@@ -675,15 +679,18 @@ class DefaultShareProvider implements IShareProvider {
 	 * Thus if the user moved their group share make sure this is properly reflected here.
 	 *
 	 * @param Share $share
+	 * @param IUser $user
 	 * @return Share Returns the updated share if one was found else return the original share.
 	 */
-	private function resolveGroupShare(Share $share) {
+	private function resolveGroupShare(Share $share, IUser $user) {
 		$qb = $this->dbConn->getQueryBuilder();
 
 		$stmt = $qb->select('*')
 			->from('share')
 			->where($qb->expr()->eq('parent', $qb->createNamedParameter($share->getId())))
 			->andWhere($qb->expr()->eq('share_type', $qb->createNamedParameter(self::SHARE_TYPE_USERGROUP)))
+			->andWhere($qb->expr()->eq('share_with', $qb->createNamedParameter($user->getUID())))
+			->setMaxResults(1)
 			->execute();
 
 		$data = $stmt->fetch();

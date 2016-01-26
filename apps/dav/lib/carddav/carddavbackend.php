@@ -24,12 +24,15 @@
 
 namespace OCA\DAV\CardDAV;
 
+use Doctrine\DBAL\Connection;
 use OCA\DAV\Connector\Sabre\Principal;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 use Sabre\CardDAV\Backend\BackendInterface;
 use Sabre\CardDAV\Backend\SyncSupport;
 use Sabre\CardDAV\Plugin;
 use Sabre\DAV\Exception\BadRequest;
+use Sabre\HTTP\URLUtil;
 use Sabre\VObject\Component\VCard;
 use Sabre\VObject\Reader;
 
@@ -112,21 +115,24 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 		$principals[]= $principalUri;
 
 		$query = $this->db->getQueryBuilder();
-		$result = $query->select(['a.id', 'a.uri', 'a.displayname', 'a.principaluri', 'a.description', 'a.synctoken', 's.uri', 's.access'])
+		$result = $query->select(['a.id', 'a.uri', 'a.displayname', 'a.principaluri', 'a.description', 'a.synctoken', 's.access'])
 			->from('dav_shares', 's')
 			->join('s', 'addressbooks', 'a', $query->expr()->eq('s.resourceid', 'a.id'))
 			->where($query->expr()->in('s.principaluri', $query->createParameter('principaluri')))
 			->andWhere($query->expr()->eq('s.type', $query->createParameter('type')))
 			->setParameter('type', 'addressbook')
-			->setParameter('principaluri', $principals, \Doctrine\DBAL\Connection::PARAM_STR_ARRAY)
+			->setParameter('principaluri', $principals, IQueryBuilder::PARAM_STR_ARRAY)
 			->execute();
 
 		while($row = $result->fetch()) {
+			list(, $name) = URLUtil::splitPath($row['principaluri']);
+			$uri = $row['uri'] . '_shared_by_' . $name;
+			$displayName = $row['displayname'] . "($name)";
 			$addressBooks[] = [
 				'id'  => $row['id'],
-				'uri' => $row['uri'],
+				'uri' => $uri,
 				'principaluri' => $principalUri,
-				'{DAV:}displayname' => $row['displayname'],
+				'{DAV:}displayname' => $displayName,
 				'{' . Plugin::NS_CARDDAV . '}addressbook-description' => $row['description'],
 				'{http://calendarserver.org/ns/}getctag' => $row['synctoken'],
 				'{http://sabredav.org/ns}sync-token' => $row['synctoken']?$row['synctoken']:'0',
@@ -423,7 +429,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 			->from('cards')
 			->where($query->expr()->eq('addressbookid', $query->createNamedParameter($addressBookId)))
 			->andWhere($query->expr()->in('uri', $query->createParameter('uri')))
-			->setParameter('uri', $uris, \Doctrine\DBAL\Connection::PARAM_STR_ARRAY);
+			->setParameter('uri', $uris, IQueryBuilder::PARAM_STR_ARRAY);
 
 		$cards = [];
 
@@ -825,12 +831,10 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 			$access = $element['readOnly'] ? self::ACCESS_READ : self::ACCESS_READ_WRITE;
 		}
 
-		$newUri = sha1($addressBook->getName() . $addressBook->getOwner());
 		$query = $this->db->getQueryBuilder();
 		$query->insert('dav_shares')
 			->values([
 				'principaluri' => $query->createNamedParameter($parts[1]),
-				'uri' => $query->createNamedParameter($newUri),
 				'type' => $query->createNamedParameter('addressbook'),
 				'access' => $query->createNamedParameter($access),
 				'resourceid' => $query->createNamedParameter($addressBook->getBookId())
