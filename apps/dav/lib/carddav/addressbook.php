@@ -132,4 +132,12 @@ class AddressBook extends \Sabre\CardDAV\AddressBook implements IShareable {
 	public function getResourceId() {
 		return $this->addressBookInfo['id'];
 	}
+
+	function getOwner() {
+		if (isset($this->addressBookInfo['{' . \OCA\DAV\DAV\Sharing\Plugin::NS_OWNCLOUD . '}owner-principal'])) {
+			return $this->addressBookInfo['{' . \OCA\DAV\DAV\Sharing\Plugin::NS_OWNCLOUD . '}owner-principal'];
+		}
+		return parent::getOwner();
+	}
+
 }
