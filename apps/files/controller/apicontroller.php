@@ -45,6 +45,10 @@ class ApiController extends Controller {
 	private $tagService;
 	/** @var IPreview */
 	private $previewManager;
+        /** @var int */
+        protected $foldersCounter = 0;
+        /** @var int */
+        protected $filesCounter = 0;
 
 	/**
 	 * @param string $appName
@@ -146,5 +150,63 @@ class ApiController extends Controller {
 		}
 		return new DataResponse(['files' => $files]);
 	}
+
+        /**
+         * Scans a single path
+         *
+         * @param string $path path to scan
+         * @return DataResponse
+         */
+        public function scanSingle($path=null) {
+                $result = [];
+                if(!is_null($path)) {
+                        $this->scanPath($path);
+                }
+
+                $result['folders'] = $this->foldersCounter;
+                $result['files'] = $this->filesCounter;
+
+                return new DataResponse($result);
+        }
+
+        /**
+         * Scans paths listed in $path_list
+         *
+         * @param array|string $path_list array of paths
+         * @return DataResponse
+         */
+        public function scanBatch($path_list=null) {
+                $result = [];
+                if(!is_null($path_list)) {
+                        foreach ($path_list as $path) {
+                                $this->scanPath($path);
+                        }
+                }
+
+                $result['folders'] = $this->foldersCounter;
+                $result['files'] = $this->filesCounter;
+
+                return new DataResponse($result);
+        }
+
+        private function scanPath($path=null) {
+                $path = '/' . trim($path, '/');
+                list (, $user,) = explode('/', $path, 3);
+                $scanner = new \OC\Files\Utils\Scanner($user, \OC::$server->getDatabaseConnection());
+                $scanner->listen('\OC\Files\Utils\Scanner', 'scanFile', function ($path) {
+                        $this->filesCounter += 1;
+                });
+                $scanner->listen('\OC\Files\Utils\Scanner', 'scanFolder', function ($path) {
+                        $this->foldersCounter += 1;
+                });
+                try {
+                        $scanner->scan($path);
+                } catch (ForbiddenException $e) {
+                        return new DataResponse([
+                                'message' => $e->getMessage()
+                        ], Http::STATUS_SERVICE_UNAVAILABLE);
+                }
+        }
+
 
 }
