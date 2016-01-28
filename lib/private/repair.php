@@ -100,6 +100,7 @@ class Repair extends BasicEmitter {
 	 * Returns the default repair steps to be run on the
 	 * command line or after an upgrade.
 	 *
+	 * @param bool $enableMimeTypes true to enable mime type repair
 	 * @return array of RepairStep instances
 	 */
 	public static function getRepairSteps() {
