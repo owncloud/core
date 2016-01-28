@@ -59,9 +59,6 @@ $application->registerRoutes(
                                 'url' => '/api/v1/scan',
                                 'verb' => 'POST',
                         ),
-                        array(
-                                'name' => 'API#getFilesByTag',
-
 			[
 				'name' => 'view#index',
 				'url' => '/',
