@@ -154,6 +154,8 @@ class ApiController extends Controller {
         /**
          * Scans a single path
          *
+	 * @NoCSRFRequired
+	 *
          * @param string $path path to scan
          * @return DataResponse
          */
@@ -172,6 +174,8 @@ class ApiController extends Controller {
         /**
          * Scans paths listed in $path_list
          *
+	 * @NoCSRFRequired
+	 *
          * @param array|string $path_list array of paths
          * @return DataResponse
          */
