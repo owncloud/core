@@ -49,6 +49,10 @@ class ApiController extends Controller {
         protected $foldersCounter = 0;
         /** @var int */
         protected $filesCounter = 0;
+	/** @var int */
+	protected $userInvalidCounter = 0;
+	/** @var int */
+	protected $pathInvalidCounter = 0;
 
 	/**
 	 * @param string $appName
@@ -160,15 +164,11 @@ class ApiController extends Controller {
          * @return DataResponse
          */
         public function scanSingle($path=null) {
-                $result = [];
                 if(!is_null($path)) {
                         $this->scanPath($path);
                 }
 
-                $result['folders'] = $this->foldersCounter;
-                $result['files'] = $this->filesCounter;
-
-                return new DataResponse($result);
+                return $this->scanComplete();
         }
 
         /**
@@ -180,15 +180,23 @@ class ApiController extends Controller {
          * @return DataResponse
          */
         public function scanBatch($path_list=null) {
-                $result = [];
                 if(!is_null($path_list)) {
                         foreach ($path_list as $path) {
                                 $this->scanPath($path);
                         }
                 }
 
+		return $this->scanComplete();
+	}
+
+	private function scanComplete() {
+		$result = [];
                 $result['folders'] = $this->foldersCounter;
                 $result['files'] = $this->filesCounter;
+		if ($this->userInvalidCounter || $this->pathInvalidCounter) {
+			$result['invalid_user'] = $this->userInvalidCounter;
+			$result['invalid_path'] = $this->pathInvalidCounter;
+		}
 
                 return new DataResponse($result);
         }
@@ -206,11 +214,10 @@ class ApiController extends Controller {
                 try {
                         $scanner->scan($path);
                 } catch (ForbiddenException $e) {
-                        return new DataResponse([
-                                'message' => $e->getMessage()
-                        ], Http::STATUS_SERVICE_UNAVAILABLE);
-                }
+			$this->userInvalidCounter += 1;
+                } catch (\InvalidArgumentException $e) {
+			$this->pathInvalidCounter += 1;
+		}
         }
-
 
 }
