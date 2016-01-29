@@ -72,6 +72,12 @@ class Scan extends Command {
 				'limit rescan to this path, eg. --path="/alice/files/Music", the user_id is determined by the path and the user_id parameter and --all are ignored'
 			)
 			->addOption(
+				'path_list',
+				'l',
+				InputArgument::OPTIONAL,
+				'limit rescan to the files/directories listed in the file (one file/directory per line) pointed at by the argument (--user_id and --all are ignored)'
+			)
+			->addOption(
 				'quiet',
 				'q',
 				InputOption::VALUE_NONE,
@@ -92,56 +98,48 @@ class Scan extends Command {
 	}
 
 	protected function scanFiles($user, $path, $verbose, OutputInterface $output) {
-		$scanner = new \OC\Files\Utils\Scanner($user, \OC::$server->getDatabaseConnection(), \OC::$server->getLogger());
-		# printout and count
-		if ($verbose) {
-			$scanner->listen('\OC\Files\Utils\Scanner', 'scanFile', function ($path) use ($output) {
-				$output->writeln("Scanning file   <info>$path</info>");
-				$this->filesCounter += 1;
-			});
-			$scanner->listen('\OC\Files\Utils\Scanner', 'scanFolder', function ($path) use ($output) {
-				$output->writeln("Scanning folder <info>$path</info>");
-				$this->foldersCounter += 1;
-			});
-			$scanner->listen('\OC\Files\Utils\Scanner', 'StorageNotAvailable', function (StorageNotAvailableException $e) use ($output) {
-				$output->writeln("Error while scanning, storage not available (" . $e->getMessage() . ")");
-			});
-		# count only
-		} else {
-			$scanner->listen('\OC\Files\Utils\Scanner', 'scanFile', function ($path) use ($output) {
-				$this->filesCounter += 1;
-			});
-			$scanner->listen('\OC\Files\Utils\Scanner', 'scanFolder', function ($path) use ($output) {
-				$this->foldersCounter += 1;
-			});
-		}
+		if (is_object($user)) {
+                        $user = $user->getUID();
+                }
+                if ($this->userManager->userExists($user)) {
+			$scanner = new \OC\Files\Utils\Scanner($user, \OC::$server->getDatabaseConnection(), \OC::$server->getLogger());
+			# printout and count
+			if ($verbose) {
+				$scanner->listen('\OC\Files\Utils\Scanner', 'scanFile', function ($path) use ($output) {
+					$output->writeln("Scanning file   <info>$path</info>");
+					$this->filesCounter += 1;
+				});
+				$scanner->listen('\OC\Files\Utils\Scanner', 'scanFolder', function ($path) use ($output) {
+					$output->writeln("Scanning folder <info>$path</info>");
+					$this->foldersCounter += 1;
+				});
+				$scanner->listen('\OC\Files\Utils\Scanner', 'StorageNotAvailable', function (StorageNotAvailableException $e) use ($output) {
+					$output->writeln("Error while scanning, storage not available (" . $e->getMessage() . ")");
+				});
+			# count only
+			} else {
+				$scanner->listen('\OC\Files\Utils\Scanner', 'scanFile', function ($path) use ($output) {
+					$this->filesCounter += 1;
+				});
+				$scanner->listen('\OC\Files\Utils\Scanner', 'scanFolder', function ($path) use ($output) {
+					$this->foldersCounter += 1;
+				});
+			}
 
-		try {
-			$scanner->scan($path);
-		} catch (ForbiddenException $e) {
-			$output->writeln("<error>Home storage for user $user not writable</error>");
-			$output->writeln("Make sure you're running the scan command only as the user the web server runs as");
-		}
+			try {
+				$scanner->scan($path);
+			} catch (ForbiddenException $e) {
+				$output->writeln("<error>Home storage for user $user not writable</error>");
+				$output->writeln("Make sure you're running the scan command only as the user the web server runs as");
+			}
+		} else {
+                        $output->writeln("<error>Unknown user $user</error>");
+                }
+
 	}
 
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$inputPath = $input->getOption('path');
-		if ($inputPath) {
-			$inputPath = '/' . trim($inputPath, '/');
-			list (, $user,) = explode('/', $inputPath, 3);
-			$users = array($user);
-		} else if ($input->getOption('all')) {
-			$users = $this->userManager->search('');
-		} else {
-			$users = $input->getArgument('user_id');
-		}
-
-		if (count($users) === 0) {
-			$output->writeln("<error>Please specify the user id to scan, \"--all\" to scan for all users or \"--path=...\"</error>");
-			return;
-		}
-
 		# no messaging level option means: no full printout but statistics
 		# $quiet   means no print at all
 		# $verbose means full printout including statistics
@@ -161,16 +159,41 @@ class Scan extends Command {
 
 		$this->initTools();
 
-		foreach ($users as $user) {
-			if (is_object($user)) {
-				$user = $user->getUID();
-			}
-			$path = $inputPath ? $inputPath : '/' . $user;
-			if ($this->userManager->userExists($user)) {
-				# full: printout data if $verbose was set
-				$this->scanFiles($user, $path, $verbose, $output);
+		$pathList = $input->getOption('path_list');
+		if ($pathList) {
+                        try {
+                                $plFile = new \SplFileObject($pathList);
+                                $plFile->setFlags(\SplFileObject::DROP_NEW_LINE|
+                                                  \SplFileObject::READ_AHEAD|
+                                                  \SplFileObject::SKIP_EMPTY);
+                                foreach ($plFile as $lineNumber => $path) {
+                                        $path = '/' . trim($path, '/');
+                                        list (, $user,) = explode('/', $path, 3);
+                                        $this->scanFiles($user,$path,$quiet,$output);
+                                }
+                        } catch (RuntimeException $e) {
+                                $output->writeln("<error>Could not open path_list file</error>");
+                        }
+                } else {
+			$inputPath = $input->getOption('path');
+			if ($inputPath) {
+				$inputPath = '/' . trim($inputPath, '/');
+				list (, $user,) = explode('/', $inputPath, 3);
+				$users = array($user);
+			} else if ($input->getOption('all')) {
+				$users = $this->userManager->search('');
 			} else {
-				$output->writeln("<error>Unknown user $user</error>");
+				$users = $input->getArgument('user_id');
+			}
+
+			if (count($users) === 0) {
+				$output->writeln("<error>Please specify the user id to scan, \"--all\" to scan for all users or \"--path=...\"</error>");
+				return;
+			}
+
+			foreach ($users as $user) {
+				$path = $inputPath ? $inputPath : '/' . $user;
+				$this->scanFiles($user, $path, $verbose, $output);
 			}
 		}
 
