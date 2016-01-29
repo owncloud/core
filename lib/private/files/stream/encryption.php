@@ -72,6 +72,22 @@ class Encryption extends Wrapper {
 	protected $fullPath;
 
 	/**
+	 * true whenever the unencrypted size is wrong and needs
+	 * to be recomputed on the fly
+	 *
+	 * @var bool
+	 */
+	protected $mustFixUnencryptedSize;
+
+	/**
+	 * Fixed unencrypted size value, computed on the fly whenever
+	 * $mustFixUnencryptedSize is true
+	 *
+	 * @var int
+	 */
+	protected $fixedUnencryptedSize;
+
+	/**
 	 * header data returned by the encryption module, will be written to the file
 	 * in case of a write operation
 	 *
@@ -222,6 +238,7 @@ class Encryption extends Wrapper {
 		$this->loadContext('ocencryption');
 
 		$this->position = 0;
+		$this->fixedUnencryptedSize = 0;
 		$this->cache = '';
 		$this->writeFlag = false;
 		$this->unencryptedBlockSize = $this->encryptionModule->getUnencryptedBlockSize();
@@ -237,6 +254,14 @@ class Encryption extends Wrapper {
 			$this->readOnly = false;
 		} else {
 			$this->readOnly = true;
+
+			// in some error cases, the size from the database is the same as the encrypted size
+			if ($this->unencryptedSize < 0 || $this->unencryptedSize === $this->size) {
+				// activate repair routine
+				$this->mustFixUnencryptedSize = true;
+				// unencrypted size must be big enough for having the stream loops working
+				$this->unencryptedSize = $this->size;
+			}
 		}
 
 		$sharePath = $this->fullPath;
@@ -292,6 +317,17 @@ class Encryption extends Wrapper {
 				$this->flush();
 				$this->position += ($this->unencryptedBlockSize - $blockPosition);
 				$count -= ($this->unencryptedBlockSize - $blockPosition);
+			}
+		}
+
+		// gather data to repair unencrypted size
+		if ($this->mustFixUnencryptedSize) {
+			// strlen is expensive, so check with isset if the length is the max size
+			if (isset($result[$this->unencryptedBlockSize])) {
+				$this->fixedUnencryptedSize += $this->unencryptedBlockSize;
+			} else {
+				// use strlen for the remaining block
+				$this->fixedUnencryptedSize += strlen($result);
 			}
 		}
 		return $result;
@@ -398,6 +434,19 @@ class Encryption extends Wrapper {
 				parent::stream_write($remainingData);
 			}
 			$this->encryptionStorage->updateUnencryptedSize($this->fullPath, $this->unencryptedSize);
+		}
+		if ($this->mustFixUnencryptedSize && $this->unencryptedSize !== $this->fixedUnencryptedSize) {
+			// TODO: log entry
+
+			// fix unencrypted size
+			$this->encryptionStorage->updateUnencryptedSize($this->fullPath, $this->fixedUnencryptedSize);
+
+			// write to cache if applicable
+			$cache = $this->encryptionStorage->getCache();
+			if ($cache) {
+				$entry = $cache->get($this->internalPath);
+				$cache->update($entry['fileid'], ['size' => $this->fixedUnencryptedSize]);
+			}
 		}
 		return parent::stream_close();
 	}
