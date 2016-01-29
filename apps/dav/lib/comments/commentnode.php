@@ -26,11 +26,14 @@ use OCP\Comments\IComment;
 use OCP\Comments\ICommentsManager;
 use OCP\ILogger;
 use OCP\IUserManager;
+use OCP\IUserSession;
 use Sabre\DAV\Exception\MethodNotAllowed;
 use Sabre\DAV\PropPatch;
 
 class CommentNode implements \Sabre\DAV\INode, \Sabre\DAV\IProperties {
 	const NS_OWNCLOUD = 'http://owncloud.org/ns';
+
+	const PROPERTY_NAME_UNREAD = '{http://owncloud.org/ns}isUnread';
 
 	/** @var  IComment */
 	public $comment;
@@ -47,18 +50,23 @@ class CommentNode implements \Sabre\DAV\INode, \Sabre\DAV\IProperties {
 	/** @var IUserManager */
 	protected $userManager;
 
+	/** @var IUserSession */
+	protected $userSession;
+
 	/**
 	 * CommentNode constructor.
 	 *
 	 * @param ICommentsManager $commentsManager
 	 * @param IComment $comment
 	 * @param IUserManager $userManager
+	 * @param IUserSession $userSession
 	 * @param ILogger $logger
 	 */
 	public function __construct(
 		ICommentsManager $commentsManager,
 		IComment $comment,
 		IUserManager $userManager,
+		IUserSession $userSession,
 		ILogger $logger
 	) {
 		$this->commentsManager = $commentsManager;
@@ -74,6 +82,7 @@ class CommentNode implements \Sabre\DAV\INode, \Sabre\DAV\IProperties {
 			$this->properties[$name] = $getter;
 		}
 		$this->userManager = $userManager;
+		$this->userSession = $userSession;
 	}
 
 	/**
@@ -203,6 +212,24 @@ class CommentNode implements \Sabre\DAV\INode, \Sabre\DAV\IProperties {
 			$displayName = is_null($user) ? null : $user->getDisplayName();
 			$result['{' . self::NS_OWNCLOUD . '}actorDisplayName'] = $displayName;
 		}
+
+		$unread = null;
+		$user =  $this->userSession->getUser();
+		if(!is_null($user)) {
+			$readUntil = $this->commentsManager->getReadMark(
+				$this->comment->getActorType(),
+				$this->comment->getActorId(),
+				$user
+			);
+			if(is_null($readUntil)) {
+				$unread = 'true';
+			} else {
+				$unread = $this->comment->getCreationDateTime() > $readUntil;
+				// re-format for output
+				$unread = $unread ? 'true' : 'false';
+			}
+		}
+		$result[self::PROPERTY_NAME_UNREAD] = $unread;
 
 		return $result;
 	}
