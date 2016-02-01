@@ -170,7 +170,7 @@ class EntityCollection extends RootCollection implements \Sabre\DAV\IProperties 
 	 * @param \DateTime $value
 	 * @return bool
 	 */
-	public function setReadMarker($value) {
+	public function setReadMark($value) {
 		$dateTime = new \DateTime($value);
 		$user = $this->userSession->getUser();
 		$this->commentsManager->setReadMark($this->name, $this->id, $dateTime, $user);
@@ -181,7 +181,7 @@ class EntityCollection extends RootCollection implements \Sabre\DAV\IProperties 
 	 * @inheritdoc
 	 */
 	function propPatch(PropPatch $propPatch) {
-		$propPatch->handle(self::PROPERTY_NAME_READ_MARKER, [$this, 'setReadMarker']);
+		$propPatch->handle(self::PROPERTY_NAME_READ_MARKER, [$this, 'setReadMark']);
 	}
 
 	/**

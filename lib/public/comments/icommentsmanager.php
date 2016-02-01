@@ -203,6 +203,17 @@ interface ICommentsManager {
 	public function setReadMark($objectType, $objectId, \DateTime $dateTime, \OCP\IUser $user);
 
 	/**
+	 * sets all read markers for a given object type of the provided user
+	 *
+	 * @param $objectType
+	 * @param \DateTime $dateTime
+	 * @param \OCP\IUser $user
+	 * @return bool
+	 * @since 9.0.0
+	 */
+	public function setAllReadMarks($objectType, \DateTime $dateTime, \OCP\IUser $user);
+
+	/**
 	 * returns the read marker for a given file to the specified date for the
 	 * provided user. It returns null, when the marker is not present, i.e.
 	 * no comments were marked as read.

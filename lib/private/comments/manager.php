@@ -604,6 +604,25 @@ class Manager implements ICommentsManager {
 		return ($affectedRows > 0);
 	}
 
+
+	public function setAllReadMarks($objectType, \DateTime $dateTime, \OCP\IUser $user) {
+		if(!is_string($objectType)) {
+			throw new \InvalidArgumentException('objectType parameter is expected to be string');
+		}
+
+		$qb = $this->dbConn->getQueryBuilder();
+		$affectedRows = $qb
+			->update('comments_read_markers')
+			->set('marker_datetime', $qb->createNamedParameter($dateTime, 'datetime'), 'datetime')
+			->where($qb->expr()->eq('user_id', $qb->createParameter('user_id')))
+			->andWhere($qb->expr()->eq('object_type', $qb->createParameter('object_type')))
+			->setParameter('user_id', $user->getUID(), \PDO::PARAM_STR)
+			->setParameter('object_type', $objectType, \PDO::PARAM_STR)
+			->execute();
+
+		return $affectedRows > 0;
+	}
+
 	/**
 	 * sets the read marker for a given file to the specified date for the
 	 * provided user
@@ -632,6 +651,7 @@ class Manager implements ICommentsManager {
 			->set('marker_datetime', $values['marker_datetime'], 'datetime')
 			->set('object_type',     $values['object_type'])
 			->set('object_id',       $values['object_id'])
+			// FIXME: where are the where clauses!?!
 			->execute();
 
 		if ($affectedRows > 0) {
@@ -640,6 +660,30 @@ class Manager implements ICommentsManager {
 
 		$qb->insert('comments_read_markers')
 			->values($values)
+			->execute();
+	}
+
+	protected function getReadMarkFromDB($objectType, $objectId, IUser $user) {
+		$qb = $this->dbConn->getQueryBuilder();
+		return $qb->select('marker_datetime')
+			->from('comments_read_markers')
+			->where($qb->expr()->eq('user_id', $qb->createParameter('user_id')))
+			->andWhere($qb->expr()->eq('object_type', $qb->createParameter('object_type')))
+			->andWhere($qb->expr()->eq('object_id', $qb->createParameter('object_id')))
+			->setParameter('user_id', $user->getUID(), \PDO::PARAM_STR)
+			->setParameter('object_type', $objectType, \PDO::PARAM_STR)
+			->setParameter('object_id', $objectId, \PDO::PARAM_STR)
+			->execute();
+	}
+
+	protected function initUniversalReadMarker($objectType, \OCP\IUser $user) {
+		$qb = $this->dbConn->getQueryBuilder();
+		$qb->insert('comments_read_markers')
+			->values([
+				'user_id'     => $qb->createNamedParameter($user->getUID()),
+				'object_type' => $qb->createNamedParameter($objectType),
+				'object_id'   => $qb->createNamedParameter(''),
+			])
 			->execute();
 	}
 
@@ -655,24 +699,23 @@ class Manager implements ICommentsManager {
 	 * @since 9.0.0
 	 */
 	public function getReadMark($objectType, $objectId, IUser $user) {
-		$qb = $this->dbConn->getQueryBuilder();
-		$resultStatement = $qb->select('marker_datetime')
-			->from('comments_read_markers')
-			->where($qb->expr()->eq('user_id', $qb->createParameter('user_id')))
-			->andWhere($qb->expr()->eq('object_type', $qb->createParameter('object_type')))
-			->andWhere($qb->expr()->eq('object_id', $qb->createParameter('object_id')))
-			->setParameter('user_id', $user->getUID(), \PDO::PARAM_STR)
-			->setParameter('object_type', $objectType, \PDO::PARAM_STR)
-			->setParameter('object_id', $objectId, \PDO::PARAM_STR)
-			->execute();
+		$data = null;
+		$ids = [$objectId, ''];
+		foreach($ids as $id) {
+			$resultStatement = $this->getReadMarkFromDB($objectType, $id, $user);
+			$data = $resultStatement->fetch();
+			$resultStatement->closeCursor();
 
-		$data = $resultStatement->fetch();
-		$resultStatement->closeCursor();
-		if(!$data || is_null($data['marker_datetime'])) {
-			return null;
+			if(!!$data && !is_null($data['marker_datetime'])) {
+				return new \DateTime($data['marker_datetime']);
+			}
 		}
 
-		return new \DateTime($data['marker_datetime']);
+		if(!$data) {
+			// No "fallback" marker was set yet
+			$this->initUniversalReadMarker($objectType, $user);
+		}
+		return null;
 	}
 
 	/**

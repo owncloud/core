@@ -28,6 +28,7 @@ use OCP\IUserManager;
 use OCP\IUserSession;
 use Sabre\DAV\Exception\MethodNotAllowed;
 use Sabre\DAV\Exception\NotFound;
+use Sabre\DAV\PropPatch;
 
 /**
  * Class EntityTypeCollection
@@ -40,7 +41,7 @@ use Sabre\DAV\Exception\NotFound;
  *
  * @package OCA\DAV\Comments
  */
-class EntityTypeCollection extends RootCollection {
+class EntityTypeCollection extends RootCollection implements \Sabre\DAV\IProperties {
 	/** @var  Folder */
 	protected $fileRoot;
 
@@ -121,5 +122,29 @@ class EntityTypeCollection extends RootCollection {
 		return !empty($nodes);
 	}
 
+	/**
+	 * Sets the read marker to the specified date for the logged in user
+	 *
+	 * @param \DateTime $value
+	 * @return bool
+	 */
+	public function setReadMarks($value) {
+		$dateTime = new \DateTime($value);
+		$user = $this->userSession->getUser();
+		$this->commentsManager->setAllReadMarks($this->name, $dateTime, $user);
+	}
 
+	/**
+	 * @inheritdoc
+	 */
+	function propPatch(PropPatch $propPatch) {
+		$propPatch->handle(EntityCollection::PROPERTY_NAME_READ_MARKER, [$this, 'setReadMarks']);
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	function getProperties($properties) {
+		return [];
+	}
 }
