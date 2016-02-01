@@ -651,7 +651,9 @@ class Manager implements ICommentsManager {
 			->set('marker_datetime', $values['marker_datetime'], 'datetime')
 			->set('object_type',     $values['object_type'])
 			->set('object_id',       $values['object_id'])
-			// FIXME: where are the where clauses!?!
+			->where($qb->expr()->eq('user_id', $qb->createParameter('user_id')))
+			->andWhere($qb->expr()->eq('object_type', $qb->createParameter('object_type')))
+			->andWhere($qb->expr()->eq('object_id', $qb->createParameter('object_id')))
 			->execute();
 
 		if ($affectedRows > 0) {
