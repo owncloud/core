@@ -21,6 +21,7 @@
 
 namespace OC\Share20;
 
+use OCP\Files\Node;
 use OCP\Share\IManager;
 use OCP\Share\IProviderFactory;
 use OC\Share20\Exception\BackendError;
@@ -216,7 +217,9 @@ class Manager implements IManager {
 	 * @return \DateTime|null The expiration date or null if $expireDate was null and it is not required
 	 * @throws \OC\HintException
 	 */
-	protected function validateExpirationDate($expirationDate) {
+	protected function validateExpirationDate(\OCP\Share\IShare $share) {
+
+		$expirationDate = $share->getExpirationDate();
 
 		if ($expirationDate !== null) {
 			//Make sure the expiration date is a date
@@ -243,17 +246,29 @@ class Manager implements IManager {
 				$message = $this->l->t('Cannot set expiration date more than %s days in the future', [$this->shareApiLinkDefaultExpireDays()]);
 				throw new \OC\HintException($message, $message, 404);
 			}
-
-			return $expirationDate;
 		}
 
 		// If expiredate is empty set a default one if there is a default
 		if ($expirationDate === null && $this->shareApiLinkDefaultExpireDate()) {
-			$date = new \DateTime();
-			$date->setTime(0,0,0);
-			$date->add(new \DateInterval('P'.$this->shareApiLinkDefaultExpireDays().'D'));
-			return $date;
+			$expirationDate = new \DateTime();
+			$expirationDate->setTime(0,0,0);
+			$expirationDate->add(new \DateInterval('P'.$this->shareApiLinkDefaultExpireDays().'D'));
 		}
+
+		$accepted = true;
+		$message = '';
+		\OCP\Util::emitHook('\OC\Share', 'verifyExpirationDate', [
+			'expirationDate' => &$expirationDate,
+			'accepted' => &$accepted,
+			'message' => &$message,
+			'passwordSet' => $share->getPassword() === null,
+		]);
+
+		if (!$accepted) {
+			throw new \Exception($message);
+		}
+
+		$share->setExpirationDate($expirationDate);
 
 		return $expirationDate;
 	}
@@ -435,7 +450,7 @@ class Manager implements IManager {
 			);
 
 			//Verify the expiration date
-			$share->setExpirationDate($this->validateExpirationDate($share->getExpirationDate()));
+			$this->validateExpirationDate($share);
 
 			//Verify the password
 			$this->verifyPassword($share->getPassword());
@@ -572,7 +587,7 @@ class Manager implements IManager {
 
 			if ($share->getExpirationDate() !== $originalShare->getExpirationDate()) {
 				//Verify the expiration date
-				$share->setExpirationDate($this->validateExpirationDate($share->getExpirationDate()));
+				$this->validateExpirationDate($share);
 				$expirationDateUpdated = true;
 			}
 		}
@@ -722,18 +737,12 @@ class Manager implements IManager {
 	}
 
 	/**
-	 * Get shares shared with $user.
-	 *
-	 * @param IUser $user
-	 * @param int $shareType
-	 * @param int $limit The maximum number of shares returned, -1 for all
-	 * @param int $offset
-	 * @return \OCP\Share\IShare[]
+	 * @inheritdoc
 	 */
-	public function getSharedWith(IUser $user, $shareType, $limit = 50, $offset = 0) {
+	public function getSharedWith(IUser $user, $shareType, $node = null, $limit = 50, $offset = 0) {
 		$provider = $this->factory->getProviderForType($shareType);
 
-		return $provider->getSharedWith($user, $shareType, $limit, $offset);
+		return $provider->getSharedWith($user, $shareType, $node, $limit, $offset);
 	}
 
 	/**

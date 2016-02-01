@@ -25,8 +25,10 @@ use OCP\Comments\ICommentsManager;
 use OCP\Files\Folder;
 use OCP\ILogger;
 use OCP\IUserManager;
+use OCP\IUserSession;
 use Sabre\DAV\Exception\MethodNotAllowed;
 use Sabre\DAV\Exception\NotFound;
+use Sabre\DAV\PropPatch;
 
 /**
  * Class EntityTypeCollection
@@ -39,7 +41,7 @@ use Sabre\DAV\Exception\NotFound;
  *
  * @package OCA\DAV\Comments
  */
-class EntityTypeCollection extends RootCollection {
+class EntityTypeCollection extends RootCollection implements \Sabre\DAV\IProperties {
 	/** @var  Folder */
 	protected $fileRoot;
 
@@ -51,6 +53,7 @@ class EntityTypeCollection extends RootCollection {
 	 * @param ICommentsManager $commentsManager
 	 * @param Folder $fileRoot
 	 * @param IUserManager $userManager
+	 * @param IUserSession $userSession
 	 * @param ILogger $logger
 	 */
 	public function __construct(
@@ -58,6 +61,7 @@ class EntityTypeCollection extends RootCollection {
 		ICommentsManager $commentsManager,
 		Folder $fileRoot,
 		IUserManager $userManager,
+		IUserSession $userSession,
 		ILogger $logger
 	) {
 		$name = trim($name);
@@ -69,6 +73,7 @@ class EntityTypeCollection extends RootCollection {
 		$this->fileRoot = $fileRoot;
 		$this->logger = $logger;
 		$this->userManager = $userManager;
+		$this->userSession = $userSession;
 	}
 
 	/**
@@ -91,6 +96,7 @@ class EntityTypeCollection extends RootCollection {
 			$this->commentsManager,
 			$this->fileRoot,
 			$this->userManager,
+			$this->userSession,
 			$this->logger
 		);
 	}
@@ -116,5 +122,29 @@ class EntityTypeCollection extends RootCollection {
 		return !empty($nodes);
 	}
 
+	/**
+	 * Sets the read marker to the specified date for the logged in user
+	 *
+	 * @param \DateTime $value
+	 * @return bool
+	 */
+	public function setReadMarks($value) {
+		$dateTime = new \DateTime($value);
+		$user = $this->userSession->getUser();
+		$this->commentsManager->setAllReadMarks($this->name, $dateTime, $user);
+	}
 
+	/**
+	 * @inheritdoc
+	 */
+	function propPatch(PropPatch $propPatch) {
+		$propPatch->handle(EntityCollection::PROPERTY_NAME_READ_MARKER, [$this, 'setReadMarks']);
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	function getProperties($properties) {
+		return [];
+	}
 }
