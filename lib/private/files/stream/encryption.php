@@ -330,13 +330,7 @@ class Encryption extends Wrapper {
 
 		// gather data to repair unencrypted size
 		if ($this->mustFixUnencryptedSize) {
-			// strlen is expensive, so check with isset if the length is the max size
-			if (isset($result[$this->unencryptedBlockSize])) {
-				$this->fixedUnencryptedSize += $this->unencryptedBlockSize;
-			} else {
-				// use strlen for the remaining block
-				$this->fixedUnencryptedSize += strlen($result);
-			}
+			$this->fixedUnencryptedSize += strlen($result);
 		}
 		return $result;
 
