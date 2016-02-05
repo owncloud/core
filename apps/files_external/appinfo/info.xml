@@ -17,6 +17,7 @@
 	<types>
 		<filesystem/>
 	</types>
+	<default_enable/>
 	<ocsid>166048</ocsid>
 
 	<dependencies>
