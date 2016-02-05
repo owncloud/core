@@ -285,6 +285,7 @@ Feature: provisioning
 			| comments |
 			| dav |
 			| files |
+			| files_external |
 			| files_sharing |
 			| files_trashbin |
 			| files_versions |
