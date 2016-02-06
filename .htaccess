@@ -4,6 +4,14 @@
        SetEnvIfNoCase ^Authorization$ "(.+)" XAUTHORIZATION=$1
        RequestHeader set XAuthorization %{XAUTHORIZATION}e env=XAUTHORIZATION
     </IfModule>
+    <IfModule mod_cgi.c>
+       SetEnvIfNoCase ^Authorization$ "(.+)" XAUTHORIZATION=$1
+       RequestHeader set XAuthorization %{XAUTHORIZATION}e env=XAUTHORIZATION
+    </IfModule>
+    <IfModule mod_fastcgi.c>
+       SetEnvIfNoCase ^Authorization$ "(.+)" XAUTHORIZATION=$1
+       RequestHeader set XAuthorization %{XAUTHORIZATION}e env=XAUTHORIZATION
+    </IfModule>
     <IfModule mod_proxy_fcgi.c>
        SetEnvIfNoCase Authorization "(.+)" HTTP_AUTHORIZATION=$1
     </IfModule>
