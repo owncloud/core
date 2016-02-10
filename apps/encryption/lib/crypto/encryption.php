@@ -236,7 +236,7 @@ class Encryption implements IEncryptionModule {
 			} else {
 				$version = $this->version + 1;
 			}
-			$this->keyManager->setVersion($this->path, $this->version+1, new View());
+			$this->keyManager->setVersion($this->path, $version, new View());
 			if (!empty($this->writeCache)) {
 				$result = $this->crypt->symmetricEncryptFileContent($this->writeCache, $this->fileKey, $version, $position);
 				$this->writeCache = '';
