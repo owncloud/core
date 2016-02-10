@@ -46,6 +46,10 @@
 	 * @property {string} mail_send
 	 * @property {Date} expiration optional?
 	 * @property {number} stime optional?
+	 * @property {string} uid_file_owner
+	 * @property {string} displayname_file_owner
+	 * @property {string} uid_owner
+	 * @property {string} displayname_owner
 	 */
 
 	/**
@@ -387,6 +391,58 @@
 				throw "Unknown Share";
 			}
 			return share.share_with_displayname;
+		},
+
+		/**
+		 * @param shareIndex
+		 * @returns {number}
+		 */
+		getShareOwner: function(shareIndex) {
+			/** @type OC.Share.Types.ShareInfo **/
+			var share = this.get('shares')[shareIndex];
+			if(!_.isObject(share)) {
+				throw "Unknown Share";
+			}
+			return share.uid_file_owner;
+		},
+
+		/**
+		 * @param shareIndex
+		 * @returns {number}
+		 */
+		getShareOwnerDisplayName: function(shareIndex) {
+			/** @type OC.Share.Types.ShareInfo **/
+			var share = this.get('shares')[shareIndex];
+			if(!_.isObject(share)) {
+				throw "Unknown Share";
+			}
+			return share.displayname_file_owner;
+		},
+
+		/**
+		 * @param shareIndex
+		 * @returns {number}
+		 */
+		getShareInitiator: function(shareIndex) {
+			/** @type OC.Share.Types.ShareInfo **/
+			var share = this.get('shares')[shareIndex];
+			if(!_.isObject(share)) {
+				throw "Unknown Share";
+			}
+			return share.uid_owner;
+		},
+
+		/**
+		 * @param shareIndex
+		 * @returns {number}
+		 */
+		getShareInitiatorDisplayName: function(shareIndex) {
+			/** @type OC.Share.Types.ShareInfo **/
+			var share = this.get('shares')[shareIndex];
+			if(!_.isObject(share)) {
+				throw "Unknown Share";
+			}
+			return share.displayname_owner;
 		},
 
 		getShareType: function(shareIndex) {

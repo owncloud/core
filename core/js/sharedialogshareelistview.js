@@ -21,7 +21,7 @@
 			'        {{#if avatarEnabled}}' +
 			'        <div class="avatar {{#if modSeed}}imageplaceholderseed{{/if}}" data-username="{{shareWith}}" {{#if modSeed}}data-seed="{{shareWith}} {{shareType}}"{{/if}}></div>' +
 			'        {{/if}}' +
-			'        <span class="username">{{shareWithDisplayName}}</span>' +
+			'        <span class="username" title="{{sharedBy}}" >{{shareWithDisplayName}}</span>' +
 			'        {{#if mailNotificationEnabled}} {{#unless isRemoteShare}}' +
 			'        <input id="mail-{{cid}}-{{shareWith}}" type="checkbox" name="mailNotification" class="mailNotification checkbox" {{#if wasMailSent}}checked="checked"{{/if}} />' +
 			'        <label for="mail-{{cid}}-{{shareWith}}">{{notifyByMailLabel}}</label>' +
@@ -105,6 +105,17 @@
 			var shareWith = this.model.getShareWith(shareIndex);
 			var shareWithDisplayName = this.model.getShareWithDisplayName(shareIndex);
 			var shareType = this.model.getShareType(shareIndex);
+			var owner = this.model.getShareOwner(shareIndex);
+			var ownerDisplayName = this.model.getShareOwnerDisplayName(shareIndex);
+			var initiator = this.model.getShareInitiator(shareIndex);
+			var initiatorDisplayName = this.model.getShareInitiatorDisplayName(shareIndex);
+
+			var sharedBy;
+			if (owner === initiator) {
+				sharedBy = t('core', 'shared by you');
+			} else {
+				sharedBy = t('core', 'shared by {initiator}', {initiator: initiatorDisplayName});
+			}
 
 			var hasPermissionOverride = {};
 			if (shareType === OC.Share.SHARE_TYPE_GROUP) {
@@ -127,6 +138,11 @@
 				wasMailSent: this.model.notificationMailWasSent(shareIndex),
 				shareWith: shareWith,
 				shareWithDisplayName: shareWithDisplayName,
+				owner: owner,
+				ownerDisplayName: ownerDisplayName,
+				initiator: initiator,
+				initiatorDisplayName: initiatorDisplayName,
+				sharedBy: sharedBy,
 				shareType: shareType,
 				shareId: this.model.get('shares')[shareIndex].id,
 				modSeed: shareType !== OC.Share.SHARE_TYPE_USER,
