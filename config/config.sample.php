@@ -460,12 +460,6 @@ $CONFIG = array(
 'appcodechecker' => true,
 
 /**
- * Check if ownCloud is up-to-date and shows a notification if a new version is
- * available.
- */
-'updatechecker' => true,
-
-/**
  * Is ownCloud connected to the Internet or running in a closed network?
  */
 'has_internet_connection' => true,
