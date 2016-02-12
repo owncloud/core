@@ -81,6 +81,7 @@
 			'keyup input.linkPassText': 'onPasswordKeyUp',
 			'click .linkCheckbox': 'onLinkCheckBoxChange',
 			'click .linkText': 'onLinkTextClick',
+			'touchstart .linkText': 'onLinkTextClick',
 			'change .publicUploadCheckbox': 'onAllowPublicUploadChange',
 			'click .showPasswordCheckbox': 'onShowPasswordClick'
 		},
