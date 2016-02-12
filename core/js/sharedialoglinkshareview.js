@@ -150,9 +150,9 @@
 		},
 
 		onLinkTextClick: function() {
-			var $el = this.$el.find('.linkText');
+			var $el = this.$el.find('.linkText')[0];
 			$el.focus();
-			$el.select();
+			$el.setSelectionRange(0, $el.value.length);
 		},
 
 		onShowPasswordClick: function() {
