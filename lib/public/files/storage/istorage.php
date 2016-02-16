@@ -304,15 +304,6 @@ interface IStorage {
 	public function free_space($path);
 
 	/**
-	 * search for occurrences of $query in file names
-	 *
-	 * @param string $query
-	 * @return array|false
-	 * @since 9.0.0
-	 */
-	public function search($query);
-
-	/**
 	 * see http://php.net/manual/en/function.touch.php
 	 * If the backend does not support the operation, false should be returned
 	 *
@@ -332,16 +323,6 @@ interface IStorage {
 	 * @since 9.0.0
 	 */
 	public function getLocalFile($path);
-
-	/**
-	 * get the path to a local version of the folder.
-	 * The local version of the folder can be temporary and doesn't have to be persistent across requests
-	 *
-	 * @param string $path
-	 * @return string|false
-	 * @since 9.0.0
-	 */
-	public function getLocalFolder($path);
 
 	/**
 	 * check if a file or folder has been updated since $time

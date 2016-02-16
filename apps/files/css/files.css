@@ -59,7 +59,7 @@
 
 /* fit app list view heights */
 .app-files #app-content>.viewcontainer {
-	min-height: 100%;
+	min-height: 0%;
 }
 
 .app-files #app-content {
@@ -530,8 +530,8 @@ html.ie8 #fileList tr.selected td.filename>.selectCheckBox {
 }
 
 a.action > img {
-	max-height: 16px;
-	max-width: 16px;
+	height: 16px;
+	width: 16px;
 	vertical-align: text-bottom;
 }
 

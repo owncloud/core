@@ -79,6 +79,9 @@ class Manager extends TestCase {
 	/** @var \OCP\App\IAppManager */
 	protected $manager;
 
+	/** @var  \Symfony\Component\EventDispatcher\EventDispatcherInterface */
+	protected $eventDispatcher;
+
 	protected function setUp() {
 		parent::setUp();
 
@@ -87,11 +90,12 @@ class Manager extends TestCase {
 		$this->appConfig = $this->getAppConfig();
 		$this->cacheFactory = $this->getMock('\OCP\ICacheFactory');
 		$this->cache = $this->getMock('\OCP\ICache');
+		$this->eventDispatcher = $this->getMock('\Symfony\Component\EventDispatcher\EventDispatcherInterface');
 		$this->cacheFactory->expects($this->any())
 			->method('create')
 			->with('settings')
 			->willReturn($this->cache);
-		$this->manager = new \OC\App\AppManager($this->userSession, $this->appConfig, $this->groupManager, $this->cacheFactory);
+		$this->manager = new \OC\App\AppManager($this->userSession, $this->appConfig, $this->groupManager, $this->cacheFactory, $this->eventDispatcher);
 	}
 
 	protected function expectClearCache() {
@@ -149,7 +153,7 @@ class Manager extends TestCase {
 		/** @var \OC\App\AppManager|\PHPUnit_Framework_MockObject_MockObject $manager */
 		$manager = $this->getMockBuilder('OC\App\AppManager')
 			->setConstructorArgs([
-				$this->userSession, $this->appConfig, $this->groupManager, $this->cacheFactory
+				$this->userSession, $this->appConfig, $this->groupManager, $this->cacheFactory, $this->eventDispatcher
 			])
 			->setMethods([
 				'getAppInfo'
@@ -192,7 +196,7 @@ class Manager extends TestCase {
 		/** @var \OC\App\AppManager|\PHPUnit_Framework_MockObject_MockObject $manager */
 		$manager = $this->getMockBuilder('OC\App\AppManager')
 			->setConstructorArgs([
-				$this->userSession, $this->appConfig, $this->groupManager, $this->cacheFactory
+				$this->userSession, $this->appConfig, $this->groupManager, $this->cacheFactory, $this->eventDispatcher
 			])
 			->setMethods([
 				'getAppInfo'
@@ -282,7 +286,7 @@ class Manager extends TestCase {
 		$this->appConfig->setValue('test1', 'enabled', 'yes');
 		$this->appConfig->setValue('test2', 'enabled', 'no');
 		$this->appConfig->setValue('test3', 'enabled', '["foo"]');
-		$this->assertEquals(['dav', 'files', 'test1', 'test3'], $this->manager->getInstalledApps());
+		$this->assertEquals(['dav', 'federatedfilesharing', 'files', 'test1', 'test3'], $this->manager->getInstalledApps());
 	}
 
 	public function testGetAppsForUser() {
@@ -296,18 +300,19 @@ class Manager extends TestCase {
 		$this->appConfig->setValue('test2', 'enabled', 'no');
 		$this->appConfig->setValue('test3', 'enabled', '["foo"]');
 		$this->appConfig->setValue('test4', 'enabled', '["asd"]');
-		$this->assertEquals(['dav', 'files', 'test1', 'test3'], $this->manager->getEnabledAppsForUser($user));
+		$this->assertEquals(['dav', 'federatedfilesharing', 'files', 'test1', 'test3'], $this->manager->getEnabledAppsForUser($user));
 	}
 
 	public function testGetAppsNeedingUpgrade() {
 		$this->manager = $this->getMockBuilder('\OC\App\AppManager')
-			->setConstructorArgs([$this->userSession, $this->appConfig, $this->groupManager, $this->cacheFactory])
+			->setConstructorArgs([$this->userSession, $this->appConfig, $this->groupManager, $this->cacheFactory, $this->eventDispatcher])
 			->setMethods(['getAppInfo'])
 			->getMock();
 
 		$appInfos = [
 			'dav' => ['id' => 'dav'],
 			'files' => ['id' => 'files'],
+			'federatedfilesharing' => ['id' => 'federatedfilesharing'],
 			'test1' => ['id' => 'test1', 'version' => '1.0.1', 'requiremax' => '9.0.0'],
 			'test2' => ['id' => 'test2', 'version' => '1.0.0', 'requiremin' => '8.2.0'],
 			'test3' => ['id' => 'test3', 'version' => '1.2.4', 'requiremin' => '9.0.0'],
@@ -341,13 +346,14 @@ class Manager extends TestCase {
 
 	public function testGetIncompatibleApps() {
 		$this->manager = $this->getMockBuilder('\OC\App\AppManager')
-			->setConstructorArgs([$this->userSession, $this->appConfig, $this->groupManager, $this->cacheFactory])
+			->setConstructorArgs([$this->userSession, $this->appConfig, $this->groupManager, $this->cacheFactory, $this->eventDispatcher])
 			->setMethods(['getAppInfo'])
 			->getMock();
 
 		$appInfos = [
 			'dav' => ['id' => 'dav'],
 			'files' => ['id' => 'files'],
+			'federatedfilesharing' => ['id' => 'federatedfilesharing'],
 			'test1' => ['id' => 'test1', 'version' => '1.0.1', 'requiremax' => '8.0.0'],
 			'test2' => ['id' => 'test2', 'version' => '1.0.0', 'requiremin' => '8.2.0'],
 			'test3' => ['id' => 'test3', 'version' => '1.2.4', 'requiremin' => '9.0.0'],

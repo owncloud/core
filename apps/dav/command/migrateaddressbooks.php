@@ -68,6 +68,7 @@ class MigrateAddressbooks extends Command {
 			}
 			$output->writeln("Start migration for $user");
 			$this->service->migrateForUser($user);
+			return;
 		}
 		$output->writeln("Start migration of all known users ...");
 		$p = new ProgressBar($output);

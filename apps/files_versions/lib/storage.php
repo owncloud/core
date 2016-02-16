@@ -52,6 +52,10 @@ class Storage {
 	const DEFAULTMAXSIZE=50; // unit: percentage; 50% of available disk space/quota
 	const VERSIONS_ROOT = 'files_versions/';
 
+	const DELETE_TRIGGER_MASTER_REMOVED = 0;
+	const DELETE_TRIGGER_RETENTION_CONSTRAINT = 1;
+	const DELETE_TRIGGER_QUOTA_EXCEEDED = 2;
+
 	// files for which we can remove the versions after the delete operation was successful
 	private static $deletedFiles = array();
 
@@ -161,7 +165,12 @@ class Storage {
 			$mtime = $users_view->filemtime('files/' . $filename);
 			$users_view->copy('files/' . $filename, 'files_versions/' . $filename . '.v' . $mtime);
 			// call getFileInfo to enforce a file cache entry for the new version
-			$users_view->getFileInfo('files_versions/' . $filename . '.v' . $mtime);
+			$newFileInfo = $users_view->getFileInfo('files_versions/' . $filename . '.v' . $mtime);
+
+			// Keep the "encrypted" value of the original file
+			$oldVersion = $files_view->getFileInfo($filename)->getEncryptedVersion();
+			$cache = $newFileInfo->getStorage()->getCache();
+			$cache->update($newFileInfo->getId(), ['encrypted' => $oldVersion, 'encryptedVersion' => $oldVersion]);
 		}
 	}
 
@@ -210,9 +219,9 @@ class Storage {
 			$versions = self::getVersions($uid, $filename);
 			if (!empty($versions)) {
 				foreach ($versions as $v) {
-					\OC_Hook::emit('\OCP\Versions', 'preDelete', array('path' => $path . $v['version']));
+					\OC_Hook::emit('\OCP\Versions', 'preDelete', array('path' => $path . $v['version'], 'trigger' => self::DELETE_TRIGGER_MASTER_REMOVED));
 					self::deleteVersion($view, $filename . '.v' . $v['version']);
-					\OC_Hook::emit('\OCP\Versions', 'delete', array('path' => $path . $v['version']));
+					\OC_Hook::emit('\OCP\Versions', 'delete', array('path' => $path . $v['version'], 'trigger' => self::DELETE_TRIGGER_MASTER_REMOVED));
 				}
 			}
 		}
@@ -309,6 +318,7 @@ class Storage {
 				Storage::scheduleExpire($uid, $file);
 				\OC_Hook::emit('\OCP\Versions', 'rollback', array(
 					'path' => $filename,
+					'revision' => $revision,
 				));
 				return true;
 			} else if ($versionCreated) {
@@ -444,9 +454,9 @@ class Storage {
 		$view = new \OC\Files\View('/' . $uid . '/files_versions');
 		if (!empty($toDelete)) {
 			foreach ($toDelete as $version) {
-				\OC_Hook::emit('\OCP\Versions', 'preDelete', array('path' => $version['path'].'.v'.$version['version']));
+				\OC_Hook::emit('\OCP\Versions', 'preDelete', array('path' => $version['path'].'.v'.$version['version'], 'trigger' => self::DELETE_TRIGGER_RETENTION_CONSTRAINT));
 				self::deleteVersion($view, $version['path'] . '.v' . $version['version']);
-				\OC_Hook::emit('\OCP\Versions', 'delete', array('path' => $version['path'].'.v'.$version['version']));
+				\OC_Hook::emit('\OCP\Versions', 'delete', array('path' => $version['path'].'.v'.$version['version'], 'trigger' => self::DELETE_TRIGGER_RETENTION_CONSTRAINT));
 			}
 		}
 	}
@@ -648,11 +658,9 @@ class Storage {
 			$versionsFileview = new \OC\Files\View('/'.$uid.'/files_versions');
 
 			// get available disk space for user
+			$user = \OC::$server->getUserManager()->get($uid);
 			$softQuota = true;
-			$quota = $config->getUserValue($uid, 'files', 'quota', null);
-			if ( $quota === null || $quota === 'default') {
-				$quota = $config->getAppValue('files', 'default_quota', null);
-			}
+			$quota = $user->getQuota();
 			if ( $quota === null || $quota === 'none' ) {
 				$quota = \OC\Files\Filesystem::free_space('/');
 				$softQuota = false;
@@ -705,9 +713,9 @@ class Storage {
 			}
 
 			foreach($toDelete as $key => $path) {
-				\OC_Hook::emit('\OCP\Versions', 'preDelete', array('path' => $path));
+				\OC_Hook::emit('\OCP\Versions', 'preDelete', array('path' => $path, 'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED));
 				self::deleteVersion($versionsFileview, $path);
-				\OC_Hook::emit('\OCP\Versions', 'delete', array('path' => $path));
+				\OC_Hook::emit('\OCP\Versions', 'delete', array('path' => $path, 'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED));
 				unset($allVersions[$key]); // update array with the versions we keep
 				\OCP\Util::writeLog('files_versions', "Expire: " . $path, \OCP\Util::DEBUG);
 			}
@@ -722,9 +730,9 @@ class Storage {
 			reset($allVersions);
 			while ($availableSpace < 0 && $i < $numOfVersions) {
 				$version = current($allVersions);
-				\OC_Hook::emit('\OCP\Versions', 'preDelete', array('path' => $version['path'].'.v'.$version['version']));
+				\OC_Hook::emit('\OCP\Versions', 'preDelete', array('path' => $version['path'].'.v'.$version['version'], 'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED));
 				self::deleteVersion($versionsFileview, $version['path'] . '.v' . $version['version']);
-				\OC_Hook::emit('\OCP\Versions', 'delete', array('path' => $version['path'].'.v'.$version['version']));
+				\OC_Hook::emit('\OCP\Versions', 'delete', array('path' => $version['path'].'.v'.$version['version'], 'trigger' => self::DELETE_TRIGGER_QUOTA_EXCEEDED));
 				\OCP\Util::writeLog('files_versions', 'running out of space! Delete oldest version: ' . $version['path'].'.v'.$version['version'] , \OCP\Util::DEBUG);
 				$versionsSize -= $version['size'];
 				$availableSpace += $version['size'];

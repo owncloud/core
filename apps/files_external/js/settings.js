@@ -23,6 +23,10 @@ var MOUNT_OPTIONS_DROPDOWN_TEMPLATE =
 	'		<label for="mountOptionsPreviews">{{t "files_external" "Enable previews"}}</label>' +
 	'	</div>' +
 	'	<div class="optionRow">' +
+	'		<input id="mountOptionsSharing" name="enable_sharing" type="checkbox" value="true" checked="checked"/>' +
+	'		<label for="mountOptionsSharing">{{t "files_external" "Enable sharing"}}</label>' +
+	'	</div>' +
+	'	<div class="optionRow">' +
 	'		<label for="mountOptionsFilesystemCheck">{{t "files_external" "Check for changes"}}</label>' +
 	'		<select id="mountOptionsFilesystemCheck" name="filesystem_check_changes" data-type="int">' +
 	'			<option value="0">{{t "files_external" "Never"}}</option>' +
@@ -35,6 +39,7 @@ var MOUNT_OPTIONS_DROPDOWN_TEMPLATE =
 	   templates therefore they are duplicated here
 	t("files_external", "Enable encryption")
 	t("files_external", "Enable previews")
+	t("files_external", "Enable sharing")
 	t("files_external", "Check for changes")
 	t("files_external", "Never")
 	t("files_external", "Once every direct access")
@@ -206,6 +211,12 @@ StorageConfig.Status = {
 	ERROR: 1,
 	INDETERMINATE: 2
 };
+StorageConfig.Visibility = {
+	NONE: 0,
+	PERSONAL: 1,
+	ADMIN: 2,
+	DEFAULT: 3
+};
 /**
  * @memberof OCA.External.Settings
  */
@@ -357,6 +368,9 @@ StorageConfig.prototype = {
 		if (this.mountPoint === '') {
 			return false;
 		}
+		if (!this.backend) {
+			return false;
+		}
 		if (this.errors) {
 			return false;
 		}
@@ -430,6 +444,21 @@ var UserStorageConfig = function(id) {
 UserStorageConfig.prototype = _.extend({}, StorageConfig.prototype,
 	/** @lends OCA.External.Settings.UserStorageConfig.prototype */ {
 	_url: 'apps/files_external/userstorages'
+});
+
+/**
+ * @class OCA.External.Settings.UserGlobalStorageConfig
+ * @augments OCA.External.Settings.StorageConfig
+ *
+ * @classdesc User external storage config
+ */
+var UserGlobalStorageConfig = function (id) {
+	this.id = id;
+};
+UserGlobalStorageConfig.prototype = _.extend({}, StorageConfig.prototype,
+	/** @lends OCA.External.Settings.UserStorageConfig.prototype */ {
+
+	_url: 'apps/files_external/userglobalstorages'
 });
 
 /**
@@ -558,6 +587,19 @@ MountOptionsDropdown.prototype = {
 var MountConfigListView = function($el, options) {
 	this.initialize($el, options);
 };
+
+MountConfigListView.ParameterFlags = {
+	OPTIONAL: 1,
+	USER_PROVIDED: 2
+};
+
+MountConfigListView.ParameterTypes = {
+	TEXT: 0,
+	BOOLEAN: 1,
+	PASSWORD: 2,
+	HIDDEN: 3
+};
+
 /**
  * @memberOf OCA.External.Settings
  */
@@ -748,7 +790,7 @@ MountConfigListView.prototype = _.extend({
 
 		$.each(authMechanismConfiguration['configuration'], _.partial(
 			this.writeParameterInput, $td, _, _, ['auth-param']
-		));
+		).bind(this));
 
 		this.trigger('selectAuthMechanism',
 			$tr, authMechanism, authMechanismConfiguration['scheme'], onCompletion
@@ -770,6 +812,7 @@ MountConfigListView.prototype = _.extend({
 		var $tr = this.$el.find('tr#addMountPoint');
 		this.$el.find('tbody').append($tr.clone());
 
+		$tr.data('storageConfig', storageConfig);
 		$tr.find('td').last().attr('class', 'remove');
 		$tr.find('td.mountOptionsToggle').removeClass('hidden');
 		$tr.find('td').last().removeAttr('style');
@@ -790,8 +833,9 @@ MountConfigListView.prototype = _.extend({
 		$tr.find('.backend').data('identifier', backend.identifier);
 
 		var selectAuthMechanism = $('<select class="selectAuthMechanism"></select>');
+		var neededVisibility = (this._isPersonal) ? StorageConfig.Visibility.PERSONAL : StorageConfig.Visibility.ADMIN;
 		$.each(this._allAuthMechanisms, function(authIdentifier, authMechanism) {
-			if (backend.authSchemes[authMechanism.scheme]) {
+			if (backend.authSchemes[authMechanism.scheme] && (authMechanism.visibility & neededVisibility)) {
 				selectAuthMechanism.append(
 					$('<option value="'+authMechanism.identifier+'" data-scheme="'+authMechanism.scheme+'">'+authMechanism.name+'</option>')
 				);
@@ -805,7 +849,7 @@ MountConfigListView.prototype = _.extend({
 		$tr.find('td.authentication').append(selectAuthMechanism);
 
 		var $td = $tr.find('td.configuration');
-		$.each(backend.configuration, _.partial(this.writeParameterInput, $td));
+		$.each(backend.configuration, _.partial(this.writeParameterInput, $td).bind(this));
 
 		this.trigger('selectBackend', $tr, backend.identifier, onCompletion);
 		this.configureAuthMechanism($tr, storageConfig.authMechanism, onCompletion);
@@ -844,6 +888,7 @@ MountConfigListView.prototype = _.extend({
 			$tr.find('input.mountOptions').val(JSON.stringify({
 				'encrypt': true,
 				'previews': true,
+				'enable_sharing': true,
 				'filesystem_check_changes': 1
 			}));
 		}
@@ -866,8 +911,14 @@ MountConfigListView.prototype = _.extend({
 				success: function(result) {
 					var onCompletion = jQuery.Deferred();
 					$.each(result, function(i, storageParams) {
+						var storageConfig;
+						var isUserGlobal = storageParams.type === 'system' && self._isPersonal;
 						storageParams.mountPoint = storageParams.mountPoint.substr(1); // trim leading slash
-						var storageConfig = new self._storageConfigClass();
+						if (isUserGlobal) {
+							storageConfig = new UserGlobalStorageConfig();
+						} else {
+							storageConfig = new self._storageConfigClass();
+						}
 						_.extend(storageConfig, storageParams);
 						var $tr = self.newStorage(storageConfig, onCompletion);
 
@@ -878,12 +929,16 @@ MountConfigListView.prototype = _.extend({
 						var $authentication = $tr.find('.authentication');
 						$authentication.text($authentication.find('select option:selected').text());
 
-						// userglobal storages do not expose configuration data
-						$tr.find('.configuration').text(t('files_external', 'Admin defined'));
-
 						// disable any other inputs
 						$tr.find('.mountOptionsToggle, .remove').empty();
-						$tr.find('input, select, button').attr('disabled', 'disabled');
+						$tr.find('input:not(.user_provided), select:not(.user_provided)').attr('disabled', 'disabled');
+
+						if (isUserGlobal) {
+							$tr.find('.configuration').find(':not(.user_provided)').remove();
+						} else {
+							// userglobal storages do not expose configuration data
+							$tr.find('.configuration').text(t('files_external', 'Admin defined'));
+						}
 					});
 					onCompletion.resolve();
 				}
@@ -918,22 +973,35 @@ MountConfigListView.prototype = _.extend({
 	 * @return {jQuery} newly created input
 	 */
 	writeParameterInput: function($td, parameter, placeholder, classes) {
+		var hasFlag = function(flag) {
+			return (placeholder.flags & flag) === flag;
+		};
 		classes = $.isArray(classes) ? classes : [];
 		classes.push('added');
-		if (placeholder.indexOf('&') === 0) {
+		if (hasFlag(MountConfigListView.ParameterFlags.OPTIONAL)) {
 			classes.push('optional');
-			placeholder = placeholder.substring(1);
 		}
+
+		if (hasFlag(MountConfigListView.ParameterFlags.USER_PROVIDED)) {
+			if (this._isPersonal) {
+				classes.push('user_provided');
+			} else {
+				return;
+			}
+		}
+
 		var newElement;
-		if (placeholder.indexOf('*') === 0) {
-			newElement = $('<input type="password" class="'+classes.join(' ')+'" data-parameter="'+parameter+'" placeholder="'+placeholder.substring(1)+'" />');
-		} else if (placeholder.indexOf('!') === 0) {
+
+		var trimmedPlaceholder = placeholder.value;
+		if (placeholder.type === MountConfigListView.ParameterTypes.PASSWORD) {
+			newElement = $('<input type="password" class="'+classes.join(' ')+'" data-parameter="'+parameter+'" placeholder="'+ trimmedPlaceholder+'" />');
+		} else if (placeholder.type === MountConfigListView.ParameterTypes.BOOLEAN) {
 			var checkboxId = _.uniqueId('checkbox_');
-			newElement = $('<input type="checkbox" id="'+checkboxId+'" class="'+classes.join(' ')+'" data-parameter="'+parameter+'" /><label for="'+checkboxId+'">'+placeholder.substring(1)+'</label>');
-		} else if (placeholder.indexOf('#') === 0) {
+			newElement = $('<input type="checkbox" id="'+checkboxId+'" class="'+classes.join(' ')+'" data-parameter="'+parameter+'" /><label for="'+checkboxId+'">'+ trimmedPlaceholder+'</label>');
+		} else if (placeholder.type === MountConfigListView.ParameterTypes.HIDDEN) {
 			newElement = $('<input type="hidden" class="'+classes.join(' ')+'" data-parameter="'+parameter+'" />');
 		} else {
-			newElement = $('<input type="text" class="'+classes.join(' ')+'" data-parameter="'+parameter+'" placeholder="'+placeholder+'" />');
+			newElement = $('<input type="text" class="'+classes.join(' ')+'" data-parameter="'+parameter+'" placeholder="'+ trimmedPlaceholder+'" />');
 		}
 		highlightInput(newElement);
 		$td.append(newElement);
@@ -952,7 +1020,12 @@ MountConfigListView.prototype = _.extend({
 			// new entry
 			storageId = null;
 		}
-		var storage = new this._storageConfigClass(storageId);
+
+		var storage = $tr.data('storageConfig');
+		if (!storage) {
+			storage = new this._storageConfigClass(storageId);
+		}
+		storage.errors = null;
 		storage.mountPoint = $tr.find('.mountPoint input').val();
 		storage.backend = $tr.find('.backend').data('identifier');
 		storage.authMechanism = $tr.find('.selectAuthMechanism').val();
@@ -966,7 +1039,7 @@ MountConfigListView.prototype = _.extend({
 			if ($input.attr('type') === 'button') {
 				return;
 			}
-			if (!isInputValid($input)) {
+			if (!isInputValid($input) && !$input.hasClass('optional')) {
 				missingOptions.push(parameter);
 				return;
 			}
@@ -994,7 +1067,7 @@ MountConfigListView.prototype = _.extend({
 			var users = [];
 			var multiselect = getSelection($tr);
 			$.each(multiselect, function(index, value) {
-				var pos = value.indexOf('(group)');
+				var pos = (value.indexOf)?value.indexOf('(group)'): -1;
 				if (pos !== -1) {
 					groups.push(value.substr(0, pos));
 				} else {
@@ -1057,7 +1130,7 @@ MountConfigListView.prototype = _.extend({
 	saveStorageConfig:function($tr, callback, concurrentTimer) {
 		var self = this;
 		var storage = this.getStorageConfig($tr);
-		if (!storage.validate()) {
+		if (!storage || !storage.validate()) {
 			return false;
 		}
 
@@ -1186,7 +1259,7 @@ MountConfigListView.prototype = _.extend({
 		var storage = this.getStorageConfig($tr);
 		var $toggle = $tr.find('.mountOptionsToggle');
 		var dropDown = new MountOptionsDropdown();
-		var enabledOptions = ['previews', 'filesystem_check_changes'];
+		var enabledOptions = ['previews', 'filesystem_check_changes', 'enable_sharing'];
 		if (this._encryptionEnabled) {
 			enabledOptions.push('encrypt');
 		}
@@ -1263,6 +1336,33 @@ $(document).ready(function() {
 			$allowUserMounting.trigger('change');
 
 		}
+	});
+
+	$('#global_credentials').on('submit', function() {
+		var $form = $(this);
+		var uid = $form.find('[name=uid]').val();
+		var user = $form.find('[name=username]').val();
+		var password = $form.find('[name=password]').val();
+		var $submit = $form.find('[type=submit]');
+		$submit.val(t('files_external', 'Saving...'));
+		$.ajax({
+			type: 'POST',
+			contentType: 'application/json',
+			data: JSON.stringify({
+				uid: uid,
+				user: user,
+				password: password
+			}),
+			url: OC.generateUrl('apps/files_external/globalcredentials'),
+			dataType: 'json',
+			success: function() {
+				$submit.val(t('files_external', 'Saved'));
+				setTimeout(function(){
+					$submit.val(t('files_external', 'Save'));
+				}, 2500);
+			}
+		});
+		return false;
 	});
 
 	// global instance

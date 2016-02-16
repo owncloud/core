@@ -2,7 +2,7 @@
 /**
  * @author Arthur Schiwon <blizzz@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -88,7 +88,7 @@ class CommentsPlugin extends ServerPlugin {
 		$this->server->xml->namespaceMap[self::NS_OWNCLOUD] = 'oc';
 
 		$this->server->xml->classMap['DateTime'] = function(Writer $writer, \DateTime $value) {
-			$writer->write($value->format('Y-m-d H:m:i'));
+			$writer->write(\Sabre\HTTP\toDate($value));
 		};
 
 		$this->server->on('report', [$this, 'onReport']);
@@ -116,7 +116,12 @@ class CommentsPlugin extends ServerPlugin {
 			$data,
 			$request->getHeader('Content-Type')
 		);
-		$url = $request->getUrl() . '/' . urlencode($comment->getId());
+
+		// update read marker for the current user/poster to avoid
+		// having their own comments marked as unread
+		$node->setReadMarker(null);
+
+		$url = rtrim($request->getUrl(), '/') . '/' . urlencode($comment->getId());
 
 		$response->setHeader('Content-Location', $url);
 
@@ -237,6 +242,9 @@ class CommentsPlugin extends ServerPlugin {
 			return $comment;
 		} catch (\InvalidArgumentException $e) {
 			throw new BadRequest('Invalid input values', 0, $e);
+		} catch (\OCP\Comments\MessageTooLongException $e) {
+			$msg = 'Message exceeds allowed character limit of ';
+			throw new BadRequest($msg . \OCP\Comments\IComment::MAX_MESSAGE_LENGTH, 0,	$e);
 		}
 	}
 

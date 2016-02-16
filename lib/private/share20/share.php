@@ -20,7 +20,10 @@
  */
 namespace OC\Share20;
 
+use OCP\Files\File;
+use OCP\Files\IRootFolder;
 use OCP\Files\Node;
+use OCP\Files\NotFoundException;
 use OCP\IUser;
 use OCP\IGroup;
 
@@ -31,14 +34,18 @@ class Share implements \OCP\Share\IShare {
 	/** @var string */
 	private $providerId;
 	/** @var Node */
-	private $path;
+	private $node;
+	/** @var int */
+	private $fileId;
+	/** @var string */
+	private $nodeType;
 	/** @var int */
 	private $shareType;
-	/** @var IUser|IGroup */
+	/** @var string */
 	private $sharedWith;
-	/** @var IUser */
+	/** @var string */
 	private $sharedBy;
-	/** @var IUser */
+	/** @var string */
 	private $shareOwner;
 	/** @var int */
 	private $permissions;
@@ -56,6 +63,13 @@ class Share implements \OCP\Share\IShare {
 	private $shareTime;
 	/** @var bool */
 	private $mailSend;
+
+	/** @var IRootFolder */
+	private $rootFolder;
+
+	public function __construct(IRootFolder $rootFolder) {
+		$this->rootFolder = $rootFolder;
+	}
 
 	/**
 	 * @inheritdoc
@@ -76,6 +90,9 @@ class Share implements \OCP\Share\IShare {
 	 * @inheritdoc
 	 */
 	public function getFullId() {
+		if ($this->providerId === null || $this->id === null) {
+			throw new \UnexpectedValueException;
+		}
 		return $this->providerId . ':' . $this->id;
 	}
 
@@ -90,8 +107,10 @@ class Share implements \OCP\Share\IShare {
 	/**
 	 * @inheritdoc
 	 */
-	public function setNode(Node $path) {
-		$this->path = $path;
+	public function setNode(Node $node) {
+		$this->fileId = null;
+		$this->nodeType = null;
+		$this->node = $node;
 		return $this;
 	}
 
@@ -99,7 +118,67 @@ class Share implements \OCP\Share\IShare {
 	 * @inheritdoc
 	 */
 	public function getNode() {
-		return $this->path;
+		if ($this->node === null) {
+
+			if ($this->shareOwner === null || $this->fileId === null) {
+				throw new NotFoundException();
+			}
+
+			$userFolder = $this->rootFolder->getUserFolder($this->shareOwner);
+
+			$nodes = $userFolder->getById($this->fileId);
+			if (empty($nodes)) {
+				throw new NotFoundException();
+			}
+
+			$this->node = $nodes[0];
+		}
+
+		return $this->node;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function setNodeId($fileId) {
+		$this->node = null;
+		$this->fileId = $fileId;
+		return $this;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getNodeId() {
+		if ($this->fileId === null) {
+			$this->fileId = $this->getNode()->getId();
+		}
+
+		return $this->fileId;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function setNodeType($type) {
+		if ($type !== 'file' && $type !== 'folder') {
+			throw new \InvalidArgumentException();
+		}
+
+		$this->nodeType = $type;
+		return $this;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getNodeType() {
+		if ($this->nodeType === null) {
+			$node = $this->getNode();
+			$this->nodeType = $node instanceof File ? 'file' : 'folder';
+		}
+
+		return $this->nodeType;
 	}
 
 	/**
@@ -121,6 +200,9 @@ class Share implements \OCP\Share\IShare {
 	 * @inheritdoc
 	 */
 	public function setSharedWith($sharedWith) {
+		if (!is_string($sharedWith)) {
+			throw new \InvalidArgumentException();
+		}
 		$this->sharedWith = $sharedWith;
 		return $this;
 	}
@@ -170,6 +252,9 @@ class Share implements \OCP\Share\IShare {
 	 * @inheritdoc
 	 */
 	public function setSharedBy($sharedBy) {
+		if (!is_string($sharedBy)) {
+			throw new \InvalidArgumentException();
+		}
 		//TODO checks
 		$this->sharedBy = $sharedBy;
 
@@ -188,6 +273,9 @@ class Share implements \OCP\Share\IShare {
 	 * @inheritdoc
 	 */
 	public function setShareOwner($shareOwner) {
+		if (!is_string($shareOwner)) {
+			throw new \InvalidArgumentException();
+		}
 		//TODO checks
 
 		$this->shareOwner = $shareOwner;
@@ -233,7 +321,11 @@ class Share implements \OCP\Share\IShare {
 	}
 
 	/**
-	 * @inheritdoc
+	 * Set the parent of this share
+	 *
+	 * @param int parent
+	 * @return \OCP\Share\IShare
+	 * @deprecated The new shares do not have parents. This is just here for legacy reasons.
 	 */
 	public function setParent($parent) {
 		$this->parent = $parent;
@@ -241,7 +333,10 @@ class Share implements \OCP\Share\IShare {
 	}
 
 	/**
-	 * @inheritdoc
+	 * Get the parent of this share.
+	 *
+	 * @return int
+	 * @deprecated The new shares do not have parents. This is just here for legacy reasons.
 	 */
 	public function getParent() {
 		return $this->parent;

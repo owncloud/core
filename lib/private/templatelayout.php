@@ -70,34 +70,9 @@ class TemplateLayout extends \OC_Template {
 				$this->assign('bodyid', 'body-user');
 			}
 
-			// Update notification
-			if($this->config->getSystemValue('updatechecker', true) === true &&
-				\OC_User::isAdminUser(\OC_User::getUser())) {
-				$updater = new \OC\Updater(
-						\OC::$server->getHTTPHelper(),
-						\OC::$server->getConfig(),
-						\OC::$server->getIntegrityCodeChecker(),
-						\OC::$server->getLogger()
-				);
-				$data = $updater->check();
-
-				if(isset($data['version']) && $data['version'] != '' and $data['version'] !== Array()) {
-					$this->assign('updateAvailable', true);
-					$this->assign('updateVersion', $data['versionstring']);
-					if(substr($data['web'], 0, 8) === 'https://') {
-						$this->assign('updateLink', $data['web']);
-					}
-					\OCP\Util::addScript('core', 'update-notification');
-				} else {
-					$this->assign('updateAvailable', false); // No update available or not an admin user
-				}
-			} else {
-				$this->assign('updateAvailable', false); // Update check is disabled
-			}
-
 			// Code integrity notification
 			$integrityChecker = \OC::$server->getIntegrityCodeChecker();
-			if(!$integrityChecker->hasPassedCheck()) {
+			if(\OC_User::isAdminUser(\OC_User::getUser()) && !$integrityChecker->hasPassedCheck()) {
 				\OCP\Util::addScript('core', 'integritycheck-failed-notification');
 			}
 
@@ -130,7 +105,7 @@ class TemplateLayout extends \OC_Template {
 			$this->assign('user_displayname', $userDisplayName);
 			$this->assign('user_uid', \OC_User::getUser());
 			$this->assign('appsmanagement_active', $appsMgmtActive);
-			$this->assign('enableAvatars', $this->config->getSystemValue('enable_avatars', true));
+			$this->assign('enableAvatars', $this->config->getSystemValue('enable_avatars', true) === true);
 
 			if (\OC_User::getUser() === false) {
 				$this->assign('userAvatarSet', false);

@@ -30,6 +30,7 @@
 namespace OC\User;
 
 use OC\Hooks\Emitter;
+use OC_Helper;
 use OCP\IAvatarManager;
 use OCP\IImage;
 use OCP\IURLGenerator;
@@ -79,16 +80,14 @@ class User implements IUser {
 		$this->uid = $uid;
 		$this->backend = $backend;
 		$this->emitter = $emitter;
+		if(is_null($config)) {
+			$config = \OC::$server->getConfig();
+		}
 		$this->config = $config;
 		$this->urlGenerator = $urlGenerator;
-		if ($this->config) {
-			$enabled = $this->config->getUserValue($uid, 'core', 'enabled', 'true');
-			$this->enabled = ($enabled === 'true');
-			$this->lastLogin = $this->config->getUserValue($uid, 'login', 'lastLogin', 0);
-		} else {
-			$this->enabled = true;
-			$this->lastLogin = \OC::$server->getConfig()->getUserValue($uid, 'login', 'lastLogin', 0);
-		}
+		$enabled = $this->config->getUserValue($uid, 'core', 'enabled', 'true');
+		$this->enabled = ($enabled === 'true');
+		$this->lastLogin = $this->config->getUserValue($uid, 'login', 'lastLogin', 0);
 		if (is_null($this->urlGenerator)) {
 			$this->urlGenerator = \OC::$server->getURLGenerator();
 		}
@@ -140,7 +139,7 @@ class User implements IUser {
 			$result = $this->backend->setDisplayName($this->uid, $displayName);
 			if ($result) {
 				$this->displayName = $displayName;
-				$this->triggerChange();
+				$this->triggerChange('displayName', $displayName);
 			}
 			return $result !== false;
 		} else {
@@ -161,7 +160,7 @@ class User implements IUser {
 		} else {
 			$this->config->setUserValue($this->uid, 'settings', 'email', $mailAddress);
 		}
-		$this->triggerChange();
+		$this->triggerChange('eMailAddress', $mailAddress);
 	}
 
 	/**
@@ -210,7 +209,8 @@ class User implements IUser {
 			// Delete the users entry in the storage table
 			\OC\Files\Cache\Storage::remove('home::' . $this->uid);
 
-			\OC::$server->getCommentsManager()->deleteReferencesOfActor('user', $this->uid);
+			\OC::$server->getCommentsManager()->deleteReferencesOfActor('users', $this->uid);
+			\OC::$server->getCommentsManager()->deleteReadMarksFromUser($this);
 		}
 
 		if ($this->emitter) {
@@ -298,11 +298,10 @@ class User implements IUser {
 	 * @return bool
 	 */
 	public function canChangeDisplayName() {
-		if ($this->config and $this->config->getSystemValue('allow_user_to_change_display_name') === false) {
+		if ($this->config->getSystemValue('allow_user_to_change_display_name') === false) {
 			return false;
-		} else {
-			return $this->backend->implementsActions(\OC_User_Backend::SET_DISPLAYNAME);
 		}
+		return $this->backend->implementsActions(\OC_User_Backend::SET_DISPLAYNAME);
 	}
 
 	/**
@@ -321,10 +320,8 @@ class User implements IUser {
 	 */
 	public function setEnabled($enabled) {
 		$this->enabled = $enabled;
-		if ($this->config) {
-			$enabled = ($enabled) ? 'true' : 'false';
-			$this->config->setUserValue($this->uid, 'core', 'enabled', $enabled);
-		}
+		$enabled = ($enabled) ? 'true' : 'false';
+		$this->config->setUserValue($this->uid, 'core', 'enabled', $enabled);
 	}
 
 	/**
@@ -335,6 +332,36 @@ class User implements IUser {
 	 */
 	public function getEMailAddress() {
 		return $this->config->getUserValue($this->uid, 'settings', 'email', null);
+	}
+
+	/**
+	 * get the users' quota
+	 *
+	 * @return string
+	 * @since 9.0.0
+	 */
+	public function getQuota() {
+		$quota = $this->config->getUserValue($this->uid, 'files', 'quota', 'default');
+		if($quota === 'default') {
+			$quota = $this->config->getAppValue('files', 'default_quota', 'none');
+		}
+		return $quota;
+	}
+
+	/**
+	 * set the users' quota
+	 *
+	 * @param string $quota
+	 * @return void
+	 * @since 9.0.0
+	 */
+	public function setQuota($quota) {
+		if($quota !== 'none' and $quota !== 'default') {
+			$quota = OC_Helper::computerFileSize($quota);
+			$quota = OC_Helper::humanFileSize($quota);
+		}
+		$this->config->setUserValue($this->uid, 'files', 'quota', $quota);
+		$this->triggerChange('quota', $quota);
 	}
 
 	/**
@@ -385,9 +412,9 @@ class User implements IUser {
 		return $url;
 	}
 
-	public function triggerChange() {
+	public function triggerChange($feature, $value = null) {
 		if ($this->emitter) {
-			$this->emitter->emit('\OC\User', 'changeUser', array($this));
+			$this->emitter->emit('\OC\User', 'changeUser', array($this, $feature, $value));
 		}
 	}
 

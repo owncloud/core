@@ -32,7 +32,6 @@ namespace OC\AppFramework\DependencyInjection;
 
 use OC;
 use OC\AppFramework\Http;
-use OC\AppFramework\Http\Request;
 use OC\AppFramework\Http\Dispatcher;
 use OC\AppFramework\Http\Output;
 use OC\AppFramework\Core\API;
@@ -43,8 +42,6 @@ use OC\AppFramework\Middleware\SessionMiddleware;
 use OC\AppFramework\Utility\SimpleContainer;
 use OCP\AppFramework\IApi;
 use OCP\AppFramework\IAppContainer;
-use OCP\AppFramework\Middleware;
-use OCP\IServerContainer;
 
 
 class DIContainer extends SimpleContainer implements IAppContainer {
@@ -107,6 +104,10 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 			return $this->getServer()->getCapabilitiesManager();
 		});
 
+		$this->registerService('OCP\Comments\ICommentsManager', function($c) {
+			return $this->getServer()->getCommentsManager();
+		});
+
 		$this->registerService('OCP\\IConfig', function($c) {
 			return $this->getServer()->getConfig();
 		});
@@ -153,6 +154,10 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 
 		$this->registerService('OCP\\IL10N', function($c) {
 			return $this->getServer()->getL10N($c->query('AppName'));
+		});
+
+		$this->registerService('OCP\\L10N\\IFactory', function($c) {
+			return $this->getServer()->getL10NFactory();
 		});
 
 		$this->registerService('OCP\\ILogger', function($c) {
@@ -255,6 +260,10 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 			return $this->getServer()->getSession();
 		});
 
+		$this->registerService('OCP\\Security\\IContentSecurityPolicyManager', function($c) {
+			return $this->getServer()->getContentSecurityPolicyManager();
+		});
+
 		$this->registerService('ServerContainer', function ($c) {
 			return $this->getServer();
 		});
@@ -319,7 +328,8 @@ class DIContainer extends SimpleContainer implements IAppContainer {
 				$app->getServer()->getLogger(),
 				$c['AppName'],
 				$app->isLoggedIn(),
-				$app->isAdminUser()
+				$app->isAdminUser(),
+				$app->getServer()->getContentSecurityPolicyManager()
 			);
 		});
 

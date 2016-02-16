@@ -1,8 +1,8 @@
 /**
  * Disable console output unless DEBUG mode is enabled.
  * Add
- *      define('DEBUG', true);
- * To the end of config/config.php to enable debug mode.
+ *      'debug' => true,
+ * To the definition of $CONFIG in config/config.php to enable debug mode.
  * The undefined checks fix the broken ie8 console
  */
 
@@ -82,6 +82,12 @@ var OC={
 	webroot:oc_webroot,
 
 	appswebroots:(typeof oc_appswebroots !== 'undefined') ? oc_appswebroots:false,
+	/**
+	 * Currently logged in user or null if none
+	 *
+	 * @type String
+	 * @deprecated use {@link OC.getCurrentUser} instead
+	 */
 	currentUser:(typeof oc_current_user!=='undefined')?oc_current_user:false,
 	config: window.oc_config,
 	appConfig: window.oc_appconfig || {},
@@ -237,14 +243,31 @@ var OC={
 	},
 
 	/**
-	 * Returns the host name used to access this ownCloud instance
+	 * Returns the host used to access this ownCloud instance
+	 * Host is sometimes the same as the hostname but now always.
 	 *
-	 * @return {string} host name
+	 * Examples:
+	 * http://example.com => example.com
+	 * https://example.com => exmaple.com
+	 * http://example.com:8080 => example.com:8080
+	 *
+	 * @return {string} host
 	 *
 	 * @since 8.2
 	 */
 	getHost: function() {
 		return window.location.host;
+	},
+
+	/**
+	 * Returns the hostname used to access this ownCloud instance
+	 * The hostname is always stripped of the port
+	 *
+	 * @return {string} hostname
+	 * @since 9.0
+	 */
+	getHostName: function() {
+		return window.location.hostname;
 	},
 
 	/**
@@ -269,6 +292,23 @@ var OC={
 	 */
 	getRootPath: function() {
 		return OC.webroot;
+	},
+
+	/**
+	 * Returns the currently logged in user or null if there is no logged in
+	 * user (public page mode)
+	 *
+	 * @return {OC.CurrentUser} user spec
+	 * @since 9.0.0
+	 */
+	getCurrentUser: function() {
+		if (_.isUndefined(this._currentUserDisplayName)) {
+			this._currentUserDisplayName = document.getElementsByTagName('head')[0].getAttribute('data-user-displayname');
+		}
+		return {
+			uid: this.currentUser,
+			displayName: this._currentUserDisplayName
+		};
 	},
 
 	/**
@@ -688,6 +728,15 @@ var OC={
 		return oc_isadmin;
 	},
 };
+
+/**
+ * Current user attributes
+ *
+ * @typedef {Object} OC.CurrentUser
+ *
+ * @property {String} uid user id
+ * @property {String} displayName display name
+ */
 
 /**
  * @namespace OC.Plugins

@@ -132,8 +132,12 @@ class OC_App {
 	 */
 	public static function loadApp($app, $checkUpgrade = true) {
 		self::$loadedApps[] = $app;
-		\OC::$loader->addValidRoot(self::getAppPath($app)); // in case someone calls loadApp() directly
-		if (is_file(self::getAppPath($app) . '/appinfo/app.php')) {
+		$appPath = self::getAppPath($app);
+		if($appPath === false) {
+			return;
+		}
+		\OC::$loader->addValidRoot($appPath); // in case someone calls loadApp() directly
+		if (is_file($appPath . '/appinfo/app.php')) {
 			\OC::$server->getEventLogger()->start('load_app_' . $app, 'Load app: ' . $app);
 			if ($checkUpgrade and self::shouldUpgrade($app)) {
 				throw new \OC\NeedsUpdateException();
@@ -564,7 +568,7 @@ class OC_App {
 	}
 
 	/**
-	 * get the last version of the app, either from appinfo/version or from appinfo/info.xml
+	 * get the last version of the app from appinfo/info.xml
 	 *
 	 * @param string $appId
 	 * @return string
@@ -584,14 +588,9 @@ class OC_App {
 	 * @return string
 	 */
 	public static function getAppVersionByPath($path) {
-		$versionFile = $path . '/appinfo/version';
 		$infoFile = $path . '/appinfo/info.xml';
-		if (is_file($versionFile)) {
-			return trim(file_get_contents($versionFile));
-		} else {
-			$appData = self::getAppInfo($infoFile, true);
-			return isset($appData['version']) ? $appData['version'] : '';
-		}
+		$appData = self::getAppInfo($infoFile, true);
+		return isset($appData['version']) ? $appData['version'] : '';
 	}
 
 
@@ -610,7 +609,11 @@ class OC_App {
 			if (isset(self::$appInfo[$appId])) {
 				return self::$appInfo[$appId];
 			}
-			$file = self::getAppPath($appId) . '/appinfo/info.xml';
+			$appPath = self::getAppPath($appId);
+			if($appPath === false) {
+				return null;
+			}
+			$file = $appPath . '/appinfo/info.xml';
 		}
 
 		$parser = new \OC\App\InfoParser(\OC::$server->getHTTPHelper(), \OC::$server->getURLGenerator());
@@ -776,7 +779,6 @@ class OC_App {
 		//we don't want to show configuration for these
 		$blacklist = \OC::$server->getAppManager()->getAlwaysEnabledApps();
 		$appList = array();
-		$l = \OC::$server->getL10N('core');
 
 		foreach ($installedApps as $app) {
 			if (array_search($app, $blacklist) === false) {
@@ -812,15 +814,18 @@ class OC_App {
 
 				$info['update'] = ($includeUpdateInfo) ? OC_Installer::isUpdateAvailable($app) : null;
 
-				$appIcon = self::getAppPath($app) . '/img/' . $app . '.svg';
-				if (file_exists($appIcon)) {
-					$info['preview'] = \OC::$server->getURLGenerator()->imagePath($app, $app . '.svg');
-					$info['previewAsIcon'] = true;
-				} else {
-					$appIcon = self::getAppPath($app) . '/img/app.svg';
+				$appPath = self::getAppPath($app);
+				if($appPath !== false) {
+					$appIcon = $appPath . '/img/' . $app . '.svg';
 					if (file_exists($appIcon)) {
-						$info['preview'] = \OC::$server->getURLGenerator()->imagePath($app, 'app.svg');
+						$info['preview'] = \OC::$server->getURLGenerator()->imagePath($app, $app . '.svg');
 						$info['previewAsIcon'] = true;
+					} else {
+						$appIcon = $appPath . '/img/app.svg';
+						if (file_exists($appIcon)) {
+							$info['preview'] = \OC::$server->getURLGenerator()->imagePath($app, 'app.svg');
+							$info['previewAsIcon'] = true;
+						}
 					}
 				}
 				$info['version'] = OC_App::getAppVersion($app);
@@ -1117,14 +1122,18 @@ class OC_App {
 	 * @return bool
 	 */
 	public static function updateApp($appId) {
-		if (file_exists(self::getAppPath($appId) . '/appinfo/database.xml')) {
-			OC_DB::updateDbFromStructure(self::getAppPath($appId) . '/appinfo/database.xml');
+		$appPath = self::getAppPath($appId);
+		if($appPath === false) {
+			return false;
+		}
+		if (file_exists($appPath . '/appinfo/database.xml')) {
+			OC_DB::updateDbFromStructure($appPath . '/appinfo/database.xml');
 		}
 		unset(self::$appVersion[$appId]);
 		// run upgrade code
-		if (file_exists(self::getAppPath($appId) . '/appinfo/update.php')) {
+		if (file_exists($appPath . '/appinfo/update.php')) {
 			self::loadApp($appId, false);
-			include self::getAppPath($appId) . '/appinfo/update.php';
+			include $appPath . '/appinfo/update.php';
 		}
 
 		//set remote/public handlers

@@ -270,8 +270,16 @@ class Sharees {
 		$addressBookContacts = $this->contactsManager->search($search, ['CLOUD', 'FN']);
 		$foundRemoteById = false;
 		foreach ($addressBookContacts as $contact) {
+			if (isset($contact['isLocalSystemBook'])) {
+				continue;
+			}
 			if (isset($contact['CLOUD'])) {
-				foreach ($contact['CLOUD'] as $cloudId) {
+				$cloudIds = $contact['CLOUD'];
+				if (!is_array($cloudIds)) {
+					$cloudIds = [$cloudIds];
+				}
+				foreach ($cloudIds as $cloudId) {
+					list(, $serverUrl) = $this->splitUserRemote($cloudId);
 					if (strtolower($contact['FN']) === $search || strtolower($cloudId) === $search) {
 						if (strtolower($cloudId) === $search) {
 							$foundRemoteById = true;
@@ -281,6 +289,7 @@ class Sharees {
 							'value' => [
 								'shareType' => Share::SHARE_TYPE_REMOTE,
 								'shareWith' => $cloudId,
+								'server' => $serverUrl,
 							],
 						];
 					} else {
@@ -289,6 +298,7 @@ class Sharees {
 							'value' => [
 								'shareType' => Share::SHARE_TYPE_REMOTE,
 								'shareWith' => $cloudId,
+								'server' => $serverUrl,
 							],
 						];
 					}
@@ -311,6 +321,74 @@ class Sharees {
 		}
 
 		$this->reachedEndFor[] = 'remotes';
+	}
+
+	/**
+	 * split user and remote from federated cloud id
+	 *
+	 * @param string $address federated share address
+	 * @return array [user, remoteURL]
+	 * @throws \Exception
+	 */
+	public function splitUserRemote($address) {
+		if (strpos($address, '@') === false) {
+			throw new \Exception('Invalid Federated Cloud ID');
+		}
+
+		// Find the first character that is not allowed in user names
+		$id = str_replace('\\', '/', $address);
+		$posSlash = strpos($id, '/');
+		$posColon = strpos($id, ':');
+
+		if ($posSlash === false && $posColon === false) {
+			$invalidPos = strlen($id);
+		} else if ($posSlash === false) {
+			$invalidPos = $posColon;
+		} else if ($posColon === false) {
+			$invalidPos = $posSlash;
+		} else {
+			$invalidPos = min($posSlash, $posColon);
+		}
+
+		// Find the last @ before $invalidPos
+		$pos = $lastAtPos = 0;
+		while ($lastAtPos !== false && $lastAtPos <= $invalidPos) {
+			$pos = $lastAtPos;
+			$lastAtPos = strpos($id, '@', $pos + 1);
+		}
+
+		if ($pos !== false) {
+			$user = substr($id, 0, $pos);
+			$remote = substr($id, $pos + 1);
+			$remote = $this->fixRemoteURL($remote);
+			if (!empty($user) && !empty($remote)) {
+				return array($user, $remote);
+			}
+		}
+
+		throw new \Exception('Invalid Federated Cloud ID');
+	}
+
+	/**
+	 * Strips away a potential file names and trailing slashes:
+	 * - http://localhost
+	 * - http://localhost/
+	 * - http://localhost/index.php
+	 * - http://localhost/index.php/s/{shareToken}
+	 *
+	 * all return: http://localhost
+	 *
+	 * @param string $remote
+	 * @return string
+	 */
+	protected function fixRemoteURL($remote) {
+		$remote = str_replace('\\', '/', $remote);
+		if ($fileNamePosition = strpos($remote, '/index.php')) {
+			$remote = substr($remote, 0, $fileNamePosition);
+		}
+		$remote = rtrim($remote, '/');
+
+		return $remote;
 	}
 
 	/**

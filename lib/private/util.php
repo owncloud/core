@@ -152,6 +152,16 @@ class OC_Util {
 			return $storage;
 		});
 
+		\OC\Files\Filesystem::addStorageWrapper('enable_sharing', function ($mountPoint, \OCP\Files\Storage $storage, \OCP\Files\Mount\IMountPoint $mount) {
+			if (!$mount->getOption('enable_sharing', true)) {
+				return new \OC\Files\Storage\Wrapper\PermissionsMask([
+					'storage' => $storage,
+					'mask' => \OCP\Constants::PERMISSION_ALL - \OCP\Constants::PERMISSION_SHARE
+				]);
+			}
+			return $storage;
+		});
+
 		// install storage availability wrapper, before most other wrappers
 		\OC\Files\Filesystem::addStorageWrapper('oc_availability', function ($mountPoint, $storage) {
 			if (!$storage->isLocal()) {
@@ -275,11 +285,7 @@ class OC_Util {
 	 * @return int Quota bytes
 	 */
 	public static function getUserQuota($user) {
-		$config = \OC::$server->getConfig();
-		$userQuota = $config->getUserValue($user, 'files', 'quota', 'default');
-		if ($userQuota === 'default') {
-			$userQuota = $config->getAppValue('files', 'default_quota', 'none');
-		}
+		$userQuota = \OC::$server->getUserManager()->get($user)->getQuota();
 		if($userQuota === 'none') {
 			return \OCP\Files\FileInfo::SPACE_UNLIMITED;
 		}else{
@@ -963,6 +969,7 @@ class OC_Util {
 
 		$parameters['alt_login'] = OC_App::getAlternativeLogIns();
 		$parameters['rememberLoginAllowed'] = self::rememberLoginAllowed();
+		$parameters['rememberLoginState'] = isset($_POST['remember_login']) ? $_POST['remember_login'] : 0;
 		\OC_Hook::emit('OC_Util', 'pre_displayLoginPage', array('parameters' => $parameters));
 		OC_Template::printGuestPage("", "login", $parameters);
 	}

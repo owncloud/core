@@ -2297,6 +2297,16 @@ class Share extends Constants {
 		return $id ? $id : false;
 	}
 
+	/**
+	 * @param string $itemType
+	 * @param string $itemSource
+	 * @param int $shareType
+	 * @param string $shareWith
+	 * @param string $uidOwner
+	 * @param int $permissions
+	 * @param string|null $itemSourceName
+	 * @param null|\DateTime $expirationDate
+	 */
 	private static function checkReshare($itemType, $itemSource, $shareType, $shareWith, $uidOwner, $permissions, $itemSourceName, $expirationDate) {
 		$backend = self::getBackend($itemType);
 
@@ -2485,7 +2495,8 @@ class Share extends Constants {
 			if ($fileDependent) {
 				$select = '`*PREFIX*share`.`id`, `*PREFIX*share`.`parent`, `share_type`, `path`, `storage`, '
 					. '`share_with`, `uid_owner` , `file_source`, `stime`, `*PREFIX*share`.`permissions`, '
-					. '`*PREFIX*storages`.`id` AS `storage_id`, `*PREFIX*filecache`.`parent` as `file_parent`';
+					. '`*PREFIX*storages`.`id` AS `storage_id`, `*PREFIX*filecache`.`parent` as `file_parent`, '
+					. '`uid_initiator`';
 			} else {
 				$select = '`id`, `parent`, `share_type`, `share_with`, `uid_owner`, `item_source`, `stime`, `*PREFIX*share`.`permissions`';
 			}
@@ -2573,6 +2584,9 @@ class Share extends Constants {
 			$statuses = array();
 			foreach ($items as $item) {
 				if ($item['share_type'] === self::SHARE_TYPE_LINK) {
+					if ($item['uid_initiator'] !== \OC::$server->getUserSession()->getUser()->getUID()) {
+						continue;
+					}
 					$statuses[$item[$column]]['link'] = true;
 				} else if (!isset($statuses[$item[$column]])) {
 					$statuses[$item[$column]]['link'] = false;

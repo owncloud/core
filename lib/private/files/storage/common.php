@@ -248,12 +248,6 @@ abstract class Common implements Storage, ILockingStorage {
 		return $this->getCachedFile($path);
 	}
 
-	public function getLocalFolder($path) {
-		$baseDir = \OC::$server->getTempManager()->getTemporaryFolder();
-		$this->addLocalFolder($path, $baseDir);
-		return $baseDir;
-	}
-
 	/**
 	 * @param string $path
 	 * @param string $target
@@ -396,7 +390,7 @@ abstract class Common implements Storage, ILockingStorage {
 	 * get the ETag for a file or folder
 	 *
 	 * @param string $path
-	 * @return string|false
+	 * @return string
 	 */
 	public function getETag($path) {
 		return uniqid();

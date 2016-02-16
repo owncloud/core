@@ -397,6 +397,14 @@
                 <length>4</length>
             </field>
 
+			<field>
+				<name>checksum</name>
+				<type>text</type>
+				<default></default>
+				<notnull>false</notnull>
+				<length>255</length>
+			</field>
+
 
             <index>
 				<name>fs_storage_path_hash</name>
@@ -1575,6 +1583,49 @@
 				</field>
 			</index>
 -->
+
+		</declaration>
+
+	</table>
+
+	<table>
+		<!--
+		default place to store per user and object read markers
+		-->
+		<name>*dbprefix*comments_read_markers</name>
+
+		<declaration>
+
+			<field>
+				<name>user_id</name>
+				<type>text</type>
+				<default></default>
+				<notnull>true</notnull>
+				<length>64</length>
+			</field>
+
+			<field>
+				<name>marker_datetime</name>
+				<type>timestamp</type>
+				<default></default>
+				<notnull>false</notnull>
+			</field>
+
+			<field>
+				<name>object_type</name>
+				<type>text</type>
+				<default></default>
+				<notnull>true</notnull>
+				<length>64</length>
+			</field>
+
+			<field>
+				<name>object_id</name>
+				<type>text</type>
+				<default></default>
+				<notnull>true</notnull>
+				<length>64</length>
+			</field>
 
 		</declaration>
 

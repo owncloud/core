@@ -287,7 +287,7 @@ class Test_App extends \Test\TestCase {
 	 * Tests that the app order is correct
 	 */
 	public function testGetEnabledAppsIsSorted() {
-		$apps = \OC_App::getEnabledApps(true);
+		$apps = \OC_App::getEnabledApps();
 		// copy array
 		$sortedApps = $apps;
 		sort($sortedApps);
@@ -312,6 +312,7 @@ class Test_App extends \Test\TestCase {
 					'appforgroup1',
 					'appforgroup12',
 					'dav',
+					'federatedfilesharing',
 				),
 				false
 			),
@@ -325,6 +326,7 @@ class Test_App extends \Test\TestCase {
 					'appforgroup12',
 					'appforgroup2',
 					'dav',
+					'federatedfilesharing',
 				),
 				false
 			),
@@ -339,6 +341,7 @@ class Test_App extends \Test\TestCase {
 					'appforgroup12',
 					'appforgroup2',
 					'dav',
+					'federatedfilesharing',
 				),
 				false
 			),
@@ -353,6 +356,7 @@ class Test_App extends \Test\TestCase {
 					'appforgroup12',
 					'appforgroup2',
 					'dav',
+					'federatedfilesharing',
 				),
 				false,
 			),
@@ -367,6 +371,7 @@ class Test_App extends \Test\TestCase {
 					'appforgroup12',
 					'appforgroup2',
 					'dav',
+					'federatedfilesharing',
 				),
 				true,
 			),
@@ -408,7 +413,7 @@ class Test_App extends \Test\TestCase {
 			)
 			);
 
-		$apps = \OC_App::getEnabledApps(true, $forceAll);
+		$apps = \OC_App::getEnabledApps(false, $forceAll);
 
 		$this->restoreAppConfig();
 		\OC_User::setUserId(null);
@@ -443,12 +448,12 @@ class Test_App extends \Test\TestCase {
 			)
 			);
 
-		$apps = \OC_App::getEnabledApps(true);
-		$this->assertEquals(array('files', 'app3', 'dav'), $apps);
+		$apps = \OC_App::getEnabledApps();
+		$this->assertEquals(array('files', 'app3', 'dav', 'federatedfilesharing',), $apps);
 
 		// mock should not be called again here
-		$apps = \OC_App::getEnabledApps(false);
-		$this->assertEquals(array('files', 'app3', 'dav'), $apps);
+		$apps = \OC_App::getEnabledApps();
+		$this->assertEquals(array('files', 'app3', 'dav', 'federatedfilesharing',), $apps);
 
 		$this->restoreAppConfig();
 		\OC_User::setUserId(null);
@@ -480,7 +485,7 @@ class Test_App extends \Test\TestCase {
 			return $appConfig;
 		});
 		\OC::$server->registerService('AppManager', function (\OC\Server $c) use ($appConfig) {
-			return new \OC\App\AppManager($c->getUserSession(), $appConfig, $c->getGroupManager(), $c->getMemCacheFactory());
+			return new \OC\App\AppManager($c->getUserSession(), $appConfig, $c->getGroupManager(), $c->getMemCacheFactory(), $c->getEventDispatcher());
 		});
 	}
 
@@ -492,11 +497,11 @@ class Test_App extends \Test\TestCase {
 			return new \OC\AppConfig($c->getDatabaseConnection());
 		});
 		\OC::$server->registerService('AppManager', function (\OC\Server $c) {
-			return new \OC\App\AppManager($c->getUserSession(), $c->getAppConfig(), $c->getGroupManager(), $c->getMemCacheFactory());
+			return new \OC\App\AppManager($c->getUserSession(), $c->getAppConfig(), $c->getGroupManager(), $c->getMemCacheFactory(), $c->getEventDispatcher());
 		});
 
 		// Remove the cache of the mocked apps list with a forceRefresh
-		\OC_App::getEnabledApps(true);
+		\OC_App::getEnabledApps();
 	}
 
 	/**

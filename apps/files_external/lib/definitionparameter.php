@@ -35,6 +35,7 @@ class DefinitionParameter implements \JsonSerializable {
 	/** Flag constants */
 	const FLAG_NONE = 0;
 	const FLAG_OPTIONAL = 1;
+	const FLAG_USER_PROVIDED = 2;
 
 	/** @var string name of parameter */
 	private $name;
@@ -92,6 +93,22 @@ class DefinitionParameter implements \JsonSerializable {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getTypeName() {
+		switch ($this->type) {
+			case self::VALUE_BOOLEAN:
+				return 'boolean';
+			case self::VALUE_TEXT:
+				return 'text';
+			case self::VALUE_PASSWORD:
+				return 'password';
+			default:
+				return 'unknown';
+		}
+	}
+
+	/**
 	 * @return int
 	 */
 	public function getFlags() {
@@ -121,7 +138,7 @@ class DefinitionParameter implements \JsonSerializable {
 	 * @return bool
 	 */
 	public function isFlagSet($flag) {
-		return (bool) $this->flags & $flag;
+		return (bool)($this->flags & $flag);
 	}
 
 	/**
@@ -130,26 +147,15 @@ class DefinitionParameter implements \JsonSerializable {
 	 * @return string
 	 */
 	public function jsonSerialize() {
-		$prefix = '';
-		switch ($this->getType()) {
-			case self::VALUE_BOOLEAN:
-				$prefix = '!';
-				break;
-			case self::VALUE_PASSWORD:
-				$prefix = '*';
-				break;
-			case self::VALUE_HIDDEN:
-				$prefix = '#';
-				break;
-		}
+		return [
+			'value' => $this->getText(),
+			'flags' => $this->getFlags(),
+			'type' => $this->getType()
+		];
+	}
 
-		switch ($this->getFlags()) {
-			case self::FLAG_OPTIONAL:
-				$prefix = '&' . $prefix;
-				break;
-		}
-
-		return $prefix . $this->getText();
+	public function isOptional() {
+		return $this->isFlagSet(self::FLAG_OPTIONAL) || $this->isFlagSet(self::FLAG_USER_PROVIDED);
 	}
 
 	/**
@@ -160,28 +166,26 @@ class DefinitionParameter implements \JsonSerializable {
 	 * @return bool success
 	 */
 	public function validateValue(&$value) {
-		$optional = $this->getFlags() & self::FLAG_OPTIONAL;
-
 		switch ($this->getType()) {
-		case self::VALUE_BOOLEAN:
-			if (!is_bool($value)) {
-				switch ($value) {
-				case 'true':
-					$value = true;
-					break;
-				case 'false':
-					$value = false;
-					break;
-				default:
+			case self::VALUE_BOOLEAN:
+				if (!is_bool($value)) {
+					switch ($value) {
+						case 'true':
+							$value = true;
+							break;
+						case 'false':
+							$value = false;
+							break;
+						default:
+							return false;
+					}
+				}
+				break;
+			default:
+				if (!$value && !$this->isOptional()) {
 					return false;
 				}
-			}
-			break;
-		default:
-			if (!$value && !$optional) {
-				return false;
-			}
-			break;
+				break;
 		}
 		return true;
 	}

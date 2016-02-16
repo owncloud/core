@@ -63,6 +63,7 @@ use OC\Lock\NoopLockingProvider;
 use OC\Mail\Mailer;
 use OC\Notification\Manager;
 use OC\Security\CertificateManager;
+use OC\Security\CSP\ContentSecurityPolicyManager;
 use OC\Security\Crypto;
 use OC\Security\CSRF\CsrfTokenGenerator;
 use OC\Security\CSRF\CsrfTokenManager;
@@ -74,6 +75,7 @@ use OC\Security\TrustedDomainHelper;
 use OC\Session\CryptoWrapper;
 use OC\Tagging\TagMapper;
 use OCP\IServerContainer;
+use OCP\Security\IContentSecurityPolicyManager;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -242,9 +244,9 @@ class Server extends ServerContainer implements IServerContainer {
 			$userSession->listen('\OC\User', 'logout', function () {
 				\OC_Hook::emit('OC_User', 'logout', array());
 			});
-			$userSession->listen('\OC\User', 'changeUser', function ($user) {
+			$userSession->listen('\OC\User', 'changeUser', function ($user, $feature, $value) {
 				/** @var $user \OC\User\User */
-				\OC_Hook::emit('OC_User', 'changeUser', array('run' => true, 'user' => $user));
+				\OC_Hook::emit('OC_User', 'changeUser', array('run' => true, 'user' => $user, 'feature' => $feature, 'value' => $value));
 			});
 			return $userSession;
 		});
@@ -411,7 +413,8 @@ class Server extends ServerContainer implements IServerContainer {
 				$c->getUserSession(),
 				$c->getAppConfig(),
 				$c->getGroupManager(),
-				$c->getMemCacheFactory()
+				$c->getMemCacheFactory(),
+				$c->getEventDispatcher()
 			);
 		});
 		$this->registerService('DateTimeZone', function (Server $c) {
@@ -598,6 +601,9 @@ class Server extends ServerContainer implements IServerContainer {
 				$sessionStorage
 			);
 		});
+		$this->registerService('ContentSecurityPolicyManager', function (Server $c) {
+			return new ContentSecurityPolicyManager();
+		});
 		$this->registerService('ShareManager', function(Server $c) {
 			$config = $c->getConfig();
 			$factoryClass = $config->getSystemValue('sharing.managerFactory', '\OC\Share20\ProviderFactory');
@@ -612,7 +618,9 @@ class Server extends ServerContainer implements IServerContainer {
 				$c->getMountManager(),
 				$c->getGroupManager(),
 				$c->getL10N('core'),
-				$factory
+				$factory,
+				$c->getUserManager(),
+				$c->getRootFolder()
 			);
 
 			return $manager;
@@ -1218,6 +1226,13 @@ class Server extends ServerContainer implements IServerContainer {
 	 */
 	public function getCsrfTokenManager() {
 		return $this->query('CsrfTokenManager');
+	}
+
+	/**
+	 * @return IContentSecurityPolicyManager
+	 */
+	public function getContentSecurityPolicyManager() {
+		return $this->query('ContentSecurityPolicyManager');
 	}
 
 	/**
