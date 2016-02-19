@@ -207,6 +207,27 @@ describe('OCA.Files.FileActions tests', function() {
 			expect($tr.find('.action.action-iconnoalttext').find('img').length).toEqual(1);
 			expect($tr.find('.action.action-iconnoalttext').find('img').eq(0).attr('alt')).toEqual('');
 		});
+		it('display dropdown action inline if there is only 1', function() {
+			fileActions.clear();
+			fileActions.registerAction({
+				name: 'Inline',
+				displayName: 'Inline',
+				type: OCA.Files.FileActions.TYPE_INLINE,
+				mime: 'text/plain',
+				permissions: OC.PERMISSION_READ
+			});
+			fileActions.registerAction({
+				name: 'DropDown',
+				displayName: 'DropDown',
+				type: OCA.Files.FileActions.TYPE_DROPDOWN,
+				mime: 'text/plain',
+				permissions: OC.PERMISSION_READ
+			});
+
+			fileActions.display($tr.find('td.filename'), true, fileList);
+			expect($tr.find('.action.action-inline').length).toEqual(1);
+			expect($tr.find('.action.action-dropdown').length).toEqual(1);
+		});
 	});
 	describe('action handler', function() {
 		var actionStub, $tr, clock;
