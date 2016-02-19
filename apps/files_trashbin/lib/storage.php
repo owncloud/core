@@ -114,6 +114,10 @@ class Storage extends Wrapper {
 	 * @return bool
 	 */
 	protected function shouldMoveToTrash($path){
+		// don't move mount point roots to trash
+		if (empty($path) || $path === '/') {
+			return false;
+		}
 		$normalized = Filesystem::normalizePath($this->mountPoint . '/' . $path);
 		$parts = explode('/', $normalized);
 		if (count($parts) < 4) {
