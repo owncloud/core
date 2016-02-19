@@ -73,6 +73,21 @@ class ConfigTests extends TestCase {
 		$this->assertEquals($expected, $content);
 	}
 
+	public function testFilterClosure() {
+
+		$func = function($foo){ return $foo; };
+
+		$this->config->setValue('closure', $func);
+		$this->assertSame($func, $this->config->getValue('closure'));
+
+		$content = file_get_contents($this->configFile);
+
+		$expected = "<?php\n\$CONFIG = array (\n  'foo' => 'bur',\n  'beers' => \n  array (\n    0 => 'Appenzeller',\n  " .
+			"  1 => 'Guinness',\n    2 => 'Kölsch',\n  ),\n  'alcohol_free' => false,\n" .
+			"  'closure' => 'Closure from separate config file',\n);\n";
+		$this->assertEquals($expected, $content);
+	}
+
 	public function testSetValues() {
 		$content = file_get_contents($this->configFile);
 		$this->assertEquals(self::TESTCONTENT, $content);
