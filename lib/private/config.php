@@ -219,10 +219,21 @@ class Config {
 	 * @throws \Exception If no file lock can be acquired
 	 */
 	private function writeData() {
+
+		// filter config
+		$config = [];
+		foreach ($this->cache as $key => $value) {
+			if ($value instanceof \Closure) {
+				$config[$key] = 'Closure from separate config file';
+			} else {
+				$config[$key] = $value;
+			}
+		}
+
 		// Create a php file ...
 		$content = "<?php\n";
 		$content .= '$CONFIG = ';
-		$content .= var_export($this->cache, true);
+		$content .= var_export($config, true);
 		$content .= ";\n";
 
 		touch ($this->configFilePath);
