@@ -26,7 +26,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-set_time_limit(0);
+@set_time_limit(0);
 require_once '../../lib/base.php';
 
 $l = \OC::$server->getL10N('core');
