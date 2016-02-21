@@ -143,7 +143,7 @@ GroupList = {
 				}
 				GroupList.toggleAddGroup();
 			}).fail(function(result, textStatus, errorThrown) {
-				OC.dialogs.alert(result.responseJSON.message, t('settings', 'Error creating group'));
+				OC.Notification.showTemporary(result.responseJSON.message, t('settings', 'Error creating group'));
 			});
 	},
 
