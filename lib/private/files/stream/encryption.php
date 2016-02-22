@@ -386,6 +386,8 @@ class Encryption extends Wrapper {
 	public function stream_seek($offset, $whence = SEEK_SET) {
 
 		$return = false;
+		// don't try to fix unencrypted size on fseek
+		$this->mustFixUnencryptedSize = false;
 
 		switch ($whence) {
 			case SEEK_SET:
