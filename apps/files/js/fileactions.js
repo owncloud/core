@@ -531,6 +531,7 @@
 				fileList: fileList
 			};
 
+			var numDropDown = 0;
 			$.each(actions, function (name, actionSpec) {
 				if (actionSpec.type === FileActions.TYPE_INLINE) {
 					self._renderInlineAction(
@@ -538,10 +539,24 @@
 						defaultAction && actionSpec.name === defaultAction.name,
 						context
 					);
+				} else {
+					numDropDown++;
 				}
 			});
 
-			this._renderMenuTrigger($tr, context);
+			if (numDropDown === 1) {
+				$.each(actions, function (name, actionSpec) {
+					if (actionSpec.type === FileActions.TYPE_DROPDOWN) {
+						self._renderInlineAction(
+							actionSpec,
+							defaultAction && actionSpec.name === defaultAction.name,
+							context
+						);
+					}
+				});
+			} else if (numDropDown > 1) {
+				this._renderMenuTrigger($tr, context);
+			}
 
 			if (triggerEvent){
 				fileList.$fileList.trigger(jQuery.Event("fileActionsReady", {fileList: fileList, $files: $tr}));
