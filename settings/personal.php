@@ -135,6 +135,7 @@ if ($externalStorageEnabled) {
 	$enableCertImport = $backendService->isUserMountingAllowed();
 }
 
+$user = \OC::$server->getUserManager()->get(OC_User::getUser());
 
 // Return template
 $tmpl = new OC_Template( 'settings', 'personal', 'user');
@@ -146,18 +147,19 @@ $tmpl->assign('email', $email);
 $tmpl->assign('languages', $languages);
 $tmpl->assign('commonlanguages', $commonLanguages);
 $tmpl->assign('activelanguage', $userLang);
-$tmpl->assign('passwordChangeSupported', OC_User::canUserChangePassword(OC_User::getUser()));
-$tmpl->assign('displayNameChangeSupported', OC_User::canUserChangeDisplayName(OC_User::getUser()));
-$tmpl->assign('displayName', OC_User::getDisplayName());
+$tmpl->assign('passwordChangeSupported', $user->canChangePassword());
+$tmpl->assign('displayNameChangeSupported', $user->canChangeDisplayName());
+$tmpl->assign('emailChangeSupported', $user->canChangeEmail());
+$tmpl->assign('displayName', $user->getDisplayName());
 $tmpl->assign('enableAvatars', $config->getSystemValue('enable_avatars', true) === true);
-$tmpl->assign('avatarChangeSupported', OC_User::canUserChangeAvatar(OC_User::getUser()));
+$tmpl->assign('avatarChangeSupported', $user->canChangeAvatar());
 $tmpl->assign('certs', $certificateManager->listCertificates());
 $tmpl->assign('showCertificates', $enableCertImport);
 $tmpl->assign('urlGenerator', $urlGenerator);
 
 // Get array of group ids for this user
 $groups = \OC::$server->getGroupManager()->getUserIdGroups(OC_User::getUser());
-$groups2 = array_map(function($group) { return $group->getGID(); }, $groups);
+$groups2 = array_map(function(\OCP\IGroup $group) { return $group->getGID(); }, $groups);
 sort($groups2);
 $tmpl->assign('groups', $groups2);
 
