@@ -84,6 +84,15 @@ class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 			return $target;
 		}
 
+		$currentUser = \OC::$server->getUserSession()->getUser();
+		$currentUserID = is_null($currentUser) ? '' : $currentUser->getUID();
+
+		// setup filesystem for added user if it isn't the current user
+		if($currentUserID !== $shareWith) {
+			\OC_Util::tearDownFS();
+			\OC_Util::setupFS($shareWith);
+		}
+
 		\OC\Files\Filesystem::initMountPoints($shareWith);
 		$view = new \OC\Files\View('/' . $shareWith . '/files');
 
@@ -100,7 +109,17 @@ class OC_Share_Backend_File implements OCP\Share_Backend_File_Dependent {
 
 		$excludeList = (is_array($exclude)) ? $exclude : array();
 
-		return \OCA\Files_Sharing\Helper::generateUniqueTarget($target, $excludeList, $view);
+		$uniqueTarget = \OCA\Files_Sharing\Helper::generateUniqueTarget($target, $excludeList, $view);
+
+		// re-setup old filesystem state
+		if($currentUserID !== $shareWith) {
+			\OC_Util::tearDownFS();
+			if($currentUserID !== '') {
+				\OC_Util::setupFS($currentUserID);
+			}
+		}
+
+		return $uniqueTarget;
 	}
 
 	public function formatItems($items, $format, $parameters = null) {
