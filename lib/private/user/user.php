@@ -305,6 +305,19 @@ class User implements IUser {
 	}
 
 	/**
+	 * check if the email can be changed
+	 *
+	 * @return bool
+	 */
+	public function canChangeEmail() {
+		if ($this->config->getSystemValue('allow_user_to_change_email', null) !== null) {
+			return $this->config->getSystemValue('allow_user_to_change_email', null) !== false;
+		}
+
+		return $this->config->getSystemValue('allow_user_to_change_display_name') !== false;
+	}
+
+	/**
 	 * check if the user is enabled
 	 *
 	 * @return bool
