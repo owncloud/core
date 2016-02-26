@@ -176,6 +176,15 @@ $CONFIG = array(
 'allow_user_to_change_display_name' => true,
 
 /**
+ * ``true`` allows users to change their email addresses (on their Personal
+ * pages), and ``false`` prevents them from changing their email addresses.
+ *
+ * If this value is not set, it falls back to
+ * ``allow_user_to_change_display_name``
+ */
+'allow_user_to_change_email' => true,
+
+/**
  * Lifetime of the remember login cookie, which is set when the user clicks the
  * ``remember`` checkbox on the login screen. The default is 15 days, expressed
  * in seconds.
