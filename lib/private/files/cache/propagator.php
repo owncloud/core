@@ -67,6 +67,11 @@ class Propagator implements IPropagator {
 			$cache->update($parentId, ['mtime' => $mtime, 'etag' => $this->storage->getETag($entry['path']), 'size' => $newSize]);
 
 			$parentId = $entry['parent'];
+
+			\OC_Hook::emit('\OC\Files\Cache\Propagator', 'propagate', [
+				'storage' => $this->storage,
+				'entry' => $entry
+			]);
 		}
 
 		return $propagatedEntries;

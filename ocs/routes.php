@@ -99,7 +99,9 @@ API::register(
 
 // Server-to-Server Sharing
 if (\OC::$server->getAppManager()->isEnabledForUser('files_sharing')) {
-	$s2s = new \OCA\Files_Sharing\API\Server2Server();
+	$application = new \OCA\Files_Sharing\AppInfo\Application();
+	$externalUpdater = $application->getContainer()->query('ExternalUpdater');
+	$s2s = new \OCA\Files_Sharing\API\Server2Server($externalUpdater);
 	API::register('post',
 		'/cloud/shares',
 		array($s2s, 'createShare'),
@@ -124,6 +126,13 @@ if (\OC::$server->getAppManager()->isEnabledForUser('files_sharing')) {
 	API::register('post',
 		'/cloud/shares/{id}/unshare',
 		array($s2s, 'unshare'),
+		'files_sharing',
+		API::GUEST_AUTH
+	);
+
+	API::register('post',
+		'/cloud/shares/{id}/update',
+		array($s2s, 'updateShare'),
 		'files_sharing',
 		API::GUEST_AUTH
 	);
