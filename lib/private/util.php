@@ -311,7 +311,13 @@ class OC_Util {
 				'copying skeleton for '.$userId.' from '.$skeletonDirectory.' to '.$userDirectory->getFullPath('/'),
 				\OCP\Util::DEBUG
 			);
-			self::copyr($skeletonDirectory, $userDirectory);
+			try {
+				self::copyr($skeletonDirectory, $userDirectory);
+			} catch (\OCP\Files\NotFoundException $e) {
+				\OC::$server->getLogger()->logException($e, [
+					'app' => 'files_skeleton',
+				]);
+			}
 			// update the file cache
 			$userDirectory->getStorage()->getScanner()->scan('', \OC\Files\Cache\Scanner::SCAN_RECURSIVE);
 		}
