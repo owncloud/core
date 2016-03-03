@@ -19,7 +19,7 @@
 				placeholder="<?php p($l->t('Password')); ?>" value=""
 				autocomplete="off" autocapitalize="off" autocorrect="off"
 				autofocus />
-			<input type="submit" id="submit" value=""
+			<input type="submit" id="password-submit" 
 				class="svg icon-confirm input-button-inline" value="" disabled="disabled" />
 		</p>
 	</fieldset>

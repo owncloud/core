@@ -4,9 +4,9 @@ $(document).ready(function(){
 		var n = $('#password').val().length;
 
 		if (n > 0) {
-			$('#submit').prop('disabled', false);
+			$('#password-submit').prop('disabled', false);
 		} else {
-			$('#submit').prop('disabled', true);
+			$('#password-submit').prop('disabled', true);
 		}
 	});
 });
