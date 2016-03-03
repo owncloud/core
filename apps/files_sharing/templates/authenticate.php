@@ -20,7 +20,7 @@
 				autocomplete="off" autocapitalize="off" autocorrect="off"
 				autofocus />
 			<input type="submit" id="submit" value=""
-				class="svg icon-confirm input-button-inline" value="disabled" />
+				class="svg icon-confirm input-button-inline" value="" disabled="disabled" />
 		</p>
 	</fieldset>
 </form>
