@@ -66,6 +66,8 @@ class Storage extends DAV implements ISharedStorage {
 	 */
 	private $manager;
 
+	private $isOwncloud = null;
+
 	public function __construct($options) {
 		$discoveryManager = new DiscoveryManager(
 			\OC::$server->getMemCacheFactory(),
@@ -141,9 +143,6 @@ class Storage extends DAV implements ISharedStorage {
 	public function getScanner($path = '', $storage = null) {
 		if (!$storage) {
 			$storage = $this;
-		}
-		if(!$this->remoteIsOwnCloud()) {
-			return parent::getScanner($path, $storage);
 		}
 		if (!isset($this->scanner)) {
 			$this->scanner = new Scanner($storage);
@@ -253,11 +252,14 @@ class Storage extends DAV implements ISharedStorage {
 	 *
 	 * @return bool
 	 */
-	private function remoteIsOwnCloud() {
-		if(defined('PHPUNIT_RUN') || !$this->testRemoteUrl($this->getRemote() . '/status.php')) {
-			return false;
+	public function remoteIsOwnCloud() {
+		if (is_null($this->isOwncloud)) {
+			if (defined('PHPUNIT_RUN') || !$this->testRemoteUrl($this->getRemote() . '/status.php')) {
+				$this->isOwncloud = false;
+			}
+			$this->isOwncloud = true;
 		}
-		return true;
+		return $this->isOwncloud;
 	}
 
 	/**
