@@ -36,7 +36,11 @@ class Scanner extends \OC\Files\Cache\Scanner {
 
 	/** {@inheritDoc} */
 	public function scan($path, $recursive = self::SCAN_RECURSIVE, $reuse = -1, $lock = true) {
-		$this->scanAll();
+		if ($this->storage->remoteIsOwnCloud()) {
+			$this->scanAll();
+		} else {
+			return parent::scan($path, $recursive, $reuse, $lock);
+		}
 	}
 
 	/**
@@ -54,7 +58,7 @@ class Scanner extends \OC\Files\Cache\Scanner {
 	 */
 	public function scanFile($file, $reuseExisting = 0, $parentId = -1, $cacheData = null, $lock = true) {
 		try {
-			return parent::scanFile($file, $reuseExisting);
+			return parent::scanFile($file, $reuseExisting, $parentId, $cacheData, $lock);
 		} catch (ForbiddenException $e) {
 			$this->storage->checkStorageAvailability();
 		} catch (NotFoundException $e) {
