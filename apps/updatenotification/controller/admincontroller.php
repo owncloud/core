@@ -100,8 +100,10 @@ class AdminController extends Controller {
 			unset($channels[$key]);
 		}
 
+		$updateState = $this->updateChecker->getUpdateState();
 		$params = [
-			'isNewVersionAvailable' => ($this->updateChecker->getUpdateState() === []) ? false : true,
+			'isNewVersionAvailable' => $updateState !== [],
+			'newVersionString' => $updateState !== [] ? $updateState['updateVersion'] : '',
 			'lastChecked' => $lastUpdateCheck,
 			'currentChannel' => $currentChannel,
 			'channels' => $channels,
