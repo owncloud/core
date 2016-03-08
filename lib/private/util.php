@@ -165,9 +165,11 @@ class OC_Util {
 
 		// install storage availability wrapper, before most other wrappers
 		\OC\Files\Filesystem::addStorageWrapper('oc_availability', function ($mountPoint, $storage) {
+			/*
 			if (!$storage->isLocal()) {
 				return new \OC\Files\Storage\Wrapper\Availability(['storage' => $storage]);
 			}
+			 */
 			return $storage;
 		});
 

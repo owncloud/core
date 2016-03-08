@@ -566,6 +566,7 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 	}
 
 	public function getCache($path = '', $storage = null) {
+		$this->init();
 		if (!$storage) {
 			$storage = $this;
 		}

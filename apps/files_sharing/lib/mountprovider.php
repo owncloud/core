@@ -56,7 +56,11 @@ class MountProvider implements IMountProvider {
 			return $share['permissions'] > 0;
 		});
 		$shares = array_map(function ($share) use ($user, $storageFactory) {
-
+           \OC::$server->getLogger()->debug('Mounting share #{share} for {user}', [
+               'app' => 'testing2016-03-08',
+               'share' => $share['id'],
+               'user' => $user->getUID(),
+           ]);
 			return new SharedMount(
 				'\OC\Files\Storage\Shared',
 				'/' . $user->getUID() . '/' . $share['file_target'],
