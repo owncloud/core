@@ -85,6 +85,7 @@ class Shared extends \OC\Files\Storage\Common implements ISharedStorage {
 	}
 
 	private function isValid() {
+		$this->init();
 		return ($this->sourceRootInfo->getPermissions() & Constants::PERMISSION_SHARE) === Constants::PERMISSION_SHARE;
 	}
 
