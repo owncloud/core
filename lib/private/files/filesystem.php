@@ -65,6 +65,7 @@ use OCP\Files\Config\IMountProvider;
 use OCP\Files\Mount\IMountPoint;
 use OCP\Files\NotFoundException;
 use OCP\IUserManager;
+use OCA\Files_Sharing\SharedMount;
 
 class Filesystem {
 
@@ -428,7 +429,10 @@ class Filesystem {
 			$mounts = $mountConfigManager->getMountsForUser($userObject);
 			array_walk($mounts, array(self::$mounts, 'addMount'));
 			$mounts[] = $mount;
-			//$mountConfigManager->registerMounts($userObject, $mounts);
+			$mountsToRegister = array_filter($mounts, function(IMountPoint $mount) {
+				return ! $mount instanceof SharedMount;
+			});
+			$mountConfigManager->registerMounts($userObject, $mountsToRegister);
 		}
 
 		self::listenForNewMountProviders($mountConfigManager, $userManager);
