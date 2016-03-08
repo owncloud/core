@@ -204,13 +204,8 @@ class URLGenerator implements IURLGenerator {
 			return rtrim($this->config->getSystemValue('overwrite.cli.url'), '/') . '/' . ltrim($url, '/');
 		}
 
-		// The ownCloud web root can already be prepended.
-		$webRoot = substr($url, 0, strlen(\OC::$WEBROOT)) === \OC::$WEBROOT
-			? ''
-			: \OC::$WEBROOT;
-
 		$request = \OC::$server->getRequest();
-		return $request->getServerProtocol() . '://' . $request->getServerHost() . $webRoot . $separator . $url;
+		return $request->getServerProtocol() . '://' . $request->getServerHost() . \OC::$WEBROOT . $separator . $url;
 	}
 
 	/**
