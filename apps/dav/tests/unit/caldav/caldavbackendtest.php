@@ -57,11 +57,11 @@ class CalDavBackendTest extends TestCase {
 			->disableOriginalConstructor()
 			->setMethods(['getPrincipalByPath', 'getGroupMembership'])
 			->getMock();
-		$this->principal->method('getPrincipalByPath')
+		$this->principal->expects($this->any())->method('getPrincipalByPath')
 			->willReturn([
 				'uri' => 'principals/best-friend'
 			]);
-		$this->principal->method('getGroupMembership')
+		$this->principal->expects($this->any())->method('getGroupMembership')
 			->withAnyParameters()
 			->willReturn([self::UNIT_TEST_GROUP]);
 
@@ -444,6 +444,56 @@ EOD;
 
 		$sos = $this->backend->getSchedulingObjects(self::UNIT_TEST_USER);
 		$this->assertEquals(0, count($sos));
+	}
+
+	public function testEventBeforeUnixEpoch() {
+
+		$calendarId = $this->createTestCalendar();
+
+		// create a card
+		$uri = $this->getUniqueID('calobj');
+		$calData = <<<'EOD'
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Sabre//Sabre VObject 3.5.0//EN
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+UID:413F269B-B51B-46B1-AFB6-40055C53A4DC
+DTSTAMP:20160309T095056Z
+DTSTART;VALUE=DATE:16040222
+DTEND;VALUE=DATE:16040223
+RRULE:FREQ=YEARLY
+SUMMARY:SUMMARY
+TRANSP:TRANSPARENT
+END:VEVENT
+END:VCALENDAR
+EOD;
+
+		$this->backend->createCalendarObject($calendarId, $uri, $calData);
+
+		// get all the cards
+		$calendarObjects = $this->backend->getCalendarObjects($calendarId);
+		$this->assertEquals(1, count($calendarObjects));
+		$this->assertEquals($calendarId, $calendarObjects[0]['calendarid']);
+
+		// get the cards
+		$calendarObject = $this->backend->getCalendarObject($calendarId, $uri);
+		$this->assertNotNull($calendarObject);
+		$this->assertArrayHasKey('id', $calendarObject);
+		$this->assertArrayHasKey('uri', $calendarObject);
+		$this->assertArrayHasKey('lastmodified', $calendarObject);
+		$this->assertArrayHasKey('etag', $calendarObject);
+		$this->assertArrayHasKey('size', $calendarObject);
+		$this->assertEquals($calData, $calendarObject['calendardata']);
+
+		// query
+		$result = $this->backend->calendarQuery($calendarId, [
+			'name' => '',
+			'prop-filters' => [],
+			'comp-filters' => [['name' => 'VEVENT', 'is-not-defined' => false, 'comp-filters' => [], 'time-range' => ['start' => new DateTime('1600-01-1 14:00:00', new DateTimeZone('UTC')), 'end' => null], 'prop-filters' => []]]
+		]);
+		$this->assertEquals(1, count($result));
+		$this->assertEquals($uri, $result[0]);
 	}
 
 	private function assertAcl($principal, $privilege, $acl) {
