@@ -148,6 +148,55 @@ input[type="checkbox"].checkbox:hover+label:before, input[type="checkbox"]:focus
 	color:#111 !important;
 }
 
+input[type="radio"].radio {
+	position: absolute;
+	left:-10000px;
+	top: auto;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+input[type="radio"].radio + label:before {
+	content: "";
+	display: inline-block;
+
+	height: 20px;
+	width: 20px;
+	vertical-align: middle;
+
+	background: url('../img/actions/radio.svg') left top no-repeat;
+	opacity: 0.7;
+}
+
+input[type="radio"].radio:checked + label:before {
+	background-image: url('../img/actions/radio-checked.svg');
+}
+
+input[type="radio"].radio:disabled + label:before {
+	background-image: url('../img/actions/radio-disabled.svg');
+}
+
+input[type="radio"].radio:checked:disabled + label:before {
+	background-image: url('../img/actions/radio-checked-disabled.svg');
+}
+
+input[type="radio"].radio--white + label:before {
+	background-image: url('../img/actions/radio-white.svg');
+}
+
+input[type="radio"].radio--white:checked + label:before {
+	background-image: url('../img/actions/radio-checked-white.svg');
+}
+
+input[type="radio"].radio--white:disabled + label:before {
+	background-image: url('../img/actions/radio-disabled-white.svg');
+}
+
+input[type="radio"].radio--white:checked:disabled + label:before {
+	background-image: url('../img/actions/radio-checked-disabled.svg');
+}
+
 input[type="time"] {
 	width: initial;
 	height: 31px;
