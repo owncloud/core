@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="96" height="18" viewBox="0 0 96 18">
+  <defs>
+    <image id="image" width="18" height="18" xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAMAAABhEH5lAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAM1BMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACjBUbJAAAAEHRSTlMAMGAYgBBQSAh4QGhwWCAooeEIPQAAAAFiS0dEAIgFHUgAAAAJcEhZcwAALiMAAC4jAXilP3YAAABvSURBVBjTXZBbDoAgEAOhVGFB8f63VRCWx3yRIWmbNaZhrdkBduPIY1Mn6VcThJRVWX70ggggsXEBdzROuCD560qzSa5GTw5hLPg5te/p6lHluxprNSzp9LIo5/IRNEpiXS0a5u92hAOxqekq5fkC5gYDV1r1bxgAAAAASUVORK5CYII="/>
+  </defs>
+  <use xlink:href="#image"/>
+  <use x="20" xlink:href="#image"/>
+  <use x="40" xlink:href="#image"/>
+  <use x="60" xlink:href="#image"/>
+  <use x="78" xlink:href="#image"/>
+</svg>
