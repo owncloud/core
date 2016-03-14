@@ -1850,9 +1850,14 @@ class View {
 					);
 				}
 			} catch (\OCP\Lock\LockedException $e) {
+				try {
+					$lockedPath = $this->getPathRelativeToFiles($absolutePath);
+				} catch (\InvalidArgumentException $e) {
+					$lockedPath = $absolutePath;
+				}
 				// rethrow with the a human-readable path
 				throw new \OCP\Lock\LockedException(
-					$this->getPathRelativeToFiles($absolutePath),
+					$lockedPath,
 					$e
 				);
 			}
@@ -1891,9 +1896,14 @@ class View {
 					);
 				}
 			} catch (\OCP\Lock\LockedException $e) {
+				try {
+					$lockedPath = $this->getPathRelativeToFiles($absolutePath);
+				} catch (\InvalidArgumentException $e) {
+					$lockedPath = $absolutePath;
+				}
 				// rethrow with the a human-readable path
 				throw new \OCP\Lock\LockedException(
-					$this->getPathRelativeToFiles($absolutePath),
+					$lockedPath,
 					$e
 				);
 			}
