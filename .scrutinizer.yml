@@ -1,3 +1,6 @@
+before_commands:
+  - 'git submodule update --init --recursive'
+
 filter:
     excluded_paths:
         - '3rdparty/*'
@@ -17,7 +20,7 @@ filter:
         - 'settings/l10n/*'
         - 'tests/*'
         - 'build/*'
-
+        - 'lib/composer/*'
 
 imports:
     - javascript

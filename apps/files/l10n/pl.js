@@ -41,6 +41,8 @@ OC.L10N.register(
     "Pending" : "Oczekujące",
     "Unable to determine date" : "Nie można ustalić daty",
     "This directory is unavailable, please check the logs or contact the administrator" : "Ten folder jest niedostępny, proszę sprawdzić logi lub skontaktować się z administratorem.",
+    "Could not create folder \"{dir}\" because it already exists" : "Nie można utworzyć folderu „{dir}”, ponieważ już istnieje.",
+    "Error deleting file \"{fileName}\"." : "Błąd podczas usuwania pliku „{fileName}”.",
     "No entries in this folder match '{filter}'" : "Brak wyników pasujących do '{filter}'",
     "Name" : "Nazwa",
     "Size" : "Rozmiar",
@@ -85,10 +87,12 @@ OC.L10N.register(
     "WebDAV" : "WebDAV",
     "Use this address to <a href=\"%s\" target=\"_blank\">access your Files via WebDAV</a>" : "Użyj tego adresu do <a href=\"%s\" target=\"_blank\">dostępu do twoich plików przez WebDAV</a>",
     "Cancel upload" : "Anuluj wysyłanie",
+    "No files in here" : "Brak plików",
     "No entries found in this folder" : "Brak wpisów w tym folderze",
     "Select all" : "Wybierz wszystko",
     "Upload too large" : "Ładowany plik jest za duży",
     "The files you are trying to upload exceed the maximum size for file uploads on this server." : "Pliki, które próbujesz przesłać, przekraczają maksymalną dopuszczalną wielkość.",
-    "Text file" : "Plik tekstowy"
+    "Text file" : "Plik tekstowy",
+    "New text file.txt" : "Nowy plik tekstowy.txt"
 },
 "nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

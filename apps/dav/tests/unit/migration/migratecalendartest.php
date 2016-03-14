@@ -22,32 +22,42 @@ namespace OCA\DAV\Tests\Unit\Migration;
 
 use OCA\DAV\CalDAV\CalDavBackend;
 use OCA\Dav\Migration\CalendarAdapter;
+use OCP\ILogger;
 use Test\TestCase;
 
 class MigrateCalendarTest extends TestCase {
 
 	public function testMigration() {
 		/** @var CalendarAdapter | \PHPUnit_Framework_MockObject_MockObject $adapter */
-		$adapter = $this->mockAdapter();
+		$adapter = $this->mockAdapter([
+			['share_type' => '1', 'share_with' => 'users', 'permissions' => '31'],
+			['share_type' => '2', 'share_with' => 'adam', 'permissions' => '1'],
+		]);
 
 		/** @var CalDavBackend | \PHPUnit_Framework_MockObject_MockObject $cardDav */
 		$cardDav = $this->getMockBuilder('\OCA\Dav\CalDAV\CalDAVBackend')->disableOriginalConstructor()->getMock();
-		$cardDav->method('createCalendar')->willReturn(666);
+		$cardDav->expects($this->any())->method('createCalendar')->willReturn(666);
 		$cardDav->expects($this->once())->method('createCalendar')->with('principals/users/test01', 'test_contacts');
 		$cardDav->expects($this->once())->method('createCalendarObject')->with(666, '63f0dd6c-39d5-44be-9d34-34e7a7441fc2.ics', 'BEGIN:VCARD');
+		$cardDav->expects($this->once())->method('updateShares')->with($this->anything(), [
+			['href' => 'principal:principals/groups/users', 'readOnly' => false],
+			['href' => 'principal:principals/users/adam', 'readOnly' => true]
+		]);
+		/** @var ILogger $logger */
+		$logger = $this->getMockBuilder('\OCP\ILogger')->disableOriginalConstructor()->getMock();
 
-		$m = new \OCA\Dav\Migration\MigrateCalendars($adapter, $cardDav);
+		$m = new \OCA\Dav\Migration\MigrateCalendars($adapter, $cardDav, $logger, null);
 		$m->migrateForUser('test01');
 	}
 
 	/**
 	 * @return \PHPUnit_Framework_MockObject_MockObject
 	 */
-	private function mockAdapter($shares = []) {
+	private function mockAdapter($shares = [], $calData = 'BEGIN:VCARD') {
 		$adapter = $this->getMockBuilder('\OCA\Dav\Migration\CalendarAdapter')
 			->disableOriginalConstructor()
 			->getMock();
-		$adapter->method('foreachCalendar')->willReturnCallback(function ($user, \Closure $callBack) {
+		$adapter->expects($this->any())->method('foreachCalendar')->willReturnCallback(function ($user, \Closure $callBack) {
 			$callBack([
 				// calendarorder | calendarcolor | timezone | components
 				'id' => 0,
@@ -62,15 +72,14 @@ class MigrateCalendarTest extends TestCase {
 				'components' => 'VEVENT,VTODO,VJOURNAL'
 			]);
 		});
-		$adapter->method('foreachCalendarObject')->willReturnCallback(function ($addressBookId, \Closure $callBack) {
+		$adapter->expects($this->any())->method('foreachCalendarObject')->willReturnCallback(function ($addressBookId, \Closure $callBack) use ($calData) {
 			$callBack([
 				'userid' => $addressBookId,
 				'uri' => '63f0dd6c-39d5-44be-9d34-34e7a7441fc2.ics',
-				'calendardata' => 'BEGIN:VCARD'
+				'calendardata' => $calData
 			]);
 		});
-		$adapter->method('getShares')->willReturn($shares);
+		$adapter->expects($this->any())->method('getShares')->willReturn($shares);
 		return $adapter;
 	}
-
 }

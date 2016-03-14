@@ -339,16 +339,6 @@ class OC {
 	}
 
 	/**
-	 * check if the instance needs to perform an upgrade
-	 *
-	 * @return bool
-	 * @deprecated use \OCP\Util::needUpgrade() instead
-	 */
-	public static function needUpgrade() {
-		return \OCP\Util::needUpgrade();
-	}
-
-	/**
 	 * Checks if the version requires an update and shows
 	 * @param bool $showTemplate Whether an update screen should get shown
 	 * @return bool|void
@@ -509,12 +499,17 @@ class OC {
 			require_once $vendorAutoLoad;
 
 		} catch (\RuntimeException $e) {
-			OC_Response::setStatus(OC_Response::STATUS_SERVICE_UNAVAILABLE);
+			if (!self::$CLI) {
+				OC_Response::setStatus(OC_Response::STATUS_SERVICE_UNAVAILABLE);
+			}
 			// we can't use the template error page here, because this needs the
 			// DI container which isn't available yet
 			print($e->getMessage());
 			exit();
 		}
+
+		// Add default composer PSR-4 autoloader
+		require_once OC::$SERVERROOT . '/lib/composer/autoload.php';
 
 		// setup the basic server
 		self::$server = new \OC\Server(\OC::$WEBROOT, self::$config);
@@ -714,6 +709,9 @@ class OC {
 				try {
 					$cache = new \OC\Cache\File();
 					$cache->gc();
+				} catch (\OC\ServerNotAvailableException $e) {
+					// not a GC exception, pass it on
+					throw $e;
 				} catch (\Exception $e) {
 					// a GC exception should not prevent users from using OC,
 					// so log the exception
