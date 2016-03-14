@@ -32,39 +32,27 @@ class Redis extends Cache implements IMemcacheTTL {
 	/**
 	 * @var \Redis $cache
 	 */
-	private static $cache = null;
+	protected static $cache = null;
 
 	public function __construct($prefix = '') {
 		parent::__construct($prefix);
 		if (is_null(self::$cache)) {
 			$systemConfig = \OC::$server->getSystemConfig();
 
-			if ($config = $systemConfig->getValue('redis.cluster', [])) {
-				// cluster config
-				$timeout = isset($config['timeout']) ? $config['timeout'] : null;
-				$readTimeout = isset($config['read_timeout']) ? $config['read_timeout'] : null;
-				self::$cache = new \RedisCluster(null, $config['seeds'], $timeout, $readTimeout);
+			$config = $systemConfig->getValue('redis', []);
+			self::$cache = new \Redis();
 
-				if (isset($config['failover_mode'])) {
-					self::$cache->setOption(\RedisCluster::OPT_FAILOVER, $config['failover_mode']);
-				}
-			} else {
-				// single-instance config (default)
-				$config = $systemConfig->getValue('redis', []);
-				self::$cache = new \Redis();
+			$host = isset($config['host']) ? $config['host'] : '127.0.0.1';
+			$port = isset($config['port']) ? $config['port'] : 6379;
+			$timeout = isset($config['timeout']) ? $config['timeout'] : 0.0; // default: unlimited
 
-				$host = isset($config['host']) ? $config['host'] : '127.0.0.1';
-				$port = isset($config['port']) ? $config['port'] : 6379;
-				$timeout = isset($config['timeout']) ? $config['timeout'] : 0.0; // default: unlimited
+			self::$cache->connect($host, $port, $timeout);
+			if(isset($config['password']) && $config['password'] !== '') {
+				self::$cache->auth($config['password']);
+			}
 
-				self::$cache->connect($host, $port, $timeout);
-				if(isset($config['password']) && $config['password'] !== '') {
-					self::$cache->auth($config['password']);
-				}
-
-				if (isset($config['dbindex'])) {
-					self::$cache->select($config['dbindex']);
-				}
+			if (isset($config['dbindex'])) {
+				self::$cache->select($config['dbindex']);
 			}
 		}
 	}
