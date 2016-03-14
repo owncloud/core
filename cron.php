@@ -3,15 +3,17 @@
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @author Christopher Schäpers <kondou@ts.unde.re>
  * @author Jakob Sack <mail@jakobsack.de>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Oliver Kohl D.Sc. <oliver@kohl.bz>
+ * @author Phil Davis <phil.davis@inf.org>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Steffen Lindner <mail@steffen-lindner.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -58,9 +60,10 @@ try {
 	\OC::$server->setSession($session);
 
 	$logger = \OC::$server->getLogger();
+	$config = \OC::$server->getConfig();
 
 	// Don't do anything if ownCloud has not been installed
-	if (!OC_Config::getValue('installed', false)) {
+	if (!$config->getSystemValue('installed', false)) {
 		exit(0);
 	}
 
@@ -97,7 +100,6 @@ try {
 			}
 		}
 
-		$config = OC::$server->getConfig();
 		$instanceId = $config->getSystemValue('instanceid');
 		$lockFileName = 'owncloud-server-' . $instanceId . '-cron.lock';
 		$lockDirectory = $config->getSystemValue('cron.lockfile.location', sys_get_temp_dir());
@@ -128,9 +130,20 @@ try {
 
 		// Work
 		$jobList = \OC::$server->getJobList();
-		$jobs = $jobList->getAll();
-		foreach ($jobs as $job) {
+
+		$executedJobs = [];
+		while ($job = $jobList->getNext()) {
+			if (isset($executedJobs[$job->getId()])) {
+				break;
+			}
+
+			$logger->debug('Run job with ID ' . $job->getId(), ['app' => 'cron']);
 			$job->execute($jobList, $logger);
+			$logger->debug('Finished job with ID ' . $job->getId(), ['app' => 'cron']);
+
+			$jobList->setLastJob($job);
+			$executedJobs[$job->getId()] = true;
+			unset($job);
 		}
 
 		// unlock the file

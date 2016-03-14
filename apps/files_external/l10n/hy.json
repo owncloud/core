@@ -1,5 +1,15 @@
 { "translations": {
     "Personal" : "Անձնական",
+    "Never" : "Երբեք",
+    "Saved" : "Պահված",
+    "Username" : "Օգտանուն",
+    "Password" : "Գաղտնաբառ",
+    "Save" : "Պահպանել",
+    "URL" : "URL",
+    "Dropbox" : "Dropbox",
+    "Share" : "Կիսվել",
+    "Name" : "Անուն",
+    "Folder name" : "Պանակի անուն",
     "Delete" : "Ջնջել"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

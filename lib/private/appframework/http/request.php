@@ -5,13 +5,16 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Mitar <mitar.git@tnode.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
  * @author Vincent Petry <pvince81@owncloud.com>
- * @author Robin McCorkell <rmccorkell@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -30,6 +33,8 @@
 
 namespace OC\AppFramework\Http;
 
+use OC\Security\CSRF\CsrfToken;
+use OC\Security\CSRF\CsrfTokenManager;
 use OC\Security\TrustedDomainHelper;
 use OCP\IConfig;
 use OCP\IRequest;
@@ -42,7 +47,8 @@ use OCP\Security\ISecureRandom;
  */
 class Request implements \ArrayAccess, \Countable, IRequest {
 
-	const USER_AGENT_IE = '/MSIE/';
+	const USER_AGENT_IE = '/(MSIE)|(Trident)/';
+	const USER_AGENT_IE_8 = '/MSIE 8.0/';
 	// Android Chrome user agent: https://developers.google.com/chrome/mobile/docs/user-agent
 	const USER_AGENT_ANDROID_MOBILE_CHROME = '#Android.*Chrome/[.0-9]*#';
 	const USER_AGENT_FREEBOX = '#^Mozilla/5\.0$#';
@@ -71,6 +77,8 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	protected $requestId = '';
 	/** @var ICrypto */
 	protected $crypto;
+	/** @var CsrfTokenManager|null */
+	protected $csrfTokenManager;
 
 	/** @var bool */
 	protected $contentDecoded = false;
@@ -87,21 +95,21 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 *        - string 'method' the request method (GET, POST etc)
 	 *        - string|false 'requesttoken' the requesttoken or false when not available
 	 * @param ISecureRandom $secureRandom
-	 * @param ICrypto $crypto
 	 * @param IConfig $config
+	 * @param CsrfTokenManager|null $csrfTokenManager
 	 * @param string $stream
 	 * @see http://www.php.net/manual/en/reserved.variables.php
 	 */
 	public function __construct(array $vars=array(),
 								ISecureRandom $secureRandom = null,
-								ICrypto $crypto,
 								IConfig $config,
-								$stream='php://input') {
+								CsrfTokenManager $csrfTokenManager = null,
+								$stream = 'php://input') {
 		$this->inputStream = $stream;
 		$this->items['params'] = array();
 		$this->secureRandom = $secureRandom;
-		$this->crypto = $crypto;
 		$this->config = $config;
+		$this->csrfTokenManager = $csrfTokenManager;
 
 		if(!array_key_exists('method', $vars)) {
 			$vars['method'] = 'GET';
@@ -410,7 +418,9 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 			}
 		}
 
-		$this->items['parameters'] = array_merge($this->items['parameters'], $params);
+		if (is_array($params)) {
+			$this->items['parameters'] = array_merge($this->items['parameters'], $params);
+		}
 		$this->contentDecoded = true;
 	}
 
@@ -418,10 +428,9 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	/**
 	 * Checks if the CSRF check was correct
 	 * @return bool true if CSRF check passed
-	 * @see OC_Util::callRegister()
 	 */
 	public function passesCSRFCheck() {
-		if($this->items['requesttoken'] === false) {
+		if($this->csrfTokenManager === null) {
 			return false;
 		}
 
@@ -435,27 +444,9 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 			//no token found.
 			return false;
 		}
+		$token = new CsrfToken($token);
 
-		// Decrypt token to prevent BREACH like attacks
-		$token = explode(':', $token);
-		if (count($token) !== 2) {
-			return false;
-		}
-
-		$encryptedToken = $token[0];
-		$secret = $token[1];
-		try {
-			$decryptedToken = $this->crypto->decrypt($encryptedToken, $secret);
-		} catch (\Exception $e) {
-			return false;
-		}
-
-		// Check if the token is valid
-		if(\OCP\Security\StringUtils::equals($decryptedToken, $this->items['requesttoken'])) {
-			return true;
-		} else {
-			return false;
-		}
+		return $this->csrfTokenManager->isTokenValid($token);
 	}
 
 	/**
@@ -469,7 +460,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 		}
 
 		if(empty($this->requestId)) {
-			$this->requestId = $this->secureRandom->getLowStrengthGenerator()->generate(20);
+			$this->requestId = $this->secureRandom->generate(20);
 		}
 
 		return $this->requestId;
@@ -545,11 +536,33 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 
 		if (isset($this->server['HTTPS'])
 			&& $this->server['HTTPS'] !== null
-			&& $this->server['HTTPS'] !== 'off') {
+			&& $this->server['HTTPS'] !== 'off'
+			&& $this->server['HTTPS'] !== '') {
 			return 'https';
 		}
 
 		return 'http';
+	}
+
+	/**
+	 * Returns the used HTTP protocol.
+	 *
+	 * @return string HTTP protocol. HTTP/2, HTTP/1.1 or HTTP/1.0.
+	 */
+	public function getHttpProtocol() {
+		$claimedProtocol = strtoupper($this->server['SERVER_PROTOCOL']);
+
+		$validProtocols = [
+			'HTTP/1.0',
+			'HTTP/1.1',
+			'HTTP/2',
+		];
+
+		if(in_array($claimedProtocol, $validProtocols, true)) {
+			return $claimedProtocol;
+		}
+
+		return 'HTTP/1.1';
 	}
 
 	/**
@@ -603,7 +616,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 		if (strpos($pathInfo, $name) === 0) {
 			$pathInfo = substr($pathInfo, strlen($name));
 		}
-		if($pathInfo === '/'){
+		if($pathInfo === false || $pathInfo === '/'){
 			return '';
 		} else {
 			return $pathInfo;
@@ -657,6 +670,9 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 * @return bool true if at least one of the given agent matches, false otherwise
 	 */
 	public function isUserAgent(array $agent) {
+		if (!isset($this->server['HTTP_USER_AGENT'])) {
+			return false;
+		}
 		foreach ($agent as $regex) {
 			if (preg_match($regex, $this->server['HTTP_USER_AGENT'])) {
 				return true;

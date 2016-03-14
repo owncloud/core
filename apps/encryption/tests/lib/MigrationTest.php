@@ -2,9 +2,10 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
- * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -43,15 +44,18 @@ class MigrationTest extends \Test\TestCase {
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
-		\OC_User::createUser(self::TEST_ENCRYPTION_MIGRATION_USER1, 'foo');
-		\OC_User::createUser(self::TEST_ENCRYPTION_MIGRATION_USER2, 'foo');
-		\OC_User::createUser(self::TEST_ENCRYPTION_MIGRATION_USER3, 'foo');
+		\OC::$server->getUserManager()->createUser(self::TEST_ENCRYPTION_MIGRATION_USER1, 'foo');
+		\OC::$server->getUserManager()->createUser(self::TEST_ENCRYPTION_MIGRATION_USER2, 'foo');
+		\OC::$server->getUserManager()->createUser(self::TEST_ENCRYPTION_MIGRATION_USER3, 'foo');
 	}
 
 	public static function tearDownAfterClass() {
-		\OC_User::deleteUser(self::TEST_ENCRYPTION_MIGRATION_USER1);
-		\OC_User::deleteUser(self::TEST_ENCRYPTION_MIGRATION_USER2);
-		\OC_User::deleteUser(self::TEST_ENCRYPTION_MIGRATION_USER3);
+		$user = \OC::$server->getUserManager()->get(self::TEST_ENCRYPTION_MIGRATION_USER1);
+		if ($user !== null) { $user->delete(); }
+		$user = \OC::$server->getUserManager()->get(self::TEST_ENCRYPTION_MIGRATION_USER2);
+		if ($user !== null) { $user->delete(); }
+		$user = \OC::$server->getUserManager()->get(self::TEST_ENCRYPTION_MIGRATION_USER3);
+		if ($user !== null) { $user->delete(); }
 		parent::tearDownAfterClass();
 	}
 
@@ -62,7 +66,12 @@ class MigrationTest extends \Test\TestCase {
 		$this->moduleId = \OCA\Encryption\Crypto\Encryption::ID;
 	}
 
+	/**
+	 * @param string $uid
+	 */
 	protected function createDummyShareKeys($uid) {
+		$this->loginAsUser($uid);
+
 		$this->view->mkdir($uid . '/files_encryption/keys/folder1/folder2/folder3/file3');
 		$this->view->mkdir($uid . '/files_encryption/keys/folder1/folder2/file2');
 		$this->view->mkdir($uid . '/files_encryption/keys/folder1/file.1');
@@ -87,14 +96,24 @@ class MigrationTest extends \Test\TestCase {
 		}
 	}
 
+	/**
+	 * @param string $uid
+	 */
 	protected function createDummyUserKeys($uid) {
+		$this->loginAsUser($uid);
+
 		$this->view->mkdir($uid . '/files_encryption/');
 		$this->view->mkdir('/files_encryption/public_keys');
 		$this->view->file_put_contents($uid . '/files_encryption/' . $uid . '.privateKey', 'privateKey');
 		$this->view->file_put_contents('/files_encryption/public_keys/' . $uid . '.publicKey', 'publicKey');
 	}
 
+	/**
+	 * @param string $uid
+	 */
 	protected function createDummyFileKeys($uid) {
+		$this->loginAsUser($uid);
+
 		$this->view->mkdir($uid . '/files_encryption/keys/folder1/folder2/folder3/file3');
 		$this->view->mkdir($uid . '/files_encryption/keys/folder1/folder2/file2');
 		$this->view->mkdir($uid . '/files_encryption/keys/folder1/file.1');
@@ -105,7 +124,12 @@ class MigrationTest extends \Test\TestCase {
 		$this->view->file_put_contents($uid . '/files_encryption/keys/folder2/file.2.1/fileKey'  , 'data');
 	}
 
+	/**
+	 * @param string $uid
+	 */
 	protected function createDummyFiles($uid) {
+		$this->loginAsUser($uid);
+
 		$this->view->mkdir($uid . '/files/folder1/folder2/folder3/file3');
 		$this->view->mkdir($uid . '/files/folder1/folder2/file2');
 		$this->view->mkdir($uid . '/files/folder1/file.1');
@@ -116,7 +140,12 @@ class MigrationTest extends \Test\TestCase {
 		$this->view->file_put_contents($uid . '/files/folder2/file.2.1/fileKey'  , 'data');
 	}
 
+	/**
+	 * @param string $uid
+	 */
 	protected function createDummyFilesInTrash($uid) {
+		$this->loginAsUser($uid);
+
 		$this->view->mkdir($uid . '/files_trashbin/keys/file1.d5457864');
 		$this->view->mkdir($uid . '/files_trashbin/keys/folder1.d7437648723/file2');
 		$this->view->file_put_contents($uid . '/files_trashbin/keys/file1.d5457864/' . self::TEST_ENCRYPTION_MIGRATION_USER1 . '.shareKey' , 'data');
@@ -166,6 +195,7 @@ class MigrationTest extends \Test\TestCase {
 
 		$this->createDummySystemWideKeys();
 
+		/** @var \PHPUnit_Framework_MockObject_MockObject|\OCA\Encryption\Migration $m */
 		$m = $this->getMockBuilder('OCA\Encryption\Migration')
 			->setConstructorArgs(
 				[
@@ -177,27 +207,38 @@ class MigrationTest extends \Test\TestCase {
 			)->setMethods(['getSystemMountPoints'])->getMock();
 
 		$m->expects($this->any())->method('getSystemMountPoints')
-			->willReturn([['mountpoint' => 'folder1'], ['mountpoint' => 'folder2']]);
+			->will($this->returnValue([['mountpoint' => 'folder1'], ['mountpoint' => 'folder2']]));
 
 		$m->reorganizeFolderStructure();
 		// even if it runs twice folder should always move only once
 		$m->reorganizeFolderStructure();
+
+		$this->loginAsUser(self::TEST_ENCRYPTION_MIGRATION_USER1);
 
 		$this->assertTrue(
 			$this->view->file_exists(
 				self::TEST_ENCRYPTION_MIGRATION_USER1 . '/files_encryption/' .
 				$this->moduleId . '/' . self::TEST_ENCRYPTION_MIGRATION_USER1 . '.publicKey')
 		);
+
+		$this->loginAsUser(self::TEST_ENCRYPTION_MIGRATION_USER2);
+
 		$this->assertTrue(
 			$this->view->file_exists(
 				self::TEST_ENCRYPTION_MIGRATION_USER2 . '/files_encryption/' .
 				$this->moduleId . '/' . self::TEST_ENCRYPTION_MIGRATION_USER2 . '.publicKey')
 		);
+
+		$this->loginAsUser(self::TEST_ENCRYPTION_MIGRATION_USER3);
+
 		$this->assertTrue(
 			$this->view->file_exists(
 				self::TEST_ENCRYPTION_MIGRATION_USER3 . '/files_encryption/' .
 				$this->moduleId . '/' . self::TEST_ENCRYPTION_MIGRATION_USER3 . '.publicKey')
 		);
+
+		$this->loginAsUser(self::TEST_ENCRYPTION_MIGRATION_USER1);
+
 		$this->assertTrue(
 			$this->view->file_exists(
 			    '/files_encryption/' . $this->moduleId . '/systemwide_1.publicKey')
@@ -217,7 +258,12 @@ class MigrationTest extends \Test\TestCase {
 
 	}
 
+	/**
+	 * @param string $uid
+	 */
 	protected function verifyFilesInTrash($uid) {
+		$this->loginAsUser($uid);
+
 		// share keys
 		$this->assertTrue(
 			$this->view->file_exists($uid . '/files_encryption/keys/files_trashbin/file1.d5457864/' . $this->moduleId . '/' . self::TEST_ENCRYPTION_MIGRATION_USER1 . '.shareKey')
@@ -242,9 +288,13 @@ class MigrationTest extends \Test\TestCase {
 		);
 	}
 
+	/**
+	 * @param string $uid
+	 */
 	protected function verifyNewKeyPath($uid) {
 		// private key
 		if ($uid !== '') {
+			$this->loginAsUser($uid);
 			$this->assertTrue($this->view->file_exists($uid . '/files_encryption/' . $this->moduleId . '/'. $uid . '.privateKey'));
 		}
 		// file keys
@@ -369,6 +419,11 @@ class MigrationTest extends \Test\TestCase {
 
 	}
 
+	/**
+	 * @param string $table
+	 * @param string $appid
+	 * @param integer $expected
+	 */
 	public function verifyDB($table, $appid, $expected) {
 		/** @var \OCP\IDBConnection $connection */
 		$connection = \OC::$server->getDatabaseConnection();

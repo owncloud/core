@@ -12,10 +12,9 @@
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
- * @author Volkan Gezer <volkangezer@gmail.com>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -185,7 +184,7 @@ class Config {
 
 		// Include file and merge config
 		foreach ($configFiles as $file) {
-			$filePointer = @fopen($file, 'r');
+			$filePointer = file_exists($file) ? fopen($file, 'r') : false;
 			if($file === $this->configFilePath &&
 				$filePointer === false &&
 				@!file_exists($this->configFilePath)) {
@@ -234,7 +233,9 @@ class Config {
 
 		// File does not exist, this can happen when doing a fresh install
 		if(!is_resource ($filePointer)) {
-			$url = \OC_Helper::linkToDocs('admin-dir_permissions');
+			// TODO fix this via DI once it is very clear that this doesn't cause side effects due to initialization order
+			// currently this breaks app routes but also could have other side effects especially during setup and exception handling
+			$url = \OC::$server->getURLGenerator()->linkToDocs('admin-dir_permissions');
 			throw new HintException(
 				"Can't write into config directory!",
 				'This can usually be fixed by '

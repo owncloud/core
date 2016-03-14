@@ -2,11 +2,13 @@
 /**
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Christopher Schäpers <kondou@ts.unde.re>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Kamil Domanski <kdomanski@kdemail.net>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -28,8 +30,9 @@ OCP\JSON::callCheck();
 $groups = isset($_POST['groups']) ? (array)$_POST['groups'] : null;
 
 try {
-	OC_App::enable(OC_App::cleanAppId((string)$_POST['appid']), $groups);
-	OC_JSON::success();
+	$app = OC_App::cleanAppId((string)$_POST['appid']);
+	OC_App::enable($app, $groups);
+	OC_JSON::success(['data' => ['update_required' => \OC_App::shouldUpgrade($app)]]);
 } catch (Exception $e) {
 	\OCP\Util::writeLog('core', $e->getMessage(), \OCP\Util::ERROR);
 	OC_JSON::error(array("data" => array("message" => $e->getMessage()) ));

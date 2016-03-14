@@ -1,9 +1,10 @@
 <?php
 /**
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -166,9 +167,9 @@ class NodeVisitor extends NodeVisitorAbstract {
 					 *       $c = "OC_API";
 					 *       $n = $i::ADMIN_AUTH;
 					 */
+				} else {
+					$this->checkBlackListConstant($node->class->toString(), $node->name, $node);
 				}
-
-				$this->checkBlackListConstant($node->class->toString(), $node->name, $node);
 			}
 		}
 		if ($node instanceof Node\Expr\New_) {

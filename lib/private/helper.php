@@ -4,10 +4,9 @@
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Christopher Schäpers <kondou@ts.unde.re>
+ * @author Clark Tomlinson <fallen013@gmail.com>
  * @author Fabian Henze <flyser42@gmx.de>
  * @author Felix Moeller <mail@felixmoeller.de>
- * @author François Kubler <francois@kubler.org>
- * @author Frank Karlitschek <frank@owncloud.org>
  * @author Georg Ehrke <georg@owncloud.com>
  * @author Jakob Sack <mail@jakobsack.de>
  * @author Jan-Christoph Borchardt <hey@jancborchardt.net>
@@ -17,18 +16,16 @@
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Olivier Paroz <github@oparoz.com>
- * @author Owen Winkler <a_github@midnightcircus.com>
  * @author Pellaeon Lin <nfsmwlin@gmail.com>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Simon Könnecke <simonkoennecke@gmail.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
- * @author Valerio Ponte <valerio.ponte@gmail.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -53,97 +50,6 @@ class OC_Helper {
 	private static $templateManager;
 
 	/**
-	 * Creates an url using a defined route
-	 * @param string $route
-	 * @param array $parameters with param=>value, will be appended to the returned url
-	 * @return string the url
-	 * @deprecated Use \OC::$server->getURLGenerator()->linkToRoute($route, $parameters)
-	 *
-	 * Returns a url to the given app and file.
-	 */
-	public static function linkToRoute($route, $parameters = array()) {
-		return OC::$server->getURLGenerator()->linkToRoute($route, $parameters);
-	}
-
-	/**
-	 * Creates an url
-	 * @param string $app app
-	 * @param string $file file
-	 * @param array $args array with param=>value, will be appended to the returned url
-	 *    The value of $args will be urlencoded
-	 * @return string the url
-	 * @deprecated Use \OC::$server->getURLGenerator()->linkTo($app, $file, $args)
-	 *
-	 * Returns a url to the given app and file.
-	 */
-	public static function linkTo( $app, $file, $args = array() ) {
-		return OC::$server->getURLGenerator()->linkTo($app, $file, $args);
-	}
-
-	/**
-	 * @param string $key
-	 * @return string url to the online documentation
-	 * @deprecated Use \OC::$server->getURLGenerator()->linkToDocs($key)
-	 */
-	public static function linkToDocs($key) {
-		return OC::$server->getURLGenerator()->linkToDocs($key);
-	}
-
-	/**
-	 * Creates an absolute url
-	 * @param string $app app
-	 * @param string $file file
-	 * @param array $args array with param=>value, will be appended to the returned url
-	 *    The value of $args will be urlencoded
-	 * @return string the url
-	 *
-	 * Returns a absolute url to the given app and file.
-	 */
-	public static function linkToAbsolute($app, $file, $args = array()) {
-		return OC::$server->getURLGenerator()->getAbsoluteURL(
-			self::linkTo($app, $file, $args)
-		);
-	}
-
-	/**
-	 * Makes an $url absolute
-	 * @param string $url the url
-	 * @return string the absolute url
-	 * @deprecated Use \OC::$server->getURLGenerator()->getAbsoluteURL($url)
-	 *
-	 * Returns a absolute url to the given app and file.
-	 */
-	public static function makeURLAbsolute($url) {
-		return OC::$server->getURLGenerator()->getAbsoluteURL($url);
-	}
-
-	/**
-	 * Creates an url for remote use
-	 * @param string $service id
-	 * @return string the url
-	 *
-	 * Returns a url to the given service.
-	 */
-	public static function linkToRemoteBase($service) {
-		return self::linkTo('', 'remote.php') . '/' . $service;
-	}
-
-	/**
-	 * Creates an absolute url for remote use
-	 * @param string $service id
-	 * @param bool $add_slash
-	 * @return string the url
-	 *
-	 * Returns a absolute url to the given service.
-	 */
-	public static function linkToRemote($service, $add_slash = true) {
-		return OC::$server->getURLGenerator()->getAbsoluteURL(
-			self::linkToRemoteBase($service)
-				. (($add_slash && $service[strlen($service) - 1] != '/') ? '/' : '')
-		);
-	}
-
-	/**
 	 * Creates an absolute url for public use
 	 * @param string $service id
 	 * @param bool $add_slash
@@ -155,34 +61,9 @@ class OC_Helper {
 		if ($service === 'files') {
 			$url = OC::$server->getURLGenerator()->getAbsoluteURL('/s');
 		} else {
-			$url = OC::$server->getURLGenerator()->getAbsoluteURL(self::linkTo('', 'public.php').'?service='.$service);
+			$url = OC::$server->getURLGenerator()->getAbsoluteURL(OC::$server->getURLGenerator()->linkTo('', 'public.php').'?service='.$service);
 		}
 		return $url . (($add_slash && $service[strlen($service) - 1] != '/') ? '/' : '');
-	}
-
-	/**
-	 * Creates path to an image
-	 * @param string $app app
-	 * @param string $image image name
-	 * @return string the url
-	 * @deprecated Use \OC::$server->getURLGenerator()->imagePath($app, $image)
-	 *
-	 * Returns the path to the image.
-	 */
-	public static function imagePath($app, $image) {
-		return OC::$server->getURLGenerator()->imagePath($app, $image);
-	}
-
-	/**
-	 * get path to icon of file type
-	 * @param string $mimetype mimetype
-	 * @return string the url
-	 *
-	 * Returns the path to the image of this file type.
-	 * @deprecated 8.2.0 Use \OC::$server->getMimeTypeDetector()->mimeTypeIcon($mimetype)
-	 */
-	public static function mimetypeIcon($mimetype) {
-		return \OC::$server->getMimeTypeDetector()->mimeTypeIcon($mimetype);
 	}
 
 	/**
@@ -193,21 +74,11 @@ class OC_Helper {
 	 * Returns the path to the preview of the file.
 	 */
 	public static function previewIcon($path) {
-		return self::linkToRoute( 'core_ajax_preview', array('x' => 36, 'y' => 36, 'file' => $path ));
+		return \OC::$server->getURLGenerator()->linkToRoute('core_ajax_preview', ['x' => 32, 'y' => 32, 'file' => $path]);
 	}
 
 	public static function publicPreviewIcon( $path, $token ) {
-		return self::linkToRoute( 'core_ajax_public_preview', array('x' => 36, 'y' => 36, 'file' => $path, 't' => $token));
-	}
-
-	/**
-	 * shows whether the user has an avatar
-	 * @param string $user username
-	 * @return bool avatar set or not
-	**/
-	public static function userAvatarSet($user) {
-		$avatar = new \OC\Avatar($user);
-		return $avatar->exists();
+		return \OC::$server->getURLGenerator()->linkToRoute('core_ajax_public_preview', ['x' => 32, 'y' => 32, 'file' => $path, 't' => $token]);
 	}
 
 	/**
@@ -226,7 +97,7 @@ class OC_Helper {
 		}
 		$bytes = round($bytes / 1024, 0);
 		if ($bytes < 1024) {
-			return "$bytes kB";
+			return "$bytes KB";
 		}
 		$bytes = round($bytes / 1024, 1);
 		if ($bytes < 1024) {
@@ -274,7 +145,7 @@ class OC_Helper {
 	/**
 	 * Make a computer file size
 	 * @param string $str file size in human readable format
-	 * @return int a file size in bytes
+	 * @return float a file size in bytes
 	 *
 	 * Makes 2kB to 2048.
 	 *
@@ -283,7 +154,7 @@ class OC_Helper {
 	public static function computerFileSize($str) {
 		$str = strtolower($str);
 		if (is_numeric($str)) {
-			return $str;
+			return floatval($str);
 		}
 
 		$bytes_array = array(
@@ -372,14 +243,6 @@ class OC_Helper {
 	}
 
 	/**
-	 * @return \OC\Files\Type\Detection
-	 * @deprecated 8.2.0 use \OC::$server->getMimeTypeDetector()
-	 */
-	static public function getMimetypeDetector() {
-		return \OC::$server->getMimeTypeDetector();
-	}
-
-	/**
 	 * @return \OC\Files\Type\TemplateManager
 	 */
 	static public function getFileTemplateManager() {
@@ -387,51 +250,6 @@ class OC_Helper {
 			self::$templateManager = new \OC\Files\Type\TemplateManager();
 		}
 		return self::$templateManager;
-	}
-
-	/**
-	 * Try to guess the mimetype based on filename
-	 *
-	 * @param string $path
-	 * @return string
-	 * @deprecated 8.2.0 Use \OC::$server->getMimeTypeDetector()->detectPath($path)
-	 */
-	static public function getFileNameMimeType($path) {
-		return \OC::$server->getMimeTypeDetector()->detectPath($path);
-	}
-
-	/**
-	 * get the mimetype form a local file
-	 *
-	 * @param string $path
-	 * @return string
-	 * does NOT work for ownClouds filesystem, use OC_FileSystem::getMimeType instead
-	 * @deprecated 8.2.0 Use \OC::$server->getMimeTypeDetector()->detect($path)
-	 */
-	static function getMimeType($path) {
-		return \OC::$server->getMimeTypeDetector()->detect($path);
-	}
-
-	/**
-	 * Get a secure mimetype that won't expose potential XSS.
-	 *
-	 * @param string $mimeType
-	 * @return string
-	 * @deprecated 8.2.0 Use \OC::$server->getMimeTypeDetector()->getSecureMimeType($mimeType)
-	 */
-	static function getSecureMimeType($mimeType) {
-		return \OC::$server->getMimeTypeDetector()->getSecureMimeType($mimeType);
-	}
-
-	/**
-	 * get the mimetype form a data string
-	 *
-	 * @param string $data
-	 * @return string
-	 * @deprecated 8.2.0 Use \OC::$server->getMimeTypeDetector()->detectString($data)
-	 */
-	static function getStringMimeType($data) {
-		return \OC::$server->getMimeTypeDetector()->detectString($data);
 	}
 
 	/**
@@ -461,7 +279,7 @@ class OC_Helper {
 		// Default check will be done with $path directories :
 		$dirs = explode(PATH_SEPARATOR, $path);
 		// WARNING : We have to check if open_basedir is enabled :
-		$obd = ini_get('open_basedir');
+		$obd = OC::$server->getIniWrapper()->getString('open_basedir');
 		if ($obd != "none") {
 			$obd_values = explode(PATH_SEPARATOR, $obd);
 			if (count($obd_values) > 0 and $obd_values[0]) {
@@ -510,31 +328,6 @@ class OC_Helper {
 			}
 		}
 		return array($count, $result);
-	}
-
-	/**
-	 * create a temporary file with an unique filename
-	 *
-	 * @param string $postfix
-	 * @return string
-	 * @deprecated Use the TempManager instead
-	 *
-	 * temporary files are automatically cleaned up after the script is finished
-	 */
-	public static function tmpFile($postfix = '') {
-		return \OC::$server->getTempManager()->getTemporaryFile($postfix);
-	}
-
-	/**
-	 * create a temporary folder with an unique filename
-	 *
-	 * @return string
-	 * @deprecated Use the TempManager instead
-	 *
-	 * temporary files are automatically cleaned up after the script is finished
-	 */
-	public static function tmpFolder() {
-		return \OC::$server->getTempManager()->getTemporaryFolder();
 	}
 
 	/**
@@ -644,37 +437,6 @@ class OC_Helper {
 	}
 
 	/**
-	 * replaces a copy of string delimited by the start and (optionally) length parameters with the string given in replacement.
-	 *
-	 * @param string $string
-	 * @param string $replacement The replacement string.
-	 * @param int $start If start is positive, the replacing will begin at the start'th offset into string. If start is negative, the replacing will begin at the start'th character from the end of string.
-	 * @param int $length Length of the part to be replaced
-	 * @param string $encoding The encoding parameter is the character encoding. Defaults to UTF-8
-	 * @return string
-	 * @deprecated 8.2.0 Use substr_replace() instead.
-	 */
-	public static function mb_substr_replace($string, $replacement, $start, $length = 0, $encoding = 'UTF-8') {
-		return substr_replace($string, $replacement, $start, $length);
-	}
-
-	/**
-	 * Replace all occurrences of the search string with the replacement string
-	 *
-	 * @param string $search The value being searched for, otherwise known as the needle.
-	 * @param string $replace The replacement
-	 * @param string $subject The string or array being searched and replaced on, otherwise known as the haystack.
-	 * @param string $encoding The encoding parameter is the character encoding. Defaults to UTF-8
-	 * @param int $count If passed, this will be set to the number of replacements performed.
-	 * @return string
-	 * @deprecated 8.2.0 Use str_replace() instead.
-	 *
-	 */
-	public static function mb_str_replace($search, $replace, $subject, $encoding = 'UTF-8', &$count = null) {
-		return str_replace($search, $replace, $subject, $count);
-	}
-
-	/**
 	 * performs a search in a nested array
 	 * @param array $haystack the array to be searched
 	 * @param string $needle the search string
@@ -742,7 +504,7 @@ class OC_Helper {
 			$freeSpace = max($freeSpace, 0);
 			return $freeSpace;
 		} else {
-			return INF;
+			return (INF > 0)? INF: PHP_INT_MAX; // work around https://bugs.php.net/bug.php?id=69188
 		}
 	}
 
@@ -752,8 +514,9 @@ class OC_Helper {
 	 * @return int PHP upload file size limit
 	 */
 	public static function uploadLimit() {
-		$upload_max_filesize = OCP\Util::computerFileSize(ini_get('upload_max_filesize'));
-		$post_max_size = OCP\Util::computerFileSize(ini_get('post_max_size'));
+		$ini = \OC::$server->getIniWrapper();
+		$upload_max_filesize = OCP\Util::computerFileSize($ini->get('upload_max_filesize'));
+		$post_max_size = OCP\Util::computerFileSize($ini->get('post_max_size'));
 		if ((int)$upload_max_filesize === 0 and (int)$post_max_size === 0) {
 			return INF;
 		} elseif ((int)$upload_max_filesize === 0 or (int)$post_max_size === 0) {
@@ -773,12 +536,13 @@ class OC_Helper {
 		if (!function_exists($function_name)) {
 			return false;
 		}
-		$disabled = explode(',', ini_get('disable_functions'));
+		$ini = \OC::$server->getIniWrapper();
+		$disabled = explode(',', $ini->get('disable_functions'));
 		$disabled = array_map('trim', $disabled);
 		if (in_array($function_name, $disabled)) {
 			return false;
 		}
-		$disabled = explode(',', ini_get('suhosin.executor.func.blacklist'));
+		$disabled = explode(',', $ini->get('suhosin.executor.func.blacklist'));
 		$disabled = array_map('trim', $disabled);
 		if (in_array($function_name, $disabled)) {
 			return false;
@@ -817,7 +581,8 @@ class OC_Helper {
 				}
 			}
 		}
-		$memcache->set($program, $result, 3600);
+		// store the value for 5 minutes
+		$memcache->set($program, $result, 300);
 		return $result;
 	}
 
@@ -831,7 +596,7 @@ class OC_Helper {
 	 */
 	public static function getStorageInfo($path, $rootInfo = null) {
 		// return storage info without adding mount points
-		$includeExtStorage = \OC_Config::getValue('quota_include_external_storage', false);
+		$includeExtStorage = \OC::$server->getSystemConfig()->getValue('quota_include_external_storage', false);
 
 		if (!$rootInfo) {
 			$rootInfo = \OC\Files\Filesystem::getFileInfo($path, false);
@@ -843,10 +608,12 @@ class OC_Helper {
 		if ($used < 0) {
 			$used = 0;
 		}
-		$quota = 0;
+		$quota = \OCP\Files\FileInfo::SPACE_UNLIMITED;
 		$storage = $rootInfo->getStorage();
-		if ($includeExtStorage && $storage->instanceOfStorage('\OC\Files\Storage\Shared')) {
+		$sourceStorage = $storage;
+		if ($storage->instanceOfStorage('\OC\Files\Storage\Shared')) {
 			$includeExtStorage = false;
+			$sourceStorage = $storage->getSourceStorage();
 		}
 		if ($includeExtStorage) {
 			$quota = OC_Util::getUserQuota(\OCP\User::getUser());
@@ -857,9 +624,9 @@ class OC_Helper {
 		}
 
 		// TODO: need a better way to get total space from storage
-		if ($storage->instanceOfStorage('\OC\Files\Storage\Wrapper\Quota')) {
+		if ($sourceStorage->instanceOfStorage('\OC\Files\Storage\Wrapper\Quota')) {
 			/** @var \OC\Files\Storage\Wrapper\Quota $storage */
-			$quota = $storage->getQuota();
+			$quota = $sourceStorage->getQuota();
 		}
 		$free = $storage->free_space('');
 		if ($free >= 0) {
@@ -887,6 +654,7 @@ class OC_Helper {
 		return [
 			'free' => $free,
 			'used' => $used,
+			'quota' => $quota,
 			'total' => $total,
 			'relative' => $relative,
 			'owner' => $ownerId,

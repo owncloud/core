@@ -4,9 +4,10 @@ OC.L10N.register(
     "Personal" : "පෞද්ගලික",
     "Grant access" : "පිවිසුම ලබාදෙන්න",
     "Access granted" : "පිවිසීමට හැක",
-    "None" : "කිසිවක් නැත",
     "Username" : "පරිශීලක නම",
     "Password" : "මුර පදය",
+    "Save" : "සුරකින්න",
+    "None" : "කිසිවක් නැත",
     "Port" : "තොට",
     "Region" : "කළාපය",
     "URL" : "URL",
@@ -18,7 +19,6 @@ OC.L10N.register(
     "External Storage" : "භාහිර ගබඩාව",
     "Folder name" : "ෆොල්ඩරයේ නම",
     "Configuration" : "වින්‍යාසය",
-    "Delete" : "මකා දමන්න",
-    "Enable User External Storage" : "පරිශීලක භාහිර ගබඩාවන් සක්‍රිය කරන්න"
+    "Delete" : "මකා දමන්න"
 },
 "nplurals=2; plural=(n != 1);");

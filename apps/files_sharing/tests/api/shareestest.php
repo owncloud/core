@@ -1,8 +1,11 @@
 <?php
 /**
+ * @author Björn Schießle <schiessle@owncloud.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -26,6 +29,13 @@ use OCA\Files_sharing\Tests\TestCase;
 use OCP\AppFramework\Http;
 use OCP\Share;
 
+/**
+ * Class ShareesTest
+ *
+ * @group DB
+ *
+ * @package OCA\Files_Sharing\Tests\API
+ */
 class ShareesTest extends TestCase {
 	/** @var Sharees */
 	protected $sharees;
@@ -80,6 +90,11 @@ class ShareesTest extends TestCase {
 		);
 	}
 
+	/**
+	 * @param string $uid
+	 * @param string $displayName
+	 * @return \OCP\IUser|\PHPUnit_Framework_MockObject_MockObject
+	 */
 	protected function getUserMock($uid, $displayName) {
 		$user = $this->getMockBuilder('OCP\IUser')
 			->disableOriginalConstructor()
@@ -96,6 +111,10 @@ class ShareesTest extends TestCase {
 		return $user;
 	}
 
+	/**
+	 * @param string $gid
+	 * @return \OCP\IGroup|\PHPUnit_Framework_MockObject_MockObject
+	 */
 	protected function getGroupMock($gid) {
 		$group = $this->getMockBuilder('OCP\IGroup')
 			->disableOriginalConstructor()
@@ -128,12 +147,20 @@ class ShareesTest extends TestCase {
 			],
 			[
 				'test', true, true, [], [],
+				[], [], true, $this->getUserMock('test', 'Test')
+			],
+			[
+				'test', true, false, [], [],
+				[], [], true, $this->getUserMock('test', 'Test')
+			],
+			[
+				'test', true, true, ['test-group'], [['test-group', 'test', 2, 0, []]],
 				[
 					['label' => 'Test', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test']],
 				], [], true, $this->getUserMock('test', 'Test')
 			],
 			[
-				'test', true, false, [], [],
+				'test', true, false, ['test-group'], [['test-group', 'test', 2, 0, []]],
 				[
 					['label' => 'Test', 'value' => ['shareType' => Share::SHARE_TYPE_USER, 'shareWith' => 'test']],
 				], [], true, $this->getUserMock('test', 'Test')
@@ -382,10 +409,20 @@ class ShareesTest extends TestCase {
 				->with($searchTerm, $this->invokePrivate($this->sharees, 'limit'), $this->invokePrivate($this->sharees, 'offset'))
 				->willReturn($userResponse);
 		} else {
-			$this->groupManager->expects($this->once())
-				->method('getUserGroupIds')
-				->with($user)
-				->willReturn($groupResponse);
+			if ($singleUser !== false) {
+				$this->groupManager->expects($this->exactly(2))
+					->method('getUserGroupIds')
+					->withConsecutive(
+						$user,
+						$singleUser
+					)
+					->willReturn($groupResponse);
+			} else {
+				$this->groupManager->expects($this->once())
+					->method('getUserGroupIds')
+					->with($user)
+					->willReturn($groupResponse);
+			}
 
 			$this->groupManager->expects($this->exactly(sizeof($groupResponse)))
 				->method('displayNamesInGroup')
@@ -768,7 +805,7 @@ class ShareesTest extends TestCase {
 				true,
 				[],
 				[
-					['label' => 'User @ Localhost', 'value' => ['shareType' => Share::SHARE_TYPE_REMOTE, 'shareWith' => 'username@localhost']],
+					['label' => 'User @ Localhost', 'value' => ['shareType' => Share::SHARE_TYPE_REMOTE, 'shareWith' => 'username@localhost', 'server' => 'localhost']],
 				],
 				true,
 			],
@@ -818,7 +855,7 @@ class ShareesTest extends TestCase {
 					['label' => 'test@remote', 'value' => ['shareType' => Share::SHARE_TYPE_REMOTE, 'shareWith' => 'test@remote']],
 				],
 				[
-					['label' => 'User @ Localhost', 'value' => ['shareType' => Share::SHARE_TYPE_REMOTE, 'shareWith' => 'username@localhost']],
+					['label' => 'User @ Localhost', 'value' => ['shareType' => Share::SHARE_TYPE_REMOTE, 'shareWith' => 'username@localhost', 'server' => 'localhost']],
 				],
 				true,
 			],
@@ -867,7 +904,7 @@ class ShareesTest extends TestCase {
 				],
 				true,
 				[
-					['label' => 'User @ Localhost', 'value' => ['shareType' => Share::SHARE_TYPE_REMOTE, 'shareWith' => 'username@localhost']],
+					['label' => 'User @ Localhost', 'value' => ['shareType' => Share::SHARE_TYPE_REMOTE, 'shareWith' => 'username@localhost', 'server' => 'localhost']],
 				],
 				[],
 				true,
@@ -892,7 +929,7 @@ class ShareesTest extends TestCase {
 				],
 				false,
 				[
-					['label' => 'User @ Localhost', 'value' => ['shareType' => Share::SHARE_TYPE_REMOTE, 'shareWith' => 'username@localhost']],
+					['label' => 'User @ Localhost', 'value' => ['shareType' => Share::SHARE_TYPE_REMOTE, 'shareWith' => 'username@localhost', 'server' => 'localhost']],
 				],
 				[],
 				true,
@@ -1008,6 +1045,10 @@ class ShareesTest extends TestCase {
 			[[], 'no', 'yes',  true, '', null, $allTypes, 1, 200, false, true],
 			[[], 'no', 'no', true, '', null, $allTypes, 1, 200, false, false],
 
+			// Test keep case for search
+			[[
+				'search' => 'foo@example.com/ownCloud',
+			], '', 'yes', true, 'foo@example.com/ownCloud', null, $allTypes, 1, 200, false, true],
 		];
 	}
 
@@ -1393,5 +1434,98 @@ class ShareesTest extends TestCase {
 		$this->assertNotEmpty($meta);
 		$this->assertArrayHasKey('message', $meta);
 		$this->assertSame($message, $meta['message']);
+	}
+
+	/**
+	 * @dataProvider dataTestSplitUserRemote
+	 *
+	 * @param string $remote
+	 * @param string $expectedUser
+	 * @param string $expectedUrl
+	 */
+	public function testSplitUserRemote($remote, $expectedUser, $expectedUrl) {
+		list($remoteUser, $remoteUrl) = $this->sharees->splitUserRemote($remote);
+		$this->assertSame($expectedUser, $remoteUser);
+		$this->assertSame($expectedUrl, $remoteUrl);
+	}
+
+	public function dataTestSplitUserRemote() {
+		$userPrefix = ['user@name', 'username'];
+		$protocols = ['', 'http://', 'https://'];
+		$remotes = [
+			'localhost',
+			'local.host',
+			'dev.local.host',
+			'dev.local.host/path',
+			'dev.local.host/at@inpath',
+			'127.0.0.1',
+			'::1',
+			'::192.0.2.128',
+			'::192.0.2.128/at@inpath',
+		];
+
+		$testCases = [];
+		foreach ($userPrefix as $user) {
+			foreach ($remotes as $remote) {
+				foreach ($protocols as $protocol) {
+					$baseUrl = $user . '@' . $protocol . $remote;
+
+					$testCases[] = [$baseUrl, $user, $protocol . $remote];
+					$testCases[] = [$baseUrl . '/', $user, $protocol . $remote];
+					$testCases[] = [$baseUrl . '/index.php', $user, $protocol . $remote];
+					$testCases[] = [$baseUrl . '/index.php/s/token', $user, $protocol . $remote];
+				}
+			}
+		}
+		return $testCases;
+	}
+
+	public function dataTestSplitUserRemoteError() {
+		return array(
+			// Invalid path
+			array('user@'),
+
+			// Invalid user
+			array('@server'),
+			array('us/er@server'),
+			array('us:er@server'),
+
+			// Invalid splitting
+			array('user'),
+			array(''),
+			array('us/erserver'),
+			array('us:erserver'),
+		);
+	}
+
+	/**
+	 * @dataProvider dataTestSplitUserRemoteError
+	 *
+	 * @param string $id
+	 * @expectedException \Exception
+	 */
+	public function testSplitUserRemoteError($id) {
+		$this->sharees->splitUserRemote($id);
+	}
+
+	/**
+	 * @dataProvider dataTestFixRemoteUrl
+	 *
+	 * @param string $url
+	 * @param string $expected
+	 */
+	public function testFixRemoteUrl($url, $expected) {
+		$this->assertSame($expected,
+			$this->invokePrivate($this->sharees, 'fixRemoteURL', [$url])
+		);
+	}
+
+	public function dataTestFixRemoteUrl() {
+		return [
+			['http://localhost', 'http://localhost'],
+			['http://localhost/', 'http://localhost'],
+			['http://localhost/index.php', 'http://localhost'],
+			['http://localhost/index.php/s/AShareToken', 'http://localhost'],
+		];
 	}
 }

@@ -13,13 +13,14 @@
     "All users. Type to select user or group." : "Всички потребители. Пиши, за да избереш потребител или група.",
     "(group)" : "(група)",
     "Saved" : "Запазено",
+    "Username" : "Потребителско Име",
+    "Password" : "Парола",
+    "Save" : "Запазване",
     "None" : "Няма",
     "App key" : "App key",
     "App secret" : "App secret",
     "Client ID" : "Client ID",
     "Client secret" : "Client secret",
-    "Username" : "Потребителско Име",
-    "Password" : "Парола",
     "API key" : "API ключ",
     "Public key" : "Публичен ключ",
     "Amazon S3" : "Amazon S3",
@@ -57,10 +58,9 @@
     "Folder name" : "Име на папката",
     "Configuration" : "Настройки",
     "Available for" : "Достъпно за",
+    "Add storage" : "Добави дисково пространство",
     "Advanced settings" : "Разширени настройки",
     "Delete" : "Изтрий",
-    "Add storage" : "Добави дисково пространство",
-    "Enable User External Storage" : "Разреши Потребителско Външно Дисково Пространство",
     "Allow users to mount the following external storage" : "Разреши на потребителите да прикачват следното външно дисково пространство"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

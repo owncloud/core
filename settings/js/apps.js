@@ -4,7 +4,7 @@ Handlebars.registerHelper('score', function() {
 	if(this.score) {
 		var score = Math.round( this.score / 10 );
 		var imageName = 'rating/s' + score + '.png';
-		
+
 		return new Handlebars.SafeString('<img src="' + OC.imagePath('core', imageName) + '">');
 	}
 	return new Handlebars.SafeString('');
@@ -40,7 +40,8 @@ OC.Settings.Apps = OC.Settings.Apps || {
 		}
 
 		var categories = [
-			{displayName: 'Enabled', id: '0'}
+			{displayName: t('settings', 'Enabled'), ident: 'enabled', id: '0'},
+			{displayName: t('settings', 'Not enabled'), ident: 'disabled', id: '1'}
 		];
 
 		var source   = $("#categories-template").html();
@@ -48,7 +49,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 		var html = template(categories);
 		$('#apps-categories').html(html);
 
-		OC.Settings.Apps.loadCategory(0);
+		OC.Settings.Apps.loadCategory($('#app-navigation').attr('data-category'));
 
 		this._loadCategoriesCall = $.ajax(OC.generateUrl('settings/apps/categories'), {
 			data:{},
@@ -115,7 +116,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 					});
 				} else {
 					$('#apps-list').addClass('hidden');
-					$('#apps-list-empty').removeClass('hidden');
+					$('#apps-list-empty').removeClass('hidden').find('h2').text(t('settings', 'No apps found for your version'));
 				}
 
 				$('.app-level .official').tipsy({fallback: t('settings', 'Official apps are developed by and within the ownCloud community. They offer functionality central to ownCloud and are ready for production use.')});
@@ -123,6 +124,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 				$('.app-level .experimental').tipsy({fallback: t('settings', 'This app is not checked for security issues and is new or known to be unstable. Install at your own risk.')});
 			},
 			complete: function() {
+				var availableUpdates = 0;
 				$('#apps-list').removeClass('icon-loading');
 				$.ajax(OC.generateUrl('settings/apps/list?category={categoryId}&includeUpdateInfo=1', {
 					categoryId: categoryId
@@ -134,8 +136,14 @@ OC.Settings.Apps = OC.Settings.Apps || {
 								var $update = $('#app-' + app.id + ' .update');
 								$update.removeClass('hidden');
 								$update.val(t('settings', 'Update to %s').replace(/%s/g, app.update));
+								availableUpdates++;
+								OC.Settings.Apps.State.apps[app.id].update = true;
 							}
-						})
+						});
+
+						if (availableUpdates > 0) {
+							OC.Notification.show(n('settings', 'You have %n app update pending', 'You have %n app updates pending', availableUpdates));
+						}
 					}
 				});
 			}
@@ -152,6 +160,11 @@ OC.Settings.Apps = OC.Settings.Apps || {
 		}
 		app.firstExperimental = firstExperimental;
 
+		if (!app.preview) {
+			app.preview = OC.imagePath('core', 'default-app-icon');
+			app.previewAsIcon = true;
+		}
+
 		var html = template(app);
 		if (selector) {
 			selector.html(html);
@@ -161,8 +174,8 @@ OC.Settings.Apps = OC.Settings.Apps || {
 
 		var page = $('#app-' + app.id);
 
-		// image loading kung-fu
-		if (app.preview) {
+		// image loading kung-fu (IE doesn't properly scale SVGs, so disable app icons)
+		if (app.preview && !OC.Util.isIE()) {
 			var currentImage = new Image();
 			currentImage.src = app.preview;
 
@@ -175,24 +188,22 @@ OC.Settings.Apps = OC.Settings.Apps || {
 
 		// set group select properly
 		if(OC.Settings.Apps.isType(app, 'filesystem') || OC.Settings.Apps.isType(app, 'prelogin') ||
-			OC.Settings.Apps.isType(app, 'authentication') || OC.Settings.Apps.isType(app, 'logging')) {
+			OC.Settings.Apps.isType(app, 'authentication') || OC.Settings.Apps.isType(app, 'logging') ||
+			OC.Settings.Apps.isType(app, 'prevent_group_restriction')) {
 			page.find(".groups-enable").hide();
-			page.find("label[for='groups_enable-"+app.id+"']").hide();
-			page.find(".groups-enable").attr('checked', null);
+			page.find(".groups-enable__checkbox").attr('checked', null);
 		} else {
 			page.find('#group_select').val((app.groups || []).join('|'));
 			if (app.active) {
 				if (app.groups.length) {
 					OC.Settings.Apps.setupGroupsSelect(page.find('#group_select'));
-					page.find(".groups-enable").attr('checked','checked');
+					page.find(".groups-enable__checkbox").attr('checked','checked');
 				} else {
-					page.find(".groups-enable").attr('checked', null);
+					page.find(".groups-enable__checkbox").attr('checked', null);
 				}
 				page.find(".groups-enable").show();
-				page.find("label[for='groups_enable-"+app.id+"']").show();
 			} else {
 				page.find(".groups-enable").hide();
-				page.find("label[for='groups_enable-"+app.id+"']").hide();
 			}
 		}
 	},
@@ -201,7 +212,19 @@ OC.Settings.Apps = OC.Settings.Apps || {
 		return app.types && app.types.indexOf(type) !== -1;
 	},
 
+	/**
+	 * Checks the server health.
+	 *
+	 * If the promise fails, the server is broken.
+	 *
+	 * @return {Promise} promise
+	 */
+	_checkServerHealth: function() {
+		return $.get(OC.generateUrl('apps/files'));
+	},
+
 	enableApp:function(appId, active, element, groups) {
+		var self = this;
 		OC.Settings.Apps.hideErrorMessage(appId);
 		groups = groups || [];
 		var appItem = $('div#app-'+appId+'');
@@ -226,13 +249,13 @@ OC.Settings.Apps = OC.Settings.Apps || {
 					appItem.removeClass('active');
 					element.val(t('settings','Enable'));
 					element.parent().find(".groups-enable").hide();
-					element.parent().find("#groups_enable-"+appId).hide();
-					element.parent().find("label[for='groups_enable-"+appId+"']").hide();
 					element.parent().find('#group_select').hide().val(null);
 					OC.Settings.Apps.State.apps[appId].active = false;
 				}
 			},'json');
 		} else {
+			// TODO: display message to admin to not refresh the page!
+			// TODO: lock UI to prevent further operations
 			$.post(OC.filePath('settings','ajax','enableapp.php'),{appid: appId, groups: groups},function(result) {
 				if(!result || result.status !== 'success') {
 					if (result.data && result.data.message) {
@@ -245,32 +268,55 @@ OC.Settings.Apps = OC.Settings.Apps || {
 					element.val(t('settings','Enable'));
 					appItem.addClass('appwarning');
 				} else {
-					OC.Settings.Apps.rebuildNavigation();
-					appItem.data('active',true);
-					element.data('active',true);
-					appItem.addClass('active');
-					element.val(t('settings','Disable'));
-					var app = OC.Settings.Apps.State.apps[appId];
-					app.active = true;
+					self._checkServerHealth().done(function() {
+						if (result.data.update_required) {
+							OC.Settings.Apps.showReloadMessage();
 
-					if (OC.Settings.Apps.isType(app, 'filesystem') || OC.Settings.Apps.isType(app, 'prelogin') ||
-						OC.Settings.Apps.isType(app, 'authentication') || OC.Settings.Apps.isType(app, 'logging')) {
-						element.parent().find(".groups-enable").attr('checked', null);
-						element.parent().find("#groups_enable-"+appId).hide();
-						element.parent().find("label[for='groups_enable-"+appId+"']").hide();
-						element.parent().find(".groups-enable").hide();
-						element.parent().find("#groups_enable-"+appId).hide();
-						element.parent().find("label[for='groups_enable-"+appId+"']").hide();
-						element.parent().find('#group_select').hide().val(null);
-					} else {
-						element.parent().find("#groups_enable-"+appId).show();
-						element.parent().find("label[for='groups_enable-"+appId+"']").show();
-						if (groups) {
-							appItem.data('groups', JSON.stringify(groups));
-						} else {
-							appItem.data('groups', '');
+							setTimeout(function() {
+								location.reload();
+							}, 5000);
 						}
-					}
+
+						OC.Settings.Apps.rebuildNavigation();
+						appItem.data('active',true);
+						element.data('active',true);
+						appItem.addClass('active');
+						element.val(t('settings','Disable'));
+						var app = OC.Settings.Apps.State.apps[appId];
+						app.active = true;
+
+						if (OC.Settings.Apps.isType(app, 'filesystem') || OC.Settings.Apps.isType(app, 'prelogin') ||
+							OC.Settings.Apps.isType(app, 'authentication') || OC.Settings.Apps.isType(app, 'logging')) {
+							element.parent().find(".groups-enable").attr('checked', null);
+							element.parent().find(".groups-enable").hide();
+							element.parent().find('#group_select').hide().val(null);
+						} else {
+							element.parent().find("#groups-enable").show();
+							if (groups) {
+								appItem.data('groups', JSON.stringify(groups));
+							} else {
+								appItem.data('groups', '');
+							}
+						}
+					}).fail(function() {
+						// server borked, emergency disable app
+						$.post(OC.webroot + '/index.php/disableapp', {appid: appId}, function() {
+							OC.Settings.Apps.showErrorMessage(
+								appId,
+								t('settings', 'Error: this app cannot be enabled because it makes the server unstable')
+							);
+							appItem.data('errormsg', t('settings', 'Error while enabling app'));
+							element.val(t('settings','Enable'));
+							appItem.addClass('appwarning');
+						}).fail(function() {
+							OC.Settings.Apps.showErrorMessage(
+								appId,
+								t('settings', 'Error: could not disable broken app')
+							);
+							appItem.data('errormsg', t('settings', 'Error while disabling broken app'));
+							element.val(t('settings','Enable'));
+						});
+					});
 				}
 			},'json')
 				.fail(function() {
@@ -390,25 +436,94 @@ OC.Settings.Apps = OC.Settings.Apps || {
 			.text('');
 	},
 
-	filter: function(query) {
-		query = query.toLowerCase();
-		$('#apps-list').find('.section').addClass('hidden');
+	showReloadMessage: function() {
+		OC.dialogs.info(
+			t(
+				'settings',
+				'The app has been enabled but needs to be updated. You will be redirected to the update page in 5 seconds.'
+			),
+			t('settings','App update'),
+			function () {
+				window.location.reload();
+			},
+			true
+		);
+	},
 
+	filter: function(query) {
+		var $appList = $('#apps-list'),
+			$emptyList = $('#apps-list-empty');
+		$appList.removeClass('hidden');
+		$appList.find('.section').removeClass('hidden');
+		$emptyList.addClass('hidden');
+
+		if (query === '') {
+			return;
+		}
+
+		query = query.toLowerCase();
+		$appList.find('.section').addClass('hidden');
+
+		// App Name
 		var apps = _.filter(OC.Settings.Apps.State.apps, function (app) {
 			return app.name.toLowerCase().indexOf(query) !== -1;
 		});
 
+		// App ID
+		apps = apps.concat(_.filter(OC.Settings.Apps.State.apps, function (app) {
+			return app.id.toLowerCase().indexOf(query) !== -1;
+		}));
+
+		// App Description
 		apps = apps.concat(_.filter(OC.Settings.Apps.State.apps, function (app) {
 			return app.description.toLowerCase().indexOf(query) !== -1;
 		}));
 
+		// Author Name
+		apps = apps.concat(_.filter(OC.Settings.Apps.State.apps, function (app) {
+			return app.author.toLowerCase().indexOf(query) !== -1;
+		}));
+
+		// App status
+		if (t('settings', 'Official').toLowerCase().indexOf(query) !== -1) {
+			apps = apps.concat(_.filter(OC.Settings.Apps.State.apps, function (app) {
+				return app.level === 200;
+			}));
+		}
+		if (t('settings', 'Approved').toLowerCase().indexOf(query) !== -1) {
+			apps = apps.concat(_.filter(OC.Settings.Apps.State.apps, function (app) {
+				return app.level === 100;
+			}));
+		}
+		if (t('settings', 'Experimental').toLowerCase().indexOf(query) !== -1) {
+			apps = apps.concat(_.filter(OC.Settings.Apps.State.apps, function (app) {
+				return app.level !== 100 && app.level !== 200;
+			}));
+		}
+
 		apps = _.uniq(apps, function(app){return app.id;});
 
-		_.each(apps, function (app) {
-			$('#app-' + app.id).removeClass('hidden');
-		});
+		if (apps.length === 0) {
+			$appList.addClass('hidden');
+			$emptyList.removeClass('hidden');
+			$emptyList.removeClass('hidden').find('h2').text(t('settings', 'No apps found for "{query}"', {
+				query: query
+			}));
+		} else {
+			_.each(apps, function (app) {
+				$('#app-' + app.id).removeClass('hidden');
+			});
 
-		$('#searchresults').hide();
+			$('#searchresults').hide();
+		}
+	},
+
+	_onPopState: function(params) {
+		params = _.extend({
+			category: 'enabled'
+		}, params);
+
+		OC.Settings.Apps.loadCategory(params.category);
 	},
 
 	/**
@@ -417,10 +532,15 @@ OC.Settings.Apps = OC.Settings.Apps || {
 	initialize: function($el) {
 		OC.Plugins.register('OCA.Search', OC.Settings.Apps.Search);
 		OC.Settings.Apps.loadCategories();
+		OC.Util.History.addOnPopStateHandler(_.bind(this._onPopState, this));
 
 		$(document).on('click', 'ul#apps-categories li', function () {
 			var categoryId = $(this).data('categoryId');
 			OC.Settings.Apps.loadCategory(categoryId);
+			OC.Util.History.pushState({
+				category: categoryId
+			});
+			$('#searchbox').val('');
 		});
 
 		$(document).on('click', '.app-description-toggle-show', function () {
@@ -472,8 +592,8 @@ OC.Settings.Apps = OC.Settings.Apps || {
 			}
 		});
 
-		$(document).on('change', ".groups-enable", function() {
-			var $select = $(this).parent().find('#group_select');
+		$(document).on('change', ".groups-enable__checkbox", function() {
+			var $select = $(this).closest('.section').find('#group_select');
 			$select.val('');
 
 			if (this.checked) {
@@ -486,7 +606,7 @@ OC.Settings.Apps = OC.Settings.Apps || {
 		});
 
 		$(document).on('click', '#enable-experimental-apps', function () {
-			var state = $(this).prop('checked')
+			var state = $(this).prop('checked');
 			$.ajax(OC.generateUrl('settings/apps/experimental'), {
 				data: {state: state},
 				type: 'POST',

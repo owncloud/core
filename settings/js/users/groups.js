@@ -49,18 +49,26 @@ GroupList = {
 		return parseInt($groupLiElement.data('usercount'), 10);
 	},
 
-	modEveryoneCount: function(diff) {
-		var $li = GroupList.getGroupLI(GroupList.everyoneGID);
+	modGroupCount: function(gid, diff) {
+		var $li = GroupList.getGroupLI(gid);
 		var count = GroupList.getUserCount($li) + diff;
 		GroupList.setUserCount($li, count);
 	},
 
 	incEveryoneCount: function() {
-		GroupList.modEveryoneCount(1);
+		GroupList.modGroupCount(GroupList.everyoneGID, 1);
 	},
 
 	decEveryoneCount: function() {
-		GroupList.modEveryoneCount(-1);
+		GroupList.modGroupCount(GroupList.everyoneGID, -1);
+	},
+
+	incGroupCount: function(gid) {
+		GroupList.modGroupCount(gid, 1);
+	},
+
+	decGroupCount: function(gid) {
+		GroupList.modGroupCount(gid, -1);
 	},
 
 	getCurrentGID: function () {
@@ -134,8 +142,8 @@ GroupList = {
 							.text(result.groupname));
 				}
 				GroupList.toggleAddGroup();
-			}).fail(function(result, textStatus, errorThrown) {
-				OC.dialogs.alert(result.responseJSON.message, t('settings', 'Error creating group'));
+			}).fail(function(result) {
+				OC.Notification.showTemporary(t('settings', 'Error creating group: {message}', {message: result.responseJSON.message}));
 			});
 	},
 
@@ -237,9 +245,9 @@ GroupList = {
 
 	isGroupNameValid: function (groupname) {
 		if ($.trim(groupname) === '') {
-			OC.dialogs.alert(
-				t('settings', 'A valid group name must be provided'),
-				t('settings', 'Error creating group'));
+			OC.Notification.showTemporary(t('settings', 'Error creating group: {message}', {
+				message: t('settings', 'A valid group name must be provided')
+			}));
 			return false;
 		}
 		return true;
@@ -296,10 +304,10 @@ GroupList = {
 		$.ajax({
 			type: "GET",
 			dataType: "json",
-			url: OC.generateUrl('/settings/ajax/geteveryonecount')
+			url: OC.generateUrl('/settings/users/stats')
 		}).success(function (data) {
-			$('#everyonegroup').data('usercount', data.count);
-			$('#everyonecount').text(data.count);
+			$('#everyonegroup').data('usercount', data.totalUsers);
+			$('#everyonecount').text(data.totalUsers);
 		});
 	}
 };

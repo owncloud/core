@@ -3,10 +3,10 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -215,7 +215,10 @@ class Folder extends Node implements \OCP\Files\Folder {
 		 * @var \OC\Files\Storage\Storage $storage
 		 */
 		list($storage, $internalPath) = $this->view->resolvePath($this->path);
-		$internalPath = rtrim($internalPath, '/') . '/';
+		$internalPath = rtrim($internalPath, '/');
+		if ($internalPath !== '') {
+			$internalPath = $internalPath . '/';
+		}
 		$internalRootLength = strlen($internalPath);
 
 		$cache = $storage->getCache('');
@@ -292,8 +295,9 @@ class Folder extends Node implements \OCP\Files\Folder {
 	public function delete() {
 		if ($this->checkPermissions(\OCP\Constants::PERMISSION_DELETE)) {
 			$this->sendHooks(array('preDelete'));
+			$fileInfo = $this->getFileInfo();
 			$this->view->rmdir($this->path);
-			$nonExisting = new NonExistingFolder($this->root, $this->view, $this->path);
+			$nonExisting = new NonExistingFolder($this->root, $this->view, $this->path, $fileInfo);
 			$this->root->emit('\OC\Files', 'postDelete', array($nonExisting));
 			$this->exists = false;
 		} else {

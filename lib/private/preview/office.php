@@ -3,8 +3,10 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Olivier Paroz <github@oparoz.com>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -78,8 +80,9 @@ abstract class Office extends Provider {
 	private function initCmd() {
 		$cmd = '';
 
-		if (is_string(\OC_Config::getValue('preview_libreoffice_path', null))) {
-			$cmd = \OC_Config::getValue('preview_libreoffice_path', null);
+		$libreOfficePath = \OC::$server->getConfig()->getSystemValue('preview_libreoffice_path', null);
+		if (is_string($libreOfficePath)) {
+			$cmd = $libreOfficePath;
 		}
 
 		$whichLibreOffice = shell_exec('command -v libreoffice');

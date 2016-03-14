@@ -5,7 +5,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -42,6 +42,8 @@ use OCP\IConfig;
  * @package OC\Settings\Controller
  */
 class AppSettingsController extends Controller {
+	const CAT_ENABLED = 0;
+	const CAT_DISABLED = 1;
 
 	/** @var \OCP\IL10N */
 	private $l10n;
@@ -95,12 +97,42 @@ class AppSettingsController extends Controller {
 	}
 
 	/**
+	 * @param string|int $category
+	 * @return int
+	 */
+	protected function getCategory($category) {
+		if (is_string($category)) {
+			foreach ($this->listCategories() as $cat) {
+				if (isset($cat['ident']) && $cat['ident'] === $category) {
+					$category = (int) $cat['id'];
+					break;
+				}
+			}
+
+			// Didn't find the category, falling back to enabled
+			if (is_string($category)) {
+				$category = self::CAT_ENABLED;
+			}
+		}
+		return (int) $category;
+	}
+
+	/**
 	 * @NoCSRFRequired
+	 * @param string $category
 	 * @return TemplateResponse
 	 */
-	public function viewApps() {
+	public function viewApps($category = '') {
+		$categoryId = $this->getCategory($category);
+		if ($categoryId === self::CAT_ENABLED) {
+			// Do not use an arbitrary input string, because we put the category in html
+			$category = 'enabled';
+		}
+
 		$params = [];
 		$params['experimentalEnabled'] = $this->config->getSystemValue('appstore.experimental.enabled', false);
+		$params['category'] = $category;
+		$params['appstoreEnabled'] = $this->config->getSystemValue('appstoreenabled', true) === true;
 		$this->navigationManager->setActiveEntry('core_apps');
 
 		$templateResponse = new TemplateResponse($this->appName, 'apps', $params, 'user');
@@ -121,18 +153,21 @@ class AppSettingsController extends Controller {
 			return $this->cache->get('listCategories');
 		}
 		$categories = [
-			['id' => 0, 'displayName' => (string)$this->l10n->t('Enabled')],
-			['id' => 1, 'displayName' => (string)$this->l10n->t('Not enabled')],
+			['id' => self::CAT_ENABLED, 'ident' => 'enabled', 'displayName' => (string)$this->l10n->t('Enabled')],
+			['id' => self::CAT_DISABLED, 'ident' => 'disabled', 'displayName' => (string)$this->l10n->t('Not enabled')],
 		];
 
 		if($this->ocsClient->isAppStoreEnabled()) {
 			// apps from external repo via OCS
-			$ocs = $this->ocsClient->getCategories(\OC_Util::getVersion());
+			$ocs = $this->ocsClient->getCategories(\OCP\Util::getVersion());
 			if ($ocs) {
 				foreach($ocs as $k => $v) {
+					$name = str_replace('ownCloud ', '', $v);
+					$ident = str_replace(' ', '-', urlencode(strtolower($name)));
 					$categories[] = [
 						'id' => $k,
-						'displayName' => str_replace('ownCloud ', '', $v)
+						'ident' => $ident,
+						'displayName' => $name,
 					];
 				}
 			}
@@ -146,12 +181,13 @@ class AppSettingsController extends Controller {
 	/**
 	 * Get all available apps in a category
 	 *
-	 * @param int $category
+	 * @param string $category
 	 * @param bool $includeUpdateInfo Should we check whether there is an update
 	 *                                in the app store?
 	 * @return array
 	 */
-	public function listApps($category = 0, $includeUpdateInfo = true) {
+	public function listApps($category = '', $includeUpdateInfo = true) {
+		$category = $this->getCategory($category);
 		$cacheName = 'listApps-' . $category . '-' . (int) $includeUpdateInfo;
 
 		if(!is_null($this->cache->get($cacheName))) {
@@ -169,9 +205,10 @@ class AppSettingsController extends Controller {
 						}
 						return ($a < $b) ? -1 : 1;
 					});
+					$version = \OCP\Util::getVersion();
 					foreach($apps as $key => $app) {
 						if(!array_key_exists('level', $app) && array_key_exists('ocsid', $app)) {
-							$remoteAppEntry = $this->ocsClient->getApplication($app['ocsid'], \OC_Util::getVersion());
+							$remoteAppEntry = $this->ocsClient->getApplication($app['ocsid'], $version);
 
 							if(is_array($remoteAppEntry) && array_key_exists('level', $remoteAppEntry)) {
 								$apps[$key]['level'] = $remoteAppEntry['level'];
@@ -181,13 +218,14 @@ class AppSettingsController extends Controller {
 					break;
 				// not-installed apps
 				case 1:
-					$apps = \OC_App::listAllApps(true, $includeUpdateInfo);
+					$apps = \OC_App::listAllApps(true, $includeUpdateInfo, $this->ocsClient);
 					$apps = array_filter($apps, function ($app) {
 						return !$app['active'];
 					});
+					$version = \OCP\Util::getVersion();
 					foreach($apps as $key => $app) {
 						if(!array_key_exists('level', $app) && array_key_exists('ocsid', $app)) {
-							$remoteAppEntry = $this->ocsClient->getApplication($app['ocsid'], \OC_Util::getVersion());
+							$remoteAppEntry = $this->ocsClient->getApplication($app['ocsid'], $version);
 
 							if(is_array($remoteAppEntry) && array_key_exists('level', $remoteAppEntry)) {
 								$apps[$key]['level'] = $remoteAppEntry['level'];
@@ -206,7 +244,7 @@ class AppSettingsController extends Controller {
 				default:
 					$filter = $this->config->getSystemValue('appstore.experimental.enabled', false) ? 'all' : 'approved';
 
-					$apps = \OC_App::getAppstoreApps($filter, $category);
+					$apps = \OC_App::getAppstoreApps($filter, $category, $this->ocsClient);
 					if (!$apps) {
 						$apps = array();
 					} else {
@@ -258,6 +296,9 @@ class AppSettingsController extends Controller {
 			$app['canInstall'] = empty($missing);
 			$app['missingDependencies'] = $missing;
 
+			$app['missingMinOwnCloudVersion'] = !isset($app['dependencies']['owncloud']['@attributes']['min-version']);
+			$app['missingMaxOwnCloudVersion'] = !isset($app['dependencies']['owncloud']['@attributes']['max-version']);
+
 			return $app;
 		}, $apps);
 
@@ -272,7 +313,7 @@ class AppSettingsController extends Controller {
 	 * @return array
 	 */
 	private function getInstalledApps($includeUpdateInfo = true) {
-		$apps = \OC_App::listAllApps(true, $includeUpdateInfo);
+		$apps = \OC_App::listAllApps(true, $includeUpdateInfo, $this->ocsClient);
 		$apps = array_filter($apps, function ($app) {
 			return $app['active'];
 		});

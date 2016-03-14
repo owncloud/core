@@ -6,9 +6,11 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Vincent Petry <pvince81@owncloud.com>
  * @author Volkan Gezer <volkangezer@gmail.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -40,6 +42,7 @@ if (isset($_POST['client_id']) && isset($_POST['client_secret']) && isset($_POST
 	$client->setClientSecret((string)$_POST['client_secret']);
 	$client->setRedirectUri((string)$_POST['redirect']);
 	$client->setScopes(array('https://www.googleapis.com/auth/drive'));
+	$client->setApprovalPrompt('force');
 	$client->setAccessType('offline');
 	if (isset($_POST['step'])) {
 		$step = $_POST['step'];

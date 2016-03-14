@@ -5,8 +5,9 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -71,7 +72,7 @@ class Root extends Folder implements IRootFolder {
 	/**
 	 * @param \OC\Files\Mount\Manager $manager
 	 * @param \OC\Files\View $view
-	 * @param \OC\User\User $user
+	 * @param \OC\User\User|null $user
 	 */
 	public function __construct($manager, $view, $user) {
 		parent::__construct($this, $view, '');
@@ -169,7 +170,7 @@ class Root extends Folder implements IRootFolder {
 	 * @param string $path
 	 * @throws \OCP\Files\NotFoundException
 	 * @throws \OCP\Files\NotPermittedException
-	 * @return \OCP\Files\Node
+	 * @return string
 	 */
 	public function get($path) {
 		$path = $this->normalizePath($path);

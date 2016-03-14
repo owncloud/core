@@ -8,7 +8,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -46,6 +46,12 @@ use OCA\Files_sharing\Tests\TestCase;
  * You should have received a copy of the GNU Affero General Public
  * License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
+ */
+
+/**
+ * Class Test_Files_Sharing_Cache
+ *
+ * @group DB
  */
 class Test_Files_Sharing_Cache extends TestCase {
 

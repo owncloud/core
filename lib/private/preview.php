@@ -9,10 +9,11 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Olivier Paroz <github@oparoz.com>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Tobias Kaminsky <tobias@kaminsky.me>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -201,7 +202,7 @@ class Preview {
 	/**
 	 * returns the max width set in ownCloud's config
 	 *
-	 * @return string
+	 * @return integer
 	 */
 	public function getConfigMaxX() {
 		return $this->configMaxWidth;
@@ -210,7 +211,7 @@ class Preview {
 	/**
 	 * returns the max height set in ownCloud's config
 	 *
-	 * @return string
+	 * @return integer
 	 */
 	public function getConfigMaxY() {
 		return $this->configMaxHeight;
@@ -252,12 +253,13 @@ class Preview {
 	 * Sets the path of the file you want a preview of
 	 *
 	 * @param string $file
+	 * @param \OCP\Files\FileInfo|null $info
 	 *
 	 * @return \OC\Preview
 	 */
-	public function setFile($file) {
+	public function setFile($file, $info = null) {
 		$this->file = $file;
-		$this->info = null;
+		$this->info = $info;
 
 		if ($file !== '') {
 			$this->getFileInfo();
@@ -374,7 +376,7 @@ class Preview {
 			return false;
 		}
 
-		if (!$this->fileView->file_exists($file)) {
+		if (!$this->getFileInfo() instanceof FileInfo) {
 			\OCP\Util::writeLog('core', 'File:"' . $file . '" not found', \OCP\Util::DEBUG);
 
 			return false;
@@ -478,7 +480,7 @@ class Preview {
 			$preview = $this->buildCachePath($fileId, $previewWidth, $previewHeight);
 
 			// This checks if we have a preview of those exact dimensions in the cache
-			if ($this->userView->file_exists($preview)) {
+			if ($this->thumbnailSizeExists($allThumbnails, basename($preview))) {
 				return $preview;
 			}
 
@@ -524,9 +526,27 @@ class Preview {
 	}
 
 	/**
+	 * Check if a specific thumbnail size is cached
+	 *
+	 * @param FileInfo[] $allThumbnails the list of all our cached thumbnails
+	 * @param string $name
+	 * @return bool
+	 */
+	private function thumbnailSizeExists(array $allThumbnails, $name) {
+
+		foreach ($allThumbnails as $thumbnail) {
+			if ($name === $thumbnail->getName()) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Determines the size of the preview we should be looking for in the cache
 	 *
-	 * @return int[]
+	 * @return integer[]
 	 */
 	private function simulatePreviewDimensions() {
 		$askedWidth = $this->getMaxX();
@@ -550,7 +570,7 @@ class Preview {
 	 *
 	 * @param int $originalWidth
 	 * @param int $originalHeight
-	 * @return \int[]
+	 * @return integer[]
 	 */
 	private function applyAspectRatio($askedWidth, $askedHeight, $originalWidth = 0, $originalHeight = 0) {
 		if(!$originalWidth){
@@ -582,7 +602,7 @@ class Preview {
 	 * @param int $askedHeight
 	 * @param int $previewWidth
 	 * @param int $previewHeight
-	 * @return \int[]
+	 * @return integer[]
 	 */
 	private function applyCover($askedWidth, $askedHeight, $previewWidth, $previewHeight) {
 		$originalRatio = $previewWidth / $previewHeight;
@@ -608,7 +628,7 @@ class Preview {
 	 * @param int $askedWidth
 	 * @param int $askedHeight
 	 *
-	 * @return \int[]
+	 * @return integer[]
 	 */
 	private function fixSize($askedWidth, $askedHeight) {
 		if ($this->scalingUp) {
@@ -837,6 +857,11 @@ class Preview {
 		$askedWidth = $this->getMaxX();
 		$askedHeight = $this->getMaxY();
 
+		if ($this->mode === self::MODE_COVER) {
+			list($askedWidth, $askedHeight) =
+				$this->applyCover($askedWidth, $askedHeight, $previewWidth, $previewHeight);
+		}
+
 		/**
 		 * Phase 1: If required, adjust boundaries to keep aspect ratio
 		 */
@@ -845,20 +870,12 @@ class Preview {
 				$this->applyAspectRatio($askedWidth, $askedHeight, $previewWidth, $previewHeight);
 		}
 
-		if ($this->mode === self::MODE_COVER) {
-			list($scaleWidth, $scaleHeight) =
-				$this->applyCover($askedWidth, $askedHeight, $previewWidth, $previewHeight);
-		} else {
-			$scaleWidth = $askedWidth;
-			$scaleHeight = $askedHeight;
-		}
-
 		/**
 		 * Phase 2: Resizes preview to try and match requirements.
 		 * Takes the scaling ratio into consideration
 		 */
 		list($newPreviewWidth, $newPreviewHeight) = $this->scale(
-			$image, $scaleWidth, $scaleHeight, $previewWidth, $previewHeight
+			$image, $askedWidth, $askedHeight, $previewWidth, $previewHeight
 		);
 
 		// The preview has been resized and should now have the asked dimensions
@@ -890,6 +907,7 @@ class Preview {
 
 			return;
 		}
+
 		// The preview is smaller, but we can't touch it
 		$this->storePreview($fileId, $newPreviewWidth, $newPreviewHeight);
 	}
@@ -903,7 +921,7 @@ class Preview {
 	 * @param int $askedWidth
 	 * @param int $askedHeight
 	 * @param int $previewWidth
-	 * @param null $previewHeight
+	 * @param int $previewHeight
 	 *
 	 * @return int[]
 	 */
@@ -953,7 +971,7 @@ class Preview {
 	 * @param int $askedWidth
 	 * @param int $askedHeight
 	 * @param int $previewWidth
-	 * @param null $previewHeight
+	 * @param int $previewHeight
 	 */
 	private function crop($image, $askedWidth, $askedHeight, $previewWidth, $previewHeight = null) {
 		$cropX = floor(abs($askedWidth - $previewWidth) * 0.5);
@@ -972,7 +990,7 @@ class Preview {
 	 * @param int $askedWidth
 	 * @param int $askedHeight
 	 * @param int $previewWidth
-	 * @param null $previewHeight
+	 * @param int $previewHeight
 	 */
 	private function cropAndFill($image, $askedWidth, $askedHeight, $previewWidth, $previewHeight) {
 		if ($previewWidth > $askedWidth) {
@@ -1151,7 +1169,7 @@ class Preview {
 	 */
 	private function getMimeIcon() {
 		$image = new \OC_Image();
-		$mimeIconWebPath = \OC_Helper::mimetypeIcon($this->mimeType);
+		$mimeIconWebPath = \OC::$server->getMimeTypeDetector()->mimeTypeIcon($this->mimeType);
 		if (empty(\OC::$WEBROOT)) {
 			$mimeIconServerPath = \OC::$SERVERROOT . $mimeIconWebPath;
 		} else {
@@ -1200,7 +1218,7 @@ class Preview {
 	 * @param int $maxDim
 	 * @param string $dimName
 	 *
-	 * @return mixed
+	 * @return integer
 	 */
 	private function limitMaxDim($dim, $maxDim, $dimName) {
 		if (!is_null($maxDim)) {
@@ -1233,7 +1251,7 @@ class Preview {
 	 * @param array $args
 	 * @param string $prefix
 	 */
-	public static function prepare_delete($args, $prefix = '') {
+	public static function prepare_delete(array $args, $prefix = '') {
 		$path = $args['path'];
 		if (substr($path, 0, 1) === '/') {
 			$path = substr($path, 1);
@@ -1242,7 +1260,11 @@ class Preview {
 		$view = new \OC\Files\View('/' . \OC_User::getUser() . '/' . $prefix);
 
 		$absPath = Files\Filesystem::normalizePath($view->getAbsolutePath($path));
-		self::addPathToDeleteFileMapper($absPath, $view->getFileInfo($path));
+		$fileInfo = $view->getFileInfo($path);
+		if($fileInfo === false) {
+			return;
+		}
+		self::addPathToDeleteFileMapper($absPath, $fileInfo);
 		if ($view->is_dir($path)) {
 			$children = self::getAllChildren($view, $path);
 			self::$deleteChildrenMapper[$absPath] = $children;

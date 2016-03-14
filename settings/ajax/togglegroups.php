@@ -8,7 +8,7 @@
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -37,9 +37,19 @@ if($username === OC_User::getUser() && $group === "admin" &&  OC_User::isAdminUs
 	exit();
 }
 
+$isUserAccessible = false;
+$isGroupAccessible = false;
+$currentUserObject = \OC::$server->getUserSession()->getUser();
+$targetUserObject = \OC::$server->getUserManager()->get($username);
+$targetGroupObject = \OC::$server->getGroupManager()->get($group);
+if($targetUserObject !== null && $currentUserObject !== null && $targetGroupObject !== null) {
+	$isUserAccessible = \OC::$server->getGroupManager()->getSubAdmin()->isUserAccessible($currentUserObject, $targetUserObject);
+	$isGroupAccessible = \OC::$server->getGroupManager()->getSubAdmin()->isSubAdminofGroup($currentUserObject, $targetGroupObject);
+}
+
 if(!OC_User::isAdminUser(OC_User::getUser())
-	&& (!OC_SubAdmin::isUserAccessible(OC_User::getUser(), $username)
-		|| !OC_SubAdmin::isGroupAccessible(OC_User::getUser(), $group))) {
+	&& (!$isUserAccessible
+		|| !$isGroupAccessible)) {
 	$l = \OC::$server->getL10N('core');
 	OC_JSON::error(array( 'data' => array( 'message' => $l->t('Authentication error') )));
 	exit();

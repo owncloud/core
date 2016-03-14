@@ -6,6 +6,11 @@
  * See the COPYING-README file.
  */
 
+/**
+ * Class TestSqliteMigration
+ *
+ * @group DB
+ */
 class TestSqliteMigration extends \Test\TestCase {
 
 	/** @var \Doctrine\DBAL\Connection */
@@ -17,7 +22,7 @@ class TestSqliteMigration extends \Test\TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->connection = \OC_DB::getConnection();
+		$this->connection = \OC::$server->getDatabaseConnection();
 		if (!$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\SqlitePlatform) {
 			$this->markTestSkipped("Test only relevant on Sqlite");
 		}

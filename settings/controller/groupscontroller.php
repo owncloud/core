@@ -4,7 +4,7 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -77,8 +77,12 @@ class GroupsController extends Controller {
 	public function index($pattern = '', $filterGroups = false, $sortGroups = MetaData::SORT_USERCOUNT) {
 		$groupPattern = $filterGroups ? $pattern : '';
 
-		$groupsInfo = new MetaData($this->userSession->getUser()->getUID(),
-			$this->isAdmin, $this->groupManager);
+		$groupsInfo = new MetaData(
+			$this->userSession->getUser()->getUID(),
+			$this->isAdmin,
+			$this->groupManager,
+			$this->userSession
+		);
 		$groupsInfo->setSorting($sortGroups);
 		list($adminGroups, $groups) = $groupsInfo->get($groupPattern, $pattern);
 

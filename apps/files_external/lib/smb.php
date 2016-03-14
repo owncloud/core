@@ -1,16 +1,17 @@
 <?php
 /**
  * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Jesús Macias <jmacias@solidgear.es>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Philipp Kapfer <philipp.kapfer@gmx.at>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -30,11 +31,13 @@
 namespace OC\Files\Storage;
 
 use Icewind\SMB\Exception\Exception;
+use Icewind\SMB\Exception\ForbiddenException;
 use Icewind\SMB\Exception\NotFoundException;
 use Icewind\SMB\NativeServer;
 use Icewind\SMB\Server;
 use Icewind\Streams\CallbackWrapper;
 use Icewind\Streams\IteratorDirectory;
+use OC\Cache\CappedMemoryCache;
 use OC\Files\Filesystem;
 
 class SMB extends Common {
@@ -49,9 +52,14 @@ class SMB extends Common {
 	protected $share;
 
 	/**
+	 * @var string
+	 */
+	protected $root;
+
+	/**
 	 * @var \Icewind\SMB\FileInfo[]
 	 */
-	protected $statCache = array();
+	protected $statCache;
 
 	public function __construct($params) {
 		if (isset($params['host']) && isset($params['user']) && isset($params['password']) && isset($params['share'])) {
@@ -72,6 +80,7 @@ class SMB extends Common {
 		} else {
 			throw new \Exception('Invalid configuration');
 		}
+		$this->statCache = new CappedMemoryCache();
 	}
 
 	/**
@@ -152,6 +161,8 @@ class SMB extends Common {
 			}
 		} catch (NotFoundException $e) {
 			return false;
+		} catch (ForbiddenException $e) {
+			return false;
 		}
 	}
 
@@ -190,7 +201,10 @@ class SMB extends Common {
 					return $this->share->read($fullPath);
 				case 'w':
 				case 'wb':
-					return $this->share->write($fullPath);
+					$source = $this->share->write($fullPath);
+					return CallBackWrapper::wrap($source, null, null, function () use ($fullPath) {
+						unset($this->statCache[$fullPath]);
+					});
 				case 'a':
 				case 'ab':
 				case 'r+':
@@ -220,13 +234,16 @@ class SMB extends Common {
 					}
 					$source = fopen($tmpFile, $mode);
 					$share = $this->share;
-					return CallBackWrapper::wrap($source, null, null, function () use ($tmpFile, $fullPath, $share) {
+					return CallbackWrapper::wrap($source, null, null, function () use ($tmpFile, $fullPath, $share) {
+						unset($this->statCache[$fullPath]);
 						$share->put($tmpFile, $fullPath);
 						unlink($tmpFile);
 					});
 			}
 			return false;
 		} catch (NotFoundException $e) {
+			return false;
+		} catch (ForbiddenException $e) {
 			return false;
 		}
 	}
@@ -246,6 +263,8 @@ class SMB extends Common {
 			return true;
 		} catch (NotFoundException $e) {
 			return false;
+		} catch (ForbiddenException $e) {
+			return false;
 		}
 	}
 
@@ -259,7 +278,13 @@ class SMB extends Common {
 	}
 
 	public function opendir($path) {
-		$files = $this->getFolderContents($path);
+		try {
+			$files = $this->getFolderContents($path);
+		} catch (NotFoundException $e) {
+			return false;
+		} catch (ForbiddenException $e) {
+			return false;
+		}
 		$names = array_map(function ($info) {
 			/** @var \Icewind\SMB\IFileInfo $info */
 			return $info->getName();
@@ -271,6 +296,8 @@ class SMB extends Common {
 		try {
 			return $this->getFileInfo($path)->isDirectory() ? 'dir' : 'file';
 		} catch (NotFoundException $e) {
+			return false;
+		} catch (ForbiddenException $e) {
 			return false;
 		}
 	}
@@ -291,6 +318,8 @@ class SMB extends Common {
 			return true;
 		} catch (NotFoundException $e) {
 			return false;
+		} catch (ForbiddenException $e) {
+			return false;
 		}
 	}
 
@@ -298,7 +327,22 @@ class SMB extends Common {
 	 * check if smbclient is installed
 	 */
 	public static function checkDependencies() {
-		$smbClientExists = (bool)\OC_Helper::findBinaryPath('smbclient');
-		return $smbClientExists ? true : array('smbclient');
+		return (
+			(bool)\OC_Helper::findBinaryPath('smbclient')
+			|| Server::NativeAvailable()
+		) ? true : ['smbclient'];
+	}
+
+	/**
+	 * Test a storage for availability
+	 *
+	 * @return bool
+	 */
+	public function test() {
+		try {
+			return parent::test();
+		} catch (Exception $e) {
+			return false;
+		}
 	}
 }

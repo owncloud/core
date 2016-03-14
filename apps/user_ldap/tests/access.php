@@ -4,8 +4,9 @@
  * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -28,6 +29,13 @@ use \OCA\user_ldap\lib\Access;
 use \OCA\user_ldap\lib\Connection;
 use \OCA\user_ldap\lib\ILDAPWrapper;
 
+/**
+ * Class Test_Access
+ *
+ * @group DB
+ *
+ * @package OCA\user_ldap\tests
+ */
 class Test_Access extends \Test\TestCase {
 	private function getConnectorAndLdapMock() {
 		static $conMethods;
@@ -50,7 +58,8 @@ class Test_Access extends \Test\TestCase {
 				$this->getMock('\OCA\user_ldap\lib\LogWrapper'),
 				$this->getMock('\OCP\IAvatarManager'),
 				$this->getMock('\OCP\Image'),
-				$this->getMock('\OCP\IDBConnection')));
+				$this->getMock('\OCP\IDBConnection'),
+				$this->getMock('\OCP\IUserManager')));
 
 		return array($lw, $connector, $um);
 	}
@@ -230,24 +239,34 @@ class Test_Access extends \Test\TestCase {
 		$mapperMock = $this->getMockBuilder('\OCA\User_LDAP\Mapping\UserMapping')
 			->disableOriginalConstructor()
 			->getMock();
+
+		$mapperMock->expects($this->any())
+			->method('getNameByDN')
+			->will($this->returnValue('a_username'));
+
 		$userMock = $this->getMockBuilder('\OCA\user_ldap\lib\user\User')
 			->disableOriginalConstructor()
 			->getMock();
 
+		$access->connection->expects($this->any())
+			->method('__get')
+			->will($this->returnValue('displayName'));
+
 		$access->setUserMapper($mapperMock);
 
+		$displayNameAttribute = strtolower($access->connection->ldapUserDisplayName);
 		$data = array(
 			array(
 				'dn' => 'foobar',
-				$con->ldapUserDisplayName => 'barfoo'
+				$displayNameAttribute => 'barfoo'
 			),
 			array(
 				'dn' => 'foo',
-				$con->ldapUserDisplayName => 'bar'
+				$displayNameAttribute => 'bar'
 			),
 			array(
 				'dn' => 'raboof',
-				$con->ldapUserDisplayName => 'oofrab'
+				$displayNameAttribute => 'oofrab'
 			)
 		);
 
@@ -259,5 +278,39 @@ class Test_Access extends \Test\TestCase {
 			->will($this->returnValue($userMock));
 
 		$access->batchApplyUserAttributes($data);
+	}
+
+	public function dNAttributeProvider() {
+		// corresponds to Access::resemblesDN()
+		return array(
+			'dn' => array('dn'),
+			'uniqueMember' => array('uniquemember'),
+			'member' => array('member'),
+			'memberOf' => array('memberof')
+		);
+	}
+
+	/**
+	 * @dataProvider dNAttributeProvider
+	 */
+	public function testSanitizeDN($attribute) {
+		list($lw, $con, $um) = $this->getConnectorAndLdapMock();
+
+
+		$dnFromServer = 'cn=Mixed Cases,ou=Are Sufficient To,ou=Test,dc=example,dc=org';
+
+		$lw->expects($this->any())
+			->method('isResource')
+			->will($this->returnValue(true));
+
+		$lw->expects($this->any())
+			->method('getAttributes')
+			->will($this->returnValue(array(
+				$attribute => array('count' => 1, $dnFromServer)
+			)));
+
+		$access = new Access($con, $lw, $um);
+		$values = $access->readAttribute('uid=whoever,dc=example,dc=org', $attribute);
+		$this->assertSame($values[0], strtolower($dnFromServer));
 	}
 }

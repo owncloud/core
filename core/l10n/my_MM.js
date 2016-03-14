@@ -13,6 +13,7 @@ OC.L10N.register(
     "October" : "အောက်တိုဘာ",
     "November" : "နိုဝင်ဘာ",
     "December" : "ဒီဇင်ဘာ",
+    "seconds ago" : "စက္ကန့်အနည်းငယ်က",
     "No" : "မဟုတ်ဘူး",
     "Yes" : "ဟုတ်",
     "Choose" : "ရွေးချယ်",
@@ -26,7 +27,6 @@ OC.L10N.register(
     "create" : "ဖန်တီးမည်",
     "delete" : "ဖျက်မည်",
     "Add" : "ပေါင်းထည့်",
-    "New password" : "စကားဝှက်အသစ်",
     "Users" : "သုံးစွဲသူ",
     "Apps" : "Apps",
     "Admin" : "အက်ဒမင်",
@@ -39,6 +39,6 @@ OC.L10N.register(
     "Database name" : "Database အမည်",
     "Finish setup" : "တပ်ဆင်ခြင်းပြီးပါပြီ။",
     "Log in" : "ဝင်ရောက်ရန်",
-    "remember" : "မှတ်မိစေသည်"
+    "New password" : "စကားဝှက်အသစ်"
 },
 "nplurals=1; plural=0;");

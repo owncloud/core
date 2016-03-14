@@ -7,12 +7,13 @@
  * @author Lennart Rosam <lennart.rosam@medien-systempartner.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Ross Nicoll <jrn@jrn.me.uk>
  * @author SA <stephen@mthosting.net>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -51,28 +52,41 @@ class SFTP extends \OC\Files\Storage\Common {
 	protected $client;
 
 	/**
+	 * @param string $host protocol://server:port
+	 * @return array [$server, $port]
+	 */
+	private function splitHost($host) {
+		$input = $host;
+		if (strpos($host, '://') === false) {
+			// add a protocol to fix parse_url behavior with ipv6
+			$host = 'http://' . $host;
+		}
+
+		$parsed = parse_url($host);
+		if(is_array($parsed) && isset($parsed['port'])) {
+			return [$parsed['host'], $parsed['port']];
+		} else if (is_array($parsed)) {
+			return [$parsed['host'], 22];
+		} else {
+			return [$input, 22];
+		}
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function __construct($params) {
 		// Register sftp://
 		Stream::register();
 
-		$this->host = $params['host'];
+		$parsedHost =  $this->splitHost($params['host']);
 
-		//deals with sftp://server example
-		$proto = strpos($this->host, '://');
-		if ($proto != false) {
-			$this->host = substr($this->host, $proto+3);
+		$this->host = $parsedHost[0];
+		$this->port = $parsedHost[1];
+
+		if (!isset($params['user'])) {
+			throw new \UnexpectedValueException('no authentication parameters specified');
 		}
-
-		//deals with server:port
-		$hasPort = strpos($this->host,':');
-		if($hasPort != false) {
-			$pieces = explode(":", $this->host);
-			$this->host = $pieces[0];
-			$this->port = $pieces[1];
-		}
-
 		$this->user = $params['user'];
 
 		if (isset($params['public_key_auth'])) {
@@ -184,7 +198,7 @@ class SFTP extends \OC\Files\Storage\Common {
 	}
 
 	/**
-	 * @return bool|string
+	 * @return string|false
 	 */
 	private function hostKeysPath() {
 		try {

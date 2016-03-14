@@ -5,14 +5,11 @@
  * @author Jakob Sack <mail@jakobsack.de>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
- * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
- * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
- * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -253,14 +250,13 @@ class AppConfig implements IAppConfig {
 		if ($key === false) {
 			return $this->getAppValues($app);
 		} else {
-			$configs = [];
-			foreach ($this->getApps() as $appId) {
-				if ($this->hasKey($appId, $key)) {
-					$configs[$appId] = $this->getValue($appId, $key);
-				}
-			}
+			$appIds = $this->getApps();
+			$values = array_map(function($appId) use ($key) {
+				return isset($this->cache[$appId][$key]) ? $this->cache[$appId][$key] : null;
+			}, $appIds);
+			$result = array_combine($appIds, $values);
 
-			return $configs;
+			return array_filter($result);
 		}
 	}
 

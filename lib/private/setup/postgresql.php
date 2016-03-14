@@ -1,11 +1,13 @@
 <?php
 /**
  * @author Bart Visscher <bartv@thisnet.nl>
- * @author Christopher Schäpers <kondou@ts.unde.re>
  * @author eduardo <eduardo@vnexu.net>
  * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -61,12 +63,13 @@ class PostgreSQL extends AbstractDatabase {
 			//add prefix to the postgresql user name to prevent collisions
 			$this->dbUser='oc_'.$username;
 			//create a new password so we don't need to store the admin config in the config file
-			$this->dbPassword=\OC_Util::generateRandomBytes(30);
+			$this->dbPassword = \OC::$server->getSecureRandom()->generate(30, \OCP\Security\ISecureRandom::CHAR_LOWER.\OCP\Security\ISecureRandom::CHAR_DIGITS);
 
 			$this->createDBUser($connection);
 		}
 
-		\OC_Config::setValues([
+		$systemConfig = \OC::$server->getSystemConfig();
+		$systemConfig->setValues([
 			'dbuser'		=> $this->dbUser,
 			'dbpassword'	=> $this->dbPassword,
 		]);
@@ -78,8 +81,8 @@ class PostgreSQL extends AbstractDatabase {
 		pg_close($connection);
 
 		// connect to the ownCloud database (dbname=$this->dbname) and check if it needs to be filled
-		$this->dbUser = \OC_Config::getValue('dbuser');
-		$this->dbPassword = \OC_Config::getValue('dbpassword');
+		$this->dbUser = $systemConfig->getValue('dbuser');
+		$this->dbPassword = $systemConfig->getValue('dbpassword');
 
 		$e_host = addslashes($this->dbHost);
 		$e_dbname = addslashes($this->dbName);

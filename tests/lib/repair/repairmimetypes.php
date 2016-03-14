@@ -11,6 +11,8 @@ namespace Test\Repair;
 /**
  * Tests for the converting of legacy storages to home storages.
  *
+ * @group DB
+ *
  * @see \OC\Repair\RepairMimeTypes
  */
 class RepairMimeTypes extends \Test\TestCase {
@@ -283,6 +285,89 @@ class RepairMimeTypes extends \Test\TestCase {
 	}
 
 	/**
+	 * Test renaming the java mime types
+	 */
+	public function testRenameJavaMimeType() {
+		$currentMimeTypes = [
+			['test.java', 'application/octet-stream'],
+			['test.class', 'application/octet-stream'],
+		];
+
+		$fixedMimeTypes = [
+			['test.java', 'text/x-java-source'],
+			['test.class', 'application/java'],
+		];
+
+		$this->renameMimeTypes($currentMimeTypes, $fixedMimeTypes);
+	}
+
+	/**
+	 * Test renaming the hpp mime type
+	 */
+	public function testRenameHppMimeType() {
+		$currentMimeTypes = [
+			['test.hpp', 'application/octet-stream'],
+		];
+
+		$fixedMimeTypes = [
+			['test.hpp', 'text/x-h'],
+		];
+
+		$this->renameMimeTypes($currentMimeTypes, $fixedMimeTypes);
+	}
+
+	/**
+	 * Test renaming the rss mime type
+	 */
+	public function testRenameRssMimeType() {
+		$currentMimeTypes = [
+			['test.rss', 'application/octet-stream'],
+		];
+
+		$fixedMimeTypes = [
+			['test.rss', 'application/rss+xml'],
+		];
+
+		$this->renameMimeTypes($currentMimeTypes, $fixedMimeTypes);
+	}
+
+	/**
+	 * Test renaming the hpp mime type
+	 */
+	public function testRenameRtfMimeType() {
+		$currentMimeTypes = [
+			['test.rtf', 'application/octet-stream'],
+		];
+
+		$fixedMimeTypes = [
+			['test.rtf', 'text/rtf'],
+		];
+
+		$this->renameMimeTypes($currentMimeTypes, $fixedMimeTypes);
+	}
+
+	/**
+	 * Test renaming the richdocuments additional office mime types
+	 */
+	public function testRenameRichDocumentsMimeTypes() {
+		$currentMimeTypes = [
+			['test.lwp', 'application/octet-stream'],
+			['test.one', 'application/octet-stream'],
+			['test.vsd', 'application/octet-stream'],
+			['test.wpd', 'application/octet-stream'],
+		];
+
+		$fixedMimeTypes = [
+			['test.lwp', 'application/vnd.lotus-wordpro'],
+			['test.one', 'application/msonenote'],
+			['test.vsd', 'application/vnd.visio'],
+			['test.wpd', 'application/vnd.wordperfect'],
+		];
+
+		$this->renameMimeTypes($currentMimeTypes, $fixedMimeTypes);
+	}
+
+	/**
 	 * Test renaming and splitting old office mime types when
 	 * new ones already exist
 	 */
@@ -399,6 +484,15 @@ class RepairMimeTypes extends \Test\TestCase {
 			['test.cnf', 'text/plain'],
 			['test.yaml', 'application/yaml'],
 			['test.yml', 'application/yaml'],
+			['test.java', 'text/x-java-source'],
+			['test.class', 'application/java'],
+			['test.hpp', 'text/x-h'],
+			['test.rss', 'application/rss+xml'],
+			['test.rtf', 'text/rtf'],
+			['test.lwp', 'application/vnd.lotus-wordpro'],
+			['test.one', 'application/msonenote'],
+			['test.vsd', 'application/vnd.visio'],
+			['test.wpd', 'application/vnd.wordperfect'],
 		];
 
 		$fixedMimeTypes = [
@@ -438,6 +532,32 @@ class RepairMimeTypes extends \Test\TestCase {
 			['test.cnf', 'text/plain'],
 			['test.yaml', 'application/yaml'],
 			['test.yml', 'application/yaml'],
+			['test.java', 'text/x-java-source'],
+			['test.class', 'application/java'],
+			['test.hpp', 'text/x-h'],
+			['test.rss', 'application/rss+xml'],
+			['test.rtf', 'text/rtf'],
+			['test.lwp', 'application/vnd.lotus-wordpro'],
+			['test.one', 'application/msonenote'],
+			['test.vsd', 'application/vnd.visio'],
+			['test.wpd', 'application/vnd.wordperfect'],
+		];
+
+		$this->renameMimeTypes($currentMimeTypes, $fixedMimeTypes);
+	}
+
+	/**
+	 * Test that mime type renaming does not affect folders
+	 */
+	public function testDoNotChangeFolderMimeType() {
+		$currentMimeTypes = [
+			['test.conf', 'httpd/unix-directory'],
+			['test.cnf', 'httpd/unix-directory'],
+		];
+
+		$fixedMimeTypes = [
+			['test.conf', 'httpd/unix-directory'],
+			['test.cnf', 'httpd/unix-directory'],
 		];
 
 		$this->renameMimeTypes($currentMimeTypes, $fixedMimeTypes);

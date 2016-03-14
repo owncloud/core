@@ -2,10 +2,9 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
- * @author Lukas Reschke <lukas@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -43,6 +42,12 @@ class ActivityManager implements IManager {
 
 	/** @var IConfig */
 	protected $config;
+
+	/** @var string */
+	protected $formattingObjectType;
+
+	/** @var int */
+	protected $formattingObjectId;
 
 	/**
 	 * constructor of the controller
@@ -301,6 +306,23 @@ class ActivityManager implements IManager {
 
 		$this->typeIcons[$type] = '';
 		return '';
+	}
+
+	/**
+	 * @param string $type
+	 * @param string $id
+	 */
+	public function setFormattingObject($type, $id) {
+		$this->formattingObjectType = $type;
+		$this->formattingObjectId = (string) $id;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isFormattingFilteredObject() {
+		return $this->formattingObjectType === $this->request->getParam('object_type')
+			&& $this->formattingObjectId === $this->request->getParam('object_id');
 	}
 
 	/**

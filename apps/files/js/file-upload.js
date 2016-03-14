@@ -18,7 +18,7 @@
  *    - TODO music upload button
  */
 
-/* global jQuery, oc_requesttoken, humanFileSize */
+/* global jQuery, oc_requesttoken, humanFileSize, FileList */
 
 /**
  * Function that will allow us to know if Ajax uploads are supported
@@ -45,6 +45,26 @@ function supportAjaxUploadWithProgress() {
 	function supportFormData() {
 		return !! window.FormData;
 	}
+}
+
+/**
+ * Add form data into the given form data
+ *
+ * @param {Array|Object} formData form data which can either be an array or an object
+ * @param {Object} newData key-values to add to the form data
+ *
+ * @return updated form data
+ */
+function addFormData(formData, newData) {
+	// in IE8, formData is an array instead of object
+	if (_.isArray(formData)) {
+		_.each(newData, function(value, key) {
+			formData.push({name: key, value: value});
+		});
+	} else {
+		formData = _.extend(formData, newData);
+	}
+	return formData;
 }
 
 /**
@@ -75,6 +95,9 @@ OC.Upload = {
 			this._uploads.push(jqXHR);
 		}
 	},
+	showUploadCancelMessage: _.debounce(function() {
+		OC.Notification.showTemporary(t('files', 'Upload cancelled.'), {timeout: 10});
+	}, 500),
 	/**
 	 * Checks the currently known uploads.
 	 * returns true if any hxr has the state 'pending'
@@ -140,9 +163,9 @@ OC.Upload = {
 			data.data.append('resolution', 'replace');
 		} else {
 			if (!data.formData) {
-				data.formData = [];
+				data.formData = {};
 			}
-			data.formData.push({name:'resolution', value:'replace'}); //hack for ie8
+			addFormData(data.formData, {resolution: 'replace'});
 		}
 		data.submit();
 	},
@@ -156,9 +179,9 @@ OC.Upload = {
 			data.data.append('resolution', 'autorename');
 		} else {
 			if (!data.formData) {
-				data.formData = [];
+				data.formData = {};
 			}
-			data.formData.push({name:'resolution', value:'autorename'}); //hack for ie8
+			addFormData(data.formData, {resolution: 'autorename'});
 		}
 		data.submit();
 	},
@@ -182,7 +205,7 @@ OC.Upload = {
 	 * @param {function} callbacks.onCancel
 	 */
 	checkExistingFiles: function (selection, callbacks) {
-		var fileList = OCA.Files.App.fileList;
+		var fileList = FileList;
 		var conflicts = [];
 		// only keep non-conflicting uploads
 		selection.uploads = _.filter(selection.uploads, function(upload) {
@@ -201,8 +224,11 @@ OC.Upload = {
 			return true;
 		});
 		if (conflicts.length) {
-			_.each(conflicts, function(conflictData) {
-				OC.dialogs.fileexists(conflictData[1], conflictData[0], conflictData[1].files[0], OC.Upload);
+			// wait for template loading
+			OC.dialogs.fileexists(null, null, null, OC.Upload).done(function() {
+				_.each(conflicts, function(conflictData) {
+					OC.dialogs.fileexists(conflictData[1], conflictData[0], conflictData[1].files[0], OC.Upload);
+				});
 			});
 		}
 
@@ -225,7 +251,26 @@ OC.Upload = {
 		$('#file_upload_start').trigger(new $.Event('resized'));
 	},
 
+	/**
+	 * Returns whether the given file is known to be a received shared file
+	 *
+	 * @param {Object} file file
+	 * @return {bool} true if the file is a shared file
+	 */
+	_isReceivedSharedFile: function(file) {
+		if (!window.FileList) {
+			return false;
+		}
+		var $tr = window.FileList.findFileEl(file.name);
+		if (!$tr.length) {
+			return false;
+		}
+
+		return ($tr.attr('data-mounttype') === 'shared-root' && $tr.attr('data-mime') !== 'httpd/unix-directory');
+	},
+
 	init: function() {
+		var self = this;
 		if ( $('#file_upload_start').exists() ) {
 			var file_upload_param = {
 				dropZone: $('#content'), // restrict dropZone to content div
@@ -315,10 +360,15 @@ OC.Upload = {
 						}
 					}
 
-					// add size
-					selection.totalBytes += file.size;
-					// update size of biggest file
-					selection.biggestFileBytes = Math.max(selection.biggestFileBytes, file.size);
+					// only count if we're not overwriting an existing shared file
+					if (self._isReceivedSharedFile(file)) {
+						file.isReceivedShare = true;
+					} else {
+						// add size
+						selection.totalBytes += file.size;
+						// update size of biggest file
+						selection.biggestFileBytes = Math.max(selection.biggestFileBytes, file.size);
+					}
 
 					// check PHP upload limit against biggest file
 					if (selection.biggestFileBytes > $('#upload_limit').val()) {
@@ -396,26 +446,37 @@ OC.Upload = {
 				submit: function(e, data) {
 					OC.Upload.rememberUpload(data);
 					if (!data.formData) {
-						data.formData = [];
+						data.formData = {};
 					}
 
 					var fileDirectory = '';
 					if(typeof data.files[0].relativePath !== 'undefined') {
 						fileDirectory = data.files[0].relativePath;
 					}
-					// FIXME: prevent re-adding the same
-					data.formData.push({name: 'requesttoken', value: oc_requesttoken});
-					data.formData.push({name: 'dir', value: data.targetDir || FileList.getCurrentDirectory()});
-					data.formData.push({name: 'file_directory', value: fileDirectory});
+
+					var params = {
+						requesttoken: oc_requesttoken,
+						dir: data.targetDir || FileList.getCurrentDirectory(),
+						file_directory: fileDirectory,
+					};
+					if (data.files[0].isReceivedShare) {
+						params.isReceivedShare = true;
+					}
+
+					addFormData(data.formData, params);
 				},
 				fail: function(e, data) {
 					OC.Upload.log('fail', e, data);
 					if (typeof data.textStatus !== 'undefined' && data.textStatus !== 'success' ) {
 						if (data.textStatus === 'abort') {
-							OC.Notification.show(t('files', 'Upload cancelled.'));
+							OC.Upload.showUploadCancelMessage();
 						} else {
 							// HTTP connection problem
-							OC.Notification.show(data.errorThrown);
+							var message = t('files', 'Error uploading file "{fileName}": {message}', {
+								fileName: data.files[0].name,
+								message: data.errorThrown
+							});
+							OC.Notification.show(message, {timeout: 0, type: 'error'});
 							if (data.result) {
 								var result = JSON.parse(data.result);
 								if (result && result[0] && result[0].data && result[0].data.code === 'targetnotfound') {
@@ -424,10 +485,6 @@ OC.Upload = {
 								}
 							}
 						}
-						//hide notification after 10 sec
-						setTimeout(function() {
-							OC.Notification.hide();
-						}, 10000);
 					}
 					OC.Upload.deleteUpload(data);
 				},

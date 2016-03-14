@@ -1,10 +1,13 @@
 <?php
 /**
  * @author Arthur Schiwon <blizzz@owncloud.com>
+ * @author Frédéric Fortier <frederic.fortier@oronospolytechnique.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -28,6 +31,13 @@ use \OCA\user_ldap\lib\Access;
 use \OCA\user_ldap\lib\Connection;
 use \OCA\user_ldap\lib\ILDAPWrapper;
 
+/**
+ * Class Test_Group_Ldap
+ *
+ * @group DB
+ *
+ * @package OCA\user_ldap\tests
+ */
 class Test_Group_Ldap extends \Test\TestCase {
 	private function getAccessMock() {
 		static $conMethods;
@@ -41,14 +51,9 @@ class Test_Group_Ldap extends \Test\TestCase {
 		$connector = $this->getMock('\OCA\user_ldap\lib\Connection',
 									$conMethods,
 									array($lw, null, null));
-		$um = new \OCA\user_ldap\lib\user\Manager(
-				$this->getMock('\OCP\IConfig'),
-				$this->getMock('\OCA\user_ldap\lib\FilesystemHelper'),
-				$this->getMock('\OCA\user_ldap\lib\LogWrapper'),
-				$this->getMock('\OCP\IAvatarManager'),
-				$this->getMock('\OCP\Image'),
-				$this->getMock('\OCP\IDBConnection')
-			);
+		$um = $this->getMockBuilder('\OCA\user_ldap\lib\user\Manager')
+			->disableOriginalConstructor()
+			->getMock();
 		$access = $this->getMock('\OCA\user_ldap\lib\Access',
 								 $accMethods,
 								 array($connector, $lw, $um));
@@ -62,10 +67,13 @@ class Test_Group_Ldap extends \Test\TestCase {
 
 	private function enableGroups($access) {
 		$access->connection->expects($this->any())
-			   ->method('__get')
-			   ->will($this->returnCallback(function() {
-					return 1;
-			   }));
+			->method('__get')
+			->will($this->returnCallback(function($name) {
+				if($name === 'ldapDynamicGroupMemberURL') {
+					return '';
+				}
+				return 1;
+			}));
 	}
 
 	public function testCountEmptySearchString() {
@@ -144,7 +152,7 @@ class Test_Group_Ldap extends \Test\TestCase {
 
 		$access->expects($this->once())
 			->method('searchGroups')
-			->will($this->returnValue(array('cn=foo,dc=barfoo,dc=bar')));
+			->will($this->returnValue([['dn' => ['cn=foo,dc=barfoo,dc=bar']]]));
 
 		$access->expects($this->once())
 			->method('dn2groupname')
@@ -220,7 +228,7 @@ class Test_Group_Ldap extends \Test\TestCase {
 
 		$access->expects($this->once())
 			->method('searchGroups')
-			->will($this->returnValue(array('cn=foo,dc=barfoo,dc=bar')));
+			->will($this->returnValue([['dn' => ['cn=foo,dc=barfoo,dc=bar']]]));
 
 		$access->expects($this->once())
 			->method('dn2groupname')
@@ -425,6 +433,8 @@ class Test_Group_Ldap extends \Test\TestCase {
 			->will($this->returnCallback(function($name) {
 				if($name === 'useMemberOfToDetectMembership') {
 					return 0;
+				} else if($name === 'ldapDynamicGroupMemberURL') {
+					return '';
 				}
 				return 1;
 			}));

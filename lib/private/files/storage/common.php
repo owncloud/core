@@ -7,16 +7,17 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Martin Mattel <martin.mattel@diemattels.at>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Sam Tuke <mail@samtuke.com>
  * @author scambra <sergio@entrecables.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -36,13 +37,16 @@
 namespace OC\Files\Storage;
 
 use OC\Files\Cache\Cache;
+use OC\Files\Cache\Propagator;
 use OC\Files\Cache\Scanner;
+use OC\Files\Cache\Updater;
 use OC\Files\Filesystem;
 use OC\Files\Cache\Watcher;
 use OCP\Files\FileNameTooLongException;
 use OCP\Files\InvalidCharacterInPathException;
 use OCP\Files\InvalidPathException;
 use OCP\Files\ReservedWordException;
+use OCP\Files\Storage\ILockingStorage;
 use OCP\Lock\ILockingProvider;
 
 /**
@@ -56,16 +60,19 @@ use OCP\Lock\ILockingProvider;
  * Some \OC\Files\Storage\Common methods call functions which are first defined
  * in classes which extend it, e.g. $this->stat() .
  */
-abstract class Common implements Storage {
+abstract class Common implements Storage, ILockingStorage {
 
 	use LocalTempFileTrait;
 
 	protected $cache;
 	protected $scanner;
 	protected $watcher;
+	protected $propagator;
 	protected $storageCache;
+	protected $updater;
 
 	protected $mountOptions = [];
+	protected $owner = null;
 
 	public function __construct($parameters) {
 	}
@@ -136,10 +143,6 @@ abstract class Common implements Storage {
 	}
 
 	public function isSharable($path) {
-		if (\OC_Util::isSharingDisabledForUser()) {
-			return false;
-		}
-
 		return $this->isReadable($path);
 	}
 
@@ -224,7 +227,7 @@ abstract class Common implements Storage {
 		if ($this->is_dir($path)) {
 			return 'httpd/unix-directory';
 		} elseif ($this->file_exists($path)) {
-			return \OC_Helper::getFileNameMimeType($path);
+			return \OC::$server->getMimeTypeDetector()->detectPath($path);
 		} else {
 			return false;
 		}
@@ -244,12 +247,6 @@ abstract class Common implements Storage {
 
 	public function getLocalFile($path) {
 		return $this->getCachedFile($path);
-	}
-
-	public function getLocalFolder($path) {
-		$baseDir = \OC_Helper::tmpFolder();
-		$this->addLocalFolder($path, $baseDir);
-		return $baseDir;
 	}
 
 	/**
@@ -344,6 +341,32 @@ abstract class Common implements Storage {
 		return $this->watcher;
 	}
 
+	/**
+	 * get a propagator instance for the cache
+	 *
+	 * @param \OC\Files\Storage\Storage (optional) the storage to pass to the watcher
+	 * @return \OC\Files\Cache\Propagator
+	 */
+	public function getPropagator($storage = null) {
+		if (!$storage) {
+			$storage = $this;
+		}
+		if (!isset($this->propagator)) {
+			$this->propagator = new Propagator($storage);
+		}
+		return $this->propagator;
+	}
+
+	public function getUpdater($storage = null) {
+		if (!$storage) {
+			$storage = $this;
+		}
+		if (!isset($this->updater)) {
+			$this->updater = new Updater($storage);
+		}
+		return $this->updater;
+	}
+
 	public function getStorageCache($storage = null) {
 		if (!$storage) {
 			$storage = $this;
@@ -361,23 +384,21 @@ abstract class Common implements Storage {
 	 * @return string|false uid or false
 	 */
 	public function getOwner($path) {
-		return \OC_User::getUser();
+		if ($this->owner === null) {
+			$this->owner = \OC_User::getUser();
+		}
+
+		return $this->owner;
 	}
 
 	/**
 	 * get the ETag for a file or folder
 	 *
 	 * @param string $path
-	 * @return string|false
+	 * @return string
 	 */
 	public function getETag($path) {
-		$ETagFunction = \OC\Connector\Sabre\Node::$ETagFunction;
-		if ($ETagFunction) {
-			$hash = call_user_func($ETagFunction, $path);
-			return $hash;
-		} else {
-			return uniqid();
-		}
+		return uniqid();
 	}
 
 	/**
@@ -590,6 +611,10 @@ abstract class Common implements Storage {
 	public function moveFromStorage(\OCP\Files\Storage $sourceStorage, $sourceInternalPath, $targetInternalPath) {
 		if ($sourceStorage === $this) {
 			return $this->rename($sourceInternalPath, $targetInternalPath);
+		}
+
+		if (!$sourceStorage->isDeletable($sourceInternalPath)) {
+			return false;
 		}
 
 		$result = $this->copyFromStorage($sourceStorage, $sourceInternalPath, $targetInternalPath, true);

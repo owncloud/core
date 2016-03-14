@@ -6,12 +6,13 @@
     "Access granted" : "অধিগমনের  অনুমতি প্রদান করা হলো",
     "(group)" : "(গোষ্ঠি)",
     "Saved" : "সংরক্ষণ করা হলো",
+    "Username" : "ব্যবহারকারী",
+    "Password" : "কূটশব্দ",
+    "Save" : "সংরক্ষণ",
     "None" : "কোনটিই নয়",
     "App key" : "অ্যাপ কি",
     "App secret" : "অ্যাপ সিক্রেট",
     "Client ID" : "ক্লায়েন্ট পরিচিতি",
-    "Username" : "ব্যবহারকারী",
-    "Password" : "কূটশব্দ",
     "Amazon S3" : "আমাজন S3",
     "Bucket" : "বালতি",
     "Hostname" : "হোস্টনেম",
@@ -32,7 +33,6 @@
     "External Storage" : "বাহ্যিক সংরক্ষণাগার",
     "Folder name" : "ফোলডারের নাম",
     "Configuration" : "কনফিগারেসন",
-    "Delete" : "মুছে",
-    "Enable User External Storage" : "ব্যবহারকারীর বাহ্যিক সংরক্ষণাগার সক্রিয় কর"
+    "Delete" : "মুছে"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

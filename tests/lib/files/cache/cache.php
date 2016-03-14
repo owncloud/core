@@ -16,6 +16,13 @@ class LongId extends \OC\Files\Storage\Temporary {
 	}
 }
 
+/**
+ * Class Cache
+ *
+ * @group DB
+ *
+ * @package Test\Files\Cache
+ */
 class Cache extends \Test\TestCase {
 	/**
 	 * @var \OC\Files\Storage\Temporary $storage ;
@@ -310,7 +317,7 @@ class Cache extends \Test\TestCase {
 
 	function testSearchByTag() {
 		$userId = $this->getUniqueId('user');
-		\OC_User::createUser($userId, $userId);
+		\OC::$server->getUserManager()->createUser($userId, $userId);
 		$this->loginAsUser($userId);
 		$user = new \OC\User\User($userId, null);
 
@@ -366,7 +373,8 @@ class Cache extends \Test\TestCase {
 		$tagManager->delete('tag2');
 
 		$this->logout();
-		\OC_User::deleteUser($userId);
+		$user = \OC::$server->getUserManager()->get($userId);
+		if ($user !== null) { $user->delete(); }
 	}
 
 	function testMove() {
@@ -548,7 +556,7 @@ class Cache extends \Test\TestCase {
 		$this->assertEquals($folderWith00F6, $unNormalizedFolderName['name']);
 
 		// put normalized folder
-		$this->assertTrue(is_array($this->cache->get('folder/' . $folderWith00F6)));
+		$this->assertInstanceOf('\OCP\Files\Cache\ICacheEntry', $this->cache->get('folder/' . $folderWith00F6));
 		$this->assertGreaterThan(0, $this->cache->put('folder/' . $folderWith00F6, $data));
 
 		// at this point we should have only one folder named "Schön"
@@ -602,6 +610,54 @@ class Cache extends \Test\TestCase {
 		$info2 = $this->cache->get('anotherfile.txt');
 		$fileId2 = $info2['fileid'];
 		$this->assertNotEquals($fileId, $fileId2);
+	}
+
+	public function escapingProvider() {
+		return [
+				['foo'],
+				['o%'],
+				['oth_r'],
+		];
+	}
+
+	/**
+	 * @param string $name
+	 * @dataProvider escapingProvider
+	 */
+	public function testEscaping($name) {
+		$data = array('size' => 100, 'mtime' => 50, 'mimetype' => 'text/plain');
+		$this->cache->put($name, $data);
+		$this->assertTrue($this->cache->inCache($name));
+		$retrievedData = $this->cache->get($name);
+		foreach ($data as $key => $value) {
+			$this->assertEquals($value, $retrievedData[$key]);
+		}
+		$this->cache->move($name, $name . 'asd');
+		$this->assertFalse($this->cache->inCache($name));
+		$this->assertTrue($this->cache->inCache($name . 'asd'));
+		$this->cache->remove($name . 'asd');
+		$this->assertFalse($this->cache->inCache($name . 'asd'));
+		$folderData = array('size' => 100, 'mtime' => 50, 'mimetype' => 'httpd/unix-directory');
+		$this->cache->put($name, $folderData);
+		$this->cache->put('other', $folderData);
+		$childs = ['asd', 'bar', 'foo', 'sub/folder'];
+		$this->cache->put($name . '/sub', $folderData);
+		$this->cache->put('other/sub', $folderData);
+		foreach ($childs as $child) {
+			$this->cache->put($name . '/' . $child, $data);
+			$this->cache->put('other/' . $child, $data);
+			$this->assertTrue($this->cache->inCache($name . '/' . $child));
+		}
+		$this->cache->move($name, $name . 'asd');
+		foreach ($childs as $child) {
+			$this->assertTrue($this->cache->inCache($name . 'asd/' . $child));
+			$this->assertTrue($this->cache->inCache('other/' . $child));
+		}
+		foreach ($childs as $child) {
+			$this->cache->remove($name . 'asd/' . $child);
+			$this->assertFalse($this->cache->inCache($name . 'asd/' . $child));
+			$this->assertTrue($this->cache->inCache('other/' . $child));
+		}
 	}
 
 	protected function tearDown() {

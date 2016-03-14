@@ -2,13 +2,15 @@
 /**
  * @author Andreas Fischer <bantu@owncloud.com>
  * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Christian Schnidrig <christian.schnidrig@switch.ch>
  * @author Georg Ehrke <georg@owncloud.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -38,20 +40,22 @@ class OC_Log_Owncloud {
 	 * Init class data
 	 */
 	public static function init() {
-		$defaultLogFile = OC_Config::getValue("datadirectory", OC::$SERVERROOT.'/data').'/owncloud.log';
-		self::$logFile = OC_Config::getValue("logfile", $defaultLogFile);
+		$systemConfig = \OC::$server->getSystemConfig();
+		$defaultLogFile = $systemConfig->getValue("datadirectory", OC::$SERVERROOT.'/data').'/owncloud.log';
+		self::$logFile = $systemConfig->getValue("logfile", $defaultLogFile);
 
-		/*
-		* Fall back to default log file if specified logfile does not exist
-		* and can not be created. Error suppression is required in order to
-		* not end up in the error handler which will try to log the error.
-		* A better solution (compared to error suppression) would be checking
-		* !is_writable(dirname(self::$logFile)) before touch(), but
-		* is_writable() on directories used to be pretty unreliable on Windows
-		* for at least some time.
-		*/
-		if (!file_exists(self::$logFile) && !@touch(self::$logFile)) {
-			self::$logFile = $defaultLogFile;
+		/**
+		 * Fall back to default log file if specified logfile does not exist
+		 * and can not be created.
+		 */
+		if (!file_exists(self::$logFile)) {
+			if(!is_writable(dirname(self::$logFile))) {
+				self::$logFile = $defaultLogFile;
+			} else {
+				if(!touch(self::$logFile)) {
+					self::$logFile = $defaultLogFile;
+				}
+			}
 		}
 	}
 
@@ -66,13 +70,16 @@ class OC_Log_Owncloud {
 
 		// default to ISO8601
 		$format = $config->getValue('logdateformat', 'c');
-		$logtimezone = $config->getValue( "logtimezone", 'UTC' );
+		$logTimeZone = $config->getValue( "logtimezone", 'UTC' );
 		try {
-			$timezone = new DateTimeZone($logtimezone);
+			$timezone = new DateTimeZone($logTimeZone);
 		} catch (Exception $e) {
 			$timezone = new DateTimeZone('UTC');
 		}
-		$time = new DateTime(null, $timezone);
+		$time = DateTime::createFromFormat("U.u", number_format(microtime(true), 4, ".", ""), $timezone);
+		if ($time === false) {
+			$time = new DateTime(null, $timezone);
+		}
 		$request = \OC::$server->getRequest();
 		$reqId = $request->getId();
 		$remoteAddr = $request->getRemoteAddress();
@@ -97,6 +104,9 @@ class OC_Log_Owncloud {
 			// Fall back to error_log
 			error_log($entry);
 		}
+		if (php_sapi_name() === 'cli-server') {
+			error_log($message, 4);
+		}
 	}
 
 	/**
@@ -107,7 +117,7 @@ class OC_Log_Owncloud {
 	 */
 	public static function getEntries($limit=50, $offset=0) {
 		self::init();
-		$minLevel=OC_Config::getValue( "loglevel", \OCP\Util::WARN );
+		$minLevel = \OC::$server->getSystemConfig()->getValue("loglevel", \OCP\Util::WARN);
 		$entries = array();
 		$handle = @fopen(self::$logFile, 'rb');
 		if ($handle) {

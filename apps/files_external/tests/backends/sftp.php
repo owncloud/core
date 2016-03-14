@@ -4,9 +4,10 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -25,7 +26,19 @@
 
 namespace Test\Files\Storage;
 
+/**
+ * Class SFTP
+ *
+ * @group DB
+ *
+ * @package Test\Files\Storage
+ */
 class SFTP extends Storage {
+	/**
+	 * @var \OC\Files\Storage\SFTP instance
+	 */
+	protected $instance;
+
 	private $config;
 
 	protected function setUp() {
@@ -102,6 +115,39 @@ class SFTP extends Storage {
 					'root' => 'remotedir/subdir/',
 				],
 				'sftp::someuser@somehost:8822//remotedir/subdir/',
+			],
+			[
+				// ipv6 with port
+				[
+					'run' => true,
+					'host' => 'FE80:0000:0000:0000:0202:B3FF:FE1E:8329',
+					'user' => 'someuser',
+					'password' => 'somepassword',
+					'root' => 'remotedir/subdir/',
+				],
+				'sftp::someuser@FE80:0000:0000:0000:0202:B3FF:FE1E:8329//remotedir/subdir/',
+			],
+			[
+				// ipv6 without port
+				[
+					'run' => true,
+					'host' => 'FE80:0000:0000:0000:0202:B3FF:FE1E:8329:8822',
+					'user' => 'someuser',
+					'password' => 'somepassword',
+					'root' => 'remotedir/subdir/',
+				],
+				'sftp::someuser@FE80:0000:0000:0000:0202:B3FF:FE1E:8329:8822//remotedir/subdir/',
+			],
+			[
+				// collapsed ipv6 with port
+				[
+					'run' => true,
+					'host' => 'FE80::0202:B3FF:FE1E:8329:8822',
+					'user' => 'someuser',
+					'password' => 'somepassword',
+					'root' => 'remotedir/subdir/',
+				],
+				'sftp::someuser@FE80::0202:B3FF:FE1E:8329:8822//remotedir/subdir/',
 			],
 		];
 	}

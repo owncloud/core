@@ -11,13 +11,13 @@
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Sam Tuke <mail@samtuke.com>
- * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
  * @author Stephan Peijnik <speijnik@anexia-it.com>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -58,10 +58,12 @@
 
 namespace OC\Files;
 
-use OC\Cache\File;
 use OC\Files\Config\MountProviderCollection;
+use OC\Files\Mount\MountPoint;
 use OC\Files\Storage\StorageFactory;
 use OCP\Files\Config\IMountProvider;
+use OCP\Files\Mount\IMountPoint;
+use OCP\Files\NotFoundException;
 use OCP\IUserManager;
 
 class Filesystem {
@@ -235,9 +237,9 @@ class Filesystem {
 	 *
 	 * @return \OC\Files\Mount\Manager
 	 */
-	public static function getMountManager() {
+	public static function getMountManager($user = '') {
 		if (!self::$mounts) {
-			\OC_Util::setupFS();
+			\OC_Util::setupFS($user);
 		}
 		return self::$mounts;
 	}
@@ -385,7 +387,7 @@ class Filesystem {
 			throw new \OC\User\NoUserException('Backends provided no user object for ' . $user);
 		}
 
-		$homeStorage = \OC_Config::getValue('objectstore');
+		$homeStorage = \OC::$server->getConfig()->getSystemValue('objectstore');
 		if (!empty($homeStorage)) {
 			// sanity checks
 			if (empty($homeStorage['class'])) {
@@ -412,7 +414,8 @@ class Filesystem {
 			$homeStorage['arguments']['legacy'] = true;
 		}
 
-		self::mount($homeStorage['class'], $homeStorage['arguments'], $user);
+		$mount = new MountPoint($homeStorage['class'], '/' . $user, $homeStorage['arguments'], self::getLoader());
+		self::getMountManager()->addMount($mount);
 
 		$home = \OC\Files\Filesystem::getStorage($user);
 
@@ -424,6 +427,8 @@ class Filesystem {
 		if ($userObject) {
 			$mounts = $mountConfigManager->getMountsForUser($userObject);
 			array_walk($mounts, array(self::$mounts, 'addMount'));
+			$mounts[] = $mount;
+			$mountConfigManager->registerMounts($userObject, $mounts);
 		}
 
 		self::listenForNewMountProviders($mountConfigManager, $userManager);
@@ -457,7 +462,7 @@ class Filesystem {
 	 * @param string $user user name
 	 */
 	private static function mountCacheDir($user) {
-		$cacheBaseDir = \OC_Config::getValue('cache_path', '');
+		$cacheBaseDir = \OC::$server->getConfig()->getSystemValue('cache_path', '');
 		if ($cacheBaseDir !== '') {
 			$cacheDir = rtrim($cacheBaseDir, '/') . '/' . $user;
 			if (!file_exists($cacheDir)) {
@@ -602,7 +607,7 @@ class Filesystem {
 	static public function isFileBlacklisted($filename) {
 		$filename = self::normalizePath($filename);
 
-		$blacklist = \OC_Config::getValue('blacklisted_files', array('.htaccess'));
+		$blacklist = \OC::$server->getConfig()->getSystemValue('blacklisted_files', array('.htaccess'));
 		$filename = strtolower(basename($filename));
 		return in_array($filename, $blacklist);
 	}
@@ -855,7 +860,7 @@ class Filesystem {
 	 * @param string $path
 	 * @param boolean $includeMountPoints whether to add mountpoint sizes,
 	 * defaults to true
-	 * @return \OC\Files\FileInfo
+	 * @return \OC\Files\FileInfo|bool False if file does not exist
 	 */
 	public static function getFileInfo($path, $includeMountPoints = true) {
 		return self::$defaultInstance->getFileInfo($path, $includeMountPoints);
@@ -891,6 +896,7 @@ class Filesystem {
 	 * Note that the resulting path is not guaranteed to be unique for the id, multiple paths can point to the same file
 	 *
 	 * @param int $id
+	 * @throws NotFoundException
 	 * @return string
 	 */
 	public static function getPath($id) {

@@ -1,12 +1,14 @@
 <?php
 /**
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Michael Roth <michael.roth@rz.uni-augsburg.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -31,16 +33,19 @@
 // use OCP namespace for all classes that are considered public.
 // This means that they should be used by apps instead of the internal ownCloud classes
 namespace OCP\Files;
-use OCP\Files\InvalidPathException;
+
+use OCP\Files\Storage\IStorage;
 use OCP\Lock\ILockingProvider;
 
 /**
  * Provide a common interface to all different storage options
  *
  * All paths passed to the storage are relative to the storage and should NOT have a leading slash.
+ *
  * @since 6.0.0
+ * @deprecated 9.0.0 use \OCP\Files\Storage\IStorage instead
  */
-interface Storage {
+interface Storage extends IStorage {
 	/**
 	 * $parameters is a free form array with the configuration options needed to construct the storage
 	 *
@@ -61,6 +66,7 @@ interface Storage {
 
 	/**
 	 * see http://php.net/manual/en/function.mkdir.php
+	 * implementations need to implement a recursive mkdir
 	 *
 	 * @param string $path
 	 * @return bool
@@ -324,15 +330,6 @@ interface Storage {
 	 */
 	public function getLocalFile($path);
 
-	/**
-	 * get the path to a local version of the folder.
-	 * The local version of the folder can be temporary and doesn't have to be persistent across requests
-	 *
-	 * @param string $path
-	 * @return string|false
-	 * @since 6.0.0
-	 */
-	public function getLocalFolder($path);
 	/**
 	 * check if a file or folder has been updated since $time
 	 *

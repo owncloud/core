@@ -1,7 +1,10 @@
 <?php
 /**
+ * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -69,6 +72,7 @@ class UpdateJS extends Command {
 
 		//Remove duplicates
 		$files = array_values(array_unique($files));
+		sort($files);
 
 		// Fetch all themes!
 		$themes = [];
@@ -98,6 +102,7 @@ class UpdateJS extends Command {
 
 			//Remove Duplicates
 			$themes[$theme] = array_values(array_unique($themes[$theme]));
+			sort($themes[$theme]);
 		}
 
 		//Generate the JS

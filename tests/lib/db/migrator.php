@@ -15,6 +15,13 @@ use \Doctrine\DBAL\Schema\Schema;
 use \Doctrine\DBAL\Schema\SchemaConfig;
 use OCP\IConfig;
 
+/**
+ * Class Migrator
+ *
+ * @group DB
+ *
+ * @package Test\DB
+ */
 class Migrator extends \Test\TestCase {
 	/**
 	 * @var \Doctrine\DBAL\Connection $connection
@@ -38,7 +45,7 @@ class Migrator extends \Test\TestCase {
 		parent::setUp();
 
 		$this->config = \OC::$server->getConfig();
-		$this->connection = \OC_DB::getConnection();
+		$this->connection = \OC::$server->getDatabaseConnection();
 		if ($this->connection->getDatabasePlatform() instanceof OraclePlatform) {
 			$this->markTestSkipped('DB migration tests are not supported on OCI');
 		}

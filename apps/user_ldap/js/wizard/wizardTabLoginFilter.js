@@ -32,7 +32,7 @@ OCA = OCA || {};
 					setMethod: 'setLoginAttributeEmail'
 				},
 				ldap_login_filter_mode: {
-					setMethod: 'setFilterMode'
+					setMethod: 'setFilterModeOnce'
 				},
 				ldap_loginfilter_attributes: {
 					$element: $('#ldap_loginfilter_attributes'),
@@ -241,7 +241,11 @@ OCA = OCA || {};
 		onTestLoginnameChange: function() {
 			var loginName = this.managedItems.ldap_test_loginname.$element.val();
 			var beDisabled = !_.isString(loginName) || !loginName.trim();
-			this.managedItems.ldap_test_loginname.$relatedElements.prop('disabled', beDisabled);
+			if(beDisabled) {
+				this.disableElement(this.managedItems.ldap_test_loginname.$relatedElements);
+			} else {
+				this.enableElement(this.managedItems.ldap_test_loginname.$relatedElements);
+			}
 		}
 
 	});

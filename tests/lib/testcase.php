@@ -24,13 +24,57 @@ namespace Test;
 
 use OC\Command\QueueBus;
 use OC\Files\Filesystem;
+use OCP\DB\QueryBuilder\IQueryBuilder;
+use OCP\IDBConnection;
 use OCP\Security\ISecureRandom;
 
 abstract class TestCase extends \PHPUnit_Framework_TestCase {
-	/**
-	 * @var \OC\Command\QueueBus
-	 */
+	/** @var \OC\Command\QueueBus */
 	private $commandBus;
+
+	/** @var IDBConnection */
+	static protected $realDatabase = null;
+	static private $wasDatabaseAllowed = false;
+
+	/** @var array */
+	protected $services = [];
+
+	/**
+	 * @param string $name
+	 * @param mixed $newService
+	 * @return bool
+	 */
+	public function overwriteService($name, $newService) {
+		if (isset($this->services[$name])) {
+			return false;
+		}
+
+		$this->services[$name] = \OC::$server->query($name);
+		\OC::$server->registerService($name, function () use ($newService) {
+			return $newService;
+		});
+
+		return true;
+	}
+
+	/**
+	 * @param string $name
+	 * @return bool
+	 */
+	public function restoreService($name) {
+		if (isset($this->services[$name])) {
+			$oldService = $this->services[$name];
+			\OC::$server->registerService($name, function () use ($oldService) {
+				return $oldService;
+			});
+
+
+			unset($this->services[$name]);
+			return true;
+		}
+
+		return false;
+	}
 
 	protected function getTestTraits() {
 		$traits = [];
@@ -48,6 +92,18 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function setUp() {
+		// detect database access
+		self::$wasDatabaseAllowed = true;
+		if (!$this->IsDatabaseAccessAllowed()) {
+			self::$wasDatabaseAllowed = false;
+			if (is_null(self::$realDatabase)) {
+				self::$realDatabase = \OC::$server->getDatabaseConnection();
+			}
+			\OC::$server->registerService('DatabaseConnection', function () {
+				$this->fail('Your test case is not allowed to access the database.');
+			});
+		}
+
 		// overwrite the command bus with one we can run ourselves
 		$this->commandBus = new QueueBus();
 		\OC::$server->registerService('AsyncCommandBus', function () {
@@ -64,6 +120,14 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function tearDown() {
+		// restore database connection
+		if (!$this->IsDatabaseAccessAllowed()) {
+			\OC::$server->registerService('DatabaseConnection', function () {
+				return self::$realDatabase;
+			});
+		}
+
+		// further cleanup
 		$hookExceptions = \OC_Hook::$thrownExceptions;
 		\OC_Hook::$thrownExceptions = [];
 		\OC::$server->getLockingProvider()->releaseAll();
@@ -71,6 +135,12 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 			throw $hookExceptions[0];
 		}
 
+		// fail hard if xml errors have not been cleaned up
+		$errors = libxml_get_errors();
+		libxml_clear_errors();
+		$this->assertEquals([], $errors);
+
+		// tearDown the traits
 		$traits = $this->getTestTraits();
 		foreach ($traits as $trait) {
 			$methodName = 'tearDown' . basename(str_replace('\\', '/', $trait));
@@ -120,7 +190,7 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 	 * @return string
 	 */
 	protected static function getUniqueID($prefix = '', $length = 13) {
-		return $prefix . \OC::$server->getSecureRandom()->getLowStrengthGenerator()->generate(
+		return $prefix . \OC::$server->getSecureRandom()->generate(
 			$length,
 			// Do not use dots and slashes as we use the value for file names
 			ISecureRandom::CHAR_DIGITS . ISecureRandom::CHAR_LOWER . ISecureRandom::CHAR_UPPER
@@ -128,10 +198,21 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	public static function tearDownAfterClass() {
+		if (!self::$wasDatabaseAllowed && self::$realDatabase !== null) {
+			// in case an error is thrown in a test, PHPUnit jumps straight to tearDownAfterClass,
+			// so we need the database again
+			\OC::$server->registerService('DatabaseConnection', function () {
+				return self::$realDatabase;
+			});
+		}
 		$dataDir = \OC::$server->getConfig()->getSystemValue('datadirectory', \OC::$SERVERROOT . '/data-autotest');
+		if (self::$wasDatabaseAllowed && \OC::$server->getDatabaseConnection()) {
+			$queryBuilder = \OC::$server->getDatabaseConnection()->getQueryBuilder();
 
-		self::tearDownAfterClassCleanStorages();
-		self::tearDownAfterClassCleanFileCache();
+			self::tearDownAfterClassCleanShares($queryBuilder);
+			self::tearDownAfterClassCleanStorages($queryBuilder);
+			self::tearDownAfterClassCleanFileCache($queryBuilder);
+		}
 		self::tearDownAfterClassCleanStrayDataFiles($dataDir);
 		self::tearDownAfterClassCleanStrayHooks();
 		self::tearDownAfterClassCleanStrayLocks();
@@ -140,25 +221,33 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * Remove all entries from the share table
+	 *
+	 * @param IQueryBuilder $queryBuilder
+	 */
+	static protected function tearDownAfterClassCleanShares(IQueryBuilder $queryBuilder) {
+		$queryBuilder->delete('share')
+			->execute();
+	}
+
+	/**
 	 * Remove all entries from the storages table
 	 *
-	 * @throws \OC\DatabaseException
+	 * @param IQueryBuilder $queryBuilder
 	 */
-	static protected function tearDownAfterClassCleanStorages() {
-		$sql = 'DELETE FROM `*PREFIX*storages`';
-		$query = \OC_DB::prepare($sql);
-		$query->execute();
+	static protected function tearDownAfterClassCleanStorages(IQueryBuilder $queryBuilder) {
+		$queryBuilder->delete('storages')
+			->execute();
 	}
 
 	/**
 	 * Remove all entries from the filecache table
 	 *
-	 * @throws \OC\DatabaseException
+	 * @param IQueryBuilder $queryBuilder
 	 */
-	static protected function tearDownAfterClassCleanFileCache() {
-		$sql = 'DELETE FROM `*PREFIX*filecache`';
-		$query = \OC_DB::prepare($sql);
-		$query->execute();
+	static protected function tearDownAfterClassCleanFileCache(IQueryBuilder $queryBuilder) {
+		$queryBuilder->delete('filecache')
+			->execute();
 	}
 
 	/**
@@ -304,5 +393,19 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 			// the lock of $type was in place
 			return true;
 		}
+	}
+
+	private function IsDatabaseAccessAllowed() {
+		// on travis-ci.org we allow database access in any case - otherwise
+		// this will break all apps right away
+		if (true == getenv('TRAVIS')) {
+			return true;
+		}
+		$annotations = $this->getAnnotations();
+		if (isset($annotations['class']['group']) && in_array('DB', $annotations['class']['group'])) {
+			return true;
+		}
+
+		return false;
 	}
 }

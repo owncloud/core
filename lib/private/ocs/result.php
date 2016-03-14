@@ -5,10 +5,11 @@
  * @author Christopher Schäpers <kondou@ts.unde.re>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Tom Needham <tom@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -50,8 +51,9 @@ class OC_OCS_Result{
 	 * @param mixed $data the data to return
 	 * @param int $code
 	 * @param null|string $message
+	 * @param array $headers
 	 */
-	public function __construct($data=null, $code=100, $message=null) {
+	public function __construct($data = null, $code = 100, $message = null, $headers = []) {
 		if ($data === null) {
 			$this->data = array();
 		} elseif (!is_array($data)) {
@@ -61,6 +63,7 @@ class OC_OCS_Result{
 		}
 		$this->statusCode = $code;
 		$this->message = $message;
+		$this->headers = $headers;
 	}
 
 	/**

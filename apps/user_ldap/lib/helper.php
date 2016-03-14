@@ -8,7 +8,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -27,7 +27,6 @@
 
 namespace OCA\user_ldap\lib;
 
-use OCA\user_ldap\lib\LDAP;
 use OCA\user_ldap\User_Proxy;
 
 class Helper {
@@ -63,7 +62,7 @@ class Helper {
 		';
 
 		if($activeConfigurations) {
-			if (\OC_Config::getValue( 'dbtype', 'sqlite' ) === 'oci') {
+			if (\OC::$server->getConfig()->getSystemValue( 'dbtype', 'sqlite' ) === 'oci') {
 				//FIXME oracle hack: need to explicitly cast CLOB to CHAR for comparison
 				$sql .= ' AND to_char(`configvalue`)=\'1\'';
 			} else {

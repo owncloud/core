@@ -2,10 +2,8 @@
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
- * @author Morris Jobke <hey@morrisjobke.de>
- * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -57,9 +55,14 @@ class EncryptionTest extends TestCase {
 	/** @var \PHPUnit_Framework_MockObject_MockObject */
 	private $l10nMock;
 
+	/** @var \PHPUnit_Framework_MockObject_MockObject */
+	private $storageMock;
+
 	public function setUp() {
 		parent::setUp();
 
+		$this->storageMock = $this->getMockBuilder('OCP\Files\Storage')
+			->disableOriginalConstructor()->getMock();
 		$this->cryptMock = $this->getMockBuilder('OCA\Encryption\Crypto\Crypt')
 			->disableOriginalConstructor()
 			->getMock();
@@ -226,7 +229,7 @@ class EncryptionTest extends TestCase {
 
 	public function dataTestBegin() {
 		return array(
-			array('w', ['cipher' => 'myCipher'], 'legacyCipher', 'defaultCipher', 'fileKey', 'myCipher'),
+			array('w', ['cipher' => 'myCipher'], 'legacyCipher', 'defaultCipher', 'fileKey', 'defaultCipher'),
 			array('r', ['cipher' => 'myCipher'], 'legacyCipher', 'defaultCipher', 'fileKey', 'myCipher'),
 			array('w', [], 'legacyCipher', 'defaultCipher', '', 'defaultCipher'),
 			array('r', [], 'legacyCipher', 'defaultCipher', 'file_key', 'legacyCipher'),
@@ -295,6 +298,9 @@ class EncryptionTest extends TestCase {
 				return $publicKeys;
 			});
 
+		$this->keyManagerMock->expects($this->never())->method('getVersion');
+		$this->keyManagerMock->expects($this->never())->method('setVersion');
+
 		$this->assertSame($expected,
 			$this->instance->update('path', 'user1', ['users' => ['user1']])
 		);
@@ -308,13 +314,39 @@ class EncryptionTest extends TestCase {
 		);
 	}
 
+	public function testUpdateNoUsers() {
+
+		$this->invokePrivate($this->instance, 'rememberVersion', [['path' => 2]]);
+
+		$this->keyManagerMock->expects($this->never())->method('getFileKey');
+		$this->keyManagerMock->expects($this->never())->method('getPublicKey');
+		$this->keyManagerMock->expects($this->never())->method('addSystemKeys');
+		$this->keyManagerMock->expects($this->once())->method('setVersion')
+			->willReturnCallback(function($path, $version, $view) {
+				$this->assertSame('path', $path);
+				$this->assertSame(2, $version);
+				$this->assertTrue($view instanceof \OC\Files\View);
+			});
+		$this->instance->update('path', 'user1', []);
+	}
+
 	/**
 	 * by default the encryption module should encrypt regular files, files in
 	 * files_versions and files in files_trashbin
 	 *
 	 * @dataProvider dataTestShouldEncrypt
 	 */
-	public function testShouldEncrypt($path, $expected) {
+	public function testShouldEncrypt($path, $shouldEncryptHomeStorage, $isHomeStorage, $expected) {
+		$this->utilMock->expects($this->once())->method('shouldEncryptHomeStorage')
+			->willReturn($shouldEncryptHomeStorage);
+
+		if ($shouldEncryptHomeStorage === false) {
+			$this->storageMock->expects($this->once())->method('instanceOfStorage')
+				->with('\OCP\Files\IHomeStorage')->willReturn($isHomeStorage);
+			$this->utilMock->expects($this->once())->method('getStorage')->with($path)
+				->willReturn($this->storageMock);
+		}
+
 		$this->assertSame($expected,
 			$this->instance->shouldEncrypt($path)
 		);
@@ -322,14 +354,17 @@ class EncryptionTest extends TestCase {
 
 	public function dataTestShouldEncrypt() {
 		return array(
-			array('/user1/files/foo.txt', true),
-			array('/user1/files_versions/foo.txt', true),
-			array('/user1/files_trashbin/foo.txt', true),
-			array('/user1/some_folder/foo.txt', false),
-			array('/user1/foo.txt', false),
-			array('/user1/files', false),
-			array('/user1/files_trashbin', false),
-			array('/user1/files_versions', false),
+			array('/user1/files/foo.txt', true, true, true),
+			array('/user1/files_versions/foo.txt', true, true, true),
+			array('/user1/files_trashbin/foo.txt', true, true, true),
+			array('/user1/some_folder/foo.txt', true, true, false),
+			array('/user1/foo.txt', true, true, false),
+			array('/user1/files', true, true, false),
+			array('/user1/files_trashbin', true, true, false),
+			array('/user1/files_versions', true, true, false),
+			// test if shouldEncryptHomeStorage is set to false
+			array('/user1/files/foo.txt', false, true, false),
+			array('/user1/files_versions/foo.txt', false, false, true),
 		);
 	}
 

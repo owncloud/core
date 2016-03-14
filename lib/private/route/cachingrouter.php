@@ -3,7 +3,7 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -22,6 +22,8 @@
 
 namespace OC\Route;
 
+use OCP\ILogger;
+
 class CachingRouter extends Router {
 	/**
 	 * @var \OCP\ICache
@@ -30,10 +32,11 @@ class CachingRouter extends Router {
 
 	/**
 	 * @param \OCP\ICache $cache
+	 * @param ILogger $logger
 	 */
-	public function __construct($cache) {
+	public function __construct($cache, ILogger $logger) {
 		$this->cache = $cache;
-		parent::__construct();
+		parent::__construct($logger);
 	}
 
 	/**
@@ -46,7 +49,7 @@ class CachingRouter extends Router {
 	 */
 	public function generate($name, $parameters = array(), $absolute = false) {
 		asort($parameters);
-		$key = $this->context->getHost() . '#' . $this->context->getBaseUrl() . $name . json_encode($parameters) . intval($absolute);
+		$key = $this->context->getHost() . '#' . $this->context->getBaseUrl() . $name . sha1(json_encode($parameters)) . intval($absolute);
 		if ($this->cache->hasKey($key)) {
 			return $this->cache->get($key);
 		} else {

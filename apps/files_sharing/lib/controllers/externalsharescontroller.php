@@ -3,8 +3,10 @@
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin Appelman <icewind@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -36,8 +38,6 @@ use OCP\AppFramework\Http\DataResponse;
  */
 class ExternalSharesController extends Controller {
 
-	/** @var bool */
-	private $incomingShareEnabled;
 	/** @var \OCA\Files_Sharing\External\Manager */
 	private $externalManager;
 	/** @var IClientService */
@@ -46,59 +46,49 @@ class ExternalSharesController extends Controller {
 	/**
 	 * @param string $appName
 	 * @param IRequest $request
-	 * @param bool $incomingShareEnabled
 	 * @param \OCA\Files_Sharing\External\Manager $externalManager
 	 * @param IClientService $clientService
 	 */
 	public function __construct($appName,
 								IRequest $request,
-								$incomingShareEnabled,
 								\OCA\Files_Sharing\External\Manager $externalManager,
 								IClientService $clientService) {
 		parent::__construct($appName, $request);
-		$this->incomingShareEnabled = $incomingShareEnabled;
 		$this->externalManager = $externalManager;
 		$this->clientService = $clientService;
 	}
 
 	/**
 	 * @NoAdminRequired
+	 * @NoOutgoingFederatedSharingRequired
 	 *
 	 * @return JSONResponse
 	 */
 	public function index() {
-		$shares = [];
-		if ($this->incomingShareEnabled) {
-			$shares = $this->externalManager->getOpenShares();
-		}
-		return new JSONResponse($shares);
+		return new JSONResponse($this->externalManager->getOpenShares());
 	}
 
 	/**
 	 * @NoAdminRequired
+	 * @NoOutgoingFederatedSharingRequired
 	 *
 	 * @param int $id
 	 * @return JSONResponse
 	 */
 	public function create($id) {
-		if ($this->incomingShareEnabled) {
-			$this->externalManager->acceptShare($id);
-		}
-
+		$this->externalManager->acceptShare($id);
 		return new JSONResponse();
 	}
 
 	/**
 	 * @NoAdminRequired
+	 * @NoOutgoingFederatedSharingRequired
 	 *
-	 * @param $id
+	 * @param integer $id
 	 * @return JSONResponse
 	 */
 	public function destroy($id) {
-		if ($this->incomingShareEnabled) {
-			$this->externalManager->declineShare($id);
-		}
-
+		$this->externalManager->declineShare($id);
 		return new JSONResponse();
 	}
 
@@ -106,9 +96,10 @@ class ExternalSharesController extends Controller {
 	 * Test whether the specified remote is accessible
 	 *
 	 * @param string $remote
+	 * @param bool $checkVersion
 	 * @return bool
 	 */
-	protected function testUrl($remote) {
+	protected function testUrl($remote, $checkVersion = false) {
 		try {
 			$client = $this->clientService->newClient();
 			$response = json_decode($client->get(
@@ -119,7 +110,11 @@ class ExternalSharesController extends Controller {
 				]
 			)->getBody());
 
-			return !empty($response->version) && version_compare($response->version, '7.0.0', '>=');
+			if ($checkVersion) {
+				return !empty($response->version) && version_compare($response->version, '7.0.0', '>=');
+			} else {
+				return is_object($response);
+			}
 		} catch (\Exception $e) {
 			return false;
 		}
@@ -127,14 +122,24 @@ class ExternalSharesController extends Controller {
 
 	/**
 	 * @PublicPage
+	 * @NoOutgoingFederatedSharingRequired
+	 * @NoIncomingFederatedSharingRequired
 	 *
 	 * @param string $remote
 	 * @return DataResponse
 	 */
 	public function testRemote($remote) {
-		if ($this->testUrl('https://' . $remote . '/status.php')) {
+		if (
+			$this->testUrl('https://' . $remote . '/ocs-provider/') ||
+			$this->testUrl('https://' . $remote . '/ocs-provider/index.php') ||
+			$this->testUrl('https://' . $remote . '/status.php', true)
+		) {
 			return new DataResponse('https');
-		} elseif ($this->testUrl('http://' . $remote . '/status.php')) {
+		} elseif (
+			$this->testUrl('http://' . $remote . '/ocs-provider/') ||
+			$this->testUrl('http://' . $remote . '/ocs-provider/index.php') ||
+			$this->testUrl('http://' . $remote . '/status.php', true)
+		) {
 			return new DataResponse('http');
 		} else {
 			return new DataResponse(false);

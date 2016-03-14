@@ -1,8 +1,9 @@
 <?php
 /**
  * @author Lukas Reschke <lukas@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -32,8 +33,6 @@ use OCP\IRequest;
  * @package OCA\Files_Sharing\Controllers
  */
 class ExternalShareControllerTest extends \Test\TestCase {
-	/** @var bool */
-	private $incomingShareEnabled;
 	/** @var IRequest */
 	private $request;
 	/** @var \OCA\Files_Sharing\External\Manager */
@@ -57,22 +56,12 @@ class ExternalShareControllerTest extends \Test\TestCase {
 		return new ExternalSharesController(
 			'files_sharing',
 			$this->request,
-			$this->incomingShareEnabled,
 			$this->externalManager,
 			$this->clientService
 		);
 	}
 
-	public function testIndexDisabled() {
-		$this->externalManager
-			->expects($this->never())
-			->method('getOpenShares');
-
-		$this->assertEquals(new JSONResponse(), $this->getExternalShareController()->index());
-	}
-
-	public function testIndexEnabled() {
-		$this->incomingShareEnabled = true;
+	public function testIndex() {
 		$this->externalManager
 			->expects($this->once())
 			->method('getOpenShares')
@@ -81,16 +70,7 @@ class ExternalShareControllerTest extends \Test\TestCase {
 		$this->assertEquals(new JSONResponse(['MyDummyArray']), $this->getExternalShareController()->index());
 	}
 
-	public function testCreateDisabled() {
-		$this->externalManager
-			->expects($this->never())
-			->method('acceptShare');
-
-		$this->assertEquals(new JSONResponse(), $this->getExternalShareController()->create(4));
-	}
-
-	public function testCreateEnabled() {
-		$this->incomingShareEnabled = true;
+	public function testCreate() {
 		$this->externalManager
 			->expects($this->once())
 			->method('acceptShare')
@@ -99,16 +79,7 @@ class ExternalShareControllerTest extends \Test\TestCase {
 		$this->assertEquals(new JSONResponse(), $this->getExternalShareController()->create(4));
 	}
 
-	public function testDestroyDisabled() {
-		$this->externalManager
-			->expects($this->never())
-			->method('destroy');
-
-		$this->assertEquals(new JSONResponse(), $this->getExternalShareController()->destroy(4));
-	}
-
-	public function testDestroyEnabled() {
-		$this->incomingShareEnabled = true;
+	public function testDestroy() {
 		$this->externalManager
 			->expects($this->once())
 			->method('declineShare')
@@ -122,23 +93,17 @@ class ExternalShareControllerTest extends \Test\TestCase {
 			->disableOriginalConstructor()->getMock();
 		$response = $this->getMockBuilder('\\OCP\\Http\\Client\\IResponse')
 			->disableOriginalConstructor()->getMock();
-		$client
-			->expects($this->once())
-			->method('get')
-			->with(
-				'https://owncloud.org/status.php',
-				[
-					'timeout' => 3,
-					'connect_timeout' => 3,
-				]
-			)->will($this->returnValue($response));
 		$response
-			->expects($this->once())
+			->expects($this->exactly(2))
 			->method('getBody')
-			->will($this->returnValue('{"installed":true,"maintenance":false,"version":"8.1.0.8","versionstring":"8.1.0","edition":""}'));
+			->will($this->onConsecutiveCalls('Certainly not a JSON string', '{"installed":true,"maintenance":false,"version":"8.1.0.8","versionstring":"8.1.0","edition":""}'));
+		$client
+			->expects($this->any())
+			->method('get')
+			->will($this->returnValue($response));
 
 		$this->clientService
-			->expects($this->once())
+			->expects($this->exactly(2))
 			->method('newClient')
 			->will($this->returnValue($client));
 
@@ -152,13 +117,13 @@ class ExternalShareControllerTest extends \Test\TestCase {
 			->disableOriginalConstructor()->getMock();
 		$client
 			->method('get')
-			->will($this->onConsecutiveCalls($response, $response));
+			->will($this->returnValue($response));
 		$response
-			->expects($this->exactly(2))
+			->expects($this->exactly(5))
 			->method('getBody')
-			->will($this->onConsecutiveCalls('Certainly not a JSON string', '{"installed":true,"maintenance":false,"version":"8.1.0.8","versionstring":"8.1.0","edition":""}'));
+			->will($this->onConsecutiveCalls('Certainly not a JSON string', 'Certainly not a JSON string', 'Certainly not a JSON string', 'Certainly not a JSON string', '{"installed":true,"maintenance":false,"version":"8.1.0.8","versionstring":"8.1.0","edition":""}'));
 		$this->clientService
-			->expects($this->exactly(2))
+			->expects($this->exactly(5))
 			->method('newClient')
 			->will($this->returnValue($client));
 
@@ -172,13 +137,13 @@ class ExternalShareControllerTest extends \Test\TestCase {
 			->disableOriginalConstructor()->getMock();
 		$client
 			->method('get')
-			->will($this->onConsecutiveCalls($response, $response));
+			->will($this->returnValue($response));
 		$response
-			->expects($this->exactly(2))
+			->expects($this->exactly(6))
 			->method('getBody')
 			->will($this->returnValue('Certainly not a JSON string'));
 		$this->clientService
-			->expects($this->exactly(2))
+			->expects($this->exactly(6))
 			->method('newClient')
 			->will($this->returnValue($client));
 

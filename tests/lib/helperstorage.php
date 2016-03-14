@@ -8,8 +8,9 @@
 
 /**
  * Test the storage functions of OC_Helper
+ *
+ * @group DB
  */
-
 class Test_Helper_Storage extends \Test\TestCase {
 	/** @var string */
 	private $user;
@@ -22,7 +23,7 @@ class Test_Helper_Storage extends \Test\TestCase {
 		parent::setUp();
 
 		$this->user = $this->getUniqueID('user_');
-		\OC_User::createUser($this->user, $this->user);
+		\OC::$server->getUserManager()->createUser($this->user, $this->user);
 
 		$this->storage = \OC\Files\Filesystem::getStorage('/');
 		\OC\Files\Filesystem::tearDown();
@@ -44,7 +45,8 @@ class Test_Helper_Storage extends \Test\TestCase {
 		\OC\Files\Filesystem::mount($this->storage, array(), '/');
 
 		\OC_User::setUserId('');
-		\OC_User::deleteUser($this->user);
+		$user = \OC::$server->getUserManager()->get($this->user);
+		if ($user !== null) { $user->delete(); }
 		\OC::$server->getConfig()->deleteAllUserValues($this->user);
 
 		parent::tearDown();
@@ -119,19 +121,19 @@ class Test_Helper_Storage extends \Test\TestCase {
 
 		\OC\Files\Filesystem::mount($extStorage, array(), '/' . $this->user . '/files/ext');
 
-		$oldConfig = \OC_Config::getValue('quota_include_external_storage', false);
-		\OC_Config::setValue('quota_include_external_storage', 'true');
-
 		$config = \OC::$server->getConfig();
-		$userQuota = $config->setUserValue($this->user, 'files', 'quota', '25');
+		$oldConfig = $config->getSystemValue('quota_include_external_storage', false);
+		$config->setSystemValue('quota_include_external_storage', 'true');
+
+		$config->setUserValue($this->user, 'files', 'quota', '25');
 
 		$storageInfo = \OC_Helper::getStorageInfo('');
 		$this->assertEquals(3, $storageInfo['free']);
 		$this->assertEquals(22, $storageInfo['used']);
 		$this->assertEquals(25, $storageInfo['total']);
 
-		\OC_Config::setValue('quota_include_external_storage', $oldConfig);
-		$userQuota = $config->setUserValue($this->user, 'files', 'quota', 'default');
+		$config->setSystemValue('quota_include_external_storage', $oldConfig);
+		$config->setUserValue($this->user, 'files', 'quota', 'default');
 	}
 
 	/**
@@ -150,15 +152,16 @@ class Test_Helper_Storage extends \Test\TestCase {
 
 		\OC\Files\Filesystem::mount($extStorage, array(), '/' . $this->user . '/files/ext');
 
-		$oldConfig = \OC_Config::getValue('quota_include_external_storage', false);
-		\OC_Config::setValue('quota_include_external_storage', 'true');
+		$config = \OC::$server->getConfig();
+		$oldConfig = $config->getSystemValue('quota_include_external_storage', false);
+		$config->setSystemValue('quota_include_external_storage', 'true');
 
 		$storageInfo = \OC_Helper::getStorageInfo('');
 		$this->assertEquals(12, $storageInfo['free']);
 		$this->assertEquals(5, $storageInfo['used']);
 		$this->assertEquals(17, $storageInfo['total']);
 
-		\OC_Config::setValue('quota_include_external_storage', $oldConfig);
+		$config->setSystemValue('quota_include_external_storage', $oldConfig);
 	}
 
 

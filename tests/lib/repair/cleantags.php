@@ -7,9 +7,12 @@
  */
 
 namespace Test\Repair;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 
 /**
  * Tests for the cleaning the tags tables
+ *
+ * @group DB
  *
  * @see \OC\Repair\CleanTags
  */
@@ -121,8 +124,8 @@ class CleanTags extends \Test\TestCase {
 		$qb = $this->connection->getQueryBuilder();
 		$qb->insert('vcategory_to_object')
 			->values([
-				'objid'			=> $qb->createNamedParameter($objectId, \PDO::PARAM_INT),
-				'categoryid'	=> $qb->createNamedParameter($category, \PDO::PARAM_INT),
+				'objid'			=> $qb->createNamedParameter($objectId, IQueryBuilder::PARAM_INT),
+				'categoryid'	=> $qb->createNamedParameter($category, IQueryBuilder::PARAM_INT),
 				'type'			=> $qb->createNamedParameter($type),
 			])
 			->execute();
@@ -165,20 +168,6 @@ class CleanTags extends \Test\TestCase {
 	 * @return int
 	 */
 	protected function getLastInsertID($tableName, $idName) {
-		$id = $this->connection->lastInsertId();
-		if ($id) {
-			return $id;
-		}
-
-		// FIXME !!!! ORACLE WORKAROUND DO NOT COPY
-		// FIXME INSTEAD HELP FIXING DOCTRINE
-		// FIXME https://github.com/owncloud/core/issues/13303
-		// FIXME ALSO FIX https://github.com/owncloud/core/commit/2dd85ec984c12d3be401518f22c90d2327bec07a
-		$qb = $this->connection->getQueryBuilder();
-		$result = $qb->select($qb->createFunction('MAX(`' . $idName . '`)'))
-			->from($tableName)
-			->execute();
-
-		return (int) $result->fetchColumn();
+		return $this->connection->lastInsertId("*PREFIX*$tableName");
 	}
 }

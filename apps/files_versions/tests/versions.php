@@ -1,14 +1,18 @@
 <?php
 /**
+ * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Georg Ehrke <georg@owncloud.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -32,6 +36,8 @@ use OC\Files\Storage\Temporary;
 /**
  * Class Test_Files_versions
  * this class provide basic files versions test
+ *
+ * @group DB
  */
 class Test_Files_Versioning extends \Test\TestCase {
 
@@ -49,7 +55,6 @@ class Test_Files_Versioning extends \Test\TestCase {
 
 		$application = new \OCA\Files_Sharing\AppInfo\Application();
 		$application->registerMountProviders();
-		$application->setupPropagation();
 
 		// create test user
 		self::loginHelper(self::TEST_VERSIONS_USER2, true);
@@ -58,8 +63,10 @@ class Test_Files_Versioning extends \Test\TestCase {
 
 	public static function tearDownAfterClass() {
 		// cleanup test user
-		\OC_User::deleteUser(self::TEST_VERSIONS_USER);
-		\OC_User::deleteUser(self::TEST_VERSIONS_USER2);
+		$user = \OC::$server->getUserManager()->get(self::TEST_VERSIONS_USER);
+		if ($user !== null) { $user->delete(); }
+		$user = \OC::$server->getUserManager()->get(self::TEST_VERSIONS_USER2);
+		if ($user !== null) { $user->delete(); }
 
 		parent::tearDownAfterClass();
 	}
@@ -80,10 +87,12 @@ class Test_Files_Versioning extends \Test\TestCase {
 	}
 
 	protected function tearDown() {
-		$this->rootView->deleteAll(self::TEST_VERSIONS_USER . '/files/');
-		$this->rootView->deleteAll(self::TEST_VERSIONS_USER2 . '/files/');
-		$this->rootView->deleteAll(self::TEST_VERSIONS_USER . '/files_versions/');
-		$this->rootView->deleteAll(self::TEST_VERSIONS_USER2 . '/files_versions/');
+		if ($this->rootView) {
+			$this->rootView->deleteAll(self::TEST_VERSIONS_USER . '/files/');
+			$this->rootView->deleteAll(self::TEST_VERSIONS_USER2 . '/files/');
+			$this->rootView->deleteAll(self::TEST_VERSIONS_USER . '/files_versions/');
+			$this->rootView->deleteAll(self::TEST_VERSIONS_USER2 . '/files_versions/');
+		}
 
 		\OC_Hook::clear();
 
@@ -299,10 +308,9 @@ class Test_Files_Versioning extends \Test\TestCase {
 		// execute rename hook of versions app
 		\OC\Files\Filesystem::rename('/folder1/test.txt', '/folder1/folder2/test.txt');
 
-
-		self::loginHelper(self::TEST_VERSIONS_USER2);
-
 		$this->runCommands();
+
+		self::loginHelper(self::TEST_VERSIONS_USER);
 
 		$this->assertFalse($this->rootView->file_exists($v1));
 		$this->assertFalse($this->rootView->file_exists($v2));
@@ -645,7 +653,9 @@ class Test_Files_Versioning extends \Test\TestCase {
 			'path' => '/sub/test.txt',
 		);
 
-		$this->assertEquals($expectedParams, $params);
+		$this->assertEquals($expectedParams['path'], $params['path']);
+		$this->assertTrue(array_key_exists('revision', $params));
+		$this->assertTrue($params['revision'] > 0);
 
 		$this->assertEquals('version2', $this->rootView->file_get_contents($filePath));
 		$info2 = $this->rootView->getFileInfo($filePath);
@@ -758,7 +768,11 @@ class Test_Files_Versioning extends \Test\TestCase {
 		);
 	}
 
-	private function createAndCheckVersions($view, $path) {
+	/**
+	 * @param \OC\Files\View $view
+	 * @param string $path
+	 */
+	private function createAndCheckVersions(\OC\Files\View $view, $path) {
 		$view->file_put_contents($path, 'test file');
 		$view->file_put_contents($path, 'version 1');
 		$view->file_put_contents($path, 'version 2');
@@ -781,7 +795,6 @@ class Test_Files_Versioning extends \Test\TestCase {
 	/**
 	 * @param string $user
 	 * @param bool $create
-	 * @param bool $password
 	 */
 	public static function loginHelper($user, $create = false) {
 
@@ -792,9 +805,9 @@ class Test_Files_Versioning extends \Test\TestCase {
 		}
 
 		$storage = new \ReflectionClass('\OC\Files\Storage\Shared');
-		$isInitialized = $storage->getProperty('isInitialized');
+		$isInitialized = $storage->getProperty('initialized');
 		$isInitialized->setAccessible(true);
-		$isInitialized->setValue(array());
+		$isInitialized->setValue($storage, false);
 		$isInitialized->setAccessible(false);
 
 		\OC_Util::tearDownFS();

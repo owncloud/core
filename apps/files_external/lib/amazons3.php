@@ -7,15 +7,16 @@
  * @author Christopher T. Johnson <ctjctj@gmail.com>
  * @author Johan Björk <johanimon@gmail.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Martin Mattel <martin.mattel@diemattels.at>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Philipp Kapfer <philipp.kapfer@gmx.at>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -413,27 +414,6 @@ class AmazonS3 extends \OC\Files\Storage\Common {
 				self::$tmpFiles[$tmpFile] = $path;
 
 				return fopen('close://' . $tmpFile, $mode);
-		}
-		return false;
-	}
-
-	public function getMimeType($path) {
-		$path = $this->normalizePath($path);
-
-		if ($this->is_dir($path)) {
-			return 'httpd/unix-directory';
-		} else if ($this->file_exists($path)) {
-			try {
-				$result = $this->getConnection()->headObject(array(
-					'Bucket' => $this->bucket,
-					'Key' => $path
-				));
-			} catch (S3Exception $e) {
-				\OCP\Util::logException('files_external', $e);
-				return false;
-			}
-
-			return $result['ContentType'];
 		}
 		return false;
 	}

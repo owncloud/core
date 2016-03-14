@@ -23,6 +23,13 @@ namespace Test\Lock;
 
 use OCP\Lock\ILockingProvider;
 
+/**
+ * Class DBLockingProvider
+ *
+ * @group DB
+ *
+ * @package Test\Lock
+ */
 class DBLockingProvider extends LockingProvider {
 	/**
 	 * @var \OC\Lock\DBLockingProvider
@@ -78,13 +85,7 @@ class DBLockingProvider extends LockingProvider {
 
 		$this->assertEquals(3, $this->getLockEntryCount());
 
-		$this->instance->cleanEmptyLocks();
-
-		$this->assertEquals(3, $this->getLockEntryCount());
-
-		$this->instance->releaseAll();
-
-		$this->instance->cleanEmptyLocks();
+		$this->instance->cleanExpiredLocks();
 
 		$this->assertEquals(2, $this->getLockEntryCount());
 	}

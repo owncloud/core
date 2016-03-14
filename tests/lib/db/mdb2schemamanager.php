@@ -11,13 +11,20 @@ namespace Test\DB;
 
 use Doctrine\DBAL\Platforms\OraclePlatform;
 
+/**
+ * Class MDB2SchemaManager
+ *
+ * @group DB
+ *
+ * @package Test\DB
+ */
 class MDB2SchemaManager extends \Test\TestCase {
 
 	protected function tearDown() {
 		// do not drop the table for Oracle as it will create a bogus transaction
 		// that will break the following test suites requiring transactions
 		if (\OC::$server->getConfig()->getSystemValue('dbtype', 'sqlite') !== 'oci') {
-			\OC_DB::dropTable('table');
+			\OC::$server->getDatabaseConnection()->dropTable('table');
 		}
 
 		parent::tearDown();
@@ -25,7 +32,7 @@ class MDB2SchemaManager extends \Test\TestCase {
 
 	public function testAutoIncrement() {
 
-		$connection = \OC_DB::getConnection();
+		$connection = \OC::$server->getDatabaseConnection();
 		if ($connection->getDatabasePlatform() instanceof OraclePlatform) {
 			$this->markTestSkipped('Adding auto increment columns in Oracle is not supported.');
 		}

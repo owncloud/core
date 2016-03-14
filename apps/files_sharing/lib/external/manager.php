@@ -3,11 +3,12 @@
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Vincent Petry <pvince81@owncloud.com>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -27,8 +28,9 @@
 namespace OCA\Files_Sharing\External;
 
 use OC\Files\Filesystem;
+use OCA\FederatedFileSharing\DiscoveryManager;
 use OCP\Files;
-use OC\Notification\IManager;
+use OCP\Notification\IManager;
 
 class Manager {
 	const STORAGE = '\OCA\Files_Sharing\External\Storage';
@@ -62,6 +64,8 @@ class Manager {
 	 * @var IManager
 	 */
 	private $notificationManager;
+	/** @var DiscoveryManager */
+	private $discoveryManager;
 
 	/**
 	 * @param \OCP\IDBConnection $connection
@@ -69,16 +73,23 @@ class Manager {
 	 * @param \OCP\Files\Storage\IStorageFactory $storageLoader
 	 * @param \OC\HTTPHelper $httpHelper
 	 * @param IManager $notificationManager
+	 * @param DiscoveryManager $discoveryManager
 	 * @param string $uid
 	 */
-	public function __construct(\OCP\IDBConnection $connection, \OC\Files\Mount\Manager $mountManager,
-								\OCP\Files\Storage\IStorageFactory $storageLoader, \OC\HTTPHelper $httpHelper, IManager $notificationManager, $uid) {
+	public function __construct(\OCP\IDBConnection $connection,
+								\OC\Files\Mount\Manager $mountManager,
+								\OCP\Files\Storage\IStorageFactory $storageLoader,
+								\OC\HTTPHelper $httpHelper,
+								IManager $notificationManager,
+								DiscoveryManager $discoveryManager,
+								$uid) {
 		$this->connection = $connection;
 		$this->mountManager = $mountManager;
 		$this->storageLoader = $storageLoader;
 		$this->httpHelper = $httpHelper;
 		$this->uid = $uid;
 		$this->notificationManager = $notificationManager;
+		$this->discoveryManager = $discoveryManager;
 	}
 
 	/**
@@ -152,37 +163,15 @@ class Manager {
 		return $this->mountShare($options);
 	}
 
-	private function setupMounts() {
-		// don't setup server-to-server shares if the admin disabled it
-		if (\OCA\Files_Sharing\Helper::isIncomingServer2serverShareEnabled() === false) {
-			return false;
-		}
-
-		if (!is_null($this->uid)) {
-			$query = $this->connection->prepare('
-				SELECT `remote`, `share_token`, `password`, `mountpoint`, `owner`
-				FROM `*PREFIX*share_external`
-				WHERE `user` = ? AND `accepted` = ?
-			');
-			$query->execute(array($this->uid, 1));
-
-			while ($row = $query->fetch()) {
-				$row['manager'] = $this;
-				$row['token'] = $row['share_token'];
-				$this->mountShare($row);
-			}
-		}
-	}
-
 	/**
 	 * get share
 	 *
 	 * @param int $id share id
 	 * @return mixed share of false
 	 */
-	private function getShare($id) {
+	public function getShare($id) {
 		$getShare = $this->connection->prepare('
-			SELECT `remote`, `remote_id`, `share_token`, `name`
+			SELECT `id`, `remote`, `remote_id`, `share_token`, `name`, `owner`, `user`, `mountpoint`, `accepted`
 			FROM  `*PREFIX*share_external`
 			WHERE `id` = ? AND `user` = ?');
 		$result = $getShare->execute(array($id, $this->uid));
@@ -214,7 +203,9 @@ class Manager {
 			$acceptShare->execute(array(1, $mountPoint, $hash, $id, $this->uid));
 			$this->sendFeedbackToRemote($share['remote'], $share['share_token'], $share['remote_id'], 'accept');
 
-			//FIXME $this->scrapNotification($share['remote_id']);
+			\OC_Hook::emit('OCP\Share', 'federated_share_added', ['server' => $share['remote']]);
+
+			$this->processNotification($id);
 			return true;
 		}
 
@@ -237,7 +228,7 @@ class Manager {
 			$removeShare->execute(array($id, $this->uid));
 			$this->sendFeedbackToRemote($share['remote'], $share['share_token'], $share['remote_id'], 'decline');
 
-			//FIXME $this->scrapNotification($share['remote_id']);
+			$this->processNotification($id);
 			return true;
 		}
 
@@ -247,7 +238,7 @@ class Manager {
 	/**
 	 * @param int $remoteShare
 	 */
-	protected function scrapNotification($remoteShare) {
+	public function processNotification($remoteShare) {
 		$filter = $this->notificationManager->createNotification();
 		$filter->setApp('files_sharing')
 			->setUser($this->uid)
@@ -266,31 +257,13 @@ class Manager {
 	 */
 	private function sendFeedbackToRemote($remote, $token, $remoteId, $feedback) {
 
-		$url = rtrim($remote, '/') . \OCP\Share::BASE_PATH_TO_SHARE_API . '/' . $remoteId . '/' . $feedback . '?format=' . \OCP\Share::RESPONSE_FORMAT;
+		$url = rtrim($remote, '/') . $this->discoveryManager->getShareEndpoint($remote) . '/' . $remoteId . '/' . $feedback . '?format=' . \OCP\Share::RESPONSE_FORMAT;
 		$fields = array('token' => $token);
 
 		$result = $this->httpHelper->post($url, $fields);
 		$status = json_decode($result['result'], true);
 
-		return ($result['success'] && $status['ocs']['meta']['statuscode'] === 100);
-	}
-
-	/**
-	 * setup the server-to-server mounts
-	 *
-	 * @param array $params
-	 */
-	public static function setup(array $params) {
-		$externalManager = new \OCA\Files_Sharing\External\Manager(
-				\OC::$server->getDatabaseConnection(),
-				\OC\Files\Filesystem::getMountManager(),
-				\OC\Files\Filesystem::getLoader(),
-				\OC::$server->getHTTPHelper(),
-				\OC::$server->getNotificationManager(),
-				$params['user']
-		);
-
-		$externalManager->setupMounts();
+		return ($result['success'] && ($status['ocs']['meta']['statuscode'] === 100 || $status['ocs']['meta']['statuscode'] === 200));
 	}
 
 	/**
@@ -304,16 +277,20 @@ class Manager {
 		return rtrim(substr($path, strlen($prefix)), '/');
 	}
 
+	public function getMount($data) {
+		$data['manager'] = $this;
+		$mountPoint = '/' . $this->uid . '/files' . $data['mountpoint'];
+		$data['mountpoint'] = $mountPoint;
+		$data['certificateManager'] = \OC::$server->getCertificateManager($this->uid);
+		return new Mount(self::STORAGE, $mountPoint, $data, $this, $this->storageLoader);
+	}
+
 	/**
 	 * @param array $data
 	 * @return Mount
 	 */
 	protected function mountShare($data) {
-		$data['manager'] = $this;
-		$mountPoint = '/' . $this->uid . '/files' . $data['mountpoint'];
-		$data['mountpoint'] = $mountPoint;
-		$data['certificateManager'] = \OC::$server->getCertificateManager($this->uid);
-		$mount = new Mount(self::STORAGE, $mountPoint, $data, $this, $this->storageLoader);
+		$mount = $this->getMount($data);
 		$this->mountManager->addMount($mount);
 		return $mount;
 	}
@@ -407,6 +384,15 @@ class Manager {
 	}
 
 	/**
+	 * return a list of shares wich are accepted by the user
+	 *
+	 * @return array list of accepted server-to-server shares
+	 */
+	public function getAcceptedShares() {
+		return $this->getShares(true);
+	}
+
+	/**
 	 * return a list of shares for the user
 	 *
 	 * @param bool|null $accepted True for accepted only,
@@ -415,7 +401,9 @@ class Manager {
 	 * @return array list of open server-to-server shares
 	 */
 	private function getShares($accepted) {
-		$query = 'SELECT * FROM `*PREFIX*share_external` WHERE `user` = ?';
+		$query = 'SELECT `id`, `remote`, `remote_id`, `share_token`, `name`, `owner`, `user`, `mountpoint`, `accepted`
+		          FROM `*PREFIX*share_external` 
+				  WHERE `user` = ?';
 		$parameters = [$this->uid];
 		if (!is_null($accepted)) {
 			$query .= ' AND `accepted` = ?';

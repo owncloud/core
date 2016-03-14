@@ -58,7 +58,7 @@ describe('OCA.Files.MainFileInfoDetailView tests', function() {
 			expect(view.$el.find('.fileName h3').attr('title')).toEqual('One.txt');
 			expect(view.$el.find('.size').text()).toEqual('117.7 MB');
 			expect(view.$el.find('.size').attr('title')).toEqual('123456789 bytes');
-			expect(view.$el.find('.date').text()).toEqual('a few seconds ago');
+			expect(view.$el.find('.date').text()).toEqual('seconds ago');
 			expect(view.$el.find('.date').attr('title')).toEqual(dateExpected);
 			clock.restore();
 		});
@@ -109,6 +109,20 @@ describe('OCA.Files.MainFileInfoDetailView tests', function() {
 
 			expect(view.$el.find('.thumbnail').css('background-image'))
 				.toContain('filetypes/folder.svg');
+
+			lazyLoadPreviewStub.restore();
+		});
+		it('uses icon from model if present in model', function() {
+			var lazyLoadPreviewStub = sinon.stub(fileList, 'lazyLoadPreview');
+			testFileInfo.set('mimetype', 'httpd/unix-directory');
+			testFileInfo.set('icon', OC.MimeType.getIconUrl('dir-external'));
+			view.setFileInfo(testFileInfo);
+
+			expect(lazyLoadPreviewStub.notCalled).toEqual(true);
+
+			expect(view.$el.find('.thumbnail').hasClass('icon-loading')).toEqual(false);
+			expect(view.$el.find('.thumbnail').css('background-image'))
+				.toContain('filetypes/folder-external.svg');
 
 			lazyLoadPreviewStub.restore();
 		});

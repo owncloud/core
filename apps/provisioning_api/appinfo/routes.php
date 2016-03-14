@@ -1,10 +1,13 @@
 <?php
 /**
  * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Lukas Reschke <lukas@owncloud.com>
+ * @author michag86 <micha_g@arcor.de>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Tom Needham <tom@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -30,10 +33,11 @@ $users = new \OCA\Provisioning_API\Users(
 	\OC::$server->getUserManager(),
 	\OC::$server->getConfig(),
 	\OC::$server->getGroupManager(),
-	\OC::$server->getUserSession()
+	\OC::$server->getUserSession(),
+	\OC::$server->getLogger()
 );
-API::register('get', '/cloud/users', [$users, 'getUsers'], 'provisioning_api', API::ADMIN_AUTH);
-API::register('post', '/cloud/users', [$users, 'addUser'], 'provisioning_api', API::ADMIN_AUTH);
+API::register('get', '/cloud/users', [$users, 'getUsers'], 'provisioning_api', API::SUBADMIN_AUTH);
+API::register('post', '/cloud/users', [$users, 'addUser'], 'provisioning_api', API::SUBADMIN_AUTH);
 API::register('get', '/cloud/users/{userid}', [$users, 'getUser'], 'provisioning_api', API::USER_AUTH);
 API::register('put', '/cloud/users/{userid}', [$users, 'editUser'], 'provisioning_api', API::USER_AUTH);
 API::register('delete', '/cloud/users/{userid}', [$users, 'deleteUser'], 'provisioning_api', API::SUBADMIN_AUTH);
@@ -47,7 +51,8 @@ API::register('get', '/cloud/users/{userid}/subadmins', [$users, 'getUserSubAdmi
 // Groups
 $groups = new \OCA\Provisioning_API\Groups(
 	\OC::$server->getGroupManager(),
-	\OC::$server->getUserSession()
+	\OC::$server->getUserSession(),
+	\OC::$server->getRequest()
 );
 API::register('get', '/cloud/groups', [$groups, 'getGroups'], 'provisioning_api', API::SUBADMIN_AUTH);
 API::register('post', '/cloud/groups', [$groups, 'addGroup'], 'provisioning_api', API::SUBADMIN_AUTH);
@@ -57,7 +62,8 @@ API::register('get', '/cloud/groups/{groupid}/subadmins', [$groups, 'getSubAdmin
 
 // Apps
 $apps = new \OCA\Provisioning_API\Apps(
-	\OC::$server->getAppManager()
+	\OC::$server->getAppManager(),
+	\OC::$server->getOcsClient()
 );
 API::register('get', '/cloud/apps', [$apps, 'getApps'], 'provisioning_api', API::ADMIN_AUTH);
 API::register('get', '/cloud/apps/{appid}', [$apps, 'getAppInfo'], 'provisioning_api', API::ADMIN_AUTH);

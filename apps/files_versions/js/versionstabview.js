@@ -85,12 +85,18 @@
 			ev.preventDefault();
 			revision = $target.attr('data-revision');
 
+			this.$el.find('.versions, .showMoreVersions').addClass('hidden');
+
 			var versionModel = this.collection.get(revision);
 			versionModel.revert({
 				success: function() {
 					// reset and re-fetch the updated collection
+					self.$versionsContainer.empty();
 					self.collection.setFileInfo(fileInfoModel);
-					self.collection.fetch();
+					self.collection.reset([], {silent: true});
+					self.collection.fetchNext();
+
+					self.$el.find('.versions').removeClass('hidden');
 
 					// update original model
 					fileInfoModel.trigger('busy', fileInfoModel, false);
@@ -134,7 +140,9 @@
 		},
 
 		_onAddModel: function(model) {
-			this.$versionsContainer.append(this.itemTemplate(this._formatItem(model)));
+			var $el = $(this.itemTemplate(this._formatItem(model)));
+			this.$versionsContainer.append($el);
+			$el.find('.has-tooltip').tooltip();
 		},
 
 		template: function(data) {
@@ -157,7 +165,7 @@
 			if (fileInfo) {
 				this.render();
 				this.collection.setFileInfo(fileInfo);
-				this.collection.reset({silent: true});
+				this.collection.reset([], {silent: true});
 				this.nextPage();
 			} else {
 				this.render();

@@ -3,8 +3,10 @@
  * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
+ * @author Viktor Szépe <viktor@szepe.net>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -30,6 +32,13 @@ use \OCA\user_ldap\lib\Wizard;
 // use \OCA\user_ldap\lib\Configuration;
 // use \OCA\user_ldap\lib\ILDAPWrapper;
 
+/**
+ * Class Test_Wizard
+ *
+ * @group DB
+ *
+ * @package OCA\user_ldap\tests
+ */
 class Test_Wizard extends \Test\TestCase {
 	protected function setUp() {
 		parent::setUp();

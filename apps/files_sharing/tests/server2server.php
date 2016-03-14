@@ -1,10 +1,12 @@
 <?php
 /**
  * @author Björn Schießle <schiessle@owncloud.com>
+ * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -25,6 +27,8 @@ use OCA\Files_Sharing\Tests\TestCase;
 
 /**
  * Class Test_Files_Sharing_Api
+ *
+ * @group DB
  */
 class Test_Files_Sharing_S2S_OCS_API extends TestCase {
 
@@ -149,14 +153,19 @@ class Test_Files_Sharing_S2S_OCS_API extends TestCase {
 	function testDeleteUser($toDelete, $expected, $remainingUsers) {
 		$this->createDummyS2SShares();
 
+		$discoveryManager = new \OCA\FederatedFileSharing\DiscoveryManager(
+			\OC::$server->getMemCacheFactory(),
+			\OC::$server->getHTTPClientService()
+		);
 		$manager = new OCA\Files_Sharing\External\Manager(
 			\OC::$server->getDatabaseConnection(),
 			\OC\Files\Filesystem::getMountManager(),
 			\OC\Files\Filesystem::getLoader(),
 			\OC::$server->getHTTPHelper(),
 			\OC::$server->getNotificationManager(),
+			$discoveryManager,
 			$toDelete
-			);
+		);
 
 		$manager->removeUserShares($toDelete);
 

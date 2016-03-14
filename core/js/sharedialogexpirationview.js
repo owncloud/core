@@ -8,6 +8,8 @@
  *
  */
 
+/* global moment */
+
 (function() {
 	if (!OC.Share) {
 		OC.Share = {};
@@ -19,9 +21,9 @@
 			// in the LinkShareView to ease reusing it in future. Then,
 			// modifications (getting rid of IDs) are still necessary.
 			'{{#if isLinkShare}}' +
-			'<input type="checkbox" name="expirationCheckbox" class="expirationCheckbox checkbox" id="expirationCheckbox" value="1" ' +
+			'<input type="checkbox" name="expirationCheckbox" class="expirationCheckbox checkbox" id="expirationCheckbox-{{cid}}" value="1" ' +
 				'{{#if isExpirationSet}}checked="checked"{{/if}} {{#if disableCheckbox}}disabled="disabled"{{/if}} />' +
-			'<label for="expirationCheckbox">{{setExpirationLabel}}</label>' +
+			'<label for="expirationCheckbox-{{cid}}">{{setExpirationLabel}}</label>' +
 			'<div class="expirationDateContainer {{#unless isExpirationSet}}hidden{{/unless}}">' +
 			'    <label for="expirationDate" class="hidden-visually" value="{{expirationDate}}">{{expirationLabel}}</label>' +
 			'    <input id="expirationDate" class="datepicker" type="text" placeholder="{{expirationDatePlaceholder}}" value="{{expirationValue}}" />' +
@@ -91,8 +93,9 @@
 			this.$el.find('.expirationDateContainer').toggleClass('hidden', !state);
 			if (!state) {
 				// discard expiration date
-				this.model.setExpirationDate('');
-				this.model.saveLinkShare();
+				this.model.saveLinkShare({
+					expireDate: ''
+				});
 			}
 		},
 
@@ -101,8 +104,9 @@
 			$target.tooltip('hide');
 			$target.removeClass('error');
 
-			this.model.setExpirationDate($target.val());
-			this.model.saveLinkShare(null, {
+			this.model.saveLinkShare({
+				expiration: moment($target.val(), 'DD-MM-YYYY').format('YYYY-MM-DD')
+			}, {
 				error: function(model, message) {
 					if (!message) {
 						$target.attr('title', t('core', 'Error setting expiration date'));
@@ -132,8 +136,13 @@
 
 			var isExpirationSet = !!this.model.get('linkShare').expiration || isExpirationEnforced;
 
-			var expirationTemplate = this.template();
-			this.$el.html(expirationTemplate({
+			var expiration;
+			if (isExpirationSet) {
+				expiration = moment(this.model.get('linkShare').expiration, 'YYYY-MM-DD').format('DD-MM-YYYY');
+			}
+
+			this.$el.html(this.template({
+				cid: this.cid,
 				setExpirationLabel: t('core', 'Set expiration date'),
 				expirationLabel: t('core', 'Expiration'),
 				expirationDatePlaceholder: t('core', 'Expiration date'),
@@ -142,7 +151,7 @@
 				isExpirationSet: isExpirationSet,
 				isExpirationEnforced: isExpirationEnforced,
 				disableCheckbox: isExpirationEnforced && isExpirationSet,
-				expirationValue: this.model.get('linkShare').expiration
+				expirationValue: expiration
 			}));
 
 			// what if there is another date picker on that page?
@@ -181,11 +190,11 @@
 		 * @returns {Function} from Handlebars
 		 * @private
 		 */
-		template: function () {
+		template: function (data) {
 			if (!this._template) {
 				this._template = Handlebars.compile(TEMPLATE);
 			}
-			return this._template;
+			return this._template(data);
 		}
 
 	});

@@ -9,10 +9,12 @@
 var $userList;
 var $userListBody;
 
+var UserDeleteHandler;
 var UserList = {
 	availableGroups: [],
 	offset: 0,
 	usersToLoad: 10, //So many users will be loaded when user scrolls down
+	initialUsersToLoad: 250, //initial number of users to load
 	currentGid: '',
 	filter: '',
 
@@ -62,9 +64,12 @@ var UserList = {
 		/**
 		 * Avatar or placeholder
 		 */
-		if ($tr.find('div.avatardiv').length){
-			$tr.find('.avatardiv').imageplaceholder(user.name, user.displayname);
-			$('div.avatardiv', $tr).avatar(user.name, 32);
+		if ($tr.find('div.avatardiv').length) {
+			if (user.isAvatarAvailable === true) {
+				$('div.avatardiv', $tr).avatar(user.name, 32, undefined, undefined, undefined, user.displayname);
+			} else {
+				$('div.avatardiv', $tr).imageplaceholder(user.displayname, undefined, 32);
+			}
 		}
 
 		/**
@@ -254,6 +259,10 @@ var UserList = {
 		}
 	},
 	doSort: function() {
+		// some browsers like Chrome lose the scrolling information
+		// when messing with the list elements
+		var lastScrollTop = this.scrollArea.scrollTop();
+		var lastScrollLeft = this.scrollArea.scrollLeft();
 		var rows = $userListBody.find('tr').get();
 
 		rows.sort(function(a, b) {
@@ -279,13 +288,15 @@ var UserList = {
 		if(items.length > 0) {
 			$userListBody.append(items);
 		}
+		this.scrollArea.scrollTop(lastScrollTop);
+		this.scrollArea.scrollLeft(lastScrollLeft);
 	},
 	checkUsersToLoad: function() {
 		//30 shall be loaded initially, from then on always 10 upon scrolling
 		if(UserList.isEmpty === false) {
 			UserList.usersToLoad = 10;
 		} else {
-			UserList.usersToLoad = 30;
+			UserList.usersToLoad = UserList.initialUsersToLoad;
 		}
 	},
 	empty: function() {
@@ -313,11 +324,7 @@ var UserList = {
 			var gid = groups[i];
 			var $li = GroupList.getGroupLI(gid);
 			var userCount = GroupList.getUserCount($li);
-			if(userCount === 1) {
-				GroupList.setUserCount($li, '');
-			} else {
-				GroupList.setUserCount($li, userCount - 1);
-			}
+			GroupList.setUserCount($li, userCount - 1);
 		}
 		GroupList.decEveryoneCount();
 		UserList.hide(uid);
@@ -332,11 +339,7 @@ var UserList = {
 			var gid = groups[i];
 			var $li = GroupList.getGroupLI(gid);
 			var userCount = GroupList.getUserCount($li);
-			if(userCount === 1) {
-				GroupList.setUserCount($li, '');
-			} else {
-				GroupList.setUserCount($li, userCount + 1);
-			}
+			GroupList.setUserCount($li, userCount + 1);
 		}
 		GroupList.incEveryoneCount();
 		UserList.getRow(uid).show();
@@ -470,6 +473,11 @@ var UserList = {
 								UserList.availableGroups.push(groupName);
 							}
 
+							if (response.data.action === 'add') {
+								GroupList.incGroupCount(groupName);
+							} else {
+								GroupList.decGroupCount(groupName);
+							}
 						}
 						if (response.data.message) {
 							OC.Notification.show(response.data.message);
@@ -603,10 +611,11 @@ $(document).ready(function () {
 	// Implements User Search
 	OCA.Search.users= new UserManagementFilter(UserList, GroupList);
 
+	UserList.scrollArea = $('#app-content');
+
 	UserList.doSort();
 	UserList.availableGroups = $userList.data('groups');
 
-	UserList.scrollArea = $('#app-content');
 	UserList.scrollArea.scroll(function(e) {UserList._onScroll(e);});
 
 	$userList.after($('<div class="loading" style="height: 200px; visibility: hidden;"></div>'));
@@ -648,7 +657,7 @@ $(document).ready(function () {
 							{username: uid, password: $(this).val(), recoveryPassword: recoveryPasswordVal},
 							function (result) {
 								if (result.status != 'success') {
-									OC.Notification.show(t('admin', result.data.message));
+									OC.Notification.showTemporary(t('admin', result.data.message));
 								}
 							}
 						);
@@ -688,7 +697,7 @@ $(document).ready(function () {
 							$div.imageplaceholder(uid, displayName);
 						}
 						$.post(
-							OC.filePath('settings', 'ajax', 'changedisplayname.php'),
+							OC.generateUrl('/settings/users/{id}/displayName', {id: uid}),
 							{username: uid, displayName: $(this).val()},
 							function (result) {
 								if (result && result.status==='success' && $div.length){
@@ -696,6 +705,8 @@ $(document).ready(function () {
 								}
 							}
 						);
+						var displayName = $input.val();
+						$tr.data('displayname', displayName);
 						$input.blur();
 					} else {
 						$input.blur();
@@ -703,8 +714,7 @@ $(document).ready(function () {
 				}
 			})
 			.blur(function () {
-				var displayName = $input.val();
-				$tr.data('displayname', displayName);
+				var displayName = $tr.data('displayname');
 				$input.replaceWith('<span>' + escapeHTML(displayName) + '</span>');
 				$td.find('img').show();
 			});
@@ -722,27 +732,24 @@ $(document).ready(function () {
 			.focus()
 			.keypress(function (event) {
 				if (event.keyCode === 13) {
-					if ($(this).val().length > 0) {
-						$input.blur();
-						$.ajax({
-							type: 'PUT',
-							url: OC.generateUrl('/settings/users/{id}/mailAddress', {id: uid}),
-							data: {
-								mailAddress: $(this).val()
-							}
-						}).fail(function (result) {
-							OC.Notification.show(result.responseJSON.data.message);
-							// reset the values
-							$tr.data('mailAddress', mailAddress);
-							$tr.children('.mailAddress').children('span').text(mailAddress);
-						});
-					} else {
-						$input.blur();
-					}
+					$tr.data('mailAddress', $input.val());
+					$input.blur();
+					$.ajax({
+						type: 'PUT',
+						url: OC.generateUrl('/settings/users/{id}/mailAddress', {id: uid}),
+						data: {
+							mailAddress: $(this).val()
+						}
+					}).fail(function (result) {
+						OC.Notification.show(result.responseJSON.data.message);
+						// reset the values
+						$tr.data('mailAddress', mailAddress);
+						$tr.children('.mailAddress').children('span').text(mailAddress);
+					});
 				}
 			})
 			.blur(function () {
-				var mailAddress = $input.val();
+				var mailAddress = $tr.data('mailAddress');
 				var $span = $('<span>').text(mailAddress);
 				$tr.data('mailAddress', mailAddress);
 				$input.replaceWith($span);
@@ -760,57 +767,69 @@ $(document).ready(function () {
 		var password = $('#newuserpassword').val();
 		var email = $('#newemail').val();
 		if ($.trim(username) === '') {
-			OC.dialogs.alert(
-				t('settings', 'A valid username must be provided'),
-				t('settings', 'Error creating user'));
+			OC.Notification.showTemporary(t('settings', 'Error creating user: {message}', {
+				message: t('settings', 'A valid username must be provided')
+			}));
 			return false;
 		}
 		if ($.trim(password) === '') {
-			OC.dialogs.alert(
-				t('settings', 'A valid password must be provided'),
-				t('settings', 'Error creating user'));
+			OC.Notification.showTemporary(t('settings', 'Error creating user: {message}', {
+				message: t('settings', 'A valid password must be provided')
+			}));
 			return false;
 		}
 		if(!$('#CheckboxMailOnUserCreate').is(':checked')) {
 			email = '';
 		}
 		if ($('#CheckboxMailOnUserCreate').is(':checked') && $.trim(email) === '') {
-			OC.dialogs.alert(
-				t('settings', 'A valid email must be provided'),
-				t('settings', 'Error creating user'));
+			OC.Notification.showTemporary( t('settings', 'Error creating user: {message}', {
+				message: t('settings', 'A valid email must be provided')
+			}));
 			return false;
 		}
-		var groups = $('#newusergroups').val() || [];
-		$.post(
-			OC.generateUrl('/settings/users/users'),
-			{
-				username: username,
-				password: password,
-				groups: groups,
-				email: email
-			},
-			function (result) {
-				if (result.groups) {
-					for (var i in result.groups) {
-						var gid = result.groups[i];
-						if(UserList.availableGroups.indexOf(gid) === -1) {
-							UserList.availableGroups.push(gid);
+
+		var promise;
+		if (UserDeleteHandler) {
+			promise = UserDeleteHandler.deleteEntry();
+		} else {
+			promise = $.Deferred().resolve().promise();
+		}
+
+		promise.then(function() {
+			var groups = $('#newusergroups').val() || [];
+			$.post(
+				OC.generateUrl('/settings/users/users'),
+				{
+					username: username,
+					password: password,
+					groups: groups,
+					email: email
+				},
+				function (result) {
+					if (result.groups) {
+						for (var i in result.groups) {
+							var gid = result.groups[i];
+							if(UserList.availableGroups.indexOf(gid) === -1) {
+								UserList.availableGroups.push(gid);
+							}
+							$li = GroupList.getGroupLI(gid);
+							userCount = GroupList.getUserCount($li);
+							GroupList.setUserCount($li, userCount + 1);
 						}
-						$li = GroupList.getGroupLI(gid);
-						userCount = GroupList.getUserCount($li);
-						GroupList.setUserCount($li, userCount + 1);
 					}
-				}
-				if(!UserList.has(username)) {
-					UserList.add(result, true);
-				}
-				$('#newusername').focus();
-				GroupList.incEveryoneCount();
-			}).fail(function(result, textStatus, errorThrown) {
-				OC.dialogs.alert(result.responseJSON.message, t('settings', 'Error creating user'));
-			}).success(function(){
-				$('#newuser').get(0).reset();
-			});
+					if(!UserList.has(username)) {
+						UserList.add(result, true);
+					}
+					$('#newusername').focus();
+					GroupList.incEveryoneCount();
+				}).fail(function(result) {
+					OC.Notification.showTemporary(t('settings', 'Error creating user: {message}', {
+						message: result.responseJSON.message
+					}));
+				}).success(function(){
+					$('#newuser').get(0).reset();
+				});
+		});
 	});
 
 	if ($('#CheckboxStorageLocation').is(':checked')) {
@@ -884,15 +903,19 @@ $(document).ready(function () {
 	});
 
 	// calculate initial limit of users to load
-	var initialUserCountLimit = 20,
+	var initialUserCountLimit = UserList.initialUsersToLoad,
 		containerHeight = $('#app-content').height();
 	if(containerHeight > 40) {
 		initialUserCountLimit = Math.floor(containerHeight/40);
-		while((initialUserCountLimit % UserList.usersToLoad) !== 0) {
-			// must be a multiple of this, otherwise LDAP freaks out.
-			// FIXME: solve this in LDAP backend in  8.1
-			initialUserCountLimit = initialUserCountLimit + 1;
+		if (initialUserCountLimit < UserList.initialUsersToLoad) {
+			initialUserCountLimit = UserList.initialUsersToLoad;
 		}
+	}
+	//realign initialUserCountLimit with usersToLoad as a safeguard
+	while((initialUserCountLimit % UserList.usersToLoad) !== 0) {
+		// must be a multiple of this, otherwise LDAP freaks out.
+		// FIXME: solve this in LDAP backend in  8.1
+		initialUserCountLimit = initialUserCountLimit + 1;
 	}
 
 	// trigger loading of users on startup

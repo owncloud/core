@@ -12,26 +12,14 @@ If you have questions about how to install or use ownCloud, please direct these 
   - You can also filter by appending e. g. "state:open" to the search string.
   - More info on [search syntax within github](https://help.github.com/articles/searching-issues)
 * This repository ([core](https://github.com/owncloud/core/issues)) is *only* for issues within the ownCloud core code. This also includes the apps: files, encryption, external storage, sharing, deleted files, versions, LDAP, and WebDAV Auth
-* __SECURITY__: Report any potential security bug to security@owncloud.com following our [security policy](https://owncloud.org/security/) instead of filing an issue in our bug tracker
+* __SECURITY__: Report any potential security bug to us via [our HackerOne page](https://hackerone.com/owncloud) or security@owncloud.com following our [security policy](https://owncloud.org/security/) instead of filing an issue in our bug tracker
 * The issues in other components should be reported in their respective repositories: 
   - [Android client](https://github.com/owncloud/android/issues)
-  - [iOS client](https://github.com/owncloud/ios-issues/issues)
-  - [Desktop client](https://github.com/owncloud/mirall/issues)
+  - [iOS client](https://github.com/owncloud/ios/issues)
+  - [Desktop client](https://github.com/owncloud/client/issues)
   - [Documentation](https://github.com/owncloud/documentation/issues)
-  - Apps:
-      - [Activity](https://github.com/owncloud/activity/issues)
-      - [Bookmarks](https://github.com/owncloud/bookmarks/issues)
-      - [Calendar](https://github.com/owncloud/calendar/issues)
-      - [Contacts](https://github.com/owncloud/contacts/issues)
-      - [Documents](https://github.com/owncloud/documents/issues)
-      - [Gallery](https://github.com/owncloud/gallery/issues)
-      - [Mail](https://github.com/owncloud/mail/issues)
-      - [Music](https://github.com/owncloud/music/issues)
-      - [News](https://github.com/owncloud/news/issues)
-      - [Notes](https://github.com/owncloud/notes/issues)
-      - [Shorty](https://github.com/owncloud/shorty/issues)
-      - [Tasks](https://github.com/owncloud/tasks/issues)
-      - [All other apps](https://github.com/owncloud/apps/issues)
+  - [ownCloud apps](https://github.com/owncloud/core/wiki/Maintainers#apps-repo)
+
 * Report the issue using our [template][template], it includes all the information we need to track down the issue.
 
 Help us to maximize the effort we can spend fixing issues and adding new features, by not reporting duplicate issues.

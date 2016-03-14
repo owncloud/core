@@ -1,8 +1,10 @@
 <?php
 /**
+ * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Victor Dubiniuk <dubiniuk@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -38,7 +40,7 @@ class Streamer {
 		if ($request->isUserAgent($this->preferTarFor)) {
 			$this->streamerInstance = new TarStreamer();
 		} else {
-			$this->streamerInstance = new ZipStreamer();
+			$this->streamerInstance = new ZipStreamer(['zip64' => PHP_INT_SIZE !== 4]);
 		}
 	}
 	
@@ -49,10 +51,6 @@ class Streamer {
 	public function sendHeaders($name){
 		$extension = $this->streamerInstance instanceof ZipStreamer ? '.zip' : '.tar';
 		$fullName = $name . $extension;
-		// ZipStreamer does not escape name in Content-Disposition atm
-		if ($this->streamerInstance instanceof ZipStreamer) {
-			$fullName = rawurlencode($fullName);
-		}
 		$this->streamerInstance->sendHeaders($fullName);
 	}
 	
@@ -89,9 +87,9 @@ class Streamer {
 	/**
 	 * Add a file to the archive at the specified location and file name.
 	 *
-	 * @param string $stream      Stream to read data from
-	 * @param string $internalName    Filepath and name to be used in the archive.
-	 * @param int $size           Filesize
+	 * @param string $stream Stream to read data from
+	 * @param string $internalName Filepath and name to be used in the archive.
+	 * @param int $size Filesize
 	 * @return bool $success
 	 */
 	public function addFileFromStream($stream, $internalName, $size){
@@ -101,17 +99,17 @@ class Streamer {
 			return $this->streamerInstance->addFileFromStream($stream, $internalName, $size);
 		}
 	}
-	
+
 	/**
 	 * Add an empty directory entry to the archive.
 	 *
-	 * @param string $directoryPath  Directory Path and name to be added to the archive.
+	 * @param string $dirName Directory Path and name to be added to the archive.
 	 * @return bool $success
 	 */
 	public function addEmptyDir($dirName){
 		return $this->streamerInstance->addEmptyDir($dirName);
 	}
-	
+
 	/**
 	 * Close the archive.
 	 * A closed archive can no longer have new files added to it. After

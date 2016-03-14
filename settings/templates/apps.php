@@ -24,12 +24,12 @@ script(
 ?>
 <script id="categories-template" type="text/x-handlebars-template">
 {{#each this}}
-	<li id="app-category-{{id}}" data-category-id="{{id}}" tabindex="0">
+	<li id="app-category-{{ident}}" data-category-id="{{ident}}" tabindex="0">
 		<a>{{displayName}}</a>
 	</li>
 {{/each}}
 
-<?php if(OC_Config::getValue('appstoreenabled', true) === true): ?>
+<?php if($_['appstoreEnabled']): ?>
 	<li>
 		<a class="app-external" target="_blank" href="https://owncloud.org/dev"><?php p($l->t('Developer documentation'));?> ↗</a>
 	</li>
@@ -60,9 +60,9 @@ script(
 	</h2>
 	<div class="app-version"> {{version}}</div>
 	{{#if profilepage}}<a href="{{profilepage}}" target="_blank" rel="noreferrer">{{/if}}
-	<div class="app-author"><?php p($l->t('by')); ?> {{author}}
+	<div class="app-author"><?php p($l->t('by %s', ['{{author}}']));?>
 		{{#if licence}}
-		({{licence}}-<?php p($l->t('licensed')); ?>)
+		(<?php p($l->t('%s-licensed', ['{{licence}}'])); ?>)
 		{{/if}}
 	</div>
 	{{#if profilepage}}</a>{{/if}}
@@ -97,6 +97,22 @@ script(
 	<div class="app-description-toggle-show"><?php p($l->t("Show description …"));?></div>
 	<div class="app-description-toggle-hide hidden"><?php p($l->t("Hide description …"));?></div>
 
+	<div class="app-dependencies update hidden">
+		<p><?php p($l->t('This app has an update available.')); ?></p>
+	</div>
+
+	{{#if missingMinOwnCloudVersion}}
+		<div class="app-dependencies">
+			<p><?php p($l->t('This app has no minimum ownCloud version assigned. This will be an error in ownCloud 11 and later.')); ?></p>
+		</div>
+	{{else}}
+		{{#if missingMaxOwnCloudVersion}}
+			<div class="app-dependencies">
+				<p><?php p($l->t('This app has no maximum ownCloud version assigned. This will be an error in ownCloud 11 and later.')); ?></p>
+			</div>
+		{{/if}}
+	{{/if}}
+
 	{{#unless canInstall}}
 	<div class="app-dependencies">
 	<p><?php p($l->t('This app cannot be installed because the following dependencies are not fulfilled:')); ?></p>
@@ -111,8 +127,10 @@ script(
 	<input class="update hidden" type="submit" value="<?php p($l->t('Update to %s', array('{{update}}'))); ?>" data-appid="{{id}}" />
 	{{#if active}}
 	<input class="enable" type="submit" data-appid="{{id}}" data-active="true" value="<?php p($l->t("Disable"));?>"/>
-	<input type="checkbox" class="groups-enable" id="groups_enable-{{id}}"/>
-	<label for="groups_enable-{{id}}"><?php p($l->t('Enable only for specific groups')); ?></label>
+	<span class="groups-enable">
+		<input type="checkbox" class="groups-enable__checkbox checkbox" id="groups_enable-{{id}}"/>
+		<label for="groups_enable-{{id}}"><?php p($l->t('Enable only for specific groups')); ?></label>
+	</span>
 	<br />
 	<input type="hidden" id="group_select" title="<?php p($l->t('All')); ?>" style="width: 200px">
 	{{else}}
@@ -127,7 +145,7 @@ script(
 	</div>
 </script>
 
-<div id="app-navigation" class="icon-loading">
+<div id="app-navigation" class="icon-loading" data-category="<?php p($_['category']);?>">
 	<ul id="apps-categories">
 
 	</ul>
@@ -137,7 +155,7 @@ script(
 		</div>
 
 		<div id="app-settings-content" class="apps-experimental">
-			<input type="checkbox" id="enable-experimental-apps" <?php if($_['experimentalEnabled']) { print_unescaped('checked="checked"'); }?>>
+			<input type="checkbox" id="enable-experimental-apps" <?php if($_['experimentalEnabled']) { print_unescaped('checked="checked"'); }?> class="checkbox">
 			<label for="enable-experimental-apps"><?php p($l->t('Enable experimental apps')) ?></label>
 			<p>
 				<small>

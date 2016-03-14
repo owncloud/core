@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Arthur Schiwon <blizzz@owncloud.com>
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @author Björn Schießle <schiessle@owncloud.com>
@@ -9,11 +10,13 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
+ * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -39,6 +42,7 @@
 // use OCP namespace for all classes that are considered public.
 // This means that they should be used by apps instead of the internal ownCloud classes
 namespace OCP;
+use OCP\Security\IContentSecurityPolicyManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 
@@ -176,6 +180,14 @@ interface IServerContainer {
 	 * @since 8.1.0
 	 */
 	public function getSecureRandom();
+
+	/**
+	 * Returns a CredentialsManager instance
+	 *
+	 * @return \OCP\Security\ICredentialsManager
+	 * @since 9.0.0
+	 */
+	public function getCredentialsManager();
 
 	/**
 	 * Returns an instance of the db facade
@@ -325,7 +337,7 @@ interface IServerContainer {
 	/**
 	 * Get the certificate manager for the user
 	 *
-	 * @param string $userId (optional) if not specified the current loggedin user is used
+	 * @param string $userId (optional) if not specified the current loggedin user is used, use null to get the system certificate manager
 	 * @return \OCP\ICertificateManager | null if $userId is null and no user is logged in
 	 * @since 8.0.0
 	 */
@@ -465,8 +477,46 @@ interface IServerContainer {
 	/**
 	 * Get the Notification Manager
 	 *
-	 * @return \OC\Notification\IManager
-	 * @since 8.2.0
+	 * @return \OCP\Notification\IManager
+	 * @since 9.0.0
 	 */
 	public function getNotificationManager();
+
+	/**
+	 * @return \OCP\Comments\ICommentsManager
+	 * @since 9.0.0
+	 */
+	public function getCommentsManager();
+
+	/**
+	 * Returns the system-tag manager
+	 *
+	 * @return \OCP\SystemTag\ISystemTagManager
+	 *
+	 * @since 9.0.0
+	 */
+	public function getSystemTagManager();
+
+	/**
+	 * Returns the system-tag object mapper
+	 *
+	 * @return \OCP\SystemTag\ISystemTagObjectMapper
+	 *
+	 * @since 9.0.0
+	 */
+	public function getSystemTagObjectMapper();
+
+	/**
+	 * Returns the share manager
+	 *
+	 * @return \OCP\Share\IManager
+	 * @since 9.0.0
+	 */
+	public function getShareManager();
+
+	/**
+	 * @return IContentSecurityPolicyManager
+	 * @since 9.0.0
+	 */
+	public function getContentSecurityPolicyManager();
 }

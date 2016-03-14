@@ -1,8 +1,9 @@
 <?php
 /**
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Morris Jobke <hey@morrisjobke.de>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -72,6 +73,11 @@ class BackendService {
 		$this->userMountingBackends = explode(',',
 			$this->config->getAppValue('files_external', 'user_mounting_backends', '')
 		);
+
+		// if no backend is in the list an empty string is in the array and user mounting is disabled
+		if ($this->userMountingBackends === ['']) {
+			$this->userMountingAllowed = false;
+		}
 	}
 
 	/**

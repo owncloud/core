@@ -5,12 +5,12 @@
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Philipp Kapfer <philipp.kapfer@gmx.at>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
  * @author Sascha Schmidt <realriot@realriot.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -64,12 +64,16 @@ class Dropbox extends \OC\Files\Storage\Common {
 	 * @param string $path
 	 */
 	private function deleteMetaData($path) {
-		$path = $this->root.$path;
+		$path = ltrim($this->root.$path, '/');
 		if (isset($this->metaData[$path])) {
 			unset($this->metaData[$path]);
 			return true;
 		}
 		return false;
+	}
+
+	private function setMetaData($path, $metaData) {
+		$this->metaData[ltrim($path, '/')] = $metaData;
 	}
 
 	/**
@@ -80,7 +84,7 @@ class Dropbox extends \OC\Files\Storage\Common {
 	 * false, null if the file doesn't exist or "false" if the operation failed
 	 */
 	private function getDropBoxMetaData($path, $list = false) {
-		$path = $this->root.$path;
+		$path = ltrim($this->root.$path, '/');
 		if ( ! $list && isset($this->metaData[$path])) {
 			return $this->metaData[$path];
 		} else {
@@ -96,14 +100,14 @@ class Dropbox extends \OC\Files\Storage\Common {
 					// Cache folder's contents
 					foreach ($response['contents'] as $file) {
 						if (!isset($file['is_deleted']) || !$file['is_deleted']) {
-							$this->metaData[$path.'/'.basename($file['path'])] = $file;
+							$this->setMetaData($path.'/'.basename($file['path']), $file);
 							$contents[] = $file;
 						}
 					}
 					unset($response['contents']);
 				}
 				if (!isset($response['is_deleted']) || !$response['is_deleted']) {
-					$this->metaData[$path] = $response;
+					$this->setMetaData($path, $response);
 				}
 				// Return contents of folder only
 				return $contents;
@@ -116,7 +120,7 @@ class Dropbox extends \OC\Files\Storage\Common {
 
 					$response = $this->dropbox->getMetaData($requestPath, 'false');
 					if (!isset($response['is_deleted']) || !$response['is_deleted']) {
-						$this->metaData[$path] = $response;
+						$this->setMetaData($path, $response);
 						return $response;
 					}
 					return null;
@@ -288,22 +292,11 @@ class Dropbox extends \OC\Files\Storage\Common {
 			try {
 				$this->dropbox->putFile(self::$tempFiles[$tmpFile], $handle);
 				unlink($tmpFile);
+				$this->deleteMetaData(self::$tempFiles[$tmpFile]);
 			} catch (\Exception $exception) {
 				\OCP\Util::writeLog('files_external', $exception->getMessage(), \OCP\Util::ERROR);
 			}
 		}
-	}
-
-	public function getMimeType($path) {
-		if ($this->filetype($path) == 'dir') {
-			return 'httpd/unix-directory';
-		} else {
-			$metaData = $this->getDropBoxMetaData($path);
-			if ($metaData) {
-				return $metaData['mime_type'];
-			}
-		}
-		return false;
 	}
 
 	public function free_space($path) {

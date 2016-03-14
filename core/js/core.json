@@ -8,7 +8,9 @@
 		"handlebars/handlebars.js",
 		"blueimp-md5/js/md5.js",
 		"bootstrap/js/tooltip.js",
-		"backbone/backbone.js"
+		"backbone/backbone.js",
+		"es6-promise/dist/es6-promise.js",
+		"davclient.js/lib/client.js"
 	],
 	"libraries": [
 		"jquery-showpassword.js",
@@ -21,6 +23,7 @@
 		"oc-dialogs.js",
 		"js.js",
 		"oc-backbone.js",
+		"oc-backbone-webdav.js",
 		"l10n.js",
 		"apps.js",
 		"share.js",
@@ -39,6 +42,13 @@
 		"setupchecks.js",
 		"../search/js/search.js",
 		"mimetype.js",
-		"mimetypelist.js"
+		"mimetypelist.js",
+		"files/fileinfo.js",
+		"files/client.js",
+		"systemtags/systemtags.js",
+		"systemtags/systemtagmodel.js",
+		"systemtags/systemtagscollection.js",
+		"systemtags/systemtagsmappingcollection.js",
+		"systemtags/systemtagsinputfield.js"
 	]
 }

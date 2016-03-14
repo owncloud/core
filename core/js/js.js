@@ -1,10 +1,12 @@
 /**
  * Disable console output unless DEBUG mode is enabled.
  * Add
- *      define('DEBUG', true);
- * To the end of config/config.php to enable debug mode.
+ *      'debug' => true,
+ * To the definition of $CONFIG in config/config.php to enable debug mode.
  * The undefined checks fix the broken ie8 console
  */
+
+/* global oc_isadmin */
 
 var oc_debug;
 var oc_webroot;
@@ -80,11 +82,18 @@ var OC={
 	webroot:oc_webroot,
 
 	appswebroots:(typeof oc_appswebroots !== 'undefined') ? oc_appswebroots:false,
+	/**
+	 * Currently logged in user or null if none
+	 *
+	 * @type String
+	 * @deprecated use {@link OC.getCurrentUser} instead
+	 */
 	currentUser:(typeof oc_current_user!=='undefined')?oc_current_user:false,
 	config: window.oc_config,
 	appConfig: window.oc_appconfig || {},
 	theme: window.oc_defaults || {},
 	coreApps:['', 'admin','log','core/search','settings','core','3rdparty'],
+	requestToken: oc_requesttoken,
 	menuSpeed: 50,
 
 	/**
@@ -118,10 +127,12 @@ var OC={
 	/**
 	 * Gets the base path for the given OCS API service.
 	 * @param {string} service name
+	 * @param {int} version OCS API version
 	 * @return {string} OCS API base path
 	 */
-	linkToOCS: function(service) {
-		return window.location.protocol + '//' + window.location.host + OC.webroot + '/ocs/v1.php/' + service + '/';
+	linkToOCS: function(service, version) {
+		version = (version !== 2) ? 1 : 2;
+		return window.location.protocol + '//' + window.location.host + OC.webroot + '/ocs/v' + version + '.php/' + service + '/';
 	},
 
 	/**
@@ -157,7 +168,11 @@ var OC={
 			url = '/' + url;
 
 		}
-		// TODO save somewhere whether the webserver is able to skip the index.php to have shorter links (e.g. for sharing)
+
+		if(oc_config.modRewriteWorking == true) {
+			return OC.webroot + _build(url, params);
+		}
+
 		return OC.webroot + '/index.php' + _build(url, params);
 	},
 
@@ -167,7 +182,6 @@ var OC={
 	 * @param {string} type the type of the file to link to (e.g. css,img,ajax.template)
 	 * @param {string} file the filename
 	 * @return {string} Absolute URL for a file in an app
-	 * @deprecated use OC.generateUrl() instead
 	 */
 	filePath:function(app,type,file){
 		var isCore=OC.coreApps.indexOf(app)!==-1,
@@ -221,6 +235,13 @@ var OC={
 	},
 
 	/**
+	 * Reloads the current page
+	 */
+	reload: function() {
+		window.location.reload();
+	},
+
+	/**
 	 * Protocol that is used to access this ownCloud instance
 	 * @return {string} Used protocol
 	 */
@@ -229,14 +250,31 @@ var OC={
 	},
 
 	/**
-	 * Returns the host name used to access this ownCloud instance
+	 * Returns the host used to access this ownCloud instance
+	 * Host is sometimes the same as the hostname but now always.
 	 *
-	 * @return {string} host name
+	 * Examples:
+	 * http://example.com => example.com
+	 * https://example.com => exmaple.com
+	 * http://example.com:8080 => example.com:8080
+	 *
+	 * @return {string} host
 	 *
 	 * @since 8.2
 	 */
 	getHost: function() {
 		return window.location.host;
+	},
+
+	/**
+	 * Returns the hostname used to access this ownCloud instance
+	 * The hostname is always stripped of the port
+	 *
+	 * @return {string} hostname
+	 * @since 9.0
+	 */
+	getHostName: function() {
+		return window.location.hostname;
 	},
 
 	/**
@@ -261,6 +299,23 @@ var OC={
 	 */
 	getRootPath: function() {
 		return OC.webroot;
+	},
+
+	/**
+	 * Returns the currently logged in user or null if there is no logged in
+	 * user (public page mode)
+	 *
+	 * @return {OC.CurrentUser} user spec
+	 * @since 9.0.0
+	 */
+	getCurrentUser: function() {
+		if (_.isUndefined(this._currentUserDisplayName)) {
+			this._currentUserDisplayName = document.getElementsByTagName('head')[0].getAttribute('data-user-displayname');
+		}
+		return {
+			uid: this.currentUser,
+			displayName: this._currentUserDisplayName
+		};
 	},
 
 	/**
@@ -668,8 +723,77 @@ var OC={
 	 */
 	getLocale: function() {
 		return $('html').prop('lang');
+	},
+
+	/**
+	 * Returns whether the current user is an administrator
+	 *
+	 * @return {bool} true if the user is an admin, false otherwise
+	 * @since 9.0.0
+	 */
+	isUserAdmin: function() {
+		return oc_isadmin;
+	},
+
+	/**
+	 * Process ajax error, redirects to main page
+	 * if an error/auth error status was returned.
+	 */
+	_processAjaxError: function(xhr) {
+		// purposefully aborted request ?
+		if (xhr.status === 0 && (xhr.statusText === 'abort' || xhr.statusText === 'timeout')) {
+			return;
+		}
+
+		if (_.contains([0, 302, 307, 401], xhr.status)) {
+			OC.reload();
+		}
+	},
+
+	/**
+	 * Registers XmlHttpRequest object for global error processing.
+	 *
+	 * This means that if this XHR object returns 401 or session timeout errors,
+	 * the current page will automatically be reloaded.
+	 *
+	 * @param {XMLHttpRequest} xhr
+	 */
+	registerXHRForErrorProcessing: function(xhr) {
+		var loadCallback = function() {
+			if (xhr.readyState !== 4) {
+				return;
+			}
+
+			if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
+				return;
+			}
+
+			// fire jquery global ajax error handler
+			$(document).trigger(new $.Event('ajaxError'), xhr);
+		};
+
+		var errorCallback = function() {
+			// fire jquery global ajax error handler
+			$(document).trigger(new $.Event('ajaxError'), xhr);
+		};
+
+		// FIXME: also needs an IE8 way
+		if (xhr.addEventListener) {
+			xhr.addEventListener('load', loadCallback);
+			xhr.addEventListener('error', errorCallback);
+		}
+
 	}
 };
+
+/**
+ * Current user attributes
+ *
+ * @typedef {Object} OC.CurrentUser
+ *
+ * @property {String} uid user id
+ * @property {String} displayName display name
+ */
 
 /**
  * @namespace OC.Plugins
@@ -864,7 +988,11 @@ OC.msg = {
 OC.Notification={
 	queuedNotifications: [],
 	getDefaultNotificationFunction: null,
-	notificationTimer: 0,
+
+	/**
+	 * @type Array.<int> array of notification timers
+	 */
+	notificationTimers: [],
 
 	/**
 	 * @param callback
@@ -875,25 +1003,64 @@ OC.Notification={
 	},
 
 	/**
-	 * Hides a notification
-	 * @param callback
-	 * @todo Write documentation
+	 * Hides a notification.
+	 *
+	 * If a row is given, only hide that one.
+	 * If no row is given, hide all notifications.
+	 *
+	 * @param {jQuery} [$row] notification row
+	 * @param {Function} [callback] callback
 	 */
-	hide: function(callback) {
-		$('#notification').fadeOut('400', function(){
-			if (OC.Notification.isHidden()) {
-				if (OC.Notification.getDefaultNotificationFunction) {
-					OC.Notification.getDefaultNotificationFunction.call();
-				}
-			}
+	hide: function($row, callback) {
+		var self = this;
+		var $notification = $('#notification');
+
+		if (_.isFunction($row)) {
+			// first arg is the callback
+			callback = $row;
+			$row = undefined;
+		}
+
+		if (!$row) {
+			console.warn('Missing argument $row in OC.Notification.hide() call, caller needs to be adjusted to only dismiss its own notification');
+			// assume that the row to be hidden is the first one
+			$row = $notification.find('.row:first');
+		}
+
+		if ($row && $notification.find('.row').length > 1) {
+			// remove the row directly
+			$row.remove();
 			if (callback) {
 				callback.call();
 			}
-			$('#notification').empty();
-			if(OC.Notification.queuedNotifications.length > 0){
-				OC.Notification.showHtml(OC.Notification.queuedNotifications[0]);
-				OC.Notification.queuedNotifications.shift();
+			return;
+		}
+
+		_.defer(function() {
+			// fade out is supposed to only fade when there is a single row
+			// however, some code might call hide() and show() directly after,
+			// which results in more than one element
+			// in this case, simply delete that one element that was supposed to
+			// fade out
+			//
+			// FIXME: remove once all callers are adjusted to only hide their own notifications
+			if ($notification.find('.row').length > 1) {
+				$row.remove();
+				return;
 			}
+
+			// else, fade out whatever was present
+			$notification.fadeOut('400', function(){
+				if (self.isHidden()) {
+					if (self.getDefaultNotificationFunction) {
+						self.getDefaultNotificationFunction.call();
+					}
+				}
+				if (callback) {
+					callback.call();
+				}
+				$notification.empty();
+			});
 		});
 	},
 
@@ -901,66 +1068,93 @@ OC.Notification={
 	 * Shows a notification as HTML without being sanitized before.
 	 * If you pass unsanitized user input this may lead to a XSS vulnerability.
 	 * Consider using show() instead of showHTML()
+	 *
 	 * @param {string} html Message to display
+	 * @param {Object} [options] options
+	 * @param {string] [options.type] notification type
+	 * @param {int} [options.timeout=0] timeout value, defaults to 0 (permanent)
+	 * @return {jQuery} jQuery element for notification row
 	 */
-	showHtml: function(html) {
-		var notification = $('#notification');
-		if((notification.filter('span.undo').length == 1) || OC.Notification.isHidden()){
-			notification.html(html);
-			notification.fadeIn().css('display','inline-block');
-		}else{
-			OC.Notification.queuedNotifications.push(html);
+	showHtml: function(html, options) {
+		options = options || {};
+		_.defaults(options, {
+			timeout: 0
+		});
+
+		var self = this;
+		var $notification = $('#notification');
+		if (this.isHidden()) {
+			$notification.fadeIn().css('display','inline-block');
 		}
+		var $row = $('<div class="row"></div>');
+		if (options.type) {
+			$row.addClass('type-' + options.type);
+		}
+		if (options.type === 'error') {
+			// add a close button
+			var $closeButton = $('<a class="action close icon-close" href="#"></a>');
+			$closeButton.attr('alt', t('core', 'Dismiss'));
+			$row.append($closeButton);
+			$closeButton.one('click', function() {
+				self.hide($row);
+				return false;
+			});
+			$row.addClass('closeable');
+		}
+
+		$row.prepend(html);
+		$notification.append($row);
+
+		if(options.timeout > 0) {
+			// register timeout to vanish notification
+			this.notificationTimers.push(setTimeout(function() {
+				self.hide($row);
+			}, (options.timeout * 1000)));
+		}
+
+		return $row;
 	},
 
 	/**
 	 * Shows a sanitized notification
+	 *
 	 * @param {string} text Message to display
+	 * @param {Object} [options] options
+	 * @param {string] [options.type] notification type
+	 * @param {int} [options.timeout=0] timeout value, defaults to 0 (permanent)
+	 * @return {jQuery} jQuery element for notification row
 	 */
-	show: function(text) {
-		var notification = $('#notification');
-		if((notification.filter('span.undo').length == 1) || OC.Notification.isHidden()){
-			notification.text(text);
-			notification.fadeIn().css('display','inline-block');
-		}else{
-			OC.Notification.queuedNotifications.push($('<div/>').text(text).html());
-		}
+	show: function(text, options) {
+		return this.showHtml($('<div/>').text(text).html(), options);
 	},
-
 
 	/**
 	 * Shows a notification that disappears after x seconds, default is
 	 * 7 seconds
+	 *
 	 * @param {string} text Message to show
 	 * @param {array} [options] options array
 	 * @param {int} [options.timeout=7] timeout in seconds, if this is 0 it will show the message permanently
 	 * @param {boolean} [options.isHTML=false] an indicator for HTML notifications (true) or text (false)
+	 * @param {string] [options.type] notification type
 	 */
 	showTemporary: function(text, options) {
+		var self = this;
 		var defaults = {
-				isHTML: false,
-				timeout: 7
-			},
-			options = options || {};
+			isHTML: false,
+			timeout: 7
+		};
+		options = options || {};
 		// merge defaults with passed in options
 		_.defaults(options, defaults);
 
-		// clear previous notifications
-		OC.Notification.hide();
-		if(OC.Notification.notificationTimer) {
-			clearTimeout(OC.Notification.notificationTimer);
-		}
-
+		var $row;
 		if(options.isHTML) {
-			OC.Notification.showHtml(text);
+			$row = this.showHtml(text, options);
 		} else {
-			OC.Notification.show(text);
+			$row = this.show(text, options);
 		}
-
-		if(options.timeout > 0) {
-			// register timeout to vanish notification
-			OC.Notification.notificationTimer = setTimeout(OC.Notification.hide, (options.timeout * 1000));
-		}
+		return $row;
 	},
 
 	/**
@@ -968,7 +1162,7 @@ OC.Notification={
 	 * @return {boolean}
 	 */
 	isHidden: function() {
-		return ($("#notification").text() === '');
+		return !$("#notification").find('.row').length;
 	}
 };
 
@@ -1235,6 +1429,21 @@ function initCore() {
 	 */
 	moment.locale(OC.getLocale());
 
+	if ($.browser.msie || !!navigator.userAgent.match(/Trident\/7\./)) {
+		// for IE10+ that don't have conditional comments
+		// and IE11 doesn't identify as MSIE any more...
+		$('html').addClass('ie');
+	} else if (!!navigator.userAgent.match(/Edge\/12/)) {
+		// for edge
+		$('html').addClass('edge');
+	}
+
+	$(document).on('ajaxError.main', function( event, request, settings ) {
+		if (settings && settings.allowAuthErrors) {
+			return;
+		}
+		OC._processAjaxError(request);
+	});
 
 	/**
 	 * Calls the server periodically to ensure that session doesn't
@@ -1274,23 +1483,7 @@ function initCore() {
 		SVGSupport.checkMimeType();
 	}
 
-	// user menu
-	$('#settings #expand').keydown(function(event) {
-		if (event.which === 13 || event.which === 32) {
-			$('#expand').click();
-		}
-	});
-	$('#settings #expand').click(function(event) {
-		$('#settings #expanddiv').slideToggle(OC.menuSpeed);
-		event.stopPropagation();
-	});
-	$('#settings #expanddiv').click(function(event){
-		event.stopPropagation();
-	});
-	//hide the user menu when clicking outside it
-	$(document).click(function(){
-		$('#settings #expanddiv').slideUp(OC.menuSpeed);
-	});
+	OC.registerMenu($('#expand'), $('#expanddiv'));
 
 	// toggle for menus
 	$(document).on('mouseup.closemenus', function(event) {
@@ -1303,7 +1496,6 @@ function initCore() {
 		OC.hideMenus();
 	});
 
-
 	/**
 	 * Set up the main menu toggle to react to media query changes.
 	 * If the screen is small enough, the main menu becomes a toggle.
@@ -1311,7 +1503,7 @@ function initCore() {
 	 */
 	function setupMainMenu() {
 		// toggle the navigation
-		var $toggle = $('#header .menutoggle');
+		var $toggle = $('#header .header-appname-container');
 		var $navigation = $('#navigation');
 
 		// init the menu
@@ -1434,7 +1626,6 @@ function initCore() {
 		$('body').delegate('#app-content', 'apprendered appresized', adjustControlsWidth);
 
 	}
-
 }
 
 $(document).ready(initCore);
@@ -1453,7 +1644,7 @@ $.fn.filterAttr = function(attr_name, attr_value) {
  * @return {string}
  */
 function humanFileSize(size, skipSmallSizes) {
-	var humanList = ['B', 'kB', 'MB', 'GB', 'TB'];
+	var humanList = ['B', 'KB', 'MB', 'GB', 'TB'];
 	// Calculate Log with base 1024: size = 1024 ** order
 	var order = size > 0 ? Math.floor(Math.log(size) / Math.log(1024)) : 0;
 	// Stay in range of the byte sizes that are defined
@@ -1462,9 +1653,9 @@ function humanFileSize(size, skipSmallSizes) {
 	var relativeSize = (size / Math.pow(1024, order)).toFixed(1);
 	if(skipSmallSizes === true && order === 0) {
 		if(relativeSize !== "0.0"){
-			return '< 1 kB';
+			return '< 1 KB';
 		} else {
-			return '0 kB';
+			return '0 KB';
 		}
 	}
 	if(order < 2){
@@ -1533,6 +1724,10 @@ OC.Util = {
 	 * @returns {string} human readable difference from now
 	 */
 	relativeModifiedDate: function (timestamp) {
+		var diff = moment().diff(moment(timestamp));
+		if (diff >= 0 && diff < 45000 ) {
+			return t('core', 'seconds ago');
+		}
 		return moment(timestamp).fromNow();
 	},
 	/**
@@ -1594,6 +1789,94 @@ OC.Util = {
 				}
 			});
 		});
+	},
+
+	/**
+	 * Fix image scaling for IE8, since background-size is not supported.
+	 *
+	 * This scales the image to the element's actual size, the URL is
+	 * taken from the "background-image" CSS attribute.
+	 *
+	 * @param {Object} $el image element
+	 */
+	scaleFixForIE8: function($el) {
+		if (!this.isIE8()) {
+			return;
+		}
+		var self = this;
+		$($el).each(function() {
+			var url = $(this).css('background-image');
+			var r = url.match(/url\(['"]?([^'")]*)['"]?\)/);
+			if (!r) {
+				return;
+			}
+			url = r[1];
+			url = self.replaceSVGIcon(url);
+			// TODO: escape
+			url = url.replace(/'/g, '%27');
+			$(this).css({
+				'filter': 'progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\'' + url + '\', sizingMethod=\'scale\')',
+				'background-image': ''
+			});
+		});
+		return $el;
+	},
+
+	/**
+	 * Returns whether this is IE
+	 *
+	 * @return {bool} true if this is IE, false otherwise
+	 */
+	isIE: function() {
+		return $('html').hasClass('ie');
+	},
+
+	/**
+	 * Returns whether this is IE8
+	 *
+	 * @return {bool} true if this is IE8, false otherwise
+	 */
+	isIE8: function() {
+		return $('html').hasClass('ie8');
+	},
+
+	/**
+	 * Returns the width of a generic browser scrollbar
+	 *
+	 * @return {int} width of scrollbar
+	 */
+	getScrollBarWidth: function() {
+		if (this._scrollBarWidth) {
+			return this._scrollBarWidth;
+		}
+
+		var inner = document.createElement('p');
+		inner.style.width = "100%";
+		inner.style.height = "200px";
+
+		var outer = document.createElement('div');
+		outer.style.position = "absolute";
+		outer.style.top = "0px";
+		outer.style.left = "0px";
+		outer.style.visibility = "hidden";
+		outer.style.width = "200px";
+		outer.style.height = "150px";
+		outer.style.overflow = "hidden";
+		outer.appendChild (inner);
+
+		document.body.appendChild (outer);
+		var w1 = inner.offsetWidth;
+		outer.style.overflow = 'scroll';
+		var w2 = inner.offsetWidth;
+		if(w1 === w2) {
+			w2 = outer.clientWidth;
+		}
+
+		document.body.removeChild (outer);
+
+		this._scrollBarWidth = (w1 - w2);
+
+		return this._scrollBarWidth;
 	},
 
 	/**
@@ -1886,32 +2169,11 @@ jQuery.fn.exists = function(){
 	return this.length > 0;
 };
 
+/**
+ * @deprecated use OC.Util.getScrollBarWidth() instead
+ */
 function getScrollBarWidth() {
-	var inner = document.createElement('p');
-	inner.style.width = "100%";
-	inner.style.height = "200px";
-
-	var outer = document.createElement('div');
-	outer.style.position = "absolute";
-	outer.style.top = "0px";
-	outer.style.left = "0px";
-	outer.style.visibility = "hidden";
-	outer.style.width = "200px";
-	outer.style.height = "150px";
-	outer.style.overflow = "hidden";
-	outer.appendChild (inner);
-
-	document.body.appendChild (outer);
-	var w1 = inner.offsetWidth;
-	outer.style.overflow = 'scroll';
-	var w2 = inner.offsetWidth;
-	if(w1 === w2) {
-		w2 = outer.clientWidth;
-	}
-
-	document.body.removeChild (outer);
-
-	return (w1 - w2);
+	return OC.Util.getScrollBarWidth();
 }
 
 /**
@@ -1926,7 +2188,8 @@ jQuery.fn.tipsy = function(argument) {
 			placement: 'bottom',
 			delay: { 'show': 0, 'hide': 0},
 			trigger: 'hover',
-			html: false
+			html: false,
+			container: 'body'
 		};
 		if(argument.gravity) {
 			switch(argument.gravity) {

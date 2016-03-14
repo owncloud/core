@@ -1,6 +1,5 @@
 <?php
 /**
- * @author Alexander Bogdanov <syn@li.ru>
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Björn Schießle <schiessle@owncloud.com>
  * @author Carlos Cerrillo <ccerrillo@gmail.com>
@@ -9,14 +8,12 @@
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author Michael Gapczynski <GapczynskiM@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
- * @author Philippe Kueck <pk@plusline.de>
  * @author Philipp Kapfer <philipp.kapfer@gmx.at>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -36,6 +33,8 @@
 namespace OC\Files\Storage;
 
 use Exception;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Message\ResponseInterface;
 use OC\Files\Filesystem;
 use OC\Files\Stream\Close;
 use Icewind\Streams\IteratorDirectory;
@@ -49,6 +48,7 @@ use OCP\Files\StorageNotAvailableException;
 use OCP\Util;
 use Sabre\DAV\Client;
 use Sabre\DAV\Exception\NotFound;
+use Sabre\DAV\Xml\Property\ResourceType;
 use Sabre\HTTP\ClientException;
 use Sabre\HTTP\ClientHttpException;
 
@@ -106,6 +106,7 @@ class DAV extends Common {
 				$this->secure = false;
 			}
 			if ($this->secure === true) {
+				// inject mock for testing
 				$certPath = \OC_User::getHome(\OC_User::getUser()) . '/files_external/rootcerts.crt';
 				if (file_exists($certPath)) {
 					$this->certPath = $certPath;
@@ -135,11 +136,15 @@ class DAV extends Common {
 			'password' => $this->password,
 		);
 
+		$proxy = \OC::$server->getConfig()->getSystemValue('proxy', '');
+		if($proxy !== '') {
+			$settings['proxy'] = $proxy;
+		}
+
 		$this->client = new Client($settings);
 		$this->client->setThrowExceptions(true);
-
 		if ($this->secure === true && $this->certPath) {
-			$this->client->addTrustedCertificates($this->certPath);
+			$this->client->addCurlSetting(CURLOPT_CAINFO, $this->certPath);
 		}
 	}
 
@@ -282,7 +287,8 @@ class DAV extends Common {
 			$response = $this->propfind($path);
 			$responseType = array();
 			if (isset($response["{DAV:}resourcetype"])) {
-				$responseType = $response["{DAV:}resourcetype"]->resourceType;
+				/** @var ResourceType[] $response */
+				$responseType = $response["{DAV:}resourcetype"]->getValue();
 			}
 			return (count($responseType) > 0 and $responseType[0] == "{DAV:}collection") ? 'dir' : 'file';
 		} catch (ClientHttpException $e) {
@@ -338,15 +344,21 @@ class DAV extends Common {
 		switch ($mode) {
 			case 'r':
 			case 'rb':
-				if (!$this->file_exists($path)) {
-					return false;
+				try {
+					$response = $this->httpClientService
+							->newClient()
+							->get($this->createBaseUri() . $this->encodePath($path), [
+									'auth' => [$this->user, $this->password],
+									'stream' => true
+							]);
+				} catch (RequestException $e) {
+					if ($e->getResponse() instanceof ResponseInterface
+						&& $e->getResponse()->getStatusCode() === 404) {
+						return false;
+					} else {
+						throw $e;
+					}
 				}
-				$response = $this->httpClientService
-					->newClient()
-					->get($this->createBaseUri() . $this->encodePath($path), [
-						'auth' => [$this->user, $this->password],
-						'stream' => true
-					]);
 
 				if ($response->getStatusCode() !== Http::STATUS_OK) {
 					if ($response->getStatusCode() === Http::STATUS_LOCKED) {
@@ -556,7 +568,8 @@ class DAV extends Common {
 			$response = $this->propfind($path);
 			$responseType = array();
 			if (isset($response["{DAV:}resourcetype"])) {
-				$responseType = $response["{DAV:}resourcetype"]->resourceType;
+				/** @var ResourceType[] $response */
+				$responseType = $response["{DAV:}resourcetype"]->getValue();
 			}
 			$type = (count($responseType) > 0 and $responseType[0] == "{DAV:}collection") ? 'dir' : 'file';
 			if ($type == 'dir') {

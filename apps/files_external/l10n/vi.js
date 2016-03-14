@@ -6,9 +6,10 @@ OC.L10N.register(
     "Grant access" : "Cấp quyền truy cập",
     "Access granted" : "Đã cấp quyền truy cập",
     "Saved" : "Đã lưu",
-    "None" : "Không gì cả",
     "Username" : "Tên đăng nhập",
     "Password" : "Mật khẩu",
+    "Save" : "Lưu",
+    "None" : "Không gì cả",
     "Port" : "Cổng",
     "Region" : "Vùng/miền",
     "WebDAV" : "WebDAV",
@@ -21,8 +22,7 @@ OC.L10N.register(
     "External Storage" : "Lưu trữ ngoài",
     "Folder name" : "Tên thư mục",
     "Configuration" : "Cấu hình",
-    "Delete" : "Xóa",
     "Add storage" : "Thêm bộ nhớ",
-    "Enable User External Storage" : "Kích hoạt tính năng lưu trữ ngoài"
+    "Delete" : "Xóa"
 },
 "nplurals=1; plural=0;");

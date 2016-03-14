@@ -5,12 +5,11 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Scrutinizer Auto-Fixer <auto-fixer@scrutinizer-ci.com>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
  * @author Vincent Petry <pvince81@owncloud.com>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -75,14 +74,16 @@ class OC_FileChunking {
 
 	public function isComplete() {
 		$prefix = $this->getPrefix();
-		$parts = 0;
 		$cache = $this->getCache();
-		for($i=0; $i < $this->info['chunkcount']; $i++) {
-			if ($cache->hasKey($prefix.$i)) {
-				$parts ++;
+		$chunkcount = (int)$this->info['chunkcount'];
+
+		for($i=($chunkcount-1); $i >= 0; $i--) {
+			if (!$cache->hasKey($prefix.$i)) {
+				return false;
 			}
 		}
-		return $parts == $this->info['chunkcount'];
+
+		return true;
 	}
 
 	/**

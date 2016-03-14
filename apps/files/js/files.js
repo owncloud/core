@@ -136,13 +136,27 @@
 
 		/**
 		 * Returns the download URL of the given file(s)
-		 * @param filename string or array of file names to download
-		 * @param dir optional directory in which the file name is, defaults to the current directory
+		 * @param {string} filename string or array of file names to download
+		 * @param {string} [dir] optional directory in which the file name is, defaults to the current directory
+		 * @param {bool} [isDir=false] whether the given filename is a directory and might need a special URL
 		 */
-		getDownloadUrl: function(filename, dir) {
-			if ($.isArray(filename)) {
+		getDownloadUrl: function(filename, dir, isDir) {
+			if (!_.isArray(filename) && !isDir) {
+				var pathSections = dir.split('/');
+				pathSections.push(filename);
+				var encodedPath = '';
+				_.each(pathSections, function(section) {
+					if (section !== '') {
+						encodedPath += '/' + encodeURIComponent(section);
+					}
+				});
+				return OC.linkToRemoteBase('webdav') + encodedPath;
+			}
+
+			if (_.isArray(filename)) {
 				filename = JSON.stringify(filename);
 			}
+
 			var params = {
 				dir: dir,
 				files: filename
@@ -193,7 +207,7 @@
 		 */
 		lazyLoadPreview : function(path, mime, ready, width, height, etag) {
 			console.warn('DEPRECATED: please use lazyLoadPreview() from an OCA.Files.FileList instance');
-			return OCA.Files.App.fileList.lazyLoadPreview({
+			return FileList.lazyLoadPreview({
 				path: path,
 				mime: mime,
 				callback: ready,
@@ -229,9 +243,6 @@
 					e.preventDefault(); // prevent browser from doing anything, if file isn't dropped in dropZone
 				});
 
-			//do a background scan if needed
-			scanFiles();
-
 			// display storage warnings
 			setTimeout(Files.displayStorageWarnings, 100);
 
@@ -260,8 +271,9 @@
 			}
 
 
-			$('#webdavurl').on('click', function () {
-				$('#webdavurl').select();
+			$('#webdavurl').on('click touchstart', function () {
+				this.focus();
+				this.setSelectionRange(0, this.value.length);
 			});
 
 			$('#upload').tooltip({placement:'right'});
@@ -295,7 +307,12 @@
 					}
 				};
 
-			OC.redirect(url + '&downloadStartSecret=' + randomToken);
+			if (url.indexOf('?') >= 0) {
+				url += '&';
+			} else {
+				url += '?';
+			}
+			OC.redirect(url + 'downloadStartSecret=' + randomToken);
 			OC.Util.waitFor(checkForDownloadCookie, 500);
 		}
 	};
@@ -304,55 +321,12 @@
 	OCA.Files.Files = Files;
 })();
 
-function scanFiles(force, dir, users) {
-	if (!OC.currentUser) {
-		return;
-	}
-
-	if (!dir) {
-		dir = '';
-	}
-	force = !!force; //cast to bool
-	scanFiles.scanning = true;
-	var scannerEventSource;
-	if (users) {
-		var usersString;
-		if (users === 'all') {
-			usersString = users;
-		} else {
-			usersString = JSON.stringify(users);
-		}
-		scannerEventSource = new OC.EventSource(OC.filePath('files','ajax','scan.php'),{force: force,dir: dir, users: usersString});
-	} else {
-		scannerEventSource = new OC.EventSource(OC.filePath('files','ajax','scan.php'),{force: force,dir: dir});
-	}
-	scanFiles.cancel = scannerEventSource.close.bind(scannerEventSource);
-	scannerEventSource.listen('count',function(count) {
-		console.log(count + ' files scanned');
-	});
-	scannerEventSource.listen('folder',function(path) {
-		console.log('now scanning ' + path);
-	});
-	scannerEventSource.listen('error',function(message) {
-		console.error('Scanner error: ', message);
-	});
-	scannerEventSource.listen('done',function(count) {
-		scanFiles.scanning=false;
-		console.log('done after ' + count + ' files');
-		if (OCA.Files.App) {
-			OCA.Files.App.fileList.updateStorageStatistics(true);
-		}
-	});
-	scannerEventSource.listen('user',function(user) {
-		console.log('scanning files for ' + user);
-	});
-}
-scanFiles.scanning=false;
-
 // TODO: move to FileList
 var createDragShadow = function(event) {
+	// FIXME: inject file list instance somehow
+	/* global FileList, Files */
+
 	//select dragged file
-	var FileList = OCA.Files.App.fileList;
 	var isDragSelected = $(event.target).parents('tr').find('td input:first').prop('checked');
 	if (!isDragSelected) {
 		//select dragged file
@@ -389,7 +363,7 @@ var createDragShadow = function(event) {
 				.css('background-image', 'url(' + OC.imagePath('core', 'filetypes/folder.png') + ')');
 		} else {
 			var path = dir + '/' + elem.name;
-			OCA.Files.App.files.lazyLoadPreview(path, elem.mime, function(previewpath) {
+			Files.lazyLoadPreview(path, elem.mimetype, function(previewpath) {
 				newtr.find('td.filename')
 					.css('background-image', 'url(' + previewpath + ')');
 			}, null, null, elem.etag);
@@ -436,7 +410,7 @@ var folderDropOptions = {
 	hoverClass: "canDrop",
 	drop: function( event, ui ) {
 		// don't allow moving a file into a selected folder
-		var FileList = OCA.Files.App.fileList;
+		/* global FileList */
 		if ($(event.target).parents('tr').find('td input:first').prop('checked') === true) {
 			return false;
 		}

@@ -14,49 +14,44 @@
 	}
 
 	var TEMPLATE =
-			'<ul id="shareWithList">' +
+			'<ul id="shareWithList" class="shareWithList">' +
 			'{{#each sharees}}' +
-			'    {{#if isCollection}}' +
-			'    <li data-collection="{{collectionID}}">{{text}}</li>' +
-			'    {{/if}}' +
-			'    {{#unless isCollection}}' +
-			'    <li data-share-type="{{shareType}}" data-share-with="{{shareWith}}" title="{{shareWith}}">' +
-			'        <a href="#" class="unshare"><span class="icon-loading-small hidden"></span><img class="svg" alt="{{unshareLabel}}" title="{{unshareLabel}}" src="{{unshareImage}}" /></a>' +
+			'    <li data-share-id="{{shareId}}" data-share-type="{{shareType}}" data-share-with="{{shareWith}}">' +
+			'        <a href="#" class="unshare"><span class="icon-loading-small hidden"></span><span class="icon icon-delete"></span><span class="hidden-visually">{{unshareLabel}}</span></a>' +
 			'        {{#if avatarEnabled}}' +
 			'        <div class="avatar {{#if modSeed}}imageplaceholderseed{{/if}}" data-username="{{shareWith}}" {{#if modSeed}}data-seed="{{shareWith}} {{shareType}}"{{/if}}></div>' +
 			'        {{/if}}' +
-			'        <span class="username">{{shareWithDisplayName}}</span>' +
-			'        {{#if mailPublicNotificationEnabled}} {{#unless isRemoteShare}}' +
-			'        <input id="mail-{{shareWith}}" type="checkbox" name="mailNotification" class="mailNotification checkbox" {{#if wasMailSent}}checked="checked"{{/if}} />' +
-			'        <label for="mail-{{shareWith}}">{{notifyByMailLabel}}</label>' +
+			'        <span class="has-tooltip username" title="{{shareWith}}">{{shareWithDisplayName}}</span>' +
+			'        {{#if mailNotificationEnabled}} {{#unless isRemoteShare}}' +
+			'        <input id="mail-{{cid}}-{{shareWith}}" type="checkbox" name="mailNotification" class="mailNotification checkbox" {{#if wasMailSent}}checked="checked"{{/if}} />' +
+			'        <label for="mail-{{cid}}-{{shareWith}}">{{notifyByMailLabel}}</label>' +
 			'        {{/unless}} {{/if}}' +
 			'        {{#if isResharingAllowed}} {{#if sharePermissionPossible}} {{#unless isRemoteShare}}' +
-			'        <input id="canShare-{{shareWith}}" type="checkbox" name="share" class="permissions checkbox" {{#if hasSharePermission}}checked="checked"{{/if}} data-permissions="{{sharePermission}}" />' +
-			'        <label for="canShare-{{shareWith}}">{{canShareLabel}}</label>' +
+			'        <input id="canShare-{{cid}}-{{shareWith}}" type="checkbox" name="share" class="permissions checkbox" {{#if hasSharePermission}}checked="checked"{{/if}} data-permissions="{{sharePermission}}" />' +
+			'        <label for="canShare-{{cid}}-{{shareWith}}">{{canShareLabel}}</label>' +
 			'        {{/unless}} {{/if}} {{/if}}' +
 			'        {{#if editPermissionPossible}}' +
-			'        <input id="canEdit-{{shareWith}}" type="checkbox" name="edit" class="permissions checkbox" {{#if hasEditPermission}}checked="checked"{{/if}} />' +
-			'        <label for="canEdit-{{shareWith}}">{{canEditLabel}}</label>' +
+			'        <input id="canEdit-{{cid}}-{{shareWith}}" type="checkbox" name="edit" class="permissions checkbox" {{#if hasEditPermission}}checked="checked"{{/if}} />' +
+			'        <label for="canEdit-{{cid}}-{{shareWith}}">{{canEditLabel}}</label>' +
 			'        {{/if}}' +
 			'        {{#unless isRemoteShare}}' +
 			'        <a href="#" class="showCruds"><img class="svg" alt="{{crudsLabel}}" src="{{triangleSImage}}"/></a>' +
 			'        <div class="cruds hidden">' +
 			'            {{#if createPermissionPossible}}' +
-			'            <input id="canCreate-{{shareWith}}" type="checkbox" name="create" class="permissions checkbox" {{#if hasCreatePermission}}checked="checked"{{/if}} data-permissions="{{createPermission}}"/>' +
-			'            <label for="canCreate-{{shareWith}}">{{createPermissionLabel}}</label>' +
+			'            <input id="canCreate-{{cid}}-{{shareWith}}" type="checkbox" name="create" class="permissions checkbox" {{#if hasCreatePermission}}checked="checked"{{/if}} data-permissions="{{createPermission}}"/>' +
+			'            <label for="canCreate-{{cid}}-{{shareWith}}">{{createPermissionLabel}}</label>' +
 			'            {{/if}}' +
 			'            {{#if updatePermissionPossible}}' +
-			'            <input id="canUpdate-{{shareWith}}" type="checkbox" name="update" class="permissions checkbox" {{#if hasUpdatePermission}}checked="checked"{{/if}} data-permissions="{{updatePermission}}"/>' +
-			'            <label for="canUpdate-{{shareWith}}">{{updatePermissionLabel}}</label>' +
+			'            <input id="canUpdate-{{cid}}-{{shareWith}}" type="checkbox" name="update" class="permissions checkbox" {{#if hasUpdatePermission}}checked="checked"{{/if}} data-permissions="{{updatePermission}}"/>' +
+			'            <label for="canUpdate-{{cid}}-{{shareWith}}">{{updatePermissionLabel}}</label>' +
 			'            {{/if}}' +
 			'            {{#if deletePermissionPossible}} {{#unless isRemoteShare}}' +
-			'            <input id="canDelete-{{shareWith}}" type="checkbox" name="delete" class="permissions checkbox" {{#if hasDeletePermission}}checked="checked"{{/if}} data-permissions="{{deletePermission}}"/>' +
-			'            <label for="canDelete-{{shareWith}}">{{deletePermissionLabel}}</label>' +
+			'            <input id="canDelete-{{cid}}-{{shareWith}}" type="checkbox" name="delete" class="permissions checkbox" {{#if hasDeletePermission}}checked="checked"{{/if}} data-permissions="{{deletePermission}}"/>' +
+			'            <label for="canDelete-{{cid}}-{{shareWith}}">{{deletePermissionLabel}}</label>' +
 			'            {{/unless}} {{/if}}' +
 			'        </div>' +
 			'        {{/unless}}' +
 			'    </li>' +
-			'    {{/unless}}' +
 			'{{/each}}' +
 			'</ul>'
 		;
@@ -81,12 +76,6 @@
 		/** @type {Function} **/
 		_template: undefined,
 
-		/** @type {boolean} **/
-		showLink: true,
-
-		/** @type {object} **/
-		_collections: {},
-
 		events: {
 			'click .unshare': 'onUnshare',
 			'click .permissions': 'onPermissionChange',
@@ -105,23 +94,6 @@
 			this.model.on('change:shares', function() {
 				view.render();
 			});
-		},
-
-		processCollectionShare: function(shareIndex) {
-			var type = this.model.getCollectionType(shareIndex);
-			var id = this.model.getCollectionPath(shareIndex);
-			if(type !== 'file' && type !== 'folder') {
-				id = this.model.getCollectionSource(shareIndex);
-			}
-			var displayName = this.model.getShareWithDisplayName(shareIndex);
-			if(!_.isUndefined(this._collections[id])) {
-				this._collections[id].text = this._collections[id].text + ", " + displayName;
-			} else {
-				this._collections[id] = {};
-				this._collections[id].text = t('core', 'Shared in {item} with {user}', {'item': id, user: displayName});
-				this._collections[id].id = id;
-				this._collections[id].isCollection = true;
-			}
 		},
 
 		/**
@@ -146,6 +118,7 @@
 			}
 
 			return _.extend(hasPermissionOverride, {
+				cid: this.cid,
 				hasSharePermission: this.model.hasSharePermission(shareIndex),
 				hasEditPermission: this.model.hasEditPermission(shareIndex),
 				hasCreatePermission: this.model.hasCreatePermission(shareIndex),
@@ -155,6 +128,7 @@
 				shareWith: shareWith,
 				shareWithDisplayName: shareWithDisplayName,
 				shareType: shareType,
+				shareId: this.model.get('shares')[shareIndex].id,
 				modSeed: shareType !== OC.Share.SHARE_TYPE_USER,
 				isRemoteShare: shareType === OC.Share.SHARE_TYPE_REMOTE
 			});
@@ -163,10 +137,9 @@
 		getShareeList: function() {
 			var universal = {
 				avatarEnabled: this.configModel.areAvatarsEnabled(),
-				mailPublicNotificationEnabled: this.configModel.isMailPublicNotificationEnabled(),
+				mailNotificationEnabled: this.configModel.isMailNotificationEnabled(),
 				notifyByMailLabel: t('core', 'notify by email'),
 				unshareLabel: t('core', 'Unshare'),
-				unshareImage: OC.imagePath('core', 'actions/delete'),
 				canShareLabel: t('core', 'can share'),
 				canEditLabel: t('core', 'can edit'),
 				createPermissionLabel: t('core', 'create'),
@@ -186,8 +159,6 @@
 				deletePermission: OC.PERMISSION_DELETE
 			};
 
-			this._collections = {};
-
 			if(!this.model.hasUserShares()) {
 				return [];
 			}
@@ -195,22 +166,17 @@
 			var shares = this.model.get('shares');
 			var list = [];
 			for(var index = 0; index < shares.length; index++) {
-				if(this.model.isCollection(index)) {
-					this.processCollectionShare(index);
-				} else {
-					// first empty {} is necessary, otherwise we get in trouble
-					// with references
-					list.push(_.extend({}, universal, this.getShareeObject(index)));
-				}
+				// first empty {} is necessary, otherwise we get in trouble
+				// with references
+				list.push(_.extend({}, universal, this.getShareeObject(index)));
 			}
-			list = _.union(_.values(this._collections), list);
 
 			return list;
 		},
 
 		render: function() {
-			var shareeListTemplate = this.template();
-			this.$el.html(shareeListTemplate({
+			this.$el.html(this.template({
+				cid: this.cid,
 				sharees: this.getShareeList()
 			}));
 
@@ -226,6 +192,10 @@
 				});
 			}
 
+			this.$el.find('.has-tooltip').tooltip({
+				placement: 'bottom'
+			});
+
 			this.delegateEvents();
 
 			return this;
@@ -235,36 +205,46 @@
 		 * @returns {Function} from Handlebars
 		 * @private
 		 */
-		template: function () {
+		template: function (data) {
 			if (!this._template) {
 				this._template = Handlebars.compile(TEMPLATE);
 			}
-			return this._template;
+			return this._template(data);
 		},
 
 		onUnshare: function(event) {
+			var self = this;
 			var $element = $(event.target);
-			console.log($element);
+			if (!$element.is('a')) {
+				$element = $element.closest('a');
+			}
 
-			var $loading = $element.siblings('.icon-loading-small').eq(0);
+			var $loading = $element.find('.icon-loading-small').eq(0);
 			if(!$loading.hasClass('hidden')) {
 				// in process
-				return;
+				return false;
 			}
 			$loading.removeClass('hidden');
 
 			var $li = $element.closest('li');
-			var shareType = $li.data('share-type');
-			var shareWith = $li.attr('data-share-with');
 
-			this.model.removeShare(shareType, shareWith);
+			var shareId = $li.data('share-id');
 
+			self.model.removeShare(shareId)
+				.done(function() {
+					$li.remove();
+				})
+				.fail(function() {
+					$loading.addClass('hidden');
+					OC.Notification.showTemporary(t('core', 'Could not unshare'));
+				});
 			return false;
 		},
 
 		onPermissionChange: function(event) {
 			var $element = $(event.target);
 			var $li = $element.closest('li');
+			var shareId = $li.data('share-id');
 			var shareType = $li.data('share-type');
 			var shareWith = $li.attr('data-share-with');
 
@@ -286,7 +266,7 @@
 				permissions |= $(checkbox).data('permissions');
 			});
 
-			this.model.setPermissions(shareType, shareWith, permissions);
+			this.model.updateShare(shareId, {permissions: permissions});
 		},
 
 		onCrudsToggle: function(event) {

@@ -1,8 +1,9 @@
 <?php
 /**
  * @author Bart Visscher <bartv@thisnet.nl>
+ * @author Morris Jobke <hey@morrisjobke.de>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -31,7 +32,7 @@ class Sqlite extends AbstractDatabase {
 	}
 
 	public function setupDatabase($username) {
-		$datadir = \OC_Config::getValue('datadirectory');
+		$datadir = \OC::$server->getSystemConfig()->getValue('datadirectory');
 
 		//delete the old sqlite database first, might cause infinte loops otherwise
 		if(file_exists("$datadir/owncloud.db")) {

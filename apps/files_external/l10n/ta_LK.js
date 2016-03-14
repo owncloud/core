@@ -4,9 +4,10 @@ OC.L10N.register(
     "Personal" : "தனிப்பட்ட",
     "Grant access" : "அனுமதியை வழங்கல்",
     "Access granted" : "அனுமதி வழங்கப்பட்டது",
-    "None" : "ஒன்றுமில்லை",
     "Username" : "பயனாளர் பெயர்",
     "Password" : "கடவுச்சொல்",
+    "Save" : "சேமிக்க ",
+    "None" : "ஒன்றுமில்லை",
     "Port" : "துறை ",
     "Region" : "பிரதேசம்",
     "URL" : "URL",
@@ -18,7 +19,6 @@ OC.L10N.register(
     "External Storage" : "வெளி சேமிப்பு",
     "Folder name" : "கோப்புறை பெயர்",
     "Configuration" : "தகவமைப்பு",
-    "Delete" : "நீக்குக",
-    "Enable User External Storage" : "பயனாளர் வெளி சேமிப்பை இயலுமைப்படுத்துக"
+    "Delete" : "நீக்குக"
 },
 "nplurals=2; plural=(n != 1);");

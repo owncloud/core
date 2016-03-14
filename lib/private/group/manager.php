@@ -4,16 +4,18 @@
  * @author Bart Visscher <bartv@thisnet.nl>
  * @author Bernhard Posselt <dev@bernhard-posselt.com>
  * @author Joas Schilling <nickvergessen@owncloud.com>
+ * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Lukas Reschke <lukas@owncloud.com>
  * @author macjohnny <estebanmarin@gmx.ch>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Robin Appelman <icewind@owncloud.com>
- * @author Robin McCorkell <rmccorkell@karoshi.org.uk>
- * @author Roeland Jago Douma <roeland@famdouma.nl>
+ * @author Robin McCorkell <robin@mccorkell.me.uk>
+ * @author Roeland Jago Douma <rullzer@owncloud.com>
+ * @author Roman Kreisel <mail@romankreisel.de>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author voxsim <Simon Vocella>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -33,6 +35,7 @@
 namespace OC\Group;
 
 use OC\Hooks\PublicEmitter;
+use OCP\GroupInterface;
 use OCP\IGroupManager;
 
 /**
@@ -52,7 +55,7 @@ use OCP\IGroupManager;
  */
 class Manager extends PublicEmitter implements IGroupManager {
 	/**
-	 * @var \OC_Group_Backend[]|\OC_Group_Database[] $backends
+	 * @var GroupInterface[] $backends
 	 */
 	private $backends = array();
 
@@ -71,11 +74,13 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 */
 	private $cachedUserGroups = array();
 
+	/** @var \OC\SubAdmin */
+	private $subAdmin = null;
 
 	/**
 	 * @param \OC\User\Manager $userManager
 	 */
-	public function __construct($userManager) {
+	public function __construct(\OC\User\Manager $userManager) {
 		$this->userManager = $userManager;
 		$cachedGroups = & $this->cachedGroups;
 		$cachedUserGroups = & $this->cachedUserGroups;
@@ -119,14 +124,19 @@ class Manager extends PublicEmitter implements IGroupManager {
 	}
 
 	/**
-	 * @param \OC_Group_Backend $backend
+	 * @param \OCP\GroupInterface $backend
 	 */
 	public function addBackend($backend) {
 		$this->backends[] = $backend;
+		$this->clearCaches();
 	}
 
 	public function clearBackends() {
 		$this->backends = array();
+		$this->clearCaches();
+	}
+	
+	protected function clearCaches() {
 		$this->cachedGroups = array();
 		$this->cachedUserGroups = array();
 	}
@@ -142,6 +152,10 @@ class Manager extends PublicEmitter implements IGroupManager {
 		return $this->getGroupObject($gid);
 	}
 
+	/**
+	 * @param string $gid
+	 * @return \OCP\IGroup
+	 */
 	protected function getGroupObject($gid) {
 		$backends = array();
 		foreach ($this->backends as $backend) {
@@ -208,10 +222,13 @@ class Manager extends PublicEmitter implements IGroupManager {
 	}
 
 	/**
-	 * @param \OC\User\User $user
+	 * @param \OC\User\User|null $user
 	 * @return \OC\Group\Group[]
 	 */
 	public function getUserGroups($user) {
+		if (is_null($user)) {
+			return [];
+		}
 		return $this->getUserIdGroups($user->getUID());
 	}
 
@@ -261,7 +278,9 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 * @return array with group ids
 	 */
 	public function getUserGroupIds($user) {
-		return array_keys($this->getUserGroups($user));
+		return array_map(function($value) {
+			return (string) $value;
+		}, array_keys($this->getUserGroups($user)));
 	}
 
 	/**
@@ -313,5 +332,20 @@ class Manager extends PublicEmitter implements IGroupManager {
 			$matchingUsers[$groupUser->getUID()] = $groupUser->getDisplayName();
 		}
 		return $matchingUsers;
+	}
+
+	/**
+	 * @return \OC\SubAdmin
+	 */
+	public function getSubAdmin() {
+		if (!$this->subAdmin) {
+			$this->subAdmin = new \OC\SubAdmin(
+				$this->userManager,
+				$this,
+				\OC::$server->getDatabaseConnection()
+			);
+		}
+
+		return $this->subAdmin;
 	}
 }

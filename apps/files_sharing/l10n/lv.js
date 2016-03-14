@@ -36,8 +36,8 @@ OC.L10N.register(
     "Public shared file %1$s was downloaded" : "Publiski koplietots fails %1$s tika lejupielādēts",
     "You shared %1$s with %2$s" : "Tu koplietoji %1$s ar %2$s",
     "You shared %1$s with group %2$s" : "Tu koplietoji %1$s ar grupu %2$s",
-    "%2$s shared %1$s with you" : "%2$s koplietoja %1$s ar tevi",
     "You shared %1$s via link" : "Tu koplietoji %1$s , izmantojot saiti",
+    "%2$s shared %1$s with you" : "%2$s koplietoja %1$s ar tevi",
     "Shares" : "Koplietotie",
     "This share is password-protected" : "Šī koplietotne ir aizsargāta ar paroli",
     "The password is wrong. Try again." : "Nepareiza parole. Mēģiniet vēlreiz.",
@@ -56,6 +56,7 @@ OC.L10N.register(
     "Download %s" : "Lejupielādēt %s",
     "Direct link" : "Tiešā saite",
     "Federated Cloud Sharing" : "Federatīva mākoņkoplietošana",
+    "Open documentation" : "Atvērt dokumentāciju",
     "Allow users on this server to send shares to other servers" : "Atļaut šī servera lietotājiem sūtīt koplietotnes uz citiem serveriem",
     "Allow users on this server to receive shares from other servers" : "Atļaut šī servera lietotājiem saņem koplietotnes no citiem serveriem"
 },

@@ -3,7 +3,7 @@
  * @author Joas Schilling <nickvergessen@owncloud.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -22,7 +22,8 @@
 
 namespace OCA\Files;
 
-use OC\L10N\Factory;
+use OCP\IDBConnection;
+use OCP\L10N\IFactory;
 use OCP\Activity\IExtension;
 use OCP\Activity\IManager;
 use OCP\IConfig;
@@ -43,7 +44,7 @@ class Activity implements IExtension {
 	/** @var IL10N */
 	protected $l;
 
-	/** @var Factory */
+	/** @var IFactory */
 	protected $languageFactory;
 
 	/** @var IURLGenerator */
@@ -52,6 +53,9 @@ class Activity implements IExtension {
 	/** @var \OCP\Activity\IManager */
 	protected $activityManager;
 
+	/** @var \OCP\IDBConnection */
+	protected $connection;
+
 	/** @var \OCP\IConfig */
 	protected $config;
 
@@ -59,18 +63,20 @@ class Activity implements IExtension {
 	protected $helper;
 
 	/**
-	 * @param Factory $languageFactory
+	 * @param IFactory $languageFactory
 	 * @param IURLGenerator $URLGenerator
 	 * @param IManager $activityManager
 	 * @param ActivityHelper $helper
+	 * @param IDBConnection $connection
 	 * @param IConfig $config
 	 */
-	public function __construct(Factory $languageFactory, IURLGenerator $URLGenerator, IManager $activityManager, ActivityHelper $helper, IConfig $config) {
+	public function __construct(IFactory $languageFactory, IURLGenerator $URLGenerator, IManager $activityManager, ActivityHelper $helper, IDBConnection $connection, IConfig $config) {
 		$this->languageFactory = $languageFactory;
 		$this->URLGenerator = $URLGenerator;
 		$this->l = $this->getL10N();
 		$this->activityManager = $activityManager;
 		$this->helper = $helper;
+		$this->connection = $connection;
 		$this->config = $config;
 	}
 
@@ -145,6 +151,24 @@ class Activity implements IExtension {
 		}
 
 		$l = $this->getL10N($languageCode);
+
+		if ($this->activityManager->isFormattingFilteredObject()) {
+			$translation = $this->translateShort($text, $l, $params);
+			if ($translation !== false) {
+				return $translation;
+			}
+		}
+
+		return $this->translateLong($text, $l, $params);
+	}
+
+	/**
+	 * @param string $text
+	 * @param IL10N $l
+	 * @param array $params
+	 * @return string|false
+	 */
+	protected function translateLong($text, IL10N $l, array $params) {
 		switch ($text) {
 			case 'created_self':
 				return (string) $l->t('You created %1$s', $params);
@@ -164,6 +188,26 @@ class Activity implements IExtension {
 				return (string) $l->t('You restored %1$s', $params);
 			case 'restored_by':
 				return (string) $l->t('%2$s restored %1$s', $params);
+
+			default:
+				return false;
+		}
+	}
+
+	/**
+	 * @param string $text
+	 * @param IL10N $l
+	 * @param array $params
+	 * @return string|false
+	 */
+	protected function translateShort($text, IL10N $l, array $params) {
+		switch ($text) {
+			case 'changed_by':
+				return (string) $l->t('Changed by %2$s', $params);
+			case 'deleted_by':
+				return (string) $l->t('Deleted by %2$s', $params);
+			case 'restored_by':
+				return (string) $l->t('Restored by %2$s', $params);
 
 			default:
 				return false;
@@ -341,6 +385,7 @@ class Activity implements IExtension {
 			 */
 			$parameters = $fileQueryList = [];
 			$parameters[] = self::APP_FILES;
+			$parameters[] = self::APP_FILES;
 
 			$fileQueryList[] = '(`type` <> ? AND `type` <> ?)';
 			$parameters[] = self::TYPE_SHARE_CREATED;
@@ -352,13 +397,15 @@ class Activity implements IExtension {
 			}
 			foreach ($favorites['folders'] as $favorite) {
 				$fileQueryList[] = '`file` LIKE ?';
-				$parameters[] = $favorite . '/%';
+				$parameters[] = $this->connection->escapeLikeParameter($favorite) . '/%';
 			}
 
-			$parameters[] = self::APP_FILES;
-
 			return [
-				' CASE WHEN `app` = ? THEN (' . implode(' OR ', $fileQueryList) . ') ELSE `app` <> ? END ',
+				' CASE '
+					. 'WHEN `app` <> ? THEN 1 '
+					. 'WHEN `app` = ? AND (' . implode(' OR ', $fileQueryList) . ') THEN 1 '
+					. 'ELSE 0 '
+				. 'END = 1 ',
 				$parameters,
 			];
 		}

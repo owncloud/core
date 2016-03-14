@@ -4,10 +4,11 @@
  * @author Christopher Schäpers <kondou@ts.unde.re>
  * @author Frank Karlitschek <frank@owncloud.org>
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
+ * @author Lukas Reschke <lukas@owncloud.com>
  * @author Masaki Kawabata Neto <masaki.kawabata@gmail.com>
  * @author Morris Jobke <hey@morrisjobke.de>
  *
- * @copyright Copyright (c) 2015, ownCloud, Inc.
+ * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
  *
  * This code is free software: you can redistribute it and/or modify
@@ -35,7 +36,7 @@ try {
 	$values=array(
 		'installed'=>$installed,
 		'maintenance' => $maintenance,
-		'version'=>implode('.', OC_Util::getVersion()),
+		'version'=>implode('.', \OCP\Util::getVersion()),
 		'versionstring'=>OC_Util::getVersionString(),
 		'edition'=>OC_Util::getEditionString());
 	if (OC::$CLI) {
