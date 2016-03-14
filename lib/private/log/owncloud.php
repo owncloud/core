@@ -93,8 +93,7 @@ class OC_Log_Owncloud {
 			$url = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '--';
 			$method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : '--';
 			$entry = compact('reqId', 'remoteAddr', 'app', 'message', 'level', 'time', 'method', 'url');
-		}
-		else {
+		} else {
 			$entry = compact('reqId', 'remoteAddr', 'app', 'message', 'level', 'time');
 		}
 		$entry = json_encode($entry);
