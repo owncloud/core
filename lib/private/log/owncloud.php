@@ -80,7 +80,7 @@ class OC_Log_Owncloud {
 		if ($time === false) {
 			$time = new DateTime(null, $timezone);
 		} else {
-			// apply timezone if timestamp is based on UNIX timestamp
+			// apply timezone if $time is created from UNIX timestamp
 			$time->setTimezone($timezone);
 		}
 		$request = \OC::$server->getRequest();
