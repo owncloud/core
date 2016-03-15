@@ -25,7 +25,7 @@ use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\IDBConnection;
 use OCP\ILogger;
 
-class FakeDBLocking extends \OC\Lock\DBLockingProvider {
+class FakeDBLockingProvider extends \OC\Lock\DBLockingProvider {
 	// Lock for 10 hours just to be sure
 	const TTL = 36000;
 

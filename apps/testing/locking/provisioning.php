@@ -21,6 +21,8 @@
 
 namespace OCA\Testing\Locking;
 
+use OC\Lock\DBLockingProvider;
+use OC\Lock\MemcacheLockingProvider;
 use OC\User\NoUserException;
 use OCP\AppFramework\Http;
 use OCP\Files\NotFoundException;
@@ -61,12 +63,11 @@ class Provisioning {
 	 * @return ILockingProvider
 	 */
 	protected function getLockingProvider() {
-		return \OC::$server->query('OCA\Testing\Locking\FakeDBLocking');
-		/*
 		if ($this->lockingProvider instanceof DBLockingProvider) {
-			return \OC::$server->query('OCA\Testing\Locking\FakeDBLocking');
+			return \OC::$server->query('OCA\Testing\Locking\FakeDBLockingProvider');
+		} else {
+			throw new \RuntimeException('Lock provisioning is only possible using the DBLockingProvider');
 		}
-		*/
 	}
 
 	/**
@@ -86,6 +87,18 @@ class Provisioning {
 			->getUserFolder($parameters['user'])
 			->get($this->request->getParam('path'));
 		return 'files/' . md5($node->getStorage()->getId() . '::' . trim($node->getInternalPath(), '/'));
+	}
+
+	/**
+	 * @return \OC_OCS_Result
+	 */
+	public function isLockingEnabled() {
+		try {
+			$this->getLockingProvider();
+			return new \OC_OCS_Result(null, 100);
+		} catch (\RuntimeException $e) {
+			return new \OC_OCS_Result(null, Http::STATUS_NOT_IMPLEMENTED, $e->getMessage());
+		}
 	}
 
 	/**

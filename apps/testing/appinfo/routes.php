@@ -52,6 +52,7 @@ $locking = new Provisioning(
 	\OC::$server->getConfig(),
 	\OC::$server->getRequest()
 );
+API::register('get', '/apps/testing/api/v1/lockprovisioning', [$locking, 'isLockingEnabled'], 'files_lockprovisioning', API::ADMIN_AUTH);
 API::register('get', '/apps/testing/api/v1/lockprovisioning/{type}/{user}', [$locking, 'isLocked'], 'files_lockprovisioning', API::ADMIN_AUTH);
 API::register('post', '/apps/testing/api/v1/lockprovisioning/{type}/{user}', [$locking, 'acquireLock'], 'files_lockprovisioning', API::ADMIN_AUTH);
 API::register('put', '/apps/testing/api/v1/lockprovisioning/{type}/{user}', [$locking, 'changeLock'], 'files_lockprovisioning', API::ADMIN_AUTH);
