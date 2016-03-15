@@ -28,6 +28,8 @@ use OCA\Files_Sharing\API\Sharees;
 use OCA\Files_sharing\Tests\TestCase;
 use OCP\AppFramework\Http;
 use OCP\Share;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Class ShareesTest
@@ -55,6 +57,9 @@ class ShareesTest extends TestCase {
 	/** @var \OCP\IRequest|\PHPUnit_Framework_MockObject_MockObject */
 	protected $request;
 
+	/** @var EventDispatcherInterface|\PHPUnit_Framework_MockObject_MockObject */
+	protected $dispatcher;
+
 	protected function setUp() {
 		parent::setUp();
 
@@ -78,6 +83,10 @@ class ShareesTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcherInterface')
+			->disableOriginalConstructor()
+			->getMock();
+
 		$this->sharees = new Sharees(
 			$this->groupManager,
 			$this->userManager,
@@ -86,7 +95,8 @@ class ShareesTest extends TestCase {
 			$this->session,
 			$this->getMockBuilder('OCP\IURLGenerator')->disableOriginalConstructor()->getMock(),
 			$this->request,
-			$this->getMockBuilder('OCP\ILogger')->disableOriginalConstructor()->getMock()
+			$this->getMockBuilder('OCP\ILogger')->disableOriginalConstructor()->getMock(),
+			$this->dispatcher
 		);
 	}
 
@@ -966,89 +976,94 @@ class ShareesTest extends TestCase {
 		$allTypes = [Share::SHARE_TYPE_USER, Share::SHARE_TYPE_GROUP, Share::SHARE_TYPE_REMOTE];
 
 		return [
-			[[], '', 'yes', true, '', null, $allTypes, 1, 200, false, true],
+			[[], '', 'yes', true, '', null, $allTypes, 1, 200, false, true, []],
 
 			// Test itemType
 			[[
 				'search' => '',
-			], '', 'yes', true, '', null, $allTypes, 1, 200, false, true],
+			], '', 'yes', true, '', null, $allTypes, 1, 200, false, true, []],
 			[[
 				'search' => 'foobar',
-			], '', 'yes', true, 'foobar', null, $allTypes, 1, 200, false, true],
+			], '', 'yes', true, 'foobar', null, $allTypes, 1, 200, false, true, []],
 			[[
 				'search' => 0,
-			], '', 'yes', true, '0', null, $allTypes, 1, 200, false, true],
+			], '', 'yes', true, '0', null, $allTypes, 1, 200, false, true, []],
 
 			// Test itemType
 			[[
 				'itemType' => '',
-			], '', 'yes', true, '', '', $allTypes, 1, 200, false, true],
+			], '', 'yes', true, '', '', $allTypes, 1, 200, false, true, []],
 			[[
 				'itemType' => 'folder',
-			], '', 'yes', true, '', 'folder', $allTypes, 1, 200, false, true],
+			], '', 'yes', true, '', 'folder', $allTypes, 1, 200, false, true, []],
 			[[
 				'itemType' => 0,
-			], '', 'yes', true, '', '0', $allTypes, 1, 200, false, true],
+			], '', 'yes', true, '', '0', $allTypes, 1, 200, false, true, []],
 
 			// Test shareType
 			[[
-			], '', 'yes', true, '', null, $allTypes, 1, 200, false, true],
+			], '', 'yes', true, '', null, $allTypes, 1, 200, false, true, []],
 			[[
 				'shareType' => 0,
-			], '', 'yes', true, '', null, [0], 1, 200, false, true],
+			], '', 'yes', true, '', null, [0], 1, 200, false, true, []],
 			[[
 				'shareType' => '0',
-			], '', 'yes', true, '', null, [0], 1, 200, false, true],
+			], '', 'yes', true, '', null, [0], 1, 200, false, true, []],
 			[[
 				'shareType' => 1,
-			], '', 'yes', true, '', null, [1], 1, 200, false, true],
+			], '', 'yes', true, '', null, [1], 1, 200, false, true, []],
 			[[
 				'shareType' => 12,
-			], '', 'yes', true, '', null, [], 1, 200, false, true],
+			], '', 'yes', true, '', null, [], 1, 200, false, true, []],
 			[[
 				'shareType' => 'foobar',
-			], '', 'yes', true, '', null, $allTypes, 1, 200, false, true],
+			], '', 'yes', true, '', null, $allTypes, 1, 200, false, true, []],
 			[[
 				'shareType' => [0, 1, 2],
-			], '', 'yes', true, '', null, [0, 1], 1, 200, false, true],
+			], '', 'yes', true, '', null, [0, 1], 1, 200, false, true, []],
 			[[
 				'shareType' => [0, 1],
-			], '', 'yes', true, '', null, [0, 1], 1, 200, false, true],
+			], '', 'yes', true, '', null, [0, 1], 1, 200, false, true, []],
 			[[
 				'shareType' => $allTypes,
-			], '', 'yes', true, '', null, $allTypes, 1, 200, false, true],
+			], '', 'yes', true, '', null, $allTypes, 1, 200, false, true, []],
 			[[
 				'shareType' => $allTypes,
-			], '', 'yes', false, '', null, [0, 1], 1, 200, false, true],
+			], '', 'yes', false, '', null, [0, 1], 1, 200, false, true, []],
 
 			// Test pagination
 			[[
 				'page' => 1,
-			], '', 'yes', true, '', null, $allTypes, 1, 200, false, true],
+			], '', 'yes', true, '', null, $allTypes, 1, 200, false, true, []],
 			[[
 				'page' => 10,
-			], '', 'yes', true, '', null, $allTypes, 10, 200, false, true],
+			], '', 'yes', true, '', null, $allTypes, 10, 200, false, true, []],
 
 			// Test perPage
 			[[
 				'perPage' => 1,
-			], '', 'yes', true, '', null, $allTypes, 1, 1, false, true],
+			], '', 'yes', true, '', null, $allTypes, 1, 1, false, true, []],
 			[[
 				'perPage' => 10,
-			], '', 'yes', true, '', null, $allTypes, 1, 10, false, true],
+			], '', 'yes', true, '', null, $allTypes, 1, 10, false, true, []],
 
 			// Test $shareWithGroupOnly setting
-			[[], 'no', 'yes',  true, '', null, $allTypes, 1, 200, false, true],
-			[[], 'yes', 'yes', true, '', null, $allTypes, 1, 200, true, true],
+			[[], 'no', 'yes',  true, '', null, $allTypes, 1, 200, false, true, []],
+			[[], 'yes', 'yes', true, '', null, $allTypes, 1, 200, true, true, []],
 
 			// Test $shareeEnumeration setting
-			[[], 'no', 'yes',  true, '', null, $allTypes, 1, 200, false, true],
-			[[], 'no', 'no', true, '', null, $allTypes, 1, 200, false, false],
+			[[], 'no', 'yes',  true, '', null, $allTypes, 1, 200, false, true, []],
+			[[], 'no', 'no', true, '', null, $allTypes, 1, 200, false, false, []],
 
 			// Test keep case for search
 			[[
 				'search' => 'foo@example.com/ownCloud',
-			], '', 'yes', true, 'foo@example.com/ownCloud', null, $allTypes, 1, 200, false, true],
+			], '', 'yes', true, 'foo@example.com/ownCloud', null, $allTypes, 1, 200, false, true, []],
+
+			// Test filter out shareTypes
+			[[], 'no', 'yes', true, '', null, [\OCP\Share::SHARE_TYPE_GROUP, \OCP\Share::SHARE_TYPE_REMOTE], 1, 200, false, true, [\OCP\Share::SHARE_TYPE_USER]],
+			[[], 'no', 'yes', true, '', null, [\OCP\Share::SHARE_TYPE_USER, \OCP\Share::SHARE_TYPE_REMOTE], 1, 200, false, true, [\OCP\Share::SHARE_TYPE_GROUP]],
+			[[], 'no', 'yes', true, '', null, [\OCP\Share::SHARE_TYPE_USER, \OCP\Share::SHARE_TYPE_GROUP], 1, 200, false, true, [\OCP\Share::SHARE_TYPE_REMOTE]],
 		];
 	}
 
@@ -1067,7 +1082,7 @@ class ShareesTest extends TestCase {
 	 * @param bool $shareWithGroupOnly
 	 * @param bool $shareeEnumeration
 	 */
-	public function testSearch($getData, $apiSetting, $enumSetting, $remoteSharingEnabled, $search, $itemType, $shareTypes, $page, $perPage, $shareWithGroupOnly, $shareeEnumeration) {
+	public function testSearch($getData, $apiSetting, $enumSetting, $remoteSharingEnabled, $search, $itemType, $shareTypes, $page, $perPage, $shareWithGroupOnly, $shareeEnumeration, $eventFilter) {
 		$oldGet = $_GET;
 		$_GET = $getData;
 
@@ -1082,6 +1097,16 @@ class ShareesTest extends TestCase {
 				['core', 'shareapi_allow_share_dialog_user_enumeration', 'yes', $enumSetting],
 			]);
 
+		$this->dispatcher->expects($this->once())
+			->method('dispatch')
+			->with(
+				$this->equalTo('OCA\Files_Sharing\API::shareeTypes')
+			)->willReturnCallback(function ($name, GenericEvent $event) use ($eventFilter) {
+					$event['shareTypes'] = array_values(array_diff($event['shareTypes'], $eventFilter));
+					return $event;
+				}
+			);
+
 		$sharees = $this->getMockBuilder('\OCA\Files_Sharing\API\Sharees')
 			->setConstructorArgs([
 				$this->groupManager,
@@ -1091,7 +1116,8 @@ class ShareesTest extends TestCase {
 				$this->session,
 				$this->getMockBuilder('OCP\IURLGenerator')->disableOriginalConstructor()->getMock(),
 				$this->getMockBuilder('OCP\IRequest')->disableOriginalConstructor()->getMock(),
-				$this->getMockBuilder('OCP\ILogger')->disableOriginalConstructor()->getMock()
+				$this->getMockBuilder('OCP\ILogger')->disableOriginalConstructor()->getMock(),
+				$this->dispatcher,
 			])
 			->setMethods(array('searchSharees', 'isRemoteSharingAllowed'))
 			->getMock();
@@ -1175,7 +1201,8 @@ class ShareesTest extends TestCase {
 				$this->session,
 				$this->getMockBuilder('OCP\IURLGenerator')->disableOriginalConstructor()->getMock(),
 				$this->getMockBuilder('OCP\IRequest')->disableOriginalConstructor()->getMock(),
-				$this->getMockBuilder('OCP\ILogger')->disableOriginalConstructor()->getMock()
+				$this->getMockBuilder('OCP\ILogger')->disableOriginalConstructor()->getMock(),
+				$this->dispatcher,
 			])
 			->setMethods(array('searchSharees', 'isRemoteSharingAllowed'))
 			->getMock();
@@ -1327,7 +1354,8 @@ class ShareesTest extends TestCase {
 				$this->session,
 				$this->getMockBuilder('OCP\IURLGenerator')->disableOriginalConstructor()->getMock(),
 				$this->getMockBuilder('OCP\IRequest')->disableOriginalConstructor()->getMock(),
-				$this->getMockBuilder('OCP\ILogger')->disableOriginalConstructor()->getMock()
+				$this->getMockBuilder('OCP\ILogger')->disableOriginalConstructor()->getMock(),
+				$this->dispatcher
 			])
 			->setMethods(array('getShareesForShareIds', 'getUsers', 'getGroups', 'getRemote'))
 			->getMock();

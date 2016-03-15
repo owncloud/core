@@ -35,6 +35,8 @@ use OCP\IConfig;
 use OCP\IUserSession;
 use OCP\IURLGenerator;
 use OCP\Share;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class Sharees {
 
@@ -61,6 +63,9 @@ class Sharees {
 
 	/** @var ILogger */
 	protected $logger;
+
+	/** @var EventDispatcherInterface */
+	protected $dispatcher;
 
 	/** @var bool */
 	protected $shareWithGroupOnly = false;
@@ -105,7 +110,8 @@ class Sharees {
 								IUserSession $userSession,
 								IURLGenerator $urlGenerator,
 								IRequest $request,
-								ILogger $logger) {
+								ILogger $logger,
+								EventDispatcherInterface $dispatcher) {
 		$this->groupManager = $groupManager;
 		$this->userManager = $userManager;
 		$this->contactsManager = $contactsManager;
@@ -114,6 +120,7 @@ class Sharees {
 		$this->urlGenerator = $urlGenerator;
 		$this->request = $request;
 		$this->logger = $logger;
+		$this->dispatcher = $dispatcher;
 	}
 
 	/**
@@ -414,6 +421,18 @@ class Sharees {
 			Share::SHARE_TYPE_GROUP,
 			Share::SHARE_TYPE_REMOTE,
 		];
+
+		/*
+		 * Dispatch event that contains the shareTypes we can search for
+		 * listeners can modify this to block certain share types.
+		 */
+		$event = new GenericEvent('OCA\Files_Sharing\API::shareeTypes', ['shareTypes' => $shareTypes]);
+		$this->dispatcher->dispatch(
+			'OCA\Files_Sharing\API::shareeTypes',
+			$event
+		);
+		$shareTypes = $event['shareTypes'];
+
 		if (isset($_GET['shareType']) && is_array($_GET['shareType'])) {
 			$shareTypes = array_intersect($shareTypes, $_GET['shareType']);
 			sort($shareTypes);
