@@ -43,7 +43,7 @@ $principalBackend = new Principal(
 	'principals/'
 );
 $db = \OC::$server->getDatabaseConnection();
-$cardDavBackend = new CardDavBackend($db, $principalBackend);
+$app = new \OCA\Dav\AppInfo\Application();
 
 $debugging = \OC::$server->getConfig()->getSystemValue('debug', false);
 
@@ -51,7 +51,7 @@ $debugging = \OC::$server->getConfig()->getSystemValue('debug', false);
 $principalCollection = new \Sabre\CalDAV\Principal\Collection($principalBackend);
 $principalCollection->disableListing = !$debugging; // Disable listing
 
-$addressBookRoot = new AddressBookRoot($principalBackend, $cardDavBackend);
+$addressBookRoot = new AddressBookRoot($principalBackend, $app->getCardDavBackend());
 $addressBookRoot->disableListing = !$debugging; // Disable listing
 
 $nodes = array(
