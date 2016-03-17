@@ -18,6 +18,7 @@
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Thomas Tanghus <thomas@tanghus.net>
  * @author Vincent Petry <pvince81@owncloud.com>
+ * @author GitHubUser4234 <i_feel_happy@yahoo.com>
  *
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  * @license AGPL-3.0
@@ -57,6 +58,7 @@ use OC\IntegrityCheck\Checker;
 use OC\IntegrityCheck\Helpers\AppLocator;
 use OC\IntegrityCheck\Helpers\EnvironmentHelper;
 use OC\IntegrityCheck\Helpers\FileAccessHelper;
+use OC\LDAP\LDAPProvider;
 use OC\Lock\DBLockingProvider;
 use OC\Lock\MemcacheLockingProvider;
 use OC\Lock\NoopLockingProvider;
@@ -518,6 +520,9 @@ class Server extends ServerContainer implements IServerContainer {
 				$this->getConfig(),
 				$this->getLogger()
 			);
+		});
+		$this->registerService('LDAPProvider', function ($c) {
+			return new LDAPProvider();
 		});
 		$this->registerService('LockingProvider', function (Server $c) {
 			if ($c->getConfig()->getSystemValue('filelocking.enabled', true) or (defined('PHPUNIT_RUN') && PHPUNIT_RUN)) {
@@ -1275,4 +1280,12 @@ class Server extends ServerContainer implements IServerContainer {
 		return $this->query('ShareManager');
 	}
 
+	/**
+	 * Returns the preview manager which can create preview images for a given file
+	 *
+	 * @return \OCP\LDAP\ILDAPProvider
+	 */
+	public function getLDAPProvider() {
+		return $this->query('LDAPProvider');
+	}
 }
